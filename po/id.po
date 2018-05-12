@@ -10,30 +10,30 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-02-16 20:43+0000\n"
-"PO-Revision-Date: 2018-02-18 15:19+0700\n"
-"Last-Translator: Andika Triwidada <atriwidada@gnome.org>\n"
+"POT-Creation-Date: 2018-03-26 14:56+0000\n"
+"PO-Revision-Date: 2018-04-23 13:27+0700\n"
+"Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: ../gio/gapplication.c:495
+#: ../gio/gapplication.c:496
 msgid "GApplication options"
 msgstr "Opsi GApplication"
 
-#: ../gio/gapplication.c:495
+#: ../gio/gapplication.c:496
 msgid "Show GApplication options"
 msgstr "Tunjukkan opsi GApplication"
 
-#: ../gio/gapplication.c:540
+#: ../gio/gapplication.c:541
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "Masuk mode layanan GApplication (pakai dari berkas layanan D-Bus)"
 
-#: ../gio/gapplication.c:552
+#: ../gio/gapplication.c:553
 msgid "Override the application’s ID"
 msgstr "Timpa ID aplikasi"
 
@@ -115,8 +115,8 @@ msgstr "Perintah yang ingin dicetak bantuan terrincinya"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Identifier aplikasi dalam format D-Bus (mis: org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:665
-#: ../gio/glib-compile-resources.c:671 ../gio/glib-compile-resources.c:698
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:737
+#: ../gio/glib-compile-resources.c:743 ../gio/glib-compile-resources.c:770
 #: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "BERKAS"
@@ -539,7 +539,7 @@ msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr ""
 "Ketiadaan isi yang tak diharapkan ketika membaca suatu baris (secara aman)"
 
-#: ../gio/gdbusauth.c:508
+#: ../gio/gdbusauth.c:481
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -547,7 +547,7 @@ msgstr ""
 "Menghabiskan semua mekanisme otentikasi yang tersedia (dicoba: %s) "
 "(tersedia: %s)"
 
-#: ../gio/gdbusauth.c:1171
+#: ../gio/gdbusauth.c:1144
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Dibatalkan melalui GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -568,17 +568,17 @@ msgstr ""
 msgid "Error creating directory “%s”: %s"
 msgstr "Galat saat membuat direktori \"%s\": %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:379
+#: ../gio/gdbusauthmechanismsha1.c:343
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Galat saat membuka ring kunci \"%s\" untuk dibaca: "
 
-#: ../gio/gdbusauthmechanismsha1.c:402 ../gio/gdbusauthmechanismsha1.c:720
+#: ../gio/gdbusauthmechanismsha1.c:366 ../gio/gdbusauthmechanismsha1.c:684
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Baris %d dari ring kunci pada \"%s\" dengan isi \"%s\" salah bentuk"
 
-#: ../gio/gdbusauthmechanismsha1.c:416 ../gio/gdbusauthmechanismsha1.c:734
+#: ../gio/gdbusauthmechanismsha1.c:380 ../gio/gdbusauthmechanismsha1.c:698
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -586,7 +586,7 @@ msgstr ""
 "Token pertama dari baris %d dari ring kunci pada \"%s\" dengan isi \"%s\" "
 "salah bentuk"
 
-#: ../gio/gdbusauthmechanismsha1.c:430 ../gio/gdbusauthmechanismsha1.c:748
+#: ../gio/gdbusauthmechanismsha1.c:394 ../gio/gdbusauthmechanismsha1.c:712
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -594,37 +594,37 @@ msgstr ""
 "Token kedua dari baris %d dari ring kunci pada \"%s\" dengan isi \"%s\" "
 "salah bentuk"
 
-#: ../gio/gdbusauthmechanismsha1.c:454
+#: ../gio/gdbusauthmechanismsha1.c:418
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Tak menemukan cookie dengan id %d dalam gantungan kunci pada \"%s\""
 
-#: ../gio/gdbusauthmechanismsha1.c:536
+#: ../gio/gdbusauthmechanismsha1.c:500
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Galat saat menghapus berkas kunci yang basi \"%s\": %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:568
+#: ../gio/gdbusauthmechanismsha1.c:532
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Galat saat membuat berkas kunci \"%s\": %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:599
+#: ../gio/gdbusauthmechanismsha1.c:563
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Galat saat menutup berkas kunci (tak terkait) \"%s\": %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:610
+#: ../gio/gdbusauthmechanismsha1.c:574
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Galat saat membuka kait berkas kunci \"%s\": %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:687
+#: ../gio/gdbusauthmechanismsha1.c:651
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Galat saat membuka gantungan kunci \"%s\" untuk ditulisi: "
 
-#: ../gio/gdbusauthmechanismsha1.c:883
+#: ../gio/gdbusauthmechanismsha1.c:847
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Selain itu, melepas kunci bagi \"%s\" juga gagal: %s) "
@@ -989,60 +989,60 @@ msgstr ""
 "Gunakan \"%s PERINTAH --help\" untuk memperoleh bantuan pada setiap "
 "perintah.\n"
 
-#: ../gio/gdbus-tool.c:167 ../gio/gdbus-tool.c:234 ../gio/gdbus-tool.c:306
-#: ../gio/gdbus-tool.c:330 ../gio/gdbus-tool.c:811 ../gio/gdbus-tool.c:1150
-#: ../gio/gdbus-tool.c:1592
+#: ../gio/gdbus-tool.c:185 ../gio/gdbus-tool.c:252 ../gio/gdbus-tool.c:324
+#: ../gio/gdbus-tool.c:348 ../gio/gdbus-tool.c:834 ../gio/gdbus-tool.c:1171
+#: ../gio/gdbus-tool.c:1613
 #, c-format
 msgid "Error: %s\n"
 msgstr "Galat: %s\n"
 
-#: ../gio/gdbus-tool.c:178 ../gio/gdbus-tool.c:247 ../gio/gdbus-tool.c:1608
+#: ../gio/gdbus-tool.c:196 ../gio/gdbus-tool.c:265 ../gio/gdbus-tool.c:1629
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Galat saat mengurai XML introspeksi: %s\n"
 
-#: ../gio/gdbus-tool.c:216
+#: ../gio/gdbus-tool.c:234
 #, c-format
 msgid "Error: %s is not a valid name\n"
 msgstr "Galat: %s bukan nama yang valid\n"
 
-#: ../gio/gdbus-tool.c:364
+#: ../gio/gdbus-tool.c:382
 msgid "Connect to the system bus"
 msgstr "Menyambung ke bus sistem"
 
-#: ../gio/gdbus-tool.c:365
+#: ../gio/gdbus-tool.c:383
 msgid "Connect to the session bus"
 msgstr "Menyambung ke bus sesi"
 
-#: ../gio/gdbus-tool.c:366
+#: ../gio/gdbus-tool.c:384
 msgid "Connect to given D-Bus address"
 msgstr "Menyambung ke alamat D-Bus yang diberikan"
 
-#: ../gio/gdbus-tool.c:376
+#: ../gio/gdbus-tool.c:394
 msgid "Connection Endpoint Options:"
 msgstr "Opsi Titik Ujung Sambungan:"
 
-#: ../gio/gdbus-tool.c:377
+#: ../gio/gdbus-tool.c:395
 msgid "Options specifying the connection endpoint"
 msgstr "Opsi yang menyatakan titik ujung sambungan"
 
-#: ../gio/gdbus-tool.c:399
+#: ../gio/gdbus-tool.c:417
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Titik ujung sambungan tak dinyatakan"
 
-#: ../gio/gdbus-tool.c:409
+#: ../gio/gdbus-tool.c:427
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Telah dinyatakan titik ujung sambungan berganda"
 
-#: ../gio/gdbus-tool.c:479
+#: ../gio/gdbus-tool.c:497
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr "Peringatan: Menurut data introspeksi, antar muka \"%s\" tak ada\n"
 
-#: ../gio/gdbus-tool.c:488
+#: ../gio/gdbus-tool.c:506
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
@@ -1051,169 +1051,168 @@ msgstr ""
 "Peringatan: Menurut data introspeksi, metoda \"%s\" tak ada pada antar muka "
 "\"%s\"\n"
 
-#: ../gio/gdbus-tool.c:550
+#: ../gio/gdbus-tool.c:568
 msgid "Optional destination for signal (unique name)"
 msgstr "Tujuan opsional bagi sinyal (nama unik)"
 
-#: ../gio/gdbus-tool.c:551
+#: ../gio/gdbus-tool.c:569
 msgid "Object path to emit signal on"
 msgstr "Path objek untuk dipancari sinyal"
 
-#: ../gio/gdbus-tool.c:552
+#: ../gio/gdbus-tool.c:570
 msgid "Signal and interface name"
 msgstr "Nama antar muka dan sinyal"
 
-#: ../gio/gdbus-tool.c:587
+#: ../gio/gdbus-tool.c:603
 msgid "Emit a signal."
 msgstr "Pancarkan sinyal."
 
-#: ../gio/gdbus-tool.c:642 ../gio/gdbus-tool.c:944 ../gio/gdbus-tool.c:1698
-#: ../gio/gdbus-tool.c:1931 ../gio/gdbus-tool.c:2152
+#: ../gio/gdbus-tool.c:658 ../gio/gdbus-tool.c:965 ../gio/gdbus-tool.c:1715
+#: ../gio/gdbus-tool.c:1944 ../gio/gdbus-tool.c:2164
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Galat saat menyambung: %s\n"
 
-#: ../gio/gdbus-tool.c:659 ../gio/gdbus-tool.c:961 ../gio/gdbus-tool.c:1715
-#: ../gio/gdbus-tool.c:1956
-#, c-format
-msgid "Error: Destination is not specified\n"
-msgstr "Galat: Tujuan tak dinyatakan\n"
-
-#: ../gio/gdbus-tool.c:670
+#: ../gio/gdbus-tool.c:678
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Galat: '%s' bukan nama bus unik yang valid\n"
 
-#: ../gio/gdbus-tool.c:685 ../gio/gdbus-tool.c:987 ../gio/gdbus-tool.c:1741
+#: ../gio/gdbus-tool.c:697 ../gio/gdbus-tool.c:1008 ../gio/gdbus-tool.c:1758
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Galat: Lokasi objek tak dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:705 ../gio/gdbus-tool.c:1007 ../gio/gdbus-tool.c:1761
-#: ../gio/gdbus-tool.c:2002
+#: ../gio/gdbus-tool.c:720 ../gio/gdbus-tool.c:1028 ../gio/gdbus-tool.c:1778
+#: ../gio/gdbus-tool.c:2015
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Galat: '%s' bukan suatu lokasi objek yang valid\n"
 
-#: ../gio/gdbus-tool.c:720
+#: ../gio/gdbus-tool.c:740
 #, c-format
 msgid "Error: Signal name is not specified\n"
 msgstr "Galat: Nama sinyal tak dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:731
+#: ../gio/gdbus-tool.c:754
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "Galat: Nama sinyal \"%s\" tak valid\n"
 
-#: ../gio/gdbus-tool.c:743
+#: ../gio/gdbus-tool.c:766
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Galat: '%s' bukan nama antar muka yang valid\n"
 
-#: ../gio/gdbus-tool.c:749
+#: ../gio/gdbus-tool.c:772
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Galat: '%s' bukan nama anggota yang valid\n"
 
 #. Use the original non-"parse-me-harder" error
-#: ../gio/gdbus-tool.c:786 ../gio/gdbus-tool.c:1119
+#: ../gio/gdbus-tool.c:809 ../gio/gdbus-tool.c:1140
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Galat saat mengurai parameter %d: %s\n"
 
-#: ../gio/gdbus-tool.c:818
+#: ../gio/gdbus-tool.c:841
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Galat saat menggelontor sambungan: %s\n"
 
-#: ../gio/gdbus-tool.c:845
+#: ../gio/gdbus-tool.c:868
 msgid "Destination name to invoke method on"
 msgstr "Nama tujuan tempat menjalankan metoda"
 
-#: ../gio/gdbus-tool.c:846
+#: ../gio/gdbus-tool.c:869
 msgid "Object path to invoke method on"
 msgstr "Lokasi objek tempat menjalankan metoda"
 
-#: ../gio/gdbus-tool.c:847
+#: ../gio/gdbus-tool.c:870
 msgid "Method and interface name"
 msgstr "Nama metoda dan antar muka"
 
-#: ../gio/gdbus-tool.c:848
+#: ../gio/gdbus-tool.c:871
 msgid "Timeout in seconds"
 msgstr "Tenggat waktu dalam detik"
 
-#: ../gio/gdbus-tool.c:889
+#: ../gio/gdbus-tool.c:910
 msgid "Invoke a method on a remote object."
 msgstr "Jalankan suatu metoda pada suatu objek jauh."
 
-#: ../gio/gdbus-tool.c:972 ../gio/gdbus-tool.c:1732 ../gio/gdbus-tool.c:1967
+#: ../gio/gdbus-tool.c:982 ../gio/gdbus-tool.c:1732 ../gio/gdbus-tool.c:1969
+#, c-format
+msgid "Error: Destination is not specified\n"
+msgstr "Galat: Tujuan tak dinyatakan\n"
+
+#: ../gio/gdbus-tool.c:993 ../gio/gdbus-tool.c:1749 ../gio/gdbus-tool.c:1980
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Galat: %s bukan nama bus yang valid\n"
 
-#: ../gio/gdbus-tool.c:1022
+#: ../gio/gdbus-tool.c:1043
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Galat: Nama metoda tak dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:1033
+#: ../gio/gdbus-tool.c:1054
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Galat: Nama metoda \"%s\" tak valid\n"
 
-#: ../gio/gdbus-tool.c:1111
+#: ../gio/gdbus-tool.c:1132
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Galat ketika mengurai parameter ke-%d bertipe \"%s\": %s\n"
 
-#: ../gio/gdbus-tool.c:1555
+#: ../gio/gdbus-tool.c:1576
 msgid "Destination name to introspect"
 msgstr "Nama tujuan untuk introspeksi"
 
-#: ../gio/gdbus-tool.c:1556
+#: ../gio/gdbus-tool.c:1577
 msgid "Object path to introspect"
 msgstr "Lokasi objek untuk introspeksi"
 
-#: ../gio/gdbus-tool.c:1557
+#: ../gio/gdbus-tool.c:1578
 msgid "Print XML"
 msgstr "Cetak XML"
 
-#: ../gio/gdbus-tool.c:1558
+#: ../gio/gdbus-tool.c:1579
 msgid "Introspect children"
 msgstr "Introspeksi anak"
 
-#: ../gio/gdbus-tool.c:1559
+#: ../gio/gdbus-tool.c:1580
 msgid "Only print properties"
 msgstr "Hanya cetak properti"
 
-#: ../gio/gdbus-tool.c:1650
+#: ../gio/gdbus-tool.c:1667
 msgid "Introspect a remote object."
 msgstr "Introspeksi suatu objek jauh."
 
-#: ../gio/gdbus-tool.c:1853
+#: ../gio/gdbus-tool.c:1870
 msgid "Destination name to monitor"
 msgstr "Nama tujuan untuk dipantau"
 
-#: ../gio/gdbus-tool.c:1854
+#: ../gio/gdbus-tool.c:1871
 msgid "Object path to monitor"
 msgstr "Lokasi objek untuk dipantau"
 
-#: ../gio/gdbus-tool.c:1883
+#: ../gio/gdbus-tool.c:1896
 msgid "Monitor a remote object."
 msgstr "Memantau suatu objek jauh."
 
-#: ../gio/gdbus-tool.c:1941
+#: ../gio/gdbus-tool.c:1954
 #, c-format
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr "Galat: tidak dapat memonitor koneksi non bus pesan\n"
 
-#: ../gio/gdbus-tool.c:2065
+#: ../gio/gdbus-tool.c:2078
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr ""
 "Layanan yang akan diaktifkan sebelum menunggu yang lain (nama yang dikenal "
 "baik)"
 
-#: ../gio/gdbus-tool.c:2068
+#: ../gio/gdbus-tool.c:2081
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1221,30 +1220,30 @@ msgstr ""
 "Tenggat waktu menunggu sebelum keluar dengan suatu kesalahan (detik); 0 "
 "untuk tanpa tenggat (baku)"
 
-#: ../gio/gdbus-tool.c:2116
+#: ../gio/gdbus-tool.c:2129
 msgid "[OPTION…] BUS-NAME"
 msgstr "[OPSI…] NAMA-BUS"
 
-#: ../gio/gdbus-tool.c:2118
+#: ../gio/gdbus-tool.c:2130
 msgid "Wait for a bus name to appear."
 msgstr "Tunggu suatu nama bus muncul."
 
-#: ../gio/gdbus-tool.c:2194
+#: ../gio/gdbus-tool.c:2206
 #, c-format
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Galat: Suatu layanan yang akan diaktifkan mesti dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:2199
+#: ../gio/gdbus-tool.c:2211
 #, c-format
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Galat: Suatu layanan yang mesti ditunggu harus dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:2204
+#: ../gio/gdbus-tool.c:2216
 #, c-format
 msgid "Error: Too many arguments.\n"
 msgstr "Galat: Terlalu banyak argumen.\n"
 
-#: ../gio/gdbus-tool.c:2212 ../gio/gdbus-tool.c:2219
+#: ../gio/gdbus-tool.c:2224 ../gio/gdbus-tool.c:2231
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Galat: %s bukan nama bus yang dikenal baik dan valid\n"
@@ -2235,12 +2234,12 @@ msgstr "Ikuti taut simbolik, kait, dan pintasan"
 msgid "List contents of directories in a tree-like format."
 msgstr "Tampilkan daftar isi direktori dalam format mirip pohon."
 
-#: ../gio/glib-compile-resources.c:142 ../gio/glib-compile-schemas.c:1501
+#: ../gio/glib-compile-resources.c:143 ../gio/glib-compile-schemas.c:1501
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Elemen <%s> tidak diijinkan di dalam <%s>"
 
-#: ../gio/glib-compile-resources.c:146
+#: ../gio/glib-compile-resources.c:147
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Elemen <%s> tidak diijinkan pada aras puncak"
@@ -2260,91 +2259,96 @@ msgstr "Gagal menemukan \"%s\" dalam direktori sumber manapun"
 msgid "Failed to locate “%s” in current directory"
 msgstr "Gagal menemukan \"%s\" di direktori saat ini"
 
-#: ../gio/glib-compile-resources.c:290
+#: ../gio/glib-compile-resources.c:293
 #, c-format
 msgid "Unknown processing option “%s”"
 msgstr "Opsi pemrosesan \"%s\" tidak dikenal"
 
-#: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:354
+#. Translators: the first %s is a gresource XML attribute,
+#. * the second %s is an environment variable, and the third
+#. * %s is a command line tool
+#.
+#: ../gio/glib-compile-resources.c:313 ../gio/glib-compile-resources.c:370
+#: ../gio/glib-compile-resources.c:427
 #, c-format
-msgid "Failed to create temp file: %s"
-msgstr "Gagal membuat berkas temporer: %s"
+msgid "%s preprocessing requested, but %s is not set, and %s is not in PATH"
+msgstr "praproses %s diminta, tetapi %s tidak diatur, dan %s tidak dalam PATH"
 
-#: ../gio/glib-compile-resources.c:382
+#: ../gio/glib-compile-resources.c:460
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Galat saat membaca berkas %s: %s"
 
-#: ../gio/glib-compile-resources.c:402
+#: ../gio/glib-compile-resources.c:480
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Galat saat memampatkan berkas %s"
 
-#: ../gio/glib-compile-resources.c:469
+#: ../gio/glib-compile-resources.c:541
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "teks tidak boleh muncul di dalam <%s>"
 
-#: ../gio/glib-compile-resources.c:664 ../gio/glib-compile-schemas.c:2067
+#: ../gio/glib-compile-resources.c:736 ../gio/glib-compile-schemas.c:2067
 msgid "Show program version and exit"
 msgstr "Tampilkan versi program dan keluar"
 
-#: ../gio/glib-compile-resources.c:665
+#: ../gio/glib-compile-resources.c:737
 msgid "name of the output file"
 msgstr "nama berkas keluaran"
 
-#: ../gio/glib-compile-resources.c:666
+#: ../gio/glib-compile-resources.c:738
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "Direktori tempat berkas akan dibaca darinya (baku ke direktori kini)"
 
-#: ../gio/glib-compile-resources.c:666 ../gio/glib-compile-schemas.c:2068
+#: ../gio/glib-compile-resources.c:738 ../gio/glib-compile-schemas.c:2068
 #: ../gio/glib-compile-schemas.c:2096
 msgid "DIRECTORY"
 msgstr "DIREKTORI"
 
-#: ../gio/glib-compile-resources.c:667
+#: ../gio/glib-compile-resources.c:739
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Buat keluaran dalam format yang dipilih bagi ekstensi nama berkas target"
 
-#: ../gio/glib-compile-resources.c:668
+#: ../gio/glib-compile-resources.c:740
 msgid "Generate source header"
 msgstr "Buat tajuk sumber"
 
-#: ../gio/glib-compile-resources.c:669
+#: ../gio/glib-compile-resources.c:741
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Buat kode sumber yang dipakai untutk menaut berkas sumber daya ke dalam kode "
 "Anda"
 
-#: ../gio/glib-compile-resources.c:670
+#: ../gio/glib-compile-resources.c:742
 msgid "Generate dependency list"
 msgstr "Buat daftar kebergantungan"
 
-#: ../gio/glib-compile-resources.c:671
+#: ../gio/glib-compile-resources.c:743
 msgid "name of the dependency file to generate"
 msgstr "nama berkas kebergantungan yang akan dibuat"
 
-#: ../gio/glib-compile-resources.c:672
+#: ../gio/glib-compile-resources.c:744
 msgid "Include phony targets in the generated dependency file"
 msgstr "Sertakan target palsu pada berkas dependensi yang dihasilkan"
 
-#: ../gio/glib-compile-resources.c:673
+#: ../gio/glib-compile-resources.c:745
 msgid "Don’t automatically create and register resource"
 msgstr "Jangan buat dan daftarkan sumber daya secara otomatis"
 
-#: ../gio/glib-compile-resources.c:674
+#: ../gio/glib-compile-resources.c:746
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Jangan ekspor fungsi; deklarasikan mereka G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:675
+#: ../gio/glib-compile-resources.c:747
 msgid "C identifier name used for the generated source code"
 msgstr "Nama identifier C yang dipakai bagi kode sumber yang dibuat"
 
-#: ../gio/glib-compile-resources.c:701
+#: ../gio/glib-compile-resources.c:773
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2354,7 +2358,7 @@ msgstr ""
 "Berkas spesifikasi sumber daya memiliki ekstensi .gresource.xml,\n"
 "dan berkas sumber daya memiliki ekstensi bernama .gresource."
 
-#: ../gio/glib-compile-resources.c:723
+#: ../gio/glib-compile-resources.c:795
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Anda mesti memberikan hanya satu nama berkas\n"
@@ -3200,11 +3204,11 @@ msgstr "mount tak mengimplementasi penebakan sinkron jenis isi"
 msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "Nama host \"%s\" mengandung \"[\" tapi tanpa \"]\""
 
-#: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:310
+#: ../gio/gnetworkmonitorbase.c:212 ../gio/gnetworkmonitorbase.c:316
 msgid "Network unreachable"
 msgstr "Jaringan tak dapat dijangkau"
 
-#: ../gio/gnetworkmonitorbase.c:244 ../gio/gnetworkmonitorbase.c:274
+#: ../gio/gnetworkmonitorbase.c:250 ../gio/gnetworkmonitorbase.c:280
 msgid "Host unreachable"
 msgstr "Host tak dapat dihubungi"
 
@@ -3222,7 +3226,7 @@ msgstr "Tak bisa membuat pemantau jaringan: "
 msgid "Could not get network status: "
 msgstr "Tak bisa mendapat status jaringan: "
 
-#: ../gio/gnetworkmonitornm.c:329
+#: ../gio/gnetworkmonitornm.c:322
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "Versi NetworkManager terlalu tua"
@@ -3827,11 +3831,11 @@ msgstr "Proksi melalui koneksi bukan TCP tidak didukung."
 msgid "Proxy protocol “%s” is not supported."
 msgstr "Protokol proksi \"%s\" tidak didukung."
 
-#: ../gio/gsocketlistener.c:218
+#: ../gio/gsocketlistener.c:225
 msgid "Listener is already closed"
 msgstr "Pendengar telah ditutup"
 
-#: ../gio/gsocketlistener.c:264
+#: ../gio/gsocketlistener.c:271
 msgid "Added socket is closed"
 msgstr "Soket yang ditambahkan tertutup"
 
@@ -4263,25 +4267,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "Nama path \"%s\" bukan lokasi absolut"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %d %b %Y %r %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:210
+#: ../glib/gdatetime.c:216
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:219
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:216
+#: ../glib/gdatetime.c:222
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4302,62 +4306,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: ../glib/gdatetime.c:251
+#: ../glib/gdatetime.c:261
 msgctxt "full month name"
 msgid "January"
 msgstr "Januari"
 
-#: ../glib/gdatetime.c:253
+#: ../glib/gdatetime.c:263
 msgctxt "full month name"
 msgid "February"
 msgstr "Februari"
 
-#: ../glib/gdatetime.c:255
+#: ../glib/gdatetime.c:265
 msgctxt "full month name"
 msgid "March"
 msgstr "Maret"
 
-#: ../glib/gdatetime.c:257
+#: ../glib/gdatetime.c:267
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:259
+#: ../glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:261
+#: ../glib/gdatetime.c:271
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:263
+#: ../glib/gdatetime.c:273
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:265
+#: ../glib/gdatetime.c:275
 msgctxt "full month name"
 msgid "August"
 msgstr "Agustus"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:277
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:279
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:281
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:283
 msgctxt "full month name"
 msgid "December"
 msgstr "Desember"
@@ -4379,132 +4383,132 @@ msgstr "Desember"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: ../glib/gdatetime.c:305
+#: ../glib/gdatetime.c:315
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:307
+#: ../glib/gdatetime.c:317
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:309
+#: ../glib/gdatetime.c:319
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:311
+#: ../glib/gdatetime.c:321
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:313
+#: ../glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:315
+#: ../glib/gdatetime.c:325
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:317
+#: ../glib/gdatetime.c:327
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:319
+#: ../glib/gdatetime.c:329
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Ags"
 
-#: ../glib/gdatetime.c:321
+#: ../glib/gdatetime.c:331
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:323
+#: ../glib/gdatetime.c:333
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:325
+#: ../glib/gdatetime.c:335
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:327
+#: ../glib/gdatetime.c:337
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Des"
 
-#: ../glib/gdatetime.c:342
+#: ../glib/gdatetime.c:352
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Senin"
 
-#: ../glib/gdatetime.c:344
+#: ../glib/gdatetime.c:354
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Selasa"
 
-#: ../glib/gdatetime.c:346
+#: ../glib/gdatetime.c:356
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Rabu"
 
-#: ../glib/gdatetime.c:348
+#: ../glib/gdatetime.c:358
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Kamis"
 
-#: ../glib/gdatetime.c:350
+#: ../glib/gdatetime.c:360
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Jumat"
 
-#: ../glib/gdatetime.c:352
+#: ../glib/gdatetime.c:362
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sabtu"
 
-#: ../glib/gdatetime.c:354
+#: ../glib/gdatetime.c:364
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Minggu"
 
-#: ../glib/gdatetime.c:369
+#: ../glib/gdatetime.c:379
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Sen"
 
-#: ../glib/gdatetime.c:371
+#: ../glib/gdatetime.c:381
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Sel"
 
-#: ../glib/gdatetime.c:373
+#: ../glib/gdatetime.c:383
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Rab"
 
-#: ../glib/gdatetime.c:375
+#: ../glib/gdatetime.c:385
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Kam"
 
-#: ../glib/gdatetime.c:377
+#: ../glib/gdatetime.c:387
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Jum"
 
-#: ../glib/gdatetime.c:379
+#: ../glib/gdatetime.c:389
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sab"
 
-#: ../glib/gdatetime.c:381
+#: ../glib/gdatetime.c:391
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Min"
@@ -4526,62 +4530,62 @@ msgstr "Min"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: ../glib/gdatetime.c:441
+#: ../glib/gdatetime.c:455
 msgctxt "full month name with day"
 msgid "January"
 msgstr "Januari"
 
-#: ../glib/gdatetime.c:443
+#: ../glib/gdatetime.c:457
 msgctxt "full month name with day"
 msgid "February"
 msgstr "Februari"
 
-#: ../glib/gdatetime.c:445
+#: ../glib/gdatetime.c:459
 msgctxt "full month name with day"
 msgid "March"
 msgstr "Maret"
 
-#: ../glib/gdatetime.c:447
+#: ../glib/gdatetime.c:461
 msgctxt "full month name with day"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:449
+#: ../glib/gdatetime.c:463
 msgctxt "full month name with day"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:451
+#: ../glib/gdatetime.c:465
 msgctxt "full month name with day"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:453
+#: ../glib/gdatetime.c:467
 msgctxt "full month name with day"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:455
+#: ../glib/gdatetime.c:469
 msgctxt "full month name with day"
 msgid "August"
 msgstr "Agustus"
 
-#: ../glib/gdatetime.c:457
+#: ../glib/gdatetime.c:471
 msgctxt "full month name with day"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:459
+#: ../glib/gdatetime.c:473
 msgctxt "full month name with day"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:461
+#: ../glib/gdatetime.c:475
 msgctxt "full month name with day"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:463
+#: ../glib/gdatetime.c:477
 msgctxt "full month name with day"
 msgid "December"
 msgstr "Desember"
@@ -4603,74 +4607,74 @@ msgstr "Desember"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: ../glib/gdatetime.c:524
+#: ../glib/gdatetime.c:542
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:526
+#: ../glib/gdatetime.c:544
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:528
+#: ../glib/gdatetime.c:546
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:530
+#: ../glib/gdatetime.c:548
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:532
+#: ../glib/gdatetime.c:550
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:534
+#: ../glib/gdatetime.c:552
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:536
+#: ../glib/gdatetime.c:554
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:538
+#: ../glib/gdatetime.c:556
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "Ags"
 
-#: ../glib/gdatetime.c:540
+#: ../glib/gdatetime.c:558
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:542
+#: ../glib/gdatetime.c:560
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:544
+#: ../glib/gdatetime.c:562
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:546
+#: ../glib/gdatetime.c:564
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "Des"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:563
+#: ../glib/gdatetime.c:581
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:566
+#: ../glib/gdatetime.c:584
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -5877,3 +5881,6 @@ msgstr[0] "%s bita"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "Failed to create temp file: %s"
+#~ msgstr "Gagal membuat berkas temporer: %s"
