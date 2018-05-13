@@ -794,7 +794,7 @@ libgio = library('gio-2.0',
   include_directories : [configinc, gioinc],
   link_with : internal_deps,
   #  '$(gio_win32_res_ldflag)',
-  dependencies : [libintl, libz_dep, libdl_dep, libmount_dep, libglib_dep,
+  dependencies : [libz_dep, libdl_dep, libmount_dep, libglib_dep,
                   libgobject_dep, libgmodule_dep, selinux_dep, xattr_dep,
                   platform_deps, network_libs],
   c_args : gio_c_args,
@@ -894,13 +894,13 @@ executable('gio', gio_tool_sources,
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
-  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 executable('gresource', 'gresource-tool.c',
   install : true,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
-  dependencies : [libelf, libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  dependencies : [libelf, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 executable('gio-querymodules', 'gio-querymodules.c', 'giomodule-priv.c',
   install : true,
@@ -914,7 +914,7 @@ glib_compile_schemas = executable('glib-compile-schemas',
   install : true,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
-  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 glib_compile_resources = executable('glib-compile-resources',
   [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-resources.c'],
@@ -922,14 +922,14 @@ glib_compile_resources = executable('glib-compile-resources',
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
-  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 executable('gsettings', 'gsettings-tool.c',
   install : true,
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
-  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 install_data('gschema.dtd',
   install_dir : join_paths(get_option('datadir'), 'glib-2.0/schemas'))
 
@@ -941,7 +941,7 @@ executable('gdbus', 'gdbus-tool.c',
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
-  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 if host_system != 'windows'
   executable('gapplication', 'gapplication-tool.c',
@@ -949,7 +949,7 @@ if host_system != 'windows'
     c_args : gio_c_args,
     # intl.lib is not compatible with SAFESEH
     link_args : noseh_link_args,
-    dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+    dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 endif
 
 if enable_systemtap

@@ -245,11 +245,11 @@ libglib_dep = declare_dependency(
   link_with : libglib,
   # thread_dep doesn't get pulled in from libglib atm,
   # see https://github.com/mesonbuild/meson/issues/1426
-  dependencies : [thread_dep],
+  dependencies : [thread_dep, libintl],
   # We sadly need to export configinc here because everyone includes <glib/*.h>
   include_directories : [configinc, glibinc])
 
-pkg.generate(libraries : libglib,
+pkg.generate(libraries : [libglib, libintl],
   libraries_private : [osx_ldflags],
   subdirs : ['glib-2.0'],
   extra_cflags : ['-I${libdir}/glib-2.0/include'],
@@ -271,23 +271,23 @@ if host_system == 'windows'
       install : true,
       gui_app : true,
       include_directories : configinc,
-      dependencies : [libintl, libglib_dep])
+      dependencies : [libglib_dep])
     executable('gspawn-win32-helper-console', 'gspawn-win32-helper.c',
       install : true,
       c_args : ['-DHELPER_CONSOLE'],
       include_directories : configinc,
-      dependencies : [libintl, libglib_dep])
+      dependencies : [libglib_dep])
   else
     executable('gspawn-win64-helper', 'gspawn-win32-helper.c',
       install : true,
       gui_app : true,
       include_directories : configinc,
-      dependencies : [libintl, libglib_dep])
+      dependencies : [libglib_dep])
     executable('gspawn-win64-helper-console', 'gspawn-win32-helper.c',
       install : true,
       c_args : ['-DHELPER_CONSOLE'],
       include_directories : configinc,
-      dependencies : [libintl, libglib_dep])
+      dependencies : [libglib_dep])
   endif
 else
   gtester = executable('gtester', 'gtester.c',

@@ -3,7 +3,6 @@ common_gio_tests_deps = [
   libgmodule_dep,
   libgobject_dep,
   libgio_dep,
-  libintl
 ]
 
 subdir('gdbus-object-manager-example')
