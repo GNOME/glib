@@ -1765,7 +1765,22 @@ if libmount_dep.length() != 0
   glib_conf.set('HAVE_LIBMOUNT', 1)
 endif
 glib_conf.set('GIO_MODULE_DIR', glib_giomodulesdir)
-# FIXME: Missing: @G_LIBS_EXTRA@ @GLIB_EXTRA_CFLAGS@ @G_MODULE_LDFLAGS@
+# FIXME: Missing: @G_MODULE_LDFLAGS@
+
+win32_cflags = []
+win32_ldflags = []
+if host_system == 'windows' and cc.get_id() != 'msvc'
+  # Ensure MSVC-compatible struct packing convention is used when
+  # compiling for Win32 with gcc. It is used for the whole project and exposed
+  # in glib-2.0.pc.
+  win32_cflags = ['-mms-bitfields']
+  add_project_arguments(win32_cflags, language : 'c')
+
+  # Win32 API libs, used only by libglib and exposed in glib-2.0.pc
+  win32_ldflags = ['-lws2_32', '-lole32', '-lwinmm', '-lshlwapi']
+elif host_system == 'cygwin'
+  win32_ldflags = ['-luser32', '-lkernel32']
+endif
 
 # Tracing: dtrace
 want_dtrace = get_option('dtrace')

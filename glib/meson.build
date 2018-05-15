@@ -234,7 +234,7 @@ libglib = library('glib-2.0',
   soversion : soversion,
   install : true,
   # intl.lib is not compatible with SAFESEH
-  link_args : [noseh_link_args, glib_link_flags],
+  link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
   link_with : [charset_lib, gnulib_lib],
   dependencies : [pcre, thread_dep, libintl, librt] + libiconv + platform_deps,
@@ -250,9 +250,9 @@ libglib_dep = declare_dependency(
   include_directories : [configinc, glibinc])
 
 pkg.generate(libraries : [libglib, libintl],
-  libraries_private : [osx_ldflags],
+  libraries_private : [osx_ldflags, win32_ldflags],
   subdirs : ['glib-2.0'],
-  extra_cflags : ['-I${libdir}/glib-2.0/include'],
+  extra_cflags : ['-I${libdir}/glib-2.0/include'] + win32_cflags,
   variables : ['bindir=' + join_paths('${prefix}', get_option('bindir')),
                'glib_genmarshal=' + join_paths('${bindir}', 'glib-genmarshal'),
                'gobject_query=' + join_paths('${bindir}', 'gobject-query'),
