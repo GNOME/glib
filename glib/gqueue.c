@@ -35,6 +35,9 @@
  * using one of the [Type Conversion Macros][glib-Type-Conversion-Macros],
  * or simply pointers to any type of data.
  *
+ * As with all other GLib data structures, #GQueue is not thread-safe.
+ * For a thread-safe queue, use #GAsyncQueue.
+ *
  * To create a new GQueue, use g_queue_new().
  *
  * To initialize a statically-allocated GQueue, use #G_QUEUE_INIT or
