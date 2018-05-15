@@ -618,7 +618,7 @@ glib_have_cocoa = cc.compiles('''#include <Cocoa/Cocoa.h>
 
 if glib_have_cocoa
   glib_conf.set('HAVE_COCOA', true)
-  osx_ldflags += '-Wl,-framework,Foundation -Wl,-framework,AppKit'
+  osx_ldflags += ['-Wl,-framework,Foundation', '-Wl,-framework,AppKit']
 endif
 
 add_project_link_arguments(osx_ldflags, language : 'c')
@@ -1765,9 +1765,7 @@ if libmount_dep.length() != 0
   glib_conf.set('HAVE_LIBMOUNT', 1)
 endif
 glib_conf.set('GIO_MODULE_DIR', glib_giomodulesdir)
-# FIXME: Missing:
-# @COCOA_LIBS@ @CARBON_LIBS@ @G_LIBS_EXTRA@ @GLIB_EXTRA_CFLAGS@
-# @G_MODULE_LDFLAGS@
+# FIXME: Missing: @G_LIBS_EXTRA@ @GLIB_EXTRA_CFLAGS@ @G_MODULE_LDFLAGS@
 
 # Tracing: dtrace
 want_dtrace = get_option('dtrace')
