@@ -68,3 +68,8 @@ option('bsymbolic_functions',
        type : 'boolean',
        value : true,
        description : 'link with -Bsymbolic-functions if supported')
+
+option('force_posix_threads',
+       type : 'boolean',
+       value : false,
+       description : 'Also use posix threads in case the platform defaults to another implementation (on Windows for example)')

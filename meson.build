@@ -1476,15 +1476,16 @@ endif
 
 # === Threads ===
 
-# Let meson figure out all this business and whether -pthread or whatnot is needed
-# FIXME: probably needs more tweaking in meson for things like -D_REENTRANT etc.
-thread_dep = dependency('threads')
-
 # Determination of thread implementation
-if host_system == 'windows'
+if host_system == 'windows' and not get_option('force_posix_threads')
+  thread_dep = []
+  threads_implementation = 'win32'
   glibconfig_conf.set('g_threads_impl_def', 'WIN32')
   glib_conf.set('THREADS_WIN32', 1)
 else
+  # FIXME: probably needs more tweaking in meson for things like -D_REENTRANT etc.
+  thread_dep = dependency('threads')
+  threads_implementation = 'posix'
   pthread_prefix = '''
       #ifndef _GNU_SOURCE
       # define _GNU_SOURCE

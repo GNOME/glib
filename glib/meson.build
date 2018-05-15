@@ -204,14 +204,14 @@ if host_system == 'windows'
   )
   glib_win_res = windows.compile_resources(glib_win_rc)
   glib_sources += [glib_win_res]
-  glib_sources += files('gthread-win32.c')
   glib_sources += files('gwin32.c', 'gspawn-win32.c', 'giowin32.c')
   platform_deps = [winsock2, cc.find_library('winmm')]
 else
-  glib_sources += files('gthread-posix.c')
   glib_sources += files('glib-unix.c', 'gspawn.c', 'giounix.c')
   platform_deps = []
 endif
+
+glib_sources += files('gthread-@0@.c'.format(threads_implementation))
 
 if enable_dtrace
   glib_dtrace_obj = dtrace_obj_gen.process('glib_probes.d')
