@@ -1460,9 +1460,10 @@ glibconfig_conf.set('G_ATOMIC_OP_MEMORY_BARRIER_NEEDED', glib_memory_barrier_nee
 # to abort and advise the user to fix their CFLAGS.  It's better to do
 # that then to silently fall back on emulated atomic ops just because
 # the user had the wrong build environment.
-atomictest = '''void func() {
+atomictest = '''int main() {
   volatile int atomic = 2;
   __sync_bool_compare_and_swap (&atomic, 2, 3);
+  return 0;
 }
 '''
 if cc.links(atomictest, name : 'atomic ops')
