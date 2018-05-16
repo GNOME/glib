@@ -457,9 +457,8 @@ zone_info_unix (const gchar  *identifier,
           else
             {
               /* Error */
-              if (out_identifier != NULL)
-                *out_identifier = NULL;
-              return NULL;
+              g_assert (resolved_identifier == NULL);
+              goto out;
             }
         }
       else
@@ -494,11 +493,15 @@ zone_info_unix (const gchar  *identifier,
                                              g_mapped_file_ref (file));
       g_mapped_file_unref (file);
     }
-  g_free (filename);
 
   g_assert (resolved_identifier != NULL);
+
+out:
   if (out_identifier != NULL)
     *out_identifier = g_steal_pointer (&resolved_identifier);
+
+  g_free (resolved_identifier);
+  g_free (filename);
 
   return zoneinfo;
 }
