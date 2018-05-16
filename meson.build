@@ -1586,7 +1586,7 @@ else
   endif
 
   if not found_iconv
-    error('No iconv() implementation found in C library or libiconv')
+    error('iconv implementation "@0@" not found'.format(iconv_opt))
   endif
 
 endif
