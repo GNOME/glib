@@ -1510,6 +1510,7 @@ else
   if cc.links(pthread_prefix + '''
               int main() {
                 pthread_setname_np("example");
+                return 0;
               }''',
               name : 'pthread_setname_np(const char*)',
               dependencies : thread_dep)
@@ -1518,6 +1519,7 @@ else
   elif cc.links(pthread_prefix + '''
                 int main() {
                   pthread_setname_np(pthread_self(), "example");
+                  return 0;
                 }''',
                 name : 'pthread_setname_np(pthread_t, const char*)',
                 dependencies : thread_dep)
@@ -1728,6 +1730,7 @@ if host_system != 'windows' and get_option('xattr')
 
                  int main (void) {
                    ssize_t len = getxattr("", "", NULL, 0, 0, XATTR_NOFOLLOW);
+                   return len;
                  }''',
                  name : 'XATTR_NOFOLLOW')
     glib_conf.set('HAVE_XATTR_NOFOLLOW', 1)
