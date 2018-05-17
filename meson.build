@@ -1446,7 +1446,9 @@ atomictest = '''int main() {
   return 0;
 }
 '''
-if cc.links(atomictest, name : 'atomic ops')
+
+# We know that we can always use real ("lock free") atomic operations with MSVC
+if cc.get_id() == 'msvc' or cc.links(atomictest, name : 'atomic ops')
   glibconfig_conf.set('G_ATOMIC_LOCK_FREE', true)
 else
   if host_machine.cpu_family() == 'x86' and cc.links(atomictest, args : '-march=i486')
