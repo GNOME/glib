@@ -1467,7 +1467,7 @@ g_signal_new (const gchar	 *signal_name,
  * Creates a new signal. (This is usually done in the class initializer.)
  *
  * This is a variant of g_signal_new() that takes a C callback instead
- * off a class offset for the signal's class handler. This function
+ * of a class offset for the signal's class handler. This function
  * doesn't need a function pointer exposed in the class structure of
  * an object definition, instead the function pointer is passed
  * directly and can be overriden by derived classes with
