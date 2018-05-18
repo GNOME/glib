@@ -172,7 +172,7 @@ dl_listing (const char *path)
 
     assert (path != NULL);
 
-    dir =  = opendir (path);
+    dir = opendir (path);
     if (dir != NULL) {
         struct dirent *ent;
 
