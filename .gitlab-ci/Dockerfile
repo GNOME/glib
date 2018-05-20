@@ -28,12 +28,19 @@ RUN dnf -y install \
     wget \
     unzip \
     make \
+    mingw64-gcc \
+    mingw64-gcc-c++ \
+    mingw64-gettext \
+    mingw64-zlib \
+    mingw64-libffi \
  && dnf clean all
 
 RUN pip3 install meson
 
 COPY setup-android-ndk.sh .
 RUN ./setup-android-ndk.sh
+
+COPY cross_file_mingw64.txt /opt
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}

@@ -1,4 +1,4 @@
-image: registry.gitlab.gnome.org/gnome/glib/master:v2
+image: registry.gitlab.gnome.org/gnome/glib/master:v3
 
 stages:
   - build
@@ -35,6 +35,17 @@ fedora-meson-android_ndk_r16_api21_arm64:
     - tags
   script:
     - meson --cross-file=/opt/cross-file-android_ndk_r16_api21_arm64.txt -Diconv=gnu -Dinternal_pcre=true --buildtype debug _build
+    - ninja -C _build
+  artifacts:
+    paths:
+      - "${CI_PROJECT_DIR}/_build/meson-logs"
+
+fedora-meson-mingw64:
+  stage: build
+  except:
+    - tags
+  script:
+    - meson --cross-file=/opt/cross_file_mingw64.txt --buildtype debug _build
     - ninja -C _build
   artifacts:
     paths:
