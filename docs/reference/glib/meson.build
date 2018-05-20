@@ -34,6 +34,7 @@ if get_option('gtk_doc')
     'glib-init.h',
     'gconstructor.h',
     'valgrind.h',
+    'gvalgrind.h',
   ]
 
   ignore_decorators = [
