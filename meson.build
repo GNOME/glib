@@ -1684,6 +1684,7 @@ xgettext = find_program('xgettext', required : false)
 libmount_dep = []
 if host_system == 'linux' and get_option('libmount')
   libmount_dep = [dependency('mount', version : '>=2.23', required : true)]
+  glib_conf.set('HAVE_LIBMOUNT', 1)
 endif
 
 if host_system == 'windows'
@@ -1693,7 +1694,6 @@ endif
 selinux_dep = []
 if host_system == 'linux' and get_option('selinux')
   selinux_dep = [dependency('libselinux')]
-  glib_conf.set('SELINUX_LIBS', '-lselinux')
   glib_conf.set('HAVE_SELINUX', 1)
 endif
 
@@ -1752,23 +1752,6 @@ glib_conf.set('STDC_HEADERS', 1)
 # THREADS_NONE
 glib_conf.set('SIZEOF___INT64', 8)
 
-# Various substs needed for our pkg-config files
-# FIXME: Derive these from the dependency() objects (Meson support needed)
-glib_conf.set('ZLIB_LIBS', zlib_libname)
-glib_conf.set('LIBFFI_LIBS', '-lffi')
-if libintl.found()
-  glib_conf.set('INTLLIBS', '-lintl')
-endif
-if libiconv.length() != 0
-  glib_conf.set('ICONV_LIBS', '-liconv')
-endif
-if use_system_pcre
-  glib_conf.set('PCRE_LIBS', '-lpcre')
-endif
-if libmount_dep.length() != 0
-  glib_conf.set('LIBMOUNT_LIBS', '-lmount')
-  glib_conf.set('HAVE_LIBMOUNT', 1)
-endif
 glib_conf.set('GIO_MODULE_DIR', glib_giomodulesdir)
 
 # Sadly Meson does not expose this value:
