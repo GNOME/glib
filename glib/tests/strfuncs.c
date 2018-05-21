@@ -1337,7 +1337,6 @@ test_strerror (void)
   GHashTable *strs;
   gint i;
   const gchar *str, *unknown_str;
-  GHashTableIter iter;
 
   setlocale (LC_ALL, "C");
 
@@ -1353,10 +1352,6 @@ test_strerror (void)
       g_assert_true (!g_hash_table_contains (strs, str) || is_unknown);
       g_hash_table_add (strs, (char *)str);
     }
-
-  g_hash_table_iter_init (&iter, strs);
-  while (g_hash_table_iter_next (&iter, (gpointer *)&str, NULL))
-    g_assert (g_utf8_validate (str, -1, NULL));
 
   g_hash_table_unref (strs);
 }
