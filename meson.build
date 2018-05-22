@@ -965,7 +965,7 @@ if cc.compiles('''/* The Stardent Vistra knows sizeof(long double), but does not
   glib_conf.set('HAVE_LONG_DOUBLE', 1)
 endif
 
-#dnl Test whether <stddef.h> has the 'wchar_t' type.
+# Test whether <stddef.h> has the 'wchar_t' type.
 if cc.has_header_symbol('stddef.h', 'wchar_t')
   glib_conf.set('HAVE_WCHAR_T', 1)
 endif
