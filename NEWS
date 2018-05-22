@@ -1,3 +1,48 @@
+Overview of changes in GLib 2.57.1
+==================================
+
+* New api:
+ - g_hash_table_steal_extended
+ - G_GNUC_NO_INLINE 
+
+* Bug fixes:
+ 668132 Use libmount and expose mount options on GUnixMountEntry type
+ 736741 Update private copy of valgrind.h
+ 748620 g_regex_* utf-8 validity requirements are not stated clearly
+ 784995 meson: some Windows improvements
+ 788771 NODELETE missing when built with meson
+ 788773 meson does not install correct pc files
+ 789968 Add g_autoptr() support for GTypeClass
+ 794325 Various fixes to compile on OSX
+ 795152 gdesktopappinfo: Mark GDesktopAppInfo constructors as nullable.
+ 795165 Add g_date_time_get_timezone() and g_time_zone_get_identifier()
+ 795180 Investigate performance impacts of recent compiler features on hot functions
+ 795302 Add g_hash_table_steal_extended() API
+ 795376 Add g_ptr_array_steal()
+ 795544 Add binary/textfile/zero size detection
+ 795569 MinGW CI: fix tests
+ 795636 gitlab-ci: generate test coverage reports
+ 795735 Fix comparison for GVariant property values
+ 795802 gdbus-codegen doesn't accept --output-directory with --output for --body and --header
+ 795849 gwin32: Fix detection of MinGW32 vs MinGW-w64
+ 795876 meson: Fix checks for posix_memalign and stpcpy
+ 795960 g_format_size_for_display() is deprecated since 2.30
+ 796085 Meson: Many apps breaks on non-glibc because of missing libintl
+ 796138 Fix typo in g_file_info_set_attribute docs
+ 796139 Add g_autoptr() support for GParamSpec
+ 796164 Fix atomic ops check in meson.build
+ 796186 Typo: "instead off" in gsignal.c
+ 796213 Meson: Fail to build on macosx
+ 796220 meson: do not run atomic test with msvc
+ 796264 Add android CI
+ 796325 meson: Add exception for atomic ops test for Android
+ 796328 gengiotypefuncs.py: Read and parse files in binary mode 
+
+* Translation updates:
+ Czech
+ Indonesian
+
+
 Overview of changes in GLib 2.57.0
 ==================================
 
