@@ -19,11 +19,11 @@ if debug: print (len(in_files), 'input files')
 
 for filename in in_files:
   if debug: print ('Input file: ', filename)
-  with open(filename, "r") as f:
+  with open(filename, 'rb') as f:
     for line in f:
-      line = line.rstrip('\n').rstrip('\r')
+      line = line.rstrip(b'\n').rstrip(b'\r')
       # print line
-      match = re.search(r'\bg_[a-zA-Z0-9_]*_get_type\b', line)
+      match = re.search(b'\bg_[a-zA-Z0-9_]*_get_type\b', line)
       if match:
         func = match.group(0)
         if not func in funcs:
