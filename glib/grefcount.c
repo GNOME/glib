@@ -30,6 +30,11 @@
  * GLib uses reference counting in many of its data types, and provides
  * the #grefcount and #gatomicrefcount types to implement safe and atomic
  * reference counting semantics.
+ *
+ * It is important to note that #grefcount and #gatomicrefcount should be
+ * considered completely opaque types; you should always use the provided
+ * API to increase and decrease the counters, and you should never check
+ * their content directly, or compare their content with other values.
  */
 
 #include "config.h"
@@ -38,6 +43,32 @@
 
 #include "gatomic.h"
 #include "gmessages.h"
+
+/**
+ * grefcount:
+ *
+ * A type for implementing reference count semantics.
+ *
+ * Use g_ref_count_init() to initialize it; g_ref_count_inc() to
+ * increase the counter, and g_ref_count_dec() to decrease it.
+ *
+ * See also: #gatomicrefcount
+ *
+ * Since: 2.58
+ */
+
+/**
+ * gatomicrefcount:
+ *
+ * A type for implementing atomic reference count semantics.
+ *
+ * Use g_atomic_ref_count_init() to initialize it; g_atomic_ref_count_inc()
+ * to increase the counter, and g_atomic_ref_count_dec() to decrease it.
+ *
+ * See also: #grefcount
+ *
+ * Since: 2.58
+ */
 
 /**
  * g_ref_count_init:
