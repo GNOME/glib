@@ -572,48 +572,36 @@ if host_system == 'linux'
 endif
 
 osx_ldflags = []
+
+# Mac OS X Carbon support
+glib_have_carbon = cc.compiles('''#include <Carbon/Carbon.h>
+                                  #include <CoreServices/CoreServices.h>''',
+                               name : 'Mac OS X Carbon support')
+
 glib_have_os_x_9_or_later = false
-glib_have_carbon = false
-glib_have_cocoa = false
-if host_system == 'darwin'
-  add_languages('objc')
-  objcc = meson.get_compiler('objc')
 
-  # FIXME: Should this be conditional? glib-gettext.m4 has some checks
-  osx_ldflags += ['-Wl,-framework,CoreFoundation']
-
-  # Mac OS X Carbon support
-  glib_have_carbon = objcc.compiles('''#include <Carbon/Carbon.h>
-                                       #include <CoreServices/CoreServices.h>''',
-                                    name : 'Mac OS X Carbon support')
-
-  if glib_have_carbon
-    glib_conf.set('HAVE_CARBON', true)
-    osx_ldflags += '-Wl,-framework,Carbon'
-    glib_have_os_x_9_or_later = objcc.compiles('''#include <AvailabilityMacros.h>
-                                                  #if MAC_OS_X_VERSION_MIN_REQUIRED < 1090
-                                                  #error Compiling for minimum OS X version before 10.9
-                                                  #endif''',
-                                               name : 'OS X 9 or later')
-  endif
-
-  # Mac OS X Cocoa support
-  glib_have_cocoa = objcc.compiles('''#include <Cocoa/Cocoa.h>
-                                      #ifdef GNUSTEP_BASE_VERSION
-                                      #error "Detected GNUstep, not Cocoa"
-                                      #endif''',
-                                   name : 'Mac OS X Cocoa support')
-
-  if glib_have_cocoa
-    glib_conf.set('HAVE_COCOA', true)
-    osx_ldflags += ['-Wl,-framework,Foundation', '-Wl,-framework,AppKit']
-  endif
-
-  # FIXME: libgio mix C and objC source files and there is no way to reliably
-  # know which language flags it's going to use to link. Add to both languages
-  # for now. See https://github.com/mesonbuild/meson/issues/3585.
-  add_project_link_arguments(osx_ldflags, language : ['objc', 'c'])
+if glib_have_carbon
+  glib_conf.set('HAVE_CARBON', true)
+  osx_ldflags += '-Wl,-framework,Carbon'
+  glib_have_os_x_9_or_later = cc.compiles('''#include <AvailabilityMacros.h>
+                                             #if MAC_OS_X_VERSION_MIN_REQUIRED < 1090
+                                             #error Compiling for minimum OS X version before 10.9
+                                             #endif''', name : 'OS X 9 or later')
 endif
+
+# Mac OS X Cocoa support
+glib_have_cocoa = cc.compiles('''#include <Cocoa/Cocoa.h>
+                                 #ifdef GNUSTEP_BASE_VERSION
+                                 #error "Detected GNUstep, not Cocoa"
+                                 #endif''',
+                              name : 'Mac OS X Cocoa support')
+
+if glib_have_cocoa
+  glib_conf.set('HAVE_COCOA', true)
+  osx_ldflags += ['-Wl,-framework,Foundation', '-Wl,-framework,AppKit']
+endif
+
+add_project_link_arguments(osx_ldflags, language : 'c')
 
 # Check for futex(2)
 if cc.links('''#include <linux/futex.h>
