@@ -292,6 +292,11 @@ if host_system == 'windows'
   settings_sources += files('gregistrysettingsbackend.c')
 endif
 
+# FIXME:
+#if OS_COCOA
+#settings_sources += files('gnextstepsettingsbackend.c')
+#endif
+
 application_headers = files(
   'gapplication.h',
   'gapplicationcommandline.h',
@@ -407,11 +412,10 @@ if host_system != 'windows'
   )
 
   if glib_have_cocoa
-    settings_sources += files('gnextstepsettingsbackend.m')
-    contenttype_sources += files('gosxcontenttype.m')
-    appinfo_sources += files('gosxappinfo.m')
+    contenttype_sources += files('gosxcontenttype.c')
+    appinfo_sources += files('gosxappinfo.c')
     if glib_have_os_x_9_or_later
-      unix_sources += files('gcocoanotificationbackend.m')
+      unix_sources += files('gcocoanotificationbackend.c')
     endif
   else
     contenttype_sources += files('gcontenttype.c')
