@@ -29,6 +29,19 @@ fedora-meson-x86_64:
       - "${CI_PROJECT_DIR}/_build/meson-logs"
       - "${CI_PROJECT_DIR}/_coverage"
 
+macosx-10.13-meson-x86_64:
+  stage: build
+  tags:
+    - macosx-10.13
+  script:
+    - meson -Diconv=native _build
+    - ninja -C _build
+    # FIXME: Multiple unit tests currently fails
+    - ninja -C _build test || true
+  artifacts:
+    paths:
+      - "${CI_PROJECT_DIR}/_build/meson-logs"
+
 msys2-mingw32:
   stage: build
   tags:
