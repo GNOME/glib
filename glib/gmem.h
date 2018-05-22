@@ -196,8 +196,14 @@ g_steal_pointer (gpointer pp)
 }
 
 /* type safety */
+#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && !defined(__cplusplus) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_58
+#define g_steal_pointer(pp) ((__typeof__(*pp)) (g_steal_pointer) (pp))
+#else  /* __GNUC__ */
+/* This version does not depend on gcc extensions, but gcc does not warn
+ * about incompatible-pointer-types: */
 #define g_steal_pointer(pp) \
   (0 ? (*(pp)) : (g_steal_pointer) (pp))
+#endif /* __GNUC__ */
 
 /* Optimise: avoid the call to the (slower) _n function if we can
  * determine at compile-time that no overflow happens.
