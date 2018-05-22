@@ -365,6 +365,12 @@ _g_win32_stat_utf8 (const gchar       *filename,
   int result;
   gsize len;
 
+  if (filename == NULL)
+    {
+      errno = EINVAL;
+      return -1;
+    }
+
   len = strlen (filename);
 
   while (len > 0 && G_IS_DIR_SEPARATOR (filename[len - 1]))
