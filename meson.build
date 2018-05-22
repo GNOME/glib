@@ -1434,6 +1434,19 @@ else
 endif
 glibconfig_conf.set('G_ATOMIC_OP_MEMORY_BARRIER_NEEDED', glib_memory_barrier_needed)
 
+# We need to decide at configure time if GLib will use real atomic
+# operations ("lock free") or emulated ones with a mutex.  This is
+# because we must put this information in glibconfig.h so we know if
+# it is safe or not to inline using compiler intrinsics directly from
+# the header.
+#
+# We also publish the information via G_ATOMIC_LOCK_FREE in case the
+# user is interested in knowing if they can use the atomic ops across
+# processes.
+#
+# We can currently support the atomic ops natively when building GLib
+# with recent versions of GCC or MSVC.
+#
 # Note that the atomic ops are only available with GCC on x86 when
 # using -march=i486 or higher.  If we detect that the atomic ops are
 # not available but would be available given the right flags, we want
