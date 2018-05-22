@@ -1460,15 +1460,28 @@ atomictest = '''int main() {
 }
 '''
 
+atomicdefine = '''
+#ifndef __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4
+#error "compiler has atomic ops, but doesn't define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4"
+#endif
+'''
+
 # We know that we can always use real ("lock free") atomic operations with MSVC
 if cc.get_id() == 'msvc' or cc.links(atomictest, name : 'atomic ops')
-  glibconfig_conf.set('G_ATOMIC_LOCK_FREE', true)
+  have_atomic_lock_free = true
+  if host_system == 'android' and not cc.compiles(atomicdefine, name : 'atomic ops define')
+    # When building for armv5 on Android, gcc 4.9 provides
+    # __sync_bool_compare_and_swap but doesn't define
+    # __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4
+    glib_conf.set('__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4', true)
+  endif
 else
+  have_atomic_lock_free = false
   if host_machine.cpu_family() == 'x86' and cc.links(atomictest, args : '-march=i486')
     error('GLib must be built with -march=i486 or later.')
   endif
-  glibconfig_conf.set('G_ATOMIC_LOCK_FREE', false)
 endif
+glibconfig_conf.set('G_ATOMIC_LOCK_FREE', have_atomic_lock_free)
 
 # === Threads ===
 
