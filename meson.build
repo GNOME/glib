@@ -99,17 +99,6 @@ glib_conf.set_quoted('PACKAGE_URL', '')
 glib_conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 glib_conf.set('ENABLE_NLS', 1)
 
-# Variables used in glib-gettextize and pkg-config files
-# These should not contain " quotes around the values
-glib_conf.set('PACKAGE', 'glib')
-glib_conf.set('VERSION', meson.project_version())
-glib_conf.set('prefix', glib_prefix)
-glib_conf.set('exec_prefix', glib_prefix)
-glib_conf.set('libdir', glib_libdir)
-glib_conf.set('includedir', glib_includedir)
-glib_conf.set('datadir', glib_datadir)
-glib_conf.set('datarootdir', glib_datadir)
-
 # used by the .rc.in files
 glibconfig_conf.set('LT_CURRENT_MINUS_AGE', soversion)
 
@@ -1784,8 +1773,6 @@ glib_conf.set('STDC_HEADERS', 1)
 # THREADS_NONE
 glib_conf.set('SIZEOF___INT64', 8)
 
-glib_conf.set('GIO_MODULE_DIR', glib_giomodulesdir)
-
 # Sadly Meson does not expose this value:
 # https://github.com/mesonbuild/meson/pull/3460
 if host_system == 'windows'
@@ -1876,11 +1863,18 @@ subdir('tests')
 
 # Install glib-gettextize executable, if a UNIX-style shell is found
 if have_sh
+  # These should not contain " quotes around the values
+  gettexize_conf = configuration_data()
+  gettexize_conf.set('PACKAGE', 'glib')
+  gettexize_conf.set('VERSION', meson.project_version())
+  gettexize_conf.set('prefix', glib_prefix)
+  gettexize_conf.set('datarootdir', glib_datadir)
+  gettexize_conf.set('datadir', glib_datadir)
   configure_file(input : 'glib-gettextize.in',
     install : true,
     install_dir : 'bin',
     output : 'glib-gettextize',
-    configuration : glib_conf)
+    configuration : gettexize_conf)
 endif
 
 if have_m4
@@ -1896,9 +1890,7 @@ if host_system != 'windows'
     install_dir : join_paths(get_option('datadir'), 'glib-2.0', 'valgrind'))
 endif
 
-configure_file(input : 'config.h.meson',
-  output : 'config.h',
-  configuration : glib_conf)
+configure_file(output : 'config.h', configuration : glib_conf)
 
 if host_system == 'windows'
   install_headers([ 'msvc_recommended_pragmas.h' ], subdir : 'glib-2.0')
