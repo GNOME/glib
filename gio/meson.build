@@ -417,9 +417,10 @@ if host_system != 'windows'
     contenttype_sources += files('gcontenttype.c')
     appinfo_sources += files('gdesktopappinfo.c')
     gio_unix_include_headers += files('gdesktopappinfo.h')
-    subdir('xdgmime')
-    internal_deps += [xdgmime_lib]
   endif
+
+  subdir('xdgmime')
+  internal_deps += [xdgmime_lib]
 
   install_headers(gio_unix_include_headers, subdir : 'gio-unix-2.0/gio')
 
@@ -794,6 +795,7 @@ libgio = library('gio-2.0',
                   libgobject_dep, libgmodule_dep, selinux_dep, xattr_dep,
                   platform_deps, network_libs],
   c_args : gio_c_args,
+  objc_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags],
 )
@@ -939,7 +941,7 @@ executable('gdbus', 'gdbus-tool.c',
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
-if host_system != 'windows'
+if host_system != 'windows' and not glib_have_cocoa
   executable('gapplication', 'gapplication-tool.c',
     install : true,
     c_args : gio_c_args,
