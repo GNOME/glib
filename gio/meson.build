@@ -164,12 +164,6 @@ if host_system != 'windows'
 
 endif
 
-network_args_string = ''
-foreach arg : network_args
-  network_args_string += arg + ' '
-endforeach
-glib_conf.set('NETWORK_LIBS', network_args_string)
-
 gnetworking_h_conf.set('WSPIAPI_INCLUDE', gnetworking_h_wspiapi_include)
 gnetworking_h_conf.set('NAMESER_COMPAT_INCLUDE', gnetworking_h_nameser_compat_include)
 
