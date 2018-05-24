@@ -955,18 +955,18 @@ test_paths (void)
   if (g_test_verbose ())
     g_printerr ("checking g_canonicalize_filename() supports NULL...");
 
-    {
-      const gchar *relative_path = "./";
-      gchar *canonical_path = g_canonicalize_filename (relative_path, NULL);
-      gchar *cwd = g_get_current_dir ();
-      if (g_strcmp0 (canonical_path, cwd) != 0)
-        {
-          g_error ("\nfailed for \"%s\"==\"%s\" (returned: \"%s\")\n",
-                   relative_path, cwd, canonical_path);
-        }
-      g_free (cwd);
-      g_free (canonical_path);
-    }
+  {
+    const gchar *relative_path = "./";
+    gchar *canonical_path = g_canonicalize_filename (relative_path, NULL);
+    gchar *cwd = g_get_current_dir ();
+    if (g_strcmp0 (canonical_path, cwd) != 0)
+      {
+        g_error ("\nfailed for \"%s\"==\"%s\" (returned: \"%s\")\n",
+                 relative_path, cwd, canonical_path);
+      }
+    g_free (cwd);
+    g_free (canonical_path);
+  }
 
   if (g_test_verbose ())
     g_printerr ("ok\n");
