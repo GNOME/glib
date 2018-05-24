@@ -43,6 +43,13 @@ msys2-mingw32:
     paths:
       - _coverage/
 
+vs2017-x64:
+  stage: build
+  tags:
+    - win32
+  script:
+    - .gitlab-ci/test-msvc.bat
+
 coverage:
   stage: coverage
   artifacts:
