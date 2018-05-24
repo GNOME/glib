@@ -37,7 +37,9 @@
 #include <windows.h>
 #endif
 
+#ifdef ENABLE_VALGRIND
 #include "../glib/valgrind.h"
+#endif
 
 #ifdef	G_ENABLE_DEBUG
 #define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
@@ -1832,6 +1834,7 @@ g_type_create_instance (GType type)
   private_size = node->data->instance.private_size;
   ivar_size = node->data->instance.instance_size;
 
+#ifdef ENABLE_VALGRIND
   if (private_size && RUNNING_ON_VALGRIND)
     {
       private_size += ALIGN_STRUCT (1);
@@ -1846,6 +1849,7 @@ g_type_create_instance (GType type)
       VALGRIND_MALLOCLIKE_BLOCK (allocated + ALIGN_STRUCT (1), private_size - ALIGN_STRUCT (1), 0, TRUE);
     }
   else
+#endif
     allocated = g_slice_alloc0 (private_size + ivar_size);
 
   instance = (GTypeInstance *) (allocated + private_size);
@@ -1924,6 +1928,7 @@ g_type_free_instance (GTypeInstance *instance)
   memset (allocated, 0xaa, ivar_size + private_size);
 #endif
 
+#ifdef ENABLE_VALGRIND
   /* See comment in g_type_create_instance() about what's going on here.
    * We're basically unwinding what we put into motion there.
    */
@@ -1941,6 +1946,7 @@ g_type_free_instance (GTypeInstance *instance)
       VALGRIND_FREELIKE_BLOCK (instance, 0);
     }
   else
+#endif
     g_slice_free1 (private_size + ivar_size, allocated);
 
 #ifdef	G_ENABLE_DEBUG

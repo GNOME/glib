@@ -1866,6 +1866,9 @@ if host_system != 'windows'
     install_dir : join_paths(get_option('datadir'), 'glib-2.0', 'valgrind'))
 endif
 
+# Valgrind is not supported by msvc compiler
+glib_conf.set('ENABLE_VALGRIND', cc.get_id() != 'msvc')
+
 configure_file(output : 'config.h', configuration : glib_conf)
 
 if host_system == 'windows'
