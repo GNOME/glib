@@ -580,7 +580,6 @@ if host_system == 'darwin'
   add_languages('objc')
   objcc = meson.get_compiler('objc')
 
-  # FIXME: Should this be conditional? glib-gettext.m4 has some checks
   osx_ldflags += ['-Wl,-framework,CoreFoundation']
 
   # Mac OS X Carbon support
