@@ -92,6 +92,40 @@ vs2017-x64:
     paths:
       - _build/meson-logs
 
+freebsd-11-x86_64:
+  stage: build
+  tags:
+    # To run a FreeBSD builder, install gitlab-runner package and start both
+    # gitlab-runner and dbus service because we need /var/lib/dbus/machine-id.
+    # To compile GLib, you still have to install the following packages:
+    # desktop-file-utils gettext libiconv meson pkgconf python3 shared-mime-info
+    - freebsd-11
+  variables:
+    # CPPFLAGS is required because libintl doesn't use pkg-config.
+    CPPFLAGS: -I/usr/local/include
+    # FIXME: Workaround meson inability to set LD_LIBRARY_PATH.
+    # https://github.com/mesonbuild/meson/issues/1383
+    # https://github.com/mesonbuild/meson/issues/1635
+    # https://github.com/mesonbuild/meson/issues/2881
+    LDFLAGS: -L/usr/local/lib -Wl,--disable-new-dtags
+    # FreeBSD doesn't have C.UTF-8 locale.
+    LANG: en_US.UTF-8
+  script:
+    # We cannot use -Wl,--no-undefined because GLib uses 'environ' variable.
+    # FreeBSD iconv doesn't handle transliteration, so we use GNU libiconv here.
+    # FreeBSD supports xattr, but its API is different from Linux xattr.
+    # FIXME: extattr(2) support: https://gitlab.gnome.org/GNOME/glib/issues/1404
+    - meson -Db_lundef=false -Diconv=gnu -Dxattr=false --buildtype debug _build
+    - ninja -C _build
+    - meson test -C _build --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
+  except:
+    - tags
+  artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/meson-logs"
+
 coverage:
   stage: coverage
   artifacts:
