@@ -51,7 +51,9 @@
 #include "gthread.h"
 #include "glib_trace.h"
 
+#ifdef _MSC_VER
 #include "valgrind.h"
+#endif
 
 /**
  * SECTION:memory_slices
@@ -388,8 +390,10 @@ slice_config_init (SliceConfig *config)
        * This way it's possible to force gslice to be enabled under
        * valgrind just by setting G_SLICE to the empty string.
        */
+#ifdef _MSC_VER
       if (RUNNING_ON_VALGRIND)
         config->always_malloc = TRUE;
+#endif
     }
 }
 
