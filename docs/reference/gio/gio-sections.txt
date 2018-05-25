@@ -1248,6 +1248,7 @@ g_drive_stop_finish
 g_drive_enumerate_identifiers
 g_drive_get_identifier
 g_drive_get_sort_key
+G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE
 <SUBSECTION Standard>
 G_DRIVE
 G_IS_DRIVE
