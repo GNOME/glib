@@ -255,7 +255,8 @@ g_mount_get_symbolic_icon (GMount *mount)
  * considered an opaque string. Returns %NULL if there is no UUID
  * available.
  * 
- * Returns: the UUID for @mount or %NULL if no UUID can be computed.
+ * Returns: (nullable) (transfer full): the UUID for @mount or %NULL if no UUID
+ *     can be computed.
  *     The returned string should be freed with g_free()
  *     when no longer needed.
  **/
@@ -276,8 +277,9 @@ g_mount_get_uuid (GMount *mount)
  * @mount: a #GMount.
  * 
  * Gets the volume for the @mount.
- * 
- * Returns: (transfer full): a #GVolume or %NULL if @mount is not associated with a volume.
+ *
+ * Returns: (transfer full) (nullable): a #GVolume or %NULL if @mount is not
+ *      associated with a volume.
  *      The returned object should be unreffed with 
  *      g_object_unref() when no longer needed.
  **/
@@ -302,7 +304,8 @@ g_mount_get_volume (GMount *mount)
  * This is a convenience method for getting the #GVolume and then
  * using that object to get the #GDrive.
  * 
- * Returns: (transfer full): a #GDrive or %NULL if @mount is not associated with a volume or a drive.
+ * Returns: (transfer full) (nullable): a #GDrive or %NULL if @mount is not
+ *      associated with a volume or a drive.
  *      The returned object should be unreffed with 
  *      g_object_unref() when no longer needed.
  **/
@@ -1037,7 +1040,7 @@ g_mount_unshadow (GMount *mount)
  *
  * Gets the sort key for @mount, if any.
  *
- * Returns: Sorting key for @mount or %NULL if no such key is available.
+ * Returns: (nullable): Sorting key for @mount or %NULL if no such key is available.
  *
  * Since: 2.32
  */
