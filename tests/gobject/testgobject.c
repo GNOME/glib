@@ -154,6 +154,13 @@ static gboolean	test_signal_accumulator	(GSignalInvocationHint	*ihint,
 static gchar*	test_object_test_signal	(TestObject		*tobject,
 					 TestIface		*iface_object,
 					 gpointer		 tdata);
+static gint TestObject_private_offset;
+static inline gpointer
+test_object_get_instance_private (TestObject *self)
+{
+  return (G_STRUCT_MEMBER_P (self, TestObject_private_offset));
+}
+
 static GType
 test_object_get_type (void)
 {
@@ -177,6 +184,9 @@ test_object_get_type (void)
 
       test_object_type = g_type_register_static (G_TYPE_OBJECT, "TestObject", &test_object_info, 0);
       g_type_add_interface_static (test_object_type, TEST_TYPE_IFACE, &iface_info);
+
+      TestObject_private_offset =
+        g_type_add_instance_private (test_object_type, sizeof (TestObjectPrivate));
     }
 
   return test_object_type;
@@ -185,6 +195,7 @@ static void
 test_object_class_init (TestObjectClass *class)
 {
   /*  GObjectClass *gobject_class = G_OBJECT_CLASS (class); */
+  g_type_class_adjust_private_offset (class, &TestObject_private_offset);
 
   class->test_signal = test_object_test_signal;
 
@@ -195,15 +206,11 @@ test_object_class_init (TestObjectClass *class)
 		test_signal_accumulator, NULL,
 		g_cclosure_marshal_STRING__OBJECT_POINTER,
 		G_TYPE_STRING, 2, TEST_TYPE_IFACE, G_TYPE_POINTER);
-
-  g_type_class_add_private (class, sizeof (TestObjectPrivate));
 }
 static void
 test_object_init (TestObject *tobject)
 {
-  TestObjectPrivate *priv;
-
-  priv = TEST_OBJECT_GET_PRIVATE (tobject);
+  TestObjectPrivate *priv = test_object_get_instance_private (tobject);
 
   g_assert (priv);
 
@@ -215,9 +222,7 @@ test_object_init (TestObject *tobject)
 static void
 test_object_check_private_init (TestObject *tobject)
 {
-  TestObjectPrivate *priv;
-
-  priv = TEST_OBJECT_GET_PRIVATE (tobject);
+  TestObjectPrivate *priv = test_object_get_instance_private (tobject);
 
   g_print ("private data during initialization: %u == %u\n", priv->dummy1, 54321);
   g_assert (priv->dummy1 == 54321);
@@ -317,6 +322,12 @@ struct _DerivedObjectPrivate
 };
 static void derived_object_class_init (DerivedObjectClass *class);
 static void derived_object_init       (DerivedObject      *dobject);
+static gint DerivedObject_private_offset;
+static inline gpointer
+derived_object_get_instance_private (DerivedObject *self)
+{
+  return (G_STRUCT_MEMBER_P (self, DerivedObject_private_offset));
+}
 static GType
 derived_object_get_type (void)
 {
@@ -340,6 +351,8 @@ derived_object_get_type (void)
 
       derived_object_type = g_type_register_static (TEST_TYPE_OBJECT, "DerivedObject", &derived_object_info, 0);
       g_type_add_interface_static (derived_object_type, TEST_TYPE_IFACE, &iface_info);
+      DerivedObject_private_offset =
+        g_type_add_instance_private (derived_object_type, sizeof (DerivedObjectPrivate));
     }
 
   return derived_object_type;
@@ -347,7 +360,7 @@ derived_object_get_type (void)
 static void
 derived_object_class_init (DerivedObjectClass *class)
 {
-  g_type_class_add_private (class, sizeof (DerivedObjectPrivate));
+  g_type_class_adjust_private_offset (class, &DerivedObject_private_offset);
 }
 static void
 derived_object_init (DerivedObject *dobject)
@@ -355,14 +368,13 @@ derived_object_init (DerivedObject *dobject)
   TestObjectPrivate *test_priv;
   DerivedObjectPrivate *derived_priv;
 
-  derived_priv = DERIVED_OBJECT_GET_PRIVATE (dobject);
+  derived_priv = derived_object_get_instance_private (dobject);
 
   g_assert (derived_priv);
 
-  test_priv = TEST_OBJECT_GET_PRIVATE (dobject);
+  test_priv = test_object_get_instance_private (TEST_OBJECT (dobject));
   
   g_assert (test_priv);
-
 }
 
 /* --- main --- */
@@ -411,7 +423,7 @@ main (int   argc,
   iface_print_string (TEST_IFACE (sigarg), "iface-string-from-test-type");
   iface_print_string (TEST_IFACE (dobject), "iface-string-from-derived-type");
 
-  priv = TEST_OBJECT_GET_PRIVATE (dobject);
+  priv = test_object_get_instance_private (TEST_OBJECT (dobject));
   g_print ("private data after initialization: %u == %u\n", priv->dummy1, 54321);
   g_assert (priv->dummy1 == 54321);
   
