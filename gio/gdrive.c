@@ -611,7 +611,9 @@ g_drive_poll_for_media_finish (GDrive        *drive,
  * @drive: a #GDrive
  * @kind: the kind of identifier to return
  *
- * Gets the identifier of the given kind for @drive.
+ * Gets the identifier of the given kind for @drive. The only
+ * identifier currently available is
+ * #G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
  *
  * Returns: a newly allocated string containing the
  *     requested identfier, or %NULL if the #GDrive
