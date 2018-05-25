@@ -221,7 +221,7 @@ static void
 usage (void)
 {
   g_printerr ("%s\n", _("Usage:"));
-  g_printerr ("  gio %s %s\n", _("COMMAND"), _("[ARGS...]"));
+  g_printerr ("  gio %s %s\n", _("COMMAND"), _("[ARGS…]"));
   g_printerr ("\n");
   g_printerr ("%s\n", _("Commands:"));
   g_printerr ("  help     %s\n", _("Print help"));

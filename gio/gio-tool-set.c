@@ -86,7 +86,7 @@ handle_set (int argc, char *argv[], gboolean do_help)
   g_set_prgname ("gio set");
 
   /* Translators: commandline placeholder */
-  param = g_strdup_printf ("%s %s %s...", _("LOCATION"), _("ATTRIBUTE"), _("VALUE"));
+  param = g_strdup_printf ("%s %s %s…", _("LOCATION"), _("ATTRIBUTE"), _("VALUE"));
   context = g_option_context_new (param);
   g_free (param);
   g_option_context_set_help_enabled (context, FALSE);
