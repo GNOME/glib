@@ -45,7 +45,7 @@ handle_remove (int argc, char *argv[], gboolean do_help)
   g_set_prgname ("gio remove");
 
   /* Translators: commandline placeholder */
-  param = g_strdup_printf ("%s...", _("LOCATION"));
+  param = g_strdup_printf ("%s…", _("LOCATION"));
   context = g_option_context_new (param);
   g_free (param);
   g_option_context_set_help_enabled (context, FALSE);
