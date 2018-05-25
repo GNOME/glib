@@ -1,6 +1,12 @@
 #include <glib.h>
 #include <string.h>
 
+typedef struct _HNVC HasNonVoidCleanup;
+HasNonVoidCleanup * non_void_cleanup (HasNonVoidCleanup *);
+
+/* Should not cause any warnings with -Wextra */
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(HasNonVoidCleanup, non_void_cleanup)
+
 static void
 test_autofree (void)
 {
