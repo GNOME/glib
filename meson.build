@@ -328,6 +328,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Wall',
     '-Wduplicated-branches',
     '-Wstrict-prototypes',
+    '-Wunused',
     '-Werror=declaration-after-statement',
     '-Werror=format=2',
     '-Werror=format-security',
