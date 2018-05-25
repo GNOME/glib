@@ -1085,6 +1085,7 @@ int
 main (int   argc,
       char *argv[])
 {
+  g_setenv ("LC_ALL", "C", TRUE);
   setlocale (LC_ALL, "C");
 
   g_test_init (&argc, &argv, NULL);

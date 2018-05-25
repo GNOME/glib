@@ -741,15 +741,18 @@ test_l10n (void)
 
   settings = g_settings_new ("org.gtk.test.localized");
 
+  g_setenv ("LC_MESSAGES", "C", TRUE);
   setlocale (LC_MESSAGES, "C");
   str = g_settings_get_string (settings, "error-message");
+  g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
 
   g_assert_cmpstr (str, ==, "Unnamed");
   g_free (str);
   str = NULL;
 
-  setlocale (LC_MESSAGES, "de_DE");
+  g_setenv ("LC_MESSAGES", "de_DE.UTF-8", TRUE);
+  setlocale (LC_MESSAGES, "de_DE.UTF-8");
   /* Only do the test if translation is actually working... */
   if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
     {
@@ -762,6 +765,7 @@ test_l10n (void)
   else
     g_printerr ("warning: translation is not working... skipping test. ");
 
+  g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
   g_free (locale);
   g_object_unref (settings);
@@ -788,15 +792,18 @@ test_l10n_context (void)
 
   settings = g_settings_new ("org.gtk.test.localized");
 
+  g_setenv ("LC_MESSAGES", "C", TRUE);
   setlocale (LC_MESSAGES, "C");
   g_settings_get (settings, "backspace", "s", &str);
+  g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
 
   g_assert_cmpstr (str, ==, "BackSpace");
   g_free (str);
   str = NULL;
 
-  setlocale (LC_MESSAGES, "de_DE");
+  g_setenv ("LC_MESSAGES", "de_DE.UTF-8", TRUE);
+  setlocale (LC_MESSAGES, "de_DE.UTF-8");
   /* Only do the test if translation is actually working... */
   if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
     {
@@ -809,6 +816,7 @@ test_l10n_context (void)
   else
     g_printerr ("warning: translation is not working... skipping test.  ");
 
+  g_setenv ("LC_MESSAGES", locale, TRUE);
   setlocale (LC_MESSAGES, locale);
   g_free (locale);
   g_object_unref (settings);
