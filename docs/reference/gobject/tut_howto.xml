@@ -1071,6 +1071,20 @@ viewer_file_init (ViewerFile *self)
 }
 </programlisting></informalexample>
     </para>
+    <para>
+      If the object is not of final type, e.g. was declared using
+      <function><link linkend="G-DECLARE-DERIVABLE-TYPE:CAPS">G_DECLARE_DERIVABLE_TYPE</link></function>
+      then
+      <function><link linkend="G-ADD-PRIVATE:CAPS">G_ADD_PRIVATE</link></function>
+      macro should be added. The private structure should be declared exactly
+      as for a normal derivable object, see <xref linkend="howto-gobject-code"/>.
+<informalexample><programlisting>
+G_DEFINE_TYPE_WITH_CODE (ViewerFile, viewer_file, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (ViewerFile)
+                         G_IMPLEMENT_INTERFACE (VIEWER_TYPE_EDITABLE,
+                                                viewer_file_editable_interface_init))
+</programlisting></informalexample>
+    </para>
   </sect1>
   
   <sect1 id="howto-interface-prerequisite">
