@@ -972,6 +972,8 @@ test_api (void)
 int
 main (int argc, char **argv)
 {
+  g_setenv ("LC_ALL", "C", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_dbus_unset ();
