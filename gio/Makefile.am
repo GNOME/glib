@@ -601,11 +601,28 @@ libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined)
 
+# We cannot build .m files because it would require adding AC_PROG_OBJC in
+# configure.ac, and it cannot be added conditionally. That means we would always
+# depend on an objective-c compiler even when not needed. To work around that
+# limitation we rename .m files to .c and compile them separately with
+# -xobjective-c into an intermediary library. Note that we cannot rename those
+# files to .c directly in the source tree because Meson needs the .m extension.
+# This must be done outside of "if OS_COCOA" block otherwise distcheck fails.
+# See https://bugzilla.gnome.org/show_bug.cgi?id=672777.
+OBJC_FILES = \
+	gnextstepsettingsbackend.m \
+	gosxcontenttype.m \
+	gosxappinfo.m \
+	gcocoanotificationbackend.m \
+	$(NULL)
+OBJC_C_FILES = $(OBJC_FILES:.m=.c)
+BUILT_SOURCES += $(OBJC_C_FILES)
+CLEANFILES += $(OBJC_C_FILES)
+EXTRA_DIST += $(OBJC_FILES)
+$(OBJC_C_FILES): %.c: %.m Makefile
+	cp $< $@
+
 if OS_COCOA
-# Let's avoid polluting the CFLAGS of libgio with -xobjective-c
-# We cannot simply rename the ObjC files to .m because it plays
-# tricks with Automake. For further reference, see:
-# https://bugzilla.gnome.org/show_bug.cgi?id=672777
 libgio_objc_2_0_la_CFLAGS = $(libgio_2_0_la_CFLAGS) -xobjective-c
 libgio_objc_2_0_la_CPPFLAGS = $(libgio_2_0_la_CPPFLAGS)
 libgio_objc_2_0_la_LDFLAGS = $(libgio_2_0_la_LDFLAGS) -Wl,-framework,Foundation -Wl,-framework,AppKit
