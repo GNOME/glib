@@ -50,6 +50,7 @@ coverage:
       - _coverage/
   script:
     - bash -x ./.gitlab-ci/coverage-docker.sh
+  coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
 
 pages:
   stage: deploy
