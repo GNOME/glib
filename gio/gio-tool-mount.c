@@ -50,6 +50,7 @@ static gboolean extra_detail = FALSE;
 static gboolean mount_monitor = FALSE;
 static const char *unmount_scheme = NULL;
 static const char *mount_device_file = NULL;
+static const char *stop_device_file = NULL;
 static gboolean success = TRUE;
 
 
@@ -59,6 +60,7 @@ static const GOptionEntry entries[] =
   { "device", 'd', 0, G_OPTION_ARG_STRING, &mount_device_file, N_("Mount volume with device file"), N_("DEVICE") },
   { "unmount", 'u', 0, G_OPTION_ARG_NONE, &mount_unmount, N_("Unmount"), NULL},
   { "eject", 'e', 0, G_OPTION_ARG_NONE, &mount_eject, N_("Eject"), NULL},
+  { "stop", 't', 0, G_OPTION_ARG_STRING, &stop_device_file, N_("Stop drive with device file"), N_("DEVICE") },
   { "unmount-scheme", 's', 0, G_OPTION_ARG_STRING, &unmount_scheme, N_("Unmount all mounts with the given scheme"), N_("SCHEME") },
   { "force", 'f', 0, G_OPTION_ARG_NONE, &force, N_("Ignore outstanding file operations when unmounting or ejecting"), NULL },
   { "anonymous", 'a', 0, G_OPTION_ARG_NONE, &anonymous, N_("Use an anonymous user when authenticating"), NULL },
@@ -434,6 +436,81 @@ eject (GFile *file)
   g_object_unref (mount_op);
 
   outstanding_mounts++;
+}
+
+static void
+stop_with_device_file_cb (GObject *object,
+                          GAsyncResult *res,
+                          gpointer user_data)
+{
+  GDrive *drive;
+  gboolean succeeded;
+  GError *error = NULL;
+  gchar *device_path = (gchar *)user_data;
+
+  drive = G_DRIVE (object);
+
+  succeeded = g_drive_stop_finish (drive, res, &error);
+
+  if (!succeeded)
+    {
+      print_error ("%s: %s", device_path, error->message);
+      g_error_free (error);
+      success = FALSE;
+    }
+
+  g_free (device_path);
+
+  outstanding_mounts--;
+
+  if (outstanding_mounts == 0)
+    g_main_loop_quit (main_loop);
+}
+
+static void
+stop_with_device_file (const char *device_file)
+{
+  GVolumeMonitor *volume_monitor;
+  GList *drives;
+  GList *l;
+
+  volume_monitor = g_volume_monitor_get();
+
+  drives = g_volume_monitor_get_connected_drives (volume_monitor);
+  for (l = drives; l != NULL; l = l->next)
+    {
+      GDrive *drive = G_DRIVE (l->data);
+      gchar *id;
+
+      id = g_drive_get_identifier (drive, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+      if (g_strcmp0 (id, device_file) == 0)
+        {
+          GMountOperation *op;
+          GMountUnmountFlags flags;
+
+          op = new_mount_op ();
+          flags = force ? G_MOUNT_UNMOUNT_FORCE : G_MOUNT_UNMOUNT_NONE;
+          g_drive_stop (drive,
+                        flags,
+                        op,
+                        NULL,
+                        stop_with_device_file_cb,
+                        id);
+
+          outstanding_mounts++;
+        }
+      else
+        g_free (id);
+    }
+  g_list_free_full (drives, g_object_unref);
+
+  if (outstanding_mounts == 0)
+    {
+      print_error ("%s: %s", device_file, _("No drive for device file"));
+      success = FALSE;
+    }
+
+  g_object_unref (volume_monitor);
 }
 
 static gboolean
@@ -1168,6 +1245,8 @@ handle_mount (int argc, char *argv[], gboolean do_help)
     list_monitor_items ();
   else if (mount_device_file != NULL)
     mount_with_device_file (mount_device_file);
+  else if (stop_device_file)
+    stop_with_device_file (stop_device_file);
   else if (unmount_scheme != NULL)
     unmount_all_with_scheme (unmount_scheme);
   else if (mount_monitor)
