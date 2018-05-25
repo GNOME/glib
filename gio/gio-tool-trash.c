@@ -101,8 +101,6 @@ handle_trash (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  g_option_context_free (context);
-
   if (argc > 1)
     {
       int i;
@@ -132,6 +130,15 @@ handle_trash (int argc, char *argv[], gboolean do_help)
       delete_trash_file (file, FALSE, TRUE);
       g_object_unref (file);
     }
+
+  if (argc == 1 && !empty)
+    {
+      show_help (context, _("No locations given"));
+      g_option_context_free (context);
+      return 1;
+    }
+
+  g_option_context_free (context);
 
   return retval;
 }
