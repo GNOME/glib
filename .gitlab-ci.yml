@@ -43,6 +43,17 @@ msys2-mingw32:
     paths:
       - _coverage/
 
+vs2017-x64:
+  stage: build
+  tags:
+    - win32
+  script:
+    - .gitlab-ci/test-msvc.bat
+  artifacts:
+    when: always
+    paths:
+      - _build/meson-logs
+
 coverage:
   stage: coverage
   artifacts:
