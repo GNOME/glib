@@ -9,6 +9,9 @@ cache:
   paths:
     - _ccache/
 
+variables:
+  MESON_TEST_TIMEOUT_MULTIPLIER: 2
+
 fedora-meson-x86_64:
   stage: build
   variables:
@@ -17,7 +20,7 @@ fedora-meson-x86_64:
     - meson --prefix /usr --libdir /usr/lib64 --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
     - cd _build
     - ninja
-    - meson test --timeout-multiplier 2
+    - meson test --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
     - cd ..
     - mkdir -p _coverage
     - lcov --rc lcov_branch_coverage=1 --directory . --capture --no-external --output-file "_coverage/${CI_JOB_NAME}.lcov"

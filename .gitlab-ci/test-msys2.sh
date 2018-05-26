@@ -35,7 +35,7 @@ cd _build
 ninja
 
 # FIXME: fix the test suite
-meson test || true
+meson test --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} || true
 
 cd ..
 curl -O -J -L "https://github.com/linux-test-project/lcov/releases/download/v1.13/lcov-1.13.tar.gz"
