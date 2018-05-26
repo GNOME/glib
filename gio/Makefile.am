@@ -255,8 +255,12 @@ endif
 if OS_UNIX
 platform_libadd += xdgmime/libxdgmime.la
 platform_deps += xdgmime/libxdgmime.la
-if !OS_COCOA
+if OS_COCOA
+if APPINFO_IMPL_NATIVE
+appinfo_headers += gosxappinfo.h
+else
 appinfo_headers += gdesktopappinfo.h
+endif
 endif
 
 
@@ -303,7 +307,7 @@ giounixinclude_HEADERS = \
 	gunixinputstream.h 	\
 	gunixoutputstream.h 	\
 	gunixsocketaddress.h	\
-	$(appinfo_headers) \
+	$(appinfo_headers)	\
 	$(NULL)
 
 if HAVE_NETLINK
@@ -357,7 +361,13 @@ win32_more_sources_for_vcproj = \
 	win32/gwin32filemonitor.c
 
 if OS_WIN32
-appinfo_sources += gwin32appinfo.c gwin32appinfo.h
+if APPINFO_IMPL_NATIVE
+appinfo_headers += gwin32appinfo.h
+appinfo_sources += gwin32appinfo.c
+else
+appinfo_headers += gdesktopappinfo.h
+appinfo_sources += gdesktopappinfo.c
+endif
 contenttype_sources += gcontenttype-win32.c
 platform_libadd += -lshlwapi -lws2_32 -ldnsapi -liphlpapi
 win32_sources = $(win32_actual_sources)
@@ -367,6 +377,7 @@ giowin32includedir=$(includedir)/gio-win32-2.0/gio
 giowin32include_HEADERS = \
 	gwin32inputstream.h \
 	gwin32outputstream.h \
+	$(appinfo_headers) \
 	$(NULL)
 
 endif
@@ -407,7 +418,12 @@ nodist_portal_sources = \
 	$(NULL)
 
 if OS_UNIX
-if !OS_COCOA
+if OS_COCOA
+if !APPINFO_IMPL_NATIVE
+contenttype_sources += gcontenttype.c
+appinfo_sources += gdesktopappinfo.c
+endif
+else
 contenttype_sources += gcontenttype.c
 appinfo_sources += gdesktopappinfo.c
 endif
@@ -644,10 +660,12 @@ libgio_objc_2_0_la_CFLAGS = $(libgio_2_0_la_CFLAGS) -xobjective-c
 libgio_objc_2_0_la_CPPFLAGS = $(libgio_2_0_la_CPPFLAGS)
 libgio_objc_2_0_la_LDFLAGS = $(libgio_2_0_la_LDFLAGS) -Wl,-framework,Foundation -Wl,-framework,AppKit
 libgio_objc_2_0_la_SOURCES = \
-	gnextstepsettingsbackend.c \
+	gnextstepsettingsbackend.c
+if APPINFO_IMPL_NATIVE
+libgio_objc_2_0_la_SOURCES += \
 	gosxcontenttype.c \
-	gosxappinfo.c \
-	gosxappinfo.h
+	gosxappinfo.c
+endif
 if MAC_OS_X_9
 libgio_objc_2_0_la_SOURCES += \
 	gcocoanotificationbackend.c

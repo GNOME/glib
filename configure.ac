@@ -1720,6 +1720,24 @@ dnl   failure. try libattr
 ])
 AC_SUBST(XATTR_LIBS)
 
+dnl ***********************************************
+dnl *** Check for gappinfo implementation (GIO) ***
+dnl ***********************************************
+AC_ARG_WITH(appinfo-impl,
+           [AS_HELP_STRING([--appinfo-impl=@<:@native/generic@:>@],
+                           [use appinfo implementation [native]])],
+           [],
+           [with_appinfo_impl='native'])
+
+if test "$with_appinfo_impl" != "native" && test "$with_appinfo_impl" != "generic"; then
+  with_appinfo_impl="native"
+fi
+
+AM_CONDITIONAL(APPINFO_IMPL_NATIVE, [test "$with_appinfo_impl" = "native"])
+AS_IF([test "$with_appinfo_impl" = "native"],[
+  AC_DEFINE(USE_APPINFO_NATIVE, 1, [Prefer the native application information implementation])
+])
+
 dnl ************************
 dnl *** check for libelf ***
 dnl ************************

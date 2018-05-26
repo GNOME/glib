@@ -1637,6 +1637,15 @@ else
 
 endif
 
+# GAppInfo implementation to use
+#
+# USE_APPINFO_NATIVE: Using a native platform-specific app info implementation
+# !USE_APPINFO_NATIVE: Using the generic freedesktop.org implementation
+#
+# We should default to the native implementation.
+native_appinfo_opt = get_option('native_appinfo')
+glib_conf.set('USE_APPINFO_NATIVE', native_appinfo_opt)
+
 if get_option('internal_pcre')
   pcre = []
   use_system_pcre = false

@@ -83,3 +83,8 @@ option('installed_tests',
        type : 'boolean',
        value : false,
        description : 'enable installed tests')
+
+option('native_appinfo',
+       type : 'boolean',
+       value : true,
+       description : 'use platform-native GAppInfo implementation (true) or generic freedesktop.org implementation (false); APIs for the non-selected implementation will not be installed')

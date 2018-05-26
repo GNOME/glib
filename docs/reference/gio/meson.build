@@ -55,6 +55,7 @@ if get_option('gtk_doc')
     'gnetworkmonitorportal.h',
     'gnotificationbackend.h',
     'gnotification-private.h',
+    'gosxappinfo.h',
     'gpollfilemonitor.h',
     'gproxyresolverportal.h',
     'gregistrysettingsbackend.h',
@@ -94,21 +95,17 @@ if get_option('gtk_doc')
       'gunixinputstream.h',
       'gunixoutputstream.h',
       'gunixsocketaddress.h',
-      'gdesktopappinfo.h',
-      'gosxappinfo.h',
     ]
   else
-    if glib_have_cocoa
-      ignore_headers += ['gdesktopappinfo.h']
-    else
-      ignore_headers += ['gosxappinfo.h']
-    endif
-
     ignore_headers += [
       'gwin32networkmonitor.h',
       'gwin32inputstream.h',
       'gwin32outputstream.h',
     ]
+  endif
+
+  if native_appinfo_opt and (glib_have_cocoa or host_system == 'windows')
+    ignore_headers += [ 'gdesktopappinfo.h' ]
   endif
 
   ignore_decorators = [

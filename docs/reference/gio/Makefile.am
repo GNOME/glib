@@ -74,6 +74,7 @@ IGNORE_HFILES = \
 	gnetworkmonitorportal.h \
 	gnotificationbackend.h \
 	gnotification-private.h \
+	gosxappinfo.h \
 	gpollfilemonitor.h \
 	gproxyresolverportal.h \
 	gregistrysettingsbackend.h \
@@ -113,22 +114,24 @@ IGNORE_HFILES += \
 	gunixinputstream.h \
 	gunixoutputstream.h \
 	gunixsocketaddress.h \
-	gdesktopappinfo.h \
-	gosxappinfo.h \
 	$(NULL)
 else
-
-if OS_COCOA
-IGNORE_HFILES += gdesktopappinfo.h
-else
-IGNORE_HFILES += gosxappinfo.h
-endif
 
 IGNORE_HFILES += \
 	gwin32networkmonitor.h \
 	gwin32inputstream.h \
 	gwin32outputstream.h \
 	$(NULL)
+endif
+
+if APPINFO_IMPL_NATIVE
+if OS_COCOA
+IGNORE_HFILES += gdesktopappinfo.h
+else
+if OS_WIN32
+IGNORE_HFILES += gdesktopappinfo.h
+endif
+endif
 endif
 
 MKDB_IGNORE_FILES = \

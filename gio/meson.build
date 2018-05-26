@@ -406,12 +406,17 @@ if host_system != 'windows'
   if glib_have_cocoa
     settings_sources += files('gnextstepsettingsbackend.m')
     contenttype_sources += files('gosxcontenttype.m')
-    appinfo_sources += files('gosxappinfo.m')
     if glib_have_os_x_9_or_later
       unix_sources += files('gcocoanotificationbackend.m')
     endif
   else
     contenttype_sources += files('gcontenttype.c')
+  endif
+
+  if native_appinfo_opt and glib_have_cocoa
+    appinfo_sources += files('gosxappinfo.m')
+    gio_unix_include_headers += files('gosxappinfo.h')
+  else
     appinfo_sources += files('gdesktopappinfo.c')
     gio_unix_include_headers += files('gdesktopappinfo.h')
 
@@ -434,7 +439,6 @@ if host_system != 'windows'
     )
   endif
 else
-  appinfo_sources += files('gwin32appinfo.c')
   contenttype_sources += files('gcontenttype-win32.c')
   platform_deps += [cc.find_library('shlwapi'),
                     cc.find_library('dnsapi'),
@@ -451,6 +455,19 @@ else
     'gwin32notificationbackend.c',
   )
 
+  gio_win32_include_headers = files(
+    'gwin32inputstream.h',
+    'gwin32outputstream.h',
+  )
+
+  if native_appinfo_opt
+    appinfo_sources += files('gwin32appinfo.c')
+    gio_win32_include_headers += files('gwin32appinfo.h')
+  else
+    appinfo_sources += files('gdesktopappinfo.c')
+    gio_win32_include_headers += files('gdesktopappinfo.h')
+  endif
+
   gio_win_rc = configure_file(
     input: 'gio.rc.in',
     output: 'gio.rc',
@@ -459,10 +476,6 @@ else
   gio_win_res = windows.compile_resources(gio_win_rc)
   win32_sources += [gio_win_res]
 
-  gio_win32_include_headers = files(
-    'gwin32inputstream.h',
-    'gwin32outputstream.h',
-  )
   install_headers(gio_win32_include_headers, subdir : 'gio-win32-2.0/gio')
 endif
 
