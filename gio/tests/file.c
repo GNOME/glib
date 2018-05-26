@@ -897,13 +897,13 @@ splice_to_string (GInputStream   *stream,
   return ret;
 }
 
-static guint64
-get_size_from_du (const gchar *path)
+static gboolean
+get_size_from_du (const gchar *path, guint64 *size)
 {
   GSubprocess *du;
+  gboolean ok;
   gchar *result;
   gchar *endptr;
-  guint64 size;
   GError *error = NULL;
 
   du = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE,
@@ -914,12 +914,17 @@ get_size_from_du (const gchar *path)
   result = splice_to_string (g_subprocess_get_stdout_pipe (du), &error);
   g_assert_no_error (error);
 
-  size = g_ascii_strtoll (result, &endptr, 10);
+  *size = g_ascii_strtoll (result, &endptr, 10);
+
+  g_subprocess_wait (du, NULL, &error);
+  g_assert_no_error (error);
+
+  ok = g_subprocess_get_successful (du);
 
   g_object_unref (du);
   g_free (result);
 
-  return size;
+  return ok;
 }
 
 static void
@@ -937,13 +942,9 @@ test_measure (void)
   path = g_test_build_filename (G_TEST_DIST, "desktop-files", NULL);
   file = g_file_new_for_path (path);
 
-  if (g_find_program_in_path ("du"))
+  if (!g_find_program_in_path ("du") || !get_size_from_du (path, &size))
     {
-      size = get_size_from_du (path);
-    }
-  else
-    {
-      g_test_message ("du not found, skipping byte measurement");
+      g_test_message ("du not found or fail to run, skipping byte measurement");
       size = 0;
     }
 
@@ -1043,13 +1044,10 @@ test_measure_async (void)
   path = g_test_build_filename (G_TEST_DIST, "desktop-files", NULL);
   file = g_file_new_for_path (path);
 
-  if (g_find_program_in_path ("du"))
+  if (!g_find_program_in_path ("du") ||
+      !get_size_from_du (path, &data->expected_bytes))
     {
-      data->expected_bytes = get_size_from_du (path);
-    }
-  else
-    {
-      g_test_message ("du not found, skipping byte measurement");
+      g_test_message ("du not found or fail to run, skipping byte measurement");
       data->expected_bytes = 0;
     }
 
