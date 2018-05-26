@@ -43,11 +43,12 @@
 #endif
 #include <glib/gstdio.h>
 
-#if defined(G_OS_UNIX) && !defined(HAVE_COCOA)
+#if defined(G_OS_UNIX)
+#if !defined(HAVE_COCOA) || defined(USE_APPINFO_GENERIC)
 #include "gdesktopappinfo.h"
-#endif
-#ifdef HAVE_COCOA
+#elif defined(HAVE_COCOA)
 #include "gosxappinfo.h"
+#endif
 #endif
 
 #ifdef HAVE_COCOA
@@ -1012,7 +1013,7 @@ _g_io_modules_ensure_extension_points_registered (void)
     {
       registered_extensions = TRUE;
       
-#if defined(G_OS_UNIX) && !defined(HAVE_COCOA)
+#if defined(G_OS_UNIX) && (!defined(HAVE_COCOA) || defined(USE_APPINFO_GENERIC))
 #if !GLIB_CHECK_VERSION (3, 0, 0)
       ep = g_io_extension_point_register (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
       G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -1153,7 +1154,9 @@ _g_io_modules_ensure_loaded (void)
 #endif
 #ifdef HAVE_COCOA
       g_type_ensure (g_nextstep_settings_backend_get_type ());
+#ifndef USE_APPINFO_GENERIC
       g_type_ensure (g_osx_app_info_get_type ());
+#endif
 #endif
 #ifdef G_OS_UNIX
       g_type_ensure (_g_unix_volume_monitor_get_type ());

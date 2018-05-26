@@ -78,3 +78,9 @@ option('fam',
        type : 'boolean',
        value : false,
        description : 'Use fam for file system monitoring')
+
+option('appinfo',
+       type : 'combo',
+       choices : ['native', 'generic'],
+       value : 'native',
+       description : 'GAppInfo implementation to use (\'native\' = \'Platform-native implementation\'; \'generic\' = \'Generic freedesktop.org implementation\')')
