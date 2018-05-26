@@ -2957,9 +2957,11 @@ g_socket_check_connect_result (GSocket  *socket,
 gssize
 g_socket_get_available_bytes (GSocket *socket)
 {
-#ifdef G_OS_WIN32
+#ifndef SO_NREAD
   const gint bufsize = 64 * 1024;
   static guchar *buf = NULL;
+#endif
+#ifdef G_OS_WIN32
   u_long avail;
 #else
   gint avail;
@@ -2967,25 +2969,37 @@ g_socket_get_available_bytes (GSocket *socket)
 
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
 
-#if defined (SO_NREAD)
+#ifdef SO_NREAD
   if (!g_socket_get_option (socket, SOL_SOCKET, SO_NREAD, &avail, NULL))
       return -1;
-#elif !defined (G_OS_WIN32)
-  if (ioctl (socket->priv->fd, FIONREAD, &avail) < 0)
-    avail = -1;
 #else
   if (socket->priv->type == G_SOCKET_TYPE_DATAGRAM)
     {
       if (G_UNLIKELY (g_once_init_enter (&buf)))
         g_once_init_leave (&buf, g_malloc (bufsize));
 
+      /* On datagram sockets, FIONREAD ioctl is not reliable because many
+       * systems add internal header size to the reported size, making it
+       * unusable for this function. */
       avail = recv (socket->priv->fd, buf, bufsize, MSG_PEEK);
-      if (avail == -1 && get_socket_errno () == WSAEWOULDBLOCK)
-        avail = 0;
+      if (avail == -1)
+        {
+          int errsv = get_socket_errno ();
+#ifdef G_OS_WIN32
+          if (errsv == WSAEWOULDBLOCK)
+#else
+          if (errsv == EWOULDBLOCK || errsv == EAGAIN)
+#endif
+            avail = 0;
+        }
     }
   else
     {
+#ifdef G_OS_WIN32
       if (ioctlsocket (socket->priv->fd, FIONREAD, &avail) < 0)
+#else
+      if (ioctl (socket->priv->fd, FIONREAD, &avail) < 0)
+#endif
         avail = -1;
     }
 #endif
