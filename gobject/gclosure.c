@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include "../glib/valgrind.h"
 #include <string.h>
 
 #include <ffi.h>
@@ -34,7 +35,6 @@
 #include "gvaluetypes.h"
 #include "gtype-private.h"
 
-#include "../glib/valgrind.h"
 
 /**
  * SECTION:gclosure
