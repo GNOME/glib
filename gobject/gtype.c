@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include "../glib/valgrind.h"
 #include <string.h>
 
 #include "gtype.h"
@@ -36,8 +37,6 @@
 #ifdef G_OS_WIN32
 #include <windows.h>
 #endif
-
-#include "../glib/valgrind.h"
 
 #ifdef	G_ENABLE_DEBUG
 #define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
