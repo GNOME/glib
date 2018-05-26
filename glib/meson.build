@@ -327,7 +327,4 @@ if enable_systemtap
     install : true)
 endif
 
-# gtester doesn't work on native windows
-if cc.get_id() != 'msvc'
-  subdir('tests')
-endif
+subdir('tests')
