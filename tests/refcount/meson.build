@@ -1,7 +1,7 @@
 refcount_tests = [
  ['closures', 'closures.c', []],
  ['objects', 'objects.c', []],
- ['objects2', 'objects2.c', []],
+ ['objects2', 'objects2.c', [], 90],
  ['properties', 'properties.c', []],
  ['properties2', 'properties2.c', []],
  ['properties3', 'properties3.c', [], 90], # extra long timeout
