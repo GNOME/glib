@@ -188,6 +188,7 @@ libglib_2_0_la_SOURCES = 	\
 	gurifuncs.c 		\
 	gutils.c		\
 	guuid.c			\
+	gvalgrind.h		\
 	gvariant.h		\
 	gvariant.c		\
 	gvariant-core.h		\
