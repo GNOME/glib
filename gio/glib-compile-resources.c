@@ -1030,7 +1030,7 @@ main (int argc, char **argv)
 	  return 1;
 	}
 
-      fprintf (file,
+      g_fprintf (file,
 	       "#ifndef __RESOURCE_%s_H__\n"
 	       "#define __RESOURCE_%s_H__\n"
 	       "\n"
@@ -1040,14 +1040,14 @@ main (int argc, char **argv)
 	       c_name, c_name, linkage, c_name);
 
       if (manual_register)
-	fprintf (file,
+	g_fprintf (file,
 		 "\n"
 		 "%s void %s_register_resource (void);\n"
 		 "%s void %s_unregister_resource (void);\n"
 		 "\n",
 		 linkage, c_name, linkage, c_name);
 
-      fprintf (file,
+      g_fprintf (file,
 	       "#endif\n");
 
       fclose (file);
@@ -1078,7 +1078,7 @@ main (int argc, char **argv)
 	  return 1;
 	}
 
-      fprintf (file,
+      g_fprintf (file,
 	       "#include <gio/gio.h>\n"
 	       "\n"
 	       "#if defined (__ELF__) && ( __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 6))\n"
@@ -1092,17 +1092,17 @@ main (int argc, char **argv)
 
       for (i = 0; i < data_size; i++) {
 	if (i % 8 == 0)
-	  fprintf (file, "  ");
-	fprintf (file, "0x%2.2x", (int)data[i]);
+	  g_fprintf (file, "  ");
+	g_fprintf (file, "0x%2.2x", (int)data[i]);
 	if (i != data_size - 1)
-	  fprintf (file, ", ");
+	  g_fprintf (file, ", ");
 	if ((i % 8 == 7) || (i == data_size - 1))
-	  fprintf (file, "\n");
+	  g_fprintf (file, "\n");
       }
 
-      fprintf (file, "} };\n");
+      g_fprintf (file, "} };\n");
 
-      fprintf (file,
+      g_fprintf (file,
 	       "\n"
 	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data), NULL, NULL, NULL };\n"
 	       "%s GResource *%s_get_resource (void);\n"
@@ -1115,7 +1115,7 @@ main (int argc, char **argv)
 
       if (manual_register)
 	{
-	  fprintf (file,
+	  g_fprintf (file,
 		   "\n"
 		   "%s void %s_unregister_resource (void);\n"
 		   "void %s_unregister_resource (void)\n"
@@ -1132,8 +1132,8 @@ main (int argc, char **argv)
 	}
       else
 	{
-	  fprintf (file, "%s", gconstructor_code);
-	  fprintf (file,
+	  g_fprintf (file, "%s", gconstructor_code);
+	  g_fprintf (file,
 		   "\n"
 		   "#ifdef G_HAS_CONSTRUCTORS\n"
 		   "\n"
