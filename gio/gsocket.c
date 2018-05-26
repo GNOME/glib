@@ -2957,9 +2957,11 @@ g_socket_check_connect_result (GSocket  *socket,
 gssize
 g_socket_get_available_bytes (GSocket *socket)
 {
-#ifdef G_OS_WIN32
+#ifndef SO_NREAD
   const gint bufsize = 64 * 1024;
   static guchar *buf = NULL;
+#endif
+#ifdef G_OS_WIN32
   u_long avail;
 #else
   gint avail;
@@ -2971,8 +2973,24 @@ g_socket_get_available_bytes (GSocket *socket)
   if (!g_socket_get_option (socket, SOL_SOCKET, SO_NREAD, &avail, NULL))
       return -1;
 #elif !defined (G_OS_WIN32)
-  if (ioctl (socket->priv->fd, FIONREAD, &avail) < 0)
-    avail = -1;
+  if (socket->priv->type == G_SOCKET_TYPE_DATAGRAM)
+    {
+      if (G_UNLIKELY (g_once_init_enter (&buf)))
+        g_once_init_leave (&buf, g_malloc (bufsize));
+
+      avail = recv (socket->priv->fd, buf, bufsize, MSG_PEEK);
+      if (avail == -1)
+        {
+          int errsv = get_socket_errno ();
+          if (errsv == EWOULDBLOCK || errsv == EAGAIN)
+            avail = 0;
+        }
+    }
+  else
+    {
+      if (ioctl (socket->priv->fd, FIONREAD, &avail) < 0)
+        avail = -1;
+    }
 #else
   if (socket->priv->type == G_SOCKET_TYPE_DATAGRAM)
     {
