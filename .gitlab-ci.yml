@@ -17,7 +17,7 @@ fedora-meson-x86_64:
     - meson --prefix /usr --libdir /usr/lib64 --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
     - cd _build
     - ninja
-    - meson test --timeout-multiplier 2
+    - meson test --timeout-multiplier 4
     - cd ..
     - mkdir -p _coverage
     - lcov --rc lcov_branch_coverage=1 --directory . --capture --no-external --output-file "_coverage/${CI_JOB_NAME}.lcov"
