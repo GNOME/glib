@@ -17,6 +17,10 @@
 #ifdef G_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+/* mingw defines it while msvc doesn't */
+#ifndef SUBLANG_LITHUANIAN_LITHUANIA
+#define SUBLANG_LITHUANIAN_LITHUANIA 0x01
+#endif
 #endif
 
 static void

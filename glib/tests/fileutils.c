@@ -36,11 +36,19 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <utime.h>
 #endif
 #include <fcntl.h>
-#include <utime.h>
 #ifdef G_OS_WIN32
 #include <windows.h>
+#include <sys/utime.h>
+#include <io.h>
+#ifndef S_ISDIR
+#define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
+#endif
+#ifndef F_OK
+#define F_OK 0
+#endif
 #endif
 
 #define S G_DIR_SEPARATOR_S
