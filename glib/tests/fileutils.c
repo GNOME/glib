@@ -36,11 +36,16 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <utime.h>
 #endif
 #include <fcntl.h>
-#include <utime.h>
 #ifdef G_OS_WIN32
 #include <windows.h>
+#include <sys/utime.h>
+#include <io.h>
+#ifndef S_ISDIR
+#define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
+#endif
 #endif
 
 #define S G_DIR_SEPARATOR_S
@@ -920,8 +925,12 @@ test_stdio_wrappers (void)
   g_close (ret, &error);
   g_assert_no_error (error);
 
+#ifndef G_OS_WIN32
   ret = g_access ("test-creat", F_OK);
   g_assert_cmpint (ret, ==, 0);
+#else
+  g_assert_true (g_file_test ("test-creat", G_FILE_TEST_EXISTS));
+#endif
 
   ret = g_rename ("test-creat", "test-create");
   g_assert_cmpint (ret, ==, 0);
