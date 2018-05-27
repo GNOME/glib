@@ -108,6 +108,9 @@ glib_conf.set('includedir', glib_includedir)
 glib_conf.set('datadir', glib_datadir)
 glib_conf.set('datarootdir', glib_datadir)
 
+# used by the .rc.in files
+glibconfig_conf.set('LT_CURRENT_MINUS_AGE', soversion)
+
 glib_conf.set('_GNU_SOURCE', 1)
 
 if host_system == 'windows'
