@@ -23,6 +23,8 @@ if cc.get_id() == 'msvc'
   # Disable SAFESEH with MSVC for plugins and libs that use external deps that
   # are built with MinGW
   noseh_link_args = ['/SAFESEH:NO']
+  # Set the input and exec encoding to utf-8, like is the default with GCC
+  add_project_arguments(cc.get_supported_arguments(['/utf-8']), language: 'c')
 else
   noseh_link_args = []
   # -mms-bitfields vs -fnative-struct ?
