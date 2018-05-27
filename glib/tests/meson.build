@@ -121,7 +121,7 @@ foreach test_name : glib_tests
   )
   # These tests may take more than 30 seconds to run on the CI infrastructure
   if slow_tests.contains(test_name)
-    test(test_name, exe, env : test_env, timeout : 90)
+    test(test_name, exe, env : test_env, timeout : 120)
   else
     test(test_name, exe, env : test_env)
   endif
