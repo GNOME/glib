@@ -34,6 +34,8 @@ G_BEGIN_DECLS
  * G_VOLUME_IDENTIFIER_KIND_HAL_UDI:
  *
  * The string used to obtain a Hal UDI with g_volume_get_identifier().
+ *
+ * Deprecated: 2.58: Do not use, HAL is deprecated.
  */
 #define G_VOLUME_IDENTIFIER_KIND_HAL_UDI "hal-udi"
 
