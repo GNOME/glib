@@ -248,6 +248,35 @@ test_spawn_sync (void)
   g_ptr_array_free (argv, TRUE);
 }
 
+/* Like test_spawn_sync but uses spawn flags that trigger the optimized
+ * posix_spawn codepath.
+ */
+static void
+test_posix_spawn (void)
+{
+  int tnum = 1;
+  GError *error = NULL;
+  GPtrArray *argv;
+  char *arg;
+  char *stdout_str;
+  int estatus;
+  GSpawnFlags flags = G_SPAWN_CLOEXEC_PIPES | G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
+
+  arg = g_strdup_printf ("thread %d", tnum);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, echo_prog_path);
+  g_ptr_array_add (argv, arg);
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char**)argv->pdata, NULL, flags, NULL, NULL, &stdout_str, NULL, &estatus, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (arg, ==, stdout_str);
+  g_free (arg);
+  g_free (stdout_str);
+  g_ptr_array_free (argv, TRUE);
+}
+
 static void
 test_spawn_script (void)
 {
@@ -298,6 +327,7 @@ main (int   argc,
   g_test_add_func ("/gthread/spawn-single-async", test_spawn_async);
   g_test_add_func ("/gthread/spawn-single-async-with-fds", test_spawn_async_with_fds);
   g_test_add_func ("/gthread/spawn-script", test_spawn_script);
+  g_test_add_func ("/gthread/spawn-posix-spawn", test_posix_spawn);
 
   ret = g_test_run();
 
