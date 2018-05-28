@@ -614,7 +614,7 @@ g_drive_poll_for_media_finish (GDrive        *drive,
  * Gets the identifier of the given kind for @drive.
  *
  * Returns: (nullable) (transfer full): a newly allocated string containing the
- *     requested identfier, or %NULL if the #GDrive
+ *     requested identifier, or %NULL if the #GDrive
  *     doesn't have this kind of identifier.
  */
 char *
