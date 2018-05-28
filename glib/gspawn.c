@@ -30,6 +30,7 @@
 #include <string.h>
 #include <stdlib.h>   /* for fdwalk */
 #include <dirent.h>
+#include <spawn.h>
 
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
@@ -53,6 +54,22 @@
 #include "gutils.h"
 #include "glibintl.h"
 #include "glib-unix.h"
+
+/* posix_spawn() is assumed the fastest way to spawn, but glibc's
+ * implementation was buggy before glibc 2.24, so avoid it on old versions.
+ */
+#ifdef HAVE_POSIX_SPAWN
+#ifdef __GLIBC__
+
+#if __GLIBC_PREREQ(2,24)
+#define POSIX_SPAWN_AVAILABLE
+#endif
+
+#else /* !__GLIBC__ */
+/* Assume that all non-glibc posix_spawn implementations are fine. */
+#define POSIX_SPAWN_AVAILABLE
+#endif /* __GLIBC__ */
+#endif /* HAVE_POSIX_SPAWN */
 
 /**
  * SECTION:spawn
@@ -699,6 +716,21 @@ g_spawn_sync (const gchar          *working_directory,
  * If @child_pid is not %NULL and an error does not occur then the returned
  * process reference must be closed using g_spawn_close_pid().
  *
+ * On modern UNIX platforms, GLib can use an efficient process launching
+ * codepath driven internally by posix_spawn(). This has the advantage of
+ * avoiding the fork-time performance costs of cloning the parent process
+ * address space, and avoiding associated memory overcommit checks that are
+ * not relevant in the context of immediately executing a distinct process.
+ * This optimized codepath will be used provided that the following conditions
+ * are met:
+ *
+ * 1. %G_SPAWN_DO_NOT_REAP_CHILD is set
+ * 2. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN is set
+ * 3. %G_SPAWN_SEARCH_PATH_FROM_ENVP is not set
+ * 4. @working_directory is %NULL
+ * 5. @child_setup is %NULL
+ * 6. The program is of a recognised binary format, or has a shebang. Otherwise, GLib will have to execute the program through the shell, which is not done using the optimized codepath.
+ *
  * If you are writing a GTK+ application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
  * windows on the right screen, you may want to use #GdkAppLaunchContext,
@@ -1330,6 +1362,173 @@ read_ints (int      fd,
   return TRUE;
 }
 
+#ifdef POSIX_SPAWN_AVAILABLE
+static gboolean
+do_posix_spawn (gchar     **argv,
+                gchar     **envp,
+                gboolean    search_path,
+                gboolean    stdout_to_null,
+                gboolean    stderr_to_null,
+                gboolean    child_inherits_stdin,
+                gboolean    file_and_argv_zero,
+                GPid       *child_pid,
+                gint       *child_close_fds,
+                gint        stdin_fd,
+                gint        stdout_fd,
+                gint        stderr_fd)
+{
+  pid_t pid;
+  gchar **argv_pass;
+  posix_spawnattr_t attr;
+  posix_spawn_file_actions_t file_actions;
+  gint parent_close_fds[3];
+  gint num_parent_close_fds = 0;
+  GSList *child_close = NULL;
+  GSList *elem;
+  sigset_t mask;
+  int i, r;
+
+  if (*argv[0] == '\0')
+    {
+      /* We check the simple case first. */
+      return ENOENT;
+    }
+
+  r = posix_spawnattr_init (&attr);
+  if (r != 0)
+    return r;
+
+  if (child_close_fds)
+    {
+      int i = -1;
+      while (child_close_fds[++i] != -1)
+        child_close = g_slist_prepend (child_close,
+                                       GINT_TO_POINTER (child_close_fds[i]));
+    }
+
+   r = posix_spawnattr_setflags (&attr, POSIX_SPAWN_SETSIGDEF);
+   if (r != 0)
+     goto out_free_spawnattr;
+
+   /* Reset some signal handlers that we may use */
+   sigemptyset (&mask);
+   sigaddset (&mask, SIGCHLD);
+   sigaddset (&mask, SIGINT);
+   sigaddset (&mask, SIGTERM);
+   sigaddset (&mask, SIGHUP);
+
+   r = posix_spawnattr_setsigdefault (&attr, &mask);
+   if (r != 0)
+     goto out_free_spawnattr;
+
+   r = posix_spawn_file_actions_init (&file_actions);
+   if (r != 0)
+     goto out_free_spawnattr;
+
+  /* Redirect pipes as required */
+
+  if (stdin_fd >= 0)
+    {
+      r = posix_spawn_file_actions_adddup2 (&file_actions, stdin_fd, 0);
+      if (r != 0)
+        goto out_close_fds;
+
+      if (!g_slist_find (child_close, GINT_TO_POINTER (stdin_fd)))
+        child_close = g_slist_prepend (child_close, GINT_TO_POINTER (stdin_fd));
+    }
+  else if (!child_inherits_stdin)
+    {
+      /* Keep process from blocking on a read of stdin */
+      gint read_null = sane_open ("/dev/null", O_RDONLY | O_CLOEXEC);
+      g_assert (read_null != -1);
+      parent_close_fds[num_parent_close_fds++] = read_null;
+
+      r = posix_spawn_file_actions_adddup2 (&file_actions, read_null, 0);
+      if (r != 0)
+        goto out_close_fds;
+    }
+
+  if (stdout_fd >= 0)
+    {
+      r = posix_spawn_file_actions_adddup2 (&file_actions, stdout_fd, 1);
+      if (r != 0)
+        goto out_close_fds;
+
+      if (!g_slist_find (child_close, GINT_TO_POINTER (stdout_fd)))
+        child_close = g_slist_prepend (child_close, GINT_TO_POINTER (stdout_fd));
+    }
+  else if (stdout_to_null)
+    {
+      gint write_null = sane_open ("/dev/null", O_WRONLY | O_CLOEXEC);
+      g_assert (write_null != -1);
+      parent_close_fds[num_parent_close_fds++] = write_null;
+
+      r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 1);
+      if (r != 0)
+        goto out_close_fds;
+    }
+
+  if (stderr_fd >= 0)
+    {
+      r = posix_spawn_file_actions_adddup2 (&file_actions, stderr_fd, 2);
+      if (r != 0)
+        goto out_close_fds;
+
+      if (!g_slist_find (child_close, GINT_TO_POINTER (stderr_fd)))
+        child_close = g_slist_prepend (child_close, GINT_TO_POINTER (stderr_fd));
+    }
+  else if (stderr_to_null)
+    {
+      gint write_null = sane_open ("/dev/null", O_WRONLY | O_CLOEXEC);
+      g_assert (write_null != -1);
+      parent_close_fds[num_parent_close_fds++] = write_null;
+
+      r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 2);
+      if (r != 0)
+        goto out_close_fds;
+    }
+
+  /* Intentionally close the fds in the child as the last file action,
+   * having been careful not to add the same fd to this list twice.
+   *
+   * This is important to allow (e.g.) for the same fd to be passed as stdout
+   * and stderr (we must not close it before we have dupped it in both places,
+   * and we must not attempt to close it twice).
+   */
+  for (elem = child_close; elem != NULL; elem = elem->next)
+    {
+      r = posix_spawn_file_actions_addclose (&file_actions,
+                                             GPOINTER_TO_INT (elem->data));
+      if (r != 0)
+        goto out_close_fds;
+    }
+
+  argv_pass = file_and_argv_zero ? argv + 1 : argv;
+  if (envp == NULL)
+    envp = environ;
+
+  /* Don't search when it contains a slash. */
+  if (!search_path || strchr (argv[0], '/') != NULL)
+    r = posix_spawn (&pid, argv[0], &file_actions, &attr, argv_pass, envp);
+  else
+    r = posix_spawnp (&pid, argv[0], &file_actions, &attr, argv_pass, envp);
+
+  if (r == 0 && child_pid != NULL)
+    *child_pid = pid;
+
+out_close_fds:
+  for (i = 0; i < num_parent_close_fds; i++)
+    close_and_invalidate (&parent_close_fds [i]);
+
+  posix_spawn_file_actions_destroy (&file_actions);
+out_free_spawnattr:
+  posix_spawnattr_destroy (&attr);
+  g_slist_free (child_close);
+
+  return r;
+}
+#endif /* POSIX_SPAWN_AVAILABLE */
+
 static gboolean
 fork_exec_with_fds (gboolean              intermediate_child,
                     const gchar          *working_directory,
@@ -1357,7 +1556,56 @@ fork_exec_with_fds (gboolean              intermediate_child,
   gint child_pid_report_pipe[2] = { -1, -1 };
   guint pipe_flags = cloexec_pipes ? FD_CLOEXEC : 0;
   gint status;
-  
+
+#ifdef POSIX_SPAWN_AVAILABLE
+  if (!intermediate_child && working_directory == NULL && !close_descriptors &&
+      !search_path_from_envp && child_setup == NULL)
+    {
+      g_debug ("Launching with posix_spawn");
+      status = do_posix_spawn (argv,
+                               envp,
+                               search_path,
+                               stdout_to_null,
+                               stderr_to_null,
+                               child_inherits_stdin,
+                               file_and_argv_zero,
+                               child_pid,
+                               child_close_fds,
+                               stdin_fd,
+                               stdout_fd,
+                               stderr_fd);
+      if (status == 0)
+        return TRUE;
+
+      if (status != ENOEXEC)
+        {
+          g_set_error (error,
+                       G_SPAWN_ERROR,
+                       G_SPAWN_ERROR_FAILED,
+                       _("Failed to spawn child process \"%s\" (%s)"),
+                       argv[0],
+                       g_strerror (status));
+          return FALSE;
+       }
+
+      /* posix_spawn is not intended to support script execution. It does in
+       * some situations on some glibc versions, but that will be fixed.
+       * So if it fails with ENOEXEC, we fall through to the regular
+       * gspawn codepath so that script execution can be attempted,
+       * per standard gspawn behaviour. */
+      g_debug ("posix_spawn failed (ENOEXEC), fall back to regular gspawn");
+    }
+  else
+    {
+      g_debug ("posix_spawn avoided %s%s%s%s%s",
+               !intermediate_child ? "" : "(automatic reaping requested) ",
+               working_directory == NULL ? "" : "(workdir specified) ",
+               !close_descriptors ? "" : "(fd close requested) ",
+               !search_path_from_envp ? "" : "(using envp for search path) ",
+               child_setup == NULL ? "" : "(child_setup specified) ");
+    }
+#endif /* POSIX_SPAWN_AVAILABLE */
+
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
     return FALSE;
 
