@@ -215,6 +215,19 @@ gboolean g_spawn_async_with_pipes (const gchar          *working_directory,
                                    gint                 *standard_error,
                                    GError              **error);
 
+/* Lets you provide fds for stdin/stdout/stderr */
+GLIB_AVAILABLE_IN_2_58
+gboolean g_spawn_async_with_fds (const gchar          *working_directory,
+                                 gchar               **argv,
+                                 gchar               **envp,
+                                 GSpawnFlags           flags,
+                                 GSpawnChildSetupFunc  child_setup,
+                                 gpointer              user_data,
+                                 GPid                 *child_pid,
+                                 gint                  stdin_fd,
+                                 gint                  stdout_fd,
+                                 gint                  stderr_fd,
+                                 GError              **error);
 
 /* If standard_output or standard_error are non-NULL, the full
  * standard output or error of the command will be placed there.
