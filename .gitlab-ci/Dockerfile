@@ -25,9 +25,15 @@ RUN dnf -y install \
     python3-wheel \
     systemtap-sdt-devel \
     zlib-devel \
+    wget \
+    unzip \
+    make \
  && dnf clean all
 
 RUN pip3 install meson
+
+COPY setup-android-ndk.sh .
+RUN ./setup-android-ndk.sh
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}
