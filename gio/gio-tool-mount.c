@@ -254,6 +254,8 @@ mount_mountable_done_cb (GObject *object,
   else
     g_object_unref (target);
 
+  g_object_unref (op);
+
   outstanding_mounts--;
 
   if (outstanding_mounts == 0)
@@ -281,6 +283,8 @@ mount_done_cb (GObject *object,
 
       g_error_free (error);
     }
+
+  g_object_unref (op);
 
   outstanding_mounts--;
 
@@ -1009,6 +1013,8 @@ mount_with_device_file (const char *device_file)
                           NULL,
                           mount_with_device_file_cb,
                           id);
+
+          g_object_unref (op);
 
           outstanding_mounts++;
         }
