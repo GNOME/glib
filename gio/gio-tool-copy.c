@@ -95,7 +95,7 @@ handle_copy (int argc, char *argv[], gboolean do_help)
   g_set_prgname ("gio copy");
 
   /* Translators: commandline placeholder */
-  param = g_strdup_printf ("%s... %s", _("SOURCE"), _("DESTINATION"));
+  param = g_strdup_printf ("%s… %s", _("SOURCE"), _("DESTINATION"));
   context = g_option_context_new (param);
   g_free (param);
   g_option_context_set_help_enabled (context, FALSE);

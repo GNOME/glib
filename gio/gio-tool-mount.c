@@ -1138,7 +1138,7 @@ handle_mount (int argc, char *argv[], gboolean do_help)
   g_set_prgname ("gio mount");
 
   /* Translators: commandline placeholder */
-  param = g_strdup_printf ("[%s...]", _("LOCATION"));
+  param = g_strdup_printf ("[%s…]", _("LOCATION"));
   context = g_option_context_new (param);
   g_free (param);
   g_option_context_set_help_enabled (context, FALSE);
@@ -1159,8 +1159,6 @@ handle_mount (int argc, char *argv[], gboolean do_help)
       g_option_context_free (context);
       return 1;
     }
-
-  g_option_context_free (context);
 
   main_loop = g_main_loop_new (NULL, FALSE);
 
@@ -1186,6 +1184,14 @@ handle_mount (int argc, char *argv[], gboolean do_help)
           g_object_unref (file);
         }
     }
+  else
+    {
+      show_help (context, _("No locations given"));
+      g_option_context_free (context);
+      return 1;
+    }
+
+  g_option_context_free (context);
 
   if (outstanding_mounts > 0)
     g_main_loop_run (main_loop);
