@@ -305,17 +305,38 @@ g_cond_wait_until (GCond  *cond,
                    GMutex *entered_mutex,
                    gint64  end_time)
 {
-  gint64 span;
+  gint64 span, start_time;
+  DWORD span_millis;
+  gboolean signalled;
 
-  span = end_time - g_get_monotonic_time ();
+  start_time = g_get_monotonic_time ();
+  do
+    {
+      span = end_time - start_time;
 
-  if G_UNLIKELY (span < 0)
-    span = 0;
+      if G_UNLIKELY (span < 0)
+        span_millis = 0;
+      else if G_UNLIKELY (span > G_GINT64_CONSTANT (1000) * (DWORD) INFINITE)
+        span_millis = INFINITE;
+      else
+        /* Round up so we don't time out too early */
+        span_millis = (span + 1000 - 1) / 1000;
 
-  if G_UNLIKELY (span > G_GINT64_CONSTANT (1000) * G_MAXINT32)
-    span = INFINITE;
+      /* We never want to wait infinitely */
+      if (span_millis >= INFINITE)
+        span_millis = INFINITE - 1;
 
-  return g_thread_impl_vtable.SleepConditionVariableSRW (cond, entered_mutex, span / 1000, 0);
+      signalled = g_thread_impl_vtable.SleepConditionVariableSRW (cond, entered_mutex, span_millis, 0);
+      if (signalled)
+        break;
+
+      /* In case we didn't wait long enough after a timeout, wait again for the
+       * remaining time */
+      start_time = g_get_monotonic_time ();
+    }
+  while (start_time < end_time);
+
+  return signalled;
 }
 
 /* {{{1 GPrivate */
