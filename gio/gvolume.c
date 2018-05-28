@@ -567,7 +567,7 @@ g_volume_eject_with_operation_finish (GVolume        *volume,
  * information about volume identifiers.
  *
  * Returns: (nullable) (transfer full): a newly allocated string containing the
- *     requested identfier, or %NULL if the #GVolume
+ *     requested identifier, or %NULL if the #GVolume
  *     doesn't have this kind of identifier
  */
 char *
