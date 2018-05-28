@@ -25,6 +25,11 @@
 
 #include <glib.h>
 #include <string.h>
+#include <fcntl.h>
+
+#ifdef G_OS_UNIX
+#include <glib-unix.h>
+#endif
 
 #ifdef G_OS_WIN32
 #define LINEEND "\r\n"
@@ -156,6 +161,73 @@ test_spawn_async (void)
   g_free (arg);
 }
 
+#ifdef G_OS_UNIX
+static void
+test_spawn_async_with_fds (void)
+{
+  int tnum = 1;
+  GError *error = NULL;
+  GPtrArray *argv;
+  char *arg;
+  GPid pid;
+  GMainContext *context;
+  GMainLoop *loop;
+  GIOChannel *channel;
+  GSource *source;
+  SpawnAsyncMultithreadedData data;
+  gint stdout_pipe[2] = { -1, -1 };
+
+  context = g_main_context_new ();
+  loop = g_main_loop_new (context, TRUE);
+
+  arg = g_strdup_printf ("thread %d", tnum);
+
+  g_unix_open_pipe (stdout_pipe, FD_CLOEXEC, &error);
+  g_assert_no_error (error);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, echo_prog_path);
+  g_ptr_array_add (argv, arg);
+  g_ptr_array_add (argv, NULL);
+
+  /* Specifically test the same fd as stdout and stderr */
+  g_spawn_async_with_fds (NULL, (char**)argv->pdata, NULL, G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid, -1,
+			  stdout_pipe[1], stdout_pipe[1], &error);
+  g_assert_no_error (error);
+  g_ptr_array_free (argv, TRUE);
+  close (stdout_pipe[1]);
+
+  data.loop = loop;
+  data.stdout_done = FALSE;
+  data.child_exited = FALSE;
+  data.stdout_buf = g_string_new (0);
+
+  source = g_child_watch_source_new (pid);
+  g_source_set_callback (source, (GSourceFunc)on_child_exited, &data, NULL);
+  g_source_attach (source, context);
+  g_source_unref (source);
+
+  channel = g_io_channel_unix_new (stdout_pipe[0]);
+  source = g_io_create_watch (channel, G_IO_IN | G_IO_HUP | G_IO_ERR);
+  g_source_set_callback (source, (GSourceFunc)on_child_stdout, &data, NULL);
+  g_source_attach (source, context);
+  g_source_unref (source);
+
+  g_main_loop_run (loop);
+
+  g_assert (data.child_exited);
+  g_assert (data.stdout_done);
+  g_assert_cmpstr (data.stdout_buf->str, ==, arg);
+  g_string_free (data.stdout_buf, TRUE);
+
+  g_io_channel_unref (channel);
+  g_main_context_unref (context);
+  g_main_loop_unref (loop);
+
+  g_free (arg);
+}
+#endif
+
 static void
 test_spawn_sync (void)
 {
@@ -251,6 +323,9 @@ main (int   argc,
 
   g_test_add_func ("/gthread/spawn-single-sync", test_spawn_sync);
   g_test_add_func ("/gthread/spawn-single-async", test_spawn_async);
+#ifdef G_OS_UNIX
+  g_test_add_func ("/gthread/spawn-single-async-with-fds", test_spawn_async_with_fds);
+#endif
   g_test_add_func ("/gthread/spawn-script", test_spawn_script);
   g_test_add_func ("/gthread/spawn/nonexistent", test_spawn_nonexistent);
 
