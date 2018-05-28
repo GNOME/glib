@@ -44,6 +44,7 @@ msys2-mingw32:
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
   artifacts:
     paths:
+      - _build/meson-logs
       - _coverage/
 
 vs2017-x64:
