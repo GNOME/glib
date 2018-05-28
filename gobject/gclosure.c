@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include "../glib/gvalgrind.h"
 #include <string.h>
 
 #include <ffi.h>
@@ -34,7 +35,6 @@
 #include "gvaluetypes.h"
 #include "gtype-private.h"
 
-#include "../glib/valgrind.h"
 
 /**
  * SECTION:gclosure
@@ -200,6 +200,7 @@ g_closure_new_simple (guint           sizeof_closure,
 
   private_size = sizeof (GRealClosure) - sizeof (GClosure);
 
+#ifdef ENABLE_VALGRIND
   /* See comments in gtype.c about what's going on here... */
   if (RUNNING_ON_VALGRIND)
     {
@@ -213,6 +214,7 @@ g_closure_new_simple (guint           sizeof_closure,
       VALGRIND_MALLOCLIKE_BLOCK (allocated + sizeof (gpointer), private_size - sizeof (gpointer), 0, TRUE);
     }
   else
+#endif
     allocated = g_malloc0 (private_size + sizeof_closure);
 
   closure = (GClosure *) (allocated + private_size);
@@ -613,6 +615,7 @@ g_closure_unref (GClosure *closure)
       closure_invoke_notifiers (closure, FNOTIFY);
       g_free (closure->notifiers);
 
+#ifdef ENABLE_VALGRIND
       /* See comments in gtype.c about what's going on here... */
       if (RUNNING_ON_VALGRIND)
         {
@@ -627,6 +630,7 @@ g_closure_unref (GClosure *closure)
           VALGRIND_FREELIKE_BLOCK (closure, 0);
         }
       else
+#endif
         g_free (G_REAL_CLOSURE (closure));
     }
 }
