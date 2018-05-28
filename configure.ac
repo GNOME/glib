@@ -480,7 +480,7 @@ AM_CONDITIONAL(OS_WIN32_AND_DLL_COMPILATION, [test x$glib_native_win32 = xyes -a
 # Checks for library functions.
 AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2 issetugid)
-AC_CHECK_FUNCS(timegm gmtime_r)
+AC_CHECK_FUNCS(timegm gmtime_r posix_spawn)
 AC_FUNC_STRERROR_R()
 
 AC_CHECK_SIZEOF(char)
