@@ -83,7 +83,7 @@ GLIB_AVAILABLE_IN_ALL
 const gchar * const * g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void));
 #endif
 
-#if defined (G_OS_WIN32) && defined (G_CAN_INLINE) && !defined (__cplusplus)
+#if defined (G_OS_WIN32) && defined (G_CAN_INLINE)
 /* This function is not part of the public GLib API either. Just call
  * g_get_system_data_dirs() in your code, never mind that that is
  * actually a macro and you will in fact call this inline function.
