@@ -109,7 +109,7 @@ testcase_close (long double duration,
   success = exit_status == G_TEST_RUN_SUCCESS || exit_status == G_TEST_RUN_SKIPPED;
   test_log_printfe ("%s<status exit-status=\"%d\" n-forks=\"%d\" result=\"%s\"/>\n",
                     sindent (log_indent), exit_status, n_forks,
-                    success ? "failed" : "success");
+                    success ? "success" : "failed");
   log_indent -= 2;
   test_log_printfe ("%s</testcase>\n", sindent (log_indent));
   testcase_open--;
