@@ -28,6 +28,7 @@ fedora-meson-x86_64:
     - tags
   artifacts:
     name: "glib-_${CI_COMMIT_REF_NAME}"
+    when: always
     paths:
       - "${CI_PROJECT_DIR}/_build/meson-logs"
       - "${CI_PROJECT_DIR}/_coverage"
