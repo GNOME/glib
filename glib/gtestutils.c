@@ -89,10 +89,11 @@
  *
  * In addition to the traditional g_assert(), the test framework provides
  * an extended set of assertions for comparisons: g_assert_cmpfloat(),
- * g_assert_cmpint(), g_assert_cmpuint(), g_assert_cmphex(),
- * g_assert_cmpstr(), and g_assert_cmpmem(). The advantage of these
- * variants over plain g_assert() is that the assertion messages can be
- * more elaborate, and include the values of the compared entities.
+ * g_assert_cmpfloat_with_epsilon(), g_assert_cmpint(), g_assert_cmpuint(),
+ * g_assert_cmphex(), g_assert_cmpstr(), and g_assert_cmpmem(). The
+ * advantage of these variants over plain g_assert() is that the assertion
+ * messages can be more elaborate, and include the values of the compared
+ * entities.
  *
  * A full example of creating a test suite with two tests using fixtures:
  * |[<!-- language="C" -->
@@ -634,6 +635,23 @@
  * actual values of @n1 and @n2.
  *
  * Since: 2.16
+ */
+
+/**
+ * g_assert_cmpfloat_with_epsilon:
+ * @n1: an floating point number
+ * @n2: another floating point number
+ * @epsilon: a numeric value that expresses the expected tolerance
+ *   between @n1 and @n2
+ *
+ * Debugging macro to compare two floating point numbers within an epsilon.
+ *
+ * The effect of `g_assert_cmpfloat_with_epsilon (n1, n2, epsilon)` is
+ * the same as `g_assert_true (abs (n1 - n2) < epsilon)`. The advantage
+ * of this macro is that it can produce a message that includes the
+ * actual values of @n1 and @n2.
+ *
+ * Since: 2.58
  */
 
 /**

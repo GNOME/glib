@@ -329,6 +329,9 @@
 #undef	CLAMP
 #define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 
+#define G_APPROX_VALUE(a, b, epsilon) \
+  (((a) > (b) ? (a) - (b) : (b) - (a)) < (epsilon))
+
 /* Count the number of elements in an array. The array must be defined
  * as such; using this with a dynamically allocated array will give
  * incorrect results.
