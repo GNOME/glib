@@ -210,13 +210,6 @@ if host_machine.system() != 'windows'
       test(test_name, exe, env : test_env)
     endforeach
 
-    exe = executable('gdbus-test-codegen-old', 'gdbus-test-codegen.c',
-          'gdbus-sessionbus.c', 'gdbus-tests.c', gdbus_test_codegen_generated,
-          install : false,
-          c_args : test_c_args + ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36', '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36'],
-          dependencies : common_gio_tests_deps)
-    test('gdbus-test-codegen-old', exe, env : test_env)
-
     # There is already a gapplication exe target in gio so need to use a
     # different name for the unit test executable, since we can't have two
     # targets of the same name even if in different directories

@@ -1634,14 +1634,9 @@ class CodeGenerator:
 
         self.outfile.write('static void %s_proxy_iface_init (%sIface *iface);\n'
                            '\n'%(i.name_lower, i.camel_name))
-        self.outfile.write('#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38\n')
         self.outfile.write('G_DEFINE_TYPE_WITH_CODE (%sProxy, %s_proxy, G_TYPE_DBUS_PROXY,\n'%(i.camel_name, i.name_lower))
         self.outfile.write('                         G_ADD_PRIVATE (%sProxy)\n'%(i.camel_name))
         self.outfile.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_proxy_iface_init))\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
-        self.outfile.write('#else\n')
-        self.outfile.write('G_DEFINE_TYPE_WITH_CODE (%sProxy, %s_proxy, G_TYPE_DBUS_PROXY,\n'%(i.camel_name, i.name_lower))
-        self.outfile.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_proxy_iface_init))\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
-        self.outfile.write('#endif\n')
 
         # finalize
         self.outfile.write('static void\n'
@@ -1871,17 +1866,12 @@ class CodeGenerator:
         self.outfile.write('static void\n'
                            '%s_proxy_init (%sProxy *proxy)\n'
                            '{\n'
-                           '#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38\n'
                            '  proxy->priv = %s_proxy_get_instance_private (proxy);\n'
-                           '#else\n'
-                           '  proxy->priv = G_TYPE_INSTANCE_GET_PRIVATE (proxy, %sTYPE_%s_PROXY, %sProxyPrivate);\n'
-                           '#endif\n\n'
                            '  g_dbus_proxy_set_interface_info (G_DBUS_PROXY (proxy), %s_interface_info ());\n'
                            '}\n'
                            '\n'
                            %(i.name_lower, i.camel_name,
                              i.name_lower,
-                             i.ns_upper, i.name_upper, i.camel_name,
                              i.name_lower))
         self.outfile.write('static void\n'
                            '%s_proxy_class_init (%sProxyClass *klass)\n'
@@ -1901,9 +1891,6 @@ class CodeGenerator:
                                  i.name_lower, i.name_lower, i.name_lower, i.name_lower, i.name_lower))
         if len(i.properties) > 0:
             self.outfile.write('  %s_override_properties (gobject_class, 1);\n\n'%(i.name_lower))
-        self.outfile.write('#if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_38\n'
-                           '  g_type_class_add_private (klass, sizeof (%sProxyPrivate));\n'
-                           '#endif\n'%(i.camel_name))
         self.outfile.write('}\n'
                            '\n')
 
@@ -2419,14 +2406,9 @@ class CodeGenerator:
         self.outfile.write('static void %s_skeleton_iface_init (%sIface *iface);\n'
                            %(i.name_lower, i.camel_name))
 
-        self.outfile.write('#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38\n')
         self.outfile.write('G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n'%(i.camel_name, i.name_lower))
         self.outfile.write('                         G_ADD_PRIVATE (%sSkeleton)\n'%(i.camel_name))
         self.outfile.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init))\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
-        self.outfile.write('#else\n')
-        self.outfile.write('G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n'%(i.camel_name, i.name_lower))
-        self.outfile.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init))\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
-        self.outfile.write('#endif\n')
 
         # finalize
         self.outfile.write('static void\n'
@@ -2620,14 +2602,9 @@ class CodeGenerator:
         self.outfile.write('static void\n'
                            '%s_skeleton_init (%sSkeleton *skeleton)\n'
                            '{\n'
-                           '#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38\n'
-                           '  skeleton->priv = %s_skeleton_get_instance_private (skeleton);\n'
-                           '#else\n'
-                           '  skeleton->priv = G_TYPE_INSTANCE_GET_PRIVATE (skeleton, %sTYPE_%s_SKELETON, %sSkeletonPrivate);\n'
-                           '#endif\n\n'
+                           '  skeleton->priv = %s_skeleton_get_instance_private (skeleton);\n\n'
                            %(i.name_lower, i.camel_name,
-                             i.name_lower,
-                             i.ns_upper, i.name_upper, i.camel_name))
+                             i.name_lower))
         self.outfile.write('  g_mutex_init (&skeleton->priv->lock);\n')
         self.outfile.write('  skeleton->priv->context = g_main_context_ref_thread_default ();\n')
         if len(i.properties) > 0:
@@ -2679,11 +2656,6 @@ class CodeGenerator:
         self.outfile.write('  skeleton_class->get_properties = %s_skeleton_dbus_interface_get_properties;\n'%(i.name_lower))
         self.outfile.write('  skeleton_class->flush = %s_skeleton_dbus_interface_flush;\n'%(i.name_lower))
         self.outfile.write('  skeleton_class->get_vtable = %s_skeleton_dbus_interface_get_vtable;\n'%(i.name_lower))
-
-        self.outfile.write('\n'
-                           '#if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_38\n'
-                           '  g_type_class_add_private (klass, sizeof (%sSkeletonPrivate));\n'
-                           '#endif\n'%(i.camel_name))
 
         self.outfile.write('}\n'
                            '\n')
