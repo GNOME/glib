@@ -359,7 +359,7 @@ add_project_arguments(cc.get_supported_arguments(test_c_args), language: 'c')
 # improve this.
 glib_link_flags = cc.get_supported_link_arguments(test_c_link_args)
 
-# Windows Support (Vista+)
+# Windows Support (7+)
 if host_system == 'windows'
   glib_conf.set('_WIN32_WINNT', '0x0601')
 endif
@@ -1375,7 +1375,7 @@ if has_syspoll and has_systypes
       #include<sys/types.h>'''
 elif has_winsock2
   poll_includes = '''
-      #define _WIN32_WINNT 0x0600
+      #define _WIN32_WINNT 0x0601
       #include <winsock2.h>'''
 else
   # FIXME?
