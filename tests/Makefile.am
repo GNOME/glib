@@ -146,8 +146,8 @@ endif
 
 EXTRA_DIST += \
 	$(test_scripts)				\
-	gen-casefold-txt.pl			\
-	gen-casemap-txt.pl			\
+	gen-casefold-txt.py			\
+	gen-casemap-txt.py			\
 	iochannel-test-infile			\
 	timeloop-basic.c			\
 	assert-msg-test.gdb

@@ -57,7 +57,7 @@ int main (int argc, char **argv)
       
       test = strings[1];
 
-      /* gen-casemap-txt.pl uses an empty string when a single character
+      /* gen-casemap-txt.py uses an empty string when a single character
        * doesn't have an equivalent in a particular case; since that behavior
        * is nonsense for multicharacter strings, it would make more sense
        * to put the expected result .. the original character unchanged. But 
