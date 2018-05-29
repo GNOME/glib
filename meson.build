@@ -363,7 +363,7 @@ add_project_arguments(cc.get_supported_arguments(test_c_args), language: 'c')
 # improve this.
 glib_link_flags = cc.get_supported_link_arguments(test_c_link_args)
 
-# Windows Support (Vista+)
+# Windows Support (7+)
 if host_system == 'windows'
   glib_conf.set('_WIN32_WINNT', '0x0601')
 endif
@@ -441,8 +441,11 @@ if host_system == 'windows'
   iphlpapi_dep = cc.find_library('iphlpapi')
   iphlpapi_funcs = ['if_nametoindex', 'if_indextoname']
   foreach ifunc : iphlpapi_funcs
+    iphl_prefix =  '''#define _WIN32_WINNT @0@
+      #include <winsock2.h>
+      #include <iphlpapi.h>'''.format(glib_conf.get('_WIN32_WINNT'))
     if cc.has_function(ifunc,
-                       prefix : '#define _WIN32_WINNT 0x0601\n#include <winsock2.h>\n#include <iphlpapi.h>',
+                       prefix : iphl_prefix,
                        dependencies : iphlpapi_dep)
       idefine = 'HAVE_' + ifunc.underscorify().to_upper()
       glib_conf.set(idefine, 1)
@@ -1378,8 +1381,8 @@ if has_syspoll and has_systypes
       #include<sys/types.h>'''
 elif has_winsock2
   poll_includes = '''
-      #define _WIN32_WINNT 0x0600
-      #include <winsock2.h>'''
+      #define _WIN32_WINNT @0@
+      #include <winsock2.h>'''.format(glib_conf.get('_WIN32_WINNT'))
 else
   # FIXME?
   error('FIX POLL* defines')
