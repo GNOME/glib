@@ -900,15 +900,19 @@ splice_to_string (GInputStream   *stream,
 static guint64
 get_size_from_du (const gchar *path)
 {
+  GSubprocessLauncher *launcher = NULL;
   GSubprocess *du;
   gchar *result;
   gchar *endptr;
   guint64 size;
   GError *error = NULL;
 
-  du = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE,
-                         &error,
-                         "du", "--bytes", "-s", path, NULL);
+  /* We have to use BLOCKSIZE=1 to get the result in bytes. We could use --bytes
+   * on Linux, but that option isn’t available on BSD. */
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE);
+  g_subprocess_launcher_setenv (launcher, "BLOCKSIZE", "1", TRUE);
+  du = g_subprocess_launcher_spawn (launcher, &error,
+                                    "du", "-s", path, NULL);
   g_assert_no_error (error);
 
   result = splice_to_string (g_subprocess_get_stdout_pipe (du), &error);
@@ -917,6 +921,7 @@ get_size_from_du (const gchar *path)
   size = g_ascii_strtoll (result, &endptr, 10);
 
   g_object_unref (du);
+  g_object_unref (launcher);
   g_free (result);
 
   return size;
