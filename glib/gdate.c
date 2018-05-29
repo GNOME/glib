@@ -1088,7 +1088,7 @@ g_date_prepare_to_parse (const gchar      *str,
         {
 	  gchar *casefold;
 	  
-          g_date_set_dmy (&d, 1, i, 1);
+          g_date_set_dmy (&d, 1, i, 1976);
 	  
           g_return_if_fail (g_date_valid (&d));
 	  
