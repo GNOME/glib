@@ -42,6 +42,8 @@ fedora-meson-android_ndk_r16_api21_arm64:
     - meson --cross-file=/opt/cross-file-android_ndk_r16_api21_arm64.txt -Diconv=gnu -Dinternal_pcre=true --buildtype debug _build
     - ninja -C _build
   artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
     paths:
       - "${CI_PROJECT_DIR}/_build/meson-logs"
 
@@ -54,6 +56,8 @@ fedora-meson-mingw64:
     - meson --cross-file=/opt/cross_file_mingw64.txt --buildtype debug _build
     - ninja -C _build
   artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
     paths:
       - "${CI_PROJECT_DIR}/_build/meson-logs"
 
@@ -68,11 +72,11 @@ msys2-mingw32:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
   artifacts:
-    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     paths:
-      - _build/meson-logs
-      - _coverage/
+      - "${CI_PROJECT_DIR}/_build/meson-logs"
+      - "${CI_PROJECT_DIR}/_coverage"
 
 vs2017-x64:
   stage: build
@@ -81,10 +85,10 @@ vs2017-x64:
   script:
     - .gitlab-ci/test-msvc.bat
   artifacts:
-    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     paths:
-      - _build/meson-logs
+      - "${CI_PROJECT_DIR}/_build/meson-logs"
 
 coverage:
   stage: coverage
