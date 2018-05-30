@@ -331,6 +331,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   test_c_args = [
     '-Wall',
     '-Wduplicated-branches',
+    '-Wmisleading-indentation',
     '-Wstrict-prototypes',
     '-Wunused',
     '-Werror=declaration-after-statement',
