@@ -74,11 +74,8 @@ G_STATIC_ASSERT (_g_alignof (TestInt) == _g_alignof (int));
  * This variable is %TRUE if the `G_DEBUG` environment variable
  * includes the key `gc-friendly`.
  */
-#ifdef ENABLE_GC_FRIENDLY_DEFAULT
-gboolean g_mem_gc_friendly = TRUE;
-#else
 gboolean g_mem_gc_friendly = FALSE;
-#endif
+
 GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING |
                                   G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
 GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
