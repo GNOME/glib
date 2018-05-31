@@ -50,6 +50,9 @@
 #ifdef HAVE_CRT_EXTERNS_H 
 #include <crt_externs.h> /* for _NSGetEnviron */
 #endif
+#ifdef HAVE_SYS_AUXV_H
+#include <sys/auxv.h>
+#endif
 
 #include "glib-init.h"
 #include "glib-private.h"
@@ -2500,9 +2503,17 @@ const gchar *g_get_tmp_dir_utf8 (void) { return g_get_tmp_dir (); }
 gboolean
 g_check_setuid (void)
 {
-/* TODO: use getauxval(AT_SECURE) if available */
+#if defined(HAVE_SYS_AUXV_H)
+  unsigned long value;
+  int errsv;
 
-#if defined(HAVE_ISSETUGID) && !defined(__BIONIC__)
+  errno = 0;
+  value = getauxval (AT_SECURE);
+  errsv = errno;
+  if (errsv)
+    g_error ("getauxval () failed: %s", g_strerror (errsv));
+  return value;
+#elif defined(HAVE_ISSETUGID) && !defined(__BIONIC__)
   /* BSD: http://www.freebsd.org/cgi/man.cgi?query=issetugid&sektion=2 */
 
   /* Android had it in older versions but the new 64 bit ABI does not

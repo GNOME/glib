@@ -525,6 +525,9 @@
    */
 #mesondefine HAVE_SYS_DIR_H
 
+/* Define to 1 if you have the <sys/auxv.h> header file. */
+#mesondefine HAVE_SYS_AUXV_H
+
 /* Define to 1 if you have the <sys/event.h> header file. */
 #mesondefine HAVE_SYS_EVENT_H
 
