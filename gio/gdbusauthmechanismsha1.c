@@ -658,7 +658,7 @@ keyring_generate_entry (const gchar  *cookie_context,
     }
 
   new_contents = g_string_new (NULL);
-  now = time (NULL);
+  now = (guint64) time (NULL);
   changed_file = FALSE;
 
   max_line_id = 0;
