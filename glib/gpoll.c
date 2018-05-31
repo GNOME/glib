@@ -333,26 +333,13 @@ g_poll (GPollFD *fds,
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
 
-#ifndef NO_FD_SET
-#  define SELECT_MASK fd_set
-#else /* !NO_FD_SET */
-#  ifndef _AIX
-typedef long fd_mask;
-#  endif /* _AIX */
-#  ifdef _IBMR2
-#    define SELECT_MASK void
-#  else /* !_IBMR2 */
-#    define SELECT_MASK int
-#  endif /* !_IBMR2 */
-#endif /* !NO_FD_SET */
-
 gint
 g_poll (GPollFD *fds,
 	guint    nfds,
 	gint     timeout)
 {
   struct timeval tv;
-  SELECT_MASK rset, wset, xset;
+  fd_set rset, wset, xset;
   GPollFD *f;
   int ready;
   int maxfd = 0;
