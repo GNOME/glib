@@ -678,7 +678,7 @@
 /* #undef NEED_ICONV_CACHE */
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "http://bugzilla.gnome.org/enter_bug.cgi?product=glib"
+#define PACKAGE_BUGREPORT "https://gitlab.gnome.org/GNOME/glib/issues/new"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "glib"

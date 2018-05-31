@@ -22,7 +22,7 @@ Getting help with GLib
 <para>
 If you encounter a bug, misfeature, or missing feature in GLib, please
 file a bug report on 
-<ulink url="http://bugzilla.gnome.org">http://bugzilla.gnome.org</ulink>. 
+<ulink url="https://gitlab.gnome.org/GNOME/glib/issues/new">https://gitlab.gnome.org/GNOME/glib/issues/new</ulink>. 
 We'd also appreciate reports of incomplete or misleading information in 
 the GLib documentation; file those against the "docs" component of the "glib"
 product in Bugzilla.
