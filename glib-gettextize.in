@@ -35,7 +35,7 @@ Usage: glib-gettextize [OPTION]... [package-dir]
       --version        print version information and exit
   -c, --copy           copy files instead of making symlinks
   -f, --force          force writing of new files even if old exist
-Report bugs to http://bugzilla.gnome.org/."
+Report bugs to https://gitlab.gnome.org/GNOME/glib/issues/new."
 package=@PACKAGE@
 version=@VERSION@
 try_ln_s=:

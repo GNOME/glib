@@ -399,7 +399,7 @@ $ gdbus wait --session --timeout 30 org.bar.SomeName
   <para>
     Please send bug reports to either the distribution bug tracker
     or the upstream bug tracker at
-    <ulink url="https://bugzilla.gnome.org/enter_bug.cgi?product=glib"/>.
+    <ulink url="https://gitlab.gnome.org/GNOME/glib/issues/new"/>.
   </para>
 </refsect1>
 

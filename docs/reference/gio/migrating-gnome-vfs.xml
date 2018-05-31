@@ -127,7 +127,7 @@ start_monitoring_trash (void)
         since we have not found a compelling use case where
         #GnomeVFSMIMEMonitor was used. If you think you have such a use
         case, please report it at
-        <ulink url="http://bugzilla.gnome.org">bugzilla.gnome.org</ulink>.
+        <ulink url="https://gitlab.gnome.org/GNOME/glib/issues/new">https://gitlab.gnome.org/GNOME/glib/issues/new</ulink>.
       </para>
     </section>
   </chapter>

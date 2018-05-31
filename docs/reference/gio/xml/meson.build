@@ -1,6 +1,6 @@
 ent_conf = configuration_data()
 ent_conf.set('PACKAGE', 'glib')
-ent_conf.set('PACKAGE_BUGREPORT', 'https://bugzilla.gnome.org/enter_bug.cgi?product=glib')
+ent_conf.set('PACKAGE_BUGREPORT', 'https://gitlab.gnome.org/GNOME/glib/issues/new')
 ent_conf.set('PACKAGE_NAME', 'glib')
 ent_conf.set('PACKAGE_STRING', 'glib')
 ent_conf.set('PACKAGE_TARNAME', 'glib')

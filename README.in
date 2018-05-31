@@ -29,7 +29,7 @@ How to report bugs
 ==================
 
 Bugs should be reported to the GNOME bug tracking system.
-(http://bugzilla.gnome.org, product glib.) You will need
+(https://gitlab.gnome.org/GNOME/glib/issues/new). You will need
 to create an account for yourself.
 
 In the bug report please include:
@@ -58,14 +58,12 @@ In the bug report please include:
 Patches
 =======
 
-Patches should also be submitted to bugzilla.gnome.org. If the
-patch fixes an existing bug, add the patch as an attachment
-to that bug report.
+Patches should also be submitted as pull requests to gitlab.gnome.org. If the
+patch fixes an existing bug, please refer to the bug in you pull request.
 
-Otherwise, enter a new bug report that describes the patch,
-and attach the patch to that bug report.
+Otherwise, craete a new pull request that describes the patch.
 
-Patches should be in unified diff form. (The -up option to GNU diff.)
+Patches should be submitted as git branches.
 
 Notes about GLib 2.48
 =====================
