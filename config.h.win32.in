@@ -254,9 +254,6 @@
 /* Define if your <locale.h> file defines LC_MESSAGES. */
 /* #undef HAVE_LC_MESSAGES */
 
-/* Define if you have the __libc_enable_secure variable (GNU libc, eglibc) */
-/* #undef HAVE_LIBC_ENABLE_SECURE */
-
 /* Define if libelf is available */
 /* #undef HAVE_LIBELF */
 

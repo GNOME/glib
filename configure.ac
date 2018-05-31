@@ -506,17 +506,6 @@ AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2 issetugid)
 AC_CHECK_FUNCS(timegm gmtime_r)
 AC_FUNC_STRERROR_R()
 
-AC_CACHE_CHECK([for __libc_enable_secure], glib_cv_have_libc_enable_secure,
-  [AC_TRY_LINK([#include <unistd.h>
-    extern int __libc_enable_secure;],
-    [return __libc_enable_secure;],
-   glib_cv_have_libc_enable_secure=yes,
-   glib_cv_have_libc_enable_secure=no)])
-AS_IF([test x$glib_cv_have_libc_enable_secure = xyes], [
-   AC_DEFINE(HAVE_LIBC_ENABLE_SECURE, 1,
-     [Define if you have the __libc_enable_secure variable (GNU libc, eglibc)])
-])
-
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(long)
