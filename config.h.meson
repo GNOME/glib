@@ -686,9 +686,6 @@
 /* Define to the version of this package. */
 #mesondefine PACKAGE_VERSION
 
-/* define if posix_memalign() can allocate any size */
-#mesondefine POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS
-
 /* The size of `char', as computed by sizeof. */
 #mesondefine SIZEOF_CHAR
 

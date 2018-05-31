@@ -701,9 +701,6 @@
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.@GLIB_MICRO_VERSION@"
 
-/* define if posix_memalign() can allocate any size */
-/* #undef POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS */
-
 /* The size of `char', as computed by sizeof. */
 #define SIZEOF_CHAR 1
 
