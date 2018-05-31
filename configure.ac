@@ -54,7 +54,7 @@ m4_define([glib_debug_default],
 
 
 AC_INIT(glib, [glib_version],
-        [http://bugzilla.gnome.org/enter_bug.cgi?product=glib])
+        [https://gitlab.gnome.org/GNOME/glib/issues/new])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([glib/glib.h])
