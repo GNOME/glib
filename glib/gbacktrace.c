@@ -68,18 +68,6 @@
 #include "gprintfint.h"
 #include "gutils.h"
 
-
-#ifndef NO_FD_SET
-#  define SELECT_MASK fd_set
-#else
-#  if defined(_IBMR2)
-#    define SELECT_MASK void
-#  else
-#    define SELECT_MASK int
-#  endif
-#endif
-
-
 #ifndef G_OS_WIN32
 static void stack_trace (const char * const *args);
 #endif
@@ -274,8 +262,8 @@ stack_trace (const char * const *args)
   pid_t pid;
   int in_fd[2];
   int out_fd[2];
-  SELECT_MASK fdset;
-  SELECT_MASK readset;
+  fd_set fdset;
+  fd_set readset;
   struct timeval tv;
   int sel, idx, state;
   char buffer[256];

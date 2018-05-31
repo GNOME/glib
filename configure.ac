@@ -1221,24 +1221,6 @@ jm_AC_TYPE_INTMAX_T
 AC_CHECK_FUNCS([snprintf strnlen wcslen wcsnlen mbrtowc wcrtomb])
 AC_FUNC_SNPRINTF_C99
 
-# Check if <sys/select.h> needs to be included for fd_set
-AC_MSG_CHECKING([for fd_set])
-AC_TRY_COMPILE([#include <sys/types.h>],
-        [fd_set readMask, writeMask;], gtk_ok=yes, gtk_ok=no)
-AS_IF([test "$gtk_ok" = "yes"], [
-    AC_MSG_RESULT([yes, found in sys/types.h])
-], [
-    AC_EGREP_HEADER(fd_set, sys/select.h, gtk_ok=yes)
-    if test "$gtk_ok" = "yes"; then
-	# *** FIXME: give it a different name
-        AC_DEFINE(HAVE_SYS_SELECT_H,1,[found fd_set in sys/select.h])
-        AC_MSG_RESULT([yes, found in sys/select.h])
-    else
-	AC_DEFINE(NO_FD_SET,1,[didn't find fd_set])
-	AC_MSG_RESULT(no)
-    fi
-])
-
 dnl Check for nl_langinfo and CODESET
 AC_LANG_SAVE
 AC_LANG_C

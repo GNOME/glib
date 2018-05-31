@@ -668,9 +668,6 @@
 /* Do we cache iconv descriptors */
 #mesondefine NEED_ICONV_CACHE
 
-/* didn't find fd_set */
-#mesondefine NO_FD_SET
-
 /* Define to the address where bug reports for this package should be sent. */
 #mesondefine PACKAGE_BUGREPORT
 

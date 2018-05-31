@@ -683,9 +683,6 @@
 /* Do we cache iconv descriptors */
 /* #undef NEED_ICONV_CACHE */
 
-/* didn't find fd_set */
-/* #undef NO_FD_SET */
-
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "http://bugzilla.gnome.org/enter_bug.cgi?product=glib"
 
