@@ -32,9 +32,6 @@
 /* Whether to disable memory pools */
 #mesondefine DISABLE_MEM_POOLS
 
-/* Whether to enable GC friendliness by default */
-#mesondefine ENABLE_GC_FRIENDLY_DEFAULT
-
 /* always defined to indicate that i18n is enabled */
 #mesondefine ENABLE_NLS
 
