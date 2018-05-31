@@ -50,6 +50,9 @@
 #ifdef HAVE_CRT_EXTERNS_H 
 #include <crt_externs.h> /* for _NSGetEnviron */
 #endif
+#ifdef HAVE_SYS_AUXV_H
+#include <sys/auxv.h>
+#endif
 
 #include "glib-init.h"
 #include "glib-private.h"
@@ -2495,22 +2498,21 @@ const gchar *g_get_tmp_dir_utf8 (void) { return g_get_tmp_dir (); }
 
 /* Private API:
  *
- * Returns %TRUE if the current process was executed as setuid (or an
- * equivalent __libc_enable_secure is available).  See:
- * http://osdir.com/ml/linux.lfs.hardened/2007-04/msg00032.html
+ * Returns %TRUE if the current process was executed as setuid
  */ 
 gboolean
 g_check_setuid (void)
 {
-  /* TODO: get __libc_enable_secure exported from glibc.
-   * See http://www.openwall.com/lists/owl-dev/2012/08/14/1
-   */
-#if 0 && defined(HAVE_LIBC_ENABLE_SECURE)
-  {
-    /* See glibc/include/unistd.h */
-    extern int __libc_enable_secure;
-    return __libc_enable_secure;
-  }
+#if defined(HAVE_SYS_AUXV_H)
+  unsigned long value;
+  int errsv;
+
+  errno = 0;
+  value = getauxval (AT_SECURE);
+  errsv = errno;
+  if (errsv)
+    g_error ("getauxval () failed: %s", g_strerror (errsv));
+  return value;
 #elif defined(HAVE_ISSETUGID) && !defined(__BIONIC__)
   /* BSD: http://www.freebsd.org/cgi/man.cgi?query=issetugid&sektion=2 */
 

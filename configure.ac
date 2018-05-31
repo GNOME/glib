@@ -506,17 +506,6 @@ AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2 issetugid)
 AC_CHECK_FUNCS(timegm gmtime_r)
 AC_FUNC_STRERROR_R()
 
-AC_CACHE_CHECK([for __libc_enable_secure], glib_cv_have_libc_enable_secure,
-  [AC_TRY_LINK([#include <unistd.h>
-    extern int __libc_enable_secure;],
-    [return __libc_enable_secure;],
-   glib_cv_have_libc_enable_secure=yes,
-   glib_cv_have_libc_enable_secure=no)])
-AS_IF([test x$glib_cv_have_libc_enable_secure = xyes], [
-   AC_DEFINE(HAVE_LIBC_ENABLE_SECURE, 1,
-     [Define if you have the __libc_enable_secure variable (GNU libc, eglibc)])
-])
-
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(long)
@@ -685,7 +674,7 @@ fi
 # check for header files
 AC_CHECK_HEADERS([sys/param.h sys/resource.h mach/mach_time.h])
 AC_CHECK_HEADERS([sys/select.h stdint.h inttypes.h sched.h malloc.h])
-AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h])
+AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h sys/auxv.h])
 AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
 AC_CHECK_HEADERS([linux/magic.h])
 AC_CHECK_HEADERS([termios.h])

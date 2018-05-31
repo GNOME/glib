@@ -229,6 +229,7 @@ headers = [
   'stdlib.h',
   'string.h',
   'strings.h',
+  'sys/auxv.h',
   'sys/event.h',
   'sys/filio.h',
   'sys/inotify.h',

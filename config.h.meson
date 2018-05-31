@@ -250,9 +250,6 @@
 /* Define if your <locale.h> file defines LC_MESSAGES. */
 #mesondefine HAVE_LC_MESSAGES
 
-/* Define if you have the __libc_enable_secure variable (GNU libc, eglibc) */
-#mesondefine HAVE_LIBC_ENABLE_SECURE
-
 /* Define if libelf is available */
 #mesondefine HAVE_LIBELF
 
@@ -527,6 +524,9 @@
 /* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
    */
 #mesondefine HAVE_SYS_DIR_H
+
+/* Define to 1 if you have the <sys/auxv.h> header file. */
+#mesondefine HAVE_SYS_AUXV_H
 
 /* Define to 1 if you have the <sys/event.h> header file. */
 #mesondefine HAVE_SYS_EVENT_H
