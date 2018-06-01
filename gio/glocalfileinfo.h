@@ -36,6 +36,7 @@ typedef struct
   gboolean has_trash_dir;
   int      owner;
   dev_t    device;
+  ino_t    inode;
   gpointer extra_data;
   GDestroyNotify free_extra_data;
 } GLocalParentFileInfo;

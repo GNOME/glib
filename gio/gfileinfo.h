@@ -644,7 +644,8 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  *
  * A key in the "unix" namespace for checking if the file represents a
  * UNIX mount point. This attribute is %TRUE if the file is a UNIX mount
- * point. This attribute is only available for UNIX file systems.
+ * point. Since 2.58, `/` is considered to be a mount point.
+ * This attribute is only available for UNIX file systems.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT "unix::is-mountpoint" /* boolean */
