@@ -32,6 +32,8 @@
 #include <sys/mkdev.h>
 #elif MAJOR_IN_SYSMACROS
 #include <sys/sysmacros.h>
+#elif MAJOR_IN_TYPES
+#include <sys/types.h>
 #else
 #define MAJOR_MINOR_NOT_FOUND 1
 #endif
