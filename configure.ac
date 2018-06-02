@@ -671,6 +671,8 @@ AC_CHECK_HEADERS([sys/mount.h sys/sysctl.h], [], [],
 AC_CHECK_FUNCS(sysctlbyname)
 
 AC_HEADER_MAJOR
+AS_IF([test "$ac_cv_header_sys_types_h_makedev" = "yes"],
+      [AC_DEFINE([MAJOR_IN_TYPES], [1], [Define to 1 if `major', `minor', and `makedev' are declared in <sys/types.h>.])])
 AC_CHECK_HEADERS([xlocale.h])
 
 # check for structure fields

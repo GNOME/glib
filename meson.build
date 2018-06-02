@@ -541,6 +541,8 @@ if cc.has_header_symbol('sys/sysmacros.h', 'major')
   glib_conf.set('MAJOR_IN_SYSMACROS', 1)
 elif cc.has_header_symbol('sys/mkdev.h', 'major')
   glib_conf.set('MAJOR_IN_MKDEV', 1)
+elif cc.has_header_symbol('sys/types.h', 'major')
+  glib_conf.set('MAJOR_IN_TYPES', 1)
 endif
 
 if cc.has_header_symbol('dlfcn.h', 'RTLD_LAZY')
