@@ -248,20 +248,7 @@ AC_ARG_ENABLE(debug,
                              [turn on debugging @<:@default=glib_debug_default@:>@]),,
               enable_debug=glib_debug_default)
 
-AC_ARG_ENABLE(mem_pools,
-              [AS_HELP_STRING([--disable-mem-pools],
-			      [disable all glib memory pools])],,
-	      [disable_mem_pools=no])
-
 GLIB_TESTS
-
-AC_MSG_CHECKING([whether to disable memory pools])
-AS_IF([test "x$disable_mem_pools" = "xno"], [
-  AC_MSG_RESULT([no])
-], [
-  AC_DEFINE(DISABLE_MEM_POOLS, [1], [Whether to disable memory pools])
-  AC_MSG_RESULT([yes])
-])
 
 dnl location to install runtime libraries, e.g. ../../lib to install
 dnl to /lib if libdir is /usr/lib

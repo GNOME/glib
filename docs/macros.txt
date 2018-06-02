@@ -9,8 +9,6 @@ GLib's configure options and corresponding macros
 	none
 --enable-debug=yes	[default for development branches]
 	-DG_ENABLE_DEBUG -g
---disable-mem-pools=yes
-	#define DISABLE_MEM_POOLS 1
 
 Besides these, there are some local feature specific options, but my main
 focus here is to concentrate on macros that affect overall GLib behaviour
@@ -20,18 +18,6 @@ and/or third party code.
 Notes on GLib's internal and global macros
 ==========================================
 
-DISABLE_MEM_POOLS
-	Many small chunks of memory are often allocated via collective pools
-	in GLib and are cached after release to speed up reallocations.
-	For sparse memory systems this behaviour is often inferior, so
-	memory pools can be disabled to avoid excessive caching and force
-	atomic maintenance of chunks through the g_malloc/g_free.
-	Code currently affected by this macro:
-	- GList, GSList, GNode allocations
-	- GMemChunks become basically non-effective
-	- GSignal disables all caching (potentially very slow)
-	- GType doesn't honour the GTypeInfo n_preallocs field anymore
-	- the GBSearchArray flag G_BSEARCH_ALIGN_POWER2 becomes non-functional
 G_DISABLE_ASSERT
 	The g_assert() and g_assert_not_reached() become non-functional
 	with this define. The motivation is to speed up end-user apps by

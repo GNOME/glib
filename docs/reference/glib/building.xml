@@ -228,47 +228,6 @@
     </formalpara>
 
     <formalpara>
-      <title><option>--disable-mem-pools</option> and
-        <option>--enable-mem-pools</option></title>
-
-      <para>
-        Many small chunks of memory are often allocated via collective pools
-        in GLib and are cached after release to speed up reallocations.
-        For sparse memory systems this behaviour is often inferior, so
-        memory pools can be disabled to avoid excessive caching and force
-        atomic maintenance of chunks through the <function>g_malloc()</function>
-        and <function>g_free()</function> functions. Code currently affected by
-        this:
-        <itemizedlist>
-          <listitem>
-            <para>
-              <structname>GMemChunk</structname>s become basically non-effective
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <structname>GSignal</structname> disables all caching
-              (potentially very slow)
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <structname>GType</structname> doesn't honour the
-              <structname>GTypeInfo</structname>
-              <structfield>n_preallocs</structfield> field anymore
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              the <structname>GBSearchArray</structname> flag
-              <literal>G_BSEARCH_ALIGN_POWER2</literal> becomes non-functional
-            </para>
-          </listitem>
-        </itemizedlist>
-      </para>
-    </formalpara>
-
-    <formalpara>
       <title><option>--with-threads</option></title>
 
       <para>
