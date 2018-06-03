@@ -29,9 +29,6 @@
 /* Define to 1 if using `alloca.c'. */
 #mesondefine C_ALLOCA
 
-/* Whether to disable memory pools */
-#mesondefine DISABLE_MEM_POOLS
-
 /* always defined to indicate that i18n is enabled */
 #mesondefine ENABLE_NLS
 

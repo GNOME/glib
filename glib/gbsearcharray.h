@@ -116,11 +116,7 @@ static inline void              g_bsearch_array_free      (GBSearchArray        
 
 /* --- implementation --- */
 /* helper macro to cut down realloc()s */
-#ifdef  DISABLE_MEM_POOLS
-#define G_BSEARCH_UPPER_POWER2(n)       (n)
-#else   /* !DISABLE_MEM_POOLS */
 #define G_BSEARCH_UPPER_POWER2(n)       ((n) ? 1 << g_bit_storage ((n) - 1) : 0)
-#endif  /* !DISABLE_MEM_POOLS */
 #define G_BSEARCH_ARRAY_NODES(barray)    (((guint8*) (barray)) + sizeof (GBSearchArray))
 static inline GBSearchArray*
 g_bsearch_array_create (const GBSearchConfig *bconfig)

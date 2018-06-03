@@ -1132,11 +1132,7 @@ type_data_make_W (TypeNode              *node,
       data->instance.class_private_size = 0;
       if (pnode)
         data->instance.class_private_size = pnode->data->instance.class_private_size;
-#ifdef	DISABLE_MEM_POOLS
-      data->instance.n_preallocs = 0;
-#else	/* !DISABLE_MEM_POOLS */
       data->instance.n_preallocs = MIN (info->n_preallocs, 1024);
-#endif	/* !DISABLE_MEM_POOLS */
       data->instance.instance_init = info->instance_init;
     }
   else if (node->is_classed) /* only classed */

@@ -57,12 +57,7 @@
  * ]|
  */
 
-
-#ifdef	DISABLE_MEM_POOLS
-#  define	GROUP_N_VALUES	(1)	/* power of 2 !! */
-#else
-#  define	GROUP_N_VALUES	(8)	/* power of 2 !! */
-#endif
+#define	GROUP_N_VALUES	(8)	/* power of 2 !! */
 
 
 /* --- functions --- */
@@ -106,18 +101,6 @@ value_array_grow (GValueArray *value_array,
       memset (value_array->values + i, 0,
 	      (value_array->n_prealloced - i) * sizeof (value_array->values[0]));
     }
-}
-
-static inline void
-value_array_shrink (GValueArray *value_array)
-{
-#ifdef  DISABLE_MEM_POOLS
-  if (value_array->n_prealloced >= value_array->n_values + GROUP_N_VALUES)
-    {
-      value_array->n_prealloced = (value_array->n_values + GROUP_N_VALUES - 1) & ~(GROUP_N_VALUES - 1);
-      value_array->values = g_renew (GValue, value_array->values, value_array->n_prealloced);
-    }
-#endif
 }
 
 /**
@@ -316,7 +299,6 @@ g_value_array_remove (GValueArray *value_array,
   if (index < value_array->n_values)
     memmove (value_array->values + index, value_array->values + index + 1,
              (value_array->n_values - index) * sizeof (value_array->values[0]));
-  value_array_shrink (value_array);
   if (value_array->n_prealloced > value_array->n_values)
     memset (value_array->values + value_array->n_values, 0, sizeof (value_array->values[0]));
 
