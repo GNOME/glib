@@ -27,10 +27,6 @@
 
 #define SCAN_MISSING_TIME 4 /* 1/4 Hz */
 
-void _kh_file_appeared_cb (kqueue_sub *sub);
-
-static gboolean km_scan_missing (gpointer user_data);
-
 static gboolean km_debug_enabled = FALSE;
 #define KM_W if (km_debug_enabled) g_warning
 
@@ -39,6 +35,12 @@ G_LOCK_DEFINE_STATIC (missing_lock);
 
 static volatile gboolean scan_missing_running = FALSE;
 
+
+static gboolean
+_km_scan_missing_cb (gpointer user_data)
+{
+  return _km_scan_missing (TRUE);
+}
 
 /**
  * _km_add_missing:
@@ -64,7 +66,7 @@ _km_add_missing (kqueue_sub *sub)
   if (!scan_missing_running)
     {
       scan_missing_running = TRUE;
-      g_timeout_add_seconds (SCAN_MISSING_TIME, km_scan_missing, NULL);
+      g_timeout_add_seconds (SCAN_MISSING_TIME, _km_scan_missing_cb, NULL);
     }
 }
 
@@ -77,29 +79,23 @@ _km_add_missing (kqueue_sub *sub)
  * Signals that a missing file has finally appeared in the filesystem.
  * Emits %G_FILE_MONITOR_EVENT_CREATED.
  **/
-void
+static void
 _kh_file_appeared_cb (kqueue_sub *sub)
 {
-  GFile *child;
-
   g_assert (sub != NULL);
   g_assert (sub->filename);
 
   if (!g_file_test (sub->filename, G_FILE_TEST_EXISTS))
     return;
 
-  child = g_file_new_for_path (sub->filename);
-
-  g_file_monitor_emit_event (G_FILE_MONITOR (sub->mon),
-                             child,
-                             NULL,
-                             G_FILE_MONITOR_EVENT_CREATED);
-
-  g_object_unref (child);
+  g_file_monitor_source_handle_event (sub->source, G_FILE_MONITOR_EVENT_CREATED,
+                                      sub->basename, NULL, NULL, g_get_monotonic_time ());
+  g_file_monitor_source_handle_event (sub->source, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT,
+                                      sub->basename, NULL, NULL, g_get_monotonic_time ());
 }
 
 /**
- * km_scan_missing:
+ * _km_scan_missing:
  * @user_data: unused
  *
  * The core missing files watching routine.
@@ -110,8 +106,8 @@ _kh_file_appeared_cb (kqueue_sub *sub)
  *
  * Returns: %FALSE if no missing files left, %TRUE otherwise.
  **/
-static gboolean
-km_scan_missing (gpointer user_data)
+gboolean
+_km_scan_missing (gboolean emit_event)
 {
   GSList *head;
   GSList *not_missing = NULL;
@@ -131,7 +127,8 @@ km_scan_missing (gpointer user_data)
       if (_kqsub_start_watching (sub))
         {
           KM_W ("file %s now exists, starting watching", sub->filename);
-          _kh_file_appeared_cb (sub);
+          if (emit_event)
+            _kh_file_appeared_cb (sub);
           not_missing = g_slist_prepend (not_missing, head);
         }
     }
