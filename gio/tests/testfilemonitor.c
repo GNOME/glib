@@ -9,12 +9,25 @@
  * the tests, e.g. the length of timeouts
  */
 
+typedef enum {
+  NONE      = 0,
+  INOTIFY   = (1 << 1),
+  KQUEUE    = (1 << 2)
+} Environment;
+
 typedef struct
 {
   gint event_type;
   gchar *file;
   gchar *other_file;
   gint step;
+
+  /* Since different file monitor implementation has different capabilities,
+   * we cannot expect all implementations to report all kind of events without
+   * any loss. This 'optional' field is a bit mask used to mark events which
+   * may be lost under specific platforms.
+   */
+  Environment optional;
 } RecordedEvent;
 
 static void
@@ -68,41 +81,158 @@ output_events (GList *list)
 /* a placeholder for temp file names we don't want to compare */
 static const gchar DONT_CARE[] = "";
 
-static void
-check_expected_event (gint           i,
-                      RecordedEvent *e1,
-                      RecordedEvent *e2)
+static Environment
+get_environment (GFileMonitor *monitor)
 {
-  g_assert_cmpint (e1->step, ==, e2->step);
-  if (e1->step < 0)
-    return;
-
-  g_assert_cmpint (e1->event_type, ==, e2->event_type);
-
-  if (e1->file != DONT_CARE)
-    g_assert_cmpstr (e1->file, ==, e2->file);
-
-  if (e1->other_file != DONT_CARE)
-    g_assert_cmpstr (e1->other_file, ==, e2->other_file);
+  if (g_str_equal (G_OBJECT_TYPE_NAME (monitor), "GInotifyFileMonitor"))
+    return INOTIFY;
+  if (g_str_equal (G_OBJECT_TYPE_NAME (monitor), "GKqueueFileMonitor"))
+    return KQUEUE;
+  return NONE;
 }
 
 static void
 check_expected_events (RecordedEvent *expected,
                        gsize          n_expected,
-                       GList         *recorded)
+                       GList         *recorded,
+                       Environment    env)
 {
-  gint i;
+  gint i, li;
   GList *l;
 
-  g_assert_cmpint (n_expected, ==, g_list_length (recorded));
-
-  for (i = 0, l = recorded; i < n_expected; i++, l = l->next)
+  for (i = 0, li = 0, l = recorded; i < n_expected && l != NULL;)
     {
       RecordedEvent *e1 = &expected[i];
-      RecordedEvent *e2 = (RecordedEvent *)l->data;
+      RecordedEvent *e2 = l->data;
+      gboolean mismatch = TRUE;
+      gboolean l_extra_step = FALSE;
 
-      check_expected_event (i, e1, e2);
+      do
+        {
+          gboolean ignore_other_file = FALSE;
+
+          if (e1->step != e2->step)
+            break;
+
+          /* Kqueue isn't good at detecting file renaming, so
+           * G_FILE_MONITOR_WATCH_MOVES is mostly useless there.  */
+          if (e1->event_type != e2->event_type && env & KQUEUE)
+            {
+              /* It is possible for kqueue file monitor to emit 'RENAMED' event,
+               * but most of the time it is reported as a 'DELETED' event and
+               * a 'CREATED' event. */
+              if (e1->event_type == G_FILE_MONITOR_EVENT_RENAMED)
+                {
+                  RecordedEvent *e2_next;
+
+                  if (l->next == NULL)
+                    break;
+                  e2_next = l->next->data;
+
+                  if (e2->event_type != G_FILE_MONITOR_EVENT_DELETED)
+                    break;
+                  if (e2_next->event_type != G_FILE_MONITOR_EVENT_CREATED)
+                    break;
+
+                  if (e1->step != e2_next->step)
+                    break;
+
+                  if (e1->file != DONT_CARE &&
+                      (g_strcmp0 (e1->file, e2->file) != 0 ||
+                       e2->other_file != NULL))
+                    break;
+
+                  if (e1->other_file != DONT_CARE &&
+                      (g_strcmp0 (e1->other_file, e2_next->file) != 0 ||
+                       e2_next->other_file != NULL))
+                    break;
+
+                  l_extra_step = TRUE;
+                  mismatch = FALSE;
+                  break;
+                }
+              /* Kqueue won't report 'MOVED_IN' and 'MOVED_OUT' events. We set
+               * 'ignore_other_file' here to let the following code know that
+               * 'other_file' may not match. */
+              else if (e1->event_type == G_FILE_MONITOR_EVENT_MOVED_IN)
+                {
+                  if (e2->event_type != G_FILE_MONITOR_EVENT_CREATED)
+                    break;
+                  ignore_other_file = TRUE;
+                }
+              else if (e1->event_type == G_FILE_MONITOR_EVENT_MOVED_OUT)
+                {
+                  if (e2->event_type != G_FILE_MONITOR_EVENT_DELETED)
+                    break;
+                  ignore_other_file = TRUE;
+                }
+              else
+                break;
+            }
+
+          if (e1->file != DONT_CARE &&
+              g_strcmp0 (e1->file, e2->file) != 0)
+            break;
+
+          if (e1->other_file != DONT_CARE && !ignore_other_file &&
+              g_strcmp0 (e1->other_file, e2->other_file) != 0)
+            break;
+
+          mismatch = FALSE;
+        }
+      while (0);
+
+      if (mismatch)
+        {
+          /* Sometimes the emission of 'CHANGES_DONE_HINT' may be late because
+           * it depends on the ability of file monitor implementation to report
+           * 'CHANGES_DONE_HINT' itself. If the file monitor implementation
+           * doesn't report 'CHANGES_DONE_HINT' itself, it may be emitted by
+           * GLocalFileMonitor after a few seconds, which causes the event to
+           * mix with results from different steps. Since 'CHANGES_DONE_HINT'
+           * is just a hint, we don't require it to be reliable and we simply
+           * ignore unexpected 'CHANGES_DONE_HINT' events here. */
+          if (e1->event_type != G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT &&
+              e2->event_type == G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+            {
+              g_test_message ("Event CHANGES_DONE_HINT ignored at "
+                              "expected index %d, recorded index %d", i, li);
+              li++, l = l->next;
+              continue;
+            }
+          /* If an event is marked as optional in the current environment and
+           * the event doesn't match, it means the expected event has lost. */
+          else if (env & e1->optional)
+            {
+              g_test_message ("Event %d at expected index %d skipped because "
+                              "it is marked as optional", e1->event_type, i);
+              i++;
+              continue;
+            }
+          /* Run above checks under g_assert_* again to provide more useful
+           * error messages. */
+          else
+            {
+              g_assert_cmpint (e1->step, ==, e2->step);
+              g_assert_cmpint (e1->event_type, ==, e2->event_type);
+
+              if (e1->file != DONT_CARE)
+                g_assert_cmpstr (e1->file, ==, e2->file);
+
+              if (e1->other_file != DONT_CARE)
+                g_assert_cmpstr (e1->other_file, ==, e2->other_file);
+
+              g_assert_not_reached ();
+            }
+        }
+
+      i++, li++, l = l->next;
+      if (l_extra_step)
+        li++, l = l->next;
     }
+
+  g_assert_cmpint (i, ==, n_expected);
+  g_assert_cmpint (li, ==, g_list_length (recorded));
 }
 
 static void
@@ -180,15 +310,15 @@ atomic_replace_step (gpointer user_data)
 
 /* this is the output we expect from the above steps */
 static RecordedEvent atomic_replace_output[] = {
-  { -1, NULL, NULL, 0 },
-  { G_FILE_MONITOR_EVENT_CREATED, "atomic_replace_file", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGED, "atomic_replace_file", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "atomic_replace_file", NULL, -1 },
-  { -1, NULL, NULL, 1 },
-  { G_FILE_MONITOR_EVENT_RENAMED, (gchar*)DONT_CARE, "atomic_replace_file", -1 },
-  { -1, NULL, NULL, 2 },
-  { G_FILE_MONITOR_EVENT_DELETED, "atomic_replace_file", NULL, -1 },
-  { -1, NULL, NULL, 3 }
+  { -1, NULL, NULL, 0, NONE },
+  { G_FILE_MONITOR_EVENT_CREATED, "atomic_replace_file", NULL, -1, NONE },
+  { G_FILE_MONITOR_EVENT_CHANGED, "atomic_replace_file", NULL, -1, KQUEUE },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "atomic_replace_file", NULL, -1, KQUEUE },
+  { -1, NULL, NULL, 1, NONE },
+  { G_FILE_MONITOR_EVENT_RENAMED, (gchar*)DONT_CARE, "atomic_replace_file", -1, NONE },
+  { -1, NULL, NULL, 2, NONE },
+  { G_FILE_MONITOR_EVENT_DELETED, "atomic_replace_file", NULL, -1, NONE },
+  { -1, NULL, NULL, 3, NONE }
 };
 
 static void
@@ -216,7 +346,10 @@ test_atomic_replace (void)
   g_main_loop_run (data.loop);
 
   /*output_events (data.events);*/
-  check_expected_events (atomic_replace_output, G_N_ELEMENTS (atomic_replace_output), data.events);
+  check_expected_events (atomic_replace_output,
+                         G_N_ELEMENTS (atomic_replace_output),
+                         data.events,
+                         get_environment (data.monitor));
 
   g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data.loop);
@@ -277,18 +410,18 @@ change_step (gpointer user_data)
 
 /* this is the output we expect from the above steps */
 static RecordedEvent change_output[] = {
-  { -1, NULL, NULL, 0 },
-  { G_FILE_MONITOR_EVENT_CREATED, "change_file", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGED, "change_file", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "change_file", NULL, -1 },
-  { -1, NULL, NULL, 1 },
-  { G_FILE_MONITOR_EVENT_CHANGED, "change_file", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "change_file", NULL, -1 },
-  { -1, NULL, NULL, 2 },
-  { G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED, "change_file", NULL, -1 },
-  { -1, NULL, NULL, 3 },
-  { G_FILE_MONITOR_EVENT_DELETED, "change_file", NULL, -1 },
-  { -1, NULL, NULL, 4 }
+  { -1, NULL, NULL, 0, NONE },
+  { G_FILE_MONITOR_EVENT_CREATED, "change_file", NULL, -1, NONE },
+  { G_FILE_MONITOR_EVENT_CHANGED, "change_file", NULL, -1, KQUEUE },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "change_file", NULL, -1, KQUEUE },
+  { -1, NULL, NULL, 1, NONE },
+  { G_FILE_MONITOR_EVENT_CHANGED, "change_file", NULL, -1, NONE },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "change_file", NULL, -1, NONE },
+  { -1, NULL, NULL, 2, NONE },
+  { G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED, "change_file", NULL, -1, NONE },
+  { -1, NULL, NULL, 3, NONE },
+  { G_FILE_MONITOR_EVENT_DELETED, "change_file", NULL, -1, NONE },
+  { -1, NULL, NULL, 4, NONE }
 };
 
 static void
@@ -316,7 +449,10 @@ test_file_changes (void)
   g_main_loop_run (data.loop);
 
   /*output_events (data.events);*/
-  check_expected_events (change_output, G_N_ELEMENTS (change_output), data.events);
+  check_expected_events (change_output,
+                         G_N_ELEMENTS (change_output),
+                         data.events,
+                         get_environment (data.monitor));
 
   g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data.loop);
@@ -391,16 +527,16 @@ dir_step (gpointer user_data)
 
 /* this is the output we expect from the above steps */
 static RecordedEvent dir_output[] = {
-  { -1, NULL, NULL, 1 },
-  { -1, NULL, NULL, 2 },
-  { G_FILE_MONITOR_EVENT_MOVED_IN, "dir_test_file", NULL, -1 },
-  { -1, NULL, NULL, 3 },
-  { G_FILE_MONITOR_EVENT_RENAMED, "dir_test_file", "dir_test_file2", -1 },
-  { -1, NULL, NULL, 4 },
-  { G_FILE_MONITOR_EVENT_MOVED_OUT, "dir_test_file2", NULL, -1 },
-  { -1, NULL, NULL, 5 },
-  { G_FILE_MONITOR_EVENT_DELETED, "dir_monitor_test", NULL, -1 },
-  { -1, NULL, NULL, 6 }
+  { -1, NULL, NULL, 1, NONE },
+  { -1, NULL, NULL, 2, NONE },
+  { G_FILE_MONITOR_EVENT_MOVED_IN, "dir_test_file", NULL, -1, NONE },
+  { -1, NULL, NULL, 3, NONE },
+  { G_FILE_MONITOR_EVENT_RENAMED, "dir_test_file", "dir_test_file2", -1, NONE },
+  { -1, NULL, NULL, 4, NONE },
+  { G_FILE_MONITOR_EVENT_MOVED_OUT, "dir_test_file2", NULL, -1, NONE },
+  { -1, NULL, NULL, 5, NONE },
+  { G_FILE_MONITOR_EVENT_DELETED, "dir_monitor_test", NULL, -1, NONE },
+  { -1, NULL, NULL, 6, NONE }
 };
 
 static void
@@ -429,7 +565,10 @@ test_dir_monitor (void)
   g_main_loop_run (data.loop);
 
   /*output_events (data.events);*/
-  check_expected_events (dir_output, G_N_ELEMENTS (dir_output), data.events);
+  check_expected_events (dir_output,
+                         G_N_ELEMENTS (dir_output),
+                         data.events,
+                         get_environment (data.monitor));
 
   g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data.loop);
@@ -482,17 +621,17 @@ nodir_step (gpointer user_data)
 }
 
 static RecordedEvent nodir_output[] = {
-  { -1, NULL, NULL, 0 },
-  { G_FILE_MONITOR_EVENT_CREATED, "nosuchfile", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "nosuchfile", NULL, -1 },
-  { -1, NULL, NULL, 1 },
-  { G_FILE_MONITOR_EVENT_CREATED, "nosuchfile", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGED, "nosuchfile", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "nosuchfile", NULL, -1 },
-  { -1, NULL, NULL, 2 },
-  { G_FILE_MONITOR_EVENT_DELETED, "nosuchfile", NULL, -1 },
-  { -1, NULL, NULL, 3 },
-  { -1, NULL, NULL, 4 }
+  { -1, NULL, NULL, 0, NONE },
+  { G_FILE_MONITOR_EVENT_CREATED, "nosuchfile", NULL, -1, KQUEUE },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "nosuchfile", NULL, -1, KQUEUE },
+  { -1, NULL, NULL, 1, NONE },
+  { G_FILE_MONITOR_EVENT_CREATED, "nosuchfile", NULL, -1, NONE },
+  { G_FILE_MONITOR_EVENT_CHANGED, "nosuchfile", NULL, -1, KQUEUE },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "nosuchfile", NULL, -1, KQUEUE },
+  { -1, NULL, NULL, 2, NONE },
+  { G_FILE_MONITOR_EVENT_DELETED, "nosuchfile", NULL, -1, NONE },
+  { -1, NULL, NULL, 3, NONE },
+  { -1, NULL, NULL, 4, NONE }
 };
 
 static void
@@ -521,7 +660,10 @@ test_dir_non_existent (void)
   g_main_loop_run (data.loop);
 
   /*output_events (data.events);*/
-  check_expected_events (nodir_output, G_N_ELEMENTS (nodir_output), data.events);
+  check_expected_events (nodir_output,
+                         G_N_ELEMENTS (nodir_output),
+                         data.events,
+                         get_environment (data.monitor));
 
   g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data.loop);
@@ -578,26 +720,26 @@ cross_dir_step (gpointer user_data)
 }
 
 static RecordedEvent cross_dir_a_output[] = {
-  { -1, NULL, NULL, 0 },
-  { -1, NULL, NULL, 1 },
-  { G_FILE_MONITOR_EVENT_CREATED, "a", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "a", NULL, -1 },
-  { -1, NULL, NULL, 2 },
-  { G_FILE_MONITOR_EVENT_DELETED, "a", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_DELETED, "cross_dir_a", NULL, -1 },
-  { -1, NULL, NULL, 3 },
+  { -1, NULL, NULL, 0, NONE },
+  { -1, NULL, NULL, 1, NONE },
+  { G_FILE_MONITOR_EVENT_CREATED, "a", NULL, -1, NONE },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "a", NULL, -1, KQUEUE },
+  { -1, NULL, NULL, 2, NONE },
+  { G_FILE_MONITOR_EVENT_DELETED, "a", NULL, -1, NONE },
+  { G_FILE_MONITOR_EVENT_DELETED, "cross_dir_a", NULL, -1, NONE },
+  { -1, NULL, NULL, 3, NONE },
 };
 
 static RecordedEvent cross_dir_b_output[] = {
-  { -1, NULL, NULL, 0 },
-  { G_FILE_MONITOR_EVENT_CREATED, "a", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGED, "a", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "a", NULL, -1 },
-  { -1, NULL, NULL, 1 },
-  { G_FILE_MONITOR_EVENT_MOVED_OUT, "a", "a", -1 },
-  { -1, NULL, NULL, 2 },
-  { G_FILE_MONITOR_EVENT_DELETED, "cross_dir_b", NULL, -1 },
-  { -1, NULL, NULL, 3 },
+  { -1, NULL, NULL, 0, NONE },
+  { G_FILE_MONITOR_EVENT_CREATED, "a", NULL, -1, NONE },
+  { G_FILE_MONITOR_EVENT_CHANGED, "a", NULL, -1, KQUEUE },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "a", NULL, -1, KQUEUE },
+  { -1, NULL, NULL, 1, NONE },
+  { G_FILE_MONITOR_EVENT_MOVED_OUT, "a", "a", -1, NONE },
+  { -1, NULL, NULL, 2, NONE },
+  { G_FILE_MONITOR_EVENT_DELETED, "cross_dir_b", NULL, -1, NONE },
+  { -1, NULL, NULL, 3, NONE },
 };
 static void
 test_cross_dir_moves (void)
@@ -644,8 +786,14 @@ test_cross_dir_moves (void)
   output_events (data[1].events);
 #endif
 
-  check_expected_events (cross_dir_a_output, G_N_ELEMENTS (cross_dir_a_output), data[0].events);
-  check_expected_events (cross_dir_b_output, G_N_ELEMENTS (cross_dir_b_output), data[1].events);
+  check_expected_events (cross_dir_a_output,
+                         G_N_ELEMENTS (cross_dir_a_output),
+                         data[0].events,
+                         get_environment (data[0].monitor));
+  check_expected_events (cross_dir_b_output,
+                         G_N_ELEMENTS (cross_dir_b_output),
+                         data[1].events,
+                         get_environment (data[1].monitor));
 
   g_list_free_full (data[0].events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data[0].loop);
@@ -742,19 +890,26 @@ file_hard_links_step (gpointer user_data)
 }
 
 static RecordedEvent file_hard_links_output[] = {
-  { -1, NULL, NULL, 0 },
-  { G_FILE_MONITOR_EVENT_CHANGED, "testfilemonitor.db", NULL, -1 },
-  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "testfilemonitor.db", NULL, -1 },
-  { -1, NULL, NULL, 1 },
-  { G_FILE_MONITOR_EVENT_RENAMED, NULL  /* .goutputstream-XXXXXX */, "testfilemonitor.db", -1 },
-  { -1, NULL, NULL, 2 },
-  { -1, NULL, NULL, 3 },
-  /* FIXME: There should be a EVENT_CHANGED and EVENT_CHANGES_DONE_HINT here
-   * from the modification of the hard link. */
-  { -1, NULL, NULL, 4 },
-  { G_FILE_MONITOR_EVENT_DELETED, "testfilemonitor.db", NULL, -1 },
-  { -1, NULL, NULL, 5 },
-  { -1, NULL, NULL, 6 },
+  { -1, NULL, NULL, 0, NONE },
+  { G_FILE_MONITOR_EVENT_CHANGED, "testfilemonitor.db", NULL, -1, NONE },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "testfilemonitor.db", NULL, -1, NONE },
+  { -1, NULL, NULL, 1, NONE },
+  { G_FILE_MONITOR_EVENT_RENAMED, (gchar*)DONT_CARE /* .goutputstream-XXXXXX */, "testfilemonitor.db", -1, NONE },
+  { -1, NULL, NULL, 2, NONE },
+  { -1, NULL, NULL, 3, NONE },
+  /* Kqueue is based on file descriptors. You can get events from all hard
+   * links by just monitoring one open file descriptor, and it is not possible
+   * to know whether it is done on the file name we use to open the file. Since
+   * the hard link count of 'testfilemonitor.db' is 2, it is expected to see
+   * two 'DELETED' events reported here. You have to call 'unlink' twice on
+   * different file names to remove 'testfilemonitor.db' from the file system,
+   * and each 'unlink' call generates a 'DELETED' event. */
+  { G_FILE_MONITOR_EVENT_CHANGED, "testfilemonitor.db", NULL, -1, INOTIFY },
+  { -1, NULL, NULL, 4, NONE },
+  { G_FILE_MONITOR_EVENT_DELETED, "testfilemonitor.db", NULL, -1, NONE },
+  { -1, NULL, NULL, 5, NONE },
+  { G_FILE_MONITOR_EVENT_DELETED, "testfilemonitor.db", NULL, -1, INOTIFY },
+  { -1, NULL, NULL, 6, NONE },
 };
 
 static void
@@ -800,7 +955,9 @@ test_file_hard_links (void)
 
   /* output_events (data.events); */
   check_expected_events (file_hard_links_output,
-                         G_N_ELEMENTS (file_hard_links_output), data.events);
+                         G_N_ELEMENTS (file_hard_links_output),
+                         data.events,
+                         get_environment (data.monitor));
 
   g_list_free_full (data.events, (GDestroyNotify) free_recorded_event);
   g_main_loop_unref (data.loop);
