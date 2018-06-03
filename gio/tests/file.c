@@ -477,7 +477,15 @@ test_create_delete (gconstpointer d)
    * that the monitor will notice a create immediately followed by a
    * delete, rather than coalescing them into nothing.
    */
-  if (!strcmp (G_OBJECT_TYPE_NAME (data->monitor), "GPollFileMonitor"))
+  /* This test also doesn't work with GKqueueFileMonitor because of
+   * the same reason. Kqueue is able to return a kevent when a file is
+   * created or deleted in a directory. However, the kernel doesn't tell
+   * the program file names, so GKqueueFileMonitor has to calculate the
+   * difference itself. This is usually too slow for rapid file creation
+   * and deletion tests.
+   */
+  if (strcmp (G_OBJECT_TYPE_NAME (data->monitor), "GPollFileMonitor") == 0 ||
+      strcmp (G_OBJECT_TYPE_NAME (data->monitor), "GKqueueFileMonitor") == 0)
     {
       g_test_skip ("skipping test for this GFileMonitor implementation");
       goto skip;
