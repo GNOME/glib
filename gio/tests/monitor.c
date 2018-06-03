@@ -84,6 +84,19 @@ delete_file_idle (gpointer data)
   return G_SOURCE_REMOVE;
 }
 
+static gboolean
+stop_loop_idle (gpointer data)
+{
+  MonitorData *d = data;
+
+  g_assert (d->state == 6);
+
+  if (d->loop)
+    g_main_loop_quit (d->loop);
+
+  return G_SOURCE_REMOVE;
+}
+
 static void
 changed_cb (GFileMonitor      *monitor,
             GFile             *file,
@@ -112,8 +125,7 @@ changed_cb (GFileMonitor      *monitor,
     case 5:
       g_assert (event == G_FILE_MONITOR_EVENT_DELETED);
       d->state = 6;
-      if (d->loop)
-        g_main_loop_quit (d->loop);
+      g_idle_add (stop_loop_idle, data);
       break;
     default:
       g_assert_not_reached ();
