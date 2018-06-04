@@ -47,6 +47,72 @@ GLIB_AVAILABLE_IN_2_58
 gboolean        g_atomic_ref_count_compare      (gatomicrefcount *arc,
                                                  gint             val);
 
+/* On GCC we can use __extension__ to inline the API without using
+ * ancillary functions; we only do this when disabling checks, as
+ * it disables warnings when saturating the reference counters
+ */
+#if defined(__GNUC__) && defined(G_DISABLE_CHECKS)
+
+# define g_ref_count_init(rc) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(rc) == sizeof (grefcount)); \
+    (void) (0 ? *(rc) ^ *(rc) : 1); \
+    *(rc) = -1; \
+  }))
+
+# define g_ref_count_inc(rc) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(rc) == sizeof (grefcount)); \
+    (void) (0 ? *(rc) ^ *(rc) : 1); \
+    (void) (*(rc) > G_MININT ? *(rc) -= 1 : 1); \
+  }))
+
+# define g_ref_count_dec(rc) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(rc) == sizeof (grefcount)); \
+    grefcount __rc = *(rc) + 1; \
+    if (__rc < 0) \
+      *(rc) += 1; \
+    (gboolean) (__rc == 0); \
+  }))
+
+# define g_ref_count_compare(rc,val) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(rc) == sizeof (grefcount)); \
+    (void) (0 ? *(rc) ^ (val) : 1); \
+    (gboolean) (*(rc) == -(val)); \
+  }))
+
+# define g_atomic_ref_count_init(rc) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(rc) == sizeof (gatomicrefcount)); \
+    (void) (0 ? *(rc) ^ *(rc) : 1); \
+    g_atomic_int_set ((rc), 1); \
+  }))
+
+# define g_atomic_ref_count_inc(rc) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(rc) == sizeof (gatomicrefcount)); \
+    (void) (0 ? *(rc) ^ *(rc) : 1); \
+    (void) (g_atomic_int_get (rc) < G_MAXINT ? g_atomic_int_inc ((rc)) : 1); \
+  }))
+
+# define g_atomic_ref_count_dec(rc) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(rc) == sizeof (gatomicrefcount)); \
+    (void) (0 ? *(rc) ^ *(rc) : 1); \
+    g_atomic_int_dec_and_test ((rc)); \
+  }))
+
+# define g_atomic_ref_count_compare(rc,val) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(rc) == sizeof (gatomicrefcount)); \
+    (void) (0 ? *(rc) ^ (val) : 1); \
+    (gboolean) (g_atomic_int_get (rc) == (val)); \
+  }))
+
+#endif
+
 G_END_DECLS
 
 #endif /* __GREFCOUNT_H__ */
