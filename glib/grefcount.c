@@ -79,7 +79,7 @@
  * Since: 2.58
  */
 void
-g_ref_count_init (grefcount *rc)
+(g_ref_count_init) (grefcount *rc)
 {
   g_return_if_fail (rc != NULL);
 
@@ -95,7 +95,7 @@ g_ref_count_init (grefcount *rc)
  * Since: 2.58
  */
 void
-g_ref_count_inc (grefcount *rc)
+(g_ref_count_inc) (grefcount *rc)
 {
   grefcount rrc;
 
@@ -127,7 +127,7 @@ g_ref_count_inc (grefcount *rc)
  * Since: 2.58
  */
 gboolean
-g_ref_count_dec (grefcount *rc)
+(g_ref_count_dec) (grefcount *rc)
 {
   grefcount rrc;
 
@@ -158,8 +158,8 @@ g_ref_count_dec (grefcount *rc)
  * Since: 2.58
  */
 gboolean
-g_ref_count_compare (grefcount *rc,
-                     gint       val)
+(g_ref_count_compare) (grefcount *rc,
+                       gint       val)
 {
   grefcount rrc;
 
@@ -179,7 +179,7 @@ g_ref_count_compare (grefcount *rc,
  * Since: 2.58
  */
 void
-g_atomic_ref_count_init (gatomicrefcount *arc)
+(g_atomic_ref_count_init) (gatomicrefcount *arc)
 {
   g_return_if_fail (arc != NULL);
 
@@ -195,7 +195,7 @@ g_atomic_ref_count_init (gatomicrefcount *arc)
  * Since: 2.58
  */
 void
-g_atomic_ref_count_inc (gatomicrefcount *arc)
+(g_atomic_ref_count_inc) (gatomicrefcount *arc)
 {
   g_return_if_fail (arc != NULL);
   g_return_if_fail (g_atomic_int_get (arc) > 0);
@@ -220,7 +220,7 @@ g_atomic_ref_count_inc (gatomicrefcount *arc)
  * Since: 2.58
  */
 gboolean
-g_atomic_ref_count_dec (gatomicrefcount *arc)
+(g_atomic_ref_count_dec) (gatomicrefcount *arc)
 {
   g_return_val_if_fail (arc != NULL, FALSE);
   g_return_val_if_fail (g_atomic_int_get (arc) > 0, FALSE);
@@ -241,8 +241,8 @@ g_atomic_ref_count_dec (gatomicrefcount *arc)
  * Since: 2.58
  */
 gboolean
-g_atomic_ref_count_compare (gatomicrefcount *arc,
-                            gint             val)
+(g_atomic_ref_count_compare) (gatomicrefcount *arc,
+                              gint             val)
 {
   g_return_val_if_fail (arc != NULL, FALSE);
 
