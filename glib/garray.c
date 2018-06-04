@@ -439,10 +439,13 @@ g_array_append_vals (GArray       *farray,
 /**
  * g_array_prepend_vals:
  * @array: a #GArray
- * @data: (not nullable): a pointer to the elements to prepend to the start of the array
- * @len: the number of elements to prepend
+ * @data: (nullable): a pointer to the elements to prepend to the start of the array
+ * @len: the number of elements to prepend, which may be zero
  *
  * Adds @len elements onto the start of the array.
+ *
+ * @data may be %NULL if (and only if) @len is zero. If @len is zero, this
+ * function is a no-op.
  *
  * This operation is slower than g_array_append_vals() since the
  * existing elements in the array have to be moved to make space for
@@ -498,10 +501,18 @@ g_array_prepend_vals (GArray        *farray,
  * g_array_insert_vals:
  * @array: a #GArray
  * @index_: the index to place the elements at
- * @data: (not nullable): a pointer to the elements to insert
+ * @data: (nullable): a pointer to the elements to insert
  * @len: the number of elements to insert
  *
  * Inserts @len elements into a #GArray at the given index.
+ *
+ * If @index_ is greater than the array’s current length, the array is expanded.
+ * The elements between the old end of the array and the newly inserted elements
+ * will be initialised to zero if the array was configured to clear elements;
+ * otherwise their values will be undefined.
+ *
+ * @data may be %NULL if (and only if) @len is zero. If @len is zero, this
+ * function is a no-op.
  *
  * Returns: the #GArray
  */
@@ -531,6 +542,11 @@ g_array_insert_vals (GArray        *farray,
 
   if (len == 0)
     return farray;
+
+  /* Is the index off the end of the array, and hence do we need to over-allocate
+   * and clear some elements? */
+  if (index_ >= array->len)
+      return g_array_append_vals (g_array_set_size (farray, index_), data, len);
 
   g_array_maybe_expand (array, len);
 
