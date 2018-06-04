@@ -2437,8 +2437,7 @@ g_clear_handle_id (guint            *tag_ptr,
   if (_handle_id > 0)
     {
       *tag_ptr = 0;
-      if (clear_func != NULL)
-        clear_func (_handle_id);
+      clear_func (_handle_id);
     }
 }
 
