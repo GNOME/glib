@@ -17,6 +17,8 @@ DEFS = -DG_LOG_DOMAIN=\"GLib-GIO\" -DTEST_SERVICES=\""$(abs_top_builddir)/gio/te
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 AM_TESTS_ENVIRONMENT += GIO_MODULE_DIR=
 
+AM_TESTS_ENVIRONMENT += PATH="$(top_builddir)/gio:$$PATH"
+
 # -----------------------------------------------------------------------------
 #  Test programs buildable on all platforms
 
