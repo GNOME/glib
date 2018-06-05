@@ -1247,8 +1247,8 @@ handle_remove_match (_GFreedesktopDBus *object,
       else
 	_g_freedesktop_dbus_complete_remove_match (object, invocation);
     }
-
-  match_free (match);
+  if (match)    
+    match_free (match);
 
   return TRUE;
 }
