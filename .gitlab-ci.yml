@@ -17,13 +17,11 @@ fedora-meson-x86_64:
   except:
     - tags
   variables:
-   CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
+    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
-    - meson --prefix /usr --libdir /usr/lib64 --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
-    - cd _build
-    - ninja
-    - meson test --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
-    - cd ..
+    - meson --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
+    - ninja -C _build
+    - meson test -C _build --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
     - mkdir -p _coverage
     - lcov --rc lcov_branch_coverage=1 --directory . --capture --no-external --output-file "_coverage/${CI_JOB_NAME}.lcov"
   artifacts:
