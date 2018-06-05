@@ -1769,6 +1769,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   char uid_str[32];
   GStatBuf global_stat, trash_stat;
   gboolean res;
+  GUnixMountEntry *mount;
 
   if (g_once_init_enter (&home_dev_set))
     {
@@ -1786,6 +1787,16 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   topdir = find_mountpoint_for (dirname, dir_dev);
   if (topdir == NULL)
     return FALSE;
+
+  mount = g_unix_mount_at (topdir, NULL);
+  if (mount == NULL || g_unix_mount_is_system_internal (mount))
+    {
+      g_clear_pointer (&mount, g_unix_mount_free);
+
+      return FALSE;
+    }
+
+  g_clear_pointer (&mount, g_unix_mount_free);
 
   globaldir = g_build_filename (topdir, ".Trash", NULL);
   if (g_lstat (globaldir, &global_stat) == 0 &&
