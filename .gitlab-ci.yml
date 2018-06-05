@@ -28,8 +28,8 @@ fedora-meson-x86_64:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     paths:
-      - "${CI_PROJECT_DIR}/_build/meson-logs"
-      - "${CI_PROJECT_DIR}/_coverage"
+      - "_build/meson-logs"
+      - "_coverage"
 
 fedora-meson-android_ndk_r16_api21_arm64:
   stage: build
@@ -40,8 +40,10 @@ fedora-meson-android_ndk_r16_api21_arm64:
     - meson --cross-file=/opt/cross-file-android_ndk_r16_api21_arm64.txt -Diconv=gnu -Dinternal_pcre=true --buildtype debug _build
     - ninja -C _build
   artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
     paths:
-      - "${CI_PROJECT_DIR}/_build/meson-logs"
+      - "_build/meson-logs"
 
 fedora-meson-mingw64:
   stage: build
@@ -52,8 +54,10 @@ fedora-meson-mingw64:
     - meson --cross-file=/opt/cross_file_mingw64.txt --buildtype debug _build
     - ninja -C _build
   artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
     paths:
-      - "${CI_PROJECT_DIR}/_build/meson-logs"
+      - "_build/meson-logs"
 
 msys2-mingw32:
   stage: build
