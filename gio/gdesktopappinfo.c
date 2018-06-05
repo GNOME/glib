@@ -155,6 +155,7 @@ static guint           n_desktop_file_dirs;
 static const guint     desktop_file_dir_user_config_index = 0;
 static guint           desktop_file_dir_user_data_index;
 static GMutex          desktop_file_dir_lock;
+static const gchar    *gio_launch_desktop_path = NULL;
 
 /* Monitor 'changed' signal handler {{{2 */
 static void desktop_file_dir_reset (DesktopFileDir *dir);
@@ -2562,41 +2563,6 @@ create_files_for_uris (GList *uris)
   return g_list_reverse (res);
 }
 
-typedef struct
-{
-  GSpawnChildSetupFunc user_setup;
-  gpointer user_setup_data;
-
-  char *pid_envvar;
-} ChildSetupData;
-
-static void
-child_setup (gpointer user_data)
-{
-  ChildSetupData *data = user_data;
-
-  if (data->pid_envvar)
-    {
-      pid_t pid = getpid ();
-      char buf[20];
-      int i;
-
-      /* Write the pid into the space already reserved for it in the
-       * environment array. We can't use sprintf because it might
-       * malloc, so we do it by hand. It's simplest to write the pid
-       * out backwards first, then copy it over.
-       */
-      for (i = 0; pid; i++, pid /= 10)
-        buf[i] = (pid % 10) + '0';
-      for (i--; i >= 0; i--)
-        *(data->pid_envvar++) = buf[i];
-      *data->pid_envvar = '\0';
-    }
-
-  if (data->user_setup)
-    data->user_setup (data->user_setup_data);
-}
-
 static void
 notify_desktop_launch (GDBusConnection  *session_bus,
                        GDesktopAppInfo  *info,
@@ -2683,7 +2649,6 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
 
   char **argv, **envp;
   int argc;
-  ChildSetupData data;
 
   g_return_val_if_fail (info != NULL, FALSE);
 
@@ -2705,6 +2670,8 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       GList *launched_uris;
       GList *iter;
       char *sn_id = NULL;
+      char **wrapped_argv;
+      int i;
 
       old_uris = dup_uris;
       if (!expand_application_parameters (info, exec_line, &dup_uris, &argc, &argv, error))
@@ -2723,25 +2690,11 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           goto out;
         }
 
-      data.user_setup = user_setup;
-      data.user_setup_data = user_setup_data;
-
       if (info->filename)
-        {
-          envp = g_environ_setenv (envp,
-                                   "GIO_LAUNCHED_DESKTOP_FILE",
-                                   info->filename,
-                                   TRUE);
-          envp = g_environ_setenv (envp,
-                                   "GIO_LAUNCHED_DESKTOP_FILE_PID",
-                                   "XXXXXXXXXXXXXXXXXXXX", /* filled in child_setup */
-                                   TRUE);
-          data.pid_envvar = (char *)g_environ_getenv (envp, "GIO_LAUNCHED_DESKTOP_FILE_PID");
-        }
-      else
-        {
-          data.pid_envvar = NULL;
-        }
+        envp = g_environ_setenv (envp,
+                                 "GIO_LAUNCHED_DESKTOP_FILE",
+                                 info->filename,
+                                 TRUE);
 
       sn_id = NULL;
       if (launch_context)
@@ -2760,12 +2713,35 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           g_list_free_full (launched_files, g_object_unref);
         }
 
+      if (g_once_init_enter (&gio_launch_desktop_path))
+        {
+          const gchar *tmp;
+
+          /* Allow test suite to specify path to gio-launch-desktop */
+          tmp = g_getenv ("GIO_LAUNCH_DESKTOP");
+
+          /* Fall back on usual searching in $PATH */
+          if (tmp == NULL)
+            tmp = "gio-launch-desktop";
+          g_once_init_leave (&gio_launch_desktop_path, tmp);
+        }
+
+      wrapped_argv = g_new (char *, argc + 2);
+      wrapped_argv[0] = g_strdup (gio_launch_desktop_path);
+
+      for (i = 0; i < argc; i++)
+        wrapped_argv[i + 1] = g_steal_pointer (&argv[i]);
+
+      wrapped_argv[i + 1] = NULL;
+      g_free (argv);
+      argv = NULL;
+
       if (!g_spawn_async (info->path,
-                          argv,
+                          wrapped_argv,
                           envp,
                           spawn_flags,
-                          child_setup,
-                          &data,
+                          user_setup,
+                          user_setup_data,
                           &pid,
                           error))
         {
@@ -2805,8 +2781,8 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       g_free (sn_id);
       g_list_free (launched_uris);
 
-      g_strfreev (argv);
-      argv = NULL;
+      g_strfreev (wrapped_argv);
+      wrapped_argv = NULL;
     }
   while (dup_uris != NULL);
 
@@ -3046,11 +3022,12 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
  * launch applications.  Ordinary applications should use
  * g_app_info_launch_uris().
  *
- * If the application is launched via traditional UNIX fork()/exec()
- * then @spawn_flags, @user_setup and @user_setup_data are used for the
- * call to g_spawn_async().  Additionally, @pid_callback (with
- * @pid_callback_data) will be called to inform about the PID of the
- * created process.
+ * If the application is launched via GSpawn, then @spawn_flags, @user_setup
+ * and @user_setup_data are used for the call to g_spawn_async().
+ * Additionally, @pid_callback (with @pid_callback_data) will be called to
+ * inform about the PID of the created process. See g_spawn_async_with_pipes()
+ * for information on certain parameter conditions that can enable an
+ * optimized posix_spawn() codepath to be used.
  *
  * If application launching occurs via some other mechanism (eg: D-Bus
  * activation) then @spawn_flags, @user_setup, @user_setup_data,
