@@ -913,6 +913,13 @@ gio_querymodules = executable('gio-querymodules', 'gio-querymodules.c', 'giomodu
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
+executable('gio-launch-desktop', 'gio-launch-desktop.c',
+  install : true,
+  c_args : gio_c_args,
+  include_directories: configinc,
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args)
+
 glib_compile_schemas = executable('glib-compile-schemas',
   [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-schemas.c'],
   install : true,
