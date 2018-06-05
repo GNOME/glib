@@ -269,9 +269,6 @@
 /* Define if you have the 'long long' type. */
 #define HAVE_LONG_LONG 1
 
-/* define if system printf can print long long */
-/* #undef HAVE_LONG_LONG_FORMAT */
-
 /* Define to 1 if you have the `lstat' function. */
 /* #undef HAVE_LSTAT */
 

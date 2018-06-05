@@ -533,10 +533,6 @@ AS_IF([test x$glib_native_win32 != xyes && test x$ac_cv_sizeof_long_long = x8], 
 		done])
 	AS_IF([ test -n "$glib_cv_long_long_format"], [
 	  AC_MSG_RESULT(%${glib_cv_long_long_format}u)
-	  AC_DEFINE(HAVE_LONG_LONG_FORMAT,1,[define if system printf can print long long])
-	  if test x"$glib_cv_long_long_format" = xI64; then
-	    AC_DEFINE(HAVE_INT64_AND_I64,1,[define to support printing 64-bit integers with format I64])
-          fi
 	], [AC_MSG_RESULT(none)])
 ],[ test x$ac_cv_sizeof___int64 = x8], [
 	# __int64 is a 64 bit integer.
@@ -544,8 +540,6 @@ AS_IF([test x$glib_native_win32 != xyes && test x$ac_cv_sizeof_long_long = x8], 
 	# We know this is MSVCRT.DLL, and what the formats are
 	glib_cv_long_long_format=I64
 	AC_MSG_RESULT(%${glib_cv_long_long_format}u)
-        AC_DEFINE(HAVE_LONG_LONG_FORMAT,1,[define if system printf can print long long])
-	AC_DEFINE(HAVE_INT64_AND_I64,1,[define to support printing 64-bit integers with format I64])
 ])
 
 AC_C_CONST

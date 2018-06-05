@@ -961,9 +961,8 @@ if cc.links('''#include <signal.h>
   glib_conf.set('HAVE_SIG_ATOMIC_T', 1)
 endif
 
-# Check if 'long long' works and what format can be used to print it
+# Check if 'long long' works
 # jm_AC_TYPE_LONG_LONG
-# Nothing uses HAVE_LONG_LONG_FORMAT and HAVE_INT64_AND_I64
 if cc.compiles('''long long ll = 1LL;
                   int i = 63;
                   int some_func (void) {
