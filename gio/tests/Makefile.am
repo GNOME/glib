@@ -273,6 +273,7 @@ test_programs += \
 	unix-mounts				\
 	unix-streams				\
 	g-file-info-filesystem-readonly		\
+	trash					\
 	$(NULL)
 
 test_extra_programs += \
