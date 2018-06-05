@@ -1781,10 +1781,14 @@ have_sh = find_program('sh', required : false).found() # For glib-gettextize
 # FIXME: defines in config.h that are not actually used anywhere
 # (we add them for now to minimise the diff)
 glib_conf.set('HAVE_DLFCN_H', 1)
-glib_conf.set('__EXTENSIONS__', 1)
 glib_conf.set('STDC_HEADERS', 1)
 # THREADS_NONE
 glib_conf.set('SIZEOF___INT64', 8)
+
+# FIXME: Needed to get declarations for msg_control and msg_controllen on Solaris
+#glib_conf.set('_XOPEN_SOURCE_EXTENDED', 1)
+#glib_conf.set('_XOPEN_SOURCE', 2)
+#glib_conf.set('__EXTENSIONS__',1)
 
 glib_conf.set('GIO_MODULE_DIR', glib_giomodulesdir)
 
