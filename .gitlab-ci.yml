@@ -14,24 +14,22 @@ variables:
 
 fedora-meson-x86_64:
   stage: build
-  variables:
-   CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
-  script:
-    - meson --prefix /usr --libdir /usr/lib64 --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
-    - cd _build
-    - ninja
-    - meson test --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
-    - cd ..
-    - mkdir -p _coverage
-    - lcov --rc lcov_branch_coverage=1 --directory . --capture --no-external --output-file "_coverage/${CI_JOB_NAME}.lcov"
   except:
     - tags
+  variables:
+    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
+  script:
+    - meson --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
+    - ninja -C _build
+    - meson test -C _build --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
+    - mkdir -p _coverage
+    - lcov --rc lcov_branch_coverage=1 --directory . --capture --no-external --output-file "_coverage/${CI_JOB_NAME}.lcov"
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     paths:
-      - "${CI_PROJECT_DIR}/_build/meson-logs"
-      - "${CI_PROJECT_DIR}/_coverage"
+      - "_build/meson-logs"
+      - "_coverage"
 
 fedora-meson-android_ndk_r16_api21_arm64:
   stage: build
@@ -42,8 +40,10 @@ fedora-meson-android_ndk_r16_api21_arm64:
     - meson --cross-file=/opt/cross-file-android_ndk_r16_api21_arm64.txt -Diconv=gnu -Dinternal_pcre=true --buildtype debug _build
     - ninja -C _build
   artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
     paths:
-      - "${CI_PROJECT_DIR}/_build/meson-logs"
+      - "_build/meson-logs"
 
 fedora-meson-mingw64:
   stage: build
@@ -54,11 +54,15 @@ fedora-meson-mingw64:
     - meson --cross-file=/opt/cross_file_mingw64.txt --buildtype debug _build
     - ninja -C _build
   artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
     paths:
-      - "${CI_PROJECT_DIR}/_build/meson-logs"
+      - "_build/meson-logs"
 
 msys2-mingw32:
   stage: build
+  except:
+    - tags
   tags:
     - win32
   variables:
@@ -76,6 +80,8 @@ msys2-mingw32:
 
 vs2017-x64:
   stage: build
+  except:
+    - tags
   tags:
     - win32
   script:
@@ -98,13 +104,13 @@ coverage:
 
 pages:
   stage: deploy
+  only:
+    - master
   script:
     - mv _coverage/ public/
   artifacts:
     paths:
       - public
-  only:
-    - master
 
 dist-job:
   stage: build
