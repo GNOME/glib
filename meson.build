@@ -1667,7 +1667,6 @@ endif
 
 libm = cc.find_library('m', required : false)
 libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
-zlib_libname = '-lz'
 if cc.get_id() != 'msvc'
   libz_dep = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
 else
@@ -1679,13 +1678,9 @@ else
   # of using ZLib's win32/makefile.msc.
   if not libz_dep.found()
     libz_dep = cc.find_library('zlib1', required : false)
-    if libz_dep.found()
-      zlib_libname = '-lzlib1'
-    else
+    if not libz_dep.found()
       libz_dep = cc.find_library('zlib', required : false)
-      if libz_dep.found()
-        zlib_libname = '-lzlib'
-      else
+      if not libz_dep.found()
         libz_dep = subproject('zlib').get_variable('zlib_dep')
       endif
     endif
