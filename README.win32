@@ -172,32 +172,34 @@ and libtool documentation.
 Building with Visual Studio
 ===========================
 
-A more detailed outline of building GLib with its dependencies can
-now be found on the GNOME wiki:
+Meson is now the supported method of building GLib using Visual Studio.
+
+Note that you will need a libintl implementation, zlib, and libFFI.
+
+You will also need the following items:
+-Python 3.6.x, you need the 32-bit version if you are building GLib
+ as a 32-bit/x86 build, or the amd64/x64 version for building 64-bit/x86-64
+ builds.  You will then need to install or update Meson by using pip.
+-The Ninja build tool, required for Visual Studio 2008, 2012 and 2013 builds,
+ and optional for 2010, 2015 and 2017 builds, where Visual Studio projects
+ can be generated instead of the Ninja build files.
+
+One can also refer to the following page for building the dependencies:
 
 https://wiki.gnome.org/Projects/GTK%2B/Win32/MSVCCompilationOfGTKStack
 
-Please do not build GLib in paths that contain spaces in them, as
-this may cause problems during compilation and during usage of the
-library.
+Note that if building the sources with Visual Studio 2008, note the following steps:
 
-In an unpacked tarball, you will find in build\win32\vs9 (VS 2008) and
-build\win32\vs10 (VS 2010) a solution file that can be used to build
-the GLib DLLs and some auxiliary programs under VS 2008 and VS 2010
-(Express Edition will suffice with the needed dependencies) respectively.
-Read the README.txt file in those folders for more
-information. Note that you will need a libintl implementation, zlib, and 
-libFFI.
+-You need to run the following lines from your build directory, to embed the manifests
+ that are generated during the build, assuming the built binaries are installed
+ to $(PREFIX), after a successful build/installation:
 
-If you are building from a GIT checkout, you will first need to use some
-Unix-like environment or run win32/setup.py, 
-which will expand the VS 2008/2010 project files, the DLL resouce files and
-other miscellanious files required for the build.  Run win32/setup.py
-as follows:
+for /r %f in (*.dll.manifest) do if exist $(PREFIX)\bin\%~nf mt /manifest %f $(PREFIX)\bin\%~nf;2
+for /r %f in (*.exe.manifest) do if exist $(PREFIX)\bin\%~nf mt /manifest %f $(PREFIX)\bin\%~nf;1
 
-$python win32/setup.py --perl path_to_your_perl.exe
-
-for more usage on this script, run
-$python win32/setup.py -h/--help
-
-[1]: https://wiki.gnome.org/Projects/GTK%2B/Win32/MSVCCompilationOfGTKStack under "Preparations"
+-If building for amd64/x86_64/x64, sometimes the compilation of sources may seem to hang, which
+ is caused by an optimization issue in the 2008 x64 compiler.  You need to use Task Manager to
+ remove all running instances of cl.exe, which will cause the build process to terminate.  Update
+ the build flags of the sources that hang on compilation by changing its "/O2" flag to "/O1", and
+ things should continue to build normally.  At the time of writing, this is needed for compiling
+ glib/gtestutils.c,  gio/gsettings.c and gio/gsettingsschema.c
