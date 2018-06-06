@@ -7,7 +7,7 @@ include $(top_srcdir)/glib.mk
 ACLOCAL_AMFLAGS = -I m4macros ${ACLOCAL_FLAGS}
 
 SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs tests subprojects
-DIST_SUBDIRS = $(SUBDIRS) build win32
+DIST_SUBDIRS = $(SUBDIRS) build
 
 bin_SCRIPTS = glib-gettextize
 
@@ -50,7 +50,6 @@ EXTRA_DIST += 			\
 	tap-driver.sh		\
 	tap-test		\
 	msvc_recommended_pragmas.h \
-	config.h.win32.in	\
         po/po2tbl.sed.in        \
 	glib-2.0.pc.in 		\
 	gobject-2.0.pc.in 	\
@@ -113,7 +112,6 @@ BUILT_EXTRA_DIST += 		\
 	README			\
 	INSTALL			\
 	ChangeLog		\
-	config.h.win32		\
 	$(NULL)
 
 CONFIGURE_DEPENDENCIES = acglib.m4
