@@ -1618,6 +1618,7 @@ g_desktop_app_info_get_boolean
 g_desktop_app_info_has_key
 GDesktopAppLaunchCallback
 g_desktop_app_info_launch_uris_as_manager
+g_desktop_app_info_launch_uris_as_manager_with_fds
 <SUBSECTION>
 g_desktop_app_info_list_actions
 g_desktop_app_info_get_action_name
