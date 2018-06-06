@@ -1769,6 +1769,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   char uid_str[32];
   GStatBuf global_stat, trash_stat;
   gboolean res;
+  GUnixMountEntry *mount;
 
   if (g_once_init_enter (&home_dev_set))
     {
@@ -1786,6 +1787,16 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   topdir = find_mountpoint_for (dirname, dir_dev);
   if (topdir == NULL)
     return FALSE;
+
+  mount = g_unix_mount_at (topdir, NULL);
+  if (mount == NULL || g_unix_mount_is_system_internal (mount))
+    {
+      g_clear_pointer (&mount, g_unix_mount_free);
+
+      return FALSE;
+    }
+
+  g_clear_pointer (&mount, g_unix_mount_free);
 
   globaldir = g_build_filename (topdir, ".Trash", NULL);
   if (g_lstat (globaldir, &global_stat) == 0 &&
@@ -1930,6 +1941,7 @@ g_local_file_trash (GFile         *file,
     {
       uid_t uid;
       char uid_str[32];
+      GUnixMountEntry *mount;
 
       uid = geteuid ();
       g_snprintf (uid_str, sizeof (uid_str), "%lu", (unsigned long)uid);
@@ -1942,7 +1954,21 @@ g_local_file_trash (GFile         *file,
                           file, G_IO_ERROR_NOT_SUPPORTED);
 	  return FALSE;
 	}
-      
+
+      mount = g_unix_mount_at (topdir, NULL);
+      if (mount == NULL || g_unix_mount_is_system_internal (mount))
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       _("Trashing on system internal mounts is not supported"));
+
+          g_clear_pointer (&mount, g_unix_mount_free);
+          g_free (topdir);
+
+          return FALSE;
+        }
+
+      g_clear_pointer (&mount, g_unix_mount_free);
+
       /* Try looking for global trash dir $topdir/.Trash/$uid */
       globaldir = g_build_filename (topdir, ".Trash", NULL);
       if (g_lstat (globaldir, &global_stat) == 0 &&
