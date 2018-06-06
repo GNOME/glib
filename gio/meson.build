@@ -759,11 +759,6 @@ if host_system == 'windows'
   internal_deps += [ giowin32_lib ]
 endif
 
-# FIXME: FAM support
-#if HAVE_FAM
-#  subdir('fam')
-#endif
-
 if have_bash
   install_data([
     'completion/gapplication',
@@ -957,6 +952,8 @@ if enable_systemtap
     install_dir : tapset_install_dir,
     install : true)
 endif
+
+subdir('fam')
 
 if host_system != 'windows'
   subdir('tests')
