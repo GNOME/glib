@@ -3524,8 +3524,6 @@ if false; then
   AC_CONFIG_FILES([
     INSTALL
     README
-    config.h.win32
-    glib/glibconfig.h.win32
     glib/glib.rc
     gmodule/gmodule.rc
     gobject/gobject.rc
