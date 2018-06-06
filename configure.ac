@@ -3466,15 +3466,6 @@ Makefile
 build/Makefile
 build/win32/Makefile
 build/win32/dirent/Makefile
-win32/Makefile
-win32/vs9/Makefile
-win32/vs9/glib-version-paths.vsprops
-win32/vs10/Makefile
-win32/vs10/glib-version-paths.props
-win32/vs11/Makefile
-win32/vs12/Makefile
-win32/vs14/Makefile
-win32/vs15/Makefile
 glib/Makefile
 glib/libcharset/Makefile
 glib/gnulib/Makefile
@@ -3533,8 +3524,6 @@ if false; then
   AC_CONFIG_FILES([
     INSTALL
     README
-    config.h.win32
-    glib/glibconfig.h.win32
     glib/glib.rc
     gmodule/gmodule.rc
     gobject/gobject.rc

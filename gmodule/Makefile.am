@@ -15,7 +15,6 @@ EXTRA_DIST +=				\
 		gmodule-dyld.c		\
 		gmodule-win32.c		\
 		gmodule-ar.c		\
-		gmoduleconf.h.win32 	\
 		gmodule.rc.in
 
 BUILT_EXTRA_DIST += \
