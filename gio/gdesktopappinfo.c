@@ -2640,6 +2640,9 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
                                            gpointer                    user_setup_data,
                                            GDesktopAppLaunchCallback   pid_callback,
                                            gpointer                    pid_callback_data,
+                                           gint                        stdin_fd,
+                                           gint                        stdout_fd,
+                                           gint                        stderr_fd,
                                            GError                    **error)
 {
   gboolean completed = FALSE;
@@ -2722,14 +2725,17 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       g_free (argv);
       argv = NULL;
 
-      if (!g_spawn_async (info->path,
-                          real_argv,
-                          envp,
-                          spawn_flags,
-                          user_setup,
-                          user_setup_data,
-                          &pid,
-                          error))
+      if (!g_spawn_async_with_fds (info->path,
+                                   real_argv,
+                                   envp,
+                                   spawn_flags,
+                                   user_setup,
+                                   user_setup_data,
+                                   &pid,
+                                   stdin_fd,
+                                   stdout_fd,
+                                   stderr_fd,
+                                   error))
         {
           if (sn_id)
             g_app_launch_context_launch_failed (launch_context, sn_id);
@@ -2902,6 +2908,9 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
                                          gpointer                    user_setup_data,
                                          GDesktopAppLaunchCallback   pid_callback,
                                          gpointer                    pid_callback_data,
+                                         gint                        stdin_fd,
+                                         gint                        stdout_fd,
+                                         gint                        stderr_fd,
                                          GError                     **error)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
@@ -2915,7 +2924,8 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
   else
     success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec, uris, launch_context,
                                                          spawn_flags, user_setup, user_setup_data,
-                                                         pid_callback, pid_callback_data, error);
+                                                         pid_callback, pid_callback_data,
+                                                         stdin_fd, stdout_fd, stderr_fd, error);
 
   if (session_bus != NULL)
     {
@@ -2940,6 +2950,7 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
                                                   launch_context,
                                                   _SPAWN_FLAGS_DEFAULT,
                                                   NULL, NULL, NULL, NULL,
+                                                  -1, -1, -1,
                                                   error);
 }
 
@@ -2991,6 +3002,61 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
 }
 
 /**
+ * g_desktop_app_info_launch_uris_as_manager_with_fds:
+ * @appinfo: a #GDesktopAppInfo
+ * @uris: (element-type utf8): List of URIs
+ * @launch_context: (nullable): a #GAppLaunchContext
+ * @spawn_flags: #GSpawnFlags, used for each process
+ * @user_setup: (scope async) (nullable): a #GSpawnChildSetupFunc, used once
+ *     for each process.
+ * @user_setup_data: (closure user_setup) (nullable): User data for @user_setup
+ * @pid_callback: (scope call) (nullable): Callback for child processes
+ * @pid_callback_data: (closure pid_callback) (nullable): User data for @callback
+ * @stdin_fd: (optional): file descriptor to use for child's stdin, or -1
+ * @stdout_fd: (optional): file descriptor to use for child's stdout, or -1
+ * @stderr_fd: (optional): file descriptor to use for child's stderr, or -1
+ * @error: return location for a #GError, or %NULL
+ *
+ * Equivalent to g_desktop_app_info_launch_uris_as_manager() but allows
+ * you to pass in file descriptors for the stdin, stdout and stderr streams
+ * of the launched process.
+ *
+ * If application launching occurs via some non-spawn mechanism (e.g. D-Bus
+ * activation) then @stdin_fd, @stdout_fd and @stderr_fd are ignored.
+ *
+ * Returns: %TRUE on successful launch, %FALSE otherwise.
+ *
+ * Since: 2.58
+ */
+gboolean
+g_desktop_app_info_launch_uris_as_manager_with_fds (GDesktopAppInfo            *appinfo,
+                                                    GList                      *uris,
+                                                    GAppLaunchContext          *launch_context,
+                                                    GSpawnFlags                 spawn_flags,
+                                                    GSpawnChildSetupFunc        user_setup,
+                                                    gpointer                    user_setup_data,
+                                                    GDesktopAppLaunchCallback   pid_callback,
+                                                    gpointer                    pid_callback_data,
+                                                    gint                        stdin_fd,
+                                                    gint                        stdout_fd,
+                                                    gint                        stderr_fd,
+                                                    GError                    **error)
+{
+  return g_desktop_app_info_launch_uris_internal ((GAppInfo*)appinfo,
+                                                  uris,
+                                                  launch_context,
+                                                  spawn_flags,
+                                                  user_setup,
+                                                  user_setup_data,
+                                                  pid_callback,
+                                                  pid_callback_data,
+                                                  stdin_fd,
+                                                  stdout_fd,
+                                                  stderr_fd,
+                                                  error);
+}
+
+/**
  * g_desktop_app_info_launch_uris_as_manager:
  * @appinfo: a #GDesktopAppInfo
  * @uris: (element-type utf8): List of URIs
@@ -3031,15 +3097,16 @@ g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
                                            gpointer                    pid_callback_data,
                                            GError                    **error)
 {
-  return g_desktop_app_info_launch_uris_internal ((GAppInfo*)appinfo,
-                                                  uris,
-                                                  launch_context,
-                                                  spawn_flags,
-                                                  user_setup,
-                                                  user_setup_data,
-                                                  pid_callback,
-                                                  pid_callback_data,
-                                                  error);
+  return g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
+                                                             uris,
+                                                             launch_context,
+                                                             spawn_flags,
+                                                             user_setup,
+                                                             user_setup_data,
+                                                             pid_callback,
+                                                             pid_callback_data,
+                                                             -1, -1, -1,
+                                                             error);
 }
 
 /* OnlyShowIn API support {{{2 */
@@ -4614,7 +4681,8 @@ g_desktop_app_info_launch_action (GDesktopAppInfo   *info,
 
       if (exec_line)
         g_desktop_app_info_launch_uris_with_spawn (info, session_bus, exec_line, NULL, launch_context,
-                                                   _SPAWN_FLAGS_DEFAULT, NULL, NULL, NULL, NULL, NULL);
+                                                   _SPAWN_FLAGS_DEFAULT, NULL, NULL, NULL, NULL,
+                                                   -1, -1, -1, NULL);
     }
 
   if (session_bus != NULL)
