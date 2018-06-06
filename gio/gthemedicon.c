@@ -143,25 +143,27 @@ g_themed_icon_set_property (GObject      *object,
 static void
 g_themed_icon_constructed (GObject *object)
 {
-  GThemedIcon *themed = G_THEMED_ICON (object);
+  GThemedIcon  *themed = G_THEMED_ICON (object);
+  gchar       **names;
+  gchar        *name;
+  gboolean      is_symbolic;
+  gint          i = 0;
+  gint          n_names;
 
   g_return_if_fail (themed->names != NULL && themed->names[0] != NULL);
 
+  is_symbolic = g_str_has_suffix (themed->names[0], "-symbolic");
+  if (is_symbolic)
+    name = g_strndup (themed->names[0], strlen (themed->names[0]) - 9);
+  else
+    name = g_strdup (themed->names[0]);
+
   if (themed->use_default_fallbacks)
     {
-      int i = 0, dashes = 0;
+      int dashes = 0;
       const char *p;
       char *dashp;
       char *last;
-      gboolean is_symbolic;
-      char *name;
-      char **names;
-
-      is_symbolic = g_str_has_suffix (themed->names[0], "-symbolic");
-      if (is_symbolic)
-        name = g_strndup (themed->names[0], strlen (themed->names[0]) - 9);
-      else
-        name = g_strdup (themed->names[0]);
 
       p = name;
       while (*p)
@@ -173,33 +175,39 @@ g_themed_icon_constructed (GObject *object)
 
       last = name;
 
-      g_strfreev (themed->names);
-
       names = g_new (char *, dashes + 1 + 1);
       names[i++] = last;
 
       while ((dashp = strrchr (last, '-')) != NULL)
         names[i++] = last = g_strndup (last, dashp - last);
+    }
+  else
+    {
+      names = g_new (char *, 2);
+      names[i++] = name;
+    }
+  names[i] = NULL;
+  n_names = i;
+  g_strfreev (themed->names);
 
-      names[i++] = NULL;
-
+  /* All icons must be searched in symbolic and regular form. */
+  themed->names = g_new (char *, 2 * n_names + 1);
+  for (i = 0; names[i] != NULL; i++)
+    {
       if (is_symbolic)
         {
-          themed->names = g_new (char *, 2 * dashes + 3);
-          for (i = 0; names[i] != NULL; i++)
-            {
-              themed->names[i] = g_strconcat (names[i], "-symbolic", NULL);
-              themed->names[dashes + 1 + i] = names[i];
-            }
-
-          themed->names[dashes + 1 + i] = NULL;
-          g_free (names);
+          themed->names[i] = g_strconcat (names[i], "-symbolic", NULL);
+          themed->names[n_names + i] = names[i];
         }
       else
         {
-          themed->names = names;
+          themed->names[i] = names[i];
+          themed->names[n_names + i] = g_strconcat (names[i], "-symbolic", NULL);
         }
     }
+  themed->names[2 * n_names] = NULL;
+
+  g_free (names);
 }
 
 static void
