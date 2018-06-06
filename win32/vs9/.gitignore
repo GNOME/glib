@@ -1,7 +1,0 @@
-glib.vcproj
-gobject.vcproj
-gio.vcproj
-glib-compile-resources.vcproj
-glib-compile-schemas.vcproj
-glib-version-paths.vsprops
-glib-install.vsprops

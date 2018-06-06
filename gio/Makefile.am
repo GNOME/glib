@@ -973,43 +973,7 @@ gio_LDADD = libgio-2.0.la 				\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)
 
-# ------------------------------------------------------------------------
-# ------ MSVC Project File Generation ------
-# ------------------------------------------------------------------------
-#
-MSVCPROJS = gio glib-compile-resources glib-compile-schemas gio-tool
-
-gio_FILES =	\
-	$(gio_base_sources)			\
-	$(win32_actual_sources)			\
-	$(win32_more_sources_for_vcproj)	\
-	$(settings_base_sources)		\
-	$(win32_settings_sources)
-
-gio_EXCLUDES = dummy
-
-gio_HEADERS_DIR = $(includedir)/glib-2.0/gio
-gio_HEADERS_INST = $(gioinclude_HEADERS) $(nodist_gioinclude_HEADERS)
-gio_HEADERS_EXCLUDES = dummy
-
-glib_compile_resources_FILES = $(glib_compile_resources_SOURCES)
-glib_compile_resources_EXCLUDES = dummy
-
-glib_compile_schemas_FILES = $(glib_compile_schemas_SOURCES)
-glib_compile_schemas_EXCLUDES = dummy
-
-gio_tool_FILES = $(gio_SOURCES)
-gio_tool_EXCLUDES = dummy
-
-include $(top_srcdir)/win32/Makefile.msvcproj
-
-dist-hook: \
-	$(BUILT_EXTRA_DIST)						\
-	$(top_builddir)/win32/vs9/gio.vcproj			\
-	$(top_builddir)/win32/vs9/gio.headers			\
-	$(top_builddir)/win32/vs9/glib-compile-schemas.vcproj	\
-	$(top_builddir)/win32/vs9/glib-compile-resources.vcproj	\
-	$(top_builddir)/win32/vs9/gio-tool.vcproj
+dist-hook: $(BUILT_EXTRA_DIST)
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
