@@ -14,10 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-04-26 14:46+0000\n"
-"PO-Revision-Date: 2018-05-04 00:37+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
+"POT-Creation-Date: 2018-06-05 15:11+0000\n"
+"PO-Revision-Date: 2018-06-06 11:01+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -169,7 +168,7 @@ msgstr "Použití:\n"
 msgid "Arguments:\n"
 msgstr "Argumenty:\n"
 
-#: ../gio/gapplication-tool.c:133
+#: ../gio/gapplication-tool.c:133 ../gio/gio-tool.c:224
 msgid "[ARGS…]"
 msgstr "[ARGUMENTY…]"
 
@@ -1249,38 +1248,38 @@ msgstr "Chyba: Příliš mnoho argumentů.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Chyba: %s není platným oficiálně známým názvem sběrnice.\n"
 
-#: ../gio/gdesktopappinfo.c:2021 ../gio/gdesktopappinfo.c:4588
+#: ../gio/gdesktopappinfo.c:2022 ../gio/gdesktopappinfo.c:4589
 msgid "Unnamed"
 msgstr "Bez názvu"
 
-#: ../gio/gdesktopappinfo.c:2431
+#: ../gio/gdesktopappinfo.c:2432
 msgid "Desktop file didn’t specify Exec field"
 msgstr "V souboru .desktop není určeno pole Exec"
 
-#: ../gio/gdesktopappinfo.c:2721
+#: ../gio/gdesktopappinfo.c:2722
 msgid "Unable to find terminal required for application"
 msgstr "Nezdařilo se najít  terminál vyžadovaný pro aplikaci"
 
-#: ../gio/gdesktopappinfo.c:3157
+#: ../gio/gdesktopappinfo.c:3158
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Nezdařilo se vytvořit složku %s s uživatelským nastavením aplikace: %s"
 
-#: ../gio/gdesktopappinfo.c:3161
+#: ../gio/gdesktopappinfo.c:3162
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Nezdařilo se vytvořit složku %s s uživatelským nastavením MIME: %s"
 
-#: ../gio/gdesktopappinfo.c:3401 ../gio/gdesktopappinfo.c:3425
+#: ../gio/gdesktopappinfo.c:3402 ../gio/gdesktopappinfo.c:3426
 msgid "Application information lacks an identifier"
 msgstr "Informace o aplikaci postrádá identifikátor"
 
-#: ../gio/gdesktopappinfo.c:3659
+#: ../gio/gdesktopappinfo.c:3660
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Nezdařilo se vytvořit uživatelský soubor .desktop %s"
 
-#: ../gio/gdesktopappinfo.c:3793
+#: ../gio/gdesktopappinfo.c:3794
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Vlastní definice %s"
@@ -1300,11 +1299,11 @@ msgstr "mechanika neumí vysouvací funkce eject nebo eject_with_operation"
 msgid "drive doesn’t implement polling for media"
 msgstr "mechanika neumí dotazování na média"
 
-#: ../gio/gdrive.c:776
+#: ../gio/gdrive.c:778
 msgid "drive doesn’t implement start"
 msgstr "mechanika neumí spuštění"
 
-#: ../gio/gdrive.c:878
+#: ../gio/gdrive.c:880
 msgid "drive doesn’t implement stop"
 msgstr "mechanika neumí zastavení"
 
@@ -1361,7 +1360,7 @@ msgstr "Operace není podporována"
 msgid "Containing mount does not exist"
 msgstr "Obsahující připojené neexistuje"
 
-#: ../gio/gfile.c:2617 ../gio/glocalfile.c:2446
+#: ../gio/gfile.c:2617 ../gio/glocalfile.c:2347
 msgid "Can’t copy over directory"
 msgstr "Nelze kopírovat nad složku"
 
@@ -1416,7 +1415,7 @@ msgstr "Zahozené není podporováno"
 msgid "File names cannot contain “%c”"
 msgstr "Názvy souborů nemohou obsahovat „%c“"
 
-#: ../gio/gfile.c:6768 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6768 ../gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "svazek neumí připojení"
 
@@ -1591,10 +1590,6 @@ msgstr "Použití:"
 msgid "Print version information and exit."
 msgstr "Vypsat informace o verzi a skončit."
 
-#: ../gio/gio-tool.c:224
-msgid "[ARGS...]"
-msgstr "[ARGUMENTY...]"
-
 #: ../gio/gio-tool.c:226
 msgid "Commands:"
 msgstr "Příkazy:"
@@ -1677,7 +1672,7 @@ msgstr "Chyba při zápisu do standardního výstupu"
 #: ../gio/gio-tool-list.c:165 ../gio/gio-tool-mkdir.c:48
 #: ../gio/gio-tool-monitor.c:37 ../gio/gio-tool-monitor.c:39
 #: ../gio/gio-tool-monitor.c:41 ../gio/gio-tool-monitor.c:43
-#: ../gio/gio-tool-monitor.c:203 ../gio/gio-tool-mount.c:1141
+#: ../gio/gio-tool-monitor.c:203 ../gio/gio-tool-mount.c:1219
 #: ../gio/gio-tool-open.c:113 ../gio/gio-tool-remove.c:48
 #: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89
 #: ../gio/gio-tool-trash.c:81 ../gio/gio-tool-tree.c:239
@@ -1700,7 +1695,8 @@ msgstr ""
 
 #: ../gio/gio-tool-cat.c:162 ../gio/gio-tool-info.c:313
 #: ../gio/gio-tool-mkdir.c:76 ../gio/gio-tool-monitor.c:228
-#: ../gio/gio-tool-open.c:139 ../gio/gio-tool-remove.c:72
+#: ../gio/gio-tool-mount.c:1269 ../gio/gio-tool-open.c:139
+#: ../gio/gio-tool-remove.c:72 ../gio/gio-tool-trash.c:136
 msgid "No locations given"
 msgstr "Nebylo zadáno žádné umístění"
 
@@ -1998,71 +1994,79 @@ msgstr "Sledovat události připojení"
 
 #: ../gio/gio-tool-monitor.c:208
 msgid "Monitor files or directories for changes."
-msgstr "Sledovat soubory nebo složky ohledně změn."
+msgstr "Sledovat soubory nebo složky ohledně změn"
 
-#: ../gio/gio-tool-mount.c:58
+#: ../gio/gio-tool-mount.c:59
 msgid "Mount as mountable"
 msgstr "Připojit jako připojitelný"
 
-#: ../gio/gio-tool-mount.c:59
+#: ../gio/gio-tool-mount.c:60
 msgid "Mount volume with device file"
-msgstr "Připojit svazek pomocí souboru zařízení"
+msgstr "Připojit svazek odpovídající souboru zařízení"
 
-#: ../gio/gio-tool-mount.c:59
+#: ../gio/gio-tool-mount.c:60 ../gio/gio-tool-mount.c:63
 msgid "DEVICE"
 msgstr "ZAŘÍZENÍ"
 
-#: ../gio/gio-tool-mount.c:60
+#: ../gio/gio-tool-mount.c:61
 msgid "Unmount"
 msgstr "Odpojit"
 
-#: ../gio/gio-tool-mount.c:61
+#: ../gio/gio-tool-mount.c:62
 msgid "Eject"
 msgstr "Vysunout"
 
-#: ../gio/gio-tool-mount.c:62
+#: ../gio/gio-tool-mount.c:63
+msgid "Stop drive with device file"
+msgstr "Zastavit médium odpovídající souboru zařízení"
+
+#: ../gio/gio-tool-mount.c:64
 msgid "Unmount all mounts with the given scheme"
 msgstr "Odpojit všechna připojení se zadaným schématem"
 
-#: ../gio/gio-tool-mount.c:62
+#: ../gio/gio-tool-mount.c:64
 msgid "SCHEME"
 msgstr "SCHÉMA"
 
-#: ../gio/gio-tool-mount.c:63
+#: ../gio/gio-tool-mount.c:65
 msgid "Ignore outstanding file operations when unmounting or ejecting"
 msgstr "Při odpojování nebo vysouvání ignorovat nedokončené operace se soubory"
 
-#: ../gio/gio-tool-mount.c:64
+#: ../gio/gio-tool-mount.c:66
 msgid "Use an anonymous user when authenticating"
 msgstr "Při ověřování použít anonymního uživatele"
 
 #. Translator: List here is a verb as in 'List all mounts'
-#: ../gio/gio-tool-mount.c:66
+#: ../gio/gio-tool-mount.c:68
 msgid "List"
 msgstr "Vypsat"
 
-#: ../gio/gio-tool-mount.c:67
+#: ../gio/gio-tool-mount.c:69
 msgid "Monitor events"
 msgstr "Sledovat události"
 
-#: ../gio/gio-tool-mount.c:68
+#: ../gio/gio-tool-mount.c:70
 msgid "Show extra information"
 msgstr "Zobrazit doplňující informace"
 
-#: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
+#: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:280
 msgid "Anonymous access denied"
 msgstr "Anonymní přístup byl zamítnut"
 
-#: ../gio/gio-tool-mount.c:897
+#: ../gio/gio-tool-mount.c:508
+msgid "No drive for device file"
+msgstr "Pro soubor zařízení není žádné médium"
+
+#: ../gio/gio-tool-mount.c:973
 #, c-format
 msgid "Mounted %s at %s\n"
 msgstr "Připojeno %s do %s\n"
 
-#: ../gio/gio-tool-mount.c:950
+#: ../gio/gio-tool-mount.c:1028
 msgid "No volume for device file"
 msgstr "Pro soubor zařízení není žádný svazek"
 
-#: ../gio/gio-tool-mount.c:1145
+#: ../gio/gio-tool-mount.c:1223
 msgid "Mount or unmount the locations."
 msgstr "Připojit nebo odpojit umístění."
 
@@ -2804,12 +2808,12 @@ msgstr "nedělá se nic.\n"
 msgid "removed existing output file.\n"
 msgstr "odstraněn existující výstupní soubor.\n"
 
-#: ../gio/glocalfile.c:643 ../gio/win32/gwinhttpfile.c:420
+#: ../gio/glocalfile.c:544 ../gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Neplatný název souboru %s"
 
-#: ../gio/glocalfile.c:1105
+#: ../gio/glocalfile.c:1006
 #, c-format
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Chyba při získávání informace o souborovém systému pro %s: %s"
@@ -2818,123 +2822,123 @@ msgstr "Chyba při získávání informace o souborovém systému pro %s: %s"
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
-#: ../gio/glocalfile.c:1244
+#: ../gio/glocalfile.c:1145
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "Přípojení obsahující soubor %s nebylo nalezen"
 
-#: ../gio/glocalfile.c:1267
+#: ../gio/glocalfile.c:1168
 msgid "Can’t rename root directory"
 msgstr "Nelze přejmenovat kořenovou složku"
 
-#: ../gio/glocalfile.c:1285 ../gio/glocalfile.c:1308
+#: ../gio/glocalfile.c:1186 ../gio/glocalfile.c:1209
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "Chyba při přejmenovávání souboru %s: %s"
 
-#: ../gio/glocalfile.c:1292
+#: ../gio/glocalfile.c:1193
 msgid "Can’t rename file, filename already exists"
 msgstr "Soubor nelze přejmenovat, název souboru již existuje"
 
-#: ../gio/glocalfile.c:1305 ../gio/glocalfile.c:2322 ../gio/glocalfile.c:2350
-#: ../gio/glocalfile.c:2507 ../gio/glocalfileoutputstream.c:551
+#: ../gio/glocalfile.c:1206 ../gio/glocalfile.c:2223 ../gio/glocalfile.c:2251
+#: ../gio/glocalfile.c:2408 ../gio/glocalfileoutputstream.c:551
 msgid "Invalid filename"
 msgstr "Neplatný název souboru"
 
-#: ../gio/glocalfile.c:1473 ../gio/glocalfile.c:1488
+#: ../gio/glocalfile.c:1374 ../gio/glocalfile.c:1389
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "Chyba při otevírání souboru %s: %s"
 
-#: ../gio/glocalfile.c:1613
+#: ../gio/glocalfile.c:1514
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "Chyba při odstraňování souboru %s: %s"
 
-#: ../gio/glocalfile.c:1997
+#: ../gio/glocalfile.c:1898
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Chyba při zahazování souboru %s do koše: %s"
 
-#: ../gio/glocalfile.c:2020
+#: ../gio/glocalfile.c:1921
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Nelze vytvořit složku koše %s: %s"
 
-#: ../gio/glocalfile.c:2040
+#: ../gio/glocalfile.c:1941
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Nelze nalézt složku nejvyšší úrovně pro vyhození %s"
 
-#: ../gio/glocalfile.c:2119 ../gio/glocalfile.c:2139
+#: ../gio/glocalfile.c:2020 ../gio/glocalfile.c:2040
 #, c-format
 msgid "Unable to find or create trash directory for %s"
 msgstr "Nelze nalézt nebo vytvořit složku koše pro %s"
 
-#: ../gio/glocalfile.c:2174
+#: ../gio/glocalfile.c:2075
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Nelze vytvořit informační soubor o koši pro %s: %s"
 
-#: ../gio/glocalfile.c:2233
+#: ../gio/glocalfile.c:2134
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Nelze zahodit soubor %s do koše mimo hranice souborového systému"
 
-#: ../gio/glocalfile.c:2237 ../gio/glocalfile.c:2293
+#: ../gio/glocalfile.c:2138 ../gio/glocalfile.c:2194
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Nelze zahodit soubor %s do koše: %s"
 
-#: ../gio/glocalfile.c:2299
+#: ../gio/glocalfile.c:2200
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Nelze zahodit soubor %s do koše"
 
-#: ../gio/glocalfile.c:2325
+#: ../gio/glocalfile.c:2226
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Chyba při vytváření složky %s: %s"
 
-#: ../gio/glocalfile.c:2354
+#: ../gio/glocalfile.c:2255
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Systém souborů nepodporuje symbolické odkazy"
 
-#: ../gio/glocalfile.c:2357
+#: ../gio/glocalfile.c:2258
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Chyba při vytváření symbolického odkazu %s: %s"
 
-#: ../gio/glocalfile.c:2363 ../glib/gfileutils.c:2127
+#: ../gio/glocalfile.c:2264 ../glib/gfileutils.c:2127
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nejsou podporovány"
 
-#: ../gio/glocalfile.c:2418 ../gio/glocalfile.c:2453 ../gio/glocalfile.c:2510
+#: ../gio/glocalfile.c:2319 ../gio/glocalfile.c:2354 ../gio/glocalfile.c:2411
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Chyba při přesunování souboru %s: %s"
 
-#: ../gio/glocalfile.c:2441
+#: ../gio/glocalfile.c:2342
 msgid "Can’t move directory over directory"
 msgstr "Složku nelze přesunout nad složku"
 
-#: ../gio/glocalfile.c:2467 ../gio/glocalfileoutputstream.c:935
+#: ../gio/glocalfile.c:2368 ../gio/glocalfileoutputstream.c:935
 #: ../gio/glocalfileoutputstream.c:949 ../gio/glocalfileoutputstream.c:964
 #: ../gio/glocalfileoutputstream.c:981 ../gio/glocalfileoutputstream.c:995
 msgid "Backup file creation failed"
 msgstr "Vytvoření záložního souboru selhalo"
 
-#: ../gio/glocalfile.c:2486
+#: ../gio/glocalfile.c:2387
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Chyba při odstraňování cílového souboru: %s"
 
-#: ../gio/glocalfile.c:2500
+#: ../gio/glocalfile.c:2401
 msgid "Move between mounts not supported"
 msgstr "Přesunování mezi připojeními není podporováno"
 
-#: ../gio/glocalfile.c:2691
+#: ../gio/glocalfile.c:2592
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Nelze zjistit využití disku %s: %s"
@@ -2960,76 +2964,76 @@ msgstr "Chyba při nastavování rozšířeného atributu „%s“: %s"
 msgid " (invalid encoding)"
 msgstr " (neplatné kódování)"
 
-#: ../gio/glocalfileinfo.c:1778 ../gio/glocalfileoutputstream.c:813
+#: ../gio/glocalfileinfo.c:1773 ../gio/glocalfileoutputstream.c:813
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Chyba při získávání informací pro soubor „%s“: %s"
 
-#: ../gio/glocalfileinfo.c:2040
+#: ../gio/glocalfileinfo.c:2035
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Chyba při získávání informací pro popisovače souboru: %s"
 
-#: ../gio/glocalfileinfo.c:2085
+#: ../gio/glocalfileinfo.c:2080
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Neplatný typ atributu (očekáván uint32)"
 
-#: ../gio/glocalfileinfo.c:2103
+#: ../gio/glocalfileinfo.c:2098
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Neplatný typ atributu (očekáván uint64)"
 
-#: ../gio/glocalfileinfo.c:2122 ../gio/glocalfileinfo.c:2141
+#: ../gio/glocalfileinfo.c:2117 ../gio/glocalfileinfo.c:2136
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Neplatný typ atributu (očekáván bajtový řetězec)"
 
-#: ../gio/glocalfileinfo.c:2186
+#: ../gio/glocalfileinfo.c:2181
 msgid "Cannot set permissions on symlinks"
 msgstr "Nelze nastavit oprávnění na symbolických odkazech"
 
-#: ../gio/glocalfileinfo.c:2202
+#: ../gio/glocalfileinfo.c:2197
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Chyba při nastavování oprávnění: %s"
 
-#: ../gio/glocalfileinfo.c:2253
+#: ../gio/glocalfileinfo.c:2248
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Chyba při nastavování vlastníka: %s"
 
-#: ../gio/glocalfileinfo.c:2276
+#: ../gio/glocalfileinfo.c:2271
 msgid "symlink must be non-NULL"
 msgstr "symbolický odkaz nesmí být prázdný"
 
-#: ../gio/glocalfileinfo.c:2286 ../gio/glocalfileinfo.c:2305
-#: ../gio/glocalfileinfo.c:2316
+#: ../gio/glocalfileinfo.c:2281 ../gio/glocalfileinfo.c:2300
+#: ../gio/glocalfileinfo.c:2311
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Chyba při nastavování symbolického odkazu: %s"
 
-#: ../gio/glocalfileinfo.c:2295
+#: ../gio/glocalfileinfo.c:2290
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Chyba při nastavování symbolického odkazu: soubor není symbolickým odkazem"
 
-#: ../gio/glocalfileinfo.c:2421
+#: ../gio/glocalfileinfo.c:2416
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Chyba při nastavování změny nebo času přístupu: %s"
 
-#: ../gio/glocalfileinfo.c:2444
+#: ../gio/glocalfileinfo.c:2439
 msgid "SELinux context must be non-NULL"
 msgstr "Kontext SELinux nesmí být prázdný"
 
-#: ../gio/glocalfileinfo.c:2459
+#: ../gio/glocalfileinfo.c:2454
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Chyba při nastavování kontextu SELinux: %s"
 
-#: ../gio/glocalfileinfo.c:2466
+#: ../gio/glocalfileinfo.c:2461
 msgid "SELinux is not enabled on this system"
 msgstr "V tomto systému není SELinux povolen"
 
-#: ../gio/glocalfileinfo.c:2558
+#: ../gio/glocalfileinfo.c:2553
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Nastavení atributu %s není podporováno"
@@ -3144,21 +3148,21 @@ msgstr "Požadováno hledání za ukončením proudu"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: ../gio/gmount.c:396
+#: ../gio/gmount.c:399
 msgid "mount doesn’t implement “unmount”"
 msgstr "připojené neprovádí odpojovací operaci „unmount“"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: ../gio/gmount.c:472
+#: ../gio/gmount.c:475
 msgid "mount doesn’t implement “eject”"
 msgstr "připojené neumí vysouvací operaci „eject“"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: ../gio/gmount.c:550
+#: ../gio/gmount.c:553
 msgid "mount doesn’t implement “unmount” or “unmount_with_operation”"
 msgstr ""
 "připojené neumí odpojovací operaci „unmount“ nebo „unmount_with_operation“"
@@ -3166,28 +3170,28 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gmount.c:635
+#: ../gio/gmount.c:638
 msgid "mount doesn’t implement “eject” or “eject_with_operation”"
 msgstr "připojené neumí vysouvací operaci „eject“ nebo „eject_with_operation“"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: ../gio/gmount.c:723
+#: ../gio/gmount.c:726
 msgid "mount doesn’t implement “remount”"
 msgstr "připojené neumí operaci opakovaného připojení „remount“"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:805
+#: ../gio/gmount.c:808
 msgid "mount doesn’t implement content type guessing"
 msgstr "připojené neumí odhad typu obsahu"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:892
+#: ../gio/gmount.c:895
 msgid "mount doesn’t implement synchronous content type guessing"
 msgstr "připojené neumí synchronní odhad typu obsahu"
 
@@ -4058,7 +4062,7 @@ msgstr "Chyba při čtení z popisovače souboru: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Chyba při zavírání popisovače souboru: %s"
 
-#: ../gio/gunixmounts.c:2556 ../gio/gunixmounts.c:2609
+#: ../gio/gunixmounts.c:2593 ../gio/gunixmounts.c:2646
 msgid "Filesystem root"
 msgstr "Kořen systému souborů"
 
@@ -4071,14 +4075,14 @@ msgstr "Chyba při zápisu do popisovače souboru: %s"
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "V tomto systému nejsou podporovány abstraktní adresy soketů domén UNIX"
 
-#: ../gio/gvolume.c:437
+#: ../gio/gvolume.c:438
 msgid "volume doesn’t implement eject"
 msgstr "svazek neumí vysouvací operaci eject"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gvolume.c:514
+#: ../gio/gvolume.c:515
 msgid "volume doesn’t implement eject or eject_with_operation"
 msgstr "svazek neumí vysouvací operaci eject nebo eject_with_operation"
 
@@ -5465,7 +5469,7 @@ msgstr "název je příliš dlouhý v (*MARK), (*PRUNE), (*SKIP) nebo (*THEN)"
 msgid "character value in \\u.... sequence is too large"
 msgstr "znaková hodnota v posloupnosti \\u.... je příliš vysoká"
 
-#: ../glib/gregex.c:745 ../glib/gregex.c:1977
+#: ../glib/gregex.c:745 ../glib/gregex.c:1983
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Chyba při porovnávání regulárního výrazu %s: %s"
@@ -5492,43 +5496,43 @@ msgstr "Chyba při optimalizaci regulárního výrazu %s: %s"
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Chyba při kompilaci regulárního výrazu %s na znaku %d: %s"
 
-#: ../glib/gregex.c:2413
+#: ../glib/gregex.c:2419
 msgid "hexadecimal digit or “}” expected"
 msgstr "očekávána šestnáctková číslice nebo „}“"
 
-#: ../glib/gregex.c:2429
+#: ../glib/gregex.c:2435
 msgid "hexadecimal digit expected"
 msgstr "očekávána šestnáctková číslice"
 
-#: ../glib/gregex.c:2469
+#: ../glib/gregex.c:2475
 msgid "missing “<” in symbolic reference"
 msgstr "v symbolickém odkazu chybí „<“"
 
-#: ../glib/gregex.c:2478
+#: ../glib/gregex.c:2484
 msgid "unfinished symbolic reference"
 msgstr "neukončený symbolický odkaz"
 
-#: ../glib/gregex.c:2485
+#: ../glib/gregex.c:2491
 msgid "zero-length symbolic reference"
 msgstr "symbolický odkaz o nulové délce"
 
-#: ../glib/gregex.c:2496
+#: ../glib/gregex.c:2502
 msgid "digit expected"
 msgstr "očekávána číslice"
 
-#: ../glib/gregex.c:2514
+#: ../glib/gregex.c:2520
 msgid "illegal symbolic reference"
 msgstr "nedovolený symbolický odkaz"
 
-#: ../glib/gregex.c:2576
+#: ../glib/gregex.c:2582
 msgid "stray final “\\”"
 msgstr "osamocené koncové „\\“"
 
-#: ../glib/gregex.c:2580
+#: ../glib/gregex.c:2586
 msgid "unknown escape sequence"
 msgstr "neznámá úniková sekvence"
 
-#: ../glib/gregex.c:2590
+#: ../glib/gregex.c:2596
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Chyba při zpracování náhradního textu „%s“ na znaku %lu: %s"
@@ -5715,127 +5719,127 @@ msgstr "Neplatná posloupnost na vstupu převodu"
 msgid "Character out of range for UTF-16"
 msgstr "Znak je mimo rozsah UTF-16"
 
-#: ../glib/gutils.c:2241
+#: ../glib/gutils.c:2244
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2242 ../glib/gutils.c:2448
+#: ../glib/gutils.c:2245 ../glib/gutils.c:2451
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2243 ../glib/gutils.c:2453
+#: ../glib/gutils.c:2246 ../glib/gutils.c:2456
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2244 ../glib/gutils.c:2458
+#: ../glib/gutils.c:2247 ../glib/gutils.c:2461
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2245 ../glib/gutils.c:2463
+#: ../glib/gutils.c:2248 ../glib/gutils.c:2466
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2246 ../glib/gutils.c:2468
+#: ../glib/gutils.c:2249 ../glib/gutils.c:2471
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#: ../glib/gutils.c:2249
+#: ../glib/gutils.c:2252
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2250
+#: ../glib/gutils.c:2253
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2251
+#: ../glib/gutils.c:2254
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2252
+#: ../glib/gutils.c:2255
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2253
+#: ../glib/gutils.c:2256
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2254
+#: ../glib/gutils.c:2257
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2257
+#: ../glib/gutils.c:2260
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
-#: ../glib/gutils.c:2258
+#: ../glib/gutils.c:2261
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
-#: ../glib/gutils.c:2259
+#: ../glib/gutils.c:2262
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
-#: ../glib/gutils.c:2260
+#: ../glib/gutils.c:2263
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
-#: ../glib/gutils.c:2261
+#: ../glib/gutils.c:2264
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
-#: ../glib/gutils.c:2262
+#: ../glib/gutils.c:2265
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
-#: ../glib/gutils.c:2265
+#: ../glib/gutils.c:2268
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
-#: ../glib/gutils.c:2266
+#: ../glib/gutils.c:2269
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
-#: ../glib/gutils.c:2267
+#: ../glib/gutils.c:2270
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
-#: ../glib/gutils.c:2268
+#: ../glib/gutils.c:2271
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
-#: ../glib/gutils.c:2269
+#: ../glib/gutils.c:2272
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
-#: ../glib/gutils.c:2270
+#: ../glib/gutils.c:2273
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: ../glib/gutils.c:2304 ../glib/gutils.c:2430
+#: ../glib/gutils.c:2307 ../glib/gutils.c:2433
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -5843,7 +5847,7 @@ msgstr[0] "%u bajt"
 msgstr[1] "%u bajty"
 msgstr[2] "%u bajtů"
 
-#: ../glib/gutils.c:2308
+#: ../glib/gutils.c:2311
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -5852,7 +5856,7 @@ msgstr[1] "%u bity"
 msgstr[2] "%u bitů"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2375
+#: ../glib/gutils.c:2378
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -5861,7 +5865,7 @@ msgstr[1] "%s bajty"
 msgstr[2] "%s bajtů"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: ../glib/gutils.c:2380
+#: ../glib/gutils.c:2383
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -5874,10 +5878,7 @@ msgstr[2] "%s bitů"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2443
+#: ../glib/gutils.c:2446
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
-
-#~ msgid "Failed to create temp file: %s"
-#~ msgstr "Nelze vytvořit dočasný soubor „%s“"
