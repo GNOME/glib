@@ -787,7 +787,6 @@ EXTRA_DIST += 			\
 	gio.rc.in		\
 	gschema.dtd		\
 	gconstructor_as_data.h	\
-	gnetworking.h.win32	\
 	$(NULL)
 
 BUILT_EXTRA_DIST += 		\
