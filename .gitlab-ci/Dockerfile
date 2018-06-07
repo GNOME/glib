@@ -4,6 +4,7 @@ RUN dnf -y install \
     desktop-file-utils \
     elfutils-libelf-devel \
     findutils \
+    gamin-devel \
     gcc \
     gcc-c++ \
     gettext \
@@ -18,21 +19,21 @@ RUN dnf -y install \
     libmount-devel \
     libselinux-devel \
     libxslt \
+    make \
+    mingw64-gcc \
+    mingw64-gcc-c++ \
+    mingw64-gettext \
+    mingw64-libffi \
+    mingw64-zlib \
     ninja-build \
     pcre-devel \
     python3 \
     python3-pip \
     python3-wheel \
     systemtap-sdt-devel \
-    zlib-devel \
-    wget \
     unzip \
-    make \
-    mingw64-gcc \
-    mingw64-gcc-c++ \
-    mingw64-gettext \
-    mingw64-zlib \
-    mingw64-libffi \
+    wget \
+    zlib-devel \
  && dnf clean all
 
 RUN pip3 install meson
