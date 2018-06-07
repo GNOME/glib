@@ -417,6 +417,15 @@ test_attributes (struct StructureItem item, GFileInfo * info)
 					   G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN);
       g_assert_cmpint (is_hidden, ==, TRUE);
     }
+
+  /* unix::is-mountpoint */
+  if (posix_compat)
+    {
+      gboolean is_mountpoint =
+        g_file_info_get_attribute_boolean (info,
+                                      G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT);
+      g_assert_false (is_mountpoint);
+    }
 }
 
 static void
@@ -851,6 +860,33 @@ test_copy_move (gconstpointer test_data)
 	}
     }
   g_object_unref (root);
+}
+
+/* Test that G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT is TRUE for / and for another
+ * known mountpoint. The FALSE case is tested for many directories and files by
+ * test_initial_structure(), via test_attributes().
+ */
+static void
+test_unix_is_mountpoint (gconstpointer data)
+{
+  const gchar *path = data;
+  GFile *file = g_file_new_for_path (path);
+  GFileInfo *info;
+  gboolean is_mountpoint;
+  GError *error = NULL;
+
+  info = g_file_query_info (file, G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT,
+                            G_FILE_QUERY_INFO_NONE, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (info);
+
+  is_mountpoint =
+    g_file_info_get_attribute_boolean (info,
+                                       G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT);
+  g_assert_true (is_mountpoint);
+
+  g_clear_object (&info);
+  g_clear_object (&file);
 }
 
 static void
@@ -1341,6 +1377,18 @@ main (int argc, char *argv[])
   /*  Read test - open (g_file_read())  */
   if (!only_create_struct)
     g_test_add_data_func ("/live-g-file/test_open", target_path, test_open);
+
+  if (posix_compat)
+    {
+      g_test_add_data_func ("/live-g-file/test_unix_is_mountpoint/sysroot",
+                            "/",
+                            test_unix_is_mountpoint);
+#ifdef __linux__
+      g_test_add_data_func ("/live-g-file/test_unix_is_mountpoint/proc",
+                            "/proc",
+                            test_unix_is_mountpoint);
+#endif
+    }
 
   /*  Write test - create  */
   if (write_test && (!only_create_struct))

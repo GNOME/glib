@@ -821,6 +821,7 @@ _g_local_file_info_get_parent_info (const char            *dir,
   parent_info->is_sticky = FALSE;
   parent_info->has_trash_dir = FALSE;
   parent_info->device = 0;
+  parent_info->inode = 0;
 
   if (_g_file_attribute_matcher_matches_id (attribute_matcher, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_RENAME) ||
       _g_file_attribute_matcher_matches_id (attribute_matcher, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_DELETE) ||
@@ -850,6 +851,7 @@ _g_local_file_info_get_parent_info (const char            *dir,
 #endif
 	  parent_info->owner = statbuf.st_uid;
 	  parent_info->device = statbuf.st_dev;
+	  parent_info->inode = statbuf.st_ino;
           /* No need to find trash dir if it's not writable anyway */
           if (parent_info->writable &&
               _g_file_attribute_matcher_matches_id (attribute_matcher, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_TRASH))
@@ -1965,7 +1967,7 @@ _g_local_file_info_get (const char             *basename,
 
   if (stat_ok && parent_info && parent_info->device != 0 &&
       _g_file_attribute_matcher_matches_id (attribute_matcher, G_FILE_ATTRIBUTE_ID_UNIX_IS_MOUNTPOINT) &&
-      statbuf.st_dev != parent_info->device) 
+      (statbuf.st_dev != parent_info->device || statbuf.st_ino == parent_info->inode))
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_IS_MOUNTPOINT, TRUE);
   
   if (stat_ok)
