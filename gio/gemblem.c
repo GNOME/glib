@@ -79,7 +79,7 @@ g_emblem_get_property (GObject    *object,
     {
       case PROP_ICON:
         g_value_set_object (value, emblem->icon);
-	break;
+        break;
 
       case PROP_ORIGIN:
         g_value_set_enum (value, emblem->origin);
@@ -276,8 +276,8 @@ g_emblem_equal (GIcon *icon1,
 
 static gboolean
 g_emblem_to_tokens (GIcon *icon,
-		    GPtrArray *tokens,
-		    gint  *out_version)
+                    GPtrArray *tokens,
+                    gint  *out_version)
 {
   GEmblem *emblem = G_EMBLEM (icon);
   char *s;
@@ -305,9 +305,9 @@ g_emblem_to_tokens (GIcon *icon,
 
 static GIcon *
 g_emblem_from_tokens (gchar  **tokens,
-		      gint     num_tokens,
-		      gint     version,
-		      GError **error)
+                      gint     num_tokens,
+                      gint     version,
+                      GError **error)
 {
   GEmblem *emblem;
   GIcon *icon;

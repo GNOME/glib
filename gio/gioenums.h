@@ -764,7 +764,7 @@ typedef enum {
  *
  * GResourceFlags give information about a particular file inside a resource
  * bundle.
- * 
+ *
  * Since: 2.32
  **/
 typedef enum {
@@ -777,7 +777,7 @@ typedef enum {
  * @G_RESOURCE_LOOKUP_FLAGS_NONE: No flags set.
  *
  * GResourceLookupFlags determine how resource path lookups are handled.
- * 
+ *
  * Since: 2.32
  **/
 typedef enum /*< flags >*/ {
