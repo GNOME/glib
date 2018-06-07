@@ -546,7 +546,10 @@ g_array_insert_vals (GArray        *farray,
   /* Is the index off the end of the array, and hence do we need to over-allocate
    * and clear some elements? */
   if (index_ >= array->len)
+    {
+      g_array_maybe_expand (array, index_ - array->len + len);
       return g_array_append_vals (g_array_set_size (farray, index_), data, len);
+    }
 
   g_array_maybe_expand (array, len);
 
