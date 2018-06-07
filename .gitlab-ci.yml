@@ -19,7 +19,7 @@ fedora-meson-x86_64:
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
-    - meson --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
+    - meson --buildtype debug --werror -Dsystemtap=true -Ddtrace=true -Dfam=true _build .
     - ninja -C _build
     - meson test -C _build --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
     - mkdir -p _coverage

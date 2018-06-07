@@ -4,6 +4,7 @@ RUN dnf -y install \
     desktop-file-utils \
     elfutils-libelf-devel \
     findutils \
+    gamin-devel \
     gcc \
     gcc-c++ \
     gettext \
