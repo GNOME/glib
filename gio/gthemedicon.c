@@ -156,6 +156,12 @@ g_themed_icon_constructed (GObject *object)
       gchar    *name;
       gboolean  is_symbolic;
 
+      if (g_list_find_custom (names, themed->names[i], (GCompareFunc) g_strcmp0) ||
+          g_list_find_custom (variants, themed->names[i], (GCompareFunc) g_strcmp0))
+        /* The icon name was already added and is higher in priority.
+         * There is no need to re-add it. */
+        continue;
+
       is_symbolic = g_str_has_suffix (themed->names[i], "-symbolic");
       if (is_symbolic)
         {
