@@ -58,6 +58,7 @@ test_trash_not_supported (void)
 
   mount = g_unix_mount_for (g_file_peek_path (file), NULL);
   g_assert_nonnull (mount);
+  g_test_message ("Mount: %s", g_unix_mount_get_mount_path (mount));
 
   g_assert_true (g_unix_mount_is_system_internal (mount));
   g_unix_mount_free (mount);

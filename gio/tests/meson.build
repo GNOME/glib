@@ -298,6 +298,8 @@ foreach test_name : gio_tests
       dependencies : common_gio_tests_deps + extra_deps)
   if test_name == 'testfilemonitor'
     test(test_name, exe, env : test_env, timeout : 45)
+  elif test_name == 'trash'
+    test(test_name, exe, env : test_env, args : '--verbose')
   else
     test(test_name, exe, env : test_env)
   endif
