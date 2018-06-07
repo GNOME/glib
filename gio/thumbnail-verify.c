@@ -232,7 +232,7 @@ thumbnail_verify (const char     *thumbnail_path,
     return FALSE;
 
   expected_info.uri = file_uri;
-  expected_info.mtime = file_stat_buf->st_mtime;
+  expected_info.mtime = (guint64) file_stat_buf->st_mtime;
   expected_info.size = file_stat_buf->st_size;
 
   file = g_mapped_file_new (thumbnail_path, FALSE, NULL);
