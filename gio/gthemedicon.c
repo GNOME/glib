@@ -49,6 +49,7 @@ struct _GThemedIcon
 {
   GObject parent_instance;
   
+  char     **init_names;
   char     **names;
   gboolean   use_default_fallbacks;
 };
@@ -66,6 +67,8 @@ enum
   PROP_USE_DEFAULT_FALLBACKS
 };
 
+static void g_themed_icon_update_names (GThemedIcon *themed);
+
 G_DEFINE_TYPE_WITH_CODE (GThemedIcon, g_themed_icon, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
 						g_themed_icon_icon_iface_init))
@@ -81,7 +84,7 @@ g_themed_icon_get_property (GObject    *object,
   switch (prop_id)
     {
       case PROP_NAMES:
-        g_value_set_boxed (value, icon->names);
+        g_value_set_boxed (value, icon->init_names);
         break;
 
       case PROP_USE_DEFAULT_FALLBACKS:
@@ -111,12 +114,12 @@ g_themed_icon_set_property (GObject      *object,
         if (!name)
           break;
 
-        if (icon->names)
-          g_strfreev (icon->names);
+        if (icon->init_names)
+          g_strfreev (icon->init_names);
 
-        icon->names = g_new (char *, 2);
-        icon->names[0] = g_strdup (name);
-        icon->names[1] = NULL;
+        icon->init_names = g_new (char *, 2);
+        icon->init_names[0] = g_strdup (name);
+        icon->init_names[1] = NULL;
         break;
 
       case PROP_NAMES:
@@ -125,10 +128,10 @@ g_themed_icon_set_property (GObject      *object,
         if (!names)
           break;
 
-        if (icon->names)
-          g_strfreev (icon->names);
+        if (icon->init_names)
+          g_strfreev (icon->init_names);
 
-        icon->names = names;
+        icon->init_names = names;
         break;
 
       case PROP_USE_DEFAULT_FALLBACKS:
@@ -143,79 +146,7 @@ g_themed_icon_set_property (GObject      *object,
 static void
 g_themed_icon_constructed (GObject *object)
 {
-  GThemedIcon  *themed   = G_THEMED_ICON (object);
-  GList        *names    = NULL;
-  GList        *variants = NULL;
-  GList        *iter;
-  gint          i;
-
-  g_return_if_fail (themed->names != NULL && themed->names[0] != NULL);
-
-  for (i = 0; themed->names[i]; i++)
-    {
-      gchar    *name;
-      gboolean  is_symbolic;
-
-      if (g_list_find_custom (names, themed->names[i], (GCompareFunc) g_strcmp0) ||
-          g_list_find_custom (variants, themed->names[i], (GCompareFunc) g_strcmp0))
-        /* The icon name was already added and is higher in priority.
-         * There is no need to re-add it. */
-        continue;
-
-      is_symbolic = g_str_has_suffix (themed->names[i], "-symbolic");
-      if (is_symbolic)
-        {
-          name     = g_strndup (themed->names[i], strlen (themed->names[i]) - 9);
-          names    = g_list_prepend (names, g_strdup (themed->names[i]));
-          variants = g_list_prepend (variants, name);
-        }
-      else
-        {
-          name     = g_strdup (themed->names[i]);
-          names    = g_list_prepend (names, name);
-          variants = g_list_prepend (variants,
-                                     g_strdup_printf ("%s-symbolic", name));
-        }
-
-      if (themed->use_default_fallbacks)
-        {
-          char *dashp;
-          char *last;
-
-          last = name;
-
-          while ((dashp = strrchr (last, '-')) != NULL)
-            {
-              last = g_strndup (last, dashp - last);
-              if (is_symbolic)
-                {
-                  names = g_list_prepend (names,
-                                          g_strdup_printf ("%s-symbolic", last));
-                  variants = g_list_prepend (variants, last);
-                }
-              else
-                {
-                  names = g_list_prepend (names, last);
-                  variants = g_list_prepend (variants,
-                                             g_strdup_printf ("%s-symbolic", last));
-                }
-            }
-        }
-    }
-  names = g_list_reverse (names);
-  variants = g_list_reverse (variants);
-
-  g_strfreev (themed->names);
-  themed->names = g_new (char *, g_list_length (names) + g_list_length (variants) + 1);
-
-  for (iter = names, i = 0; iter; iter = iter->next, i++)
-    themed->names[i] = iter->data;
-  for (iter = variants; iter; iter = iter->next, i++)
-    themed->names[i] = iter->data;
-  themed->names[i] = NULL;
-
-  g_list_free (names);
-  g_list_free (variants);
+  g_themed_icon_update_names (G_THEMED_ICON (object));
 }
 
 static void
@@ -225,6 +156,7 @@ g_themed_icon_finalize (GObject *object)
 
   themed = G_THEMED_ICON (object);
 
+  g_strfreev (themed->init_names);
   g_strfreev (themed->names);
 
   G_OBJECT_CLASS (g_themed_icon_parent_class)->finalize (object);
@@ -294,7 +226,87 @@ g_themed_icon_class_init (GThemedIconClass *klass)
 static void
 g_themed_icon_init (GThemedIcon *themed)
 {
-  themed->names = NULL;
+  themed->init_names = NULL;
+  themed->names      = NULL;
+}
+
+static void
+g_themed_icon_update_names (GThemedIcon *themed)
+{
+  GList *names    = NULL;
+  GList *variants = NULL;
+  GList *iter;
+  gint   i;
+
+  g_return_if_fail (themed->init_names != NULL && themed->init_names[0] != NULL);
+
+  for (i = 0; themed->init_names[i]; i++)
+    {
+      gchar    *name;
+      gboolean  is_symbolic;
+
+      if (g_list_find_custom (names, themed->init_names[i], (GCompareFunc) g_strcmp0) ||
+          g_list_find_custom (variants, themed->init_names[i], (GCompareFunc) g_strcmp0))
+        /* The icon name was already added and is higher in priority.
+         * There is no need to re-add it. */
+        continue;
+
+      is_symbolic = g_str_has_suffix (themed->init_names[i], "-symbolic");
+      if (is_symbolic)
+        {
+          name     = g_strndup (themed->init_names[i], strlen (themed->init_names[i]) - 9);
+          names    = g_list_prepend (names, g_strdup (themed->init_names[i]));
+          variants = g_list_prepend (variants, name);
+        }
+      else
+        {
+          name     = g_strdup (themed->init_names[i]);
+          names    = g_list_prepend (names, name);
+          variants = g_list_prepend (variants,
+                                     g_strdup_printf ("%s-symbolic", name));
+        }
+
+      if (themed->use_default_fallbacks)
+        {
+          char *dashp;
+          char *last;
+
+          last = name;
+
+          while ((dashp = strrchr (last, '-')) != NULL)
+            {
+              last = g_strndup (last, dashp - last);
+              if (is_symbolic)
+                {
+                  names = g_list_prepend (names,
+                                          g_strdup_printf ("%s-symbolic", last));
+                  variants = g_list_prepend (variants, last);
+                }
+              else
+                {
+                  names = g_list_prepend (names, last);
+                  variants = g_list_prepend (variants,
+                                             g_strdup_printf ("%s-symbolic", last));
+                }
+            }
+        }
+    }
+  names = g_list_reverse (names);
+  variants = g_list_reverse (variants);
+
+  g_strfreev (themed->names);
+  themed->names = g_new (char *, g_list_length (names) + g_list_length (variants) + 1);
+
+  for (iter = names, i = 0; iter; iter = iter->next, i++)
+    themed->names[i] = iter->data;
+  for (iter = variants; iter; iter = iter->next, i++)
+    themed->names[i] = iter->data;
+  themed->names[i] = NULL;
+
+  g_list_free (names);
+  g_list_free (variants);
+
+  g_object_notify (G_OBJECT (themed), "names");
 }
 
 /**
@@ -418,12 +430,12 @@ g_themed_icon_append_name (GThemedIcon *icon,
   g_return_if_fail (G_IS_THEMED_ICON (icon));
   g_return_if_fail (iconname != NULL);
 
-  num_names = g_strv_length (icon->names);
-  icon->names = g_realloc (icon->names, sizeof (char*) * (num_names + 2));
-  icon->names[num_names] = g_strdup (iconname);
-  icon->names[num_names + 1] = NULL;
+  num_names = g_strv_length (icon->init_names);
+  icon->init_names = g_realloc (icon->init_names, sizeof (char*) * (num_names + 2));
+  icon->init_names[num_names] = g_strdup (iconname);
+  icon->init_names[num_names + 1] = NULL;
 
-  g_object_notify (G_OBJECT (icon), "names");
+  g_themed_icon_update_names (icon);
 }
 
 /**
@@ -449,17 +461,17 @@ g_themed_icon_prepend_name (GThemedIcon *icon,
   g_return_if_fail (G_IS_THEMED_ICON (icon));
   g_return_if_fail (iconname != NULL);
 
-  num_names = g_strv_length (icon->names);
+  num_names = g_strv_length (icon->init_names);
   names = g_new (char*, num_names + 2);
-  for (i = 0; icon->names[i]; i++)
-    names[i + 1] = icon->names[i];
+  for (i = 0; icon->init_names[i]; i++)
+    names[i + 1] = icon->init_names[i];
   names[0] = g_strdup (iconname);
   names[num_names + 1] = NULL;
 
-  g_free (icon->names);
-  icon->names = names;
+  g_free (icon->init_names);
+  icon->init_names = names;
 
-  g_object_notify (G_OBJECT (icon), "names");
+  g_themed_icon_update_names (icon);
 }
 
 static guint
