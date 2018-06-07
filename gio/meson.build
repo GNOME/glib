@@ -753,11 +753,6 @@ if host_system == 'windows'
   internal_deps += [ giowin32_lib ]
 endif
 
-# FIXME: FAM support
-#if HAVE_FAM
-#  subdir('fam')
-#endif
-
 if have_bash
   install_data([
     'completion/gapplication',
@@ -894,7 +889,7 @@ executable('gresource', 'gresource-tool.c',
   link_args : noseh_link_args,
   dependencies : [libelf, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
-executable('gio-querymodules', 'gio-querymodules.c', 'giomodule-priv.c',
+gio_querymodules = executable('gio-querymodules', 'gio-querymodules.c', 'giomodule-priv.c',
   install : true,
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
@@ -951,6 +946,8 @@ if enable_systemtap
     install_dir : tapset_install_dir,
     install : true)
 endif
+
+subdir('fam')
 
 if host_system != 'windows'
   subdir('tests')
