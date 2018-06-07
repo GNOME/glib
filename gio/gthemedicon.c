@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ static void g_themed_icon_icon_iface_init (GIconIface *iface);
 struct _GThemedIcon
 {
   GObject parent_instance;
-  
+
   char     **init_names;
   char     **names;
   gboolean   use_default_fallbacks;
@@ -70,8 +70,8 @@ enum
 static void g_themed_icon_update_names (GThemedIcon *themed);
 
 G_DEFINE_TYPE_WITH_CODE (GThemedIcon, g_themed_icon, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
-						g_themed_icon_icon_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
+                                                g_themed_icon_icon_iface_init))
 
 static void
 g_themed_icon_get_property (GObject    *object,
@@ -166,7 +166,7 @@ static void
 g_themed_icon_class_init (GThemedIconClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  
+
   gobject_class->finalize = g_themed_icon_finalize;
   gobject_class->constructed = g_themed_icon_constructed;
   gobject_class->set_property = g_themed_icon_set_property;
@@ -199,11 +199,11 @@ g_themed_icon_class_init (GThemedIconClass *klass)
   /**
    * GThemedIcon:use-default-fallbacks:
    *
-   * Whether to use the default fallbacks found by shortening the icon name 
-   * at '-' characters. If the "names" array has more than one element, 
+   * Whether to use the default fallbacks found by shortening the icon name
+   * at '-' characters. If the "names" array has more than one element,
    * ignores any past the first.
    *
-   * For example, if the icon name was "gnome-dev-cdrom-audio", the array 
+   * For example, if the icon name was "gnome-dev-cdrom-audio", the array
    * would become
    * |[<!-- language="C" -->
    * {
@@ -312,9 +312,9 @@ g_themed_icon_update_names (GThemedIcon *themed)
 /**
  * g_themed_icon_new:
  * @iconname: a string containing an icon name.
- * 
+ *
  * Creates a new themed icon for @iconname.
- * 
+ *
  * Returns: (transfer full) (type GThemedIcon): a new #GThemedIcon.
  **/
 GIcon *
@@ -328,11 +328,11 @@ g_themed_icon_new (const char *iconname)
 /**
  * g_themed_icon_new_from_names:
  * @iconnames: (array length=len): an array of strings containing icon names.
- * @len: the length of the @iconnames array, or -1 if @iconnames is 
+ * @len: the length of the @iconnames array, or -1 if @iconnames is
  *     %NULL-terminated
- * 
+ *
  * Creates a new themed icon for @iconnames.
- * 
+ *
  * Returns: (transfer full) (type GThemedIcon): a new #GThemedIcon
  **/
 GIcon *
@@ -371,10 +371,10 @@ g_themed_icon_new_from_names (char **iconnames,
  *
  * Creates a new themed icon for @iconname, and all the names
  * that can be created by shortening @iconname at '-' characters.
- * 
+ *
  * In the following example, @icon1 and @icon2 are equivalent:
  * |[<!-- language="C" -->
- * const char *names[] = { 
+ * const char *names[] = {
  *   "gnome-dev-cdrom-audio",
  *   "gnome-dev-cdrom",
  *   "gnome-dev",
@@ -422,7 +422,7 @@ g_themed_icon_get_names (GThemedIcon *icon)
  * to g_icon_hash().
  */
 void
-g_themed_icon_append_name (GThemedIcon *icon, 
+g_themed_icon_append_name (GThemedIcon *icon,
                            const char  *iconname)
 {
   guint num_names;
@@ -451,7 +451,7 @@ g_themed_icon_append_name (GThemedIcon *icon,
  * Since: 2.18
  */
 void
-g_themed_icon_prepend_name (GThemedIcon *icon, 
+g_themed_icon_prepend_name (GThemedIcon *icon,
                             const char  *iconname)
 {
   guint num_names;
@@ -485,7 +485,7 @@ g_themed_icon_hash (GIcon *icon)
 
   for (i = 0; themed->names[i] != NULL; i++)
     hash ^= g_str_hash (themed->names[i]);
-  
+
   return hash;
 }
 
@@ -500,7 +500,7 @@ g_themed_icon_equal (GIcon *icon1,
   for (i = 0; themed1->names[i] != NULL && themed2->names[i] != NULL; i++)
     {
       if (!g_str_equal (themed1->names[i], themed2->names[i]))
-	return FALSE;
+        return FALSE;
     }
 
   return themed1->names[i] == NULL && themed2->names[i] == NULL;
@@ -509,7 +509,7 @@ g_themed_icon_equal (GIcon *icon1,
 
 static gboolean
 g_themed_icon_to_tokens (GIcon *icon,
-			 GPtrArray *tokens,
+                         GPtrArray *tokens,
                          gint  *out_version)
 {
   GThemedIcon *themed_icon = G_THEMED_ICON (icon);
@@ -521,8 +521,8 @@ g_themed_icon_to_tokens (GIcon *icon,
 
   for (n = 0; themed_icon->names[n] != NULL; n++)
     g_ptr_array_add (tokens,
-		     g_strdup (themed_icon->names[n]));
-  
+                     g_strdup (themed_icon->names[n]));
+
   return TRUE;
 }
 
@@ -547,7 +547,7 @@ g_themed_icon_from_tokens (gchar  **tokens,
                    version);
       goto out;
     }
-  
+
   names = g_new0 (gchar *, num_tokens + 1);
   for (n = 0; n < num_tokens; n++)
     names[n] = tokens[n];

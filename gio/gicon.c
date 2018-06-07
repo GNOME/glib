@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -47,9 +47,9 @@
  * for checking the equality of two icons, hashing of icons and
  * serializing an icon to and from strings.
  *
- * #GIcon does not provide the actual pixmap for the icon as this is out 
- * of GIO's scope, however implementations of #GIcon may contain the name 
- * of an icon (see #GThemedIcon), or the path to an icon (see #GLoadableIcon). 
+ * #GIcon does not provide the actual pixmap for the icon as this is out
+ * of GIO's scope, however implementations of #GIcon may contain the name
+ * of an icon (see #GThemedIcon), or the path to an icon (see #GLoadableIcon).
  *
  * To obtain a hash of a #GIcon, see g_icon_hash().
  *
@@ -84,11 +84,11 @@ g_icon_default_init (GIconInterface *iface)
 /**
  * g_icon_hash:
  * @icon: (not nullable): #gconstpointer to an icon object.
- * 
+ *
  * Gets a hash for an icon.
  *
  * Virtual: hash
- * Returns: a #guint containing a hash for the @icon, suitable for 
+ * Returns: a #guint containing a hash for the @icon, suitable for
  * use in a #GHashTable or similar data structure.
  **/
 guint
@@ -107,14 +107,14 @@ g_icon_hash (gconstpointer icon)
  * g_icon_equal:
  * @icon1: (nullable): pointer to the first #GIcon.
  * @icon2: (nullable): pointer to the second #GIcon.
- * 
+ *
  * Checks if two icons are equal.
- * 
+ *
  * Returns: %TRUE if @icon1 is equal to @icon2. %FALSE otherwise.
  **/
 gboolean
 g_icon_equal (GIcon *icon1,
-	      GIcon *icon2)
+              GIcon *icon2)
 {
   GIconIface *iface;
 
@@ -123,12 +123,12 @@ g_icon_equal (GIcon *icon1,
 
   if (icon1 == NULL || icon2 == NULL)
     return FALSE;
-  
+
   if (G_TYPE_FROM_INSTANCE (icon1) != G_TYPE_FROM_INSTANCE (icon2))
     return FALSE;
 
   iface = G_ICON_GET_IFACE (icon1);
-  
+
   return (* iface->equal) (icon1, icon2);
 }
 
@@ -157,11 +157,11 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
   /* format: TypeName[.Version] <token_0> .. <token_N-1>
      version 0 is implicit and can be omitted
      all the tokens are url escaped to ensure they have no spaces in them */
-  
+
   g_string_append (s, g_type_name_from_instance ((GTypeInstance *)icon));
   if (version != 0)
     g_string_append_printf (s, ".%d", version);
-  
+
   for (i = 0; i < tokens->len; i++)
     {
       char *token;
@@ -171,13 +171,13 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
       g_string_append_c (s, ' ');
       /* We really only need to escape spaces here, so allow lots of otherwise reserved chars */
       g_string_append_uri_escaped (s, token,
-				   G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, TRUE);
+                                   G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, TRUE);
 
       g_free (token);
     }
-  
+
   g_ptr_array_free (tokens, TRUE);
-  
+
   return TRUE;
 }
 
@@ -198,7 +198,7 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
  *   if the #GFile for @icon is a native file.  If the file is not
  *   native, the returned string is the result of g_file_get_uri()
  *   (such as `sftp://path/to/my%20icon.png`).
- * 
+ *
  * - If @icon is a #GThemedIcon with exactly one name, the encoding is
  *    simply the name (such as `network-server`).
  *
@@ -224,14 +224,14 @@ g_icon_to_string (GIcon *icon)
 
       file = g_file_icon_get_file (G_FILE_ICON (icon));
       if (g_file_is_native (file))
-	{
-	  ret = g_file_get_path (file);
-	  if (!g_utf8_validate (ret, -1, NULL))
-	    {
-	      g_free (ret);
-	      ret = NULL;
-	    }
-	}
+        {
+          ret = g_file_get_path (file);
+          if (!g_utf8_validate (ret, -1, NULL))
+            {
+              g_free (ret);
+              ret = NULL;
+            }
+        }
       else
         ret = g_file_get_uri (file);
     }
@@ -241,11 +241,11 @@ g_icon_to_string (GIcon *icon)
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
       if (names != NULL &&
-	  names[0] != NULL &&
-	  names[0][0] != '.' && /* Allowing icons starting with dot would break G_ICON_SERIALIZATION_MAGIC0 */
-	  g_utf8_validate (names[0], -1, NULL) && /* Only return utf8 strings */
-	  names[1] == NULL)
-	ret = g_strdup (names[0]);
+          names[0] != NULL &&
+          names[0][0] != '.' && /* Allowing icons starting with dot would break G_ICON_SERIALIZATION_MAGIC0 */
+          g_utf8_validate (names[0], -1, NULL) && /* Only return utf8 strings */
+          names[1] == NULL)
+        ret = g_strdup (names[0]);
     }
 
   if (ret == NULL)
@@ -255,9 +255,9 @@ g_icon_to_string (GIcon *icon)
       s = g_string_new (G_ICON_SERIALIZATION_MAGIC0);
 
       if (g_icon_to_string_tokenized (icon, s))
-	ret = g_string_free (s, FALSE);
+        ret = g_string_free (s, FALSE);
       else
-	g_string_free (s, TRUE);
+        g_string_free (s, TRUE);
     }
 
   return ret;
@@ -265,7 +265,7 @@ g_icon_to_string (GIcon *icon)
 
 static GIcon *
 g_icon_new_from_tokens (char   **tokens,
-			GError **error)
+                        GError **error)
 {
   GIcon *icon;
   char *typename, *version_str;
@@ -291,7 +291,7 @@ g_icon_new_from_tokens (char   **tokens,
                    num_tokens);
       goto out;
     }
-  
+
   typename = tokens[0];
   version_str = strchr (typename, '.');
   if (version_str)
@@ -299,8 +299,8 @@ g_icon_new_from_tokens (char   **tokens,
       *version_str = 0;
       version_str += 1;
     }
-  
-  
+
+
   type = g_type_from_name (tokens[0]);
   if (type == 0)
     {
@@ -338,14 +338,14 @@ g_icon_new_from_tokens (char   **tokens,
     {
       version = strtol (version_str, &endp, 10);
       if (endp == NULL || *endp != '\0')
-	{
-	  g_set_error (error,
-		       G_IO_ERROR,
-		       G_IO_ERROR_INVALID_ARGUMENT,
-		       _("Malformed version number: %s"),
-		       version_str);
-	  goto out;
-	}
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Malformed version number: %s"),
+                       version_str);
+          goto out;
+        }
     }
 
   icon_iface = g_type_interface_peek (klass, G_TYPE_ICON);
@@ -369,7 +369,7 @@ g_icon_new_from_tokens (char   **tokens,
       tokens[i] = g_uri_unescape_string (escaped, NULL);
       g_free (escaped);
     }
-  
+
   icon = icon_iface->from_tokens (tokens + 1, num_tokens - 1, version, error);
 
  out:

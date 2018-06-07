@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@
  *
  * #GEmblemedIcon is an implementation of #GIcon that supports
  * adding an emblem to an icon. Adding multiple emblems to an
- * icon is ensured via g_emblemed_icon_add_emblem(). 
+ * icon is ensured via g_emblemed_icon_add_emblem().
  *
  * Note that #GEmblemedIcon allows no control over the position
  * of the emblems. See also #GEmblem for more information.
@@ -156,7 +156,7 @@ g_emblemed_icon_new (GIcon   *icon,
                      GEmblem *emblem)
 {
   GEmblemedIcon *emblemed;
-  
+
   g_return_val_if_fail (G_IS_ICON (icon), NULL);
   g_return_val_if_fail (!G_IS_EMBLEM (icon), NULL);
 
@@ -254,7 +254,7 @@ g_emblem_comp (GEmblem *a,
  *
  * Since: 2.18
  **/
-void 
+void
 g_emblemed_icon_add_emblem (GEmblemedIcon *emblemed,
                             GEmblem       *emblem)
 {
@@ -297,11 +297,11 @@ g_emblemed_icon_equal (GIcon *icon1,
   {
     if (!g_icon_equal (G_ICON (list1->data), G_ICON (list2->data)))
         return FALSE;
-    
+
     list1 = list1->next;
     list2 = list2->next;
   }
-  
+
   return list1 == NULL && list2 == NULL;
 }
 
@@ -336,7 +336,7 @@ g_emblemed_icon_to_tokens (GIcon *icon,
       s = g_icon_to_string (emblem_icon);
       if (s == NULL)
         return FALSE;
-      
+
       g_ptr_array_add (tokens, s);
     }
 
