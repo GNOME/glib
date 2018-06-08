@@ -1967,7 +1967,7 @@ g_local_file_trash (GFile         *file,
 	{
           g_set_io_error (error,
                           _("Unable to find toplevel directory to trash %s"),
-                          file, G_IO_ERROR_NOT_SUPPORTED);
+                          file, ENOTSUP);
 	  return FALSE;
 	}
 
