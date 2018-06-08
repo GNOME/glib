@@ -169,6 +169,21 @@ typedef struct _GSourceFuncs            GSourceFuncs;
 typedef gboolean (*GSourceFunc)       (gpointer user_data);
 
 /**
+ * G_SOURCE_FUNC:
+ * @f: a function pointer.
+ *
+ * Cast a function pointer to a #GSourceFunc, suppressing warnings from recent
+ * versions of GCC about the function types being incompatible.
+ *
+ * For example, the correct type of callback for a source created by
+ * g_child_watch_source_new() is #GChildWatchFunc, which accepts more arguments
+ * than #GSourceFunc. Casting it with `(GSourceFunc)` to call
+ * g_source_set_callback() will trigger a warning, even though it will be cast
+ * back to the correct type before it is called by the source.
+ */
+#define G_SOURCE_FUNC(f) ((GSourceFunc) (void (*)(void)) (f))
+
+/**
  * GChildWatchFunc:
  * @pid: the process id of the child process
  * @status: Status information about the child process, encoded
