@@ -25,8 +25,14 @@ if cc.get_id() == 'msvc'
   noseh_link_args = ['/SAFESEH:NO']
   # Set the input and exec encoding to utf-8, like is the default with GCC
   add_project_arguments(cc.get_supported_arguments(['/utf-8']), language: 'c')
+  disable_pkgconfig = get_option('disable_pkgconfig')
 else
   noseh_link_args = []
+  warn_disable_pkgconfig_ignored = get_option('disable_pkgconfig')
+  if warn_disable_pkgconfig_ignored
+    warning('disable_pkgconfig is only for Visual Studio builds, ignored')
+  endif
+  disable_pkgconfig = false
   # -mms-bitfields vs -fnative-struct ?
 endif
 
@@ -1614,8 +1620,10 @@ if get_option('internal_pcre')
   pcre = []
   use_system_pcre = false
 else
-  pcre = dependency('libpcre', required : false) # Should check for Unicode support, too. FIXME
-  if not pcre.found()
+  if not disable_pkgconfig
+    pcre = dependency('libpcre', required : false) # Should check for Unicode support, too. FIXME
+  endif
+  if disable_pkgconfig or not pcre.found()
     if cc.get_id() == 'msvc'
     # MSVC: Search for the PCRE library by the configuration, which corresponds
     # to the output of CMake builds of PCRE.  Note that debugoptimized
@@ -1653,17 +1661,29 @@ if host_system == 'windows'
 endif
 
 libm = cc.find_library('m', required : false)
-libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
+
+if not disable_pkgconfig
+  libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
+else
+  if cc.has_header('ffi.h')
+    libffi_dep = cc.find_library('ffi', required : false)
+    if not libffi_dep.found()
+      libffi_dep = subproject('libffi').get_variable('ffi_dep')
+    endif
+  endif
+endif
 if cc.get_id() != 'msvc'
   libz_dep = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
 else
   # MSVC: Don't use the bundled ZLib sources until we are sure that we can't
   # find the ZLib .lib
-  libz_dep = dependency('zlib', required : false)
+  if not disable_pkgconfig
+    libz_dep = dependency('zlib', required : false)
+  endif
 
   # MSVC: Search for the ZLib .lib, which corresponds to the results of
   # of using ZLib's win32/makefile.msc.
-  if not libz_dep.found()
+  if disable_pkgconfig or not libz_dep.found()
     libz_dep = cc.find_library('zlib1', required : false)
     if not libz_dep.found()
       libz_dep = cc.find_library('zlib', required : false)

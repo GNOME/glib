@@ -78,3 +78,8 @@ option('fam',
        type : 'boolean',
        value : false,
        description : 'Use fam for file system monitoring')
+
+option('disable_pkgconfig',
+       type : 'boolean',
+       value : false,
+       description : 'Disable pkg-config for Visual Studio builds only')
