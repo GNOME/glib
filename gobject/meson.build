@@ -83,6 +83,7 @@ pkg.generate(libraries : libgobject,
 )
 
 libgobject_dep = declare_dependency(link_with : libgobject,
+  dependencies : [libffi_dep],
   include_directories : gobjectinc)
 
 python_tools = [

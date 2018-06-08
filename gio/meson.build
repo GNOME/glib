@@ -830,7 +830,7 @@ else
 endif
 
 libgio_dep = declare_dependency(link_with : libgio,
-  dependencies : [gioenumtypes_dep],
+  dependencies : [gioenumtypes_dep, libz_dep],
   # We sadly need to export configinc here because everyone includes <gio/*.h>
   include_directories : [configinc, gioinc])
 
