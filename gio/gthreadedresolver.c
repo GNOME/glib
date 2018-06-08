@@ -803,7 +803,9 @@ free_records (GList *records)
 
 #if defined(G_OS_UNIX)
 #ifdef __BIONIC__
+#ifndef C_IN
 #define C_IN 1
+#endif
 int res_query(const char *, int, int, u_char *, int);
 #endif
 #endif
