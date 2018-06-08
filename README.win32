@@ -171,7 +171,17 @@ Building with Visual Studio
 
 Meson is now the supported method of building GLib using Visual Studio.
 
-Note that you will need a libintl implementation, zlib, and libFFI.
+Note that you will need a libintl implementation, zlib, and libFFI, and
+optionally PCRE1, which should preferably be built with the same compiler
+that is now being used to build GLib.  Ensure that their headers, .lib's
+and DLLs can be found in the paths specified by the INCLUDE, LIB and PATH
+envvars.  The Meson build process will pull in a copy of the ZLib and the
+libFFI sources if they cannot be found, and will build an in-source copy
+of PCRE1 if PCRE1 cannt be found.
+
+One can also refer to the following page for building the dependencies:
+
+https://wiki.gnome.org/Projects/GTK%2B/Win32/MSVCCompilationOfGTKStack
 
 You will also need the following items:
 -Python 3.6.x, you need the 32-bit version if you are building GLib
@@ -181,11 +191,41 @@ You will also need the following items:
  and optional for 2010, 2015 and 2017 builds, where Visual Studio projects
  can be generated instead of the Ninja build files.
 
-One can also refer to the following page for building the dependencies:
+To do a build using Meson, do the following:
 
-https://wiki.gnome.org/Projects/GTK%2B/Win32/MSVCCompilationOfGTKStack
+-Open a Visual Studio (or SDK) command prompt that matches the Visual Studio
+ version and build platform (Win32/x86, x64, etc.) that will be used in all
+ the following steps.
 
-Note that if building the sources with Visual Studio 2008, note the following steps:
+-Create an empty directory/folder for the build.  It needs to be in the same
+ drive as where your GLib sources are located (i.e. $(GLIB_SRCDIR)).  cd into
+ that directory/folder.
+
+-Setup your PATH envvar:
+
+   set PATH=%PATH%;$(PYTHON_INSTALL_DIR);$(NINJA_DIR)
+
+ where PYTHON_INSTALL_DIR is where Python 3.6.x+ is installed to, and NINJA_DIR
+ is where your ninja executable can be found.  The NINJA_DIR can be omitted if one
+ passes --backend=vs to the Meson configuration line, for Visual Studio 2010, 2015
+ and 2017 builds.
+
+-Configure the build using Meson:
+
+    python $(PYTHON_INSTALL_DIR)\scripts\meson.py $(GLIB_SRCDIR) --buildtype=$(build_configuration) --prefix=$(INSTALL_PREFIX) [--backend=vs]
+
+ Please see the Meson docs for an explanation for --buildtype, the path passed for
+ --prefix need not to be on the same drive as where the build is carried out, but
+ it is recommended to use forward slashes for this path.  The --backend=vs can be
+ used if the Visual Studio project generator is preferred over using Ninja, for
+ Visual Studio 2010, 2015 and 2017 builds.
+
+-Build, test and install the build:
+ Run ninja (and ninja test and ninja install) or open the generated Visual Studio
+ projects to compile, test and install the build.
+
+Note that if building the sources with Visual Studio 2008, note the following
+additional items:
 
 -You need to run the following lines from your build directory, to embed the manifests
  that are generated during the build, assuming the built binaries are installed
@@ -197,6 +237,7 @@ for /r %f in (*.exe.manifest) do if exist $(PREFIX)\bin\%~nf mt /manifest %f $(P
 -If building for amd64/x86_64/x64, sometimes the compilation of sources may seem to hang, which
  is caused by an optimization issue in the 2008 x64 compiler.  You need to use Task Manager to
  remove all running instances of cl.exe, which will cause the build process to terminate.  Update
- the build flags of the sources that hang on compilation by changing its "/O2" flag to "/O1", and
- retry the build, where things should continue to build normally.  At the time of writing, this
- is needed for compiling glib/gtestutils.c,  gio/gsettings.c and gio/gsettingsschema.c
+ the build flags of the sources that hang on compilation by changing its "/O2" flag to "/O1"
+ in build.ninja, and  retry the build, where things should continue to build normally.  At the
+ time of writing, this is needed for compiling glib/gtestutils.c,  gio/gsettings.c and
+ gio/gsettingsschema.c
