@@ -357,6 +357,11 @@ libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined)
 
+if OS_COCOA
+libglib_2_0_la_CFLAGS += -xobjective-c
+libglib_2_0_la_LDFLAGS += -Wl,-framework,Foundation
+endif
+
 INSTALL_PROGS=
 
 if ENABLE_DTRACE

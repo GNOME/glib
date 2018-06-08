@@ -569,6 +569,7 @@ if host_system == 'linux'
 endif
 
 osx_ldflags = []
+osx_cargs = []
 glib_have_os_x_9_or_later = false
 glib_have_carbon = false
 glib_have_cocoa = false
@@ -603,12 +604,14 @@ if host_system == 'darwin'
   if glib_have_cocoa
     glib_conf.set('HAVE_COCOA', true)
     osx_ldflags += ['-Wl,-framework,Foundation', '-Wl,-framework,AppKit']
+    osx_cargs += ['-xobjective-c']
   endif
 
   # FIXME: libgio mix C and objC source files and there is no way to reliably
   # know which language flags it's going to use to link. Add to both languages
   # for now. See https://github.com/mesonbuild/meson/issues/3585.
   add_project_link_arguments(osx_ldflags, language : ['objc', 'c'])
+  add_project_arguments(osx_cargs, language : ['c'])
 endif
 
 # Check for futex(2)
