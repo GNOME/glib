@@ -1119,8 +1119,10 @@ lookup_uid_data (uid_t uid)
   char buffer[4096];
   struct passwd pwbuf;
   struct passwd *pwbufp;
+#ifndef __BIONIC__
   char *gecos, *comma;
-  
+#endif
+
   if (uid_cache == NULL)
     uid_cache = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)uid_data_free);
 
@@ -1205,10 +1207,12 @@ static char *
 lookup_gid_name (gid_t gid)
 {
   char *name;
+#if defined (HAVE_GETGRGID_R)
   char buffer[4096];
   struct group gbuf;
+#endif
   struct group *gbufp;
-  
+
   if (gid_cache == NULL)
     gid_cache = g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify)g_free);
 
