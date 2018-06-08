@@ -121,7 +121,7 @@ _ke_is_excluded (const char *full_path)
     g_object_unref (f);
   }
 
-  if ((mount != NULL && (g_mount_can_unmount (mount))) || g_str_has_prefix (full_path, "/mnt/"))
+  if (mount != NULL && (g_str_has_prefix (full_path, "/media/") || g_str_has_prefix (full_path, "/run/media/")))
   {
     g_warning ("Excluding %s from kernel notification, falling back to poll", full_path);
     if (mount)
