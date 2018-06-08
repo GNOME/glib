@@ -1677,21 +1677,36 @@ find_mountpoint_for (const char *file,
     }
 }
 
-char *
-_g_local_file_find_topdir_for (const char *file)
+static char *
+_g_local_file_find_topdir_for_internal (const char *file, dev_t file_dev)
 {
   char *dir;
   char *mountpoint = NULL;
   dev_t dir_dev;
 
   dir = get_parent (file, &dir_dev);
-  if (dir == NULL)
-    return NULL;
+  if (dir == NULL || dir_dev != file_dev)
+    {
+      g_free (dir);
+
+      return NULL;
+    }
 
   mountpoint = find_mountpoint_for (dir, dir_dev);
   g_free (dir);
 
   return mountpoint;
+}
+
+char *
+_g_local_file_find_topdir_for (const char *file)
+{
+  GStatBuf file_stat;
+
+  if (g_lstat (file, &file_stat) != 0)
+    return NULL;
+
+  return _g_local_file_find_topdir_for_internal (file, file_stat.st_dev);
 }
 
 static char *
@@ -1946,7 +1961,8 @@ g_local_file_trash (GFile         *file,
       uid = geteuid ();
       g_snprintf (uid_str, sizeof (uid_str), "%lu", (unsigned long)uid);
 
-      topdir = _g_local_file_find_topdir_for (local->filename);
+      topdir = _g_local_file_find_topdir_for_internal (local->filename,
+                                                       file_stat.st_dev);
       if (topdir == NULL)
 	{
           g_set_io_error (error,
