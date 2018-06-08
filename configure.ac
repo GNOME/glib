@@ -3459,7 +3459,6 @@ gobject-2.0.pc
 gio-2.0.pc
 gio-unix-2.0.pc
 gio-windows-2.0.pc
-glib-zip
 glib-gettextize
 Makefile
 build/Makefile
@@ -3511,8 +3510,7 @@ subprojects/Makefile
 # We need this command because the configure script will not preserve
 # the same attributes of the template files
 AC_CONFIG_COMMANDS([chmod-scripts],
-[chmod 0755 glib-zip
-chmod 0755 glib-gettextize
+[chmod 0755 glib-gettextize
 chmod 0755 gobject/glib-genmarshal
 chmod 0755 gobject/glib-mkenums])
 
