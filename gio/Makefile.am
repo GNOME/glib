@@ -820,7 +820,6 @@ gio-2.0.lib: libgio-2.0.la gio.def
 	$(AM_V_GEN) lib.exe -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gio.def -out:$@
 
 bin_PROGRAMS = gio-querymodules glib-compile-schemas glib-compile-resources gsettings
-EXTRA_DIST += gio-querymodules-wrapper.py
 
 glib_compile_resources_LDADD = libgio-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\

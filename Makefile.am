@@ -64,7 +64,6 @@ EXTRA_DIST += 			\
 	$(NULL)
 
 meson_build_files = \
-	config.h.meson \
 	meson_options.txt \
 	meson.build \
 	docs/reference/gio/meson.build \
@@ -77,7 +76,10 @@ meson_build_files = \
 	docs/reference/gobject/xml/gtkdocentities.ent.in \
 	docs/reference/gobject/xml/meson.build \
 	gio/data-to-c.py \
+	gio/fam/gfamfilemonitor.map \
+	gio/fam/meson.build \
 	gio/gdbus-2.0/codegen/meson.build \
+	gio/gio-querymodules-wrapper.py \
 	gio/inotify/meson.build \
 	gio/kqueue/meson.build \
 	gio/meson.build \
