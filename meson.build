@@ -1860,8 +1860,6 @@ if xgettext.found()
 endif
 subdir('tests')
 
-# NOTE: We skip glib-zip.in because the filenames it assumes don't match ours
-
 # Install glib-gettextize executable, if a UNIX-style shell is found
 if have_sh
   # These should not contain " quotes around the values
