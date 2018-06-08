@@ -749,7 +749,7 @@ test_l10n (void)
   g_free (str);
   str = NULL;
 
-  setlocale (LC_MESSAGES, "de_DE");
+  setlocale (LC_MESSAGES, "de_DE.UTF-8");
   /* Only do the test if translation is actually working... */
   if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
     {
@@ -796,7 +796,7 @@ test_l10n_context (void)
   g_free (str);
   str = NULL;
 
-  setlocale (LC_MESSAGES, "de_DE");
+  setlocale (LC_MESSAGES, "de_DE.UTF-8");
   /* Only do the test if translation is actually working... */
   if (g_str_equal (dgettext ("test", "\"Unnamed\""), "\"Unbenannt\""))
     {
