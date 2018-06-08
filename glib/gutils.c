@@ -119,8 +119,8 @@
 #  include <process.h>
 #endif
 
-#ifdef HAVE_CARBON
-#include <CoreServices/CoreServices.h>
+#ifdef HAVE_COCOA
+#include <Cocoa/Cocoa.h>
 #endif
 
 #ifdef HAVE_CODESET
@@ -1402,56 +1402,40 @@ g_get_user_runtime_dir (void)
   return runtime_dir;
 }
 
-#ifdef HAVE_CARBON
+#ifdef HAVE_COCOA
 
 static gchar *
-find_folder (OSType type)
+find_folder (NSSearchPathDirectory type)
 {
-  gchar *filename = NULL;
-  FSRef  found;
+  gchar *filename;
+  NSString *path;
+  NSArray *paths;
 
-  if (FSFindFolder (kUserDomain, type, kDontCreateFolder, &found) == noErr)
+  paths = NSSearchPathForDirectoriesInDomains (type, NSUserDomainMask, YES);
+  path = [paths firstObject];
+  if (path == nil)
     {
-      CFURLRef url = CFURLCreateFromFSRef (kCFAllocatorSystemDefault, &found);
-
-      if (url)
-	{
-	  CFStringRef path = CFURLCopyFileSystemPath (url, kCFURLPOSIXPathStyle);
-
-	  if (path)
-	    {
-	      filename = g_strdup (CFStringGetCStringPtr (path, kCFStringEncodingUTF8));
-
-	      if (! filename)
-		{
-		  filename = g_new0 (gchar, CFStringGetLength (path) * 3 + 1);
-
-		  CFStringGetCString (path, filename,
-				      CFStringGetLength (path) * 3 + 1,
-				      kCFStringEncodingUTF8);
-		}
-
-	      CFRelease (path);
-	    }
-
-	  CFRelease (url);
-	}
+      [paths release];
+      return NULL;
     }
 
+  filename = g_strdup ([path UTF8String]);
+
+  [paths release];
   return filename;
 }
 
 static void
 load_user_special_dirs (void)
 {
-  g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = find_folder (kDesktopFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = find_folder (kDocumentsFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = find_folder (kDesktopFolderType); /* XXX correct ? */
-  g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = find_folder (kMusicDocumentsFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_PICTURES] = find_folder (kPictureDocumentsFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = NULL;
+  g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = find_folder (NSDesktopDirectory);
+  g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = find_folder (NSDocumentDirectory);
+  g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = find_folder (NSDownloadsDirectory);
+  g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = find_folder (NSMusicDirectory);
+  g_user_special_dirs[G_USER_DIRECTORY_PICTURES] = find_folder (NSPicturesDirectory);
+  g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = find_folder (NSSharedPublicDirectory);
   g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = NULL;
-  g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = find_folder (kMovieDocumentsFolderType);
+  g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = find_folder (NSMoviesDirectory);
 }
 
 #elif defined(G_OS_WIN32)
