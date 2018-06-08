@@ -293,7 +293,7 @@ else
   gtester = executable('gtester', 'gtester.c',
     install : true,
     include_directories : configinc,
-    dependencies : [libglib_dep])
+    dependencies : [libglib_dep, libiconv])
 endif
 
 install_data('gtester-report', install_dir : get_option('bindir'))

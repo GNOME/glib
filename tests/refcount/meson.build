@@ -21,7 +21,8 @@ foreach t : refcount_tests
   # FIXME? $(GLIB_DEBUG_FLAGS)
   exe = executable(test_name + '-test', test_src,
     c_args : test_cargs + test_extra_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS'],
-    dependencies : [libm, thread_dep, libglib_dep, libgobject_dep],
+    dependencies : [libm, thread_dep, libglib_dep, libgobject_dep,
+                    libffi_dep, libiconv],
     install : false,
   )
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset

@@ -52,7 +52,8 @@ foreach t : gobject_tests
   # FIXME? $(GLIB_DEBUG_FLAGS)
   exe = executable(test_name + '-gobject', test_src,
     c_args : test_cargs + test_extra_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS'],
-    dependencies : [libm, thread_dep, libglib_dep, libgobject_dep],
+    dependencies : [libm, thread_dep, libglib_dep, libgobject_dep,
+                    libiconv, libffi_dep],
     install : false,
   )
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
@@ -62,17 +63,20 @@ endforeach
 # Don't install these ones, and keep them out of 'make check' because they take too long...
 executable('performance', 'performance.c',
     c_args : test_cargs + test_extra_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS'],
-    dependencies : [libm, thread_dep, libglib_dep, libgobject_dep],
+    dependencies : [libm, thread_dep, libglib_dep, libgobject_dep,
+                    libffi_dep, libiconv],
     install : false)
 
 executable('performance-threaded', 'performance-threaded.c',
     c_args : test_cargs + test_extra_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS'],
-    dependencies : [libm, thread_dep, libglib_dep, libgobject_dep],
+    dependencies : [libm, thread_dep, libglib_dep, libgobject_dep,
+                    libffi_dep, libiconv],
     install : false)
 
 if host_system != 'windows' and host_system != 'minix'
   executable('timeloop-closure', 'timeloop-closure.c',
       c_args : test_cargs + test_extra_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS'],
-      dependencies : [libm, thread_dep, libglib_dep, libgobject_dep],
+      dependencies : [libm, thread_dep, libglib_dep, libgobject_dep,
+                      libffi_dep, libiconv],
       install : false)
 endif

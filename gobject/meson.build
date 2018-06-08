@@ -109,7 +109,7 @@ endforeach
 
 executable('gobject-query', 'gobject-query.c',
   install : true,
-  dependencies : [libglib_dep, libgobject_dep])
+  dependencies : [libglib_dep, libgobject_dep, libiconv, libffi_dep])
 
 install_data('gobject_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 gdb_conf = configuration_data()

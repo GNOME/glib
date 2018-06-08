@@ -107,7 +107,7 @@ slow_tests = [
 ]
 
 foreach test_name : glib_tests
-  deps = [libm, thread_dep, libglib_dep]
+  deps = [libm, thread_dep, libglib_dep, libiconv]
   if test_name == 'regex'
     deps += [pcre]
   endif
@@ -132,7 +132,7 @@ if cc.get_id() == 'gcc'
   c_args_atomic += ['-Wstrict-aliasing=2']
 endif
 
-deps = [libm, thread_dep, libglib_dep]
+deps = [libm, thread_dep, libglib_dep, libiconv]
 
 exe = executable('atomic', 'atomic.c',
   c_args : test_cargs + c_args_atomic,

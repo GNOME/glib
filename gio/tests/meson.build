@@ -1,8 +1,11 @@
 common_gio_tests_deps = [
+  libiconv,
+  libffi_dep,
   libglib_dep,
   libgmodule_dep,
   libgobject_dep,
   libgio_dep,
+  libz_dep,
 ]
 
 subdir('gdbus-object-manager-example')

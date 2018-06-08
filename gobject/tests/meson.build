@@ -31,7 +31,7 @@ test_env = [
 ]
 
 foreach test_name : gobject_tests
-  deps = [libm, thread_dep, libglib_dep, libgobject_dep]
+  deps = [libm, thread_dep, libglib_dep, libgobject_dep, libiconv, libffi_dep]
   test_src = '@0@.c'.format(test_name)
   # private is an existing or reserved target it seems
   if test_name == 'private'
