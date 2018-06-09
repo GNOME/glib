@@ -123,6 +123,7 @@ if host_machine.system() != 'windows'
     'unix-streams',
     'g-file-info-filesystem-readonly',
     'gschema-compile',
+    'trash',
   ]
 
   # Uninstalled because of the check-for-executable logic in DesktopAppInfo
