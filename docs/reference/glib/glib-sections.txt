@@ -3464,3 +3464,15 @@ g_atomic_ref_count_inc
 g_atomic_ref_count_dec
 g_atomic_ref_count_compare
 </SECTION>
+
+<SECTION>
+<FILE>rcbox</FILE>
+g_rc_box_alloc
+g_rc_box_alloc0
+g_rc_box_new
+g_rc_box_new0
+g_rc_box_dup
+g_rc_box_acquire
+g_rc_box_release
+g_rc_box_release_full
+</SECTION>

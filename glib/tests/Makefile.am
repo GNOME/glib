@@ -89,6 +89,7 @@ test_programs = \
 	protocol			\
 	queue				\
 	rand				\
+	rcbox				\
 	rec-mutex			\
 	regex				\
 	rwlock				\

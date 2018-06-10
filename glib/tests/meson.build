@@ -46,6 +46,7 @@ glib_tests = [
   'protocol',
   'queue',
   'rand',
+  'rcbox',
   'rec-mutex',
   'refcount',
   'refcount-macro',
