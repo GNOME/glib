@@ -17,6 +17,7 @@ foreach t : refcount_tests
   test_src = t.get(1)
   test_extra_cargs = t.get(2)
   test_timeout = t.get(3, 30)
+  test_suite = test_timeout == 30 ? ['refcount'] : ['refcount', 'slow']
 
   # FIXME? $(GLIB_DEBUG_FLAGS)
   exe = executable(test_name + '-test', test_src,
@@ -25,5 +26,5 @@ foreach t : refcount_tests
     install : false,
   )
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
-  test(test_name, exe, env : test_env, timeout : test_timeout)
+  test(test_name, exe, env : test_env, timeout : test_timeout, suite : test_suite)
 endforeach
