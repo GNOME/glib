@@ -96,6 +96,7 @@ deprecated_sources = \
 libglib_2_0_la_SOURCES = 	\
 	$(deprecated_sources)	\
 	glib_probes.d		\
+	garcbox.c		\
 	garray.c		\
 	gasyncqueue.c		\
 	gasyncqueueprivate.h	\
@@ -150,6 +151,7 @@ libglib_2_0_la_SOURCES = 	\
 	gqueue.c		\
 	grand.c			\
 	grcbox.c		\
+	grcboxprivate.h		\
 	grefcount.c		\
 	gregex.c		\
 	gscanner.c		\

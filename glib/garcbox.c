@@ -1,4 +1,4 @@
-/* grcbox.c: Reference counted data
+/* garcbox.c: Atomically reference counted data
  *
  * Copyright 2018  Emmanuele Bassi
  *
@@ -30,17 +30,19 @@
 
 #include <string.h>
 
+#define G_ARC_BOX(p)            (GArcBox *) (((char *) (p)) - G_ARC_BOX_SIZE)
+
 /**
- * SECTION:rcbox
- * @Title: Reference counted data
- * @Short_description: Allocated memory with reference counting semantics
+ * SECTION:arcbox
+ * @Title: Atomically reference counted data
+ * @Short_description: Allocated memory with atomic reference counting semantics
  *
- * A "reference counted box", or "RcBox", is an opaque wrapper data type
- * that is guaranteed to be as big as the size of a given data type, and
- * which augments the given data type with reference counting semantics
- * for its memory management.
+ * An "atomically reference counted box", or "ArcBox", is an opaque wrapper
+ * data type that is guaranteed to be as big as the size of a given data type,
+ * and which augments the given data type with thread safe reference counting
+ * semantics for its memory management.
  *
- * RcBox is useful if you have a plain old data type, like a structure
+ * ArcBox is useful if you have a plain old data type, like a structure
  * typically placed on the stack, and you wish to provide additional API
  * to use it on the heap, without necessarily implementing copy/free
  * semantics, or your own reference counting.
@@ -55,7 +57,7 @@
  * Point *
  * point_new (float x, float y)
  * {
- *   Point *res = g_rc_box_new (Point);
+ *   Point *res = g_arc_box_new (Point);
  *
  *   res->x = x;
  *   res->y = y;
@@ -65,25 +67,25 @@
  * ]|
  *
  * Every time you wish to acquire a reference on the memory, you should
- * call g_rc_box_acquire(); similarly, when you wish to release a reference
- * you should call g_rc_box_release():
+ * call g_arc_box_acquire(); similarly, when you wish to release a reference
+ * you should call g_arc_box_release():
  *
  * |[<!-- language="C" -->
  * Point *
  * point_ref (Point *p)
  * {
- *   return g_rc_box_acquire (p);
+ *   return g_arc_box_acquire (p);
  * }
  *
  * void
  * point_unref (Point *p)
  * {
- *   g_rc_box_release (p);
+ *   g_arc_box_release (p);
  * }
  * ]|
  *
  * If you have additional memory allocated inside the structure, you can
- * use g_rc_box_release_full(), which takes a function pointer, which
+ * use g_arc_box_release_full(), which takes a function pointer, which
  * will be called if the reference released was the last:
  *
  * |[<!-- language="C" -->
@@ -107,7 +109,7 @@
  * void
  * person_unref (Person *p)
  * {
- *   g_rc_box_release_full (p, (GDestroyNotify) person_clear);
+ *   g_arc_box_release_full (p, (GDestroyNotify) person_clear);
  * }
  * ]|
  *
@@ -115,95 +117,28 @@
  * type without increasing the reference count, you can use g_steal_pointer():
  *
  * |[<!-- language="C" -->
- *   Person *p = g_rc_box_new (Person);
+ *   Person *p = g_arc_box_new (Person);
  *
  *   fill_person_details (p);
  *
  *   add_person_to_database (db, g_steal_pointer (&p));
  * ]|
  *
- * The reference counting operations on data allocated using g_rc_box_alloc(),
- * g_rc_box_new(), and g_rc_box_dup() are not thread safe; it is your code's
- * responsibility to ensure that references are acquired are released on the
- * same thread.
+ * The reference counting operations on data allocated using g_arc_box_alloc(),
+ * g_arc_box_new(), and g_arc_box_dup() are guaranteed to be atomic, and thus
+ * can be safely be performed by different threads. It is important to note that
+ * only the reference acquisition and release are atomic; changes to the content
+ * of the data are your responsibility.
  *
  * Since: 2.58.
  */
 
-#define G_RC_BOX(p)             (GRcBox *) (((char *) (p)) - G_RC_BOX_SIZE)
-
-/* We use the same alignment as GTypeInstance and GNU libc's malloc */
-#define STRUCT_ALIGNMENT        (2 * sizeof (gsize))
-#define ALIGN_STRUCT(offset)    ((offset + (STRUCT_ALIGNMENT - 1)) & -STRUCT_ALIGNMENT)
-
-gpointer
-g_rc_box_alloc_full (gsize    block_size,
-                     gboolean atomic,
-                     gboolean clear)
-{
-  /* sizeof GArcBox == sizeof GRcBox */
-  gsize private_size = G_ARC_BOX_SIZE;
-  gsize real_size = private_size + block_size;
-  char *allocated;
-
-#ifdef ENABLE_VALGRIND
-  if (RUNNING_ON_VALGRIND)
-    {
-      /* When running under Valgrind we massage the memory allocation
-       * to include a pointer at the tail end of the block; the pointer
-       * is then set to the start of the block. This trick allows
-       * Valgrind to keep track of the over-allocation and not be
-       * confused when passing the pointer around
-       */
-      private_size += ALIGN_STRUCT (1);
-
-      if (clear)
-        allocated = g_malloc0 (real_size + sizeof (gpointer));
-      else
-        allocated = g_malloc (real_size + sizeof (gpointer));
-
-      *(gpointer *) (allocated + private_size + block_size) = allocated + ALIGN_STRUCT (1);
-
-      VALGRIND_MALLOCLIKE_BLOCK (allocated + private_size, block_size + sizeof (gpointer), 0, TRUE);
-      VALGRIND_MALLOCLIKE_BLOCK (allocated + ALIGN_STRUCT (1), private_size - ALIGN_STRUCT (1), 0, TRUE);
-    }
-  else
-#endif /* ENABLE_VALGRIND */
-    {
-      if (clear)
-        allocated = g_malloc0 (real_size);
-      else
-        allocated = g_malloc (real_size);
-    }
-
-  if (atomic)
-    {
-      GArcBox *real_box = (GArcBox *) allocated;
-      real_box->mem_size = block_size;
-#ifndef G_DISABLE_ASSERT
-      real_box->magic = G_BOX_MAGIC;
-#endif
-      g_atomic_ref_count_init (&real_box->ref_count);
-    }
-  else
-    {
-      GRcBox *real_box = (GRcBox *) allocated;
-      real_box->mem_size = block_size;
-#ifndef G_DISABLE_ASSERT
-      real_box->magic = G_BOX_MAGIC;
-#endif
-      g_ref_count_init (&real_box->ref_count);
-    }
-
-  return allocated + private_size;
-}
-
 /**
- * g_rc_box_alloc:
+ * g_arc_box_alloc:
  * @block_size: the size of the allocation
  *
- * Allocates @block_size bytes of memory, and adds reference
- * counting semantics to it.
+ * Allocates @block_size bytes of memory, and adds atomic
+ * reference counting semantics to it.
  *
  * The data will be freed when its reference count drops to
  * zero.
@@ -213,19 +148,19 @@ g_rc_box_alloc_full (gsize    block_size,
  * Since: 2.58
  */
 gpointer
-g_rc_box_alloc (gsize block_size)
+g_arc_box_alloc (gsize block_size)
 {
   g_return_val_if_fail (block_size > 0, NULL);
 
-  return g_rc_box_alloc_full (block_size, FALSE, FALSE);
+  return g_rc_box_alloc_full (block_size, TRUE, FALSE);
 }
 
 /**
- * g_rc_box_alloc0:
+ * g_arc_box_alloc0:
  * @block_size: the size of the allocation
  *
- * Allocates @block_size bytes of memory, and adds reference
- * counting semantics to it.
+ * Allocates @block_size bytes of memory, and adds atomic
+ * referenc counting semantics to it.
  *
  * The contents of the returned data is set to 0's.
  *
@@ -237,21 +172,21 @@ g_rc_box_alloc (gsize block_size)
  * Since: 2.58
  */
 gpointer
-g_rc_box_alloc0 (gsize block_size)
+g_arc_box_alloc0 (gsize block_size)
 {
   g_return_val_if_fail (block_size > 0, NULL);
 
-  return g_rc_box_alloc_full (block_size, FALSE, TRUE);
+  return g_rc_box_alloc_full (block_size, TRUE, TRUE);
 }
 
 /**
- * g_rc_box_new:
+ * g_arc_box_new:
  * @type: the type to allocate, typically a structure name
  *
- * A convenience macro to allocate reference counted data with
- * the size of the given @type.
+ * A convenience macro to allocate atomically reference counted
+ * data with the size of the given @type.
  *
- * This macro calls g_rc_box_alloc() with `sizeof (@type)` and
+ * This macro calls g_arc_box_alloc() with `sizeof (@type)` and
  * casts the returned pointer to a pointer of the given @type,
  * avoiding a type cast in the source code.
  *
@@ -265,13 +200,14 @@ g_rc_box_alloc0 (gsize block_size)
  */
 
 /**
- * g_rc_box_new0:
+ * g_arc_box_new0:
  * @type: the type to allocate, typically a structure name
  *
- * A convenience macro to allocate reference counted data with
- * the size of the given @type, and set its contents to 0.
+ * A convenience macro to allocate atomically reference counted
+ * data with the size of the given @type, and set its contents
+ * to 0.
  *
- * This macro calls g_rc_box_alloc0() with `sizeof (@type)` and
+ * This macro calls g_arc_box_alloc0() with `sizeof (@type)` and
  * casts the returned pointer to a pointer of the given @type,
  * avoiding a type cast in the source code.
  *
@@ -285,10 +221,10 @@ g_rc_box_alloc0 (gsize block_size)
  */
 
 /**
- * g_rc_box_dup:
+ * g_arc_box_dup:
  * @mem_block: (not nullable): a pointer to reference counted data
  *
- * Allocates a new block of data with reference counting
+ * Allocates a new block of data with atomic reference counting
  * semantics, and copies the contents of @mem_block into
  * it.
  *
@@ -297,9 +233,9 @@ g_rc_box_alloc0 (gsize block_size)
  * Since: 2.58
  */
 gpointer
-(g_rc_box_dup) (gpointer mem_block)
+(g_arc_box_dup) (gpointer mem_block)
 {
-  GRcBox *real_box = G_RC_BOX (mem_block);
+  GArcBox *real_box = G_ARC_BOX (mem_block);
   gpointer res;
 
   g_return_val_if_fail (mem_block != NULL, NULL);
@@ -307,17 +243,17 @@ gpointer
   g_return_val_if_fail (real_box->magic == G_BOX_MAGIC, NULL);
 #endif
 
-  res = g_rc_box_alloc_full (real_box->mem_size, FALSE, FALSE);
+  res = g_rc_box_alloc_full (real_box->mem_size, TRUE, FALSE);
   memcpy (res, mem_block, real_box->mem_size);
 
   return res;
 }
 
 /**
- * g_rc_box_acquire:
+ * g_arc_box_acquire:
  * @mem_block: (not nullable): a pointer to reference counted data
  *
- * Acquires a reference on the data pointed by @mem_block.
+ * Atomically acquires a reference on the data pointed by @mem_block.
  *
  * Returns: (not nullabl): a pointer to the data, with its reference
  *   count increased
@@ -325,25 +261,25 @@ gpointer
  * Since: 2.58
  */
 gpointer
-(g_rc_box_acquire) (gpointer mem_block)
+(g_arc_box_acquire) (gpointer mem_block)
 {
-  GRcBox *real_box = G_RC_BOX (mem_block);
+  GArcBox *real_box = G_ARC_BOX (mem_block);
 
   g_return_val_if_fail (mem_block != NULL, NULL);
 #ifndef G_DISABLE_ASSERT
   g_return_val_if_fail (real_box->magic == G_BOX_MAGIC, NULL);
 #endif
 
-  g_ref_count_inc (&real_box->ref_count);
+  g_atomic_ref_count_inc (&real_box->ref_count);
 
   return mem_block;
 }
 
 /**
- * g_rc_box_release:
+ * g_arc_box_release:
  * @mem_block: (not nullable): a pointer to reference counted data
  *
- * Releases a reference on the data pointed by @mem_block.
+ * Atomically releases a reference on the data pointed by @mem_block.
  *
  * If the reference was the last one, it will free the
  * resources allocated for @mem_block.
@@ -351,25 +287,25 @@ gpointer
  * Since: 2.58
  */
 void
-g_rc_box_release (gpointer mem_block)
+g_arc_box_release (gpointer mem_block)
 {
-  GRcBox *real_box = G_RC_BOX (mem_block);
+  GArcBox *real_box = G_ARC_BOX (mem_block);
 
   g_return_if_fail (mem_block != NULL);
 #ifndef G_DISABLE_ASSERT
   g_return_if_fail (real_box->magic == G_BOX_MAGIC);
 #endif
 
-  if (g_ref_count_dec (&real_box->ref_count))
+  if (g_atomic_ref_count_dec (&real_box->ref_count))
     g_free (real_box);
 }
 
 /**
- * g_rc_box_release_full:
- * @mem_block: (not nullabl): a pointer to reference counted data
+ * g_arc_box_release_full:
+ * @mem_block: (not nullable): a pointer to reference counted data
  * @clear_func: (not nullable): a function to call when clearing the data
  *
- * Releases a reference on the data pointed by @mem_block.
+ * Atomically releases a reference on the data pointed by @mem_block.
  *
  * If the reference was the last one, it will call @clear_func
  * to clear the contents of @mem_block, and then will free the
@@ -378,10 +314,10 @@ g_rc_box_release (gpointer mem_block)
  * Since: 2.58
  */
 void
-g_rc_box_release_full (gpointer       mem_block,
-                       GDestroyNotify clear_func)
+g_arc_box_release_full (gpointer       mem_block,
+                        GDestroyNotify clear_func)
 {
-  GRcBox *real_box = G_RC_BOX (mem_block);
+  GArcBox *real_box = G_ARC_BOX (mem_block);
 
   g_return_if_fail (mem_block != NULL);
   g_return_if_fail (clear_func != NULL);
@@ -389,7 +325,7 @@ g_rc_box_release_full (gpointer       mem_block,
   g_return_if_fail (real_box->magic == G_BOX_MAGIC);
 #endif
 
-  if (g_ref_count_dec (&real_box->ref_count))
+  if (g_atomic_ref_count_dec (&real_box->ref_count))
     {
       clear_func (mem_block);
       g_free (real_box);
