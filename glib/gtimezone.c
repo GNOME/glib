@@ -1677,7 +1677,10 @@ interval_end (GTimeZone *tz,
               guint      interval)
 {
   if (tz->transitions && interval < tz->transitions->len)
-    return (TRANSITION(interval)).time - 1;
+    {
+      gint64 lim = (TRANSITION(interval)).time;
+      return lim - (lim != G_MININT64);
+    }
   return G_MAXINT64;
 }
 
