@@ -510,6 +510,9 @@ struct _GTimeVal
   glong tv_usec;
 };
 
+typedef gint            grefcount;
+typedef volatile gint   gatomicrefcount;
+
 G_END_DECLS
 
 /* We prefix variable declarations so they can

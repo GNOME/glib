@@ -37,7 +37,7 @@
 #include "gatomic.h"
 #include "gtestutils.h"
 #include "gslice.h"
-
+#include "grefcount.h"
 
 /**
  * SECTION:hash_tables
@@ -227,7 +227,7 @@ struct _GHashTable
 
   GHashFunc        hash_func;
   GEqualFunc       key_equal_func;
-  gint             ref_count;
+  gatomicrefcount  ref_count;
 #ifndef G_DISABLE_ASSERT
   /*
    * Tracks the structure of the hash table, not its contents: is only
@@ -374,7 +374,7 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
    * (as keys, etc. will be NULL).
    * Applications need to either use g_hash_table_destroy, or ensure the hash
    * table is empty prior to removing the last reference using g_hash_table_unref(). */
-  g_assert (hash_table->ref_count > 0);
+  g_assert (!g_atomic_ref_count_compare (&hash_table->ref_count, 0));
 
   hash_value = hash_table->hash_func (key);
   if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
@@ -716,11 +716,11 @@ g_hash_table_new_full (GHashFunc      hash_func,
 
   hash_table = g_slice_new (GHashTable);
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
+  g_atomic_ref_count_init (&hash_table->ref_count);
   hash_table->nnodes             = 0;
   hash_table->noccupied          = 0;
   hash_table->hash_func          = hash_func ? hash_func : g_direct_hash;
   hash_table->key_equal_func     = key_equal_func;
-  hash_table->ref_count          = 1;
 #ifndef G_DISABLE_ASSERT
   hash_table->version            = 0;
 #endif
@@ -1077,7 +1077,7 @@ g_hash_table_ref (GHashTable *hash_table)
 {
   g_return_val_if_fail (hash_table != NULL, NULL);
 
-  g_atomic_int_inc (&hash_table->ref_count);
+  g_atomic_ref_count_inc (&hash_table->ref_count);
 
   return hash_table;
 }
@@ -1098,7 +1098,7 @@ g_hash_table_unref (GHashTable *hash_table)
 {
   g_return_if_fail (hash_table != NULL);
 
-  if (g_atomic_int_dec_and_test (&hash_table->ref_count))
+  if (g_atomic_ref_count_dec (&hash_table->ref_count))
     {
       g_hash_table_remove_all_nodes (hash_table, TRUE, TRUE);
       if (hash_table->keys != hash_table->values)

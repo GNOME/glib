@@ -47,6 +47,8 @@ glib_tests = [
   'queue',
   'rand',
   'rec-mutex',
+  'refcount',
+  'refcount-macro',
   'regex',
   'rwlock',
   'scannerapi',
@@ -108,14 +110,23 @@ slow_tests = [
 
 foreach test_name : glib_tests
   deps = [libm, thread_dep, libglib_dep]
+  source = test_name + '.c'
+  c_args = test_cargs + ['-DPCRE_STATIC']
   if test_name == 'regex'
     deps += [pcre]
   endif
   if test_name == 'gdatetime'
     deps += [libintl]
   endif
-  exe = executable(test_name, '@0@.c'.format(test_name),
-    c_args : ['-DPCRE_STATIC'] + test_cargs,
+  # We build the refcount test twice: one to test the function-based API,
+  # and the other to test the macro-based API that is used when disabling
+  # checks
+  if test_name == 'refcount-macro'
+    source = 'refcount.c'
+    c_args += ['-DG_DISABLE_CHECKS']
+  endif
+  exe = executable(test_name, source,
+    c_args : c_args,
     dependencies : deps,
     install : false,
   )

@@ -30,6 +30,7 @@
 #include <glib/gtestutils.h>
 #include <glib/gmem.h>
 #include <glib/gmessages.h>
+#include <glib/grefcount.h>
 
 #include <string.h>
 
@@ -69,7 +70,7 @@ struct _GBytes
 {
   gconstpointer data;  /* may be NULL iff (size == 0) */
   gsize size;  /* may be 0 */
-  gint ref_count;
+  gatomicrefcount ref_count;
   GDestroyNotify free_func;
   gpointer user_data;
 };
@@ -187,7 +188,7 @@ g_bytes_new_with_free_func (gconstpointer  data,
   bytes->size = size;
   bytes->free_func = free_func;
   bytes->user_data = user_data;
-  bytes->ref_count = 1;
+  g_atomic_ref_count_init (&bytes->ref_count);
 
   return (GBytes *)bytes;
 }
@@ -310,7 +311,7 @@ g_bytes_ref (GBytes *bytes)
 {
   g_return_val_if_fail (bytes != NULL, NULL);
 
-  g_atomic_int_inc (&bytes->ref_count);
+  g_atomic_ref_count_inc (&bytes->ref_count);
 
   return bytes;
 }
@@ -330,7 +331,7 @@ g_bytes_unref (GBytes *bytes)
   if (bytes == NULL)
     return;
 
-  if (g_atomic_int_dec_and_test (&bytes->ref_count))
+  if (g_atomic_ref_count_dec (&bytes->ref_count))
     {
       if (bytes->free_func != NULL)
         bytes->free_func (bytes->user_data);
@@ -438,7 +439,7 @@ try_steal_and_unref (GBytes         *bytes,
     return NULL;
 
   /* Are we the only reference? */
-  if (g_atomic_int_get (&bytes->ref_count) == 1)
+  if (g_atomic_ref_count_compare (&bytes->ref_count, 1))
     {
       *size = bytes->size;
       result = (gpointer)bytes->data;
