@@ -40,16 +40,41 @@ GLIB_AVAILABLE_IN_2_58
 void            g_rc_box_release_full   (gpointer        mem_block,
                                          GDestroyNotify  clear_func);
 
+GLIB_AVAILABLE_IN_2_58
+gpointer        g_arc_box_alloc         (gsize           block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+GLIB_AVAILABLE_IN_2_58
+gpointer        g_arc_box_alloc0        (gsize           block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+GLIB_AVAILABLE_IN_2_58
+gpointer        g_arc_box_dup           (gpointer        mem_block) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+GLIB_AVAILABLE_IN_2_58
+gpointer        g_arc_box_acquire       (gpointer        mem_block);
+GLIB_AVAILABLE_IN_2_58
+void            g_arc_box_release       (gpointer        mem_block);
+GLIB_AVAILABLE_IN_2_58
+void            g_arc_box_release_full  (gpointer        mem_block,
+                                         GDestroyNotify  clear_func);
+
 #define g_rc_box_new(type) \
   ((type *) g_rc_box_alloc (sizeof (type)))
 #define g_rc_box_new0(type) \
   ((type *) g_rc_box_alloc0 (sizeof (type)))
+#define g_arc_box_new(type) \
+  ((type *) g_arc_box_alloc (sizeof (type)))
+#define g_arc_box_new0(type) \
+  ((type *) g_arc_box_alloc0 (sizeof (type)))
 
 #if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && !defined(_cplusplus)
 /* Type check to avoid assigning references to different types */
-# define g_rc_box_acquire(mem_block) ((__typeof__(mem_block)) (g_rc_box_acquire) (mem_block))
+# define g_rc_box_acquire(mem_block) \
+  ((__typeof__(mem_block)) (g_rc_box_acquire) (mem_block))
+# define g_arc_box_acquire(mem_block) \
+  ((__typeof__(mem_block)) (g_arc_box_acquire) (mem_block))
+
 /* Type check to avoid duplicating data to different types */
-# define g_rc_box_dup(mem_block) ((__typeof__(mem_block)) (g_rc_box_dup) (mem_block))
+# define g_rc_box_dup(mem_block) \
+  ((__typeof__(mem_block)) (g_rc_box_dup) (mem_block))
+# define g_arc_box_dup(mem_block) \
+  ((__typeof__(mem_block)) (g_arc_box_dup) (mem_block))
 #endif
 
 G_END_DECLS

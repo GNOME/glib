@@ -121,6 +121,7 @@
     <xi:include href="gvariant-text.xml"/>
     <xi:include href="xml/refcount.xml"/>
     <xi:include href="xml/rcbox.xml"/>
+    <xi:include href="xml/arcbox.xml"/>
   </chapter>
 
   <chapter id="deprecated">
