@@ -207,7 +207,6 @@ headers = [
   'linux/magic.h',
   'locale.h',
   'mach/mach_time.h',
-  'malloc.h',
   'memory.h',
   'mntent.h',
   'poll.h',
@@ -253,6 +252,13 @@ foreach h : headers
     glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format(define)
   endif
 endforeach
+
+# FIXME: Use cc.check_header from Meson 0.47.
+# FreeBSD includes a malloc.h which always throw compilation error.
+if cc.compiles('#include <malloc.h>', name : 'malloc.h')
+  glib_conf.set('HAVE_MALLOC_H', 1)
+  glib_conf_prefix = glib_conf_prefix + '#define HAVE_MALLOC_H 1\n'
+endif
 
 if cc.has_header('linux/netlink.h')
   glib_conf.set('HAVE_NETLINK', 1)
@@ -524,6 +530,8 @@ if cc.has_header_symbol('sys/sysmacros.h', 'major')
   glib_conf.set('MAJOR_IN_SYSMACROS', 1)
 elif cc.has_header_symbol('sys/mkdev.h', 'major')
   glib_conf.set('MAJOR_IN_MKDEV', 1)
+elif cc.has_header_symbol('sys/types.h', 'major')
+  glib_conf.set('MAJOR_IN_TYPES', 1)
 endif
 
 if cc.has_header_symbol('dlfcn.h', 'RTLD_LAZY')

@@ -108,7 +108,7 @@ _fallback_callback (GFileMonitor      *unused,
  * Returns: TRUE if the file should be excluded from the kqueue-powered
  *      monitoring, FALSE otherwise.
  **/
-gboolean
+static gboolean
 _ke_is_excluded (const char *full_path)
 {
   GFile *f = NULL;

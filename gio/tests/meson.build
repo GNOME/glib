@@ -376,7 +376,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     resource_plugin_platform_link_args = []
   endif
   shared_module ('resourceplugin', 'resourceplugin.c', plugin_resources_c,
-    link_args : ['-export-dynamic'] + resource_plugin_platform_link_args,
+    link_args : export_dynamic_ldflags + resource_plugin_platform_link_args,
     dependencies : common_gio_tests_deps)
 
   test_gresource = custom_target('test.gresource',
