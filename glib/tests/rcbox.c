@@ -1,3 +1,21 @@
+/* rcbox.c: Reference counted data
+ *
+ * Copyright 2018  Emmanuele Bassi
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <glib.h>
 
 typedef struct {
@@ -6,6 +24,7 @@ typedef struct {
 
 static Point *global_point;
 
+/* test_rcbox_new: Test g_rc_box_new() */
 static void
 test_rcbox_new (void)
 {
@@ -27,14 +46,18 @@ static void
 point_clear (Point *p)
 {
   g_assert_nonnull (p);
+  g_assert_true (global_point == p);
 
   g_assert_cmpfloat (p->x, ==, 42.0f);
   g_assert_cmpfloat (p->y, ==, 47.0f);
 
-  g_assert_true (global_point == p);
+  g_test_message ("global_point = %p", p);
   global_point = NULL;
 }
 
+/* test_rcbox_release_full: Verify that g_rc_box_release_full() calls
+ * the clear function only when the last reference is released
+ */
 static void
 test_rcbox_release_full (void)
 {
@@ -56,16 +79,63 @@ test_rcbox_release_full (void)
   g_assert_null (global_point);
 }
 
+static Point *global_point_a;
+static Point *global_point_b;
+
+static void
+point_clear_dup_a (Point *a)
+{
+  g_assert_true (a == global_point_a);
+
+  g_test_message ("global_point_a = %p", a);
+  global_point_a = NULL;
+}
+
+static void
+point_clear_dup_b (Point *b)
+{
+  g_assert_true (b == global_point_b);
+
+  g_test_message ("global_point_b = %p", b);
+  global_point_b = NULL;
+}
+
+/* test_rcbox_dup: Verify that g_rc_box_dup() copies only the
+ * data and does not change the reference count of the original
+ */
 static void
 test_rcbox_dup (void)
 {
-  Point *a = g_rc_box_new (Point);
-  Point *b = g_rc_box_dup (a);
+  Point *a, *b;
 
+  a = g_rc_box_new (Point);
+  a->x = 10.f;
+  a->y = 5.f;
+
+  b = g_rc_box_dup (sizeof (Point), a);
   g_assert_true (a != b);
+  g_assert_cmpfloat (a->x, ==, b->x);
+  g_assert_cmpfloat (a->y, ==, b->y);
 
-  g_rc_box_release (a);
-  g_rc_box_release (b);
+  global_point_a = a;
+  global_point_b = b;
+
+  a->x = 1.f;
+  a->y = 1.f;
+  g_assert_cmpfloat (a->x, !=, b->x);
+  g_assert_cmpfloat (a->y, !=, b->y);
+
+  b->x = 5.f;
+  b->y = 10.f;
+  g_assert_cmpfloat (a->x, !=, b->x);
+  g_assert_cmpfloat (a->y, !=, b->y);
+
+  g_rc_box_release_full (a, (GDestroyNotify) point_clear_dup_a);
+  g_assert_null (global_point_a);
+  g_assert_nonnull (global_point_b);
+
+  g_rc_box_release_full (b, (GDestroyNotify) point_clear_dup_b);
+  g_assert_null (global_point_b);
 }
 
 int
@@ -75,8 +145,8 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/rcbox/new", test_rcbox_new);
-  g_test_add_func ("/rcbox/dup", test_rcbox_dup);
   g_test_add_func ("/rcbox/release-full", test_rcbox_release_full);
+  g_test_add_func ("/rcbox/dup", test_rcbox_dup);
 
   return g_test_run ();
 }
