@@ -286,29 +286,28 @@ g_rc_box_alloc0 (gsize block_size)
 
 /**
  * g_rc_box_dup:
- * @mem_block: (not nullable): a pointer to reference counted data
+ * @block_size: the number of bytes to copy
+ * @mem_block: (not nullable): the memory to copy
  *
  * Allocates a new block of data with reference counting
- * semantics, and copies the contents of @mem_block into
- * it.
+ * semantics, and copies @block_size bytes of @mem_block
+ * into it.
  *
  * Returns: (not nullable): a pointer to the allocated memory
  *
  * Since: 2.58
  */
 gpointer
-(g_rc_box_dup) (gpointer mem_block)
+(g_rc_box_dup) (gsize         block_size,
+                gconstpointer mem_block)
 {
-  GRcBox *real_box = G_RC_BOX (mem_block);
   gpointer res;
 
+  g_return_val_if_fail (block_size > 0, NULL);
   g_return_val_if_fail (mem_block != NULL, NULL);
-#ifndef G_DISABLE_ASSERT
-  g_return_val_if_fail (real_box->magic == G_BOX_MAGIC, NULL);
-#endif
 
-  res = g_rc_box_alloc_full (real_box->mem_size, FALSE, FALSE);
-  memcpy (res, mem_block, real_box->mem_size);
+  res = g_rc_box_alloc_full (block_size, FALSE, FALSE);
+  memcpy (res, mem_block, block_size);
 
   return res;
 }
