@@ -1296,11 +1296,9 @@ glibconfig_conf.set('glongbits', long_size * 8)
 glibconfig_conf.set('gsizebits', sizet_size * 8)
 glibconfig_conf.set('gssizebits', ssizet_size * 8)
 
-# FIXME: maybe meson should tell us the libsuffix?
+# XXX: https://gitlab.gnome.org/GNOME/glib/issues/1413
 if host_system == 'windows'
   g_module_suffix = 'dll'
-elif host_system == 'darwin'
-  g_module_suffix = 'dylib'
 else
   g_module_suffix = 'so'
 endif
