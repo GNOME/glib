@@ -80,6 +80,11 @@ To overcome this problem, please set your system's locale setting for non-Unicod
 English (United States), reboot, and restart the build, and the code should build
 normally.  See also this GNOME Wiki page [1] that gives a bit further info on this.
 
+In Visual Studio 2015 and later, the /utf-8 option is provided, which is set by the
+latest Meson releases when building GLib, and can be used in other project files
+that uses GLib to avoid the need of setting your system's locale setting for
+non-Unicode and the subsequent requirement to restart the system.
+
 Building software that use GLib or GTK+
 =======================================
 
@@ -190,6 +195,9 @@ You will also need the following items:
 -The Ninja build tool, required for Visual Studio 2008, 2012 and 2013 builds,
  and optional for 2010, 2015 and 2017 builds, where Visual Studio projects
  can be generated instead of the Ninja build files.
+-GIT for Windows is highly recommended, in the case where some required
+ dependencies are not found, and Meson makes use of GIT to download
+ the sources to build in the build process.
 
 To do a build using Meson, do the following:
 
