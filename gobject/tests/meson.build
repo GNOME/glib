@@ -41,7 +41,7 @@ foreach test_name : gobject_tests
       c_args : ['-DG_LOG_DOMAIN="GLib-GObject"'],
       dependencies : deps,
   )
-  test(test_name, exe, env : test_env)
+  test(test_name, exe, env : test_env, suite : ['gobject'])
 endforeach
 
 marshalers_h = custom_target('marshalers_h',
@@ -77,4 +77,4 @@ exe = executable('signals',
     c_args : ['-DG_LOG_DOMAIN="GLib-GObject"'],
     dependencies : deps,
 )
-test('signals', exe, env : test_env)
+test('signals', exe, env : test_env, suite : ['gobject'])

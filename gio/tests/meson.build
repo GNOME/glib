@@ -106,7 +106,7 @@ if dbus1_dep.found()
       install : false,
       c_args : test_c_args,
       dependencies : common_gio_tests_deps + [dbus1_dep])
-  test('gdbus-serialization', exe, env : test_env)
+  test('gdbus-serialization', exe, env : test_env, suite : ['gio'])
 endif
 
 #  Test programs buildable on UNIX only
@@ -208,7 +208,7 @@ if host_machine.system() != 'windows'
           install : false,
           c_args : test_c_args,
           dependencies : common_gio_tests_deps + extra_deps)
-      test(test_name, exe, env : test_env)
+      test(test_name, exe, env : test_env, suite : ['gio'])
     endforeach
 
     exe = executable('gdbus-test-codegen-old', 'gdbus-test-codegen.c',
@@ -216,7 +216,7 @@ if host_machine.system() != 'windows'
           install : false,
           c_args : test_c_args + ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36', '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36'],
           dependencies : common_gio_tests_deps)
-    test('gdbus-test-codegen-old', exe, env : test_env)
+    test('gdbus-test-codegen-old', exe, env : test_env, suite : ['gio'])
 
     # There is already a gapplication exe target in gio so need to use a
     # different name for the unit test executable, since we can't have two
@@ -229,7 +229,7 @@ if host_machine.system() != 'windows'
                        c_args : test_c_args,
                        dependencies : common_gio_tests_deps)
     endif
-    test('gapplication', exe, env : test_env)
+    test('gapplication', exe, env : test_env, suite : ['gio'])
 
     gio_tests += ['gdbus-unix-addresses']
   endif # have_dbus_daemon
@@ -245,14 +245,14 @@ if host_machine.system() != 'windows'
       install : false,
       c_args : test_c_args,
       dependencies : common_gio_tests_deps)
-  test('gdbus-connection-flush', exe, env : test_env)
+  test('gdbus-connection-flush', exe, env : test_env, suite : ['gio'])
 
   exe = executable('gdbus-non-socket', 'gdbus-non-socket.c',
       'gdbus-tests.c', 'test-io-stream.c', 'test-pipe-unix.c',
       install : false,
       c_args : test_c_args,
       dependencies : common_gio_tests_deps)
-  test('gdbus-non-socket', exe, env : test_env)
+  test('gdbus-non-socket', exe, env : test_env, suite : ['gio'])
 
   # Generate test.mo from de.po using msgfmt
   msgfmt = find_program('msgfmt', required : false)
@@ -266,7 +266,7 @@ if host_machine.system() != 'windows'
                    '-DTEST_LOCALE_PATH="@0@"'.format(test_mo_dir),
                  ],
         dependencies : common_gio_tests_deps)
-    test('gsettings', exe, env : test_env)
+    test('gsettings', exe, env : test_env, suite : ['gio'])
   endif
 endif # unix
 
@@ -297,9 +297,9 @@ foreach test_name : gio_tests
       c_args : test_c_args,
       dependencies : common_gio_tests_deps + extra_deps)
   if test_name == 'testfilemonitor'
-    test(test_name, exe, env : test_env, timeout : 45)
+    test(test_name, exe, env : test_env, timeout : 45, suite : ['gio', 'slow'])
   else
-    test(test_name, exe, env : test_env)
+    test(test_name, exe, env : test_env, suite : ['gio'])
   endif
 endforeach
 
@@ -431,7 +431,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
       install : false,
       c_args : test_c_args,
       dependencies : common_gio_tests_deps)
-  test('resources', exe, env : test_env)
+  test('resources', exe, env : test_env, suite : ['gio'])
 endif
 
 # FIXME: subdir('services')

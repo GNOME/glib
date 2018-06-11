@@ -121,9 +121,9 @@ foreach test_name : glib_tests
   )
   # These tests may take more than 30 seconds to run on the CI infrastructure
   if slow_tests.contains(test_name)
-    test(test_name, exe, env : test_env, timeout : 120)
+    test(test_name, exe, env : test_env, timeout : 120, suite : ['glib', 'slow'])
   else
-    test(test_name, exe, env : test_env)
+    test(test_name, exe, env : test_env, suite : ['glib'])
   endif
 endforeach
 
@@ -138,7 +138,7 @@ exe = executable('atomic', 'atomic.c',
   c_args : test_cargs + c_args_atomic,
   dependencies : deps,
 )
-test('atomic', exe, env : test_env)
+test('atomic', exe, env : test_env, suite : ['glib'])
 
 # FIXME: consolidate all of these into the array
 exe = executable('overflow-fallback', 'overflow.c',
@@ -146,27 +146,27 @@ exe = executable('overflow-fallback', 'overflow.c',
   dependencies : deps,
   install : false,
 )
-test('overflow-fallback', exe, env : test_env)
+test('overflow-fallback', exe, env : test_env, suite : ['glib'])
 
 exe = executable('642026-ec', '642026.c',
   c_args : test_cargs + ['-DG_ERRORCHECK_MUTEXES'],
   dependencies : deps,
   install : false,
 )
-test('642026-ec', exe, env : test_env, timeout : 90)
+test('642026-ec', exe, env : test_env, timeout : 90, suite : ['glib', 'slow'])
 
 exe = executable('1bit-emufutex', '1bit-mutex.c',
   c_args : test_cargs + ['-DTEST_EMULATED_FUTEX'],
   dependencies : deps,
   install : false,
 )
-test('1bit-emufutex', exe, env : test_env)
+test('1bit-emufutex', exe, env : test_env, suite : ['glib'])
 
 exe = executable('gwakeup', 'gwakeuptest.c', '../gwakeup.c',
   c_args : test_cargs,
   dependencies : deps,
   install : false)
-test('gwakeup', exe, env : test_env)
+test('gwakeup', exe, env : test_env, suite : ['glib'])
 
 if glib_conf.has('HAVE_EVENTFD')
   exe = executable('gwakeup-fallback', 'gwakeuptest.c', '../gwakeup.c',
@@ -174,7 +174,7 @@ if glib_conf.has('HAVE_EVENTFD')
     dependencies : deps,
     install : false,
   )
-  test('gwakeup-fallback', exe, env : test_env)
+  test('gwakeup-fallback', exe, env : test_env, suite : ['glib'])
 endif
 
 # test-spawn-echo helper binary required by the spawn tests above
@@ -196,6 +196,8 @@ if not meson.is_cross_build() and host_system != 'windows'
 
     test('gtester-xmllint-check', xmllint,
       args : ['--noout', tmpsample_xml],
-      env : test_env)
+      env : test_env,
+      suite : ['glib'],
+    )
   endif
 endif

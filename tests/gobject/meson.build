@@ -48,6 +48,7 @@ foreach t : gobject_tests
   test_src = t.get(1, test_name + '.c')
   test_extra_cargs = t.get(2, [])
   test_timeout = t.get(3, 30)
+  test_suite = test_timeout == 30 ? ['gobject'] : ['gobject', 'slow']
 
   # FIXME? $(GLIB_DEBUG_FLAGS)
   exe = executable(test_name + '-gobject', test_src,
@@ -56,7 +57,7 @@ foreach t : gobject_tests
     install : false,
   )
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
-  test(test_name, exe, env : test_env, timeout : test_timeout)
+  test(test_name, exe, env : test_env, timeout : test_timeout, suite : test_suite)
 endforeach
 
 # Don't install these ones, and keep them out of 'make check' because they take too long...
