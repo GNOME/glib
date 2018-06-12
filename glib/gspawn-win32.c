@@ -316,6 +316,7 @@ read_helper_report (int      fd,
   while (bytes < sizeof(gintptr)*2)
     {
       gint chunk;
+      int errsv;
 
       if (debug)
 	g_print ("%s:read_helper_report: read %" G_GSIZE_FORMAT "...\n",
@@ -324,14 +325,13 @@ read_helper_report (int      fd,
 
       chunk = read (fd, ((gchar*)report) + bytes,
 		    sizeof(gintptr)*2 - bytes);
+      errsv = errno;
 
       if (debug)
 	g_print ("...got %d bytes\n", chunk);
           
       if (chunk < 0)
         {
-          int errsv = errno;
-
           /* Some weird shit happened, bail out */
           g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
                        _("Failed to read from child pipe (%s)"),
@@ -429,7 +429,7 @@ do_spawn_directly (gint                 *exit_status,
   const int mode = (exit_status == NULL) ? P_NOWAIT : P_WAIT;
   char **new_argv;
   gintptr rc = -1;
-  int saved_errno;
+  int errsv;
   GError *conv_error = NULL;
   gint conv_error_index;
   wchar_t *wargv0, **wargv, **wenvp;
@@ -481,17 +481,17 @@ do_spawn_directly (gint                 *exit_status,
     else
       rc = _wspawnv (mode, wargv0, (const wchar_t **) wargv);
 
+  errsv = errno;
+
   g_free (wargv0);
   g_strfreev ((gchar **) wargv);
   g_strfreev ((gchar **) wenvp);
 
-  saved_errno = errno;
-
-  if (rc == -1 && saved_errno != 0)
+  if (rc == -1 && errsv != 0)
     {
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
 		   _("Failed to execute child process (%s)"),
-		   g_strerror (saved_errno));
+		   g_strerror (errsv));
       return FALSE;
     }
 
@@ -532,7 +532,7 @@ do_spawn_with_pipes (gint                 *exit_status,
   char **new_argv;
   int i;
   gintptr rc = -1;
-  int saved_errno;
+  int errsv;
   int argc;
   int stdin_pipe[2] = { -1, -1 };
   int stdout_pipe[2] = { -1, -1 };
@@ -752,7 +752,7 @@ do_spawn_with_pipes (gint                 *exit_status,
   else
     rc = _wspawnvp (P_NOWAIT, whelper, (const wchar_t **) wargv);
 
-  saved_errno = errno;
+  errsv = errno;
 
   g_free (whelper);
   g_strfreev ((gchar **) wargv);
@@ -774,11 +774,11 @@ do_spawn_with_pipes (gint                 *exit_status,
   g_free (new_argv);
 
   /* Check if gspawn-win32-helper couldn't be run */
-  if (rc == -1 && saved_errno != 0)
+  if (rc == -1 && errsv != 0)
     {
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
 		   _("Failed to execute helper program (%s)"),
-		   g_strerror (saved_errno));
+		   g_strerror (errsv));
       goto cleanup_and_fail;
     }
 
