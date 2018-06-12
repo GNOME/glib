@@ -220,6 +220,7 @@ EXTRA_libglib_2_0_la_SOURCES = \
 	giounix.c	\
 	giowin32.c	\
 	gspawn.c	\
+	gspawn-private.h \
 	gspawn-win32.c	\
 	gwin32.c
 

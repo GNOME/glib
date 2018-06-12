@@ -40,6 +40,7 @@
 #endif /* HAVE_SYS_RESOURCE_H */
 
 #include "gspawn.h"
+#include "gspawn-private.h"
 #include "gthread.h"
 #include "glib/gstdio.h"
 
@@ -925,113 +926,6 @@ g_spawn_check_exit_status (gint      exit_status,
   return ret;
 }
 
-static gint
-exec_err_to_g_error (gint en)
-{
-  switch (en)
-    {
-#ifdef EACCES
-    case EACCES:
-      return G_SPAWN_ERROR_ACCES;
-      break;
-#endif
-
-#ifdef EPERM
-    case EPERM:
-      return G_SPAWN_ERROR_PERM;
-      break;
-#endif
-
-#ifdef E2BIG
-    case E2BIG:
-      return G_SPAWN_ERROR_TOO_BIG;
-      break;
-#endif
-
-#ifdef ENOEXEC
-    case ENOEXEC:
-      return G_SPAWN_ERROR_NOEXEC;
-      break;
-#endif
-
-#ifdef ENAMETOOLONG
-    case ENAMETOOLONG:
-      return G_SPAWN_ERROR_NAMETOOLONG;
-      break;
-#endif
-
-#ifdef ENOENT
-    case ENOENT:
-      return G_SPAWN_ERROR_NOENT;
-      break;
-#endif
-
-#ifdef ENOMEM
-    case ENOMEM:
-      return G_SPAWN_ERROR_NOMEM;
-      break;
-#endif
-
-#ifdef ENOTDIR
-    case ENOTDIR:
-      return G_SPAWN_ERROR_NOTDIR;
-      break;
-#endif
-
-#ifdef ELOOP
-    case ELOOP:
-      return G_SPAWN_ERROR_LOOP;
-      break;
-#endif
-      
-#ifdef ETXTBUSY
-    case ETXTBUSY:
-      return G_SPAWN_ERROR_TXTBUSY;
-      break;
-#endif
-
-#ifdef EIO
-    case EIO:
-      return G_SPAWN_ERROR_IO;
-      break;
-#endif
-
-#ifdef ENFILE
-    case ENFILE:
-      return G_SPAWN_ERROR_NFILE;
-      break;
-#endif
-
-#ifdef EMFILE
-    case EMFILE:
-      return G_SPAWN_ERROR_MFILE;
-      break;
-#endif
-
-#ifdef EINVAL
-    case EINVAL:
-      return G_SPAWN_ERROR_INVAL;
-      break;
-#endif
-
-#ifdef EISDIR
-    case EISDIR:
-      return G_SPAWN_ERROR_ISDIR;
-      break;
-#endif
-
-#ifdef ELIBBAD
-    case ELIBBAD:
-      return G_SPAWN_ERROR_LIBBAD;
-      break;
-#endif
-      
-    default:
-      return G_SPAWN_ERROR_FAILED;
-      break;
-    }
-}
-
 static gssize
 write_all (gint fd, gconstpointer vbuf, gsize to_write)
 {
@@ -1549,7 +1443,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
             case CHILD_EXEC_FAILED:
               g_set_error (error,
                            G_SPAWN_ERROR,
-                           exec_err_to_g_error (buf[1]),
+                           _g_spawn_exec_err_to_g_error (buf[1]),
                            _("Failed to execute child process “%s” (%s)"),
                            argv[0],
                            g_strerror (buf[1]));
