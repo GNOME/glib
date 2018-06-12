@@ -44,49 +44,11 @@
  *
  * ArcBox is useful if you have a plain old data type, like a structure
  * typically placed on the stack, and you wish to provide additional API
- * to use it on the heap, without necessarily implementing copy/free
- * semantics, or your own reference counting.
+ * to use it on the heap; or if you want to implement a new type to be
+ * passed around by reference without necessarily implementing copy/free
+ * semantics or your own reference counting.
  *
  * The typical use is:
- *
- * |[<!-- language="C" -->
- * typedef struct {
- *   float x, y;
- * } Point;
- *
- * Point *
- * point_new (float x, float y)
- * {
- *   Point *res = g_arc_box_new (Point);
- *
- *   res->x = x;
- *   res->y = y;
- *
- *   return res;
- * }
- * ]|
- *
- * Every time you wish to acquire a reference on the memory, you should
- * call g_arc_box_acquire(); similarly, when you wish to release a reference
- * you should call g_arc_box_release():
- *
- * |[<!-- language="C" -->
- * Point *
- * point_ref (Point *p)
- * {
- *   return g_arc_box_acquire (p);
- * }
- *
- * void
- * point_unref (Point *p)
- * {
- *   g_arc_box_release (p);
- * }
- * ]|
- *
- * If you have additional memory allocated inside the structure, you can
- * use g_arc_box_release_full(), which takes a function pointer, which
- * will be called if the reference released was the last:
  *
  * |[<!-- language="C" -->
  * typedef struct {
@@ -97,6 +59,41 @@
  *   int age;
  * } Person;
  *
+ * Person *
+ * person_new (void)
+ * {
+ *   return g_arc_box_new0 (Person);
+ * }
+ * ]|
+ *
+ * Every time you wish to acquire a reference on the memory, you should
+ * call g_arc_box_acquire(); similarly, when you wish to release a reference
+ * you should call g_arc_box_release():
+ *
+ * |[<!-- language="C" -->
+ * // Add a Person to the Database; the Database acquires ownership
+ * // of the Person instance
+ * void
+ * add_person_to_database (Database *db, Person *p)
+ * {
+ *   db->persons = g_list_prepend (db->persons, g_arc_box_acquire (p));
+ * }
+ *
+ * // Removes a Person from the Database; the reference acquired by
+ * // add_person_to_database() is released here
+ * void
+ * remove_person_from_database (Database *db, Person *p)
+ * {
+ *   db->persons = g_list_remove (db->persons, p);
+ *   g_arc_box_release (p);
+ * }
+ * ]|
+ *
+ * If you have additional memory allocated inside the structure, you can
+ * use g_arc_box_release_full(), which takes a function pointer, which
+ * will be called if the reference released was the last:
+ *
+ * |[<!-- language="C" -->
  * void
  * person_clear (Person *p)
  * {
@@ -107,8 +104,9 @@
  * }
  *
  * void
- * person_unref (Person *p)
+ * remove_person_from_database (Database *db, Person *p)
  * {
+ *   db->persons = g_list_remove (db->persons, p);
  *   g_arc_box_release_full (p, (GDestroyNotify) person_clear);
  * }
  * ]|
@@ -124,11 +122,37 @@
  *   add_person_to_database (db, g_steal_pointer (&p));
  * ]|
  *
+ * ## Thread safety
+ *
  * The reference counting operations on data allocated using g_arc_box_alloc(),
  * g_arc_box_new(), and g_arc_box_dup() are guaranteed to be atomic, and thus
  * can be safely be performed by different threads. It is important to note that
  * only the reference acquisition and release are atomic; changes to the content
  * of the data are your responsibility.
+ *
+ * ## Automatic pointer clean up
+ *
+ * If you want to add g_autoptr() support to your plain old data type through
+ * reference counting, you can use the G_DEFINE_AUTOPTR_CLEANUP_FUNC() and
+ * g_arc_box_release():
+ *
+ * |[<!-- language="C" -->
+ * G_DEFINE_AUTOPTR_CLEANUP_FUNC (MyDataStruct, g_arc_box_release)
+ * ]|
+ *
+ * If you need to clear the contents of the data, you will need to use an
+ * ancillary function that calls g_rc_box_release_full():
+ *
+ * |[<!-- laguage="C" -->
+ * static void
+ * my_data_struct_release (MyDataStruct *data)
+ * {
+ *   // my_data_struct_clear() is defined elsewhere
+ *   g_arc_box_release_full (data, (GDestroyNotify) my_data_struct_clear);
+ * }
+ *
+ * G_DEFINE_AUTOPTR_CLEANUP_FUNC (MyDataStruct, my_data_struct_clear)
+ * ]|
  *
  * Since: 2.58.
  */
