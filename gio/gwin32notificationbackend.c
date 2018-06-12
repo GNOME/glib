@@ -59,12 +59,18 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
                                                 const gchar          *id,
                                                 GNotification        *notification)
 {
+  static gsize warned = 0;
+
   /* FIXME: See https://bugzilla.gnome.org/show_bug.cgi?id=776583. This backend
    * exists purely to stop crashes when applications use g_notification*()
    * on Windows, by providing a dummy backend implementation. (The alternative
    * was to modify all of the backend call sites in g_notification*(), which
    * seemed less scalable.) */
-  g_warning ("Notifications are not yet supported on Windows.");
+  if (g_once_init_enter (&warned))
+    {
+      g_warning ("Notifications are not yet supported on Windows.");
+      g_once_init_leave (&warned, 1);
+    }
 }
 
 static void
