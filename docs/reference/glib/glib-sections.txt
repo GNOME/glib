@@ -3477,6 +3477,7 @@ g_rc_box_dup
 g_rc_box_acquire
 g_rc_box_release
 g_rc_box_release_full
+g_rc_box_get_size
 </SECTION>
 
 <SECTION>
@@ -3489,6 +3490,7 @@ g_arc_box_dup
 g_arc_box_acquire
 g_arc_box_release
 g_arc_box_release_full
+g_arc_box_get_size
 </SECTION>
 
 <SECTION>

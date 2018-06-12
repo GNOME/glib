@@ -42,6 +42,9 @@ void            g_rc_box_release_full   (gpointer        mem_block,
                                          GDestroyNotify  clear_func);
 
 GLIB_AVAILABLE_IN_2_58
+gsize           g_rc_box_get_size       (gpointer        mem_block);
+
+GLIB_AVAILABLE_IN_2_58
 gpointer        g_arc_box_alloc         (gsize           block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 GLIB_AVAILABLE_IN_2_58
 gpointer        g_arc_box_alloc0        (gsize           block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
@@ -55,6 +58,9 @@ void            g_arc_box_release       (gpointer        mem_block);
 GLIB_AVAILABLE_IN_2_58
 void            g_arc_box_release_full  (gpointer        mem_block,
                                          GDestroyNotify  clear_func);
+
+GLIB_AVAILABLE_IN_2_58
+gsize           g_arc_box_get_size      (gpointer        mem_block);
 
 #define g_rc_box_new(type) \
   ((type *) g_rc_box_alloc (sizeof (type)))

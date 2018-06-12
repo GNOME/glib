@@ -31,6 +31,7 @@ test_rcbox_new (void)
   Point *a = g_rc_box_new (Point);
 
   g_assert_nonnull (a);
+  g_assert_cmpuint (g_rc_box_get_size (a), ==, sizeof (Point));
 
   g_rc_box_release (a);
 

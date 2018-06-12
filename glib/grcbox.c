@@ -424,3 +424,26 @@ g_rc_box_release_full (gpointer       mem_block,
       g_free (real_box);
     }
 }
+
+/**
+ * g_rc_box_get_size:
+ * @mem_block: (not nullable): a pointer to reference counted data
+ *
+ * Retrieves the size of the reference counted data pointed by @mem_block.
+ *
+ * Returns: the size of the data
+ *
+ * Since: 2.58
+ */
+gsize
+g_rc_box_get_size (gpointer mem_block)
+{
+  GRcBox *real_box = G_RC_BOX (mem_block);
+
+  g_return_val_if_fail (mem_block != NULL, 0);
+#ifndef G_DISABLE_ASSERT
+  g_return_val_if_fail (real_box->magic == G_BOX_MAGIC, 0);
+#endif
+
+  return real_box->mem_size;
+}
