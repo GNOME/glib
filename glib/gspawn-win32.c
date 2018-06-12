@@ -46,6 +46,7 @@
 #include "glib-private.h"
 #include "gprintfint.h"
 #include "glibintl.h"
+#include "gspawn-private.h"
 #include "gthread.h"
 
 #include <string.h>
@@ -86,6 +87,7 @@ enum
   CHILD_NO_ERROR,
   CHILD_CHDIR_FAILED,
   CHILD_SPAWN_FAILED,
+  CHILD_SPAWN_NOENT,
 };
 
 enum {
@@ -374,6 +376,11 @@ set_child_error (gintptr      report[2],
 		   _("Failed to execute child process (%s)"),
 		   g_strerror (report[1]));
       break;
+    case CHILD_SPAWN_NOENT:
+      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT,
+                   _("Failed to execute child process (%s)"),
+                   g_strerror (report[1]));
+      break;
     default:
       g_assert_not_reached ();
     }
@@ -489,7 +496,7 @@ do_spawn_directly (gint                 *exit_status,
 
   if (rc == -1 && errsv != 0)
     {
-      g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+      g_set_error (error, G_SPAWN_ERROR, _g_spawn_exec_err_to_g_error (errsv),
 		   _("Failed to execute child process (%s)"),
 		   g_strerror (errsv));
       return FALSE;

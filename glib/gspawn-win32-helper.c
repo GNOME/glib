@@ -352,7 +352,12 @@ main (int ignored_argc, char **ignored_argv)
   saved_errno = errno;
 
   if (handle == -1 && saved_errno != 0)
-    write_err_and_exit (child_err_report_fd, CHILD_SPAWN_FAILED);
+    {
+      int ec = (saved_errno == ENOENT)
+          ? CHILD_SPAWN_NOENT
+          : CHILD_SPAWN_FAILED;
+      write_err_and_exit (child_err_report_fd, ec);
+    }
 
   write (child_err_report_fd, &no_error, sizeof (no_error));
   write (child_err_report_fd, &handle, sizeof (handle));
