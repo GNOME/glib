@@ -3488,3 +3488,11 @@ g_arc_box_acquire
 g_arc_box_release
 g_arc_box_release_full
 </SECTION>
+
+<SECTION>
+<FILE>refstring</FILE>
+g_ref_string_new
+g_ref_string_new_intern
+g_ref_string_acquire
+g_ref_string_release
+</SECTION>

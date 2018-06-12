@@ -91,6 +91,7 @@ test_programs = \
 	rand				\
 	rcbox				\
 	rec-mutex			\
+	refstring			\
 	regex				\
 	rwlock				\
 	scannerapi			\

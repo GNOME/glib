@@ -153,6 +153,7 @@ libglib_2_0_la_SOURCES = 	\
 	grcbox.c		\
 	grcboxprivate.h		\
 	grefcount.c		\
+	grefstring.c		\
 	gregex.c		\
 	gscanner.c		\
 	gscripttable.h		\
@@ -290,6 +291,7 @@ glibsubinclude_HEADERS = \
 	grand.h		\
 	grcbox.h	\
 	grefcount.h	\
+	grefstring.h	\
 	gregex.h	\
 	gscanner.h	\
 	gsequence.h	\
