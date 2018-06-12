@@ -33,6 +33,9 @@ char *  g_ref_string_acquire    (char       *str);
 GLIB_AVAILABLE_IN_2_58
 void    g_ref_string_release    (char       *str);
 
+GLIB_AVAILABLE_IN_2_58
+gsize   g_ref_string_length     (char       *str);
+
 typedef char GRefString;
 
 G_END_DECLS

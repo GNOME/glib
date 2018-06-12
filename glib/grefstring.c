@@ -173,3 +173,21 @@ g_ref_string_release (char *str)
 
   g_arc_box_release_full (str, remove_if_interned);
 }
+
+/**
+ * g_ref_string_length:
+ * @str: a reference counted string
+ *
+ * Retrieves the length of @str.
+ *
+ * Returns: the length of the given string, in bytes
+ *
+ * Since: 2.58
+ */
+gsize
+g_ref_string_length (char *str)
+{
+  g_return_val_if_fail (str != NULL && *str != '\0', 0);
+
+  return g_arc_box_get_size (str) - 1;
+}
