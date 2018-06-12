@@ -423,6 +423,13 @@ test_strv (void)
 }
 
 static void
+test_refstring (void)
+{
+  g_autoptr(GRefString) str = g_ref_string_new ("hello, world");
+  g_assert_nonnull (str);
+}
+
+static void
 mark_freed (gpointer ptr)
 {
   gboolean *freed = ptr;
@@ -539,6 +546,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_variant_dict", test_g_variant_dict);
   g_test_add_func ("/autoptr/g_variant_type", test_g_variant_type);
   g_test_add_func ("/autoptr/strv", test_strv);
+  g_test_add_func ("/autoptr/refstring", test_refstring);
   g_test_add_func ("/autoptr/autolist", test_autolist);
   g_test_add_func ("/autoptr/autoslist", test_autoslist);
 

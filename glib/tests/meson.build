@@ -50,6 +50,7 @@ glib_tests = [
   'rec-mutex',
   'refcount',
   'refcount-macro',
+  'refstring',
   'regex',
   'rwlock',
   'scannerapi',
