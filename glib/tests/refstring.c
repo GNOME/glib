@@ -28,6 +28,7 @@ test_refstring_base (void)
   g_test_message ("s = '%s' (%p)", s, s);
   g_assert_cmpint (strcmp (s, "hello, world"), ==, 0);
   g_assert_cmpint (strlen (s), ==, strlen ("hello, world"));
+  g_assert_cmpuint (g_ref_string_length (s), ==, strlen ("hello, world"));
 
   g_ref_string_release (s);
 }
