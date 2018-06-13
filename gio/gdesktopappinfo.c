@@ -155,6 +155,7 @@ static guint           n_desktop_file_dirs;
 static const guint     desktop_file_dir_user_config_index = 0;
 static guint           desktop_file_dir_user_data_index;
 static GMutex          desktop_file_dir_lock;
+static const gchar    *gio_launch_desktop_path = NULL;
 
 /* Monitor 'changed' signal handler {{{2 */
 static void desktop_file_dir_reset (DesktopFileDir *dir);
@@ -2715,8 +2716,18 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           g_list_free_full (launched_files, g_object_unref);
         }
 
+      if (gio_launch_desktop_path == NULL)
+        {
+          /* Allow test suite to specify path to gio-launch-desktop */
+          gio_launch_desktop_path = g_getenv ("GIO_LAUNCH_DESKTOP");
+
+          /* Fall back on usual searching in $PATH */
+          if (gio_launch_desktop_path == NULL)
+            gio_launch_desktop_path = "gio-launch-desktop";
+        }
+
       wrapped_argv = g_new (char *, argc + 2);
-      wrapped_argv[0] = g_strdup ("gio-launch-desktop");
+      wrapped_argv[0] = g_strdup (gio_launch_desktop_path);
 
       for (i = 0; i < argc; i++)
         wrapped_argv[i + 1] = g_steal_pointer (&argv[i]);
