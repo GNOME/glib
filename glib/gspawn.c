@@ -55,6 +55,15 @@
 #include "glibintl.h"
 #include "glib-unix.h"
 
+/* posix_spawn() is assumed the fastest way to spawn, but glibc's
+ * implementation was buggy before glibc 2.24, so avoid it on old versions.
+ * Assume that all non-glibc implementations are fine.
+ */
+#if defined(HAVE_POSIX_SPAWN) && \
+    (!defined(__GLIBC__) || (defined(__GLIBC__) && __GLIBC_PREREQ(2,24)))
+#define POSIX_SPAWN_AVAILABLE
+#endif
+
 /**
  * SECTION:spawn
  * @Short_description: process launching
@@ -700,17 +709,21 @@ g_spawn_sync (const gchar          *working_directory,
  * If @child_pid is not %NULL and an error does not occur then the returned
  * process reference must be closed using g_spawn_close_pid().
  *
- * On modern UNIX platforms, glib will use an efficient process launching
- * codepath (driven internally by posix_spawn()) provided that the following
- * conditions are met:
+ * On modern UNIX platforms, GLib can use an efficient process launching
+ * codepath driven internally by posix_spawn(). This has the advantage of
+ * avoiding the fork-time performance costs of cloning the parent process
+ * address space, and avoiding associated memory overcommit checks that are
+ * not relevant in the context of immediately executing a distinct process.
+ * This optimized codepath will be used provided that the following conditions
+ * are met:
  *
  * 1. %G_SPAWN_DO_NOT_REAP_CHILD is set
  * 2. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN is set
  * 3. %G_SPAWN_CLOEXEC_PIPES is set
  * 4. %G_SPAWN_SEARCH_PATH_FROM_ENVP is not set
- * 5. @working_directory is NULL
- * 6. @child_setup is NULL
- * 7. The program is of a recognised binary format, or has a shebang. Otherwise, glib will have to execute the program through the shell, which is not done using the optimized codepath.
+ * 5. @working_directory is %NULL
+ * 6. @child_setup is %NULL
+ * 7. The program is of a recognised binary format, or has a shebang. Otherwise, GLib will have to execute the program through the shell, which is not done using the optimized codepath.
  *
  * If you are writing a GTK+ application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
@@ -1343,7 +1356,7 @@ read_ints (int      fd,
   return TRUE;
 }
 
-#ifdef HAVE_POSIX_SPAWN
+#ifdef POSIX_SPAWN_AVAILABLE
 static gboolean
 do_posix_spawn (gchar     **argv,
                 gchar     **envp,
@@ -1476,7 +1489,7 @@ do_posix_spawn (gchar     **argv,
    * and stderr (we must not close it before we have dupped it in both places,
    * and we must not attempt to close it twice).
    */
-  for (elem = child_close; elem; elem = elem->next)
+  for (elem = child_close; elem != NULL; elem = elem->next)
     {
       r = posix_spawn_file_actions_addclose (&file_actions,
                                              GPOINTER_TO_INT (elem->data));
@@ -1485,7 +1498,7 @@ do_posix_spawn (gchar     **argv,
     }
 
   argv_pass = file_and_argv_zero ? argv + 1 : argv;
-  if (!envp)
+  if (envp == NULL)
     envp = environ;
 
   /* Don't search when it contains a slash. */
@@ -1494,7 +1507,7 @@ do_posix_spawn (gchar     **argv,
   else
     r = posix_spawnp (&pid, argv[0], &file_actions, &attr, argv_pass, envp);
 
-  if (r == 0 && child_pid)
+  if (r == 0 && child_pid != NULL)
     *child_pid = pid;
 
 out_close_fds:
@@ -1508,7 +1521,7 @@ out_free_spawnattr:
 
   return r;
 }
-#endif
+#endif /* POSIX_SPAWN_AVAILABLE */
 
 static gboolean
 fork_exec_with_fds (gboolean              intermediate_child,
@@ -1538,10 +1551,11 @@ fork_exec_with_fds (gboolean              intermediate_child,
   guint pipe_flags = cloexec_pipes ? FD_CLOEXEC : 0;
   gint status;
 
-#ifdef HAVE_POSIX_SPAWN
-  if (!intermediate_child && !working_directory && !close_descriptors &&
-      !search_path_from_envp && cloexec_pipes && !child_setup)
+#ifdef POSIX_SPAWN_AVAILABLE
+  if (!intermediate_child && working_directory == NULL && !close_descriptors &&
+      !search_path_from_envp && cloexec_pipes && child_setup == NULL)
     {
+      g_debug ("Launching with posix_spawn");
       status = do_posix_spawn (argv,
                                envp,
                                search_path,
@@ -1562,7 +1576,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
           g_set_error (error,
                        G_SPAWN_ERROR,
                        G_SPAWN_ERROR_FAILED,
-                       _("Failed to launch with posix_spawn (%s)"),
+                       _("Failed to spawn child process \"%s\" (%s)"),
+                       argv[0],
                        g_strerror (status));
           return FALSE;
        }
@@ -1572,8 +1587,17 @@ fork_exec_with_fds (gboolean              intermediate_child,
        * So if it fails with ENOEXEC, we fall through to the regular
        * gspawn codepath so that script execution can be attempted,
        * per standard gspawn behaviour. */
+      g_debug ("posix_spawn failed (ENOEXEC), fall back to regular gspawn");
+    } else {
+      g_debug ("posix_spawn avoided %s%s%s%s%s%s",
+               !intermediate_child ? "" : "(automatic reaping requested) ",
+               working_directory == NULL ? "" : "(workdir specified) ",
+               !close_descriptors ? "" : "(fd close requested) ",
+               !search_path_from_envp ? "" : "(using envp for search path) ",
+               !cloexec_pipes ? "" : "(pipes created without CLOEXEC) ",
+               child_setup == NULL ? "" : "(child_setup specified) ");
     }
-#endif
+#endif /* POSIX_SPAWN_AVAILABLE */
 
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
     return FALSE;
