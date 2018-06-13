@@ -418,6 +418,10 @@ g_dbus_is_supported_address (const gchar  *string,
         supported = is_valid_nonce_tcp (a[n], key_value_pairs, error);
       else if (g_strcmp0 (a[n], "autolaunch:") == 0)
         supported = TRUE;
+      else
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                     _("Unknown or unsupported transport “%s” for address “%s”"),
+                     transport_name, a[n]);
 
       g_free (transport_name);
       g_hash_table_unref (key_value_pairs);
