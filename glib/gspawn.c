@@ -1434,7 +1434,7 @@ do_posix_spawn (gchar     **argv,
   else if (!child_inherits_stdin)
     {
       /* Keep process from blocking on a read of stdin */
-      gint read_null = open ("/dev/null", O_RDONLY | O_CLOEXEC);
+      gint read_null = sane_open ("/dev/null", O_RDONLY | O_CLOEXEC);
       g_assert (read_null != -1);
       parent_close_fds[num_parent_close_fds++] = read_null;
 
