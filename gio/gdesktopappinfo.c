@@ -2672,7 +2672,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       GList *launched_uris;
       GList *iter;
       char *sn_id = NULL;
-      char **real_argv;
+      char **wrapped_argv;
       int i;
 
       old_uris = dup_uris;
@@ -2715,18 +2715,18 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           g_list_free_full (launched_files, g_object_unref);
         }
 
-      real_argv = g_new (char *, argc + 2);
-      real_argv[0] = g_strdup ("gio-launch-desktop");
+      wrapped_argv = g_new (char *, argc + 2);
+      wrapped_argv[0] = g_strdup ("gio-launch-desktop");
 
       for (i = 0; i < argc; i++)
-        real_argv[i + 1] = (char *)argv[i];
+        wrapped_argv[i + 1] = g_steal_pointer (&argv[i]);
 
-      real_argv[i + 1] = NULL;
+      wrapped_argv[i + 1] = NULL;
       g_free (argv);
       argv = NULL;
 
       if (!g_spawn_async_with_fds (info->path,
-                                   real_argv,
+                                   wrapped_argv,
                                    envp,
                                    spawn_flags,
                                    user_setup,
@@ -2773,8 +2773,8 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       g_free (sn_id);
       g_list_free (launched_uris);
 
-      g_strfreev (real_argv);
-      real_argv = NULL;
+      g_strfreev (wrapped_argv);
+      wrapped_argv = NULL;
     }
   while (dup_uris != NULL);
 
@@ -3074,11 +3074,12 @@ g_desktop_app_info_launch_uris_as_manager_with_fds (GDesktopAppInfo            *
  * launch applications.  Ordinary applications should use
  * g_app_info_launch_uris().
  *
- * If the application is launched via traditional UNIX fork()/exec()
- * then @spawn_flags, @user_setup and @user_setup_data are used for the
- * call to g_spawn_async().  Additionally, @pid_callback (with
- * @pid_callback_data) will be called to inform about the PID of the
- * created process.
+ * If the application is launched via GSpawn, then @spawn_flags, @user_setup
+ * and @user_setup_data are used for the call to g_spawn_async().
+ * Additionally, @pid_callback (with @pid_callback_data) will be called to
+ * inform about the PID of the created process. See g_spawn_async_with_pipes()
+ * for information on certain parameter conditions that can enable an
+ * optimized posix_spawn() codepath to be used.
  *
  * If application launching occurs via some other mechanism (eg: D-Bus
  * activation) then @spawn_flags, @user_setup, @user_setup_data,
