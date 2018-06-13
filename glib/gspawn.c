@@ -143,7 +143,6 @@ static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
                                       gint                 *standard_error,
                                       GError              **error);
 
-
 static gboolean fork_exec_with_fds (gboolean              intermediate_child,
                                     const gchar          *working_directory,
                                     gchar               **argv,
@@ -772,9 +771,9 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * @child_setup: (scope async) (nullable): function to run in the child just before exec()
  * @user_data: (closure): user data for @child_setup
  * @child_pid: (out) (optional): return location for child process ID, or %NULL
- * @stdin_fd: (optional): file descriptor to use for child's stdin, or -1
- * @stdout_fd: (optional): file descriptor to use for child's stdout, or -1
- * @stderr_fd: (optional): file descriptor to use for child's stderr, or -1
+ * @stdin_fd: file descriptor to use for child's stdin, or -1
+ * @stdout_fd: file descriptor to use for child's stdout, or -1
+ * @stderr_fd: file descriptor to use for child's stderr, or -1
  * @error: return location for error
  *
  * Identical to g_spawn_async_with_pipes() but instead of
@@ -1619,7 +1618,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
        */
       close_and_invalidate (&child_err_report_pipe[0]);
       close_and_invalidate (&child_pid_report_pipe[0]);
-      if (child_close_fds)
+      if (child_close_fds != NULL)
         {
            int i = -1;
            while (child_close_fds[++i] != -1)
