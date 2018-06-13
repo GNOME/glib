@@ -57,12 +57,19 @@
 
 /* posix_spawn() is assumed the fastest way to spawn, but glibc's
  * implementation was buggy before glibc 2.24, so avoid it on old versions.
- * Assume that all non-glibc implementations are fine.
  */
-#if defined(HAVE_POSIX_SPAWN) && \
-    (!defined(__GLIBC__) || (defined(__GLIBC__) && __GLIBC_PREREQ(2,24)))
+#ifdef HAVE_POSIX_SPAWN
+#ifdef __GLIBC__
+
+#if __GLIBC_PREREQ(2,24)
 #define POSIX_SPAWN_AVAILABLE
 #endif
+
+#else /* !__GLIBC__ */
+/* Assume that all non-glibc posix_spawn implementations are fine. */
+#define POSIX_SPAWN_AVAILABLE
+#endif /* __GLIBC__ */
+#endif /* HAVE_POSIX_SPAWN */
 
 /**
  * SECTION:spawn
