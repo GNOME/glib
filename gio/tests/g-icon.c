@@ -108,6 +108,15 @@ test_g_icon_to_string (void)
   g_object_unref (location);
 #endif
 
+  icon = g_themed_icon_new_with_default_fallbacks ("some-icon-symbolic");
+  g_themed_icon_append_name (G_THEMED_ICON (icon), "some-other-icon");
+  data = g_icon_to_string (icon);
+  g_assert_cmpstr (data, ==, ". GThemedIcon "
+                             "some-icon-symbolic some-symbolic some-other-icon some-other some "
+                             "some-icon some-other-icon-symbolic some-other-symbolic");
+  g_free (data);
+  g_object_unref (icon);
+
   icon = g_themed_icon_new ("network-server");
   data = g_icon_to_string (icon);
   g_assert_cmpstr (data, ==, ". GThemedIcon network-server network-server-symbolic");
