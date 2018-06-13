@@ -230,13 +230,39 @@ g_themed_icon_init (GThemedIcon *themed)
   themed->names      = NULL;
 }
 
+/**
+ * g_themed_icon_update_names:
+ * @themed: a #GThemedIcon.
+ *
+ * Update the actual icon name list, based on the requested names (from
+ * construction, or later added with g_themed_icon_prepend_name() and
+ * g_themed_icon_append_name()).
+ * The order of the list matters, indicating priority:
+ * - The first requested icon is first in priority.
+ * - If "use-default-fallbacks" is #TRUE, then it is followed by all its
+ *   fallbacks (starting from top to lower context levels).
+ * - Then next requested icons, and optionally their fallbacks, follow.
+ * - Finally all the style variants (symbolic or regular, opposite to whatever
+ *   is the requested style) follow in the same order.
+ *
+ * An icon is not added twice in the list if it was previously added.
+ *
+ * For instance, if requested names are:
+ * [ "some-icon-symbolic", "some-other-icon" ]
+ * and use-default-fallbacks is TRUE, the final name list shall be:
+ * [ "some-icon-symbolic", "some-symbolic", "some-other-icon",
+ *   "some-other", "some", "some-icon", "some-other-icon-symbolic",
+ *   "some-other-symbolic" ]
+ *
+ * Returns: (transfer full) (type GThemedIcon): a new #GThemedIcon
+ **/
 static void
 g_themed_icon_update_names (GThemedIcon *themed)
 {
   GList *names    = NULL;
   GList *variants = NULL;
   GList *iter;
-  gint   i;
+  guint  i;
 
   g_return_if_fail (themed->init_names != NULL && themed->init_names[0] != NULL);
 
@@ -245,26 +271,22 @@ g_themed_icon_update_names (GThemedIcon *themed)
       gchar    *name;
       gboolean  is_symbolic;
 
-      if (g_list_find_custom (names, themed->init_names[i], (GCompareFunc) g_strcmp0) ||
-          g_list_find_custom (variants, themed->init_names[i], (GCompareFunc) g_strcmp0))
-        /* The icon name was already added and is higher in priority.
-         * There is no need to re-add it. */
-        continue;
-
       is_symbolic = g_str_has_suffix (themed->init_names[i], "-symbolic");
       if (is_symbolic)
-        {
-          name     = g_strndup (themed->init_names[i], strlen (themed->init_names[i]) - 9);
-          names    = g_list_prepend (names, g_strdup (themed->init_names[i]));
-          variants = g_list_prepend (variants, name);
-        }
+        name = g_strndup (themed->init_names[i], strlen (themed->init_names[i]) - 9);
       else
+        name = g_strdup (themed->init_names[i]);
+
+      if (g_list_find_custom (names, name, (GCompareFunc) g_strcmp0))
         {
-          name     = g_strdup (themed->init_names[i]);
-          names    = g_list_prepend (names, name);
-          variants = g_list_prepend (variants,
-                                     g_strdup_printf ("%s-symbolic", name));
+          g_free (name);
+          continue;
         }
+
+      if (is_symbolic)
+        names = g_list_prepend (names, g_strdup (themed->init_names[i]));
+      else
+        names = g_list_prepend (names, name);
 
       if (themed->use_default_fallbacks)
         {
@@ -275,24 +297,51 @@ g_themed_icon_update_names (GThemedIcon *themed)
 
           while ((dashp = strrchr (last, '-')) != NULL)
             {
+              gchar *tmp = last;
+              gchar *fallback;
+
               last = g_strndup (last, dashp - last);
               if (is_symbolic)
                 {
-                  names = g_list_prepend (names,
-                                          g_strdup_printf ("%s-symbolic", last));
-                  variants = g_list_prepend (variants, last);
+                  g_free (tmp);
+                  fallback = g_strdup_printf ("%s-symbolic", last);
                 }
               else
+                fallback = last;
+              if (g_list_find_custom (names, fallback, (GCompareFunc) g_strcmp0))
                 {
-                  names = g_list_prepend (names, last);
-                  variants = g_list_prepend (variants,
-                                             g_strdup_printf ("%s-symbolic", last));
+                  g_free (fallback);
+                  break;
                 }
+              names = g_list_prepend (names, fallback);
             }
+          if (is_symbolic)
+            g_free (last);
         }
+      else if (is_symbolic)
+        g_free (name);
+    }
+  for (iter = names; iter; iter = iter->next)
+    {
+      gchar    *name = (gchar *) iter->data;
+      gchar    *variant;
+      gboolean  is_symbolic;
+
+      is_symbolic = g_str_has_suffix (name, "-symbolic");
+      if (is_symbolic)
+        variant = g_strndup (name, strlen (name) - 9);
+      else
+        variant = g_strdup_printf ("%s-symbolic", name);
+      if (g_list_find_custom (names, variant, (GCompareFunc) g_strcmp0) ||
+          g_list_find_custom (variants, variant, (GCompareFunc) g_strcmp0))
+        {
+          g_free (variant);
+          continue;
+        }
+
+      variants = g_list_prepend (variants, variant);
     }
   names = g_list_reverse (names);
-  variants = g_list_reverse (variants);
 
   g_strfreev (themed->names);
   themed->names = g_new (char *, g_list_length (names) + g_list_length (variants) + 1);
