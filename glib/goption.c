@@ -2028,7 +2028,7 @@ g_option_context_parse (GOptionContext   *context,
 
                   /* Now look for --<group>-<option> */
                   dash = strchr (arg, '-');
-                  if (dash)
+                  if (dash && arg < dash)
                     {
                       /* Try the groups */
                       list = context->groups;
