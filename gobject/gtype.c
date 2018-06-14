@@ -76,7 +76,7 @@
  *
  * Type instance and class structs are limited to a total of 64 KiB,
  * including all parent types. Similarly, type instances' private data
- * (as created by g_type_class_add_private()) are limited to a total of
+ * (as created by G_ADD_PRIVATE()) are limited to a total of
  * 64 KiB. If a type instance needs a large static buffer, allocate it
  * separately (typically by using #GArray or #GPtrArray) and put a pointer
  * to the buffer in the structure.
@@ -4562,6 +4562,8 @@ gobject_init_ctor (void)
  * ]|
  *
  * Since: 2.4
+ * Deprecated: 2.58: Use the G_ADD_PRIVATE() macro with the `G_DEFINE_*`
+ *   family of macros to add instance private data to a type
  */
 void
 g_type_class_add_private (gpointer g_class,

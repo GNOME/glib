@@ -634,6 +634,8 @@ struct _GTypeQuery
  * This macro should only be used in type implementations.
  * 
  * Since: 2.4
+ * Deprecated: 2.58: Use %G_ADD_PRIVATE and the generated
+ *   `your_type_get_instance_private()` function instead
  * Returns: (not nullable): a pointer to the private data structure
  */
 #define G_TYPE_INSTANCE_GET_PRIVATE(instance, g_type, c_type)   ((c_type*) g_type_instance_get_private ((GTypeInstance*) (instance), (g_type)))
@@ -1297,7 +1299,7 @@ void  g_type_interface_add_prerequisite (GType			     interface_type,
 GLIB_AVAILABLE_IN_ALL
 GType*g_type_interface_prerequisites    (GType                       interface_type,
 					 guint                      *n_prerequisites);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_58
 void     g_type_class_add_private       (gpointer                    g_class,
                                          gsize                       private_size);
 GLIB_AVAILABLE_IN_2_38
