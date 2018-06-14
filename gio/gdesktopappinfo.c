@@ -3023,9 +3023,9 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
  * @user_setup_data: (closure user_setup) (nullable): User data for @user_setup
  * @pid_callback: (scope call) (nullable): Callback for child processes
  * @pid_callback_data: (closure pid_callback) (nullable): User data for @callback
- * @stdin_fd: (optional): file descriptor to use for child's stdin, or -1
- * @stdout_fd: (optional): file descriptor to use for child's stdout, or -1
- * @stderr_fd: (optional): file descriptor to use for child's stderr, or -1
+ * @stdin_fd: file descriptor to use for child's stdin, or -1
+ * @stdout_fd: file descriptor to use for child's stdout, or -1
+ * @stderr_fd: file descriptor to use for child's stderr, or -1
  * @error: return location for a #GError, or %NULL
  *
  * Equivalent to g_desktop_app_info_launch_uris_as_manager() but allows
