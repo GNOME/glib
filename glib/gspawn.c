@@ -727,11 +727,10 @@ g_spawn_sync (const gchar          *working_directory,
  *
  * 1. %G_SPAWN_DO_NOT_REAP_CHILD is set
  * 2. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN is set
- * 3. %G_SPAWN_CLOEXEC_PIPES is set
- * 4. %G_SPAWN_SEARCH_PATH_FROM_ENVP is not set
- * 5. @working_directory is %NULL
- * 6. @child_setup is %NULL
- * 7. The program is of a recognised binary format, or has a shebang. Otherwise, GLib will have to execute the program through the shell, which is not done using the optimized codepath.
+ * 3. %G_SPAWN_SEARCH_PATH_FROM_ENVP is not set
+ * 4. @working_directory is %NULL
+ * 5. @child_setup is %NULL
+ * 6. The program is of a recognised binary format, or has a shebang. Otherwise, GLib will have to execute the program through the shell, which is not done using the optimized codepath.
  *
  * If you are writing a GTK+ application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
@@ -1561,7 +1560,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
 
 #ifdef POSIX_SPAWN_AVAILABLE
   if (!intermediate_child && working_directory == NULL && !close_descriptors &&
-      !search_path_from_envp && cloexec_pipes && child_setup == NULL)
+      !search_path_from_envp && child_setup == NULL)
     {
       g_debug ("Launching with posix_spawn");
       status = do_posix_spawn (argv,
@@ -1597,12 +1596,11 @@ fork_exec_with_fds (gboolean              intermediate_child,
        * per standard gspawn behaviour. */
       g_debug ("posix_spawn failed (ENOEXEC), fall back to regular gspawn");
     } else {
-      g_debug ("posix_spawn avoided %s%s%s%s%s%s",
+      g_debug ("posix_spawn avoided %s%s%s%s%s",
                !intermediate_child ? "" : "(automatic reaping requested) ",
                working_directory == NULL ? "" : "(workdir specified) ",
                !close_descriptors ? "" : "(fd close requested) ",
                !search_path_from_envp ? "" : "(using envp for search path) ",
-               !cloexec_pipes ? "" : "(pipes created without CLOEXEC) ",
                child_setup == NULL ? "" : "(child_setup specified) ");
     }
 #endif /* POSIX_SPAWN_AVAILABLE */
