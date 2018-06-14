@@ -1772,7 +1772,6 @@ have_sh = find_program('sh', required : false).found() # For glib-gettextize
 # (we add them for now to minimise the diff)
 glib_conf.set('HAVE_DLFCN_H', 1)
 glib_conf.set('STDC_HEADERS', 1)
-# THREADS_NONE
 glib_conf.set('SIZEOF___INT64', 8)
 
 # FIXME: How to detect Solaris? https://github.com/mesonbuild/meson/issues/1578
