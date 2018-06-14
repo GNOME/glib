@@ -32,6 +32,7 @@
 #endif
 
 #ifdef G_OS_WIN32
+#include <io.h>
 #define LINEEND "\r\n"
 #else
 #define LINEEND "\n"
@@ -161,7 +162,16 @@ test_spawn_async (void)
   g_free (arg);
 }
 
-#ifdef G_OS_UNIX
+/* Windows close() causes failure through the Invalid Parameter Handler
+ * Routine if the file descriptor does not exist.
+ */
+static void
+sane_close (int fd)
+{
+  if (fd >= 0)
+    close (fd);
+}
+
 /* Test g_spawn_async_with_fds() with a variety of different inputs */
 static void
 test_spawn_async_with_fds (void)
@@ -189,7 +199,7 @@ test_spawn_async_with_fds (void)
   g_ptr_array_add (argv, arg);
   g_ptr_array_add (argv, NULL);
 
-  for (i = 0; i < G_N_ELEMENTS(tests); i++) {
+  for (i = 0; i < G_N_ELEMENTS (tests); i++) {
     GError *error = NULL;
     GPid pid;
     GMainContext *context;
@@ -208,8 +218,12 @@ test_spawn_async_with_fds (void)
         test_pipe[j][1] = -1;
         break;
       case PIPE:
+#ifdef G_OS_UNIX
         g_unix_open_pipe (test_pipe[j], FD_CLOEXEC, &error);
         g_assert_no_error (error);
+#else
+        g_assert (_pipe (test_pipe[j], 4096, _O_BINARY) >= 0);
+#endif
         break;
       case STDOUT_PIPE:
         g_assert (j == 2); /* only works for stderr */
@@ -226,12 +240,13 @@ test_spawn_async_with_fds (void)
 
     g_spawn_async_with_fds (NULL, (char**)argv->pdata, NULL,
 			    G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid,
-			    test_pipe[0][1], test_pipe[1][1], test_pipe[2][1],
+			    test_pipe[0][0], test_pipe[1][1], test_pipe[2][1],
 			    &error);
     g_assert_no_error (error);
-    close (test_pipe[0][1]);
-    close (test_pipe[1][1]);
-    close (test_pipe[2][1]);
+    sane_close (test_pipe[0][0]);
+    sane_close (test_pipe[1][1]);
+    if (fd_info[2] != STDOUT_PIPE)
+      sane_close (test_pipe[2][1]);
 
     data.loop = loop;
     data.stdout_done = FALSE;
@@ -270,15 +285,15 @@ test_spawn_async_with_fds (void)
 
     g_main_context_unref (context);
     g_main_loop_unref (loop);
-    close (test_pipe[0][0]);
-    close (test_pipe[1][0]);
-    close (test_pipe[2][0]);
+    sane_close (test_pipe[0][1]);
+    sane_close (test_pipe[1][0]);
+    if (fd_info[2] != STDOUT_PIPE)
+      sane_close (test_pipe[2][0]);
   }
 
   g_ptr_array_free (argv, TRUE);
   g_free (arg);
 }
-#endif
 
 static void
 test_spawn_sync (void)
@@ -404,9 +419,7 @@ main (int   argc,
 
   g_test_add_func ("/gthread/spawn-single-sync", test_spawn_sync);
   g_test_add_func ("/gthread/spawn-single-async", test_spawn_async);
-#ifdef G_OS_UNIX
   g_test_add_func ("/gthread/spawn-single-async-with-fds", test_spawn_async_with_fds);
-#endif
   g_test_add_func ("/gthread/spawn-script", test_spawn_script);
   g_test_add_func ("/gthread/spawn/nonexistent", test_spawn_nonexistent);
   g_test_add_func ("/gthread/spawn-posix-spawn", test_posix_spawn);
