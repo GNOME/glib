@@ -1761,6 +1761,24 @@ if host_system != 'windows' and get_option('xattr')
   endif
 endif
 
+if cc_can_run
+  rres = cc.run('''#include <stdlib.h>
+                   #include <string.h>
+                   int main() {
+                     char p[10];
+                     (void) strlcpy (p, "hi", 10);
+                     if (strlcat (p, "bye", 0) != 3)
+                       return 1;
+                     return 0;
+                   }''',
+                name : 'OpenBSD strlcpy/strlcat')
+  if rres.compiled() and rres.returncode() == 0
+    glib_conf.set('HAVE_STRLCPY', 1)
+  endif
+elif meson.get_cross_property('have_strlcpy', false)
+  glib_conf.set('HAVE_STRLCPY', 1)
+endif
+
 python = import('python3').find_python()
 
 # Determine which user environment-dependent files that we want to install
