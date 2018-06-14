@@ -304,6 +304,10 @@ struct_members = [
   [ 'statfs', 'f_bavail', struct_stat_blkprefix ],
   [ 'dirent', 'd_type', '''#include <sys/types.h>
                            #include <dirent.h>''' ],
+  [ 'statvfs', 'f_basetype', '#include <sys/statvfs.h>' ],
+  [ 'statvfs', 'f_fstypename', '#include <sys/statvfs.h>' ],
+  [ 'tm', 'tm_gmtoff', '#include <time.h>' ],
+  [ 'tm', '__tm_gmtoff', '#include <time.h>' ],
 ]
 
 foreach m : struct_members
