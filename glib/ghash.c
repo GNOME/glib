@@ -1909,9 +1909,9 @@ g_hash_table_get_values (GHashTable *hash_table)
  * @key_equal_func parameter, when using non-%NULL strings as keys in a
  * #GHashTable.
  *
- * Note that this function is primarily meant as a hash table comparison
- * function. For a general-purpose, %NULL-safe string comparison function,
- * see g_strcmp0().
+ * This function is typically used for hash table comparisons, but can be used
+ * for general purpose comparisons of non-%NULL strings. For a %NULL-safe string
+ * comparison function, see g_strcmp0().
  *
  * Returns: %TRUE if the two keys match
  */
