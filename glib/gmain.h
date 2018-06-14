@@ -163,10 +163,32 @@ typedef struct _GSourceFuncs            GSourceFuncs;
  * Specifies the type of function passed to g_timeout_add(),
  * g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
  *
+ * When calling g_source_set_callback(), you may need to cast a function of a
+ * different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
+ * incompatible function types.
+ *
  * Returns: %FALSE if the source should be removed. #G_SOURCE_CONTINUE and
  * #G_SOURCE_REMOVE are more memorable names for the return value.
  */
 typedef gboolean (*GSourceFunc)       (gpointer user_data);
+
+/**
+ * G_SOURCE_FUNC:
+ * @f: a function pointer.
+ *
+ * Cast a function pointer to a #GSourceFunc, suppressing warnings from GCC 8
+ * onwards with `-Wextra` or `-Wcast-function-type` enabled about the function
+ * types being incompatible.
+ *
+ * For example, the correct type of callback for a source created by
+ * g_child_watch_source_new() is #GChildWatchFunc, which accepts more arguments
+ * than #GSourceFunc. Casting the function with `(GSourceFunc)` to call
+ * g_source_set_callback() will trigger a warning, even though it will be cast
+ * back to the correct type before it is called by the source.
+ *
+ * Since: 2.58
+ */
+#define G_SOURCE_FUNC(f) ((GSourceFunc) (void (*)(void)) (f))
 
 /**
  * GChildWatchFunc:

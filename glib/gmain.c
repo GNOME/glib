@@ -1628,7 +1628,8 @@ g_source_set_callback_indirect (GSource              *source,
  *
  * The exact type of @func depends on the type of source; ie. you
  * should not count on @func being called with @data as its first
- * parameter.
+ * parameter. Cast @func with G_SOURCE_FUNC() to avoid warnings about
+ * incompatible function types.
  *
  * See [memory management of sources][mainloop-memory-management] for details
  * on how to handle memory management of @data.
