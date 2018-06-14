@@ -67,6 +67,7 @@ freedesktop_notification_free (gpointer data)
 {
   FreedesktopNotification *n = data;
 
+  g_object_unref (n->backend);
   g_free (n->id);
   g_free (n->default_action);
   if (n->default_action_target)
@@ -83,7 +84,7 @@ freedesktop_notification_new (GFdoNotificationBackend *backend,
   FreedesktopNotification *n;
 
   n = g_slice_new0 (FreedesktopNotification);
-  n->backend = backend;
+  n->backend = g_object_ref (backend);
   n->id = g_strdup (id);
   n->notify_id = 0;
   g_notification_get_default_action (notification,
