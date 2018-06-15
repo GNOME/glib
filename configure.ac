@@ -3520,7 +3520,6 @@ chmod 0755 gobject/glib-mkenums])
 if false; then
   AC_CONFIG_FILES([
     INSTALL
-    README
     glib/glib.rc
     gmodule/gmodule.rc
     gobject/gobject.rc

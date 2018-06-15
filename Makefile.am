@@ -38,7 +38,7 @@ EXTRA_DIST += 			\
 	acglib.m4		\
 	sanity_check		\
 	README.commits		\
-	README.in		\
+	README.md		\
 	README.rationale	\
 	INSTALL.in		\
 	README.win32		\
@@ -110,7 +110,6 @@ EXTRA_DIST += $(meson_build_files)
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST += 		\
-	README			\
 	INSTALL			\
 	ChangeLog		\
 	$(NULL)
