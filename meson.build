@@ -424,6 +424,8 @@ functions = [
   'wcrtomb',
   'wcslen',
   'wcsnlen',
+  'sysctlbyname',
+  '_NSGetEnviron',
 ]
 
 if glib_conf.has('HAVE_SYS_STATVFS_H')
