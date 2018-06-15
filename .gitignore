@@ -51,7 +51,6 @@ py-compile
 test-driver
 
 INSTALL
-README
 ChangeLog
 /glib-lcov.info
 /glib-lcov/

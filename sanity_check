@@ -13,7 +13,7 @@ echo "Checking glib-$VERSION.tar.gz..."
 tar xfz glib-$VERSION.tar.gz
 
 
-for file in INSTALL NEWS README 
+for file in INSTALL NEWS
 do
 	echo -n "$file... "
 	if [ "x`grep $VERSION glib-$VERSION/$file | wc -l | awk -F' ' '{print $1}'`" = "x0" ]; then

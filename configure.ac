@@ -54,7 +54,7 @@ m4_define([glib_debug_default],
 
 
 AC_INIT(glib, [glib_version],
-        [http://bugzilla.gnome.org/enter_bug.cgi?product=glib])
+        [https://gitlab.gnome.org/GNOME/glib/issues/new])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([glib/glib.h])
@@ -3520,7 +3520,6 @@ chmod 0755 gobject/glib-mkenums])
 if false; then
   AC_CONFIG_FILES([
     INSTALL
-    README
     glib/glib.rc
     gmodule/gmodule.rc
     gobject/gobject.rc

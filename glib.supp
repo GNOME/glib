@@ -17,7 +17,7 @@
 # This file should be updated if GLib introduces a new deliberate one-time leak,
 # or another false race positive in Valgrind: please file bugs at:
 #
-# https://bugzilla.gnome.org/enter_bug.cgi?product=glib
+# https://gitlab.gnome.org/GNOME/glib/issues/new
 
 {
 	gnutls-init-calloc

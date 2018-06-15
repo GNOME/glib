@@ -25,10 +25,10 @@ if test -z $AUTORECONF; then
         exit 1
 fi
 
-# README and INSTALL are required by automake, but may be deleted by clean
-# up rules. to get automake to work, simply touch these here, they will be
-# regenerated from their corresponding *.in files by ./configure anyway.
-touch README INSTALL
+# INSTALL is required by automake, but may be deleted by clean
+# up rules. to get automake to work, simply touch it here. It will be
+# regenerated from its corresponding *.in file by ./configure anyway.
+touch INSTALL
 
 autoreconf --force --install --verbose || exit $?
 
