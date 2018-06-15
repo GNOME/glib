@@ -37,7 +37,7 @@ EXTRA_DIST += 			\
 	NEWS.pre-1-3		\
 	acglib.m4		\
 	sanity_check		\
-	README.commits		\
+	CONTRIBUTING.md		\
 	README.md		\
 	README.rationale	\
 	INSTALL.in		\
