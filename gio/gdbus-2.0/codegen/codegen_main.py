@@ -152,7 +152,7 @@ def codegen_main():
     arg_parser.add_argument('files', metavar='FILE', nargs='*',
                             help='D-Bus introspection XML file')
     arg_parser.add_argument('--xml-files', metavar='FILE', action='append', default=[],
-                            help='D-Bus introspection XML file')
+                            help=argparse.SUPPRESS)
     arg_parser.add_argument('--interface-prefix', metavar='PREFIX', default='',
                             help='String to strip from D-Bus interface names for code and docs')
     arg_parser.add_argument('--c-namespace', metavar='NAMESPACE', default='',
@@ -175,6 +175,10 @@ def codegen_main():
                        help='Generate C headers')
     group.add_argument('--body', action='store_true',
                        help='Generate C code')
+    group.add_argument('--interface-info-header', action='store_true',
+                       help='Generate GDBusInterfaceInfo C header')
+    group.add_argument('--interface-info-body', action='store_true',
+                       help='Generate GDBusInterfaceInfo C code')
 
     group = arg_parser.add_mutually_exclusive_group()
     group.add_argument('--output', metavar='FILE',
@@ -210,6 +214,24 @@ def codegen_main():
 
         c_file = args.output
         header_name = os.path.splitext(os.path.basename(c_file))[0] + '.h'
+    elif args.interface_info_header:
+        if args.output is None:
+            print_error('Using --interface-info-header requires --output')
+        if args.c_generate_object_manager:
+            print_error('--c-generate-object-manager is incompatible with '
+                        '--interface-info-header')
+
+        h_file = args.output
+        header_name = os.path.basename(h_file)
+    elif args.interface_info_body:
+        if args.output is None:
+            print_error('Using --interface-info-body requires --output')
+        if args.c_generate_object_manager:
+            print_error('--c-generate-object-manager is incompatible with '
+                        '--interface-info-body')
+
+        c_file = args.output
+        header_name = os.path.splitext(os.path.basename(c_file))[0] + '.h'
 
     all_ifaces = []
     input_files_basenames = []
@@ -220,7 +242,7 @@ def codegen_main():
         all_ifaces.extend(parsed_ifaces)
         input_files_basenames.append(os.path.basename(fname))
 
-    if args.annotate != None:
+    if args.annotate is not None:
         apply_annotations(all_ifaces, args.annotate)
 
     for i in all_ifaces:
@@ -252,6 +274,23 @@ def codegen_main():
                                         input_files_basenames,
                                         docbook_gen,
                                         outfile)
+            gen.generate()
+
+    if args.interface_info_header:
+        with open(h_file, 'w') as outfile:
+            gen = codegen.InterfaceInfoHeaderCodeGenerator(all_ifaces,
+                                                           args.c_namespace,
+                                                           header_name,
+                                                           args.pragma_once,
+                                                           outfile)
+            gen.generate()
+
+    if args.interface_info_body:
+        with open(c_file, 'w') as outfile:
+            gen = codegen.InterfaceInfoBodyCodeGenerator(all_ifaces,
+                                                         args.c_namespace,
+                                                         header_name,
+                                                         outfile)
             gen.generate()
 
     sys.exit(0)
