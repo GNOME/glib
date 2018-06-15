@@ -544,6 +544,26 @@ _g_win32_readlink_utf16 (const gunichar2 *filename,
   return result;
 }
 
+static gchar *
+_g_win32_get_mode_alias (const gchar *mode)
+{
+  gchar *alias;
+
+  alias = g_strdup (mode);
+  if (strlen (mode) > 2 && mode[2] == '+')
+    {
+      /* Windows implementation of fopen() does not accept modes such as
+       * "wb+". The 'b' needs to be appended to "w+", i.e. "w+b". Note
+       * that otherwise these 2 modes are supposed to be aliases, hence
+       * swappable at will.
+       */
+      alias[1] = '+';
+      alias[2] = mode[1];
+    }
+
+  return alias;
+}
+
 int
 g_win32_readlink_utf8 (const gchar *filename,
                        gchar       *buf,
@@ -1246,7 +1266,7 @@ g_rmdir (const gchar *filename)
  *
  * A wrapper for the stdio fopen() function. The fopen() function
  * opens a file and associates a new stream with it.
- * 
+ *
  * Because file descriptors are specific to the C library on Windows,
  * and a file descriptor is part of the FILE struct, the FILE* returned
  * by this function makes sense only to functions in the same C library.
@@ -1258,16 +1278,17 @@ g_rmdir (const gchar *filename)
  *
  * Returns: A FILE* if the file was successfully opened, or %NULL if
  *     an error occurred
- * 
+ *
  * Since: 2.6
  */
 FILE *
 g_fopen (const gchar *filename,
-	 const gchar *mode)
+         const gchar *mode)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
   wchar_t *wmode;
+  gchar   *mode2;
   FILE *retval;
   int save_errno;
 
@@ -1277,7 +1298,9 @@ g_fopen (const gchar *filename,
       return NULL;
     }
 
-  wmode = g_utf8_to_utf16 (mode, -1, NULL, NULL, NULL);
+  mode2 = _g_win32_get_mode_alias (mode);
+  wmode = g_utf8_to_utf16 (mode2, -1, NULL, NULL, NULL);
+  g_free (mode2);
 
   if (wmode == NULL)
     {
@@ -1308,22 +1331,23 @@ g_fopen (const gchar *filename,
  *
  * A wrapper for the POSIX freopen() function. The freopen() function
  * opens a file and associates it with an existing stream.
- * 
+ *
  * See your C library manual for more details about freopen().
  *
  * Returns: A FILE* if the file was successfully opened, or %NULL if
  *     an error occurred.
- * 
+ *
  * Since: 2.6
  */
 FILE *
 g_freopen (const gchar *filename,
-	   const gchar *mode,
-	   FILE        *stream)
+           const gchar *mode,
+           FILE        *stream)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
   wchar_t *wmode;
+  gchar   *mode2;
   FILE *retval;
   int save_errno;
 
@@ -1332,8 +1356,10 @@ g_freopen (const gchar *filename,
       errno = EINVAL;
       return NULL;
     }
-  
-  wmode = g_utf8_to_utf16 (mode, -1, NULL, NULL, NULL);
+
+  mode2 = _g_win32_get_mode_alias (mode);
+  wmode = g_utf8_to_utf16 (mode2, -1, NULL, NULL, NULL);
+  g_free (mode2);
 
   if (wmode == NULL)
     {
@@ -1341,7 +1367,7 @@ g_freopen (const gchar *filename,
       errno = EINVAL;
       return NULL;
     }
-  
+
   retval = _wfreopen (wfilename, wmode, stream);
   save_errno = errno;
 
