@@ -66,8 +66,12 @@ _km_add_missing (kqueue_sub *sub)
 
   if (!scan_missing_running)
     {
+      GSource *source;
       scan_missing_running = TRUE;
-      g_timeout_add_seconds (SCAN_MISSING_TIME, km_scan_missing, NULL);
+      source = g_timeout_source_new_seconds (SCAN_MISSING_TIME);
+      g_source_set_callback (source, _km_scan_missing_cb, NULL, NULL);
+      g_source_attach (source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
+      g_source_unref (source);
     }
 }
 
