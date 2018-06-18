@@ -120,10 +120,10 @@ dist-job:
   only:
     - tags
   script:
-    - meson --prefix /usr --libdir /usr/lib64 --buildtype release -Dgtk_doc=true -Dman=true _build .
+    - meson --buildtype release -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
-    - ninja glib-doc
+    - ninja glib-doc gobject-doc gio-doc
     - tar -c -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib html
     - tar -c -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gobject html
     - tar -c -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gio html
