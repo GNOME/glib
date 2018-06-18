@@ -1767,6 +1767,8 @@ if host_system != 'windows' and get_option('xattr')
   endif
 endif
 
+# Test if we have strlcpy/strlcat with a compatible implementation:
+# https://bugzilla.gnome.org/show_bug.cgi?id=53933
 if cc_can_run
   rres = cc.run('''#include <stdlib.h>
                    #include <string.h>
