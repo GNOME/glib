@@ -539,9 +539,14 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                                      G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
-   * GMountOperation:hidden_volume:
+   * GMountOperation:hidden-volume:
    *
    * Whether the device to be unlocked is a TCRYPT hidden volume.
+   * A hidden volume is a second encrypted volume stored inside the
+   * outer volume. It aims to provide plausible deniability. For further
+   * documentation, see https://www.veracrypt.fr/en/Hidden%20Volume.html.
+   *
+   * Since: 2.58
    */
   g_object_class_install_property (object_class,
                                    PROP_IS_TCRYPT_HIDDEN_VOLUME,
@@ -553,9 +558,15 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
-  * GMountOperation:system_volume:
+  * GMountOperation:system-volume:
   *
   * Whether the device to be unlocked is a TCRYPT system volume.
+  * In this context, a system volume is a volume with a bootloader
+  * and operating system installed. This is only supported for Windows
+  * operating systems. For further documentation, see
+  * https://www.veracrypt.fr/en/System%20Encryption.html.
+  *
+  * Since: 2.58
   */
   g_object_class_install_property (object_class,
                                    PROP_IS_TCRYPT_SYSTEM_VOLUME,
