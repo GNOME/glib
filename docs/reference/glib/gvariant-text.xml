@@ -563,7 +563,10 @@
    <title>Bytestrings</title>
    <para>
     The bytestring syntax is a piece of syntactic sugar meant to complement the bytestring APIs in GVariant.  It
-    constructs arrays of non-nul bytes (type '<literal>ay</literal>') with a nul terminator at the end.
+    constructs arrays of non-nul bytes (type '<literal>ay</literal>') with a nul terminator at the end. These are
+    normal C strings with no particular encoding enforced, so the bytes may not be valid UTF-8.
+    Bytestrings are a special case of byte arrays; byte arrays (also type '<literal>ay</literal>'), in the general
+    case, can contain nul at any position, and need not end with nul.
    </para>
    <para>
     Bytestrings are specified with either <literal>b""</literal> or <literal>b''</literal>.  As with strings,
