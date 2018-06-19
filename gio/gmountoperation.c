@@ -539,29 +539,38 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                                      G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
-   * GMountOperation:hidden_volume:
+   * GMountOperation:hidden-volume:
    *
    * Whether the device to be unlocked is a TCRYPT hidden volume.
+   * See https://www.veracrypt.fr/en/Hidden%20Volume.html.
+   *
+   * Since: 2.58
    */
   g_object_class_install_property (object_class,
                                    PROP_IS_TCRYPT_HIDDEN_VOLUME,
                                    g_param_spec_boolean ("hidden-volume",
                                                          P_("Hidden Volume"),
-                                                         P_("Whether to unlock a hidden volume"),
+                                                         P_("Whether to unlock a TCRYPT hidden volume. See https://www.veracrypt.fr/en/Hidden%20Volume.html."),
                                                          FALSE,
                                                          G_PARAM_READWRITE|
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
-  * GMountOperation:system_volume:
+  * GMountOperation:system-volume:
   *
   * Whether the device to be unlocked is a TCRYPT system volume.
+  * In this context, a system volume is a volume with a bootloader
+  * and operating system installed. This is only supported for Windows
+  * operating systems. For further documentation, see
+  * https://www.veracrypt.fr/en/System%20Encryption.html.
+  *
+  * Since: 2.58
   */
   g_object_class_install_property (object_class,
                                    PROP_IS_TCRYPT_SYSTEM_VOLUME,
                                    g_param_spec_boolean ("system-volume",
                                                          P_("System Volume"),
-                                                         P_("Whether to unlock a system volume"),
+                                                         P_("Whether to unlock a system volume. Only supported for encrypted Windows systems. See https://www.veracrypt.fr/en/System%20Encryption.html."),
                                                          FALSE,
                                                          G_PARAM_READWRITE|
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
@@ -569,7 +578,8 @@ g_mount_operation_class_init (GMountOperationClass *klass)
   /**
   * GMountOperation:pim:
   *
-  * The VeraCrypt PIM value, when unlocking a VeraCrypt volume.
+  * The VeraCrypt PIM value, when unlocking a VeraCrypt volume. See
+  * https://www.veracrypt.fr/en/Personal%20Iterations%20Multiplier%20(PIM).html.
   */
   g_object_class_install_property (object_class,
                                    PROP_PIM,
@@ -845,7 +855,7 @@ g_mount_operation_set_hidden_volume (GMountOperation *op,
   if (priv->hidden_volume != hidden_volume)
     {
       priv->hidden_volume = hidden_volume;
-      g_object_notify (G_OBJECT (op), "hidden_volume");
+      g_object_notify (G_OBJECT (op), "hidden-volume");
     }
 }
 
@@ -883,7 +893,7 @@ g_mount_operation_set_system_volume (GMountOperation *op,
   if (priv->system_volume != system_volume)
     {
       priv->system_volume = system_volume;
-      g_object_notify (G_OBJECT (op), "system_volume");
+      g_object_notify (G_OBJECT (op), "system-volume");
     }
 }
 
@@ -891,7 +901,7 @@ g_mount_operation_set_system_volume (GMountOperation *op,
  * g_mount_operation_get_pim:
  * @op: a #GMountOperation.
  *
- * Gets a pim from the mount operation.
+ * Gets a PIM from the mount operation.
  *
  * Returns: The VeraCrypt PIM within @op.
  **/
@@ -907,7 +917,7 @@ g_mount_operation_get_pim (GMountOperation *op)
  * @op: a #GMountOperation.
  * @pim: an integer.
  *
- * Sets the mount operation's pim to @pim.
+ * Sets the mount operation's PIM to @pim.
  **/
 void
 g_mount_operation_set_pim (GMountOperation *op,
