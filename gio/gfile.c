@@ -702,6 +702,11 @@ g_file_get_parse_name (GFile *file)
  * the actual file or directory represented by the #GFile; see
  * g_file_copy() if attempting to copy a file.
  *
+ * g_file_dup() is useful when a second handle is needed to the same underlying
+ * file, for use in a separate thread (#GFile is not thread-safe). For use
+ * within the same thread, use g_object_ref() to increment the existing object’s
+ * reference count.
+ *
  * This call does no blocking I/O.
  *
  * Returns: (transfer full): a new #GFile that is a duplicate
