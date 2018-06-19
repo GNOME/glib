@@ -2246,6 +2246,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
                             "org.gtk.test.range.direct",
                             "org.gtk.test.mapped",
                             "org.gtk.test.descriptions",
+                            "org.gtk.test.per-desktop",
                             NULL));
 }
 
@@ -2637,6 +2638,24 @@ test_default_value (void)
   g_object_unref (settings);
 }
 
+/* Test that per-desktop values from org.gtk.test.gschema.override
+ * are successfully loaded based on the value of $XDG_CURRENT_DESKTOP.
+ */
+static void
+test_per_desktop_default_value (void)
+{
+  GSettings *settings;
+  gchar *str;
+
+  settings = g_settings_new ("org.gtk.test.per-desktop");
+
+  str = g_settings_get_string (settings, "desktop");
+  g_assert_cmpstr (str, ==, "GNOME Classic");
+  g_free (str);
+
+  g_object_unref (settings);
+}
+
 static void
 test_extended_schema (void)
 {
@@ -2657,6 +2676,7 @@ int
 main (int argc, char *argv[])
 {
   gchar *schema_text;
+  gchar *override_text;
   gchar *enums;
   gint result;
 
@@ -2679,6 +2699,7 @@ main (int argc, char *argv[])
       g_setenv ("XDG_DATA_DIRS", ".", TRUE);
       g_setenv ("XDG_DATA_HOME", ".", TRUE);
       g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
+      g_setenv ("XDG_CURRENT_DESKTOP", "GNOME-Classic:GNOME", TRUE);
 
       if (!backend_set)
         g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
@@ -2701,6 +2722,10 @@ main (int argc, char *argv[])
       g_assert (g_file_set_contents ("org.gtk.test.gschema.xml", schema_text, -1, NULL));
       g_free (schema_text);
 
+      g_assert (g_file_get_contents (SRCDIR "/org.gtk.test.gschema.override.orig", &override_text, NULL, NULL));
+      g_assert (g_file_set_contents ("org.gtk.test.gschema.override", override_text, -1, NULL));
+      g_free (override_text);
+
 /* Meson build defines this, autotools build does not */
 #ifndef GLIB_COMPILE_SCHEMAS
 #define GLIB_COMPILE_SCHEMAS "../glib-compile-schemas"
@@ -2709,7 +2734,8 @@ main (int argc, char *argv[])
       g_remove ("gschemas.compiled");
       g_assert (g_spawn_command_line_sync (GLIB_COMPILE_SCHEMAS " --targetdir=. "
                                            "--schema-file=org.gtk.test.enums.xml "
-                                           "--schema-file=org.gtk.test.gschema.xml",
+                                           "--schema-file=org.gtk.test.gschema.xml "
+                                           "--override-file=org.gtk.test.gschema.override",
                                            NULL, NULL, &result, NULL));
       g_assert (result == 0);
 
@@ -2790,6 +2816,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/read-descriptions", test_read_descriptions);
   g_test_add_func ("/gsettings/test-extended-schema", test_extended_schema);
   g_test_add_func ("/gsettings/default-value", test_default_value);
+  g_test_add_func ("/gsettings/per-desktop/default-value", test_per_desktop_default_value);
 
   result = g_test_run ();
 
