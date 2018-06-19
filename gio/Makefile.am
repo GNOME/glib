@@ -927,6 +927,7 @@ completiondir = $(datadir)/bash-completion/completions
 completion_DATA = \
 	completion/gapplication				\
 	completion/gdbus				\
+	completion/gio					\
 	completion/gsettings				\
 	completion/gresource
 EXTRA_DIST += $(completion_DATA)

@@ -757,6 +757,7 @@ if have_bash
   install_data([
     'completion/gapplication',
     'completion/gdbus',
+    'completion/gio',
     'completion/gsettings',
     'completion/gresource'
   ],
