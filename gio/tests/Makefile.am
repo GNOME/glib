@@ -367,12 +367,14 @@ test.mo: de.po
 EXTRA_DIST += de.po
 dist_uninstalled_test_data += \
 	org.gtk.test.gschema.xml.orig		\
+	org.gtk.test.gschema.override.orig	\
 	org.gtk.schemasourcecheck.gschema.xml	\
 	testenum.h				\
 	enums.xml.template
 # Generated while running the testcase itself...
 CLEANFILES += \
 	org.gtk.test.gschema.xml	\
+	org.gtk.test.gschema.override	\
 	org.gtk.test.enums.xml		\
 	gsettings.store			\
 	gschemas.compiled		\

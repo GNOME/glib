@@ -209,4 +209,10 @@
     </key>
   </schema>
 
+  <schema id="org.gtk.test.per-desktop" path="/tests/per-desktop/">
+    <key name="desktop" type="s">
+      <default>"GNOME"</default>
+    </key>
+  </schema>
+
 </schemalist>
