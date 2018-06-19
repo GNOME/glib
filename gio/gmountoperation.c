@@ -131,13 +131,13 @@ g_mount_operation_set_property (GObject      *object,
       break;
 
     case PROP_IS_TCRYPT_HIDDEN_VOLUME:
-      g_mount_operation_set_hidden_volume (operation,
-                                           g_value_get_boolean (value));
+      g_mount_operation_set_is_tcrypt_hidden_volume (operation,
+                                                     g_value_get_boolean (value));
       break;
 
     case PROP_IS_TCRYPT_SYSTEM_VOLUME:
-      g_mount_operation_set_system_volume (operation,
-                                           g_value_get_boolean (value));
+      g_mount_operation_set_is_tcrypt_system_volume (operation,
+                                                     g_value_get_boolean (value));
       break;
 
     case PROP_PIM:

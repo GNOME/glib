@@ -150,15 +150,15 @@ GLIB_AVAILABLE_IN_ALL
 void          g_mount_operation_reply             (GMountOperation *op,
 						   GMountOperationResult result);
 GLIB_AVAILABLE_IN_2_58
-gboolean      g_mount_operation_get_hidden_volume (GMountOperation *op);
+gboolean      g_mount_operation_get_is_tcrypt_hidden_volume (GMountOperation *op);
 GLIB_AVAILABLE_IN_2_58
-void          g_mount_operation_set_hidden_volume (GMountOperation *op,
-                                                   gboolean hidden_volume);
+void          g_mount_operation_set_is_tcrypt_hidden_volume (GMountOperation *op,
+                                                             gboolean hidden_volume);
 GLIB_AVAILABLE_IN_2_58
-gboolean      g_mount_operation_get_system_volume (GMountOperation *op);
+gboolean      g_mount_operation_get_is_tcrypt_system_volume (GMountOperation *op);
 GLIB_AVAILABLE_IN_2_58
-void          g_mount_operation_set_system_volume (GMountOperation *op,
-                                                   gboolean system_volume);
+void          g_mount_operation_set_is_tcrypt_system_volume (GMountOperation *op,
+                                                             gboolean system_volume);
 GLIB_AVAILABLE_IN_2_58
 int           g_mount_operation_get_pim           (GMountOperation *op);
 GLIB_AVAILABLE_IN_2_58
