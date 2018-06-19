@@ -25,6 +25,7 @@
 #include <sys/event.h>
 #include <sys/time.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <gio/glocalfile.h>
 #include <gio/glocalfilemonitor.h>
 #include <gio/gfile.h>
@@ -38,6 +39,7 @@
 typedef struct {
   kqueue_sub *sub;
   GFileMonitorSource *source;
+  gboolean handle_deleted;
 } handle_ctx;
 
 /**
@@ -53,6 +55,9 @@ static void
 handle_created (void *udata, const char *path, ino_t inode)
 {
   handle_ctx *ctx = NULL;
+  gint64 now;
+  gchar *fullname;
+  struct stat st;
 
   (void) inode;
   ctx = (handle_ctx *) udata;
@@ -60,8 +65,16 @@ handle_created (void *udata, const char *path, ino_t inode)
   g_assert (ctx->sub != NULL);
   g_assert (ctx->source != NULL);
 
+  now = g_get_monotonic_time ();
   g_file_monitor_source_handle_event (ctx->source, G_FILE_MONITOR_EVENT_CREATED, path,
-                                      NULL, NULL, g_get_monotonic_time ());
+                                      NULL, NULL, now);
+
+  /* Copied from ih_event_callback to report 'CHANGES_DONE_HINT' earlier. */
+  fullname = g_build_filename (ctx->sub->filename, path, NULL);
+  if (stat (fullname, &st) != 0 || !S_ISREG (st.st_mode) || st.st_nlink != 1)
+    g_file_monitor_source_handle_event (ctx->source, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, path,
+                                        NULL, NULL, now);
+  g_free (fullname);
 }
 
 /**
@@ -83,6 +96,9 @@ handle_deleted (void *udata, const char *path, ino_t inode)
   g_assert (udata != NULL);
   g_assert (ctx->sub != NULL);
   g_assert (ctx->source != NULL);
+
+  if (!ctx->handle_deleted)
+    return;
 
   g_file_monitor_source_handle_event (ctx->source, G_FILE_MONITOR_EVENT_DELETED, path,
                                       NULL, NULL, g_get_monotonic_time ());
@@ -161,7 +177,7 @@ static const traverse_cbs cbs = {
 
 
 void
-_kh_dir_diff (kqueue_sub *sub)
+_kh_dir_diff (kqueue_sub *sub, gboolean handle_deleted)
 {
   dep_list *was;
   handle_ctx ctx;
@@ -169,6 +185,7 @@ _kh_dir_diff (kqueue_sub *sub)
   memset (&ctx, 0, sizeof (handle_ctx));
   ctx.sub = sub;
   ctx.source = sub->source;
+  ctx.handle_deleted = handle_deleted;
 
   was = sub->deps;
   sub->deps = dl_listing (sub->filename);
