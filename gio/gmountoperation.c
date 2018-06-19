@@ -573,12 +573,12 @@ g_mount_operation_class_init (GMountOperationClass *klass)
   */
   g_object_class_install_property (object_class,
                                    PROP_PIM,
-                                   g_param_spec_int ("pim",
-                                                     P_("PIM"),
-                                                     P_("The VeraCrypt PIM value"),
-                                                     0, G_MAXINT, 0,
-                                                     G_PARAM_READWRITE|
-                                                     G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
+                                   g_param_spec_uint ("pim",
+                                                      P_("PIM"),
+                                                      P_("The VeraCrypt PIM value"),
+                                                      0, G_MAXINT, 0,
+                                                      G_PARAM_READWRITE|
+                                                      G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 }
 
 static void
