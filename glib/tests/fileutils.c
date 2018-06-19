@@ -479,6 +479,15 @@ test_mkdir_with_parents_1 (const gchar *base)
     g_error ("failed, couldn't create file %s", p1);
   fclose (f);
 
+  /* Some platforms (Win32) do not support "wb+", but g_fopen() should
+   * automatically translate this mode to its alias "w+b".
+   * See: https://gitlab.gnome.org/GNOME/glib/merge_requests/119
+   */
+  f = g_fopen (p1, "wb+");
+  if (f == NULL)
+    g_error ("failed, couldn't open binary file %s for update with mode 'wb+'", p1);
+  fclose (f);
+
   if (g_mkdir_with_parents (p1, 0666) == 0)
     g_error ("failed, g_mkdir_with_parents(%s) succeeded, even if %s is a file", p1, p1);
 
