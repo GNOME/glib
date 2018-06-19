@@ -570,7 +570,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
                                    PROP_IS_TCRYPT_SYSTEM_VOLUME,
                                    g_param_spec_boolean ("is-tcrypt-system-volume",
                                                          P_("TCRYPT System Volume"),
-                                                         P_("Whether to unlock a TCRYPT system volume. Only supported for encrypted Windows systems. See https://www.veracrypt.fr/en/System%20Encryption.html."),
+                                                         P_("Whether to unlock a TCRYPT system volume. Only supported for unlocking Windows system volumes. See https://www.veracrypt.fr/en/System%20Encryption.html."),
                                                          FALSE,
                                                          G_PARAM_READWRITE|
                                                          G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
