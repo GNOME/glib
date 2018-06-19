@@ -81,8 +81,8 @@ enum {
   PROP_DOMAIN,
   PROP_PASSWORD_SAVE,
   PROP_CHOICE,
-  PROP_HIDDEN_VOLUME,
-  PROP_SYSTEM_VOLUME,
+  PROP_IS_TCRYPT_HIDDEN_VOLUME,
+  PROP_IS_TCRYPT_SYSTEM_VOLUME,
   PROP_PIM
 };
 
@@ -130,12 +130,12 @@ g_mount_operation_set_property (GObject      *object,
                                     g_value_get_int (value));
       break;
 
-    case PROP_HIDDEN_VOLUME:
+    case PROP_IS_TCRYPT_HIDDEN_VOLUME:
       g_mount_operation_set_hidden_volume (operation,
                                            g_value_get_boolean (value));
       break;
 
-    case PROP_SYSTEM_VOLUME:
+    case PROP_IS_TCRYPT_SYSTEM_VOLUME:
       g_mount_operation_set_system_volume (operation,
                                            g_value_get_boolean (value));
       break;
@@ -190,11 +190,11 @@ g_mount_operation_get_property (GObject    *object,
       g_value_set_int (value, priv->choice);
       break;
 
-    case PROP_HIDDEN_VOLUME:
+    case PROP_IS_TCRYPT_HIDDEN_VOLUME:
       g_value_set_boolean (value, priv->hidden_volume);
       break;
 
-    case PROP_SYSTEM_VOLUME:
+    case PROP_IS_TCRYPT_SYSTEM_VOLUME:
       g_value_set_boolean (value, priv->system_volume);
       break;
 
@@ -544,7 +544,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    * Whether the device to be unlocked is a TCRYPT hidden volume.
    */
   g_object_class_install_property (object_class,
-                                   PROP_HIDDEN_VOLUME,
+                                   PROP_IS_TCRYPT_HIDDEN_VOLUME,
                                    g_param_spec_boolean ("hidden-volume",
                                                          P_("Hidden Volume"),
                                                          P_("Whether to unlock a hidden volume"),
@@ -558,7 +558,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
   * Whether the device to be unlocked is a TCRYPT system volume.
   */
   g_object_class_install_property (object_class,
-                                   PROP_SYSTEM_VOLUME,
+                                   PROP_IS_TCRYPT_SYSTEM_VOLUME,
                                    g_param_spec_boolean ("system-volume",
                                                          P_("System Volume"),
                                                          P_("Whether to unlock a system volume"),
