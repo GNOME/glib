@@ -47,6 +47,8 @@
  * #GtkMountOperation. If no user interaction is desired (for example
  * when automounting filesystems at login time), usually %NULL can be
  * passed, see each method taking a #GMountOperation for details.
+ *
+ * Note that the term "TCRYPT" is used as "TrueCrypt-compatible and VeraCrypt".
  */
 
 enum {
