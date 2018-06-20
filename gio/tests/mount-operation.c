@@ -71,7 +71,7 @@ test_properties (void)
   g_assert_cmpint (choice, ==, g_mount_operation_get_choice (op));
   g_assert_cmpint (hidden_volume, ==, g_mount_operation_get_is_tcrypt_hidden_volume (op));
   g_assert_cmpint (system_volume, ==, g_mount_operation_get_is_tcrypt_system_volume (op));
-  g_assert_cmpint (pim, ==, g_mount_operation_get_pim (op));
+  g_assert_cmpuint (pim, ==, g_mount_operation_get_pim (op));
 
   g_mount_operation_set_username (op, "username");
   g_assert_cmpstr (g_mount_operation_get_username (op), ==, "username");
@@ -98,7 +98,7 @@ test_properties (void)
   g_assert_cmpint (g_mount_operation_get_is_tcrypt_system_volume (op), ==, !system_volume);
 
   g_mount_operation_set_pim (op, 5);
-  g_assert_cmpint (g_mount_operation_get_pim (op), ==, 5);
+  g_assert_cmpuint (g_mount_operation_get_pim (op), ==, 5);
 
   g_object_set (op,
                 "username", "other-username",
