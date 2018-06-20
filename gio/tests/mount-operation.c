@@ -47,7 +47,7 @@ test_properties (void)
   int choice;
   gboolean hidden_volume;
   gboolean system_volume;
-  unsigned int pim;
+  guint pim;
 
   op = g_mount_operation_new ();
 

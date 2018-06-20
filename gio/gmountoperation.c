@@ -72,7 +72,7 @@ struct _GMountOperationPrivate {
   int choice;
   gboolean hidden_volume;
   gboolean system_volume;
-  unsigned int pim;
+  guint pim;
 };
 
 enum {
@@ -919,7 +919,7 @@ g_mount_operation_set_is_tcrypt_system_volume (GMountOperation *op,
  *
  * Since: 2.58
  **/
-unsigned int
+guint
 g_mount_operation_get_pim (GMountOperation *op)
 {
   g_return_val_if_fail (G_IS_MOUNT_OPERATION (op), 0);
@@ -937,7 +937,7 @@ g_mount_operation_get_pim (GMountOperation *op)
  **/
 void
 g_mount_operation_set_pim (GMountOperation *op,
-                           unsigned int pim)
+                           guint pim)
 {
   GMountOperationPrivate *priv;
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
