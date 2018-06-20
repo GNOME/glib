@@ -199,97 +199,103 @@ test_spawn_async_with_fds (void)
   g_ptr_array_add (argv, arg);
   g_ptr_array_add (argv, NULL);
 
-  for (i = 0; i < G_N_ELEMENTS (tests); i++) {
-    GError *error = NULL;
-    GPid pid;
-    GMainContext *context;
-    GMainLoop *loop;
-    GIOChannel *channel = NULL;
-    GSource *source;
-    SpawnAsyncMultithreadedData data;
-    enum fd_type *fd_info = tests[i];
-    gint test_pipe[3][2];
-    int j;
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      GError *error = NULL;
+      GPid pid;
+      GMainContext *context;
+      GMainLoop *loop;
+      GIOChannel *channel = NULL;
+      GSource *source;
+      SpawnAsyncMultithreadedData data;
+      enum fd_type *fd_info = tests[i];
+      gint test_pipe[3][2];
+      int j;
 
-    for (j = 0; j < 3; j++) {
-      switch (fd_info[j]) {
-      case NO_FD:
-        test_pipe[j][0] = -1;
-        test_pipe[j][1] = -1;
-        break;
-      case PIPE:
+      for (j = 0; j < 3; j++)
+        {
+          switch (fd_info[j])
+            {
+            case NO_FD:
+              test_pipe[j][0] = -1;
+              test_pipe[j][1] = -1;
+              break;
+            case PIPE:
 #ifdef G_OS_UNIX
-        g_unix_open_pipe (test_pipe[j], FD_CLOEXEC, &error);
-        g_assert_no_error (error);
+              g_unix_open_pipe (test_pipe[j], FD_CLOEXEC, &error);
+              g_assert_no_error (error);
 #else
-        g_assert (_pipe (test_pipe[j], 4096, _O_BINARY) >= 0);
+              g_assert_cmpint (_pipe (test_pipe[j], 4096, _O_BINARY), >=, 0);
 #endif
-        break;
-      case STDOUT_PIPE:
-        g_assert (j == 2); /* only works for stderr */
-        test_pipe[j][0] = test_pipe[1][0];
-        test_pipe[j][1] = test_pipe[1][1];
-        break;
-      default:
-        g_assert_not_reached ();
-      }
+              break;
+            case STDOUT_PIPE:
+              g_assert_cmpint (j, ==, 2); /* only works for stderr */
+              test_pipe[j][0] = test_pipe[1][0];
+              test_pipe[j][1] = test_pipe[1][1];
+              break;
+            default:
+              g_assert_not_reached ();
+            }
+        }
+
+      context = g_main_context_new ();
+      loop = g_main_loop_new (context, TRUE);
+
+      g_spawn_async_with_fds (NULL, (char**)argv->pdata, NULL,
+			      G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid,
+			      test_pipe[0][0], test_pipe[1][1], test_pipe[2][1],
+			      &error);
+      g_assert_no_error (error);
+      sane_close (test_pipe[0][0]);
+      sane_close (test_pipe[1][1]);
+      if (fd_info[2] != STDOUT_PIPE)
+        sane_close (test_pipe[2][1]);
+
+      data.loop = loop;
+      data.stdout_done = FALSE;
+      data.child_exited = FALSE;
+      data.stdout_buf = g_string_new (0);
+
+      source = g_child_watch_source_new (pid);
+      g_source_set_callback (source, (GSourceFunc)on_child_exited, &data, NULL);
+      g_source_attach (source, context);
+      g_source_unref (source);
+
+      if (test_pipe[1][0] != -1)
+        {
+          channel = g_io_channel_unix_new (test_pipe[1][0]);
+          source = g_io_create_watch (channel, G_IO_IN | G_IO_HUP | G_IO_ERR);
+          g_source_set_callback (source, (GSourceFunc)on_child_stdout,
+                                 &data, NULL);
+          g_source_attach (source, context);
+          g_source_unref (source);
+        }
+      else
+        {
+          /* Don't check stdout data if we didn't pass a fd */
+          data.stdout_done = TRUE;
+        }
+
+      g_main_loop_run (loop);
+
+      g_assert_true (data.child_exited);
+
+      if (test_pipe[1][0] != -1)
+        {
+          /* Check for echo on stdout */
+          g_assert_true (data.stdout_done);
+          g_assert_cmpstr (data.stdout_buf->str, ==, arg);
+          g_io_channel_unref (channel);
+        }
+      g_string_free (data.stdout_buf, TRUE);
+
+      g_main_context_unref (context);
+      g_main_loop_unref (loop);
+      sane_close (test_pipe[0][1]);
+      sane_close (test_pipe[1][0]);
+      if (fd_info[2] != STDOUT_PIPE)
+        sane_close (test_pipe[2][0]);
     }
-
-    context = g_main_context_new ();
-    loop = g_main_loop_new (context, TRUE);
-
-    g_spawn_async_with_fds (NULL, (char**)argv->pdata, NULL,
-			    G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid,
-			    test_pipe[0][0], test_pipe[1][1], test_pipe[2][1],
-			    &error);
-    g_assert_no_error (error);
-    sane_close (test_pipe[0][0]);
-    sane_close (test_pipe[1][1]);
-    if (fd_info[2] != STDOUT_PIPE)
-      sane_close (test_pipe[2][1]);
-
-    data.loop = loop;
-    data.stdout_done = FALSE;
-    data.child_exited = FALSE;
-    data.stdout_buf = g_string_new (0);
-
-    source = g_child_watch_source_new (pid);
-    g_source_set_callback (source, (GSourceFunc)on_child_exited, &data, NULL);
-    g_source_attach (source, context);
-    g_source_unref (source);
-
-    if (test_pipe[1][0] != -1)
-      {
-        channel = g_io_channel_unix_new (test_pipe[1][0]);
-        source = g_io_create_watch (channel, G_IO_IN | G_IO_HUP | G_IO_ERR);
-        g_source_set_callback (source, (GSourceFunc)on_child_stdout, &data, NULL);
-        g_source_attach (source, context);
-        g_source_unref (source);
-      } else {
-        /* Don't check stdout data if we didn't pass a fd */
-        data.stdout_done = TRUE;
-      }
-
-    g_main_loop_run (loop);
-
-    g_assert (data.child_exited);
-
-    if (test_pipe[1][0] != -1)
-      {
-        /* Check for echo on stdout */
-        g_assert (data.stdout_done);
-        g_assert_cmpstr (data.stdout_buf->str, ==, arg);
-        g_io_channel_unref (channel);
-      }
-    g_string_free (data.stdout_buf, TRUE);
-
-    g_main_context_unref (context);
-    g_main_loop_unref (loop);
-    sane_close (test_pipe[0][1]);
-    sane_close (test_pipe[1][0]);
-    if (fd_info[2] != STDOUT_PIPE)
-      sane_close (test_pipe[2][0]);
-  }
 
   g_ptr_array_free (argv, TRUE);
   g_free (arg);
