@@ -955,8 +955,6 @@ g_mount_operation_set_pim (GMountOperation *op,
  * @result: a #GMountOperationResult
  * 
  * Emits the #GMountOperation::reply signal.
- *
- * Since: 2.58
  **/
 void
 g_mount_operation_reply (GMountOperation *op,
