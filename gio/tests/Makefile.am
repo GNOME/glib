@@ -47,6 +47,7 @@ test_programs = \
 	memory-input-stream			\
 	memory-output-stream			\
 	monitor					\
+	mount-operation				\
 	network-address				\
 	network-monitor				\
 	network-monitor-race			\
