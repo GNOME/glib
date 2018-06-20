@@ -572,7 +572,7 @@ typedef enum {
  * @G_ASK_PASSWORD_NEED_DOMAIN: operation requires a domain.
  * @G_ASK_PASSWORD_SAVING_SUPPORTED: operation supports saving settings.
  * @G_ASK_PASSWORD_ANONYMOUS_SUPPORTED: operation supports anonymous users.
- * @G_ASK_PASSWORD_TCRYPT: operation takes TCRYPT parameters
+ * @G_ASK_PASSWORD_TCRYPT: operation takes TCRYPT parameters (Since: 2.58)
  *
  * #GAskPasswordFlags are used to request specific information from the
  * user, or to notify the user of their choices in an authentication
