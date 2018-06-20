@@ -1595,7 +1595,9 @@ fork_exec_with_fds (gboolean              intermediate_child,
        * gspawn codepath so that script execution can be attempted,
        * per standard gspawn behaviour. */
       g_debug ("posix_spawn failed (ENOEXEC), fall back to regular gspawn");
-    } else {
+    }
+  else
+    {
       g_debug ("posix_spawn avoided %s%s%s%s%s",
                !intermediate_child ? "" : "(automatic reaping requested) ",
                working_directory == NULL ? "" : "(workdir specified) ",
