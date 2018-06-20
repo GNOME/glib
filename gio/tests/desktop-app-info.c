@@ -796,31 +796,36 @@ test_launch_as_manager (void)
 {
   GDesktopAppInfo *appinfo;
   GError *error = NULL;
+  gboolean retval;
   const gchar *path;
 
   if (g_getenv ("DISPLAY") == NULL || g_getenv ("DISPLAY")[0] == '\0')
     {
-      g_printerr ("No DISPLAY.  Skipping test.  ");
+      g_test_skip ("No DISPLAY.  Skipping test.");
       return;
     }
 
   path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
-  g_assert (appinfo != NULL);
+  g_assert_nonnull (appinfo);
 
-  g_assert (g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, NULL, 0,
-                                                       NULL, NULL,
-                                                       NULL, NULL,
-                                                       &error));
+  retval = g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, NULL, 0,
+                                                      NULL, NULL,
+                                                      NULL, NULL,
+                                                      &error);
   g_assert_no_error (error);
+  g_assert_true (retval);
 
-  g_assert (g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
-                                                                NULL, NULL, 0,
-                                                                NULL, NULL,
-                                                                NULL, NULL,
-                                                                -1, -1, -1,
-                                                                &error));
+  retval = g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
+                                                               NULL, NULL, 0,
+                                                               NULL, NULL,
+                                                               NULL, NULL,
+                                                               -1, -1, -1,
+                                                               &error);
   g_assert_no_error (error);
+  g_assert_true (retval);
+
+  g_object_unref (appinfo);
 }
 
 int
