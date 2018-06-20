@@ -2716,14 +2716,17 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           g_list_free_full (launched_files, g_object_unref);
         }
 
-      if (gio_launch_desktop_path == NULL)
+      if (g_once_init_enter (&gio_launch_desktop_path))
         {
+          const gchar *tmp;
+
           /* Allow test suite to specify path to gio-launch-desktop */
-          gio_launch_desktop_path = g_getenv ("GIO_LAUNCH_DESKTOP");
+          tmp = g_getenv ("GIO_LAUNCH_DESKTOP");
 
           /* Fall back on usual searching in $PATH */
-          if (gio_launch_desktop_path == NULL)
-            gio_launch_desktop_path = "gio-launch-desktop";
+          if (tmp == NULL)
+            tmp = "gio-launch-desktop";
+          g_once_init_leave (&gio_launch_desktop_path, tmp);
         }
 
       wrapped_argv = g_new (char *, argc + 2);
