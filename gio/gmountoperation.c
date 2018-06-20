@@ -48,7 +48,11 @@
  * when automounting filesystems at login time), usually %NULL can be
  * passed, see each method taking a #GMountOperation for details.
  *
- * Note that the term "TCRYPT" is used as "TrueCrypt-compatible and VeraCrypt".
+ * The term ‘TCRYPT’ is used to mean ‘compatible with TrueCrypt and VeraCrypt’.
+ * [TrueCrypt](https://en.wikipedia.org/wiki/TrueCrypt) is a discontinued system for
+ * encrypting file containers, partitions or whole disks, typically used with Windows.
+ * [VeraCrypt](https://www.veracrypt.fr/) is a maintained fork of TrueCrypt with various
+ * improvements and auditing fixes.
  */
 
 enum {
