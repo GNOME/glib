@@ -638,7 +638,7 @@ g_spawn_sync (const gchar          *working_directory,
  * is equivalent to calling CloseHandle() on the process handle returned
  * in @child_pid). See g_child_watch_add().
  *
- * Open UNIX file descriptors marked as FD_CLOEXEC will be automatically
+ * Open UNIX file descriptors marked as `FD_CLOEXEC` will be automatically
  * closed in the child process. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN means that
  * other open file descriptors will be inherited by the child; otherwise all
  * descriptors except stdin/stdout/stderr will be closed before calling exec()
