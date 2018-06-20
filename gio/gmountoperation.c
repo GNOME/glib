@@ -72,7 +72,7 @@ struct _GMountOperationPrivate {
   int choice;
   gboolean hidden_volume;
   gboolean system_volume;
-  int pim;
+  unsigned int pim;
 };
 
 enum {
@@ -144,7 +144,7 @@ g_mount_operation_set_property (GObject      *object,
 
     case PROP_PIM:
         g_mount_operation_set_pim (operation,
-                                   g_value_get_int (value));
+                                   g_value_get_uint (value));
         break;
 
     default:
@@ -201,7 +201,7 @@ g_mount_operation_get_property (GObject    *object,
       break;
 
     case PROP_PIM:
-      g_value_set_int (value, priv->pim);
+      g_value_set_uint (value, priv->pim);
       break;
 
     default:
@@ -919,7 +919,7 @@ g_mount_operation_set_is_tcrypt_system_volume (GMountOperation *op,
  *
  * Since: 2.58
  **/
-int
+unsigned int
 g_mount_operation_get_pim (GMountOperation *op)
 {
   g_return_val_if_fail (G_IS_MOUNT_OPERATION (op), 0);
@@ -929,7 +929,7 @@ g_mount_operation_get_pim (GMountOperation *op)
 /**
  * g_mount_operation_set_pim:
  * @op: a #GMountOperation.
- * @pim: an integer.
+ * @pim: an unsigned integer.
  *
  * Sets the mount operation's PIM to @pim.
  *
@@ -937,7 +937,7 @@ g_mount_operation_get_pim (GMountOperation *op)
  **/
 void
 g_mount_operation_set_pim (GMountOperation *op,
-                           int pim)
+                           unsigned int pim)
 {
   GMountOperationPrivate *priv;
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
