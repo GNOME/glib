@@ -48,6 +48,9 @@ static gboolean anonymous = FALSE;
 static gboolean mount_list = FALSE;
 static gboolean extra_detail = FALSE;
 static gboolean mount_monitor = FALSE;
+static gboolean tcrypt_hidden = FALSE;
+static gboolean tcrypt_system = FALSE;
+static guint tcrypt_pim = 0;
 static const char *unmount_scheme = NULL;
 static const char *mount_device_file = NULL;
 static const char *stop_device_file = NULL;
@@ -68,6 +71,9 @@ static const GOptionEntry entries[] =
   { "list", 'l', 0, G_OPTION_ARG_NONE, &mount_list, N_("List"), NULL},
   { "monitor", 'o', 0, G_OPTION_ARG_NONE, &mount_monitor, N_("Monitor events"), NULL},
   { "detail", 'i', 0, G_OPTION_ARG_NONE, &extra_detail, N_("Show extra information"), NULL},
+  { "tcrypt-pim", 0, 0, G_OPTION_ARG_INT, &tcrypt_pim, N_("The numeric PIM when unlocking a VeraCrypt volume"), N_("PIM")},
+  { "tcrypt-hidden", 0, 0, G_OPTION_ARG_NONE, &tcrypt_hidden, N_("Mount a TCRYPT hidden volume"), NULL},
+  { "tcrypt-system", 0, 0, G_OPTION_ARG_NONE, &tcrypt_system, N_("Mount a TCRYPT system volume"), NULL},
   { NULL }
 };
 
@@ -172,6 +178,16 @@ ask_password_cb (GMountOperation *op,
           g_mount_operation_set_password (op, s);
           g_free (s);
         }
+    }
+
+  if (flags & G_ASK_PASSWORD_TCRYPT)
+    {
+      if (tcrypt_pim)
+        g_mount_operation_set_pim (op, tcrypt_pim);
+      if (tcrypt_hidden)
+        g_mount_operation_set_is_tcrypt_hidden_volume (op, TRUE);
+      if (tcrypt_system)
+        g_mount_operation_set_is_tcrypt_system_volume (op, TRUE);
     }
 
   /* Only try anonymous access once. */

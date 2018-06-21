@@ -45,6 +45,9 @@ test_properties (void)
   gchar *domain = NULL;
   GPasswordSave password_save;
   int choice;
+  gboolean hidden_volume;
+  gboolean system_volume;
+  guint pim;
 
   op = g_mount_operation_new ();
 
@@ -55,6 +58,9 @@ test_properties (void)
                 "domain", &domain,
                 "password-save", &password_save,
                 "choice", &choice,
+                "is-tcrypt-hidden-volume", &hidden_volume,
+                "is-tcrypt-system-volume", &system_volume,
+                "pim", &pim,
                 NULL);
 
   g_assert_cmpstr (username, ==, g_mount_operation_get_username (op));
@@ -63,6 +69,9 @@ test_properties (void)
   g_assert_cmpstr (domain, ==, g_mount_operation_get_domain (op));
   g_assert_cmpint (password_save, ==, g_mount_operation_get_password_save (op));
   g_assert_cmpint (choice, ==, g_mount_operation_get_choice (op));
+  g_assert_cmpint (hidden_volume, ==, g_mount_operation_get_is_tcrypt_hidden_volume (op));
+  g_assert_cmpint (system_volume, ==, g_mount_operation_get_is_tcrypt_system_volume (op));
+  g_assert_cmpuint (pim, ==, g_mount_operation_get_pim (op));
 
   g_mount_operation_set_username (op, "username");
   g_assert_cmpstr (g_mount_operation_get_username (op), ==, "username");
@@ -82,6 +91,15 @@ test_properties (void)
   g_mount_operation_set_choice (op, 5);
   g_assert_cmpint (g_mount_operation_get_choice (op), ==, 5);
 
+  g_mount_operation_set_is_tcrypt_hidden_volume (op, !hidden_volume);
+  g_assert_cmpint (g_mount_operation_get_is_tcrypt_hidden_volume (op), ==, !hidden_volume);
+
+  g_mount_operation_set_is_tcrypt_system_volume (op, !system_volume);
+  g_assert_cmpint (g_mount_operation_get_is_tcrypt_system_volume (op), ==, !system_volume);
+
+  g_mount_operation_set_pim (op, 5);
+  g_assert_cmpuint (g_mount_operation_get_pim (op), ==, 5);
+
   g_object_set (op,
                 "username", "other-username",
                 "password", "other-password",
@@ -89,6 +107,9 @@ test_properties (void)
                 "domain", "other-domain",
                 "password-save", G_PASSWORD_SAVE_PERMANENTLY,
                 "choice", 4,
+                "is-tcrypt-hidden-volume", FALSE,
+                "is-tcrypt-system-volume", FALSE,
+                "pim", 4,
                 NULL);
 
   g_free (domain);

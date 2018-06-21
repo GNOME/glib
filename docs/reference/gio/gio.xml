@@ -455,6 +455,21 @@
                 <listitem><para>Show extra information.</para>
                 </listitem>
               </varlistentry>
+              <varlistentry>
+                <term><option>--tcrypt-pim</option></term>
+                <listitem><para>The numeric PIM when unlocking a VeraCrypt volume.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term><option>--tcrypt-hidden</option></term>
+                <listitem><para>Mount a TCRYPT hidden volume.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term><option>--tcrypt-system</option></term>
+                <listitem><para>Mount a TCRYPT system volume.</para>
+                </listitem>
+              </varlistentry>
             </variablelist>
           </refsect3>
         </listitem>
