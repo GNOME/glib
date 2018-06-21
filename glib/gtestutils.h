@@ -64,7 +64,7 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                  #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'x'); \
                                         } G_STMT_END
 #define g_assert_cmpfloat(n1,cmp,n2)    G_STMT_START { \
-                                             long double __n1 = (n1), __n2 = (n2); \
+                                             long double __n1 = (long double) (n1), __n2 = (long double) (n2); \
                                              if (__n1 cmp __n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                  #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'f'); \
