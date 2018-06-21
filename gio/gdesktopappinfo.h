@@ -169,6 +169,20 @@ gboolean    g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo          
 						       gpointer                    pid_callback_data,
 						       GError                    **error);
 
+GLIB_AVAILABLE_IN_2_58
+gboolean    g_desktop_app_info_launch_uris_as_manager_with_fds (GDesktopAppInfo            *appinfo,
+								GList                      *uris,
+								GAppLaunchContext          *launch_context,
+								GSpawnFlags                 spawn_flags,
+								GSpawnChildSetupFunc        user_setup,
+								gpointer                    user_setup_data,
+								GDesktopAppLaunchCallback   pid_callback,
+								gpointer                    pid_callback_data,
+								gint                        stdin_fd,
+								gint                        stdout_fd,
+								gint                        stderr_fd,
+								GError                    **error);
+
 GLIB_AVAILABLE_IN_2_40
 gchar *** g_desktop_app_info_search (const gchar *search_string);
 

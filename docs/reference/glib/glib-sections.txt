@@ -1233,6 +1233,7 @@ GSpawnError
 G_SPAWN_ERROR
 GSpawnFlags
 GSpawnChildSetupFunc
+g_spawn_async_with_fds
 g_spawn_async_with_pipes
 g_spawn_async
 g_spawn_sync
