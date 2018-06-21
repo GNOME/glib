@@ -609,32 +609,28 @@ libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 # files to .c directly in the source tree because Meson needs the .m extension.
 # This must be done outside of "if OS_COCOA" block otherwise distcheck fails.
 # See https://bugzilla.gnome.org/show_bug.cgi?id=672777.
-OBJC_FILES = \
+ALL_OBJC_FILES = \
 	gnextstepsettingsbackend.m \
 	gosxcontenttype.m \
 	gosxappinfo.m \
 	gcocoanotificationbackend.m \
 	$(NULL)
-OBJC_C_FILES = $(OBJC_FILES:.m=.c)
-BUILT_SOURCES += $(OBJC_C_FILES)
-CLEANFILES += $(OBJC_C_FILES)
-EXTRA_DIST += $(OBJC_FILES)
-$(OBJC_C_FILES): %.c: %.m Makefile
-	cp $< $@
+EXTRA_DIST += $(ALL_OBJC_FILES)
 
 if OS_COCOA
+if !MAC_OS_X_9
+OBJC_FILES = $(filter-out gcocoanotificationbackend.m, $(ALL_OBJC_FILES))
+endif
+
+OBJC_C_FILES = $(OBJC_FILES:.m=.c)
+CLEANFILES += $(OBJC_C_FILES)
+$(OBJC_C_FILES): %.c: %.m Makefile
+	$(AM_V_GEN)cp $< $@
+
 libgio_objc_2_0_la_CFLAGS = $(libgio_2_0_la_CFLAGS) -xobjective-c
 libgio_objc_2_0_la_CPPFLAGS = $(libgio_2_0_la_CPPFLAGS)
 libgio_objc_2_0_la_LDFLAGS = $(libgio_2_0_la_LDFLAGS) -Wl,-framework,Foundation -Wl,-framework,AppKit
-libgio_objc_2_0_la_SOURCES = \
-	$(builddir)/gnextstepsettingsbackend.c \
-	$(builddir)/gosxcontenttype.c \
-	$(builddir)/gosxappinfo.c \
-	$(builddir)/gosxappinfo.h
-if MAC_OS_X_9
-libgio_objc_2_0_la_SOURCES += \
-	$(builddir)/gcocoanotificationbackend.c
-endif
+libgio_objc_2_0_la_SOURCES = $(OBJC_C_FILES)
 
 noinst_LTLIBRARIES += libgio-objc-2.0.la
 libgio_2_0_la_LIBADD += libgio-objc-2.0.la
