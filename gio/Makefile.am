@@ -627,13 +627,13 @@ libgio_objc_2_0_la_CFLAGS = $(libgio_2_0_la_CFLAGS) -xobjective-c
 libgio_objc_2_0_la_CPPFLAGS = $(libgio_2_0_la_CPPFLAGS)
 libgio_objc_2_0_la_LDFLAGS = $(libgio_2_0_la_LDFLAGS) -Wl,-framework,Foundation -Wl,-framework,AppKit
 libgio_objc_2_0_la_SOURCES = \
-	$(builddir)/gnextstepsettingsbackend.c \
-	$(builddir)/gosxcontenttype.c \
-	$(builddir)/gosxappinfo.c \
-	$(builddir)/gosxappinfo.h
+	gnextstepsettingsbackend.c \
+	gosxcontenttype.c \
+	gosxappinfo.c \
+	gosxappinfo.h
 if MAC_OS_X_9
 libgio_objc_2_0_la_SOURCES += \
-	$(builddir)/gcocoanotificationbackend.c
+	gcocoanotificationbackend.c
 endif
 
 noinst_LTLIBRARIES += libgio-objc-2.0.la
