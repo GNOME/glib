@@ -92,14 +92,14 @@ vs2017-x64:
     paths:
       - _build/meson-logs
 
-freebsd-11-meson-x86_64:
+freebsd-meson-x86_64:
   stage: build
   tags:
     # To run a FreeBSD builder, install gitlab-runner package and start both
     # gitlab-runner and dbus service because we need /var/lib/dbus/machine-id.
     # To compile GLib, you still have to install the following packages:
     # desktop-file-utils gettext libiconv meson pkgconf python3 shared-mime-info
-    - freebsd-11
+    - freebsd
   variables:
     # CPPFLAGS is required because libintl doesn't use pkg-config.
     CPPFLAGS: -I/usr/local/include
