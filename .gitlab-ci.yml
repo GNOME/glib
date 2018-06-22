@@ -12,7 +12,7 @@ cache:
 variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
 
-fedora-meson-x86_64:
+fedora-x86_64:
   stage: build
   except:
     - tags
@@ -31,7 +31,7 @@ fedora-meson-x86_64:
       - "_build/meson-logs"
       - "_coverage"
 
-fedora-meson-android_api21_arm64:
+cross-android_api21_arm64:
   stage: build
   except:
     - tags
@@ -45,7 +45,7 @@ fedora-meson-android_api21_arm64:
     paths:
       - "_build/meson-logs"
 
-fedora-meson-mingw64:
+cross-mingw64:
   stage: build
   except:
     - tags
