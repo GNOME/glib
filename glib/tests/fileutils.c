@@ -952,12 +952,64 @@ test_stdio_wrappers (void)
   g_rmdir ("mkdir-test");
 }
 
+/* Win32 does not support "wb+", but g_fopen() should automatically
+ * translate this mode to its alias "w+b".
+ * Also check various other file open modes for correct support accross
+ * platforms.
+ * See: https://gitlab.gnome.org/GNOME/glib/merge_requests/119
+ */
+static void
+test_fopen_modes (void)
+{
+  char        *path = g_build_filename ("temp-fopen", NULL);
+  gsize        i;
+  const gchar *modes[] =
+    {
+      "w",
+      "r",
+      "a",
+      "w+",
+      "r+",
+      "a+",
+      "wb",
+      "rb",
+      "ab",
+      "w+b",
+      "r+b",
+      "a+b",
+      "wb+",
+      "rb+",
+      "ab+"
+    };
+
+  g_test_bug ("119");
+
+  if (g_file_test (path, G_FILE_TEST_EXISTS))
+    g_error ("failed, %s exists, cannot test g_fopen()", path);
+
+  for (i = 0; i < G_N_ELEMENTS (modes); i++)
+    {
+      FILE *f;
+
+      g_test_message ("Testing fopen() mode '%s'", modes[i]);
+
+      f = g_fopen (path, modes[i]);
+      g_assert_nonnull (f);
+      fclose (f);
+    }
+
+  g_remove (path);
+  g_free (path);
+}
+
 int
 main (int   argc,
       char *argv[])
 {
   g_setenv ("LC_ALL", "C", TRUE);
   g_test_init (&argc, &argv, NULL);
+
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/merge_requests/");
 
   g_test_add_func ("/fileutils/build-path", test_build_path);
   g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
@@ -974,6 +1026,7 @@ main (int   argc,
   g_test_add_func ("/fileutils/set-contents", test_set_contents);
   g_test_add_func ("/fileutils/read-link", test_read_link);
   g_test_add_func ("/fileutils/stdio-wrappers", test_stdio_wrappers);
+  g_test_add_func ("/fileutils/fopen-modes", test_fopen_modes);
 
   return g_test_run ();
 }
