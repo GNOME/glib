@@ -579,7 +579,7 @@
     forms <literal>\0nnn</literal> and <literal>\xnn</literal>.
    </para>
    <para>
-    <literal>b'abc'</literal> is equivalent to <literal>[byte 0x97, 0x98, 0x99, 0]</literal>.
+    <literal>b'abc'</literal> is equivalent to <literal>[byte 0x61, 0x62, 0x63, 0]</literal>.
    </para>
    <para>
     When formatting arrays of bytes, the printer will choose to display the array as a bytestring if it contains
