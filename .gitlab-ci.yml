@@ -1,4 +1,4 @@
-image: registry.gitlab.gnome.org/gnome/glib/master:v3
+image: registry.gitlab.gnome.org/gnome/glib/master:v4
 
 stages:
   - build
@@ -12,7 +12,7 @@ cache:
 variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
 
-fedora-meson-x86_64:
+fedora-x86_64:
   stage: build
   except:
     - tags
@@ -31,13 +31,13 @@ fedora-meson-x86_64:
       - "_build/meson-logs"
       - "_coverage"
 
-fedora-meson-android_ndk_r16_api21_arm64:
+cross-android_api21_arm64:
   stage: build
   except:
     - tags
   script:
     # FIXME: add --werror
-    - meson --cross-file=/opt/cross-file-android_ndk_r16_api21_arm64.txt -Diconv=gnu -Dinternal_pcre=true --buildtype debug _build
+    - meson --cross-file=/opt/cross_file_android_api21_arm64.txt -Diconv=gnu -Dinternal_pcre=true --buildtype debug _build
     - ninja -C _build
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
@@ -45,7 +45,7 @@ fedora-meson-android_ndk_r16_api21_arm64:
     paths:
       - "_build/meson-logs"
 
-fedora-meson-mingw64:
+cross-mingw64:
   stage: build
   except:
     - tags
