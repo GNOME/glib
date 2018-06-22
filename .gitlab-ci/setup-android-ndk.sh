@@ -24,16 +24,18 @@ set -e
 cd /opt
 
 # Download Android NDK
-wget --quiet https://dl.google.com/android/repository/android-ndk-r16-linux-x86_64.zip
-echo "5b9ec70eac78f6cef8572dff9a133c9b18c83155dc6d980237a6925df4ae65b7b2adb3d8ea55b3ce9f3f75868f20eefdb8c87da110683c2dd1a1a27c44dc5b91  android-ndk-r16-linux-x86_64.zip" | sha512sum -c
-unzip android-ndk-r16-linux-x86_64.zip
-rm android-ndk-r16-linux-x86_64.zip
+ANDROID_NDK_VERSION="r17b"
+ANDROID_NDK_SHA512="062fac12f747730f5563995089a8b4abab683fbbc621aa8582fdf35fe327daee5d69ed2437af257c10ec4ef54ecd3805a8f134a1400eb8f34ee76f55c8dc9ae9"
+wget --quiet https://dl.google.com/android/repository/android-ndk-$ANDROID_NDK_VERSION-linux-x86_64.zip
+echo "$ANDROID_NDK_SHA512  android-ndk-$ANDROID_NDK_VERSION-linux-x86_64.zip" | sha512sum -c
+unzip android-ndk-$ANDROID_NDK_VERSION-linux-x86_64.zip
+rm android-ndk-$ANDROID_NDK_VERSION-linux-x86_64.zip
 
 # Setup cross build env
 export ANDROID_HOST=aarch64-linux-android
 export ANDROID_BUILD=linux-x86_64
 export ANDROID_ARCH=arm64
-export ANDROID_NDK=/opt/android-ndk-r16
+export ANDROID_NDK=/opt/android-ndk-$ANDROID_NDK_VERSION
 export ANDROID_VERSION=21
 export ANDROID_TOOLCHAIN_VERSION=4.9
 export ANDROID_SYSROOT=$ANDROID_NDK/platforms/android-$ANDROID_VERSION/arch-$ANDROID_ARCH
@@ -80,7 +82,7 @@ EOM
 chmod +x $PKG_CONFIG
 
 # Create a cross file that can be passed to meson
-cat > /opt/cross-file-android_ndk_r16_api21_arm64.txt <<- EOM
+cat > /opt/cross_file_android_api21_arm64.txt <<- EOM
 [host_machine]
 system = 'android'
 cpu_family = 'arm64'
