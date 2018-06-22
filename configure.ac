@@ -198,6 +198,22 @@ AC_TRY_CPP([
 
 AC_MSG_RESULT([$glib_have_cocoa])
 
+dnl Check for a working ObjC compiler, but do not bail out, if none is found.
+AC_CHECK_TOOLS(OBJC, [$OBJC gcc clang CC], [gcc])
+AC_LANG_SAVE
+AC_LANG_OBJC
+AC_COMPILE_IFELSE([
+  AC_LANG_PROGRAM([#include <Foundation/Foundation.h>], [
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSLog (@"Hello, World!");
+    [pool drain];
+  ])],
+  [AC_MSG_RESULT([ok])],
+  [OBJC=""]
+)
+AM_CONDITIONAL(HAVE_OBJC, [test "$OBJC" != ""])
+AC_LANG_RESTORE
+
 AM_CONDITIONAL(OS_WIN32, [test "$glib_native_win32" = "yes"])
 AM_CONDITIONAL(OS_WIN32_X64, [test "$LIB_EXE_MACHINE_FLAG" = "X64"])
 AM_CONDITIONAL(OS_UNIX, [test "$glib_native_win32" != "yes"])
