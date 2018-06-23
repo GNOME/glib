@@ -32,6 +32,10 @@
 #include <dirent.h>
 #include <spawn.h>
 
+#ifdef HAVE_CRT_EXTERNS_H
+#include <crt_externs.h> /* for _NSGetEnviron */
+#endif
+
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
@@ -70,6 +74,12 @@
 #define POSIX_SPAWN_AVAILABLE
 #endif /* __GLIBC__ */
 #endif /* HAVE_POSIX_SPAWN */
+
+#ifdef HAVE__NSGETENVIRON
+#define environ (*_NSGetEnviron())
+#else
+extern char **environ;
+#endif
 
 /**
  * SECTION:spawn
