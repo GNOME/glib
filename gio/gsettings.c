@@ -1204,10 +1204,7 @@ g_settings_get_value (GSettings   *settings,
   value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE);
 
   if (value == NULL)
-    value = g_settings_schema_key_get_translated_default (&skey);
-
-  if (value == NULL)
-    value = g_variant_ref (skey.default_value);
+    value = g_settings_schema_key_get_default_value (&skey);
 
   g_settings_schema_key_clear (&skey);
 
@@ -1304,10 +1301,7 @@ g_settings_get_default_value (GSettings   *settings,
   value = g_settings_read_from_backend (settings, &skey, FALSE, TRUE);
 
   if (value == NULL)
-    value = g_settings_schema_key_get_translated_default (&skey);
-
-  if (value == NULL)
-    value = g_variant_ref (skey.default_value);
+    value = g_settings_schema_key_get_default_value (&skey);
 
   g_settings_schema_key_clear (&skey);
 
@@ -1360,10 +1354,7 @@ g_settings_get_enum (GSettings   *settings,
   value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE);
 
   if (value == NULL)
-    value = g_settings_schema_key_get_translated_default (&skey);
-
-  if (value == NULL)
-    value = g_variant_ref (skey.default_value);
+    value = g_settings_schema_key_get_default_value (&skey);
 
   result = g_settings_schema_key_to_enum (&skey, value);
   g_settings_schema_key_clear (&skey);
@@ -1473,10 +1464,7 @@ g_settings_get_flags (GSettings   *settings,
   value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE);
 
   if (value == NULL)
-    value = g_settings_schema_key_get_translated_default (&skey);
-
-  if (value == NULL)
-    value = g_variant_ref (skey.default_value);
+    value = g_settings_schema_key_get_default_value (&skey);
 
   result = g_settings_schema_key_to_flags (&skey, value);
   g_settings_schema_key_clear (&skey);
@@ -1745,6 +1733,13 @@ g_settings_get_mapped (GSettings           *settings,
     }
 
   if ((value = g_settings_schema_key_get_translated_default (&skey)))
+    {
+      okay = mapping (value, &result, user_data);
+      g_variant_unref (value);
+      if (okay) goto okay;
+    }
+
+  if ((value = g_settings_schema_key_get_per_desktop_default (&skey)))
     {
       okay = mapping (value, &result, user_data);
       g_variant_unref (value);
@@ -2653,6 +2648,20 @@ g_settings_binding_key_changed (GSettings   *settings,
                      "was rejected by the binding mapping function",
                      binding->key.unparsed, binding->key.name,
                      g_settings_schema_get_id (binding->key.schema));
+          g_variant_unref (variant);
+          variant = NULL;
+        }
+    }
+
+  if (variant == NULL)
+    {
+      variant = g_settings_schema_key_get_per_desktop_default (&binding->key);
+      if (variant &&
+          !binding->get_mapping (&value, variant, binding->user_data))
+        {
+          g_error ("Per-desktop default value for key '%s' in schema '%s' "
+                   "was rejected by the binding mapping function.",
+                   binding->key.name, g_settings_schema_get_id (binding->key.schema));
           g_variant_unref (variant);
           variant = NULL;
         }
