@@ -415,6 +415,8 @@ def replace_specials(prod):
     prod = prod.rstrip()
     return prod
 
+options.args.sort()
+
 if len(fhead) > 0:
     prod = fhead
     base = os.path.basename(options.args[0])
@@ -707,7 +709,7 @@ def process_file(curfilename):
                 prod = replace_specials(prod)
                 write_output(prod)
 
-for fname in sorted(options.args):
+for fname in options.args:
     process_file(fname)
 
 if len(ftail) > 0:
