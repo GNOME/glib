@@ -1296,6 +1296,11 @@ g_source_destroy (GSource *source)
  * context. The reverse
  * mapping from ID to source is done by g_main_context_find_source_by_id().
  *
+ * You can only call this function while the source is associated to a
+ * #GMainContext instance; calling this function before g_source_attach()
+ * or after g_source_destroy() yields undefined behavior. The ID returned
+ * is unique within the #GMainContext instance passed to g_source_attach().
+ *
  * Returns: the ID (greater than 0) for the source
  **/
 guint
