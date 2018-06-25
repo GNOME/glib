@@ -1593,7 +1593,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
           g_set_error (error,
                        G_SPAWN_ERROR,
                        G_SPAWN_ERROR_FAILED,
-                       _("Failed to spawn child process \"%s\" (%s)"),
+                       _("Failed to spawn child process “%s” (%s)"),
                        argv[0],
                        g_strerror (status));
           return FALSE;

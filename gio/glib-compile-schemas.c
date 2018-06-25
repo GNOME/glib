@@ -1982,7 +1982,7 @@ set_overrides (GHashTable  *schema_table,
                    */
                   fprintf (stderr,
                            _("cannot provide per-desktop overrides for localised "
-                             "key '%s' in schema '%s' (override file '%s')"),
+                             "key “%s” in schema “%s” (override file “%s”)"),
                            key, group, filename);
 
                   if (!strict)
