@@ -21,7 +21,6 @@
 """Integration tests for glib-mkenums utility."""
 
 import os
-import shutil
 import subprocess
 import tempfile
 import unittest
@@ -44,9 +43,9 @@ class TestMkenums(unittest.TestCase):
 
     def setUp(self):
         self.timeout_seconds = 10  # seconds per test
-        self.tmpdir = tempfile.mkdtemp()
-        os.chdir(self.tmpdir)
-        print('tmpdir:', self.tmpdir)
+        self.tmpdir = tempfile.TemporaryDirectory()
+        os.chdir(self.tmpdir.name)
+        print('tmpdir:', self.tmpdir.name)
         if 'G_TEST_BUILDDIR' in os.environ:
             self.__mkenums = \
                 os.path.join(os.environ['G_TEST_BUILDDIR'], '..',
@@ -56,7 +55,7 @@ class TestMkenums(unittest.TestCase):
         print('mkenums:', self.__mkenums)
 
     def tearDown(self):
-        shutil.rmtree(self.tmpdir)
+        self.tmpdir.cleanup()
 
     def runMkenums(self, *args):
         argv = [self.__mkenums]
@@ -146,9 +145,9 @@ basename: @basename@
 /*** END file-tail ***/
 '''
 
-        with tempfile.NamedTemporaryFile(dir=self.tmpdir,
+        with tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
                                          suffix='.template') as template_file, \
-             tempfile.NamedTemporaryFile(dir=self.tmpdir,
+             tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
                                          suffix='.h') as h_file:
             # Write out the template.
             template_file.write(template_contents.encode('utf-8'))
@@ -328,11 +327,11 @@ comment: {standard_bottom_comment}
         } Header2;
         '''
 
-        with tempfile.NamedTemporaryFile(dir=self.tmpdir,
+        with tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
                                          suffix='.template') as template_file, \
-             tempfile.NamedTemporaryFile(dir=self.tmpdir,
+             tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
                                          suffix='1.h') as h_file1, \
-             tempfile.NamedTemporaryFile(dir=self.tmpdir,
+             tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
                                          suffix='2.h') as h_file2:
             # Write out the template and headers.
             template_file.write('template'.encode('utf-8'))
