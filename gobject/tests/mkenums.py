@@ -20,7 +20,6 @@
 
 """Integration tests for glib-mkenums utility."""
 
-import json
 import os
 import shutil
 import subprocess
@@ -57,8 +56,7 @@ class TestMkenums(unittest.TestCase):
         print('mkenums:', self.__mkenums)
 
     def tearDown(self):
-        pass
-        #shutil.rmtree(self.tmpdir)
+        shutil.rmtree(self.tmpdir)
 
     def runMkenums(self, *args):
         argv = [self.__mkenums]
@@ -307,8 +305,8 @@ comment: {standard_bottom_comment}
           ENUM_VALUE
         } SomeEnumIdentifier;
         '''
-        (info, out, err, subs) = self.runMkenumsWithHeader(h_contents,
-                                                      encoding='iso-8859-1')
+        (info, out, err, subs) = \
+            self.runMkenumsWithHeader(h_contents, encoding='iso-8859-1')
         self.assertIn('WARNING: UnicodeWarning: ', err)
         self.assertSingleEnum(out, subs, 'SomeEnumIdentifier',
                               'some_enum_identifier', 'SOME_ENUM_IDENTIFIER',
