@@ -2138,7 +2138,7 @@ g_local_file_trash (GFile         *file,
   {
     time_t t;
     struct tm now;
-    t = time (NULL);
+    t = g_get_real_time ();
     localtime_r (&t, &now);
     delete_time[0] = 0;
     strftime(delete_time, sizeof (delete_time), "%Y-%m-%dT%H:%M:%S", &now);

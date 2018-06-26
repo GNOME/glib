@@ -658,7 +658,7 @@ keyring_generate_entry (const gchar  *cookie_context,
     }
 
   new_contents = g_string_new (NULL);
-  now = (guint64) time (NULL);
+  now = g_get_real_time ();
   changed_file = FALSE;
 
   max_line_id = 0;
@@ -672,7 +672,7 @@ keyring_generate_entry (const gchar  *cookie_context,
           gchar **tokens;
           gchar *endp;
           gint line_id;
-          guint64 line_when;
+          gint64 line_when;
           gboolean keep_entry;
 
           if (line[0] == '\0')
@@ -745,7 +745,7 @@ keyring_generate_entry (const gchar  *cookie_context,
               if (line_when - now > 24*60*60)
                 {
                   keep_entry = FALSE;
-                  _log ("Deleted SHA1 cookie from %" G_GUINT64_FORMAT " seconds in the future", line_when - now);
+                  _log ("Deleted SHA1 cookie from %" G_GINT64_FORMAT " seconds in the future", line_when - now);
                 }
             }
           else
@@ -764,7 +764,7 @@ keyring_generate_entry (const gchar  *cookie_context,
           else
             {
               g_string_append_printf (new_contents,
-                                      "%d %" G_GUINT64_FORMAT " %s\n",
+                                      "%d %" G_GINT64_FORMAT " %s\n",
                                       line_id,
                                       line_when,
                                       tokens[2]);
@@ -807,9 +807,9 @@ keyring_generate_entry (const gchar  *cookie_context,
       g_free (raw_cookie);
 
       g_string_append_printf (new_contents,
-                              "%d %" G_GUINT64_FORMAT " %s\n",
+                              "%d %" G_GINT64_FORMAT " %s\n",
                               *out_id,
-                              (guint64) time (NULL),
+                              g_get_real_time (),
                               *out_cookie);
       changed_file = TRUE;
     }

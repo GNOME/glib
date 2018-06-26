@@ -79,7 +79,7 @@ on_name_appeared (GDBusConnection *connection,
       gssize len;
       gchar *str;
 
-      now = time (NULL);
+      now = g_get_real_time ();
       strftime (now_buf,
                 sizeof now_buf,
                 "%Y-%m-%d %H:%M:%S",
