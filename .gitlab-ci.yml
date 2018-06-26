@@ -111,6 +111,40 @@ G_DISABLE_ASSERT:
       - "_build/meson-logs"
       - "_build/${CI_JOB_NAME}-report.xml"
 
+valgrind:
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v3
+  stage: analysis
+  except:
+    - tags
+  variables:
+    MESON_TEST_TIMEOUT_MULTIPLIER: 10
+  script:
+    - meson ${MESON_COMMON_OPTIONS}
+            --werror
+            -Dsystemtap=true
+            -Ddtrace=true
+            -Dfam=true
+            -Dinstalled_tests=true
+            _build
+    - ninja -C _build
+    - bash -x ./.gitlab-ci/run-tests.sh
+                 --log-file _build/meson-logs/testlog-valgrind.json
+                 --wrap "valgrind --tool=memcheck --error-exitcode=1 --track-origins=yes --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/glib.supp"
+                 --no-suite no-valgrind
+                 --no-suite slow
+  # FIXME: Remove this when we have zero valgrind leaks.
+  # https://gitlab.gnome.org/GNOME/glib/issues/333
+  allow_failure: true
+  artifacts:
+    reports:
+      junit: "_build/${CI_JOB_NAME}-report.xml"
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+
 .cross-template: &cross-template
   stage: build
   except:
