@@ -32,6 +32,20 @@ fedora-x86_64:
       - "_build/meson-logs"
       - "_coverage"
 
+valgrind-x86_64:
+  stage: build
+  except:
+    - tags
+  script:
+    - meson --buildtype debug --werror -Dsystemtap=true -Ddtrace=true -Dfam=true _build .
+    - ninja -C _build
+    - meson test -C _build --wrap 'valgrind --tool=memcheck --error-exitcode=1 --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite --suppressions=${CI_PROJECT_DIR}/glib.supp' --no-suite no-valgrind --no-suite slow --timeout-multiplier $((5 * ${MESON_TEST_TIMEOUT_MULTIPLIER}))
+  artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/meson-logs"
+
 .cross-template: &cross-template
   stage: build
   except:
