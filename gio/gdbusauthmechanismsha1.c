@@ -603,7 +603,7 @@ keyring_generate_entry (const gchar  *cookie_context,
   gchar **lines;
   gint max_line_id;
   GString *new_contents;
-  guint64 now;
+  gint64 now;
   gboolean have_id;
   gint use_id;
   gchar *use_cookie;
