@@ -25,6 +25,7 @@ RUN dnf -y install \
     mingw64-gettext \
     mingw64-libffi \
     mingw64-zlib \
+    ncurses-compat-libs \
     ninja-build \
     pcre-devel \
     python3 \
@@ -36,8 +37,14 @@ RUN dnf -y install \
     zlib-devel \
  && dnf clean all
 
-COPY setup-android-ndk.sh .
-RUN ./setup-android-ndk.sh
+WORKDIR /opt
+ENV ANDROID_NDK_PATH /opt/android-ndk
+COPY android-download-ndk.sh .
+RUN ./android-download-ndk.sh
+COPY android-setup-env.sh .
+RUN ./android-setup-env.sh arm64 21
+RUN ./android-setup-env.sh arm64 28
+RUN rm -rf $ANDROID_NDK_PATH
 
 COPY cross_file_mingw64.txt /opt
 

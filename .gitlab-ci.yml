@@ -1,4 +1,4 @@
-image: registry.gitlab.gnome.org/gnome/glib/master:v4
+image: registry.gitlab.gnome.org/gnome/glib/master:v5
 
 stages:
   - build
@@ -46,6 +46,13 @@ cross-android_api21_arm64:
   script:
     # FIXME: add --werror
     - meson --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=gnu -Dinternal_pcre=true --buildtype debug _build
+    - ninja -C _build
+
+cross-android_api28_arm64:
+  <<: *cross-template
+  script:
+    # FIXME: add --werror
+    - meson --cross-file=/opt/cross_file_android_arm64_28.txt -Dinternal_pcre=true --buildtype debug _build
     - ninja -C _build
 
 cross-mingw64:

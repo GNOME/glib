@@ -2,7 +2,7 @@
 
 set -e
 
-TAG="registry.gitlab.gnome.org/gnome/glib/master:v4"
+TAG="registry.gitlab.gnome.org/gnome/glib/master:v5"
 
 docker build --build-arg HOST_USER_ID="$UID" --tag "${TAG}" \
     --file "Dockerfile" .
