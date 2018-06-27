@@ -648,6 +648,8 @@ g_file_monitor_source_new (gpointer           instance,
   source = g_source_new (&source_funcs, sizeof (GFileMonitorSource));
   fms = (GFileMonitorSource *) source;
 
+  g_source_set_name (source, "GFileMonitorSource");
+
   g_mutex_init (&fms->lock);
   fms->instance = instance;
   fms->pending_changes = g_sequence_new (pending_change_free);

@@ -5239,6 +5239,68 @@ unref_unix_signal_handler_unlocked (int signum)
     }
 }
 
+/* Return a const string to avoid allocations. We lose precision in the case the
+ * @signum is unrecognised, but that’ll do. */
+static const gchar *
+signum_to_string (int signum)
+{
+  /* See `man 0P signal.h` */
+#define SIGNAL(s) \
+    case (s): \
+      return ("GUnixSignalSource: " #s);
+  switch (signum)
+    {
+    /* These signals are guaranteed to exist by POSIX. */
+    SIGNAL (SIGABRT)
+    SIGNAL (SIGFPE)
+    SIGNAL (SIGILL)
+    SIGNAL (SIGINT)
+    SIGNAL (SIGSEGV)
+    SIGNAL (SIGTERM)
+    /* Frustratingly, these are not, and hence for brevity the list is
+     * incomplete. */
+#ifdef SIGALRM
+    SIGNAL (SIGALRM)
+#endif
+#ifdef SIGCHLD
+    SIGNAL (SIGCHLD)
+#endif
+#ifdef SIGHUP
+    SIGNAL (SIGHUP)
+#endif
+#ifdef SIGKILL
+    SIGNAL (SIGKILL)
+#endif
+#ifdef SIGPIPE
+    SIGNAL (SIGPIPE)
+#endif
+#ifdef SIGQUIT
+    SIGNAL (SIGQUIT)
+#endif
+#ifdef SIGSTOP
+    SIGNAL (SIGSTOP)
+#endif
+#ifdef SIGUSR1
+    SIGNAL (SIGUSR1)
+#endif
+#ifdef SIGUSR2
+    SIGNAL (SIGUSR2)
+#endif
+#ifdef SIGPOLL
+    SIGNAL (SIGPOLL)
+#endif
+#ifdef SIGPROF
+    SIGNAL (SIGPROF)
+#endif
+#ifdef SIGTRAP
+    SIGNAL (SIGTRAP)
+#endif
+    default:
+      return "GUnixSignalSource: Unrecognized signal";
+    }
+#undef SIGNAL
+}
+
 GSource *
 _g_main_create_unix_signal_watch (int signum)
 {
@@ -5250,6 +5312,9 @@ _g_main_create_unix_signal_watch (int signum)
 
   unix_signal_source->signum = signum;
   unix_signal_source->pending = FALSE;
+
+  /* Set a default name on the source, just in case the caller does not. */
+  g_source_set_name (source, signum_to_string (signum));
 
   G_LOCK (unix_signal_lock);
   ref_unix_signal_handler_unlocked (signum);
@@ -5378,6 +5443,9 @@ g_child_watch_source_new (GPid pid)
 
   source = g_source_new (&g_child_watch_funcs, sizeof (GChildWatchSource));
   child_watch_source = (GChildWatchSource *)source;
+
+  /* Set a default name on the source, just in case the caller does not. */
+  g_source_set_name (source, "GChildWatchSource");
 
   child_watch_source->pid = pid;
 
@@ -5564,6 +5632,9 @@ g_idle_source_new (void)
 
   source = g_source_new (&g_idle_funcs, sizeof (GSource));
   g_source_set_priority (source, G_PRIORITY_DEFAULT_IDLE);
+
+  /* Set a default name on the source, just in case the caller does not. */
+  g_source_set_name (source, "GIdleSource");
 
   return source;
 }
