@@ -155,6 +155,7 @@ main (int argc, char **argv)
 
   g_object_unref (test1);
   g_object_unref (test2);
+  g_array_unref (test_threads);
 
   g_print ("stopped\n");
 
