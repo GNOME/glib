@@ -108,7 +108,6 @@ if get_option('gtk_doc')
                src_dir : [ 'glib', 'gmodule' ],
                dependencies : libglib_dep,
                scan_args : [
-                 '--rebuild-types',
                  '--deprecated-guards=G_DISABLE_DEPRECATED',
                  '--ignore-decorators=' + '|'.join(ignore_decorators),
                  '--ignore-headers=' + ' '.join(ignore_headers),
