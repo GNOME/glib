@@ -87,5 +87,5 @@ test(
   py3,
   args: files('mkenums.py'),
   env: test_env,
-  suite: ['gobject'],
+  suite: ['gobject', 'no-valgrind'],
 )
