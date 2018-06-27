@@ -1459,6 +1459,7 @@ skip_callback_wrapper (GObject      *source_object,
                              g_task_get_priority (task),
                              g_task_get_cancellable (task),
                              skip_callback_wrapper, task);
+    g_clear_error (&error);
 	  return;
 	}
     }
