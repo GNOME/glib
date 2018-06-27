@@ -156,11 +156,14 @@ test_set (void)
 {
   GObject *o = NULL;
   GObject *tmp;
+  gpointer tmp_weak = NULL;
 
   g_assert (!g_set_object (&o, NULL));
   g_assert (o == NULL);
 
   tmp = g_object_new (G_TYPE_OBJECT, NULL);
+  tmp_weak = tmp;
+  g_object_add_weak_pointer (tmp, &tmp_weak);
   g_assert_cmpint (tmp->ref_count, ==, 1);
 
   g_assert (g_set_object (&o, tmp));
@@ -174,10 +177,11 @@ test_set (void)
   g_assert (!g_set_object (&o, tmp));
   g_assert (o == tmp);
   g_assert_cmpint (tmp->ref_count, ==, 1);
+  g_assert_nonnull (tmp_weak);
 
   g_assert (g_set_object (&o, NULL));
   g_assert (o == NULL);
-  g_assert (!G_IS_OBJECT (tmp));  /* finalised */
+  g_assert_null (tmp_weak);
 }
 
 static void
@@ -185,11 +189,14 @@ test_set_function (void)
 {
   GObject *o = NULL;
   GObject *tmp;
+  gpointer tmp_weak = NULL;
 
   g_assert (!(g_set_object) (&o, NULL));
   g_assert (o == NULL);
 
   tmp = g_object_new (G_TYPE_OBJECT, NULL);
+  tmp_weak = tmp;
+  g_object_add_weak_pointer (tmp, &tmp_weak);
   g_assert_cmpint (tmp->ref_count, ==, 1);
 
   g_assert ((g_set_object) (&o, tmp));
@@ -203,10 +210,11 @@ test_set_function (void)
   g_assert (!(g_set_object) (&o, tmp));
   g_assert (o == tmp);
   g_assert_cmpint (tmp->ref_count, ==, 1);
+  g_assert_nonnull (tmp_weak);
 
   g_assert ((g_set_object) (&o, NULL));
   g_assert (o == NULL);
-  g_assert (!G_IS_OBJECT (tmp));  /* finalised */
+  g_assert_null (tmp_weak);
 }
 
 static void
