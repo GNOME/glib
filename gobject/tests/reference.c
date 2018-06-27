@@ -177,7 +177,6 @@ test_set (void)
 
   g_assert (g_set_object (&o, NULL));
   g_assert (o == NULL);
-  g_assert (!G_IS_OBJECT (tmp));  /* finalised */
 }
 
 static void
@@ -206,7 +205,6 @@ test_set_function (void)
 
   g_assert ((g_set_object) (&o, NULL));
   g_assert (o == NULL);
-  g_assert (!G_IS_OBJECT (tmp));  /* finalised */
 }
 
 static void
