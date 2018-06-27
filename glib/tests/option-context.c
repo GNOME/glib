@@ -2550,6 +2550,7 @@ double_free (void)
 
   g_option_context_free (context);
   g_clear_error (&error);
+  g_strfreev (argv);
 
 }
 
