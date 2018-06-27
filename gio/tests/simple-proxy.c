@@ -77,6 +77,7 @@ test_uris (void)
   g_assert_cmpstr (error->message, ==, str);
   g_clear_error (&error);
   g_assert_null (proxies);
+  g_object_unref (result);
 
   g_object_unref (resolver);
   g_free (str);

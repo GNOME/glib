@@ -547,7 +547,8 @@ test_uri_query_info (void)
   GBytes *data;
   GFile *file;
   GFileInfo *info;
-  const char *content_type, *mime_type;
+  const char *content_type;
+  gchar *mime_type = NULL;
   const char *fs_type;
   gboolean readonly;
 
@@ -573,6 +574,7 @@ test_uri_query_info (void)
   mime_type = g_content_type_get_mime_type (content_type);
   g_assert (mime_type);
   g_assert_cmpstr (mime_type, ==, "text/plain");
+  g_free (mime_type);
 
   g_object_unref (info);
 

@@ -1902,6 +1902,7 @@ legacy_error_callback (GObject      *object,
 
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
       *result_out = -2;
+      g_clear_error (&error);
     }
   else
     {

@@ -45,6 +45,8 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
     {
       /* We need these because "mount --bind" requires root privileges */
       g_test_skip ("'bindfs' and 'fusermount' commands are needed to run this test");
+      g_free (fusermount);
+      g_free (bindfs);
       return;
     }
 
