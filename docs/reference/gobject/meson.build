@@ -77,12 +77,12 @@ if get_option('gtk_doc')
   gnome.gtkdoc('gobject',
     main_xml : 'gobject-docs.xml',
     namespace : 'g',
-    gobject_typesfile : join_paths(meson.current_source_dir(), 'gobject.types'),
     mode : 'none',
     dependencies : [libgobject_dep, libglib_dep],
     include_directories : [gtkdocincl],
     src_dir : 'gobject',
     scan_args : [
+      '--rebuild-types',
       '--deprecated-guards=G_DISABLE_DEPRECATED',
       '--ignore-decorators=' + '|'.join(ignore_decorators),
       '--ignore-headers=' + ' '.join(ignore_headers),
