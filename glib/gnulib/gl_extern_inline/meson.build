@@ -65,7 +65,7 @@ gl_extern_inline = '''
        && !defined _GL_EXTERN_INLINE_STDHEADER_BUG)
 # if defined __GNUC_GNU_INLINE__ && __GNUC_GNU_INLINE__
    /* __gnu_inline__ suppresses a GCC 4.2 diagnostic.  */
-#  define _GL_INLINE extern inline __attribute__ ((__gnu_inline__))
+#  define _GL_INLINE extern inline __attribute__ ((__gnu_inline__)) __attribute__ ((always_inline))
 # else
 #  define _GL_INLINE extern inline
 # endif
