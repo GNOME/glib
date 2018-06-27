@@ -128,10 +128,10 @@ static void
 test_locale (const char *locale)
 {
   GAppInfo *appinfo;
-  const gchar *orig;
+  gchar *orig = NULL;
   const gchar *path;
 
-  orig = setlocale (LC_ALL, NULL);
+  orig = g_strdup (setlocale (LC_ALL, NULL));
   g_setenv ("LANGUAGE", locale, TRUE);
   setlocale (LC_ALL, "");
 
@@ -161,6 +161,7 @@ test_locale (const char *locale)
 
   g_setenv ("LANGUAGE", orig, TRUE);
   setlocale (LC_ALL, "");
+  g_free (orig);
 }
 
 static void
