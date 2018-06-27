@@ -8,6 +8,7 @@ DOC_MAIN_SGML_FILE=gio-docs.xml
 
 # Extra options to supply to gtkdoc-scan
 SCAN_OPTIONS = \
+	--rebuild-types \
 	--deprecated-guards="G_DISABLE_DEPRECATED" \
 	--ignore-decorators="GLIB_VAR|G_GNUC_INTERNAL|G_GNUC_WARN_UNUSED_RESULT|GLIB_AVAILABLE_IN_ALL|GLIB_AVAILABLE_IN_2_26|GLIB_AVAILABLE_IN_2_28|GLIB_AVAILABLE_IN_2_30|GLIB_AVAILABLE_IN_2_32|GLIB_AVAILABLE_IN_2_34|GLIB_AVAILABLE_IN_2_36|GLIB_AVAILABLE_IN_2_38|GLIB_AVAILABLE_IN_2_40|GLIB_AVAILABLE_IN_2_42|GLIB_AVAILABLE_IN_2_44|GLIB_AVAILABLE_IN_2_46|GLIB_AVAILABLE_IN_2_48|GLIB_AVAILABLE_IN_2_50|GLIB_AVAILABLE_IN_2_52|GLIB_AVAILABLE_IN_2_54|GLIB_AVAILABLE_IN_2_56|GLIB_DEPRECATED_IN_2_26|GLIB_DEPRECATED_IN_2_26_FOR|GLIB_DEPRECATED_IN_2_28|GLIB_DEPRECATED_IN_2_28_FOR|GLIB_DEPRECATED_IN_2_30|GLIB_DEPRECATED_IN_2_30_FOR|GLIB_DEPRECATED_IN_2_32|GLIB_DEPRECATED_IN_2_32_FOR|GLIB_DEPRECATED_IN_2_34|GLIB_DEPRECATED_IN_2_34_FOR|GLIB_DEPRECATED_IN_2_36|GLIB_DEPRECATED_IN_2_36_FOR|GLIB_DEPRECATED_IN_2_38|GLIB_DEPRECATED_IN_2_38_FOR|GLIB_DEPRECATED_IN_2_40|GLIB_DEPRECATED_IN_2_40_FOR|GLIB_DEPRECATED_IN_2_42|GLIB_DEPRECATED_IN_2_42_FOR|GLIB_DEPRECATED_IN_2_44|GLIB_DEPRECATED_IN_2_44_FOR|GLIB_DEPRECATED_IN_2_46|GLIB_DEPRECATED_IN_2_46_FOR|GLIB_DEPRECATED_IN_2_48|GLIB_DEPRECATED_IN_2_48_FOR|GLIB_DEPRECATED_IN_2_50|GLIB_DEPRECATED_IN_2_50_FOR|GLIB_DEPRECATED_IN_2_52|GLIB_DEPRECATED_IN_2_52_FOR|GLIB_DEPRECATED_IN_2_54|GLIB_DEPRECATED_IN_2_54_FOR|GLIB_DEPRECATED_IN_2_56|GLIB_DEPRECATED_IN_2_56_FOR"
 
@@ -20,82 +21,115 @@ HFILE_GLOB= \
 CFILE_GLOB=$(top_srcdir)/gio/*.c
 
 IGNORE_HFILES = \
-	fam				\
-	fen				\
-	gdbus-2.0			\
-	gvdb				\
-	inotify				\
-	kqueue				\
-	libasyncns			\
-	tests				\
-	win32				\
-	xdgmime				\
-	gappinfoprivate.h		\
-	gapplicationimpl.h		\
-	gasynchelper.h			\
-	gcontenttypeprivate.h		\
-	gcontextspecificgroup.h		\
-	gcredentialsprivate.h		\
-	gdbus-daemon-generated.h	\
-	gdbusactiongroup-private.h	\
-	gdbusauth.h			\
-	gdbusauthmechanismanon.h	\
-	gdbusauthmechanismexternal.h	\
-	gdbusauthmechanism.h		\
-	gdbusauthmechanismsha1.h	\
-	gdbusdaemon.h			\
-	gdbusprivate.h			\
-	gdelayedsettingsbackend.h	\
-	gdummyfile.h			\
-	gdummyproxyresolver.h		\
-	gdummytlsbackend.h		\
-	gfileattribute-priv.h		\
-	gfileinfo-priv.h		\
-	ghttpproxy.h			\
-	gio_trace.h			\
-	giomodule-priv.h		\
-	gioprivate.h			\
-	giowin32-priv.h			\
-	glocaldirectorymonitor.h	\
-	glocalfileenumerator.h		\
-	glocalfile.h			\
-	glocalfileinfo.h		\
-	glocalfileinputstream.h		\
-	glocalfileiostream.h		\
-	glocalfilemonitor.h		\
-	glocalfileoutputstream.h	\
-	glocalvfs.h			\
-	gmountprivate.h			\
-	gnativevolumemonitor.h		\
-	gnetworkingprivate.h		\
-	gnetworkmonitorbase.h		\
-	gnetworkmonitornetlink.h	\
-	gnetworkmonitornm.h		\
-	gnotificationbackend.h		\
-	gnotification-private.h		\
-	gpollfilemonitor.h		\
-	gregistrysettingsbackend.h	\
-	gresourcefile.h			\
-	gsettingsbackendinternal.h	\
-	gsettings-mapping.h		\
-	gsettingsschema-internal.h	\
-	gsocketinputstream.h		\
-	gsocketoutputstream.h		\
-	gsocks4aproxy.h			\
-	gsocks4proxy.h			\
-	gsocks5proxy.h			\
-	gsubprocesslauncher-private.h	\
-	gthreadedresolver.h		\
-	gunionvolumemonitor.h		\
-	gunixmount.h			\
-	gunixresolver.h			\
-	gunixvolume.h			\
-	gunixvolumemonitor.h		\
-	gwin32appinfo.h			\
-	gwin32mount.h			\
-	gwin32resolver.h		\
-	gwin32volumemonitor.h		\
-	thumbnail-verify.h
+	fam \
+	fen \
+	gdbus-2.0 \
+	gvdb \
+	inotify \
+	kqueue \
+	libasyncns \
+	tests \
+	win32 \
+	xdgmime \
+	gappinfoprivate.h \
+	gapplicationimpl.h \
+	gasynchelper.h \
+	gcontenttypeprivate.h \
+	gcontextspecificgroup.h \
+	gcredentialsprivate.h \
+	gdbus-daemon-generated.h \
+	gdbusactiongroup-private.h \
+	gdbusauth.h \
+	gdbusauthmechanismanon.h \
+	gdbusauthmechanismexternal.h \
+	gdbusauthmechanism.h \
+	gdbusauthmechanismsha1.h \
+	gdbusdaemon.h \
+	gdbusprivate.h \
+	gdelayedsettingsbackend.h \
+	gdummyfile.h \
+	gdummyproxyresolver.h \
+	gdummytlsbackend.h \
+	gfileattribute-priv.h \
+	gfileinfo-priv.h \
+	ghttpproxy.h \
+	giomodule-priv.h \
+	gioprivate.h \
+	giowin32-priv.h \
+	glocaldirectorymonitor.h \
+	glocalfileenumerator.h \
+	glocalfile.h \
+	glocalfileinfo.h \
+	glocalfileinputstream.h \
+	glocalfileiostream.h \
+	glocalfilemonitor.h \
+	glocalfileoutputstream.h \
+	glocalvfs.h \
+	gmountprivate.h \
+	gnativevolumemonitor.h \
+	gnetworkingprivate.h \
+	gnetworkmonitorbase.h \
+	gnetworkmonitornetlink.h \
+	gnetworkmonitornm.h \
+	gnetworkmonitorportal.h \
+	gnotificationbackend.h \
+	gnotification-private.h \
+	gpollfilemonitor.h \
+	gproxyresolverportal.h \
+	gregistrysettingsbackend.h \
+	gresourcefile.h \
+	gsettingsbackendinternal.h \
+	gsettings-mapping.h \
+	gsettingsschema-internal.h \
+	gsocketinputstream.h \
+	gsocketoutputstream.h \
+	gsocks4aproxy.h \
+	gsocks4proxy.h \
+	gsocks5proxy.h \
+	gsubprocesslauncher-private.h \
+	gthreadedresolver.h \
+	gunionvolumemonitor.h \
+	gunixmount.h \
+	gunixresolver.h \
+	gunixvolume.h \
+	gunixvolumemonitor.h \
+	gwin32appinfo.h \
+	gwin32mount.h \
+	gwin32registrykey.h \
+	gwin32resolver.h \
+	gwin32volumemonitor.h \
+	thumbnail-verify.h \
+	xdp-dbus.h \
+	$(NULL)
+
+if OS_WIN32
+IGNORE_HFILES += \
+	gfiledescriptorbased.h \
+	gunixconnection.h \
+	gunixcredentialsmessage.h \
+	gunixmounts.h \
+	gunixfdlist.h \
+	gunixfdmessage.h \
+	gunixinputstream.h \
+	gunixoutputstream.h \
+	gunixsocketaddress.h \
+	gdesktopappinfo.h \
+	gosxappinfo.h \
+	$(NULL)
+else
+
+if OS_COCOA
+IGNORE_HFILES += gdesktopappinfo.h
+else
+IGNORE_HFILES += gosxappinfo.h
+endif
+
+IGNORE_HFILES += \
+	gwin32networkmonitor.h \
+	gwin32inputstream.h \
+	gwin32outputstream.h \
+	$(NULL)
+endif
 
 MKDB_IGNORE_FILES = \
 	gdbus-daemon-generated.c	\
