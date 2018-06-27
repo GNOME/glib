@@ -258,6 +258,8 @@ setup (Test *test,
 
   g_assert (test->server);
   g_assert (test->client);
+
+  g_object_unref (stream);
 }
 
 static void

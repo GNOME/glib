@@ -381,6 +381,7 @@ test_associations (void)
                                                 "cmdline-app-test",
                                                 G_APP_INFO_CREATE_SUPPORTS_URIS,
                                                 NULL);
+  g_free (cmdline);
 
   error = NULL;
   result = g_app_info_set_as_default_for_type (appinfo, "application/x-glib-test", &error);
