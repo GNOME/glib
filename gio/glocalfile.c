@@ -1807,6 +1807,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   if (mount == NULL || g_unix_mount_is_system_internal (mount))
     {
       g_clear_pointer (&mount, g_unix_mount_free);
+      g_free (topdir);
 
       return FALSE;
     }
