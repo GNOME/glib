@@ -1379,6 +1379,8 @@ test_empty (void)
     }
 
   g_assert_true (g_sequence_is_empty (seq));
+
+  g_sequence_free (seq);
 }
 
 int
