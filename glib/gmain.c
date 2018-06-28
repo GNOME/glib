@@ -3307,25 +3307,10 @@ g_main_context_release (GMainContext *context)
   UNLOCK_CONTEXT (context); 
 }
 
-/**
- * g_main_context_wait:
- * @context: a #GMainContext
- * @cond: a condition variable
- * @mutex: a mutex, currently held
- * 
- * Tries to become the owner of the specified context,
- * as with g_main_context_acquire(). But if another thread
- * is the owner, atomically drop @mutex and wait on @cond until 
- * that owner releases ownership or until @cond is signaled, then
- * try again (once) to become the owner.
- * 
- * Returns: %TRUE if the operation succeeded, and
- *   this thread is now the owner of @context.
- **/
-gboolean
-g_main_context_wait (GMainContext *context,
-		     GCond        *cond,
-		     GMutex       *mutex)
+static gboolean
+g_main_context_wait_internal (GMainContext *context,
+                              GCond        *cond,
+                              GMutex       *mutex)
 {
   gboolean result = FALSE;
   GThread *self = G_THREAD_SELF;
@@ -3333,18 +3318,6 @@ g_main_context_wait (GMainContext *context,
   
   if (context == NULL)
     context = g_main_context_default ();
-
-  if G_UNLIKELY (cond != &context->cond || mutex != &context->mutex)
-    {
-      static gboolean warned;
-
-      if (!warned)
-        {
-          g_critical ("WARNING!! g_main_context_wait() will be removed in a future release.  "
-                      "If you see this message, please file a bug immediately.");
-          warned = TRUE;
-        }
-    }
 
   loop_internal_waiter = (mutex == &context->mutex);
   
@@ -3361,10 +3334,10 @@ g_main_context_wait (GMainContext *context,
       context->waiters = g_slist_append (context->waiters, &waiter);
       
       if (!loop_internal_waiter)
-	UNLOCK_CONTEXT (context);
+        UNLOCK_CONTEXT (context);
       g_cond_wait (cond, mutex);
-      if (!loop_internal_waiter)      
-	LOCK_CONTEXT (context);
+      if (!loop_internal_waiter)
+        LOCK_CONTEXT (context);
 
       context->waiters = g_slist_remove (context->waiters, &waiter);
     }
@@ -3385,6 +3358,45 @@ g_main_context_wait (GMainContext *context,
     UNLOCK_CONTEXT (context); 
   
   return result;
+}
+
+/**
+ * g_main_context_wait:
+ * @context: a #GMainContext
+ * @cond: a condition variable
+ * @mutex: a mutex, currently held
+ *
+ * Tries to become the owner of the specified context,
+ * as with g_main_context_acquire(). But if another thread
+ * is the owner, atomically drop @mutex and wait on @cond until
+ * that owner releases ownership or until @cond is signaled, then
+ * try again (once) to become the owner.
+ *
+ * Returns: %TRUE if the operation succeeded, and
+ *   this thread is now the owner of @context.
+ * Deprecated: 2.58: Use g_main_context_is_owner() and separate locking instead.
+ */
+gboolean
+g_main_context_wait (GMainContext *context,
+                     GCond        *cond,
+                     GMutex       *mutex)
+{
+  if (context == NULL)
+    context = g_main_context_default ();
+
+  if (G_UNLIKELY (cond != &context->cond || mutex != &context->mutex))
+    {
+      static gboolean warned;
+
+      if (!warned)
+        {
+          g_critical ("WARNING!! g_main_context_wait() will be removed in a future release.  "
+                      "If you see this message, please file a bug immediately.");
+          warned = TRUE;
+        }
+    }
+
+  return g_main_context_wait_internal (context, cond, mutex);
 }
 
 /**
@@ -3864,9 +3876,9 @@ g_main_context_iterate (GMainContext *context,
       if (!block)
 	return FALSE;
 
-      got_ownership = g_main_context_wait (context,
-                                           &context->cond,
-                                           &context->mutex);
+      got_ownership = g_main_context_wait_internal (context,
+                                                    &context->cond,
+                                                    &context->mutex);
 
       if (!got_ownership)
 	return FALSE;
@@ -4073,9 +4085,9 @@ g_main_loop_run (GMainLoop *loop)
 	loop->is_running = TRUE;
 
       while (loop->is_running && !got_ownership)
-	got_ownership = g_main_context_wait (loop->context,
-                                             &loop->context->cond,
-                                             &loop->context->mutex);
+        got_ownership = g_main_context_wait_internal (loop->context,
+                                                      &loop->context->cond,
+                                                      &loop->context->mutex);
       
       if (!loop->is_running)
 	{

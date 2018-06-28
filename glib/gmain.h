@@ -376,7 +376,7 @@ GLIB_AVAILABLE_IN_ALL
 void     g_main_context_release (GMainContext *context);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_main_context_is_owner (GMainContext *context);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_58_FOR(g_main_context_is_owner)
 gboolean g_main_context_wait    (GMainContext *context,
                                  GCond        *cond,
                                  GMutex       *mutex);
