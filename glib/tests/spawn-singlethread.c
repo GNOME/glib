@@ -183,13 +183,15 @@ test_spawn_async_with_fds (void)
 
   /* Each test has 3 variable parameters: stdin, stdout, stderr */
   enum fd_type {
-    NO_FD,        /* don't pass a fd */
+    NO_FD,        /* pass fd -1 (unset) */
+    FD_NEGATIVE,  /* pass fd of negative value (equivalent to unset) */
     PIPE,         /* pass fd of new/unique pipe */
     STDOUT_PIPE,  /* pass the same pipe as stdout */
   } tests[][3] = {
-    { NO_FD, NO_FD, NO_FD },      /* Test with no fds passed */
-    { PIPE, PIPE, PIPE },         /* Test with unique fds passed */
-    { NO_FD, PIPE, STDOUT_PIPE }, /* Test the same fd for stdout + stderr */
+    { NO_FD, NO_FD, NO_FD },       /* Test with no fds passed */
+    { NO_FD, FD_NEGATIVE, NO_FD }, /* Test another negative fd value */
+    { PIPE, PIPE, PIPE },          /* Test with unique fds passed */
+    { NO_FD, PIPE, STDOUT_PIPE },  /* Test the same fd for stdout + stderr */
   };
 
   arg = g_strdup_printf ("thread %d", tnum);
@@ -219,6 +221,10 @@ test_spawn_async_with_fds (void)
             case NO_FD:
               test_pipe[j][0] = -1;
               test_pipe[j][1] = -1;
+              break;
+            case FD_NEGATIVE:
+              test_pipe[j][0] = -5;
+              test_pipe[j][1] = -5;
               break;
             case PIPE:
 #ifdef G_OS_UNIX
@@ -261,7 +267,7 @@ test_spawn_async_with_fds (void)
       g_source_attach (source, context);
       g_source_unref (source);
 
-      if (test_pipe[1][0] != -1)
+      if (test_pipe[1][0] >= 0)
         {
           channel = g_io_channel_unix_new (test_pipe[1][0]);
           source = g_io_create_watch (channel, G_IO_IN | G_IO_HUP | G_IO_ERR);
@@ -280,7 +286,7 @@ test_spawn_async_with_fds (void)
 
       g_assert_true (data.child_exited);
 
-      if (test_pipe[1][0] != -1)
+      if (test_pipe[1][0] >= 0)
         {
           /* Check for echo on stdout */
           g_assert_true (data.stdout_done);
