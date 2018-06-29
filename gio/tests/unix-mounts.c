@@ -33,6 +33,12 @@ test_is_system_fs_type (void)
 {
   g_assert_true (g_unix_is_system_fs_type ("tmpfs"));
   g_assert_false (g_unix_is_system_fs_type ("ext4"));
+
+  /* Check that some common network file systems aren’t considered ‘system’. */
+  g_assert_false (g_unix_is_system_fs_type ("cifs"));
+  g_assert_false (g_unix_is_system_fs_type ("nfs"));
+  g_assert_false (g_unix_is_system_fs_type ("nfs4"));
+  g_assert_false (g_unix_is_system_fs_type ("smbfs"));
 }
 
 static void
