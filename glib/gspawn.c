@@ -843,12 +843,12 @@ g_spawn_async_with_fds (const gchar          *working_directory,
                         GError              **error)
 {
   g_return_val_if_fail (argv != NULL, FALSE);
-  g_return_val_if_fail (stdout_fd == -1 ||
+  g_return_val_if_fail (stdout_fd < 0 ||
                         !(flags & G_SPAWN_STDOUT_TO_DEV_NULL), FALSE);
-  g_return_val_if_fail (stderr_fd == -1 ||
+  g_return_val_if_fail (stderr_fd < 0 ||
                         !(flags & G_SPAWN_STDERR_TO_DEV_NULL), FALSE);
   /* can't inherit stdin if we have an input pipe. */
-  g_return_val_if_fail (stdin_fd == -1 ||
+  g_return_val_if_fail (stdin_fd < 0 ||
                         !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
 
   return fork_exec_with_fds (!(flags & G_SPAWN_DO_NOT_REAP_CHILD),
