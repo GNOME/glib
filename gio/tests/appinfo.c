@@ -128,10 +128,10 @@ static void
 test_locale (const char *locale)
 {
   GAppInfo *appinfo;
-  const gchar *orig;
+  gchar *orig = NULL;
   const gchar *path;
 
-  orig = setlocale (LC_ALL, NULL);
+  orig = g_strdup (setlocale (LC_ALL, NULL));
   g_setenv ("LANGUAGE", locale, TRUE);
   setlocale (LC_ALL, "");
 
@@ -161,6 +161,7 @@ test_locale (const char *locale)
 
   g_setenv ("LANGUAGE", orig, TRUE);
   setlocale (LC_ALL, "");
+  g_free (orig);
 }
 
 static void
@@ -380,6 +381,7 @@ test_associations (void)
                                                 "cmdline-app-test",
                                                 G_APP_INFO_CREATE_SUPPORTS_URIS,
                                                 NULL);
+  g_free (cmdline);
 
   error = NULL;
   result = g_app_info_set_as_default_for_type (appinfo, "application/x-glib-test", &error);

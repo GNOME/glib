@@ -394,6 +394,8 @@ test_spawn_nonexistent (void)
   g_assert_cmpint (exit_status, ==, -1);
 
   g_ptr_array_free (argv, TRUE);
+
+  g_clear_error (&error);
 }
 
 int

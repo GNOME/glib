@@ -913,6 +913,13 @@ get_size_from_du (const gchar *path, guint64 *size)
   gchar *result;
   gchar *endptr;
   GError *error = NULL;
+  gchar *du_path = NULL;
+
+  /* If we can’t find du, don’t try and run the test. */
+  du_path = g_find_program_in_path ("du");
+  if (du_path == NULL)
+    return FALSE;
+  g_free (du_path);
 
   du = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE,
                          &error,
@@ -950,7 +957,7 @@ test_measure (void)
   path = g_test_build_filename (G_TEST_DIST, "desktop-files", NULL);
   file = g_file_new_for_path (path);
 
-  if (!g_find_program_in_path ("du") || !get_size_from_du (path, &size))
+  if (!get_size_from_du (path, &size))
     {
       g_test_message ("du not found or fail to run, skipping byte measurement");
       size = 0;
@@ -1052,8 +1059,7 @@ test_measure_async (void)
   path = g_test_build_filename (G_TEST_DIST, "desktop-files", NULL);
   file = g_file_new_for_path (path);
 
-  if (!g_find_program_in_path ("du") ||
-      !get_size_from_du (path, &data->expected_bytes))
+  if (!get_size_from_du (path, &data->expected_bytes))
     {
       g_test_message ("du not found or fail to run, skipping byte measurement");
       data->expected_bytes = 0;

@@ -699,7 +699,7 @@ g_buffered_output_stream_flush_async (GOutputStream        *stream,
   GTask *task;
   FlushData *fdata;
 
-  fdata = g_slice_new (FlushData);
+  fdata = g_slice_new0 (FlushData);
   fdata->flush_stream = TRUE;
   fdata->close_stream = FALSE;
 
@@ -732,7 +732,7 @@ g_buffered_output_stream_close_async (GOutputStream        *stream,
   GTask *task;
   FlushData *fdata;
 
-  fdata = g_slice_new (FlushData);
+  fdata = g_slice_new0 (FlushData);
   fdata->close_stream = TRUE;
 
   task = g_task_new (stream, cancellable, callback, data);

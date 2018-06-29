@@ -80,7 +80,10 @@ test_object_set_quux (TestObject  *obj,
 static void
 test_object_finalize (GObject *gobject)
 {
-  g_free (((TestObject *) gobject)->baz);
+  TestObject *self = (TestObject *) gobject;
+
+  g_free (self->baz);
+  g_free (self->quux);
 
   /* When the ref_count of an object is zero it is still
    * possible to notify the property, but it should do
@@ -412,6 +415,9 @@ properties_testv_with_valid_properties (void)
   g_assert_cmpstr (g_value_get_string (&values_out[2]), ==, "pigs");
   g_assert_cmpstr (g_value_get_string (&values_out[3]), ==, "fly");
 
+  for (i = 0; i < G_N_ELEMENTS (values_out); i++)
+    g_value_unset (&values_out[i]);
+
   /* Test newv2 && getv */
   g_value_set_string (&(values_in[2]), "Elmo knows");
   g_value_set_string (&(values_in[3]), "where you live");
@@ -425,12 +431,10 @@ properties_testv_with_valid_properties (void)
   g_assert_cmpstr (g_value_get_string (&values_out[2]), ==, "Elmo knows");
   g_assert_cmpstr (g_value_get_string (&values_out[3]), ==, "where you live");
 
-
-  for (i = 0; i < 4; i++)
-    {
-      g_value_unset (&values_in[i]);
-      g_value_unset (&values_out[i]);
-    }
+  for (i = 0; i < G_N_ELEMENTS (values_in); i++)
+    g_value_unset (&values_in[i]);
+  for (i = 0; i < G_N_ELEMENTS (values_out); i++)
+    g_value_unset (&values_out[i]);
 
   g_object_unref (test_obj);
 }

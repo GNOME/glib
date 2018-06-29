@@ -4698,6 +4698,8 @@ g_desktop_app_info_launch_action (GDesktopAppInfo   *info,
         g_desktop_app_info_launch_uris_with_spawn (info, session_bus, exec_line, NULL, launch_context,
                                                    _SPAWN_FLAGS_DEFAULT, NULL, NULL, NULL, NULL,
                                                    -1, -1, -1, NULL);
+
+      g_free (exec_line);
     }
 
   if (session_bus != NULL)

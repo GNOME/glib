@@ -875,6 +875,7 @@ test_peer (void)
                       getuid ());
     g_assert_cmpuint (g_credentials_get_unix_pid (credentials, NULL), ==,
                       getpid ());
+    g_object_unref (credentials);
 #else
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
     g_assert (credentials == NULL);
@@ -1358,6 +1359,8 @@ test_nonce_tcp (void)
 
   g_main_loop_quit (service_loop);
   g_thread_join (service_thread);
+
+  g_ptr_array_unref (data.current_connections);
 }
 
 static void
@@ -1711,6 +1714,7 @@ codegen_test_peer (void)
    * change notifications anyway because those are done from an idle handler
    */
   example_animal_call_poke_sync (animal2, TRUE, TRUE, NULL, &error);
+  g_clear_error (&error);
 
   g_object_unref (animal1);
   g_object_unref (animal2);

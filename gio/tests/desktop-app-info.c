@@ -93,6 +93,8 @@ test_delete (void)
       res = g_app_info_delete (info);
       g_assert (!res);
     }
+
+  g_free (filename);
 }
 
 static void
@@ -115,6 +117,7 @@ test_default (void)
   info = g_app_info_get_default_for_type ("application/x-test", FALSE);
   g_assert (info != NULL);
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
+  g_object_unref (info);
 
   /* now try adding something, but not setting as default */
   g_app_info_add_supports_type (info3, "application/x-test", &error);
@@ -124,6 +127,7 @@ test_default (void)
   info = g_app_info_get_default_for_type ("application/x-test", FALSE);
   g_assert (info != NULL);
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
+  g_object_unref (info);
 
   /* now remove info1 again */
   g_app_info_remove_supports_type (info1, "application/x-test", &error);
@@ -133,6 +137,7 @@ test_default (void)
   info = g_app_info_get_default_for_type ("application/x-test", FALSE);
   g_assert (info != NULL);
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
+  g_object_unref (info);
 
   /* now clean it all up */
   g_app_info_reset_type_associations ("application/x-test");
@@ -146,6 +151,7 @@ test_default (void)
 
   g_object_unref (info1);
   g_object_unref (info2);
+  g_object_unref (info3);
 }
 
 static void
@@ -324,6 +330,8 @@ cleanup_dir_recurse (GFile   *parent,
 
   ret = TRUE;
  out:
+  g_clear_object (&enumerator);
+
   return ret;
 }
 
@@ -342,6 +350,7 @@ cleanup_subdirs (const char *base_dir)
   (void) cleanup_dir_recurse (file, file, &error);
   g_assert_no_error (error);
   g_object_unref (file);
+  g_object_unref (base);
 }
 
 static void

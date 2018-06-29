@@ -178,6 +178,7 @@ main_thread_read (GObject *source, GAsyncResult *res, gpointer user_data)
   if (g_cancellable_is_cancelled (main_cancel))
     {
       do_main_cancel (out);
+      g_clear_error (&err);
       return;
     }
 
@@ -214,6 +215,7 @@ main_thread_wrote (GObject *source, GAsyncResult *res, gpointer user_data)
   if (g_cancellable_is_cancelled (main_cancel))
     {
       do_main_cancel (out);
+      g_clear_error (&err);
       return;
     }
 
