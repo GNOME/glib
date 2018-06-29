@@ -182,7 +182,6 @@ if get_option('gtk_doc')
   gnome.gtkdoc('gio',
     main_xml : 'gio-docs.xml',
     namespace : 'g',
-    gobject_typesfile : 'gio.types',
     mode : 'none',
     dependencies : [libgio_dep, libgobject_dep, libglib_dep],
     src_dir : 'gio',
