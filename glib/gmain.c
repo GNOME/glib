@@ -2810,7 +2810,10 @@ g_get_monotonic_time (void)
   result = clock_gettime (CLOCK_MONOTONIC, &ts);
 
   if G_UNLIKELY (result != 0)
-    g_error ("GLib requires working CLOCK_MONOTONIC");
+    {
+      g_error ("GLib requires working CLOCK_MONOTONIC");
+      return 0;
+    }  
 
   return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
 }
