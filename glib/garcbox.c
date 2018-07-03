@@ -62,13 +62,13 @@
  * Person *
  * person_new (void)
  * {
- *   return g_arc_box_new0 (Person);
+ *   return g_atomic_rc_box_new0 (Person);
  * }
  * ]|
  *
  * Every time you wish to acquire a reference on the memory, you should
- * call g_arc_box_acquire(); similarly, when you wish to release a reference
- * you should call g_arc_box_release():
+ * call g_atomic_rc_box_acquire(); similarly, when you wish to release a reference
+ * you should call g_atomic_rc_box_release():
  *
  * |[<!-- language="C" -->
  * // Add a Person to the Database; the Database acquires ownership
@@ -76,7 +76,7 @@
  * void
  * add_person_to_database (Database *db, Person *p)
  * {
- *   db->persons = g_list_prepend (db->persons, g_arc_box_acquire (p));
+ *   db->persons = g_list_prepend (db->persons, g_atomic_rc_box_acquire (p));
  * }
  *
  * // Removes a Person from the Database; the reference acquired by
@@ -85,12 +85,12 @@
  * remove_person_from_database (Database *db, Person *p)
  * {
  *   db->persons = g_list_remove (db->persons, p);
- *   g_arc_box_release (p);
+ *   g_atomic_rc_box_release (p);
  * }
  * ]|
  *
  * If you have additional memory allocated inside the structure, you can
- * use g_arc_box_release_full(), which takes a function pointer, which
+ * use g_atomic_rc_box_release_full(), which takes a function pointer, which
  * will be called if the reference released was the last:
  *
  * |[<!-- language="C" -->
@@ -107,7 +107,7 @@
  * remove_person_from_database (Database *db, Person *p)
  * {
  *   db->persons = g_list_remove (db->persons, p);
- *   g_arc_box_release_full (p, (GDestroyNotify) person_clear);
+ *   g_atomic_rc_box_release_full (p, (GDestroyNotify) person_clear);
  * }
  * ]|
  *
@@ -115,7 +115,7 @@
  * type without increasing the reference count, you can use g_steal_pointer():
  *
  * |[<!-- language="C" -->
- *   Person *p = g_arc_box_new (Person);
+ *   Person *p = g_atomic_rc_box_new (Person);
  *
  *   fill_person_details (p);
  *
@@ -124,8 +124,8 @@
  *
  * ## Thread safety
  *
- * The reference counting operations on data allocated using g_arc_box_alloc(),
- * g_arc_box_new(), and g_arc_box_dup() are guaranteed to be atomic, and thus
+ * The reference counting operations on data allocated using g_atomic_rc_box_alloc(),
+ * g_atomic_rc_box_new(), and g_atomic_rc_box_dup() are guaranteed to be atomic, and thus
  * can be safely be performed by different threads. It is important to note that
  * only the reference acquisition and release are atomic; changes to the content
  * of the data are your responsibility.
@@ -134,10 +134,10 @@
  *
  * If you want to add g_autoptr() support to your plain old data type through
  * reference counting, you can use the G_DEFINE_AUTOPTR_CLEANUP_FUNC() and
- * g_arc_box_release():
+ * g_atomic_rc_box_release():
  *
  * |[<!-- language="C" -->
- * G_DEFINE_AUTOPTR_CLEANUP_FUNC (MyDataStruct, g_arc_box_release)
+ * G_DEFINE_AUTOPTR_CLEANUP_FUNC (MyDataStruct, g_atomic_rc_box_release)
  * ]|
  *
  * If you need to clear the contents of the data, you will need to use an
@@ -148,7 +148,7 @@
  * my_data_struct_release (MyDataStruct *data)
  * {
  *   // my_data_struct_clear() is defined elsewhere
- *   g_arc_box_release_full (data, (GDestroyNotify) my_data_struct_clear);
+ *   g_atomic_rc_box_release_full (data, (GDestroyNotify) my_data_struct_clear);
  * }
  *
  * G_DEFINE_AUTOPTR_CLEANUP_FUNC (MyDataStruct, my_data_struct_clear)
@@ -158,7 +158,7 @@
  */
 
 /**
- * g_arc_box_alloc:
+ * g_atomic_rc_box_alloc:
  * @block_size: the size of the allocation
  *
  * Allocates @block_size bytes of memory, and adds atomic
@@ -172,7 +172,7 @@
  * Since: 2.58
  */
 gpointer
-g_arc_box_alloc (gsize block_size)
+g_atomic_rc_box_alloc (gsize block_size)
 {
   g_return_val_if_fail (block_size > 0, NULL);
 
@@ -180,7 +180,7 @@ g_arc_box_alloc (gsize block_size)
 }
 
 /**
- * g_arc_box_alloc0:
+ * g_atomic_rc_box_alloc0:
  * @block_size: the size of the allocation
  *
  * Allocates @block_size bytes of memory, and adds atomic
@@ -196,7 +196,7 @@ g_arc_box_alloc (gsize block_size)
  * Since: 2.58
  */
 gpointer
-g_arc_box_alloc0 (gsize block_size)
+g_atomic_rc_box_alloc0 (gsize block_size)
 {
   g_return_val_if_fail (block_size > 0, NULL);
 
@@ -204,13 +204,13 @@ g_arc_box_alloc0 (gsize block_size)
 }
 
 /**
- * g_arc_box_new:
+ * g_atomic_rc_box_new:
  * @type: the type to allocate, typically a structure name
  *
  * A convenience macro to allocate atomically reference counted
  * data with the size of the given @type.
  *
- * This macro calls g_arc_box_alloc() with `sizeof (@type)` and
+ * This macro calls g_atomic_rc_box_alloc() with `sizeof (@type)` and
  * casts the returned pointer to a pointer of the given @type,
  * avoiding a type cast in the source code.
  *
@@ -224,14 +224,14 @@ g_arc_box_alloc0 (gsize block_size)
  */
 
 /**
- * g_arc_box_new0:
+ * g_atomic_rc_box_new0:
  * @type: the type to allocate, typically a structure name
  *
  * A convenience macro to allocate atomically reference counted
  * data with the size of the given @type, and set its contents
  * to 0.
  *
- * This macro calls g_arc_box_alloc0() with `sizeof (@type)` and
+ * This macro calls g_atomic_rc_box_alloc0() with `sizeof (@type)` and
  * casts the returned pointer to a pointer of the given @type,
  * avoiding a type cast in the source code.
  *
@@ -245,7 +245,7 @@ g_arc_box_alloc0 (gsize block_size)
  */
 
 /**
- * g_arc_box_dup:
+ * g_atomic_rc_box_dup:
  * @block_size: the number of bytes to copy
  * @mem_block: (not nullable): the memory to copy
  *
@@ -258,8 +258,8 @@ g_arc_box_alloc0 (gsize block_size)
  * Since: 2.58
  */
 gpointer
-(g_arc_box_dup) (gsize         block_size,
-                 gconstpointer mem_block)
+(g_atomic_rc_box_dup) (gsize         block_size,
+                       gconstpointer mem_block)
 {
   gpointer res;
 
@@ -273,7 +273,7 @@ gpointer
 }
 
 /**
- * g_arc_box_acquire:
+ * g_atomic_rc_box_acquire:
  * @mem_block: (not nullable): a pointer to reference counted data
  *
  * Atomically acquires a reference on the data pointed by @mem_block.
@@ -284,7 +284,7 @@ gpointer
  * Since: 2.58
  */
 gpointer
-(g_arc_box_acquire) (gpointer mem_block)
+(g_atomic_rc_box_acquire) (gpointer mem_block)
 {
   GArcBox *real_box = G_ARC_BOX (mem_block);
 
@@ -299,7 +299,7 @@ gpointer
 }
 
 /**
- * g_arc_box_release:
+ * g_atomic_rc_box_release:
  * @mem_block: (not nullable): a pointer to reference counted data
  *
  * Atomically releases a reference on the data pointed by @mem_block.
@@ -310,7 +310,7 @@ gpointer
  * Since: 2.58
  */
 void
-g_arc_box_release (gpointer mem_block)
+g_atomic_rc_box_release (gpointer mem_block)
 {
   GArcBox *real_box = G_ARC_BOX (mem_block);
 
@@ -324,7 +324,7 @@ g_arc_box_release (gpointer mem_block)
 }
 
 /**
- * g_arc_box_release_full:
+ * g_atomic_rc_box_release_full:
  * @mem_block: (not nullable): a pointer to reference counted data
  * @clear_func: (not nullable): a function to call when clearing the data
  *
@@ -337,8 +337,8 @@ g_arc_box_release (gpointer mem_block)
  * Since: 2.58
  */
 void
-g_arc_box_release_full (gpointer       mem_block,
-                        GDestroyNotify clear_func)
+g_atomic_rc_box_release_full (gpointer       mem_block,
+                              GDestroyNotify clear_func)
 {
   GArcBox *real_box = G_ARC_BOX (mem_block);
 
@@ -356,7 +356,7 @@ g_arc_box_release_full (gpointer       mem_block,
 }
 
 /**
- * g_arc_box_get_size:
+ * g_atomic_rc_box_get_size:
  * @mem_block: (not nullable): a pointer to reference counted data
  *
  * Retrieves the size of the reference counted data pointed by @mem_block.
@@ -366,7 +366,7 @@ g_arc_box_release_full (gpointer       mem_block,
  * Since: 2.58
  */
 gsize
-g_arc_box_get_size (gpointer mem_block)
+g_atomic_rc_box_get_size (gpointer mem_block)
 {
   GArcBox *real_box = G_ARC_BOX (mem_block);
 
