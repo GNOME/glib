@@ -34,6 +34,13 @@ test_rcbox_new (void)
   g_assert_cmpuint (g_rc_box_get_size (a), ==, sizeof (Point));
 
   g_rc_box_release (a);
+
+  a = g_rc_box_new0 (Point);
+  g_assert_nonnull (a);
+  g_assert_cmpfloat (a->x, ==, 0.f);
+  g_assert_cmpfloat (a->y, ==, 0.f);
+
+  g_rc_box_release (a);
 }
 
 static void
