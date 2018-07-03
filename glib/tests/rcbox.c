@@ -43,6 +43,25 @@ test_rcbox_new (void)
   g_rc_box_release (a);
 }
 
+/* test_atomic_rcbox_new: Test g_atomic_rc_box_new() */
+static void
+test_atomic_rcbox_new (void)
+{
+  Point *a = g_atomic_rc_box_new (Point);
+
+  g_assert_nonnull (a);
+  g_assert_cmpuint (g_atomic_rc_box_get_size (a), ==, sizeof (Point));
+
+  g_atomic_rc_box_release (a);
+
+  a = g_atomic_rc_box_new0 (Point);
+  g_assert_nonnull (a);
+  g_assert_cmpfloat (a->x, ==, 0.f);
+  g_assert_cmpfloat (a->y, ==, 0.f);
+
+  g_atomic_rc_box_release (a);
+}
+
 static void
 point_clear (Point *p)
 {
@@ -77,6 +96,30 @@ test_rcbox_release_full (void)
   g_assert_true (p == global_point);
 
   g_rc_box_release_full (p, (GDestroyNotify) point_clear);
+  g_assert_null (global_point);
+}
+
+/* test_atomic_rcbox_release_full: Verify that g_atomic_rc_box_release_full()
+ * calls the clear function only when the last reference is released
+ */
+static void
+test_atomic_rcbox_release_full (void)
+{
+  Point *p = g_atomic_rc_box_new (Point);
+
+  g_assert_nonnull (p);
+  global_point = p;
+
+  p->x = 42.0f;
+  p->y = 47.0f;
+
+  g_assert_true (g_atomic_rc_box_acquire (p) == p);
+
+  g_atomic_rc_box_release_full (p, (GDestroyNotify) point_clear);
+  g_assert_nonnull (global_point);
+  g_assert_true (p == global_point);
+
+  g_atomic_rc_box_release_full (p, (GDestroyNotify) point_clear);
   g_assert_null (global_point);
 }
 
@@ -139,6 +182,44 @@ test_rcbox_dup (void)
   g_assert_null (global_point_b);
 }
 
+/* test_atomic_rcbox_dup: Verify that g_atomic_rc_box_dup() copies
+ * only the data and does not change the reference count of the original
+ */
+static void
+test_atomic_rcbox_dup (void)
+{
+  Point *a, *b;
+
+  a = g_atomic_rc_box_new (Point);
+  a->x = 10.f;
+  a->y = 5.f;
+
+  b = g_atomic_rc_box_dup (sizeof (Point), a);
+  g_assert_true (a != b);
+  g_assert_cmpfloat (a->x, ==, b->x);
+  g_assert_cmpfloat (a->y, ==, b->y);
+
+  global_point_a = a;
+  global_point_b = b;
+
+  a->x = 1.f;
+  a->y = 1.f;
+  g_assert_cmpfloat (a->x, !=, b->x);
+  g_assert_cmpfloat (a->y, !=, b->y);
+
+  b->x = 5.f;
+  b->y = 10.f;
+  g_assert_cmpfloat (a->x, !=, b->x);
+  g_assert_cmpfloat (a->y, !=, b->y);
+
+  g_atomic_rc_box_release_full (a, (GDestroyNotify) point_clear_dup_a);
+  g_assert_null (global_point_a);
+  g_assert_nonnull (global_point_b);
+
+  g_atomic_rc_box_release_full (b, (GDestroyNotify) point_clear_dup_b);
+  g_assert_null (global_point_b);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -148,6 +229,10 @@ main (int   argc,
   g_test_add_func ("/rcbox/new", test_rcbox_new);
   g_test_add_func ("/rcbox/release-full", test_rcbox_release_full);
   g_test_add_func ("/rcbox/dup", test_rcbox_dup);
+
+  g_test_add_func ("/atomic-rcbox/new", test_atomic_rcbox_new);
+  g_test_add_func ("/atomic-rcbox/release-full", test_atomic_rcbox_release_full);
+  g_test_add_func ("/atomic-rcbox/dup", test_atomic_rcbox_dup);
 
   return g_test_run ();
 }
