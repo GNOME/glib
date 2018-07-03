@@ -18,10 +18,9 @@
 
 #include "config.h"
 
-#include "grcbox.h"
+#include "grcboxprivate.h"
 
 #include "gmessages.h"
-#include "grcboxprivate.h"
 #include "grefcount.h"
 
 #ifdef ENABLE_VALGRIND

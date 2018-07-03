@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gtypes.h"
+#include "grcbox.h"
 
 G_BEGIN_DECLS
 
