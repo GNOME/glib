@@ -377,15 +377,7 @@ gpointer
 void
 g_rc_box_release (gpointer mem_block)
 {
-  GRcBox *real_box = G_RC_BOX (mem_block);
-
-  g_return_if_fail (mem_block != NULL);
-#ifndef G_DISABLE_ASSERT
-  g_return_if_fail (real_box->magic == G_BOX_MAGIC);
-#endif
-
-  if (g_ref_count_dec (&real_box->ref_count))
-    g_free (real_box);
+  g_rc_box_release_full (mem_block, NULL);
 }
 
 /**
@@ -408,14 +400,14 @@ g_rc_box_release_full (gpointer       mem_block,
   GRcBox *real_box = G_RC_BOX (mem_block);
 
   g_return_if_fail (mem_block != NULL);
-  g_return_if_fail (clear_func != NULL);
 #ifndef G_DISABLE_ASSERT
   g_return_if_fail (real_box->magic == G_BOX_MAGIC);
 #endif
 
   if (g_ref_count_dec (&real_box->ref_count))
     {
-      clear_func (mem_block);
+      if (clear_func != NULL)
+        clear_func (mem_block);
       g_free (real_box);
     }
 }
