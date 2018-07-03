@@ -27,6 +27,8 @@
 #include "valgrind.h"
 #endif
 
+#include "glib_trace.h"
+
 #include <string.h>
 
 #define G_ARC_BOX(p)            (GArcBox *) (((char *) (p)) - G_ARC_BOX_SIZE)
@@ -289,6 +291,8 @@ gpointer
 
   g_atomic_ref_count_inc (&real_box->ref_count);
 
+  TRACE (GLIB_RCBOX_ACQUIRE (mem_block, 1));
+
   return mem_block;
 }
 
@@ -335,8 +339,12 @@ g_atomic_rc_box_release_full (gpointer       mem_block,
 
   if (g_atomic_ref_count_dec (&real_box->ref_count))
     {
+      TRACE (GLIB_RCBOX_RELEASE (mem_block, 1));
+
       if (clear_func != NULL)
         clear_func (mem_block);
+
+      TRACE (GLIB_RCBOX_FREE (mem_block));
       g_free (real_box);
     }
 }

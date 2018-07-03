@@ -28,6 +28,8 @@
 #include "valgrind.h"
 #endif
 
+#include "glib_trace.h"
+
 #include <string.h>
 
 /**
@@ -229,6 +231,8 @@ g_rc_box_alloc_full (gsize    block_size,
       g_ref_count_init (&real_box->ref_count);
     }
 
+  TRACE (GLIB_RCBOX_ALLOC (allocated, block_size, atomic, clear));
+
   return allocated + private_size;
 }
 
@@ -364,6 +368,8 @@ gpointer
 
   g_ref_count_inc (&real_box->ref_count);
 
+  TRACE (GLIB_RCBOX_ACQUIRE (mem_block, 0));
+
   return mem_block;
 }
 
@@ -410,8 +416,12 @@ g_rc_box_release_full (gpointer       mem_block,
 
   if (g_ref_count_dec (&real_box->ref_count))
     {
+      TRACE (GLIB_RCBOX_RELEASE (mem_block, 0));
+
       if (clear_func != NULL)
         clear_func (mem_block);
+
+      TRACE (GLIB_RCBOX_FREE (mem_block));
       g_free (real_box);
     }
 }
