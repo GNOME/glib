@@ -43,4 +43,8 @@ provider glib {
 	probe source__set_name(void*, const char*);
 	probe source__before_free(void*, void*, void*);
 	probe thread__spawned(void*, void*, char*);
+        probe rcbox__alloc(void*, unsigned int, unsigned int, unsigned int);
+        probe rcbox__acquire(void*, unsigned int);
+        probe rcbox__release(void*, unsigned int);
+        probe rcbox__free(void*);
 };

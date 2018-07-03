@@ -598,3 +598,48 @@ probe glib.thread_spawned = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.
   name = user_string($arg3);
   probestr = sprintf("glib.thread_spawned(%p, %p, %s)", func, data, name);
 }
+
+/**
+ * probe glib.rcbox_alloc - Called when a refcounted block is initially requested
+ * @mem: Raw memory pointer returned
+ * @n_bytes: number of bytes
+ * @atomic: Boolean value, %TRUE if this block is atomically refcounted
+ * @zeroed: Boolean value, %TRUE if this block was filled with NUL bytes
+ */
+probe glib.rcbox_alloc = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("rcbox__alloc")
+{
+  mem = $arg1;
+  n_bytes = $arg2;
+  atomic = $arg3;
+  zeroed = $arg4;
+  probestr = sprintf("glib.rcbox_alloc(n_bytes=%d) -> %p", n_bytes, mem);
+}
+
+/**
+ * probe glib.rcbox_acquire - Called when a refcounted block acquires a ref
+ */
+probe glib.rcbox_acquire = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("rcbox__acquire")
+{
+  mem = $arg1;  /* ARG: @mem: Raw memory pointer */
+  atomic = $arg2;  /* ARG: @atomic: Boolean value, %TRUE if the reference was acquired atomically */
+  probestr = sprintf("glib.rcbox_acquire(mem=%p)", mem);
+}
+
+/**
+ * probe glib.rcbox_release - Called when a refcounted block acquires a ref
+ */
+probe glib.rcbox_acquire = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("rcbox__release")
+{
+  mem = $arg1;  /* ARG: @mem: Raw memory pointer */
+  atomic = $arg2;  /* ARG: @atomic: Boolean value, %TRUE if the reference was released atomically */
+  probestr = sprintf("glib.rcbox_release(mem=%p)", mem);
+}
+
+/**
+ * probe glib.rcbox_free - Called when a refcounted block is freed
+ */
+probe glib.rcbox_free = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("rcbox__free")
+{
+  mem = $arg1;  /* ARG: @mem: Raw memory pointer */
+  probestr = sprintf("glib.rcbox_free(mem=%p)", mem);
+}
