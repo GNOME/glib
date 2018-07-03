@@ -18,11 +18,11 @@
 
 #include "config.h"
 
-#include "grcbox.h"
+#include "grcboxprivate.h"
 
 #include "gmessages.h"
-#include "grcboxprivate.h"
 #include "grefcount.h"
+#include "gtestutils.h"
 
 #ifdef ENABLE_VALGRIND
 #include "valgrind.h"
@@ -173,8 +173,11 @@ g_rc_box_alloc_full (gsize    block_size,
 {
   /* sizeof GArcBox == sizeof GRcBox */
   gsize private_size = G_ARC_BOX_SIZE;
-  gsize real_size = private_size + block_size;
+  gsize real_size;
   char *allocated;
+
+  g_assert (block_size < (G_MAXSIZE - G_ARC_BOX_SIZE));
+  real_size = private_size + block_size;
 
 #ifdef ENABLE_VALGRIND
   if (RUNNING_ON_VALGRIND)
@@ -185,6 +188,7 @@ g_rc_box_alloc_full (gsize    block_size,
        * Valgrind to keep track of the over-allocation and not be
        * confused when passing the pointer around
        */
+      g_assert (private_size < (G_MAXSIZE - ALIGN_STRUCT (1)));
       private_size += ALIGN_STRUCT (1);
 
       if (clear)
