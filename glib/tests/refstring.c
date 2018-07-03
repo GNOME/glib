@@ -30,6 +30,9 @@ test_refstring_base (void)
   g_assert_cmpint (strlen (s), ==, strlen ("hello, world"));
   g_assert_cmpuint (g_ref_string_length (s), ==, strlen ("hello, world"));
 
+  g_assert_true (g_ref_string_acquire (s) == s);
+  g_ref_string_release (s);
+
   g_ref_string_release (s);
 }
 
@@ -47,14 +50,23 @@ test_refstring_intern (void)
   g_test_message ("p = s = '%s' (%p)", p, p);
   g_assert_true (s == p);
 
+  g_test_message ("releasing p[%p] ('%s')", p, p);
   g_ref_string_release (p);
 
   p = g_ref_string_new_intern ("goodbye, world");
   g_test_message ("p = '%s' (%p)", p, p);
   g_assert_false (s == p);
 
+  g_test_message ("releasing p[%p] ('%s')", p, p);
   g_ref_string_release (p);
+
+  g_test_message ("releasing s[%p] ('%s')", s, s);
   g_ref_string_release (s);
+
+  p = g_ref_string_new_intern ("hello, world");
+  g_test_message ("p[%p] ('%s') != s[%p]", p, p, s);
+  g_assert_false (s == p);
+  g_ref_string_release (p);
 }
 
 int
