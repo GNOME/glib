@@ -110,7 +110,7 @@ static GHashTable *interned_ref_strings;
  * Creates a new reference counted string and copies the contents of @str
  * into it.
  *
- * Returns: (not nullable): the newly created reference counted string
+ * Returns: (transfer full) (not nullable): the newly created reference counted string
  *
  * Since: 2.58
  */
