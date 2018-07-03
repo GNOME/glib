@@ -120,7 +120,7 @@ g_ref_string_new (const char *str)
   char *res;
   gsize len;
 
-  g_return_val_if_fail (str != NULL && *str != '\0', NULL);
+  g_return_val_if_fail (str != NULL, NULL);
   
   len = strlen (str);
   
@@ -171,7 +171,7 @@ g_ref_string_new_intern (const char *str)
 {
   char *res;
 
-  g_return_val_if_fail (str != NULL && *str != '\0', NULL);
+  g_return_val_if_fail (str != NULL, NULL);
 
   G_LOCK (interned_ref_strings);
 
@@ -211,7 +211,7 @@ g_ref_string_new_intern (const char *str)
 char *
 g_ref_string_acquire (char *str)
 {
-  g_return_val_if_fail (str != NULL && *str != '\0', NULL);
+  g_return_val_if_fail (str != NULL, NULL);
 
   return g_atomic_rc_box_acquire (str);
 }
@@ -246,7 +246,7 @@ remove_if_interned (gpointer data)
 void
 g_ref_string_release (char *str)
 {
-  g_return_if_fail (str != NULL && *str != '\0');
+  g_return_if_fail (str != NULL);
 
   g_atomic_rc_box_release_full (str, remove_if_interned);
 }
@@ -264,7 +264,7 @@ g_ref_string_release (char *str)
 gsize
 g_ref_string_length (char *str)
 {
-  g_return_val_if_fail (str != NULL && *str != '\0', 0);
+  g_return_val_if_fail (str != NULL, 0);
 
   return g_atomic_rc_box_get_size (str) - 1;
 }
