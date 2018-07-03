@@ -159,7 +159,7 @@
 
 /**
  * g_atomic_rc_box_alloc:
- * @block_size: the size of the allocation
+ * @block_size: the size of the allocation, must be greater than 0
  *
  * Allocates @block_size bytes of memory, and adds atomic
  * reference counting semantics to it.
@@ -167,7 +167,7 @@
  * The data will be freed when its reference count drops to
  * zero.
  *
- * Returns: a pointer to the allocated memory
+ * Returns: (transfer full) (not nullable): a pointer to the allocated memory
  *
  * Since: 2.58
  */
@@ -181,17 +181,17 @@ g_atomic_rc_box_alloc (gsize block_size)
 
 /**
  * g_atomic_rc_box_alloc0:
- * @block_size: the size of the allocation
+ * @block_size: the size of the allocation, must be greater than 0
  *
  * Allocates @block_size bytes of memory, and adds atomic
  * referenc counting semantics to it.
  *
- * The contents of the returned data is set to 0's.
+ * The contents of the returned data is set to zero.
  *
  * The data will be freed when its reference count drops to
  * zero.
  *
- * Returns: a pointer to the allocated memory
+ * Returns: (transfer full) (not nullable): a pointer to the allocated memory
  *
  * Since: 2.58
  */
@@ -214,11 +214,8 @@ g_atomic_rc_box_alloc0 (gsize block_size)
  * casts the returned pointer to a pointer of the given @type,
  * avoiding a type cast in the source code.
  *
- * This macro cannot return %NULL, as the minimum allocation
- * size from `sizeof (@type)` is 1 byte.
- *
- * Returns: (not nullable): a pointer to the allocated memory,
- *   cast to a pointer for the given @type
+ * Returns: (transfer full) (not nullable): a pointer to the allocated
+ *   memory, cast to a pointer for the given @type
  *
  * Since: 2.58
  */
@@ -229,31 +226,29 @@ g_atomic_rc_box_alloc0 (gsize block_size)
  *
  * A convenience macro to allocate atomically reference counted
  * data with the size of the given @type, and set its contents
- * to 0.
+ * to zero.
  *
  * This macro calls g_atomic_rc_box_alloc0() with `sizeof (@type)` and
  * casts the returned pointer to a pointer of the given @type,
  * avoiding a type cast in the source code.
  *
- * This macro cannot return %NULL, as the minimum allocation
- * size from `sizeof (@type)` is 1 byte.
- *
- * Returns: (not nullable): a pointer to the allocated memory,
- *   cast to a pointer for the given @type
+ * Returns: (transfer full) (not nullable): a pointer to the allocated
+ *   memory, cast to a pointer for the given @type
  *
  * Since: 2.58
  */
 
 /**
  * g_atomic_rc_box_dup:
- * @block_size: the number of bytes to copy
+ * @block_size: the number of bytes to copy, must be greater than 0
  * @mem_block: (not nullable): the memory to copy
  *
  * Allocates a new block of data with atomit reference counting
  * semantics, and copies @block_size bytes of @mem_block
  * into it.
  *
- * Returns: (not nullable): a pointer to the allocated memory
+ * Returns: (transfer full) (not nullable): a pointer to the allocated
+ *   memory
  *
  * Since: 2.58
  */
@@ -278,8 +273,8 @@ gpointer
  *
  * Atomically acquires a reference on the data pointed by @mem_block.
  *
- * Returns: (not nullabl): a pointer to the data, with its reference
- *   count increased
+ * Returns: (transfer none) (not nullable): a pointer to the data,
+ *   with its reference count increased
  *
  * Since: 2.58
  */
