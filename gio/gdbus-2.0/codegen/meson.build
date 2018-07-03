@@ -30,12 +30,11 @@ gdbus_codegen_built_files += configure_file(input : 'config.py.in',
                                             install_dir : codegen_dir,
                                             configuration : gdbus_codegen_conf)
 
-blank_conf = configuration_data()
 foreach f : gdbus_codegen_files
   # Copy these into the builddir so that gdbus-codegen can be used uninstalled
   # and then install it too so that it can be used after installation
   gdbus_codegen_built_files += configure_file(input : f, output : f,
                                               install : true,
                                               install_dir : codegen_dir,
-                                              configuration : blank_conf)
+                                              copy : true)
 endforeach
