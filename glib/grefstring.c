@@ -65,7 +65,7 @@ g_ref_string_new (const char *str)
   
   len = strlen (str);
   
-  res = (char *) g_arc_box_dup (sizeof (char) * len + 1, str);
+  res = (char *) g_atomic_rc_box_dup (sizeof (char) * len + 1, str);
   res[len] = '\0';
 
   return res;
@@ -99,21 +99,21 @@ g_ref_string_new_intern (const char *str)
 
   if (G_UNLIKELY (interned_ref_strings == NULL))
     interned_ref_strings = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                  (GDestroyNotify) g_arc_box_release,
+                                                  (GDestroyNotify) g_atomic_rc_box_release,
                                                   NULL);
 
   res = g_hash_table_lookup (interned_ref_strings, str);
   if (res != NULL)
     {
       G_UNLOCK (interned_ref_strings);
-      return g_arc_box_acquire (res);
+      return g_atomic_rc_box_acquire (res);
     }
 
   len = strlen (str);
-  res = (char *) g_arc_box_dup (sizeof (char) * len + 1, str);
+  res = (char *) g_atomic_rc_box_dup (sizeof (char) * len + 1, str);
   res[len] = '\0';
 
-  g_hash_table_add (interned_ref_strings, g_arc_box_acquire (res));
+  g_hash_table_add (interned_ref_strings, g_atomic_rc_box_acquire (res));
 
   G_UNLOCK (interned_ref_strings);
 
@@ -135,7 +135,7 @@ g_ref_string_acquire (char *str)
 {
   g_return_val_if_fail (str != NULL && *str != '\0', NULL);
 
-  return g_arc_box_acquire (str);
+  return g_atomic_rc_box_acquire (str);
 }
 
 static void
@@ -171,7 +171,7 @@ g_ref_string_release (char *str)
 {
   g_return_if_fail (str != NULL && *str != '\0');
 
-  g_arc_box_release_full (str, remove_if_interned);
+  g_atomic_rc_box_release_full (str, remove_if_interned);
 }
 
 /**
@@ -189,5 +189,5 @@ g_ref_string_length (char *str)
 {
   g_return_val_if_fail (str != NULL && *str != '\0', 0);
 
-  return g_arc_box_get_size (str) - 1;
+  return g_atomic_rc_box_get_size (str) - 1;
 }
