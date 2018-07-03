@@ -348,7 +348,7 @@ g_atomic_rc_box_release_full (gpointer       mem_block,
  *
  * Retrieves the size of the reference counted data pointed by @mem_block.
  *
- * Returns: the size of the data
+ * Returns: the size of the data, in bytes
  *
  * Since: 2.58
  */
