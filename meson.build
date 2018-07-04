@@ -1518,7 +1518,6 @@ if host_system == 'windows' and not get_option('force_posix_threads')
   glibconfig_conf.set('g_threads_impl_def', 'WIN32')
   glib_conf.set('THREADS_WIN32', 1)
 else
-  # FIXME: probably needs more tweaking in meson for things like -D_REENTRANT etc.
   thread_dep = dependency('threads')
   threads_implementation = 'posix'
   pthread_prefix = '''
