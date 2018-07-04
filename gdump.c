@@ -311,7 +311,7 @@ dump_flags_type (GType type, const char *symbol, GOutputStream *out)
     {
       GFlagsValue *value = &(klass->values[i]);
 
-      escaped_printf (out, "    <member name=\"%s\" nick=\"%s\" value=\"%d\"/>\n",
+      escaped_printf (out, "    <member name=\"%s\" nick=\"%s\" value=\"%u\"/>\n",
 		      value->value_name, value->value_nick, value->value);
     }
   goutput_write (out, "  </flags>\n");
