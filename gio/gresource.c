@@ -606,8 +606,9 @@ do_lookup (GResource             *resource,
   gboolean res = FALSE;
   GVariant *value;
 
+  /* Drop any trailing slash. */
   path_len = strlen (path);
-  if (path[path_len-1] == '/')
+  if (path_len >= 1 && path[path_len-1] == '/')
     {
       path = free_path = g_strdup (path);
       free_path[path_len-1] = 0;

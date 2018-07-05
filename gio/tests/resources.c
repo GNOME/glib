@@ -32,14 +32,24 @@ test_resource (GResource *resource)
   char **children;
   GInputStream *in;
   char buffer[128];
+  const gchar *not_found_paths[] =
+    {
+      "/not/there",
+      "/",
+      "",
+    };
+  gsize i;
 
-  found = g_resource_get_info (resource,
-			       "/not/there",
-			       G_RESOURCE_LOOKUP_FLAGS_NONE,
-			       &size, &flags, &error);
-  g_assert (!found);
-  g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
-  g_clear_error (&error);
+  for (i = 0; i < G_N_ELEMENTS (not_found_paths); i++)
+    {
+      found = g_resource_get_info (resource,
+                                   not_found_paths[i],
+                                   G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                   &size, &flags, &error);
+      g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+      g_clear_error (&error);
+      g_assert_false (found);
+    }
 
   found = g_resource_get_info (resource,
 			       "/test1.txt",
@@ -68,6 +78,17 @@ test_resource (GResource *resource)
   g_assert_cmpint (size, ==, 6);
   g_assert_cmpuint (flags, ==, 0);
 
+  for (i = 0; i < G_N_ELEMENTS (not_found_paths); i++)
+    {
+      data = g_resource_lookup_data (resource,
+                                     not_found_paths[i],
+                                     G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                     &error);
+      g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+      g_clear_error (&error);
+      g_assert_null (data);
+    }
+
   data = g_resource_lookup_data (resource,
 				 "/test1.txt",
 				 G_RESOURCE_LOOKUP_FLAGS_NONE,
@@ -75,6 +96,17 @@ test_resource (GResource *resource)
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
   g_assert_no_error (error);
   g_bytes_unref (data);
+
+  for (i = 0; i < G_N_ELEMENTS (not_found_paths); i++)
+    {
+      in = g_resource_open_stream (resource,
+                                   not_found_paths[i],
+                                   G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                   &error);
+      g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+      g_clear_error (&error);
+      g_assert_null (in);
+    }
 
   in = g_resource_open_stream (resource,
 			       "/test1.txt",
@@ -118,13 +150,19 @@ test_resource (GResource *resource)
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test2\n");
   g_bytes_unref (data);
 
-  children = g_resource_enumerate_children  (resource,
-					     "/not/here",
-					     G_RESOURCE_LOOKUP_FLAGS_NONE,
-					     &error);
-  g_assert (children == NULL);
-  g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
-  g_clear_error (&error);
+  for (i = 0; i < G_N_ELEMENTS (not_found_paths); i++)
+    {
+      if (g_str_equal (not_found_paths[i], "/"))
+        continue;
+
+      children = g_resource_enumerate_children (resource,
+                                                not_found_paths[i],
+                                                G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                                &error);
+      g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+      g_clear_error (&error);
+      g_assert_null (children);
+    }
 
   children = g_resource_enumerate_children  (resource,
 					     "/a_prefix",
