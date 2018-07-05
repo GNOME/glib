@@ -210,7 +210,11 @@ if host_machine.system() != 'windows'
           install : false,
           c_args : test_c_args,
           dependencies : common_gio_tests_deps + extra_deps)
-      test(test_name, exe, env : test_env, suite : ['gio'])
+      if test_name == 'actions' or test_name == 'gdbus-export'
+        test(test_name, exe, env : test_env, timeout : 45, suite : ['gio', 'slow'])
+      else
+        test(test_name, exe, env : test_env, suite : ['gio'])
+      endif
     endforeach
 
     exe = executable('gdbus-test-codegen-old', 'gdbus-test-codegen.c',
