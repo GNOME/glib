@@ -197,7 +197,7 @@ if host_machine.system() != 'windows'
     ]
 
     if not glib_have_cocoa
-      gio_dbus_tests = [['dbus-appinfo', [], []]]
+      gio_dbus_tests += [['dbus-appinfo', [], []]]
     endif
 
     # separate loop because extra source files for each test
