@@ -65,6 +65,11 @@ gio_tests = [
   'testfilemonitor',
   'thumbnail-verification',
 ]
+slow_tests = [
+  'actions',
+  'gdbus-export',
+  'testfilemonitor',
+]
 
 test_extra_programs = [
   ['gdbus-connection-flush-helper'],
@@ -210,8 +215,9 @@ if host_machine.system() != 'windows'
           install : false,
           c_args : test_c_args,
           dependencies : common_gio_tests_deps + extra_deps)
-      if test_name == 'actions' or test_name == 'gdbus-export'
-        test(test_name, exe, env : test_env, timeout : 45, suite : ['gio', 'slow'])
+      # These tests may take more than 30 seconds to run on the CI infrastructure
+      if slow_tests.contains(test_name)
+        test(test_name, exe, env : test_env, timeout : 120, suite : ['gio', 'slow'])
       else
         test(test_name, exe, env : test_env, suite : ['gio'])
       endif
@@ -302,8 +308,9 @@ foreach test_name : gio_tests
       install : false,
       c_args : test_c_args,
       dependencies : common_gio_tests_deps + extra_deps)
-  if test_name == 'testfilemonitor'
-    test(test_name, exe, env : test_env, timeout : 45, suite : ['gio', 'slow'])
+  # These tests may take more than 30 seconds to run on the CI infrastructure
+  if slow_tests.contains(test_name)
+    test(test_name, exe, env : test_env, timeout : 120, suite : ['gio', 'slow'])
   else
     test(test_name, exe, env : test_env, suite : ['gio'])
   endif
