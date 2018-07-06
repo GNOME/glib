@@ -1632,7 +1632,7 @@ if get_option('internal_pcre')
   pcre = []
   use_system_pcre = false
 else
-  pcre = dependency('libpcre', required : false) # Should check for Unicode support, too. FIXME
+  pcre = dependency('libpcre', version: '8.31', required : false) # Should check for Unicode support, too. FIXME
   if not pcre.found()
     if cc.get_id() == 'msvc'
     # MSVC: Search for the PCRE library by the configuration, which corresponds
