@@ -273,7 +273,8 @@ main (int argc, char *argv[])
                "Negotiated capabilities: unix-fd-passing=%d\n",
                g_dbus_connection_get_capabilities (connection) & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
-      greeting = g_strdup_printf ("Hey, it's %" G_GUINT64_FORMAT " already!", (guint64) time (NULL));
+      greeting = g_strdup_printf ("Hey, it's %" G_GINT64_FORMAT " already!",
+                                  g_get_real_time () / G_USEC_PER_SEC);
       value = g_dbus_connection_call_sync (connection,
                                            NULL, /* bus_name */
                                            "/org/gtk/GDBus/TestObject",
