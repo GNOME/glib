@@ -70,6 +70,7 @@ gio_tests = [
 slow_tests = [
   'actions',
   'gdbus-export',
+  'gdbus-threading',
   'testfilemonitor',
 ]
 
