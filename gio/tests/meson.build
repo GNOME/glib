@@ -64,6 +64,8 @@ gio_tests = [
   'glistmodel',
   'testfilemonitor',
   'thumbnail-verification',
+  'tls-certificate',
+  'tls-interaction',
 ]
 slow_tests = [
   'actions',
@@ -303,6 +305,8 @@ foreach test_name : gio_tests
     # This is peer to peer so it doesn't need a session bus, so we can run
     # it automatically as a test by default
     extra_deps = [libgdbus_example_objectmanager_dep]
+  elif test_name == 'tls-certificate' or test_name == 'tls-interaction'
+    srcs += ['gtesttlsbackend.c']
   endif
   exe = executable(test_name, srcs,
       install : false,
@@ -343,8 +347,6 @@ uninstalled_test_extra_programs = [
   ['send-data'],
   ['socket-server'],
   ['socket-client', ['gtlsconsoleinteraction.c']],
-  ['tls-certificate', ['gtesttlsbackend.c']],
-  ['tls-interaction', ['gtesttlsbackend.c']],
   # These three are manual-run tests because they need a session bus but don't bring one up themselves
   # FIXME: these build but don't seem to work!
   ['gdbus-example-objectmanager-client', [], [libgdbus_example_objectmanager_dep]],
