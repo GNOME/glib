@@ -332,7 +332,6 @@ AC_SUBST(GLIB_EXTRA_CFLAGS)
 AC_EXEEXT
 
 AC_PROG_AWK
-AC_CHECK_PROGS(PERL, [perl5 perl])
 
 # option to specify python interpreter to use; this just sets $PYTHON, so that
 # we will fallback to reading $PYTHON if --with-python is not given, and
