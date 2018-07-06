@@ -425,7 +425,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
   # referenced by test.gresource.xml
   test_generated_txt = configure_file(input : 'test1.txt',
     output : 'test-generated.txt',
-    configuration : configuration_data(),
+    copy : true,
     install : false)
 
   exe = executable('resources', 'resources.c', test_gresource,
