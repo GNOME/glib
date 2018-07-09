@@ -89,7 +89,9 @@ test_programs = \
 	protocol			\
 	queue				\
 	rand				\
+	rcbox				\
 	rec-mutex			\
+	refstring			\
 	regex				\
 	rwlock				\
 	scannerapi			\

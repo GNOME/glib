@@ -96,6 +96,7 @@ deprecated_sources = \
 libglib_2_0_la_SOURCES = 	\
 	$(deprecated_sources)	\
 	glib_probes.d		\
+	garcbox.c		\
 	garray.c		\
 	gasyncqueue.c		\
 	gasyncqueueprivate.h	\
@@ -149,7 +150,10 @@ libglib_2_0_la_SOURCES = 	\
 	gquark.c		\
 	gqueue.c		\
 	grand.c			\
+	grcbox.c		\
+	grcboxprivate.h		\
 	grefcount.c		\
+	grefstring.c		\
 	gregex.c		\
 	gscanner.c		\
 	gscripttable.h		\
@@ -286,7 +290,9 @@ glibsubinclude_HEADERS = \
 	gquark.h	\
 	gqueue.h	\
 	grand.h		\
+	grcbox.h	\
 	grefcount.h	\
+	grefstring.h	\
 	gregex.h	\
 	gscanner.h	\
 	gsequence.h	\

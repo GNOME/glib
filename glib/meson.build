@@ -76,7 +76,9 @@ glib_sub_headers = files(
   'gquark.h',
   'gqueue.h',
   'grand.h',
+  'grcbox.h',
   'grefcount.h',
+  'grefstring.h',
   'gregex.h',
   'gscanner.h',
   'gsequence.h',
@@ -118,6 +120,7 @@ deprecated_sources = files(
 )
 
 glib_sources = files(
+  'garcbox.c',
   'garray.c',
   'gasyncqueue.c',
   'gatomic.c',
@@ -160,7 +163,9 @@ glib_sources = files(
   'gquark.c',
   'gqueue.c',
   'grand.c',
+  'grcbox.c',
   'grefcount.c',
+  'grefstring.c',
   'gregex.c',
   'gscanner.c',
   'gsequence.c',
