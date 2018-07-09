@@ -351,7 +351,7 @@ gpointer
  *
  * Acquires a reference on the data pointed by @mem_block.
  *
- * Returns: (transfer none) (not nullable): a pointer to the data,
+ * Returns: (transfer full) (not nullable): a pointer to the data,
  *   with its reference count increased
  *
  * Since: 2.58
@@ -375,7 +375,7 @@ gpointer
 
 /**
  * g_rc_box_release:
- * @mem_block: (not nullable): a pointer to reference counted data
+ * @mem_block: (transfer full) (not nullable): a pointer to reference counted data
  *
  * Releases a reference on the data pointed by @mem_block.
  *
@@ -392,7 +392,7 @@ g_rc_box_release (gpointer mem_block)
 
 /**
  * g_rc_box_release_full:
- * @mem_block: (not nullable): a pointer to reference counted data
+ * @mem_block: (transfer full) (not nullable): a pointer to reference counted data
  * @clear_func: (not nullable): a function to call when clearing the data
  *
  * Releases a reference on the data pointed by @mem_block.
