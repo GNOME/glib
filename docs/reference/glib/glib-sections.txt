@@ -3497,6 +3497,7 @@ g_arc_box_get_size
 <FILE>refstring</FILE>
 g_ref_string_new
 g_ref_string_new_intern
+g_ref_string_new_len
 g_ref_string_acquire
 g_ref_string_release
 g_ref_string_length
