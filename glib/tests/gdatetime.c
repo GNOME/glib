@@ -2417,7 +2417,7 @@ test_seconds_to_time (void)
   t = g_seconds_to_time (1000);
   g_assert_cmpstr (t, ==, "16:40");
 
-  t = g_seconds_to_time (NULL);
+  t = g_seconds_to_time (0);
   g_assert_cmpstr (t, ==, "00:00");
 
   t = g_seconds_to_time (-700);
