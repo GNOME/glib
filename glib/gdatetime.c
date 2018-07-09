@@ -3373,6 +3373,26 @@ g_date_time_format (GDateTime   *datetime,
   return utf8;
 }
 
+/**
+ * g_date_time_is_same_day
+ * @day1 a #GDateTime to compare against @day2 
+ * @day2 a #GDateTime to compare to
+ * 
+ * Compares if the two dates occur on the same day of the same year. 
+ * 
+ * Returns: %TRUE if @day1 and @day2 occur on the same day of the same year.
+ * 
+ * Since 2.58
+ */
+gboolean
+g_date_time_is_same_day (GDateTime *day1, GDateTime *day2)
+{
+  g_return_val_if_fail (day1 != NULL, 0);
+  g_return_val_if_fail (day2 != NULL, 0);
+
+  return g_date_time_get_day_of_year (day1) == g_date_time_get_day_of_year (day2) &&
+         g_date_time_get_year (day1) == g_date_time_get_year (day2);
+}
 
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */
