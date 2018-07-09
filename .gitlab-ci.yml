@@ -122,6 +122,9 @@ freebsd-11-x86_64:
     - meson -Db_lundef=false -Diconv=gnu -Dxattr=false --buildtype debug _build
     - ninja -C _build
     - meson test -C _build --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
+  # FIXME: Remove this when we have a stable FreeBSD runner
+  # https://gitlab.gnome.org/Infrastructure/GitLab/issues/286
+  allow_failure: true
   except:
     - tags
   artifacts:
