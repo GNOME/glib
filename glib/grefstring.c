@@ -130,6 +130,36 @@ g_ref_string_new (const char *str)
   return res;
 }
 
+/**
+ * g_ref_string_new_len:
+ * @str: (not nullable): a NUL-terminated string
+ * @len: length of @str to use
+ *
+ * Creates a new reference counted string and copies the contents of @str
+ * into it.
+ *
+ * Returns: (transfer full) (not nullable): the newly created reference counted string
+ *
+ * Since: 2.58
+ */
+char *
+g_ref_string_new_len (const char *str, gssize len)
+{
+  char *res;
+
+  g_return_val_if_fail (str != NULL, NULL);
+
+  if (len < 0)
+    return g_ref_string_new (str);
+
+  /* allocate then copy as str[len] may not be readable */
+  res = (char *) g_atomic_rc_box_alloc (sizeof (char) * len + 1);
+  memcpy (res, str, len);
+  res[len] = '\0';
+
+  return res;
+}
+
 /* interned_str_equal: variant of g_str_equal() that compares
  * pointers as well as contents; this avoids running strcmp()
  * on arbitrarily long strings, as it's more likely to have

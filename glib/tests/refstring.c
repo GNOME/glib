@@ -36,6 +36,19 @@ test_refstring_base (void)
   g_ref_string_release (s);
 }
 
+/* test_refstring_length: Test the _len variant */
+static void
+test_refstring_length (void)
+{
+  char buf[] = {'h', 'e', 'l', 'l', 'o'}; /* no NUL */
+  char *s = g_ref_string_new_len (buf, 5);
+
+  g_assert_cmpstr (s, ==, "hello");
+  g_assert_cmpint (strlen (s), ==, strlen ("hello"));
+  g_assert_cmpuint (g_ref_string_length (s), ==, strlen ("hello"));
+  g_ref_string_release (s);
+}
+
 /* test_refstring_intern: Test the interning API of GRefString */
 static void
 test_refstring_intern (void)
@@ -76,6 +89,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/refstring/base", test_refstring_base);
+  g_test_add_func ("/refstring/length", test_refstring_length);
   g_test_add_func ("/refstring/intern", test_refstring_intern);
 
   return g_test_run ();
