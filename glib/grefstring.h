@@ -26,6 +26,9 @@ G_BEGIN_DECLS
 GLIB_AVAILABLE_IN_2_58
 char *  g_ref_string_new        (const char *str);
 GLIB_AVAILABLE_IN_2_58
+char *  g_ref_string_new_len    (const char *str,
+                                 gssize      len);
+GLIB_AVAILABLE_IN_2_58
 char *  g_ref_string_new_intern (const char *str);
 
 GLIB_AVAILABLE_IN_2_58
