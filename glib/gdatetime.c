@@ -3373,6 +3373,47 @@ g_date_time_format (GDateTime   *datetime,
   return utf8;
 }
 
+/**
+ * g_seconds_to_time
+ * @seconds the number of seconds to convert into ISO 8601
+ * 
+ * Converts seconds into the ISO 8601 standard date format for minutes (e.g. 100s to 01:40).
+ * Output of negative seconds is prepended with minus character.
+ * 
+ * Returns: a newly allocated ISO 8601 formatted string. The string should be freed with g_free().
+ */
+gchar *
+g_seconds_to_time (gint seconds)
+{
+  gint hours, min, sec;
+  gint sign;
+  gchar *outstr;
+
+  if (seconds < 0)
+    {
+      seconds = -seconds;
+      sign = -1;
+    } 
+  else
+    {
+      sign = 1;
+    }
+    
+  hours = seconds / 3600;
+  min = (seconds % 3600) / 60;
+  sec = seconds % 60;
+
+  if (hours > 0)
+    {
+      outstr = g_strdup_printf("%d:%02d:%02d", sign * hours, min, sec);
+    }
+  else
+    {
+      outstr = g_strdup_printf("%02d:%02d", sign * min, sec);
+    }
+
+  return outstr;
+}
 
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */

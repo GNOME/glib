@@ -2406,6 +2406,26 @@ test_new_offset (void)
     }
 }
 
+static void
+test_seconds_to_time (void)
+{
+  gchar* t;
+
+  t = g_seconds_to_time (3750);
+  g_assert_cmpstr (t, ==, "1:02:30");
+
+  t = g_seconds_to_time (1000);
+  g_assert_cmpstr (t, ==, "16:40");
+
+  t = g_seconds_to_time (NULL);
+  g_assert_cmpstr (t, ==, "00:00");
+
+  t = g_seconds_to_time (-700);
+  g_assert_cmpstr (t, ==, "-11:40");
+
+  g_free (t);
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -2462,6 +2482,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/dst", test_GDateTime_dst);
   g_test_add_func ("/GDateTime/test_z", test_z);
   g_test_add_func ("/GDateTime/test-all-dates", test_all_dates);
+  g_test_add_func ("/GDateTime/seconds_to_time", test_seconds_to_time);
   g_test_add_func ("/GTimeZone/find-interval", test_find_interval);
   g_test_add_func ("/GTimeZone/adjust-time", test_adjust_time);
   g_test_add_func ("/GTimeZone/no-header", test_no_header);
