@@ -3405,11 +3405,11 @@ g_seconds_to_time (gint seconds)
 
   if (hours > 0)
     {
-      outstr = g_strdup_printf("%d:%02d:%02d", sign * hours, min, sec);
+      outstr = g_strdup_printf ("%d:%02d:%02d", sign * hours, min, sec);
     }
   else
     {
-      outstr = g_strdup_printf("%02d:%02d", sign * min, sec);
+      outstr = g_strdup_printf ("%02d:%02d", sign * min, sec);
     }
 
   return outstr;
