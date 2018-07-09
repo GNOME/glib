@@ -1215,6 +1215,9 @@ test_GDateTime_is_same_day (void)
   day1 = g_date_time_new_utc (2017, 1, 1, 0, 0, 0);
   day2 = g_date_time_new_utc (2018, 1, 1, 0, 0, 0);
   g_assert (!g_date_time_is_same_day (day1, day2));
+
+  g_date_time_unref (day1);
+  g_date_time_unref (day2);
 }
 
 static void
