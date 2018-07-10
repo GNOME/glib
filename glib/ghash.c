@@ -334,6 +334,16 @@ g_hash_table_set_shift_from_size (GHashTable *hash_table, gint size)
   g_hash_table_set_shift (hash_table, shift);
 }
 
+static inline guint
+g_hash_table_hash_to_index (GHashTable *hash_table, guint hash)
+{
+  /* Multiply the hash by a small prime before applying the modulo. This
+   * prevents the table from becoming densely packed, even with a poor hash
+   * function. A densely packed table would have poor performance on
+   * workloads with many failed lookups or a high degree of churn. */
+  return (hash * 11) % hash_table->mod;
+}
+
 /*
  * g_hash_table_lookup_node:
  * @hash_table: our #GHashTable
@@ -382,7 +392,7 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
 
   *hash_return = hash_value;
 
-  node_index = hash_value % hash_table->mod;
+  node_index = g_hash_table_hash_to_index (hash_table, hash_value);
   node_hash = hash_table->hashes[node_index];
 
   while (!HASH_IS_UNUSED (node_hash))
@@ -602,7 +612,7 @@ g_hash_table_resize (GHashTable *hash_table)
       if (!HASH_IS_REAL (node_hash))
         continue;
 
-      hash_val = node_hash % hash_table->mod;
+      hash_val = g_hash_table_hash_to_index (hash_table, node_hash);
 
       while (!HASH_IS_UNUSED (new_hashes[hash_val]))
         {
