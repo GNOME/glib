@@ -8,6 +8,7 @@ glib_tests = [
   'cache',
   'charset',
   'checksum',
+  'clear-pointer',
   'collate',
   'cond',
   'convert',
