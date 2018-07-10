@@ -2413,16 +2413,18 @@ test_seconds_to_time (void)
 
   t = g_seconds_to_time (3750);
   g_assert_cmpstr (t, ==, "1:02:30");
+  g_free (t);
 
   t = g_seconds_to_time (1000);
   g_assert_cmpstr (t, ==, "16:40");
+  g_free (t);
 
   t = g_seconds_to_time (0);
   g_assert_cmpstr (t, ==, "00:00");
+  g_free (t);
 
   t = g_seconds_to_time (-700);
   g_assert_cmpstr (t, ==, "-11:40");
-
   g_free (t);
 }
 
