@@ -297,19 +297,15 @@ static const gint prime_mod [] =
 static void
 g_hash_table_set_shift (GHashTable *hash_table, gint shift)
 {
-  gint i;
-  guint mask = 0;
-
   hash_table->size = 1 << shift;
   hash_table->mod  = prime_mod [shift];
 
-  for (i = 0; i < shift; i++)
-    {
-      mask <<= 1;
-      mask |= 1;
-    }
+  /* hash_table->size is always a power of two, so we can calculate the mask
+   * by simply subtracting 1 from it. The leading assertion ensures that
+   * we're really dealing with a power of two. */
 
-  hash_table->mask = mask;
+  g_assert ((hash_table->size & (hash_table->size - 1)) == 0);
+  hash_table->mask = hash_table->size - 1;
 }
 
 static gint
