@@ -88,15 +88,6 @@
  *      kind of pitfalls it avoids
  *      - Export objects before claiming names
  *    - Talk about auto-starting services (cf. GBusNameWatcherFlags)
- *
- *  - use abstract sockets in test code
- *   - right now it doesn't work, dbus-daemon(1) fails with
- *
- *        /gdbus/connection/filter: Failed to start message bus: Failed to bind
- *        socket "/tmp/g-dbus-tests-pid-28531": Address already in use
- *        ** WARNING **: Error reading address from dbus daemon, 0 bytes read
- *
- *     or similar.
  */
 
 #include "config.h"
