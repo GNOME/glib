@@ -50,6 +50,7 @@ test_programs = \
 	cache				\
 	charset				\
 	checksum			\
+	clear-pointer			\
 	collate				\
 	cond				\
 	convert				\
