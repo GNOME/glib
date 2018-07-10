@@ -3407,6 +3407,7 @@ AC_ARG_ENABLE(compile-warnings,
 AS_IF([test "x$enable_compile_warnings" != xno], [
   CC_CHECK_FLAGS_APPEND([GLIB_WARN_CFLAGS], [CFLAGS], [\
    -Wall -Wstrict-prototypes -Wduplicated-branches -Wmisleading-indentation \
+   -Wno-bad-function-cast \
    -Werror=declaration-after-statement \
    -Werror=missing-prototypes -Werror=implicit-function-declaration \
    -Werror=pointer-arith -Werror=init-self -Werror=format-security \
