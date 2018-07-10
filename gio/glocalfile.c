@@ -983,15 +983,21 @@ g_local_file_query_filesystem_info (GFile         *file,
   block_size = statfs_buffer.f_bsize;
   
   /* Many backends can't report free size (for instance the gvfs fuse
-     backend for backend not supporting this), and set f_bfree to 0,
-     but it can be 0 for real too. We treat the available == 0 and
-     free == 0 case as "both of these are invalid".
+   * backend for backend not supporting this), and set f_bfree to 0,
+   *  but it can be 0 for real too. We treat the available == 0 and
+   * free == 0 case as "both of these are invalid", but only on file systems
+   * which are known to not support this (otherwise we can omit metadata for
+   * systems which are legitimately full). */
    */
-#ifndef G_OS_WIN32
+#if defined(__linux__)
   if (statfs_result == 0 &&
-      statfs_buffer.f_bavail == 0 && statfs_buffer.f_bfree == 0)
+      statfs_buffer.f_bavail == 0 && statfs_buffer.f_bfree == 0 &&
+      (/* linux/ncp_fs.h: NCP_SUPER_MAGIC == 0x564c */
+       statfs_buffer.f_type == 0x564c ||
+       /* man statfs: FUSE_SUPER_MAGIC == 0x65735546 */
+       statfs_buffer.f_type == 0x65735546))
     no_size = TRUE;
-#endif /* G_OS_WIN32 */
+#endif  /* __linux__ */
   
 #elif defined(USE_STATVFS)
   statfs_result = statvfs (local->filename, &statfs_buffer);
