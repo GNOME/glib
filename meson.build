@@ -333,6 +333,9 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Wmisleading-indentation',
     '-Wstrict-prototypes',
     '-Wunused',
+    # Due to pervasive use of things like GPOINTER_TO_UINT(), we do not support
+    # building with -Wbad-function-cast.
+    '-Wno-bad-function-cast',
     '-Werror=declaration-after-statement',
     '-Werror=format=2',
     '-Werror=format-security',
