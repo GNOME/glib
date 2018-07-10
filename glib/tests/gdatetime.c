@@ -1203,21 +1203,25 @@ test_GDateTime_new_from_unix_utc (void)
 static void
 test_GDateTime_is_same_day (void)
 {
-  GDateTime *day1, *day2;
+  GDateTime *dt1, *dt2, *dt3;
 
-  day1 = g_date_time_new_utc (2018, 7, 9, 0, 0, 0);
-  day2 = g_date_time_new_utc (2018, 7, 9, 15, 15, 15);
-  g_assert (g_date_time_is_same_day (day1, day2));
+  dt1 = g_date_time_new_utc (2018, 7, 9, 0, 0, 0);
+  dt2 = g_date_time_new_utc (2018, 7, 9, 15, 15, 15);
+  g_assert (g_date_time_is_same_day (dt1, dt2));
 
-  day2 = g_date_time_add_days (day2, 1);
-  g_assert (!g_date_time_is_same_day (day1, day2));
+  dt3 = g_date_time_add_days (dt2, 1);
+  g_assert (!g_date_time_is_same_day (dt2, dt3));
 
-  day1 = g_date_time_new_utc (2017, 1, 1, 0, 0, 0);
-  day2 = g_date_time_new_utc (2018, 1, 1, 0, 0, 0);
-  g_assert (!g_date_time_is_same_day (day1, day2));
+  g_date_time_unref (dt1);
+  g_date_time_unref (dt2);
+  g_date_time_unref (dt3);
 
-  g_date_time_unref (day1);
-  g_date_time_unref (day2);
+  dt1 = g_date_time_new_utc (2017, 1, 1, 0, 0, 0);
+  dt2 = g_date_time_new_utc (2018, 1, 1, 0, 0, 0);
+  g_assert (!g_date_time_is_same_day (dt1, dt2));
+
+  g_date_time_unref (dt1);
+  g_date_time_unref (dt2);
 }
 
 static void
