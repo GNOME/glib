@@ -235,6 +235,11 @@ GLogWriterOutput g_log_writer_standard_streams (GLogLevelFlags   log_level,
                                                 const GLogField *fields,
                                                 gsize            n_fields,
                                                 gpointer         user_data);
+GLIB_AVAILABLE_IN_2_58
+GLogWriterOutput g_log_writer_new_style        (GLogLevelFlags   log_level,
+                                                const GLogField *fields,
+                                                gsize            n_fields,
+                                                gpointer         user_data);
 GLIB_AVAILABLE_IN_2_50
 GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
                                                 const GLogField *fields,

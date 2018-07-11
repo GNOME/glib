@@ -2566,6 +2566,83 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
   return G_LOG_WRITER_HANDLED;
 }
 
+static const gchar*
+log_level_to_new_style_header (GLogLevelFlags log_level)
+{
+  switch (log_level)
+    {
+      case G_LOG_LEVEL_DEBUG:
+        return "<7>";
+      case G_LOG_LEVEL_INFO:
+        return "<6>";
+      case G_LOG_LEVEL_MESSAGE:
+        return "<5>"; /* NOTICE level in new style daemons. */
+      case G_LOG_LEVEL_WARNING:
+        return "<4>";
+      case G_LOG_LEVEL_CRITICAL:
+        return "<3>"; /* ERR level in new style daemons. */
+      case G_LOG_LEVEL_ERROR:
+        return "<0>"; /* Errors are fatal in GLib so translate to EMERG. */
+      default:
+        return ""; /* Drop the header for all other values. */
+    }
+}
+
+/* g_log_writer_new_style:
+ * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ *    level
+ * @fields: (array length=n_fields): key–value pairs of structured data forming
+ *    the log message
+ * @n_fields: number of elements in the @fields array
+ * @user_data: user data passed to g_log_set_writer_func()
+ *
+ * Format a one-line log message, prepend it with a new-style daemon logging
+ * header depending on its log level and print it to `stderr`. Only the MESSAGE
+ * field and the log level are understood by this function.
+ *
+ * A trailing new-line character is added to the log message when it is printed.
+ *
+ * This is suitable for use as a #GLogWriterFunc.
+ *
+ * Returns: %G_LOG_WRITER_HANDLED on success, %G_LOG_WRITER_UNHANDLED otherwise.
+ * Since: 2.58
+ */
+GLogWriterOutput g_log_writer_new_style (GLogLevelFlags   log_level,
+                                         const GLogField *fields,
+                                         gsize            n_fields,
+                                         gpointer         user_data)
+{
+  const gchar *msg = NULL;
+  const gchar *hdr;
+  const GLogField *field;
+  gsize i;
+
+  g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
+  g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
+
+  hdr = log_level_to_new_style_header (log_level);
+
+  for (i = 0; i < n_fields; i++)
+    {
+      field = &fields[i];
+
+      /* We're only interested in the MESSAGE field. */
+      if (g_strcmp0(field->key, "MESSAGE") == 0)
+        {
+          msg = (const gchar *) field->value;
+          break;
+        }
+    }
+
+  if (!msg)
+    return G_LOG_WRITER_UNHANDLED;
+
+  _g_fprintf(stderr, "%s%s\n", hdr, msg);
+  fflush (stderr);
+
+  return G_LOG_WRITER_HANDLED;
+}
+
 /* The old g_log() API is implemented in terms of the new structured log API.
  * However, some of the checks do not line up between the two APIs: the
  * structured API only handles fatalness of messages for log levels; the old API
