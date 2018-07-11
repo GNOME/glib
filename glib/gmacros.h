@@ -111,6 +111,18 @@
 #endif
 
 /*
+ * We can only use __typeof__ on GCC >= 4.8, and not when compiling C++. Since
+ * __typeof__ is used in a few places in GLib, provide a pre-processor symbol
+ * to factor the check out from callers.
+ *
+ * This symbol is private.
+ */
+#undef g_has_typeof
+#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && !defined(__cplusplus)
+#define g_has_typeof
+#endif
+
+/*
  * Clang feature detection: http://clang.llvm.org/docs/LanguageExtensions.html
  * These are not available on GCC, but since the pre-processor doesn't do
  * operator short-circuiting, we can't use it in a statement or we'll get:
