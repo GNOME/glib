@@ -110,16 +110,6 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 			   gsize	 n_blocks,
 			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
 
-#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && !defined(__cplusplus) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_58
-#define g_clear_pointer(pp, destroy) \
-  G_STMT_START {                                                               \
-    G_STATIC_ASSERT (sizeof *(pp) == sizeof (gpointer));                       \
-    __typeof__(*(pp)) _ptr = *(pp);                                            \
-    *(pp) = NULL;                                                              \
-    if (_ptr)                                                                  \
-      destroy (_ptr);                                                          \
-  } G_STMT_END
-#else /* __GNUC__ */
 #define g_clear_pointer(pp, destroy) \
   G_STMT_START {                                                               \
     G_STATIC_ASSERT (sizeof *(pp) == sizeof (gpointer));                       \
@@ -137,7 +127,6 @@ gpointer g_try_realloc_n  (gpointer	 mem,
         _destroy (_p);                                                         \
       }                                                                        \
   } G_STMT_END
-#endif /* __GNUC__ */
 
 /**
  * g_steal_pointer:
