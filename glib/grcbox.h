@@ -71,7 +71,7 @@ gsize           g_atomic_rc_box_get_size        (gpointer        mem_block);
 #define g_atomic_rc_box_new0(type) \
   ((type *) g_atomic_rc_box_alloc0 (sizeof (type)))
 
-#if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && !defined(_cplusplus)
+#ifdef g_has_typeof
 /* Type check to avoid assigning references to different types */
 # define g_rc_box_acquire(mem_block) \
   ((__typeof__(mem_block)) (g_rc_box_acquire) (mem_block))
