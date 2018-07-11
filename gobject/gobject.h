@@ -668,7 +668,7 @@ G_STMT_START { \
     G_OBJECT_WARN_INVALID_PSPEC ((object), "property", (property_id), (pspec))
 
 GLIB_AVAILABLE_IN_ALL
-void    g_clear_object (volatile GObject **object_ptr);
+void    g_clear_object (GObject **object_ptr);
 #define g_clear_object(object_ptr) g_clear_pointer ((object_ptr), g_object_unref)
 
 /**
