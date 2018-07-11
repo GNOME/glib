@@ -887,6 +887,7 @@ test_stdio_wrappers (void)
   gint ret;
   struct utimbuf ut;
   GError *error = NULL;
+  GStatBuf path_statbuf, cwd_statbuf;
 
   /* The permissions tests here don’t work when running as root. */
 #ifdef G_OS_UNIX
@@ -920,7 +921,13 @@ test_stdio_wrappers (void)
   ret = g_chdir (path);
   g_assert_cmpint (ret, ==, 0);
   cwd = g_get_current_dir ();
-  g_assert_true (g_str_equal (cwd, path));
+  /* We essentially want to check that cwd == path, but we can’t compare the
+   * paths directly since the tests might be running under a symlink (for
+   * example, /tmp is sometimes a symlink). Compare the inode numbers instead. */
+  g_assert_cmpint (g_stat (cwd, &cwd_statbuf), ==, 0);
+  g_assert_cmpint (g_stat (path, &path_statbuf), ==, 0);
+  g_assert_true (cwd_statbuf.st_dev == path_statbuf.st_dev &&
+                 cwd_statbuf.st_ino == path_statbuf.st_ino);
   g_free (cwd);
   g_free (path);
 
