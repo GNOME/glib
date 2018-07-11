@@ -87,13 +87,17 @@
  * creates a test suite called "misc" with a single test case named
  * "assertions", which consists of running the test_assertions function.
  *
- * In addition to the traditional g_assert(), the test framework provides
+ * In addition to the traditional g_assert_true(), the test framework provides
  * an extended set of assertions for comparisons: g_assert_cmpfloat(),
  * g_assert_cmpfloat_with_epsilon(), g_assert_cmpint(), g_assert_cmpuint(),
  * g_assert_cmphex(), g_assert_cmpstr(), and g_assert_cmpmem(). The
- * advantage of these variants over plain g_assert() is that the assertion
+ * advantage of these variants over plain g_assert_true() is that the assertion
  * messages can be more elaborate, and include the values of the compared
  * entities.
+ *
+ * Note that g_assert() should not be used in unit tests, since it is a no-op
+ * when compiling with `G_DISABLE_ASSERT`. Use g_assert() in production code,
+ * and g_assert_true() in unit tests.
  *
  * A full example of creating a test suite with two tests using fixtures:
  * |[<!-- language="C" -->
@@ -473,7 +477,10 @@
  *
  * The macro can be turned off in final releases of code by defining
  * `G_DISABLE_ASSERT` when compiling the application, so code must
- * not depend on any side effects from @expr.
+ * not depend on any side effects from @expr. Similarly, it must not be used
+ * in unit tests, otherwise the unit tests will be ineffective if compiled with
+ * `G_DISABLE_ASSERT`. Use g_assert_true() and related macros in unit tests
+ * instead.
  */
 
 /**
@@ -484,7 +491,8 @@
  * application is terminated.
  *
  * The macro can be turned off in final releases of code by defining
- * `G_DISABLE_ASSERT` when compiling the application.
+ * `G_DISABLE_ASSERT` when compiling the application. Hence, it should not be
+ * used in unit tests, where assertions should always be effective.
  */
 
 /**
@@ -496,6 +504,10 @@
  * If the assertion fails (i.e. the expression is not true),
  * an error message is logged and the application is either
  * terminated or the testcase marked as failed.
+ *
+ * Note that unlike g_assert(), this macro is unaffected by whether
+ * `G_DISABLE_ASSERT` is defined. Hence it should only be used in tests and,
+ * conversely, g_assert() should not be used in tests.
  *
  * See g_test_set_nonfatal_assertions().
  *
@@ -512,6 +524,10 @@
  * an error message is logged and the application is either
  * terminated or the testcase marked as failed.
  *
+ * Note that unlike g_assert(), this macro is unaffected by whether
+ * `G_DISABLE_ASSERT` is defined. Hence it should only be used in tests and,
+ * conversely, g_assert() should not be used in tests.
+ *
  * See g_test_set_nonfatal_assertions().
  *
  * Since: 2.38
@@ -527,6 +543,10 @@
  * an error message is logged and the application is either
  * terminated or the testcase marked as failed.
  *
+ * Note that unlike g_assert(), this macro is unaffected by whether
+ * `G_DISABLE_ASSERT` is defined. Hence it should only be used in tests and,
+ * conversely, g_assert() should not be used in tests.
+ *
  * See g_test_set_nonfatal_assertions().
  *
  * Since: 2.38
@@ -541,6 +561,10 @@
  * If the assertion fails (i.e. the expression is %NULL),
  * an error message is logged and the application is either
  * terminated or the testcase marked as failed.
+ *
+ * Note that unlike g_assert(), this macro is unaffected by whether
+ * `G_DISABLE_ASSERT` is defined. Hence it should only be used in tests and,
+ * conversely, g_assert() should not be used in tests.
  *
  * See g_test_set_nonfatal_assertions().
  *
