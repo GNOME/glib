@@ -99,6 +99,7 @@ vs2017-x64:
 freebsd-11-x86_64:
   when: manual
   stage: build
+  image: freebsd:11.2
   tags:
     # To run a FreeBSD builder, install gitlab-runner package and start both
     # gitlab-runner and dbus service because we need /var/lib/dbus/machine-id.
