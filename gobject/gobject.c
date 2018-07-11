@@ -3378,7 +3378,7 @@ g_object_unref (gpointer _object)
  **/
 #undef g_clear_object
 void
-g_clear_object (volatile GObject **object_ptr)
+g_clear_object (GObject **object_ptr)
 {
   g_clear_pointer (object_ptr, g_object_unref);
 }
