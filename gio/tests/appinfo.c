@@ -17,7 +17,7 @@ test_launch_for_app_info (GAppInfo *appinfo)
 
   if (g_getenv ("DISPLAY") == NULL || g_getenv ("DISPLAY")[0] == '\0')
     {
-      g_printerr ("No DISPLAY.  Skipping test.  ");
+      g_test_skip ("No DISPLAY set");
       return;
     }
 
