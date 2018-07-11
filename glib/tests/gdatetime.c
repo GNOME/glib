@@ -112,6 +112,7 @@ test_GDateTime_new_from_unix (void)
 
   memset (&tm, 0, sizeof (tm));
   t = time (NULL);
+  g_assert_cmpint (t, !=, (time_t) -1);
   get_localtime_tm (t, &tm);
 
   dt = g_date_time_new_from_unix_local (t);
@@ -787,6 +788,7 @@ test_GDateTime_to_unix (void)
   time_t     t;
 
   t = time (NULL);
+  g_assert_cmpint (t, !=, (time_t) -1);
   dt = g_date_time_new_from_unix_local (t);
   g_assert_cmpint (g_date_time_to_unix (dt), ==, t);
   g_date_time_unref (dt);
@@ -1283,6 +1285,7 @@ test_GDateTime_to_utc (void)
   struct tm  tm;
 
   t = time (NULL);
+  g_assert_cmpint (t, !=, (time_t) -1);
 #ifdef HAVE_GMTIME_R
   gmtime_r (&t, &tm);
 #else
@@ -1362,6 +1365,7 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
    * that of the generated timezone.
    */
   t = time (NULL);
+  g_assert_cmpint (t, !=, (time_t) -1);
   memset (&tt, 0, sizeof(tt));
   get_localtime_tm (t, &tt);
   tt.tm_year = 2009 - 1900;

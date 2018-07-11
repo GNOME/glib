@@ -89,11 +89,14 @@ test_dates (void)
 {
   GDate *d;
   GTimeVal tv;
+  time_t now;
 
   d = g_date_new ();
 
   /* today */
-  g_date_set_time (d, time (NULL));
+  now = time (NULL);
+  g_assert_cmpint (now, !=, (time_t) -1);
+  g_date_set_time (d, now);
   g_assert (g_date_valid (d));
 
   /* Unix epoch */

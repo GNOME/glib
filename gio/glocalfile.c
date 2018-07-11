@@ -1909,7 +1909,7 @@ g_local_file_trash (GFile         *file,
   int i;
   char *data;
   gboolean is_homedir_trash;
-  char delete_time[32];
+  char *delete_time = NULL;
   int fd;
   GStatBuf trash_stat, global_stat;
   char *dirname, *globaldir;
@@ -2137,16 +2137,17 @@ g_local_file_trash (GFile         *file,
   g_free (topdir);
   
   {
-    time_t t;
-    struct tm now;
-    t = time (NULL);
-    localtime_r (&t, &now);
-    delete_time[0] = 0;
-    strftime(delete_time, sizeof (delete_time), "%Y-%m-%dT%H:%M:%S", &now);
+    GDateTime *now = g_date_time_new_now_local ();
+    if (now != NULL)
+      delete_time = g_date_time_format (now, "%Y-%m-%dT%H:%M:%S");
+    else
+      delete_time = g_strdup ("9999-12-31T23:59:59");
+    g_date_time_unref (now);
   }
 
   data = g_strdup_printf ("[Trash Info]\nPath=%s\nDeletionDate=%s\n",
 			  original_name_escaped, delete_time);
+  g_free (delete_time);
 
   g_file_set_contents (infofile, data, -1, NULL);
 
