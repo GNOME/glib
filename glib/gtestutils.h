@@ -147,6 +147,29 @@ GLIB_AVAILABLE_IN_ALL
 void    g_test_init                     (int            *argc,
                                          char         ***argv,
                                          ...) G_GNUC_NULL_TERMINATED;
+
+/* While we discourage its use, g_assert() is often used in unit tests
+ * (especially in legacy code). g_assert_*() should really be used instead.
+ * g_assert() can be disabled at client program compile time, which can render
+ * tests useless. Highlight that to the user. */
+#ifdef G_DISABLE_ASSERT
+#if defined(G_HAVE_ISO_VARARGS)
+#define g_test_init(argc, argv, ...) \
+  G_STMT_START { \
+    g_printerr ("Tests were compiled with G_DISABLE_ASSERT and are likely no-ops. Aborting."); \
+    exit (1); \
+  } G_STMT_END
+#elif defined(G_HAVE_GNUC_VARARGS)
+#define g_test_init(argc, argv...) \
+  G_STMT_START { \
+    g_printerr ("Tests were compiled with G_DISABLE_ASSERT and are likely no-ops. Aborting."); \
+    exit (1); \
+  } G_STMT_END
+#else  /* no varargs */
+  /* do nothing */
+#endif  /* varargs support */
+#endif  /* G_DISABLE_ASSERT */
+
 /* query testing framework config */
 #define g_test_initialized()            (g_test_config_vars->test_initialized)
 #define g_test_quick()                  (g_test_config_vars->test_quick)
