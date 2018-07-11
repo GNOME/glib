@@ -1274,9 +1274,9 @@ parse_args (gint    *argc_p,
  * Since: 2.16
  */
 void
-g_test_init (int    *argc,
-             char ***argv,
-             ...)
+(g_test_init) (int    *argc,
+               char ***argv,
+               ...)
 {
   static char seedstr[4 + 4 * 8 + 1];
   va_list args;
