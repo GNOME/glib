@@ -591,23 +591,24 @@ g_resource_load (const gchar  *filename,
   return g_resource_new_from_table (table);
 }
 
-static
-gboolean do_lookup (GResource             *resource,
-                    const gchar           *path,
-                    GResourceLookupFlags   lookup_flags,
-                    gsize                 *size,
-                    guint32               *flags,
-                    const void           **data,
-                    gsize                 *data_size,
-                    GError               **error)
+static gboolean
+do_lookup (GResource             *resource,
+           const gchar           *path,
+           GResourceLookupFlags   lookup_flags,
+           gsize                 *size,
+           guint32               *flags,
+           const void           **data,
+           gsize                 *data_size,
+           GError               **error)
 {
   char *free_path = NULL;
   gsize path_len;
   gboolean res = FALSE;
   GVariant *value;
 
+  /* Drop any trailing slash. */
   path_len = strlen (path);
-  if (path[path_len-1] == '/')
+  if (path_len >= 1 && path[path_len-1] == '/')
     {
       path = free_path = g_strdup (path);
       free_path[path_len-1] = 0;
