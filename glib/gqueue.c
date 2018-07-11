@@ -372,7 +372,7 @@ g_queue_push_nth (GQueue   *queue,
 {
   g_return_if_fail (queue != NULL);
 
-  if (n < 0 || n >= queue->length)
+  if (n < 0 || (guint) n >= queue->length)
     {
       g_queue_push_tail (queue, data);
       return;
@@ -475,7 +475,7 @@ g_queue_push_nth_link (GQueue *queue,
   g_return_if_fail (queue != NULL);
   g_return_if_fail (link_ != NULL);
 
-  if (n < 0 || n >= queue->length)
+  if (n < 0 || (guint) n >= queue->length)
     {
       g_queue_push_tail_link (queue, link_);
       return;
@@ -749,7 +749,7 @@ g_queue_peek_nth_link (GQueue *queue,
                        guint   n)
 {
   GList *link;
-  gint i;
+  guint i;
   
   g_return_val_if_fail (queue != NULL, NULL);
 
