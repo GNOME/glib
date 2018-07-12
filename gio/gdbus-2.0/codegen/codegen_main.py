@@ -63,38 +63,38 @@ def apply_annotation(iface_list, iface, method, signal, prop, arg, key, value):
             iface_obj = i
             break
 
-    if iface_obj == None:
+    if iface_obj is None:
         print_error('No interface "{}"'.format(iface))
 
     target_obj = None
 
     if method:
         method_obj = find_method(iface_obj, method)
-        if method_obj == None:
+        if method_obj is None:
             print_error('No method "{}" on interface "{}"'.format(method, iface))
         if arg:
             arg_obj = find_arg(method_obj.in_args, arg)
-            if (arg_obj == None):
+            if (arg_obj is None):
                 arg_obj = find_arg(method_obj.out_args, arg)
-                if (arg_obj == None):
+                if (arg_obj is None):
                     print_error('No arg "{}" on method "{}" on interface "{}"'.format(arg, method, iface))
             target_obj = arg_obj
         else:
             target_obj = method_obj
     elif signal:
         signal_obj = find_signal(iface_obj, signal)
-        if signal_obj == None:
+        if signal_obj is None:
             print_error('No signal "{}" on interface "{}"'.format(signal, iface))
         if arg:
             arg_obj = find_arg(signal_obj.args, arg)
-            if (arg_obj == None):
+            if (arg_obj is None):
                 print_error('No arg "{}" on signal "{}" on interface "{}"'.format(arg, signal, iface))
             target_obj = arg_obj
         else:
             target_obj = signal_obj
     elif prop:
         prop_obj = find_prop(iface_obj, prop)
-        if prop_obj == None:
+        if prop_obj is None:
             print_error('No property "{}" on interface "{}"'.format(prop, iface))
         target_obj = prop_obj
     else:
