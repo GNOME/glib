@@ -61,7 +61,7 @@ class Arg:
         if len(self.since) == 0:
             self.since = utils.lookup_since(self.annotations)
 
-        if self.name == None:
+        if self.name is None:
             self.name = 'unnamed_arg%d'%arg_number
         # default to GVariant
         self.ctype_in_g  = 'GVariant *'

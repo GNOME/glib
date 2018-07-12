@@ -1068,7 +1068,7 @@ class CodeGenerator:
                            '\n')
 
     def generate_annotations(self, prefix, annotations):
-        if annotations == None:
+        if annotations is None:
             return
 
         n = 0
