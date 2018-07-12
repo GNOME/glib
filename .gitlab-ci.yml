@@ -97,6 +97,7 @@ vs2017-x64:
       - _build/meson-logs
 
 freebsd-11-x86_64:
+  when: manual
   stage: build
   tags:
     # To run a FreeBSD builder, install gitlab-runner package and start both
