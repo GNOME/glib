@@ -726,7 +726,7 @@ g_date_time_copy (GDateTime *datetime)
 {
 	g_return_val_if_fail(datetime != NULL, NULL);
 
-	GTimeZone *tz;
+	GTimeZone *tz = NULL;
 
 	tz = g_time_zone_new (g_date_time_get_timezone_abbreviation (datetime));
 
