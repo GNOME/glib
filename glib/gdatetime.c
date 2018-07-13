@@ -724,7 +724,7 @@ g_date_time_unref (GDateTime *datetime)
 GDateTime *
 g_date_time_copy (GDateTime *datetime)
 {
-	g_return_val_if_fail(datetime != NULL, NULL);
+	g_return_val_if_fail(datetime, NULL);
 
 	GTimeZone *tz = NULL;
 
