@@ -1417,24 +1417,24 @@ do_posix_spawn (gchar     **argv,
                                        GINT_TO_POINTER (child_close_fds[i]));
     }
 
-   r = posix_spawnattr_setflags (&attr, POSIX_SPAWN_SETSIGDEF);
-   if (r != 0)
-     goto out_free_spawnattr;
+  r = posix_spawnattr_setflags (&attr, POSIX_SPAWN_SETSIGDEF);
+  if (r != 0)
+    goto out_free_spawnattr;
 
-   /* Reset some signal handlers that we may use */
-   sigemptyset (&mask);
-   sigaddset (&mask, SIGCHLD);
-   sigaddset (&mask, SIGINT);
-   sigaddset (&mask, SIGTERM);
-   sigaddset (&mask, SIGHUP);
+  /* Reset some signal handlers that we may use */
+  sigemptyset (&mask);
+  sigaddset (&mask, SIGCHLD);
+  sigaddset (&mask, SIGINT);
+  sigaddset (&mask, SIGTERM);
+  sigaddset (&mask, SIGHUP);
 
-   r = posix_spawnattr_setsigdefault (&attr, &mask);
-   if (r != 0)
-     goto out_free_spawnattr;
+  r = posix_spawnattr_setsigdefault (&attr, &mask);
+  if (r != 0)
+    goto out_free_spawnattr;
 
-   r = posix_spawn_file_actions_init (&file_actions);
-   if (r != 0)
-     goto out_free_spawnattr;
+  r = posix_spawn_file_actions_init (&file_actions);
+  if (r != 0)
+    goto out_free_spawnattr;
 
   /* Redirect pipes as required */
 
