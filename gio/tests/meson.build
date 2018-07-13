@@ -64,6 +64,14 @@ gio_tests = [
   'glistmodel',
   'testfilemonitor',
   'thumbnail-verification',
+  'tls-certificate',
+  'tls-interaction',
+]
+slow_tests = [
+  'actions',
+  'gdbus-export',
+  'gdbus-threading',
+  'testfilemonitor',
 ]
 
 test_extra_programs = [
@@ -197,7 +205,7 @@ if host_machine.system() != 'windows'
     ]
 
     if not glib_have_cocoa
-      gio_dbus_tests = [['dbus-appinfo', [], []]]
+      gio_dbus_tests += [['dbus-appinfo', [], []]]
     endif
 
     # separate loop because extra source files for each test
@@ -210,7 +218,12 @@ if host_machine.system() != 'windows'
           install : false,
           c_args : test_c_args,
           dependencies : common_gio_tests_deps + extra_deps)
-      test(test_name, exe, env : test_env, suite : ['gio'])
+      # These tests may take more than 30 seconds to run on the CI infrastructure
+      if slow_tests.contains(test_name)
+        test(test_name, exe, env : test_env, timeout : 120, suite : ['gio', 'slow'])
+      else
+        test(test_name, exe, env : test_env, suite : ['gio'])
+      endif
     endforeach
 
     exe = executable('gdbus-test-codegen-old', 'gdbus-test-codegen.c',
@@ -293,13 +306,16 @@ foreach test_name : gio_tests
     # This is peer to peer so it doesn't need a session bus, so we can run
     # it automatically as a test by default
     extra_deps = [libgdbus_example_objectmanager_dep]
+  elif test_name == 'tls-certificate' or test_name == 'tls-interaction'
+    srcs += ['gtesttlsbackend.c']
   endif
   exe = executable(test_name, srcs,
       install : false,
       c_args : test_c_args,
       dependencies : common_gio_tests_deps + extra_deps)
-  if test_name == 'testfilemonitor'
-    test(test_name, exe, env : test_env, timeout : 45, suite : ['gio', 'slow'])
+  # These tests may take more than 30 seconds to run on the CI infrastructure
+  if slow_tests.contains(test_name)
+    test(test_name, exe, env : test_env, timeout : 120, suite : ['gio', 'slow'])
   else
     test(test_name, exe, env : test_env, suite : ['gio'])
   endif
@@ -332,8 +348,6 @@ uninstalled_test_extra_programs = [
   ['send-data'],
   ['socket-server'],
   ['socket-client', ['gtlsconsoleinteraction.c']],
-  ['tls-certificate', ['gtesttlsbackend.c']],
-  ['tls-interaction', ['gtesttlsbackend.c']],
   # These three are manual-run tests because they need a session bus but don't bring one up themselves
   # FIXME: these build but don't seem to work!
   ['gdbus-example-objectmanager-client', [], [libgdbus_example_objectmanager_dep]],

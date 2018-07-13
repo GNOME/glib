@@ -18,6 +18,7 @@ glib_tests = [
   'error',
   'fileutils',
   'gdatetime',
+  'guuid',
   'gvariant',
   'hash',
   'hmac',
