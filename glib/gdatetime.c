@@ -712,6 +712,32 @@ g_date_time_unref (GDateTime *datetime)
     }
 }
 
+/**
+ * g_date_time_copy:
+ * @datetime: a #GDateTime
+ *
+ * Create a copy of @datetime. 
+ * 
+ * Returns: (transfer full): A new instance of #GDateTime or %NULL. 
+ * The returned copy should be freed using g_date_time_unref()
+ */
+GDateTime *
+g_date_time_copy (GDateTime *datetime)
+{
+	g_return_val_if_fail(datetime != NULL, NULL);
+
+	GTimeZone *tz;
+
+	tz = g_time_zone_new (g_date_time_get_timezone_abbreviation (datetime));
+
+	return g_date_time_new (tz,
+													g_date_time_get_year (datetime),
+													g_date_time_get_month (datetime),
+													g_date_time_get_day_of_month (datetime),
+													g_date_time_get_hour (datetime),
+													g_date_time_get_minute (datetime),
+													g_date_time_get_seconds (datetime));
+}
 /* Internal state transformers {{{1 */
 /*< internal >
  * g_date_time_to_instant:

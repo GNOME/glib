@@ -147,6 +147,10 @@ GDateTime *             g_date_time_new_utc                             (gint   
 
 GLIB_AVAILABLE_IN_ALL
 G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_copy                                (GDateTime      *datetime);
+
+GLIB_AVAILABLE_IN_ALL
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add                                 (GDateTime      *datetime,
                                                                          GTimeSpan       timespan);
 
