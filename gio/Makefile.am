@@ -843,7 +843,7 @@ gio_querymodules_LDADD	 = libgio-2.0.la 		\
 gio_launch_desktop_SOURCES = gio-launch-desktop.c
 
 gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c.py
-	$(AM_V_GEN) $(srcdir)/data-to-c.py $(top_srcdir)/glib/gconstructor.h gconstructor_code $@
+	$(AM_V_GEN) $(PYTHON) $(srcdir)/data-to-c.py $(top_srcdir)/glib/gconstructor.h gconstructor_code $@
 
 glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
 glib_compile_schemas_SOURCES = \
