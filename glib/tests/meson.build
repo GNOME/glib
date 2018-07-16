@@ -22,10 +22,12 @@ glib_tests = {
   'gdatetime' : {},
   'guuid' : {},
   'gvariant' : {'suite' : ['slow']},
-  'gwakeup' : {'source' : ['gwakeuptest.c', '../gwakeup.c']},
+  'gwakeup' : {'source' : ['gwakeuptest.c', '../gwakeup.c'],
+               'install' : false},
   'gwakeup-fallback' : {'skip' : not glib_conf.has('HAVE_EVENTFD'),
                         'source' : ['gwakeuptest.c', '../gwakeup.c'],
-                        'c_args' : ['-DTEST_EVENTFD_FALLBACK']},
+                        'c_args' : ['-DTEST_EVENTFD_FALLBACK'],
+                        'install' : false},
   'hash' : {},
   'hmac' : {},
   'hook' : {},
@@ -90,7 +92,8 @@ glib_tests = {
   'uri' : {},
   '1bit-mutex' : {},
   '1bit-emufutex' : {'source' : '1bit-mutex.c',
-                     'c_args' : ['-DTEST_EMULATED_FUTEX']},
+                     'c_args' : ['-DTEST_EMULATED_FUTEX'],
+                     'install' : false},
   '642026' : {'suite' : ['slow']},
   '642026-ec' : {'source' : '642026.c',
                  'c_args' : ['-DG_ERRORCHECK_MUTEXES'], 'suite' : ['slow']},
@@ -117,11 +120,25 @@ foreach test_name, extra_args : glib_tests
     source = extra_args.get('source', test_name + '.c')
     deps += extra_args.get('dependencies', [])
     c_args = test_cargs + extra_args.get('c_args', [])
+    install = installed_tests_enabled and extra_args.get('install', true)
+
+    if install
+      test_conf = configuration_data()
+      test_conf.set('installed_tests_dir', installed_tests_execdir)
+      test_conf.set('program', test_name)
+      configure_file(
+        input: installed_tests_template,
+        output: test_name + '.test',
+        install_dir: installed_tests_metadir,
+        configuration: test_conf
+      )
+    endif
 
     exe = executable(test_name, source,
       c_args : c_args,
       dependencies : deps,
-      install: false,
+      install: install,
+      install_dir: installed_tests_execdir,
     )
 
     suite = ['glib'] + extra_args.get('suite', [])
@@ -134,7 +151,8 @@ endforeach
 executable('test-spawn-echo', 'test-spawn-echo.c',
   c_args : test_cargs,
   dependencies : deps,
-  install : false,
+  install: installed_tests_enabled,
+  install_dir: installed_tests_execdir,
 )
 
 # some testing of gtester functionality
