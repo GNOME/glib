@@ -20,18 +20,16 @@ gobject_tests = [
   'ifaceproperties',
 ]
 
-# FIXME: use new environment() object
 # FIXME: put common bits of test environment() in one location
 # Not entirely random of course, but at least it changes over time
 random_number = minor_version + meson.version().split('.').get(1).to_int()
 
-test_env = [
-  'G_TEST_SRCDIR=' + meson.current_source_dir(),
-  'G_TEST_BUILDDIR=' + meson.current_build_dir(),
-  'G_DEBUG=gc-friendly',
-  'MALLOC_CHECK_=2',
-  'MALLOC_PERTURB_=@0@'.format(random_number % 256),
-]
+test_env = environment()
+test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
+test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
+test_env.set('G_DEBUG', 'gc-friendly')
+test_env.set('MALLOC_CHECK_', '2')
+test_env.set('MALLOC_PERTURB_', '@0@'.format(random_number % 256))
 
 foreach test_name : gobject_tests
   deps = [libm, thread_dep, libglib_dep, libgobject_dep]

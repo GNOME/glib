@@ -79,12 +79,11 @@ test_extra_programs = [
   ['gdbus-testserver'],
 ]
 
-test_env = [
-  'G_TEST_SRCDIR=' + meson.current_source_dir(),
-  'G_TEST_BUILDDIR=' + meson.current_build_dir(),
-  'GIO_MODULE_DIR=',
-  'GIO_LAUNCH_DESKTOP=' + meson.build_root() + '/gio/gio-launch-desktop',
-]
+test_env = environment()
+test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
+test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
+test_env.set('GIO_MODULE_DIR', '')
+test_env.set('GIO_LAUNCH_DESKTOP', meson.build_root() + '/gio/gio-launch-desktop')
 
 test_c_args = [
   '-DG_LOG_DOMAIN="GLib-GIO"',
