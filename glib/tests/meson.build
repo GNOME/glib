@@ -22,10 +22,12 @@ glib_tests = {
   'gdatetime' : {},
   'guuid' : {},
   'gvariant' : {'suite' : ['slow']},
-  'gwakeup' : {'source' : ['gwakeuptest.c', '../gwakeup.c']},
+  'gwakeup' : {'source' : ['gwakeuptest.c', '../gwakeup.c'],
+               'install' : false},
   'gwakeup-fallback' : {'skip' : not glib_conf.has('HAVE_EVENTFD'),
                         'source' : ['gwakeuptest.c', '../gwakeup.c'],
-                        'c_args' : ['-DTEST_EVENTFD_FALLBACK']},
+                        'c_args' : ['-DTEST_EVENTFD_FALLBACK'],
+                        'install' : false},
   'hash' : {},
   'hmac' : {},
   'hook' : {},
@@ -91,7 +93,8 @@ glib_tests = {
   'uri' : {},
   '1bit-mutex' : {},
   '1bit-emufutex' : {'source' : '1bit-mutex.c',
-                     'c_args' : ['-DTEST_EMULATED_FUTEX']},
+                     'c_args' : ['-DTEST_EMULATED_FUTEX'],
+                     'install' : false},
   '642026' : {'suite' : ['slow']},
   '642026-ec' : {'source' : '642026.c',
                  'c_args' : ['-DG_ERRORCHECK_MUTEXES'], 'suite' : ['slow']},
@@ -116,11 +119,25 @@ foreach test_name, extra_args : glib_tests
   # mutable to dictionaries (https://github.com/mesonbuild/meson/pull/3820).
   if not extra_args.get('skip', false)
     source = extra_args.get('source', test_name + '.c')
+    install = installed_tests_enabled and extra_args.get('install', true)
+
+    if install
+      test_conf = configuration_data()
+      test_conf.set('installed_tests_dir', installed_tests_execdir)
+      test_conf.set('program', test_name)
+      configure_file(
+        input: installed_tests_template,
+        output: test_name + '.test',
+        install_dir: installed_tests_metadir,
+        configuration: test_conf
+      )
+    endif
 
     exe = executable(test_name, source,
       c_args : test_cargs + extra_args.get('c_args', []),
       dependencies : test_deps + extra_args.get('dependencies', []),
-      install: false,
+      install_dir: installed_tests_execdir,
+      install: install,
     )
 
     suite = ['glib'] + extra_args.get('suite', [])
@@ -133,7 +150,8 @@ endforeach
 executable('test-spawn-echo', 'test-spawn-echo.c',
   c_args : test_cargs,
   dependencies : test_deps,
-  install : false,
+  install_dir: installed_tests_execdir,
+  install: installed_tests_enabled,
 )
 
 # some testing of gtester functionality
