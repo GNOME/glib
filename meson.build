@@ -56,6 +56,7 @@ gioinc = include_directories('gio')
 glib_prefix = get_option('prefix')
 glib_bindir = join_paths(glib_prefix, get_option('bindir'))
 glib_libdir = join_paths(glib_prefix, get_option('libdir'))
+glib_libexecdir = join_paths(glib_prefix, get_option('libexecdir'))
 glib_datadir = join_paths(glib_prefix, get_option('datadir'))
 glib_pkgdatadir = join_paths(glib_datadir, 'glib-2.0')
 glib_includedir = join_paths(glib_prefix, get_option('includedir'))
@@ -65,6 +66,11 @@ if glib_giomodulesdir == ''
 endif
 
 glib_pkgconfigreldir = join_paths(glib_libdir, 'pkgconfig')
+
+installed_tests_metadir = join_paths(glib_datadir, 'installed-tests', meson.project_name())
+installed_tests_execdir = join_paths(glib_libexecdir, 'installed-tests', meson.project_name())
+installed_tests_enabled = get_option('installed_tests')
+installed_tests_template = files('template.test.in')
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
