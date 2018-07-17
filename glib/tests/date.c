@@ -215,7 +215,11 @@ test_month_names (void)
 #define TEST_DATE(d,m,y,f,o)                                    \
   g_date_set_dmy (gdate, d, m, y);                              \
   g_date_strftime (buf, 100, f, gdate);                         \
-  g_assert_cmpstr (buf, ==, (o));                               \
+  gchar *buf_casefold = g_utf8_casefold (buf, -1);              \
+  gchar *o_casefold = g_utf8_casefold ((o), -1);                \
+  g_assert_cmpstr (buf_casefold, ==, o_casefold);               \
+  g_free (buf_casefold);                                        \
+  g_free (o_casefold);                                          \
   g_date_set_parse (gdate, buf);                                \
   g_assert (g_date_valid (gdate));                              \
   g_assert_cmpint (g_date_get_day (gdate), ==, d);              \
