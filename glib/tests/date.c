@@ -196,6 +196,17 @@ test_month_names (void)
 
   g_test_bug ("749206");
 
+  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
+   * need the translations to be installed. We can’t mess around with
+   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
+   * right installed directory hierarchy to be successfully loaded by gettext. */
+  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
+    {
+      g_test_skip ("Skipping due to running uninstalled. "
+                   "This test can only be run when the translations are installed.");
+      return;
+    }
+
   /* This test can only work (on non-Windows platforms) if libc supports
    * the %OB (etc.) format placeholders. If it doesn’t, strftime() (and hence
    * g_date_strftime()) will return the placeholder unsubstituted.
@@ -212,15 +223,21 @@ test_month_names (void)
   g_test_skip ("libc doesn’t support all alternative month names");
 #else
 
-#define TEST_DATE(d,m,y,f,o)                                    \
+#define TEST_DATE(d,m,y,f,o)                     G_STMT_START { \
+  gchar *o_casefold, *buf_casefold;                             \
   g_date_set_dmy (gdate, d, m, y);                              \
   g_date_strftime (buf, 100, f, gdate);                         \
-  g_assert_cmpstr (buf, ==, (o));                               \
+  buf_casefold = g_utf8_casefold (buf, -1);                     \
+  o_casefold = g_utf8_casefold ((o), -1);                       \
+  g_assert_cmpstr (buf_casefold, ==, o_casefold);               \
+  g_free (buf_casefold);                                        \
+  g_free (o_casefold);                                          \
   g_date_set_parse (gdate, buf);                                \
   g_assert (g_date_valid (gdate));                              \
   g_assert_cmpint (g_date_get_day (gdate), ==, d);              \
   g_assert_cmpint (g_date_get_month (gdate), ==, m);            \
-  g_assert_cmpint (g_date_get_year (gdate), ==, y);
+  g_assert_cmpint (g_date_get_year (gdate), ==, y);             \
+} G_STMT_END
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
 #ifdef G_OS_WIN32
