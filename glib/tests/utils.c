@@ -517,6 +517,22 @@ test_clear_pointer (void)
   g_assert (a == NULL);
 }
 
+/* Test that g_clear_pointer() works with a GDestroyNotify which contains a cast.
+ * See https://gitlab.gnome.org/GNOME/glib/issues/1425 */
+static void
+test_clear_pointer_cast (void)
+{
+  GHashTable *hash_table = NULL;
+
+  hash_table = g_hash_table_new (g_str_hash, g_str_equal);
+
+  g_assert_nonnull (hash_table);
+
+  g_clear_pointer (&hash_table, (void (*) (GHashTable *)) g_hash_table_destroy);
+
+  g_assert_null (hash_table);
+}
+
 static int obj_count;
 
 static void
@@ -656,6 +672,7 @@ main (int   argc,
   g_test_add_func ("/utils/specialdir", test_special_dir);
   g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
+  g_test_add_func ("/utils/clear-pointer-cast", test_clear_pointer_cast);
   g_test_add_func ("/utils/take-pointer", test_take_pointer);
   g_test_add_func ("/utils/clear-source", test_clear_source);
   g_test_add_func ("/utils/misc-mem", test_misc_mem);
