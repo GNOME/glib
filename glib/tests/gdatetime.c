@@ -1441,6 +1441,17 @@ test_non_utf8_printf (void)
 {
   gchar *oldlocale;
 
+  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
+   * need the translations to be installed. We can’t mess around with
+   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
+   * right installed directory hierarchy to be successfully loaded by gettext. */
+  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
+    {
+      g_test_skip ("Skipping due to running uninstalled. "
+                   "This test can only be run when the translations are installed.");
+      return;
+    }
+
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "ja_JP.eucjp");
   if (strstr (setlocale (LC_ALL, NULL), "ja_JP") == NULL)
