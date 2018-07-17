@@ -4738,10 +4738,13 @@ g_variant_valist_new_nnp (const gchar **str,
           type = g_variant_type_element (type);
 
           if G_UNLIKELY (!g_variant_type_is_subtype_of (type, (GVariantType *) *str))
-            g_error ("g_variant_new: expected GVariantBuilder array element "
-                     "type '%s' but the built value has element type '%s'",
-                     g_variant_type_dup_string ((GVariantType *) *str),
-                     g_variant_get_type_string (value) + 1);
+            {
+              gchar *type_string = g_variant_type_dup_string ((GVariantType *) *str);
+              g_error ("g_variant_new: expected GVariantBuilder array element "
+                       "type '%s' but the built value has element type '%s'",
+                       type_string, g_variant_get_type_string (value) + 1);
+              g_free (type_string);
+            }
 
           g_variant_type_string_scan (*str, NULL, str);
 
@@ -4803,10 +4806,13 @@ g_variant_valist_new_nnp (const gchar **str,
 
     case '@':
       if G_UNLIKELY (!g_variant_is_of_type (ptr, (GVariantType *) *str))
-        g_error ("g_variant_new: expected GVariant of type '%s' but "
-                 "received value has type '%s'",
-                 g_variant_type_dup_string ((GVariantType *) *str),
-                 g_variant_get_type_string (ptr));
+        {
+          gchar *type_string = g_variant_type_dup_string ((GVariantType *) *str);
+          g_error ("g_variant_new: expected GVariant of type '%s' but "
+                   "received value has type '%s'",
+                   type_string, g_variant_get_type_string (ptr));
+          g_free (type_string);
+        }
 
       g_variant_type_string_scan (*str, NULL, str);
 

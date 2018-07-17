@@ -2921,10 +2921,12 @@ g_settings_bind_with_mapping (GSettings               *settings,
 
       if (!g_variant_type_equal (binding->key.type, G_VARIANT_TYPE_BOOLEAN))
         {
+          gchar *type_string = g_variant_type_dup_string (binding->key.type);
           g_critical ("g_settings_bind: G_SETTINGS_BIND_INVERT_BOOLEAN "
                       "was specified, but key '%s' on schema '%s' has "
                       "type '%s'", key, g_settings_schema_get_id (settings->priv->schema),
-                      g_variant_type_dup_string (binding->key.type));
+                      type_string);
+          g_free (type_string);
           return;
         }
 
@@ -2935,12 +2937,14 @@ g_settings_bind_with_mapping (GSettings               *settings,
            !g_settings_mapping_is_compatible (binding->property->value_type,
                                               binding->key.type))
     {
+      gchar *type_string = g_variant_type_dup_string (binding->key.type);
       g_critical ("g_settings_bind: property '%s' on class '%s' has type "
                   "'%s' which is not compatible with type '%s' of key '%s' "
                   "on schema '%s'", binding->property->name, G_OBJECT_TYPE_NAME (object),
                   g_type_name (binding->property->value_type),
-                  g_variant_type_dup_string (binding->key.type), key,
+                  type_string, key,
                   g_settings_schema_get_id (settings->priv->schema));
+      g_free (type_string);
       return;
     }
 
