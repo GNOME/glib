@@ -92,7 +92,7 @@ python_tools = [
 
 python_tools_conf = configuration_data()
 python_tools_conf.set('VERSION', glib_version)
-python_tools_conf.set('PYTHON', python.path())
+python_tools_conf.set('PYTHON', python_name)
 
 foreach tool: python_tools
   tool_bin = configure_file(

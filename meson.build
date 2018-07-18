@@ -1800,7 +1800,9 @@ elif meson.get_cross_property('have_strlcpy', false)
   glib_conf.set('HAVE_STRLCPY', 1)
 endif
 
-python = import('python3').find_python()
+python = import('python').find_installation('python3')
+# used for '#!/usr/bin/env <name>'
+python_name = 'python3'
 
 # Determine which user environment-dependent files that we want to install
 have_bash = find_program('bash', required : false).found() # For completion scripts
