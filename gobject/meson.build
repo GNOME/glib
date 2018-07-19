@@ -105,6 +105,8 @@ foreach tool: python_tools
 
   # Set variables for later use
   set_variable(tool.underscorify(), tool_bin)
+  # Provide tools for others when we're a subproject and they use the Meson GNOME module
+  meson.override_find_program(tool, tool_bin)
 endforeach
 
 executable('gobject-query', 'gobject-query.c',
