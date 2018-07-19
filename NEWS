@@ -1,3 +1,28 @@
+Overview of changes in GLib 2.57.2
+==================================
+
+* Require pcre 8.31
+* Require meson 0.47.0
+
+* Bugs fixed:
+ 742456 Add g_steal_pointer() convenience function to mark ownership...
+ 795569 MinGW CI: fix tests
+ 796341 gmem.h: Use typeof() in g_steal_pointer() macro 
+ #1013 Support for per-session overrides
+ #1360 glib-mkenums breaks if option specified but no nick
+ #1175 Add names and tags to various GSources and GTasks constructed in GLib
+ #903 g_main_context_wait() not deprecated in API, but emits a g_critical()...
+ #786 Fix memory leaks in libgio tests
+ #927 gio/gresource.c:do_lookup check for terminating "/"
+ #976 Document difference between g_assert() and g_assert_*()...
+ #1447 glib 2.57.1: test_month_names: assertion failed...
+
+* Translation updates:
+ Friulian
+ German
+ Romanian
+
+
 Overview of changes in GLib 2.57.1
 ==================================
 
