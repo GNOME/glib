@@ -40,7 +40,10 @@ enum
 struct _GNetworkMonitorPortalPrivate
 {
   GXdpNetworkMonitor *proxy;
-  gboolean network_available;
+  gboolean has_network;
+  gboolean available;
+  gboolean metered;
+  GNetworkConnectivity connectivity;
 };
 
 G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorPortal, g_network_monitor_portal, G_TYPE_NETWORK_MONITOR_BASE,
@@ -72,22 +75,15 @@ g_network_monitor_portal_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_NETWORK_AVAILABLE:
-      g_value_set_boolean (value,
-                           nm->priv->network_available &&
-                           gxdp_network_monitor_get_available (nm->priv->proxy));
+      g_value_set_boolean (value, nm->priv->available);
       break;
 
     case PROP_NETWORK_METERED:
-      g_value_set_boolean (value,
-                           nm->priv->network_available &&
-                           gxdp_network_monitor_get_metered (nm->priv->proxy));
+      g_value_set_boolean (value, nm->priv->metered);
       break;
 
     case PROP_CONNECTIVITY:
-      g_value_set_enum (value,
-                        nm->priv->network_available
-                        ? gxdp_network_monitor_get_connectivity (nm->priv->proxy)
-                        : G_NETWORK_CONNECTIVITY_LOCAL);
+      g_value_set_enum (value, nm->priv->connectivity);
       break;
 
     default:
@@ -97,12 +93,88 @@ g_network_monitor_portal_get_property (GObject    *object,
 }
 
 static void
+got_available (GObject *source,
+               GAsyncResult *res,
+               gpointer data)
+{
+  GXdpNetworkMonitor *proxy = GXDP_NETWORK_MONITOR (source);
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (data);
+  GError *error = NULL;
+  gboolean available;
+  
+  if (!gxdp_network_monitor_call_get_available_finish (proxy, &available, res, &error))
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  if (nm->priv->available != available)
+    {
+      nm->priv->available = available;
+      g_object_notify (G_OBJECT (nm), "network-available");
+      g_signal_emit_by_name (nm, "network-changed", available);
+    }
+}
+
+static void
+got_metered (GObject *source,
+             GAsyncResult *res,
+             gpointer data)
+{
+  GXdpNetworkMonitor *proxy = GXDP_NETWORK_MONITOR (source);
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (data);
+  GError *error = NULL;
+  gboolean metered;
+  
+  if (!gxdp_network_monitor_call_get_metered_finish (proxy, &metered, res, &error))
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  if (nm->priv->metered != metered)
+    {
+      nm->priv->metered = metered;
+      g_object_notify (G_OBJECT (nm), "network-metered");
+    }
+}
+
+static void
+got_connectivity (GObject *source,
+                  GAsyncResult *res,
+                  gpointer data)
+{
+  GXdpNetworkMonitor *proxy = GXDP_NETWORK_MONITOR (source);
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (data);
+  GError *error = NULL;
+  GNetworkConnectivity connectivity;
+  
+  if (!gxdp_network_monitor_call_get_connectivity_finish (proxy, &connectivity, res, &error))
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  if (nm->priv->connectivity != connectivity)
+    {
+      nm->priv->connectivity = connectivity;
+      g_object_notify (G_OBJECT (nm), "connectivity");
+    }
+}
+
+static void
 proxy_changed (GXdpNetworkMonitor    *proxy,
-               gboolean               available,
                GNetworkMonitorPortal *nm)
 {
-  if (nm->priv->network_available)
-    g_signal_emit_by_name (nm, "network-changed", available);
+  if (nm->priv->has_network)
+    {
+      gxdp_network_monitor_call_get_connectivity (proxy, NULL, got_connectivity, nm);
+      gxdp_network_monitor_call_get_metered (proxy, NULL, got_metered, nm);
+      gxdp_network_monitor_call_get_available (proxy, NULL, got_available, nm);
+    }
 }
 
 static gboolean
@@ -113,6 +185,11 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (initable);
   GXdpNetworkMonitor *proxy;
   gchar *name_owner = NULL;
+  int version;
+
+  nm->priv->available = FALSE;
+  nm->priv->metered = FALSE;
+  nm->priv->connectivity = G_NETWORK_CONNECTIVITY_LOCAL;
 
   if (!glib_should_use_portal ())
     {
@@ -144,9 +221,21 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
 
   g_free (name_owner);
 
+  g_object_get (proxy, "version", &version, NULL);
+  if (version != 2)
+    {
+      g_object_unref (proxy);
+      g_set_error (error,
+                   G_DBUS_ERROR,
+                   G_DBUS_ERROR_NAME_HAS_NO_OWNER,
+                   "NetworkMonitor portal wrong version: %d != 2", version);
+      return FALSE;
+    }
+
   g_signal_connect (proxy, "changed", G_CALLBACK (proxy_changed), nm);
+
   nm->priv->proxy = proxy;
-  nm->priv->network_available = glib_network_available_in_sandbox ();
+  nm->priv->has_network = glib_network_available_in_sandbox ();
 
   return initable_parent_iface->init (initable, cancellable, error);
 }
