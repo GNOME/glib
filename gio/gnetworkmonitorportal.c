@@ -21,7 +21,6 @@
 #include "gnetworkmonitorportal.h"
 #include "ginitable.h"
 #include "giomodule-priv.h"
-#include "gnetworkmonitor.h"
 #include "xdp-dbus.h"
 #include "gportalsupport.h"
 
@@ -39,8 +38,13 @@ enum
 
 struct _GNetworkMonitorPortalPrivate
 {
-  GXdpNetworkMonitor *proxy;
-  gboolean network_available;
+  GDBusProxy *proxy;
+  gboolean has_network;
+  int version;
+
+  gboolean available;
+  gboolean metered;
+  GNetworkConnectivity connectivity;
 };
 
 G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorPortal, g_network_monitor_portal, G_TYPE_NETWORK_MONITOR_BASE,
@@ -72,22 +76,15 @@ g_network_monitor_portal_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_NETWORK_AVAILABLE:
-      g_value_set_boolean (value,
-                           nm->priv->network_available &&
-                           gxdp_network_monitor_get_available (nm->priv->proxy));
+      g_value_set_boolean (value, nm->priv->available);
       break;
 
     case PROP_NETWORK_METERED:
-      g_value_set_boolean (value,
-                           nm->priv->network_available &&
-                           gxdp_network_monitor_get_metered (nm->priv->proxy));
+      g_value_set_boolean (value, nm->priv->metered);
       break;
 
     case PROP_CONNECTIVITY:
-      g_value_set_enum (value,
-                        nm->priv->network_available
-                        ? gxdp_network_monitor_get_connectivity (nm->priv->proxy)
-                        : G_NETWORK_CONNECTIVITY_LOCAL);
+      g_value_set_enum (value, nm->priv->connectivity);
       break;
 
     default:
@@ -97,22 +94,184 @@ g_network_monitor_portal_get_property (GObject    *object,
 }
 
 static void
-proxy_changed (GXdpNetworkMonitor    *proxy,
-               gboolean               available,
-               GNetworkMonitorPortal *nm)
+got_available (GObject *source,
+               GAsyncResult *res,
+               gpointer data)
 {
-  if (nm->priv->network_available)
-    g_signal_emit_by_name (nm, "network-changed", available);
+  GDBusProxy *proxy = G_DBUS_PROXY (source);
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (data);
+  GError *error = NULL;
+  GVariant *ret;
+  gboolean available;
+  
+  ret = g_dbus_proxy_call_finish (proxy, res, &error);
+  if (ret == NULL)
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  g_variant_get (ret, "(b)", &available);
+  g_variant_unref (ret);
+
+  if (nm->priv->available != available)
+    {
+      nm->priv->available = available;
+      g_object_notify (G_OBJECT (nm), "network-available");
+      g_signal_emit_by_name (nm, "network-changed", available);
+    }
 }
 
+static void
+got_metered (GObject *source,
+             GAsyncResult *res,
+             gpointer data)
+{
+  GDBusProxy *proxy = G_DBUS_PROXY (source);
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (data);
+  GError *error = NULL;
+  GVariant *ret;
+  gboolean metered;
+  
+  ret = g_dbus_proxy_call_finish (proxy, res, &error);
+  if (ret == NULL)
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  g_variant_get (ret, "(b)", &metered);
+  g_variant_unref (ret);
+
+  if (nm->priv->metered != metered)
+    {
+      nm->priv->metered = metered;
+      g_object_notify (G_OBJECT (nm), "network-metered");
+    }
+}
+
+static void
+got_connectivity (GObject *source,
+                  GAsyncResult *res,
+                  gpointer data)
+{
+  GDBusProxy *proxy = G_DBUS_PROXY (source);
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (data);
+  GError *error = NULL;
+  GVariant *ret;
+  GNetworkConnectivity connectivity;
+  
+  ret = g_dbus_proxy_call_finish (proxy, res, &error);
+  if (ret == NULL)
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  g_variant_get (ret, "(u)", &connectivity);
+  g_variant_unref (ret);
+
+  if (nm->priv->connectivity != connectivity)
+    {
+      nm->priv->connectivity = connectivity;
+      g_object_notify (G_OBJECT (nm), "connectivity");
+    }
+}
+
+static void
+proxy_signal (GDBusProxy *proxy,
+              const char *sender,
+              const char *signal,
+              GVariant *parameters,
+              GNetworkMonitorPortal *nm)
+{
+  if (!nm->priv->has_network)
+    return;
+
+  if (nm->priv->version == 1)
+    {
+      gboolean available;
+
+      g_variant_get (parameters, "(b)", &available);
+      g_signal_emit_by_name (nm, "network-changed", available);
+    }
+  else if (nm->priv->version == 2)
+    {
+      g_dbus_proxy_call (proxy, "GetConnectivity", NULL, 0, -1, NULL, got_connectivity, nm);
+      g_dbus_proxy_call (proxy, "GetMetered", NULL, 0, -1, NULL, got_metered, nm);
+      g_dbus_proxy_call (proxy, "GetAvailable", NULL, 0, -1, NULL, got_available, nm);
+    }
+}
+
+static void
+proxy_properties_changed (GDBusProxy *proxy,
+                          GVariant *changed,
+                          GVariant *invalidated,
+                          GNetworkMonitorPortal *nm)
+{
+  if (!nm->priv->has_network)
+    return;
+
+  if (nm->priv->version == 1)
+    {
+      GVariant *ret;
+
+      ret = g_dbus_proxy_get_cached_property (proxy, "connectivity");
+      if (ret)
+        {
+          GNetworkConnectivity connectivity = g_variant_get_uint32 (ret);
+          if (nm->priv->connectivity != connectivity)
+            {
+              nm->priv->connectivity = connectivity;
+              g_object_notify (G_OBJECT (nm), "connectivity");
+            }
+          g_variant_unref (ret);
+        }
+
+      ret = g_dbus_proxy_get_cached_property (proxy, "metered");
+      if (ret)
+        {
+          gboolean metered = g_variant_get_boolean (ret);
+          if (nm->priv->metered != metered)
+            {
+              nm->priv->metered = metered;
+              g_object_notify (G_OBJECT (nm), "network-metered");
+            }
+          g_variant_unref (ret);
+        }
+
+      ret = g_dbus_proxy_get_cached_property (proxy, "available");
+      if (ret)
+        {
+          gboolean available = g_variant_get_boolean (ret);
+          if (nm->priv->available != available)
+            {
+              nm->priv->available = available;
+              g_object_notify (G_OBJECT (nm), "network-available");
+              g_signal_emit_by_name (nm, "network-changed", available);
+            }
+          g_variant_unref (ret);
+        }
+    }
+}
+                           
 static gboolean
 g_network_monitor_portal_initable_init (GInitable     *initable,
                                         GCancellable  *cancellable,
                                         GError       **error)
 {
   GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (initable);
-  GXdpNetworkMonitor *proxy;
+  GDBusProxy *proxy;
   gchar *name_owner = NULL;
+  int version;
+  GVariant *ret;
+
+  nm->priv->available = FALSE;
+  nm->priv->metered = FALSE;
+  nm->priv->connectivity = G_NETWORK_CONNECTIVITY_LOCAL;
 
   if (!glib_should_use_portal ())
     {
@@ -120,17 +279,19 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
       return FALSE;
     }
 
-  proxy = gxdp_network_monitor_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-                                                       G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START
-                                                       | G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES,
-                                                       "org.freedesktop.portal.Desktop",
-                                                       "/org/freedesktop/portal/desktop",
-                                                       cancellable,
-                                                       error);
+  proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                         G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START
+                                         | G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES,
+                                         NULL,
+                                         "org.freedesktop.portal.Desktop",
+                                         "/org/freedesktop/portal/desktop",
+					 "org.freedesktop.portal.NetworkMonitor",
+                                         cancellable,
+                                         error);
   if (!proxy)
     return FALSE;
 
-  name_owner = g_dbus_proxy_get_name_owner (G_DBUS_PROXY (proxy));
+  name_owner = g_dbus_proxy_get_name_owner (proxy);
 
   if (!name_owner)
     {
@@ -144,9 +305,26 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
 
   g_free (name_owner);
 
-  g_signal_connect (proxy, "changed", G_CALLBACK (proxy_changed), nm);
+  ret = g_dbus_proxy_get_cached_property (proxy, "version");
+  g_variant_get (ret, "u", &version);
+  g_variant_unref (ret);
+
+  if (version != 1 && version != 2)
+    {
+      g_object_unref (proxy);
+      g_set_error (error,
+                   G_DBUS_ERROR,
+                   G_DBUS_ERROR_NAME_HAS_NO_OWNER,
+                   "NetworkMonitor portal unsupported version: %d", version);
+      return FALSE;
+    }
+
+  g_signal_connect (proxy, "g-signal", G_CALLBACK (proxy_signal), nm);
+  g_signal_connect (proxy, "g-properties-changed", G_CALLBACK (proxy_properties_changed), nm);
+
   nm->priv->proxy = proxy;
-  nm->priv->network_available = glib_network_available_in_sandbox ();
+  nm->priv->has_network = glib_network_available_in_sandbox ();
+  nm->priv->version = version;
 
   return initable_parent_iface->init (initable, cancellable, error);
 }
