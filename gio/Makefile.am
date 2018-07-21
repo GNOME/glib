@@ -369,7 +369,6 @@ CLEANFILES += $(xdp_dbus_built_sources)
 portal_interfaces = \
 	org.freedesktop.portal.Documents.xml \
 	org.freedesktop.portal.OpenURI.xml \
-	org.freedesktop.portal.NetworkMonitor.xml \
 	org.freedesktop.portal.ProxyResolver.xml \
 	$(NULL)
 
