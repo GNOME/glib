@@ -344,22 +344,6 @@
     </formalpara>
 
     <formalpara>
-      <title><option>--disable-man</option> and
-        <option>--enable-man</option></title>
-
-      <para>
-        By default the <command>configure</command> script will try
-        to auto-detect whether <application>xsltproc</application>
-        and the necessary Docbook stylesheets are installed.
-        If they are, then it will use them to rebuild the included
-        man pages from the XML sources. These options can be used
-        to explicitly control whether man pages should be rebuilt
-        used or not. The distribution includes pre-generated man
-        pages.
-      </para>
-    </formalpara>
-
-    <formalpara>
       <title><option>--disable-xattr</option> and
         <option>--enable-xattr</option></title>
 

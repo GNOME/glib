@@ -147,7 +147,7 @@ valgrinddir = $(datadir)/glib-2.0/valgrind
 dist_valgrind_DATA = glib.supp
 
 # build documentation when doing distcheck
-AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gtk-doc --enable-man --disable-maintainer-mode
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gtk-doc --disable-maintainer-mode
 
 DISTCLEANFILES += config.lt
 

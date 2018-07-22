@@ -115,11 +115,7 @@ EXTRA_DIST +=				\
 
 ########################################################################
 
-man_MANS =
-
-if ENABLE_MAN
-
-man_MANS += \
+man_MANS = \
 	glib-gettextize.1 	\
 	gtester.1		\
 	gtester-report.1
@@ -135,11 +131,7 @@ XSLTPROC_FLAGS = \
 .xml.1:
 	$(AM_V_GEN) $(XSLTPROC) $(XSLTPROC_FLAGS) http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
 
-endif
-
-CLEANFILES ?=
 CLEANFILES += $(man_MANS)
-
 EXTRA_DIST += $(man_MANS)
 
 dist-hook-local: all-local

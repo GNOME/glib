@@ -200,11 +200,7 @@ include $(top_srcdir)/gtk-doc.make
 EXTRA_DIST +=			\
 	version.xml.in
 
-man_MANS =
-
-if ENABLE_MAN
-
-man_MANS +=				\
+man_MANS =				\
 	gapplication.1			\
 	gio-querymodules.1		\
 	glib-compile-schemas.1		\
@@ -227,11 +223,7 @@ XSLTPROC_FLAGS = \
 .xml.1:
 	$(AM_V_GEN) $(XSLTPROC) $(XSLTPROC_FLAGS) http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
 
-endif
-
-CLEANFILES ?=
 CLEANFILES += $(man_MANS)
-
 EXTRA_DIST += $(man_MANS)
 
 dist-hook-local: all-local
