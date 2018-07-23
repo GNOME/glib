@@ -10,7 +10,7 @@ gdbus_codegen_files = [
 
 gdbus_codegen_conf = configuration_data()
 gdbus_codegen_conf.set('VERSION', glib_version)
-gdbus_codegen_conf.set('PYTHON', python.path())
+gdbus_codegen_conf.set('PYTHON', python_name)
 gdbus_codegen_conf.set('DATADIR', glib_datadir)
 
 # Install gdbus-codegen executable
