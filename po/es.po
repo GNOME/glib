@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2018-07-20 07:02+0000\n"
-"PO-Revision-Date: 2018-07-09 08:42+0200\n"
+"POT-Creation-Date: 2018-07-24 08:03+0000\n"
+"PO-Revision-Date: 2018-07-24 12:28+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -48,7 +48,8 @@ msgstr "Omitir el ID de la aplicación"
 msgid "Print help"
 msgstr "Imprimir ayuda"
 
-#: gio/gapplication-tool.c:47 gio/gresource-tool.c:489 gio/gresource-tool.c:557
+#: gio/gapplication-tool.c:47 gio/gresource-tool.c:489
+#: gio/gresource-tool.c:557
 msgid "[COMMAND]"
 msgstr "[COMANDO]"
 
@@ -147,7 +148,8 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr ""
 "Parámetro opcionales para la invocación de la acción, en formato GVariant"
 
-#: gio/gapplication-tool.c:96 gio/gresource-tool.c:526 gio/gsettings-tool.c:661
+#: gio/gapplication-tool.c:96 gio/gresource-tool.c:526
+#: gio/gsettings-tool.c:661
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -1697,9 +1699,9 @@ msgstr "Error al escribir en la salida estándar"
 #: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:282 gio/gio-tool-list.c:165
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
-#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1235 gio/gio-tool-open.c:113
-#: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
-#: gio/gio-tool-trash.c:81 gio/gio-tool-tree.c:239
+#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1235
+#: gio/gio-tool-open.c:113 gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45
+#: gio/gio-tool-set.c:89 gio/gio-tool-trash.c:81 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "UBICACIÓN"
 
@@ -1718,8 +1720,8 @@ msgstr ""
 "usar algo como smb://servidor/recurso/archivo.txt como ubicación."
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:313 gio/gio-tool-mkdir.c:76
-#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1285 gio/gio-tool-open.c:139
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
+#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1285
+#: gio/gio-tool-open.c:139 gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
 msgid "No locations given"
 msgstr "No se han proporcionado ubicaciones"
 
@@ -1908,7 +1910,7 @@ msgstr "TIPOMIME"
 
 #: gio/gio-tool-mime.c:71
 msgid "HANDLER"
-msgstr "MANEJADOR"
+msgstr "GESTOR"
 
 #: gio/gio-tool-mime.c:76
 msgid "Get or set the handler for a mimetype."
@@ -1922,8 +1924,7 @@ msgid ""
 msgstr ""
 "Si no se indica un gestor, lista las aplicaciones registradas y "
 "recomendadas\n"
-"para el tipo MIME. Si se indica un gestor, se establece como el "
-"gestor\n"
+"para el tipo MIME. Si se indica un gestor, se establece como el gestor\n"
 "predeterminado para el tipo MIME."
 
 #: gio/gio-tool-mime.c:100
@@ -1964,8 +1965,7 @@ msgstr "Falló al cargar la información para el gestor «%s»"
 #: gio/gio-tool-mime.c:168
 #, c-format
 msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
-msgstr ""
-"Falló al establecer el gestor «%s» como predeterminado para «%s»: %s\n"
+msgstr "Falló al establecer el gestor «%s» como predeterminado para «%s»: %s\n"
 
 #: gio/gio-tool-mkdir.c:31
 msgid "Create parent directories"
