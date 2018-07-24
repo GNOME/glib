@@ -123,7 +123,7 @@ freebsd-11-x86_64:
     # FIXME: extattr(2) support: https://gitlab.gnome.org/GNOME/glib/issues/1404
     - meson -Db_lundef=false -Diconv=gnu -Dxattr=false --buildtype debug _build
     - ninja -C _build
-    - meson test -C _build --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
+    - meson test -C _build -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
   # FIXME: Remove this when we have a stable FreeBSD runner
   # https://gitlab.gnome.org/Infrastructure/GitLab/issues/286
   allow_failure: true
