@@ -803,8 +803,14 @@ static void
 g_array_maybe_expand (GRealArray *array,
                       guint       len)
 {
-  guint want_alloc = g_array_elt_len (array, array->len + len + 
-                                      array->zero_terminated);
+  guint want_alloc;
+
+  /* Detect potential overflow */
+  if G_UNLIKELY ((G_MAXUINT - array->len) < len)
+    g_error ("adding %u to array would overflow", len);
+
+  want_alloc = g_array_elt_len (array, array->len + len +
+                                array->zero_terminated);
 
   if (want_alloc > array->alloc)
     {
@@ -1162,6 +1168,10 @@ static void
 g_ptr_array_maybe_expand (GRealPtrArray *array,
                           gint           len)
 {
+  /* Detect potential overflow */
+  if G_UNLIKELY ((G_MAXUINT - array->len) < len)
+    g_error ("adding %u to array would overflow", len);
+
   if ((array->len + len) > array->alloc)
     {
       guint old_alloc = array->alloc;
