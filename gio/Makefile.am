@@ -369,7 +369,6 @@ CLEANFILES += $(xdp_dbus_built_sources)
 portal_interfaces = \
 	org.freedesktop.portal.Documents.xml \
 	org.freedesktop.portal.OpenURI.xml \
-	org.freedesktop.portal.NetworkMonitor.xml \
 	org.freedesktop.portal.ProxyResolver.xml \
 	$(NULL)
 
@@ -971,6 +970,14 @@ gio_SOURCES = \
 	gio-tool-tree.c					\
 	$(NULL)
 gio_LDADD = libgio-2.0.la 				\
+	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/glib/libglib-2.0.la		\
+	$(NULL)
+
+bin_PROGRAMS += gnet
+gnet_SOURCES = \
+	gnet-tool.c
+gnet_LDADD = libgio-2.0.la 				\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)

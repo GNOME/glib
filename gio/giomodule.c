@@ -802,14 +802,29 @@ _g_io_module_get_default_type (const gchar *extension_point,
 }
 
 static gpointer
-try_implementation (GIOExtension         *extension,
+try_implementation (const char           *extension_point,
+                    GIOExtension         *extension,
 		    GIOModuleVerifyFunc   verify_func)
 {
   GType type = g_io_extension_get_type (extension);
   gpointer impl;
 
   if (g_type_is_a (type, G_TYPE_INITABLE))
-    return g_initable_new (type, NULL, NULL, NULL);
+    {
+      GError *error = NULL;
+
+      impl = g_initable_new (type, NULL, &error, NULL);
+      if (impl)
+        return impl;
+
+      g_debug ("Failed to initialize %s (%s) for %s: %s",
+               g_io_extension_get_name (extension),
+               g_type_name (type),
+               extension_point,
+               error ? error->message : "");
+      g_clear_error (&error);
+      return NULL;
+    }
   else
     {
       impl = g_object_new (type, NULL);
@@ -895,7 +910,7 @@ _g_io_module_get_default (const gchar         *extension_point,
       preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
       if (preferred)
 	{
-	  impl = try_implementation (preferred, verify_func);
+	  impl = try_implementation (extension_point, preferred, verify_func);
 	  if (impl)
 	    goto done;
 	}
@@ -911,7 +926,7 @@ _g_io_module_get_default (const gchar         *extension_point,
       if (extension == preferred)
 	continue;
 
-      impl = try_implementation (extension, verify_func);
+      impl = try_implementation (extension_point, extension, verify_func);
       if (impl)
 	goto done;
     }
