@@ -665,6 +665,56 @@ test_strstr (void)
 }
 
 static void
+test_get_substr (void)
+{
+  gchar const *haystack;
+  gchar const *needle;
+  gchar *res;
+
+  haystack = "FooBarFooBarFoo";
+
+  /* strstr_len */
+  needle = "xxx";
+  res = g_str_get_substr (haystack, 6, needle, strlen (needle));
+  g_assert (res == NULL);
+
+  needle = "FooBarFooBarFooBar";
+  res = g_str_get_substr (haystack, 6, needle, strlen (needle));
+  g_assert (res == NULL);
+
+  needle = "Bar";
+  res = g_str_get_substr (haystack, 3, needle, strlen (needle));
+  g_assert (res == NULL);
+
+  needle = "";
+  res = g_str_get_substr (haystack, 6, needle, strlen (needle));
+  g_assert (res == haystack);
+  g_assert_cmpstr (res, ==, "FooBarFooBarFoo");
+
+  needle = "Bar";
+  res = g_str_get_substr (haystack, 6, needle, strlen (needle));
+  g_assert (res == haystack + 3);
+  g_assert_cmpstr (res, ==, "BarFooBarFoo");
+
+  res = g_str_get_substr (haystack, strlen(haystack), needle, strlen (needle));
+  g_assert (res == haystack + 3);
+  g_assert_cmpstr (res, ==, "BarFooBarFoo");
+
+  /* test case for strings with \0 in the middle */
+  haystack = "FooBarF\x00oBarFoo";
+  needle = "BarFoo";
+  res = g_str_get_substr (haystack, 15, needle, strlen (needle));
+  g_assert (res == haystack + 9);
+  g_assert_cmpstr (res, ==, "BarFoo");
+
+  haystack = "FooBarF\x00oBarFoo";
+  needle = "F\x00oBar";
+  res = g_str_get_substr (haystack, 15, needle, 6);
+  g_assert (res == haystack + 6);
+  g_assert_cmpmem (res, 3, needle, 3);
+}
+
+static void
 test_has_prefix (void)
 {
   gboolean res;
@@ -1746,6 +1796,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strreverse", test_strreverse);
   g_test_add_func ("/strfuncs/strncasecmp", test_strncasecmp);
   g_test_add_func ("/strfuncs/strstr", test_strstr);
+  g_test_add_func ("/strfuncs/get-substr", test_get_substr);
   g_test_add_func ("/strfuncs/has-prefix", test_has_prefix);
   g_test_add_func ("/strfuncs/has-suffix", test_has_suffix);
   g_test_add_func ("/strfuncs/strsplit", test_strsplit);

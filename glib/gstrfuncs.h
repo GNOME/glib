@@ -134,6 +134,12 @@ gchar *               g_strrstr_len    (const gchar  *haystack,
 					gssize        haystack_len,
 					const gchar  *needle);
 
+GLIB_AVAILABLE_IN_2_59
+gchar *               g_str_get_substr (const gchar  *haystack,
+					gsize        haystack_len,
+					const gchar  *needle,
+                                        gsize        needle_len);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_str_has_suffix (const gchar  *str,
 					const gchar  *suffix);

@@ -2669,27 +2669,30 @@ g_strjoin (const gchar *separator,
 /**
  * g_strstr_len:
  * @haystack: a string
- * @haystack_len: the maximum length of @haystack. Note that -1 is
+ * @haystack_max_len: the maximum length of @haystack. Note that -1 is
  *     a valid length, if @haystack is nul-terminated, meaning it will
- *     search through the whole string.
+ *     search through the whole string. Note that this is a maximum
+ *     length, meaning that if the nul-byte is found in @haystack
+ *     then the search stops here. Use g_str_get_substr if you
+ *     don't want this behavior.
  * @needle: the string to search for
  *
  * Searches the string @haystack for the first occurrence
  * of the string @needle, limiting the length of the search
- * to @haystack_len.
+ * to @haystack_max_len.
  *
  * Returns: a pointer to the found occurrence, or
  *    %NULL if not found.
  */
 gchar *
 g_strstr_len (const gchar *haystack,
-              gssize       haystack_len,
+              gssize       haystack_max_len,
               const gchar *needle)
 {
   g_return_val_if_fail (haystack != NULL, NULL);
   g_return_val_if_fail (needle != NULL, NULL);
 
-  if (haystack_len < 0)
+  if (haystack_max_len < 0)
     return strstr (haystack, needle);
   else
     {
@@ -2701,10 +2704,10 @@ g_strstr_len (const gchar *haystack,
       if (needle_len == 0)
         return (gchar *)haystack;
 
-      if (haystack_len < needle_len)
+      if (haystack_max_len < needle_len)
         return NULL;
 
-      end = haystack + haystack_len - needle_len;
+      end = haystack + haystack_max_len - needle_len;
 
       while (p <= end && *p)
         {
@@ -2774,30 +2777,30 @@ g_strrstr (const gchar *haystack,
 /**
  * g_strrstr_len:
  * @haystack: a nul-terminated string
- * @haystack_len: the maximum length of @haystack
+ * @haystack_max_len: the maximum length of @haystack
  * @needle: the nul-terminated string to search for
  *
  * Searches the string @haystack for the last occurrence
  * of the string @needle, limiting the length of the search
- * to @haystack_len.
+ * to @haystack_max_len.
  *
  * Returns: a pointer to the found occurrence, or
  *    %NULL if not found.
  */
 gchar *
 g_strrstr_len (const gchar *haystack,
-               gssize        haystack_len,
+               gssize        haystack_max_len,
                const gchar *needle)
 {
   g_return_val_if_fail (haystack != NULL, NULL);
   g_return_val_if_fail (needle != NULL, NULL);
 
-  if (haystack_len < 0)
+  if (haystack_max_len < 0)
     return g_strrstr (haystack, needle);
   else
     {
       gsize needle_len = strlen (needle);
-      const gchar *haystack_max = haystack + haystack_len;
+      const gchar *haystack_max = haystack + haystack_max_len;
       const gchar *p = haystack;
       gsize i;
 
@@ -2825,6 +2828,63 @@ g_strrstr_len (const gchar *haystack,
     }
 }
 
+/**
+ * g_str_get_substr:
+ * @haystack: a string
+ * @haystack_len: the length of @haystack. Even if the
+ *     nul byte is found, the search will continue until
+ *     @haystack + @haystack_len is reached
+ * @needle: the substring to search for
+ * @needle_len: the length of @needle. @needle needs not
+ *     to be nul-terminated, and it is assumed to be of
+ *     length @needle_len, even if it contains nul bytes
+ *
+ * Searches the string @haystack for the first occurrence
+ * of the string @needle, limiting the length of the search
+ * to @haystack_len.
+ * Note that since the strings passed as parameters need
+ * not to be nul-terminated, and that nul bytes have no
+ * special treatment, you can reuse this function
+ * for any binary data of your choice.
+ *
+ * Returns: a pointer to the found occurrence, or
+ *    %NULL if not found.
+ */
+gchar *
+g_str_get_substr (const gchar *haystack,
+                  gsize        haystack_len,
+                  const gchar *needle,
+                  gsize        needle_len)
+{
+  const gchar *p = haystack;
+  const gchar *end;
+  gsize i;
+
+  g_return_val_if_fail (haystack != NULL, NULL);
+  g_return_val_if_fail (needle != NULL, NULL);
+
+  if (needle_len == 0)
+    return (gchar *)haystack;
+
+  if (haystack_len < needle_len)
+    return NULL;
+
+  end = haystack + haystack_len - needle_len;
+
+  while (p <= end)
+    {
+      for (i = 0; i < needle_len; i++)
+        if (p[i] != needle[i])
+          goto next;
+
+      return (gchar *)p;
+
+    next:
+      p++;
+    }
+
+  return NULL;
+}
 
 /**
  * g_str_has_suffix:
