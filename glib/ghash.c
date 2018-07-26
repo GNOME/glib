@@ -39,6 +39,25 @@
 #include "gslice.h"
 #include "grefcount.h"
 
+/* The following #pragma is here so we can do this...
+ *
+ *   #ifndef USE_SMALL_ARRAYS
+ *     is_big = TRUE;
+ *   #endif
+ *     return is_big ? *(((gpointer *) a) + index) : GUINT_TO_POINTER (*(((guint *) a) + index));
+ *
+ * ...instead of this...
+ *
+ *   #ifndef USE_SMALL_ARRAYS
+ *     return *(((gpointer *) a) + index);
+ *   #else
+ *     return is_big ? *(((gpointer *) a) + index) : GUINT_TO_POINTER (*(((guint *) a) + index));
+ *   #endif
+ *
+ * ...and still compile successfully when -Werror=duplicated-branches is passed. */
+
+#pragma GCC diagnostic ignored "-Wduplicated-branches"
+
 /**
  * SECTION:hash_tables
  * @title: Hash Tables
@@ -213,6 +232,18 @@
 #define HASH_IS_TOMBSTONE(h_) ((h_) == TOMBSTONE_HASH_VALUE)
 #define HASH_IS_REAL(h_) ((h_) >= 2)
 
+/* If int is smaller than void * on our arch, we start out with
+ * int-sized keys and values and resize to pointer-sized entries as
+ * needed. This saves a good amount of memory when the HT is being
+ * used with e.g. GUINT_TO_POINTER(). */
+
+#define BIG_ENTRY_SIZE (SIZEOF_VOID_P)
+#define SMALL_ENTRY_SIZE (SIZEOF_INT)
+
+#if SMALL_ENTRY_SIZE < BIG_ENTRY_SIZE
+# define USE_SMALL_ARRAYS
+#endif
+
 struct _GHashTable
 {
   gint             size;
@@ -221,9 +252,12 @@ struct _GHashTable
   gint             nnodes;
   gint             noccupied;  /* nnodes + tombstones */
 
-  gpointer        *keys;
+  guint            have_big_keys : 1;
+  guint            have_big_values : 1;
+
+  gpointer         keys;
   guint           *hashes;
-  gpointer        *values;
+  gpointer         values;
 
   GHashFunc        hash_func;
   GEqualFunc       key_equal_func;
@@ -330,6 +364,37 @@ g_hash_table_set_shift_from_size (GHashTable *hash_table, gint size)
   g_hash_table_set_shift (hash_table, shift);
 }
 
+static inline gpointer
+g_hash_table_alloc_key_or_value_array (guint size, gboolean is_big G_GNUC_UNUSED)
+{
+#ifdef USE_SMALL_ARRAYS
+  return g_malloc0 (size * (is_big ? BIG_ENTRY_SIZE : SMALL_ENTRY_SIZE));
+#else
+  return g_new0 (gpointer, size);
+#endif
+}
+
+static inline gpointer
+g_hash_table_fetch_key_or_value (gpointer a, guint index, gboolean is_big)
+{
+#ifndef USE_SMALL_ARRAYS
+  is_big = TRUE;
+#endif
+  return is_big ? *(((gpointer *) a) + index) : GUINT_TO_POINTER (*(((guint *) a) + index));
+}
+
+static inline void
+g_hash_table_assign_key_or_value (gpointer a, guint index, gboolean is_big, gpointer v)
+{
+#ifndef USE_SMALL_ARRAYS
+  is_big = TRUE;
+#endif
+  if (is_big)
+    *(((gpointer *) a) + index) = v;
+  else
+    *(((guint *) a) + index) = GPOINTER_TO_UINT (v);
+}
+
 static inline guint
 g_hash_table_hash_to_index (GHashTable *hash_table, guint hash)
 {
@@ -399,7 +464,7 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
        */
       if (node_hash == hash_value)
         {
-          gpointer node_key = hash_table->keys[node_index];
+          gpointer node_key = g_hash_table_fetch_key_or_value (hash_table->keys, node_index, hash_table->have_big_keys);
 
           if (hash_table->key_equal_func)
             {
@@ -449,15 +514,15 @@ g_hash_table_remove_node (GHashTable   *hash_table,
   gpointer key;
   gpointer value;
 
-  key = hash_table->keys[i];
-  value = hash_table->values[i];
+  key = g_hash_table_fetch_key_or_value (hash_table->keys, i, hash_table->have_big_keys);
+  value = g_hash_table_fetch_key_or_value (hash_table->values, i, hash_table->have_big_values);
 
   /* Erect tombstone */
   hash_table->hashes[i] = TOMBSTONE_HASH_VALUE;
 
   /* Be GC friendly */
-  hash_table->keys[i] = NULL;
-  hash_table->values[i] = NULL;
+  g_hash_table_assign_key_or_value (hash_table->keys, i, hash_table->have_big_keys, NULL);
+  g_hash_table_assign_key_or_value (hash_table->values, i, hash_table->have_big_values, NULL);
 
   hash_table->nnodes--;
 
@@ -507,8 +572,14 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
       if (!destruction)
         {
           memset (hash_table->hashes, 0, hash_table->size * sizeof (guint));
+
+#ifdef USE_SMALL_ARRAYS
+          memset (hash_table->keys, 0, hash_table->size * (hash_table->have_big_keys ? BIG_ENTRY_SIZE : SMALL_ENTRY_SIZE));
+          memset (hash_table->values, 0, hash_table->size * (hash_table->have_big_values ? BIG_ENTRY_SIZE : SMALL_ENTRY_SIZE));
+#else
           memset (hash_table->keys, 0, hash_table->size * sizeof (gpointer));
           memset (hash_table->values, 0, hash_table->size * sizeof (gpointer));
+#endif
         }
 
       return;
@@ -529,7 +600,7 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   if (!destruction)
     {
-      hash_table->keys   = g_new0 (gpointer, hash_table->size);
+      hash_table->keys   = g_hash_table_alloc_key_or_value_array (hash_table->size, FALSE);
       hash_table->values = hash_table->keys;
       hash_table->hashes = g_new0 (guint, hash_table->size);
     }
@@ -544,12 +615,13 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
     {
       if (HASH_IS_REAL (old_hashes[i]))
         {
-          key = old_keys[i];
-          value = old_values[i];
+          key = g_hash_table_fetch_key_or_value (old_keys, i, hash_table->have_big_keys);
+          value = g_hash_table_fetch_key_or_value (old_values, i, hash_table->have_big_values);
 
           old_hashes[i] = UNUSED_HASH_VALUE;
-          old_keys[i] = NULL;
-          old_values[i] = NULL;
+
+          g_hash_table_assign_key_or_value (old_keys, i, hash_table->have_big_keys, NULL);
+          g_hash_table_assign_key_or_value (old_values, i, hash_table->have_big_values, NULL);
 
           if (hash_table->key_destroy_func != NULL)
             hash_table->key_destroy_func (key);
@@ -558,6 +630,9 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
             hash_table->value_destroy_func (value);
         }
     }
+
+  hash_table->have_big_keys = FALSE;
+  hash_table->have_big_values = FALSE;
 
   /* Destroy old storage space. */
   if (old_keys != old_values)
@@ -583,8 +658,8 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
 static void
 g_hash_table_resize (GHashTable *hash_table)
 {
-  gpointer *new_keys;
-  gpointer *new_values;
+  gpointer new_keys;
+  gpointer new_values;
   guint *new_hashes;
   gint old_size;
   gint i;
@@ -592,11 +667,11 @@ g_hash_table_resize (GHashTable *hash_table)
   old_size = hash_table->size;
   g_hash_table_set_shift_from_size (hash_table, hash_table->nnodes * 2);
 
-  new_keys = g_new0 (gpointer, hash_table->size);
+  new_keys = g_hash_table_alloc_key_or_value_array (hash_table->size, hash_table->have_big_keys);
   if (hash_table->keys == hash_table->values)
     new_values = new_keys;
   else
-    new_values = g_new0 (gpointer, hash_table->size);
+    new_values = g_hash_table_alloc_key_or_value_array (hash_table->size, hash_table->have_big_values);
   new_hashes = g_new0 (guint, hash_table->size);
 
   for (i = 0; i < old_size; i++)
@@ -618,8 +693,8 @@ g_hash_table_resize (GHashTable *hash_table)
         }
 
       new_hashes[hash_val] = hash_table->hashes[i];
-      new_keys[hash_val] = hash_table->keys[i];
-      new_values[hash_val] = hash_table->values[i];
+      g_hash_table_assign_key_or_value (new_keys, hash_val, hash_table->have_big_keys, g_hash_table_fetch_key_or_value (hash_table->keys, i, hash_table->have_big_keys));
+      g_hash_table_assign_key_or_value (new_values, hash_val, hash_table->have_big_values, g_hash_table_fetch_key_or_value (hash_table->values, i, hash_table->have_big_values));
     }
 
   if (hash_table->keys != hash_table->values)
@@ -653,6 +728,94 @@ g_hash_table_maybe_resize (GHashTable *hash_table)
   if ((size > hash_table->nnodes * 4 && size > 1 << HASH_TABLE_MIN_SHIFT) ||
       (size <= noccupied + (noccupied / 16)))
     g_hash_table_resize (hash_table);
+}
+
+#ifdef USE_SMALL_ARRAYS
+
+static inline gboolean
+entry_is_big (gpointer v)
+{
+  return (((guintptr) v) >> ((BIG_ENTRY_SIZE - SMALL_ENTRY_SIZE) * 8)) != 0;
+}
+
+static inline gboolean
+g_hash_table_maybe_make_big_keys_or_values (gpointer *a_p, gpointer v, gint ht_size)
+{
+  if (entry_is_big (v))
+    {
+      guint *a = (guint *) *a_p;
+      gpointer *a_new;
+      gint i;
+
+      a_new = g_new (gpointer, ht_size);
+
+      for (i = 0; i < ht_size; i++)
+        {
+          a_new[i] = GUINT_TO_POINTER (a[i]);
+        }
+
+      g_free (a);
+      *a_p = a_new;
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+#endif
+
+static inline void
+g_hash_table_ensure_keyval_fits (GHashTable *hash_table, gpointer key, gpointer value)
+{
+  gboolean is_a_set = (hash_table->keys == hash_table->values);
+
+#ifdef USE_SMALL_ARRAYS
+
+  /* Convert from set to map? */
+  if (is_a_set)
+    {
+      if (hash_table->have_big_keys)
+        {
+          if (key != value)
+            hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
+          /* Keys and values are both big now, so no need for further checks */
+          return;
+        }
+      else
+        {
+          if (key != value)
+            {
+              hash_table->values = g_memdup (hash_table->keys, sizeof (guint) * hash_table->size);
+              is_a_set = FALSE;
+            }
+        }
+    }
+
+  /* Make keys big? */
+  if (!hash_table->have_big_keys)
+    {
+      hash_table->have_big_keys = g_hash_table_maybe_make_big_keys_or_values (&hash_table->keys, key, hash_table->size);
+
+      if (is_a_set)
+        {
+          hash_table->values = hash_table->keys;
+          hash_table->have_big_values = hash_table->have_big_keys;
+        }
+    }
+
+  /* Make values big? */
+  if (!is_a_set && !hash_table->have_big_values)
+    {
+      hash_table->have_big_values = g_hash_table_maybe_make_big_keys_or_values (&hash_table->values, value, hash_table->size);
+    }
+
+#else
+
+  /* Just split if necessary */
+  if (is_a_set && key != value)
+    hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
+
+#endif
 }
 
 /**
@@ -732,9 +895,17 @@ g_hash_table_new_full (GHashFunc      hash_func,
 #endif
   hash_table->key_destroy_func   = key_destroy_func;
   hash_table->value_destroy_func = value_destroy_func;
-  hash_table->keys               = g_new0 (gpointer, hash_table->size);
+  hash_table->keys               = g_hash_table_alloc_key_or_value_array (hash_table->size, FALSE);
   hash_table->values             = hash_table->keys;
   hash_table->hashes             = g_new0 (guint, hash_table->size);
+
+#ifdef USE_SMALL_ARRAYS
+  hash_table->have_big_keys = FALSE;
+  hash_table->have_big_values = FALSE;
+#else
+  hash_table->have_big_keys = TRUE;
+  hash_table->have_big_values = TRUE;
+#endif
 
   return hash_table;
 }
@@ -818,9 +989,9 @@ g_hash_table_iter_next (GHashTableIter *iter,
   while (!HASH_IS_REAL (ri->hash_table->hashes[position]));
 
   if (key != NULL)
-    *key = ri->hash_table->keys[position];
+    *key = g_hash_table_fetch_key_or_value (ri->hash_table->keys, position, ri->hash_table->have_big_keys);
   if (value != NULL)
-    *value = ri->hash_table->values[position];
+    *value = g_hash_table_fetch_key_or_value (ri->hash_table->values, position, ri->hash_table->have_big_values);
 
   ri->position = position;
   return TRUE;
@@ -923,6 +1094,7 @@ g_hash_table_insert_node (GHashTable *hash_table,
   gboolean already_exists;
   guint old_hash;
   gpointer key_to_free = NULL;
+  gpointer key_to_keep = NULL;
   gpointer value_to_free = NULL;
 
   old_hash = hash_table->hashes[node_index];
@@ -952,31 +1124,31 @@ g_hash_table_insert_node (GHashTable *hash_table,
        * because we might change the value in the event that the two
        * arrays are shared.
        */
-      value_to_free = hash_table->values[node_index];
+      value_to_free = g_hash_table_fetch_key_or_value (hash_table->values, node_index, hash_table->have_big_values);
 
       if (keep_new_key)
         {
-          key_to_free = hash_table->keys[node_index];
-          hash_table->keys[node_index] = new_key;
+          key_to_free = g_hash_table_fetch_key_or_value (hash_table->keys, node_index, hash_table->have_big_keys);
+          key_to_keep = new_key;
         }
       else
-        key_to_free = new_key;
+        {
+          key_to_free = new_key;
+          key_to_keep = g_hash_table_fetch_key_or_value (hash_table->keys, node_index, hash_table->have_big_keys);
+        }
     }
   else
     {
       hash_table->hashes[node_index] = key_hash;
-      hash_table->keys[node_index] = new_key;
+      key_to_keep = new_key;
     }
 
-  /* Step two: check if the value that we are about to write to the
-   * table is the same as the key in the same position.  If it's not,
-   * split the table.
-   */
-  if (G_UNLIKELY (hash_table->keys == hash_table->values && hash_table->keys[node_index] != new_value))
-    hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
+  /* Resize key/value arrays and split table as necessary */
+  g_hash_table_ensure_keyval_fits (hash_table, key_to_keep, new_value);
+  g_hash_table_assign_key_or_value (hash_table->keys, node_index, hash_table->have_big_keys, key_to_keep);
 
   /* Step 3: Actually do the write */
-  hash_table->values[node_index] = new_value;
+  g_hash_table_assign_key_or_value (hash_table->values, node_index, hash_table->have_big_values, new_value);
 
   /* Now, the bookkeeping... */
   if (!already_exists)
@@ -1038,7 +1210,8 @@ g_hash_table_iter_replace (GHashTableIter *iter,
   g_return_if_fail (ri->position < ri->hash_table->size);
 
   node_hash = ri->hash_table->hashes[ri->position];
-  key = ri->hash_table->keys[ri->position];
+
+  key = g_hash_table_fetch_key_or_value (ri->hash_table->keys, ri->position, ri->hash_table->have_big_keys);
 
   g_hash_table_insert_node (ri->hash_table, ri->position, node_hash, key, value, TRUE, TRUE);
 
@@ -1159,7 +1332,7 @@ g_hash_table_lookup (GHashTable    *hash_table,
   node_index = g_hash_table_lookup_node (hash_table, key, &node_hash);
 
   return HASH_IS_REAL (hash_table->hashes[node_index])
-    ? hash_table->values[node_index]
+    ? g_hash_table_fetch_key_or_value (hash_table->values, node_index, hash_table->have_big_values)
     : NULL;
 }
 
@@ -1206,10 +1379,10 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
     }
 
   if (orig_key)
-    *orig_key = hash_table->keys[node_index];
+    *orig_key = g_hash_table_fetch_key_or_value (hash_table->keys, node_index, hash_table->have_big_keys);
 
   if (value)
-    *value = hash_table->values[node_index];
+    *value = g_hash_table_fetch_key_or_value (hash_table->values, node_index, hash_table->have_big_values);
 
   return TRUE;
 }
@@ -1480,10 +1653,16 @@ g_hash_table_steal_extended (GHashTable    *hash_table,
     }
 
   if (stolen_key != NULL)
-    *stolen_key = g_steal_pointer (&hash_table->keys[node_index]);
+  {
+    *stolen_key = g_hash_table_fetch_key_or_value (hash_table->keys, node_index, hash_table->have_big_keys);
+    g_hash_table_assign_key_or_value (hash_table->keys, node_index, hash_table->have_big_keys, NULL);
+  }
 
   if (stolen_value != NULL)
-    *stolen_value = g_steal_pointer (&hash_table->values[node_index]);
+  {
+    *stolen_value = g_hash_table_fetch_key_or_value (hash_table->values, node_index, hash_table->have_big_values);
+    g_hash_table_assign_key_or_value (hash_table->values, node_index, hash_table->have_big_values, NULL);
+  }
 
   g_hash_table_remove_node (hash_table, node_index, FALSE);
   g_hash_table_maybe_resize (hash_table);
@@ -1577,8 +1756,8 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
   for (i = 0; i < hash_table->size; i++)
     {
       guint node_hash = hash_table->hashes[i];
-      gpointer node_key = hash_table->keys[i];
-      gpointer node_value = hash_table->values[i];
+      gpointer node_key = g_hash_table_fetch_key_or_value (hash_table->keys, i, hash_table->have_big_keys);
+      gpointer node_value = g_hash_table_fetch_key_or_value (hash_table->values, i, hash_table->have_big_values);
 
       if (HASH_IS_REAL (node_hash) &&
           (* func) (node_key, node_value, user_data))
@@ -1693,8 +1872,8 @@ g_hash_table_foreach (GHashTable *hash_table,
   for (i = 0; i < hash_table->size; i++)
     {
       guint node_hash = hash_table->hashes[i];
-      gpointer node_key = hash_table->keys[i];
-      gpointer node_value = hash_table->values[i];
+      gpointer node_key = g_hash_table_fetch_key_or_value (hash_table->keys, i, hash_table->have_big_keys);
+      gpointer node_value = g_hash_table_fetch_key_or_value (hash_table->values, i, hash_table->have_big_values);
 
       if (HASH_IS_REAL (node_hash))
         (* func) (node_key, node_value, user_data);
@@ -1754,8 +1933,8 @@ g_hash_table_find (GHashTable *hash_table,
   for (i = 0; i < hash_table->size; i++)
     {
       guint node_hash = hash_table->hashes[i];
-      gpointer node_key = hash_table->keys[i];
-      gpointer node_value = hash_table->values[i];
+      gpointer node_key = g_hash_table_fetch_key_or_value (hash_table->keys, i, hash_table->have_big_keys);
+      gpointer node_value = g_hash_table_fetch_key_or_value (hash_table->values, i, hash_table->have_big_values);
 
       if (HASH_IS_REAL (node_hash))
         match = predicate (node_key, node_value, user_data);
@@ -1817,7 +1996,7 @@ g_hash_table_get_keys (GHashTable *hash_table)
   for (i = 0; i < hash_table->size; i++)
     {
       if (HASH_IS_REAL (hash_table->hashes[i]))
-        retval = g_list_prepend (retval, hash_table->keys[i]);
+        retval = g_list_prepend (retval, g_hash_table_fetch_key_or_value (hash_table->keys, i, hash_table->have_big_keys));
     }
 
   return retval;
@@ -1862,7 +2041,7 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
   for (i = 0; i < hash_table->size; i++)
     {
       if (HASH_IS_REAL (hash_table->hashes[i]))
-        result[j++] = hash_table->keys[i];
+        result[j++] = g_hash_table_fetch_key_or_value (hash_table->keys, i, hash_table->have_big_keys);
     }
   g_assert_cmpint (j, ==, hash_table->nnodes);
   result[j] = NULL;
@@ -1903,7 +2082,7 @@ g_hash_table_get_values (GHashTable *hash_table)
   for (i = 0; i < hash_table->size; i++)
     {
       if (HASH_IS_REAL (hash_table->hashes[i]))
-        retval = g_list_prepend (retval, hash_table->values[i]);
+        retval = g_list_prepend (retval, g_hash_table_fetch_key_or_value (hash_table->values, i, hash_table->have_big_values));
     }
 
   return retval;

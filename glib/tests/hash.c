@@ -1353,6 +1353,9 @@ struct _GHashTable
   gint             nnodes;
   gint             noccupied;  /* nnodes + tombstones */
 
+  guint            have_big_keys : 1;
+  guint            have_big_values : 1;
+
   gpointer        *keys;
   guint           *hashes;
   gpointer        *values;
@@ -1387,6 +1390,23 @@ count_keys (GHashTable *h, gint *unused, gint *occupied, gint *tombstones)
     }
 }
 
+#define BIG_ENTRY_SIZE (SIZEOF_VOID_P)
+#define SMALL_ENTRY_SIZE (SIZEOF_INT)
+
+#if SMALL_ENTRY_SIZE < BIG_ENTRY_SIZE
+# define USE_SMALL_ARRAYS
+#endif
+
+static gpointer
+fetch_key_or_value (gpointer a, guint index, gboolean is_big)
+{
+#ifdef USE_SMALL_ARRAYS
+  return is_big ? *(((gpointer *) a) + index) : GUINT_TO_POINTER (*(((guint *) a) + index));
+#else
+  return *(((gpointer *) a) + index);
+#endif
+}
+
 static void
 check_data (GHashTable *h)
 {
@@ -1396,12 +1416,12 @@ check_data (GHashTable *h)
     {
       if (h->hashes[i] < 2)
         {
-          g_assert (h->keys[i] == NULL);
-          g_assert (h->values[i] == NULL);
+          g_assert (fetch_key_or_value (h->keys, i, h->have_big_keys) == NULL);
+          g_assert (fetch_key_or_value (h->values, i, h->have_big_values) == NULL);
         }
       else
         {
-          g_assert_cmpint (h->hashes[i], ==, h->hash_func (h->keys[i]));
+          g_assert_cmpint (h->hashes[i], ==, h->hash_func (fetch_key_or_value (h->keys, i, h->have_big_keys)));
         }
     }
 }
