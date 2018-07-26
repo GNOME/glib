@@ -124,20 +124,20 @@ gsize	              g_strlcat        (gchar	     *dest,
 					gsize         dest_size);
 GLIB_AVAILABLE_IN_ALL
 gchar *               g_strstr_len     (const gchar  *haystack,
-					gssize        haystack_len,
+					gssize        haystack_max_len,
 					const gchar  *needle);
 GLIB_AVAILABLE_IN_ALL
 gchar *               g_strrstr        (const gchar  *haystack,
 					const gchar  *needle);
 GLIB_AVAILABLE_IN_ALL
 gchar *               g_strrstr_len    (const gchar  *haystack,
-					gssize        haystack_len,
+					gssize        haystack_max_len,
 					const gchar  *needle);
 
-GLIB_AVAILABLE_IN_2_59
+GLIB_AVAILABLE_IN_2_58
 gchar *               g_str_get_substr (const gchar  *haystack,
-					gsize        haystack_len,
-					const gchar  *needle,
+                                        gsize        haystack_len,
+                                        const gchar  *needle,
                                         gsize        needle_len);
 
 GLIB_AVAILABLE_IN_ALL
