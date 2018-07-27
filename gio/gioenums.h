@@ -1509,6 +1509,9 @@ typedef enum
  * @G_TLS_ERROR_EOF: The TLS connection was closed without proper
  *   notice, which may indicate an attack. See
  *   g_tls_connection_set_require_close_notify().
+ * @G_TLS_ERROR_INAPPROPRIATE_FALLBACK: The TLS handshake failed
+ *   because the client sent the fallback SCSV, indicating a protocol
+ *   downgrade attack. Since: 2.60
  *
  * An error code used with %G_TLS_ERROR in a #GError returned from a
  * TLS-related routine.
@@ -1522,7 +1525,8 @@ typedef enum {
   G_TLS_ERROR_NOT_TLS,
   G_TLS_ERROR_HANDSHAKE,
   G_TLS_ERROR_CERTIFICATE_REQUIRED,
-  G_TLS_ERROR_EOF
+  G_TLS_ERROR_EOF,
+  G_TLS_ERROR_INAPPROPRIATE_FALLBACK
 } GTlsError;
 
 /**
