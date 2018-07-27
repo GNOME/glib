@@ -674,7 +674,8 @@ g_tls_connection_get_require_close_notify (GTlsConnection *conn)
  * @conn: a #GTlsConnection
  * @mode: the rehandshaking mode
  *
- * Sets how @conn behaves with respect to rehandshaking requests.
+ * Sets how @conn behaves with respect to rehandshaking requests, when
+ * TLS 1.2 or older is in use.
  *
  * %G_TLS_REHANDSHAKE_NEVER means that it will never agree to
  * rehandshake after the initial handshake is complete. (For a client,
@@ -743,7 +744,7 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * On the client side, it is never necessary to call this method;
  * although the connection needs to perform a handshake after
  * connecting (or after sending a "STARTTLS"-type command) and may
- * need to rehandshake later if the server requests it,
+ * need to rehandshake or rekey later if the server requests it,
  * #GTlsConnection will handle this for you automatically when you try
  * to send or receive data on the connection. However, you can call
  * g_tls_connection_handshake() manually if you want to know for sure
@@ -756,7 +757,8 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * the beginning of the communication, you do not need to call this
  * function explicitly unless you want clearer error reporting.
  * However, you may call g_tls_connection_handshake() later on to
- * renegotiate parameters (encryption methods, etc) with the client.
+ * rehandshake, if TLS 1.2 or older is in use. With TLS 1.3, this will
+ * instead perform a rekey.
  *
  * #GTlsConnection::accept_certificate may be emitted during the
  * handshake.
