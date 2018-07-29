@@ -60,7 +60,12 @@ main (int argc, char *argv[])
 
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
-  g_option_context_parse (context, &argc, &argv, &error);
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+    {
+      g_fprintf (stderr, "failed to parse: %s\n", error->message);
+      g_error_free (error);
+      return 1;
+    }
 
   if (!input)
     {
