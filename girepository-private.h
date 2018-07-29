@@ -113,13 +113,4 @@ GIVFuncInfo * _g_base_info_find_vfunc (GIRealInfo   *rinfo,
 				       gint          n_vfuncs,
 				       const gchar  *name);
 
-extern ffi_status ffi_prep_closure_loc (ffi_closure *,
-                                        ffi_cif *,
-                                        void (*fun)(ffi_cif *, void *, void **, void *),
-                                        void *user_data,
-                                        void *codeloc);
-extern void *ffi_closure_alloc (size_t size, void **code);
-extern void ffi_closure_free (void *);
-
-
 #endif /* __GIREPOSITORY_PRIVATE_H__ */
