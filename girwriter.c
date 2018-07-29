@@ -62,6 +62,9 @@ xml_element_free (XmlElement *elem)
 }
 
 static void
+xml_printf (Xml *xml, const char *fmt, ...) G_GNUC_PRINTF (2, 3);
+
+static void
 xml_printf (Xml *xml, const char *fmt, ...)
 {
   va_list ap;
