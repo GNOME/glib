@@ -2455,7 +2455,7 @@ g_typelib_free (GITypelib *typelib)
       g_free (typelib->data);
   if (typelib->modules)
     {
-      g_list_foreach (typelib->modules, (GFunc) g_module_close, NULL);
+      g_list_foreach (typelib->modules, (GFunc) (void *) g_module_close, NULL);
       g_list_free (typelib->modules);
     }
   g_slice_free (GITypelib, typelib);

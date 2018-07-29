@@ -1362,7 +1362,7 @@ find_namespace_latest (const gchar  *namespace,
       *path_ret = elected->path;
       *version_ret = elected->version;
       g_slice_free (struct NamespaceVersionCandidadate, elected); /* just free the container */
-      g_slist_foreach (candidates, (GFunc) free_candidate, NULL);
+      g_slist_foreach (candidates, (GFunc) (void *) free_candidate, NULL);
       g_slist_free (candidates);
     }
   return result;
