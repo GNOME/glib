@@ -375,6 +375,16 @@ g_hash_table_alloc_key_or_value_array (guint size, gboolean is_big G_GNUC_UNUSED
 }
 
 static inline gpointer
+g_hash_table_realloc_key_or_value_array (gpointer a, guint size, gboolean is_big G_GNUC_UNUSED)
+{
+#ifdef USE_SMALL_ARRAYS
+  return g_realloc (a, size * (is_big ? BIG_ENTRY_SIZE : SMALL_ENTRY_SIZE));
+#else
+  return g_renew (gpointer, a, size);
+#endif
+}
+
+static inline gpointer
 g_hash_table_fetch_key_or_value (gpointer a, guint index, gboolean is_big)
 {
 #ifndef USE_SMALL_ARRAYS
@@ -393,6 +403,26 @@ g_hash_table_assign_key_or_value (gpointer a, guint index, gboolean is_big, gpoi
     *(((gpointer *) a) + index) = v;
   else
     *(((guint *) a) + index) = GPOINTER_TO_UINT (v);
+}
+
+static inline gpointer
+g_hash_table_evict_key_or_value (gpointer a, guint index, gboolean is_big, gpointer v)
+{
+#ifndef USE_SMALL_ARRAYS
+  is_big = TRUE;
+#endif
+  if (is_big)
+    {
+      gpointer r = *(((gpointer *) a) + index);
+      *(((gpointer *) a) + index) = v;
+      return r;
+    }
+  else
+    {
+      gpointer r = GUINT_TO_POINTER (*(((guint *) a) + index));
+      *(((guint *) a) + index) = GPOINTER_TO_UINT (v);
+      return r;
+    }
 }
 
 static inline guint
@@ -642,6 +672,125 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   g_free (old_hashes);
 }
 
+static void
+realloc_arrays (GHashTable *hash_table, gboolean is_a_set)
+{
+  hash_table->hashes = g_renew (guint, hash_table->hashes, hash_table->size);
+  hash_table->keys = g_hash_table_realloc_key_or_value_array (hash_table->keys, hash_table->size, hash_table->have_big_keys);
+
+  if (is_a_set)
+    hash_table->values = hash_table->keys;
+  else
+    hash_table->values = g_hash_table_realloc_key_or_value_array (hash_table->values, hash_table->size, hash_table->have_big_values);
+}
+
+/* When resizing the table in place, we use a temporary bit array to keep
+ * track of which entries have been assigned a proper location in the new
+ * table layout.
+ *
+ * Each bit corresponds to a bucket. A bit is set if an entry was assigned
+ * its corresponding location during the resize and thus should not be
+ * evicted. The array starts out cleared to zero. */
+
+static inline gboolean
+get_status_bit (const guint32 *bitmap, guint index)
+{
+  return (bitmap[index / 32] >> (index % 32)) & 1;
+}
+
+static inline void
+set_status_bit (guint32 *bitmap, guint index)
+{
+  bitmap[index / 32] |= 1 << (index % 32);
+}
+
+/* By calling dedicated resize functions for sets and maps, we avoid 2x
+ * test-and-branch per key in the inner loop. This yields a small
+ * performance improvement at the cost of a bit of macro gunk. */
+
+#define DEFINE_RESIZE_FUNC(fname) \
+static void fname (GHashTable *hash_table, guint old_size, guint32 *reallocated_buckets_bitmap) \
+{                                                                       \
+  guint i;                                                              \
+                                                                        \
+  for (i = 0; i < old_size; i++)                                        \
+    {                                                                   \
+      guint node_hash = hash_table->hashes[i];                          \
+      gpointer key, value G_GNUC_UNUSED;                                \
+                                                                        \
+      if (!HASH_IS_REAL (node_hash))                                    \
+        {                                                               \
+          /* Clear tombstones */                                        \
+          hash_table->hashes[i] = UNUSED_HASH_VALUE;                    \
+          continue;                                                     \
+        }                                                               \
+                                                                        \
+      /* Skip entries relocated through eviction */                     \
+      if (get_status_bit (reallocated_buckets_bitmap, i))               \
+        continue;                                                       \
+                                                                        \
+      hash_table->hashes[i] = UNUSED_HASH_VALUE;                        \
+      EVICT_KEYVAL (hash_table, i, NULL, NULL, key, value);             \
+                                                                        \
+      for (;;)                                                          \
+        {                                                               \
+          guint hash_val;                                               \
+          guint replaced_hash;                                          \
+          guint step = 0;                                               \
+                                                                        \
+          hash_val = g_hash_table_hash_to_index (hash_table, node_hash); \
+                                                                        \
+          while (get_status_bit (reallocated_buckets_bitmap, hash_val)) \
+            {                                                           \
+              step++;                                                   \
+              hash_val += step;                                         \
+              hash_val &= hash_table->mask;                             \
+            }                                                           \
+                                                                        \
+          set_status_bit (reallocated_buckets_bitmap, hash_val);        \
+                                                                        \
+          replaced_hash = hash_table->hashes[hash_val];                 \
+          hash_table->hashes[hash_val] = node_hash;                     \
+          if (!HASH_IS_REAL (replaced_hash))                            \
+            {                                                           \
+              ASSIGN_KEYVAL (hash_table, hash_val, key, value);         \
+              break;                                                    \
+            }                                                           \
+                                                                        \
+          node_hash = replaced_hash;                                    \
+          EVICT_KEYVAL (hash_table, hash_val, key, value, key, value);  \
+        }                                                               \
+    }                                                                   \
+}
+
+#define ASSIGN_KEYVAL(ht, index, key, value) G_STMT_START{ \
+    g_hash_table_assign_key_or_value ((ht)->keys, (index), (ht)->have_big_keys, (key)); \
+    g_hash_table_assign_key_or_value ((ht)->values, (index), (ht)->have_big_values, (value)); \
+  }G_STMT_END
+
+#define EVICT_KEYVAL(ht, index, key, value, outkey, outvalue) G_STMT_START{ \
+    (outkey) = g_hash_table_evict_key_or_value ((ht)->keys, (index), (ht)->have_big_keys, (key)); \
+    (outvalue) = g_hash_table_evict_key_or_value ((ht)->values, (index), (ht)->have_big_values, (value)); \
+  }G_STMT_END
+
+DEFINE_RESIZE_FUNC (resize_map)
+
+#undef ASSIGN_KEYVAL
+#undef EVICT_KEYVAL
+
+#define ASSIGN_KEYVAL(ht, index, key, value) G_STMT_START{ \
+    g_hash_table_assign_key_or_value ((ht)->keys, (index), (ht)->have_big_keys, (key)); \
+  }G_STMT_END
+
+#define EVICT_KEYVAL(ht, index, key, value, outkey, outvalue) G_STMT_START{ \
+    (outkey) = g_hash_table_evict_key_or_value ((ht)->keys, (index), (ht)->have_big_keys, (key)); \
+  }G_STMT_END
+
+DEFINE_RESIZE_FUNC (resize_set)
+
+#undef ASSIGN_KEYVAL
+#undef EVICT_KEYVAL
+
 /*
  * g_hash_table_resize:
  * @hash_table: our #GHashTable
@@ -658,54 +807,36 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
 static void
 g_hash_table_resize (GHashTable *hash_table)
 {
-  gpointer new_keys;
-  gpointer new_values;
-  guint *new_hashes;
-  gint old_size;
-  gint i;
+  guint32 *reallocated_buckets_bitmap;
+  guint old_size;
+  gboolean is_a_set;
 
   old_size = hash_table->size;
+  is_a_set = hash_table->keys == hash_table->values;
+
   g_hash_table_set_shift_from_size (hash_table, hash_table->nnodes * 2);
 
-  new_keys = g_hash_table_alloc_key_or_value_array (hash_table->size, hash_table->have_big_keys);
-  if (hash_table->keys == hash_table->values)
-    new_values = new_keys;
-  else
-    new_values = g_hash_table_alloc_key_or_value_array (hash_table->size, hash_table->have_big_values);
-  new_hashes = g_new0 (guint, hash_table->size);
-
-  for (i = 0; i < old_size; i++)
+  if (hash_table->size > old_size)
     {
-      guint node_hash = hash_table->hashes[i];
-      guint hash_val;
-      guint step = 0;
+      realloc_arrays (hash_table, is_a_set);
+      memset (&hash_table->hashes[old_size], 0, (hash_table->size - old_size) * sizeof (guint));
 
-      if (!HASH_IS_REAL (node_hash))
-        continue;
-
-      hash_val = g_hash_table_hash_to_index (hash_table, node_hash);
-
-      while (!HASH_IS_UNUSED (new_hashes[hash_val]))
-        {
-          step++;
-          hash_val += step;
-          hash_val &= hash_table->mask;
-        }
-
-      new_hashes[hash_val] = hash_table->hashes[i];
-      g_hash_table_assign_key_or_value (new_keys, hash_val, hash_table->have_big_keys, g_hash_table_fetch_key_or_value (hash_table->keys, i, hash_table->have_big_keys));
-      g_hash_table_assign_key_or_value (new_values, hash_val, hash_table->have_big_values, g_hash_table_fetch_key_or_value (hash_table->values, i, hash_table->have_big_values));
+      reallocated_buckets_bitmap = g_new0 (guint32, (hash_table->size + 31) / 32);
+    }
+  else
+    {
+      reallocated_buckets_bitmap = g_new0 (guint32, (old_size + 31) / 32);
     }
 
-  if (hash_table->keys != hash_table->values)
-    g_free (hash_table->values);
+  if (is_a_set)
+    resize_set (hash_table, old_size, reallocated_buckets_bitmap);
+  else
+    resize_map (hash_table, old_size, reallocated_buckets_bitmap);
 
-  g_free (hash_table->keys);
-  g_free (hash_table->hashes);
+  g_free (reallocated_buckets_bitmap);
 
-  hash_table->keys = new_keys;
-  hash_table->values = new_values;
-  hash_table->hashes = new_hashes;
+  if (hash_table->size < old_size)
+    realloc_arrays (hash_table, is_a_set);
 
   hash_table->noccupied = hash_table->nnodes;
 }
