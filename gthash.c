@@ -177,7 +177,7 @@ _gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint
       guint32 hashv;
 
       hashv = cmph_search_packed (packed_mem, str, strlen (str));
-      g_assert (hashv >= 0 && hashv < num_elts);
+      g_assert (hashv < num_elts);
       table[hashv] = strval;
     }
 }
