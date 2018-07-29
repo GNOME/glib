@@ -748,7 +748,7 @@ write_constant_value (const gchar *namespace,
       xml_printf (file, "%" G_GUINT64_FORMAT, value->v_uint64);
       break;
     case GI_TYPE_TAG_FLOAT:
-      xml_printf (file, "%f", value->v_float);
+      xml_printf (file, "%f", (double)value->v_float);
       break;
     case GI_TYPE_TAG_DOUBLE:
       xml_printf (file, "%f", value->v_double);
