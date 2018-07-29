@@ -1500,7 +1500,7 @@ validate_struct_blob (ValidateContext *ctx,
   field_offset = offset + sizeof (StructBlob);
   for (i = 0; i < blob->n_fields; i++)
     {
-      FieldBlob *blob = (FieldBlob*) &typelib->data[field_offset];
+      FieldBlob *field_blob = (FieldBlob*) &typelib->data[field_offset];
 
       if (!validate_field_blob (ctx,
 				field_offset,
@@ -1508,7 +1508,7 @@ validate_struct_blob (ValidateContext *ctx,
 	return FALSE;
 
       field_offset += sizeof (FieldBlob);
-      if (blob->has_embedded_type)
+      if (field_blob->has_embedded_type)
         field_offset += sizeof (CallbackBlob);
     }
 
@@ -1778,14 +1778,14 @@ validate_object_blob (ValidateContext *ctx,
   n_field_callbacks = 0;
   for (i = 0; i < blob->n_fields; i++)
     {
-      FieldBlob *blob = (FieldBlob*) &typelib->data[offset2];
+      FieldBlob *field_blob = (FieldBlob*) &typelib->data[offset2];
 
       if (!validate_field_blob (ctx, offset2, error))
 	return FALSE;
 
       offset2 += sizeof (FieldBlob);
       /* Special case fields which are callbacks. */
-      if (blob->has_embedded_type) {
+      if (field_blob->has_embedded_type) {
         offset2 += sizeof (CallbackBlob);
         n_field_callbacks++;
       }

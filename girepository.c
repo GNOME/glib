@@ -56,7 +56,7 @@
 
 
 static GIRepository *default_repository = NULL;
-static GSList *search_path = NULL;
+static GSList *typelib_search_path = NULL;
 
 struct _GIRepositoryPrivate
 {
@@ -160,7 +160,7 @@ init_globals (void)
   if (default_repository == NULL)
     default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
 
-  if (search_path == NULL)
+  if (typelib_search_path == NULL)
     {
       const char *libdir;
       char *typelib_dir;
@@ -172,7 +172,7 @@ init_globals (void)
        */
       type_lib_path_env = g_getenv ("GI_TYPELIB_PATH");
 
-      search_path = NULL;
+      typelib_search_path = NULL;
       if (type_lib_path_env)
         {
           gchar **custom_dirs;
@@ -183,7 +183,7 @@ init_globals (void)
           d = custom_dirs;
           while (*d)
             {
-              search_path = g_slist_prepend (search_path, *d);
+              typelib_search_path = g_slist_prepend (typelib_search_path, *d);
               d++;
             }
 
@@ -195,9 +195,9 @@ init_globals (void)
 
       typelib_dir = g_build_filename (libdir, "girepository-1.0", NULL);
 
-      search_path = g_slist_prepend (search_path, typelib_dir);
+      typelib_search_path = g_slist_prepend (typelib_search_path, typelib_dir);
 
-      search_path = g_slist_reverse (search_path);
+      typelib_search_path = g_slist_reverse (typelib_search_path);
     }
 
   g_once_init_leave (&initialized, 1);
@@ -216,7 +216,7 @@ void
 g_irepository_prepend_search_path (const char *directory)
 {
   init_globals ();
-  search_path = g_slist_prepend (search_path, g_strdup (directory));
+  typelib_search_path = g_slist_prepend (typelib_search_path, g_strdup (directory));
 }
 
 /**
@@ -231,7 +231,7 @@ g_irepository_prepend_search_path (const char *directory)
 GSList *
 g_irepository_get_search_path (void)
 {
-  return search_path;
+  return typelib_search_path;
 }
 
 static char *
@@ -1388,7 +1388,7 @@ g_irepository_enumerate_versions (GIRepository *repository,
   const gchar *loaded_version;
 
   init_globals ();
-  candidates = enumerate_namespace_versions (namespace_, search_path);
+  candidates = enumerate_namespace_versions (namespace_, typelib_search_path);
 
   for (link = candidates; link; link = link->next)
     {
@@ -1555,7 +1555,7 @@ g_irepository_require (GIRepository  *repository,
 
   init_globals ();
   typelib = require_internal (repository, namespace, version, flags,
-			      search_path, error);
+			      typelib_search_path, error);
 
   return typelib;
 }

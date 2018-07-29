@@ -1182,14 +1182,14 @@ get_index_of_member_type (GIrNodeInterface *node,
 
   for (l = node->members; l; l = l->next)
     {
-      GIrNode *node = l->data;
+      GIrNode *member_node = l->data;
 
-      if (node->type != type)
+      if (member_node->type != type)
         continue;
 
       index++;
 
-      if (strcmp (node->name, name) == 0)
+      if (strcmp (member_node->name, name) == 0)
         break;
     }
 
@@ -1543,13 +1543,13 @@ _g_ir_node_build_typelib (GIrNode         *node,
 
 		  case GI_TYPE_TAG_ERROR:
 		    {
-		      ErrorTypeBlob *blob = (ErrorTypeBlob *)&data[*offset2];
+		      ErrorTypeBlob *error_blob = (ErrorTypeBlob *)&data[*offset2];
 
-		      blob->pointer = 1;
-		      blob->reserved = 0;
-		      blob->tag = type->tag;
-		      blob->reserved2 = 0;
-		      blob->n_domains = 0;
+		      error_blob->pointer = 1;
+		      error_blob->reserved = 0;
+		      error_blob->tag = type->tag;
+		      error_blob->reserved2 = 0;
+		      error_blob->n_domains = 0;
 
 		      *offset2 += sizeof (ErrorTypeBlob);
 		    }
