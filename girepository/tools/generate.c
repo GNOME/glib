@@ -80,11 +80,11 @@ main (int argc, char *argv[])
 
   for (i = 0; input[i]; i++)
     {
-      GError *error = NULL;
       const char *namespace;
       GMappedFile *mfile;
       GITypelib *typelib;
 
+      error = NULL;
       mfile = g_mapped_file_new (input[i], FALSE, &error);
       if (!mfile)
 	g_error ("failed to read '%s': %s", input[i], error->message);
