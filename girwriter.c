@@ -505,6 +505,8 @@ write_callable_info (const gchar    *namespace,
 	case GI_DIRECTION_INOUT:
 	  xml_printf (file, " direction=\"inout\"");
 	  break;
+	default:
+	  g_assert_not_reached ();
 	}
 
       if (g_arg_info_may_be_null (arg))
@@ -529,6 +531,8 @@ write_callable_info (const gchar    *namespace,
         case GI_SCOPE_TYPE_NOTIFIED:
           xml_printf (file, " scope=\"notified\"");
           break;
+        default:
+          g_assert_not_reached ();
         }
 
       if (g_arg_info_get_closure (arg) >= 0)

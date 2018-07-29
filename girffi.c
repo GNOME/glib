@@ -102,6 +102,8 @@ gi_type_tag_get_ffi_type_internal (GITypeTag   tag,
         return &ffi_type_pointer;
       else
         return &ffi_type_void;
+    default:
+      break;
     }
 
   g_assert_not_reached ();

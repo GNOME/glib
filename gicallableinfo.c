@@ -77,6 +77,8 @@ signature_offset (GICallableInfo *info)
     case GI_INFO_TYPE_SIGNAL:
       sigoff = G_STRUCT_OFFSET (SignalBlob, signature);
       break;
+    default:
+      g_assert_not_reached ();
     }
   if (sigoff >= 0)
     return *(guint32 *)&rinfo->typelib->data[rinfo->offset + sigoff];

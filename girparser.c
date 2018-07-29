@@ -3092,6 +3092,8 @@ start_element_handler (GMarkupParseContext *context,
 		      ctx, error))
 	goto out;
       break;
+    default:
+      break;
     }
 
   if (*error == NULL && ctx->state != STATE_PASSTHROUGH)

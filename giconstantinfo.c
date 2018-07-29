@@ -166,6 +166,8 @@ g_constant_info_get_value (GIConstantInfo *info,
 	    case GI_TYPE_TAG_DOUBLE:
 	      DO_ALIGNED_COPY(&value->v_double, &rinfo->typelib->data[blob->offset], gdouble);
 	      break;
+	    default:
+	      g_assert_not_reached ();
 	    }
 	}
     }

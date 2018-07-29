@@ -337,11 +337,15 @@ g_field_info_get_field (GIFieldInfo *field_info,
 			  g_base_info_get_name ((GIBaseInfo *)field_info),
 			  g_base_info_get_type (interface));
 		break;
+	      default:
+		break;
 	      }
 
 	    g_base_info_unref ((GIBaseInfo *)interface);
 	    break;
 	  }
+	  break;
+	default:
 	  break;
 	}
     }
@@ -513,11 +517,15 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 			  g_base_info_get_name ((GIBaseInfo *)field_info),
 			  g_base_info_get_type (interface));
 		break;
+	      default:
+		break;
 	      }
 
 	    g_base_info_unref ((GIBaseInfo *)interface);
 	    break;
 	  }
+	  break;
+	default:
 	  break;
 	}
     } else {
