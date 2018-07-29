@@ -324,7 +324,7 @@ g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
 {
   Header *header = (Header *)typelib->data;
   const char *c_prefix;
-  gchar *prefix;
+  const gchar *prefix;
   gboolean ret = FALSE;
   StrSplitIter split_iter;
   gsize gtype_name_len;
