@@ -3479,8 +3479,8 @@ end_element_handler (GMarkupParseContext *context,
 	  (strcmp ("varargs", element_name) == 0))
 	{
 	  end_type (ctx);
-	  break;
 	}
+      break;
     case STATE_ATTRIBUTE:
       if (strcmp ("attribute", element_name) == 0)
         {
