@@ -237,7 +237,7 @@ write_type_info (const gchar *namespace,
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
       gint length, size;
-      char *name = NULL;
+      const char *name = NULL;
 
       xml_start_element (file, "array");
 

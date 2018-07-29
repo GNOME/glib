@@ -272,7 +272,7 @@ strsplit_iter_init (StrSplitIter  *iter,
 
 static gboolean
 strsplit_iter_next (StrSplitIter  *iter,
-                    char         **out_val)
+                    const char   **out_val)
 {
   const char *s = iter->s;
   const char *next;
