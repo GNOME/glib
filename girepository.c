@@ -66,7 +66,7 @@ struct _GIRepositoryPrivate
   GHashTable *info_by_error_domain; /* GQuark -> GIBaseInfo */
 };
 
-G_DEFINE_TYPE (GIRepository, g_irepository, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_CODE (GIRepository, g_irepository, G_TYPE_OBJECT, G_ADD_PRIVATE (GIRepository));
 
 #ifdef G_PLATFORM_WIN32
 
@@ -104,8 +104,7 @@ DllMain (HINSTANCE hinstDLL,
 static void
 g_irepository_init (GIRepository *repository)
 {
-  repository->priv = G_TYPE_INSTANCE_GET_PRIVATE (repository, G_TYPE_IREPOSITORY,
-						  GIRepositoryPrivate);
+  repository->priv = g_irepository_get_instance_private (repository);
   repository->priv->typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
 			     (GDestroyNotify) NULL,
@@ -145,8 +144,6 @@ g_irepository_class_init (GIRepositoryClass *class)
   gobject_class = G_OBJECT_CLASS (class);
 
   gobject_class->finalize = g_irepository_finalize;
-
-  g_type_class_add_private (class, sizeof (GIRepositoryPrivate));
 }
 
 static void
