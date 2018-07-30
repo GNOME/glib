@@ -498,7 +498,7 @@ g_object_do_class_init (GObjectClass *class)
    *                   text_view)
    * ]|
    * It is important to note that you must use
-   * [canonical][canonical-parameter-name] parameter names as
+   * [canonical parameter names][canonical-parameter-names] as
    * detail strings for the notify signal.
    */
   gobject_signals[NOTIFY] =
