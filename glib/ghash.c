@@ -814,7 +814,18 @@ g_hash_table_resize (GHashTable *hash_table)
   old_size = hash_table->size;
   is_a_set = hash_table->keys == hash_table->values;
 
-  g_hash_table_set_shift_from_size (hash_table, hash_table->nnodes * 2);
+  /* The outer checks in g_hash_table_maybe_resize() will only consider
+   * cleanup/resize when the load factor goes below .25 (1/4, ignoring
+   * tombstones) or above .9375 (15/16, including tombstones).
+   *
+   * Once this happens, tombstones will always be cleaned out. If our
+   * load sans tombstones is greater than .75 (1/1.333, see below), we'll
+   * take this opportunity to grow the table too.
+   *
+   * Immediately after growing, the load factor will be in the range
+   * .375 .. .469. After shrinking, it will be exactly .5. */
+
+  g_hash_table_set_shift_from_size (hash_table, hash_table->nnodes * 1.333);
 
   if (hash_table->size > old_size)
     {
