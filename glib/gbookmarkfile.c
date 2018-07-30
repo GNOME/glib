@@ -210,7 +210,7 @@ struct _GBookmarkFile
 };
 
 /* parser state machine */
-enum
+typedef enum
 {
   STATE_STARTED        = 0,
   
@@ -228,7 +228,7 @@ enum
   STATE_ICON,
   
   STATE_FINISHED
-};
+} ParserState;
 
 static void          g_bookmark_file_init        (GBookmarkFile  *bookmark);
 static void          g_bookmark_file_clear       (GBookmarkFile  *bookmark);
@@ -681,7 +681,7 @@ g_bookmark_file_clear (GBookmarkFile *bookmark)
 
 struct _ParseData
 {
-  gint state;
+  ParserState state;
   
   GHashTable *namespaces;
   
@@ -1083,6 +1083,43 @@ is_element_full (ParseData   *parse_data,
 #define IS_ELEMENT(p,s,e)	(is_element_full ((p), (s), NULL, (e), '\0'))
 #define IS_ELEMENT_NS(p,s,n,e)	(is_element_full ((p), (s), (n), (e), '|'))
 
+static const gchar *
+parser_state_to_element_name (ParserState state)
+{
+  switch (state)
+    {
+    case STATE_STARTED:
+    case STATE_FINISHED:
+      return "(top-level)";
+    case STATE_ROOT:
+      return XBEL_ROOT_ELEMENT;
+    case STATE_BOOKMARK:
+      return XBEL_BOOKMARK_ELEMENT;
+    case STATE_TITLE:
+      return XBEL_TITLE_ELEMENT;
+    case STATE_DESC:
+      return XBEL_DESC_ELEMENT;
+    case STATE_INFO:
+      return XBEL_INFO_ELEMENT;
+    case STATE_METADATA:
+      return XBEL_METADATA_ELEMENT;
+    case STATE_APPLICATIONS:
+      return BOOKMARK_APPLICATIONS_ELEMENT;
+    case STATE_APPLICATION:
+      return BOOKMARK_APPLICATION_ELEMENT;
+    case STATE_GROUPS:
+      return BOOKMARK_GROUPS_ELEMENT;
+    case STATE_GROUP:
+      return BOOKMARK_GROUP_ELEMENT;
+    case STATE_MIME:
+      return MIME_TYPE_ELEMENT;
+    case STATE_ICON:
+      return BOOKMARK_ICON_ELEMENT;
+    default:
+      g_assert_not_reached ();
+    }
+}
+
 static void
 start_element_raw_cb (GMarkupParseContext *context,
                       const gchar         *element_name,
@@ -1263,8 +1300,23 @@ start_element_raw_cb (GMarkupParseContext *context,
         	     element_name,
         	     BOOKMARK_GROUP_ELEMENT);
       break;
+
+    case STATE_TITLE:
+    case STATE_DESC:
+    case STATE_APPLICATION:
+    case STATE_GROUP:
+    case STATE_MIME:
+    case STATE_ICON:
+    case STATE_FINISHED:
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   _("Unexpected tag “%s” inside “%s”"),
+                   element_name,
+                   parser_state_to_element_name (parse_data->state));
+      break;
+
     default:
-      g_warn_if_reached ();
+      g_assert_not_reached ();
       break;
     }
 }

@@ -143,6 +143,27 @@ dist_test_data += \
 	bookmarks/fail-15.xbel \
 	bookmarks/fail-16.xbel \
 	bookmarks/fail-17.xbel \
+	bookmarks/fail-18.xbel \
+	bookmarks/fail-19.xbel \
+	bookmarks/fail-20.xbel \
+	bookmarks/fail-21.xbel \
+	bookmarks/fail-22.xbel \
+	bookmarks/fail-23.xbel \
+	bookmarks/fail-24.xbel \
+	bookmarks/fail-25.xbel \
+	bookmarks/fail-26.xbel \
+	bookmarks/fail-27.xbel \
+	bookmarks/fail-28.xbel \
+	bookmarks/fail-29.xbel \
+	bookmarks/fail-30.xbel \
+	bookmarks/fail-31.xbel \
+	bookmarks/fail-32.xbel \
+	bookmarks/fail-33.xbel \
+	bookmarks/fail-34.xbel \
+	bookmarks/fail-35.xbel \
+	bookmarks/fail-36.xbel \
+	bookmarks/fail-37.xbel \
+	bookmarks/fail-38.xbel \
 	bookmarks/valid-01.xbel \
 	bookmarks/valid-02.xbel \
 	bookmarks/valid-03.xbel \
