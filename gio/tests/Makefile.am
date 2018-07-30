@@ -557,7 +557,8 @@ nodist_resources_SOURCES = test_resources.c test_resources2.c test_resources2.h
 resources_DEPENDENCIES = test.gresource
 
 test_ltlibraries += libresourceplugin.la
-libresourceplugin_la_SOURCES = resourceplugin.c plugin_resources.c
+libresourceplugin_la_SOURCES = resourceplugin.c
+nodist_libresourceplugin_la_SOURCES = plugin_resources.c
 libresourceplugin_la_LDFLAGS = -avoid-version -module -export-dynamic $(no_undefined)
 libresourceplugin_la_LIBADD = $(LDADD)
 

@@ -410,15 +410,26 @@ gspawn-win64-helper-console.c:
 	echo '#define HELPER_CONSOLE' >$@
 	echo '#include "gspawn-win32-helper.c"' >>$@
 
+nodist_win_helper_sources = \
+	gspawn-win32-helper-console.c \
+	gspawn-win64-helper.c \
+	gspawn-win64-helper-console.c \
+	$(NULL)
+
+BUILT_SOURCES += $(nodist_win_helper_sources)
+CLEANFILES += $(nodist_win_helper_sources)
 
 if OS_WIN32
 if OS_WIN32_X64
 bin_PROGRAMS += gspawn-win64-helper gspawn-win64-helper-console
+nodist_gspawn_win64_helper_SOURCES = gspawn-win64-helper.c
+nodist_gspawn_win64_helper_console_SOURCES = gspawn-win64-helper-console.c
 gspawn_win64_helper_LDADD = libglib-2.0.la
 gspawn_win64_helper_LDFLAGS = -mwindows
 gspawn_win64_helper_console_LDADD = libglib-2.0.la
 else
 bin_PROGRAMS += gspawn-win32-helper gspawn-win32-helper-console
+nodist_gspawn_win32_helper_console_SOURCES = gspawn-win32-helper-console.c
 gspawn_win32_helper_LDADD = libglib-2.0.la
 gspawn_win32_helper_LDFLAGS = -mwindows
 gspawn_win32_helper_console_LDADD = libglib-2.0.la

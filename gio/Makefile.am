@@ -288,6 +288,9 @@ unix_sources = \
 	gportalsupport.h	\
 	$(portal_sources)	\
 	$(NULL)
+nodist_unix_sources = \
+	$(nodist_portal_sources) \
+	$(NULL)
 
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
@@ -316,6 +319,8 @@ endif
 gdbus_daemon_sources = \
 	gdbusdaemon.c \
 	gdbusdaemon.h \
+	$(NULL)
+nodist_gdbus_daemon_sources = \
 	gdbus-daemon-generated.c \
 	gdbus-daemon-generated.h \
 	$(NULL)
@@ -336,6 +341,9 @@ win32_actual_sources = \
 	gwin32networkmonitor.h \
 	gwin32notificationbackend.c \
 	$(NULL)
+nodist_win32_actual_sources = \
+	$(nodist_gdbus_daemon_sources) \
+	$(NULL)
 
 win32_more_sources_for_vcproj = \
 	gwin32appinfo.c \
@@ -353,6 +361,7 @@ appinfo_sources += gwin32appinfo.c gwin32appinfo.h
 contenttype_sources += gcontenttype-win32.c
 platform_libadd += -lshlwapi -lws2_32 -ldnsapi -liphlpapi
 win32_sources = $(win32_actual_sources)
+nodist_win32_sources = $(nodist_win32_actual_sources)
 
 giowin32includedir=$(includedir)/gio-win32-2.0/gio
 giowin32include_HEADERS = \
@@ -392,7 +401,9 @@ portal_sources = \
 	gnetworkmonitorportal.h		\
 	gproxyresolverportal.c		\
 	gproxyresolverportal.h		\
-	$(xdp_dbus_built_sources)	\
+	$(NULL)
+nodist_portal_sources = \
+	$(xdp_dbus_built_sources) \
 	$(NULL)
 
 if OS_UNIX
@@ -546,13 +557,15 @@ gio_base_sources =		\
 	gzlibcompressor.c	\
 	gzlibdecompressor.c	\
 	gmountprivate.h 	\
-	gioenumtypes.h		\
-	gioenumtypes.c		\
 	glistmodel.c 		\
 	gliststore.c		\
 	$(application_sources) 	\
 	$(gdbus_sources) 	\
 	$(local_sources) 	\
+	$(NULL)
+nodist_gio_base_sources = \
+	gioenumtypes.h \
+	gioenumtypes.c \
 	$(NULL)
 
 libgio_2_0_la_SOURCES =		\
@@ -562,6 +575,11 @@ libgio_2_0_la_SOURCES =		\
 	$(unix_sources) 	\
 	$(win32_sources) 	\
 	$(settings_sources) 	\
+	$(NULL)
+nodist_libgio_2_0_la_SOURCES = \
+	$(nodist_gio_base_sources) \
+	$(nodist_unix_sources) \
+	$(nodist_win32_sources) \
 	$(NULL)
 
 EXTRA_DIST += strinfo.c
@@ -762,8 +780,11 @@ gio_headers =			\
 
 gioincludedir=$(includedir)/glib-2.0/gio/
 gioinclude_HEADERS = 		\
-	$(gio_headers)		\
-	gioenumtypes.h
+	$(gio_headers) \
+	$(NULL)
+nodist_gioinclude_HEADERS = \
+	gioenumtypes.h \
+	$(NULL)
 
 nodist_gioinclude_HEADERS =	\
 	gnetworking.h		\
@@ -785,7 +806,6 @@ EXTRA_DIST += 			\
 	gioenumtypes.c.template	\
 	gio.rc.in		\
 	gschema.dtd		\
-	gconstructor_as_data.h	\
 	$(NULL)
 
 BUILT_EXTRA_DIST += 		\
@@ -846,11 +866,13 @@ gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c.py
 
 glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
 glib_compile_schemas_SOURCES = \
-	gconstructor_as_data.h \
 	gvdb/gvdb-format.h		\
 	gvdb/gvdb-builder.h		\
 	gvdb/gvdb-builder.c		\
 	glib-compile-schemas.c
+nodist_glib_compile_schemas_SOURCES = \
+	gconstructor_as_data.h \
+	$(NULL)
 
 gsettings_LDADD = libgio-2.0.la 			\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
