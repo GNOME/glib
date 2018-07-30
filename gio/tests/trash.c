@@ -41,10 +41,12 @@ test_trash_not_supported (void)
   file = g_file_new_tmp ("test-trashXXXXXX", &stream, &error);
   g_assert_no_error (error);
   g_assert_cmpint (g_lstat (g_file_peek_path (file), &file_stat), ==, 0);
-  g_test_message ("File: %s (dev: %lu)", g_file_peek_path (file), file_stat.st_dev);
+  g_test_message ("File: %s (dev: %" G_GUINT64_FORMAT ")",
+                  g_file_peek_path (file), (guint64) file_stat.st_dev);
 
   g_assert_cmpint (g_stat (g_get_home_dir (), &home_stat), ==, 0);
-  g_test_message ("Home: %s (dev: %lu)", g_get_home_dir (), home_stat.st_dev);
+  g_test_message ("Home: %s (dev: %" G_GUINT64_FORMAT ")",
+                  g_get_home_dir (), (guint64) home_stat.st_dev);
 
   if (file_stat.st_dev == home_stat.st_dev)
     {
