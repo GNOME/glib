@@ -2293,7 +2293,7 @@ g_option_group_free (GOptionGroup *group)
  *
  * Increments the reference count of @group by one.
  *
- * Returns: a #GoptionGroup
+ * Returns: a #GOptionGroup
  *
  * Since: 2.44
  */
