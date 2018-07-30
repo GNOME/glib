@@ -1,6 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/glib.mk
 
+bin_PROGRAMS =
+
 #
 # Generate glibconfig.h
 #
@@ -366,8 +368,6 @@ libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined)
 
-INSTALL_PROGS=
-
 if ENABLE_DTRACE
 glib_probes.h: glib_probes.d
 	$(AM_V_GEN) $(DTRACE) -C -h -s $< -o $@.tmp
@@ -413,12 +413,12 @@ gspawn-win64-helper-console.c:
 
 if OS_WIN32
 if OS_WIN32_X64
-INSTALL_PROGS += gspawn-win64-helper gspawn-win64-helper-console
+bin_PROGRAMS += gspawn-win64-helper gspawn-win64-helper-console
 gspawn_win64_helper_LDADD = libglib-2.0.la
 gspawn_win64_helper_LDFLAGS = -mwindows
 gspawn_win64_helper_console_LDADD = libglib-2.0.la
 else
-INSTALL_PROGS += gspawn-win32-helper gspawn-win32-helper-console
+bin_PROGRAMS += gspawn-win32-helper gspawn-win32-helper-console
 gspawn_win32_helper_LDADD = libglib-2.0.la
 gspawn_win32_helper_LDFLAGS = -mwindows
 gspawn_win32_helper_console_LDADD = libglib-2.0.la
@@ -428,11 +428,9 @@ endif
 glib-win32-res.o: glib.rc
 	$(WINDRES) glib.rc $@
 
-bin_PROGRAMS	 = ${INSTALL_PROGS}
-
 if OS_UNIX
 
-INSTALL_PROGS	+= gtester
+bin_PROGRAMS += gtester
 gtester_SOURCES	 = gtester.c
 gtester_LDADD	 = libglib-2.0.la 
 
