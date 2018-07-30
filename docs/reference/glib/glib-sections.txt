@@ -3482,15 +3482,15 @@ g_rc_box_get_size
 
 <SECTION>
 <FILE>arcbox</FILE>
-g_arc_box_alloc
-g_arc_box_alloc0
-g_arc_box_new
-g_arc_box_new0
-g_arc_box_dup
-g_arc_box_acquire
-g_arc_box_release
-g_arc_box_release_full
-g_arc_box_get_size
+g_atomic_rc_box_alloc
+g_atomic_rc_box_alloc0
+g_atomic_rc_box_new
+g_atomic_rc_box_new0
+g_atomic_rc_box_dup
+g_atomic_rc_box_acquire
+g_atomic_rc_box_release
+g_atomic_rc_box_release_full
+g_atomic_rc_box_get_size
 </SECTION>
 
 <SECTION>

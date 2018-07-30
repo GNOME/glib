@@ -140,8 +140,6 @@ endif
 CLEANFILES ?=
 CLEANFILES += $(man_MANS)
 
-EXTRA_DIST += $(man_MANS)
-
 dist-hook-local: all-local
 
 glib-docs-clean: clean
