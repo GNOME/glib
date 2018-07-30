@@ -274,6 +274,7 @@ eject_mount_done (GObject      *source,
   GTask *task = user_data;
   GError *error = NULL;
   gchar *stderr_str;
+  GUnixVolume *unix_volume;
 
   if (!g_subprocess_communicate_utf8_finish (subprocess, result, NULL, &stderr_str, &error))
     {
@@ -286,8 +287,12 @@ eject_mount_done (GObject      *source,
         /* ...but bad exit code */
         g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_FAILED, "%s", stderr_str);
       else
-        /* ...and successful exit code */
-        g_task_return_boolean (task, TRUE);
+        {
+          /* ...and successful exit code */
+          unix_volume = G_UNIX_VOLUME (g_task_get_source_object (task));
+          _g_unix_volume_monitor_update (G_UNIX_VOLUME_MONITOR (unix_volume->volume_monitor));
+          g_task_return_boolean (task, TRUE);
+        }
 
       g_free (stderr_str);
     }
