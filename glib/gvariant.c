@@ -1364,10 +1364,10 @@ g_variant_new_object_path (const gchar *object_path)
  * should ensure that a string is a valid D-Bus object path before
  * passing it to g_variant_new_object_path().
  *
- * A valid object path starts with '/' followed by zero or more
- * sequences of characters separated by '/' characters.  Each sequence
- * must contain only the characters "[A-Z][a-z][0-9]_".  No sequence
- * (including the one following the final '/' character) may be empty.
+ * A valid object path starts with `/` followed by zero or more
+ * sequences of characters separated by `/` characters.  Each sequence
+ * must contain only the characters `[A-Z][a-z][0-9]_`.  No sequence
+ * (including the one following the final `/` character) may be empty.
  *
  * Returns: %TRUE if @string is a D-Bus object path
  *

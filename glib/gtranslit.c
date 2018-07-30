@@ -314,12 +314,12 @@ get_default_item_id (void)
  * If the source language of @str is known, it can used to improve the
  * accuracy of the translation by passing it as @from_locale.  It should
  * be a valid POSIX locale string (of the form
- * "language[_territory][.codeset][@modifier]").
+ * `language[_territory][.codeset][@modifier]`).
  *
  * If @from_locale is %NULL then the current locale is used.
  *
  * If you want to do translation for no specific locale, and you want it
- * to be done independently of the currently locale, specify "C" for
+ * to be done independently of the currently locale, specify `"C"` for
  * @from_locale.
  *
  * Returns: a string in plain ASCII
