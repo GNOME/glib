@@ -365,17 +365,7 @@ g_hash_table_set_shift_from_size (GHashTable *hash_table, gint size)
 }
 
 static inline gpointer
-g_hash_table_alloc_key_or_value_array (guint size, gboolean is_big G_GNUC_UNUSED)
-{
-#ifdef USE_SMALL_ARRAYS
-  return g_malloc0 (size * (is_big ? BIG_ENTRY_SIZE : SMALL_ENTRY_SIZE));
-#else
-  return g_new0 (gpointer, size);
-#endif
-}
-
-static inline gpointer
-g_hash_table_realloc_key_or_value_array (gpointer a, guint size, gboolean is_big G_GNUC_UNUSED)
+g_hash_table_realloc_key_or_value_array (gpointer a, guint size, G_GNUC_UNUSED gboolean is_big)
 {
 #ifdef USE_SMALL_ARRAYS
   return g_realloc (a, size * (is_big ? BIG_ENTRY_SIZE : SMALL_ENTRY_SIZE));
@@ -630,7 +620,7 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   if (!destruction)
     {
-      hash_table->keys   = g_hash_table_alloc_key_or_value_array (hash_table->size, FALSE);
+      hash_table->keys   = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, FALSE);
       hash_table->values = hash_table->keys;
       hash_table->hashes = g_new0 (guint, hash_table->size);
     }
@@ -1037,7 +1027,7 @@ g_hash_table_new_full (GHashFunc      hash_func,
 #endif
   hash_table->key_destroy_func   = key_destroy_func;
   hash_table->value_destroy_func = value_destroy_func;
-  hash_table->keys               = g_hash_table_alloc_key_or_value_array (hash_table->size, FALSE);
+  hash_table->keys               = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, FALSE);
   hash_table->values             = hash_table->keys;
   hash_table->hashes             = g_new0 (guint, hash_table->size);
 
