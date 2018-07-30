@@ -125,7 +125,6 @@ g_ref_string_new (const char *str)
   len = strlen (str);
   
   res = (char *) g_atomic_rc_box_dup (sizeof (char) * len + 1, str);
-  res[len] = '\0';
 
   return res;
 }
