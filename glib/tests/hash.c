@@ -1414,12 +1414,7 @@ check_data (GHashTable *h)
 
   for (i = 0; i < h->size; i++)
     {
-      if (h->hashes[i] < 2)
-        {
-          g_assert (fetch_key_or_value (h->keys, i, h->have_big_keys) == NULL);
-          g_assert (fetch_key_or_value (h->values, i, h->have_big_values) == NULL);
-        }
-      else
+      if (h->hashes[i] >= 2)
         {
           g_assert_cmpint (h->hashes[i], ==, h->hash_func (fetch_key_or_value (h->keys, i, h->have_big_keys)));
         }
