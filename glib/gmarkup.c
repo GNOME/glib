@@ -557,11 +557,23 @@ char_str (gunichar c,
   return buf;
 }
 
+/* Format the next UTF-8 character as a gchar* for printing in error output
+ * when we encounter a syntax error. This correctly handles invalid UTF-8,
+ * emitting it as hex escapes. */
 static gchar*
 utf8_str (const gchar *utf8,
           gchar       *buf)
 {
-  char_str (g_utf8_get_char (utf8), buf);
+  gunichar c = g_utf8_get_char_validated (utf8, -1);
+  if (c == (gunichar) -1 || c == (gunichar) -2)
+    {
+      gchar *temp = g_strdup_printf ("\\x%02x", (guint)(guchar)*utf8);
+      memset (buf, 0, 8);
+      memcpy (buf, temp, strlen (temp));
+      g_free (temp);
+    }
+  else
+    char_str (c, buf);
   return buf;
 }
 
