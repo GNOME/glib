@@ -148,7 +148,7 @@
  * If you need to clear the contents of the data, you will need to use an
  * ancillary function that calls g_rc_box_release_full():
  *
- * |[<!-- laguage="C" -->
+ * |[<!-- language="C" -->
  * static void
  * my_data_struct_release (MyDataStruct *data)
  * {
