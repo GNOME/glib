@@ -1772,18 +1772,6 @@ dnl ****************************************
 dnl *** platform dependent source checks ***
 dnl ****************************************
 
-AC_MSG_CHECKING(for platform-dependent source)
-case "$host" in
-  *-*-cygwin*|*-*-mingw*)
-    PLATFORMDEP=gwin32.lo
-    ;;
-  *)
-    PLATFORMDEP=
-    ;;    
-esac
-AC_MSG_RESULT($PLATFORMDEP)
-AC_SUBST(PLATFORMDEP)
-
 AC_MSG_CHECKING([whether to compile timeloop])
 case "$host" in
   *-*-cygwin*|*-*-mingw*|*-*-minix)
