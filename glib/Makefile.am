@@ -163,6 +163,7 @@ libglib_2_0_la_SOURCES = 	\
 	gshell.c		\
 	gslice.c		\
 	gslist.c		\
+	gspawn-private.h	\
 	gstdio.c		\
 	gstdioprivate.h		\
 	gstrfuncs.c		\
@@ -222,13 +223,21 @@ libglib_2_0_la_SOURCES += gthread-posix.c
 endif
 endif
 
-EXTRA_libglib_2_0_la_SOURCES = \
-	giounix.c	\
-	giowin32.c	\
-	gspawn.c	\
-	gspawn-private.h \
-	gspawn-win32.c	\
-	gwin32.c
+if PLATFORM_WIN32
+libglib_2_0_la_SOURCES += gwin32.c
+endif
+
+if G_SPAWN_WIN32
+libglib_2_0_la_SOURCES += gspawn-win32.c
+else
+libglib_2_0_la_SOURCES += gspawn.c
+endif
+
+if G_IO_CHANNEL_WIN32
+libglib_2_0_la_SOURCES += giowin32.c
+else
+libglib_2_0_la_SOURCES += giounix.c
+endif
 
 glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
@@ -360,8 +369,8 @@ pcre_inc =
 endif
 
 libglib_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS) $(LIBSYSTEMD_CFLAGS)
-libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ $(pcre_lib) $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD) $(LIBSYSTEMD_LIBS)
-libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ $(glib_win32_res) $(glib_def)
+libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @ICONV_LIBS@ @G_LIBS_EXTRA@ $(pcre_lib) $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD) $(LIBSYSTEMD_LIBS)
+libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) $(glib_win32_res) $(glib_def)
 
 libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	 $(glib_win32_res_ldflag) \

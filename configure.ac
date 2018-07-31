@@ -1552,14 +1552,14 @@ dnl **********************
 AC_MSG_CHECKING(for gspawn implementation)
 case "$host" in
   *-*-mingw*)
-    GSPAWN=gspawn-win32.lo
+    g_spawn_impl=win32
     ;;
   *)
-    GSPAWN=gspawn.lo
+    g_spawn_impl=unix
     ;;    
 esac
-AC_MSG_RESULT($GSPAWN)
-AC_SUBST(GSPAWN)
+AC_MSG_RESULT($g_spawn_impl)
+AM_CONDITIONAL(G_SPAWN_WIN32, [test "$g_spawn_impl" = "win32"])
 
 dnl *************************
 dnl *** GIOChannel checks ***
@@ -1568,14 +1568,14 @@ dnl *************************
 AC_MSG_CHECKING(for GIOChannel implementation)
 case "$host" in
   *-*-mingw*)
-    GIO=giowin32.lo
+    g_io_channel_impl=win32
     ;;
   *)
-    GIO=giounix.lo
+    g_io_channel_impl=unix
     ;;    
 esac
-AC_MSG_RESULT($GIO)
-AC_SUBST(GIO)
+AC_MSG_RESULT($g_io_channel_impl)
+AM_CONDITIONAL(G_IO_CHANNEL_WIN32, [test "$g_io_channel_impl" = "win32"])
 
 dnl *********************************
 dnl *** Directory for GIO modules ***
@@ -1771,18 +1771,6 @@ AM_CONDITIONAL(HAVE_LIBMOUNT, [test x$have_libmount = xyes])
 dnl ****************************************
 dnl *** platform dependent source checks ***
 dnl ****************************************
-
-AC_MSG_CHECKING(for platform-dependent source)
-case "$host" in
-  *-*-cygwin*|*-*-mingw*)
-    PLATFORMDEP=gwin32.lo
-    ;;
-  *)
-    PLATFORMDEP=
-    ;;    
-esac
-AC_MSG_RESULT($PLATFORMDEP)
-AC_SUBST(PLATFORMDEP)
 
 AC_MSG_CHECKING([whether to compile timeloop])
 case "$host" in
