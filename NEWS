@@ -7,7 +7,7 @@ Overview of changes in GLib 2.57.2
 * Bugs fixed:
  742456 Add g_steal_pointer() convenience function to mark ownership...
  795569 MinGW CI: fix tests
- 796341 gmem.h: Use typeof() in g_steal_pointer() macro 
+ 796341 gmem.h: Use typeof() in g_steal_pointer() macro
  #1013 Support for per-session overrides
  #1360 glib-mkenums breaks if option specified but no nick
  #1175 Add names and tags to various GSources and GTasks constructed in GLib
@@ -16,11 +16,15 @@ Overview of changes in GLib 2.57.2
  #927 gio/gresource.c:do_lookup check for terminating "/"
  #976 Document difference between g_assert() and g_assert_*()...
  #1447 glib 2.57.1: test_month_names: assertion failed...
+ #1407 Update to Unicode Character Database 11
+ #1455 glib python tools have full python path in shebang, limits to 128 characters
+ #1459 Missing g_return_val_if_fail in g_async_queue_timeout_pop
 
 * Translation updates:
  Friulian
  German
  Romanian
+ Spanish
 
 
 Overview of changes in GLib 2.57.1
