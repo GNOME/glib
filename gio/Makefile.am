@@ -779,15 +779,12 @@ gio_headers =			\
 	$(NULL)
 
 gioincludedir=$(includedir)/glib-2.0/gio/
-gioinclude_HEADERS = 		\
+gioinclude_HEADERS = \
 	$(gio_headers) \
 	$(NULL)
 nodist_gioinclude_HEADERS = \
 	gioenumtypes.h \
-	$(NULL)
-
-nodist_gioinclude_HEADERS =	\
-	gnetworking.h		\
+	gnetworking.h \
 	$(NULL)
 
 # these sources (also mentioned above) are generated.
