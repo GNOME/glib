@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2018-07-24 08:03+0000\n"
-"PO-Revision-Date: 2018-07-24 12:28+0200\n"
+"POT-Creation-Date: 2018-07-30 18:46+0000\n"
+"PO-Revision-Date: 2018-07-31 11:42+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: gio/gapplication.c:496
 msgid "GApplication options"
@@ -48,8 +48,7 @@ msgstr "Omitir el ID de la aplicación"
 msgid "Print help"
 msgstr "Imprimir ayuda"
 
-#: gio/gapplication-tool.c:47 gio/gresource-tool.c:489
-#: gio/gresource-tool.c:557
+#: gio/gapplication-tool.c:47 gio/gresource-tool.c:489 gio/gresource-tool.c:557
 msgid "[COMMAND]"
 msgstr "[COMANDO]"
 
@@ -148,8 +147,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr ""
 "Parámetro opcionales para la invocación de la acción, en formato GVariant"
 
-#: gio/gapplication-tool.c:96 gio/gresource-tool.c:526
-#: gio/gsettings-tool.c:661
+#: gio/gapplication-tool.c:96 gio/gresource-tool.c:526 gio/gsettings-tool.c:661
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -1699,9 +1697,9 @@ msgstr "Error al escribir en la salida estándar"
 #: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:282 gio/gio-tool-list.c:165
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
-#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1235
-#: gio/gio-tool-open.c:113 gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45
-#: gio/gio-tool-set.c:89 gio/gio-tool-trash.c:81 gio/gio-tool-tree.c:239
+#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1235 gio/gio-tool-open.c:113
+#: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
+#: gio/gio-tool-trash.c:81 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "UBICACIÓN"
 
@@ -1720,8 +1718,8 @@ msgstr ""
 "usar algo como smb://servidor/recurso/archivo.txt como ubicación."
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:313 gio/gio-tool-mkdir.c:76
-#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1285
-#: gio/gio-tool-open.c:139 gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
+#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1285 gio/gio-tool-open.c:139
+#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
 msgid "No locations given"
 msgstr "No se han proporcionado ubicaciones"
 
@@ -4982,12 +4980,12 @@ msgstr "«%s» no es un nombre válido"
 msgid "“%s” is not a valid name: “%c”"
 msgstr "«%s» no es un nombre válido: «%c»"
 
-#: glib/gmarkup.c:598
+#: glib/gmarkup.c:610
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Error en la línea %d: %s"
 
-#: glib/gmarkup.c:675
+#: glib/gmarkup.c:687
 #, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
@@ -4997,7 +4995,7 @@ msgstr ""
 "carácter de referencia( por ejemplo &#234;) - tal vez el dígito es demasiado "
 "grande"
 
-#: glib/gmarkup.c:687
+#: glib/gmarkup.c:699
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand "
@@ -5007,24 +5005,24 @@ msgstr ""
 "un carácter «&» sin pretender iniciar una entidad; escape el carácter \"&\" "
 "como &amp;"
 
-#: glib/gmarkup.c:713
+#: glib/gmarkup.c:725
 #, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr "El carácter de referencia «%-.*s» no codifica un carácter permitido"
 
-#: glib/gmarkup.c:751
+#: glib/gmarkup.c:763
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "La entidad «&;» está vacía; las entidades válidas son: &amp; &quot; &lt; "
 "&gt; &apos;"
 
-#: glib/gmarkup.c:759
+#: glib/gmarkup.c:771
 #, c-format
 msgid "Entity name “%-.*s” is not known"
 msgstr "El nombre de la entidad «%-.*s» es desconocido"
 
-#: glib/gmarkup.c:764
+#: glib/gmarkup.c:776
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity — escape ampersand as &amp;"
@@ -5033,11 +5031,11 @@ msgstr ""
 "\"&\" sin la intención de indicar una entidad, escape el signo \"&\" como "
 "&amp;"
 
-#: glib/gmarkup.c:1170
+#: glib/gmarkup.c:1182
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "El documento debe comenzar con un elemento (por ejemplo: <book>)"
 
-#: glib/gmarkup.c:1210
+#: glib/gmarkup.c:1222
 #, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
@@ -5046,7 +5044,7 @@ msgstr ""
 "«%s» no es un carácter válido a continuación del carácter '<'; no debe "
 "iniciar un nombre de elemento"
 
-#: glib/gmarkup.c:1252
+#: glib/gmarkup.c:1264
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
@@ -5055,7 +5053,7 @@ msgstr ""
 "Carácter «%s» impropio, se esperaba un carácter «>» para terminar la "
 "etiqueta vacía del elemento «%s»"
 
-#: glib/gmarkup.c:1333
+#: glib/gmarkup.c:1345
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
@@ -5063,7 +5061,7 @@ msgstr ""
 "Carácter «%s» impropio, se esperaba el carácter '=' después del nombre de "
 "atributo «%s» del elemento «%s»"
 
-#: glib/gmarkup.c:1374
+#: glib/gmarkup.c:1386
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
@@ -5074,7 +5072,7 @@ msgstr ""
 "etiqueta de inicio del elemento «%s» u opcionalmente un atributo; tal vez "
 "utilizó un carácter que no es válido en un nombre de atributo"
 
-#: glib/gmarkup.c:1418
+#: glib/gmarkup.c:1430
 #, c-format
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when "
@@ -5083,7 +5081,7 @@ msgstr ""
 "Carácter «%s» impropio, se esperaba una marca de apertura de comillas "
 "después del signo igual al darle valor al atributo «%s» del elemento «%s»"
 
-#: glib/gmarkup.c:1551
+#: glib/gmarkup.c:1563
 #, c-format
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not "
@@ -5092,7 +5090,7 @@ msgstr ""
 "«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  "
 "no debe iniciar un nombre de elemento"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1599
 #, c-format
 msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
@@ -5101,27 +5099,27 @@ msgstr ""
 "«%s» no es un carácter válido a continuación del nombre del elemento de "
 "cierre «%s»; el carácter permitido es '>'"
 
-#: glib/gmarkup.c:1598
+#: glib/gmarkup.c:1610
 #, c-format
 msgid "Element “%s” was closed, no element is currently open"
 msgstr "Se cerró el elemento «%s», no existe ningún elemento abierto"
 
-#: glib/gmarkup.c:1607
+#: glib/gmarkup.c:1619
 #, c-format
 msgid "Element “%s” was closed, but the currently open element is “%s”"
 msgstr ""
 "Se cerró el elemento «%s», pero el elemento que está abierto actualmente es "
 "«%s»"
 
-#: glib/gmarkup.c:1760
+#: glib/gmarkup.c:1772
 msgid "Document was empty or contained only whitespace"
 msgstr "El documento estaba vacío o sólo contenía espacios en blanco"
 
-#: glib/gmarkup.c:1774
+#: glib/gmarkup.c:1786
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr "El documento termina inesperadamente justo después de un '<'"
 
-#: glib/gmarkup.c:1782 glib/gmarkup.c:1827
+#: glib/gmarkup.c:1794 glib/gmarkup.c:1839
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
@@ -5130,7 +5128,7 @@ msgstr ""
 "El documento termina inesperadamente con elementos todavía abiertos - «%s» "
 "fue el último elemento abierto"
 
-#: glib/gmarkup.c:1790
+#: glib/gmarkup.c:1802
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -5139,21 +5137,21 @@ msgstr ""
 "El documento termina inesperadamente, se esperaba un carácter '>' "
 "finalizando la etiqueta <%s/>"
 
-#: glib/gmarkup.c:1796
+#: glib/gmarkup.c:1808
 msgid "Document ended unexpectedly inside an element name"
 msgstr "El documento termina inesperadamente dentro de un nombre de elemento"
 
-#: glib/gmarkup.c:1802
+#: glib/gmarkup.c:1814
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "El documento termina inesperadamente dentro de un nombre de atributo"
 
-#: glib/gmarkup.c:1807
+#: glib/gmarkup.c:1819
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "El documento terminó inesperadamente dentro de una etiqueta de apertura de "
 "elemento."
 
-#: glib/gmarkup.c:1813
+#: glib/gmarkup.c:1825
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -5161,18 +5159,26 @@ msgstr ""
 "El documento termina inesperadamente después de los signos igual que siguen "
 "al nombre de atributo; sin valor de atributo"
 
-#: glib/gmarkup.c:1820
+#: glib/gmarkup.c:1832
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "El documento termina inesperadamente dentro del valor de un atributo"
 
-#: glib/gmarkup.c:1836
+#: glib/gmarkup.c:1849
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr ""
 "El documento termina inesperadamente dentro de la etiqueta de cierre del "
 "elemento «%s»"
 
-#: glib/gmarkup.c:1842
+#: glib/gmarkup.c:1853
+#| msgid "Document ended unexpectedly inside the close tag for element “%s”"
+msgid ""
+"Document ended unexpectedly inside the close tag for an unopened element"
+msgstr ""
+"El documento termina inesperadamente dentro de la etiqueta de cierre para un "
+"elemento no abierto"
+
+#: glib/gmarkup.c:1859
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "El documento termina inesperadamente dentro de un comentario o instrucción "
