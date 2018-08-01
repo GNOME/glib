@@ -512,6 +512,19 @@ g_resource_new_from_table (GvdbTable *table)
   return resource;
 }
 
+static void
+g_resource_error_from_gvdb_table_error (GError **g_resource_error,
+                                        GError  *gvdb_table_error  /* (transfer full) */)
+{
+  if (g_error_matches (gvdb_table_error, G_FILE_ERROR, G_FILE_ERROR_INVAL))
+    g_set_error_literal (g_resource_error,
+                         G_RESOURCE_ERROR, G_RESOURCE_ERROR_INTERNAL,
+                         gvdb_table_error->message);
+  else
+    g_propagate_error (g_resource_error, g_steal_pointer (&gvdb_table_error));
+  g_clear_error (&gvdb_table_error);
+}
+
 /**
  * g_resource_new_from_data:
  * @data: A #GBytes
@@ -528,6 +541,8 @@ g_resource_new_from_table (GvdbTable *table)
  * Otherwise this function will internally create a copy of the memory since
  * GLib 2.56, or in older versions fail and exit the process.
  *
+ * If @data is empty or corrupt, %G_RESOURCE_ERROR_INTERNAL will be returned.
+ *
  * Returns: (transfer full): a new #GResource, or %NULL on error
  *
  * Since: 2.32
@@ -538,6 +553,7 @@ g_resource_new_from_data (GBytes  *data,
 {
   GvdbTable *table;
   gboolean unref_data = FALSE;
+  GError *local_error = NULL;
 
   if (((guintptr) g_bytes_get_data (data, NULL)) % sizeof (gpointer) != 0)
     {
@@ -546,13 +562,16 @@ g_resource_new_from_data (GBytes  *data,
       unref_data = TRUE;
     }
 
-  table = gvdb_table_new_from_bytes (data, TRUE, error);
+  table = gvdb_table_new_from_bytes (data, TRUE, &local_error);
 
   if (unref_data)
     g_bytes_unref (data);
 
   if (table == NULL)
-    return NULL;
+    {
+      g_resource_error_from_gvdb_table_error (error, g_steal_pointer (&local_error));
+      return NULL;
+    }
 
   return g_resource_new_from_table (table);
 }
@@ -568,6 +587,11 @@ g_resource_new_from_data (GBytes  *data,
  * If you want to use this resource in the global resource namespace you need
  * to register it with g_resources_register().
  *
+ * If @filename is empty or the data in it is corrupt,
+ * %G_RESOURCE_ERROR_INTERNAL will be returned. If @filename doesn’t exist, or
+ * there is an error in reading it, an error from g_mapped_file_new() will be
+ * returned.
+ *
  * Returns: (transfer full): a new #GResource, or %NULL on error
  *
  * Since: 2.32
@@ -577,10 +601,14 @@ g_resource_load (const gchar  *filename,
                  GError      **error)
 {
   GvdbTable *table;
+  GError *local_error = NULL;
 
-  table = gvdb_table_new (filename, FALSE, error);
+  table = gvdb_table_new (filename, FALSE, &local_error);
   if (table == NULL)
-    return NULL;
+    {
+      g_resource_error_from_gvdb_table_error (error, g_steal_pointer (&local_error));
+      return NULL;
+    }
 
   return g_resource_new_from_table (table);
 }

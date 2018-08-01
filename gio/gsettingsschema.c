@@ -267,6 +267,9 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
  * Generally, you should set @trusted to %TRUE for files installed by the
  * system and to %FALSE for files in the home directory.
  *
+ * In either case, an empty file or some types of corruption in the file will
+ * result in %G_FILE_ERROR_INVAL being returned.
+ *
  * If @parent is non-%NULL then there are two effects.
  *
  * First, if g_settings_schema_source_lookup() is called with the
