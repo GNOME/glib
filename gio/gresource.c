@@ -489,7 +489,7 @@ g_resource_unref (GResource *resource)
 {
   if (g_atomic_int_dec_and_test (&resource->ref_count))
     {
-      gvdb_table_unref (resource->table);
+      gvdb_table_free (resource->table);
       g_free (resource);
     }
 }
@@ -546,13 +546,7 @@ g_resource_new_from_data (GBytes  *data,
       unref_data = TRUE;
     }
 
-  table = gvdb_table_new_from_data (g_bytes_get_data (data, NULL),
-                                    g_bytes_get_size (data),
-                                    TRUE,
-                                    g_bytes_ref (data),
-                                    (GvdbRefFunc)g_bytes_ref,
-                                    (GDestroyNotify)g_bytes_unref,
-                                    error);
+  table = gvdb_table_new_from_bytes (data, TRUE, error);
 
   if (unref_data)
     g_bytes_unref (data);
