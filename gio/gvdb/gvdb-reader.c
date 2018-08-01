@@ -193,8 +193,8 @@ new_from_data (const void    *data,
  * In that case, the #GError that is returned will be an error from
  * g_mapped_file_new().
  *
- * An empty or otherwise corrupted file is considered to be a valid
- * #GvdbTable with no entries.
+ * An empty file is considered to be a valid #GvdbTable with no entries. A
+ * corrupt file will return %G_FILE_ERROR_INVAL.
  *
  * You should call gvdb_table_unref() on the return result when you no
  * longer require it.
@@ -232,8 +232,8 @@ gvdb_table_new (const gchar  *filename,
  *
  * Creates a new #GvdbTable from the data in @data.
  *
- * An empty or otherwise corrupted data is considered to be a valid
- * #GvdbTable with no entries.
+ * An empty data is considered to be a valid #GvdbTable with no entries. A
+ * corrupt data will return %G_FILE_ERROR_INVAL.
  *
  * You should call gvdb_table_unref() on the return result when you no
  * longer require it.
