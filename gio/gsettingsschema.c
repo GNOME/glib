@@ -231,7 +231,7 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
 
       if (source->parent)
         g_settings_schema_source_unref (source->parent);
-      gvdb_table_unref (source->table);
+      gvdb_table_free (source->table);
       g_free (source->directory);
 
       if (source->text_tables)
@@ -802,7 +802,7 @@ g_settings_schema_source_list_schemas (GSettingsSchemaSource   *source,
               else
                 g_hash_table_add (reloc, schema);
 
-              gvdb_table_unref (table);
+              gvdb_table_free (table);
             }
         }
 
@@ -928,7 +928,7 @@ g_settings_schema_unref (GSettingsSchema *schema)
         g_settings_schema_unref (schema->extends);
 
       g_settings_schema_source_unref (schema->source);
-      gvdb_table_unref (schema->table);
+      gvdb_table_free (schema->table);
       g_free (schema->items);
       g_free (schema->id);
 
@@ -1188,7 +1188,7 @@ g_settings_schema_list (GSettingsSchema *schema,
                   g_hash_table_iter_remove (&iter);
               }
 
-            gvdb_table_unref (child_table);
+            gvdb_table_free (child_table);
           }
 
       /* Now create the list */
