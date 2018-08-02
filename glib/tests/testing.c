@@ -622,6 +622,7 @@ static void
 test_skip (void)
 {
   g_test_skip ("Skipped should count as passed, not failed");
+  g_assert_true (g_test_failed ());
 }
 
 static void
@@ -645,14 +646,8 @@ test_fail (void)
 static void
 test_incomplete (void)
 {
-  if (g_test_subprocess ())
-    {
-      g_test_incomplete ("not done");
-      g_assert (g_test_failed ());
-      return;
-    }
-  g_test_trap_subprocess (NULL, 0, 0);
-  g_test_trap_assert_failed ();
+  g_test_incomplete ("not done, but that's OK");
+  g_assert_true (g_test_failed ());
 }
 
 static void
@@ -718,11 +713,30 @@ test_skip_all (void)
   g_ptr_array_add (argv, (char *) argv0);
   g_ptr_array_add (argv, "--GTestSubprocess");
   g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip-all/subprocess/incomplete");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 77);
+  g_clear_error (&error);
+
+  g_ptr_array_set_size (argv, 0);
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
   g_ptr_array_add (argv, "/misc/skip");
   g_ptr_array_add (argv, "-p");
   g_ptr_array_add (argv, "/misc/skip-all/subprocess/pass");
   g_ptr_array_add (argv, "-p");
   g_ptr_array_add (argv, "/misc/skip-all/subprocess/skip1");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip-all/subprocess/incomplete");
   g_ptr_array_add (argv, NULL);
 
   g_spawn_sync (NULL, (char **) argv->pdata, NULL,
@@ -804,6 +818,7 @@ main (int   argc,
   g_test_add_func ("/misc/skip-all", test_skip_all);
   g_test_add_func ("/misc/skip-all/subprocess/skip1", test_skip);
   g_test_add_func ("/misc/skip-all/subprocess/skip2", test_skip);
+  g_test_add_func ("/misc/skip-all/subprocess/incomplete", test_incomplete);
   g_test_add_func ("/misc/skip-all/subprocess/pass", test_pass);
   g_test_add_func ("/misc/fail", test_fail);
   g_test_add_func ("/misc/incomplete", test_incomplete);

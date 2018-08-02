@@ -990,7 +990,7 @@ g_test_log (GTestLogType lbit,
             g_print ("Bail out!\n");
           g_abort ();
         }
-      if (result == G_TEST_RUN_SKIPPED)
+      if (result == G_TEST_RUN_SKIPPED || result == G_TEST_RUN_INCOMPLETE)
         test_skipped_count++;
       break;
     case G_TEST_LOG_MIN_RESULT:
@@ -2338,7 +2338,8 @@ test_case_run (GTestCase *tc)
   test_uri_base = old_base;
 
   return (success == G_TEST_RUN_SUCCESS ||
-          success == G_TEST_RUN_SKIPPED);
+          success == G_TEST_RUN_SKIPPED ||
+          success == G_TEST_RUN_INCOMPLETE);
 }
 
 static gboolean
