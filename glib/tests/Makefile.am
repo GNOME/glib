@@ -164,6 +164,7 @@ dist_test_data += \
 	bookmarks/fail-36.xbel \
 	bookmarks/fail-37.xbel \
 	bookmarks/fail-38.xbel \
+	bookmarks/fail-39.xbel \
 	bookmarks/valid-01.xbel \
 	bookmarks/valid-02.xbel \
 	bookmarks/valid-03.xbel \

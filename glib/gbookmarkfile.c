@@ -915,7 +915,8 @@ parse_mime_type_element (GMarkupParseContext  *context,
     
   if (!item->metadata)
     item->metadata = bookmark_metadata_new ();
-  
+
+  g_free (item->metadata->mime_type);
   item->metadata->mime_type = g_strdup (type);
 }
 
@@ -964,7 +965,9 @@ parse_icon_element (GMarkupParseContext  *context,
     
   if (!item->metadata)
     item->metadata = bookmark_metadata_new ();
-  
+
+  g_free (item->metadata->icon_href);
+  g_free (item->metadata->icon_mime);
   item->metadata->icon_href = g_strdup (href);
   item->metadata->icon_mime = g_strdup (type);
 }
