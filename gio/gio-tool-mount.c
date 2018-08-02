@@ -39,6 +39,7 @@ typedef enum {
 
 static int outstanding_mounts = 0;
 static GMainLoop *main_loop;
+static GVolumeMonitor *volume_monitor;
 
 static gboolean mount_mountable = FALSE;
 static gboolean mount_unmount = FALSE;
@@ -813,10 +814,7 @@ list_drives (GList *drives,
 static void
 list_monitor_items (void)
 {
-  GVolumeMonitor *volume_monitor;
   GList *drives, *volumes, *mounts;
-
-  volume_monitor = g_volume_monitor_get();
 
   /* populate gvfs network mounts */
   iterate_gmain();
@@ -832,18 +830,13 @@ list_monitor_items (void)
   mounts = g_volume_monitor_get_mounts (volume_monitor);
   list_mounts (mounts, 0, TRUE);
   g_list_free_full (mounts, g_object_unref);
-
-  g_object_unref (volume_monitor);
 }
 
 static void
 unmount_all_with_scheme (const char *scheme)
 {
-  GVolumeMonitor *volume_monitor;
   GList *mounts;
   GList *l;
-
-  volume_monitor = g_volume_monitor_get();
 
   /* populate gvfs network mounts */
   iterate_gmain();
@@ -860,8 +853,6 @@ unmount_all_with_scheme (const char *scheme)
     g_object_unref (root);
   }
   g_list_free_full (mounts, g_object_unref);
-
-  g_object_unref (volume_monitor);
 }
 
 static void
@@ -912,11 +903,8 @@ mount_with_device_file_cb (GObject *object,
 static void
 mount_with_device_file (const char *device_file)
 {
-  GVolumeMonitor *volume_monitor;
   GList *volumes;
   GList *l;
-
-  volume_monitor = g_volume_monitor_get();
 
   volumes = g_volume_monitor_get_volumes (volume_monitor);
   for (l = volumes; l != NULL; l = l->next)
@@ -950,8 +938,6 @@ mount_with_device_file (const char *device_file)
       print_error ("%s: %s", device_file, _("No volume for device file"));
       success = FALSE;
     }
-
-  g_object_unref (volume_monitor);
 }
 
 static void
@@ -1105,10 +1091,6 @@ monitor_drive_eject_button (GVolumeMonitor *volume_monitor, GDrive *drive)
 static void
 monitor (void)
 {
-  GVolumeMonitor *volume_monitor;
-
-  volume_monitor = g_volume_monitor_get ();
-
   g_signal_connect (volume_monitor, "mount-added", (GCallback) monitor_mount_added, NULL);
   g_signal_connect (volume_monitor, "mount-removed", (GCallback) monitor_mount_removed, NULL);
   g_signal_connect (volume_monitor, "mount-changed", (GCallback) monitor_mount_changed, NULL);
@@ -1163,6 +1145,7 @@ handle_mount (int argc, char *argv[], gboolean do_help)
   g_option_context_free (context);
 
   main_loop = g_main_loop_new (NULL, FALSE);
+  volume_monitor = g_volume_monitor_get ();
 
   if (mount_list)
     list_monitor_items ();
@@ -1189,6 +1172,8 @@ handle_mount (int argc, char *argv[], gboolean do_help)
 
   if (outstanding_mounts > 0)
     g_main_loop_run (main_loop);
+
+  g_object_unref (volume_monitor);
 
   return success ? 0 : 2;
 }
