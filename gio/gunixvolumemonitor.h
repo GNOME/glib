@@ -55,6 +55,7 @@ GType            _g_unix_volume_monitor_get_type                     (void) G_GN
 GVolumeMonitor * _g_unix_volume_monitor_new                          (void);
 GUnixVolume    * _g_unix_volume_monitor_lookup_volume_for_mount_path (GUnixVolumeMonitor *monitor,
                                                                       const char         *mount_path);
+void             _g_unix_volume_monitor_update                       (GUnixVolumeMonitor *monitor);
 
 G_END_DECLS
 
