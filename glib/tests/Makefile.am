@@ -184,7 +184,7 @@ markup_tests = \
 	fail-36 fail-37 fail-38 fail-39 fail-40 \
 	fail-41 fail-42 fail-43 fail-44 fail-45 \
 	fail-46 fail-47 fail-48 fail-49 fail-50 \
-	fail-51 \
+	fail-51 fail-52 fail-53 \
 	valid-1 valid-2 valid-3 valid-4 valid-5 \
 	valid-6 valid-7 valid-8 valid-9 valid-10 \
 	valid-11 valid-12 valid-13 valid-14 valid-15 \
