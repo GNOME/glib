@@ -148,7 +148,7 @@ test_in_chunks (const gchar       *contents,
 static int
 test_file (const gchar *filename, GMarkupParseFlags flags)
 {
-  gchar *contents;
+  gchar *contents = NULL, *contents_unterminated = NULL;
   gsize  length;
   GError *error;
   GMarkupParseContext *context;
@@ -165,12 +165,13 @@ test_file (const gchar *filename, GMarkupParseFlags flags)
       return 1;
     }
 
+  /* Test with nul termination. */
   context = g_markup_parse_context_new (&parser, flags, NULL, NULL);
   g_assert (g_markup_parse_context_get_user_data (context) == NULL);
   g_markup_parse_context_get_position (context, &line, &col);
   g_assert (line == 1 && col == 1);
 
-  if (!g_markup_parse_context_parse (context, contents, length, NULL))
+  if (!g_markup_parse_context_parse (context, contents, -1, NULL))
     {
       g_markup_parse_context_free (context);
       g_free (contents);
@@ -185,6 +186,28 @@ test_file (const gchar *filename, GMarkupParseFlags flags)
     }
 
   g_markup_parse_context_free (context);
+
+  /* With the length specified explicitly and a nul terminator present (since
+   * g_file_get_contents() always adds one). */
+  if (test_in_chunks (contents, length, length, flags) != 0)
+    {
+      g_free (contents);
+      return 1;
+    }
+
+  /* With the length specified explicitly and no nul terminator present. */
+  contents_unterminated = g_malloc (length);
+  if (contents_unterminated != NULL)
+    memcpy (contents_unterminated, contents, length);
+
+  if (test_in_chunks (contents_unterminated, length, length, flags) != 0)
+    {
+      g_free (contents);
+      g_free (contents_unterminated);
+      return 1;
+    }
+
+  g_free (contents_unterminated);
 
   /* A byte at a time */
   if (test_in_chunks (contents, length, 1, flags) != 0)
