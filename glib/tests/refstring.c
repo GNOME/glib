@@ -98,11 +98,6 @@ test_refstring_intern (void)
 
   g_test_message ("releasing s[%p] ('%s')", s, s);
   g_ref_string_release (s);
-
-  p = g_ref_string_new_intern ("hello, world");
-  g_test_message ("p[%p] ('%s') != s[%p]", p, p, s);
-  g_assert_false (s == p);
-  g_ref_string_release (p);
 }
 
 int
