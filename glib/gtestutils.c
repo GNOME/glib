@@ -959,7 +959,20 @@ g_test_log (GTestLogType lbit,
       fail = result == G_TEST_RUN_FAILURE;
       if (test_tap_log)
         {
-          g_print ("%s %d %s", fail ? "not ok" : "ok", test_run_count, string1);
+          const gchar *ok;
+
+          /* The TAP representation for an expected failure starts with
+           * "not ok", even though it does not actually count as failing
+           * due to the use of the TODO directive. "ok # TODO" would mean
+           * a test that was expected to fail unexpectedly succeeded,
+           * for which GTestResult does not currently have a
+           * representation. */
+          if (fail || result == G_TEST_RUN_INCOMPLETE)
+            ok = "not ok";
+          else
+            ok = "ok";
+
+          g_print ("%s %d %s", ok, test_run_count, string1);
           if (result == G_TEST_RUN_INCOMPLETE)
             g_print (" # TODO %s\n", string2 ? string2 : "");
           else if (result == G_TEST_RUN_SKIPPED)
