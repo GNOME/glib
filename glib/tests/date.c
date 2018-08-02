@@ -265,7 +265,7 @@ test_month_names (void)
       TEST_DATE (1,  6, 2018,    "%Oh %Y",         "Jun 2018");
     }
   else
-    g_test_incomplete ("locale en_GB not available, skipping English month names test");
+    g_test_skip ("locale en_GB not available, skipping English month names test");
 
   setlocale (LC_ALL, "de_DE.utf-8");
 #ifdef G_OS_WIN32
@@ -281,7 +281,7 @@ test_month_names (void)
       TEST_DATE ( 1, 12, 2018,    "%Oh %Y",      "Dez 2018");
     }
   else
-    g_test_incomplete ("locale de_DE not available, skipping German month names test");
+    g_test_skip ("locale de_DE not available, skipping German month names test");
 
 
   setlocale (LC_ALL, "es_ES.utf-8");
@@ -298,7 +298,7 @@ test_month_names (void)
       TEST_DATE ( 1,  6, 2018,      "%Oh de %Y",         "jun de 2018");
     }
   else
-    g_test_incomplete ("locale es_ES not available, skipping Spanish month names test");
+    g_test_skip ("locale es_ES not available, skipping Spanish month names test");
 
   setlocale (LC_ALL, "fr_FR.utf-8");
 #ifdef G_OS_WIN32
@@ -314,7 +314,7 @@ test_month_names (void)
       TEST_DATE ( 1, 12, 2018,   "%Oh %Y",       "déc. 2018");
     }
   else
-    g_test_incomplete ("locale fr_FR not available, skipping French month names test");
+    g_test_skip ("locale fr_FR not available, skipping French month names test");
 
   /* Make sure that there are visible changes in some European languages.  */
   setlocale (LC_ALL, "el_GR.utf-8");
@@ -333,7 +333,7 @@ test_month_names (void)
       TEST_DATE ( 1,  8, 2018,   "%Ob %Y",            "Αύγ 2018");
     }
   else
-    g_test_incomplete ("locale el_GR not available, skipping Greek month names test");
+    g_test_skip ("locale el_GR not available, skipping Greek month names test");
 
   setlocale (LC_ALL, "hr_HR.utf-8");
 #ifdef G_OS_WIN32
@@ -351,7 +351,7 @@ test_month_names (void)
       TEST_DATE ( 1, 12, 2018,    "%Ob %Y",         "Pro 2018");
     }
   else
-    g_test_incomplete ("locale hr_HR not available, skipping Croatian month names test");
+    g_test_skip ("locale hr_HR not available, skipping Croatian month names test");
 
   setlocale (LC_ALL, "lt_LT.utf-8");
 #ifdef G_OS_WIN32
@@ -369,7 +369,7 @@ test_month_names (void)
       TEST_DATE ( 1,  8, 2018,      "%Y m. %Ob",           "2018 m. Rgp");
     }
   else
-    g_test_incomplete ("locale lt_LT not available, skipping Lithuanian month names test");
+    g_test_skip ("locale lt_LT not available, skipping Lithuanian month names test");
 
   setlocale (LC_ALL, "pl_PL.utf-8");
 #ifdef G_OS_WIN32
@@ -387,7 +387,7 @@ test_month_names (void)
       TEST_DATE ( 1, 12, 2018,   "%Ob %Y",         "gru 2018");
     }
   else
-    g_test_incomplete ("locale pl_PL not available, skipping Polish month names test");
+    g_test_skip ("locale pl_PL not available, skipping Polish month names test");
 
   setlocale (LC_ALL, "ru_RU.utf-8");
 #ifdef G_OS_WIN32
@@ -408,7 +408,7 @@ test_month_names (void)
       TEST_DATE (20,  5, 2018, "%Ob, %d-е, %Y", "май, 20-е, 2018");
     }
   else
-    g_test_incomplete ("locale ru_RU not available, skipping Russian month names test");
+    g_test_skip ("locale ru_RU not available, skipping Russian month names test");
 
   g_date_free (gdate);
 
