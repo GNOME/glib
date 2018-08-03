@@ -622,6 +622,10 @@ static void
 test_skip (void)
 {
   g_test_skip ("Skipped should count as passed, not failed");
+  /* This function really means "the test concluded with a non-successful
+   * status" rather than "the test failed": it is documented to return
+   * true for skipped and incomplete tests, not just for failures. */
+  g_assert_true (g_test_failed ());
 }
 
 static void
