@@ -345,6 +345,8 @@ mktime_utc (struct tm *tm)
  * zone indicator. (In the absence of any time zone indication, the
  * timestamp is assumed to be in local time.)
  *
+ * Any leading or trailing space in @iso_date is ignored.
+ *
  * Returns: %TRUE if the conversion was successful.
  *
  * Since: 2.12
