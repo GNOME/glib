@@ -152,6 +152,11 @@ if host_system != 'windows'
     glib_conf.set('HAVE_SIOCGIFADDR', '/**/')
   endif
 
+endif
+
+if host_system.contains('android')
+  # struct ip_mreq_source definition is broken on Android NDK <= r16
+  # See https://bugzilla.gnome.org/show_bug.cgi?id=740791
   if not cc.compiles('''#include <netinet/in.h>
                         int main(int argc, char ** argv) {
                           struct ip_mreq_source mc_req_src;
@@ -161,7 +166,6 @@ if host_system != 'windows'
                         name : 'ip_mreq_source.imr_interface has s_addr member')
     glib_conf.set('BROKEN_IP_MREQ_SOURCE_STRUCT', 1)
   endif
-
 endif
 
 gnetworking_h_conf.set('WSPIAPI_INCLUDE', gnetworking_h_wspiapi_include)
