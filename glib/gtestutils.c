@@ -1733,11 +1733,13 @@ g_test_get_root (void)
  * particular code runs before or after a given test case, use
  * g_test_add(), which lets you specify setup and teardown functions.
  *
- * If all tests are skipped, this function will return 0 if
- * producing TAP output, or 77 (treated as "skip test" by Automake) otherwise.
+ * If all tests are skipped or marked as incomplete (expected failures),
+ * this function will return 0 if producing TAP output, or 77 (treated
+ * as "skip test" by Automake) otherwise.
  *
  * Returns: 0 on success, 1 on failure (assuming it returns at all),
- *   0 or 77 if all tests were skipped with g_test_skip()
+ *   0 or 77 if all tests were skipped with g_test_skip() and/or
+ *   g_test_incomplete()
  *
  * Since: 2.16
  */
