@@ -78,6 +78,7 @@ test_assertions (void)
   g_assert_cmpfloat_with_epsilon (3.14, 3.15, 0.01);
   g_assert_cmpfloat_with_epsilon (3.14159, 3.1416, 0.0001);
   g_assert (TRUE);
+  g_assert_true (TRUE);
   g_assert_cmpstr ("foo", !=, "faa");
   fuu = g_strdup_printf ("f%s", "uu");
   g_test_queue_free (fuu);
@@ -170,7 +171,7 @@ test_fork_timeout (void)
         g_usleep (1000 * 1000);
     }
   g_test_trap_assert_failed();
-  g_assert (g_test_trap_reached_timeout());
+  g_assert_true (g_test_trap_reached_timeout());
 }
 
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -233,7 +234,7 @@ test_subprocess_timeout (void)
   /* allow child to run for only a fraction of a second */
   g_test_trap_subprocess (NULL, 0.11 * 1000000, 0);
   g_test_trap_assert_failed ();
-  g_assert (g_test_trap_reached_timeout ());
+  g_assert_true (g_test_trap_reached_timeout ());
 }
 
 /* run a test with fixture setup and teardown */
@@ -246,7 +247,7 @@ static void
 fixturetest_setup (Fixturetest  *fix,
                    gconstpointer test_data)
 {
-  g_assert (test_data == (void*) 0xc0cac01a);
+  g_assert_true (test_data == (void*) 0xc0cac01a);
   fix->seed = 18;
   fix->prime = 19;
   fix->msg = g_strdup_printf ("%d", fix->prime);
@@ -259,13 +260,13 @@ fixturetest_test (Fixturetest  *fix,
   g_assert_cmpint (prime, ==, fix->prime);
   prime = g_ascii_strtoull (fix->msg, NULL, 0);
   g_assert_cmpint (prime, ==, fix->prime);
-  g_assert (test_data == (void*) 0xc0cac01a);
+  g_assert_true (test_data == (void*) 0xc0cac01a);
 }
 static void
 fixturetest_teardown (Fixturetest  *fix,
                       gconstpointer test_data)
 {
-  g_assert (test_data == (void*) 0xc0cac01a);
+  g_assert_true (test_data == (void*) 0xc0cac01a);
   g_free (fix->msg);
 }
 
@@ -308,7 +309,7 @@ test_rand2 (void)
 static void
 test_data_test (gconstpointer test_data)
 {
-  g_assert (test_data == (void*) 0xc0c0baba);
+  g_assert_true (test_data == (void*) 0xc0c0baba);
 }
 
 static void
@@ -319,7 +320,7 @@ test_random_conversions (void)
   char *err, *str = g_strdup_printf ("%d", vint);
   gint64 vint64 = g_ascii_strtoll (str, &err, 10);
   g_assert_cmphex (vint, ==, vint64);
-  g_assert (!err || *err == 0);
+  g_assert_true (!err || *err == 0);
   g_free (str);
 }
 
@@ -639,7 +640,7 @@ test_fail (void)
   if (g_test_subprocess ())
     {
       g_test_fail ();
-      g_assert (g_test_failed ());
+      g_assert_true (g_test_failed ());
       return;
     }
   g_test_trap_subprocess (NULL, 0, 0);
@@ -671,7 +672,7 @@ test_subprocess_timed_out (void)
       return;
     }
   g_test_trap_subprocess (NULL, 50000, 0);
-  g_assert (g_test_trap_reached_timeout ());
+  g_assert_true (g_test_trap_reached_timeout ());
 }
 
 static const char *argv0;
