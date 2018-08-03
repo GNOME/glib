@@ -961,20 +961,22 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
         AC_MSG_RESULT(no)
 ])
 
-AC_MSG_CHECKING([if ip_mreq_source.imr_interface has s_addr member])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
-    [[
-        #include <netinet/in.h>
-    ]],
-    [[
-        struct ip_mreq_source mc_req_src;
-        mc_req_src.imr_interface.s_addr = 0;
-    ]])], [
-        AC_MSG_RESULT(yes)
-    ], [
-        AC_MSG_RESULT(no)
-        AC_DEFINE(BROKEN_IP_MREQ_SOURCE_STRUCT, 1, [struct ip_mreq_source definition is broken on Android NDK <= r16])
-])
+# See https://bugzilla.gnome.org/show_bug.cgi?id=740791
+AS_IF([test $glib_native_android = yes], [
+  AC_MSG_CHECKING([if ip_mreq_source.imr_interface has s_addr member])
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+      [[
+          #include <netinet/in.h>
+      ]],
+      [[
+          struct ip_mreq_source mc_req_src;
+          mc_req_src.imr_interface.s_addr = 0;
+      ]])], [
+          AC_MSG_RESULT(yes)
+      ], [
+          AC_MSG_RESULT(no)
+          AC_DEFINE(BROKEN_IP_MREQ_SOURCE_STRUCT, 1, [struct ip_mreq_source definition is broken on Android NDK <= r16])
+  ])])
 
 AS_IF([test $glib_native_win32 = yes], [
   # <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
