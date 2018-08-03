@@ -2308,7 +2308,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	    memcpy (&data[blob->offset], constant->value, blob->size);
 	    break;
 	  default:
-	    g_assert_not_reached ();
+	    break;
 	  }
 	*offset2 += ALIGN_VALUE (blob->size, 4);
 
