@@ -183,6 +183,13 @@ executable('test-spawn-echo', 'test-spawn-echo.c',
   install: installed_tests_enabled,
 )
 
+executable('testing-helper', 'testing-helper.c',
+  c_args : test_cargs,
+  dependencies : test_deps,
+  install_dir: installed_tests_execdir,
+  install: installed_tests_enabled,
+)
+
 # some testing of gtester functionality
 if not meson.is_cross_build() and host_system != 'windows'
   xmllint = find_program('xmllint', required: false)

@@ -20,6 +20,8 @@
  * if advised of the possibility of such damage.
  */
 
+#include "config.h"
+
 /* We want to distinguish between messages originating from libglib
  * and messages originating from this program.
  */
@@ -890,6 +892,128 @@ test_combining (void)
   g_ptr_array_unref (argv);
 }
 
+/* Test the TAP output when a test suite is run with --tap. */
+static void
+test_tap (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  g_test_message ("pass");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "pass");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (output, "\nok 1 /pass\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("skip");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "skip");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (output, "\nok 1 /skip # SKIP not enough tea\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("incomplete");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "incomplete");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (output, "\nnot ok 1 /incomplete # TODO mind reading not implemented yet\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("fail");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "fail");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_assert_nonnull (strstr (output, "\nnot ok 1 /fail\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("all");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "all");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_clear_error (&error);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("all-non-failures");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "all-non-failures");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+
+  g_ptr_array_unref (argv);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -963,6 +1087,8 @@ main (int   argc,
   g_test_add_func ("/misc/fail", test_fail);
   g_test_add_func ("/misc/incomplete", test_incomplete);
   g_test_add_func ("/misc/timeout", test_subprocess_timed_out);
+
+  g_test_add_func ("/tap", test_tap);
 
   return g_test_run();
 }
