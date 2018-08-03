@@ -660,6 +660,11 @@ test_incomplete (void)
       return;
     }
   g_test_trap_subprocess (NULL, 0, 0);
+  /* An incomplete test represents functionality that is known not to be
+   * implemented yet (an expected failure), so it does not cause test
+   * failure; but it does count as the test having been skipped, which
+   * causes nonzero exit status 77, which is treated as failure by
+   * g_test_trap_subprocess(). */
   g_test_trap_assert_failed ();
 }
 
