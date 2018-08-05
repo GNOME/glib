@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2018-07-20 07:02+0000\n"
-"PO-Revision-Date: 2018-07-28 17:26+0300\n"
+"POT-Creation-Date: 2018-07-30 18:46+0000\n"
+"PO-Revision-Date: 2018-08-05 23:25+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -641,8 +641,6 @@ msgstr "Nepalaikomi požymiai aptikti konstruojant kliento pusės ryšį"
 
 #: gio/gdbusconnection.c:4115 gio/gdbusconnection.c:4462
 #, c-format
-#| msgid ""
-#| "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
@@ -650,25 +648,21 @@ msgstr ""
 
 #: gio/gdbusconnection.c:4257
 #, c-format
-#| msgid "No such property '%s'"
 msgid "No such property “%s”"
 msgstr "Nėra savybės „%s“"
 
 #: gio/gdbusconnection.c:4269
 #, c-format
-#| msgid "Property '%s' is not readable"
 msgid "Property “%s” is not readable"
 msgstr "Savybė „%s“ yra neskaitoma"
 
 #: gio/gdbusconnection.c:4280
 #, c-format
-#| msgid "Property '%s' is not writable"
 msgid "Property “%s” is not writable"
 msgstr "Savybė „%s“ nėra rašoma"
 
 #: gio/gdbusconnection.c:4300
 #, c-format
-#| msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr "Klaida nustatant savybę „%s“: tikėtasi tipo „%s“, bet gauta „%s“"
 
@@ -680,19 +674,16 @@ msgstr "Nėra sąsajos „%s“"
 
 #: gio/gdbusconnection.c:4831 gio/gdbusconnection.c:7091
 #, c-format
-#| msgid "No such interface '%s' on object at path %s"
 msgid "No such interface “%s” on object at path %s"
 msgstr "Nėra sąsajos „%s“ objektui, kurio kelias %s"
 
 #: gio/gdbusconnection.c:4929
 #, c-format
-#| msgid "No such key “%s”\n"
 msgid "No such method “%s”"
 msgstr "Nėra metodo „%s“"
 
 #: gio/gdbusconnection.c:4960
 #, c-format
-#| msgid "Type of message, '%s', does not match expected type '%s'"
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Pranešimo tipas „%s“ neatitinka laukiamo tipo „%s“"
 
@@ -713,13 +704,11 @@ msgstr "Nepavyko nustatyti savybės: %s.%s"
 
 #: gio/gdbusconnection.c:5618
 #, c-format
-#| msgid "Method '%s' returned type '%s', but expected '%s'"
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Metodas „%s“ grąžino tipą „%s“, bet laukta „%s“"
 
 #: gio/gdbusconnection.c:6693
 #, c-format
-#| msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Metodas „%s“ sąsajoje „%s“ su signatūra „%s“ neegzistuoja"
 
@@ -2004,7 +1993,6 @@ msgid "Eject"
 msgstr "Išstumti"
 
 #: gio/gio-tool-mount.c:66
-#| msgid "Mount volume with device file"
 msgid "Stop drive with device file"
 msgstr "Sustabdyti laikmeną su įrenginio failu"
 
@@ -2042,8 +2030,6 @@ msgid "The numeric PIM when unlocking a VeraCrypt volume"
 msgstr "Skaitmeninis PIM atrakinant VeraCrypt tomą"
 
 #: gio/gio-tool-mount.c:74
-#| msgctxt "GDateTime"
-#| msgid "PM"
 msgid "PIM"
 msgstr "PIM"
 
@@ -2060,7 +2046,6 @@ msgid "Anonymous access denied"
 msgstr "Neleidžiama anoniminė prieiga"
 
 #: gio/gio-tool-mount.c:524
-#| msgid "No volume for device file"
 msgid "No drive for device file"
 msgstr "Nėra laikmenos ar įrenginio failo"
 
@@ -2297,14 +2282,10 @@ msgid "Show program version and exit"
 msgstr "Parodyti programos versiją ir išeiti"
 
 #: gio/glib-compile-resources.c:737
-#| msgid "name of the output file"
 msgid "Name of the output file"
 msgstr "Išvesties failo pavadinimas"
 
 #: gio/glib-compile-resources.c:738
-#| msgid ""
-#| "The directories where files are to be read from (default to current "
-#| "directory)"
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
@@ -2327,7 +2308,6 @@ msgid "Generate source header"
 msgstr "Generuoti šaltinio antraštę"
 
 #: gio/glib-compile-resources.c:741
-#| msgid "Generate sourcecode used to link in the resource file into your code"
 msgid "Generate source code used to link in the resource file into your code"
 msgstr "Generuoti kodą, naudojamą išteklių failo įrišimui į jūsų kodą"
 
@@ -2336,7 +2316,6 @@ msgid "Generate dependency list"
 msgstr "Generuoti priklausomybių sąrašą"
 
 #: gio/glib-compile-resources.c:743
-#| msgid "name of the dependency file to generate"
 msgid "Name of the dependency file to generate"
 msgstr "Generuojamo priklausomybių failo pavadinimas"
 
@@ -2724,7 +2703,6 @@ msgstr "Nepaisoma šio failo.\n"
 
 #: gio/glib-compile-schemas.c:1959
 #, c-format
-#| msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgid "No such key “%s” in schema “%s” as specified in override file “%s”"
 msgstr "Nėra rakto „%s“ schemoje „%s“ kaip nurodyta perrašančiame faile „%s“"
 
@@ -2751,9 +2729,6 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:2011
 #, c-format
-#| msgid ""
-#| "error parsing key '%s' in schema '%s' as specified in override file '%s': "
-#| "%s."
 msgid ""
 "error parsing key “%s” in schema “%s” as specified in override file “%s”: %s."
 msgstr ""
@@ -2767,9 +2742,6 @@ msgstr "Nepaisoma šio rakto perrašymo.\n"
 
 #: gio/glib-compile-schemas.c:2040
 #, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is outside the "
-#| "range given in the schema"
 msgid ""
 "override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema"
@@ -2779,9 +2751,6 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:2069
 #, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is not in the "
-#| "list of valid choices"
 msgid ""
 "override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices"
@@ -2899,7 +2868,6 @@ msgstr "Nepavyko rasti šakninio aplanko %s išmesti"
 
 #: gio/glocalfile.c:1979
 #, c-format
-#| msgid "Copy (reflink/clone) between mounts is not supported"
 msgid "Trashing on system internal mounts is not supported"
 msgstr "Išmetimas tarp sistemos vidinių prijungimo taškų nepalaikomas"
 
@@ -4924,32 +4892,26 @@ msgstr "Klaida eilutėje %d simbolyje %d: "
 
 #: glib/gmarkup.c:461 glib/gmarkup.c:544
 #, c-format
-#| msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
 msgstr "Klaidingai koduotas UTF-8 tekstas varde – netinkamas „%s“"
 
 #: glib/gmarkup.c:472
 #, c-format
-#| msgid "'%s' is not a valid name"
 msgid "“%s” is not a valid name"
 msgstr "„%s“ nėra tinkamas vardas"
 
 #: glib/gmarkup.c:488
 #, c-format
-#| msgid "'%s' is not a valid name: '%c'"
 msgid "“%s” is not a valid name: “%c”"
 msgstr "„%s“ nėra tinkamas vardas: „%c“"
 
-#: glib/gmarkup.c:598
+#: glib/gmarkup.c:610
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Klaida eilutėje %d: %s"
 
-#: glib/gmarkup.c:675
+#: glib/gmarkup.c:687
 #, c-format
-#| msgid ""
-#| "Failed to parse '%-.*s', which should have been a digit inside a "
-#| "character reference (&#234; for example) - perhaps the digit is too large"
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
 "reference (&#234; for example) — perhaps the digit is too large"
@@ -4957,11 +4919,7 @@ msgstr ""
 "Nepavyko perskaityti „%-.*s“, kuris galėjo turėti skaičius simbolio aprašyme "
 "(pvz., &#234;) – gal skaičius per didelis"
 
-#: glib/gmarkup.c:687
-#| msgid ""
-#| "Character reference did not end with a semicolon; most likely you used an "
-#| "ampersand character without intending to start an entity - escape "
-#| "ampersand as &amp;"
+#: glib/gmarkup.c:699
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand "
@@ -4971,31 +4929,24 @@ msgstr ""
 "ampersendo simbolį nepradėdami elemento įvedimo – pakeiskite ampersendą "
 "įvesdami &amp;"
 
-#: glib/gmarkup.c:713
+#: glib/gmarkup.c:725
 #, c-format
-#| msgid "Character reference '%-.*s' does not encode a permitted character"
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr "Simbolio aprašymas „%-.*s“ neatitinka leistinų simbolių"
 
-#: glib/gmarkup.c:751
-#| msgid ""
-#| "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+#: glib/gmarkup.c:763
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Aptiktas tuščias elementas '&;'; galimi elementai yra: &amp; &quot; &lt; "
 "&gt; &apos;"
 
-#: glib/gmarkup.c:759
+#: glib/gmarkup.c:771
 #, c-format
-#| msgid "Entity name '%-.*s' is not known"
 msgid "Entity name “%-.*s” is not known"
 msgstr "Elemento vardas „%-.*s“ nežinomas"
 
-#: glib/gmarkup.c:764
-#| msgid ""
-#| "Entity did not end with a semicolon; most likely you used an ampersand "
-#| "character without intending to start an entity - escape ampersand as &amp;"
+#: glib/gmarkup.c:776
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity — escape ampersand as &amp;"
@@ -5003,26 +4954,20 @@ msgstr ""
 "Elementas nepasibaigė kabliataškiu; greičiausiai Jūs panaudojote ampersendo "
 "simbolį nepradėdami elemento įvedimo – pakeiskite ampersendą įvesdami &amp;"
 
-#: glib/gmarkup.c:1170
+#: glib/gmarkup.c:1182
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentas turėtų prasidėti elementu (pvz., <book>)"
 
-#: glib/gmarkup.c:1210
+#: glib/gmarkup.c:1222
 #, c-format
-#| msgid ""
-#| "'%s' is not a valid character following a '<' character; it may not begin "
-#| "an element name"
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
 "element name"
 msgstr ""
 "„%s“ negali būti rašomas po „<“ simbolio; jis nepradeda jokio elemento vardo"
 
-#: glib/gmarkup.c:1252
+#: glib/gmarkup.c:1264
 #, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' character to end the empty-element tag "
-#| "'%s'"
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
 "“%s”"
@@ -5030,23 +4975,16 @@ msgstr ""
 "Neįprastas simbolis „%s“, tikėtasi sulaukti „>“ simbolio, užbaigiančio "
 "tuščią žymą „%s“"
 
-#: glib/gmarkup.c:1333
+#: glib/gmarkup.c:1345
 #, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '=' after attribute name '%s' of element "
-#| "'%s'"
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
 msgstr ""
 "Neįprastas simbolis „%1$s“, tikėtasi sulaukti „=“ po elemento „%3$s“ "
 "atributo vardo „%2$s“"
 
-#: glib/gmarkup.c:1374
+#: glib/gmarkup.c:1386
 #, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' or '/' character to end the start tag "
-#| "of element '%s', or optionally an attribute; perhaps you used an invalid "
-#| "character in an attribute name"
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
 "element “%s”, or optionally an attribute; perhaps you used an invalid "
@@ -5056,11 +4994,8 @@ msgstr ""
 "užbaigiančių elementą „%s“, arba papildomo požymio; gal Jūs panaudojote "
 "netinkama simbolį požymio varde"
 
-#: glib/gmarkup.c:1418
+#: glib/gmarkup.c:1430
 #, c-format
-#| msgid ""
-#| "Odd character '%s', expected an open quote mark after the equals sign "
-#| "when giving value for attribute '%s' of element '%s'"
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when "
 "giving value for attribute “%s” of element “%s”"
@@ -5068,22 +5003,16 @@ msgstr ""
 "Neįprastas simbolis „%1$s“, po lygybės tikėtasi sulaukti atidarančio "
 "citavimo simbolio pradedant „%3$s“ elemento „%2$s“ atributo reikšmę."
 
-#: glib/gmarkup.c:1551
+#: glib/gmarkup.c:1563
 #, c-format
-#| msgid ""
-#| "'%s' is not a valid character following the characters '</'; '%s' may not "
-#| "begin an element name"
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not "
 "begin an element name"
 msgstr ""
 "„%s“ negali būti rašomas po simbolių „</“; „%s“ negali pradėti elemento vardo"
 
-#: glib/gmarkup.c:1587
+#: glib/gmarkup.c:1599
 #, c-format
-#| msgid ""
-#| "'%s' is not a valid character following the close element name '%s'; the "
-#| "allowed character is '>'"
 msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
 "allowed character is “>”"
@@ -5091,36 +5020,30 @@ msgstr ""
 "„%s“ negali būti rašomas po uždarančio elemento vardo „%s“; leistinas "
 "simbolis yra „>“"
 
-#: glib/gmarkup.c:1598
+#: glib/gmarkup.c:1610
 #, c-format
-#| msgid "Element '%s' was closed, no element is currently open"
 msgid "Element “%s” was closed, no element is currently open"
 msgstr ""
 "Elemento „%s“ uždarymo simbolis sutiktas anksčiau už elemento atidarymo "
 "simbolį"
 
-#: glib/gmarkup.c:1607
+#: glib/gmarkup.c:1619
 #, c-format
-#| msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgid "Element “%s” was closed, but the currently open element is “%s”"
 msgstr ""
 "Sutiktas elemento „%s“ uždarymo simbolis, tačiau šiuo metu atidarytas kitas "
 "elementas „%s“"
 
-#: glib/gmarkup.c:1760
+#: glib/gmarkup.c:1772
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentas tuščias arba susideda tik iš tarpų"
 
-#: glib/gmarkup.c:1774
-#| msgid "Document ended unexpectedly just after an open angle bracket '<'"
+#: glib/gmarkup.c:1786
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr "Dokumentas netikėtai pasibaigė tuoj po atidarančių skliaustų „<“"
 
-#: glib/gmarkup.c:1782 glib/gmarkup.c:1827
+#: glib/gmarkup.c:1794 glib/gmarkup.c:1839
 #, c-format
-#| msgid ""
-#| "Document ended unexpectedly with elements still open - '%s' was the last "
-#| "element opened"
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
 "element opened"
@@ -5128,7 +5051,7 @@ msgstr ""
 "Dokumentas netikėtai pasibaigė neuždarius dalies elementų – „%s“ yra "
 "paskutinis atviras elementas"
 
-#: glib/gmarkup.c:1790
+#: glib/gmarkup.c:1802
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -5137,19 +5060,19 @@ msgstr ""
 "Dokumentas netikėtai pasibaigė, tikėtasi uždarančių skliaustų simbolio, "
 "užbaigiančio žymą <%s/>"
 
-#: glib/gmarkup.c:1796
+#: glib/gmarkup.c:1808
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentas netikėtai pasibaigė elemento varde"
 
-#: glib/gmarkup.c:1802
+#: glib/gmarkup.c:1814
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentas netikėtai pasibaigė požymio varde"
 
-#: glib/gmarkup.c:1807
+#: glib/gmarkup.c:1819
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokumentas netikėtai pasibaigė elemento atvėrimo žyma."
 
-#: glib/gmarkup.c:1813
+#: glib/gmarkup.c:1825
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -5157,17 +5080,22 @@ msgstr ""
 "Dokumentas netikėtai pasibaigė lygybės simboliu einančio po požymio vardo; "
 "nerasta požymio reikšmė"
 
-#: glib/gmarkup.c:1820
+#: glib/gmarkup.c:1832
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentas netikėtai pasibaigė požymio verte"
 
-#: glib/gmarkup.c:1836
+#: glib/gmarkup.c:1849
 #, c-format
-#| msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr "Dokumentas netikėtai pasibaigė žymos „%s“ uždarančiame simbolyje"
 
-#: glib/gmarkup.c:1842
+#: glib/gmarkup.c:1853
+#| msgid "Document ended unexpectedly inside the close tag for element “%s”"
+msgid ""
+"Document ended unexpectedly inside the close tag for an unopened element"
+msgstr "Dokumentas netikėtai pasibaigė neatidaryto elemento uždarymo žymoje"
+
+#: glib/gmarkup.c:1859
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentas netikėtai pasibaigė komentaruose arba apdorojimo instrukcijose"
@@ -5669,7 +5597,6 @@ msgstr "Nepavyko perskaityti duomenų iš antrinio konvejerio (%s)"
 
 #: glib/gspawn.c:1596
 #, c-format
-#| msgid "Failed to execute child process “%s” (%s)"
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Nepavyko paleisti antrinio proceso „%s“ (%s)"
 
