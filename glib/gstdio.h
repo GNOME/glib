@@ -44,6 +44,10 @@ G_BEGIN_DECLS
 
 typedef struct _stat32 GStatBuf;
 
+#elif defined(__MINGW64_VERSION_MAJOR) && defined(_WIN64)
+
+typedef struct _stat64 GStatBuf;
+
 #else
 
 typedef struct stat GStatBuf;
