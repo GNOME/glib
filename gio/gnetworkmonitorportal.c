@@ -264,6 +264,45 @@ proxy_properties_changed (GDBusProxy *proxy,
         }
     }
 }
+
+static void
+get_initial_properties (GNetworkMonitorPortal *nm)
+{
+  if (!nm->priv->has_network || nm->priv->proxy == NULL)
+    return;
+
+  if (nm->priv->version == 1)
+    {
+      GVariant *ret;
+
+      ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "available");
+      if (ret != NULL)
+        {
+          nm->priv->available = g_variant_get_boolean (ret);
+          g_variant_unref (ret);
+        }
+
+      ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "metered");
+      if (ret != NULL)
+        {
+          nm->priv->metered = g_variant_get_boolean (ret);
+          g_variant_unref (ret);
+        }
+
+      ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "connectivity");
+      if (ret != NULL)
+        {
+          nm->priv->connectivity = g_variant_get_uint32 (ret);
+          g_variant_unref (ret);
+        }
+    }
+  else if (nm->priv->version == 2)
+    {
+      update_properties (nm->priv->proxy, nm);
+    }
+  else
+    g_assert_not_reached ();
+}
                            
 static gboolean
 g_network_monitor_portal_initable_init (GInitable     *initable,
@@ -336,8 +375,8 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   if (!initable_parent_iface->init (initable, cancellable, error))
     return FALSE;
 
-  if (nm->priv->has_network && nm->priv->version == 2)
-    update_properties (proxy, nm);
+  if (nm->priv->has_network)
+    get_initial_properties (nm);
 
   return TRUE;
 }
