@@ -257,6 +257,57 @@ proxy_properties_changed (GDBusProxy *proxy,
         }
     }
 }
+
+static void
+get_initial_properties (GNetworkMonitorPortal *nm)
+{
+  if (!nm->priv->has_network || nm->priv->proxy == NULL)
+    return;
+
+  if (nm->priv->version == 1)
+    {
+      GVariant *ret;
+
+      ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "available");
+      if (ret != NULL)
+        {
+          nm->priv->available = g_variant_get_boolean (ret);
+          g_variant_unref (ret);
+        }
+
+      ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "metered");
+      if (ret != NULL)
+        {
+          nm->priv->metered = g_variant_get_boolean (ret);
+          g_variant_unref (ret);
+        }
+
+      ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "connectivity");
+      if (ret != NULL)
+        {
+          nm->priv->connectivity = g_variant_get_uint32 (ret);
+          g_variant_unref (ret);
+        }
+    }
+  else if (nm->priv->version == 2)
+    {
+      GVariant *ret;
+
+      ret = g_dbus_proxy_call_sync (nm->priv->proxy, "GetAvailable", NULL, 0, -1, NULL, NULL);
+      g_variant_get (ret, "(b)", &nm->priv->available);
+      g_variant_unref (ret);
+
+      ret = g_dbus_proxy_call_sync (nm->priv->proxy, "GetMetered", NULL, 0, -1, NULL, NULL);
+      g_variant_get (ret, "(b)", &nm->priv->metered);
+      g_variant_unref (ret);
+
+      ret = g_dbus_proxy_call_sync (nm->priv->proxy, "GetConnectivity", NULL, 0, -1, NULL, NULL);
+      g_variant_get (ret, "(u)", &nm->priv->connectivity);
+      g_variant_unref (ret);
+    }
+  else
+    g_assert_not_reached ();
+}
                            
 static gboolean
 g_network_monitor_portal_initable_init (GInitable     *initable,
@@ -325,6 +376,8 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   nm->priv->proxy = proxy;
   nm->priv->has_network = glib_network_available_in_sandbox ();
   nm->priv->version = version;
+
+  get_initial_properties (nm);
 
   return initable_parent_iface->init (initable, cancellable, error);
 }
