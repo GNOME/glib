@@ -863,7 +863,8 @@ parse_application_element (GMarkupParseContext  *context,
       item->metadata->applications = g_list_prepend (item->metadata->applications, ai);
       g_hash_table_replace (item->metadata->apps_by_name, ai->name, ai);
     }
-      
+
+  g_free (ai->exec);
   ai->exec = g_strdup (exec);
   
   if (count)
