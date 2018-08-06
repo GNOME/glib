@@ -93,6 +93,20 @@ g_network_monitor_portal_get_property (GObject    *object,
     }
 }
 
+static gboolean
+is_valid_connectivity (guint32 value)
+{
+  GEnumValue *enum_value;
+  GEnumClass *enum_klass;
+
+  enum_klass = g_type_class_ref (G_TYPE_NETWORK_CONNECTIVITY);
+  enum_value = g_enum_get_value (enum_klass, value);
+
+  g_type_class_unref (enum_klass);
+
+  return enum_value != NULL;
+}
+
 static void
 got_available (GObject *source,
                GAsyncResult *res,
@@ -174,7 +188,8 @@ got_connectivity (GObject *source,
   g_variant_get (ret, "(u)", &connectivity);
   g_variant_unref (ret);
 
-  if (nm->priv->connectivity != connectivity)
+  if (nm->priv->connectivity != connectivity &&
+      is_valid_connectivity (connectivity))
     {
       nm->priv->connectivity = connectivity;
       g_object_notify (G_OBJECT (nm), "connectivity");
@@ -223,7 +238,8 @@ proxy_properties_changed (GDBusProxy *proxy,
       if (ret)
         {
           GNetworkConnectivity connectivity = g_variant_get_uint32 (ret);
-          if (nm->priv->connectivity != connectivity)
+          if (nm->priv->connectivity != connectivity &&
+              is_valid_connectivity (connectivity))
             {
               nm->priv->connectivity = connectivity;
               g_object_notify (G_OBJECT (nm), "connectivity");
@@ -285,13 +301,16 @@ get_initial_properties (GNetworkMonitorPortal *nm)
       ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "connectivity");
       if (ret != NULL)
         {
-          nm->priv->connectivity = g_variant_get_uint32 (ret);
+          guint32 connectivity = g_variant_get_uint32 (ret);
+          if (is_valid_connectivity (connectivity))
+            nm->priv->connectivity = connectivity;
           g_variant_unref (ret);
         }
     }
   else if (nm->priv->version == 2)
     {
       GVariant *ret;
+      guint32 connectivity;
 
       ret = g_dbus_proxy_call_sync (nm->priv->proxy, "GetAvailable", NULL, 0, -1, NULL, NULL);
       g_variant_get (ret, "(b)", &nm->priv->available);
@@ -302,7 +321,9 @@ get_initial_properties (GNetworkMonitorPortal *nm)
       g_variant_unref (ret);
 
       ret = g_dbus_proxy_call_sync (nm->priv->proxy, "GetConnectivity", NULL, 0, -1, NULL, NULL);
-      g_variant_get (ret, "(u)", &nm->priv->connectivity);
+      g_variant_get (ret, "(u)", &connectivity);
+      if (is_valid_connectivity (connectivity))
+        nm->priv->connectivity = connectivity;
       g_variant_unref (ret);
     }
   else
