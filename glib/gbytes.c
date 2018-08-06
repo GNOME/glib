@@ -405,8 +405,10 @@ g_bytes_hash (gconstpointer bytes)
  *
  * This function can be used to sort GBytes instances in lexographical order.
  *
- * Returns: a negative value if bytes2 is lesser, a positive value if bytes2 is
- *          greater, and zero if bytes2 is equal to bytes1
+ * Returns: a negative value if bytes1 is less than bytes2, a positive value
+ *          if bytes1 is greater than bytes2, and zero if bytes1 is equal to
+ *          bytes2
+ *
  *
  * Since: 2.32
  */
