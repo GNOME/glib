@@ -345,6 +345,8 @@ mktime_utc (struct tm *tm)
  * zone indicator. (In the absence of any time zone indication, the
  * timestamp is assumed to be in local time.)
  *
+ * Any leading or trailing space in @iso_date is ignored.
+ *
  * Returns: %TRUE if the conversion was successful.
  *
  * Since: 2.12
@@ -355,6 +357,8 @@ g_time_val_from_iso8601 (const gchar *iso_date,
 {
   struct tm tm = {0};
   long val;
+  long mday, mon, year;
+  long hour, min, sec;
 
   g_return_val_if_fail (iso_date != NULL, FALSE);
   g_return_val_if_fail (time_ != NULL, FALSE);
@@ -368,29 +372,41 @@ g_time_val_from_iso8601 (const gchar *iso_date,
   if (*iso_date == '\0')
     return FALSE;
 
-  if (!g_ascii_isdigit (*iso_date) && *iso_date != '-' && *iso_date != '+')
+  if (!g_ascii_isdigit (*iso_date) && *iso_date != '+')
     return FALSE;
 
   val = strtoul (iso_date, (char **)&iso_date, 10);
   if (*iso_date == '-')
     {
       /* YYYY-MM-DD */
-      tm.tm_year = val - 1900;
+      year = val;
       iso_date++;
-      tm.tm_mon = strtoul (iso_date, (char **)&iso_date, 10) - 1;
-      
+
+      mon = strtoul (iso_date, (char **)&iso_date, 10);
       if (*iso_date++ != '-')
         return FALSE;
       
-      tm.tm_mday = strtoul (iso_date, (char **)&iso_date, 10);
+      mday = strtoul (iso_date, (char **)&iso_date, 10);
     }
   else
     {
       /* YYYYMMDD */
-      tm.tm_mday = val % 100;
-      tm.tm_mon = (val % 10000) / 100 - 1;
-      tm.tm_year = val / 10000 - 1900;
+      mday = val % 100;
+      mon = (val % 10000) / 100;
+      year = val / 10000;
     }
+
+  /* Validation. */
+  if (year < 1900 || year > G_MAXINT)
+    return FALSE;
+  if (mon < 1 || mon > 12)
+    return FALSE;
+  if (mday < 1 || mday > 31)
+    return FALSE;
+
+  tm.tm_mday = mday;
+  tm.tm_mon = mon - 1;
+  tm.tm_year = year - 1900;
 
   if (*iso_date != 'T')
     return FALSE;
@@ -405,22 +421,34 @@ g_time_val_from_iso8601 (const gchar *iso_date,
   if (*iso_date == ':')
     {
       /* hh:mm:ss */
-      tm.tm_hour = val;
+      hour = val;
       iso_date++;
-      tm.tm_min = strtoul (iso_date, (char **)&iso_date, 10);
+      min = strtoul (iso_date, (char **)&iso_date, 10);
       
       if (*iso_date++ != ':')
         return FALSE;
       
-      tm.tm_sec = strtoul (iso_date, (char **)&iso_date, 10);
+      sec = strtoul (iso_date, (char **)&iso_date, 10);
     }
   else
     {
       /* hhmmss */
-      tm.tm_sec = val % 100;
-      tm.tm_min = (val % 10000) / 100;
-      tm.tm_hour = val / 10000;
+      sec = val % 100;
+      min = (val % 10000) / 100;
+      hour = val / 10000;
     }
+
+  /* Validation. Allow up to 2 leap seconds when validating @sec. */
+  if (hour > 23)
+    return FALSE;
+  if (min > 59)
+    return FALSE;
+  if (sec > 61)
+    return FALSE;
+
+  tm.tm_hour = hour;
+  tm.tm_min = min;
+  tm.tm_sec = sec;
 
   time_->tv_usec = 0;
   
@@ -428,11 +456,15 @@ g_time_val_from_iso8601 (const gchar *iso_date,
     {
       glong mul = 100000;
 
-      while (g_ascii_isdigit (*++iso_date))
+      while (mul >= 1 && g_ascii_isdigit (*++iso_date))
         {
           time_->tv_usec += (*iso_date - '0') * mul;
           mul /= 10;
         }
+
+      /* Skip any remaining digits after we’ve reached our limit of precision. */
+      while (g_ascii_isdigit (*iso_date))
+        iso_date++;
     }
     
   /* Now parse the offset and convert tm to a time_t */
@@ -448,11 +480,24 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       val = strtoul (iso_date + 1, (char **)&iso_date, 10);
       
       if (*iso_date == ':')
-        val = 60 * val + strtoul (iso_date + 1, (char **)&iso_date, 10);
+        {
+          /* hh:mm */
+          hour = val;
+          min = strtoul (iso_date + 1, (char **)&iso_date, 10);
+        }
       else
-        val = 60 * (val / 100) + (val % 100);
+        {
+          /* hhmm */
+          hour = val / 100;
+          min = val % 100;
+        }
 
-      time_->tv_sec = mktime_utc (&tm) + (time_t) (60 * val * sign);
+      if (hour > 99)
+        return FALSE;
+      if (min > 59)
+        return FALSE;
+
+      time_->tv_sec = mktime_utc (&tm) + (time_t) (60 * (60 * hour + min) * sign);
     }
   else
     {
