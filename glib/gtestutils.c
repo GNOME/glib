@@ -1284,6 +1284,12 @@ parse_args (gint    *argc_p,
  *
  * - `--debug-log`: Debug test logging output.
  *
+ * Since 2.58, if tests are compiled with `G_DISABLE_ASSERT` defined,
+ * g_test_init() will print an error and exit. This is to prevent no-op tests
+ * from being executed, as g_assert() is commonly (erroneously) used in unit
+ * tests, and is a no-op when compiled with `G_DISABLE_ASSERT`. Ensure your
+ * tests are compiled without `G_DISABLE_ASSERT` defined.
+ *
  * Since: 2.16
  */
 void
