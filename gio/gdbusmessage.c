@@ -1994,7 +1994,7 @@ g_dbus_message_bytes_needed (guchar  *blob,
 
 /**
  * g_dbus_message_new_from_blob:
- * @blob: (array length=blob_len) (element-type guint8): A blob represent a binary D-Bus message.
+ * @blob: (array length=blob_len) (element-type guint8): A blob representing a binary D-Bus message.
  * @blob_len: The length of @blob.
  * @capabilities: A #GDBusCapabilityFlags describing what protocol features are supported.
  * @error: Return location for error or %NULL.

@@ -115,6 +115,14 @@ test_timeval_add (void)
   g_time_val_add (&time, 1000);
   g_assert_cmpint (time.tv_sec, ==, 1); 
   g_assert_cmpint (time.tv_usec, ==, 510);
+
+  g_time_val_add (&time, 0);
+  g_assert_cmpint (time.tv_sec, ==, 1);
+  g_assert_cmpint (time.tv_usec, ==, 510);
+
+  g_time_val_add (&time, -210);
+  g_assert_cmpint (time.tv_sec, ==, 1);
+  g_assert_cmpint (time.tv_usec, ==, 300);
 }
 
 typedef struct {
@@ -230,6 +238,22 @@ test_timeval_to_iso8601 (void)
     }
 }
 
+/* Test error handling for g_time_val_to_iso8601() on dates which are too large. */
+static void
+test_timeval_to_iso8601_overflow (void)
+{
+  GTimeVal val;
+  gchar *out = NULL;
+
+  g_unsetenv ("TZ");
+
+  val.tv_sec = G_MAXLONG;
+  val.tv_usec = G_USEC_PER_SEC - 1;
+
+  out = g_time_val_to_iso8601 (&val);
+  g_assert_null (out);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -242,6 +266,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/timeval/add", test_timeval_add);
   g_test_add_func ("/timeval/from-iso8601", test_timeval_from_iso8601);
   g_test_add_func ("/timeval/to-iso8601", test_timeval_to_iso8601);
+  g_test_add_func ("/timeval/to-iso8601/overflow", test_timeval_to_iso8601_overflow);
 
   return g_test_run ();
 }
