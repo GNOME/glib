@@ -115,6 +115,14 @@ test_timeval_add (void)
   g_time_val_add (&time, 1000);
   g_assert_cmpint (time.tv_sec, ==, 1); 
   g_assert_cmpint (time.tv_usec, ==, 510);
+
+  g_time_val_add (&time, 0);
+  g_assert_cmpint (time.tv_sec, ==, 1);
+  g_assert_cmpint (time.tv_usec, ==, 510);
+
+  g_time_val_add (&time, -210);
+  g_assert_cmpint (time.tv_sec, ==, 1);
+  g_assert_cmpint (time.tv_usec, ==, 300);
 }
 
 typedef struct {
