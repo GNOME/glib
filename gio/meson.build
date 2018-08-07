@@ -845,11 +845,10 @@ libgio_dep = declare_dependency(link_with : libgio,
   include_directories : [configinc, gioinc])
 
 if host_system == 'windows'
-  # Hack till https://github.com/mesonbuild/meson/issues/2324 is fixed
-  libgiounix_dep = dependency('', required : false)
+  libgiounix_dep = declare_dependency()
   libgiowin32_dep = libgio_dep
 else
-  libgiowin32_dep = dependency('', required : false)
+  libgiowin32_dep = declare_dependency()
   libgiounix_dep = libgio_dep
 endif
 
