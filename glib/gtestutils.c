@@ -959,7 +959,20 @@ g_test_log (GTestLogType lbit,
       fail = result == G_TEST_RUN_FAILURE;
       if (test_tap_log)
         {
-          g_print ("%s %d %s", fail ? "not ok" : "ok", test_run_count, string1);
+          const gchar *ok;
+
+          /* The TAP representation for an expected failure starts with
+           * "not ok", even though it does not actually count as failing
+           * due to the use of the TODO directive. "ok # TODO" would mean
+           * a test that was expected to fail unexpectedly succeeded,
+           * for which GTestResult does not currently have a
+           * representation. */
+          if (fail || result == G_TEST_RUN_INCOMPLETE)
+            ok = "not ok";
+          else
+            ok = "ok";
+
+          g_print ("%s %d %s", ok, test_run_count, string1);
           if (result == G_TEST_RUN_INCOMPLETE)
             g_print (" # TODO %s\n", string2 ? string2 : "");
           else if (result == G_TEST_RUN_SKIPPED)
@@ -977,7 +990,7 @@ g_test_log (GTestLogType lbit,
             g_print ("Bail out!\n");
           g_abort ();
         }
-      if (result == G_TEST_RUN_SKIPPED)
+      if (result == G_TEST_RUN_SKIPPED || result == G_TEST_RUN_INCOMPLETE)
         test_skipped_count++;
       break;
     case G_TEST_LOG_MIN_RESULT:
@@ -1720,11 +1733,13 @@ g_test_get_root (void)
  * particular code runs before or after a given test case, use
  * g_test_add(), which lets you specify setup and teardown functions.
  *
- * If all tests are skipped, this function will return 0 if
- * producing TAP output, or 77 (treated as "skip test" by Automake) otherwise.
+ * If all tests are skipped or marked as incomplete (expected failures),
+ * this function will return 0 if producing TAP output, or 77 (treated
+ * as "skip test" by Automake) otherwise.
  *
  * Returns: 0 on success, 1 on failure (assuming it returns at all),
- *   0 or 77 if all tests were skipped with g_test_skip()
+ *   0 or 77 if all tests were skipped with g_test_skip() and/or
+ *   g_test_incomplete()
  *
  * Since: 2.16
  */
@@ -2325,7 +2340,8 @@ test_case_run (GTestCase *tc)
   test_uri_base = old_base;
 
   return (success == G_TEST_RUN_SUCCESS ||
-          success == G_TEST_RUN_SKIPPED);
+          success == G_TEST_RUN_SKIPPED ||
+          success == G_TEST_RUN_INCOMPLETE);
 }
 
 static gboolean

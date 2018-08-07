@@ -20,6 +20,8 @@
  * if advised of the possibility of such damage.
  */
 
+#include "config.h"
+
 /* We want to distinguish between messages originating from libglib
  * and messages originating from this program.
  */
@@ -78,6 +80,7 @@ test_assertions (void)
   g_assert_cmpfloat_with_epsilon (3.14, 3.15, 0.01);
   g_assert_cmpfloat_with_epsilon (3.14159, 3.1416, 0.0001);
   g_assert (TRUE);
+  g_assert_true (TRUE);
   g_assert_cmpstr ("foo", !=, "faa");
   fuu = g_strdup_printf ("f%s", "uu");
   g_test_queue_free (fuu);
@@ -170,7 +173,7 @@ test_fork_timeout (void)
         g_usleep (1000 * 1000);
     }
   g_test_trap_assert_failed();
-  g_assert (g_test_trap_reached_timeout());
+  g_assert_true (g_test_trap_reached_timeout());
 }
 
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -233,7 +236,7 @@ test_subprocess_timeout (void)
   /* allow child to run for only a fraction of a second */
   g_test_trap_subprocess (NULL, 0.11 * 1000000, 0);
   g_test_trap_assert_failed ();
-  g_assert (g_test_trap_reached_timeout ());
+  g_assert_true (g_test_trap_reached_timeout ());
 }
 
 /* run a test with fixture setup and teardown */
@@ -246,7 +249,7 @@ static void
 fixturetest_setup (Fixturetest  *fix,
                    gconstpointer test_data)
 {
-  g_assert (test_data == (void*) 0xc0cac01a);
+  g_assert_true (test_data == (void*) 0xc0cac01a);
   fix->seed = 18;
   fix->prime = 19;
   fix->msg = g_strdup_printf ("%d", fix->prime);
@@ -259,13 +262,13 @@ fixturetest_test (Fixturetest  *fix,
   g_assert_cmpint (prime, ==, fix->prime);
   prime = g_ascii_strtoull (fix->msg, NULL, 0);
   g_assert_cmpint (prime, ==, fix->prime);
-  g_assert (test_data == (void*) 0xc0cac01a);
+  g_assert_true (test_data == (void*) 0xc0cac01a);
 }
 static void
 fixturetest_teardown (Fixturetest  *fix,
                       gconstpointer test_data)
 {
-  g_assert (test_data == (void*) 0xc0cac01a);
+  g_assert_true (test_data == (void*) 0xc0cac01a);
   g_free (fix->msg);
 }
 
@@ -308,7 +311,7 @@ test_rand2 (void)
 static void
 test_data_test (gconstpointer test_data)
 {
-  g_assert (test_data == (void*) 0xc0c0baba);
+  g_assert_true (test_data == (void*) 0xc0c0baba);
 }
 
 static void
@@ -319,7 +322,7 @@ test_random_conversions (void)
   char *err, *str = g_strdup_printf ("%d", vint);
   gint64 vint64 = g_ascii_strtoll (str, &err, 10);
   g_assert_cmphex (vint, ==, vint64);
-  g_assert (!err || *err == 0);
+  g_assert_true (!err || *err == 0);
   g_free (str);
 }
 
@@ -622,6 +625,10 @@ static void
 test_skip (void)
 {
   g_test_skip ("Skipped should count as passed, not failed");
+  /* This function really means "the test concluded with a non-successful
+   * status" rather than "the test failed": it is documented to return
+   * true for skipped and incomplete tests, not just for failures. */
+  g_assert_true (g_test_failed ());
 }
 
 static void
@@ -630,12 +637,21 @@ test_pass (void)
 }
 
 static void
+subprocess_fail (void)
+{
+  /* Exit 1 instead of raising SIGABRT so that we can make assertions about
+   * how this combines with skipped/incomplete tests */
+  g_test_set_nonfatal_assertions ();
+  g_test_fail ();
+  g_assert_true (g_test_failed ());
+}
+
+static void
 test_fail (void)
 {
   if (g_test_subprocess ())
     {
-      g_test_fail ();
-      g_assert (g_test_failed ());
+      subprocess_fail ();
       return;
     }
   g_test_trap_subprocess (NULL, 0, 0);
@@ -643,15 +659,29 @@ test_fail (void)
 }
 
 static void
+subprocess_incomplete (void)
+{
+  g_test_incomplete ("not done");
+  /* This function really means "the test concluded with a non-successful
+   * status" rather than "the test failed": it is documented to return
+   * true for skipped and incomplete tests, not just for failures. */
+  g_assert_true (g_test_failed ());
+}
+
+static void
 test_incomplete (void)
 {
   if (g_test_subprocess ())
     {
-      g_test_incomplete ("not done");
-      g_assert (g_test_failed ());
+      subprocess_incomplete ();
       return;
     }
   g_test_trap_subprocess (NULL, 0, 0);
+  /* An incomplete test represents functionality that is known not to be
+   * implemented yet (an expected failure), so it does not cause test
+   * failure; but it does count as the test having been skipped, which
+   * causes nonzero exit status 77, which is treated as failure by
+   * g_test_trap_subprocess(). */
   g_test_trap_assert_failed ();
 }
 
@@ -664,18 +694,19 @@ test_subprocess_timed_out (void)
       return;
     }
   g_test_trap_subprocess (NULL, 50000, 0);
-  g_assert (g_test_trap_reached_timeout ());
+  g_assert_true (g_test_trap_reached_timeout ());
 }
 
 static const char *argv0;
 
 static void
-test_skip_all (void)
+test_combining (void)
 {
   GPtrArray *argv;
   GError *error = NULL;
   int status;
 
+  g_test_message ("single test case skipped -> overall status 77");
   argv = g_ptr_array_new ();
   g_ptr_array_add (argv, (char *) argv0);
   g_ptr_array_add (argv, "--GTestSubprocess");
@@ -693,15 +724,16 @@ test_skip_all (void)
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 77);
   g_clear_error (&error);
 
+  g_test_message ("each test case skipped -> overall status 77");
   g_ptr_array_set_size (argv, 0);
   g_ptr_array_add (argv, (char *) argv0);
   g_ptr_array_add (argv, "--GTestSubprocess");
   g_ptr_array_add (argv, "-p");
   g_ptr_array_add (argv, "/misc/skip");
   g_ptr_array_add (argv, "-p");
-  g_ptr_array_add (argv, "/misc/skip-all/subprocess/skip1");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/skip1");
   g_ptr_array_add (argv, "-p");
-  g_ptr_array_add (argv, "/misc/skip-all/subprocess/skip2");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/skip2");
   g_ptr_array_add (argv, NULL);
 
   g_spawn_sync (NULL, (char **) argv->pdata, NULL,
@@ -714,15 +746,260 @@ test_skip_all (void)
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 77);
   g_clear_error (&error);
 
+  g_test_message ("single test case incomplete -> overall status 77");
+  g_ptr_array_set_size (argv, 0);
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/incomplete");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 77);
+  g_clear_error (&error);
+
+  g_test_message ("one pass and some skipped -> overall status 0");
   g_ptr_array_set_size (argv, 0);
   g_ptr_array_add (argv, (char *) argv0);
   g_ptr_array_add (argv, "--GTestSubprocess");
   g_ptr_array_add (argv, "-p");
   g_ptr_array_add (argv, "/misc/skip");
   g_ptr_array_add (argv, "-p");
-  g_ptr_array_add (argv, "/misc/skip-all/subprocess/pass");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/pass");
   g_ptr_array_add (argv, "-p");
-  g_ptr_array_add (argv, "/misc/skip-all/subprocess/skip1");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/skip1");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+
+  g_test_message ("one pass and some incomplete -> overall status 0");
+  g_ptr_array_set_size (argv, 0);
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/pass");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/incomplete");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+
+  g_test_message ("one pass and mix of skipped and incomplete -> overall status 0");
+  g_ptr_array_set_size (argv, 0);
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/pass");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/skip1");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/incomplete");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+
+  g_test_message ("one fail and some skipped -> overall status fail");
+  g_ptr_array_set_size (argv, 0);
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/fail");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/skip1");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_clear_error (&error);
+
+  g_test_message ("one fail and some incomplete -> overall status fail");
+  g_ptr_array_set_size (argv, 0);
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/fail");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/incomplete");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_clear_error (&error);
+
+  g_test_message ("one fail and mix of skipped and incomplete -> overall status fail");
+  g_ptr_array_set_size (argv, 0);
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/fail");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/skip1");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/combining/subprocess/incomplete");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_clear_error (&error);
+
+  g_ptr_array_unref (argv);
+}
+
+/* Test the TAP output when a test suite is run with --tap. */
+static void
+test_tap (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  g_test_message ("pass");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "pass");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (output, "\nok 1 /pass\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("skip");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "skip");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (output, "\nok 1 /skip # SKIP not enough tea\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("incomplete");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "incomplete");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (output, "\nnot ok 1 /incomplete # TODO mind reading not implemented yet\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("fail");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "fail");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_assert_nonnull (strstr (output, "\nnot ok 1 /fail\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("all");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "all");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_clear_error (&error);
+  g_ptr_array_unref (argv);
+
+  g_test_message ("all-non-failures");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "all-non-failures");
+  g_ptr_array_add (argv, "--tap");
   g_ptr_array_add (argv, NULL);
 
   g_spawn_sync (NULL, (char **) argv->pdata, NULL,
@@ -801,13 +1078,17 @@ main (int   argc,
   g_test_add_func ("/misc/nonfatal", test_nonfatal);
 
   g_test_add_func ("/misc/skip", test_skip);
-  g_test_add_func ("/misc/skip-all", test_skip_all);
-  g_test_add_func ("/misc/skip-all/subprocess/skip1", test_skip);
-  g_test_add_func ("/misc/skip-all/subprocess/skip2", test_skip);
-  g_test_add_func ("/misc/skip-all/subprocess/pass", test_pass);
+  g_test_add_func ("/misc/combining", test_combining);
+  g_test_add_func ("/misc/combining/subprocess/fail", subprocess_fail);
+  g_test_add_func ("/misc/combining/subprocess/skip1", test_skip);
+  g_test_add_func ("/misc/combining/subprocess/skip2", test_skip);
+  g_test_add_func ("/misc/combining/subprocess/incomplete", subprocess_incomplete);
+  g_test_add_func ("/misc/combining/subprocess/pass", test_pass);
   g_test_add_func ("/misc/fail", test_fail);
   g_test_add_func ("/misc/incomplete", test_incomplete);
   g_test_add_func ("/misc/timeout", test_subprocess_timed_out);
+
+  g_test_add_func ("/tap", test_tap);
 
   return g_test_run();
 }

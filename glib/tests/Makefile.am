@@ -38,6 +38,7 @@ dist_test_extra_scripts = \
 
 test_extra_programs = \
 	test-spawn-echo			\
+	testing-helper			\
 	$(NULL)
 
 test_programs = \
