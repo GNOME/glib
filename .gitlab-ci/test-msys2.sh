@@ -38,7 +38,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
 
-meson --werror --buildtype debug _build
+meson -Dnative_appinfo=false --werror --buildtype debug _build
 cd _build
 ninja
 

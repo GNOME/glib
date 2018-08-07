@@ -6,7 +6,7 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary
 
 :: FIXME: make warnings fatal
 pip3 install --upgrade --user meson==0.47.0  || goto :error
-meson _build || goto :error
+meson -Dnative_appinfo=false _build || goto :error
 ninja -C _build || goto :error
 
 :: FIXME: dont ignore test errors
