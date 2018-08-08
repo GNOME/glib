@@ -121,6 +121,8 @@ w32_error_to_errno (DWORD error_code)
     }
 }
 
+#include "gstdio-private.c"
+
 static int
 _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
                                          int                 fd,
@@ -259,15 +261,11 @@ _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
 
           if (new_len > 0)
             {
-              const wchar_t *extended_prefix = L"\\\\?\\";
-              const gsize    extended_prefix_len = wcslen (extended_prefix);
-              const gsize    extended_prefix_len_bytes = sizeof (wchar_t) * extended_prefix_len;
-
               /* Pretend that new_len doesn't count the terminating NUL char,
-               * and ask for a bit more space than is needed.
+               * and ask for a bit more space than is needed, and allocate even more.
                */
-              filename_target_len = new_len + 5;
-              filename_target = g_malloc (filename_target_len * sizeof (wchar_t));
+              filename_target_len = new_len + 3;
+              filename_target = g_malloc ((filename_target_len + 1) * sizeof (wchar_t));
 
               new_len = GetFinalPathNameByHandleW (file_handle,
                                                    filename_target,
@@ -284,17 +282,32 @@ _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
                   error_code = ERROR_BUFFER_OVERFLOW;
                   g_clear_pointer (&filename_target, g_free);
                 }
-              /* GetFinalPathNameByHandle() is documented to return extended paths,
-               * strip the extended prefix.
-               */
-              else if (new_len > extended_prefix_len &&
-                       memcmp (filename_target, extended_prefix, extended_prefix_len_bytes) == 0)
+              else if (new_len == 0)
                 {
-                  new_len -= extended_prefix_len;
-                  memmove (filename_target,
-                           filename_target + extended_prefix_len,
-                           (new_len + 1) * sizeof (wchar_t));
+                  g_clear_pointer (&filename_target, g_free);
                 }
+              /* GetFinalPathNameByHandle() is documented to return extended paths,
+               * strip the extended prefix, if it is followed by a drive letter
+               * and a colon. Otherwise keep it (the path could be
+               * \\\\?\\Volume{GUID}\\ - it's only usable in extended form).
+               */
+              else if (new_len > 0)
+                {
+                  gsize len = new_len;
+
+                  /* Account for NUL-terminator maybe not being counted.
+                   * This is why we overallocated earlier.
+                   */
+                  if (filename_target[len] != L'\0')
+                    {
+                      len++;
+                      filename_target[len] = L'\0';
+                    }
+
+                  _g_win32_strip_extended_ntobjm_prefix (filename_target, &len);
+                  new_len = len;
+                }
+
             }
 
           if (new_len == 0)
@@ -513,10 +526,8 @@ _g_win32_readlink_utf16 (const gunichar2 *filename,
                          gunichar2       *buf,
                          gsize            buf_size)
 {
-  const wchar_t *ntobjm_prefix = L"\\??\\";
-  const gsize    ntobjm_prefix_len_unichar2 = wcslen (ntobjm_prefix);
-  const gsize    ntobjm_prefix_len_bytes = sizeof (gunichar2) * ntobjm_prefix_len_unichar2;
-  int            result = _g_win32_readlink_utf16_raw (filename, buf, buf_size);
+  int   result = _g_win32_readlink_utf16_raw (filename, buf, buf_size);
+  gsize string_size;
 
   if (result <= 0)
     return result;
@@ -532,16 +543,16 @@ _g_win32_readlink_utf16 (const gunichar2 *filename,
   /* DeviceIoControl () tends to return filenames as NT Object Manager
    * names , i.e. "\\??\\C:\\foo\\bar".
    * Remove the leading 4-byte \??\ prefix, as glib (as well as many W32 API
-   * functions) is unprepared to deal with it.
+   * functions) is unprepared to deal with it. Unless it has no 'x:' drive
+   * letter part after the prefix, in which case we leave everything
+   * as-is, because the path could be "\??\Volume{GUID}" - stripping
+   * the prefix will allow it to be confused with relative links
+   * targeting "Volume{GUID}".
    */
-  if (result > ntobjm_prefix_len_bytes &&
-      memcmp (buf, ntobjm_prefix, ntobjm_prefix_len_bytes) == 0)
-    {
-      result -= ntobjm_prefix_len_bytes;
-      memmove (buf, buf + ntobjm_prefix_len_unichar2, result);
-    }
+  string_size = result / sizeof (gunichar2);
+  _g_win32_strip_extended_ntobjm_prefix (buf, &string_size);
 
-  return result;
+  return string_size * sizeof (gunichar2);
 }
 
 static gchar *
