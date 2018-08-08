@@ -285,10 +285,15 @@ _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
                   g_clear_pointer (&filename_target, g_free);
                 }
               /* GetFinalPathNameByHandle() is documented to return extended paths,
-               * strip the extended prefix.
+               * strip the extended prefix, if it is followed by a drive letter
+               * and a colon. Otherwise keep it (the path could be
+               * \\\\?\\Volume{GUID}\\ - it's only usable in extended form).
                */
               else if (new_len > extended_prefix_len &&
-                       memcmp (filename_target, extended_prefix, extended_prefix_len_bytes) == 0)
+                       memcmp (filename_target,
+                               extended_prefix,
+                               extended_prefix_len_bytes) == 0 &&
+                       filename_target[5] == L':')
                 {
                   new_len -= extended_prefix_len;
                   memmove (filename_target,
@@ -516,6 +521,7 @@ _g_win32_readlink_utf16 (const gunichar2 *filename,
   const wchar_t *ntobjm_prefix = L"\\??\\";
   const gsize    ntobjm_prefix_len_unichar2 = wcslen (ntobjm_prefix);
   const gsize    ntobjm_prefix_len_bytes = sizeof (gunichar2) * ntobjm_prefix_len_unichar2;
+  const gsize    ntobjm_prefix_with_drive_len_bytes = sizeof (gunichar2) * (ntobjm_prefix_len_unichar2 + 2);
   int            result = _g_win32_readlink_utf16_raw (filename, buf, buf_size);
 
   if (result <= 0)
@@ -532,10 +538,15 @@ _g_win32_readlink_utf16 (const gunichar2 *filename,
   /* DeviceIoControl () tends to return filenames as NT Object Manager
    * names , i.e. "\\??\\C:\\foo\\bar".
    * Remove the leading 4-byte \??\ prefix, as glib (as well as many W32 API
-   * functions) is unprepared to deal with it.
+   * functions) is unprepared to deal with it. Unless it has no 'x:' drive
+   * letter part after the prefix, in which case we leave everything
+   * as-is, because the path could be "\??\Volume{GUID}" - stripping
+   * the prefix will allow it to be confused with relative links
+   * targeting "Volume{GUID}".
    */
-  if (result > ntobjm_prefix_len_bytes &&
-      memcmp (buf, ntobjm_prefix, ntobjm_prefix_len_bytes) == 0)
+  if (result >= ntobjm_prefix_with_drive_len_bytes &&
+      memcmp (buf, ntobjm_prefix, ntobjm_prefix_len_bytes) == 0 &&
+      buf[5] == L':')
     {
       result -= ntobjm_prefix_len_bytes;
       memmove (buf, buf + ntobjm_prefix_len_unichar2, result);
