@@ -2131,13 +2131,15 @@ test_posix_parse (void)
   GTimeZone *tz;
   GDateTime *gdt1, *gdt2;
 
-  tz = g_time_zone_new ("PST");
+  /* Check that an unknown zone name falls back to UTC. */
+  tz = g_time_zone_new ("nonexistent");
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 0);
   g_assert (!g_time_zone_is_dst (tz, 0));
   g_time_zone_unref (tz);
 
+  /* An existent zone name should not fall back to UTC. */
   tz = g_time_zone_new ("PST8");
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
