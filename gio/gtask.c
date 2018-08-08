@@ -52,7 +52,7 @@
  * where it was created (waiting until the next iteration of the main
  * loop first, if necessary). The caller will pass the #GTask back to
  * the operation's finish function (as a #GAsyncResult), and you can
- * can use g_task_propagate_pointer() or the like to extract the
+ * use g_task_propagate_pointer() or the like to extract the
  * return value.
  *
  * Here is an example for using GTask as a GAsyncResult:
