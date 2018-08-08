@@ -961,7 +961,8 @@ set_info_from_stat (GFileInfo             *info,
   else if (S_ISLNK (statbuf->st_mode))
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #elif defined (G_OS_WIN32)
-  if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK)
+  if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+      statbuf->reparse_tag == IO_REPARSE_TAG_MOUNT_POINT)
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #endif
 
@@ -1806,7 +1807,9 @@ _g_local_file_info_get (const char             *basename,
   is_symlink = stat_ok && S_ISLNK (statbuf.st_mode);
 #elif defined (G_OS_WIN32)
   /* glib already checked the FILE_ATTRIBUTE_REPARSE_POINT for us */
-  is_symlink = stat_ok && statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK; 
+  is_symlink = stat_ok &&
+      (statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+       statbuf.reparse_tag == IO_REPARSE_TAG_MOUNT_POINT);
 #else
   is_symlink = FALSE;
 #endif
@@ -2189,7 +2192,9 @@ set_unix_mode (char                       *filename,
     GWin32PrivateStat statbuf;
 
     res = GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (filename, &statbuf);
-    is_symlink = (res == 0 && statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK);
+    is_symlink = (res == 0 &&
+                  (statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+                   statbuf.reparse_tag == IO_REPARSE_TAG_MOUNT_POINT));
 #endif
     if (is_symlink)
       {
