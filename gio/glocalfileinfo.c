@@ -953,7 +953,8 @@ set_info_from_stat (GFileInfo             *info,
   else if (S_ISLNK (statbuf->st_mode))
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #elif defined (G_OS_WIN32)
-  if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK)
+  if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+      statbuf->reparse_tag == IO_REPARSE_TAG_MOUNT_POINT)
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #endif
 
@@ -997,12 +998,19 @@ set_info_from_stat (GFileInfo             *info,
 #elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atim.tv_nsec / 1000);
 #endif
-  
+
+#ifndef G_OS_WIN32
+  /* Microsoft uses st_ctime for file creation time,
+   * instead of file change time:
+   * https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/stat-functions#generic-text-routine-mappings
+   * Thank you, Microsoft!
+   */
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED, statbuf->st_ctime);
 #if defined (HAVE_STRUCT_STAT_ST_CTIMENSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, statbuf->st_ctimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, statbuf->st_ctim.tv_nsec / 1000);
+#endif
 #endif
 
 #if defined (HAVE_STRUCT_STAT_ST_BIRTHTIME) && defined (HAVE_STRUCT_STAT_ST_BIRTHTIMENSEC)
@@ -1015,6 +1023,8 @@ set_info_from_stat (GFileInfo             *info,
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_birthtime);
 #elif defined (HAVE_STRUCT_STAT_ST_BIRTHTIM)
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_birthtim);
+#elif defined (G_OS_WIN32)
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_ctime);
 #endif
 
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
@@ -1792,7 +1802,9 @@ _g_local_file_info_get (const char             *basename,
   is_symlink = stat_ok && S_ISLNK (statbuf.st_mode);
 #elif defined (G_OS_WIN32)
   /* glib already checked the FILE_ATTRIBUTE_REPARSE_POINT for us */
-  is_symlink = stat_ok && statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK; 
+  is_symlink = stat_ok &&
+      (statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+       statbuf.reparse_tag == IO_REPARSE_TAG_MOUNT_POINT);
 #else
   is_symlink = FALSE;
 #endif
@@ -2175,7 +2187,9 @@ set_unix_mode (char                       *filename,
     GWin32PrivateStat statbuf;
 
     res = GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (filename, &statbuf);
-    is_symlink = (res == 0 && statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK);
+    is_symlink = (res == 0 &&
+                  (statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+                   statbuf.reparse_tag == IO_REPARSE_TAG_MOUNT_POINT));
 #endif
     if (is_symlink)
       {
