@@ -3889,27 +3889,48 @@ test_parse_failures (void)
     "boolean 4",                "8-9:",            "can not parse as",
     "int32 true",               "6-10:",           "can not parse as",
     "[double 5, int32 5]",      "1-9,11-18:",      "common type",
-    "string 4",                 "7-8:",            "can not parse as"
+    "string 4",                 "7-8:",            "can not parse as",
+    "\x0a",                     "1:",              "expected value",
+    "((",                       "2:",              "expected value",
   };
   gint i;
 
   for (i = 0; i < G_N_ELEMENTS (test); i += 3)
     {
-      GError *error = NULL;
+      GError *error1 = NULL, *error2 = NULL;
       GVariant *value;
 
-      value = g_variant_parse (NULL, test[i], NULL, NULL, &error);
-      g_assert (value == NULL);
+      /* Copy the test string and drop its nul terminator, then use the @limit
+       * parameter of g_variant_parse() to set the length. This allows valgrind
+       * to catch 1-byte heap buffer overflows. */
+      gsize test_len = MAX (strlen (test[i]), 1);
+      gchar *test_blob = g_malloc0 (test_len);  /* no nul terminator */
 
-      if (!strstr (error->message, test[i+2]))
+      memcpy (test_blob, test[i], test_len);
+      value = g_variant_parse (NULL, test_blob, test_blob + test_len, NULL, &error1);
+      g_assert_null (value);
+
+      g_free (test_blob);
+
+      if (!strstr (error1->message, test[i+2]))
         g_error ("test %d: Can't find '%s' in '%s'", i / 3,
-                 test[i+2], error->message);
+                 test[i+2], error1->message);
 
-      if (!g_str_has_prefix (error->message, test[i+1]))
+      if (!g_str_has_prefix (error1->message, test[i+1]))
         g_error ("test %d: Expected location '%s' in '%s'", i / 3,
-                 test[i+1], error->message);
+                 test[i+1], error1->message);
 
-      g_error_free (error);
+      /* Test again with the nul terminator this time. The behaviour should be
+       * the same. */
+      value = g_variant_parse (NULL, test[i], NULL, NULL, &error2);
+      g_assert_null (value);
+
+      g_assert_cmpint (error1->domain, ==, error2->domain);
+      g_assert_cmpint (error1->code, ==, error2->code);
+      g_assert_cmpstr (error1->message, ==, error2->message);
+
+      g_clear_error (&error1);
+      g_clear_error (&error2);
     }
 }
 
