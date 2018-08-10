@@ -24,6 +24,7 @@ import collections
 import os
 import subprocess
 import tempfile
+import textwrap
 import unittest
 
 import taptestrunner
@@ -108,8 +109,6 @@ class TestMkenums(unittest.TestCase):
         template_contents = '''
 /*** BEGIN file-header ***/
 file-header
-filename: @filename@
-basename: @basename@
 /*** END file-header ***/
 
 /*** BEGIN file-production ***/
@@ -171,8 +170,6 @@ comment: @comment@
 
 /*** BEGIN file-tail ***/
 file-tail
-filename: @filename@
-basename: @basename@
 /*** END file-tail ***/
 '''
         return self.runMkenumsWithTemplate(template_contents, *args)
@@ -222,8 +219,6 @@ comment: {standard_top_comment}
 
 
 file-header
-filename: {filename}
-basename: {basename}
 file-production
 filename: {filename}
 basename: {basename}
@@ -262,8 +257,6 @@ type: {type_lower}
 Type: {type_camel}
 TYPE: {type_upper}
 file-tail
-filename: ARGV
-basename: {basename}
 
 comment
 comment: {standard_bottom_comment}
@@ -273,6 +266,42 @@ comment: {standard_bottom_comment}
         """Test the --help argument."""
         result = self.runMkenums('--help')
         self.assertIn('usage: glib-mkenums', result.out)
+
+    def test_no_args(self):
+        """Test running with no arguments at all."""
+        result = self.runMkenums()
+        self.assertEqual('', result.err)
+        self.assertEquals('''/* {standard_top_comment} */
+
+
+/* {standard_bottom_comment} */'''.format(**result.subs),
+                          result.out.strip())
+
+    def test_empty_template(self):
+        """Test running with an empty template and no header files."""
+        result = self.runMkenumsWithTemplate('')
+        self.assertEqual('', result.err)
+        self.assertEquals('''/* {standard_top_comment} */
+
+
+/* {standard_bottom_comment} */'''.format(**result.subs),
+                          result.out.strip())
+
+    def test_no_headers(self):
+        """Test running with a complete template, but no header files."""
+        result = self.runMkenumsWithAllSubstitutions()
+        self.assertEqual('', result.err)
+        self.assertEquals('''
+comment
+comment: {standard_top_comment}
+
+
+file-header
+file-tail
+
+comment
+comment: {standard_bottom_comment}
+'''.format(**result.subs).strip(), result.out)
 
     def test_empty_header(self):
         """Test an empty header."""
@@ -284,11 +313,7 @@ comment: {standard_top_comment}
 
 
 file-header
-filename: {filename}
-basename: {basename}
 file-tail
-filename: ARGV
-basename: {basename}
 
 comment
 comment: {standard_bottom_comment}
@@ -377,6 +402,50 @@ comment: {standard_bottom_comment}
                               'gegl_sampler_type', 'GEGL_SAMPLER_TYPE',
                               'SAMPLER_TYPE', 'GEGL', 'enum', 'Enum',
                               'ENUM', 'GEGL_SAMPLER_NEAREST', 'nearest', '0')
+
+    def test_filename_basename_in_fhead_ftail(self):
+        template_contents = '''
+/*** BEGIN file-header ***/
+file-header
+filename: @filename@
+basename: @basename@
+/*** END file-header ***/
+
+/*** BEGIN comment ***/
+comment
+comment: @comment@
+/*** END comment ***/
+
+/*** BEGIN file-tail ***/
+file-tail
+filename: @filename@
+basename: @basename@
+/*** END file-tail ***/'''
+        result = self.runMkenumsWithTemplate(template_contents)
+        self.assertEqual(
+            textwrap.dedent(
+                '''
+                WARNING: @filename@ used in file-header section.
+                WARNING: @basename@ used in file-header section.
+                WARNING: @filename@ used in file-tail section.
+                WARNING: @basename@ used in file-tail section.
+                ''').strip(),
+            result.err)
+        self.assertEqual('''
+comment
+comment: {standard_top_comment}
+
+
+file-header
+filename: @filename@
+basename: @basename@
+file-tail
+filename: @filename@
+basename: @basename@
+
+comment
+comment: {standard_bottom_comment}
+'''.format(**result.subs).strip(), result.out)
 
 
 if __name__ == '__main__':

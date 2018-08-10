@@ -415,12 +415,17 @@ def replace_specials(prod):
     prod = prod.rstrip()
     return prod
 
+
+def warn_if_filename_basename_used(section, prod):
+    for substitution in ('\u0040filename\u0040',
+                         '\u0040basename\u0040'):
+        if substitution in prod:
+            print_warning('{} used in {} section.'.format(substitution,
+                                                          section))
+
 if len(fhead) > 0:
     prod = fhead
-    base = os.path.basename(options.args[0])
-
-    prod = prod.replace('\u0040filename\u0040', options.args[0])
-    prod = prod.replace('\u0040basename\u0040', base)
+    warn_if_filename_basename_used('file-header', prod)
     prod = replace_specials(prod)
     write_output(prod)
 
@@ -712,10 +717,7 @@ for fname in sorted(options.args):
 
 if len(ftail) > 0:
     prod = ftail
-    base = os.path.basename(options.args[-1]) # FIXME, wrong
-
-    prod = prod.replace('\u0040filename\u0040', 'ARGV') # wrong too
-    prod = prod.replace('\u0040basename\u0040', base)
+    warn_if_filename_basename_used('file-tail', prod)
     prod = replace_specials(prod)
     write_output(prod)
 
