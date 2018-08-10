@@ -342,8 +342,8 @@ comment: {standard_bottom_comment}
 
         with tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
                                          suffix='1.h') as h_file1, \
-             tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
-                                         suffix='2.h') as h_file2:
+                tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
+                                            suffix='2.h') as h_file2:
             # Write out the headers.
             h_file1.write(h_contents1.encode('utf-8'))
             h_file2.write(h_contents2.encode('utf-8'))
