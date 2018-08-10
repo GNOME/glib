@@ -303,15 +303,15 @@ parser = argparse.ArgumentParser(epilog=help_epilog,
 parser.add_argument('--identifier-prefix', default='', dest='idprefix',
                     help='Identifier prefix')
 parser.add_argument('--symbol-prefix', default='', dest='symprefix',
-                    help='symbol-prefix')
+                    help='Symbol prefix')
 parser.add_argument('--fhead', default=[], dest='fhead', action='append',
                     help='Output file header')
 parser.add_argument('--ftail', default=[], dest='ftail', action='append',
-                    help='Per input file production')
+                    help='Output file footer')
 parser.add_argument('--fprod', default=[], dest='fprod', action='append',
-                    help='Put out TEXT everytime a new input file is being processed.')
+                    help='Put out TEXT every time a new input file is being processed.')
 parser.add_argument('--eprod', default=[], dest='eprod', action='append',
-                    help='Per enum text (produced prior to value iterations)')
+                    help='Per enum text, produced prior to value iterations')
 parser.add_argument('--vhead', default=[], dest='vhead', action='append',
                     help='Value header, produced before iterating over enum values')
 parser.add_argument('--vprod', default=[], dest='vprod', action='append',
@@ -324,8 +324,9 @@ parser.add_argument('--template', default='', dest='template',
                     help='Template file')
 parser.add_argument('--output', default=None, dest='output')
 parser.add_argument('--version', '-v', default=False, action='store_true', dest='version',
-                    help='Print version informations')
-parser.add_argument('args', nargs='*')
+                    help='Print version information')
+parser.add_argument('args', nargs='*',
+                    help='Input files')
 
 options = parser.parse_args()
 
