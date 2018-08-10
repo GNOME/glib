@@ -325,7 +325,8 @@ parser.add_argument('--template', default='', dest='template',
 parser.add_argument('--output', default=None, dest='output')
 parser.add_argument('--version', '-v', default=False, action='store_true', dest='version',
                     help='Print version informations')
-parser.add_argument('args', nargs='*')
+parser.add_argument('args', nargs='*',
+                    help='Header files to process')
 
 options = parser.parse_args()
 
