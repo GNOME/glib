@@ -497,7 +497,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       if (min > 59)
         return FALSE;
 
-      time_->tv_sec = mktime_utc (&tm) + (time_t) (60 * (60 * hour + min) * sign);
+      time_->tv_sec = mktime_utc (&tm) + (time_t) (60 * (gint64) (60 * hour + min) * sign);
     }
   else
     {
