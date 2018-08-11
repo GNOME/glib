@@ -81,6 +81,12 @@
 extern char **environ;
 #endif
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#else
+#define HAVE_O_CLOEXEC 1
+#endif
+
 /**
  * SECTION:spawn
  * @Short_description: process launching
@@ -1454,6 +1460,10 @@ do_posix_spawn (gchar     **argv,
       g_assert (read_null != -1);
       parent_close_fds[num_parent_close_fds++] = read_null;
 
+#ifndef HAVE_O_CLOEXEC
+      fcntl (read_null, F_SETFD, FD_CLOEXEC);
+#endif
+
       r = posix_spawn_file_actions_adddup2 (&file_actions, read_null, 0);
       if (r != 0)
         goto out_close_fds;
@@ -1474,6 +1484,10 @@ do_posix_spawn (gchar     **argv,
       g_assert (write_null != -1);
       parent_close_fds[num_parent_close_fds++] = write_null;
 
+#ifndef HAVE_O_CLOEXEC
+      fcntl (read_null, F_SETFD, FD_CLOEXEC);
+#endif
+
       r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 1);
       if (r != 0)
         goto out_close_fds;
@@ -1493,6 +1507,10 @@ do_posix_spawn (gchar     **argv,
       gint write_null = sane_open ("/dev/null", O_WRONLY | O_CLOEXEC);
       g_assert (write_null != -1);
       parent_close_fds[num_parent_close_fds++] = write_null;
+
+#ifndef HAVE_O_CLOEXEC
+      fcntl (read_null, F_SETFD, FD_CLOEXEC);
+#endif
 
       r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 2);
       if (r != 0)
