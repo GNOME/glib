@@ -134,6 +134,7 @@ typedef struct {
 static void
 test_timeval_from_iso8601 (void)
 {
+  gchar *old_tz = g_strdup (g_getenv ("TZ"));
   TimeValParseTest tests[] = {
     { TRUE, "1990-11-01T10:21:17Z", { 657454877, 0 } },
     { TRUE, "19901101T102117Z", { 657454877, 0 } },
@@ -190,7 +191,12 @@ test_timeval_from_iso8601 (void)
   gboolean success;
   gint i;
 
-  g_unsetenv ("TZ");
+  /* Always run in UTC so the comparisons of parsed values are valid. */
+  if (!g_setenv ("TZ", "UTC", TRUE))
+    {
+      g_test_skip ("Failed to set TZ=UTC");
+      return;
+    }
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
@@ -204,6 +210,13 @@ test_timeval_from_iso8601 (void)
           g_assert_cmpint (out.tv_usec, ==, tests[i].val.tv_usec);
         }
     }
+
+  if (old_tz != NULL)
+    g_assert_true (g_setenv ("TZ", old_tz, TRUE));
+  else
+    g_unsetenv ("TZ");
+
+  g_free (old_tz);
 }
 
 typedef struct {
