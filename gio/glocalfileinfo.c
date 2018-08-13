@@ -924,13 +924,9 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 	_g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_DELETE,
 					         writable);
 
-      /* Trashing is supported only if the parent device is the same */
       if (_g_file_attribute_matcher_matches_id (attribute_matcher, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_TRASH))
-        _g_file_info_set_attribute_boolean_by_id (info,
-                                                  G_FILE_ATTRIBUTE_ID_ACCESS_CAN_TRASH,
-                                                  writable &&
-                                                  parent_info->has_trash_dir &&
-                                                  parent_info->device == statbuf->st_dev);
+        _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_TRASH,
+                                                 writable && parent_info->has_trash_dir);
     }
 }
 

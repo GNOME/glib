@@ -1677,36 +1677,21 @@ find_mountpoint_for (const char *file,
     }
 }
 
-static char *
-_g_local_file_find_topdir_for_internal (const char *file, dev_t file_dev)
+char *
+_g_local_file_find_topdir_for (const char *file)
 {
   char *dir;
   char *mountpoint = NULL;
   dev_t dir_dev;
 
   dir = get_parent (file, &dir_dev);
-  if (dir == NULL || dir_dev != file_dev)
-    {
-      g_free (dir);
-
-      return NULL;
-    }
+  if (dir == NULL)
+    return NULL;
 
   mountpoint = find_mountpoint_for (dir, dir_dev);
   g_free (dir);
 
   return mountpoint;
-}
-
-char *
-_g_local_file_find_topdir_for (const char *file)
-{
-  GStatBuf file_stat;
-
-  if (g_lstat (file, &file_stat) != 0)
-    return NULL;
-
-  return _g_local_file_find_topdir_for_internal (file, file_stat.st_dev);
 }
 
 static char *
@@ -1908,6 +1893,7 @@ g_local_file_trash (GFile         *file,
   char *original_name, *original_name_escaped;
   int i;
   char *data;
+  char *path;
   gboolean is_homedir_trash;
   char *delete_time = NULL;
   int fd;
@@ -1932,6 +1918,24 @@ g_local_file_trash (GFile         *file,
 
   is_homedir_trash = FALSE;
   trashdir = NULL;
+
+  /* On overlayfs, a file's st_dev will be different to the home directory's.
+   * We still want to create our trash directory under the home directory, so
+   * instead we should stat the directory that the file we're deleting is in as
+   * this will have the same st_dev.
+   */
+  if (!S_ISDIR (file_stat.st_mode))
+    {
+      path = g_path_get_dirname (local->filename);
+      /* If the parent is a symlink to a different device then it might have
+       * st_dev equal to the home directory's, in which case we will end up
+       * trying to rename across a filesystem boundary, which doesn't work. So
+       * we use g_stat here instead of g_lstat, to know where the symlink
+       * points to. */
+      g_stat (path, &file_stat);
+      g_free (path);
+    }
+
   if (file_stat.st_dev == home_stat.st_dev)
     {
       is_homedir_trash = TRUE;
@@ -1962,8 +1966,7 @@ g_local_file_trash (GFile         *file,
       uid = geteuid ();
       g_snprintf (uid_str, sizeof (uid_str), "%lu", (unsigned long)uid);
 
-      topdir = _g_local_file_find_topdir_for_internal (local->filename,
-                                                       file_stat.st_dev);
+      topdir = _g_local_file_find_topdir_for (local->filename);
       if (topdir == NULL)
 	{
           g_set_io_error (error,

@@ -35,23 +35,26 @@ test_trash_not_supported (void)
   GFileInfo *info;
   GError *error = NULL;
   gboolean ret;
-  GStatBuf file_stat, home_stat;
+  gchar *parent_dirname;
+  GStatBuf parent_stat, home_stat;
 
   /* The test assumes that tmp file is located on system internal mount. */
   file = g_file_new_tmp ("test-trashXXXXXX", &stream, &error);
+  parent_dirname = g_path_get_dirname (g_file_peek_path (file));
   g_assert_no_error (error);
-  g_assert_cmpint (g_lstat (g_file_peek_path (file), &file_stat), ==, 0);
-  g_test_message ("File: %s (dev: %" G_GUINT64_FORMAT ")",
-                  g_file_peek_path (file), (guint64) file_stat.st_dev);
+  g_assert_cmpint (g_stat (parent_dirname, &parent_stat), ==, 0);
+  g_test_message ("File: %s (parent st_dev: %" G_GUINT64_FORMAT ")",
+                  g_file_peek_path (file), (guint64) parent_stat.st_dev);
 
   g_assert_cmpint (g_stat (g_get_home_dir (), &home_stat), ==, 0);
-  g_test_message ("Home: %s (dev: %" G_GUINT64_FORMAT ")",
+  g_test_message ("Home: %s (st_dev: %" G_GUINT64_FORMAT ")",
                   g_get_home_dir (), (guint64) home_stat.st_dev);
 
-  if (file_stat.st_dev == home_stat.st_dev)
+  if (parent_stat.st_dev == home_stat.st_dev)
     {
       g_test_skip ("The file has to be on another filesystem than the home trash to run this test");
 
+      g_free (parent_dirname);
       g_object_unref (stream);
       g_object_unref (file);
 
@@ -85,6 +88,7 @@ test_trash_not_supported (void)
   g_io_stream_close (G_IO_STREAM (stream), NULL, &error);
   g_assert_no_error (error);
 
+  g_free (parent_dirname);
   g_object_unref (info);
   g_object_unref (stream);
   g_object_unref (file);
