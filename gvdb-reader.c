@@ -128,7 +128,8 @@ gvdb_table_setup_root (GvdbTable                 *file,
  *
  * Creates a new #GvdbTable from the contents of @bytes.
  *
- * This call can fail if the header contained in @bytes is invalid.
+ * This call can fail if the header contained in @bytes is invalid or if @bytes
+ * is empty; if so, %G_FILE_ERROR_INVAL will be returned.
  *
  * You should call gvdb_table_free() on the return result when you no
  * longer require it.
@@ -188,6 +189,12 @@ invalid:
  *
  * Creates a new #GvdbTable using the #GMappedFile for @filename as the
  * #GBytes.
+ *
+ * This function will fail if the file cannot be opened.
+ * In that case, the #GError that is returned will be an error from
+ * g_mapped_file_new().
+ *
+ * An empty or corrupt file will result in %G_FILE_ERROR_INVAL.
  *
  * Returns: a new #GvdbTable
  **/
