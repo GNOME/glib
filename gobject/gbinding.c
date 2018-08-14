@@ -373,6 +373,7 @@ g_binding_unbind_internal (GBinding *binding,
                            gboolean  unref_binding)
 {
   gboolean source_is_target = binding->source == binding->target;
+  gboolean binding_was_removed = FALSE;
 
   /* dispose of the transformation data */
   if (binding->notify != NULL)
@@ -392,6 +393,7 @@ g_binding_unbind_internal (GBinding *binding,
 
       binding->source_notify = 0;
       binding->source = NULL;
+      binding_was_removed = TRUE;
     }
 
   if (binding->target != NULL)
@@ -404,9 +406,10 @@ g_binding_unbind_internal (GBinding *binding,
 
       binding->target_notify = 0;
       binding->target = NULL;
+      binding_was_removed = TRUE;
     }
 
-  if (unref_binding)
+  if (binding_was_removed && unref_binding)
     g_object_unref (binding);
 }
 
@@ -748,7 +751,7 @@ g_binding_get_target_property (GBinding *binding)
 
 /**
  * g_binding_unbind:
- * @binding: (transfer full): a #GBinding
+ * @binding: a #GBinding
  *
  * Explicitly releases the binding between the source and the target
  * property expressed by @binding.
