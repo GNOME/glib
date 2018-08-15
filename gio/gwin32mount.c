@@ -131,6 +131,9 @@ _g_win32_mount_new (GVolumeMonitor  *volume_monitor,
 {
   GWin32Mount *mount;
   const gchar *drive = path; //fixme
+  WCHAR *drive_utf16;
+
+  drive_utf16 = g_utf8_to_utf16 (drive, -1, NULL, NULL, NULL);
 
 #if 0  
   /* No volume for mount: Ignore internal things */
@@ -141,7 +144,7 @@ _g_win32_mount_new (GVolumeMonitor  *volume_monitor,
   mount = g_object_new (G_TYPE_WIN32_MOUNT, NULL);
   mount->volume_monitor = volume_monitor != NULL ? g_object_ref (volume_monitor) : NULL;
   mount->mount_path = g_strdup (path);
-  mount->drive_type = GetDriveType (drive);
+  mount->drive_type = GetDriveTypeW (drive_utf16);
   mount->can_eject = FALSE; /* TODO */
   mount->name = _win32_get_displayname (drive);
 
@@ -151,6 +154,9 @@ _g_win32_mount_new (GVolumeMonitor  *volume_monitor,
   if (volume != NULL)
     _g_win32_volume_set_mount (volume, mount);
 #endif
+
+  g_free (drive_utf16);
+
   return mount;
 }
 

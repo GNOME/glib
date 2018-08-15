@@ -107,12 +107,15 @@ g_win32_ftruncate (gint  fd,
 gchar *
 g_win32_getlocale (void)
 {
+  gchar *result;
   LCID lcid;
   LANGID langid;
   const gchar *ev;
   gint primary, sub;
-  char iso639[10];
-  char iso3166[10];
+  WCHAR iso639[10];
+  gchar *iso639_utf8;
+  WCHAR iso3166[10];
+  gchar *iso3166_utf8;
   const gchar *script = NULL;
 
   /* Let the user override the system settings through environment
@@ -127,8 +130,8 @@ g_win32_getlocale (void)
 
   lcid = GetThreadLocale ();
 
-  if (!GetLocaleInfo (lcid, LOCALE_SISO639LANGNAME, iso639, sizeof (iso639)) ||
-      !GetLocaleInfo (lcid, LOCALE_SISO3166CTRYNAME, iso3166, sizeof (iso3166)))
+  if (!GetLocaleInfoW (lcid, LOCALE_SISO639LANGNAME, iso639, sizeof (iso639)) ||
+      !GetLocaleInfoW (lcid, LOCALE_SISO3166CTRYNAME, iso3166, sizeof (iso3166)))
     return g_strdup ("C");
   
   /* Strip off the sorting rules, keep only the language part.  */
@@ -173,7 +176,16 @@ g_win32_getlocale (void)
 	}
       break;
     }
-  return g_strconcat (iso639, "_", iso3166, script, NULL);
+
+  iso639_utf8 = g_utf16_to_utf8 (iso639, -1, NULL, NULL, NULL);
+  iso3166_utf8 = g_utf16_to_utf8 (iso3166, -1, NULL, NULL, NULL);
+
+  result = g_strconcat (iso639_utf8, "_", iso3166_utf8, script, NULL);
+
+  g_free (iso3166_utf8);
+  g_free (iso639_utf8);
+
+  return result;
 }
 
 /**
@@ -1062,10 +1074,11 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 {
   EXCEPTION_RECORD    *er;
   char                 debugger[MAX_PATH + 1];
+  WCHAR               *debugger_utf16;
   const char          *debugger_env = NULL;
   const char          *catch_list;
   gboolean             catch = FALSE;
-  STARTUPINFO          si;
+  STARTUPINFOW         si;
   PROCESS_INFORMATION  pi;
   HANDLE               event;
   SECURITY_ATTRIBUTES  sa;
@@ -1165,11 +1178,13 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
       CloseHandle (event);
       return EXCEPTION_CONTINUE_SEARCH;
     }
+  debugger[MAX_PATH] = '\0';
+
+  debugger_utf16 = g_utf8_to_utf16 (debugger, -1, NULL, NULL, NULL);
 
   /* Run the debugger */
-  debugger[MAX_PATH] = '\0';
-  if (0 != CreateProcessA (NULL,
-                           debugger,
+  if (0 != CreateProcessW (NULL,
+                           debugger_utf16,
                            NULL,
                            NULL,
                            TRUE,
@@ -1189,6 +1204,8 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
        */
       WaitForSingleObject (event, 60000);
     }
+
+  g_free (debugger_utf16);
 
   CloseHandle (event);
 

@@ -39,20 +39,20 @@ static void
 lookup_funcs (void)
 {
   HMODULE winhttp = NULL;
-  char winhttp_dll[MAX_PATH + 100];
+  WCHAR winhttp_dll[MAX_PATH + 100];
   int n;
 
   if (lookup_done)
     return;
 
-  n = GetSystemDirectory (winhttp_dll, MAX_PATH);
+  n = GetSystemDirectoryW (winhttp_dll, MAX_PATH);
   if (n > 0 && n < MAX_PATH)
     {
-        if (winhttp_dll[n-1] != '\\' &&
-            winhttp_dll[n-1] != '/')
-            strcat (winhttp_dll, "\\");
-        strcat (winhttp_dll, "winhttp.dll");
-        winhttp = LoadLibrary (winhttp_dll);
+        if (winhttp_dll[n-1] != L'\\' &&
+            winhttp_dll[n-1] != L'/')
+            wcscat (winhttp_dll, L"\\");
+        wcscat (winhttp_dll, L"winhttp.dll");
+        winhttp = LoadLibraryW (winhttp_dll);
     }
 
   if (winhttp != NULL)
