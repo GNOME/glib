@@ -180,16 +180,24 @@ test_internal_enhanced_stdio (void)
       gchar *programdata;
       gchar *users_dir;
       gchar *allusers;
-      GFile *gf_programdata, *gf_allusers;
-      GFileInfo *fi_programdata, *fi_allusers, *fi_allusers_target;
+      gchar *commondata;
+      GFile *gf_programdata, *gf_allusers, *gf_commondata;
+      GFileInfo *fi_programdata, *fi_allusers, *fi_allusers_target, *fi_commondata, *fi_commondata_target;
       GFileType ft_allusers;
       GFileType ft_allusers_target;
       GFileType ft_programdata;
+      GFileType ft_commondata;
       gboolean allusers_is_symlink;
+      gboolean commondata_is_symlink;
+      gboolean commondata_is_mount_point;
+      guint32 allusers_reparse_tag;
+      guint32 commondata_reparse_tag;
       const gchar *id_allusers;
       const gchar *id_allusers_target;
+      const gchar *id_commondata_target;
       const gchar *id_programdata;
       const gchar *allusers_target;
+      const gchar *commondata_target;
 
       /* C:/ProgramData */
       programdata = g_utf16_to_utf8 (programdata_dir_w, -1, NULL, NULL, NULL);
@@ -201,7 +209,11 @@ test_internal_enhanced_stdio (void)
        * for "C:/ProgramData".
        */
       allusers = g_build_filename (users_dir, "All Users", NULL);
-      g_assert_nonnull (allusers);
+
+      /* "C:/Users/All Users/Application Data" is a known
+       * junction for "C:/ProgramData"
+       */
+      commondata = g_build_filename (allusers, "Application Data", NULL);
 
       /* We don't test g_stat() and g_lstat() on these directories,
        * because it is pointless - there's no way to tell that these
@@ -213,6 +225,7 @@ test_internal_enhanced_stdio (void)
        */
       gf_programdata = g_file_new_for_path (programdata);
       gf_allusers = g_file_new_for_path (allusers);
+      gf_commondata = g_file_new_for_path (commondata);
 
       fi_programdata = g_file_query_info (gf_programdata,
                                           G_FILE_ATTRIBUTE_ID_FILE ","
@@ -229,52 +242,99 @@ test_internal_enhanced_stdio (void)
       fi_allusers = g_file_query_info (gf_allusers,
                                        G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET ","
                                        G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK ","
+                                       G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG ","
                                        G_FILE_ATTRIBUTE_ID_FILE ","
                                        G_FILE_ATTRIBUTE_STANDARD_TYPE,
                                        G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
                                        NULL, NULL);
+
+      fi_commondata = g_file_query_info (gf_commondata,
+                                         G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET ","
+                                         G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK ","
+                                         G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT ","
+                                         G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG ","
+                                         G_FILE_ATTRIBUTE_ID_FILE ","
+                                         G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                         G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                         NULL, NULL);
+
+      fi_commondata_target = g_file_query_info (gf_commondata,
+                                                G_FILE_ATTRIBUTE_ID_FILE ","
+                                                G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                                G_FILE_QUERY_INFO_NONE,
+                                                NULL, NULL);
 
       g_assert (g_file_info_has_attribute (fi_programdata, G_FILE_ATTRIBUTE_ID_FILE));
       g_assert (g_file_info_has_attribute (fi_programdata, G_FILE_ATTRIBUTE_STANDARD_TYPE));
 
       g_assert (g_file_info_has_attribute (fi_allusers_target, G_FILE_ATTRIBUTE_ID_FILE));
       g_assert (g_file_info_has_attribute (fi_allusers_target, G_FILE_ATTRIBUTE_STANDARD_TYPE));
+      g_assert (g_file_info_has_attribute (fi_commondata_target, G_FILE_ATTRIBUTE_ID_FILE));
+      g_assert (g_file_info_has_attribute (fi_commondata_target, G_FILE_ATTRIBUTE_STANDARD_TYPE));
 
       g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_ID_FILE));
       g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_TYPE));
       g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK));
+      g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG));
       g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET));
+
+      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_ID_FILE));
+      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_TYPE));
+      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK));
+      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT));
+      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG));
+      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET));
 
       ft_allusers = g_file_info_get_file_type (fi_allusers);
       ft_allusers_target = g_file_info_get_file_type (fi_allusers_target);
       ft_programdata = g_file_info_get_file_type (fi_programdata);
+      ft_commondata = g_file_info_get_file_type (fi_commondata);
 
       g_assert (ft_allusers == G_FILE_TYPE_SYMBOLIC_LINK);
       g_assert (ft_allusers_target == G_FILE_TYPE_DIRECTORY);
       g_assert (ft_programdata == G_FILE_TYPE_DIRECTORY);
+      g_assert (ft_commondata == G_FILE_TYPE_SYMBOLIC_LINK);
 
       allusers_is_symlink = g_file_info_get_attribute_boolean (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
+      allusers_reparse_tag = g_file_info_get_attribute_uint32 (fi_allusers, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG);
+      commondata_is_symlink = g_file_info_get_attribute_boolean (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
+      commondata_is_mount_point = g_file_info_get_attribute_boolean (fi_commondata, G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT);
+      commondata_reparse_tag = g_file_info_get_attribute_uint32 (fi_commondata, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG);
 
       g_assert_true (allusers_is_symlink);
+      g_assert_cmpuint (allusers_reparse_tag, ==, IO_REPARSE_TAG_SYMLINK);
+      g_assert_true (commondata_is_symlink);
+      g_assert_true (commondata_is_mount_point);
+      g_assert_cmpuint (commondata_reparse_tag, ==, IO_REPARSE_TAG_MOUNT_POINT);
 
       id_allusers = g_file_info_get_attribute_string (fi_allusers, G_FILE_ATTRIBUTE_ID_FILE);
       id_allusers_target = g_file_info_get_attribute_string (fi_allusers_target, G_FILE_ATTRIBUTE_ID_FILE);
+      id_commondata_target = g_file_info_get_attribute_string (fi_commondata_target, G_FILE_ATTRIBUTE_ID_FILE);
       id_programdata = g_file_info_get_attribute_string (fi_programdata, G_FILE_ATTRIBUTE_ID_FILE);
 
       g_assert_cmpstr (id_allusers_target, ==, id_programdata);
+      g_assert_cmpstr (id_commondata_target, ==, id_programdata);
       g_assert_cmpstr (id_allusers, !=, id_programdata);
 
       allusers_target = g_file_info_get_symlink_target (fi_allusers);
 
       g_assert_true (g_str_has_suffix (allusers_target, "ProgramData"));
 
+      commondata_target = g_file_info_get_symlink_target (fi_commondata);
+
+      g_assert_true (g_str_has_suffix (commondata_target, "ProgramData"));
+
       g_object_unref (fi_allusers);
       g_object_unref (fi_allusers_target);
+      g_object_unref (fi_commondata);
+      g_object_unref (fi_commondata_target);
       g_object_unref (fi_programdata);
       g_object_unref (gf_allusers);
+      g_object_unref (gf_commondata);
       g_object_unref (gf_programdata);
 
       g_free (allusers);
+      g_free (commondata);
       g_free (users_dir);
       g_free (programdata);
     }
