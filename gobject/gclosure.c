@@ -556,7 +556,7 @@ g_closure_ref (GClosure *closure)
 
 /**
  * g_closure_invalidate:
- * @closure: GClosure to invalidate
+ * @closure: #GClosure to invalidate
  *
  * Sets a flag on the closure to indicate that its calling
  * environment has become invalid, and thus causes any future
