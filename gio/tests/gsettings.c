@@ -2353,6 +2353,18 @@ test_schema_source (void)
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_clear_error (&error);
 
+  /* Test error handling of corrupt compiled files. */
+  source = g_settings_schema_source_new_from_directory ("schema-source-corrupt", parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
+  /* Test error handling of empty compiled files. */
+  source = g_settings_schema_source_new_from_directory ("schema-source-empty", parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
   /* create a source with the parent */
   source = g_settings_schema_source_new_from_directory ("schema-source", parent, TRUE, &error);
   g_assert_no_error (error);
@@ -2770,6 +2782,12 @@ main (int argc, char *argv[])
 
   if (!g_test_subprocess ())
     {
+      GError *local_error = NULL;
+      /* A GVDB header is 6 guint32s, and requires a magic number in the first
+       * two guint32s. A set of zero bytes of a greater length is considered
+       * corrupt. */
+      const guint8 gschemas_compiled_corrupt[sizeof (guint32) * 7] = { 0, };
+
       backend_set = g_getenv ("GSETTINGS_BACKEND") != NULL;
 
       g_setenv ("XDG_DATA_DIRS", ".", TRUE);
@@ -2821,6 +2839,21 @@ main (int argc, char *argv[])
                                            "--schema-file=" SRCDIR "/org.gtk.schemasourcecheck.gschema.xml",
                                            NULL, NULL, &result, NULL));
       g_assert (result == 0);
+
+      g_remove ("schema-source-corrupt/gschemas.compiled");
+      g_mkdir ("schema-source-corrupt", 0777);
+      g_file_set_contents ("schema-source-corrupt/gschemas.compiled",
+                           (const gchar *) gschemas_compiled_corrupt,
+                           sizeof (gschemas_compiled_corrupt),
+                           &local_error);
+      g_assert_no_error (local_error);
+
+      g_remove ("schema-source-empty/gschemas.compiled");
+      g_mkdir ("schema-source-empty", 0777);
+      g_file_set_contents ("schema-source-empty/gschemas.compiled",
+                           "", 0,
+                           &local_error);
+      g_assert_no_error (local_error);
    }
 
   g_test_add_func ("/gsettings/basic", test_basic);
