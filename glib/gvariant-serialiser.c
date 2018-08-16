@@ -1065,6 +1065,9 @@ gvs_tuple_is_normal (GVariantSerialised value)
           break;
 
         case G_VARIANT_MEMBER_ENDING_OFFSET:
+          if (offset_ptr < offset_size)
+            return FALSE;
+
           offset_ptr -= offset_size;
 
           if (offset_ptr < offset)
