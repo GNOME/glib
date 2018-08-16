@@ -985,7 +985,10 @@ g_dbus_message_set_serial (GDBusMessage  *message,
  *
  * Gets a header field on @message.
  *
- * Returns: A #GVariant with the value if the header was found, %NULL
+ * The caller is responsible for checking the type of the returned #GVariant
+ * matches what is expected.
+ *
+ * Returns: (transfer none) (nullable): A #GVariant with the value if the header was found, %NULL
  * otherwise. Do not free, it is owned by @message.
  *
  * Since: 2.26
