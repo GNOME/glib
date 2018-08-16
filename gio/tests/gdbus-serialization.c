@@ -874,6 +874,20 @@ message_serialize_header_checks (void)
   g_object_unref (message);
 
   /*
+   * check that we can't serialize messages with SIGNATURE set to a non-signature-typed value
+   */
+  message = g_dbus_message_new_signal ("/the/path", "The.Interface", "TheMember");
+  g_dbus_message_set_header (message, G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE, g_variant_new_boolean (FALSE));
+  blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
+
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_cmpstr (error->message, ==, "Signature header found but is not of type signature");
+  g_assert_null (blob);
+
+  g_clear_error (&error);
+  g_clear_object (&message);
+
+  /*
    * check we can't serialize signal messages with INTERFACE, PATH or MEMBER unset / set to reserved value
    */
   message = g_dbus_message_new_signal ("/the/path", "The.Interface", "TheMember");
@@ -1083,6 +1097,46 @@ test_double_array (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Test that an invalid header in a D-Bus message (specifically, with a type
+ * which doesn’t match what’s expected for the given header) is gracefully
+ * handled with an error rather than a crash.
+ * The set of bytes here come directly from fuzzer output. */
+static void
+test_message_parse_non_signature_header (void)
+{
+  const guint8 data[] = {
+    0x6c,  /* byte order */
+    0x04,  /* message type */
+    0x0f,  /* message flags */
+    0x01,  /* major protocol version */
+    0x00, 0x00, 0x00, 0x00,  /* body length */
+    0x00, 0x00, 0x00, 0xbc,  /* message serial */
+    /* a{yv} of header fields:
+     * (things start to be invalid below here) */
+    0x02, 0x00, 0x00, 0x00,  /* array length (in bytes) */
+      G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE, /* array key */
+      /* GVariant array value: */
+      0x04, /* signature length */
+      'd', 0x00, 0x00, 'F',  /* signature (invalid) */
+      0x00,  /* nul terminator */
+      /* (GVariant array value payload missing) */
+    /* (message body length missing) */
+  };
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1102,6 +1156,8 @@ main (int   argc,
       message_parse_empty_arrays_of_arrays);
 
   g_test_add_func ("/gdbus/message-serialize/double-array", test_double_array);
+  g_test_add_func ("/gdbus/message-parse/non-signature-header",
+                   test_message_parse_non_signature_header);
 
   return g_test_run();
 }
