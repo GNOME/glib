@@ -4631,6 +4631,30 @@ test_stack_dict_init (void)
   g_variant_unref (variant);
 }
 
+/* Test checking arbitrary binary data for normal form. This time, it’s a tuple
+ * with invalid element ends. */
+static void
+test_normal_checking_tuples (void)
+{
+  const guint8 data[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00,
+    'a', '(', 'a', 'o', 'a', 'o', 'a', 'a', 'o', 'a', 'a', 'o', ')'
+  };
+  gsize size = sizeof (data);
+  GVariant *variant = NULL;
+  GVariant *normal_variant = NULL;
+
+  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, data, size,
+                                     FALSE, NULL, NULL);
+  g_assert_nonnull (variant);
+
+  normal_variant = g_variant_get_normal_form (variant);
+  g_assert_nonnull (normal_variant);
+
+  g_variant_unref (normal_variant);
+  g_variant_unref (variant);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -4692,5 +4716,9 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gvariant/stack-builder-init", test_stack_builder_init);
   g_test_add_func ("/gvariant/stack-dict-init", test_stack_dict_init);
+
+  g_test_add_func ("/gvariant/normal-checking/tuples",
+                   test_normal_checking_tuples);
+
   return g_test_run ();
 }
