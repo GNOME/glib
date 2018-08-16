@@ -462,7 +462,7 @@ gvdb_table_get_names (GvdbTable *table,
     {
       GPtrArray *fixed_names;
 
-      fixed_names = g_ptr_array_new ();
+      fixed_names = g_ptr_array_sized_new (n_names);
       for (i = 0; i < n_names; i++)
         if (names[i] != NULL)
           g_ptr_array_add (fixed_names, names[i]);
