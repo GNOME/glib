@@ -466,8 +466,9 @@ _g_win32_readlink_utf16_raw (const gunichar2 *filename,
    * point and use DeviceIoControl() on it.
    */
   h = CreateFileW (filename,
-                   FILE_READ_ATTRIBUTES | SYNCHRONIZE | GENERIC_READ,
-                   FILE_SHARE_READ, NULL, OPEN_EXISTING,
+                   FILE_READ_EA,
+                   FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,
+                   NULL, OPEN_EXISTING,
                    FILE_ATTRIBUTE_NORMAL
                    | FILE_FLAG_OPEN_REPARSE_POINT
                    | (attributes & FILE_ATTRIBUTE_DIRECTORY ? FILE_FLAG_BACKUP_SEMANTICS : 0),
