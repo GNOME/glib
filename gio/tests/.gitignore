@@ -135,6 +135,7 @@ test_resources2.h
 testfilemonitor
 thumbnail-verification
 tls-certificate
+tls-database
 tls-interaction
 unix-fd
 unix-streams

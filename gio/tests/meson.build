@@ -68,6 +68,7 @@ gio_tests = [{
   'thumbnail-verification' : {},
   'tls-certificate' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-interaction' : {'extra_sources' : ['gtesttlsbackend.c']},
+  'tls-database' : {'extra_sources' : ['gtesttlsbackend.c']},
 }]
 
 # FIXME: We are using list of dictionnaries until we can depend on Meson 0.48.0
