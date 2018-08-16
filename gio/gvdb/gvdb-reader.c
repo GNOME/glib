@@ -332,7 +332,7 @@ gvdb_table_list_from_item (GvdbTable                    *table,
 /**
  * gvdb_table_get_names:
  * @table: a #GvdbTable
- * @length: the number of items returned, or %NULL
+ * @length: (optional): the number of items returned, or %NULL
  *
  * Gets a list of all names contained in @table.
  *
@@ -344,7 +344,7 @@ gvdb_table_list_from_item (GvdbTable                    *table,
  * above calls in the case of the corrupted file.  Note also that the
  * returned strings may not be utf8.
  *
- * Returns: a %NULL-terminated list of strings, of length @length
+ * Returns: (array length=length): a %NULL-terminated list of strings, of length @length
  **/
 gchar **
 gvdb_table_get_names (GvdbTable *table,
