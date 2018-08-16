@@ -348,7 +348,7 @@ gvdb_table_list_from_item (GvdbTable                    *table,
  **/
 gchar **
 gvdb_table_get_names (GvdbTable *table,
-                      gint      *length)
+                      gsize     *length)
 {
   gchar **names;
   gint n_names;
@@ -474,7 +474,10 @@ gvdb_table_get_names (GvdbTable *table,
     }
 
   if (length)
-    *length = n_names;
+    {
+      G_STATIC_ASSERT (sizeof (*length) >= sizeof (n_names));
+      *length = n_names;
+    }
 
   return names;
 }
