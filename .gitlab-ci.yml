@@ -11,6 +11,7 @@ cache:
 
 variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
+  G_MESSAGES_DEBUG: all
 
 fedora-x86_64:
   stage: build
