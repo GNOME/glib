@@ -182,6 +182,15 @@ got_connectivity (GObject *source,
 }
 
 static void
+update_properties (GDBusProxy *proxy,
+                   GNetworkMonitorPortal *nm)
+{
+  g_dbus_proxy_call (proxy, "GetConnectivity", NULL, 0, -1, NULL, got_connectivity, nm);
+  g_dbus_proxy_call (proxy, "GetMetered", NULL, 0, -1, NULL, got_metered, nm);
+  g_dbus_proxy_call (proxy, "GetAvailable", NULL, 0, -1, NULL, got_available, nm);
+}
+
+static void
 proxy_signal (GDBusProxy *proxy,
               const char *sender,
               const char *signal,
@@ -200,9 +209,7 @@ proxy_signal (GDBusProxy *proxy,
     }
   else if (nm->priv->version == 2)
     {
-      g_dbus_proxy_call (proxy, "GetConnectivity", NULL, 0, -1, NULL, got_connectivity, nm);
-      g_dbus_proxy_call (proxy, "GetMetered", NULL, 0, -1, NULL, got_metered, nm);
-      g_dbus_proxy_call (proxy, "GetAvailable", NULL, 0, -1, NULL, got_available, nm);
+      update_properties (proxy, nm);
     }
 }
 
@@ -326,7 +333,13 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   nm->priv->has_network = glib_network_available_in_sandbox ();
   nm->priv->version = version;
 
-  return initable_parent_iface->init (initable, cancellable, error);
+  if (!initable_parent_iface->init (initable, cancellable, error))
+    return FALSE;
+
+  if (nm->priv->has_network && nm->priv->version == 2)
+    update_properties (proxy, nm);
+
+  return TRUE;
 }
 
 static void
