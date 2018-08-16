@@ -2115,6 +2115,15 @@ g_dbus_message_new_from_blob (guchar                *blob,
       const gchar *signature_str;
       gsize signature_str_len;
 
+      if (!g_variant_is_of_type (signature, G_VARIANT_TYPE_SIGNATURE))
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("Signature header found but is not of type signature"));
+          goto out;
+        }
+
       signature_str = g_variant_get_string (signature, &signature_str_len);
 
       /* signature but no body */
@@ -2695,6 +2704,16 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   body_start_offset = mbuf.valid_len;
 
   signature = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE);
+
+  if (signature != NULL && !g_variant_is_of_type (signature, G_VARIANT_TYPE_SIGNATURE))
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Signature header found but is not of type signature"));
+      goto out;
+    }
+
   signature_str = NULL;
   if (signature != NULL)
       signature_str = g_variant_get_string (signature, NULL);
