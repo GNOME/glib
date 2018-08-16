@@ -66,6 +66,7 @@ test_programs = \
 	srvtarget				\
 	task					\
 	tls-interaction				\
+	tls-database				\
 	vfs					\
 	volumemonitor				\
 	glistmodel				\
@@ -522,6 +523,7 @@ endif # OS_UNIX
 endif # HAVE_DBUS_DAEMON
 
 tls_interaction_SOURCES = tls-interaction.c gtesttlsbackend.c gtesttlsbackend.h
+tls_database_SOURCES = tls-database.c gtesttlsbackend.c gtesttlsbackend.h
 
 # -----------------------------------------------------------------------------
 
