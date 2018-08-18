@@ -476,6 +476,7 @@ g_application_parse_command_line (GApplication   *application,
 {
   gboolean become_service = FALSE;
   gchar *app_id = NULL;
+  gboolean replace = FALSE;
   GVariantDict *dict = NULL;
   GOptionContext *context;
   GOptionGroup *gapplication_group;
@@ -557,6 +558,18 @@ g_application_parse_command_line (GApplication   *application,
       g_option_group_add_entries (gapplication_group, entries);
     }
 
+  /* Allow replacing if the application allows it */
+  if (application->priv->flags & G_APPLICATION_ALLOW_REPLACEMENT)
+    {
+      GOptionEntry entries[] = {
+        { "gapplication-replace", '\0', 0, G_OPTION_ARG_NONE, &replace,
+          N_("Replace the running instance") },
+        { NULL }
+      };
+
+      g_option_group_add_entries (gapplication_group, entries);
+    }
+
   /* Now we parse... */
   if (!g_option_context_parse_strv (context, arguments, error))
     goto out;
@@ -568,6 +581,10 @@ g_application_parse_command_line (GApplication   *application,
   /* Check for --gapplication-app-id */
   if (app_id)
     g_application_set_application_id (application, app_id);
+
+  /* Check for --gapplication-replace */
+  if (replace)
+    application->priv->flags |= G_APPLICATION_REPLACE;
 
   dict = g_variant_dict_new (NULL);
   if (application->priv->packed_options)

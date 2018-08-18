@@ -1474,6 +1474,10 @@ typedef enum
  * @G_APPLICATION_CAN_OVERRIDE_APP_ID: Allow users to override the
  *     application ID from the command line with `--gapplication-app-id`.
  *     Since: 2.48
+ * @G_APPLICATION_ALLOW_REPLACEMENT: Allow another instance to take over
+ *     the bus name. Since: 2.58
+ * @G_APPLICATION_REPLACE: Take over from another instance. This flag is
+ *     usually set by passing --gapplication-replace on the commandline. Since: 2.58
  *
  * Flags used to define the behaviour of a #GApplication.
  *
@@ -1491,7 +1495,9 @@ typedef enum
 
   G_APPLICATION_NON_UNIQUE =           (1 << 5),
 
-  G_APPLICATION_CAN_OVERRIDE_APP_ID =  (1 << 6)
+  G_APPLICATION_CAN_OVERRIDE_APP_ID =  (1 << 6),
+  G_APPLICATION_ALLOW_REPLACEMENT   =  (1 << 7),
+  G_APPLICATION_REPLACE             =  (1 << 8)
 } GApplicationFlags;
 
 /**
