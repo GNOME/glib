@@ -366,7 +366,7 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
     NULL /* set_property */
   };
   GApplicationClass *app_class = G_APPLICATION_GET_CLASS (impl->app);
-  GDBusNameOwnerFlags flags;
+  GBusNameOwnerFlags flags;
   GApplicationFlags app_flags;
   GVariant *reply;
   guint32 rval;
@@ -450,15 +450,15 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   flags = G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE;
   app_flags = g_application_get_flags (impl->app);
 
-  if (app_flags & G_APPLICATION_FLAGS_ALLOW_REPLACEMENT)
+  if (app_flags & G_APPLICATION_ALLOW_REPLACEMENT)
     {
-      impl->name_lost_signal = g_dbus_connection_signal_subscribe (impl->session_bus, "org.freeesktop.DBus, "org.freedesktop.DBus",
+      impl->name_lost_signal = g_dbus_connection_signal_subscribe (impl->session_bus, "org.freeesktop.DBus", "org.freedesktop.DBus",
                                                                    "NameLost", impl->bus_name, NULL, G_DBUS_SIGNAL_FLAGS_NONE,
                                                                    name_lost, impl, NULL);
 
       flags |= G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
     }
-  if (app_flags & G_APPLICATION_FLAGS_REPLACE)
+  if (app_flags & G_APPLICATION_REPLACE)
     flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
 
   reply = g_dbus_connection_call_sync (impl->session_bus, "org.freedesktop.DBus", "/org/freedesktop/DBus",
