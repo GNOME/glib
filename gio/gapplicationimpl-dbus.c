@@ -426,10 +426,12 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
    * the well-known name and fall back to remote mode (!is_primary)
    * in the case that we can't do that.
    */
-  /* DBUS_NAME_FLAG_DO_NOT_QUEUE: 0x4 */
   reply = g_dbus_connection_call_sync (impl->session_bus, "org.freedesktop.DBus", "/org/freedesktop/DBus",
                                        "org.freedesktop.DBus", "RequestName",
-                                       g_variant_new ("(su)", impl->bus_name, 0x4), G_VARIANT_TYPE ("(u)"),
+                                       g_variant_new ("(su)",
+                                                      impl->bus_name,
+                                                      G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE),
+                                       G_VARIANT_TYPE ("(u)"),
                                        0, -1, cancellable, error);
 
   if (reply == NULL)
