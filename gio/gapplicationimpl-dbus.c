@@ -111,6 +111,7 @@ struct _GApplicationImpl
   GDBusConnection *session_bus;
   GActionGroup    *exported_actions;
   const gchar     *bus_name;
+  guint            name_lost_signal;
 
   gchar           *object_path;
   guint            object_id;
@@ -327,6 +328,24 @@ application_path_from_appid (const gchar *appid)
   return appid_path;
 }
 
+static void g_application_impl_stop_primary (GApplicationImpl *impl);
+
+static void
+name_lost (GDBusConnection *bus,
+           const char      *sender_name,
+           const char      *object_path,
+           const char      *interface_name,
+           const char      *signal_name,
+           GVariant        *parameters,
+           gpointer         user_data)
+{
+  GApplicationImpl *impl = user_data;
+
+  impl->primary = FALSE;
+  g_application_impl_stop_primary (impl);
+  g_application_quit (impl->app);
+}
+
 /* Attempt to become the primary instance.
  *
  * Returns %TRUE if everything went OK, regardless of if we became the
@@ -432,7 +451,13 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   app_flags = g_application_get_flags (impl->app);
 
   if (app_flags & G_APPLICATION_FLAGS_ALLOW_REPLACEMENT)
-    flags |= G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
+    {
+      impl->name_lost_signal = g_dbus_connection_signal_subscribe (impl->session_bus, "org.freeesktop.DBus, "org.freedesktop.DBus",
+                                                                   "NameLost", impl->bus_name, NULL, G_DBUS_SIGNAL_FLAGS_NONE,
+                                                                   name_lost, impl, NULL);
+
+      flags |= G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
+    }
   if (app_flags & G_APPLICATION_FLAGS_REPLACE)
     flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
 
@@ -449,6 +474,12 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
 
   /* DBUS_REQUEST_NAME_REPLY_EXISTS: 3 */
   impl->primary = (rval != 3);
+
+  if (!impl->primary && impl->name_lost_signal)
+    {
+      g_dbus_connection_signal_unsubscribe (impl->session_bus, impl->name_lost_signal);
+      impl->name_lost_signal = 0;
+    }
 
   return TRUE;
 }
@@ -490,6 +521,12 @@ g_application_impl_stop_primary (GApplicationImpl *impl)
     {
       g_dbus_connection_unexport_action_group (impl->session_bus, impl->actions_id);
       impl->actions_id = 0;
+    }
+
+  if (impl->name_lost_signal)
+    {
+      g_dbus_connection_signal_unsubscribe (impl->session_bus, impl->name_lost_signal);
+      impl->name_lost_signal = 0;
     }
 
   if (impl->primary && impl->bus_name)
