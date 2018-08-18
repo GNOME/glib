@@ -343,7 +343,7 @@ name_lost (GDBusConnection *bus,
 
   impl->primary = FALSE;
   g_application_impl_stop_primary (impl);
-  g_application_quit (impl->app);
+  g_signal_emit_by_name (impl->app, "name-lost");
 }
 
 /* Attempt to become the primary instance.

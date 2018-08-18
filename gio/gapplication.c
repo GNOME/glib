@@ -212,6 +212,7 @@
  *     @dbus_register vfunc. Since: 2.34
  * @handle_local_options: invoked locally after the parsing of the commandline
  *  options has occurred. Since: 2.40
+ * @name_lost: invoked when another instance is taking over name. Since: 2.58
  *
  * Virtual function table for #GApplication.
  *
@@ -277,6 +278,7 @@ enum
   SIGNAL_ACTION,
   SIGNAL_COMMAND_LINE,
   SIGNAL_HANDLE_LOCAL_OPTIONS,
+  SIGNAL_NAME_LOST,
   NR_SIGNALS
 };
 
@@ -1194,6 +1196,12 @@ g_application_real_dbus_unregister (GApplication    *application,
 {
 }
 
+static void
+g_application_real_name_lost (GApplication *application)
+{
+  g_application_quit (application);
+}
+
 /* GObject implementation stuff {{{1 */
 static void
 g_application_set_property (GObject      *object,
@@ -1451,6 +1459,7 @@ g_application_class_init (GApplicationClass *class)
   class->add_platform_data = g_application_real_add_platform_data;
   class->dbus_register = g_application_real_dbus_register;
   class->dbus_unregister = g_application_real_dbus_unregister;
+  class->name_lost = g_application_real_name_lost;
 
   g_object_class_install_property (object_class, PROP_APPLICATION_ID,
     g_param_spec_string ("application-id",
@@ -1644,6 +1653,23 @@ g_application_class_init (GApplicationClass *class)
                   G_STRUCT_OFFSET (GApplicationClass, handle_local_options),
                   g_application_handle_local_options_accumulator, NULL, NULL,
                   G_TYPE_INT, 1, G_TYPE_VARIANT_DICT);
+
+  /**
+   * GApplication::name-lost:
+   * @application: the application
+   *
+   * The ::name-lost signal is emitted only on the registered primary instance
+   * when a new instance has taken over. This can only happen if the application
+   * is using the %G_APPLICATION_ALLOW_REPLACEMENT flag.
+   *
+   * The default handler for this signal calls g_application_quit().
+   *
+   * Since: 2.58
+   */
+  g_application_signals[SIGNAL_NAME_LOST] =
+    g_signal_new (I_("name-lost"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GApplicationClass, name_lost),
+                  NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
 }
 
