@@ -114,6 +114,14 @@ if host_system == 'windows'
   glib_conf.set('BROKEN_POLL', true)
 endif
 
+if host_system == 'windows' and cc.get_id() != 'msvc'
+  # FIXME: Ideally we shouldn't depend on this on Windows and should use
+  # 64 bit capable Windows API that also works with MSVC.
+  # The autotools build did set this for mingw and while meson sets it
+  # for gcc/clang by default, it doesn't do so on Windows.
+  glib_conf.set('_FILE_OFFSET_BITS', 64)
+endif
+
 # Check for GNU visibility attributes
 g_have_gnuc_visibility = cc.compiles('''
   void
