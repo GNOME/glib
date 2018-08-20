@@ -179,7 +179,7 @@ watch_parent (gint fd)
       if (num_events == 0)
         continue;
 
-      if (fds[0].revents == G_IO_HUP)
+      if (fds[0].revents & G_IO_HUP)
         {
           /* Parent quit, cleanup the mess and exit */
           for (n = 0; n < pids_to_kill->len; n++)
