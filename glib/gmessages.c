@@ -428,8 +428,8 @@ myInvalidParameterHandler(const wchar_t *expression,
  * preferred for that instead, as it allows calling functions to perform actions
  * conditional on the type of error.
  *
- * Error messages are always fatal, resulting in a call to
- * abort() to terminate the application. This function will
+ * Error messages are always fatal, resulting in a `SIGTRAP` being raised
+ * to terminate the application. This function will
  * result in a core dump; don't use it for errors you expect.
  * Using this function indicates a bug in your program, i.e.
  * an assertion failure.
@@ -1238,8 +1238,10 @@ static GSList *expected_messages = NULL;
  *
  * Logs an error or debugging message.
  *
- * If the log level has been set as fatal, the abort()
- * function is called to terminate the program.
+ * If the log level has been set as fatal, `SIGTRAP` is raised
+ * to terminate the program. `SIGTRAP` is used (rather than calling abort()) to
+ * allow the log message to be skipped past in a debugger if it’s not the
+ * desired target of debugging.
  *
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
@@ -1389,8 +1391,10 @@ g_logv (const gchar   *log_domain,
  *
  * Logs an error or debugging message.
  *
- * If the log level has been set as fatal, the abort()
- * function is called to terminate the program.
+ * If the log level has been set as fatal, `SIGTRAP` is raised
+ * to terminate the program. `SIGTRAP` is used (rather than calling abort()) to
+ * allow the log message to be skipped past in a debugger if it’s not the
+ * desired target of debugging.
  *
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
@@ -1571,7 +1575,7 @@ done_query:
  * Log a message with structured data. The message will be passed through to
  * the log writer set by the application using g_log_set_writer_func(). If the
  * message is fatal (i.e. its log level is %G_LOG_LEVEL_ERROR), the program will
- * be aborted at the end of this function. If the log writer returns
+ * be aborted with `SIGTRAP` at the end of this function. If the log writer returns
  * %G_LOG_WRITER_UNHANDLED (failure), no other fallback writers will be tried.
  * See the documentation for #GLogWriterFunc for information on chaining
  * writers.
@@ -3040,7 +3044,7 @@ escape_string (GString *string)
  * allows to install an alternate default log handler.
  * This is used if no log handler has been set for the particular log
  * domain and log level combination. It outputs the message to stderr
- * or stdout and if the log level is fatal it calls abort(). It automatically
+ * or stdout and if the log level is fatal it raises `SIGTRAP`. It automatically
  * prints a new-line character after the message, so one does not need to be
  * manually included in @message.
  *
