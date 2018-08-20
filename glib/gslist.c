@@ -573,7 +573,7 @@ g_slist_copy (GSList *list)
  * g_slist_free_full (another_list, g_object_unref);
  * ]|
  *
- * Returns: a full copy of @list, use #g_slist_free_full to free it
+ * Returns: a full copy of @list, use g_slist_free_full() to free it
  *
  * Since: 2.34
  */
