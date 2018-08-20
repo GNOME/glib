@@ -1,3 +1,12 @@
+Overview of changes in GLib 2.57.3
+==================================
+
+* MinGW-w64 ABI warning: In case you build 64 bit glib without LFS support by
+  passing --disable-largefile (not the default) and use GStatBuf, you need to
+  rebuild your application as the size of GStatBuf has changed for this case.
+  See #1476
+
+
 Overview of changes in GLib 2.57.2
 ==================================
 
