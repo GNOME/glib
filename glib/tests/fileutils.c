@@ -913,9 +913,12 @@ test_stdio_wrappers (void)
   cwd = g_get_current_dir ();
   path = g_build_filename (cwd, "mkdir-test", NULL);
   g_free (cwd);
+#ifndef G_OS_WIN32
+  /* 0666 on directories means nothing to Windows, it only obeys ACLs */
   ret = g_chdir (path);
   g_assert_cmpint (errno, ==, EACCES);
   g_assert_cmpint (ret, ==, -1);
+#endif
   ret = g_chmod (path, 0777);
   g_assert_cmpint (ret, ==, 0);
   ret = g_chdir (path);
@@ -944,6 +947,15 @@ test_stdio_wrappers (void)
   ret = g_open ("test-create", O_RDONLY, 0666);
   g_close (ret, &error);
   g_assert_no_error (error);
+
+#ifdef G_OS_WIN32
+  /* On Windows the 5 permission bit results in a read-only file
+   * that cannot be modified in any way (attribute changes included).
+   * Remove the read-only attribute via chmod().
+   */
+  ret = g_chmod ("test-create", 0666);
+  g_assert_cmpint (ret, ==, 0);
+#endif
 
   ut.actime = ut.modtime = (time_t)0;
   ret = g_utime ("test-create", &ut);
