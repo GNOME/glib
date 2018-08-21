@@ -36,6 +36,7 @@
 #include <direct.h>
 #include <io.h>
 #include <sys/utime.h>
+#include <stdlib.h> /* for MB_CUR_MAX */
 #else
 #include <utime.h>
 #include <errno.h>
@@ -122,6 +123,140 @@ w32_error_to_errno (DWORD error_code)
 }
 
 #include "gstdio-private.c"
+
+/* From
+ * https://support.microsoft.com/en-ca/help/167296/how-to-convert-a-unix-time-t-to-a-win32-filetime-or-systemtime
+ * FT = UT * 10000000 + 116444736000000000.
+ * Therefore:
+ * UT = (FT - 116444736000000000) / 10000000.
+ */
+static gint64
+_g_win32_filetime_to_unix_time (FILETIME *ft)
+{
+  gint64 result;
+  /* 1 unit of FILETIME is 100ns */
+  const gint64 hundreds_of_usec_per_sec = 10000000;
+  /* The difference between January 1, 1601 UTC (FILETIME epoch) and UNIX epoch
+   * in hundreds of nanoseconds.
+   */
+  const gint64 filetime_unix_epoch_offset = 116444736000000000;
+
+  result = ((gint64) ft->dwLowDateTime) | (((gint64) ft->dwHighDateTime) << 32);
+  return (result - filetime_unix_epoch_offset) / hundreds_of_usec_per_sec;
+}
+
+#  ifdef _MSC_VER
+#    ifndef S_IXUSR
+#      define _S_IRUSR _S_IREAD
+#      define _S_IWUSR _S_IWRITE
+#      define _S_IXUSR _S_IEXEC
+#      define S_IRUSR _S_IRUSR
+#      define S_IWUSR _S_IWUSR
+#      define S_IXUSR _S_IXUSR
+#      define S_IRGRP (S_IRUSR >> 3)
+#      define S_IWGRP (S_IWUSR >> 3)
+#      define S_IXGRP (S_IXUSR >> 3)
+#      define S_IROTH (S_IRGRP >> 3)
+#      define S_IWOTH (S_IWGRP >> 3)
+#      define S_IXOTH (S_IXGRP >> 3)
+#    endif
+#    ifndef S_ISDIR
+#      define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
+#    endif
+#  endif
+
+static int
+_g_win32_fill_statbuf_from_handle_info (const wchar_t              *filename,
+                                        const wchar_t              *filename_target,
+                                        BY_HANDLE_FILE_INFORMATION *handle_info,
+                                        struct __stat64            *statbuf)
+{
+  wchar_t drive_letter_w = 0;
+  size_t drive_letter_size = MB_CUR_MAX;
+  char *drive_letter = _alloca (drive_letter_size);
+
+  /* If filename (target or link) is absolute,
+   * then use the drive letter from it as-is.
+   */
+  if (filename_target != NULL &&
+      filename_target[0] != L'\0' &&
+      filename_target[1] == L':')
+    drive_letter_w = filename_target[0];
+  else if (filename[0] != L'\0' &&
+           filename[1] == L':')
+    drive_letter_w = filename[0];
+
+  if (drive_letter_w > 0 &&
+      iswalpha (drive_letter_w) &&
+      iswascii (drive_letter_w) &&
+      wctomb (drive_letter, drive_letter_w) == 1)
+    statbuf->st_dev = toupper (drive_letter[0]) - 'A'; /* 0 means A: drive */
+  else
+    /* Otherwise use the PWD drive.
+     * Return value of 0 gives us 0 - 1 = -1,
+     * which is the "no idea" value for st_dev.
+     */
+    statbuf->st_dev = _getdrive () - 1;
+
+  statbuf->st_rdev = statbuf->st_dev;
+  /* Theoretically, it's possible to set it for ext-FS. No idea how.
+   * Meaningless for all filesystems that Windows normally uses.
+   */
+  statbuf->st_ino = 0;
+  statbuf->st_mode = 0;
+
+  if ((handle_info->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
+    statbuf->st_mode |= S_IFDIR | S_IXUSR | S_IXGRP | S_IXOTH;
+  else
+    statbuf->st_mode |= S_IFREG;
+  /* No idea what S_IFCHR means here. */
+  /* S_IFIFO is not even mentioned in MSDN */
+  /* S_IFBLK is also not mentioned */
+
+  /* The aim here is to reproduce MS stat() behaviour,
+   * even if it's braindead.
+   */
+  statbuf->st_mode |= S_IRUSR | S_IRGRP | S_IROTH;
+  if ((handle_info->dwFileAttributes & FILE_ATTRIBUTE_READONLY) != FILE_ATTRIBUTE_READONLY)
+    statbuf->st_mode |= S_IWUSR | S_IWGRP | S_IWOTH;
+
+  if (!S_ISDIR (statbuf->st_mode))
+    {
+      const wchar_t *name;
+      const wchar_t *dot = NULL;
+
+      if (filename_target != NULL)
+        name = filename_target;
+      else
+        name = filename;
+
+      do
+        {
+          wchar_t *last_dot = wcschr (name, L'.');
+          if (last_dot == NULL)
+            break;
+          dot = last_dot;
+          name = &last_dot[1];
+        }
+      while (TRUE);
+
+      if ((dot != NULL &&
+          (wcsicmp (dot, L".exe") == 0 ||
+           wcsicmp (dot, L".com") == 0 ||
+           wcsicmp (dot, L".bat") == 0 ||
+           wcsicmp (dot, L".cmd") == 0)))
+        statbuf->st_mode |= S_IXUSR | S_IXGRP | S_IXOTH;
+    }
+
+  statbuf->st_nlink = handle_info->nNumberOfLinks;
+  statbuf->st_uid = statbuf->st_gid = 0;
+  statbuf->st_size = (((guint64) handle_info->nFileSizeHigh) << 32) | handle_info->nFileSizeLow;
+  statbuf->st_ctime = _g_win32_filetime_to_unix_time (&handle_info->ftCreationTime);
+  statbuf->st_mtime = _g_win32_filetime_to_unix_time (&handle_info->ftLastWriteTime);
+  statbuf->st_atime = _g_win32_filetime_to_unix_time (&handle_info->ftLastAccessTime);
+
+  return 0;
+}
 
 static int
 _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
@@ -232,11 +367,9 @@ _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
 
       if (is_symlink && !for_symlink)
         {
-          /* If filename is a symlink, _wstat64 obtains information about
-           * the symlink (except that st_size will be 0).
+          /* If filename is a symlink, but we need the target.
            * To get information about the target we need to resolve
-           * the symlink first. And we need _wstat64() to get st_dev,
-           * it's a bother to try finding it ourselves.
+           * the symlink first.
            */
           DWORD filename_target_len;
           DWORD new_len;
@@ -326,8 +459,18 @@ _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
       return -1;
     }
 
+  /*
+   * We can't use _wstat64() here, because with UCRT it now gives
+   * information about the target, even if we want information about
+   * the link itself (unlike MSVCRT, which gave information about
+   * the link, and if we needed information about the target we were
+   * able to resolve it by ourselves prior to calling _wstat64()).
+   */
   if (fd < 0)
-    result = _wstat64 (filename_target != NULL ? filename_target : filename, &statbuf);
+    result = _g_win32_fill_statbuf_from_handle_info (filename,
+                                                     filename_target,
+                                                     &handle_info,
+                                                     &statbuf);
   else
     result = _fstat64 (fd, &statbuf);
 
