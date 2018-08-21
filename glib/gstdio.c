@@ -121,6 +121,35 @@ w32_error_to_errno (DWORD error_code)
     }
 }
 
+static gint64
+_g_win32_filetime_to_unix_time (FILETIME *ft)
+{
+  gint64 result;
+
+  result = (gint64) ft->dwLowDateTime |  (((gint64) ft->dwHighDateTime) << 32);
+  return (result - 116444736000000000) / 10000000;
+}
+
+#  ifdef _MSC_VER
+#    ifndef S_IXUSR
+#      define _S_IRUSR _S_IREAD
+#      define _S_IWUSR _S_IWRITE
+#      define _S_IXUSR _S_IEXEC
+#      define S_IRUSR _S_IRUSR
+#      define S_IWUSR _S_IWUSR
+#      define S_IXUSR _S_IXUSR
+#      define S_IRGRP (S_IRUSR >> 3)
+#      define S_IWGRP (S_IWUSR >> 3)
+#      define S_IXGRP (S_IXUSR >> 3)
+#      define S_IROTH (S_IRGRP >> 3)
+#      define S_IWOTH (S_IWGRP >> 3)
+#      define S_IXOTH (S_IXGRP >> 3)
+#    endif
+#    ifndef S_ISDIR
+#      define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
+#    endif
+#  endif
+
 static int
 _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
                                          int                 fd,
@@ -230,11 +259,9 @@ _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
 
       if (is_symlink && !for_symlink)
         {
-          /* If filename is a symlink, _wstat64 obtains information about
-           * the symlink (except that st_size will be 0).
+          /* If filename is a symlink, but we need the target.
            * To get information about the target we need to resolve
-           * the symlink first. And we need _wstat64() to get st_dev,
-           * it's a bother to try finding it ourselves.
+           * the symlink first.
            */
           DWORD filename_target_len;
           DWORD new_len;
@@ -314,7 +341,91 @@ _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
     }
 
   if (fd < 0)
-    result = _wstat64 (filename_target != NULL ? filename_target : filename, &statbuf);
+    {
+      wchar_t drive_letter_w = 0;
+      char drive_letter[MB_CUR_MAX];
+
+      /* If filename (target or link) is absolute,
+       * then use the drive letter from it as-is.
+       */
+      if (filename_target != NULL &&
+          filename_target[0] != L'\0' &&
+          filename_target[1] == L':')
+        drive_letter_w = filename_target[0];
+      else if (filename[0] != L'\0' &&
+               filename[1] == L':')
+        drive_letter_w = filename[0];
+
+      if (drive_letter_w > 0 &&
+          iswalpha (drive_letter_w) &&
+          iswascii (drive_letter_w) &&
+          wctomb (drive_letter, drive_letter_w) == 1)
+        statbuf.st_dev = toupper (drive_letter[0]) - 0x41;
+      else
+        /* Otherwise use the PWD drive.
+         * Return value of 0 gives us 0 - 1 = -1,
+         * which is the "no idea" value for st_dev.
+         */
+        statbuf.st_dev = _getdrive () - 1;
+
+      statbuf.st_rdev = statbuf.st_dev;
+      /* Theoretically, it's possible to set it for ext-FS. No idea how.
+       * Meaningless for all filesystems that Windows normally uses.
+       */
+      statbuf.st_ino = 0;
+      statbuf.st_mode = 0;
+
+      if ((handle_info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
+        statbuf.st_mode |= S_IFDIR | S_IXUSR | S_IXGRP | S_IXOTH;
+      else
+        statbuf.st_mode |= S_IFREG;
+      /* No idea what S_IFCHR means here. */
+      /* S_IFIFO is not even mentioned in MSDN */
+      /* S_IFBLK is also not mentioned */
+
+      /* The aim here is to reproduce MS stat() behaviour,
+       * even if it's braindead.
+       */
+      statbuf.st_mode |= S_IRUSR | S_IRGRP | S_IROTH;
+      if ((handle_info.dwFileAttributes & FILE_ATTRIBUTE_READONLY) != FILE_ATTRIBUTE_READONLY)
+        statbuf.st_mode |= S_IWUSR | S_IWGRP | S_IWOTH;
+
+      if (!S_ISDIR (statbuf.st_mode))
+        {
+          wchar_t *name;
+          wchar_t *dot = NULL;
+
+          if (filename_target != NULL)
+            name = filename_target;
+          else
+            name = (wchar_t*) filename;
+
+          do
+            {
+              wchar_t *last_dot = wcschr (name, L'.');
+              if (last_dot == NULL)
+                break;
+              dot = last_dot;
+              name = &last_dot[1];
+            }
+          while (TRUE);
+
+          if ((dot != NULL &&
+              (wcsicmp (dot, L".exe") == 0 ||
+               wcsicmp (dot, L".com") == 0 ||
+               wcsicmp (dot, L".bat") == 0 ||
+               wcsicmp (dot, L".cmd") == 0)))
+            statbuf.st_mode |= S_IXUSR | S_IXGRP | S_IXOTH;
+        }
+
+      statbuf.st_nlink = handle_info.nNumberOfLinks;
+      statbuf.st_uid = statbuf.st_gid = 0;
+      statbuf.st_size = (((guint64) handle_info.nFileSizeHigh) << 32) | handle_info.nFileSizeLow;
+      statbuf.st_ctime = _g_win32_filetime_to_unix_time (&handle_info.ftCreationTime);
+      statbuf.st_mtime = _g_win32_filetime_to_unix_time (&handle_info.ftLastWriteTime);
+      statbuf.st_atime = _g_win32_filetime_to_unix_time (&handle_info.ftLastAccessTime);
+      result = 0;
+    }
   else
     result = _fstat64 (fd, &statbuf);
 
