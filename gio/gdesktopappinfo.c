@@ -2506,6 +2506,10 @@ prepend_terminal_to_vector (int    *argc,
   else
     {
       if (check == NULL)
+        check = g_find_program_in_path ("gnome-terminal-emulator");
+      if (check == NULL)
+        check = g_find_program_in_path ("x-terminal-emulator");
+      if (check == NULL)
         check = g_find_program_in_path ("nxterm");
       if (check == NULL)
         check = g_find_program_in_path ("color-xterm");
