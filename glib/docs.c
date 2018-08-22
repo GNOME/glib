@@ -2051,15 +2051,29 @@
 /**
  * G_GNUC_MALLOC:
  *
- * Expands to the GNU C malloc function attribute if the compiler is gcc.
- * Declaring a function as malloc enables better optimization of the function.
- * A function can have the malloc attribute if it returns a pointer which is
- * guaranteed to not alias with any other pointer when the function returns
- * (in practice, this means newly allocated memory).
+ * Expands to the
+ * [GNU C `malloc` function attribute](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-functions-that-behave-like-malloc)
+ * if the compiler is gcc.
+ * Declaring a function as `malloc` enables better optimization of the function,
+ * but must only be done if the allocation behaviour of the function is fully
+ * understood, otherwise miscompilation can result.
+ *
+ * A function can have the `malloc` attribute if it returns a pointer which is
+ * guaranteed to not alias with any other pointer valid when the function
+ * returns, and moreover no pointers to valid objects occur in any storage
+ * addressed by the returned pointer.
+ *
+ * In practice, this means that `G_GNUC_MALLOC` can be used with any function
+ * which returns unallocated or zeroed-out memory, but not with functions which
+ * return initialised structures containing other pointers, or with functions
+ * that reallocate memory. This definition changed in GLib 2.56.3 to match the
+ * stricter definition introduced around GCC 5.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the
+ * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-functions-that-behave-like-malloc)
+ * for more details.
  *
  * Since: 2.6
  */
