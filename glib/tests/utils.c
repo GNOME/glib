@@ -533,6 +533,32 @@ test_clear_pointer_cast (void)
   g_assert_null (hash_table);
 }
 
+/* Test that the macro version of g_clear_pointer() only evaluates its argument
+ * once, just like the function version would. */
+static void
+test_clear_pointer_side_effects (void)
+{
+  gchar **my_string_array, **i;
+
+  my_string_array = g_new0 (gchar*, 3);
+  my_string_array[0] = g_strdup ("hello");
+  my_string_array[1] = g_strdup ("there");
+  my_string_array[2] = NULL;
+
+  i = my_string_array;
+
+  g_clear_pointer (i++, g_free);
+
+  g_assert_true (i == &my_string_array[1]);
+  g_assert_null (my_string_array[0]);
+  g_assert_nonnull (my_string_array[1]);
+  g_assert_null (my_string_array[2]);
+
+  g_free (my_string_array[1]);
+  g_free (my_string_array[2]);
+  g_free (my_string_array);
+}
+
 static int obj_count;
 
 static void
@@ -673,6 +699,7 @@ main (int   argc,
   g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
   g_test_add_func ("/utils/clear-pointer-cast", test_clear_pointer_cast);
+  g_test_add_func ("/utils/clear-pointer/side-effects", test_clear_pointer_side_effects);
   g_test_add_func ("/utils/take-pointer", test_take_pointer);
   g_test_add_func ("/utils/clear-source", test_clear_source);
   g_test_add_func ("/utils/misc-mem", test_misc_mem);

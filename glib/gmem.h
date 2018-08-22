@@ -114,8 +114,9 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 #define g_clear_pointer(pp, destroy)                                           \
   G_STMT_START {                                                               \
     G_STATIC_ASSERT (sizeof *(pp) == sizeof (gpointer));                       \
-    __typeof__(*(pp)) _ptr = *(pp);                                            \
-    *(pp) = NULL;                                                              \
+    __typeof__((pp)) _pp = (pp);                                               \
+    __typeof__(*(pp)) _ptr = *_pp;                                             \
+    *_pp = NULL;                                                               \
     if (_ptr)                                                                  \
       (destroy) (_ptr);                                                        \
   } G_STMT_END
