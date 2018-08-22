@@ -170,7 +170,7 @@ GLIB_AVAILABLE_IN_ALL
 gchar *g_filename_display_basename (const gchar *filename) G_GNUC_MALLOC;
 
 GLIB_AVAILABLE_IN_ALL
-gchar **g_uri_list_extract_uris (const gchar *uri_list) G_GNUC_MALLOC;
+gchar **g_uri_list_extract_uris (const gchar *uri_list);
 
 G_END_DECLS
 
