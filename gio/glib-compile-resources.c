@@ -1087,20 +1087,16 @@ main (int argc, char **argv)
 	       "# define SECTION\n"
 	       "#endif\n"
 	       "\n"
-	       "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = { {\n",
+	       "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = {\n  \"",
 	       c_name_no_underscores, data_size, c_name);
 
       for (i = 0; i < data_size; i++) {
-	if (i % 8 == 0)
-	  g_fprintf (file, "  ");
-	g_fprintf (file, "0x%2.2x", (int)data[i]);
-	if (i != data_size - 1)
-	  g_fprintf (file, ", ");
-	if ((i % 8 == 7) || (i == data_size - 1))
-	  g_fprintf (file, "\n");
+	g_fprintf (file, "\\%3.3o", (int)data[i]);
+	if (i % 16 == 15)
+	  g_fprintf (file, "\"\n  \"");
       }
 
-      g_fprintf (file, "} };\n");
+      g_fprintf (file, "\" };\n");
 
       g_fprintf (file,
 	       "\n"
