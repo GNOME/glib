@@ -296,7 +296,7 @@ foreach test_name : gio_tests
       install : false,
       c_args : test_c_args,
       dependencies : common_gio_tests_deps + extra_deps)
-  if test_name == 'testfilemonitor'
+  if test_name == 'testfilemonitor' or test_name == 'network-monitor-race'
     test(test_name, exe, env : test_env, timeout : 45)
   else
     test(test_name, exe, env : test_env)
