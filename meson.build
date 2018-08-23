@@ -386,7 +386,6 @@ if host_system == 'windows'
 endif
 
 functions = [
-  'alloca',
   'endmntent',
   'endservent',
   'fallocate',

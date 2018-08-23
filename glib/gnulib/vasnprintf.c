@@ -55,7 +55,9 @@
 #ifndef VASNPRINTF
 # include <config.h>
 #endif
+/* galloca.h also defines alloca and HAVE_ALLOCA makes the code below use it */
 #include "glib/galloca.h"
+#define HAVE_ALLOCA 1
 
 #include "g-gnulib.h"
 
