@@ -383,7 +383,10 @@ CLEANFILES += \
 	org.gtk.test.enums.xml		\
 	gsettings.store			\
 	gschemas.compiled		\
-	schema-source/gschemas.compiled
+	schema-source/gschemas.compiled \
+	schema-source-corrupt/gschemas.compiled \
+	schema-source-empty/gschemas.compiled \
+	$(NULL)
 
 test_programs += gdbus-connection-flush
 gdbus_connection_flush_SOURCES = \
