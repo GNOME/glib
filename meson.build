@@ -1073,6 +1073,39 @@ else
   ssizet_size = cc.sizeof('ssize_t')
 endif
 
+# Some platforms (Apple) hard-code int64_t to long long instead of
+# using long on 64-bit architectures. This can cause type mismatch
+# warnings when trying to interface with code using the standard
+# library type. Test for the warnings and set gint64 to whichever
+# works.
+if long_long_size == long_size
+  if cc.compiles('''#if defined(_AIX) && !defined(__GNUC__)
+                    #pragma options langlvl=stdc99
+                    #endif
+                    #pragma GCC diagnostic error "-Wincompatible-pointer-types"
+                    #include <stdint.h>
+                    #include <stdio.h>
+                    int main () {
+                      int64_t i1 = 1;
+                      long *i2 = &i1;
+                      return 1;
+                    }''', name : 'int64_t is long')
+    int64_t_typedef = 'long'
+  elif cc.compiles('''#if defined(_AIX) && !defined(__GNUC__)
+                      #pragma options langlvl=stdc99
+                      #endif
+                      #pragma GCC diagnostic error "-Wincompatible-pointer-types"
+                      #include <stdint.h>
+                      #include <stdio.h>
+                      int main () {
+                        int64_t i1 = 1;
+                        long long *i2 = &i1;
+                        return 1;
+                      }''', name : 'int64_t is long long')
+    int64_t_typedef = 'long long'
+  endif
+endif
+
 int64_m = 'll'
 char_align = cc.alignment('char')
 short_align = cc.alignment('short')
@@ -1149,7 +1182,7 @@ if int_size == 8
   gint64_constant='(val)'
   guint64_constant='(val)'
   guint64_align = int_align
-elif long_size == 8
+elif long_size == 8 and (long_long_size != long_size or int64_t_typedef == 'long')
   gint64 = 'long'
   glib_extension=''
   gint64_modifier='l'
@@ -1158,7 +1191,7 @@ elif long_size == 8
   gint64_constant='(val##L)'
   guint64_constant='(val##UL)'
   guint64_align = long_align
-elif long_long_size == 8
+elif long_long_size == 8 and (long_long_size != long_size or int64_t_typedef == 'long long')
   gint64 = 'long long'
   glib_extension='G_GNUC_EXTENSION '
   gint64_modifier=int64_m
