@@ -38,6 +38,9 @@ AM_CPPFLAGS = 				\
 	$(gobject_INCLUDES) 		\
 	$(GLIB_DEBUG_FLAGS)
 
+# We don't want to error out over gtk-doc produced code
+AM_CFLAGS = -Wno-error
+
 GTKDOC_LIBS = 					\
 	$(top_builddir)/glib/libglib-2.0.la	\
 	$(top_builddir)/gobject/libgobject-2.0.la

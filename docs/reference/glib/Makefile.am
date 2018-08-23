@@ -13,6 +13,9 @@ DOC_SOURCE_DIR = \
     $(top_srcdir)/glib $(top_srcdir)/gmodule \
     $(top_builddir)/glib $(top_builddir)/gmodule
 
+# We don't want to error out over gtk-doc produced code
+AM_CFLAGS = -Wno-error
+
 # Extra options to supply to gtkdoc-scan
 SCAN_OPTIONS = \
 	--deprecated-guards="G_DISABLE_DEPRECATED" \
