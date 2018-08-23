@@ -238,7 +238,8 @@ subdir('gdbus-2.0/codegen')
 xdp_dbus_generated = custom_target('xdp-dbus',
     input : ['org.freedesktop.portal.Documents.xml',
              'org.freedesktop.portal.OpenURI.xml',
-             'org.freedesktop.portal.ProxyResolver.xml'],
+             'org.freedesktop.portal.ProxyResolver.xml',
+             'org.freedesktop.portal.Trash.xml'],
     output : ['xdp-dbus.h', 'xdp-dbus.c'],
     depend_files : gdbus_codegen_built_files,
     command : [python, gdbus_codegen,
@@ -253,6 +254,8 @@ xdp_dbus_generated = custom_target('xdp-dbus',
                '--annotate', 'org.freedesktop.portal.Documents.AddFull()',
                              'org.gtk.GDBus.C.UnixFD', 'true',
                '--annotate', 'org.freedesktop.portal.OpenURI.OpenFile()',
+                             'org.gtk.GDBus.C.UnixFD', 'true',
+               '--annotate', 'org.freedesktop.portal.Trash.TrashFile()',
                              'org.gtk.GDBus.C.UnixFD', 'true',
                '@INPUT@'])
 
@@ -392,6 +395,7 @@ if host_system != 'windows'
     'gopenuriportal.c',
     'gnetworkmonitorportal.c',
     'gproxyresolverportal.c',
+    'gtrashportal.c',
     'gportalsupport.c',
     'gportalnotificationbackend.c'),
     xdp_dbus_generated
