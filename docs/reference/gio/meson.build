@@ -75,6 +75,7 @@ if get_option('gtk_doc')
     'gsocks5proxy.h',
     'gsubprocesslauncher-private.h',
     'gthreadedresolver.h',
+    'gtrashportal.h',
     'gunionvolumemonitor.h',
     'gunixmount.h',
     'gunixresolver.h',
