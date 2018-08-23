@@ -1,6 +1,8 @@
 FROM fedora:27
 
 RUN dnf -y install \
+    autoconf \
+    automake \
     desktop-file-utils \
     elfutils-libelf-devel \
     findutils \
@@ -18,6 +20,7 @@ RUN dnf -y install \
     libffi-devel \
     libmount-devel \
     libselinux-devel \
+    libtool \
     libxslt \
     make \
     mingw64-gcc \
@@ -34,6 +37,7 @@ RUN dnf -y install \
     systemtap-sdt-devel \
     unzip \
     wget \
+    xz \
     zlib-devel \
  && dnf clean all
 
