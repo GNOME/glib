@@ -31,31 +31,16 @@
 
 #include <glib/gtypes.h>
 
-#if defined(__BIONIC__) && defined (GLIB_HAVE_ALLOCA_H)
-# include <alloca.h>
-#elif defined(__GNUC__)
-/* GCC does the right thing */
-# undef alloca
-# define alloca(size)   __builtin_alloca (size)
-#elif defined (GLIB_HAVE_ALLOCA_H)
-/* a native and working alloca.h is there */ 
-# include <alloca.h>
-#else /* !__GNUC__ && !GLIB_HAVE_ALLOCA_H */
-# if defined(_MSC_VER) || defined(__DMC__)
-#  include <malloc.h>
-#  define alloca _alloca
-# else /* !_MSC_VER && !__DMC__ */
-#  ifdef _AIX
-#   pragma alloca
-#  else /* !_AIX */
-#   ifndef alloca /* predefined by HP cc +Olibcalls */
-G_BEGIN_DECLS
-char *alloca ();
-G_END_DECLS
-#   endif /* !alloca */
-#  endif /* !_AIX */
-# endif /* !_MSC_VER && !__DMC__ */
-#endif /* !__GNUC__ && !GLIB_HAVE_ALLOCA_H */
+#ifdef G_OS_WIN32
+#include <malloc.h>
+#undef alloca
+#define alloca _alloca
+#elif defined(HAVE_ALLOCA_H)
+#include <alloca.h>
+#else
+/* BSDs */
+#include <stdlib.h>
+#endif
 
 /**
  * g_alloca:

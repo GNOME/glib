@@ -477,7 +477,6 @@ AS_IF([test "$glib_native_win32" = "yes"], [
 AM_CONDITIONAL(OS_WIN32_AND_DLL_COMPILATION, [test x$glib_native_win32 = xyes -a x$glib_win32_static_compilation != xyes])
 
 # Checks for library functions.
-AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2 issetugid)
 AC_CHECK_FUNCS(timegm gmtime_r posix_spawn)
 AC_FUNC_STRERROR_R()
@@ -648,6 +647,7 @@ AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h 
 AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
 AC_CHECK_HEADERS([linux/magic.h])
 AC_CHECK_HEADERS([termios.h])
+AC_CHECK_HEADERS([alloca.h], [glib_header_alloca_h=yes])
 
 # Some versions of MSC lack these
 AC_CHECK_HEADERS([dirent.h sys/time.h])
@@ -2997,12 +2997,6 @@ _______EOF
 # Note also that this is inside an AC_OUTPUT_COMMAND.  We do not depend
 # on variable expansion in case labels.  Look at the generated config.status
 # for a hint.
-
-if test "x${ac_cv_working_alloca_h+set}" = xset ; then
-  glib_header_alloca_h="$ac_cv_working_alloca_h"
-else
-  glib_header_alloca_h="$ac_cv_header_alloca_h"
-fi
 
 if test x$enable_included_printf = xyes ; then
   glib_included_printf=yes
