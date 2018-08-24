@@ -969,14 +969,210 @@ test_api (void)
   g_object_unref (app);
 }
 
+/* Check that G_APPLICATiON_ALLOW_REPLACEMENT works. To do so, we launch
+ * a GApplication in this process that allows replacement, and then
+ * launch a subprocess with --gapplication-replace. We have to do our
+ * own async version of g_test_trap_subprocess() here since we need
+ * the main process to keep spinning its mainloop.
+ */
+
+static gboolean
+name_was_lost (GApplication *app,
+               gboolean     *called)
+{
+  *called = TRUE;
+  g_application_quit (app);
+  return TRUE;
+}
+
+static void
+startup_in_sub (GApplication *app,
+                gboolean     *called)
+{
+  *called = TRUE;
+}
+
+static const char *self;
+static GSubprocess *sub;
+
+static void
+launch_replacement (const char *const *argv)
+{
+  GSubprocessLauncher *launcher;
+  GError *error = NULL;
+
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
+  g_subprocess_launcher_set_environ (launcher, NULL);
+  sub = g_subprocess_launcher_spawnv (launcher, argv, &error);
+  g_assert_no_error (error);
+  g_object_unref (launcher);
+}
+
+static void
+startup_cb (GApplication *app,
+            gboolean     *called)
+{
+  const char * const argv[] = { self, "--verbose", "-q", "-p", "/gapplication/replace", "--GTestSubprocess", NULL };
+
+  *called = TRUE;
+
+  g_application_hold (app);
+
+  g_test_message ("launching sub");
+  /* Now that we are the primary instance, launch our replacement.
+   * We inherit the environment to share the test session bus.
+   */
+  launch_replacement (argv);
+}
+
+static void
+startup_cb2 (GApplication *app,
+             gboolean     *called)
+{
+  const char * const argv[] = { self, "--verbose", "-q", "-p", "/gapplication/no-replace", "--GTestSubprocess", NULL };
+
+  *called = TRUE;
+
+g_test_message ("activate in main");
+  g_application_hold (app);
+
+  /* Now that we are the primary instance, launch our replacement.
+   * We inherit the environment to share the test session bus.
+   */
+  launch_replacement (argv);
+
+  g_application_release (app);
+}
+
+static void
+activate (gpointer data)
+{
+}
+
+static void
+test_replace (void)
+{
+  if (g_test_subprocess ())
+    {
+      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+      gchar *argv[] = { binpath, "--gapplication-replace", NULL };
+      GApplication *app;
+      gboolean startup = FALSE; 
+      GError *error = NULL;
+
+      app = g_application_new ("org.gtk.TestApplication.Replace", G_APPLICATION_ALLOW_REPLACEMENT);
+      g_application_set_inactivity_timeout (app, 500);
+      g_signal_connect (app, "startup", G_CALLBACK (startup_in_sub), &startup);
+      g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+      
+      g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+
+      g_assert (startup);
+
+      g_object_unref (app);
+      g_free (binpath);
+    }
+  else
+    {
+      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+      gchar *argv[] = { binpath, NULL };
+      GApplication *app;
+      gboolean name_lost = FALSE; 
+      gboolean startup = FALSE; 
+      GTestDBus *bus;
+
+      bus = g_test_dbus_new (0);
+      g_test_dbus_up (bus);
+
+      app = g_application_new ("org.gtk.TestApplication.Replace", G_APPLICATION_ALLOW_REPLACEMENT);
+      g_application_set_inactivity_timeout (app, 500);
+      g_signal_connect (app, "name-lost", G_CALLBACK (name_was_lost), &name_lost);
+      g_signal_connect (app, "startup", G_CALLBACK (startup_cb), &startup);
+      g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+
+      g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+
+      g_assert (startup);
+      g_assert (name_lost);
+
+      g_object_unref (app);
+      g_free (binpath);
+
+      g_subprocess_wait (sub, NULL, NULL);
+      g_clear_object (&sub);
+
+      g_test_dbus_down (bus);
+      g_object_unref (bus);
+    }
+}
+
+static void
+test_no_replace (void)
+{
+  if (g_test_subprocess ())
+    {
+      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+      gchar *argv[] = { binpath, "--gapplication-replace", NULL };
+      GApplication *app;
+      gboolean startup = FALSE;
+
+      app = g_application_new ("org.gtk.TestApplication.Replace", G_APPLICATION_ALLOW_REPLACEMENT);
+      g_signal_connect (app, "startup", G_CALLBACK (startup_in_sub), &startup);
+      g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+
+      g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+
+      g_assert (!startup);
+
+      g_object_unref (app);
+      g_free (binpath);
+    }
+  else
+    {
+      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+      gchar *argv[] = { binpath, NULL };
+      GApplication *app;
+      gboolean name_lost = FALSE; 
+      gboolean startup = FALSE; 
+      GTestDBus *bus;
+
+      bus = g_test_dbus_new (0);
+      g_test_dbus_up (bus);
+
+      app = g_application_new ("org.gtk.TestApplication.Replace", 0);
+      g_application_set_inactivity_timeout (app, 500);
+      g_signal_connect (app, "name-lost", G_CALLBACK (name_was_lost), &name_lost);
+      g_signal_connect (app, "startup", G_CALLBACK (startup_cb2), &startup);
+      g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+
+      g_timeout_add (1000, g_application_quit, app);
+      g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+
+      g_assert (startup);
+      g_assert (!name_lost);
+
+      g_object_unref (app);
+      g_free (binpath);
+
+      g_subprocess_wait (sub, NULL, NULL);
+      g_clear_object (&sub);
+
+      g_test_dbus_down (bus);
+      g_object_unref (bus);
+    }
+}
+
 int
 main (int argc, char **argv)
 {
+  self = argv[0];
+
   g_setenv ("LC_ALL", "C", TRUE);
 
   g_test_init (&argc, &argv, NULL);
 
-  g_test_dbus_unset ();
+  if (!g_test_subprocess ())
+    g_test_dbus_unset ();
 
   g_test_add_func ("/gapplication/no-dbus", test_nodbus);
 /*  g_test_add_func ("/gapplication/basic", basic); */
@@ -996,6 +1192,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/test-handle-local-options2", test_handle_local_options_failure);
   g_test_add_func ("/gapplication/test-handle-local-options3", test_handle_local_options_passthrough);
   g_test_add_func ("/gapplication/api", test_api);
+  g_test_add_func ("/gapplication/replace", test_replace);
+  g_test_add_func ("/gapplication/no-replace", test_no_replace);
 
   return g_test_run ();
 }
