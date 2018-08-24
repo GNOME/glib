@@ -969,6 +969,156 @@ test_api (void)
   g_object_unref (app);
 }
 
+/* Check that G_APPLICATION_ALLOW_REPLACEMENT works. To do so, we launch
+ * a GApplication in this process that allows replacement, and then
+ * launch a subprocess with --gapplication-replace. We have to do our
+ * own async version of g_test_trap_subprocess() here since we need
+ * the main process to keep spinning its mainloop.
+ */
+
+static gboolean
+name_was_lost (GApplication *app,
+               gboolean     *called)
+{
+  *called = TRUE;
+  g_application_quit (app);
+  return TRUE;
+}
+
+static void
+startup_in_subprocess (GApplication *app,
+                       gboolean     *called)
+{
+  *called = TRUE;
+}
+
+typedef struct
+{
+  gboolean allow_replacement;
+  GSubprocess *subprocess;
+} TestReplaceData;
+
+static void
+startup_cb (GApplication *app,
+            TestReplaceData *data)
+{
+  const char *argv[] = { NULL, "--verbose", "--quiet", "-p", NULL, "--GTestSubprocess", NULL };
+  GSubprocessLauncher *launcher;
+  GError *local_error = NULL;
+
+  g_application_hold (app);
+
+  argv[0] = g_get_prgname ();
+
+  if (data->allow_replacement)
+    argv[4] = "/gapplication/replace";
+  else
+    argv[4] = "/gapplication/no-replace";
+
+  /* Now that we are the primary instance, launch our replacement.
+   * We inherit the environment to share the test session bus.
+   */
+  g_test_message ("launching subprocess");
+
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
+  g_subprocess_launcher_set_environ (launcher, NULL);
+  data->subprocess = g_subprocess_launcher_spawnv (launcher, argv, &local_error);
+  g_assert_no_error (local_error);
+  g_object_unref (launcher);
+
+  if (!data->allow_replacement)
+    {
+      /* make sure we exit after a bit, if the subprocess is not replacing us */
+      g_application_set_inactivity_timeout (app, 500);
+      g_application_release (app);
+    }
+}
+
+static void
+activate (gpointer data)
+{
+  /* GApplication complains if we don't connect to ::activate */
+}
+
+static gboolean
+quit_already (gpointer data)
+{
+  GApplication *app = data;
+
+  g_application_quit (app);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_replace (gconstpointer data)
+{
+  gboolean allow = GPOINTER_TO_INT (data);
+
+  if (g_test_subprocess ())
+    {
+      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+      char *argv[] = { binpath, "--gapplication-replace", NULL };
+      GApplication *app;
+      gboolean startup = FALSE;
+
+      app = g_application_new ("org.gtk.TestApplication.Replace", G_APPLICATION_ALLOW_REPLACEMENT);
+      g_signal_connect (app, "startup", G_CALLBACK (startup_in_subprocess), &startup);
+      g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+
+      g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
+
+      if (allow)
+        g_assert_true (startup);
+      else
+        g_assert_false (startup);
+
+      g_object_unref (app);
+      g_free (binpath);
+    }
+  else
+    {
+      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+      gchar *argv[] = { binpath, NULL };
+      GApplication *app;
+      gboolean name_lost = FALSE;
+      TestReplaceData data;
+      GTestDBus *bus;
+
+      data.allow_replacement = allow;
+      data.subprocess = NULL;
+
+      bus = g_test_dbus_new (0);
+      g_test_dbus_up (bus);
+
+      app = g_application_new ("org.gtk.TestApplication.Replace", allow ? G_APPLICATION_ALLOW_REPLACEMENT : G_APPLICATION_FLAGS_NONE);
+      g_application_set_inactivity_timeout (app, 500);
+      g_signal_connect (app, "name-lost", G_CALLBACK (name_was_lost), &name_lost);
+      g_signal_connect (app, "startup", G_CALLBACK (startup_cb), &data);
+      g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+
+      if (!allow)
+        g_timeout_add_seconds (1, quit_already, app);
+
+      g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
+
+      g_assert_nonnull (data.subprocess);
+      if (allow)
+        g_assert_true (name_lost);
+      else
+        g_assert_false (name_lost);
+
+      g_object_unref (app);
+      g_free (binpath);
+
+      g_subprocess_wait (data.subprocess, NULL, NULL);
+      g_clear_object (&data.subprocess);
+
+      g_test_dbus_down (bus);
+      g_object_unref (bus);
+    }
+}
+
 int
 main (int argc, char **argv)
 {
@@ -976,7 +1126,8 @@ main (int argc, char **argv)
 
   g_test_init (&argc, &argv, NULL);
 
-  g_test_dbus_unset ();
+  if (!g_test_subprocess ())
+    g_test_dbus_unset ();
 
   g_test_add_func ("/gapplication/no-dbus", test_nodbus);
 /*  g_test_add_func ("/gapplication/basic", basic); */
@@ -996,6 +1147,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/test-handle-local-options2", test_handle_local_options_failure);
   g_test_add_func ("/gapplication/test-handle-local-options3", test_handle_local_options_passthrough);
   g_test_add_func ("/gapplication/api", test_api);
+  g_test_add_data_func ("/gapplication/replace", GINT_TO_POINTER (TRUE), test_replace);
+  g_test_add_data_func ("/gapplication/no-replace", GINT_TO_POINTER (FALSE), test_replace);
 
   return g_test_run ();
 }
