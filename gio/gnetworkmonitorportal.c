@@ -325,7 +325,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   g_variant_get (ret, "u", &version);
   g_variant_unref (ret);
 
-  if (version != 1 && version != 2)
+  if (version != 1 && version != 2 && version != 3)
     {
       g_object_unref (proxy);
       g_set_error (error,
@@ -345,7 +345,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   if (!initable_parent_iface->init (initable, cancellable, error))
     return FALSE;
 
-  if (nm->priv->has_network && nm->priv->version == 2)
+  if (nm->priv->has_network && nm->priv->version > 1)
     update_properties (proxy, nm);
 
   return TRUE;
@@ -374,9 +374,119 @@ g_network_monitor_portal_class_init (GNetworkMonitorPortalClass *class)
   g_object_class_override_property (gobject_class, PROP_CONNECTIVITY, "connectivity");
 }
 
+static gboolean
+g_network_monitor_portal_can_reach (GNetworkMonitor     *monitor,
+                                    GSocketConnectable  *connectable,
+                                    GCancellable        *cancellable,
+                                    GError             **error)
+{
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (monitor);
+  GVariant *ret;
+  GNetworkAddress *address;
+  gboolean reachable = FALSE;
+
+  if (!G_IS_NETWORK_ADDRESS (connectable))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Can't handle this kind of GSocketConnectable");
+      return FALSE;
+    }
+
+  address = G_NETWORK_ADDRESS (connectable);
+
+  ret = g_dbus_proxy_call_sync (nm->priv->proxy,
+                                "CanReach",
+                                g_variant_new ("(su)",
+                                               g_network_address_get_hostname (address),
+                                               g_network_address_get_port (address)),
+                               G_DBUS_CALL_FLAGS_NONE,
+                               -1,
+                               cancellable,
+                               error);
+  
+  if (ret)
+    {
+      g_variant_get (ret, "(b)", &reachable);
+      g_variant_unref (ret);
+    }
+
+  return reachable;
+}
+
+static void
+can_reach_done (GObject      *source,
+                GAsyncResult *result,
+                gpointer      data)
+{
+  GTask *task = data;
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (g_task_get_source_object (task));
+  GError *error = NULL;
+  GVariant *ret;
+  gboolean reachable;
+
+  ret = g_dbus_proxy_call_finish (nm->priv->proxy, result, &error);
+  if (ret == NULL)
+    {
+      g_task_return_error (task, error);
+      g_object_unref (task);
+      return;
+    }
+ 
+  g_variant_get (ret, "(b)", &reachable);
+  g_variant_unref (ret);
+
+  g_task_return_boolean (task, reachable);
+  g_object_unref (task);
+}
+
+static void
+g_network_monitor_portal_can_reach_async (GNetworkMonitor     *monitor,
+                                          GSocketConnectable  *connectable,
+                                          GCancellable        *cancellable,
+                                          GAsyncReadyCallback  callback,
+                                          gpointer             data)
+{
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (monitor);
+  GTask *task;
+  GNetworkAddress *address;
+
+  task = g_task_new (monitor, cancellable, callback, data);
+
+  if (!G_IS_NETWORK_ADDRESS (connectable))
+    {
+      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_FAILED,
+                               "Can't handle this kind of GSocketConnectable");
+      g_object_unref (task);
+      return;
+    }
+
+  address = G_NETWORK_ADDRESS (connectable);
+
+  g_dbus_proxy_call (nm->priv->proxy,
+                     "CanReach",
+                     g_variant_new ("(su)",
+                                    g_network_address_get_hostname (address),
+                                    g_network_address_get_port (address)),
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     cancellable,
+                     can_reach_done,
+                     task);
+}
+
+static gboolean
+g_network_monitor_portal_can_reach_finish (GNetworkMonitor  *monitor,
+                                           GAsyncResult     *result,
+                                           GError          **error)
+{
+  return g_task_propagate_boolean (G_TASK (result), error);
+}
+
 static void
 g_network_monitor_portal_iface_init (GNetworkMonitorInterface *monitor_iface)
 {
+  monitor_iface->can_reach = g_network_monitor_portal_can_reach;
+  monitor_iface->can_reach_async = g_network_monitor_portal_can_reach_async;
+  monitor_iface->can_reach_finish = g_network_monitor_portal_can_reach_finish;
 }
 
 static void
