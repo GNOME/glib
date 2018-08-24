@@ -961,6 +961,13 @@ executable('gdbus', 'gdbus-tool.c',
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
+executable('gnet', 'gnet-tool.c',
+  install : true,
+  c_args : gio_c_args,
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args,
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+
 if host_system != 'windows' and not glib_have_cocoa
   executable('gapplication', 'gapplication-tool.c',
     install : true,
