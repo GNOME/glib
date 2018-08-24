@@ -292,7 +292,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
                                          NULL,
                                          "org.freedesktop.portal.Desktop",
                                          "/org/freedesktop/portal/desktop",
-					 "org.freedesktop.portal.NetworkMonitor",
+                                         "org.freedesktop.portal.NetworkMonitor",
                                          cancellable,
                                          error);
   if (!proxy)
