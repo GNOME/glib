@@ -182,12 +182,71 @@ got_connectivity (GObject *source,
 }
 
 static void
+got_status (GObject *source,
+            GAsyncResult *res,
+            gpointer data)
+{
+  GDBusProxy *proxy = G_DBUS_PROXY (source);
+  GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (data);
+  GError *error = NULL;
+  GVariant *ret;
+  gboolean should_emit_changed = FALSE;
+  gboolean available;
+  gboolean metered;
+  GNetworkConnectivity connectivity;
+
+  ret = g_dbus_proxy_call_finish (proxy, res, &error);
+  if (ret == NULL)
+    {
+      g_warning ("%s", error->message);
+      g_clear_error (&error);
+      return;
+    }
+
+  g_variant_get (ret, "(bbu)", &available, &metered, &connectivity);
+  g_variant_unref (ret);
+
+  g_object_freeze_notify (G_OBJECT (nm));
+
+  if (nm->priv->available != available)
+    {
+      nm->priv->available = available;
+      g_object_notify (G_OBJECT (nm), "network-available");
+      should_emit_changed = TRUE;
+    }
+
+  if (nm->priv->metered != metered)
+    {
+      nm->priv->metered = metered;
+      g_object_notify (G_OBJECT (nm), "network-metered");
+    }
+
+  if (nm->priv->connectivity != connectivity)
+    {
+      nm->priv->connectivity = connectivity;
+      g_object_notify (G_OBJECT (nm), "connectivity");
+    }
+
+  g_object_thaw_notify (G_OBJECT (nm));
+
+  if (should_emit_changed)
+    g_signal_emit_by_name (nm, "network-changed", available);
+}
+
+static void
 update_properties (GDBusProxy *proxy,
                    GNetworkMonitorPortal *nm)
 {
-  g_dbus_proxy_call (proxy, "GetConnectivity", NULL, 0, -1, NULL, got_connectivity, nm);
-  g_dbus_proxy_call (proxy, "GetMetered", NULL, 0, -1, NULL, got_metered, nm);
-  g_dbus_proxy_call (proxy, "GetAvailable", NULL, 0, -1, NULL, got_available, nm);
+  if (nm->priv->version == 3)
+    {
+      g_dbus_proxy_call (proxy, "GetStatus", NULL, 0, -1, NULL, got_status, nm);
+    }
+  else
+    {
+      g_dbus_proxy_call (proxy, "GetConnectivity", NULL, 0, -1, NULL, got_connectivity, nm);
+      g_dbus_proxy_call (proxy, "GetMetered", NULL, 0, -1, NULL, got_metered, nm);
+      g_dbus_proxy_call (proxy, "GetAvailable", NULL, 0, -1, NULL, got_available, nm);
+    }
 }
 
 static void
@@ -207,7 +266,7 @@ proxy_signal (GDBusProxy *proxy,
       g_variant_get (parameters, "(b)", &available);
       g_signal_emit_by_name (nm, "network-changed", available);
     }
-  else if (nm->priv->version == 2)
+  else if (nm->priv->version == 2 || nm->priv->version == 3)
     {
       update_properties (proxy, nm);
     }
