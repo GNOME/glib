@@ -149,6 +149,7 @@ got_metered (GObject *source,
     {
       nm->priv->metered = metered;
       g_object_notify (G_OBJECT (nm), "network-metered");
+      g_signal_emit_by_name (nm, "network-changed", nm->priv->available);
     }
 }
 
@@ -178,6 +179,7 @@ got_connectivity (GObject *source,
     {
       nm->priv->connectivity = connectivity;
       g_object_notify (G_OBJECT (nm), "connectivity");
+      g_signal_emit_by_name (nm, "network-changed", nm->priv->available);
     }
 }
 
@@ -219,6 +221,8 @@ proxy_properties_changed (GDBusProxy *proxy,
                           GVariant *invalidated,
                           GNetworkMonitorPortal *nm)
 {
+  gboolean should_emit_changed = FALSE;
+
   if (!nm->priv->has_network)
     return;
 
@@ -234,6 +238,7 @@ proxy_properties_changed (GDBusProxy *proxy,
             {
               nm->priv->connectivity = connectivity;
               g_object_notify (G_OBJECT (nm), "connectivity");
+              should_emit_changed = TRUE;
             }
           g_variant_unref (ret);
         }
@@ -246,6 +251,7 @@ proxy_properties_changed (GDBusProxy *proxy,
             {
               nm->priv->metered = metered;
               g_object_notify (G_OBJECT (nm), "network-metered");
+              should_emit_changed = TRUE;
             }
           g_variant_unref (ret);
         }
@@ -258,11 +264,14 @@ proxy_properties_changed (GDBusProxy *proxy,
             {
               nm->priv->available = available;
               g_object_notify (G_OBJECT (nm), "network-available");
-              g_signal_emit_by_name (nm, "network-changed", available);
+              should_emit_changed = TRUE;
             }
           g_variant_unref (ret);
         }
     }
+
+  if (should_emit_changed)
+    g_signal_emit_by_name (nm, "network-changed", nm->priv->available);
 }
                            
 static gboolean
