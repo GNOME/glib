@@ -40,7 +40,6 @@ struct _GNetworkMonitorPortalPrivate
 {
   GDBusProxy *proxy;
   gboolean has_network;
-  int version;
 
   gboolean available;
   gboolean metered;
@@ -107,13 +106,28 @@ got_available (GObject *source,
   ret = g_dbus_proxy_call_finish (proxy, res, &error);
   if (ret == NULL)
     {
-      g_warning ("%s", error->message);
-      g_clear_error (&error);
-      return;
-    }
+      if (!g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
+        {
+          g_warning ("%s", error->message);
+          g_clear_error (&error);
+          return;
+        }
 
-  g_variant_get (ret, "(b)", &available);
-  g_variant_unref (ret);
+      g_clear_error (&error);
+
+      /* Fall back to version 1 */
+      ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "available");
+      if (ret == NULL)
+        return;
+
+      available = g_variant_get_boolean (ret);
+      g_variant_unref (ret);
+    }
+  else
+    {
+      g_variant_get (ret, "(b)", &available);
+      g_variant_unref (ret);
+    }
 
   if (nm->priv->available != available)
     {
@@ -137,13 +151,28 @@ got_metered (GObject *source,
   ret = g_dbus_proxy_call_finish (proxy, res, &error);
   if (ret == NULL)
     {
-      g_warning ("%s", error->message);
-      g_clear_error (&error);
-      return;
-    }
+      if (!g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
+        {
+          g_warning ("%s", error->message);
+          g_clear_error (&error);
+          return;
+        }
 
-  g_variant_get (ret, "(b)", &metered);
-  g_variant_unref (ret);
+      g_clear_error (&error);
+
+      /* Fall back to version 1 */
+      ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "metered");
+      if (ret == NULL)
+        return;
+
+      metered = g_variant_get_boolean (ret);
+      g_variant_unref (ret);
+    }
+  else
+    {
+      g_variant_get (ret, "(b)", &metered);
+      g_variant_unref (ret);
+    }
 
   if (nm->priv->metered != metered)
     {
@@ -167,13 +196,28 @@ got_connectivity (GObject *source,
   ret = g_dbus_proxy_call_finish (proxy, res, &error);
   if (ret == NULL)
     {
-      g_warning ("%s", error->message);
-      g_clear_error (&error);
-      return;
-    }
+      if (!g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
+        {
+          g_warning ("%s", error->message);
+          g_clear_error (&error);
+          return;
+        }
 
-  g_variant_get (ret, "(u)", &connectivity);
-  g_variant_unref (ret);
+      g_clear_error (&error);
+
+      /* Fall back to version 1 */
+      ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "connectivity");
+      if (ret == NULL)
+        return;
+
+      connectivity = g_variant_get_uint32 (ret);
+      g_variant_unref (ret);
+    }
+  else
+    {
+      g_variant_get (ret, "(u)", &connectivity);
+      g_variant_unref (ret);
+    }
 
   if (nm->priv->connectivity != connectivity)
     {
@@ -200,7 +244,16 @@ got_status (GObject *source,
   ret = g_dbus_proxy_call_finish (proxy, res, &error);
   if (ret == NULL)
     {
-      g_warning ("%s", error->message);
+      if (g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD))
+        {
+          /* Fall back to version 2 */
+          g_dbus_proxy_call (proxy, "GetConnectivity", NULL, 0, -1, NULL, got_connectivity, nm);
+          g_dbus_proxy_call (proxy, "GetMetered", NULL, 0, -1, NULL, got_metered, nm);
+          g_dbus_proxy_call (proxy, "GetAvailable", NULL, 0, -1, NULL, got_available, nm);
+        }
+      else
+        g_warning ("%s", error->message);
+
       g_clear_error (&error);
       return;
     }
@@ -241,94 +294,82 @@ static void
 update_properties (GDBusProxy *proxy,
                    GNetworkMonitorPortal *nm)
 {
-  if (nm->priv->version == 3)
-    {
-      g_dbus_proxy_call (proxy, "GetStatus", NULL, 0, -1, NULL, got_status, nm);
-    }
-  else
-    {
-      g_dbus_proxy_call (proxy, "GetConnectivity", NULL, 0, -1, NULL, got_connectivity, nm);
-      g_dbus_proxy_call (proxy, "GetMetered", NULL, 0, -1, NULL, got_metered, nm);
-      g_dbus_proxy_call (proxy, "GetAvailable", NULL, 0, -1, NULL, got_available, nm);
-    }
+  /* Try version 3 first */
+  g_dbus_proxy_call (proxy, "GetStatus", NULL, 0, -1, NULL, got_status, nm);
 }
 
 static void
-proxy_signal (GDBusProxy *proxy,
-              const char *sender,
-              const char *signal,
-              GVariant *parameters,
+proxy_signal (GDBusProxy            *proxy,
+              const char            *sender,
+              const char            *signal,
+              GVariant              *parameters,
               GNetworkMonitorPortal *nm)
 {
   if (!nm->priv->has_network)
     return;
 
-  if (nm->priv->version == 1)
+  if (g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(b)")))
     {
       gboolean available;
 
       g_variant_get (parameters, "(b)", &available);
       g_signal_emit_by_name (nm, "network-changed", available);
     }
-  else if (nm->priv->version == 2 || nm->priv->version == 3)
+  else
     {
       update_properties (proxy, nm);
     }
 }
 
 static void
-proxy_properties_changed (GDBusProxy *proxy,
-                          GVariant *changed,
-                          GVariant *invalidated,
+proxy_properties_changed (GDBusProxy            *proxy,
+                          GVariant              *changed,
+                          GVariant              *invalidated,
                           GNetworkMonitorPortal *nm)
 {
   gboolean should_emit_changed = FALSE;
+  GVariant *ret;
 
   if (!nm->priv->has_network)
     return;
 
-  if (nm->priv->version == 1)
+  ret = g_dbus_proxy_get_cached_property (proxy, "connectivity");
+  if (ret)
     {
-      GVariant *ret;
-
-      ret = g_dbus_proxy_get_cached_property (proxy, "connectivity");
-      if (ret)
+      GNetworkConnectivity connectivity = g_variant_get_uint32 (ret);
+      if (nm->priv->connectivity != connectivity)
         {
-          GNetworkConnectivity connectivity = g_variant_get_uint32 (ret);
-          if (nm->priv->connectivity != connectivity)
-            {
-              nm->priv->connectivity = connectivity;
-              g_object_notify (G_OBJECT (nm), "connectivity");
-              should_emit_changed = TRUE;
-            }
-          g_variant_unref (ret);
+          nm->priv->connectivity = connectivity;
+          g_object_notify (G_OBJECT (nm), "connectivity");
+          should_emit_changed = TRUE;
         }
+      g_variant_unref (ret);
+    }
 
-      ret = g_dbus_proxy_get_cached_property (proxy, "metered");
-      if (ret)
+  ret = g_dbus_proxy_get_cached_property (proxy, "metered");
+  if (ret)
+    {
+      gboolean metered = g_variant_get_boolean (ret);
+      if (nm->priv->metered != metered)
         {
-          gboolean metered = g_variant_get_boolean (ret);
-          if (nm->priv->metered != metered)
-            {
-              nm->priv->metered = metered;
-              g_object_notify (G_OBJECT (nm), "network-metered");
-              should_emit_changed = TRUE;
-            }
-          g_variant_unref (ret);
+          nm->priv->metered = metered;
+          g_object_notify (G_OBJECT (nm), "network-metered");
+          should_emit_changed = TRUE;
         }
+      g_variant_unref (ret);
+    }
 
-      ret = g_dbus_proxy_get_cached_property (proxy, "available");
-      if (ret)
+  ret = g_dbus_proxy_get_cached_property (proxy, "available");
+  if (ret)
+    {
+      gboolean available = g_variant_get_boolean (ret);
+      if (nm->priv->available != available)
         {
-          gboolean available = g_variant_get_boolean (ret);
-          if (nm->priv->available != available)
-            {
-              nm->priv->available = available;
-              g_object_notify (G_OBJECT (nm), "network-available");
-              should_emit_changed = TRUE;
-            }
-          g_variant_unref (ret);
-        }
+          nm->priv->available = available;
+          g_object_notify (G_OBJECT (nm), "network-available");
+          should_emit_changed = TRUE;
+        } 
+      g_variant_unref (ret);
     }
 
   if (should_emit_changed)
@@ -386,6 +427,11 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   g_variant_get (ret, "u", &version);
   g_variant_unref (ret);
 
+  /* We only know how to deal with versions 1, 2 and 3.
+   * Version 1 uses properties
+   * Version 2 uses individual getters
+   * Version 3 adds GetStatus and CanReach
+   */
   if (version != 1 && version != 2 && version != 3)
     {
       g_object_unref (proxy);
@@ -401,12 +447,11 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
 
   nm->priv->proxy = proxy;
   nm->priv->has_network = glib_network_available_in_sandbox ();
-  nm->priv->version = version;
 
   if (!initable_parent_iface->init (initable, cancellable, error))
     return FALSE;
 
-  if (nm->priv->has_network && nm->priv->version > 1)
+  if (nm->priv->has_network)
     update_properties (proxy, nm);
 
   return TRUE;
