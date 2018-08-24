@@ -966,15 +966,17 @@ set_info_from_stat (GFileInfo             *info,
   g_file_info_set_size (info, statbuf->st_size);
 
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_DEVICE, statbuf->st_dev);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_NLINK, statbuf->st_nlink);
 #ifndef G_OS_WIN32
   /* Pointless setting these on Windows even if they exist in the struct */
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_INODE, statbuf->st_ino);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_NLINK, statbuf->st_nlink);
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_UID, statbuf->st_uid);
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_GID, statbuf->st_gid);
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_RDEV, statbuf->st_rdev);
 #endif
-  /* FIXME: st_mode is mostly pointless on Windows, too. Set the attribute or not? */
+  /* Mostly pointless on Windows.
+   * Still, it allows for S_ISREG/S_ISDIR and IWRITE (read-only) checks.
+   */
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_MODE, statbuf->st_mode);
 #if defined (HAVE_STRUCT_STAT_ST_BLKSIZE)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCK_SIZE, statbuf->st_blksize);
