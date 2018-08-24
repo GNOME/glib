@@ -51,6 +51,27 @@ notify (GObject *object,
     g_print ("connectivity: %d\n", g_network_monitor_get_connectivity (nm));
 }
 
+static gboolean
+check_google (gpointer data)
+{
+  GNetworkMonitor *nm = data;
+  g_autoptr(GSocketAddress) address = NULL;
+  g_autoptr(GError) error = NULL;
+  gboolean reachable;
+
+  address = g_network_address_new ("www.google.com", 8080);
+  reachable = g_network_monitor_can_reach (nm, G_SOCKET_CONNECTABLE (address), NULL, &error);
+  if (error)
+    g_print ("CanReach returned error: %s\n", error->message);
+  else
+    g_print ("%s:%d is %s\n",
+             g_network_address_get_hostname (G_NETWORK_ADDRESS (address)),
+             g_network_address_get_port (G_NETWORK_ADDRESS (address)),
+             reachable ? "reachable" : "unreachable");
+  
+  return G_SOURCE_CONTINUE;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -67,6 +88,7 @@ main (int argc, char **argv)
   nm = g_network_monitor_get_default ();
   g_print ("Using %s\n", g_type_name_from_instance (nm));
 
+  g_timeout_add (1000, check_google, nm);
   g_signal_connect (nm, "network-changed", G_CALLBACK (network_changed), NULL);
   g_signal_connect (nm, "notify", G_CALLBACK (notify), NULL);
 
