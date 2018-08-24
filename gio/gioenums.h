@@ -361,6 +361,9 @@ typedef enum {
  * @G_FILE_TYPE_MOUNTABLE: File is a mountable location.
  *
  * Indicates the file's on-disk type.
+ * On Windows systems a file will never have %G_FILE_TYPE_SYMBOLIC_LINK type,
+ * use GFileInfo and %G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK to determine
+ * whether a file is a symlink or not.
  **/
 typedef enum {
   G_FILE_TYPE_UNKNOWN = 0,
