@@ -161,7 +161,7 @@ _g_local_file_info_create_fs_id (GLocalFileStat *statbuf)
 static gchar *
 read_link (const gchar *full_name)
 {
-#if defined (HAVE_READLINK) || defined (G_OS_WIN32)
+#if defined (HAVE_READLINK)
   gchar *buffer;
   guint size;
   
@@ -171,12 +171,8 @@ read_link (const gchar *full_name)
   while (1)
     {
       int read_size;
-      
-#ifndef G_OS_WIN32
+
       read_size = readlink (full_name, buffer, size);
-#else
-      read_size = GLIB_PRIVATE_CALL (g_win32_readlink_utf8) (full_name, buffer, size);
-#endif
       if (read_size < 0)
 	{
 	  g_free (buffer);
@@ -190,6 +186,17 @@ read_link (const gchar *full_name)
       size *= 2;
       buffer = g_realloc (buffer, size);
     }
+#elif defined (G_OS_WIN32)
+  gchar *buffer;
+  int read_size;
+
+  read_size = GLIB_PRIVATE_CALL (g_win32_readlink_utf8) (full_name, NULL, 0, &buffer, TRUE);
+  if (read_size < 0)
+    return NULL;
+  else if (read_size == 0)
+    return strdup ("");
+  else
+    return buffer;
 #else
   return NULL;
 #endif
