@@ -2090,7 +2090,7 @@ gchar *
 g_file_read_link (const gchar  *filename,
 	          GError      **error)
 {
-#if defined (HAVE_READLINK) || defined (G_OS_WIN32)
+#if defined (HAVE_READLINK)
   gchar *buffer;
   size_t size;
   gssize read_size;
@@ -2103,11 +2103,7 @@ g_file_read_link (const gchar  *filename,
   
   while (TRUE) 
     {
-#ifndef G_OS_WIN32
       read_size = readlink (filename, buffer, size);
-#else
-      read_size = g_win32_readlink_utf8 (filename, buffer, size);
-#endif
       if (read_size < 0)
         {
           int saved_errno = errno;
@@ -2128,6 +2124,27 @@ g_file_read_link (const gchar  *filename,
       size *= 2;
       buffer = g_realloc (buffer, size);
     }
+#elif defined (G_OS_WIN32)
+  gchar *buffer;
+  gssize read_size;
+  
+  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  read_size = g_win32_readlink_utf8 (filename, NULL, 0, &buffer, TRUE);
+  if (read_size < 0)
+    {
+      int saved_errno = errno;
+      set_file_error (error,
+                      filename,
+                      _("Failed to read the symbolic link “%s”: %s"),
+                      saved_errno);
+      return NULL;
+    }
+  else if (read_size == 0)
+    return strdup ("");
+  else
+    return buffer;
 #else
   g_return_val_if_fail (filename != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
