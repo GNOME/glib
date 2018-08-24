@@ -252,6 +252,7 @@ got_status (GObject *source,
   GError *error = NULL;
   GVariant *ret;
   gboolean should_emit_changed = FALSE;
+  GVariant *status;
   gboolean available;
   gboolean metered;
   GNetworkConnectivity connectivity;
@@ -273,8 +274,13 @@ got_status (GObject *source,
       return;
     }
 
-  g_variant_get (ret, "(bbu)", &available, &metered, &connectivity);
+  g_variant_get (ret, "(@a{sv})", &status);
   g_variant_unref (ret);
+
+  g_variant_lookup (status, "available", "b", &available);
+  g_variant_lookup (status, "metered", "b", &metered);
+  g_variant_lookup (status, "connectivity", "u", &connectivity);
+  g_variant_unref (status);
 
   g_object_freeze_notify (G_OBJECT (nm));
 
