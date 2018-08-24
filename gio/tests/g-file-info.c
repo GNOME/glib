@@ -291,10 +291,10 @@ test_internal_enhanced_stdio (void)
       ft_programdata = g_file_info_get_file_type (fi_programdata);
       ft_commondata = g_file_info_get_file_type (fi_commondata);
 
-      g_assert_cmpint (ft_allusers, ==, G_FILE_TYPE_SYMBOLIC_LINK);
+      g_assert_cmpint (ft_allusers, ==, G_FILE_TYPE_DIRECTORY);
       g_assert_cmpint (ft_allusers_target, ==, G_FILE_TYPE_DIRECTORY);
       g_assert_cmpint (ft_programdata, ==, G_FILE_TYPE_DIRECTORY);
-      g_assert_cmpint (ft_commondata, ==, G_FILE_TYPE_SYMBOLIC_LINK);
+      g_assert_cmpint (ft_commondata, ==, G_FILE_TYPE_DIRECTORY);
 
       allusers_is_symlink = g_file_info_get_attribute_boolean (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
       allusers_reparse_tag = g_file_info_get_attribute_uint32 (fi_allusers, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG);

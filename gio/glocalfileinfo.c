@@ -957,8 +957,8 @@ set_info_from_stat (GFileInfo             *info,
   else if (S_ISLNK (statbuf->st_mode))
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #elif defined (G_OS_WIN32)
-  if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK ||
-      statbuf->reparse_tag == IO_REPARSE_TAG_MOUNT_POINT)
+  else if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+           statbuf->reparse_tag == IO_REPARSE_TAG_MOUNT_POINT)
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #endif
 
