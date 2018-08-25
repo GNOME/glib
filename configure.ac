@@ -142,7 +142,7 @@ case "$host" in
     case "$host" in
     x86_64-*-*)
       LIB_EXE_MACHINE_FLAG=X64
-      glib_pollfd_format='%#I64x'
+      glib_pollfd_format='%#llx'
       ;;
     esac
 
@@ -514,7 +514,7 @@ AS_IF([test x$ac_cv_sizeof_long_long = x8], [
 	# long long is a 64 bit integer.
 	AC_MSG_CHECKING(for format to printf and scanf a guint64)
 	AC_CACHE_VAL(glib_cv_long_long_format,[
-		for format in ll q I64; do
+		for format in ll q; do
 		  AC_TRY_RUN([#include <stdio.h>  
 			int main()
 			{
@@ -3096,8 +3096,8 @@ long)
   glib_msize_type='LONG'
   ;;
 "long long")
-  gsize_modifier='"I64"'
-  gsize_format='"I64u"'
+  gsize_modifier='"ll"'
+  gsize_format='"llu"'
   glib_msize_type='INT64'
   ;;
 esac
@@ -3119,8 +3119,8 @@ long)
   glib_mssize_type='LONG'
   ;;
 "long long")
-  gssize_modifier='"I64"'
-  gssize_format='"I64i"'
+  gssize_modifier='"ll"'
+  gssize_format='"lli"'
   glib_mssize_type='INT64'
   ;;
 esac
@@ -3149,9 +3149,9 @@ $ac_cv_sizeof_long)
   ;;
 $ac_cv_sizeof_long_long)
   glib_intptr_type_define='long long'
-  gintptr_modifier='"I64"'
-  gintptr_format='"I64i"'
-  guintptr_format='"I64u"'
+  gintptr_modifier='"ll"'
+  gintptr_format='"lli"'
+  guintptr_format='"llu"'
   glib_gpi_cast='(gint64)'
   glib_gpui_cast='(guint64)'
   ;;
