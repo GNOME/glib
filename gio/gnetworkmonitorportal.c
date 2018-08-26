@@ -547,10 +547,10 @@ g_network_monitor_portal_can_reach (GNetworkMonitor     *monitor,
                                 g_variant_new ("(su)",
                                                g_network_address_get_hostname (address),
                                                g_network_address_get_port (address)),
-                               G_DBUS_CALL_FLAGS_NONE,
-                               -1,
-                               cancellable,
-                               error);
+                                G_DBUS_CALL_FLAGS_NONE,
+                                -1,
+                                cancellable,
+                                error);
   
   if (ret)
     {
