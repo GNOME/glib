@@ -132,7 +132,10 @@ got_available (GObject *source,
       /* Fall back to version 1 */
       ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "available");
       if (ret == NULL)
-        return;
+        {
+          g_warning ("Failed to get the '%s' property", "available");
+          return;
+        }
 
       available = g_variant_get_boolean (ret);
       g_variant_unref (ret);
@@ -177,7 +180,10 @@ got_metered (GObject *source,
       /* Fall back to version 1 */
       ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "metered");
       if (ret == NULL)
-        return;
+        {
+          g_warning ("Failed to get the '%s' property", "metered");
+          return;
+        }
 
       metered = g_variant_get_boolean (ret);
       g_variant_unref (ret);
@@ -222,7 +228,10 @@ got_connectivity (GObject *source,
       /* Fall back to version 1 */
       ret = g_dbus_proxy_get_cached_property (nm->priv->proxy, "connectivity");
       if (ret == NULL)
-        return;
+        {
+          g_warning ("Failed to get the '%s' property", "connectivity");
+          return;
+        }
 
       connectivity = g_variant_get_uint32 (ret);
       g_variant_unref (ret);
