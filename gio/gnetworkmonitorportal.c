@@ -534,7 +534,9 @@ g_network_monitor_portal_can_reach (GNetworkMonitor     *monitor,
 
   if (!G_IS_NETWORK_ADDRESS (connectable))
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Can't handle this kind of GSocketConnectable");
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                   "Can't handle this kind of GSocketConnectable (%s)",
+                   G_OBJECT_TYPE_NAME (connectable));
       return FALSE;
     }
 
@@ -600,8 +602,9 @@ g_network_monitor_portal_can_reach_async (GNetworkMonitor     *monitor,
 
   if (!G_IS_NETWORK_ADDRESS (connectable))
     {
-      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_FAILED,
-                               "Can't handle this kind of GSocketConnectable");
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                   "Can't handle this kind of GSocketConnectable (%s)",
+                   G_OBJECT_TYPE_NAME (connectable));
       g_object_unref (task);
       return;
     }
