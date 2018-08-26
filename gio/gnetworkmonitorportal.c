@@ -339,11 +339,20 @@ proxy_signal (GDBusProxy            *proxy,
   if (!nm->priv->has_network)
     return;
 
+  if (strcmp (signal, "changed") != 0)
+    return;
+
+  /* Version 1 updates "available" with the "changed" signal */
   if (g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(b)")))
     {
       gboolean available;
 
       g_variant_get (parameters, "(b)", &available);
+      if (nm->priv->available != available)
+        {
+          nm->priv->available = available;
+          g_object_notify (G_OBJECT (nm), "available");
+        }
       g_signal_emit_by_name (nm, "network-changed", available);
     }
   else
