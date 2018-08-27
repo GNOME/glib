@@ -804,10 +804,14 @@ if giomodulesdir == ''
   giomodulesdir = join_paths('${libdir}', 'gio', 'modules')
 endif
 
+schemas_subdir = join_paths('glib-2.0', 'schemas')
+
 pkg.generate(libraries : libgio,
   libraries_private : [osx_ldflags],
   requires : ['glib-2.0', 'gobject-2.0'],
-  variables : ['bindir=' + join_paths('${prefix}', get_option('bindir')),
+  variables : ['datadir=' + join_paths('${prefix}', get_option('datadir')),
+               'schemasdir=' + join_paths('${datadir}', schemas_subdir),
+               'bindir=' + join_paths('${prefix}', get_option('bindir')),
                'giomoduledir=' + giomodulesdir,
                'glib_compile_schemas=' + join_paths('${bindir}', 'glib-compile-schemas'),
                'glib_compile_resources=' + join_paths('${bindir}', 'glib-compile-resources'),
@@ -945,7 +949,7 @@ executable('gsettings', 'gsettings-tool.c',
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 install_data('gschema.dtd',
-  install_dir : join_paths(get_option('datadir'), 'glib-2.0/schemas'))
+  install_dir : join_paths(get_option('datadir'), schemas_subdir))
 
 install_data(['gschema.loc', 'gschema.its'],
   install_dir : join_paths(get_option('datadir'), 'gettext/its'))
