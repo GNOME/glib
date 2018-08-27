@@ -849,6 +849,167 @@ test_communicate (gconstpointer test_data)
   g_object_unref (proc);
 }
 
+typedef struct {
+  GSubprocess  *proc;
+  GCancellable *cancellable;
+  gboolean is_utf8;
+  gboolean running;
+  GError *error;
+} TestCancelledCommunicateData;
+
+static gboolean
+on_test_communicate_cancelled_idle (gpointer user_data)
+{
+  TestCancelledCommunicateData *data = user_data;
+  GBytes *input;
+  const gchar *hellostring;
+  GBytes *stdout_bytes = NULL, *stderr_bytes = NULL;
+  gchar *stdout_buf = NULL, *stderr_buf = NULL;
+
+  /* Include a leading hash and trailing newline so that if this gets onto the
+   * test’s stdout, it doesn’t mess up TAP output. */
+  hellostring = "# hello world\n";
+  input = g_bytes_new_static (hellostring, strlen (hellostring));
+
+  if (data->is_utf8)
+    g_subprocess_communicate_utf8 (data->proc, hellostring, data->cancellable,
+                                   &stdout_buf, &stderr_buf, &data->error);
+  else
+    g_subprocess_communicate (data->proc, input, data->cancellable, &stdout_bytes,
+                              &stderr_bytes, &data->error);
+
+  data->running = FALSE;
+
+  if (data->is_utf8)
+    {
+      g_assert_null (stdout_buf);
+      g_assert_null (stderr_buf);
+    }
+  else
+    {
+      g_assert_null (stdout_bytes);
+      g_assert_null (stderr_bytes);
+    }
+
+  g_bytes_unref (input);
+
+  return G_SOURCE_REMOVE;
+}
+
+/* Test g_subprocess_communicate() can be cancelled correctly */
+static void
+test_communicate_cancelled (gconstpointer test_data)
+{
+  GSubprocessFlags flags = GPOINTER_TO_INT (test_data);
+  GPtrArray *args;
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+  GError *error = NULL;
+  TestCancelledCommunicateData data = { 0 };
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE | flags,
+                            &error);
+  g_assert_no_error (error);
+  g_ptr_array_free (args, TRUE);
+
+  cancellable = g_cancellable_new ();
+
+  data.proc = proc;
+  data.cancellable = cancellable;
+  data.error = error;
+
+  g_cancellable_cancel (cancellable);
+  g_idle_add (on_test_communicate_cancelled_idle, &data);
+
+  data.running = TRUE;
+  while (data.running)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&data.error);
+
+  g_object_unref (cancellable);
+  g_object_unref (proc);
+}
+
+static void
+on_communicate_cancelled_complete (GObject               *proc,
+                                   GAsyncResult          *result,
+                                   gpointer               user_data)
+{
+  TestAsyncCommunicateData *data = user_data;
+  GBytes *stdout_bytes = NULL, *stderr_bytes = NULL;
+  char *stdout_str = NULL, *stderr_str = NULL;
+
+  data->running = FALSE;
+  if (data->is_utf8)
+    (void) g_subprocess_communicate_utf8_finish ((GSubprocess*)proc, result,
+                                                 &stdout_str, &stderr_str, &data->error);
+  else
+    (void) g_subprocess_communicate_finish ((GSubprocess*)proc, result,
+                                            &stdout_bytes, &stderr_bytes, &data->error);
+
+  if (data->is_utf8)
+    {
+      g_assert_null (stdout_str);
+      g_assert_null (stderr_str);
+    }
+  else
+    {
+      g_assert_null (stdout_bytes);
+      g_assert_null (stderr_bytes);
+    }
+}
+
+/* Test g_subprocess_communicate_async() can be cancelled correctly,
+ * as passed in via @test_data. */
+static void
+test_communicate_cancelled_async (gconstpointer test_data)
+{
+  GSubprocessFlags flags = GPOINTER_TO_INT (test_data);
+  GError *error = NULL;
+  GPtrArray *args;
+  TestAsyncCommunicateData data = { 0 };
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+  GBytes *input;
+  const char *hellostring;
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE | flags,
+                            &error);
+  g_assert_no_error (error);
+  g_ptr_array_free (args, TRUE);
+
+  /* Include a leading hash and trailing newline so that if this gets onto the
+   * test’s stdout, it doesn’t mess up TAP output. */
+  hellostring = "# hello world\n";
+  input = g_bytes_new_static (hellostring, strlen (hellostring));
+
+  cancellable = g_cancellable_new ();
+
+  g_subprocess_communicate_async (proc, input,
+                                  cancellable,
+                                  on_communicate_cancelled_complete,
+                                  &data);
+
+  g_cancellable_cancel (cancellable);
+
+  data.running = TRUE;
+  while (data.running)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&data.error);
+
+  g_bytes_unref (input);
+  g_object_unref (cancellable);
+  g_object_unref (proc);
+}
+
 /* Test g_subprocess_communicate_utf8_async() works correctly with a variety of
  * flags, as passed in via @test_data. */
 static void
@@ -880,6 +1041,44 @@ test_communicate_utf8_async (gconstpointer test_data)
 
   g_assert_no_error (data.error);
 
+  g_object_unref (proc);
+}
+
+/* Test g_subprocess_communicate_utf8_async() can be cancelled correclty. */
+static void
+test_communicate_utf8_cancelled_async (gconstpointer test_data)
+{
+  GSubprocessFlags flags = GPOINTER_TO_INT (test_data);
+  GError *error = NULL;
+  GPtrArray *args;
+  TestAsyncCommunicateData data = { flags, 0, };
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE | flags,
+                            &error);
+  g_assert_no_error (error);
+  g_ptr_array_free (args, TRUE);
+
+  cancellable = g_cancellable_new ();
+  data.is_utf8 = TRUE;
+  g_subprocess_communicate_utf8_async (proc, "# hello world\n",
+                                       cancellable,
+                                       on_communicate_cancelled_complete,
+                                       &data);
+
+  g_cancellable_cancel (cancellable);
+
+  data.running = TRUE;
+  while (data.running)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&data.error);
+
+  g_object_unref (cancellable);
   g_object_unref (proc);
 }
 
@@ -920,6 +1119,45 @@ test_communicate_utf8 (gconstpointer test_data)
 
   g_free (stdout_buf);
   g_free (stderr_buf);
+  g_object_unref (proc);
+}
+
+/* Test g_subprocess_communicate_utf8() can be cancelled correctly */
+static void
+test_communicate_utf8_cancelled (gconstpointer test_data)
+{
+  GSubprocessFlags flags = GPOINTER_TO_INT (test_data);
+  GPtrArray *args;
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+  GError *error = NULL;
+  TestCancelledCommunicateData data = { 0 };
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE | flags,
+                            &error);
+  g_assert_no_error (error);
+  g_ptr_array_free (args, TRUE);
+
+  cancellable = g_cancellable_new ();
+
+  data.proc = proc;
+  data.cancellable = cancellable;
+  data.error = error;
+
+  g_cancellable_cancel (cancellable);
+  g_idle_add (on_test_communicate_cancelled_idle, &data);
+
+  data.is_utf8 = TRUE;
+  data.running = TRUE;
+  while (data.running)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&data.error);
+
+  g_object_unref (cancellable);
   g_object_unref (proc);
 }
 
@@ -1509,9 +1747,19 @@ main (int argc, char **argv)
                             test_communicate);
       g_free (test_path);
 
+      test_path = g_strdup_printf ("/gsubprocess/communicate/cancelled%s", flags_vectors[i].subtest);
+      g_test_add_data_func (test_path, GINT_TO_POINTER (flags_vectors[i].flags),
+                            test_communicate_cancelled);
+      g_free (test_path);
+
       test_path = g_strdup_printf ("/gsubprocess/communicate/async%s", flags_vectors[i].subtest);
       g_test_add_data_func (test_path, GINT_TO_POINTER (flags_vectors[i].flags),
                             test_communicate_async);
+      g_free (test_path);
+
+      test_path = g_strdup_printf ("/gsubprocess/communicate/async/cancelled%s", flags_vectors[i].subtest);
+      g_test_add_data_func (test_path, GINT_TO_POINTER (flags_vectors[i].flags),
+                            test_communicate_cancelled_async);
       g_free (test_path);
 
       test_path = g_strdup_printf ("/gsubprocess/communicate/utf8%s", flags_vectors[i].subtest);
@@ -1519,9 +1767,19 @@ main (int argc, char **argv)
                             test_communicate_utf8);
       g_free (test_path);
 
+      test_path = g_strdup_printf ("/gsubprocess/communicate/utf8/cancelled%s", flags_vectors[i].subtest);
+      g_test_add_data_func (test_path, GINT_TO_POINTER (flags_vectors[i].flags),
+                            test_communicate_utf8_cancelled);
+      g_free (test_path);
+
       test_path = g_strdup_printf ("/gsubprocess/communicate/utf8/async%s", flags_vectors[i].subtest);
       g_test_add_data_func (test_path, GINT_TO_POINTER (flags_vectors[i].flags),
                             test_communicate_utf8_async);
+      g_free (test_path);
+
+      test_path = g_strdup_printf ("/gsubprocess/communicate/utf8/async/cancelled%s", flags_vectors[i].subtest);
+      g_test_add_data_func (test_path, GINT_TO_POINTER (flags_vectors[i].flags),
+                            test_communicate_utf8_cancelled_async);
       g_free (test_path);
     }
 
