@@ -40,21 +40,20 @@
 #define HAVE_O_CLOEXEC 1
 #endif
 
-static GXdpTrash *trash;
-
-static gboolean
-init_trash_portal (void)
+static GXdpTrash *
+ensure_trash_portal (void)
 {
-  static gsize trash_inited = 0;
+  static GXdpTrash *trash = NULL;
 
-  if (g_once_init_enter (&trash_inited))
+  if (g_once_init_enter (&trash))
     {
       GError *error = NULL;
       GDBusConnection *connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+      GXdpTrash *proxy = NULL;
 
       if (connection != NULL)
         {
-          trash = gxdp_trash_proxy_new_sync (connection, 0,
+          proxy = gxdp_trash_proxy_new_sync (connection, 0,
                                              "org.freedesktop.portal.Desktop",
                                              "/org/freedesktop/portal/desktop",
                                              NULL, &error);
@@ -67,10 +66,10 @@ init_trash_portal (void)
           g_error_free (error);
         }
 
-      g_once_init_leave (&trash_inited, 1);
+      g_once_init_leave (&trash, proxy);
     }
 
-  return trash != NULL;
+  return trash;
 }
 
 gboolean
@@ -81,8 +80,10 @@ g_trash_portal_trash_file (GFile   *file,
   GUnixFDList *fd_list = NULL;
   int fd, fd_in, errsv;
   gboolean ret = FALSE;
-
-  if (!init_trash_portal ())
+  GXdpTrash *proxy;
+  
+  proxy = ensure_trash_portal ();
+  if (proxy == NULL)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
                    "Trash portal is not available");
@@ -111,7 +112,7 @@ g_trash_portal_trash_file (GFile   *file,
   if (fd_in == -1)
     goto out;
 
-  ret = gxdp_trash_call_trash_file_sync (trash,
+  ret = gxdp_trash_call_trash_file_sync (proxy,
                                          g_variant_new_handle (fd_in),
                                          fd_list,
                                          NULL,
