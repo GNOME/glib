@@ -425,8 +425,6 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (initable);
   GDBusProxy *proxy;
   gchar *name_owner = NULL;
-  int version;
-  GVariant *ret;
 
   nm->priv->available = FALSE;
   nm->priv->metered = FALSE;
@@ -440,7 +438,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
 
   proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
                                          G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START
-                                         | G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES,
+                                         | G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
                                          NULL,
                                          "org.freedesktop.portal.Desktop",
                                          "/org/freedesktop/portal/desktop",
@@ -463,25 +461,6 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
     }
 
   g_free (name_owner);
-
-  ret = g_dbus_proxy_get_cached_property (proxy, "version");
-  g_variant_get (ret, "u", &version);
-  g_variant_unref (ret);
-
-  /* We only know how to deal with versions 1, 2 and 3.
-   * Version 1 uses properties
-   * Version 2 uses individual getters
-   * Version 3 adds GetStatus and CanReach
-   */
-  if (version != 1 && version != 2 && version != 3)
-    {
-      g_object_unref (proxy);
-      g_set_error (error,
-                   G_DBUS_ERROR,
-                   G_DBUS_ERROR_NAME_HAS_NO_OWNER,
-                   "NetworkMonitor portal unsupported version: %d", version);
-      return FALSE;
-    }
 
   g_signal_connect (proxy, "g-signal", G_CALLBACK (proxy_signal), nm);
   g_signal_connect (proxy, "g-properties-changed", G_CALLBACK (proxy_properties_changed), nm);
