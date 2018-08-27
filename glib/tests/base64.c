@@ -413,7 +413,7 @@ main (int argc, char *argv[])
   gint i;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/browse.cgi?product=");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   for (i = 0; i < DATA_SIZE; i++)
     data[i] = (guchar)i;

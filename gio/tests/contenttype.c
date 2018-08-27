@@ -408,7 +408,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/contenttype/guess", test_guess);
   g_test_add_func ("/contenttype/guess_svg_from_data", test_guess_svg_from_data);

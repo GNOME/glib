@@ -1089,7 +1089,7 @@ main (int   argc,
   setlocale (LC_ALL, "C");
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/gdbus/message-serialize-basic", message_serialize_basic);
   g_test_add_func ("/gdbus/message-serialize-complex", message_serialize_complex);

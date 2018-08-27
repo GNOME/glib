@@ -154,7 +154,7 @@ main (int argc, char *argv[])
 
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
   g_test_bug ("787731");
 
   g_test_add_data_func ("/g-file-info-filesystem-readonly/test-fs-ro",

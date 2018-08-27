@@ -734,7 +734,7 @@ test_store_signal_items_changed (void)
 int main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/glistmodel/store/boundaries", test_store_boundaries);
   g_test_add_func ("/glistmodel/store/refcounts", test_store_refcounts);

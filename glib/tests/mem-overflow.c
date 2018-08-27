@@ -210,7 +210,7 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/mem/overflow", mem_overflow);
   g_test_add_func ("/mem/overflow/subprocess/malloc_n_a_a", mem_overflow_malloc_n_a_a);

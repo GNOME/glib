@@ -1717,7 +1717,7 @@ main (int   argc,
   GError *error = NULL;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   sock = g_socket_new (G_SOCKET_FAMILY_IPV6,
                        G_SOCKET_TYPE_STREAM,

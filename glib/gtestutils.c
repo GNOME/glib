@@ -149,7 +149,7 @@
  *   setlocale (LC_ALL, "");
  *
  *   g_test_init (&argc, &argv, NULL);
- *   g_test_bug_base ("http://bugzilla.gnome.org/show_bug.cgi?id=");
+ *   g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
  *
  *   // Define the tests.
  *   g_test_add ("/my-object/test1", MyObjectFixture, "some-user-data",

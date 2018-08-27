@@ -1167,7 +1167,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/file/basic", test_basic);
   g_test_add_func ("/file/build-filename", test_build_filename);

@@ -1478,7 +1478,7 @@ main (int argc, char **argv)
   gsize i;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/gsubprocess/noop", test_noop);
   g_test_add_func ("/gsubprocess/noop-all-to-null", test_noop_all_to_null);

@@ -1735,7 +1735,7 @@ main (int argc, char *argv[])
   g_setenv ("XDG_DATA_HOME", g_test_get_dir (G_TEST_DIST), TRUE);
 #endif
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/keyfile/line-ends", test_line_ends);
   g_test_add_func ("/keyfile/whitespace", test_whitespace);

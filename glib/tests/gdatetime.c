@@ -2428,7 +2428,7 @@ main (gint   argc,
       gchar *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   /* GDateTime Tests */
   bind_textdomain_codeset ("glib20", "UTF-8");

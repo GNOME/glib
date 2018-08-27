@@ -551,7 +551,7 @@ main (int argc, char *argv[])
   g_setenv ("XDG_CURRENT_DESKTOP", "GNOME", TRUE);
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   /* With Meson build we need to change into right directory, so that the
    * appinfo-test binary can be found. */

@@ -2564,7 +2564,7 @@ main (int   argc,
   g_setenv ("LC_ALL", "C", TRUE);
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/option/help/options", test_help);
   g_test_add_func ("/option/help/no-options", test_help_no_options);

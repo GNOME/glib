@@ -460,7 +460,7 @@ binding_chain (void)
   BindingSource *c = g_object_new (binding_source_get_type (), NULL);
   GBinding *binding_1, *binding_2;
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
   g_test_bug ("621782");
 
   /* A -> B, B -> C */

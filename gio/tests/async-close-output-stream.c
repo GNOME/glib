@@ -244,7 +244,7 @@ main (int   argc,
 
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   data = g_slice_new (SetupData);
 

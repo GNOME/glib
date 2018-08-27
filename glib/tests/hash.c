@@ -1537,7 +1537,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/hash/misc", test_hash_misc);
   g_test_add_data_func ("/hash/one", GINT_TO_POINTER (TRUE), second_hash_test);
