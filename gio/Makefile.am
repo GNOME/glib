@@ -993,6 +993,14 @@ gio_LDADD = libgio-2.0.la 				\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)
 
+bin_PROGRAMS += gnet
+gnet_SOURCES = \
+	gnet-tool.c
+gnet_LDADD = libgio-2.0.la 				\
+	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/glib/libglib-2.0.la		\
+	$(NULL)
+
 dist-hook: $(BUILT_EXTRA_DIST)
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
