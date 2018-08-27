@@ -81,6 +81,7 @@ g_trash_portal_trash_file (GFile   *file,
   int fd, fd_in, errsv;
   gboolean ret = FALSE;
   GXdpTrash *proxy;
+  int flags;
   
   proxy = ensure_trash_portal ();
   if (proxy == NULL)
@@ -91,7 +92,12 @@ g_trash_portal_trash_file (GFile   *file,
     }
 
   path = g_file_get_path (file);
-  fd = g_open (path, O_RDWR | O_PATH | O_CLOEXEC);
+
+  flags = O_RDWR | O_CLOEXEC;
+  if (g_file_query_file_type (file, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY)
+    flags |= O_PATH;
+
+  fd = g_open (path, flags);
   errsv = errno;
 
   if (fd == -1)
