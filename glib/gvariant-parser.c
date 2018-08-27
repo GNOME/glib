@@ -197,7 +197,8 @@ token_stream_prepare (TokenStream *stream)
       break;
 
     case 'b':
-      if (stream->stream[1] == '\'' || stream->stream[1] == '"')
+      if (stream->stream + 1 != stream->end &&
+          (stream->stream[1] == '\'' || stream->stream[1] == '"'))
         {
           for (end = stream->stream + 2; end != stream->end; end++)
             if (*end == stream->stream[1] || *end == '\0' ||

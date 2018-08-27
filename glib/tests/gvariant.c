@@ -3892,6 +3892,17 @@ test_parse_failures (void)
     "string 4",                 "7-8:",            "can not parse as",
     "\x0a",                     "1:",              "expected value",
     "((",                       "2:",              "expected value",
+    "(b",                       "1:",              "expected value",
+    "b'",                       "0-2:",            "unterminated string constant",
+    "b\"",                      "0-2:",            "unterminated string constant",
+    "b'a",                      "0-3:",            "unterminated string constant",
+    "b\"a",                     "0-3:",            "unterminated string constant",
+    "b'\\",                     "0-3:",            "unterminated string constant",
+    "b\"\\",                    "0-3:",            "unterminated string constant",
+    "b'\\'",                    "0-4:",            "unterminated string constant",
+    "b\"\\\"",                  "0-4:",            "unterminated string constant",
+    "b'\\'a",                   "0-5:",            "unterminated string constant",
+    "b\"\\\"a",                 "0-5:",            "unterminated string constant",
   };
   gint i;
 
