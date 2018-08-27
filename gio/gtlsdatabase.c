@@ -39,6 +39,9 @@
  * from a certificate or key store. It is an abstract base class which
  * TLS library specific subtypes override.
  *
+ * A #GTlsDatabase may be accessed from multiple threads by the TLS backend.
+ * All implementations are required to be fully thread-safe.
+ *
  * Most common client applications will not directly interact with
  * #GTlsDatabase. It is used internally by #GTlsConnection.
  *
