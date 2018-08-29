@@ -1882,10 +1882,6 @@ have_bash = find_program('bash', required : false).found() # For completion scri
 have_m4 = find_program('m4', required : false).found() # For m4 macros
 have_sh = find_program('sh', required : false).found() # For glib-gettextize
 
-# FIXME: defines in config.h that are not actually used anywhere
-# (we add them for now to minimise the diff)
-glib_conf.set('SIZEOF___INT64', 8)
-
 # FIXME: How to detect Solaris? https://github.com/mesonbuild/meson/issues/1578
 if host_system == 'sunos'
   glib_conf.set('_XOPEN_SOURCE_EXTENDED', 1)
