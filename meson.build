@@ -894,6 +894,9 @@ else
   glib_conf.set('HAVE_VASPRINTF', 1)
 endif
 
+glibconfig_conf.set('GLIB_USING_SYSTEM_PRINTF',
+                    have_good_vsnprintf and have_good_snprintf and have_good_printf)
+
 # Check whether the printf() family supports Unix98 %n$ positional parameters
 # AC_FUNC_PRINTF_UNIX98
 # Nothing uses HAVE_UNIX98_PRINTF
@@ -1523,8 +1526,6 @@ foreach d : inet_defines
   val = cc.compute_int(d[0], prefix: inet_includes)
   glibconfig_conf.set(d[1], val)
 endforeach
-
-glibconfig_conf.set('GLIB_USING_SYSTEM_PRINTF', true) # FIXME!
 
 # We need a more robust approach here...
 host_cpu_family = host_machine.cpu_family()
