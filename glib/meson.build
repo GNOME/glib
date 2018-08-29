@@ -256,6 +256,7 @@ libglib = library('glib-2.0',
   objects : [charset_lib.extract_all_objects()] + gnulib_objects + pcre_objects,
   version : library_version,
   soversion : soversion,
+  darwin_versions : darwin_versions,
   install : true,
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
