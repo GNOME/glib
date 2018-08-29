@@ -903,7 +903,6 @@ glibconfig_conf.set('GLIB_USING_SYSTEM_PRINTF',
 
 
 # Check for nl_langinfo and CODESET
-# FIXME: Check for HAVE_BIND_TEXTDOMAIN_CODESET
 if cc.links('''#include <langinfo.h>
                int main (int argc, char ** argv) {
                  char *codeset = nl_langinfo (CODESET);
@@ -1775,12 +1774,19 @@ endif
 # implementations. This could be extended if issues are found in some platforms.
 if cc.has_function('ngettext')
   libintl = []
+  have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset')
 else
   libintl = cc.find_library('intl', required : false)
   if not libintl.found()
     libintl = subproject('proxy-libintl').get_variable('intl_dep')
+    have_bind_textdomain_codeset = true  # proxy-libintl supports it
+  else
+    have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset',
+                                                   dependencies : libintl)
   endif
 endif
+
+glib_conf.set('HAVE_BIND_TEXTDOMAIN_CODESET', have_bind_textdomain_codeset)
 
 # We require gettext to always be present
 glib_conf.set('HAVE_DCGETTEXT', 1)
