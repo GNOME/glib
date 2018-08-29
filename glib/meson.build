@@ -239,6 +239,7 @@ libglib = library('glib-2.0',
   sources : [deprecated_sources, glib_sources],
   version : library_version,
   soversion : soversion,
+  darwin_versions : darwin_versions,
   install : true,
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
