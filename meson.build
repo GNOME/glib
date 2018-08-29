@@ -739,12 +739,14 @@ if cc.compiles('''#include <fcntl.h>
 endif
 
 # Check whether there is a vsnprintf() function with C99 semantics installed.
-# AC_FUNC_VSNPRINTF_C99
+# (similar tests to AC_FUNC_VSNPRINTF_C99)
 # Check whether there is a snprintf() function with C99 semantics installed.
-# AC_FUNC_SNPRINTF_C99
-
+# (similar tests to AC_FUNC_SNPRINTF_C99)
+# Check whether there is a printf() function with Unix98 semantics installed.
+# (similar tests to AC_FUNC_PRINTF_UNIX98)
 have_good_vsnprintf = false
 have_good_snprintf = false
+have_good_printf = false
 
 if host_system == 'windows' and cc.get_id() == 'msvc'
   # Unfortunately the Visual Studio 2015+ implementations of C99-style
@@ -755,6 +757,7 @@ if host_system == 'windows' and cc.get_id() == 'msvc'
   # rigorous enough to notice, though.
   glib_conf.set('HAVE_C99_SNPRINTF', false)
   glib_conf.set('HAVE_C99_VSNPRINTF', false)
+  glib_conf.set('HAVE_UNIX98_PRINTF', false)
 else
   vsnprintf_c99_test_code = '''
 #include <stdio.h>
@@ -851,6 +854,31 @@ main(void)
       have_good_snprintf = meson.get_cross_property('have_c99_snprintf', false)
       glib_conf.set('HAVE_C99_SNPRINTF', have_good_snprintf)
   endif
+
+  printf_unix98_test_code = '''
+#include <stdio.h>
+
+int
+main (void)
+{
+  char buffer[128];
+
+  sprintf (buffer, "%2\$d %3\$d %1\$d", 1, 2, 3);
+  if (strcmp ("2 3 1", buffer) == 0)
+    exit (0);
+  exit (1);
+}'''
+
+  if cc_can_run
+    rres = cc.run(printf_unix98_test_code, name : 'Unix98 printf positional parameters')
+    if rres.compiled() and rres.returncode() == 0
+      glib_conf.set('HAVE_UNIX98_PRINTF', 1)
+      have_good_printf = true
+    endif
+  else
+      have_good_printf = meson.get_cross_property('have_unix98_printf', false)
+      glib_conf.set('HAVE_UNIX98_PRINTF', have_good_printf)
+  endif
 endif
 
 if host_system == 'windows'
@@ -859,9 +887,9 @@ else
   glib_conf.set('EXEEXT', '')
 endif
 
-if have_good_vsnprintf and have_good_snprintf
-  # Our printf is 'good' only if vsnpintf()/snprintf() supports C99 well enough
-  glib_conf.set('HAVE_GOOD_PRINTF', 1) # FIXME: Check for HAVE_UNIX98_PRINTF?
+if have_good_vsnprintf and have_good_snprintf and have_good_printf
+  # Our printf is 'good' only if vsnpintf()/snprintf()/printf() supports C99 well enough
+  glib_conf.set('HAVE_GOOD_PRINTF', 1)
 else
   glib_conf.set('HAVE_VASPRINTF', 1)
 endif
