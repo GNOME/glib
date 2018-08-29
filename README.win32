@@ -145,8 +145,7 @@ prebuilt binaries are included in the "dev" packages.
 
 Please note that the ./configure mechanism should not blindly be used
 to build a GLib to be distributed to other developers because it
-produces a compiler-dependent glibconfig.h. For instance, the typedef
-for gint64 is long long with gcc, but __int64 with MSVC.
+produces a compiler-dependent glibconfig.h.
 
 Except for this and a few other minor issues, there shouldn't be any
 reason to distribute separate GLib headers and DLLs for gcc and MSVC6
