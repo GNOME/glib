@@ -1,3 +1,48 @@
+Overview of changes in GLib 2.58.0
+==================================
+
+* Tarball built with `ninja dist`, so if you want to build this release with
+  autotools (which is supported), you will need to re-run autogen.sh. This
+  release, and all micro releases in the 2.58.x series, support being built
+  with Meson or autotools. See:
+  https://mail.gnome.org/archives/gtk-devel-list/2018-June/msg00012.html
+
+* Fix cancellation of g_subprocess_communicate_async() calls. See !266.
+
+* Drop support for the __int64 type, which further breaks compilation on old
+  MSVC versions (before VS2013). See #1313.
+
+* Expose GSettings schema directory in gio-2.0.pc as `schemasdir`. See !274.
+
+* Support v3 of the xdg-desktop-portal network monitor API. See !265, !279.
+
+* Fix G_MODULE_SUFFIX on macOS when GLib is built with Meson — it should be `so`
+  rather than `dylib`. Projects that use Meson and the `g_module_build_path()`
+  API such as glib-networking should pass `name_suffix:` to `shared_module()` to
+  ensure that plugins continue to be called libfoo.so on macOS. See !280.
+
+Bugs fixed:
+ !280 meson: Always set G_MODULE_SUFFIX to `so` on macOS
+ !266 subprocess: Fix communicate_cancelled signature
+ !279 Revert "Add a gnet utility" (see !265)
+ !265 Network monitor again
+ !274 gio: Provide schemas directory information in pkg-config file
+ !239 gvariant: Fix more bounds checking in GVariant text format parser
+ !195 garray: add overflow checks before expanding array
+ #1497 g_strdup_printf warns on invalid format specifier with G_GUINT64_FORMAT on Win32
+ !270 autotools: remove support for the __int64 type. See #1313
+ !267 ci: Add an autotools job
+
+* Translation updates:
+ Czech
+ Galician
+ Indonesian
+ Italian
+ Kazakh
+ Korean
+ Turkish
+
+
 Overview of changes in GLib 2.57.3
 ==================================
 
