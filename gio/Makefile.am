@@ -282,6 +282,8 @@ unix_sources = \
 	gportalnotificationbackend.c \
 	gdocumentportal.c	\
 	gdocumentportal.h	\
+	gtrashportal.c		\
+	gtrashportal.h		\
 	gopenuriportal.c	\
 	gopenuriportal.h	\
 	gportalsupport.c	\
@@ -376,6 +378,7 @@ BUILT_SOURCES += $(xdp_dbus_built_sources)
 CLEANFILES += $(xdp_dbus_built_sources)
 
 portal_interfaces = \
+	org.freedesktop.portal.Trash.xml \
 	org.freedesktop.portal.Documents.xml \
 	org.freedesktop.portal.OpenURI.xml \
 	org.freedesktop.portal.ProxyResolver.xml \
