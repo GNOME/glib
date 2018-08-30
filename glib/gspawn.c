@@ -1485,7 +1485,7 @@ do_posix_spawn (gchar     **argv,
       parent_close_fds[num_parent_close_fds++] = write_null;
 
 #ifndef HAVE_O_CLOEXEC
-      fcntl (read_null, F_SETFD, FD_CLOEXEC);
+      fcntl (write_null, F_SETFD, FD_CLOEXEC);
 #endif
 
       r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 1);
@@ -1509,7 +1509,7 @@ do_posix_spawn (gchar     **argv,
       parent_close_fds[num_parent_close_fds++] = write_null;
 
 #ifndef HAVE_O_CLOEXEC
-      fcntl (read_null, F_SETFD, FD_CLOEXEC);
+      fcntl (write_null, F_SETFD, FD_CLOEXEC);
 #endif
 
       r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 2);
