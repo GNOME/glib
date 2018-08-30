@@ -1528,7 +1528,8 @@ g_subprocess_communicate_made_progress (GObject      *source_object,
 }
 
 static gboolean
-g_subprocess_communicate_cancelled (gpointer user_data)
+g_subprocess_communicate_cancelled (GCancellable *cancellable,
+                                    gpointer      user_data)
 {
   CommunicateState *state = user_data;
 
@@ -1580,7 +1581,9 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
     {
       state->cancellable_source = g_cancellable_source_new (cancellable);
       /* No ref held here, but we unref the source from state's free function */
-      g_source_set_callback (state->cancellable_source, g_subprocess_communicate_cancelled, state, NULL);
+      g_source_set_callback (state->cancellable_source,
+                             (GSourceFunc) g_subprocess_communicate_cancelled,
+                             state, NULL);
       g_source_attach (state->cancellable_source, g_main_context_get_thread_default ());
     }
 
