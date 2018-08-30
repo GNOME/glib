@@ -3410,7 +3410,8 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * signal is unsubscribed from, and may be called after @connection
  * has been destroyed.)
  *
- * Returns: a subscription identifier that can be used with g_dbus_connection_signal_unsubscribe()
+ * Returns: a subscription identifier that can be used with g_dbus_connection_signal_unsubscribe(),
+ *          or 0 if an error occured.
  *
  * Since: 2.26
  */
@@ -3612,7 +3613,7 @@ unsubscribe_id_internal (GDBusConnection *connection,
  * g_dbus_connection_signal_unsubscribe:
  * @connection: a #GDBusConnection
  * @subscription_id: a subscription id obtained from
- *     g_dbus_connection_signal_subscribe()
+ *     g_dbus_connection_signal_subscribe().  Expected to be 1 or higher.
  *
  * Unsubscribes from signals.
  *
