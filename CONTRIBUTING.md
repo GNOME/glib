@@ -25,10 +25,9 @@ people committing to GLib to follow a few rules:
 
 1) Ask _first_.
 
-2) With git, we no longer maintain a ChangeLog file, but you are expected
-   to produce a meaningful commit message. Changes without a sufficient
-   commit message will be reverted. See below for the expected format
-   of commit messages.
+2) You are expected to produce a meaningful commit message.
+   Changes without a sufficient commit message will be reverted. See below for
+   the expected format of commit messages.
 
 Notes:
 

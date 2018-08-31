@@ -22,18 +22,6 @@ AM_CPPFLAGS = 					\
 	-DGLIB_COMPILATION
 
 EXTRA_DIST += 			\
-	ChangeLog.pre-2-20	\
-	ChangeLog.pre-2-18	\
-	ChangeLog.pre-2-16	\
-	ChangeLog.pre-2-14	\
-	ChangeLog.pre-2-12	\
-	ChangeLog.pre-2-10	\
-	ChangeLog.pre-2-8	\
-	ChangeLog.pre-2-6	\
-	ChangeLog.pre-2-4	\
-	ChangeLog.pre-2-2	\
-	ChangeLog.pre-2-0	\
-	ChangeLog.pre-1-2	\
 	NEWS.pre-1-3		\
 	acglib.m4		\
 	sanity_check		\
