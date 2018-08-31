@@ -260,7 +260,6 @@ got_status (GObject *source,
   GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (data);
   GError *error = NULL;
   GVariant *ret;
-  gboolean should_emit_changed = FALSE;
   GVariant *status;
   gboolean available;
   gboolean metered;
@@ -297,14 +296,12 @@ got_status (GObject *source,
     {
       nm->priv->available = available;
       g_object_notify (G_OBJECT (nm), "network-available");
-      should_emit_changed = TRUE;
     }
 
   if (nm->priv->metered != metered)
     {
       nm->priv->metered = metered;
       g_object_notify (G_OBJECT (nm), "network-metered");
-      should_emit_changed = TRUE;
     }
 
   if (nm->priv->connectivity != connectivity &&
@@ -312,13 +309,11 @@ got_status (GObject *source,
     {
       nm->priv->connectivity = connectivity;
       g_object_notify (G_OBJECT (nm), "connectivity");
-      should_emit_changed = TRUE;
     }
 
   g_object_thaw_notify (G_OBJECT (nm));
 
-  if (should_emit_changed)
-    g_signal_emit_by_name (nm, "network-changed", available);
+  g_signal_emit_by_name (nm, "network-changed", available);
 }
 
 static void
