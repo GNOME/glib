@@ -738,12 +738,14 @@ if cc.compiles('''#include <fcntl.h>
 endif
 
 # Check whether there is a vsnprintf() function with C99 semantics installed.
-# AC_FUNC_VSNPRINTF_C99
+# (similar tests to AC_FUNC_VSNPRINTF_C99)
 # Check whether there is a snprintf() function with C99 semantics installed.
-# AC_FUNC_SNPRINTF_C99
-
+# (similar tests to AC_FUNC_SNPRINTF_C99)
+# Check whether there is a printf() function with Unix98 semantics installed.
+# (similar tests to AC_FUNC_PRINTF_UNIX98)
 have_good_vsnprintf = false
 have_good_snprintf = false
+have_good_printf = false
 
 if host_system == 'windows' and cc.get_id() == 'msvc'
   # Unfortunately the Visual Studio 2015+ implementations of C99-style
@@ -754,6 +756,7 @@ if host_system == 'windows' and cc.get_id() == 'msvc'
   # rigorous enough to notice, though.
   glib_conf.set('HAVE_C99_SNPRINTF', false)
   glib_conf.set('HAVE_C99_VSNPRINTF', false)
+  glib_conf.set('HAVE_UNIX98_PRINTF', false)
 else
   vsnprintf_c99_test_code = '''
 #include <stdio.h>
@@ -850,6 +853,31 @@ main(void)
       have_good_snprintf = meson.get_cross_property('have_c99_snprintf', false)
       glib_conf.set('HAVE_C99_SNPRINTF', have_good_snprintf)
   endif
+
+  printf_unix98_test_code = '''
+#include <stdio.h>
+
+int
+main (void)
+{
+  char buffer[128];
+
+  sprintf (buffer, "%2\$d %3\$d %1\$d", 1, 2, 3);
+  if (strcmp ("2 3 1", buffer) == 0)
+    exit (0);
+  exit (1);
+}'''
+
+  if cc_can_run
+    rres = cc.run(printf_unix98_test_code, name : 'Unix98 printf positional parameters')
+    if rres.compiled() and rres.returncode() == 0
+      glib_conf.set('HAVE_UNIX98_PRINTF', 1)
+      have_good_printf = true
+    endif
+  else
+      have_good_printf = meson.get_cross_property('have_unix98_printf', false)
+      glib_conf.set('HAVE_UNIX98_PRINTF', have_good_printf)
+  endif
 endif
 
 if host_system == 'windows'
@@ -858,12 +886,15 @@ else
   glib_conf.set('EXEEXT', '')
 endif
 
-if have_good_vsnprintf and have_good_snprintf
-  # Our printf is 'good' only if vsnpintf()/snprintf() supports C99 well enough
-  glib_conf.set('HAVE_GOOD_PRINTF', 1) # FIXME: Check for HAVE_UNIX98_PRINTF?
+if have_good_vsnprintf and have_good_snprintf and have_good_printf
+  # Our printf is 'good' only if vsnpintf()/snprintf()/printf() supports C99 well enough
+  glib_conf.set('HAVE_GOOD_PRINTF', 1)
 else
   glib_conf.set('HAVE_VASPRINTF', 1)
 endif
+
+glibconfig_conf.set('GLIB_USING_SYSTEM_PRINTF',
+                    have_good_vsnprintf and have_good_snprintf and have_good_printf)
 
 # Check whether the printf() family supports Unix98 %n$ positional parameters
 # AC_FUNC_PRINTF_UNIX98
@@ -871,7 +902,6 @@ endif
 
 
 # Check for nl_langinfo and CODESET
-# FIXME: Check for HAVE_BIND_TEXTDOMAIN_CODESET
 if cc.links('''#include <langinfo.h>
                int main (int argc, char ** argv) {
                  char *codeset = nl_langinfo (CODESET);
@@ -1493,8 +1523,6 @@ foreach d : inet_defines
   glibconfig_conf.set(d[1], val)
 endforeach
 
-glibconfig_conf.set('GLIB_USING_SYSTEM_PRINTF', true) # FIXME!
-
 # We need a more robust approach here...
 host_cpu_family = host_machine.cpu_family()
 if host_cpu_family == 'x86' or host_cpu_family == 'x86_64' or host_cpu_family == 's390' or host_cpu_family == 's390x' or host_cpu_family.startswith('arm') or host_cpu_family.startswith('crisv32') or host_cpu_family.startswith('etrax')
@@ -1745,12 +1773,19 @@ endif
 # implementations. This could be extended if issues are found in some platforms.
 if cc.has_function('ngettext')
   libintl = []
+  have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset')
 else
   libintl = cc.find_library('intl', required : false)
   if not libintl.found()
     libintl = subproject('proxy-libintl').get_variable('intl_dep')
+    have_bind_textdomain_codeset = true  # proxy-libintl supports it
+  else
+    have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset',
+                                                   dependencies : libintl)
   endif
 endif
+
+glib_conf.set('HAVE_BIND_TEXTDOMAIN_CODESET', have_bind_textdomain_codeset)
 
 # We require gettext to always be present
 glib_conf.set('HAVE_DCGETTEXT', 1)
@@ -1852,12 +1887,6 @@ endif
 have_bash = find_program('bash', required : false).found() # For completion scripts
 have_m4 = find_program('m4', required : false).found() # For m4 macros
 have_sh = find_program('sh', required : false).found() # For glib-gettextize
-
-# FIXME: defines in config.h that are not actually used anywhere
-# (we add them for now to minimise the diff)
-glib_conf.set('HAVE_DLFCN_H', 1)
-glib_conf.set('STDC_HEADERS', 1)
-glib_conf.set('SIZEOF___INT64', 8)
 
 # FIXME: How to detect Solaris? https://github.com/mesonbuild/meson/issues/1578
 if host_system == 'sunos'
