@@ -1088,7 +1088,7 @@ main (int argc, char **argv)
 	       "#endif\n"
 	       "\n"
 	       "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = {\n  \"",
-	       c_name_no_underscores, data_size, c_name);
+	       c_name_no_underscores, data_size + 1 /* nul terminator */, c_name);
 
       for (i = 0; i < data_size; i++) {
 	g_fprintf (file, "\\%3.3o", (int)data[i]);
@@ -1100,7 +1100,7 @@ main (int argc, char **argv)
 
       g_fprintf (file,
 	       "\n"
-	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data), NULL, NULL, NULL };\n"
+	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data) - 1 /* nul terminator */, NULL, NULL, NULL };\n"
 	       "%s GResource *%s_get_resource (void);\n"
 	       "GResource *%s_get_resource (void)\n"
 	       "{\n"
