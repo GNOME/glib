@@ -1958,7 +1958,7 @@ if have_sh
   gettexize_conf.set('datadir', glib_datadir)
   configure_file(input : 'glib-gettextize.in',
     install : true,
-    install_dir : 'bin',
+    install_dir : glib_bindir,
     output : 'glib-gettextize',
     configuration : gettexize_conf)
 endif
