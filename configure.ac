@@ -338,12 +338,12 @@ AC_PROG_AWK
 # python.m4 will get the expected input
 AC_ARG_WITH(python,
             AS_HELP_STRING([--with-python=PATH],
-                           [Path to Python interpreter; searches $PATH if only a program name is given; if not given, searches for a few standard names such as "python3" or "python2"]),
+                           [Path to Python interpreter; searches $PATH if only a program name, such as "python3" or "python3.4", is given; if not given, searches for a few standard names]),
             [PYTHON="$withval"], [])
 if test x"$PYTHON" = xyes; then
   AC_MSG_ERROR([--with-python option requires a path or program argument])
 fi
-AM_PATH_PYTHON(2.7,,PYTHON="python2.7")
+AM_PATH_PYTHON(3.4,,[AC_MSG_ERROR([Requires Python >=3.4])])
 
 
 dnl ***********************
