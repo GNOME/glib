@@ -788,7 +788,8 @@ g_convert_with_fallback (const gchar *str,
 		  inbytes_remaining = strlen (p);
 		  break;
 		}
-	      /* fall thru if p is NULL */
+              /* if p is null */
+              G_GNUC_FALLTHROUGH;
 	    default:
               {
                 int errsv = errno;
