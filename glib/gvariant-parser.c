@@ -210,10 +210,7 @@ token_stream_prepare (TokenStream *stream)
           break;
         }
 
-      else
-        {
-          /* ↓↓↓ */
-        }
+      G_GNUC_FALLTHROUGH;
 
     case 'a': /* 'b' */ case 'c': case 'd': case 'e': case 'f':
     case 'g': case 'h': case 'i': case 'j': case 'k': case 'l':
@@ -1646,6 +1643,8 @@ string_parse (TokenStream  *stream,
           case '\n': i++; continue;
           }
 
+        G_GNUC_FALLTHROUGH;
+
       default:
         str[j++] = token[i++];
       }
@@ -1772,6 +1771,8 @@ bytestring_parse (TokenStream  *stream,
           case 'v': str[j++] = '\v'; i++; continue;
           case '\n': i++; continue;
           }
+
+        G_GNUC_FALLTHROUGH;
 
       default:
         str[j++] = token[i++];

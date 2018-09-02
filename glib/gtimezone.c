@@ -372,6 +372,8 @@ parse_constant_offset (const gchar *name,
           *offset = -*offset;
           return TRUE;
         }
+      else
+        return FALSE;
 
     default:
       return FALSE;
