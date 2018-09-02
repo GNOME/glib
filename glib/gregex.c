@@ -2537,6 +2537,7 @@ expand_escape (const gchar        *replacement,
           base = 8;
           p = g_utf8_next_char (p);
         }
+      G_GNUC_FALLTHROUGH;
     case '1':
     case '2':
     case '3':
