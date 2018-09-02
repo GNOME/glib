@@ -2281,6 +2281,20 @@
  */
 
 /**
+ * G_GNUC_FALLTHROUGH:
+ *
+ * Expands to the GNU C fallthrough statement attribute if the compiler is gcc.
+ * This allows declaring case statement to explicitly fall through in switch
+ * statements. To enable this feature, use -Wimplicit-fallthrough during
+ * compilation.
+ *
+ * Put the attribute right before the case statement you want to fall through
+ * to.
+ *
+ * See the GNU C documentation for more details.
+ */
+
+/**
  * G_GNUC_UNUSED:
  *
  * Expands to the GNU C unused function attribute if the compiler is gcc.
