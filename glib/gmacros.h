@@ -191,6 +191,12 @@
 #define G_GNUC_NO_INSTRUMENT
 #endif  /* !__GNUC__ */
 
+#if    __GNUC__ > 6
+#define G_GNUC_FALLTHROUGH __attribute__((fallthrough))
+#else
+#define G_GNUC_FALLTHROUGH
+#endif /* __GNUC__ */
+
 #if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)
 #define G_GNUC_DEPRECATED __attribute__((__deprecated__))
 #else
