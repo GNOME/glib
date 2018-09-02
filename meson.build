@@ -344,6 +344,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   test_c_args = [
     '-Wall',
     '-Wduplicated-branches',
+    '-Wimplicit-fallthrough',
     '-Wmisleading-indentation',
     '-Wstrict-prototypes',
     '-Wunused',
