@@ -350,6 +350,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     # Due to pervasive use of things like GPOINTER_TO_UINT(), we do not support
     # building with -Wbad-function-cast.
     '-Wno-bad-function-cast',
+    '-Wimplicit-fallthrough',
     '-Werror=declaration-after-statement',
     '-Werror=format=2',
     '-Werror=format-security',
