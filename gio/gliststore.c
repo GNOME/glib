@@ -486,8 +486,7 @@ g_list_store_splice (GListStore *store,
               return;
             }
 
-          it = g_sequence_insert_before (it, g_object_ref (additions[i]));
-          it = g_sequence_iter_next (it);
+          g_sequence_insert_before (it, g_object_ref (additions[i]));
         }
     }
 
