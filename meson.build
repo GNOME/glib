@@ -1952,17 +1952,17 @@ subdir('tests')
 # Install glib-gettextize executable, if a UNIX-style shell is found
 if have_sh
   # These should not contain " quotes around the values
-  gettexize_conf = configuration_data()
-  gettexize_conf.set('PACKAGE', 'glib')
-  gettexize_conf.set('VERSION', meson.project_version())
-  gettexize_conf.set('prefix', glib_prefix)
-  gettexize_conf.set('datarootdir', glib_datadir)
-  gettexize_conf.set('datadir', glib_datadir)
+  gettextize_conf = configuration_data()
+  gettextize_conf.set('PACKAGE', 'glib')
+  gettextize_conf.set('VERSION', meson.project_version())
+  gettextize_conf.set('prefix', glib_prefix)
+  gettextize_conf.set('datarootdir', glib_datadir)
+  gettextize_conf.set('datadir', glib_datadir)
   configure_file(input : 'glib-gettextize.in',
     install : true,
     install_dir : 'bin',
     output : 'glib-gettextize',
-    configuration : gettexize_conf)
+    configuration : gettextize_conf)
 endif
 
 if have_m4
