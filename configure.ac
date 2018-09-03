@@ -3408,7 +3408,7 @@ AS_IF([test "x$enable_compile_warnings" != xno], [
    -Wno-bad-function-cast \
    -Werror=declaration-after-statement \
    -Werror=missing-prototypes -Werror=implicit-function-declaration \
-   -Werror=pointer-arith -Werror=init-self -Werror=format-security \
+   -Werror=pointer-arith -Werror=init-self \
    -Werror=format=2 -Werror=missing-include-dirs])
 ])
 AC_SUBST(GLIB_WARN_CFLAGS)
