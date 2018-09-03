@@ -533,8 +533,6 @@ AS_IF([test x$ac_cv_sizeof_long_long = x8], [
 	], [AC_MSG_RESULT(none)])
 ])
 
-AC_C_CONST
-
 dnl
 dnl check in which direction the stack grows
 dnl
