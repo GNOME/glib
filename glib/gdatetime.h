@@ -118,7 +118,7 @@ GDateTime *             g_date_time_new_from_timeval_local              (const G
 GLIB_AVAILABLE_IN_ALL
 GDateTime *             g_date_time_new_from_timeval_utc                (const GTimeVal *tv);
 
-GLIB_AVAILABLE_IN_2_56
+GLIB_AVAILABLE_IN_2_58
 GDateTime *             g_date_time_new_from_iso8601                    (const gchar    *text,
                                                                          GTimeZone      *default_tz);
 

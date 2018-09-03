@@ -3378,20 +3378,35 @@ g_date_time_format (GDateTime   *datetime,
  * @day1 a #GDateTime to compare against @day2 
  * @day2 a #GDateTime to compare to
  * 
- * Compares if the two dates occur on the same day of the same year. 
+ * Compares if the two dates occur on the same calendar day.
  * 
- * Returns: %TRUE if @day1 and @day2 occur on the same day of the same year.
+ * At the time of conversion both dates are converted to the local timezone.
+ * This means that the outcome of this function can change depending
+ * on your current local timezone.
+ * 
+ * Returns: %TRUE if @day1 and @day2 occur on the same calendar day.
  * 
  * Since 2.58
  */
 gboolean
 g_date_time_is_same_day (GDateTime *day1, GDateTime *day2)
 {
-  g_return_val_if_fail (day1 != NULL, 0);
-  g_return_val_if_fail (day2 != NULL, 0);
+  GDateTime* local1;
+  GDateTime* local2;
+  gboolean same_day;
 
-  return g_date_time_get_day_of_year (day1) == g_date_time_get_day_of_year (day2) &&
-         g_date_time_get_year (day1) == g_date_time_get_year (day2);
+  g_return_val_if_fail (day1 != NULL, FALSE);
+  g_return_val_if_fail (day2 != NULL, FALSE);
+
+  local1 = g_date_time_to_local (day1);
+  local2 = g_date_time_to_local (day2);
+
+  same_day = g_date_time_get_day_of_year (local1) == g_date_time_get_day_of_year (local2) &&
+             g_date_time_get_year (local1) == g_date_time_get_year (local2);
+  
+  g_date_time_unref (local1);
+  g_date_time_unref (local2);
+  return same_day;
 }
 
 /* Epilogue {{{1 */
