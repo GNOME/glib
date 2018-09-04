@@ -2872,6 +2872,8 @@ failure:
             case G_MARKUP_COLLECT_STRDUP:
               if (written)
                 g_free (*(char **) ptr);
+              *(char **) ptr = NULL;
+              break;
 
             case G_MARKUP_COLLECT_STRING:
               *(char **) ptr = NULL;

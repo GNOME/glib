@@ -170,8 +170,11 @@ g_base64_encode_step (const guchar *in,
       /* len can only be 0 1 or 2 */
       switch(len)
         {
-        case 2: *saveout++ = *inptr++;
-        case 1: *saveout++ = *inptr++;
+        case 2:
+          *saveout++ = *inptr++;
+          G_GNUC_FALLTHROUGH;
+        case 1:
+          *saveout++ = *inptr++;
         }
       ((char *)save)[0] += len;
     }
