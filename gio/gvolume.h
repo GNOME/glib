@@ -74,8 +74,8 @@ G_BEGIN_DECLS
  *
  * The string used to obtain the volume class with g_volume_get_identifier().
  *
- * Known volume classes include `device` and `network`. Other classes may
- * be added in the future.
+ * Known volume classes include `device`, `network`, and `loop`. Other
+ * classes may be added in the future.
  *
  * This is intended to be used by applications to classify #GVolume
  * instances into different sections - for example a file manager or
