@@ -99,23 +99,9 @@ EXTRA_DIST += $(meson_build_files)
 # These may be in the builddir too
 BUILT_EXTRA_DIST += 		\
 	INSTALL			\
-	ChangeLog		\
 	$(NULL)
 
 CONFIGURE_DEPENDENCIES = acglib.m4
-
-ChangeLog:
-	$(AM_V_GEN) if test -d "$(srcdir)/.git"; then \
-	  (GIT_DIR=$(top_srcdir)/.git ./missing --run git log GLIB_2_20_0^^.. --stat) | fmt --split-only > $@.tmp \
-	  && mv -f $@.tmp $@ \
-	  || ($(RM) $@.tmp; \
-	      echo Failed to generate ChangeLog, your ChangeLog may be outdated >&2; \
-	      (test -f $@ || echo git-log is required to generate this file >> $@)); \
-	else \
-	  test -f $@ || \
-	  (echo A git checkout and git-log is required to generate ChangeLog >&2 && \
-	  echo A git checkout and git-log is required to generate this file >> $@); \
-	fi
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = glib-2.0.pc gobject-2.0.pc gmodule-2.0.pc gmodule-export-2.0.pc gmodule-no-export-2.0.pc gthread-2.0.pc gio-2.0.pc
@@ -144,7 +130,7 @@ distclean-local: lcov-clean
 	    rm -f $(BUILT_EXTRA_DIST); \
 	fi
 
-.PHONY: files release sanity snapshot ChangeLog
+.PHONY: files release sanity snapshot
 
 files:
 	@files=`ls $(DISTFILES) 2> /dev/null `; for p in $$files; do \
