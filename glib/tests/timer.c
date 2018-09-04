@@ -258,6 +258,12 @@ test_timeval_to_iso8601_overflow (void)
   GTimeVal val;
   gchar *out = NULL;
 
+  if ((glong) G_MAXINT == G_MAXLONG)
+    {
+      g_test_skip ("G_MAXINT == G_MAXLONG - we can't make g_time_val_to_iso8601() overflow.");
+      return;
+    }
+
   g_unsetenv ("TZ");
 
   val.tv_sec = G_MAXLONG;
