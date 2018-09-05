@@ -125,10 +125,8 @@ g_list_store_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_ITEM_TYPE: /* construct-only */
+      g_assert (g_type_is_a (g_value_get_gtype (value), G_TYPE_OBJECT));
       store->item_type = g_value_get_gtype (value);
-      if (!g_type_is_a (store->item_type, G_TYPE_OBJECT))
-        g_critical ("GListStore cannot store items of type '%s'. Items must be GObjects.",
-                    g_type_name (store->item_type));
       break;
 
     default:
