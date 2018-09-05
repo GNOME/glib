@@ -556,7 +556,7 @@ g_closure_ref (GClosure *closure)
 
 /**
  * g_closure_invalidate:
- * @closure: GClosure to invalidate
+ * @closure: #GClosure to invalidate
  *
  * Sets a flag on the closure to indicate that its calling
  * environment has become invalid, and thus causes any future
@@ -936,6 +936,8 @@ _g_closure_set_va_marshal (GClosure       *closure,
  * Creates a new closure which invokes @callback_func with @user_data as
  * the last parameter.
  *
+ * @destroy_data will be called as a finalize notifier on the #GClosure.
+ *
  * Returns: (transfer none): a floating reference to a new #GCClosure
  */
 GClosure*
@@ -963,6 +965,8 @@ g_cclosure_new (GCallback      callback_func,
  *
  * Creates a new closure which invokes @callback_func with @user_data as
  * the first parameter.
+ *
+ * @destroy_data will be called as a finalize notifier on the #GClosure.
  *
  * Returns: (transfer none): a floating reference to a new #GCClosure
  */
