@@ -21,6 +21,38 @@
 
 #include <string.h>
 
+/* Test that constructing/getting/setting properties on a #GListStore works. */
+static void
+test_store_properties (void)
+{
+  GListStore *store = NULL;
+  GType item_type;
+
+  store = g_list_store_new (G_TYPE_MENU_ITEM);
+  g_object_get (store, "item-type", &item_type, NULL);
+  g_assert_cmpint (item_type, ==, G_TYPE_MENU_ITEM);
+
+  g_clear_object (&store);
+}
+
+/* Test that #GListStore rejects non-GObject item types. */
+static void
+test_store_non_gobjects (void)
+{
+  if (g_test_subprocess ())
+    {
+      /* We have to use g_object_new() since g_list_store_new() checks the item
+       * type. We want to check the property setter code works properly. */
+      g_object_new (G_TYPE_LIST_STORE, "item-type", G_TYPE_LONG, NULL);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*WARNING*value * of type 'GType' is invalid or "
+                             "out of range for property 'item-type'*");
+}
+
 static void
 test_store_boundaries (void)
 {
@@ -736,6 +768,8 @@ int main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("https://bugzilla.gnome.org/");
 
+  g_test_add_func ("/glistmodel/store/properties", test_store_properties);
+  g_test_add_func ("/glistmodel/store/non-gobjects", test_store_non_gobjects);
   g_test_add_func ("/glistmodel/store/boundaries", test_store_boundaries);
   g_test_add_func ("/glistmodel/store/refcounts", test_store_refcounts);
   g_test_add_func ("/glistmodel/store/sorted", test_store_sorted);
