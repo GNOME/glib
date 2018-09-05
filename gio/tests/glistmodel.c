@@ -21,6 +21,21 @@
 
 #include <string.h>
 
+/* Wrapper around g_list_model_get_item() and g_list_model_get_object() which
+ * checks they return the same thing. */
+static gpointer
+list_model_get (GListModel *model,
+                guint       position)
+{
+  GObject *item = g_list_model_get_item (model, position);
+  GObject *object = g_list_model_get_object (model, position);
+
+  g_assert_true (item == object);
+
+  g_clear_object (&object);
+  return g_steal_pointer (&item);
+}
+
 /* Test that constructing/getting/setting properties on a #GListStore works. */
 static void
 test_store_properties (void)
@@ -124,7 +139,7 @@ test_store_refcounts (void)
   store = g_list_store_new (G_TYPE_MENU_ITEM);
 
   g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, 0);
-  g_assert_null (g_list_model_get_item (G_LIST_MODEL (store), 0));
+  g_assert_null (list_model_get (G_LIST_MODEL (store), 0));
 
   n_items = G_N_ELEMENTS (items);
   for (i = 0; i < n_items; i++)
@@ -138,17 +153,17 @@ test_store_refcounts (void)
     }
 
   g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, n_items);
-  g_assert_null (g_list_model_get_item (G_LIST_MODEL (store), n_items));
+  g_assert_null (list_model_get (G_LIST_MODEL (store), n_items));
 
-  tmp = g_list_model_get_item (G_LIST_MODEL (store), 3);
-  g_assert (tmp == items[3]);
+  tmp = list_model_get (G_LIST_MODEL (store), 3);
+  g_assert_true (tmp == items[3]);
   g_object_unref (tmp);
 
   g_list_store_remove (store, 4);
   g_assert_null (items[4]);
   n_items--;
   g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), ==, n_items);
-  g_assert_null (g_list_model_get_item (G_LIST_MODEL (store), n_items));
+  g_assert_null (list_model_get (G_LIST_MODEL (store), n_items));
 
   g_object_unref (store);
   for (i = 0; i < G_N_ELEMENTS (items); i++)
@@ -221,8 +236,8 @@ test_store_sorted (void)
       GObject *a, *b;
 
       /* should see our two copies */
-      a = g_list_model_get_item (G_LIST_MODEL (store), i * 2);
-      b = g_list_model_get_item (G_LIST_MODEL (store), i * 2 + 1);
+      a = list_model_get (G_LIST_MODEL (store), i * 2);
+      b = list_model_get (G_LIST_MODEL (store), i * 2 + 1);
 
       g_assert (compare_items (a, b, GUINT_TO_POINTER(0x1234)) == 0);
       g_assert (a != b);
@@ -231,7 +246,7 @@ test_store_sorted (void)
         {
           GObject *c;
 
-          c = g_list_model_get_item (G_LIST_MODEL (store), i * 2 - 1);
+          c = list_model_get (G_LIST_MODEL (store), i * 2 - 1);
           g_assert (c != a);
           g_assert (c != b);
 
@@ -273,13 +288,13 @@ test_store_splice_replace_middle (void)
   g_list_store_splice (store, 0, 0, array->pdata, 3);
   g_assert_cmpuint (g_list_model_get_n_items (model), ==, 3);
 
-  item = g_list_model_get_item (model, 0);
+  item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "1");
   g_object_unref (item);
-  item = g_list_model_get_item (model, 1);
+  item = list_model_get (model, 1);
   g_assert_cmpstr (g_action_get_name (item), ==, "2");
   g_object_unref (item);
-  item = g_list_model_get_item (model, 2);
+  item = list_model_get (model, 2);
   g_assert_cmpstr (g_action_get_name (item), ==, "3");
   g_object_unref (item);
 
@@ -287,16 +302,16 @@ test_store_splice_replace_middle (void)
   g_list_store_splice (store, 1, 1, array->pdata + 3, 2);
   g_assert_cmpuint (g_list_model_get_n_items (model), ==, 4);
 
-  item = g_list_model_get_item (model, 0);
+  item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "1");
   g_object_unref (item);
-  item = g_list_model_get_item (model, 1);
+  item = list_model_get (model, 1);
   g_assert_cmpstr (g_action_get_name (item), ==, "4");
   g_object_unref (item);
-  item = g_list_model_get_item (model, 2);
+  item = list_model_get (model, 2);
   g_assert_cmpstr (g_action_get_name (item), ==, "5");
   g_object_unref (item);
-  item = g_list_model_get_item (model, 3);
+  item = list_model_get (model, 3);
   g_assert_cmpstr (g_action_get_name (item), ==, "3");
   g_object_unref (item);
 
@@ -328,10 +343,10 @@ test_store_splice_replace_all (void)
   g_list_store_splice (store, 0, 0, array->pdata, 2);
 
   g_assert_cmpuint (g_list_model_get_n_items (model), ==, 2);
-  item = g_list_model_get_item (model, 0);
+  item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "1");
   g_object_unref (item);
-  item = g_list_model_get_item (model, 1);
+  item = list_model_get (model, 1);
   g_assert_cmpstr (g_action_get_name (item), ==, "2");
   g_object_unref (item);
 
@@ -339,10 +354,10 @@ test_store_splice_replace_all (void)
   g_list_store_splice (store, 0, 2, array->pdata + 2, 2);
 
   g_assert_cmpuint (g_list_model_get_n_items (model), ==, 2);
-  item = g_list_model_get_item (model, 0);
+  item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "3");
   g_object_unref (item);
-  item = g_list_model_get_item (model, 1);
+  item = list_model_get (model, 1);
   g_assert_cmpstr (g_action_get_name (item), ==, "4");
   g_object_unref (item);
 
@@ -376,7 +391,7 @@ test_store_splice_noop (void)
   g_list_store_splice (store, 1, 0, NULL, 0);
   g_assert_cmpuint (g_list_model_get_n_items (model), ==, 1);
 
-  item = g_list_model_get_item (model, 0);
+  item = list_model_get (model, 0);
   g_assert_cmpstr (g_action_get_name (item), ==, "1");
   g_object_unref (item);
 
@@ -396,7 +411,7 @@ model_array_equal (GListModel *model, GPtrArray *array)
       GObject *ptr;
       gboolean ptrs_equal;
 
-      ptr = g_list_model_get_item (model, i);
+      ptr = list_model_get (model, i);
       ptrs_equal = (g_ptr_array_index (array, i) == ptr);
       g_object_unref (ptr);
       if (!ptrs_equal)
@@ -621,33 +636,33 @@ test_store_get_item_cache (void)
   g_list_store_append (store, item2);
 
   /* Clear the cache */
-  g_assert_null (g_list_model_get_item (model, 42));
+  g_assert_null (list_model_get (model, 42));
 
   /* Access the same position twice */
-  temp = g_list_model_get_item (model, 1);
+  temp = list_model_get (model, 1);
   g_assert (temp == item2);
   g_object_unref (temp);
-  temp = g_list_model_get_item (model, 1);
+  temp = list_model_get (model, 1);
   g_assert (temp == item2);
   g_object_unref (temp);
 
-  g_assert_null (g_list_model_get_item (model, 42));
+  g_assert_null (list_model_get (model, 42));
 
   /* Access forwards */
-  temp = g_list_model_get_item (model, 0);
+  temp = list_model_get (model, 0);
   g_assert (temp == item1);
   g_object_unref (temp);
-  temp = g_list_model_get_item (model, 1);
+  temp = list_model_get (model, 1);
   g_assert (temp == item2);
   g_object_unref (temp);
 
-  g_assert_null (g_list_model_get_item (model, 42));
+  g_assert_null (list_model_get (model, 42));
 
   /* Access backwards */
-  temp = g_list_model_get_item (model, 1);
+  temp = list_model_get (model, 1);
   g_assert (temp == item2);
   g_object_unref (temp);
-  temp = g_list_model_get_item (model, 0);
+  temp = list_model_get (model, 0);
   g_assert (temp == item1);
   g_object_unref (temp);
 
