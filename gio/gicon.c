@@ -199,8 +199,8 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
  *   native, the returned string is the result of g_file_get_uri()
  *   (such as `sftp://path/to/my%20icon.png`).
  * 
- * - If @icon is a #GThemedIcon with exactly one name, the encoding is
- *    simply the name (such as `network-server`).
+ * - If @icon is a #GThemedIcon with exactly one name and no fallbacks,
+ *   the encoding is simply the name (such as `network-server`).
  *
  * Virtual: to_tokens
  * Returns: (nullable): An allocated NUL-terminated UTF8 string or
@@ -237,10 +237,16 @@ g_icon_to_string (GIcon *icon)
     }
   else if (G_IS_THEMED_ICON (icon))
     {
-      const char * const *names;
+      const char * const *names                 = NULL;
+      gboolean            use_default_fallbacks = FALSE;
 
-      names = g_themed_icon_get_names (G_THEMED_ICON (icon));
+      g_object_get (G_OBJECT (icon),
+                    "names", &names,
+                    "use-default-fallbacks", &use_default_fallbacks,
+                    NULL);
+      /* Themed icon initialized with a single name and no fallback. */
       if (names != NULL &&
+          ! use_default_fallbacks &&
 	  names[0] != NULL &&
 	  names[0][0] != '.' && /* Allowing icons starting with dot would break G_ICON_SERIALIZATION_MAGIC0 */
 	  g_utf8_validate (names[0], -1, NULL) && /* Only return utf8 strings */
