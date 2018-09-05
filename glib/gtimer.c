@@ -538,10 +538,12 @@ g_time_val_from_iso8601 (const gchar *iso_date,
  * variation of ISO 8601 format is required.
  *
  * If @time_ represents a date which is too large to fit into a `struct tm`,
- * %NULL will be returned. This is platform dependent, but it is safe to assume
- * years up to 3000 are supported. The return value of g_time_val_to_iso8601()
- * has been nullable since GLib 2.54; before then, GLib would crash under the
- * same conditions.
+ * %NULL will be returned. This is platform dependent. Note also that since
+ * `GTimeVal` stores the number of seconds as a `glong`, on 32-bit systems it
+ * is subject to the year 2038 problem.
+ *
+ * The return value of g_time_val_to_iso8601() has been nullable since GLib
+ * 2.54; before then, GLib would crash under the same conditions.
  *
  * Returns: (nullable): a newly allocated string containing an ISO 8601 date,
  *    or %NULL if @time_ was too large

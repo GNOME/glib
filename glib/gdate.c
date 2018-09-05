@@ -120,7 +120,9 @@
  *
  * GLib is attempting to unify around the use of 64bit integers to
  * represent microsecond-precision time. As such, this type will be
- * removed from a future version of GLib.
+ * removed from a future version of GLib. A consequence of using `glong` for
+ * `tv_sec` is that on 32-bit systems `GTimeVal` is subject to the year 2038
+ * problem.
  */
 
 /**
