@@ -353,7 +353,6 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Wno-bad-function-cast',
     '-Werror=declaration-after-statement',
     '-Werror=format=2',
-    '-Werror=format-security',
     '-Werror=implicit-function-declaration',
     '-Werror=init-self',
     '-Werror=missing-include-dirs',
