@@ -844,10 +844,10 @@ class CodeGenerator:
                                '\n')
 
         if len(args) > 0:
-            self.outfile.write('static const _ExtendedGDBusArgInfo * const %s_pointers[] =\n'
+            self.outfile.write('static const GDBusArgInfo * const %s_pointers[] =\n'
                              '{\n'%(prefix))
             for a in args:
-                self.outfile.write('  &%s_%s,\n'%(prefix, a.name))
+                self.outfile.write('  &%s_%s.parent_struct,\n'%(prefix, a.name))
             self.outfile.write('  NULL\n'
                                '};\n'
                                '\n')
@@ -890,10 +890,10 @@ class CodeGenerator:
                     self.outfile.write('};\n'
                                        '\n')
 
-                self.outfile.write('static const _ExtendedGDBusMethodInfo * const _%s_method_info_pointers[] =\n'
+                self.outfile.write('static const GDBusMethodInfo * const _%s_method_info_pointers[] =\n'
                                    '{\n'%(i.name_lower))
                 for m in i.methods:
-                    self.outfile.write('  &_%s_method_info_%s,\n'%(i.name_lower, m.name_lower))
+                    self.outfile.write('  &_%s_method_info_%s.parent_struct,\n'%(i.name_lower, m.name_lower))
                 self.outfile.write('  NULL\n'
                                    '};\n'
                                    '\n')
@@ -924,10 +924,10 @@ class CodeGenerator:
                     self.outfile.write('};\n'
                                        '\n')
 
-                self.outfile.write('static const _ExtendedGDBusSignalInfo * const _%s_signal_info_pointers[] =\n'
+                self.outfile.write('static const GDBusSignalInfo * const _%s_signal_info_pointers[] =\n'
                                    '{\n'%(i.name_lower))
                 for s in i.signals:
-                    self.outfile.write('  &_%s_signal_info_%s,\n'%(i.name_lower, s.name_lower))
+                    self.outfile.write('  &_%s_signal_info_%s.parent_struct,\n'%(i.name_lower, s.name_lower))
                 self.outfile.write('  NULL\n'
                                    '};\n'
                                    '\n')
@@ -966,10 +966,10 @@ class CodeGenerator:
                     self.outfile.write('};\n'
                                        '\n')
 
-                self.outfile.write('static const _ExtendedGDBusPropertyInfo * const _%s_property_info_pointers[] =\n'
+                self.outfile.write('static const GDBusPropertyInfo * const _%s_property_info_pointers[] =\n'
                                    '{\n'%(i.name_lower))
                 for p in i.properties:
-                    self.outfile.write('  &_%s_property_info_%s,\n'%(i.name_lower, p.name_lower))
+                    self.outfile.write('  &_%s_property_info_%s.parent_struct,\n'%(i.name_lower, p.name_lower))
                 self.outfile.write('  NULL\n'
                                    '};\n'
                                    '\n')
@@ -1663,7 +1663,7 @@ class CodeGenerator:
             self.outfile.write('  const _ExtendedGDBusPropertyInfo *info;\n'
                                '  GVariant *variant;\n'
                                '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
-                               '  info = _%s_property_info_pointers[prop_id - 1];\n'
+                               '  info = (const _ExtendedGDBusPropertyInfo *) _%s_property_info_pointers[prop_id - 1];\n'
                                '  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (object), info->parent_struct.name);\n'
                                '  if (info->use_gvariant)\n'
                                '    {\n'
@@ -1716,7 +1716,7 @@ class CodeGenerator:
             self.outfile.write('  const _ExtendedGDBusPropertyInfo *info;\n'
                                '  GVariant *variant;\n'
                                '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
-                               '  info = _%s_property_info_pointers[prop_id - 1];\n'
+                               '  info = (const _ExtendedGDBusPropertyInfo *) _%s_property_info_pointers[prop_id - 1];\n'
                                '  variant = g_dbus_gvalue_to_gvariant (value, G_VARIANT_TYPE (info->parent_struct.signature));\n'
                                '  g_dbus_proxy_call (G_DBUS_PROXY (object),\n'
                                '    "org.freedesktop.DBus.Properties.Set",\n'
@@ -2602,7 +2602,7 @@ class CodeGenerator:
                                '  if (!_g_value_equal (value, &skeleton->priv->properties[prop_id - 1]))\n'
                                '    {\n'
                                '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)\n'
-                               '        _%s_schedule_emit_changed (skeleton, _%s_property_info_pointers[prop_id - 1], prop_id, &skeleton->priv->properties[prop_id - 1]);\n'
+                               '        _%s_schedule_emit_changed (skeleton, (const _ExtendedGDBusPropertyInfo *) _%s_property_info_pointers[prop_id - 1], prop_id, &skeleton->priv->properties[prop_id - 1]);\n'
                                '      g_value_copy (value, &skeleton->priv->properties[prop_id - 1]);\n'
                                '      g_object_notify_by_pspec (object, pspec);\n'
                                '    }\n'
