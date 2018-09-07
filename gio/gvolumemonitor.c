@@ -43,6 +43,9 @@
  * [thread-default-context aware][g-main-context-push-thread-default],
  * and so should not be used other than from the main thread, with no
  * thread-default-context active.
+ *
+ * In order to receive updates about volumes and mounts monitored through GVFS,
+ * a main loop must be running.
  **/
 
 G_DEFINE_TYPE (GVolumeMonitor, g_volume_monitor, G_TYPE_OBJECT)
