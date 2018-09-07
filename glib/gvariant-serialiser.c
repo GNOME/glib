@@ -694,7 +694,7 @@ gvs_variable_sized_array_get_child (GVariantSerialised value,
                                (offset_size * index_),
                                offset_size);
 
-  if (start < end && end <= value.size)
+  if (start < end && end <= value.size && end <= last_end)
     {
       child.data = value.data + start;
       child.size = end - start;

@@ -4817,6 +4817,30 @@ test_recursion_limits_array_in_variant (void)
   g_variant_unref (wrapper_variant);
 }
 
+/* Test that an array with invalidly large values in its offset table is
+ * normalised successfully without looping infinitely. */
+static void
+test_normal_checking_array_offsets (void)
+{
+  const guint8 data[] = {
+    0x07, 0xe5, 0x00, 0x07, 0x00, 0x07, 0x00, 0x00,
+    'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'g',
+  };
+  gsize size = sizeof (data);
+  GVariant *variant = NULL;
+  GVariant *normal_variant = NULL;
+
+  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, data, size,
+                                     FALSE, NULL, NULL);
+  g_assert_nonnull (variant);
+
+  normal_variant = g_variant_get_normal_form (variant);
+  g_assert_nonnull (normal_variant);
+
+  g_variant_unref (normal_variant);
+  g_variant_unref (variant);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -4885,6 +4909,8 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gvariant/normal-checking/tuples",
                    test_normal_checking_tuples);
+  g_test_add_func ("/gvariant/normal-checking/array-offsets",
+                   test_normal_checking_array_offsets);
 
   g_test_add_func ("/gvariant/recursion-limits/variant-in-variant",
                    test_recursion_limits_variant_in_variant);
