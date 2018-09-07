@@ -130,6 +130,8 @@ GLIB_AVAILABLE_IN_ALL
 void                            g_variant_type_info_query               (GVariantTypeInfo   *typeinfo,
                                                                          guint              *alignment,
                                                                          gsize              *size);
+GLIB_AVAILABLE_IN_2_60
+gsize                           g_variant_type_info_query_depth         (GVariantTypeInfo   *typeinfo);
 
 /* array */
 GLIB_AVAILABLE_IN_ALL

@@ -47,4 +47,22 @@ GVariantType *                  g_variant_format_string_scan_type       (const g
                                                                          const gchar          *limit,
                                                                          const gchar         **endptr);
 
+/* The maximum number of levels of nested container which this implementation
+ * of #GVariant will handle.
+ *
+ * The limit must be at least 64 + 1, to allow D-Bus messages to be wrapped in
+ * a top-level #GVariant. This comes from the D-Bus specification (§(Valid
+ * Signatures)), but also seems generally reasonable. #GDBusMessage wraps its
+ * payload in a top-level tuple.
+ *
+ * The limit is actually set to be a lot greater than 64, to allow much greater
+ * nesting of values off D-Bus. It cannot be set over around 80000, or the risk
+ * of overflowing the stack when parsing type strings becomes too great.
+ *
+ * Aside from those constraints, the choice of this value is arbitrary. The
+ * only restrictions on it from the API are that it has to be greater than 64
+ * (due to D-Bus).
+*/
+#define G_VARIANT_MAX_RECURSION_DEPTH ((gsize) 128)
+
 #endif /* __G_VARIANT_INTERNAL_H__ */

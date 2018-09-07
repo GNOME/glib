@@ -24,6 +24,7 @@
 
 #include <glib/gtestutils.h>
 #include <glib/gstrfuncs.h>
+#include <glib/gvariant-internal.h>
 
 #include <string.h>
 
@@ -114,7 +115,10 @@
  *
  * The above definition is recursive to arbitrary depth. "aaaaai" and
  * "(ui(nq((y)))s)" are both valid type strings, as is
- * "a(aa(ui)(qna{ya(yd)}))".
+ * "a(aa(ui)(qna{ya(yd)}))". In order to not hit memory limits, #GVariant
+ * imposes a limit on recursion depth of 65 nested containers. This is the
+ * limit in the D-Bus specification (64) plus one to allow a #GDBusMessage to
+ * be nested in a top-level tuple.
  *
  * The meaning of each of the characters is as follows:
  * - `b`: the type string of %G_VARIANT_TYPE_BOOLEAN; a boolean value.
@@ -194,6 +198,76 @@ g_variant_type_check (const GVariantType *type)
 #endif
 }
 
+static gboolean
+variant_type_string_scan_internal (const gchar  *string,
+                                   const gchar  *limit,
+                                   const gchar **endptr,
+                                   gsize        *depth,
+                                   gsize         depth_limit)
+{
+  gsize max_depth = 0, child_depth;
+
+  g_return_val_if_fail (string != NULL, FALSE);
+
+  if (string == limit || *string == '\0')
+    return FALSE;
+
+  switch (*string++)
+    {
+    case '(':
+      while (string == limit || *string != ')')
+        {
+          if (depth_limit == 0 ||
+              !variant_type_string_scan_internal (string, limit, &string,
+                                                  &child_depth,
+                                                  depth_limit - 1))
+            return FALSE;
+
+          max_depth = MAX (max_depth, child_depth + 1);
+        }
+
+      string++;
+      break;
+
+    case '{':
+      if (depth_limit == 0 ||
+          string == limit || *string == '\0' ||                                  /* { */
+          !strchr ("bynqihuxtdsog?", *string++) ||                               /* key */
+          !variant_type_string_scan_internal (string, limit, &string,
+                                              &child_depth, depth_limit - 1) ||  /* value */
+          string == limit || *string++ != '}')                                   /* } */
+        return FALSE;
+
+      max_depth = MAX (max_depth, child_depth + 1);
+      break;
+
+    case 'm': case 'a':
+      if (depth_limit == 0 ||
+          !variant_type_string_scan_internal (string, limit, &string,
+                                              &child_depth, depth_limit - 1))
+        return FALSE;
+
+      max_depth = MAX (max_depth, child_depth + 1);
+      break;
+
+    case 'b': case 'y': case 'n': case 'q': case 'i': case 'u':
+    case 'x': case 't': case 'd': case 's': case 'o': case 'g':
+    case 'v': case 'r': case '*': case '?': case 'h':
+      max_depth = MAX (max_depth, 1);
+      break;
+
+    default:
+      return FALSE;
+    }
+
+  if (endptr != NULL)
+    *endptr = string;
+  if (depth != NULL)
+    *depth = max_depth;
+
+  return TRUE;
+}
+
 /**
  * g_variant_type_string_scan:
  * @string: a pointer to any string
@@ -223,46 +297,37 @@ g_variant_type_string_scan (const gchar  *string,
                             const gchar  *limit,
                             const gchar **endptr)
 {
-  g_return_val_if_fail (string != NULL, FALSE);
+  return variant_type_string_scan_internal (string, limit, endptr, NULL,
+                                            G_VARIANT_MAX_RECURSION_DEPTH);
+}
 
-  if (string == limit || *string == '\0')
-    return FALSE;
+/* < private >
+ * g_variant_type_string_get_depth_:
+ * @type_string: a pointer to any string
+ *
+ * Get the maximum depth of the nested types in @type_string. A basic type will
+ * return depth 1, and a container type will return a greater value. The depth
+ * of a tuple is 1 plus the depth of its deepest child type.
+ *
+ * If @type_string is not a valid #GVariant type string, 0 will be returned.
+ *
+ * Returns: depth of @type_string, or 0 on error
+ * Since: 2.60
+ */
+gsize
+g_variant_type_string_get_depth_ (const gchar *type_string)
+{
+  const gchar *endptr;
+  gsize depth = 0;
 
-  switch (*string++)
-    {
-    case '(':
-      while (string == limit || *string != ')')
-        if (!g_variant_type_string_scan (string, limit, &string))
-          return FALSE;
+  g_return_val_if_fail (type_string != NULL, 0);
 
-      string++;
-      break;
+  if (!variant_type_string_scan_internal (type_string, NULL, &endptr, &depth,
+                                          G_VARIANT_MAX_RECURSION_DEPTH) ||
+      *endptr != '\0')
+    return 0;
 
-    case '{':
-      if (string == limit || *string == '\0' ||                    /* { */
-          !strchr ("bynqihuxtdsog?", *string++) ||                 /* key */
-          !g_variant_type_string_scan (string, limit, &string) ||  /* value */
-          string == limit || *string++ != '}')                     /* } */
-        return FALSE;
-
-      break;
-
-    case 'm': case 'a':
-      return g_variant_type_string_scan (string, limit, endptr);
-
-    case 'b': case 'y': case 'n': case 'q': case 'i': case 'u':
-    case 'x': case 't': case 'd': case 's': case 'o': case 'g':
-    case 'v': case 'r': case '*': case '?': case 'h':
-      break;
-
-    default:
-      return FALSE;
-    }
-
-  if (endptr != NULL)
-    *endptr = string;
-
-  return TRUE;
+  return depth;
 }
 
 /**

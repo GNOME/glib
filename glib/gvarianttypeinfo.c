@@ -251,6 +251,31 @@ g_variant_type_info_query (GVariantTypeInfo *info,
     *fixed_size = info->fixed_size;
 }
 
+/* < private >
+ * g_variant_type_info_query_depth:
+ * @info: a #GVariantTypeInfo
+ *
+ * Queries @info to determine the depth of the type.
+ *
+ * See g_variant_type_string_get_depth_() for more details.
+ *
+ * Returns: depth of @info
+ * Since: 2.60
+ */
+gsize
+g_variant_type_info_query_depth (GVariantTypeInfo *info)
+{
+  g_variant_type_info_check (info, 0);
+
+  if (info->container_class)
+    {
+      ContainerInfo *container = (ContainerInfo *) info;
+      return g_variant_type_string_get_depth_ (container->type_string);
+    }
+
+  return 1;
+}
+
 /* == array == */
 #define GV_ARRAY_INFO_CLASS 'a'
 static ArrayInfo *

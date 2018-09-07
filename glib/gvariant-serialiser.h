@@ -28,6 +28,7 @@ typedef struct
   GVariantTypeInfo *type_info;
   guchar           *data;
   gsize             size;
+  gsize             depth;  /* same semantics as GVariant.depth */
 } GVariantSerialised;
 
 /* deserialisation */
