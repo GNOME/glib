@@ -557,11 +557,23 @@ char_str (gunichar c,
   return buf;
 }
 
+/* Format the next UTF-8 character as a gchar* for printing in error output
+ * when we encounter a syntax error. This correctly handles invalid UTF-8,
+ * emitting it as hex escapes. */
 static gchar*
 utf8_str (const gchar *utf8,
           gchar       *buf)
 {
-  char_str (g_utf8_get_char (utf8), buf);
+  gunichar c = g_utf8_get_char_validated (utf8, -1);
+  if (c == (gunichar) -1 || c == (gunichar) -2)
+    {
+      gchar *temp = g_strdup_printf ("\\x%02x", (guint)(guchar)*utf8);
+      memset (buf, 0, 8);
+      memcpy (buf, temp, strlen (temp));
+      g_free (temp);
+    }
+  else
+    char_str (c, buf);
   return buf;
 }
 
@@ -1832,9 +1844,14 @@ g_markup_parse_context_end_parse (GMarkupParseContext  *context,
     case STATE_AFTER_CLOSE_TAG_SLASH:
     case STATE_INSIDE_CLOSE_TAG_NAME:
     case STATE_AFTER_CLOSE_TAG_NAME:
-      set_error (context, error, G_MARKUP_ERROR_PARSE,
-                 _("Document ended unexpectedly inside the close tag for "
-                   "element '%s'"), current_element (context));
+      if (context->tag_stack != NULL)
+        set_error (context, error, G_MARKUP_ERROR_PARSE,
+                   _("Document ended unexpectedly inside the close tag for "
+                     "element '%s'"), current_element (context));
+      else
+        set_error (context, error, G_MARKUP_ERROR_PARSE,
+                   _("Document ended unexpectedly inside the close tag for an "
+                     "unopened element"));
       break;
 
     case STATE_INSIDE_PASSTHROUGH:
