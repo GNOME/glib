@@ -661,6 +661,57 @@ test_gvarianttype (void)
     }
 }
 
+/* Test that scanning a deeply recursive type string doesn’t exhaust our
+ * stack space (which it would if the type string scanner was recursive). */
+static void
+test_gvarianttype_string_scan_recursion_tuple (void)
+{
+  gchar *type_string = NULL;
+  gsize type_string_len = 1000001;  /* not including nul terminator */
+  gsize i;
+
+  /* Build a long type string of ‘((…u…))’. */
+  type_string = g_new0 (gchar, type_string_len + 1);
+  for (i = 0; i < type_string_len; i++)
+    {
+      if (i < type_string_len / 2)
+        type_string[i] = '(';
+      else if (i == type_string_len / 2)
+        type_string[i] = 'u';
+      else
+        type_string[i] = ')';
+    }
+
+  /* Goes (way) over allowed recursion limit. */
+  g_assert_false (g_variant_type_string_is_valid (type_string));
+
+  g_free (type_string);
+}
+
+/* Same as above, except with an array rather than a tuple. */
+static void
+test_gvarianttype_string_scan_recursion_array (void)
+{
+  gchar *type_string = NULL;
+  gsize type_string_len = 1000001;  /* not including nul terminator */
+  gsize i;
+
+  /* Build a long type string of ‘aaa…aau’. */
+  type_string = g_new0 (gchar, type_string_len + 1);
+  for (i = 0; i < type_string_len; i++)
+    {
+      if (i < type_string_len - 1)
+        type_string[i] = 'a';
+      else
+        type_string[i] = 'u';
+    }
+
+  /* Goes (way) over allowed recursion limit. */
+  g_assert_false (g_variant_type_string_is_valid (type_string));
+
+  g_free (type_string);
+}
+
 #define ALIGNED(x, y)   (((x + (y - 1)) / y) * y)
 
 /* do our own calculation of the fixed_size and alignment of a type
@@ -1230,6 +1281,8 @@ random_instance_filler (GVariantSerialised *serialised,
   if (serialised->size == 0)
     serialised->size = instance->size;
 
+  serialised->depth = 0;
+
   g_assert (serialised->type_info == instance->type_info);
   g_assert (serialised->size == instance->size);
 
@@ -1394,6 +1447,7 @@ test_maybe (void)
         serialised.type_info = type_info;
         serialised.data = flavoured_malloc (needed_size, flavour);
         serialised.size = needed_size;
+        serialised.depth = 0;
 
         g_variant_serialiser_serialise (serialised,
                                         random_instance_filler,
@@ -1516,6 +1570,7 @@ test_array (void)
         serialised.type_info = array_info;
         serialised.data = flavoured_malloc (needed_size, flavour);
         serialised.size = needed_size;
+        serialised.depth = 0;
 
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) instances, n_children);
@@ -1679,6 +1734,7 @@ test_tuple (void)
         serialised.type_info = type_info;
         serialised.data = flavoured_malloc (needed_size, flavour);
         serialised.size = needed_size;
+        serialised.depth = 0;
 
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) instances, n_children);
@@ -1774,6 +1830,7 @@ test_variant (void)
         serialised.type_info = type_info;
         serialised.data = flavoured_malloc (needed_size, flavour);
         serialised.size = needed_size;
+        serialised.depth = 0;
 
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) &instance, 1);
@@ -2055,6 +2112,8 @@ tree_filler (GVariantSerialised *serialised,
   if (serialised->type_info == NULL)
     serialised->type_info = instance->info;
 
+  serialised->depth = 0;
+
   if (instance->data_size == 0)
     /* is a container */
     {
@@ -2225,6 +2284,7 @@ test_byteswap (void)
   g_variant_serialised_byteswap (two);
 
   g_assert_cmpmem (one.data, one.size, two.data, two.size);
+  g_assert_cmpuint (one.depth, ==, two.depth);
 
   tree_instance_free (tree);
   g_free (one.data);
@@ -4663,6 +4723,10 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gvariant/type", test_gvarianttype);
+  g_test_add_func ("/gvariant/type/string-scan/recursion/tuple",
+                   test_gvarianttype_string_scan_recursion_tuple);
+  g_test_add_func ("/gvariant/type/string-scan/recursion/array",
+                   test_gvarianttype_string_scan_recursion_array);
   g_test_add_func ("/gvariant/typeinfo", test_gvarianttypeinfo);
   g_test_add_func ("/gvariant/serialiser/maybe", test_maybes);
   g_test_add_func ("/gvariant/serialiser/array", test_arrays);
@@ -4719,6 +4783,11 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gvariant/normal-checking/tuples",
                    test_normal_checking_tuples);
+
+  g_test_add_func ("/gvariant/recursion-limits/variant-in-variant",
+                   test_recursion_limits_variant_in_variant);
+  g_test_add_func ("/gvariant/recursion-limits/array-in-variant",
+                   test_recursion_limits_array_in_variant);
 
   return g_test_run ();
 }
