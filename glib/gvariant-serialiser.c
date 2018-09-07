@@ -870,7 +870,7 @@ gvs_tuple_get_child (GVariantSerialised value,
   const GVariantMemberInfo *member_info;
   GVariantSerialised child = { 0, };
   gsize offset_size;
-  gsize start, end;
+  gsize start, end, last_end;
 
   member_info = g_variant_type_info_member_info (value.type_info, index_);
   child.type_info = g_variant_type_info_ref (member_info->type_info);
@@ -940,7 +940,19 @@ gvs_tuple_get_child (GVariantSerialised value,
                                  offset_size * (member_info->i + 2),
                                  offset_size);
 
-  if (start < end && end <= value.size)
+  /* The child should not extend into the offset table. */
+  if (index_ != g_variant_type_info_n_members (value.type_info) - 1)
+    {
+      GVariantSerialised last_child;
+      last_child = gvs_tuple_get_child (value,
+                                        g_variant_type_info_n_members (value.type_info) - 1);
+      last_end = last_child.data + last_child.size - value.data;
+      g_variant_type_info_unref (last_child.type_info);
+    }
+  else
+    last_end = end;
+
+  if (start < end && end <= value.size && end <= last_end)
     {
       child.data = value.data + start;
       child.size = end - start;
