@@ -35,6 +35,7 @@
 #include "gtestutils.h"
 #include "glibintl.h"
 #include "gthread.h"
+#include "ghash.h"
 
 /**
  * SECTION:markup
@@ -2895,4 +2896,576 @@ failure:
   va_end (ap);
 
   return FALSE;
+}
+
+typedef enum
+{
+ RECORD_TYPE_ELEMENT,
+ RECORD_TYPE_END_ELEMENT,
+ RECORD_TYPE_TEXT,
+ RECORD_TYPE_PASSTHROUGH,
+} RecordTreeType;
+
+/* All strings are owned by the string table */
+typedef struct RecordDataTree RecordDataTree;
+
+struct RecordDataTree {
+  RecordDataTree *parent;
+  RecordTreeType type;
+  const char *data;
+  const char **attributes;
+  const char **values;
+  GList *children;
+};
+
+typedef struct {
+  char *string;
+  int count;
+  int offset;
+} RecordDataString;
+
+
+static RecordDataTree *
+record_data_tree_new (RecordDataTree *parent, RecordTreeType type,  const char *data)
+{
+  RecordDataTree *tree = g_slice_new0 (RecordDataTree);
+  tree->parent = parent;
+  tree->type = type;
+  tree->data = data;
+
+  if (parent)
+    parent->children = g_list_prepend  (parent->children, tree);
+
+  return tree;
+}
+
+static void
+record_data_tree_free (RecordDataTree *tree)
+{
+  g_list_free_full (tree->children, (GDestroyNotify)record_data_tree_free);
+  g_free (tree->attributes);
+  g_free (tree->values);
+  g_slice_free (RecordDataTree, tree);
+}
+
+static void
+record_data_string_free (RecordDataString *s)
+{
+  g_free (s->string);
+  g_slice_free (RecordDataString, s);
+}
+
+static const char *
+record_data_string_lookup (GHashTable *strings, const char *str, gssize len)
+{
+  char *copy = NULL;
+  RecordDataString *s;
+
+  if (len >= 0)
+    {
+      /* Ensure str is zero terminated */
+      copy = g_strndup (str, len);
+      str = copy;
+    }
+
+  s = g_hash_table_lookup (strings, str);
+  if (s)
+    {
+      g_free (copy);
+      s->count++;
+      return s->string;
+    }
+
+  s = g_slice_new (RecordDataString);
+  s->string = copy ? copy : g_strdup (str);
+  s->count = 1;
+
+  g_hash_table_insert (strings, s->string, s);
+  return s->string;
+}
+
+typedef struct {
+  GHashTable *strings;
+  RecordDataTree *root;
+  RecordDataTree *current;
+} RecordData;
+
+static void
+record_start_element (GMarkupParseContext  *context,
+                      const gchar          *element_name,
+                      const gchar         **names,
+                      const gchar         **values,
+                      gpointer              user_data,
+                      GError              **error)
+{
+  gsize n_attrs = g_strv_length ((char **)names);
+  RecordData *data = user_data;
+  RecordDataTree *child;
+  int i;
+
+  child = record_data_tree_new (data->current, RECORD_TYPE_ELEMENT,
+                                record_data_string_lookup (data->strings, element_name, -1));
+  data->current = child;
+
+  child->attributes = g_new (const char *, n_attrs + 1);
+  child->values = g_new (const char *, n_attrs + 1);
+
+  for (i = 0; i < n_attrs; i++)
+    {
+      child->attributes[i] = record_data_string_lookup (data->strings, names[i], -1);
+      child->values[i] = record_data_string_lookup (data->strings, values[i], -1);
+    }
+
+  child->attributes[i] = NULL;
+  child->values[i] = NULL;
+}
+
+static void
+record_end_element (GMarkupParseContext  *context,
+                    const gchar          *element_name,
+                    gpointer              user_data,
+                    GError              **error)
+{
+  RecordData *data = user_data;
+
+  data->current = data->current->parent;
+}
+
+static void
+record_text (GMarkupParseContext  *context,
+             const gchar          *text,
+             gsize                 text_len,
+             gpointer              user_data,
+             GError              **error)
+{
+  RecordData *data = user_data;
+
+  record_data_tree_new (data->current, RECORD_TYPE_TEXT,
+                        record_data_string_lookup (data->strings, text, text_len));
+}
+
+static void
+record_passthrough (GMarkupParseContext *context,
+                    const gchar         *passthrough_text,
+                    gsize                text_len,
+                    gpointer             user_data,
+                    GError             **error)
+{
+  RecordData *data = user_data;
+  record_data_tree_new (data->current, RECORD_TYPE_PASSTHROUGH,
+                        record_data_string_lookup (data->strings, passthrough_text, text_len));
+}
+
+static const GMarkupParser record_parser =
+{
+ record_start_element,
+ record_end_element,
+ record_text,
+ record_passthrough,
+};
+
+
+static gint
+compare_string (gconstpointer _a,
+                gconstpointer _b)
+{
+  const RecordDataString *a = _a;
+  const RecordDataString *b = _b;
+
+  return b->count - a->count;
+}
+
+static void
+marshal_uint32 (GString *str,
+                guint32 v)
+{
+  /*
+    We encode in a variable length format similar to
+    utf8:
+
+    v size      byte 1    byte 2    byte 3   byte 4  byte 5
+    7 bit:    0xxxxxxx
+    14 bit:   10xxxxxx  xxxxxxxx
+    21 bit:   110xxxxx  xxxxxxxx  xxxxxxxx
+    28 bit:   1110xxxx  xxxxxxxx  xxxxxxxx xxxxxxxx
+    32 bit:   11110000  xxxxxxxx  xxxxxxxx xxxxxxxx xxxxxxx
+  */
+
+  if (v < 128)
+    {
+      g_string_append_c (str, (guchar)v);
+    }
+  else if (v < (1<<14))
+    {
+      g_string_append_c (str, (guchar)(v >> 8) | 0x80);
+      g_string_append_c (str, (guchar)(v & 0xff));
+    }
+  else if (v < (1<<21))
+    {
+      g_string_append_c (str, (guchar)(v >> 16) | 0xc0);
+      g_string_append_c (str, (guchar)((v >> 8) & 0xff));
+      g_string_append_c (str, (guchar)(v & 0xff));
+    }
+  else if (v < (1<<28))
+    {
+      g_string_append_c (str, (guchar)(v >> 24) | 0xe0);
+      g_string_append_c (str, (guchar)((v >> 16) & 0xff));
+      g_string_append_c (str, (guchar)((v >> 8) & 0xff));
+      g_string_append_c (str, (guchar)(v & 0xff));
+    }
+  else
+    {
+      g_string_append_c (str, 0xf0);
+      g_string_append_c (str, (guchar)((v >> 24) & 0xff));
+      g_string_append_c (str, (guchar)((v >> 16) & 0xff));
+      g_string_append_c (str, (guchar)((v >> 8) & 0xff));
+      g_string_append_c (str, (guchar)(v & 0xff));
+    }
+}
+
+static void
+marshal_string (GString *marshaled,
+                GHashTable *strings,
+                const char *string)
+{
+  RecordDataString *s;
+
+  s = g_hash_table_lookup (strings, string);
+  g_assert (s != NULL);
+
+  marshal_uint32 (marshaled, s->offset);
+}
+
+static void
+marshal_tree (GString *marshaled,
+              GHashTable *strings,
+              RecordDataTree *tree)
+{
+  GList *l;
+  int i;
+
+  /* Special case the root */
+  if (tree->parent == NULL)
+    {
+      for (l = g_list_last (tree->children); l != NULL; l = l->prev)
+        marshal_tree (marshaled, strings, l->data);
+      return;
+    }
+
+  switch (tree->type)
+    {
+    case RECORD_TYPE_ELEMENT:
+      marshal_uint32 (marshaled, RECORD_TYPE_ELEMENT);
+      marshal_string (marshaled, strings, tree->data);
+      marshal_uint32 (marshaled, g_strv_length ((char **)tree->attributes));
+      for (i = 0; tree->attributes[i] != NULL; i++)
+        {
+          marshal_string (marshaled, strings, tree->attributes[i]);
+          marshal_string (marshaled, strings, tree->values[i]);
+        }
+      for (l = g_list_last (tree->children); l != NULL; l = l->prev)
+        marshal_tree (marshaled, strings, l->data);
+
+      marshal_uint32 (marshaled, RECORD_TYPE_END_ELEMENT);
+      break;
+    case RECORD_TYPE_TEXT:
+      marshal_uint32 (marshaled, RECORD_TYPE_TEXT);
+      marshal_string (marshaled, strings, tree->data);
+      break;
+    case RECORD_TYPE_PASSTHROUGH:
+      marshal_uint32 (marshaled, RECORD_TYPE_PASSTHROUGH);
+      marshal_string (marshaled, strings, tree->data);
+      break;
+    case RECORD_TYPE_END_ELEMENT:
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static guint32 demarshal_uint32 (const char **tree);
+
+GLIB_AVAILABLE_IN_ALL
+GBytes *
+g_markup_parse_context_record (GMarkupParseFlags    flags,
+                               const gchar         *text,
+                               gssize               text_len,
+                               GError             **error)
+{
+  GMarkupParseContext *ctx;
+  RecordData data = { 0 };
+  GList *string_table, *l;
+  GString *marshaled;
+  int offset;
+
+  data.strings = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, (GDestroyNotify)record_data_string_free);
+  data.root = record_data_tree_new (NULL, RECORD_TYPE_ELEMENT, NULL);
+  data.current = data.root;
+
+  ctx = g_markup_parse_context_new (&record_parser, flags,
+                                    &data, NULL);
+
+  if (!g_markup_parse_context_parse (ctx, text, text_len, error))
+    {
+      record_data_tree_free (data.root);
+      g_hash_table_destroy (data.strings);
+      g_markup_parse_context_free (ctx);
+      return NULL;
+    }
+
+  g_markup_parse_context_free (ctx);
+
+  string_table = g_hash_table_get_values (data.strings);
+
+  string_table = g_list_sort (string_table, compare_string);
+
+  offset = 0;
+  for (l = string_table; l != NULL; l = l->next)
+    {
+      RecordDataString *s = l->data;
+      s->offset = offset;
+      offset += strlen (s->string) + 1;
+    }
+
+  marshaled = g_string_new ("");
+  marshal_uint32 (marshaled, offset);
+
+  for (l = string_table; l != NULL; l = l->next)
+    {
+      RecordDataString *s = l->data;
+      g_string_append_len (marshaled, s->string, strlen (s->string) + 1);
+    }
+
+  g_list_free (string_table);
+
+  marshal_tree (marshaled, data.strings, data.root);
+
+  record_data_tree_free (data.root);
+  g_hash_table_destroy (data.strings);
+
+  return g_string_free_to_bytes (marshaled);
+}
+
+static guint32
+demarshal_uint32 (const char **tree)
+{
+  const guchar *p = (const guchar *)*tree;
+  guchar c = *p;
+  /* see marshal_uint32 for format */
+
+  if (c < 128) /* 7 bit */
+    {
+      *tree += 1;
+      return c;
+    }
+  else if ((c & 0xc0) == 0x80) /* 14 bit */
+    {
+      *tree += 2;
+      return (c & 0x3f) << 8 | p[1];
+    }
+  else if ((c & 0xe0) == 0xc0) /* 21 bit */
+    {
+      *tree += 3;
+      return (c & 0x1f) << 16 | p[1] << 8 | p[2];
+    }
+  else if ((c & 0xf0) == 0xe0) /* 28 bit */
+    {
+      *tree += 4;
+      return (c & 0xf) << 24 | p[1] << 16 | p[2] << 8 | p[3];
+    }
+  else
+    {
+      *tree += 5;
+      return p[1] << 24 | p[2] << 16 | p[3] << 8 | p[4];
+    }
+}
+
+static const char *
+demarshal_string (const char **tree, const char *strings)
+{
+  guint32 offset = demarshal_uint32 (tree);
+
+  return strings + offset;
+}
+
+static gboolean
+replay_start_element (GMarkupParseContext *context,
+                      const char **tree,
+                      const char *strings,
+                      GError **error)
+{
+  const char *element_name;
+  guint32 i, n_attrs;
+  const gchar **attr_names;
+  const gchar **attr_values;
+  GError *tmp_error = NULL;
+
+  element_name = demarshal_string (tree, strings);
+  n_attrs = demarshal_uint32 (tree);
+
+  attr_names = g_newa (const gchar *, n_attrs + 1);
+  attr_values = g_newa (const gchar *, n_attrs + 1);
+  for (i = 0; i < n_attrs; i++)
+    {
+      attr_names[i] = demarshal_string (tree, strings);
+      attr_values[i] = demarshal_string (tree, strings);
+    }
+  attr_names[i] = NULL;
+  attr_values[i] = NULL;
+
+  context->tag_stack = g_slist_concat (get_list_node (context, (char *)element_name), context->tag_stack);
+
+  if (context->parser->start_element)
+    (* context->parser->start_element) (context,
+                                        element_name,
+                                        attr_names,
+                                        attr_values,
+                                        context->user_data,
+                                        &tmp_error);
+
+  if (tmp_error)
+    {
+      propagate_error (context, error, tmp_error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+replay_end_element (GMarkupParseContext *context,
+                    const char **tree,
+                    const char *strings,
+                    GError **error)
+{
+  GError *tmp_error = NULL;
+  GSList *node;
+
+  g_assert (context->tag_stack != NULL);
+
+  possibly_finish_subparser (context);
+
+  if (context->parser->end_element)
+    (* context->parser->end_element) (context,
+                                      current_element (context),
+                                      context->user_data,
+                                      &tmp_error);
+
+  ensure_no_outstanding_subparser (context);
+
+  node = context->tag_stack;
+  context->tag_stack = g_slist_remove_link (context->tag_stack, node);
+  free_list_node (context, node);
+
+  if (tmp_error)
+    {
+      propagate_error (context, error, tmp_error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+replay_text (GMarkupParseContext *context,
+             const char **tree,
+             const char *strings,
+             GError **error)
+{
+  const char *text;
+  GError *tmp_error = NULL;
+
+  text = demarshal_string (tree, strings);
+
+  if (context->parser->text)
+    (*context->parser->text) (context,
+                              text,
+                              strlen (text),
+                              context->user_data,
+                              &tmp_error);
+
+  if (tmp_error)
+    {
+      propagate_error (context, error, tmp_error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+replay_passthrough (GMarkupParseContext *context,
+                    const char **tree,
+                    const char *strings,
+                    GError **error)
+{
+  const char *text;
+  GError *tmp_error = NULL;
+
+  text = demarshal_string (tree, strings);
+
+  if (context->parser->passthrough)
+    (*context->parser->passthrough) (context,
+                                     text,
+                                     strlen (text),
+                                     context->user_data,
+                                     &tmp_error);
+
+  if (tmp_error)
+    {
+      propagate_error (context, error, tmp_error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+g_markup_parse_context_replay (GMarkupParseContext *context,
+                               GBytes              *data,
+                               GError             **error)
+{
+  gsize d_size;
+  const char *d;
+  const char *d_end;
+  guint32 len, type;
+  const char *strings;
+  const char *tree;
+
+  d = g_bytes_get_data (data, &d_size);
+  d_end = d + d_size;
+
+  len = demarshal_uint32 (&d);
+
+  strings = d;
+  d = d + len;
+  tree = d;
+
+  while (tree < d_end)
+    {
+      gboolean res;
+      type = demarshal_uint32 (&tree);
+
+      switch (type)
+        {
+        case RECORD_TYPE_ELEMENT:
+          res = replay_start_element (context, &tree, strings, error);
+          break;
+        case RECORD_TYPE_END_ELEMENT:
+          res = replay_end_element (context, &tree, strings, error);
+          break;
+        case RECORD_TYPE_TEXT:
+          res = replay_text (context, &tree, strings, error);
+          break;
+        case RECORD_TYPE_PASSTHROUGH:
+          res = replay_passthrough (context, &tree, strings, error);
+          break;
+        default:
+          g_assert_not_reached ();
+        }
+
+      if (!res)
+        return FALSE;
+    }
+
+  return TRUE;
 }
