@@ -109,7 +109,7 @@ typedef enum
 
 typedef struct
 {
-  const char *prev_element;
+  GSList *prev_element;
   const GMarkupParser *prev_parser;
   gpointer prev_user_data;
 } GMarkupRecursionTracker;
@@ -162,7 +162,7 @@ struct _GMarkupParseContext
 
   /* subparser support */
   GSList *subparser_stack; /* (GMarkupRecursionTracker *) */
-  const char *subparser_element;
+  GSList *subparser_element;
   gpointer held_user_data;
 };
 
@@ -941,7 +941,7 @@ pop_tag (GMarkupParseContext *context)
 static void
 possibly_finish_subparser (GMarkupParseContext *context)
 {
-  if (current_element (context) == context->subparser_element)
+  if (context->tag_stack == context->subparser_element)
     pop_subparser_stack (context);
 }
 
@@ -2105,7 +2105,7 @@ g_markup_parse_context_push (GMarkupParseContext *context,
   tracker->prev_parser = context->parser;
   tracker->prev_user_data = context->user_data;
 
-  context->subparser_element = current_element (context);
+  context->subparser_element = context->tag_stack;
   context->parser = parser;
   context->user_data = user_data;
 
