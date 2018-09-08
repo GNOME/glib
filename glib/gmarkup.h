@@ -27,6 +27,7 @@
 
 #include <glib/gerror.h>
 #include <glib/gslist.h>
+#include <glib/gbytes.h>
 
 G_BEGIN_DECLS
 
@@ -221,6 +222,17 @@ void                 g_markup_parse_context_get_position (GMarkupParseContext *c
                                                           gint                *char_number);
 GLIB_AVAILABLE_IN_ALL
 gpointer             g_markup_parse_context_get_user_data (GMarkupParseContext *context);
+
+GLIB_AVAILABLE_IN_2_60
+GBytes              *g_markup_parse_context_record (GMarkupParseFlags    flags,
+                                                    const gchar         *text,
+                                                    gssize               text_len,
+                                                    GError             **error);
+GLIB_AVAILABLE_IN_2_60
+gboolean             g_markup_parse_context_replay (GMarkupParseContext *context,
+                                                    const char          *data,
+                                                    gsize                data_size,
+                                                    GError             **error);
 
 /* useful when saving */
 GLIB_AVAILABLE_IN_ALL
