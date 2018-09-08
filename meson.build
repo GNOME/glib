@@ -1976,6 +1976,7 @@ subdir('gobject')
 subdir('gthread')
 subdir('gmodule')
 subdir('gio')
+subdir('m4macros')
 if xgettext.found()
   subdir('po')
 endif
