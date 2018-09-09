@@ -264,36 +264,36 @@ test_internal_enhanced_stdio (void)
                                                 G_FILE_QUERY_INFO_NONE,
                                                 NULL, NULL);
 
-      g_assert (g_file_info_has_attribute (fi_programdata, G_FILE_ATTRIBUTE_ID_FILE));
-      g_assert (g_file_info_has_attribute (fi_programdata, G_FILE_ATTRIBUTE_STANDARD_TYPE));
+      g_assert_true (g_file_info_has_attribute (fi_programdata, G_FILE_ATTRIBUTE_ID_FILE));
+      g_assert_true (g_file_info_has_attribute (fi_programdata, G_FILE_ATTRIBUTE_STANDARD_TYPE));
 
-      g_assert (g_file_info_has_attribute (fi_allusers_target, G_FILE_ATTRIBUTE_ID_FILE));
-      g_assert (g_file_info_has_attribute (fi_allusers_target, G_FILE_ATTRIBUTE_STANDARD_TYPE));
-      g_assert (g_file_info_has_attribute (fi_commondata_target, G_FILE_ATTRIBUTE_ID_FILE));
-      g_assert (g_file_info_has_attribute (fi_commondata_target, G_FILE_ATTRIBUTE_STANDARD_TYPE));
+      g_assert_true (g_file_info_has_attribute (fi_allusers_target, G_FILE_ATTRIBUTE_ID_FILE));
+      g_assert_true (g_file_info_has_attribute (fi_allusers_target, G_FILE_ATTRIBUTE_STANDARD_TYPE));
+      g_assert_true (g_file_info_has_attribute (fi_commondata_target, G_FILE_ATTRIBUTE_ID_FILE));
+      g_assert_true (g_file_info_has_attribute (fi_commondata_target, G_FILE_ATTRIBUTE_STANDARD_TYPE));
 
-      g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_ID_FILE));
-      g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_TYPE));
-      g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK));
-      g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG));
-      g_assert (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET));
+      g_assert_true (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_ID_FILE));
+      g_assert_true (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_TYPE));
+      g_assert_true (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK));
+      g_assert_true (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG));
+      g_assert_true (g_file_info_has_attribute (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET));
 
-      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_ID_FILE));
-      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_TYPE));
-      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK));
-      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT));
-      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG));
-      g_assert (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET));
+      g_assert_true (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_ID_FILE));
+      g_assert_true (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_TYPE));
+      g_assert_true (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK));
+      g_assert_true (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT));
+      g_assert_true (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG));
+      g_assert_true (g_file_info_has_attribute (fi_commondata, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET));
 
       ft_allusers = g_file_info_get_file_type (fi_allusers);
       ft_allusers_target = g_file_info_get_file_type (fi_allusers_target);
       ft_programdata = g_file_info_get_file_type (fi_programdata);
       ft_commondata = g_file_info_get_file_type (fi_commondata);
 
-      g_assert (ft_allusers == G_FILE_TYPE_SYMBOLIC_LINK);
-      g_assert (ft_allusers_target == G_FILE_TYPE_DIRECTORY);
-      g_assert (ft_programdata == G_FILE_TYPE_DIRECTORY);
-      g_assert (ft_commondata == G_FILE_TYPE_SYMBOLIC_LINK);
+      g_assert_cmpint (ft_allusers, ==, G_FILE_TYPE_SYMBOLIC_LINK);
+      g_assert_cmpint (ft_allusers_target, ==, G_FILE_TYPE_DIRECTORY);
+      g_assert_cmpint (ft_programdata, ==, G_FILE_TYPE_DIRECTORY);
+      g_assert_cmpint (ft_commondata, ==, G_FILE_TYPE_SYMBOLIC_LINK);
 
       allusers_is_symlink = g_file_info_get_attribute_boolean (fi_allusers, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK);
       allusers_reparse_tag = g_file_info_get_attribute_uint32 (fi_allusers, G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG);
@@ -385,7 +385,7 @@ test_internal_enhanced_stdio (void)
       g_assert_nonnull (f);
 
       h = (HANDLE) _get_osfhandle (fileno (f));
-      g_assert (h != INVALID_HANDLE_VALUE);
+      g_assert_cmpuint ((guintptr) h, !=, (guintptr) INVALID_HANDLE_VALUE);
 
       ssb.SetSparse = TRUE;
       g_assert_true (DeviceIoControl (h,
@@ -424,8 +424,8 @@ test_internal_enhanced_stdio (void)
 
       g_remove (ps);
 
-      g_assert (g_file_info_has_attribute (fi_ps, G_FILE_ATTRIBUTE_STANDARD_SIZE));
-      g_assert (g_file_info_has_attribute (fi_ps, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE));
+      g_assert_true (g_file_info_has_attribute (fi_ps, G_FILE_ATTRIBUTE_STANDARD_SIZE));
+      g_assert_true (g_file_info_has_attribute (fi_ps, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE));
 
       size_ps = g_file_info_get_attribute_uint64 (fi_ps, G_FILE_ATTRIBUTE_STANDARD_SIZE);
       alsize_ps = g_file_info_get_attribute_uint64 (fi_ps, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE);
@@ -464,7 +464,7 @@ test_internal_enhanced_stdio (void)
   g_assert_nonnull (f);
 
   h = (HANDLE) _get_osfhandle (fileno (f));
-  g_assert (h != INVALID_HANDLE_VALUE);
+  g_assert_cmpuint ((guintptr) h, !=, (guintptr) INVALID_HANDLE_VALUE);
 
   fprintf (f, "1");
   fflush (f);
@@ -503,15 +503,15 @@ test_internal_enhanced_stdio (void)
                              G_FILE_QUERY_INFO_NONE,
                              NULL, NULL);
 
-  g_assert (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_STANDARD_SIZE));
-  g_assert (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE));
-  g_assert (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_ID_FILE));
-  g_assert (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_TIME_MODIFIED));
+  g_assert_true (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_STANDARD_SIZE));
+  g_assert_true (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE));
+  g_assert_true (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_ID_FILE));
+  g_assert_true (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_TIME_MODIFIED));
 
-  g_assert (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_STANDARD_SIZE));
-  g_assert (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE));
-  g_assert (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_ID_FILE));
-  g_assert (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_TIME_MODIFIED));
+  g_assert_true (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_STANDARD_SIZE));
+  g_assert_true (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE));
+  g_assert_true (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_ID_FILE));
+  g_assert_true (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_TIME_MODIFIED));
 
   size_p0 = g_file_info_get_attribute_uint64 (fi_p0, G_FILE_ATTRIBUTE_STANDARD_SIZE);
   alsize_p0 = g_file_info_get_attribute_uint64 (fi_p0, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE);
@@ -529,7 +529,7 @@ test_internal_enhanced_stdio (void)
   /* st_ino from W32 stat() is useless for file identification.
    * It will be either 0, or it will be the same for both files.
    */
-  g_assert (statbuf_p0.st_ino == statbuf_p1.st_ino);
+  g_assert_cmpint (statbuf_p0.st_ino, ==, statbuf_p1.st_ino);
   g_assert_cmpstr (id_p0, !=, id_p1);
 
   time_p0 = g_file_info_get_attribute_uint64 (fi_p0, G_FILE_ATTRIBUTE_TIME_MODIFIED);
@@ -541,7 +541,7 @@ test_internal_enhanced_stdio (void)
    *  and 64-bit on 64-bit Windows, usually),
    * so it *can* pass this test in some cases.
    */
-  g_assert (time_p0 > G_GUINT64_CONSTANT (0xFFFFFFFF));
+  g_assert_cmpuint (time_p0, >, G_GUINT64_CONSTANT (0xFFFFFFFF));
 
   g_object_unref (fi_p0);
   g_object_unref (fi_p1);
