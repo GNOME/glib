@@ -31,6 +31,7 @@
 #include <glib/gstdio.h>
 #include <Windows.h>
 #include <Shlobj.h>
+#include <io.h> /* for _get_osfhandle */
 #endif
 
 #define TEST_NAME			"Prilis zlutoucky kun"
