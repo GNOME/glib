@@ -725,12 +725,14 @@ main (int argc, char **argv)
   gboolean generate_header = FALSE;
   gboolean manual_register = FALSE;
   gboolean internal = FALSE;
+  gboolean external_data = FALSE;
   gboolean generate_dependencies = FALSE;
   gboolean generate_phony_targets = FALSE;
   char *dependency_file = NULL;
   char *c_name = NULL;
   char *c_name_no_underscores;
   const char *linkage = "extern";
+  const char *data_linkage = "static";
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "version", 0, 0, G_OPTION_ARG_NONE, &show_version_and_exit, N_("Show program version and exit"), NULL },
@@ -744,6 +746,7 @@ main (int argc, char **argv)
     { "generate-phony-targets", 0, 0, G_OPTION_ARG_NONE, &generate_phony_targets, N_("Include phony targets in the generated dependency file"), NULL },
     { "manual-register", 0, 0, G_OPTION_ARG_NONE, &manual_register, N_("Don’t automatically create and register resource"), NULL },
     { "internal", 0, 0, G_OPTION_ARG_NONE, &internal, N_("Don’t export functions; declare them G_GNUC_INTERNAL"), NULL },
+    { "external-data", 0, 0, G_OPTION_ARG_NONE, &external_data, N_("Don’t embed resource data in c file, declare external"), NULL },
     { "c-name", 0, 0, G_OPTION_ARG_STRING, &c_name, N_("C identifier name used for the generated source code"), NULL },
     { NULL }
   };
@@ -1078,6 +1081,9 @@ main (int argc, char **argv)
 	  return 1;
 	}
 
+      if (external_data)
+        data_linkage = "extern";
+
       g_fprintf (file,
 	       "#include <gio/gio.h>\n"
 	       "\n"
@@ -1087,26 +1093,34 @@ main (int argc, char **argv)
 	       "# define SECTION\n"
 	       "#endif\n"
 	       "\n"
-	       "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = {\n  \"",
-	       c_name_no_underscores, data_size + 1 /* nul terminator */, c_name);
+	       "%s const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data",
+	       c_name_no_underscores, data_linkage, (external_data ? data_size : data_size + 1 /* nul terminator */), c_name);
 
-      for (i = 0; i < data_size; i++) {
-	g_fprintf (file, "\\%3.3o", (int)data[i]);
-	if (i % 16 == 15)
-	  g_fprintf (file, "\"\n  \"");
-      }
+      if (external_data)
+        {
+          g_fprintf (file, ";\n");
+        }
+      else
+        {
+          g_fprintf (file, " = {\n  \"");
+          for (i = 0; i < data_size; i++) {
+            g_fprintf (file, "\\%3.3o", (int)data[i]);
+            if (i % 16 == 15)
+              g_fprintf (file, "\"\n  \"");
+          }
 
-      g_fprintf (file, "\" };\n");
+          g_fprintf (file, "\" };\n");
+        }
 
       g_fprintf (file,
 	       "\n"
-	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data) - 1 /* nul terminator */, NULL, NULL, NULL };\n"
+	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data)%s, NULL, NULL, NULL };\n"
 	       "%s GResource *%s_get_resource (void);\n"
 	       "GResource *%s_get_resource (void)\n"
 	       "{\n"
 	       "  return g_static_resource_get_resource (&static_resource);\n"
 	       "}\n",
-	       c_name, c_name, linkage, c_name, c_name);
+	       c_name, c_name, (external_data ? "" : " - 1 /* nul terminator */"), linkage, c_name, c_name);
 
 
       if (manual_register)
