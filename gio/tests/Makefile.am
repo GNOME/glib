@@ -670,8 +670,21 @@ plugin_resources.c: test4.gresource.xml Makefile $(shell $(glib_compile_resource
 test.gresource: test.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=. --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test.gresource.xml)
 	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=. --sourcedir=$(srcdir) $<
 
-EXTRA_DIST += test.gresource.xml test1.txt test2.gresource.xml test2.txt test3.gresource.xml test3.txt test4.gresource.xml gen-big-test-resource.py
+EXTRA_DIST += test.gresource.xml test1.txt test2.gresource.xml test2.txt test3.gresource.xml test3.txt test4.gresource.xml test5.gresource.xml gen-big-test-resource.py
 CLEANFILES += test-generated.txt test_resources.c test_resources2.[ch] plugin_resources.c test.gresource gresource-big-test.txt
+
+if OS_LINUX
+test5.gresource: test5.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=. --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test5.gresource.xml)
+	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=. --sourcedir=$(srcdir) $<
+test_resources_binary.c: test5.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=. --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test5.gresource.xml)
+	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_binary_test1 $<
+test_resources_binary_data.o: test5.gresource
+	$(AM_V_GEN) ld -r -b binary $< -o $@
+test_resources_binary_data2.o: test_resources_binary.o
+	$(AM_V_GEN) objcopy --add-symbol _g_binary_test1_resource_data=.data:0 -N _binary_test5_gresource_start -N _binary_test5_gresource_size -N _binary_test5_gresource_end $< $@
+nodist_resources_SOURCES += test_resources_binary_data2.o test_resources_binary.c
+endif
+
 endif # !CROSS_COMPILING
 
 BUILT_SOURCES += giotypefuncs.inc
