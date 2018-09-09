@@ -6,6 +6,9 @@
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
+#ifdef G_OS_WIN32
+#include <io.h> /* for close() */
+#endif
 
 static const char *original_data = "This is some test data that we can put in a file...";
 static const char *new_data = "new data..";
