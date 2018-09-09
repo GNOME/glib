@@ -524,12 +524,67 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     copy : true,
     install : false)
 
-  gio_tests += {
-    'resources' : {
-      'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
-                         test_resources2_h],
-    },
-  }
+  # Create object file containing resource data
+  # for testing the external data option
+  if build_machine.system() == 'linux'
+    test_gresource_binary = custom_target('test5.gresource',
+      input : 'test5.gresource.xml',
+      output : 'test5.gresource',
+      command : [glib_compile_resources,
+                 '--target=@OUTPUT@',
+                 '--sourcedir=' + meson.current_source_dir(),
+                 '--sourcedir=' + meson.current_build_dir(),
+                 '@INPUT@'],
+      install_dir : installed_tests_execdir,
+      install : installed_tests_enabled)
+
+	# Create resource data file
+    test_resources_binary_c = custom_target('test_resources_binary.c',
+      input : 'test5.gresource.xml',
+      output : 'test_resources_binary.c',
+      command : [glib_compile_resources,
+                 '--target=@OUTPUT@',
+                 '--sourcedir=' + meson.current_source_dir(),
+                 '--sourcedir=' + meson.current_build_dir(),
+                 '--generate-source',
+                 '--external-data',
+                 '--c-name', '_g_binary_test1',
+                 '@INPUT@'])
+
+	# Create object file containing resource data
+    test_resources_binary = custom_target('test_resources.o',
+      input : test_gresource_binary,
+      output : 'test_resources.o',
+      command : ['ld',
+                 '-r',
+                 '-b','binary',
+                 '@INPUT@',
+                 '-o','@OUTPUT@'])
+
+	# Rename symbol to match the one in the C file
+    test_resources_binary2 = custom_target('test_resources2.o',
+      input : test_resources_binary,
+      output : 'test_resources2.o',
+      command : ['objcopy',
+                 '--add-symbol','_g_binary_test1_resource_data=.data:0',
+                 '@INPUT@',
+                 '@OUTPUT@'])
+
+    gio_tests += {
+      'resources' : {
+        'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
+                           test_resources2_h, test_resources_binary_c,
+                           test_resources_binary2],
+      },
+    }
+  else
+    gio_tests += {
+      'resources' : {
+        'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
+                           test_resources2_h],
+      },
+    }
+  endif
 endif
 
 foreach test_name, extra_args : gio_tests

@@ -725,6 +725,7 @@ main (int argc, char **argv)
   gboolean generate_header = FALSE;
   gboolean manual_register = FALSE;
   gboolean internal = FALSE;
+  gboolean external_data = FALSE;
   gboolean generate_dependencies = FALSE;
   gboolean generate_phony_targets = FALSE;
   char *dependency_file = NULL;
@@ -744,6 +745,7 @@ main (int argc, char **argv)
     { "generate-phony-targets", 0, 0, G_OPTION_ARG_NONE, &generate_phony_targets, N_("Include phony targets in the generated dependency file"), NULL },
     { "manual-register", 0, 0, G_OPTION_ARG_NONE, &manual_register, N_("Don’t automatically create and register resource"), NULL },
     { "internal", 0, 0, G_OPTION_ARG_NONE, &internal, N_("Don’t export functions; declare them G_GNUC_INTERNAL"), NULL },
+    { "external-data", 0, 0, G_OPTION_ARG_NONE, &external_data, N_("Don’t embed resource data in the C file; assume it's linked externally instead"), NULL },
     { "c-name", 0, 0, G_OPTION_ARG_STRING, &c_name, N_("C identifier name used for the generated source code"), NULL },
     { NULL }
   };
@@ -1089,49 +1091,60 @@ main (int argc, char **argv)
 	       "\n",
 	       c_name_no_underscores);
 
-      /* For Visual Studio builds: Avoid surpassing the 65535-character limit for a string, GitLab issue #1580 */
-      g_fprintf (file, "#ifdef _MSC_VER\n");
-      g_fprintf (file,
-           "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = { {\n",
-           data_size + 1 /* nul terminator */, c_name);
-
-      for (i = 0; i < data_size; i++)
+      if (external_data)
         {
-          if (i % 16 == 0)
-            g_fprintf (file, "  ");
-          g_fprintf (file, "0%3.3o", (int)data[i]);
-          if (i != data_size - 1)
-            g_fprintf (file, ", ");
-          if (i % 16 == 15 || i == data_size - 1)
-            g_fprintf (file, "\n");
+          g_fprintf (file,
+                     "extern const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data;"
+                     "\n",
+                     data_size, c_name);
         }
+      else
+        {
+          /* For Visual Studio builds: Avoid surpassing the 65535-character limit for a string, GitLab issue #1580 */
+          g_fprintf (file, "#ifdef _MSC_VER\n");
+          g_fprintf (file,
+                     "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = { {\n",
+                     data_size + 1 /* nul terminator */, c_name);
 
-      g_fprintf (file, "} };\n");
+          for (i = 0; i < data_size; i++)
+            {
+              if (i % 16 == 0)
+                g_fprintf (file, "  ");
+              g_fprintf (file, "0%3.3o", (int)data[i]);
+              if (i != data_size - 1)
+                g_fprintf (file, ", ");
+              if (i % 16 == 15 || i == data_size - 1)
+                g_fprintf (file, "\n");
+            }
 
-      /* For other compilers, use the long string approach */
-      g_fprintf (file, "#else /* _MSC_VER */\n");
-      g_fprintf (file,
-	       "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = {\n  \"",
-	       data_size + 1 /* nul terminator */, c_name);
+          g_fprintf (file, "} };\n");
 
-      for (i = 0; i < data_size; i++) {
-	g_fprintf (file, "\\%3.3o", (int)data[i]);
-	if (i % 16 == 15)
-	  g_fprintf (file, "\"\n  \"");
-      }
+          /* For other compilers, use the long string approach */
+          g_fprintf (file, "#else /* _MSC_VER */\n");
+          g_fprintf (file,
+                     "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = {\n  \"",
+                     data_size + 1 /* nul terminator */, c_name);
 
-      g_fprintf (file, "\" };\n");
-      g_fprintf (file, "#endif /* !_MSC_VER */\n");
+          for (i = 0; i < data_size; i++)
+            {
+              g_fprintf (file, "\\%3.3o", (int)data[i]);
+              if (i % 16 == 15)
+                g_fprintf (file, "\"\n  \"");
+            }
+
+          g_fprintf (file, "\" };\n");
+          g_fprintf (file, "#endif /* !_MSC_VER */\n");
+        }
 
       g_fprintf (file,
 	       "\n"
-	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data) - 1 /* nul terminator */, NULL, NULL, NULL };\n"
+	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data)%s, NULL, NULL, NULL };\n"
 	       "%s GResource *%s_get_resource (void);\n"
 	       "GResource *%s_get_resource (void)\n"
 	       "{\n"
 	       "  return g_static_resource_get_resource (&static_resource);\n"
 	       "}\n",
-	       c_name, c_name, linkage, c_name, c_name);
+	       c_name, c_name, (external_data ? "" : " - 1 /* nul terminator */"), linkage, c_name, c_name);
 
 
       if (manual_register)
