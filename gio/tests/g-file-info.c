@@ -29,8 +29,9 @@
 #ifdef G_OS_WIN32
 #include <stdio.h>
 #include <glib/gstdio.h>
-#include <Windows.h>
-#include <Shlobj.h>
+#include <windows.h>
+#include <shlobj.h>
+#include <io.h> /* for _get_osfhandle */
 #endif
 
 #define TEST_NAME			"Prilis zlutoucky kun"

@@ -5,6 +5,10 @@ common_gio_tests_deps = [
   libgio_dep,
 ]
 
+if host_machine.system() == 'windows'
+  common_gio_tests_deps += [iphlpapi_dep, winsock2, cc.find_library ('secur32')]
+endif
+
 subdir('gdbus-object-manager-example')
 
 gengiotypefuncs_prog = find_program('gengiotypefuncs.py')
@@ -321,21 +325,26 @@ test_extra_programs += [{
     'extra_sources' : ['gtlsconsoleinteraction.c'],
     'install' : false,
   },
-  # These three are manual-run tests because they need a session bus but don't bring one up themselves
-  # FIXME: these build but don't seem to work!
-  'gdbus-example-objectmanager-client' : {
-    'dependencies' : [libgdbus_example_objectmanager_dep],
-    'install' : false,
-  },
-  'gdbus-example-objectmanager-server' : {
-    'dependencies' : [libgdbus_example_objectmanager_dep],
-    'install' : false,
-  },
-  'gdbus-test-fixture' : {
-    'dependencies' : [libgdbus_example_objectmanager_dep],
-    'install' : false,
-  },
 }]
+
+if cc.get_id() != 'msvc'
+  test_extra_programs += [{
+    # These three are manual-run tests because they need a session bus but don't bring one up themselves
+    # FIXME: these build but don't seem to work!
+    'gdbus-example-objectmanager-client' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install' : false,
+    },
+    'gdbus-example-objectmanager-server' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install' : false,
+    },
+    'gdbus-test-fixture' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install' : false,
+    },
+  }]
+endif
 
 if host_machine.system() != 'windows'
   test_extra_programs += [{
@@ -357,13 +366,8 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--c-name', '_g_plugin',
                '@INPUT@'])
 
-  if host_system == 'windows'
-    resource_plugin_platform_link_args = ['-no-undefined']
-  else
-    resource_plugin_platform_link_args = []
-  endif
   shared_module ('resourceplugin', 'resourceplugin.c', plugin_resources_c,
-    link_args : export_dynamic_ldflags + resource_plugin_platform_link_args,
+    link_args : export_dynamic_ldflags,
     dependencies : common_gio_tests_deps)
 
   test_gresource = custom_target('test.gresource',

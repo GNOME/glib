@@ -979,7 +979,4 @@ if enable_systemtap
 endif
 
 subdir('fam')
-
-if host_system != 'windows'
-  subdir('tests')
-endif
+subdir('tests')
