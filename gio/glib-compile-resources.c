@@ -220,6 +220,7 @@ end_element (GMarkupParseContext  *context,
       gchar *key;
       FileData *data = NULL;
       char *tmp_file = NULL;
+      gboolean xml_preparse = FALSE;
 
       file = state->string->str;
       key = file;
@@ -283,6 +284,8 @@ end_element (GMarkupParseContext  *context,
             {
               if (!strcmp (options[i], "xml-stripblanks"))
                 xml_stripblanks = TRUE;
+              else if (!strcmp (options[i], "xml-preparse"))
+                xml_preparse = TRUE;
               else if (!strcmp (options[i], "to-pixdata"))
                 to_pixdata = TRUE;
               else if (!strcmp (options[i], "json-stripblanks"))
@@ -464,6 +467,24 @@ end_element (GMarkupParseContext  *context,
 	}
       /* Include zero termination in content_size for uncompressed files (but not in size) */
       data->content_size = data->size + 1;
+
+      if (xml_preparse)
+        {
+          GBytes *preparsed = g_markup_parse_context_record (G_MARKUP_TREAT_CDATA_AS_TEXT,
+                                                             data->content, data->size, &my_error);
+          if (preparsed == NULL)
+            {
+              g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                           _("Error pre-parsing xml file %s: %s"),
+                           real_file, my_error->message);
+              g_clear_error (&my_error);
+              goto cleanup;
+            }
+
+          g_free (data->content);
+          data->content = g_bytes_unref_to_data (preparsed, &data->size);
+          data->content_size = data->size;
+        }
 
       if (state->compressed)
 	{
