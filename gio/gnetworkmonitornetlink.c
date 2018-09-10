@@ -435,12 +435,6 @@ g_network_monitor_netlink_finalize (GObject *object)
 {
   GNetworkMonitorNetlink *nl = G_NETWORK_MONITOR_NETLINK (object);
 
-  if (nl->priv->sock)
-    {
-      g_socket_close (nl->priv->sock, NULL);
-      g_object_unref (nl->priv->sock);
-    }
-
   if (nl->priv->source)
     {
       g_source_destroy (nl->priv->source);
@@ -451,6 +445,12 @@ g_network_monitor_netlink_finalize (GObject *object)
     {
       g_source_destroy (nl->priv->dump_source);
       g_source_unref (nl->priv->dump_source);
+    }
+
+  if (nl->priv->sock)
+    {
+      g_socket_close (nl->priv->sock, NULL);
+      g_object_unref (nl->priv->sock);
     }
 
   g_clear_pointer (&nl->priv->context, g_main_context_unref);
