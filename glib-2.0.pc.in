@@ -3,9 +3,10 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-glib_genmarshal=glib-genmarshal
-gobject_query=gobject-query
-glib_mkenums=glib-mkenums
+bindir=@bindir@
+glib_genmarshal=${bindir}/glib-genmarshal
+gobject_query=${bindir}/gobject-query
+glib_mkenums=${bindir}/glib-mkenums
 
 Name: GLib
 Description: C Utility Library
