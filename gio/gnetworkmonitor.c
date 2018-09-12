@@ -90,9 +90,14 @@ static guint signals[LAST_SIGNAL] = { 0 };
 GNetworkMonitor *
 g_network_monitor_get_default (void)
 {
-  return _g_io_module_get_default (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
-                                   "GIO_USE_NETWORK_MONITOR",
-                                   NULL);
+  GNetworkMonitor *monitor;
+  monitor = _g_io_module_get_default (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
+                                      "GIO_USE_NETWORK_MONITOR",
+                                      NULL);
+  g_debug ("%s: Default network monitor is %s",
+           G_STRFUNC, G_OBJECT_TYPE_NAME (monitor));
+
+  return monitor;
 }
 
 /**
