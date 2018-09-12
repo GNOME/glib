@@ -432,8 +432,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
     }
 
   proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-                                         G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START
-                                         | G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
+                                         G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
                                          NULL,
                                          "org.freedesktop.portal.Desktop",
                                          "/org/freedesktop/portal/desktop",
