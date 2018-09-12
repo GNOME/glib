@@ -885,6 +885,8 @@ _g_io_module_get_default (const gchar         *extension_point,
       if (g_hash_table_lookup_extended (default_modules, extension_point,
 					&key, &impl))
 	{
+          /* Don’t debug here, since we’re returning a cached object which was
+           * already printed earlier. */
 	  g_rec_mutex_unlock (&default_modules_lock);
 	  return impl;
 	}
@@ -899,6 +901,8 @@ _g_io_module_get_default (const gchar         *extension_point,
 
   if (!ep)
     {
+      g_debug ("%s: Failed to find extension point ‘%s’",
+               G_STRFUNC, extension_point);
       g_warn_if_reached ();
       g_rec_mutex_unlock (&default_modules_lock);
       return NULL;
@@ -911,6 +915,7 @@ _g_io_module_get_default (const gchar         *extension_point,
       if (preferred)
 	{
 	  impl = try_implementation (extension_point, preferred, verify_func);
+	  extension = preferred;
 	  if (impl)
 	    goto done;
 	}
@@ -938,6 +943,14 @@ _g_io_module_get_default (const gchar         *extension_point,
 		       g_strdup (extension_point),
 		       impl ? g_object_ref (impl) : NULL);
   g_rec_mutex_unlock (&default_modules_lock);
+
+  if (impl != NULL)
+    g_debug ("%s: Found default implementation %s (%s) for ‘%s’",
+             G_STRFUNC, g_io_extension_get_name (extension),
+             G_OBJECT_TYPE_NAME (impl), extension_point);
+  else
+    g_debug ("%s: Failed to find default implementation for ‘%s’",
+             G_STRFUNC, extension_point);
 
   return impl;
 }
