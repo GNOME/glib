@@ -1009,6 +1009,139 @@ test_fopen_modes (void)
   g_free (path);
 }
 
+#ifdef G_OS_WIN32
+#include "../gstdio-private.c"
+
+static int
+g_wcscmp0 (const gunichar2 *str1,
+           const gunichar2 *str2)
+{
+  if (!str1)
+    return -(str1 != str2);
+  if (!str2)
+    return str1 != str2;
+  return wcscmp (str1, str2);
+}
+
+#define g_assert_cmpwcs(s1, cmp, s2, s1u8, s2u8) \
+G_STMT_START { \
+  const gunichar2 *__s1 = (s1), *__s2 = (s2); \
+  if (g_wcscmp0 (__s1, __s2) cmp 0) ; else \
+    g_assertion_message_cmpstr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                #s1u8 " " #cmp " " #s2u8, s1u8, #cmp, s2u8); \
+} G_STMT_END
+
+static void
+test_win32_pathstrip (void)
+{
+  gunichar2 *buf;
+  gsize i;
+#define IDENTITY_TEST(x) { x, x, FALSE }
+  struct
+  {
+    gunichar2 *in;
+    gunichar2 *out;
+    gboolean   result;
+  } testcases[] = {
+    IDENTITY_TEST (L"\\\\?\\V"),
+    IDENTITY_TEST (L"\\\\?\\Vo"),
+    IDENTITY_TEST (L"\\\\?\\Volume{0700f3d3-6d24-11e3-8b2f-806e6f6e6963}\\"),
+    IDENTITY_TEST (L"\\??\\V"),
+    IDENTITY_TEST (L"\\??\\Vo"),
+    IDENTITY_TEST (L"\\??\\Volume{0700f3d3-6d24-11e3-8b2f-806e6f6e6963}\\"),
+    IDENTITY_TEST (L"\\\\?\\\x0441:\\"),
+    IDENTITY_TEST (L"\\??\\\x0441:\\"),
+    IDENTITY_TEST (L"a:\\"),
+    IDENTITY_TEST (L"a:\\b\\c"),
+    IDENTITY_TEST (L"x"),
+#undef IDENTITY_TEST
+    {
+      L"\\\\?\\c:\\",
+             L"c:\\",
+      TRUE,
+    },
+    {
+      L"\\\\?\\C:\\",
+             L"C:\\",
+      TRUE,
+    },
+    {
+      L"\\\\?\\c:\\",
+             L"c:\\",
+      TRUE,
+    },
+    {
+      L"\\\\?\\C:\\",
+             L"C:\\",
+      TRUE,
+    },
+    {
+      L"\\\\?\\C:\\",
+             L"C:\\",
+      TRUE,
+    },
+    { 0, }
+  };
+
+  for (i = 0; testcases[i].in; i++)
+    {
+      gsize str_len = wcslen (testcases[i].in) + 1;
+      gchar *in_u8 = g_utf16_to_utf8 (testcases[i].in, -1, NULL, NULL, NULL);
+      gchar *out_u8 = g_utf16_to_utf8 (testcases[i].out, -1, NULL, NULL, NULL);
+
+      g_assert_nonnull (in_u8);
+      g_assert_nonnull (out_u8);
+
+      buf = g_new0 (gunichar2, str_len);
+      memcpy (buf, testcases[i].in, str_len * sizeof (gunichar2));
+      _g_win32_strip_extended_ntobjm_prefix (buf, &str_len);
+      g_assert_cmpwcs (buf, ==, testcases[i].out, in_u8, out_u8);
+      g_free (buf);
+      g_free (in_u8);
+      g_free (out_u8);
+    }
+  /* Check for correct behaviour on non-NUL-terminated strings */
+  for (i = 0; testcases[i].in; i++)
+    {
+      gsize str_len = wcslen (testcases[i].in) + 1;
+      wchar_t old_endchar;
+      gchar *in_u8 = g_utf16_to_utf8 (testcases[i].in, -1, NULL, NULL, NULL);
+      gchar *out_u8 = g_utf16_to_utf8 (testcases[i].out, -1, NULL, NULL, NULL);
+
+      g_assert_nonnull (in_u8);
+      g_assert_nonnull (out_u8);
+
+      buf = g_new0 (gunichar2, str_len);
+      memcpy (buf, testcases[i].in, (str_len) * sizeof (gunichar2));
+
+      old_endchar = buf[wcslen (testcases[i].out)];
+      str_len -= 1;
+
+      if (testcases[i].result)
+        {
+          /* Given "\\\\?\\C:\\" (len 7, unterminated),
+           * we should get "C:\\" (len 3, unterminated).
+           * Put a character different from "\\" (4-th character of the buffer)
+           * at the end of the unterminated source buffer, into a position
+           * where NUL-terminator would normally be. Then later test that 4-th character
+           * in the buffer is still the old "\\".
+           * After that terminate the string and use normal g_wcscmp0().
+           */
+          buf[str_len] = old_endchar - 1;
+        }
+
+      _g_win32_strip_extended_ntobjm_prefix (buf, &str_len);
+      g_assert_cmpuint (old_endchar, ==, buf[wcslen (testcases[i].out)]);
+      buf[str_len] = L'\0';
+      g_assert_cmpwcs (buf, ==, testcases[i].out, in_u8, out_u8);
+      g_free (buf);
+      g_free (in_u8);
+      g_free (out_u8);
+    }
+}
+
+#endif
+
 int
 main (int   argc,
       char *argv[])
@@ -1018,6 +1151,9 @@ main (int   argc,
 
   g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/merge_requests/");
 
+#ifdef G_OS_WIN32
+  g_test_add_func ("/fileutils/stdio-win32-pathstrip", test_win32_pathstrip);
+#endif
   g_test_add_func ("/fileutils/build-path", test_build_path);
   g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
   g_test_add_func ("/fileutils/build-filename", test_build_filename);
