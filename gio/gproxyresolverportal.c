@@ -52,7 +52,7 @@ ensure_resolver_proxy (GProxyResolverPortal *resolver)
     return FALSE;
 
   resolver->resolver = gxdp_proxy_resolver_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-                                                                   G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
+                                                                   G_DBUS_PROXY_FLAGS_NONE,
                                                                    "org.freedesktop.portal.Desktop",
                                                                    "/org/freedesktop/portal/desktop",
                                                                    NULL,
