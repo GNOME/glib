@@ -46,12 +46,18 @@ static gssize   g_pollable_output_stream_default_write_nonblocking (GPollableOut
 								    const void             *buffer,
 								    gsize                   count,
 								    GError                **error);
+static gboolean g_pollable_output_stream_default_writev_nonblocking(GPollableOutputStream  *stream,
+								    GOutputVector          *vectors,
+								    gint                    n_vectors,
+								    gsize                  *bytes_written,
+								    GError                **error);
 
 static void
 g_pollable_output_stream_default_init (GPollableOutputStreamInterface *iface)
 {
-  iface->can_poll          = g_pollable_output_stream_default_can_poll;
-  iface->write_nonblocking = g_pollable_output_stream_default_write_nonblocking;
+  iface->can_poll           = g_pollable_output_stream_default_can_poll;
+  iface->write_nonblocking  = g_pollable_output_stream_default_write_nonblocking;
+  iface->writev_nonblocking = g_pollable_output_stream_default_writev_nonblocking;
 }
 
 static gboolean
@@ -157,6 +163,38 @@ g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stre
     write_fn (G_OUTPUT_STREAM (stream), buffer, count, NULL, error);
 }
 
+static gboolean
+g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *stream,
+						     GOutputVector          *vectors,
+						     gint                    n_vectors,
+						     gsize                  *bytes_written,
+						     GError                **error)
+{
+  gsize _bytes_written = 0;
+  GPollableOutputStreamInterface *iface = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream);
+  gint i;
+  GError *err = NULL;
+
+  for (i = 0; i < n_vectors; i++)
+    {
+      gssize res;
+
+      res = iface->write_nonblocking (stream, vectors[i].buffer, vectors[i].size, error);
+      if (res == -1)
+        {
+          g_propagate_error (error, err);
+          *bytes_written = _bytes_written;
+          return FALSE;
+        }
+
+      bytes_written += res;
+    }
+
+  *bytes_written = _bytes_written;
+
+  return TRUE;
+}
+
 /**
  * g_pollable_output_stream_write_nonblocking:
  * @stream: a #GPollableOutputStream
@@ -215,6 +253,80 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
 
   res = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream)->
     write_nonblocking (stream, buffer, count, error);
+
+  if (cancellable)
+    g_cancellable_pop_current (cancellable);
+
+  return res;
+}
+
+/**
+ * g_pollable_output_stream_writev_nonblocking:
+ * @stream: a #GPollableOutputStream
+ * @vectors: (array length=n_vectors): the buffer containing the #GOutputVector to write.
+ * @n_vectors: the number of vectors to write
+ * @bytes_written: (out) (optional): location to store the number of bytes that was
+ *     written to the stream
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Attempts to write the bytes contained in the @n_vectors @vectors to @stream,
+ * as with g_output_stream_writev(). If @stream is not currently writable,
+ * this will immediately return %G_IO_ERROR_WOULD_BLOCK, and you can
+ * use g_pollable_output_stream_create_source() to create a #GSource
+ * that will be triggered when @stream is writable.
+ *
+ * Note that since this method never blocks, you cannot actually
+ * use @cancellable to cancel it. However, it will return an error
+ * if @cancellable has already been cancelled when you call, which
+ * may happen if you call this method after a source triggers due
+ * to having been cancelled.
+ *
+ * Also note that if %G_IO_ERROR_WOULD_BLOCK is returned some underlying
+ * transports like D/TLS require that you send the same @vectors and
+ * @n_vectors.
+ *
+ * As a special exception to the normal conventions for functions that
+ * use #GError, if this function returns %FALSE (and sets @error) then
+ * @bytes_written will be set to the number of bytes that were
+ * successfully written before the error (including %G_IO_ERROR_WOULD_BLOCK!)
+ * was encountered. This functionality is only available from C.
+ *
+ * Virtual: writev_nonblocking
+ *
+ * Returns: %TRUE on success, %FALSE if there was an error
+ *
+ * Since: 2.60
+ *
+ */
+gboolean
+g_pollable_output_stream_writev_nonblocking(GPollableOutputStream  *stream,
+					    GOutputVector          *vectors,
+					    gint                    n_vectors,
+					    gsize                  *bytes_written,
+					    GCancellable           *cancellable,
+					    GError                **error)
+{
+  gboolean res;
+
+  if (bytes_written)
+    *bytes_written = 0;
+
+  g_return_val_if_fail (G_IS_POLLABLE_OUTPUT_STREAM (stream), FALSE);
+  g_return_val_if_fail (vectors != NULL, TRUE);
+  g_return_val_if_fail (n_vectors >= 0, FALSE);
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return FALSE;
+
+  if (n_vectors == 0)
+    return TRUE;
+
+  if (cancellable)
+    g_cancellable_push_current (cancellable);
+
+  res = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream)->
+    writev_nonblocking (stream, vectors, n_vectors, bytes_written, error);
 
   if (cancellable)
     g_cancellable_pop_current (cancellable);
