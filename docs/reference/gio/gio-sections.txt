@@ -843,6 +843,12 @@ g_output_stream_write
 g_output_stream_write_all
 g_output_stream_write_all_async
 g_output_stream_write_all_finish
+g_output_stream_writev
+g_output_stream_writev_all
+g_output_stream_writev_async
+g_output_stream_writev_finish
+g_output_stream_writev_all_async
+g_output_stream_writev_all_finish
 g_output_stream_splice
 g_output_stream_flush
 g_output_stream_close
@@ -2124,6 +2130,7 @@ g_socket_receive_with_blocking
 g_socket_send
 g_socket_send_to
 g_socket_send_message
+g_socket_send_message_with_timeout
 g_socket_send_messages
 g_socket_send_with_blocking
 g_socket_close
@@ -3648,6 +3655,7 @@ g_pollable_output_stream_can_poll
 g_pollable_output_stream_is_writable
 g_pollable_output_stream_create_source
 g_pollable_output_stream_write_nonblocking
+g_pollable_output_stream_writev_nonblocking
 <SUBSECTION Standard>
 G_POLLABLE_OUTPUT_STREAM
 G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE
