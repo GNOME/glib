@@ -113,9 +113,10 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
     }
 
   nl->priv->sock = g_socket_new_from_fd (sockfd, error);
-  if (error)
+  if (nl->priv->sock == NULL)
     {
-      g_prefix_error (error, "%s", _("Could not create network monitor: "));
+      if (error)
+        g_prefix_error (error, "%s", _("Could not create network monitor: "));
       (void) g_close (sockfd, NULL);
       return FALSE;
     }
