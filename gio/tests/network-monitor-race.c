@@ -74,7 +74,10 @@ test_network_monitor (void)
 
   for (ii = 0; ii < MAX_RUNS; ii++)
     {
-       g_test_trap_subprocess (NULL, 0, 0);
+       g_test_trap_subprocess (NULL,
+                               0,
+                               G_TEST_SUBPROCESS_INHERIT_STDOUT |
+                               G_TEST_SUBPROCESS_INHERIT_STDERR);
        g_test_trap_assert_passed ();
     }
 }
