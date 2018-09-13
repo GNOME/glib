@@ -77,6 +77,11 @@ struct _GPollableOutputStreamInterface
 				     const void             *buffer,
 				     gsize                   count,
 				     GError                **error);
+  gboolean     (*writev_nonblocking)(GPollableOutputStream  *stream,
+				     GOutputVector          *vectors,
+				     gsize                   n_vectors,
+				     gsize                  *bytes_written,
+				     GError                **error);
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -95,6 +100,14 @@ GLIB_AVAILABLE_IN_ALL
 gssize   g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
 						     const void             *buffer,
 						     gsize                   count,
+						     GCancellable           *cancellable,
+						     GError                **error);
+
+GLIB_AVAILABLE_IN_2_60
+gboolean g_pollable_output_stream_writev_nonblocking(GPollableOutputStream  *stream,
+						     GOutputVector          *vectors,
+						     gsize                   n_vectors,
+						     gsize                  *bytes_written,
 						     GCancellable           *cancellable,
 						     GError                **error);
 
