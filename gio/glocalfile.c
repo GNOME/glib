@@ -1769,7 +1769,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
 {
   static gsize home_dev_set = 0;
   static dev_t home_dev;
-  char *topdir, *globaldir, *trashdir, *tmpname;
+  char *topdir, *globaldir, *trashdir, *tmpname, *target;
   uid_t uid;
   char uid_str[32];
   GStatBuf global_stat, trash_stat;
@@ -1789,7 +1789,14 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   if (dir_dev == home_dev)
     return TRUE;
 
-  topdir = find_mountpoint_for (dirname, dir_dev);
+  /* find_mountpoint_for() expands symlinks, however, just for parents, but
+   * dirname is already parent and might be symlink, try to expand it...
+   */
+  target = expand_symlink (dirname);
+
+  topdir = find_mountpoint_for (target, dir_dev);
+  g_free (target);
+
   if (topdir == NULL)
     return FALSE;
 
