@@ -194,17 +194,6 @@ g_socket_receive_messages_with_timeout (GSocket        *socket,
                                         gint64          timeout,
                                         GCancellable   *cancellable,
                                         GError        **error);
-static gssize
-g_socket_send_message_with_timeout     (GSocket                 *socket,
-                                        GSocketAddress          *address,
-                                        GOutputVector           *vectors,
-                                        gint                     num_vectors,
-                                        GSocketControlMessage  **messages,
-                                        gint                     num_messages,
-                                        gint                     flags,
-                                        gint64                   timeout,
-                                        GCancellable            *cancellable,
-                                        GError                 **error);
 static gint
 g_socket_send_messages_with_timeout    (GSocket        *socket,
                                         GOutputMessage *messages,
@@ -4613,7 +4602,32 @@ g_socket_send_message (GSocket                *socket,
                                              cancellable, error);
 }
 
-static gssize
+/**
+ * g_socket_send_message_with_timeout:
+ * @socket: a #GSocket
+ * @address: (nullable): a #GSocketAddress, or %NULL
+ * @vectors: (array length=num_vectors): an array of #GOutputVector structs
+ * @num_vectors: the number of elements in @vectors, or -1
+ * @messages: (array length=num_messages) (nullable): a pointer to an
+ *   array of #GSocketControlMessages, or %NULL.
+ * @num_messages: number of elements in @messages, or -1.
+ * @flags: an int containing #GSocketMsgFlags flags
+ * @timeout: the maximum time (in microseconds) to wait, or -1
+ * @cancellable: (nullable): a %GCancellable or %NULL
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * This behaves exactly the same as g_socket_send_message(), except that
+ * the choice of timeout behavior is determined by the @timeout argument
+ * rather than by @socket's properties.
+ *
+ * On error -1 is returned and @error is set accordingly.
+ *
+ * Returns: Number of bytes written (which may be less than @size), or -1
+ * on error
+ *
+ * Since: 2.60
+ */
+gssize
 g_socket_send_message_with_timeout (GSocket                *socket,
                                     GSocketAddress         *address,
                                     GOutputVector          *vectors,
