@@ -125,11 +125,37 @@ g_socket_output_stream_write (GOutputStream  *stream,
                               GCancellable   *cancellable,
                               GError        **error)
 {
-  GSocketOutputStream *onput_stream = G_SOCKET_OUTPUT_STREAM (stream);
+  GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (stream);
 
-  return g_socket_send_with_blocking (onput_stream->priv->socket,
+  return g_socket_send_with_blocking (output_stream->priv->socket,
 				      buffer, count, TRUE,
 				      cancellable, error);
+}
+
+static gboolean
+g_socket_output_stream_writev (GOutputStream  *stream,
+                               GOutputVector  *vectors,
+                               gsize           n_vectors,
+                               gsize          *bytes_written,
+                               GCancellable   *cancellable,
+                               GError        **error)
+{
+  GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (stream);
+  gssize res;
+
+  if (bytes_written)
+    *bytes_written = 0;
+
+  res = g_socket_send_message_with_timeout (output_stream->priv->socket, NULL,
+                                            vectors, n_vectors,
+                                            NULL, 0, G_SOCKET_MSG_NONE,
+                                            -1,
+                                            cancellable, error);
+
+  if (res != -1)
+    *bytes_written = res;
+
+  return res != -1;
 }
 
 static gboolean
@@ -151,6 +177,30 @@ g_socket_output_stream_pollable_write_nonblocking (GPollableOutputStream  *polla
   return g_socket_send_with_blocking (output_stream->priv->socket,
 				      buffer, size, FALSE,
 				      NULL, error);
+}
+
+static gboolean
+g_socket_output_stream_pollable_writev_nonblocking(GPollableOutputStream  *pollable,
+                                                   GOutputVector          *vectors,
+                                                   gsize                   n_vectors,
+                                                   gsize                  *bytes_written,
+                                                   GError                **error)
+{
+  GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (pollable);
+  gssize res;
+
+  if (bytes_written)
+    *bytes_written = 0;
+
+  res = g_socket_send_message_with_timeout (output_stream->priv->socket,
+                                            NULL, vectors, n_vectors,
+                                            NULL, 0, G_SOCKET_MSG_NONE, 0,
+                                            NULL, error);
+
+  if (res != -1)
+    *bytes_written = res;
+
+  return res != -1;
 }
 
 static GSource *
@@ -191,6 +241,7 @@ g_socket_output_stream_class_init (GSocketOutputStreamClass *klass)
   gobject_class->set_property = g_socket_output_stream_set_property;
 
   goutputstream_class->write_fn = g_socket_output_stream_write;
+  goutputstream_class->writev_fn = g_socket_output_stream_writev;
 
   g_object_class_install_property (gobject_class, PROP_SOCKET,
 				   g_param_spec_object ("socket",
@@ -214,6 +265,7 @@ g_socket_output_stream_pollable_iface_init (GPollableOutputStreamInterface *ifac
   iface->is_writable = g_socket_output_stream_pollable_is_writable;
   iface->create_source = g_socket_output_stream_pollable_create_source;
   iface->write_nonblocking = g_socket_output_stream_pollable_write_nonblocking;
+  iface->writev_nonblocking = g_socket_output_stream_pollable_writev_nonblocking;
 }
 
 static void
