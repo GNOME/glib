@@ -1162,6 +1162,170 @@ test_load_bytes_async (void)
   g_main_loop_unref (data.main_loop);
 }
 
+static void
+test_writev (void)
+{
+  GFile *file;
+  GFileIOStream *iostream = NULL;
+  GOutputVector vectors[3];
+  guint8 buffer1[] = {1, 2, 3, 4, 5};
+  guint8 buffer2[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+  guint8 buffer3[] = {1, 2, 3};
+  GOutputStream *ostream;
+  GError *error = NULL;
+  gsize bytes_written;
+  gboolean res;
+  guint8 *contents;
+  gsize length;
+
+  vectors[0].buffer = buffer1;
+  vectors[0].size = sizeof buffer1;
+
+  vectors[1].buffer = buffer2;
+  vectors[1].size = sizeof buffer2;
+
+  vectors[2].buffer = buffer3;
+  vectors[2].size = sizeof buffer3;
+
+  file = g_file_new_tmp ("g_file_writev_XXXXXX",
+                         &iostream, NULL);
+  g_assert (file != NULL);
+  g_assert (iostream != NULL);
+
+  ostream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
+
+  res = g_output_stream_writev_all (ostream, vectors, 3, &bytes_written, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (res);
+  g_assert_cmpint (bytes_written, ==, sizeof buffer1 + sizeof buffer2 + sizeof buffer3);
+
+  res = g_io_stream_close (G_IO_STREAM (iostream), NULL, &error);
+  g_assert_no_error (error);
+  g_assert (res);
+  g_object_unref (iostream);
+
+  res = g_file_load_contents (file, NULL, (gchar **) &contents, &length, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (res);
+
+  g_assert_cmpint (length, ==, sizeof buffer1 + sizeof buffer2 + sizeof buffer3);
+  g_assert (memcmp (contents, buffer1, sizeof buffer1) == 0);
+  g_assert (memcmp (contents + sizeof buffer1, buffer2, sizeof buffer2) == 0);
+  g_assert (memcmp (contents + sizeof buffer1 + sizeof buffer2, buffer3, sizeof buffer3) == 0);
+
+  g_free (contents);
+
+  g_file_delete (file, NULL, NULL);
+  g_object_unref (file);
+}
+
+typedef struct
+{
+  GMainLoop *main_loop;
+  gsize bytes_written;
+  GOutputVector *vectors;
+  gint n_vectors;
+} WritevAsyncData;
+
+static void
+test_writev_cb (GObject      *object,
+                GAsyncResult *result,
+                gpointer      user_data)
+{
+  GOutputStream *ostream = G_OUTPUT_STREAM (object);
+  WritevAsyncData *data = user_data;
+  GError *error = NULL;
+  gsize bytes_written;
+  gboolean res;
+
+  res = g_output_stream_writev_finish (ostream, result, &bytes_written, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+  data->bytes_written += bytes_written;
+
+  /* skip vectors that have been written in full */
+  while (bytes_written >= data->vectors[0].size)
+    {
+      bytes_written -= data->vectors[0].size;
+      ++data->vectors;
+      --data->n_vectors;
+    }
+  /* skip partially written vector data */
+  if (bytes_written > 0)
+    {
+      data->vectors[0].size -= bytes_written;
+      data->vectors[0].buffer = ((guint8 *) data->vectors[0].buffer) + bytes_written;
+    }
+
+  if (data->n_vectors > 0)
+    g_output_stream_writev_async (ostream, data->vectors, data->n_vectors, 0, NULL, test_writev_cb, &data);
+  else
+    g_main_loop_quit (data->main_loop);
+}
+
+static void
+test_writev_async (void)
+{
+  WritevAsyncData data = { 0 };
+  GFile *file;
+  GFileIOStream *iostream = NULL;
+  GOutputVector vectors[3];
+  guint8 buffer1[] = {1, 2, 3, 4, 5};
+  guint8 buffer2[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+  guint8 buffer3[] = {1, 2, 3};
+  GOutputStream *ostream;
+  GError *error = NULL;
+  gboolean res;
+  guint8 *contents;
+  gsize length;
+
+  vectors[0].buffer = buffer1;
+  vectors[0].size = sizeof buffer1;
+
+  vectors[1].buffer = buffer2;
+  vectors[1].size = sizeof buffer2;
+
+  vectors[2].buffer = buffer3;
+  vectors[2].size = sizeof buffer3;
+
+  file = g_file_new_tmp ("g_file_writev_XXXXXX",
+                         &iostream, NULL);
+  g_assert (file != NULL);
+  g_assert (iostream != NULL);
+
+  data.main_loop = g_main_loop_new (NULL, FALSE);
+  data.vectors = vectors;
+  data.n_vectors = 3;
+
+  ostream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
+
+  g_output_stream_writev_async (ostream, data.vectors, data.n_vectors, 0, NULL, test_writev_cb, &data);
+
+  g_main_loop_run (data.main_loop);
+
+  g_assert_cmpint (data.bytes_written, ==, sizeof buffer1 + sizeof buffer2 + sizeof buffer3);
+
+  res = g_io_stream_close (G_IO_STREAM (iostream), NULL, &error);
+  g_assert_no_error (error);
+  g_assert (res);
+  g_object_unref (iostream);
+
+  res = g_file_load_contents (file, NULL, (gchar **) &contents, &length, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (res);
+
+  g_assert_cmpint (length, ==, sizeof buffer1 + sizeof buffer2 + sizeof buffer3);
+  g_assert (memcmp (contents, buffer1, sizeof buffer1) == 0);
+  g_assert (memcmp (contents + sizeof buffer1, buffer2, sizeof buffer2) == 0);
+  g_assert (memcmp (contents + sizeof buffer1 + sizeof buffer2, buffer3, sizeof buffer3) == 0);
+
+  g_free (contents);
+
+  g_file_delete (file, NULL, NULL);
+  g_object_unref (file);
+  g_main_loop_unref (data.main_loop);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1190,6 +1354,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/measure-async", test_measure_async);
   g_test_add_func ("/file/load-bytes", test_load_bytes);
   g_test_add_func ("/file/load-bytes-async", test_load_bytes_async);
+  g_test_add_func ("/file/writev", test_writev);
+  g_test_add_func ("/file/writev_async", test_writev_async);
 
   return g_test_run ();
 }
