@@ -38,6 +38,8 @@ test_trash_not_supported (void)
   gchar *parent_dirname;
   GStatBuf parent_stat, home_stat;
 
+  g_test_bug ("251");
+
   /* The test assumes that tmp file is located on system internal mount. */
   file = g_file_new_tmp ("test-trashXXXXXX", &stream, &error);
   parent_dirname = g_path_get_dirname (g_file_peek_path (file));
@@ -99,8 +101,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("htps://gitlab.gnome.org/GNOME/glib/issues/");
-  g_test_bug ("251");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/trash/not-supported", test_trash_not_supported);
 
