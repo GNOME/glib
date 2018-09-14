@@ -508,9 +508,8 @@ g_module_open (const gchar    *file_name,
       if (!main_module)
 	{
 	  handle = _g_module_self ();
-/* On Android 64 bit, RTLD_DEFAULT is (void *)0x0
- * so it always fails to create main_module if file_name is NULL */
-#if !defined(__BIONIC__) || !defined(__LP64__)
+/* On Linux, handle == RTLD_DEFAULT is (void *)0x0 */
+#if G_MODULE_IMPL != G_MODULE_IMPL_DL
 	  if (handle)
 #endif
 	    {
