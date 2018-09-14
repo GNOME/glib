@@ -298,7 +298,18 @@ gssize                 g_socket_send_with_blocking      (GSocket                
 							 gboolean                 blocking,
 							 GCancellable            *cancellable,
 							 GError                 **error);
-
+GLIB_AVAILABLE_IN_2_60
+GPollableReturn        g_socket_send_message_with_timeout (GSocket                *socket,
+							   GSocketAddress         *address,
+							   const GOutputVector    *vectors,
+							   gint                    num_vectors,
+							   GSocketControlMessage **messages,
+							   gint                    num_messages,
+							   gint                    flags,
+							   gint64                  timeout,
+							   gsize                  *bytes_written,
+							   GCancellable           *cancellable,
+							   GError                **error);
 GLIB_AVAILABLE_IN_2_36
 gboolean               g_socket_get_option              (GSocket                 *socket,
 							 gint                     level,
