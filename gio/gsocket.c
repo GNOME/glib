@@ -4605,6 +4605,50 @@ g_socket_send_message (GSocket                *socket,
                                              cancellable, error);
 }
 
+/**
+ * g_socket_send_message_with_blocking:
+ * @socket: a #GSocket
+ * @address: (nullable): a #GSocketAddress, or %NULL
+ * @vectors: (array length=num_vectors): an array of #GOutputVector structs
+ * @num_vectors: the number of elements in @vectors, or -1
+ * @messages: (array length=num_messages) (nullable): a pointer to an
+ *   array of #GSocketControlMessages, or %NULL.
+ * @num_messages: number of elements in @messages, or -1.
+ * @flags: an int containing #GSocketMsgFlags flags
+ * @blocking: whether to do blocking or non-blocking I/O
+ * @cancellable: (nullable): a %GCancellable or %NULL
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * This behaves exactly the same as g_socket_send_message(), except that
+ * the choice of blocking or non-blocking behavior is determined by
+ * the @blocking argument rather than by @socket's properties.
+ *
+ * On error -1 is returned and @error is set accordingly.
+ *
+ * Returns: Number of bytes written (which may be less than @size), or -1
+ * on error
+ *
+ * Since: 2.60
+ */
+gssize
+g_socket_send_message_with_blocking (GSocket                *socket,
+		                     GSocketAddress         *address,
+		                     GOutputVector          *vectors,
+		                     gint                    num_vectors,
+		                     GSocketControlMessage **messages,
+		                     gint                    num_messages,
+		                     gint                    flags,
+		                     gboolean                blocking,
+		                     GCancellable           *cancellable,
+		                     GError                **error)
+{
+  return g_socket_send_message_with_timeout (socket, address,
+                                             vectors, num_vectors,
+                                             messages, num_messages, flags,
+                                             blocking ? -1 : 0,
+                                             cancellable, error);
+}
+
 static gssize
 g_socket_send_message_with_timeout (GSocket                *socket,
                                     GSocketAddress         *address,
@@ -4861,6 +4905,42 @@ g_socket_send_messages (GSocket        *socket,
   return g_socket_send_messages_with_timeout (socket, messages, num_messages,
                                               flags,
                                               socket->priv->blocking ? -1 : 0,
+                                              cancellable, error);
+}
+
+/**
+ * g_socket_send_messages_with_blocking:
+ * @socket: a #GSocket
+ * @messages: (array length=num_messages): an array of #GOutputMessage structs
+ * @num_messages: the number of elements in @messages
+ * @flags: an int containing #GSocketMsgFlags flags
+ * @blocking: whether to do blocking or non-blocking I/O
+ * @cancellable: (nullable): a %GCancellable or %NULL
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * This behaves exactly the same as g_socket_send_messages(), except that
+ * the choice of blocking or non-blocking behavior is determined by
+ * the @blocking argument rather than by @socket's properties.
+ *
+ * Returns: number of messages sent, or -1 on error. Note that the number of
+ *     messages sent may be smaller than @num_messages if the socket is
+ *     non-blocking or if @num_messages was larger than UIO_MAXIOV (1024),
+ *     in which case the caller may re-try to send the remaining messages.
+ *
+ * Since: 2.60
+ */
+gint
+g_socket_send_messages_with_blocking (GSocket        *socket,
+		                      GOutputMessage *messages,
+		                      guint           num_messages,
+		                      gint            flags,
+		                      gboolean            blocking,
+		                      GCancellable   *cancellable,
+		                      GError        **error)
+{
+  return g_socket_send_messages_with_timeout (socket, messages, num_messages,
+                                              flags,
+                                              blocking ? -1 : 0,
                                               cancellable, error);
 }
 
