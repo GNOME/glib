@@ -300,6 +300,50 @@ test_write_bytes (void)
   g_bytes_unref (bytes2);
 }
 
+/* Test that writev() works on #GMemoryOutputStream with a non-empty set of vectors. */
+static void
+test_writev (void)
+{
+  GOutputStream *mo;
+  GError *error = NULL;
+  gboolean res;
+  gsize bytes_written;
+  GOutputVector vectors[3];
+  guint8 buffer1[] = {1, 2, 3, 4, 5};
+  guint8 buffer2[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+  guint8 buffer3[] = {1, 2, 3};
+  guint8 *buffer;
+
+  vectors[0].buffer = buffer1;
+  vectors[0].size = sizeof buffer1;
+
+  vectors[1].buffer = buffer2;
+  vectors[1].size = sizeof buffer2;
+
+  vectors[2].buffer = buffer3;
+  vectors[2].size = sizeof buffer3;
+
+  mo = (GOutputStream*) g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM,
+                                      "realloc-function", g_realloc,
+                                      "destroy-function", g_free,
+                                      NULL);
+  res = g_output_stream_writev_all (mo, vectors, 3, &bytes_written, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (res);
+  g_assert_cmpint (bytes_written, ==, sizeof buffer1 + sizeof buffer2 + sizeof buffer3);
+
+  g_output_stream_close (mo, NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, sizeof buffer1 + sizeof buffer2 + sizeof buffer3);
+  buffer = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mo));
+  g_assert (memcmp (buffer, buffer1, sizeof buffer1) == 0);
+  g_assert (memcmp (buffer + sizeof buffer1, buffer2, sizeof buffer2) == 0);
+  g_assert (memcmp (buffer + sizeof buffer1 + sizeof buffer2, buffer3, sizeof buffer3) == 0);
+
+  g_object_unref (mo);
+}
+
 static void
 test_steal_as_bytes (void)
 {
@@ -350,6 +394,7 @@ main (int   argc,
   g_test_add_func ("/memory-output-stream/get-data-size", test_data_size);
   g_test_add_func ("/memory-output-stream/properties", test_properties);
   g_test_add_func ("/memory-output-stream/write-bytes", test_write_bytes);
+  g_test_add_func ("/memory-output-stream/writev", test_writev);
   g_test_add_func ("/memory-output-stream/steal_as_bytes", test_steal_as_bytes);
 
   return g_test_run();
