@@ -207,8 +207,7 @@ struct _GModule
 static gpointer		_g_module_open		(const gchar	*file_name,
 						 gboolean	 bind_lazy,
 						 gboolean	 bind_local);
-static void		_g_module_close		(gpointer	 handle,
-						 gboolean	 is_unref);
+static void		_g_module_close		(gpointer	 handle);
 static gpointer		_g_module_self		(void);
 static gpointer		_g_module_symbol	(gpointer	 handle,
 						 const gchar	*symbol_name);
@@ -297,8 +296,7 @@ _g_module_open (const gchar	*file_name,
   return NULL;
 }
 static void
-_g_module_close	(gpointer	 handle,
-		 gboolean	 is_unref)
+_g_module_close (gpointer handle)
 {
 }
 static gpointer
@@ -615,7 +613,7 @@ g_module_open (const gchar    *file_name,
       module = g_module_find_by_handle (handle);
       if (module)
 	{
-	  _g_module_close (module->handle, TRUE);
+	  _g_module_close (module->handle);
 	  module->ref_count++;
 	  g_module_set_error (NULL);
 	  
@@ -721,7 +719,7 @@ g_module_close (GModule *module)
 	}
       module->next = NULL;
       
-      _g_module_close (module->handle, FALSE);
+      _g_module_close (module->handle);
       g_free (module->file_name);
       g_free (module);
     }
