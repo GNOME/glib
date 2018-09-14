@@ -131,21 +131,11 @@ _g_module_self (void)
 }
 
 static void
-_g_module_close (gpointer handle,
-		 gboolean is_unref)
+_g_module_close (gpointer handle)
 {
-  /* are there any systems out there that have dlopen()/dlclose()
-   * without a reference count implementation?
-   *
-   * See above for the Android special case
-   */
 #if defined(__BIONIC__)
-  is_unref = (handle != RTLD_DEFAULT);
-#else
-  is_unref |= 1;
+  if (handle != RTLD_DEFAULT)
 #endif
-
-  if (is_unref)
     {
       if (dlclose (handle) != 0)
 	g_module_set_error (fetch_dlerror (TRUE));
