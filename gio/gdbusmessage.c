@@ -1846,8 +1846,11 @@ parse_value_from_blob (GMemoryBuffer       *buf,
               sig = read_string (buf, (gsize) siglen, &local_error);
               if (sig == NULL)
                 goto fail;
-              if (!g_variant_is_signature (sig))
+              if (!g_variant_is_signature (sig) ||
+                  !g_variant_type_string_is_valid (sig))
                 {
+                  /* A D-Bus signature can contain zero or more complete types,
+                   * but a GVariant has to be exactly one complete type. */
                   g_set_error (&local_error,
                                G_IO_ERROR,
                                G_IO_ERROR_INVALID_ARGUMENT,
