@@ -1717,7 +1717,9 @@ g_variant_serialiser_is_object_path (gconstpointer data,
  * Performs the checks for being a valid string.
  *
  * Also, ensures that @data is a valid D-Bus type signature, as per the
- * D-Bus specification.
+ * D-Bus specification. Note that this means the empty string is valid, as the
+ * D-Bus specification defines a signature as “zero or more single complete
+ * types”.
  */
 gboolean
 g_variant_serialiser_is_signature (gconstpointer data,
