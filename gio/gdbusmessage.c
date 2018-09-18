@@ -2006,6 +2006,9 @@ g_dbus_message_bytes_needed (guchar  *blob,
  * order that the message was in can be retrieved using
  * g_dbus_message_get_byte_order().
  *
+ * If the @blob cannot be parsed, contains invalid fields, or contains invalid
+ * headers, %G_IO_ERROR_INVALID_ARGUMENT will be returned.
+ *
  * Returns: A new #GDBusMessage or %NULL if @error is set. Free with
  * g_object_unref().
  *
