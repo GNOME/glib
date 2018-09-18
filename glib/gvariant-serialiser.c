@@ -1643,6 +1643,7 @@ g_variant_serialiser_is_string (gconstpointer data,
   const gchar *expected_end;
   const gchar *end;
 
+  /* Strings must end with a nul terminator. */
   if (size == 0)
     return FALSE;
 
@@ -1651,7 +1652,7 @@ g_variant_serialiser_is_string (gconstpointer data,
   if (*expected_end != '\0')
     return FALSE;
 
-  g_utf8_validate (data, size, &end);
+  g_utf8_validate_len (data, size, &end);
 
   return end == expected_end;
 }
