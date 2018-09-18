@@ -1105,7 +1105,7 @@ static void
 test_message_parse_non_signature_header (void)
 {
   const guint8 data[] = {
-    0x6c,  /* byte order */
+    'l',  /* little-endian byte order */
     0x04,  /* message type */
     0x0f,  /* message flags */
     0x01,  /* major protocol version */
@@ -1115,11 +1115,90 @@ test_message_parse_non_signature_header (void)
      * (things start to be invalid below here) */
     0x02, 0x00, 0x00, 0x00,  /* array length (in bytes) */
       G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE, /* array key */
-      /* GVariant array value: */
+      /* Variant array value: */
       0x04, /* signature length */
       'd', 0x00, 0x00, 'F',  /* signature (invalid) */
       0x00,  /* nul terminator */
-      /* (GVariant array value payload missing) */
+      /* (Variant array value payload missing) */
+    /* (message body length missing) */
+  };
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+/* Test that an invalid header in a D-Bus message (specifically, containing a
+ * variant with an empty type signature) is gracefully handled with an error
+ * rather than a crash. The set of bytes here come directly from fuzzer
+ * output. */
+static void
+test_message_parse_empty_signature_header (void)
+{
+  const guint8 data[] = {
+    'l',  /* little-endian byte order */
+    0x20,  /* message type */
+    0x20,  /* message flags */
+    0x01,  /* major protocol version */
+    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0x20, 0x20, 0x20, 0x20,  /* message serial */
+    /* a{yv} of header fields:
+     * (things start to be even more invalid below here) */
+    0x20, 0x20, 0x20, 0x00,  /* array length (in bytes) */
+      0x20, /* array key */
+      /* Variant array value: */
+      0x00, /* signature length */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload missing) */
+    /* (message body length missing) */
+  };
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+/* Test that an invalid header in a D-Bus message (specifically, containing a
+ * variant with a type signature containing multiple complete types) is
+ * gracefully handled with an error rather than a crash. The set of bytes here
+ * come directly from fuzzer output. */
+static void
+test_message_parse_multiple_signature_header (void)
+{
+  const guint8 data[] = {
+    'l',  /* little-endian byte order */
+    0x20,  /* message type */
+    0x20,  /* message flags */
+    0x01,  /* major protocol version */
+    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0x20, 0x20, 0x20, 0x20,  /* message serial */
+    /* a{yv} of header fields:
+     * (things start to be even more invalid below here) */
+    0x20, 0x20, 0x20, 0x00,  /* array length (in bytes) */
+      0x20, /* array key */
+      /* Variant array value: */
+      0x02, /* signature length */
+      'b', 'b',  /* two complete types */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload missing) */
     /* (message body length missing) */
   };
   gsize size = sizeof (data);
@@ -1158,6 +1237,10 @@ main (int   argc,
   g_test_add_func ("/gdbus/message-serialize/double-array", test_double_array);
   g_test_add_func ("/gdbus/message-parse/non-signature-header",
                    test_message_parse_non_signature_header);
+  g_test_add_func ("/gdbus/message-parse/empty-signature-header",
+                   test_message_parse_empty_signature_header);
+  g_test_add_func ("/gdbus/message-parse/multiple-signature-header",
+                   test_message_parse_multiple_signature_header);
 
   return g_test_run();
 }
