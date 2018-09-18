@@ -1929,7 +1929,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 
 /**
  * g_dbus_message_bytes_needed:
- * @blob: (array length=blob_len) (element-type guint8): A blob represent a binary D-Bus message.
+ * @blob: (array length=blob_len) (element-type guint8): A blob representing a binary D-Bus message.
  * @blob_len: The length of @blob (must be at least 16).
  * @error: Return location for error or %NULL.
  *
