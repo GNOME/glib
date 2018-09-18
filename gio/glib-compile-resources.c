@@ -483,7 +483,7 @@ end_element (GMarkupParseContext  *context,
 	    }
 
 	  g_free (data->content);
-	  data->content_size = g_memory_output_stream_get_size (G_MEMORY_OUTPUT_STREAM (out));
+	  data->content_size = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (out));
 	  data->content = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (out));
 
 	  g_object_unref (compressor);
