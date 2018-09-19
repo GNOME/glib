@@ -129,6 +129,21 @@ glib_tests = {
   },
 }
 
+if installed_tests_enabled
+  install_data(
+    'keyfiletest.ini',
+    'pages.ini',
+    'keyfile.c',
+    'empty',
+    '4096-random-bytes',
+    'echo-script',
+    'echo-script.bat',
+    install_dir : installed_tests_execdir,
+  )
+  install_subdir('bookmarks', install_dir : installed_tests_execdir)
+  install_subdir('markups', install_dir : installed_tests_execdir)
+endif
+
 # Not entirely random of course, but at least it changes over time
 random_number = minor_version + meson.version().split('.').get(1).to_int()
 
