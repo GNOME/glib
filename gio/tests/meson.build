@@ -80,6 +80,7 @@ gio_tests = [{
 test_extra_programs = [{
   'gdbus-connection-flush-helper' : {},
   'gdbus-testserver' : {},
+  'gsubprocess-testprog' : {},
 }]
 
 test_env = environment()
@@ -254,9 +255,10 @@ if host_machine.system() != 'windows'
 
   # This test is currently unreliable
   executable('gdbus-overflow', 'gdbus-overflow.c',
-      install : false,
       c_args : test_c_args,
-      dependencies : common_gio_tests_deps)
+      dependencies : common_gio_tests_deps,
+      install_dir : installed_tests_execdir,
+      install : installed_tests_enabled)
 
   gio_tests += [{
     'gdbus-connection-flush' : {
@@ -318,7 +320,6 @@ test_extra_programs += [{
   'gdbus-example-subtree' : {'install' : false},
   'gdbus-example-watch-name' : {'install' : false},
   'gdbus-example-watch-proxy' : {'install' : false},
-  'gsubprocess-testprog' : {'install' : false},
   'httpd' : {'install' : false},
   'proxy' : {'install' : false},
   'resolver' : {'install' : false},
@@ -357,6 +358,25 @@ if host_machine.system() != 'windows'
   }]
 endif
 
+if installed_tests_enabled
+  install_data(
+    'contexts.c',
+    'g-icon.c',
+    'appinfo-test-actions.desktop',
+    'appinfo-test-gnome.desktop',
+    'appinfo-test-notgnome.desktop',
+    'appinfo-test.desktop',
+    'appinfo-test2.desktop',
+    'file.c',
+    'org.gtk.test.dbusappinfo.desktop',
+    install_dir : installed_tests_execdir,
+  )
+  install_subdir('x-content', install_dir : installed_tests_execdir)
+  install_subdir('desktop-files', install_dir : installed_tests_execdir)
+  install_subdir('thumbnails', install_dir : installed_tests_execdir)
+  install_subdir('cert-tests', install_dir : installed_tests_execdir)
+endif
+
 if not meson.is_cross_build() or meson.has_exe_wrapper()
 
   plugin_resources_c = custom_target('plugin-resources.c',
@@ -369,9 +389,12 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--c-name', '_g_plugin',
                '@INPUT@'])
 
-  shared_module ('resourceplugin', 'resourceplugin.c', plugin_resources_c,
+  shared_module('resourceplugin', 'resourceplugin.c', plugin_resources_c,
     link_args : export_dynamic_ldflags,
-    dependencies : common_gio_tests_deps)
+    dependencies : common_gio_tests_deps,
+    install_dir : installed_tests_execdir,
+    install : installed_tests_enabled
+  )
 
   test_gresource = custom_target('test.gresource',
     input : 'test.gresource.xml',
@@ -380,7 +403,9 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
                '--sourcedir=' + meson.current_build_dir(),
-               '@INPUT@'])
+               '@INPUT@'],
+    install_dir : installed_tests_execdir,
+    install : installed_tests_enabled)
 
   test_resources2_c = custom_target('test_resources2.c',
     input : 'test3.gresource.xml',
