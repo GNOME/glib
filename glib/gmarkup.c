@@ -2920,8 +2920,7 @@ struct RecordDataTree {
 
 typedef struct {
   char *string;
-  int count;
-  int offset;
+  int index;
 } RecordDataString;
 
 
@@ -2972,13 +2971,11 @@ record_data_string_lookup (GHashTable *strings, const char *str, gssize len)
   if (s)
     {
       g_free (copy);
-      s->count++;
       return s->string;
     }
 
   s = g_slice_new (RecordDataString);
   s->string = copy ? copy : g_strdup (str);
-  s->count = 1;
 
   g_hash_table_insert (strings, s->string, s);
   return s->string;
@@ -3065,124 +3062,80 @@ static const GMarkupParser record_parser =
 };
 
 
-static gint
-compare_string (gconstpointer _a,
-                gconstpointer _b)
-{
-  const RecordDataString *a = _a;
-  const RecordDataString *b = _b;
-
-  return b->count - a->count;
-}
-
-static void
-marshal_uint32 (GString *str,
-                guint32 v)
-{
-  /*
-    We encode in a variable length format similar to
-    utf8:
-
-    v size      byte 1    byte 2    byte 3   byte 4  byte 5
-    7 bit:    0xxxxxxx
-    14 bit:   10xxxxxx  xxxxxxxx
-    21 bit:   110xxxxx  xxxxxxxx  xxxxxxxx
-    28 bit:   1110xxxx  xxxxxxxx  xxxxxxxx xxxxxxxx
-    32 bit:   11110000  xxxxxxxx  xxxxxxxx xxxxxxxx xxxxxxx
-  */
-
-  if (v < 128)
-    {
-      g_string_append_c (str, (guchar)v);
-    }
-  else if (v < (1<<14))
-    {
-      g_string_append_c (str, (guchar)(v >> 8) | 0x80);
-      g_string_append_c (str, (guchar)(v & 0xff));
-    }
-  else if (v < (1<<21))
-    {
-      g_string_append_c (str, (guchar)(v >> 16) | 0xc0);
-      g_string_append_c (str, (guchar)((v >> 8) & 0xff));
-      g_string_append_c (str, (guchar)(v & 0xff));
-    }
-  else if (v < (1<<28))
-    {
-      g_string_append_c (str, (guchar)(v >> 24) | 0xe0);
-      g_string_append_c (str, (guchar)((v >> 16) & 0xff));
-      g_string_append_c (str, (guchar)((v >> 8) & 0xff));
-      g_string_append_c (str, (guchar)(v & 0xff));
-    }
-  else
-    {
-      g_string_append_c (str, 0xf0);
-      g_string_append_c (str, (guchar)((v >> 24) & 0xff));
-      g_string_append_c (str, (guchar)((v >> 16) & 0xff));
-      g_string_append_c (str, (guchar)((v >> 8) & 0xff));
-      g_string_append_c (str, (guchar)(v & 0xff));
-    }
-}
-
-static void
-marshal_string (GString *marshaled,
-                GHashTable *strings,
-                const char *string)
+static guint16
+get_string_index (GHashTable *strings,
+                  const char *string)
 {
   RecordDataString *s;
 
   s = g_hash_table_lookup (strings, string);
   g_assert (s != NULL);
 
-  marshal_uint32 (marshaled, s->offset);
+  return s->index;
 }
 
 static void
-marshal_tree (GString *marshaled,
+marshal_tree (GVariantBuilder *tree_builder,
+              GVariantBuilder *args_builder,
+              gsize *args_builder_count,
               GHashTable *strings,
               RecordDataTree *tree)
 {
   GList *l;
   int i;
+  guint16 args_index;
 
   /* Special case the root */
   if (tree->parent == NULL)
     {
       for (l = g_list_last (tree->children); l != NULL; l = l->prev)
-        marshal_tree (marshaled, strings, l->data);
+        marshal_tree (tree_builder, args_builder, args_builder_count, strings, l->data);
       return;
     }
 
   switch (tree->type)
     {
     case RECORD_TYPE_ELEMENT:
-      marshal_uint32 (marshaled, RECORD_TYPE_ELEMENT);
-      marshal_string (marshaled, strings, tree->data);
-      marshal_uint32 (marshaled, g_strv_length ((char **)tree->attributes));
-      for (i = 0; tree->attributes[i] != NULL; i++)
+      if (tree->attributes[0] != NULL)
         {
-          marshal_string (marshaled, strings, tree->attributes[i]);
-          marshal_string (marshaled, strings, tree->values[i]);
+          args_index = *args_builder_count;
+          for (i = 0; tree->attributes[i] != NULL; i++)
+            {
+              g_variant_builder_add (args_builder, "(qq)",
+                                     GUINT16_TO_LE (get_string_index (strings, tree->attributes[i])),
+                                     GUINT16_TO_LE (get_string_index (strings, tree->values[i])));
+              (*args_builder_count)++;
+            }
+          g_variant_builder_add (args_builder,"(qq)", 0, 0);
+          (*args_builder_count)++;
         }
-      for (l = g_list_last (tree->children); l != NULL; l = l->prev)
-        marshal_tree (marshaled, strings, l->data);
+      else
+        args_index = 0;
 
-      marshal_uint32 (marshaled, RECORD_TYPE_END_ELEMENT);
+      g_variant_builder_add (tree_builder, "(yqq)", RECORD_TYPE_ELEMENT,
+                             GUINT16_TO_LE (get_string_index (strings, tree->data)),
+                             GUINT16_TO_LE (args_index));
+
+      for (l = g_list_last (tree->children); l != NULL; l = l->prev)
+        marshal_tree (tree_builder, args_builder, args_builder_count, strings, l->data);
+
+      g_variant_builder_add (tree_builder, "(yqq)", RECORD_TYPE_END_ELEMENT, 0, 0);
       break;
     case RECORD_TYPE_TEXT:
-      marshal_uint32 (marshaled, RECORD_TYPE_TEXT);
-      marshal_string (marshaled, strings, tree->data);
+      g_variant_builder_add (tree_builder, "(yqq)", RECORD_TYPE_TEXT,
+                             GUINT16_TO_LE (get_string_index (strings, tree->data)),
+                             0);
       break;
     case RECORD_TYPE_PASSTHROUGH:
-      marshal_uint32 (marshaled, RECORD_TYPE_PASSTHROUGH);
-      marshal_string (marshaled, strings, tree->data);
+      g_variant_builder_add (tree_builder, "(yqq)", RECORD_TYPE_PASSTHROUGH,
+                             GUINT16_TO_LE (get_string_index (strings, tree->data)),
+                             0);
       break;
     case RECORD_TYPE_END_ELEMENT:
     default:
       g_assert_not_reached ();
     }
 }
-
-static guint32 demarshal_uint32 (const char **tree);
 
 GLIB_AVAILABLE_IN_ALL
 GBytes *
@@ -3193,9 +3146,14 @@ g_markup_parse_context_record (GMarkupParseFlags    flags,
 {
   GMarkupParseContext *ctx;
   RecordData data = { 0 };
+  GBytes *result;
+  GVariant *v;
   GList *string_table, *l;
-  GString *marshaled;
-  int offset;
+  GVariantBuilder stringtable_builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE_STRING_ARRAY);
+  GVariantBuilder tree_builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE("a(yqq)"));
+  GVariantBuilder args_builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE("a(qq)"));
+  gsize args_builder_count = 0;
+  int index;
 
   data.strings = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, (GDestroyNotify)record_data_string_free);
   data.root = record_data_tree_new (NULL, RECORD_TYPE_ELEMENT, NULL);
@@ -3216,100 +3174,72 @@ g_markup_parse_context_record (GMarkupParseFlags    flags,
 
   string_table = g_hash_table_get_values (data.strings);
 
-  string_table = g_list_sort (string_table, compare_string);
-
-  offset = 0;
-  for (l = string_table; l != NULL; l = l->next)
-    {
-      RecordDataString *s = l->data;
-      s->offset = offset;
-      offset += strlen (s->string) + 1;
-    }
-
-  marshaled = g_string_new ("");
-  /* Magic marker */
-  g_string_append_len (marshaled, "GMU\0", 4);
-  marshal_uint32 (marshaled, offset);
+  /* reserve index 0 for end-of-array markers */
+  index = 1;
+  g_variant_builder_add (&stringtable_builder, "s", "");
 
   for (l = string_table; l != NULL; l = l->next)
     {
       RecordDataString *s = l->data;
-      g_string_append_len (marshaled, s->string, strlen (s->string) + 1);
+      s->index = index++;
+      g_variant_builder_add (&stringtable_builder, "s", s->string);
     }
 
-  g_list_free (string_table);
+  /* Reserve 0 as no-args */
+  g_variant_builder_add (&args_builder, "(qq)", 0, 0);
+  args_builder_count++;
 
-  marshal_tree (marshaled, data.strings, data.root);
+  marshal_tree (&tree_builder, &args_builder, &args_builder_count, data.strings, data.root);
+  v = g_variant_new ("(s@as@a(qq)@a(yqq))",
+                     "GMU",
+                     g_variant_builder_end (&stringtable_builder),
+                     g_variant_builder_end (&args_builder),
+                     g_variant_builder_end (&tree_builder));
+  result = g_variant_get_data_as_bytes (v);
+  g_variant_unref (g_variant_ref_sink (v));
 
   record_data_tree_free (data.root);
+  g_list_free (string_table);
   g_hash_table_destroy (data.strings);
 
-  return g_string_free_to_bytes (marshaled);
+  return result;
 }
 
-static guint32
-demarshal_uint32 (const char **tree)
-{
-  const guchar *p = (const guchar *)*tree;
-  guchar c = *p;
-  /* see marshal_uint32 for format */
+typedef struct {
+  guint8 type;
+  guint16 data;
+  guint16 attributes;
+} RecordDataNode;
 
-  if (c < 128) /* 7 bit */
-    {
-      *tree += 1;
-      return c;
-    }
-  else if ((c & 0xc0) == 0x80) /* 14 bit */
-    {
-      *tree += 2;
-      return (c & 0x3f) << 8 | p[1];
-    }
-  else if ((c & 0xe0) == 0xc0) /* 21 bit */
-    {
-      *tree += 3;
-      return (c & 0x1f) << 16 | p[1] << 8 | p[2];
-    }
-  else if ((c & 0xf0) == 0xe0) /* 28 bit */
-    {
-      *tree += 4;
-      return (c & 0xf) << 24 | p[1] << 16 | p[2] << 8 | p[3];
-    }
-  else
-    {
-      *tree += 5;
-      return p[1] << 24 | p[2] << 16 | p[3] << 8 | p[4];
-    }
-}
-
-static const char *
-demarshal_string (const char **tree, const char *strings)
-{
-  guint32 offset = demarshal_uint32 (tree);
-
-  return strings + offset;
-}
+typedef struct {
+  guint16 attr;
+  guint16 val;
+} RecordDataAttr;
 
 static gboolean
 replay_start_element (GMarkupParseContext *context,
-                      const char **tree,
-                      const char *strings,
+                      const char *element_name,
+                      gint attr_index,
+                      const char **strings,
+                      const RecordDataAttr *attrs,
                       GError **error)
 {
-  const char *element_name;
-  guint32 i, n_attrs;
+  gsize end_index, n_attrs, i;
   const gchar **attr_names;
   const gchar **attr_values;
   GError *tmp_error = NULL;
 
-  element_name = demarshal_string (tree, strings);
-  n_attrs = demarshal_uint32 (tree);
+  /* Count nr of attrs */
+  for (end_index = attr_index; attrs[end_index].attr != 0; end_index++)
+    ;
+  n_attrs = end_index - attr_index,
 
   attr_names = g_newa (const gchar *, n_attrs + 1);
   attr_values = g_newa (const gchar *, n_attrs + 1);
   for (i = 0; i < n_attrs; i++)
     {
-      attr_names[i] = demarshal_string (tree, strings);
-      attr_values[i] = demarshal_string (tree, strings);
+      attr_names[i] = strings[GUINT16_FROM_LE(attrs[attr_index + i].attr)];
+      attr_values[i] = strings[GUINT16_FROM_LE(attrs[attr_index + i].val)];
     }
   attr_names[i] = NULL;
   attr_values[i] = NULL;
@@ -3335,8 +3265,6 @@ replay_start_element (GMarkupParseContext *context,
 
 static gboolean
 replay_end_element (GMarkupParseContext *context,
-                    const char **tree,
-                    const char *strings,
                     GError **error)
 {
   GError *tmp_error = NULL;
@@ -3369,14 +3297,10 @@ replay_end_element (GMarkupParseContext *context,
 
 static gboolean
 replay_text (GMarkupParseContext *context,
-             const char **tree,
-             const char *strings,
+             const char *text,
              GError **error)
 {
-  const char *text;
   GError *tmp_error = NULL;
-
-  text = demarshal_string (tree, strings);
 
   if (context->parser->text)
     (*context->parser->text) (context,
@@ -3396,14 +3320,10 @@ replay_text (GMarkupParseContext *context,
 
 static gboolean
 replay_passthrough (GMarkupParseContext *context,
-                    const char **tree,
-                    const char *strings,
+                    const char *text,
                     GError **error)
 {
-  const char *text;
   GError *tmp_error = NULL;
-
-  text = demarshal_string (tree, strings);
 
   if (context->parser->passthrough)
     (*context->parser->passthrough) (context,
@@ -3427,14 +3347,14 @@ g_markup_parse_context_replay (GMarkupParseContext *context,
                                gsize                data_size,
                                GError             **error)
 {
-  const char *data_end;
-  guint32 len, type;
-  const char *strings;
-  const char *tree;
+  GVariant *v, *stringsv, *nodesv, *attrsv;
+  const char **strings;
+  const RecordDataAttr *attrs;
+  const RecordDataNode *nodes;
+  gsize n_strings, n_attrs, n_nodes, i;
 
-  data_end = data + data_size;
-
-  if (!(data[0] == 'G' &&
+  if (data_size < 4 ||
+      !(data[0] == 'G' &&
         data[1] == 'M' &&
         data[2] == 'U' &&
         data[3] == 0))
@@ -3443,40 +3363,59 @@ g_markup_parse_context_replay (GMarkupParseContext *context,
                    _("Invalid gmarkup replay data"));
       return FALSE;
     }
-  data = data + 4;
 
-  len = demarshal_uint32 (&data);
+  v = g_variant_new_from_data (G_VARIANT_TYPE("(sasa(qq)a(yqq))"),
+                               data, data_size, TRUE, NULL, NULL);
+  g_variant_ref_sink (v);
 
-  strings = data;
-  data = data + len;
-  tree = data;
+  stringsv = g_variant_get_child_value (v, 1);
+  strings = g_variant_get_strv (stringsv, &n_strings);
+  g_variant_unref (stringsv);
 
-  while (tree < data_end)
+  attrsv = g_variant_get_child_value (v, 2);
+  attrs = g_variant_get_fixed_array (attrsv, &n_attrs, sizeof (*attrs));
+  g_variant_unref (attrsv);
+
+  nodesv = g_variant_get_child_value (v, 3);
+  nodes = g_variant_get_fixed_array (nodesv, &n_nodes, sizeof (*nodes));
+  g_variant_unref (nodesv);
+
+  for (i = 0; i < n_nodes; i++)
     {
+      const RecordDataNode *node = &nodes[i];
+      const char *node_data;
       gboolean res;
-      type = demarshal_uint32 (&tree);
 
-      switch (type)
+      node_data = strings[GUINT16_FROM_LE(node->data)];
+
+      switch (node->type)
         {
         case RECORD_TYPE_ELEMENT:
-          res = replay_start_element (context, &tree, strings, error);
+          res = replay_start_element (context, node_data, GUINT16_FROM_LE(node->attributes),
+                                      strings, attrs, error);
           break;
         case RECORD_TYPE_END_ELEMENT:
-          res = replay_end_element (context, &tree, strings, error);
+          res = replay_end_element (context, error);
           break;
         case RECORD_TYPE_TEXT:
-          res = replay_text (context, &tree, strings, error);
+          res = replay_text (context, node_data, error);
           break;
         case RECORD_TYPE_PASSTHROUGH:
-          res = replay_passthrough (context, &tree, strings, error);
+          res = replay_passthrough (context, node_data, error);
           break;
         default:
           g_assert_not_reached ();
         }
 
       if (!res)
-        return FALSE;
+        {
+          g_variant_unref (v);
+          return FALSE;
+        }
     }
+
+
+  g_variant_unref (v);
 
   return TRUE;
 }
