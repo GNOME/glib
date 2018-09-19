@@ -1,30 +1,59 @@
-refcount_tests = [
- ['closures', 'closures.c', [], 90],
- ['objects', 'objects.c', []],
- ['objects2', 'objects2.c', [], 90],
- ['properties', 'properties.c', []],
- ['properties2', 'properties2.c', [], 90],
- ['properties3', 'properties3.c', [], 90], # extra long timeout
- ['properties4', 'properties4.c', []],
- ['signal1', 'signals.c', ['-DTESTNUM=1']],
- ['signal2', 'signals.c', ['-DTESTNUM=2']],
- ['signal3', 'signals.c', ['-DTESTNUM=3']],
- ['signal4', 'signals.c', ['-DTESTNUM=4']],
-]
+refcount_tests = {
+  'closures' : {'suite' : ['slow']},
+  'objects' : {},
+  'objects2' : {'suite' : ['slow']},
+  'properties' : {},
+  'properties2' : {'suite' : ['slow']},
+  'properties3' : {'suite' : ['slow']},
+  'properties4' : {},
+  'signal1' : {
+    'source' : 'signals.c',
+    'c_args' : ['-DTESTNUM=1'],
+  },
+  'signal2' : {
+    'source' : 'signals.c',
+    'c_args' : ['-DTESTNUM=2'],
+  },
+  'signal3' : {
+    'source' : 'signals.c',
+    'c_args' : ['-DTESTNUM=3'],
+  },
+  'signal4' : {
+    'source' : 'signals.c',
+    'c_args' : ['-DTESTNUM=4'],
+  },
+}
 
-foreach t : refcount_tests
-  test_name = t.get(0)
-  test_src = t.get(1)
-  test_extra_cargs = t.get(2)
-  test_timeout = t.get(3, 30)
-  test_suite = test_timeout == 30 ? ['refcount'] : ['refcount', 'slow']
+common_c_args = test_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS']
+common_deps = [libm, thread_dep, libglib_dep, libgobject_dep]
+
+foreach test_name, extra_args : refcount_tests
+  source = extra_args.get('source', test_name + '.c')
+  extra_sources = extra_args.get('extra_sources', [])
+  install = installed_tests_enabled and extra_args.get('install', true)
+
+  if install
+    test_conf = configuration_data()
+    test_conf.set('installed_tests_dir', installed_tests_execdir)
+    test_conf.set('program', test_name)
+    configure_file(
+      input: installed_tests_template,
+      output: test_name + '.test',
+      install_dir: installed_tests_metadir,
+      configuration: test_conf
+    )
+  endif
 
   # FIXME? $(GLIB_DEBUG_FLAGS)
-  exe = executable(test_name + '-test', test_src,
-    c_args : test_cargs + test_extra_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS'],
-    dependencies : [libm, thread_dep, libglib_dep, libgobject_dep],
-    install : false,
+  exe = executable(test_name, [source, extra_sources],
+    c_args : common_c_args + extra_args.get('c_args', []),
+    dependencies : common_deps + extra_args.get('dependencies', []),
+    install_dir: installed_tests_execdir,
+    install: install,
   )
+
+  suite = ['refcount'] + extra_args.get('suite', [])
+  timeout = suite.contains('slow') ? 120 : 30
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
-  test(test_name, exe, env : test_env, timeout : test_timeout, suite : test_suite)
+  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach
