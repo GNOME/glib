@@ -30,3 +30,5 @@ pkg.generate(libraries : [libgthread, thread_dep],
   name : 'GThread',
   description : 'Thread support for GLib',
 )
+
+libgthread_dep = declare_dependency(link_with : libgthread)
