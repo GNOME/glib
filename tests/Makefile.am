@@ -123,7 +123,7 @@ dist-hook: $(BUILT_EXTRA_DIST)
 
 if HAVE_CXX
 installed_test_programs += cxx-test
-cxx_test_SOURCES = cxx-test.C
+cxx_test_SOURCES = cxx-test.cpp
 endif
 
 if ENABLE_TIMELOOP

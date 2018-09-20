@@ -51,7 +51,7 @@ tests = [{
   },
   'timeloop' : {},
   'cxx-test' : {
-    'source' : 'cxx-test.C',
+    'source' : 'cxx-test.cpp',
     'include_directories' : gmoduleinc,
     'dependencies' : [libgio_dep],
   },
