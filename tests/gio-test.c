@@ -218,7 +218,7 @@ recv_windows_message (GIOChannel  *channel,
   
   while (1)
     {
-      error = g_io_channel_read (channel, &msg, sizeof (MSG), &nb);
+      error = g_io_channel_read (channel, (gchar *) &msg, sizeof (MSG), &nb);
       
       if (error != G_IO_ERROR_NONE)
 	{
