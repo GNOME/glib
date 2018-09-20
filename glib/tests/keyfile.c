@@ -1726,6 +1726,42 @@ test_get_locale (void)
   g_key_file_free (kf);
 }
 
+static void
+test_free_when_not_last_ref (void)
+{
+  GKeyFile *kf;
+  GError *error = NULL;
+  const gchar *data =
+    "[Group]\n"
+    "Key=Value\n";
+
+  kf = load_data (data, G_KEY_FILE_NONE);
+  /* Add a second ref */
+  g_key_file_ref (kf);
+
+  /* Quick coherence check */
+  g_assert_true (g_key_file_has_group (kf, "Group"));
+  g_assert_true (g_key_file_has_key (kf, "Group", "Key", &error));
+  g_assert_no_error (error);
+
+  /* Should clear all keys and groups, and remove one ref */
+  g_key_file_free (kf);
+
+  /* kf should still work */
+  g_assert_false (g_key_file_has_group (kf, "Group"));
+  g_assert_false (g_key_file_has_key (kf, "Group", "Key", &error));
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
+  g_clear_error (&error);
+
+  g_key_file_load_from_data (kf, data, -1, G_KEY_FILE_NONE, &error);
+  g_assert_no_error (error);
+
+  g_assert_true (g_key_file_has_group (kf, "Group"));
+  g_assert_true (g_key_file_has_key (kf, "Group", "Key", &error));
+
+  g_key_file_unref (kf);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1771,6 +1807,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/roundtrip", test_roundtrip);
   g_test_add_func ("/keyfile/bytes", test_bytes);
   g_test_add_func ("/keyfile/get-locale", test_get_locale);
+  g_test_add_func ("/keyfile/free-when-not-last-ref", test_free_when_not_last_ref);
 
   return g_test_run ();
 }
