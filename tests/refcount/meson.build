@@ -1,5 +1,5 @@
 refcount_tests = [
- ['closures', 'closures.c', []],
+ ['closures', 'closures.c', [], 90],
  ['objects', 'objects.c', []],
  ['objects2', 'objects2.c', [], 90],
  ['properties', 'properties.c', []],
