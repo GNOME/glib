@@ -89,6 +89,11 @@ GLIB_AVAILABLE_IN_2_36
 gboolean         g_desktop_app_info_get_boolean       (GDesktopAppInfo *info,
                                                        const char      *key);
 
+GLIB_AVAILABLE_IN_2_60
+gchar **         g_desktop_app_info_get_string_list (GDesktopAppInfo *info,
+                                                     const char      *key,
+                                                     gsize           *length);
+
 GLIB_AVAILABLE_IN_2_38
 const gchar * const *   g_desktop_app_info_list_actions                 (GDesktopAppInfo   *info);
 

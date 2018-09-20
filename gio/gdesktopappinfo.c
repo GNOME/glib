@@ -4535,6 +4535,33 @@ g_desktop_app_info_get_boolean (GDesktopAppInfo *info,
 }
 
 /**
+ * g_desktop_app_info_get_string_list:
+ * @info: a #GDesktopAppInfo
+ * @key: the key to look up
+ * @length: (out) (optional): return location for the number of returned strings, or %NULL
+ *
+ * Looks up a string list value in the keyfile backing @info.
+ *
+ * The @key is looked up in the "Desktop Entry" group.
+ *
+ * Returns: (array zero-terminated=1 length=length) (element-type utf8) (transfer full):
+ *  a %NULL-terminated string array or %NULL if the specified
+ *  key cannot be found. The array should be freed with g_strfreev().
+ *
+ * Since: 2.59.0
+ */
+gchar **
+g_desktop_app_info_get_string_list (GDesktopAppInfo *info,
+                                    const char      *key,
+                                    gsize           *length)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
+
+  return g_key_file_get_string_list (info->keyfile,
+                                     G_KEY_FILE_DESKTOP_GROUP, key, length, NULL);
+}
+
+/**
  * g_desktop_app_info_has_key:
  * @info: a #GDesktopAppInfo
  * @key: the key to look up

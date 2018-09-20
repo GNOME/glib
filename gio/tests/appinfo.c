@@ -512,6 +512,8 @@ test_from_keyfile (void)
   GKeyFile *kf;
   GError *error = NULL;
   const gchar *categories;
+  gchar **categories_list;
+  gsize categories_count;
   gchar **keywords;
   const gchar *file;
   const gchar *name;
@@ -522,7 +524,7 @@ test_from_keyfile (void)
   g_key_file_load_from_file (kf, path, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
   info = g_desktop_app_info_new_from_keyfile (kf);
-  g_key_file_free (kf);
+  g_key_file_unref (kf);
   g_assert (info != NULL);
 
   g_object_get (info, "filename", &file, NULL);
@@ -532,6 +534,11 @@ test_from_keyfile (void)
   g_assert (file == NULL);
   categories = g_desktop_app_info_get_categories (info);
   g_assert_cmpstr (categories, ==, "GNOME;GTK;");
+  categories_list = g_desktop_app_info_get_string_list (info, "Categories", &categories_count);
+  g_assert_cmpint (categories_count, ==, 2);
+  g_assert_cmpint (g_strv_length (categories_list), ==, 2);
+  g_assert_cmpstr (categories_list[0], ==, "GNOME");
+  g_assert_cmpstr (categories_list[1], ==, "GTK");
   keywords = (gchar **)g_desktop_app_info_get_keywords (info);
   g_assert_cmpint (g_strv_length (keywords), ==, 2);
   g_assert_cmpstr (keywords[0], ==, "keyword1");
@@ -540,6 +547,7 @@ test_from_keyfile (void)
   g_assert_cmpstr (name, ==, "generic-appinfo-test");
   g_assert (!g_desktop_app_info_get_nodisplay (info));
 
+  g_strfreev (categories_list);
   g_object_unref (info);
 }
 
