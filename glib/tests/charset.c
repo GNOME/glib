@@ -59,6 +59,18 @@ test_language_names_with_category (void)
     }
 }
 
+static void
+test_language_names_with_category_async (void)
+{
+  g_thread_join (g_thread_new (
+      NULL, (GThreadFunc)g_get_language_names_with_category, "LC_CTYPE"));
+
+  /* g_get_language_names_with_category returns a pointer to a memory
+     which is owned by a thread it has been called from. The thread is dead now,
+     therefore returned pointer can't be used at this stage.
+  */
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -67,6 +79,7 @@ main (int argc, char *argv[])
   g_test_bug_base ("http://bugs.gnome.org/");
 
   g_test_add_func ("/charset/language_names_with_category", test_language_names_with_category);
+  g_test_add_func ("/charset/language_names_with_category_async", test_language_names_with_category_async);
 
   return g_test_run ();
 }
