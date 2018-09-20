@@ -1191,7 +1191,11 @@ g_key_file_free (GKeyFile *key_file)
   g_return_if_fail (key_file != NULL);
 
   g_key_file_clear (key_file);
-  g_key_file_unref (key_file);
+
+  if (g_atomic_int_dec_and_test (&key_file->ref_count))
+    g_slice_free (GKeyFile, key_file);
+  else
+    g_key_file_init (key_file);
 }
 
 /**
