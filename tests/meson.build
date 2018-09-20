@@ -49,7 +49,6 @@ tests = [{
     'dependencies' : [libgmodule_dep],
     'export_dynamic' : true,
   },
-  'timeloop' : {},
   'cxx-test' : {
     'source' : 'cxx-test.cpp',
     'include_directories' : gmoduleinc,
@@ -70,6 +69,7 @@ test_extra_programs = {
 
 if host_machine.system() != 'windows'
   tests += [{
+    'timeloop' : {},
     'spawn-test' : {},
     'iochannel-test' : {},
   }]
