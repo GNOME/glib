@@ -857,7 +857,7 @@ message_serialize_header_checks (void)
 {
   GDBusMessage *message;
   GDBusMessage *reply;
-  GError *error;
+  GError *error = NULL;
   guchar *blob;
   gsize blob_size;
 
@@ -865,11 +865,10 @@ message_serialize_header_checks (void)
    * check we can't serialize messages with INVALID type
    */
   message = g_dbus_message_new ();
-  error = NULL;
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: type is INVALID");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   g_object_unref (message);
 
@@ -894,49 +893,44 @@ message_serialize_header_checks (void)
   /* ----- */
   /* interface NULL => error */
   g_dbus_message_set_interface (message, NULL);
-  error = NULL;
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   /* interface reserved value => error */
   g_dbus_message_set_interface (message, "org.freedesktop.DBus.Local");
-  error = NULL;
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   /* reset interface */
   g_dbus_message_set_interface (message, "The.Interface");
   /* ----- */
   /* path NULL => error */
   g_dbus_message_set_path (message, NULL);
-  error = NULL;
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   /* path reserved value => error */
   g_dbus_message_set_path (message, "/org/freedesktop/DBus/Local");
-  error = NULL;
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   /* reset path */
   g_dbus_message_set_path (message, "/the/path");
   /* ----- */
   /* member NULL => error */
   g_dbus_message_set_member (message, NULL);
-  error = NULL;
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: SIGNAL message: PATH, INTERFACE or MEMBER header field is missing");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   /* reset member */
   g_dbus_message_set_member (message, "TheMember");
@@ -951,22 +945,20 @@ message_serialize_header_checks (void)
   /* ----- */
   /* path NULL => error */
   g_dbus_message_set_path (message, NULL);
-  error = NULL;
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: PATH or MEMBER header field is missing");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   /* reset path */
   g_dbus_message_set_path (message, "/the/path");
   /* ----- */
   /* member NULL => error */
   g_dbus_message_set_member (message, NULL);
-  error = NULL;
   blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_CALL message: PATH or MEMBER header field is missing");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   /* reset member */
   g_dbus_message_set_member (message, "TheMember");
@@ -983,11 +975,10 @@ message_serialize_header_checks (void)
   reply = g_dbus_message_new_method_reply (message);
   g_assert_cmpint (g_dbus_message_get_reply_serial (reply), ==, 42);
   g_dbus_message_set_header (reply, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL, NULL);
-  error = NULL;
   blob = g_dbus_message_to_blob (reply, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: METHOD_RETURN message: REPLY_SERIAL header field is missing");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   g_object_unref (reply);
   /* method error - first nuke ERROR_NAME, then REPLY_SERIAL */
@@ -995,21 +986,19 @@ message_serialize_header_checks (void)
   g_assert_cmpint (g_dbus_message_get_reply_serial (reply), ==, 42);
   /* nuke ERROR_NAME */
   g_dbus_message_set_error_name (reply, NULL);
-  error = NULL;
   blob = g_dbus_message_to_blob (reply, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   /* reset ERROR_NAME */
   g_dbus_message_set_error_name (reply, "Some.Error.Name");
   /* nuke REPLY_SERIAL */
   g_dbus_message_set_header (reply, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL, NULL);
-  error = NULL;
   blob = g_dbus_message_to_blob (reply, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_assert_cmpstr (error->message, ==, "Cannot serialize message: ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing");
-  g_error_free (error);
+  g_clear_error (&error);
   g_assert (blob == NULL);
   g_object_unref (reply);
   g_object_unref (message);
