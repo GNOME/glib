@@ -120,8 +120,13 @@ main (int   argc,
   gu64t1 = G_GINT64_CONSTANT (0xFAFAFAFAFAFAFAFA); 
 
 #define FORMAT64 "%" G_GINT64_FORMAT " %" G_GUINT64_FORMAT "\n"
+#ifndef G_OS_WIN32
+#  define SCAN_FORMAT64 FORMAT64
+#else
+#  define SCAN_FORMAT64 "%I64d %I64u\n"
+#endif
   string = g_strdup_printf (FORMAT64, gi64t1, gu64t1);
-  sscanf (string, FORMAT64, &gi64t2, &gu64t2);
+  sscanf (string, SCAN_FORMAT64, &gi64t2, &gu64t2);
   g_free (string);
   g_assert (gi64t1 == gi64t2);
   g_assert (gu64t1 == gu64t2);
@@ -130,8 +135,13 @@ main (int   argc,
   gst1 = 0xFAFAFAFA; 
 
 #define FORMATSIZE "%" G_GSSIZE_FORMAT " %" G_GSIZE_FORMAT "\n"
+#ifndef G_OS_WIN32
+#  define SCAN_FORMATSIZE FORMATSIZE
+#else
+#  define SCAN_FORMATSIZE "%Id %Iu\n"
+#endif
   string = g_strdup_printf (FORMATSIZE, gsst1, gst1);
-  sscanf (string, FORMATSIZE, &gsst2, &gst2);
+  sscanf (string, SCAN_FORMATSIZE, &gsst2, &gst2);
   g_free (string);
   g_assert (gsst1 == gsst2);
   g_assert (gst1 == gst2);
