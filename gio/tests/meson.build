@@ -226,7 +226,10 @@ if host_machine.system() != 'windows'
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
       },
-      'gmenumodel' : {'extra_sources' : extra_sources},
+      'gmenumodel' : {
+        'extra_sources' : extra_sources,
+        'suite' : ['slow'],
+      },
       'gnotification' : {
         'extra_sources' : [extra_sources, 'gnotification-server.c'],
       },
