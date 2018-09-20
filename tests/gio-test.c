@@ -214,7 +214,7 @@ recv_windows_message (GIOChannel  *channel,
 {
   GIOError error;
   MSG msg;
-  guint nb;
+  gsize nb;
   
   while (1)
     {
@@ -232,11 +232,16 @@ recv_windows_message (GIOChannel  *channel,
       break;
     }
 
-  g_print ("gio-test: ...Windows message for %#x: %d,%d,%d\n",
-	   msg.hwnd, msg.message, msg.wParam, msg.lParam);
+  g_print ("gio-test: ...Windows message for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
+	   msg.hwnd, msg.message, msg.wParam, (gintptr)msg.lParam);
 
   return TRUE;
 }
+
+LRESULT CALLBACK window_procedure (HWND   hwnd,
+                                   UINT   message,
+                                   WPARAM wparam,
+                                   LPARAM lparam);
 
 LRESULT CALLBACK 
 window_procedure (HWND hwnd,
@@ -244,8 +249,8 @@ window_procedure (HWND hwnd,
 		  WPARAM wparam,
 		  LPARAM lparam)
 {
-  g_print ("gio-test: window_procedure for %#x: %d,%d,%d\n",
-	   hwnd, message, wparam, lparam);
+  g_print ("gio-test: window_procedure for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
+	   hwnd, message, wparam, (gintptr)lparam);
   return DefWindowProc (hwnd, message, wparam, lparam);
 }
 
@@ -331,7 +336,7 @@ main (int    argc,
 	  nrunning++;
 	  
 #ifdef G_OS_WIN32
-	  cmdline = g_strdup_printf ("%d:%d:%d",
+	  cmdline = g_strdup_printf ("%d:%d:0x%p",
 				     pipe_to_sub[0],
 				     pipe_from_sub[1],
 				     hwnd);
@@ -388,7 +393,7 @@ main (int    argc,
       sscanf (argv[2], "%d:%d%n", &readfd, &writefd, &n);
 
 #ifdef G_OS_WIN32
-      sscanf (argv[2] + n, ":%d", &hwnd);
+      sscanf (argv[2] + n, ":0x%p", &hwnd);
 #endif
       
       srand (tv.tv_sec ^ (tv.tv_usec / 1000) ^ readfd ^ (writefd << 4));
@@ -413,8 +418,8 @@ main (int    argc,
 	      int msg = WM_USER + (rand() % 100);
 	      WPARAM wparam = rand ();
 	      LPARAM lparam = rand ();
-	      g_print ("gio-test: child posting message %d,%d,%d to %#x\n",
-		       msg, wparam, lparam, hwnd);
+	      g_print ("gio-test: child posting message %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT " to 0x%p\n",
+		       msg, wparam, (gintptr)lparam, hwnd);
 	      PostMessage (hwnd, msg, wparam, lparam);
 	    }
 #endif
