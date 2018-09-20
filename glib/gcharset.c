@@ -576,15 +576,16 @@ g_get_language_names (void)
  *
  * g_get_language_names() returns g_get_language_names_with_category("LC_MESSAGES").
  *
- * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib
- *    that must not be modified or freed.
+ * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by
+ *    the thread g_get_language_names_with_category was called from.
+ *    It must not be modified or freed. It must be copied if planned to be used in another thread.
  *
  * Since: 2.58
  */
 const gchar * const *
 g_get_language_names_with_category (const gchar *category_name)
 {
-  static GPrivate cache_private = G_PRIVATE_INIT ((void (*)(gpointer)) g_hash_table_remove_all);
+  static GPrivate cache_private = G_PRIVATE_INIT ((void (*)(gpointer)) g_hash_table_unref);
   GHashTable *cache = g_private_get (&cache_private);
   const gchar *languages;
   GLanguageNamesCache *name_cache;
