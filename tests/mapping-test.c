@@ -25,6 +25,9 @@
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
+#ifdef G_OS_WIN32
+#include <process.h>
+#endif
 
 static gchar *dir, *filename, *displayname, *childname;
 
