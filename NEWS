@@ -1,3 +1,31 @@
+Overview of changes in GLib 2.56.3
+==================================
+
+* The documentation for G_GNUC_MALLOC has changed to be more restrictive to
+  avoid miscompilations; you should check whether any uses of it in your code
+  are appropriate
+* Fix cancellation of g_subprocess_communicate_async() calls
+
+* Bug fixes:
+ #1518 /network-monitor/create-in-thread fails in (LXC) containers on glib-2-56
+ #1461 GBookmarkFile: nullptr access in current_element
+ #1462 GBookmarkFile: heap-buffer-overflow in g_utf8_get_char
+ !278 Backport g_subprocess_communicate() cancellation fixes from !266 to glib-2-56
+ #1465 Many uses of G_GNUC_MALLOC are incorrect
+ #1472 Test for BROKEN_IP_MREQ_SOURCE_STRUCT is broken on Windows / Mingw
+ !259 Fix persistent CI failure on glib-2-56
+
+* Translation updates:
+ Brazilian Portuguese
+ Czech
+ German
+ Hungarian
+ Indonesian
+ Polish
+ Slovenian
+ Swedish
+
+
 Overview of changes in GLib 2.56.2
 ==================================
 
