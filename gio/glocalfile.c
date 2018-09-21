@@ -1610,7 +1610,15 @@ expand_symlinks (const char *path,
         }
 
       num_recursions++;
-      if (num_recursions > 12)
+
+#ifdef MAXSYMLINKS
+      if (num_recursions > MAXSYMLINKS)
+#else
+      /* 40 is used in kernel sources currently:
+       * https://github.com/torvalds/linux/include/linux/namei.h
+       */
+      if (num_recursions > 40)
+#endif
         {
           g_free (target);
           return NULL;
