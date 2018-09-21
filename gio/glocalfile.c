@@ -1634,8 +1634,7 @@ get_parent (const char *path,
   path_copy = strip_trailing_slashes (path);
   
   parent = g_path_get_dirname (path_copy);
-  if (strcmp (parent, ".") == 0 ||
-      strcmp (parent, path_copy) == 0)
+  if (strcmp (parent, ".") == 0)
     {
       g_free (parent);
       g_free (path_copy);
@@ -1657,10 +1656,12 @@ expand_all_symlinks (const char *path)
   dev_t parent_dev;
 
   parent = get_parent (path, &parent_dev);
-  if (parent)
+  if (parent == NULL)
+    return NULL;
+
+  if (g_strcmp0 (parent, "/") != 0)
     {
       parent_expanded = expand_all_symlinks (parent);
-      g_free (parent);
       basename = g_path_get_basename (path);
       res = g_build_filename (parent_expanded, basename, NULL);
       g_free (basename);
@@ -1668,7 +1669,9 @@ expand_all_symlinks (const char *path)
     }
   else
     res = g_strdup (path);
-  
+
+  g_free (parent);
+
   return res;
 }
 
@@ -1684,19 +1687,22 @@ find_mountpoint_for (const char *file,
     {
       dir = expand_symlinks (file, NULL);
       if (dir == NULL)
-        return g_strdup (file);
+        return NULL;
     }
   else
     dir = g_strdup (file);
 
   dir_dev = dev;
 
-  while (1) 
+  while (g_strcmp0 (dir, "/") != 0)
     {
       parent = get_parent (dir, &parent_dev);
       if (parent == NULL)
-        return dir;
-    
+        {
+          g_free (dir);
+          return NULL;
+        }
+
       if (parent_dev != dir_dev)
         {
           g_free (parent);
@@ -1706,6 +1712,8 @@ find_mountpoint_for (const char *file,
       g_free (dir);
       dir = parent;
     }
+
+  return dir;
 }
 
 char *
@@ -1773,7 +1781,7 @@ try_make_relative (const char *path,
   base2 = expand_all_symlinks (base);
 
   relative = NULL;
-  if (path_has_prefix (path2, base2))
+  if (path2 != NULL && base2 != NULL && path_has_prefix (path2, base2))
     {
       relative = path2 + strlen (base2);
       while (*relative == '/')
