@@ -1,3 +1,45 @@
+Overview of changes in GLib 2.58.1
+==================================
+
+* Fix to a regression in listing GIcon fallbacks (#1513)
+
+* Changes to pkg-config paths to helper programs when building with autotools:
+  paths are now absolute with reference to the .pc file’s ${prefix} (#1521)
+
+* Fix installation path of glib-gettextize helper on Meson (!290)
+
+* Fix autostarting xdg-desktop-portal (!321, a backport of !317)
+
+* Various fixes to the network monitor (#1518, !294)
+
+* Various compilation fixes on macOS (generally older versions and older
+  compilers)
+
+Bugs fixed:
+ !318 codegen: Change pointer casting to remove type-punning warnings
+ #1513 GIcon regression?
+ #1521 pkg-config files differ between Autotools and Meson build
+ !321 Backport “Autostart xdg-desktop-portal if needed” to glib-2-58
+ #1518 /network-monitor/create-in-thread fails in (LXC) containers on glib-2-56
+ #1509 test_timeval_to_iso8601_overflow: 'out' should be NULL
+ !288 Backport `command -v` vs `which` changes to glib-2-58
+ !298 GLib 2.58 backports of various small patches
+   !295 meson: fix typo
+   !294 portal network monitor: Always emit changed signal on changed
+   !290 build: fix installation dir of glib-gettextize
+   #1488 ‘O_CLOEXEC’ undeclared (first use in this function)
+   #1506 error: redefinition of typedef 'GKqueueFileMonitor'
+
+* Translation updates:
+ Brazilian Portuguese
+ Czech
+ Danish
+ Greek
+ Hungarian
+ Latvian
+ Swedish
+
+
 Overview of changes in GLib 2.58.0
 ==================================
 
