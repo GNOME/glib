@@ -103,7 +103,7 @@ if get_option('gtk_doc')
     ],
     fixxref_args: [
       '--html-dir=' + docpath,
-      '--extra-dir=' + join_paths(meson.current_build_dir(), '../glib/html'),
+      '--extra-dir=' + join_paths('gobject', '..', 'glib', 'html'),
     ],
     install: true
   )

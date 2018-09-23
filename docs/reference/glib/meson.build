@@ -140,7 +140,6 @@ if get_option('gtk_doc')
                ],
                fixxref_args: [
                  '--html-dir=' + docpath,
-                 # TODO: gobject/gio extra dirs
                ],
                install: true)
 endif
