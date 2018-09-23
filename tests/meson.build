@@ -18,7 +18,7 @@ subdir('refcount')
 # FIXME: We are using list of dictionnaries until we can depend on Meson 0.48.0
 # that supports '+=' operator on dictionnaries.
 tests = [{
-  'testglib' : {},
+  'testglib' : {'tap' : true},
   'testgdate' : {},
   'datetime' : {},
   'atomic-test' : {},
@@ -101,13 +101,14 @@ foreach test_dict : tests
     source = extra_args.get('source', test_name + '.c')
     extra_sources = extra_args.get('extra_sources', [])
     install = installed_tests_enabled and extra_args.get('install', true)
+    template = extra_args.get('tap', false) ? installed_tests_template_tap : installed_tests_template
 
     if install
       test_conf = configuration_data()
       test_conf.set('installed_tests_dir', installed_tests_execdir)
       test_conf.set('program', test_name)
       configure_file(
-        input: installed_tests_template,
+        input: template,
         output: test_name + '.test',
         install_dir: installed_tests_metadir,
         configuration: test_conf

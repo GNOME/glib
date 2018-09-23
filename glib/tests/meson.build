@@ -170,7 +170,7 @@ foreach test_name, extra_args : glib_tests
       test_conf.set('installed_tests_dir', installed_tests_execdir)
       test_conf.set('program', test_name)
       configure_file(
-        input: installed_tests_template,
+        input: installed_tests_template_tap,
         output: test_name + '.test',
         install_dir: installed_tests_metadir,
         configuration: test_conf
