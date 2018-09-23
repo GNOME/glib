@@ -1661,7 +1661,7 @@ else
   growing_stack = meson.get_cross_property('growing_stack', false)
 endif
 
-glibconfig_conf.set('G_HAVE_GROWING_STACK', growing_stack)
+glibconfig_conf.set10('G_HAVE_GROWING_STACK', growing_stack)
 
 # Tests for iconv
 #
