@@ -27,8 +27,8 @@ testmarshal_c = custom_target('testmarshal_c',
 )
 
 gobject_tests = {
-  'gvalue-test' : {},
-  'paramspec-test' : {},
+  'gvalue-test' : {'tap' : true},
+  'paramspec-test' : {'tap' : true},
   'deftype' : {},
   'defaultiface' : {
     'extra_sources' : ['testmodule.c'],
@@ -53,13 +53,14 @@ foreach test_name, extra_args : gobject_tests
   source = extra_args.get('source', test_name + '.c')
   extra_sources = extra_args.get('extra_sources', [])
   install = installed_tests_enabled and extra_args.get('install', true)
+  template = extra_args.get('tap', false) ? installed_tests_template_tap : installed_tests_template
 
   if install
     test_conf = configuration_data()
     test_conf.set('installed_tests_dir', installed_tests_execdir)
     test_conf.set('program', test_name)
     configure_file(
-      input: installed_tests_template,
+      input: template,
       output: test_name + '.test',
       install_dir: installed_tests_metadir,
       configuration: test_conf
