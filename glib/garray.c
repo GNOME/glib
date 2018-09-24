@@ -318,15 +318,15 @@ g_array_get_element_size (GArray *array)
  * @free_segment: if %TRUE the actual element data is freed as well
  *
  * Frees the memory allocated for the #GArray. If @free_segment is
- * %TRUE it frees the memory block holding the elements as well and
- * also each element if @array has a @clear_func set. Pass %FALSE if
- * you want to free the #GArray wrapper but preserve the underlying
- * array for use elsewhere. If the reference count of @array is
- * greater than one, the #GArray wrapper is preserved but the size of
- * @array will be set to zero.
+ * %TRUE it frees the memory block holding the elements as well. Pass
+ * %FALSE if you want to free the #GArray wrapper but preserve the
+ * underlying array for use elsewhere. If the reference count of
+ * @array is greater than one, the #GArray wrapper is preserved but
+ * the size of  @array will be set to zero.
  *
- * If array elements contain dynamically-allocated memory, they should
- * be freed separately.
+ * If array contents point to dynamically-allocated memory, they should
+ * be freed separately if @free_seg is %TRUE and no @clear_func
+ * function has been set for @array.
  *
  * This function is not thread-safe. If using a #GArray from multiple
  * threads, use only the atomic g_array_ref() and g_array_unref()
