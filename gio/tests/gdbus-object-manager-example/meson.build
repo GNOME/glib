@@ -16,10 +16,10 @@ gdbus_example_objectmanager_generated = custom_target('gdbus-example-objectmanag
 
 libgdbus_example_objectmanager = library('gdbus-example-objectmanager',
     gdbus_example_objectmanager_generated,
-    c_args : gio_c_args,
+    c_args : test_c_args,
     dependencies : [libglib_dep, libgmodule_dep, libgobject_dep, libgio_dep],
     install : installed_tests_enabled,
     install_dir : installed_tests_execdir)
 
-libgdbus_example_objectmanager_dep = declare_dependency(sources : gdbus_example_objectmanager_generated,
+libgdbus_example_objectmanager_dep = declare_dependency(
   link_with : libgdbus_example_objectmanager)

@@ -122,7 +122,10 @@ endif
 if host_machine.system() != 'windows'
   gio_tests += {
     'file' : {},
-    'gdbus-peer' : {'dependencies' : [libgdbus_example_objectmanager_dep]},
+    'gdbus-peer' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install_rpath' : installed_tests_execdir
+    },
     'gdbus-peer-object-manager' : {},
     'live-g-file' : {},
     'socket-address' : {},
@@ -471,6 +474,7 @@ foreach test_name, extra_args : gio_tests
   exe = executable(test_name, [source, extra_sources],
     c_args : test_c_args + extra_args.get('c_args', []),
     dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
+    install_rpath : extra_args.get('install_rpath', ''),
     install_dir: installed_tests_execdir,
     install: install,
   )
