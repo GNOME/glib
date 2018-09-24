@@ -26,7 +26,9 @@ testmarshal_c = custom_target('testmarshal_c',
   ],
 )
 
-gobject_tests = {
+# FIXME: We are using list of dictionnaries until we can depend on Meson 0.48.0
+# that supports '+=' operator on dictionnaries.
+gobject_tests = [{
   'gvalue-test' : {'tap' : true},
   'paramspec-test' : {'tap' : true},
   'deftype' : {},
@@ -44,41 +46,49 @@ gobject_tests = {
   'accumulator' : {
     'extra_sources' : [testmarshal_c, testmarshal_h],
   },
-}
+}]
+
+if host_system != 'windows'
+  gobject_tests += [{
+    'timeloop-closure' : {},
+  }]
+endif
 
 common_c_args = test_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS']
 common_deps = [libm, thread_dep, libglib_dep, libgobject_dep]
 
-foreach test_name, extra_args : gobject_tests
-  source = extra_args.get('source', test_name + '.c')
-  extra_sources = extra_args.get('extra_sources', [])
-  install = installed_tests_enabled and extra_args.get('install', true)
-  template = extra_args.get('tap', false) ? installed_tests_template_tap : installed_tests_template
+foreach test_dict : gobject_tests
+  foreach test_name, extra_args : test_dict
+    source = extra_args.get('source', test_name + '.c')
+    extra_sources = extra_args.get('extra_sources', [])
+    install = installed_tests_enabled and extra_args.get('install', true)
+    template = extra_args.get('tap', false) ? installed_tests_template_tap : installed_tests_template
 
-  if install
-    test_conf = configuration_data()
-    test_conf.set('installed_tests_dir', installed_tests_execdir)
-    test_conf.set('program', test_name)
-    configure_file(
-      input: template,
-      output: test_name + '.test',
-      install_dir: installed_tests_metadir,
-      configuration: test_conf
+    if install
+      test_conf = configuration_data()
+      test_conf.set('installed_tests_dir', installed_tests_execdir)
+      test_conf.set('program', test_name)
+      configure_file(
+        input: template,
+        output: test_name + '.test',
+        install_dir: installed_tests_metadir,
+        configuration: test_conf
+      )
+    endif
+
+    # FIXME? $(GLIB_DEBUG_FLAGS)
+    exe = executable(test_name, [source, extra_sources],
+      c_args : common_c_args + extra_args.get('c_args', []),
+      dependencies : common_deps + extra_args.get('dependencies', []),
+      install_dir: installed_tests_execdir,
+      install: install,
     )
-  endif
 
-  # FIXME? $(GLIB_DEBUG_FLAGS)
-  exe = executable(test_name, [source, extra_sources],
-    c_args : common_c_args + extra_args.get('c_args', []),
-    dependencies : common_deps + extra_args.get('dependencies', []),
-    install_dir: installed_tests_execdir,
-    install: install,
-  )
-
-  suite = ['gobject'] + extra_args.get('suite', [])
-  timeout = suite.contains('slow') ? 120 : 30
-  # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
-  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
+    suite = ['gobject'] + extra_args.get('suite', [])
+    timeout = suite.contains('slow') ? 120 : 30
+    # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
+    test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
+  endforeach
 endforeach
 
 # Don't install these ones, and keep them out of 'make check' because they take too long...
@@ -91,10 +101,3 @@ executable('performance-threaded', 'performance-threaded.c',
     c_args : common_c_args,
     dependencies : common_deps,
     install : false)
-
-if host_system != 'windows' and host_system != 'minix'
-  executable('timeloop-closure', 'timeloop-closure.c',
-      c_args : common_c_args,
-      dependencies : common_deps,
-      install : false)
-endif
