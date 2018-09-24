@@ -3,7 +3,6 @@
 #GTESTER = gtester 			# for non-GLIB packages
 #GTESTER_REPORT = gtester-report        # for non-GLIB packages
 GTESTER = $(top_builddir)/glib/gtester			# for the GLIB package
-GTESTER_REPORT = $(top_builddir)/glib/gtester-report	# for the GLIB package
 NULL =
 
 # initialize variables for unconditional += appending
