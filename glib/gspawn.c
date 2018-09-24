@@ -30,7 +30,10 @@
 #include <string.h>
 #include <stdlib.h>   /* for fdwalk */
 #include <dirent.h>
+
+#ifdef HAVE_POSIX_SPAWN
 #include <spawn.h>
+#endif
 
 #ifdef HAVE_CRT_EXTERNS_H
 #include <crt_externs.h> /* for _NSGetEnviron */
