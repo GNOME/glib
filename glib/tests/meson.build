@@ -186,7 +186,8 @@ foreach test_name, extra_args : glib_tests
 
     suite = ['glib'] + extra_args.get('suite', [])
     timeout = suite.contains('slow') ? 120 : 30
-    test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
+    test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
+      args : ['--tap'])
   endif
 endforeach
 
