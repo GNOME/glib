@@ -227,6 +227,7 @@ headers = [
   'poll.h',
   'pwd.h',
   'sched.h',
+  'spawn.h',
   'stdint.h',
   'stdlib.h',
   'string.h',
