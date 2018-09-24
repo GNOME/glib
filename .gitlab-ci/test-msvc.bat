@@ -5,7 +5,7 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary
 @echo on
 
 :: FIXME: make warnings fatal
-pip3 install --upgrade --user meson==0.47.0  || goto :error
+pip3 install --upgrade --user meson==0.48.0  || goto :error
 meson _build || goto :error
 ninja -C _build || goto :error
 
