@@ -7,10 +7,18 @@ subdir('libcharset')
 if not use_system_pcre
   subdir('pcre')
 endif
+
+# TODO: gnulib_objects, pcre_objects and pcre_deps are a workaround for
+# <https://github.com/mesonbuild/meson/issues/3934> and
+# <https://github.com/mesonbuild/meson/issues/3937>. When we can depend
+# on a meson version where those are fixed, revert the commit that
+# introduced this workaround.
 if have_good_vsnprintf and have_good_snprintf
   gnulib_lib = []
+  gnulib_objects = []
 else
   subdir('gnulib')
+  gnulib_objects = [gnulib_lib.extract_all_objects()]
 endif
 
 glib_headers = files(
@@ -234,17 +242,25 @@ if use_pcre_static_flag
   pcre_static_args = ['-DPCRE_STATIC']
 endif
 
+if use_system_pcre
+  pcre_deps = [pcre]
+  pcre_objects = []
+else
+  pcre_deps = []
+  pcre_objects = [libpcre.extract_all_objects()]
+endif
+
 libglib = library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
   sources : [deprecated_sources, glib_sources],
+  objects : [charset_lib.extract_all_objects()] + gnulib_objects + pcre_objects,
   version : library_version,
   soversion : soversion,
   install : true,
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
-  link_with : [charset_lib, gnulib_lib],
-  dependencies : [pcre, thread_dep, libintl, librt] + libiconv + platform_deps,
+  dependencies : pcre_deps + [thread_dep, libintl, librt] + libiconv + platform_deps,
   c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
 )
 
