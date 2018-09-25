@@ -192,6 +192,11 @@ if host_system == 'windows'
 #define G_PLATFORM_WIN32'''
 else
   glib_os = '#define G_OS_UNIX'
+
+  if host_system == 'darwin'
+    glib_os += '''
+#define G_OS_OSX'''
+  endif
 endif
 glibconfig_conf.set('glib_os', glib_os)
 

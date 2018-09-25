@@ -1681,6 +1681,15 @@
  */
 
 /**
+ * G_OS_OSX:
+ *
+ * This macro is defined only on Mac OSX. So you can bracket
+ * Mac OSX-specific code in "\#ifdef G_OS_OSX".
+ *
+ * Since: 2.60
+ */
+
+/**
  * G_DIR_SEPARATOR:
  *
  * The directory separator character.
