@@ -55,6 +55,5 @@ foreach test_name, extra_args : refcount_tests
   suite = ['refcount'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? 120 : 30
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
-  test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
-    args : ['--tap'])
+  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach
