@@ -333,7 +333,7 @@ where section may be <literal>file-header</literal>,
 <varlistentry>
 <term><option>--identifier-prefix</option> <replaceable>PREFIX</replaceable></term>
 <listitem><para>
-Indicates what portion of the enum name should be intepreted as the
+Indicates what portion of the enum name should be interpreted as the
 prefix (eg, the "<literal>Gtk</literal>" in
 "<literal>GtkDirectionType</literal>"). Normally this will be figured
 out automatically, but you may need to override the default if your
