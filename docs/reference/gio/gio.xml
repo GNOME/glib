@@ -374,7 +374,7 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-D</option>, <option>--direct=<replaceable>LOCATION</replaceable></option></term>
-                <listitem><para>Monitor the file directly. This allows to capture changes made via hardlinks.</para></listitem>
+                <listitem><para>Monitor the file directly. This allows changes made via hardlinks to be captured.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-s</option>, <option>--silent=<replaceable>LOCATION</replaceable></option></term>
@@ -599,7 +599,7 @@
           <arg choice="plain" rep="repeat"><replaceable>VALUE</replaceable></arg>
         </term>
         <listitem>
-          <para>Allows to set a file attribute on a file.</para>
+          <para>Sets a file attribute on a file.</para>
           <para>File attributes can be specified with their GIO name, e.g
             standard::icon. Note that not all GIO file attributes are writable.
             Use the --query-writable option of the info command to list
