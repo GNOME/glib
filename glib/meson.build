@@ -303,7 +303,16 @@ else
     dependencies : [libglib_dep])
 endif
 
-install_data('gtester-report', install_dir : get_option('bindir'))
+report_conf = configuration_data()
+report_conf.set('GLIB_VERSION', glib_version)
+report_conf.set('PYTHON', python_name)
+configure_file(
+  input: 'gtester-report.in',
+  output: 'gtester-report',
+  install_dir: get_option('bindir'),
+  configuration: report_conf,
+  install_mode: 'rwxr-xr-x'
+)
 
 install_data('glib_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 
