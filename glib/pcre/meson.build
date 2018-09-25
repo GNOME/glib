@@ -47,4 +47,4 @@ libpcre = static_library('pcre',
   ] + glib_hidden_visibility_args
 )
 
-pcre = declare_dependency(link_with : libpcre)
+pcre = declare_dependency(link_whole : libpcre)
