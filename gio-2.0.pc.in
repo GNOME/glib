@@ -15,7 +15,7 @@ Name: GIO
 Description: glib I/O library
 Version: @VERSION@
 Requires: glib-2.0 gobject-2.0
-Requires.private: gmodule-no-export-2.0
+Requires.private: gmodule-no-export-2.0 @LIBMOUNT_REQUIRES@
 Libs: -L${libdir} -lgio-2.0
-Libs.private: @ZLIB_LIBS@ @NETWORK_LIBS@ @SELINUX_LIBS@ @COCOA_LIBS@ @CARBON_LIBS@ @LIBMOUNT_LIBS@
+Libs.private: @ZLIB_LIBS@ @NETWORK_LIBS@ @SELINUX_LIBS@ @COCOA_LIBS@ @CARBON_LIBS@
 Cflags:
