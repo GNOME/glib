@@ -145,9 +145,11 @@ if host_machine.system() != 'windows'
     gio_tests += [{
       'appinfo' : {
         'install' : false,
+        'is_parallel' : false,
       },
       'desktop-app-info' : {
         'install' : false,
+        'is_parallel' : false,
       },
     }]
   endif
@@ -480,8 +482,13 @@ foreach test_dict : gio_tests
 
     suite = ['gio'] + extra_args.get('suite', [])
     timeout = suite.contains('slow') ? 120 : 30
-    test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
-      args : ['--tap'])
+    test(test_name, exe,
+      env : test_env,
+      timeout : timeout,
+      suite : suite,
+      args : ['--tap'],
+      is_parallel : extra_args.get('is_parallel', true),
+    )
   endforeach
 endforeach
 
