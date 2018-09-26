@@ -373,6 +373,25 @@ if installed_tests_enabled
   install_subdir('desktop-files', install_dir : installed_tests_execdir)
   install_subdir('thumbnails', install_dir : installed_tests_execdir)
   install_subdir('cert-tests', install_dir : installed_tests_execdir)
+
+  cdata = configuration_data()
+  cdata.set('pkgconfig_dir', glib_pkgconfigreldir)
+  configure_file(
+    input: 'static-link.sh.in',
+    output: 'static-link.sh',
+    install_dir: installed_tests_execdir,
+    configuration: cdata
+  )
+  cdata = configuration_data()
+  cdata.set('installed_tests_dir', installed_tests_execdir)
+  cdata.set('program', 'static-link.sh')
+  configure_file(
+    input: installed_tests_template,
+    output: 'static-link.test',
+    install_dir: installed_tests_metadir,
+    configuration: cdata
+  )
+  install_subdir('static-link', install_dir : installed_tests_execdir)
 endif
 
 if not meson.is_cross_build() or meson.has_exe_wrapper()
