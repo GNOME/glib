@@ -1590,7 +1590,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
   if (!intermediate_child && working_directory == NULL && !close_descriptors &&
       !search_path_from_envp && child_setup == NULL)
     {
-      g_debug ("Launching with posix_spawn");
+      //g_debug ("Launching with posix_spawn");
       status = do_posix_spawn (argv,
                                envp,
                                search_path,
@@ -1622,8 +1622,9 @@ fork_exec_with_fds (gboolean              intermediate_child,
        * So if it fails with ENOEXEC, we fall through to the regular
        * gspawn codepath so that script execution can be attempted,
        * per standard gspawn behaviour. */
-      g_debug ("posix_spawn failed (ENOEXEC), fall back to regular gspawn");
+      //g_debug ("posix_spawn failed (ENOEXEC), fall back to regular gspawn");
     }
+#if 0
   else
     {
       g_debug ("posix_spawn avoided %s%s%s%s%s",
@@ -1633,6 +1634,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
                !search_path_from_envp ? "" : "(using envp for search path) ",
                child_setup == NULL ? "" : "(child_setup specified) ");
     }
+#endif
 #endif /* POSIX_SPAWN_AVAILABLE */
 
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
