@@ -33,8 +33,9 @@ mkdir -p _coverage
 mkdir -p _ccache
 export CCACHE_BASEDIR="$(pwd)"
 export CCACHE_DIR="${CCACHE_BASEDIR}/_ccache"
-pip3 install --upgrade --user meson==0.47.0
-export PATH="$HOME/.local/bin:$PATH"
+# FIXME: https://github.com/Alexpux/MINGW-packages/pull/4462
+# pip3 install --upgrade --user meson==0.47.0
+# export PATH="$HOME/.local/bin:$PATH"
 export CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
 
