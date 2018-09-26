@@ -1786,9 +1786,13 @@ fi
 ])
 
 if test x$have_libmount = xyes; then
+  LIBMOUNT_REQUIRES="mount >= 2.23"
   AC_DEFINE(HAVE_LIBMOUNT, 1, [Define if libmount is available])
+else
+  LIBMOUNT_REQUIRES=""
 fi
 AM_CONDITIONAL(HAVE_LIBMOUNT, [test x$have_libmount = xyes])
+AC_SUBST([LIBMOUNT_REQUIRES])
 
 dnl ****************************************
 dnl *** platform dependent source checks ***
