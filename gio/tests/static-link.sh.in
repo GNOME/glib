@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+if [[ -z "${GLIB_TEST_COMPILATION}" ]]; then
+  echo "Test disabled because GLIB_TEST_COMPILATION is not set in the env."
+  echo
+  echo "If you wish to run this test, set GLIB_TEST_COMPILATION=1 in the env,"
+  echo "and make sure you have glib build dependencies installed, including"
+  echo "meson."
+  exit 0
+fi
+
+test_dir=$(dirname $0)
+tmp_dir=$(mktemp -d)
+
+# Ensure we can static link and run a test app
+export PKG_CONFIG_PATH=@pkgconfig_dir@
+meson $test_dir/static-link $tmp_dir
+ninja -C $tmp_dir test
+
+# Make sure the executable is not dynamically linked on our libraries
+if ldd $tmp_dir/test-static-link | grep -q libgio; then
+  echo "test-static-link is dynamically linked on libgio"
+  exit 1
+fi
+
+rm -rf $tmp_dir
