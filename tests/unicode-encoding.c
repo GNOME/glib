@@ -9,8 +9,7 @@
 
 static gint exit_status = 0;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+G_GNUC_PRINTF (1, 2)
 static void
 croak (char *format, ...)
 {
@@ -23,6 +22,7 @@ croak (char *format, ...)
   exit (1);
 }
 
+G_GNUC_PRINTF (1, 2)
 static void
 fail (char *format, ...)
 {
@@ -34,7 +34,6 @@ fail (char *format, ...)
 
   exit_status |= 1;
 }
-#pragma GCC diagnostic pop
 
 typedef enum
 {
