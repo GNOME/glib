@@ -1,4 +1,4 @@
-image: registry.gitlab.gnome.org/gnome/glib/master:v7
+image: registry.gitlab.gnome.org/gnome/glib/master:v8
 
 stages:
   - build
@@ -12,6 +12,7 @@ cache:
 variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
+  MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
 
 fedora-x86_64:
   stage: build
@@ -20,7 +21,7 @@ fedora-x86_64:
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
-    - meson --buildtype debug --werror -Dsystemtap=true -Ddtrace=true -Dfam=true _build .
+    - meson ${MESON_COMMON_OPTIONS} --werror -Dsystemtap=true -Ddtrace=true -Dfam=true _build
     - ninja -C _build
     - mkdir -p _coverage
     - lcov --rc lcov_branch_coverage=1 --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
@@ -76,21 +77,21 @@ cross-android_api21_arm64:
   <<: *cross-template
   script:
     # FIXME: add --werror
-    - meson --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=gnu -Dinternal_pcre=true --buildtype debug _build
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=gnu -Dinternal_pcre=true _build
     - ninja -C _build
 
 cross-android_api28_arm64:
   <<: *cross-template
   script:
     # FIXME: add --werror
-    - meson --cross-file=/opt/cross_file_android_arm64_28.txt -Dinternal_pcre=true --buildtype debug _build
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt -Dinternal_pcre=true _build
     - ninja -C _build
 
 cross-mingw64:
   <<: *cross-template
   script:
     # FIXME: Add --werror
-    - meson --cross-file=/opt/cross_file_mingw64.txt --buildtype debug _build
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
     - ninja -C _build
 
 msys2-mingw32:
@@ -150,7 +151,7 @@ freebsd-11-x86_64:
     # FreeBSD iconv doesn't handle transliteration, so we use GNU libiconv here.
     # FreeBSD supports xattr, but its API is different from Linux xattr.
     # FIXME: extattr(2) support: https://gitlab.gnome.org/GNOME/glib/issues/1404
-    - meson -Db_lundef=false -Diconv=gnu -Dxattr=false --buildtype debug _build
+    - meson ${MESON_COMMON_OPTIONS} -Db_lundef=false -Diconv=gnu -Dxattr=false _build
     - ninja -C _build
     - meson test -C _build --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
   # FIXME: Remove this when we have a stable FreeBSD runner
@@ -191,7 +192,7 @@ dist-job:
   only:
     - tags
   script:
-    - meson --buildtype release -Dgtk_doc=true -Dman=true _build
+    - meson --buildtype release --fatal-meson-warnings -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
     - ninja glib-doc gobject-doc gio-doc
