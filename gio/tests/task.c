@@ -1987,6 +1987,136 @@ test_legacy_error (void)
   g_assert (simple == NULL);
 }
 
+/* Various helper functions for the return tests below. */
+static void
+task_complete_cb (GObject *source,
+                  GAsyncResult *result,
+                  gpointer user_data)
+{
+  GTask *task = G_TASK (result);
+  guint *calls = user_data;
+
+  g_assert_cmpint (++*calls, <=, 1);
+
+  /* Propagate the result, so it’s removed from the task’s internal state. */
+  g_task_propagate_boolean (task, NULL);
+}
+
+static void
+return_twice (GTask *task)
+{
+  gboolean error_first = GPOINTER_TO_UINT (g_task_get_task_data (task));
+
+  if (error_first)
+    {
+      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_UNKNOWN, "oh no");
+      g_task_return_boolean (task, TRUE);
+    }
+  else
+    {
+      g_task_return_boolean (task, TRUE);
+      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_UNKNOWN, "oh no");
+    }
+}
+
+static gboolean
+idle_cb (gpointer user_data)
+{
+  GTask *task = user_data;
+  return_twice (task);
+  g_object_unref (task);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_return_permutation (gboolean error_first,
+                         gboolean return_in_idle)
+{
+  guint calls = 0;
+  GTask *task = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1525");
+
+  task = g_task_new (NULL, NULL, task_complete_cb, &calls);
+  g_task_set_task_data (task, GUINT_TO_POINTER (error_first), NULL);
+
+  if (return_in_idle)
+    g_idle_add (idle_cb, g_object_ref (task));
+  else
+    return_twice (task);
+
+  while (calls == 0)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_cmpint (calls, ==, 1);
+
+  g_object_unref (task);
+}
+
+/* Test that calling g_task_return_boolean() after g_task_return_error(), when
+ * returning in an idle callback, correctly results in a critical warning. */
+static void
+test_return_in_idle_error_first (void)
+{
+  if (g_test_subprocess ())
+    {
+      test_return_permutation (TRUE, TRUE);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*assertion '!task->ever_returned' failed*");
+}
+
+/* Test that calling g_task_return_error() after g_task_return_boolean(), when
+ * returning in an idle callback, correctly results in a critical warning. */
+static void
+test_return_in_idle_value_first (void)
+{
+  if (g_test_subprocess ())
+    {
+      test_return_permutation (FALSE, TRUE);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*assertion '!task->ever_returned' failed*");
+}
+
+/* Test that calling g_task_return_boolean() after g_task_return_error(), when
+ * returning synchronously, correctly results in a critical warning. */
+static void
+test_return_error_first (void)
+{
+  if (g_test_subprocess ())
+    {
+      test_return_permutation (TRUE, FALSE);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*assertion '!task->ever_returned' failed*");
+}
+
+/* Test that calling g_task_return_error() after g_task_return_boolean(), when
+ * returning synchronously, correctly results in a critical warning. */
+static void
+test_return_value_first (void)
+{
+  if (g_test_subprocess ())
+    {
+      test_return_permutation (FALSE, FALSE);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*assertion '!task->ever_returned' failed*");
+}
 
 int
 main (int argc, char **argv)
@@ -1994,6 +2124,7 @@ main (int argc, char **argv)
   int ret;
 
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("");
 
   loop = g_main_loop_new (NULL, FALSE);
   main_thread = g_thread_self ();
@@ -2021,6 +2152,10 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/return-pointer", test_return_pointer);
   g_test_add_func ("/gtask/object-keepalive", test_object_keepalive);
   g_test_add_func ("/gtask/legacy-error", test_legacy_error);
+  g_test_add_func ("/gtask/return/in-idle/error-first", test_return_in_idle_error_first);
+  g_test_add_func ("/gtask/return/in-idle/value-first", test_return_in_idle_value_first);
+  g_test_add_func ("/gtask/return/error-first", test_return_error_first);
+  g_test_add_func ("/gtask/return/value-first", test_return_value_first);
 
   ret = g_test_run();
 
