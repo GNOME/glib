@@ -1669,16 +1669,48 @@ g_utf8_validate (const char   *str,
 {
   const gchar *p;
 
-  if (max_len < 0)
-    p = fast_validate (str);
-  else
-    p = fast_validate_len (str, max_len);
+  if (max_len >= 0)
+    return g_utf8_validate_len (str, max_len, end);
+
+  p = fast_validate (str);
 
   if (end)
     *end = p;
 
-  if ((max_len >= 0 && p != str + max_len) ||
-      (max_len < 0 && *p != '\0'))
+  if (*p != '\0')
+    return FALSE;
+  else
+    return TRUE;
+}
+
+/**
+ * g_utf8_validate_len:
+ * @str: (array length=max_len) (element-type guint8): a pointer to character data
+ * @max_len: max bytes to validate
+ * @end: (out) (optional) (transfer none): return location for end of valid data
+ *
+ * Validates UTF-8 encoded text.
+ *
+ * As with g_utf8_validate(), but @max_len must be set, and hence this function
+ * will always return %FALSE if any of the bytes of @str are nul.
+ *
+ * Returns: %TRUE if the text was valid UTF-8
+ * Since: 2.60
+ */
+gboolean
+g_utf8_validate_len (const char   *str,
+                     gsize         max_len,
+                     const gchar **end)
+
+{
+  const gchar *p;
+
+  p = fast_validate_len (str, max_len);
+
+  if (end)
+    *end = p;
+
+  if (p != str + max_len)
     return FALSE;
   else
     return TRUE;
