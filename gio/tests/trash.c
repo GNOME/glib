@@ -96,6 +96,69 @@ test_trash_not_supported (void)
   g_object_unref (file);
 }
 
+/* Test that symlinks are properly expaned when looking for topdir (e.g. for trash folder). */
+static void
+test_trash_symlinks (void)
+{
+  GFile *symlink;
+  GUnixMountEntry *target_mount, *tmp_mount, *symlink_mount, *target_over_symlink_mount;
+  gchar *target, *tmp, *target_over_symlink;
+  GError *error = NULL;
+
+  g_test_bug ("1522");
+
+  /* The test assumes that ~/.local always exists. */
+  target = g_build_filename (g_get_home_dir (), ".local", NULL);
+  target_mount = g_unix_mount_for (target, NULL);
+  g_assert_nonnull (target_mount);
+  g_test_message ("Target: %s (mount: %s)", target, g_unix_mount_get_mount_path (target_mount));
+
+  tmp = g_dir_make_tmp ("test-trashXXXXXX", &error);
+  tmp_mount = g_unix_mount_for (tmp, NULL);
+  g_assert_nonnull (tmp_mount);
+  g_test_message ("Tmp: %s (mount: %s)", tmp, g_unix_mount_get_mount_path (tmp_mount));
+
+  if (g_unix_mount_compare (target_mount, tmp_mount) == 0)
+    {
+      g_test_skip ("The tmp has to be on another mount than the home to run this test");
+
+      g_unix_mount_free (tmp_mount);
+      g_free (tmp);
+      g_unix_mount_free (target_mount);
+      g_free (target);
+
+      return;
+    }
+
+  symlink = g_file_new_build_filename (tmp, "symlink", NULL);
+  g_file_make_symbolic_link (symlink, g_get_home_dir (), NULL, &error);
+  g_assert_no_error (error);
+
+  symlink_mount = g_unix_mount_for (g_file_peek_path (symlink), NULL);
+  g_assert_nonnull (symlink_mount);
+  g_test_message ("Symlink: %s (mount: %s)", g_file_peek_path (symlink), g_unix_mount_get_mount_path (symlink_mount));
+
+  g_assert_cmpint (g_unix_mount_compare (symlink_mount, tmp_mount), ==, 0);
+
+  target_over_symlink = g_build_filename (g_file_peek_path (symlink),
+                                          ".local",
+                                          NULL);
+  target_over_symlink_mount = g_unix_mount_for (target_over_symlink, NULL);
+  g_assert_nonnull (symlink_mount);
+  g_test_message ("Target over symlink: %s (mount: %s)", target_over_symlink, g_unix_mount_get_mount_path (target_over_symlink_mount));
+
+  g_assert_cmpint (g_unix_mount_compare (target_over_symlink_mount, target_mount), ==, 0);
+
+  g_unix_mount_free (target_over_symlink_mount);
+  g_unix_mount_free (symlink_mount);
+  g_free (target_over_symlink);
+  g_object_unref (symlink);
+  g_unix_mount_free (tmp_mount);
+  g_free (tmp);
+  g_unix_mount_free (target_mount);
+  g_free (target);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -104,6 +167,7 @@ main (int argc, char *argv[])
   g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/trash/not-supported", test_trash_not_supported);
+  g_test_add_func ("/trash/symlinks", test_trash_symlinks);
 
   return g_test_run ();
 }
