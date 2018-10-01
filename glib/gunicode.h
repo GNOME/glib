@@ -847,6 +847,10 @@ GLIB_AVAILABLE_IN_ALL
 gboolean g_utf8_validate (const gchar  *str,
                           gssize        max_len,
                           const gchar **end);
+GLIB_AVAILABLE_IN_2_60
+gboolean g_utf8_validate_len (const gchar  *str,
+                              gsize         max_len,
+                              const gchar **end);
 
 GLIB_AVAILABLE_IN_ALL
 gchar *g_utf8_strup   (const gchar *str,
