@@ -1689,7 +1689,6 @@ test_return_on_cancel_atomic (void)
 
   g_task_set_task_data (task, (gpointer)&state, NULL);
   g_task_run_in_thread (task, return_on_cancel_atomic_thread);
-  g_object_unref (task);
 
   g_assert_cmpint (state, ==, 0);
 
@@ -1724,6 +1723,7 @@ test_return_on_cancel_atomic (void)
   g_object_unref (cancellable);
   g_mutex_unlock (&roca_mutex_1);
   g_mutex_unlock (&roca_mutex_2);
+  g_object_unref (task);
 }
 
 /* test_return_pointer: memory management of pointer returns */
