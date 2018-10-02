@@ -551,20 +551,26 @@ struct _GTask {
   gint64 creation_time;
   gint priority;
   GCancellable *cancellable;
-  gboolean check_cancellable;
 
   GAsyncReadyCallback callback;
   gpointer callback_data;
-  gboolean completed;
 
   GTaskThreadFunc task_func;
   GMutex lock;
   GCond cond;
-  gboolean return_on_cancel;
+
+  /* This can’t be in the bit field because we access it from TRACE(). */
   gboolean thread_cancelled;
-  gboolean synchronous;
-  gboolean thread_complete;
-  gboolean blocking_other_task;
+
+  gboolean check_cancellable : 1;
+  gboolean completed : 1;
+  gboolean return_on_cancel : 1;
+  gboolean synchronous : 1;
+  gboolean thread_complete : 1;
+  gboolean blocking_other_task : 1;
+  gboolean had_error : 1;
+  gboolean result_set : 1;
+  gboolean ever_returned : 1;
 
   GError *error;
   union {
@@ -573,8 +579,6 @@ struct _GTask {
     gboolean boolean;
   } result;
   GDestroyNotify result_destroy;
-  gboolean had_error;
-  gboolean result_set;
 };
 
 #define G_TASK_IS_THREADED(task) ((task)->task_func != NULL)
@@ -1176,6 +1180,9 @@ g_task_return (GTask           *task,
 {
   GSource *source;
 
+  if (type != G_TASK_RETURN_FROM_THREAD)
+    task->ever_returned = TRUE;
+
   if (type == G_TASK_RETURN_SUCCESS)
     task->result_set = TRUE;
 
@@ -1596,7 +1603,7 @@ g_task_return_pointer (GTask          *task,
                        GDestroyNotify  result_destroy)
 {
   g_return_if_fail (G_IS_TASK (task));
-  g_return_if_fail (task->result_set == FALSE);
+  g_return_if_fail (!task->ever_returned);
 
   task->result.pointer = result;
   task->result_destroy = result_destroy;
@@ -1631,7 +1638,7 @@ g_task_propagate_pointer (GTask   *task,
   if (g_task_propagate_error (task, error))
     return NULL;
 
-  g_return_val_if_fail (task->result_set == TRUE, NULL);
+  g_return_val_if_fail (task->result_set, NULL);
 
   task->result_destroy = NULL;
   task->result_set = FALSE;
@@ -1654,7 +1661,7 @@ g_task_return_int (GTask  *task,
                    gssize  result)
 {
   g_return_if_fail (G_IS_TASK (task));
-  g_return_if_fail (task->result_set == FALSE);
+  g_return_if_fail (!task->ever_returned);
 
   task->result.size = result;
 
@@ -1687,7 +1694,7 @@ g_task_propagate_int (GTask   *task,
   if (g_task_propagate_error (task, error))
     return -1;
 
-  g_return_val_if_fail (task->result_set == TRUE, -1);
+  g_return_val_if_fail (task->result_set, -1);
 
   task->result_set = FALSE;
   return task->result.size;
@@ -1709,7 +1716,7 @@ g_task_return_boolean (GTask    *task,
                        gboolean  result)
 {
   g_return_if_fail (G_IS_TASK (task));
-  g_return_if_fail (task->result_set == FALSE);
+  g_return_if_fail (!task->ever_returned);
 
   task->result.boolean = result;
 
@@ -1742,7 +1749,7 @@ g_task_propagate_boolean (GTask   *task,
   if (g_task_propagate_error (task, error))
     return FALSE;
 
-  g_return_val_if_fail (task->result_set == TRUE, FALSE);
+  g_return_val_if_fail (task->result_set, FALSE);
 
   task->result_set = FALSE;
   return task->result.boolean;
@@ -1772,7 +1779,7 @@ g_task_return_error (GTask  *task,
                      GError *error)
 {
   g_return_if_fail (G_IS_TASK (task));
-  g_return_if_fail (task->result_set == FALSE);
+  g_return_if_fail (!task->ever_returned);
   g_return_if_fail (error != NULL);
 
   task->error = error;
@@ -1833,7 +1840,7 @@ g_task_return_error_if_cancelled (GTask *task)
   GError *error = NULL;
 
   g_return_val_if_fail (G_IS_TASK (task), FALSE);
-  g_return_val_if_fail (task->result_set == FALSE, FALSE);
+  g_return_val_if_fail (!task->ever_returned, FALSE);
 
   if (g_cancellable_set_error_if_cancelled (task->cancellable, &error))
     {
