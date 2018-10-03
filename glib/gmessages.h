@@ -581,41 +581,53 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 
 #else /* !G_DISABLE_CHECKS */
 
-#define g_return_if_fail(expr)		G_STMT_START{			\
-     if G_LIKELY(expr) { } else       					\
-       {								\
-	 g_return_if_fail_warning (G_LOG_DOMAIN,			\
-		                   G_STRFUNC,				\
-		                   #expr);				\
-	 return;							\
-       };				}G_STMT_END
+#define g_return_if_fail(expr) \
+  G_STMT_START { \
+    if (G_LIKELY (expr)) \
+      { } \
+    else \
+      { \
+        g_return_if_fail_warning (G_LOG_DOMAIN, \
+                                  G_STRFUNC, \
+                                  #expr); \
+        return; \
+      } \
+  } G_STMT_END
 
-#define g_return_val_if_fail(expr,val)	G_STMT_START{			\
-     if G_LIKELY(expr) { } else						\
-       {								\
-	 g_return_if_fail_warning (G_LOG_DOMAIN,			\
-		                   G_STRFUNC,				\
-		                   #expr);				\
-	 return (val);							\
-       };				}G_STMT_END
+#define g_return_val_if_fail(expr, val) \
+  G_STMT_START { \
+    if (G_LIKELY (expr)) \
+      { } \
+    else \
+      { \
+        g_return_if_fail_warning (G_LOG_DOMAIN, \
+                                  G_STRFUNC, \
+                                  #expr); \
+        return (val); \
+      } \
+  } G_STMT_END
 
-#define g_return_if_reached()		G_STMT_START{			\
-     g_log (G_LOG_DOMAIN,						\
-	    G_LOG_LEVEL_CRITICAL,					\
-	    "file %s: line %d (%s): should not be reached",		\
-	    __FILE__,							\
-	    __LINE__,							\
-	    G_STRFUNC);							\
-     return;				}G_STMT_END
+#define g_return_if_reached() \
+  G_STMT_START { \
+    g_log (G_LOG_DOMAIN, \
+           G_LOG_LEVEL_CRITICAL, \
+           "file %s: line %d (%s): should not be reached", \
+           __FILE__, \
+           __LINE__, \
+           G_STRFUNC); \
+    return; \
+  } G_STMT_END
 
-#define g_return_val_if_reached(val)	G_STMT_START{			\
-     g_log (G_LOG_DOMAIN,						\
-	    G_LOG_LEVEL_CRITICAL,					\
-	    "file %s: line %d (%s): should not be reached",		\
-	    __FILE__,							\
-	    __LINE__,							\
-	    G_STRFUNC);							\
-     return (val);			}G_STMT_END
+#define g_return_val_if_reached(val) \
+  G_STMT_START { \
+    g_log (G_LOG_DOMAIN, \
+           G_LOG_LEVEL_CRITICAL, \
+           "file %s: line %d (%s): should not be reached", \
+           __FILE__, \
+           __LINE__, \
+           G_STRFUNC); \
+    return (val); \
+  } G_STMT_END
 
 #endif /* !G_DISABLE_CHECKS */
 
