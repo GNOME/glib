@@ -24,9 +24,9 @@ fedora-x86_64:
     - meson ${MESON_COMMON_OPTIONS} --werror -Dsystemtap=true -Ddtrace=true -Dfam=true _build
     - ninja -C _build
     - mkdir -p _coverage
-    - lcov --rc lcov_branch_coverage=1 --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
+    - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
     - meson test -C _build --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
-    - lcov --rc lcov_branch_coverage=1 --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
+    - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
