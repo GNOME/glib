@@ -30,7 +30,10 @@ static EscapeTest escape_tests[] =
   { "A&&A", "A&amp;&amp;A" },
   { "A&A&A", "A&amp;A&amp;A" },
   { "A&#23;A", "A&amp;#23;A" },
-  { "A&#xa;A", "A&amp;#xa;A" }
+  { "A&#xa;A", "A&amp;#xa;A" },
+  { "N\xc2\x80N", "N&#x80;N" },
+  { "N\xc2\x79N", "N\xc2\x79N" },
+  { "N\xc2\x9fN", "N&#x9f;N" },
 };
 
 static void
