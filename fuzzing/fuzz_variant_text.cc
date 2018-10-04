@@ -1,7 +1,7 @@
-#include "glib/glib.h"
-#include <stdint.h>
+#include "fuzz.h"
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+  fuzz_set_logging_func ();
   const gchar *gdata = (const gchar*) data;
   g_autoptr (GVariant) v = g_variant_parse (NULL, gdata, gdata + size, NULL,
                                             NULL);

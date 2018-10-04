@@ -27,6 +27,7 @@ foreach target_name : fuzz_targets
    cpp_args : [
       '-std=c++11',
       '-Wno-missing-prototypes',
+      '-Wno-unused-function',
       '-Wno-unused-variable',
     ],
     dependencies : deps,
