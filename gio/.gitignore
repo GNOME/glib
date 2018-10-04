@@ -1,9 +1,9 @@
 gapplication
 gconstructor_as_data.h
 gdbus
-gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml
-gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml
-gdbus-example-objectmanager-generated.[ch]
+objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Animal.xml
+objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Cat.xml
+objectmanager-gen.[ch]
 gdbus-daemon-generated.[ch]
 gio
 gio_probes.h

@@ -5,10 +5,10 @@ AM_CPPFLAGS = -g $(gio_INCLUDES) $(GLIB_DEBUG_FLAGS) -I$(top_builddir)/gio -I$(t
 # ------------------------------------------------------------------------
 
 GDBUS_GENERATED = \
-	gdbus-example-objectmanager-generated.h							\
-	gdbus-example-objectmanager-generated.c							\
-	gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml    \
-	gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml	\
+	objectmanager-gen.h							\
+	objectmanager-gen.c							\
+	objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Animal.xml    \
+	objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Cat.xml	\
 	$(NULL)
 
 $(GDBUS_GENERATED) : gdbus-example-objectmanager.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
@@ -18,8 +18,8 @@ $(GDBUS_GENERATED) : gdbus-example-objectmanager.xml Makefile $(top_builddir)/gi
 		--interface-prefix org.gtk.GDBus.Example.ObjectManager. \
 		--c-namespace Example \
 		--c-generate-object-manager \
-		--generate-c-code gdbus-example-objectmanager-generated \
-		--generate-docbook gdbus-example-objectmanager-generated \
+		--generate-c-code objectmanager-gen \
+		--generate-docbook objectmanager-gen \
 		$< \
 		$(NULL)
 
@@ -32,8 +32,8 @@ noinst_LTLIBRARIES += libgdbus-example-objectmanager.la
 endif
 
 nodist_libgdbus_example_objectmanager_la_SOURCES = \
-	gdbus-example-objectmanager-generated.h		\
-	gdbus-example-objectmanager-generated.c
+	objectmanager-gen.h		\
+	objectmanager-gen.c
 
 libgdbus_example_objectmanager_la_LIBADD = \
 	$(top_builddir)/glib/libglib-2.0.la		\
