@@ -155,7 +155,7 @@ static void
 prop_tester_init (PropTester* t)
 {
   if (t->name == NULL)
-    ; /* neds unit test framework initialization: g_test_bug ("race initializing properties"); */
+    { } /* neds unit test framework initialization: g_test_bug ("race initializing properties"); */
 }
 static void
 prop_tester_set_property (GObject        *object,
