@@ -1059,7 +1059,7 @@ make_valid_utf8 (const char *name)
 {
   GString *string;
   const gchar *remainder, *invalid;
-  gint remaining_bytes, valid_bytes;
+  gsize remaining_bytes, valid_bytes;
   
   string = NULL;
   remainder = name;
@@ -1067,7 +1067,7 @@ make_valid_utf8 (const char *name)
   
   while (remaining_bytes != 0) 
     {
-      if (g_utf8_validate (remainder, remaining_bytes, &invalid)) 
+      if (g_utf8_validate_len (remainder, remaining_bytes, &invalid))
 	break;
       valid_bytes = invalid - remainder;
     
