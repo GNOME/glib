@@ -365,8 +365,8 @@ test_month_names (void)
       TEST_DATE ( 1,  4, 2018,      "%Y m. %OB",      "2018 m. balandis");
       TEST_DATE ( 1,  5, 2018,      "%Y m. %OB",        "2018 m. gegužė");
       TEST_DATE ( 1,  6, 2018,      "%Y m. %OB",      "2018 m. birželis");
-      TEST_DATE (17,  7, 2018, "%Y m. %b %e d.",     "2018 m. Lie 17 d.");
-      TEST_DATE ( 1,  8, 2018,      "%Y m. %Ob",           "2018 m. Rgp");
+      TEST_DATE (17,  7, 2018, "%Y m. %b %e d.",   "2018 m. liep. 17 d.");
+      TEST_DATE ( 1,  8, 2018,      "%Y m. %Ob",         "2018 m. rugp.");
     }
   else
     g_test_skip ("locale lt_LT not available, skipping Lithuanian month names test");
