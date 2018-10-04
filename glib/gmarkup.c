@@ -35,6 +35,7 @@
 #include "gtestutils.h"
 #include "glibintl.h"
 #include "gthread.h"
+#include "gunicodeprivate.h"
 
 /**
  * SECTION:markup
@@ -455,7 +456,7 @@ slow_name_validate (GMarkupParseContext  *context,
 {
   const gchar *p = name;
 
-  if (!g_utf8_validate (name, strlen (name), NULL))
+  if (!g_utf8_validate (name, -1, NULL))
     {
       set_error (context, error, G_MARKUP_ERROR_BAD_UTF8,
                  _("Invalid UTF-8 encoded text in name - not valid '%s'"), name);
@@ -538,7 +539,7 @@ text_validate (GMarkupParseContext  *context,
                gint                  len,
                GError              **error)
 {
-  if (!g_utf8_validate (p, len, NULL))
+  if (!_g_utf8_validate_len (p, len, NULL))
     {
       set_error (context, error, G_MARKUP_ERROR_BAD_UTF8,
                  _("Invalid UTF-8 encoded text in name - not valid '%s'"), p);
