@@ -400,6 +400,11 @@
 #endif
 #endif
 
+/* Provide alighment macros.
+ */
+#define G_ALIGNAS(n) alignas(n)
+#define G_ALIGNOF(n) alignof(n)
+
 /* Deprecated -- do not use. */
 #ifndef G_DISABLE_DEPRECATED
 #ifdef G_DISABLE_CONST_RETURNS
