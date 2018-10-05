@@ -81,6 +81,9 @@ void     g_queue_init           (GQueue           *queue);
 GLIB_AVAILABLE_IN_ALL
 void     g_queue_clear          (GQueue           *queue);
 GLIB_AVAILABLE_IN_ALL
+void     g_queue_clear_full     (GQueue           *queue,
+				GDestroyNotify    free_func);
+GLIB_AVAILABLE_IN_ALL
 gboolean g_queue_is_empty       (GQueue           *queue);
 GLIB_AVAILABLE_IN_ALL
 guint    g_queue_get_length     (GQueue           *queue);
