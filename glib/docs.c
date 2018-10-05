@@ -1865,7 +1865,27 @@
  * macro will not work on an array allocated on the heap, only static
  * arrays or arrays on the stack.
  */
- 
+
+/**
+ * G_ALIGNAS
+ * @a: a value
+ *
+ * Complete object types have alignment requiremets which place restrictions on the
+ * addresses at which objects of that type may be allocated. An object type imposes
+ * an alignment requirement on every object of that type. Stricter alignment can be
+ * requested using the G_ALIGNAS a wrapper over required compiler extension.
+ */
+
+/**
+ * G_ALIGNOF
+ * @a: a value
+ *
+ * A fundamental alignment is represented by an alignment less than or equal to the
+ * greatest alignment supported by the implementation in all context which can be
+ * determined by passing the argument to this macro which is a wrapper over required
+ * compiler extension.
+ */
+
 /* Miscellaneous Macros {{{1 */
 
 /**
