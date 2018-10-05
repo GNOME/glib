@@ -1865,7 +1865,29 @@
  * macro will not work on an array allocated on the heap, only static
  * arrays or arrays on the stack.
  */
- 
+
+/**
+ * G_ALIGNAS
+ * @a: a type or expression
+ *
+ * Returns the alignment for the type. G_ALIGNAS can return the alignment which is
+ * greater than normal alignment or can return reducing the alignment. Applying
+ * G_ALIGNAS (long) to some type like struct is would return an alighment which is
+ * at least MAX (G_ALIGNOF (long), G_ALIGNOF (type)) or can return reduced alignement
+ * if G_ALIGNOF (long) < G_ALIGNOF (type).
+ */
+
+/**
+ * G_ALIGNOF
+ * @a: a type-name
+ *
+ * Return the minimum alignment required by the platform ABI for values of the given
+ * type. The address of a variable or struct member of the given type must always be
+ * a multiple of this alignment. For example, most platforms require int variables
+ * to be aligned at a 4-byte boundary, so G_ALIGNOF (int) is 4 on most platforms.
+ *
+ */
+
 /* Miscellaneous Macros {{{1 */
 
 /**
