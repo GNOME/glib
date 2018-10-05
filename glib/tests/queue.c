@@ -1069,7 +1069,7 @@ test_clear_full(void)
   g_queue_push_tail (queue, two = new_item(2));
   q_queue_push_tail (queue, three = new_item(3));
   q_queue_push_tail (queue, four = new_item(4));
-  g_assert_cmpint (g_queue_get_length (q), ==, 4);
+  g_assert_cmpint (g_queue_get_length (queue), ==, 4);
   g_assert (!one->freed);
   g_assert (!two->freed);
   g_assert (!three->freed);
@@ -1120,6 +1120,7 @@ int main (int argc, char *argv[])
   g_test_add_func ("/queue/static", test_static);
   g_test_add_func ("/queue/clear", test_clear);
   g_test_add_func ("/queue/free-full", test_free_full);
+  g_test_add_func ("/queue/clear-full", test_clear_full);
 
   seed = g_test_rand_int_range (0, G_MAXINT);
   path = g_strdup_printf ("/queue/random/seed:%u", seed);
