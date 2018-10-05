@@ -889,6 +889,7 @@ test_stdio_wrappers (void)
   struct utimbuf ut;
   GError *error = NULL;
   GStatBuf path_statbuf, cwd_statbuf;
+  time_t now;
 
   /* The permissions tests here don’t work when running as root. */
 #ifdef G_OS_UNIX
@@ -958,14 +959,16 @@ test_stdio_wrappers (void)
   g_assert_cmpint (ret, ==, 0);
 #endif
 
-  ut.actime = ut.modtime = (time_t)0;
+  now = time (NULL);
+
+  ut.actime = ut.modtime = now;
   ret = g_utime ("test-create", &ut);
   g_assert_cmpint (ret, ==, 0);
 
   ret = g_lstat ("test-create", &buf);
   g_assert_cmpint (ret, ==, 0);
-  g_assert_cmpint (buf.st_atime, ==, (time_t)0);
-  g_assert_cmpint (buf.st_mtime, ==, (time_t)0);
+  g_assert_cmpint (buf.st_atime, ==, now);
+  g_assert_cmpint (buf.st_mtime, ==, now);
 
   g_chdir ("..");
   g_remove ("mkdir-test/test-create");
