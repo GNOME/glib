@@ -36,7 +36,10 @@
 /* We include stddef.h to get the system's definition of NULL
  */
 #include <stddef.h>
-
+/* We include stdalign.h for alignment macros on _Alignas and
+ * _Alignof.
+ */
+#include <stdalign.h>
 #ifdef __GNUC__
 #define G_GNUC_CHECK_VERSION(major, minor) \
     ((__GNUC__ > (major)) || \
@@ -399,6 +402,11 @@
 #define G_STMT_END    while (0)
 #endif
 #endif
+
+/* Provide alighment macros.
+ */
+#define G_ALIGNAS(n) alignas(n)
+#define G_ALIGNOF(n) alignof(n)
 
 /* Deprecated -- do not use. */
 #ifndef G_DISABLE_DEPRECATED

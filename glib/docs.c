@@ -1865,7 +1865,28 @@
  * macro will not work on an array allocated on the heap, only static
  * arrays or arrays on the stack.
  */
- 
+
+/**
+ * G_ALIGNAS
+ * @a: a type or expression
+ *
+ * Complete object types have alignment requiremets which place restrictions on the
+ * addresses at which objects of that type may be allocated. An object type imposes
+ * an alignment requirement on every object of that type. Stricter alignment can be
+ * requested using the G_ALIGNAS a wrapper over required compiler extension.
+ */
+
+/**
+ * G_ALIGNOF
+ * @a: a type-name
+ *
+ * Return the minimum alignment required by the platform ABI for values of the given
+ * type. The address of a variable or struct member of the given type must always be
+ * a multiple of this alignment. For example, most platforms require int variables
+ * to be aligned at a 4-byte boundary, so G_ALIGNOF (int) is 4 on most platforms.
+ *
+ */
+
 /* Miscellaneous Macros {{{1 */
 
 /**
