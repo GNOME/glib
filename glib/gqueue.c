@@ -150,6 +150,25 @@ g_queue_clear (GQueue *queue)
 }
 
 /**
+ * g_queue_clear_full:
+ * @queue: a pointer to a #GQueue
+ * @free_func: the function to be called to free memory allocated
+ *
+ * Convenience method, which frees all the memory used by a #GQueue,
+ * and calls the provided @free_func.
+ *
+ * Since: 2.60
+ */
+void
+g_queue_clear_full (GQueue          *queue,
+                    GDestroyNotify  free_func)
+{
+  g_return_if_fail (queue != NULL);
+  g_queue_foreach (queue, (GFunc) free_func, NULL);
+  g_queue_clear (queue);
+}
+
+/**
  * g_queue_is_empty:
  * @queue: a #GQueue.
  *
