@@ -1059,6 +1059,31 @@ new_item (int x)
 }
 
 static void
+test_clear_full(void)
+{
+  QueueItem *one, *two, *three, *four;
+  GQueue *queue;
+
+  queue = g_queue_new ();
+  g_queue_push_tail (queue, one = new_item(1));
+  g_queue_push_tail (queue, two = new_item(2));
+  g_queue_push_tail (queue, three = new_item(3));
+  g_queue_push_tail (queue, four = new_item(4));
+  g_assert_cmpint (g_queue_get_length (queue), ==, 4);
+  g_assert (!one->freed);
+  g_assert (!two->freed);
+  g_assert (!three->freed);
+  g_assert (!four->freed);
+  g_queue_clear_full (queue, free_func);
+  g_assert (one->freed);
+  g_assert (two->freed);
+  g_assert (three->freed);
+  g_assert (four->freed);
+  check_integrity (queue);
+  g_assert (g_queue_is_empty (queue));
+}
+
+static void
 test_free_full (void)
 {
   QueueItem *one, *two, *three;
@@ -1095,6 +1120,7 @@ int main (int argc, char *argv[])
   g_test_add_func ("/queue/static", test_static);
   g_test_add_func ("/queue/clear", test_clear);
   g_test_add_func ("/queue/free-full", test_free_full);
+  g_test_add_func ("/queue/clear-full", test_clear_full);
 
   seed = g_test_rand_int_range (0, G_MAXINT);
   path = g_strdup_printf ("/queue/random/seed:%u", seed);
