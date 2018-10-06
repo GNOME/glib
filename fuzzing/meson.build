@@ -7,16 +7,15 @@ fuzz_targets = [
 ]
 
 deps = [libgmodule_dep, libgio_dep, libglib_dep, libgobject_dep]
+extra_sources = []
 
 # Links in a static library provided by oss-fuzz, else a standalone driver.
-fuzzing_engine = meson.get_compiler('c').find_library('FuzzingEngine',
-  required : false,
-)
+fuzzing_engine = cxx.find_library('FuzzingEngine', required : false)
 if fuzzing_engine.found()
   deps += fuzzing_engine
 else
   fuzzing_driver = declare_dependency(
-    sources : 'StandaloneFuzzTargetMain.c',
+    sources : 'fuzzing_driver.c',
     compile_args : '-std=c99',
   )
   deps += fuzzing_driver
