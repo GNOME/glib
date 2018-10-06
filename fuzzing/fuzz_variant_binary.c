@@ -3,7 +3,7 @@
 int
 LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
 {
-  g_autoptr (GVariant) variant = NULL;
+  GVariant *variant = NULL;
 
   fuzz_set_logging_func ();
 
@@ -14,5 +14,7 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
 
   g_variant_get_normal_form (variant);
   g_variant_get_data (variant);
+
+  g_variant_unref (variant);
   return 0;
 }

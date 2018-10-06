@@ -6,8 +6,8 @@ int
 LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
 {
   gssize bytes;
-  g_autoptr (GDBusMessage) msg = NULL;
-  g_autofree guchar *blob = NULL;
+  GDBusMessage *msg = NULL;
+  guchar *blob = NULL;
   gsize msg_size;
 
   fuzz_set_logging_func ();
@@ -21,5 +21,8 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
     return 0;
 
   blob = g_dbus_message_to_blob (msg, &msg_size, flags, NULL);
+
+  g_free (blob);
+  g_object_unref (msg);
   return 0;
 }
