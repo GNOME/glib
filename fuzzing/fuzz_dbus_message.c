@@ -2,7 +2,9 @@
 
 static GDBusCapabilityFlags flags = G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
 
-int LLVMFuzzerTestOneInput(const unsigned char *data, size_t size) {
+int
+LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
+{
   gssize bytes;
   g_autoptr (GDBusMessage) msg = NULL;
   g_autofree guchar *blob = NULL;

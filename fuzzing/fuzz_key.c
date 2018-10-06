@@ -1,6 +1,8 @@
 #include "fuzz.h"
 
-int LLVMFuzzerTestOneInput(const unsigned char *data, size_t size) {
+int
+LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
+{
   g_autoptr (GKeyFile) key = NULL;
 
   fuzz_set_logging_func ();

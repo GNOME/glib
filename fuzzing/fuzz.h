@@ -15,6 +15,6 @@ fuzz_set_logging_func (void)
   g_log_set_writer_func (empty_logging_func, NULL, NULL);
 }
 #else
-int LLVMFuzzerTestOneInput(const unsigned char *data, size_t size);
+int LLVMFuzzerTestOneInput (const unsigned char *data, size_t size);
 static void fuzz_set_logging_func (void) {};
 #endif

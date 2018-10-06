@@ -1,6 +1,8 @@
 #include "fuzz.h"
 
-int LLVMFuzzerTestOneInput(const unsigned char *data, size_t size) {
+int
+LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
+{
   const gchar *gdata = (const gchar*) data;
   g_autoptr (GVariant) variant = NULL;
   g_autofree gchar *text = NULL;
