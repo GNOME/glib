@@ -14,17 +14,12 @@ fuzzing_engine = cxx.find_library('FuzzingEngine', required : false)
 if fuzzing_engine.found()
   deps += fuzzing_engine
 else
-  fuzzing_driver = declare_dependency(
-    sources : 'fuzzing_driver.c',
-    compile_args : '-std=c99',
-  )
-  deps += fuzzing_driver
+  extra_sources += 'fuzzing_driver.c'
 endif
 
 foreach target_name : fuzz_targets
-  exe = executable(target_name, target_name + '.cc',
+  exe = executable(target_name, [extra_sources, target_name + '.c'],
    cpp_args : [
-      '-std=c++11',
       '-Wno-missing-prototypes',
       '-Wno-unused-function',
       '-Wno-unused-variable',
