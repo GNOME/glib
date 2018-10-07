@@ -14,7 +14,7 @@ fuzzing_engine = cxx.find_library('FuzzingEngine', required : false)
 if fuzzing_engine.found()
   deps += fuzzing_engine
 else
-  extra_sources += 'fuzzing_driver.c'
+  extra_sources += 'driver.c'
 endif
 
 foreach target_name : fuzz_targets
