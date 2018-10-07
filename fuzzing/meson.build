@@ -19,6 +19,7 @@ endif
 
 foreach target_name : fuzz_targets
   exe = executable(target_name, [extra_sources, target_name + '.c'],
+    c_args : cc.get_supported_arguments('-Werror=unused-function'),
     dependencies : deps,
   )
 endforeach

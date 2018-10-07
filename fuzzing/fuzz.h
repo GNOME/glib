@@ -3,7 +3,7 @@
 
 int LLVMFuzzerTestOneInput (const unsigned char *data, size_t size);
 
-#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION // set by oss-fuzz
+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
 static GLogWriterOutput
 empty_logging_func (GLogLevelFlags log_level, const GLogField *fields,
                     gsize n_fields, gpointer user_data)
@@ -12,6 +12,7 @@ empty_logging_func (GLogLevelFlags log_level, const GLogField *fields,
 }
 #endif
 
+/* Disables logging for oss-fuzz. Must be used with each target. */
 static void
 fuzz_set_logging_func (void)
 {
