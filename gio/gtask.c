@@ -64,6 +64,10 @@
  * #GTask was constructed to be running at least until the task has completed
  * and its data has been freed.
  *
+ * If a #GTask has been constructed and its callback set, it is an error to
+ * not call `g_task_return_*()` on it. GLib will warn at runtime if this happens
+ * (since 2.76).
+ *
  * Here is an example for using GTask as a GAsyncResult:
  * |[<!-- language="C" -->
  *     typedef struct {
@@ -658,6 +662,34 @@ static void
 g_task_finalize (GObject *object)
 {
   GTask *task = G_TASK (object);
+
+  /* Warn if a #GTask is finalised without g_task_return() ever having been
+   * called on it.
+   *
+   * Tasks without a callback or which are run in g_task_run_in_thread{,_sync}()
+   * only trigger a debug message as that’s sometimes used as a pattern for
+   * running work in a worker thread without caring about the result. */
+  if (!task->ever_returned)
+    {
+      gchar *owned_task_name = NULL;
+      const gchar *task_name = g_task_get_name (task);
+
+      if (task_name == NULL)
+        task_name = owned_task_name = g_strdup_printf ("%p", task);
+
+      if (task->callback != NULL && !G_TASK_IS_THREADED (task))
+        g_critical ("GTask %s (source object: %p, source tag: %p) finalized without "
+                    "ever returning (using g_task_return_*()). This potentially "
+                    "indicates a bug in the program.",
+                    task_name, task->source_object, task->source_tag);
+      else
+        g_debug ("GTask %s (source object: %p, source tag: %p) finalized without "
+                 "ever returning (using g_task_return_*()). This potentially "
+                 "indicates a bug in the program.",
+                 task_name, task->source_object, task->source_tag);
+
+      g_free (owned_task_name);
+    }
 
   g_clear_object (&task->source_object);
   g_clear_object (&task->cancellable);
