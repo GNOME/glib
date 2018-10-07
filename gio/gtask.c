@@ -543,6 +543,7 @@ struct _GTask {
 
   gpointer source_object;
   gpointer source_tag;
+  gchar *name;  /* (owned); locked by @lock */
 
   gpointer task_data;
   GDestroyNotify task_data_destroy;
@@ -637,6 +638,7 @@ g_task_finalize (GObject *object)
 
   g_clear_object (&task->source_object);
   g_clear_object (&task->cancellable);
+  g_free (task->name);
 
   if (task->context)
     g_main_context_unref (task->context);
@@ -979,6 +981,32 @@ g_task_set_source_tag (GTask    *task,
 }
 
 /**
+ * g_task_set_name:
+ * @task: a #GTask
+ * @name: (nullable): a human readable name for the task, or %NULL to unset it
+ *
+ * Sets @task’s name, used in debugging and profiling. The name defaults to
+ * %NULL.
+ *
+ * The task name should describe in a human readable way what the task does.
+ * For example, ‘Open file’ or ‘Connect to network host’. It is used to set the
+ * name of the #GSource used for idle completion of the task.
+ *
+ * Since: 2.60
+ */
+void
+g_task_set_name (GTask       *task,
+                 const gchar *name)
+{
+  g_return_if_fail (G_IS_TASK (task));
+
+  g_mutex_lock (&task->lock);
+  g_free (task->name);
+  task->name = g_strdup (name);
+  g_mutex_unlock (&task->lock);
+}
+
+/**
  * g_task_get_source_object:
  * @task: a #GTask
  *
@@ -1138,6 +1166,31 @@ g_task_get_source_tag (GTask *task)
   return task->source_tag;
 }
 
+/**
+ * g_task_dup_name:
+ * @task: a #GTask
+ *
+ * Gets @task’s name. See g_task_set_name().
+ *
+ * A copy of the name is returned to allow thread-safe usage of this getter from
+ * another thread.
+ *
+ * Returns: (nullable) (transfer full): @task’s name, or %NULL
+ * Since: 2.60
+ */
+gchar *
+g_task_dup_name (GTask *task)
+{
+  gchar *name = NULL;
+
+  g_return_val_if_fail (G_IS_TASK (task), NULL);
+
+  g_mutex_lock (&task->lock);
+  name = g_strdup (task->name);
+  g_mutex_unlock (&task->lock);
+
+  return g_steal_pointer (&name);
+}
 
 static void
 g_task_return_now (GTask *task)
@@ -1527,6 +1580,9 @@ g_task_run_in_thread_sync (GTask           *task,
  * #GMainContext with @task's [priority][io-priority], and sets @source's
  * callback to @callback, with @task as the callback's `user_data`.
  *
+ * It will set the @source’s name to the task’s name (as set with
+ * g_task_set_name()), if one has been set.
+ *
  * This takes a reference on @task until @source is destroyed.
  *
  * Since: 2.36
@@ -1541,6 +1597,9 @@ g_task_attach_source (GTask       *task,
   g_source_set_callback (source, callback,
                          g_object_ref (task), g_object_unref);
   g_source_set_priority (source, task->priority);
+  if (task->name != NULL)
+    g_source_set_name (source, task->name);
+
   g_source_attach (source, task->context);
 }
 
