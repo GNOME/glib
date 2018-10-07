@@ -614,6 +614,46 @@ test_priority (void)
   g_assert_cmpint (ret3, ==, 3);
 }
 
+/* Test that getting and setting the task name works. */
+static void name_callback (GObject      *object,
+                           GAsyncResult *result,
+                           gpointer      user_data);
+
+static void
+test_name (void)
+{
+  GTask *t1 = NULL;
+  gchar *name1 = NULL;
+
+  t1 = g_task_new (NULL, NULL, name_callback, &name1);
+  g_task_set_name (t1, "some task");
+  g_task_return_boolean (t1, TRUE);
+  g_object_unref (t1);
+
+  g_main_loop_run (loop);
+
+  g_assert_cmpstr (name1, ==, "some task");
+
+  g_free (name1);
+}
+
+static void
+name_callback (GObject      *object,
+               GAsyncResult *result,
+               gpointer      user_data)
+{
+  gchar **name_out = user_data;
+  GError *local_error = NULL;
+
+  g_assert_null (*name_out);
+  *name_out = g_strdup (g_task_get_name (G_TASK (result)));
+
+  g_task_propagate_boolean (G_TASK (result), &local_error);
+  g_assert_no_error (local_error);
+
+  g_main_loop_quit (loop);
+}
+
 /* test_check_cancellable: cancellation overrides return value */
 
 enum {
@@ -793,6 +833,7 @@ run_in_thread_callback (GObject      *object,
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
+  g_assert_cmpstr (g_task_get_name (G_TASK (result)), ==, "test_run_in_thread name");
 
   ret = g_task_propagate_int (G_TASK (result), &error);
   g_assert_no_error (error);
@@ -816,6 +857,7 @@ run_in_thread_thread (GTask        *task,
   g_assert (task_data == g_task_get_task_data (task));
   g_assert (cancellable == g_task_get_cancellable (task));
   g_assert_false (g_task_get_completed (task));
+  g_assert_cmpstr (g_task_get_name (task), ==, "test_run_in_thread name");
 
   g_assert (g_thread_self () != main_thread);
 
@@ -837,13 +879,13 @@ test_run_in_thread (void)
   gboolean done = FALSE;
 
   task = g_task_new (NULL, NULL, run_in_thread_callback, &done);
+  g_task_set_name (task, "test_run_in_thread name");
   g_object_weak_ref (G_OBJECT (task), task_weak_notify, (gpointer)&weak_notify_ran);
   g_signal_connect (task, "notify::completed",
                     (GCallback) completed_cb, &notification_emitted);
 
   g_task_set_task_data (task, (gpointer)&thread_ran, NULL);
   g_task_run_in_thread (task, run_in_thread_thread);
-  g_object_unref (task);
 
   g_mutex_lock (&run_in_thread_mutex);
   while (!thread_ran)
@@ -857,6 +899,10 @@ test_run_in_thread (void)
 
   g_assert (done == TRUE);
   g_assert_true (notification_emitted);
+
+  g_assert_cmpstr (g_task_get_name (task), ==, "test_run_in_thread name");
+
+  g_object_unref (task);
 
   g_mutex_lock (&run_in_thread_mutex);
   while (!weak_notify_ran)
@@ -2139,6 +2185,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/no-callback", test_no_callback);
   g_test_add_func ("/gtask/report-error", test_report_error);
   g_test_add_func ("/gtask/priority", test_priority);
+  g_test_add_func ("/gtask/name", test_name);
   g_test_add_func ("/gtask/check-cancellable", test_check_cancellable);
   g_test_add_func ("/gtask/return-if-cancelled", test_return_if_cancelled);
   g_test_add_func ("/gtask/run-in-thread", test_run_in_thread);
