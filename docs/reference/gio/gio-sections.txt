@@ -4460,6 +4460,7 @@ g_task_set_priority
 g_task_set_check_cancellable
 g_task_set_return_on_cancel
 g_task_set_source_tag
+g_task_set_name
 <SUBSECTION>
 g_task_report_error
 g_task_report_new_error
@@ -4472,6 +4473,7 @@ g_task_get_return_on_cancel
 g_task_get_context
 g_task_get_source_object
 g_task_get_source_tag
+g_task_get_name
 <SUBSECTION>
 g_task_return_boolean
 g_task_return_int
