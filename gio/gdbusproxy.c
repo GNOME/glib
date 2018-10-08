@@ -1996,6 +1996,10 @@ initable_iface_init (GInitableIface *initable_iface)
  * match rules for signals. Connect to the #GDBusProxy::g-signal signal
  * to handle signals from the remote object.
  *
+ * If both %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES and
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS are set, this constructor is
+ * guaranteed to complete immediately without blocking.
+ *
  * If @name is a well-known name and the
  * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START and %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION
  * flags aren't set and no name owner currently exists, the message bus
@@ -2095,6 +2099,10 @@ g_dbus_proxy_new_finish (GAsyncResult  *res,
  * If the %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets up
  * match rules for signals. Connect to the #GDBusProxy::g-signal signal
  * to handle signals from the remote object.
+ *
+ * If both %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES and
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS are set, this constructor is
+ * guaranteed to return immediately without blocking.
  *
  * If @name is a well-known name and the
  * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START and %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION
