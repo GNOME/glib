@@ -1190,7 +1190,7 @@ test_communicate_nothing (void)
 }
 
 static void
-test_communicate_utf8_invalid (void)
+test_communicate_utf8_async_invalid (void)
 {
   GSubprocessFlags flags = G_SUBPROCESS_FLAGS_STDOUT_PIPE;
   GError *error = NULL;
@@ -1218,6 +1218,37 @@ test_communicate_utf8_invalid (void)
 
   g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_FAILED);
   g_error_free (data.error);
+
+  g_object_unref (proc);
+}
+
+/* Test that invalid UTF-8 received using g_subprocess_communicate_utf8()
+ * results in an error. */
+static void
+test_communicate_utf8_invalid (void)
+{
+  GSubprocessFlags flags = G_SUBPROCESS_FLAGS_STDOUT_PIPE;
+  GError *local_error = NULL;
+  gboolean ret;
+  GPtrArray *args;
+  gchar *stdout_str = NULL, *stderr_str = NULL;
+  GSubprocess *proc;
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE | flags,
+                            &local_error);
+  g_assert_no_error (local_error);
+  g_ptr_array_free (args, TRUE);
+
+  ret = g_subprocess_communicate_utf8 (proc, "\xFF\xFF", NULL,
+                                       &stdout_str, &stderr_str, &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_error_free (local_error);
+  g_assert_false (ret);
+
+  g_assert_null (stdout_str);
+  g_assert_null (stderr_str);
 
   g_object_unref (proc);
 }
@@ -1783,6 +1814,7 @@ main (int argc, char **argv)
       g_free (test_path);
     }
 
+  g_test_add_func ("/gsubprocess/communicate/utf8/async/invalid", test_communicate_utf8_async_invalid);
   g_test_add_func ("/gsubprocess/communicate/utf8/invalid", test_communicate_utf8_invalid);
   g_test_add_func ("/gsubprocess/communicate/nothing", test_communicate_nothing);
   g_test_add_func ("/gsubprocess/terminate", test_terminate);
