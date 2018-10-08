@@ -883,7 +883,7 @@ on_signal_received (GDBusConnection *connection,
 
   G_LOCK (properties_lock);
 
-  if (proxy->priv->name_owner != NULL && g_strcmp0 (sender_name, proxy->priv->name_owner) != 0)
+  if (proxy->priv->name_owner == NULL || g_strcmp0 (sender_name, proxy->priv->name_owner) != 0)
     {
       G_UNLOCK (properties_lock);
       goto out;
