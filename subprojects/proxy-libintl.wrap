@@ -1,4 +1,5 @@
-[wrap-git]
+[wrap-file]
 directory=proxy-libintl
-url=https://github.com/frida/proxy-libintl.git
-revision=0.1
+source_url=https://github.com/frida/proxy-libintl/archive/0.1.tar.gz
+source_filename=proxy-libintl-0.1.tar.gz
+source_hash=202d90855943091b11ac91863ff5884f0eaf80318a32dc8504fcfdafc65992ed
