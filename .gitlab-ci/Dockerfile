@@ -52,6 +52,8 @@ RUN rm -rf $ANDROID_NDK_PATH
 
 COPY cross_file_mingw64.txt /opt
 
+RUN wget https://github.com/frida/proxy-libintl/archive/0.1.tar.gz -O proxy-libintl-0.1.tar.gz
+
 RUN pip3 install meson==0.48.0
 
 ARG HOST_USER_ID=5555
