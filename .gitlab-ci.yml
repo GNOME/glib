@@ -1,4 +1,4 @@
-image: registry.gitlab.gnome.org/gnome/glib/master:v8
+image: registry.gitlab.gnome.org/gnome/glib/master:v9
 
 stages:
   - build
@@ -12,7 +12,7 @@ cache:
 variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
-  MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
+  MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings --wrap-mode=nodownload"
 
 fedora-x86_64:
   stage: build
@@ -40,6 +40,9 @@ fedora-x86_64:
   stage: build
   except:
     - tags
+  before_script:
+    # Copy tarballs into the subprojects directory to avoid downloads.
+    - cp /opt/proxy-libintl-0.1.tar.gz subprojects/
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
@@ -119,6 +122,16 @@ vs2017-x64:
     - tags
   tags:
     - win32
+  before_script:
+    # Copy tarballs into the subprojects directory to avoid downloads.
+    - copy c:\proxy-libintl-0.1.tar.gz subprojects/
+    - copy c:\zlib-1.2.11.tar.gz subprojects/
+    - copy c:\zlib-1.2.11-3-wrap.zip subprojects/
+    # FIXME: There is no release tarball of libffi with meson build system.
+    # We could build it from upstream releases when/if this Meson PR gets
+    # merged: https://github.com/mesonbuild/meson/pull/4321
+    #- copy c:\libffi-3.2.1.tar.gz subprojects/
+
   script:
     - .gitlab-ci/test-msvc.bat
   artifacts:
@@ -192,7 +205,7 @@ dist-job:
   only:
     - tags
   script:
-    - meson --buildtype release --fatal-meson-warnings -Dgtk_doc=true -Dman=true _build
+    - meson ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
     - ninja glib-doc gobject-doc gio-doc
