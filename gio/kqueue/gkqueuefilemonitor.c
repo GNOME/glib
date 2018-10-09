@@ -75,7 +75,7 @@ typedef GLocalFileMonitorClass GKqueueFileMonitorClass;
  *
  * To distinguish between a directory monitor and a regular file monitor, check
  * whether sub_file is NULL. */
-typedef struct _GKqueueFileMonitor
+struct _GKqueueFileMonitor
 {
   GLocalFileMonitor parent_instance;
 
@@ -85,7 +85,7 @@ typedef struct _GKqueueFileMonitor
   GFileMonitor *fallback;
   GFile *fbfile;
 #endif
-} GKqueueFileMonitor;
+};
 
 #ifdef __clang__
 #pragma clang diagnostic pop

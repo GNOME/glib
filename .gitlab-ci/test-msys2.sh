@@ -33,7 +33,7 @@ mkdir -p _coverage
 mkdir -p _ccache
 export CCACHE_BASEDIR="$(pwd)"
 export CCACHE_DIR="${CCACHE_BASEDIR}/_ccache"
-pip3 install --upgrade --user meson==0.47.0
+pip3 install --upgrade --user meson==0.48.0
 export PATH="$HOME/.local/bin:$PATH"
 export CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
@@ -44,7 +44,7 @@ ninja
 
 "${LCOV}" \
     --quiet \
-    --rc lcov_branch_coverage=1 \
+    --config-file .gitlab-ci/lcovrc \
     --directory "${DIR}/_build" \
     --capture \
     --initial \
@@ -55,7 +55,7 @@ meson test --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} || true
 
 "${LCOV}" \
     --quiet \
-    --rc lcov_branch_coverage=1 \
+    --config-file .gitlab-ci/lcovrc \
     --directory "${DIR}/_build" \
     --capture \
     --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"

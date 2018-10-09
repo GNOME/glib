@@ -25,6 +25,9 @@
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
+#ifdef G_OS_WIN32
+#include <process.h>
+#endif
 
 static gchar *dir, *filename, *displayname, *childname;
 
@@ -188,7 +191,9 @@ test_child_private (gchar *argv0)
   gsize len;
   gchar *child_argv[4];
   GPid  child_pid;
+#ifndef G_OS_WIN32
   GMainLoop *loop;
+#endif
   gchar pid[100];
   
 #ifdef G_OS_WIN32

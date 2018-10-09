@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2018-08-25 12:34+0000\n"
-"PO-Revision-Date: 2018-08-30 11:56+0200\n"
+"POT-Creation-Date: 2018-09-12 19:40+0000\n"
+"PO-Revision-Date: 2018-09-13 13:52+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -303,13 +303,13 @@ msgid "Not enough space in destination"
 msgstr "Cíl nemá dostatek místa"
 
 #: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
-#: gio/gdatainputstream.c:1261 glib/gconvert.c:454 glib/gconvert.c:883
+#: gio/gdatainputstream.c:1261 glib/gconvert.c:454 glib/gconvert.c:884
 #: glib/giochannel.c:1557 glib/giochannel.c:1599 glib/giochannel.c:2443
 #: glib/gutf8.c:869 glib/gutf8.c:1322
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neplatná posloupnost bajtů na vstupu převodu"
 
-#: gio/gcharsetconverter.c:347 glib/gconvert.c:462 glib/gconvert.c:797
+#: gio/gcharsetconverter.c:347 glib/gconvert.c:462 glib/gconvert.c:798
 #: glib/giochannel.c:1564 glib/giochannel.c:2455
 #, c-format
 msgid "Error during conversion: %s"
@@ -915,12 +915,13 @@ msgstr "Chyba při volání StartServiceByName pro %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Neočekávaná odpověď %d od metody StartServiceByName(„%s“)"
 
-#: gio/gdbusproxy.c:2726 gio/gdbusproxy.c:2860
+#: gio/gdbusproxy.c:2726 gio/gdbusproxy.c:2861
+#, c-format
 msgid ""
-"Cannot invoke method; proxy is for a well-known name without an owner and "
-"proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
+"Cannot invoke method; proxy is for the well-known name %s without an owner, "
+"and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
-"Metodu nelze vyvolat; proxy je na dobře známý název bez vlastníka a proxy "
+"Metodu nelze vyvolat; proxy je na dobře známý název %s bez vlastníka a proxy "
 "byla vytvořena s příznakem G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
 #: gio/gdbusserver.c:708
@@ -1435,7 +1436,7 @@ msgid "Truncate not supported on stream"
 msgstr "Oříznutí není v datovém proudu podporováno"
 
 #: gio/ghttpproxy.c:91 gio/gresolver.c:410 gio/gresolver.c:476
-#: glib/gconvert.c:1786
+#: glib/gconvert.c:1787
 msgid "Invalid hostname"
 msgstr "Neplatný název počítače"
 
@@ -2954,71 +2955,71 @@ msgstr " (neplatné kódování)"
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Chyba při získávání informací pro soubor „%s“: %s"
 
-#: gio/glocalfileinfo.c:2053
+#: gio/glocalfileinfo.c:2059
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Chyba při získávání informací pro popisovače souboru: %s"
 
-#: gio/glocalfileinfo.c:2098
+#: gio/glocalfileinfo.c:2104
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Neplatný typ atributu (očekáván uint32)"
 
-#: gio/glocalfileinfo.c:2116
+#: gio/glocalfileinfo.c:2122
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Neplatný typ atributu (očekáván uint64)"
 
-#: gio/glocalfileinfo.c:2135 gio/glocalfileinfo.c:2154
+#: gio/glocalfileinfo.c:2141 gio/glocalfileinfo.c:2160
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Neplatný typ atributu (očekáván bajtový řetězec)"
 
-#: gio/glocalfileinfo.c:2201
+#: gio/glocalfileinfo.c:2207
 msgid "Cannot set permissions on symlinks"
 msgstr "Nelze nastavit oprávnění na symbolických odkazech"
 
-#: gio/glocalfileinfo.c:2217
+#: gio/glocalfileinfo.c:2223
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Chyba při nastavování oprávnění: %s"
 
-#: gio/glocalfileinfo.c:2268
+#: gio/glocalfileinfo.c:2274
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Chyba při nastavování vlastníka: %s"
 
-#: gio/glocalfileinfo.c:2291
+#: gio/glocalfileinfo.c:2297
 msgid "symlink must be non-NULL"
 msgstr "symbolický odkaz nesmí být prázdný"
 
-#: gio/glocalfileinfo.c:2301 gio/glocalfileinfo.c:2320
-#: gio/glocalfileinfo.c:2331
+#: gio/glocalfileinfo.c:2307 gio/glocalfileinfo.c:2326
+#: gio/glocalfileinfo.c:2337
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Chyba při nastavování symbolického odkazu: %s"
 
-#: gio/glocalfileinfo.c:2310
+#: gio/glocalfileinfo.c:2316
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Chyba při nastavování symbolického odkazu: soubor není symbolickým odkazem"
 
-#: gio/glocalfileinfo.c:2436
+#: gio/glocalfileinfo.c:2442
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Chyba při nastavování změny nebo času přístupu: %s"
 
-#: gio/glocalfileinfo.c:2459
+#: gio/glocalfileinfo.c:2465
 msgid "SELinux context must be non-NULL"
 msgstr "Kontext SELinux nesmí být prázdný"
 
-#: gio/glocalfileinfo.c:2474
+#: gio/glocalfileinfo.c:2480
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Chyba při nastavování kontextu SELinux: %s"
 
-#: gio/glocalfileinfo.c:2481
+#: gio/glocalfileinfo.c:2487
 msgid "SELinux is not enabled on this system"
 msgstr "V tomto systému není SELinux povolen"
 
-#: gio/glocalfileinfo.c:2573
+#: gio/glocalfileinfo.c:2579
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Nastavení atributu %s není podporováno"
@@ -3041,7 +3042,7 @@ msgstr "Chyba při hledání v souboru: %s"
 msgid "Error closing file: %s"
 msgstr "Chyba při zavírání souboru: %s"
 
-#: gio/glocalfilemonitor.c:854
+#: gio/glocalfilemonitor.c:856
 msgid "Unable to find default local file monitor type"
 msgstr "Nelze nalézt výchozí typ sledování místního souboru"
 
@@ -4194,40 +4195,40 @@ msgstr "Částečná posloupnost znaků na konci vstupu"
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Nelze převést zálohu „%s“ do znakové sady „%s“"
 
-#: glib/gconvert.c:940
+#: glib/gconvert.c:941
 msgid "Embedded NUL byte in conversion input"
 msgstr "Vležený nulový bajt na vstupu převodu"
 
-#: glib/gconvert.c:961
+#: glib/gconvert.c:962
 msgid "Embedded NUL byte in conversion output"
 msgstr "Vložený nulový bajt na výstupu převodu"
 
-#: glib/gconvert.c:1649
+#: glib/gconvert.c:1650
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "Adresa URI „%s“ není absolutní URI používající schéma „file“"
 
-#: glib/gconvert.c:1659
+#: glib/gconvert.c:1660
 #, c-format
 msgid "The local file URI “%s” may not include a “#”"
 msgstr "Adresa URI „%s“ místního souboru nesmí obsahovat „#“"
 
-#: glib/gconvert.c:1676
+#: glib/gconvert.c:1677
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "Adresa URI „%s“ je neplatné"
 
-#: glib/gconvert.c:1688
+#: glib/gconvert.c:1689
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "Název počítače v adrese URI „%s“ je neplatný"
 
-#: glib/gconvert.c:1704
+#: glib/gconvert.c:1705
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI „%s“ obsahuje nesprávně změněné znaky"
 
-#: glib/gconvert.c:1776
+#: glib/gconvert.c:1777
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Název cesty „%s“ není absolutní cestou"
@@ -4952,12 +4953,13 @@ msgid ""
 msgstr "„%s“ není platný znak po znaku „<“; nesmí jím začínat název prvku"
 
 #: glib/gmarkup.c:1264
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
 "“%s”"
 msgstr ""
-"Nezapadající znak „%s“, byl očekáván znak „>“ k ukončení značky empty-element "
-"„%s“"
+"Nezapadající znak „%s“, byl očekáván znak „>“ k ukončení značky empty-"
+"element „%s“"
 
 #: glib/gmarkup.c:1345
 #, c-format
@@ -4974,8 +4976,8 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 "Nezapadající znak „%s“, bylo očekáváno „>“ nebo „/“ k ukončení počáteční "
-"značky prvku „%s“, nebo případně atribut; pravděpodobně jste použili neplatný "
-"znak v názvu atributu"
+"značky prvku „%s“, nebo případně atribut; pravděpodobně jste použili "
+"neplatný znak v názvu atributu"
 
 #: glib/gmarkup.c:1430
 #, c-format
@@ -5027,8 +5029,8 @@ msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
 "element opened"
 msgstr ""
-"Dokument neočekávaně skončil s otevřenými prvky – poslední otevřený prvek byl "
-"„%s“"
+"Dokument neočekávaně skončil s otevřenými prvky – poslední otevřený prvek "
+"byl „%s“"
 
 #: glib/gmarkup.c:1802
 #, c-format
@@ -5070,7 +5072,8 @@ msgstr "Dokument neočekávaně skončil uvnitř uzavírací značky prvku „%s
 #: glib/gmarkup.c:1853
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
-msgstr "Dokument neočekávaně skončil uvnitř uzavírací značky neotevřeného prvku"
+msgstr ""
+"Dokument neočekávaně skončil uvnitř uzavírací značky neotevřeného prvku"
 
 #: glib/gmarkup.c:1859
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -5494,15 +5497,15 @@ msgstr "očekávána číslice"
 msgid "illegal symbolic reference"
 msgstr "nedovolený symbolický odkaz"
 
-#: glib/gregex.c:2582
+#: glib/gregex.c:2583
 msgid "stray final “\\”"
 msgstr "osamocené koncové „\\“"
 
-#: glib/gregex.c:2586
+#: glib/gregex.c:2587
 msgid "unknown escape sequence"
 msgstr "neznámá úniková sekvence"
 
-#: glib/gregex.c:2596
+#: glib/gregex.c:2597
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Chyba při zpracování náhradního textu „%s“ na znaku %lu: %s"

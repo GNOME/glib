@@ -500,7 +500,7 @@ usage (gboolean just_version)
   g_print ("Help Options:\n");
   g_print ("  -h, --help                    Show this help message\n\n");
   g_print ("Utility Options:\n");
-  g_print ("  -v, --version                 Print version informations\n");
+  g_print ("  -v, --version                 Print version information\n");
   g_print ("  --g-fatal-warnings            Make warnings fatal (abort)\n");
   g_print ("  -k, --keep-going              Continue running after tests failed\n");
   g_print ("  -l                            List paths of available test cases\n");

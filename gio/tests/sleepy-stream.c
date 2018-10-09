@@ -33,12 +33,14 @@ cook_piece (void)
         {
          case 26:
           buffer[i++] = '\n';
+          G_GNUC_FALLTHROUGH;
          case 27:
           buffer[i++] = '\r';
           break;
 
          case 28:
           buffer[i++] = '\r';
+          G_GNUC_FALLTHROUGH;
          case 29:
           buffer[i++] = '\n';
           break;

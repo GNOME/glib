@@ -63,7 +63,7 @@ AC_CONFIG_MACRO_DIR([m4macros])
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS:+set}
 
-AM_INIT_AUTOMAKE([1.13.3 -Wno-portability no-define no-dist-gzip dist-xz tar-ustar subdir-objects])
+AM_INIT_AUTOMAKE([1.13.3 -Wno-portability no-define no-dist-gzip dist-xz tar-ustar subdir-objects foreign])
 AM_MAINTAINER_MODE([enable])
 
 # Support silent build rules. Disable
@@ -533,8 +533,6 @@ AS_IF([test x$ac_cv_sizeof_long_long = x8], [
 	], [AC_MSG_RESULT(none)])
 ])
 
-AC_C_CONST
-
 dnl
 dnl check in which direction the stack grows
 dnl
@@ -641,6 +639,7 @@ AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
 AC_CHECK_HEADERS([linux/magic.h])
 AC_CHECK_HEADERS([termios.h])
 AC_CHECK_HEADERS([alloca.h])
+AC_CHECK_HEADERS([spawn.h])
 
 # Some versions of MSC lack these
 AC_CHECK_HEADERS([dirent.h sys/time.h])
@@ -1788,9 +1787,13 @@ fi
 ])
 
 if test x$have_libmount = xyes; then
+  LIBMOUNT_REQUIRES="mount >= 2.23"
   AC_DEFINE(HAVE_LIBMOUNT, 1, [Define if libmount is available])
+else
+  LIBMOUNT_REQUIRES=""
 fi
 AM_CONDITIONAL(HAVE_LIBMOUNT, [test x$have_libmount = xyes])
+AC_SUBST([LIBMOUNT_REQUIRES])
 
 dnl ****************************************
 dnl *** platform dependent source checks ***
@@ -1855,7 +1858,7 @@ FUNC_NO_LOCALTIME_R="the 'g_date_set_time' function will not be MT-safe
 
 AIX_COMPILE_INFO="AIX's C compiler needs to be called by a different name, when
 		linking threaded applications. As GLib cannot do that 
-		automatically, you will get an linkg error everytime you are 
+		automatically, you will get an linking error every time you are
 		not using the right compiler. In that case you have to relink 
 		with the right compiler. Ususally just '_r' is appended 
 		to the compiler name."
@@ -3410,7 +3413,7 @@ AS_IF([test "x$enable_compile_warnings" != xno], [
    -Wno-bad-function-cast \
    -Werror=declaration-after-statement \
    -Werror=missing-prototypes -Werror=implicit-function-declaration \
-   -Werror=pointer-arith -Werror=init-self -Werror=format-security \
+   -Werror=pointer-arith -Werror=init-self \
    -Werror=format=2 -Werror=missing-include-dirs])
 ])
 AC_SUBST(GLIB_WARN_CFLAGS)

@@ -1190,7 +1190,14 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
   node_index = g_hash_table_lookup_node (hash_table, lookup_key, &node_hash);
 
   if (!HASH_IS_REAL (hash_table->hashes[node_index]))
-    return FALSE;
+    {
+      if (orig_key != NULL)
+        *orig_key = NULL;
+      if (value != NULL)
+        *value = NULL;
+
+      return FALSE;
+    }
 
   if (orig_key)
     *orig_key = hash_table->keys[node_index];

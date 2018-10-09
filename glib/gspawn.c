@@ -30,7 +30,10 @@
 #include <string.h>
 #include <stdlib.h>   /* for fdwalk */
 #include <dirent.h>
+
+#ifdef HAVE_SPAWN_H
 #include <spawn.h>
+#endif /* HAVE_SPAWN_H */
 
 #ifdef HAVE_CRT_EXTERNS_H
 #include <crt_externs.h> /* for _NSGetEnviron */
@@ -1485,7 +1488,7 @@ do_posix_spawn (gchar     **argv,
       parent_close_fds[num_parent_close_fds++] = write_null;
 
 #ifndef HAVE_O_CLOEXEC
-      fcntl (read_null, F_SETFD, FD_CLOEXEC);
+      fcntl (write_null, F_SETFD, FD_CLOEXEC);
 #endif
 
       r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 1);
@@ -1509,7 +1512,7 @@ do_posix_spawn (gchar     **argv,
       parent_close_fds[num_parent_close_fds++] = write_null;
 
 #ifndef HAVE_O_CLOEXEC
-      fcntl (read_null, F_SETFD, FD_CLOEXEC);
+      fcntl (write_null, F_SETFD, FD_CLOEXEC);
 #endif
 
       r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 2);

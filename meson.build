@@ -1,6 +1,6 @@
 project('glib', 'c', 'cpp',
   version : '2.59.0',
-  meson_version : '>= 0.47.0',
+  meson_version : '>= 0.48.0',
   default_options : [
     'buildtype=debugoptimized',
     'warning_level=1',
@@ -71,6 +71,7 @@ installed_tests_metadir = join_paths(glib_datadir, 'installed-tests', meson.proj
 installed_tests_execdir = join_paths(glib_libexecdir, 'installed-tests', meson.project_name())
 installed_tests_enabled = get_option('installed_tests')
 installed_tests_template = files('template.test.in')
+installed_tests_template_tap = files('template-tap.test.in')
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
@@ -226,6 +227,7 @@ headers = [
   'poll.h',
   'pwd.h',
   'sched.h',
+  'spawn.h',
   'stdint.h',
   'stdlib.h',
   'string.h',
@@ -344,6 +346,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   test_c_args = [
     '-Wall',
     '-Wduplicated-branches',
+    '-Wimplicit-fallthrough',
     '-Wmisleading-indentation',
     '-Wstrict-prototypes',
     '-Wunused',
@@ -352,7 +355,6 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Wno-bad-function-cast',
     '-Werror=declaration-after-statement',
     '-Werror=format=2',
-    '-Werror=format-security',
     '-Werror=implicit-function-declaration',
     '-Werror=init-self',
     '-Werror=missing-include-dirs',
@@ -1661,7 +1663,7 @@ else
   growing_stack = meson.get_cross_property('growing_stack', false)
 endif
 
-glibconfig_conf.set('G_HAVE_GROWING_STACK', growing_stack)
+glibconfig_conf.set10('G_HAVE_GROWING_STACK', growing_stack)
 
 # Tests for iconv
 #
@@ -1885,7 +1887,6 @@ endif
 
 # Determine which user environment-dependent files that we want to install
 have_bash = find_program('bash', required : false).found() # For completion scripts
-have_m4 = find_program('m4', required : false).found() # For m4 macros
 have_sh = find_program('sh', required : false).found() # For glib-gettextize
 
 # FIXME: How to detect Solaris? https://github.com/mesonbuild/meson/issues/1578
@@ -1984,24 +1985,22 @@ subdir('tests')
 # Install glib-gettextize executable, if a UNIX-style shell is found
 if have_sh
   # These should not contain " quotes around the values
-  gettexize_conf = configuration_data()
-  gettexize_conf.set('PACKAGE', 'glib')
-  gettexize_conf.set('VERSION', meson.project_version())
-  gettexize_conf.set('prefix', glib_prefix)
-  gettexize_conf.set('datarootdir', glib_datadir)
-  gettexize_conf.set('datadir', glib_datadir)
+  gettextize_conf = configuration_data()
+  gettextize_conf.set('PACKAGE', 'glib')
+  gettextize_conf.set('VERSION', meson.project_version())
+  gettextize_conf.set('prefix', glib_prefix)
+  gettextize_conf.set('datarootdir', glib_datadir)
+  gettextize_conf.set('datadir', glib_datadir)
   configure_file(input : 'glib-gettextize.in',
     install : true,
-    install_dir : 'bin',
+    install_dir : glib_bindir,
     output : 'glib-gettextize',
-    configuration : gettexize_conf)
+    configuration : gettextize_conf)
 endif
 
-if have_m4
-  # Install m4 macros that other projects use
-  install_data('m4macros/glib-2.0.m4', 'm4macros/glib-gettext.m4', 'm4macros/gsettings.m4',
-    install_dir : join_paths(get_option('datadir'), 'aclocal'))
-endif
+# Install m4 macros that other projects use
+install_data('m4macros/glib-2.0.m4', 'm4macros/glib-gettext.m4', 'm4macros/gsettings.m4',
+  install_dir : join_paths(get_option('datadir'), 'aclocal'))
 
 if host_system != 'windows'
   # Install Valgrind suppression file (except on Windows,

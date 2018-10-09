@@ -5,6 +5,10 @@ common_gio_tests_deps = [
   libgio_dep,
 ]
 
+if host_machine.system() == 'windows'
+  common_gio_tests_deps += [iphlpapi_dep, winsock2, cc.find_library ('secur32')]
+endif
+
 subdir('gdbus-object-manager-example')
 
 gengiotypefuncs_prog = find_program('gengiotypefuncs.py')
@@ -15,9 +19,7 @@ giotypefuncs_inc = custom_target(
   command: [gengiotypefuncs_prog, '@OUTPUT@', '@INPUT@'])
 
 #  Test programs buildable on all platforms
-# FIXME: We are using list of dictionnaries until we can depend on Meson 0.48.0
-# that supports '+=' operator on dictionnaries.
-gio_tests = [{
+gio_tests = {
   'appmonitor' : {},
   'async-close-output-stream' : {},
   'async-splice-output-stream' : {},
@@ -68,14 +70,14 @@ gio_tests = [{
   'thumbnail-verification' : {},
   'tls-certificate' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-interaction' : {'extra_sources' : ['gtesttlsbackend.c']},
-}]
+  'tls-database' : {'extra_sources' : ['gtesttlsbackend.c']},
+}
 
-# FIXME: We are using list of dictionnaries until we can depend on Meson 0.48.0
-# that supports '+=' operator on dictionnaries.
-test_extra_programs = [{
+test_extra_programs = {
   'gdbus-connection-flush-helper' : {},
   'gdbus-testserver' : {},
-}]
+  'gsubprocess-testprog' : {},
+}
 
 test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
@@ -108,17 +110,17 @@ endif
 if dbus1_dep.found()
   glib_conf.set('HAVE_DBUS1', 1)
 
-  gio_tests += [{
+  gio_tests += {
     'gdbus-serialization' : {
       'extra_sources' : ['gdbus-tests.c'],
       'dependencies' : [dbus1_dep],
     }
-  }]
+  }
 endif
 
 #  Test programs buildable on UNIX only
 if host_machine.system() != 'windows'
-  gio_tests += [{
+  gio_tests += {
     'file' : {},
     'gdbus-peer' : {'dependencies' : [libgdbus_example_objectmanager_dep]},
     'gdbus-peer-object-manager' : {},
@@ -131,34 +133,36 @@ if host_machine.system() != 'windows'
     'g-file-info-filesystem-readonly' : {},
     'gschema-compile' : {'install' : false},
     'trash' : {},
-  }]
+  }
 
   # Uninstalled because of the check-for-executable logic in DesktopAppInfo
   # unable to find the installed executable
   if not glib_have_cocoa
-    gio_tests += [{
+    gio_tests += {
       'appinfo' : {
         'install' : false,
+        'is_parallel' : false,
       },
       'desktop-app-info' : {
         'install' : false,
+        'is_parallel' : false,
       },
-    }]
+    }
   endif
 
-  test_extra_programs += [{
+  test_extra_programs += {
     'basic-application' : {},
     'dbus-launch' : {},
     'appinfo-test' : {},
-  }]
+  }
 
   if not glib_have_cocoa
-    test_extra_programs += [{
+    test_extra_programs += {
       'apps' : {},
-    }]
-    gio_tests += [{
+    }
+    gio_tests += {
       'mimeapps' : {},
-    }]
+    }
   endif
 
   #  Test programs that need to bring up a session bus (requires dbus-daemon)
@@ -189,7 +193,7 @@ if host_machine.system() != 'windows'
 
     extra_sources = ['gdbus-sessionbus.c', 'gdbus-tests.c']
 
-    gio_tests += [{
+    gio_tests += {
       'actions' : {
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
@@ -221,7 +225,10 @@ if host_machine.system() != 'windows'
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
       },
-      'gmenumodel' : {'extra_sources' : extra_sources},
+      'gmenumodel' : {
+        'extra_sources' : extra_sources,
+        'suite' : ['slow'],
+      },
       'gnotification' : {
         'extra_sources' : [extra_sources, 'gnotification-server.c'],
       },
@@ -233,61 +240,62 @@ if host_machine.system() != 'windows'
       },
       'gapplication' : {'extra_sources' : extra_sources},
       'gdbus-unix-addresses' : {},
-    }]
+    }
 
     if not glib_have_cocoa
-      gio_tests += [{
+      gio_tests += {
         'dbus-appinfo' : {
           'extra_sources' : extra_sources,
         },
-      }]
+      }
     endif
   endif # have_dbus_daemon
 
   # This test is currently unreliable
   executable('gdbus-overflow', 'gdbus-overflow.c',
-      install : false,
       c_args : test_c_args,
-      dependencies : common_gio_tests_deps)
+      dependencies : common_gio_tests_deps,
+      install_dir : installed_tests_execdir,
+      install : installed_tests_enabled)
 
-  gio_tests += [{
+  gio_tests += {
     'gdbus-connection-flush' : {
       'extra_sources' : ['test-io-stream.c', 'test-pipe-unix.c'],
     },
     'gdbus-non-socket' : {
       'extra_sources' : ['gdbus-tests.c', 'test-io-stream.c', 'test-pipe-unix.c'],
     },
-  }]
+  }
 
   # Generate test.mo from de.po using msgfmt
   msgfmt = find_program('msgfmt', required : false)
   if msgfmt.found()
     subdir('de/LC_MESSAGES')
-    gio_tests += [{
+    gio_tests += {
       'gsettings' : {
         'extra_sources' : [test_mo],
         'c_args' : ['-DSRCDIR="@0@"'.format(meson.current_source_dir()),
                     '-DTEST_LOCALE_PATH="@0@"'.format(test_mo_dir)],
         'install' : false,
       },
-    }]
+    }
   endif
 endif # unix
 
 #  Test programs buildable on Windows only
 if host_machine.system() == 'windows'
-  gio_tests += [{'win32-streams' : {}}]
+  gio_tests += {'win32-streams' : {}}
 endif
 
 if cc.get_id() != 'msvc'
-  gio_tests += [{
+  gio_tests += {
     'autoptr-gio' : {
       'source' : 'autoptr.c',
     },
-  }]
+  }
 endif
 
-test_extra_programs += [{
+test_extra_programs += {
   'gio-du' : {'install' : false},
   'echo-server' : {'install' : false},
   'filter-cat' : {'install' : false},
@@ -310,7 +318,6 @@ test_extra_programs += [{
   'gdbus-example-subtree' : {'install' : false},
   'gdbus-example-watch-name' : {'install' : false},
   'gdbus-example-watch-proxy' : {'install' : false},
-  'gsubprocess-testprog' : {'install' : false},
   'httpd' : {'install' : false},
   'proxy' : {'install' : false},
   'resolver' : {'install' : false},
@@ -320,28 +327,52 @@ test_extra_programs += [{
     'extra_sources' : ['gtlsconsoleinteraction.c'],
     'install' : false,
   },
-  # These three are manual-run tests because they need a session bus but don't bring one up themselves
-  # FIXME: these build but don't seem to work!
-  'gdbus-example-objectmanager-client' : {
-    'dependencies' : [libgdbus_example_objectmanager_dep],
-    'install' : false,
-  },
-  'gdbus-example-objectmanager-server' : {
-    'dependencies' : [libgdbus_example_objectmanager_dep],
-    'install' : false,
-  },
-  'gdbus-test-fixture' : {
-    'dependencies' : [libgdbus_example_objectmanager_dep],
-    'install' : false,
-  },
-}]
+}
+
+if cc.get_id() != 'msvc'
+  test_extra_programs += {
+    # These three are manual-run tests because they need a session bus but don't bring one up themselves
+    # FIXME: these build but don't seem to work!
+    'gdbus-example-objectmanager-client' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install' : false,
+    },
+    'gdbus-example-objectmanager-server' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install' : false,
+    },
+    'gdbus-test-fixture' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install' : false,
+    },
+  }
+endif
 
 if host_machine.system() != 'windows'
-  test_extra_programs += [{
+  test_extra_programs += {
     'gdbus-example-unix-fd-client' : {
       'install' : false,
     },
-  }]
+  }
+endif
+
+if installed_tests_enabled
+  install_data(
+    'contexts.c',
+    'g-icon.c',
+    'appinfo-test-actions.desktop',
+    'appinfo-test-gnome.desktop',
+    'appinfo-test-notgnome.desktop',
+    'appinfo-test.desktop',
+    'appinfo-test2.desktop',
+    'file.c',
+    'org.gtk.test.dbusappinfo.desktop',
+    install_dir : installed_tests_execdir,
+  )
+  install_subdir('x-content', install_dir : installed_tests_execdir)
+  install_subdir('desktop-files', install_dir : installed_tests_execdir)
+  install_subdir('thumbnails', install_dir : installed_tests_execdir)
+  install_subdir('cert-tests', install_dir : installed_tests_execdir)
 endif
 
 if not meson.is_cross_build() or meson.has_exe_wrapper()
@@ -356,14 +387,12 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--c-name', '_g_plugin',
                '@INPUT@'])
 
-  if host_system == 'windows'
-    resource_plugin_platform_link_args = ['-no-undefined']
-  else
-    resource_plugin_platform_link_args = []
-  endif
-  shared_module ('resourceplugin', 'resourceplugin.c', plugin_resources_c,
-    link_args : export_dynamic_ldflags + resource_plugin_platform_link_args,
-    dependencies : common_gio_tests_deps)
+  shared_module('resourceplugin', 'resourceplugin.c', plugin_resources_c,
+    link_args : export_dynamic_ldflags,
+    dependencies : common_gio_tests_deps,
+    install_dir : installed_tests_execdir,
+    install : installed_tests_enabled
+  )
 
   test_gresource = custom_target('test.gresource',
     input : 'test.gresource.xml',
@@ -372,7 +401,9 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
                '--sourcedir=' + meson.current_build_dir(),
-               '@INPUT@'])
+               '@INPUT@'],
+    install_dir : installed_tests_execdir,
+    install : installed_tests_enabled)
 
   test_resources2_c = custom_target('test_resources2.c',
     input : 'test3.gresource.xml',
@@ -412,57 +443,59 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     copy : true,
     install : false)
 
-  gio_tests += [{
+  gio_tests += {
     'resources' : {
       'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
                          test_resources2_h],
     },
-  }]
+  }
 endif
 
-foreach test_dict : gio_tests
-  foreach test_name, extra_args : test_dict
-    source = extra_args.get('source', test_name + '.c')
-    extra_sources = extra_args.get('extra_sources', [])
-    install = installed_tests_enabled and extra_args.get('install', true)
+foreach test_name, extra_args : gio_tests
+  source = extra_args.get('source', test_name + '.c')
+  extra_sources = extra_args.get('extra_sources', [])
+  install = installed_tests_enabled and extra_args.get('install', true)
 
-    if install
-      test_conf = configuration_data()
-      test_conf.set('installed_tests_dir', installed_tests_execdir)
-      test_conf.set('program', test_name)
-      configure_file(
-        input: installed_tests_template,
-        output: test_name + '.test',
-        install_dir: installed_tests_metadir,
-        configuration: test_conf
-      )
-    endif
-
-    exe = executable(test_name, [source, extra_sources],
-      c_args : test_c_args + extra_args.get('c_args', []),
-      dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
-      install_dir: installed_tests_execdir,
-      install: install,
+  if install
+    test_conf = configuration_data()
+    test_conf.set('installed_tests_dir', installed_tests_execdir)
+    test_conf.set('program', test_name)
+    configure_file(
+      input: installed_tests_template_tap,
+      output: test_name + '.test',
+      install_dir: installed_tests_metadir,
+      configuration: test_conf
     )
+  endif
 
-    suite = ['gio'] + extra_args.get('suite', [])
-    timeout = suite.contains('slow') ? 120 : 30
-    test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
-  endforeach
+  exe = executable(test_name, [source, extra_sources],
+    c_args : test_c_args + extra_args.get('c_args', []),
+    dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
+    install_dir: installed_tests_execdir,
+    install: install,
+  )
+
+  suite = ['gio'] + extra_args.get('suite', [])
+  timeout = suite.contains('slow') ? 120 : 30
+  test(test_name, exe,
+    env : test_env,
+    timeout : timeout,
+    suite : suite,
+    args : ['--tap'],
+    is_parallel : extra_args.get('is_parallel', true),
+  )
 endforeach
 
-foreach program_dict : test_extra_programs
-  foreach program_name, extra_args : program_dict
-    source = extra_args.get('source', program_name + '.c')
-    extra_sources = extra_args.get('extra_sources', [])
-    install = installed_tests_enabled and extra_args.get('install', true)
-    executable(program_name, [source, extra_sources],
-        c_args : test_c_args,
-        dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
-        install_dir : installed_tests_execdir,
-        install : install,
-    )
-  endforeach
+foreach program_name, extra_args : test_extra_programs
+  source = extra_args.get('source', program_name + '.c')
+  extra_sources = extra_args.get('extra_sources', [])
+  install = installed_tests_enabled and extra_args.get('install', true)
+  executable(program_name, [source, extra_sources],
+      c_args : test_c_args,
+      dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
+      install_dir : installed_tests_execdir,
+      install : install,
+  )
 endforeach
 
 # FIXME: subdir('services')
