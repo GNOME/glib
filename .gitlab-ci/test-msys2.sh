@@ -33,12 +33,12 @@ mkdir -p _coverage
 mkdir -p _ccache
 export CCACHE_BASEDIR="$(pwd)"
 export CCACHE_DIR="${CCACHE_BASEDIR}/_ccache"
-pip3 install --upgrade --user meson==0.48.0
+pip3 install --upgrade --user meson==0.49.0
 export PATH="$HOME/.local/bin:$PATH"
 export CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
 
-meson --werror --buildtype debug _build
+meson ${MESON_COMMON_OPTIONS} --werror _build
 cd _build
 ninja
 
