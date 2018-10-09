@@ -3349,10 +3349,16 @@ g_object_unref (gpointer _object)
 
           GOBJECT_IF_DEBUG (OBJECTS,
 	    {
-	      /* catch objects not chaining finalize handlers */
-	      G_LOCK (debug_objects);
-	      g_assert (!g_hash_table_contains (debug_objects_ht, object));
-	      G_UNLOCK (debug_objects);
+              gboolean ok;
+
+              /* catch objects not chaining finalize handlers */
+              G_LOCK (debug_objects);
+              ok = !g_hash_table_remove (debug_objects_ht, object);
+              G_UNLOCK (debug_objects);
+
+              if (!ok)
+                g_critical ("Object %p of type %s not finalized correctly.",
+                            object, G_OBJECT_TYPE_NAME (object));
 	    });
           g_type_free_instance ((GTypeInstance*) object);
 	}
