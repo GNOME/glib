@@ -128,8 +128,9 @@ vs2017-x64:
       - _build/meson-logs
 
 freebsd-11-x86_64:
-  when: manual
   stage: build
+  only:
+    - branches@GNOME/glib
   tags:
     # To run a FreeBSD builder, install gitlab-runner package and start both
     # gitlab-runner and dbus service because we need /var/lib/dbus/machine-id.
@@ -154,9 +155,6 @@ freebsd-11-x86_64:
     - meson ${MESON_COMMON_OPTIONS} -Db_lundef=false -Diconv=gnu -Dxattr=false _build
     - ninja -C _build
     - meson test -C _build --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
-  # FIXME: Remove this when we have a stable FreeBSD runner
-  # https://gitlab.gnome.org/Infrastructure/GitLab/issues/286
-  allow_failure: true
   except:
     - tags
   artifacts:
