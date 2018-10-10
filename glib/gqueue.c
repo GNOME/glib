@@ -155,7 +155,7 @@ g_queue_clear (GQueue *queue)
  * @free_func: the function to be called to free memory allocated
  *
  * Convenience method, which frees all the memory used by a #GQueue,
- * and calls the provided @free_func.
+ * and calls the provided @free_func on each item in the #GQueue.
  *
  * Since: 2.60
  */
