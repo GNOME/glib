@@ -1,4 +1,4 @@
-#include "glib/glib.h"
+#include "fuzz.h"
 
 int
 LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)

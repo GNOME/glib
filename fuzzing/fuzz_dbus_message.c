@@ -1,4 +1,4 @@
-#include "gio/gio.h"
+#include "fuzz.h"
 
 const static GDBusCapabilityFlags flags = G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
 
