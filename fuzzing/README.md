@@ -8,7 +8,15 @@ New targets are picked up by oss-fuzz automatically within a day. Targets must n
 
 Add (optional) **fuzz_target_name.dict** containing keywords and magic bytes.
 
-Recommended reading: [Fuzz Target](https://llvm.org/docs/LibFuzzer.html#fuzz-target), [Dictionaries](https://llvm.org/docs/LibFuzzer.html#dictionaries)
+Add (optional) **fuzz_target_name.corpus** with file names on separate lines. Wildcards `?`, `*` and `**` are supported. Examples below.
+
+```bash
+glib/*  # all files in directory glib
+glib/** # all files in directory glib and sub-directories
+**.xbel # all files ending with .xbel in the repository
+```
+
+Recommended reading: [Fuzz Target](https://llvm.org/docs/LibFuzzer.html#fuzz-target), [Dictionaries](https://llvm.org/docs/LibFuzzer.html#dictionaries), [Corpus](https://llvm.org/docs/LibFuzzer.html#corpus)
 
 ## How to reproduce oss-fuzz bugs locally
 
