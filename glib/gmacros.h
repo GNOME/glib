@@ -422,7 +422,7 @@
 #elif defined(_MSC_VER)
 #define G_ALIGNAS(type) __declspec(align(type))
 #else
-#error G_ALIGNAS only available for C11, GCC and MSVC compiler.
+#pragma message("G_ALIGNAS only available for C11, GCC and MSVC compiler.")
 #endif
 
 /* Deprecated -- do not use. */
