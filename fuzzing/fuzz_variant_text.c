@@ -7,6 +7,8 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
   GVariant *variant = NULL;
   gchar *text = NULL;
 
+  fuzz_set_logging_func ();
+
   variant = g_variant_parse (NULL, gdata, gdata + size, NULL, NULL);
   if (variant == NULL)
     return 0;

@@ -10,6 +10,8 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
   guchar *blob = NULL;
   gsize msg_size;
 
+  fuzz_set_logging_func ();
+
   bytes = g_dbus_message_bytes_needed ((guchar*) data, size, NULL);
   if (bytes <= 0)
     return 0;

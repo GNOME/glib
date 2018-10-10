@@ -7,7 +7,9 @@ fuzz_targets = [
 ]
 
 deps = [libgmodule_dep, libgio_dep, libglib_dep, libgobject_dep]
+
 extra_sources = []
+extra_c_args = cc.get_supported_arguments('-Werror=unused-function')
 
 # Links in a static library provided by oss-fuzz, else a standalone driver.
 # https://github.com/google/oss-fuzz/blob/master/docs/new_project_guide.md#buildsh-script-environment
@@ -20,6 +22,7 @@ endif
 
 foreach target_name : fuzz_targets
   exe = executable(target_name, [extra_sources, target_name + '.c'],
+    c_args : extra_c_args,
     dependencies : deps,
   )
 endforeach
