@@ -371,6 +371,23 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 #define GSIZE_FROM_BE(val)	(GSIZE_TO_BE (val))
 #define GSSIZE_FROM_BE(val)	(GSSIZE_TO_BE (val))
 
+#define GFLOAT_FROM_BE(val) {\
+                            gfloat le_float;\
+                            gchar *src = (gchar*) & val; \
+                            gchar *dest  = (gchar*) & le_float;\
+                            dest[0] = src[3], dest[1] = src[2], dest[2] = src[1];\
+                            dest[3] = src[0];\
+                            val = le_float;\
+                            }
+#define GDOUBLE_FROM_BE(val) {\
+                             guint64 le_double;\
+                             guchar *src  = (guchar *)&val,\
+                                    *dest = (guchar *)&le_double;\
+                             dest[0] = src[7], dest[1] = src[6], dest[2] = src[5];\
+                             dest[3] = src[4], dest[4] = src[3], dest[5] = src[2];\
+                             dest[6] = src[1], dest[7] = src[0];
+                             val = le_double;\
+                             }
 /* Portable versions of host-network order stuff
  */
 #define g_ntohl(val) (GUINT32_FROM_BE (val))
