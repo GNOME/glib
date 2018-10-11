@@ -143,6 +143,11 @@ void    g_test_maximized_result         (double          maximized_quantity,
                                          ...) G_GNUC_PRINTF (2, 3);
 
 /* initialize testing framework */
+
+#define G_TEST_INIT_NO_SET_PRGNAME "no_g_set_prgname"
+
+#define G_TEST_INIT_TMP_XDG_DIRS "tmp_xdg_dirs"
+
 GLIB_AVAILABLE_IN_ALL
 void    g_test_init                     (int            *argc,
                                          char         ***argv,

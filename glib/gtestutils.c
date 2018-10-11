@@ -1242,6 +1242,34 @@ parse_args (gint    *argc_p,
   *argc_p = e;
 }
 
+static void
+_setup_tmp_xdg_dirs (void)
+{
+  gchar *xdg_dir;
+  gchar *path;
+  GError *error = NULL;
+
+  xdg_dir = g_dir_make_tmp ("glib-tests-XXXXXX", &error);
+  g_assert_no_error (error);
+
+  path = g_build_filename (xdg_dir, "cache", NULL);
+  g_setenv ("XDG_CACHE_HOME", path, TRUE);
+  g_assert_cmpstr (g_get_user_cache_dir (), ==, path);
+  g_free (path);
+
+  path = g_build_filename (xdg_dir, "config", NULL);
+  g_setenv ("XDG_CONFIG_HOME", path, TRUE);
+  g_assert_cmpstr (g_get_user_config_dir (), ==, path);
+  g_free (path);
+
+  path = g_build_filename (xdg_dir, "local", NULL);
+  g_setenv ("XDG_DATA_HOME", path, TRUE);
+  g_assert_cmpstr (g_get_user_data_dir (), ==, path);
+  g_free (path);
+
+  g_free (xdg_dir);
+}
+
 /**
  * g_test_init:
  * @argc: Address of the @argc parameter of the main() function.
@@ -1314,8 +1342,14 @@ void
   va_start (args, argv);
   while ((option = va_arg (args, char *)))
     {
-      if (g_strcmp0 (option, "no_g_set_prgname") == 0)
-        no_g_set_prgname = TRUE;
+      if (g_strcmp0 (option, G_TEST_INIT_NO_SET_PRGNAME) == 0)
+        {
+          no_g_set_prgname = TRUE;
+        }
+      else if (g_strcmp0 (option, G_TEST_INIT_TMP_XDG_DIRS) == 0)
+        {
+          _setup_tmp_xdg_dirs ();
+        }
     }
   va_end (args);
 
