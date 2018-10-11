@@ -34,6 +34,22 @@
 #include <glib/gbytes.h>
 #include <glib/gutils.h>  /* for G_CAN_INLINE */
 
+#ifdef __GNUC__
+gsize g_strlcpy_chk (gchar      *dest,
+                     const char *src,
+                     gsize      size,
+                     gsize      dest_size);
+exten __inline__
+__attribute__((__always_inline__, __artifical__))
+gsize
+g_strlcpy (gchar      *dest,
+           const char *src,
+           size_t     size)
+{
+  return g_strlcpy_chk (dest, src, size, __builtin_object_size (dest, 1));
+}
+#endif
+
 G_BEGIN_DECLS
 
 typedef struct _GString         GString;
