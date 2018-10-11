@@ -1980,6 +1980,7 @@ subdir('gio')
 if xgettext.found()
   subdir('po')
 endif
+subdir('fuzzing')
 subdir('tests')
 
 # Install glib-gettextize executable, if a UNIX-style shell is found
