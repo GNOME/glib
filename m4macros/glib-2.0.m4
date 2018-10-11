@@ -53,7 +53,7 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
   fi
 
   dnl For GLIB_CFLAGS and GLIB_LIBS
-  PKG_CHECK_MODULES([GLIB], [$pkg_config_args >= $min_glib_version], [:], [:])
+  PKG_CHECK_MODULES([GLIB], [$pkg_config_args], [:], [:])
 
   dnl For the tools
   PKG_CHECK_VAR([GLIB_GENMARSHAL], [glib-2.0], [glib_genmarshal])
