@@ -22,12 +22,6 @@
 #include "gwakeup.h"
 #include "gstdioprivate.h"
 
-#if defined(__GNUC__)
-# define _g_alignof(type) (__alignof__ (type))
-#else
-# define _g_alignof(type) (G_STRUCT_OFFSET (struct { char a; type b; }, b))
-#endif
-
 GMainContext *          g_get_worker_context            (void);
 gboolean                g_check_setuid                  (void);
 GMainContext *          g_main_context_new_with_next_id (guint next_id);
