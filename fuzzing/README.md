@@ -1,5 +1,7 @@
 Fuzz targets used by [oss-fuzz](https://github.com/google/oss-fuzz/).
 
+Useful links: [Dashboard](https://oss-fuzz.com/) _(requires access)_, [Build logs](https://oss-fuzz-build-logs.storage.googleapis.com/index.html), [Coverage](https://oss-fuzz.com/v2/coverage-report/job/libfuzzer_asan_glib/latest)
+
 ## How to add new targets
 
 Add **fuzz_target_name.c** and edit `meson.build` accordingly.
