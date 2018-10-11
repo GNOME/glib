@@ -2,7 +2,7 @@
 # Owen Taylor     1997-2001
 
 # Increment this whenever this file is changed.
-#serial 2
+#serial 3
 
 dnl AM_PATH_GLIB_2_0([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
 dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if gmodule, gobject,
@@ -53,7 +53,7 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
   fi
 
   dnl For GLIB_CFLAGS and GLIB_LIBS
-  PKG_CHECK_MODULES([GLIB], [$pkg_config_args >= $min_glib_version], [:], [:])
+  PKG_CHECK_MODULES([GLIB], [$pkg_config_args], [:], [:])
 
   dnl For the tools
   PKG_CHECK_VAR([GLIB_GENMARSHAL], [glib-2.0], [glib_genmarshal])
