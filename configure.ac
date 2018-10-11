@@ -3507,6 +3507,7 @@ tests/Makefile
 tests/gobject/Makefile
 tests/refcount/Makefile
 m4macros/Makefile
+m4macros/tests/Makefile
 subprojects/Makefile
 ])
 

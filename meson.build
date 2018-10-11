@@ -1887,7 +1887,8 @@ endif
 
 # Determine which user environment-dependent files that we want to install
 have_bash = find_program('bash', required : false).found() # For completion scripts
-have_sh = find_program('sh', required : false).found() # For glib-gettextize
+sh = find_program('sh', required : false) # For glib-gettextize and Autotools tests
+have_sh = sh.found()
 
 # FIXME: How to detect Solaris? https://github.com/mesonbuild/meson/issues/1578
 if host_system == 'sunos'
@@ -2002,6 +2003,7 @@ endif
 # Install m4 macros that other projects use
 install_data('m4macros/glib-2.0.m4', 'm4macros/glib-gettext.m4', 'm4macros/gsettings.m4',
   install_dir : join_paths(get_option('datadir'), 'aclocal'))
+subdir('m4macros/tests')
 
 if host_system != 'windows'
   # Install Valgrind suppression file (except on Windows,
