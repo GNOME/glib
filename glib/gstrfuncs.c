@@ -1358,9 +1358,9 @@ g_strsignal (gint signum)
 #ifdef HAVE_STRLCPY
 /* Use the native ones, if available; they might be implemented in assembly */
 gsize
-g_strlcpy (gchar       *dest,
-           const gchar *src,
-           gsize        dest_size)
+glib_g_strlcpy (gchar       *dest,
+                const gchar *src,
+                gsize        dest_size)
 {
   g_return_val_if_fail (dest != NULL, 0);
   g_return_val_if_fail (src  != NULL, 0);
@@ -1407,37 +1407,7 @@ gsize
 g_strlcpy (gchar       *dest,
            const gchar *src,
            gsize        dest_size)
-{
-  gchar *d = dest;
-  const gchar *s = src;
-  gsize n = dest_size;
-
-  g_return_val_if_fail (dest != NULL, 0);
-  g_return_val_if_fail (src  != NULL, 0);
-
-  /* Copy as many bytes as will fit */
-  if (n != 0 && --n != 0)
-    do
-      {
-        gchar c = *s++;
-
-        *d++ = c;
-        if (c == 0)
-          break;
-      }
-    while (--n != 0);
-
-  /* If not enough room in dest, add NUL and traverse rest of src */
-  if (n == 0)
-    {
-      if (dest_size != 0)
-        *d = 0;
-      while (*s++)
-        ;
-    }
-
-  return s - src - 1;  /* count does not include NUL */
-}
+  __attribute__ ((alias("glib_g_strlcpy_local")));
 
 /**
  * g_strlcat:
