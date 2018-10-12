@@ -691,7 +691,7 @@ get_status_bit (const guint32 *bitmap, guint index)
 static inline void
 set_status_bit (guint32 *bitmap, guint index)
 {
-  bitmap[index / 32] |= 1 << (index % 32);
+  bitmap[index / 32] |= 1U << (index % 32);
 }
 
 /* By calling dedicated resize functions for sets and maps, we avoid 2x
