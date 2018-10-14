@@ -12,7 +12,9 @@ cache:
 variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
-  MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
+  MESON_COMMON_OPTIONS: >
+    --buildtype debug
+    --fatal-meson-warnings
 
 fedora-x86_64:
   stage: build
@@ -128,19 +130,41 @@ msys2-mingw32:
       - _build/meson-logs
       - _coverage/
 
-vs2017-x64:
+.vs2017:
+  image: registry.gitlab.gnome.org/gnome/glib/windows/master:v1
   stage: build
   except:
     - tags
   tags:
-    - win32
+    - win32-docker
   script:
-    - .gitlab-ci/test-msvc.bat
+    # For some reason, options are separated by newline instead of space, so we
+    # have to replace them first.
+    - $env:MESON_ARGS = $env:MESON_COMMON_OPTIONS.replace("`n"," ")
+    # Gitlab executes PowerShell in docker, but VsDevCmd.bat is a batch script.
+    # Environment variables substitutions is done by PowerShell before calling
+    # cmd.exe, that's why we use $env:FOO instead of %FOO%
+    # FIXME: Ignoring unit test errors for now.
+    - cmd.exe /C "C:\BuildTools\Common7\Tools\VsDevCmd.bat -host_arch=amd64 -arch=$env:ARCH &&
+        meson $env:MESON_ARGS _build &&
+        ninja -C _build &&
+        (meson test -C _build --timeout-multiplier $env:MESON_TEST_TIMEOUT_MULTIPLIER & true)"
   artifacts:
-    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
+    name: "glib-$env:CI_JOB_NAME-$env:CI_COMMIT_REF_NAME"
     when: always
     paths:
       - _build/meson-logs
+
+# FIXME: libffi subproject currently fails to build for amd64
+#vs2017-amd64:
+#  extends: '.vs2017'
+#  variables:
+#    ARCH: 'amd64'
+
+vs2017-x86:
+  extends: '.vs2017'
+  variables:
+    ARCH: 'x86'
 
 freebsd-11-x86_64:
   stage: build
