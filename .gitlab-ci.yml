@@ -114,13 +114,16 @@ msys2-mingw32:
       - _coverage/
 
 vs2017-x64:
+  image: registry.gitlab.gnome.org/gnome/glib/windows/master:v1
   stage: build
   except:
     - tags
   tags:
-    - win32
+    - windows
+    - docker
   script:
-    - .gitlab-ci/test-msvc.bat
+    - meson %MESON_COMMON_OPTIONS% _build
+    - ninja -C _build
   artifacts:
     name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
     when: always
