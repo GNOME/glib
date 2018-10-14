@@ -152,7 +152,10 @@ value_flags_enum_collect_value (GValue      *value,
 				GTypeCValue *collect_values,
 				guint        collect_flags)
 {
-  value->data[0].v_long = collect_values[0].v_int;
+  if (G_VALUE_HOLDS_ENUM (value))
+    value->data[0].v_long = collect_values[0].v_int;
+  else
+    value->data[0].v_ulong = (guint) collect_values[0].v_int;
 
   return NULL;
 }
