@@ -386,7 +386,7 @@ glib_probes.h: glib_probes.d
 		< $@.tmp > $@ && rm -f $@.tmp
 
 glib_probes.lo: glib_probes.d
-	$(AM_V_GEN) $(LIBTOOL) --mode=compile $(AM_V_lt) --tag=CC $(DTRACE) -G -s $< -o $@
+	$(AM_V_GEN) $(LIBTOOL) --mode=compile $(AM_V_lt) --tag=CC env CFLAGS="$(CFLAGS)" $(DTRACE) -G -s $< -o $@
 
 BUILT_SOURCES += glib_probes.h glib_probes.lo
 CLEANFILES += glib_probes.h glib_probes.h.tmp
