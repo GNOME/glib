@@ -1414,7 +1414,9 @@ start_element (GMarkupParseContext  *context,
 
       else if (strcmp (element_name, "summary") == 0)
         {
-          if (NO_ATTRS ())
+          const gchar *comment;
+
+          if (COLLECT (STRING | OPTIONAL, "comment", &comment))
             {
               if (state->key_state->summary_seen && state->strict)
                 g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
@@ -1430,7 +1432,9 @@ start_element (GMarkupParseContext  *context,
 
       else if (strcmp (element_name, "description") == 0)
         {
-          if (NO_ATTRS ())
+          const gchar *comment;
+
+          if (COLLECT (STRING | OPTIONAL, "comment", &comment))
             {
               if (state->key_state->description_seen && state->strict)
                 g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,

@@ -12,6 +12,8 @@ http://www.gnu.org/software/gettext/manual/html_node/Preparing-ITS-Rules.html
 
   <its:translateRule selector="//default[@l10n]" translate="yes"/>
 
+  <its:locNoteRule selector="//summary | //description" locNotePointer="./@comment" locNoteType="description"/>
+
   <!-- The 'context' attribute should be extracted as msgctxt.  -->
   <gt:contextRule selector="//default[@context]" contextPointer="@context"/>
   <gt:escapeRule selector="//default/@context" escape="no"/>

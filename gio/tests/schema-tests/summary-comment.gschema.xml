@@ -1,0 +1,11 @@
+<schemalist>
+  <schema id="summary-comment" path="/tests/">
+    <key name="test" type="s">
+      <default>'test'</default>
+      <summary comment="TRANSLATORS: Here is summary">Summary</summary>
+      <description comment="TRANSLATORS: Here is description">
+        The description
+      </description>
+    </key>
+  </schema>
+</schemalist>

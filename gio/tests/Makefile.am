@@ -190,6 +190,7 @@ schema_tests = \
 	range-parse-error.gschema.xml			\
 	range-wrong-type.gschema.xml			\
 	range.gschema.xml				\
+	summary-comment.gschema.xml			\
 	summary-xmllang.gschema.xml			\
 	summary-xmllang-and-attrs.gschema.xml		\
 	wrong-category.gschema.xml			\

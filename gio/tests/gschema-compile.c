@@ -137,6 +137,7 @@ static const SchemaTest tests[] = {
   { "summary-xmllang",              NULL, "*Only one <summary> element allowed*"                },
   { "description-xmllang",          NULL, "*Only one <description> element allowed*"            },
   { "summary-xmllang-and-attrs",    NULL, "*attribute 'lang' invalid for element 'summary'*"    },
+  { "summary-comment",              NULL, NULL                                                  },
   { "inherit-gettext-domain",       NULL, NULL                                                  },
   { "range-type-test",              NULL, NULL                                                  },
   { "cdata",                        NULL, NULL                                                  }
