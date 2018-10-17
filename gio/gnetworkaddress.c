@@ -47,7 +47,7 @@
  * then attempt to connect to that host, handling the possibility of
  * multiple IP addresses and multiple address families.
  *
- * See #GSocketConnectable for and example of using the connectable
+ * See #GSocketConnectable for an example of using the connectable
  * interface.
  */
 
