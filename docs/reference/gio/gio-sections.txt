@@ -1917,6 +1917,10 @@ g_resolver_set_default
 g_resolver_lookup_by_name
 g_resolver_lookup_by_name_async
 g_resolver_lookup_by_name_finish
+GResolverNameLookupFlags
+g_resolver_lookup_by_name_with_flags
+g_resolver_lookup_by_name_with_flags_async
+g_resolver_lookup_by_name_with_flags_finish
 g_resolver_free_addresses
 g_resolver_lookup_by_address
 g_resolver_lookup_by_address_async
@@ -1930,7 +1934,6 @@ GResolverRecordType
 g_resolver_lookup_records
 g_resolver_lookup_records_async
 g_resolver_lookup_records_finish
-
 <SUBSECTION>
 G_RESOLVER_ERROR
 GResolverError
