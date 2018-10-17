@@ -3,6 +3,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
  * Copyright (C) 2008 Red Hat, Inc.
+ * Copyright (C) 2018 Igalia S.L.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +31,7 @@
 #include "gsrvtarget.h"
 #include "gthreadedresolver.h"
 #include "gioerror.h"
+#include "gcancellable.h"
 
 #ifdef G_OS_UNIX
 #include <sys/stat.h>
@@ -347,6 +349,60 @@ handle_ip_address (const char  *hostname,
   return FALSE;
 }
 
+static GList *
+lookup_by_name_real (GResolver                 *resolver,
+                     const gchar               *hostname,
+                     GResolverNameLookupFlags   flags,
+                     GCancellable              *cancellable,
+                     GError                    **error)
+{
+  GList *addrs;
+  gchar *ascii_hostname = NULL;
+
+  g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
+  g_return_val_if_fail (hostname != NULL, NULL);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  /* Check if @hostname is just an IP address */
+  if (handle_ip_address (hostname, &addrs, error))
+    return addrs;
+
+  if (g_hostname_is_non_ascii (hostname))
+    hostname = ascii_hostname = g_hostname_to_ascii (hostname);
+
+  if (!hostname)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Invalid hostname"));
+      return NULL;
+    }
+
+  g_resolver_maybe_reload (resolver);
+
+  if (flags != G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT)
+    {
+      if (!G_RESOLVER_GET_CLASS (resolver)->lookup_by_name_with_flags)
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       /* Translators: The placeholder is for a function name. */
+                       _("%s not implemented"), "lookup_by_name_with_flags");
+          g_free (ascii_hostname);
+          return NULL;
+        }
+      addrs = G_RESOLVER_GET_CLASS (resolver)->
+        lookup_by_name_with_flags (resolver, hostname, flags, cancellable, error);
+    }
+  else
+    addrs = G_RESOLVER_GET_CLASS (resolver)->
+      lookup_by_name (resolver, hostname, cancellable, error);
+
+  remove_duplicates (addrs);
+
+  g_free (ascii_hostname);
+  return addrs;
+}
+
 /**
  * g_resolver_lookup_by_name:
  * @resolver: a #GResolver
@@ -391,34 +447,185 @@ g_resolver_lookup_by_name (GResolver     *resolver,
                            GCancellable  *cancellable,
                            GError       **error)
 {
-  GList *addrs;
-  gchar *ascii_hostname = NULL;
+  return lookup_by_name_real (resolver,
+                              hostname,
+                              G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT,
+                              cancellable,
+                              error);
+}
 
-  g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
-  g_return_val_if_fail (hostname != NULL, NULL);
+/**
+ * g_resolver_lookup_by_name_with_flags:
+ * @resolver: a #GResolver
+ * @hostname: the hostname to look up
+ * @flags: extra #GResolverNameLookupFlags for the lookup
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @error: (nullable): return location for a #GError, or %NULL
+ *
+ * This differs from g_resolver_lookup_by_name() in that you can modify
+ * the lookup behavior with @flags. For example this can be used to limit
+ * results with #G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
+ *
+ * Returns: (element-type GInetAddress) (transfer full): a non-empty #GList
+ * of #GInetAddress, or %NULL on error. You
+ * must unref each of the addresses and free the list when you are
+ * done with it. (You can use g_resolver_free_addresses() to do this.)
+ *
+ * Since: 2.60
+ */
+GList *
+g_resolver_lookup_by_name_with_flags (GResolver                 *resolver,
+                                      const gchar               *hostname,
+                                      GResolverNameLookupFlags   flags,
+                                      GCancellable              *cancellable,
+                                      GError                   **error)
+{
+  return lookup_by_name_real (resolver,
+                              hostname,
+                              flags,
+                              cancellable,
+                              error);
+}
+
+static void
+lookup_by_name_async_real (GResolver                *resolver,
+                           const gchar              *hostname,
+                           GResolverNameLookupFlags  flags,
+                           GCancellable             *cancellable,
+                           GAsyncReadyCallback       callback,
+                           gpointer                  user_data)
+{
+  gchar *ascii_hostname = NULL;
+  GList *addrs;
+  GError *error = NULL;
+
+  g_return_if_fail (G_IS_RESOLVER (resolver));
+  g_return_if_fail (hostname != NULL);
+  g_return_if_fail (!(flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY && flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY));
 
   /* Check if @hostname is just an IP address */
-  if (handle_ip_address (hostname, &addrs, error))
-    return addrs;
+  if (handle_ip_address (hostname, &addrs, &error))
+    {
+      GTask *task;
+
+      task = g_task_new (resolver, cancellable, callback, user_data);
+      g_task_set_source_tag (task, lookup_by_name_async_real);
+      if (addrs)
+        g_task_return_pointer (task, addrs, (GDestroyNotify) g_resolver_free_addresses);
+      else
+        g_task_return_error (task, error);
+      g_object_unref (task);
+      return;
+    }
 
   if (g_hostname_is_non_ascii (hostname))
     hostname = ascii_hostname = g_hostname_to_ascii (hostname);
 
   if (!hostname)
     {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+      GTask *task;
+
+      g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_FAILED,
                            _("Invalid hostname"));
-      return NULL;
+      task = g_task_new (resolver, cancellable, callback, user_data);
+      g_task_set_source_tag (task, lookup_by_name_async_real);
+      g_task_return_error (task, error);
+      g_object_unref (task);
+      return;
     }
 
   g_resolver_maybe_reload (resolver);
-  addrs = G_RESOLVER_GET_CLASS (resolver)->
-    lookup_by_name (resolver, hostname, cancellable, error);
+
+  if (flags != G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT)
+    {
+      if (G_RESOLVER_GET_CLASS (resolver)->lookup_by_name_with_flags_async == NULL)
+        {
+          GTask *task;
+
+          g_set_error (&error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       /* Translators: The placeholder is for a function name. */
+                       _("%s not implemented"), "lookup_by_name_with_flags_async");
+          task = g_task_new (resolver, cancellable, callback, user_data);
+          g_task_set_source_tag (task, lookup_by_name_async_real);
+          g_task_return_error (task, error);
+          g_object_unref (task);
+        }
+      else
+        G_RESOLVER_GET_CLASS (resolver)->
+          lookup_by_name_with_flags_async (resolver, hostname, flags, cancellable, callback, user_data);
+    }
+  else
+    G_RESOLVER_GET_CLASS (resolver)->
+      lookup_by_name_async (resolver, hostname, cancellable, callback, user_data);
+
+  g_free (ascii_hostname);
+}
+
+static GList *
+lookup_by_name_finish_real (GResolver     *resolver,
+                            GAsyncResult  *result,
+                            GError       **error,
+                            gboolean       with_flags)
+{
+  GList *addrs;
+
+  g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  if (g_async_result_legacy_propagate_error (result, error))
+    return NULL;
+  else if (g_async_result_is_tagged (result, lookup_by_name_async_real))
+    {
+      /* Handle the stringified-IP-addr case */
+      return g_task_propagate_pointer (G_TASK (result), error);
+    }
+
+  if (with_flags)
+    {
+      g_assert (G_RESOLVER_GET_CLASS (resolver)->lookup_by_name_with_flags_finish != NULL);
+      addrs = G_RESOLVER_GET_CLASS (resolver)->
+        lookup_by_name_with_flags_finish (resolver, result, error);
+    }
+  else
+    addrs = G_RESOLVER_GET_CLASS (resolver)->
+      lookup_by_name_finish (resolver, result, error);
 
   remove_duplicates (addrs);
 
-  g_free (ascii_hostname);
   return addrs;
+}
+
+/**
+ * g_resolver_lookup_by_name_with_flags_async:
+ * @resolver: a #GResolver
+ * @hostname: the hostname to look up the address of
+ * @flags: extra #GResolverNameLookupFlags for the lookup
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @callback: (scope async): callback to call after resolution completes
+ * @user_data: (closure): data for @callback
+ *
+ * Begins asynchronously resolving @hostname to determine its
+ * associated IP address(es), and eventually calls @callback, which
+ * must call g_resolver_lookup_by_name_with_flags_finish() to get the result.
+ * See g_resolver_lookup_by_name() for more details.
+ *
+ * Since: 2.60
+ */
+void
+g_resolver_lookup_by_name_with_flags_async (GResolver                *resolver,
+                                            const gchar              *hostname,
+                                            GResolverNameLookupFlags  flags,
+                                            GCancellable             *cancellable,
+                                            GAsyncReadyCallback       callback,
+                                            gpointer                  user_data)
+{
+  lookup_by_name_async_real (resolver,
+                             hostname,
+                             flags,
+                             cancellable,
+                             callback,
+                             user_data);
 }
 
 /**
@@ -443,49 +650,12 @@ g_resolver_lookup_by_name_async (GResolver           *resolver,
                                  GAsyncReadyCallback  callback,
                                  gpointer             user_data)
 {
-  gchar *ascii_hostname = NULL;
-  GList *addrs;
-  GError *error = NULL;
-
-  g_return_if_fail (G_IS_RESOLVER (resolver));
-  g_return_if_fail (hostname != NULL);
-
-  /* Check if @hostname is just an IP address */
-  if (handle_ip_address (hostname, &addrs, &error))
-    {
-      GTask *task;
-
-      task = g_task_new (resolver, cancellable, callback, user_data);
-      g_task_set_source_tag (task, g_resolver_lookup_by_name_async);
-      if (addrs)
-        g_task_return_pointer (task, addrs, (GDestroyNotify) g_resolver_free_addresses);
-      else
-        g_task_return_error (task, error);
-      g_object_unref (task);
-      return;
-    }
-
-  if (g_hostname_is_non_ascii (hostname))
-    hostname = ascii_hostname = g_hostname_to_ascii (hostname);
-
-  if (!hostname)
-    {
-      GTask *task;
-
-      g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                           _("Invalid hostname"));
-      task = g_task_new (resolver, cancellable, callback, user_data);
-      g_task_set_source_tag (task, g_resolver_lookup_by_name_async);
-      g_task_return_error (task, error);
-      g_object_unref (task);
-      return;
-    }
-
-  g_resolver_maybe_reload (resolver);
-  G_RESOLVER_GET_CLASS (resolver)->
-    lookup_by_name_async (resolver, hostname, cancellable, callback, user_data);
-
-  g_free (ascii_hostname);
+  lookup_by_name_async_real (resolver,
+                             hostname,
+                             0,
+                             cancellable,
+                             callback,
+                             user_data);
 }
 
 /**
@@ -512,24 +682,40 @@ g_resolver_lookup_by_name_finish (GResolver     *resolver,
                                   GAsyncResult  *result,
                                   GError       **error)
 {
-  GList *addrs;
+  return lookup_by_name_finish_real (resolver,
+                                     result,
+                                     error,
+                                     FALSE);
+}
 
-  g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
-
-  if (g_async_result_legacy_propagate_error (result, error))
-    return NULL;
-  else if (g_async_result_is_tagged (result, g_resolver_lookup_by_name_async))
-    {
-      /* Handle the stringified-IP-addr case */
-      return g_task_propagate_pointer (G_TASK (result), error);
-    }
-
-  addrs = G_RESOLVER_GET_CLASS (resolver)->
-    lookup_by_name_finish (resolver, result, error);
-
-  remove_duplicates (addrs);
-
-  return addrs;
+/**
+ * g_resolver_lookup_by_name_with_flags_finish:
+ * @resolver: a #GResolver
+ * @result: the result passed to your #GAsyncReadyCallback
+ * @error: return location for a #GError, or %NULL
+ *
+ * Retrieves the result of a call to
+ * g_resolver_lookup_by_name_with_flags_async().
+ *
+ * If the DNS resolution failed, @error (if non-%NULL) will be set to
+ * a value from #GResolverError. If the operation was cancelled,
+ * @error will be set to %G_IO_ERROR_CANCELLED.
+ *
+ * Returns: (element-type GInetAddress) (transfer full): a #GList
+ * of #GInetAddress, or %NULL on error. See g_resolver_lookup_by_name()
+ * for more details.
+ *
+ * Since: 2.60
+ */
+GList *
+g_resolver_lookup_by_name_with_flags_finish (GResolver     *resolver,
+                                             GAsyncResult  *result,
+                                             GError       **error)
+{
+  return lookup_by_name_finish_real (resolver,
+                                     result,
+                                     error,
+                                     TRUE);
 }
 
 /**

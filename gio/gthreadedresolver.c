@@ -3,6 +3,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
  * Copyright (C) 2008 Red Hat, Inc.
+ * Copyright (C) 2018 Igalia S.L.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -63,7 +64,27 @@ g_resolver_error_from_addrinfo_error (gint err)
     }
 }
 
-static struct addrinfo addrinfo_hints;
+typedef struct {
+  char *hostname;
+  int address_family;
+} LookupData;
+
+static LookupData *
+lookup_data_new (const char *hostname,
+                 int         address_family)
+{
+  LookupData *data = g_new (LookupData, 1);
+  data->hostname = g_strdup (hostname);
+  data->address_family = address_family;
+  return data;
+}
+
+static void
+lookup_data_free (LookupData *data)
+{
+  g_free (data->hostname);
+  g_free (data);
+}
 
 static void
 do_lookup_by_name (GTask         *task,
@@ -71,11 +92,24 @@ do_lookup_by_name (GTask         *task,
                    gpointer       task_data,
                    GCancellable  *cancellable)
 {
-  const char *hostname = task_data;
+  LookupData *lookup_data = task_data;
+  const char *hostname = lookup_data->hostname;
   struct addrinfo *res = NULL;
   GList *addresses;
   gint retval;
+  struct addrinfo addrinfo_hints = { 0 };
 
+#ifdef AI_ADDRCONFIG
+  addrinfo_hints.ai_flags = AI_ADDRCONFIG;
+#endif
+  /* socktype and protocol don't actually matter, they just get copied into the
+  * returned addrinfo structures (and then we ignore them). But if
+  * we leave them unset, we'll get back duplicate answers.
+  */
+  addrinfo_hints.ai_socktype = SOCK_STREAM;
+  addrinfo_hints.ai_protocol = IPPROTO_TCP;
+
+  addrinfo_hints.ai_family = lookup_data->address_family;
   retval = getaddrinfo (hostname, NULL, &addrinfo_hints, &res);
 
   if (retval == 0)
@@ -139,10 +173,53 @@ lookup_by_name (GResolver     *resolver,
 {
   GTask *task;
   GList *addresses;
+  LookupData *data;
 
+  data = lookup_data_new (hostname, AF_UNSPEC);
   task = g_task_new (resolver, cancellable, NULL, NULL);
   g_task_set_source_tag (task, lookup_by_name);
-  g_task_set_task_data (task, g_strdup (hostname), g_free);
+  g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
+  g_task_set_return_on_cancel (task, TRUE);
+  g_task_run_in_thread_sync (task, do_lookup_by_name);
+  addresses = g_task_propagate_pointer (task, error);
+  g_object_unref (task);
+
+  return addresses;
+}
+
+static int
+flags_to_family (GResolverNameLookupFlags flags)
+{
+  int address_family = AF_UNSPEC;
+
+  if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY)
+    address_family = AF_INET;
+
+  if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY)
+    {
+      address_family = AF_INET6;
+      /* You can only filter by one family at a time */
+      g_return_val_if_fail (!(flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY), address_family);
+    }
+
+  return address_family;
+}
+
+static GList *
+lookup_by_name_with_flags (GResolver                 *resolver,
+                           const gchar               *hostname,
+                           GResolverNameLookupFlags   flags,
+                           GCancellable              *cancellable,
+                           GError                   **error)
+{
+  GTask *task;
+  GList *addresses;
+  LookupData *data;
+
+  data = lookup_data_new (hostname, AF_UNSPEC);
+  task = g_task_new (resolver, cancellable, NULL, NULL);
+  g_task_set_source_tag (task, lookup_by_name_with_flags);
+  g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread_sync (task, do_lookup_by_name);
   addresses = g_task_propagate_pointer (task, error);
@@ -152,20 +229,38 @@ lookup_by_name (GResolver     *resolver,
 }
 
 static void
+lookup_by_name_with_flags_async (GResolver                *resolver,
+                                 const gchar              *hostname,
+                                 GResolverNameLookupFlags  flags,
+                                 GCancellable             *cancellable,
+                                 GAsyncReadyCallback       callback,
+                                 gpointer                  user_data)
+{
+  GTask *task;
+  LookupData *data;
+
+  data = lookup_data_new (hostname, flags_to_family (flags));
+  task = g_task_new (resolver, cancellable, callback, user_data);
+  g_task_set_source_tag (task, lookup_by_name_with_flags_async);
+  g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
+  g_task_set_return_on_cancel (task, TRUE);
+  g_task_run_in_thread (task, do_lookup_by_name);
+  g_object_unref (task);
+}
+
+static void
 lookup_by_name_async (GResolver           *resolver,
                       const gchar         *hostname,
                       GCancellable        *cancellable,
                       GAsyncReadyCallback  callback,
                       gpointer             user_data)
 {
-  GTask *task;
-
-  task = g_task_new (resolver, cancellable, callback, user_data);
-  g_task_set_source_tag (task, lookup_by_name_async);
-  g_task_set_task_data (task, g_strdup (hostname), g_free);
-  g_task_set_return_on_cancel (task, TRUE);
-  g_task_run_in_thread (task, do_lookup_by_name);
-  g_object_unref (task);
+  lookup_by_name_with_flags_async (resolver,
+                                   hostname,
+                                   G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT,
+                                   cancellable,
+                                   callback,
+                                   user_data);
 }
 
 static GList *
@@ -178,6 +273,15 @@ lookup_by_name_finish (GResolver     *resolver,
   return g_task_propagate_pointer (G_TASK (result), error);
 }
 
+static GList *
+lookup_by_name_with_flags_finish (GResolver     *resolver,
+                                  GAsyncResult  *result,
+                                  GError       **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, resolver), NULL);
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+}
 
 static void
 do_lookup_by_address (GTask         *task,
@@ -970,24 +1074,16 @@ g_threaded_resolver_class_init (GThreadedResolverClass *threaded_class)
 {
   GResolverClass *resolver_class = G_RESOLVER_CLASS (threaded_class);
 
-  resolver_class->lookup_by_name           = lookup_by_name;
-  resolver_class->lookup_by_name_async     = lookup_by_name_async;
-  resolver_class->lookup_by_name_finish    = lookup_by_name_finish;
-  resolver_class->lookup_by_address        = lookup_by_address;
-  resolver_class->lookup_by_address_async  = lookup_by_address_async;
-  resolver_class->lookup_by_address_finish = lookup_by_address_finish;
-  resolver_class->lookup_records           = lookup_records;
-  resolver_class->lookup_records_async     = lookup_records_async;
-  resolver_class->lookup_records_finish    = lookup_records_finish;
-
-  /* Initialize addrinfo_hints */
-#ifdef AI_ADDRCONFIG
-  addrinfo_hints.ai_flags |= AI_ADDRCONFIG;
-#endif
-  /* These two don't actually matter, they just get copied into the
-   * returned addrinfo structures (and then we ignore them). But if
-   * we leave them unset, we'll get back duplicate answers.
-   */
-  addrinfo_hints.ai_socktype = SOCK_STREAM;
-  addrinfo_hints.ai_protocol = IPPROTO_TCP;
+  resolver_class->lookup_by_name                   = lookup_by_name;
+  resolver_class->lookup_by_name_async             = lookup_by_name_async;
+  resolver_class->lookup_by_name_finish            = lookup_by_name_finish;
+  resolver_class->lookup_by_name_with_flags        = lookup_by_name_with_flags;
+  resolver_class->lookup_by_name_with_flags_async  = lookup_by_name_with_flags_async;
+  resolver_class->lookup_by_name_with_flags_finish = lookup_by_name_with_flags_finish;
+  resolver_class->lookup_by_address                = lookup_by_address;
+  resolver_class->lookup_by_address_async          = lookup_by_address_async;
+  resolver_class->lookup_by_address_finish         = lookup_by_address_finish;
+  resolver_class->lookup_records                   = lookup_records;
+  resolver_class->lookup_records_async             = lookup_records_async;
+  resolver_class->lookup_records_finish            = lookup_records_finish;
 }
