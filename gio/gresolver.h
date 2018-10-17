@@ -1,6 +1,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
  * Copyright (C) 2008 Red Hat, Inc.
+ * Copyright © 2018 Igalia S.L.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,6 +43,20 @@ struct _GResolver {
 
   GResolverPrivate *priv;
 };
+
+/**
+ * GResolverNameLookupFlags:
+ * @G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT: lookup behavior is unchanged
+ * @G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY: only resolve ipv4 addresses
+ * @G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY: only resolve ipv6 addresses
+ *
+ * Flags to modify lookup behavior.
+ */
+typedef enum {
+  G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT = 0,
+  G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY = 1 << 0,
+  G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY = 1 << 1,
+} GResolverNameLookupFlags;
 
 struct _GResolverClass {
   GObjectClass parent_class;
@@ -105,11 +120,20 @@ struct _GResolverClass {
   GList * ( *lookup_records_finish)    (GResolver            *resolver,
                                         GAsyncResult         *result,
                                         GError              **error);
-
-  /* Padding for future expansion */
-  void (*_g_reserved4) (void);
-  void (*_g_reserved5) (void);
-  void (*_g_reserved6) (void);
+  void    ( *lookup_by_name_with_flags_async)  (GResolver               *resolver,
+                                                const gchar             *hostname,
+                                                GResolverNameLookupFlags flags,
+                                                GCancellable            *cancellable,
+                                                GAsyncReadyCallback      callback,
+                                                gpointer                 user_data);
+  GList * ( *lookup_by_name_with_flags_finish) (GResolver               *resolver,
+                                                GAsyncResult            *result,
+                                                GError                 **error);
+  GList * ( *lookup_by_name_with_flags)        (GResolver               *resolver,
+                                                const gchar             *hostname,
+                                                GResolverNameLookupFlags flags,
+                                                GCancellable            *cancellable,
+                                                GError                 **error);
 
 };
 
@@ -135,7 +159,23 @@ GLIB_AVAILABLE_IN_ALL
 GList     *g_resolver_lookup_by_name_finish     (GResolver            *resolver,
 						 GAsyncResult         *result,
 						 GError              **error);
-
+GLIB_AVAILABLE_IN_2_60
+void       g_resolver_lookup_by_name_with_flags_async  (GResolver               *resolver,
+                                                        const gchar             *hostname,
+                                                        GResolverNameLookupFlags flags,
+                                                        GCancellable            *cancellable,
+                                                        GAsyncReadyCallback      callback,
+                                                        gpointer                 user_data);
+GLIB_AVAILABLE_IN_2_60
+GList     *g_resolver_lookup_by_name_with_flags_finish (GResolver               *resolver,
+                                                        GAsyncResult            *result,
+                                                        GError                 **error);
+GLIB_AVAILABLE_IN_2_60
+GList     *g_resolver_lookup_by_name_with_flags        (GResolver            *resolver,
+                                                        const gchar          *hostname,
+                                                        GResolverNameLookupFlags flags,
+                                                        GCancellable         *cancellable,
+                                                        GError              **error);
 GLIB_AVAILABLE_IN_ALL
 void       g_resolver_free_addresses            (GList                *addresses);
 
