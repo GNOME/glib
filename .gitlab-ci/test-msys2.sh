@@ -44,7 +44,7 @@ ninja
 
 "${LCOV}" \
     --quiet \
-    --config-file .gitlab-ci/lcovrc \
+    --config-file "${DIR}"/.gitlab-ci/lcovrc \
     --directory "${DIR}/_build" \
     --capture \
     --initial \
@@ -55,7 +55,7 @@ meson test --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} || true
 
 "${LCOV}" \
     --quiet \
-    --config-file .gitlab-ci/lcovrc \
+    --config-file "${DIR}"/.gitlab-ci/lcovrc \
     --directory "${DIR}/_build" \
     --capture \
     --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"
