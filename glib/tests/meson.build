@@ -118,6 +118,7 @@ glib_tests = {
     'source' : '1bit-mutex.c',
     'c_args' : ['-DTEST_EMULATED_FUTEX'],
     'install' : false,
+    'suite' : ['slow'],
   },
   '642026' : {
     'suite' : ['slow'],
