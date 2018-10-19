@@ -84,8 +84,8 @@ meson --cross_file cross_file.txt builddir
            overridden by setting the
            <literal>have_<replaceable>function</replaceable></literal> property
            to <constant>true</constant> or <constant>false</constant>.
-           For example <programlisting>Checking for function "alloca" : YES</programlisting>
-           can be overridden by setting <programlisting>have_alloca = false</programlisting>
+           For example <programlisting>Checking for function "fsync" : YES</programlisting>
+           can be overridden by setting <programlisting>have_fsync = false</programlisting>
         </para>
       </formalpara>
       <formalpara>

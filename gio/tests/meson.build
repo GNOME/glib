@@ -5,6 +5,10 @@ common_gio_tests_deps = [
   libgio_dep,
 ]
 
+if host_machine.system() == 'windows'
+  common_gio_tests_deps += [iphlpapi_dep, winsock2, cc.find_library ('secur32')]
+endif
+
 subdir('gdbus-object-manager-example')
 
 gengiotypefuncs_prog = find_program('gengiotypefuncs.py')
@@ -75,6 +79,7 @@ gio_tests = [{
 test_extra_programs = [{
   'gdbus-connection-flush-helper' : {},
   'gdbus-testserver' : {},
+  'gsubprocess-testprog' : {},
 }]
 
 test_env = environment()
@@ -139,9 +144,11 @@ if host_machine.system() != 'windows'
     gio_tests += [{
       'appinfo' : {
         'install' : false,
+        'is_parallel' : false,
       },
       'desktop-app-info' : {
         'install' : false,
+        'is_parallel' : false,
       },
     }]
   endif
@@ -221,7 +228,10 @@ if host_machine.system() != 'windows'
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
       },
-      'gmenumodel' : {'extra_sources' : extra_sources},
+      'gmenumodel' : {
+        'extra_sources' : extra_sources,
+        'suite' : ['slow'],
+      },
       'gnotification' : {
         'extra_sources' : [extra_sources, 'gnotification-server.c'],
       },
@@ -246,9 +256,10 @@ if host_machine.system() != 'windows'
 
   # This test is currently unreliable
   executable('gdbus-overflow', 'gdbus-overflow.c',
-      install : false,
       c_args : test_c_args,
-      dependencies : common_gio_tests_deps)
+      dependencies : common_gio_tests_deps,
+      install_dir : installed_tests_execdir,
+      install : installed_tests_enabled)
 
   gio_tests += [{
     'gdbus-connection-flush' : {
@@ -310,7 +321,6 @@ test_extra_programs += [{
   'gdbus-example-subtree' : {'install' : false},
   'gdbus-example-watch-name' : {'install' : false},
   'gdbus-example-watch-proxy' : {'install' : false},
-  'gsubprocess-testprog' : {'install' : false},
   'httpd' : {'install' : false},
   'proxy' : {'install' : false},
   'resolver' : {'install' : false},
@@ -320,21 +330,26 @@ test_extra_programs += [{
     'extra_sources' : ['gtlsconsoleinteraction.c'],
     'install' : false,
   },
-  # These three are manual-run tests because they need a session bus but don't bring one up themselves
-  # FIXME: these build but don't seem to work!
-  'gdbus-example-objectmanager-client' : {
-    'dependencies' : [libgdbus_example_objectmanager_dep],
-    'install' : false,
-  },
-  'gdbus-example-objectmanager-server' : {
-    'dependencies' : [libgdbus_example_objectmanager_dep],
-    'install' : false,
-  },
-  'gdbus-test-fixture' : {
-    'dependencies' : [libgdbus_example_objectmanager_dep],
-    'install' : false,
-  },
 }]
+
+if cc.get_id() != 'msvc'
+  test_extra_programs += [{
+    # These three are manual-run tests because they need a session bus but don't bring one up themselves
+    # FIXME: these build but don't seem to work!
+    'gdbus-example-objectmanager-client' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install' : false,
+    },
+    'gdbus-example-objectmanager-server' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install' : false,
+    },
+    'gdbus-test-fixture' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install' : false,
+    },
+  }]
+endif
 
 if host_machine.system() != 'windows'
   test_extra_programs += [{
@@ -342,6 +357,25 @@ if host_machine.system() != 'windows'
       'install' : false,
     },
   }]
+endif
+
+if installed_tests_enabled
+  install_data(
+    'contexts.c',
+    'g-icon.c',
+    'appinfo-test-actions.desktop',
+    'appinfo-test-gnome.desktop',
+    'appinfo-test-notgnome.desktop',
+    'appinfo-test.desktop',
+    'appinfo-test2.desktop',
+    'file.c',
+    'org.gtk.test.dbusappinfo.desktop',
+    install_dir : installed_tests_execdir,
+  )
+  install_subdir('x-content', install_dir : installed_tests_execdir)
+  install_subdir('desktop-files', install_dir : installed_tests_execdir)
+  install_subdir('thumbnails', install_dir : installed_tests_execdir)
+  install_subdir('cert-tests', install_dir : installed_tests_execdir)
 endif
 
 if not meson.is_cross_build() or meson.has_exe_wrapper()
@@ -356,14 +390,12 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--c-name', '_g_plugin',
                '@INPUT@'])
 
-  if host_system == 'windows'
-    resource_plugin_platform_link_args = ['-no-undefined']
-  else
-    resource_plugin_platform_link_args = []
-  endif
-  shared_module ('resourceplugin', 'resourceplugin.c', plugin_resources_c,
-    link_args : export_dynamic_ldflags + resource_plugin_platform_link_args,
-    dependencies : common_gio_tests_deps)
+  shared_module('resourceplugin', 'resourceplugin.c', plugin_resources_c,
+    link_args : export_dynamic_ldflags,
+    dependencies : common_gio_tests_deps,
+    install_dir : installed_tests_execdir,
+    install : installed_tests_enabled
+  )
 
   test_gresource = custom_target('test.gresource',
     input : 'test.gresource.xml',
@@ -372,7 +404,9 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
                '--sourcedir=' + meson.current_build_dir(),
-               '@INPUT@'])
+               '@INPUT@'],
+    install_dir : installed_tests_execdir,
+    install : installed_tests_enabled)
 
   test_resources2_c = custom_target('test_resources2.c',
     input : 'test3.gresource.xml',
@@ -431,7 +465,7 @@ foreach test_dict : gio_tests
       test_conf.set('installed_tests_dir', installed_tests_execdir)
       test_conf.set('program', test_name)
       configure_file(
-        input: installed_tests_template,
+        input: installed_tests_template_tap,
         output: test_name + '.test',
         install_dir: installed_tests_metadir,
         configuration: test_conf
@@ -447,7 +481,13 @@ foreach test_dict : gio_tests
 
     suite = ['gio'] + extra_args.get('suite', [])
     timeout = suite.contains('slow') ? 120 : 30
-    test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
+    test(test_name, exe,
+      env : test_env,
+      timeout : timeout,
+      suite : suite,
+      args : ['--tap'],
+      is_parallel : extra_args.get('is_parallel', true),
+    )
   endforeach
 endforeach
 

@@ -253,7 +253,7 @@ will be appended to the template's <literal>file-tail</literal> section.
 <varlistentry>
 <term><option>--eprod</option> <replaceable>TEXT</replaceable></term>
 <listitem><para>
-Emits <replaceable>TEXT</replaceable> everytime an enum is encountered
+Emits <replaceable>TEXT</replaceable> every time an enum is encountered
 in the input files.
 </para></listitem>
 </varlistentry>
@@ -333,7 +333,7 @@ where section may be <literal>file-header</literal>,
 <varlistentry>
 <term><option>--identifier-prefix</option> <replaceable>PREFIX</replaceable></term>
 <listitem><para>
-Indicates what portion of the enum name should be intepreted as the
+Indicates what portion of the enum name should be interpreted as the
 prefix (eg, the "<literal>Gtk</literal>" in
 "<literal>GtkDirectionType</literal>"). Normally this will be figured
 out automatically, but you may need to override the default if your

@@ -477,7 +477,6 @@ AS_IF([test "$glib_native_win32" = "yes"], [
 AM_CONDITIONAL(OS_WIN32_AND_DLL_COMPILATION, [test x$glib_native_win32 = xyes -a x$glib_win32_static_compilation != xyes])
 
 # Checks for library functions.
-AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2 issetugid)
 AC_CHECK_FUNCS(timegm gmtime_r posix_spawn)
 AC_FUNC_STRERROR_R()
@@ -533,8 +532,6 @@ AS_IF([test x$ac_cv_sizeof_long_long = x8], [
 	  AC_MSG_RESULT(%${glib_cv_long_long_format}u)
 	], [AC_MSG_RESULT(none)])
 ])
-
-AC_C_CONST
 
 dnl
 dnl check in which direction the stack grows
@@ -641,6 +638,8 @@ AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h 
 AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
 AC_CHECK_HEADERS([linux/magic.h])
 AC_CHECK_HEADERS([termios.h])
+AC_CHECK_HEADERS([alloca.h])
+AC_CHECK_HEADERS([spawn.h])
 
 # Some versions of MSC lack these
 AC_CHECK_HEADERS([dirent.h sys/time.h])
@@ -1788,9 +1787,13 @@ fi
 ])
 
 if test x$have_libmount = xyes; then
+  LIBMOUNT_REQUIRES="mount >= 2.23"
   AC_DEFINE(HAVE_LIBMOUNT, 1, [Define if libmount is available])
+else
+  LIBMOUNT_REQUIRES=""
 fi
 AM_CONDITIONAL(HAVE_LIBMOUNT, [test x$have_libmount = xyes])
+AC_SUBST([LIBMOUNT_REQUIRES])
 
 dnl ****************************************
 dnl *** platform dependent source checks ***
@@ -1855,7 +1858,7 @@ FUNC_NO_LOCALTIME_R="the 'g_date_set_time' function will not be MT-safe
 
 AIX_COMPILE_INFO="AIX's C compiler needs to be called by a different name, when
 		linking threaded applications. As GLib cannot do that 
-		automatically, you will get an linkg error everytime you are 
+		automatically, you will get an linking error every time you are
 		not using the right compiler. In that case you have to relink 
 		with the right compiler. Ususally just '_r' is appended 
 		to the compiler name."
@@ -2985,10 +2988,8 @@ _______EOF
 # on variable expansion in case labels.  Look at the generated config.status
 # for a hint.
 
-if test "x${ac_cv_working_alloca_h+set}" = xset ; then
-  glib_header_alloca_h="$ac_cv_working_alloca_h"
-else
-  glib_header_alloca_h="$ac_cv_header_alloca_h"
+if test x$ac_cv_header_alloca_h = xyes ; then
+  glib_header_alloca_h=yes
 fi
 
 if test x$enable_included_printf = xyes ; then
@@ -3412,7 +3413,7 @@ AS_IF([test "x$enable_compile_warnings" != xno], [
    -Wno-bad-function-cast \
    -Werror=declaration-after-statement \
    -Werror=missing-prototypes -Werror=implicit-function-declaration \
-   -Werror=pointer-arith -Werror=init-self -Werror=format-security \
+   -Werror=pointer-arith -Werror=init-self \
    -Werror=format=2 -Werror=missing-include-dirs])
 ])
 AC_SUBST(GLIB_WARN_CFLAGS)

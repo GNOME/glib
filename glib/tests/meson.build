@@ -129,6 +129,21 @@ glib_tests = {
   },
 }
 
+if installed_tests_enabled
+  install_data(
+    'keyfiletest.ini',
+    'pages.ini',
+    'keyfile.c',
+    'empty',
+    '4096-random-bytes',
+    'echo-script',
+    'echo-script.bat',
+    install_dir : installed_tests_execdir,
+  )
+  install_subdir('bookmarks', install_dir : installed_tests_execdir)
+  install_subdir('markups', install_dir : installed_tests_execdir)
+endif
+
 # Not entirely random of course, but at least it changes over time
 random_number = minor_version + meson.version().split('.').get(1).to_int()
 
@@ -155,7 +170,7 @@ foreach test_name, extra_args : glib_tests
       test_conf.set('installed_tests_dir', installed_tests_execdir)
       test_conf.set('program', test_name)
       configure_file(
-        input: installed_tests_template,
+        input: installed_tests_template_tap,
         output: test_name + '.test',
         install_dir: installed_tests_metadir,
         configuration: test_conf
@@ -171,7 +186,8 @@ foreach test_name, extra_args : glib_tests
 
     suite = ['glib'] + extra_args.get('suite', [])
     timeout = suite.contains('slow') ? 120 : 30
-    test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
+    test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
+      args : ['--tap'])
   endif
 endforeach
 
