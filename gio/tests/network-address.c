@@ -1,4 +1,5 @@
 #include "config.h"
+#include "mock-resolver.h"
 
 #include <gio/gio.h>
 #include <gio/gnetworking.h>
@@ -416,6 +417,8 @@ test_loopback_sync (void)
 typedef struct {
   GList/*<owned GSocketAddress> */ *addrs;  /* owned */
   GMainLoop *loop;  /* owned */
+  guint delay_ms;
+  gint expected_error_code;
 } AsyncData;
 
 static void
@@ -430,7 +433,14 @@ got_addr (GObject *source_object, GAsyncResult *result, gpointer user_data)
   data = user_data;
 
   a = g_socket_address_enumerator_next_finish (enumerator, result, &error);
-  g_assert_no_error (error);
+
+  if (data->expected_error_code)
+    {
+      g_assert_error (error, G_IO_ERROR, data->expected_error_code);
+      g_error_free (error);
+    }
+  else
+    g_assert_no_error (error);
 
   if (a == NULL)
     {
@@ -442,6 +452,9 @@ got_addr (GObject *source_object, GAsyncResult *result, gpointer user_data)
     {
       g_assert (G_IS_INET_SOCKET_ADDRESS (a));
       data->addrs = g_list_prepend (data->addrs, a);
+
+      if (data->delay_ms)
+        g_usleep (data->delay_ms * 1000);
 
       g_socket_address_enumerator_next_async (enumerator, NULL,
                                               got_addr, user_data);
@@ -515,6 +528,216 @@ test_to_string (void)
   g_object_unref (addr);
 }
 
+static ResolveTest he_ipv4_addresses[] = {
+  {.input="1.1.1.1",},
+  {.input="2.2.2.2",},
+};
+
+static ResolveTest he_ipv6_addresses[] = {
+  {.input="ff::11",},
+  {.input="ff::22",},
+};
+
+static void
+assert_list_contains (GList *list, GInetAddress *address)
+{
+  while (list)
+    {
+      if (g_inet_address_equal (list->data, address))
+        return;
+
+      list = g_list_next (list);
+    }
+
+  g_assert_not_reached ();
+}
+
+static void
+assert_list_matches_expected (GList *result, GList *expected)
+{
+  g_assert_cmpint (g_list_length (result), ==, g_list_length (expected));
+
+  while (result)
+    {
+      GInetAddress *address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (result->data));
+      assert_list_contains (expected, address);
+      result = g_list_next (result);
+    }
+}
+
+static void
+test_happy_eyeballs_async (void)
+{
+  GResolver *old_resolver;
+  MockResolver *mock;
+  GSocketConnectable *addr = NULL;  /* owned */
+  GSocketAddressEnumerator *enumerator = NULL;  /* owned */
+  AsyncData data = { 0 };
+  GList *input_ipv4_results = NULL;
+  GList *input_ipv6_results = NULL;
+  GList *input_all_results = NULL;
+  GError *ipv6_error = NULL;
+  GError *ipv4_error = NULL;
+  int i;
+
+  /* This test tries to reproduce some of the situations that
+   * RFC 8305 (Happy Eyeballs v2) is designed to handle.
+   */
+
+  /* Setup mock resolver. */
+  old_resolver = g_resolver_get_default ();
+  mock = mock_resolver_new ();
+  g_resolver_set_default (G_RESOLVER (mock));
+
+#define CLEANUP() G_STMT_START { \
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref); \
+  g_clear_object (&enumerator); \
+  g_clear_object (&addr); \
+  addr = g_network_address_new ("test.fake", 80); \
+  enumerator = g_socket_connectable_enumerate (addr); \
+  data.addrs = NULL; \
+  data.delay_ms = 0; \
+  data.expected_error_code = 0; \
+  g_clear_error (&ipv4_error); \
+  g_clear_error (&ipv6_error); \
+  mock_resolver_set_ipv6_error (mock, NULL); \
+  mock_resolver_set_ipv4_error (mock, NULL); \
+  mock_resolver_set_ipv4_delay (mock, 0); \
+  mock_resolver_set_ipv6_delay (mock, 0); \
+} G_STMT_END
+
+  /* init */
+  CLEANUP ();
+  for (i = 0; i < G_N_ELEMENTS (he_ipv4_addresses); ++i)
+    {
+      GInetAddress *ipv4_addr = g_inet_address_new_from_string (he_ipv4_addresses[i].input);
+      GInetAddress *ipv6_addr = g_inet_address_new_from_string (he_ipv6_addresses[i].input);
+      input_ipv4_results = g_list_append (input_ipv4_results, ipv4_addr);
+      input_ipv6_results = g_list_append (input_ipv6_results, ipv6_addr);
+      input_all_results = g_list_append (input_all_results, ipv4_addr);
+      input_all_results = g_list_append (input_all_results, ipv6_addr);
+    }
+  data.loop = g_main_loop_new (NULL, FALSE);
+  mock_resolver_set_ipv4_results (mock, input_ipv4_results);
+  mock_resolver_set_ipv6_results (mock, input_ipv6_results);
+
+  /* Sanity check first */
+  g_test_message ("Sanity check");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, input_all_results);
+  CLEANUP ();
+
+  /* If ipv4 dns response is a bit slow we just don't get them */
+  mock_resolver_set_ipv4_delay (mock, 25);
+  g_test_message ("Testing slow ipv4");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, input_ipv6_results);
+  CLEANUP ();
+
+  /* If ipv6 is a bit slow it waits for them */
+  mock_resolver_set_ipv6_delay (mock, 25);
+  g_test_message ("Testing slow ipv6");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, input_all_results);
+  CLEANUP ();
+
+  /* If ipv6 is very slow we don't get them */
+  mock_resolver_set_ipv6_delay (mock, 200);
+  g_test_message ("Testing very slow ipv6");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, input_ipv4_results);
+  CLEANUP ();
+
+  /* Even if the dns response is slow we still get them if our connection attempts
+   * take long enough. */
+  data.delay_ms = 500;
+  mock_resolver_set_ipv4_delay (mock, 200);
+  g_test_message ("Testing slow ipv4 and connection");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, input_all_results);
+  CLEANUP ();
+
+  /* If ipv6 fails we still get ipv4. */
+  ipv6_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv6 Broken");
+  mock_resolver_set_ipv6_error (mock, ipv6_error);
+  g_test_message ("Testing failing ipv6");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, input_ipv4_results);
+  CLEANUP ();
+
+  /* If ipv4 fails we still get ipv6. */
+  ipv4_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv4 Broken");
+  mock_resolver_set_ipv4_error (mock, ipv4_error);
+  g_test_message ("Testing failing ipv4");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, input_ipv6_results);
+  CLEANUP ();
+
+  /* If both fail we get an error. */
+  ipv4_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv4 Broken");
+  mock_resolver_set_ipv4_error (mock, ipv4_error);
+  ipv6_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv6 Broken");
+  mock_resolver_set_ipv6_error (mock, ipv6_error);
+  data.expected_error_code = G_IO_ERROR_TIMED_OUT;
+  g_test_message ("Testing failing ipv6 and ipv4");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, NULL);
+  CLEANUP ();
+
+  /* The same with some different timings */
+  ipv4_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv4 Broken");
+  mock_resolver_set_ipv4_error (mock, ipv4_error);
+  mock_resolver_set_ipv4_delay (mock, 25);
+  ipv6_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv6 Broken");
+  mock_resolver_set_ipv6_error (mock, ipv6_error);
+  data.expected_error_code = G_IO_ERROR_TIMED_OUT;
+  g_test_message ("Testing failing ipv6 and slow ipv4");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, NULL);
+  CLEANUP ();
+
+  ipv4_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv4 Broken");
+  mock_resolver_set_ipv4_error (mock, ipv4_error);
+  ipv6_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv6 Broken");
+  mock_resolver_set_ipv6_error (mock, ipv6_error);
+  mock_resolver_set_ipv6_delay (mock, 25);
+  data.expected_error_code = G_IO_ERROR_TIMED_OUT;
+  g_test_message ("Testing failing ipv6 and slow ipv4");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, NULL);
+  CLEANUP ();
+
+  ipv4_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv4 Broken");
+  mock_resolver_set_ipv4_error (mock, ipv4_error);
+  ipv6_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv6 Broken");
+  mock_resolver_set_ipv6_error (mock, ipv6_error);
+  mock_resolver_set_ipv6_delay (mock, 200);
+  data.expected_error_code = G_IO_ERROR_TIMED_OUT;
+  g_test_message ("Testing failing and slow ipv6 and ipv4");
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+  g_main_loop_run (data.loop);
+  assert_list_matches_expected (data.addrs, NULL);
+  CLEANUP ();
+
+  g_main_loop_unref (data.loop);
+  g_list_free_full (input_all_results, g_object_unref);
+  g_list_free (input_ipv4_results);
+  g_list_free (input_ipv6_results);
+  g_resolver_set_default (old_resolver);
+  g_object_unref (old_resolver);
+  g_object_unref (mock);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -559,6 +782,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/network-address/loopback/sync", test_loopback_sync);
   g_test_add_func ("/network-address/loopback/async", test_loopback_async);
   g_test_add_func ("/network-address/to-string", test_to_string);
+
+  g_test_add_func ("/network-address/happy-eyeballs", test_happy_eyeballs_async);
 
   return g_test_run ();
 }
