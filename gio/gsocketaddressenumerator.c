@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2008 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -120,6 +120,8 @@ g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator *enumerato
  * Asynchronously retrieves the next #GSocketAddress from @enumerator
  * and then calls @callback, which must call
  * g_socket_address_enumerator_next_finish() to get the result.
+ *
+ * It is an error to call this multiple times before the first callback has finished.
  */
 void
 g_socket_address_enumerator_next_async (GSocketAddressEnumerator *enumerator,
