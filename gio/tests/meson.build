@@ -48,7 +48,7 @@ gio_tests = {
   'memory-output-stream' : {},
   'monitor' : {},
   'mount-operation' : {},
-  'network-address' : {},
+  'network-address' : {'extra_sources': ['mock-resolver.c']},
   'network-monitor' : {},
   'network-monitor-race' : {},
   'permission' : {},
