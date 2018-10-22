@@ -50,7 +50,6 @@ test_programs = \
 	memory-output-stream			\
 	monitor					\
 	mount-operation				\
-	network-address				\
 	network-monitor				\
 	network-monitor-race			\
 	permission				\
@@ -194,6 +193,12 @@ schema_tests = \
 	summary-xmllang-and-attrs.gschema.xml		\
 	wrong-category.gschema.xml			\
 	$(NULL)
+
+test_programs += network-address
+network_address_SOURCES = \
+	network-address.c \
+	mock-resolver.c \
+	mock-resolver.h
 
 test_programs += thumbnail-verification
 dist_test_data += $(thumbnail_data_files)
