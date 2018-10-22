@@ -3,6 +3,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
  * Copyright (C) 2008 Red Hat, Inc.
+ * Copyright (C) 2018 Igalia S.L.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -215,24 +216,29 @@ g_network_address_get_property (GObject    *object,
 
 }
 
+/*
+ * g_network_address_add_addresses:
+ * @addr: A #GNetworkAddress
+ * @addresses: (transfer full): List of #GSocketAddress
+ * @resolver_serial: Serial of #GResolver used
+ *
+ * Consumes address list and adds them to internal list.
+ */
 static void
-g_network_address_set_addresses (GNetworkAddress *addr,
+g_network_address_add_addresses (GNetworkAddress *addr,
                                  GList           *addresses,
                                  guint64          resolver_serial)
 {
   GList *a;
   GSocketAddress *sockaddr;
 
-  g_return_if_fail (addresses != NULL && addr->priv->sockaddrs == NULL);
-
   for (a = addresses; a; a = a->next)
     {
       sockaddr = g_inet_socket_address_new (a->data, addr->priv->port);
-      addr->priv->sockaddrs = g_list_prepend (addr->priv->sockaddrs, sockaddr);
+      addr->priv->sockaddrs = g_list_append (addr->priv->sockaddrs, sockaddr);
       g_object_unref (a->data);
     }
   g_list_free (addresses);
-  addr->priv->sockaddrs = g_list_reverse (addr->priv->sockaddrs);
 
   addr->priv->resolver_serial = resolver_serial;
 }
@@ -246,7 +252,7 @@ g_network_address_parse_sockaddr (GNetworkAddress *addr)
                                                     addr->priv->port);
   if (sockaddr)
     {
-      addr->priv->sockaddrs = g_list_prepend (addr->priv->sockaddrs, sockaddr);
+      addr->priv->sockaddrs = g_list_append (addr->priv->sockaddrs, sockaddr);
       return TRUE;
     }
   else
@@ -315,7 +321,7 @@ g_network_address_new_loopback (guint16 port)
 
   addrs = g_list_append (addrs, g_inet_address_new_loopback (AF_INET6));
   addrs = g_list_append (addrs, g_inet_address_new_loopback (AF_INET));
-  g_network_address_set_addresses (addr, addrs, 0);
+  g_network_address_add_addresses (addr, g_steal_pointer (&addrs), 0);
 
   return G_SOCKET_CONNECTABLE (addr);
 }
@@ -876,9 +882,13 @@ g_network_address_get_scheme (GNetworkAddress *addr)
 typedef struct {
   GSocketAddressEnumerator parent_instance;
 
-  GNetworkAddress *addr;
-  GList *addresses;
-  GList *next;
+  GNetworkAddress *addr; /* (owned) */
+  GList *addresses; /* (owned) (nullable) */
+  GList *current_item; /* (unowned) (nullable) */
+  GTask *queued_task; /* (owned) (nullable) */
+  GError *last_error; /* (owned) (nullable) */
+  GSource *wait_source; /* (owned) (nullable) */
+  GMainContext *context; /* (owned) (nullable) */
 } GNetworkAddressAddressEnumerator;
 
 typedef struct {
@@ -895,7 +905,16 @@ g_network_address_address_enumerator_finalize (GObject *object)
   GNetworkAddressAddressEnumerator *addr_enum =
     G_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (object);
 
+  if (addr_enum->wait_source)
+    {
+      g_source_destroy (addr_enum->wait_source);
+      g_clear_pointer (&addr_enum->wait_source, g_source_unref);
+    }
+  g_clear_object (&addr_enum->queued_task);
+  g_clear_error (&addr_enum->last_error);
   g_object_unref (addr_enum->addr);
+  g_clear_pointer (&addr_enum->addresses, g_list_free);
+  g_clear_pointer (&addr_enum->context, g_main_context_unref);
 
   G_OBJECT_CLASS (_g_network_address_address_enumerator_parent_class)->finalize (object);
 }
@@ -938,35 +957,35 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
               return NULL;
             }
 
-          g_network_address_set_addresses (addr, addresses, serial);
+          g_network_address_add_addresses (addr, g_steal_pointer (&addresses), serial);
         }
-          
+
       addr_enum->addresses = addr->priv->sockaddrs;
-      addr_enum->next = addr_enum->addresses;
+      addr_enum->current_item = addr_enum->addresses;
       g_object_unref (resolver);
     }
 
-  if (addr_enum->next == NULL)
+  if (addr_enum->current_item == NULL)
     return NULL;
 
-  sockaddr = addr_enum->next->data;
-  addr_enum->next = addr_enum->next->next;
+  sockaddr = addr_enum->current_item->data;
+  addr_enum->current_item = g_list_next (addr_enum->current_item);
   return g_object_ref (sockaddr);
 }
 
 static void
-have_addresses (GNetworkAddressAddressEnumerator *addr_enum,
-                GTask *task, GError *error)
+complete_queued_task (GNetworkAddressAddressEnumerator *addr_enum,
+                      GTask                            *task,
+                      GError                           *error)
 {
   GSocketAddress *sockaddr;
 
   addr_enum->addresses = addr_enum->addr->priv->sockaddrs;
-  addr_enum->next = addr_enum->addresses;
+  addr_enum->current_item = addr_enum->addresses;
 
-  if (addr_enum->next)
+  if (addr_enum->current_item)
     {
-      sockaddr = g_object_ref (addr_enum->next->data);
-      addr_enum->next = addr_enum->next->next;
+      sockaddr = g_object_ref (addr_enum->current_item->data);
     }
   else
     sockaddr = NULL;
@@ -978,28 +997,125 @@ have_addresses (GNetworkAddressAddressEnumerator *addr_enum,
   g_object_unref (task);
 }
 
-static void
-got_addresses (GObject      *source_object,
-               GAsyncResult *result,
-               gpointer      user_data)
+static int
+on_address_timeout (gpointer user_data)
 {
-  GTask *task = user_data;
-  GNetworkAddressAddressEnumerator *addr_enum = g_task_get_source_object (task);
+  GNetworkAddressAddressEnumerator *addr_enum = user_data;
+
+  /* If ipv6 didn't come in yet, just complete the task */
+  if (addr_enum->queued_task != NULL)
+    complete_queued_task (addr_enum, g_steal_pointer (&addr_enum->queued_task),
+                          g_steal_pointer (&addr_enum->last_error));
+
+  g_clear_pointer (&addr_enum->wait_source, g_source_unref);
+  return G_SOURCE_REMOVE;
+}
+
+static void
+got_ipv6_addresses (GObject      *source_object,
+                    GAsyncResult *result,
+                    gpointer      user_data)
+{
+  GNetworkAddressAddressEnumerator *addr_enum = user_data;
   GResolver *resolver = G_RESOLVER (source_object);
   GList *addresses;
   GError *error = NULL;
 
-  if (!addr_enum->addr->priv->sockaddrs)
+  addresses = g_resolver_lookup_by_name_with_flags_finish (resolver, result, &error);
+  if (!error)
     {
-      addresses = g_resolver_lookup_by_name_finish (resolver, result, &error);
-
-      if (!error)
-        {
-          g_network_address_set_addresses (addr_enum->addr, addresses,
-                                           g_resolver_get_serial (resolver));
-        }
+      /* Regardless of which responds first we add them to the enumerator
+       * which does mean the timing of next_async() will potentially change
+       * the results */
+      g_network_address_add_addresses (addr_enum->addr, g_steal_pointer (&addresses),
+                                       g_resolver_get_serial (resolver));
     }
-  have_addresses (addr_enum, task, error);
+  else
+    g_debug ("IPv6 DNS error: %s", error->message);
+
+  /* If ipv4 was first and waiting on us it can stop waiting */
+  if (addr_enum->wait_source)
+    {
+      g_source_destroy (addr_enum->wait_source);
+      g_clear_pointer (&addr_enum->wait_source, g_source_unref);
+    }
+
+  /* If we got an error before ipv4 then let it handle it.
+   * If we get ipv6 response first or error second then
+   * immediately complete the task.
+   */
+  if (error != NULL && !addr_enum->last_error)
+    {
+      addr_enum->last_error = g_steal_pointer (&error);
+
+      /* This shouldn't happen often but avoid never responding. */
+      addr_enum->wait_source = g_timeout_source_new_seconds (1);
+      g_source_set_callback (addr_enum->wait_source,
+                             on_address_timeout,
+                             addr_enum, NULL);
+      g_source_attach (addr_enum->wait_source, addr_enum->context);
+    }
+  else if (addr_enum->queued_task != NULL)
+    {
+      g_clear_error (&addr_enum->last_error);
+      complete_queued_task (addr_enum, g_steal_pointer (&addr_enum->queued_task),
+                            g_steal_pointer (&error));
+    }
+  else if (error != NULL)
+    g_clear_error (&error);
+
+  g_object_unref (addr_enum);
+}
+
+static void
+got_ipv4_addresses (GObject      *source_object,
+                    GAsyncResult *result,
+                    gpointer      user_data)
+{
+  GNetworkAddressAddressEnumerator *addr_enum = user_data;
+  GResolver *resolver = G_RESOLVER (source_object);
+  GList *addresses;
+  GError *error = NULL;
+
+  addresses = g_resolver_lookup_by_name_with_flags_finish (resolver, result, &error);
+  if (!error)
+    {
+      g_network_address_add_addresses (addr_enum->addr, g_steal_pointer (&addresses),
+                                       g_resolver_get_serial (resolver));
+    }
+  else
+    g_debug ("IPv4 DNS error: %s", error->message);
+
+  if (addr_enum->wait_source)
+    {
+      g_source_destroy (addr_enum->wait_source);
+      g_clear_pointer (&addr_enum->wait_source, g_source_unref);
+    }
+
+  /* If ipv6 already came in and errored then we return.
+   * If ipv6 returned successfully then we don't need to do anything.
+   * Otherwise we should wait a short while for ipv6 as RFC 8305 suggests.
+   */
+  if (addr_enum->last_error)
+    {
+      g_assert (addr_enum->queued_task);
+      g_clear_error (&addr_enum->last_error);
+      complete_queued_task (addr_enum, g_steal_pointer (&addr_enum->queued_task),
+                            g_steal_pointer (&error));
+    }
+  else if (addr_enum->queued_task != NULL)
+    {
+      addr_enum->last_error = g_steal_pointer (&error);
+      addr_enum->wait_source = g_timeout_source_new (50);
+      g_source_set_callback (addr_enum->wait_source,
+                             on_address_timeout,
+                             addr_enum, NULL);
+      g_source_attach (addr_enum->wait_source, addr_enum->context);
+    }
+  else if (error != NULL)
+    g_clear_error (&error);
+
+  g_object_unref (addr_enum);
 }
 
 static void
@@ -1012,6 +1128,7 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
     G_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (enumerator);
   GSocketAddress *sockaddr;
   GTask *task;
+  GNetworkAddress *addr = addr_enum->addr;
 
   task = g_task_new (addr_enum, cancellable, callback, user_data);
   g_task_set_source_tag (task, g_network_address_address_enumerator_next_async);
@@ -1030,30 +1147,43 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
           addr->priv->sockaddrs = NULL;
         }
 
-      if (!addr->priv->sockaddrs)
+      if (addr->priv->sockaddrs == NULL)
         {
           if (g_network_address_parse_sockaddr (addr))
-            have_addresses (addr_enum, task, NULL);
+            complete_queued_task (addr_enum, task, NULL);
           else
             {
-              g_resolver_lookup_by_name_async (resolver,
-                                               addr->priv->hostname,
-                                               cancellable,
-                                               got_addresses, task);
+              addr_enum->queued_task = g_steal_pointer (&task);
+              /* Lookup in parallel as per RFC 8305 */
+              g_resolver_lookup_by_name_with_flags_async (resolver,
+                                                          addr->priv->hostname,
+                                                          G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY,
+                                                          cancellable,
+                                                          got_ipv6_addresses, g_object_ref (addr_enum));
+              g_resolver_lookup_by_name_with_flags_async (resolver,
+                                                          addr->priv->hostname,
+                                                          G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY,
+                                                          cancellable,
+                                                          got_ipv4_addresses, g_object_ref (addr_enum));
             }
           g_object_unref (resolver);
           return;
         }
 
-      addr_enum->addresses = addr->priv->sockaddrs;
-      addr_enum->next = addr_enum->addresses;
       g_object_unref (resolver);
     }
 
-  if (addr_enum->next)
+  if (addr_enum->addresses == NULL)
     {
-      sockaddr = g_object_ref (addr_enum->next->data);
-      addr_enum->next = addr_enum->next->next;
+      g_assert (addr->priv->sockaddrs);
+      addr_enum->addresses = addr->priv->sockaddrs;
+      addr_enum->current_item = addr_enum->addresses;
+      sockaddr = g_object_ref (addr_enum->current_item->data);
+    }
+  else if (addr_enum->current_item->next)
+    {
+      addr_enum->current_item = g_list_next (addr_enum->current_item);
+      sockaddr = g_object_ref (addr_enum->current_item->data);
     }
   else
     sockaddr = NULL;
@@ -1075,6 +1205,7 @@ g_network_address_address_enumerator_next_finish (GSocketAddressEnumerator  *enu
 static void
 _g_network_address_address_enumerator_init (GNetworkAddressAddressEnumerator *enumerator)
 {
+  enumerator->context = g_main_context_ref_thread_default ();
 }
 
 static void
