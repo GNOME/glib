@@ -36,6 +36,7 @@ gobject_tests = {
   'binding' : {},
   'properties' : {},
   'reference' : {},
+  'flags' : {},
   'value' : {},
   'type' : {},
   'gobject-private' : {
