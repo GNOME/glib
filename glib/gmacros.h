@@ -497,9 +497,17 @@
 #define _GLIB_AUTO_FUNC_NAME(TypeName)    glib_auto_cleanup_##TypeName
 #define _GLIB_CLEANUP(func)               __attribute__((cleanup(func)))
 #define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName) \
-  typedef ModuleObjName *_GLIB_AUTOPTR_TYPENAME(ModuleObjName);                                          \
-  static inline void _GLIB_AUTOPTR_FUNC_NAME(ModuleObjName) (ModuleObjName **_ptr) {                     \
-    _GLIB_AUTOPTR_FUNC_NAME(ParentName) ((ParentName **) _ptr); }                                        \
+  typedef ModuleObjName *_GLIB_AUTOPTR_TYPENAME(ModuleObjName);                                                 \
+  typedef GList *_GLIB_AUTOPTR_LIST_TYPENAME(ModuleObjName);                                                    \
+  typedef GSList *_GLIB_AUTOPTR_SLIST_TYPENAME(ModuleObjName);                                                  \
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                              \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_FUNC_NAME(ModuleObjName) (ModuleObjName **_ptr) {              \
+    _GLIB_AUTOPTR_FUNC_NAME(ParentName) ((ParentName **) _ptr); }                                               \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_LIST_FUNC_NAME(ModuleObjName) (GList **_l) {                   \
+    _GLIB_AUTOPTR_LIST_FUNC_NAME(ParentName) (_l); }                                                            \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_SLIST_FUNC_NAME(ModuleObjName) (GSList **_l) {                 \
+    _GLIB_AUTOPTR_SLIST_FUNC_NAME(ParentName) (_l); }                                                           \
+  G_GNUC_END_IGNORE_DEPRECATIONS                                                                                \
 
 
 /* these macros are API */
