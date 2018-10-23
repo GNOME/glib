@@ -496,30 +496,28 @@
 #define _GLIB_AUTOPTR_SLIST_TYPENAME(TypeName)  TypeName##_slistautoptr
 #define _GLIB_AUTO_FUNC_NAME(TypeName)    glib_auto_cleanup_##TypeName
 #define _GLIB_CLEANUP(func)               __attribute__((cleanup(func)))
-#define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName) \
-  typedef ModuleObjName *_GLIB_AUTOPTR_TYPENAME(ModuleObjName);                                                 \
-  typedef GList *_GLIB_AUTOPTR_LIST_TYPENAME(ModuleObjName);                                                    \
-  typedef GSList *_GLIB_AUTOPTR_SLIST_TYPENAME(ModuleObjName);                                                  \
+#define _GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS(TypeName, cleanup, list_cleanup, slist_cleanup) \
+  typedef TypeName *_GLIB_AUTOPTR_TYPENAME(TypeName);                                                           \
+  typedef GList *_GLIB_AUTOPTR_LIST_TYPENAME(TypeName);                                                         \
+  typedef GSList *_GLIB_AUTOPTR_SLIST_TYPENAME(TypeName);                                                       \
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                              \
-  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_FUNC_NAME(ModuleObjName) (ModuleObjName **_ptr) {              \
-    _GLIB_AUTOPTR_FUNC_NAME(ParentName) ((ParentName **) _ptr); }                                               \
-  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_LIST_FUNC_NAME(ModuleObjName) (GList **_l) {                   \
-    _GLIB_AUTOPTR_LIST_FUNC_NAME(ParentName) (_l); }                                                            \
-  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_SLIST_FUNC_NAME(ModuleObjName) (GSList **_l) {                 \
-    _GLIB_AUTOPTR_SLIST_FUNC_NAME(ParentName) (_l); }                                                           \
-  G_GNUC_END_IGNORE_DEPRECATIONS                                                                                \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_FUNC_NAME(TypeName) (TypeName **_ptr) { cleanup; }             \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_LIST_FUNC_NAME(TypeName) (GList **_l) { list_cleanup; }        \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_SLIST_FUNC_NAME(TypeName) (GSList **_l) { slist_cleanup; }     \
+  G_GNUC_END_IGNORE_DEPRECATIONS
+#define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName) \
+  _GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS(ModuleObjName,                                                             \
+    _GLIB_AUTOPTR_FUNC_NAME(ParentName) ((ParentName **) _ptr),                                                 \
+    _GLIB_AUTOPTR_LIST_FUNC_NAME(ParentName) (_l),                                                              \
+    _GLIB_AUTOPTR_SLIST_FUNC_NAME(ParentName) (_l))
 
 
 /* these macros are API */
 #define G_DEFINE_AUTOPTR_CLEANUP_FUNC(TypeName, func) \
-  typedef TypeName *_GLIB_AUTOPTR_TYPENAME(TypeName);                                                           \
-  typedef GList *_GLIB_AUTOPTR_LIST_TYPENAME(TypeName);                                                         \
-  typedef GSList *_GLIB_AUTOPTR_SLIST_TYPENAME(TypeName);                                                         \
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                              \
-  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_FUNC_NAME(TypeName) (TypeName **_ptr) { if (*_ptr) (func) (*_ptr); }         \
-  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_LIST_FUNC_NAME(TypeName) (GList **_l) { g_list_free_full (*_l, (GDestroyNotify) (void(*)(void)) func); } \
-  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_SLIST_FUNC_NAME(TypeName) (GSList **_l) { g_slist_free_full (*_l, (GDestroyNotify) (void(*)(void)) func); } \
-  G_GNUC_END_IGNORE_DEPRECATIONS
+  _GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS(TypeName,                                                                  \
+    if (*_ptr) (func) (*_ptr),                                                                                  \
+    g_list_free_full (*_l, (GDestroyNotify) (void(*)(void)) func),                                              \
+    g_slist_free_full (*_l, (GDestroyNotify) (void(*)(void)) func))
 #define G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(TypeName, func) \
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                              \
   static inline void _GLIB_AUTO_FUNC_NAME(TypeName) (TypeName *_ptr) { (func) (_ptr); }                         \
