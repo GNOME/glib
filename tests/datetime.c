@@ -18,6 +18,10 @@
 #include <locale.h>
 #include <glib/glib.h>
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#endif
+
 int
 main (int argc, char *argv[])
 {
