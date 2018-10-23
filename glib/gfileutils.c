@@ -2387,7 +2387,9 @@ g_path_get_basename (const gchar *file_name)
  * g_path_get_dirname:
  * @file_name: (type filename): the name of the file
  *
- * Gets the directory components of a file name.
+ * Gets the directory components of a file name. For example, the directory
+ * component of `/usr/bin/test` is `/usr/bin`. The directory component of `/`
+ * is `/`.
  *
  * If the file name has no directory components "." is returned.
  * The returned string should be freed when no longer needed.
