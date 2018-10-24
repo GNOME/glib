@@ -25,6 +25,12 @@ test_programs = \
 	signal-handler			\
 	$(NULL)
 
+if HAVE_GCC
+test_programs += \
+	autoptr				\
+	$(NULL)
+endif
+
 # -----------------------------------------------------------------------------
 
 test_programs += ifaceproperties

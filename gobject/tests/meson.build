@@ -27,6 +27,9 @@ marshalers_c = custom_target('marshalers_c',
 )
 
 gobject_tests = {
+  'autoptr' : {
+    'skip' : cc.get_id() == 'msvc',
+  },
   'qdata' : {},
   'boxed' : {},
   'enums' : {},
