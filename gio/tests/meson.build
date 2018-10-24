@@ -36,7 +36,6 @@ gio_tests = {
   'fileattributematcher' : {},
   'filter-streams' : {},
   'giomodule' : {},
-  'gsocketclient' : {'extra_sources' : ['mock-resolver.c']},
   'gsubprocess' : {},
   'g-file' : {},
   'g-file-info' : {},
