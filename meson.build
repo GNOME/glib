@@ -45,7 +45,9 @@ binary_age = 100 * minor_version + micro_version
 soversion = 0
 # Maintain compatibility with previous libtool versioning
 # current = minor * 100 + micro
-library_version = '@0@.@1@.@2@'.format(soversion, binary_age - interface_age, interface_age)
+current = binary_age - interface_age
+library_version = '@0@.@1@.@2@'.format(soversion, current, interface_age)
+darwin_versions = [current + 1, '@0@.@1@'.format(current + 1, interface_age)]
 
 configinc = include_directories('.')
 glibinc = include_directories('glib')
