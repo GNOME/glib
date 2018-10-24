@@ -51,6 +51,10 @@ gobject_tests = {
   },
 }
 
+if cc.get_id() != 'msvc'
+  gobject_tests += {'autoptr' : {}}
+endif
+
 # FIXME: put common bits of test environment() in one location
 # Not entirely random of course, but at least it changes over time
 random_number = minor_version + meson.version().split('.').get(1).to_int()
