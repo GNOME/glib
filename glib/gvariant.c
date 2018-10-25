@@ -4662,7 +4662,15 @@ g_variant_valist_free_nnp (const gchar *str,
       break;
 
     case '^':
-      if (str[2] != '&')        /* '^as', '^ao' */
+      if (g_str_has_suffix (str, "y"))
+        {
+          if (str[2] != 'a') /* '^a&ay', '^ay' */
+            g_free (ptr);
+          else if (str[1] == 'a') /* '^aay' */
+            g_strfreev (ptr);
+          break; /* '^&ay' */
+        }
+      else if (str[2] != '&') /* '^as', '^ao' */
         g_strfreev (ptr);
       else                      /* '^a&s', '^a&o' */
         g_free (ptr);

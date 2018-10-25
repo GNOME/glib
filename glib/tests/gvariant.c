@@ -3132,28 +3132,27 @@ test_varargs (void)
     g_variant_builder_add (&builder, "^aay", strvector);
     g_variant_builder_add (&builder, "^aay", strvector);
     value = g_variant_new ("aaay", &builder);
-    g_variant_iter_init (&tuple, value);
+    array = g_variant_iter_new (value);
     i = 0;
-    while (g_variant_iter_loop (&tuple, "^aay", &my_strv)) {
-        i++;
-    }
+    while (g_variant_iter_loop (array, "^aay", &my_strv))
+      i++;
     g_assert (i == 3);
 
     /* start over */
-    g_variant_iter_init (&tuple, value);
+    g_variant_iter_init (array, value);
     i = 0;
-    while (g_variant_iter_loop (&tuple, "^a&ay", &strv)) {
-        i++;
-    }
+    while (g_variant_iter_loop (array, "^a&ay", &strv))
+      i++;
     g_assert (i == 3);
     g_variant_unref (value);
+    g_variant_iter_free (array);
 
     /* next test */
     g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
     g_variant_builder_add (&builder, "^ay", "/foo");
     g_variant_builder_add (&builder, "^ay", "/bar");
     g_variant_builder_add (&builder, "^ay", "/baz");
-    value = g_variant_new("(aay^aay^a&ay)", &builder, strvector, strvector);
+    value = g_variant_new ("(aay^aay^a&ay)", &builder, strvector, strvector);
     g_variant_iter_init (&tuple, value);
     g_variant_iter_next (&tuple, "aay", &array);
 
