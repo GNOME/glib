@@ -22,5 +22,5 @@ libgdbus_example_objectmanager = library('gdbus-example-objectmanager',
     install_dir : installed_tests_execdir)
 
 libgdbus_example_objectmanager_dep = declare_dependency(
-  sources : gdbus_example_objectmanager_generated,
+  sources : gdbus_example_objectmanager_generated[0],
   link_with : libgdbus_example_objectmanager)
