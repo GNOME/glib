@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2018-10-23 10:06+0000\n"
-"PO-Revision-Date: 2018-10-23 16:29+0200\n"
+"POT-Creation-Date: 2018-10-25 12:35+0000\n"
+"PO-Revision-Date: 2018-10-25 20:45+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -643,9 +643,7 @@ msgstr ""
 "zastavice"
 
 #: gio/gdbusconnection.c:4115 gio/gdbusconnection.c:4462
-#, fuzzy, c-format
-#| msgid ""
-#| "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
+#, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
@@ -680,20 +678,17 @@ msgid "No such interface “%s”"
 msgstr "Vmesnik »%s« ne obstaja"
 
 #: gio/gdbusconnection.c:4831 gio/gdbusconnection.c:7091
-#, fuzzy, c-format
-#| msgid "No such interface '%s' on object at path %s"
+#, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Vmesnik »%s« na predmetu na poti %s ne obstaja"
 
 #: gio/gdbusconnection.c:4929
-#, fuzzy, c-format
-#| msgid "No such key “%s”\n"
+#, c-format
 msgid "No such method “%s”"
-msgstr "Ključ »%s« ne obstaja.\n"
+msgstr "Način »%s« ne obstaja"
 
 #: gio/gdbusconnection.c:4960
-#, fuzzy, c-format
-#| msgid "Type of message, '%s', does not match expected type '%s'"
+#, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Vrsta sporočila »%s« se ne sklada s pričakovano vrsto »%s«"
 
@@ -713,14 +708,12 @@ msgid "Unable to set property %s.%s"
 msgstr "Ni mogoče določiti lastnosti %s.%s"
 
 #: gio/gdbusconnection.c:5618
-#, fuzzy, c-format
-#| msgid "Method '%s' returned type '%s', but expected '%s'"
+#, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Način »%s« je vrnil vrsto »%s«, pričakovana pa je vrsta »%s«"
 
 #: gio/gdbusconnection.c:6693
-#, fuzzy, c-format
-#| msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+#, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Način »%s« na vmesniku »%s« s podpisom »%s« ne obstaja"
 
@@ -2046,11 +2039,8 @@ msgid "The numeric PIM when unlocking a VeraCrypt volume"
 msgstr ""
 
 #: gio/gio-tool-mount.c:75
-#, fuzzy
-#| msgctxt "GDateTime"
-#| msgid "PM"
 msgid "PIM"
-msgstr "pop"
+msgstr "PIM"
 
 #: gio/gio-tool-mount.c:76
 msgid "Mount a TCRYPT hidden volume"
@@ -2307,15 +2297,11 @@ msgid "Name of the output file"
 msgstr "Ime izhodne datoteke"
 
 #: gio/glib-compile-resources.c:738
-#, fuzzy
-#| msgid ""
-#| "The directories where files are to be read from (default to current "
-#| "directory)"
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
 msgstr ""
-"Mape, iz katerih naj bodo brane datoteke (privzeto je to trenutna mapa)"
+"Mape, iz katerih naj bodo prebrane datoteke (privzeto je to trenutna mapa)"
 
 #: gio/glib-compile-resources.c:738 gio/glib-compile-schemas.c:2140
 #: gio/glib-compile-schemas.c:2169
@@ -2723,8 +2709,7 @@ msgid "Ignoring this file.\n"
 msgstr "Datoteka je prezrta.\n"
 
 #: gio/glib-compile-schemas.c:1959
-#, fuzzy, c-format
-#| msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
+#, c-format
 msgid "No such key “%s” in schema “%s” as specified in override file “%s”"
 msgstr ""
 "Ključ »%s« v shemi »%s« kot je določen v datoteki prepisa »%s« ne obstaja"
@@ -4955,16 +4940,13 @@ msgid "Error on line %d: %s"
 msgstr "Napaka v vrstici %d: %s"
 
 #: glib/gmarkup.c:687
-#, fuzzy, c-format
-#| msgid ""
-#| "Failed to parse '%-.*s', which should have been a digit inside a "
-#| "character reference (&#234; for example) - perhaps the digit is too large"
+#, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
 "reference (&#234; for example) — perhaps the digit is too large"
 msgstr ""
-"Ni mogoče razčleniti '%-.*s', ki bi morala določati številko znotraj sklica "
-"znaka (na primer &#234;) – morda je številka prevelika"
+"Razčlenjevanje vrste »%-.*s«, ki bi morala določati številko znotraj sklica "
+"znaka (na primer &#234;) je spodletelo – morda je številka prevelika"
 
 #: glib/gmarkup.c:699
 msgid ""
