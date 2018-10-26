@@ -433,6 +433,11 @@ class HeaderCodeGenerator:
             self.outfile.write('GType %sobject_get_type (void) G_GNUC_CONST;\n'
                                '\n'
                                %(self.ns_lower))
+            if self.generate_autocleanup == 'all':
+                self.outfile.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+                self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObject, g_object_unref)\n' % (self.namespace))
+                self.outfile.write('#endif\n')
+                self.outfile.write('\n')
             for i in self.ifaces:
                 if i.deprecated:
                     self.outfile.write('G_GNUC_DEPRECATED ')
