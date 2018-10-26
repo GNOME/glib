@@ -2385,6 +2385,46 @@ test_property_naming (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* autocleanups
+ *
+ * - check that g_autoptr() works for all generated types, if supported by the
+ *   current compiler
+ */
+
+static void
+test_autocleanups (void)
+{
+#ifdef g_autoptr
+  g_autoptr(FooiGenBar) bar = NULL;
+  g_autoptr(FooiGenBarProxy) bar_proxy = NULL;
+  g_autoptr(FooiGenBarSkeleton) bar_skeleton = NULL;
+  g_autoptr(FooiGenObjectProxy) object_proxy = NULL;
+  g_autoptr(FooiGenObjectSkeleton) object_skeleton = NULL;
+  g_autoptr(FooiGenObjectManagerClient) object_manager_client = NULL;
+
+  (void) bar;
+  (void) bar_proxy;
+  (void) bar_skeleton;
+  (void) object_proxy;
+  (void) object_skeleton;
+  (void) object_manager_client;
+#elif GLIB_CHECK_VERSION(2, 38, 0)
+  /* This file is compiled twice, once without GLib version guards and once
+   * with
+   *
+   *   -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36
+   *   -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36
+   *
+   * g_test_skip() was added in 2.38.
+   */
+  g_test_skip ("g_autoptr() not supported on this compiler");
+#else
+  /* Let's just say it passed. */
+#endif
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -2395,6 +2435,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/codegen/interface_stability", test_interface_stability);
   g_test_add_func ("/gdbus/codegen/object-manager", test_object_manager);
   g_test_add_func ("/gdbus/codegen/property-naming", test_property_naming);
+  g_test_add_func ("/gdbus/codegen/autocleanups", test_autocleanups);
 
   return session_bus_run ();
 }
