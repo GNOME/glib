@@ -1050,8 +1050,10 @@ emit_start_element (GMarkupParseContext  *context,
   tmp_error = NULL;
   start_name = current_element (context);
 
-  if (context->parser->start_element &&
-      name_validate (context, start_name, error))
+  if (!name_validate (context, start_name, error))
+    return;
+
+  if (context->parser->start_element)
     (* context->parser->start_element) (context,
                                         start_name,
                                         (const gchar **)attr_names,
