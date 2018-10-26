@@ -182,6 +182,7 @@ if host_machine.system() != 'windows'
                    '--output-directory', '@OUTDIR@',
                    '--generate-c-code', 'gdbus-test-codegen-generated',
                    '--c-generate-object-manager',
+                   '--c-generate-autocleanup', 'all',
                    '--c-namespace', 'Foo_iGen',
                    '--generate-docbook', 'gdbus-test-codegen-generated-doc',
                    '--annotate', 'org.project.Bar', 'Key1', 'Value1',
