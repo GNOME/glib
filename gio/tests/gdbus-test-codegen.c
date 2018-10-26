@@ -2398,6 +2398,7 @@ test_autocleanups (void)
   g_autoptr(FooiGenBar) bar = NULL;
   g_autoptr(FooiGenBarProxy) bar_proxy = NULL;
   g_autoptr(FooiGenBarSkeleton) bar_skeleton = NULL;
+  g_autoptr(FooiGenObject) object = NULL;
   g_autoptr(FooiGenObjectProxy) object_proxy = NULL;
   g_autoptr(FooiGenObjectSkeleton) object_skeleton = NULL;
   g_autoptr(FooiGenObjectManagerClient) object_manager_client = NULL;
@@ -2405,6 +2406,7 @@ test_autocleanups (void)
   (void) bar;
   (void) bar_proxy;
   (void) bar_skeleton;
+  (void) object;
   (void) object_proxy;
   (void) object_skeleton;
   (void) object_manager_client;
