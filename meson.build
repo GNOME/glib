@@ -397,6 +397,7 @@ functions = [
   'fchown',
   'fdwalk',
   'fsync',
+  'getauxval',
   'getc_unlocked',
   'getfsstat',
   'getgrgid_r',
