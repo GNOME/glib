@@ -862,6 +862,7 @@ AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat fa
 case $host_os in aix*) ac_cv_func_splice=no ;; esac # AIX splice() is something else
 AC_CHECK_FUNCS(splice)
 AC_CHECK_FUNCS(prlimit)
+AC_CHECK_FUNCS(getauxval)
 
 # To avoid finding a compatibility unusable statfs, which typically
 # successfully compiles, but warns to use the newer statvfs interface:
