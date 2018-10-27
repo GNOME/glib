@@ -15,6 +15,7 @@
  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 /*
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
@@ -342,35 +343,75 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 /* The G*_TO_?E() macros are defined in glibconfig.h.
  * The transformation is symmetric, so the FROM just maps to the TO.
  */
-#define GINT16_FROM_LE(val)	(GINT16_TO_LE (val))
+#define GINT16_FROM_LE(val)	    (GINT16_TO_LE (val))
 #define GUINT16_FROM_LE(val)	(GUINT16_TO_LE (val))
-#define GINT16_FROM_BE(val)	(GINT16_TO_BE (val))
+#define GINT16_FROM_BE(val)	    (GINT16_TO_BE (val))
 #define GUINT16_FROM_BE(val)	(GUINT16_TO_BE (val))
-#define GINT32_FROM_LE(val)	(GINT32_TO_LE (val))
+#define GINT32_FROM_LE(val)	    (GINT32_TO_LE (val))
 #define GUINT32_FROM_LE(val)	(GUINT32_TO_LE (val))
-#define GINT32_FROM_BE(val)	(GINT32_TO_BE (val))
+#define GINT32_FROM_BE(val)	    (GINT32_TO_BE (val))
 #define GUINT32_FROM_BE(val)	(GUINT32_TO_BE (val))
 
-#define GINT64_FROM_LE(val)	(GINT64_TO_LE (val))
+#define GINT64_FROM_LE(val)	    (GINT64_TO_LE (val))
 #define GUINT64_FROM_LE(val)	(GUINT64_TO_LE (val))
-#define GINT64_FROM_BE(val)	(GINT64_TO_BE (val))
+#define GINT64_FROM_BE(val)	    (GINT64_TO_BE (val))
 #define GUINT64_FROM_BE(val)	(GUINT64_TO_BE (val))
 
-#define GLONG_FROM_LE(val)	(GLONG_TO_LE (val))
-#define GULONG_FROM_LE(val)	(GULONG_TO_LE (val))
-#define GLONG_FROM_BE(val)	(GLONG_TO_BE (val))
-#define GULONG_FROM_BE(val)	(GULONG_TO_BE (val))
+#define GLONG_FROM_LE(val)	    (GLONG_TO_LE (val))
+#define GULONG_FROM_LE(val)	    (GULONG_TO_LE (val))
+#define GLONG_FROM_BE(val)	    (GLONG_TO_BE (val))
+#define GULONG_FROM_BE(val)	    (GULONG_TO_BE (val))
 
-#define GINT_FROM_LE(val)	(GINT_TO_LE (val))
-#define GUINT_FROM_LE(val)	(GUINT_TO_LE (val))
-#define GINT_FROM_BE(val)	(GINT_TO_BE (val))
-#define GUINT_FROM_BE(val)	(GUINT_TO_BE (val))
+#define GINT_FROM_LE(val)	    (GINT_TO_LE (val))
+#define GUINT_FROM_LE(val)	    (GUINT_TO_LE (val))
+#define GINT_FROM_BE(val)	    (GINT_TO_BE (val))
+#define GUINT_FROM_BE(val)	    (GUINT_TO_BE (val))
 
-#define GSIZE_FROM_LE(val)	(GSIZE_TO_LE (val))
-#define GSSIZE_FROM_LE(val)	(GSSIZE_TO_LE (val))
-#define GSIZE_FROM_BE(val)	(GSIZE_TO_BE (val))
-#define GSSIZE_FROM_BE(val)	(GSSIZE_TO_BE (val))
+#define GSIZE_FROM_LE(val)	    (GSIZE_TO_LE (val))
+#define GSSIZE_FROM_LE(val)	    (GSSIZE_TO_LE (val))
+#define GSIZE_FROM_BE(val)	    (GSIZE_TO_BE (val))
+#define GSSIZE_FROM_BE(val)	    (GSSIZE_TO_BE (val))
 
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+#define GFLOAT_TO_LE(val)       ((gfloat) (val))
+#define GFLOAT_TO_BE(val)       (GFLOAT_SWAP_LE_BE (val))
+#define GDOUBLE_TO_LE(val)      ((gdouble) (val))
+#define GDOUBLE_TO_BE(val)      (GDOUBLE_SWAP_LE_BE)
+
+#elif G_BYTE_ORDER == G_BIG_ENDIAN
+#define GFLOAT_TO_LE(val)       (GFLOAT_SWAP_LE_BE (val))
+#define GFLOAT_TO_BE(val)       ((gfloat) (val))
+#define GDOUBLE_TO_LE(val)      (GDOUBLE_SWAP_LE_BE (val))
+#define GDOUBLE_TO_BE(val)      ((gdouble) (val))
+
+#else
+#error unknown ENDIAN type
+#endif
+
+#define GFLOAT_FROM_LE(val)     (GFLOAT_TO_LE (val))
+#define GFLOAT_FROM_BE(val)     (GFLOAT_TO_BE (val))
+#define GDOUBLE_FROM_LE(val)    (GDOUBLE_TO_LE (val))
+#define GDOUBLE_FROM_BE(val)    (GDOUBLE_TO_BE (val))
+#endif
+
+gfloat
+GST_READ_FLOAT_LE(const guint8 *data)
+{
+	gfloat le_float;
+	gchar *src = (gchar*) & val;
+	gchar *dest = (gchar*) & le_float;
+	dest[0] = src[3], dest[1] = src[2], dest[2] = src[1];
+	dest[3] = src[0];
+	return le_float;
+}
+
+gfloat
+GST_READ_FLOAT_BE(const guint8 *data)
+{
+	gfloat be_float;
+	gchar *src = (gchar*) & val;
+	gchar *dest = (gchar*) & le_float;
+}
 /* Portable versions of host-network order stuff
  */
 #define g_ntohl(val) (GUINT32_FROM_BE (val))
