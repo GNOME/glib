@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2018-09-21 14:30+0000\n"
-"PO-Revision-Date: 2018-09-29 16:50+0200\n"
+"POT-Creation-Date: 2018-10-25 12:32+0000\n"
+"PO-Revision-Date: 2018-10-27 13:03+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -1998,8 +1998,6 @@ msgid "The numeric PIM when unlocking a VeraCrypt volume"
 msgstr ""
 
 #: gio/gio-tool-mount.c:75
-#| msgctxt "GDateTime"
-#| msgid "PM"
 msgid "PIM"
 msgstr ""
 
@@ -2013,7 +2011,7 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:265 gio/gio-tool-mount.c:297
 msgid "Anonymous access denied"
-msgstr ""
+msgstr "Acès anonim dineât"
 
 #: gio/gio-tool-mount.c:522
 msgid "No drive for device file"
@@ -2322,7 +2320,7 @@ msgstr "Valôr numeric no valit"
 #: gio/glib-compile-schemas.c:114
 #, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr ""
+msgstr "<value nick='%s'/> za specificât"
 
 #: gio/glib-compile-schemas.c:122
 #, c-format
@@ -2361,17 +2359,17 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:375
 msgid "<range/> already specified for this key"
-msgstr ""
+msgstr "<range/> za specificât par cheste clâf"
 
 #: gio/glib-compile-schemas.c:393
 #, c-format
 msgid "<range> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<range> no permetût pes clâfs di gjenar “%s”"
 
 #: gio/glib-compile-schemas.c:410
 #, c-format
 msgid "<range> specified minimum is greater than maximum"
-msgstr ""
+msgstr "il minim specificât di <range> al è plui grant dal massim"
 
 #: gio/glib-compile-schemas.c:435
 #, c-format
@@ -2384,7 +2382,7 @@ msgstr "l10n domandât, ma nissun domini gettext furnît"
 
 #: gio/glib-compile-schemas.c:455
 msgid "translation context given for value without l10n enabled"
-msgstr ""
+msgstr "contest di traduzion furnît pal valôr cence l10n abilitât"
 
 #: gio/glib-compile-schemas.c:477
 #, c-format
@@ -2900,70 +2898,70 @@ msgstr " (codifiche no valide)"
 msgid "Error when getting information for file “%s”: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2053
+#: gio/glocalfileinfo.c:2059
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2098
+#: gio/glocalfileinfo.c:2104
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Gjenar di atribût no valit (si spietave uint32)"
 
-#: gio/glocalfileinfo.c:2116
+#: gio/glocalfileinfo.c:2122
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Gjenar di atribût no valit (si spietave uint64)"
 
-#: gio/glocalfileinfo.c:2135 gio/glocalfileinfo.c:2154
+#: gio/glocalfileinfo.c:2141 gio/glocalfileinfo.c:2160
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Gjenar di atribût no valit (si spietave une stringhe di byte)"
 
-#: gio/glocalfileinfo.c:2201
+#: gio/glocalfileinfo.c:2207
 msgid "Cannot set permissions on symlinks"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2217
+#: gio/glocalfileinfo.c:2223
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2268
+#: gio/glocalfileinfo.c:2274
 #, c-format
 msgid "Error setting owner: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2291
+#: gio/glocalfileinfo.c:2297
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2301 gio/glocalfileinfo.c:2320
-#: gio/glocalfileinfo.c:2331
+#: gio/glocalfileinfo.c:2307 gio/glocalfileinfo.c:2326
+#: gio/glocalfileinfo.c:2337
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2310
+#: gio/glocalfileinfo.c:2316
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2436
+#: gio/glocalfileinfo.c:2442
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2459
+#: gio/glocalfileinfo.c:2465
 msgid "SELinux context must be non-NULL"
 msgstr "Il contest SELinux al scugne jessi diviers di NULL"
 
-#: gio/glocalfileinfo.c:2474
+#: gio/glocalfileinfo.c:2480
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2481
+#: gio/glocalfileinfo.c:2487
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nol è abilitât su chest sisteme"
 
-#: gio/glocalfileinfo.c:2573
+#: gio/glocalfileinfo.c:2579
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr ""
@@ -3900,7 +3898,7 @@ msgstr ""
 msgid "Error closing file descriptor: %s"
 msgstr ""
 
-#: gio/gunixmounts.c:2589 gio/gunixmounts.c:2642
+#: gio/gunixmounts.c:2606 gio/gunixmounts.c:2659
 msgid "Filesystem root"
 msgstr ""
 
@@ -4972,15 +4970,15 @@ msgstr ""
 #: glib/goption.c:2132
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Opzion %s no cognossude"
 
 #: glib/gregex.c:257
 msgid "corrupted object"
-msgstr ""
+msgstr "ogjet ruvinât"
 
 #: glib/gregex.c:259
 msgid "internal error or corrupted object"
-msgstr ""
+msgstr "erôr interni o ogjet ruvinât"
 
 #: glib/gregex.c:261
 msgid "out of memory"
@@ -5060,7 +5058,7 @@ msgstr ""
 
 #: glib/gregex.c:353
 msgid "nothing to repeat"
-msgstr ""
+msgstr "nuie di ce ripeti"
 
 #: glib/gregex.c:357
 msgid "unexpected repeat"
@@ -5088,7 +5086,7 @@ msgstr ""
 
 #: glib/gregex.c:375
 msgid "regular expression is too large"
-msgstr ""
+msgstr "la espression regolâr e je masse largje"
 
 #: glib/gregex.c:378
 msgid "failed to get memory"
@@ -5104,7 +5102,7 @@ msgstr ""
 
 #: glib/gregex.c:390
 msgid "unrecognized character after (?<"
-msgstr ""
+msgstr "caratar no ricognossût dopo (?<"
 
 #: glib/gregex.c:393
 msgid "lookbehind assertion is not fixed length"
@@ -5112,7 +5110,7 @@ msgstr ""
 
 #: glib/gregex.c:396
 msgid "malformed number or name after (?("
-msgstr ""
+msgstr "non o numar malformât dopo (?("
 
 #: glib/gregex.c:399
 msgid "conditional group contains more than two branches"
@@ -5131,7 +5129,7 @@ msgstr ""
 
 #: glib/gregex.c:412
 msgid "unknown POSIX class name"
-msgstr ""
+msgstr "non di classe POSIX no cognossût"
 
 #: glib/gregex.c:415
 msgid "POSIX collating elements are not supported"
@@ -5143,7 +5141,7 @@ msgstr ""
 
 #: glib/gregex.c:421
 msgid "invalid condition (?(0)"
-msgstr ""
+msgstr "condizion no valide (?(0)"
 
 #: glib/gregex.c:424
 msgid "\\C not allowed in lookbehind assertion"
@@ -5159,7 +5157,7 @@ msgstr ""
 
 #: glib/gregex.c:438
 msgid "unrecognized character after (?P"
-msgstr ""
+msgstr "caratar no ricognossût dopo (?P"
 
 #: glib/gregex.c:441
 msgid "missing terminator in subpattern name"
@@ -5171,7 +5169,7 @@ msgstr ""
 
 #: glib/gregex.c:447
 msgid "malformed \\P or \\p sequence"
-msgstr ""
+msgstr "secuence \\P o \\p malformade"
 
 #: glib/gregex.c:450
 msgid "unknown property name after \\P or \\p"
@@ -5187,7 +5185,7 @@ msgstr ""
 
 #: glib/gregex.c:459
 msgid "octal value is greater than \\377"
-msgstr ""
+msgstr "il valôr otâl al è plui grant di \\377"
 
 #: glib/gregex.c:463
 msgid "overran compiling workspace"
@@ -5213,7 +5211,7 @@ msgstr ""
 
 #: glib/gregex.c:480
 msgid "a numbered reference must not be zero"
-msgstr ""
+msgstr "un riferiment numerât nol pues jessi zero"
 
 #: glib/gregex.c:483
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
@@ -5225,7 +5223,7 @@ msgstr ""
 
 #: glib/gregex.c:489
 msgid "number is too big"
-msgstr ""
+msgstr "il numar al è masse grant"
 
 #: glib/gregex.c:492
 msgid "missing subpattern name after (?&"
@@ -5359,91 +5357,91 @@ msgstr ""
 
 #: glib/gshell.c:599
 msgid "Text was empty (or contained only whitespace)"
-msgstr ""
+msgstr "Il test al jere vueit (o al contignive dome spazis vueits)"
 
-#: glib/gspawn.c:308
+#: glib/gspawn.c:311
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr ""
+msgstr "No si è rivâts a lei dâts dal procès fi (%s)"
 
-#: glib/gspawn.c:456
+#: glib/gspawn.c:459
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:541
+#: glib/gspawn.c:544
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1049 glib/gspawn-win32.c:1318
+#: glib/gspawn.c:1052 glib/gspawn-win32.c:1318
 #, c-format
 msgid "Child process exited with code %ld"
-msgstr ""
+msgstr "Procès fi jessût cul codiç %ld"
 
-#: glib/gspawn.c:1057
+#: glib/gspawn.c:1060
 #, c-format
 msgid "Child process killed by signal %ld"
-msgstr ""
+msgstr "Procès fi copât dal segnâl %ld"
 
-#: glib/gspawn.c:1064
+#: glib/gspawn.c:1067
 #, c-format
 msgid "Child process stopped by signal %ld"
-msgstr ""
+msgstr "Procès fi fermât dal segnâl %ld"
 
-#: glib/gspawn.c:1071
+#: glib/gspawn.c:1074
 #, c-format
 msgid "Child process exited abnormally"
-msgstr ""
+msgstr "Il procès fi al è jessût in maniere anormâl"
 
-#: glib/gspawn.c:1366 glib/gspawn-win32.c:339 glib/gspawn-win32.c:347
+#: glib/gspawn.c:1369 glib/gspawn-win32.c:339 glib/gspawn-win32.c:347
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1614
+#: glib/gspawn.c:1617
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "No si è rivâts a creâ il procès fi “%s” (%s)"
 
-#: glib/gspawn.c:1653
+#: glib/gspawn.c:1656
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1802 glib/gspawn-win32.c:370
+#: glib/gspawn.c:1805 glib/gspawn-win32.c:370
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
-msgstr ""
+msgstr "No si è rivâts a lâ ae cartele “%s” (%s)"
 
-#: glib/gspawn.c:1812
+#: glib/gspawn.c:1815
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1822
+#: glib/gspawn.c:1825
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1831
+#: glib/gspawn.c:1834
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr ""
 
-#: glib/gspawn.c:1839
+#: glib/gspawn.c:1842
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr ""
 
-#: glib/gspawn.c:1863
+#: glib/gspawn.c:1866
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 
 #: glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
-msgstr ""
+msgstr "No si è rivâts a lei dâts dal procès fi"
 
 #: glib/gspawn-win32.c:300
 #, c-format
@@ -5453,12 +5451,12 @@ msgstr ""
 #: glib/gspawn-win32.c:376 glib/gspawn-win32.c:381 glib/gspawn-win32.c:500
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr ""
+msgstr "No si è rivâts a eseguî il procès fi (%s)"
 
 #: glib/gspawn-win32.c:450
 #, c-format
 msgid "Invalid program name: %s"
-msgstr ""
+msgstr "Non dal program no valit: %s"
 
 #: glib/gspawn-win32.c:460 glib/gspawn-win32.c:714
 #, c-format
@@ -5473,7 +5471,7 @@ msgstr ""
 #: glib/gspawn-win32.c:710
 #, c-format
 msgid "Invalid working directory: %s"
-msgstr ""
+msgstr "Cartele di lavôr no valide: %s"
 
 #: glib/gspawn-win32.c:772
 #, c-format
@@ -5488,7 +5486,7 @@ msgstr ""
 
 #: glib/gstrfuncs.c:3247 glib/gstrfuncs.c:3348
 msgid "Empty string is not a number"
-msgstr ""
+msgstr "La stringhe vueide no je un numar"
 
 #: glib/gstrfuncs.c:3271
 #, c-format
@@ -5507,11 +5505,11 @@ msgstr "“%s” nol è un numar cence segn"
 
 #: glib/gutf8.c:811
 msgid "Failed to allocate memory"
-msgstr ""
+msgstr "No si è rivâts a assegnâ la memorie"
 
 #: glib/gutf8.c:944
 msgid "Character out of range for UTF-8"
-msgstr ""
+msgstr "Caratar fûr dal limit par UTF-8"
 
 #: glib/gutf8.c:1045 glib/gutf8.c:1054 glib/gutf8.c:1184 glib/gutf8.c:1193
 #: glib/gutf8.c:1332 glib/gutf8.c:1429
@@ -5520,7 +5518,7 @@ msgstr ""
 
 #: glib/gutf8.c:1343 glib/gutf8.c:1440
 msgid "Character out of range for UTF-16"
-msgstr ""
+msgstr "Caratar fûr dal limit par UTF-16"
 
 #: glib/gutils.c:2244
 #, c-format
