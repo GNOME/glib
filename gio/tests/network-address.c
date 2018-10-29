@@ -566,6 +566,24 @@ assert_list_matches_expected (GList *result, GList *expected)
 }
 
 static void
+assert_list_is_interleaved (GList *result)
+{
+  GSocketFamily last_family = -1;
+
+  while (result)
+    {
+      GInetAddress *address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (result->data));
+      GSocketFamily family = g_inet_address_get_family (address);
+
+      if (last_family != -1)
+        g_assert_cmpint (family, !=, last_family);
+
+      last_family = family;
+      result = g_list_next (result);
+    }
+}
+
+static void
 test_happy_eyeballs_async (void)
 {
   GResolver *old_resolver;
@@ -623,10 +641,12 @@ test_happy_eyeballs_async (void)
 
   /* Sanity check first */
   g_test_message ("Sanity check");
-  data.delay_ms = 1;
+  /* We have a delay because interleaving will (appear to) fail if addresses are consumed too fast */
+  data.delay_ms = 50;
   g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
   g_main_loop_run (data.loop);
   assert_list_matches_expected (data.addrs, input_all_results);
+  assert_list_is_interleaved (data.addrs);
   CLEANUP ();
 
   /* If ipv4 dns response is a bit slow we just don't get them */
@@ -643,6 +663,7 @@ test_happy_eyeballs_async (void)
   g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
   g_main_loop_run (data.loop);
   assert_list_matches_expected (data.addrs, input_all_results);
+  assert_list_is_interleaved (data.addrs);
   CLEANUP ();
 
   /* If ipv6 is very slow we don't get them */
@@ -661,6 +682,8 @@ test_happy_eyeballs_async (void)
   g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
   g_main_loop_run (data.loop);
   assert_list_matches_expected (data.addrs, input_all_results);
+  /* Note that interleaving will not happen here because ipv6 was used before ipv4
+   * responded */
   CLEANUP ();
 
   /* If ipv6 fails we still get ipv4. */
