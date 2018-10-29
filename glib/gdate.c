@@ -1131,6 +1131,9 @@ g_date_prepare_to_parse (const gchar      *str,
       g_date_strftime (buf, 127, "%x", &d);
       
       g_date_fill_parse_tokens (buf, &testpt);
+
+      using_twodigit_years = FALSE;
+      locale_era_adjust = 0;
       
       i = 0;
       while (i < testpt.num_ints)
