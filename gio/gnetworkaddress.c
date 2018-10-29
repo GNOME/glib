@@ -875,6 +875,7 @@ typedef struct {
 
   GNetworkAddress *addr;
   GList *addresses;
+  GList *last_tail;
   GList *current_item;
   GTask *queued_task;
   GError *last_error;
@@ -899,8 +900,116 @@ g_network_address_address_enumerator_finalize (GObject *object)
   g_clear_object (&addr_enum->queued_task);
   g_clear_error (&addr_enum->last_error);
   g_object_unref (addr_enum->addr);
+  g_clear_pointer (&addr_enum->addresses, g_list_free);
 
   G_OBJECT_CLASS (_g_network_address_address_enumerator_parent_class)->finalize (object);
+}
+
+static inline GSocketFamily
+get_address_family (GInetSocketAddress *address)
+{
+  return g_inet_address_get_family (g_inet_socket_address_get_address (address));
+}
+
+static void
+list_split_families (GList  *list,
+                     GList **out_ipv4,
+                     GList **out_ipv6)
+{
+  g_assert (out_ipv4);
+  g_assert (out_ipv6);
+
+  while (list)
+    {
+      GSocketFamily family = get_address_family (list->data);
+      if (family == G_SOCKET_FAMILY_IPV4)
+        *out_ipv4 = g_list_prepend (*out_ipv4, list->data);
+      else if (family == G_SOCKET_FAMILY_IPV6)
+        *out_ipv6 = g_list_prepend (*out_ipv6, list->data);
+      else
+        g_assert_not_reached ();
+
+      list = g_list_next (list);
+    }
+
+  *out_ipv4 = g_list_reverse (*out_ipv4);
+  *out_ipv6 = g_list_reverse (*out_ipv6);
+}
+
+static GList *
+list_interleave (GList *list1,
+                 GList *list2)
+{
+  GList *interleaved = NULL;
+
+  while (list1 || list2)
+    {
+      if (list1)
+        {
+          interleaved = g_list_append (interleaved, list1->data);
+          list1 = g_list_delete_link (list1, list1);
+        }
+      if (list2)
+        {
+          interleaved = g_list_append (interleaved, list2->data);
+          list2 = g_list_delete_link (list2, list2);
+        }
+    }
+
+  return interleaved;
+}
+
+/* list_copy_interleaved:
+ * @list: (transfer none): List to copy
+ *
+ * Does a shallow copy of a list with address families interleaved.
+ *
+ * Returns: (transfer container): A new list
+ */
+static GList *
+list_copy_interleaved (GList *list)
+{
+  GList *ipv4 = NULL, *ipv6 = NULL;
+
+  list_split_families (list, &ipv4, &ipv6);
+  return list_interleave (ipv6, ipv4);
+}
+
+/* list_concat_interleaved:
+ * @existing_list: (transfer container): Already existing list
+ * @new_list: New list to be interleaved and concatenated
+ *
+ * This differs from g_list_concat() + list_copy_interleaved() in that it takes into
+ * account the items of the previous list into the sorting.
+ *
+ * Returns: (transfer container): New start of list
+ */
+static GList *
+list_concat_interleaved (GList *current_item,
+                         GList *new_list)
+{
+  GList *ipv4 = NULL, *ipv6 = NULL, *interleaved, *trailing = NULL;
+  GSocketFamily last_family = G_SOCKET_FAMILY_IPV4; /* Default to starting with ipv6 */
+
+
+  if (current_item)
+    {
+      last_family = get_address_family (current_item->data);
+
+      /* Unused addresses will get removed, resorted, then readded */
+      trailing = g_list_next (current_item);
+      current_item->next = NULL;
+    }
+
+  list_split_families (trailing, &ipv4, &ipv6);
+  list_split_families (new_list, &ipv4, &ipv6);
+
+  if (last_family == G_SOCKET_FAMILY_IPV4)
+    interleaved = list_interleave (ipv6, ipv4);
+  else
+    interleaved = list_interleave (ipv4, ipv6);
+
+  return g_list_concat (current_item, interleaved);
 }
 
 static GSocketAddress *
@@ -944,8 +1053,8 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
           g_network_address_add_addresses (addr, addresses, serial);
         }
 
-      addr_enum->addresses = addr->priv->sockaddrs;
-      addr_enum->current_item = addr_enum->addresses;
+      addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr->priv->sockaddrs);
+      addr_enum->last_tail = g_list_last (addr->priv->sockaddrs);
       g_object_unref (resolver);
     }
 
@@ -963,13 +1072,11 @@ have_addresses (GNetworkAddressAddressEnumerator *addr_enum,
 {
   GSocketAddress *sockaddr;
 
-  addr_enum->addresses = addr_enum->addr->priv->sockaddrs;
-  addr_enum->current_item = addr_enum->addresses;
+  addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr_enum->addr->priv->sockaddrs);
+  addr_enum->last_tail = g_list_last (addr_enum->addr->priv->sockaddrs);
 
   if (addr_enum->current_item)
-    {
-      sockaddr = g_object_ref (addr_enum->current_item->data);
-    }
+    sockaddr = g_object_ref (addr_enum->current_item->data);
   else
     sockaddr = NULL;
 
@@ -1143,17 +1250,28 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
   if (!addr_enum->addresses)
     {
       g_assert (addr->priv->sockaddrs);
-      addr_enum->addresses = addr->priv->sockaddrs;
-      addr_enum->current_item = addr_enum->addresses;
-      sockaddr = g_object_ref (addr_enum->current_item->data);
-    }
-  else if (addr_enum->current_item->next)
-    {
-      addr_enum->current_item = g_list_next (addr_enum->current_item);
+
+      addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr->priv->sockaddrs);
       sockaddr = g_object_ref (addr_enum->current_item->data);
     }
   else
-    sockaddr = NULL;
+    {
+      GList *parent_tail = g_list_last (addr_enum->addr->priv->sockaddrs);
+
+      if (addr_enum->last_tail != parent_tail)
+        {
+          addr_enum->current_item = list_concat_interleaved (addr_enum->current_item, g_list_next (addr_enum->last_tail));
+          addr_enum->last_tail = parent_tail;
+        }
+
+      if (addr_enum->current_item->next)
+        {
+          addr_enum->current_item = g_list_next (addr_enum->current_item);
+          sockaddr = g_object_ref (addr_enum->current_item->data);
+        }
+      else
+        sockaddr = NULL;
+    }
 
   g_task_return_pointer (task, sockaddr, g_object_unref);
   g_object_unref (task);
