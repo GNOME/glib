@@ -1,4 +1,4 @@
-image: registry.gitlab.gnome.org/gnome/glib/master:v8
+image: registry.gitlab.gnome.org/gnome/glib/master:v9
 
 stages:
   - build
