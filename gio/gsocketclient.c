@@ -2,6 +2,7 @@
  *
  * Copyright © 2008, 2009 codethink
  * Copyright © 2009 Red Hat, Inc
+ * Copyright © 2018 Igalia S.L.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -49,6 +50,10 @@
 #include <gio/ginetaddress.h>
 #include "glibintl.h"
 
+/* As recommended by RFC 8305 this is the time it waits
+ * on a connection before starting another concurrent attempt.
+ */
+#define HAPPY_EYEBALLS_CONNECTION_ATTEMPT_TIMEOUT_MS 250
 
 /**
  * SECTION:gsocketclient
@@ -1328,12 +1333,14 @@ typedef struct
   GSocketConnectable *connectable;
   GSocketAddressEnumerator *enumerator;
   GProxyAddress *proxy_addr;
-  GSocketAddress *current_addr;
-  GSocket *current_socket;
+  GSocket *socket;
   GIOStream *connection;
 
+  GSList *connection_attempts;
   GError *last_error;
 } GSocketClientAsyncConnectData;
+
+static void connection_attempt_unref (gpointer attempt);
 
 static void
 g_socket_client_async_connect_data_free (GSocketClientAsyncConnectData *data)
@@ -1341,13 +1348,65 @@ g_socket_client_async_connect_data_free (GSocketClientAsyncConnectData *data)
   g_clear_object (&data->connectable);
   g_clear_object (&data->enumerator);
   g_clear_object (&data->proxy_addr);
-  g_clear_object (&data->current_addr);
-  g_clear_object (&data->current_socket);
+  g_clear_object (&data->socket);
   g_clear_object (&data->connection);
+  g_slist_free_full (data->connection_attempts, connection_attempt_unref);
 
   g_clear_error (&data->last_error);
 
   g_slice_free (GSocketClientAsyncConnectData, data);
+}
+
+typedef struct
+{
+  GSocketAddress *address;
+  GSocket *socket;
+  GIOStream *connection;
+  GSocketClientAsyncConnectData *data; /* unowned */
+  GSource *timeout_source;
+  GCancellable *cancellable;
+  grefcount ref;
+} ConnectionAttempt;
+
+static ConnectionAttempt *
+connection_attempt_new (void)
+{
+  ConnectionAttempt *attempt = g_new0 (ConnectionAttempt, 1);
+  g_ref_count_init (&attempt->ref);
+  return attempt;
+}
+
+static ConnectionAttempt *
+connection_attempt_ref (ConnectionAttempt *attempt)
+{
+  g_ref_count_inc (&attempt->ref);
+  return attempt;
+}
+
+static void
+connection_attempt_unref (gpointer pointer)
+{
+  ConnectionAttempt *attempt = pointer;
+  if (g_ref_count_dec (&attempt->ref))
+    {
+      g_clear_object (&attempt->address);
+      g_clear_object (&attempt->socket);
+      g_clear_object (&attempt->connection);
+      g_clear_object (&attempt->cancellable);
+      if (attempt->timeout_source)
+        {
+          g_source_destroy (attempt->timeout_source);
+          g_source_unref (attempt->timeout_source);
+        }
+      g_free (attempt);
+    }
+}
+
+static void
+connection_attempt_remove (ConnectionAttempt *attempt)
+{
+  attempt->data->connection_attempts = g_slist_remove (attempt->data->connection_attempts, attempt);
+  connection_attempt_unref (attempt);
 }
 
 static void
@@ -1359,8 +1418,7 @@ g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
     {
       GSocketConnection *wrapper_connection;
 
-      wrapper_connection = g_tcp_wrapper_connection_new (data->connection,
-							 data->current_socket);
+      wrapper_connection = g_tcp_wrapper_connection_new (data->connection, data->socket);
       g_object_unref (data->connection);
       data->connection = (GIOStream *)wrapper_connection;
     }
@@ -1389,8 +1447,7 @@ static void
 enumerator_next_async (GSocketClientAsyncConnectData *data)
 {
   /* We need to cleanup the state */
-  g_clear_object (&data->current_socket);
-  g_clear_object (&data->current_addr);
+  g_clear_object (&data->socket);
   g_clear_object (&data->proxy_addr);
   g_clear_object (&data->connection);
 
@@ -1485,34 +1542,68 @@ g_socket_client_connected_callback (GObject      *source,
 				    GAsyncResult *result,
 				    gpointer      user_data)
 {
-  GSocketClientAsyncConnectData *data = user_data;
+  ConnectionAttempt *attempt = user_data;
+  GSocketClientAsyncConnectData *data = attempt->data;
+  GSList *l;
   GError *error = NULL;
   GProxy *proxy;
   const gchar *protocol;
 
-  if (g_task_return_error_if_cancelled (data->task))
+  /* data is NULL once the task is completed */
+  if (data && g_task_return_error_if_cancelled (data->task))
     {
       g_object_unref (data->task);
+      connection_attempt_unref (attempt);
       return;
+    }
+
+  if (attempt->timeout_source)
+    {
+      g_source_destroy (attempt->timeout_source);
+      g_clear_pointer (&attempt->timeout_source, g_source_unref);
     }
 
   if (!g_socket_connection_connect_finish (G_SOCKET_CONNECTION (source),
 					   result, &error))
     {
-      clarify_connect_error (error, data->connectable,
-			     data->current_addr);
-      set_last_error (data, error);
+      if (!g_cancellable_is_cancelled (attempt->cancellable))
+        {
+          clarify_connect_error (error, data->connectable, attempt->address);
+          set_last_error (data, error);
+        }
+      else
+        g_clear_error (&error);
 
-      /* try next one */
-      enumerator_next_async (data);
+      if (data)
+        {
+          connection_attempt_remove (attempt);
+          enumerator_next_async (data);
+        }
+      else
+        connection_attempt_unref (attempt);
+
       return;
     }
+
+  data->socket = g_steal_pointer (&attempt->socket);
+  data->connection = g_steal_pointer (&attempt->connection);
+
+  for (l = data->connection_attempts; l; l = g_slist_next (l))
+    {
+      ConnectionAttempt *attempt_entry = l->data;
+      g_cancellable_cancel (attempt_entry->cancellable);
+      attempt_entry->data = NULL;
+      connection_attempt_unref (attempt_entry);
+    }
+  g_slist_free (data->connection_attempts);
+  data->connection_attempts = NULL;
+  connection_attempt_unref (attempt);
 
   g_socket_connection_set_cached_remote_address ((GSocketConnection*)data->connection, NULL);
   g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_CONNECTED, data->connectable, data->connection);
 
   /* wrong, but backward compatible */
-  g_socket_set_blocking (data->current_socket, TRUE);
+  g_socket_set_blocking (data->socket, TRUE);
 
   if (!data->proxy_addr)
     {
@@ -1565,6 +1656,26 @@ g_socket_client_connected_callback (GObject      *source,
     }
 }
 
+static gboolean
+on_connection_attempt_timeout (gpointer data)
+{
+  ConnectionAttempt *attempt = data;
+
+  enumerator_next_async (attempt->data);
+
+  g_clear_pointer (&attempt->timeout_source, g_source_unref);
+  return G_SOURCE_REMOVE;
+}
+
+static void
+on_connection_cancelled (GCancellable *cancellable,
+                         gpointer      data)
+{
+  GCancellable *attempt_cancellable = data;
+
+  g_cancellable_cancel (attempt_cancellable);
+}
+
 static void
 g_socket_client_enumerator_callback (GObject      *object,
 				     GAsyncResult *result,
@@ -1573,6 +1684,7 @@ g_socket_client_enumerator_callback (GObject      *object,
   GSocketClientAsyncConnectData *data = user_data;
   GSocketAddress *address = NULL;
   GSocket *socket;
+  ConnectionAttempt *attempt;
   GError *error = NULL;
 
   if (g_task_return_error_if_cancelled (data->task))
@@ -1585,6 +1697,9 @@ g_socket_client_enumerator_callback (GObject      *object,
 						     result, &error);
   if (address == NULL)
     {
+      if (data->connection_attempts)
+        return;
+
       g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_COMPLETE, data->connectable, NULL);
       if (!error)
 	{
@@ -1621,16 +1736,27 @@ g_socket_client_enumerator_callback (GObject      *object,
       return;
     }
 
-  data->current_socket = socket;
-  data->current_addr = address;
-  data->connection = (GIOStream *) g_socket_connection_factory_create_connection (socket);
+  attempt = connection_attempt_new ();
+  attempt->data = data;
+  attempt->socket = socket;
+  attempt->address = address;
+  attempt->cancellable = g_cancellable_new ();
+  attempt->connection = (GIOStream *)g_socket_connection_factory_create_connection (socket);
+  attempt->timeout_source = g_timeout_source_new (HAPPY_EYEBALLS_CONNECTION_ATTEMPT_TIMEOUT_MS);
+  g_source_set_callback (attempt->timeout_source, on_connection_attempt_timeout, attempt, NULL);
+  g_source_attach (attempt->timeout_source, g_main_context_get_thread_default ());
+  data->connection_attempts = g_slist_append (data->connection_attempts, attempt);
 
-  g_socket_connection_set_cached_remote_address ((GSocketConnection*)data->connection, address);
-  g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_CONNECTING, data->connectable, data->connection);
-  g_socket_connection_connect_async (G_SOCKET_CONNECTION (data->connection),
+  if (g_task_get_cancellable (data->task))
+    g_cancellable_connect (g_task_get_cancellable (data->task), G_CALLBACK (on_connection_cancelled),
+                           g_object_ref (attempt->cancellable), g_object_unref);
+
+  g_socket_connection_set_cached_remote_address ((GSocketConnection *)attempt->connection, address);
+  g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_CONNECTING, data->connectable, attempt->connection);
+  g_socket_connection_connect_async (G_SOCKET_CONNECTION (attempt->connection),
 				     address,
-				     g_task_get_cancellable (data->task),
-				     g_socket_client_connected_callback, data);
+				     attempt->cancellable,
+				     g_socket_client_connected_callback, connection_attempt_ref (attempt));
 }
 
 /**
