@@ -1131,6 +1131,12 @@ g_date_prepare_to_parse (const gchar      *str,
       g_date_strftime (buf, 127, "%x", &d);
       
       g_date_fill_parse_tokens (buf, &testpt);
+
+      using_twodigit_years = FALSE;
+      locale_era_adjust = 0;
+      dmy_order[0] = G_DATE_DAY;
+      dmy_order[1] = G_DATE_MONTH;
+      dmy_order[2] = G_DATE_YEAR;
       
       i = 0;
       while (i < testpt.num_ints)
