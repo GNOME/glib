@@ -183,6 +183,32 @@ test_parse (void)
 }
 
 static void
+test_parse_locale_change (void)
+{
+  /* Checks that g_date_set_parse correctly changes locale specific data as
+   * necessary. In this particular case year adjustment, as Thai calendar is
+   * 543 years ahead of the Gregorian calendar. */
+
+  GDate date;
+
+  if (setlocale (LC_ALL, "th_TH") == NULL)
+    {
+      g_test_skip ("locale th_TH not available");
+      return;
+    }
+
+  g_date_set_parse (&date, "04/07/2519");
+
+  setlocale (LC_ALL, "C");
+  g_date_set_parse (&date, "07/04/76");
+  g_assert_cmpint (g_date_get_day (&date), ==, 4);
+  g_assert_cmpint (g_date_get_month (&date), ==, 7);
+  g_assert_cmpint (g_date_get_year (&date), ==, 1976);
+
+  setlocale (LC_ALL, "");
+}
+
+static void
 test_month_names (void)
 {
 #if defined(HAVE_LANGINFO_ABALTMON) || defined(G_OS_WIN32)
@@ -709,6 +735,7 @@ main (int argc, char** argv)
   g_test_add_func ("/date/julian", test_julian_constructor);
   g_test_add_func ("/date/dates", test_dates);
   g_test_add_func ("/date/parse", test_parse);
+  g_test_add_func ("/date/parse_locale_change", test_parse_locale_change);
   g_test_add_func ("/date/month_names", test_month_names);
   g_test_add_func ("/date/clamp", test_clamp);
   g_test_add_func ("/date/order", test_order);
