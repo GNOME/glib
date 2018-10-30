@@ -195,7 +195,7 @@ append_tuple_type_string (GString  *string,
   GVariantType *result, *other_result;
   GVariantType **types;
   gint size;
-  gint i;
+  gsize i;
 
   g_string_append_c (string, '(');
   g_string_append (description, "t of [");
@@ -377,7 +377,7 @@ describe_type (const GVariantType *type)
               const GVariantType *sub;
               GString *string;
               gint length;
-              gint i;
+              gsize i;
 
               string = g_string_new ("t of [");
 
@@ -487,7 +487,8 @@ generate_subtype (const gchar *type_string)
 {
   GVariantType *replacement;
   GString *result, *junk;
-  gint length, n = 0, l;
+  gint l;
+  gsize length, n = 0;
 
   result = g_string_new (NULL);
   junk = g_string_new (NULL);
@@ -588,7 +589,7 @@ subtype_check (const gchar      *type_string,
 static void
 test_gvarianttype (void)
 {
-  gint i;
+  gsize i;
 
   for (i = 0; i < 2000; i++)
     {
@@ -873,7 +874,7 @@ describe_info (GVariantTypeInfo *info)
         const gchar *sep = "";
         GString *string;
         gint length;
-        gint i;
+        gsize i;
 
         string = g_string_new ("t of [");
         length = g_variant_type_info_n_members (info);
@@ -934,7 +935,7 @@ static void
 check_offsets (GVariantTypeInfo   *info,
                const GVariantType *type)
 {
-  gint flavour;
+  gsize flavour;
   gint length;
 
   length = g_variant_type_info_n_members (info);
@@ -950,7 +951,7 @@ check_offsets (GVariantTypeInfo   *info,
       gsize last_offset_index;
       gsize last_offset;
       gsize position;
-      gint i;
+      gsize i;
 
       subtype = g_variant_type_first (type);
       last_offset_index = -1;
@@ -1018,7 +1019,7 @@ check_offsets (GVariantTypeInfo   *info,
 static void
 test_gvarianttypeinfo (void)
 {
-  gint i;
+  gsize i;
 
   for (i = 0; i < 2000; i++)
     {
@@ -1116,7 +1117,7 @@ random_type_string (void)
     {
       char type_string[MAX_FIXED_MULTIPLIER];
       guint multiplier;
-      guint i = 0;
+      gsize i = 0;
 
       multiplier = g_test_rand_int_range (1, sizeof type_string - 1);
 
@@ -1201,7 +1202,7 @@ random_instance_write (RandomInstance *instance,
                        guchar         *buffer)
 {
   GRand *rand;
-  gint i;
+  gsize i;
 
   g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
 
@@ -1228,7 +1229,7 @@ random_instance_assert (RandomInstance *instance,
                         gsize           size)
 {
   GRand *rand;
-  gint i;
+  gsize i;
 
   g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
   g_assert_cmpint (size, ==, instance->size);
@@ -1251,7 +1252,7 @@ random_instance_check (RandomInstance *instance,
                        gsize           size)
 {
   GRand *rand;
-  gint i;
+  gsize i;
 
   g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
 
@@ -1435,7 +1436,7 @@ test_maybe (void)
 
   {
     guint alignment;
-    guint flavour;
+    gsize flavour;
 
     alignment = (instance->alignment & ALIGN_BITS) + 1;
 
@@ -1468,7 +1469,7 @@ test_maybe (void)
 static void
 test_maybes (void)
 {
-  guint i;
+  gsize i;
 
   for (i = 0; i < 1000; i++)
     test_maybe ();
@@ -1502,7 +1503,7 @@ test_array (void)
   }
 
   {
-    guint i;
+    gsize i;
 
     n_children = g_test_rand_int_range (0, MAX_ARRAY_CHILDREN);
     instances = g_new (RandomInstance *, n_children);
@@ -1518,7 +1519,7 @@ test_array (void)
   {
     gsize element_fixed_size;
     gsize body_size = 0;
-    guint i;
+    gsize i;
 
     for (i = 0; i < n_children; i++)
       append_instance_size (instances[i], &body_size);
@@ -1540,7 +1541,7 @@ test_array (void)
 
   {
     guchar *offset_ptr, *body_ptr;
-    guint i;
+    gsize i;
 
     body_ptr = data = align_malloc (needed_size);
     offset_ptr = body_ptr + needed_size - offset_size * n_children;
@@ -1558,7 +1559,7 @@ test_array (void)
   {
     guint alignment;
     gsize flavour;
-    guint i;
+    gsize i;
 
     g_variant_type_info_query (array_info, &alignment, NULL);
     alignment = (alignment & ALIGN_BITS) + 1;
@@ -1595,7 +1596,7 @@ test_array (void)
   }
 
   {
-    guint i;
+    gsize i;
 
     for (i = 0; i < n_children; i++)
       random_instance_free (instances[i]);
@@ -1610,7 +1611,7 @@ test_array (void)
 static void
 test_arrays (void)
 {
-  guint i;
+  gsize i;
 
   for (i = 0; i < 100; i++)
     test_array ();
@@ -1635,7 +1636,7 @@ test_tuple (void)
 
   {
     GString *type_string;
-    guint i;
+    gsize i;
 
     fixed_size = TRUE;
     alignment = 0;
@@ -1667,7 +1668,7 @@ test_tuple (void)
   {
     gsize body_size = 0;
     gsize offsets = 0;
-    guint i;
+    gsize i;
 
     for (i = 0; i < n_children; i++)
       {
@@ -1693,7 +1694,7 @@ test_tuple (void)
   {
     guchar *body_ptr;
     guchar *ofs_ptr;
-    guint i;
+    gsize i;
 
     body_ptr = data = align_malloc (needed_size);
     ofs_ptr = body_ptr + needed_size;
@@ -1723,7 +1724,7 @@ test_tuple (void)
 
   {
     gsize flavour;
-    guint i;
+    gsize i;
 
     alignment = (alignment & ALIGN_BITS) + 1;
 
@@ -1759,7 +1760,7 @@ test_tuple (void)
   }
 
   {
-    guint i;
+    gsize i;
 
     for (i = 0; i < n_children; i++)
       random_instance_free (instances[i]);
@@ -1773,7 +1774,7 @@ test_tuple (void)
 static void
 test_tuples (void)
 {
-  guint i;
+  gsize i;
 
   for (i = 0; i < 100; i++)
     test_tuple ();
@@ -1857,7 +1858,7 @@ test_variant (void)
 static void
 test_variants (void)
 {
-  guint i;
+  gsize i;
 
   for (i = 0; i < 100; i++)
     test_variant ();
@@ -1909,7 +1910,7 @@ test_strings (void)
     { is_string,   15, "(yyy{vv}ssiai)" },
     { is_string,   15, "(yyy{sv)ssiai}" }
   };
-  guint i;
+  gsize i;
 
   for (i = 0; i < G_N_ELEMENTS (test_cases); i++)
     {
@@ -1968,7 +1969,7 @@ make_random_string (gchar              *string,
                     gsize               size,
                     const GVariantType *type)
 {
-  gint i;
+  gsize i;
 
   /* create strings that are valid signature strings */
 #define good_chars "bynqiuxthdsog"
@@ -2069,7 +2070,7 @@ tree_instance_new (const GVariantType *type,
   if (instance->data_size == 0)
     /* no data -> it is a container */
     {
-      guint i;
+      gsize i;
 
       instance->children = g_new (TreeInstance *, instance->n_children);
 
@@ -2092,7 +2093,7 @@ tree_instance_new (const GVariantType *type,
 static void
 tree_instance_free (TreeInstance *instance)
 {
-  gint i;
+  gsize i;
 
   g_variant_type_info_unref (instance->info);
   for (i = 0; i < instance->n_children; i++)
@@ -2195,7 +2196,7 @@ check_tree (TreeInstance       *instance,
   if (instance->data_size == 0)
     /* is a container */
     {
-      gint i;
+      gsize i;
 
       if (g_variant_serialised_n_children (serialised) !=
           instance->n_children)
@@ -2324,7 +2325,7 @@ test_fuzz (gdouble *fuzziness)
 
       while (!fuzzed)
         {
-          gint i;
+          gsize i;
 
           for (i = 0; i < serialised.size; i++)
             if (randomly (*fuzziness))
@@ -2405,7 +2406,7 @@ tree_instance_get_gvariant (TreeInstance *tree)
       {
         const GVariantType *child_type;
         GVariant **children;
-        gint i;
+        gsize i;
 
         children = g_new (GVariant *, tree->n_children);
         for (i = 0; i < tree->n_children; i++)
@@ -2424,7 +2425,7 @@ tree_instance_get_gvariant (TreeInstance *tree)
     case G_VARIANT_TYPE_INFO_CHAR_TUPLE:
       {
         GVariant **children;
-        gint i;
+        gsize i;
 
         children = g_new (GVariant *, tree->n_children);
         for (i = 0; i < tree->n_children; i++)
@@ -2835,7 +2836,7 @@ test_utf8 (void)
 static void
 test_containers (void)
 {
-  gint i;
+  gsize i;
 
   for (i = 0; i < 100; i++)
     {
@@ -3004,12 +3005,13 @@ test_varargs (void)
     GVariant *value;
     gchar *number;
     gboolean just;
-    gint i, val;
+    guint i;
+    gint val;
 
     g_variant_builder_init (&array, G_VARIANT_TYPE_ARRAY);
     for (i = 0; i < 100; i++)
       {
-        number = g_strdup_printf ("%d", i);
+        number = g_strdup_printf ("%u", i);
         g_variant_builder_add (&array, "s", number);
         g_free (number);
       }
@@ -3020,7 +3022,7 @@ test_varargs (void)
     i = 0;
     while (g_variant_iter_loop (&iter, "s", &number))
       {
-        gchar *check = g_strdup_printf ("%d", i++);
+        gchar *check = g_strdup_printf ("%u", i++);
         g_assert_cmpstr (number, ==, check);
         g_free (check);
       }
@@ -3072,7 +3074,7 @@ test_varargs (void)
     gchar **my_strv;
     GVariant *value;
     gchar *str;
-    gint i;
+    gsize i;
 
     g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
     g_variant_builder_add (&builder, "s", "/foo");
@@ -3125,7 +3127,7 @@ test_varargs (void)
     gchar **my_strv;
     GVariant *value;
     gchar *str;
-    gint i;
+    gsize i;
 
     g_variant_builder_init (&builder, G_VARIANT_TYPE ("aaay"));
     g_variant_builder_add (&builder, "^aay", strvector);
@@ -3199,7 +3201,7 @@ test_varargs (void)
     gchar **my_strv;
     GVariant *value;
     gchar *str;
-    gint i;
+    gsize i;
 
     g_variant_builder_init (&builder, G_VARIANT_TYPE_OBJECT_PATH_ARRAY);
     g_variant_builder_add (&builder, "o", "/foo");
@@ -3251,7 +3253,7 @@ test_varargs (void)
     GVariant *value;
     GVariant *sub;
     gchar **strv;
-    gint i;
+    gsize i;
 
     g_variant_builder_init (&builder, G_VARIANT_TYPE ("aas"));
     g_variant_builder_open (&builder, G_VARIANT_TYPE ("as"));
@@ -3313,7 +3315,7 @@ test_varargs (void)
 
     for (i = 0; i < g_variant_n_children (value); i++)
       {
-        gint j;
+        gsize j;
 
         g_variant_get_child (value, i, "*", &sub);
 
@@ -3665,7 +3667,7 @@ test_hashing (void)
 {
   GVariant *items[4096];
   GHashTable *table;
-  gint i;
+  gsize i;
 
   table = g_hash_table_new_full (g_variant_hash, g_variant_equal,
                                  (GDestroyNotify ) g_variant_unref,
@@ -3674,7 +3676,7 @@ test_hashing (void)
   for (i = 0; i < G_N_ELEMENTS (items); i++)
     {
       TreeInstance *tree;
-      gint j;
+      gsize j;
 
  again:
       tree = tree_instance_new (NULL, 0);
@@ -3817,7 +3819,7 @@ test_parser (void)
 static void
 test_parses (void)
 {
-  gint i;
+  gsize i;
 
   for (i = 0; i < 100; i++)
     {
@@ -3905,7 +3907,7 @@ test_parses (void)
     GVariant *value;
     gchar *printed;
     gchar *printed_down;
-    gint i;
+    gsize i;
 
     for (i = 0; i < G_N_ELEMENTS (tests); i++)
       {
@@ -4038,7 +4040,7 @@ test_parse_failures (void)
     "b'\\'a",                   "0-5:",            "unterminated string constant",
     "b\"\\\"a",                 "0-5:",            "unterminated string constant",
   };
-  gint i;
+  guint i;
 
   for (i = 0; i < G_N_ELEMENTS (test); i += 3)
     {
@@ -4058,11 +4060,11 @@ test_parse_failures (void)
       g_free (test_blob);
 
       if (!strstr (error1->message, test[i+2]))
-        g_error ("test %d: Can't find '%s' in '%s'", i / 3,
+        g_error ("test %u: Can't find '%s' in '%s'", i / 3,
                  test[i+2], error1->message);
 
       if (!g_str_has_prefix (error1->message, test[i+1]))
-        g_error ("test %d: Expected location '%s' in '%s'", i / 3,
+        g_error ("test %u: Expected location '%s' in '%s'", i / 3,
                  test[i+1], error1->message);
 
       /* Test again with the nul terminator this time. The behaviour should be
@@ -4238,7 +4240,7 @@ test_lookup_value (void)
     { "@a{sv} {'x':  <5>}",   "x",  "5"   },
     { "@a{sv} {'x':  <'y'>}", "y"         }
   };
-  gint i;
+  gsize i;
 
   for (i = 0; i < G_N_ELEMENTS (cases); i++)
     {
@@ -4460,7 +4462,7 @@ test_fixed_array (void)
   gint32 values[5];
   const gint32 *elts;
   gsize n_elts;
-  gint i;
+  gsize i;
 
   n_elts = 0;
   a = g_variant_new_parsed ("[1,2,3,4,5]");
@@ -4627,7 +4629,7 @@ test_gbytes (void)
   const guint8 values[5] = { 1, 2, 3, 4, 5 };
   const guint8 *elts;
   gsize n_elts;
-  gint i;
+  gsize i;
 
   bytes = g_bytes_new (&values, 5);
   a = g_variant_new_from_bytes (G_VARIANT_TYPE_BYTESTRING, bytes, TRUE);
@@ -4636,7 +4638,7 @@ test_gbytes (void)
   elts = g_variant_get_fixed_array (a, &n_elts, sizeof (guint8));
   g_assert (n_elts == 5);
   for (i = 0; i < 5; i++)
-    g_assert_cmpint (elts[i], ==, i + 1);
+    g_assert_cmpuint (elts[i], ==, i + 1);
 
   bytes2 = g_variant_get_data_as_bytes (a);
   g_variant_unref (a);
@@ -4677,7 +4679,7 @@ test_print_context (void)
   };
   GVariant *v;
   gchar *s;
-  gint i;
+  gsize i;
   GError *error = NULL;
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
@@ -4966,7 +4968,7 @@ test_normal_checking_empty_object_path (void)
 int
 main (int argc, char **argv)
 {
-  gint i;
+  guint i;
 
   g_test_init (&argc, &argv, NULL);
 
