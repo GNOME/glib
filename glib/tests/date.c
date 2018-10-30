@@ -209,6 +209,39 @@ test_parse_locale_change (void)
 }
 
 static void
+test_month_substring (void)
+{
+  GDate date;
+
+  g_test_bug ("793550");
+
+  if (setlocale (LC_ALL, "pl_PL") == NULL)
+    {
+      g_test_skip ("pl_PL locale not available");
+      return;
+    }
+
+  /* In Polish language September is "wrzesień" and August is "sierpień"
+   * abbreviated as "sie". The former used to be confused with the latter
+   * because "sie" is a substring of "wrzesień" and was matched first. */
+
+  g_date_set_parse (&date, "wrzesień 2018");
+  g_assert_true (g_date_valid (&date));
+  g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_SEPTEMBER);
+
+  g_date_set_parse (&date, "sie 2018");
+  g_assert_true (g_date_valid (&date));
+  g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_AUGUST);
+
+  g_date_set_parse (&date, "sierpień 2018");
+  g_assert_true (g_date_valid (&date));
+  g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_AUGUST);
+
+  setlocale (LC_ALL, "");
+}
+
+
+static void
 test_month_names (void)
 {
 #if defined(HAVE_LANGINFO_ABALTMON) || defined(G_OS_WIN32)
@@ -736,6 +769,7 @@ main (int argc, char** argv)
   g_test_add_func ("/date/dates", test_dates);
   g_test_add_func ("/date/parse", test_parse);
   g_test_add_func ("/date/parse_locale_change", test_parse_locale_change);
+  g_test_add_func ("/date/month_substring", test_month_substring);
   g_test_add_func ("/date/month_names", test_month_names);
   g_test_add_func ("/date/clamp", test_clamp);
   g_test_add_func ("/date/order", test_order);
