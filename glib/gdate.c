@@ -931,6 +931,27 @@ struct _GDateParseTokens {
 
 typedef struct _GDateParseTokens GDateParseTokens;
 
+static inline gboolean
+update_month_match (gsize *longest,
+                    const gchar *haystack,
+                    const gchar *needle)
+{
+  gsize length;
+
+  if (needle == NULL)
+    return FALSE;
+
+  length = strlen (needle);
+  if (*longest >= length)
+    return FALSE;
+
+  if (strstr (haystack, needle) == NULL)
+    return FALSE;
+
+  *longest = length;
+  return TRUE;
+}
+
 #define NUM_LEN 10
 
 /* HOLDS: g_date_global_lock */
@@ -978,6 +999,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
   
   if (pt->num_ints < 3)
     {
+      gsize longest = 0;
       gchar *casefold;
       gchar *normalized;
       
@@ -985,8 +1007,7 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
       normalized = g_utf8_normalize (casefold, -1, G_NORMALIZE_ALL);
       g_free (casefold);
 
-      i = 1;
-      while (i < 13)
+      for (i = 1; i < 13; ++i)
         {
           /* Here month names may be in a genitive case if the language
            * grammatical rules require it.
@@ -997,60 +1018,26 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
            * genitive case here so they use nominative everywhere.
            * For example, English always uses "January".
            */
-          if (long_month_names[i] != NULL) 
-            {
-              const gchar *found = strstr (normalized, long_month_names[i]);
-	      
-              if (found != NULL)
-                {
-                  pt->month = i;
-		  break;
-                }
-            }
+          if (update_month_match (&longest, normalized, long_month_names[i]))
+            pt->month = i;
 
           /* Here month names will be in a nominative case.
            * Examples of how January may look in some languages:
            * Catalan: "gener", Croatian: "Siječanj", Polish: "styczeń",
            * Upper Sorbian: "Januar".
            */
-          if (long_month_names_alternative[i] != NULL)
-            {
-              const gchar *found = strstr (normalized, long_month_names_alternative[i]);
-
-              if (found != NULL)
-                {
-                  pt->month = i;
-                  break;
-                }
-            }
+          if (update_month_match (&longest, normalized, long_month_names_alternative[i]))
+            pt->month = i;
 
           /* Differences between abbreviated nominative and abbreviated
            * genitive month names are visible in very few languages but
            * let's handle them.
            */
-          if (short_month_names[i] != NULL) 
-            {
-              const gchar *found = strstr (normalized, short_month_names[i]);
-	      
-              if (found != NULL)
-                {
-                  pt->month = i;
-		  break;
-                }
-            }
+          if (update_month_match (&longest, normalized, short_month_names[i]))
+            pt->month = i;
 
-          if (short_month_names_alternative[i] != NULL)
-            {
-              const gchar *found = strstr (normalized, short_month_names_alternative[i]);
-
-              if (found != NULL)
-                {
-                  pt->month = i;
-                  break;
-                }
-            }
-
-          ++i;
+          if (update_month_match (&longest, normalized, short_month_names_alternative[i]))
+            pt->month = i;
         }
 
       g_free (normalized);
