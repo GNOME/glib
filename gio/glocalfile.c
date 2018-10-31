@@ -109,7 +109,7 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
 						g_local_file_file_iface_init))
 
-static char *find_mountpoint_for (const char *file, dev_t dev);
+static char *find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink);
 
 static void
 g_local_file_finalize (GObject *object)
@@ -791,7 +791,7 @@ get_mount_info (GFileInfo             *fs_info,
     {
       mount_info = 0;
 
-      mountpoint = find_mountpoint_for (path, buf.st_dev);
+      mountpoint = find_mountpoint_for (path, buf.st_dev, FALSE);
       if (mountpoint == NULL)
 	mountpoint = g_strdup ("/");
 
@@ -886,7 +886,7 @@ get_volume_for_path (const char *path)
 }
 
 static char *
-find_mountpoint_for (const char *file, dev_t dev)
+find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink)
 {
   wchar_t *wpath;
   char *utf8_path;
@@ -1132,7 +1132,7 @@ g_local_file_find_enclosing_mount (GFile         *file,
   if (g_lstat (local->filename, &buf) != 0)
     goto error;
 
-  mountpoint = find_mountpoint_for (local->filename, buf.st_dev);
+  mountpoint = find_mountpoint_for (local->filename, buf.st_dev, FALSE);
   if (mountpoint == NULL)
     goto error;
 
@@ -1584,19 +1584,65 @@ expand_symlink (const char *link)
 }
 
 static char *
-get_parent (const char *path, 
+expand_symlinks (const char *path,
+                 dev_t      *dev)
+{
+  char *tmp, *target;
+  GStatBuf target_stat;
+  int num_recursions;
+
+  target = g_strdup (path);
+
+  num_recursions = 0;
+  do
+    {
+      if (g_lstat (target, &target_stat) != 0)
+        {
+          g_free (target);
+          return NULL;
+        }
+
+      if (S_ISLNK (target_stat.st_mode))
+        {
+          tmp = target;
+          target = expand_symlink (target);
+          g_free (tmp);
+        }
+
+      num_recursions++;
+
+#ifdef MAXSYMLINKS
+      if (num_recursions > MAXSYMLINKS)
+#else
+      /* 40 is used in kernel sources currently:
+       * https://github.com/torvalds/linux/include/linux/namei.h
+       */
+      if (num_recursions > 40)
+#endif
+        {
+          g_free (target);
+          return NULL;
+        }
+    }
+  while (S_ISLNK (target_stat.st_mode));
+
+  if (dev)
+    *dev = target_stat.st_dev;
+
+  return target;
+}
+
+static char *
+get_parent (const char *path,
             dev_t      *parent_dev)
 {
-  char *parent, *tmp;
-  GStatBuf parent_stat;
-  int num_recursions;
+  char *parent, *res;
   char *path_copy;
 
   path_copy = strip_trailing_slashes (path);
   
   parent = g_path_get_dirname (path_copy);
-  if (strcmp (parent, ".") == 0 ||
-      strcmp (parent, path_copy) == 0)
+  if (strcmp (parent, ".") == 0)
     {
       g_free (parent);
       g_free (path_copy);
@@ -1604,32 +1650,10 @@ get_parent (const char *path,
     }
   g_free (path_copy);
 
-  num_recursions = 0;
-  do {
-    if (g_lstat (parent, &parent_stat) != 0)
-      {
-	g_free (parent);
-	return NULL;
-      }
-    
-    if (S_ISLNK (parent_stat.st_mode))
-      {
-	tmp = parent;
-	parent = expand_symlink (parent);
-	g_free (tmp);
-      }
-    
-    num_recursions++;
-    if (num_recursions > 12)
-      {
-	g_free (parent);
-	return NULL;
-      }
-  } while (S_ISLNK (parent_stat.st_mode));
+  res = expand_symlinks (parent, parent_dev);
+  g_free (parent);
 
-  *parent_dev = parent_stat.st_dev;
-  
-  return parent;
+  return res;
 }
 
 static char *
@@ -1640,10 +1664,12 @@ expand_all_symlinks (const char *path)
   dev_t parent_dev;
 
   parent = get_parent (path, &parent_dev);
-  if (parent)
+  if (parent == NULL)
+    return NULL;
+
+  if (g_strcmp0 (parent, "/") != 0)
     {
       parent_expanded = expand_all_symlinks (parent);
-      g_free (parent);
       basename = g_path_get_basename (path);
       res = g_build_filename (parent_expanded, basename, NULL);
       g_free (basename);
@@ -1651,26 +1677,40 @@ expand_all_symlinks (const char *path)
     }
   else
     res = g_strdup (path);
-  
+
+  g_free (parent);
+
   return res;
 }
 
 static char *
-find_mountpoint_for (const char *file, 
-                     dev_t       dev)
+find_mountpoint_for (const char *file,
+                     dev_t       dev,
+                     gboolean    resolve_basename_symlink)
 {
   char *dir, *parent;
   dev_t dir_dev, parent_dev;
 
-  dir = g_strdup (file);
+  if (resolve_basename_symlink)
+    {
+      dir = expand_symlinks (file, NULL);
+      if (dir == NULL)
+        return NULL;
+    }
+  else
+    dir = g_strdup (file);
+
   dir_dev = dev;
 
-  while (1) 
+  while (g_strcmp0 (dir, "/") != 0)
     {
       parent = get_parent (dir, &parent_dev);
       if (parent == NULL)
-        return dir;
-    
+        {
+          g_free (dir);
+          return NULL;
+        }
+
       if (parent_dev != dir_dev)
         {
           g_free (parent);
@@ -1680,6 +1720,8 @@ find_mountpoint_for (const char *file,
       g_free (dir);
       dir = parent;
     }
+
+  return dir;
 }
 
 char *
@@ -1693,7 +1735,7 @@ _g_local_file_find_topdir_for (const char *file)
   if (dir == NULL)
     return NULL;
 
-  mountpoint = find_mountpoint_for (dir, dir_dev);
+  mountpoint = find_mountpoint_for (dir, dir_dev, TRUE);
   g_free (dir);
 
   return mountpoint;
@@ -1747,7 +1789,7 @@ try_make_relative (const char *path,
   base2 = expand_all_symlinks (base);
 
   relative = NULL;
-  if (path_has_prefix (path2, base2))
+  if (path2 != NULL && base2 != NULL && path_has_prefix (path2, base2))
     {
       relative = path2 + strlen (base2);
       while (*relative == '/')
@@ -1789,7 +1831,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   if (dir_dev == home_dev)
     return TRUE;
 
-  topdir = find_mountpoint_for (dirname, dir_dev);
+  topdir = find_mountpoint_for (dirname, dir_dev, TRUE);
   if (topdir == NULL)
     return FALSE;
 
@@ -1856,7 +1898,7 @@ _g_local_file_is_lost_found_dir (const char *path, dev_t path_dev)
   if (!g_str_has_suffix (path, "/lost+found"))
     goto out;
 
-  mount_dir = find_mountpoint_for (path, path_dev);
+  mount_dir = find_mountpoint_for (path, path_dev, FALSE);
   if (mount_dir == NULL)
     goto out;
 
