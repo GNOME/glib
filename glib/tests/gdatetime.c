@@ -25,6 +25,14 @@
 #include <glib/gstdio.h>
 #include <locale.h>
 
+/* The tests below exercise invalid formats and y2k-unsafe formats,
+ * so we need to silence the warnings here to pass.
+ */
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wformat"
+#pragma GCC diagnostic ignored "-Wformat-y2k"
+#endif
+
 #define ASSERT_DATE(dt,y,m,d) G_STMT_START { \
   g_assert_nonnull ((dt)); \
   g_assert_cmpint ((y), ==, g_date_time_get_year ((dt))); \
