@@ -3092,7 +3092,7 @@ test_varargs (void)
     g_variant_builder_add (&builder, "s", test_strs[0]);
     g_variant_builder_add (&builder, "s", test_strs[1]);
     g_variant_builder_add (&builder, "s", test_strs[2]);
-    value = g_variant_new("(as^as^a&s)", &builder, strvector, strvector);
+    value = g_variant_new ("(as^as^a&s)", &builder, strvector, strvector);
     g_variant_iter_init (&tuple, value);
     g_variant_iter_next (&tuple, "as", &array);
 
@@ -3211,7 +3211,7 @@ test_varargs (void)
     g_variant_builder_add (&builder, "o", test_strs[0]);
     g_variant_builder_add (&builder, "o", test_strs[1]);
     g_variant_builder_add (&builder, "o", test_strs[2]);
-    value = g_variant_new("(ao^ao^a&o)", &builder, strvector, strvector);
+    value = g_variant_new ("(ao^ao^a&o)", &builder, strvector, strvector);
     g_variant_iter_init (&tuple, value);
     g_variant_iter_next (&tuple, "ao", &array);
 
