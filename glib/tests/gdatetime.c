@@ -1994,6 +1994,28 @@ test_z (void)
   g_free (p);
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
+
+  tz = g_time_zone_new ("-00:15");
+  dt = g_date_time_new (tz, 1, 1, 1, 0, 0, 0);
+
+  p = g_date_time_format (dt, "%z");
+  g_assert_cmpstr (p, ==, "-0015");
+  g_free (p);
+
+  p = g_date_time_format (dt, "%:z");
+  g_assert_cmpstr (p, ==, "-00:15");
+  g_free (p);
+
+  p = g_date_time_format (dt, "%::z");
+  g_assert_cmpstr (p, ==, "-00:15:00");
+  g_free (p);
+
+  p = g_date_time_format (dt, "%:::z");
+  g_assert_cmpstr (p, ==, "-00:15");
+  g_free (p);
+
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
 }
 
 #pragma GCC diagnostic push
