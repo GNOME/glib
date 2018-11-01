@@ -155,7 +155,7 @@ dispatch_token (struct token *token)
       struct context *ctx;
       gint next_ctx;
 
-      next_ctx = g_test_rand_int_range (0, NUM_THREADS);
+      next_ctx = g_random_int_range (0, NUM_THREADS);
       ctx = &contexts[next_ctx];
       token->owner = ctx;
       token->ttl--;
