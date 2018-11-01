@@ -493,7 +493,7 @@ foreach test_name, extra_args : gio_tests
   )
 
   suite = ['gio'] + extra_args.get('suite', [])
-  timeout = suite.contains('slow') ? 120 : 30
+  timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   test(test_name, exe,
     env : test_env,
     timeout : timeout,
