@@ -1160,6 +1160,8 @@ do_modify (gpointer data)
       random_menu_change (menu, rand);
     }
 
+  g_rand_free (rand);
+
   return NULL;
 }
 
@@ -1201,9 +1203,11 @@ test_dbus_threaded (void)
 
   for (i = 0; i < 10; i++)
     {
-      menu[i] = random_menu_new (g_rand_new_with_seed (g_test_rand_int ()), 2);
+      GRand *rand = g_rand_new_with_seed (g_test_rand_int ());
+      menu[i] = random_menu_new (rand, 2);
       call[i] = g_thread_new ("call", do_modify, menu[i]);
       export[i] = g_thread_new ("export", do_export, menu[i]);
+      g_rand_free (rand);
     }
 
   for (i = 0; i < 10; i++)
