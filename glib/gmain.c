@@ -462,10 +462,10 @@ static volatile sig_atomic_t any_unix_signal_pending;
 static volatile int unix_signal_pending[NSIG];
 static volatile int any_unix_signal_pending;
 #endif
-static volatile guint unix_signal_refcount[NSIG];
 
 /* Guards all the data below */
 G_LOCK_DEFINE_STATIC (unix_signal_lock);
+static guint unix_signal_refcount[NSIG];
 static GSList *unix_signal_watches;
 static GSList *unix_child_watches;
 
