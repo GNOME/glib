@@ -5107,7 +5107,7 @@ dispatch_unix_signals_unlocked (void)
         {
           GChildWatchSource *source = node->data;
 
-          if (!source->child_exited)
+          if (!g_atomic_int_get (&source->child_exited))
             {
               pid_t pid;
               do
@@ -5117,14 +5117,14 @@ dispatch_unix_signals_unlocked (void)
                   pid = waitpid (source->pid, &source->child_status, WNOHANG);
                   if (pid > 0)
                     {
-                      source->child_exited = TRUE;
+                      g_atomic_int_set (&source->child_exited, TRUE);
                       wake_source ((GSource *) source);
                     }
                   else if (pid == -1 && errno == ECHILD)
                     {
                       g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). See the documentation of g_child_watch_source_new() for possible causes.");
-                      source->child_exited = TRUE;
                       source->child_status = 0;
+                      g_atomic_int_set (&source->child_exited, TRUE);
                       wake_source ((GSource *) source);
                     }
                 }
@@ -5167,7 +5167,7 @@ g_child_watch_prepare (GSource *source,
 
   child_watch_source = (GChildWatchSource *) source;
 
-  return child_watch_source->child_exited;
+  return g_atomic_int_get (&child_watch_source->child_exited);
 }
 
 static gboolean
@@ -5177,7 +5177,7 @@ g_child_watch_check (GSource *source)
 
   child_watch_source = (GChildWatchSource *) source;
 
-  return child_watch_source->child_exited;
+  return g_atomic_int_get (&child_watch_source->child_exited);
 }
 
 static gboolean
