@@ -23,7 +23,9 @@ glib_tests = {
   'environment' : {},
   'error' : {},
   'fileutils' : {},
-  'gdatetime' : {},
+  'gdatetime' : {
+    'suite' : ['slow'],
+  },
   'guuid' : {},
   'gvariant' : {
     'suite' : ['slow'],
