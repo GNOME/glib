@@ -5138,12 +5138,10 @@ dispatch_unix_signals_unlocked (void)
     {
       GUnixSignalWatchSource *source = node->data;
 
-      if (!source->pending)
+      if (pending[source->signum])
         {
-          if (pending[source->signum])
+          if (g_atomic_int_compare_and_exchange (&source->pending, FALSE, TRUE))
             {
-              source->pending = TRUE;
-
               wake_source ((GSource *) source);
             }
         }
@@ -5188,7 +5186,7 @@ g_unix_signal_watch_prepare (GSource *source,
 
   unix_signal_source = (GUnixSignalWatchSource *) source;
 
-  return unix_signal_source->pending;
+  return g_atomic_int_get (&unix_signal_source->pending);
 }
 
 static gboolean
@@ -5198,7 +5196,7 @@ g_unix_signal_watch_check (GSource  *source)
 
   unix_signal_source = (GUnixSignalWatchSource *) source;
 
-  return unix_signal_source->pending;
+  return g_atomic_int_get (&unix_signal_source->pending);
 }
 
 static gboolean
@@ -5220,7 +5218,7 @@ g_unix_signal_watch_dispatch (GSource    *source,
 
   again = (callback) (user_data);
 
-  unix_signal_source->pending = FALSE;
+  g_atomic_int_set (&unix_signal_source->pending, FALSE);
 
   return again;
 }
