@@ -18,14 +18,6 @@
 #include <locale.h>
 #include <glib/glib.h>
 
-/* The whole purpose of this test is to pass the command line argument
- * to g_date_time_format(), so the format argument cannot be compile-
- * time checked. Disable the inevitable compiler warning.
- */
-#ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-#endif
-
 int
 main (int argc, char *argv[])
 {
