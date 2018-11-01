@@ -1962,6 +1962,8 @@ if want_systemtap and enable_dtrace
   enable_systemtap = true
 endif
 
+test_timeout = 30
+test_timeout_slow = 120
 
 pkg = import('pkgconfig')
 windows = import('windows')
