@@ -205,9 +205,12 @@ main (int argc, char **argv)
   g_option_context_add_main_entries (context, options, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
+      g_option_context_free (context);
       g_printerr ("%s: %s\n", argv[0], error->message);
       return 1;
     }
+
+  g_option_context_free (context);
 
   if (argc < 2)
     {
