@@ -167,7 +167,7 @@ g_variant_type_info_check (const GVariantTypeInfo *info,
       ContainerInfo *container = (ContainerInfo *) info;
 
       /* extra checks for containers */
-      g_assert_cmpint (container->ref_count, >, 0);
+      g_assert_cmpint (g_atomic_int_get (&container->ref_count), >, 0);
       g_assert (container->type_string != NULL);
     }
   else
@@ -834,7 +834,7 @@ g_variant_type_info_ref (GVariantTypeInfo *info)
     {
       ContainerInfo *container = (ContainerInfo *) info;
 
-      g_assert_cmpint (container->ref_count, >, 0);
+      g_assert_cmpint (g_atomic_int_get (&container->ref_count), >, 0);
       g_atomic_int_inc (&container->ref_count);
     }
 
