@@ -472,11 +472,11 @@
 # memcheck checks that the third argument to ioctl() is a valid pointer, but
 # some ioctls use that argument as an integer
 {
-   ioctl-with-non-pointer-param
-   Memcheck:Param
-   ioctl(generic)
-   fun:ioctl
-   fun:btrfs_reflink_with_progress
+	ioctl-with-non-pointer-param
+	Memcheck:Param
+	ioctl(generic)
+	fun:ioctl
+	fun:btrfs_reflink_with_progress
 }
 
 {
