@@ -374,7 +374,7 @@ GVariantType *                  g_variant_type_new_dict_entry           (const G
 /*< private >*/
 GLIB_AVAILABLE_IN_ALL
 const GVariantType *            g_variant_type_checked_                 (const gchar *);
-GLIB_AVAILABLE_IN_2_60
+GLIB_AVAILABLE_IN_2_58
 gsize                           g_variant_type_string_get_depth_        (const gchar *type_string);
 
 G_END_DECLS

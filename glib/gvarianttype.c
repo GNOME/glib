@@ -312,7 +312,7 @@ g_variant_type_string_scan (const gchar  *string,
  * If @type_string is not a valid #GVariant type string, 0 will be returned.
  *
  * Returns: depth of @type_string, or 0 on error
- * Since: 2.60
+ * Since: 2.60 (backported to 2.58)
  */
 gsize
 g_variant_type_string_get_depth_ (const gchar *type_string)
