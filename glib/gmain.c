@@ -5214,9 +5214,9 @@ g_unix_signal_watch_dispatch (GSource    *source,
       return FALSE;
     }
 
-  again = (callback) (user_data);
-
   g_atomic_int_set (&unix_signal_source->pending, FALSE);
+
+  again = (callback) (user_data);
 
   return again;
 }
