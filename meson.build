@@ -1575,8 +1575,8 @@ atomicdefine = '''
 # We know that we can always use real ("lock free") atomic operations with MSVC
 if cc.get_id() == 'msvc' or cc.links(atomictest, name : 'atomic ops')
   have_atomic_lock_free = true
-  if host_system == 'android' and not cc.compiles(atomicdefine, name : 'atomic ops define')
-    # When building for armv5 on Android, gcc 4.9 provides
+  if (host_system == 'android' or host_system == 'linux') and not cc.compiles(atomicdefine, name : 'atomic ops define')
+    # When building for armv5 on Linux, gcc provides
     # __sync_bool_compare_and_swap but doesn't define
     # __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4
     glib_conf.set('__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4', true)
