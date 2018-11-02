@@ -260,7 +260,7 @@ g_variant_type_info_query (GVariantTypeInfo *info,
  * See g_variant_type_string_get_depth_() for more details.
  *
  * Returns: depth of @info
- * Since: 2.60
+ * Since: 2.60 (backported to 2.56)
  */
 gsize
 g_variant_type_info_query_depth (GVariantTypeInfo *info)
