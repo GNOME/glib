@@ -39,6 +39,7 @@
 #include "gtypes.h"
 #include "gthread.h"
 #include "glibintl.h"
+#include "gunicodeprivate.h"
 
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
   if (Char < 128)							      \
@@ -1670,7 +1671,7 @@ g_utf8_validate (const char   *str,
   const gchar *p;
 
   if (max_len >= 0)
-    return g_utf8_validate_len (str, max_len, end);
+    return _g_utf8_validate_len (str, max_len, end);
 
   p = fast_validate (str);
 
@@ -1683,8 +1684,8 @@ g_utf8_validate (const char   *str,
     return TRUE;
 }
 
-/**
- * g_utf8_validate_len:
+/*
+ * _g_utf8_validate_len:
  * @str: (array length=max_len) (element-type guint8): a pointer to character data
  * @max_len: max bytes to validate
  * @end: (out) (optional) (transfer none): return location for end of valid data
@@ -1695,12 +1696,12 @@ g_utf8_validate (const char   *str,
  * will always return %FALSE if any of the bytes of @str are nul.
  *
  * Returns: %TRUE if the text was valid UTF-8
- * Since: 2.60
+ * Since: 2.60 (backported to 2.58)
  */
 gboolean
-g_utf8_validate_len (const char   *str,
-                     gsize         max_len,
-                     const gchar **end)
+_g_utf8_validate_len (const char   *str,
+                      gsize         max_len,
+                      const gchar **end)
 
 {
   const gchar *p;
