@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include "gvariant-serialiser.h"
+#include "gunicodeprivate.h"
 
 #include <glib/gvariant-internal.h>
 #include <glib/gtestutils.h>
@@ -1652,7 +1653,7 @@ g_variant_serialiser_is_string (gconstpointer data,
   if (*expected_end != '\0')
     return FALSE;
 
-  g_utf8_validate_len (data, size, &end);
+  _g_utf8_validate_len (data, size, &end);
 
   return end == expected_end;
 }
