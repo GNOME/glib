@@ -22,6 +22,7 @@
 {
 	gnutls-init-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:gtls_gnutls_init
@@ -30,6 +31,7 @@
 {
 	gnutls-init-realloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:realloc
 	...
 	fun:gtls_gnutls_init
@@ -38,6 +40,7 @@
 {
 	g-tls-backend-gnutls-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:g_once_impl
 	fun:g_tls_backend_gnutls_init
 }
@@ -45,6 +48,7 @@
 {
 	p11-tokens-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:create_tokens_inlock
@@ -55,6 +59,7 @@
 {
 	g-local-vfs-getpwnam
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:getpwnam
@@ -64,6 +69,7 @@
 {
 	glib-init-malloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_quark_init
@@ -74,6 +80,7 @@
 {
 	glib-init-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_quark_init
@@ -84,6 +91,7 @@
 {
 	gobject-init-malloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:gobject_init_ctor
@@ -92,6 +100,7 @@
 {
 	gobject-init-realloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:realloc
 	...
 	fun:gobject_init_ctor
@@ -100,6 +109,7 @@
 {
 	gobject-init-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:gobject_init_ctor
@@ -108,6 +118,7 @@
 {
 	g-type-register-dynamic
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_register_dynamic
@@ -116,6 +127,7 @@
 {
 	g-type-register-static
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_register_static
@@ -124,6 +136,7 @@
 {
 	g-type-register-static-realloc
 	Memcheck:Leak
+	match-leak-kinds:possible,reachable
 	fun:realloc
 	...
 	fun:g_type_register_static
@@ -132,6 +145,7 @@
 {
 	g-type-register-static-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_type_register_static
@@ -140,6 +154,7 @@
 {
 	g-type-add-interface-dynamic
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_add_interface_dynamic
@@ -148,6 +163,7 @@
 {
 	g-type-add-interface-static
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_add_interface_static
@@ -174,6 +190,7 @@
 {
 	g-test-rand-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_rand_new_with_seed_array
@@ -185,6 +202,7 @@
 {
 	g-test-rand-init2
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_rand_new_with_seed_array
@@ -197,6 +215,7 @@
 {
 	g-quark-table-new
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:g_hash_table_new
 	...
 	fun:quark_new
@@ -205,6 +224,7 @@
 {
 	g-quark-table-resize
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	...
 	fun:g_hash_table_resize
 	...
@@ -214,6 +234,7 @@
 {
 	g-type-interface-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:type_iface_vtable_base_init_Wm
@@ -231,6 +252,7 @@
 {
 	g-type-class-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:g_type_create_instance
 	...
 	fun:type_class_init_Wm
@@ -335,6 +357,7 @@
 {
 	g-io-module-default-singleton-malloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_create_instance
@@ -345,6 +368,7 @@
 {
 	g-io-module-default-singleton-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_type_create_instance
@@ -357,6 +381,7 @@
 {
 	g-io-module-default-singleton
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:g_type_create_instance
 	...
 	fun:_g_io_module_get_default
@@ -365,6 +390,7 @@
 {
 	g-io-module-default-singleton-module
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_module_open
@@ -375,6 +401,7 @@
 {
 	g-io-module-default-singleton-name
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_strdup
@@ -385,6 +412,7 @@
 {
 	g-get-language-names-malloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_get_language_names
@@ -393,6 +421,7 @@
 {
 	g-get-language-names-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_get_language_names
@@ -401,6 +430,7 @@
 {
 	g-static-mutex
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_static_mutex_get_mutex_impl
@@ -409,6 +439,7 @@
 {
 	g-system-thread-init
 	Memcheck:Leak
+	match-leak-kinds:possible,reachable
 	fun:calloc
 	...
 	fun:g_system_thread_new
@@ -417,6 +448,7 @@
 {
 	g-io-module-default-proxy-resolver-gnome
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_proxy_resolver_gnome_init
@@ -428,6 +460,7 @@
 {
 	g-threaded-resolver-getaddrinfo-config
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:__resolv_conf_allocate
@@ -707,9 +740,11 @@
 }
 
 # g_set_user_dirs() deliberately leaks the previous cached g_get_user_*() values.
+# These will not all be reachable on exit.
 {
 	g_set_user_dirs_str
 	Memcheck:Leak
+	match-leak-kinds:definite,reachable
 	fun:malloc
 	...
 	fun:set_str_if_different
@@ -717,9 +752,11 @@
 }
 
 # g_set_user_dirs() deliberately leaks the previous cached g_get_user_*() values.
+# These will not all be reachable on exit.
 {
 	g_set_user_dirs_strv
 	Memcheck:Leak
+	match-leak-kinds:definite,reachable
 	fun:malloc
 	...
 	fun:set_strv_if_different
@@ -730,6 +767,7 @@
 {
 	g_get_system_data_dirs
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_build_system_data_dirs
@@ -740,6 +778,7 @@
 {
 	g_get_user_data_dir
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:realloc
 	...
 	fun:g_build_user_data_dir
@@ -750,6 +789,7 @@
 {
 	desktop_file_dirs_malloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:desktop_file_dirs_lock
@@ -759,6 +799,7 @@
 {
 	desktop_file_dirs_realloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:realloc
 	...
 	fun:desktop_file_dirs_lock
@@ -768,6 +809,7 @@
 {
 	desktop_file_dir_unindexed_setup_search
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:desktop_file_dir_unindexed_setup_search
@@ -778,6 +820,7 @@
 {
 	g_io_extension_point_register
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_io_extension_point_register
@@ -787,6 +830,7 @@
 {
 	g_strerror
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_locale_to_utf8
@@ -797,6 +841,7 @@
 {
 	g_socket_connection_factory_register_type
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_socket_connection_factory_register_type
@@ -806,6 +851,7 @@
 {
 	g_dbus_error_quark
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_dbus_error_register_error_domain
@@ -816,6 +862,7 @@
 {
 	g_private_set_alloc0
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_private_set_alloc0
@@ -823,6 +870,7 @@
 {
 	g_private_set_alloc0-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_private_set_alloc0
@@ -832,6 +880,7 @@
 {
 	g_main_context_push_thread_default
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_queue_new
@@ -842,6 +891,7 @@
 {
 	g_file_info_attribute_cache
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:ensure_attribute_hash
@@ -851,6 +901,7 @@
 {
 	g_file_info_attribute_cache2
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:ensure_attribute_hash
@@ -860,6 +911,7 @@
 {
 	g_file_info_attribute_cache3
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:lookup_namespace
@@ -869,6 +921,7 @@
 {
 	g_file_info_attribute_cache4
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:lookup_namespace
