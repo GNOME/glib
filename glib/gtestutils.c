@@ -809,6 +809,7 @@ static gboolean    test_mode_fatal = TRUE;
 static gboolean    g_test_run_once = TRUE;
 static gboolean    test_run_list = FALSE;
 static gchar      *test_run_seedstr = NULL;
+G_LOCK_DEFINE_STATIC (test_run_rand);
 static GRand      *test_run_rand = NULL;
 static gchar      *test_run_name = "";
 static GSList    **test_filename_free_list;
@@ -1437,7 +1438,13 @@ test_run_seed (const gchar *rseed)
 gint32
 g_test_rand_int (void)
 {
-  return g_rand_int (test_run_rand);
+  gint32 r;
+
+  G_LOCK (test_run_rand);
+  r = g_rand_int (test_run_rand);
+  G_UNLOCK (test_run_rand);
+
+  return r;
 }
 
 /**
@@ -1456,7 +1463,13 @@ gint32
 g_test_rand_int_range (gint32          begin,
                        gint32          end)
 {
-  return g_rand_int_range (test_run_rand, begin, end);
+  gint32 r;
+
+  G_LOCK (test_run_rand);
+  r = g_rand_int_range (test_run_rand, begin, end);
+  G_UNLOCK (test_run_rand);
+
+  return r;
 }
 
 /**
@@ -1472,7 +1485,13 @@ g_test_rand_int_range (gint32          begin,
 double
 g_test_rand_double (void)
 {
-  return g_rand_double (test_run_rand);
+  double r;
+
+  G_LOCK (test_run_rand);
+  r = g_rand_double (test_run_rand);
+  G_UNLOCK (test_run_rand);
+
+  return r;
 }
 
 /**
@@ -1491,7 +1510,13 @@ double
 g_test_rand_double_range (double          range_start,
                           double          range_end)
 {
-  return g_rand_double_range (test_run_rand, range_start, range_end);
+  double r;
+
+  G_LOCK (test_run_rand);
+  r = g_rand_double_range (test_run_rand, range_start, range_end);
+  G_UNLOCK (test_run_rand);
+
+  return r;
 }
 
 /**
