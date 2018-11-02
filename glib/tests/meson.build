@@ -23,7 +23,9 @@ glib_tests = {
   'environment' : {},
   'error' : {},
   'fileutils' : {},
-  'gdatetime' : {},
+  'gdatetime' : {
+    'suite' : ['slow'],
+  },
   'guuid' : {},
   'gvariant' : {
     'suite' : ['slow'],
@@ -186,7 +188,7 @@ foreach test_name, extra_args : glib_tests
     )
 
     suite = ['glib'] + extra_args.get('suite', [])
-    timeout = suite.contains('slow') ? 120 : 30
+    timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
     test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
       args : ['--tap'])
   endif
