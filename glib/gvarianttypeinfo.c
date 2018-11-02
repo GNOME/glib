@@ -26,6 +26,7 @@
 #include <glib/gthread.h>
 #include <glib/gslice.h>
 #include <glib/ghash.h>
+#include <glib/grefcount.h>
 
 /* < private >
  * GVariantTypeInfo:
@@ -76,7 +77,7 @@ typedef struct
   GVariantTypeInfo info;
 
   gchar *type_string;
-  gint ref_count;
+  gatomicrefcount ref_count;
 } ContainerInfo;
 
 /* For 'array' and 'maybe' types, we store some extra information on the
@@ -835,7 +836,7 @@ g_variant_type_info_ref (GVariantTypeInfo *info)
       ContainerInfo *container = (ContainerInfo *) info;
 
       g_assert_cmpint (g_atomic_int_get (&container->ref_count), >, 0);
-      g_atomic_int_inc (&container->ref_count);
+      g_atomic_ref_count_inc (&container->ref_count);
     }
 
   return info;
@@ -858,7 +859,7 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
       ContainerInfo *container = (ContainerInfo *) info;
 
       g_rec_mutex_lock (&g_variant_type_info_lock);
-      if (g_atomic_int_dec_and_test (&container->ref_count))
+      if (g_atomic_ref_count_dec (&container->ref_count))
         {
           g_hash_table_remove (g_variant_type_info_table,
                                container->type_string);
