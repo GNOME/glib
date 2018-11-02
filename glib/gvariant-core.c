@@ -28,6 +28,7 @@
 #include <glib/gbytes.h>
 #include <glib/gslice.h>
 #include <glib/gmem.h>
+#include <glib/grefcount.h>
 #include <string.h>
 
 
@@ -74,7 +75,7 @@ struct _GVariant
   } contents;
 
   gint state;
-  gint ref_count;
+  gatomicrefcount ref_count;
   gsize depth;
 };
 
@@ -632,9 +633,8 @@ void
 g_variant_unref (GVariant *value)
 {
   g_return_if_fail (value != NULL);
-  g_return_if_fail (value->ref_count > 0);
 
-  if (g_atomic_int_dec_and_test (&value->ref_count))
+  if (g_atomic_ref_count_dec (&value->ref_count))
     {
       if G_UNLIKELY (value->state & STATE_LOCKED)
         g_critical ("attempting to free a locked GVariant instance.  "
@@ -668,9 +668,8 @@ GVariant *
 g_variant_ref (GVariant *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
-  g_return_val_if_fail (value->ref_count > 0, NULL);
 
-  g_atomic_int_inc (&value->ref_count);
+  g_atomic_ref_count_inc (&value->ref_count);
 
   return value;
 }
@@ -710,7 +709,7 @@ GVariant *
 g_variant_ref_sink (GVariant *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
-  g_return_val_if_fail (value->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&value->ref_count) > 0, NULL);
 
   g_variant_lock (value);
 
@@ -767,7 +766,7 @@ GVariant *
 g_variant_take_ref (GVariant *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
-  g_return_val_if_fail (value->ref_count > 0, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&value->ref_count) > 0, NULL);
 
   g_atomic_int_and (&value->state, ~STATE_FLOATING);
 
