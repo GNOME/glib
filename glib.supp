@@ -22,6 +22,7 @@
 {
 	gnutls-init-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:gtls_gnutls_init
@@ -30,6 +31,7 @@
 {
 	gnutls-init-realloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:realloc
 	...
 	fun:gtls_gnutls_init
@@ -38,6 +40,7 @@
 {
 	g-tls-backend-gnutls-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:g_once_impl
 	fun:g_tls_backend_gnutls_init
 }
@@ -45,6 +48,7 @@
 {
 	p11-tokens-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:create_tokens_inlock
@@ -55,6 +59,7 @@
 {
 	g-local-vfs-getpwnam
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:getpwnam
@@ -84,6 +89,7 @@
 {
 	gobject-init-malloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:gobject_init_ctor
@@ -92,6 +98,7 @@
 {
 	gobject-init-realloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:realloc
 	...
 	fun:gobject_init_ctor
@@ -100,6 +107,7 @@
 {
 	gobject-init-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:gobject_init_ctor
@@ -108,6 +116,7 @@
 {
 	g-type-register-dynamic
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_register_dynamic
@@ -116,6 +125,7 @@
 {
 	g-type-register-static
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_register_static
@@ -124,6 +134,7 @@
 {
 	g-type-register-static-realloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:realloc
 	...
 	fun:g_type_register_static
@@ -132,6 +143,7 @@
 {
 	g-type-register-static-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_type_register_static
@@ -140,6 +152,7 @@
 {
 	g-type-add-interface-dynamic
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_add_interface_dynamic
@@ -148,6 +161,7 @@
 {
 	g-type-add-interface-static
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_add_interface_static
@@ -156,6 +170,7 @@
 {
 	g-test-rand-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_rand_new_with_seed_array
@@ -167,6 +182,7 @@
 {
 	g-test-rand-init2
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_rand_new_with_seed_array
@@ -179,6 +195,7 @@
 {
 	g-quark-table-new
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:g_hash_table_new
 	...
 	fun:quark_new
@@ -187,6 +204,7 @@
 {
 	g-quark-table-resize
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:g_hash_table_resize
 	...
 	fun:quark_new
@@ -195,6 +213,7 @@
 {
 	g-type-interface-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:type_iface_vtable_base_init_Wm
@@ -203,6 +222,7 @@
 {
 	g-type-class-init-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_type_create_instance
@@ -221,6 +241,7 @@
 {
 	g-io-module-default-singleton-malloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_type_create_instance
@@ -251,6 +272,7 @@
 {
 	g-io-module-default-singleton-module
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_module_open
@@ -261,6 +283,7 @@
 {
 	g-io-module-default-singleton-name
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_strdup
@@ -287,6 +310,7 @@
 {
 	g-static-mutex
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:g_static_mutex_get_mutex_impl
@@ -295,6 +319,7 @@
 {
 	g-system-thread-init
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_system_thread_new
@@ -303,6 +328,7 @@
 {
 	g-io-module-default-proxy-resolver-gnome
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
 	...
 	fun:g_proxy_resolver_gnome_init
@@ -314,6 +340,7 @@
 {
 	g-threaded-resolver-getaddrinfo-config
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:malloc
 	...
 	fun:__resolv_conf_allocate
