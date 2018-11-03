@@ -367,7 +367,7 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
     NULL /* set_property */
   };
   GApplicationClass *app_class = G_APPLICATION_GET_CLASS (impl->app);
-  GBusNameOwnerFlags flags;
+  GBusNameOwnerFlags name_owner_flags;
   GApplicationFlags app_flags;
   GVariant *reply;
   guint32 rval;
@@ -448,7 +448,7 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
    * the well-known name and fall back to remote mode (!is_primary)
    * in the case that we can't do that.
    */
-  flags = G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE;
+  name_owner_flags = G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE;
   app_flags = g_application_get_flags (impl->app);
 
   if (app_flags & G_APPLICATION_ALLOW_REPLACEMENT)
@@ -464,14 +464,18 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
                                                                    impl,
                                                                    NULL);
 
-      flags |= G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
+      name_owner_flags |= G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
     }
   if (app_flags & G_APPLICATION_REPLACE)
-    flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
+    name_owner_flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
 
-  reply = g_dbus_connection_call_sync (impl->session_bus, "org.freedesktop.DBus", "/org/freedesktop/DBus",
-                                       "org.freedesktop.DBus", "RequestName",
-                                       g_variant_new ("(su)", impl->bus_name, flags), G_VARIANT_TYPE ("(u)"),
+  reply = g_dbus_connection_call_sync (impl->session_bus,
+                                       "org.freedesktop.DBus",
+                                       "/org/freedesktop/DBus",
+                                       "org.freedesktop.DBus",
+                                       "RequestName",
+                                       g_variant_new ("(su)", impl->bus_name, name_owner_flags),
+                                       G_VARIANT_TYPE ("(u)"),
                                        0, -1, cancellable, error);
 
   if (reply == NULL)
