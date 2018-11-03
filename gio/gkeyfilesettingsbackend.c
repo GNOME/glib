@@ -33,6 +33,7 @@
 #include "gsimplepermission.h"
 #include "gsettingsbackendinternal.h"
 #include "giomodule.h"
+#include "gportalsupport.h"
 
 
 #define G_TYPE_KEYFILE_SETTINGS_BACKEND      (g_keyfile_settings_backend_get_type ())
@@ -77,7 +78,8 @@ G_DEFINE_TYPE_WITH_CODE (GKeyfileSettingsBackend,
                          g_keyfile_settings_backend,
                          G_TYPE_SETTINGS_BACKEND,
                          g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
-                                                         g_define_type_id, "keyfile", 10))
+                                                         g_define_type_id, "keyfile",
+                                                         glib_should_use_portal () ? 110 : 10))
 
 static void
 compute_checksum (guint8        *digest,
