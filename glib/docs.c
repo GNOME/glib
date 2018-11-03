@@ -2360,6 +2360,23 @@
  */
 
 /**
+ * G_GNUC_STRFTIME:
+ * @format_idx: the index of the argument corresponding to
+ *     the format string (the arguments are numbered from 1)
+ *
+ * Expands to the GNU C strftime format function attribute if the compiler
+ * is gcc. This is used for declaring functions which take a format argument
+ * which is passed to strftime() or an API implementing its formats. It allows
+ * the compiler check the format passed to the function.
+ *
+ * See the
+ * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-Wformat-3288)
+ * for details.
+ *
+ * Since: 2.60
+ */
+
+/**
  * G_GNUC_FORMAT:
  * @arg_idx: the index of the argument
  *

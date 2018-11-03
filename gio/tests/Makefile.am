@@ -502,6 +502,7 @@ gdbus-test-codegen-generated.h: test-codegen.xml Makefile $(top_builddir)/gio/gd
 		--interface-prefix org.project. \
 		--generate-c-code gdbus-test-codegen-generated \
 		--c-generate-object-manager \
+		--c-generate-autocleanup all \
 		--c-namespace Foo_iGen \
 		--generate-docbook gdbus-test-codegen-generated-doc \
 		--annotate "org.project.Bar" Key1 Value1 \

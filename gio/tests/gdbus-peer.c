@@ -45,7 +45,7 @@
 
 #include "gdbus-tests.h"
 
-#include "gdbus-object-manager-example/gdbus-example-objectmanager-generated.h"
+#include "gdbus-object-manager-example/objectmanager-gen.h"
 
 #ifdef G_OS_UNIX
 static gboolean is_unix = TRUE;

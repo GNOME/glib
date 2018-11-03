@@ -62,6 +62,26 @@
 }
 
 {
+	glib-init-malloc
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:g_quark_init
+	...
+	fun:glib_init_ctor
+}
+
+{
+	glib-init-calloc
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:g_quark_init
+	...
+	fun:glib_init_ctor
+}
+
+{
 	gobject-init-malloc
 	Memcheck:Leak
 	fun:malloc

@@ -1,4 +1,4 @@
-image: registry.gitlab.gnome.org/gnome/glib/master:v8
+image: registry.gitlab.gnome.org/gnome/glib/master:v9
 
 stages:
   - build
@@ -21,12 +21,27 @@ fedora-x86_64:
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
-    - meson ${MESON_COMMON_OPTIONS} --werror -Dsystemtap=true -Ddtrace=true -Dfam=true _build
+    - meson ${MESON_COMMON_OPTIONS}
+            --werror
+            --default-library=both
+            --prefix=$HOME/glib-installed
+            --libdir=lib
+            -Dsystemtap=true
+            -Ddtrace=true
+            -Dfam=true
+            -Dinstalled_tests=true
+            _build
     - ninja -C _build
     - mkdir -p _coverage
     - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
     - meson test -C _build --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
     - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
+    # FIXME: We should run all installed tests, but do only this one for now
+    # because it cannot run uninstalled. Reconfigure with dtrace disabled
+    # because it breaks static link.
+    - meson configure -Ddtrace=false _build
+    - ninja -C _build install
+    - GLIB_TEST_COMPILATION=1 $HOME/glib-installed/libexec/installed-tests/glib/static-link.py $HOME/glib-installed/lib/pkgconfig
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
@@ -128,8 +143,9 @@ vs2017-x64:
       - _build/meson-logs
 
 freebsd-11-x86_64:
-  when: manual
   stage: build
+  only:
+    - branches@GNOME/glib
   tags:
     # To run a FreeBSD builder, install gitlab-runner package and start both
     # gitlab-runner and dbus service because we need /var/lib/dbus/machine-id.
@@ -154,9 +170,6 @@ freebsd-11-x86_64:
     - meson ${MESON_COMMON_OPTIONS} -Db_lundef=false -Diconv=gnu -Dxattr=false _build
     - ninja -C _build
     - meson test -C _build --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
-  # FIXME: Remove this when we have a stable FreeBSD runner
-  # https://gitlab.gnome.org/Infrastructure/GitLab/issues/286
-  allow_failure: true
   except:
     - tags
   artifacts:

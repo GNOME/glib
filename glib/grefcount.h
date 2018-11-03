@@ -23,6 +23,7 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
+#include <glib/gatomic.h>
 #include <glib/gtypes.h>
 
 G_BEGIN_DECLS

@@ -17,6 +17,7 @@ test_programs = \
 	binding				\
 	properties			\
 	reference			\
+	flags				\
 	value				\
 	type				\
 	private				\

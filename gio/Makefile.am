@@ -896,7 +896,7 @@ gio_probes.h: gio_probes.d
 		< $@.tmp > $@ && rm -f $@.tmp
 
 gio_probes.lo: gio_probes.d
-	$(AM_V_GEN) $(LIBTOOL) --mode=compile $(AM_V_lt) --tag=CC $(DTRACE) -G -s $< -o $@
+	$(AM_V_GEN) $(LIBTOOL) --mode=compile $(AM_V_lt) --tag=CC env CFLAGS="$(CFLAGS)" $(DTRACE) -G -s $< -o $@
 
 BUILT_SOURCES += gio_probes.h gio_probes.lo
 CLEANFILES += gio_probes.h gio_probes.h.tmp

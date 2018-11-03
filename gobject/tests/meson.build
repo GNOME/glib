@@ -36,6 +36,7 @@ gobject_tests = {
   'binding' : {},
   'properties' : {},
   'reference' : {},
+  'flags' : {},
   'value' : {},
   'type' : {},
   'gobject-private' : {
@@ -88,7 +89,7 @@ foreach test_name, extra_args : gobject_tests
   )
 
   suite = ['gobject'] + extra_args.get('suite', [])
-  timeout = suite.contains('slow') ? 120 : 30
+  timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
     args: ['--tap'])
 endforeach

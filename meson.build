@@ -45,7 +45,9 @@ binary_age = 100 * minor_version + micro_version
 soversion = 0
 # Maintain compatibility with previous libtool versioning
 # current = minor * 100 + micro
-library_version = '@0@.@1@.@2@'.format(soversion, binary_age - interface_age, interface_age)
+current = binary_age - interface_age
+library_version = '@0@.@1@.@2@'.format(soversion, current, interface_age)
+darwin_versions = [current + 1, '@0@.@1@'.format(current + 1, interface_age)]
 
 configinc = include_directories('.')
 glibinc = include_directories('glib')
@@ -395,6 +397,7 @@ functions = [
   'fchown',
   'fdwalk',
   'fsync',
+  'getauxval',
   'getc_unlocked',
   'getfsstat',
   'getgrgid_r',
@@ -1572,8 +1575,8 @@ atomicdefine = '''
 # We know that we can always use real ("lock free") atomic operations with MSVC
 if cc.get_id() == 'msvc' or cc.links(atomictest, name : 'atomic ops')
   have_atomic_lock_free = true
-  if host_system == 'android' and not cc.compiles(atomicdefine, name : 'atomic ops define')
-    # When building for armv5 on Android, gcc 4.9 provides
+  if (host_system == 'android' or host_system == 'linux') and not cc.compiles(atomicdefine, name : 'atomic ops define')
+    # When building for armv5 on Linux, gcc provides
     # __sync_bool_compare_and_swap but doesn't define
     # __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4
     glib_conf.set('__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4', true)
@@ -1969,6 +1972,8 @@ if want_systemtap and enable_dtrace
   enable_systemtap = true
 endif
 
+test_timeout = 60
+test_timeout_slow = 120
 
 pkg = import('pkgconfig')
 windows = import('windows')
@@ -1980,6 +1985,7 @@ subdir('gio')
 if xgettext.found()
   subdir('po')
 endif
+subdir('fuzzing')
 subdir('tests')
 
 # Install glib-gettextize executable, if a UNIX-style shell is found

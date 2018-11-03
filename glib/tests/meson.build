@@ -4,9 +4,6 @@ glib_tests = {
   'atomic' : {
     'c_args' : cc.get_id() == 'gcc' ? ['-Wstrict-aliasing=2'] : [],
   },
-  'autoptr' : {
-    'skip' : cc.get_id() == 'msvc',
-  },
   'base64' : {},
   'bitlock' : {},
   'bookmarkfile' : {},
@@ -23,7 +20,9 @@ glib_tests = {
   'environment' : {},
   'error' : {},
   'fileutils' : {},
-  'gdatetime' : {},
+  'gdatetime' : {
+    'suite' : ['slow'],
+  },
   'guuid' : {},
   'gvariant' : {
     'suite' : ['slow'],
@@ -32,19 +31,10 @@ glib_tests = {
     'source' : ['gwakeuptest.c', '../gwakeup.c'],
     'install' : false,
   },
-  'gwakeup-fallback' : {
-    'skip' : not glib_conf.has('HAVE_EVENTFD'),
-    'source' : ['gwakeuptest.c', '../gwakeup.c'],
-    'c_args' : ['-DTEST_EVENTFD_FALLBACK'],
-    'install' : false,
-  },
   'hash' : {},
   'hmac' : {},
   'hook' : {},
   'hostutils' : {},
-  'include' : {
-    'skip' : host_machine.system() == 'windows',
-  },
   'keyfile' : {},
   'list' : {},
   'logging' : {},
@@ -109,15 +99,13 @@ glib_tests = {
   'utf8-misc' : {},
   'utils' : {},
   'unicode' : {},
-  'unix' : {
-    'skip' : host_machine.system() == 'windows',
-  },
   'uri' : {},
   '1bit-mutex' : {},
   '1bit-emufutex' : {
     'source' : '1bit-mutex.c',
     'c_args' : ['-DTEST_EMULATED_FUTEX'],
     'install' : false,
+    'suite' : ['slow'],
   },
   '642026' : {
     'suite' : ['slow'],
@@ -128,6 +116,27 @@ glib_tests = {
     'suite' : ['slow'],
   },
 }
+
+if cc.get_id() != 'msvc'
+  glib_tests += {'autoptr' : {}}
+endif
+
+if glib_conf.has('HAVE_EVENTFD')
+  glib_tests += {
+    'gwakeup-fallback' : {
+      'source' : ['gwakeuptest.c', '../gwakeup.c'],
+      'c_args' : ['-DTEST_EVENTFD_FALLBACK'],
+      'install' : false,
+    },
+  }
+endif
+
+if host_machine.system() != 'windows'
+  glib_tests += {
+    'include' : {},
+    'unix' : {},
+  }
+endif
 
 if installed_tests_enabled
   install_data(
@@ -158,37 +167,32 @@ test_deps = [libm, thread_dep, libglib_dep]
 test_cargs = ['-DG_LOG_DOMAIN="GLib"']
 
 foreach test_name, extra_args : glib_tests
-  # FIXME: This condition is ugly, meson should either have 'continue'
-  # keyword (https://github.com/mesonbuild/meson/issues/3601), or support
-  # mutable to dictionaries (https://github.com/mesonbuild/meson/pull/3820).
-  if not extra_args.get('skip', false)
-    source = extra_args.get('source', test_name + '.c')
-    install = installed_tests_enabled and extra_args.get('install', true)
+  source = extra_args.get('source', test_name + '.c')
+  install = installed_tests_enabled and extra_args.get('install', true)
 
-    if install
-      test_conf = configuration_data()
-      test_conf.set('installed_tests_dir', installed_tests_execdir)
-      test_conf.set('program', test_name)
-      configure_file(
-        input: installed_tests_template_tap,
-        output: test_name + '.test',
-        install_dir: installed_tests_metadir,
-        configuration: test_conf
-      )
-    endif
-
-    exe = executable(test_name, source,
-      c_args : test_cargs + extra_args.get('c_args', []),
-      dependencies : test_deps + extra_args.get('dependencies', []),
-      install_dir: installed_tests_execdir,
-      install: install,
+  if install
+    test_conf = configuration_data()
+    test_conf.set('installed_tests_dir', installed_tests_execdir)
+    test_conf.set('program', test_name)
+    configure_file(
+      input: installed_tests_template_tap,
+      output: test_name + '.test',
+      install_dir: installed_tests_metadir,
+      configuration: test_conf
     )
-
-    suite = ['glib'] + extra_args.get('suite', [])
-    timeout = suite.contains('slow') ? 120 : 30
-    test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
-      args : ['--tap'])
   endif
+
+  exe = executable(test_name, source,
+    c_args : test_cargs + extra_args.get('c_args', []),
+    dependencies : test_deps + extra_args.get('dependencies', []),
+    install_dir: installed_tests_execdir,
+    install: install,
+  )
+
+  suite = ['glib'] + extra_args.get('suite', [])
+  timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
+  test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
+    args : ['--tap'])
 endforeach
 
 # test-spawn-echo helper binary required by the spawn tests above
