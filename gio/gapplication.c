@@ -212,7 +212,7 @@
  *     @dbus_register vfunc. Since: 2.34
  * @handle_local_options: invoked locally after the parsing of the commandline
  *  options has occurred. Since: 2.40
- * @name_lost: invoked when another instance is taking over the name. Since: 2.58
+ * @name_lost: invoked when another instance is taking over the name. Since: 2.60
  *
  * Virtual function table for #GApplication.
  *
