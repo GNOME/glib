@@ -1012,7 +1012,7 @@ static void
 startup_cb (GApplication *app,
             gboolean     *called)
 {
-  const char * const argv[] = { global_argv0, "--verbose", "-q", "-p", "/gapplication/replace", "--GTestSubprocess", NULL };
+  const char * const argv[] = { global_argv0, "--verbose", "--quiet", "-p", "/gapplication/replace", "--GTestSubprocess", NULL };
 
   *called = TRUE;
 
@@ -1029,7 +1029,7 @@ static void
 startup_cb2 (GApplication *app,
              gboolean     *called)
 {
-  const char * const argv[] = { global_argv0, "--verbose", "-q", "-p", "/gapplication/no-replace", "--GTestSubprocess", NULL };
+  const char * const argv[] = { global_argv0, "--verbose", "--quiet", "-p", "/gapplication/no-replace", "--GTestSubprocess", NULL };
 
   *called = TRUE;
 
