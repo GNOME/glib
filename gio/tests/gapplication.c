@@ -1066,7 +1066,7 @@ test_replace (void)
 
       g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
 
-      g_assert (startup);
+      g_assert_true (startup);
 
       g_object_unref (app);
       g_free (binpath);
@@ -1091,8 +1091,8 @@ test_replace (void)
 
       g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
 
-      g_assert (startup);
-      g_assert (name_lost);
+      g_assert_true (startup);
+      g_assert_true (name_lost);
 
       g_object_unref (app);
       g_free (binpath);
@@ -1131,7 +1131,7 @@ test_no_replace (void)
 
       g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
 
-      g_assert (!startup);
+      g_assert_false (startup);
 
       g_object_unref (app);
       g_free (binpath);
@@ -1157,8 +1157,8 @@ test_no_replace (void)
       g_timeout_add (1000, quit_already, app);
       g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
 
-      g_assert (startup);
-      g_assert (!name_lost);
+      g_assert_true (startup);
+      g_assert_false (name_lost);
 
       g_object_unref (app);
       g_free (binpath);
