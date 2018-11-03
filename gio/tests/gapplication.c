@@ -1064,7 +1064,7 @@ test_replace (void)
       g_signal_connect (app, "startup", G_CALLBACK (startup_in_sub), &startup);
       g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
 
-      g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+      g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
 
       g_assert_true (startup);
 
@@ -1089,7 +1089,7 @@ test_replace (void)
       g_signal_connect (app, "startup", G_CALLBACK (startup_cb), &startup);
       g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
 
-      g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+      g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
 
       g_assert_true (startup);
       g_assert_true (name_lost);
@@ -1129,7 +1129,7 @@ test_no_replace (void)
       g_signal_connect (app, "startup", G_CALLBACK (startup_in_sub), &startup);
       g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
 
-      g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+      g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
 
       g_assert_false (startup);
 
@@ -1155,7 +1155,7 @@ test_no_replace (void)
       g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
 
       g_timeout_add (1000, quit_already, app);
-      g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+      g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
 
       g_assert_true (startup);
       g_assert_false (name_lost);
