@@ -986,123 +986,57 @@ name_was_lost (GApplication *app,
 }
 
 static void
-startup_in_sub (GApplication *app,
-                gboolean     *called)
+startup_in_subprocess (GApplication *app,
+                       gboolean     *called)
 {
   *called = TRUE;
 }
 
-static const char *global_argv0;
-static GSubprocess *global_subprocess;
-
-static void
-launch_replacement (const char *const *argv)
+typedef struct
 {
-  GSubprocessLauncher *launcher;
-  GError *local_error = NULL;
-
-  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
-  g_subprocess_launcher_set_environ (launcher, NULL);
-  global_subprocess = g_subprocess_launcher_spawnv (launcher, argv, &local_error);
-  g_assert_no_error (local_error);
-  g_object_unref (launcher);
-}
+  gboolean allow_replacement;
+  GSubprocess *subprocess;
+} TestReplaceData;
 
 static void
 startup_cb (GApplication *app,
-            gboolean     *called)
+            TestReplaceData *data)
 {
-  const char * const argv[] = { global_argv0, "--verbose", "--quiet", "-p", "/gapplication/replace", "--GTestSubprocess", NULL };
-
-  *called = TRUE;
+  const char * argv[] = { NULL, "--verbose", "--quiet", "-p", NULL, "--GTestSubprocess", NULL };
+  GSubprocessLauncher *launcher;
+  GError *local_error = NULL;
 
   g_application_hold (app);
 
-  g_test_message ("launching sub");
-  /* Now that we are the primary instance, launch our replacement.
-   * We inherit the environment to share the test session bus.
-   */
-  launch_replacement (argv);
-}
+  argv[0] = g_get_prgname ();
 
-static void
-startup_cb2 (GApplication *app,
-             gboolean     *called)
-{
-  const char * const argv[] = { global_argv0, "--verbose", "--quiet", "-p", "/gapplication/no-replace", "--GTestSubprocess", NULL };
-
-  *called = TRUE;
-
-  g_test_message ("activate in main");
-  g_application_hold (app);
+  if (data->allow_replacement)
+    argv[4] = "/gapplication/replace";
+  else
+    argv[4] = "/gapplication/no-replace";
 
   /* Now that we are the primary instance, launch our replacement.
    * We inherit the environment to share the test session bus.
    */
-  launch_replacement (argv);
+  g_test_message ("launching subprocess");
 
-  g_application_release (app);
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
+  g_subprocess_launcher_set_environ (launcher, NULL);
+  data->subprocess = g_subprocess_launcher_spawnv (launcher, argv, &local_error);
+  g_assert_no_error (local_error);
+  g_object_unref (launcher);
+
+  if (!data->allow_replacement)
+    {
+      /* make sure we exit after a bit, if the subprocess is not replacing us */
+      g_application_set_inactivity_timeout (app, 500);
+      g_application_release (app);
+    }
 }
 
 static void
 activate (gpointer data)
 {
-}
-
-static void
-test_replace (void)
-{
-  if (g_test_subprocess ())
-    {
-      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
-      char *argv[] = { binpath, "--gapplication-replace", NULL };
-      GApplication *app;
-      gboolean startup = FALSE;
-
-      app = g_application_new ("org.gtk.TestApplication.Replace", G_APPLICATION_ALLOW_REPLACEMENT);
-      g_application_set_inactivity_timeout (app, 500);
-      g_signal_connect (app, "startup", G_CALLBACK (startup_in_sub), &startup);
-      g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-
-      g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
-
-      g_assert_true (startup);
-
-      g_object_unref (app);
-      g_free (binpath);
-    }
-  else
-    {
-      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
-      gchar *argv[] = { binpath, NULL };
-      GApplication *app;
-      gboolean name_lost = FALSE;
-      gboolean startup = FALSE;
-      GTestDBus *bus;
-
-      bus = g_test_dbus_new (0);
-      g_test_dbus_up (bus);
-
-      app = g_application_new ("org.gtk.TestApplication.Replace", G_APPLICATION_ALLOW_REPLACEMENT);
-      g_application_set_inactivity_timeout (app, 500);
-      g_signal_connect (app, "name-lost", G_CALLBACK (name_was_lost), &name_lost);
-      g_signal_connect (app, "startup", G_CALLBACK (startup_cb), &startup);
-      g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-
-      g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
-
-      g_assert_true (startup);
-      g_assert_true (name_lost);
-
-      g_object_unref (app);
-      g_free (binpath);
-
-      g_subprocess_wait (global_subprocess, NULL, NULL);
-      g_clear_object (&global_subprocess);
-
-      g_test_dbus_down (bus);
-      g_object_unref (bus);
-    }
 }
 
 static gboolean
@@ -1116,22 +1050,27 @@ quit_already (gpointer data)
 }
 
 static void
-test_no_replace (void)
+test_replace (gconstpointer data)
 {
+  gboolean allow = GPOINTER_TO_INT (data);
+
   if (g_test_subprocess ())
     {
       char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
-      gchar *argv[] = { binpath, "--gapplication-replace", NULL };
+      char *argv[] = { binpath, "--gapplication-replace", NULL };
       GApplication *app;
       gboolean startup = FALSE;
 
       app = g_application_new ("org.gtk.TestApplication.Replace", G_APPLICATION_ALLOW_REPLACEMENT);
-      g_signal_connect (app, "startup", G_CALLBACK (startup_in_sub), &startup);
+      g_signal_connect (app, "startup", G_CALLBACK (startup_in_subprocess), &startup);
       g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
 
       g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
 
-      g_assert_false (startup);
+      if (allow)
+        g_assert_true (startup);
+      else
+        g_assert_false (startup);
 
       g_object_unref (app);
       g_free (binpath);
@@ -1142,29 +1081,37 @@ test_no_replace (void)
       gchar *argv[] = { binpath, NULL };
       GApplication *app;
       gboolean name_lost = FALSE;
-      gboolean startup = FALSE;
+      TestReplaceData data;
       GTestDBus *bus;
+
+      data.allow_replacement = allow;
+      data.subprocess = NULL;
 
       bus = g_test_dbus_new (0);
       g_test_dbus_up (bus);
 
-      app = g_application_new ("org.gtk.TestApplication.Replace", 0);
+      app = g_application_new ("org.gtk.TestApplication.Replace", allow ? G_APPLICATION_ALLOW_REPLACEMENT : G_APPLICATION_FLAGS_NONE);
       g_application_set_inactivity_timeout (app, 500);
       g_signal_connect (app, "name-lost", G_CALLBACK (name_was_lost), &name_lost);
-      g_signal_connect (app, "startup", G_CALLBACK (startup_cb2), &startup);
+      g_signal_connect (app, "startup", G_CALLBACK (startup_cb), &data);
       g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
 
-      g_timeout_add (1000, quit_already, app);
+      if (!allow)
+        g_timeout_add (1000, quit_already, app);
+
       g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
 
-      g_assert_true (startup);
-      g_assert_false (name_lost);
+      g_assert_nonnull (data.subprocess);
+      if (allow)
+        g_assert_true (name_lost);
+      else
+        g_assert_false (name_lost);
 
       g_object_unref (app);
       g_free (binpath);
 
-      g_subprocess_wait (global_subprocess, NULL, NULL);
-      g_clear_object (&global_subprocess);
+      g_subprocess_wait (data.subprocess, NULL, NULL);
+      g_clear_object (&data.subprocess);
 
       g_test_dbus_down (bus);
       g_object_unref (bus);
@@ -1174,8 +1121,6 @@ test_no_replace (void)
 int
 main (int argc, char **argv)
 {
-  global_argv0 = argv[0];
-
   g_setenv ("LC_ALL", "C", TRUE);
 
   g_test_init (&argc, &argv, NULL);
@@ -1201,8 +1146,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/test-handle-local-options2", test_handle_local_options_failure);
   g_test_add_func ("/gapplication/test-handle-local-options3", test_handle_local_options_passthrough);
   g_test_add_func ("/gapplication/api", test_api);
-  g_test_add_func ("/gapplication/replace", test_replace);
-  g_test_add_func ("/gapplication/no-replace", test_no_replace);
+  g_test_add_data_func ("/gapplication/replace", GINT_TO_POINTER (TRUE), test_replace);
+  g_test_add_data_func ("/gapplication/no-replace", GINT_TO_POINTER (FALSE), test_replace);
 
   return g_test_run ();
 }
