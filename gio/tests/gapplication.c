@@ -1055,7 +1055,7 @@ test_replace (void)
   if (g_test_subprocess ())
     {
       char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
-      gchar *argv[] = { binpath, "--gapplication-replace", NULL };
+      char *argv[] = { binpath, "--gapplication-replace", NULL };
       GApplication *app;
       gboolean startup = FALSE;
 
