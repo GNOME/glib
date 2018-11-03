@@ -969,7 +969,7 @@ test_api (void)
   g_object_unref (app);
 }
 
-/* Check that G_APPLICATiON_ALLOW_REPLACEMENT works. To do so, we launch
+/* Check that G_APPLICATION_ALLOW_REPLACEMENT works. To do so, we launch
  * a GApplication in this process that allows replacement, and then
  * launch a subprocess with --gapplication-replace. We have to do our
  * own async version of g_test_trap_subprocess() here since we need
