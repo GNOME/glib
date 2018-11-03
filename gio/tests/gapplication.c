@@ -992,8 +992,8 @@ startup_in_sub (GApplication *app,
   *called = TRUE;
 }
 
-static const char *self;
-static GSubprocess *sub;
+static const char *global_argv0;
+static GSubprocess *global_subprocess;
 
 static void
 launch_replacement (const char *const *argv)
@@ -1003,7 +1003,7 @@ launch_replacement (const char *const *argv)
 
   launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
   g_subprocess_launcher_set_environ (launcher, NULL);
-  sub = g_subprocess_launcher_spawnv (launcher, argv, &error);
+  global_subprocess = g_subprocess_launcher_spawnv (launcher, argv, &error);
   g_assert_no_error (error);
   g_object_unref (launcher);
 }
@@ -1012,7 +1012,7 @@ static void
 startup_cb (GApplication *app,
             gboolean     *called)
 {
-  const char * const argv[] = { self, "--verbose", "-q", "-p", "/gapplication/replace", "--GTestSubprocess", NULL };
+  const char * const argv[] = { global_argv0, "--verbose", "-q", "-p", "/gapplication/replace", "--GTestSubprocess", NULL };
 
   *called = TRUE;
 
@@ -1029,7 +1029,7 @@ static void
 startup_cb2 (GApplication *app,
              gboolean     *called)
 {
-  const char * const argv[] = { self, "--verbose", "-q", "-p", "/gapplication/no-replace", "--GTestSubprocess", NULL };
+  const char * const argv[] = { global_argv0, "--verbose", "-q", "-p", "/gapplication/no-replace", "--GTestSubprocess", NULL };
 
   *called = TRUE;
 
@@ -1097,8 +1097,8 @@ test_replace (void)
       g_object_unref (app);
       g_free (binpath);
 
-      g_subprocess_wait (sub, NULL, NULL);
-      g_clear_object (&sub);
+      g_subprocess_wait (global_subprocess, NULL, NULL);
+      g_clear_object (&global_subprocess);
 
       g_test_dbus_down (bus);
       g_object_unref (bus);
@@ -1163,8 +1163,8 @@ test_no_replace (void)
       g_object_unref (app);
       g_free (binpath);
 
-      g_subprocess_wait (sub, NULL, NULL);
-      g_clear_object (&sub);
+      g_subprocess_wait (global_subprocess, NULL, NULL);
+      g_clear_object (&global_subprocess);
 
       g_test_dbus_down (bus);
       g_object_unref (bus);
@@ -1174,7 +1174,7 @@ test_no_replace (void)
 int
 main (int argc, char **argv)
 {
-  self = argv[0];
+  global_argv0 = argv[0];
 
   g_setenv ("LC_ALL", "C", TRUE);
 
