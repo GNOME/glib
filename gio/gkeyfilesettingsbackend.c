@@ -79,7 +79,12 @@ G_DEFINE_TYPE_WITH_CODE (GKeyfileSettingsBackend,
                          G_TYPE_SETTINGS_BACKEND,
                          g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
                                                          g_define_type_id, "keyfile",
-                                                         glib_should_use_portal () ? 110 : 10))
+#ifdef G_OS_WIN32
+                                                         10
+#else
+                                                         glib_should_use_portal () ? 110 : 10
+#endif
+                                                         ))
 
 static void
 compute_checksum (guint8        *digest,
