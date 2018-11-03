@@ -999,12 +999,12 @@ static void
 launch_replacement (const char *const *argv)
 {
   GSubprocessLauncher *launcher;
-  GError *error = NULL;
+  GError *local_error = NULL;
 
   launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
   g_subprocess_launcher_set_environ (launcher, NULL);
-  global_subprocess = g_subprocess_launcher_spawnv (launcher, argv, &error);
-  g_assert_no_error (error);
+  global_subprocess = g_subprocess_launcher_spawnv (launcher, argv, &local_error);
+  g_assert_no_error (local_error);
   g_object_unref (launcher);
 }
 
