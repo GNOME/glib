@@ -1477,7 +1477,7 @@ typedef enum
  * @G_APPLICATION_ALLOW_REPLACEMENT: Allow another instance to take over
  *     the bus name. Since: 2.60
  * @G_APPLICATION_REPLACE: Take over from another instance. This flag is
- *     usually set by passing --gapplication-replace on the commandline.
+ *     usually set by passing `--gapplication-replace` on the commandline.
  *     Since: 2.60
  *
  * Flags used to define the behaviour of a #GApplication.
