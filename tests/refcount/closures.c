@@ -153,19 +153,11 @@ my_test_class_init (GTestClass *klass)
   klass->test_signal2 = my_test_test_signal2;
 }
 
-static inline guint32
-quick_rand32 (void)
-{
-  static guint32 accu = 2147483563;
-  accu = 1664525 * accu + 1013904223;
-  return accu;
-}
-
 static void
 test_closure (GClosure *closure)
 {
   /* try to produce high contention in closure->ref_count */
-  guint i = 0, n = quick_rand32() % 199;
+  guint i = 0, n = g_random_int () % 199;
   for (i = 0; i < n; i++)
     g_closure_ref (closure);
   g_closure_sink (closure); /* NOP */
