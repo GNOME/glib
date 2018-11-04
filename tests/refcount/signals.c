@@ -12,8 +12,6 @@
 #define MY_IS_TEST_CLASS(tclass)   (G_TYPE_CHECK_CLASS_TYPE ((tclass), G_TYPE_TEST))
 #define MY_TEST_GET_CLASS(test)    (G_TYPE_INSTANCE_GET_CLASS ((test), G_TYPE_TEST, GTestClass))
 
-static GRand *grand;
-
 typedef struct _GTest GTest;
 typedef struct _GTestClass GTestClass;
 
@@ -34,7 +32,7 @@ struct _GTestClass
 };
 
 static GType my_test_get_type (void);
-static volatile gboolean stopping;
+static gboolean stopping;
 
 /* Element signals and args */
 enum
@@ -86,8 +84,6 @@ my_test_get_type (void)
       (GInstanceInitFunc) my_test_init,
       NULL
     };
-
-    grand = g_rand_new();
 
     test_type = g_type_register_static (G_TYPE_OBJECT, "GTest",
         &test_info, 0);
@@ -221,7 +217,7 @@ my_test_do_signal3 (GTest * test)
 static void
 my_test_do_prop (GTest * test)
 {
-  test->value = g_rand_int (grand);
+  test->value = g_random_int ();
   g_object_notify (G_OBJECT (test), "test-prop");
 }
 
@@ -230,7 +226,7 @@ run_thread (GTest * test)
 {
   gint i = 1;
 
-  while (!stopping) {
+  while (!g_atomic_int_get (&stopping)) {
     if (TESTNUM == 1)
       my_test_do_signal1 (test);
     if (TESTNUM == 2)
@@ -290,7 +286,7 @@ main (int argc, char **argv)
   }
   g_usleep (5000000);
 
-  stopping = TRUE;
+  g_atomic_int_set (&stopping, TRUE);
 
   g_print ("\nstopping\n");
 
