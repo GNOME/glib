@@ -105,7 +105,7 @@ typedef struct
 GDBusNodeInfo *
 g_dbus_node_info_ref (GDBusNodeInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return info;
   g_atomic_int_inc (&info->ref_count);
   return info;
@@ -125,7 +125,7 @@ g_dbus_node_info_ref (GDBusNodeInfo *info)
 GDBusInterfaceInfo *
 g_dbus_interface_info_ref (GDBusInterfaceInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return info;
   g_atomic_int_inc (&info->ref_count);
   return info;
@@ -145,7 +145,7 @@ g_dbus_interface_info_ref (GDBusInterfaceInfo *info)
 GDBusMethodInfo *
 g_dbus_method_info_ref (GDBusMethodInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return info;
   g_atomic_int_inc (&info->ref_count);
   return info;
@@ -165,7 +165,7 @@ g_dbus_method_info_ref (GDBusMethodInfo *info)
 GDBusSignalInfo *
 g_dbus_signal_info_ref (GDBusSignalInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return info;
   g_atomic_int_inc (&info->ref_count);
   return info;
@@ -185,7 +185,7 @@ g_dbus_signal_info_ref (GDBusSignalInfo *info)
 GDBusPropertyInfo *
 g_dbus_property_info_ref (GDBusPropertyInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return info;
   g_atomic_int_inc (&info->ref_count);
   return info;
@@ -205,7 +205,7 @@ g_dbus_property_info_ref (GDBusPropertyInfo *info)
 GDBusArgInfo *
 g_dbus_arg_info_ref (GDBusArgInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return info;
   g_atomic_int_inc (&info->ref_count);
   return info;
@@ -225,7 +225,7 @@ g_dbus_arg_info_ref (GDBusArgInfo *info)
 GDBusAnnotationInfo *
 g_dbus_annotation_info_ref (GDBusAnnotationInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return info;
   g_atomic_int_inc (&info->ref_count);
   return info;
@@ -258,7 +258,7 @@ free_null_terminated_array (gpointer array, GDestroyNotify unref_func)
 void
 g_dbus_annotation_info_unref (GDBusAnnotationInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return;
   if (g_atomic_int_dec_and_test (&info->ref_count))
     {
@@ -282,7 +282,7 @@ g_dbus_annotation_info_unref (GDBusAnnotationInfo *info)
 void
 g_dbus_arg_info_unref (GDBusArgInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return;
   if (g_atomic_int_dec_and_test (&info->ref_count))
     {
@@ -306,7 +306,7 @@ g_dbus_arg_info_unref (GDBusArgInfo *info)
 void
 g_dbus_method_info_unref (GDBusMethodInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return;
   if (g_atomic_int_dec_and_test (&info->ref_count))
     {
@@ -331,7 +331,7 @@ g_dbus_method_info_unref (GDBusMethodInfo *info)
 void
 g_dbus_signal_info_unref (GDBusSignalInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return;
   if (g_atomic_int_dec_and_test (&info->ref_count))
     {
@@ -355,7 +355,7 @@ g_dbus_signal_info_unref (GDBusSignalInfo *info)
 void
 g_dbus_property_info_unref (GDBusPropertyInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return;
   if (g_atomic_int_dec_and_test (&info->ref_count))
     {
@@ -379,7 +379,7 @@ g_dbus_property_info_unref (GDBusPropertyInfo *info)
 void
 g_dbus_interface_info_unref (GDBusInterfaceInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return;
   if (g_atomic_int_dec_and_test (&info->ref_count))
     {
@@ -405,7 +405,7 @@ g_dbus_interface_info_unref (GDBusInterfaceInfo *info)
 void
 g_dbus_node_info_unref (GDBusNodeInfo *info)
 {
-  if (info->ref_count == -1)
+  if (g_atomic_int_get (&info->ref_count) == -1)
     return;
   if (g_atomic_int_dec_and_test (&info->ref_count))
     {
