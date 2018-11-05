@@ -29,6 +29,7 @@
 
 #include "gfile.h"
 #include "gfileinfo.h"
+#include "gfileenumerator.h"
 #include "gfilemonitor.h"
 #include "gsimplepermission.h"
 #include "gsettingsbackendinternal.h"
@@ -60,6 +61,8 @@ typedef struct
   GKeyFile          *keyfile;
   GPermission       *permission;
   gboolean           writable;
+  GKeyFile          *system_keyfile;
+  GHashTable        *system_locks;
 
   gchar             *prefix;
   gint               prefix_len;
@@ -204,16 +207,27 @@ get_from_keyfile (GKeyfileSettingsBackend *kfsb,
   if (convert_path (kfsb, key, &group, &name))
     {
       gchar *str;
+      gchar *sysstr;
 
       g_assert (*name);
 
+      sysstr = g_key_file_get_value (kfsb->system_keyfile, group, name, NULL);
       str = g_key_file_get_value (kfsb->keyfile, group, name, NULL);
+      if (sysstr &&
+          (g_hash_table_contains (kfsb->system_locks, key) ||
+           str == NULL))
+        {
+          g_free (str);
+          str = g_strdup (sysstr);
+        }
 
       if (str)
         {
           return_value = g_variant_parse (type, str, NULL, NULL, NULL);
           g_free (str);
         }
+
+      g_free (sysstr);
 
       g_free (group);
       g_free (name);
@@ -228,6 +242,9 @@ set_to_keyfile (GKeyfileSettingsBackend *kfsb,
                 GVariant                *value)
 {
   gchar *group, *name;
+
+  if (g_hash_table_contains (kfsb->system_locks, key))
+    return FALSE;
 
   if (convert_path (kfsb, key, &group, &name))
     {
@@ -375,7 +392,9 @@ g_keyfile_settings_backend_get_writable (GSettingsBackend *backend,
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
 
-  return kfsb->writable && path_is_valid (kfsb, name);
+  return kfsb->writable &&
+         !g_hash_table_contains (kfsb->system_locks, name) &&
+         path_is_valid (kfsb, name);
 }
 
 static GPermission *
@@ -521,6 +540,8 @@ g_keyfile_settings_backend_finalize (GObject *object)
 
   g_key_file_free (kfsb->keyfile);
   g_object_unref (kfsb->permission);
+  g_key_file_free (kfsb->system_keyfile);
+  g_hash_table_unref (kfsb->system_locks);
 
   g_file_monitor_cancel (kfsb->file_monitor);
   g_object_unref (kfsb->file_monitor);
@@ -570,6 +591,67 @@ dir_changed (GFileMonitor       *monitor,
 }
 
 static void
+load_system_settings (GKeyfileSettingsBackend *kfsb)
+{
+  GError *error = NULL;
+  const char *dir;
+  char *path;
+  char *contents;
+
+  dir = g_getenv ("GSETTINGS_DEFAULTS_DIR");
+  if (dir == NULL)
+    dir = "/etc/glib-2.0/settings";
+
+  kfsb->system_keyfile = g_key_file_new ();
+  kfsb->system_locks = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
+  path = g_build_filename (dir, "defaults", NULL);
+
+  if (!g_key_file_load_from_file (kfsb->system_keyfile, path, G_KEY_FILE_NONE, &error))
+    {
+      if (!g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT))
+        g_warning ("Failed to read %s: %s", path, error->message);
+      g_clear_error (&error);
+    }
+  else
+    g_debug ("Loading default settings from %s", path);
+
+  g_free (path);
+
+  path = g_build_filename (dir, "locks", NULL);
+
+  if (!g_file_get_contents (path, &contents, NULL, &error))
+    {
+      if (!g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT))
+        g_warning ("Failed to read %s: %s", path, error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      char **lines;
+      int i;
+
+      g_debug ("Loading locks from %s", path);
+
+      lines = g_strsplit (contents, "\n", 0);
+      for (i = 0; lines[i]; i++)
+        {
+          const char *line = lines[i];
+          if (line[0] == '#' || line[0] == '\0')
+            continue;
+
+          g_debug ("Locking key %s", line);
+          g_hash_table_add (kfsb->system_locks, g_strdup (line));
+        }
+
+      g_strfreev (lines);
+    }
+  g_free (contents);
+
+  g_free (path);
+}
+
+static void
 g_keyfile_settings_backend_constructed (GObject *object)
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
@@ -602,6 +684,8 @@ g_keyfile_settings_backend_constructed (GObject *object)
 
   g_keyfile_settings_backend_keyfile_writable (kfsb);
   g_keyfile_settings_backend_keyfile_reload (kfsb);
+
+  load_system_settings (kfsb);
 }
 
 static void
