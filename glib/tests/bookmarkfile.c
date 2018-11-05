@@ -95,6 +95,13 @@ test_move_item (void)
   g_assert_no_error (error);
 
   res = g_bookmark_file_move_item (bookmark,
+                                   "file:///tmp/schedule.ps",
+                                   "file:///tmp/schedule.ps",
+                                   &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  res = g_bookmark_file_move_item (bookmark,
                                    "file:///no-such-file.xbel",
                                    "file:///tmp/schedule.ps",
                                    &error);
