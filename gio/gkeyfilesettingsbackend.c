@@ -29,6 +29,7 @@
 
 #include "gfile.h"
 #include "gfileinfo.h"
+#include "gfileenumerator.h"
 #include "gfilemonitor.h"
 #include "gsimplepermission.h"
 #include "gsettingsbackendinternal.h"
@@ -45,11 +46,12 @@
 
 typedef GSettingsBackendClass GKeyfileSettingsBackendClass;
 
-enum {
+typedef enum {
   PROP_FILENAME = 1,
   PROP_ROOT_PATH,
-  PROP_ROOT_GROUP
-};
+  PROP_ROOT_GROUP,
+  PROP_DEFAULTS_DIR
+} GKeyfileSettingsBackendProperty;
 
 typedef struct
 {
@@ -58,6 +60,9 @@ typedef struct
   GKeyFile          *keyfile;
   GPermission       *permission;
   gboolean           writable;
+  char              *defaults_dir;
+  GKeyFile          *system_keyfile;
+  GHashTable        *system_locks; /* Used as a set, owning the strings it contains */
 
   gchar             *prefix;
   gint               prefix_len;
@@ -196,16 +201,27 @@ get_from_keyfile (GKeyfileSettingsBackend *kfsb,
   if (convert_path (kfsb, key, &group, &name))
     {
       gchar *str;
+      gchar *sysstr;
 
       g_assert (*name);
 
+      sysstr = g_key_file_get_value (kfsb->system_keyfile, group, name, NULL);
       str = g_key_file_get_value (kfsb->keyfile, group, name, NULL);
+      if (sysstr &&
+          (g_hash_table_contains (kfsb->system_locks, key) ||
+           str == NULL))
+        {
+          g_free (str);
+          str = g_steal_pointer (&sysstr);
+        }
 
       if (str)
         {
           return_value = g_variant_parse (type, str, NULL, NULL, NULL);
           g_free (str);
         }
+
+      g_free (sysstr);
 
       g_free (group);
       g_free (name);
@@ -220,6 +236,9 @@ set_to_keyfile (GKeyfileSettingsBackend *kfsb,
                 GVariant                *value)
 {
   gchar *group, *name;
+
+  if (g_hash_table_contains (kfsb->system_locks, key))
+    return FALSE;
 
   if (convert_path (kfsb, key, &group, &name))
     {
@@ -368,7 +387,9 @@ g_keyfile_settings_backend_get_writable (GSettingsBackend *backend,
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
 
-  return kfsb->writable && path_is_valid (kfsb, name);
+  return kfsb->writable &&
+         !g_hash_table_contains (kfsb->system_locks, name) &&
+         path_is_valid (kfsb, name);
 }
 
 static GPermission *
@@ -514,6 +535,9 @@ g_keyfile_settings_backend_finalize (GObject *object)
 
   g_key_file_free (kfsb->keyfile);
   g_object_unref (kfsb->permission);
+  g_key_file_unref (kfsb->system_keyfile);
+  g_hash_table_unref (kfsb->system_locks);
+  g_free (kfsb->defaults_dir);
 
   g_file_monitor_cancel (kfsb->file_monitor);
   g_object_unref (kfsb->file_monitor);
@@ -562,6 +586,75 @@ dir_changed (GFileMonitor       *monitor,
 }
 
 static void
+load_system_settings (GKeyfileSettingsBackend *kfsb)
+{
+  GError *error = NULL;
+  const char *dir = "/etc/glib-2.0/settings";
+  char *path;
+  char *contents;
+
+  kfsb->system_keyfile = g_key_file_new ();
+  kfsb->system_locks = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
+  if (kfsb->defaults_dir)
+    dir = kfsb->defaults_dir;
+
+  path = g_build_filename (dir, "defaults", NULL);
+
+  /* The defaults are in the same keyfile format that we use for the settings.
+   * It can be produced from a dconf database using: dconf dump
+   */
+  if (!g_key_file_load_from_file (kfsb->system_keyfile, path, G_KEY_FILE_NONE, &error))
+    {
+      if (!g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT))
+        g_warning ("Failed to read %s: %s", path, error->message);
+      g_clear_error (&error);
+    }
+  else
+    g_debug ("Loading default settings from %s", path);
+
+  g_free (path);
+
+  path = g_build_filename (dir, "locks", NULL);
+
+  /* The locks file is a text file containing a list paths to lock, one per line.
+   * It can be produced from a dconf database using: dconf list-locks
+   */
+  if (!g_file_get_contents (path, &contents, NULL, &error))
+    {
+      if (!g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT))
+        g_warning ("Failed to read %s: %s", path, error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      char **lines;
+      gsize i;
+
+      g_debug ("Loading locks from %s", path);
+
+      lines = g_strsplit (contents, "\n", 0);
+      for (i = 0; lines[i]; i++)
+        {
+          char *line = lines[i];
+          if (line[0] == '#' || line[0] == '\0')
+            {
+              g_free (line);
+              continue;
+            }
+
+          g_debug ("Locking key %s", line);
+          g_hash_table_add (kfsb->system_locks, g_steal_pointer (&line));
+        }
+
+      g_free (lines);
+    }
+  g_free (contents);
+
+  g_free (path);
+}
+
+static void
 g_keyfile_settings_backend_constructed (GObject *object)
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
@@ -599,6 +692,8 @@ g_keyfile_settings_backend_constructed (GObject *object)
 
   g_keyfile_settings_backend_keyfile_writable (kfsb);
   g_keyfile_settings_backend_keyfile_reload (kfsb);
+
+  load_system_settings (kfsb);
 }
 
 static void
@@ -609,7 +704,7 @@ g_keyfile_settings_backend_set_property (GObject      *object,
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
 
-  switch (prop_id)
+  switch ((GKeyfileSettingsBackendProperty)prop_id)
     {
     case PROP_FILENAME:
       /* Construct only. */
@@ -633,6 +728,12 @@ g_keyfile_settings_backend_set_property (GObject      *object,
         kfsb->root_group_len = strlen (kfsb->root_group);
       break;
 
+    case PROP_DEFAULTS_DIR:
+      /* Construct only. */
+      g_assert (kfsb->defaults_dir == NULL);
+      kfsb->defaults_dir = g_value_dup_string (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -647,7 +748,7 @@ g_keyfile_settings_backend_get_property (GObject    *object,
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
 
-  switch (prop_id)
+  switch ((GKeyfileSettingsBackendProperty)prop_id)
     {
     case PROP_FILENAME:
       g_value_set_string (value, g_file_peek_path (kfsb->file));
@@ -659,6 +760,10 @@ g_keyfile_settings_backend_get_property (GObject    *object,
 
     case PROP_ROOT_GROUP:
       g_value_set_string (value, kfsb->root_group);
+      break;
+
+    case PROP_DEFAULTS_DIR:
+      g_value_set_string (value, kfsb->defaults_dir);
       break;
 
     default:
@@ -738,6 +843,22 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
                                                         NULL,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GKeyfileSettingsBackend:default-dir:
+   *
+   * The directory where the system defaults and locks are located.
+   *
+   * Defaults to `/etc/glib-2.0/settings`.
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_DEFAULTS_DIR,
+                                   g_param_spec_string ("defaults-dir",
+                                                        P_("Default dir"),
+                                                        P_("Defaults dir"),
+                                                        NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -791,6 +912,11 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
  * syntax of the key file format.  For example, if you have '[' or ']'
  * characters in your path names or '=' in your key names you may be in
  * trouble.
+ *
+ * The backend reads default values from a keyfile called `defaults` in
+ * the directory specified by the #GKeyfileSettingsBackend:defaults-dir property,
+ * and a list of locked keys from a text file with the name `locks` in
+ * the same location.
  *
  * Returns: (transfer full): a keyfile-backed #GSettingsBackend
  **/
