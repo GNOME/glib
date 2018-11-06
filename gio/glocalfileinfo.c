@@ -1067,7 +1067,7 @@ make_valid_utf8 (const char *name)
   
   while (remaining_bytes != 0) 
     {
-      if (g_utf8_validate (remainder, remaining_bytes, &invalid)) 
+      if (g_utf8_validate (remainder, remaining_bytes, &invalid))
 	break;
       valid_bytes = invalid - remainder;
     

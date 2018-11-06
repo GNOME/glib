@@ -983,7 +983,10 @@ g_dbus_message_set_serial (GDBusMessage  *message,
  *
  * Gets a header field on @message.
  *
- * Returns: A #GVariant with the value if the header was found, %NULL
+ * The caller is responsible for checking the type of the returned #GVariant
+ * matches what is expected.
+ *
+ * Returns: (transfer none) (nullable): A #GVariant with the value if the header was found, %NULL
  * otherwise. Do not free, it is owned by @message.
  *
  * Since: 2.26
@@ -1841,8 +1844,11 @@ parse_value_from_blob (GMemoryBuffer       *buf,
               sig = read_string (buf, (gsize) siglen, &local_error);
               if (sig == NULL)
                 goto fail;
-              if (!g_variant_is_signature (sig))
+              if (!g_variant_is_signature (sig) ||
+                  !g_variant_type_string_is_valid (sig))
                 {
+                  /* A D-Bus signature can contain zero or more complete types,
+                   * but a GVariant has to be exactly one complete type. */
                   g_set_error (&local_error,
                                G_IO_ERROR,
                                G_IO_ERROR_INVALID_ARGUMENT,
@@ -1924,7 +1930,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 
 /**
  * g_dbus_message_bytes_needed:
- * @blob: (array length=blob_len) (element-type guint8): A blob represent a binary D-Bus message.
+ * @blob: (array length=blob_len) (element-type guint8): A blob representing a binary D-Bus message.
  * @blob_len: The length of @blob (must be at least 16).
  * @error: Return location for error or %NULL.
  *
@@ -2000,6 +2006,9 @@ g_dbus_message_bytes_needed (guchar  *blob,
  * Creates a new #GDBusMessage from the data stored at @blob. The byte
  * order that the message was in can be retrieved using
  * g_dbus_message_get_byte_order().
+ *
+ * If the @blob cannot be parsed, contains invalid fields, or contains invalid
+ * headers, %G_IO_ERROR_INVALID_ARGUMENT will be returned.
  *
  * Returns: A new #GDBusMessage or %NULL if @error is set. Free with
  * g_object_unref().
@@ -2112,6 +2121,15 @@ g_dbus_message_new_from_blob (guchar                *blob,
     {
       const gchar *signature_str;
       gsize signature_str_len;
+
+      if (!g_variant_is_of_type (signature, G_VARIANT_TYPE_SIGNATURE))
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("Signature header found but is not of type signature"));
+          goto out;
+        }
 
       signature_str = g_variant_get_string (signature, &signature_str_len);
 
@@ -2693,6 +2711,16 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   body_start_offset = mbuf.valid_len;
 
   signature = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE);
+
+  if (signature != NULL && !g_variant_is_of_type (signature, G_VARIANT_TYPE_SIGNATURE))
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Signature header found but is not of type signature"));
+      goto out;
+    }
+
   signature_str = NULL;
   if (signature != NULL)
       signature_str = g_variant_get_string (signature, NULL);
