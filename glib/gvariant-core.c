@@ -523,6 +523,7 @@ g_variant_new_from_bytes (const GVariantType *type,
   guint alignment;
   gsize size;
   GBytes *owned_bytes = NULL;
+  GVariantSerialised serialised;
 
   value = g_variant_alloc (type, TRUE, trusted);
 
@@ -535,7 +536,11 @@ g_variant_new_from_bytes (const GVariantType *type,
    * only cause an abort on some architectures — so is unlikely to be caught
    * in testing). Callers can always actively ensure they use the correct
    * alignment to avoid the performance hit. */
-  if ((alignment & (gsize) g_bytes_get_data (bytes, NULL)) != 0)
+  serialised.type_info = value->type_info;
+  serialised.data = (guchar *) g_bytes_get_data (bytes, &serialised.size);
+  serialised.depth = 0;
+
+  if (!g_variant_serialised_check (serialised))
     {
 #ifdef HAVE_POSIX_MEMALIGN
       gpointer aligned_data = NULL;
