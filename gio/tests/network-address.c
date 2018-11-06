@@ -707,8 +707,6 @@ test_happy_eyeballs_slow_connection_and_ipv4 (HappyEyeballsFixture *fixture,
   g_main_loop_run (fixture->loop);
 
   assert_list_matches_expected (data.addrs, fixture->input_all_results);
-  /* Note that interleaving will not happen here because ipv6 was used before ipv4
-   * responded */
 }
 
 static void
