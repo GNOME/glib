@@ -339,19 +339,18 @@ g_unix_output_stream_write (GOutputStream  *stream,
   GUnixOutputStream *unix_stream;
   gssize res = -1;
   GPollFD poll_fds[2];
-  int nfds;
+  int nfds = 0;
   int poll_ret;
 
   unix_stream = G_UNIX_OUTPUT_STREAM (stream);
 
   poll_fds[0].fd = unix_stream->priv->fd;
   poll_fds[0].events = G_IO_OUT;
+  nfds++;
 
   if (unix_stream->priv->is_pipe_or_socket &&
       g_cancellable_make_pollfd (cancellable, &poll_fds[1]))
-    nfds = 2;
-  else
-    nfds = 1;
+    nfds++;
 
   while (1)
     {
