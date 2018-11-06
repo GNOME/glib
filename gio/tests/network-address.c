@@ -555,6 +555,24 @@ assert_list_matches_expected (GList *result, GList *expected)
     }
 }
 
+static void
+assert_list_is_interleaved (GList *result)
+{
+  GSocketFamily last_family = -1;
+
+  while (result)
+    {
+      GInetAddress *address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (result->data));
+      GSocketFamily family = g_inet_address_get_family (address);
+
+      if (last_family != -1)
+        g_assert_cmpint (family, !=, last_family);
+
+      last_family = family;
+      result = g_list_next (result);
+    }
+}
+
 typedef struct {
   MockResolver *mock_resolver;
   GResolver *original_resolver;
@@ -657,6 +675,7 @@ test_happy_eyeballs_slow_ipv6 (HappyEyeballsFixture *fixture,
   g_main_loop_run (fixture->loop);
 
   assert_list_matches_expected (data.addrs, fixture->input_all_results);
+  assert_list_is_interleaved (data.addrs);
 }
 
 static void
