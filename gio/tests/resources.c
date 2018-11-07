@@ -559,6 +559,34 @@ test_resource_manual2 (void)
 }
 
 static void
+test_resource_binary_linked (void)
+{
+  GError *error = NULL;
+  gboolean found;
+  gsize size;
+  guint32 flags;
+  GBytes *data;
+
+  found = g_resources_get_info ("/binary_linked/test1.txt",
+				G_RESOURCE_LOOKUP_FLAGS_NONE,
+				&size, &flags, &error);
+  g_assert (found);
+  g_assert_no_error (error);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpuint (flags, ==, 0);
+
+  data = g_resources_lookup_data ("/binary_linked/test1.txt",
+				  G_RESOURCE_LOOKUP_FLAGS_NONE,
+				  &error);
+  g_assert (data != NULL);
+  g_assert_no_error (error);
+  size = g_bytes_get_size (data);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
+  g_bytes_unref (data);
+}
+
+static void
 test_resource_module (void)
 {
   GIOModule *module;
@@ -833,6 +861,9 @@ main (int   argc,
   g_test_add_func ("/resource/automatic", test_resource_automatic);
   /* This only uses automatic resources too, so it tests the constructors and destructors */
   g_test_add_func ("/resource/module", test_resource_module);
+#ifdef __linux__
+  g_test_add_func ("/resource/binary-linked", test_resource_binary_linked);
+#endif
 #endif
   g_test_add_func ("/resource/uri/query-info", test_uri_query_info);
   g_test_add_func ("/resource/uri/file", test_uri_file);
