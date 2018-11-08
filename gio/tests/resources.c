@@ -558,6 +558,7 @@ test_resource_manual2 (void)
   g_resource_unref (resource);
 }
 
+#if __linux__
 static void
 test_resource_binary_linked (void)
 {
@@ -585,6 +586,7 @@ test_resource_binary_linked (void)
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
   g_bytes_unref (data);
 }
+#endif
 
 static void
 test_resource_module (void)
