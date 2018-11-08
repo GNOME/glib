@@ -1002,7 +1002,7 @@ static void
 startup_cb (GApplication *app,
             TestReplaceData *data)
 {
-  const char * argv[] = { NULL, "--verbose", "--quiet", "-p", NULL, "--GTestSubprocess", NULL };
+  const char *argv[] = { NULL, "--verbose", "--quiet", "-p", NULL, "--GTestSubprocess", NULL };
   GSubprocessLauncher *launcher;
   GError *local_error = NULL;
 
