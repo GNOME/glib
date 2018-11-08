@@ -1097,7 +1097,7 @@ test_replace (gconstpointer data)
       g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
 
       if (!allow)
-        g_timeout_add (1000, quit_already, app);
+        g_timeout_add_seconds (1, quit_already, app);
 
       g_application_run (app, G_N_ELEMENTS (argv) - 1, argv);
 
