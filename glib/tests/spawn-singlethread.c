@@ -320,6 +320,8 @@ test_spawn_sync (void)
   char *argv[] = {
     echo_prog_path,
     arg,
+    "doublequotes\\\"after\\\\\"\"backslashes", /* this would be special escaped on win32 */
+    "\\\"\"doublequotes spaced after backslashes\\\\\"", /* this would be special escaped on win32 */
     "even$$dollars",
     "even%%percents",
     "even\"\"doublequotes",
