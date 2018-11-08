@@ -266,7 +266,7 @@ main (int    argc,
       
       GIOChannel *my_read_channel;
       gchar *cmdline;
-      guint *id;
+      guint *id = NULL;
       int i;
 #ifdef G_OS_WIN32
       GTimeVal start, end;
