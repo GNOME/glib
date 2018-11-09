@@ -5,6 +5,13 @@ common_gio_tests_deps = [
   libgio_dep,
 ]
 
+test_c_args = [
+  '-DG_LOG_DOMAIN="GLib-GIO"',
+  '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
+  '-DGLIB_MKENUMS="@0@"'.format(glib_mkenums),
+  '-DGLIB_COMPILE_SCHEMAS="@0@"'.format(glib_compile_schemas.full_path()),
+]
+
 if host_machine.system() == 'windows'
   common_gio_tests_deps += [iphlpapi_dep, winsock2, cc.find_library ('secur32')]
 endif
@@ -84,13 +91,6 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 test_env.set('GIO_MODULE_DIR', '')
 test_env.set('GIO_LAUNCH_DESKTOP', meson.build_root() + '/gio/gio-launch-desktop')
-
-test_c_args = [
-  '-DG_LOG_DOMAIN="GLib-GIO"',
-  '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
-  '-DGLIB_MKENUMS="@0@"'.format(glib_mkenums),
-  '-DGLIB_COMPILE_SCHEMAS="@0@"'.format(glib_compile_schemas.full_path()),
-]
 
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
 # 1.2.14 required for dbus_message_set_serial
