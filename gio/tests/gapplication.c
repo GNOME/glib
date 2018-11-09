@@ -1037,6 +1037,7 @@ startup_cb (GApplication *app,
 static void
 activate (gpointer data)
 {
+  /* GApplication complains if we don't connect to ::activate */
 }
 
 static gboolean
