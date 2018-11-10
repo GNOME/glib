@@ -459,6 +459,8 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     copy : true,
     install : false)
 
+  # Create object file containing resource data
+  # for testing the external data option
   if build_machine.system() == 'linux'
     test_gresource_binary = custom_target('test5.gresource',
       input : 'test5.gresource.xml',
@@ -471,6 +473,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
       install_dir : installed_tests_execdir,
       install : installed_tests_enabled)
 
+	# Create resource data file
     test_resources_binary_c = custom_target('test_resources_binary.c',
       input : 'test5.gresource.xml',
       output : 'test_resources_binary.c',
@@ -483,6 +486,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                  '--c-name', '_g_binary_test1',
                  '@INPUT@'])
 
+	# Create object file containing resource data
     test_resources_binary = custom_target('test_resources.o',
       input : test_gresource_binary,
       output : 'test_resources.o',
@@ -492,6 +496,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                  '@INPUT@',
                  '-o','@OUTPUT@'])
 
+	# Rename symbol to match the one in the C file
     test_resources_binary2 = custom_target('test_resources2.o',
       input : test_resources_binary,
       output : 'test_resources2.o',
