@@ -1530,7 +1530,7 @@ endforeach
 
 # We need a more robust approach here...
 host_cpu_family = host_machine.cpu_family()
-if host_cpu_family == 'x86' or host_cpu_family == 'x86_64' or host_cpu_family == 's390' or host_cpu_family == 's390x' or host_cpu_family.startswith('arm') or host_cpu_family.startswith('crisv32') or host_cpu_family.startswith('etrax')
+if host_cpu_family == 'x86' or host_cpu_family == 'x86_64' or host_cpu_family == 's390' or host_cpu_family == 's390x' or host_cpu_family.startswith('arm') or host_cpu_family == 'aarch64' or host_cpu_family.startswith('crisv32') or host_cpu_family.startswith('etrax')
   glib_memory_barrier_needed = false
 elif host_cpu_family.startswith('sparc') or host_cpu_family.startswith('alpha') or host_cpu_family.startswith('powerpc') or host_cpu_family == 'ia64'
   glib_memory_barrier_needed = true
