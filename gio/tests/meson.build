@@ -221,6 +221,7 @@ if host_machine.system() != 'windows'
         'extra_sources' : extra_sources,
         'dependencies' : [dbus1_dep],
       },
+      'gdbus-proxy-unique-name' : {'extra_sources' : extra_sources},
       'gdbus-proxy-well-known-name' : {'extra_sources' : extra_sources},
       'gdbus-test-codegen' : {
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated],
