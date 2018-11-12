@@ -27,6 +27,29 @@
 /* all tests rely on a global connection */
 static GDBusConnection *c = NULL;
 
+/* Check that the given @connection has only one ref, waiting to let any pending
+ * unrefs complete first. This is typically used on the shared connection, to
+ * ensure it’s in a correct state before beginning the next test. */
+static void
+assert_connection_has_one_ref (GDBusConnection *connection)
+{
+  guint j;
+
+  for (j = 0; j < 1000; j++)
+    {
+      guint r = g_atomic_int_get (&G_OBJECT (connection)->ref_count);
+
+      if (r == 1)
+        break;
+
+      g_debug ("refcount of %p is %u, sleeping", connection, r);
+      g_usleep (1000);
+    }
+
+  if (j == 1000)
+    g_error ("connection %p had too many refs", connection);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 /* Ensure that signal and method replies are delivered in the right thread */
 /* ---------------------------------------------------------------------------------------------------- */
@@ -229,6 +252,8 @@ test_delivery_in_thread (void)
                          NULL);
 
   g_thread_join (thread);
+
+  assert_connection_has_one_ref (c);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -441,6 +466,8 @@ test_method_calls_in_thread (void)
 
   if (g_test_verbose ())
     g_printerr ("\n");
+
+  assert_connection_has_one_ref (c);
 }
 
 #define SLEEP_MIN_USEC 1
@@ -505,24 +532,11 @@ test_threaded_singleton (void)
   for (i = 0; i < n; i++)
     {
       GThread *thread;
-      guint j;
       guint unref_delay, get_delay;
       GDBusConnection *new_conn;
 
       /* We want to be the last ref, so let it finish setting up */
-      for (j = 0; j < 100; j++)
-        {
-          guint r = (guint) g_atomic_int_get (&G_OBJECT (c)->ref_count);
-
-          if (r == 1)
-            break;
-
-          g_debug ("run %u: refcount is %u, sleeping", i, r);
-          g_usleep (1000);
-        }
-
-      if (j == 100)
-        g_error ("connection had too many refs");
+      assert_connection_has_one_ref (c);
 
       if (g_test_verbose () && (i % (n/50)) == 0)
         g_printerr ("%u%%\n", ((i * 100) / n));
