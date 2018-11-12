@@ -151,19 +151,7 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
   g_assert_no_error (error);
   g_assert_nonnull (file_info);
 
-  if (g_file_info_get_attribute_boolean (file_info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
-    {
-      /* ¡¡ GIO still reports filesystem as being Readonly !!
-       * Let's check if that's true by trying to write to file */
-      GFileOutputStream *write_stream;
-      write_stream = g_file_append_to (mounted_file, G_FILE_CREATE_NONE, NULL, NULL);
-      if (write_stream != NULL)
-        {
-          /* The file has been opened for writing without error, so ¡¡ GIO IS WRONG !! */
-          g_object_unref (write_stream);
-          g_test_fail (); /* Marking test as FAILED */
-        }
-    }
+  g_assert_false (g_file_info_get_attribute_boolean (file_info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY));
 
   /* Clean up */
   g_clear_object (&mount_monitor);
