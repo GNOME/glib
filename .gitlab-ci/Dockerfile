@@ -3,9 +3,11 @@ FROM fedora:27
 RUN dnf -y install \
     autoconf \
     automake \
+    bindfs \
     desktop-file-utils \
     elfutils-libelf-devel \
     findutils \
+    fuse \
     gamin-devel \
     gcc \
     gcc-c++ \
