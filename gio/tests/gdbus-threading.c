@@ -51,10 +51,10 @@ msg_cb_expect_success (GDBusConnection *connection,
                                           res,
                                           &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_variant_unref (result);
 
-  g_assert (g_thread_self () == data->thread);
+  g_assert_true (g_thread_self () == data->thread);
 
   g_main_loop_quit (data->thread_loop);
 }
@@ -73,11 +73,11 @@ msg_cb_expect_error_cancelled (GDBusConnection *connection,
                                           res,
                                           &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
-  g_assert (!g_dbus_error_is_remote_error (error));
+  g_assert_false (g_dbus_error_is_remote_error (error));
   g_error_free (error);
-  g_assert (result == NULL);
+  g_assert_null (result);
 
-  g_assert (g_thread_self () == data->thread);
+  g_assert_true (g_thread_self () == data->thread);
 
   g_main_loop_quit (data->thread_loop);
 }
@@ -93,7 +93,7 @@ signal_handler (GDBusConnection *connection,
 {
   DeliveryData *data = user_data;
 
-  g_assert (g_thread_self () == data->thread);
+  g_assert_true (g_thread_self () == data->thread);
 
   data->signal_count++;
 
@@ -196,15 +196,15 @@ test_delivery_in_thread_func (gpointer _data)
                                                         signal_handler,
                                                         &data,
                                                         NULL);
-  g_assert (subscription_id != 0);
-  g_assert (data.signal_count == 0);
+  g_assert_cmpuint (subscription_id, !=, 0);
+  g_assert_cmpuint (data.signal_count, ==, 0);
 
   priv_c = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (priv_c != NULL);
+  g_assert_nonnull (priv_c);
 
   g_main_loop_run (thread_loop);
-  g_assert (data.signal_count == 1);
+  g_assert_cmpuint (data.signal_count, ==, 1);
 
   g_object_unref (priv_c);
 
@@ -257,11 +257,11 @@ sleep_cb (GDBusProxy   *proxy,
                                      res,
                                      &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
 
-  g_assert (data->thread == g_thread_self ());
+  g_assert_true (data->thread == g_thread_self ());
 
   g_main_loop_quit (data->thread_loop);
 
@@ -317,7 +317,7 @@ test_sleep_in_thread_func (gpointer _data)
             g_printerr ("S");
           //g_debug ("done invoking sync (%p)", g_thread_self ());
           g_assert_no_error (error);
-          g_assert (result != NULL);
+          g_assert_nonnull (result);
           g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
           g_variant_unref (result);
         }
@@ -457,8 +457,8 @@ ensure_connection_works (GDBusConnection *conn)
       "/org/freedesktop/DBus", "org.freedesktop.DBus", "GetId", NULL, NULL, 0, -1,
       NULL, &error);
   g_assert_no_error (error);
-  g_assert (v != NULL);
-  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE ("(s)")));
+  g_assert_nonnull (v);
+  g_assert_true (g_variant_is_of_type (v, G_VARIANT_TYPE ("(s)")));
   g_variant_unref (v);
 }
 
@@ -586,7 +586,7 @@ main (int   argc,
 
   /* this is safe; testserver will exit once the bus goes away */
   path = g_test_build_filename (G_TEST_BUILT, "gdbus-testserver", NULL);
-  g_assert (g_spawn_command_line_async (path, NULL));
+  g_assert_true (g_spawn_command_line_async (path, NULL));
   g_free (path);
 
   ensure_gdbus_testserver_up ();
@@ -595,7 +595,7 @@ main (int   argc,
   error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (c != NULL);
+  g_assert_nonnull (c);
 
   g_test_add_func ("/gdbus/delivery-in-thread", test_delivery_in_thread);
   g_test_add_func ("/gdbus/method-calls-in-thread", test_method_calls_in_thread);
