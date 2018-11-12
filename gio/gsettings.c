@@ -2474,16 +2474,9 @@ g_settings_list_keys (GSettings *settings)
  * The list is exactly the list of strings for which it is not an error
  * to call g_settings_get_child().
  *
- * For GSettings objects that are lists, this value can change at any
- * time. Note that there is a race condition here: you may
- * request a child after listing it only for it to have been destroyed
- * in the meantime.  For this reason, g_settings_get_child() may return
- * %NULL even for a child that was listed by this function.
- *
- * For GSettings objects that are not lists, you should probably not be
- * calling this function from "normal" code (since you should already
- * know what children are in your schema).  This function may still be
- * useful there for introspection reasons, however.
+ * There is little reason to call this function from "normal" code, since
+ * you should already know what children are in your schema. This function
+ * may still be useful there for introspection reasons, however.
  *
  * You should free the return value with g_strfreev() when you are done
  * with it.
