@@ -130,7 +130,7 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
     }
 
   /* Now we unmount, and mount again but this time rw (not readonly) */
-  run (&error, fusermount, "-u", dir_mountpoint, NULL);
+  run (&error, fusermount, "-z", "-u", dir_mountpoint, NULL);
   g_assert_no_error (error);
   run (&error, bindfs, "-n", dir_to_mount, dir_mountpoint, NULL);
   g_assert_no_error (error);
@@ -169,7 +169,7 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
   g_clear_object (&mount_monitor);
   g_clear_object (&file_info);
   g_clear_object (&mounted_file);
-  run (&error, fusermount, "-u", dir_mountpoint, NULL);
+  run (&error, fusermount, "-z", "-u", dir_mountpoint, NULL);
   g_assert_no_error (error);
 
   assert_remove (file_in_mount);
