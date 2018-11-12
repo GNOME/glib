@@ -121,6 +121,16 @@ static const GDBusInterfaceVTable interface_vtable =
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+connection_closed (GDBusConnection *connection,
+                   gboolean remote_peer_vanished,
+                   GError *Error,
+                   gpointer user_data)
+{
+  g_print ("Client disconnected.\n");
+  g_object_unref (connection);
+}
+
 static gboolean
 on_new_connection (GDBusServer *server,
                    GDBusConnection *connection,
@@ -144,6 +154,7 @@ on_new_connection (GDBusServer *server,
            g_dbus_connection_get_capabilities (connection) & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
   g_object_ref (connection);
+  g_signal_connect (connection, "closed", G_CALLBACK (connection_closed), NULL);
   registration_id = g_dbus_connection_register_object (connection,
                                                        "/org/gtk/GDBus/TestObject",
                                                        introspection_data->interfaces[0],
