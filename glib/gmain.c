@@ -327,7 +327,7 @@ struct _GChildWatchSource
 #ifdef G_OS_WIN32
   GPollFD     poll;
 #else /* G_OS_WIN32 */
-  gboolean    child_exited;
+  gboolean    child_exited; /* (atomic) */
 #endif /* G_OS_WIN32 */
 };
 
@@ -335,7 +335,7 @@ struct _GUnixSignalWatchSource
 {
   GSource     source;
   int         signum;
-  gboolean    pending;
+  gboolean    pending; /* (atomic) */
 };
 
 struct _GPollRec
