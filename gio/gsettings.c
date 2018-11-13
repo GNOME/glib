@@ -159,6 +159,11 @@
  *       <default>(20,30)</default>
  *     </key>
  *
+ *     <key name="empty-string" type="s">
+ *       <default>""</default>
+ *       <summary>Empty strings have to be provided in GVariant form</summary>
+ *     </key>
+ *
  *   </schema>
  * </schemalist>
  * ]|
