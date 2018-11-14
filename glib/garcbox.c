@@ -31,7 +31,7 @@
 
 #include <string.h>
 
-#define G_ARC_BOX(p)            (GArcBox *) (((char *) (p)) - G_ARC_BOX_SIZE)
+#define G_ARC_BOX(p)            (GArcBox *) (((char *) (p)) - G_ARC_BOX_SIZE - STRUCT_ALIGNMENT)
 
 /**
  * SECTION:arcbox

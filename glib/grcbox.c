@@ -162,23 +162,30 @@
  * Since: 2.58.
  */
 
-#define G_RC_BOX(p)             (GRcBox *) (((char *) (p)) - G_RC_BOX_SIZE)
-
 /* We use the same alignment as GTypeInstance and GNU libc's malloc */
-#define STRUCT_ALIGNMENT        (2 * sizeof (gsize))
 #define ALIGN_STRUCT(offset)    ((offset + (STRUCT_ALIGNMENT - 1)) & -STRUCT_ALIGNMENT)
+
+#define G_RC_BOX(p)             (GRcBox *) (((char *) (p)) - G_RC_BOX_SIZE - STRUCT_ALIGNMENT)
 
 gpointer
 g_rc_box_alloc_full (gsize    block_size,
                      gboolean atomic,
                      gboolean clear)
 {
-  /* sizeof GArcBox == sizeof GRcBox */
-  gsize private_size = G_ARC_BOX_SIZE;
+  /* sizeof GArcBox == sizeof GRcBox; we need to align the size of the
+   * private structure to `2 * sizeof(gsize)`, to ensure that the whole
+   * allocation is aligned
+   */
+  gsize private_size = G_ARC_BOX_SIZE + STRUCT_ALIGNMENT;
   gsize real_size;
   char *allocated;
 
-  g_assert (block_size < (G_MAXSIZE - G_ARC_BOX_SIZE));
+  /* In order to ensure that the alignment of the allocation is
+   * respected everywhere, we also need to align the block size
+   */
+  block_size += STRUCT_ALIGNMENT;
+
+  g_assert (block_size < (G_MAXSIZE - private_size));
   real_size = private_size + block_size;
 
 #ifdef ENABLE_VALGRIND
@@ -215,7 +222,8 @@ g_rc_box_alloc_full (gsize    block_size,
   if (atomic)
     {
       GArcBox *real_box = (GArcBox *) allocated;
-      real_box->mem_size = block_size;
+      /* Store the real size */
+      real_box->mem_size = block_size - STRUCT_ALIGNMENT;
 #ifndef G_DISABLE_ASSERT
       real_box->magic = G_BOX_MAGIC;
 #endif
@@ -224,7 +232,8 @@ g_rc_box_alloc_full (gsize    block_size,
   else
     {
       GRcBox *real_box = (GRcBox *) allocated;
-      real_box->mem_size = block_size;
+      /* Store the real size */
+      real_box->mem_size = block_size - STRUCT_ALIGNMENT;
 #ifndef G_DISABLE_ASSERT
       real_box->magic = G_BOX_MAGIC;
 #endif

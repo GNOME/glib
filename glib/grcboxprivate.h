@@ -51,6 +51,8 @@ typedef struct {
 /* Keep the two refcounted boxes identical in size */
 G_STATIC_ASSERT (sizeof (GRcBox) == sizeof (GArcBox));
 
+#define STRUCT_ALIGNMENT (2 * sizeof (gsize))
+
 #define G_RC_BOX_SIZE sizeof (GRcBox)
 #define G_ARC_BOX_SIZE sizeof (GArcBox)
 
