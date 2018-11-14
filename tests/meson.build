@@ -124,7 +124,7 @@ foreach test_name, extra_args : tests
   )
 
   suite = ['glib'] + extra_args.get('suite', [])
-  timeout = suite.contains('slow') ? 120 : 30
+  timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
   test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
     args : test_command_args)

@@ -28,6 +28,7 @@ typedef struct
   GVariantTypeInfo *type_info;
   guchar           *data;
   gsize             size;
+  gsize             depth;  /* same semantics as GVariant.depth */
 } GVariantSerialised;
 
 /* deserialisation */
@@ -54,6 +55,8 @@ void                            g_variant_serialiser_serialise          (GVarian
                                                                          gsize                     n_children);
 
 /* misc */
+GLIB_AVAILABLE_IN_2_60
+gboolean                        g_variant_serialised_check              (GVariantSerialised        serialised);
 GLIB_AVAILABLE_IN_ALL
 gboolean                        g_variant_serialised_is_normal          (GVariantSerialised        value);
 GLIB_AVAILABLE_IN_ALL

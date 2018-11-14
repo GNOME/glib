@@ -263,10 +263,10 @@ adder_response (GIOChannel   *source,
   return TRUE;
 }
 
-static void
+static GThread *
 create_adder_thread (void)
 {
-  GError *err = NULL;
+  GThread *thread;
   TestData *test_data;
   
   GIOChannel *in_channels[2];
@@ -282,13 +282,7 @@ create_adder_thread (void)
   sub_channels[0] = in_channels[0];
   sub_channels[1] = out_channels[1];
 
-  g_thread_create (adder_thread, sub_channels, FALSE, &err);
-
-  if (err)
-    {
-      g_warning ("Cannot create thread: %s", err->message);
-      exit (1);
-    }
+  thread = g_thread_new ("adder", adder_thread, sub_channels);
 
   test_data = g_new (TestData, 1);
   test_data->in = in_channels[1];
@@ -299,6 +293,8 @@ create_adder_thread (void)
 		  adder_response, test_data);
   
   do_add (test_data->in, test_data->current_val, INCREMENT);
+
+  return thread;
 }
 
 static void create_crawler (void);
@@ -389,12 +385,15 @@ recurser_start (gpointer data)
   GSource *source;
   
   g_mutex_lock (&context_array_mutex);
-  context = context_array->pdata[g_random_int_range (0, context_array->len)];
-  source = g_idle_source_new ();
-  g_source_set_name (source, "Recursing idle source");
-  g_source_set_callback (source, recurser_idle, context, NULL);
-  g_source_attach (source, context);
-  g_source_unref (source);
+  if (context_array->len > 0)
+    {
+      context = context_array->pdata[g_random_int_range (0, context_array->len)];
+      source = g_idle_source_new ();
+      g_source_set_name (source, "Recursing idle source");
+      g_source_set_callback (source, recurser_idle, context, NULL);
+      g_source_attach (source, context);
+      g_source_unref (source);
+    }
   g_mutex_unlock (&context_array_mutex);
 
   return TRUE;
@@ -405,6 +404,7 @@ main (int   argc,
       char *argv[])
 {
   gint i;
+  GThread *threads[NTHREADS];
 
   context_array = g_ptr_array_new ();
 
@@ -413,13 +413,13 @@ main (int   argc,
   main_loop = g_main_loop_new (NULL, FALSE);
 
   for (i = 0; i < NTHREADS; i++)
-    create_adder_thread ();
+    threads[i] = create_adder_thread ();
 
   /* Wait for all threads to start
    */
   g_mutex_lock (&context_array_mutex);
   
-  if (context_array->len < NTHREADS)
+  while (context_array->len < NTHREADS)
     g_cond_wait (&context_array_cond, &context_array_mutex);
   
   g_mutex_unlock (&context_array_mutex);
@@ -431,6 +431,9 @@ main (int   argc,
 
   g_main_loop_run (main_loop);
   g_main_loop_unref (main_loop);
+
+  for (i = 0; i < NTHREADS; i++)
+    g_thread_join (threads[i]);
 
   g_ptr_array_unref (crawler_array);
   g_ptr_array_unref (context_array);

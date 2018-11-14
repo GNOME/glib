@@ -327,7 +327,7 @@ struct _GChildWatchSource
 #ifdef G_OS_WIN32
   GPollFD     poll;
 #else /* G_OS_WIN32 */
-  gboolean    child_exited;
+  gboolean    child_exited; /* (atomic) */
 #endif /* G_OS_WIN32 */
 };
 
@@ -335,7 +335,7 @@ struct _GUnixSignalWatchSource
 {
   GSource     source;
   int         signum;
-  gboolean    pending;
+  gboolean    pending; /* (atomic) */
 };
 
 struct _GPollRec
@@ -462,10 +462,10 @@ static volatile sig_atomic_t any_unix_signal_pending;
 static volatile int unix_signal_pending[NSIG];
 static volatile int any_unix_signal_pending;
 #endif
-static volatile guint unix_signal_refcount[NSIG];
 
 /* Guards all the data below */
 G_LOCK_DEFINE_STATIC (unix_signal_lock);
+static guint unix_signal_refcount[NSIG];
 static GSList *unix_signal_watches;
 static GSList *unix_child_watches;
 
@@ -1584,6 +1584,10 @@ static GSourceCallbackFuncs g_source_callback_funcs = {
  * an initial reference count on @callback_data, and thus
  * @callback_funcs->unref will eventually be called once more
  * than @callback_funcs->ref.
+ *
+ * It is safe to call this function multiple times on a source which has already
+ * been attached to a context. The changes will take effect for the next time
+ * the source is dispatched after this call returns.
  **/
 void
 g_source_set_callback_indirect (GSource              *source,
@@ -1640,7 +1644,11 @@ g_source_set_callback_indirect (GSource              *source,
  * on how to handle memory management of @data.
  * 
  * Typically, you won't use this function. Instead use functions specific
- * to the type of source you are using.
+ * to the type of source you are using, such as g_idle_add() or g_timeout_add().
+ *
+ * It is safe to call this function multiple times on a source which has already
+ * been attached to a context. The changes will take effect for the next time
+ * the source is dispatched after this call returns.
  **/
 void
 g_source_set_callback (GSource        *source,
@@ -5099,7 +5107,7 @@ dispatch_unix_signals_unlocked (void)
         {
           GChildWatchSource *source = node->data;
 
-          if (!source->child_exited)
+          if (!g_atomic_int_get (&source->child_exited))
             {
               pid_t pid;
               do
@@ -5109,14 +5117,14 @@ dispatch_unix_signals_unlocked (void)
                   pid = waitpid (source->pid, &source->child_status, WNOHANG);
                   if (pid > 0)
                     {
-                      source->child_exited = TRUE;
+                      g_atomic_int_set (&source->child_exited, TRUE);
                       wake_source ((GSource *) source);
                     }
                   else if (pid == -1 && errno == ECHILD)
                     {
                       g_warning ("GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). See the documentation of g_child_watch_source_new() for possible causes.");
-                      source->child_exited = TRUE;
                       source->child_status = 0;
+                      g_atomic_int_set (&source->child_exited, TRUE);
                       wake_source ((GSource *) source);
                     }
                 }
@@ -5130,14 +5138,10 @@ dispatch_unix_signals_unlocked (void)
     {
       GUnixSignalWatchSource *source = node->data;
 
-      if (!source->pending)
+      if (pending[source->signum] &&
+          g_atomic_int_compare_and_exchange (&source->pending, FALSE, TRUE))
         {
-          if (pending[source->signum])
-            {
-              source->pending = TRUE;
-
-              wake_source ((GSource *) source);
-            }
+          wake_source ((GSource *) source);
         }
     }
 
@@ -5159,7 +5163,7 @@ g_child_watch_prepare (GSource *source,
 
   child_watch_source = (GChildWatchSource *) source;
 
-  return child_watch_source->child_exited;
+  return g_atomic_int_get (&child_watch_source->child_exited);
 }
 
 static gboolean
@@ -5169,7 +5173,7 @@ g_child_watch_check (GSource *source)
 
   child_watch_source = (GChildWatchSource *) source;
 
-  return child_watch_source->child_exited;
+  return g_atomic_int_get (&child_watch_source->child_exited);
 }
 
 static gboolean
@@ -5180,7 +5184,7 @@ g_unix_signal_watch_prepare (GSource *source,
 
   unix_signal_source = (GUnixSignalWatchSource *) source;
 
-  return unix_signal_source->pending;
+  return g_atomic_int_get (&unix_signal_source->pending);
 }
 
 static gboolean
@@ -5190,7 +5194,7 @@ g_unix_signal_watch_check (GSource  *source)
 
   unix_signal_source = (GUnixSignalWatchSource *) source;
 
-  return unix_signal_source->pending;
+  return g_atomic_int_get (&unix_signal_source->pending);
 }
 
 static gboolean
@@ -5210,9 +5214,9 @@ g_unix_signal_watch_dispatch (GSource    *source,
       return FALSE;
     }
 
-  again = (callback) (user_data);
+  g_atomic_int_set (&unix_signal_source->pending, FALSE);
 
-  unix_signal_source->pending = FALSE;
+  again = (callback) (user_data);
 
   return again;
 }

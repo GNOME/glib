@@ -119,7 +119,7 @@ gobject_probes.h: gobject_probes.d
 		< $@.tmp > $@ && rm -f $@.tmp
 
 gobject_probes.lo: gobject_probes.d
-	$(AM_V_GEN) $(LIBTOOL) --mode=compile $(AM_V_lt) --tag=CC $(DTRACE) -G -s $< -o $@
+	$(AM_V_GEN) $(LIBTOOL) --mode=compile $(AM_V_lt) --tag=CC env CFLAGS="$(CFLAGS)" $(DTRACE) -G -s $< -o $@
 
 BUILT_SOURCES += gobject_probes.h gobject_probes.lo
 CLEANFILES += gobject_probes.h

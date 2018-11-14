@@ -26,6 +26,7 @@
 #include <glib/gthread.h>
 #include <glib/gslice.h>
 #include <glib/ghash.h>
+#include <glib/grefcount.h>
 
 /* < private >
  * GVariantTypeInfo:
@@ -76,7 +77,7 @@ typedef struct
   GVariantTypeInfo info;
 
   gchar *type_string;
-  gint ref_count;
+  gatomicrefcount ref_count;
 } ContainerInfo;
 
 /* For 'array' and 'maybe' types, we store some extra information on the
@@ -167,7 +168,7 @@ g_variant_type_info_check (const GVariantTypeInfo *info,
       ContainerInfo *container = (ContainerInfo *) info;
 
       /* extra checks for containers */
-      g_assert_cmpint (container->ref_count, >, 0);
+      g_assert (!g_atomic_ref_count_compare (&container->ref_count, 0));
       g_assert (container->type_string != NULL);
     }
   else
@@ -220,8 +221,8 @@ g_variant_type_info_get_type_string (GVariantTypeInfo *info)
 /* < private >
  * g_variant_type_info_query:
  * @info: a #GVariantTypeInfo
- * @alignment: (nullable): the location to store the alignment, or %NULL
- * @fixed_size: (nullable): the location to store the fixed size, or %NULL
+ * @alignment: (optional): the location to store the alignment, or %NULL
+ * @fixed_size: (optional): the location to store the fixed size, or %NULL
  *
  * Queries @info to determine the alignment requirements and fixed size
  * (if any) of the type.
@@ -249,6 +250,31 @@ g_variant_type_info_query (GVariantTypeInfo *info,
 
   if (fixed_size)
     *fixed_size = info->fixed_size;
+}
+
+/* < private >
+ * g_variant_type_info_query_depth:
+ * @info: a #GVariantTypeInfo
+ *
+ * Queries @info to determine the depth of the type.
+ *
+ * See g_variant_type_string_get_depth_() for more details.
+ *
+ * Returns: depth of @info
+ * Since: 2.60
+ */
+gsize
+g_variant_type_info_query_depth (GVariantTypeInfo *info)
+{
+  g_variant_type_info_check (info, 0);
+
+  if (info->container_class)
+    {
+      ContainerInfo *container = (ContainerInfo *) info;
+      return g_variant_type_string_get_depth_ (container->type_string);
+    }
+
+  return 1;
 }
 
 /* == array == */
@@ -304,8 +330,8 @@ g_variant_type_info_element (GVariantTypeInfo *info)
 /* < private >
  * g_variant_type_query_element:
  * @info: a #GVariantTypeInfo for an array or maybe type
- * @alignment: (nullable): the location to store the alignment, or %NULL
- * @fixed_size: (nullable): the location to store the fixed size, or %NULL
+ * @alignment: (optional): the location to store the alignment, or %NULL
+ * @fixed_size: (optional): the location to store the fixed size, or %NULL
  *
  * Returns the alignment requires and fixed size (if any) for the
  * element type of the array.  This call is a convenience wrapper around
@@ -763,7 +789,7 @@ g_variant_type_info_get (const GVariantType *type)
 
           info = (GVariantTypeInfo *) container;
           container->type_string = type_string;
-          container->ref_count = 1;
+          g_atomic_ref_count_init (&container->ref_count);
 
           g_hash_table_insert (g_variant_type_info_table, type_string, info);
           type_string = NULL;
@@ -809,8 +835,7 @@ g_variant_type_info_ref (GVariantTypeInfo *info)
     {
       ContainerInfo *container = (ContainerInfo *) info;
 
-      g_assert_cmpint (container->ref_count, >, 0);
-      g_atomic_int_inc (&container->ref_count);
+      g_atomic_ref_count_inc (&container->ref_count);
     }
 
   return info;
@@ -833,7 +858,7 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
       ContainerInfo *container = (ContainerInfo *) info;
 
       g_rec_mutex_lock (&g_variant_type_info_lock);
-      if (g_atomic_int_dec_and_test (&container->ref_count))
+      if (g_atomic_ref_count_dec (&container->ref_count))
         {
           g_hash_table_remove (g_variant_type_info_table,
                                container->type_string);

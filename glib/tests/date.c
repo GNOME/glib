@@ -183,6 +183,65 @@ test_parse (void)
 }
 
 static void
+test_parse_locale_change (void)
+{
+  /* Checks that g_date_set_parse correctly changes locale specific data as
+   * necessary. In this particular case year adjustment, as Thai calendar is
+   * 543 years ahead of the Gregorian calendar. */
+
+  GDate date;
+
+  if (setlocale (LC_ALL, "th_TH") == NULL)
+    {
+      g_test_skip ("locale th_TH not available");
+      return;
+    }
+
+  g_date_set_parse (&date, "04/07/2519");
+
+  setlocale (LC_ALL, "C");
+  g_date_set_parse (&date, "07/04/76");
+  g_assert_cmpint (g_date_get_day (&date), ==, 4);
+  g_assert_cmpint (g_date_get_month (&date), ==, 7);
+  g_assert_cmpint (g_date_get_year (&date), ==, 1976);
+
+  setlocale (LC_ALL, "");
+}
+
+static void
+test_month_substring (void)
+{
+  GDate date;
+
+  g_test_bug ("793550");
+
+  if (setlocale (LC_ALL, "pl_PL") == NULL)
+    {
+      g_test_skip ("pl_PL locale not available");
+      return;
+    }
+
+  /* In Polish language September is "wrzesień" and August is "sierpień"
+   * abbreviated as "sie". The former used to be confused with the latter
+   * because "sie" is a substring of "wrzesień" and was matched first. */
+
+  g_date_set_parse (&date, "wrzesień 2018");
+  g_assert_true (g_date_valid (&date));
+  g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_SEPTEMBER);
+
+  g_date_set_parse (&date, "sie 2018");
+  g_assert_true (g_date_valid (&date));
+  g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_AUGUST);
+
+  g_date_set_parse (&date, "sierpień 2018");
+  g_assert_true (g_date_valid (&date));
+  g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_AUGUST);
+
+  setlocale (LC_ALL, "");
+}
+
+
+static void
 test_month_names (void)
 {
 #if defined(HAVE_LANGINFO_ABALTMON) || defined(G_OS_WIN32)
@@ -365,8 +424,8 @@ test_month_names (void)
       TEST_DATE ( 1,  4, 2018,      "%Y m. %OB",      "2018 m. balandis");
       TEST_DATE ( 1,  5, 2018,      "%Y m. %OB",        "2018 m. gegužė");
       TEST_DATE ( 1,  6, 2018,      "%Y m. %OB",      "2018 m. birželis");
-      TEST_DATE (17,  7, 2018, "%Y m. %b %e d.",     "2018 m. Lie 17 d.");
-      TEST_DATE ( 1,  8, 2018,      "%Y m. %Ob",           "2018 m. Rgp");
+      TEST_DATE (17,  7, 2018, "%Y m. %b %e d.",   "2018 m. liep. 17 d.");
+      TEST_DATE ( 1,  8, 2018,      "%Y m. %Ob",         "2018 m. rugp.");
     }
   else
     g_test_skip ("locale lt_LT not available, skipping Lithuanian month names test");
@@ -709,6 +768,8 @@ main (int argc, char** argv)
   g_test_add_func ("/date/julian", test_julian_constructor);
   g_test_add_func ("/date/dates", test_dates);
   g_test_add_func ("/date/parse", test_parse);
+  g_test_add_func ("/date/parse_locale_change", test_parse_locale_change);
+  g_test_add_func ("/date/month_substring", test_month_substring);
   g_test_add_func ("/date/month_names", test_month_names);
   g_test_add_func ("/date/clamp", test_clamp);
   g_test_add_func ("/date/order", test_order);

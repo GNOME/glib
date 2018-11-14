@@ -122,7 +122,10 @@ endif
 if host_machine.system() != 'windows'
   gio_tests += {
     'file' : {},
-    'gdbus-peer' : {'dependencies' : [libgdbus_example_objectmanager_dep]},
+    'gdbus-peer' : {
+      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'install_rpath' : installed_tests_execdir
+    },
     'gdbus-peer-object-manager' : {},
     'live-g-file' : {},
     'socket-address' : {},
@@ -179,6 +182,7 @@ if host_machine.system() != 'windows'
                    '--output-directory', '@OUTDIR@',
                    '--generate-c-code', 'gdbus-test-codegen-generated',
                    '--c-generate-object-manager',
+                   '--c-generate-autocleanup', 'all',
                    '--c-namespace', 'Foo_iGen',
                    '--generate-docbook', 'gdbus-test-codegen-generated-doc',
                    '--annotate', 'org.project.Bar', 'Key1', 'Value1',
@@ -217,6 +221,7 @@ if host_machine.system() != 'windows'
         'extra_sources' : extra_sources,
         'dependencies' : [dbus1_dep],
       },
+      'gdbus-proxy-unique-name' : {'extra_sources' : extra_sources},
       'gdbus-proxy-well-known-name' : {'extra_sources' : extra_sources},
       'gdbus-test-codegen' : {
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated],
@@ -373,6 +378,18 @@ if installed_tests_enabled
   install_subdir('desktop-files', install_dir : installed_tests_execdir)
   install_subdir('thumbnails', install_dir : installed_tests_execdir)
   install_subdir('cert-tests', install_dir : installed_tests_execdir)
+
+  cdata = configuration_data()
+  cdata.set('installed_tests_dir', installed_tests_execdir)
+  cdata.set('program', 'static-link.py ' + glib_pkgconfigreldir)
+  configure_file(
+    input: installed_tests_template,
+    output: 'static-link.test',
+    install_dir: installed_tests_metadir,
+    configuration: cdata
+  )
+  install_subdir('static-link', install_dir : installed_tests_execdir)
+  install_data('static-link.py', install_dir : installed_tests_execdir)
 endif
 
 if not meson.is_cross_build() or meson.has_exe_wrapper()
@@ -471,12 +488,13 @@ foreach test_name, extra_args : gio_tests
   exe = executable(test_name, [source, extra_sources],
     c_args : test_c_args + extra_args.get('c_args', []),
     dependencies : common_gio_tests_deps + extra_args.get('dependencies', []),
+    install_rpath : extra_args.get('install_rpath', ''),
     install_dir: installed_tests_execdir,
     install: install,
   )
 
   suite = ['gio'] + extra_args.get('suite', [])
-  timeout = suite.contains('slow') ? 120 : 30
+  timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   test(test_name, exe,
     env : test_env,
     timeout : timeout,

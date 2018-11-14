@@ -2165,31 +2165,24 @@ g_log_writer_is_journald (gint output_fd)
   /* FIXME: Use the new journal API for detecting whether we’re writing to the
    * journal. See: https://github.com/systemd/systemd/issues/2473
    */
-  static gsize initialized;
-  static gboolean fd_is_journal = FALSE;
+  union {
+    struct sockaddr_storage storage;
+    struct sockaddr sa;
+    struct sockaddr_un un;
+  } addr;
+  socklen_t addr_len;
+  int err;
 
   if (output_fd < 0)
     return FALSE;
 
-  if (g_once_init_enter (&initialized))
-    {
-      union {
-        struct sockaddr_storage storage;
-        struct sockaddr sa;
-        struct sockaddr_un un;
-      } addr;
-      socklen_t addr_len = sizeof(addr);
-      int err = getpeername (output_fd, &addr.sa, &addr_len);
-      if (err == 0 && addr.storage.ss_family == AF_UNIX)
-        fd_is_journal = g_str_has_prefix (addr.un.sun_path, "/run/systemd/journal/");
-
-      g_once_init_leave (&initialized, TRUE);
-    }
-
-  return fd_is_journal;
-#else
-  return FALSE;
+  addr_len = sizeof(addr);
+  err = getpeername (output_fd, &addr.sa, &addr_len);
+  if (err == 0 && addr.storage.ss_family == AF_UNIX)
+    return g_str_has_prefix (addr.un.sun_path, "/run/systemd/journal/");
 #endif
+
+  return FALSE;
 }
 
 static void escape_string (GString *string);
@@ -2620,6 +2613,9 @@ g_log_writer_default (GLogLevelFlags   log_level,
                       gsize            n_fields,
                       gpointer         user_data)
 {
+  static gsize initialized = 0;
+  static gboolean stderr_is_journal = FALSE;
+
   g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
   g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
 
@@ -2656,7 +2652,13 @@ g_log_writer_default (GLogLevelFlags   log_level,
     log_level |= G_LOG_FLAG_FATAL;
 
   /* Try logging to the systemd journal as first choice. */
-  if (g_log_writer_is_journald (fileno (stderr)) &&
+  if (g_once_init_enter (&initialized))
+    {
+      stderr_is_journal = g_log_writer_is_journald (fileno (stderr));
+      g_once_init_leave (&initialized, TRUE);
+    }
+
+  if (stderr_is_journal &&
       g_log_writer_journald (log_level, fields, n_fields, user_data) ==
       G_LOG_WRITER_HANDLED)
     goto handled;

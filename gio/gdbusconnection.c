@@ -3410,6 +3410,11 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * signal is unsubscribed from, and may be called after @connection
  * has been destroyed.)
  *
+ * The returned subscription identifier is an opaque value which is guaranteed
+ * to never be zero.
+ *
+ * This function can never fail.
+ *
  * Returns: a subscription identifier that can be used with g_dbus_connection_signal_unsubscribe()
  *
  * Since: 2.26

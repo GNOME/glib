@@ -2721,34 +2721,39 @@ format_z (GString *outstr,
   gint hours;
   gint minutes;
   gint seconds;
+  gchar sign = offset >= 0 ? '+' : '-';
 
+  offset = ABS (offset);
   hours = offset / 3600;
-  minutes = ABS (offset) / 60 % 60;
-  seconds = ABS (offset) % 60;
+  minutes = offset / 60 % 60;
+  seconds = offset % 60;
 
   switch (colons)
     {
     case 0:
-      g_string_append_printf (outstr, "%+03d%02d",
+      g_string_append_printf (outstr, "%c%02d%02d",
+                              sign,
                               hours,
                               minutes);
       break;
 
     case 1:
-      g_string_append_printf (outstr, "%+03d:%02d",
+      g_string_append_printf (outstr, "%c%02d:%02d",
+                              sign,
                               hours,
                               minutes);
       break;
 
     case 2:
-      g_string_append_printf (outstr, "%+03d:%02d:%02d",
+      g_string_append_printf (outstr, "%c%02d:%02d:%02d",
+                              sign,
                               hours,
                               minutes,
                               seconds);
       break;
 
     case 3:
-      g_string_append_printf (outstr, "%+03d", hours);
+      g_string_append_printf (outstr, "%c%02d", sign, hours);
 
       if (minutes != 0 || seconds != 0)
         {
