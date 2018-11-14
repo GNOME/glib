@@ -105,7 +105,7 @@ enum {
 };
 
 static int
-dup_noninherited (int fd,
+reopen_noninherited (int fd,
 		  int mode)
 {
   HANDLE filehandle;
@@ -156,12 +156,6 @@ protect_argv_string (const gchar *string)
    */
   while (*p)
     {
-      /* Count length of continous sequence of preceeding backslashes. */
-      if (*p == '\\')
-	++pre_bslash;
-      else
-	pre_bslash = 0;
-
       if (*p == '"')
 	{
 	  /* Add backslash for escaping quote itself */
@@ -170,6 +164,13 @@ protect_argv_string (const gchar *string)
 	  for(;pre_bslash > 0; --pre_bslash)
 	    *q++ = '\\';
 	}
+
+      /* Count length of continous sequence of preceeding backslashes. */
+      if (*p == '\\')
+	++pre_bslash;
+      else
+	pre_bslash = 0;
+
       *q++ = *p;
       p++;
     }
@@ -615,7 +616,7 @@ do_spawn_with_fds (gint                 *exit_status,
    * helper process, and the started actual user process. As such that
    * shouldn't harm, but it is unnecessary.
    */
-  child_err_report_pipe[0] = dup_noninherited (child_err_report_pipe[0], _O_RDONLY);
+  child_err_report_pipe[0] = reopen_noninherited (child_err_report_pipe[0], _O_RDONLY);
 
   if (flags & G_SPAWN_FILE_AND_ARGV_ZERO)
     {
@@ -634,7 +635,7 @@ do_spawn_with_fds (gint                 *exit_status,
    * process won't read but won't get any EOF either, as it has the
    * write end open itself.
    */
-  helper_sync_pipe[1] = dup_noninherited (helper_sync_pipe[1], _O_WRONLY);
+  helper_sync_pipe[1] = reopen_noninherited (helper_sync_pipe[1], _O_WRONLY);
 
   if (stdin_fd != -1)
     {
@@ -666,7 +667,7 @@ do_spawn_with_fds (gint                 *exit_status,
       new_argv[ARG_STDOUT] = "-";
     }
   
-  if (stdout_fd != -1)
+  if (stderr_fd != -1)
     {
       _g_sprintf (args[ARG_STDERR], "%d", stderr_fd);
       new_argv[ARG_STDERR] = args[ARG_STDERR];
