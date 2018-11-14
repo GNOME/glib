@@ -345,7 +345,7 @@ endforeach
 
 # Compiler flags
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
-  test_c_args = [
+  warning_c_args = [
     '-Wall',
     '-Wduplicated-branches',
     '-Wimplicit-fallthrough',
@@ -363,18 +363,18 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Werror=missing-prototypes',
     '-Werror=pointer-arith',
   ]
-  test_c_link_args = [
+  warning_c_link_args = [
     '-Wl,-z,nodelete',
   ]
   if get_option('bsymbolic_functions')
-    test_c_link_args += ['-Wl,-Bsymbolic-functions']
+    warning_c_link_args += ['-Wl,-Bsymbolic-functions']
   endif
 else
-  test_c_args = []
-  test_c_link_args = []
+  warning_c_args = []
+  warning_c_link_args = []
 endif
 
-add_project_arguments(cc.get_supported_arguments(test_c_args), language: 'c')
+add_project_arguments(cc.get_supported_arguments(warning_c_args), language: 'c')
 
 # FIXME: We cannot build some of the GResource tests with -z nodelete, which
 # means we cannot use that flag in add_project_link_arguments(), and must add
@@ -382,7 +382,7 @@ add_project_arguments(cc.get_supported_arguments(test_c_args), language: 'c')
 # because that is what the autotools build did.
 # See https://github.com/mesonbuild/meson/pull/3520 for a way to eventually
 # improve this.
-glib_link_flags = cc.get_supported_link_arguments(test_c_link_args)
+glib_link_flags = cc.get_supported_link_arguments(warning_c_link_args)
 
 # Windows Support (7+)
 if host_system == 'windows'
