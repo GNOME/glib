@@ -220,6 +220,40 @@ test_atomic_rcbox_dup (void)
   g_assert_null (global_point_b);
 }
 
+/* verify that the refcounted allocation is properly aligned */
+static void
+test_rcbox_alignment (void)
+{
+  gsize block_size = sizeof (gint32) * 3;
+  gpointer p = g_rc_box_alloc0 (block_size);
+  gpointer p_align = NULL;
+
+  g_assert_nonnull (p);
+
+  g_assert_cmpint (g_rc_box_get_size (p), ==, block_size);
+  p_align = (char *) p + block_size;
+  g_assert_cmpint (((gint32 *) p_align)[0], ==, 0);
+
+  g_rc_box_release (p);
+}
+
+/* verify that the atomically refcounted allocation is properly aligned */
+static void
+test_atomic_rcbox_alignment (void)
+{
+  gsize block_size = sizeof (gint32) * 3;
+  gpointer p = g_atomic_rc_box_alloc0 (block_size);
+  gpointer p_align = NULL;
+
+  g_assert_nonnull (p);
+
+  g_assert_cmpint (g_atomic_rc_box_get_size (p), ==, block_size);
+  p_align = (char *) p + block_size;
+  g_assert_cmpint (((gint32 *) p_align)[0], ==, 0);
+
+  g_atomic_rc_box_release (p);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -229,10 +263,12 @@ main (int   argc,
   g_test_add_func ("/rcbox/new", test_rcbox_new);
   g_test_add_func ("/rcbox/release-full", test_rcbox_release_full);
   g_test_add_func ("/rcbox/dup", test_rcbox_dup);
+  g_test_add_func ("/rcbox/alignment", test_rcbox_alignment);
 
   g_test_add_func ("/atomic-rcbox/new", test_atomic_rcbox_new);
   g_test_add_func ("/atomic-rcbox/release-full", test_atomic_rcbox_release_full);
   g_test_add_func ("/atomic-rcbox/dup", test_atomic_rcbox_dup);
+  g_test_add_func ("/atomic-rcbox/alignment", test_atomic_rcbox_alignment);
 
   return g_test_run ();
 }
