@@ -3725,6 +3725,10 @@ g_main_context_check (GMainContext *context,
   i = 0;
   while (pollrec && i < n_fds)
     {
+      while (pollrec && pollrec->fd->fd != fds[i].fd)
+        {
+          pollrec = pollrec->next;
+        }
       while (pollrec && pollrec->fd->fd == fds[i].fd)
         {
           if (pollrec->priority <= max_priority)

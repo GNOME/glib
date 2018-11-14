@@ -24,6 +24,9 @@
 #include "glib-private.h"
 #include <stdio.h>
 #include <string.h>
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 
 static gboolean cb (gpointer data)
 {
@@ -1742,6 +1745,132 @@ test_nfds (void)
   g_main_context_unref (ctx);
 }
 
+#ifdef G_OS_UNIX
+typedef struct {
+  GSource src;
+  int write_fd;
+  int dispatch_count;
+} TimerSource;
+
+typedef struct {
+  GSource src;
+  GPollFD pfd;
+  int dispatch_count;
+} PollFDSource;
+
+static void
+raise_event(int write_fd)
+{
+  char temp[1] = {'W'};
+  int ret = 0;
+  do {
+    ret = write(write_fd, temp, 1);
+  } while(ret == -1 && (errno == EINTR || errno == EAGAIN || errno == EWOULDBLOCK));
+  g_assert(ret != -1);
+}
+
+static void
+ack_event(int read_fd)
+{
+  char discard[1];
+  int ret = 0;
+  do {
+      ret = read(read_fd, discard, 1);
+  } while(ret == -1 && (errno == EINTR || errno == EAGAIN || errno == EWOULDBLOCK));
+  g_assert(ret != -1);
+}
+
+static gboolean
+pollfd_check(GSource *base)
+{
+  PollFDSource *source = (PollFDSource*)base;
+  return !!source->pfd.revents;
+}
+
+static gboolean
+pollfd_dispatch(GSource *base, GSourceFunc callback, gpointer user_data)
+{
+  PollFDSource *pollfd_source = (PollFDSource*)base;
+  if (pollfd_source->pfd.revents & (G_IO_ERR | G_IO_HUP))
+    return G_SOURCE_REMOVE;
+  if (pollfd_source->pfd.revents & G_IO_IN) {
+    ack_event(pollfd_source->pfd.fd);
+    pollfd_source->dispatch_count++;
+  }
+  return G_SOURCE_CONTINUE;
+}
+
+static gboolean
+timer_dispatch(GSource *source, GSourceFunc callback, gpointer user_data)
+{
+  TimerSource *timer_source;
+  int timeout = 1000;
+  if (g_source_get_ready_time(source) == -1)
+    return G_SOURCE_CONTINUE;
+  timer_source = (TimerSource*)source;
+  timer_source->dispatch_count++;
+  raise_event(timer_source->write_fd);
+  /* set ready time and simulate work that would expire us again */
+  g_source_set_ready_time(source, g_get_monotonic_time() + timeout);
+  g_usleep(timeout);
+  return G_SOURCE_CONTINUE;
+}
+
+static void
+test_fd_source_priority (void)
+{
+  GMainContext *ctx;
+  GMainLoop *loop;
+  TimerSource *timer_source;
+  PollFDSource *pollfd_source;
+  int pipefd[2] = {0,0};
+  int tmp;
+
+  GSourceFuncs pollfd_source_funcs = {
+    NULL, pollfd_check, pollfd_dispatch, NULL
+  };
+
+  GSourceFuncs timer_source_funcs = {
+    NULL, NULL, timer_dispatch, NULL
+  };
+
+  loop = g_main_loop_new(NULL, FALSE);
+  ctx = g_main_loop_get_context(loop);
+  tmp = pipe(pipefd);
+  g_assert(tmp != -1);
+
+  /* create and attach timer source */
+  timer_source = (TimerSource*)g_source_new (&timer_source_funcs, sizeof(TimerSource));
+  timer_source->write_fd = pipefd[1];
+
+  g_source_set_priority ((GSource *)timer_source, G_PRIORITY_DEFAULT - 1);
+  g_source_attach ((GSource *)timer_source, ctx);
+  g_source_set_ready_time ((GSource *)timer_source, 0);
+
+  /* create and attach pollFD source */
+  pollfd_source = (PollFDSource*)g_source_new (&pollfd_source_funcs, sizeof(PollFDSource));
+  pollfd_source->pfd.fd = pipefd[0];
+  pollfd_source->pfd.events = G_IO_IN | G_IO_ERR | G_IO_HUP;
+  pollfd_source->pfd.revents = 0;
+
+  g_source_add_poll ((GSource *)pollfd_source, &pollfd_source->pfd);
+  g_source_set_priority ((GSource *)pollfd_source, G_PRIORITY_HIGH);
+  g_source_attach ((GSource *)pollfd_source, ctx);
+
+  for (tmp = 0; tmp < 2; ++tmp)
+    g_main_context_iteration (ctx, TRUE);
+
+  g_assert_cmpint (pollfd_source->dispatch_count, ==, 1);
+  g_assert_cmpint (timer_source->dispatch_count, ==, 1);
+
+  g_source_unref ((GSource *)pollfd_source);
+  g_source_unref ((GSource *)timer_source);
+  g_main_loop_unref (loop);
+  close (pipefd[1]);
+  close (pipefd[0]);
+}
+#endif
+
 int
 main (int argc, char *argv[])
 {
@@ -1769,6 +1898,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/source-unix-fd-api", test_source_unix_fd_api);
   g_test_add_func ("/mainloop/wait", test_mainloop_wait);
   g_test_add_func ("/mainloop/unix-file-poll", test_unix_file_poll);
+  g_test_add_func ("/mainloop/fd-source-priority", test_fd_source_priority);
 #endif
   g_test_add_func ("/mainloop/nfds", test_nfds);
 
