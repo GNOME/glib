@@ -492,10 +492,13 @@
 #define _GLIB_AUTOPTR_CLEAR_FUNC_NAME(TypeName) glib_autoptr_clear_##TypeName
 #define _GLIB_AUTOPTR_TYPENAME(TypeName)  TypeName##_autoptr
 #define _GLIB_AUTOPTR_LIST_FUNC_NAME(TypeName) glib_listautoptr_cleanup_##TypeName
+#define _GLIB_AUTOPTR_LIST_CLEAR_FUNC_NAME(TypeName) glib_listautoptr_clear_##TypeName
 #define _GLIB_AUTOPTR_LIST_TYPENAME(TypeName)  TypeName##_listautoptr
 #define _GLIB_AUTOPTR_SLIST_FUNC_NAME(TypeName) glib_slistautoptr_cleanup_##TypeName
+#define _GLIB_AUTOPTR_SLIST_CLEAR_FUNC_NAME(TypeName) glib_slistautoptr_clear_##TypeName
 #define _GLIB_AUTOPTR_SLIST_TYPENAME(TypeName)  TypeName##_slistautoptr
 #define _GLIB_AUTOPTR_QUEUE_FUNC_NAME(TypeName) glib_queueautoptr_cleanup_##TypeName
+#define _GLIB_AUTOPTR_QUEUE_CLEAR_FUNC_NAME(TypeName) glib_queueautoptr_clear_##TypeName
 #define _GLIB_AUTOPTR_QUEUE_TYPENAME(TypeName)  TypeName##_queueautoptr
 #define _GLIB_AUTO_FUNC_NAME(TypeName)    glib_auto_cleanup_##TypeName
 #define _GLIB_CLEANUP(func)               __attribute__((cleanup(func)))
@@ -509,12 +512,18 @@
     { if (_ptr) (cleanup) ((ParentName *) _ptr); }                                                              \
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_FUNC_NAME(TypeName) (TypeName **_ptr)                          \
     { _GLIB_AUTOPTR_CLEAR_FUNC_NAME(TypeName) (*_ptr); }                                                        \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_LIST_CLEAR_FUNC_NAME(TypeName) (GList *_l)                     \
+    { g_list_free_full (_l, (GDestroyNotify) (void(*)(void)) cleanup); }                                        \
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_LIST_FUNC_NAME(TypeName) (GList **_l)                          \
-    { g_list_free_full (*_l, (GDestroyNotify) (void(*)(void)) cleanup); }                                       \
+    { _GLIB_AUTOPTR_LIST_CLEAR_FUNC_NAME(TypeName) (*_l); }                                                     \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_SLIST_CLEAR_FUNC_NAME(TypeName) (GSList *_l)                   \
+    { g_slist_free_full (_l, (GDestroyNotify) (void(*)(void)) cleanup); }                                       \
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_SLIST_FUNC_NAME(TypeName) (GSList **_l)                        \
-    { g_slist_free_full (*_l, (GDestroyNotify) (void(*)(void)) cleanup); }                                      \
+    { _GLIB_AUTOPTR_SLIST_CLEAR_FUNC_NAME(TypeName) (*_l); }                                                    \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_QUEUE_CLEAR_FUNC_NAME(TypeName) (GQueue *_q)                   \
+    { if (_q) g_queue_free_full (_q, (GDestroyNotify) (void(*)(void)) cleanup); }                               \
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_QUEUE_FUNC_NAME(TypeName) (GQueue **_q)                        \
-    { if (*_q) g_queue_free_full (*_q, (GDestroyNotify) (void(*)(void)) cleanup); }                             \
+    { _GLIB_AUTOPTR_QUEUE_CLEAR_FUNC_NAME(TypeName) (*_q); }                                                    \
   G_GNUC_END_IGNORE_DEPRECATIONS
 #define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName) \
   _GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS(ModuleObjName, ParentName, _GLIB_AUTOPTR_CLEAR_FUNC_NAME(ParentName))
@@ -537,6 +546,11 @@
 #define g_autoqueue(TypeName) _GLIB_CLEANUP(_GLIB_AUTOPTR_QUEUE_FUNC_NAME(TypeName)) _GLIB_AUTOPTR_QUEUE_TYPENAME(TypeName)
 #define g_auto(TypeName) _GLIB_CLEANUP(_GLIB_AUTO_FUNC_NAME(TypeName)) TypeName
 #define g_autofree _GLIB_CLEANUP(g_autoptr_cleanup_generic_gfree)
+
+#define g_clear_autoptr(TypeName, pp) g_clear_pointer (pp, _GLIB_AUTOPTR_CLEAR_FUNC_NAME(TypeName))
+#define g_clear_autolist(TypeName, ll) g_clear_pointer (ll, _GLIB_AUTOPTR_LIST_CLEAR_FUNC_NAME(TypeName))
+#define g_clear_autoslist(TypeName, ll) g_clear_pointer (ll, _GLIB_AUTOPTR_SLIST_CLEAR_FUNC_NAME(TypeName))
+#define g_clear_autoqueue(TypeName, qq) g_clear_pointer (qq, _GLIB_AUTOPTR_QUEUE_CLEAR_FUNC_NAME(TypeName))
 
 #else /* not GNU C */
 /* this (dummy) macro is private */
