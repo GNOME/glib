@@ -2268,6 +2268,7 @@ g_list_append
 g_list_prepend
 g_list_insert
 g_list_insert_before
+g_list_insert_before_link
 g_list_insert_sorted
 g_list_remove
 g_list_remove_link
