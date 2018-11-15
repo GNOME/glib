@@ -514,7 +514,7 @@
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_SLIST_FUNC_NAME(TypeName) (GSList **_l)                        \
     { g_slist_free_full (*_l, (GDestroyNotify) (void(*)(void)) cleanup); }                                      \
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_QUEUE_FUNC_NAME(TypeName) (GQueue **_q)                        \
-    { g_queue_free_full (*_q, (GDestroyNotify) (void(*)(void)) cleanup); }                                      \
+    { if (*_q) g_queue_free_full (*_q, (GDestroyNotify) (void(*)(void)) cleanup); }                             \
   G_GNUC_END_IGNORE_DEPRECATIONS
 #define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName) \
   _GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS(ModuleObjName, ParentName, _GLIB_AUTOPTR_CLEAR_FUNC_NAME(ParentName))
