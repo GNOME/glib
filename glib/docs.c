@@ -2408,6 +2408,35 @@
  */
 
 /**
+ * g_autoqueue:
+ * @TypeName: a supported variable type
+ *
+ * Helper to declare a double-ended queue variable with automatic deep cleanup.
+ *
+ * The queue is deeply freed, in a way appropriate to the specified type, when the
+ * variable goes out of scope.  The type must support this.
+ *
+ * This feature is only supported on GCC and clang.  This macro is not
+ * defined on other compilers and should not be used in programs that
+ * are intended to be portable to those compilers.
+ *
+ * This is meant to be used to declare queues of a type with a cleanup
+ * function.  The type of the variable is a `GQueue *`.  You
+ * must not add your own `*`.
+ *
+ * This macro can be used to avoid having to do explicit cleanups of
+ * local variables when exiting functions.  It often vastly simplifies
+ * handling of error conditions, removing the need for various tricks
+ * such as `goto out` or repeating of cleanup code.  It is also helpful
+ * for non-error cases.
+ *
+ * See also g_autolist(), g_autoptr() and g_steal_pointer().
+ *
+ * Since: 2.62
+ */
+
+
+/**
  * G_DEFINE_AUTOPTR_CLEANUP_FUNC:
  * @TypeName: a type name to define a g_autoptr() cleanup function for
  * @func: the cleanup function

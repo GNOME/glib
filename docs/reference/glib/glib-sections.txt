@@ -419,6 +419,7 @@ g_autoptr
 g_autofree
 g_autolist
 g_autoslist
+g_autoqueue
 G_DEFINE_AUTOPTR_CLEANUP_FUNC
 G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC
 G_DEFINE_AUTO_CLEANUP_FREE_FUNC
