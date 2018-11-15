@@ -16,16 +16,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2018-09-07 17:04+0000\n"
-"PO-Revision-Date: 2018-09-07 19:55+0200\n"
-"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
+"POT-Creation-Date: 2018-11-10 15:47+0000\n"
+"PO-Revision-Date: 2018-11-15 20:48+0100\n"
+"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 
 #: gio/gapplication.c:496
 msgid "GApplication options"
@@ -302,13 +302,13 @@ msgstr "Nicht genug Platz im Ziel"
 
 #: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
 #: gio/gdatainputstream.c:1261 glib/gconvert.c:454 glib/gconvert.c:883
-#: glib/giochannel.c:1557 glib/giochannel.c:1599 glib/giochannel.c:2443
-#: glib/gutf8.c:869 glib/gutf8.c:1322
+#: glib/giochannel.c:1558 glib/giochannel.c:1600 glib/giochannel.c:2444
+#: glib/gutf8.c:870 glib/gutf8.c:1323
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Bytefolge in Umwandlungseingabe"
 
 #: gio/gcharsetconverter.c:347 glib/gconvert.c:462 glib/gconvert.c:797
-#: glib/giochannel.c:1564 glib/giochannel.c:2455
+#: glib/giochannel.c:1565 glib/giochannel.c:2456
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fehler bei der Umwandlung: %s"
@@ -317,7 +317,7 @@ msgstr "Fehler bei der Umwandlung: %s"
 msgid "Cancellable initialization not supported"
 msgstr "Abbrechbare Initialisierung wird nicht unterstützt"
 
-#: gio/gcharsetconverter.c:456 glib/gconvert.c:327 glib/giochannel.c:1385
+#: gio/gcharsetconverter.c:456 glib/gconvert.c:327 glib/giochannel.c:1386
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "Umwandlung von Zeichensatz »%s« in »%s« wird nicht unterstützt"
@@ -742,27 +742,27 @@ msgstr ""
 "Bus-Adresse konnte nicht über die Umgebungsvariable DBUS_STARTER_BUS_TYPE "
 "ermittelt werden, unbekannter Wert »%s«"
 
-#: gio/gdbusmessage.c:1246
+#: gio/gdbusmessage.c:1249
 msgid "type is INVALID"
 msgstr "Typ ist UNGÜLTIG"
 
-#: gio/gdbusmessage.c:1257
+#: gio/gdbusmessage.c:1260
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "METHOD_CALL-Meldung: Kopfzeilenfeld PATH oder MEMBER fehlt"
 
-#: gio/gdbusmessage.c:1268
+#: gio/gdbusmessage.c:1271
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "METHOD_RETURN-Meldung: Kopfzeilenfeld REPLY_SERIAL fehlt"
 
-#: gio/gdbusmessage.c:1280
+#: gio/gdbusmessage.c:1283
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "ERROR-Meldung: Kopfzeilenfeld REPLY_SERIAL oder ERROR_NAME fehlt"
 
-#: gio/gdbusmessage.c:1293
+#: gio/gdbusmessage.c:1296
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "SIGNAL-Meldung: Kopfzeilenfeld PATH, INTERFACE oder MEMBER fehlt"
 
-#: gio/gdbusmessage.c:1301
+#: gio/gdbusmessage.c:1304
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -770,7 +770,7 @@ msgstr ""
 "SIGNAL-Meldung: Das Kopfzeilenfeld PATH verwendet den reservierten Wert /org/"
 "freedesktop/DBus/Local"
 
-#: gio/gdbusmessage.c:1309
+#: gio/gdbusmessage.c:1312
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -778,21 +778,21 @@ msgstr ""
 "SIGNAL-Meldung: Das Kopfzeilenfeld INTERFACE verwendet den reservierten Wert "
 "org.freedesktop.DBus.Local"
 
-#: gio/gdbusmessage.c:1357 gio/gdbusmessage.c:1417
+#: gio/gdbusmessage.c:1360 gio/gdbusmessage.c:1420
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "%lu Byte sollte gelesen werden, aber nur %lu erhalten"
 msgstr[1] "%lu Bytes sollten gelesen werden, aber nur %lu erhalten"
 
-#: gio/gdbusmessage.c:1371
+#: gio/gdbusmessage.c:1374
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr ""
 "Ein NUL-Byte wurde nach der Zeichenkette »%s« erwartet, aber es wurde Byte "
 "%d gefunden"
 
-#: gio/gdbusmessage.c:1390
+#: gio/gdbusmessage.c:1393
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -802,17 +802,17 @@ msgstr ""
 "Position %d gefunden (Länge der Zeichenkette ist %d). Die gültige UTF-8-"
 "Zeichenkette bis zu diesem Punkt war »%s«."
 
-#: gio/gdbusmessage.c:1593
+#: gio/gdbusmessage.c:1596
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Verarbeiteter Wert »%s« ist kein gültiger D-Bus-Objektpfad"
 
-#: gio/gdbusmessage.c:1615
+#: gio/gdbusmessage.c:1618
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Verarbeiteter Wert »%s« ist keine gültige D-Bus-Signatur"
 
-#: gio/gdbusmessage.c:1662
+#: gio/gdbusmessage.c:1665
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -825,7 +825,7 @@ msgstr[1] ""
 "Array der Länge %u Bytes wurde erkannt. Maximale Länge ist 2<<26 Bytes (64 "
 "MiB)."
 
-#: gio/gdbusmessage.c:1682
+#: gio/gdbusmessage.c:1685
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -834,12 +834,12 @@ msgstr ""
 "Es wurde ein Feld des Typs »a%c« gefunden. Erwartet wurde als Länge ein "
 "Vielfaches von %u Byte, aber es waren %u Byte Länge"
 
-#: gio/gdbusmessage.c:1849
+#: gio/gdbusmessage.c:1855
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Verarbeiteter Wert »%s« für Variante ist keine gültige D-Bus-Signatur"
 
-#: gio/gdbusmessage.c:1873
+#: gio/gdbusmessage.c:1879
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -847,7 +847,7 @@ msgstr ""
 "Fehler beim Deserialisieren von GVariant mit der Typenzeichenkette »%s« aus "
 "dem D-Bus Wire-Format"
 
-#: gio/gdbusmessage.c:2055
+#: gio/gdbusmessage.c:2064
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -856,25 +856,29 @@ msgstr ""
 "Ungültiger Wert für die Speicherreihenfolge. Es wird entweder 0x6c (»l«) "
 "oder 0x42 (»B«) erwartet, aber der Wert 0x%02x gefunden"
 
-#: gio/gdbusmessage.c:2068
+#: gio/gdbusmessage.c:2077
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Ungültige Version des Hauptprotokolls. Erwartet wurde 1, jedoch %d gefunden"
 
-#: gio/gdbusmessage.c:2124
+#: gio/gdbusmessage.c:2130 gio/gdbusmessage.c:2720
+msgid "Signature header found but is not of type signature"
+msgstr "Signaturkopf wurde gefunden, aber der Typ ist nicht Signatur"
+
+#: gio/gdbusmessage.c:2142
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Signatur-Kopfzeilenfeld mit Signatur »%s« gefunden, aber Nachrichtenrumpf "
 "ist leer"
 
-#: gio/gdbusmessage.c:2138
+#: gio/gdbusmessage.c:2156
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Verarbeiteter Wert »%s« ist keine gültige D-Bus-Signatur (für Rumpf)"
 
-#: gio/gdbusmessage.c:2168
+#: gio/gdbusmessage.c:2186
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -885,11 +889,11 @@ msgstr[1] ""
 "Kein Signatur-Kopfzeilenfeld in der Nachricht, aber der Nachrichtenrumpf ist "
 "%u Bytes groß"
 
-#: gio/gdbusmessage.c:2178
+#: gio/gdbusmessage.c:2196
 msgid "Cannot deserialize message: "
 msgstr "Meldung kann nicht deserialisiert werden: "
 
-#: gio/gdbusmessage.c:2519
+#: gio/gdbusmessage.c:2537
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -897,7 +901,7 @@ msgstr ""
 "Fehler beim Deserialisieren von GVariant mit der Typenzeichenkette »%s« in "
 "das D-Bus Wire-Format"
 
-#: gio/gdbusmessage.c:2656
+#: gio/gdbusmessage.c:2674
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -905,18 +909,18 @@ msgstr ""
 "Anzahl der Dateideskriptoren in Meldung (%d) und Kopfzeilenfeld (%d) ist "
 "unterschiedlich"
 
-#: gio/gdbusmessage.c:2664
+#: gio/gdbusmessage.c:2682
 msgid "Cannot serialize message: "
 msgstr "Meldung kann nicht serialisiert werden: "
 
-#: gio/gdbusmessage.c:2708
+#: gio/gdbusmessage.c:2736
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr ""
 "Nachrichtenrumpf hat den Signaturtyp »%s«, aber es gibt keine Signatur im "
 "Kopfzeilenfeld"
 
-#: gio/gdbusmessage.c:2718
+#: gio/gdbusmessage.c:2746
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -925,18 +929,18 @@ msgstr ""
 "Nachrichtenrumpf hat den Signaturtyp »%s«, aber die Signatur im "
 "Kopfzeilenfeld ist »%s«"
 
-#: gio/gdbusmessage.c:2734
+#: gio/gdbusmessage.c:2762
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "Nachrichtenrumpf ist leer, aber die Signatur im Kopfzeilenfeld ist »(%s)«"
 
-#: gio/gdbusmessage.c:3287
+#: gio/gdbusmessage.c:3315
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Fehlerrückmeldung mit Inhalt des Typs »%s«"
 
-#: gio/gdbusmessage.c:3295
+#: gio/gdbusmessage.c:3323
 msgid "Error return with empty body"
 msgstr "Fehlerrückmeldung mit leerem Inhalt"
 
@@ -4203,7 +4207,7 @@ msgstr "Es existiert bereits ein Lesezeichen für die Adresse »%s«"
 #: glib/gbookmarkfile.c:2912 glib/gbookmarkfile.c:3102
 #: glib/gbookmarkfile.c:3178 glib/gbookmarkfile.c:3346
 #: glib/gbookmarkfile.c:3435 glib/gbookmarkfile.c:3524
-#: glib/gbookmarkfile.c:3640
+#: glib/gbookmarkfile.c:3643
 #, c-format
 msgid "No bookmark found for URI “%s”"
 msgstr "Es konnte kein Lesezeichen für die Adresse »%s« gefunden werden."
@@ -4243,8 +4247,8 @@ msgstr ""
 msgid "Unrepresentable character in conversion input"
 msgstr "Nicht darstellbares Zeichen in Umwandlungsausgabe"
 
-#: glib/gconvert.c:500 glib/gutf8.c:865 glib/gutf8.c:1077 glib/gutf8.c:1214
-#: glib/gutf8.c:1318
+#: glib/gconvert.c:500 glib/gutf8.c:866 glib/gutf8.c:1078 glib/gutf8.c:1215
+#: glib/gutf8.c:1319
 msgid "Partial character sequence at end of input"
 msgstr "Bruchstückhafte Zeichenfolge am Eingabeende"
 
@@ -4795,24 +4799,24 @@ msgstr "Vorlage »%s« enthält nicht XXXXXX"
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Die symbolische Verknüpfung »%s« konnte nicht gelesen werden: %s"
 
-#: glib/giochannel.c:1389
+#: glib/giochannel.c:1390
 #, c-format
 msgid "Could not open converter from “%s” to “%s”: %s"
 msgstr "Konverter von »%s« in »%s« konnte nicht geöffnet werden: %s"
 
-#: glib/giochannel.c:1734
+#: glib/giochannel.c:1735
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr "Raw-read in g_io_channel_read_line_string nicht möglich"
 
-#: glib/giochannel.c:1781 glib/giochannel.c:2039 glib/giochannel.c:2126
+#: glib/giochannel.c:1782 glib/giochannel.c:2040 glib/giochannel.c:2127
 msgid "Leftover unconverted data in read buffer"
 msgstr "Nicht konvertierte Daten befinden sich noch im Lesepuffer"
 
-#: glib/giochannel.c:1862 glib/giochannel.c:1939
+#: glib/giochannel.c:1863 glib/giochannel.c:1940
 msgid "Channel terminates in a partial character"
 msgstr "Kanal endet mit einem Teilzeichen"
 
-#: glib/giochannel.c:1925
+#: glib/giochannel.c:1926
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "Raw-read in g_io_channel_read_to_end nicht möglich"
 
@@ -4942,32 +4946,32 @@ msgstr "»%s%s%s%s« konnte nicht abgebildet werden: mmap() ist gescheitert: %s"
 msgid "Failed to open file “%s”: open() failed: %s"
 msgstr "Datei »%s« konnte nicht geöffnet werden: open() ist gescheitert: %s"
 
-#: glib/gmarkup.c:397 glib/gmarkup.c:439
+#: glib/gmarkup.c:398 glib/gmarkup.c:440
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Fehler in Zeile %d, Zeichen %d: "
 
-#: glib/gmarkup.c:461 glib/gmarkup.c:544
+#: glib/gmarkup.c:462 glib/gmarkup.c:545
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Ungültiger UTF-8-kodierter Text im Namen - »%s« ist nicht gültig"
 
-#: glib/gmarkup.c:472
+#: glib/gmarkup.c:473
 #, c-format
 msgid "'%s' is not a valid name"
 msgstr "»%s« ist kein gültiger Name"
 
-#: glib/gmarkup.c:488
+#: glib/gmarkup.c:489
 #, c-format
 msgid "'%s' is not a valid name: '%c'"
 msgstr "»%s« ist kein gültiger Name: »%c«"
 
-#: glib/gmarkup.c:610
+#: glib/gmarkup.c:611
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Fehler in Zeile %d: %s"
 
-#: glib/gmarkup.c:687
+#: glib/gmarkup.c:688
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -4976,7 +4980,7 @@ msgstr ""
 "»%-.*s«, was eine Zahl in einer Zeichenreferenz (wie &#234;) sein sollte, "
 "konnte nicht analysiert werden - vielleicht ist die Zahl zu groß"
 
-#: glib/gmarkup.c:699
+#: glib/gmarkup.c:700
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -4986,24 +4990,24 @@ msgstr ""
 "&-Zeichen benutzt, ohne eine Entität beginnen zu wollen - umschreiben Sie "
 "das »&« als &amp;"
 
-#: glib/gmarkup.c:725
+#: glib/gmarkup.c:726
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Zeichenreferenz »%-.*s« kodiert kein zulässiges Zeichen"
 
-#: glib/gmarkup.c:763
+#: glib/gmarkup.c:764
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Leere Entität »&;« gefunden; gültige Entitäten sind &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: glib/gmarkup.c:771
+#: glib/gmarkup.c:772
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "Entitätenname »%-.*s« ist unbekannt"
 
-#: glib/gmarkup.c:776
+#: glib/gmarkup.c:777
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -5012,11 +5016,11 @@ msgstr ""
 "Zeichen benutzt, ohne eine Entität beginnen zu wollen - umschreiben Sie das "
 "»&« als &amp;"
 
-#: glib/gmarkup.c:1182
+#: glib/gmarkup.c:1183
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokument muss mit einem Element beginnen (e.g. <book>)"
 
-#: glib/gmarkup.c:1222
+#: glib/gmarkup.c:1223
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -5025,7 +5029,7 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen nach einem »<«-Zeichen; es darf keinen "
 "Elementnamen beginnen"
 
-#: glib/gmarkup.c:1264
+#: glib/gmarkup.c:1265
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag "
@@ -5034,7 +5038,7 @@ msgstr ""
 "Seltsames Zeichen »%s«, »>« erwartet um Start-Tag des leeren Elements »%s« "
 "abzuschließen"
 
-#: glib/gmarkup.c:1345
+#: glib/gmarkup.c:1346
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -5042,7 +5046,7 @@ msgstr ""
 "Seltsames Zeichen »%s«, »=« wird nach dem Attributnamen »%s« des Elements "
 "»%s« erwartet"
 
-#: glib/gmarkup.c:1386
+#: glib/gmarkup.c:1387
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -5053,7 +5057,7 @@ msgstr ""
 "»/« erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht "
 "haben Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
-#: glib/gmarkup.c:1430
+#: glib/gmarkup.c:1431
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -5063,7 +5067,7 @@ msgstr ""
 "Elements »%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen "
 "erwartet"
 
-#: glib/gmarkup.c:1563
+#: glib/gmarkup.c:1564
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -5072,7 +5076,7 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« "
 "darf keinen Elementnamen beginnen"
 
-#: glib/gmarkup.c:1599
+#: glib/gmarkup.c:1600
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -5081,26 +5085,26 @@ msgstr ""
 "»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen "
 "»%s« folgt; das erlaubte Zeichen ist »>«"
 
-#: glib/gmarkup.c:1610
+#: glib/gmarkup.c:1611
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Element »%s« wurde geschlossen, kein Element ist derzeit offen"
 
-#: glib/gmarkup.c:1619
+#: glib/gmarkup.c:1620
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
 
-#: glib/gmarkup.c:1772
+#: glib/gmarkup.c:1773
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokument ist leer oder enthält nur Leerraum"
 
-#: glib/gmarkup.c:1786
+#: glib/gmarkup.c:1787
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokument endete unerwartet nach einer offenen spitzen Klammer »<«"
 
-#: glib/gmarkup.c:1794 glib/gmarkup.c:1839
+#: glib/gmarkup.c:1795 glib/gmarkup.c:1840
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -5109,7 +5113,7 @@ msgstr ""
 "Dokument endete unerwartet mit noch offenen Elementen - »%s« war das letzte "
 "offene Element"
 
-#: glib/gmarkup.c:1802
+#: glib/gmarkup.c:1803
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -5118,19 +5122,19 @@ msgstr ""
 "Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <"
 "%s/> schließt, erwartet"
 
-#: glib/gmarkup.c:1808
+#: glib/gmarkup.c:1809
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokument endete unerwartet innerhalb eines Elementnamens"
 
-#: glib/gmarkup.c:1814
+#: glib/gmarkup.c:1815
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokument endete unerwartet innerhalb eines Attributnamens"
 
-#: glib/gmarkup.c:1819
+#: glib/gmarkup.c:1820
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokument endete unerwartet innerhalb eines Element-öffnenden Tags."
 
-#: glib/gmarkup.c:1825
+#: glib/gmarkup.c:1826
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -5138,25 +5142,25 @@ msgstr ""
 "Dokument endete unerwartet nach dem Gleichheitszeichen, das einem "
 "Attributnamen folgt; kein Attributwert"
 
-#: glib/gmarkup.c:1832
+#: glib/gmarkup.c:1833
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokument endete unerwartet innerhalb eines Attributwertes"
 
-#: glib/gmarkup.c:1849
+#: glib/gmarkup.c:1850
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines schließenden Tags für das Element "
 "»%s«"
 
-#: glib/gmarkup.c:1853
+#: glib/gmarkup.c:1854
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines schließenden Tags für ein "
 "ungeöffnetes Element"
 
-#: glib/gmarkup.c:1859
+#: glib/gmarkup.c:1860
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokument endete unerwartet innerhalb eines Kommentars oder "
@@ -5774,20 +5778,20 @@ msgstr "Zahl »%s« ist außerhalb des zulässigen Bereichs [%s, %s]"
 msgid "“%s” is not an unsigned number"
 msgstr "»%s« ist keine vorzeichenlose Zahl"
 
-#: glib/gutf8.c:811
+#: glib/gutf8.c:812
 msgid "Failed to allocate memory"
 msgstr "Fehler beim Anfordern von Speicher"
 
-#: glib/gutf8.c:944
+#: glib/gutf8.c:945
 msgid "Character out of range for UTF-8"
 msgstr "Zeichen außerhalb des Bereiches für UTF-8"
 
-#: glib/gutf8.c:1045 glib/gutf8.c:1054 glib/gutf8.c:1184 glib/gutf8.c:1193
-#: glib/gutf8.c:1332 glib/gutf8.c:1429
+#: glib/gutf8.c:1046 glib/gutf8.c:1055 glib/gutf8.c:1185 glib/gutf8.c:1194
+#: glib/gutf8.c:1333 glib/gutf8.c:1430
 msgid "Invalid sequence in conversion input"
 msgstr "Ungültige Folge in Umwandlungseingabe"
 
-#: glib/gutf8.c:1343 glib/gutf8.c:1440
+#: glib/gutf8.c:1344 glib/gutf8.c:1441
 msgid "Character out of range for UTF-16"
 msgstr "Zeichen außerhalb des Bereiches für UTF-16"
 
