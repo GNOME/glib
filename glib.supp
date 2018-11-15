@@ -203,7 +203,7 @@
 {
 	g-type-class-init
 	Memcheck:Leak
-	fun:calloc
+	fun:g_type_create_instance
 	...
 	fun:type_class_init_Wm
 }
