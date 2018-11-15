@@ -367,6 +367,50 @@ g_list_insert (GList    *list,
   return list;
 }
 
+GList *
+g_list_insert_before_link (GList *list,
+                           GList *sibling,
+                           GList *link_)
+{
+  g_return_val_if_fail (link_ != NULL, list);
+
+  if (!list)
+    {
+      g_return_val_if_fail (sibling == NULL, list);
+      return link_;
+    }
+  else if (sibling)
+    {
+      link_->prev = sibling->prev;
+      link_->next = sibling;
+      sibling->prev = link_;
+      if (link_->prev)
+        {
+          link_->prev->next = link_;
+          return list;
+        }
+      else
+        {
+          g_return_val_if_fail (sibling == list, link_);
+          return link_;
+        }
+    }
+  else
+    {
+      GList *last;
+
+      last = list;
+      while (last->next)
+        last = last->next;
+
+      last->next = link_;
+      last->next->prev = last;
+      last->next->next = NULL;
+
+      return list;
+    }
+}
+
 /**
  * g_list_insert_before:
  * @list: a pointer to a #GList, this must point to the top of the list
