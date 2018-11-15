@@ -2785,6 +2785,103 @@
  * Since: 2.60
  */
 
+/**
+ * g_clear_autoptr: (skip)
+ * @TypeName: a supported variable type
+ * @pp: (not nullable): a pointer to a variable, struct member etc. holding a
+ *    pointer of @TypeName
+ *
+ * Clears a reference to a variable with automatic cleanup per @TypeName.
+ *
+ * @pp must not be %NULL.
+ *
+ * If the reference is %NULL then this function does nothing.
+ * Otherwise, the variable is destroyed using the Type automatic destroy
+ * function and pointer is set to %NULL.  The type must support this.
+ *
+ * This feature is only supported on GCC and clang.  This macro is not
+ * defined on other compilers and should not be used in programs that
+ * are intended to be portable to those compilers.
+ *
+ * See also g_autoptr(), g_clear_autolist() and g_clear_pointer().
+ *
+ * Since: 2.60
+ **/
+
+/**
+ * g_clear_autolist:
+ * @TypeName: a supported variable type
+ * @ll: (not nullable): a pointer to a list. holding items of @TypeName
+ *
+ * Helper to clear a list and its the reference pointer with automatic
+ * deep cleanup.
+ *
+ * The list is deeply freed, in a way appropriate to the specified type.
+ * The type must support this.
+ *
+ * This feature is only supported on GCC and clang.  This macro is not
+ * defined on other compilers and should not be used in programs that
+ * are intended to be portable to those compilers.
+ *
+ *
+ * This macro can be used to avoid having to do explicit cleanups of
+ * a list pointer when clearing it, and to be sure that the data it
+ * holds is properly freed.
+ *
+ * See also g_autolist(), g_clear_autoptr() and g_clear_pointer().
+ *
+ * Since: 2.60
+ */
+
+/**
+ * g_clear_autoslist:
+ * @TypeName: a supported variable type
+ * @ll: (not nullable): a pointer to a slist. holding items of @TypeName
+ *
+ * Helper to clear a single-linked list and its the reference pointer with
+ * automatic deep cleanup.
+ *
+ * The list is deeply freed, in a way appropriate to the specified type.
+ * The type must support this.
+ *
+ * This feature is only supported on GCC and clang.  This macro is not
+ * defined on other compilers and should not be used in programs that
+ * are intended to be portable to those compilers.
+ *
+ *
+ * This macro can be used to avoid having to do explicit cleanups of
+ * a list pointer when clearing it, and to be sure that the data it
+ * holds is properly freed.
+ *
+ * See also g_autoslist(), g_clear_autoptr() and g_clear_pointer().
+ *
+ * Since: 2.60
+ */
+
+/**
+ * g_clear_autoqueue:
+ * @TypeName: a supported variable type
+ * @qq: (not nullable): a pointer to a queue. holding items of @TypeName
+ *
+ * Helper to clear a double-ended queue and its the reference pointer with
+ * automatic deep cleanup.
+ *
+ * The queue is deeply freed, in a way appropriate to the specified type.
+ * The type must support this.
+ *
+ * This feature is only supported on GCC and clang.  This macro is not
+ * defined on other compilers and should not be used in programs that
+ * are intended to be portable to those compilers.
+ *
+ *
+ * This macro can be used to avoid having to do explicit cleanups of
+ * a queue pointer when clearing it, and to be sure that the data it
+ * holds is properly freed.
+ *
+ * See also g_autoqueue(), g_clear_autoptr() and g_clear_pointer().
+ *
+ * Since: 2.60
+ */
 
 /**
  * G_DEFINE_AUTOPTR_CLEANUP_FUNC:
