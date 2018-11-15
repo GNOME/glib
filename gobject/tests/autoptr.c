@@ -73,6 +73,25 @@ test_autoptr (void)
 
 /* Verify that an object declared with G_DECLARE_FINAL_TYPE provides by default
  * autocleanup functions, defined using the ones of the base type (defined with
+ * G_DECLARE_DERIVABLE_TYPE) and so that it can be defined with g_autoptr and
+ * cleared with g_clear_autoptr */
+static void
+test_clear_autoptr (void)
+{
+  TestAutoCleanup *tac_ptr = test_auto_cleanup_new ();
+  g_autoptr (TestAutoCleanup) tac = tac_ptr;
+
+  g_object_add_weak_pointer (G_OBJECT (tac_ptr), (gpointer *) &tac_ptr);
+  g_clear_autoptr (TestAutoCleanup, &tac);
+
+#ifdef __GNUC__
+  g_assert_null (tac_ptr);
+  g_assert_null (tac);
+#endif
+}
+
+/* Verify that an object declared with G_DECLARE_FINAL_TYPE provides by default
+ * autocleanup functions, defined using the ones of the base type (defined with
  * G_DECLARE_DERIVABLE_TYPE) and that stealing an autopointer works properly */
 static void
 test_autoptr_steal (void)
@@ -127,6 +146,38 @@ test_autolist (void)
 }
 
 /* Verify that an object declared with G_DECLARE_FINAL_TYPE provides by default
+ * autolist cleanup functions defined using the ones of the parent type
+ * and so that can be used with g_autolist, and that freeing the list using
+ * g_clear_autolist correctly unrefs the object too */
+static void
+test_clear_autolist (void)
+{
+  TestAutoCleanup *tac1 = test_auto_cleanup_new ();
+  TestAutoCleanup *tac2 = test_auto_cleanup_new ();
+  g_autoptr (TestAutoCleanup) tac3 = test_auto_cleanup_new ();
+  g_autolist (TestAutoCleanup) l = NULL;
+
+  g_object_add_weak_pointer (G_OBJECT (tac1), (gpointer *) &tac1);
+  g_object_add_weak_pointer (G_OBJECT (tac2), (gpointer *) &tac2);
+  g_object_add_weak_pointer (G_OBJECT (tac3), (gpointer *) &tac3);
+
+  l = g_list_prepend (l, tac1);
+  l = g_list_prepend (l, tac2);
+
+  g_clear_autolist (TestAutoCleanup, &l);
+
+#ifdef __GNUC__
+  g_assert_null (tac1);
+  g_assert_null (tac2);
+  g_assert_null (l);
+#endif
+  g_assert_nonnull (tac3);
+
+  g_clear_autoptr (TestAutoCleanup, &tac3);
+  g_assert_null (tac3);
+}
+
+/* Verify that an object declared with G_DECLARE_FINAL_TYPE provides by default
  * autoslist cleanup functions (defined using the ones of the base type declared
  * with G_DECLARE_DERIVABLE_TYPE) and so that can be used with g_autoslist, and
  * that freeing the slist correctly unrefs the object too */
@@ -157,6 +208,38 @@ test_autoslist (void)
 
   g_clear_object(&tac3);
   g_assert_null(tac3);
+}
+
+/* Verify that an object declared with G_DECLARE_FINAL_TYPE provides by default
+ * autoslist cleanup functions (defined using the ones of the base type declared
+ * with G_DECLARE_DERIVABLE_TYPE) and so that can be used with g_autoslist, and
+ * that freeing the slist with g_clear_slist correctly unrefs the object too */
+static void
+test_clear_autoslist (void)
+{
+  TestAutoCleanup *tac1 = test_auto_cleanup_new ();
+  TestAutoCleanup *tac2 = test_auto_cleanup_new ();
+  g_autoptr (TestAutoCleanup) tac3 = test_auto_cleanup_new ();
+  g_autoslist (TestAutoCleanup) l = NULL;
+
+  g_object_add_weak_pointer (G_OBJECT (tac1), (gpointer *) &tac1);
+  g_object_add_weak_pointer (G_OBJECT (tac2), (gpointer *) &tac2);
+  g_object_add_weak_pointer (G_OBJECT (tac3), (gpointer *) &tac3);
+
+  l = g_slist_prepend (l, tac1);
+  l = g_slist_prepend (l, tac2);
+  g_clear_autoslist (TestAutoCleanup, &l);
+
+  /* Only assert if autoptr works */
+#ifdef __GNUC__
+  g_assert_null (tac1);
+  g_assert_null (tac2);
+  g_assert_null (l);
+#endif
+  g_assert_nonnull (tac3);
+
+  g_clear_autoptr (TestAutoCleanup, &tac3);
+  g_assert_null (tac3);
 }
 
 /* Verify that an object declared with G_DECLARE_FINAL_TYPE provides by default
@@ -192,16 +275,52 @@ test_autoqueue (void)
   g_assert_null (tac3);
 }
 
+/* Verify that an object declared with G_DECLARE_FINAL_TYPE provides by default
+ * autoqueue cleanup functions (defined using the ones of the base type declared
+ * with G_DECLARE_DERIVABLE_TYPE) and so that can be used with g_autoqueue, and
+ * that freeing the queue correctly unrefs the object too */
+static void
+test_clear_autoqueue (void)
+{
+  TestAutoCleanup *tac1 = test_auto_cleanup_new ();
+  TestAutoCleanup *tac2 = test_auto_cleanup_new ();
+  g_autoptr (TestAutoCleanup) tac3 = test_auto_cleanup_new ();
+  g_autoqueue (TestAutoCleanup) q = g_queue_new ();
+
+  g_object_add_weak_pointer (G_OBJECT (tac1), (gpointer *) &tac1);
+  g_object_add_weak_pointer (G_OBJECT (tac2), (gpointer *) &tac2);
+  g_object_add_weak_pointer (G_OBJECT (tac3), (gpointer *) &tac3);
+
+  g_queue_push_head (q, tac1);
+  g_queue_push_tail (q, tac2);
+  g_clear_autoqueue (TestAutoCleanup, &q);
+
+  /* Only assert if autoptr works */
+#ifdef __GNUC__
+  g_assert_null (tac1);
+  g_assert_null (tac2);
+  g_assert_null (q);
+#endif
+  g_assert_nonnull (tac3);
+
+  g_clear_object (&tac3);
+  g_assert_null (tac3);
+}
+
 int
 main (int argc, gchar *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/autoptr/autoptr", test_autoptr);
+  g_test_add_func ("/autoptr/clear_autoptr", test_clear_autoptr);
   g_test_add_func ("/autoptr/autoptr_steal", test_autoptr_steal);
   g_test_add_func ("/autoptr/autolist", test_autolist);
+  g_test_add_func ("/autoptr/clear_autolist", test_clear_autolist);
   g_test_add_func ("/autoptr/autoslist", test_autoslist);
+  g_test_add_func ("/autoptr/clear_autoslist", test_clear_autoslist);
   g_test_add_func ("/autoptr/autoqueue", test_autoqueue);
+  g_test_add_func ("/autoptr/clear_autoqueue", test_clear_autoqueue);
 
   return g_test_run ();
 }

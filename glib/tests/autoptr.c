@@ -437,6 +437,39 @@ mark_freed (gpointer ptr)
 }
 
 static void
+test_autoptr (void)
+{
+  char data[1] = {0};
+  gboolean freed = FALSE;
+
+  {
+    g_autoptr (GBytes) b = NULL;
+    b = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed);
+  }
+
+  /* Only assert if autoptr works */
+#ifdef __GNUC__
+  g_assert (freed);
+#endif
+}
+
+static void
+test_clear_autoptr (void)
+{
+  char data[1] = {0};
+  g_autoptr (GBytes) b = NULL;
+  gboolean freed = FALSE;
+
+  b = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed);
+  g_clear_autoptr (GBytes, &b);
+
+#ifdef __GNUC__
+  g_assert_null (b);
+  g_assert (freed);
+#endif
+}
+
+static void
 test_autolist (void)
 {
   char data[1] = {0};
@@ -456,6 +489,34 @@ test_autolist (void)
 
   /* Only assert if autoptr works */
 #ifdef __GNUC__
+  g_assert (freed1);
+  g_assert (freed3);
+#endif
+  g_assert (!freed2);
+
+  g_bytes_unref (b2);
+  g_assert (freed2);
+}
+
+static void
+test_clear_autolist (void)
+{
+  char data[1] = {0};
+  gboolean freed1 = FALSE;
+  gboolean freed2 = FALSE;
+  gboolean freed3 = FALSE;
+  g_autolist(GBytes) l = NULL;
+  GBytes *b1 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed1);
+  GBytes *b2 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed2);
+  GBytes *b3 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed3);
+
+  l = g_list_prepend (l, b1);
+  l = g_list_prepend (l, b3);
+  g_clear_autolist (GBytes, &l);
+
+  /* Only assert if autoptr works */
+#ifdef __GNUC__
+  g_assert_null (l);
   g_assert (freed1);
   g_assert (freed3);
 #endif
@@ -495,6 +556,34 @@ test_autoslist (void)
 }
 
 static void
+test_clear_autoslist (void)
+{
+  char data[1] = {0};
+  gboolean freed1 = FALSE;
+  gboolean freed2 = FALSE;
+  gboolean freed3 = FALSE;
+  g_autoslist(GBytes) l = NULL;
+  GBytes *b1 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed1);
+  GBytes *b2 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed2);
+  GBytes *b3 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed3);
+
+  l = g_slist_prepend (l, b1);
+  l = g_slist_prepend (l, b3);
+  g_clear_autoslist (GBytes, &l);
+
+  /* Only assert if autoptr works */
+#ifdef __GNUC__
+  g_assert_null (l);
+  g_assert (freed1);
+  g_assert (freed3);
+#endif
+  g_assert (!freed2);
+
+  g_bytes_unref (b2);
+  g_assert (freed2);
+}
+
+static void
 test_autoqueue (void)
 {
   char data[1] = {0};
@@ -514,6 +603,33 @@ test_autoqueue (void)
 
   /* Only assert if autoptr works */
 #ifdef __GNUC__
+  g_assert (freed1);
+  g_assert (freed3);
+#endif
+  g_assert (!freed2);
+
+  g_bytes_unref (b2);
+  g_assert (freed2);
+}
+
+static void
+test_clear_autoqueue (void)
+{
+  char data[1] = {0};
+  gboolean freed1 = FALSE;
+  gboolean freed2 = FALSE;
+  gboolean freed3 = FALSE;
+  g_autoqueue(GBytes) q = g_queue_new ();
+  GBytes *b1 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed1);
+  GBytes *b2 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed2);
+  GBytes *b3 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed3);
+
+  g_queue_push_head (q, b1);
+  g_queue_push_tail (q, b3);
+  g_clear_autoqueue (GBytes, &q);
+
+#ifdef __GNUC__
+  g_assert_null (q);
   g_assert (freed1);
   g_assert (freed3);
 #endif
@@ -576,9 +692,14 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_variant_type", test_g_variant_type);
   g_test_add_func ("/autoptr/strv", test_strv);
   g_test_add_func ("/autoptr/refstring", test_refstring);
+  g_test_add_func ("/autoptr/autoptr", test_autoptr);
+  g_test_add_func ("/autoptr/clear_autoptr", test_clear_autoptr);
   g_test_add_func ("/autoptr/autolist", test_autolist);
+  g_test_add_func ("/autoptr/clear_autolist", test_clear_autolist);
   g_test_add_func ("/autoptr/autoslist", test_autoslist);
+  g_test_add_func ("/autoptr/clear_autoslist", test_clear_autoslist);
   g_test_add_func ("/autoptr/autoqueue", test_autoqueue);
+  g_test_add_func ("/autoptr/clear_autoqueue", test_clear_autoqueue);
 
   return g_test_run ();
 }
