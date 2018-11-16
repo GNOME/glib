@@ -134,6 +134,18 @@ if host_machine.system() != 'windows'
     'unix-mounts' : {},
     'unix-streams' : {},
     'g-file-info-filesystem-readonly' : {},
+    'gsocketclient-slow' : {
+      'depends' : [
+        shared_library('slow-connect-preload',
+          'slow-connect-preload.c',
+          name_prefix : '',
+          dependencies: cc.find_library('dl'),
+        )
+      ],
+      'env' : {
+        'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(meson.current_build_dir())
+      }
+    },
     'gschema-compile' : {'install' : false},
     'trash' : {},
   }
@@ -528,12 +540,19 @@ foreach test_name, extra_args : gio_tests
 
   suite = ['gio'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
+  local_test_env = test_env
+
+  foreach var, value : extra_args.get('env', {})
+    local_test_env.append(var, value)
+  endforeach
+
   test(test_name, exe,
-    env : test_env,
+    env : local_test_env,
     timeout : timeout,
     suite : suite,
     args : ['--tap'],
     is_parallel : extra_args.get('is_parallel', true),
+    depends : extra_args.get('depends', []),
   )
 endforeach
 
