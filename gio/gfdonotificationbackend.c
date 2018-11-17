@@ -242,6 +242,8 @@ call_notify (GDBusConnection     *con,
   GVariant *parameters;
   const gchar *body;
   guchar urgency;
+  const char *sound_name = NULL;
+  GNotificationSound sound;
 
   g_variant_builder_init (&action_builder, G_VARIANT_TYPE_STRING_ARRAY);
   if (g_notification_get_default_action (notification, NULL, NULL))
@@ -304,6 +306,25 @@ call_notify (GDBusConnection     *con,
                                   g_variant_new_string (icon_names[0]));
         }
     }
+
+  sound = g_notification_get_sound (notification);
+  switch (sound)
+    {
+      case G_NOTIFICATION_SOUND_NONE:
+      case G_NOTIFICATION_SOUND_DEFAULT:
+        break;
+      case G_NOTIFICATION_SOUND_NEW_MESSAGE:
+        sound_name = "message-new-instant";
+        break;
+      default:
+        g_debug ("Unknown sound set on notification %d", sound);
+    }
+
+  if (sound_name != NULL)
+    g_variant_builder_add (&hints_builder, "{sv}", "sound-name", g_variant_new_string (sound_name));
+
+  if (sound == G_NOTIFICATION_SOUND_NONE)
+    g_variant_builder_add (&hints_builder, "{sv}", "suppress-sound", g_variant_new_boolean (TRUE));
 
   body = g_notification_get_body (notification);
 

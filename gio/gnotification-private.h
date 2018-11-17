@@ -30,6 +30,8 @@ const gchar *           g_notification_get_body                         (GNotifi
 
 GIcon *                 g_notification_get_icon                         (GNotification *notification);
 
+GNotificationSound      g_notification_get_sound                        (GNotification *notification);
+
 GNotificationPriority   g_notification_get_priority                     (GNotification *notification);
 
 guint                   g_notification_get_n_buttons                    (GNotification *notification);
