@@ -756,11 +756,15 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * Likewise, on the server side, although a handshake is necessary at
  * the beginning of the communication, you do not need to call this
  * function explicitly unless you want clearer error reporting.
- * However, you may call g_tls_connection_handshake() later on to
- * rehandshake, if TLS 1.2 or older is in use. With TLS 1.3, the
- * behavior is undefined but guaranteed to be reasonable and
- * nondestructive, so most older code should be expected to continue to
- * work without changes.
+ *
+ * If TLS 1.2 or older is in use, you may call
+ * g_tls_connection_handshake() after the initial handshake to
+ * rehandshake; however, this usage is deprecated because rehandshaking
+ * is no longer part of the TLS protocol in TLS 1.3. Accordingly, the
+ * behavior of calling this function after the initial handshake is now
+ * undefined, except it is guaranteed to be reasonable and
+ * nondestructive so as to preserve compatibility with code written for
+ * older versions of GLib.
  *
  * #GTlsConnection::accept_certificate may be emitted during the
  * handshake.
