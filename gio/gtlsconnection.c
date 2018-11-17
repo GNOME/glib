@@ -194,7 +194,8 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 						      G_TLS_REHANDSHAKE_SAFELY,
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT |
-						      G_PARAM_STATIC_STRINGS));
+						      G_PARAM_STATIC_STRINGS |
+						      G_PARAM_DEPRECATED));
   /**
    * GTlsConnection:certificate:
    *
@@ -697,6 +698,10 @@ g_tls_connection_get_require_close_notify (GTlsConnection *conn)
  * software.
  *
  * Since: 2.28
+ *
+ * Deprecated: 2.60. Changing the rehandshake mode is no longer
+ *   required for compatibility. Also, rehandshaking has been removed
+ *   from the TLS protocol in TLS 1.3.
  */
 void
 g_tls_connection_set_rehandshake_mode (GTlsConnection       *conn,
@@ -719,6 +724,10 @@ g_tls_connection_set_rehandshake_mode (GTlsConnection       *conn,
  * Returns: @conn's rehandshaking mode
  *
  * Since: 2.28
+ *
+ * Deprecated: 2.60. Changing the rehandshake mode is no longer
+ *   required for compatibility. Also, rehandshaking has been removed
+ *   from the TLS protocol in TLS 1.3.
  */
 GTlsRehandshakeMode
 g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
