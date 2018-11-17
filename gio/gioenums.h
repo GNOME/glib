@@ -1887,6 +1887,23 @@ typedef enum {
 } GNotificationPriority;
 
 /**
+ * GNotificationSound:
+ * @G_NOTIFICATION_SOUND_DEFAULT: The default behavior of the platform which may or may not have a sound.
+ * @G_NOTIFICATION_SOUND_NONE: Sounds will be surpressed if possible. Useful if playing own sounds.
+ * @G_NOTIFICATION_SOUND_NEW_MESSAGE: A sound for new messages.
+ *
+ * Sounds used for #GNotifications. The actual sounds they represent
+ * are backend defined.
+ *
+ * Since: 2.60
+ */
+typedef enum {
+  G_NOTIFICATION_SOUND_DEFAULT,
+  G_NOTIFICATION_SOUND_NONE,
+  G_NOTIFICATION_SOUND_NEW_MESSAGE,
+} GNotificationSound;
+
+/**
  * GNetworkConnectivity:
  * @G_NETWORK_CONNECTIVITY_LOCAL: The host is not configured with a
  *   route to the Internet; it may or may not be connected to a local

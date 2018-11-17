@@ -77,6 +77,7 @@ struct _GNotification
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;
+  GNotificationSound sound;
 };
 
 typedef struct
@@ -265,6 +266,24 @@ g_notification_get_icon (GNotification *notification)
   return notification->icon;
 }
 
+/*< private >
+ * g_notification_get_sound:
+ * @notification: a #GNotification
+ *
+ * Gets the sound currently set on @notification.
+ *
+ * Returns: the sound associated with @notification
+ *
+ * Since: 2.60
+ */
+GNotificationSound
+g_notification_get_sound (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), G_NOTIFICATION_SOUND_DEFAULT);
+
+  return notification->sound;
+}
+
 /**
  * g_notification_set_icon:
  * @notification: a #GNotification
@@ -284,6 +303,25 @@ g_notification_set_icon (GNotification *notification,
     g_object_unref (notification->icon);
 
   notification->icon = g_object_ref (icon);
+}
+
+/**
+ * g_notification_set_sound:
+ * @notification: a #GNotification
+ * @sound: a sound to be shown with the @notification
+ *
+ * Sets the sound of @notification. The result of this sound
+ * depends upon the backend and notification service used.
+ *
+ * Since: 2.60
+ */
+void
+g_notification_set_sound (GNotification      *notification,
+                          GNotificationSound  sound)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+
+  notification->sound = sound;
 }
 
 /*< private >

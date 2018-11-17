@@ -51,6 +51,10 @@ GLIB_AVAILABLE_IN_2_40
 void                    g_notification_set_icon                         (GNotification *notification,
                                                                          GIcon         *icon);
 
+GLIB_AVAILABLE_IN_2_60
+void                    g_notification_set_sound                        (GNotification      *notification,
+                                                                         GNotificationSound  sound);
+
 GLIB_DEPRECATED_IN_2_42_FOR(g_notification_set_priority)
 void                    g_notification_set_urgent                       (GNotification *notification,
                                                                          gboolean       urgent);
