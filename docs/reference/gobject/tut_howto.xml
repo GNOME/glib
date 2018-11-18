@@ -212,7 +212,7 @@ struct _ViewerFile
   GObject parent_instance;
 
   /* Other members, including private data. */
-}
+};
 </programlisting></informalexample>
     </para>
 
