@@ -23,6 +23,7 @@
 #include "gdbusutils.h"
 #include "gicon.h"
 #include "gaction.h"
+#include "gfile.h"
 #include "gioenumtypes.h"
 
 /**
@@ -77,6 +78,7 @@ struct _GNotification
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;
+  GFile *sound_file;
   GNotificationSound sound;
 };
 
@@ -123,6 +125,7 @@ g_notification_finalize (GObject *object)
   if (notification->default_action_target)
     g_variant_unref (notification->default_action_target);
   g_ptr_array_free (notification->buttons, TRUE);
+  g_clear_object (&notification->sound_file);
 
   G_OBJECT_CLASS (g_notification_parent_class)->finalize (object);
 }
@@ -284,6 +287,25 @@ g_notification_get_sound (GNotification *notification)
   return notification->sound;
 }
 
+
+/*< private >
+ * g_notification_get_sound_file:
+ * @notification: a #GNotification
+ *
+ * Gets the sound file currently set on @notification.
+ *
+ * Returns: (transfer none): the sound file associated with @notification
+ *
+ * Since: 2.60
+ */
+GFile *
+g_notification_get_sound_file (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
+
+  return notification->sound_file;
+}
+
 /**
  * g_notification_set_icon:
  * @notification: a #GNotification
@@ -322,6 +344,26 @@ g_notification_set_sound (GNotification      *notification,
   g_return_if_fail (G_IS_NOTIFICATION (notification));
 
   notification->sound = sound;
+}
+
+/**
+ * g_notification_set_sound_file:
+ * @notification: a #GNotification
+ * @sound_file: a #GFile to be played with the @notification
+ *
+ * Sets the sound of @notification. The result of this sound
+ * depends upon the backend and notification service used.
+ *
+ * Since: 2.60
+ */
+void
+g_notification_set_sound_file (GNotification      *notification,
+                               GFile              *sound_file)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (G_IS_FILE (sound_file));
+
+  notification->sound_file = g_object_ref (sound_file);
 }
 
 /*< private >

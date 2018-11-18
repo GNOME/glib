@@ -243,6 +243,7 @@ call_notify (GDBusConnection     *con,
   const gchar *body;
   guchar urgency;
   const char *sound_name = NULL;
+  GFile *sound_file;
   GNotificationSound sound;
 
   g_variant_builder_init (&action_builder, G_VARIANT_TYPE_STRING_ARRAY);
@@ -325,6 +326,14 @@ call_notify (GDBusConnection     *con,
 
   if (sound == G_NOTIFICATION_SOUND_NONE)
     g_variant_builder_add (&hints_builder, "{sv}", "suppress-sound", g_variant_new_boolean (TRUE));
+
+  sound_file = g_notification_get_sound_file (notification);
+  if (sound_file != NULL)
+    {
+      gchar *path = g_file_get_path (sound_file);
+      g_variant_builder_add (&hints_builder, "{sv}", "sound-file", g_variant_new_string (path));
+      g_free (path);
+    }
 
   body = g_notification_get_body (notification);
 
