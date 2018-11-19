@@ -1752,24 +1752,23 @@ endif
 
 libm = cc.find_library('m', required : false)
 libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
-if cc.get_id() != 'msvc'
-  libz_dep = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
-else
-  # MSVC: Don't use the bundled ZLib sources until we are sure that we can't
-  # find the ZLib .lib
-  libz_dep = dependency('zlib', required : false)
 
-  # MSVC: Search for the ZLib .lib, which corresponds to the results of
-  # of using ZLib's win32/makefile.msc.
-  if not libz_dep.found()
+# Don't use the bundled ZLib sources until we are sure that we can't find it on
+# the system
+libz_dep = dependency('zlib', required : false)
+if not libz_dep.found()
+  if cc.get_id() != 'msvc'
+    libz_dep = cc.find_library('z', required : false)
+  else
     libz_dep = cc.find_library('zlib1', required : false)
     if not libz_dep.found()
       libz_dep = cc.find_library('zlib', required : false)
-      if not libz_dep.found()
-        libz_dep = subproject('zlib').get_variable('zlib_dep')
-      endif
     endif
   endif
+endif
+
+if not libz_dep.found()
+  libz_dep = subproject('zlib').get_variable('zlib_dep')
 endif
 
 # First check in libc, fallback to libintl, and as last chance build
