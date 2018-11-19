@@ -61,31 +61,6 @@ else
   gobject_dtrace_hdr = []
 endif
 
-libgobject = library('gobject-2.0',
-  gobject_dtrace_obj, gobject_dtrace_hdr,
-  sources : gobject_sources,
-  version : library_version,
-  soversion : soversion,
-  darwin_versions : darwin_versions,
-  install : true,
-  include_directories : [configinc],
-  dependencies : [libffi_dep, libglib_dep],
-  c_args : ['-DG_LOG_DOMAIN="GLib-GObject"', '-DGOBJECT_COMPILATION'] + glib_hidden_visibility_args,
-  link_args : glib_link_flags,
-)
-
-pkg.generate(libraries : libgobject,
-  requires : ['glib-2.0'],
-  version : glib_version,
-  install_dir : glib_pkgconfigreldir,
-  filebase : 'gobject-2.0',
-  name : 'GObject',
-  description : 'GLib Type, Object, Parameter and Signal Library',
-)
-
-libgobject_dep = declare_dependency(link_with : libgobject,
-  include_directories : gobjectinc)
-
 python_tools = [
   'glib-genmarshal',
   'glib-mkenums',
@@ -109,6 +84,53 @@ foreach tool: python_tools
   # Provide tools for others when we're a subproject and they use the Meson GNOME module
   meson.override_find_program(tool, tool_bin)
 endforeach
+
+gobjectenumtypes_h = custom_target('gobjectenumtypes_h',
+  output : 'gobjectenumtypes.h',
+  capture : true,
+  input : '../glib/gunicode.h',
+  install : true,
+  install_dir : join_paths(get_option('includedir'), 'glib-2.0/gobject'),
+  command : [python, glib_mkenums,
+             '--template', files('gobjectenumtypes.h.template'),
+             '@INPUT@'])
+
+gobjectenumtypes_c = custom_target('gobjectenumtypes_c',
+  output : 'gobjectenumtypes.c',
+  capture : true,
+  input : '../glib/gunicode.h',
+  depends : [gobjectenumtypes_h],
+  command : [python, glib_mkenums,
+             '--template', files('gobjectenumtypes.c.template'),
+             '@INPUT@'])
+
+gobjectenumtypes_dep = declare_dependency(sources : [gobjectenumtypes_c])
+
+libgobject = library('gobject-2.0',
+  gobjectenumtypes_c,
+  gobject_dtrace_obj, gobject_dtrace_hdr,
+  gobject_sources,
+  version : library_version,
+  soversion : soversion,
+  darwin_versions : darwin_versions,
+  install : true,
+  include_directories : [configinc],
+  dependencies : [libffi_dep, libglib_dep],
+  c_args : ['-DG_LOG_DOMAIN="GLib-GObject"', '-DGOBJECT_COMPILATION'] + glib_hidden_visibility_args,
+  link_args : glib_link_flags,
+)
+
+pkg.generate(libraries : libgobject,
+  requires : ['glib-2.0'],
+  version : glib_version,
+  install_dir : glib_pkgconfigreldir,
+  filebase : 'gobject-2.0',
+  name : 'GObject',
+  description : 'GLib Type, Object, Parameter and Signal Library',
+)
+
+libgobject_dep = declare_dependency(link_with : libgobject,
+  include_directories : gobjectinc)
 
 executable('gobject-query', 'gobject-query.c',
   install : true,
