@@ -691,10 +691,10 @@ void
 
   g_return_if_fail (g_atomic_pointer_get (value_location) == NULL);
   g_return_if_fail (result != 0);
-  g_return_if_fail (g_once_init_list != NULL);
 
   g_atomic_pointer_set (value_location, result);
   g_mutex_lock (&g_once_mutex);
+  g_return_if_fail (g_once_init_list != NULL);
   g_once_init_list = g_slist_remove (g_once_init_list, (void*) value_location);
   g_cond_broadcast (&g_once_cond);
   g_mutex_unlock (&g_once_mutex);
