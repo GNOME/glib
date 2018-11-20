@@ -2828,7 +2828,7 @@ start_element_handler (GMarkupParseContext *context,
       if (start_discriminator (context, element_name,
 			       attribute_names, attribute_values,
 			       ctx, error))
-	goto out;
+    goto out;
       if (strcmp ("doc", element_name) == 0 || strcmp ("doc-deprecated", element_name) == 0 ||
           strcmp ("doc-stability", element_name) == 0 || strcmp ("doc-version", element_name) == 0)
         {
@@ -3068,6 +3068,13 @@ start_element_handler (GMarkupParseContext *context,
 	goto out;
       break;
 
+    case 's':
+      if (strcmp ("source-position", element_name) == 0)
+      {
+          state_switch (ctx, STATE_PASSTHROUGH);
+          goto out;
+      }
+      break;
     case 'u':
       if (start_union (context, element_name,
 		       attribute_names, attribute_values,
