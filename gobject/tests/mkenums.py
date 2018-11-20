@@ -48,6 +48,7 @@ class TestMkenums(unittest.TestCase):
 
     def setUp(self):
         self.timeout_seconds = 10  # seconds per test
+        self.rspfile = 'GLIB_MKENUMS_TEST_RSPFILE' in os.environ
         self.tmpdir = tempfile.TemporaryDirectory()
         os.chdir(self.tmpdir.name)
         print('tmpdir:', self.tmpdir.name)
@@ -57,12 +58,25 @@ class TestMkenums(unittest.TestCase):
                              'glib-mkenums')
         else:
             self.__mkenums = os.path.join('/', 'usr', 'bin', 'glib-mkenums')
-        print('mkenums:', self.__mkenums)
+        print('rspfile: {}, mkenums:'.format(self.rspfile), self.__mkenums)
 
     def tearDown(self):
         self.tmpdir.cleanup()
 
+    def _write_rspfile(self, argv):
+        import shlex
+        with tempfile.NamedTemporaryFile(dir=self.tmpdir.name, mode='w',
+                                         delete=False) as f:
+            contents = ' '.join([shlex.quote(arg) for arg in argv])
+            print('Response file contains: ', contents)
+            f.write(contents)
+            f.flush()
+        return f.name
+
     def runMkenums(self, *args):
+        if self.rspfile:
+            rspfile = self._write_rspfile(args)
+            args = ['@' + rspfile]
         argv = [self.__mkenums]
         argv.extend(args)
         print('Running:', argv)

@@ -105,3 +105,14 @@ test(
   env: test_env,
   suite: ['gobject'],
 )
+
+rsptest_env = test_env
+# env vars are the least-bad way to pass options to Python unittest tests
+rsptest_env.set('GLIB_MKENUMS_TEST_RSPFILE', '1')
+test(
+  'mkenums.py (rspfile)',
+  python,
+  args: files('mkenums.py'),
+  env: rsptest_env,
+  suite: ['gobject'],
+)
