@@ -69,6 +69,13 @@ def print_info(msg):
     print_color(msg, color=Color.GREEN, prefix='INFO')
 
 
+def get_rspfile_args(rspfile):
+    import shlex
+    with open(rspfile, 'r') as f:
+        cmdline = f.read()
+    return shlex.split(cmdline)
+
+
 def write_output(output):
     global output_stream
     print(output, file=output_stream)
@@ -328,7 +335,14 @@ parser.add_argument('--version', '-v', default=False, action='store_true', dest=
 parser.add_argument('args', nargs='*',
                     help='Input files')
 
-options = parser.parse_args()
+# Support reading an rspfile of the form @filename which contains the args
+# to be parsed
+if len(sys.argv) == 2 and sys.argv[1].startswith('@'):
+    args = get_rspfile_args(sys.argv[1][1:])
+else:
+    args = sys.argv[1:]
+
+options = parser.parse_args(args)
 
 if options.version:
     print(VERSION_STR)
