@@ -69,6 +69,29 @@ def print_info(msg):
     print_color(msg, color=Color.GREEN, prefix='INFO')
 
 
+def get_rspfile_args(rspfile):
+    '''
+    Response files are useful on Windows where there is a command-line character
+    limit of 8191 because when passing sources as arguments to glib-mkenums this
+    limit can be exceeded in large codebases.
+
+    There is no specification for response files and each tool that supports it
+    generally writes them out in slightly different ways, but some sources are:
+    https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-response-files
+    https://docs.microsoft.com/en-us/windows/desktop/midl/the-response-file-command
+    '''
+    import shlex
+    if not os.path.isfile(rspfile):
+        sys.exit('Response file {!r} does not exist'.format(rspfile))
+    try:
+        with open(rspfile, 'r') as f:
+            cmdline = f.read()
+    except OSError as e:
+        sys.exit('Response file {!r} could not be read: {}'
+                 .format(rspfile, e.strerror))
+    return shlex.split(cmdline)
+
+
 def write_output(output):
     global output_stream
     print(output, file=output_stream)
@@ -326,9 +349,17 @@ parser.add_argument('--output', default=None, dest='output')
 parser.add_argument('--version', '-v', default=False, action='store_true', dest='version',
                     help='Print version information')
 parser.add_argument('args', nargs='*',
-                    help='Input files')
+                    help='One or more input files, or a single argument @rspfile_path '
+                    'pointing to a file that contains the actual arguments')
 
-options = parser.parse_args()
+# Support reading an rspfile of the form @filename which contains the args
+# to be parsed
+if len(sys.argv) == 2 and sys.argv[1].startswith('@'):
+    args = get_rspfile_args(sys.argv[1][1:])
+else:
+    args = sys.argv[1:]
+
+options = parser.parse_args(args)
 
 if options.version:
     print(VERSION_STR)
