@@ -20,8 +20,8 @@ option('gio_module_dir',
        description : 'load gio modules from this directory (default to \'libdir/gio/modules\' if unset)')
 
 option('selinux',
-       type : 'boolean',
-       value : true,
+       type : 'feature',
+       value : 'auto',
        description : 'build with selinux support')
 
 option('xattr',
