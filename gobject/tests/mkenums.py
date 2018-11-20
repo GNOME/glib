@@ -45,6 +45,7 @@ class TestMkenums(unittest.TestCase):
     parsing and generation code out into a library and unit test that, and
     convert this test to just check command line behaviour.
     """
+    rspfile = False
 
     def setUp(self):
         self.timeout_seconds = 10  # seconds per test
@@ -57,12 +58,25 @@ class TestMkenums(unittest.TestCase):
                              'glib-mkenums')
         else:
             self.__mkenums = os.path.join('/', 'usr', 'bin', 'glib-mkenums')
-        print('mkenums:', self.__mkenums)
+        print('rspfile: {}, mkenums:'.format(self.rspfile), self.__mkenums)
 
     def tearDown(self):
         self.tmpdir.cleanup()
 
+    def _write_rspfile(self, argv):
+        import shlex
+        with tempfile.NamedTemporaryFile(dir=self.tmpdir.name, mode='w',
+                                         delete=False) as f:
+            contents = ' '.join([shlex.quote(arg) for arg in argv])
+            print('Response file contains:', contents)
+            f.write(contents)
+            f.flush()
+        return f.name
+
     def runMkenums(self, *args):
+        if self.rspfile:
+            rspfile = self._write_rspfile(args)
+            args = ['@' + rspfile]
         argv = [self.__mkenums]
         argv.extend(args)
         print('Running:', argv)
@@ -446,6 +460,11 @@ basename: @basename@
 comment
 comment: {standard_bottom_comment}
 '''.format(**result.subs).strip(), result.out)
+
+
+class TestRspMkenums(TestMkenums):
+    '''Run all tests again in @rspfile mode'''
+    rspfile = True
 
 
 if __name__ == '__main__':
