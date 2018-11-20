@@ -1812,9 +1812,12 @@ if host_system == 'windows'
 endif
 
 selinux_dep = []
-if host_system == 'linux' and get_option('selinux')
-  selinux_dep = [dependency('libselinux')]
-  glib_conf.set('HAVE_SELINUX', 1)
+if host_system == 'linux'
+  selinux_dep = dependency('libselinux', required: get_option('selinux'))
+
+  if selinux_dep.found()
+    glib_conf.set('HAVE_SELINUX', 1)
+  endif
 endif
 
 xattr_dep = []
