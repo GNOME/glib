@@ -1765,10 +1765,9 @@ if not libz_dep.found()
       libz_dep = cc.find_library('zlib', required : false)
     endif
   endif
-endif
-
-if not libz_dep.found()
-  libz_dep = subproject('zlib').get_variable('zlib_dep')
+  if not libz_dep.found() or not cc.has_header('zlib.h')
+    libz_dep = subproject('zlib').get_variable('zlib_dep')
+  endif
 endif
 
 # First check in libc, fallback to libintl, and as last chance build
