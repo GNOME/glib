@@ -1,6 +1,6 @@
 /* GLib testing framework examples and tests
  *
- * Copyright (C) 2008-2011 Red Hat, Inc.
+ * Copyright (C) 2008-2018 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -2427,6 +2427,42 @@ test_autocleanups (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* deprecations
+ */
+
+static void
+test_deprecations (void)
+{
+  {
+    FooiGenOldieInterface *iskel;
+    GParamSpec *pspec;
+
+    G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+    iskel = foo_igen_oldie_interface_skeleton_new ();
+    G_GNUC_END_IGNORE_DEPRECATIONS;
+
+    pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (iskel), "bat");
+    g_assert_nonnull (pspec);
+    g_assert_cmpint (pspec->flags & G_PARAM_DEPRECATED, ==, G_PARAM_DEPRECATED);
+
+    g_object_unref (iskel);
+  }
+
+  {
+    FooiGenObjectSkeleton *oskel;
+    GParamSpec *pspec;
+
+    oskel = foo_igen_object_skeleton_new ("/objects/first");
+    pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (oskel), "oldie-interface");
+    g_assert_nonnull (pspec);
+    g_assert_cmpint (pspec->flags & G_PARAM_DEPRECATED, ==, G_PARAM_DEPRECATED);
+
+    g_object_unref (oskel);
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -2438,6 +2474,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/codegen/object-manager", test_object_manager);
   g_test_add_func ("/gdbus/codegen/property-naming", test_property_naming);
   g_test_add_func ("/gdbus/codegen/autocleanups", test_autocleanups);
+  g_test_add_func ("/gdbus/codegen/deprecations", test_deprecations);
 
   return session_bus_run ();
 }
