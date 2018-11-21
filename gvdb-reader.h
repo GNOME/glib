@@ -22,40 +22,55 @@
 
 #include <glib.h>
 
+/* We cannot enable the weak attribute unconditionally here because both
+ * gvdb/gvdb-reader.c and tests/dconf-mock-gvdb.c include this file. The
+ * intention of using weak symbols here is to allow the latter to override
+ * functions defined in the former, so functions in tests/dconf-mock-gvdb.c
+ * must have strong bindings. */
+#ifdef GVDB_USE_WEAK_SYMBOLS
+# ifdef __GNUC__
+#  define GVDB_GNUC_WEAK __attribute__((weak))
+# else
+#  define GVDB_GNUC_WEAK
+# endif
+#else
+# define GVDB_GNUC_WEAK
+#endif
+
 typedef struct _GvdbTable GvdbTable;
 
 G_BEGIN_DECLS
 
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 GvdbTable *             gvdb_table_new_from_bytes                       (GBytes       *bytes,
                                                                          gboolean      trusted,
                                                                          GError      **error);
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 GvdbTable *             gvdb_table_new                                  (const gchar  *filename,
                                                                          gboolean      trusted,
                                                                          GError      **error);
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 void                    gvdb_table_free                                 (GvdbTable    *table);
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 gchar **                gvdb_table_get_names                            (GvdbTable    *table,
                                                                          gsize        *length);
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 gchar **                gvdb_table_list                                 (GvdbTable    *table,
                                                                          const gchar  *key);
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 GvdbTable *             gvdb_table_get_table                            (GvdbTable    *table,
                                                                          const gchar  *key);
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 GVariant *              gvdb_table_get_raw_value                        (GvdbTable    *table,
                                                                          const gchar  *key);
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 GVariant *              gvdb_table_get_value                            (GvdbTable    *table,
                                                                          const gchar  *key);
 
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 gboolean                gvdb_table_has_value                            (GvdbTable    *table,
                                                                          const gchar  *key);
-G_GNUC_INTERNAL
+G_GNUC_INTERNAL GVDB_GNUC_WEAK
 gboolean                gvdb_table_is_valid                             (GvdbTable    *table);
 
 G_END_DECLS
