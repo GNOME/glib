@@ -1765,6 +1765,9 @@ if not libz_dep.found()
       libz_dep = cc.find_library('zlib', required : false)
     endif
   endif
+  if libz_dep.found() and not cc.has_header('zlib.h')
+    error('zlib found but not its header')
+  endif
 endif
 
 if not libz_dep.found()
