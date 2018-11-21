@@ -1593,6 +1593,10 @@ typedef enum {
  * g_tls_connection_set_rehandshake_mode().
  *
  * Since: 2.28
+ *
+ * Deprecated: 2.60. Changing the rehandshake mode is no longer
+ *   required for compatibility. Also, rehandshaking has been removed
+ *   from the TLS protocol in TLS 1.3.
  */
 typedef enum {
   G_TLS_REHANDSHAKE_NEVER,

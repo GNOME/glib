@@ -162,6 +162,10 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
    * g_dtls_connection_set_rehandshake_mode().
    *
    * Since: 2.48
+   *
+   * Deprecated: 2.60. Changing the rehandshake mode is no longer
+   *   required for compatibility. Also, rehandshaking has been removed
+   *   from the TLS protocol in TLS 1.3.
    */
   g_object_interface_install_property (iface,
                                        g_param_spec_enum ("rehandshake-mode",
@@ -171,7 +175,8 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
                                                           G_TLS_REHANDSHAKE_NEVER,
                                                           G_PARAM_READWRITE |
                                                           G_PARAM_CONSTRUCT |
-                                                          G_PARAM_STATIC_STRINGS));
+                                                          G_PARAM_STATIC_STRINGS |
+                                                          G_PARAM_DEPRECATED));
   /**
    * GDtlsConnection:certificate:
    *
@@ -597,6 +602,10 @@ g_dtls_connection_get_require_close_notify (GDtlsConnection *conn)
  * software.
  *
  * Since: 2.48
+ *
+ * Deprecated: 2.60. Changing the rehandshake mode is no longer
+ *   required for compatibility. Also, rehandshaking has been removed
+ *   from the TLS protocol in TLS 1.3.
  */
 void
 g_dtls_connection_set_rehandshake_mode (GDtlsConnection     *conn,
