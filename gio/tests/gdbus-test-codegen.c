@@ -2427,6 +2427,28 @@ test_autocleanups (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* deprecations
+ */
+
+static void
+test_deprecations (void)
+{
+  FooiGenOldieInterface *skel;
+  GParamSpec *pspec;
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+  skel = foo_igen_oldie_interface_skeleton_new ();
+  G_GNUC_END_IGNORE_DEPRECATIONS;
+
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (skel), "bat");
+  g_assert_nonnull (pspec);
+  g_assert_true ((pspec->flags & G_PARAM_DEPRECATED) != 0);
+
+  g_object_unref (skel);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -2438,6 +2460,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/codegen/object-manager", test_object_manager);
   g_test_add_func ("/gdbus/codegen/property-naming", test_property_naming);
   g_test_add_func ("/gdbus/codegen/autocleanups", test_autocleanups);
+  g_test_add_func ("/gdbus/codegen/deprecations", test_deprecations);
 
   return session_bus_run ();
 }
