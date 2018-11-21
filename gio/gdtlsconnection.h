@@ -123,10 +123,10 @@ void                  g_dtls_connection_set_require_close_notify    (GDtlsConnec
 GLIB_AVAILABLE_IN_2_48
 gboolean              g_dtls_connection_get_require_close_notify    (GDtlsConnection       *conn);
 
-GLIB_AVAILABLE_IN_2_48
+GLIB_DEPRECATED_IN_2_60
 void                  g_dtls_connection_set_rehandshake_mode        (GDtlsConnection       *conn,
                                                                      GTlsRehandshakeMode    mode);
-GLIB_AVAILABLE_IN_2_48
+GLIB_DEPRECATED_IN_2_60
 GTlsRehandshakeMode   g_dtls_connection_get_rehandshake_mode        (GDtlsConnection       *conn);
 
 GLIB_AVAILABLE_IN_2_48
