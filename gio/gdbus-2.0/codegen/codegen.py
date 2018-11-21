@@ -1523,7 +1523,10 @@ class CodeGenerator:
                     s = 'g_param_spec_boxed ("%s", "%s", "%s", G_TYPE_STRV'%(p.name_hyphen, p.name, p.name)
                 else:
                     print_error('Unsupported gtype "{}" for GParamSpec'.format(p.arg.gtype))
-                self.outfile.write('    %s, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));'%s);
+                flags = 'G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS'
+                if p.deprecated:
+                    flags = 'G_PARAM_DEPRECATED | ' + flags
+                self.outfile.write('    %s, %s));'%(s, flags));
                 self.outfile.write('\n')
 
         self.outfile.write('}\n'
