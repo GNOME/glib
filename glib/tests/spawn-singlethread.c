@@ -317,7 +317,7 @@ test_spawn_sync (void)
    * This is tested on all platforms, but the most prone to failure is win32,
    * where args are specially escaped during spawning.
    */
-  char *argv[] = {
+  const char *argv[] = {
     echo_prog_path,
     arg,
     "doublequotes\\\"after\\\\\"\"backslashes", /* this would be special escaped on win32 */
