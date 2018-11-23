@@ -3,7 +3,7 @@
 
 # GDBus - GLib D-Bus Library
 #
-# Copyright (C) 2008-2011 Red Hat, Inc.
+# Copyright (C) 2008-2018 Red Hat, Inc.
 # Copyright (C) 2018 Iñigo Martínez <inigomartinez@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -3061,9 +3061,12 @@ class CodeGenerator:
                     '   * Connect to the #GObject::notify signal to get informed of property changes.\n'
                     %(self.namespace, i.name_hyphen, i.camel_name, i.name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.outfile, 2)
-            self.outfile.write('  g_object_interface_install_property (iface, g_param_spec_object ("%s", "%s", "%s", %sTYPE_%s, G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS));\n'
+            flags = 'G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS'
+            if i.deprecated:
+                flags = 'G_PARAM_DEPRECATED | ' + flags
+            self.outfile.write('  g_object_interface_install_property (iface, g_param_spec_object ("%s", "%s", "%s", %sTYPE_%s, %s));\n'
                                '\n'
-                               %(i.name_hyphen, i.name_hyphen, i.name_hyphen, self.ns_upper, i.name_upper))
+                               %(i.name_hyphen, i.name_hyphen, i.name_hyphen, self.ns_upper, i.name_upper, flags))
         self.outfile.write('}\n'
                            '\n')
 
