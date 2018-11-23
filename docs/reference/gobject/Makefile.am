@@ -28,6 +28,7 @@ CFILE_GLOB=$(top_srcdir)/gobject/*.c
 IGNORE_HFILES = \
 	tests			\
 	gatomicarray.h		\
+	gobject_probes.h	\
 	gobject_trace.h		\
 	gtype-private.h
 

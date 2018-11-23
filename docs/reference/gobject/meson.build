@@ -4,6 +4,7 @@ if get_option('gtk_doc')
   ignore_headers = [
     'tests',
     'gatomicarray.h',
+    'gobject_probes.h',
     'gobject_trace.h',
     'gtype-private.h'
   ]
