@@ -1205,6 +1205,64 @@ test_message_parse_multiple_signature_header (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Test that an invalid header in a D-Bus message (specifically, containing a
+ * variant with a valid type signature that is too long to be a valid
+ * #GVariantType due to exceeding the array nesting limits) is gracefully
+ * handled with an error rather than a crash. The set of bytes here come
+ * directly from fuzzer output. */
+static void
+test_message_parse_over_long_signature_header (void)
+{
+  const guint8 data[] = {
+    'l',  /* little-endian byte order */
+    0x20,  /* message type */
+    0x20,  /* message flags */
+    0x01,  /* major protocol version */
+    0x20, 0x20, 0x20, 0x01,  /* body length (invalid) */
+    0x20, 0x20, 0x20, 0x20,  /* message serial */
+    /* a{yv} of header fields:
+     * (things start to be even more invalid below here) */
+    0x20, 0x00, 0x00, 0x00,  /* array length (in bytes) */
+      0x08,  /* array key */
+      /* Variant array value: */
+      0x04,  /* signature length */
+      'g', 0x00, 0x20, 0x20,  /* one complete type plus some rubbish */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      /* Critically, this contains 128 nested ‘a’s, which exceeds
+       * %G_VARIANT_MAX_RECURSION_DEPTH. */
+      0xec,
+      'a', 'b', 'g', 'd', 'u', 'd', 'd', 'd', 'd', 'd', 'd', 'd',
+      'd', 'd', 'd',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+      'v'
+    /* (message body length missing) */
+  };
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1230,6 +1288,8 @@ main (int   argc,
                    test_message_parse_empty_signature_header);
   g_test_add_func ("/gdbus/message-parse/multiple-signature-header",
                    test_message_parse_multiple_signature_header);
+  g_test_add_func ("/gdbus/message-parse/over-long-signature-header",
+                   test_message_parse_over_long_signature_header);
 
   return g_test_run();
 }
