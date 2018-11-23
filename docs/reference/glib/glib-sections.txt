@@ -132,6 +132,8 @@ GLIB_VERSION_2_50
 GLIB_VERSION_2_52
 GLIB_VERSION_2_54
 GLIB_VERSION_2_56
+GLIB_VERSION_2_58
+GLIB_VERSION_2_60
 GLIB_VERSION_MIN_REQUIRED
 GLIB_VERSION_MAX_ALLOWED
 GLIB_DISABLE_DEPRECATION_WARNINGS
@@ -155,6 +157,8 @@ GLIB_AVAILABLE_IN_2_50
 GLIB_AVAILABLE_IN_2_52
 GLIB_AVAILABLE_IN_2_54
 GLIB_AVAILABLE_IN_2_56
+GLIB_AVAILABLE_IN_2_58
+GLIB_AVAILABLE_IN_2_60
 GLIB_DEPRECATED_IN_2_26
 GLIB_DEPRECATED_IN_2_26_FOR
 GLIB_DEPRECATED_IN_2_28
@@ -187,6 +191,10 @@ GLIB_DEPRECATED_IN_2_54
 GLIB_DEPRECATED_IN_2_54_FOR
 GLIB_DEPRECATED_IN_2_56
 GLIB_DEPRECATED_IN_2_56_FOR
+GLIB_DEPRECATED_IN_2_58
+GLIB_DEPRECATED_IN_2_58_FOR
+GLIB_DEPRECATED_IN_2_60
+GLIB_DEPRECATED_IN_2_60_FOR
 GLIB_VERSION_CUR_STABLE
 GLIB_VERSION_PREV_STABLE
 </SECTION>
@@ -476,6 +484,7 @@ G_CAN_INLINE
 inline
 G_HAVE___INLINE
 G_HAVE___INLINE__
+G_INLINE_DEFINE_NEEDED
 G_HAVE_GNUC_VARARGS
 G_HAVE_ISO_VARARGS
 G_HAVE_GROWING_STACK
@@ -486,6 +495,10 @@ GLIB_UNAVAILABLE
 G_ANALYZER_ANALYZING
 G_ANALYZER_NORETURN
 g_autoptr_cleanup_generic_gfree
+g_has_typeof
+g_macro__has_attribute
+g_macro__has_builtin
+g_macro__has_feature
 </SECTION>
 
 <SECTION>
@@ -1213,6 +1226,9 @@ g_log_writer_format_fields
 g_log_writer_journald
 g_log_writer_standard_streams
 g_log_writer_default
+
+<SUBSECTION Private>
+g_log_structured_standard
 </SECTION>
 
 <SECTION>
@@ -1888,6 +1904,7 @@ g_spaced_primes_closest
 
 <SUBSECTION>
 g_atexit
+g_abort
 
 <SUBSECTION>
 g_parse_debug_string
@@ -1908,6 +1925,9 @@ G_NATIVE_ATEXIT
 g_ATEXIT
 g_win32_get_system_data_dirs_for_module
 ATEXIT
+g_bit_nth_lsf_impl
+g_bit_nth_msf_impl
+g_bit_storage_impl
 
 </SECTION>
 
@@ -2600,6 +2620,8 @@ g_ptr_array_remove_index
 g_ptr_array_remove_fast
 g_ptr_array_remove_index_fast
 g_ptr_array_remove_range
+g_ptr_array_steal_index
+g_ptr_array_steal_index_fast
 g_ptr_array_sort
 g_ptr_array_sort_with_data
 g_ptr_array_set_size
@@ -3188,6 +3210,7 @@ GTestConfig
 GTestLogType
 GTestLogMsg
 GTestLogBuffer
+GTestResult
 
 g_test_log_type_name
 g_test_log_buffer_new
@@ -3407,6 +3430,7 @@ g_variant_builder_open
 g_variant_builder_close
 
 <SUBSECTION>
+G_VARIANT_DICT_INIT
 GVariantDict
 g_variant_dict_unref
 g_variant_dict_ref
@@ -3499,6 +3523,7 @@ g_atomic_rc_box_get_size
 
 <SECTION>
 <FILE>refstring</FILE>
+GRefString
 g_ref_string_new
 g_ref_string_new_intern
 g_ref_string_new_len
