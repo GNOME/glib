@@ -112,7 +112,7 @@
           <listitem><para>network connectivity monitoring</para></listitem>
        </varlistentry>
     </variablelist>
-    There is support for connecting to <link linkend="http://www.freedesktop.org/wiki/Software/dbus">D-Bus</link>,
+    There is support for connecting to <ulink url="http://www.freedesktop.org/wiki/Software/dbus">D-Bus</ulink>,
     sending and receiving messages, owning and watching bus names,
     and making objects available on the bus:
     <variablelist>
