@@ -3584,6 +3584,9 @@ g_bookmark_file_move_item (GBookmarkFile  *bookmark,
 
   if (new_uri && new_uri[0] != '\0')
     {
+      if (g_strcmp0 (old_uri, new_uri) == 0)
+        return TRUE;
+
       if (g_bookmark_file_has_item (bookmark, new_uri))
         {
           if (!g_bookmark_file_remove_item (bookmark, new_uri, error))
