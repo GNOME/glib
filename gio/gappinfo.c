@@ -769,7 +769,7 @@ g_app_info_launch_default_for_uri (const char         *uri,
  * @uri: the uri to show
  * @context: (nullable): an optional #GAppLaunchContext
  * @cancellable: (nullable): a #GCancellable
- * @callback: (nullable): a #GASyncReadyCallback to call when the request is done
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
  * @user_data: (nullable): data to pass to @callback
  *
  * Async version of g_app_info_launch_default_for_uri().

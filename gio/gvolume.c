@@ -50,10 +50,10 @@
  * for credentials.
  *
  * The callback will be fired when the operation has resolved (either
- * with success or failure), and a #GAsyncReady structure will be
+ * with success or failure), and a #GAsyncResult instance will be
  * passed to the callback.  That callback should then call
  * g_volume_mount_finish() with the #GVolume instance and the
- * #GAsyncReady data to see if the operation was completed
+ * #GAsyncResult data to see if the operation was completed
  * successfully.  If an @error is present when g_volume_mount_finish()
  * is called, then it will be filled with any error information.
  *
