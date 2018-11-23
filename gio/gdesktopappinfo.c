@@ -4548,7 +4548,7 @@ g_desktop_app_info_get_boolean (GDesktopAppInfo *info,
  *  a %NULL-terminated string array or %NULL if the specified
  *  key cannot be found. The array should be freed with g_strfreev().
  *
- * Since: 2.59.0
+ * Since: 2.60.0
  */
 gchar **
 g_desktop_app_info_get_string_list (GDesktopAppInfo *info,
