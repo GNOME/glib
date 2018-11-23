@@ -2623,11 +2623,14 @@ g_assertion_message (const char     *domain,
 
 /**
  * g_assertion_message_expr: (skip)
- * @domain: (nullable):
- * @file:
- * @line:
- * @func:
- * @expr: (nullable):
+ * @domain: (nullable): log domain
+ * @file: file containing the assertion
+ * @line: line number of the assertion
+ * @func: function containing the assertion
+ * @expr: (nullable): expression which failed
+ *
+ * Internal function used to print messages from the public g_assert() and
+ * g_assert_not_reached() macros.
  */
 void
 g_assertion_message_expr (const char     *domain,

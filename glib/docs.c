@@ -2835,6 +2835,54 @@
  * Since: 2.44
  */
 
+/* Warnings and Assertions {{{1 */
+
+/**
+ * SECTION:warnings
+ * @title: Warnings and Assertions
+ * @short_description: warnings and assertions to use in runtime code
+ *
+ * GLib defines several warning functions and assertions which can be used to
+ * warn of programmer errors when calling functions, and print error messages
+ * from command line programs.
+ *
+ * The g_return_if_fail(), g_return_val_if_fail(), g_return_if_reached() and
+ * g_return_val_if_reached() macros are intended as pre-condition assertions, to
+ * be used at the top of a public function to check that the function’s
+ * arguments are acceptable. Any failure of such a pre-condition assertion is
+ * considered a programming error on the part of the caller of the public API,
+ * and the program is considered to be in an undefined state afterwards. They
+ * are similar to the libc assert() function, but provide more context on
+ * failures.
+ *
+ * For example:
+ * |[<!-- language="C" -->
+ * gboolean
+ * g_dtls_connection_shutdown (GDtlsConnection  *conn,
+ *                             gboolean          shutdown_read,
+ *                             gboolean          shutdown_write,
+ *                             GCancellable     *cancellable,
+ *                             GError          **error)
+ * {
+ *   // local variable declarations
+ *
+ *   g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), FALSE);
+ *   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), FALSE);
+ *   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+ *
+ *   // function body
+ *
+ *   return return_val;
+ * }
+ * ]|
+ *
+ * g_print(), g_printerr() and g_set_print_handler() are intended to be used for
+ * output from command line applications, since they output to standard output
+ * and standard error by default — whereas functions like g_message() and
+ * g_log() may be redirected to special purpose message windows, files, or the
+ * system journal.
+ */
+
 /* Windows Compatibility Functions {{{1 */
 
 /**
