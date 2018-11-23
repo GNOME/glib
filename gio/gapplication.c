@@ -208,8 +208,8 @@
  *     If this function returns %TRUE, registration will proceed; otherwise
  *     registration will abort. Since: 2.34
  * @dbus_unregister: invoked locally during unregistration, if the application
- *     is using its D-Bus backend. Use this to undo anything done by the
- *     @dbus_register vfunc. Since: 2.34
+ *     is using its D-Bus backend. Use this to undo anything done by
+ *     the @dbus_register vfunc. Since: 2.34
  * @handle_local_options: invoked locally after the parsing of the commandline
  *  options has occurred. Since: 2.40
  *
