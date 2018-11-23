@@ -2752,9 +2752,12 @@ _g_log_writer_fallback (GLogLevelFlags   log_level,
 
 /**
  * g_return_if_fail_warning: (skip)
- * @log_domain: (nullable):
- * @pretty_function:
- * @expression: (nullable):
+ * @log_domain: (nullable): log domain
+ * @pretty_function: function containing the assertion
+ * @expression: (nullable): expression which failed
+ *
+ * Internal function used to print messages from the public g_return_if_fail()
+ * and g_return_val_if_fail() macros.
  */
 void
 g_return_if_fail_warning (const char *log_domain,
@@ -2770,11 +2773,14 @@ g_return_if_fail_warning (const char *log_domain,
 
 /**
  * g_warn_message: (skip)
- * @domain: (nullable):
- * @file:
- * @line:
- * @func:
- * @warnexpr: (nullable):
+ * @domain: (nullable): log domain
+ * @file: file containing the warning
+ * @line: line number of the warning
+ * @func: function containing the warning
+ * @warnexpr: (nullable): expression which failed
+ *
+ * Internal function used to print messages from the public g_warn_if_reached()
+ * and g_warn_if_fail() macros.
  */
 void
 g_warn_message (const char     *domain,
