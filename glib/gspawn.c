@@ -47,6 +47,10 @@
 #include <sys/resource.h>
 #endif /* HAVE_SYS_RESOURCE_H */
 
+#ifdef __linux__
+#include <sys/syscall.h>  /* for syscall and SYS_getdents64 */
+#endif
+
 #include "gspawn.h"
 #include "gspawn-private.h"
 #include "gthread.h"
@@ -1125,6 +1129,17 @@ set_cloexec (void *data, gint fd)
 }
 
 #ifndef HAVE_FDWALK
+#ifdef __linux__
+struct linux_dirent64
+{
+  guint64        d_ino;    /* 64-bit inode number */
+  guint64        d_off;    /* 64-bit offset to next structure */
+  unsigned short d_reclen; /* Size of this dirent */
+  unsigned char  d_type;   /* File type */
+  char           d_name[]; /* Filename (null-terminated) */
+};
+#endif
+
 static int
 fdwalk (int (*cb)(void *data, int fd), void *data)
 {
@@ -1136,39 +1151,47 @@ fdwalk (int (*cb)(void *data, int fd), void *data)
   struct rlimit rl;
 #endif
 
-#ifdef __linux__  
-  DIR *d;
+#ifdef __linux__
+  /* Avoid use of opendir/closedir since these are not async-signal-safe. */
+  int dir_fd = open ("/proc/self/fd", O_RDONLY | O_DIRECTORY);
+  if (dir_fd >= 0)
+    {
+      char buf[4096];
+      int pos, nread;
+      struct linux_dirent64 *de;
 
-  if ((d = opendir("/proc/self/fd"))) {
-      struct dirent *de;
+      while ((nread = syscall (SYS_getdents64, dir_fd, buf, sizeof(buf))) > 0)
+        {
+          for (pos = 0; pos < nread; pos += de->d_reclen)
+            {
+              glong l;
+              gchar *e = NULL;
 
-      while ((de = readdir(d))) {
-          glong l;
-          gchar *e = NULL;
+              de = (struct linux_dirent64 *)(buf + pos);
+              if (de->d_name[0] == '.')
+                  continue;
 
-          if (de->d_name[0] == '.')
-              continue;
-            
-          errno = 0;
-          l = strtol(de->d_name, &e, 10);
-          if (errno != 0 || !e || *e)
-              continue;
+              errno = 0;
+              l = strtol(de->d_name, &e, 10);
+              if (errno != 0 || !e || *e)
+                  continue;
 
-          fd = (gint) l;
+              fd = (gint) l;
 
-          if ((glong) fd != l)
-              continue;
+              if ((glong) fd != l)
+                  continue;
 
-          if (fd == dirfd(d))
-              continue;
+              if (fd == dir_fd)
+                  continue;
 
-          if ((res = cb (data, fd)) != 0)
-              break;
+              if ((res = cb (data, fd)) != 0)
+                  break;
+            }
         }
-      
-      closedir(d);
+
+      close(dir_fd);
       return res;
-  }
+    }
 
   /* If /proc is not mounted or not accessible we fall back to the old
    * rlimit trick */
