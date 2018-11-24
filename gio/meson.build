@@ -857,7 +857,7 @@ endif
 libgio_dep = declare_dependency(link_with : libgio,
   dependencies : [gioenumtypes_dep],
   # We sadly need to export configinc here because everyone includes <gio/*.h>
-  include_directories : [configinc, gioinc])
+  include_directories : [configinc, glibinc, gobjectinc, gmoduleinc, gioinc])
 
 if host_system == 'windows'
   # Hack till https://github.com/mesonbuild/meson/issues/2324 is fixed
