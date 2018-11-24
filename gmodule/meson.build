@@ -140,4 +140,4 @@ pkg.generate(libraries : [libgmodule, export_dynamic_ldflags],
 )
 
 libgmodule_dep = declare_dependency(link_with : libgmodule,
-  include_directories : gmoduleinc)
+  include_directories : [configinc, gmoduleinc, glibinc])
