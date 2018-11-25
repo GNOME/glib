@@ -1860,6 +1860,34 @@ g_file_create (GFile             *file,
  * %G_IO_ERROR_FILENAME_TOO_LONG will be returned. Other errors are
  * possible too, and depend on what kind of filesystem the file is on.
  *
+ * A typical usage might look something like this:
+ *
+ * |[<!-- language="C" -->
+ * static gboolean
+ * editor_buffer_save (EditorBuffer *buffer,
+ *                     GFile        *file,
+ *                     GError      **error)
+ * {
+ *   g_autoptr(GFileOutputStream) ostream = NULL;
+ *
+ *   ostream = g_file_replace (file, NULL, TRUE, G_FILE_CREATE_NONE, NULL, error);
+ *   if (ostream == NULL)
+ *     return FALSE;
+ *
+ *   if (!editor_buffer_write (buffer, G_OUTPUT_STREAM (ostream), error) ||
+ *       !g_output_stream_flush (G_OUTPUT_STREAM (ostream), NULL, error))
+ *     {
+ *       // Failed to save the buffer, cancel the replacement operation.
+ *       g_autoptr(GCancellable) cancellable = g_cancellable_new ();
+ *       g_cancellable_cancel (cancellable);
+ *       g_output_stream_close (G_OUTPUT_STREAM (ostream), cancellable, NULL);
+ *       return FALSE;
+ *     }
+ *
+ *   return g_output_stream_close (G_OUTPUT_STREAM (ostream), NULL, error);
+ * }
+ * ]|
+ *
  * Returns: (transfer full): a #GFileOutputStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  */
