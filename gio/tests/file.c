@@ -523,6 +523,11 @@ test_create_delete (gconstpointer d)
   g_free (data);
 }
 
+static const gchar *original_data =
+    "/**\n"
+    " * g_file_replace_contents_async:\n"
+    "**/\n";
+
 static const gchar *replace_data =
     "/**\n"
     " * g_file_replace_contents_async:\n"
@@ -675,7 +680,8 @@ test_replace_cancel (void)
   GFileInfo *info;
   GCancellable *cancellable;
   gchar *path;
-  gsize nwrote;
+  gchar *contents;
+  gsize nwrote, length;
   guint count;
   GError *error = NULL;
 
@@ -688,8 +694,8 @@ test_replace_cancel (void)
 
   file = g_file_get_child (tmpdir, "file");
   g_file_replace_contents (file,
-                           replace_data,
-                           strlen (replace_data),
+                           original_data,
+                           strlen (original_data),
                            NULL, FALSE, 0, NULL,
                            NULL, &error);
   g_assert_no_error (error);
@@ -776,6 +782,17 @@ test_replace_cancel (void)
 
   g_object_unref (cancellable);
   g_object_unref (ostream);
+
+  /* Make sure that file contents wasn't actually replaced. */
+  g_file_load_contents (file,
+                        NULL,
+                        &contents,
+                        &length,
+                        NULL,
+                        &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (contents, ==, original_data);
+  g_free (contents);
 
   g_file_delete (file, NULL, &error);
   g_assert_no_error (error);
