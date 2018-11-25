@@ -1281,7 +1281,7 @@ g_value_take_variant (GValue   *value,
  *
  * Get the contents of a variant #GValue.
  *
- * Returns: (nullable): variant contents of @value (may be %NULL)
+ * Returns: (transfer none) (nullable): variant contents of @value (may be %NULL)
  *
  * Since: 2.26
  */
