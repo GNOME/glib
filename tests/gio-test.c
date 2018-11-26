@@ -266,7 +266,7 @@ main (int    argc,
       
       GIOChannel *my_read_channel;
       gchar *cmdline;
-      guint *id;
+      guint **ids;
       int i;
 #ifdef G_OS_WIN32
       GTimeVal start, end;
@@ -280,6 +280,7 @@ main (int    argc,
 
       nkiddies = (argc == 1 ? 1 : atoi(argv[1]));
       seqtab = g_malloc (nkiddies * 2 * sizeof (int));
+      ids = g_malloc (nkiddies * sizeof(gpointer));
 
 #ifdef G_OS_WIN32
       wcl.style = 0;
@@ -326,12 +327,12 @@ main (int    argc,
 
 	  my_read_channel = g_io_channel_unix_new (pipe_from_sub[0]);
 	  
-	  id = g_new (guint, 1);
-	  *id =
+	  ids[i] = g_new (guint, 1);
+	  *(ids[i]) =
 	    g_io_add_watch (my_read_channel,
 			    G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP,
 			    recv_message,
-			    id);
+			    ids[i]);
 	  
 	  nrunning++;
 	  
@@ -372,7 +373,11 @@ main (int    argc,
 
       g_main_loop_unref (main_loop);
       g_free (seqtab);
-      g_free (id);
+
+      for (i = 0; i < nkiddies; i++)
+        g_free (ids[i]);
+
+      g_free (ids);
     }
   else if (argc == 3)
     {
