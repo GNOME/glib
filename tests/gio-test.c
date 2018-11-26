@@ -266,7 +266,6 @@ main (int    argc,
       
       GIOChannel *my_read_channel;
       gchar *cmdline;
-      guint *id;
       int i;
 #ifdef G_OS_WIN32
       GTimeVal start, end;
@@ -316,6 +315,7 @@ main (int    argc,
       for (i = 0; i < nkiddies; i++)
 	{
 	  int pipe_to_sub[2], pipe_from_sub[2];
+	  guint *id;
 	  
 	  if (pipe (pipe_to_sub) == -1 ||
 	      pipe (pipe_from_sub) == -1)
@@ -328,10 +328,11 @@ main (int    argc,
 	  
 	  id = g_new (guint, 1);
 	  *id =
-	    g_io_add_watch (my_read_channel,
-			    G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP,
-			    recv_message,
-			    id);
+	    g_io_add_watch_full (my_read_channel,
+				 G_PRIORITY_DEFAULT,
+				 G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP,
+				 recv_message,
+				 id, g_free);
 	  
 	  nrunning++;
 	  
@@ -372,7 +373,6 @@ main (int    argc,
 
       g_main_loop_unref (main_loop);
       g_free (seqtab);
-      g_free (id);
     }
   else if (argc == 3)
     {
