@@ -344,7 +344,6 @@ g_unix_is_system_fs_type (const char *fs_type)
     "sysfs",
     "tmpfs",
     "usbfs",
-    "zfs",
     NULL
   };
 
