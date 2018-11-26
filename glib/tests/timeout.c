@@ -91,6 +91,39 @@ test_weeks_overflow (void)
   g_source_remove (id);
 }
 
+static void
+test_far_future_ready_time (void)
+{
+  GSourceFuncs source_funcs = { 0 };
+  GMainContext *context = g_main_context_new ();
+  GSource *source = g_source_new (&source_funcs, sizeof (GSource));
+  gboolean acquired, ready;
+  gint priority, timeout_, n_fds;
+
+  g_source_set_ready_time (source, G_MAXINT64);
+  g_source_attach (source, context);
+
+  acquired = g_main_context_acquire (context);
+  g_assert_true (acquired);
+
+  ready = g_main_context_prepare (context, &priority);
+  g_assert_false (ready);
+
+  n_fds = 0;
+  n_fds = g_main_context_query (context, priority, &timeout_, NULL, n_fds);
+
+  /* The true timeout in milliseconds doesn't fit into a gint. We definitely
+   * don't want poll() to block forever:
+   */
+  g_assert_cmpint (timeout_, >=, 0);
+  /* Instead, we want it to block for as long as possible: */
+  g_assert_cmpint (timeout_, ==, G_MAXINT);
+
+  g_main_context_release (context);
+  g_main_context_unref (context);
+  g_source_unref (source);
+}
+
 static gint64 last_time;
 static gint count;
 
@@ -145,6 +178,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/timeout/seconds", test_seconds);
   g_test_add_func ("/timeout/weeks-overflow", test_weeks_overflow);
+  g_test_add_func ("/timeout/far-future-ready-time", test_far_future_ready_time);
   g_test_add_func ("/timeout/rounding", test_rounding);
 
   return g_test_run ();
