@@ -1,4 +1,4 @@
-[wrap-git]
+[wrap-file]
 directory=libffi
-url=https://github.com/centricular/libffi.git
-revision=meson
+source_url = https://github.com/centricular/libffi/archive/3.2.9999.tar.gz
+source_filename = libffi-meson-3.2.9999.tar.gz
