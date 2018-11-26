@@ -14,7 +14,7 @@ stop_waiting (gpointer data)
 }
 
 static gboolean
-function (gpointer data)
+unreachable_callback (gpointer data)
 {
   g_assert_not_reached ();
 
@@ -38,13 +38,52 @@ test_seconds (void)
    * then we have trouble (since it ran in less than 2 seconds).
    *
    * We need a timeout of at least 2 seconds because
-   * g_timeout_add_second can add as much as an additional second of
+   * g_timeout_add_seconds() can add as much as an additional second of
    * latency.
    */
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=642052");
   loop = g_main_loop_new (NULL, FALSE);
 
   g_timeout_add (2100, stop_waiting, NULL);
-  id = g_timeout_add_seconds (21475, function, NULL);
+  id = g_timeout_add_seconds (21475, unreachable_callback, NULL);
+
+  g_main_loop_run (loop);
+  g_main_loop_unref (loop);
+
+  g_source_remove (id);
+}
+
+static void
+test_weeks_overflow (void)
+{
+  guint id;
+  guint interval_seconds;
+
+  /* Internally, the guint interval (in seconds) was converted to milliseconds
+   * then stored in a guint variable. This meant that any interval larger than
+   * G_MAXUINT / 1000 would overflow.
+   *
+   * On a system with 32-bit guint, the interval (G_MAXUINT / 1000) + 1 seconds
+   * (49.7 days) would end wrapping to 704 milliseconds.
+   *
+   * Test that that isn't true anymore by scheduling two jobs:
+   *   - one, as above
+   *   - another that runs in 2100ms
+   *
+   * If everything is working properly, the 2100ms one should run first
+   * (and exit the mainloop).  If we ever see the other job run
+   * then we have trouble (since it ran in less than 2 seconds).
+   *
+   * We need a timeout of at least 2 seconds because
+   * g_timeout_add_seconds() can add as much as an additional second of
+   * latency.
+   */
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1600");
+  loop = g_main_loop_new (NULL, FALSE);
+
+  g_timeout_add (2100, stop_waiting, NULL);
+  interval_seconds = 1 + G_MAXUINT / 1000;
+  id = g_timeout_add_seconds (interval_seconds, unreachable_callback, NULL);
 
   g_main_loop_run (loop);
   g_main_loop_unref (loop);
@@ -102,8 +141,10 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("");
 
   g_test_add_func ("/timeout/seconds", test_seconds);
+  g_test_add_func ("/timeout/weeks-overflow", test_weeks_overflow);
   g_test_add_func ("/timeout/rounding", test_rounding);
 
   return g_test_run ();
