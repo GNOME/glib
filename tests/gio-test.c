@@ -113,13 +113,11 @@ recv_message (GIOChannel  *channel,
   gint fd = g_io_channel_unix_get_fd (channel);
   gboolean retval = TRUE;
 
-#ifdef VERBOSE
-  g_print ("gio-test: ...from %d:%s%s%s%s\n", fd,
+  g_debug ("gio-test: ...from %d:%s%s%s%s", fd,
 	   (cond & G_IO_ERR) ? " ERR" : "",
 	   (cond & G_IO_HUP) ? " HUP" : "",
 	   (cond & G_IO_IN)  ? " IN"  : "",
 	   (cond & G_IO_PRI) ? " PRI" : "");
-#endif
 
   if (cond & (G_IO_ERR | G_IO_HUP))
     {
@@ -140,9 +138,7 @@ recv_message (GIOChannel  *channel,
 	{
 	  if (nb == 0)
 	    {
-#ifdef VERBOSE
-	      g_print ("gio-test: ...from %d: EOF\n", fd);
-#endif
+	      g_debug ("gio-test: ...from %d: EOF", fd);
 	      shutdown_source (data);
 	      return FALSE;
 	    }
@@ -165,9 +161,7 @@ recv_message (GIOChannel  *channel,
       
       if (nb == 0)
 	{
-#ifdef VERBOSE
-	  g_print ("gio-test: ...from %d: EOF\n", fd);
-#endif
+	  g_debug ("gio-test: ...from %d: EOF", fd);
 	  shutdown_source (data);
 	  return FALSE;
 	}
@@ -176,9 +170,7 @@ recv_message (GIOChannel  *channel,
 
       g_assert_cmpint (nbytes, <, BUFSIZE);
       g_assert (nbytes >= 0 && nbytes < BUFSIZE);
-#ifdef VERBOSE      
-      g_print ("gio-test: ...from %d: %d bytes\n", fd, nbytes);
-#endif      
+      g_debug ("gio-test: ...from %d: %d bytes", fd, nbytes);
       if (nbytes > 0)
 	{
 	  error = read_all (fd, channel, buf, nbytes, &nb);
@@ -188,18 +180,14 @@ recv_message (GIOChannel  *channel,
 
 	  if (nb == 0)
 	    {
-#ifdef VERBOSE
-	      g_print ("gio-test: ...from %d: EOF\n", fd);
-#endif
+	      g_debug ("gio-test: ...from %d: EOF", fd);
 	      shutdown_source (data);
 	      return FALSE;
 	    }
       
 	  for (j = 0; j < nbytes; j++)
             g_assert (buf[j] == ' ' + ((nbytes + j) % 95));
-#ifdef VERBOSE
-	  g_print ("gio-test: ...from %d: OK\n", fd);
-#endif
+	  g_debug ("gio-test: ...from %d: OK", fd);
 	}
     }
   return retval;
@@ -404,10 +392,8 @@ main (int    argc,
 	  buflen = rand() % BUFSIZE;
 	  for (j = 0; j < buflen; j++)
 	    buf[j] = ' ' + ((buflen + j) % 95);
-#ifdef VERBOSE
-	  g_print ("gio-test: child writing %d+%d bytes to %d\n",
+	  g_debug ("gio-test: child writing %d+%d bytes to %d",
 		   (int)(sizeof(i) + sizeof(buflen)), buflen, writefd);
-#endif
 	  write (writefd, &i, sizeof (i));
 	  write (writefd, &buflen, sizeof (buflen));
 	  write (writefd, buf, buflen);
@@ -424,9 +410,7 @@ main (int    argc,
 	    }
 #endif
 	}
-#ifdef VERBOSE
-      g_print ("gio-test: child exiting, closing %d\n", writefd);
-#endif
+      g_debug ("gio-test: child exiting, closing %d", writefd);
       close (writefd);
     }
   else
