@@ -315,6 +315,7 @@ struct _GMainLoop
 struct _GTimeoutSource
 {
   GSource     source;
+  /* Measured in seconds if 'seconds' is TRUE, or milliseconds otherwise. */
   guint       interval;
   gboolean    seconds;
 };
@@ -4615,8 +4616,6 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
 {
   gint64 expiration;
 
-  expiration = current_time + (guint64) timeout_source->interval * 1000;
-
   if (timeout_source->seconds)
     {
       gint64 remainder;
@@ -4638,6 +4637,8 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
             timer_perturb = 0;
         }
 
+      expiration = current_time + (guint64) timeout_source->interval * 1000 * 1000;
+
       /* We want the microseconds part of the timeout to land on the
        * 'timer_perturb' mark, but we need to make sure we don't try to
        * set the timeout in the past.  We do this by ensuring that we
@@ -4652,6 +4653,10 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
 
       expiration -= remainder;
       expiration += timer_perturb;
+    }
+  else
+    {
+      expiration = current_time + (guint64) timeout_source->interval * 1000;
     }
 
   g_source_set_ready_time ((GSource *) timeout_source, expiration);
@@ -4735,7 +4740,7 @@ g_timeout_source_new_seconds (guint interval)
   GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
 
-  timeout_source->interval = 1000 * interval;
+  timeout_source->interval = interval;
   timeout_source->seconds = TRUE;
 
   g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
