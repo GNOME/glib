@@ -323,7 +323,7 @@ read_data (GDataInputStream  *stream,
  * 
  * Reads an unsigned 8-bit/1-byte value from @stream.
  *
- * Returns: an unsigned 8-bit/1-byte value read from the @stream or %0 
+ * Returns: an unsigned 8-bit/1-byte value read from the @stream or `0`
  * if an error occurred.
  **/
 guchar
@@ -353,7 +353,7 @@ g_data_input_stream_read_byte (GDataInputStream  *stream,
  * In order to get the correct byte order for this read operation, 
  * see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order().
  * 
- * Returns: a signed 16-bit/2-byte value read from @stream or %0 if 
+ * Returns: a signed 16-bit/2-byte value read from @stream or `0` if
  * an error occurred.
  **/
 gint16
@@ -397,7 +397,7 @@ g_data_input_stream_read_int16 (GDataInputStream  *stream,
  * In order to get the correct byte order for this read operation, 
  * see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order(). 
  * 
- * Returns: an unsigned 16-bit/2-byte value read from the @stream or %0 if 
+ * Returns: an unsigned 16-bit/2-byte value read from the @stream or `0` if
  * an error occurred. 
  **/
 guint16
@@ -445,7 +445,7 @@ g_data_input_stream_read_uint16 (GDataInputStream  *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  *   
- * Returns: a signed 32-bit/4-byte value read from the @stream or %0 if 
+ * Returns: a signed 32-bit/4-byte value read from the @stream or `0` if
  * an error occurred. 
  **/
 gint32
@@ -493,7 +493,7 @@ g_data_input_stream_read_int32 (GDataInputStream  *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: an unsigned 32-bit/4-byte value read from the @stream or %0 if 
+ * Returns: an unsigned 32-bit/4-byte value read from the @stream or `0` if
  * an error occurred. 
  **/
 guint32
@@ -541,7 +541,7 @@ g_data_input_stream_read_uint32 (GDataInputStream  *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a signed 64-bit/8-byte value read from @stream or %0 if 
+ * Returns: a signed 64-bit/8-byte value read from @stream or `0` if
  * an error occurred.  
  **/
 gint64
@@ -589,7 +589,7 @@ g_data_input_stream_read_int64 (GDataInputStream  *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: an unsigned 64-bit/8-byte read from @stream or %0 if 
+ * Returns: an unsigned 64-bit/8-byte read from @stream or `0` if
  * an error occurred. 
  **/
 guint64

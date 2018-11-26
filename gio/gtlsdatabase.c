@@ -779,7 +779,7 @@ g_tls_database_lookup_certificate_for_handle_finish (GTlsDatabase            *se
  *
  * Lookup the issuer of @certificate in the database.
  *
- * The %issuer property
+ * The #GTlsCertificate:issuer property
  * of @certificate is not modified, and the two certificates are not hooked
  * into a chain.
  *
