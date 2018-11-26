@@ -3525,13 +3525,13 @@ g_main_context_prepare (GMainContext *context,
                 }
               else
                 {
-                  gint timeout;
+                  gint64 timeout;
 
                   /* rounding down will lead to spinning, so always round up */
                   timeout = (source->priv->ready_time - context->time + 999) / 1000;
 
                   if (source_timeout < 0 || timeout < source_timeout)
-                    source_timeout = timeout;
+                    source_timeout = MIN (timeout, G_MAXINT);
                 }
             }
 
