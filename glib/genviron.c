@@ -44,6 +44,17 @@
 #include "gquark.h"
 
 /* Environ array functions {{{1 */
+static gboolean
+g_environ_matches (const gchar *env, const gchar *variable, gint len)
+{
+#ifdef G_OS_WIN32
+    /* Like filesystem paths, environment variables are case-insensitive. */
+    return g_ascii_strncasecmp (env, variable, len) == 0 && env[len] == '=';
+#else
+    return strncmp (env, variable, len) == 0 && env[len] == '=';
+#endif
+}
+
 static gint
 g_environ_find (gchar       **envp,
                 const gchar  *variable)
@@ -57,8 +68,7 @@ g_environ_find (gchar       **envp,
 
   for (i = 0; envp[i]; i++)
     {
-      if (strncmp (envp[i], variable, len) == 0 &&
-          envp[i][len] == '=')
+      if (g_environ_matches (envp[i], variable, len))
         return i;
     }
 
@@ -166,7 +176,7 @@ g_environ_unsetenv_internal (gchar        **envp,
   e = f = envp;
   while (*e != NULL)
     {
-      if (strncmp (*e, variable, len) != 0 || (*e)[len] != '=')
+      if (!g_environ_matches (*e, variable, len))
         {
           *f = *e;
           f++;
