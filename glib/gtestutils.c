@@ -3173,7 +3173,7 @@ g_test_trap_subprocess (const char           *test_path,
     }
   g_ptr_array_add (argv, NULL);
 
-  flags = G_SPAWN_DO_NOT_REAP_CHILD;
+  flags = G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
   if (test_flags & G_TEST_TRAP_INHERIT_STDIN)
     flags |= G_SPAWN_CHILD_INHERITS_STDIN;
 
