@@ -285,6 +285,27 @@ enumerate_overlay_dir (const gchar *candidate,
   return FALSE;
 }
 
+typedef struct {
+  gsize size;
+  guint32 flags;
+} InfoData;
+
+static gboolean
+get_overlay_info (const gchar *candidate,
+                  gpointer     user_data)
+{
+  InfoData *info = user_data;
+  GStatBuf buf;
+
+  if (g_stat (candidate, &buf) < 0)
+    return FALSE;
+
+  info->size = buf.st_size;
+  info->flags = G_RESOURCE_FLAGS_NONE;
+
+  return TRUE;
+}
+
 static gboolean
 g_resource_find_overlay (const gchar    *path,
                          CheckCandidate  check,
@@ -1251,6 +1272,17 @@ g_resources_get_info (const gchar           *path,
   gboolean res = FALSE;
   GList *l;
   gboolean r_res;
+  InfoData info;
+
+  if (g_resource_find_overlay (path, get_overlay_info, &info))
+    {
+      if (size)
+        *size = info.size;
+      if (flags)
+        *flags = info.flags;
+
+      return TRUE;
+    }
 
   register_lazy_static_resources ();
 
