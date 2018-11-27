@@ -85,6 +85,8 @@ foreach tool: python_tools
   meson.override_find_program(tool, tool_bin)
 endforeach
 
+# We can't use gnome.mkenums() because the GNOME module looks for glib-mkenums
+# in PATH, which means you can't bootstrap glib with its own glib-mkenums.
 gobjectenumtypes_h = custom_target('gobjectenumtypes_h',
   output : 'gobjectenumtypes.h',
   capture : true,
@@ -107,14 +109,14 @@ gobjectenumtypes_c = custom_target('gobjectenumtypes_c',
 gobjectenumtypes_dep = declare_dependency(sources : [gobjectenumtypes_c])
 
 libgobject = library('gobject-2.0',
-  gobjectenumtypes_c,
+  gobjectenumtypes_h, gobjectenumtypes_c,
   gobject_dtrace_obj, gobject_dtrace_hdr,
   gobject_sources,
   version : library_version,
   soversion : soversion,
   darwin_versions : darwin_versions,
   install : true,
-  include_directories : [configinc],
+  include_directories : [configinc, gobjectinc],
   dependencies : [libffi_dep, libglib_dep],
   c_args : ['-DG_LOG_DOMAIN="GLib-GObject"', '-DGOBJECT_COMPILATION'] + glib_hidden_visibility_args,
   link_args : glib_link_flags,
