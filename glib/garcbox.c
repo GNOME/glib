@@ -168,6 +168,9 @@
  * The data will be freed when its reference count drops to
  * zero.
  *
+ * The allocated data is guaranteed to be suitably aligned for any
+ * built-in type.
+ *
  * Returns: (transfer full) (not nullable): a pointer to the allocated memory
  *
  * Since: 2.58
@@ -191,6 +194,9 @@ g_atomic_rc_box_alloc (gsize block_size)
  *
  * The data will be freed when its reference count drops to
  * zero.
+ *
+ * The allocated data is guaranteed to be suitably aligned for any
+ * built-in type.
  *
  * Returns: (transfer full) (not nullable): a pointer to the allocated memory
  *
