@@ -83,3 +83,9 @@ option('installed_tests',
        type : 'boolean',
        value : false,
        description : 'enable installed tests')
+
+option('nls',
+       type : 'feature',
+       value : 'auto',
+       yield: true,
+       description : 'Enable native language support (translations)')
