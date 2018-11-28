@@ -37,6 +37,22 @@
 #include "gsocketaddressenumerator.h"
 #include "gsocketconnectable.h"
 
+/**
+ * SECTION:gproxyaddressenumerator
+ * @short_description: Proxy wrapper enumerator for socket addresses
+ * @include: gio/gio.h
+ *
+ * #GProxyAddressEnumerator is a wrapper around #GSocketAddressEnumerator which
+ * takes the #GSocketAddress instances returned by the #GSocketAddressEnumerator
+ * and wraps them in #GProxyAddress instances, using the given
+ * #GProxyAddressEnumerator:proxy-resolver.
+ *
+ * This enumerator will be returned (for example, by
+ * g_socket_connectable_enumerate()) as appropriate when a proxy is configured;
+ * there should be no need to manually wrap a #GSocketAddressEnumerator instance
+ * with one.
+ */
+
 #define GET_PRIVATE(o) (G_PROXY_ADDRESS_ENUMERATOR (o)->priv)
 
 enum
