@@ -44,14 +44,24 @@ typedef struct _GSocketAddressEnumeratorClass GSocketAddressEnumeratorClass;
 
 struct _GSocketAddressEnumerator
 {
+  /*< private >*/
   GObject parent_instance;
-
 };
 
+/**
+ * GSocketAddressEnumeratorClass:
+ * @next: Virtual method for g_socket_address_enumerator_next().
+ * @next_async: Virtual method for g_socket_address_enumerator_next_async().
+ * @next_finish: Virtual method for g_socket_address_enumerator_next_finish().
+ *
+ * Class structure for #GSocketAddressEnumerator.
+ */
 struct _GSocketAddressEnumeratorClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 
+  /*< public >*/
   /* Virtual Table */
 
   GSocketAddress * (* next)        (GSocketAddressEnumerator  *enumerator,

@@ -22,6 +22,26 @@
 
 #include "gtask.h"
 
+/**
+ * SECTION:gsocketaddressenumerator
+ * @short_description: Enumerator for socket addresses
+ * @include: gio/gio.h
+ *
+ * #GSocketAddressEnumerator is an enumerator type for #GSocketAddress
+ * instances. It is returned by enumeration functions such as
+ * g_socket_connectable_enumerate(), which returns a #GSocketAddressEnumerator
+ * to list all the #GSocketAddresses which could be used to connect to that
+ * #GSocketConnectable.
+ *
+ * Enumeration is typically a blocking operation, so the asynchronous methods
+ * g_socket_address_enumerator_next_async() and
+ * g_socket_address_enumerator_next_finish() should be used where possible.
+ *
+ * Each #GSocketAddressEnumerator can only be enumerated once. Once
+ * g_socket_address_enumerator_next() has returned %NULL (and no error), further
+ * enumeration with that #GSocketAddressEnumerator is not possible, and it can
+ * be unreffed.
+ */
 
 G_DEFINE_ABSTRACT_TYPE (GSocketAddressEnumerator, g_socket_address_enumerator, G_TYPE_OBJECT)
 

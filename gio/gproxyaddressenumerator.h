@@ -49,12 +49,19 @@ typedef struct _GProxyAddressEnumeratorPrivate GProxyAddressEnumeratorPrivate;
 
 struct _GProxyAddressEnumerator
 {
+  /*< private >*/
   GSocketAddressEnumerator parent_instance;
   GProxyAddressEnumeratorPrivate *priv;
 };
 
+/**
+ * GProxyAddressEnumeratorClass:
+ *
+ * Class structure for #GProxyAddressEnumerator.
+ */
 struct _GProxyAddressEnumeratorClass
 {
+  /*< private >*/
   GSocketAddressEnumeratorClass parent_class;
 
   void (*_g_reserved1) (void);
