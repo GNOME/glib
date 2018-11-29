@@ -1086,9 +1086,33 @@ main (int argc, char **argv)
 	       "#else\n"
 	       "# define SECTION\n"
 	       "#endif\n"
-	       "\n"
+	       "\n",
+	       c_name_no_underscores);
+
+      /* For Visual Studio builds: Avoid surpassing the 65535-character limit for a string, GitLab issue #1580 */
+      g_fprintf (file, "#ifdef _MSC_VER\n");
+      g_fprintf (file,
+           "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = { {\n",
+           data_size + 1 /* nul terminator */, c_name);
+
+      for (i = 0; i < data_size; i++)
+        {
+          if (i % 16 == 0)
+            g_fprintf (file, "  ");
+          g_fprintf (file, "0%3.3o", (int)data[i]);
+          if (i != data_size - 1)
+            g_fprintf (file, ", ");
+          if (i % 16 == 15 || i == data_size - 1)
+            g_fprintf (file, "\n");
+        }
+
+      g_fprintf (file, "} };\n");
+
+      /* For other compilers, use the long string approach */
+      g_fprintf (file, "#else /* _MSC_VER */\n");
+      g_fprintf (file,
 	       "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = {\n  \"",
-	       c_name_no_underscores, data_size + 1 /* nul terminator */, c_name);
+	       data_size + 1 /* nul terminator */, c_name);
 
       for (i = 0; i < data_size; i++) {
 	g_fprintf (file, "\\%3.3o", (int)data[i]);
@@ -1097,6 +1121,7 @@ main (int argc, char **argv)
       }
 
       g_fprintf (file, "\" };\n");
+      g_fprintf (file, "#endif /* !_MSC_VER */\n");
 
       g_fprintf (file,
 	       "\n"
