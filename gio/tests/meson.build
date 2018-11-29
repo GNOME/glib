@@ -156,11 +156,9 @@ if host_machine.system() != 'windows'
     gio_tests += {
       'appinfo' : {
         'install' : false,
-        'is_parallel' : false,
       },
       'desktop-app-info' : {
         'install' : false,
-        'is_parallel' : false,
       },
     }
   endif
