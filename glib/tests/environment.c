@@ -26,6 +26,10 @@ test_listenv (void)
   gchar **list;
   gint i;
 
+  g_test_summary ("Test g_get_environ() returns an array of unique keys, all "
+                  "of which can be individually queried using g_getenv() to "
+                  "return the same value.");
+
   table = g_hash_table_new_full (g_str_hash, g_str_equal,
                                  g_free, g_free);
 
@@ -67,6 +71,9 @@ test_getenv (void)
   const gchar *variable = "TEST_G_SETENV";
   const gchar *value1 = "works";
   const gchar *value2 = "again";
+
+  g_test_summary ("Test setting an environment variable using g_setenv(), and "
+                  "that the updated value is queryable using g_getenv().");
 
   /* Check that TEST_G_SETENV is not already set */
   g_assert_null (g_getenv (variable));
@@ -168,6 +175,9 @@ test_environ_array (void)
   gchar **env;
   const gchar *value;
 
+  g_test_summary ("Test getting and setting variables on a local envp array "
+                  "(rather than the global envp).");
+
   env = g_new (gchar *, 1);
   env[0] = NULL;
 
@@ -242,6 +252,8 @@ test_environ_null (void)
   gchar **env;
   const gchar *value;
 
+  g_test_summary ("Test getting and setting variables on a NULL envp array.");
+
   env = NULL;
 
   value = g_environ_getenv (env, "foo");
@@ -260,6 +272,10 @@ test_environ_case (void)
 {
   gchar **env;
   const gchar *value;
+
+  g_test_summary ("Test that matching environment variables is case-insensitive "
+                  "on Windows and not on other platforms, since envvars were "
+                  "case-insensitive on DOS.");
 
   env = NULL;
 
