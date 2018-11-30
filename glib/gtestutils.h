@@ -148,6 +148,9 @@ void    g_test_init                     (int            *argc,
                                          char         ***argv,
                                          ...) G_GNUC_NULL_TERMINATED;
 
+/* TODO Docs */
+#define G_TEST_OPTION_ISOLATE_DIRS "isolate_dirs"
+
 /* While we discourage its use, g_assert() is often used in unit tests
  * (especially in legacy code). g_assert_*() should really be used instead.
  * g_assert() can be disabled at client program compile time, which can render
