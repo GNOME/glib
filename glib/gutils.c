@@ -791,6 +791,9 @@ g_get_real_name (void)
   return entry->real_name;
 }
 
+/* Protected by @g_utils_global_lock. */
+static gchar *g_home_dir = NULL;  /* (owned) (nullable before initialised) */
+
 /**
  * g_get_home_dir:
  *
@@ -820,9 +823,9 @@ g_get_real_name (void)
 const gchar *
 g_get_home_dir (void)
 {
-  static gchar *home_dir;
+  G_LOCK (g_utils_global);
 
-  if (g_once_init_enter (&home_dir))
+  if (g_home_dir == NULL)
     {
       gchar *tmp;
 
@@ -899,10 +902,12 @@ g_get_home_dir (void)
           tmp = "/";
         }
 
-      g_once_init_leave (&home_dir, tmp);
+      g_home_dir = g_steal_pointer (&tmp);
     }
 
-  return home_dir;
+  G_UNLOCK (g_utils_global);
+
+  return g_home_dir;
 }
 
 /**
