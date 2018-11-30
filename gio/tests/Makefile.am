@@ -589,6 +589,9 @@ test-generated.txt: test1.txt
 	$(AM_V_GEN) echo "Generated" > $@ && \
 	  cat $< >> $@
 
+gresource-big-test.txt: gen-big-test-resource.py
+	$(AM_V_GEN) $(PYTHON) $< $@
+
 resources.o: test_resources2.h
 test_resources.c: test2.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test2.gresource.xml)
 	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test1 $<
