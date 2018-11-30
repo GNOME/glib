@@ -4,6 +4,7 @@
  * Copyright (C) 2010 Thiago Santos <thiago.sousa.santos@collabora.co.uk>
  * Copyright (C) 2010 Emmanuele Bassi <ebassi@linux.intel.com>
  * Copyright © 2010 Codethink Limited
+ * Copyright © 2018 Tomasz Miąsko
  *
  * This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -2771,6 +2772,51 @@ format_z (GString *outstr,
   return TRUE;
 }
 
+#ifdef HAVE_LANGINFO_OUTDIGIT
+/** Initializes the array with UTF-8 encoded alternate digits suibtable for use
+ * in current locale. Returns NULL when current locale does not use alternate
+ * digits or there was an error converting them to UTF-8.
+ */
+static const gchar * const *
+initialize_alt_digits (void)
+{
+  guint i;
+  gsize digit_len;
+  gchar *digit;
+  const gchar *locale_digit;
+#define N_DIGITS 10
+#define MAX_UTF8_ENCODING_LEN 4
+  static gchar buffer[N_DIGITS * (MAX_UTF8_ENCODING_LEN + 1 /* null separator */)];
+#undef N_DIGITS
+#undef MAX_UTF8_ENCODING_LEN
+  gchar *buffer_end = buffer;
+  static const gchar *alt_digits[10];
+
+  for (i = 0; i != 10; ++i)
+    {
+      locale_digit = nl_langinfo (_NL_CTYPE_OUTDIGIT0_MB + i);
+
+      if (g_strcmp0 (locale_digit, "") == 0)
+        return NULL;
+
+      digit = g_locale_to_utf8 (locale_digit, -1, NULL, &digit_len, NULL);
+      if (digit == NULL)
+        return NULL;
+
+      g_assert (digit_len < buffer + sizeof (buffer) - buffer_end);
+
+      alt_digits[i] = buffer_end;
+      buffer_end = g_stpcpy (buffer_end, digit);
+      /* skip trailing null byte */
+      buffer_end += 1;
+
+      g_free (digit);
+    }
+
+  return alt_digits;
+}
+#endif /* HAVE_LANGINFO_OUTDIGIT */
+
 static void
 format_number (GString     *str,
                gboolean     use_alt_digits,
@@ -2781,7 +2827,7 @@ format_number (GString     *str,
   const gchar *ascii_digits[10] = {
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
   };
-  const gchar **digits = ascii_digits;
+  const gchar * const *digits = ascii_digits;
   const gchar *tmp[10];
   gint i = 0;
 
@@ -2790,17 +2836,16 @@ format_number (GString     *str,
 #ifdef HAVE_LANGINFO_OUTDIGIT
   if (use_alt_digits)
     {
-      static const gchar *alt_digits[10];
+      static const gchar * const *alt_digits = NULL;
       static gsize initialised;
-      /* 2^32 has 10 digits */
 
       if G_UNLIKELY (g_once_init_enter (&initialised))
         {
-#define DO_DIGIT(n) \
-        alt_digits[n] = nl_langinfo (_NL_CTYPE_OUTDIGIT## n ##_MB)
-          DO_DIGIT(0); DO_DIGIT(1); DO_DIGIT(2); DO_DIGIT(3); DO_DIGIT(4);
-          DO_DIGIT(5); DO_DIGIT(6); DO_DIGIT(7); DO_DIGIT(8); DO_DIGIT(9);
-#undef DO_DIGIT
+          alt_digits = initialize_alt_digits ();
+
+          if (alt_digits == NULL)
+            alt_digits = ascii_digits;
+
           g_once_init_leave (&initialised, TRUE);
         }
 
@@ -2833,7 +2878,6 @@ format_ampm (GDateTime *datetime,
 {
   const gchar *ampm;
   gchar       *tmp = NULL, *ampm_dup;
-  gsize        len;
 
   ampm = GET_AMPM (datetime);
 
@@ -2844,104 +2888,107 @@ format_ampm (GDateTime *datetime,
     {
       /* This assumes that locale encoding can't have embedded NULs */
       ampm = tmp = g_locale_to_utf8 (ampm, -1, NULL, NULL, NULL);
-      if (!tmp)
+      if (tmp == NULL)
         return FALSE;
     }
   if (uppercase)
     ampm_dup = g_utf8_strup (ampm, -1);
   else
     ampm_dup = g_utf8_strdown (ampm, -1);
-  len = strlen (ampm_dup);
-  if (!locale_is_utf8 && GET_AMPM_IS_LOCALE)
-    {
-      g_free (tmp);
-      tmp = g_locale_from_utf8 (ampm_dup, -1, NULL, &len, NULL);
-      g_free (ampm_dup);
-      if (!tmp)
-        return FALSE;
-      ampm_dup = tmp;
-    }
-  g_string_append_len (outstr, ampm_dup, len);
+  g_free (tmp);
+
+  g_string_append (outstr, ampm_dup);
   g_free (ampm_dup);
 
   return TRUE;
 }
 
-static gboolean g_date_time_format_locale (GDateTime   *datetime,
-					   const gchar *format,
-					   GString     *outstr,
-					   gboolean     locale_is_utf8);
+static gboolean g_date_time_format_utf8 (GDateTime   *datetime,
+					 const gchar *format,
+					 GString     *outstr,
+					 gboolean     locale_is_utf8);
 
 /* g_date_time_format() subroutine that takes a locale-encoded format
- * string and produces a locale-encoded date/time string.
+ * string and produces a UTF-8 encoded date/time string.
  */
 static gboolean
-g_date_time_locale_format_locale (GDateTime   *datetime,
-				  const gchar *format,
-				  GString     *outstr,
-				  gboolean     locale_is_utf8)
+g_date_time_format_locale (GDateTime   *datetime,
+			   const gchar *locale_format,
+			   GString     *outstr,
+			   gboolean     locale_is_utf8)
 {
   gchar *utf8_format;
   gboolean success;
 
   if (locale_is_utf8)
-    return g_date_time_format_locale (datetime, format, outstr,
-				      locale_is_utf8);
+    return g_date_time_format_utf8 (datetime, locale_format, outstr, locale_is_utf8);
 
-  utf8_format = g_locale_to_utf8 (format, -1, NULL, NULL, NULL);
-  if (!utf8_format)
+  utf8_format = g_locale_to_utf8 (locale_format, -1, NULL, NULL, NULL);
+  if (utf8_format == NULL)
     return FALSE;
 
-  success = g_date_time_format_locale (datetime, utf8_format, outstr,
-				       locale_is_utf8);
+  success = g_date_time_format_utf8 (datetime, utf8_format, outstr,
+                                     locale_is_utf8);
   g_free (utf8_format);
   return success;
 }
 
-/* g_date_time_format() subroutine that takes a UTF-8 format
- * string and produces a locale-encoded date/time string.
+static inline gboolean
+string_append (GString     *string,
+               const gchar *s,
+               gboolean     s_is_utf8)
+{
+  gchar *utf8;
+  gsize  utf8_len;
+
+  if (s_is_utf8)
+    {
+      g_string_append (string, s);
+    }
+  else
+    {
+      utf8 = g_locale_to_utf8 (s, -1, NULL, &utf8_len, NULL);
+      if (utf8 == NULL)
+        return FALSE;
+      g_string_append_len (string, utf8, utf8_len);
+      g_free (utf8);
+    }
+
+  return TRUE;
+}
+
+/* g_date_time_format() subroutine that takes a UTF-8 encoded format
+ * string and produces a UTF-8 encoded date/time string.
  */
 static gboolean
-g_date_time_format_locale (GDateTime   *datetime,
-			   const gchar *format,
-			   GString     *outstr,
-			   gboolean     locale_is_utf8)
+g_date_time_format_utf8 (GDateTime   *datetime,
+			 const gchar *utf8_format,
+			 GString     *outstr,
+			 gboolean     locale_is_utf8)
 {
   guint     len;
   guint     colons;
-  gchar    *tmp;
-  gsize     tmp_len;
   gunichar  c;
   gboolean  alt_digits = FALSE;
   gboolean  pad_set = FALSE;
+  gboolean  name_is_utf8;
   const gchar *pad = "";
   const gchar *name;
   const gchar *tz;
 
-  while (*format)
+  while (*utf8_format)
     {
-      len = strcspn (format, "%");
+      len = strcspn (utf8_format, "%");
       if (len)
-	{
-	  if (locale_is_utf8)
-	    g_string_append_len (outstr, format, len);
-	  else
-	    {
-	      tmp = g_locale_from_utf8 (format, len, NULL, &tmp_len, NULL);
-	      if (!tmp)
-		return FALSE;
-	      g_string_append_len (outstr, tmp, tmp_len);
-	      g_free (tmp);
-	    }
-	}
+        g_string_append_len (outstr, utf8_format, len);
 
-      format += len;
-      if (!*format)
+      utf8_format += len;
+      if (!*utf8_format)
 	break;
 
-      g_assert (*format == '%');
-      format++;
-      if (!*format)
+      g_assert (*utf8_format == '%');
+      utf8_format++;
+      if (!*utf8_format)
 	break;
 
       colons = 0;
@@ -2949,91 +2996,67 @@ g_date_time_format_locale (GDateTime   *datetime,
       pad_set = FALSE;
 
     next_mod:
-      c = g_utf8_get_char (format);
-      format = g_utf8_next_char (format);
+      c = g_utf8_get_char (utf8_format);
+      utf8_format = g_utf8_next_char (utf8_format);
       switch (c)
 	{
 	case 'a':
 	  name = WEEKDAY_ABBR (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-	  if (!locale_is_utf8 && !WEEKDAY_ABBR_IS_LOCALE)
-	    {
-	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
-	      if (!tmp)
-		return FALSE;
-	      g_string_append_len (outstr, tmp, tmp_len);
-	      g_free (tmp);
-	    }
-	  else
-	    {
-	      g_string_append (outstr, name);
-	    }
+
+          name_is_utf8 = locale_is_utf8 || !WEEKDAY_ABBR_IS_LOCALE;
+
+          if (!string_append (outstr, name, name_is_utf8))
+            return FALSE;
+
 	  break;
 	case 'A':
 	  name = WEEKDAY_FULL (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-	  if (!locale_is_utf8 && !WEEKDAY_FULL_IS_LOCALE)
-	    {
-	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
-	      if (!tmp)
-		return FALSE;
-	      g_string_append_len (outstr, tmp, tmp_len);
-	      g_free (tmp);
-	    }
-	  else
-	    {
-	      g_string_append (outstr, name);
-	    }
+
+          name_is_utf8 = locale_is_utf8 || !WEEKDAY_FULL_IS_LOCALE;
+
+          if (!string_append (outstr, name, name_is_utf8))
+            return FALSE;
+
 	  break;
 	case 'b':
 	  name = alt_digits ? MONTH_ABBR_STANDALONE (datetime)
 			    : MONTH_ABBR_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-	  if (!locale_is_utf8 &&
-	      ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
-	       (!alt_digits && !MONTH_ABBR_WITH_DAY_IS_LOCALE)))
-	    {
-	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
-	      if (!tmp)
-		return FALSE;
-	      g_string_append_len (outstr, tmp, tmp_len);
-	      g_free (tmp);
-	    }
-	  else
-	    {
-	      g_string_append (outstr, name);
-	    }
+
+          name_is_utf8 = locale_is_utf8 ||
+            ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
+             (!alt_digits && !MONTH_ABBR_WITH_DAY_IS_LOCALE));
+
+          if (!string_append (outstr, name, name_is_utf8))
+            return FALSE;
+
 	  break;
 	case 'B':
 	  name = alt_digits ? MONTH_FULL_STANDALONE (datetime)
 			    : MONTH_FULL_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-	  if (!locale_is_utf8 &&
-	      ((alt_digits && !MONTH_FULL_STANDALONE_IS_LOCALE) ||
-	       (!alt_digits && !MONTH_FULL_WITH_DAY_IS_LOCALE)))
-	    {
-	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
-	      if (!tmp)
-		return FALSE;
-	      g_string_append_len (outstr, tmp, tmp_len);
-	      g_free (tmp);
-	    }
-	  else
-	    {
-	      g_string_append (outstr, name);
-	    }
+
+          name_is_utf8 = locale_is_utf8 ||
+            ((alt_digits && !MONTH_FULL_STANDALONE_IS_LOCALE) ||
+             (!alt_digits && !MONTH_FULL_WITH_DAY_IS_LOCALE));
+
+          if (!string_append (outstr, name, name_is_utf8))
+              return FALSE;
+
 	  break;
 	case 'c':
 	  {
             if (g_strcmp0 (PREFERRED_DATE_TIME_FMT, "") == 0)
               return FALSE;
-	    if (!g_date_time_locale_format_locale (datetime, PREFERRED_DATE_TIME_FMT,
-						   outstr, locale_is_utf8))
-	      return FALSE;
+            if (!g_date_time_format_locale (datetime, PREFERRED_DATE_TIME_FMT,
+                                            outstr, locale_is_utf8))
+              return FALSE;
 	  }
 	  break;
 	case 'C':
@@ -3067,20 +3090,14 @@ g_date_time_format_locale (GDateTime   *datetime,
 			    : MONTH_ABBR_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-	  if (!locale_is_utf8 &&
-	      ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
-	       (!alt_digits && !MONTH_ABBR_WITH_DAY_IS_LOCALE)))
-	    {
-	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
-	      if (!tmp)
-		return FALSE;
-	      g_string_append_len (outstr, tmp, tmp_len);
-	      g_free (tmp);
-	    }
-	  else
-	    {
-	      g_string_append (outstr, name);
-	    }
+
+          name_is_utf8 = locale_is_utf8 ||
+            ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
+             (!alt_digits && !MONTH_ABBR_WITH_DAY_IS_LOCALE));
+
+          if (!string_append (outstr, name, name_is_utf8))
+            return FALSE;
+
 	  break;
 	case 'H':
 	  format_number (outstr, alt_digits, pad_set ? pad : "0", 2,
@@ -3128,8 +3145,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  {
             if (g_strcmp0 (PREFERRED_12HR_TIME_FMT, "") == 0)
               return FALSE;
-	    if (!g_date_time_locale_format_locale (datetime, PREFERRED_12HR_TIME_FMT,
-						   outstr, locale_is_utf8))
+	    if (!g_date_time_format_locale (datetime, PREFERRED_12HR_TIME_FMT,
+					    outstr, locale_is_utf8))
 	      return FALSE;
 	  }
 	  break;
@@ -3170,8 +3187,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  {
             if (g_strcmp0 (PREFERRED_DATE_FMT, "") == 0)
               return FALSE;
-	    if (!g_date_time_locale_format_locale (datetime, PREFERRED_DATE_FMT,
-						   outstr, locale_is_utf8))
+	    if (!g_date_time_format_locale (datetime, PREFERRED_DATE_FMT,
+					    outstr, locale_is_utf8))
 	      return FALSE;
 	  }
 	  break;
@@ -3179,8 +3196,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  {
             if (g_strcmp0 (PREFERRED_TIME_FMT, "") == 0)
               return FALSE;
-	    if (!g_date_time_locale_format_locale (datetime, PREFERRED_TIME_FMT,
-						   outstr, locale_is_utf8))
+	    if (!g_date_time_format_locale (datetime, PREFERRED_TIME_FMT,
+					    outstr, locale_is_utf8))
 	      return FALSE;
 	  }
 	  break;
@@ -3202,16 +3219,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'Z':
 	  tz = g_date_time_get_timezone_abbreviation (datetime);
-	  tmp = NULL;
-	  tmp_len = strlen (tz);
-	  if (!locale_is_utf8)
-	    {
-	      tz = tmp = g_locale_from_utf8 (tz, -1, NULL, &tmp_len, NULL);
-	      if (!tmp)
-		return FALSE;
-	    }
-	  g_string_append_len (outstr, tz, tmp_len);
-	  g_free (tmp);
+          g_string_append (outstr, tz);
 	  break;
 	case '%':
 	  g_string_append_c (outstr, '%');
@@ -3230,7 +3238,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  goto next_mod;
 	case ':':
 	  /* Colons are only allowed before 'z' */
-	  if (*format && *format != 'z' && *format != ':')
+	  if (*utf8_format && *utf8_format != 'z' && *utf8_format != ':')
 	    return FALSE;
 	  colons++;
 	  goto next_mod;
@@ -3355,7 +3363,6 @@ g_date_time_format (GDateTime   *datetime,
                     const gchar *format)
 {
   GString  *outstr;
-  gchar *utf8;
   gboolean locale_is_utf8 = g_get_charset (NULL);
 
   g_return_val_if_fail (datetime != NULL, NULL);
@@ -3364,18 +3371,13 @@ g_date_time_format (GDateTime   *datetime,
 
   outstr = g_string_sized_new (strlen (format) * 2);
 
-  if (!g_date_time_format_locale (datetime, format, outstr, locale_is_utf8))
+  if (!g_date_time_format_utf8 (datetime, format, outstr, locale_is_utf8))
     {
       g_string_free (outstr, TRUE);
       return NULL;
     }
 
-  if (locale_is_utf8)
-    return g_string_free (outstr, FALSE);
-
-  utf8 = g_locale_to_utf8 (outstr->str, outstr->len, NULL, NULL, NULL);
-  g_string_free (outstr, TRUE);
-  return utf8;
+  return g_string_free (outstr, FALSE);
 }
 
 
