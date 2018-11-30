@@ -3,7 +3,6 @@
 
 typedef struct
 {
-  gchar *data_dir;
   gchar *applications_dir;
 } Fixture;
 
@@ -11,18 +10,10 @@ static void
 setup (Fixture       *fixture,
        gconstpointer  user_data)
 {
-  GError *error = NULL;
+  fixture->applications_dir = g_build_filename (g_get_user_data_dir (), "applications", NULL);
+  g_assert_cmpint (g_mkdir_with_parents (fixture->applications_dir, 0755), ==, 0);
 
-  fixture->data_dir = g_dir_make_tmp ("gio-test-app-monitor_XXXXXX", &error);
-  g_assert_no_error (error);
-
-  fixture->applications_dir = g_build_filename (fixture->data_dir, "applications", NULL);
-  g_assert_cmpint (g_mkdir (fixture->applications_dir, 0755), ==, 0);
-
-  g_setenv ("XDG_DATA_DIRS", fixture->data_dir, TRUE);
-  g_setenv ("XDG_DATA_HOME", fixture->data_dir, TRUE);
-
-  g_test_message ("Using data directory: %s", fixture->data_dir);
+  g_test_message ("Using data directory: %s", g_get_user_data_dir ());
 }
 
 static void
@@ -31,9 +22,6 @@ teardown (Fixture       *fixture,
 {
   g_assert_cmpint (g_rmdir (fixture->applications_dir), ==, 0);
   g_clear_pointer (&fixture->applications_dir, g_free);
-
-  g_assert_cmpint (g_rmdir (fixture->data_dir), ==, 0);
-  g_clear_pointer (&fixture->data_dir, g_free);
 }
 
 static gboolean
@@ -129,7 +117,7 @@ test_app_monitor (Fixture       *fixture,
 int
 main (int argc, char *argv[])
 {
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add ("/monitor/app", Fixture, NULL, setup, test_app_monitor, teardown);
 
