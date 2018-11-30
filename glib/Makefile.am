@@ -191,6 +191,7 @@ libglib_2_0_la_SOURCES = 	\
 	gunicodeprivate.h	\
 	gurifuncs.c 		\
 	gutils.c		\
+	gutilsprivate.h		\
 	guuid.c			\
 	gvalgrind.h		\
 	gvariant.h		\
