@@ -204,34 +204,34 @@ test_launch_no_app_id (Fixture       *fixture,
   g_test_bug ("791337");
 
   for (i = 0; i < G_N_ELEMENTS (exec_line_variants); i++)
-  {
-    gchar *desktop_file_contents;
-    GKeyFile *fake_desktop_file;
-    GAppInfo *appinfo;
-    gboolean loaded;
+    {
+      gchar *desktop_file_contents;
+      GKeyFile *fake_desktop_file;
+      GAppInfo *appinfo;
+      gboolean loaded;
 
-    g_test_message ("Exec line variant #%" G_GSIZE_FORMAT, i);
+      g_test_message ("Exec line variant #%" G_GSIZE_FORMAT, i);
 
-    desktop_file_contents = g_strdup_printf ("%s\n%s",
-                                             desktop_file_base_contents,
-                                             exec_line_variants[i]);
+      desktop_file_contents = g_strdup_printf ("%s\n%s",
+                                               desktop_file_base_contents,
+                                               exec_line_variants[i]);
 
-    /* We load a desktop file from memory to force the app not
-     * to have an app ID, which would check different codepaths.
-     */
-    fake_desktop_file = g_key_file_new ();
-    loaded = g_key_file_load_from_data (fake_desktop_file, desktop_file_contents, -1, G_KEY_FILE_NONE, NULL);
-    g_assert_true (loaded);
+      /* We load a desktop file from memory to force the app not
+       * to have an app ID, which would check different codepaths.
+       */
+      fake_desktop_file = g_key_file_new ();
+      loaded = g_key_file_load_from_data (fake_desktop_file, desktop_file_contents, -1, G_KEY_FILE_NONE, NULL);
+      g_assert_true (loaded);
 
-    appinfo = (GAppInfo*)g_desktop_app_info_new_from_keyfile (fake_desktop_file);
-    g_assert (appinfo != NULL);
+      appinfo = (GAppInfo*)g_desktop_app_info_new_from_keyfile (fake_desktop_file);
+      g_assert (appinfo != NULL);
 
-    test_launch_for_app_info (appinfo);
+      test_launch_for_app_info (appinfo);
 
-    g_free (desktop_file_contents);
-    g_object_unref (appinfo);
-    g_key_file_unref (fake_desktop_file);
-  }
+      g_free (desktop_file_contents);
+      g_object_unref (appinfo);
+      g_key_file_unref (fake_desktop_file);
+    }
 
   g_free (exec_line_variants[1]);
   g_free (exec_line_variants[0]);
