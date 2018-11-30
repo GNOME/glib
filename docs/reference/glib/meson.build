@@ -36,6 +36,7 @@ if get_option('gtk_doc')
     'glib-init.h',
     'gconstructor.h',
     'valgrind.h',
+    'gutilsprivate.h',
     'gvalgrind.h',
   ]
 

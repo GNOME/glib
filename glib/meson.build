@@ -199,6 +199,7 @@ glib_sources = files(
   'gunidecomp.c',
   'gurifuncs.c',
   'gutils.c',
+  'gutilsprivate.h',
   'guuid.c',
   'gvariant.c',
   'gvariant-core.c',

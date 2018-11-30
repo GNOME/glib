@@ -29,6 +29,7 @@
 #include "config.h"
 
 #include "gutils.h"
+#include "gutilsprivate.h"
 
 #include <stdarg.h>
 #include <stdlib.h>
@@ -1175,6 +1176,113 @@ g_set_application_name (const gchar *application_name)
 
   if (already_set)
     g_warning ("g_set_application_name() called multiple times");
+}
+
+/* Set @global_str to a copy of @new_value if it’s currently unset or has a
+ * different value. If its current value matches @new_value, do nothing. If
+ * replaced, we have to leak the old value as client code could still have
+ * pointers to it. */
+static void
+set_str_if_different (gchar       **global_str,
+                      const gchar  *type,
+                      const gchar  *new_value)
+{
+  if (*global_str == NULL ||
+      !g_str_equal (new_value, *global_str))
+    {
+      g_debug ("g_set_user_dirs: Setting %s to %s", type, new_value);
+
+      /* We have to leak the old value, as user code could be retaining pointers
+       * to it. */
+      *global_str = g_strdup (new_value);
+    }
+}
+
+static void
+set_strv_if_different (gchar                ***global_strv,
+                       const gchar            *type,
+                       const gchar  * const   *new_value)
+{
+  if (*global_strv == NULL ||
+      !g_strv_equal (new_value, (const gchar * const *) *global_strv))
+    {
+      gchar *new_value_str = g_strjoinv (":", (gchar **) new_value);
+      g_debug ("g_set_user_dirs: Setting %s to %s", type, new_value_str);
+      g_free (new_value_str);
+
+      /* We have to leak the old value, as user code could be retaining pointers
+       * to it. */
+      *global_strv = g_strdupv ((gchar **) new_value);
+    }
+}
+
+/*
+ * g_set_user_dirs:
+ * @first_dir_type: Type of the first directory to set
+ * @...: Value to set the first directory to, followed by additional type/value
+ *    pairs, followed by %NULL
+ *
+ * Set one or more ‘user’ directories to custom values. This is intended to be
+ * used by test code (particularly with the %G_TEST_OPTION_ISOLATE_DIRS option)
+ * to override the values returned by the following functions, so that test
+ * code can be run without touching an installed system and user data:
+ *
+ *  - g_get_home_dir() — use type `HOME`, pass a string
+ *  - g_get_user_cache_dir() — use type `XDG_CACHE_HOME`, pass a string
+ *  - g_get_system_config_dirs() — use type `XDG_CONFIG_DIRS`, pass a
+ *    %NULL-terminated string array
+ *  - g_get_user_config_dir() — use type `XDG_CONFIG_HOME`, pass a string
+ *  - g_get_system_data_dirs() — use type `XDG_DATA_DIRS`, pass a
+ *    %NULL-terminated string array
+ *  - g_get_user_data_dir() — use type `XDG_DATA_HOME`, pass a string
+ *  - g_get_user_runtime_dir() — use type `XDG_RUNTIME_DIR`, pass a string
+ *
+ * The list must be terminated with a %NULL type. All of the values must be
+ * non-%NULL — passing %NULL as a value won’t reset a directory. If a reference
+ * to a directory from the calling environment needs to be kept, copy it before
+ * the first call to g_set_user_dirs(). g_set_user_dirs() can be called multiple
+ * times.
+ *
+ * Since: 2.60
+ */
+/*< private > */
+void
+g_set_user_dirs (const gchar *first_dir_type,
+                 ...)
+{
+  va_list args;
+  const gchar *dir_type;
+
+  G_LOCK (g_utils_global);
+
+  va_start (args, first_dir_type);
+
+  for (dir_type = first_dir_type; dir_type != NULL; dir_type = va_arg (args, const gchar *))
+    {
+      gconstpointer dir_value = va_arg (args, gconstpointer);
+      g_assert (dir_value != NULL);
+
+      if (g_str_equal (dir_type, "HOME"))
+        set_str_if_different (&g_home_dir, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_CACHE_HOME"))
+        set_str_if_different (&g_user_cache_dir, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_CONFIG_DIRS"))
+        set_strv_if_different (&g_system_config_dirs, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_CONFIG_HOME"))
+        set_str_if_different (&g_user_config_dir, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_DATA_DIRS"))
+        set_strv_if_different (&g_system_data_dirs, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_DATA_HOME"))
+        set_str_if_different (&g_user_data_dir, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_RUNTIME_DIR"))
+        set_str_if_different (&g_user_runtime_dir, dir_type, dir_value);
+      else
+        g_assert_not_reached ();
+    }
+
+  va_end (args);
+
+  G_UNLOCK (g_utils_global);
 }
 
 static gchar *
