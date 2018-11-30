@@ -3,4 +3,7 @@
   <gresource prefix="/auto_loaded">
     <file>test1.txt</file>
   </gresource>
+  <gresource prefix="/big_prefix">
+    <file>gresource-big-test.txt</file>
+  </gresource>
 </gresources>
