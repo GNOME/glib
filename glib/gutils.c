@@ -1696,7 +1696,7 @@ load_user_special_dirs (void)
  * that the latest on-disk version is used. Call this only
  * if you just changed the data on disk yourself.
  *
- * Due to threadsafety issues this may cause leaking of strings
+ * Due to thread safety issues this may cause leaking of strings
  * that were previously returned from g_get_user_special_dir()
  * that can't be freed. We ensure to only leak the data for
  * the directories that actually changed value though.
