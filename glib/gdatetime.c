@@ -3363,7 +3363,13 @@ g_date_time_format (GDateTime   *datetime,
                     const gchar *format)
 {
   GString  *outstr;
-  gboolean locale_is_utf8 = g_get_charset (NULL);
+  const gchar *charset;
+  /* Avoid conversions from locale charset to UTF-8 if charset is compatible
+   * with UTF-8 already. Check for UTF-8 and synonymous canonical names of
+   * ASCII. */
+  gboolean locale_is_utf8_compatible = g_get_charset (&charset) ||
+    g_strcmp0 ("ASCII", charset) == 0 ||
+    g_strcmp0 ("ANSI_X3.4-1968", charset) == 0;
 
   g_return_val_if_fail (datetime != NULL, NULL);
   g_return_val_if_fail (format != NULL, NULL);
@@ -3371,7 +3377,8 @@ g_date_time_format (GDateTime   *datetime,
 
   outstr = g_string_sized_new (strlen (format) * 2);
 
-  if (!g_date_time_format_utf8 (datetime, format, outstr, locale_is_utf8))
+  if (!g_date_time_format_utf8 (datetime, format, outstr,
+                                locale_is_utf8_compatible))
     {
       g_string_free (outstr, TRUE);
       return NULL;
