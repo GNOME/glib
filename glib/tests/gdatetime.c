@@ -1525,6 +1525,23 @@ test_non_utf8_printf (void)
   g_free (oldlocale);
 }
 
+/* Checks that it is possible to use format string that
+ * is unrepresentable in current locale charset. */
+static void
+test_format_unrepresentable (void)
+{
+  gchar *oldlocale = g_strdup (setlocale (LC_ALL, NULL));
+  setlocale (LC_ALL, "POSIX");
+
+  TEST_PRINTF ("ąśćł", "ąśćł");
+
+  /* We are using Unicode ratio symbol here, which is outside ASCII. */
+  TEST_PRINTF_TIME (23, 15, 0, "%H∶%M", "23∶15");
+
+  setlocale (LC_ALL, oldlocale);
+  g_free (oldlocale);
+}
+
 static void
 test_modifiers (void)
 {
@@ -2493,6 +2510,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
   g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
+  g_test_add_func ("/GDateTime/format_unrepresentable", test_format_unrepresentable);
   g_test_add_func ("/GDateTime/strftime", test_strftime);
   g_test_add_func ("/GDateTime/strftime/error_handling", test_GDateTime_strftime_error_handling);
   g_test_add_func ("/GDateTime/modifiers", test_modifiers);
