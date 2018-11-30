@@ -27,7 +27,6 @@
 #include <sys/time.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <glib/gstdio.h>
 #endif
 #include <string.h>
 #include <stdlib.h>
@@ -44,6 +43,7 @@
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
+#include <glib/gstdio.h>
 
 #include "gmain.h"
 #include "gpattern.h"
@@ -53,6 +53,7 @@
 #include "gslice.h"
 #include "gspawn.h"
 #include "glib-private.h"
+#include "gutilsprivate.h"
 
 
 /**
@@ -825,6 +826,9 @@ static const char * const g_test_result_names[] = {
 static int         test_log_fd = -1;
 static gboolean    test_mode_fatal = TRUE;
 static gboolean    g_test_run_once = TRUE;
+static gboolean    test_isolate_dirs = FALSE;
+static gchar      *test_isolate_dirs_tmpdir = NULL;
+static const gchar *test_tmpdir = NULL;
 static gboolean    test_run_list = FALSE;
 static gchar      *test_run_seedstr = NULL;
 G_LOCK_DEFINE_STATIC (test_run_rand);
@@ -1261,15 +1265,139 @@ parse_args (gint    *argc_p,
   *argc_p = e;
 }
 
+/* A fairly naive `rm -rf` implementation to clean up after unit tests. */
+static void
+rm_rf (const gchar *path)
+{
+  GDir *dir = NULL;
+  const gchar *entry;
+
+  dir = g_dir_open (path, 0, NULL);
+  if (dir == NULL)
+    {
+      /* Assume it’s a file. */
+      g_remove (path);
+      return;
+    }
+
+  while ((entry = g_dir_read_name (dir)) != NULL)
+    {
+      gchar *sub_path = g_build_filename (path, entry, NULL);
+      rm_rf (sub_path);
+      g_free (sub_path);
+    }
+
+  g_dir_close (dir);
+
+  g_rmdir (path);
+}
+
+/* Implement the %G_TEST_OPTION_ISOLATE_DIRS option, iff it’s enabled. Create
+ * a temporary directory for this unit test (disambiguated using @test_run_name)
+ * and use g_set_user_dirs() to point various XDG directories into it, without
+ * having to call setenv() in a process which potentially has threads running.
+ *
+ * Note that this is called for each unit test, and hence won’t have taken
+ * effect before g_test_run() is called in the unit test’s main(). Hence
+ * references to XDG variables in main() will not be using the temporary
+ * directory. */
+static gboolean
+test_do_isolate_dirs (GError **error)
+{
+  gchar *subdir = NULL;
+  gchar *home_dir = NULL, *cache_dir = NULL, *config_dir = NULL;
+  gchar *data_dir = NULL, *runtime_dir = NULL;
+  gchar *config_dirs[3];
+  gchar *data_dirs[3];
+
+  if (!test_isolate_dirs)
+    return TRUE;
+
+  /* The @test_run_name includes the test suites, so may be several directories
+   * deep. Add a `.dirs` directory to contain all the paths we create, and
+   * guarantee none of them clash with test paths below the current one — test
+   * paths may not contain components starting with `.`. */
+  subdir = g_build_filename (test_tmpdir, test_run_name, ".dirs", NULL);
+
+  /* We have to create the runtime directory (because it must be bound to
+   * the session lifetime, which we consider to be the lifetime of the unit
+   * test for testing purposes — see
+   * https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html.
+   * We don’t need to create the other directories — the specification
+   * requires that client code create them if they don’t exist. Not creating
+   * them automatically is a good test of clients’ adherence to the spec
+   * and error handling of missing directories. */
+  runtime_dir = g_build_filename (subdir, "runtime", NULL);
+  if (g_mkdir_with_parents (runtime_dir, 0700) != 0)
+    {
+      gint saved_errno = errno;
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (saved_errno),
+                   "Failed to create XDG_RUNTIME_DIR ‘%s’: %s",
+                  runtime_dir, g_strerror (saved_errno));
+      g_free (runtime_dir);
+      g_free (subdir);
+      return FALSE;
+    }
+
+  home_dir = g_build_filename (subdir, "home", NULL);
+  cache_dir = g_build_filename (subdir, "cache", NULL);
+  config_dir = g_build_filename (subdir, "config", NULL);
+  data_dir = g_build_filename (subdir, "data", NULL);
+
+  config_dirs[0] = g_build_filename (subdir, "system-config1", NULL);
+  config_dirs[1] = g_build_filename (subdir, "system-config2", NULL);
+  config_dirs[2] = NULL;
+
+  data_dirs[0] = g_build_filename (subdir, "system-data1", NULL);
+  data_dirs[1] = g_build_filename (subdir, "system-data2", NULL);
+  data_dirs[2] = NULL;
+
+  /* Remember to update the documentation for %G_TEST_OPTION_ISOLATE_DIRS if
+   * this list changes. */
+  g_set_user_dirs ("HOME", home_dir,
+                   "XDG_CACHE_HOME", cache_dir,
+                   "XDG_CONFIG_DIRS", config_dirs,
+                   "XDG_CONFIG_HOME", config_dir,
+                   "XDG_DATA_DIRS", data_dirs,
+                   "XDG_DATA_HOME", data_dir,
+                   "XDG_RUNTIME_DIR", runtime_dir,
+                   NULL);
+
+  g_free (runtime_dir);
+  g_free (data_dir);
+  g_free (config_dir);
+  g_free (cache_dir);
+  g_free (home_dir);
+  g_free (data_dirs[1]);
+  g_free (data_dirs[0]);
+  g_free (config_dirs[1]);
+  g_free (config_dirs[0]);
+  g_free (subdir);
+
+  return TRUE;
+}
+
+/* Clean up after test_do_isolate_dirs(). */
+static void
+test_rm_isolate_dirs (void)
+{
+  gchar *subdir = NULL;
+
+  if (!test_isolate_dirs)
+    return;
+
+  subdir = g_build_filename (test_tmpdir, test_run_name, NULL);
+  rm_rf (subdir);
+  g_free (subdir);
+}
+
 /**
  * g_test_init:
  * @argc: Address of the @argc parameter of the main() function.
  *        Changed if any arguments were handled.
  * @argv: Address of the @argv parameter of main().
  *        Any parameters understood by g_test_init() stripped before return.
- * @...: %NULL-terminated list of special options. Currently the only
- *       defined option is `"no_g_set_prgname"`, which
- *       will cause g_test_init() to not call g_set_prgname().
+ * @...: %NULL-terminated list of special options, documented below.
  *
  * Initialize the GLib testing framework, e.g. by seeding the
  * test random number generator, the name for g_get_prgname()
@@ -1303,6 +1431,14 @@ parse_args (gint    *argc_p,
  *
  * - `--debug-log`: Debug test logging output.
  *
+ * Options which can be passed to @... are:
+ *
+ *  - `"no_g_set_prgname"`: Causes g_test_init() to not call g_set_prgname().
+ *  - %G_TEST_OPTION_ISOLATE_DIRS: Creates a unique temporary directory for each
+ *    unit test and uses g_set_user_dirs() to set XDG directories to point into
+ *    that temporary directory for the duration of the unit test. See the
+ *    documentation for %G_TEST_OPTION_ISOLATE_DIRS.
+ *
  * Since 2.58, if tests are compiled with `G_DISABLE_ASSERT` defined,
  * g_test_init() will print an error and exit. This is to prevent no-op tests
  * from being executed, as g_assert() is commonly (erroneously) used in unit
@@ -1335,6 +1471,8 @@ void
     {
       if (g_strcmp0 (option, "no_g_set_prgname") == 0)
         no_g_set_prgname = TRUE;
+      else if (g_strcmp0 (option, G_TEST_OPTION_ISOLATE_DIRS) == 0)
+        test_isolate_dirs = TRUE;
     }
   va_end (args);
 
@@ -1347,6 +1485,77 @@ void
 
   if (!g_get_prgname() && !no_g_set_prgname)
     g_set_prgname ((*argv)[0]);
+
+  /* Set up the temporary directory for isolating the test. We have to do this
+   * early, as we want the return values from g_get_user_data_dir() (and
+   * friends) to return subdirectories of the temporary directory throughout
+   * the setup function, test, and teardown function, for each unit test.
+   * See test_do_isolate_dirs().
+   *
+   * The directory is deleted at the bottom of g_test_run().
+   *
+   * Rather than setting the XDG_* environment variables we use a new
+   * G_TEST_TMPDIR variable which gives the top-level temporary directory. This
+   * allows test subprocesses to reuse the same temporary directory when
+   * g_test_init() is called in them. */
+  if (test_isolate_dirs)
+    {
+      if (g_getenv ("G_TEST_TMPDIR") == NULL)
+        {
+          gchar *test_prgname = NULL;
+          gchar *tmpl = NULL;
+          GError *local_error = NULL;
+
+          test_prgname = g_path_get_basename (g_get_prgname ());
+          if (*test_prgname == '\0')
+            test_prgname = g_strdup ("unknown");
+          tmpl = g_strdup_printf ("test_%s_XXXXXX", test_prgname);
+          g_free (test_prgname);
+
+          test_isolate_dirs_tmpdir = g_dir_make_tmp (tmpl, &local_error);
+          if (local_error != NULL)
+            {
+              g_printerr ("%s: Failed to create temporary directory: %s\n",
+                          (*argv)[0], local_error->message);
+              g_error_free (local_error);
+              exit (1);
+            }
+          g_free (tmpl);
+
+          /* Propagate the temporary directory to subprocesses. */
+          g_setenv ("G_TEST_TMPDIR", test_isolate_dirs_tmpdir, TRUE);
+
+          /* And clear the traditional environment variables so subprocesses
+           * spawned by the code under test can’t trash anything. If a test
+           * spawns a process, the test is responsible for propagating
+           * appropriate environment variables.
+           *
+           * We assume that any in-process code will use g_get_user_data_dir()
+           * and friends, rather than getenv() directly.
+           *
+           * We set them to ‘/dev/null’ as that should fairly obviously not
+           * accidentally work, and should be fairly greppable. */
+            {
+              const gchar *overridden_environment_variables[] =
+                {
+                  "HOME",
+                  "XDG_CACHE_HOME",
+                  "XDG_CONFIG_DIRS",
+                  "XDG_CONFIG_HOME",
+                  "XDG_DATA_DIRS",
+                  "XDG_DATA_HOME",
+                  "XDG_RUNTIME_DIR",
+                };
+              gsize i;
+
+              for (i = 0; i < G_N_ELEMENTS (overridden_environment_variables); i++)
+                g_setenv (overridden_environment_variables[i], "/dev/null", TRUE);
+            }
+        }
+
+      /* Cache this for the remainder of this process’ lifetime. */
+      test_tmpdir = g_getenv ("G_TEST_TMPDIR");
+    }
 
   /* sanity check */
   if (test_tap_log)
@@ -1797,6 +2006,14 @@ g_test_run (void)
 {
   if (g_test_run_suite (g_test_get_root()) != 0)
     return 1;
+
+  /* Clean up the temporary directory. */
+  if (test_isolate_dirs_tmpdir != NULL)
+    {
+      rm_rf (test_isolate_dirs_tmpdir);
+      g_free (test_isolate_dirs_tmpdir);
+      test_isolate_dirs_tmpdir = NULL;
+    }
 
   /* 77 is special to Automake's default driver, but not Automake's TAP driver
    * or Perl's prove(1) TAP driver. */
@@ -2362,25 +2579,38 @@ test_case_run (GTestCase *tc)
         g_test_skip ("by request (-s option)");
       else
         {
-          g_timer_start (test_run_timer);
-          fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
-          test_run_seed (test_run_seedstr);
-          if (tc->fixture_setup)
-            tc->fixture_setup (fixture, tc->test_data);
-          tc->fixture_test (fixture, tc->test_data);
-          test_trap_clear();
-          while (test_destroy_queue)
+          GError *local_error = NULL;
+
+          if (!test_do_isolate_dirs (&local_error))
             {
-              DestroyEntry *dentry = test_destroy_queue;
-              test_destroy_queue = dentry->next;
-              dentry->destroy_func (dentry->destroy_data);
-              g_slice_free (DestroyEntry, dentry);
+              g_test_log (G_TEST_LOG_ERROR, local_error->message, NULL, 0, NULL);
+              g_test_fail ();
+              g_error_free (local_error);
             }
-          if (tc->fixture_teardown)
-            tc->fixture_teardown (fixture, tc->test_data);
-          if (tc->fixture_size)
-            g_free (fixture);
-          g_timer_stop (test_run_timer);
+          else
+            {
+              g_timer_start (test_run_timer);
+              fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
+              test_run_seed (test_run_seedstr);
+              if (tc->fixture_setup)
+                tc->fixture_setup (fixture, tc->test_data);
+              tc->fixture_test (fixture, tc->test_data);
+              test_trap_clear();
+              while (test_destroy_queue)
+                {
+                  DestroyEntry *dentry = test_destroy_queue;
+                  test_destroy_queue = dentry->next;
+                  dentry->destroy_func (dentry->destroy_data);
+                  g_slice_free (DestroyEntry, dentry);
+                }
+              if (tc->fixture_teardown)
+                tc->fixture_teardown (fixture, tc->test_data);
+              if (tc->fixture_size)
+                g_free (fixture);
+              g_timer_stop (test_run_timer);
+            }
+
+          test_rm_isolate_dirs ();
         }
       success = test_run_success;
       test_run_success = G_TEST_RUN_FAILURE;
