@@ -230,7 +230,25 @@ gboolean g_test_failed                  (void);
 GLIB_AVAILABLE_IN_2_38
 void    g_test_set_nonfatal_assertions  (void);
 
-/* hook up a test with fixture under test path */
+/**
+ * g_test_add:
+ * @testpath:  The test path for a new test case.
+ * @Fixture:   The type of a fixture data structure.
+ * @tdata:     Data argument for the test functions.
+ * @fsetup:    The function to set up the fixture data.
+ * @ftest:     The actual test function.
+ * @fteardown: The function to tear down the fixture data.
+ *
+ * Hook up a new test case at @testpath, similar to g_test_add_func().
+ * A fixture data structure with setup and teardown functions may be provided,
+ * similar to g_test_create_case().
+ *
+ * g_test_add() is implemented as a macro, so that the fsetup(), ftest() and
+ * fteardown() callbacks can expect a @Fixture pointer as their first argument
+ * in a type safe manner. They otherwise have type #GTestFixtureFunc.
+ *
+ * Since: 2.16
+ */
 #define g_test_add(testpath, Fixture, tdata, fsetup, ftest, fteardown) \
 					G_STMT_START {			\
                                          void (*add_vtable) (const char*,       \
