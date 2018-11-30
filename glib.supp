@@ -543,3 +543,23 @@
 	...
 	fun:g_object_new_valist
 }
+
+# g_get_system_data_dirs() caches a one-time allocation
+{
+	g_get_system_data_dirs
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:g_build_system_data_dirs
+	fun:g_get_system_data_dirs
+}
+
+# g_get_user_data_dir() caches a one-time allocation
+{
+	g_get_user_data_dir
+	Memcheck:Leak
+	fun:realloc
+	...
+	fun:g_build_user_data_dir
+	fun:g_get_user_data_dir
+}
