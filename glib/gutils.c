@@ -555,13 +555,13 @@ typedef struct
   gchar *home_dir;
 } UserDatabaseEntry;
 
+/* These must all be read/written with @g_utils_global held. */
 static  gchar   *g_user_data_dir = NULL;
 static  gchar  **g_system_data_dirs = NULL;
 static  gchar   *g_user_cache_dir = NULL;
 static  gchar   *g_user_config_dir = NULL;
 static  gchar   *g_user_runtime_dir = NULL;
 static  gchar  **g_system_config_dirs = NULL;
-
 static  gchar  **g_user_special_dirs = NULL;
 
 /* fifteen minutes of fame for everybody */
@@ -823,6 +823,8 @@ static gchar *g_home_dir = NULL;  /* (owned) (nullable before initialised) */
 const gchar *
 g_get_home_dir (void)
 {
+  const gchar *home_dir;
+
   G_LOCK (g_utils_global);
 
   if (g_home_dir == NULL)
@@ -905,9 +907,11 @@ g_get_home_dir (void)
       g_home_dir = g_steal_pointer (&tmp);
     }
 
+  home_dir = g_home_dir;
+
   G_UNLOCK (g_utils_global);
 
-  return g_home_dir;
+  return home_dir;
 }
 
 /**
@@ -1223,14 +1227,17 @@ g_build_user_data_dir (void)
 const gchar *
 g_get_user_data_dir (void)
 {
+  const gchar *user_data_dir;
+
   G_LOCK (g_utils_global);
 
   if (g_user_data_dir == NULL)
     g_user_data_dir = g_build_user_data_dir ();
+  user_data_dir = g_user_data_dir;
 
   G_UNLOCK (g_utils_global);
 
-  return g_user_data_dir;
+  return user_data_dir;
 }
 
 static gchar *
@@ -1283,14 +1290,17 @@ g_build_user_config_dir (void)
 const gchar *
 g_get_user_config_dir (void)
 {
+  const gchar *user_config_dir;
+
   G_LOCK (g_utils_global);
 
   if (g_user_config_dir == NULL)
     g_user_config_dir = g_build_user_config_dir ();
+  user_config_dir = g_user_config_dir;
 
   G_UNLOCK (g_utils_global);
 
-  return g_user_config_dir;
+  return user_config_dir;
 }
 
 static gchar *
@@ -1342,14 +1352,17 @@ g_build_user_cache_dir (void)
 const gchar *
 g_get_user_cache_dir (void)
 {
+  const gchar *user_cache_dir;
+
   G_LOCK (g_utils_global);
 
   if (g_user_cache_dir == NULL)
     g_user_cache_dir = g_build_user_cache_dir ();
+  user_cache_dir = g_user_cache_dir;
 
   G_UNLOCK (g_utils_global);
 
-  return g_user_cache_dir;
+  return user_cache_dir;
 }
 
 static gchar *
@@ -1402,14 +1415,17 @@ g_build_user_runtime_dir (void)
 const gchar *
 g_get_user_runtime_dir (void)
 {
+  const gchar *user_runtime_dir;
+
   G_LOCK (g_utils_global);
 
   if (g_user_runtime_dir == NULL)
     g_user_runtime_dir = g_build_user_runtime_dir ();
+  user_runtime_dir = g_user_runtime_dir;
 
   G_UNLOCK (g_utils_global);
 
-  return g_user_runtime_dir;
+  return user_runtime_dir;
 }
 
 #ifdef HAVE_CARBON
@@ -1774,6 +1790,8 @@ g_reload_user_special_dirs_cache (void)
 const gchar *
 g_get_user_special_dir (GUserDirectory directory)
 {
+  const gchar *user_special_dir;
+
   g_return_val_if_fail (directory >= G_USER_DIRECTORY_DESKTOP &&
                         directory < G_USER_N_DIRECTORIES, NULL);
 
@@ -1789,10 +1807,11 @@ g_get_user_special_dir (GUserDirectory directory)
       if (g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] == NULL)
         g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = g_build_filename (g_get_home_dir (), "Desktop", NULL);
     }
+  user_special_dir = g_user_special_dirs[directory];
 
   G_UNLOCK (g_utils_global);
 
-  return g_user_special_dirs[directory];
+  return user_special_dir;
 }
 
 #ifdef G_OS_WIN32
@@ -2066,14 +2085,17 @@ g_build_system_data_dirs (void)
 const gchar * const * 
 g_get_system_data_dirs (void)
 {
+  const gchar * const *system_data_dirs;
+
   G_LOCK (g_utils_global);
 
   if (g_system_data_dirs == NULL)
     g_system_data_dirs = g_build_system_data_dirs ();
+  system_data_dirs = (const gchar * const *) g_system_data_dirs;
 
   G_UNLOCK (g_utils_global);
 
-  return (const gchar * const *) g_system_data_dirs;
+  return system_data_dirs;
 }
 
 static gchar **
@@ -2138,14 +2160,17 @@ g_build_system_config_dirs (void)
 const gchar * const *
 g_get_system_config_dirs (void)
 {
+  const gchar * const *system_config_dirs;
+
   G_LOCK (g_utils_global);
 
   if (g_system_config_dirs == NULL)
     g_system_config_dirs = g_build_system_config_dirs ();
+  system_config_dirs = (const gchar * const *) g_system_config_dirs;
 
   G_UNLOCK (g_utils_global);
 
-  return (const gchar * const *) g_system_config_dirs;
+  return system_config_dirs;
 }
 
 /**
