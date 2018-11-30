@@ -64,6 +64,7 @@ IGNORE_HFILES = \
 	glib-init.h		\
 	gconstructor.h		\
 	valgrind.h		\
+	gutilsprivate.h		\
 	gvalgrind.h		\
 	$(NULL)
 
