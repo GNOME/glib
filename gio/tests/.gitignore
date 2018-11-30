@@ -141,8 +141,5 @@ unix-fd
 unix-streams
 vfs
 volumemonitor
-xdgconfighome
-xdgdatadir
-xdgdatahome
 xgen-gio
 xgen-giosrc.c
