@@ -11,7 +11,7 @@ setup (Fixture       *fixture,
        gconstpointer  user_data)
 {
   fixture->applications_dir = g_build_filename (g_get_user_data_dir (), "applications", NULL);
-  g_assert_cmpint (g_mkdir (fixture->applications_dir, 0755), ==, 0);
+  g_assert_cmpint (g_mkdir_with_parents (fixture->applications_dir, 0755), ==, 0);
 
   g_test_message ("Using data directory: %s", g_get_user_data_dir ());
 }
