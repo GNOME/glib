@@ -146,3 +146,4 @@ xdgdatadir
 xdgdatahome
 xgen-gio
 xgen-giosrc.c
+gresource-big-test.txt
