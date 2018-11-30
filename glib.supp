@@ -544,6 +544,26 @@
 	fun:g_object_new_valist
 }
 
+# g_set_user_dirs() deliberately leaks the previous cached g_get_user_*() values.
+{
+	g_set_user_dirs_str
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:set_str_if_different
+	fun:g_set_user_dirs
+}
+
+# g_set_user_dirs() deliberately leaks the previous cached g_get_user_*() values.
+{
+	g_set_user_dirs_strv
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:set_strv_if_different
+	fun:g_set_user_dirs
+}
+
 # g_get_system_data_dirs() caches a one-time allocation
 {
 	g_get_system_data_dirs
