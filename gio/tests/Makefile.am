@@ -358,9 +358,6 @@ uninstalled_test_extra_programs += \
 if !OS_COCOA
 test_extra_programs += apps
 test_programs += mimeapps
-clean-local: clean-mimeapps
-clean-mimeapps:
-	rm -rf xdgdatadir xdgdatahome xdgconfighome
 endif
 
 appinfo-test-gnome.desktop: appinfo-test-gnome.desktop.in Makefile
