@@ -3354,7 +3354,10 @@ g_date_time_format (GDateTime   *datetime,
                     const gchar *format)
 {
   GString  *outstr;
-  gboolean locale_is_utf8 = g_get_charset (NULL);
+  const gchar *charset;
+  gboolean locale_is_utf8 = g_get_charset (&charset) ||
+    g_strcmp0 ("ASCII", charset) == 0 ||
+    g_strcmp0 ("ANSI_X3.4-1968", charset) == 0;
 
   g_return_val_if_fail (datetime != NULL, NULL);
   g_return_val_if_fail (format != NULL, NULL);
