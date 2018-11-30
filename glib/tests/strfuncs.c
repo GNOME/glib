@@ -1507,6 +1507,34 @@ test_strv_contains (void)
   g_assert_false (g_strv_contains (strv_empty, ""));
 }
 
+/* Test g_strv_equal() works for various inputs. */
+static void
+test_strv_equal (void)
+{
+  const gchar *strv_empty[] = { NULL };
+  const gchar *strv_empty2[] = { NULL };
+  const gchar *strv_simple[] = { "hello", "you", NULL };
+  const gchar *strv_simple2[] = { "hello", "you", NULL };
+  const gchar *strv_simple_reordered[] = { "you", "hello", NULL };
+  const gchar *strv_simple_superset[] = { "hello", "you", "again", NULL };
+  const gchar *strv_another[] = { "not", "a", "coded", "message", NULL };
+
+  g_assert_true (g_strv_equal (strv_empty, strv_empty));
+  g_assert_true (g_strv_equal (strv_empty, strv_empty2));
+  g_assert_true (g_strv_equal (strv_empty2, strv_empty));
+  g_assert_false (g_strv_equal (strv_empty, strv_simple));
+  g_assert_false (g_strv_equal (strv_simple, strv_empty));
+  g_assert_true (g_strv_equal (strv_simple, strv_simple));
+  g_assert_true (g_strv_equal (strv_simple, strv_simple2));
+  g_assert_true (g_strv_equal (strv_simple2, strv_simple));
+  g_assert_false (g_strv_equal (strv_simple, strv_simple_reordered));
+  g_assert_false (g_strv_equal (strv_simple_reordered, strv_simple));
+  g_assert_false (g_strv_equal (strv_simple, strv_simple_superset));
+  g_assert_false (g_strv_equal (strv_simple_superset, strv_simple));
+  g_assert_false (g_strv_equal (strv_simple, strv_another));
+  g_assert_false (g_strv_equal (strv_another, strv_simple));
+}
+
 typedef enum
   {
     SIGNED,
@@ -1761,6 +1789,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strup", test_strup);
   g_test_add_func ("/strfuncs/transliteration", test_transliteration);
   g_test_add_func ("/strfuncs/strv-contains", test_strv_contains);
+  g_test_add_func ("/strfuncs/strv-equal", test_strv_equal);
   g_test_add_func ("/strfuncs/ascii-string-to-num/usual", test_ascii_string_to_number_usual);
   g_test_add_func ("/strfuncs/ascii-string-to-num/pathological", test_ascii_string_to_number_pathological);
 
