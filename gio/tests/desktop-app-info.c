@@ -365,7 +365,7 @@ test_extra_getters (void)
   g_setenv ("LANGUAGE", "de_DE.UTF8", TRUE);
   setlocale (LC_ALL, "");
 
-  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL));
+  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL));
   g_assert (appinfo != NULL);
 
   g_assert (g_desktop_app_info_has_key (appinfo, "Terminal"));
@@ -814,7 +814,7 @@ test_launch_as_manager (void)
       return;
     }
 
-  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
   g_assert_nonnull (appinfo);
 
@@ -841,14 +841,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  const gchar *build_dir;
   gint result;
-
-  /* With Meson build we need to change into right directory, so that the
-   * appinfo-test binary can be found. */
-  build_dir = g_getenv ("G_TEST_BUILDDIR");
-  if (build_dir)
-    g_chdir (build_dir);
 
   g_test_init (&argc, &argv, NULL);
 
