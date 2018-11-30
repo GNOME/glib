@@ -2084,6 +2084,10 @@ g_test_set_nonfatal_assertions (void)
  * the test will be skipped by default, and only run if explicitly
  * required via the `-p` command-line option or g_test_trap_subprocess().
  *
+ * No component of @testpath may start with a dot (`.`).
+ * TODO: Enforce this, document it better, check Debian codesearch for anything
+ * which might violate it.
+ *
  * Since: 2.16
  */
 void
