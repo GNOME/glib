@@ -812,6 +812,50 @@ test_uri_file (void)
   g_resource_unref (resource);
 }
 
+static void
+test_resource_64k (void)
+{
+  GError *error = NULL;
+  gboolean found;
+  gsize size;
+  guint32 flags;
+  GBytes *data;
+  gchar **tokens;
+
+  found = g_resources_get_info ("/big_prefix/gresource-big-test.txt",
+				G_RESOURCE_LOOKUP_FLAGS_NONE,
+				&size, &flags, &error);
+  g_assert_true (found);
+  g_assert_no_error (error);
+
+  /* Check size: 100 of all lower case letters + newline char +
+   *             100 all upper case letters + newline char +
+   *             100 of all numbers between 0 to 9 + newline char
+   *             (for 12 iterations)
+   */
+
+  g_assert_cmpint (size, ==, (26 + 26 + 10) * (100 + 1) * 12);
+  g_assert_cmpuint (flags, ==, 0);
+  data = g_resources_lookup_data ("/big_prefix/gresource-big-test.txt",
+				  G_RESOURCE_LOOKUP_FLAGS_NONE,
+				  &error);
+  g_assert_nonnull (data);
+  g_assert_no_error (error);
+  size = g_bytes_get_size (data);
+
+  g_assert_cmpint (size, ==, (26 + 26 + 10) * (100 + 1) * 12);
+  tokens = g_strsplit ((const gchar *) g_bytes_get_data (data, NULL), "\n", -1);
+
+  /* check tokens[x] == entry at gresource-big-test.txt's line, where x = line - 1 */
+  g_assert_cmpstr (tokens[0], ==, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+  g_assert_cmpstr (tokens[27], ==, "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+  g_assert_cmpstr (tokens[183], ==, "7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777");
+  g_assert_cmpstr (tokens[600], ==, "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+  g_assert_cmpstr (tokens[742], ==, "8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888");
+  g_strfreev (tokens);
+  g_bytes_unref (data);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -836,6 +880,7 @@ main (int   argc,
 #endif
   g_test_add_func ("/resource/uri/query-info", test_uri_query_info);
   g_test_add_func ("/resource/uri/file", test_uri_file);
+  g_test_add_func ("/resource/64k", test_resource_64k);
 
   return g_test_run();
 }
