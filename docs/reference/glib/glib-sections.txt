@@ -3102,6 +3102,7 @@ g_compute_hmac_for_bytes
 <SECTION>
 <TITLE>Testing</TITLE>
 <FILE>testing</FILE>
+G_TEST_OPTION_ISOLATE_DIRS
 g_test_minimized_result
 g_test_maximized_result
 g_test_init
