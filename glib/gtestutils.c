@@ -1914,6 +1914,7 @@ g_test_add_vtable (const char       *testpath,
   g_return_if_fail (testpath != NULL);
   g_return_if_fail (g_path_is_absolute (testpath));
   g_return_if_fail (fixture_test_func != NULL);
+  g_return_if_fail (!test_isolate_dirs || strstr (testpath, "/.") == NULL);
 
   suite = g_test_get_root();
   segments = g_strsplit (testpath, "/", -1);
@@ -2102,6 +2103,10 @@ g_test_set_nonfatal_assertions (void)
  * the test will be skipped by default, and only run if explicitly
  * required via the `-p` command-line option or g_test_trap_subprocess().
  *
+ * No component of @testpath may start with a dot (`.`) if the
+ * %G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to
+ * do so even if it isn’t.
+ *
  * Since: 2.16
  */
 void
@@ -2139,6 +2144,10 @@ g_test_add_func (const char *testpath,
  * If @testpath includes the component "subprocess" anywhere in it,
  * the test will be skipped by default, and only run if explicitly
  * required via the `-p` command-line option or g_test_trap_subprocess().
+ *
+ * No component of @testpath may start with a dot (`.`) if the
+ * %G_TEST_OPTION_ISOLATE_DIRS option is being used; and it is recommended to
+ * do so even if it isn’t.
  *
  * Since: 2.16
  */
