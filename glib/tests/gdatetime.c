@@ -1538,6 +1538,12 @@ test_format_unrepresentable (void)
   /* We are using Unicode ratio symbol here, which is outside ASCII. */
   TEST_PRINTF_TIME (23, 15, 0, "%H∶%M", "23∶15");
 
+  /* Test again, this time in locale with non ASCII charset. */
+  if (setlocale (LC_ALL, "pl_PL.ISO-8859-2") != NULL)
+    TEST_PRINTF_TIME (23, 15, 0, "%H∶%M", "23∶15");
+  else
+    g_test_skip ("locale pl_PL.ISO-8859-2 not available, skipping test");
+
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
 }
