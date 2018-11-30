@@ -68,21 +68,6 @@ static CmdlineTest cmdline_tests[] =
   {"foo '/bar/summer'\\''09 tours.pdf'", 2, {"foo", "/bar/summer'09 tours.pdf", NULL}, -1}
 };
 
-static gboolean
-strv_equal (gchar **a, gchar **b)
-{
-  gint i;
-
-  if (g_strv_length (a) != g_strv_length (b))
-    return FALSE;
-
-  for (i = 0; a[i]; i++)
-    if (g_strcmp0 (a[i], b[i]) != 0)
-      return FALSE;
-
-  return TRUE;
-}
-
 static void
 do_cmdline_test (gconstpointer d)
 {
@@ -99,7 +84,7 @@ do_cmdline_test (gconstpointer d)
     {
       g_assert (res);
       g_assert_cmpint (argc, ==, test->argc);
-      g_assert (strv_equal (argv, (gchar **)test->argv));
+      g_assert (g_strv_equal ((const gchar * const *) argv, (const gchar * const *) test->argv));
       g_assert_no_error (err);
     }
   else
