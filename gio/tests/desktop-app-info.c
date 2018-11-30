@@ -27,9 +27,7 @@
 #include <string.h>
 #include <unistd.h>
 
-static char *basedir;
-
-static GAppInfo * 
+static GAppInfo *
 create_app_info (const char *name)
 {
   GError *error;
@@ -66,7 +64,7 @@ test_delete (void)
   id = g_app_info_get_id (info);
   g_assert_nonnull (id);
 
-  filename = g_build_filename (basedir, "applications", id, NULL);
+  filename = g_build_filename (g_get_user_data_dir (), "applications", id, NULL);
 
   res = g_file_test (filename, G_FILE_TEST_EXISTS);
   g_assert_true (res);
@@ -276,81 +274,6 @@ test_last_used (void)
   g_object_unref (info1);
   g_object_unref (info2);
   g_object_unref (default_app);
-}
-
-static gboolean
-cleanup_dir_recurse (GFile   *parent,
-                     GFile   *root,
-                     GError **error)
-{
-  gboolean ret = FALSE;
-  GFileEnumerator *enumerator;
-  GError *local_error = NULL;
-
-  g_assert (root != NULL);
-
-  enumerator =
-    g_file_enumerate_children (parent, "*",
-                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL,
-                               &local_error);
-  if (!enumerator)
-    {
-      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-        {
-          g_clear_error (&local_error);
-          ret = TRUE;
-        }
-      goto out;
-    }
-
-  while (TRUE)
-    {
-      GFile *child;
-      GFileInfo *finfo;
-      char *relative_path;
-
-      if (!g_file_enumerator_iterate (enumerator, &finfo, &child, NULL, error))
-        goto out;
-      if (!finfo)
-        break;
-        
-      relative_path = g_file_get_relative_path (root, child);
-      g_assert (relative_path != NULL);
-      g_free (relative_path);
-
-      if (g_file_info_get_file_type (finfo) == G_FILE_TYPE_DIRECTORY)
-        {
-          if (!cleanup_dir_recurse (child, root, error))
-            goto out;
-        }
-
-      if (!g_file_delete (child, NULL, error))
-        goto out;
-    }
-
-  ret = TRUE;
- out:
-  g_clear_object (&enumerator);
-
-  return ret;
-}
-
-static void
-cleanup_subdirs (const char *base_dir)
-{
-  GFile *base, *file;
-  GError *error = NULL;
- 
-  base = g_file_new_for_path (base_dir);  
-  file = g_file_get_child (base, "applications");
-  (void) cleanup_dir_recurse (file, file, &error);
-  g_assert_no_error (error);
-  g_object_unref (file);
-  file = g_file_get_child (base, "mime");
-  (void) cleanup_dir_recurse (file, file, &error);
-  g_assert_no_error (error);
-  g_object_unref (file);
-  g_object_unref (base);
 }
 
 static void
@@ -841,13 +764,12 @@ int
 main (int   argc,
       char *argv[])
 {
-  gint result;
+  /* While we use %G_TEST_OPTION_ISOLATE_DIRS to create temporary directories
+   * for each of the tests, we want to use the system MIME registry, assuming
+   * that it exists and correctly has shared-mime-info installed. */
+  g_content_type_set_mime_dirs (NULL);
 
-  g_test_init (&argc, &argv, NULL);
-
-  basedir = g_get_current_dir ();
-  g_setenv ("XDG_DATA_HOME", basedir, TRUE);
-  cleanup_subdirs (basedir);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/desktop-app-info/delete", test_delete);
   g_test_add_func ("/desktop-app-info/default", test_default);
@@ -860,9 +782,5 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
 
-  result = g_test_run ();
-
-  cleanup_subdirs (basedir);
-
-  return result;
+  return g_test_run ();
 }
