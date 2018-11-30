@@ -6,6 +6,6 @@ X-GNOME-FullName=example
 X-GNOME-FullName[de]=Beispiel
 Comment=GAppInfo example
 Comment[de]=GAppInfo Beispiel
-Exec=./appinfo-test --option
+Exec=@installed_tests_dir@/appinfo-test --option
 TryExec=does-not-exist
 Icon=testicon

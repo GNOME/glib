@@ -339,10 +339,6 @@ dist_test_data += \
 
 dist_test_data += \
 	appinfo-test-actions.desktop		\
-	appinfo-test-gnome.desktop		\
-	appinfo-test-notgnome.desktop		\
-	appinfo-test.desktop			\
-	appinfo-test2.desktop			\
 	file.c					\
 	org.gtk.test.dbusappinfo.desktop	\
 	x-content/image-dcf/DCIM/Camera/20130831_203925.jpg \
@@ -366,6 +362,35 @@ clean-local: clean-mimeapps
 clean-mimeapps:
 	rm -rf xdgdatadir xdgdatahome xdgconfighome
 endif
+
+appinfo-test-gnome.desktop: appinfo-test-gnome.desktop.in Makefile
+	$(AM_V_GEN)$(SED) \
+		-e 's|[@]installed_tests_dir[@]|$(installed_testdir)|g' \
+		$< > $@
+appinfo-test-notgnome.desktop: appinfo-test-notgnome.desktop.in Makefile
+	$(AM_V_GEN)$(SED) \
+		-e 's|[@]installed_tests_dir[@]|$(installed_testdir)|g' \
+		$< > $@
+appinfo-test.desktop: appinfo-test.desktop.in Makefile
+	$(AM_V_GEN)$(SED) \
+		-e 's|[@]installed_tests_dir[@]|$(installed_testdir)|g' \
+		$< > $@
+appinfo-test2.desktop: appinfo-test2.desktop.in Makefile
+	$(AM_V_GEN)$(SED) \
+		-e 's|[@]installed_tests_dir[@]|$(installed_testdir)|g' \
+		$< > $@
+
+appinfo_desktop_templates = \
+	appinfo-test-gnome.desktop.in \
+	appinfo-test-notgnome.desktop.in \
+	appinfo-test.desktop.in \
+	appinfo-test2.desktop.in \
+	$(NULL)
+appinfo_desktop_files = $(appinfo_desktop_templates:.in=)
+
+EXTRA_DIST += $(appinfo_desktop_templates)
+CLEANFILES += $(appinfo_desktop_files)
+test_data += $(appinfo_desktop_files)
 
 uninstalled_test_programs += gsettings gschema-compile
 gsettings_DEPENDENCIES = test.mo

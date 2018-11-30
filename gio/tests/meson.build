@@ -395,15 +395,35 @@ if host_machine.system() != 'windows'
   }
 endif
 
+appinfo_test_desktop_files = [
+  'appinfo-test-gnome.desktop',
+  'appinfo-test-notgnome.desktop',
+  'appinfo-test.desktop',
+  'appinfo-test2.desktop',
+]
+
+cdata = configuration_data()
+if installed_tests_enabled
+  cdata.set('installed_tests_dir', installed_tests_execdir)
+else
+  cdata.set('installed_tests_dir', meson.current_build_dir())
+endif
+
+foreach appinfo_test_desktop_file : appinfo_test_desktop_files
+  configure_file(
+    input: appinfo_test_desktop_file + '.in',
+    output: appinfo_test_desktop_file,
+    install_dir: installed_tests_execdir,
+    install: installed_tests_enabled,
+    configuration: cdata,
+  )
+endforeach
+
 if installed_tests_enabled
   install_data(
     'contexts.c',
     'g-icon.c',
     'appinfo-test-actions.desktop',
-    'appinfo-test-gnome.desktop',
-    'appinfo-test-notgnome.desktop',
-    'appinfo-test.desktop',
-    'appinfo-test2.desktop',
     'file.c',
     'org.gtk.test.dbusappinfo.desktop',
     install_dir : installed_tests_execdir,
