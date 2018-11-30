@@ -95,18 +95,22 @@ const gchar *mimecache_data =
   "image/bmp=myapp4.desktop;myapp5.desktop;\n"
   "image/png=myapp3.desktop;\n";
 
+typedef struct
+{
+  gchar *mimeapps_list_home;  /* (owned) */
+} Fixture;
+
 /* Set up XDG_DATA_HOME and XDG_DATA_DIRS.
  * XDG_DATA_DIRS/applications will contain mimeapps.list
  * XDG_DATA_HOME/applications will contain myapp.desktop
  * and myapp2.desktop, and no mimeapps.list
  */
 static void
-setup (void)
+setup (Fixture       *fixture,
+       gconstpointer  test_data)
 {
-  gchar *dir;
-  gchar *xdgconfighome;
-  gchar *xdgdatahome;
-  gchar *xdgdatadir;
+  const gchar *xdgdatahome;
+  const gchar * const *xdgdatadirs;
   gchar *appdir;
   gchar *apphome;
   gchar *mimeapps;
@@ -114,18 +118,12 @@ setup (void)
   gint res;
   GError *error = NULL;
 
-  dir = g_get_current_dir ();
-  xdgconfighome = g_build_filename (dir, "xdgconfighome", NULL);
-  xdgdatahome = g_build_filename (dir, "xdgdatahome", NULL);
-  xdgdatadir = g_build_filename (dir, "xdgdatadir", NULL);
-  g_test_message ("setting XDG_CONFIG_HOME to '%s'", xdgconfighome);
-  g_setenv ("XDG_CONFIG_HOME", xdgconfighome, TRUE);
-  g_test_message ("setting XDG_DATA_HOME to '%s'", xdgdatahome);
-  g_setenv ("XDG_DATA_HOME", xdgdatahome, TRUE);
-  g_test_message ("setting XDG_DATA_DIRS to '%s'", xdgdatadir);
-  g_setenv ("XDG_DATA_DIRS", xdgdatadir, TRUE);
+  /* These are already set to a temporary directory through our use of
+   * %G_TEST_OPTION_ISOLATE_DIRS below. */
+  xdgdatahome = g_get_user_data_dir ();
+  xdgdatadirs = g_get_system_data_dirs ();
 
-  appdir = g_build_filename (xdgdatadir, "applications", NULL);
+  appdir = g_build_filename (xdgdatadirs[0], "applications", NULL);
   g_test_message ("creating '%s'", appdir);
   res = g_mkdir_with_parents (appdir, 0700);
   g_assert_cmpint (res, ==, 0);
@@ -187,17 +185,24 @@ setup (void)
   g_assert_no_error (error);
   g_free (name);
 
-  g_free (dir);
-  g_free (xdgconfighome);
-  g_free (xdgdatahome);
-  g_free (xdgdatadir);
   g_free (apphome);
   g_free (appdir);
   g_free (mimeapps);
+
+  /* Pointer to one of the temporary directories. */
+  fixture->mimeapps_list_home = g_build_filename (g_get_user_config_dir (), "mimeapps.list", NULL);
 }
 
 static void
-test_mime_api (void)
+teardown (Fixture       *fixture,
+          gconstpointer  test_data)
+{
+  g_free (fixture->mimeapps_list_home);
+}
+
+static void
+test_mime_api (Fixture       *fixture,
+               gconstpointer  test_data)
 {
   GAppInfo *appinfo;
   GAppInfo *appinfo2;
@@ -286,7 +291,8 @@ test_mime_api (void)
  * mimeapps.list to verify the results.
  */
 static void
-test_mime_file (void)
+test_mime_file (Fixture       *fixture,
+                gconstpointer  test_data)
 {
   gchar **assoc;
   GAppInfo *appinfo;
@@ -297,12 +303,7 @@ test_mime_file (void)
   gboolean res;
   GAppInfo *def;
   GList *list;
-  gchar *mimeapps;
-  gchar *dir;
   const gchar *contenttype = "application/pdf";
-
-  dir = g_get_current_dir ();
-  mimeapps = g_build_filename (dir, "xdgconfighome", "mimeapps.list", NULL);
 
   /* clear things out */
   g_app_info_reset_type_associations (contenttype);
@@ -320,7 +321,7 @@ test_mime_file (void)
   g_assert_no_error (error);
 
   keyfile = g_key_file_new ();
-  g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
+  g_key_file_load_from_file (keyfile, fixture->mimeapps_list_home, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
 
   assoc = g_key_file_get_string_list (keyfile, "Added Associations", contenttype, NULL, &error);
@@ -340,7 +341,7 @@ test_mime_file (void)
   g_assert_no_error (error);
 
   keyfile = g_key_file_new ();
-  g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
+  g_key_file_load_from_file (keyfile, fixture->mimeapps_list_home, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
 
   assoc = g_key_file_get_string_list (keyfile, "Added Associations", contenttype, NULL, &error);
@@ -359,7 +360,7 @@ test_mime_file (void)
   g_assert_no_error (error);
 
   keyfile = g_key_file_new ();
-  g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
+  g_key_file_load_from_file (keyfile, fixture->mimeapps_list_home, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
 
   assoc = g_key_file_get_string_list (keyfile, "Added Associations", contenttype, NULL, &error);
@@ -379,7 +380,7 @@ test_mime_file (void)
   g_assert_no_error (error);
 
   keyfile = g_key_file_new ();
-  g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
+  g_key_file_load_from_file (keyfile, fixture->mimeapps_list_home, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
 
   assoc = g_key_file_get_string_list (keyfile, "Added Associations", contenttype, NULL, &error);
@@ -393,7 +394,7 @@ test_mime_file (void)
   g_app_info_reset_type_associations (contenttype);
 
   keyfile = g_key_file_new ();
-  g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
+  g_key_file_load_from_file (keyfile, fixture->mimeapps_list_home, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
 
   res = g_key_file_has_key (keyfile, "Added Associations", contenttype, NULL);
@@ -406,14 +407,12 @@ test_mime_file (void)
 
   g_object_unref (appinfo);
   g_object_unref (appinfo2);
-
-  g_free (mimeapps);
-  g_free (dir);
 }
 
 /* test interaction between mimeapps.list at different levels */
 static void
-test_mime_default (void)
+test_mime_default (Fixture       *fixture,
+                   gconstpointer  test_data)
 {
   GAppInfo *appinfo;
   GAppInfo *appinfo2;
@@ -490,7 +489,8 @@ test_mime_default (void)
  * change the default
  */
 static void
-test_mime_default_last_used (void)
+test_mime_default_last_used (Fixture       *fixture,
+                             gconstpointer  test_data)
 {
   GAppInfo *appinfo4;
   GAppInfo *appinfo5;
@@ -586,7 +586,8 @@ test_mime_default_last_used (void)
 }
 
 static void
-test_scheme_handler (void)
+test_scheme_handler (Fixture       *fixture,
+                     gconstpointer  test_data)
 {
   GAppInfo *info, *info5;
 
@@ -601,7 +602,8 @@ test_scheme_handler (void)
 /* test that g_app_info_* ignores desktop files with nonexisting executables
  */
 static void
-test_mime_ignore_nonexisting (void)
+test_mime_ignore_nonexisting (Fixture       *fixture,
+                              gconstpointer  test_data)
 {
   GAppInfo *appinfo;
 
@@ -610,7 +612,8 @@ test_mime_ignore_nonexisting (void)
 }
 
 static void
-test_all (void)
+test_all (Fixture       *fixture,
+          gconstpointer  test_data)
 {
   GList *all, *l;
 
@@ -625,17 +628,21 @@ test_all (void)
 int
 main (int argc, char *argv[])
 {
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
-  setup ();
-
-  g_test_add_func ("/appinfo/mime/api", test_mime_api);
-  g_test_add_func ("/appinfo/mime/default", test_mime_default);
-  g_test_add_func ("/appinfo/mime/file", test_mime_file);
-  g_test_add_func ("/appinfo/mime/scheme-handler", test_scheme_handler);
-  g_test_add_func ("/appinfo/mime/default-last-used", test_mime_default_last_used);
-  g_test_add_func ("/appinfo/mime/ignore-nonexisting", test_mime_ignore_nonexisting);
-  g_test_add_func ("/appinfo/all", test_all);
+  g_test_add ("/appinfo/mime/api", Fixture, NULL, setup,
+              test_mime_api, teardown);
+  g_test_add ("/appinfo/mime/default", Fixture, NULL, setup,
+              test_mime_default, teardown);
+  g_test_add ("/appinfo/mime/file", Fixture, NULL, setup,
+              test_mime_file, teardown);
+  g_test_add ("/appinfo/mime/scheme-handler", Fixture, NULL, setup,
+              test_scheme_handler, teardown);
+  g_test_add ("/appinfo/mime/default-last-used", Fixture, NULL, setup,
+              test_mime_default_last_used, teardown);
+  g_test_add ("/appinfo/mime/ignore-nonexisting", Fixture, NULL, setup,
+              test_mime_ignore_nonexisting, teardown);
+  g_test_add ("/appinfo/all", Fixture, NULL, setup, test_all, teardown);
 
   return g_test_run ();
 }
