@@ -1544,6 +1544,7 @@ g_strjoinv
 GStrv
 g_strv_length
 g_strv_contains
+g_strv_equal
 
 <SUBSECTION>
 g_strerror

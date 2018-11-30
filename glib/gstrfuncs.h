@@ -307,6 +307,10 @@ GLIB_AVAILABLE_IN_2_44
 gboolean              g_strv_contains  (const gchar * const *strv,
                                         const gchar         *str);
 
+GLIB_AVAILABLE_IN_2_60
+gboolean              g_strv_equal     (const gchar * const *strv1,
+                                        const gchar * const *strv2);
+
 /* Convenience ASCII string to number API */
 
 /**

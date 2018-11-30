@@ -3181,6 +3181,40 @@ g_strv_contains (const gchar * const *strv,
   return FALSE;
 }
 
+/**
+ * g_strv_equal:
+ * @strv1: a %NULL-terminated array of strings
+ * @strv2: another %NULL-terminated array of strings
+ *
+ * Checks if @strv1 and @strv2 contain exactly the same elements in exactly the
+ * same order. Elements are compared using g_str_equal(). To match independently
+ * of order, sort the arrays first (using g_qsort_with_data() or similar).
+ *
+ * Two empty arrays are considered equal. Neither @strv1 not @strv2 may be
+ * %NULL.
+ *
+ * Returns: %TRUE if @strv1 and @strv2 are equal
+ * Since: 2.60
+ */
+gboolean
+g_strv_equal (const gchar * const *strv1,
+              const gchar * const *strv2)
+{
+  g_return_val_if_fail (strv1 != NULL, FALSE);
+  g_return_val_if_fail (strv2 != NULL, FALSE);
+
+  if (strv1 == strv2)
+    return TRUE;
+
+  for (; *strv1 != NULL && *strv2 != NULL; strv1++, strv2++)
+    {
+      if (!g_str_equal (*strv1, *strv2))
+        return FALSE;
+    }
+
+  return (*strv1 == NULL && *strv2 == NULL);
+}
+
 static gboolean
 str_has_sign (const gchar *str)
 {
