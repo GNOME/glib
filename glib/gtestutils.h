@@ -148,6 +148,20 @@ void    g_test_init                     (int            *argc,
                                          char         ***argv,
                                          ...) G_GNUC_NULL_TERMINATED;
 
+/**
+ * G_TEST_OPTION_ISOLATE_DIRS:
+ *
+ * Creates a unique temporary directory for each unit test and uses
+ * g_set_user_dirs() to set XDG directories to point into that temporary
+ * directory for the duration of the unit test. The directory is cleaned up
+ * after the test finishes. Note that this doesn’t take effect until
+ * g_test_run() is called, so calls to (for example) g_get_user_home_dir() will
+ * return the system-wide value when made in a test program’s main() function.
+ *
+ * Since: 2.60
+ */
+#define G_TEST_OPTION_ISOLATE_DIRS "isolate_dirs"
+
 /* While we discourage its use, g_assert() is often used in unit tests
  * (especially in legacy code). g_assert_*() should really be used instead.
  * g_assert() can be disabled at client program compile time, which can render
