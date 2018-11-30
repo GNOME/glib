@@ -103,10 +103,8 @@ const gchar *mimecache_data =
 static void
 setup (void)
 {
-  gchar *dir;
-  gchar *xdgconfighome;
-  gchar *xdgdatahome;
-  gchar *xdgdatadir;
+  const gchar *xdgdatahome;
+  const gchar * const *xdgdatadirs;
   gchar *appdir;
   gchar *apphome;
   gchar *mimeapps;
@@ -115,21 +113,15 @@ setup (void)
   gboolean res;
   GError *error = NULL;
 
-  dir = g_get_current_dir ();
-  xdgconfighome = g_build_filename (dir, "xdgconfighome", NULL);
-  xdgdatahome = g_build_filename (dir, "xdgdatahome", NULL);
-  xdgdatadir = g_build_filename (dir, "xdgdatadir", NULL);
-  g_test_message ("setting XDG_CONFIG_HOME to '%s'", xdgconfighome);
-  g_setenv ("XDG_CONFIG_HOME", xdgconfighome, TRUE);
-  g_test_message ("setting XDG_DATA_HOME to '%s'", xdgdatahome);
-  g_setenv ("XDG_DATA_HOME", xdgdatahome, TRUE);
-  g_test_message ("setting XDG_DATA_DIRS to '%s'", xdgdatadir);
-  g_setenv ("XDG_DATA_DIRS", xdgdatadir, TRUE);
+  /* These are already set to a temporary directory through our use of
+   * %G_TEST_OPTION_ISOLATE_DIRS below. */
+  xdgdatahome = g_get_user_data_dir ();
+  xdgdatadirs = g_get_system_data_dirs ();
 
-  appdir = g_build_filename (xdgdatadir, "applications", NULL);
+  appdir = g_build_filename (xdgdatadirs[0], "applications", NULL);
   g_test_message ("creating '%s'", appdir);
-  res_int = g_mkdir_with_parents (appdir, 0700);
-  g_assert_cmpint (res_int, ==, 0);
+  res = g_mkdir_with_parents (appdir, 0700);
+  g_assert (res == 0);
 
   name = g_build_filename (appdir, "mimeapps.list", NULL);
   g_test_message ("creating '%s'", name);
@@ -188,10 +180,6 @@ setup (void)
   g_assert_no_error (error);
   g_free (name);
 
-  g_free (dir);
-  g_free (xdgconfighome);
-  g_free (xdgdatahome);
-  g_free (xdgdatadir);
   g_free (apphome);
   g_free (appdir);
   g_free (mimeapps);
@@ -626,7 +614,7 @@ test_all (void)
 int
 main (int argc, char *argv[])
 {
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   setup ();
 
