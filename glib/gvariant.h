@@ -65,6 +65,8 @@ GLIB_AVAILABLE_IN_ALL
 gboolean                        g_variant_is_floating                   (GVariant             *value);
 GLIB_AVAILABLE_IN_ALL
 GVariant *                      g_variant_take_ref                      (GVariant             *value);
+GLIB_AVAILABLE_IN_2_60
+void                            g_clear_variant                         (GVariant            **value);
 
 GLIB_AVAILABLE_IN_ALL
 const GVariantType *            g_variant_get_type                      (GVariant             *value);

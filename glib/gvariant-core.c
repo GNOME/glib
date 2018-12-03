@@ -821,6 +821,26 @@ g_variant_take_ref (GVariant *value)
 }
 
 /**
+ * g_clear_variant: (skip)
+ * @value: a pointer to a #GVariant reference
+ *
+ * Clears a reference to a #GVariant.
+ *
+ * @value must not be %NULL.
+ *
+ * If the reference is %NULL then this function does nothing.
+ * Otherwise, the reference count of the variant is decreased and the
+ * pointer is set to %NULL.
+ *
+ * Since: 2.60
+ **/
+void
+g_clear_variant (GVariant **value)
+{
+  g_clear_pointer (value, g_variant_unref);
+}
+
+/**
  * g_variant_is_floating:
  * @value: a #GVariant
  *
