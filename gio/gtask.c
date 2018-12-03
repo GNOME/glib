@@ -1,6 +1,6 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
- * Copyright 2011 Red Hat, Inc.
+ * Copyright 2011-2018 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1260,9 +1260,18 @@ g_task_return (GTask           *task,
        */
       if (g_source_get_time (source) > task->creation_time)
         {
-          g_task_return_now (task);
-          g_object_unref (task);
-          return;
+          /* Finally, if the task has been cancelled, we shouldn't
+           * return synchronously from inside the
+           * GCancellable::cancelled handler. It's easier to run
+           * another iteration of the main loop than tracking how the
+           * cancellation was handled.
+           */
+          if (!g_cancellable_is_cancelled (task->cancellable))
+            {
+              g_task_return_now (task);
+              g_object_unref (task);
+              return;
+            }
         }
     }
 
