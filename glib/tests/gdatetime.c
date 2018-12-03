@@ -2449,6 +2449,10 @@ gint
 main (gint   argc,
       gchar *argv[])
 {
+  /* In glibc, LANGUAGE is used as highest priority guess for category value.
+   * Unset it to avoid interference with tests using setlocale and translation. */
+  g_unsetenv ("LANGUAGE");
+
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
