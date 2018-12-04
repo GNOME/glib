@@ -1140,6 +1140,11 @@ g_parse_long_long (const gchar  *nptr,
  * changing the current locale, since that would not be
  * thread-safe.
  *
+ * Note that input with a leading minus sign (`-`) is accepted, and will return
+ * the negation of the parsed number, unless that would overflow a #guint64.
+ * Critically, this means you cannot assume that a short fixed length input will
+ * never result in a low return value, as the input could have a leading `-`.
+ *
  * This function is typically used when reading configuration
  * files or other non-user input that should be locale independent.
  * To handle input from the user you should normally use the

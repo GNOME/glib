@@ -1098,6 +1098,7 @@ test_strtoll (void)
   check_uint64 ("18446744073709551616", "", 10, G_MAXUINT64, ERANGE);
   check_uint64 ("20xyz", "xyz", 10, 20, 0);
   check_uint64 ("-1", "", 10, G_MAXUINT64, 0);
+  check_uint64 ("-FF4", "", 16, -((guint64) 0xFF4), 0);
 
   check_int64 ("0", "", 10, 0, 0);
   check_int64 ("9223372036854775807", "", 10, G_MAXINT64, 0);
