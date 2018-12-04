@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Red Hat, Inc.
+ * Copyright 2012-2018 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -245,10 +245,12 @@ same_start (gpointer user_data)
                     (GCallback) completed_cb, &same_notification_emitted);
 
   g_task_return_boolean (task, TRUE);
+  g_assert_false (g_task_get_completed (task));
   g_object_unref (task);
 
   /* same_callback should not have been invoked yet */
   g_assert (same_result == FALSE);
+  g_assert_true (G_IS_TASK (task));
   g_assert (*weak_pointer == task);
   g_assert_false (same_notification_emitted);
 
@@ -307,6 +309,7 @@ test_return_from_toplevel (void)
                     (GCallback) completed_cb, &toplevel_notification_emitted);
 
   g_task_return_boolean (task, TRUE);
+  g_assert_false (g_task_get_completed (task));
   g_object_unref (task);
 
   /* toplevel_callback should not have been invoked yet */
@@ -737,8 +740,12 @@ test_return_if_cancelled (void)
   g_cancellable_cancel (cancellable);
   cancelled = g_task_return_error_if_cancelled (task);
   g_assert_true (cancelled);
+  g_assert_false (g_task_get_completed (task));
   g_assert_false (notification_emitted);
+
   g_main_loop_run (loop);
+
+  g_assert_true (g_task_get_completed (task));
   g_object_unref (task);
   g_assert_true (notification_emitted);
   g_cancellable_reset (cancellable);
@@ -753,8 +760,12 @@ test_return_if_cancelled (void)
   g_cancellable_cancel (cancellable);
   cancelled = g_task_return_error_if_cancelled (task);
   g_assert_true (cancelled);
+  g_assert_false (g_task_get_completed (task));
   g_assert_false (notification_emitted);
+
   g_main_loop_run (loop);
+
+  g_assert_true (g_task_get_completed (task));
   g_object_unref (task);
   g_assert_true (notification_emitted);
   g_object_unref (cancellable);
@@ -1668,7 +1679,12 @@ test_return_on_cancel_atomic (void)
   g_cancellable_cancel (cancellable);
 
   g_assert (callback_ran == FALSE);
+  g_assert_true (G_IS_TASK (task));
+  g_assert_false (g_task_get_completed (task));
+  g_assert_false (notification_emitted);
+
   g_main_loop_run (loop);
+
   g_assert (callback_ran == TRUE);
   g_assert_true (notification_emitted);
 
@@ -1712,8 +1728,13 @@ test_return_on_cancel_atomic (void)
   g_assert (state == 5);
   g_assert (!g_task_get_return_on_cancel (task));
 
+  g_assert_false (g_task_get_completed (task));
+  g_assert_false (notification_emitted);
+
   g_main_loop_run (loop);
+
   g_assert (callback_ran == TRUE);
+  g_assert_true (g_task_get_completed (task));
   g_assert_true (notification_emitted);
 
   while (state == 5)
@@ -1867,10 +1888,15 @@ test_object_keepalive (void)
   g_assert (object != NULL);
 
   g_task_return_int (task, magic);
+
+  g_assert_false (g_task_get_completed (task));
+  g_assert_false (notification_emitted);
+
   g_main_loop_run (loop);
 
   g_assert (object != NULL);
   g_assert_cmpint (result, ==, magic);
+  g_assert_true (g_task_get_completed (task));
   g_assert_true (notification_emitted);
 
   g_object_unref (task);
