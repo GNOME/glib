@@ -1528,6 +1528,8 @@ string_free (AST *ast)
   g_slice_free (String, string);
 }
 
+/* Accepts exactly @length hexadecimal digits. No leading sign or `0x`/`0X` prefix allowed.
+ * No leading/trailing space allowed. */
 static gboolean
 unicode_unescape (const gchar  *src,
                   gint         *src_ofs,
@@ -1538,8 +1540,9 @@ unicode_unescape (const gchar  *src,
                   GError      **error)
 {
   gchar buffer[9];
-  guint64 value;
+  guint64 value = 0;
   gchar *end;
+  gsize n_valid_chars;
 
   (*src_ofs)++;
 
@@ -1547,11 +1550,22 @@ unicode_unescape (const gchar  *src,
   strncpy (buffer, src + *src_ofs, length);
   buffer[length] = '\0';
 
-  value = g_ascii_strtoull (buffer, &end, 0x10);
+  for (n_valid_chars = 0; n_valid_chars < length; n_valid_chars++)
+    if (!g_ascii_isxdigit (buffer[n_valid_chars]))
+      break;
+
+  if (n_valid_chars == length)
+    value = g_ascii_strtoull (buffer, &end, 0x10);
 
   if (value == 0 || end != buffer + length)
     {
-      parser_set_error (error, ref, NULL,
+      SourceRef escape_ref;
+
+      escape_ref = *ref;
+      escape_ref.start += *src_ofs;
+      escape_ref.end = escape_ref.start + n_valid_chars;
+
+      parser_set_error (error, &escape_ref, NULL,
                         G_VARIANT_PARSE_ERROR_INVALID_CHARACTER,
                         "invalid %" G_GSIZE_FORMAT "-character unicode escape", length);
       return FALSE;
