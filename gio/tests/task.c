@@ -654,6 +654,120 @@ name_callback (GObject      *object,
   g_main_loop_quit (loop);
 }
 
+/* test_asynchronous_cancellation: cancelled tasks are returned
+ * asynchronously, i.e. not from inside the GCancellable::cancelled
+ * handler.
+ */
+
+static void
+asynchronous_cancellation_callback (GObject      *object,
+                                    GAsyncResult *result,
+                                    gpointer      user_data)
+{
+  GError *error = NULL;
+
+  g_assert_null (object);
+  g_assert_true (g_task_is_valid (result, object));
+  g_assert_true (g_async_result_get_user_data (result) == user_data);
+  g_assert_true (g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
+
+  g_task_propagate_boolean (G_TASK (result), &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&error);
+
+  g_assert_true (g_task_had_error (G_TASK (result)));
+
+  g_main_loop_quit (loop);
+}
+
+static gboolean
+asynchronous_cancellation_cancel_task (gpointer user_data)
+{
+  GCancellable *cancellable;
+  GTask *task = G_TASK (user_data);
+
+  cancellable = g_task_get_cancellable (task);
+  g_assert_true (G_IS_CANCELLABLE (cancellable));
+
+  g_cancellable_cancel (cancellable);
+  g_assert_false (g_task_get_completed (task));
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+asynchronous_cancellation_cancelled (GCancellable *cancellable,
+                                     gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  guint run_task_id;
+
+  g_assert_true (cancellable == g_task_get_cancellable (task));
+
+  run_task_id = GPOINTER_TO_UINT (g_task_get_task_data (task));
+  if (run_task_id != 0)
+    g_source_remove (run_task_id);
+
+  g_task_return_boolean (task, FALSE);
+  g_assert_false (g_task_get_completed (task));
+}
+
+static gboolean
+asynchronous_cancellation_run_task (gpointer user_data)
+{
+  GCancellable *cancellable;
+  GTask *task = G_TASK (user_data);
+
+  cancellable = g_task_get_cancellable (task);
+  g_assert_true (G_IS_CANCELLABLE (cancellable));
+  g_assert_false (g_cancellable_is_cancelled (cancellable));
+
+  g_task_set_task_data (task, GUINT_TO_POINTER (0), NULL);
+  return G_SOURCE_REMOVE;
+}
+
+/* Test that cancellation is always asynchronous. The completion callback for
+ * a #GTask must not be called from inside the cancellation handler. */
+static void
+test_asynchronous_cancellation (void)
+{
+  guint i;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1608");
+
+  /* Run a few times to shake out any timing issues between the
+   * cancellation and task sources.
+   */
+  for (i = 0; i < 5; i++)
+    {
+      GCancellable *cancellable;
+      GTask *task;
+      gboolean notification_emitted = FALSE;
+      guint run_task_id;
+
+      cancellable = g_cancellable_new ();
+
+      task = g_task_new (NULL, cancellable, asynchronous_cancellation_callback, NULL);
+      g_cancellable_connect (cancellable, (GCallback) asynchronous_cancellation_cancelled, task, NULL);
+      g_signal_connect (task, "notify::completed", (GCallback) completed_cb, &notification_emitted);
+
+      run_task_id = g_idle_add (asynchronous_cancellation_run_task, task);
+      g_source_set_name_by_id (run_task_id, "[test_asynchronous_cancellation] run_task");
+      g_task_set_task_data (task, GUINT_TO_POINTER (run_task_id), NULL);
+
+      g_timeout_add (50, asynchronous_cancellation_cancel_task, task);
+
+      g_main_loop_run (loop);
+
+      g_assert_true (g_task_get_completed (task));
+      g_assert_true (notification_emitted);
+
+      g_object_unref (cancellable);
+      g_object_unref (task);
+    }
+}
+
 /* test_check_cancellable: cancellation overrides return value */
 
 enum {
@@ -2186,6 +2300,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/report-error", test_report_error);
   g_test_add_func ("/gtask/priority", test_priority);
   g_test_add_func ("/gtask/name", test_name);
+  g_test_add_func ("/gtask/asynchronous-cancellation", test_asynchronous_cancellation);
   g_test_add_func ("/gtask/check-cancellable", test_check_cancellable);
   g_test_add_func ("/gtask/return-if-cancelled", test_return_if_cancelled);
   g_test_add_func ("/gtask/run-in-thread", test_run_in_thread);
