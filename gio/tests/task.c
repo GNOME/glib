@@ -70,15 +70,15 @@ basic_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_int (G_TASK (result), &error);
   g_assert_no_error (error);
 
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
 
   g_main_loop_quit (loop);
 }
@@ -136,16 +136,16 @@ error_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_int (G_TASK (result), &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
   g_error_free (error);
 
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
 
   g_main_loop_quit (loop);
 }
@@ -219,15 +219,15 @@ same_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_no_error (error);
 
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
 
   g_main_loop_quit (loop);
 }
@@ -282,15 +282,15 @@ toplevel_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_no_error (error);
 
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
 
   g_main_loop_quit (loop);
 }
@@ -338,9 +338,9 @@ anon_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   g_assert (g_thread_self () == main_thread);
@@ -348,7 +348,7 @@ anon_callback (GObject      *object,
   *result_out = g_task_propagate_int (G_TASK (result), &error);
   g_assert_no_error (error);
 
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
 
   g_main_loop_quit (loop);
 }
@@ -413,9 +413,9 @@ wrong_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   g_assert (g_thread_self () == main_thread);
@@ -423,7 +423,7 @@ wrong_callback (GObject      *object,
   *result_out = g_task_propagate_int (G_TASK (result), &error);
   g_assert_no_error (error);
 
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
 
   g_main_loop_quit (loop);
 }
@@ -515,11 +515,11 @@ report_callback (GObject      *object,
   gssize ret;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (g_async_result_is_tagged (result, test_report_error));
   g_assert (g_task_get_source_tag (G_TASK (result)) == test_report_error);
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_int (G_TASK (result), &error);
@@ -527,7 +527,7 @@ report_callback (GObject      *object,
   g_assert_cmpint (ret, ==, -1);
   g_error_free (error);
 
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
 
   *weak_pointer = result;
   g_object_add_weak_pointer (G_OBJECT (result), weak_pointer);
@@ -565,15 +565,15 @@ priority_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_no_error (error);
 
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
 
   *ret_out = ++counter;
 
@@ -634,12 +634,12 @@ cancel_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
 
   task = G_TASK (result);
   cancellable = g_task_get_cancellable (task);
-  g_assert (G_IS_CANCELLABLE (cancellable));
+  g_assert_true (G_IS_CANCELLABLE (cancellable));
 
   if (state & (CANCEL_BEFORE | CANCEL_AFTER))
     g_assert (g_cancellable_is_cancelled (cancellable));
@@ -706,16 +706,16 @@ return_if_cancelled_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
   g_clear_error (&error);
 
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
 
   g_main_loop_quit (loop);
 }
@@ -736,7 +736,7 @@ test_return_if_cancelled (void)
 
   g_cancellable_cancel (cancellable);
   cancelled = g_task_return_error_if_cancelled (task);
-  g_assert (cancelled);
+  g_assert_true (cancelled);
   g_assert_false (notification_emitted);
   g_main_loop_run (loop);
   g_object_unref (task);
@@ -752,7 +752,7 @@ test_return_if_cancelled (void)
   g_task_set_check_cancellable (task, FALSE);
   g_cancellable_cancel (cancellable);
   cancelled = g_task_return_error_if_cancelled (task);
-  g_assert (cancelled);
+  g_assert_true (cancelled);
   g_assert_false (notification_emitted);
   g_main_loop_run (loop);
   g_object_unref (task);
@@ -789,16 +789,16 @@ run_in_thread_callback (GObject      *object,
   g_assert (g_thread_self () == main_thread);
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_int (G_TASK (result), &error);
   g_assert_no_error (error);
   g_assert_cmpint (ret, ==, magic);
 
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
 
   *done = TRUE;
   g_main_loop_quit (loop);
@@ -913,7 +913,7 @@ test_run_in_thread_sync (void)
 
   g_assert (thread_ran == TRUE);
   g_assert (task != NULL);
-  g_assert (!g_task_had_error (task));
+  g_assert_false (g_task_had_error (task));
   g_assert_true (g_task_get_completed (task));
   g_assert_true (notification_emitted);
 
@@ -921,7 +921,7 @@ test_run_in_thread_sync (void)
   g_assert_no_error (error);
   g_assert_cmpint (ret, ==, magic);
 
-  g_assert (!g_task_had_error (task));
+  g_assert_false (g_task_had_error (task));
 
   g_object_unref (task);
 }
@@ -942,16 +942,16 @@ quit_main_loop_callback (GObject      *object,
   g_assert (g_thread_self () == main_thread);
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_no_error (error);
   g_assert_cmpint (ret, ==, TRUE);
 
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
 
   g_main_loop_quit (loop);
 }
@@ -1235,9 +1235,9 @@ return_on_cancel_callback (GObject      *object,
   g_assert (g_thread_self () == main_thread);
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_int (G_TASK (result), &error);
@@ -1245,7 +1245,7 @@ return_on_cancel_callback (GObject      *object,
   g_clear_error (&error);
   g_assert_cmpint (ret, ==, -1);
 
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
 
   *callback_ran = TRUE;
   g_main_loop_quit (loop);
@@ -1557,9 +1557,9 @@ return_on_cancel_atomic_callback (GObject      *object,
   g_assert (g_thread_self () == main_thread);
 
   g_assert (object == NULL);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_int (G_TASK (result), &error);
@@ -1567,7 +1567,7 @@ return_on_cancel_atomic_callback (GObject      *object,
   g_clear_error (&error);
   g_assert_cmpint (ret, ==, -1);
 
-  g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_true (g_task_had_error (G_TASK (result)));
 
   *callback_ran = TRUE;
   g_main_loop_quit (loop);
@@ -1825,15 +1825,15 @@ keepalive_callback (GObject      *object,
   GError *error = NULL;
 
   g_assert (object == keepalive_object);
-  g_assert (g_task_is_valid (result, object));
+  g_assert_true (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_int (G_TASK (result), &error);
   g_assert_no_error (error);
 
-  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_had_error (G_TASK (result)));
 
   g_main_loop_quit (loop);
 }
@@ -1895,9 +1895,9 @@ legacy_error_callback (GObject      *object,
 
   if (g_async_result_legacy_propagate_error (result, &error))
     {
-      g_assert (!g_task_is_valid (result, object));
+      g_assert_false (g_task_is_valid (result, object));
       G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-      g_assert (g_simple_async_result_is_valid (result, object, test_legacy_error));
+      g_assert_true (g_simple_async_result_is_valid (result, object, test_legacy_error));
       G_GNUC_END_IGNORE_DEPRECATIONS;
 
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
@@ -1906,7 +1906,7 @@ legacy_error_callback (GObject      *object,
     }
   else
     {
-      g_assert (g_task_is_valid (result, object));
+      g_assert_true (g_task_is_valid (result, object));
 
       *result_out = g_task_propagate_int (G_TASK (result), NULL);
       /* Might be error, might not */
