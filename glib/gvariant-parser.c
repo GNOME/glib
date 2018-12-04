@@ -1533,7 +1533,7 @@ unicode_unescape (const gchar  *src,
                   gint         *src_ofs,
                   gchar        *dest,
                   gint         *dest_ofs,
-                  gint          length,
+                  gsize         length,
                   SourceRef    *ref,
                   GError      **error)
 {
@@ -1553,7 +1553,7 @@ unicode_unescape (const gchar  *src,
     {
       parser_set_error (error, ref, NULL,
                         G_VARIANT_PARSE_ERROR_INVALID_CHARACTER,
-                        "invalid %d-character unicode escape", length);
+                        "invalid %" G_GSIZE_FORMAT "-character unicode escape", length);
       return FALSE;
     }
 
