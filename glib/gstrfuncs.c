@@ -3309,7 +3309,8 @@ g_ascii_string_to_signed (const gchar  *str,
  * @base that is within inclusive bounds limited by @min and @max. If
  * this is true, then the converted number is stored in @out_num. An
  * empty string is not a valid input. A string with leading or
- * trailing whitespace is also an invalid input.
+ * trailing whitespace is also an invalid input. A string with a leading sign
+ * (`-` or `+`) is not a valid input for the unsigned parser.
  *
  * @base can be between 2 and 36 inclusive. Hexadecimal numbers must
  * not be prefixed with "0x" or "0X". Such a problem does not exist
