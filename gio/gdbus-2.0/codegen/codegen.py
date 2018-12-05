@@ -619,17 +619,19 @@ class HeaderCodeGenerator:
 # ----------------------------------------------------------------------------------------------------
 
 class InterfaceInfoHeaderCodeGenerator:
-    def __init__(self, ifaces, namespace, header_name, use_pragma, outfile):
+    def __init__(self, ifaces, namespace, header_name, input_files_basenames, use_pragma, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_').replace(':', '_')
+        self.input_files_basenames = input_files_basenames
         self.use_pragma = use_pragma
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
 
     def generate_header_preamble(self):
-        self.outfile.write(LICENSE_STR.format(config.VERSION))
+        basenames = ', '.join(self.input_files_basenames)
+        self.outfile.write(LICENSE_STR.format(config.VERSION, basenames))
         self.outfile.write('\n')
 
         if self.use_pragma:
@@ -670,16 +672,18 @@ class InterfaceInfoHeaderCodeGenerator:
 # ----------------------------------------------------------------------------------------------------
 
 class InterfaceInfoBodyCodeGenerator:
-    def __init__(self, ifaces, namespace, header_name, outfile):
+    def __init__(self, ifaces, namespace, header_name, input_files_basenames, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.header_name = header_name
+        self.input_files_basenames = input_files_basenames
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
 
     def generate_body_preamble(self):
-        self.outfile.write(LICENSE_STR.format(config.VERSION))
+        basenames = ', '.join(self.input_files_basenames)
+        self.outfile.write(LICENSE_STR.format(config.VERSION, basenames))
         self.outfile.write('\n')
         self.outfile.write('#ifdef HAVE_CONFIG_H\n'
                            '#  include "config.h"\n'
