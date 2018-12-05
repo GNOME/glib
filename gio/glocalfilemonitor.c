@@ -219,6 +219,25 @@ g_file_monitor_source_remove_pending_change (GFileMonitorSource *fms,
   g_sequence_remove (iter);
 }
 
+static gint find_queued_event(gconstpointer a, gconstpointer b)
+{
+  QueuedEvent *queueElement = (QueuedEvent*)(a);
+  QueuedEvent *searchElement = (QueuedEvent*)(b);
+  
+  if(queueElement->event_type == searchElement->event_type &&
+     (queueElement->child == searchElement->child ||
+      g_file_equal(queueElement->child, searchElement->child) ) &&
+     (queueElement->other == searchElement->other ||
+      g_file_equal(queueElement->other, searchElement->other) ) )
+  {
+    return 0;
+  }
+  else if(queueElement < searchElement)
+    return -1;
+  else
+    return 1;
+}
+
 static void
 g_file_monitor_source_queue_event (GFileMonitorSource *fms,
                                    GFileMonitorEvent   event_type,
@@ -226,6 +245,7 @@ g_file_monitor_source_queue_event (GFileMonitorSource *fms,
                                    GFile              *other)
 {
   QueuedEvent *event;
+  GList *queueEvent;
 
   event = g_slice_new (QueuedEvent);
   event->event_type = event_type;
@@ -245,7 +265,12 @@ g_file_monitor_source_queue_event (GFileMonitorSource *fms,
   if (other)
     g_object_ref (other);
 
-  g_queue_push_tail (&fms->event_queue, event);
+  queueEvent = g_queue_find_custom(&fms->event_queue, event, &find_queued_event);
+
+  if(queueEvent == NULL)
+    g_queue_push_tail(&fms->event_queue, event);
+  else
+    queued_event_free(event);
 }
 
 static gboolean
