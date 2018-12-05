@@ -281,6 +281,7 @@ def codegen_main():
             gen = codegen.InterfaceInfoHeaderCodeGenerator(all_ifaces,
                                                            args.c_namespace,
                                                            header_name,
+                                                           input_files_basenames,
                                                            args.pragma_once,
                                                            outfile)
             gen.generate()
@@ -290,6 +291,7 @@ def codegen_main():
             gen = codegen.InterfaceInfoBodyCodeGenerator(all_ifaces,
                                                          args.c_namespace,
                                                          header_name,
+                                                         input_files_basenames,
                                                          outfile)
             gen.generate()
 
