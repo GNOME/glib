@@ -1,3 +1,6 @@
+#include "modules/symbol-visibility.h"
+#define _GLIB_EXTERN GLIB_TEST_EXPORT_SYMBOL
+
 #include <gio/gio.h>
 
 void
