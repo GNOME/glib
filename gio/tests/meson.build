@@ -195,6 +195,28 @@ if host_machine.system() != 'windows'
                    '--annotate', 'org.project.Bar::TestSignal[array_of_strings]', 'Key8', 'Value8',
                    '@INPUT@'])
 
+    # FIXME: actually test the contents of these files, as opposed to just
+    # generating & compiling them (which at least exercises the generator)
+    # https://gitlab.gnome.org/GNOME/glib/issues/1612
+    gdbus_test_codegen_generated_interface_info = [
+      custom_target('gdbus-test-codegen-generated-interface-info-h',
+          input :   ['test-codegen.xml'],
+          output :  ['gdbus-test-codegen-generated-interface-info.h'],
+          depend_files : gdbus_codegen_built_files,
+          command : [python, gdbus_codegen,
+                     '--interface-info-header',
+                     '--output', '@OUTPUT@',
+                     '@INPUT@']),
+      custom_target('gdbus-test-codegen-generated-interface-info-c',
+          input :   ['test-codegen.xml'],
+          output :  ['gdbus-test-codegen-generated-interface-info.c'],
+          depend_files : gdbus_codegen_built_files,
+          command : [python, gdbus_codegen,
+                     '--interface-info-body',
+                     '--output', '@OUTPUT@',
+                     '@INPUT@']),
+    ]
+
     extra_sources = ['gdbus-sessionbus.c', 'gdbus-tests.c']
 
     gio_tests += {
@@ -224,7 +246,7 @@ if host_machine.system() != 'windows'
       'gdbus-proxy-unique-name' : {'extra_sources' : extra_sources},
       'gdbus-proxy-well-known-name' : {'extra_sources' : extra_sources},
       'gdbus-test-codegen' : {
-        'extra_sources' : [extra_sources, gdbus_test_codegen_generated],
+        'extra_sources' : [extra_sources, gdbus_test_codegen_generated] + gdbus_test_codegen_generated_interface_info,
       },
       'gdbus-threading' : {
         'extra_sources' : extra_sources,
