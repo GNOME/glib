@@ -246,5 +246,5 @@ for /r %f in (*.exe.manifest) do if exist $(PREFIX)\bin\%~nf mt /manifest %f $(P
  remove all running instances of cl.exe, which will cause the build process to terminate.  Update
  the build flags of the sources that hang on compilation by changing its "/O2" flag to "/O1"
  in build.ninja, and  retry the build, where things should continue to build normally.  At the
- time of writing, this is needed for compiling glib/gtestutils.c,  gio/gsettings.c and
- gio/gsettingsschema.c
+ time of writing, this is needed for compiling glib/gtestutils.c,  gio/gsettings.c,
+ gio/gsettingsschema.c and gio/tests/gsubprocess-testprog.c
