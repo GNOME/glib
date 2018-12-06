@@ -4039,6 +4039,22 @@ test_parse_failures (void)
     "b\"\\\"",                  "0-4:",            "unterminated string constant",
     "b'\\'a",                   "0-5:",            "unterminated string constant",
     "b\"\\\"a",                 "0-5:",            "unterminated string constant",
+    "'\\u-ff4'",                "3:",              "invalid 4-character unicode escape",
+    "'\\u+ff4'",                "3:",              "invalid 4-character unicode escape",
+    "'\\u'",                    "3:",              "invalid 4-character unicode escape",
+    "'\\u0'",                   "3-4:",            "invalid 4-character unicode escape",
+    "'\\uHELLO'",               "3:",              "invalid 4-character unicode escape",
+    "'\\u ff4'",                "3:",              "invalid 4-character unicode escape",
+    "'\\u012'",                 "3-6:",            "invalid 4-character unicode escape",
+    "'\\u0xff4'",               "3-4:",            "invalid 4-character unicode escape",
+    "'\\U-ff4'",                "3:",              "invalid 8-character unicode escape",
+    "'\\U+ff4'",                "3:",              "invalid 8-character unicode escape",
+    "'\\U'",                    "3:",              "invalid 8-character unicode escape",
+    "'\\U0'",                   "3-4:",            "invalid 8-character unicode escape",
+    "'\\UHELLO'",               "3:",              "invalid 8-character unicode escape",
+    "'\\U ff4'",                "3:",              "invalid 8-character unicode escape",
+    "'\\U0123456'",             "3-10:",           "invalid 8-character unicode escape",
+    "'\\U0xff4'",               "3-4:",            "invalid 8-character unicode escape",
   };
   guint i;
 
@@ -4674,8 +4690,8 @@ test_print_context (void)
     { NULL, "[1, 2, 3, 'str']", " ^        ^^^^^" },
     { G_VARIANT_TYPE_UINT16, "{ 'abc':'def' }", "  ^^^^^^^^^^^^^^^" },
     { NULL, "<5", "    ^" },
-    { NULL, "'ab\\ux'", "  ^^^^^^^" },
-    { NULL, "'ab\\U00efx'", "  ^^^^^^^^^^^" }
+    { NULL, "'ab\\ux'", "       ^ " },
+    { NULL, "'ab\\U00efx'", "       ^^^^  " }
   };
   GVariant *v;
   gchar *s;
