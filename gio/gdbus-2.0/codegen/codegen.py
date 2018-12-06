@@ -700,7 +700,7 @@ class InterfaceInfoBodyCodeGenerator:
     def generate_array(self, array_name_lower, element_type, elements):
         self.outfile.write('const %s * const %s[] =\n' % (element_type, array_name_lower))
         self.outfile.write('{\n')
-        for (_, name) in sorted(elements, key=utils.version_cmp_key):
+        for (_, name) in elements:
             self.outfile.write('  &%s,\n' % name)
         self.outfile.write('  NULL,\n')
         self.outfile.write('};\n')
