@@ -87,6 +87,7 @@
 #include "gqueue.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
+#include "gthreadprivate.h"
 
 #ifdef G_OS_WIN32
 #include "gwin32.h"
@@ -2842,10 +2843,7 @@ get_dispatch (void)
   dispatch = g_private_get (&depth_private);
 
   if (!dispatch)
-    {
-      dispatch = g_slice_new0 (GMainDispatch);
-      g_private_set (&depth_private, dispatch);
-    }
+    dispatch = g_private_set_alloc0 (&depth_private, sizeof (GMainDispatch));
 
   return dispatch;
 }
