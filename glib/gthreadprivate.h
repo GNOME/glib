@@ -56,4 +56,7 @@ GThread *       g_thread_new_internal           (const gchar  *name,
 
 gpointer        g_thread_proxy                  (gpointer      thread);
 
+gpointer        g_private_set_alloc0            (GPrivate       *key,
+                                                 gsize           size);
+
 #endif /* __G_THREADPRIVATE_H__ */

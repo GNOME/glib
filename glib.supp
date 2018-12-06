@@ -657,3 +657,12 @@
 	fun:g_dbus_error_register_error_domain
 	fun:g_dbus_error_quark
 }
+
+# Thread-private data allocated once per thread
+{
+	g_private_set_alloc0
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:g_private_set_alloc0
+}
