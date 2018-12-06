@@ -487,16 +487,16 @@ gdbus_proxy_threads_SOURCES              = $(gdbus_sessionbus_sources) gdbus-pro
 gdbus_proxy_unique_name_SOURCES          = $(gdbus_sessionbus_sources) gdbus-proxy-unique-name.c
 gdbus_proxy_well_known_name_SOURCES      = $(gdbus_sessionbus_sources) gdbus-proxy-well-known-name.c
 gdbus_test_codegen_SOURCES               = $(gdbus_sessionbus_sources) gdbus-test-codegen.c
-nodist_gdbus_test_codegen_SOURCES        = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
+nodist_gdbus_test_codegen_SOURCES        = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h gdbus-test-codegen-generated-interface-info.c gdbus-test-codegen-generated-interface-info.h
 gdbus_test_codegen_old_SOURCES           = $(gdbus_sessionbus_sources) gdbus-test-codegen.c
-nodist_gdbus_test_codegen_old_SOURCES    = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
+nodist_gdbus_test_codegen_old_SOURCES    = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h gdbus-test-codegen-generated-interface-info.c gdbus-test-codegen-generated-interface-info.h
 gdbus_test_codegen_old_CPPFLAGS          = $(AM_CPPFLAGS) -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36
 gdbus_threading_SOURCES                  = $(gdbus_sessionbus_sources) gdbus-threading.c
 gmenumodel_SOURCES                       = $(gdbus_sessionbus_sources) gmenumodel.c
 gnotification_SOURCES                    = $(gdbus_sessionbus_sources) gnotification.c gnotification-server.h gnotification-server.c
 
-BUILT_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
-gdbus-test-codegen.o: gdbus-test-codegen-generated.h
+BUILT_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h gdbus-test-codegen-generated-interface-info.c gdbus-test-codegen-generated-interface-info.h
+gdbus-test-codegen.o: gdbus-test-codegen-generated.h gdbus-test-codegen-generated-interface-info.h
 gdbus-test-codegen-generated.h: test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
 	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
 		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
@@ -519,9 +519,41 @@ gdbus-test-codegen-generated.h: test-codegen.xml Makefile $(top_builddir)/gio/gd
 		$(NULL)
 gdbus-test-codegen-generated.c: gdbus-test-codegen-generated.h
 	@: # Generated as side-effect of .h
+gdbus-test-codegen-generated-interface-info.h: test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
+	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
+		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
+		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
+		--interface-info-header \
+		--annotate "org.project.Bar" Key1 Value1 \
+		--annotate "org.project.Bar" org.gtk.GDBus.Internal Value2 \
+		--annotate "org.project.Bar.HelloWorld()" Key3 Value3 \
+		--annotate "org.project.Bar::TestSignal" Key4 Value4 \
+		--annotate "org.project.Bar:ay" Key5 Value5 \
+		--annotate "org.project.Bar.TestPrimitiveTypes()[val_int32]" Key6 Value6 \
+		--annotate "org.project.Bar.TestPrimitiveTypes()[ret_uint32]" Key7 Value7 \
+		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8 \
+		--output $@ \
+		$(srcdir)/test-codegen.xml \
+		$(NULL)
+gdbus-test-codegen-generated-interface-info.c: test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
+	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
+		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
+		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
+		--interface-info-body \
+		--annotate "org.project.Bar" Key1 Value1 \
+		--annotate "org.project.Bar" org.gtk.GDBus.Internal Value2 \
+		--annotate "org.project.Bar.HelloWorld()" Key3 Value3 \
+		--annotate "org.project.Bar::TestSignal" Key4 Value4 \
+		--annotate "org.project.Bar:ay" Key5 Value5 \
+		--annotate "org.project.Bar.TestPrimitiveTypes()[val_int32]" Key6 Value6 \
+		--annotate "org.project.Bar.TestPrimitiveTypes()[ret_uint32]" Key7 Value7 \
+		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8 \
+		--output $@ \
+		$(srcdir)/test-codegen.xml \
+		$(NULL)
 
 EXTRA_DIST += test-codegen.xml
-CLEANFILES += gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml
+CLEANFILES += gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml gdbus-test-codegen-generated-interface-info.[ch]
 endif # OS_UNIX
 endif # HAVE_DBUS_DAEMON
 
