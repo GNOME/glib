@@ -666,3 +666,13 @@
 	...
 	fun:g_private_set_alloc0
 }
+
+# Thread-private GMainContext stack
+{
+	g_main_context_push_thread_default
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:g_queue_new
+	fun:g_main_context_push_thread_default
+}
