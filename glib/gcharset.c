@@ -187,10 +187,7 @@ g_get_charset (const char **charset)
   const gchar *raw;
 
   if (!cache)
-    {
-      cache = g_new0 (GCharsetCache, 1);
-      g_private_set (&cache_private, cache);
-    }
+    cache = g_private_set_alloc0 (&cache_private, sizeof (GCharsetCache), 8 /* TODO */);
 
   G_LOCK (aliases);
   raw = _g_locale_charset_raw ();

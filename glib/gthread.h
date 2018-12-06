@@ -220,6 +220,10 @@ gpointer        g_private_get                   (GPrivate       *key);
 GLIB_AVAILABLE_IN_ALL
 void            g_private_set                   (GPrivate       *key,
                                                  gpointer        value);
+GLIB_AVAILABLE_IN_2_60
+gpointer        g_private_set_alloc0            (GPrivate       *key,
+                                                 gsize           size,
+                                                 gsize           alignment);
 GLIB_AVAILABLE_IN_2_32
 void            g_private_replace               (GPrivate       *key,
                                                  gpointer        value);

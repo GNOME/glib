@@ -1084,6 +1084,33 @@ g_private_set (GPrivate *key,
 }
 
 /**
+ * g_private_set_alloc0:
+ * @key: a #GPrivate
+ * @site: TODO
+ * @alignment: TODO
+ *
+ * TODO
+ * Sets the thread local variable @key to have the value @value in the
+ * current thread.
+ *
+ * This function differs from g_private_replace() in the following way:
+ * the #GDestroyNotify for @key is not called on the old value.
+ */
+gpointer
+g_private_set_alloc0 (GPrivate *key,
+                      gsize     size,
+                      gsize     alignment)
+{
+  gpointer allocated = g_malloc0 (size);
+
+  /* TODO alignment */
+
+  g_private_set (key, allocated);
+
+  return g_steal_pointer (&allocated);
+}
+
+/**
  * g_private_replace:
  * @key: a #GPrivate
  * @value: the new value

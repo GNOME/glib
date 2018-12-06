@@ -515,10 +515,9 @@ thread_memory_from_self (void)
       g_mutex_unlock (&init_mutex);
 
       n_magazines = MAX_SLAB_INDEX (allocator);
-      tmem = g_malloc0 (sizeof (ThreadMemory) + sizeof (Magazine) * 2 * n_magazines);
+      tmem = g_private_set_alloc0 (&private_thread_memory, sizeof (ThreadMemory) + sizeof (Magazine) * 2 * n_magazines, 8 /* TODO */);
       tmem->magazine1 = (Magazine*) (tmem + 1);
       tmem->magazine2 = &tmem->magazine1[n_magazines];
-      g_private_set (&private_thread_memory, tmem);
     }
   return tmem;
 }
