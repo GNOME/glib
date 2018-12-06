@@ -799,9 +799,15 @@ g_binding_unbind (GBinding *binding)
  * of bidirectional bindings, otherwise it will be ignored
  *
  * The binding will automatically be removed when either the @source or the
- * @target instances are finalized. To remove the binding without affecting the
- * @source and the @target you can just call g_object_unref() on the returned
- * #GBinding instance.
+ * @target instances are finalized. At this point the object will be destroyed
+ * unless it has been ref'ed explicitly.
+ *
+ * You can explicitly remove the binding by calling g_binding_unbind() on the
+ * returned pointer. As a convenience, it is also possible to g_object_unref()
+ * the internal reference that keeps the binding alive.
+ *
+ * Note that you must create a strong or weak reference if you do not own a
+ * reference to both @source and @target.
  *
  * A #GObject can have multiple bindings.
  *
