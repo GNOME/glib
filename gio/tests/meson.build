@@ -171,6 +171,16 @@ if host_machine.system() != 'windows'
   #  Test programs that need to bring up a session bus (requires dbus-daemon)
   have_dbus_daemon = find_program('dbus-daemon', required : false).found()
   if have_dbus_daemon
+    annotate_args = [
+      '--annotate', 'org.project.Bar', 'Key1', 'Value1',
+      '--annotate', 'org.project.Bar', 'org.gtk.GDBus.Internal', 'Value2',
+      '--annotate', 'org.project.Bar.HelloWorld()', 'Key3', 'Value3',
+      '--annotate', 'org.project.Bar::TestSignal', 'Key4', 'Value4',
+      '--annotate', 'org.project.Bar:ay', 'Key5', 'Value5',
+      '--annotate', 'org.project.Bar.TestPrimitiveTypes()[val_int32]', 'Key6', 'Value6',
+      '--annotate', 'org.project.Bar.TestPrimitiveTypes()[ret_uint32]', 'Key7', 'Value7',
+      '--annotate', 'org.project.Bar::TestSignal[array_of_strings]', 'Key8', 'Value8',
+    ]
     # Generate gdbus-test-codegen-generated.{c,h}
     gdbus_test_codegen_generated = custom_target('gdbus-test-codegen-generated',
         input :   ['test-codegen.xml'],
@@ -185,15 +195,29 @@ if host_machine.system() != 'windows'
                    '--c-generate-autocleanup', 'all',
                    '--c-namespace', 'Foo_iGen',
                    '--generate-docbook', 'gdbus-test-codegen-generated-doc',
-                   '--annotate', 'org.project.Bar', 'Key1', 'Value1',
-                   '--annotate', 'org.project.Bar', 'org.gtk.GDBus.Internal', 'Value2',
-                   '--annotate', 'org.project.Bar.HelloWorld()', 'Key3', 'Value3',
-                   '--annotate', 'org.project.Bar::TestSignal', 'Key4', 'Value4',
-                   '--annotate', 'org.project.Bar:ay', 'Key5', 'Value5',
-                   '--annotate', 'org.project.Bar.TestPrimitiveTypes()[val_int32]', 'Key6', 'Value6',
-                   '--annotate', 'org.project.Bar.TestPrimitiveTypes()[ret_uint32]', 'Key7', 'Value7',
-                   '--annotate', 'org.project.Bar::TestSignal[array_of_strings]', 'Key8', 'Value8',
+                   annotate_args,
                    '@INPUT@'])
+
+    gdbus_test_codegen_generated_interface_info = [
+      custom_target('gdbus-test-codegen-generated-interface-info-h',
+          input :   ['test-codegen.xml'],
+          output :  ['gdbus-test-codegen-generated-interface-info.h'],
+          depend_files : gdbus_codegen_built_files,
+          command : [python, gdbus_codegen,
+                     '--interface-info-header',
+                     annotate_args,
+                     '--output', '@OUTPUT@',
+                     '@INPUT@']),
+      custom_target('gdbus-test-codegen-generated-interface-info-c',
+          input :   ['test-codegen.xml'],
+          output :  ['gdbus-test-codegen-generated-interface-info.c'],
+          depend_files : gdbus_codegen_built_files,
+          command : [python, gdbus_codegen,
+                     '--interface-info-body',
+                     annotate_args,
+                     '--output', '@OUTPUT@',
+                     '@INPUT@']),
+    ]
 
     extra_sources = ['gdbus-sessionbus.c', 'gdbus-tests.c']
 
@@ -224,7 +248,7 @@ if host_machine.system() != 'windows'
       'gdbus-proxy-unique-name' : {'extra_sources' : extra_sources},
       'gdbus-proxy-well-known-name' : {'extra_sources' : extra_sources},
       'gdbus-test-codegen' : {
-        'extra_sources' : [extra_sources, gdbus_test_codegen_generated],
+        'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
       },
       'gdbus-threading' : {
         'extra_sources' : extra_sources,
@@ -239,7 +263,7 @@ if host_machine.system() != 'windows'
       },
       'gdbus-test-codegen-old' : {
         'source' : 'gdbus-test-codegen.c',
-        'extra_sources' : [extra_sources, gdbus_test_codegen_generated],
+        'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36',
                     '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36'],
       },
