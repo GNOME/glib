@@ -817,7 +817,7 @@ endif
 
 schemas_subdir = join_paths('glib-2.0', 'schemas')
 
-pkg.generate(libraries : libgio,
+pkg.generate(libgio,
   libraries_private : [osx_ldflags],
   requires : ['glib-2.0', 'gobject-2.0'],
   variables : ['datadir=' + join_paths('${prefix}', get_option('datadir')),
