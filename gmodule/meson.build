@@ -109,7 +109,8 @@ libgmodule = library('gmodule-2.0',
 
 supported_var = 'gmodule_supported=@0@'.format(g_module_impl != '0')
 
-pkg.generate(libraries : [libgmodule, thread_dep],
+pkg.generate(libgmodule,
+  libraries : [thread_dep],
   requires : ['glib-2.0'],
   version : glib_version,
   variables : [supported_var],

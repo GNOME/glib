@@ -23,7 +23,8 @@ libgthread = library('gthread-2.0',
   link_args : glib_link_flags,
 )
 
-pkg.generate(libraries : [libgthread, thread_dep],
+pkg.generate(libgthread,
+  libraries : [thread_dep],
   requires : ['glib-2.0'],
   version : glib_version,
   install_dir : glib_pkgconfigreldir,
