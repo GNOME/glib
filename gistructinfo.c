@@ -42,7 +42,7 @@
  * <refsect1 id="gi-giobjectinfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
  *          +----GIStructInfo
  * </synopsis>
@@ -123,6 +123,7 @@ g_struct_info_get_field (GIStructInfo *info,
  *
  * Obtain the type information for field named @name.
  *
+ * Since: 1.46
  * Returns: (transfer full): the #GIFieldInfo or %NULL if not found,
  * free it with g_base_info_unref() when done.
  */

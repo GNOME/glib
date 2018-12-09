@@ -34,23 +34,6 @@
 G_BEGIN_DECLS
 
 /**
- * GIBaseInfoStub:
- *
- * TODO
- */
-struct _GIBaseInfoStub {
-  /* <private> */
-  gint32 dummy1;
-  gint32 dummy2;
-  gpointer dummy3;
-  gpointer dummy4;
-  gpointer dummy5;
-  guint32  dummy6;
-  guint32  dummy7;
-  gpointer padding[4];
-};
-
-/**
  * GIAttributeIter:
  *
  * An opaque structure used to iterate over attributes

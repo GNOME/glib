@@ -528,7 +528,7 @@ typedef struct {
  * @constructor: The function acts as a constructor for the object it is
  *   contained in.
  * @wraps_vfunc: The function is a simple wrapper for a virtual function.
- * @throws: (deprecated): This is now additionally stored in the #SignatureBlob.
+ * @throws: This is now additionally stored in the #SignatureBlob. (deprecated)
  * @index: Index of the property that this function is a setter or getter of
  *   in the array of properties of the containing interface, or index
  *   of the virtual function that this function wraps.
@@ -996,7 +996,7 @@ typedef struct {
  *   virtual function.
  * @class_closure: Set if this virtual function is the class closure of a
  *   signal.
- * @throws: (deprecated): This is now additionally stored in the #SignatureBlob.
+ * @throws: This is now additionally stored in the #SignatureBlob. (deprecated)
  * @reserved: Reserved for future use.
  * @signal: The index of the signal in the list of signals of the object or
  *   interface to which this virtual function belongs.

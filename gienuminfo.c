@@ -40,7 +40,7 @@
  * <refsect1 id="gi-gienuminfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
  *          +----GIEnumInfo
  * </synopsis>
@@ -78,7 +78,7 @@ g_enum_info_get_n_values (GIEnumInfo *info)
  *
  * Returns: (transfer none): the string form of the error domain associated
  * with this enum, or %NULL.
- * Since: 1.29.17
+ * Since: 1.30
  */
 const gchar *
 g_enum_info_get_error_domain (GIEnumInfo *info)
@@ -132,7 +132,7 @@ g_enum_info_get_value (GIEnumInfo *info,
  * Obtain the number of methods that this enum type has.
  *
  * Returns: number of methods
- * Since: 1.29.17
+ * Since: 1.30
  */
 gint
 g_enum_info_get_n_methods (GIEnumInfo *info)
@@ -157,7 +157,7 @@ g_enum_info_get_n_methods (GIEnumInfo *info)
  *
  * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
  * g_base_info_unref() when done.
- * Since: 1.29.17
+ * Since: 1.30
  */
 GIFunctionInfo *
 g_enum_info_get_method (GIEnumInfo *info,

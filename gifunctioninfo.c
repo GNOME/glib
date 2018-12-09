@@ -45,7 +45,7 @@
  * <refsect1 id="gi-gifunctioninfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
  *          +----GIFunctionInfo
  *          +----<link linkend="gi-GISignalInfo">GISignalInfo</link>

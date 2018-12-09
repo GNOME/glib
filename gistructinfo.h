@@ -48,7 +48,7 @@ GI_AVAILABLE_IN_ALL
 GIFieldInfo *    g_struct_info_get_field       (GIStructInfo *info,
 						gint          n);
 
-GI_AVAILABLE_IN_ALL
+GI_AVAILABLE_IN_1_46
 GIFieldInfo *    g_struct_info_find_field      (GIStructInfo *info,
 						const gchar  *name);
 

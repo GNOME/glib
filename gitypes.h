@@ -31,9 +31,17 @@
 
 G_BEGIN_DECLS
 
-#ifndef __GTK_DOC_IGNORE__
-typedef struct _GIBaseInfoStub GIBaseInfo;
-#endif
+typedef struct _GIBaseInfoStub {
+  /* <private> */
+  gint32 dummy1;
+  gint32 dummy2;
+  gpointer dummy3;
+  gpointer dummy4;
+  gpointer dummy5;
+  guint32  dummy6;
+  guint32  dummy7;
+  gpointer padding[4];
+} GIBaseInfo;
 
 /**
  * GICallableInfo:
@@ -60,7 +68,7 @@ typedef GIBaseInfo GIFunctionInfo;
  * <refsect1 id="gi-gicallbackinfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
  *          +----GIFunctionInfo
  *          +----<link linkend="gi-GISignalInfo">GISignalInfo</link>
@@ -135,7 +143,7 @@ typedef GIBaseInfo GIConstantInfo;
  * <refsect1 id="gi-givalueinfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----GIValueInfo
  * </synopsis>
  * </refsect1>

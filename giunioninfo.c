@@ -42,7 +42,7 @@
  * <refsect1 id="gi-giobjectinfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
  *          +----GIUnionInfo
  * </synopsis>

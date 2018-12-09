@@ -44,7 +44,7 @@
  * <refsect1 id="gi-gifieldinfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----GIFieldInfo
  * </synopsis>
  * </refsect1>

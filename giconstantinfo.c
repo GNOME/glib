@@ -41,7 +41,7 @@
  * <refsect1 id="gi-giconstantinfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----GIConstantInfo
  * </synopsis>
  * </refsect1>
@@ -78,7 +78,7 @@ g_constant_info_get_type (GIConstantInfo *info)
  *
  * Free the value returned from g_constant_info_get_value().
  *
- * Since: 1.30.1
+ * Since: 1.32
  */
 void
 g_constant_info_free_value (GIConstantInfo *info,

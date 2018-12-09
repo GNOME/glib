@@ -47,7 +47,7 @@
  * <refsect1 id="gi-giregisteredtypeinfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----GIRegisteredTypeInfo
  *          +----<link linkend="gi-GIEnumInfo">GIEnumInfo</link>
  *          +----<link linkend="gi-GIInterfaceInfo">GIInterfaceInfo</link>

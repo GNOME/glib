@@ -48,7 +48,7 @@
  * <refsect1 id="gi-gicallableinfo.struct-hierarchy" role="struct_hierarchy">
  * <title role="struct_hierarchy.title">Struct hierarchy</title>
  * <synopsis>
- *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *   <link linkend="GIBaseInfo">GIBaseInfo</link>
  *    +----GICallableInfo
  *          +----<link linkend="gi-GIFunctionInfo">GIFunctionInfo</link>
  *          +----<link linkend="gi-GISignalInfo">GISignalInfo</link>
@@ -297,6 +297,7 @@ g_callable_info_get_caller_owns (GICallableInfo *info)
  * Obtains the ownership transfer for the instance argument.
  * #GITransfer contains a list of possible transfer values.
  *
+ * Since: 1.42
  * Returns: the transfer mode of the instance argument
  */
 GITransfer

@@ -220,7 +220,7 @@ g_irepository_prepend_search_path (const char *directory)
  * g_irepository_get_search_path:
  *
  * Returns the current search path #GIRepository will use when loading
- * typelib files. The list is internal to #GIRespository and should not
+ * typelib files. The list is internal to #GIRepository and should not
  * be freed, nor should its string elements.
  *
  * Returns: (element-type filename) (transfer none): #GSList of strings
@@ -900,7 +900,7 @@ find_by_error_domain_foreach (gpointer key,
  *
  * Returns: (transfer full): #GIEnumInfo representing metadata about @domain's
  * enum type, or %NULL
- * Since: 1.29.17
+ * Since: 1.30
  */
 GIEnumInfo *
 g_irepository_find_by_error_domain (GIRepository *repository,
