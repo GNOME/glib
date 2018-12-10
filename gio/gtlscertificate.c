@@ -224,6 +224,8 @@ g_tls_certificate_new_internal (const gchar      *certificate_pem,
 #define PEM_PKCS8_PRIVKEY_FOOTER   "-----END PRIVATE KEY-----"
 #define PEM_PKCS8_ENCRYPTED_HEADER "-----BEGIN ENCRYPTED PRIVATE KEY-----"
 #define PEM_PKCS8_ENCRYPTED_FOOTER "-----END ENCRYPTED PRIVATE KEY-----"
+#define PEM_TSS2_PRIVKEY_HEADER    "-----BEGIN TSS2 PRIVATE KEY-----"
+#define PEM_TSS2_PRIVKEY_FOOTER    "-----END TSS2 PRIVATE KEY-----"
 
 static gchar *
 parse_private_key (const gchar *data,
@@ -243,18 +245,24 @@ parse_private_key (const gchar *data,
 	footer = PEM_PKCS8_PRIVKEY_FOOTER;
       else
 	{
-	  start = g_strstr_len (data, data_len, PEM_PKCS8_ENCRYPTED_HEADER);
+	  start = g_strstr_len (data, data_len, PEM_TSS2_PRIVKEY_HEADER);
 	  if (start)
+	    footer = PEM_TSS2_PRIVKEY_FOOTER;
+	  else
 	    {
-	      g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-				   _("Cannot decrypt PEM-encoded private key"));
+	      start = g_strstr_len (data, data_len, PEM_PKCS8_ENCRYPTED_HEADER);
+	      if (start)
+		{
+		  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+				       _("Cannot decrypt PEM-encoded private key"));
+		}
+	      else if (required)
+		{
+		g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+				     _("No PEM-encoded private key found"));
+		}
+	      return NULL;
 	    }
-	  else if (required)
-	    {
-	      g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-				   _("No PEM-encoded private key found"));
-	    }
-	  return NULL;
 	}
     }
 
