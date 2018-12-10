@@ -300,3 +300,12 @@ g_ref_string_length (char *str)
 
   return g_atomic_rc_box_get_size (str) - 1;
 }
+
+/**
+ * GRefString:
+ *
+ * A typedef alias for char. This improves readability when passing reference
+ * counted strings and is useful when used together with g_autoptr().
+ *
+ * Since: 2.58
+ */
