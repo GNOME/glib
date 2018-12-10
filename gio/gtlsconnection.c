@@ -779,14 +779,15 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * g_tls_connection_set_advertised_protocols:
  * @conn: a #GTlsConnection
  * @protocols: (array null-terminated=1): a %NULL-terminated array
- *   of ALPN protocol names (eg, "http/1.1", "h2")
+ *   of ALPN protocol names (eg, "http/1.1", "h2"), or %NULL
  *
  * Sets the list of application-layer protocols to advertise that the
  * caller is willing to speak on this connection. The
  * Application-Layer Protocol Negotiation (ALPN) extension will be
  * used to negotiate a compatible protocol with the peer; use
  * g_tls_connection_get_negotiated_protocol() to find the negotiated
- * protocol after the handshake.
+ * protocol after the handshake.  Specifying %NULL for the the value
+ * of @protocols will disable ALPN negotiation.
  *
  * See <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml>
  * for a list of registered protocol IDs.
