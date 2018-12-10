@@ -84,7 +84,8 @@ pkg.generate(libgobject,
 )
 
 libgobject_dep = declare_dependency(link_with : libgobject,
-  include_directories : [configinc, glibinc, gobjectinc])
+  include_directories : [gobjectinc],
+  dependencies : [libglib_dep])
 
 python_tools = [
   'glib-genmarshal',
