@@ -225,17 +225,20 @@ tls_certificate_SOURCES = \
 dist_test_data += $(cert_data_files)
 cert_data_files = $(addprefix cert-tests/,$(cert_tests))
 cert_tests = \
-	cert1.pem	\
-	cert2.pem	\
-	cert3.pem	\
-	cert-crlf.pem	\
-	cert-key.pem	\
-	cert-list.pem	\
-	key8.pem	\
-	key-cert.pem	\
-	key.pem		\
-	key-crlf.pem	\
-	nothing.pem	\
+	cert1.pem		\
+	cert2.pem		\
+	cert3.pem		\
+	cert-crlf.pem		\
+	cert-key.pem		\
+	cert-list.pem		\
+	key8.pem		\
+	key8enc.pem		\
+	key-cert.pem		\
+	key.pem			\
+	key-crlf.pem		\
+	key_missing-footer.pem	\
+	key_missing-header.pem	\
+	nothing.pem		\
 	$(NULL)
 
 uninstalled_test_extra_programs += socket-client
