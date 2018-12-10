@@ -235,7 +235,7 @@ def codegen_main():
 
     all_ifaces = []
     input_files_basenames = []
-    for fname in args.files + args.xml_files:
+    for fname in sorted(args.files + args.xml_files):
         with open(fname, 'rb') as f:
             xml_data = f.read()
         parsed_ifaces = parser.parse_dbus_xml(xml_data)
