@@ -788,6 +788,9 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * g_tls_connection_get_negotiated_protocol() to find the negotiated
  * protocol after the handshake.
  *
+ * See <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml>
+ * for a list of registered protocol IDs.
+ *
  * Since: 2.46
  */
 void
