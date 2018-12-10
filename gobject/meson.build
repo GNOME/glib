@@ -74,7 +74,7 @@ libgobject = library('gobject-2.0',
   link_args : glib_link_flags,
 )
 
-pkg.generate(libraries : libgobject,
+pkg.generate(libgobject,
   requires : ['glib-2.0'],
   version : glib_version,
   install_dir : glib_pkgconfigreldir,
