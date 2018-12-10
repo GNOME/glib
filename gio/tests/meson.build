@@ -411,6 +411,13 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     install : installed_tests_enabled
   )
 
+  # referenced by test2.gresource.xml
+  big_test_resource = custom_target(
+    'gresource-big-test.txt',
+    input : ['gen-big-test-resource.py'],
+    output : ['gresource-big-test.txt'],
+    command : [python, '@INPUT0@', '@OUTPUT@'])
+
   test_gresource = custom_target('test.gresource',
     input : 'test.gresource.xml',
     output : 'test.gresource',
@@ -446,10 +453,12 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
 
   test_resources_c = custom_target('test_resources.c',
     input : 'test2.gresource.xml',
+    depends : big_test_resource,
     output : 'test_resources.c',
     command : [glib_compile_resources,
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
+               '--sourcedir=' + meson.current_build_dir(),
                '--generate-source',
                '--c-name', '_g_test1',
                '@INPUT@'])
