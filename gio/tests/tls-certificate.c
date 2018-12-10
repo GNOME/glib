@@ -260,6 +260,22 @@ from_files (const Reference *ref)
   g_clear_error (&error);
   g_assert_null (cert);
 
+  /* Missing header private key */
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key_missing-header.pem", NULL),
+                                           &error);
+  g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
+  g_clear_error (&error);
+  g_assert_null (cert);
+
+  /* Missing footer private key */
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key_missing-footer.pem", NULL),
+                                           &error);
+  g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
+  g_clear_error (&error);
+  g_assert_null (cert);
+
   /* Missing certificate */
   cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL),
                                            g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL),
@@ -331,6 +347,21 @@ from_files_pkcs8 (const Reference *ref)
   parsed_key_pem = NULL;
 
   g_object_unref (cert);
+}
+
+static void
+from_files_pkcs8enc (const Reference *ref)
+{
+  GTlsCertificate *cert;
+  GError *error = NULL;
+
+  /* Mare sure an error is returned for encrypted key */
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key8enc.pem", NULL),
+                                           &error);
+  g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
+  g_clear_error (&error);
+  g_assert_null (cert);
 }
 
 static void
@@ -429,6 +460,8 @@ main (int   argc,
                         &ref, (GTestDataFunc)from_files_crlf);
   g_test_add_data_func ("/tls-certificate/from_files_pkcs8",
                         &ref, (GTestDataFunc)from_files_pkcs8);
+  g_test_add_data_func ("/tls-certificate/from_files_pkcs8enc",
+                        &ref, (GTestDataFunc)from_files_pkcs8enc);
   g_test_add_data_func ("/tls-certificate/list_from_file",
                         &ref, (GTestDataFunc)list_from_file);
 
