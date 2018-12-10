@@ -792,7 +792,7 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * See <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml>
  * for a list of registered protocol IDs.
  *
- * Since: 2.46
+ * Since: 2.60
  */
 void
 g_tls_connection_set_advertised_protocols (GTlsConnection     *conn,
@@ -817,7 +817,9 @@ g_tls_connection_set_advertised_protocols (GTlsConnection     *conn,
  * protocol that matched one of @conn's protocols, or the TLS backend
  * does not support ALPN, then this will be %NULL.
  *
- * Since: 2.46
+ * Returns: (nullable): the negotiated protocol, or %NULL
+ *
+ * Since: 2.60
  */
 const char *
 g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
