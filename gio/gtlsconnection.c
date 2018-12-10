@@ -260,7 +260,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * advertises that it is willing to speak. See
    * g_tls_connection_set_advertised_protocols().
    *
-   * Since: 2.46
+   * Since: 2.60
    */
   g_object_class_install_property (gobject_class, PROP_ADVERTISED_PROTOCOLS,
                                    g_param_spec_boxed ("advertised-protocols",
@@ -275,7 +275,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * The application-layer protocol negotiated during the TLS
    * handshake. See g_tls_connection_get_negotiated_protocol().
    *
-   * Since: 2.46
+   * Since: 2.60
    */
   g_object_class_install_property (gobject_class, PROP_NEGOTIATED_PROTOCOL,
                                    g_param_spec_string ("negotiated-protocol",
