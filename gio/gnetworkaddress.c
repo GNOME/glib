@@ -1271,6 +1271,10 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
             complete_queued_task (addr_enum, task, NULL);
           else
             {
+              /* It does not make sense for this to be called multiple
+               * times before the initial callback has been called */
+              g_assert (addr_enum->queued_task == NULL);
+
               addr_enum->queued_task = g_steal_pointer (&task);
               /* Lookup in parallel as per RFC 8305 */
               g_resolver_lookup_by_name_with_flags_async (resolver,
