@@ -2711,8 +2711,6 @@ g_socket_accept (GSocket       *socket,
 
   while (TRUE)
     {
-      win32_unset_event_mask (socket, FD_ACCEPT);
-
       if ((ret = accept (socket->priv->fd, NULL, 0)) < 0)
 	{
 	  int errsv = get_socket_errno ();
@@ -2727,6 +2725,8 @@ g_socket_accept (GSocket       *socket,
               errsv == EAGAIN)
 #endif
             {
+              win32_unset_event_mask (socket, FD_ACCEPT);
+
               if (socket->priv->blocking)
                 {
                   if (!g_socket_condition_wait (socket,
@@ -2742,6 +2742,8 @@ g_socket_accept (GSocket       *socket,
 	}
       break;
     }
+
+  win32_unset_event_mask (socket, FD_ACCEPT);
 
 #ifdef G_OS_WIN32
   {
@@ -2834,8 +2836,6 @@ g_socket_connect (GSocket         *socket,
 
   while (1)
     {
-      win32_unset_event_mask (socket, FD_CONNECT);
-
       if (connect (socket->priv->fd, &buffer.sa,
 		   g_socket_address_get_native_size (address)) < 0)
 	{
@@ -2850,6 +2850,8 @@ g_socket_connect (GSocket         *socket,
 	  if (errsv == WSAEWOULDBLOCK)
 #endif
 	    {
+              win32_unset_event_mask (socket, FD_CONNECT);
+
 	      if (socket->priv->blocking)
 		{
 		  if (g_socket_condition_wait (socket, G_IO_OUT, cancellable, error))
@@ -2874,6 +2876,8 @@ g_socket_connect (GSocket         *socket,
 	}
       break;
     }
+
+  win32_unset_event_mask (socket, FD_CONNECT);
 
   socket->priv->connected_read = TRUE;
   socket->priv->connected_write = TRUE;
@@ -3068,8 +3072,6 @@ g_socket_receive_with_timeout (GSocket       *socket,
 
   while (1)
     {
-      win32_unset_event_mask (socket, FD_READ);
-
       if ((ret = recv (socket->priv->fd, buffer, size, 0)) < 0)
 	{
 	  int errsv = get_socket_errno ();
@@ -3084,6 +3086,8 @@ g_socket_receive_with_timeout (GSocket       *socket,
               errsv == EAGAIN)
 #endif
             {
+              win32_unset_event_mask (socket, FD_READ);
+
               if (timeout != 0)
                 {
                   if (!block_on_timeout (socket, G_IO_IN, timeout, start_time,
@@ -3094,9 +3098,13 @@ g_socket_receive_with_timeout (GSocket       *socket,
                 }
             }
 
+	  win32_unset_event_mask (socket, FD_READ);
+
 	  socket_set_error_lazy (error, errsv, _("Error receiving data: %s"));
 	  return -1;
 	}
+
+      win32_unset_event_mask (socket, FD_READ);
 
       break;
     }
@@ -3263,8 +3271,6 @@ g_socket_send_with_timeout (GSocket       *socket,
 
   while (1)
     {
-      win32_unset_event_mask (socket, FD_WRITE);
-
       if ((ret = send (socket->priv->fd, (const char *)buffer, size, G_SOCKET_DEFAULT_SEND_FLAGS)) < 0)
 	{
 	  int errsv = get_socket_errno ();
@@ -3279,6 +3285,8 @@ g_socket_send_with_timeout (GSocket       *socket,
               errsv == EAGAIN)
 #endif
             {
+              win32_unset_event_mask (socket, FD_WRITE);
+
               if (timeout != 0)
                 {
                   if (!block_on_timeout (socket, G_IO_OUT, timeout, start_time,
@@ -4755,8 +4763,6 @@ g_socket_send_message_with_timeout (GSocket                *socket,
 
     while (1)
       {
-        win32_unset_event_mask (socket, FD_WRITE);
-
 	if (address)
 	  result = WSASendTo (socket->priv->fd,
 			      bufs, num_vectors,
@@ -4778,6 +4784,8 @@ g_socket_send_message_with_timeout (GSocket                *socket,
 
 	    if (errsv == WSAEWOULDBLOCK)
               {
+                win32_unset_event_mask (socket, FD_WRITE);
+
                 if (timeout != 0)
                   {
                     if (!block_on_timeout (socket, G_IO_OUT, timeout,
@@ -5225,8 +5233,6 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
     /* do it */
     while (1)
       {
-        win32_unset_event_mask (socket, FD_READ);
-
 	addrlen = sizeof addr;
 	if (address)
 	  result = WSARecvFrom (socket->priv->fd,
@@ -5248,6 +5254,8 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
 
             if (errsv == WSAEWOULDBLOCK)
               {
+                win32_unset_event_mask (socket, FD_READ);
+
                 if (timeout != 0)
                   {
                     if (!block_on_timeout (socket, G_IO_IN, timeout,
@@ -5261,6 +5269,7 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
 	    socket_set_error_lazy (error, errsv, _("Error receiving message: %s"));
 	    return -1;
 	  }
+        win32_unset_event_mask (socket, FD_READ);
 	break;
       }
 
