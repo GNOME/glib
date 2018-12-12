@@ -87,6 +87,23 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #m1 " == " #m2 ")"); \
                                         } G_STMT_END
+#define g_assert_cmpvariant(v1, v2) \
+  G_STMT_START \
+  { \
+    GVariant *__v1 = (v1), *__v2 = (v2); \
+    if (!g_variant_equal (__v1, __v2)) \
+      { \
+        gchar *__s1, *__s2, *__msg; \
+        __s1 = g_variant_print (__v1, TRUE); \
+        __s2 = g_variant_print (__v2, TRUE); \
+        __msg = g_strdup_printf ("assertion failed (" #v1 " == " #v2 "): %s does not equal %s", __s1, __s2); \
+        g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, __msg); \
+        g_free (__s1); \
+        g_free (__s2); \
+        g_free (__msg); \
+      } \
+  } \
+  G_STMT_END
 #define g_assert_no_error(err)          G_STMT_START { \
                                              if (err) \
                                                g_assertion_message_error (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \

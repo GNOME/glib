@@ -35,6 +35,38 @@
 
 /* test assertion variants */
 static void
+test_assertions_bad_cmpvariant_types (void)
+{
+  GVariant *v1, *v2;
+
+  v1 = g_variant_new_boolean (TRUE);
+  v2 = g_variant_new_string ("hello");
+
+  g_assert_cmpvariant (v1, v2);
+
+  g_variant_unref (v2);
+  g_variant_unref (v1);
+
+  exit (0);
+}
+
+static void
+test_assertions_bad_cmpvariant_values (void)
+{
+  GVariant *v1, *v2;
+
+  v1 = g_variant_new_string ("goodbye");
+  v2 = g_variant_new_string ("hello");
+
+  g_assert_cmpvariant (v1, v2);
+
+  g_variant_unref (v2);
+  g_variant_unref (v1);
+
+  exit (0);
+}
+
+static void
 test_assertions_bad_cmpstr (void)
 {
   g_assert_cmpstr ("fzz", !=, "fzz");
@@ -72,7 +104,9 @@ test_assertions_bad_cmpfloat_epsilon (void)
 static void
 test_assertions (void)
 {
+  GVariant *v1, *v2;
   gchar *fuu;
+
   g_assert_cmpint (1, >, 0);
   g_assert_cmphex (2, ==, 2);
   g_assert_cmpfloat (3.3, !=, 7);
@@ -93,6 +127,23 @@ test_assertions (void)
   g_assert_cmpstr ("fzz", >, "faa");
   g_assert_cmpstr ("fzz", ==, "fzz");
   g_assert_cmpmem ("foo", 3, "foot", 3);
+
+  v1 = g_variant_new_parsed ("['hello', 'there']");
+  v2 = g_variant_new_parsed ("['hello', 'there']");
+
+  g_assert_cmpvariant (v1, v1);
+  g_assert_cmpvariant (v1, v2);
+
+  g_variant_unref (v2);
+  g_variant_unref (v1);
+
+  g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpvariant_types", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
+
+  g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpvariant_values", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
 
   g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpstr", 0, 0);
   g_test_trap_assert_failed ();
@@ -1026,6 +1077,8 @@ main (int   argc,
   g_test_add_func ("/random-generator/rand-2", test_rand2);
   g_test_add_func ("/random-generator/random-conversions", test_random_conversions);
   g_test_add_func ("/misc/assertions", test_assertions);
+  g_test_add_func ("/misc/assertions/subprocess/bad_cmpvariant_types", test_assertions_bad_cmpvariant_types);
+  g_test_add_func ("/misc/assertions/subprocess/bad_cmpvariant_values", test_assertions_bad_cmpvariant_values);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpstr", test_assertions_bad_cmpstr);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpint", test_assertions_bad_cmpint);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpmem_len", test_assertions_bad_cmpmem_len);
