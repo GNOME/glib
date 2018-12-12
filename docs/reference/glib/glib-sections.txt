@@ -734,6 +734,11 @@ g_rec_mutex_trylock
 g_rec_mutex_unlock
 
 <SUBSECTION>
+GRecMutexLocker
+g_rec_mutex_locker_new
+g_rec_mutex_locker_free
+
+<SUBSECTION>
 GRWLock
 g_rw_lock_init
 g_rw_lock_clear
