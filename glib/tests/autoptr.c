@@ -345,6 +345,21 @@ test_g_mutex_locker (void)
 }
 
 static void
+test_g_rec_mutex_locker (void)
+{
+  GRecMutex rec_mutex;
+
+  g_rec_mutex_init (&rec_mutex);
+
+  if (TRUE)
+    {
+      g_autoptr(GRecMutexLocker) val = g_rec_mutex_locker_new (&rec_mutex);
+
+      g_assert_nonnull (val);
+    }
+}
+
+static void
 test_g_cond (void)
 {
   g_auto(GCond) val;
@@ -536,6 +551,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_thread", test_g_thread);
   g_test_add_func ("/autoptr/g_mutex", test_g_mutex);
   g_test_add_func ("/autoptr/g_mutex_locker", test_g_mutex_locker);
+  g_test_add_func ("/autoptr/g_rec_mutex_locker", test_g_rec_mutex_locker);
   g_test_add_func ("/autoptr/g_cond", test_g_cond);
   g_test_add_func ("/autoptr/g_timer", test_g_timer);
   g_test_add_func ("/autoptr/g_time_zone", test_g_time_zone);
