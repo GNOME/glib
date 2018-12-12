@@ -576,7 +576,7 @@
  * g_assert_cmpstr:
  * @s1: a string (may be %NULL)
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @s2: another string (may be %NULL)
  *
  * Debugging macro to compare two strings. If the comparison fails,
@@ -600,7 +600,7 @@
  * g_assert_cmpint:
  * @n1: an integer
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @n2: another integer
  *
  * Debugging macro to compare two integers.
@@ -617,7 +617,7 @@
  * g_assert_cmpuint:
  * @n1: an unsigned integer
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @n2: another unsigned integer
  *
  * Debugging macro to compare two unsigned integers.
@@ -634,7 +634,7 @@
  * g_assert_cmphex:
  * @n1: an unsigned integer
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @n2: another unsigned integer
  *
  * Debugging macro to compare to unsigned integers.
@@ -649,7 +649,7 @@
  * g_assert_cmpfloat:
  * @n1: an floating point number
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @n2: another floating point number
  *
  * Debugging macro to compare two floating point numbers.
