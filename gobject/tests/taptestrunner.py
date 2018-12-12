@@ -28,10 +28,7 @@
 import unittest
 import sys
 import base64
-if sys.hexversion >= 0x03000000:
-  from io import StringIO
-else:
-  from StringIO import StringIO
+from io import StringIO
 
 # Log modes
 class LogMode(object) :
