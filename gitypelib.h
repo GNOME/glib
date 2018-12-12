@@ -35,7 +35,7 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:gitypelib
- * @title: gitypelib
+ * @title: GITypelib
  * @short_description: TODO
  *
  * TODO

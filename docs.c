@@ -26,7 +26,7 @@
 
 /**
  * SECTION:gicommontypes
- * @title: common types
+ * @title: Common Types
  * @short_description: TODO
  *
  * TODO

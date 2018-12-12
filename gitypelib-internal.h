@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 
 /**
  * SECTION:gitypelib-internal
- * @title: GITypelib
+ * @title: GITypelib Internals
  * @short_description: Layout and accessors for typelib
  * @stability: Stable
  *
