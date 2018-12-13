@@ -327,6 +327,7 @@ class Property:
         self.doc_string = ''
         self.since = ''
         self.deprecated = False
+        self.emits_changed_signal = True
 
     def post_process(self, interface_prefix, cns, cns_upper, cns_lower, containing_iface):
         if len(self.doc_string) == 0:
@@ -355,6 +356,12 @@ class Property:
 
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
             self.deprecated = True
+
+        # FIXME: for now we only support 'false' and 'const' on the signal itself, see #674913 and
+        # http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format
+        # for details
+        if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Property.EmitsChangedSignal') in ('false', 'const'):
+            self.emits_changed_signal = False
 
 class Interface:
     def __init__(self, name):
