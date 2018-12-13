@@ -58,6 +58,8 @@
 /* We lock this mutex whenever we modify global state in this module.  */
 G_LOCK_DEFINE_STATIC (gio_xdgmime);
 
+static void xdg_mime_reload (void *user_data);
+
 gsize
 _g_unix_content_type_get_sniff_len (void)
 {
@@ -93,7 +95,6 @@ _g_unix_content_type_get_parents (const gchar *type)
   array = g_ptr_array_new ();
 
   G_LOCK (gio_xdgmime);
-
   umime = xdg_mime_unalias_mime_type (type);
 
   g_ptr_array_add (array, g_strdup (umime));
@@ -109,6 +110,59 @@ _g_unix_content_type_get_parents (const gchar *type)
   g_ptr_array_add (array, NULL);
 
   return (gchar **)g_ptr_array_free (array, FALSE);
+}
+
+G_LOCK_DEFINE_STATIC (global_mime_dirs);
+static gchar **global_mime_dirs = NULL;
+
+/* TODO docs */
+const gchar * const *
+_g_unix_content_type_get_mime_dirs (void)
+{
+  const gchar * const *mime_dirs;
+
+  G_LOCK (global_mime_dirs);
+
+  if (global_mime_dirs == NULL)
+    {
+      G_UNLOCK (global_mime_dirs);  /* TODO */
+      g_unix_content_type_set_mime_dirs (NULL);
+      G_LOCK (global_mime_dirs);
+    }
+
+  mime_dirs = (const gchar * const *) global_mime_dirs;
+
+  G_UNLOCK (global_mime_dirs);
+
+  g_assert (mime_dirs != NULL);
+  return (const gchar * const *) mime_dirs;
+}
+
+/* TODO docs, not thread safe, make it properly public? */
+void
+g_unix_content_type_set_mime_dirs (const char * const *dirs)
+{
+  g_clear_pointer (&global_mime_dirs, g_strfreev);
+
+  if (dirs != NULL)
+    {
+      global_mime_dirs = g_strdupv ((gchar **) dirs);
+    }
+  else
+    {
+      GPtrArray *mime_dirs = g_ptr_array_new_with_free_func (g_free);
+      const gchar * const *system_dirs = g_get_system_data_dirs ();
+
+      g_ptr_array_add (mime_dirs, g_build_filename (g_get_user_data_dir (), "mime", NULL));
+      for (; *system_dirs != NULL; system_dirs++)
+        g_ptr_array_add (mime_dirs, g_build_filename (*system_dirs, "mime", NULL));
+      g_ptr_array_add (mime_dirs, NULL);  /* NULL terminator */
+
+      global_mime_dirs = (gchar **) g_ptr_array_free (mime_dirs, FALSE);
+    }
+
+  xdg_mime_set_dirs (global_mime_dirs);
+  xdg_mime_reload (NULL); /* TODO should this be necessary if we’re calling set_dirs()? */
 }
 
 /**
@@ -306,7 +360,7 @@ load_comment_for_mime_helper (const char *dir,
     mime_info_text
   };
 
-  filename = g_build_filename (dir, "mime", basename, NULL);
+  filename = g_build_filename (dir, basename, NULL);
 
   res = g_file_get_contents (filename,  &data,  &len,  NULL);
   g_free (filename);
@@ -328,22 +382,14 @@ load_comment_for_mime_helper (const char *dir,
 static char *
 load_comment_for_mime (const char *mimetype)
 {
-  const char * const* dirs;
+  const char * const *dirs;
   char *basename;
   char *comment;
-  int i;
+  gsize i;
 
   basename = g_strdup_printf ("%s.xml", mimetype);
 
-  comment = load_comment_for_mime_helper (g_get_user_data_dir (), basename);
-  if (comment)
-    {
-      g_free (basename);
-      return comment;
-    }
-
-  dirs = g_get_system_data_dirs ();
-
+  dirs = _g_unix_content_type_get_mime_dirs ();
   for (i = 0; dirs[i] != NULL; i++)
     {
       comment = load_comment_for_mime_helper (dirs[i], basename);
@@ -783,7 +829,7 @@ enumerate_mimetypes_dir (const char *dir,
   char *mimedir;
   char *name;
 
-  mimedir = g_build_filename (dir, "mime", NULL);
+  mimedir = g_build_filename (dir, NULL);
 
   d = opendir (mimedir);
   if (d)
@@ -817,18 +863,16 @@ enumerate_mimetypes_dir (const char *dir,
 GList *
 g_content_types_get_registered (void)
 {
-  const char * const* dirs;
+  const char * const *dirs;
   GHashTable *mimetypes;
   GHashTableIter iter;
   gpointer key;
-  int i;
+  gsize i;
   GList *l;
 
   mimetypes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-  enumerate_mimetypes_dir (g_get_user_data_dir (), mimetypes);
-  dirs = g_get_system_data_dirs ();
-
+  dirs = _g_unix_content_type_get_mime_dirs ();
   for (i = 0; dirs[i] != NULL; i++)
     enumerate_mimetypes_dir (dirs[i], mimetypes);
 
@@ -1030,7 +1074,7 @@ read_tree_magic_from_directory (const gchar *prefix)
   TreeMatchlet *matchlet;
   gint depth;
 
-  filename = g_build_filename (prefix, "mime", "treemagic", NULL);
+  filename = g_build_filename (prefix, "treemagic", NULL);
 
   if (g_file_get_contents (filename, &text, &len, NULL))
     {
@@ -1086,9 +1130,7 @@ static void
 tree_magic_init (void)
 {
   static gboolean initialized = FALSE;
-  const gchar *dir;
-  const gchar * const * dirs;
-  int i;
+  gsize i;
 
   if (!initialized)
     {
@@ -1100,14 +1142,14 @@ tree_magic_init (void)
 
   if (need_reload)
     {
+      const char * const *dirs;
+
       need_reload = FALSE;
 
       tree_magic_shutdown ();
 
-      dir = g_get_user_data_dir ();
-      read_tree_magic_from_directory (dir);
-      dirs = g_get_system_data_dirs ();
-      for (i = 0; dirs[i]; i++)
+      dirs = _g_unix_content_type_get_mime_dirs ();
+      for (i = 0; dirs[i] != NULL; i++)
         read_tree_magic_from_directory (dirs[i]);
     }
 }
