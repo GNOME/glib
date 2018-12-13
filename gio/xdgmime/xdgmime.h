@@ -127,6 +127,8 @@ int          xdg_mime_register_reload_callback     (XdgMimeCallback  callback,
 void         xdg_mime_remove_callback              (int              callback_id);
 #endif
 
+void xdg_mime_set_dirs (const char * const *dirs);
+
    /* Private versions of functions that don't call xdg_mime_init () */
 int          _xdg_mime_mime_type_equal             (const char *mime_a,
 						    const char *mime_b);
