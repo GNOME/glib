@@ -665,7 +665,8 @@ class CodeGenerator:
                            '{\n'
                            '  GDBusPropertyInfo parent_struct;\n'
                            '  const gchar *hyphen_name;\n'
-                           '  gboolean use_gvariant;\n'
+                           '  guint use_gvariant : 1;\n'
+                           '  guint emits_changed_signal : 1;\n'
                            '} _ExtendedGDBusPropertyInfo;\n'
                            '\n')
 
@@ -960,9 +961,13 @@ class CodeGenerator:
                                        '  "%s",\n'
                                        %(p.name_hyphen))
                     if not utils.lookup_annotation(p.annotations, 'org.gtk.GDBus.C.ForceGVariant'):
-                        self.outfile.write('  FALSE\n')
+                        self.outfile.write('  FALSE,\n')
                     else:
+                        self.outfile.write('  TRUE,\n')
+                    if p.emits_changed_signal:
                         self.outfile.write('  TRUE\n')
+                    else:
+                        self.outfile.write('  FALSE\n')
                     self.outfile.write('};\n'
                                        '\n')
 
@@ -2595,14 +2600,17 @@ class CodeGenerator:
                                '  const GValue *value,\n'
                                '  GParamSpec   *pspec)\n'
                                '{\n'%(i.name_lower))
-            self.outfile.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
+            self.outfile.write('  const _ExtendedGDBusPropertyInfo *info;\n'
+                               '  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
                                '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
+                               '  info = (const _ExtendedGDBusPropertyInfo *) _%s_property_info_pointers[prop_id - 1];\n'
                                '  g_mutex_lock (&skeleton->priv->lock);\n'
                                '  g_object_freeze_notify (object);\n'
                                '  if (!_g_value_equal (value, &skeleton->priv->properties[prop_id - 1]))\n'
                                '    {\n'
-                               '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)\n'
-                               '        _%s_schedule_emit_changed (skeleton, (const _ExtendedGDBusPropertyInfo *) _%s_property_info_pointers[prop_id - 1], prop_id, &skeleton->priv->properties[prop_id - 1]);\n'
+                               '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL &&\n'
+                               '          info->emits_changed_signal)\n'
+                               '        _%s_schedule_emit_changed (skeleton, info, prop_id, &skeleton->priv->properties[prop_id - 1]);\n'
                                '      g_value_copy (value, &skeleton->priv->properties[prop_id - 1]);\n'
                                '      g_object_notify_by_pspec (object, pspec);\n'
                                '    }\n'

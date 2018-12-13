@@ -106,6 +106,12 @@
     <property name="FinallyNormalName" type="s" access="readwrite"/>
     <property name="ReadonlyProperty" type="s" access="read"/>
     <property name="WriteonlyProperty" type="s" access="write"/>
+    <property name="quiet" type="s" access="readwrite">
+      <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="false"/>
+    </property>
+    <property name="quiet_too" type="s" access="readwrite">
+      <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+    </property>
 
     <!-- unset properties -->
     <property name="unset_i" type="i" access="readwrite"/>
