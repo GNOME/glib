@@ -795,6 +795,76 @@ g_get_real_name (void)
 /* Protected by @g_utils_global_lock. */
 static gchar *g_home_dir = NULL;  /* (owned) (nullable before initialised) */
 
+static gchar *
+g_build_home_dir (void)
+{
+  gchar *home_dir;
+
+  /* We first check HOME and use it if it is set */
+  home_dir = g_strdup (g_getenv ("HOME"));
+
+#ifdef G_OS_WIN32
+  /* Only believe HOME if it is an absolute path and exists.
+   *
+   * We only do this check on Windows for a couple of reasons.
+   * Historically, we only did it there because we used to ignore $HOME
+   * on UNIX.  There are concerns about enabling it now on UNIX because
+   * of things like autofs.  In short, if the user has a bogus value in
+   * $HOME then they get what they pay for...
+   */
+  if (home_dir != NULL)
+    {
+      if (!(g_path_is_absolute (home_dir) &&
+            g_file_test (home_dir, G_FILE_TEST_IS_DIR)))
+        g_clear_pointer (&home_dir, g_free);
+    }
+
+  /* In case HOME is Unix-style (it happens), convert it to
+   * Windows style.
+   */
+  if (home_dir != NULL)
+    {
+      gchar *p;
+      while ((p = strchr (home_dir, '/')) != NULL)
+        *p = '\\';
+    }
+
+  if (home_dir == NULL)
+    {
+      /* USERPROFILE is probably the closest equivalent to $HOME? */
+      if (g_getenv ("USERPROFILE") != NULL)
+        home_dir = g_strdup (g_getenv ("USERPROFILE"));
+    }
+
+  if (home_dir == NULL)
+    home_dir = get_special_folder (CSIDL_PROFILE);
+
+  if (home_dir == NULL)
+    home_dir = get_windows_directory_root ();
+#endif /* G_OS_WIN32 */
+
+  if (home_dir == NULL)
+    {
+      /* If we didn't get it from any of those methods, we will have
+       * to read the user database entry.
+       */
+      UserDatabaseEntry *entry = g_get_user_database_entry ();
+      home_dir = g_strdup (entry->home_dir);
+    }
+
+  /* If we have been denied access to /etc/passwd (for example, by an
+   * overly-zealous LSM), make up a junk value. The return value at this
+   * point is explicitly documented as ‘undefined’. */
+  if (home_dir == NULL)
+    {
+      g_warning ("Could not find home directory: $HOME is not set, and "
+                 "user database could not be read.");
+      home_dir = g_strdup ("/");
+    }
+
+  return g_steal_pointer (&home_dir);
+}
+
 /**
  * g_get_home_dir:
  *
@@ -829,85 +899,7 @@ g_get_home_dir (void)
   G_LOCK (g_utils_global);
 
   if (g_home_dir == NULL)
-    {
-      gchar *tmp;
-
-      /* We first check HOME and use it if it is set */
-      tmp = g_strdup (g_getenv ("HOME"));
-
-#ifdef G_OS_WIN32
-      /* Only believe HOME if it is an absolute path and exists.
-       *
-       * We only do this check on Windows for a couple of reasons.
-       * Historically, we only did it there because we used to ignore $HOME
-       * on UNIX.  There are concerns about enabling it now on UNIX because
-       * of things like autofs.  In short, if the user has a bogus value in
-       * $HOME then they get what they pay for...
-       */
-      if (tmp)
-        {
-          if (!(g_path_is_absolute (tmp) &&
-                g_file_test (tmp, G_FILE_TEST_IS_DIR)))
-            {
-              g_free (tmp);
-              tmp = NULL;
-            }
-        }
-
-      /* In case HOME is Unix-style (it happens), convert it to
-       * Windows style.
-       */
-      if (tmp)
-        {
-          gchar *p;
-          while ((p = strchr (tmp, '/')) != NULL)
-            *p = '\\';
-        }
-
-      if (!tmp)
-        {
-          /* USERPROFILE is probably the closest equivalent to $HOME? */
-          if (g_getenv ("USERPROFILE") != NULL)
-            tmp = g_strdup (g_getenv ("USERPROFILE"));
-        }
-
-      if (!tmp)
-        tmp = get_special_folder (CSIDL_PROFILE);
-
-      if (!tmp)
-        tmp = get_windows_directory_root ();
-#endif /* G_OS_WIN32 */
-
-      if (!tmp)
-        {
-          /* If we didn't get it from any of those methods, we will have
-           * to read the user database entry.
-           */
-          UserDatabaseEntry *entry;
-
-          entry = g_get_user_database_entry ();
-
-          /* Strictly speaking, we should copy this, but we know that
-           * neither will ever be freed, so don't bother...
-           */
-          tmp = entry->home_dir;
-        }
-
-      /* If we have been denied access to /etc/passwd (for example, by an
-       * overly-zealous LSM), make up a junk value. The return value at this
-       * point is explicitly documented as ‘undefined’. Memory management is as
-       * immediately above: strictly this should be copied, but we know not
-       * copying it is OK. */
-      if (tmp == NULL)
-        {
-          g_warning ("Could not find home directory: $HOME is not set, and "
-                     "user database could not be read.");
-          tmp = "/";
-        }
-
-      g_home_dir = g_steal_pointer (&tmp);
-    }
-
+    g_home_dir = g_build_home_dir ();
   home_dir = g_home_dir;
 
   G_UNLOCK (g_utils_global);
@@ -1299,12 +1291,14 @@ g_build_user_data_dir (void)
 #endif
   if (!data_dir || !data_dir[0])
     {
-      const gchar *home_dir = g_get_home_dir ();
+      gchar *home_dir = g_build_home_dir ();
 
-      if (home_dir)
+      if (home_dir != NULL)
         data_dir = g_build_filename (home_dir, ".local", "share", NULL);
       else
         data_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".local", "share", NULL);
+
+      g_free (home_dir);
     }
 
   return g_steal_pointer (&data_dir);
@@ -1362,12 +1356,14 @@ g_build_user_config_dir (void)
 #endif
   if (!config_dir || !config_dir[0])
     {
-      const gchar *home_dir = g_get_home_dir ();
+      gchar *home_dir = g_build_home_dir ();
 
-      if (home_dir)
+      if (home_dir != NULL)
         config_dir = g_build_filename (home_dir, ".config", NULL);
       else
         config_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".config", NULL);
+
+      g_free (home_dir);
     }
 
   return g_steal_pointer (&config_dir);
@@ -1425,12 +1421,14 @@ g_build_user_cache_dir (void)
 #endif
   if (!cache_dir || !cache_dir[0])
     {
-      const gchar *home_dir = g_get_home_dir ();
+      gchar *home_dir = g_build_home_dir ();
 
-      if (home_dir)
+      if (home_dir != NULL)
         cache_dir = g_build_filename (home_dir, ".cache", NULL);
       else
         cache_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".cache", NULL);
+
+      g_free (home_dir);
     }
 
   return g_steal_pointer (&cache_dir);
@@ -1805,7 +1803,9 @@ load_user_special_dirs (void)
       
       if (is_relative)
         {
-          g_user_special_dirs[directory] = g_build_filename (g_get_home_dir (), d, NULL);
+          gchar *home_dir = g_build_home_dir ();
+          g_user_special_dirs[directory] = g_build_filename (home_dir, d, NULL);
+          g_free (home_dir);
         }
       else
 	g_user_special_dirs[directory] = g_strdup (d);
@@ -1913,7 +1913,11 @@ g_get_user_special_dir (GUserDirectory directory)
 
       /* Special-case desktop for historical compatibility */
       if (g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] == NULL)
-        g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = g_build_filename (g_get_home_dir (), "Desktop", NULL);
+        {
+          gchar *home_dir = g_build_home_dir ();
+          g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = g_build_filename (home_dir, "Desktop", NULL);
+          g_free (home_dir);
+        }
     }
   user_special_dir = g_user_special_dirs[directory];
 
