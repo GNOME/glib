@@ -69,6 +69,10 @@ gchar ** g_content_type_guess_for_tree    (GFile        *root);
 GLIB_AVAILABLE_IN_ALL
 GList *  g_content_types_get_registered   (void);
 
+/* TODO */
+GLIB_AVAILABLE_IN_2_60
+void     g_unix_content_type_set_mime_dirs (const char * const *dirs);
+
 G_END_DECLS
 
 #endif /* __G_CONTENT_TYPE_H__ */

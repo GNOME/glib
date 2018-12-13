@@ -1217,6 +1217,8 @@ g_set_user_dirs (const gchar *first_dir_type,
   va_list args;
   const gchar *dir_type;
 
+  /* TODO: debug output? */
+
   G_LOCK (g_utils_global);
 
   va_start (args, first_dir_type);

@@ -1246,7 +1246,9 @@ parse_args (gint    *argc_p,
   *argc_p = e;
 }
 
-/* TODO docs */
+/* TODO docs, note that it only takes effect just before first fixture setup function
+ * is called, so calling g_get_user_data_dir() from main() after g_test_init()
+ * but before g_test_run() will get the system values */
 static gboolean
 test_do_isolate_dirs (GError **error)
 {
