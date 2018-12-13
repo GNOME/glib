@@ -152,6 +152,7 @@ typedef struct
 
 static DesktopFileDir *desktop_file_dirs;
 static guint           n_desktop_file_dirs;
+static const gchar    *desktop_file_dirs_config_dir = NULL;
 static const guint     desktop_file_dir_user_config_index = 0;
 static guint           desktop_file_dir_user_data_index;
 static GMutex          desktop_file_dir_lock;
@@ -1476,8 +1477,23 @@ static void
 desktop_file_dirs_lock (void)
 {
   gint i;
+  const gchar *user_config_dir = g_get_user_config_dir ();
 
   g_mutex_lock (&desktop_file_dir_lock);
+
+  /* If the XDG dirs configuration has changed (expected only during tests),
+   * clear and reload the state. */
+  if (g_strcmp0 (desktop_file_dirs_config_dir, user_config_dir) != 0)
+    {
+      g_debug ("%s: Resetting desktop app info dirs from %s to %s",
+               G_STRFUNC, desktop_file_dirs_config_dir, user_config_dir);
+
+      for (i = 0; i < n_desktop_file_dirs; i++)
+        desktop_file_dir_reset (&desktop_file_dirs[i]);
+      g_clear_pointer (&desktop_file_dirs, g_free);
+      n_desktop_file_dirs = 0;
+      desktop_file_dir_user_data_index = 0;
+    }
 
   if (desktop_file_dirs == NULL)
     {
@@ -1488,7 +1504,7 @@ desktop_file_dirs_lock (void)
       tmp = g_array_new (FALSE, FALSE, sizeof (DesktopFileDir));
 
       /* First, the configs.  Highest priority: the user's ~/.config */
-      desktop_file_dir_create_for_config (tmp, g_get_user_config_dir ());
+      desktop_file_dir_create_for_config (tmp, user_config_dir);
 
       /* Next, the system configs (/etc/xdg, and so on). */
       dirs = g_get_system_config_dirs ();
@@ -1504,9 +1520,11 @@ desktop_file_dirs_lock (void)
       for (i = 0; dirs[i]; i++)
         desktop_file_dir_create (tmp, dirs[i]);
 
-      /* The list of directories will never change after this. */
+      /* The list of directories will never change after this, unless
+       * g_get_user_config_dir() changes due to %G_TEST_OPTION_ISOLATE_DIRS. */
       desktop_file_dirs = (DesktopFileDir *) tmp->data;
       n_desktop_file_dirs = tmp->len;
+      desktop_file_dirs_config_dir = user_config_dir;
 
       g_array_free (tmp, FALSE);
     }
@@ -3190,6 +3208,8 @@ ensure_dir (DirType   type,
     default:
       g_assert_not_reached ();
     }
+
+  g_debug ("%s: Ensuring %s", G_STRFUNC, path);
 
   errno = 0;
   if (g_mkdir_with_parents (path, 0700) == 0)
