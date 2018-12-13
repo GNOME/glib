@@ -28,10 +28,7 @@
 import unittest
 import sys
 import base64
-if sys.hexversion >= 0x03000000:
-  from io import StringIO
-else:
-  from StringIO import StringIO
+from io import StringIO
 
 # Log modes
 class LogMode(object) :
@@ -124,6 +121,9 @@ class TAPTestResult(unittest.TestResult):
             self.print_raw("  ...\n")
           else:
             self.print_raw("# " + output.rstrip().replace("\n", "\n# ") + "\n")
+        # Truncate doesn't change the current stream position.
+        # Seek to the beginning to avoid extensions on subsequent writes.
+        log.seek(0)
         log.truncate(0)
 
   def addSuccess(self, test):

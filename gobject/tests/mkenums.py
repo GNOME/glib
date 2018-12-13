@@ -285,7 +285,7 @@ comment: {standard_bottom_comment}
         """Test running with no arguments at all."""
         result = self.runMkenums()
         self.assertEqual('', result.err)
-        self.assertEquals('''/* {standard_top_comment} */
+        self.assertEqual('''/* {standard_top_comment} */
 
 
 /* {standard_bottom_comment} */'''.format(**result.subs),
@@ -295,7 +295,7 @@ comment: {standard_bottom_comment}
         """Test running with an empty template and no header files."""
         result = self.runMkenumsWithTemplate('')
         self.assertEqual('', result.err)
-        self.assertEquals('''/* {standard_top_comment} */
+        self.assertEqual('''/* {standard_top_comment} */
 
 
 /* {standard_bottom_comment} */'''.format(**result.subs),
@@ -305,7 +305,7 @@ comment: {standard_bottom_comment}
         """Test running with a complete template, but no header files."""
         result = self.runMkenumsWithAllSubstitutions()
         self.assertEqual('', result.err)
-        self.assertEquals('''
+        self.assertEqual('''
 comment
 comment: {standard_top_comment}
 
