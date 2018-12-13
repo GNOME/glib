@@ -959,7 +959,8 @@ class CodeGenerator:
                            '{\n'
                            '  GDBusPropertyInfo parent_struct;\n'
                            '  const gchar *hyphen_name;\n'
-                           '  gboolean use_gvariant;\n'
+                           '  guint use_gvariant : 1;\n'
+                           '  guint emits_changed_signal : 1;\n'
                            '} _ExtendedGDBusPropertyInfo;\n'
                            '\n')
 
@@ -1254,9 +1255,13 @@ class CodeGenerator:
                                        '  "%s",\n'
                                        %(p.name_hyphen))
                     if not utils.lookup_annotation(p.annotations, 'org.gtk.GDBus.C.ForceGVariant'):
-                        self.outfile.write('  FALSE\n')
+                        self.outfile.write('  FALSE,\n')
                     else:
+                        self.outfile.write('  TRUE,\n')
+                    if p.emits_changed_signal:
                         self.outfile.write('  TRUE\n')
+                    else:
+                        self.outfile.write('  FALSE\n')
                     self.outfile.write('};\n'
                                        '\n')
 
@@ -2898,14 +2903,15 @@ class CodeGenerator:
                                '  g_object_freeze_notify (object);\n'
                                '  if (!_g_value_equal (value, &skeleton->priv->properties[prop_id - 1]))\n'
                                '    {\n'
-                               '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)\n'
+                               '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL &&\n'
+                               '          _%s_property_info_pointers[prop_id - 1]->emits_changed_signal)\n'
                                '        _%s_schedule_emit_changed (skeleton, (const _ExtendedGDBusPropertyInfo *) _%s_property_info_pointers[prop_id - 1], prop_id, &skeleton->priv->properties[prop_id - 1]);\n'
                                '      g_value_copy (value, &skeleton->priv->properties[prop_id - 1]);\n'
                                '      g_object_notify_by_pspec (object, pspec);\n'
                                '    }\n'
                                '  g_mutex_unlock (&skeleton->priv->lock);\n'
                                '  g_object_thaw_notify (object);\n'
-                               %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties), i.name_lower, i.name_lower))
+                               %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties), i.name_lower, i.name_lower, i.name_lower))
             self.outfile.write('}\n'
                                '\n')
 
