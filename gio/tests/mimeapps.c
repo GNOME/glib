@@ -111,7 +111,7 @@ setup (void)
   gchar *apphome;
   gchar *mimeapps;
   gchar *name;
-  gboolean res;
+  gint res;
   GError *error = NULL;
 
   dir = g_get_current_dir ();
@@ -128,7 +128,7 @@ setup (void)
   appdir = g_build_filename (xdgdatadir, "applications", NULL);
   g_test_message ("creating '%s'\n", appdir);
   res = g_mkdir_with_parents (appdir, 0700);
-  g_assert (res == 0);
+  g_assert_cmpint (res, ==, 0);
 
   name = g_build_filename (appdir, "mimeapps.list", NULL);
   g_test_message ("creating '%s'\n", name);
@@ -139,7 +139,7 @@ setup (void)
   apphome = g_build_filename (xdgdatahome, "applications", NULL);
   g_test_message ("creating '%s'\n", apphome);
   res = g_mkdir_with_parents (apphome, 0700);
-  g_assert (res == 0);
+  g_assert_cmpint (res, ==, 0);
 
   name = g_build_filename (apphome, "myapp.desktop", NULL);
   g_test_message ("creating '%s'\n", name);
@@ -214,8 +214,8 @@ test_mime_api (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (def == NULL);
-  g_assert (list == NULL);
+  g_assert_null (def);
+  g_assert_null (list);
 
   /* 1. add a non-default association */
   g_app_info_add_supports_type (appinfo, contenttype, &error);
@@ -223,9 +223,9 @@ test_mime_api (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo));
+  g_assert_true (g_app_info_equal (def, appinfo));
   g_assert_cmpint (g_list_length (list), ==, 1);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -235,10 +235,10 @@ test_mime_api (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo));
+  g_assert_true (g_app_info_equal (def, appinfo));
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -248,10 +248,10 @@ test_mime_api (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo));
+  g_assert_true (g_app_info_equal (def, appinfo));
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -261,10 +261,10 @@ test_mime_api (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo));
+  g_assert_true (g_app_info_equal (def, appinfo));
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo2));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo2));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -273,8 +273,8 @@ test_mime_api (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (def == NULL);
-  g_assert (list == NULL);
+  g_assert_null (def);
+  g_assert_null (list);
 
   g_object_unref (appinfo);
   g_object_unref (appinfo2);
@@ -312,8 +312,8 @@ test_mime_file (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (def == NULL);
-  g_assert (list == NULL);
+  g_assert_null (def);
+  g_assert_null (list);
 
   /* 1. add a non-default association */
   g_app_info_add_supports_type (appinfo, contenttype, &error);
@@ -325,12 +325,12 @@ test_mime_file (void)
 
   assoc = g_key_file_get_string_list (keyfile, "Added Associations", contenttype, NULL, &error);
   g_assert_no_error (error);
-  g_assert (strv_equal (assoc, "myapp.desktop", NULL));
+  g_assert_true (strv_equal (assoc, "myapp.desktop", NULL));
   g_strfreev (assoc);
 
   /* we've unset XDG_DATA_DIRS so there should be no default */
   assoc = g_key_file_get_string_list (keyfile, "Default Applications", contenttype, NULL, &error);
-  g_assert (error != NULL);
+  g_assert_nonnull (error);
   g_clear_error (&error);
 
   g_key_file_free (keyfile);
@@ -345,11 +345,11 @@ test_mime_file (void)
 
   assoc = g_key_file_get_string_list (keyfile, "Added Associations", contenttype, NULL, &error);
   g_assert_no_error (error);
-  g_assert (strv_equal (assoc, "myapp.desktop", "myapp2.desktop", NULL));
+  g_assert_true (strv_equal (assoc, "myapp.desktop", "myapp2.desktop", NULL));
   g_strfreev (assoc);
 
   assoc = g_key_file_get_string_list (keyfile, "Default Applications", contenttype, NULL, &error);
-  g_assert (error != NULL);
+  g_assert_nonnull (error);
   g_clear_error (&error);
 
   g_key_file_free (keyfile);
@@ -364,7 +364,7 @@ test_mime_file (void)
 
   assoc = g_key_file_get_string_list (keyfile, "Added Associations", contenttype, NULL, &error);
   g_assert_no_error (error);
-  g_assert (strv_equal (assoc, "myapp.desktop", "myapp2.desktop", NULL));
+  g_assert_true (strv_equal (assoc, "myapp.desktop", "myapp2.desktop", NULL));
   g_strfreev (assoc);
 
   str = g_key_file_get_string (keyfile, "Default Applications", contenttype, &error);
@@ -384,7 +384,7 @@ test_mime_file (void)
 
   assoc = g_key_file_get_string_list (keyfile, "Added Associations", contenttype, NULL, &error);
   g_assert_no_error (error);
-  g_assert (strv_equal (assoc, "myapp2.desktop", "myapp.desktop", NULL));
+  g_assert_true (strv_equal (assoc, "myapp2.desktop", "myapp.desktop", NULL));
   g_strfreev (assoc);
 
   g_key_file_free (keyfile);
@@ -397,10 +397,10 @@ test_mime_file (void)
   g_assert_no_error (error);
 
   res = g_key_file_has_key (keyfile, "Added Associations", contenttype, NULL);
-  g_assert (!res);
+  g_assert_false (res);
 
   res = g_key_file_has_key (keyfile, "Default Applications", contenttype, NULL);
-  g_assert (!res);
+  g_assert_false (res);
 
   g_key_file_free (keyfile);
 
@@ -433,9 +433,9 @@ test_mime_default (void)
   /* myapp3 is set as the default in defaults.list */
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo3));
+  g_assert_true (g_app_info_equal (def, appinfo3));
   g_assert_cmpint (g_list_length (list), ==, 1);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo3));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo3));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -445,10 +445,10 @@ test_mime_default (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo3)); /* default is unaffected */
+  g_assert_true (g_app_info_equal (def, appinfo3)); /* default is unaffected */
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo3));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo3));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -458,11 +458,11 @@ test_mime_default (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo3));
+  g_assert_true (g_app_info_equal (def, appinfo3));
   g_assert_cmpint (g_list_length (list), ==, 3);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->next->data, appinfo3));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->next->data, appinfo3));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -472,11 +472,11 @@ test_mime_default (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo));
+  g_assert_true (g_app_info_equal (def, appinfo));
   g_assert_cmpint (g_list_length (list), ==, 3);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->next->data, appinfo3));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->next->data, appinfo3));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -509,10 +509,10 @@ test_mime_default_last_used (void)
   /* myapp4 and myapp5 can both handle image/bmp */
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo4));
+  g_assert_true (g_app_info_equal (def, appinfo4));
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo4));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo5));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo4));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo5));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -522,10 +522,10 @@ test_mime_default_last_used (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo4)); /* default is unaffected */
+  g_assert_true (g_app_info_equal (def, appinfo4)); /* default is unaffected */
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo4));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo5));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo4));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo5));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -535,10 +535,10 @@ test_mime_default_last_used (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo4));
+  g_assert_true (g_app_info_equal (def, appinfo4));
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo5));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo4));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo5));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo4));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -548,10 +548,10 @@ test_mime_default_last_used (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo5));
+  g_assert_true (g_app_info_equal (def, appinfo5));
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo5));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo4));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo5));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo4));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -561,10 +561,10 @@ test_mime_default_last_used (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo5));
+  g_assert_true (g_app_info_equal (def, appinfo5));
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo4));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo5));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo4));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo5));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -574,10 +574,10 @@ test_mime_default_last_used (void)
 
   def = g_app_info_get_default_for_type (contenttype, FALSE);
   list = g_app_info_get_recommended_for_type (contenttype);
-  g_assert (g_app_info_equal (def, appinfo5));
+  g_assert_true (g_app_info_equal (def, appinfo5));
   g_assert_cmpint (g_list_length (list), ==, 2);
-  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo5));
-  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo4));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->data, appinfo5));
+  g_assert_true (g_app_info_equal ((GAppInfo*)list->next->data, appinfo4));
   g_object_unref (def);
   g_list_free_full (list, g_object_unref);
 
@@ -592,7 +592,7 @@ test_scheme_handler (void)
 
   info5 = (GAppInfo*)g_desktop_app_info_new ("myapp5.desktop");
   info = g_app_info_get_default_for_uri_scheme ("ftp");
-  g_assert (g_app_info_equal (info, info5));
+  g_assert_true (g_app_info_equal (info, info5));
 
   g_object_unref (info);
   g_object_unref (info5);
@@ -606,7 +606,7 @@ test_mime_ignore_nonexisting (void)
   GAppInfo *appinfo;
 
   appinfo = (GAppInfo*)g_desktop_app_info_new ("nosuchapp.desktop");
-  g_assert (appinfo == NULL);
+  g_assert_null (appinfo);
 }
 
 static void
@@ -617,7 +617,7 @@ test_all (void)
   all = g_app_info_get_all ();
 
   for (l = all; l; l = l->next)
-    g_assert (G_IS_APP_INFO (l->data));
+    g_assert_true (G_IS_APP_INFO (l->data));
 
   g_list_free_full (all, g_object_unref);
 }
