@@ -118,71 +118,71 @@ setup (void)
   xdgconfighome = g_build_filename (dir, "xdgconfighome", NULL);
   xdgdatahome = g_build_filename (dir, "xdgdatahome", NULL);
   xdgdatadir = g_build_filename (dir, "xdgdatadir", NULL);
-  g_test_message ("setting XDG_CONFIG_HOME to '%s'\n", xdgconfighome);
+  g_test_message ("setting XDG_CONFIG_HOME to '%s'", xdgconfighome);
   g_setenv ("XDG_CONFIG_HOME", xdgconfighome, TRUE);
-  g_test_message ("setting XDG_DATA_HOME to '%s'\n", xdgdatahome);
+  g_test_message ("setting XDG_DATA_HOME to '%s'", xdgdatahome);
   g_setenv ("XDG_DATA_HOME", xdgdatahome, TRUE);
-  g_test_message ("setting XDG_DATA_DIRS to '%s'\n", xdgdatadir);
+  g_test_message ("setting XDG_DATA_DIRS to '%s'", xdgdatadir);
   g_setenv ("XDG_DATA_DIRS", xdgdatadir, TRUE);
 
   appdir = g_build_filename (xdgdatadir, "applications", NULL);
-  g_test_message ("creating '%s'\n", appdir);
+  g_test_message ("creating '%s'", appdir);
   res = g_mkdir_with_parents (appdir, 0700);
   g_assert_cmpint (res, ==, 0);
 
   name = g_build_filename (appdir, "mimeapps.list", NULL);
-  g_test_message ("creating '%s'\n", name);
+  g_test_message ("creating '%s'", name);
   g_file_set_contents (name, defaults_data, -1, &error);
   g_assert_no_error (error);
   g_free (name);
 
   apphome = g_build_filename (xdgdatahome, "applications", NULL);
-  g_test_message ("creating '%s'\n", apphome);
+  g_test_message ("creating '%s'", apphome);
   res = g_mkdir_with_parents (apphome, 0700);
   g_assert_cmpint (res, ==, 0);
 
   name = g_build_filename (apphome, "myapp.desktop", NULL);
-  g_test_message ("creating '%s'\n", name);
+  g_test_message ("creating '%s'", name);
   g_file_set_contents (name, myapp_data, -1, &error);
   g_assert_no_error (error);
   g_free (name);
 
   name = g_build_filename (apphome, "myapp2.desktop", NULL);
-  g_test_message ("creating '%s'\n", name);
+  g_test_message ("creating '%s'", name);
   g_file_set_contents (name, myapp2_data, -1, &error);
   g_assert_no_error (error);
   g_free (name);
 
   name = g_build_filename (apphome, "myapp3.desktop", NULL);
-  g_test_message ("creating '%s'\n", name);
+  g_test_message ("creating '%s'", name);
   g_file_set_contents (name, myapp3_data, -1, &error);
   g_assert_no_error (error);
   g_free (name);
 
   name = g_build_filename (apphome, "myapp4.desktop", NULL);
-  g_test_message ("creating '%s'\n", name);
+  g_test_message ("creating '%s'", name);
   g_file_set_contents (name, myapp4_data, -1, &error);
   g_assert_no_error (error);
   g_free (name);
 
   name = g_build_filename (apphome, "myapp5.desktop", NULL);
-  g_test_message ("creating '%s'\n", name);
+  g_test_message ("creating '%s'", name);
   g_file_set_contents (name, myapp5_data, -1, &error);
   g_assert_no_error (error);
   g_free (name);
 
   name = g_build_filename (apphome, "nosuchapp.desktop", NULL);
-  g_test_message ("creating '%s'\n", name);
+  g_test_message ("creating '%s'", name);
   g_file_set_contents (name, nosuchapp_data, -1, &error);
   g_assert_no_error (error);
   g_free (name);
 
   mimeapps = g_build_filename (apphome, "mimeapps.list", NULL);
-  g_test_message ("removing '%s'\n", mimeapps);
+  g_test_message ("removing '%s'", mimeapps);
   g_remove (mimeapps);
 
   name = g_build_filename (apphome, "mimeinfo.cache", NULL);
-  g_test_message ("creating '%s'\n", name);
+  g_test_message ("creating '%s'", name);
   g_file_set_contents (name, mimecache_data, -1, &error);
   g_assert_no_error (error);
   g_free (name);
