@@ -2021,7 +2021,44 @@
  * has any effect.)
  *
  * This macro can be used either inside or outside of a function body,
- * but must appear on a line by itself.
+ * but must appear on a line by itself. Both this macro and the corresponding
+ * %G_GNUC_END_IGNORE_DEPRECATIONS are considered statements, so they
+ * should not be used around branching or loop conditions; for instance,
+ * this use is invalid:
+ *
+ * |[<!-- language="C" -->
+ *   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+ *   if (check == some_deprecated_function ())
+ *   G_GNUC_END_IGNORE_DEPRECATIONS
+ *     {
+ *       do_something ();
+ *     }
+ * ]|
+ *
+ * and you should move the deprecated section outside the condition
+ *
+ * |[<!-- language="C" -->
+ *
+ *   // Solution A
+ *   some_data_t *res;
+ *
+ *   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+ *   res = some_deprecated_function ();
+ *   G_GNUC_END_IGNORE_DEPRECATIONS
+ *
+ *   if (check == res)
+ *     {
+ *       do_something ();
+ *     }
+ *
+ *   // Solution B
+ *   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+ *   if (check == some_deprecated_function ())
+ *     {
+ *       do_something ();
+ *     }
+ *   G_GNUC_END_IGNORE_DEPRECATIONS
+ * ]|
  *
  * |[<!-- language="C" --
  * static void
