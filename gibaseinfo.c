@@ -377,6 +377,7 @@ g_base_info_get_name (GIBaseInfo *info)
       }
       break;
     case GI_INFO_TYPE_TYPE:
+      return NULL;
     default: ;
       g_assert_not_reached ();
       /* unnamed */
