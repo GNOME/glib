@@ -933,7 +933,7 @@ check_bar_proxy (FooiGenBar *proxy,
   g_assert_cmpuint (g_strv_length ((gchar **) ret_array_of_objpaths), ==,
                     g_strv_length ((gchar **) array_of_objpaths));
   g_assert_nonnull (ret_array_of_signatures);
-  g_assert_true (g_variant_equal (ret_array_of_signatures, array_of_signatures));
+  g_assert_cmpvariant (ret_array_of_signatures, array_of_signatures);
   g_assert_nonnull (ret_array_of_bytestrings);
   g_assert_cmpuint (g_strv_length ((gchar **) ret_array_of_bytestrings), ==,
                     g_strv_length ((gchar **) array_of_bytestrings));

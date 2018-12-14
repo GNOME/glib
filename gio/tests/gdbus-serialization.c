@@ -526,7 +526,6 @@ check_serialization (GVariant *value,
   GError *error;
   DBusError dbus_error;
   gchar *s;
-  gchar *s1;
   guint n;
 
   message = g_dbus_message_new ();
@@ -618,17 +617,7 @@ check_serialization (GVariant *value,
       else
         {
           g_assert (g_dbus_message_get_body (recovered_message) != NULL);
-          if (!g_variant_equal (g_dbus_message_get_body (recovered_message), value))
-            {
-              s = g_variant_print (g_dbus_message_get_body (recovered_message), TRUE);
-              s1 = g_variant_print (value, TRUE);
-              g_printerr ("Recovered value:\n%s\ndoes not match given value\n%s\n",
-                          s,
-                          s1);
-              g_free (s);
-              g_free (s1);
-              g_assert_not_reached ();
-            }
+          g_assert_cmpvariant (g_dbus_message_get_body (recovered_message), value);
         }
       g_object_unref (recovered_message);
       g_free (blob);

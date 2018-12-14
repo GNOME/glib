@@ -128,7 +128,7 @@ message_copy (void)
       copy_val = g_dbus_message_get_header (m, m_headers[n]);
       g_assert (m_val != NULL);
       g_assert (copy_val != NULL);
-      g_assert (g_variant_equal (m_val, copy_val));
+      g_assert_cmpvariant (m_val, copy_val);
     }
   g_assert_cmpint (n, >, 0); /* make sure we actually compared headers etc. */
   g_assert_cmpint (copy_headers[n], ==, 0);
