@@ -329,6 +329,14 @@ test_g_mutex (void)
   g_mutex_init (&val);
 }
 
+static gpointer
+mutex_locked_thread (gpointer data)
+{
+  GMutex *mutex = (GMutex *) data;
+  g_assert_false (g_mutex_trylock (mutex));
+  return NULL;
+}
+
 static void
 test_g_mutex_locker (void)
 {
@@ -339,8 +347,13 @@ test_g_mutex_locker (void)
   if (TRUE)
     {
       g_autoptr(GMutexLocker) val = g_mutex_locker_new (&mutex);
+      GThread *thread;
       
-      g_assert (val != NULL);
+      g_assert_nonnull (val);
+
+      /* verify that the mutex is actually locked */
+      thread = g_thread_new ("mutex locked", mutex_locked_thread, &mutex);
+      g_thread_join (thread);
     }
 }
 
