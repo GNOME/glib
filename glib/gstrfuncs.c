@@ -3188,7 +3188,7 @@ g_strv_contains (const gchar * const *strv,
  *
  * Checks if @strv1 and @strv2 contain exactly the same elements in exactly the
  * same order. Elements are compared using g_str_equal(). To match independently
- * of order, sort the arrays first.
+ * of order, sort the arrays first (using g_qsort_with_data() or similar).
  *
  * Two empty arrays are considered equal. Neither @strv1 not @strv2 may be
  * %NULL.
