@@ -408,6 +408,7 @@ run_apps (const gchar *command,
   gchar **argv;
   gint status;
   gchar *out;
+  gchar *argv_str = NULL;
 
   argv = g_new (gchar *, 4);
   argv[0] = g_test_build_filename (G_TEST_BUILT, "apps", NULL);
@@ -453,6 +454,10 @@ run_apps (const gchar *command,
   success = g_spawn_sync (NULL, argv, envp, 0, NULL, NULL, &out, NULL, &status, NULL);
   g_assert_true (success);
   g_assert_cmpuint (status, ==, 0);
+
+  argv_str = g_strjoinv (" ", argv);
+  g_test_message ("%s: `%s` returned: %s", G_STRFUNC, argv_str, out);
+  g_free (argv_str);
 
   g_strfreev (envp);
   g_strfreev (argv);
