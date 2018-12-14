@@ -305,7 +305,7 @@ test_extra_getters (void)
       g_message ("%s: stat2 = %d", G_STRFUNC, g_stat ("/home/user/glib-installed/libexec/installed-tests/glib/appinfo-test", &stat_buf));
     }
 
-  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL));
+  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test-static.desktop", NULL));
   g_assert_nonnull (appinfo);
 
   g_assert_true (g_desktop_app_info_has_key (appinfo, "Terminal"));
@@ -756,7 +756,12 @@ test_launch_as_manager (void)
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
-  g_assert_nonnull (appinfo);
+
+  if (appinfo == NULL)
+    {
+      g_test_skip ("appinfo-test binary not installed");
+      return;
+    }
 
   retval = g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, NULL, 0,
                                                       NULL, NULL,
