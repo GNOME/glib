@@ -125,6 +125,7 @@ reopen_noninherited (int fd,
 #define HELPER_PROCESS "gspawn-win32-helper"
 #endif
 
+/* This logic has a copy for wchar_t in gspawn-win32-helper.c, protect_wargv() */
 static gchar *
 protect_argv_string (const gchar *string)
 {
