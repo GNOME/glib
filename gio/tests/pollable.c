@@ -38,10 +38,13 @@ poll_source_callback (GPollableInputStream *in,
   gssize nread;
   gboolean *success = user_data;
 
+  g_assert_true (g_pollable_input_stream_is_readable (G_POLLABLE_INPUT_STREAM (in)));
+
   nread = g_pollable_input_stream_read_nonblocking (in, buf, 2, NULL, &error);
   g_assert_no_error (error);
   g_assert_cmpint (nread, ==, 2);
   g_assert_cmpstr (buf, ==, "x");
+  g_assert_false (g_pollable_input_stream_is_readable (G_POLLABLE_INPUT_STREAM (in)));
 
   *success = TRUE;
   return G_SOURCE_REMOVE;
