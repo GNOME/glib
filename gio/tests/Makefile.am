@@ -339,6 +339,7 @@ dist_test_data += \
 
 dist_test_data += \
 	appinfo-test-actions.desktop		\
+	appinfo-test-static.desktop		\
 	file.c					\
 	org.gtk.test.dbusappinfo.desktop	\
 	x-content/image-dcf/DCIM/Camera/20130831_203925.jpg \
