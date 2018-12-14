@@ -301,6 +301,8 @@ test_extra_getters (void)
       g_file_get_contents (filename, &contents, NULL, NULL);
       g_message ("%s: %s", G_STRFUNC, contents);
       g_free (contents);
+
+      g_message ("%s: stat2 = %d", G_STRFUNC, g_stat ("/home/user/glib-installed/libexec/installed-tests/glib/appinfo-test", &stat_buf));
     }
 
   appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL));
