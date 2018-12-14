@@ -451,6 +451,8 @@ run_apps (const gchar *command,
   else
     envp = g_environ_unsetenv (envp, "XDG_CURRENT_DESKTOP");
 
+  envp = g_environ_setenv (envp, "G_MESSAGES_DEBUG", "", TRUE);
+
   success = g_spawn_sync (NULL, argv, envp, 0, NULL, NULL, &out, NULL, &status, NULL);
   g_assert_true (success);
   g_assert_cmpuint (status, ==, 0);
