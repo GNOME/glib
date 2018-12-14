@@ -1221,9 +1221,11 @@ set_strv_if_different (gchar                ***global_strv,
  *
  *  - g_get_home_dir() — use type `HOME`, pass a string
  *  - g_get_user_cache_dir() — use type `XDG_CACHE_HOME`, pass a string
- *  - g_get_system_config_dirs() — use type `XDG_CONFIG_DIRS`, pass a #GStrv
+ *  - g_get_system_config_dirs() — use type `XDG_CONFIG_DIRS`, pass a
+ *    %NULL-terminated string array
  *  - g_get_user_config_dir() — use type `XDG_CONFIG_HOME`, pass a string
- *  - g_get_system_data_dirs() — use type `XDG_DATA_DIRS`, pass a #GStrv
+ *  - g_get_system_data_dirs() — use type `XDG_DATA_DIRS`, pass a
+ *    %NULL-terminated string array
  *  - g_get_user_data_dir() — use type `XDG_DATA_HOME`, pass a string
  *  - g_get_user_runtime_dir() — use type `XDG_RUNTIME_DIR`, pass a string
  *
