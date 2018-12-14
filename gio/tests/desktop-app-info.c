@@ -288,6 +288,21 @@ test_extra_getters (void)
   g_setenv ("LANGUAGE", "de_DE.UTF8", TRUE);
   setlocale (LC_ALL, "");
 
+    {
+      const gchar *filename;
+      gchar *contents = NULL;
+      GStatBuf stat_buf;
+
+      filename = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+      g_message ("%s: %s", G_STRFUNC, filename);
+
+      g_message ("%s: stat = %d", G_STRFUNC, g_stat (filename, &stat_buf));
+
+      g_file_get_contents (filename, &contents, NULL, NULL);
+      g_message ("%s: %s", G_STRFUNC, contents);
+      g_free (contents);
+    }
+
   appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL));
   g_assert_nonnull (appinfo);
 
