@@ -54,7 +54,12 @@
  * Since: 2.28
  */
 
-G_DEFINE_ABSTRACT_TYPE (GTlsConnection, g_tls_connection, G_TYPE_IO_STREAM)
+struct _GTlsConnectionPrivate
+{
+    gchar *negotiated_protocol;
+};
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GTlsConnection, g_tls_connection, G_TYPE_IO_STREAM)
 
 static void g_tls_connection_get_property (GObject    *object,
 					   guint       prop_id,
@@ -85,7 +90,7 @@ enum {
   PROP_PEER_CERTIFICATE,
   PROP_PEER_CERTIFICATE_ERRORS,
   PROP_ADVERTISED_PROTOCOLS,
-  PROP_NEGOTIATED_PROTOCOL
+  PROP_NEGOTIATED_PROTOCOL,
 };
 
 static void
@@ -815,7 +820,8 @@ g_tls_connection_set_advertised_protocols (GTlsConnection     *conn,
  *
  * If the peer did not use the ALPN extension, or did not advertise a
  * protocol that matched one of @conn's protocols, or the TLS backend
- * does not support ALPN, then this will be %NULL.
+ * does not support ALPN, then this will be %NULL. See
+ * g_tls_connection_set_advertised_protocols().
  *
  * Returns: (nullable): the negotiated protocol, or %NULL
  *
@@ -824,17 +830,42 @@ g_tls_connection_set_advertised_protocols (GTlsConnection     *conn,
 const char *
 g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
 {
+  GObjectClass *klass;
+  GParamSpec *child_pspec;
+  GParamSpec *pspec;
+  GTlsConnectionPrivate *priv;
   char *protocol;
-  const char *interned_protocol;
 
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
+
+  priv = g_tls_connection_get_instance_private (conn);
+
+  /*
+   * Gracefully handle backend implementations that don't yet support
+   * this property, returning NULL if not implemented.
+   */
+  klass = G_OBJECT_GET_CLASS (conn);
+  pspec = g_object_class_find_property (klass, "negotiated-protocol");
+  child_pspec = g_param_spec_get_redirect_target (pspec);
+
+  if (child_pspec != NULL)
+      return NULL;
 
   g_object_get (G_OBJECT (conn),
                 "negotiated-protocol", &protocol,
                 NULL);
-  interned_protocol = protocol ? g_intern_string (protocol) : NULL;
-  g_free (protocol);
-  return interned_protocol;
+
+  if (g_strcmp0 (priv->negotiated_protocol, protocol) != 0)
+    {
+      g_free(priv->negotiated_protocol);
+      priv->negotiated_protocol = protocol;
+    }
+  else
+    {
+      g_free(protocol);
+    }
+
+  return priv->negotiated_protocol;
 }
 
 /**
