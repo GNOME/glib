@@ -47,6 +47,7 @@
 #include <giunioninfo.h>
 #include <giversionmacros.h>
 #include <givfuncinfo.h>
+#include <giversion.h>
 
 G_BEGIN_DECLS
 

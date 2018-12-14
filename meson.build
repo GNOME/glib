@@ -36,6 +36,12 @@ girepo_internals_dep = declare_dependency(
   include_directories: include_directories('.'),
 )
 
+gi_version_h = configure_file(
+  configuration: config,
+  input: 'giversion.h.in',
+  output: 'giversion.h',
+)
+
 girepo_headers = [
   'giarginfo.h',
   'gibaseinfo.h',
@@ -58,6 +64,7 @@ girepo_headers = [
   'giunioninfo.h',
   'giversionmacros.h',
   'givfuncinfo.h',
+  gi_version_h,
 ]
 
 girepo_sources = [
@@ -81,6 +88,7 @@ girepo_sources = [
   'gitypeinfo.c',
   'gitypelib.c',
   'giunioninfo.c',
+  'giversion.c',
   'givfuncinfo.c',
 ]
 
@@ -102,6 +110,7 @@ girepo_gir_sources = files(
   'gistructinfo.c',
   'gitypeinfo.c',
   'giunioninfo.c',
+  'giversion.c',
   'givfuncinfo.c',
   'giarginfo.h',
   'gibaseinfo.h',
@@ -122,7 +131,8 @@ girepo_gir_sources = files(
   'gitypes.h',
   'giunioninfo.h',
   'givfuncinfo.h',
-)
+) + [gi_version_h]
+
 
 install_headers(girepo_headers, subdir: 'gobject-introspection-1.0')
 
