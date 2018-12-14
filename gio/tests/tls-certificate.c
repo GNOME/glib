@@ -36,14 +36,16 @@ pem_parser (const Reference *ref)
 {
   GTlsCertificate *cert;
   gchar *pem;
+  gsize pem_len = 0;
   gchar *parsed_cert_pem = NULL;
   const gchar *parsed_key_pem = NULL;
   GError *error = NULL;
 
   /* Check PEM parsing in certificate, private key order. */
-  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-key.pem", NULL), &pem, NULL, &error);
+  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-key.pem", NULL), &pem, &pem_len, &error);
   g_assert_no_error (error);
   g_assert (pem);
+  g_assert_cmpuint (pem_len, >=, 10);
 
   cert = g_tls_certificate_new_from_pem (pem, -1, &error);
   g_assert_no_error (error);
@@ -61,8 +63,15 @@ pem_parser (const Reference *ref)
 
   g_object_unref (cert);
 
-  /* Make sure length is respected and parser detect invalid (truncated) PEM. */
+  /* Make sure length is respected and parser detect invalid PEM
+   * when cert is truncated. */
   cert = g_tls_certificate_new_from_pem (pem, 10, &error);
+  g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
+  g_clear_error (&error);
+
+  /* Make sure length is respected and parser detect invalid PEM
+   * when cert exists but key is truncated. */
+  cert = g_tls_certificate_new_from_pem (pem, pem_len - 10, &error);
   g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
   g_clear_error (&error);
   g_free (pem);

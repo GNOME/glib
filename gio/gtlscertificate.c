@@ -258,7 +258,7 @@ parse_private_key (const gchar *data,
 	}
     }
 
-  end = g_strstr_len (start, data_len - (data - start), footer);
+  end = g_strstr_len (start, data_len - (start - data), footer);
   if (!end)
     {
       g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
