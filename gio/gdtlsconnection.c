@@ -232,6 +232,37 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
                                                            0,
                                                            G_PARAM_READABLE |
                                                            G_PARAM_STATIC_STRINGS));
+  /**
+   * GDtlsConnection:advertised-protocols:
+   *
+   * The list of application-layer protocols that the connection
+   * advertises that it is willing to speak. See
+   * g_tls_connection_set_advertised_protocols().
+   *
+   * Since: 2.60
+   */
+  g_object_interface_install_property (iface,
+                                       g_param_spec_boxed ("advertised-protocols",
+                                                           P_("Advertised Protocols"),
+                                                           P_("Application-layer protocols available on this connection"),
+                                                           G_TYPE_STRV,
+                                                           G_PARAM_READWRITE |
+                                                           G_PARAM_STATIC_STRINGS));
+  /**
+   * GDtlsConnection:negotiated-protocol:
+   *
+   * The application-layer protocol negotiated during the TLS
+   * handshake. See g_tls_connection_get_negotiated_protocol().
+   *
+   * Since: 2.60
+   */
+  g_object_interface_install_property (iface,
+                                       g_param_spec_string ("negotiated-protocol",
+                                                            P_("Negotiated Protocol"),
+                                                            P_("Application-layer protocol negotiated for this connection"),
+                                                            NULL,
+                                                            G_PARAM_READABLE |
+                                                            G_PARAM_STATIC_STRINGS));
 
   /**
    * GDtlsConnection::accept-certificate:
