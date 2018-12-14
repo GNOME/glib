@@ -345,7 +345,7 @@ endforeach
 
 # Compiler flags
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
-  test_c_args = [
+  warning_c_args = [
     '-Wall',
     '-Wduplicated-branches',
     '-Wimplicit-fallthrough',
@@ -363,18 +363,18 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Werror=missing-prototypes',
     '-Werror=pointer-arith',
   ]
-  test_c_link_args = [
+  warning_c_link_args = [
     '-Wl,-z,nodelete',
   ]
   if get_option('bsymbolic_functions')
-    test_c_link_args += ['-Wl,-Bsymbolic-functions']
+    warning_c_link_args += ['-Wl,-Bsymbolic-functions']
   endif
 else
-  test_c_args = []
-  test_c_link_args = []
+  warning_c_args = []
+  warning_c_link_args = []
 endif
 
-add_project_arguments(cc.get_supported_arguments(test_c_args), language: 'c')
+add_project_arguments(cc.get_supported_arguments(warning_c_args), language: 'c')
 
 # FIXME: We cannot build some of the GResource tests with -z nodelete, which
 # means we cannot use that flag in add_project_link_arguments(), and must add
@@ -382,7 +382,7 @@ add_project_arguments(cc.get_supported_arguments(test_c_args), language: 'c')
 # because that is what the autotools build did.
 # See https://github.com/mesonbuild/meson/pull/3520 for a way to eventually
 # improve this.
-glib_link_flags = cc.get_supported_link_arguments(test_c_link_args)
+glib_link_flags = cc.get_supported_link_arguments(warning_c_link_args)
 
 # Windows Support (7+)
 if host_system == 'windows'
@@ -1752,23 +1752,21 @@ endif
 
 libm = cc.find_library('m', required : false)
 libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
-if cc.get_id() != 'msvc'
-  libz_dep = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
-else
-  # MSVC: Don't use the bundled ZLib sources until we are sure that we can't
-  # find the ZLib .lib
-  libz_dep = dependency('zlib', required : false)
 
-  # MSVC: Search for the ZLib .lib, which corresponds to the results of
-  # of using ZLib's win32/makefile.msc.
-  if not libz_dep.found()
+# Don't use the bundled ZLib sources until we are sure that we can't find it on
+# the system
+libz_dep = dependency('zlib', required : false)
+if not libz_dep.found()
+  if cc.get_id() != 'msvc'
+    libz_dep = cc.find_library('z', required : false)
+  else
     libz_dep = cc.find_library('zlib1', required : false)
     if not libz_dep.found()
       libz_dep = cc.find_library('zlib', required : false)
-      if not libz_dep.found()
-        libz_dep = subproject('zlib').get_variable('zlib_dep')
-      endif
     endif
+  endif
+  if not libz_dep.found() or not cc.has_header('zlib.h')
+    libz_dep = subproject('zlib').get_variable('zlib_dep')
   endif
 endif
 
@@ -1797,8 +1795,6 @@ glib_conf.set('HAVE_DCGETTEXT', 1)
 glib_conf.set('HAVE_GETTEXT', 1)
 
 glib_conf.set_quoted('GLIB_LOCALE_DIR', join_paths(glib_datadir, 'locale'))
-# xgettext is optional (on Windows for instance)
-xgettext = find_program('xgettext', required : false)
 
 # libmount is only used by gio, but we need to fetch the libs to generate the
 # pkg-config file below
@@ -1813,9 +1809,10 @@ if host_system == 'windows'
 endif
 
 selinux_dep = []
-if host_system == 'linux' and get_option('selinux')
-  selinux_dep = [dependency('libselinux')]
-  glib_conf.set('HAVE_SELINUX', 1)
+if host_system == 'linux'
+  selinux_dep = dependency('libselinux', required: get_option('selinux'))
+
+  glib_conf.set('HAVE_SELINUX', selinux_dep.found())
 endif
 
 xattr_dep = []
@@ -1982,11 +1979,13 @@ subdir('gobject')
 subdir('gthread')
 subdir('gmodule')
 subdir('gio')
-if xgettext.found()
-  subdir('po')
-endif
 subdir('fuzzing')
 subdir('tests')
+
+# xgettext is optional (on Windows for instance)
+if find_program('xgettext', required : get_option('nls')).found()
+  subdir('po')
+endif
 
 # Install glib-gettextize executable, if a UNIX-style shell is found
 if have_sh

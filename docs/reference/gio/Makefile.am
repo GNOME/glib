@@ -47,6 +47,7 @@ IGNORE_HFILES = \
 	gdbusdaemon.h \
 	gdbusprivate.h \
 	gdelayedsettingsbackend.h \
+	gdocumentportal.h \
 	gdummyfile.h \
 	gdummyproxyresolver.h \
 	gdummytlsbackend.h \
@@ -56,6 +57,9 @@ IGNORE_HFILES = \
 	giomodule-priv.h \
 	gioprivate.h \
 	giowin32-priv.h \
+	gio_probes.h \
+	gio_trace.h \
+	gio-tool.h \
 	glocaldirectorymonitor.h \
 	glocalfileenumerator.h \
 	glocalfile.h \
@@ -74,7 +78,9 @@ IGNORE_HFILES = \
 	gnetworkmonitorportal.h \
 	gnotificationbackend.h \
 	gnotification-private.h \
+	gopenuriportal.h \
 	gpollfilemonitor.h \
+	gportalsupport.h \
 	gproxyresolverportal.h \
 	gregistrysettingsbackend.h \
 	gresourcefile.h \

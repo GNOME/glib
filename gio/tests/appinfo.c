@@ -6,6 +6,111 @@
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 
+static gboolean
+cleanup_dir_recurse (GFile   *parent,
+                     GFile   *root,
+                     GError **error)
+{
+  gboolean ret = FALSE;
+  GFileEnumerator *enumerator;
+  GError *local_error = NULL;
+
+  g_assert (root != NULL);
+
+  enumerator =
+    g_file_enumerate_children (parent, "*",
+                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL,
+                               &local_error);
+  if (!enumerator)
+    {
+      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+        {
+          g_clear_error (&local_error);
+          ret = TRUE;
+        }
+      goto out;
+    }
+
+  while (TRUE)
+    {
+      GFile *child;
+      GFileInfo *finfo;
+      char *relative_path;
+
+      if (!g_file_enumerator_iterate (enumerator, &finfo, &child, NULL, error))
+        goto out;
+      if (!finfo)
+        break;
+
+      relative_path = g_file_get_relative_path (root, child);
+      g_assert (relative_path != NULL);
+      g_free (relative_path);
+
+      if (g_file_info_get_file_type (finfo) == G_FILE_TYPE_DIRECTORY)
+        {
+          if (!cleanup_dir_recurse (child, root, error))
+            goto out;
+        }
+
+      if (!g_file_delete (child, NULL, error))
+        goto out;
+    }
+
+  ret = TRUE;
+ out:
+  g_clear_object (&enumerator);
+
+  return ret;
+}
+
+typedef struct
+{
+  gchar *tmp_dir;
+  gchar *config_dir;
+  gchar *data_dir;
+} Fixture;
+
+static void
+setup (Fixture       *fixture,
+       gconstpointer  user_data)
+{
+  GError *local_error = NULL;
+
+  fixture->tmp_dir = g_dir_make_tmp ("gio-test-appinfo_XXXXXX", &local_error);
+  g_assert_no_error (local_error);
+
+  fixture->config_dir = g_build_filename (fixture->tmp_dir, "config", NULL);
+  g_assert_cmpint (g_mkdir (fixture->config_dir, 0755), ==, 0);
+
+  fixture->data_dir = g_build_filename (fixture->tmp_dir, "data", NULL);
+  g_assert_cmpint (g_mkdir (fixture->data_dir, 0755), ==, 0);
+
+  g_setenv ("XDG_CONFIG_HOME", fixture->config_dir, TRUE);
+  g_setenv ("XDG_DATA_HOME", fixture->data_dir, TRUE);
+
+  g_setenv ("XDG_DATA_DIRS", "/dev/null", TRUE);
+  g_setenv ("XDG_CONFIG_DIRS", "/dev/null", TRUE);
+  g_setenv ("XDG_CACHE_HOME", "/dev/null", TRUE);
+  g_setenv ("XDG_RUNTIME_DIR", "/dev/null", TRUE);
+
+  g_test_message ("Using tmp directory: %s", fixture->tmp_dir);
+}
+
+static void
+teardown (Fixture       *fixture,
+          gconstpointer  user_data)
+{
+  GFile *tmp_dir = g_file_new_for_path (fixture->tmp_dir);
+  GError *local_error = NULL;
+
+  cleanup_dir_recurse (tmp_dir, tmp_dir, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_pointer (&fixture->config_dir, g_free);
+  g_clear_pointer (&fixture->data_dir, g_free);
+  g_clear_pointer (&fixture->tmp_dir, g_free);
+}
+
 static void
 test_launch_for_app_info (GAppInfo *appinfo)
 {
@@ -50,7 +155,8 @@ test_launch_for_app_info (GAppInfo *appinfo)
 }
 
 static void
-test_launch (void)
+test_launch (Fixture       *fixture,
+             gconstpointer  user_data)
 {
   GAppInfo *appinfo;
   const gchar *path;
@@ -64,7 +170,8 @@ test_launch (void)
 }
 
 static void
-test_launch_no_app_id (void)
+test_launch_no_app_id (Fixture       *fixture,
+                       gconstpointer  user_data)
 {
   const gchar desktop_file_base_contents[] =
     "[Desktop Entry]\n"
@@ -165,7 +272,8 @@ test_locale (const char *locale)
 }
 
 static void
-test_text (void)
+test_text (Fixture       *fixture,
+           gconstpointer  user_data)
 {
   test_locale ("C");
   test_locale ("en_US");
@@ -174,7 +282,8 @@ test_text (void)
 }
 
 static void
-test_basic (void)
+test_basic (Fixture       *fixture,
+            gconstpointer  user_data)
 {
   GAppInfo *appinfo;
   GAppInfo *appinfo2;
@@ -202,7 +311,8 @@ test_basic (void)
 }
 
 static void
-test_show_in (void)
+test_show_in (Fixture       *fixture,
+              gconstpointer  user_data)
 {
   GAppInfo *appinfo;
   const gchar *path;
@@ -224,7 +334,8 @@ test_show_in (void)
 }
 
 static void
-test_commandline (void)
+test_commandline (Fixture       *fixture,
+                  gconstpointer  user_data)
 {
   GAppInfo *appinfo;
   GError *error;
@@ -270,7 +381,8 @@ test_commandline (void)
 }
 
 static void
-test_launch_context (void)
+test_launch_context (Fixture       *fixture,
+                     gconstpointer  user_data)
 {
   GAppLaunchContext *context;
   GAppInfo *appinfo;
@@ -322,7 +434,8 @@ launch_failed (GAppLaunchContext *context,
 }
 
 static void
-test_launch_context_signals (void)
+test_launch_context_signals (Fixture       *fixture,
+                             gconstpointer  user_data)
 {
   GAppLaunchContext *context;
   GAppInfo *appinfo;
@@ -352,7 +465,8 @@ test_launch_context_signals (void)
 }
 
 static void
-test_tryexec (void)
+test_tryexec (Fixture       *fixture,
+              gconstpointer  user_data)
 {
   GAppInfo *appinfo;
   const gchar *path;
@@ -367,7 +481,8 @@ test_tryexec (void)
  * file extension, and also add and remove handled mime types.
  */
 static void
-test_associations (void)
+test_associations (Fixture       *fixture,
+                   gconstpointer  user_data)
 {
   GAppInfo *appinfo;
   GAppInfo *appinfo2;
@@ -428,7 +543,8 @@ test_associations (void)
 }
 
 static void
-test_environment (void)
+test_environment (Fixture       *fixture,
+                  gconstpointer  user_data)
 {
   GAppLaunchContext *ctx;
   gchar **env;
@@ -473,7 +589,8 @@ test_environment (void)
 }
 
 static void
-test_startup_wm_class (void)
+test_startup_wm_class (Fixture       *fixture,
+                       gconstpointer  user_data)
 {
   GDesktopAppInfo *appinfo;
   const char *wm_class;
@@ -489,7 +606,8 @@ test_startup_wm_class (void)
 }
 
 static void
-test_supported_types (void)
+test_supported_types (Fixture       *fixture,
+                      gconstpointer  user_data)
 {
   GAppInfo *appinfo;
   const char * const *content_types;
@@ -506,7 +624,8 @@ test_supported_types (void)
 }
 
 static void
-test_from_keyfile (void)
+test_from_keyfile (Fixture       *fixture,
+                   gconstpointer  user_data)
 {
   GDesktopAppInfo *info;
   GKeyFile *kf;
@@ -567,20 +686,20 @@ main (int argc, char *argv[])
   if (build_dir)
     g_chdir (build_dir);
 
-  g_test_add_func ("/appinfo/basic", test_basic);
-  g_test_add_func ("/appinfo/text", test_text);
-  g_test_add_func ("/appinfo/launch", test_launch);
-  g_test_add_func ("/appinfo/launch/no-appid", test_launch_no_app_id);
-  g_test_add_func ("/appinfo/show-in", test_show_in);
-  g_test_add_func ("/appinfo/commandline", test_commandline);
-  g_test_add_func ("/appinfo/launch-context", test_launch_context);
-  g_test_add_func ("/appinfo/launch-context-signals", test_launch_context_signals);
-  g_test_add_func ("/appinfo/tryexec", test_tryexec);
-  g_test_add_func ("/appinfo/associations", test_associations);
-  g_test_add_func ("/appinfo/environment", test_environment);
-  g_test_add_func ("/appinfo/startup-wm-class", test_startup_wm_class);
-  g_test_add_func ("/appinfo/supported-types", test_supported_types);
-  g_test_add_func ("/appinfo/from-keyfile", test_from_keyfile);
+  g_test_add ("/appinfo/basic", Fixture, NULL, setup, test_basic, teardown);
+  g_test_add ("/appinfo/text", Fixture, NULL, setup, test_text, teardown);
+  g_test_add ("/appinfo/launch", Fixture, NULL, setup, test_launch, teardown);
+  g_test_add ("/appinfo/launch/no-appid", Fixture, NULL, setup, test_launch_no_app_id, teardown);
+  g_test_add ("/appinfo/show-in", Fixture, NULL, setup, test_show_in, teardown);
+  g_test_add ("/appinfo/commandline", Fixture, NULL, setup, test_commandline, teardown);
+  g_test_add ("/appinfo/launch-context", Fixture, NULL, setup, test_launch_context, teardown);
+  g_test_add ("/appinfo/launch-context-signals", Fixture, NULL, setup, test_launch_context_signals, teardown);
+  g_test_add ("/appinfo/tryexec", Fixture, NULL, setup, test_tryexec, teardown);
+  g_test_add ("/appinfo/associations", Fixture, NULL, setup, test_associations, teardown);
+  g_test_add ("/appinfo/environment", Fixture, NULL, setup, test_environment, teardown);
+  g_test_add ("/appinfo/startup-wm-class", Fixture, NULL, setup, test_startup_wm_class, teardown);
+  g_test_add ("/appinfo/supported-types", Fixture, NULL, setup, test_supported_types, teardown);
+  g_test_add ("/appinfo/from-keyfile", Fixture, NULL, setup, test_from_keyfile, teardown);
 
   return g_test_run ();
 }

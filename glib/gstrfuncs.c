@@ -1140,6 +1140,11 @@ g_parse_long_long (const gchar  *nptr,
  * changing the current locale, since that would not be
  * thread-safe.
  *
+ * Note that input with a leading minus sign (`-`) is accepted, and will return
+ * the negation of the parsed number, unless that would overflow a #guint64.
+ * Critically, this means you cannot assume that a short fixed length input will
+ * never result in a low return value, as the input could have a leading `-`.
+ *
  * This function is typically used when reading configuration
  * files or other non-user input that should be locale independent.
  * To handle input from the user you should normally use the
@@ -3304,7 +3309,8 @@ g_ascii_string_to_signed (const gchar  *str,
  * @base that is within inclusive bounds limited by @min and @max. If
  * this is true, then the converted number is stored in @out_num. An
  * empty string is not a valid input. A string with leading or
- * trailing whitespace is also an invalid input.
+ * trailing whitespace is also an invalid input. A string with a leading sign
+ * (`-` or `+`) is not a valid input for the unsigned parser.
  *
  * @base can be between 2 and 36 inclusive. Hexadecimal numbers must
  * not be prefixed with "0x" or "0X". Such a problem does not exist

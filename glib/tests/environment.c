@@ -116,6 +116,44 @@ test_environ_null (void)
   g_assert (env == NULL);
 }
 
+static void
+test_environ_case (void)
+{
+  gchar **env;
+  const gchar *value;
+
+  env = NULL;
+
+  env = g_environ_setenv (env, "foo", "bar", TRUE);
+  value = g_environ_getenv (env, "foo");
+  g_assert_cmpstr (value, ==, "bar");
+
+  value = g_environ_getenv (env, "Foo");
+#ifdef G_OS_WIN32
+  g_assert_cmpstr (value, ==, "bar");
+#else
+  g_assert (value == NULL);
+#endif
+
+  env = g_environ_setenv (env, "FOO", "x", TRUE);
+  value = g_environ_getenv (env, "foo");
+#ifdef G_OS_WIN32
+  g_assert_cmpstr (value, ==, "x");
+#else
+  g_assert_cmpstr (value, ==, "bar");
+#endif
+
+  env = g_environ_unsetenv (env, "Foo");
+  value = g_environ_getenv (env, "foo");
+#ifdef G_OS_WIN32
+  g_assert (value == NULL);
+#else
+  g_assert_cmpstr (value, ==, "bar");
+#endif
+
+  g_strfreev (env);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -125,6 +163,7 @@ main (int argc, char **argv)
   g_test_add_func ("/environ/setenv", test_setenv);
   g_test_add_func ("/environ/array", test_environ_array);
   g_test_add_func ("/environ/null", test_environ_null);
+  g_test_add_func ("/environ/case", test_environ_case);
 
   return g_test_run ();
 }

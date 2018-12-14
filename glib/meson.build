@@ -273,7 +273,8 @@ libglib_dep = declare_dependency(
   # We sadly need to export configinc here because everyone includes <glib/*.h>
   include_directories : [configinc, glibinc])
 
-pkg.generate(libraries : [libglib, libintl],
+pkg.generate(libglib,
+  libraries : [libintl],
   libraries_private : [osx_ldflags, win32_ldflags],
   subdirs : ['glib-2.0'],
   extra_cflags : ['-I${libdir}/glib-2.0/include'] + win32_cflags,

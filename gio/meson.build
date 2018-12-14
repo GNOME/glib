@@ -817,7 +817,7 @@ endif
 
 schemas_subdir = join_paths('glib-2.0', 'schemas')
 
-pkg.generate(libraries : libgio,
+pkg.generate(libgio,
   libraries_private : [osx_ldflags],
   requires : ['glib-2.0', 'gobject-2.0'],
   variables : ['datadir=' + join_paths('${prefix}', get_option('datadir')),
@@ -855,9 +855,8 @@ else
 endif
 
 libgio_dep = declare_dependency(link_with : libgio,
-  dependencies : [gioenumtypes_dep],
-  # We sadly need to export configinc here because everyone includes <gio/*.h>
-  include_directories : [configinc, gioinc])
+  dependencies : [libgmodule_dep, libgobject_dep, gioenumtypes_dep],
+  include_directories : [gioinc])
 
 if host_system == 'windows'
   # Hack till https://github.com/mesonbuild/meson/issues/2324 is fixed

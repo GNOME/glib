@@ -5,6 +5,13 @@ common_gio_tests_deps = [
   libgio_dep,
 ]
 
+test_c_args = [
+  '-DG_LOG_DOMAIN="GLib-GIO"',
+  '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
+  '-DGLIB_MKENUMS="@0@"'.format(glib_mkenums),
+  '-DGLIB_COMPILE_SCHEMAS="@0@"'.format(glib_compile_schemas.full_path()),
+]
+
 if host_machine.system() == 'windows'
   common_gio_tests_deps += [iphlpapi_dep, winsock2, cc.find_library ('secur32')]
 endif
@@ -48,7 +55,7 @@ gio_tests = {
   'memory-output-stream' : {},
   'monitor' : {},
   'mount-operation' : {},
-  'network-address' : {},
+  'network-address' : {'extra_sources': ['mock-resolver.c']},
   'network-monitor' : {},
   'network-monitor-race' : {},
   'permission' : {},
@@ -84,13 +91,6 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 test_env.set('GIO_MODULE_DIR', '')
 test_env.set('GIO_LAUNCH_DESKTOP', meson.build_root() + '/gio/gio-launch-desktop')
-
-test_c_args = [
-  '-DG_LOG_DOMAIN="GLib-GIO"',
-  '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
-  '-DGLIB_MKENUMS="@0@"'.format(glib_mkenums),
-  '-DGLIB_COMPILE_SCHEMAS="@0@"'.format(glib_compile_schemas.full_path()),
-]
 
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
 # 1.2.14 required for dbus_message_set_serial
@@ -134,6 +134,18 @@ if host_machine.system() != 'windows'
     'unix-mounts' : {},
     'unix-streams' : {},
     'g-file-info-filesystem-readonly' : {},
+    'gsocketclient-slow' : {
+      'depends' : [
+        shared_library('slow-connect-preload',
+          'slow-connect-preload.c',
+          name_prefix : '',
+          dependencies: cc.find_library('dl'),
+        )
+      ],
+      'env' : {
+        'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(meson.current_build_dir())
+      }
+    },
     'gschema-compile' : {'install' : false},
     'trash' : {},
   }
@@ -171,6 +183,16 @@ if host_machine.system() != 'windows'
   #  Test programs that need to bring up a session bus (requires dbus-daemon)
   have_dbus_daemon = find_program('dbus-daemon', required : false).found()
   if have_dbus_daemon
+    annotate_args = [
+      '--annotate', 'org.project.Bar', 'Key1', 'Value1',
+      '--annotate', 'org.project.Bar', 'org.gtk.GDBus.Internal', 'Value2',
+      '--annotate', 'org.project.Bar.HelloWorld()', 'Key3', 'Value3',
+      '--annotate', 'org.project.Bar::TestSignal', 'Key4', 'Value4',
+      '--annotate', 'org.project.Bar:ay', 'Key5', 'Value5',
+      '--annotate', 'org.project.Bar.TestPrimitiveTypes()[val_int32]', 'Key6', 'Value6',
+      '--annotate', 'org.project.Bar.TestPrimitiveTypes()[ret_uint32]', 'Key7', 'Value7',
+      '--annotate', 'org.project.Bar::TestSignal[array_of_strings]', 'Key8', 'Value8',
+    ]
     # Generate gdbus-test-codegen-generated.{c,h}
     gdbus_test_codegen_generated = custom_target('gdbus-test-codegen-generated',
         input :   ['test-codegen.xml'],
@@ -185,15 +207,29 @@ if host_machine.system() != 'windows'
                    '--c-generate-autocleanup', 'all',
                    '--c-namespace', 'Foo_iGen',
                    '--generate-docbook', 'gdbus-test-codegen-generated-doc',
-                   '--annotate', 'org.project.Bar', 'Key1', 'Value1',
-                   '--annotate', 'org.project.Bar', 'org.gtk.GDBus.Internal', 'Value2',
-                   '--annotate', 'org.project.Bar.HelloWorld()', 'Key3', 'Value3',
-                   '--annotate', 'org.project.Bar::TestSignal', 'Key4', 'Value4',
-                   '--annotate', 'org.project.Bar:ay', 'Key5', 'Value5',
-                   '--annotate', 'org.project.Bar.TestPrimitiveTypes()[val_int32]', 'Key6', 'Value6',
-                   '--annotate', 'org.project.Bar.TestPrimitiveTypes()[ret_uint32]', 'Key7', 'Value7',
-                   '--annotate', 'org.project.Bar::TestSignal[array_of_strings]', 'Key8', 'Value8',
+                   annotate_args,
                    '@INPUT@'])
+
+    gdbus_test_codegen_generated_interface_info = [
+      custom_target('gdbus-test-codegen-generated-interface-info-h',
+          input :   ['test-codegen.xml'],
+          output :  ['gdbus-test-codegen-generated-interface-info.h'],
+          depend_files : gdbus_codegen_built_files,
+          command : [python, gdbus_codegen,
+                     '--interface-info-header',
+                     annotate_args,
+                     '--output', '@OUTPUT@',
+                     '@INPUT@']),
+      custom_target('gdbus-test-codegen-generated-interface-info-c',
+          input :   ['test-codegen.xml'],
+          output :  ['gdbus-test-codegen-generated-interface-info.c'],
+          depend_files : gdbus_codegen_built_files,
+          command : [python, gdbus_codegen,
+                     '--interface-info-body',
+                     annotate_args,
+                     '--output', '@OUTPUT@',
+                     '@INPUT@']),
+    ]
 
     extra_sources = ['gdbus-sessionbus.c', 'gdbus-tests.c']
 
@@ -224,7 +260,7 @@ if host_machine.system() != 'windows'
       'gdbus-proxy-unique-name' : {'extra_sources' : extra_sources},
       'gdbus-proxy-well-known-name' : {'extra_sources' : extra_sources},
       'gdbus-test-codegen' : {
-        'extra_sources' : [extra_sources, gdbus_test_codegen_generated],
+        'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
       },
       'gdbus-threading' : {
         'extra_sources' : extra_sources,
@@ -239,7 +275,7 @@ if host_machine.system() != 'windows'
       },
       'gdbus-test-codegen-old' : {
         'source' : 'gdbus-test-codegen.c',
-        'extra_sources' : [extra_sources, gdbus_test_codegen_generated],
+        'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36',
                     '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36'],
       },
@@ -411,6 +447,13 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     install : installed_tests_enabled
   )
 
+  # referenced by test2.gresource.xml
+  big_test_resource = custom_target(
+    'gresource-big-test.txt',
+    input : ['gen-big-test-resource.py'],
+    output : ['gresource-big-test.txt'],
+    command : [python, '@INPUT0@', '@OUTPUT@'])
+
   test_gresource = custom_target('test.gresource',
     input : 'test.gresource.xml',
     output : 'test.gresource',
@@ -446,10 +489,12 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
 
   test_resources_c = custom_target('test_resources.c',
     input : 'test2.gresource.xml',
+    depends : big_test_resource,
     output : 'test_resources.c',
     command : [glib_compile_resources,
                '--target=@OUTPUT@',
                '--sourcedir=' + meson.current_source_dir(),
+               '--sourcedir=' + meson.current_build_dir(),
                '--generate-source',
                '--c-name', '_g_test1',
                '@INPUT@'])
@@ -495,12 +540,19 @@ foreach test_name, extra_args : gio_tests
 
   suite = ['gio'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
+  local_test_env = test_env
+
+  foreach var, value : extra_args.get('env', {})
+    local_test_env.append(var, value)
+  endforeach
+
   test(test_name, exe,
-    env : test_env,
+    env : local_test_env,
     timeout : timeout,
     suite : suite,
     args : ['--tap'],
     is_parallel : extra_args.get('is_parallel', true),
+    depends : extra_args.get('depends', []),
   )
 endforeach
 

@@ -3,7 +3,7 @@
 
 # GDBus - GLib D-Bus Library
 #
-# Copyright (C) 2008-2011 Red Hat, Inc.
+# Copyright (C) 2008-2018 Red Hat, Inc.
 # Copyright (C) 2018 Iñigo Martínez <inigomartinez@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -619,17 +619,19 @@ class HeaderCodeGenerator:
 # ----------------------------------------------------------------------------------------------------
 
 class InterfaceInfoHeaderCodeGenerator:
-    def __init__(self, ifaces, namespace, header_name, use_pragma, outfile):
+    def __init__(self, ifaces, namespace, header_name, input_files_basenames, use_pragma, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_').replace(':', '_')
+        self.input_files_basenames = input_files_basenames
         self.use_pragma = use_pragma
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
 
     def generate_header_preamble(self):
-        self.outfile.write(LICENSE_STR.format(config.VERSION))
+        basenames = ', '.join(self.input_files_basenames)
+        self.outfile.write(LICENSE_STR.format(config.VERSION, basenames))
         self.outfile.write('\n')
 
         if self.use_pragma:
@@ -670,16 +672,18 @@ class InterfaceInfoHeaderCodeGenerator:
 # ----------------------------------------------------------------------------------------------------
 
 class InterfaceInfoBodyCodeGenerator:
-    def __init__(self, ifaces, namespace, header_name, outfile):
+    def __init__(self, ifaces, namespace, header_name, input_files_basenames, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.header_name = header_name
+        self.input_files_basenames = input_files_basenames
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
 
     def generate_body_preamble(self):
-        self.outfile.write(LICENSE_STR.format(config.VERSION))
+        basenames = ', '.join(self.input_files_basenames)
+        self.outfile.write(LICENSE_STR.format(config.VERSION, basenames))
         self.outfile.write('\n')
         self.outfile.write('#ifdef HAVE_CONFIG_H\n'
                            '#  include "config.h"\n'
@@ -696,7 +700,7 @@ class InterfaceInfoBodyCodeGenerator:
     def generate_array(self, array_name_lower, element_type, elements):
         self.outfile.write('const %s * const %s[] =\n' % (element_type, array_name_lower))
         self.outfile.write('{\n')
-        for (_, name) in sorted(elements, key=utils.version_cmp_key):
+        for (_, name) in elements:
             self.outfile.write('  &%s,\n' % name)
         self.outfile.write('  NULL,\n')
         self.outfile.write('};\n')
@@ -1523,7 +1527,10 @@ class CodeGenerator:
                     s = 'g_param_spec_boxed ("%s", "%s", "%s", G_TYPE_STRV'%(p.name_hyphen, p.name, p.name)
                 else:
                     print_error('Unsupported gtype "{}" for GParamSpec'.format(p.arg.gtype))
-                self.outfile.write('    %s, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));'%s);
+                flags = 'G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS'
+                if p.deprecated:
+                    flags = 'G_PARAM_DEPRECATED | ' + flags
+                self.outfile.write('    %s, %s));'%(s, flags));
                 self.outfile.write('\n')
 
         self.outfile.write('}\n'
@@ -3058,9 +3065,12 @@ class CodeGenerator:
                     '   * Connect to the #GObject::notify signal to get informed of property changes.\n'
                     %(self.namespace, i.name_hyphen, i.camel_name, i.name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.outfile, 2)
-            self.outfile.write('  g_object_interface_install_property (iface, g_param_spec_object ("%s", "%s", "%s", %sTYPE_%s, G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS));\n'
+            flags = 'G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS'
+            if i.deprecated:
+                flags = 'G_PARAM_DEPRECATED | ' + flags
+            self.outfile.write('  g_object_interface_install_property (iface, g_param_spec_object ("%s", "%s", "%s", %sTYPE_%s, %s));\n'
                                '\n'
-                               %(i.name_hyphen, i.name_hyphen, i.name_hyphen, self.ns_upper, i.name_upper))
+                               %(i.name_hyphen, i.name_hyphen, i.name_hyphen, self.ns_upper, i.name_upper, flags))
         self.outfile.write('}\n'
                            '\n')
 

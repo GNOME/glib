@@ -375,6 +375,15 @@ Write output to FILE instead of stdout.
 </para></listitem>
 </varlistentry>
 
+<varlistentry>
+<term><option>@RSPFILE</option></term>
+<listitem><para>
+When passed as the sole argument, read and parse the actual arguments from
+<literal>RSPFILE</literal>. Useful on systems with a low command-line length
+limit. For example, Windows has a limit of 8191 characters.
+</para></listitem>
+</varlistentry>
+
 </variablelist>
 </refsect1>
 
