@@ -424,6 +424,7 @@ if installed_tests_enabled
     'contexts.c',
     'g-icon.c',
     'appinfo-test-actions.desktop',
+    'appinfo-test-static.desktop',
     'file.c',
     'org.gtk.test.dbusappinfo.desktop',
     install_dir : installed_tests_execdir,

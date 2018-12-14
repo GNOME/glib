@@ -62,7 +62,12 @@ test_launch (void)
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
-  g_assert_nonnull (appinfo);
+
+  if (appinfo == NULL)
+    {
+      g_test_skip ("appinfo-test binary not installed");
+      return;
+    }
 
   test_launch_for_app_info (appinfo);
   g_object_unref (appinfo);
@@ -146,7 +151,7 @@ test_locale (const char *locale)
   g_setenv ("LANGUAGE", locale, TRUE);
   setlocale (LC_ALL, "");
 
-  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test-static.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
 
   if (g_strcmp0 (locale, "C") == 0)
@@ -192,12 +197,12 @@ test_basic (void)
   GIcon *icon, *icon2;
   const gchar *path;
 
-  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test-static.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert_nonnull (appinfo);
 
-  g_assert_cmpstr (g_app_info_get_id (appinfo), ==, "appinfo-test.desktop");
-  g_assert_nonnull (strstr (g_app_info_get_executable (appinfo), "appinfo-test"));
+  g_assert_cmpstr (g_app_info_get_id (appinfo), ==, "appinfo-test-static.desktop");
+  g_assert_nonnull (strstr (g_app_info_get_executable (appinfo), "true"));
 
   icon = g_app_info_get_icon (appinfo);
   g_assert_true (G_IS_THEMED_ICON (icon));
@@ -221,6 +226,13 @@ test_show_in (void)
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
+
+  if (appinfo == NULL)
+    {
+      g_test_skip ("appinfo-test binary not installed");
+      return;
+    }
+
   g_assert_true (g_app_info_should_show (appinfo));
   g_object_unref (appinfo);
 
@@ -491,7 +503,7 @@ test_startup_wm_class (void)
   const char *wm_class;
   const gchar *path;
 
-  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test-static.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
   wm_class = g_desktop_app_info_get_startup_wm_class (appinfo);
 
@@ -507,7 +519,7 @@ test_supported_types (void)
   const char * const *content_types;
   const gchar *path;
 
-  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test-static.desktop", NULL);
   appinfo = G_APP_INFO (g_desktop_app_info_new_from_filename (path));
   content_types = g_app_info_get_supported_types (appinfo);
 
@@ -531,7 +543,7 @@ test_from_keyfile (void)
   const gchar *name;
   const gchar *path;
 
-  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test-static.desktop", NULL);
   kf = g_key_file_new ();
   g_key_file_load_from_file (kf, path, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
