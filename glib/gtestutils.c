@@ -27,7 +27,6 @@
 #include <sys/time.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <glib/gstdio.h>
 #endif
 #include <string.h>
 #include <stdlib.h>
@@ -44,6 +43,7 @@
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
+#include <glib/gstdio.h>
 
 #include "gmain.h"
 #include "gpattern.h"
