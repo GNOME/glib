@@ -857,12 +857,12 @@ g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
 
   if (g_strcmp0 (priv->negotiated_protocol, protocol) != 0)
     {
-      g_free(priv->negotiated_protocol);
+      g_free (priv->negotiated_protocol);
       priv->negotiated_protocol = protocol;
     }
   else
     {
-      g_free(protocol);
+      g_free (protocol);
     }
 
   return priv->negotiated_protocol;
