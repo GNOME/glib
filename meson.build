@@ -1,9 +1,14 @@
 subdir('cmph')
 
+custom_c_args = cc.get_supported_arguments([
+  '-Wno-strict-prototypes',
+  '-Wno-old-style-definition',
+  '-Wno-cast-align',
+])
 girepo_gthash_lib = static_library('girepository-gthash',
   sources: 'gthash.c',
   include_directories : configinc,
-  c_args: gi_hidden_visibility_cflags,
+  c_args: gi_hidden_visibility_cflags + custom_c_args,
   dependencies: [
     cmph_dep,
     glib_dep,
@@ -17,6 +22,11 @@ girepo_gthash_dep = declare_dependency(
   include_directories: include_directories('.'),
 )
 
+custom_c_args = cc.get_supported_arguments([
+  '-Wno-unused-parameter',
+  '-Wno-duplicated-branches',
+  '-Wno-cast-align',
+])
 girepo_internals_lib = static_library('girepository-internals',
   sources: [
     'girmodule.c',
@@ -25,7 +35,7 @@ girepo_internals_lib = static_library('girepository-internals',
     'girparser.c',
     'girwriter.c',
   ],
-  c_args: gi_hidden_visibility_cflags,
+  c_args: gi_hidden_visibility_cflags + custom_c_args,
   include_directories : configinc,
   dependencies: [girepo_gthash_dep, libffi_dep],
 )
@@ -136,10 +146,18 @@ girepo_gir_sources = files(
 
 install_headers(girepo_headers, subdir: 'gobject-introspection-1.0')
 
+custom_c_args = cc.get_supported_arguments([
+  '-Wno-unused-parameter',
+  '-Wno-duplicated-branches',
+  '-Wno-type-limits',
+  '-Wno-cast-align',
+  '-Wno-missing-field-initializers',
+])
 girepo_lib = shared_library('girepository-1.0',
   sources: girepo_sources,
   include_directories : configinc,
-  c_args: gi_hidden_visibility_cflags + ['-DG_IREPOSITORY_COMPILATION'],
+  c_args: gi_hidden_visibility_cflags + ['-DG_IREPOSITORY_COMPILATION'] +
+          custom_c_args,
   dependencies: [glib_dep, gobject_dep, gmodule_dep,
                  gio_dep, girepo_internals_dep],
   version: '1.0.0',
