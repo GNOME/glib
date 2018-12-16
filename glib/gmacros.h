@@ -48,7 +48,7 @@
 
 /* Here we provide G_GNUC_EXTENSION as an alias for __extension__,
  * where this is valid. This allows for warningless compilation of
- * "long long" types even in the presence of '-ansi -pedantic'. 
+ * "long long" types even in the presence of '-ansi -pedantic'.
  */
 #if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 8)
 #define G_GNUC_EXTENSION __extension__
@@ -405,6 +405,17 @@
 #endif
 #endif
 
+/* Provide alignment macro.
+ */
+
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L && !defined(__cplusplus)
+#define G_ALIGNOF(type) _Alignof (type)
+#elif defined(__GNUC__)
+#define G_ALIGNOF(type) (__alignof__ (type))
+#else
+#define G_ALIGNOF(type) (G_STRUCT_OFFSET (struct { char a; type b; }, b))
+#endif
+
 /* Deprecated -- do not use. */
 #ifndef G_DISABLE_DEPRECATED
 #ifdef G_DISABLE_CONST_RETURNS
@@ -415,12 +426,12 @@
 #endif
 
 /*
- * The G_LIKELY and G_UNLIKELY macros let the programmer give hints to 
+ * The G_LIKELY and G_UNLIKELY macros let the programmer give hints to
  * the compiler about the expected result of an expression. Some compilers
  * can use this information for optimizations.
  *
  * The _G_BOOLEAN_EXPR macro is intended to trigger a gcc warning when
- * putting assignments in g_return_if_fail ().  
+ * putting assignments in g_return_if_fail ().
  */
 #if defined(__GNUC__) && (__GNUC__ > 2) && defined(__OPTIMIZE__)
 #define _G_BOOLEAN_EXPR(expr)                   \
