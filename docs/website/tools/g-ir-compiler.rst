@@ -49,6 +49,9 @@ OPTIONS
     found. The name of the library should not contain the ending shared
     library suffix.
 
+--version
+    Show program's version number and exit
+
 
 BUGS
 ====

@@ -35,6 +35,9 @@ OPTIONS
 --output=FILENAME
     Save the resulting output in FILENAME.
 
+--version
+    Show program's version number and exit
+
 
 BUGS
 ====
