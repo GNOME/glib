@@ -41,6 +41,7 @@ main (int argc, char *argv[])
   GOptionContext *context;
   GError *error = NULL;
   gboolean needs_prefix;
+  gboolean show_version = FALSE;
   gint i;
   GOptionEntry options[] =
     {
@@ -48,6 +49,7 @@ main (int argc, char *argv[])
       { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" },
       { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL },
       { "all", 0, 0, G_OPTION_ARG_NONE, &show_all, "show all available information", NULL, },
+      { "version", 0, 0, G_OPTION_ARG_NONE, &show_version, "show program's version number and exit", NULL },
       { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
       { NULL, }
     };
@@ -65,6 +67,13 @@ main (int argc, char *argv[])
       g_fprintf (stderr, "failed to parse: %s\n", error->message);
       g_error_free (error);
       return 1;
+    }
+
+  if (show_version)
+    {
+      g_printf ("g-ir-generate %u.%u.%u\n",
+                GI_MAJOR_VERSION, GI_MINOR_VERSION, GI_MICRO_VERSION);
+      return 0;
     }
 
   if (!input)
