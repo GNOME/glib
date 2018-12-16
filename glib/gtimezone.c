@@ -449,12 +449,17 @@ zone_info_unix (const gchar  *identifier,
                                                     G_FILE_ERROR_INVAL);
           g_clear_error (&read_link_err);
 
-          /* Fallback to the content of /var/db/zoneinfo if /etc/localtime is
-           * not a symlink. This is where 'tzsetup' program on FreeBSD and
-           * DragonflyBSD stores the timezone chosen by the user. */
-          if (not_a_symlink && g_file_get_contents ("/var/db/zoneinfo",
-                                                    &resolved_identifier,
-                                                    NULL, NULL))
+          /* Fallback to the content of /var/db/zoneinfo or /etc/timezone
+           * if /etc/localtime is not a symlink. /var/db/zoneinfo is
+           * where 'tzsetup' program on FreeBSD and DragonflyBSD stores
+           * the timezone chosen by the user. /etc/timezone is where user
+           * choice is expressed on Gentoo OpenRC and others. */
+          if (not_a_symlink && (g_file_get_contents ("/var/db/zoneinfo",
+                                                     &resolved_identifier,
+                                                     NULL, NULL) ||
+                                g_file_get_contents ("/etc/timezone",
+                                                     &resolved_identifier,
+                                                     NULL, NULL)))
             g_strchomp (resolved_identifier);
           else
             {
