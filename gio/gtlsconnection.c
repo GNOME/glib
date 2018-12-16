@@ -69,6 +69,7 @@ static void g_tls_connection_set_property (GObject      *object,
 					   guint         prop_id,
 					   const GValue *value,
 					   GParamSpec   *pspec);
+static void g_tls_connection_finalize (GObject *object);
 
 enum {
   ACCEPT_CERTIFICATE,
@@ -100,6 +101,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 
   gobject_class->get_property = g_tls_connection_get_property;
   gobject_class->set_property = g_tls_connection_set_property;
+  gobject_class->finalize = g_tls_connection_finalize;
 
   /**
    * GTlsConnection:base-io-stream:
@@ -370,6 +372,17 @@ g_tls_connection_set_property (GObject      *object,
 			       GParamSpec   *pspec)
 {
   G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+}
+
+static void
+g_tls_connection_finalize (GObject *object)
+{
+  GTlsConnection *conn = G_TLS_CONNECTION(object);
+  GTlsConnectionPrivate *priv = g_tls_connection_get_instance_private (conn);
+
+  g_clear_pointer (&priv->negotiated_protocol, g_free);
+
+  G_OBJECT_CLASS (g_tls_connection_parent_class)->finalize (object);
 }
 
 /**
