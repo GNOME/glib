@@ -830,31 +830,15 @@ g_tls_connection_set_advertised_protocols (GTlsConnection     *conn,
 const char *
 g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
 {
-  GObjectClass *klass;
-  GParamSpec *child_pspec;
-  GParamSpec *pspec;
   GTlsConnectionPrivate *priv;
   char *protocol;
 
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
-
-  priv = g_tls_connection_get_instance_private (conn);
-
-  /*
-   * Gracefully handle backend implementations that don't yet support
-   * this property, returning NULL if not implemented.
-   */
-  klass = G_OBJECT_GET_CLASS (conn);
-  pspec = g_object_class_find_property (klass, "negotiated-protocol");
-  child_pspec = g_param_spec_get_redirect_target (pspec);
-
-  if (child_pspec != NULL)
-      return NULL;
-
   g_object_get (G_OBJECT (conn),
                 "negotiated-protocol", &protocol,
                 NULL);
 
+  priv = g_tls_connection_get_instance_private (conn); 
   if (g_strcmp0 (priv->negotiated_protocol, protocol) != 0)
     {
       g_free (priv->negotiated_protocol);
