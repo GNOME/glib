@@ -45,6 +45,7 @@ gchar **shlibs = NULL;
 gboolean include_cwd = FALSE;
 gboolean debug = FALSE;
 gboolean verbose = FALSE;
+gboolean show_version = FALSE;
 
 static gboolean
 write_out_typelib (gchar *prefix,
@@ -135,6 +136,7 @@ static GOptionEntry options[] =
   { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME_ARRAY, &shlibs, "shared library", "FILE" }, 
   { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, "show debug messages", NULL }, 
   { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose, "show verbose messages", NULL }, 
+  { "version", 0, 0, G_OPTION_ARG_NONE, &show_version, "show program's version number and exit", NULL },
   { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
   { NULL, }
 };
@@ -173,6 +175,13 @@ main (int argc, char ** argv)
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
 
   g_log_set_default_handler (log_handler, NULL);
+
+  if (show_version)
+    {
+      g_printf ("g-ir-compiler %u.%u.%u\n",
+                GI_MAJOR_VERSION, GI_MINOR_VERSION, GI_MICRO_VERSION);
+      return 0;
+    }
 
   if (!input) 
     { 
