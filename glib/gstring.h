@@ -173,6 +173,22 @@ g_string_append_c_inline (GString *gstring,
 #define g_string_append_c(gstr,c)       g_string_append_c_inline (gstr, c)
 #endif /* G_CAN_INLINE */
 
+#ifdef __GNUC__
+gsize g_strlcpy_chk (gchar      *dest,
+                     const char *src,
+                     gsize      size,
+                     gsize      dest_size);
+extern __inline__
+__attribute__((__always_inline__, __artificial__))
+gsize
+g_strlcpy (gchar      *dest,
+           const char *src,
+           size_t     size)
+{
+  return g_strlcpy_chk (dest, src, size, __builtin_object_size (dest, 1));
+}
+#endif
+
 
 GLIB_DEPRECATED
 GString *g_string_down (GString *string);

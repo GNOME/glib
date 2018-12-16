@@ -271,7 +271,7 @@
  * on systems with 64bit IEEE-compatible doubles.
  *
  * The typical usage would be something like:
- * |[<!-- language="C" --> 
+ * |[<!-- language="C" -->
  *   char buf[G_ASCII_DTOSTR_BUF_SIZE];
  *
  *   fprintf (out, "value=%s\n", g_ascii_dtostr (buf, sizeof (buf), value));
@@ -1356,16 +1356,15 @@ g_strsignal (gint signum)
 
 /* Functions g_strlcpy and g_strlcat were originally developed by
  * Todd C. Miller <Todd.Miller@courtesan.com> to simplify writing secure code.
- * See http://www.openbsd.org/cgi-bin/man.cgi?query=strlcpy 
+ * See http://www.openbsd.org/cgi-bin/man.cgi?query=strlcpy
  * for more information.
  */
 
 #ifdef HAVE_STRLCPY
 /* Use the native ones, if available; they might be implemented in assembly */
-gsize
-g_strlcpy (gchar       *dest,
-           const gchar *src,
-           gsize        dest_size)
+glib_g_strlcpy (gchar       *dest,
+		        const gchar *src,
+				gsize        dest_size)
 {
   g_return_val_if_fail (dest != NULL, 0);
   g_return_val_if_fail (src  != NULL, 0);
@@ -1412,37 +1411,7 @@ gsize
 g_strlcpy (gchar       *dest,
            const gchar *src,
            gsize        dest_size)
-{
-  gchar *d = dest;
-  const gchar *s = src;
-  gsize n = dest_size;
-
-  g_return_val_if_fail (dest != NULL, 0);
-  g_return_val_if_fail (src  != NULL, 0);
-
-  /* Copy as many bytes as will fit */
-  if (n != 0 && --n != 0)
-    do
-      {
-        gchar c = *s++;
-
-        *d++ = c;
-        if (c == 0)
-          break;
-      }
-    while (--n != 0);
-
-  /* If not enough room in dest, add NUL and traverse rest of src */
-  if (n == 0)
-    {
-      if (dest_size != 0)
-        *d = 0;
-      while (*s++)
-        ;
-    }
-
-  return s - src - 1;  /* count does not include NUL */
-}
+  __attribute__ ((alias("glib_g_strlcpy")));
 
 /**
  * g_strlcat:
@@ -1988,7 +1957,7 @@ g_strncasecmp (const gchar *s1,
  * changed to the @new_delimiter character. Modifies @string in place,
  * and returns @string itself, not a copy. The return value is to
  * allow nesting such as
- * |[<!-- language="C" --> 
+ * |[<!-- language="C" -->
  *   g_ascii_strup (g_strdelimit (str, "abc", '?'))
  * ]|
  *
@@ -2025,7 +1994,7 @@ g_strdelimit (gchar       *string,
  * replaces the character with @substitutor. Modifies @string in place,
  * and return @string itself, not a copy. The return value is to allow
  * nesting such as
- * |[<!-- language="C" --> 
+ * |[<!-- language="C" -->
  *   g_ascii_strup (g_strcanon (str, "abc", '?'))
  * ]|
  *
