@@ -6612,29 +6612,28 @@ g_file_new_build_filename (const gchar *first_element,
 }
 
 static gboolean
-is_valid_scheme_character (char c)
-{
-  return g_ascii_isalnum (c) || c == '+' || c == '-' || c == '.';
-}
-
-/* Following RFC 2396, valid schemes are built like:
- *       scheme        = alpha *( alpha | digit | "+" | "-" | "." )
- */
-static gboolean
 has_valid_scheme (const char *uri)
 {
-  const char *p;
+  const gchar * const *supported_schemes;
+  char *scheme;
+  gboolean is_valid;
+  int i;
 
-  p = uri;
-
-  if (!g_ascii_isalpha (*p))
+  scheme = g_uri_parse_scheme (uri);
+  if (scheme == NULL)
     return FALSE;
 
-  do {
-    p++;
-  } while (is_valid_scheme_character (*p));
+  is_valid = FALSE;
+  supported_schemes = g_vfs_get_supported_uri_schemes (g_vfs_get_default ());
+  for (i = 0; supported_schemes[i] != NULL; i++)
+    if (g_ascii_strcasecmp (supported_schemes[i], scheme) == 0)
+      {
+        is_valid = TRUE;
+        break;
+      }
+  g_free (scheme);
 
-  return *p == ':';
+  return is_valid;
 }
 
 static GFile *
