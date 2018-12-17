@@ -31,7 +31,7 @@ dist_test_data = \
 	4096-random-bytes		\
 	$(NULL)
 
-dist_test_extra_scripts = \
+dist_test_extra_SCRIPTS = \
 	echo-script			\
 	echo-script.bat			\
 	$(NULL)
