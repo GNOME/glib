@@ -106,7 +106,6 @@ set_up_mock_dbus_launch (void)
 {
   path = g_strconcat (g_test_get_dir (G_TEST_BUILT), ":",
       g_getenv ("PATH"), NULL);
-  g_debug ("PATH=%s", path);
   g_setenv ("PATH", path, TRUE);
 
   /* libdbus won't even try X11 autolaunch if DISPLAY is unset; GDBus
