@@ -2659,7 +2659,7 @@ g_option_context_get_description (GOptionContext *context)
 /**
  * g_option_context_parse_strv:
  * @context: a #GOptionContext
- * @arguments: (inout) (array null-terminated=1): a pointer to the
+ * @arguments: (inout) (array zero-terminated=1): a pointer to the
  *    command line arguments (which must be in UTF-8 on Windows)
  * @error: a return location for errors
  *
