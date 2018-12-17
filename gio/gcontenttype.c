@@ -148,21 +148,28 @@ _g_content_type_set_mime_dirs_locked (const char * const *dirs)
  *    directories to load MIME data from, including any `mime/` subdirectory,
  *    and with the first directory to try listed first
  *
- * Set the list of directories to load MIME data from. Pass %NULL to use the
- * defaults, which are the `mime/` subdirectories of `$XDG_DATA_HOME` and
- * `$XDG_DATA_DIRS` (or the equivalent on other platforms).
+ * Set the list of directories used by GIO to load the MIME database.
+ * If @dirs is %NULL, the directories used are the default:
  *
- * This is intended to be used by tests, typically when
- * %G_TEST_OPTION_ISOLATE_DIRS is being passed to g_test_init() to generate
- * temporary XDG directories for a unit test, but that unit test still needs
- * access to the system MIME registry. Typically this will be achieved using:
+ *  - the `mime` subdirectory of the directory in `$XDG_DATA_HOME`
+ *  - the `mime` subdirectory of every directory in `$XDG_DATA_DIRS`
+ *
+ * This function is intended to be used when writing tests that depend on
+ * information stored in the MIME database, in order to control the data.
+ *
+ * Typically, in case your tests use %G_TEST_OPTION_ISOLATE_DIRS, but they
+ * depend on the system’s MIME database, you should call this function
+ * with @dirs set to %NULL before calling g_test_init(), for instance:
  *
  * |[<!-- language="C" -->
- * g_content_type_set_mime_dirs (NULL);
- * g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+ *   // Load MIME data from the system
+ *   g_content_type_set_mime_dirs (NULL);
+ *   // Isolate the environment
+ *   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
  *
- * g_test_add_func ("/desktop-app-info/delete", test_delete);
- * …
+ *   …
+ *
+ *   return g_test_run ();
  * ]|
  *
  * Since: 2.60
