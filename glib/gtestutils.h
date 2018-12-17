@@ -152,11 +152,27 @@ void    g_test_init                     (int            *argc,
  * G_TEST_OPTION_ISOLATE_DIRS:
  *
  * Creates a unique temporary directory for each unit test and uses
- * g_set_user_dirs() to set XDG directories to point into that temporary
- * directory for the duration of the unit test. The directory is cleaned up
- * after the test finishes. Note that this doesn’t take effect until
+ * g_set_user_dirs() to set XDG directories to point into subdirectories of it
+ * for the duration of the unit test. The directory tree is cleaned up after the
+ * test finishes successfully. Note that this doesn’t take effect until
  * g_test_run() is called, so calls to (for example) g_get_user_home_dir() will
  * return the system-wide value when made in a test program’s main() function.
+ *
+ * The following functions will return subdirectories of the temporary directory
+ * when this option is used. The specific subdirectory paths in use are not
+ * guaranteed to be stable API — always use a getter function to retrieve them.
+ *
+ *  - g_get_home_dir()
+ *  - g_get_user_cache_dir()
+ *  - g_get_system_config_dirs()
+ *  - g_get_user_config_dir()
+ *  - g_get_system_data_dirs()
+ *  - g_get_user_data_dir()
+ *  - g_get_user_runtime_dir()
+ *
+ * The subdirectories may not be created by the test harness; as with normal
+ * calls to functions like g_get_user_cache_dir(), the caller must be prepared
+ * to create the directory if it doesn’t exist.
  *
  * Since: 2.60
  */

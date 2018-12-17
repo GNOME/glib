@@ -1334,6 +1334,8 @@ test_do_isolate_dirs (GError **error)
   data_dirs[1] = g_build_filename (subdir, "system-data2", NULL);
   data_dirs[2] = NULL;
 
+  /* Remember to update the documentation for %G_TEST_OPTION_ISOLATE_DIRS if
+   * this list changes. */
   g_set_user_dirs ("HOME", home_dir,
                    "XDG_CACHE_HOME", cache_dir,
                    "XDG_CONFIG_DIRS", config_dirs,
