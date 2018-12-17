@@ -867,10 +867,10 @@ enumerate_mimetypes_dir (const char *dir,
 {
   DIR *d;
   struct dirent *ent;
-  char *mimedir;
+  const char *mimedir;
   char *name;
 
-  mimedir = g_build_filename (dir, NULL);
+  mimedir = dir;
 
   d = opendir (mimedir);
   if (d)
@@ -887,8 +887,6 @@ enumerate_mimetypes_dir (const char *dir,
         }
       closedir (d);
     }
-
-  g_free (mimedir);
 }
 
 /**
