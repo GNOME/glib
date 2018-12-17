@@ -515,7 +515,7 @@ test_parse_detailed (void)
           expected = g_variant_parse (NULL, testcases[i].expected_target, NULL, NULL, NULL);
           g_assert (expected);
 
-          g_assert (g_variant_equal (expected, target));
+          g_assert_cmpvariant (expected, target);
           g_variant_unref (expected);
           g_variant_unref (target);
         }

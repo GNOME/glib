@@ -90,7 +90,8 @@
  * In addition to the traditional g_assert_true(), the test framework provides
  * an extended set of assertions for comparisons: g_assert_cmpfloat(),
  * g_assert_cmpfloat_with_epsilon(), g_assert_cmpint(), g_assert_cmpuint(),
- * g_assert_cmphex(), g_assert_cmpstr(), and g_assert_cmpmem(). The
+ * g_assert_cmphex(), g_assert_cmpstr(), g_assert_cmpmem() and
+ * g_assert_cmpvariant(). The
  * advantage of these variants over plain g_assert_true() is that the assertion
  * messages can be more elaborate, and include the values of the compared
  * entities.
@@ -575,7 +576,7 @@
  * g_assert_cmpstr:
  * @s1: a string (may be %NULL)
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @s2: another string (may be %NULL)
  *
  * Debugging macro to compare two strings. If the comparison fails,
@@ -599,7 +600,7 @@
  * g_assert_cmpint:
  * @n1: an integer
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @n2: another integer
  *
  * Debugging macro to compare two integers.
@@ -616,7 +617,7 @@
  * g_assert_cmpuint:
  * @n1: an unsigned integer
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @n2: another unsigned integer
  *
  * Debugging macro to compare two unsigned integers.
@@ -633,7 +634,7 @@
  * g_assert_cmphex:
  * @n1: an unsigned integer
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @n2: another unsigned integer
  *
  * Debugging macro to compare to unsigned integers.
@@ -648,7 +649,7 @@
  * g_assert_cmpfloat:
  * @n1: an floating point number
  * @cmp: The comparison operator to use.
- *     One of ==, !=, <, >, <=, >=.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @n2: another floating point number
  *
  * Debugging macro to compare two floating point numbers.
@@ -699,6 +700,23 @@
  * ]|
  *
  * Since: 2.46
+ */
+
+/**
+ * g_assert_cmpvariant:
+ * @v1: pointer to a #GVariant
+ * @v2: pointer to another #GVariant
+ *
+ * Debugging macro to compare two #GVariants. If the comparison fails,
+ * an error message is logged and the application is either terminated
+ * or the testcase marked as failed. The variants are compared using
+ * g_variant_equal().
+ *
+ * The effect of `g_assert_cmpvariant (v1, v2)` is the same as
+ * `g_assert_true (g_variant_equal (v1, v2))`. The advantage of this macro is
+ * that it can produce a message that includes the actual values of @v1 and @v2.
+ *
+ * Since: 2.60
  */
 
 /**

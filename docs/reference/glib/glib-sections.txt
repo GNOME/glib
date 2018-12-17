@@ -3176,6 +3176,7 @@ g_assert_cmphex
 g_assert_cmpfloat
 g_assert_cmpfloat_with_epsilon
 g_assert_cmpmem
+g_assert_cmpvariant
 g_assert_no_error
 g_assert_error
 g_assert_true
