@@ -1041,9 +1041,10 @@ g_dtls_connection_emit_accept_certificate (GDtlsConnection      *conn,
  * Since: 2.60
  */
 void
-g_dtls_connection_set_advertised_protocols (GDtlsConnection    *conn,
-                                            const char * const *protocols)
+g_dtls_connection_set_advertised_protocols (GDtlsConnection     *conn,
+                                            const gchar * const *protocols)
 {
+    g_printerr(G_STRLOC " %s() enter\n", __func__);
   g_return_if_fail (G_IS_DTLS_CONNECTION (conn));
 
   return G_DTLS_CONNECTION_GET_INTERFACE (conn)->set_advertised_protocols (conn,
@@ -1066,7 +1067,7 @@ g_dtls_connection_set_advertised_protocols (GDtlsConnection    *conn,
  *
  * Since: 2.60
  */
-const char *
+const gchar *
 g_dtls_connection_get_negotiated_protocol (GDtlsConnection *conn)
 {
   g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), NULL);

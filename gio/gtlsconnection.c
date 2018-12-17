@@ -813,8 +813,8 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * Since: 2.60
  */
 void
-g_tls_connection_set_advertised_protocols (GTlsConnection     *conn,
-                                           const char * const *protocols)
+g_tls_connection_set_advertised_protocols (GTlsConnection      *conn,
+                                           const gchar * const *protocols)
 {
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
 
@@ -839,11 +839,11 @@ g_tls_connection_set_advertised_protocols (GTlsConnection     *conn,
  *
  * Since: 2.60
  */
-const char *
+const gchar *
 g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
 {
   GTlsConnectionPrivate *priv;
-  char *protocol;
+  gchar *protocol;
 
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
 
@@ -851,7 +851,7 @@ g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
                 "negotiated-protocol", &protocol,
                 NULL);
 
-  priv = g_tls_connection_get_instance_private (conn); 
+  priv = g_tls_connection_get_instance_private (conn);
   if (g_strcmp0 (priv->negotiated_protocol, protocol) != 0)
     {
       g_free (priv->negotiated_protocol);

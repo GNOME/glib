@@ -92,7 +92,7 @@ struct _GDtlsConnectionInterface
 
   void (*set_advertised_protocols)        (GDtlsConnection     *conn,
                                            const gchar * const *protocols);
-  const char *(*get_negotiated_protocol)  (GDtlsConnection     *conn);
+  const gchar *(*get_negotiated_protocol) (GDtlsConnection     *conn);
 };
 
 GLIB_AVAILABLE_IN_2_48
@@ -192,10 +192,10 @@ gboolean              g_dtls_connection_emit_accept_certificate     (GDtlsConnec
                                                                      GTlsCertificateFlags   errors);
 GLIB_AVAILABLE_IN_2_60
 void                  g_dtls_connection_set_advertised_protocols    (GDtlsConnection     *conn,
-                                                                     const char * const *protocols);
+                                                                     const gchar * const *protocols);
 
 GLIB_AVAILABLE_IN_2_60
-const char *          g_dtls_connection_get_negotiated_protocol     (GDtlsConnection     *conn);
+const gchar *          g_dtls_connection_get_negotiated_protocol     (GDtlsConnection    *conn);
 
 G_END_DECLS
 
