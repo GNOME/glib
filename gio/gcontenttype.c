@@ -203,7 +203,7 @@ g_content_type_get_mime_dirs (void)
   G_UNLOCK (global_mime_dirs);
 
   g_assert (mime_dirs != NULL);
-  return (const gchar * const *) mime_dirs;
+  return mime_dirs;
 }
 
 /**
