@@ -56,7 +56,7 @@
 
 struct _GTlsConnectionPrivate
 {
-    gchar *negotiated_protocol;
+  gchar *negotiated_protocol;
 };
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GTlsConnection, g_tls_connection, G_TYPE_IO_STREAM)
@@ -796,8 +796,8 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
 /**
  * g_tls_connection_set_advertised_protocols:
  * @conn: a #GTlsConnection
- * @protocols: (array null-terminated=1): a %NULL-terminated array
- *   of ALPN protocol names (eg, "http/1.1", "h2"), or %NULL
+ * @protocols: (array zero-terminated=1 nullable): a %NULL-terminated
+ *   array of ALPN protocol names (eg, "http/1.1", "h2"), or %NULL
  *
  * Sets the list of application-layer protocols to advertise that the
  * caller is willing to speak on this connection. The
@@ -817,7 +817,6 @@ g_tls_connection_set_advertised_protocols (GTlsConnection     *conn,
                                            const char * const *protocols)
 {
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
-  g_return_if_fail (protocols != NULL);
 
   g_object_set (G_OBJECT (conn),
                 "advertised-protocols", protocols,
@@ -847,6 +846,7 @@ g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
   char *protocol;
 
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
+
   g_object_get (G_OBJECT (conn),
                 "negotiated-protocol", &protocol,
                 NULL);
