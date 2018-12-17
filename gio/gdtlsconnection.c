@@ -1020,3 +1020,56 @@ g_dtls_connection_emit_accept_certificate (GDtlsConnection      *conn,
                  peer_cert, errors, &accept);
   return accept;
 }
+
+/**
+ * g_dtls_connection_set_advertised_protocols:
+ * @conn: a #GDtlsConnection
+ * @protocols: (array zero-terminated=1 nullable): a %NULL-terminated
+ *   array of ALPN protocol names (eg, "http/1.1", "h2"), or %NULL
+ *
+ * Sets the list of application-layer protocols to advertise that the
+ * caller is willing to speak on this connection. The
+ * Application-Layer Protocol Negotiation (ALPN) extension will be
+ * used to negotiate a compatible protocol with the peer; use
+ * g_dtls_connection_get_negotiated_protocol() to find the negotiated
+ * protocol after the handshake.  Specifying %NULL for the the value
+ * of @protocols will disable ALPN negotiation.
+ *
+ * See <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml>
+ * for a list of registered protocol IDs.
+ *
+ * Since: 2.60
+ */
+void
+g_dtls_connection_set_advertised_protocols (GDtlsConnection    *conn,
+                                            const char * const *protocols)
+{
+  g_return_if_fail (G_IS_DTLS_CONNECTION (conn));
+
+  return G_DTLS_CONNECTION_GET_INTERFACE (conn)->set_advertised_protocols (conn,
+                                                                           protocols);
+}
+
+/**
+ * g_dtls_connection_get_negotiated_protocol:
+ * @conn: a #GDtlsConnection
+ *
+ * Gets the name of the application-layer protocol negotiated during
+ * the handshake.
+ *
+ * If the peer did not use the ALPN extension, or did not advertise a
+ * protocol that matched one of @conn's protocols, or the TLS backend
+ * does not support ALPN, then this will be %NULL. See
+ * g_dtls_connection_set_advertised_protocols().
+ *
+ * Returns: (nullable): the negotiated protocol, or %NULL
+ *
+ * Since: 2.60
+ */
+const char *
+g_dtls_connection_get_negotiated_protocol (GDtlsConnection *conn)
+{
+  g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), NULL);
+
+  return G_DTLS_CONNECTION_GET_INTERFACE (conn)->get_negotiated_protocol (conn);
+}
