@@ -229,9 +229,17 @@
 }
 
 {
-	g-get-language-names
+	g-get-language-names-malloc
 	Memcheck:Leak
 	fun:malloc
+	...
+	fun:g_get_language_names
+}
+
+{
+	g-get-language-names-calloc
+	Memcheck:Leak
+	fun:calloc
 	...
 	fun:g_get_language_names
 }
@@ -542,4 +550,110 @@
 	Helgrind:Race
 	...
 	fun:g_object_new_valist
+}
+
+# g_set_user_dirs() deliberately leaks the previous cached g_get_user_*() values.
+{
+	g_set_user_dirs_str
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:set_str_if_different
+	fun:g_set_user_dirs
+}
+
+# g_set_user_dirs() deliberately leaks the previous cached g_get_user_*() values.
+{
+	g_set_user_dirs_strv
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:set_strv_if_different
+	fun:g_set_user_dirs
+}
+
+# g_get_system_data_dirs() caches a one-time allocation
+{
+	g_get_system_data_dirs
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:g_build_system_data_dirs
+	fun:g_get_system_data_dirs
+}
+
+# g_get_user_data_dir() caches a one-time allocation
+{
+	g_get_user_data_dir
+	Memcheck:Leak
+	fun:realloc
+	...
+	fun:g_build_user_data_dir
+	fun:g_get_user_data_dir
+}
+
+# gdesktopappinfo.c caches a one-time allocation global table of @desktop_file_dirs.
+{
+	desktop_file_dirs_malloc
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:desktop_file_dirs_lock
+}
+
+# gdesktopappinfo.c caches a one-time allocation global table of @desktop_file_dirs.
+{
+	desktop_file_dirs_realloc
+	Memcheck:Leak
+	fun:realloc
+	...
+	fun:desktop_file_dirs_lock
+}
+
+# gdesktopappinfo.c caches a one-time allocation global table of @desktop_file_dirs.
+{
+	desktop_file_dir_unindexed_setup_search
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:desktop_file_dir_unindexed_setup_search
+	fun:desktop_file_dir_unindexed_setup_search
+}
+
+# g_io_extension_point_register() caches a one-time allocation global table of @extension_points.
+{
+	g_io_extension_point_register
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:g_io_extension_point_register
+}
+
+# g_strerror() caches a one-time allocation global table of @errors.
+{
+	g_strerror
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:g_locale_to_utf8
+	fun:g_strerror
+}
+
+# g_socket_connection_factory_register_type() caches a one-time allocation global table of @connection_types.
+{
+	g_socket_connection_factory_register_type
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:g_socket_connection_factory_register_type
+}
+
+# g_dbus_error_quark() never unregisters itself as a GDBusError domain, as it’s always available
+{
+	g_dbus_error_quark
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:g_dbus_error_register_error_domain
+	fun:g_dbus_error_quark
 }
