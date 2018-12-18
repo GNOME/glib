@@ -149,7 +149,7 @@ girepo_lib = shared_library('girepository-1.0',
 # Copy to builddir for use with giscanner/dumper.py when running uninstalled
 configure_file(input : 'gdump.c',
   output : 'gdump.c',
-  configuration : configuration_data(),
+  copy: true,
   install_dir: join_paths(get_option('datadir'), 'gobject-introspection-1.0'),
   install : true,
 )
