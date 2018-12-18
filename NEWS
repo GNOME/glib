@@ -1,3 +1,24 @@
+Overview of changes in GLib 2.56.4
+==================================
+
+* Various buffer overflow fixes in GMarkup/GVariant/GDBus (#1582)
+
+* Bug fixes:
+ #1588 Moving a bookmark item to the same URI causes a crash
+ #1582 Backport GMarkup/GVariant/GDBus fixes to glib-2-58 and glib-2-56
+
+* Translation updates:
+ Brazilian Portuguese
+ Czech
+ German
+ Hungarian
+ Indonesian
+ Lithuanian
+ Polish
+ Slovenian
+ Swedish
+
+
 Overview of changes in GLib 2.56.3
 ==================================
 
