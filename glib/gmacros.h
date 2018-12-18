@@ -405,6 +405,17 @@
 #endif
 #endif
 
+/* Provide alignment macro.
+ */
+
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L && !defined(__cplusplus)
+#define G_ALIGNOF(type) _Alignof (type)
+#elif defined(__GNUC__)
+#define G_ALIGNOF(type) (__alignof__ (type))
+#else
+#define G_ALIGNOF(type) (G_STRUCT_OFFSET (struct { char a; type b; }, b))
+#endif
+
 /* Deprecated -- do not use. */
 #ifndef G_DISABLE_DEPRECATED
 #ifdef G_DISABLE_CONST_RETURNS
@@ -420,7 +431,7 @@
  * can use this information for optimizations.
  *
  * The _G_BOOLEAN_EXPR macro is intended to trigger a gcc warning when
- * putting assignments in g_return_if_fail ().  
+ * putting assignments in g_return_if_fail (). 
  */
 #if defined(__GNUC__) && (__GNUC__ > 2) && defined(__OPTIMIZE__)
 #define _G_BOOLEAN_EXPR(expr)                   \
