@@ -45,6 +45,8 @@ typedef struct _GDtlsConnectionInterface GDtlsConnectionInterface;
  * @shutdown: Shut down one or both directions of the connection.
  * @shutdown_async: Start an asynchronous shutdown operation.
  * @shutdown_finish: Finish an asynchronous shutdown operation.
+ * @set_advertised_protocols: Set APLN protocol list
+ * @get_negotiated_protocol: Retrieve ALPN-negotiated protocol
  *
  * Virtual method table for a #GDtlsConnection implementation.
  *

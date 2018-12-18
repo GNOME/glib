@@ -796,7 +796,7 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
 /**
  * g_tls_connection_set_advertised_protocols:
  * @conn: a #GTlsConnection
- * @protocols: (array zero-terminated=1 nullable): a %NULL-terminated
+ * @protocols: (array zero-terminated=1) (nullable): a %NULL-terminated
  *   array of ALPN protocol names (eg, "http/1.1", "h2"), or %NULL
  *
  * Sets the list of application-layer protocols to advertise that the
@@ -807,7 +807,7 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * protocol after the handshake.  Specifying %NULL for the the value
  * of @protocols will disable ALPN negotiation.
  *
- * See <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml>
+ * See [IANA TLS ALPN Protocol IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
  * for a list of registered protocol IDs.
  *
  * Since: 2.60
@@ -851,6 +851,10 @@ g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
                 "negotiated-protocol", &protocol,
                 NULL);
 
+  /*
+   * Cache the property internally so we can return a `const` pointer
+   * to the caller.
+   */
   priv = g_tls_connection_get_instance_private (conn);
   if (g_strcmp0 (priv->negotiated_protocol, protocol) != 0)
     {

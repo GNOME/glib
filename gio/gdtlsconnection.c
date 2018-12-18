@@ -237,7 +237,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
    *
    * The list of application-layer protocols that the connection
    * advertises that it is willing to speak. See
-   * g_tls_connection_set_advertised_protocols().
+   * g_dtls_connection_set_advertised_protocols().
    *
    * Since: 2.60
    */
@@ -252,7 +252,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
    * GDtlsConnection:negotiated-protocol:
    *
    * The application-layer protocol negotiated during the TLS
-   * handshake. See g_tls_connection_get_negotiated_protocol().
+   * handshake. See g_dtls_connection_get_negotiated_protocol().
    *
    * Since: 2.60
    */
@@ -1024,7 +1024,7 @@ g_dtls_connection_emit_accept_certificate (GDtlsConnection      *conn,
 /**
  * g_dtls_connection_set_advertised_protocols:
  * @conn: a #GDtlsConnection
- * @protocols: (array zero-terminated=1 nullable): a %NULL-terminated
+ * @protocols: (array zero-terminated=1) (nullable): a %NULL-terminated
  *   array of ALPN protocol names (eg, "http/1.1", "h2"), or %NULL
  *
  * Sets the list of application-layer protocols to advertise that the
@@ -1035,7 +1035,7 @@ g_dtls_connection_emit_accept_certificate (GDtlsConnection      *conn,
  * protocol after the handshake.  Specifying %NULL for the the value
  * of @protocols will disable ALPN negotiation.
  *
- * See <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml>
+ * See [IANA TLS ALPN Protocol IDs](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
  * for a list of registered protocol IDs.
  *
  * Since: 2.60
@@ -1044,10 +1044,13 @@ void
 g_dtls_connection_set_advertised_protocols (GDtlsConnection     *conn,
                                             const gchar * const *protocols)
 {
-  g_return_if_fail (G_IS_DTLS_CONNECTION (conn));
+  GDtlsConnectionInterface *iface;
 
-  return G_DTLS_CONNECTION_GET_INTERFACE (conn)->set_advertised_protocols (conn,
-                                                                           protocols);
+  iface = G_DTLS_CONNECTION_GET_INTERFACE (conn);
+  if (iface->set_advertised_protocols == NULL)
+    return;
+
+  return iface->set_advertised_protocols (conn, protocols);
 }
 
 /**
@@ -1069,7 +1072,11 @@ g_dtls_connection_set_advertised_protocols (GDtlsConnection     *conn,
 const gchar *
 g_dtls_connection_get_negotiated_protocol (GDtlsConnection *conn)
 {
-  g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), NULL);
+  GDtlsConnectionInterface *iface;
 
-  return G_DTLS_CONNECTION_GET_INTERFACE (conn)->get_negotiated_protocol (conn);
+  iface = G_DTLS_CONNECTION_GET_INTERFACE (conn);
+  if (iface->set_advertised_protocols == NULL)
+    return NULL;
+
+  return iface->get_negotiated_protocol (conn);
 }
