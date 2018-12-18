@@ -27,7 +27,9 @@
 typedef struct
 {
   gchar *cert_pems[3];
+  gchar *cert_crlf_pem;
   gchar *key_pem;
+  gchar *key_crlf_pem;
   gchar *key8_pem;
 } Reference;
 
@@ -277,6 +279,32 @@ from_files (const Reference *ref)
   g_object_unref (cert);
 }
 
+static void
+from_files_crlf (const Reference *ref)
+{
+  GTlsCertificate *cert;
+  gchar *parsed_cert_pem = NULL;
+  const gchar *parsed_key_pem = NULL;
+  GError *error = NULL;
+
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-crlf.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key-crlf.pem", NULL),
+                                           &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  g_object_get (cert,
+      "certificate-pem", &parsed_cert_pem,
+      NULL);
+  parsed_key_pem = g_test_tls_connection_get_private_key_pem (cert);
+  g_assert_cmpstr (parsed_cert_pem, ==, ref->cert_crlf_pem);
+  g_free (parsed_cert_pem);
+  parsed_cert_pem = NULL;
+  g_assert_cmpstr (parsed_key_pem, ==, ref->key_crlf_pem);
+  parsed_key_pem = NULL;
+
+  g_object_unref (cert);
+}
 
 static void
 from_files_pkcs8 (const Reference *ref)
@@ -368,10 +396,20 @@ main (int   argc,
   g_assert_no_error (error);
   g_assert_nonnull (ref.cert_pems[2]);
   g_free (path);
+  path = g_test_build_filename (G_TEST_DIST, "cert-tests", "cert-crlf.pem", NULL);
+  g_file_get_contents (path, &ref.cert_crlf_pem, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (ref.cert_crlf_pem);
+  g_free (path);
   path = g_test_build_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL);
   g_file_get_contents (path, &ref.key_pem, NULL, &error);
   g_assert_no_error (error);
   g_assert_nonnull (ref.key_pem);
+  g_free (path);
+  path = g_test_build_filename (G_TEST_DIST, "cert-tests", "key-crlf.pem", NULL);
+  g_file_get_contents (path, &ref.key_crlf_pem, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (ref.key_crlf_pem);
   g_free (path);
   path = g_test_build_filename (G_TEST_DIST, "cert-tests", "key8.pem", NULL);
   g_file_get_contents (path, &ref.key8_pem, NULL, &error);
@@ -387,6 +425,8 @@ main (int   argc,
                         &ref, (GTestDataFunc)from_file);
   g_test_add_data_func ("/tls-certificate/from_files",
                         &ref, (GTestDataFunc)from_files);
+  g_test_add_data_func ("/tls-certificate/from_files_crlf",
+                        &ref, (GTestDataFunc)from_files_crlf);
   g_test_add_data_func ("/tls-certificate/from_files_pkcs8",
                         &ref, (GTestDataFunc)from_files_pkcs8);
   g_test_add_data_func ("/tls-certificate/list_from_file",
@@ -397,7 +437,9 @@ main (int   argc,
   g_free (ref.cert_pems[0]);
   g_free (ref.cert_pems[1]);
   g_free (ref.cert_pems[2]);
+  g_free (ref.cert_crlf_pem);
   g_free (ref.key_pem);
+  g_free (ref.key_crlf_pem);
   g_free (ref.key8_pem);
 
   return rtv;

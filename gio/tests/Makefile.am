@@ -228,11 +228,13 @@ cert_tests = \
 	cert1.pem	\
 	cert2.pem	\
 	cert3.pem	\
+	cert-crlf.pem	\
 	cert-key.pem	\
 	cert-list.pem	\
 	key8.pem	\
 	key-cert.pem	\
 	key.pem		\
+	key-crlf.pem	\
 	nothing.pem	\
 	$(NULL)
 
