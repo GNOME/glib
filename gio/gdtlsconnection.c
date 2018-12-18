@@ -1044,7 +1044,6 @@ void
 g_dtls_connection_set_advertised_protocols (GDtlsConnection     *conn,
                                             const gchar * const *protocols)
 {
-    g_printerr(G_STRLOC " %s() enter\n", __func__);
   g_return_if_fail (G_IS_DTLS_CONNECTION (conn));
 
   return G_DTLS_CONNECTION_GET_INTERFACE (conn)->set_advertised_protocols (conn,
