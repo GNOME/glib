@@ -329,10 +329,30 @@ test_g_mutex (void)
   g_mutex_init (&val);
 }
 
+/* Thread function to check that a mutex given in @data is locked */
+static gpointer
+mutex_locked_thread (gpointer data)
+{
+  GMutex *mutex = (GMutex *) data;
+  g_assert_false (g_mutex_trylock (mutex));
+  return NULL;
+}
+
+/* Thread function to check that a mutex given in @data is unlocked */
+static gpointer
+mutex_unlocked_thread (gpointer data)
+{
+  GMutex *mutex = (GMutex *) data;
+  g_assert_true (g_mutex_trylock (mutex));
+  g_mutex_unlock (mutex);
+  return NULL;
+}
+
 static void
 test_g_mutex_locker (void)
 {
   GMutex mutex;
+  GThread *thread;
 
   g_mutex_init (&mutex);
 
@@ -340,8 +360,58 @@ test_g_mutex_locker (void)
     {
       g_autoptr(GMutexLocker) val = g_mutex_locker_new (&mutex);
       
-      g_assert (val != NULL);
+      g_assert_nonnull (val);
+
+      /* Verify that the mutex is actually locked */
+      thread = g_thread_new ("mutex locked", mutex_locked_thread, &mutex);
+      g_thread_join (thread);
     }
+
+    /* Verify that the mutex is unlocked again */
+    thread = g_thread_new ("mutex unlocked", mutex_unlocked_thread, &mutex);
+    g_thread_join (thread);
+}
+
+/* Thread function to check that a recursive mutex given in @data is locked */
+static gpointer
+rec_mutex_locked_thread (gpointer data)
+{
+  GRecMutex *rec_mutex = (GRecMutex *) data;
+  g_assert_false (g_rec_mutex_trylock (rec_mutex));
+  return NULL;
+}
+
+/* Thread function to check that a recursive mutex given in @data is unlocked */
+static gpointer
+rec_mutex_unlocked_thread (gpointer data)
+{
+  GRecMutex *rec_mutex = (GRecMutex *) data;
+  g_assert_true (g_rec_mutex_trylock (rec_mutex));
+  return NULL;
+}
+
+static void
+test_g_rec_mutex_locker (void)
+{
+  GRecMutex rec_mutex;
+  GThread *thread;
+
+  g_rec_mutex_init (&rec_mutex);
+
+  if (TRUE)
+    {
+      g_autoptr(GRecMutexLocker) val = g_rec_mutex_locker_new (&rec_mutex);
+
+      g_assert_nonnull (val);
+
+      /* Verify that the mutex is actually locked */
+      thread = g_thread_new ("rec mutex locked", rec_mutex_locked_thread, &rec_mutex);
+      g_thread_join (thread);
+    }
+
+    /* Verify that the mutex is unlocked again */
+    thread = g_thread_new ("rec mutex unlocked", rec_mutex_unlocked_thread, &rec_mutex);
+    g_thread_join (thread);
 }
 
 static void
@@ -536,6 +606,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_thread", test_g_thread);
   g_test_add_func ("/autoptr/g_mutex", test_g_mutex);
   g_test_add_func ("/autoptr/g_mutex_locker", test_g_mutex_locker);
+  g_test_add_func ("/autoptr/g_rec_mutex_locker", test_g_rec_mutex_locker);
   g_test_add_func ("/autoptr/g_cond", test_g_cond);
   g_test_add_func ("/autoptr/g_timer", test_g_timer);
   g_test_add_func ("/autoptr/g_time_zone", test_g_time_zone);
