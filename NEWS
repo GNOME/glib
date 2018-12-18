@@ -1,3 +1,81 @@
+Overview of changes in GLib 2.58.2
+==================================
+
+* Fix calling gdbus-codegen with --interface-info-{header,body} (!527)
+
+* Fix parsing month names in certain locales with g_date_set_parse() (#1343)
+
+* Fix ^*ay handling in g_variant_iter_loop() (!437)
+
+* Various buffer overflow fixes in GMarkup/GVariant/GDBus (#1582)
+
+* A huge number of fixes to the Meson build
+
+* Prevent bind mounts being advertised as mounts (#1271)
+
+* Fix cross-compilation of 2.58.x releases with autotools (#1546)
+
+Bugs fixed:
+ !527 fix gdbus-codegen --interface-info-{header,body}
+ #1605 g_date_time_format fails when used with non ASCII format string on POSIX locale
+ !544 gtimezone: Fallback to /etc/timezone on Gentoo
+ #945 g_spawn_* functions break POSIX requirements and deadlock the child process under certain conditions
+ #1014 g_spawn family does not appear to be safe in multi-threaded programs
+ !542 gtlscertificate: Fix bug in PEM private key parser
+ #1343 g_date_set_parse: Parses "September" in Polish incorrectly
+ !471 meson: pin the libffi wrap file to the last release supporting meson 0.47
+ !430 gdate: Reinitialize using_twodigit_years and locale_era_adjust.
+ !437 Fix ^*ay handling in g_variant_iter_loop()
+ #1337 /GDateTime/strftime test fails with TZ=Africa/Monrovia
+ #1588 Moving a bookmark item to the same URI causes a crash
+ !462 meson: add aarch64 memory barrier handling
+ #1582 Backport GMarkup/GVariant/GDBus fixes to glib-2-58 and glib-2-56
+ !428 gdbus-codegen: add autocleanup for FooObject
+ #1576 Fails to build with Meson on Debian armel (armv5te EABI softfloat little-endian)
+ !407 meson: Increase test timeouts
+ #1572 Flags validation fails
+ #1522 Trash not working on NTFS folder accessed from symlink
+ #1562 GDate test suite fails with latest glibc
+ !367 Add g_desktop_app_info_get_string_list(); fix g_key_file_free()
+ !416 gdbus-peer: Make sure to not include objectmanager-gen.c source
+ !414 gio, tests: ensure objectmanager sources are generated
+ !409 A couple of minor glib-2-58 backports
+  !400 grefcount: add missing gatomic.h
+  !403 build-sys: Pass CFLAGS to $(DTRACE)
+ #1543 Backport recent Meson/pkg-config/test fixes to glib-2-58
+ #1271 fstab binds appear as mounts (x-gvfs-hide is being ignored)
+ #1546 Cross-compilation fails in 2.58
+ #1536 meson: spurious dependencies on convenience libraries in .pc files
+ #1544 meson: gtester-report #! not replaced with ${PYTHON}
+ #1528 Meson tests are hard to debug in an autobuilder environment
+ #1539 meson: Some files are unnecessarily installed executable
+ #1527 Meson doesn't install data for installed-tests
+ !406 meson: Mark 1bit-emufutex test as slow
+ !334 gio: automake: Add libgmodule dependency
+ !238 W32 GFileInfo improvements (partially)
+ !312 Enable GIO tests on Windows
+ #1520 Change conditions for installing m4 macros
+ #656 check for -Werror=format-security broken
+ #1313 Meson: Rework the config.h generation
+ !346 ci: Use a docker image for stable branch
+
+* Translation updates:
+ Basque
+ Brazilian Portuguese
+ Czech
+ Friulian
+ German
+ Indonesian
+ Italian
+ Lithuanian
+ Occitan
+ Polish
+ Turkish
+ Slovak
+ Slovenian
+ Spanish
+ Swedish
+
 Overview of changes in GLib 2.58.1
 ==================================
 
