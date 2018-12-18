@@ -405,6 +405,17 @@
 #endif
 #endif
 
+/* Provide G_ALIGNOF alignment macro.
+ */
+
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L && !defined(__cplusplus)
+#define G_ALIGNOF(type) _Alignof (type)
+#elif defined(__GNUC__)
+#define G_ALIGNOF(type) (__alignof__ (type))
+#else
+#define G_ALIGNOF(type) (G_STRUCT_OFFSET (struct { char a; type b; }, b))
+#endif
+
 /* Deprecated -- do not use. */
 #ifndef G_DISABLE_DEPRECATED
 #ifdef G_DISABLE_CONST_RETURNS
