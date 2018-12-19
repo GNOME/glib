@@ -143,6 +143,9 @@
       use GIO locations instead of local files: for example you can use
       something like <filename>smb://server/resource/file.txt</filename>
       as a location.</para>
+    <para>Plain filenames which contain a colon will be interpreted as URIs
+      with an unknown protocol. To avoid this, prefix them with a path such as
+      <filename>./</filename>, or with the <literal>file:</literal> protocol.</para>
   </refsect1>
 
   <refsect1>
