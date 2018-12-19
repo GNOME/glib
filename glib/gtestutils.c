@@ -751,7 +751,7 @@
  *
  * This can only be used to test for a specific error. If you want to
  * test that @err is set, but don't care what it's set to, just use
- * `g_assert (err != NULL)`
+ * `g_assert_nonnull (err)`.
  *
  * Since: 2.20
  */
