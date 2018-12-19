@@ -133,7 +133,7 @@ poll_rest (GPollFD *msg_fd,
            HANDLE  *handles,
            GPollFD *handle_to_fd[],
            gint     nhandles,
-           gint     timeout)
+           gint     timeout_ms)
 {
   DWORD ready;
   GPollFD *f;
@@ -145,9 +145,9 @@ poll_rest (GPollFD *msg_fd,
        * -> Use MsgWaitForMultipleObjectsEx
        */
       if (_g_main_poll_debug)
-	g_print ("  MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
+	g_print ("  MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout_ms);
 
-      ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout,
+      ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout_ms,
 					   QS_ALLINPUT, MWMO_ALERTABLE);
 
       if (ready == WAIT_FAILED)
@@ -160,12 +160,12 @@ poll_rest (GPollFD *msg_fd,
   else if (nhandles == 0)
     {
       /* No handles to wait for, just the timeout */
-      if (timeout == INFINITE)
+      if (timeout_ms == INFINITE)
 	ready = WAIT_FAILED;
       else
         {
           /* Wait for the current process to die, more efficient than SleepEx(). */
-          WaitForSingleObjectEx (GetCurrentProcess (), timeout, TRUE);
+          WaitForSingleObjectEx (GetCurrentProcess (), timeout_ms, TRUE);
           ready = WAIT_TIMEOUT;
         }
     }
@@ -175,9 +175,9 @@ poll_rest (GPollFD *msg_fd,
        * -> Use WaitForMultipleObjectsEx
        */
       if (_g_main_poll_debug)
-	g_print ("  WaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout);
+	g_print ("  WaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout_ms);
 
-      ready = WaitForMultipleObjectsEx (nhandles, handles, FALSE, timeout, TRUE);
+      ready = WaitForMultipleObjectsEx (nhandles, handles, FALSE, timeout_ms, TRUE);
       if (ready == WAIT_FAILED)
 	{
 	  gchar *emsg = g_win32_error_message (GetLastError ());
@@ -205,7 +205,7 @@ poll_rest (GPollFD *msg_fd,
       /* If we have a timeout, or no handles to poll, be satisfied
        * with just noticing we have messages waiting.
        */
-      if (timeout != 0 || nhandles == 0)
+      if (timeout_ms != 0 || nhandles == 0)
 	return 1;
 
       /* If no timeout and handles to poll, recurse to poll them,
@@ -224,7 +224,7 @@ poll_rest (GPollFD *msg_fd,
       /* If no timeout and polling several handles, recurse to poll
        * the rest of them.
        */
-      if (timeout == 0 && nhandles > 1)
+      if (timeout_ms == 0 && nhandles > 1)
 	{
 	  /* Poll the handles with index > ready */
           HANDLE  *shorter_handles;
