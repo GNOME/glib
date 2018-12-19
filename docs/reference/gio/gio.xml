@@ -201,7 +201,7 @@
             <variablelist>
               <varlistentry>
                 <term><option>-T</option>, <option>--no-target-directory</option></term>
-                <listitem><para>Don't copy into <replaceable>DESTINATION</replaceable> even if it is a directory.</para></listitem>
+                <listitem><para>Don’t copy into <replaceable>DESTINATION</replaceable> even if it is a directory.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-p</option>, <option>--progress</option></term>
@@ -259,7 +259,7 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-n</option>, <option>--nofollow-symlinks</option></term>
-                <listitem><para>Don't follow symbolic links.</para></listitem>
+                <listitem><para>Don’t follow symbolic links.</para></listitem>
               </varlistentry>
             </variablelist>
           </refsect3>
@@ -298,7 +298,7 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-n</option>, <option>--nofollow-symlinks</option></term>
-                <listitem><para>Don't follow symbolic links.</para></listitem>
+                <listitem><para>Don’t follow symbolic links.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-u</option>, <option>--print-uris</option></term>
@@ -378,7 +378,7 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-s</option>, <option>--silent=<replaceable>LOCATION</replaceable></option></term>
-                <listitem><para>Monitor the file directly, but don't report changes.</para></listitem>
+                <listitem><para>Monitor the file directly, but don’t report changes.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-n</option>, <option>--no-moves</option></term>
@@ -564,7 +564,7 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-c</option>, <option>--create</option></term>
-                <listitem><para>Only create the destination if it doesn't exist yet.</para></listitem>
+                <listitem><para>Only create the destination if it doesn’t exist yet.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-a</option>, <option>--append</option></term>
@@ -622,7 +622,7 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-n</option>, <option>--nofollow-symlinks</option></term>
-                <listitem><para>Don't follow symbolic links.</para></listitem>
+                <listitem><para>Don’t follow symbolic links.</para></listitem>
               </varlistentry>
             </variablelist>
           </refsect3>
@@ -636,15 +636,15 @@
           <arg choice="opt" rep="repeat"><replaceable>LOCATION</replaceable></arg>
         </term>
         <listitem>
-          <para>Sends files or directories to the "Trashcan". This can be a
+          <para>Sends files or directories to the ‘Trashcan’. This can be a
             different folder depending on where the file is located, and not
             all file systems support this concept. In the common case that the
             file lives inside a user’s home directory, the trash folder is
             <filename><envar>$XDG_DATA_HOME</envar>/Trash</filename>.</para>
           <para>Note that moving files to the trash does not free up space on
-            the file system until the "Trashcan" is emptied. If you are interested
+            the file system until the ‘Trashcan’ is emptied. If you are interested
             in deleting a file irreversibly, see the <command>remove</command> command.</para>
-          <para>Inspecting and emptying the "Trashcan" is normally supported by
+          <para>Inspecting and emptying the ‘Trashcan’ is normally supported by
             graphical file managers such as Nautilus, but you can also see the
             trash with the command: <command>gio list trash://</command>.</para>
           <refsect3>
