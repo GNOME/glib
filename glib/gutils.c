@@ -2378,35 +2378,59 @@ g_format_size_full (guint64          size,
 
   const struct Format formats[4][6] = {
     {
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { KILOBYTE_FACTOR, N_("%.1f kB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { MEGABYTE_FACTOR, N_("%.1f MB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { GIGABYTE_FACTOR, N_("%.1f GB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { TERABYTE_FACTOR, N_("%.1f TB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { PETABYTE_FACTOR, N_("%.1f PB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { EXABYTE_FACTOR,  N_("%.1f EB") }
     },
     {
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { KIBIBYTE_FACTOR, N_("%.1f KiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { MEBIBYTE_FACTOR, N_("%.1f MiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { GIBIBYTE_FACTOR, N_("%.1f GiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { TEBIBYTE_FACTOR, N_("%.1f TiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { PEBIBYTE_FACTOR, N_("%.1f PiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { EXBIBYTE_FACTOR, N_("%.1f EiB") }
     },
     {
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { KILOBYTE_FACTOR, N_("%.1f kb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { MEGABYTE_FACTOR, N_("%.1f Mb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { GIGABYTE_FACTOR, N_("%.1f Gb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { TERABYTE_FACTOR, N_("%.1f Tb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { PETABYTE_FACTOR, N_("%.1f Pb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { EXABYTE_FACTOR,  N_("%.1f Eb") }
     },
     {
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { KIBIBYTE_FACTOR, N_("%.1f Kib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { MEBIBYTE_FACTOR, N_("%.1f Mib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { GIBIBYTE_FACTOR, N_("%.1f Gib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { TEBIBYTE_FACTOR, N_("%.1f Tib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { PEBIBYTE_FACTOR, N_("%.1f Pib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
       { EXBIBYTE_FACTOR, N_("%.1f Eib") }
     }
   };
@@ -2441,11 +2465,11 @@ g_format_size_full (guint64          size,
 
       if (index == FORMAT_BYTES || index == FORMAT_BYTES_IEC)
         {
-          format = g_dngettext (GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size);
+          format = g_dngettext (GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size);
         }
       else
         {
-          format = g_dngettext (GETTEXT_PACKAGE, "%u bit", "%u bits", (guint) size);
+          format = g_dngettext (GETTEXT_PACKAGE, "%u bit", "%u bits", (guint) size);
         }
 
       g_string_printf (string, format, (guint) size);
@@ -2512,12 +2536,12 @@ g_format_size_full (guint64          size,
       if (index == FORMAT_BYTES || index == FORMAT_BYTES_IEC)
         {
           /* Translators: the %s in "%s bytes" will always be replaced by a number. */
-          translated_format = g_dngettext (GETTEXT_PACKAGE, "%s byte", "%s bytes", plural_form);
+          translated_format = g_dngettext (GETTEXT_PACKAGE, "%s byte", "%s bytes", plural_form);
         }
       else
         {
           /* Translators: the %s in "%s bits" will always be replaced by a number. */
-          translated_format = g_dngettext (GETTEXT_PACKAGE, "%s bit", "%s bits", plural_form);
+          translated_format = g_dngettext (GETTEXT_PACKAGE, "%s bit", "%s bits", plural_form);
         }
       /* XXX: Windows doesn't support the "'" format modifier, so we
        * must not use it there.  Instead, just display the number
