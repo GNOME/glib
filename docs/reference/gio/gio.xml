@@ -580,11 +580,11 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-v</option>, <option>--print-etag</option></term>
-                <listitem><para>Print the new etag in the end.</para></listitem>
+                <listitem><para>Print the new ETag in the end.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-e</option>, <option>--etag=<replaceable>ETAG</replaceable></option></term>
-                <listitem><para>The etag of the file that is overwritten.</para></listitem>
+                <listitem><para>The ETag of the file that is overwritten.</para></listitem>
               </varlistentry>
             </variablelist>
           </refsect3>
