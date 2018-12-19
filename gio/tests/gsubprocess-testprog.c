@@ -209,13 +209,10 @@ main (int argc, char **argv)
 
   if (!ret)
     {
-      g_option_context_free (context);
       g_printerr ("%s: %s\n", argv[0], error->message);
       g_error_free (error);
       return 1;
     }
-
-  g_option_context_free (context);
 
   if (argc < 2)
     {
