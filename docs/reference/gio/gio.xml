@@ -142,7 +142,7 @@
       commands that are similar to traditional utilities, but let you
       use GIO locations instead of local files: for example you can use
       something like <filename>smb://server/resource/file.txt</filename>
-      as location.</para>
+      as a location.</para>
   </refsect1>
 
   <refsect1>
@@ -560,7 +560,7 @@
             <variablelist>
               <varlistentry>
                 <term><option>-b</option>, <option>--backup</option></term>
-                <listitem><para>Backup existing destination files.</para></listitem>
+                <listitem><para>Back up existing destination files.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-c</option>, <option>--create</option></term>
@@ -639,7 +639,7 @@
           <para>Sends files or directories to the "Trashcan". This can be a
             different folder depending on where the file is located, and not
             all file systems support this concept. In the common case that the
-            file lives inside a users home directory, the trash folder is
+            file lives inside a user’s home directory, the trash folder is
             <filename><envar>$XDG_DATA_HOME</envar>/Trash</filename>.</para>
           <para>Note that moving files to the trash does not free up space on
             the file system until the "Trashcan" is emptied. If you are interested
