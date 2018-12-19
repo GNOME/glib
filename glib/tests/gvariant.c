@@ -4664,6 +4664,7 @@ test_stack_dict_init (void)
 static void
 test_normal_checking_tuples (void)
 {
+  gpointer aligned_data;
   const guint8 data[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00,
     'a', '(', 'a', 'o', 'a', 'o', 'a', 'a', 'o', 'a', 'a', 'o', ')'
@@ -4672,13 +4673,15 @@ test_normal_checking_tuples (void)
   GVariant *variant = NULL;
   GVariant *normal_variant = NULL;
 
-  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, data, size,
+  aligned_data = g_memdup (data, size); /* guarantee alignment */
+  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, aligned_data, size,
                                      FALSE, NULL, NULL);
   g_assert_nonnull (variant);
 
   normal_variant = g_variant_get_normal_form (variant);
   g_assert_nonnull (normal_variant);
 
+  g_free (aligned_data);
   g_variant_unref (normal_variant);
   g_variant_unref (variant);
 }
@@ -4790,6 +4793,7 @@ test_recursion_limits_array_in_variant (void)
 static void
 test_normal_checking_array_offsets (void)
 {
+  gpointer aligned_data;
   const guint8 data[] = {
     0x07, 0xe5, 0x00, 0x07, 0x00, 0x07, 0x00, 0x00,
     'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'g',
@@ -4798,13 +4802,15 @@ test_normal_checking_array_offsets (void)
   GVariant *variant = NULL;
   GVariant *normal_variant = NULL;
 
-  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, data, size,
+  aligned_data = g_memdup (data, size); /* guarantee alignment */
+  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, aligned_data, size,
                                      FALSE, NULL, NULL);
   g_assert_nonnull (variant);
 
   normal_variant = g_variant_get_normal_form (variant);
   g_assert_nonnull (normal_variant);
 
+  g_free (aligned_data);
   g_variant_unref (normal_variant);
   g_variant_unref (variant);
 }
@@ -4838,6 +4844,7 @@ test_normal_checking_tuple_offsets (void)
 static void
 test_normal_checking_empty_object_path (void)
 {
+  gpointer aligned_data;
   const guint8 data[] = {
     0x20, 0x20, 0x00, 0x00, 0x00, 0x00,
     '(', 'h', '(', 'a', 'i', 'a', 'b', 'i', 'o', ')', ')',
@@ -4846,13 +4853,15 @@ test_normal_checking_empty_object_path (void)
   GVariant *variant = NULL;
   GVariant *normal_variant = NULL;
 
-  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, data, size,
+  aligned_data = g_memdup (data, size); /* guarantee alignment */
+  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, aligned_data, size,
                                      FALSE, NULL, NULL);
   g_assert_nonnull (variant);
 
   normal_variant = g_variant_get_normal_form (variant);
   g_assert_nonnull (normal_variant);
 
+  g_free (aligned_data);
   g_variant_unref (normal_variant);
   g_variant_unref (variant);
 }
