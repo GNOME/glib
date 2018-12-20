@@ -24,8 +24,9 @@
 			}
 			*elapsed_time =  (double)e_time.tv_sec + ((double)e_time.tv_usec/1000000.0);
 		}
-		static inline void dummy_elapsed_time_in_seconds()
+		static inline void dummy_elapsed_time_in_seconds(double * elapsed_time)
 		{
+                  (void) elapsed_time;
 		}
 		static inline void elapsed_time_in_useconds(cmph_uint64 * elapsed_time)
 		{
@@ -35,8 +36,9 @@
 			}
 			*elapsed_time =  (cmph_uint64)(e_time.tv_sec*1000000 + e_time.tv_usec);
 		}
-		static inline void dummy_elapsed_time_in_useconds()
+		static inline void dummy_elapsed_time_in_useconds(cmph_uint64 * elapsed_time)
 		{
+                  (void) elapsed_time;
 		}	
 	#endif
 #endif

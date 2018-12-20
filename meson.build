@@ -1,7 +1,6 @@
 subdir('cmph')
 
 custom_c_args = cc.get_supported_arguments([
-  '-Wno-strict-prototypes',
   '-Wno-old-style-definition',
   '-Wno-cast-align',
 ])

@@ -32,7 +32,6 @@ cmph_deps = [
 custom_c_args = cc.get_supported_arguments([
   '-Wno-implicit-fallthrough',
   '-Wno-old-style-definition',
-  '-Wno-strict-prototypes',
   '-Wno-suggest-attribute=noreturn',
   '-Wno-type-limits',
   '-Wno-undef',
@@ -53,7 +52,6 @@ cmph_dep = declare_dependency(
 
 custom_c_args = cc.get_supported_arguments([
   '-Wno-old-style-definition',
-  '-Wno-strict-prototypes',
   '-Wno-type-limits',
 ])
 cmph_test = executable('cmph-bdz-test', '../cmph-bdz-test.c',
