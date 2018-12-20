@@ -101,6 +101,16 @@ main (int   argc,
       g_test_add_func ("/incomplete", test_incomplete);
       g_test_add_func ("/fail", test_fail);
     }
+  else if (g_strcmp0 (argv1, "skip-options") == 0)
+    {
+      /* The caller is expected to skip some of these with
+       * -p, -s and/or --GTestSkipCount */
+      g_test_add_func ("/a", test_pass);
+      g_test_add_func ("/b/a", test_pass);
+      g_test_add_func ("/b/b", test_pass);
+      g_test_add_func ("/c/a", test_pass);
+      g_test_add_func ("/d/a", test_pass);
+    }
   else
     {
       g_assert_not_reached ();
