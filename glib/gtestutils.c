@@ -813,6 +813,8 @@ static void     gtest_default_log_handler       (const gchar    *log_domain,
                                                  GLogLevelFlags  log_level,
                                                  const gchar    *message,
                                                  gpointer        unused_data);
+static gboolean test_should_run                 (const char     *test_path,
+                                                 const char     *cmp_path);
 
 
 static const char * const g_test_result_names[] = {
@@ -1015,6 +1017,10 @@ g_test_log (GTestLogType lbit,
         }
       if (result == G_TEST_RUN_SKIPPED || result == G_TEST_RUN_INCOMPLETE)
         test_skipped_count++;
+      break;
+    case G_TEST_LOG_SKIP_CASE:
+      if (test_tap_log)
+          g_print ("ok %d %s # SKIP\n", test_run_count, string1);
       break;
     case G_TEST_LOG_MIN_RESULT:
       if (test_tap_log)
@@ -1555,18 +1561,6 @@ void
 
       /* Cache this for the remainder of this process’ lifetime. */
       test_tmpdir = g_getenv ("G_TEST_TMPDIR");
-    }
-
-  /* sanity check */
-  if (test_tap_log)
-    {
-      if (test_paths || test_startup_skip_count)
-        {
-          /* Not invoking every test (even if SKIPped) breaks the "1..XX" plan */
-          g_printerr ("%s: -p and --GTestSkipCount options are incompatible with --tap\n",
-                      (*argv)[0]);
-          exit (1);
-        }
     }
 
   /* verify GRand reliability, needed for reliable seeds */
@@ -2548,6 +2542,25 @@ g_test_queue_destroy (GDestroyNotify destroy_func,
   test_destroy_queue = dentry;
 }
 
+/* Return whether the test named in the global variable @test_run_name
+ * is a match for the global variable @test_paths: either one of the
+ * given paths is a prefix of its name, or no paths were given.
+ */
+static gboolean
+current_test_matches_paths (void)
+{
+  GSList *iter;
+
+  if (test_paths == NULL)
+    return TRUE;
+
+  for (iter = test_paths; iter; iter = iter->next)
+    if (test_should_run (test_run_name, iter->data))
+      return TRUE;
+
+  return FALSE;
+}
+
 static gboolean
 test_case_run (GTestCase *tc)
 {
@@ -2577,6 +2590,8 @@ test_case_run (GTestCase *tc)
       g_test_log_set_fatal_handler (NULL, NULL);
       if (test_paths_skipped && g_slist_find_custom (test_paths_skipped, test_run_name, (GCompareFunc)g_strcmp0))
         g_test_skip ("by request (-s option)");
+      else if (!current_test_matches_paths ())
+        g_test_skip ("by request (does not match -p option)");
       else
         {
           GError *local_error = NULL;
@@ -2761,7 +2776,10 @@ g_test_run_suite (GTestSuite *suite)
 
   test_run_name = g_strdup_printf ("/%s", suite->name);
 
-  if (test_paths)
+  /* "./test-prog -p /foo -p /foo -p /foo" traditionally ran the "foo"
+   * test three times, but we can't do that in TAP mode, because it would
+   * contradict the "plan" (the 1..N at the beginning of the output). */
+  if (test_paths && !test_tap_log)
     {
       GSList *iter;
 
