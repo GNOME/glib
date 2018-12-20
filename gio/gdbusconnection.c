@@ -728,6 +728,10 @@ g_dbus_connection_get_property (GObject    *object,
       g_value_set_flags (value, g_dbus_connection_get_capabilities (connection));
       break;
 
+    case PROP_FLAGS:
+      g_value_set_flags (value, g_dbus_connection_get_flags (connection));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -874,6 +878,7 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
                                                        P_("Flags"),
                                                        G_TYPE_DBUS_CONNECTION_FLAGS,
                                                        G_DBUS_CONNECTION_FLAGS_NONE,
+                                                       G_PARAM_READABLE |
                                                        G_PARAM_WRITABLE |
                                                        G_PARAM_CONSTRUCT_ONLY |
                                                        G_PARAM_STATIC_NAME |
@@ -1184,6 +1189,28 @@ g_dbus_connection_get_capabilities (GDBusConnection *connection)
     return G_DBUS_CAPABILITY_FLAGS_NONE;
 
   return connection->capabilities;
+}
+
+/**
+ * g_dbus_connection_get_flags:
+ * @connection: a #GDBusConnection
+ *
+ * Gets the flags used to construct this connection
+ *
+ * Returns: zero or more flags from the #GDBusConnectionFlags enumeration
+ *
+ * Since: 2.60
+ */
+GDBusConnectionFlags
+g_dbus_connection_get_flags (GDBusConnection *connection)
+{
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), G_DBUS_CONNECTION_FLAGS_NONE);
+
+  /* do not use g_return_val_if_fail(), we want the memory barrier */
+  if (!check_initialized (connection))
+    return G_DBUS_CONNECTION_FLAGS_NONE;
+
+  return connection->flags;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
