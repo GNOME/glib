@@ -21,6 +21,9 @@
 
 #include "config.h"
 
+#include <glib.h>
+#include <glibintl.h>
+
 #include <stdio.h>
 #include <string.h>
 
@@ -28,7 +31,8 @@
 #include "gfileinfo.h"
 #include "gfilemonitor.h"
 #include "gsimplepermission.h"
-#include "gsettingsbackend.h"
+#include "gsettingsbackendinternal.h"
+#include "giomodule.h"
 
 
 #define G_TYPE_KEYFILE_SETTINGS_BACKEND      (g_keyfile_settings_backend_get_type ())
@@ -40,6 +44,12 @@
 
 
 typedef GSettingsBackendClass GKeyfileSettingsBackendClass;
+
+enum {
+  PROP_FILENAME = 1,
+  PROP_ROOT_PATH,
+  PROP_ROOT_GROUP
+};
 
 typedef struct
 {
@@ -61,7 +71,6 @@ typedef struct
   GFileMonitor      *dir_monitor;
 } GKeyfileSettingsBackend;
 
-static GType g_keyfile_settings_backend_get_type (void);
 G_DEFINE_TYPE (GKeyfileSettingsBackend,
                g_keyfile_settings_backend,
                G_TYPE_SETTINGS_BACKEND)
@@ -287,7 +296,8 @@ g_keyfile_settings_backend_check_one (gpointer key,
 {
   WriteManyData *data = user_data;
 
-  return data->failed = !path_is_valid (data->kfsb, key);
+  return data->failed = g_hash_table_contains (data->kfsb->system_locks, key) ||
+                        !path_is_valid (data->kfsb, key);
 }
 
 static gboolean
@@ -523,25 +533,6 @@ g_keyfile_settings_backend_init (GKeyfileSettingsBackend *kfsb)
 }
 
 static void
-g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
-{
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
-
-  object_class->finalize = g_keyfile_settings_backend_finalize;
-
-  class->read = g_keyfile_settings_backend_read;
-  class->write = g_keyfile_settings_backend_write;
-  class->write_tree = g_keyfile_settings_backend_write_tree;
-  class->reset = g_keyfile_settings_backend_reset;
-  class->get_writable = g_keyfile_settings_backend_get_writable;
-  class->get_permission = g_keyfile_settings_backend_get_permission;
-  /* No need to implement subscribed/unsubscribe: the only point would be to
-   * stop monitoring the file when there's no GSettings anymore, which is no
-   * big win.
-   */
-}
-
-static void
 file_changed (GFileMonitor      *monitor,
               GFile             *file,
               GFile             *other_file,
@@ -565,6 +556,185 @@ dir_changed (GFileMonitor       *monitor,
   GKeyfileSettingsBackend *kfsb = user_data;
 
   g_keyfile_settings_backend_keyfile_writable (kfsb);
+}
+
+static void
+g_keyfile_settings_backend_constructed (GObject *object)
+{
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
+
+  if (kfsb->file == NULL)
+    {
+      char *filename = g_build_filename (g_get_user_config_dir (),
+                                         "glib-2.0", "settings", "keyfile",
+                                         NULL);
+      kfsb->file = g_file_new_for_path (filename);
+      g_free (filename);
+    }
+
+  if (kfsb->prefix == NULL)
+    {
+      kfsb->prefix = g_strdup ("/");
+      kfsb->prefix_len = 1;
+    }
+  
+  kfsb->keyfile = g_key_file_new ();
+  kfsb->permission = g_simple_permission_new (TRUE);
+
+  kfsb->dir = g_file_get_parent (kfsb->file);
+  g_file_make_directory_with_parents (kfsb->dir, NULL, NULL);
+
+  kfsb->file_monitor = g_file_monitor (kfsb->file, G_FILE_MONITOR_NONE, NULL, NULL);
+  kfsb->dir_monitor = g_file_monitor (kfsb->dir, G_FILE_MONITOR_NONE, NULL, NULL);
+
+  compute_checksum (kfsb->digest, NULL, 0);
+
+  g_signal_connect (kfsb->file_monitor, "changed",
+                    G_CALLBACK (file_changed), kfsb);
+  g_signal_connect (kfsb->dir_monitor, "changed",
+                    G_CALLBACK (dir_changed), kfsb);
+
+  g_keyfile_settings_backend_keyfile_writable (kfsb);
+  g_keyfile_settings_backend_keyfile_reload (kfsb);
+}
+
+static void
+g_keyfile_settings_backend_set_property (GObject      *object,
+                                         guint         prop_id,
+                                         const GValue *value,
+                                         GParamSpec   *pspec)
+{
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
+
+  switch (prop_id)
+    {
+    case PROP_FILENAME:
+      /* Construct only. */
+      g_assert (kfsb->file == NULL);
+      kfsb->file = g_file_new_for_path (g_value_get_string (value));
+      break;
+
+    case PROP_ROOT_PATH:
+      /* Construct only. */
+      g_assert (kfsb->prefix == NULL);
+      kfsb->prefix = g_value_dup_string (value);
+      if (kfsb->prefix)
+        kfsb->prefix_len = strlen (kfsb->prefix);
+      break;
+
+    case PROP_ROOT_GROUP:
+      /* Construct only. */
+      g_assert (kfsb->root_group == NULL);
+      kfsb->root_group = g_value_dup_string (value);
+      if (kfsb->root_group)
+        kfsb->root_group_len = strlen (kfsb->root_group);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+g_keyfile_settings_backend_get_property (GObject    *object,
+                                         guint       prop_id,
+                                         GValue     *value,
+                                         GParamSpec *pspec)
+{
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
+
+  switch (prop_id)
+    {
+    case PROP_FILENAME:
+      g_value_set_string (value, g_file_peek_path (kfsb->file));
+      break;
+
+    case PROP_ROOT_PATH:
+      g_value_set_string (value, kfsb->prefix);
+      break;
+
+    case PROP_ROOT_GROUP:
+      g_value_set_string (value, kfsb->root_group);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+
+  object_class->finalize = g_keyfile_settings_backend_finalize;
+  object_class->constructed = g_keyfile_settings_backend_constructed;
+  object_class->get_property = g_keyfile_settings_backend_get_property;
+  object_class->set_property = g_keyfile_settings_backend_set_property;
+
+  class->read = g_keyfile_settings_backend_read;
+  class->write = g_keyfile_settings_backend_write;
+  class->write_tree = g_keyfile_settings_backend_write_tree;
+  class->reset = g_keyfile_settings_backend_reset;
+  class->get_writable = g_keyfile_settings_backend_get_writable;
+  class->get_permission = g_keyfile_settings_backend_get_permission;
+  /* No need to implement subscribed/unsubscribe: the only point would be to
+   * stop monitoring the file when there's no GSettings anymore, which is no
+   * big win.
+   */
+
+  /**
+   * GKeyfileSettingsBackend:filename:
+   *
+   * The location where the settings are stored on disk.
+   *
+   * Defaults to `$XDG_CONFIG_HOME/glib-2.0/settings/keyfile`.
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_FILENAME,
+                                   g_param_spec_string ("filename",
+                                                        P_("Filename"),
+                                                        P_("The filename"),
+                                                        NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GKeyfileSettingsBackend:root-path:
+   *
+   * All settings read to or written from the backend must fall under the
+   * path given in @root_path (which must start and end with a slash and
+   * not contain two consecutive slashes).  @root_path may be "/".
+   * 
+   * Defaults to "/".
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_ROOT_PATH,
+                                   g_param_spec_string ("root-path",
+                                                        P_("Root path"),
+                                                        P_("The root path"),
+                                                        NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GKeyfileSettingsBackend:root-group:
+   *
+   * If @root_group is non-%NULL then it specifies the name of the keyfile
+   * group used for keys that are written directly below the root path.
+   *
+   * Defaults to NULL.
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_ROOT_GROUP,
+                                   g_param_spec_string ("root-group",
+                                                        P_("Root group"),
+                                                        P_("The root group"),
+                                                        NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -626,43 +796,15 @@ g_keyfile_settings_backend_new (const gchar *filename,
                                 const gchar *root_path,
                                 const gchar *root_group)
 {
-  GKeyfileSettingsBackend *kfsb;
-
   g_return_val_if_fail (filename != NULL, NULL);
   g_return_val_if_fail (root_path != NULL, NULL);
   g_return_val_if_fail (g_str_has_prefix (root_path, "/"), NULL);
   g_return_val_if_fail (g_str_has_suffix (root_path, "/"), NULL);
   g_return_val_if_fail (strstr (root_path, "//") == NULL, NULL);
 
-  kfsb = g_object_new (G_TYPE_KEYFILE_SETTINGS_BACKEND, NULL);
-  kfsb->keyfile = g_key_file_new ();
-  kfsb->permission = g_simple_permission_new (TRUE);
-
-  kfsb->file = g_file_new_for_path (filename);
-  kfsb->dir = g_file_get_parent (kfsb->file);
-  g_file_make_directory_with_parents (kfsb->dir, NULL, NULL);
-
-  kfsb->file_monitor = g_file_monitor (kfsb->file, 0, NULL, NULL);
-  kfsb->dir_monitor = g_file_monitor (kfsb->dir, 0, NULL, NULL);
-
-  kfsb->prefix_len = strlen (root_path);
-  kfsb->prefix = g_strdup (root_path);
-
-  if (root_group)
-    {
-      kfsb->root_group_len = strlen (root_group);
-      kfsb->root_group = g_strdup (root_group);
-    }
-
-  compute_checksum (kfsb->digest, NULL, 0);
-
-  g_signal_connect (kfsb->file_monitor, "changed",
-                    G_CALLBACK (file_changed), kfsb);
-  g_signal_connect (kfsb->dir_monitor, "changed",
-                    G_CALLBACK (dir_changed), kfsb);
-
-  g_keyfile_settings_backend_keyfile_writable (kfsb);
-  g_keyfile_settings_backend_keyfile_reload (kfsb);
-
-  return G_SETTINGS_BACKEND (kfsb);
+  return G_SETTINGS_BACKEND (g_object_new (G_TYPE_KEYFILE_SETTINGS_BACKEND,
+                                           "filename", filename,
+                                           "root-path", root_path,
+                                           "root-group", root_group,
+                                           NULL));
 }
