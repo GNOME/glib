@@ -32,7 +32,7 @@
 #include "gfilemonitor.h"
 #include "gsimplepermission.h"
 #include "gsettingsbackendinternal.h"
-#include "giomodule.h"
+#include "giomodule-priv.h"
 
 
 #define G_TYPE_KEYFILE_SETTINGS_BACKEND      (g_keyfile_settings_backend_get_type ())
@@ -71,9 +71,12 @@ typedef struct
   GFileMonitor      *dir_monitor;
 } GKeyfileSettingsBackend;
 
-G_DEFINE_TYPE (GKeyfileSettingsBackend,
-               g_keyfile_settings_backend,
-               G_TYPE_SETTINGS_BACKEND)
+G_DEFINE_TYPE_WITH_CODE (GKeyfileSettingsBackend,
+                         g_keyfile_settings_backend,
+                         G_TYPE_SETTINGS_BACKEND,
+                         _g_io_modules_ensure_extension_points_registered ();
+                         g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
+                                                         g_define_type_id, "keyfile", 10))
 
 static void
 compute_checksum (guint8        *digest,
