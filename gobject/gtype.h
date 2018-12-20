@@ -2023,7 +2023,7 @@ type_name##_get_type (void) \
                                        0, \
                                        (GInstanceInitFunc)NULL, \
                                        (GTypeFlags) 0); \
-      if (TYPE_PREREQ) \
+      if (TYPE_PREREQ != G_TYPE_INVALID) \
         g_type_interface_add_prerequisite (g_define_type_id, TYPE_PREREQ); \
       { /* custom code follows */
 #define _G_DEFINE_INTERFACE_EXTENDED_END()	\
