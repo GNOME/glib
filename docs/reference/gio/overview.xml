@@ -443,7 +443,7 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         This variable can be set to the name of a #GSettingsBackend
         implementation to override the default for debugging purposes.
         The memory-based implementation that is included in GIO has
-        the name "memory", the one in dconf has the name "dconf-settings".
+        the name "memory", the one in dconf has the name "dconf".
       </para>
     </formalpara>
 
