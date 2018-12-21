@@ -406,12 +406,14 @@
 #endif
 
 /* Provide G_ALIGNOF alignment macro.
+ *
+ * Note we cannot use the gcc __alignof__ operator here, as that returns the
+ * preferred alignment rather than the minimal alignment. See
+ * https://gitlab.gnome.org/GNOME/glib/merge_requests/538/diffs#note_390790.
  */
 
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L && !defined(__cplusplus)
 #define G_ALIGNOF(type) _Alignof (type)
-#elif defined(__GNUC__)
-#define G_ALIGNOF(type) (__alignof__ (type))
 #else
 #define G_ALIGNOF(type) (G_STRUCT_OFFSET (struct { char a; type b; }, b))
 #endif
