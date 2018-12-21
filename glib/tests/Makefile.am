@@ -70,6 +70,7 @@ test_programs = \
 	keyfile				\
 	list				\
 	logging				\
+	macros				\
 	mainloop			\
 	mappedfile			\
 	markup				\
