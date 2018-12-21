@@ -1768,7 +1768,8 @@ async_initable_init_first (GAsyncInitable *initable)
                                             (GDestroyNotify) signal_subscription_unref);
     }
 
-  if (proxy->priv->name != NULL)
+  if (proxy->priv->name != NULL &&
+      (g_dbus_connection_get_flags (proxy->priv->connection) & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION))
     {
       proxy->priv->name_owner_changed_subscription_id =
         g_dbus_connection_signal_subscribe (proxy->priv->connection,
