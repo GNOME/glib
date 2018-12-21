@@ -38,6 +38,7 @@ glib_tests = {
   'keyfile' : {},
   'list' : {},
   'logging' : {},
+  'macros' : {},
   'mainloop' : {},
   'mappedfile' : {},
   'markup' : {},
