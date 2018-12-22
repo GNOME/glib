@@ -828,7 +828,7 @@
  * Extracts a #gsize from a pointer. The #gsize must have
  * been stored in the pointer with GSIZE_TO_POINTER().
  */
-
+ 
 /* Byte order {{{1 */
 
 /**
@@ -1432,7 +1432,7 @@
  *
  * Returns: @val converted to the opposite byte order
  */
-
+ 
 /* Bounds-checked integer arithmetic {{{1 */
 /**
  * SECTION:checkedmath
@@ -1655,7 +1655,7 @@
  *
  * Multiplying the base 2 exponent by this number yields the base 10 exponent.
  */
-
+ 
 /* Macros {{{1 */
 
 /**
@@ -1865,7 +1865,7 @@
  * macro will not work on an array allocated on the heap, only static
  * arrays or arrays on the stack.
  */
-
+ 
 /**
  * G_ALIGNAS
  * @a: a type or expression
@@ -2943,7 +2943,7 @@
  *
  * Since: 2.6
  */
-
+ 
 
 /**
  * G_WIN32_IS_NT_BASED:
