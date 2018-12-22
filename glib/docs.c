@@ -828,7 +828,7 @@
  * Extracts a #gsize from a pointer. The #gsize must have
  * been stored in the pointer with GSIZE_TO_POINTER().
  */
- 
+
 /* Byte order {{{1 */
 
 /**
@@ -1432,7 +1432,7 @@
  *
  * Returns: @val converted to the opposite byte order
  */
- 
+
 /* Bounds-checked integer arithmetic {{{1 */
 /**
  * SECTION:checkedmath
@@ -1655,7 +1655,7 @@
  *
  * Multiplying the base 2 exponent by this number yields the base 10 exponent.
  */
- 
+
 /* Macros {{{1 */
 
 /**
@@ -1865,7 +1865,20 @@
  * macro will not work on an array allocated on the heap, only static
  * arrays or arrays on the stack.
  */
- 
+
+/**
+ * G_ALIGNAS
+ * @a: a type or expression
+ *
+ * #G_ALIGNAS can return the alignment for the type. G_ALIGNAS can return the
+ * alignment which is greater than normal alignment or can return reducing the
+ * alignment. Applying `G_ALIGNAS (long)` to some type like struct is would return
+ * an alighment which is at least MAX (`G_ALIGNOF (long)`, `G_ALIGNOF (type)`) or can
+ * return reduced alignment if `G_ALIGNOF (long) < G_ALIGNOF (type)`.
+ *
+ * Since: 2.60
+ */
+
 /* Miscellaneous Macros {{{1 */
 
 /**
@@ -2942,6 +2955,6 @@
  *
  * Since: 2.6
  */
- 
+
  /* Epilogue {{{1 */
 /* vim: set foldmethod=marker: */
