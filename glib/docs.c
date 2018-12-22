@@ -1866,6 +1866,19 @@
  * arrays or arrays on the stack.
  */
  
+/**
+ * G_ALIGNAS
+ * @a: a type or expression
+ *
+ * #G_ALIGNAS can return the alignment for the type. G_ALIGNAS can return the
+ * alignment which is greater than normal alignment or can return reducing the
+ * alignment. Applying `G_ALIGNAS (long)` to some type like struct is would return
+ * an alighment which is at least MAX (`G_ALIGNOF (long)`, `G_ALIGNOF (type)`) or can
+ * return reduced alignment if `G_ALIGNOF (long) < G_ALIGNOF (type)`.
+ *
+ * Since: 2.60
+ */
+
 /* Miscellaneous Macros {{{1 */
 
 /**
@@ -2916,7 +2929,7 @@
  *
  * On non-Windows platforms, expands to nothing.
  */
-
+ 
 /**
  * G_WIN32_HAVE_WIDECHAR_API:
  *
@@ -2931,7 +2944,6 @@
  * Since: 2.6
  */
 
-
 /**
  * G_WIN32_IS_NT_BASED:
  *
@@ -2942,6 +2954,6 @@
  *
  * Since: 2.6
  */
- 
+
  /* Epilogue {{{1 */
 /* vim: set foldmethod=marker: */
