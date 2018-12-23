@@ -46,6 +46,7 @@ G_BEGIN_DECLS
 typedef char   gchar;
 typedef short  gshort;
 typedef long   glong;
+typedef long long  gllong;
 typedef int    gint;
 typedef gint   gboolean;
 
@@ -53,6 +54,7 @@ typedef unsigned char   guchar;
 typedef unsigned short  gushort;
 typedef unsigned long   gulong;
 typedef unsigned int    guint;
+typedef unsigned long long  gullong;
 
 typedef float   gfloat;
 typedef double  gdouble;
@@ -135,6 +137,96 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 #define G_PI_2  1.5707963267948966192313216916397514420985846996876
 #define G_PI_4  0.78539816339744830961566084581987572104929234984378
 #define G_SQRT2 1.4142135623730950488016887242096980785696718753769
+
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+#define GFLOAT_TO_LE(val) (GFLOAT_UNSWAP_LE_BE (val))
+#define GFLOAT_TO_BE(val) (GFLOAT_SWAP_LE_BE (val))
+#define GDOUBLE_TO_LE(val)   (GDOUBLE_UNSWAP_LE_BE (val))
+#define GDOUBLE_TO_BE(val)   (GDOUBLE_SWAP_LE_BE (val))
+
+#elif G_BYTE_ORDER == G_BIG_ENDIAN
+#define GFLOAT_TO_LE(val) (GFLOAT_SWAP_LE_BE (val))
+#define GFLOAT_TO_BE(val) ((GFLOAT_UNSWAP_LE_BE (val))
+#define GDOUBLE_TO_LE(val)   (GDOUBLE_SWAP_LE_BE (val))
+#define GDOUBLE_TO_BE(val)   ((GDOUBLE_UNSWAP_LE_BE (val))
+
+#else
+#error unknown ENDIAN type
+#endif
+
+#define GFLOAT_FROM_LE(val) (GFLOAT_TO_LE (val))
+#define GFLOAT_FROM_BE(val) (GFLOAT_TO_BE (val))
+#define GDOUBLE_FROM_LE(val) (GDOUBLE_TO_LE (val))
+#define GDOUBLE_FROM_BE(val) (GDOUBLE_TO_BE (val))
+
+#endif
+
+#ifndef GFLOAT_FROM_LE
+
+gulong GFLOAT_SWAP_LE_BE(gfloat s)
+{
+  gulong d;
+  guchar *dst = (guchar *) &d;
+  guchar *src = (guchar *) &s;
+
+  dst[0] = src[3];
+  dst[1] = src[2];
+  dst[2] = src[1];
+  dst[3] = src[0];
+
+  return d;
+}
+
+gfloat GFLOAT_UNSWAP_LE_BE(guchar s)
+{
+  gfloat d;
+  guchar *src = (guchar *)&s;
+  guchar *dst = (guchar *)&d;
+
+  dst[0] = src[3];
+  dst[1] = src[2];
+  dst[2] = src[1];
+  dst[3] = src[0];
+
+  return d;
+}
+
+gullong GDOUBLE_SWAP_LE_BE(gdouble s)
+{
+  gullong d;
+  guchar *dst = (guchar *) &d;
+  guchar *src = (guchar *) &s;
+
+  dst[0] = src[7];
+  dst[1] = src[6];
+  dst[2] = src[5];
+  dst[3] = src[4];
+  dst[4] = src[3];
+  dst[5] = src[2];
+  dst[6] = src[1];
+  dst[7] = src[0];
+
+  return d;
+}
+
+gdouble GDOUBLE_UNSWAP_LE_BE(guchar s)
+{
+  gdouble d;
+  guchar *src = (guchar *)&s;
+  guchar *dst = (guchar *)&d;
+
+  dst[0] = src[7];
+  dst[1] = src[6];
+  dst[2] = src[5];
+  dst[3] = src[4];
+  dst[4] = src[3];
+  dst[5] = src[2];
+  dst[6] = src[1];
+  dst[7] = src[0];
+
+  return d;
+}
+
 
 /* Portable endian checks and conversions
  *
@@ -539,3 +631,4 @@ G_END_DECLS
 #endif /* GLIB_VAR */
 
 #endif /* __G_TYPES_H__ */
+

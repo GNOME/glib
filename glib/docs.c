@@ -1148,6 +1148,87 @@
  */
 
 /**
+ * GDOUBLE_TO_LE:
+ * @val: value
+ *
+ * Convert 64-bit floating point value (double) from native byte order into
+ * little endian byte order.
+ */
+
+/**
+ * GDOUBLE_TO_BE:
+ * @val: value
+ *
+ * Convert 64-bit floating point value (double) from native byte order into
+ * big endian byte order.
+ */
+
+/**
+ * GDOUBLE_FROM_LE:
+ * @val: value
+ *
+ * Convert 64-bit floating point value (double) from little endian byte order
+ * into native byte order.
+ */
+
+/**
+ * GDOUBLE_FROM_BE:
+ * @val: value
+ *
+ * Convert 64-bit floating point value (double) from big endian byte order
+ * into native byte order.
+ */
+
+/**
+ * GFLOAT_FROM_LE:
+ * @val: value
+ *
+ * Convert 32-bit floating point value (float) from little endian byte order
+ * into native byte order.
+ */
+
+/**
+ * GFLOAT_FROM_BE:
+ * @val: value
+ *
+ * Convert 32-bit floating point value (float) from big endian byte order
+ * into native byte order.
+ */
+
+/**
+ * GFLOAT_TO_LE:
+ * @val: value
+ *
+ * Convert 32-bit floating point value (float) from native byte order into
+ * little endian byte order.
+ */
+
+/**
+ * GFLOAT_TO_BE:
+ * @val: value
+ *
+ * Convert 32-bit floating point value (float) from native byte order into
+ * big endian byte order.
+ */
+
+/**
+ * GFLOAT_FROM_LE:
+ * @val: value
+ *
+ * Convert 32-bit floating point value (float) from little endian byte order
+ * into native byte order.
+
+ */
+
+/**
+ * GFLOAT_FROM_BE:
+ * @val: value
+ *
+ * Convert 32-bit floating point value (float) from big endian byte order
+ * into native byte order.
+ */
+
+/**
  * GINT16_FROM_BE:
  * @val: a #gint16 value in big-endian byte order
  *
