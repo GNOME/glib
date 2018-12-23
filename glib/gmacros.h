@@ -405,6 +405,21 @@
 #endif
 #endif
 
+/* Provide G_ALIGNAS macros.
+ */
+
+#if defined(STDC_VERSION__) && \
+  (__STDC_VERSION__ >= 201112L) || !defined(_STRICT_ANSI__) && \
+   !defined(__cplusplus)
+#define G_ALIGNAS(a) _Alignas (a)
+#elif defined(__GNUC__)
+#define G_ALIGNAS(a) __attribute__((__aligned__(a)))
+#elif defined(_MSC_VER)
+#define G_ALIGNAS(a) __declspec(align(a))
+#else
+#pragma message("G_ALIGNAS only available for C11, GCC and MSVC compiler.")
+#endif
+
 /* Deprecated -- do not use. */
 #ifndef G_DISABLE_DEPRECATED
 #ifdef G_DISABLE_CONST_RETURNS
