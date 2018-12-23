@@ -1865,7 +1865,30 @@
  * macro will not work on an array allocated on the heap, only static
  * arrays or arrays on the stack.
  */
- 
+
+/**
+ * G_ALIGNAS
+ * @a: a type or expression
+ *
+ * G_ALGINAS (A) aligns a variable or type to the alignment A, where A is an interger
+ * constant expression. For example-
+ *  `int alignas (8) foo;`
+ *  `struct s { int a; int alignas (8) bar; };`
+ *  aligns the address of FOO and the offset of BAR to be multiples of 8.
+ *
+ *  A is at least the type's alignment and at most the implementation's alignment
+ *  limit. To be portable to MSVC through at least version 10.0, A should be an
+ *  integer constant, as MSVC does not support expressions which have bitwise
+ *  operators.
+ *
+ *  The following C11 requirements are not supported by the implementation:
+ *  If A is zero, alignas has no effect.
+ *  alignas can be used multiple times; the strictest will be applied.
+ *  alignas (TYPE) is equivalent to alginas (alignof (TYPE)).
+ *
+ * Since: 2.60
+ */
+
 /* Miscellaneous Macros {{{1 */
 
 /**
@@ -2945,3 +2968,5 @@
  
  /* Epilogue {{{1 */
 /* vim: set foldmethod=marker: */
+
+
