@@ -657,7 +657,7 @@ do_spawn_with_fds (gint                 *exit_status,
       new_argv[ARG_STDOUT] = "-";
     }
   
-  if (stdout_fd != -1)
+  if (stderr_fd != -1)
     {
       _g_sprintf (args[ARG_STDERR], "%d", stderr_fd);
       new_argv[ARG_STDERR] = args[ARG_STDERR];
