@@ -105,8 +105,8 @@ enum {
 };
 
 static int
-dup_noninherited (int fd,
-		  int mode)
+reopen_noninherited (int fd,
+		     int mode)
 {
   HANDLE filehandle;
 
@@ -606,7 +606,7 @@ do_spawn_with_fds (gint                 *exit_status,
    * helper process, and the started actual user process. As such that
    * shouldn't harm, but it is unnecessary.
    */
-  child_err_report_pipe[0] = dup_noninherited (child_err_report_pipe[0], _O_RDONLY);
+  child_err_report_pipe[0] = reopen_noninherited (child_err_report_pipe[0], _O_RDONLY);
 
   if (flags & G_SPAWN_FILE_AND_ARGV_ZERO)
     {
@@ -625,7 +625,7 @@ do_spawn_with_fds (gint                 *exit_status,
    * process won't read but won't get any EOF either, as it has the
    * write end open itself.
    */
-  helper_sync_pipe[1] = dup_noninherited (helper_sync_pipe[1], _O_WRONLY);
+  helper_sync_pipe[1] = reopen_noninherited (helper_sync_pipe[1], _O_WRONLY);
 
   if (stdin_fd != -1)
     {

@@ -179,6 +179,7 @@ main (int ignored_argc, char **ignored_argv)
 {
   int child_err_report_fd = -1;
   int helper_sync_fd = -1;
+  int saved_stderr_fd = -1;
   int i;
   int fd;
   int mode;
@@ -280,6 +281,7 @@ main (int ignored_argc, char **ignored_argv)
 	}
     }
 
+  saved_stderr_fd = reopen_noninherited (dup (2), _O_WRONLY);
   if (argv[ARG_STDERR][0] == '-')
     ; /* Nothing */
   else if (argv[ARG_STDERR][0] == 'z')
@@ -315,15 +317,15 @@ main (int ignored_argc, char **ignored_argv)
    */
   if (argv[ARG_CLOSE_DESCRIPTORS][0] == 'y')
     for (i = 3; i < 1000; i++)	/* FIXME real limit? */
-      if (i != child_err_report_fd && i != helper_sync_fd)
+      if (i != child_err_report_fd && i != helper_sync_fd && i != saved_stderr_fd)
         if (_get_osfhandle (i) != -1)
           close (i);
 
   /* We don't want our child to inherit the error report and
    * helper sync fds.
    */
-  child_err_report_fd = dup_noninherited (child_err_report_fd, _O_WRONLY);
-  helper_sync_fd = dup_noninherited (helper_sync_fd, _O_RDONLY);
+  child_err_report_fd = reopen_noninherited (child_err_report_fd, _O_WRONLY);
+  helper_sync_fd = reopen_noninherited (helper_sync_fd, _O_RDONLY);
 
   /* argv[ARG_WAIT] is "w" to wait for the program to exit */
   if (argv[ARG_WAIT][0] == 'w')
@@ -351,6 +353,11 @@ main (int ignored_argc, char **ignored_argv)
 
   saved_errno = errno;
 
+  /* Some coverage warnings may be printed on stderr during this process exit.
+   * Remove redirection so that they would go to original stderr
+   * instead of being treated as part of stderr of child process.
+   */
+  dup2 (saved_stderr_fd, 2);
   if (handle == -1 && saved_errno != 0)
     {
       int ec = (saved_errno == ENOENT)
