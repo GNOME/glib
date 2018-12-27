@@ -38,6 +38,7 @@ tests = {
     'dependencies' : [libgthread_dep],
   },
   'sources' : {},
+  'spawn-test' : {},
   'thread-test' : {},
   'threadpool-test' : {'suite' : ['slow']},
   'type-test' : {},
@@ -68,8 +69,11 @@ test_extra_programs = {
 if host_machine.system() != 'windows'
   tests += {
     'timeloop' : {},
-    'spawn-test' : {},
     'iochannel-test' : {},
+  }
+else
+  test_extra_programs += {
+    'spawn-test-win32-gui' : {'gui_app' : true}
   }
 endif
 
@@ -139,5 +143,6 @@ foreach program_name, extra_args : test_extra_programs
       dependencies : common_deps + extra_args.get('dependencies', []),
       install_dir : installed_tests_execdir,
       install : install,
+      gui_app : extra_args.get('gui_app', false),
   )
 endforeach

@@ -92,22 +92,17 @@ protect_wargv (gint       argc,
       wchar_t *p = wargv[i];
       wchar_t *q;
       gint len = 0;
+      gint pre_bslash = 0;
       gboolean need_dblquotes = FALSE;
       while (*p)
 	{
 	  if (*p == ' ' || *p == '\t')
 	    need_dblquotes = TRUE;
-	  else if (*p == '"')
-	    len++;
-	  else if (*p == '\\')
-	    {
-	      wchar_t *pp = p;
-	      while (*pp && *pp == '\\')
-		pp++;
-	      if (*pp == '"')
-		len++;
-	    }
-	  len++;
+	  /* estimate max len, assuming that all escapable chracters will be escaped */
+	  if (*p == '"' || *p == '\\')
+	    len += 2;
+	  else
+	    len += 1;
 	  p++;
 	}
 
@@ -117,24 +112,40 @@ protect_wargv (gint       argc,
       if (need_dblquotes)
 	*q++ = '"';
 
+      /* Only quotes and backslashes preceeding quotes are escaped:
+       * see "Parsing C Command-Line Arguments" at
+       * https://docs.microsoft.com/en-us/cpp/c-language/parsing-c-command-line-arguments
+       */
       while (*p)
 	{
 	  if (*p == '"')
-	    *q++ = '\\';
-	  else if (*p == '\\')
 	    {
-	      wchar_t *pp = p;
-	      while (*pp && *pp == '\\')
-		pp++;
-	      if (*pp == '"')
+	      /* Add backslash for escaping quote itself */
+	      *q++ = '\\';
+	      /* Add backslash for every preceeding backslash for escaping it */
+	      for (;pre_bslash > 0; --pre_bslash)
 		*q++ = '\\';
 	    }
+
+	  /* Count length of continuous sequence of preceeding backslashes. */
+	  if (*p == '\\')
+	    ++pre_bslash;
+	  else
+	    pre_bslash = 0;
+
 	  *q++ = *p;
 	  p++;
 	}
 
       if (need_dblquotes)
-	*q++ = '"';
+	{
+	  /* Add backslash for every preceeding backslash for escaping it,
+	   * do NOT escape quote itself.
+	   */
+	  for (;pre_bslash > 0; --pre_bslash)
+	    *q++ = '\\';
+	  *q++ = '"';
+	}
       *q++ = '\0';
     }
   (*new_wargv)[argc] = NULL;
@@ -179,6 +190,7 @@ main (int ignored_argc, char **ignored_argv)
 {
   int child_err_report_fd = -1;
   int helper_sync_fd = -1;
+  int saved_stderr_fd = -1;
   int i;
   int fd;
   int mode;
@@ -280,6 +292,7 @@ main (int ignored_argc, char **ignored_argv)
 	}
     }
 
+  saved_stderr_fd = reopen_noninherited (dup (2), _O_WRONLY);
   if (argv[ARG_STDERR][0] == '-')
     ; /* Nothing */
   else if (argv[ARG_STDERR][0] == 'z')
@@ -315,15 +328,15 @@ main (int ignored_argc, char **ignored_argv)
    */
   if (argv[ARG_CLOSE_DESCRIPTORS][0] == 'y')
     for (i = 3; i < 1000; i++)	/* FIXME real limit? */
-      if (i != child_err_report_fd && i != helper_sync_fd)
+      if (i != child_err_report_fd && i != helper_sync_fd && i != saved_stderr_fd)
         if (_get_osfhandle (i) != -1)
           close (i);
 
   /* We don't want our child to inherit the error report and
    * helper sync fds.
    */
-  child_err_report_fd = dup_noninherited (child_err_report_fd, _O_WRONLY);
-  helper_sync_fd = dup_noninherited (helper_sync_fd, _O_RDONLY);
+  child_err_report_fd = reopen_noninherited (child_err_report_fd, _O_WRONLY);
+  helper_sync_fd = reopen_noninherited (helper_sync_fd, _O_RDONLY);
 
   /* argv[ARG_WAIT] is "w" to wait for the program to exit */
   if (argv[ARG_WAIT][0] == 'w')
@@ -351,6 +364,11 @@ main (int ignored_argc, char **ignored_argv)
 
   saved_errno = errno;
 
+  /* Some coverage warnings may be printed on stderr during this process exit.
+   * Remove redirection so that they would go to original stderr
+   * instead of being treated as part of stderr of child process.
+   */
+  dup2 (saved_stderr_fd, 2);
   if (handle == -1 && saved_errno != 0)
     {
       int ec = (saved_errno == ENOENT)
