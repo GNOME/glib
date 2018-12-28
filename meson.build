@@ -201,7 +201,7 @@ glibconfig_conf.set('glib_os', glib_os)
 # for dependencies that don't normally come with pkg-config files for Visual Studio builds
 buildtype = get_option('buildtype')
 
-glib_debug_cflags = []
+glib_debug_cflags = ['-g']
 if buildtype.startswith('debug')
   glib_debug_cflags += ['-DG_ENABLE_DEBUG']
 elif buildtype == 'release'
