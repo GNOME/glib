@@ -17,7 +17,7 @@
  */
 
 #include <glib.h>
-#include <Winsock2.h>
+#include <winsock2.h>
 
 #define NUM_POLLEES 999
 #define NUM_POLLFDS 1000
