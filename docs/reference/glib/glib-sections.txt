@@ -2501,6 +2501,24 @@ g_hash_table_iter_replace
 g_hash_table_iter_remove
 g_hash_table_iter_steal
 
+<SECTION>
+<TITLE>Hash Maps</TITLE>
+<FILE>hash_maps</FILE>
+GHashMap
+g_hash_map_new
+g_hash_map_new_full
+GHashFunc
+GEqualFunc
+g_hash_map_insert
+g_hash_map_replace
+g_hash_map_add
+g_hash_map_contains
+g_hash_map_size
+g_hash_map_lookup
+g_hash_map_lookup_extended
+g_hash_map_foreach
+g_hash_map_find
+
 <SUBSECTION>
 g_direct_equal
 g_direct_hash
