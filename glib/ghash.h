@@ -148,6 +148,70 @@ GHashTable* g_hash_table_ref               (GHashTable     *hash_table);
 GLIB_AVAILABLE_IN_ALL
 void        g_hash_table_unref             (GHashTable     *hash_table);
 
+typedef struct _GHashMap  GHashMap;
+
+typedef gboolean  (*GHRFunc)  (gpointer  key,
+                               gpointer  value,
+                               gpointer  user_data);
+
+typedef struct _GHashMapIter GHashMapIter;
+
+struct _GHashMapIter
+{
+  gpointer      dummy1;
+  gpointer      dummy2;
+  gpointer      dummy3;
+  int           dummy4;
+  gboolean      dummy5;
+  gpointer      dummy6;
+};
+
+GLIB_AVAILABLE_IN_ALL
+GHashTable* g_hash_map_new                (GHashFunc       hash_func,
+                                            GEqualFunc      key_equal_func);
+GLIB_AVAILABLE_IN_ALL
+GHashTable* g_hash_map_new_full          (GHashFunc       hash_func,
+                                            GEqualFunc      key_equal_func,
+                                            GDestroyNotify  key_destroy_func,
+                                            GDestroyNotify  value_destroy_func);
+GLIB_AVAILABLE_IN_ALL
+void        g_hash_map_destroy           (GHashMap     *hash_map);
+GLIB_AVAILABLE_IN_ALL
+gboolean    g_hash_map_insert            (GHashMap     *hash_map,
+                                            gpointer        key,
+                                            gpointer        value);
+GLIB_AVAILABLE_IN_ALL
+gboolean    g_hash_map_replace           (GHashMap     *hash_map,
+                                            gpointer        key,
+                                            gpointer        value);
+GLIB_AVAILABLE_IN_ALL
+gboolean    g_hash_map_add                 (GHashMap     *hash_map,
+                                            gpointer        key);
+GLIB_AVAILABLE_IN_ALL
+gboolean    g_hash_map_remove             (GHashMap     *hash_map,
+                                            gconstpointer   key);
+GLIB_AVAILABLE_IN_ALL
+void        g_hash_map_remove_all         (GHashMap     *hash_map);
+
+GLIB_AVAILABLE_IN_ALL
+gpointer    g_hash_map_lookup              (GHashMap     *hash_map,
+                                            gconstpointer   key);
+
+GLIB_AVAILABLE_IN_ALL
+gboolean    g_hash_map_lookup_extended     (GHashMap     *hash_map,
+                                            gconstpointer   lookup_key,
+                                            gpointer       *orig_key,
+                                            gpointer       *value);
+GLIB_AVAILABLE_IN_ALL
+void        g_hash_map_foreach           (GHashMap     *hash_map,
+                                            GHFunc          func,
+                                            gpointer        user_data);
+GLIB_AVAILABLE_IN_ALL
+guint       g_hash_map_size              (GHashMap     *hash_map);
+GLIB_AVAILABLE_IN_ALL
+GList *     g_hash_map_get_keys          (GHashMap     *hash_map);
+
+
 #ifndef G_DISABLE_DEPRECATED
 #define g_hash_table_freeze(hash_table) ((void)0)
 #define g_hash_table_thaw(hash_table) ((void)0)
