@@ -7,25 +7,25 @@ avoid unnecessary breakage, and to take advantage of the knowledge
 about GLib that has been built up over the years, we'd like to ask
 people committing to GLib to follow a few rules:
 
-0) Ask first. If your changes are major, or could possibly break existing
+1. Ask first. If your changes are major, or could possibly break existing
    code, you should always ask. If your change is minor and you've
    been working on GLib for a while it probably isn't necessary
    to ask. But when in doubt, ask. Even if your change is correct,
    somebody may know a better way to do things.
 
    If you are making changes to GLib, you should be subscribed
-   to gtk-devel-list@gnome.org. (Subscription address:
-   gtk-devel-list-request@gnome.org.) This is a good place to ask
+   to `gtk-devel-list@gnome.org`. (Subscription address:
+   `gtk-devel-list-request@gnome.org`.) This is a good place to ask
    about intended changes.
 
-   #gtk+ on GIMPNet (irc.gimp.org, irc.us.gimp.org, irc.eu.gimp.org, ...)
+   `#gtk+` on GIMPNet (`irc.gimp.org`, `irc.us.gimp.org`, `irc.eu.gimp.org`, …)
    is also a good place to find GTK+ developers to discuss changes with,
-   however, email to gtk-devel-list is the most certain and preferred
+   however, email to `gtk-devel-list` is the most certain and preferred
    method.
 
-1) Ask _first_.
+2. Ask _first_.
 
-2) You are expected to produce a meaningful commit message.
+3. You are expected to produce a meaningful commit message.
    Changes without a sufficient commit message will be reverted. See below for
    the expected format of commit messages.
 
@@ -38,13 +38,13 @@ Notes:
 
 * The expected format for git commit messages is as follows:
 
-=== begin example commit ===
-Short explanation of the commit
+  ```
+  Short explanation of the commit
 
-Longer explanation explaining exactly what's changed, whether any
-external or private interfaces changed, what bugs were fixed (with bug
-tracker reference if applicable) and so forth. Be concise but not too brief.
-=== end example commit ===
+  Longer explanation explaining exactly what's changed, whether any
+  external or private interfaces changed, what bugs were fixed (with bug
+  tracker reference if applicable) and so forth. Be concise but not too brief.
+  ```
 
   - Always add a brief description of the commit to the _first_ line of
     the commit and terminate by two newlines (it will work without the
@@ -59,8 +59,8 @@ tracker reference if applicable) and so forth. Be concise but not too brief.
     punctuation and capital letters where appropriate. Normally, for patches
     sent to a mailing list it's copied from there.
 
-  - When committing code on behalf of others use the --author option, e.g.
-    git commit -a --author "Joe Coder <joe@coder.org>" and --signoff.
+  - When committing code on behalf of others use the `--author` option, e.g.
+    `git commit -a --author "Joe Coder <joe@coder.org>"` and `--signoff`.
 
 
 Owen Taylor
