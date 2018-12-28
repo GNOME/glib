@@ -1371,6 +1371,31 @@ struct _GHashTable
   GDestroyNotify   value_destroy_func;
 };
 
+struct _GHashMap
+{
+  gint             size;
+  guint            mask;
+  gint             nnodes;
+
+  guint            have_big_keys : 1;
+  guint            have_big_values : 1;
+
+  gpointer        *keys;
+  guint           *hashes;
+  gpointer        *values;
+
+  GHashFunc        hash_func;
+  GEqualFunc       key_equal_func;
+  volatile gint    ref_count;
+
+#ifndef G_DISABLE_ASSERT
+  int              version;
+#endif
+  GDestroyNotify   key_destroy_func;
+  GDestroyNotify   value_destroy_func;
+};
+
+
 static void
 count_keys (GHashTable *h, gint *unused, gint *occupied, gint *tombstones)
 {
@@ -1389,6 +1414,20 @@ count_keys (GHashTable *h, gint *unused, gint *occupied, gint *tombstones)
         (*occupied)++;
     }
 }
+
+static void
+count_keys (GHashMap *h, gint *unused)
+{
+  gint i;
+
+  *unused = 0;
+  for (i = 0; i < h->size; i++)
+    {
+      if (h->hashes[i] == 0)
+        (*unused)++;
+    }
+}
+
 
 #define BIG_ENTRY_SIZE (SIZEOF_VOID_P)
 #define SMALL_ENTRY_SIZE (SIZEOF_INT)
@@ -1436,6 +1475,56 @@ check_consistency (GHashTable *h)
 
   check_data (h);
 }
+
+static void
+check_consistency (GHashMap *h)
+{
+  gint unused;
+
+	count_keys (h, &unused);
+
+	g_assert_cmpint (unused + h->nnodes, ==, h->size);
+  check_data (h);
+}
+
+static void
+test_internal_consistency (void)
+{
+  GHashMap *h;
+
+  h = g_hash_map_new_full (g_str_hash, g_str_equal, trivial_key_destroy, NULL);
+
+  check_consistency (h);
+
+  g_hash_map_insert (h, "a", "A");
+  g_hash_map_insert (h, "b", "B");
+  g_hash_map_insert (h, "c", "C");
+  g_hash_map_insert (h, "d", "D");
+  g_hash_map_insert (h, "e", "E");
+  g_hash_map_insert (h, "f", "F");
+  g_hash_map_insert (h, "g", "G");
+  g_hash_map_insert (h, "h", "H");
+
+  check_consistency (h);
+
+  g_hash_table_remove (h, "a");
+  check_consistency (h);
+
+  g_hash_table_remove (h, "b");
+  check_consistency (h);
+
+  g_hash_table_insert (h, "c", "c");
+  check_consistency (h);
+
+  g_hash_table_insert (h, "a", "A");
+  check_consistency (h);
+
+  g_hash_table_remove_all (h);
+  check_consistency (h);
+
+  g_hash_table_unref (h);
+}
+
 
 static void
 check_counts (GHashTable *h, gint occupied, gint tombstones)
