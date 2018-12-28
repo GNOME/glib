@@ -61,11 +61,3 @@ Notes:
 
   - When committing code on behalf of others use the `--author` option, e.g.
     `git commit -a --author "Joe Coder <joe@coder.org>"` and `--signoff`.
-
-
-Owen Taylor
-13 Aug 1998
-17 Apr 2001
-
-Matthias Clasen
-31 Mar 2009
