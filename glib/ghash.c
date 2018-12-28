@@ -231,6 +231,7 @@
 #define HASH_IS_UNUSED(h_) ((h_) == UNUSED_HASH_VALUE)
 #define HASH_IS_TOMBSTONE(h_) ((h_) == TOMBSTONE_HASH_VALUE)
 #define HASH_IS_REAL(h_) ((h_) >= 2)
+#define HASH_IS_REAL_RH(h_) ((h_) != UNUSED_HASH_VALUE)
 
 /* If int is smaller than void * on our arch, we start out with
  * int-sized keys and values and resize to pointer-sized entries as
@@ -283,6 +284,35 @@ typedef struct
   gboolean     dummy3;
   int          version;
 } RealIter;
+
+struct _GHashMap
+{
+  gint             size;
+  guint            mask;
+  gint             nnodes;
+
+  guint            have_big_keys : 1;
+  guint            have_big_values : 1;
+
+  gpointer         keys;
+  guint           *hashes;
+  gpointer         values;
+
+  GHashFunc        hash_func;
+  GEqualFunc       key_equal_func;
+  gatomicrefcount  ref_count;
+#ifndef G_DISABLE_ASSERT
+  /*
+   * Tracks the structure of the hash table, not its contents: is only
+   * incremented when a node is added or removed (is not incremented
+   * when the key or data of a node is modified).
+   */
+  int              version;
+#endif
+  GDestroyNotify   key_destroy_func;
+  GDestroyNotify   value_destroy_func;
+};
+
 
 G_STATIC_ASSERT (sizeof (GHashTableIter) == sizeof (RealIter));
 G_STATIC_ASSERT (_g_alignof (GHashTableIter) >= _g_alignof (RealIter));
@@ -340,6 +370,21 @@ g_hash_table_set_shift (GHashTable *hash_table, gint shift)
 
   g_assert ((hash_table->size & (hash_table->size - 1)) == 0);
   hash_table->mask = hash_table->size - 1;
+}
+
+static void
+g_hash_map_set_shift (GHashMap *hash_map, gint shift)
+{
+  hash_map->size = 1 << shift;
+
+  g_assert ((hash_map->size & (hash_map->size - 1)) == 0);
+  hash_map->mask = hash_map->size - 1;
+}
+
+static guint
+calc_dib (guint hash, guint index, guint map_size, guint map_mask)
+{
+  return (index - hash) & map_mask;
 }
 
 static gint
@@ -514,6 +559,21 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
   return node_index;
 }
 
+static void
+g_hash_map_set_shift (GHashMap *hash_map, gint shift)
+{
+  hash_map->size = 1 << shift;
+
+  g_assert ((hash_map->size & (hash_map->size - 1)) == 0);
+  hash_map->mask = hash_map->size - 1;
+}
+
+static guint
+calc_dib (guint hash, guint index, guint map_size, guint map_mask)
+{
+  return (index - hash) & map_mask;
+}
+
 /*
  * g_hash_table_remove_node:
  * @hash_table: our #GHashTable
@@ -551,6 +611,59 @@ g_hash_table_remove_node (GHashTable   *hash_table,
 
   if (notify && hash_table->value_destroy_func)
     hash_table->value_destroy_func (value);
+
+}
+
+/*
+ * g_hash_map_remove_node:
+ * @hash_table: our #GHashMap
+ * @node: pointer to node to remove
+ * @notify: %TRUE if the destroy notify handlers are to be called
+ *
+ * Removes a node from the hash table and updates the node count.
+ * No table resize is performed.
+ *
+ * If @notify is %TRUE then the destroy notify functions are called
+ * for the key and value of the hash node.
+ */
+static void
+g_hash_map_remove_node   (GHashMap     *hash_map,
+                          gint          i,
+                          gboolean      notify)
+{
+  gpointer key;
+  gpointer value;
+  gint j;
+
+  key = g_hash_map_fetch_key_or_value (hash_map->keys, i, hash_map->have_big_keys);
+  value = g_hash_map_fetch_key_or_value (hash_map->values, i, hash_map->have_big_values);
+
+  hash_map->hashes[i] = TOMBSTONE_HASH_VALUE;
+
+  for (j = (i + 1) & hash_map->mask;
+       !HASH_IS_UNUSED (hash_map->hashes [j])
+         && ((hash_map->hashes [j] & hash_map->mask) != j);
+       i = j, j = (i + 1) & hash_map->mask)
+  {
+    hash_map->hashes [i] = hash_map->hashes [j];
+    hash_map->keys [i] = hash_map->keys [j];
+    hash_map->values [i] = hash_map->values [j];
+  }
+
+  hash_map->hashes [i] = UNUSED_HASH_VALUE;
+
+
+  /* Be GC friendly */
+  g_hash_map_assign_key_or_value (hash_map->keys, i, hash_map->have_big_keys, NULL);
+  g_hash_map_assign_key_or_value (hash_map->values, i, hash_map->have_big_values, NULL);
+
+  hash_table->nnodes--;
+
+  if (notify && hash_map->key_destroy_func)
+    hash_map->key_destroy_func (key);
+
+  if (notify && hash_map->value_destroy_func)
+    hash_map->value_destroy_func (value);
 
 }
 
@@ -660,6 +773,282 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
 
   g_free (old_keys);
   g_free (old_hashes);
+}
+
+/*
+ * g_hash_map_remove_all_nodes:
+ * @hash_table: our #GHashMap
+ * @notify: %TRUE if the destroy notify handlers are to be called
+ *
+ * Removes all nodes from the table.  Since this may be a precursor to
+ * freeing the table entirely, no resize is performed.
+ *
+ * If @notify is %TRUE then the destroy notify functions are called
+ * for the key and value of the hash node.
+ */
+static void
+g_hash_map_remove_all_nodes   (GHashMap    *hash_map,
+                               gboolean    notify,
+                               gboolean    destruction)
+{
+  int i;
+  gpointer key;
+  gpointer value;
+  gint old_size;
+  gpointer *old_keys;
+  gpointer *old_values;
+  guint    *old_hashes;
+
+  /* If the hash table is already empty, there is nothing to be done. */
+  if (hash_map->nnodes == 0)
+    return;
+
+  hash_table->nnodes = 0;
+
+  if (!notify ||
+      (hash_map->key_destroy_func == NULL &&
+       hash_map->value_destroy_func == NULL))
+    {
+      if (!destruction)
+        {
+          memset (hash_map->hashes, 0, hash_map->size * sizeof (guint));
+
+#ifdef USE_SMALL_ARRAYS
+          memset (hash_map->keys, 0, hash_map->size * (hash_map->have_big_keys ? BIG_ENTRY_SIZE : SMALL_ENTRY_SIZE));
+          memset (hash_map->values, 0, hash_map->size * (hash_map->have_big_values ? BIG_ENTRY_SIZE : SMALL_ENTRY_SIZE));
+#else
+          memset (hash_map->keys, 0, hash_map->size * sizeof (gpointer));
+          memset (hash_map->values, 0, hash_map->size * sizeof (gpointer));
+#endif
+        }
+
+      return;
+    }
+
+  /* Keep the old storage space around to iterate over it. */
+  old_size = hash_map->size;
+  old_keys   = hash_map->keys;
+  old_values = hash_map->values;
+  old_hashes = hash_map->hashes;
+
+  /* Now create a new storage space; If the table is destroyed we can use the
+   * shortcut of not creating a new storage. This saves the allocation at the
+   * cost of not allowing any recursive access.
+   * However, the application doesn't own any reference anymore, so access
+   * is not allowed. If accesses are done, then either an assert or crash
+   * *will* happen. */
+  g_hash_map_set_shift (hash_map, HASH_MAP_MIN_SHIFT);
+  if (!destruction)
+    {
+      hash_map->keys   = g_hash_map_realloc_key_or_value_array (NULL, hash_map->size, FALSE);
+      hash_map->values = hash_map->keys;
+      hash_map->hashes = g_new0 (guint, hash_map->size);
+    }
+  else
+    {
+      hash_map->keys   = NULL;
+      hash_map->values = NULL;
+      hash_map->hashes = NULL;
+    }
+
+  for (i = 0; i < old_size; i++)
+    {
+      if (HASH_IS_REAL (old_hashes[i]))
+        {
+          key = g_hash_map_fetch_key_or_value (old_keys, i, hash_map->have_big_keys);
+          value = g_hash_map_fetch_key_or_value (old_values, i, hash_map->have_big_values);
+
+          old_hashes[i] = UNUSED_HASH_VALUE;
+
+          g_hash_map_assign_key_or_value (old_keys, i, hash_map->have_big_keys, NULL);
+          g_hash_map_assign_key_or_value (old_values, i, hash_map->have_big_values, NULL);
+
+          if (hash_map->key_destroy_func != NULL)
+            hash_map->key_destroy_func (key);
+
+          if (hash_map->value_destroy_func != NULL)
+            hash_map->value_destroy_func (value);
+        }
+    }
+
+  hash_map->have_big_keys = FALSE;
+  hash_map->have_big_values = FALSE;
+
+  /* Destroy old storage space. */
+  if (old_keys != old_values)
+    g_free (old_values);
+
+  g_free (old_keys);
+  g_free (old_hashes);
+}
+
+/*
+ * g_hash_map_resize:
+ * @hash_table: our #GHashMap
+ *
+ * Resizes the hash map to the optimal size based on the number of
+ * nodes currently held. If you call this function then a resize will
+ * occur, even if one does not need to occur.
+ * Use g_hash_map_maybe_resize() instead.
+ *
+ * This function may "resize" the hash table to its current size, with
+ * the side effect of cleaning up tombstones and otherwise optimizing
+ * the probe sequences.
+ */
+static void
+g_hash_map_resize (GHashMap *hash_map)
+{
+  guint32 *reallocated_buckets_bitmap;
+  guint old_size;
+  gboolean is_a_set;
+
+  old_size = hash_map->size;
+  is_a_set = hash_map->keys == hash_map->values;
+
+  g_hash_map_set_shift_from_size (hash_map, hash_map->nnodes * 1.333);
+
+  if (hash_map->size > old_size)
+    {
+      realloc_arrays (hash_map, is_a_set);
+      memset (&hash_map->hashes[old_size], 0, (hash_map->size - old_size) * sizeof (guint));
+
+      reallocated_buckets_bitmap = g_new0 (guint32, (hash_map->size + 31) / 32);
+    }
+  else
+    {
+      reallocated_buckets_bitmap = g_new0 (guint32, (old_size + 31) / 32);
+    }
+
+  if (is_a_set)
+    resize_set (hash_map, old_size, reallocated_buckets_bitmap);
+  else
+    resize_map (hash_map, old_size, reallocated_buckets_bitmap);
+
+  g_free (reallocated_buckets_bitmap);
+
+  if (hash_map->size < old_size)
+    realloc_arrays (hash_map, is_a_set);
+
+  hash_map->noccupied = hash_map->nnodes;
+}
+
+/*
+ * g_hash_map_maybe_resize:
+ * @hash_map: our #GHashMap
+ *
+ * Resizes the hash map, if needed.
+ *
+ * Essentially, calls g_hash_map_resize() if the map has strayed
+ * too far from its ideal size for its number of nodes.
+ */
+static inline void
+g_hash_map_maybe_resize (GHashMap *hash_map)
+{
+  gint size = hash_map->size;
+  gint nnodes = hash_table->nnodes;
+
+  if ((size > nnodes * 4 && size > 1 << HASH_MAP_MIN_SHIFT) ||
+      (size <= nnodes + (nnodes / 16)))
+    g_hash_map_resize (hash_map);
+}
+
+static guint
+find_insertion_slot (GHashTable *hash_table,
+                     gpointer key,
+                     guint *hash_out)
+{
+  guint ret_index;
+  guint node_index;
+  guint node_hash;
+  guint hash_value;
+  gpointer value;
+  guint my_dib = 0;
+  gboolean have_ret_index = FALSE;
+
+  hash_value = hash_table->hash_func (key);
+  if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
+    hash_value = 1;
+
+  *hash_out = hash_value;
+
+  node_index = hash_value & hash_table->mask;
+  node_hash = hash_table->hashes [node_index];
+
+  while (!HASH_IS_UNUSED (node_hash))
+    {
+      guint candidate_dib;
+
+      if (node_hash == hash_value)
+        {
+          gpointer node_key = hash_table->keys [node_index];
+
+          if (hash_table->key_equal_func)
+            {
+              if (hash_table->key_equal_func (node_key, key))
+                {
+                  g_assert (!have_ret_index);
+                  return node_index;
+                }
+            }
+          else if (node_key == key)
+            {
+              g_assert (!have_ret_index);
+              return node_index;
+            }
+        }
+
+      candidate_dib = calc_dib (node_hash,
+                                node_index,
+                                hash_table->size,
+                                hash_table->mask);
+
+      if (candidate_dib < my_dib)
+        {
+          gpointer temp_key, temp_value;
+          guint temp_hash;
+
+          temp_key = hash_table->keys [node_index];
+          temp_value = hash_table->values [node_index];
+          temp_hash = hash_table->hashes [node_index];
+
+        if (have_ret_index)
+          {
+            hash_table->keys [node_index] = key;
+            hash_table->values [node_index] = value;
+            hash_table->hashes [node_index] = hash_value;
+          }
+        else
+          {
+            hash_table->hashes [node_index] = UNUSED_HASH_VALUE;
+            ret_index = node_index;
+            have_ret_index = TRUE;
+          }
+
+          key = temp_key;
+          value = temp_value;
+          hash_value = temp_hash;
+
+          my_dib = candidate_dib;
+        }
+
+      node_index++;
+      node_index &= hash_table->mask;
+      node_hash = hash_table->hashes [node_index];
+      my_dib++;
+   }
+
+  if (have_ret_index)
+    {
+      hash_table->keys [node_index] = key;
+      hash_table->values [node_index] = value;
+      hash_table->hashes [node_index] = hash_value;
+    }
+  else
+    {
+      ret_index = node_index;
+    }
+
+  return ret_index;
 }
 
 static void
@@ -1553,6 +1942,22 @@ g_hash_table_insert_internal (GHashTable *hash_table,
   return g_hash_table_insert_node (hash_table, node_index, key_hash, key, value, keep_new_key, FALSE);
 }
 
+static gboolean
+g_hash_map_insert_internal (GHashTable   *map_table,
+                              gpointer    key,
+                              gpointer    value,
+                              gboolean    keep_new_key)
+{
+  guint key_hash;
+  guint node_index;
+
+  g_return_val_if_fail (hash_table != NULL, FALSE);
+	node_index = find_insertion_slot (hash_map, key, &key_hash);
+
+  return g_hash_table_map_node (hash_map, node_index, key_hash, key, value, keep_new_key, FALSE);
+}
+
+
 /**
  * g_hash_table_insert:
  * @hash_table: a #GHashTable
@@ -1662,6 +2067,18 @@ g_hash_table_contains (GHashTable    *hash_table,
 
   return HASH_IS_REAL (hash_table->hashes[node_index]);
 }
+
+gboolean
+g_hash_map_contains (GHashMap    *hash_table,
+                       gconstpointer  key)
+{
+  guint node_index;
+
+  g_return_val_if_fail (hash_map != NULL, FALSE);
+
+	return g_hash_map_lookup_node (hash_map, key, &node_index);
+}
+
 
 /*
  * g_hash_table_remove_internal:
