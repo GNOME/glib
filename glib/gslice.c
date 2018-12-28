@@ -291,7 +291,7 @@ static SliceConfig slice_config = {
 };
 static GMutex      smc_tree_mutex; /* mutex for G_SLICE=debug-blocks */
 
-/* --- auxiliary funcitons --- */
+/* --- auxiliary functions --- */
 void
 g_slice_set_config (GSliceConfig ckey,
                     gint64       value)
@@ -1685,6 +1685,18 @@ smc_tree_remove (SmcKType key)
   g_mutex_unlock (&smc_tree_mutex);
   return found_one;
 }
+
+/* Memory cleaning */
+void g_slice_finalize (void);
+
+void
+g_slice_finalize (void)
+{
+  ThreadMemory *tmem = g_private_get (&private_thread_memory);
+  if (tmem != NULL)
+    private_thread_memory_cleanup (tmem);
+}
+
 
 #ifdef G_ENABLE_DEBUG
 void

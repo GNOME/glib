@@ -64,6 +64,13 @@ g_quark_init (void)
   quark_seq_id = 1;
 }
 
+void
+g_quark_finalize (void)
+{
+  g_hash_table_destroy (quark_ht);
+  g_free (quarks);
+}
+
 /**
  * SECTION:quarks
  * @title: Quarks

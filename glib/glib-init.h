@@ -25,8 +25,13 @@
 extern GLogLevelFlags g_log_always_fatal;
 extern GLogLevelFlags g_log_msg_prefix;
 
+/* Initialization and finalization */
 void glib_init (void);
 void g_quark_init (void);
+
+void glib_finalize (void);
+void g_quark_finalize (void);
+void g_slice_finalize (void);
 
 #ifdef G_OS_WIN32
 #include <windows.h>

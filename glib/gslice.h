@@ -26,8 +26,7 @@
 
 G_BEGIN_DECLS
 
-/* slices - fast allocation/release of small memory blocks
- */
+/* slices - fast allocation/release of small memory blocks */
 GLIB_AVAILABLE_IN_ALL
 gpointer g_slice_alloc          	(gsize	       block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 GLIB_AVAILABLE_IN_ALL

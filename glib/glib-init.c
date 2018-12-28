@@ -269,6 +269,13 @@ glib_init (void)
   g_quark_init ();
 }
 
+void
+glib_finalize (void)
+{
+  g_quark_finalize ();
+  g_slice_finalize ();
+}
+
 #if defined (G_OS_WIN32)
 
 BOOL WINAPI DllMain (HINSTANCE hinstDLL,
@@ -327,6 +334,18 @@ static void
 glib_init_ctor (void)
 {
   glib_init ();
+}
+
+
+#ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(glib_final_ctor)
+#endif
+G_DEFINE_DESTRUCTOR(glib_final_ctor)
+
+static void
+glib_final_ctor (void)
+{
+  glib_finalize ();
 }
 
 #else
