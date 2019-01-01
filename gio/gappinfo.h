@@ -196,7 +196,8 @@ gboolean    g_app_info_remove_supports_type         (GAppInfo             *appin
                                                      GError              **error);
 GLIB_AVAILABLE_IN_2_34
 const char **g_app_info_get_supported_types         (GAppInfo             *appinfo);
-
+GLIB_AVAILABLE_IN_2_56
+const char **g_app_info_get_supported_types_full    (GBoolean             with_tweaks);
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_app_info_can_delete                   (GAppInfo   *appinfo);
 GLIB_AVAILABLE_IN_ALL
