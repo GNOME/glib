@@ -38,6 +38,7 @@ custom_c_args = cc.get_supported_arguments([
   '-Wno-unused-parameter',
   '-Wno-cast-align',
   '-Wno-unused-function',
+  '-Wno-return-type',
 ])
 cmph = static_library('cmph',
   sources: cmph_sources,
