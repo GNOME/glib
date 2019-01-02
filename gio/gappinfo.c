@@ -531,6 +531,46 @@ g_app_info_get_icon (GAppInfo *appinfo)
   return (* iface->get_icon) (appinfo);
 }
 
+/**
+ * g_app_info_get_icon:
+ * g_app_info_get_supported_types_full:
+ * @with_tweaks: a #GBoolean
+ *
+ * Retrives the list of content types that were set by g_app_info_add_supports_type(),
+ * and unset by g_app_info_remove_supports_type() modifies.
+ * If this information is not provided by the environment, this function
+ * will return %NULL.
+ *
+ * Since: 2.60
+ */
+
+const char **
+g_app_info_get_supported_types_full (gboolean with_tweaks)
+{
+  GAppInfoIface *iface;
+
+  UnindenxedMimeTweaks *tweaks;
+  gchar **mime_types;
+  mime_types = g_key_file_get_keys (key_file, added_group, NULL, NULL);
+
+  if (mime_types != NULL)
+  {
+	  for (i = 0; mime_types[i] != NULL; ++i)
+	  {
+		  desktop_file_ids = g_key_file_get_string_list (key_file, added_group, mime_types[i], NULL, NULL);
+		  tweaks = desktop_file_dir_unidexed_get_tweaks (dir, mime_types[i]);
+	  }
+  }
+
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), NULL);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  if (iface->get_supported_types)
+    return iface->get_supported_types (appinfo);
+  else
+    return NULL;
+}
 
 /**
  * g_app_info_launch:
