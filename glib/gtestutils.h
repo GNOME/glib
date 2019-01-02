@@ -124,6 +124,19 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "'" #expr "' should be FALSE"); \
                                         } G_STMT_END
+
+/* Use nullptr in C++ to catch misuse of these macros. */
+#if defined(__cplusplus) && __cplusplus >= 201100L
+#define g_assert_null(expr)             G_STMT_START { if G_LIKELY ((expr) == nullptr) ; else \
+                                               g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                                    "'" #expr "' should be nullptr"); \
+                                        } G_STMT_END
+#define g_assert_nonnull(expr)          G_STMT_START { \
+                                             if G_LIKELY ((expr) != nullptr) ; else \
+                                               g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                                    "'" #expr "' should not be nullptr"); \
+                                        } G_STMT_END
+#else /* not C++ */
 #define g_assert_null(expr)             G_STMT_START { if G_LIKELY ((expr) == NULL) ; else \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "'" #expr "' should be NULL"); \
@@ -133,6 +146,8 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "'" #expr "' should not be NULL"); \
                                         } G_STMT_END
+#endif
+
 #ifdef G_DISABLE_ASSERT
 #define g_assert_not_reached()          G_STMT_START { (void) 0; } G_STMT_END
 #define g_assert(expr)                  G_STMT_START { (void) 0; } G_STMT_END
