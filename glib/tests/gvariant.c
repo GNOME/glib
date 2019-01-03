@@ -4820,6 +4820,7 @@ test_normal_checking_array_offsets (void)
 static void
 test_normal_checking_tuple_offsets (void)
 {
+  gpointer aligned_data;
   const guint8 data[] = {
     0x07, 0xe5, 0x00, 0x07, 0x00, 0x07,
     '(', 'a', 's', 'a', 's', 'a', 's', 'a', 's', 'a', 's', 'a', 's', ')',
@@ -4828,13 +4829,15 @@ test_normal_checking_tuple_offsets (void)
   GVariant *variant = NULL;
   GVariant *normal_variant = NULL;
 
-  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, data, size,
-                                     FALSE, NULL, NULL);
+  aligned_data = g_memdup (data, size); /* guarantee alignment */
+  variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, aligned_data,
+                                     size, FALSE, NULL, NULL);
   g_assert_nonnull (variant);
 
   normal_variant = g_variant_get_normal_form (variant);
   g_assert_nonnull (normal_variant);
 
+  g_free (aligned_data);
   g_variant_unref (normal_variant);
   g_variant_unref (variant);
 }
