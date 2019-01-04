@@ -141,21 +141,18 @@ g_socket_output_stream_writev (GOutputStream  *stream,
                                GError        **error)
 {
   GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (stream);
-  gssize res;
-
-  if (bytes_written)
-    *bytes_written = 0;
+  GPollableReturn res;
 
   res = g_socket_send_message_with_timeout (output_stream->priv->socket, NULL,
                                             vectors, n_vectors,
                                             NULL, 0, G_SOCKET_MSG_NONE,
-                                            -1,
+                                            -1, bytes_written,
                                             cancellable, error);
 
-  if (res != -1)
-    *bytes_written = res;
+  /* we have a non-zero timeout so this can't happen */
+  g_assert (res != G_POLLABLE_RETURN_WOULD_BLOCK);
 
-  return res != -1;
+  return res == G_POLLABLE_RETURN_OK;
 }
 
 static gboolean
@@ -179,7 +176,7 @@ g_socket_output_stream_pollable_write_nonblocking (GPollableOutputStream  *polla
 				      NULL, error);
 }
 
-static gboolean
+static GPollableReturn
 g_socket_output_stream_pollable_writev_nonblocking(GPollableOutputStream  *pollable,
                                                    GOutputVector          *vectors,
                                                    gsize                   n_vectors,
@@ -187,20 +184,11 @@ g_socket_output_stream_pollable_writev_nonblocking(GPollableOutputStream  *polla
                                                    GError                **error)
 {
   GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (pollable);
-  gssize res;
 
-  if (bytes_written)
-    *bytes_written = 0;
-
-  res = g_socket_send_message_with_timeout (output_stream->priv->socket,
-                                            NULL, vectors, n_vectors,
-                                            NULL, 0, G_SOCKET_MSG_NONE, 0,
-                                            NULL, error);
-
-  if (res != -1)
-    *bytes_written = res;
-
-  return res != -1;
+  return g_socket_send_message_with_timeout (output_stream->priv->socket,
+                                             NULL, vectors, n_vectors,
+                                             NULL, 0, G_SOCKET_MSG_NONE, 0,
+                                             bytes_written, NULL, error);
 }
 
 static GSource *
