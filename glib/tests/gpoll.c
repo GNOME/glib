@@ -17,14 +17,14 @@
  */
 
 #include <glib.h>
-#include <Winsock2.h>
+#include <winsock2.h>
 
-#define NUM_POLLEES 63
-#define NUM_POLLFDS 64
+#define NUM_POLLEES 999
+#define NUM_POLLFDS 1000
 
 #define ASYNC_CONNECT_OK(r) (r == 0 || (r < 0 && GetLastError () == WSAEWOULDBLOCK))
 
-#define REPEAT 1000
+#define REPEAT 1
 
 static void
 init_networking (void)
