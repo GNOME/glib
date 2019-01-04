@@ -512,6 +512,9 @@ typedef enum {
  * ]|
  * but should instead treat all unrecognized error codes the same as
  * #G_IO_ERROR_FAILED.
+ *
+ * See also #GPollableReturn for a cheaper way of returning
+ * %G_IO_ERROR_WOULD_BLOCK to callers without allocating a #GError.
  **/
 typedef enum {
   G_IO_ERROR_FAILED,
@@ -1921,6 +1924,30 @@ typedef enum {
   G_NETWORK_CONNECTIVITY_PORTAL      = 3,
   G_NETWORK_CONNECTIVITY_FULL        = 4
 } GNetworkConnectivity;
+
+/**
+ * GPollableReturn:
+ * @G_POLLABLE_RETURN_FAILED: Generic error condition for when an operation fails.
+ * @G_POLLABLE_RETURN_OK: The operation was successfully finished.
+ * @G_POLLABLE_RETURN_WOULD_BLOCK: The operation would block.
+ *
+ * Return value for various IO operations that signal errors via the
+ * return value and not necessarily via a #GError.
+ *
+ * This enum exists to be able to return errors to callers without having to
+ * allocate a #GError. Allocating #GErrors can be quite expensive for
+ * regularly happening errors like %G_IO_ERROR_WOULD_BLOCK.
+ *
+ * In case of %G_POLLABLE_RETURN_FAILED a #GError should be set for the
+ * operation to give details about the error that happened.
+ *
+ * Since: 2.60
+ */
+typedef enum {
+  G_POLLABLE_RETURN_FAILED       = 0,
+  G_POLLABLE_RETURN_OK           = 1,
+  G_POLLABLE_RETURN_WOULD_BLOCK  = -G_IO_ERROR_WOULD_BLOCK
+} GPollableReturn;
 
 G_END_DECLS
 
