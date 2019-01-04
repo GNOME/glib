@@ -4595,11 +4595,20 @@ g_socket_send_message (GSocket                *socket,
 		       GCancellable           *cancellable,
 		       GError                **error)
 {
-  return g_socket_send_message_with_timeout (socket, address,
-                                             vectors, num_vectors,
-                                             messages, num_messages, flags,
-                                             socket->priv->blocking ? -1 : 0,
-                                             cancellable, error);
+  GPollableReturn res;
+  gsize bytes_written = 0;
+
+  res = g_socket_send_message_with_timeout (socket, address,
+                                            vectors, num_vectors,
+                                            messages, num_messages, flags,
+                                            socket->priv->blocking ? -1 : 0,
+                                            &bytes_written,
+                                            cancellable, error);
+
+  if (res == G_POLLABLE_RETURN_WOULD_BLOCK)
+    socket_set_error_lazy (error, EWOULDBLOCK, _("Error sending message: %s"));
+
+  return res == G_POLLABLE_RETURN_OK ? bytes_written : -1;
 }
 
 /**
@@ -4613,6 +4622,7 @@ g_socket_send_message (GSocket                *socket,
  * @num_messages: number of elements in @messages, or -1.
  * @flags: an int containing #GSocketMsgFlags flags
  * @timeout: the maximum time (in microseconds) to wait, or -1
+ * @bytes_written: (out) (optional): location to store the number of bytes that were written to the socket
  * @cancellable: (nullable): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -4620,14 +4630,17 @@ g_socket_send_message (GSocket                *socket,
  * the choice of timeout behavior is determined by the @timeout argument
  * rather than by @socket's properties.
  *
- * On error -1 is returned and @error is set accordingly.
+ * On error %G_POLLABLE_RETURN_FAILED is returned and @error is set accordingly, or
+ * if the socket is currently not writable %G_POLLABLE_RETURN_WOULD_BLOCK is
+ * returned. @bytes_written will contain 0 in both cases.
  *
- * Returns: Number of bytes written (which may be less than @size), or -1
- * on error
+ * Returns: %G_POLLABLE_RETURN_OK if all data was successfully written,
+ * %G_POLLABLE_RETURN_WOULD_BLOCK if the socket is currently not writable, or
+ * %G_POLLABLE_RETURN_FAILED if an error happened and @error is set.
  *
  * Since: 2.60
  */
-gssize
+GPollableReturn
 g_socket_send_message_with_timeout (GSocket                *socket,
                                     GSocketAddress         *address,
                                     GOutputVector          *vectors,
@@ -4636,6 +4649,7 @@ g_socket_send_message_with_timeout (GSocket                *socket,
                                     gint                    num_messages,
                                     gint                    flags,
                                     gint64                  timeout,
+                                    gsize                  *bytes_written,
                                     GCancellable           *cancellable,
                                     GError                **error)
 {
@@ -4643,23 +4657,26 @@ g_socket_send_message_with_timeout (GSocket                *socket,
   char zero;
   gint64 start_time;
 
-  g_return_val_if_fail (G_IS_SOCKET (socket), -1);
-  g_return_val_if_fail (address == NULL || G_IS_SOCKET_ADDRESS (address), -1);
-  g_return_val_if_fail (num_vectors == 0 || vectors != NULL, -1);
-  g_return_val_if_fail (num_messages == 0 || messages != NULL, -1);
-  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), -1);
-  g_return_val_if_fail (error == NULL || *error == NULL, -1);
+  if (bytes_written)
+    *bytes_written = 0;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), G_POLLABLE_RETURN_FAILED);
+  g_return_val_if_fail (address == NULL || G_IS_SOCKET_ADDRESS (address), G_POLLABLE_RETURN_FAILED);
+  g_return_val_if_fail (num_vectors == 0 || vectors != NULL, G_POLLABLE_RETURN_FAILED);
+  g_return_val_if_fail (num_messages == 0 || messages != NULL, G_POLLABLE_RETURN_FAILED);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), G_POLLABLE_RETURN_FAILED);
+  g_return_val_if_fail (error == NULL || *error == NULL, G_POLLABLE_RETURN_FAILED);
 
   start_time = g_get_monotonic_time ();
 
   if (!check_socket (socket, error))
-    return -1;
+    return G_POLLABLE_RETURN_FAILED;
 
   if (!check_timeout (socket, error))
-    return -1;
+    return G_POLLABLE_RETURN_FAILED;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
-    return -1;
+    return G_POLLABLE_RETURN_FAILED;
 
   if (num_vectors == -1)
     {
@@ -4706,7 +4723,7 @@ g_socket_send_message_with_timeout (GSocket                *socket,
     if (child_error != NULL)
       {
         g_propagate_error (error, child_error);
-        return -1;
+        return G_POLLABLE_RETURN_FAILED;
       }
 
     while (1)
@@ -4719,24 +4736,30 @@ g_socket_send_message_with_timeout (GSocket                *socket,
 	    if (errsv == EINTR)
 	      continue;
 
-	    if (timeout != 0 &&
-		(errsv == EWOULDBLOCK ||
-		 errsv == EAGAIN))
+	    if (errsv == EWOULDBLOCK || errsv == EAGAIN)
               {
-                if (!block_on_timeout (socket, G_IO_OUT, timeout, start_time,
-                                       cancellable, error))
-                  return -1;
+                if (timeout != 0)
+                  {
+                    if (!block_on_timeout (socket, G_IO_OUT, timeout, start_time,
+                                           cancellable, error))
+                      return G_POLLABLE_RETURN_FAILED;
 
-                continue;
+                    continue;
+                  }
+
+                return G_POLLABLE_RETURN_WOULD_BLOCK;
               }
 
-	    socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
-	    return -1;
+            socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
+            return G_POLLABLE_RETURN_FAILED;
 	  }
 	break;
       }
 
-    return result;
+    if (bytes_written)
+      *bytes_written = result;
+
+    return G_POLLABLE_RETURN_OK;
   }
 #else
   {
@@ -4755,7 +4778,7 @@ g_socket_send_message_with_timeout (GSocket                *socket,
       {
         g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                              _("GSocketControlMessage not supported on Windows"));
-	return -1;
+	return G_POLLABLE_RETURN_FAILED;
       }
 
     /* iov */
@@ -4772,7 +4795,7 @@ g_socket_send_message_with_timeout (GSocket                *socket,
       {
 	addrlen = g_socket_address_get_native_size (address);
 	if (!g_socket_address_to_native (address, &addr, sizeof addr, error))
-	  return -1;
+	  return G_POLLABLE_RETURN_FAILED;
       }
 
     while (1)
@@ -4804,19 +4827,23 @@ g_socket_send_message_with_timeout (GSocket                *socket,
                   {
                     if (!block_on_timeout (socket, G_IO_OUT, timeout,
                                            start_time, cancellable, error))
-                      return -1;
+                      return G_POLLABLE_RETURN_FAILED;
 
                     continue;
                   }
+
+                return G_POLLABLE_RETURN_WOULD_BLOCK;
               }
 
 	    socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
-	    return -1;
+	    return G_POLLABLE_RETURN_FAILED;
 	  }
 	break;
       }
 
-    return bytes_sent;
+    if (bytes_written)
+      *bytes_written = bytes_sent;
+    return G_POLLABLE_RETURN_OK;
   }
 #endif
 }
@@ -5013,14 +5040,22 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
       {
         GOutputMessage *msg = &messages[i];
         GError *msg_error = NULL;
+        GPollableReturn pollable_result;
+        gsize bytes_written = 0;
 
-        result = g_socket_send_message_with_timeout (socket, msg->address,
-                                                     msg->vectors,
-                                                     msg->num_vectors,
-                                                     msg->control_messages,
-                                                     msg->num_control_messages,
-                                                     flags, wait_timeout,
-                                                     cancellable, &msg_error);
+        pollable_result = g_socket_send_message_with_timeout (socket, msg->address,
+                                                              msg->vectors,
+                                                              msg->num_vectors,
+                                                              msg->control_messages,
+                                                              msg->num_control_messages,
+                                                              flags, wait_timeout,
+                                                              &bytes_written,
+                                                              cancellable, &msg_error);
+
+        if (pollable_result == G_POLLABLE_RETURN_WOULD_BLOCK)
+          socket_set_error_lazy (&msg_error, EWOULDBLOCK, _("Error sending message: %s"));
+
+        result = pollable_result == G_POLLABLE_RETURN_OK ? bytes_written : -1;
 
         /* check if we've timed out or how much time to wait at most */
         if (timeout > 0)
