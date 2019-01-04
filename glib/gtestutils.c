@@ -994,6 +994,10 @@ g_test_log (GTestLogType lbit,
       if (result == G_TEST_RUN_SKIPPED || result == G_TEST_RUN_INCOMPLETE)
         test_skipped_count++;
       break;
+    case G_TEST_LOG_SKIP_CASE:
+      if (test_tap_log)
+          g_print ("ok %d %s # SKIP\n", test_run_count, string1);
+      break;
     case G_TEST_LOG_MIN_RESULT:
       if (test_tap_log)
         g_print ("# min perf: %s\n", string1);
@@ -1538,10 +1542,10 @@ void
   /* sanity check */
   if (test_tap_log)
     {
-      if (test_paths || test_startup_skip_count)
+      if (test_paths)
         {
           /* Not invoking every test (even if SKIPped) breaks the "1..XX" plan */
-          g_printerr ("%s: -p and --GTestSkipCount options are incompatible with --tap\n",
+          g_printerr ("%s: -p option is incompatible with --tap\n",
                       (*argv)[0]);
           exit (1);
         }
