@@ -114,11 +114,11 @@ static gboolean g_unix_output_stream_pollable_can_poll      (GPollableOutputStre
 static gboolean g_unix_output_stream_pollable_is_writable   (GPollableOutputStream *stream);
 static GSource *g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
 							     GCancellable         *cancellable);
-static gboolean g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream,
-								  GOutputVector          *vectors,
-								  gsize                   n_vectors,
-								  gsize                  *bytes_written,
-								  GError                **error);
+static GPollableReturn g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream,
+									 GOutputVector          *vectors,
+									 gsize                   n_vectors,
+									 gsize                  *bytes_written,
+									 GError                **error);
 
 static void
 g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
@@ -612,7 +612,7 @@ g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
   return pollable_source;
 }
 
-static gboolean
+static GPollableReturn
 g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream,
 						  GOutputVector          *vectors,
 						  gsize                   n_vectors,
@@ -625,10 +625,8 @@ g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream
 
   if (!g_pollable_output_stream_is_writable (stream))
     {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK,
-                           g_strerror (EAGAIN));
       *bytes_written = 0;
-      return FALSE;
+      return G_POLLABLE_RETURN_WOULD_BLOCK;
     }
 
   if (G_OUTPUT_VECTOR_IS_IOVEC)
@@ -672,5 +670,5 @@ g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream
       break;
     }
 
-  return res != -1;
+  return res != -1 ? G_POLLABLE_RETURN_OK : G_POLLABLE_RETURN_FAILED;
 }
