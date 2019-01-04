@@ -1064,6 +1064,33 @@ test_tap (void)
 
   g_ptr_array_unref (argv);
 
+  g_test_message ("--GTestSkipCount");
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "skip-options");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, "--GTestSkipCount");
+  g_ptr_array_add (argv, "2");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (strstr (output, "1..5\n"));
+  g_assert_nonnull (strstr (output, "\nok 1 /a # SKIP\n"));
+  g_assert_nonnull (strstr (output, "\nok 2 /b/a # SKIP\n"));
+  g_assert_nonnull (strstr (output, "\nok 3 /b/b\n"));
+  g_assert_nonnull (strstr (output, "\nok 4 /c/a\n"));
+  g_assert_nonnull (strstr (output, "\nok 5 /d/a\n"));
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+
+  g_free (output);
+  g_ptr_array_unref (argv);
+
   g_test_message ("-s");
   argv = g_ptr_array_new ();
   g_ptr_array_add (argv, (char *) testing_helper);
