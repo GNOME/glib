@@ -2513,7 +2513,7 @@ writev_async_pollable (GPollableOutputStream *stream,
 {
   GError *error = NULL;
   WritevData *op = g_task_get_task_data (task);
-  gboolean res;
+  GPollableReturn res;
   gsize bytes_written = 0;
 
   if (g_task_return_error_if_cancelled (task))
@@ -2524,25 +2524,34 @@ writev_async_pollable (GPollableOutputStream *stream,
 
   op->bytes_written = bytes_written;
 
-  /* only wait and write later if nothing was written at all so far */
-  if (bytes_written == 0 && g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
+  switch (res)
     {
-      GSource *source;
+    case G_POLLABLE_RETURN_WOULD_BLOCK:
+      /* only wait and write later if nothing was written at all so far */
+      if (bytes_written == 0)
+        {
+          GSource *source;
 
-      g_error_free (error);
+          g_warn_if_fail (error == NULL);
 
-      source = g_pollable_output_stream_create_source (stream,
-                                                       g_task_get_cancellable (task));
-      g_task_attach_source (task, source,
-                            (GSourceFunc) writev_async_pollable_ready);
-      g_source_unref (source);
-      return;
+          source = g_pollable_output_stream_create_source (stream,
+                                                           g_task_get_cancellable (task));
+          g_task_attach_source (task, source,
+                                (GSourceFunc) writev_async_pollable_ready);
+          g_source_unref (source);
+          break;
+        }
+
+        /* fall through */
+      case G_POLLABLE_RETURN_OK:
+        g_task_return_boolean (task, TRUE);
+        break;
+      case G_POLLABLE_RETURN_FAILED:
+        g_task_return_error (task, g_steal_pointer (&error));
+        break;
+      default:
+        g_assert_not_reached ();
     }
-
-  if (!res)
-    g_task_return_error (task, g_steal_pointer (&error));
-  else
-    g_task_return_boolean (task, TRUE);
 }
 
 static void
