@@ -306,9 +306,7 @@ g_output_stream_write_all (GOutputStream  *stream,
 	    *bytes_written = _bytes_written;
 	  return FALSE;
 	}
-      
-      if (res == 0)
-	g_warning ("Write returned zero without error");
+      g_return_val_if_fail (res > 0, FALSE);
 
       _bytes_written += res;
     }
@@ -492,8 +490,7 @@ g_output_stream_writev_all (GOutputStream  *stream,
           return FALSE;
         }
 
-      if (n_written == 0)
-        g_warning ("Write returned zero without error");
+      g_return_val_if_fail (n_written > 0, FALSE);
       _bytes_written += n_written;
 
       /* skip vectors that have been written in full */
