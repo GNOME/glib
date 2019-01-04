@@ -942,17 +942,24 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_START_SUITE:
       if (test_tap_log)
         {
+          /* We only print the TAP "plan" (1..n) ahead of time if we did
+           * not use the -p option to select specific tests to be run. */
           if (string1[0] != 0)
             g_print ("# Start of %s tests\n", string1);
-          else
+          else if (test_paths == NULL)
             g_print ("1..%d\n", test_count);
         }
       break;
     case G_TEST_LOG_STOP_SUITE:
       if (test_tap_log)
         {
+          /* If we didn't print the TAP "plan" at the beginning because
+           * we were using -p, we need to print how many tests we ran at
+           * the end instead. */
           if (string1[0] != 0)
             g_print ("# End of %s tests\n", string1);
+          else if (test_paths != NULL)
+            g_print ("1..%d\n", test_run_count);
         }
       break;
     case G_TEST_LOG_STOP_CASE:
@@ -1537,18 +1544,6 @@ void
 
       /* Cache this for the remainder of this process’ lifetime. */
       test_tmpdir = g_getenv ("G_TEST_TMPDIR");
-    }
-
-  /* sanity check */
-  if (test_tap_log)
-    {
-      if (test_paths)
-        {
-          /* Not invoking every test (even if SKIPped) breaks the "1..XX" plan */
-          g_printerr ("%s: -p option is incompatible with --tap\n",
-                      (*argv)[0]);
-          exit (1);
-        }
     }
 
   /* verify GRand reliability, needed for reliable seeds */
