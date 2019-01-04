@@ -3659,6 +3659,7 @@ g_pollable_output_stream_get_type
 
 <SECTION>
 <FILE>gpollableutils</FILE>
+GPollableReturn
 GPollableSourceFunc
 g_pollable_source_new
 g_pollable_source_new_full
