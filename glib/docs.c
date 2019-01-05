@@ -64,6 +64,15 @@
  * A standard boolean type.
  * Variables of this type should only contain the value
  * %TRUE or %FALSE.
+ *
+ * Never directly compare the contents of a #gboolean variable with the values
+ * %TRUE or %FALSE. Use `if (condition)` to check a #gboolean is true, instead
+ * of `if (condition == TRUE)`. Likewise use `if (!condition)` to check a
+ * #gboolean is false.
+ *
+ * This is because there is no validation when assigning to a #gboolean variable
+ * and so it could contain any value represented by a #gint. All non-zero values
+ * in C evaluate to true.
  */
 
 /**
