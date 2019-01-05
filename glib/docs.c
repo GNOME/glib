@@ -64,6 +64,10 @@
  * A standard boolean type.
  * Variables of this type should only contain the value
  * %TRUE or %FALSE.
+ *
+ * To safeguard against applications that erroneously use another value for
+ * %TRUE in the #gint use 'if (condition)' to check a boolean condition, rather
+ * than 'if (condition == TRUE)'.
  */
 
 /**
