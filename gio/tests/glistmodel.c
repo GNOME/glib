@@ -778,6 +778,34 @@ test_store_signal_items_changed (void)
   g_object_unref (store);
 }
 
+/* Due to an overflow in the list store last-iter optimization,
+ * the sequence 'lookup 0; lookup MAXUINT' was returning the
+ * same item twice, and not NULL for the second lookup.
+ * See #1639.
+ */
+static void
+test_store_past_end (void)
+{
+  GListStore *store;
+  GListModel *model;
+  GSimpleAction *item;
+
+  store = g_list_store_new (G_TYPE_SIMPLE_ACTION);
+  model = G_LIST_MODEL (store);
+
+  item = g_simple_action_new ("2", NULL);
+  g_list_store_append (store, item);
+  g_object_unref (item);
+
+  g_assert_cmpint (g_list_model_get_n_items (model), ==, 1);
+  item = g_list_model_get_item (model, 0);
+  g_assert_nonnull (item);
+  item = g_list_model_get_item (model, G_MAXUINT);
+  g_assert_null (item);
+
+  g_object_unref (store);
+}
+
 int main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
@@ -809,6 +837,7 @@ int main (int argc, char *argv[])
                    test_store_get_item_cache);
   g_test_add_func ("/glistmodel/store/items-changed",
                    test_store_signal_items_changed);
+  g_test_add_func ("/glistmodel/store/past-end", test_store_past_end);
 
   return g_test_run ();
 }
