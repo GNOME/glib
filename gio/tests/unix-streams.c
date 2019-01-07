@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #define DATA "abcdefghijklmnopqrstuvwxyz"
 
@@ -351,6 +352,366 @@ test_basic (void)
   g_object_unref (os);
 }
 
+/* test if g_pollable_output_stream_write_nonblocking() and
+ * g_pollable_output_stream_read_nonblocking() correctly return WOULD_BLOCK
+ * and correctly reset their status afterwards again, and all data that is
+ * written can also be read again.
+ */
+static void
+test_write_wouldblock (void)
+{
+#ifndef F_GETPIPE_SZ
+  g_test_skip ("F_GETPIPE_SZ not defined");
+#else  /* if F_GETPIPE_SZ */
+  GUnixInputStream *is;
+  GUnixOutputStream *os;
+  gint fd[2];
+  GError *err = NULL;
+  guint8 data_write[1024], data_read[1024];
+  guint i;
+  gint pipe_capacity;
+
+  for (i = 0; i < sizeof (data_write); i++)
+    data_write[i] = i;
+
+  g_assert_cmpint (pipe (fd), ==, 0);
+
+  g_assert_cmpint (fcntl (fd[0], F_SETPIPE_SZ, 4096, NULL), !=, 0);
+  pipe_capacity = fcntl (fd[0], F_GETPIPE_SZ, &pipe_capacity, NULL);
+  g_assert_cmpint (pipe_capacity, >=, 4096);
+  g_assert_cmpint (pipe_capacity % 1024, >=, 0);
+
+  is = G_UNIX_INPUT_STREAM (g_unix_input_stream_new (fd[0], TRUE));
+  os = G_UNIX_OUTPUT_STREAM (g_unix_output_stream_new (fd[1], TRUE));
+
+  /* Run the whole thing three times to make sure that the streams
+   * reset the writability/readability state again */
+  for (i = 0; i < 3; i++) {
+    gssize written = 0, written_complete = 0;
+    gssize read = 0, read_complete = 0;
+
+    do
+      {
+        written_complete += written;
+        written = g_pollable_output_stream_write_nonblocking (G_POLLABLE_OUTPUT_STREAM (os),
+                                                              data_write,
+                                                              sizeof (data_write),
+                                                              NULL,
+                                                              &err);
+      }
+    while (written > 0);
+
+    g_assert_cmpuint (written_complete, >, 0);
+    g_assert_nonnull (err);
+    g_assert_error (err, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK);
+    g_clear_error (&err);
+
+    do
+      {
+        read_complete += read;
+        read = g_pollable_input_stream_read_nonblocking (G_POLLABLE_INPUT_STREAM (is),
+                                                         data_read,
+                                                         sizeof (data_read),
+                                                         NULL,
+                                                         &err);
+        if (read > 0)
+          g_assert_cmpmem (data_read, read, data_write, sizeof (data_write));
+      }
+    while (read > 0);
+
+    g_assert_cmpuint (read_complete, ==, written_complete);
+    g_assert_nonnull (err);
+    g_assert_error (err, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK);
+    g_clear_error (&err);
+  }
+
+  g_object_unref (os);
+  g_object_unref (is);
+#endif  /* if F_GETPIPE_SZ */
+}
+
+/* test if g_pollable_output_stream_write_nonblocking() and
+ * g_pollable_output_stream_read_nonblocking() correctly return WOULD_BLOCK
+ * and correctly reset their status afterwards again, and all data that is
+ * written can also be read again.
+ */
+static void
+test_writev_wouldblock (void)
+{
+#ifndef F_GETPIPE_SZ
+  g_test_skip ("F_GETPIPE_SZ not defined");
+#else  /* if F_GETPIPE_SZ */
+  GUnixInputStream *is;
+  GUnixOutputStream *os;
+  gint fd[2];
+  GError *err = NULL;
+  guint8 data_write[1024], data_read[1024];
+  guint i;
+  GOutputVector vectors[4];
+  GPollableReturn res;
+  gint pipe_capacity;
+
+  for (i = 0; i < sizeof (data_write); i++)
+    data_write[i] = i;
+
+  g_assert_cmpint (pipe (fd), ==, 0);
+
+  g_assert_cmpint (fcntl (fd[0], F_SETPIPE_SZ, 4096, NULL), !=, 0);
+  pipe_capacity = fcntl (fd[0], F_GETPIPE_SZ, &pipe_capacity, NULL);
+  g_assert_cmpint (pipe_capacity, >=, 4096);
+  g_assert_cmpint (pipe_capacity % 1024, >=, 0);
+
+  is = G_UNIX_INPUT_STREAM (g_unix_input_stream_new (fd[0], TRUE));
+  os = G_UNIX_OUTPUT_STREAM (g_unix_output_stream_new (fd[1], TRUE));
+
+  /* Run the whole thing three times to make sure that the streams
+   * reset the writability/readability state again */
+  for (i = 0; i < 3; i++) {
+    gsize written = 0, written_complete = 0;
+    gssize read = 0, read_complete = 0;
+
+    do
+    {
+        written_complete += written;
+
+        vectors[0].buffer = data_write;
+        vectors[0].size = 256;
+        vectors[1].buffer = data_write + 256;
+        vectors[1].size = 256;
+        vectors[2].buffer = data_write + 512;
+        vectors[2].size = 256;
+        vectors[3].buffer = data_write + 768;
+        vectors[3].size = 256;
+
+        res = g_pollable_output_stream_writev_nonblocking (G_POLLABLE_OUTPUT_STREAM (os),
+                                                           vectors,
+                                                           G_N_ELEMENTS (vectors),
+                                                           &written,
+                                                           NULL,
+                                                           &err);
+      }
+    while (res == G_POLLABLE_RETURN_OK);
+
+    g_assert_cmpuint (written_complete, >, 0);
+    g_assert_null (err);
+    g_assert_cmpint (res, ==, G_POLLABLE_RETURN_WOULD_BLOCK);
+    /* writev() on UNIX streams either succeeds fully or not at all */
+    g_assert_cmpuint (written, ==, 0);
+
+    do
+      {
+        read_complete += read;
+        read = g_pollable_input_stream_read_nonblocking (G_POLLABLE_INPUT_STREAM (is),
+                                                         data_read,
+                                                         sizeof (data_read),
+                                                         NULL,
+                                                         &err);
+        if (read > 0)
+          g_assert_cmpmem (data_read, read, data_write, sizeof (data_write));
+      }
+    while (read > 0);
+
+    g_assert_cmpuint (read_complete, ==, written_complete);
+    g_assert_nonnull (err);
+    g_assert_error (err, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK);
+    g_clear_error (&err);
+  }
+
+  g_object_unref (os);
+  g_object_unref (is);
+#endif  /* if F_GETPIPE_SZ */
+}
+
+#ifdef F_GETPIPE_SZ
+static void
+write_async_wouldblock_cb (GUnixOutputStream *os,
+                           GAsyncResult      *result,
+                           gpointer           user_data)
+{
+  gsize *bytes_written = user_data;
+  GError *err = NULL;
+
+  g_output_stream_write_all_finish (G_OUTPUT_STREAM (os), result, bytes_written, &err);
+  g_assert_no_error (err);
+}
+
+static void
+read_async_wouldblock_cb (GUnixInputStream  *is,
+                          GAsyncResult      *result,
+                          gpointer           user_data)
+{
+  gsize *bytes_read = user_data;
+  GError *err = NULL;
+
+  g_input_stream_read_all_finish (G_INPUT_STREAM (is), result, bytes_read, &err);
+  g_assert_no_error (err);
+}
+#endif  /* if F_GETPIPE_SZ */
+
+static void
+test_write_async_wouldblock (void)
+{
+#ifndef F_GETPIPE_SZ
+  g_test_skip ("F_GETPIPE_SZ not defined");
+#else  /* if F_GETPIPE_SZ */
+  GUnixInputStream *is;
+  GUnixOutputStream *os;
+  gint fd[2];
+  guint8 *data, *data_read;
+  guint i;
+  gint pipe_capacity;
+  gsize bytes_written = 0, bytes_read = 0;
+
+  g_assert_cmpint (pipe (fd), ==, 0);
+
+  /* FIXME: These should not be needed but otherwise
+   * g_unix_output_stream_write() will block because
+   *   a) the fd is writable
+   *   b) writing 4x capacity will block because writes are atomic
+   *   c) the fd is blocking
+   *
+   * See https://gitlab.gnome.org/GNOME/glib/issues/1654
+   */
+  g_unix_set_fd_nonblocking (fd[0], TRUE, NULL);
+  g_unix_set_fd_nonblocking (fd[1], TRUE, NULL);
+
+  g_assert_cmpint (fcntl (fd[0], F_SETPIPE_SZ, 4096, NULL), !=, 0);
+  pipe_capacity = fcntl (fd[0], F_GETPIPE_SZ, &pipe_capacity, NULL);
+  g_assert_cmpint (pipe_capacity, >=, 4096);
+
+  data = g_new (guint8, 4 * pipe_capacity);
+  for (i = 0; i < 4 * pipe_capacity; i++)
+    data[i] = i;
+  data_read = g_new (guint8, 4 * pipe_capacity);
+
+  is = G_UNIX_INPUT_STREAM (g_unix_input_stream_new (fd[0], TRUE));
+  os = G_UNIX_OUTPUT_STREAM (g_unix_output_stream_new (fd[1], TRUE));
+
+  g_output_stream_write_all_async (G_OUTPUT_STREAM (os),
+                                   data,
+                                   4 * pipe_capacity,
+                                   G_PRIORITY_DEFAULT,
+                                   NULL,
+                                   (GAsyncReadyCallback) write_async_wouldblock_cb,
+                                   &bytes_written);
+
+  g_input_stream_read_all_async (G_INPUT_STREAM (is),
+                                 data_read,
+                                 4 * pipe_capacity,
+                                 G_PRIORITY_DEFAULT,
+                                 NULL,
+                                 (GAsyncReadyCallback) read_async_wouldblock_cb,
+                                 &bytes_read);
+
+  while (bytes_written == 0 && bytes_read == 0)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_cmpuint (bytes_written, ==, 4 * pipe_capacity);
+  g_assert_cmpuint (bytes_read, ==, 4 * pipe_capacity);
+  g_assert_cmpmem (data_read, bytes_read, data, bytes_written);
+
+  g_free (data);
+  g_free (data_read);
+
+  g_object_unref (os);
+  g_object_unref (is);
+#endif  /* if F_GETPIPE_SZ */
+}
+
+#ifdef F_GETPIPE_SZ
+static void
+writev_async_wouldblock_cb (GUnixOutputStream *os,
+                            GAsyncResult      *result,
+                            gpointer           user_data)
+{
+  gsize *bytes_written = user_data;
+  GError *err = NULL;
+
+  g_output_stream_writev_all_finish (G_OUTPUT_STREAM (os), result, bytes_written, &err);
+  g_assert_no_error (err);
+}
+#endif  /* if F_GETPIPE_SZ */
+
+static void
+test_writev_async_wouldblock (void)
+{
+#ifndef F_GETPIPE_SZ
+  g_test_skip ("F_GETPIPE_SZ not defined");
+#else  /* if F_GETPIPE_SZ */
+  GUnixInputStream *is;
+  GUnixOutputStream *os;
+  gint fd[2];
+  guint8 *data, *data_read;
+  guint i;
+  gint pipe_capacity;
+  gsize bytes_written = 0, bytes_read = 0;
+  GOutputVector vectors[4];
+
+  g_assert_cmpint (pipe (fd), ==, 0);
+
+  /* FIXME: These should not be needed but otherwise
+   * g_unix_output_stream_writev() will block because
+   *   a) the fd is writable
+   *   b) writing 4x capacity will block because writes are atomic
+   *   c) the fd is blocking
+   *
+   * See https://gitlab.gnome.org/GNOME/glib/issues/1654
+   */
+  g_unix_set_fd_nonblocking (fd[0], TRUE, NULL);
+  g_unix_set_fd_nonblocking (fd[1], TRUE, NULL);
+
+  g_assert_cmpint (fcntl (fd[0], F_SETPIPE_SZ, 4096, NULL), !=, 0);
+  pipe_capacity = fcntl (fd[0], F_GETPIPE_SZ, &pipe_capacity, NULL);
+  g_assert_cmpint (pipe_capacity, >=, 4096);
+
+  data = g_new (guint8, 4 * pipe_capacity);
+  for (i = 0; i < 4 * pipe_capacity; i++)
+    data[i] = i;
+  data_read = g_new (guint8, 4 * pipe_capacity);
+
+  vectors[0].buffer = data;
+  vectors[0].size = 1024;
+  vectors[1].buffer = data + 1024;
+  vectors[1].size = 1024;
+  vectors[2].buffer = data + 2048;
+  vectors[2].size = 1024;
+  vectors[3].buffer = data + 3072;
+  vectors[3].size = 4 * pipe_capacity - 3072;
+
+  is = G_UNIX_INPUT_STREAM (g_unix_input_stream_new (fd[0], TRUE));
+  os = G_UNIX_OUTPUT_STREAM (g_unix_output_stream_new (fd[1], TRUE));
+
+  g_output_stream_writev_all_async (G_OUTPUT_STREAM (os),
+                                    vectors,
+                                    G_N_ELEMENTS (vectors),
+                                    G_PRIORITY_DEFAULT,
+                                    NULL,
+                                    (GAsyncReadyCallback) writev_async_wouldblock_cb,
+                                    &bytes_written);
+
+  g_input_stream_read_all_async (G_INPUT_STREAM (is),
+                                 data_read,
+                                 4 * pipe_capacity,
+                                 G_PRIORITY_DEFAULT,
+                                 NULL,
+                                 (GAsyncReadyCallback) read_async_wouldblock_cb,
+                                 &bytes_read);
+
+  while (bytes_written == 0 && bytes_read == 0)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_cmpuint (bytes_written, ==, 4 * pipe_capacity);
+  g_assert_cmpuint (bytes_read, ==, 4 * pipe_capacity);
+  g_assert_cmpmem (data_read, bytes_read, data, bytes_written);
+
+  g_free (data);
+  g_free (data_read);
+
+  g_object_unref (os);
+  g_object_unref (is);
+#endif  /* F_GETPIPE_SZ */
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -364,6 +725,16 @@ main (int   argc,
   g_test_add_data_func ("/unix-streams/nonblocking-io-test",
 			GINT_TO_POINTER (TRUE),
 			test_pipe_io);
+
+  g_test_add_func ("/unix-streams/write-wouldblock",
+		   test_write_wouldblock);
+  g_test_add_func ("/unix-streams/writev-wouldblock",
+		   test_writev_wouldblock);
+
+  g_test_add_func ("/unix-streams/write-async-wouldblock",
+		   test_write_async_wouldblock);
+  g_test_add_func ("/unix-streams/writev-async-wouldblock",
+		   test_writev_async_wouldblock);
 
   return g_test_run();
 }
