@@ -1426,7 +1426,7 @@ collect_capable_apps_from_clients (GPtrArray *capable_apps,
       GWin32RegistrySubkeyIter subkey_iter;
       GWin32RegistryKey *system_client_type;
       GWin32RegistryValueType default_type;
-      gunichar2 *default_value;
+      gunichar2 *default_value = NULL;
       gunichar2 *client_name;
       gsize client_name_len;
 
