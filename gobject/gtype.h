@@ -1785,7 +1785,7 @@ guint     g_type_get_type_registration_serial (void);
 /**
  * G_IMPLEMENT_INTERFACE:
  * @TYPE_IFACE: The #GType of the interface to add
- * @iface_init: The interface init function
+ * @iface_init: (type GInterfaceInitFunc): The interface init function, of type #GInterfaceInitFunc
  *
  * A convenience macro to ease interface addition in the `_C_` section
  * of G_DEFINE_TYPE_WITH_CODE() or G_DEFINE_ABSTRACT_TYPE_WITH_CODE().
