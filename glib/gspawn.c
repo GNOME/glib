@@ -1128,6 +1128,14 @@ set_cloexec (void *data, gint fd)
   return 0;
 }
 
+#ifndef HAVE_CLOSEFROM
+#ifdef F_CLOSEM
+static void
+closefrom (int lowfd)
+{
+  (void) fcntl (lowfd, F_CLOSEM);
+}
+#else
 #ifndef HAVE_FDWALK
 #ifdef __linux__
 struct linux_dirent64
@@ -1225,7 +1233,37 @@ fdwalk (int (*cb)(void *data, int fd), void *data)
 
   return res;
 }
-#endif
+#endif /* HAVE_FDWALK */
+
+static gint
+sane_close (gint fd)
+{
+  gint ret;
+
+ retry:
+  ret = close (fd);
+  if (ret < 0 && errno == EINTR)
+    goto retry;
+
+  return ret;
+}
+
+static int
+close_func (void *data, int fd)
+{
+  if (fd >= GPOINTER_TO_INT (data))
+    (void) sane_close (fd);
+
+  return 0;
+}
+
+static void
+closefrom (int lowfd)
+{
+  (void) fdwalk (close_func, GINT_TO_POINTER (lowfd));
+}
+#endif /* F_CLOSEM */
+#endif /* HAVE_CLOSEFROM */
 
 static gint
 sane_dup2 (gint fd1, gint fd2)
@@ -1282,21 +1320,6 @@ do_exec (gint                  child_err_report_fd,
   if (working_directory && chdir (working_directory) < 0)
     write_err_and_exit (child_err_report_fd,
                         CHILD_CHDIR_FAILED);
-
-  /* Close all file descriptors but stdin stdout and stderr as
-   * soon as we exec. Note that this includes
-   * child_err_report_fd, which keeps the parent from blocking
-   * forever on the other end of that pipe.
-   */
-  if (close_descriptors)
-    {
-      fdwalk (set_cloexec, GINT_TO_POINTER(3));
-    }
-  else
-    {
-      /* We need to do child_err_report_fd anyway */
-      set_cloexec (GINT_TO_POINTER(0), child_err_report_fd);
-    }
   
   /* Redirect pipes as required */
   
@@ -1352,6 +1375,21 @@ do_exec (gint                  child_err_report_fd,
       gint write_null = sane_open ("/dev/null", O_WRONLY);
       sane_dup2 (write_null, 2);
       close_and_invalidate (&write_null);
+    }
+
+  /* Close all file descriptors but stdin, stdout and stderr
+   * before we exec. Note that this includes
+   * child_err_report_fd, which keeps the parent from blocking
+   * forever on the other end of that pipe.
+   */
+  if (close_descriptors)
+    {
+      closefrom (3);
+    }
+  else
+    {
+      /* We need to do child_err_report_fd anyway */
+      set_cloexec (GINT_TO_POINTER(0), child_err_report_fd);
     }
   
   /* Call user function just before we exec */

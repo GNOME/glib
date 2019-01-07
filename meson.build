@@ -390,6 +390,7 @@ if host_system == 'windows'
 endif
 
 functions = [
+  'closefrom',
   'endmntent',
   'endservent',
   'fallocate',
