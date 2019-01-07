@@ -144,10 +144,20 @@ GLIB_AVAILABLE_IN_ALL
 void     g_queue_insert_before  (GQueue           *queue,
                                  GList            *sibling,
                                  gpointer          data);
+GLIB_AVAILABLE_IN_2_62
+void     g_queue_insert_before_link
+                                (GQueue           *queue,
+                                 GList            *sibling,
+                                 GList            *link_);
 GLIB_AVAILABLE_IN_ALL
 void     g_queue_insert_after   (GQueue           *queue,
                                  GList            *sibling,
                                  gpointer          data);
+GLIB_AVAILABLE_IN_2_62
+void     g_queue_insert_after_link
+                                (GQueue           *queue,
+                                 GList            *sibling,
+                                 GList            *link_);
 GLIB_AVAILABLE_IN_ALL
 void     g_queue_insert_sorted  (GQueue           *queue,
                                  gpointer          data,

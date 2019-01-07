@@ -1048,6 +1048,44 @@ g_queue_insert_before (GQueue   *queue,
 }
 
 /**
+ * g_queue_insert_before_link:
+ * @queue: a #GQueue
+ * @sibling: (nullable): a #GList link that must be part of @queue, or %NULL to
+ *   push at the tail of the queue.
+ * @link_: a #GList link to insert which must not be part of any other list.
+ *
+ * Inserts @link_ into @queue before @sibling.
+ *
+ * @sibling must be part of @queue.
+ *
+ * Since: 2.62
+ */
+void
+g_queue_insert_before_link (GQueue   *queue,
+                            GList    *sibling,
+                            GList    *link_)
+{
+  g_return_if_fail (queue != NULL);
+  g_return_if_fail (link_ != NULL);
+  g_return_if_fail (link_->prev == NULL);
+  g_return_if_fail (link_->next == NULL);
+
+  if G_UNLIKELY (sibling == NULL)
+    {
+      /* We don't use g_list_insert_before_link() with a NULL sibling because it
+       * would be a O(n) operation and we would need to update manually the tail
+       * pointer.
+       */
+      g_queue_push_tail_link (queue, link_);
+    }
+  else
+    {
+      queue->head = g_list_insert_before_link (queue->head, sibling, link_);
+      queue->length++;
+    }
+}
+
+/**
  * g_queue_insert_after:
  * @queue: a #GQueue
  * @sibling: (nullable): a #GList link that must be part of @queue, or %NULL to
@@ -1072,6 +1110,35 @@ g_queue_insert_after (GQueue   *queue,
     g_queue_push_head (queue, data);
   else
     g_queue_insert_before (queue, sibling->next, data);
+}
+
+/**
+ * g_queue_insert_after_link:
+ * @queue: a #GQueue
+ * @sibling: (nullable): a #GList link that must be part of @queue, or %NULL to
+ *   push at the head of the queue.
+ * @link_: a #GList link to insert which must not be part of any other list.
+ *
+ * Inserts @link_ into @queue after @sibling.
+ *
+ * @sibling must be part of @queue.
+ *
+ * Since: 2.62
+ */
+void
+g_queue_insert_after_link (GQueue   *queue,
+                           GList    *sibling,
+                           GList    *link_)
+{
+  g_return_if_fail (queue != NULL);
+  g_return_if_fail (link_ != NULL);
+  g_return_if_fail (link_->prev == NULL);
+  g_return_if_fail (link_->next == NULL);
+
+  if G_UNLIKELY (sibling == NULL)
+    g_queue_push_head_link (queue, link_);
+  else
+    g_queue_insert_before_link (queue, sibling->next, link_);
 }
 
 /**

@@ -2390,7 +2390,9 @@ g_queue_index
 g_queue_remove
 g_queue_remove_all
 g_queue_insert_before
+g_queue_insert_before_link
 g_queue_insert_after
+g_queue_insert_after_link
 g_queue_insert_sorted
 g_queue_push_head_link
 g_queue_push_tail_link
