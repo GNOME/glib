@@ -181,9 +181,9 @@ g_list_store_get_item (GListModel *list,
 
   if (store->last_position != -1u)
     {
-      if (store->last_position == position + 1)
+      if (position < G_MAXUINT && store->last_position == position + 1)
         it = g_sequence_iter_prev (store->last_iter);
-      else if (store->last_position == position - 1)
+      else if (position > 0 && store->last_position == position - 1)
         it = g_sequence_iter_next (store->last_iter);
       else if (store->last_position == position)
         it = store->last_iter;
