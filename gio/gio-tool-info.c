@@ -22,8 +22,11 @@
 #include <gio/gio.h>
 #include <gi18n.h>
 
-#include "gio-tool.h"
+#ifdef G_OS_UNIX
+#include <gio/gunixmounts.h>
+#endif
 
+#include "gio-tool.h"
 
 static gboolean writable = FALSE;
 static gboolean filesystem = FALSE;
@@ -120,6 +123,10 @@ show_info (GFile *file, GFileInfo *info)
   const char *name, *type;
   char *escaped, *uri;
   goffset size;
+  const char *path;
+#ifdef G_OS_UNIX
+  GUnixMountEntry *entry;
+#endif
 
   name = g_file_info_get_display_name (info);
   if (name)
@@ -158,6 +165,34 @@ show_info (GFile *file, GFileInfo *info)
   uri = g_file_get_uri (file);
   g_print (_("uri: %s\n"), uri);
   g_free (uri);
+
+  path = g_file_peek_path (file);
+  if (path)
+    {
+      g_print (_("local path: %s\n"), path);
+
+#ifdef G_OS_UNIX
+      entry = g_unix_mount_at (path, NULL);
+      if (entry == NULL)
+        entry = g_unix_mount_for (path, NULL);
+      if (entry != NULL)
+        {
+          g_autofree gchar *device = NULL;
+          g_autofree gchar *mount = NULL;
+          g_autofree gchar *fs = NULL;
+          g_autofree gchar *options = NULL;
+
+          device = g_strescape (g_unix_mount_get_device_path (entry), NULL);
+          mount = g_strescape (g_unix_mount_get_mount_path (entry), NULL);
+          fs = g_strescape (g_unix_mount_get_fs_type (entry), NULL);
+          options = g_strescape (g_unix_mount_get_options (entry), NULL);
+
+          g_print (_("unix mount: %s %s %s %s\n"), device, mount, fs, options);
+
+          g_unix_mount_free (entry);
+        }
+#endif
+    }
 
   show_attributes (info);
 }
