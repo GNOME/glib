@@ -21,6 +21,8 @@
 #error This is a Unix-specific test
 #endif
 
+#include <errno.h>
+
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gunixmounts.h>
@@ -107,8 +109,21 @@ test_trash_symlinks (void)
 
   g_test_bug ("1522");
 
-  /* The test assumes that ~/.local always exists. */
   target = g_build_filename (g_get_home_dir (), ".local", NULL);
+
+  if (g_mkdir_with_parents (target, 0700) != 0)
+    {
+      int saved_errno = errno;
+      gchar *message;
+
+      message = g_strdup_printf ("Unable to create %s: %s",
+                                 target, g_strerror (saved_errno));
+      g_test_skip (message);
+      g_free (message);
+      g_free (target);
+      return;
+    }
+
   target_mount = g_unix_mount_for (target, NULL);
   g_assert_nonnull (target_mount);
   g_test_message ("Target: %s (mount: %s)", target, g_unix_mount_get_mount_path (target_mount));
