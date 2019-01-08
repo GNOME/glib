@@ -2363,6 +2363,7 @@ g_queue_free_full
 G_QUEUE_INIT
 g_queue_init
 g_queue_clear
+g_queue_clear_full
 g_queue_is_empty
 g_queue_get_length
 g_queue_reverse
