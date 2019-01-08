@@ -22,8 +22,11 @@
 #include <gio/gio.h>
 #include <gi18n.h>
 
-#include "gio-tool.h"
+#ifdef G_OS_UNIX
+#include <gio/gunixmounts.h>
+#endif
 
+#include "gio-tool.h"
 
 static gboolean writable = FALSE;
 static gboolean filesystem = FALSE;
@@ -120,6 +123,10 @@ show_info (GFile *file, GFileInfo *info)
   const char *name, *type;
   char *escaped, *uri;
   goffset size;
+  char *path;
+#ifdef G_OS_UNIX
+  GUnixMountEntry *entry;
+#endif
 
   name = g_file_info_get_display_name (info);
   if (name)
@@ -158,6 +165,32 @@ show_info (GFile *file, GFileInfo *info)
   uri = g_file_get_uri (file);
   g_print (_("uri: %s\n"), uri);
   g_free (uri);
+
+  path = g_file_get_path (file);
+  g_print (_("local path: %s\n"), path);
+
+#ifdef G_OS_UNIX
+  entry = g_unix_mount_at (path, NULL);
+
+  if (entry != NULL)
+    {
+      g_print (_("mount point for: %s\n"), g_unix_mount_get_device_path (entry));
+      g_print (_("mounted filesystem: %s\n"), g_unix_mount_get_fs_type (entry));
+      g_print (_("mount options: %s\n"), g_unix_mount_get_options (entry));
+
+      if (g_unix_mount_is_system_internal (entry))
+        g_print (_("mount is system-internal: yes\n"));
+      else
+        g_print (_("mount is system-internal: no\n"));
+    }
+
+  entry = g_unix_mount_for (path, NULL);
+
+  if (entry != NULL)
+    g_print (_("enclosing mount point: %s\n"), g_unix_mount_get_mount_path (entry));
+
+  g_free (path);
+#endif
 
   show_attributes (info);
 }
