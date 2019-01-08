@@ -1505,7 +1505,8 @@ typedef enum
  * GTlsError:
  * @G_TLS_ERROR_UNAVAILABLE: No TLS provider is available
  * @G_TLS_ERROR_MISC: Miscellaneous TLS error
- * @G_TLS_ERROR_BAD_CERTIFICATE: A certificate could not be parsed
+ * @G_TLS_ERROR_BAD_CERTIFICATE: The certificate presented could not
+ *   be parsed or failed validation.
  * @G_TLS_ERROR_NOT_TLS: The TLS handshake failed because the
  *   peer does not seem to be a TLS server.
  * @G_TLS_ERROR_HANDSHAKE: The TLS handshake failed because the

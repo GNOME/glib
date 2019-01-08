@@ -323,8 +323,8 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * let the user decide whether or not to accept the certificate, you
    * would have to return %FALSE from the signal handler on the first
    * attempt, and then after the connection attempt returns a
-   * %G_TLS_ERROR_HANDSHAKE, you can interact with the user, and if
-   * the user decides to accept the certificate, remember that fact,
+   * %G_TLS_ERROR_BAD_CERTIFICATE, you can interact with the user, and
+   * if the user decides to accept the certificate, remember that fact,
    * create a new connection, and return %TRUE from the signal handler
    * the next time.
    *
