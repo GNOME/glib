@@ -34,7 +34,7 @@ fedora-x86_64:
     - ninja -C _build
     - mkdir -p _coverage
     - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
-    - meson test -C _build --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER}
+    - meson test -C _build --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} --no-suite flaky
     - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
     # FIXME: We should run all installed tests, but do only this one for now
     # because it cannot run uninstalled. Reconfigure with dtrace disabled
@@ -142,7 +142,7 @@ freebsd-11-x86_64:
     # FIXME: extattr(2) support: https://gitlab.gnome.org/GNOME/glib/issues/1404
     - meson ${MESON_COMMON_OPTIONS} -Db_lundef=false -Diconv=gnu -Dxattr=false _build
     - ninja -C _build
-    - meson test -C _build --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
+    - meson test -C _build --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" --no-suite flaky
   except:
     - tags
   artifacts:
