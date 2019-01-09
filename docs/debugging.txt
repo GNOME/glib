@@ -36,6 +36,3 @@ supports an environment variable GOBJECT_DEBUG that can be set to a
 combination of the flags passed in to g_type_init() (currently
 "objects" and "signals") to trigger debugging messages about
 object bookkeeping and signal emissions during runtime.
-
-
-2000/02/04	Tim Janik

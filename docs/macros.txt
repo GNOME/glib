@@ -53,6 +53,3 @@ G_ENABLE_DEBUG
 	- object ref/unref traps (consult debugging.txt) and object bookkeeping
 	  in gobject.c
 	- extra validity checks in gsignal.c
-
-
-2000/12/28	Tim Janik
