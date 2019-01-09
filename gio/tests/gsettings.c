@@ -2798,12 +2798,8 @@ main (int argc, char *argv[])
       if (!backend_set)
         g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
 
-/* Meson build defines this, autotools build does not */
-#ifndef GLIB_MKENUMS
-#define GLIB_MKENUMS "../../gobject/glib-mkenums"
-#endif
-
       g_remove ("org.gtk.test.enums.xml");
+      /* #GLIB_MKENUMS is defined in meson.build */
       g_assert (g_spawn_command_line_sync (GLIB_MKENUMS " "
                                            "--template " SRCDIR "/enums.xml.template "
                                            SRCDIR "/testenum.h",
@@ -2820,12 +2816,8 @@ main (int argc, char *argv[])
       g_assert (g_file_set_contents ("org.gtk.test.gschema.override", override_text, -1, NULL));
       g_free (override_text);
 
-/* Meson build defines this, autotools build does not */
-#ifndef GLIB_COMPILE_SCHEMAS
-#define GLIB_COMPILE_SCHEMAS "../glib-compile-schemas"
-#endif
-
       g_remove ("gschemas.compiled");
+      /* #GLIB_COMPILE_SCHEMAS is defined in meson.build */
       g_assert (g_spawn_command_line_sync (GLIB_COMPILE_SCHEMAS " --targetdir=. "
                                            "--schema-file=org.gtk.test.enums.xml "
                                            "--schema-file=org.gtk.test.gschema.xml "
