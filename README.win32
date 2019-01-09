@@ -29,7 +29,7 @@ Note that to just *use* GLib on Windows, there is no need to build it
 yourself.
 
 On Windows setting up a correct build environment can be quite a task,
-especially if you are used to just type "./configure; make" on Linux,
+especially if you are used to just typing `meson; ninja` on Linux,
 and expect things to work as smoothly on Windows.
 
 The following preprocessor macros are to be used for conditional
