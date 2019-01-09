@@ -679,7 +679,6 @@ test_uri_query_info (void)
   g_resources_register (resource);
 
   file = g_file_new_for_uri ("resource://" "/a_prefix/test2-alias.txt");
-
   info = g_file_query_info (file, "*", 0, NULL, &error);
   g_assert_no_error (error);
 
@@ -893,6 +892,37 @@ test_resource_64k (void)
   g_bytes_unref (data);
 }
 
+/* Check that g_resources_get_info() respects G_RESOURCE_OVERLAYS */
+static void
+test_overlay (void)
+{
+  if (g_test_subprocess ())
+    {
+       GError *error = NULL;
+       gboolean res;
+       gsize size;
+       char *overlay;
+       char *path;
+
+       path = g_test_build_filename (G_TEST_DIST, "test1.overlay", NULL);
+       overlay = g_strconcat ("/auto_loaded/test1.txt=", path, NULL);
+
+       g_setenv ("G_RESOURCE_OVERLAYS", overlay, TRUE);
+       res = g_resources_get_info ("/auto_loaded/test1.txt", 0, &size, NULL, &error);
+       g_assert_true (res);
+       g_assert_no_error (error);
+       /* test1.txt is 6 bytes, test1.overlay is 23 */
+       g_assert_cmpint (size, ==, 23);
+
+       g_free (overlay);
+       g_free (path);
+
+       return;
+    }
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_STDERR);
+  g_test_trap_assert_passed ();
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -919,6 +949,7 @@ main (int   argc,
   g_test_add_func ("/resource/uri/query-info", test_uri_query_info);
   g_test_add_func ("/resource/uri/file", test_uri_file);
   g_test_add_func ("/resource/64k", test_resource_64k);
+  g_test_add_func ("/resource/overlay", test_overlay);
 
   return g_test_run();
 }
