@@ -195,9 +195,9 @@
  * [TAP](https://testanything.org/) harness; GLib provides template files for
  * easily integrating with it:
  *
- *   - [glib-tap.mk](https://git.gnome.org/browse/glib/tree/glib-tap.mk)
- *   - [tap-test](https://git.gnome.org/browse/glib/tree/tap-test)
- *   - [tap-driver.sh](https://git.gnome.org/browse/glib/tree/tap-driver.sh)
+ *   - [glib-tap.mk](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/glib-tap.mk)
+ *   - [tap-test](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/tap-test)
+ *   - [tap-driver.sh](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/tap-driver.sh)
  *
  * You can copy these files in your own project's root directory, and then
  * set up your `Makefile.am` file to reference them, for instance:
@@ -234,8 +234,8 @@
  *
  * If you don't have access to the Autotools TAP harness, you can use the
  * [gtester][gtester] and [gtester-report][gtester-report] tools, and use
- * the [glib.mk](https://git.gnome.org/browse/glib/tree/glib.mk) Automake
- * template provided by GLib.
+ * the [glib.mk](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/glib.mk)
+ * Automake template provided by GLib.
  */
 
 /**
