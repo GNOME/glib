@@ -486,6 +486,11 @@ _g_get_unix_mounts (void)
   if (mnt_table_parse_mtab (table, NULL) < 0)
     goto out;
 
+  /* Use only the first mount for device, see comment from _g_get_unix_mounts
+   * in #else branch.
+   */
+  mnt_table_uniq_fs (table, MNT_UNIQ_FORWARD, uniq_fs_source_cmp);
+
   iter = mnt_new_iter (MNT_ITER_FORWARD);
   while (mnt_table_next_fs (table, iter, &fs) == 0)
     {
@@ -493,11 +498,6 @@ _g_get_unix_mounts (void)
       char *mount_options = NULL;
       unsigned long mount_flags = 0;
       gboolean is_read_only = FALSE;
-
-      /* Use only the first mount for device, see comment from _g_get_unix_mounts
-       * in #else branch.
-       */
-      mnt_table_uniq_fs (table, MNT_UNIQ_FORWARD, uniq_fs_source_cmp);
 
       device_path = mnt_fs_get_source (fs);
       if (g_strcmp0 (device_path, "/dev/root") == 0)
