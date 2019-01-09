@@ -3,12 +3,13 @@
 GLib's configure options and corresponding macros
 =================================================
 
---enable-debug=no
-	-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS
---enable-debug=minimum	[default for stable branches]
+--buildtype={plain,release,minsize,custom}
 	none
---enable-debug=yes	[default for development branches]
+--buildtype={debug,debugoptimized}	[debugoptimized is the default]
 	-DG_ENABLE_DEBUG -g
+
+Available to define yourself:
+	-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS
 
 Besides these, there are some local feature specific options, but my main
 focus here is to concentrate on macros that affect overall GLib behaviour
@@ -22,8 +23,8 @@ G_DISABLE_ASSERT
 	The g_assert() and g_assert_not_reached() become non-functional
 	with this define. The motivation is to speed up end-user apps by
 	avoiding expensive checks.
-	This macro can affect third-party code. --enable-debug=no will only
-	disable the assertion macros for GLib itself, but third-party code
+	This macro can affect third-party code. Defining it when building GLib
+	will only disable the assertion macros for GLib itself, but third-party code
 	that passes -DG_DISABLE_ASSERT to the compiler upon its own build
 	will end up with the non-functional variants after including glib.h
 	as well.
