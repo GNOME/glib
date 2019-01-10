@@ -2305,7 +2305,9 @@ g_nullify_pointer (gpointer *nullify_location)
  * Formats a size (for example the size of a file) into a human readable
  * string.  Sizes are rounded to the nearest size prefix (kB, MB, GB)
  * and are displayed rounded to the nearest tenth. E.g. the file size
- * 3292528 bytes will be converted into the string "3.2 MB".
+ * 3292528 bytes will be converted into the string "3.2 MB". The returned string
+ * is UTF-8, and may use a non-breaking space to separate the number and units,
+ * to ensure they aren’t separated when line wrapped.
  *
  * The prefix units base is 1000 (i.e. 1 kB is 1000 bytes).
  *
