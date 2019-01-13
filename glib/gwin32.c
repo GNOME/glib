@@ -1115,6 +1115,7 @@ subst_pid_and_event (char     *debugger,
 static LONG __stdcall
 g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 {
+  EXCEPTION_RECORD    *er;
   char                 debugger[MAX_PATH + 1];
   char                *debugger_env = NULL;
   char                *catch_list;
@@ -1128,7 +1129,9 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
       ExceptionInfo->ExceptionRecord == NULL)
     return EXCEPTION_CONTINUE_SEARCH;
 
-  switch (ExceptionInfo->ExceptionRecord->ExceptionCode)
+  er = ExceptionInfo->ExceptionRecord;
+
+  switch (er->ExceptionCode)
     {
     case EXCEPTION_ACCESS_VIOLATION:
     case EXCEPTION_STACK_OVERFLOW:
@@ -1150,7 +1153,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
           catch_list = end;
           if (catch_list != NULL && catch_list[0] == ',')
             catch_list++;
-          if (catch_code == ExceptionInfo->ExceptionRecord->ExceptionCode)
+          if (catch_code == er->ExceptionCode)
             catch = TRUE;
         }
 
@@ -1167,10 +1170,36 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
     }
 
   fprintf (stderr,
-           "Exception code=0x%lx flags=0x%lx at 0x%p ",
-           ExceptionInfo->ExceptionRecord->ExceptionCode,
-           ExceptionInfo->ExceptionRecord->ExceptionFlags,
-           ExceptionInfo->ExceptionRecord->ExceptionAddress);
+           "Exception code=0x%lx flags=0x%lx at 0x%p",
+           er->ExceptionCode,
+           er->ExceptionFlags,
+           er->ExceptionAddress);
+
+  switch (er->ExceptionCode)
+    {
+    case EXCEPTION_ACCESS_VIOLATION:
+      fprintf (stderr,
+               ". Access violation - attempting to %s at address 0x%p\n",
+               er->ExceptionInformation[0] == 0 ? "read data" :
+               er->ExceptionInformation[0] == 1 ? "write data" :
+               er->ExceptionInformation[0] == 8 ? "execute data" :
+               "do something bad",
+               (void *) er->ExceptionInformation[1]);
+      break;
+    case EXCEPTION_IN_PAGE_ERROR:
+      fprintf (stderr,
+               ". Page access violation - attempting to %s at address 0x%p with status %Ix\n",
+               er->ExceptionInformation[0] == 0 ? "read from an inaccessible page" :
+               er->ExceptionInformation[0] == 1 ? "write to an inaccessible page" :
+               er->ExceptionInformation[0] == 8 ? "execute data in page" :
+               "do something bad with a page",
+               (void *) er->ExceptionInformation[1],
+               er->ExceptionInformation[2]);
+      break;
+    default:
+      break;
+    }
+
   debugger_env = getenv ("G_DEBUGGER");
 
   if (debugger_env == NULL)
