@@ -1018,4 +1018,153 @@ g_console_win32_init (void)
     }
 }
 
+static void *WinVEH_handle = NULL;
+
+/**
+ * Handles exceptions (useful for debugging).
+ * Issues a DebugBreak() call if the process is being debugged (not really
+ * useful - if the process is being debugged, this handler won't be invoked
+ * anyway). If it is not, runs a debugger from G_DEBUGGER env var,
+ * substituting first %u in it for PID, and the %u for the event handle -
+ * that event should be set once the debugger attaches itself (otherwise the
+ * only way out of WaitForSingleObject() is to time out after 1 minute).
+ * For example, G_DEBUGGER can be set to the following command:
+ * gdb.exe -ex "attach %lu" -ex "signal-event %lu" -ex "bt" -ex "c"
+ * This will make GDB attach to the process, signal the event (GDB must be
+ * recent enough for the signal-event command to be available),
+ * show the backtrace and resume execution, which should make it catch
+ * the exception when Windows re-raises it again.
+ *
+ * This function will only stop (and run a debugger) on the following exceptions:
+ * * EXCEPTION_ACCESS_VIOLATION
+ * * EXCEPTION_STACK_OVERFLOW
+ * * EXCEPTION_ILLEGAL_INSTRUCTION
+ * To make it stop at other exceptions one should set the G_VEH_CATCH
+ * environment variable to a list of comma-separated hexademical numbers,
+ * where each number is the code of an exception that should be caught.
+ * This is done to prevent GLib from breaking when Windows uses
+ * exceptions to shuttle information (SetThreadName(), OutputDebugString())
+ * or for control flow.
+ *
+ * This function deliberately avoids calling any GLib code.
+ */
+static LONG __stdcall
+g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
+{
+  char                 debugger[MAX_PATH + 1];
+  char                *debugger_env = NULL;
+  char                *catch_list;
+  gboolean             catch = FALSE;
+  STARTUPINFO          si;
+  PROCESS_INFORMATION  pi;
+  HANDLE               event;
+  SECURITY_ATTRIBUTES  sa;
+
+  if (ExceptionInfo == NULL ||
+      ExceptionInfo->ExceptionRecord == NULL)
+    return EXCEPTION_CONTINUE_SEARCH;
+
+  switch (ExceptionInfo->ExceptionRecord->ExceptionCode)
+    {
+    case EXCEPTION_ACCESS_VIOLATION:
+    case EXCEPTION_STACK_OVERFLOW:
+    case EXCEPTION_ILLEGAL_INSTRUCTION:
+      break;
+    default:
+      catch_list = getenv ("G_VEH_CATCH");
+
+      while (!catch &&
+             catch_list != NULL &&
+             catch_list[0] != 0)
+        {
+          unsigned long  catch_code;
+          char          *end;
+          errno = 0;
+          catch_code = strtol (catch_list, &end, 16);
+          if (errno != NO_ERROR)
+            break;
+          catch_list = end;
+          if (catch_list != NULL && catch_list[0] == ',')
+            catch_list++;
+          if (catch_code == ExceptionInfo->ExceptionRecord->ExceptionCode)
+            catch = TRUE;
+        }
+
+      if (catch)
+        break;
+
+      return EXCEPTION_CONTINUE_SEARCH;
+    }
+
+  if (IsDebuggerPresent ())
+    {
+      DebugBreak ();
+      return EXCEPTION_CONTINUE_EXECUTION;
+    }
+
+  fprintf (stderr,
+           "Exception code=0x%lx flags=0x%lx at 0x%p ",
+           ExceptionInfo->ExceptionRecord->ExceptionCode,
+           ExceptionInfo->ExceptionRecord->ExceptionFlags,
+           ExceptionInfo->ExceptionRecord->ExceptionAddress);
+  debugger_env = getenv ("G_DEBUGGER");
+
+  if (debugger_env == NULL)
+    return EXCEPTION_CONTINUE_SEARCH;
+
+  memset (&si, 0, sizeof (si));
+  memset (&pi, 0, sizeof (pi));
+  memset (&sa, 0, sizeof (sa));
+  si.cb = sizeof (si);
+  sa.nLength = sizeof (sa);
+  sa.bInheritHandle = TRUE;
+  event = CreateEvent (&sa, FALSE, FALSE, NULL);
+  snprintf (debugger,
+            G_N_ELEMENTS (debugger),
+            debugger_env,
+            GetCurrentProcessId (),
+            (guintptr) event);
+  debugger[MAX_PATH] = '\0';
+  if (0 != CreateProcessA (NULL,
+                           debugger,
+                           NULL,
+                           NULL,
+                           TRUE,
+                           CREATE_NEW_CONSOLE,
+                           NULL,
+                           NULL,
+                           &si,
+                           &pi))
+    {
+      CloseHandle (pi.hProcess);
+      CloseHandle (pi.hThread);
+      WaitForSingleObject (event, 60000);
+    }
+
+  CloseHandle (event);
+
+  if (IsDebuggerPresent ())
+    return EXCEPTION_CONTINUE_EXECUTION;
+
+  return EXCEPTION_CONTINUE_SEARCH;
+}
+
+void
+g_crash_handler_win32_init ()
+{
+  if (WinVEH_handle != NULL)
+    return;
+
+  WinVEH_handle = AddVectoredExceptionHandler (0, &g_win32_veh_handler);
+}
+
+void
+g_crash_handler_win32_deinit ()
+{
+  if (WinVEH_handle != NULL)
+    RemoveVectoredExceptionHandler (WinVEH_handle);
+
+  WinVEH_handle = NULL;
+}
+
 #endif
