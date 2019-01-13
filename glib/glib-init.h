@@ -36,6 +36,8 @@ void g_thread_win32_thread_detach (void);
 void g_thread_win32_init (void);
 void g_console_win32_init (void);
 void g_clock_win32_init (void);
+void g_crash_handler_win32_init (void);
+void g_crash_handler_win32_deinit (void);
 extern HMODULE glib_dll;
 #endif
 
