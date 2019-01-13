@@ -286,6 +286,7 @@ DllMain (HINSTANCE hinstDLL,
     {
     case DLL_PROCESS_ATTACH:
       glib_dll = hinstDLL;
+      g_crash_handler_win32_init ();
       g_clock_win32_init ();
 #ifdef THREADS_WIN32
       g_thread_win32_init ();
@@ -306,6 +307,7 @@ DllMain (HINSTANCE hinstDLL,
       if (lpvReserved == NULL)
         g_thread_win32_process_detach ();
 #endif
+      g_crash_handler_win32_deinit ();
       break;
 
     default:
