@@ -190,6 +190,10 @@
 #define G_GNUC_SCANF( format_idx, arg_idx )
 #define G_GNUC_STRFTIME( format_idx )
 #define G_GNUC_FORMAT( arg_idx )
+/* NOTE: MSVC has __declspec(noreturn) but unlike GCC __attribute__,
+ * __declspec can only be placed at the start of the function prototype
+ * and not at the end, so we can't use it without breaking API.
+ */
 #define G_GNUC_NORETURN
 #define G_GNUC_CONST
 #define G_GNUC_UNUSED
