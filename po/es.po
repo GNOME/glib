@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-01-05 07:57+0000\n"
-"PO-Revision-Date: 2019-01-08 15:57+0100\n"
+"POT-Creation-Date: 2019-01-10 11:27+0000\n"
+"PO-Revision-Date: 2019-01-14 10:47+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -309,13 +309,13 @@ msgid "Not enough space in destination"
 msgstr "No hay suficiente espacio en el destino"
 
 #: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
-#: gio/gdatainputstream.c:1261 glib/gconvert.c:454 glib/gconvert.c:884
+#: gio/gdatainputstream.c:1261 glib/gconvert.c:455 glib/gconvert.c:885
 #: glib/giochannel.c:1557 glib/giochannel.c:1599 glib/giochannel.c:2443
 #: glib/gutf8.c:869 glib/gutf8.c:1322
 msgid "Invalid byte sequence in conversion input"
 msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 
-#: gio/gcharsetconverter.c:347 glib/gconvert.c:462 glib/gconvert.c:798
+#: gio/gcharsetconverter.c:347 glib/gconvert.c:463 glib/gconvert.c:799
 #: glib/giochannel.c:1564 glib/giochannel.c:2455
 #, c-format
 msgid "Error during conversion: %s"
@@ -325,13 +325,13 @@ msgstr "Falló durante la conversión: %s"
 msgid "Cancellable initialization not supported"
 msgstr "La inicialización cancelable no eestá soportada"
 
-#: gio/gcharsetconverter.c:456 glib/gconvert.c:327 glib/giochannel.c:1385
+#: gio/gcharsetconverter.c:456 glib/gconvert.c:328 glib/giochannel.c:1385
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr ""
 "La conversión desde el conjunto de caracteres «%s» a «%s» no está soportada"
 
-#: gio/gcharsetconverter.c:460 glib/gconvert.c:331
+#: gio/gcharsetconverter.c:460 glib/gconvert.c:332
 #, c-format
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "No se pudo abrir el conversor de «%s» a «%s»"
@@ -1498,7 +1498,7 @@ msgid "Truncate not supported on stream"
 msgstr "No se soporta el truncamiento en el flujo"
 
 #: gio/ghttpproxy.c:91 gio/gresolver.c:377 gio/gresolver.c:529
-#: glib/gconvert.c:1787
+#: glib/gconvert.c:1785
 msgid "Invalid hostname"
 msgstr "El nombre del host no es válido"
 
@@ -4294,54 +4294,54 @@ msgstr "Ninguna aplicación con nombre «%s» registró un marcador para «%s»"
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Falló la expansión de lalinea ejecutable «%s» con el URI «%s»"
 
-#: glib/gconvert.c:473
+#: glib/gconvert.c:474
 msgid "Unrepresentable character in conversion input"
 msgstr "Carácter no representable en entrada de conversión"
 
-#: glib/gconvert.c:500 glib/gutf8.c:865 glib/gutf8.c:1077 glib/gutf8.c:1214
+#: glib/gconvert.c:501 glib/gutf8.c:865 glib/gutf8.c:1077 glib/gutf8.c:1214
 #: glib/gutf8.c:1318
 msgid "Partial character sequence at end of input"
 msgstr "Hay una secuencia parcial de caracteres en el final de la entrada"
 
-#: glib/gconvert.c:769
+#: glib/gconvert.c:770
 #, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "No se puede convertir el fallback «%s» al conjunto de códigos «%s»"
 
-#: glib/gconvert.c:941
+#: glib/gconvert.c:942
 msgid "Embedded NUL byte in conversion input"
 msgstr "Tipo NUL empotrado en la entrada de conversión"
 
-#: glib/gconvert.c:962
+#: glib/gconvert.c:963
 msgid "Embedded NUL byte in conversion output"
 msgstr "Tipo NUL empotrado en la salida de conversión"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1648
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "El URI «%s» no es una URI absoluta utilizando el esquema «file»"
 
-#: glib/gconvert.c:1660
+#: glib/gconvert.c:1658
 #, c-format
 msgid "The local file URI “%s” may not include a “#”"
 msgstr "El archivo local en la URI «%s» no debe incluir un «#»"
 
-#: glib/gconvert.c:1677
+#: glib/gconvert.c:1675
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "El URI «%s» no es válido"
 
-#: glib/gconvert.c:1689
+#: glib/gconvert.c:1687
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "El nombre del host de la URI «%s» no es válido"
 
-#: glib/gconvert.c:1705
+#: glib/gconvert.c:1703
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "El URI «%s» contiene caracteres de escape no válidos"
 
-#: glib/gconvert.c:1777
+#: glib/gconvert.c:1775
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "El nombre de la ruta «%s» no es una ruta absoluta"
@@ -5839,134 +5839,182 @@ msgstr "Secuencia no válida en la entrada de conversión"
 msgid "Character out of range for UTF-16"
 msgstr "El carácter se sale del rango para UTF-16"
 
-#: glib/gutils.c:2381
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2382
 #, c-format
-msgid "%.1f kB"
-msgstr "%.1f kB"
+#| msgid "%.1f kB"
+msgid "%.1f kB"
+msgstr "%.1f kB"
 
-#: glib/gutils.c:2382 glib/gutils.c:2588
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2384
 #, c-format
-msgid "%.1f MB"
-msgstr "%.1f MB"
+#| msgid "%.1f MB"
+msgid "%.1f MB"
+msgstr "%.1f MB"
 
-#: glib/gutils.c:2383 glib/gutils.c:2593
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2386
 #, c-format
-msgid "%.1f GB"
-msgstr "%.1f GB"
+#| msgid "%.1f GB"
+msgid "%.1f GB"
+msgstr "%.1f GB"
 
-#: glib/gutils.c:2384 glib/gutils.c:2598
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2388
 #, c-format
-msgid "%.1f TB"
-msgstr "%.1f TB"
+#| msgid "%.1f TB"
+msgid "%.1f TB"
+msgstr "%.1f TB"
 
-#: glib/gutils.c:2385 glib/gutils.c:2603
-#, c-format
-msgid "%.1f PB"
-msgstr "%.1f PB"
-
-#: glib/gutils.c:2386 glib/gutils.c:2608
-#, c-format
-msgid "%.1f EB"
-msgstr "%.1f EB"
-
-#: glib/gutils.c:2389
-#, c-format
-msgid "%.1f KiB"
-msgstr "%.1f KiB"
-
+#. Translators: Keep the no-break space between %.1f and the unit symbol
 #: glib/gutils.c:2390
 #, c-format
-msgid "%.1f MiB"
-msgstr "%.1f MiB"
+#| msgid "%.1f PB"
+msgid "%.1f PB"
+msgstr "%.1f PB"
 
-#: glib/gutils.c:2391
-#, c-format
-msgid "%.1f GiB"
-msgstr "%.1f GiB"
-
+#. Translators: Keep the no-break space between %.1f and the unit symbol
 #: glib/gutils.c:2392
 #, c-format
-msgid "%.1f TiB"
-msgstr "%.1f TiB"
+#| msgid "%.1f EB"
+msgid "%.1f EB"
+msgstr "%.1f EB"
 
-#: glib/gutils.c:2393
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2396
 #, c-format
-msgid "%.1f PiB"
-msgstr "%.1f PiB"
+#| msgid "%.1f KiB"
+msgid "%.1f KiB"
+msgstr "%.1f KiB"
 
-#: glib/gutils.c:2394
-#, c-format
-msgid "%.1f EiB"
-msgstr "%.1f EiB"
-
-#: glib/gutils.c:2397
-#, c-format
-msgid "%.1f kb"
-msgstr "%.1f kb"
-
+#. Translators: Keep the no-break space between %.1f and the unit symbol
 #: glib/gutils.c:2398
 #, c-format
-msgid "%.1f Mb"
-msgstr "%.1f Mb"
+#| msgid "%.1f MiB"
+msgid "%.1f MiB"
+msgstr "%.1f MiB"
 
-#: glib/gutils.c:2399
-#, c-format
-msgid "%.1f Gb"
-msgstr "%.1f Gb"
-
+#. Translators: Keep the no-break space between %.1f and the unit symbol
 #: glib/gutils.c:2400
 #, c-format
-msgid "%.1f Tb"
-msgstr "%.1f Tb"
+#| msgid "%.1f GiB"
+msgid "%.1f GiB"
+msgstr "%.1f GiB"
 
-#: glib/gutils.c:2401
-#, c-format
-msgid "%.1f Pb"
-msgstr "%.1f Pb"
-
+#. Translators: Keep the no-break space between %.1f and the unit symbol
 #: glib/gutils.c:2402
 #, c-format
-msgid "%.1f Eb"
-msgstr "%.1f Eb"
+#| msgid "%.1f TiB"
+msgid "%.1f TiB"
+msgstr "%.1f TiB"
 
-#: glib/gutils.c:2405
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2404
 #, c-format
-msgid "%.1f Kib"
-msgstr "%.1f Kib"
+#| msgid "%.1f PiB"
+msgid "%.1f PiB"
+msgstr "%.1f PiB"
 
+#. Translators: Keep the no-break space between %.1f and the unit symbol
 #: glib/gutils.c:2406
 #, c-format
-msgid "%.1f Mib"
-msgstr "%.1f Mib"
+#| msgid "%.1f EiB"
+msgid "%.1f EiB"
+msgstr "%.1f EiB"
 
-#: glib/gutils.c:2407
-#, c-format
-msgid "%.1f Gib"
-msgstr "%.1f Gib"
-
-#: glib/gutils.c:2408
-#, c-format
-msgid "%.1f Tib"
-msgstr "%.1f Tib"
-
-#: glib/gutils.c:2409
-#, c-format
-msgid "%.1f Pib"
-msgstr "%.1f Pib"
-
+#. Translators: Keep the no-break space between %.1f and the unit symbol
 #: glib/gutils.c:2410
 #, c-format
-msgid "%.1f Eib"
-msgstr "%.1f Eib"
+#| msgid "%.1f kb"
+msgid "%.1f kb"
+msgstr "%.1f kb"
 
-#: glib/gutils.c:2444 glib/gutils.c:2570
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2412
+#, c-format
+#| msgid "%.1f Mb"
+msgid "%.1f Mb"
+msgstr "%.1f Mb"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2414
+#, c-format
+#| msgid "%.1f Gb"
+msgid "%.1f Gb"
+msgstr "%.1f Gb"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2416
+#, c-format
+#| msgid "%.1f Tb"
+msgid "%.1f Tb"
+msgstr "%.1f Tb"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2418
+#, c-format
+#| msgid "%.1f Pb"
+msgid "%.1f Pb"
+msgstr "%.1f Pb"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2420
+#, c-format
+#| msgid "%.1f Eb"
+msgid "%.1f Eb"
+msgstr "%.1f Eb"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2424
+#, c-format
+#| msgid "%.1f Kib"
+msgid "%.1f Kib"
+msgstr "%.1f Kib"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2426
+#, c-format
+#| msgid "%.1f Mib"
+msgid "%.1f Mib"
+msgstr "%.1f Mib"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2428
+#, c-format
+#| msgid "%.1f Gib"
+msgid "%.1f Gib"
+msgstr "%.1f Gib"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2430
+#, c-format
+#| msgid "%.1f Tib"
+msgid "%.1f Tib"
+msgstr "%.1f Tib"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2432
+#, c-format
+#| msgid "%.1f Pib"
+msgid "%.1f Pib"
+msgstr "%.1f Pib"
+
+#. Translators: Keep the no-break space between %.1f and the unit symbol
+#: glib/gutils.c:2434
+#, c-format
+#| msgid "%.1f Eib"
+msgid "%.1f Eib"
+msgstr "%.1f Eib"
+
+#: glib/gutils.c:2468 glib/gutils.c:2594
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: glib/gutils.c:2448
+#: glib/gutils.c:2472
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -5974,7 +6022,7 @@ msgstr[0] "%u bit"
 msgstr[1] "%u bits"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2515
+#: glib/gutils.c:2539
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -5982,7 +6030,7 @@ msgstr[0] "%s byte"
 msgstr[1] "%s bytes"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2520
+#: glib/gutils.c:2544
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -5994,10 +6042,35 @@ msgstr[1] "%s bits"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:2583
+#: glib/gutils.c:2607
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#: glib/gutils.c:2612
+#, c-format
+msgid "%.1f MB"
+msgstr "%.1f MB"
+
+#: glib/gutils.c:2617
+#, c-format
+msgid "%.1f GB"
+msgstr "%.1f GB"
+
+#: glib/gutils.c:2622
+#, c-format
+msgid "%.1f TB"
+msgstr "%.1f TB"
+
+#: glib/gutils.c:2627
+#, c-format
+msgid "%.1f PB"
+msgstr "%.1f PB"
+
+#: glib/gutils.c:2632
+#, c-format
+msgid "%.1f EB"
+msgstr "%.1f EB"
 
 #~ msgid "No such interface '%s'"
 #~ msgstr "La interfaz «%s» no existe"
