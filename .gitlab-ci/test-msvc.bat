@@ -10,7 +10,7 @@ meson _build || goto :error
 ninja -C _build || goto :error
 
 :: FIXME: dont ignore test errors
-meson test -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER%
+meson test -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% --no-suite flaky
 
 :: FIXME: can we get code coverage support?
 
