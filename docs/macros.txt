@@ -1,5 +1,3 @@
-
-
 GLib's configure options and corresponding macros
 =================================================
 
