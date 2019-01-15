@@ -3,12 +3,11 @@ Simple install procedure
 
   % tar xf glib-@GLIB_VERSION@.tar.gz       # unpack the sources
   % cd glib-@GLIB_VERSION@                  # change to the toplevel directory
-  % ./configure                             # run the `configure' script
-  % make                                    # build GLIB
+  % meson _build                            # configure the build
+  % ninja -C _build                         # build GLib
 
   [ Become root if necessary ]
-  % rm -rf /install-prefix/include/glib.h /install-prefix/include/gmodule.h
-  % make install                            # install GLIB
+  % ninja -C _build install                 # install GLib
 
 Requirements
 ============
@@ -25,7 +24,7 @@ information.) Information about pkg-config can be found at:
 
   http://www.freedesktop.org/software/pkgconfig/
 
-GNU make (http://www.gnu.org/software/make) is also required.
+Meson (http://mesonbuild.com/) is also required.
 
 In order to implement conversions between character sets,
 GLib requires an implementation of the standard iconv() routine.

@@ -61,33 +61,6 @@ fedora-x86_64:
     paths:
       - "_build/meson-logs"
 
-fedora-autotools-x86_64:
-  stage: build
-  except:
-    - tags
-  variables:
-    CFLAGS: "-Werror"
-    V: "1"
-    MAKEFLAGS: "-j8"
-  script:
-    - mkdir _build
-    - cd _build
-    - ../autogen.sh --enable-always-build-tests --enable-systemtap --enable-dtrace
-    - make
-    - make check
-  artifacts:
-    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    when: always
-    paths:
-      - "_build/config.h"
-      - "_build/glib/glibconfig.h"
-      - "_build/*.log"
-      - "_build/*/*.log"
-      - "_build/*/*/*.log"
-      - "_build/*/*/*/*.log"
-      - "_build/*/*/*/*/*.log"
-      - "_build/*/*/*/*/*/*.log"
-
 cross-android_api21_arm64:
   <<: *cross-template
   script:

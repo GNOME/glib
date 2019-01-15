@@ -56,7 +56,7 @@ test_annotations (void)
   iface = foo_igen_bar_interface_info ();
   g_assert (iface != NULL);
 
-  /* see Makefile.am for where these annotations are injected */
+  /* see meson.build for where these annotations are injected */
   g_assert_cmpint (count_annotations (iface->annotations), ==, 1);
   g_assert_cmpstr (g_dbus_annotation_info_lookup (iface->annotations, "Key1"), ==, "Value1");
 
