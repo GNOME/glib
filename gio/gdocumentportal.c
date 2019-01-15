@@ -31,9 +31,6 @@
 #include "gunixfdlist.h"
 #endif
 
-#ifndef O_PATH
-#define O_PATH 0
-#endif
 #ifndef O_CLOEXEC
 #define O_CLOEXEC 0
 #else
@@ -112,7 +109,7 @@ g_document_portal_add_document (GFile   *file,
     }
 
   path = g_file_get_path (file);
-  fd = g_open (path, O_PATH | O_CLOEXEC);
+  fd = g_open (path, O_RDWR | O_CLOEXEC);
   errsv = errno;
 
   if (fd == -1)
@@ -210,7 +207,7 @@ g_document_portal_add_documents (GList       *uris,
         {
           int fd;
 
-          fd = g_open (path, O_CLOEXEC | O_PATH);
+          fd = g_open (path, O_CLOEXEC | O_RDWR);
           if (fd >= 0)
             {
 #ifndef HAVE_O_CLOEXEC
