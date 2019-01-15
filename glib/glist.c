@@ -313,17 +313,19 @@ g_list_prepend (GList    *list,
   
   new_list = _g_list_alloc ();
   new_list->data = data;
-  new_list->next = list;
+  new_list->prev = NULL;
+  new_list->next = NULL;
   
   if (list)
     {
-      new_list->prev = list->prev;
+      new_list->next = list;
       if (list->prev)
-        list->prev->next = new_list;
+        {
+          new_list->prev = list->prev;
+          list->prev->next = new_list;
+	}
       list->prev = new_list;
     }
-  else
-    new_list->prev = NULL;
   
   return new_list;
 }
