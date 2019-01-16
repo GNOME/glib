@@ -968,8 +968,8 @@ g_irepository_find_by_error_domain (GIRepository *repository,
  * g_irepository_get_object_gtype_interfaces:
  * @repository: (nullable): a #GIRepository, or %NULL for the default repository
  * @gtype: a #GType whose fundamental type is G_TYPE_OBJECT
- * @n_interfaces: (out): Number of interfaces
- * @interfaces: (out) (transfer none) (array length=n_interfaces): Interfaces for @gtype
+ * @n_interfaces_out: (out): Number of interfaces
+ * @interfaces_out: (out) (transfer none) (array length=n_interfaces_out): Interfaces for @gtype
  *
  * Look up the implemented interfaces for @gtype.  This function
  * cannot fail per se; but for a totally "unknown" #GType, it may
