@@ -220,7 +220,7 @@ get_from_keyfile (GKeyfileSettingsBackend *kfsb,
            str == NULL))
         {
           g_free (str);
-          str = g_strdup (sysstr);
+          str = g_steal_pointer (&sysstr);
         }
 
       if (str)
@@ -653,7 +653,7 @@ load_system_settings (GKeyfileSettingsBackend *kfsb)
             }
 
           g_debug ("Locking key %s", line);
-          g_hash_table_add (kfsb->system_locks, line);
+          g_hash_table_add (kfsb->system_locks, g_steal_pointer (&line));
         }
 
       g_free (lines);
@@ -686,8 +686,8 @@ g_keyfile_settings_backend_constructed (GObject *object)
   kfsb->dir = g_file_get_parent (kfsb->file);
   g_file_make_directory_with_parents (kfsb->dir, NULL, NULL);
 
-  kfsb->file_monitor = g_file_monitor (kfsb->file, 0, NULL, NULL);
-  kfsb->dir_monitor = g_file_monitor (kfsb->dir, 0, NULL, NULL);
+  kfsb->file_monitor = g_file_monitor (kfsb->file, G_FILE_MONITOR_NONE, NULL, NULL);
+  kfsb->dir_monitor = g_file_monitor (kfsb->dir, G_FILE_MONITOR_NONE, NULL, NULL);
 
   compute_checksum (kfsb->digest, NULL, 0);
 
@@ -804,7 +804,7 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
    *
    * The location where the settings are stored on disk.
    *
-   * Defaults to $XDG_CONFIG_HOME/settings.
+   * Defaults to `$XDG_CONFIG_HOME/glib-2.0/settings/keyfile`.
    */
   g_object_class_install_property (object_class,
                                    PROP_FILENAME,
@@ -855,7 +855,7 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
    *
    * The directory where the system defaults and locks are located.
    *
-   * Defaults to "/etc/glib-2.0/settings"
+   * Defaults to `/etc/glib-2.0/settings`.
    */
   g_object_class_install_property (object_class,
                                    PROP_DEFAULTS_DIR,
@@ -919,10 +919,10 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
  * characters in your path names or '=' in your key names you may be in
  * trouble.
  *
- * The backend reads default values from a keyfile called "defaults" in
- * the directory specified by the defaults-dir property, and a list of
- * locked keys from a text file with the name "locks" in the same
- * location.
+ * The backend reads default values from a keyfile called `defaults` in
+ * the directory specified by the #GKeyfileSettingsBackend:defaults-dir property,
+ * and a list of locked keys from a text file with the name `locks` in
+ * the same location.
  *
  * Returns: (transfer full): a keyfile-backed #GSettingsBackend
  **/
