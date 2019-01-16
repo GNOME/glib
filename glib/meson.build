@@ -222,6 +222,9 @@ if host_system == 'windows'
   glib_sources += [glib_win_res]
   glib_sources += files('gwin32.c', 'gspawn-win32.c', 'giowin32.c')
   platform_deps = [winsock2, cc.find_library('winmm')]
+  if cc.get_id() == 'msvc'
+    glib_sources += files('dirent/wdirent.c')
+  endif
 else
   glib_sources += files('glib-unix.c', 'gspawn.c', 'giounix.c')
   platform_deps = []
