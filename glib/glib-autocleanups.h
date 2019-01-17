@@ -97,5 +97,6 @@ G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(GVariantDict, g_variant_dict_clear)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GVariantType, g_variant_type_free)
 G_DEFINE_AUTO_CLEANUP_FREE_FUNC(GStrv, g_strfreev, NULL)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GRefString, g_ref_string_release)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUri, g_uri_unref)
 
 G_GNUC_END_IGNORE_DEPRECATIONS

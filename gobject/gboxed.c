@@ -169,6 +169,7 @@ G_DEFINE_BOXED_TYPE (GMarkupParseContext, g_markup_parse_context, g_markup_parse
 
 G_DEFINE_BOXED_TYPE (GThread, g_thread, g_thread_ref, g_thread_unref)
 G_DEFINE_BOXED_TYPE (GChecksum, g_checksum, g_checksum_copy, g_checksum_free)
+G_DEFINE_BOXED_TYPE (GUri, g_uri, g_uri_ref, g_uri_unref)
 
 G_DEFINE_BOXED_TYPE (GOptionGroup, g_option_group, g_option_group_ref, g_option_group_unref)
 
