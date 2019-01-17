@@ -81,7 +81,7 @@
     <xi:include href="xml/timers.xml" />
     <xi:include href="xml/spawn.xml" />
     <xi:include href="xml/fileutils.xml" />
-    <xi:include href="xml/gurifuncs.xml" />
+    <xi:include href="xml/guri.xml" />
     <xi:include href="xml/ghostutils.xml" />
     <xi:include href="xml/shell.xml" />
     <xi:include href="xml/option.xml" />
