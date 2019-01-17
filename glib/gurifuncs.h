@@ -25,59 +25,6 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
-#include <glib/gtypes.h>
-
-G_BEGIN_DECLS
-
-/**
- * G_URI_RESERVED_CHARS_GENERIC_DELIMITERS:
- * 
- * Generic delimiters characters as defined in RFC 3986. Includes ":/?#[]@".
- **/
-#define G_URI_RESERVED_CHARS_GENERIC_DELIMITERS ":/?#[]@"
-
-/**
- * G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS:
- * 
- * Subcomponent delimiter characters as defined in RFC 3986. Includes "!$&'()*+,;=".
- **/
-#define G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS "!$&'()*+,;="
-
-/**
- * G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT:
- * 
- * Allowed characters in path elements. Includes "!$&'()*+,;=:@".
- **/
-#define G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS ":@"
-
-/**
- * G_URI_RESERVED_CHARS_ALLOWED_IN_PATH:
- * 
- * Allowed characters in a path. Includes "!$&'()*+,;=:@/".
- **/
-#define G_URI_RESERVED_CHARS_ALLOWED_IN_PATH G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT "/"
-
-/**
- * G_URI_RESERVED_CHARS_ALLOWED_IN_USERINFO:
- * 
- * Allowed characters in userinfo as defined in RFC 3986. Includes "!$&'()*+,;=:".
- **/
-#define G_URI_RESERVED_CHARS_ALLOWED_IN_USERINFO G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS ":"
-
-GLIB_AVAILABLE_IN_ALL
-char *   g_uri_unescape_string       (const char *escaped_string,
-				      const char *illegal_characters);
-GLIB_AVAILABLE_IN_ALL
-char *   g_uri_unescape_segment      (const char *escaped_string,
-				      const char *escaped_string_end,
-				      const char *illegal_characters);
-GLIB_AVAILABLE_IN_ALL
-char *   g_uri_parse_scheme          (const char *uri);
-GLIB_AVAILABLE_IN_ALL
-char *   g_uri_escape_string         (const char *unescaped,
-				      const char *reserved_chars_allowed,
-				      gboolean    allow_utf8);
-
-G_END_DECLS
+#include <glib/guri.h>
 
 #endif /* __G_URI_FUNCS_H__ */
