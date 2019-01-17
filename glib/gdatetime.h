@@ -266,6 +266,9 @@ gchar *                 g_date_time_format                              (GDateTi
 GLIB_AVAILABLE_IN_2_58
 gboolean                g_date_time_is_same_day                         (GDateTime      *day1,
                                                                          GDateTime      *day2);
+GLIB_AVAILABLE_IN_2_58
+gint                    g_date_time_days_between                        (GDateTime      *end,
+                                                                         GDateTime      *begin);
 
 G_END_DECLS
 
