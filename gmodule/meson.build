@@ -8,7 +8,8 @@ libdl_dep = [ ]
 g_module_lib_args = [ ]
 g_module_impl = ''
 
-dlopen_dlsym_test_code = '''
+if get_option('default_library') != 'static'
+  dlopen_dlsym_test_code = '''
 #include <dlfcn.h>
 int glib_underscore_test (void) { return 42; }
 int main (int argc, char ** argv) {
@@ -21,48 +22,49 @@ int main (int argc, char ** argv) {
   return (!f2 || f1);
 }'''
 
-# On Windows force native WIN32 shared lib loader
-if host_system == 'windows'
-  g_module_impl = 'G_MODULE_IMPL_WIN32'
-# Force native AIX library loader
-# dlopen() filepath must be of the form /path/libname.a(libname.so)
-elif host_system == 'aix'
-  g_module_impl = 'G_MODULE_IMPL_AR'
-elif cc.links(dlopen_dlsym_test_code, name : 'dlopen() and dlsym() in system libraries')
-  g_module_impl = 'G_MODULE_IMPL_DL'
-# NSLinkModule (dyld) in system libraries (Darwin)
-elif cc.has_function('NSLinkModule')
-  g_module_impl = 'G_MODULE_IMPL_DYLD'
-  g_module_need_uscore = 1
-elif cc.links(dlopen_dlsym_test_code, args : '-ldl', name : 'dlopen() and dlsym() in libdl')
-  g_module_impl = 'G_MODULE_IMPL_DL'
-  libdl_dep = cc.find_library('dl')
-  g_module_lib_args = '-ldl'
-endif
-
-# additional checks for G_MODULE_IMPL_DL
-if g_module_impl == 'G_MODULE_IMPL_DL'
-  # FIXME: check for OSF1/5.0 RTLD_GLOBAL brokenness (is this still relevant?)
-
-  # Check whether we need preceding underscores
-  if cc.get_id() == 'msvc'
-    message('Building for MSVC: assuming that symbols are prefixed with underscore')
+  # On Windows force native WIN32 shared lib loader
+  if host_system == 'windows'
+    g_module_impl = 'G_MODULE_IMPL_WIN32'
+  # Force native AIX library loader
+  # dlopen() filepath must be of the form /path/libname.a(libname.so)
+  elif host_system == 'aix'
+    g_module_impl = 'G_MODULE_IMPL_AR'
+  elif cc.links(dlopen_dlsym_test_code, name : 'dlopen() and dlsym() in system libraries')
+    g_module_impl = 'G_MODULE_IMPL_DL'
+  # NSLinkModule (dyld) in system libraries (Darwin)
+  elif cc.has_function('NSLinkModule')
+    g_module_impl = 'G_MODULE_IMPL_DYLD'
     g_module_need_uscore = 1
-  elif meson.has_exe_wrapper()
-    # FIXME: communicate result via stdout instead of return value, so non-0 return is not printed in bold red
-    rres = cc.run(dlopen_dlsym_test_code,
-                  args : g_module_lib_args,
-                  name : 'dlsym() preceding underscores')
-    if host_system == 'windows' or rres.returncode() == 0
-      g_module_need_uscore = 1
-    endif
-  else
-    message('Cross-compiling: assuming that symbols aren\'t prefixed with underscore')
-    g_module_need_uscore = 0
+  elif cc.links(dlopen_dlsym_test_code, args : '-ldl', name : 'dlopen() and dlsym() in libdl')
+    g_module_impl = 'G_MODULE_IMPL_DL'
+    libdl_dep = cc.find_library('dl')
+    g_module_lib_args = '-ldl'
   endif
 
-  if cc.has_function('dlerror', args : g_module_lib_args)
-    g_module_have_dlerror = 1
+  # additional checks for G_MODULE_IMPL_DL
+  if g_module_impl == 'G_MODULE_IMPL_DL'
+    # FIXME: check for OSF1/5.0 RTLD_GLOBAL brokenness (is this still relevant?)
+
+    # Check whether we need preceding underscores
+    if cc.get_id() == 'msvc'
+      message('Building for MSVC: assuming that symbols are prefixed with underscore')
+      g_module_need_uscore = 1
+    elif meson.has_exe_wrapper()
+      # FIXME: communicate result via stdout instead of return value, so non-0 return is not printed in bold red
+      rres = cc.run(dlopen_dlsym_test_code,
+                    args : g_module_lib_args,
+                    name : 'dlsym() preceding underscores')
+      if host_system == 'windows' or rres.returncode() == 0
+        g_module_need_uscore = 1
+      endif
+    else
+      message('Cross-compiling: assuming that symbols aren\'t prefixed with underscore')
+      g_module_need_uscore = 0
+    endif
+
+    if cc.has_function('dlerror', args : g_module_lib_args)
+      g_module_have_dlerror = 1
+    endif
   endif
 endif
 
