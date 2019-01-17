@@ -138,6 +138,8 @@ installed-tests:
             _build
     - ninja -C _build
     - sudo ninja -C _build install
+    # Remove old headers, possibly present in current installation
+    - sudo rm -f /usr/include/glib-2.0/glib/gurifuncs.h
     - sudo chown -R `id -un`:`id -gn` _build/
     # FIXME Install newer xdg-desktop-portal with
     # GMemoryMonitor support, see:
