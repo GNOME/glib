@@ -82,7 +82,7 @@ main (int    argc,
   g_test_init (&argc, &argv, NULL);
 
   if (!g_module_supported ())
-    g_error ("dynamic modules not supported");
+    return 0;
 
   plugin_a = g_test_build_filename (G_TEST_BUILT, "libmoduletestplugin_a", NULL);
   plugin_b = g_test_build_filename (G_TEST_BUILT, "libmoduletestplugin_b", NULL);
