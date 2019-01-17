@@ -120,10 +120,6 @@
 #  include <process.h>
 #endif
 
-#ifdef HAVE_COCOA
-#include <Cocoa/Cocoa.h>
-#endif
-
 #ifdef HAVE_CODESET
 #include <langinfo.h>
 #endif
@@ -1521,36 +1517,13 @@ g_get_user_runtime_dir (void)
 
 #ifdef HAVE_COCOA
 
-static gchar *
-find_folder (NSSearchPathDirectory type)
-{
-  gchar *filename;
-  NSString *path;
-  NSArray *paths;
-
-  paths = NSSearchPathForDirectoriesInDomains (type, NSUserDomainMask, YES);
-  path = [paths firstObject];
-  if (path == nil)
-    {
-      return NULL;
-    }
-
-  filename = g_strdup ([path UTF8String]);
-
-  return filename;
-}
+// Implemented in gutils-macos.m
+void load_user_special_dirs_macos (gchar **table);
 
 static void
 load_user_special_dirs (void)
 {
-  g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = find_folder (NSDesktopDirectory);
-  g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = find_folder (NSDocumentDirectory);
-  g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = find_folder (NSDownloadsDirectory);
-  g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = find_folder (NSMusicDirectory);
-  g_user_special_dirs[G_USER_DIRECTORY_PICTURES] = find_folder (NSPicturesDirectory);
-  g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = find_folder (NSSharedPublicDirectory);
-  g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = NULL;
-  g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = find_folder (NSMoviesDirectory);
+  load_user_special_dirs_macos (g_user_special_dirs);
 }
 
 #elif defined(G_OS_WIN32)
