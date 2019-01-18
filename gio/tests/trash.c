@@ -107,14 +107,54 @@ test_trash_symlinks (void)
 
   g_test_bug ("1522");
 
-  /* The test assumes that ~/.local always exists. */
   target = g_build_filename (g_get_home_dir (), ".local", NULL);
+
+  if (!g_file_test (target, G_FILE_TEST_IS_DIR))
+    {
+      gchar *message;
+
+      message = g_strdup_printf ("Directory '%s' does not exist", target);
+      g_test_skip (message);
+      g_free (message);
+      g_free (target);
+      return;
+    }
+
   target_mount = g_unix_mount_for (target, NULL);
+
+  if (target_mount == NULL)
+    {
+      gchar *message;
+
+      message = g_strdup_printf ("Unable to determine mount point for %s",
+                                 target);
+      g_test_skip (message);
+      g_free (message);
+      g_free (target);
+      return;
+    }
+
   g_assert_nonnull (target_mount);
   g_test_message ("Target: %s (mount: %s)", target, g_unix_mount_get_mount_path (target_mount));
 
   tmp = g_dir_make_tmp ("test-trashXXXXXX", &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (tmp);
   tmp_mount = g_unix_mount_for (tmp, NULL);
+
+  if (tmp_mount == NULL)
+    {
+      gchar *message;
+
+      message = g_strdup_printf ("Unable to determine mount point for %s", tmp);
+      g_test_skip (message);
+      g_free (message);
+      g_unix_mount_free (target_mount);
+      g_free (target);
+      g_free (tmp);
+      return;
+    }
+
   g_assert_nonnull (tmp_mount);
   g_test_message ("Tmp: %s (mount: %s)", tmp, g_unix_mount_get_mount_path (tmp_mount));
 
