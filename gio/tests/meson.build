@@ -144,7 +144,8 @@ if host_machine.system() != 'windows'
       ],
       'env' : {
         'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(meson.current_build_dir())
-      }
+      },
+      'suite': ['flaky'],
     },
     'gschema-compile' : {'install' : false},
     'trash' : {},
