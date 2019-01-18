@@ -808,10 +808,18 @@ proxy_ready (GObject      *source,
 {
   GDBusProxy *proxy;
   GError *error;
+  gchar *owner;
 
   error = NULL;
   proxy = g_dbus_proxy_new_for_bus_finish (result, &error);
   g_assert_no_error (error);
+
+  owner = g_dbus_proxy_get_name_owner (proxy);
+  g_assert_null (owner);
+  g_free (owner);
+
+  /* this is safe; we explicitly kill the service later on */
+  g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
   _g_assert_property_notify (proxy, "g-name-owner");
 
@@ -846,9 +854,6 @@ test_async (void)
                             NULL, /* GCancellable */
                             proxy_ready,
                             NULL);
-
-  /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
   id = g_timeout_add (10000, fail_test, NULL);
   g_main_loop_run (loop);
