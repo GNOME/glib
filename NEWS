@@ -1,3 +1,19 @@
+Overview of changes in GLib 2.58.3
+==================================
+
+* Fix GVariant tests on i686 (#1626)
+
+* Fix crashes caused by filtering of mounts (#1645)
+
+* Bugs fixed:
+ - #1626 2.58.2 GVariant test failure on i686
+ - #1637 EXCEPTION_ACCESS_VIOLATION in g_clear_pointer
+ - #1645 2.58.2 introduces libgio segfaults
+ - !558 Backport Suppress -Wint-in-bool-context warning with G_DEFINE_INTERFACE and g++ to glib-2-58
+ - !577 Don't fail trash test if ~/.local doesn't exist or mount points can't be determined
+ - !578 gunixmounts: Fix segfaults caused by new filter of mounts
+
+
 Overview of changes in GLib 2.58.2
 ==================================
 
