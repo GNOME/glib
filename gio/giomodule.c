@@ -700,6 +700,30 @@ try_class (GIOExtension *extension,
   return NULL;
 }
 
+static void
+print_help (const char        *envvar,
+            GIOExtensionPoint *ep)
+{
+  GList *l;
+  GIOExtension *extension;
+  int width = 0;
+
+  g_print ("Supported arguments for %s environment variable:\n", envvar);
+
+  for (l = g_io_extension_point_get_extensions (ep); l; l = l->next)
+    {
+      extension = l->data;
+      width = MAX (width, strlen (g_io_extension_get_name (extension)));
+    }
+
+  for (l = g_io_extension_point_get_extensions (ep); l; l = l->next)
+    {
+      extension = l->data;
+
+      g_print (" %*s - %d\n", width, g_io_extension_get_name (extension), g_io_extension_get_priority (extension));
+    }
+}
+
 /**
  * _g_io_module_get_default_type:
  * @extension_point: the name of an extension point
@@ -766,6 +790,12 @@ _g_io_module_get_default_type (const gchar *extension_point,
     }
 
   use_this = envvar ? g_getenv (envvar) : NULL;
+  if (g_strcmp0 (use_this, "help") == 0)
+    {
+      print_help (envvar, ep);
+      use_this = NULL;
+    }
+
   if (use_this)
     {
       preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
@@ -905,17 +935,23 @@ _g_io_module_get_default (const gchar         *extension_point,
     }
 
   use_this = envvar ? g_getenv (envvar) : NULL;
+  if (g_strcmp0 (use_this, "help") == 0)
+    {
+      print_help (envvar, ep);
+      use_this = NULL;
+    }
+
   if (use_this)
     {
       preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
       if (preferred)
-	{
-	  impl = try_implementation (extension_point, preferred, verify_func);
-	  if (impl)
-	    goto done;
-	}
+       {
+         impl = try_implementation (extension_point, preferred, verify_func);
+         if (impl)
+           goto done;
+       }
       else
-	g_warning ("Can't find module '%s' specified in %s", use_this, envvar);
+       g_warning ("Can't find module '%s' specified in %s", use_this, envvar);
     }
   else
     preferred = NULL;
