@@ -192,7 +192,7 @@ gboolean               g_socket_condition_wait          (GSocket                
 GLIB_AVAILABLE_IN_2_32
 gboolean               g_socket_condition_timed_wait    (GSocket                 *socket,
 							 GIOCondition             condition,
-							 gint64                   timeout,
+							 gint64                   timeout_us,
 							 GCancellable            *cancellable,
 							 GError                 **error);
 GLIB_AVAILABLE_IN_ALL
@@ -306,7 +306,7 @@ GPollableReturn        g_socket_send_message_with_timeout (GSocket              
 							   GSocketControlMessage **messages,
 							   gint                    num_messages,
 							   gint                    flags,
-							   gint64                  timeout,
+							   gint64                  timeout_us,
 							   gsize                  *bytes_written,
 							   GCancellable           *cancellable,
 							   GError                **error);
