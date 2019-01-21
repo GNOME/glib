@@ -76,7 +76,7 @@ gdbus-test-codegen-old
 gdbus-test-fixture
 gdbus-testserver
 gdbus-threading
-gdbus-unix-addresses
+gdbus-address-get-session
 glistmodel
 gio-du
 giomodule
