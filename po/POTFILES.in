@@ -88,6 +88,7 @@ gio/gio-tool-save.c
 gio/gio-tool-set.c
 gio/gio-tool-trash.c
 gio/gio-tool-tree.c
+gio/gkeyfilesettingsbackend.c
 gio/glib-compile-resources.c
 gio/glib-compile-schemas.c
 gio/glistmodel.c
