@@ -284,7 +284,7 @@ if host_machine.system() != 'windows'
                     '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36'],
       },
       'gapplication' : {'extra_sources' : extra_sources},
-      'gdbus-unix-addresses' : {},
+      'gdbus-address-get-session' : {},
     }
 
     if not glib_have_cocoa

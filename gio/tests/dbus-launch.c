@@ -1,5 +1,5 @@
 /*
- * Mock version of dbus-launch, for gdbus-unix-addresses test
+ * Mock version of dbus-launch, for gdbus-address-get-session test
  *
  * Copyright © 2015 Collabora Ltd.
  *
