@@ -766,6 +766,20 @@ _g_io_module_get_default_type (const gchar *extension_point,
     }
 
   use_this = envvar ? g_getenv (envvar) : NULL;
+  if (g_strcmp0 (use_this, "help") == 0)
+    {
+      g_print ("Supported arguments for %s environment variable:\n", envvar);
+
+      for (l = g_io_extension_point_get_extensions (ep); l; l = l->next)
+        {
+          extension = l->data;
+
+          g_print ("%10s - %d\n", g_io_extension_get_name (extension), g_io_extension_get_priority (extension));
+        }
+
+      use_this = NULL;
+    }
+
   if (use_this)
     {
       preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
@@ -905,6 +919,20 @@ _g_io_module_get_default (const gchar         *extension_point,
     }
 
   use_this = envvar ? g_getenv (envvar) : NULL;
+  if (g_strcmp0 (use_this, "help") == 0)
+    {
+      g_print ("Supported arguments for %s environment variable:\n", envvar);
+
+      for (l = g_io_extension_point_get_extensions (ep); l; l = l->next)
+        {
+          extension = l->data;
+
+          g_print ("%10s - %d\n", g_io_extension_get_name (extension), g_io_extension_get_priority (extension));
+        }
+
+      use_this = NULL;
+    }
+
   if (use_this)
     {
       preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
