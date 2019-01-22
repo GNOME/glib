@@ -370,7 +370,7 @@ test_read_write_write_thread (gpointer user_data)
   res = g_output_stream_write_all (data->os, data->write_data, 1024, &bytes_written, NULL, &error);
   g_assert_true (res);
   g_assert_no_error (error);
-  g_assert_cmpint (bytes_written, ==, 1024);
+  g_assert_cmpuint (bytes_written, ==, 1024);
 
   return NULL;
 }
@@ -386,7 +386,7 @@ test_read_write_read_thread (gpointer user_data)
   res = g_input_stream_read_all (data->is, data->read_data, 1024, &bytes_read, NULL, &error);
   g_assert_true (res);
   g_assert_no_error (error);
-  g_assert_cmpint (bytes_read, ==, 1024);
+  g_assert_cmpuint (bytes_read, ==, 1024);
 
   return NULL;
 }
@@ -410,7 +410,7 @@ test_read_write_writev_thread (gpointer user_data)
   res = g_output_stream_writev_all (data->os, vectors, G_N_ELEMENTS (vectors), &bytes_written, NULL, &error);
   g_assert_true (res);
   g_assert_no_error (error);
-  g_assert_cmpint (bytes_written, ==, 1024);
+  g_assert_cmpuint (bytes_written, ==, 1024);
 
   return NULL;
 }
