@@ -225,6 +225,26 @@ get_from_keyfile (GKeyfileSettingsBackend *kfsb,
       if (str)
         {
           return_value = g_variant_parse (type, str, NULL, NULL, NULL);
+          if (return_value == NULL &&
+              g_variant_type_equal (type, G_VARIANT_TYPE_STRING) &&
+              str[0] != '\"')
+            {
+              GString *s = g_string_sized_new (strlen (str) + 2);
+              char *p = str;
+
+              g_string_append_c (s, '\"');
+              while (*p)
+                {
+                  gunichar ch = g_utf8_get_char (p);
+                  if (ch == (gunichar)'\"')
+                    g_string_append_c (s, '\\');
+                  g_string_append_unichar (s, ch);
+                  p = g_utf8_next_char (p);
+                }
+              g_string_append_c (s, '\"');
+              return_value = g_variant_parse (type, s->str, NULL, NULL, NULL);
+              g_string_free (s, TRUE);
+            }
           g_free (str);
         }
 
