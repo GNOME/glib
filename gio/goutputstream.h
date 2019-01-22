@@ -120,14 +120,14 @@ struct _GOutputStreamClass
                                  GError                  **error);
 
   gboolean    (* writev_fn)     (GOutputStream            *stream,
-                                 GOutputVector            *vectors,
+                                 const GOutputVector      *vectors,
                                  gsize                     n_vectors,
                                  gsize                    *bytes_written,
                                  GCancellable             *cancellable,
                                  GError                  **error);
 
   void        (* writev_async)  (GOutputStream            *stream,
-                                 GOutputVector            *vectors,
+                                 const GOutputVector      *vectors,
                                  gsize                     n_vectors,
                                  int                       io_priority,
                                  GCancellable             *cancellable,
@@ -167,7 +167,7 @@ gboolean g_output_stream_write_all     (GOutputStream             *stream,
 
 GLIB_AVAILABLE_IN_2_60
 gboolean g_output_stream_writev        (GOutputStream             *stream,
-					GOutputVector             *vectors,
+					const GOutputVector       *vectors,
 					gsize                      n_vectors,
 					gsize                     *bytes_written,
 					GCancellable              *cancellable,
@@ -243,7 +243,7 @@ gboolean g_output_stream_write_all_finish (GOutputStream          *stream,
 
 GLIB_AVAILABLE_IN_2_60
 void     g_output_stream_writev_async  (GOutputStream             *stream,
-					GOutputVector             *vectors,
+					const GOutputVector       *vectors,
 					gsize                      n_vectors,
 					int                        io_priority,
 					GCancellable              *cancellable,

@@ -93,7 +93,7 @@ static gssize   g_unix_output_stream_write        (GOutputStream        *stream,
 						   GCancellable         *cancellable,
 						   GError              **error);
 static gboolean g_unix_output_stream_writev       (GOutputStream        *stream,
-						   GOutputVector        *vectors,
+						   const GOutputVector  *vectors,
 						   gsize                 n_vectors,
 						   gsize                *bytes_written,
 						   GCancellable         *cancellable,
@@ -115,7 +115,7 @@ static gboolean g_unix_output_stream_pollable_is_writable   (GPollableOutputStre
 static GSource *g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
 							     GCancellable         *cancellable);
 static GPollableReturn g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream,
-									 GOutputVector          *vectors,
+									 const GOutputVector    *vectors,
 									 gsize                   n_vectors,
 									 gsize                  *bytes_written,
 									 GError                **error);
@@ -408,12 +408,12 @@ g_unix_output_stream_write (GOutputStream  *stream,
       G_STRUCT_OFFSET (struct iovec, iov_len) == G_STRUCT_OFFSET (GOutputVector, size))
 
 static gboolean
-g_unix_output_stream_writev (GOutputStream  *stream,
-			     GOutputVector  *vectors,
-			     gsize           n_vectors,
-			     gsize          *bytes_written,
-			     GCancellable   *cancellable,
-			     GError        **error)
+g_unix_output_stream_writev (GOutputStream        *stream,
+			     const GOutputVector  *vectors,
+			     gsize                 n_vectors,
+			     gsize                *bytes_written,
+			     GCancellable         *cancellable,
+			     GError              **error)
 {
   GUnixOutputStream *unix_stream;
   gssize res = -1;
@@ -614,7 +614,7 @@ g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
 
 static GPollableReturn
 g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream,
-						  GOutputVector          *vectors,
+						  const GOutputVector    *vectors,
 						  gsize                   n_vectors,
 						  gsize                  *bytes_written,
 						  GError                **error)

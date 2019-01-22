@@ -95,12 +95,12 @@ static gssize     g_local_file_output_stream_write        (GOutputStream      *s
 							   GCancellable       *cancellable,
 							   GError            **error);
 #ifdef G_OS_UNIX
-static gboolean   g_local_file_output_stream_writev       (GOutputStream      *stream,
-							   GOutputVector      *vectors,
-							   gsize               n_vectors,
-							   gsize              *bytes_written,
-							   GCancellable       *cancellable,
-							   GError            **error);
+static gboolean   g_local_file_output_stream_writev       (GOutputStream       *stream,
+							   const GOutputVector *vectors,
+							   gsize                n_vectors,
+							   gsize               *bytes_written,
+							   GCancellable        *cancellable,
+							   GError             **error);
 #endif
 static gboolean   g_local_file_output_stream_close        (GOutputStream      *stream,
 							   GCancellable       *cancellable,
@@ -229,12 +229,12 @@ g_local_file_output_stream_write (GOutputStream  *stream,
       G_STRUCT_OFFSET (struct iovec, iov_len) == G_STRUCT_OFFSET (GOutputVector, size))
 
 static gboolean
-g_local_file_output_stream_writev (GOutputStream  *stream,
-				   GOutputVector  *vectors,
-				   gsize           n_vectors,
-				   gsize          *bytes_written,
-				   GCancellable   *cancellable,
-				   GError        **error)
+g_local_file_output_stream_writev (GOutputStream        *stream,
+				   const GOutputVector  *vectors,
+				   gsize                 n_vectors,
+				   gsize                *bytes_written,
+				   GCancellable         *cancellable,
+				   GError              **error)
 {
   GLocalFileOutputStream *file;
   gssize res;
