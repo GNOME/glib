@@ -1448,6 +1448,8 @@ g_app_info_launch
 g_app_info_supports_files
 g_app_info_supports_uris
 g_app_info_launch_uris
+g_app_info_launch_uris_async
+g_app_info_launch_uris_finish
 g_app_info_should_show
 g_app_info_can_delete
 g_app_info_delete
