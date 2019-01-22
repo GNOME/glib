@@ -1770,6 +1770,23 @@ test_keyfile (void)
   g_assert_cmpstr (str, ==, "howdy");
   g_free (str);
 
+  /* Now check setting a string without quotes */
+  called = FALSE;
+  g_signal_connect (settings, "changed::greeting", G_CALLBACK (key_changed_cb), &called);
+
+  g_key_file_set_string (keyfile, "tests", "greeting", "he\"l🤗uń");
+  g_free (data);
+  data = g_key_file_to_data (keyfile, &len, NULL);
+  g_file_set_contents ("keyfile/gsettings.store", data, len, &error);
+  g_assert_no_error (error);
+  while (!called)
+    g_main_context_iteration (NULL, FALSE);
+  g_signal_handlers_disconnect_by_func (settings, key_changed_cb, &called);
+
+  str = g_settings_get_string (settings, "greeting");
+  g_assert_cmpstr (str, ==, "he\"l🤗uń");
+  g_free (str);
+
   g_settings_set (settings, "farewell", "s", "cheerio");
   
   called = FALSE;
