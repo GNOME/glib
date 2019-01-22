@@ -24,6 +24,7 @@
 #include "gappinfoprivate.h"
 #include "gcontextspecificgroup.h"
 #include "gtask.h"
+#include "gcancellable.h"
 
 #include "glibintl.h"
 #include <gioerror.h>
@@ -662,6 +663,86 @@ g_app_info_launch_uris (GAppInfo           *appinfo,
   return (* iface->launch_uris) (appinfo, uris, launch_context, error);
 }
 
+/**
+ * g_app_info_launch_uris_async:
+ * @appinfo: a #GAppInfo
+ * @uris: (nullable) (element-type utf8): a #GList containing URIs to launch.
+ * @context: (nullable): a #GAppLaunchContext or %NULL
+ * @cancellable: (nullable): a #GCancellable
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @user_data: (nullable): data to pass to @callback
+ *
+ * Async version of g_app_info_launch_uris().
+ *
+ * The @callback is invoked immediately after the application launch, but it
+ * waits for activation in case of D-Bus–activated applications and also provides
+ * extended error information for sandboxed applications, see notes for
+ * g_app_info_launch_default_for_uri_async().
+ *
+ * Since: 2.60
+ **/
+void
+g_app_info_launch_uris_async (GAppInfo           *appinfo,
+                              GList              *uris,
+                              GAppLaunchContext  *context,
+                              GCancellable       *cancellable,
+                              GAsyncReadyCallback callback,
+                              gpointer            user_data)
+{
+  GAppInfoIface *iface;
+
+  g_return_if_fail (G_IS_APP_INFO (appinfo));
+  g_return_if_fail (context == NULL || G_IS_APP_LAUNCH_CONTEXT (context));
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+  if (iface->launch_uris_async == NULL)
+    {
+      GTask *task;
+
+      task = g_task_new (appinfo, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_app_info_launch_uris_async);
+      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               "Operation not supported for the current backend.");
+      g_object_unref (task);
+
+      return;
+    }
+
+  (* iface->launch_uris_async) (appinfo, uris, context, cancellable, callback, user_data);
+}
+
+/**
+ * g_app_info_launch_uris_finish:
+ * @appinfo: a #GAppInfo
+ * @result: a #GAsyncResult
+ * @error: (nullable): a #GError
+ *
+ * Finishes a g_app_info_launch_uris_async() operation.
+ *
+ * Returns: %TRUE on successful launch, %FALSE otherwise.
+ *
+ * Since: 2.60
+ */
+gboolean
+g_app_info_launch_uris_finish (GAppInfo     *appinfo,
+                               GAsyncResult *result,
+                               GError      **error)
+{
+  GAppInfoIface *iface;
+
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), FALSE);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+  if (iface->launch_uris_finish == NULL)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           "Operation not supported for the current backend.");
+      return FALSE;
+    }
+
+  return (* iface->launch_uris_finish) (appinfo, result, error);
+}
 
 /**
  * g_app_info_should_show:
