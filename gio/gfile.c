@@ -6885,6 +6885,129 @@ g_file_query_default_handler (GFile         *file,
   return NULL;
 }
 
+static void
+query_default_handler_query_info_cb (GObject      *object,
+                                     GAsyncResult *result,
+                                     gpointer      user_data)
+{
+  GFile *file = G_FILE (object);
+  GTask *task = G_TASK (user_data);
+  GError *error = NULL;
+  GFileInfo *info;
+  const char *content_type;
+  GAppInfo *appinfo = NULL;
+
+  info = g_file_query_info_finish (file, result, &error);
+  if (info == NULL)
+    {
+      g_task_return_error (task, g_steal_pointer (&error));
+      g_object_unref (task);
+      return;
+    }
+
+  content_type = g_file_info_get_content_type (info);
+  if (content_type)
+    {
+      char *path;
+
+      /* Don't use is_native(), as we want to support fuse paths if available */
+      path = g_file_get_path (file);
+
+      /* FIXME: The following still uses blocking calls. */
+      appinfo = g_app_info_get_default_for_type (content_type,
+                                                 path == NULL);
+      g_free (path);
+    }
+
+  g_object_unref (info);
+
+  if (appinfo != NULL)
+    g_task_return_pointer (task, g_steal_pointer (&appinfo), g_object_unref);
+  else
+    g_task_return_new_error (task,
+                             G_IO_ERROR,
+                             G_IO_ERROR_NOT_SUPPORTED,
+                             _("No application is registered as handling this file"));
+  g_object_unref (task);
+}
+
+/**
+ * g_file_query_default_handler_async:
+ * @file: a #GFile to open
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @user_data: (nullable): data to pass to @callback
+ *
+ * Async version of g_file_query_default_handler().
+ *
+ * Since: 2.60
+ */
+void
+g_file_query_default_handler_async (GFile              *file,
+                                    int                 io_priority,
+                                    GCancellable       *cancellable,
+                                    GAsyncReadyCallback callback,
+                                    gpointer            user_data)
+{
+  GTask *task;
+  char *uri_scheme;
+
+  task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_query_default_handler_async);
+
+  uri_scheme = g_file_get_uri_scheme (file);
+  if (uri_scheme && uri_scheme[0] != '\0')
+    {
+      GAppInfo *appinfo;
+
+      /* FIXME: The following still uses blocking calls. */
+      appinfo = g_app_info_get_default_for_uri_scheme (uri_scheme);
+      g_free (uri_scheme);
+
+      if (appinfo != NULL)
+        {
+          g_task_return_pointer (task, g_steal_pointer (&appinfo), g_object_unref);
+          g_object_unref (task);
+          return;
+        }
+    }
+  else
+    g_free (uri_scheme);
+
+  g_file_query_info_async (file,
+                           G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                           0,
+                           io_priority,
+                           cancellable,
+                           query_default_handler_query_info_cb,
+                           g_steal_pointer (&task));
+}
+
+/**
+ * g_file_query_default_handler_finish:
+ * @file: a #GFile to open
+ * @result: a #GAsyncResult
+ * @error: (nullable): a #GError
+ *
+ * Finishes g_file_query_default_handler_async() operation.
+ *
+ * Returns: (transfer full): a #GAppInfo if the handle was found,
+ *     %NULL if there were errors.
+ *     When you are done with it, release it with g_object_unref()
+ *
+ * Since: 2.60
+ */
+GAppInfo *
+g_file_query_default_handler_finish (GFile        *file,
+                                     GAsyncResult *result,
+                                     GError      **error)
+{
+  g_return_val_if_fail (G_IS_FILE (file), NULL);
+  g_return_val_if_fail (g_task_is_valid (result, file), NULL);
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+}
+
 #define GET_CONTENT_BLOCK_SIZE 8192
 
 /**
