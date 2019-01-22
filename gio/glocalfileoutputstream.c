@@ -243,6 +243,12 @@ g_local_file_output_stream_writev (GOutputStream        *stream,
   if (bytes_written)
     *bytes_written = 0;
 
+  /* Clamp to G_MAXINT as writev() takes an integer for the number of vectors.
+   * We handle this like a short write in this case
+   */
+  if (n_vectors > G_MAXINT)
+    n_vectors = G_MAXINT;
+
   file = G_LOCAL_FILE_OUTPUT_STREAM (stream);
 
   if (G_OUTPUT_VECTOR_IS_IOVEC)
