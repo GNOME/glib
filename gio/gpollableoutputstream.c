@@ -47,7 +47,7 @@ static gssize   g_pollable_output_stream_default_write_nonblocking  (GPollableOu
 								     gsize                   count,
 								     GError                **error);
 static GPollableReturn g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *stream,
-									    GOutputVector          *vectors,
+									    const GOutputVector    *vectors,
 									    gsize                   n_vectors,
 									    gsize                  *bytes_written,
 									    GError                **error);
@@ -165,7 +165,7 @@ g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stre
 
 static GPollableReturn
 g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *stream,
-						     GOutputVector          *vectors,
+						     const GOutputVector    *vectors,
 						     gsize                   n_vectors,
 						     gsize                  *bytes_written,
 						     GError                **error)
@@ -319,7 +319,7 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
  */
 GPollableReturn
 g_pollable_output_stream_writev_nonblocking (GPollableOutputStream  *stream,
-					     GOutputVector          *vectors,
+					     const GOutputVector    *vectors,
 					     gsize                   n_vectors,
 					     gsize                  *bytes_written,
 					     GCancellable           *cancellable,

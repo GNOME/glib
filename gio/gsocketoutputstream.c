@@ -133,12 +133,12 @@ g_socket_output_stream_write (GOutputStream  *stream,
 }
 
 static gboolean
-g_socket_output_stream_writev (GOutputStream  *stream,
-                               GOutputVector  *vectors,
-                               gsize           n_vectors,
-                               gsize          *bytes_written,
-                               GCancellable   *cancellable,
-                               GError        **error)
+g_socket_output_stream_writev (GOutputStream        *stream,
+                               const GOutputVector  *vectors,
+                               gsize                 n_vectors,
+                               gsize                *bytes_written,
+                               GCancellable         *cancellable,
+                               GError              **error)
 {
   GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (stream);
   GPollableReturn res;
@@ -184,7 +184,7 @@ g_socket_output_stream_pollable_write_nonblocking (GPollableOutputStream  *polla
 
 static GPollableReturn
 g_socket_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *pollable,
-                                                    GOutputVector          *vectors,
+                                                    const GOutputVector    *vectors,
                                                     gsize                   n_vectors,
                                                     gsize                  *bytes_written,
                                                     GError                **error)

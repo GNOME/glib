@@ -4646,7 +4646,7 @@ g_socket_send_message (GSocket                *socket,
 GPollableReturn
 g_socket_send_message_with_timeout (GSocket                *socket,
                                     GSocketAddress         *address,
-                                    GOutputVector          *vectors,
+                                    const GOutputVector    *vectors,
                                     gint                    num_vectors,
                                     GSocketControlMessage **messages,
                                     gint                    num_messages,
@@ -4715,7 +4715,7 @@ g_socket_send_message_with_timeout (GSocket                *socket,
     GError *child_error = NULL;
 
     output_message.address = address;
-    output_message.vectors = vectors;
+    output_message.vectors = (GOutputVector *) vectors;
     output_message.num_vectors = num_vectors;
     output_message.bytes_sent = 0;
     output_message.control_messages = messages;

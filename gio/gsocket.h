@@ -301,7 +301,7 @@ gssize                 g_socket_send_with_blocking      (GSocket                
 GLIB_AVAILABLE_IN_2_60
 GPollableReturn        g_socket_send_message_with_timeout (GSocket                *socket,
 							   GSocketAddress         *address,
-							   GOutputVector          *vectors,
+							   const GOutputVector    *vectors,
 							   gint                    num_vectors,
 							   GSocketControlMessage **messages,
 							   gint                    num_messages,

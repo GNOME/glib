@@ -73,13 +73,13 @@ static gssize   g_output_stream_real_write_finish  (GOutputStream             *s
 						    GAsyncResult              *result,
 						    GError                   **error);
 static gboolean g_output_stream_real_writev        (GOutputStream             *stream,
-						    GOutputVector             *vectors,
+						    const GOutputVector       *vectors,
 						    gsize                      n_vectors,
 						    gsize                     *bytes_written,
 						    GCancellable              *cancellable,
 						    GError                   **error);
 static void     g_output_stream_real_writev_async  (GOutputStream             *stream,
-						    GOutputVector             *vectors,
+						    const GOutputVector       *vectors,
 						    gsize                      n_vectors,
 						    int                        io_priority,
 						    GCancellable              *cancellable,
@@ -364,12 +364,12 @@ g_output_stream_write_all (GOutputStream  *stream,
  * Since: 2.60
  */
 gboolean
-g_output_stream_writev (GOutputStream  *stream,
-		        GOutputVector  *vectors,
-		        gsize           n_vectors,
-		        gsize          *bytes_written,
-		        GCancellable   *cancellable,
-		        GError        **error)
+g_output_stream_writev (GOutputStream        *stream,
+		        const GOutputVector  *vectors,
+		        gsize                 n_vectors,
+		        gsize                *bytes_written,
+		        GCancellable         *cancellable,
+		        GError              **error)
 {
   GOutputStreamClass *class;
   gboolean res;
@@ -1319,13 +1319,13 @@ g_output_stream_write_all_finish (GOutputStream  *stream,
  * Since: 2.60
  */
 void
-g_output_stream_writev_async (GOutputStream       *stream,
-			      GOutputVector       *vectors,
-			      gsize                n_vectors,
-			      int                  io_priority,
-			      GCancellable        *cancellable,
-			      GAsyncReadyCallback  callback,
-			      gpointer             user_data)
+g_output_stream_writev_async (GOutputStream             *stream,
+			      const GOutputVector       *vectors,
+			      gsize                      n_vectors,
+			      int                        io_priority,
+			      GCancellable              *cancellable,
+			      GAsyncReadyCallback        callback,
+			      gpointer                   user_data)
 {
   GOutputStreamClass *class;
 
@@ -2294,12 +2294,12 @@ g_output_stream_async_close_is_via_threads (GOutputStream *stream)
  *   Default implementation of sync ops    *
  ********************************************/
 static gboolean
-g_output_stream_real_writev (GOutputStream   *stream,
-                             GOutputVector   *vectors,
-                             gsize            n_vectors,
-                             gsize           *bytes_written,
-                             GCancellable    *cancellable,
-                             GError         **error)
+g_output_stream_real_writev (GOutputStream         *stream,
+                             const GOutputVector   *vectors,
+                             gsize                  n_vectors,
+                             gsize                 *bytes_written,
+                             GCancellable          *cancellable,
+                             GError               **error)
 {
   GOutputStreamClass *class;
   gsize _bytes_written = 0;
@@ -2459,9 +2459,9 @@ g_output_stream_real_write_finish (GOutputStream  *stream,
 }
 
 typedef struct {
-  GOutputVector *vectors;
-  gsize          n_vectors; /* (unowned) */
-  gsize          bytes_written;
+  const GOutputVector *vectors;
+  gsize                n_vectors; /* (unowned) */
+  gsize                bytes_written;
 } WritevData;
 
 static void
@@ -2553,7 +2553,7 @@ writev_async_pollable (GPollableOutputStream *stream,
 
 static void
 g_output_stream_real_writev_async (GOutputStream        *stream,
-                                   GOutputVector        *vectors,
+                                   const GOutputVector  *vectors,
                                    gsize                 n_vectors,
                                    int                   io_priority,
                                    GCancellable         *cancellable,
