@@ -346,12 +346,6 @@ g_output_stream_write_all (GOutputStream  *stream,
  * operation was partially finished when the operation was cancelled the
  * partial result will be returned, without an error.
  *
- * As a special exception to the normal conventions for functions that
- * use #GError, if this function returns %FALSE (and sets @error) then
- * @bytes_written will be set to the number of bytes that were
- * successfully written before the error was encountered. This
- * functionality is only available from C.
- *
  * Some implementations of g_output_stream_writev() may have limitations on the
  * aggregate buffer size, and will return %G_IO_ERROR_INVALID_ARGUMENT if these
  * are exceeded. For example, when writing to a local file on UNIX platforms,
@@ -379,7 +373,6 @@ g_output_stream_writev (GOutputStream        *stream,
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
   g_return_val_if_fail (vectors != NULL || n_vectors == 0, FALSE);
-  g_return_val_if_fail (n_vectors <= G_MAXINT, FALSE);
   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
@@ -397,6 +390,9 @@ g_output_stream_writev (GOutputStream        *stream,
     g_cancellable_push_current (cancellable);
 
   res = class->writev_fn (stream, vectors, n_vectors, bytes_written, cancellable, error);
+
+  g_warn_if_fail (res || bytes_written == 0);
+  g_warn_if_fail (res || (error == NULL || *error != NULL));
 
   if (cancellable)
     g_cancellable_pop_current (cancellable);
@@ -459,7 +455,6 @@ g_output_stream_writev_all (GOutputStream  *stream,
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
   g_return_val_if_fail (vectors != NULL || n_vectors == 0, FALSE);
-  g_return_val_if_fail (n_vectors <= G_MAXINT, FALSE);
   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
@@ -483,7 +478,6 @@ g_output_stream_writev_all (GOutputStream  *stream,
       gboolean res;
 
       res = g_output_stream_writev (stream, vectors, n_vectors, &n_written, cancellable, error);
-      _bytes_written += n_written;
 
       if (!res)
         {
@@ -493,6 +487,7 @@ g_output_stream_writev_all (GOutputStream  *stream,
         }
 
       g_return_val_if_fail (n_written > 0, FALSE);
+      _bytes_written += n_written;
 
       /* skip vectors that have been written in full */
       while (n_vectors > 0 && n_written >= vectors[0].size)
@@ -1331,7 +1326,6 @@ g_output_stream_writev_async (GOutputStream             *stream,
 
   g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
   g_return_if_fail (vectors != NULL || n_vectors == 0);
-  g_return_if_fail (n_vectors <= G_MAXINT);
   g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
@@ -1351,12 +1345,6 @@ g_output_stream_writev_async (GOutputStream             *stream,
  *
  * Finishes a stream writev operation.
  *
- * As a special exception to the normal conventions for functions that
- * use #GError, if this function returns %FALSE (and sets @error) then
- * @bytes_written will be set to the number of bytes that were
- * successfully written before the error was encountered. This
- * functionality is only available from C.
- *
  * Returns: %TRUE on success, %FALSE if there was an error
  *
  * Since: 2.60
@@ -1368,6 +1356,8 @@ g_output_stream_writev_finish (GOutputStream  *stream,
                                GError        **error)
 {
   GOutputStreamClass *class;
+  gboolean res;
+  gsize _bytes_written = 0;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
@@ -1376,7 +1366,15 @@ g_output_stream_writev_finish (GOutputStream  *stream,
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
   g_return_val_if_fail (class->writev_finish != NULL, FALSE);
 
-  return class->writev_finish (stream, result, bytes_written, error);
+  res = class->writev_finish (stream, result, &_bytes_written, error);
+
+  g_warn_if_fail (res || _bytes_written == 0);
+  g_warn_if_fail (res || (error == NULL || *error != NULL));
+
+  if (bytes_written)
+    *bytes_written = _bytes_written;
+
+  return res;
 }
 
 typedef struct
@@ -1409,7 +1407,6 @@ writev_all_callback (GObject      *stream,
       gsize n_written = 0;
 
       res = g_output_stream_writev_finish (G_OUTPUT_STREAM (stream), result, &n_written, &error);
-      data->bytes_written += n_written;
 
       if (!res)
         {
@@ -1419,6 +1416,7 @@ writev_all_callback (GObject      *stream,
         }
 
       g_warn_if_fail (n_written > 0);
+      data->bytes_written += n_written;
 
       /* skip vectors that have been written in full */
       while (data->n_vectors > 0 && n_written >= data->vectors[0].size)
@@ -1510,7 +1508,6 @@ g_output_stream_writev_all_async (GOutputStream       *stream,
 
   g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
   g_return_if_fail (vectors != NULL || n_vectors == 0);
-  g_return_if_fail (n_vectors <= G_MAXINT);
   g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
   task = g_task_new (stream, cancellable, callback, user_data);
@@ -2301,7 +2298,6 @@ g_output_stream_real_writev (GOutputStream         *stream,
                              GCancellable          *cancellable,
                              GError               **error)
 {
-  GOutputStreamClass *class;
   gsize _bytes_written = 0;
   gsize i;
   GError *err = NULL;
@@ -2309,27 +2305,37 @@ g_output_stream_real_writev (GOutputStream         *stream,
   if (bytes_written)
     *bytes_written = 0;
 
-  class = G_OUTPUT_STREAM_GET_CLASS (stream);
-
   for (i = 0; i < n_vectors; i++)
     {
-      gssize res;
+      gboolean res;
+      gsize written = 0;
 
       /* Would we overflow here? In that case simply return and let the caller
        * handle this like a short write */
       if (_bytes_written > G_MAXSIZE - vectors[i].size)
         break;
 
-      res = class->write_fn (stream, vectors[i].buffer, vectors[i].size, cancellable, &err);
-      if (res == -1)
+      res = g_output_stream_write_all (stream, vectors[i].buffer, vectors[i].size, &written, cancellable, &err);
+      _bytes_written += written;
+
+      if (!res)
         {
-          g_propagate_error (error, err);
           if (bytes_written)
             *bytes_written = _bytes_written;
+
+          /* If we already wrote something  we handle this like a short write
+           * and assume that on the next call the same error happens again, or
+           * everything finishes successfully without data loss then
+           */
+          if (_bytes_written > 0)
+            {
+              g_clear_error (&err);
+              return TRUE;
+            }
+
+          g_propagate_error (error, err);
           return FALSE;
         }
-
-      _bytes_written += res;
     }
 
   if (bytes_written)
@@ -2485,6 +2491,10 @@ writev_async_thread (GTask        *task,
   class = G_OUTPUT_STREAM_GET_CLASS (stream);
   res = class->writev_fn (stream, op->vectors, op->n_vectors,
                           &op->bytes_written, cancellable, &error);
+
+  g_warn_if_fail (res || op->bytes_written == 0);
+  g_warn_if_fail (res || error != NULL);
+
   if (!res)
     g_task_return_error (task, g_steal_pointer (&error));
   else
@@ -2519,31 +2529,30 @@ writev_async_pollable (GPollableOutputStream *stream,
   res = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream)->
     writev_nonblocking (stream, op->vectors, op->n_vectors, &bytes_written, &error);
 
-  op->bytes_written = bytes_written;
-
   switch (res)
     {
     case G_POLLABLE_RETURN_WOULD_BLOCK:
-      /* only wait and write later if nothing was written at all so far */
-      if (bytes_written == 0)
         {
           GSource *source;
 
           g_warn_if_fail (error == NULL);
+          g_warn_if_fail (bytes_written == 0);
 
           source = g_pollable_output_stream_create_source (stream,
                                                            g_task_get_cancellable (task));
           g_task_attach_source (task, source,
                                 (GSourceFunc) writev_async_pollable_ready);
           g_source_unref (source);
-          break;
         }
-
-        /* fall through */
+        break;
       case G_POLLABLE_RETURN_OK:
+        g_warn_if_fail (error == NULL);
+        op->bytes_written = bytes_written;
         g_task_return_boolean (task, TRUE);
         break;
       case G_POLLABLE_RETURN_FAILED:
+        g_warn_if_fail (bytes_written == 0);
+        g_warn_if_fail (error != NULL);
         g_task_return_error (task, g_steal_pointer (&error));
         break;
       default:
