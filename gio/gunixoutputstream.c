@@ -425,6 +425,12 @@ g_unix_output_stream_writev (GOutputStream        *stream,
   if (bytes_written)
     *bytes_written = 0;
 
+  /* Clamp to G_MAXINT as writev() takes an integer for the number of vectors.
+   * We handle this like a short write in this case
+   */
+  if (n_vectors > G_MAXINT)
+    n_vectors = G_MAXINT;
+
   unix_stream = G_UNIX_OUTPUT_STREAM (stream);
 
   if (G_OUTPUT_VECTOR_IS_IOVEC)
@@ -628,6 +634,12 @@ g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream
       *bytes_written = 0;
       return G_POLLABLE_RETURN_WOULD_BLOCK;
     }
+
+  /* Clamp to G_MAXINT as writev() takes an integer for the number of vectors.
+   * We handle this like a short write in this case
+   */
+  if (n_vectors > G_MAXINT)
+    n_vectors = G_MAXINT;
 
   if (G_OUTPUT_VECTOR_IS_IOVEC)
     {
