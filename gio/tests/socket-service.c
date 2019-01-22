@@ -269,7 +269,7 @@ written_read_write_async_cb (GOutputStream *ostream,
   res = g_output_stream_write_all_finish (ostream, result, &bytes_written, &error);
   g_assert_no_error (error);
   g_assert_true (res);
-  g_assert_cmpint (bytes_written, ==, 20);
+  g_assert_cmpuint (bytes_written, ==, 20);
 
   g_io_stream_close_async (G_IO_STREAM (conn),
                            G_PRIORITY_DEFAULT,
@@ -339,7 +339,7 @@ writtenv_read_write_async_cb (GOutputStream *ostream,
   res = g_output_stream_writev_all_finish (ostream, result, &bytes_written, &error);
   g_assert_no_error (error);
   g_assert_true (res);
-  g_assert_cmpint (bytes_written, ==, 20);
+  g_assert_cmpuint (bytes_written, ==, 20);
 
   g_io_stream_close_async (G_IO_STREAM (conn),
                            G_PRIORITY_DEFAULT,
