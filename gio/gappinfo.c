@@ -662,6 +662,61 @@ g_app_info_launch_uris (GAppInfo           *appinfo,
   return (* iface->launch_uris) (appinfo, uris, launch_context, error);
 }
 
+/**
+ * g_app_info_launch_uris_async:
+ * @appinfo: a #GAppInfo
+ * @uris: (nullable) (element-type utf8): a #GList containing URIs to launch.
+ * @context: (nullable): a #GAppLaunchContext or %NULL
+ * @cancellable: (nullable): a #GCancellable
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @user_data: (nullable): data to pass to @callback
+ *
+ * Async version of g_app_info_launch_uris().
+ *
+ * Since: 2.60
+ **/
+void
+g_app_info_launch_uris_async (GAppInfo           *appinfo,
+                              GList              *uris,
+                              GAppLaunchContext  *context,
+                              GCancellable       *cancellable,
+                              GAsyncReadyCallback callback,
+                              gpointer            user_data)
+{
+  GAppInfoIface *iface;
+
+  g_return_if_fail (G_IS_APP_INFO (appinfo));
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  return (* iface->launch_uris_async) (appinfo, uris, context, cancellable, callback, user_data);
+}
+
+/**
+ * g_app_info_launch_uris_finish:
+ * @appinfo: a #GAppInfo
+ * @result: a #GAsyncResult
+ * @error: (nullable): a #GError
+ *
+ * Finishes g_app_info_launch_uris_async() operation.
+ *
+ * Returns: %TRUE on successful launch, %FALSE otherwise.
+ *
+ * Since: 2.60
+ */
+gboolean
+g_app_info_launch_uris_finish (GAppInfo     *appinfo,
+                               GAsyncResult *result,
+                               GError      **error)
+{
+  GAppInfoIface *iface;
+
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), FALSE);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  return (* iface->launch_uris_finish) (appinfo, result, error);
+}
 
 /**
  * g_app_info_should_show:

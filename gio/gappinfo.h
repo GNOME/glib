@@ -107,6 +107,16 @@ struct _GAppInfoIface
                                                  GList              *uris,
                                                  GAppLaunchContext  *context,
                                                  GError            **error);
+  void         (* launch_uris_async)            (GAppInfo           *appinfo,
+                                                 GList              *uris,
+                                                 GAppLaunchContext  *context,
+                                                 GCancellable       *cancellable,
+                                                 GAsyncReadyCallback callback,
+                                                 gpointer            user_data);
+  gboolean     (* launch_uris_finish)           (GAppInfo           *appinfo,
+                                                 GAsyncResult       *result,
+                                                 GError            **error);
+
   gboolean     (* should_show)                  (GAppInfo           *appinfo);
 
   /* For changing associations */
@@ -173,6 +183,18 @@ gboolean    g_app_info_launch_uris                  (GAppInfo             *appin
                                                      GList                *uris,
                                                      GAppLaunchContext    *context,
                                                      GError              **error);
+GLIB_AVAILABLE_IN_2_60
+void        g_app_info_launch_uris_async            (GAppInfo             *appinfo,
+                                                     GList                *uris,
+                                                     GAppLaunchContext    *context,
+                                                     GCancellable         *cancellable,
+                                                     GAsyncReadyCallback   callback,
+                                                     gpointer              user_data);
+GLIB_AVAILABLE_IN_2_60
+gboolean    g_app_info_launch_uris_finish           (GAppInfo             *appinfo,
+                                                     GAsyncResult         *result,
+                                                     GError              **error);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_app_info_should_show                  (GAppInfo             *appinfo);
 
