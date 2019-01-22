@@ -1183,6 +1183,17 @@ GLIB_AVAILABLE_IN_ALL
 GAppInfo *g_file_query_default_handler       (GFile                  *file,
 					      GCancellable           *cancellable,
 					      GError                **error);
+GLIB_AVAILABLE_IN_2_60
+void      g_file_query_default_handler_async (GFile                  *file,
+                                              int                     io_priority,
+                                              GCancellable           *cancellable,
+                                              GAsyncReadyCallback     callback,
+                                              gpointer                user_data);
+GLIB_AVAILABLE_IN_2_60
+GAppInfo *g_file_query_default_handler_finish (GFile                 *file,
+                                               GAsyncResult          *result,
+                                               GError               **error);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean g_file_load_contents                (GFile                  *file,
 					      GCancellable           *cancellable,
