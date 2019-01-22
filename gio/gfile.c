@@ -6989,7 +6989,7 @@ g_file_query_default_handler_async (GFile              *file,
  * @result: a #GAsyncResult
  * @error: (nullable): a #GError
  *
- * Finishes g_file_query_default_handler_async() operation.
+ * Finishes a g_file_query_default_handler_async() operation.
  *
  * Returns: (transfer full): a #GAppInfo if the handle was found,
  *     %NULL if there were errors.

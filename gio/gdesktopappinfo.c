@@ -2870,7 +2870,10 @@ static void
 launch_uris_with_dbus (GDesktopAppInfo    *info,
                        GDBusConnection    *session_bus,
                        GList              *uris,
-                       GAppLaunchContext  *launch_context)
+                       GAppLaunchContext  *launch_context,
+                       GCancellable       *cancellable,
+                       GAsyncReadyCallback callback,
+                       gpointer            user_data)
 {
   GVariantBuilder builder;
   gchar *object_path;
@@ -2889,14 +2892,11 @@ launch_uris_with_dbus (GDesktopAppInfo    *info,
 
   g_variant_builder_add_value (&builder, g_desktop_app_info_make_platform_data (info, uris, launch_context));
 
-  /* This is non-blocking API.  Similar to launching via fork()/exec()
-   * we don't wait around to see if the program crashed during startup.
-   * This is what startup-notification's job is...
-   */
   object_path = object_path_from_appid (info->app_id);
   g_dbus_connection_call (session_bus, info->app_id, object_path, "org.freedesktop.Application",
                           uris ? "Open" : "Activate", g_variant_builder_end (&builder),
-                          NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+                          NULL, G_DBUS_CALL_FLAGS_NONE, -1,
+                          cancellable, callback, user_data);
   g_free (object_path);
 }
 
@@ -2904,7 +2904,10 @@ static gboolean
 g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
                                           GDBusConnection    *session_bus,
                                           GList              *uris,
-                                          GAppLaunchContext  *launch_context)
+                                          GAppLaunchContext  *launch_context,
+                                          GCancellable       *cancellable,
+                                          GAsyncReadyCallback callback,
+                                          gpointer            user_data)
 {
   GList *ruris = uris;
   char *app_id = NULL;
@@ -2921,7 +2924,8 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
     }
 #endif
 
-  launch_uris_with_dbus (info, session_bus, ruris, launch_context);
+  launch_uris_with_dbus (info, session_bus, ruris, launch_context,
+                         cancellable, callback, user_data);
 
   if (ruris != uris)
     g_list_free_full (ruris, g_free);
@@ -2952,7 +2956,12 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   if (session_bus && info->app_id)
-    g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context);
+    /* This is non-blocking API. Similar to launching via fork()/exec()
+     * we don't wait around to see if the program crashed during startup.
+     * This is what startup-notification's job is...
+     */
+    g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context,
+                                              NULL, NULL, NULL);
   else
     success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec, uris, launch_context,
                                                          spawn_flags, user_setup, user_setup_data,
@@ -2984,6 +2993,137 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
                                                   NULL, NULL, NULL, NULL,
                                                   -1, -1, -1,
                                                   error);
+}
+
+typedef struct
+{
+  GAppInfo *appinfo;
+  GList *uris;
+  GAppLaunchContext *context;
+} LaunchUrisData;
+
+static void
+launch_uris_data_free (LaunchUrisData *data)
+{
+  g_clear_object (&data->context);
+  g_list_free_full (data->uris, g_free);
+  g_free (data);
+}
+
+static void
+launch_uris_with_dbus_cb (GObject      *object,
+                          GAsyncResult *result,
+                          gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GError *error = NULL;
+
+  g_dbus_connection_call_finish (G_DBUS_CONNECTION (object), result, &error);
+  if (error != NULL)
+    {
+      g_dbus_error_strip_remote_error (error);
+      g_task_return_error (task, g_steal_pointer (&error));
+    }
+  else
+    g_task_return_boolean (task, TRUE);
+
+  g_object_unref (task);
+}
+
+static void
+launch_uris_flush_cb (GObject      *object,
+                      GAsyncResult *result,
+                      gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+
+  g_dbus_connection_flush_finish (G_DBUS_CONNECTION (object), result, NULL);
+  g_task_return_boolean (task, TRUE);
+  g_object_unref (task);
+}
+
+static void
+launch_uris_bus_get_cb (GObject      *object,
+                        GAsyncResult *result,
+                        gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (g_task_get_source_object (task));
+  LaunchUrisData *data = g_task_get_task_data (task);
+  GCancellable *cancellable = g_task_get_cancellable (task);
+  GDBusConnection *session_bus;
+  GError *error = NULL;
+
+  session_bus = g_bus_get_finish (result, NULL);
+
+  if (session_bus && info->app_id)
+    {
+      /* FIXME: The g_document_portal_add_documents() function, which is called
+       * from the g_desktop_app_info_launch_uris_with_dbus() function, still
+       * uses blocking calls.
+       */
+      g_desktop_app_info_launch_uris_with_dbus (info, session_bus,
+                                                data->uris, data->context,
+                                                cancellable,
+                                                launch_uris_with_dbus_cb,
+                                                g_steal_pointer (&task));
+    }
+  else
+    {
+      /* FIXME: The D-Bus message from the notify_desktop_launch() function
+       * can be still lost even if flush is called later. See:
+       * https://gitlab.freedesktop.org/dbus/dbus/issues/72
+       */
+      g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec,
+                                                 data->uris, data->context,
+                                                 _SPAWN_FLAGS_DEFAULT, NULL,
+                                                 NULL, NULL, NULL, -1, -1, -1,
+                                                 &error);
+      if (error != NULL)
+        {
+          g_task_return_error (task, g_steal_pointer (&error));
+          g_object_unref (task);
+        }
+      else
+        g_dbus_connection_flush (session_bus,
+                                 cancellable,
+                                 launch_uris_flush_cb,
+                                 g_steal_pointer (&task));
+    }
+
+  g_clear_object (&session_bus);
+}
+
+static void
+g_desktop_app_info_launch_uris_async (GAppInfo           *appinfo,
+                                      GList              *uris,
+                                      GAppLaunchContext  *context,
+                                      GCancellable       *cancellable,
+                                      GAsyncReadyCallback callback,
+                                      gpointer            user_data)
+{
+  GTask *task;
+  LaunchUrisData *data;
+
+  task = g_task_new (appinfo, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_desktop_app_info_launch_uris_async);
+
+  data = g_new0 (LaunchUrisData, 1);
+  data->uris = g_list_copy_deep (uris, (GCopyFunc) g_strdup, NULL);
+  data->context = (context != NULL) ? g_object_ref (context) : NULL;
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) launch_uris_data_free);
+
+  g_bus_get (G_BUS_TYPE_SESSION, cancellable, launch_uris_bus_get_cb, task);
+}
+
+static gboolean
+g_desktop_app_info_launch_uris_finish (GAppInfo     *appinfo,
+                                       GAsyncResult *result,
+                                       GError      **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, appinfo), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 static gboolean
@@ -3876,6 +4016,8 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
   iface->supports_uris = g_desktop_app_info_supports_uris;
   iface->supports_files = g_desktop_app_info_supports_files;
   iface->launch_uris = g_desktop_app_info_launch_uris;
+  iface->launch_uris_async = g_desktop_app_info_launch_uris_async;
+  iface->launch_uris_finish = g_desktop_app_info_launch_uris_finish;
   iface->should_show = g_desktop_app_info_should_show;
   iface->set_as_default_for_type = g_desktop_app_info_set_as_default_for_type;
   iface->set_as_default_for_extension = g_desktop_app_info_set_as_default_for_extension;
