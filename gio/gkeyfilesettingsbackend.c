@@ -704,7 +704,7 @@ g_keyfile_settings_backend_constructed (GObject *object)
   kfsb->permission = g_simple_permission_new (TRUE);
 
   kfsb->dir = g_file_get_parent (kfsb->file);
-  g_file_make_directory_with_parents (kfsb->dir, NULL, NULL);
+  g_mkdir_with_parents (g_file_peek_path (kfsb->dir), 700);
 
   kfsb->file_monitor = g_file_monitor (kfsb->file, G_FILE_MONITOR_NONE, NULL, NULL);
   kfsb->dir_monitor = g_file_monitor (kfsb->dir, G_FILE_MONITOR_NONE, NULL, NULL);
