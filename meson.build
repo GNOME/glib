@@ -355,6 +355,9 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     # Due to pervasive use of things like GPOINTER_TO_UINT(), we do not support
     # building with -Wbad-function-cast.
     '-Wno-bad-function-cast',
+    # Due to function casts through (void*) we cannot support -Wpedantic:
+    # https://wiki.gnome.org/Projects/GLib/CompilerRequirements#Function_pointer_conversions.
+    '-Wno-pedantic',
     '-Werror=declaration-after-statement',
     '-Werror=format=2',
     '-Werror=implicit-function-declaration',
