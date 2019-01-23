@@ -1137,6 +1137,8 @@ g_settings_new_full (GSettingsSchema  *schema,
 }
 
 /* Internal read/write utilities {{{1 */
+
+/* @value will be sunk */
 static gboolean
 g_settings_write_to_backend (GSettings          *settings,
                              GSettingsSchemaKey *key,
@@ -1417,7 +1419,7 @@ g_settings_set_enum (GSettings   *settings,
       return FALSE;
     }
 
-  success = g_settings_write_to_backend (settings, &skey, variant);
+  success = g_settings_write_to_backend (settings, &skey, g_steal_pointer (&variant));
   g_settings_schema_key_clear (&skey);
 
   return success;
@@ -1528,7 +1530,7 @@ g_settings_set_flags (GSettings   *settings,
       return FALSE;
     }
 
-  success = g_settings_write_to_backend (settings, &skey, variant);
+  success = g_settings_write_to_backend (settings, &skey, g_steal_pointer (&variant));
   g_settings_schema_key_clear (&skey);
 
   return success;
@@ -1672,7 +1674,7 @@ g_settings_set (GSettings   *settings,
   value = g_variant_new_va (format, NULL, &ap);
   va_end (ap);
 
-  return g_settings_set_value (settings, key, value);
+  return g_settings_set_value (settings, key, g_steal_pointer (&value));
 }
 
 /**
