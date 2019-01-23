@@ -225,6 +225,10 @@ get_from_keyfile (GKeyfileSettingsBackend *kfsb,
       if (str)
         {
           return_value = g_variant_parse (type, str, NULL, NULL, NULL);
+
+          /* As a special case, support values of type %G_VARIANT_TYPE_STRING
+           * not being quoted, since users keep forgetting to do it and then
+           * getting confused. */
           if (return_value == NULL &&
               g_variant_type_equal (type, G_VARIANT_TYPE_STRING) &&
               str[0] != '\"')
