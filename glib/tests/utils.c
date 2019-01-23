@@ -655,6 +655,36 @@ test_check_setuid (void)
   g_assert (!res);
 }
 
+/* Test the defined integer limits are correct, as some compilers have had
+ * problems with signed/unsigned conversion in the past. These limits should not
+ * vary between platforms, compilers or architectures.
+ *
+ * Use string comparisons to avoid the same systematic problems with unary minus
+ * application in C++. See https://gitlab.gnome.org/GNOME/glib/issues/1663. */
+static void
+test_int_limits (void)
+{
+  gchar *str = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1663");
+
+  str = g_strdup_printf ("%d %d %u\n"
+                         "%" G_GINT16_FORMAT " %" G_GINT16_FORMAT " %" G_GUINT16_FORMAT "\n"
+                         "%" G_GINT32_FORMAT " %" G_GINT32_FORMAT " %" G_GUINT32_FORMAT "\n"
+                         "%" G_GINT64_FORMAT " %" G_GINT64_FORMAT " %" G_GUINT64_FORMAT "\n",
+                         G_MININT8, G_MAXINT8, G_MAXUINT8,
+                         G_MININT16, G_MAXINT16, G_MAXUINT16,
+                         G_MININT32, G_MAXINT32, G_MAXUINT32,
+                         G_MININT64, G_MAXINT64, G_MAXUINT64);
+
+  g_assert_cmpstr (str, ==,
+                   "-128 127 255\n"
+                   "-32768 32767 65535\n"
+                   "-2147483648 2147483647 4294967295\n"
+                   "-9223372036854775808 9223372036854775807 18446744073709551615\n");
+  g_free (str);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -706,6 +736,7 @@ main (int   argc,
   g_test_add_func ("/utils/nullify", test_nullify);
   g_test_add_func ("/utils/atexit", test_atexit);
   g_test_add_func ("/utils/check-setuid", test_check_setuid);
+  g_test_add_func ("/utils/int-limits", test_int_limits);
 
   return g_test_run ();
 }
