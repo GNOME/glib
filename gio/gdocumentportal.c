@@ -89,76 +89,6 @@ init_document_portal (void)
   return (documents != NULL && documents_mountpoint != NULL);
 }
 
-char *
-g_document_portal_add_document (GFile   *file,
-                                GError **error)
-{
-  char *doc_path, *basename;
-  char *doc_id = NULL;
-  char *doc_uri = NULL;
-  char *path = NULL;
-  GUnixFDList *fd_list = NULL;
-  int fd, fd_in, errsv;
-  gboolean ret;
-
-  if (!init_document_portal ())
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
-                   "Document portal is not available");
-      goto out;
-    }
-
-  path = g_file_get_path (file);
-  fd = g_open (path, O_RDWR | O_CLOEXEC);
-  errsv = errno;
-
-  if (fd == -1)
-    {
-      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-                   "Failed to open %s", path);
-      goto out;
-    }
-
-#ifndef HAVE_O_CLOEXEC
-  fcntl (fd, F_SETFD, FD_CLOEXEC);
-#endif
-
-  fd_list = g_unix_fd_list_new ();
-  fd_in = g_unix_fd_list_append (fd_list, fd, error);
-  g_close (fd, NULL);
-
-  if (fd_in == -1)
-    goto out;
-
-  ret = gxdp_documents_call_add_sync (documents,
-                                      g_variant_new_handle (fd_in),
-                                      TRUE,
-                                      TRUE,
-                                      fd_list,
-                                      &doc_id,
-                                      NULL,
-                                      NULL,
-                                      error);
-
-  if (!ret)
-    goto out;
-
-  basename = g_path_get_basename (path);
-  doc_path = g_build_filename (documents_mountpoint, doc_id, basename, NULL);
-  g_free (basename);
-
-  doc_uri = g_filename_to_uri (doc_path, NULL, NULL);
-  g_free (doc_path);
-
- out:
-  if (fd_list)
-    g_object_unref (fd_list);
-  g_free (path);
-  g_free (doc_id);
-
-  return doc_uri;
-}
-
 /* Flags accepted by org.freedesktop.portal.Documents.AddFull */
 enum {
   XDP_ADD_FLAGS_REUSE_EXISTING             =  (1 << 0),
@@ -208,6 +138,13 @@ g_document_portal_add_documents (GList       *uris,
           int fd;
 
           fd = g_open (path, O_CLOEXEC | O_RDWR);
+          if (fd == -1 && (errno == EACCES || errno == EISDIR))
+            {
+              /* If we don't have write access, fall back to read-only,
+               * and stop requesting the write permission */
+              fd = g_open (path, O_CLOEXEC | O_RDONLY);
+              permissions[1] = NULL;
+            }
           if (fd >= 0)
             {
 #ifndef HAVE_O_CLOEXEC
