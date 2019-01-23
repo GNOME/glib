@@ -93,6 +93,8 @@ g_tls_backend_default_init (GTlsBackendInterface *iface)
 {
 }
 
+static GTlsBackend *tls_backend_default_singleton = NULL;  /* (owned) (atomic) */
+
 /**
  * g_tls_backend_get_default:
  *
@@ -106,8 +108,18 @@ g_tls_backend_default_init (GTlsBackendInterface *iface)
 GTlsBackend *
 g_tls_backend_get_default (void)
 {
-  return _g_io_module_get_default (G_TLS_BACKEND_EXTENSION_POINT_NAME,
-				   "GIO_USE_TLS", NULL);
+  if (g_once_init_enter (&tls_backend_default_singleton))
+    {
+      GTlsBackend *singleton;
+
+      singleton = _g_io_module_get_default (G_TLS_BACKEND_EXTENSION_POINT_NAME,
+                                            "GIO_USE_TLS",
+                                            NULL);
+
+      g_once_init_leave (&tls_backend_default_singleton, singleton);
+    }
+
+  return tls_backend_default_singleton;
 }
 
 /**

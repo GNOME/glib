@@ -422,6 +422,14 @@
 }
 
 {
+	g-io-module-default-singleton-weak-ref
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:_g_io_module_get_default
+}
+
+{
 	g-get-language-names-malloc
 	Memcheck:Leak
 	match-leak-kinds:reachable

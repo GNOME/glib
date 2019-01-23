@@ -992,6 +992,12 @@ g_settings_backend_verify (gpointer impl)
   return TRUE;
 }
 
+/* We need to cache the default #GSettingsBackend for the entire process
+ * lifetime, especially if the backend is #GMemorySettingsBackend: it needs to
+ * keep the in-memory settings around even while there are no #GSettings
+ * instances alive. */
+static GSettingsBackend *settings_backend_default_singleton = NULL;  /* (owned) (atomic) */
+
 /**
  * g_settings_backend_get_default:
  *
@@ -1010,12 +1016,18 @@ g_settings_backend_verify (gpointer impl)
 GSettingsBackend *
 g_settings_backend_get_default (void)
 {
-  GSettingsBackend *backend;
+  if (g_once_init_enter (&settings_backend_default_singleton))
+    {
+      GSettingsBackend *singleton;
 
-  backend = _g_io_module_get_default (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
-				      "GSETTINGS_BACKEND",
-				      g_settings_backend_verify);
-  return g_object_ref (backend);
+      singleton = _g_io_module_get_default (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
+                                            "GSETTINGS_BACKEND",
+                                            g_settings_backend_verify);
+
+      g_once_init_leave (&settings_backend_default_singleton, singleton);
+    }
+
+  return g_object_ref (settings_backend_default_singleton);
 }
 
 /*< private >
