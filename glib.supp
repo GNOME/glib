@@ -229,6 +229,16 @@
 }
 
 {
+	g-io-module-default-singleton-name
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:g_strdup
+	...
+	fun:_g_io_module_get_default*
+}
+
+{
 	g-get-language-names-malloc
 	Memcheck:Leak
 	fun:malloc
@@ -675,4 +685,42 @@
 	...
 	fun:g_queue_new
 	fun:g_main_context_push_thread_default
+}
+
+# One-time allocations for #GFileInfo attribute cache
+{
+	g_file_info_attribute_cache
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:ensure_attribute_hash
+	...
+	fun:g_file_*
+}
+{
+	g_file_info_attribute_cache2
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:ensure_attribute_hash
+	...
+	fun:g_file_*
+}
+{
+	g_file_info_attribute_cache3
+	Memcheck:Leak
+	fun:malloc
+	...
+	fun:lookup_namespace
+	...
+	fun:g_file_*
+}
+{
+	g_file_info_attribute_cache4
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:lookup_namespace
+	...
+	fun:g_file_*
 }
