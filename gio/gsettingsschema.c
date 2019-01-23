@@ -1472,6 +1472,7 @@ g_settings_schema_key_to_enum (GSettingsSchemaKey *key,
   return result;
 }
 
+/* Returns a new floating #GVariant. */
 GVariant *
 g_settings_schema_key_from_enum (GSettingsSchemaKey *key,
                                  gint                value)
@@ -1511,6 +1512,7 @@ g_settings_schema_key_to_flags (GSettingsSchemaKey *key,
   return result;
 }
 
+/* Returns a new floating #GVariant. */
 GVariant *
 g_settings_schema_key_from_flags (GSettingsSchemaKey *key,
                                   guint               value)
