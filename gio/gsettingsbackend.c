@@ -1052,5 +1052,7 @@ g_settings_backend_sync_default (void)
 
       if (class->sync)
         class->sync (backend);
+
+      g_object_unref (backend);
     }
 }
