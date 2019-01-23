@@ -2442,6 +2442,7 @@ test_schema_source (void)
   g_settings_schema_unref (schema);
 
   g_settings_schema_source_unref (source);
+  g_object_unref (backend);
 }
 
 static void
