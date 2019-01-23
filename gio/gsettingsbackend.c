@@ -777,6 +777,8 @@ g_settings_backend_read_user_value (GSettingsBackend   *backend,
  * to indicate that the affected keys have suddenly "changed back" to their
  * old values.
  *
+ * If @value has a floating reference, it will be sunk.
+ *
  * Returns: %TRUE if the write succeeded, %FALSE if the key was not writable
  */
 gboolean
