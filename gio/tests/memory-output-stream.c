@@ -300,6 +300,94 @@ test_write_bytes (void)
   g_bytes_unref (bytes2);
 }
 
+/* Test that writev() works on #GMemoryOutputStream with a non-empty set of vectors. This
+ * covers the default writev() implementation around write(). */
+static void
+test_writev (void)
+{
+  GOutputStream *mo;
+  GError *error = NULL;
+  gboolean res;
+  gsize bytes_written;
+  GOutputVector vectors[3];
+  const guint8 buffer[] = {1, 2, 3, 4, 5,
+                           1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                           1, 2, 3};
+  guint8 *output_buffer;
+
+  vectors[0].buffer = buffer;
+  vectors[0].size = 5;
+
+  vectors[1].buffer = buffer + vectors[0].size;
+  vectors[1].size = 12;
+
+  vectors[2].buffer = buffer + vectors[0].size + vectors[1].size;
+  vectors[2].size = 3;
+
+  mo = (GOutputStream*) g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM,
+                                      "realloc-function", g_realloc,
+                                      "destroy-function", g_free,
+                                      NULL);
+  res = g_output_stream_writev_all (mo, vectors, G_N_ELEMENTS (vectors), &bytes_written, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+  g_assert_cmpuint (bytes_written, ==, sizeof buffer);
+
+  g_output_stream_close (mo, NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpuint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, sizeof buffer);
+  output_buffer = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mo));
+  g_assert_cmpmem (output_buffer, sizeof buffer, buffer, sizeof buffer);
+
+  g_object_unref (mo);
+}
+
+/* Test that writev_nonblocking() works on #GMemoryOutputStream with a non-empty set of vectors. This
+ * covers the default writev_nonblocking() implementation around write_nonblocking(). */
+static void
+test_writev_nonblocking (void)
+{
+  GOutputStream *mo;
+  GError *error = NULL;
+  gboolean res;
+  gsize bytes_written;
+  GOutputVector vectors[3];
+  const guint8 buffer[] = {1, 2, 3, 4, 5,
+                           1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                           1, 2, 3};
+  guint8 *output_buffer;
+
+  vectors[0].buffer = buffer;
+  vectors[0].size = 5;
+
+  vectors[1].buffer = buffer + vectors[0].size;
+  vectors[1].size = 12;
+
+  vectors[2].buffer = buffer + vectors[0].size + vectors[1].size;
+  vectors[2].size = 3;
+
+  mo = (GOutputStream*) g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM,
+                                      "realloc-function", g_realloc,
+                                      "destroy-function", g_free,
+                                      NULL);
+  res = g_pollable_output_stream_writev_nonblocking (G_POLLABLE_OUTPUT_STREAM (mo),
+                                                     vectors, G_N_ELEMENTS (vectors),
+                                                     &bytes_written, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (res, ==, G_POLLABLE_RETURN_OK);
+  g_assert_cmpuint (bytes_written, ==, sizeof buffer);
+
+  g_output_stream_close (mo, NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpuint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, sizeof buffer);
+  output_buffer = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mo));
+  g_assert_cmpmem (output_buffer, sizeof buffer, buffer, sizeof buffer);
+
+  g_object_unref (mo);
+}
+
 static void
 test_steal_as_bytes (void)
 {
@@ -350,6 +438,8 @@ main (int   argc,
   g_test_add_func ("/memory-output-stream/get-data-size", test_data_size);
   g_test_add_func ("/memory-output-stream/properties", test_properties);
   g_test_add_func ("/memory-output-stream/write-bytes", test_write_bytes);
+  g_test_add_func ("/memory-output-stream/writev", test_writev);
+  g_test_add_func ("/memory-output-stream/writev_nonblocking", test_writev_nonblocking);
   g_test_add_func ("/memory-output-stream/steal_as_bytes", test_steal_as_bytes);
 
   return g_test_run();
