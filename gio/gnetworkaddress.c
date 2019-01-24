@@ -1119,13 +1119,18 @@ static int
 on_address_timeout (gpointer user_data)
 {
   GNetworkAddressAddressEnumerator *addr_enum = user_data;
+  GSource *wait_source;
+
+  /* Steal source before tasks can complete/finalize them */
+  wait_source = g_steal_pointer (&addr_enum->wait_source);
 
   /* If ipv6 didn't come in yet, just complete the task */
   if (addr_enum->queued_task != NULL)
     complete_queued_task (addr_enum, g_steal_pointer (&addr_enum->queued_task),
                           g_steal_pointer (&addr_enum->last_error));
 
-  g_clear_pointer (&addr_enum->wait_source, g_source_unref);
+  g_clear_pointer (&wait_source, g_source_unref);
+
   return G_SOURCE_REMOVE;
 }
 
