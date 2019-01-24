@@ -296,15 +296,45 @@ remove_duplicates (GList *addrs)
     }
 }
 
+static gboolean
+hostname_is_localhost (const char *hostname)
+{
+  size_t len = strlen (hostname);
+  const char *p;
+
+  /* Match "localhost", "localhost.", and "*.localhost" */
+  if (len < strlen ("localhost"))
+    return FALSE;
+
+  if (hostname[len - 1] == '.')
+      len--;
+
+  p = hostname + len - 1;
+  while (p >= hostname)
+    {
+      if (*p == '.')
+       {
+         p++;
+         break;
+       }
+      else if (p == hostname)
+        break;
+      p--;
+    }
+
+  return g_ascii_strncasecmp (p, "localhost", strlen ("localhost")) == 0;
+}
+
 /* Note that this does not follow the "FALSE means @error is set"
  * convention. The return value tells the caller whether it should
  * return @addrs and @error to the caller right away, or if it should
  * continue and trying to resolve the name as a hostname.
  */
 static gboolean
-handle_ip_address (const char  *hostname,
-                   GList      **addrs,
-                   GError     **error)
+handle_ip_address_or_localhost (const char                *hostname,
+                                GList                    **addrs,
+                                GResolverNameLookupFlags   flags,
+                                GError                   **error)
 {
   GInetAddress *addr;
 
@@ -346,6 +376,16 @@ handle_ip_address (const char  *hostname,
       return TRUE;
     }
 
+  /* Always resolve localhost to a loopback address so it can be reliably considered secure */
+  if (hostname_is_localhost (hostname))
+    {
+      if (!(flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY))
+        *addrs = g_list_append (*addrs, g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV6));
+      if (!(flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY))
+        *addrs = g_list_append (*addrs, g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4));
+      return TRUE;
+    }
+
   return FALSE;
 }
 
@@ -365,7 +405,7 @@ lookup_by_name_real (GResolver                 *resolver,
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   /* Check if @hostname is just an IP address */
-  if (handle_ip_address (hostname, &addrs, error))
+  if (handle_ip_address_or_localhost (hostname, &addrs, flags, error))
     return addrs;
 
   if (g_hostname_is_non_ascii (hostname))
@@ -504,7 +544,7 @@ lookup_by_name_async_real (GResolver                *resolver,
   g_return_if_fail (!(flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY && flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY));
 
   /* Check if @hostname is just an IP address */
-  if (handle_ip_address (hostname, &addrs, &error))
+  if (handle_ip_address_or_localhost (hostname, &addrs, flags, &error))
     {
       GTask *task;
 
