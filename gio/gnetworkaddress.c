@@ -1120,12 +1120,17 @@ on_address_timeout (gpointer user_data)
 {
   GNetworkAddressAddressEnumerator *addr_enum = user_data;
 
+  /* Upon completion it may get unref'd by the owner */
+  g_object_ref (addr_enum);
+
   /* If ipv6 didn't come in yet, just complete the task */
   if (addr_enum->queued_task != NULL)
     complete_queued_task (addr_enum, g_steal_pointer (&addr_enum->queued_task),
                           g_steal_pointer (&addr_enum->last_error));
 
   g_clear_pointer (&addr_enum->wait_source, g_source_unref);
+  g_object_unref (addr_enum);
+
   return G_SOURCE_REMOVE;
 }
 
