@@ -155,7 +155,7 @@ test_default (void)
 static void
 test_fallback (void)
 {
-  GAppInfo *info1, *info2, *app;
+  GAppInfo *info1, *info2, *app = NULL;
   GList *apps, *recomm, *fallback, *list, *l, *m;
   GError *error = NULL;
   gint old_length;
@@ -188,6 +188,7 @@ test_fallback (void)
       if (g_app_info_equal (info1, app))
         break;
     }
+  g_assert_nonnull (app);
   g_assert_true (g_app_info_equal (info1, app));
 
   /* and that Test2 is among the fallback apps */
