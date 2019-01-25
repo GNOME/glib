@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-01-10 15:01+0000\n"
-"PO-Revision-Date: 2019-01-14 14:00+0100\n"
+"POT-Creation-Date: 2019-01-24 14:43+0000\n"
+"PO-Revision-Date: 2019-01-25 22:36+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -254,8 +254,8 @@ msgstr ""
 
 #: gio/gbufferedinputstream.c:420 gio/gbufferedinputstream.c:498
 #: gio/ginputstream.c:179 gio/ginputstream.c:379 gio/ginputstream.c:617
-#: gio/ginputstream.c:1019 gio/goutputstream.c:203 gio/goutputstream.c:834
-#: gio/gpollableinputstream.c:205 gio/gpollableoutputstream.c:209
+#: gio/ginputstream.c:1019 gio/goutputstream.c:223 gio/goutputstream.c:1049
+#: gio/gpollableinputstream.c:205 gio/gpollableoutputstream.c:277
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "För stort räknevärde skickat till %s"
@@ -270,7 +270,7 @@ msgid "Cannot truncate GBufferedInputStream"
 msgstr "Kan inte kapa av GBufferedInputStream"
 
 #: gio/gbufferedinputstream.c:982 gio/ginputstream.c:1208 gio/giostream.c:300
-#: gio/goutputstream.c:1661
+#: gio/goutputstream.c:2198
 msgid "Stream is already closed"
 msgstr "Strömmen är redan stängd"
 
@@ -309,7 +309,7 @@ msgstr "Ogiltig bytesekvens i konverteringsindata"
 msgid "Error during conversion: %s"
 msgstr "Fel vid konvertering: %s"
 
-#: gio/gcharsetconverter.c:445 gio/gsocket.c:1104
+#: gio/gcharsetconverter.c:445 gio/gsocket.c:1093
 msgid "Cancellable initialization not supported"
 msgstr "Avbrytningsbar initiering stöds inte"
 
@@ -1543,7 +1543,7 @@ msgstr "Inmatningsströmmen har inte implementerat läsning"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:1218 gio/giostream.c:310 gio/goutputstream.c:1671
+#: gio/ginputstream.c:1218 gio/giostream.c:310 gio/goutputstream.c:2208
 msgid "Stream has outstanding operation"
 msgstr "Strömmen har kvarstående åtgärd"
 
@@ -2833,7 +2833,7 @@ msgid "Can’t rename file, filename already exists"
 msgstr "Kan inte byta namn på filen, filnamnet finns redan"
 
 #: gio/glocalfile.c:1211 gio/glocalfile.c:2317 gio/glocalfile.c:2345
-#: gio/glocalfile.c:2502 gio/glocalfileoutputstream.c:551
+#: gio/glocalfile.c:2502 gio/glocalfileoutputstream.c:646
 msgid "Invalid filename"
 msgstr "Ogiltigt filnamn"
 
@@ -2920,9 +2920,9 @@ msgstr "Fel vid flyttning av filen %s: %s"
 msgid "Can’t move directory over directory"
 msgstr "Kan inte flytta katalog över katalog"
 
-#: gio/glocalfile.c:2462 gio/glocalfileoutputstream.c:935
-#: gio/glocalfileoutputstream.c:949 gio/glocalfileoutputstream.c:964
-#: gio/glocalfileoutputstream.c:981 gio/glocalfileoutputstream.c:995
+#: gio/glocalfile.c:2462 gio/glocalfileoutputstream.c:1030
+#: gio/glocalfileoutputstream.c:1044 gio/glocalfileoutputstream.c:1059
+#: gio/glocalfileoutputstream.c:1076 gio/glocalfileoutputstream.c:1090
 msgid "Backup file creation failed"
 msgstr "Misslyckades med att skapa säkerhetskopiefil"
 
@@ -2961,7 +2961,7 @@ msgstr "Fel vid inställning av utökat attribut ”%s”: %s"
 msgid " (invalid encoding)"
 msgstr " (ogiltig kodning)"
 
-#: gio/glocalfileinfo.c:1789 gio/glocalfileoutputstream.c:813
+#: gio/glocalfileinfo.c:1789 gio/glocalfileoutputstream.c:908
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Fel vid hämtning av information om filen ”%s”: %s"
@@ -3034,20 +3034,20 @@ msgstr "SELinux är inte aktiverat på detta system"
 msgid "Setting attribute %s not supported"
 msgstr "Inställning av attributet %s stöds inte"
 
-#: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:696
+#: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:791
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Fel vid läsning från fil: %s"
 
 #: gio/glocalfileinputstream.c:199 gio/glocalfileinputstream.c:211
 #: gio/glocalfileinputstream.c:225 gio/glocalfileinputstream.c:333
-#: gio/glocalfileoutputstream.c:458 gio/glocalfileoutputstream.c:1013
+#: gio/glocalfileoutputstream.c:553 gio/glocalfileoutputstream.c:1108
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Fel vid sökning i fil: %s"
 
-#: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:248
-#: gio/glocalfileoutputstream.c:342
+#: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:343
+#: gio/glocalfileoutputstream.c:437
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Fel vid stängning av fil: %s"
@@ -3056,51 +3056,51 @@ msgstr "Fel vid stängning av fil: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Kunde inte hitta standardtyp för lokal filövervakare"
 
-#: gio/glocalfileoutputstream.c:196 gio/glocalfileoutputstream.c:228
-#: gio/glocalfileoutputstream.c:717
+#: gio/glocalfileoutputstream.c:208 gio/glocalfileoutputstream.c:286
+#: gio/glocalfileoutputstream.c:323 gio/glocalfileoutputstream.c:812
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Fel vid skrivning till fil: %s"
 
-#: gio/glocalfileoutputstream.c:275
+#: gio/glocalfileoutputstream.c:370
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Fel vid borttagning av gamla länk till säkerhetskopia: %s"
 
-#: gio/glocalfileoutputstream.c:289 gio/glocalfileoutputstream.c:302
+#: gio/glocalfileoutputstream.c:384 gio/glocalfileoutputstream.c:397
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Fel vid skapande av säkerhetskopia: %s"
 
-#: gio/glocalfileoutputstream.c:320
+#: gio/glocalfileoutputstream.c:415
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Fel vid namnbyte på temporärfil: %s"
 
-#: gio/glocalfileoutputstream.c:504 gio/glocalfileoutputstream.c:1064
+#: gio/glocalfileoutputstream.c:599 gio/glocalfileoutputstream.c:1159
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Fel vid kapning av fil: %s"
 
-#: gio/glocalfileoutputstream.c:557 gio/glocalfileoutputstream.c:795
-#: gio/glocalfileoutputstream.c:1045 gio/gsubprocess.c:380
+#: gio/glocalfileoutputstream.c:652 gio/glocalfileoutputstream.c:890
+#: gio/glocalfileoutputstream.c:1140 gio/gsubprocess.c:380
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Fel vid öppning av filen ”%s”: %s"
 
-#: gio/glocalfileoutputstream.c:826
+#: gio/glocalfileoutputstream.c:921
 msgid "Target file is a directory"
 msgstr "Målfilen är en katalog"
 
-#: gio/glocalfileoutputstream.c:831
+#: gio/glocalfileoutputstream.c:926
 msgid "Target file is not a regular file"
 msgstr "Målfilen är inte en vanlig fil"
 
-#: gio/glocalfileoutputstream.c:843
+#: gio/glocalfileoutputstream.c:938
 msgid "The file was externally modified"
 msgstr "Filen blev externt ändrad"
 
-#: gio/glocalfileoutputstream.c:1029
+#: gio/glocalfileoutputstream.c:1124
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Fel vid borttagning av gammal fil: %s"
@@ -3227,11 +3227,16 @@ msgstr "Nätverkshanteraren är inte igång"
 msgid "NetworkManager version too old"
 msgstr "Nätverkshanterare är för gammal"
 
-#: gio/goutputstream.c:212 gio/goutputstream.c:560
+#: gio/goutputstream.c:232 gio/goutputstream.c:775
 msgid "Output stream doesn’t implement write"
 msgstr "Utmatningsström har inte implementerat skrivning"
 
-#: gio/goutputstream.c:521 gio/goutputstream.c:1224
+#: gio/goutputstream.c:472 gio/goutputstream.c:1533
+#, c-format
+msgid "Sum of vectors passed to %s too large"
+msgstr "Summan av vektorer skickade till %s är för stor"
+
+#: gio/goutputstream.c:736 gio/goutputstream.c:1761
 msgid "Source stream is already closed"
 msgstr "Källströmmen är redan stängd"
 
@@ -3250,15 +3255,15 @@ msgstr "%s inte implementerad"
 msgid "Invalid domain"
 msgstr "Ogiltig domän"
 
-#: gio/gresource.c:644 gio/gresource.c:903 gio/gresource.c:942
-#: gio/gresource.c:1066 gio/gresource.c:1138 gio/gresource.c:1211
-#: gio/gresource.c:1281 gio/gresourcefile.c:476 gio/gresourcefile.c:599
+#: gio/gresource.c:665 gio/gresource.c:924 gio/gresource.c:963
+#: gio/gresource.c:1087 gio/gresource.c:1159 gio/gresource.c:1232
+#: gio/gresource.c:1313 gio/gresourcefile.c:476 gio/gresourcefile.c:599
 #: gio/gresourcefile.c:736
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Resursen på ”%s” finns inte"
 
-#: gio/gresource.c:809
+#: gio/gresource.c:830
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "Resursen på ”%s” gick inte att dekomprimera"
@@ -3620,171 +3625,172 @@ msgstr "Tomt schemanamn angavs\n"
 msgid "No such key “%s”\n"
 msgstr "Ingen sådan nyckel ”%s”\n"
 
-#: gio/gsocket.c:384
+#: gio/gsocket.c:373
 msgid "Invalid socket, not initialized"
 msgstr "Ogiltigt uttag, inte initierat"
 
-#: gio/gsocket.c:391
+#: gio/gsocket.c:380
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Ogiltigt uttag, initiering misslyckades på grund av: %s"
 
-#: gio/gsocket.c:399
+#: gio/gsocket.c:388
 msgid "Socket is already closed"
 msgstr "Uttaget är redan stängt"
 
-#: gio/gsocket.c:414 gio/gsocket.c:3038 gio/gsocket.c:4252 gio/gsocket.c:4310
+#: gio/gsocket.c:403 gio/gsocket.c:3027 gio/gsocket.c:4244 gio/gsocket.c:4302
 msgid "Socket I/O timed out"
 msgstr "Tidsgräns för in/ut på uttaget överstegs"
 
-#: gio/gsocket.c:549
+#: gio/gsocket.c:538
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "skapar GSocket från fd: %s"
 
-#: gio/gsocket.c:578 gio/gsocket.c:632 gio/gsocket.c:639
+#: gio/gsocket.c:567 gio/gsocket.c:621 gio/gsocket.c:628
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Kunde inte skapa uttag: %s"
 
-#: gio/gsocket.c:632
+#: gio/gsocket.c:621
 msgid "Unknown family was specified"
 msgstr "Okänd familj angavs"
 
-#: gio/gsocket.c:639
+#: gio/gsocket.c:628
 msgid "Unknown protocol was specified"
 msgstr "Okänt protokoll angavs"
 
-#: gio/gsocket.c:1130
+#: gio/gsocket.c:1119
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr "Kan inte använda datagramåtgärder på ett icke-datagram-uttag."
 
-#: gio/gsocket.c:1147
+#: gio/gsocket.c:1136
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr "Kan inte använda datagramåtgärder på ett uttag med en satt tidsgräns."
 
-#: gio/gsocket.c:1954
+#: gio/gsocket.c:1943
 #, c-format
 msgid "could not get local address: %s"
 msgstr "kunde inte få lokal adress: %s"
 
-#: gio/gsocket.c:2000
+#: gio/gsocket.c:1989
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "kunde inte få fjärradress: %s"
 
-#: gio/gsocket.c:2066
+#: gio/gsocket.c:2055
 #, c-format
 msgid "could not listen: %s"
 msgstr "kunde inte lyssna: %s"
 
-#: gio/gsocket.c:2168
+#: gio/gsocket.c:2157
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Fel vid bindning till adress: %s"
 
-#: gio/gsocket.c:2226 gio/gsocket.c:2263 gio/gsocket.c:2373 gio/gsocket.c:2398
-#: gio/gsocket.c:2471 gio/gsocket.c:2529 gio/gsocket.c:2547
+#: gio/gsocket.c:2215 gio/gsocket.c:2252 gio/gsocket.c:2362 gio/gsocket.c:2387
+#: gio/gsocket.c:2460 gio/gsocket.c:2518 gio/gsocket.c:2536
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Fel vid medlemskap i multicast-grupp: %s"
 
-#: gio/gsocket.c:2227 gio/gsocket.c:2264 gio/gsocket.c:2374 gio/gsocket.c:2399
-#: gio/gsocket.c:2472 gio/gsocket.c:2530 gio/gsocket.c:2548
+#: gio/gsocket.c:2216 gio/gsocket.c:2253 gio/gsocket.c:2363 gio/gsocket.c:2388
+#: gio/gsocket.c:2461 gio/gsocket.c:2519 gio/gsocket.c:2537
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Fel vid lämnande av multicast-grupp: %s"
 
-#: gio/gsocket.c:2228
+#: gio/gsocket.c:2217
 msgid "No support for source-specific multicast"
 msgstr "Inget stöd för källspecifik multicast"
 
-#: gio/gsocket.c:2375
+#: gio/gsocket.c:2364
 msgid "Unsupported socket family"
 msgstr "Uttagsfamiljen stöds inte"
 
-#: gio/gsocket.c:2400
+#: gio/gsocket.c:2389
 msgid "source-specific not an IPv4 address"
 msgstr "källspecifik är inte en IPv4-adress"
 
-#: gio/gsocket.c:2418 gio/gsocket.c:2447 gio/gsocket.c:2497
+#: gio/gsocket.c:2407 gio/gsocket.c:2436 gio/gsocket.c:2486
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Gränssnitt hittades inte: %s"
 
-#: gio/gsocket.c:2434
+#: gio/gsocket.c:2423
 #, c-format
 msgid "Interface name too long"
 msgstr "Gränssnittsnamnet är för långt"
 
-#: gio/gsocket.c:2473
+#: gio/gsocket.c:2462
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Inget stöd för IPv4-källspecifik multicast"
 
-#: gio/gsocket.c:2531
+#: gio/gsocket.c:2520
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Inget stöd för IPv6-källspecifik multicast"
 
-#: gio/gsocket.c:2740
+#: gio/gsocket.c:2729
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Fel vid godkännande av anslutning: %s"
 
-#: gio/gsocket.c:2866
+#: gio/gsocket.c:2855
 msgid "Connection in progress"
 msgstr "Anslutningsförsök pågår"
 
-#: gio/gsocket.c:2917
+#: gio/gsocket.c:2906
 msgid "Unable to get pending error: "
 msgstr "Kunde inte få tag på väntande fel: "
 
-#: gio/gsocket.c:3103
+#: gio/gsocket.c:3092
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Fel vid mottagning av data: %s"
 
-#: gio/gsocket.c:3300
+#: gio/gsocket.c:3289
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Fel vid sändning av data: %s"
 
-#: gio/gsocket.c:3487
+#: gio/gsocket.c:3476
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Kunde inte stänga ner uttag: %s"
 
-#: gio/gsocket.c:3568
+#: gio/gsocket.c:3557
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Fel vid stängning av uttag: %s"
 
-#: gio/gsocket.c:4245
+#: gio/gsocket.c:4237
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Väntar på uttagstillstånd: %s"
 
-#: gio/gsocket.c:4719 gio/gsocket.c:4799 gio/gsocket.c:4977
+#: gio/gsocket.c:4612 gio/gsocket.c:4756 gio/gsocket.c:4841 gio/gsocket.c:5021
+#: gio/gsocket.c:5059
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Fel vid sändning av meddelande: %s"
 
-#: gio/gsocket.c:4743
+#: gio/gsocket.c:4783
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage stöds inte på Windows"
 
-#: gio/gsocket.c:5196 gio/gsocket.c:5269 gio/gsocket.c:5496
+#: gio/gsocket.c:5248 gio/gsocket.c:5321 gio/gsocket.c:5548
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Fel vid mottagning av meddelande: %s"
 
-#: gio/gsocket.c:5768
+#: gio/gsocket.c:5820
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Kunde inte läsa uttagets inloggningsuppgifter: %s"
 
-#: gio/gsocket.c:5777
+#: gio/gsocket.c:5829
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials har inte implementerats för detta operativsystem"
@@ -4042,7 +4048,7 @@ msgstr "Fel vid inaktivering av SO_PASSCRED: %s"
 msgid "Error reading from file descriptor: %s"
 msgstr "Fel vid läsning från filhandtag: %s"
 
-#: gio/gunixinputstream.c:426 gio/gunixoutputstream.c:411
+#: gio/gunixinputstream.c:426 gio/gunixoutputstream.c:534
 #: gio/gwin32inputstream.c:217 gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
@@ -4052,7 +4058,9 @@ msgstr "Fel vid stängning av filhandtag: %s"
 msgid "Filesystem root"
 msgstr "Filsystemsrot"
 
-#: gio/gunixoutputstream.c:358 gio/gunixoutputstream.c:378
+#: gio/gunixoutputstream.c:371 gio/gunixoutputstream.c:391
+#: gio/gunixoutputstream.c:478 gio/gunixoutputstream.c:498
+#: gio/gunixoutputstream.c:675
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "Fel vid skrivning till filhandtag: %s"
@@ -4664,7 +4672,7 @@ msgctxt "GDateTime"
 msgid "PM"
 msgstr "e.m."
 
-#: glib/gdir.c:155
+#: glib/gdir.c:154
 #, c-format
 msgid "Error opening directory “%s”: %s"
 msgstr "Fel vid öppning av katalogen ”%s”: %s"
