@@ -91,6 +91,7 @@ gboolean _g_dbus_debug_incoming (void);
 gboolean _g_dbus_debug_return (void);
 gboolean _g_dbus_debug_emission (void);
 gboolean _g_dbus_debug_address (void);
+gboolean _g_dbus_debug_proxy (void);
 
 void     _g_dbus_debug_print_lock (void);
 void     _g_dbus_debug_print_unlock (void);

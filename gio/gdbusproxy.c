@@ -1235,11 +1235,14 @@ on_name_owner_changed_get_all_cb (GDBusConnection *connection,
        *
        * Either way, apps can know about this by using
        * get_cached_property_names() or get_cached_property().
-       *
-       * TODO: handle G_DBUS_DEBUG flag 'proxy' and, if enabled, log the
-       * fact that GetAll() failed
        */
-      //g_debug ("error: %d %d %s", error->domain, error->code, error->message);
+      if (G_UNLIKELY (_g_dbus_debug_proxy ()))
+        {
+          g_debug ("error: %d %d %s",
+                   error->domain,
+                   error->code,
+                   error->message);
+        }
       g_error_free (error);
     }
 
@@ -1432,11 +1435,14 @@ async_init_get_all_cb (GDBusConnection *connection,
        *
        * Either way, apps can know about this by using
        * get_cached_property_names() or get_cached_property().
-       *
-       * TODO: handle G_DBUS_DEBUG flag 'proxy' and, if enabled, log the
-       * fact that GetAll() failed
        */
-      //g_debug ("error: %d %d %s", error->domain, error->code, error->message);
+      if (G_UNLIKELY (_g_dbus_debug_proxy ()))
+        {
+          g_debug ("error: %d %d %s",
+                   error->domain,
+                   error->code,
+                   error->message);
+        }
       g_error_free (error);
     }
 
