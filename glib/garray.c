@@ -1519,7 +1519,7 @@ g_ptr_array_insert (GPtrArray *array,
   if (index_ < 0)
     index_ = rarray->len;
 
-  if (index_ < rarray->len)
+  if ((guint) index_ < rarray->len)
     memmove (&(rarray->pdata[index_ + 1]),
              &(rarray->pdata[index_]),
              (rarray->len - index_) * sizeof (gpointer));
