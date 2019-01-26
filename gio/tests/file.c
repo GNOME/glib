@@ -1534,10 +1534,9 @@ test_writev_async_all_cancellation (void)
   ostream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
 
   cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
 
   g_output_stream_writev_all_async (ostream, vectors, G_N_ELEMENTS (vectors), 0, cancellable, test_writev_all_cb, &data);
-
-  g_cancellable_cancel (cancellable);
 
   while (!data.done)
     g_main_context_iteration (NULL, TRUE);
