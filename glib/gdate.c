@@ -1729,7 +1729,7 @@ g_date_add_months (GDate *d,
   years  = nmonths/12;
   months = nmonths%12;
 
-  g_return_if_fail (years <= G_MAXUINT16 - d->year);
+  g_return_if_fail (years <= (guint) (G_MAXUINT16 - d->year));
 
   d->month = months + 1;
   d->year  += years;
@@ -1813,7 +1813,7 @@ g_date_add_years (GDate *d,
     g_date_update_dmy (d);
 
   g_return_if_fail (d->dmy != 0);
-  g_return_if_fail (nyears <= G_MAXUINT16 - d->year);
+  g_return_if_fail (nyears <= (guint) (G_MAXUINT16 - d->year));
 
   d->year += nyears;
   
