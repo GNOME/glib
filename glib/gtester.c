@@ -69,7 +69,7 @@ static const char*
 sindent (guint n)
 {
   static const char spaces[] = "                                                                                                    ";
-  int l = sizeof (spaces) - 1;
+  gsize l = sizeof (spaces) - 1;
   n = MIN (n, l);
   return spaces + l - n;
 }
