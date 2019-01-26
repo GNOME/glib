@@ -129,7 +129,7 @@ void     g_thread_foreach      (GFunc             thread_func,
 #endif
 
 #define g_static_mutex_get_mutex g_static_mutex_get_mutex_impl
-#define G_STATIC_MUTEX_INIT { NULL }
+#define G_STATIC_MUTEX_INIT {{ NULL }}
 typedef struct
 {
   GMutex *mutex;
