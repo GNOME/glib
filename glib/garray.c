@@ -907,7 +907,7 @@ struct _GRealPtrArray
  */
 
 static void g_ptr_array_maybe_expand (GRealPtrArray *array,
-                                      gint           len);
+                                      guint          len);
 
 /**
  * g_ptr_array_new:
@@ -1166,7 +1166,7 @@ ptr_array_free (GPtrArray      *array,
 
 static void
 g_ptr_array_maybe_expand (GRealPtrArray *array,
-                          gint           len)
+                          guint          len)
 {
   /* Detect potential overflow */
   if G_UNLIKELY ((G_MAXUINT - array->len) < len)
