@@ -1,3 +1,88 @@
+Overview of changes in GLib 2.59.1
+==================================
+
+* Autotools support is gone. (!580)
+
+* g_format_size() now uses a no-break space to separate digits and units;
+  translations will need to be updated accordingly. (#1625)
+
+* New g_queue_clear_full() API. (#1464)
+
+* Fix argument quoting on win32 when spawning subprocesses. (!419)
+
+* Allow polling more than 64 handles on win32 using g_poll(). (#1071)
+
+* Tag various tests as ‘flaky’. These are no longer run routinely on our
+  upstream CI machines, and downstream packagers may want to not run them (or
+  not treat those test failures as package build failures) on their test
+  machines either. They are in the `flaky` test suite. (!579)
+
+* Add overlay support to g_resources_get_info(). (#1445)
+
+* Support defaults and locks in the keyfile GSettings backend. This will be
+  used for flatpaks. (!450)
+
+* Accept unquoted strings in the keyfile GSettings backend to simplify things
+  for sysadmins. (!603)
+
+* Update our contribution guidelines (`CONTRIBUTING.md`). (!590)
+
+* Add writev() and writev_all() APIs to GOutputStream and GPollableOutputStream,
+  and provide implementations of them for many subclasses. (#1431)
+
+* Bugs fixed:
+ - #424 Add 'proxy' debugging support
+ - #1055 Provide alignment macros
+ - #1071 Eliminate MAXIMUM_WAIT_OBJECTS limitation in g_poll() on Windows
+ - #1445 g_resources_get_info doesn't respect resource overlays
+ - #1464 Add g_queue_clear_full() API
+ - #1500 GListStore needs double checking on some warnings
+ - #1623 xdg-open: file with colon results in “The specified location is not supported”
+ - #1625 Unbreakable space needed when showing size of folder/file
+ - #1636 GTask getters don’t return TRUE/FALSE after bitfield changes
+ - #1637 EXCEPTION_ACCESS_VIOLATION in g_clear_pointer
+ - #1639 GListStore implementation of g_list_model_get_item() returns wrong results on integer overflow
+ - #1655 gvariant-parser warnings
+ - #1663 G_MININT32 triggers compiler warning C4146 with Visual C++
+ - #1666 `G_DEFINE_DYNAMIC_TYPE_EXTENDED` causes warnings with -Wcast-function-type
+ - !319 giomodule: Print the type of each default GIO module
+ - !333 Add writev() API to GOutputStream and GPollableOutputStream
+ - !419 gspawn, win32: qouted args - escape end backslash
+ - !450 Settings portal
+ - !512 gtype: Clarify type of GInterfaceInitFunc
+ - !516 gthread: Add g_private_set_alloc0() convenience API
+ - !535 win32 gpoll: overcome the 64 handles limit
+ - !545 goption: Fix an annotation on g_option_context_parse_strv()
+ - !560 docs: Fix dconf GSETTINGS_BACKEND name in gio overview
+ - !564 gtype: Document type for iface_default_init() function
+ - !568 Add separate definitions of g_assert_[non]null() for C++
+ - !571 docs: Add note on how to check a gboolean condition
+ - !575 gio: Update bad cert error in accept-certificate and GTlsError docs
+ - !579 Temporarily disable flaky tests
+ - !580 Drop autotools support
+ - !583 gmacros: MSVC supports the noreturn function attribute
+ - !587 Remove unused .pc.in files
+ - !588 MSVC: Move dirent implementation to glib/dirent/
+ - !590 Update contribution documentation
+ - !591 gfileinfo: Fix annotation for g_file_info_set_attribute_stringv
+ - !592 Remove leftover build/ directory
+ - !595 gtestutils: pass open file descriptors to subprocess
+ - !597 tests: Tag gsocketclient-slow test as ‘flaky’
+ - !598 gdbus-proxy test fails with GLib-GIO:ERROR:glib/gio/tests/gdbus-proxy.c:832:fail_test: code should not be reached
+ - !599 gdtlsconnection: do not return on a void method
+ - !601 gio: Support "help" in extension point env vars
+ - !602 Update POTFILES.in
+ - !603 keyfile settings: Accept unquoted strings
+ - !608 build: Add -Wno-pedantic flag to compiler arguments
+ - !611 gnetworkaddress: fix use-after-free for network address
+ - !612 gdir: shutup a warning when building with msvc
+ - !615 Fix a couple of wrong compiler warnings
+
+* Translation updates:
+ - Spanish
+ - Swedish
+
+
 Overview of changes in GLib 2.59.0
 ==================================
 
