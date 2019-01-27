@@ -410,17 +410,17 @@ else
   cdata.set('installed_tests_dir', meson.current_build_dir())
 endif
 
-foreach appinfo_test_desktop_file : appinfo_test_desktop_files
-  configure_file(
-    input: appinfo_test_desktop_file + '.in',
-    output: appinfo_test_desktop_file,
-    install_dir: installed_tests_execdir,
-    install: installed_tests_enabled,
-    configuration: cdata,
-  )
-endforeach
-
 if installed_tests_enabled
+  foreach appinfo_test_desktop_file : appinfo_test_desktop_files
+    configure_file(
+      input: appinfo_test_desktop_file + '.in',
+      output: appinfo_test_desktop_file,
+      install_dir: installed_tests_execdir,
+      install: installed_tests_enabled,
+      configuration: cdata,
+    )
+  endforeach
+
   install_data(
     'contexts.c',
     'g-icon.c',
