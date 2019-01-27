@@ -129,7 +129,7 @@ void     g_thread_foreach      (GFunc             thread_func,
 #endif
 
 #define g_static_mutex_get_mutex g_static_mutex_get_mutex_impl
-#define G_STATIC_MUTEX_INIT {{ NULL }}
+#define G_STATIC_MUTEX_INIT { NULL }
 typedef struct
 {
   GMutex *mutex;
@@ -171,7 +171,7 @@ struct _GStaticRecMutex
   } unused;
 };
 
-#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT }
+#define G_STATIC_REC_MUTEX_INIT G_STATIC_MUTEX_INIT
 GLIB_DEPRECATED_IN_2_32_FOR(g_rec_mutex_init)
 void     g_static_rec_mutex_init        (GStaticRecMutex *mutex);
 
