@@ -6851,6 +6851,8 @@ g_file_query_default_handler (GFile         *file,
       if (appinfo != NULL)
         return appinfo;
     }
+  else
+    g_free (uri_scheme);
 
   info = g_file_query_info (file,
                             G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
