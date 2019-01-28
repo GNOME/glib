@@ -23,9 +23,6 @@
 
 G_BEGIN_DECLS
 
-char * g_document_portal_add_document (GFile   *file,
-                                       GError **error);
-
 GList * g_document_portal_add_documents (GList       *uris,
                                          const char  *app_id,
                                          GError     **error);
