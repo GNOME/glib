@@ -1984,7 +1984,7 @@ g_dbus_message_bytes_needed (guchar  *blob,
                    "Unable to determine message blob length - given blob is malformed");
     }
 
-  if (ret > (2<<27))
+  if (ret > (1<<27))
     {
       g_set_error (error,
                    G_IO_ERROR,
