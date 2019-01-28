@@ -78,7 +78,9 @@ typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
  * @get_display_name: Gets the display name for the #GAppInfo. Since 2.24
  * @set_as_last_used_for_type: Sets the application as the last used. See g_app_info_set_as_last_used_for_type().
  * @get_supported_types: Retrieves the list of content types that @app_info claims to support.
- *
+ * @launch_uris_async: Asynchronously launches an application with a list of URIs. (Since: 2.60)
+ * @launch_uris_finish: Finishes an operation started with @launch_uris_async. (Since: 2.60)
+
  * Application Information interface, for operating system portability.
  */
 typedef struct _GAppInfoIface    GAppInfoIface;
@@ -131,6 +133,15 @@ struct _GAppInfoIface
                                                  const char         *content_type,
                                                  GError            **error);
   const char ** (* get_supported_types)         (GAppInfo           *appinfo);
+  void         (* launch_uris_async)            (GAppInfo           *appinfo,
+                                                 GList              *uris,
+                                                 GAppLaunchContext  *context,
+                                                 GCancellable       *cancellable,
+                                                 GAsyncReadyCallback callback,
+                                                 gpointer            user_data);
+  gboolean     (* launch_uris_finish)           (GAppInfo           *appinfo,
+                                                 GAsyncResult       *result,
+                                                 GError            **error);
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -173,6 +184,18 @@ gboolean    g_app_info_launch_uris                  (GAppInfo             *appin
                                                      GList                *uris,
                                                      GAppLaunchContext    *context,
                                                      GError              **error);
+GLIB_AVAILABLE_IN_2_60
+void        g_app_info_launch_uris_async            (GAppInfo             *appinfo,
+                                                     GList                *uris,
+                                                     GAppLaunchContext    *context,
+                                                     GCancellable         *cancellable,
+                                                     GAsyncReadyCallback   callback,
+                                                     gpointer              user_data);
+GLIB_AVAILABLE_IN_2_60
+gboolean    g_app_info_launch_uris_finish           (GAppInfo             *appinfo,
+                                                     GAsyncResult         *result,
+                                                     GError              **error);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_app_info_should_show                  (GAppInfo             *appinfo);
 
