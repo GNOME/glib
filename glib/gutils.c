@@ -120,10 +120,6 @@
 #  include <process.h>
 #endif
 
-#ifdef HAVE_CARBON
-#include <CoreServices/CoreServices.h>
-#endif
-
 #ifdef HAVE_CODESET
 #include <langinfo.h>
 #endif
@@ -1519,56 +1515,15 @@ g_get_user_runtime_dir (void)
   return user_runtime_dir;
 }
 
-#ifdef HAVE_CARBON
+#ifdef HAVE_COCOA
 
-static gchar *
-find_folder (OSType type)
-{
-  gchar *filename = NULL;
-  FSRef  found;
-
-  if (FSFindFolder (kUserDomain, type, kDontCreateFolder, &found) == noErr)
-    {
-      CFURLRef url = CFURLCreateFromFSRef (kCFAllocatorSystemDefault, &found);
-
-      if (url)
-	{
-	  CFStringRef path = CFURLCopyFileSystemPath (url, kCFURLPOSIXPathStyle);
-
-	  if (path)
-	    {
-	      filename = g_strdup (CFStringGetCStringPtr (path, kCFStringEncodingUTF8));
-
-	      if (! filename)
-		{
-		  filename = g_new0 (gchar, CFStringGetLength (path) * 3 + 1);
-
-		  CFStringGetCString (path, filename,
-				      CFStringGetLength (path) * 3 + 1,
-				      kCFStringEncodingUTF8);
-		}
-
-	      CFRelease (path);
-	    }
-
-	  CFRelease (url);
-	}
-    }
-
-  return filename;
-}
+/* Implemented in gutils-macos.m */
+void load_user_special_dirs_macos (gchar **table);
 
 static void
 load_user_special_dirs (void)
 {
-  g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = find_folder (kDesktopFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = find_folder (kDocumentsFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = find_folder (kDesktopFolderType); /* XXX correct ? */
-  g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = find_folder (kMusicDocumentsFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_PICTURES] = find_folder (kPictureDocumentsFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = NULL;
-  g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = NULL;
-  g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = find_folder (kMovieDocumentsFolderType);
+  load_user_special_dirs_macos (g_user_special_dirs);
 }
 
 #elif defined(G_OS_WIN32)

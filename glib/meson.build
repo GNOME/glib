@@ -230,6 +230,10 @@ else
   platform_deps = []
 endif
 
+if host_system == 'darwin'
+  glib_sources += files('gosxutils.m')
+endif
+
 glib_sources += files('gthread-@0@.c'.format(threads_implementation))
 
 if enable_dtrace
@@ -254,6 +258,7 @@ else
   pcre_objects = [libpcre.extract_all_objects()]
 endif
 
+glib_c_args = ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
 libglib = library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
   sources : [deprecated_sources, glib_sources],
@@ -266,7 +271,8 @@ libglib = library('glib-2.0',
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
   dependencies : pcre_deps + [thread_dep, libintl, librt] + libiconv + platform_deps,
-  c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
+  c_args : glib_c_args,
+  objc_args : glib_c_args,
 )
 
 libglib_dep = declare_dependency(
