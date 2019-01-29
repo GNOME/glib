@@ -79,6 +79,7 @@ gio_tests = {
   'tls-certificate' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-interaction' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-database' : {'extra_sources' : ['gtesttlsbackend.c']},
+  'gdbus-address-get-session' : {},
 }
 
 test_extra_programs = {
@@ -284,7 +285,6 @@ if host_machine.system() != 'windows'
                     '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36'],
       },
       'gapplication' : {'extra_sources' : extra_sources},
-      'gdbus-address-get-session' : {},
     }
 
     if not glib_have_cocoa
