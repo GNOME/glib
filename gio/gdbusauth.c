@@ -1272,9 +1272,9 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                                                     &line_length,
                                                     cancellable,
                                                     error);
-          debug_print ("SERVER: WaitingForBegin, read '%s'", line);
           if (line == NULL)
             goto out;
+          debug_print ("SERVER: WaitingForBegin, read '%s'", line);
           if (g_strcmp0 (line, "BEGIN") == 0)
             {
               /* YAY, done! */

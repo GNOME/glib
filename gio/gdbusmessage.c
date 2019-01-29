@@ -2731,7 +2731,6 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   if (message->body != NULL)
     {
       gchar *tupled_signature_str;
-      tupled_signature_str = g_strdup_printf ("(%s)", signature_str);
       if (signature == NULL)
         {
           g_set_error (error,
@@ -2739,10 +2738,10 @@ g_dbus_message_to_blob (GDBusMessage          *message,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        _("Message body has signature “%s” but there is no signature header"),
                        signature_str);
-          g_free (tupled_signature_str);
           goto out;
         }
-      else if (g_strcmp0 (tupled_signature_str, g_variant_get_type_string (message->body)) != 0)
+      tupled_signature_str = g_strdup_printf ("(%s)", signature_str);
+      if (g_strcmp0 (tupled_signature_str, g_variant_get_type_string (message->body)) != 0)
         {
           g_set_error (error,
                        G_IO_ERROR,
