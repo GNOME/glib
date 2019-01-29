@@ -63,12 +63,65 @@ test_happy_eyeballs (void)
   g_object_unref (client);
 }
 
+static void
+on_connected_cancelled (GObject      *source_object,
+                        GAsyncResult *result,
+                        gpointer      user_data)
+{
+  GSocketConnection *conn;
+  GError *error = NULL;
+
+  conn = g_socket_client_connect_to_uri_finish (G_SOCKET_CLIENT (source_object), result, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_assert_null (conn);
+
+  g_error_free (error);
+  g_main_loop_quit (user_data);
+}
+
+static int
+on_timer (GCancellable *cancel)
+{
+  g_cancellable_cancel (cancel);
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_happy_eyeballs_cancel (void)
+{
+  GSocketClient *client;
+  GSocketService *service;
+  GError *error = NULL;
+  guint16 port;
+  GMainLoop *loop;
+  GCancellable *cancel;
+
+  loop = g_main_loop_new (NULL, FALSE);
+
+  service = g_socket_service_new ();
+  port = g_socket_listener_add_any_inet_port (G_SOCKET_LISTENER (service), NULL, &error);
+  g_assert_no_error (error);
+  g_socket_service_start (service);
+
+  client = g_socket_client_new ();
+  cancel = g_cancellable_new ();
+  g_socket_client_connect_to_host_async (client, "localhost", port, cancel, on_connected_cancelled, loop);
+  g_timeout_add (1, (GSourceFunc) on_timer, cancel);
+  g_main_loop_run (loop);
+
+  g_main_loop_unref (loop);
+  g_object_unref (service);
+  g_object_unref (client);
+  g_object_unref (cancel);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/socket-client/happy-eyeballs", test_happy_eyeballs);
+  g_test_add_func ("/socket-client/happy-eyeballs/slow", test_happy_eyeballs);
+  g_test_add_func ("/socket-client/happy-eyeballs/cancellation", test_happy_eyeballs_cancel);
 
   return g_test_run ();
 }

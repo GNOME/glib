@@ -1327,7 +1327,7 @@ g_socket_client_connect_to_uri (GSocketClient  *client,
 
 typedef struct
 {
-  GTask *task;
+  GTask *task; /* unowned */
   GSocketClient *client;
 
   GSocketConnectable *connectable;
@@ -1345,6 +1345,7 @@ static void connection_attempt_unref (gpointer attempt);
 static void
 g_socket_client_async_connect_data_free (GSocketClientAsyncConnectData *data)
 {
+  data->task = NULL;
   g_clear_object (&data->connectable);
   g_clear_object (&data->enumerator);
   g_clear_object (&data->proxy_addr);
@@ -1444,12 +1445,18 @@ set_last_error (GSocketClientAsyncConnectData *data,
 }
 
 static void
-enumerator_next_async (GSocketClientAsyncConnectData *data)
+enumerator_next_async (GSocketClientAsyncConnectData *data,
+                       gboolean                       add_task_ref)
 {
   /* We need to cleanup the state */
   g_clear_object (&data->socket);
   g_clear_object (&data->proxy_addr);
   g_clear_object (&data->connection);
+
+  /* Each enumeration takes a ref. This arg just avoids repeated unrefs when
+     an enumeration starts another enumeration */
+  if (add_task_ref)
+    g_object_ref (data->task);
 
   g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_RESOLVING, data->connectable, NULL);
   g_socket_address_enumerator_next_async (data->enumerator,
@@ -1478,7 +1485,7 @@ g_socket_client_tls_handshake_callback (GObject      *object,
   else
     {
       g_object_unref (object);
-      enumerator_next_async (data);
+      enumerator_next_async (data, FALSE);
     }
 }
 
@@ -1509,7 +1516,7 @@ g_socket_client_tls_handshake (GSocketClientAsyncConnectData *data)
     }
   else
     {
-      enumerator_next_async (data);
+      enumerator_next_async (data, FALSE);
     }
 }
 
@@ -1530,11 +1537,22 @@ g_socket_client_proxy_connect_callback (GObject      *object,
     }
   else
     {
-      enumerator_next_async (data);
+      enumerator_next_async (data, FALSE);
       return;
     }
 
   g_socket_client_tls_handshake (data);
+}
+
+static gboolean
+task_completed_or_cancelled (GTask *task)
+{
+  if (g_task_get_completed (task))
+    return TRUE;
+  else if (g_task_return_error_if_cancelled (task))
+      return TRUE;
+  else
+    return FALSE;
 }
 
 static void
@@ -1549,8 +1567,7 @@ g_socket_client_connected_callback (GObject      *source,
   GProxy *proxy;
   const gchar *protocol;
 
-  /* data is NULL once the task is completed */
-  if (data && g_task_return_error_if_cancelled (data->task))
+  if (g_cancellable_is_cancelled (attempt->cancellable) || task_completed_or_cancelled (data->task))
     {
       g_object_unref (data->task);
       connection_attempt_unref (attempt);
@@ -1570,17 +1587,15 @@ g_socket_client_connected_callback (GObject      *source,
         {
           clarify_connect_error (error, data->connectable, attempt->address);
           set_last_error (data, error);
-        }
-      else
-        g_clear_error (&error);
-
-      if (data)
-        {
           connection_attempt_remove (attempt);
-          enumerator_next_async (data);
+          enumerator_next_async (data, FALSE);
         }
       else
-        connection_attempt_unref (attempt);
+        {
+          g_clear_error (&error);
+          g_object_unref (data->task);
+          connection_attempt_unref (attempt);
+        }
 
       return;
     }
@@ -1592,7 +1607,6 @@ g_socket_client_connected_callback (GObject      *source,
     {
       ConnectionAttempt *attempt_entry = l->data;
       g_cancellable_cancel (attempt_entry->cancellable);
-      attempt_entry->data = NULL;
       connection_attempt_unref (attempt_entry);
     }
   g_slist_free (data->connection_attempts);
@@ -1625,7 +1639,7 @@ g_socket_client_connected_callback (GObject      *source,
           G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
           _("Proxying over a non-TCP connection is not supported."));
 
-      enumerator_next_async (data);
+      enumerator_next_async (data, FALSE);
     }
   else if (g_hash_table_contains (data->client->priv->app_proxies, protocol))
     {
@@ -1652,7 +1666,7 @@ g_socket_client_connected_callback (GObject      *source,
           _("Proxy protocol “%s” is not supported."),
           protocol);
 
-      enumerator_next_async (data);
+      enumerator_next_async (data, FALSE);
     }
 }
 
@@ -1661,7 +1675,7 @@ on_connection_attempt_timeout (gpointer data)
 {
   ConnectionAttempt *attempt = data;
 
-  enumerator_next_async (attempt->data);
+  enumerator_next_async (attempt->data, TRUE);
 
   g_clear_pointer (&attempt->timeout_source, g_source_unref);
   return G_SOURCE_REMOVE;
@@ -1687,7 +1701,7 @@ g_socket_client_enumerator_callback (GObject      *object,
   ConnectionAttempt *attempt;
   GError *error = NULL;
 
-  if (g_task_return_error_if_cancelled (data->task))
+  if (task_completed_or_cancelled (data->task))
     {
       g_object_unref (data->task);
       return;
@@ -1698,7 +1712,10 @@ g_socket_client_enumerator_callback (GObject      *object,
   if (address == NULL)
     {
       if (data->connection_attempts)
-        return;
+        {
+          g_object_unref (data->task);
+          return;
+        }
 
       g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_COMPLETE, data->connectable, NULL);
       if (!error)
@@ -1732,7 +1749,7 @@ g_socket_client_enumerator_callback (GObject      *object,
   if (socket == NULL)
     {
       g_object_unref (address);
-      enumerator_next_async (data);
+      enumerator_next_async (data, FALSE);
       return;
     }
 
@@ -1804,11 +1821,24 @@ g_socket_client_connect_async (GSocketClient       *client,
   else
     data->enumerator = g_socket_connectable_enumerate (connectable);
 
+  /* The flow and ownership here isn't quite obvious:
+    - The task starts an async attempt to connect.
+      - Each attempt holds a single ref on task.
+      - Each attempt may create new attempts by timing out (not a failure) so
+        there are multiple attempts happening in parallel.
+      - Upon failure an attempt will start a new attempt that steals its ref
+        until there are no more attempts left and it drops its ref.
+      - Upon success it will cancel all other attempts and continue on
+        to the rest of the connection (tls, proxies, etc) which do not
+        happen in parallel and at the very end drop its ref.
+      - Upon cancellation an attempt drops its ref.
+   */
+
   data->task = g_task_new (client, cancellable, callback, user_data);
   g_task_set_source_tag (data->task, g_socket_client_connect_async);
   g_task_set_task_data (data->task, data, (GDestroyNotify)g_socket_client_async_connect_data_free);
 
-  enumerator_next_async (data);
+  enumerator_next_async (data, FALSE);
 }
 
 /**
