@@ -41,6 +41,7 @@ fedora-x86_64:
     # because it breaks static link.
     - meson configure -Ddtrace=false _build
     - ninja -C _build install
+    - LC_ALL=he_IL.utf8 ./_build/tests/datetime "%a ה־%-e ב%b_%R:%S"
     - GLIB_TEST_COMPILATION=1 $HOME/glib-installed/libexec/installed-tests/glib/static-link.py $HOME/glib-installed/lib/pkgconfig
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"

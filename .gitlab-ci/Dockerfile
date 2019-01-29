@@ -1,4 +1,4 @@
-FROM fedora:27
+FROM fedora:rawhide
 
 RUN dnf -y install \
     autoconf \
@@ -23,6 +23,7 @@ RUN dnf -y install \
     glibc-langpack-es \
     glibc-langpack-fa \
     glibc-langpack-fr \
+    glibc-langpack-he \
     glibc-langpack-hr \
     glibc-langpack-ja \
     glibc-langpack-lt \
