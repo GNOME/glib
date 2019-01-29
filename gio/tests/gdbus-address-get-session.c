@@ -18,9 +18,12 @@
 
 #include <glib.h>
 
-#ifndef G_OS_UNIX
-#error This is a Unix-specific test
-#endif
+/* This test does NOT depend on any dbus binaries preinstalled on test host.
+ * On Unix it uses mock environment (test_xdg_runtime)
+ * or mock dbus-launch binary (test_x11_autolaunch).
+ * On Windows it relies on the fact that libgio provides
+ * internal session dbus-server on win32.
+ */
 
 #include <errno.h>
 
@@ -42,6 +45,8 @@ print_address (void)
   g_print ("%s\n", addr);
   g_free (addr);
 }
+
+#ifdef G_OS_UNIX
 
 static GSocket *mock_bus = NULL;
 static gchar *mock_bus_path = NULL;
@@ -166,14 +171,57 @@ test_xdg_runtime (void)
   g_test_trap_assert_passed ();
 }
 
+#endif
+
+#ifdef G_OS_WIN32
+static void
+check_and_cleanup_autolaunched_win32_bus (void)
+{
+  /* win32 autostarted bus runs infinitely if no client ever connected.
+   * However it exits in several seconds if the last client disconnects.
+   * _This_ test only checks successful launching and connectivity,
+   * and don't bother on bus termination behavior (being it a bug or not).
+   * So connect+disconnect here is not only connectivity test,
+   * but also the workaround the bus process infinite run.
+   */
+  GError *err = NULL;
+  GDBusConnection *bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &err);
+  g_assert_no_error (err);
+  g_object_unref (bus);
+}
+
+static void
+test_win32_autolaunch (void)
+{
+  if (g_test_subprocess ())
+    {
+      print_address ();
+
+      check_and_cleanup_autolaunched_win32_bus ();
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  /* stderr is not checked: coverage prints warnings there */
+  g_test_trap_assert_stdout ("nonce-tcp:host=localhost,port=*,noncefile=*\\gdbus-nonce-file-*\n");
+  g_test_trap_assert_passed ();
+}
+#endif
+
 int
 main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
+#ifdef G_OS_UNIX
   g_test_add_func ("/gdbus/x11-autolaunch", test_x11_autolaunch);
   g_test_add_func ("/gdbus/xdg-runtime", test_xdg_runtime);
+#endif
 
-  return g_test_run();
+#ifdef G_OS_WIN32
+  g_test_add_func ("/gdbus/win32-autolaunch", test_win32_autolaunch);
+#endif
+
+  return g_test_run ();
 }
