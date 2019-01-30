@@ -2167,61 +2167,108 @@ g_markup_parse_context_pop (GMarkupParseContext *context)
   return user_data;
 }
 
+#define APPEND_TEXT_AND_SEEK(_str, _start, _end)          \
+  G_STMT_START {                                          \
+    if (_end > _start)                                    \
+      g_string_append_len (_str, _start, _end - _start);  \
+    _start = ++_end;                                      \
+  } G_STMT_END
+
+/*
+ * https://www.w3.org/TR/REC-xml/ defines the set of valid
+ * characters as:
+ *   #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
+ *
+ * That is, from non-ASCII UTF-8 character set, only 0xC27F - 0xC284 and
+ * 0xC286 - 0xC29F have to be escaped (excluding the surrogate blocks).
+ * Corresponding Unicode code points are [0x7F-0x84] and [0x86-0x9F].
+ *
+ * So instead of using costly g_utf8_next_char or similar UTF8 functions, it's
+ * better to read each byte, and make an exception for 0xC2XX.
+ */
 static void
 append_escaped_text (GString     *str,
                      const gchar *text,
                      gssize       length)
 {
-  const gchar *p;
+  const gchar *p, *pending;
   const gchar *end;
-  gunichar c;
 
-  p = text;
+  p = pending = text;
   end = text + length;
 
-  while (p < end)
+  while (p < end && pending < end)
     {
-      const gchar *next;
-      next = g_utf8_next_char (p);
+      guchar c = (guchar) *pending;
 
-      switch (*p)
+      switch (c)
         {
         case '&':
+          APPEND_TEXT_AND_SEEK (str, p, pending);
           g_string_append (str, "&amp;");
           break;
 
         case '<':
+          APPEND_TEXT_AND_SEEK (str, p, pending);
           g_string_append (str, "&lt;");
           break;
 
         case '>':
+          APPEND_TEXT_AND_SEEK (str, p, pending);
           g_string_append (str, "&gt;");
           break;
 
         case '\'':
+          APPEND_TEXT_AND_SEEK (str, p, pending);
           g_string_append (str, "&apos;");
           break;
 
         case '"':
+          APPEND_TEXT_AND_SEEK (str, p, pending);
           g_string_append (str, "&quot;");
           break;
 
         default:
-          c = g_utf8_get_char (p);
           if ((0x1 <= c && c <= 0x8) ||
               (0xb <= c && c  <= 0xc) ||
               (0xe <= c && c <= 0x1f) ||
-              (0x7f <= c && c <= 0x84) ||
-              (0x86 <= c && c <= 0x9f))
-            g_string_append_printf (str, "&#x%x;", c);
+              (c == 0x7f))
+            {
+              APPEND_TEXT_AND_SEEK (str, p, pending);
+              g_string_append_printf (str, "&#x%x;", c);
+            }
+          /* The utf-8 control characters to escape begins with 0xc2 byte */
+          else if (c == 0xc2)
+            {
+              gunichar u = g_utf8_get_char (pending);
+
+              if ((0x7f < u && u <= 0x84) ||
+                  (0x86 <= u && u <= 0x9f))
+                {
+                  APPEND_TEXT_AND_SEEK (str, p, pending);
+                  g_string_append_printf (str, "&#x%x;", u);
+
+                  /*
+                   * We have appended a two byte character above, which
+                   * is one byte ahead of what we read on every loop.
+                   * Increment to skip 0xc2 and point to the right location.
+                   */
+                  p++;
+                }
+              else
+                pending++;
+            }
           else
-            g_string_append_len (str, p, next - p);
+            pending++;
           break;
         }
-
-      p = next;
     }
+
+  if (pending > p)
+    g_string_append_len (str, p, pending - p);
 }
+
+#undef APPEND_TEXT_AND_SEEK
 
 /**
  * g_markup_escape_text:
