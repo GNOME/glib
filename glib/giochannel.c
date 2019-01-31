@@ -2176,6 +2176,7 @@ g_io_channel_write_chars (GIOChannel   *channel,
 			  gsize        *bytes_written,
                           GError      **error)
 {
+  gsize count_unsigned = count;
   GIOStatus status;
   gssize wrote_bytes = 0;
 
@@ -2282,7 +2283,7 @@ g_io_channel_write_chars (GIOChannel   *channel,
 
       if (!channel->encoding)
         {
-          gssize write_this = MIN (space_in_buf, count - wrote_bytes);
+          gssize write_this = MIN (space_in_buf, count_unsigned - wrote_bytes);
 
           g_string_append_len (channel->write_buf, buf, write_this);
           buf += write_this;
@@ -2412,7 +2413,7 @@ reconvert:
                          * less than a full character
                          */
 
-                        g_assert (count == from_buf_len - from_buf_old_len);
+                        g_assert (count_unsigned == from_buf_len - from_buf_old_len);
 
                         channel->partial_write_buf[from_buf_len] = '\0';
 
