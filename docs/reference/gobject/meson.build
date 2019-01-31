@@ -7,7 +7,7 @@ if get_option('gtk_doc')
     'gobject_probes.h',
     'gobject_trace.h',
     'gtype-private.h',
-    'gobjectenumtypes.h'
+    'gobjectenumtypes.h',
   ]
 
   ignore_decorators = [
