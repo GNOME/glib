@@ -798,7 +798,7 @@ static void
 g_hash_table_resize (GHashTable *hash_table)
 {
   guint32 *reallocated_buckets_bitmap;
-  guint old_size;
+  gint old_size;
   gboolean is_a_set;
 
   old_size = hash_table->size;
@@ -2167,7 +2167,8 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
                                 guint      *length)
 {
   gpointer *result;
-  guint i, j = 0;
+  gint i;
+  guint j = 0;
 
   result = g_new (gpointer, hash_table->nnodes + 1);
   for (i = 0; i < hash_table->size; i++)
