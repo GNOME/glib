@@ -1405,7 +1405,6 @@ enumerate_namespace_versions (const gchar *namespace,
 	      g_free (version);
 	      continue;
 	    }
-	  g_hash_table_insert (found_versions, version, version);
 
 	  path = g_build_filename (dirname, entry, NULL);
 	  mfile = g_mapped_file_new (path, FALSE, &error);
@@ -1422,6 +1421,7 @@ enumerate_namespace_versions (const gchar *namespace,
 	  candidate->path = path;
 	  candidate->version = version;
 	  candidates = g_slist_prepend (candidates, candidate);
+	  g_hash_table_add (found_versions, version);
 	}
       g_dir_close (dir);
       index++;
