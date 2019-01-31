@@ -246,7 +246,7 @@
 
 struct _GHashTable
 {
-  gint             size;
+  gsize            size;
   gint             mod;
   guint            mask;
   gint             nnodes;
@@ -279,7 +279,7 @@ typedef struct
   GHashTable  *hash_table;
   gpointer     dummy1;
   gpointer     dummy2;
-  int          position;
+  gsize        position;
   gboolean     dummy3;
   int          version;
 } RealIter;
@@ -798,7 +798,7 @@ static void
 g_hash_table_resize (GHashTable *hash_table)
 {
   guint32 *reallocated_buckets_bitmap;
-  guint old_size;
+  gsize old_size;
   gboolean is_a_set;
 
   old_size = hash_table->size;
@@ -1099,7 +1099,7 @@ g_hash_table_iter_next (GHashTableIter *iter,
                         gpointer       *value)
 {
   RealIter *ri = (RealIter *) iter;
-  gint position;
+  gsize position;
 
   g_return_val_if_fail (iter != NULL, FALSE);
 #ifndef G_DISABLE_ASSERT
@@ -1154,7 +1154,6 @@ iter_remove_or_steal (RealIter *ri, gboolean notify)
 #ifndef G_DISABLE_ASSERT
   g_return_if_fail (ri->version == ri->hash_table->version);
 #endif
-  g_return_if_fail (ri->position >= 0);
   g_return_if_fail (ri->position < ri->hash_table->size);
 
   g_hash_table_remove_node (ri->hash_table, ri->position, notify);
@@ -1338,7 +1337,6 @@ g_hash_table_iter_replace (GHashTableIter *iter,
 #ifndef G_DISABLE_ASSERT
   g_return_if_fail (ri->version == ri->hash_table->version);
 #endif
-  g_return_if_fail (ri->position >= 0);
   g_return_if_fail (ri->position < ri->hash_table->size);
 
   node_hash = ri->hash_table->hashes[ri->position];
@@ -1880,7 +1878,7 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
                                       gboolean    notify)
 {
   guint deleted = 0;
-  gint i;
+  gsize i;
 #ifndef G_DISABLE_ASSERT
   gint version = hash_table->version;
 #endif
@@ -1989,7 +1987,7 @@ g_hash_table_foreach (GHashTable *hash_table,
                       GHFunc      func,
                       gpointer    user_data)
 {
-  gint i;
+  gsize i;
 #ifndef G_DISABLE_ASSERT
   gint version;
 #endif
@@ -2047,7 +2045,7 @@ g_hash_table_find (GHashTable *hash_table,
                    GHRFunc     predicate,
                    gpointer    user_data)
 {
-  gint i;
+  gsize i;
 #ifndef G_DISABLE_ASSERT
   gint version;
 #endif
@@ -2119,7 +2117,7 @@ g_hash_table_size (GHashTable *hash_table)
 GList *
 g_hash_table_get_keys (GHashTable *hash_table)
 {
-  gint i;
+  gsize i;
   GList *retval;
 
   g_return_val_if_fail (hash_table != NULL, NULL);
@@ -2167,7 +2165,7 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
                                 guint      *length)
 {
   gpointer *result;
-  guint i, j = 0;
+  gsize i, j = 0;
 
   result = g_new (gpointer, hash_table->nnodes + 1);
   for (i = 0; i < hash_table->size; i++)
@@ -2205,7 +2203,7 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
 GList *
 g_hash_table_get_values (GHashTable *hash_table)
 {
-  gint i;
+  gsize i;
   GList *retval;
 
   g_return_val_if_fail (hash_table != NULL, NULL);
