@@ -562,7 +562,8 @@ g_irepository_get_dependencies (GIRepository *repository,
   g_return_val_if_fail (typelib != NULL, NULL);
 
   /* Load the dependencies. */
-  transitive_dependencies = g_hash_table_new (g_str_hash, g_str_equal);
+  transitive_dependencies = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                   g_free, NULL);
   get_typelib_dependencies_transitive (repository, typelib,
                                        transitive_dependencies);
 
