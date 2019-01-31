@@ -63,6 +63,7 @@ if get_option('gtk_doc')
     'GLIB_AVAILABLE_IN_2_56',
     'GLIB_AVAILABLE_IN_2_58',
     'GLIB_AVAILABLE_IN_2_60',
+    'GLIB_AVAILABLE_IN_2_62',
     'GLIB_DEPRECATED_IN_2_26',
     'GLIB_DEPRECATED_IN_2_26_FOR',
     'GLIB_DEPRECATED_IN_2_28',
@@ -99,6 +100,8 @@ if get_option('gtk_doc')
     'GLIB_DEPRECATED_IN_2_58_FOR',
     'GLIB_DEPRECATED_IN_2_60',
     'GLIB_DEPRECATED_IN_2_60_FOR',
+    'GLIB_DEPRECATED_IN_2_62',
+    'GLIB_DEPRECATED_IN_2_62_FOR',
   ]
 
   docpath = join_paths(glib_datadir, 'gtk-doc', 'html')
