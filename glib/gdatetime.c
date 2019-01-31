@@ -1134,7 +1134,8 @@ g_date_time_new_from_timeval_utc (const GTimeVal *tv)
 static gboolean
 get_iso8601_int (const gchar *text, gsize length, gint *value)
 {
-  gint i, v = 0;
+  gsize i;
+  guint v = 0;
 
   if (length < 1 || length > 4)
     return FALSE;
@@ -1155,7 +1156,7 @@ get_iso8601_int (const gchar *text, gsize length, gint *value)
 static gboolean
 get_iso8601_seconds (const gchar *text, gsize length, gdouble *value)
 {
-  gint i;
+  gsize i;
   gdouble divisor = 1, v = 0;
 
   if (length < 2)
@@ -2803,7 +2804,7 @@ initialize_alt_digits (void)
       if (digit == NULL)
         return NULL;
 
-      g_assert (digit_len < buffer + sizeof (buffer) - buffer_end);
+      g_assert (digit_len < (gsize) (buffer + sizeof (buffer) - buffer_end));
 
       alt_digits[i] = buffer_end;
       buffer_end = g_stpcpy (buffer_end, digit);

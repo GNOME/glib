@@ -171,7 +171,7 @@ struct _GStaticRecMutex
   } unused;
 };
 
-#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT }
+#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, 0, { 0 } }
 GLIB_DEPRECATED_IN_2_32_FOR(g_rec_mutex_init)
 void     g_static_rec_mutex_init        (GStaticRecMutex *mutex);
 
