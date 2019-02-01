@@ -1268,6 +1268,15 @@ read_shm (const char *shm_name)
   if (shared_mem != 0)
     {
       shared_data = MapViewOfFile (shared_mem, FILE_MAP_READ, 0, 0, 0);
+      /* It looks that a race is possible here:
+       * if the dbus process already created mapping but didn't fill it
+       * the code below may read incorrect address.
+       * Also this is a bit complicated by the fact that
+       * any change in the "synchronization contract" between processes
+       * should be accompanied with renaming all of used win32 named objects:
+       * otherwise libgio-2.0-0.dll of different versions shipped with
+       * different apps may break each other due to protocol difference.
+       */
       if (shared_data != NULL)
 	{
 	  res = g_strdup (shared_data);
@@ -1431,6 +1440,12 @@ g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow
       return;
     }
 
+  /* There is a subtle detail with "idle-timeout" signal of dbus daemon:
+   * It is fired on idle after last client disconnection,
+   * but (at least with glib 2.59.1) it is NEVER fired
+   * if no clients connect to daemon at all.
+   * This may lead to infinite run of this daemon process.
+   */
   g_signal_connect (daemon, "idle-timeout", G_CALLBACK (idle_timeout_cb), loop);
 
   if (publish_session_bus (_g_dbus_daemon_get_address (daemon)))
