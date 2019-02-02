@@ -23,7 +23,7 @@
 
 #include <glib.h>
 #include <stdio.h>
-#include <Windows.h>
+#include <windows.h>
 
 static char *argv0 = NULL;
 
@@ -128,11 +128,11 @@ veh_debugger (int argc, char *argv[])
 {
   char *end;
   DWORD pid = strtoul (argv[1], &end, 10);
-  DWORD event = strtoul (argv[2], &end, 10);
+  guintptr event = (guintptr) strtoull (argv[2], &end, 10);
   /* Unfreeze the debugee and announce ourselves */
   SetEvent ((HANDLE) event);
   CloseHandle ((HANDLE) event);
-  fprintf (stderr, "Debugger invoked, attaching to %lu and signalling %lu", pid, event);
+  fprintf (stderr, "Debugger invoked, attaching to %lu and signalling %" G_GUINTPTR_FORMAT, pid, event);
 }
 
 int
@@ -143,7 +143,7 @@ main (int   argc,
 
   g_test_init (&argc, &argv, NULL);
 
-  if (argc > 1)
+  if (argc > 2)
     {
       veh_debugger (argc, argv);
       return 0;
