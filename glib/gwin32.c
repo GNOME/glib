@@ -1025,65 +1025,7 @@ g_console_win32_init (void)
  */
 static void *WinVEH_handle = NULL;
 
-/* Copy @cmdline into @debugger, and substitute @pid for `%p`
- * and @event for `%e`.
- * If @debugger_size (in bytes) is overflowed, return %FALSE.
- * Also returns %FALSE when `%` is followed by anything other
- * than `e` or `p`.
- */
-static gboolean
-subst_pid_and_event (char       *debugger,
-                     gsize       debugger_size,
-                     const char *cmdline,
-                     DWORD       pid,
-                     guintptr    event)
-{
-  gsize i = 0, dbg_i = 0;
-/* These are integers, and they can't be longer than 20 characters
- * even when they are 64-bit and in decimal notation.
- * Use 30 just to be sure.
- */
-#define STR_BUFFER_SIZE 30
-  char pid_str[STR_BUFFER_SIZE] = {0};
-  gsize pid_str_len;
-  char event_str[STR_BUFFER_SIZE] = {0};
-  gsize event_str_len;
-#undef STR_BUFFER_SIZE
-  snprintf (pid_str, G_N_ELEMENTS (pid_str), "%lu", pid);
-  pid_str[G_N_ELEMENTS (pid_str) - 1] = 0;
-  pid_str_len = strlen (pid_str);
-  snprintf (event_str, G_N_ELEMENTS (pid_str), "%Iu", event);
-  event_str[G_N_ELEMENTS (pid_str) - 1] = 0;
-  event_str_len = strlen (event_str);
-
-  while (cmdline[i] != 0 && dbg_i < debugger_size)
-    {
-      if (cmdline[i] != '%')
-        debugger[dbg_i++] = cmdline[i++];
-      else if (cmdline[i + 1] == 'p')
-        {
-          gsize j = 0;
-          while (j < pid_str_len && dbg_i < debugger_size)
-            debugger[dbg_i++] = pid_str[j++];
-          i += 2;
-        }
-      else if (cmdline[i + 1] == 'e')
-        {
-          gsize j = 0;
-          while (j < event_str_len && dbg_i < debugger_size)
-            debugger[dbg_i++] = event_str[j++];
-          i += 2;
-        }
-      else
-        return FALSE;
-    }
-  if (dbg_i < debugger_size)
-    debugger[dbg_i] = 0;
-  else
-    return FALSE;
-
-  return TRUE;
-}
+#include "gwin32-private.c"
 
 /**
  * Handles exceptions (useful for debugging).
@@ -1226,9 +1168,9 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
   event = CreateEvent (&sa, FALSE, FALSE, NULL);
 
   /* Put process ID and event handle into debugger commandline */
-  if (!subst_pid_and_event (debugger, G_N_ELEMENTS (debugger),
-                            debugger_env, GetCurrentProcessId (),
-                            (guintptr) event))
+  if (!_g_win32_subst_pid_and_event (debugger, G_N_ELEMENTS (debugger),
+                                     debugger_env, GetCurrentProcessId (),
+                                     (guintptr) event))
     {
       CloseHandle (event);
       return EXCEPTION_CONTINUE_SEARCH;
