@@ -76,15 +76,7 @@ test_access_violation (void)
 static void
 test_illegal_instruction (void)
 {
-#if defined (__GNUC__)
-  asm ("ud2");
-#elif defined (_MSC_VER)
-  __asm ud2
-#else
-#  warning Don't know how to produce illegal instruction with current compiler
-  /* This will fail the test, but at least we'll crash */
-  g_abort ();
-#endif
+  RaiseException (EXCEPTION_ILLEGAL_INSTRUCTION, 0, 0, NULL);
 }
 
 static void
