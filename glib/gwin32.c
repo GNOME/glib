@@ -1018,59 +1018,61 @@ g_console_win32_init (void)
     }
 }
 
+/* This is a handle to the Vectored Exception Handler that
+ * we install on library initialization. If installed correctly,
+ * it will be non-NULL. Only used to later de-install the handler
+ * on library de-initialization.
+ */
 static void *WinVEH_handle = NULL;
 
+/* Copy @cmdline into @debugger, and substitute @pid for `%p`
+ * and @event for `%e`.
+ * If @debugger_size (in bytes) is overflowed, return %FALSE.
+ * Also returns %FALSE when `%` is followed by anything other
+ * than `e` or `p`.
+ */
 static gboolean
-subst_pid_and_event (char     *debugger,
-                     gsize     debugger_size,
-                     char     *cmdline,
-                     DWORD     pid,
-                     guintptr  event)
+subst_pid_and_event (char       *debugger,
+                     gsize       debugger_size,
+                     const char *cmdline,
+                     DWORD       pid,
+                     guintptr    event)
 {
-  gsize i, dbg_i;
-  gboolean replaced_pid = FALSE;
-  gboolean replaced_event = FALSE;
-  char pid_str[30] = {0};
+  gsize i = 0, dbg_i = 0;
+/* These are integers, and they can't be longer than 20 characters
+ * even when they are 64-bit and in decimal notation.
+ * Use 30 just to be sure.
+ */
+#define STR_BUFFER_SIZE 30
+  char pid_str[STR_BUFFER_SIZE] = {0};
   gsize pid_str_len;
-  char event_str[30] = {0};
+  char event_str[STR_BUFFER_SIZE] = {0};
   gsize event_str_len;
-  i = 0;
-  dbg_i = 0;
+#undef STR_BUFFER_SIZE
   snprintf (pid_str, G_N_ELEMENTS (pid_str), "%lu", pid);
-  pid_str[29] = 0;
+  pid_str[G_N_ELEMENTS (pid_str) - 1] = 0;
   pid_str_len = strlen (pid_str);
   snprintf (event_str, G_N_ELEMENTS (pid_str), "%Iu", event);
-  event_str[29] = 0;
+  event_str[G_N_ELEMENTS (pid_str) - 1] = 0;
   event_str_len = strlen (event_str);
 
   while (cmdline[i] != 0 && dbg_i < debugger_size)
     {
       if (cmdline[i] != '%')
+        debugger[dbg_i++] = cmdline[i++];
+      else if (cmdline[i + 1] == 'p')
         {
-          debugger[dbg_i++] = cmdline[i++];
-          continue;
-        }
-      if (cmdline[i + 1] == 'p')
-        {
-          if (!replaced_pid)
-            {
-              gsize j = 0;
-              while (j < pid_str_len && dbg_i < debugger_size)
-                debugger[dbg_i++] = pid_str[j++];
-              replaced_pid = TRUE;
-              i += 2;
-            }
+          gsize j = 0;
+          while (j < pid_str_len && dbg_i < debugger_size)
+            debugger[dbg_i++] = pid_str[j++];
+          i += 2;
         }
       else if (cmdline[i + 1] == 'e')
         {
-          if (!replaced_event)
-            {
-              gsize j = 0;
-              while (j < event_str_len && dbg_i < debugger_size)
-                debugger[dbg_i++] = event_str[j++];
-              replaced_pid = TRUE;
-              i += 2;
-            }
+          gsize j = 0;
+          while (j < event_str_len && dbg_i < debugger_size)
+            debugger[dbg_i++] = event_str[j++];
+          i += 2;
         }
       else
         return FALSE;
@@ -1092,7 +1094,9 @@ subst_pid_and_event (char     *debugger,
  * that event should be set once the debugger attaches itself (otherwise the
  * only way out of WaitForSingleObject() is to time out after 1 minute).
  * For example, G_DEBUGGER can be set to the following command:
+ * ```
  * gdb.exe -ex "attach %p" -ex "signal-event %e" -ex "bt" -ex "c"
+ * ```
  * This will make GDB attach to the process, signal the event (GDB must be
  * recent enough for the signal-event command to be available),
  * show the backtrace and resume execution, which should make it catch
@@ -1117,8 +1121,8 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 {
   EXCEPTION_RECORD    *er;
   char                 debugger[MAX_PATH + 1];
-  char                *debugger_env = NULL;
-  char                *catch_list;
+  const char          *debugger_env = NULL;
+  const char          *catch_list;
   gboolean             catch = FALSE;
   STARTUPINFO          si;
   PROCESS_INFORMATION  pi;
@@ -1197,6 +1201,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
                er->ExceptionInformation[2]);
       break;
     default:
+      fprintf (stderr, "\n");
       break;
     }
 
@@ -1205,6 +1210,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
   if (debugger_env == NULL)
     return EXCEPTION_CONTINUE_SEARCH;
 
+  /* Create an inheritable event */
   memset (&si, 0, sizeof (si));
   memset (&pi, 0, sizeof (pi));
   memset (&sa, 0, sizeof (sa));
@@ -1213,6 +1219,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
   sa.bInheritHandle = TRUE;
   event = CreateEvent (&sa, FALSE, FALSE, NULL);
 
+  /* Put process ID and event handle into debugger commandline */
   if (!subst_pid_and_event (debugger, G_N_ELEMENTS (debugger),
                             debugger_env, GetCurrentProcessId (),
                             (guintptr) event))
@@ -1221,6 +1228,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
       return EXCEPTION_CONTINUE_SEARCH;
     }
 
+  /* Run the debugger */
   debugger[MAX_PATH] = '\0';
   if (0 != CreateProcessA (NULL,
                            debugger,
@@ -1235,11 +1243,21 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
     {
       CloseHandle (pi.hProcess);
       CloseHandle (pi.hThread);
+      /* If successful, wait for 60 seconds on the event
+       * we passed. The debugger should signal that event.
+       * 60 second limit is here to prevent us from hanging
+       * up forever in case the debugger does not support
+       * event signalling.
+       */
       WaitForSingleObject (event, 60000);
     }
 
   CloseHandle (event);
 
+  /* Now the debugger is present, and we can try
+   * resuming execution, re-triggering the exception,
+   * which will be caught by debugger this time around.
+   */
   if (IsDebuggerPresent ())
     return EXCEPTION_CONTINUE_EXECUTION;
 
@@ -1247,7 +1265,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 }
 
 void
-g_crash_handler_win32_init ()
+g_crash_handler_win32_init (void)
 {
   if (WinVEH_handle != NULL)
     return;
@@ -1256,7 +1274,7 @@ g_crash_handler_win32_init ()
 }
 
 void
-g_crash_handler_win32_deinit ()
+g_crash_handler_win32_deinit (void)
 {
   if (WinVEH_handle != NULL)
     RemoveVectoredExceptionHandler (WinVEH_handle);
