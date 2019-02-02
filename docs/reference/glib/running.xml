@@ -256,6 +256,68 @@ How to run and debug your GLib application
   </para>
 </formalpara>
 
+<formalpara id="G_DEBUGGER">
+  <title><envar>G_DEBUGGER</envar></title>
+
+  <para>
+    When running on Windows, if set to a non-empty string, glib will
+    try to interpret the contents of this environment variable as
+    a command line to a debugger, and run it if the process crashes.
+    The debugger command line should contain '%p' and '%e' substitution
+    tokens, which glib will replace with the process ID of the crashing
+    process and a handle to an event that the debugger should signal
+    to let glib know that the debugger successfully attached to the
+    process. If '%e' is absent, or if the debugger is not able to
+    signal events, glib will resume execution after 60 seconds.
+    If '%p' is absent, the debugger won't know which process to attach to,
+    and glib will also resume execution after 60 seconds.
+  </para>
+  <para>
+    Additionally, even if %G_DEBUGGER is not set, glib would still
+    try to print basic exception information (code and address) into
+    stderr.
+  </para>
+  <para>
+    By default the debugger gets a new console allocated for it.
+    Set the %G_DEBUGGER_OLD_CONSOLE environment variable to any
+    non-empty string to make the debugger inherit the console of
+    the crashing process. Normally this is only used by the glib
+    testsuite.
+  </para>
+  <para>
+    The exception handler is written with the aim of making it as
+    simple as possible, to minimize the risk of it invoking
+    buggy functions or running buggy code, which would result
+    in exceptions being raised recursively. Because of that
+    it lacks most of the amenities that one would expect of glib.
+    Namely, it does not support Unicode, so it is highly advisable
+    to only use ASCII characters in %G_DEBUGGER.
+  </para>
+  <para>
+    See also %G_VEH_CATCH.
+  </para>
+</formalpara>
+
+<formalpara id="G_VEH_CATCH">
+  <title><envar>G_VEH_CATCH</envar></title>
+
+  <para>
+    Catching some exceptions can break the program, since Windows
+    will sometimes use exceptions for execuion flow control and
+    other purposes other than signalling a crash.
+  </para>
+  <para>
+    The %G_VEH_CATCH environment variable augments Vectored Exception Handling
+    on Windows (see %G_DEBUGGER), allowing glib to catch more
+    exceptions. Set this variable to a comma-separated list of
+    hexademical exception codes that should additionally be caught.
+  </para>
+  <para>
+    By default glib will only catch Access Violation, Stack Overflow and
+    Illegal Instruction <ulink url="https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_exception_record">exceptions</ulink>.
+  </para>
+</formalpara>
+
 </refsect2>
 
 <refsect2 id="setlocale">
