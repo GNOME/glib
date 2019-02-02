@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <glib.h>
+#include <gprintf.h>
 #include <stdio.h>
 #include <windows.h>
 
