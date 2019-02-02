@@ -1140,6 +1140,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
     case EXCEPTION_ACCESS_VIOLATION:
     case EXCEPTION_STACK_OVERFLOW:
     case EXCEPTION_ILLEGAL_INSTRUCTION:
+    case EXCEPTION_BREAKPOINT: /* DebugBreak() raises this */
       break;
     default:
       catch_list = getenv ("G_VEH_CATCH");
@@ -1169,7 +1170,12 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 
   if (IsDebuggerPresent ())
     {
-      DebugBreak ();
+      /* This shouldn't happen, but still try to
+       * avoid recursion with EXCEPTION_BREAKPOINT and
+       * DebugBreak().
+       */
+      if (er->ExceptionCode != EXCEPTION_BREAKPOINT)
+        DebugBreak ();
       return EXCEPTION_CONTINUE_EXECUTION;
     }
 
