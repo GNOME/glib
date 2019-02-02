@@ -101,7 +101,6 @@ glib_tests = {
   'utils' : {},
   'unicode' : {},
   'uri' : {},
-  'win32' : {},
   '1bit-mutex' : {},
   '1bit-emufutex' : {
     'source' : '1bit-mutex.c',
@@ -139,6 +138,7 @@ if host_machine.system() == 'windows'
       'gpoll' : {
         'dependencies' : [winsock2],
       },
+      'win32' : {},
     }
   endif
 else
