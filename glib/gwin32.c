@@ -1153,6 +1153,8 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
       break;
     }
 
+  fflush (stderr);
+
   debugger_env = getenv ("G_DEBUGGER");
 
   if (debugger_env == NULL)
@@ -1183,7 +1185,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
                            NULL,
                            NULL,
                            TRUE,
-                           CREATE_NEW_CONSOLE,
+                           getenv ("G_DEBUGGER_OLD_CONSOLE") != NULL ? 0 : CREATE_NEW_CONSOLE,
                            NULL,
                            NULL,
                            &si,
