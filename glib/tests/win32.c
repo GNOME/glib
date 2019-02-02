@@ -75,7 +75,15 @@ test_access_violation (void)
 static void
 test_illegal_instruction (void)
 {
+#if defined (__GNUC__)
   asm ("ud2");
+#elif defined (_MSC_VER)
+  __asm ud2
+#else
+#  warning Don't know how to produce illegal instruction with current compiler
+  /* This will fail the test, but at least we'll crash */
+  g_abort ();
+#endif
 }
 
 static void
@@ -132,7 +140,7 @@ veh_debugger (int argc, char *argv[])
   /* Unfreeze the debugee and announce ourselves */
   SetEvent ((HANDLE) event);
   CloseHandle ((HANDLE) event);
-  fprintf (stderr, "Debugger invoked, attaching to %lu and signalling %" G_GUINTPTR_FORMAT, pid, event);
+  g_fprintf (stderr, "Debugger invoked, attaching to %lu and signalling %" G_GUINTPTR_FORMAT, pid, event);
 }
 
 int
