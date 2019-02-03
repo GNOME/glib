@@ -786,8 +786,8 @@ unescape_gstring_inplace (GMarkupParseContext  *context,
         }
     }
 
-  g_assert (to - string->str <= string->len);
-  if (to - string->str != string->len)
+  g_assert (to - string->str <= (gssize) string->len);
+  if (to - string->str != (gssize) string->len)
     g_string_truncate (string, to - string->str);
 
   *is_ascii = !(mask & 0x80);
@@ -2629,7 +2629,7 @@ g_markup_parse_boolean (const char  *string,
 {
   char const * const falses[] = { "false", "f", "no", "n", "0" };
   char const * const trues[] = { "true", "t", "yes", "y", "1" };
-  int i;
+  gsize i;
 
   for (i = 0; i < G_N_ELEMENTS (falses); i++)
     {
