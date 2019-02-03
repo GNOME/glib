@@ -129,7 +129,7 @@ veh_debugger (int argc, char *argv[])
 {
   char *end;
   DWORD pid = strtoul (argv[1], &end, 10);
-  guintptr event = (guintptr) strtoull (argv[2], &end, 10);
+  guintptr event = (guintptr) _strtoui64 (argv[2], &end, 10);
   /* Unfreeze the debugee and announce ourselves */
   SetEvent ((HANDLE) event);
   CloseHandle ((HANDLE) event);
