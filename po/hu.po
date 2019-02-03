@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-01-24 14:43+0000\n"
-"PO-Revision-Date: 2019-01-27 15:54+0100\n"
+"POT-Creation-Date: 2019-01-29 20:59+0000\n"
+"PO-Revision-Date: 2019-02-03 16:30+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -887,12 +887,12 @@ msgstr ""
 msgid "Cannot serialize message: "
 msgstr "Az üzenet nem fejthető sorba: "
 
-#: gio/gdbusmessage.c:2740
+#: gio/gdbusmessage.c:2739
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Az üzenettörzs „%s” aláírással rendelkezik, de nincs aláírásfejléc"
 
-#: gio/gdbusmessage.c:2750
+#: gio/gdbusmessage.c:2749
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -901,40 +901,40 @@ msgstr ""
 "Az üzenettörzs „%s” típusaláírással rendelkezik, de az aláírásfejlécben lévő "
 "aláírás: „%s”"
 
-#: gio/gdbusmessage.c:2766
+#: gio/gdbusmessage.c:2765
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Az üzenettörzs üres, de az aláírásfejlécben lévő aláírás: „%s”"
 
-#: gio/gdbusmessage.c:3319
+#: gio/gdbusmessage.c:3318
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Hiba került visszaadásra a(z) „%s” típusú törzzsel"
 
-#: gio/gdbusmessage.c:3327
+#: gio/gdbusmessage.c:3326
 msgid "Error return with empty body"
 msgstr "Hiba került visszaadásra az üres törzzsel"
 
-#: gio/gdbusprivate.c:2066
+#: gio/gdbusprivate.c:2075
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Nem kérhető le hardverprofil: %s"
 
-#: gio/gdbusprivate.c:2111
+#: gio/gdbusprivate.c:2120
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Nem tölthető be a /var/lib/dbus/machine-id vagy az /etc/machine-id: "
 
-#: gio/gdbusproxy.c:1611
+#: gio/gdbusproxy.c:1617
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Hiba a StartServiceByName hívásakor ehhez: %s: "
 
-#: gio/gdbusproxy.c:1634
+#: gio/gdbusproxy.c:1640
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Váratlan válasz (%d) a StartServiceByName(\"%s\") metódustól"
 
-#: gio/gdbusproxy.c:2734 gio/gdbusproxy.c:2869
+#: gio/gdbusproxy.c:2740 gio/gdbusproxy.c:2875
 #, c-format
 msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
@@ -1239,7 +1239,7 @@ msgstr "Hiba: Túl sok argumentum.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Hiba: a(z) %s nem érvényes busznév\n"
 
-#: gio/gdesktopappinfo.c:2041 gio/gdesktopappinfo.c:4680
+#: gio/gdesktopappinfo.c:2041 gio/gdesktopappinfo.c:4822
 msgid "Unnamed"
 msgstr "Névtelen"
 
@@ -1251,27 +1251,27 @@ msgstr "A desktop fájl nem adta meg az Exec mezőt"
 msgid "Unable to find terminal required for application"
 msgstr "Nem található az alkalmazáshoz szükséges terminál"
 
-#: gio/gdesktopappinfo.c:3222
+#: gio/gdesktopappinfo.c:3362
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Nem hozható létre a(z) %s felhasználói alkalmazáskonfigurációs mappa: %s"
 
-#: gio/gdesktopappinfo.c:3226
+#: gio/gdesktopappinfo.c:3366
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Nem hozható létre a(z) %s felhasználói MIME konfigurációs mappa: %s"
 
-#: gio/gdesktopappinfo.c:3466 gio/gdesktopappinfo.c:3490
+#: gio/gdesktopappinfo.c:3606 gio/gdesktopappinfo.c:3630
 msgid "Application information lacks an identifier"
 msgstr "Az alkalmazásinformációkból hiányzik az azonosító"
 
-#: gio/gdesktopappinfo.c:3724
+#: gio/gdesktopappinfo.c:3864
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Nem hozható létre a felhasználói desktop fájl (%s)"
 
-#: gio/gdesktopappinfo.c:3858
+#: gio/gdesktopappinfo.c:3998
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s egyéni meghatározása"
@@ -1338,7 +1338,7 @@ msgstr "Egy GEmblem kellene a GEmblemedIconhoz"
 #: gio/gfile.c:2008 gio/gfile.c:2063 gio/gfile.c:3738 gio/gfile.c:3793
 #: gio/gfile.c:4029 gio/gfile.c:4071 gio/gfile.c:4539 gio/gfile.c:4950
 #: gio/gfile.c:5035 gio/gfile.c:5125 gio/gfile.c:5222 gio/gfile.c:5309
-#: gio/gfile.c:5410 gio/gfile.c:7988 gio/gfile.c:8078 gio/gfile.c:8162
+#: gio/gfile.c:5410 gio/gfile.c:8113 gio/gfile.c:8203 gio/gfile.c:8287
 #: gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "A művelet nem támogatott"
@@ -1409,7 +1409,7 @@ msgstr "A fájlnevek nem tartalmazhatnak „%c” karaktert"
 msgid "volume doesn’t implement mount"
 msgstr "a kötet nem valósítja meg a csatolást"
 
-#: gio/gfile.c:6882
+#: gio/gfile.c:6884 gio/gfile.c:6930
 msgid "No application is registered as handling this file"
 msgstr "Nincs alkalmazás regisztrálva a fájl kezeléséhez"
 
@@ -1661,7 +1661,7 @@ msgstr "Hiba a szabványos kimenetre íráskor"
 #: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:282 gio/gio-tool-list.c:165
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
-#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1212 gio/gio-tool-open.c:113
+#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1212 gio/gio-tool-open.c:70
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
 #: gio/gio-tool-trash.c:81 gio/gio-tool-tree.c:239
 msgid "LOCATION"
@@ -1682,7 +1682,7 @@ msgstr ""
 "smb://kiszolgáló/erőforrás/fájl.txt."
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:313 gio/gio-tool-mkdir.c:76
-#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1263 gio/gio-tool-open.c:139
+#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1263 gio/gio-tool-open.c:96
 #: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
 msgid "No locations given"
 msgstr "Nincsenek megadva helyek"
@@ -2090,7 +2090,7 @@ msgstr ""
 msgid "Target %s is not a directory"
 msgstr "A megadott cél (%s) nem könyvtár"
 
-#: gio/gio-tool-open.c:118
+#: gio/gio-tool-open.c:75
 msgid ""
 "Open files with the default application that\n"
 "is registered to handle files of this type."
@@ -3838,15 +3838,15 @@ msgstr "Nem sikerült kapcsolódni a következőhöz: %s: "
 msgid "Could not connect: "
 msgstr "Nem sikerült kapcsolódni: "
 
-#: gio/gsocketclient.c:1032 gio/gsocketclient.c:1714
+#: gio/gsocketclient.c:1032 gio/gsocketclient.c:1731
 msgid "Unknown error on connect"
 msgstr "Ismeretlen csatlakozási hiba"
 
-#: gio/gsocketclient.c:1086 gio/gsocketclient.c:1626
+#: gio/gsocketclient.c:1086 gio/gsocketclient.c:1640
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "A proxyzás nem TCP kapcsolaton keresztül nem támogatott."
 
-#: gio/gsocketclient.c:1115 gio/gsocketclient.c:1652
+#: gio/gsocketclient.c:1115 gio/gsocketclient.c:1666
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "A proxyprotokoll („%s”) nem támogatott."
@@ -4297,25 +4297,25 @@ msgstr "A(z) „%s” elérési út neve nem abszolút útvonal"
 #: glib/gdatetime.c:214
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%Y. %b. %e., %A, %H.%M.%S %Z"
+msgstr "%Y. %b. %-e. %a. %H:%M:%S"
 
 #. Translators: this is the preferred format for expressing the date
 #: glib/gdatetime.c:217
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr "%y. %m %e."
+msgstr "%Y. %m. %d."
 
 #. Translators: this is the preferred format for expressing the time
 #: glib/gdatetime.c:220
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr "%k.%M.%S"
+msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: glib/gdatetime.c:223
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%H.%M.%S"
+msgstr "%H:%M:%S"
 
 #. Translators: Some languages (Baltic, Slavic, Greek, and some more)
 #. * need different grammatical forms of month names depending on whether
