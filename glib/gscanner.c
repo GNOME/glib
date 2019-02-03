@@ -341,6 +341,7 @@ static const GScannerConfig g_scanner_config_template =
   FALSE			/* symbol_2_token */,
   FALSE			/* scope_0_fallback */,
   FALSE			/* store_int64 */,
+  0    			/* padding_dummy */
 };
 
 
