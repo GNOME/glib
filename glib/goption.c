@@ -277,7 +277,7 @@ struct _GOptionGroup
   gpointer         translate_data;
 
   GOptionEntry    *entries;
-  gint             n_entries;
+  gsize            n_entries;
 
   GOptionParseFunc pre_parse_func;
   GOptionParseFunc post_parse_func;
@@ -665,7 +665,7 @@ calculate_max_length (GOptionGroup *group,
                       GHashTable   *aliases)
 {
   GOptionEntry *entry;
-  gint i, len, max_length;
+  gsize i, len, max_length;
   const gchar *long_name;
 
   max_length = 0;
@@ -828,7 +828,7 @@ g_option_context_get_help (GOptionContext *context,
 {
   GList *list;
   gint max_length = 0, len;
-  gint i;
+  gsize i;
   GOptionEntry *entry;
   GHashTable *shadow_map;
   GHashTable *aliases;
@@ -1505,7 +1505,7 @@ parse_short_option (GOptionContext *context,
                     GError        **error,
                     gboolean       *parsed)
 {
-  gint j;
+  gsize j;
 
   for (j = 0; j < group->n_entries; j++)
     {
@@ -1587,7 +1587,7 @@ parse_long_option (GOptionContext *context,
                    GError        **error,
                    gboolean       *parsed)
 {
-  gint j;
+  gsize j;
 
   for (j = 0; j < group->n_entries; j++)
     {
@@ -1698,7 +1698,7 @@ parse_remaining_arg (GOptionContext *context,
                      GError        **error,
                      gboolean       *parsed)
 {
-  gint j;
+  gsize j;
 
   for (j = 0; j < group->n_entries; j++)
     {
@@ -2353,7 +2353,7 @@ void
 g_option_group_add_entries (GOptionGroup       *group,
                             const GOptionEntry *entries)
 {
-  gint i, n_entries;
+  gsize i, n_entries;
 
   g_return_if_fail (entries != NULL);
 
