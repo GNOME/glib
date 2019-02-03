@@ -271,7 +271,7 @@ g_quark_to_string (GQuark quark)
 {
   gchar* result = NULL;
   gchar **strings;
-  gint seq_id;
+  guint seq_id;
 
   seq_id = g_atomic_int_get (&quark_seq_id);
   strings = g_atomic_pointer_get (&quarks);
