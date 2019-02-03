@@ -777,7 +777,7 @@ group_list_has_visible_entries (GOptionContext *context,
 static gboolean
 context_has_h_entry (GOptionContext *context)
 {
-  gsize i;
+  gint i;
   GList *list;
 
   if (context->main_group)
