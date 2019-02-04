@@ -271,7 +271,7 @@ int
 main (int argc, char *argv[])
 {
   gchar *path;
-  gint i;
+  gsize i;
   const gchar *locale;
   CollateTest test[3];
 
@@ -299,13 +299,13 @@ main (int argc, char *argv[])
 
   for (i = 0; i < G_N_ELEMENTS (test); i++)
     {
-      path = g_strdup_printf ("/unicode/collate/%d", i);
+      path = g_strdup_printf ("/unicode/collate/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &test[i], test_collate);
       g_free (path);
-      path = g_strdup_printf ("/unicode/collate-key/%d", i);
+      path = g_strdup_printf ("/unicode/collate-key/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &test[i], test_collate_key);
       g_free (path);
-      path = g_strdup_printf ("/unicode/collate-filename/%d", i);
+      path = g_strdup_printf ("/unicode/collate-filename/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &test[i], test_collate_file);
       g_free (path);
     }
