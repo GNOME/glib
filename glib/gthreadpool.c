@@ -91,7 +91,7 @@ struct _GRealThreadPool
   GAsyncQueue *queue;
   GCond cond;
   gint max_threads;
-  gint num_threads;
+  guint num_threads;
   gboolean running;
   gboolean immediate;
   gboolean waiting;
