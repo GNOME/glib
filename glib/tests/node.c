@@ -168,7 +168,7 @@ traversal_test (void)
     { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  7, "ABFCDEG"     },
     { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  8, "ABFCDEG"     },
   };
-  gint i;
+  gsize i;
   CallbackData data;
 
   root = g_node_new (C2P ('A'));
