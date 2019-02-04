@@ -1552,7 +1552,7 @@ g_variant_new_strv (const gchar * const *strv,
                     gssize               length)
 {
   GVariant **strings;
-  gsize i;
+  gssize i;
 
   g_return_val_if_fail (length == 0 || strv != NULL, NULL);
 
@@ -1688,7 +1688,7 @@ g_variant_new_objv (const gchar * const *strv,
                     gssize               length)
 {
   GVariant **strings;
-  gsize i;
+  gssize i;
 
   g_return_val_if_fail (length == 0 || strv != NULL, NULL);
 
@@ -1928,7 +1928,7 @@ g_variant_new_bytestring_array (const gchar * const *strv,
                                 gssize               length)
 {
   GVariant **strings;
-  gsize i;
+  gssize i;
 
   g_return_val_if_fail (length == 0 || strv != NULL, NULL);
 
