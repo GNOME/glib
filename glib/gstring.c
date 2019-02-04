@@ -440,7 +440,7 @@ g_string_insert_len (GString     *string,
   if (pos < 0)
     pos = string->len;
   else
-    g_return_val_if_fail (pos <= string->len, string);
+    g_return_val_if_fail ((gsize) pos <= string->len, string);
 
   /* Check whether val represents a substring of string.
    * This test probably violates chapter and verse of the C standards,
@@ -457,18 +457,18 @@ g_string_insert_len (GString     *string,
       /* At this point, val is valid again.  */
 
       /* Open up space where we are going to insert.  */
-      if (pos < string->len)
+      if ((guint) pos < string->len)
         memmove (string->str + pos + len, string->str + pos, string->len - pos);
 
       /* Move the source part before the gap, if any.  */
-      if (offset < pos)
+      if (offset < (guint) pos)
         {
-          precount = MIN (len, pos - offset);
+          precount = MIN (len, (guint) (pos - offset));
           memcpy (string->str + pos, val, precount);
         }
 
       /* Move the source part after the gap, if any.  */
-      if (len > precount)
+      if ((gsize) len > precount)
         memcpy (string->str + pos + precount,
                 val + /* Already moved: */ precount + /* Space opened up: */ len,
                 len - precount);
@@ -480,7 +480,7 @@ g_string_insert_len (GString     *string,
       /* If we aren't appending at the end, move a hunk
        * of the old string to the end, opening up space
        */
-      if (pos < string->len)
+      if ((guint) pos < string->len)
         memmove (string->str + pos + len, string->str + pos, string->len - pos);
 
       /* insert the new string */
@@ -785,10 +785,10 @@ g_string_insert_c (GString *string,
   if (pos < 0)
     pos = string->len;
   else
-    g_return_val_if_fail (pos <= string->len, string);
+    g_return_val_if_fail ((guint) pos <= string->len, string);
 
   /* If not just an append, move the old stuff */
-  if (pos < string->len)
+  if ((guint) pos < string->len)
     memmove (string->str + pos + 1, string->str + pos, string->len - pos);
 
   string->str[pos] = c;
@@ -860,10 +860,10 @@ g_string_insert_unichar (GString  *string,
   if (pos < 0)
     pos = string->len;
   else
-    g_return_val_if_fail (pos <= string->len, string);
+    g_return_val_if_fail ((gsize) pos <= string->len, string);
 
   /* If not just an append, move the old stuff */
-  if (pos < string->len)
+  if ((gsize) pos < string->len)
     memmove (string->str + pos + charlen, string->str + pos, string->len - pos);
 
   dest = string->str + pos;
@@ -972,15 +972,15 @@ g_string_erase (GString *string,
 {
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (pos >= 0, string);
-  g_return_val_if_fail (pos <= string->len, string);
+  g_return_val_if_fail ((gsize) pos <= string->len, string);
 
   if (len < 0)
     len = string->len - pos;
   else
     {
-      g_return_val_if_fail (pos + len <= string->len, string);
+      g_return_val_if_fail ((gsize) (pos + len) <= string->len, string);
 
-      if (pos + len < string->len)
+      if ((gsize) (pos + len) < string->len)
         memmove (string->str + pos, string->str + pos + len, string->len - (pos + len));
     }
 
