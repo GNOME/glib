@@ -2706,7 +2706,7 @@ g_strstr_len (const gchar *haystack,
       if (needle_len == 0)
         return (gchar *)haystack;
 
-      if (haystack_len < needle_len)
+      if (((gsize) haystack_len) < needle_len)
         return NULL;
 
       end = haystack + haystack_len - needle_len;
