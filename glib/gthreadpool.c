@@ -154,7 +154,7 @@ g_thread_pool_wait_for_new_pool (void)
 
   do
     {
-      if (g_atomic_int_get (&unused_threads) >= local_max_unused_threads)
+      if (g_atomic_int_get (&unused_threads) >= (int) local_max_unused_threads)
         {
           /* If this is a superfluous thread, stop it. */
           pool = NULL;
@@ -819,7 +819,7 @@ g_thread_pool_free_internal (GRealThreadPool* pool)
 static void
 g_thread_pool_wakeup_and_stop_all (GRealThreadPool *pool)
 {
-  guint i;
+  gint i;
 
   g_return_if_fail (pool);
   g_return_if_fail (pool->running == FALSE);
