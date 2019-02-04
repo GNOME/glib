@@ -108,32 +108,32 @@ typedef struct
 
 /* Hard-code the base types in a constant array */
 static const GVariantTypeInfo g_variant_type_info_basic_table[24] = {
-#define fixed_aligned(x)  x, x - 1
-#define not_a_type             0,
-#define unaligned         0, 0
-#define aligned(x)        0, x - 1
+#define fixed_aligned(x)  x, x - 1, 0
+#define not_a_type        0,     0, 0
+#define unaligned         0,     0, 0
+#define aligned(x)        0, x - 1, 0
   /* 'b' */ { fixed_aligned(1) },   /* boolean */
-  /* 'c' */ { not_a_type },
+  /* 'c' */ { not_a_type       },
   /* 'd' */ { fixed_aligned(8) },   /* double */
-  /* 'e' */ { not_a_type },
-  /* 'f' */ { not_a_type },
+  /* 'e' */ { not_a_type       },
+  /* 'f' */ { not_a_type       },
   /* 'g' */ { unaligned        },   /* signature string */
   /* 'h' */ { fixed_aligned(4) },   /* file handle (int32) */
   /* 'i' */ { fixed_aligned(4) },   /* int32 */
-  /* 'j' */ { not_a_type },
-  /* 'k' */ { not_a_type },
-  /* 'l' */ { not_a_type },
-  /* 'm' */ { not_a_type },
+  /* 'j' */ { not_a_type       },
+  /* 'k' */ { not_a_type       },
+  /* 'l' */ { not_a_type       },
+  /* 'm' */ { not_a_type       },
   /* 'n' */ { fixed_aligned(2) },   /* int16 */
   /* 'o' */ { unaligned        },   /* object path string */
-  /* 'p' */ { not_a_type },
+  /* 'p' */ { not_a_type       },
   /* 'q' */ { fixed_aligned(2) },   /* uint16 */
-  /* 'r' */ { not_a_type },
+  /* 'r' */ { not_a_type       },
   /* 's' */ { unaligned        },   /* string */
   /* 't' */ { fixed_aligned(8) },   /* uint64 */
   /* 'u' */ { fixed_aligned(4) },   /* uint32 */
   /* 'v' */ { aligned(8)       },   /* variant */
-  /* 'w' */ { not_a_type },
+  /* 'w' */ { not_a_type       },
   /* 'x' */ { fixed_aligned(8) },   /* int64 */
   /* 'y' */ { fixed_aligned(1) },   /* byte */
 #undef fixed_aligned
@@ -360,7 +360,7 @@ static void
 tuple_info_free (GVariantTypeInfo *info)
 {
   TupleInfo *tuple_info;
-  gint i;
+  gsize i;
 
   g_assert (info->container_class == GV_TUPLE_INFO_CLASS);
   tuple_info = (TupleInfo *) info;
@@ -638,7 +638,7 @@ tuple_set_base_info (TupleInfo *info)
        * offsets are stored and the last item is fixed-sized too (since
        * an offset is never stored for the last item).
        */
-      if (m->i == -1 && m->type_info->fixed_size)
+      if (m->i == (gsize) -1 && m->type_info->fixed_size)
         /* in that case, the fixed size can be found by finding the
          * start of the last item (in the usual way) and adding its
          * fixed size.
