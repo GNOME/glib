@@ -237,7 +237,7 @@ again:
 
       if (tz->t_info != NULL)
         {
-          gint idx;
+          guint idx;
           for (idx = 0; idx < tz->t_info->len; idx++)
             {
               TransitionInfo *info = &g_array_index (tz->t_info, TransitionInfo, idx);
@@ -575,7 +575,7 @@ init_zone_from_iana_info (GTimeZone *gtz,
         trans.time = gint32_from_be (((gint32_be*)tz_transitions)[index]);
       trans.info_index = tz_type_index[index];
       g_assert (trans.info_index >= 0);
-      g_assert (trans.info_index < gtz->t_info->len);
+      g_assert ((guint) trans.info_index < gtz->t_info->len);
       g_array_append_val (gtz->transitions, trans);
     }
 }
@@ -690,7 +690,7 @@ register_tzi_to_tzi (RegTZI *reg, TIME_ZONE_INFORMATION *tzi)
   tzi->DaylightBias = reg->DaylightBias;
 }
 
-static gint
+static guint
 rules_from_windows_time_zone (const gchar   *identifier,
                               gchar        **out_identifier,
                               TimeZoneRule **rules)
@@ -702,7 +702,7 @@ rules_from_windows_time_zone (const gchar   *identifier,
     "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones\\";
   TIME_ZONE_INFORMATION tzi;
   DWORD size;
-  gint rules_num = 0;
+  guint rules_num = 0;
   RegTZI regtzi, regtzi_prev;
 
   g_assert (out_identifier != NULL);
@@ -830,7 +830,7 @@ failed:
 static void
 find_relative_date (TimeZoneDate *buffer)
 {
-  gint wday;
+  guint wday;
   GDate date;
   g_date_clear (&date, 1);
   wday = buffer->wday;
@@ -923,7 +923,7 @@ fill_transition_info_from_rule (TransitionInfo *info,
 static void
 init_zone_from_rules (GTimeZone    *gtz,
                       TimeZoneRule *rules,
-                      gint          rules_num,
+                      guint         rules_num,
                       gchar        *identifier  /* (transfer full) */)
 {
   guint type_count = 0, trans_count = 0, info_index = 0;
@@ -1214,7 +1214,7 @@ parse_tz_boundary (const gchar  *identifier,
     }
 }
 
-static gint
+static guint
 create_ruleset_from_rule (TimeZoneRule **rules, TimeZoneRule *rule)
 {
   *rules = g_new0 (TimeZoneRule, 2);
@@ -1306,7 +1306,7 @@ parse_identifier_boundaries (gchar **pos, TimeZoneRule *tzr)
  * Creates an array of TimeZoneRule from a TZ environment variable
  * type of identifier.  Should free rules afterwards
  */
-static gint
+static guint
 rules_from_identifier (const gchar   *identifier,
                        gchar        **out_identifier,
                        TimeZoneRule **rules)
@@ -1779,8 +1779,8 @@ g_time_zone_adjust_time (GTimeZone *tz,
                          GTimeType  type,
                          gint64    *time_)
 {
-  gint i;
-  guint intervals;
+  guint i, intervals;
+  gboolean interval_is_dst;
 
   if (tz->transitions == NULL)
     return 0;
@@ -1822,16 +1822,21 @@ g_time_zone_adjust_time (GTimeZone *tz,
             *time_ = interval_local_start (tz, i);
         }
 
-      else if (interval_isdst (tz, i) != type)
-        /* it's in this interval, but dst flag doesn't match.
-         * check neighbours for a better fit. */
+      else
         {
-          if (i && *time_ <= interval_local_end (tz, i - 1))
-            i--;
+          interval_is_dst = interval_isdst (tz, i);
+          if ((interval_is_dst && type != G_TIME_TYPE_DAYLIGHT) ||
+              (!interval_is_dst && type == G_TIME_TYPE_DAYLIGHT))
+            {
+              /* it's in this interval, but dst flag doesn't match.
+               * check neighbours for a better fit. */
+              if (i && *time_ <= interval_local_end (tz, i - 1))
+                i--;
 
-          else if (i < intervals &&
-                   *time_ >= interval_local_start (tz, i + 1))
-            i++;
+              else if (i < intervals &&
+                       *time_ >= interval_local_start (tz, i + 1))
+                i++;
+            }
         }
     }
 
@@ -1872,8 +1877,8 @@ g_time_zone_find_interval (GTimeZone *tz,
                            GTimeType  type,
                            gint64     time_)
 {
-  gint i;
-  guint intervals;
+  guint i, intervals;
+  gboolean interval_is_dst;
 
   if (tz->transitions == NULL)
     return 0;
@@ -1897,13 +1902,18 @@ g_time_zone_find_interval (GTimeZone *tz,
         return -1;
     }
 
-  else if (interval_isdst (tz, i) != type)
+  else
     {
-      if (i && time_ <= interval_local_end (tz, i - 1))
-        i--;
+      interval_is_dst = interval_isdst (tz, i);
+      if  ((interval_is_dst && type != G_TIME_TYPE_DAYLIGHT) ||
+           (!interval_is_dst && type == G_TIME_TYPE_DAYLIGHT))
+        {
+          if (i && time_ <= interval_local_end (tz, i - 1))
+            i--;
 
-      else if (i < intervals && time_ >= interval_local_start (tz, i + 1))
-        i++;
+          else if (i < intervals && time_ >= interval_local_start (tz, i + 1))
+            i++;
+        }
     }
 
   return i;
