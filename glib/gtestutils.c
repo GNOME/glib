@@ -3829,7 +3829,7 @@ g_test_build_filename_va (GTestFileType  file_type,
                           va_list        ap)
 {
   const gchar *pathv[16];
-  gint num_path_segments;
+  gsize num_path_segments;
 
   if (file_type == G_TEST_DIST)
     pathv[0] = test_disted_files_dir;
