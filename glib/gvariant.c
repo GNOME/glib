@@ -1552,19 +1552,20 @@ g_variant_new_strv (const gchar * const *strv,
                     gssize               length)
 {
   GVariant **strings;
-  gsize i;
+  gsize i, length_unsigned;
 
   g_return_val_if_fail (length == 0 || strv != NULL, NULL);
 
   if (length < 0)
     length = g_strv_length ((gchar **) strv);
+  length_unsigned = length;
 
-  strings = g_new (GVariant *, length);
-  for (i = 0; i < length; i++)
+  strings = g_new (GVariant *, length_unsigned);
+  for (i = 0; i < length_unsigned; i++)
     strings[i] = g_variant_ref_sink (g_variant_new_string (strv[i]));
 
   return g_variant_new_from_children (G_VARIANT_TYPE_STRING_ARRAY,
-                                      strings, length, TRUE);
+                                      strings, length_unsigned, TRUE);
 }
 
 /**
@@ -1688,7 +1689,7 @@ g_variant_new_objv (const gchar * const *strv,
                     gssize               length)
 {
   GVariant **strings;
-  gsize i;
+  gssize i;
 
   g_return_val_if_fail (length == 0 || strv != NULL, NULL);
 
@@ -1928,7 +1929,7 @@ g_variant_new_bytestring_array (const gchar * const *strv,
                                 gssize               length)
 {
   GVariant **strings;
-  gsize i;
+  gssize i;
 
   g_return_val_if_fail (length == 0 || strv != NULL, NULL);
 
