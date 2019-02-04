@@ -677,7 +677,7 @@ int
 main (int    argc,
       char **argv)
 {
-  guint ui;
+  gint ui;
 
   g_set_prgname (argv[0]);
   parse_args (&argc, &argv);
