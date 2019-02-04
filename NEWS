@@ -1,3 +1,45 @@
+Overview of changes in GLib 2.59.2
+==================================
+
+* Fix check on GDBusMessage size when reading it. (#1642)
+
+* Add async GIO API: g_file_query_default_handler_async(), g_app_info_launch_uris_async() (#1249, #1347)
+
+* Fix some bugs in the Happy Eyeballs implementation. (#1646, #1649)
+
+* Install a new generated header with enum types for Unicode enums. (!481)
+
+* Support the XDG trash portal. (!276)
+
+* Bugs fixed:
+ - #1224 TSAN patches
+ - #1249 xdg-open/gnome-open doesn't work if service isn't started
+ - #1347 g_app_info_launch_default_for_uri_async  is not really async
+ - #1376 gmarkup: Optimize g_markup_escape_text()
+ - #1642 minor mismatch between error and code in g_dbus_message_bytes_needed
+ - #1646 Criticals in g_socket_client_enumerator_callback()
+ - #1649 Critical in g_socket_client_connected_callback
+ - #1673 G_MININT constants broken in g-i
+ - !276 Support the trash portal
+ - !481 Define enum types for Unicode enums
+ - !585 gio: do not pass O_PATH file descriptors to portal APIs
+ - !593 Don't fail trash test if ~/.local doesn't exist or mount points can't be determined (master)
+ - !609 Make `g_app_info_launch_uris_async()` really asynchronous
+ - !619 gvariant: Fix a mistake in docs
+ - !622 Fixing warnings
+ - !626 gdbus: Avoid printing null strings
+ - !627 gsocketclient: Fix criticals
+ - !629 Various memory leak cleanups to GSettings tests (subset)
+ - !630 docs: Ignore more version macros
+
+* Translation updates:
+ - Galician
+ - Hungarian
+ - Lithuanian
+ - Polish
+ - Spanish
+
+
 Overview of changes in GLib 2.59.1
 ==================================
 
