@@ -595,6 +595,38 @@ test_resource_binary_linked (void)
   #endif /* if __linux__ */
 }
 
+/* Test resource whose xml file starts with more than one digit
+ * and where no explicit c-name is given
+ * Checks if resources are automatically registered and
+ * data can be found and read. */
+static void
+test_resource_digits (void)
+{
+  GError *error = NULL;
+  gboolean found;
+  gsize size;
+  guint32 flags;
+  GBytes *data;
+
+  found = g_resources_get_info ("/digit_test/test1.txt",
+				G_RESOURCE_LOOKUP_FLAGS_NONE,
+				&size, &flags, &error);
+  g_assert_true (found);
+  g_assert_no_error (error);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpuint (flags, ==, 0);
+
+  data = g_resources_lookup_data ("/digit_test/test1.txt",
+				  G_RESOURCE_LOOKUP_FLAGS_NONE,
+				  &error);
+  g_assert_nonnull (data);
+  g_assert_no_error (error);
+  size = g_bytes_get_size (data);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
+  g_bytes_unref (data);
+}
+
 static void
 test_resource_module (void)
 {
@@ -945,6 +977,7 @@ main (int   argc,
   /* This only uses automatic resources too, so it tests the constructors and destructors */
   g_test_add_func ("/resource/module", test_resource_module);
   g_test_add_func ("/resource/binary-linked", test_resource_binary_linked);
+  g_test_add_func ("/resource/digits", test_resource_digits);
 #endif
   g_test_add_func ("/resource/uri/query-info", test_uri_query_info);
   g_test_add_func ("/resource/uri/file", test_uri_file);
