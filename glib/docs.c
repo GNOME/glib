@@ -209,14 +209,6 @@
  */
 
 /**
- * G_MININT8:
- *
- * The minimum value which can be held in a #gint8.
- *
- * Since: 2.4
- */
-
-/**
  * G_MAXINT8:
  *
  * The maximum value which can be held in a #gint8.
@@ -248,14 +240,6 @@
  *
  * To print or scan values of this type, use
  * %G_GINT16_MODIFIER and/or %G_GINT16_FORMAT.
- */
-
-/**
- * G_MININT16:
- *
- * The minimum value which can be held in a #gint16.
- *
- * Since: 2.4
  */
 
 /**
@@ -338,14 +322,6 @@
  */
 
 /**
- * G_MININT32:
- *
- * The minimum value which can be held in a #gint32.
- *
- * Since: 2.4
- */
-
-/**
  * G_MAXINT32:
  *
  * The maximum value which can be held in a #gint32.
@@ -405,12 +381,6 @@
  *
  * To print or scan values of this type, use
  * %G_GINT64_MODIFIER and/or %G_GINT64_FORMAT.
- */
-
-/**
- * G_MININT64:
- *
- * The minimum value which can be held in a #gint64.
  */
 
 /**
