@@ -14,7 +14,7 @@ check_integrity (GQueue *queue)
   GList *last;
   GList *links;
   GList *link;
-  gint n;
+  guint n;
 
   g_assert (queue->length < 4000000000u);
 
@@ -266,7 +266,7 @@ random_test (gconstpointer d)
           break;
         case GET_LENGTH:
           {
-            int l;
+            guint l;
 
             l = g_queue_get_length (q);
 
@@ -413,16 +413,16 @@ random_test (gconstpointer d)
         case POP_NTH:
           if (!g_queue_is_empty (q))
             {
-              int n = get_random_position (q, TRUE);
+              gint n = get_random_position (q, TRUE);
               gpointer elm = g_queue_peek_nth (q, n);
 
-              if (n == q->length - 1)
+              if (n == (gint) (q->length - 1))
                 qinf->tail = qinf->tail->prev;
 
               if (n == 0)
                 qinf->head = qinf->head->next;
 
-              if (n >= 0 && n < q->length)
+              if (n >= 0 && (guint) n < q->length)
                 qinf->length--;
 
               g_assert (elm == g_queue_pop_nth (q, n));
@@ -449,8 +449,8 @@ random_test (gconstpointer d)
           else
             {
               GList *list;
-              int n = get_random_position (q, TRUE);
-              if (n < 0 || n >= q->length)
+              gint n = get_random_position (q, TRUE);
+              if (n < 0 || ((guint) n >= q->length))
                 {
                   g_assert (g_queue_peek_nth (q, n) == NULL);
                 }
@@ -635,9 +635,9 @@ random_test (gconstpointer d)
             g_assert (g_queue_pop_nth_link (q, 200) == NULL);
           else
             {
-              int n = get_random_position (q, FALSE);
+              gint n = get_random_position (q, FALSE);
 
-              if (n == g_queue_get_length (q) - 1)
+              if (n == (gint) (g_queue_get_length (q) - 1))
                 qinf->tail = qinf->tail->prev;
 
               if (n == 0)
