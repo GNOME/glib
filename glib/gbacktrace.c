@@ -214,7 +214,7 @@ g_on_error_query (const gchar *prg_name)
  *
  * When running on Windows, this function is *not* called by
  * g_on_error_query(). If called directly, it will raise an
- * exception, which will crash the program. If `G_DEBUGGER` environment
+ * exception, which will crash the program. If the `G_DEBUGGER` environment
  * variable is set, a debugger will be invoked to attach and
  * handle that exception (see [Running GLib Applications](glib-running.html)).
  */
