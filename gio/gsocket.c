@@ -4609,7 +4609,13 @@ g_socket_send_message (GSocket                *socket,
                                             cancellable, error);
 
   if (res == G_POLLABLE_RETURN_WOULD_BLOCK)
-    socket_set_error_lazy (error, EWOULDBLOCK, _("Error sending message: %s"));
+    {
+#ifndef G_OS_WIN32
+      socket_set_error_lazy (error, EWOULDBLOCK, _("Error sending message: %s"));
+#else
+      socket_set_error_lazy (error, WSAEWOULDBLOCK, _("Error sending message: %s"));
+#endif
+    }
 
   return res == G_POLLABLE_RETURN_OK ? bytes_written : -1;
 }
@@ -5056,7 +5062,13 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
                                                               cancellable, &msg_error);
 
         if (pollable_result == G_POLLABLE_RETURN_WOULD_BLOCK)
-          socket_set_error_lazy (&msg_error, EWOULDBLOCK, _("Error sending message: %s"));
+          {
+#ifndef G_OS_WIN32
+            socket_set_error_lazy (&msg_error, EWOULDBLOCK, _("Error sending message: %s"));
+#else
+            socket_set_error_lazy (&msg_error, WSAEWOULDBLOCK, _("Error sending message: %s"));
+#endif
+          }
 
         result = pollable_result == G_POLLABLE_RETURN_OK ? bytes_written : -1;
 
