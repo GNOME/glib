@@ -136,8 +136,7 @@ static void
 test_allocate (void)
 {
   GThread *threads[30];
-  gint size;
-  gint i;
+  gsize size, i;
 
   for (i = 0; i < 30; i++)
     for (size = 1; size <= 4096; size++)
