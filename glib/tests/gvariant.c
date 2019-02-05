@@ -194,8 +194,7 @@ append_tuple_type_string (GString  *string,
 {
   GVariantType *result, *other_result;
   GVariantType **types;
-  gint size;
-  gsize i;
+  gsize size, i;
 
   g_string_append_c (string, '(');
   g_string_append (description, "t of [");
@@ -376,8 +375,7 @@ describe_type (const GVariantType *type)
             {
               const GVariantType *sub;
               GString *string;
-              gint length;
-              gsize i;
+              gsize length, i;
 
               string = g_string_new ("t of [");
 
@@ -873,8 +871,7 @@ describe_info (GVariantTypeInfo *info)
       {
         const gchar *sep = "";
         GString *string;
-        gint length;
-        gsize i;
+        gsize length, i;
 
         string = g_string_new ("t of [");
         length = g_variant_type_info_n_members (info);
@@ -935,8 +932,7 @@ static void
 check_offsets (GVariantTypeInfo   *info,
                const GVariantType *type)
 {
-  gsize flavour;
-  gint length;
+  gsize flavour, length;
 
   length = g_variant_type_info_n_members (info);
   g_assert_cmpint (length, ==, g_variant_type_n_items (type));
@@ -948,10 +944,8 @@ check_offsets (GVariantTypeInfo   *info,
   for (flavour = 0; flavour < 8; flavour++)
     {
       const GVariantType *subtype;
-      gsize last_offset_index;
-      gsize last_offset;
-      gsize position;
-      gsize i;
+      gsize last_offset, last_offset_index;
+      gsize position, i;
 
       subtype = g_variant_type_first (type);
       last_offset_index = -1;
@@ -2597,7 +2591,7 @@ tree_instance_check_gvariant (TreeInstance *tree,
       break;
 
     case 'b':
-      return g_variant_get_boolean (value) == tree->data.integer;
+      return g_variant_get_boolean (value) == (gboolean) tree->data.integer;
 
     case 'y':
       return g_variant_get_byte (value) == (guchar) tree->data.integer;
@@ -3017,8 +3011,7 @@ test_varargs (void)
     GVariant *value;
     gchar *number;
     gboolean just;
-    guint i;
-    gint val;
+    guint i, val;
 
     g_variant_builder_init (&array, G_VARIANT_TYPE_ARRAY);
     for (i = 0; i < 100; i++)
@@ -4249,12 +4242,12 @@ test_lookup_value (void)
     const gchar *dict, *key, *value;
   } cases[] = {
     { "@a{ss} {'x':  'y'}",   "x",  "'y'" },
-    { "@a{ss} {'x':  'y'}",   "y"         },
+    { "@a{ss} {'x':  'y'}",   "y",   NULL },
     { "@a{os} {'/x': 'y'}",   "/x", "'y'" },
-    { "@a{os} {'/x': 'y'}",   "/y"        },
+    { "@a{os} {'/x': 'y'}",   "/y",  NULL },
     { "@a{sv} {'x':  <'y'>}", "x",  "'y'" },
     { "@a{sv} {'x':  <5>}",   "x",  "5"   },
-    { "@a{sv} {'x':  <'y'>}", "y"         }
+    { "@a{sv} {'x':  <'y'>}", "y",   NULL }
   };
   gsize i;
 
