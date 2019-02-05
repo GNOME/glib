@@ -704,7 +704,7 @@ g_object_class_install_properties (GObjectClass  *oclass,
                                    GParamSpec   **pspecs)
 {
   GType oclass_type, parent_type;
-  gint i;
+  gsize i;
 
   g_return_if_fail (G_IS_OBJECT_CLASS (oclass));
   g_return_if_fail (n_pspecs > 1);
@@ -1664,7 +1664,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
   gint n_cparams;
   gint cvals_used;
   GSList *node;
-  gint i;
+  gsize i;
 
   /* If we have ->constructed() then we have to do a lot more work.
    * It's possible that this is a singleton and it's also possible
@@ -1694,7 +1694,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
     {
       GParamSpec *pspec;
       GValue *value;
-      gint j;
+      gsize j;
 
       pspec = node->data;
       value = NULL; /* to silence gcc... */
@@ -1820,7 +1820,7 @@ g_object_new_internal (GObjectClass          *class,
         {
           const GValue *value;
           GParamSpec *pspec;
-          gint j;
+          gsize j;
 
           pspec = node->data;
           value = NULL; /* to silence gcc... */
@@ -1846,7 +1846,7 @@ g_object_new_internal (GObjectClass          *class,
 
   if (nqueue)
     {
-      gint i;
+      gsize i;
 
       /* Set remaining properties.  The construct properties will
        * already have been taken, so set only the non-construct
