@@ -421,9 +421,21 @@ test_loopback_sync (void)
 typedef struct {
   GList/*<owned GSocketAddress> */ *addrs;  /* owned */
   GMainLoop *loop;  /* owned */
+  GSocketAddressEnumerator *enumerator; /* unowned */
   guint delay_ms;
   gint expected_error_code;
 } AsyncData;
+
+static void got_addr (GObject *source_object, GAsyncResult *result, gpointer user_data);
+
+static int
+on_delayed_get_addr (gpointer user_data)
+{
+  AsyncData *data = user_data;
+  g_socket_address_enumerator_next_async (data->enumerator, NULL,
+                                          got_addr, user_data);
+  return G_SOURCE_REMOVE;
+}
 
 static void
 got_addr (GObject      *source_object,
@@ -459,11 +471,14 @@ got_addr (GObject      *source_object,
       g_assert (G_IS_INET_SOCKET_ADDRESS (a));
       data->addrs = g_list_prepend (data->addrs, a);
 
-      if (data->delay_ms)
-        g_usleep (data->delay_ms * 1000);
-
-      g_socket_address_enumerator_next_async (enumerator, NULL,
-                                              got_addr, user_data);
+      if (!data->delay_ms)
+        g_socket_address_enumerator_next_async (enumerator, NULL,
+                                                got_addr, user_data);
+      else
+        {
+          data->enumerator = enumerator;
+          g_timeout_add (data->delay_ms, on_delayed_get_addr, data);
+        }
     }
 }
 
