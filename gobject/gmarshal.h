@@ -358,6 +358,23 @@ void g_cclosure_marshal_BOOLEAN__FLAGSv (GClosure *closure,
                                          gpointer  marshal_data,
                                          int       n_params,
                                          GType    *param_types);
+
+/**
+ * g_cclosure_marshal_BOOL__FLAGS:
+ * @closure: A #GClosure.
+ * @return_value: A #GValue to store the return value. May be %NULL
+ *   if the callback of closure doesn't return a value.
+ * @n_param_values: The length of the @param_values array.
+ * @param_values: An array of #GValues holding the arguments
+ *   on which to invoke the callback of closure.
+ * @invocation_hint: The invocation hint given as the last argument to
+ *   g_closure_invoke().
+ * @marshal_data: Additional data specified when registering the
+ *   marshaller, see g_closure_set_marshal() and
+ *   g_closure_set_meta_marshal()
+ *
+ * An old alias for g_cclosure_marshal_BOOLEAN__FLAGS().
+ */
 #define g_cclosure_marshal_BOOL__FLAGS	g_cclosure_marshal_BOOLEAN__FLAGS
 
 /* STRING:OBJECT,POINTER */
@@ -393,6 +410,23 @@ void g_cclosure_marshal_BOOLEAN__BOXED_BOXEDv (GClosure *closure,
                                                gpointer  marshal_data,
                                                int       n_params,
                                                GType    *param_types);
+
+/**
+ * g_cclosure_marshal_BOOL__BOXED_BOXED:
+ * @closure: A #GClosure.
+ * @return_value: A #GValue to store the return value. May be %NULL
+ *   if the callback of closure doesn't return a value.
+ * @n_param_values: The length of the @param_values array.
+ * @param_values: An array of #GValues holding the arguments
+ *   on which to invoke the callback of closure.
+ * @invocation_hint: The invocation hint given as the last argument to
+ *   g_closure_invoke().
+ * @marshal_data: Additional data specified when registering the
+ *   marshaller, see g_closure_set_marshal() and
+ *   g_closure_set_meta_marshal()
+ *
+ * An old alias for g_cclosure_marshal_BOOLEAN__BOXED_BOXED().
+ */
 #define g_cclosure_marshal_BOOL__BOXED_BOXED	g_cclosure_marshal_BOOLEAN__BOXED_BOXED
 
 G_END_DECLS
