@@ -120,6 +120,46 @@ G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT)
 
 static guint g_list_model_changed_signal;
 
+/* Implement our own marshaller to speed up signal emissions, rather than using
+ * the generic marshaller. */
+static void
+marshal_void__uint_uint_uint (GClosure     *closure,
+                              GValue       *return_value G_GNUC_UNUSED,
+                              guint         n_param_values,
+                              const GValue *param_values,
+                              gpointer      invocation_hint G_GNUC_UNUSED,
+                              gpointer      marshal_data)
+{
+  typedef void (*MarshalFunc) (gpointer  data1,
+                               guint     arg_1,
+                               guint     arg_2,
+                               guint     arg_3,
+                               gpointer  data2);
+  MarshalFunc callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 4);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values);
+      data2 = closure->data;
+    }
+  callback = (MarshalFunc) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_value_get_uint (param_values + 1),
+            g_value_get_uint (param_values + 2),
+            g_value_get_uint (param_values + 3),
+            data2);
+}
+
 static void
 g_list_model_default_init (GListModelInterface *iface)
 {
@@ -141,7 +181,7 @@ g_list_model_default_init (GListModelInterface *iface)
                                               G_SIGNAL_RUN_LAST,
                                               0,
                                               NULL, NULL,
-                                              g_cclosure_marshal_generic,
+                                              marshal_void__uint_uint_uint,
                                               G_TYPE_NONE,
                                               3, G_TYPE_UINT, G_TYPE_UINT, G_TYPE_UINT);
 }
