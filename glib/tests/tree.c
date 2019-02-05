@@ -331,7 +331,7 @@ static void
 test_tree_traverse (void)
 {
   GTree *tree;
-  gint i;
+  gsize i;
   TraverseData orders[] = {
     { G_IN_ORDER,   -1, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" },
     { G_IN_ORDER,    1, "0" },
