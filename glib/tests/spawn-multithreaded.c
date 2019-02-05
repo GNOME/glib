@@ -31,9 +31,8 @@ static char *echo_prog_path;
 static void
 multithreaded_test_run (GThreadFunc function)
 {
-  int i;
   GPtrArray *threads = g_ptr_array_new ();
-  guint n_threads;
+  guint n_threads, i;
 
   /* Limit to 64, otherwise we may hit file descriptor limits and such */
   n_threads = MIN (g_get_num_processors () * 2, 64);
