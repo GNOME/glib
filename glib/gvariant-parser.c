@@ -1921,6 +1921,8 @@ number_get_value (AST                 *ast,
     case 'n':
       if (abs_val - negative > G_MAXINT16)
         return number_overflow (ast, type, error);
+      if (negative && abs_val > G_MAXINT16)
+        return g_variant_new_int16 (G_MININT16);
       return g_variant_new_int16 (negative ? -((gint16) abs_val) : abs_val);
 
     case 'q':
@@ -1931,6 +1933,8 @@ number_get_value (AST                 *ast,
     case 'i':
       if (abs_val - negative > G_MAXINT32)
         return number_overflow (ast, type, error);
+      if (negative && abs_val > G_MAXINT32)
+        return g_variant_new_int32 (G_MININT32);
       return g_variant_new_int32 (negative ? -((gint32) abs_val) : abs_val);
 
     case 'u':
@@ -1941,6 +1945,8 @@ number_get_value (AST                 *ast,
     case 'x':
       if (abs_val - negative > G_MAXINT64)
         return number_overflow (ast, type, error);
+      if (negative && abs_val > G_MAXINT64)
+        return g_variant_new_int64 (G_MININT64);
       return g_variant_new_int64 (negative ? -((gint64) abs_val) : abs_val);
 
     case 't':
@@ -1951,6 +1957,8 @@ number_get_value (AST                 *ast,
     case 'h':
       if (abs_val - negative > G_MAXINT32)
         return number_overflow (ast, type, error);
+      if (negative && abs_val > G_MAXINT32)
+        return g_variant_new_handle (G_MININT32);
       return g_variant_new_handle (negative ? -((gint32) abs_val) : abs_val);
 
     default:
