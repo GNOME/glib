@@ -827,8 +827,11 @@ test_filename_to_utf8_embedded_nul_utf8 (void)
   gsize bytes_read;
   GError *error = NULL;
 
+#ifndef G_OS_WIN32
+  /* G_FILENAME_ENCODING has no effect on Windows for g_get_filename_charsets() */
   g_setenv ("G_FILENAME_ENCODING", "UTF-8", TRUE);
   g_assert_true (g_get_filename_charsets (NULL));
+#endif
 
   res = g_filename_to_utf8 ("ab\0c", 4, &bytes_read, NULL, &error);
 
@@ -848,8 +851,11 @@ test_filename_to_utf8_embedded_nul_iconv (void)
   gsize bytes_read;
   GError *error = NULL;
 
+#ifndef G_OS_WIN32
+  /* G_FILENAME_ENCODING has no effect on Windows for g_get_filename_charsets() */
   g_setenv ("G_FILENAME_ENCODING", "US-ASCII", TRUE);
   g_assert_false (g_get_filename_charsets (NULL));
+#endif
 
   res = g_filename_to_utf8 ("ab\0c", 4, &bytes_read, NULL, &error);
 
@@ -878,8 +884,11 @@ test_filename_from_utf8_embedded_nul_utf8 (void)
   gsize bytes_read;
   GError *error = NULL;
 
+#ifndef G_OS_WIN32
+  /* G_FILENAME_ENCODING has no effect on Windows for g_get_filename_charsets() */
   g_setenv ("G_FILENAME_ENCODING", "UTF-8", TRUE);
   g_assert_true (g_get_filename_charsets (NULL));
+#endif
 
   res = g_filename_from_utf8 ("ab\0c", 4, &bytes_read, NULL, &error);
 
@@ -899,8 +908,11 @@ test_filename_from_utf8_embedded_nul_iconv (void)
   gsize bytes_read;
   GError *error = NULL;
 
+#ifndef G_OS_WIN32
+  /* G_FILENAME_ENCODING has no effect on Windows for g_get_filename_charsets() */
   g_setenv ("G_FILENAME_ENCODING", "US-ASCII", TRUE);
   g_assert_false (g_get_filename_charsets (NULL));
+#endif
 
   res = g_filename_from_utf8 ("ab\0c", 4, &bytes_read, NULL, &error);
 
