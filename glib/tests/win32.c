@@ -69,14 +69,23 @@ static void
 test_access_violation (void)
 {
   int *integer = NULL;
+  /* Use SEM_NOGPFAULTERRORBOX to prevent an error dialog
+   * from being shown.
+   */
+  DWORD dwMode = SetErrorMode (SEM_NOGPFAULTERRORBOX);
+  SetErrorMode (dwMode | SEM_NOGPFAULTERRORBOX);
   *integer = 1;
+  SetErrorMode (dwMode);
 }
 
 /* Crash with illegal instruction */
 static void
 test_illegal_instruction (void)
 {
+  DWORD dwMode = SetErrorMode (SEM_NOGPFAULTERRORBOX);
+  SetErrorMode (dwMode | SEM_NOGPFAULTERRORBOX);
   RaiseException (EXCEPTION_ILLEGAL_INSTRUCTION, 0, 0, NULL);
+  SetErrorMode (dwMode);
 }
 
 static void
