@@ -843,7 +843,7 @@
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* VOID:VOID (./gmarshal.list:6) */
+/* VOID:VOID */
 void
 g_cclosure_marshal_VOID__VOID (GClosure     *closure,
                                GValue       *return_value G_GNUC_UNUSED,
@@ -907,7 +907,7 @@ g_cclosure_marshal_VOID__VOIDv (GClosure     *closure,
 }
 
 
-/* VOID:BOOLEAN (./gmarshal.list:7) */
+/* VOID:BOOLEAN */
 void
 g_cclosure_marshal_VOID__BOOLEAN (GClosure     *closure,
                                   GValue       *return_value G_GNUC_UNUSED,
@@ -981,7 +981,7 @@ g_cclosure_marshal_VOID__BOOLEANv (GClosure     *closure,
 }
 
 
-/* VOID:CHAR (./gmarshal.list:8) */
+/* VOID:CHAR */
 void
 g_cclosure_marshal_VOID__CHAR (GClosure     *closure,
                                GValue       *return_value G_GNUC_UNUSED,
@@ -1055,7 +1055,7 @@ g_cclosure_marshal_VOID__CHARv (GClosure     *closure,
 }
 
 
-/* VOID:UCHAR (./gmarshal.list:9) */
+/* VOID:UCHAR */
 void
 g_cclosure_marshal_VOID__UCHAR (GClosure     *closure,
                                 GValue       *return_value G_GNUC_UNUSED,
@@ -1129,7 +1129,7 @@ g_cclosure_marshal_VOID__UCHARv (GClosure     *closure,
 }
 
 
-/* VOID:INT (./gmarshal.list:10) */
+/* VOID:INT */
 void
 g_cclosure_marshal_VOID__INT (GClosure     *closure,
                               GValue       *return_value G_GNUC_UNUSED,
@@ -1203,7 +1203,7 @@ g_cclosure_marshal_VOID__INTv (GClosure     *closure,
 }
 
 
-/* VOID:UINT (./gmarshal.list:11) */
+/* VOID:UINT */
 void
 g_cclosure_marshal_VOID__UINT (GClosure     *closure,
                                GValue       *return_value G_GNUC_UNUSED,
@@ -1277,7 +1277,7 @@ g_cclosure_marshal_VOID__UINTv (GClosure     *closure,
 }
 
 
-/* VOID:LONG (./gmarshal.list:12) */
+/* VOID:LONG */
 void
 g_cclosure_marshal_VOID__LONG (GClosure     *closure,
                                GValue       *return_value G_GNUC_UNUSED,
@@ -1351,7 +1351,7 @@ g_cclosure_marshal_VOID__LONGv (GClosure     *closure,
 }
 
 
-/* VOID:ULONG (./gmarshal.list:13) */
+/* VOID:ULONG */
 void
 g_cclosure_marshal_VOID__ULONG (GClosure     *closure,
                                 GValue       *return_value G_GNUC_UNUSED,
@@ -1425,7 +1425,7 @@ g_cclosure_marshal_VOID__ULONGv (GClosure     *closure,
 }
 
 
-/* VOID:ENUM (./gmarshal.list:14) */
+/* VOID:ENUM */
 void
 g_cclosure_marshal_VOID__ENUM (GClosure     *closure,
                                GValue       *return_value G_GNUC_UNUSED,
@@ -1499,7 +1499,7 @@ g_cclosure_marshal_VOID__ENUMv (GClosure     *closure,
 }
 
 
-/* VOID:FLAGS (./gmarshal.list:15) */
+/* VOID:FLAGS */
 void
 g_cclosure_marshal_VOID__FLAGS (GClosure     *closure,
                                 GValue       *return_value G_GNUC_UNUSED,
@@ -1573,7 +1573,7 @@ g_cclosure_marshal_VOID__FLAGSv (GClosure     *closure,
 }
 
 
-/* VOID:FLOAT (./gmarshal.list:16) */
+/* VOID:FLOAT */
 void
 g_cclosure_marshal_VOID__FLOAT (GClosure     *closure,
                                 GValue       *return_value G_GNUC_UNUSED,
@@ -1647,7 +1647,7 @@ g_cclosure_marshal_VOID__FLOATv (GClosure     *closure,
 }
 
 
-/* VOID:DOUBLE (./gmarshal.list:17) */
+/* VOID:DOUBLE */
 void
 g_cclosure_marshal_VOID__DOUBLE (GClosure     *closure,
                                  GValue       *return_value G_GNUC_UNUSED,
@@ -1721,7 +1721,7 @@ g_cclosure_marshal_VOID__DOUBLEv (GClosure     *closure,
 }
 
 
-/* VOID:STRING (./gmarshal.list:18) */
+/* VOID:STRING */
 void
 g_cclosure_marshal_VOID__STRING (GClosure     *closure,
                                  GValue       *return_value G_GNUC_UNUSED,
@@ -1799,7 +1799,7 @@ g_cclosure_marshal_VOID__STRINGv (GClosure     *closure,
 }
 
 
-/* VOID:PARAM (./gmarshal.list:19) */
+/* VOID:PARAM */
 void
 g_cclosure_marshal_VOID__PARAM (GClosure     *closure,
                                 GValue       *return_value G_GNUC_UNUSED,
@@ -1877,7 +1877,7 @@ g_cclosure_marshal_VOID__PARAMv (GClosure     *closure,
 }
 
 
-/* VOID:BOXED (./gmarshal.list:20) */
+/* VOID:BOXED */
 void
 g_cclosure_marshal_VOID__BOXED (GClosure     *closure,
                                 GValue       *return_value G_GNUC_UNUSED,
@@ -1955,7 +1955,7 @@ g_cclosure_marshal_VOID__BOXEDv (GClosure     *closure,
 }
 
 
-/* VOID:POINTER (./gmarshal.list:21) */
+/* VOID:POINTER */
 void
 g_cclosure_marshal_VOID__POINTER (GClosure     *closure,
                                   GValue       *return_value G_GNUC_UNUSED,
@@ -2029,7 +2029,7 @@ g_cclosure_marshal_VOID__POINTERv (GClosure     *closure,
 }
 
 
-/* VOID:OBJECT (./gmarshal.list:22) */
+/* VOID:OBJECT */
 void
 g_cclosure_marshal_VOID__OBJECT (GClosure     *closure,
                                  GValue       *return_value G_GNUC_UNUSED,
@@ -2107,7 +2107,7 @@ g_cclosure_marshal_VOID__OBJECTv (GClosure     *closure,
 }
 
 
-/* VOID:VARIANT (./gmarshal.list:23) */
+/* VOID:VARIANT */
 void
 g_cclosure_marshal_VOID__VARIANT (GClosure     *closure,
                                   GValue       *return_value G_GNUC_UNUSED,
@@ -2185,7 +2185,7 @@ g_cclosure_marshal_VOID__VARIANTv (GClosure     *closure,
 }
 
 
-/* VOID:UINT,POINTER (./gmarshal.list:26) */
+/* VOID:UINT,POINTER */
 void
 g_cclosure_marshal_VOID__UINT_POINTER (GClosure     *closure,
                                        GValue       *return_value G_GNUC_UNUSED,
@@ -2265,7 +2265,7 @@ g_cclosure_marshal_VOID__UINT_POINTERv (GClosure     *closure,
 }
 
 
-/* BOOL:FLAGS (./gmarshal.list:27) */
+/* BOOL:FLAGS */
 void
 g_cclosure_marshal_BOOLEAN__FLAGS (GClosure     *closure,
                                    GValue       *return_value G_GNUC_UNUSED,
@@ -2348,7 +2348,7 @@ g_cclosure_marshal_BOOLEAN__FLAGSv (GClosure     *closure,
 }
 
 
-/* STRING:OBJECT,POINTER (./gmarshal.list:28) */
+/* STRING:OBJECT,POINTER */
 void
 g_cclosure_marshal_STRING__OBJECT_POINTER (GClosure     *closure,
                                            GValue       *return_value G_GNUC_UNUSED,
@@ -2441,7 +2441,7 @@ g_cclosure_marshal_STRING__OBJECT_POINTERv (GClosure     *closure,
 }
 
 
-/* BOOL:BOXED,BOXED (./gmarshal.list:29) */
+/* BOOL:BOXED,BOXED */
 void
 g_cclosure_marshal_BOOLEAN__BOXED_BOXED (GClosure     *closure,
                                          GValue       *return_value G_GNUC_UNUSED,
