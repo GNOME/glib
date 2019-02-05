@@ -2551,5 +2551,3 @@ g_cclosure_marshal_BOOLEAN__BOXED_BOXEDv (GClosure     *closure,
 
   g_value_set_boolean (return_value, v_return);
 }
-
-
