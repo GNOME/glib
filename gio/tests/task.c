@@ -615,7 +615,7 @@ test_priority (void)
 }
 
 /* test_asynchronous_cancellation: cancelled tasks are returned
- * asynchronously, ie. not from inside the GCancellable::cancelled
+ * asynchronously, i.e. not from inside the GCancellable::cancelled
  * handler.
  */
 
@@ -628,7 +628,7 @@ asynchronous_cancellation_callback (GObject      *object,
 
   g_assert_null (object);
   g_assert_true (g_task_is_valid (result, object));
-  g_assert (g_async_result_get_user_data (result) == user_data);
+  g_assert_true (g_async_result_get_user_data (result) == user_data);
   g_assert_true (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
 
@@ -663,10 +663,11 @@ asynchronous_cancellation_cancelled (GCancellable *cancellable,
   GTask *task = G_TASK (user_data);
   guint run_task_id;
 
-  g_assert (cancellable == g_task_get_cancellable (task));
+  g_assert_true (cancellable == g_task_get_cancellable (task));
 
   run_task_id = GPOINTER_TO_UINT (g_task_get_task_data (task));
-  g_source_remove (run_task_id);
+  if (run_task_id != 0)
+    g_source_remove (run_task_id);
 
   g_task_return_boolean (task, FALSE);
   g_assert_false (g_task_get_completed (task));
@@ -682,13 +683,18 @@ asynchronous_cancellation_run_task (gpointer user_data)
   g_assert_true (G_IS_CANCELLABLE (cancellable));
   g_assert_false (g_cancellable_is_cancelled (cancellable));
 
-  return G_SOURCE_CONTINUE;
+  g_task_set_task_data (task, GUINT_TO_POINTER (0), NULL);
+  return G_SOURCE_REMOVE;
 }
 
+/* Test that cancellation is always asynchronous. The completion callback for
+ * a #GTask must not be called from inside the cancellation handler. */
 static void
 test_asynchronous_cancellation (void)
 {
-  gint i;
+  guint i;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1608");
 
   /* Run a few times to shake out any timing issues between the
    * cancellation and task sources.
