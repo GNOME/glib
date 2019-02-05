@@ -3943,6 +3943,7 @@ test_parse_failures (void)
     "[4, 5, '']",               "1-2,7-9:",        "common type",
     "[[4], [], ['']]",          "1-4,10-14:",      "common type",
     "[[], [4], ['']]",          "5-8,10-14:",      "common type",
+    "[[0], [], [nothing]]",     "10-19:",          "common type",
     "just",                     "4:",              "expected value",
     "nothing",                  "0-7:",            "unable to infer",
     "just [4, '']",             "6-7,9-11:",       "common type",
