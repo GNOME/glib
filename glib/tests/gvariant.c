@@ -4097,6 +4097,38 @@ test_parse_failures (void)
     }
 }
 
+/* Test that parsing GVariant text format integers works at the boundaries of
+ * those integer types. We’re especially interested in the handling of the most
+ * negative numbers, since those can’t be represented in sign + absolute value
+ * form. */
+static void
+test_parser_integer_bounds (void)
+{
+  GVariant *value = NULL;
+  GError *local_error = NULL;
+
+#define test_bound(TYPE, type, text, expected_value) \
+  value = g_variant_parse (G_VARIANT_TYPE_##TYPE, text, NULL, NULL, &local_error); \
+  g_assert_no_error (local_error); \
+  g_assert_nonnull (value); \
+  g_assert_true (g_variant_is_of_type (value, G_VARIANT_TYPE_##TYPE)); \
+  g_assert_cmpint (g_variant_get_##type (value), ==, expected_value); \
+  g_variant_unref (value)
+
+  test_bound (BYTE, byte, "0", 0);
+  test_bound (BYTE, byte, "255", G_MAXUINT8);
+  test_bound (INT16, int16, "-32768", G_MININT16);
+  test_bound (INT16, int16, "32767", G_MAXINT16);
+  test_bound (INT32, int32, "-2147483648", G_MININT32);
+  test_bound (INT32, int32, "2147483647", G_MAXINT32);
+  test_bound (INT64, int64, "-9223372036854775808", G_MININT64);
+  test_bound (INT64, int64, "9223372036854775807", G_MAXINT64);
+  test_bound (HANDLE, handle, "-2147483648", G_MININT32);
+  test_bound (HANDLE, handle, "2147483647", G_MAXINT32);
+
+#undef test_bound
+}
+
 static void
 test_parse_bad_format_char (void)
 {
@@ -5068,6 +5100,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/hashing", test_hashing);
   g_test_add_func ("/gvariant/byteswap", test_gv_byteswap);
   g_test_add_func ("/gvariant/parser", test_parses);
+  g_test_add_func ("/gvariant/parser/integer-bounds", test_parser_integer_bounds);
   g_test_add_func ("/gvariant/parse-failures", test_parse_failures);
   g_test_add_func ("/gvariant/parse-positional", test_parse_positional);
   g_test_add_func ("/gvariant/parse/subprocess/bad-format-char", test_parse_bad_format_char);
