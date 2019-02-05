@@ -88,6 +88,7 @@ g_type_plugin_get_type (void)
 	sizeof (GTypePluginClass),
 	NULL,           /* base_init */
 	NULL,           /* base_finalize */
+        NULL, NULL, NULL, 0, 0, NULL, NULL
       };
       
       type_plugin_type = g_type_register_static (G_TYPE_INTERFACE, g_intern_static_string ("GTypePlugin"), &type_plugin_info, 0);
