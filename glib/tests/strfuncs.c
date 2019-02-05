@@ -914,10 +914,10 @@ static void
 check_strtod_string (gchar    *number,
 		     double    res,
 		     gboolean  check_end,
-		     gint      correct_len)
+		     gsize     correct_len)
 {
   double d;
-  gint l;
+  gsize l;
   gchar *dummy;
 
   /* we try a copy of number, with some free space for malloc before that. 
@@ -934,7 +934,7 @@ check_strtod_string (gchar    *number,
       setlocale (LC_NUMERIC, locales[l]);
       d = g_ascii_strtod (number, &end);
       g_assert (isnan (res) ? isnan (d) : (d == res));
-      g_assert ((end - number) == (check_end ? correct_len : strlen (number)));
+      g_assert ((end - number) == (gint) (check_end ? correct_len : strlen (number)));
     }
 
   g_free (number);
@@ -943,7 +943,7 @@ check_strtod_string (gchar    *number,
 static void
 check_strtod_number (gdouble num, gchar *fmt, gchar *str)
 {
-  int l;
+  gsize l;
   gchar buf[G_ASCII_DTOSTR_BUF_SIZE];
 
   for (l = 0; l < G_N_ELEMENTS (locales); l++)
@@ -1666,7 +1666,7 @@ test_ascii_string_to_number_usual (void)
       if (data->should_fail)
         {
           g_assert_false (result);
-          g_assert_error (error, G_NUMBER_PARSER_ERROR, data->error_code);
+          g_assert_error (error, G_NUMBER_PARSER_ERROR, (gint) data->error_code);
           g_clear_error (&error);
         }
       else
