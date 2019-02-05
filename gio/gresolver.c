@@ -296,15 +296,50 @@ remove_duplicates (GList *addrs)
     }
 }
 
+static gboolean
+hostname_is_localhost (const char *hostname)
+{
+  size_t len = strlen (hostname);
+  const char *p;
+
+  /* Match "localhost", "localhost.", "*.localhost" and "*.localhost." */
+  if (len < strlen ("localhost"))
+    return FALSE;
+
+  if (hostname[len - 1] == '.')
+      len--;
+
+  /* Scan backwards in @hostname to find the right-most dot (excluding the final dot, if it exists, as it was chopped off above).
+   * We can’t use strrchr() because because we need to operate with string lengths.
+   * End with @p pointing to the character after the right-most dot. */
+  p = hostname + len - 1;
+  while (p >= hostname)
+    {
+      if (*p == '.')
+       {
+         p++;
+         break;
+       }
+      else if (p == hostname)
+        break;
+      p--;
+    }
+
+  len -= p - hostname;
+
+  return g_ascii_strncasecmp (p, "localhost", MAX (len, strlen ("localhost"))) == 0;
+}
+
 /* Note that this does not follow the "FALSE means @error is set"
  * convention. The return value tells the caller whether it should
  * return @addrs and @error to the caller right away, or if it should
  * continue and trying to resolve the name as a hostname.
  */
 static gboolean
-handle_ip_address (const char  *hostname,
-                   GList      **addrs,
-                   GError     **error)
+handle_ip_address_or_localhost (const char                *hostname,
+                                GList                    **addrs,
+                                GResolverNameLookupFlags   flags,
+                                GError                   **error)
 {
   GInetAddress *addr;
 
@@ -355,6 +390,28 @@ handle_ip_address (const char  *hostname,
       return TRUE;
     }
 
+  /* Always resolve localhost to a loopback address so it can be reliably considered secure.
+     This behavior is being adopted by browsers:
+     - https://w3c.github.io/webappsec-secure-contexts/
+     - https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/RC9dSw-O3fE/E3_0XaT0BAAJ
+     - https://chromium.googlesource.com/chromium/src.git/+/8da2a80724a9b896890602ff77ef2216cb951399
+     - https://bugs.webkit.org/show_bug.cgi?id=171934
+     - https://tools.ietf.org/html/draft-west-let-localhost-be-localhost-06
+  */
+  if (hostname_is_localhost (hostname))
+    {
+      if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY)
+        *addrs = g_list_append (*addrs, g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV6)); 
+      if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY)
+        *addrs = g_list_append (*addrs, g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4));
+      if (*addrs == NULL)
+        {
+          *addrs = g_list_append (*addrs, g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV6));
+          *addrs = g_list_append (*addrs, g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4));
+        }
+      return TRUE;
+    }
+
   return FALSE;
 }
 
@@ -374,7 +431,7 @@ lookup_by_name_real (GResolver                 *resolver,
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   /* Check if @hostname is just an IP address */
-  if (handle_ip_address (hostname, &addrs, error))
+  if (handle_ip_address_or_localhost (hostname, &addrs, flags, error))
     return addrs;
 
   if (g_hostname_is_non_ascii (hostname))
@@ -513,7 +570,7 @@ lookup_by_name_async_real (GResolver                *resolver,
   g_return_if_fail (!(flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY && flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY));
 
   /* Check if @hostname is just an IP address */
-  if (handle_ip_address (hostname, &addrs, &error))
+  if (handle_ip_address_or_localhost (hostname, &addrs, flags, &error))
     {
       GTask *task;
 
