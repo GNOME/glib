@@ -572,7 +572,7 @@ lookup_iface_entry_I (volatile IFaceEntries *entries,
   guint8 *offsets;
   guint offset_index;
   IFaceEntry *check;
-  int index;
+  gsize index;
   IFaceEntry *entry;
 
   if (entries == NULL)
@@ -1273,8 +1273,8 @@ type_data_ref_U (TypeNode *node)
 
 static gboolean
 iface_node_has_available_offset_L (TypeNode *iface_node,
-				   int offset,
-				   int for_index)
+				   gsize offset,
+				   gsize for_index)
 {
   guint8 *offsets;
 
@@ -1361,8 +1361,7 @@ type_node_add_iface_entry_W (TypeNode   *node,
   IFaceEntries *entries;
   IFaceEntry *entry;
   TypeNode *iface_node;
-  guint i, j;
-  int num_entries;
+  gsize i, j, num_entries;
 
   g_assert (node->is_instantiatable);
 
@@ -1583,7 +1582,7 @@ g_type_interface_add_prerequisite (GType interface_type,
     }
   if (prerequisite_node->is_instantiatable)
     {
-      guint i;
+      gint i;
       
       /* can have at most one publicly installable instantiatable prerequisite */
       for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
