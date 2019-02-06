@@ -138,9 +138,11 @@ if host_machine.system() == 'windows'
       'gpoll' : {
         'dependencies' : [winsock2],
       },
-      'win32' : {},
     }
   endif
+  glib_tests += {
+    'win32' : {},
+  }
 else
   glib_tests += {
     'include' : {},
