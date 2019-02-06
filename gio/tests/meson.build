@@ -67,7 +67,7 @@ gio_tests = {
   'sleepy-stream' : {},
   'socket' : {},
   'socket-listener' : {},
-  'socket-service' : {},
+  'socket-service' : { 'suite': ['flaky'] },
   'srvtarget' : {},
   'task' : {},
   'vfs' : {},
