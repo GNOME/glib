@@ -132,7 +132,7 @@ test_clear (void)
 static void
 test_clear_function (void)
 {
-  volatile GObject *o = NULL;
+  GObject *o = NULL;
   GObject *tmp;
 
   (g_clear_object) (&o);

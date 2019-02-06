@@ -280,15 +280,22 @@ do_test (gconstpointer d)
 
   result = g_utf8_validate (test->text, test->max_len, &end);
 
-  g_assert (result == test->valid);
-  g_assert (end - test->text == test->offset);
+  g_assert_true (result == test->valid);
+  g_assert_cmpint (end - test->text, ==, test->offset);
 
   if (test->max_len < 0)
     {
       result = g_utf8_validate (test->text, strlen (test->text), &end);
 
-      g_assert (result == test->valid);
-      g_assert (end - test->text == test->offset);
+      g_assert_true (result == test->valid);
+      g_assert_cmpint (end - test->text, ==, test->offset);
+    }
+  else
+    {
+      result = g_utf8_validate_len (test->text, test->max_len, &end);
+
+      g_assert_true (result == test->valid);
+      g_assert_cmpint (end - test->text, ==, test->offset);
     }
 }
 

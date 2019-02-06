@@ -1770,6 +1770,23 @@ test_keyfile (void)
   g_assert_cmpstr (str, ==, "howdy");
   g_free (str);
 
+  /* Now check setting a string without quotes */
+  called = FALSE;
+  g_signal_connect (settings, "changed::greeting", G_CALLBACK (key_changed_cb), &called);
+
+  g_key_file_set_string (keyfile, "tests", "greeting", "he\"l🤗uń");
+  g_free (data);
+  data = g_key_file_to_data (keyfile, &len, NULL);
+  g_file_set_contents ("keyfile/gsettings.store", data, len, &error);
+  g_assert_no_error (error);
+  while (!called)
+    g_main_context_iteration (NULL, FALSE);
+  g_signal_handlers_disconnect_by_func (settings, key_changed_cb, &called);
+
+  str = g_settings_get_string (settings, "greeting");
+  g_assert_cmpstr (str, ==, "he\"l🤗uń");
+  g_free (str);
+
   g_settings_set (settings, "farewell", "s", "cheerio");
   
   called = FALSE;
@@ -2353,6 +2370,18 @@ test_schema_source (void)
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_clear_error (&error);
 
+  /* Test error handling of corrupt compiled files. */
+  source = g_settings_schema_source_new_from_directory ("schema-source-corrupt", parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
+  /* Test error handling of empty compiled files. */
+  source = g_settings_schema_source_new_from_directory ("schema-source-empty", parent, TRUE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert_null (source);
+  g_clear_error (&error);
+
   /* create a source with the parent */
   source = g_settings_schema_source_new_from_directory ("schema-source", parent, TRUE, &error);
   g_assert_no_error (error);
@@ -2413,6 +2442,7 @@ test_schema_source (void)
   g_settings_schema_unref (schema);
 
   g_settings_schema_source_unref (source);
+  g_object_unref (backend);
 }
 
 static void
@@ -2770,6 +2800,12 @@ main (int argc, char *argv[])
 
   if (!g_test_subprocess ())
     {
+      GError *local_error = NULL;
+      /* A GVDB header is 6 guint32s, and requires a magic number in the first
+       * two guint32s. A set of zero bytes of a greater length is considered
+       * corrupt. */
+      const guint8 gschemas_compiled_corrupt[sizeof (guint32) * 7] = { 0, };
+
       backend_set = g_getenv ("GSETTINGS_BACKEND") != NULL;
 
       g_setenv ("XDG_DATA_DIRS", ".", TRUE);
@@ -2780,12 +2816,8 @@ main (int argc, char *argv[])
       if (!backend_set)
         g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
 
-/* Meson build defines this, autotools build does not */
-#ifndef GLIB_MKENUMS
-#define GLIB_MKENUMS "../../gobject/glib-mkenums"
-#endif
-
       g_remove ("org.gtk.test.enums.xml");
+      /* #GLIB_MKENUMS is defined in meson.build */
       g_assert (g_spawn_command_line_sync (GLIB_MKENUMS " "
                                            "--template " SRCDIR "/enums.xml.template "
                                            SRCDIR "/testenum.h",
@@ -2802,12 +2834,8 @@ main (int argc, char *argv[])
       g_assert (g_file_set_contents ("org.gtk.test.gschema.override", override_text, -1, NULL));
       g_free (override_text);
 
-/* Meson build defines this, autotools build does not */
-#ifndef GLIB_COMPILE_SCHEMAS
-#define GLIB_COMPILE_SCHEMAS "../glib-compile-schemas"
-#endif
-
       g_remove ("gschemas.compiled");
+      /* #GLIB_COMPILE_SCHEMAS is defined in meson.build */
       g_assert (g_spawn_command_line_sync (GLIB_COMPILE_SCHEMAS " --targetdir=. "
                                            "--schema-file=org.gtk.test.enums.xml "
                                            "--schema-file=org.gtk.test.gschema.xml "
@@ -2821,6 +2849,21 @@ main (int argc, char *argv[])
                                            "--schema-file=" SRCDIR "/org.gtk.schemasourcecheck.gschema.xml",
                                            NULL, NULL, &result, NULL));
       g_assert (result == 0);
+
+      g_remove ("schema-source-corrupt/gschemas.compiled");
+      g_mkdir ("schema-source-corrupt", 0777);
+      g_file_set_contents ("schema-source-corrupt/gschemas.compiled",
+                           (const gchar *) gschemas_compiled_corrupt,
+                           sizeof (gschemas_compiled_corrupt),
+                           &local_error);
+      g_assert_no_error (local_error);
+
+      g_remove ("schema-source-empty/gschemas.compiled");
+      g_mkdir ("schema-source-empty", 0777);
+      g_file_set_contents ("schema-source-empty/gschemas.compiled",
+                           "", 0,
+                           &local_error);
+      g_assert_no_error (local_error);
    }
 
   g_test_add_func ("/gsettings/basic", test_basic);

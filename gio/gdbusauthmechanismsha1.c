@@ -603,7 +603,7 @@ keyring_generate_entry (const gchar  *cookie_context,
   gchar **lines;
   gint max_line_id;
   GString *new_contents;
-  guint64 now;
+  gint64 now;
   gboolean have_id;
   gint use_id;
   gchar *use_cookie;
@@ -658,7 +658,7 @@ keyring_generate_entry (const gchar  *cookie_context,
     }
 
   new_contents = g_string_new (NULL);
-  now = (guint64) time (NULL);
+  now = g_get_real_time () / G_USEC_PER_SEC;
   changed_file = FALSE;
 
   max_line_id = 0;
@@ -672,7 +672,7 @@ keyring_generate_entry (const gchar  *cookie_context,
           gchar **tokens;
           gchar *endp;
           gint line_id;
-          guint64 line_when;
+          gint64 line_when;
           gboolean keep_entry;
 
           if (line[0] == '\0')
@@ -807,9 +807,9 @@ keyring_generate_entry (const gchar  *cookie_context,
       g_free (raw_cookie);
 
       g_string_append_printf (new_contents,
-                              "%d %" G_GUINT64_FORMAT " %s\n",
+                              "%d %" G_GINT64_FORMAT " %s\n",
                               *out_id,
-                              (guint64) time (NULL),
+                              g_get_real_time () / G_USEC_PER_SEC,
                               *out_cookie);
       changed_file = TRUE;
     }

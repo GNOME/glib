@@ -104,7 +104,7 @@ class Mapping:
         return [self]
 
     def serialise(self, serialiser):
-        if self.serialised == None:
+        if self.serialised is None:
             self.serialised = serialiser.add_mapping(self.mapping)
 
         return self.serialised
@@ -193,7 +193,7 @@ class Chain:
             return [self]
 
     def serialise(self, serialiser):
-        if self.serialised == None:
+        if self.serialised is None:
             # Before we serialise, see if we can optimise a bit
             self.chain = sum((item.get_flattened() for item in self.chain), [])
 

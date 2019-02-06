@@ -112,7 +112,7 @@
           <listitem><para>network connectivity monitoring</para></listitem>
        </varlistentry>
     </variablelist>
-    There is support for connecting to <link linkend="http://www.freedesktop.org/wiki/Software/dbus">D-Bus</link>,
+    There is support for connecting to <ulink url="http://www.freedesktop.org/wiki/Software/dbus">D-Bus</ulink>,
     sending and receiving messages, owning and watching bus names,
     and making objects available on the bus:
     <variablelist>
@@ -371,6 +371,9 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         has the name "local", the implementation in the gvfs module has
         the name "gvfs".  Most commonly, system software will set this to "local"
 	to avoid having `GFile` APIs perform unnecessary DBus calls.
+      </para><para>
+        The special value <literal>help</literal> can be used to print a list of
+        available implementations to standard output.
       </para>
     </formalpara>
 
@@ -390,6 +393,9 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         in GIO on Linux has the name "inotify", others that are built
         are built as modules (depending on the platform) are called
         "fam" and "fen".
+      </para><para>
+        The special value <literal>help</literal> can be used to print a list of
+        available implementations to standard output.
       </para>
     </formalpara>
 
@@ -402,6 +408,9 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         The #GVolumeMonitor implementation for local files that is included
         in GIO has the name "unix", the udisks2-based implementation in the
         gvfs module has the name "udisks2".
+      </para><para>
+        The special value <literal>help</literal> can be used to print a list of
+        available implementations to standard output.
       </para>
     </formalpara>
 
@@ -413,6 +422,9 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         implementation to override the default for debugging purposes.
         GIO does not include a #GTlsBackend implementation, the gnutls-based
         implementation in the glib-networking module has the name "gnutls".
+      </para><para>
+        The special value <literal>help</literal> can be used to print a list of
+        available implementations to standard output.
       </para>
     </formalpara>
 
@@ -443,7 +455,10 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         This variable can be set to the name of a #GSettingsBackend
         implementation to override the default for debugging purposes.
         The memory-based implementation that is included in GIO has
-        the name "memory", the one in dconf has the name "dconf-settings".
+        the name "memory", the one in dconf has the name "dconf".
+      </para><para>
+        The special value <literal>help</literal> can be used to print a list of
+        available implementations to standard output.
       </para>
     </formalpara>
 

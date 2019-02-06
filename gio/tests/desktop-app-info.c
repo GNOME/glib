@@ -27,9 +27,7 @@
 #include <string.h>
 #include <unistd.h>
 
-static char *basedir;
-
-static GAppInfo * 
+static GAppInfo *
 create_app_info (const char *name)
 {
   GError *error;
@@ -40,13 +38,13 @@ create_app_info (const char *name)
                                              name,
                                              G_APP_INFO_CREATE_NONE,
                                              &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   /* this is necessary to ensure that the info is saved */
   g_app_info_set_as_default_for_type (info, "application/x-blah", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   g_app_info_remove_supports_type (info, "application/x-blah", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
   g_app_info_reset_type_associations ("application/x-blah");
   
   return info;
@@ -64,34 +62,34 @@ test_delete (void)
   info = create_app_info ("Blah");
  
   id = g_app_info_get_id (info);
-  g_assert (id != NULL);
+  g_assert_nonnull (id);
 
-  filename = g_build_filename (basedir, "applications", id, NULL);
+  filename = g_build_filename (g_get_user_data_dir (), "applications", id, NULL);
 
   res = g_file_test (filename, G_FILE_TEST_EXISTS);
-  g_assert (res);
+  g_assert_true (res);
 
   res = g_app_info_can_delete (info);
-  g_assert (res);
+  g_assert_true (res);
 
   res = g_app_info_delete (info);
-  g_assert (res);
+  g_assert_true (res);
 
   res = g_file_test (filename, G_FILE_TEST_EXISTS);
-  g_assert (!res);
+  g_assert_false (res);
 
   g_object_unref (info);
 
   if (g_file_test ("/usr/share/applications/gedit.desktop", G_FILE_TEST_EXISTS))
     {
       info = (GAppInfo*)g_desktop_app_info_new_from_filename ("/usr/share/applications/gedit.desktop");
-      g_assert (info);
+      g_assert_nonnull (info);
      
       res = g_app_info_can_delete (info);
-      g_assert (!res);
+      g_assert_false (res);
  
       res = g_app_info_delete (info);
-      g_assert (!res);
+      g_assert_false (res);
     }
 
   g_free (filename);
@@ -109,33 +107,33 @@ test_default (void)
   info3 = create_app_info ("Blah3");
 
   g_app_info_set_as_default_for_type (info1, "application/x-test", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   g_app_info_set_as_default_for_type (info2, "application/x-test", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   info = g_app_info_get_default_for_type ("application/x-test", FALSE);
-  g_assert (info != NULL);
+  g_assert_nonnull (info);
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
   g_object_unref (info);
 
   /* now try adding something, but not setting as default */
   g_app_info_add_supports_type (info3, "application/x-test", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   /* check that info2 is still default */
   info = g_app_info_get_default_for_type ("application/x-test", FALSE);
-  g_assert (info != NULL);
+  g_assert_nonnull (info);
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
   g_object_unref (info);
 
   /* now remove info1 again */
   g_app_info_remove_supports_type (info1, "application/x-test", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   /* and make sure info2 is still default */
   info = g_app_info_get_default_for_type ("application/x-test", FALSE);
-  g_assert (info != NULL);
+  g_assert_nonnull (info);
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
   g_object_unref (info);
 
@@ -143,7 +141,7 @@ test_default (void)
   g_app_info_reset_type_associations ("application/x-test");
 
   list = g_app_info_get_all_for_type ("application/x-test");
-  g_assert (list == NULL);
+  g_assert_null (list);
 
   g_app_info_delete (info1);
   g_app_info_delete (info2);
@@ -157,7 +155,7 @@ test_default (void)
 static void
 test_fallback (void)
 {
-  GAppInfo *info1, *info2, *app;
+  GAppInfo *info1, *info2, *app = NULL;
   GList *apps, *recomm, *fallback, *list, *l, *m;
   GError *error = NULL;
   gint old_length;
@@ -165,17 +163,17 @@ test_fallback (void)
   info1 = create_app_info ("Test1");
   info2 = create_app_info ("Test2");
 
-  g_assert (g_content_type_is_a ("text/x-python", "text/plain"));
+  g_assert_true (g_content_type_is_a ("text/x-python", "text/plain"));
 
   apps = g_app_info_get_all_for_type ("text/x-python");
   old_length = g_list_length (apps);
   g_list_free_full (apps, g_object_unref);
 
   g_app_info_add_supports_type (info1, "text/x-python", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   g_app_info_add_supports_type (info2, "text/plain", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   /* check that both apps are registered */
   apps = g_app_info_get_all_for_type ("text/x-python");
@@ -183,18 +181,19 @@ test_fallback (void)
 
   /* check that Test1 is among the recommended apps */
   recomm = g_app_info_get_recommended_for_type ("text/x-python");
-  g_assert (recomm != NULL);
+  g_assert_nonnull (recomm);
   for (l = recomm; l; l = l->next)
     {
       app = l->data;
       if (g_app_info_equal (info1, app))
         break;
     }
-  g_assert (g_app_info_equal (info1, app));
+  g_assert_nonnull (app);
+  g_assert_true (g_app_info_equal (info1, app));
 
   /* and that Test2 is among the fallback apps */
   fallback = g_app_info_get_fallback_for_type ("text/x-python");
-  g_assert (fallback != NULL);
+  g_assert_nonnull (fallback);
   for (l = fallback; l; l = l->next)
     {
       app = l->data;
@@ -205,11 +204,11 @@ test_fallback (void)
 
   /* check that recomm + fallback = all applications */
   list = g_list_concat (g_list_copy (recomm), g_list_copy (fallback));
-  g_assert (g_list_length (list) == g_list_length (apps));
+  g_assert_cmpuint (g_list_length (list), ==, g_list_length (apps));
 
   for (l = list, m = apps; l != NULL && m != NULL; l = l->next, m = m->next)
     {
-      g_assert (g_app_info_equal (l->data, m->data));
+      g_assert_true (g_app_info_equal (l->data, m->data));
     }
 
   g_list_free (list);
@@ -239,32 +238,32 @@ test_last_used (void)
   info2 = create_app_info ("Test2");
 
   g_app_info_set_as_default_for_type (info1, "application/x-test", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   g_app_info_add_supports_type (info2, "application/x-test", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   applications = g_app_info_get_recommended_for_type ("application/x-test");
-  g_assert (g_list_length (applications) == 2);
+  g_assert_cmpuint (g_list_length (applications), ==, 2);
 
   /* the first should be the default app now */
-  g_assert (g_app_info_equal (g_list_nth_data (applications, 0), info1));
-  g_assert (g_app_info_equal (g_list_nth_data (applications, 1), info2));
+  g_assert_true (g_app_info_equal (g_list_nth_data (applications, 0), info1));
+  g_assert_true (g_app_info_equal (g_list_nth_data (applications, 1), info2));
 
   g_list_free_full (applications, g_object_unref);
 
   g_app_info_set_as_last_used_for_type (info2, "application/x-test", &error);
-  g_assert (error == NULL);
+  g_assert_no_error (error);
 
   applications = g_app_info_get_recommended_for_type ("application/x-test");
-  g_assert (g_list_length (applications) == 2);
+  g_assert_cmpuint (g_list_length (applications), ==, 2);
 
   default_app = g_app_info_get_default_for_type ("application/x-test", FALSE);
-  g_assert (g_app_info_equal (default_app, info1));
+  g_assert_true (g_app_info_equal (default_app, info1));
 
   /* the first should be the other app now */
-  g_assert (g_app_info_equal (g_list_nth_data (applications, 0), info2));
-  g_assert (g_app_info_equal (g_list_nth_data (applications, 1), info1));
+  g_assert_true (g_app_info_equal (g_list_nth_data (applications, 0), info2));
+  g_assert_true (g_app_info_equal (g_list_nth_data (applications, 1), info1));
 
   g_list_free_full (applications, g_object_unref);
 
@@ -276,81 +275,6 @@ test_last_used (void)
   g_object_unref (info1);
   g_object_unref (info2);
   g_object_unref (default_app);
-}
-
-static gboolean
-cleanup_dir_recurse (GFile   *parent,
-                     GFile   *root,
-                     GError **error)
-{
-  gboolean ret = FALSE;
-  GFileEnumerator *enumerator;
-  GError *local_error = NULL;
-
-  g_assert (root != NULL);
-
-  enumerator =
-    g_file_enumerate_children (parent, "*",
-                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL,
-                               &local_error);
-  if (!enumerator)
-    {
-      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-        {
-          g_clear_error (&local_error);
-          ret = TRUE;
-        }
-      goto out;
-    }
-
-  while (TRUE)
-    {
-      GFile *child;
-      GFileInfo *finfo;
-      char *relative_path;
-
-      if (!g_file_enumerator_iterate (enumerator, &finfo, &child, NULL, error))
-        goto out;
-      if (!finfo)
-        break;
-        
-      relative_path = g_file_get_relative_path (root, child);
-      g_assert (relative_path != NULL);
-      g_free (relative_path);
-
-      if (g_file_info_get_file_type (finfo) == G_FILE_TYPE_DIRECTORY)
-        {
-          if (!cleanup_dir_recurse (child, root, error))
-            goto out;
-        }
-
-      if (!g_file_delete (child, NULL, error))
-        goto out;
-    }
-
-  ret = TRUE;
- out:
-  g_clear_object (&enumerator);
-
-  return ret;
-}
-
-static void
-cleanup_subdirs (const char *base_dir)
-{
-  GFile *base, *file;
-  GError *error = NULL;
- 
-  base = g_file_new_for_path (base_dir);  
-  file = g_file_get_child (base, "applications");
-  (void) cleanup_dir_recurse (file, file, &error);
-  g_assert_no_error (error);
-  g_object_unref (file);
-  file = g_file_get_child (base, "mime");
-  (void) cleanup_dir_recurse (file, file, &error);
-  g_assert_no_error (error);
-  g_object_unref (file);
-  g_object_unref (base);
 }
 
 static void
@@ -365,11 +289,11 @@ test_extra_getters (void)
   g_setenv ("LANGUAGE", "de_DE.UTF8", TRUE);
   setlocale (LC_ALL, "");
 
-  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL));
-  g_assert (appinfo != NULL);
+  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test-static.desktop", NULL));
+  g_assert_nonnull (appinfo);
 
-  g_assert (g_desktop_app_info_has_key (appinfo, "Terminal"));
-  g_assert (!g_desktop_app_info_has_key (appinfo, "Bratwurst"));
+  g_assert_true (g_desktop_app_info_has_key (appinfo, "Terminal"));
+  g_assert_false (g_desktop_app_info_has_key (appinfo, "Bratwurst"));
 
   s = g_desktop_app_info_get_string (appinfo, "StartupWMClass");
   g_assert_cmpstr (s, ==, "appinfo-class");
@@ -387,7 +311,7 @@ test_extra_getters (void)
   g_free (s);
 
   b = g_desktop_app_info_get_boolean (appinfo, "Terminal");
-  g_assert (b);
+  g_assert_true (b);
 
   g_object_unref (appinfo);
 
@@ -400,7 +324,7 @@ wait_for_file (const gchar *want_this,
                const gchar *but_not_this,
                const gchar *or_this)
 {
-  gint retries = 600;
+  guint retries = 600;
 
   /* I hate time-based conditions in tests, but this will wait up to one
    * whole minute for "touch file" to finish running.  I think it should
@@ -411,12 +335,12 @@ wait_for_file (const gchar *want_this,
   while (access (want_this, F_OK) != 0)
     {
       g_usleep (100000); /* 100ms */
-      g_assert (retries);
+      g_assert_cmpuint (retries, >, 0);
       retries--;
     }
 
-  g_assert (access (but_not_this, F_OK) != 0);
-  g_assert (access (or_this, F_OK) != 0);
+  g_assert_cmpuint (access (but_not_this, F_OK), !=, 0);
+  g_assert_cmpuint (access (or_this, F_OK), !=, 0);
 
   unlink (want_this);
   unlink (but_not_this);
@@ -431,7 +355,7 @@ test_actions (void)
   gchar *name;
 
   appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test-actions.desktop", NULL));
-  g_assert (appinfo != NULL);
+  g_assert_nonnull (appinfo);
 
   actions = g_desktop_app_info_list_actions (appinfo);
   g_assert_cmpstr (actions[0], ==, "frob");
@@ -453,8 +377,8 @@ test_actions (void)
   g_free (name);
 
   name = g_desktop_app_info_get_action_name (appinfo, "broken");
-  g_assert (name != NULL);
-  g_assert (g_utf8_validate (name, -1, NULL));
+  g_assert_nonnull (name);
+  g_assert_true (g_utf8_validate (name, -1, NULL));
   g_free (name);
 
   unlink ("frob"); unlink ("tweak"); unlink ("twiddle");
@@ -485,6 +409,7 @@ run_apps (const gchar *command,
   gchar **argv;
   gint status;
   gchar *out;
+  gchar *argv_str = NULL;
 
   argv = g_new (gchar *, 4);
   argv[0] = g_test_build_filename (G_TEST_BUILT, "apps", NULL);
@@ -527,9 +452,15 @@ run_apps (const gchar *command,
   else
     envp = g_environ_unsetenv (envp, "XDG_CURRENT_DESKTOP");
 
+  envp = g_environ_setenv (envp, "G_MESSAGES_DEBUG", "", TRUE);
+
   success = g_spawn_sync (NULL, argv, envp, 0, NULL, NULL, &out, NULL, &status, NULL);
-  g_assert (success);
-  g_assert (status == 0);
+  g_assert_true (success);
+  g_assert_cmpuint (status, ==, 0);
+
+  argv_str = g_strjoinv (" ", argv);
+  g_test_message ("%s: `%s` returned: %s", G_STRFUNC, argv_str, out);
+  g_free (argv_str);
 
   g_strfreev (envp);
   g_strfreev (argv);
@@ -814,9 +745,14 @@ test_launch_as_manager (void)
       return;
     }
 
-  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
+  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
   appinfo = g_desktop_app_info_new_from_filename (path);
-  g_assert_nonnull (appinfo);
+
+  if (appinfo == NULL)
+    {
+      g_test_skip ("appinfo-test binary not installed");
+      return;
+    }
 
   retval = g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, NULL, 0,
                                                       NULL, NULL,
@@ -841,20 +777,12 @@ int
 main (int   argc,
       char *argv[])
 {
-  const gchar *build_dir;
-  gint result;
+  /* While we use %G_TEST_OPTION_ISOLATE_DIRS to create temporary directories
+   * for each of the tests, we want to use the system MIME registry, assuming
+   * that it exists and correctly has shared-mime-info installed. */
+  g_content_type_set_mime_dirs (NULL);
 
-  /* With Meson build we need to change into right directory, so that the
-   * appinfo-test binary can be found. */
-  build_dir = g_getenv ("G_TEST_BUILDDIR");
-  if (build_dir)
-    g_chdir (build_dir);
-
-  g_test_init (&argc, &argv, NULL);
-
-  basedir = g_get_current_dir ();
-  g_setenv ("XDG_DATA_HOME", basedir, TRUE);
-  cleanup_subdirs (basedir);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/desktop-app-info/delete", test_delete);
   g_test_add_func ("/desktop-app-info/default", test_default);
@@ -867,9 +795,5 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
 
-  result = g_test_run ();
-
-  cleanup_subdirs (basedir);
-
-  return result;
+  return g_test_run ();
 }

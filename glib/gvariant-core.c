@@ -20,6 +20,7 @@
 
 #include <glib/gvariant-core.h>
 
+#include <glib/gvariant-internal.h>
 #include <glib/gvariant-serialiser.h>
 #include <glib/gtestutils.h>
 #include <glib/gbitlock.h>
@@ -27,6 +28,7 @@
 #include <glib/gbytes.h>
 #include <glib/gslice.h>
 #include <glib/gmem.h>
+#include <glib/grefcount.h>
 #include <string.h>
 
 
@@ -73,7 +75,8 @@ struct _GVariant
   } contents;
 
   gint state;
-  gint ref_count;
+  gatomicrefcount ref_count;
+  gsize depth;
 };
 
 /* struct GVariant:
@@ -202,6 +205,11 @@ struct _GVariant
  *                    reference.  See g_variant_ref_sink().
  *
  * ref_count: the reference count of the instance
+ *
+ * depth: the depth of the GVariant in a hierarchy of nested containers,
+ *        increasing with the level of nesting. The top-most GVariant has depth
+ *        zero.  This is used to avoid recursing too deeply and overflowing the
+ *        stack when handling deeply nested untrusted serialised GVariants.
  */
 #define STATE_LOCKED     1
 #define STATE_SERIALISED 2
@@ -366,6 +374,7 @@ g_variant_serialise (GVariant *value,
   serialised.type_info = value->type_info;
   serialised.size = value->size;
   serialised.data = data;
+  serialised.depth = value->depth;
 
   children = (gpointer *) value->contents.tree.children;
   n_children = value->contents.tree.n_children;
@@ -407,6 +416,7 @@ g_variant_fill_gvs (GVariantSerialised *serialised,
   if (serialised->size == 0)
     serialised->size = value->size;
   g_assert (serialised->size == value->size);
+  serialised->depth = value->depth;
 
   if (serialised->data)
     /* g_variant_store() is a public API, so it
@@ -479,7 +489,8 @@ g_variant_alloc (const GVariantType *type,
                  (trusted ? STATE_TRUSTED : 0) |
                  STATE_FLOATING;
   value->size = (gssize) -1;
-  value->ref_count = 1;
+  g_atomic_ref_count_init (&value->ref_count);
+  value->depth = 0;
 
   return value;
 }
@@ -496,6 +507,10 @@ g_variant_alloc (const GVariantType *type,
  *
  * A reference is taken on @bytes.
  *
+ * The data in @bytes must be aligned appropriately for the @type being loaded.
+ * Otherwise this function will internally create a copy of the memory (since
+ * GLib 2.60) or (in older versions) fail and exit the process.
+ *
  * Returns: (transfer none): a new #GVariant with a floating reference
  *
  * Since: 2.36
@@ -508,13 +523,54 @@ g_variant_new_from_bytes (const GVariantType *type,
   GVariant *value;
   guint alignment;
   gsize size;
+  GBytes *owned_bytes = NULL;
+  GVariantSerialised serialised;
 
   value = g_variant_alloc (type, TRUE, trusted);
 
-  value->contents.serialised.bytes = g_bytes_ref (bytes);
-
   g_variant_type_info_query (value->type_info,
                              &alignment, &size);
+
+  /* Ensure the alignment is correct. This is a huge performance hit if it’s
+   * not correct, but that’s better than aborting if a caller provides data
+   * with the wrong alignment (which is likely to happen very occasionally, and
+   * only cause an abort on some architectures — so is unlikely to be caught
+   * in testing). Callers can always actively ensure they use the correct
+   * alignment to avoid the performance hit. */
+  serialised.type_info = value->type_info;
+  serialised.data = (guchar *) g_bytes_get_data (bytes, &serialised.size);
+  serialised.depth = 0;
+
+  if (!g_variant_serialised_check (serialised))
+    {
+#ifdef HAVE_POSIX_MEMALIGN
+      gpointer aligned_data = NULL;
+      gsize aligned_size = g_bytes_get_size (bytes);
+
+      /* posix_memalign() requires the alignment to be a multiple of
+       * sizeof(void*), and a power of 2. See g_variant_type_info_query() for
+       * details on the alignment format. */
+      if (posix_memalign (&aligned_data, MAX (sizeof (void *), alignment + 1),
+                          aligned_size) != 0)
+        g_error ("posix_memalign failed");
+
+      memcpy (aligned_data, g_bytes_get_data (bytes, NULL), aligned_size);
+
+      bytes = owned_bytes = g_bytes_new_with_free_func (aligned_data,
+                                                        aligned_size,
+                                                        free, aligned_data);
+      aligned_data = NULL;
+#else
+      /* NOTE: there may be platforms that lack posix_memalign() and also
+       * have malloc() that returns non-8-aligned.  if so, we need to try
+       * harder here.
+       */
+      bytes = owned_bytes = g_bytes_new (g_bytes_get_data (bytes, NULL),
+                                         g_bytes_get_size (bytes));
+#endif
+    }
+
+  value->contents.serialised.bytes = g_bytes_ref (bytes);
 
   if (size && g_bytes_get_size (bytes) != size)
     {
@@ -532,6 +588,8 @@ g_variant_new_from_bytes (const GVariantType *type,
     {
       value->contents.serialised.data = g_bytes_get_data (bytes, &value->size);
     }
+
+  g_clear_pointer (&owned_bytes, g_bytes_unref);
 
   return value;
 }
@@ -622,9 +680,8 @@ void
 g_variant_unref (GVariant *value)
 {
   g_return_if_fail (value != NULL);
-  g_return_if_fail (value->ref_count > 0);
 
-  if (g_atomic_int_dec_and_test (&value->ref_count))
+  if (g_atomic_ref_count_dec (&value->ref_count))
     {
       if G_UNLIKELY (value->state & STATE_LOCKED)
         g_critical ("attempting to free a locked GVariant instance.  "
@@ -658,9 +715,8 @@ GVariant *
 g_variant_ref (GVariant *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
-  g_return_val_if_fail (value->ref_count > 0, NULL);
 
-  g_atomic_int_inc (&value->ref_count);
+  g_atomic_ref_count_inc (&value->ref_count);
 
   return value;
 }
@@ -700,7 +756,7 @@ GVariant *
 g_variant_ref_sink (GVariant *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
-  g_return_val_if_fail (value->ref_count > 0, NULL);
+  g_return_val_if_fail (!g_atomic_ref_count_compare (&value->ref_count, 0), NULL);
 
   g_variant_lock (value);
 
@@ -757,7 +813,7 @@ GVariant *
 g_variant_take_ref (GVariant *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
-  g_return_val_if_fail (value->ref_count > 0, NULL);
+  g_return_val_if_fail (!g_atomic_ref_count_compare (&value->ref_count, 0), NULL);
 
   g_atomic_int_and (&value->state, ~STATE_FLOATING);
 
@@ -933,7 +989,8 @@ g_variant_n_children (GVariant *value)
       GVariantSerialised serialised = {
         value->type_info,
         (gpointer) value->contents.serialised.data,
-        value->size
+        value->size,
+        value->depth,
       };
 
       n_children = g_variant_serialised_n_children (serialised);
@@ -962,6 +1019,11 @@ g_variant_n_children (GVariant *value)
  * The returned value is never floating.  You should free it with
  * g_variant_unref() when you're done with it.
  *
+ * There may be implementation specific restrictions on deeply nested values,
+ * which would result in the unit tuple being returned as the child value,
+ * instead of further nested children. #GVariant is guaranteed to handle
+ * nesting up to at least 64 levels.
+ *
  * This function is O(1).
  *
  * Returns: (transfer full): the child at the specified index
@@ -973,6 +1035,7 @@ g_variant_get_child_value (GVariant *value,
                            gsize     index_)
 {
   g_return_val_if_fail (index_ < g_variant_n_children (value), NULL);
+  g_return_val_if_fail (value->depth < G_MAXSIZE, NULL);
 
   if (~g_atomic_int_get (&value->state) & STATE_SERIALISED)
     {
@@ -995,7 +1058,8 @@ g_variant_get_child_value (GVariant *value,
     GVariantSerialised serialised = {
       value->type_info,
       (gpointer) value->contents.serialised.data,
-      value->size
+      value->size,
+      value->depth,
     };
     GVariantSerialised s_child;
     GVariant *child;
@@ -1005,13 +1069,28 @@ g_variant_get_child_value (GVariant *value,
      */
     s_child = g_variant_serialised_get_child (serialised, index_);
 
+    /* Check whether this would cause nesting too deep. If so, return a fake
+     * child. The only situation we expect this to happen in is with a variant,
+     * as all other deeply-nested types have a static type, and hence should
+     * have been rejected earlier. In the case of a variant whose nesting plus
+     * the depth of its child is too great, return a unit variant () instead of
+     * the real child. */
+    if (!(value->state & STATE_TRUSTED) &&
+        g_variant_type_info_query_depth (s_child.type_info) >=
+        G_VARIANT_MAX_RECURSION_DEPTH - value->depth)
+      {
+        g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE_VARIANT));
+        return g_variant_new_tuple (NULL, 0);
+      }
+
     /* create a new serialised instance out of it */
     child = g_slice_new (GVariant);
     child->type_info = s_child.type_info;
     child->state = (value->state & STATE_TRUSTED) |
                    STATE_SERIALISED;
     child->size = s_child.size;
-    child->ref_count = 1;
+    g_atomic_ref_count_init (&child->ref_count);
+    child->depth = value->depth + 1;
     child->contents.serialised.bytes =
       g_bytes_ref (value->contents.serialised.bytes);
     child->contents.serialised.data = s_child.data;
@@ -1074,6 +1153,9 @@ g_variant_store (GVariant *value,
  * being trusted.  If the value was already marked as being trusted then
  * this function will immediately return %TRUE.
  *
+ * There may be implementation specific restrictions on deeply nested values.
+ * GVariant is guaranteed to handle nesting up to at least 64 levels.
+ *
  * Returns: %TRUE if @value is in normal form
  *
  * Since: 2.24
@@ -1086,12 +1168,16 @@ g_variant_is_normal_form (GVariant *value)
 
   g_variant_lock (value);
 
+  if (value->depth >= G_VARIANT_MAX_RECURSION_DEPTH)
+    return FALSE;
+
   if (value->state & STATE_SERIALISED)
     {
       GVariantSerialised serialised = {
         value->type_info,
         (gpointer) value->contents.serialised.data,
-        value->size
+        value->size,
+        value->depth
       };
 
       if (g_variant_serialised_is_normal (serialised))

@@ -125,6 +125,7 @@ typedef enum {
 struct _GUnixMountEntry {
   char *mount_path;
   char *device_path;
+  char *root_path;
   char *filesystem_type;
   char *options;
   gboolean is_read_only;
@@ -343,7 +344,6 @@ g_unix_is_system_fs_type (const char *fs_type)
     "sysfs",
     "tmpfs",
     "usbfs",
-    "zfs",
     NULL
   };
 
@@ -388,8 +388,9 @@ g_unix_is_system_device_path (const char *device_path)
 
 static gboolean
 guess_system_internal (const char *mountpoint,
-		       const char *fs,
-		       const char *device)
+                       const char *fs,
+                       const char *device,
+                       const char *root)
 {
   if (g_unix_is_system_fs_type (fs))
     return TRUE;
@@ -399,7 +400,29 @@ guess_system_internal (const char *mountpoint,
 
   if (g_unix_is_mount_path_system_internal (mountpoint))
     return TRUE;
-  
+
+  /* It is not possible to reliably detect mounts which were created by bind
+   * operation. mntent-based _g_get_unix_mounts() implementation blindly skips
+   * mounts with a device path that is repeated (e.g. mounts created by bind
+   * operation, btrfs subvolumes). This usually chooses the most important
+   * mounts (i.e. which points to the root of filesystem), but it doesn't work
+   * in all cases and also it is not ideal that those mounts are completely
+   * ignored (e.g. x-gvfs-show doesn't work for them, trash backend can't handle
+   * files on btrfs subvolumes). libmount-based _g_get_unix_mounts()
+   * implementation provides a root path. So there is no need to completely
+   * ignore those mounts, because e.g. our volume monitors can use the root path
+   * to not mengle those mounts with the "regular" mounts (i.e. which points to
+   * the root). But because those mounts usually just duplicate other mounts and
+   * are completely ignored with mntend-based implementation, let's mark them as
+   * system internal. Given the different approches it doesn't mean that all
+   * mounts which were ignored will be system internal now, but this should work
+   * in most cases. For more info, see g_unix_mount_get_root_path() annotation,
+   * comment in mntent-based _g_get_unix_mounts() implementation and the
+   * https://gitlab.gnome.org/GNOME/glib/issues/1271 issue.
+   */
+  if (root != NULL && g_strcmp0 (root, "/") != 0)
+    return TRUE;
+
   return FALSE;
 }
 
@@ -408,6 +431,7 @@ guess_system_internal (const char *mountpoint,
 static GUnixMountEntry *
 create_unix_mount_entry (const char *device_path,
                          const char *mount_path,
+                         const char *root_path,
                          const char *filesystem_type,
                          const char *options,
                          gboolean    is_read_only)
@@ -417,6 +441,7 @@ create_unix_mount_entry (const char *device_path,
   mount_entry = g_new0 (GUnixMountEntry, 1);
   mount_entry->device_path = g_strdup (device_path);
   mount_entry->mount_path = g_strdup (mount_path);
+  mount_entry->root_path = g_strdup (root_path);
   mount_entry->filesystem_type = g_strdup (filesystem_type);
   mount_entry->options = g_strdup (options);
   mount_entry->is_read_only = is_read_only;
@@ -424,7 +449,9 @@ create_unix_mount_entry (const char *device_path,
   mount_entry->is_system_internal =
     guess_system_internal (mount_entry->mount_path,
                            mount_entry->filesystem_type,
-                           mount_entry->device_path);
+                           mount_entry->device_path,
+                           mount_entry->root_path);
+
   return mount_entry;
 }
 
@@ -496,6 +523,7 @@ _g_get_unix_mounts (void)
 
       mount_entry = create_unix_mount_entry (device_path,
                                              mnt_fs_get_target (fs),
+                                             mnt_fs_get_root (fs),
                                              mnt_fs_get_fstype (fs),
                                              mnt_fs_get_options (fs),
                                              is_read_only);
@@ -591,6 +619,7 @@ _g_get_unix_mounts (void)
 
       mount_entry = create_unix_mount_entry (device_path,
                                              mntent->mnt_dir,
+                                             NULL,
                                              mntent->mnt_type,
                                              mntent->mnt_opts,
                                              is_read_only);
@@ -705,6 +734,7 @@ _g_get_unix_mounts (void)
 
       mount_entry = create_unix_mount_entry (mntent.mnt_special,
                                              mntent.mnt_mountp,
+                                             NULL,
                                              mntent.mnt_fstype,
                                              mntent.mnt_opts,
                                              is_read_only);
@@ -772,6 +802,7 @@ _g_get_unix_mounts (void)
 
       mount_entry = create_unix_mount_entry (vmt2dataptr (vmount_info, VMT_OBJECT),
                                              vmt2dataptr (vmount_info, VMT_STUB),
+                                             NULL,
                                              fs_info == NULL ? "unknown" : fs_info->vfsent_name,
                                              NULL,
                                              is_read_only);
@@ -848,6 +879,7 @@ _g_get_unix_mounts (void)
 
       mount_entry = create_unix_mount_entry (mntent[i].f_mntfromname,
                                              mntent[i].f_mntonname,
+                                             NULL,
                                              mntent[i].f_fstypename,
                                              NULL,
                                              is_read_only);
@@ -1992,6 +2024,7 @@ g_unix_mount_free (GUnixMountEntry *mount_entry)
 
   g_free (mount_entry->mount_path);
   g_free (mount_entry->device_path);
+  g_free (mount_entry->root_path);
   g_free (mount_entry->filesystem_type);
   g_free (mount_entry->options);
   g_free (mount_entry);
@@ -2017,6 +2050,7 @@ g_unix_mount_copy (GUnixMountEntry *mount_entry)
   copy = g_new0 (GUnixMountEntry, 1);
   copy->mount_path = g_strdup (mount_entry->mount_path);
   copy->device_path = g_strdup (mount_entry->device_path);
+  copy->root_path = g_strdup (mount_entry->root_path);
   copy->filesystem_type = g_strdup (mount_entry->filesystem_type);
   copy->options = g_strdup (mount_entry->options);
   copy->is_read_only = mount_entry->is_read_only;
@@ -2097,7 +2131,11 @@ g_unix_mount_compare (GUnixMountEntry *mount1,
   res = g_strcmp0 (mount1->device_path, mount2->device_path);
   if (res != 0)
     return res;
-	
+
+  res = g_strcmp0 (mount1->root_path, mount2->root_path);
+  if (res != 0)
+    return res;
+
   res = g_strcmp0 (mount1->filesystem_type, mount2->filesystem_type);
   if (res != 0)
     return res;
@@ -2143,6 +2181,29 @@ g_unix_mount_get_device_path (GUnixMountEntry *mount_entry)
   g_return_val_if_fail (mount_entry != NULL, NULL);
 
   return mount_entry->device_path;
+}
+
+/**
+ * g_unix_mount_get_root_path:
+ * @mount_entry: a #GUnixMountEntry.
+ * 
+ * Gets the root of the mount within the filesystem. This is useful e.g. for
+ * mounts created by bind operation, or btrfs subvolumes.
+ * 
+ * For example, the root path is equal to "/" for mount created by
+ * "mount /dev/sda1 /mnt/foo" and "/bar" for
+ * "mount --bind /mnt/foo/bar /mnt/bar".
+ *
+ * Returns: (nullable): a string containing the root, or %NULL if not supported.
+ *
+ * Since: 2.60
+ */
+const gchar *
+g_unix_mount_get_root_path (GUnixMountEntry *mount_entry)
+{
+  g_return_val_if_fail (mount_entry != NULL, NULL);
+
+  return mount_entry->root_path;
 }
 
 /**

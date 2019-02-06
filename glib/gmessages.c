@@ -428,8 +428,8 @@ myInvalidParameterHandler(const wchar_t *expression,
  * preferred for that instead, as it allows calling functions to perform actions
  * conditional on the type of error.
  *
- * Error messages are always fatal, resulting in a call to
- * abort() to terminate the application. This function will
+ * Error messages are always fatal, resulting in a call to G_BREAKPOINT()
+ * to terminate the application. This function will
  * result in a core dump; don't use it for errors you expect.
  * Using this function indicates a bug in your program, i.e.
  * an assertion failure.
@@ -1238,8 +1238,9 @@ static GSList *expected_messages = NULL;
  *
  * Logs an error or debugging message.
  *
- * If the log level has been set as fatal, the abort()
- * function is called to terminate the program.
+ * If the log level has been set as fatal, G_BREAKPOINT() is called
+ * to terminate the program. See the documentation for G_BREAKPOINT() for
+ * details of the debugging options this provides.
  *
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
@@ -1389,8 +1390,9 @@ g_logv (const gchar   *log_domain,
  *
  * Logs an error or debugging message.
  *
- * If the log level has been set as fatal, the abort()
- * function is called to terminate the program.
+ * If the log level has been set as fatal, G_BREAKPOINT() is called
+ * to terminate the program. See the documentation for G_BREAKPOINT() for
+ * details of the debugging options this provides.
  *
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
@@ -1571,7 +1573,7 @@ done_query:
  * Log a message with structured data. The message will be passed through to
  * the log writer set by the application using g_log_set_writer_func(). If the
  * message is fatal (i.e. its log level is %G_LOG_LEVEL_ERROR), the program will
- * be aborted at the end of this function. If the log writer returns
+ * be aborted by calling G_BREAKPOINT() at the end of this function. If the log writer returns
  * %G_LOG_WRITER_UNHANDLED (failure), no other fallback writers will be tried.
  * See the documentation for #GLogWriterFunc for information on chaining
  * writers.
@@ -2163,31 +2165,24 @@ g_log_writer_is_journald (gint output_fd)
   /* FIXME: Use the new journal API for detecting whether we’re writing to the
    * journal. See: https://github.com/systemd/systemd/issues/2473
    */
-  static gsize initialized;
-  static gboolean fd_is_journal = FALSE;
+  union {
+    struct sockaddr_storage storage;
+    struct sockaddr sa;
+    struct sockaddr_un un;
+  } addr;
+  socklen_t addr_len;
+  int err;
 
   if (output_fd < 0)
     return FALSE;
 
-  if (g_once_init_enter (&initialized))
-    {
-      union {
-        struct sockaddr_storage storage;
-        struct sockaddr sa;
-        struct sockaddr_un un;
-      } addr;
-      socklen_t addr_len = sizeof(addr);
-      int err = getpeername (output_fd, &addr.sa, &addr_len);
-      if (err == 0 && addr.storage.ss_family == AF_UNIX)
-        fd_is_journal = g_str_has_prefix (addr.un.sun_path, "/run/systemd/journal/");
-
-      g_once_init_leave (&initialized, TRUE);
-    }
-
-  return fd_is_journal;
-#else
-  return FALSE;
+  addr_len = sizeof(addr);
+  err = getpeername (output_fd, &addr.sa, &addr_len);
+  if (err == 0 && addr.storage.ss_family == AF_UNIX)
+    return g_str_has_prefix (addr.un.sun_path, "/run/systemd/journal/");
 #endif
+
+  return FALSE;
 }
 
 static void escape_string (GString *string);
@@ -2618,6 +2613,9 @@ g_log_writer_default (GLogLevelFlags   log_level,
                       gsize            n_fields,
                       gpointer         user_data)
 {
+  static gsize initialized = 0;
+  static gboolean stderr_is_journal = FALSE;
+
   g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
   g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
 
@@ -2654,7 +2652,13 @@ g_log_writer_default (GLogLevelFlags   log_level,
     log_level |= G_LOG_FLAG_FATAL;
 
   /* Try logging to the systemd journal as first choice. */
-  if (g_log_writer_is_journald (fileno (stderr)) &&
+  if (g_once_init_enter (&initialized))
+    {
+      stderr_is_journal = g_log_writer_is_journald (fileno (stderr));
+      g_once_init_leave (&initialized, TRUE);
+    }
+
+  if (stderr_is_journal &&
       g_log_writer_journald (log_level, fields, n_fields, user_data) ==
       G_LOG_WRITER_HANDLED)
     goto handled;
@@ -2748,9 +2752,12 @@ _g_log_writer_fallback (GLogLevelFlags   log_level,
 
 /**
  * g_return_if_fail_warning: (skip)
- * @log_domain: (nullable):
- * @pretty_function:
- * @expression: (nullable):
+ * @log_domain: (nullable): log domain
+ * @pretty_function: function containing the assertion
+ * @expression: (nullable): expression which failed
+ *
+ * Internal function used to print messages from the public g_return_if_fail()
+ * and g_return_val_if_fail() macros.
  */
 void
 g_return_if_fail_warning (const char *log_domain,
@@ -2766,11 +2773,14 @@ g_return_if_fail_warning (const char *log_domain,
 
 /**
  * g_warn_message: (skip)
- * @domain: (nullable):
- * @file:
- * @line:
- * @func:
- * @warnexpr: (nullable):
+ * @domain: (nullable): log domain
+ * @file: file containing the warning
+ * @line: line number of the warning
+ * @func: function containing the warning
+ * @warnexpr: (nullable): expression which failed
+ *
+ * Internal function used to print messages from the public g_warn_if_reached()
+ * and g_warn_if_fail() macros.
  */
 void
 g_warn_message (const char     *domain,
@@ -3040,7 +3050,7 @@ escape_string (GString *string)
  * allows to install an alternate default log handler.
  * This is used if no log handler has been set for the particular log
  * domain and log level combination. It outputs the message to stderr
- * or stdout and if the log level is fatal it calls abort(). It automatically
+ * or stdout and if the log level is fatal it calls G_BREAKPOINT(). It automatically
  * prints a new-line character after the message, so one does not need to be
  * manually included in @message.
  *

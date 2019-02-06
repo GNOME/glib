@@ -109,7 +109,8 @@ G_END_DECLS
 #define g_atomic_pointer_get(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
-    (gpointer) __atomic_load_8 ((atomic), __ATOMIC_SEQ_CST);                 \
+    guint64 gapg_temp = __atomic_load_8 ((atomic), __ATOMIC_SEQ_CST);        \
+    (gpointer) gapg_temp;                                                    \
   }))
 #define g_atomic_pointer_set(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
@@ -127,7 +128,8 @@ G_END_DECLS
 #define g_atomic_pointer_get(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
-    (gpointer) __atomic_load_4 ((atomic), __ATOMIC_SEQ_CST);                 \
+    guint32 gapg_temp = __atomic_load_4 ((atomic), __ATOMIC_SEQ_CST);        \
+    (gpointer) gapg_temp;                                                    \
   }))
 #define g_atomic_pointer_set(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
@@ -186,7 +188,7 @@ G_END_DECLS
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (newval) ^ (oldval) : 1);                        \
-    (gboolean) __sync_bool_compare_and_swap ((atomic), (oldval), (newval));  \
+    __sync_bool_compare_and_swap ((atomic), (oldval), (newval)) ? TRUE : FALSE; \
   }))
 #define g_atomic_int_add(atomic, val) \
   (G_GNUC_EXTENSION ({                                                       \
@@ -217,7 +219,7 @@ G_END_DECLS
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : NULL);                                \
-    (gboolean) __sync_bool_compare_and_swap ((atomic), (oldval), (newval));  \
+    __sync_bool_compare_and_swap ((atomic), (oldval), (newval)) ? TRUE : FALSE; \
   }))
 #define g_atomic_pointer_add(atomic, val) \
   (G_GNUC_EXTENSION ({                                                       \

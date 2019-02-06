@@ -539,6 +539,8 @@ g_async_queue_timeout_pop (GAsyncQueue *queue,
   gint64 end_time = g_get_monotonic_time () + timeout;
   gpointer retval;
 
+  g_return_val_if_fail (queue != NULL, NULL);
+
   g_mutex_lock (&queue->mutex);
   retval = g_async_queue_pop_intern_unlocked (queue, TRUE, end_time);
   g_mutex_unlock (&queue->mutex);
@@ -566,6 +568,8 @@ g_async_queue_timeout_pop_unlocked (GAsyncQueue *queue,
 				    guint64      timeout)
 {
   gint64 end_time = g_get_monotonic_time () + timeout;
+
+  g_return_val_if_fail (queue != NULL, NULL);
 
   return g_async_queue_pop_intern_unlocked (queue, TRUE, end_time);
 }

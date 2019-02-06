@@ -23,6 +23,7 @@
 
 #include "gvariant-serialiser.h"
 
+#include <glib/gvariant-internal.h>
 #include <glib/gtestutils.h>
 #include <glib/gstrfuncs.h>
 #include <glib/gtypes.h>
@@ -81,7 +82,9 @@
  * values is permitted (eg: 0 to 255 is a valid byte).  Special checks
  * need to be performed for booleans (only 0 or 1 allowed), strings
  * (properly nul-terminated) and object paths and signature strings
- * (meeting the D-Bus specification requirements).
+ * (meeting the D-Bus specification requirements).  Depth checks need to be
+ * performed for nested types (arrays, tuples, and variants), to avoid massive
+ * recursion which could exhaust our stack when handling untrusted input.
  */
 
 /* < private >
@@ -113,6 +116,9 @@
  * fixed-sized type, yet @size must be non-zero.  The effect of this
  * combination should be as if @data were a pointer to an
  * appropriately-sized zero-filled region.
+ *
+ * @depth has no restrictions; the depth of a top-level serialised #GVariant is
+ * zero, and it increases for each level of nested child.
  */
 
 /* < private >
@@ -121,20 +127,24 @@
  *
  * Checks @serialised for validity according to the invariants described
  * above.
+ *
+ * Returns: %TRUE if @serialised is valid; %FALSE otherwise
  */
-static void
+gboolean
 g_variant_serialised_check (GVariantSerialised serialised)
 {
   gsize fixed_size;
   guint alignment;
 
-  g_assert (serialised.type_info != NULL);
+  if (serialised.type_info == NULL)
+    return FALSE;
   g_variant_type_info_query (serialised.type_info, &alignment, &fixed_size);
 
-  if (fixed_size)
-    g_assert_cmpint (serialised.size, ==, fixed_size);
-  else
-    g_assert (serialised.size == 0 || serialised.data != NULL);
+  if (fixed_size != 0 && serialised.size != fixed_size)
+    return FALSE;
+  else if (fixed_size == 0 &&
+           !(serialised.size == 0 || serialised.data != NULL))
+    return FALSE;
 
   /* Depending on the native alignment requirements of the machine, the
    * compiler will insert either 3 or 7 padding bytes after the char.
@@ -161,10 +171,8 @@ g_variant_serialised_check (GVariantSerialised serialised)
    * Check if this is a small allocation and return without enforcing
    * the alignment assertion if this is the case.
    */
-  if (serialised.size <= alignment)
-    return;
-
-  g_assert_cmpint (alignment & (gsize) serialised.data, ==, 0);
+  return (serialised.size <= alignment ||
+          (alignment & (gsize) serialised.data) == 0);
 }
 
 /* < private >
@@ -255,6 +263,7 @@ gvs_fixed_sized_maybe_get_child (GVariantSerialised value,
    */
   value.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_ref (value.type_info);
+  value.depth++;
 
   return value;
 }
@@ -286,7 +295,7 @@ gvs_fixed_sized_maybe_serialise (GVariantSerialised        value,
 {
   if (n_children)
     {
-      GVariantSerialised child = { NULL, value.data, value.size };
+      GVariantSerialised child = { NULL, value.data, value.size, value.depth + 1 };
 
       gvs_filler (&child, children[0]);
     }
@@ -307,6 +316,7 @@ gvs_fixed_sized_maybe_is_normal (GVariantSerialised value)
 
       /* proper element size: "Just".  recurse to the child. */
       value.type_info = g_variant_type_info_element (value.type_info);
+      value.depth++;
 
       return g_variant_serialised_is_normal (value);
     }
@@ -347,6 +357,8 @@ gvs_variable_sized_maybe_get_child (GVariantSerialised value,
   if (value.size == 0)
     value.data = NULL;
 
+  value.depth++;
+
   return value;
 }
 
@@ -376,7 +388,7 @@ gvs_variable_sized_maybe_serialise (GVariantSerialised        value,
 {
   if (n_children)
     {
-      GVariantSerialised child = { NULL, value.data, value.size - 1 };
+      GVariantSerialised child = { NULL, value.data, value.size - 1, value.depth + 1 };
 
       /* write the data for the child.  */
       gvs_filler (&child, children[0]);
@@ -395,6 +407,7 @@ gvs_variable_sized_maybe_is_normal (GVariantSerialised value)
 
   value.type_info = g_variant_type_info_element (value.type_info);
   value.size--;
+  value.depth++;
 
   return g_variant_serialised_is_normal (value);
 }
@@ -445,6 +458,7 @@ gvs_fixed_sized_array_get_child (GVariantSerialised value,
   g_variant_type_info_query (child.type_info, NULL, &child.size);
   child.data = value.data + (child.size * index_);
   g_variant_type_info_ref (child.type_info);
+  child.depth = value.depth + 1;
 
   return child;
 }
@@ -474,6 +488,7 @@ gvs_fixed_sized_array_serialise (GVariantSerialised        value,
   child.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_query (child.type_info, NULL, &child.size);
   child.data = value.data;
+  child.depth = value.depth + 1;
 
   for (i = 0; i < n_children; i++)
     {
@@ -489,6 +504,7 @@ gvs_fixed_sized_array_is_normal (GVariantSerialised value)
 
   child.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_query (child.type_info, NULL, &child.size);
+  child.depth = value.depth + 1;
 
   if (value.size % child.size != 0)
     return FALSE;
@@ -655,6 +671,7 @@ gvs_variable_sized_array_get_child (GVariantSerialised value,
 
   child.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_ref (child.type_info);
+  child.depth = value.depth + 1;
 
   offset_size = gvs_get_offset_size (value.size);
 
@@ -679,7 +696,7 @@ gvs_variable_sized_array_get_child (GVariantSerialised value,
                                (offset_size * index_),
                                offset_size);
 
-  if (start < end && end <= value.size)
+  if (start < end && end <= value.size && end <= last_end)
     {
       child.data = value.data + start;
       child.size = end - start;
@@ -783,6 +800,7 @@ gvs_variable_sized_array_is_normal (GVariantSerialised value)
 
   child.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_query (child.type_info, &alignment, NULL);
+  child.depth = value.depth + 1;
   offset = 0;
 
   for (i = 0; i < length; i++)
@@ -854,10 +872,11 @@ gvs_tuple_get_child (GVariantSerialised value,
   const GVariantMemberInfo *member_info;
   GVariantSerialised child = { 0, };
   gsize offset_size;
-  gsize start, end;
+  gsize start, end, last_end;
 
   member_info = g_variant_type_info_member_info (value.type_info, index_);
   child.type_info = g_variant_type_info_ref (member_info->type_info);
+  child.depth = value.depth + 1;
   offset_size = gvs_get_offset_size (value.size);
 
   /* tuples are the only (potentially) fixed-sized containers, so the
@@ -923,7 +942,19 @@ gvs_tuple_get_child (GVariantSerialised value,
                                  offset_size * (member_info->i + 2),
                                  offset_size);
 
-  if (start < end && end <= value.size)
+  /* The child should not extend into the offset table. */
+  if (index_ != g_variant_type_info_n_members (value.type_info) - 1)
+    {
+      GVariantSerialised last_child;
+      last_child = gvs_tuple_get_child (value,
+                                        g_variant_type_info_n_members (value.type_info) - 1);
+      last_end = last_child.data + last_child.size - value.data;
+      g_variant_type_info_unref (last_child.type_info);
+    }
+  else
+    last_end = end;
+
+  if (start < end && end <= value.size && end <= last_end)
     {
       child.data = value.data + start;
       child.size = end - start;
@@ -1042,6 +1073,7 @@ gvs_tuple_is_normal (GVariantSerialised value)
 
       member_info = g_variant_type_info_member_info (value.type_info, i);
       child.type_info = member_info->type_info;
+      child.depth = value.depth + 1;
 
       g_variant_type_info_query (child.type_info, &alignment, &fixed_size);
 
@@ -1065,6 +1097,9 @@ gvs_tuple_is_normal (GVariantSerialised value)
           break;
 
         case G_VARIANT_MEMBER_ENDING_OFFSET:
+          if (offset_ptr < offset_size)
+            return FALSE;
+
           offset_ptr -= offset_size;
 
           if (offset_ptr < offset)
@@ -1168,8 +1203,10 @@ gvs_variant_get_child (GVariantSerialised value,
               if (g_variant_type_is_definite (type))
                 {
                   gsize fixed_size;
+                  gsize child_type_depth;
 
                   child.type_info = g_variant_type_info_get (type);
+                  child.depth = value.depth + 1;
 
                   if (child.size != 0)
                     /* only set to non-%NULL if size > 0 */
@@ -1177,8 +1214,10 @@ gvs_variant_get_child (GVariantSerialised value,
 
                   g_variant_type_info_query (child.type_info,
                                              NULL, &fixed_size);
+                  child_type_depth = g_variant_type_info_query_depth (child.type_info);
 
-                  if (!fixed_size || fixed_size == child.size)
+                  if ((!fixed_size || fixed_size == child.size) &&
+                      value.depth < G_VARIANT_MAX_RECURSION_DEPTH - child_type_depth)
                     return child;
 
                   g_variant_type_info_unref (child.type_info);
@@ -1190,6 +1229,7 @@ gvs_variant_get_child (GVariantSerialised value,
   child.type_info = g_variant_type_info_get (G_VARIANT_TYPE_UNIT);
   child.data = NULL;
   child.size = 1;
+  child.depth = value.depth + 1;
 
   return child;
 }
@@ -1231,10 +1271,13 @@ gvs_variant_is_normal (GVariantSerialised value)
 {
   GVariantSerialised child;
   gboolean normal;
+  gsize child_type_depth;
 
   child = gvs_variant_get_child (value, 0);
+  child_type_depth = g_variant_type_info_query_depth (child.type_info);
 
-  normal = (child.data != NULL || child.size == 0) &&
+  normal = (value.depth < G_VARIANT_MAX_RECURSION_DEPTH - child_type_depth) &&
+           (child.data != NULL || child.size == 0) &&
            g_variant_serialised_is_normal (child);
 
   g_variant_type_info_unref (child.type_info);
@@ -1314,7 +1357,7 @@ gvs_variant_is_normal (GVariantSerialised value)
 gsize
 g_variant_serialised_n_children (GVariantSerialised serialised)
 {
-  g_variant_serialised_check (serialised);
+  g_assert (g_variant_serialised_check (serialised));
 
   DISPATCH_CASES (serialised.type_info,
 
@@ -1351,7 +1394,7 @@ g_variant_serialised_get_child (GVariantSerialised serialised,
 {
   GVariantSerialised child;
 
-  g_variant_serialised_check (serialised);
+  g_assert (g_variant_serialised_check (serialised));
 
   if G_LIKELY (index_ < g_variant_serialised_n_children (serialised))
     {
@@ -1359,7 +1402,7 @@ g_variant_serialised_get_child (GVariantSerialised serialised,
 
                       child = gvs_/**/,/**/_get_child (serialised, index_);
                       g_assert (child.size || child.data == NULL);
-                      g_variant_serialised_check (child);
+                      g_assert (g_variant_serialised_check (child));
                       return child;
 
                      )
@@ -1400,7 +1443,7 @@ g_variant_serialiser_serialise (GVariantSerialised        serialised,
                                 const gpointer           *children,
                                 gsize                     n_children)
 {
-  g_variant_serialised_check (serialised);
+  g_assert (g_variant_serialised_check (serialised));
 
   DISPATCH_CASES (serialised.type_info,
 
@@ -1455,7 +1498,7 @@ g_variant_serialised_byteswap (GVariantSerialised serialised)
   gsize fixed_size;
   guint alignment;
 
-  g_variant_serialised_check (serialised);
+  g_assert (g_variant_serialised_check (serialised));
 
   if (!serialised.data)
     return;
@@ -1552,6 +1595,8 @@ g_variant_serialised_is_normal (GVariantSerialised serialised)
 
   if (serialised.data == NULL)
     return FALSE;
+  if (serialised.depth >= G_VARIANT_MAX_RECURSION_DEPTH)
+    return FALSE;
 
   /* some hard-coded terminal cases */
   switch (g_variant_type_info_get_type_char (serialised.type_info))
@@ -1600,6 +1645,7 @@ g_variant_serialiser_is_string (gconstpointer data,
   const gchar *expected_end;
   const gchar *end;
 
+  /* Strings must end with a nul terminator. */
   if (size == 0)
     return FALSE;
 
@@ -1608,7 +1654,7 @@ g_variant_serialiser_is_string (gconstpointer data,
   if (*expected_end != '\0')
     return FALSE;
 
-  g_utf8_validate (data, size, &end);
+  g_utf8_validate_len (data, size, &end);
 
   return end == expected_end;
 }
@@ -1673,7 +1719,9 @@ g_variant_serialiser_is_object_path (gconstpointer data,
  * Performs the checks for being a valid string.
  *
  * Also, ensures that @data is a valid D-Bus type signature, as per the
- * D-Bus specification.
+ * D-Bus specification. Note that this means the empty string is valid, as the
+ * D-Bus specification defines a signature as “zero or more single complete
+ * types”.
  */
 gboolean
 g_variant_serialiser_is_signature (gconstpointer data,

@@ -69,6 +69,29 @@ def print_info(msg):
     print_color(msg, color=Color.GREEN, prefix='INFO')
 
 
+def get_rspfile_args(rspfile):
+    '''
+    Response files are useful on Windows where there is a command-line character
+    limit of 8191 because when passing sources as arguments to glib-mkenums this
+    limit can be exceeded in large codebases.
+
+    There is no specification for response files and each tool that supports it
+    generally writes them out in slightly different ways, but some sources are:
+    https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-response-files
+    https://docs.microsoft.com/en-us/windows/desktop/midl/the-response-file-command
+    '''
+    import shlex
+    if not os.path.isfile(rspfile):
+        sys.exit('Response file {!r} does not exist'.format(rspfile))
+    try:
+        with open(rspfile, 'r') as f:
+            cmdline = f.read()
+    except OSError as e:
+        sys.exit('Response file {!r} could not be read: {}'
+                 .format(rspfile, e.strerror))
+    return shlex.split(cmdline)
+
+
 def write_output(output):
     global output_stream
     print(output, file=output_stream)
@@ -303,15 +326,15 @@ parser = argparse.ArgumentParser(epilog=help_epilog,
 parser.add_argument('--identifier-prefix', default='', dest='idprefix',
                     help='Identifier prefix')
 parser.add_argument('--symbol-prefix', default='', dest='symprefix',
-                    help='symbol-prefix')
+                    help='Symbol prefix')
 parser.add_argument('--fhead', default=[], dest='fhead', action='append',
                     help='Output file header')
 parser.add_argument('--ftail', default=[], dest='ftail', action='append',
-                    help='Per input file production')
+                    help='Output file footer')
 parser.add_argument('--fprod', default=[], dest='fprod', action='append',
-                    help='Put out TEXT everytime a new input file is being processed.')
+                    help='Put out TEXT every time a new input file is being processed.')
 parser.add_argument('--eprod', default=[], dest='eprod', action='append',
-                    help='Per enum text (produced prior to value iterations)')
+                    help='Per enum text, produced prior to value iterations')
 parser.add_argument('--vhead', default=[], dest='vhead', action='append',
                     help='Value header, produced before iterating over enum values')
 parser.add_argument('--vprod', default=[], dest='vprod', action='append',
@@ -324,10 +347,19 @@ parser.add_argument('--template', default='', dest='template',
                     help='Template file')
 parser.add_argument('--output', default=None, dest='output')
 parser.add_argument('--version', '-v', default=False, action='store_true', dest='version',
-                    help='Print version informations')
-parser.add_argument('args', nargs='*')
+                    help='Print version information')
+parser.add_argument('args', nargs='*',
+                    help='One or more input files, or a single argument @rspfile_path '
+                    'pointing to a file that contains the actual arguments')
 
-options = parser.parse_args()
+# Support reading an rspfile of the form @filename which contains the args
+# to be parsed
+if len(sys.argv) == 2 and sys.argv[1].startswith('@'):
+    args = get_rspfile_args(sys.argv[1][1:])
+else:
+    args = sys.argv[1:]
+
+options = parser.parse_args(args)
 
 if options.version:
     print(VERSION_STR)
@@ -415,12 +447,17 @@ def replace_specials(prod):
     prod = prod.rstrip()
     return prod
 
+
+def warn_if_filename_basename_used(section, prod):
+    for substitution in ('\u0040filename\u0040',
+                         '\u0040basename\u0040'):
+        if substitution in prod:
+            print_warning('{} used in {} section.'.format(substitution,
+                                                          section))
+
 if len(fhead) > 0:
     prod = fhead
-    base = os.path.basename(options.args[0])
-
-    prod = prod.replace('\u0040filename\u0040', options.args[0])
-    prod = prod.replace('\u0040basename\u0040', base)
+    warn_if_filename_basename_used('file-header', prod)
     prod = replace_specials(prod)
     write_output(prod)
 
@@ -712,10 +749,7 @@ for fname in sorted(options.args):
 
 if len(ftail) > 0:
     prod = ftail
-    base = os.path.basename(options.args[-1]) # FIXME, wrong
-
-    prod = prod.replace('\u0040filename\u0040', 'ARGV') # wrong too
-    prod = prod.replace('\u0040basename\u0040', base)
+    warn_if_filename_basename_used('file-tail', prod)
     prod = replace_specials(prod)
     write_output(prod)
 

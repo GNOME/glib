@@ -218,12 +218,11 @@ g_tls_certificate_new_internal (const gchar      *certificate_pem,
 
 #define PEM_CERTIFICATE_HEADER     "-----BEGIN CERTIFICATE-----"
 #define PEM_CERTIFICATE_FOOTER     "-----END CERTIFICATE-----"
-#define PEM_PKCS1_PRIVKEY_HEADER   "-----BEGIN RSA PRIVATE KEY-----"
-#define PEM_PKCS1_PRIVKEY_FOOTER   "-----END RSA PRIVATE KEY-----"
-#define PEM_PKCS8_PRIVKEY_HEADER   "-----BEGIN PRIVATE KEY-----"
-#define PEM_PKCS8_PRIVKEY_FOOTER   "-----END PRIVATE KEY-----"
+#define PEM_PRIVKEY_HEADER_BEGIN   "-----BEGIN "
+#define PEM_PRIVKEY_HEADER_END     "PRIVATE KEY-----"
+#define PEM_PRIVKEY_FOOTER_BEGIN   "-----END "
+#define PEM_PRIVKEY_FOOTER_END     "PRIVATE KEY-----"
 #define PEM_PKCS8_ENCRYPTED_HEADER "-----BEGIN ENCRYPTED PRIVATE KEY-----"
-#define PEM_PKCS8_ENCRYPTED_FOOTER "-----END ENCRYPTED PRIVATE KEY-----"
 
 static gchar *
 parse_private_key (const gchar *data,
@@ -231,45 +230,47 @@ parse_private_key (const gchar *data,
 		   gboolean required,
 		   GError **error)
 {
-  const gchar *start, *end, *footer;
+  const gchar *header_start = NULL, *header_end, *footer_start = NULL, *footer_end;
 
-  start = g_strstr_len (data, data_len, PEM_PKCS1_PRIVKEY_HEADER);
-  if (start)
-    footer = PEM_PKCS1_PRIVKEY_FOOTER;
-  else
+  header_end = g_strstr_len (data, data_len, PEM_PRIVKEY_HEADER_END);
+  if (header_end)
+    header_start = g_strrstr_len (data, header_end - data, PEM_PRIVKEY_HEADER_BEGIN);
+
+  if (!header_start)
     {
-      start = g_strstr_len (data, data_len, PEM_PKCS8_PRIVKEY_HEADER);
-      if (start)
-	footer = PEM_PKCS8_PRIVKEY_FOOTER;
-      else
-	{
-	  start = g_strstr_len (data, data_len, PEM_PKCS8_ENCRYPTED_HEADER);
-	  if (start)
-	    {
-	      g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-				   _("Cannot decrypt PEM-encoded private key"));
-	    }
-	  else if (required)
-	    {
-	      g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-				   _("No PEM-encoded private key found"));
-	    }
-	  return NULL;
-	}
+      if (required)
+	g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+			     _("No PEM-encoded private key found"));
+
+      return NULL;
     }
 
-  end = g_strstr_len (start, data_len - (data - start), footer);
-  if (!end)
+  header_end += strlen (PEM_PRIVKEY_HEADER_END);
+
+  if (strncmp (header_start, PEM_PKCS8_ENCRYPTED_HEADER, header_end - header_start) == 0)
+    {
+      g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+			   _("Cannot decrypt PEM-encoded private key"));
+      return NULL;
+    }
+
+  footer_end = g_strstr_len (header_end, data_len - (header_end - data), PEM_PRIVKEY_FOOTER_END);
+  if (footer_end)
+    footer_start = g_strrstr_len (header_end, footer_end - header_end, PEM_PRIVKEY_FOOTER_BEGIN);
+
+  if (!footer_start)
     {
       g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
 			   _("Could not parse PEM-encoded private key"));
       return NULL;
     }
-  end += strlen (footer);
-  while (*end == '\r' || *end == '\n')
-    end++;
 
-  return g_strndup (start, end - start);
+  footer_end += strlen (PEM_PRIVKEY_FOOTER_END);
+
+  while (*footer_end == '\r' || *footer_end == '\n')
+    footer_end++;
+
+  return g_strndup (header_start, footer_end - header_start);
 }
 
 

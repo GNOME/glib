@@ -700,6 +700,35 @@ try_class (GIOExtension *extension,
   return NULL;
 }
 
+static void
+print_help (const char        *envvar,
+            GIOExtensionPoint *ep)
+{
+  g_print ("Supported arguments for %s environment variable:\n", envvar);
+
+  if (g_io_extension_point_get_extensions (ep) == NULL)
+    g_print (" (none)\n");
+  else
+    {
+      GList *l;
+      GIOExtension *extension;
+      int width = 0;
+
+      for (l = g_io_extension_point_get_extensions (ep); l; l = l->next)
+        {
+          extension = l->data;
+          width = MAX (width, strlen (g_io_extension_get_name (extension)));
+        }
+
+      for (l = g_io_extension_point_get_extensions (ep); l; l = l->next)
+        {
+          extension = l->data;
+
+          g_print (" %*s - %d\n", width, g_io_extension_get_name (extension), g_io_extension_get_priority (extension));
+        }
+    }
+}
+
 /**
  * _g_io_module_get_default_type:
  * @extension_point: the name of an extension point
@@ -766,6 +795,12 @@ _g_io_module_get_default_type (const gchar *extension_point,
     }
 
   use_this = envvar ? g_getenv (envvar) : NULL;
+  if (g_strcmp0 (use_this, "help") == 0)
+    {
+      print_help (envvar, ep);
+      use_this = NULL;
+    }
+
   if (use_this)
     {
       preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
@@ -802,14 +837,29 @@ _g_io_module_get_default_type (const gchar *extension_point,
 }
 
 static gpointer
-try_implementation (GIOExtension         *extension,
+try_implementation (const char           *extension_point,
+                    GIOExtension         *extension,
 		    GIOModuleVerifyFunc   verify_func)
 {
   GType type = g_io_extension_get_type (extension);
   gpointer impl;
 
   if (g_type_is_a (type, G_TYPE_INITABLE))
-    return g_initable_new (type, NULL, NULL, NULL);
+    {
+      GError *error = NULL;
+
+      impl = g_initable_new (type, NULL, &error, NULL);
+      if (impl)
+        return impl;
+
+      g_debug ("Failed to initialize %s (%s) for %s: %s",
+               g_io_extension_get_name (extension),
+               g_type_name (type),
+               extension_point,
+               error ? error->message : "");
+      g_clear_error (&error);
+      return NULL;
+    }
   else
     {
       impl = g_object_new (type, NULL);
@@ -859,7 +909,7 @@ _g_io_module_get_default (const gchar         *extension_point,
   const char *use_this;
   GList *l;
   GIOExtensionPoint *ep;
-  GIOExtension *extension, *preferred;
+  GIOExtension *extension = NULL, *preferred;
   gpointer impl;
 
   g_rec_mutex_lock (&default_modules_lock);
@@ -870,6 +920,8 @@ _g_io_module_get_default (const gchar         *extension_point,
       if (g_hash_table_lookup_extended (default_modules, extension_point,
 					&key, &impl))
 	{
+          /* Don’t debug here, since we’re returning a cached object which was
+           * already printed earlier. */
 	  g_rec_mutex_unlock (&default_modules_lock);
 	  return impl;
 	}
@@ -884,23 +936,32 @@ _g_io_module_get_default (const gchar         *extension_point,
 
   if (!ep)
     {
+      g_debug ("%s: Failed to find extension point ‘%s’",
+               G_STRFUNC, extension_point);
       g_warn_if_reached ();
       g_rec_mutex_unlock (&default_modules_lock);
       return NULL;
     }
 
   use_this = envvar ? g_getenv (envvar) : NULL;
+  if (g_strcmp0 (use_this, "help") == 0)
+    {
+      print_help (envvar, ep);
+      use_this = NULL;
+    }
+
   if (use_this)
     {
       preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
       if (preferred)
 	{
-	  impl = try_implementation (preferred, verify_func);
+	  impl = try_implementation (extension_point, preferred, verify_func);
+	  extension = preferred;
 	  if (impl)
 	    goto done;
 	}
       else
-	g_warning ("Can't find module '%s' specified in %s", use_this, envvar);
+        g_warning ("Can't find module '%s' specified in %s", use_this, envvar);
     }
   else
     preferred = NULL;
@@ -911,7 +972,7 @@ _g_io_module_get_default (const gchar         *extension_point,
       if (extension == preferred)
 	continue;
 
-      impl = try_implementation (extension, verify_func);
+      impl = try_implementation (extension_point, extension, verify_func);
       if (impl)
 	goto done;
     }
@@ -923,6 +984,17 @@ _g_io_module_get_default (const gchar         *extension_point,
 		       g_strdup (extension_point),
 		       impl ? g_object_ref (impl) : NULL);
   g_rec_mutex_unlock (&default_modules_lock);
+
+  if (impl != NULL)
+    {
+      g_assert (extension != NULL);
+      g_debug ("%s: Found default implementation %s (%s) for ‘%s’",
+               G_STRFUNC, g_io_extension_get_name (extension),
+               G_OBJECT_TYPE_NAME (impl), extension_point);
+    }
+  else
+    g_debug ("%s: Failed to find default implementation for ‘%s’",
+             G_STRFUNC, extension_point);
 
   return impl;
 }

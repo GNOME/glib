@@ -112,6 +112,7 @@ test_GDateTime_new_from_unix (void)
 
   memset (&tm, 0, sizeof (tm));
   t = time (NULL);
+  g_assert_cmpint (t, !=, (time_t) -1);
   get_localtime_tm (t, &tm);
 
   dt = g_date_time_new_from_unix_local (t);
@@ -787,6 +788,7 @@ test_GDateTime_to_unix (void)
   time_t     t;
 
   t = time (NULL);
+  g_assert_cmpint (t, !=, (time_t) -1);
   dt = g_date_time_new_from_unix_local (t);
   g_assert_cmpint (g_date_time_to_unix (dt), ==, t);
   g_date_time_unref (dt);
@@ -1324,6 +1326,7 @@ test_GDateTime_to_utc (void)
   struct tm  tm;
 
   t = time (NULL);
+  g_assert_cmpint (t, !=, (time_t) -1);
 #ifdef HAVE_GMTIME_R
   gmtime_r (&t, &tm);
 #else
@@ -1403,6 +1406,7 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
    * that of the generated timezone.
    */
   t = time (NULL);
+  g_assert_cmpint (t, !=, (time_t) -1);
   memset (&tt, 0, sizeof(tt));
   get_localtime_tm (t, &tt);
   tt.tm_year = 2009 - 1900;
@@ -1478,6 +1482,17 @@ test_non_utf8_printf (void)
 {
   gchar *oldlocale;
 
+  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
+   * need the translations to be installed. We can’t mess around with
+   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
+   * right installed directory hierarchy to be successfully loaded by gettext. */
+  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
+    {
+      g_test_skip ("Skipping due to running uninstalled. "
+                   "This test can only be run when the translations are installed.");
+      return;
+    }
+
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
   setlocale (LC_ALL, "ja_JP.eucjp");
   if (strstr (setlocale (LC_ALL, NULL), "ja_JP") == NULL)
@@ -1546,6 +1561,29 @@ test_non_utf8_printf (void)
   TEST_PRINTF ("%%", "%");
   TEST_PRINTF ("%", "");
   TEST_PRINTF ("%9", NULL);
+
+  setlocale (LC_ALL, oldlocale);
+  g_free (oldlocale);
+}
+
+/* Checks that it is possible to use format string that
+ * is unrepresentable in current locale charset. */
+static void
+test_format_unrepresentable (void)
+{
+  gchar *oldlocale = g_strdup (setlocale (LC_ALL, NULL));
+  setlocale (LC_ALL, "POSIX");
+
+  TEST_PRINTF ("ąśćł", "ąśćł");
+
+  /* We are using Unicode ratio symbol here, which is outside ASCII. */
+  TEST_PRINTF_TIME (23, 15, 0, "%H∶%M", "23∶15");
+
+  /* Test again, this time in locale with non ASCII charset. */
+  if (setlocale (LC_ALL, "pl_PL.ISO-8859-2") != NULL)
+    TEST_PRINTF_TIME (23, 15, 0, "%H∶%M", "23∶15");
+  else
+    g_test_skip ("locale pl_PL.ISO-8859-2 not available, skipping test");
 
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
@@ -2012,6 +2050,28 @@ test_z (void)
   g_free (p);
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
+
+  tz = g_time_zone_new ("-00:15");
+  dt = g_date_time_new (tz, 1, 1, 1, 0, 0, 0);
+
+  p = g_date_time_format (dt, "%z");
+  g_assert_cmpstr (p, ==, "-0015");
+  g_free (p);
+
+  p = g_date_time_format (dt, "%:z");
+  g_assert_cmpstr (p, ==, "-00:15");
+  g_free (p);
+
+  p = g_date_time_format (dt, "%::z");
+  g_assert_cmpstr (p, ==, "-00:15:00");
+  g_free (p);
+
+  p = g_date_time_format (dt, "%:::z");
+  g_assert_cmpstr (p, ==, "-00:15");
+  g_free (p);
+
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
 }
 
 #pragma GCC diagnostic push
@@ -2157,13 +2217,15 @@ test_posix_parse (void)
   GTimeZone *tz;
   GDateTime *gdt1, *gdt2;
 
-  tz = g_time_zone_new ("PST");
+  /* Check that an unknown zone name falls back to UTC. */
+  tz = g_time_zone_new ("nonexistent");
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 0);
   g_assert (!g_time_zone_is_dst (tz, 0));
   g_time_zone_unref (tz);
 
+  /* An existent zone name should not fall back to UTC. */
   tz = g_time_zone_new ("PST8");
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
@@ -2451,6 +2513,10 @@ gint
 main (gint   argc,
       gchar *argv[])
 {
+  /* In glibc, LANGUAGE is used as highest priority guess for category value.
+   * Unset it to avoid interference with tests using setlocale and translation. */
+  g_unsetenv ("LANGUAGE");
+
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
@@ -2491,6 +2557,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
   g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
+  g_test_add_func ("/GDateTime/format_unrepresentable", test_format_unrepresentable);
   g_test_add_func ("/GDateTime/strftime", test_strftime);
   g_test_add_func ("/GDateTime/strftime/error_handling", test_GDateTime_strftime_error_handling);
   g_test_add_func ("/GDateTime/modifiers", test_modifiers);

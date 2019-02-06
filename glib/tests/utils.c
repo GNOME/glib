@@ -517,6 +517,48 @@ test_clear_pointer (void)
   g_assert (a == NULL);
 }
 
+/* Test that g_clear_pointer() works with a GDestroyNotify which contains a cast.
+ * See https://gitlab.gnome.org/GNOME/glib/issues/1425 */
+static void
+test_clear_pointer_cast (void)
+{
+  GHashTable *hash_table = NULL;
+
+  hash_table = g_hash_table_new (g_str_hash, g_str_equal);
+
+  g_assert_nonnull (hash_table);
+
+  g_clear_pointer (&hash_table, (void (*) (GHashTable *)) g_hash_table_destroy);
+
+  g_assert_null (hash_table);
+}
+
+/* Test that the macro version of g_clear_pointer() only evaluates its argument
+ * once, just like the function version would. */
+static void
+test_clear_pointer_side_effects (void)
+{
+  gchar **my_string_array, **i;
+
+  my_string_array = g_new0 (gchar*, 3);
+  my_string_array[0] = g_strdup ("hello");
+  my_string_array[1] = g_strdup ("there");
+  my_string_array[2] = NULL;
+
+  i = my_string_array;
+
+  g_clear_pointer (i++, g_free);
+
+  g_assert_true (i == &my_string_array[1]);
+  g_assert_null (my_string_array[0]);
+  g_assert_nonnull (my_string_array[1]);
+  g_assert_null (my_string_array[2]);
+
+  g_free (my_string_array[1]);
+  g_free (my_string_array[2]);
+  g_free (my_string_array);
+}
+
 static int obj_count;
 
 static void
@@ -613,6 +655,36 @@ test_check_setuid (void)
   g_assert (!res);
 }
 
+/* Test the defined integer limits are correct, as some compilers have had
+ * problems with signed/unsigned conversion in the past. These limits should not
+ * vary between platforms, compilers or architectures.
+ *
+ * Use string comparisons to avoid the same systematic problems with unary minus
+ * application in C++. See https://gitlab.gnome.org/GNOME/glib/issues/1663. */
+static void
+test_int_limits (void)
+{
+  gchar *str = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1663");
+
+  str = g_strdup_printf ("%d %d %u\n"
+                         "%" G_GINT16_FORMAT " %" G_GINT16_FORMAT " %" G_GUINT16_FORMAT "\n"
+                         "%" G_GINT32_FORMAT " %" G_GINT32_FORMAT " %" G_GUINT32_FORMAT "\n"
+                         "%" G_GINT64_FORMAT " %" G_GINT64_FORMAT " %" G_GUINT64_FORMAT "\n",
+                         G_MININT8, G_MAXINT8, G_MAXUINT8,
+                         G_MININT16, G_MAXINT16, G_MAXUINT16,
+                         G_MININT32, G_MAXINT32, G_MAXUINT32,
+                         G_MININT64, G_MAXINT64, G_MAXUINT64);
+
+  g_assert_cmpstr (str, ==,
+                   "-128 127 255\n"
+                   "-32768 32767 65535\n"
+                   "-2147483648 2147483647 4294967295\n"
+                   "-9223372036854775808 9223372036854775807 18446744073709551615\n");
+  g_free (str);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -656,12 +728,15 @@ main (int   argc,
   g_test_add_func ("/utils/specialdir", test_special_dir);
   g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
+  g_test_add_func ("/utils/clear-pointer-cast", test_clear_pointer_cast);
+  g_test_add_func ("/utils/clear-pointer/side-effects", test_clear_pointer_side_effects);
   g_test_add_func ("/utils/take-pointer", test_take_pointer);
   g_test_add_func ("/utils/clear-source", test_clear_source);
   g_test_add_func ("/utils/misc-mem", test_misc_mem);
   g_test_add_func ("/utils/nullify", test_nullify);
   g_test_add_func ("/utils/atexit", test_atexit);
   g_test_add_func ("/utils/check-setuid", test_check_setuid);
+  g_test_add_func ("/utils/int-limits", test_int_limits);
 
   return g_test_run ();
 }

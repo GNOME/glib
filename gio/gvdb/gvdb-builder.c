@@ -339,6 +339,13 @@ file_builder_allocate_for_hash (FileBuilder            *fb,
 #undef chunk
 
   memset (*bloom_filter, 0, n_bloom_words * sizeof (guint32_le));
+
+  /* NOTE - the code to actually fill in the bloom filter here is missing.
+   * Patches welcome! 
+   *
+   * http://en.wikipedia.org/wiki/Bloom_filter
+   * http://0pointer.de/blog/projects/bloom.html
+   */
 }
 
 static void

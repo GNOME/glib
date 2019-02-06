@@ -125,6 +125,8 @@ g_file_query_filesystem_info
 g_file_query_filesystem_info_async
 g_file_query_filesystem_info_finish
 g_file_query_default_handler
+g_file_query_default_handler_async
+g_file_query_default_handler_finish
 g_file_measure_disk_usage
 g_file_measure_disk_usage_async
 g_file_measure_disk_usage_finish
@@ -222,6 +224,13 @@ G_TYPE_FILE_MONITOR_FLAGS
 G_TYPE_FILE_QUERY_INFO_FLAGS
 <SUBSECTION Private>
 g_file_get_type
+g_file_copy_flags_get_type
+g_file_create_flags_get_type
+g_file_measure_flags_get_type
+g_file_monitor_event_get_type
+g_file_monitor_flags_get_type
+g_file_query_info_flags_get_type
+g_filesystem_preview_type_get_type
 </SECTION>
 
 <SECTION>
@@ -319,7 +328,9 @@ G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE
 G_FILE_ATTRIBUTE_UNIX_BLOCKS
 G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT
 G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE
+G_FILE_ATTRIBUTE_DOS_IS_MOUNTPOINT
 G_FILE_ATTRIBUTE_DOS_IS_SYSTEM
+G_FILE_ATTRIBUTE_DOS_REPARSE_POINT_TAG
 G_FILE_ATTRIBUTE_OWNER_USER
 G_FILE_ATTRIBUTE_OWNER_USER_REAL
 G_FILE_ATTRIBUTE_OWNER_GROUP
@@ -424,6 +435,7 @@ g_file_attribute_matcher_get_type
 G_TYPE_FILE_TYPE
 <SUBSECTION Private>
 g_file_info_get_type
+g_file_type_get_type
 </SECTION>
 
 <SECTION>
@@ -448,6 +460,9 @@ G_TYPE_FILE_ATTRIBUTE_STATUS
 G_TYPE_FILE_ATTRIBUTE_TYPE
 <SUBSECTION Private>
 g_file_attribute_info_list_get_type
+g_file_attribute_info_flags_get_type
+g_file_attribute_status_get_type
+g_file_attribute_type_get_type
 </SECTION>
 
 <SECTION>
@@ -605,6 +620,7 @@ G_IS_EMBLEM
 G_IS_EMBLEM_CLASS
 G_TYPE_EMBLEM
 G_TYPE_EMBLEM_ORIGIN
+g_emblem_origin_get_type
 </SECTION>
 
 <SECTION>
@@ -788,6 +804,8 @@ G_TYPE_DATA_STREAM_NEWLINE_TYPE
 <SUBSECTION Private>
 g_data_input_stream_get_type
 GDataInputStreamPrivate
+g_data_stream_byte_order_get_type
+g_data_stream_newline_type_get_type
 </SECTION>
 
 <SECTION>
@@ -827,6 +845,12 @@ g_output_stream_write
 g_output_stream_write_all
 g_output_stream_write_all_async
 g_output_stream_write_all_finish
+g_output_stream_writev
+g_output_stream_writev_all
+g_output_stream_writev_async
+g_output_stream_writev_finish
+g_output_stream_writev_all_async
+g_output_stream_writev_all_finish
 g_output_stream_splice
 g_output_stream_flush
 g_output_stream_close
@@ -860,6 +884,7 @@ G_TYPE_OUTPUT_STREAM_SPLICE_FLAGS
 <SUBSECTION Private>
 g_output_stream_get_type
 GOutputStreamPrivate
+g_output_stream_splice_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -1049,6 +1074,7 @@ G_TYPE_IO_STREAM_SPLICE_FLAGS
 GIOStreamPrivate
 GIOStreamAdapter
 g_io_stream_get_type
+g_io_stream_splice_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -1172,6 +1198,8 @@ G_TYPE_MOUNT_MOUNT_FLAGS
 G_TYPE_MOUNT_UNMOUNT_FLAGS
 <SUBSECTION Private>
 g_mount_get_type
+g_mount_mount_flags_get_type
+g_mount_unmount_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -1258,6 +1286,8 @@ G_TYPE_DRIVE_START_FLAGS
 G_TYPE_DRIVE_START_STOP_TYPE
 <SUBSECTION Private>
 g_drive_get_type
+g_drive_start_flags_get_type
+g_drive_start_stop_type_get_type
 </SECTION>
 
 <SECTION>
@@ -1375,6 +1405,7 @@ g_io_error_from_win32_error
 G_TYPE_IO_ERROR_ENUM
 <SUBSECTION Private>
 g_io_error_quark
+g_io_error_enum_get_type
 </SECTION>
 
 <SECTION>
@@ -1417,6 +1448,8 @@ g_app_info_launch
 g_app_info_supports_files
 g_app_info_supports_uris
 g_app_info_launch_uris
+g_app_info_launch_uris_async
+g_app_info_launch_uris_finish
 g_app_info_should_show
 g_app_info_can_delete
 g_app_info_delete
@@ -1519,6 +1552,8 @@ G_TYPE_PASSWORD_SAVE
 g_mount_operation_get_type
 g_ask_password_flags_get_type
 GMountOperationPrivate
+g_mount_operation_result_get_type
+g_password_save_get_type
 </SECTION>
 
 <SECTION>
@@ -1552,6 +1587,7 @@ g_unix_mount_compare
 g_unix_mount_copy
 g_unix_mount_get_mount_path
 g_unix_mount_get_device_path
+g_unix_mount_get_root_path
 g_unix_mount_get_fs_type
 g_unix_mount_get_options
 g_unix_mount_is_readonly
@@ -1621,6 +1657,7 @@ g_desktop_app_info_set_desktop_env
 g_desktop_app_info_get_string
 g_desktop_app_info_get_locale_string
 g_desktop_app_info_get_boolean
+g_desktop_app_info_get_string_list
 g_desktop_app_info_has_key
 GDesktopAppLaunchCallback
 g_desktop_app_info_launch_uris_as_manager
@@ -1682,6 +1719,7 @@ G_IO_MODULE_GET_CLASS
 G_TYPE_IO_MODULE_SCOPE_FLAGS
 <SUBSECTION Private>
 g_io_module_get_type
+g_io_module_scope_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -1807,6 +1845,7 @@ G_TYPE_SOCKET_ADDRESS
 G_TYPE_SOCKET_FAMILY
 <SUBSECTION Private>
 g_socket_address_get_type
+g_socket_family_get_type
 </SECTION>
 
 <SECTION>
@@ -1857,6 +1896,7 @@ G_UNIX_SOCKET_ADDRESS_GET_CLASS
 G_TYPE_UNIX_SOCKET_ADDRESS_TYPE
 <SUBSECTION Private>
 g_unix_socket_address_get_type
+g_unix_socket_address_type_get_type
 </SECTION>
 
 <SECTION>
@@ -1887,6 +1927,10 @@ g_resolver_set_default
 g_resolver_lookup_by_name
 g_resolver_lookup_by_name_async
 g_resolver_lookup_by_name_finish
+GResolverNameLookupFlags
+g_resolver_lookup_by_name_with_flags
+g_resolver_lookup_by_name_with_flags_async
+g_resolver_lookup_by_name_with_flags_finish
 g_resolver_free_addresses
 g_resolver_lookup_by_address
 g_resolver_lookup_by_address_async
@@ -1921,6 +1965,7 @@ GResolverPrivate
 g_resolver_get_type
 g_resolver_error_quark
 g_resolver_record_type_get_type
+g_resolver_error_get_type
 </SECTION>
 
 <SECTION>
@@ -2089,6 +2134,7 @@ g_socket_receive_with_blocking
 g_socket_send
 g_socket_send_to
 g_socket_send_message
+g_socket_send_message_with_timeout
 g_socket_send_messages
 g_socket_send_with_blocking
 g_socket_close
@@ -2145,6 +2191,9 @@ G_TYPE_SOCKET_TYPE
 <SUBSECTION Private>
 g_socket_get_type
 GSocketPrivate
+g_socket_msg_flags_get_type
+g_socket_protocol_get_type
+g_socket_type_get_type
 </SECTION>
 
 <SECTION>
@@ -2196,6 +2245,7 @@ G_TYPE_SOCKET_CLIENT_EVENT
 <SUBSECTION Private>
 GSocketClientPrivate
 g_socket_client_get_type
+g_socket_client_event_get_type
 </SECTION>
 
 <SECTION>
@@ -2342,6 +2392,7 @@ G_TYPE_SOCKET_LISTENER_EVENT
 <SUBSECTION Private>
 GSocketListenerPrivate
 g_socket_listener_get_type
+g_socket_listener_event_get_type
 </SECTION>
 
 <SECTION>
@@ -2504,6 +2555,7 @@ G_ZLIB_COMPRESSOR_GET_CLASS
 G_TYPE_ZLIB_COMPRESSOR_FORMAT
 <SUBSECTION Private>
 g_zlib_compressor_get_type
+g_zlib_compressor_format_get_type
 </SECTION>
 
 <SECTION>
@@ -2707,6 +2759,7 @@ G_TYPE_SETTINGS_BIND_FLAGS
 <SUBSECTION Private>
 GSettingsPrivate
 g_settings_get_type
+g_settings_bind_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -2823,6 +2876,7 @@ G_TYPE_DBUS_SERVER
 G_TYPE_DBUS_SERVER_FLAGS
 <SUBSECTION Private>
 g_dbus_server_get_type
+g_dbus_server_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -2892,6 +2946,10 @@ G_TYPE_DBUS_MESSAGE_HEADER_FIELD
 G_TYPE_DBUS_MESSAGE_TYPE
 <SUBSECTION Private>
 g_dbus_message_get_type
+g_dbus_message_byte_order_get_type
+g_dbus_message_flags_get_type
+g_dbus_message_header_field_get_type
+g_dbus_message_type_get_type
 </SECTION>
 
 <SECTION>
@@ -2920,6 +2978,7 @@ g_dbus_connection_flush_sync
 g_dbus_connection_get_exit_on_close
 g_dbus_connection_set_exit_on_close
 g_dbus_connection_get_stream
+g_dbus_connection_get_flags
 g_dbus_connection_get_guid
 g_dbus_connection_get_unique_name
 GDBusCapabilityFlags
@@ -2974,6 +3033,12 @@ G_TYPE_DBUS_SUBTREE_FLAGS
 <SUBSECTION Private>
 g_dbus_connection_get_type
 g_bus_type_get_type
+g_dbus_call_flags_get_type
+g_dbus_capability_flags_get_type
+g_dbus_connection_flags_get_type
+g_dbus_send_message_flags_get_type
+g_dbus_signal_flags_get_type
+g_dbus_subtree_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -3059,6 +3124,7 @@ g_dbus_error_encode_gerror
 <SUBSECTION Standard>
 G_TYPE_DBUS_ERROR
 g_dbus_error_quark
+g_dbus_error_get_type
 </SECTION>
 
 <SECTION>
@@ -3103,6 +3169,7 @@ G_TYPE_DBUS_PROXY_FLAGS
 <SUBSECTION Private>
 GDBusProxyPrivate
 g_dbus_proxy_get_type
+g_dbus_proxy_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -3156,6 +3223,7 @@ g_dbus_method_info_get_type
 g_dbus_node_info_get_type
 g_dbus_property_info_get_type
 g_dbus_signal_info_get_type
+g_dbus_property_info_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -3591,6 +3659,7 @@ g_pollable_output_stream_can_poll
 g_pollable_output_stream_is_writable
 g_pollable_output_stream_create_source
 g_pollable_output_stream_write_nonblocking
+g_pollable_output_stream_writev_nonblocking
 <SUBSECTION Standard>
 G_POLLABLE_OUTPUT_STREAM
 G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE
@@ -3602,6 +3671,7 @@ g_pollable_output_stream_get_type
 
 <SECTION>
 <FILE>gpollableutils</FILE>
+GPollableReturn
 GPollableSourceFunc
 g_pollable_source_new
 g_pollable_source_new_full
@@ -3622,6 +3692,9 @@ GTlsCertificateFlags
 G_TYPE_TLS_AUTHENTICATION_MODE
 G_TYPE_TLS_CERTIFICATE_FLAGS
 G_TYPE_TLS_ERROR
+g_tls_authentication_mode_get_type
+g_tls_certificate_flags_get_type
+g_tls_error_get_type
 </SECTION>
 
 <SECTION>
@@ -3634,6 +3707,7 @@ g_tls_backend_get_default
 g_tls_backend_supports_tls
 g_tls_backend_supports_dtls
 g_tls_backend_get_default_database
+g_tls_backend_set_default_database
 g_tls_backend_get_certificate_type
 g_tls_backend_get_client_connection_type
 g_tls_backend_get_server_connection_type
@@ -3687,6 +3761,8 @@ g_tls_connection_get_require_close_notify
 GTlsRehandshakeMode
 g_tls_connection_set_rehandshake_mode
 g_tls_connection_get_rehandshake_mode
+g_tls_connection_set_advertised_protocols
+g_tls_connection_get_negotiated_protocol
 g_tls_connection_set_use_system_certdb
 g_tls_connection_get_use_system_certdb
 g_tls_connection_get_database
@@ -3711,6 +3787,7 @@ G_TYPE_TLS_CONNECTION
 G_TYPE_TLS_REHANDSHAKE_MODE
 <SUBSECTION Private>
 g_tls_connection_get_type
+g_tls_rehandshake_mode_get_type
 </SECTION>
 
 <SECTION>
@@ -3862,6 +3939,7 @@ G_TYPE_TLS_CERTIFICATE_REQUEST_FLAGS
 GTlsInteractionPrivate
 g_tls_interaction_get_type
 g_tls_interaction_result_get_type
+g_tls_certificate_request_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -3876,6 +3954,8 @@ g_dtls_connection_set_require_close_notify
 g_dtls_connection_get_require_close_notify
 g_dtls_connection_set_rehandshake_mode
 g_dtls_connection_get_rehandshake_mode
+g_dtls_connection_set_advertised_protocols
+g_dtls_connection_get_negotiated_protocol
 g_dtls_connection_get_database
 g_dtls_connection_set_database
 g_dtls_connection_get_interaction
@@ -4144,6 +4224,7 @@ G_TYPE_NETWORK_MONITOR
 G_NETWORK_MONITOR
 G_IS_NETWORK_MONITOR
 G_NETWORK_MONITOR_GET_INTERFACE
+g_network_connectivity_get_type
 </SECTION>
 
 <SECTION>
@@ -4393,6 +4474,7 @@ g_task_set_priority
 g_task_set_check_cancellable
 g_task_set_return_on_cancel
 g_task_set_source_tag
+g_task_set_name
 <SUBSECTION>
 g_task_report_error
 g_task_report_new_error
@@ -4405,6 +4487,7 @@ g_task_get_return_on_cancel
 g_task_get_context
 g_task_get_source_object
 g_task_get_source_tag
+g_task_get_name
 <SUBSECTION>
 g_task_return_boolean
 g_task_return_int
@@ -4511,6 +4594,7 @@ G_TYPE_SUBPROCESS
 G_SUBPROCESS
 G_TYPE_SUBPROCESS_FLAGS
 g_subprocess_get_type
+g_subprocess_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -4568,6 +4652,7 @@ G_TYPE_NOTIFICATION
 G_TYPE_NOTIFICATION_BACKEND
 g_notification_get_type
 G_TYPE_NOTIFICATION_PRIORITY
+g_notification_priority_get_type
 </SECTION>
 
 <SECTION>

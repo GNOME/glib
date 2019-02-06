@@ -245,6 +245,8 @@ ensure_attribute_hash (void)
   REGISTER_ATTRIBUTE (UNIX_IS_MOUNTPOINT);
   REGISTER_ATTRIBUTE (DOS_IS_ARCHIVE);
   REGISTER_ATTRIBUTE (DOS_IS_SYSTEM);
+  REGISTER_ATTRIBUTE (DOS_IS_MOUNTPOINT);
+  REGISTER_ATTRIBUTE (DOS_REPARSE_POINT_TAG);
   REGISTER_ATTRIBUTE (OWNER_USER);
   REGISTER_ATTRIBUTE (OWNER_USER_REAL);
   REGISTER_ATTRIBUTE (OWNER_GROUP);
@@ -1178,7 +1180,8 @@ _g_file_info_set_attribute_stringv_by_id (GFileInfo *info,
  * g_file_info_set_attribute_stringv:
  * @info: a #GFileInfo.
  * @attribute: a file attribute key
- * @attr_value: (array) (element-type utf8): a %NULL terminated array of UTF-8 strings.
+ * @attr_value: (array zero-terminated=1) (element-type utf8): a %NULL
+ *   terminated array of UTF-8 strings.
  *
  * Sets the @attribute to contain the given @attr_value,
  * if possible.

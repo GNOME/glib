@@ -197,7 +197,8 @@ token_stream_prepare (TokenStream *stream)
       break;
 
     case 'b':
-      if (stream->stream[1] == '\'' || stream->stream[1] == '"')
+      if (stream->stream + 1 != stream->end &&
+          (stream->stream[1] == '\'' || stream->stream[1] == '"'))
         {
           for (end = stream->stream + 2; end != stream->end; end++)
             if (*end == stream->stream[1] || *end == '\0' ||
@@ -209,10 +210,7 @@ token_stream_prepare (TokenStream *stream)
           break;
         }
 
-      else
-        {
-          /* ↓↓↓ */
-        }
+      G_GNUC_FALLTHROUGH;
 
     case 'a': /* 'b' */ case 'c': case 'd': case 'e': case 'f':
     case 'g': case 'h': case 'i': case 'j': case 'k': case 'l':
@@ -260,6 +258,9 @@ token_stream_prepare (TokenStream *stream)
   stream->this = stream->stream;
   stream->stream = end;
 
+  /* We must have at least one byte in a token. */
+  g_assert (stream->stream - stream->this >= 1);
+
   return TRUE;
 }
 
@@ -276,7 +277,8 @@ token_stream_peek (TokenStream *stream,
   if (!token_stream_prepare (stream))
     return FALSE;
 
-  return stream->this[0] == first_char;
+  return stream->stream - stream->this >= 1 &&
+         stream->this[0] == first_char;
 }
 
 static gboolean
@@ -287,7 +289,8 @@ token_stream_peek2 (TokenStream *stream,
   if (!token_stream_prepare (stream))
     return FALSE;
 
-  return stream->this[0] == first_char &&
+  return stream->stream - stream->this >= 2 &&
+         stream->this[0] == first_char &&
          stream->this[1] == second_char;
 }
 
@@ -297,7 +300,8 @@ token_stream_is_keyword (TokenStream *stream)
   if (!token_stream_prepare (stream))
     return FALSE;
 
-  return g_ascii_isalpha (stream->this[0]) &&
+  return stream->stream - stream->this >= 2 &&
+         g_ascii_isalpha (stream->this[0]) &&
          g_ascii_isalpha (stream->this[1]);
 }
 
@@ -307,10 +311,11 @@ token_stream_is_numeric (TokenStream *stream)
   if (!token_stream_prepare (stream))
     return FALSE;
 
-  return (g_ascii_isdigit (stream->this[0]) ||
-          stream->this[0] == '-' ||
-          stream->this[0] == '+' ||
-          stream->this[0] == '.');
+  return (stream->stream - stream->this >= 1 &&
+          (g_ascii_isdigit (stream->this[0]) ||
+           stream->this[0] == '-' ||
+           stream->this[0] == '+' ||
+           stream->this[0] == '.'));
 }
 
 static gboolean
@@ -1523,18 +1528,21 @@ string_free (AST *ast)
   g_slice_free (String, string);
 }
 
+/* Accepts exactly @length hexadecimal digits. No leading sign or `0x`/`0X` prefix allowed.
+ * No leading/trailing space allowed. */
 static gboolean
 unicode_unescape (const gchar  *src,
                   gint         *src_ofs,
                   gchar        *dest,
                   gint         *dest_ofs,
-                  gint          length,
+                  gsize         length,
                   SourceRef    *ref,
                   GError      **error)
 {
   gchar buffer[9];
-  guint64 value;
+  guint64 value = 0;
   gchar *end;
+  gsize n_valid_chars;
 
   (*src_ofs)++;
 
@@ -1542,13 +1550,24 @@ unicode_unescape (const gchar  *src,
   strncpy (buffer, src + *src_ofs, length);
   buffer[length] = '\0';
 
-  value = g_ascii_strtoull (buffer, &end, 0x10);
+  for (n_valid_chars = 0; n_valid_chars < length; n_valid_chars++)
+    if (!g_ascii_isxdigit (buffer[n_valid_chars]))
+      break;
+
+  if (n_valid_chars == length)
+    value = g_ascii_strtoull (buffer, &end, 0x10);
 
   if (value == 0 || end != buffer + length)
     {
-      parser_set_error (error, ref, NULL,
+      SourceRef escape_ref;
+
+      escape_ref = *ref;
+      escape_ref.start += *src_ofs;
+      escape_ref.end = escape_ref.start + n_valid_chars;
+
+      parser_set_error (error, &escape_ref, NULL,
                         G_VARIANT_PARSE_ERROR_INVALID_CHARACTER,
-                        "invalid %d-character unicode escape", length);
+                        "invalid %" G_GSIZE_FORMAT "-character unicode escape", length);
       return FALSE;
     }
 
@@ -1637,6 +1656,8 @@ string_parse (TokenStream  *stream,
           case 'v': str[j++] = '\v'; i++; continue;
           case '\n': i++; continue;
           }
+
+        G_GNUC_FALLTHROUGH;
 
       default:
         str[j++] = token[i++];
@@ -1764,6 +1785,8 @@ bytestring_parse (TokenStream  *stream,
           case 'v': str[j++] = '\v'; i++; continue;
           case '\n': i++; continue;
           }
+
+        G_GNUC_FALLTHROUGH;
 
       default:
         str[j++] = token[i++];
@@ -1898,7 +1921,7 @@ number_get_value (AST                 *ast,
     case 'n':
       if (abs_val - negative > G_MAXINT16)
         return number_overflow (ast, type, error);
-      return g_variant_new_int16 (negative ? -abs_val : abs_val);
+      return g_variant_new_int16 (negative ? -((gint16) abs_val) : abs_val);
 
     case 'q':
       if (negative || abs_val > G_MAXUINT16)
@@ -1908,7 +1931,7 @@ number_get_value (AST                 *ast,
     case 'i':
       if (abs_val - negative > G_MAXINT32)
         return number_overflow (ast, type, error);
-      return g_variant_new_int32 (negative ? -abs_val : abs_val);
+      return g_variant_new_int32 (negative ? -((gint32) abs_val) : abs_val);
 
     case 'u':
       if (negative || abs_val > G_MAXUINT32)
@@ -1918,7 +1941,7 @@ number_get_value (AST                 *ast,
     case 'x':
       if (abs_val - negative > G_MAXINT64)
         return number_overflow (ast, type, error);
-      return g_variant_new_int64 (negative ? -abs_val : abs_val);
+      return g_variant_new_int64 (negative ? -((gint64) abs_val) : abs_val);
 
     case 't':
       if (negative)
@@ -1928,7 +1951,7 @@ number_get_value (AST                 *ast,
     case 'h':
       if (abs_val - negative > G_MAXINT32)
         return number_overflow (ast, type, error);
-      return g_variant_new_handle (negative ? -abs_val : abs_val);
+      return g_variant_new_handle (negative ? -((gint32) abs_val) : abs_val);
 
     default:
       return ast_type_error (ast, type, error);

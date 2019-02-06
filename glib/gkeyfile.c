@@ -599,7 +599,8 @@ static gboolean              g_key_file_parse_value_as_boolean (GKeyFile        
 static gchar                *g_key_file_parse_boolean_as_value (GKeyFile               *key_file,
 								gboolean                value);
 static gchar                *g_key_file_parse_value_as_comment (GKeyFile               *key_file,
-                                                                const gchar            *value);
+                                                                const gchar            *value,
+                                                                gboolean                is_final_line);
 static gchar                *g_key_file_parse_comment_as_value (GKeyFile               *key_file,
                                                                 const gchar            *comment);
 static void                  g_key_file_parse_key_value_pair   (GKeyFile               *key_file,
@@ -1191,7 +1192,11 @@ g_key_file_free (GKeyFile *key_file)
   g_return_if_fail (key_file != NULL);
 
   g_key_file_clear (key_file);
-  g_key_file_unref (key_file);
+
+  if (g_atomic_int_dec_and_test (&key_file->ref_count))
+    g_slice_free (GKeyFile, key_file);
+  else
+    g_key_file_init (key_file);
 }
 
 /**
@@ -3507,8 +3512,9 @@ g_key_file_get_key_comment (GKeyFile     *key_file,
       
       if (string == NULL)
 	string = g_string_sized_new (512);
-      
-      comment = g_key_file_parse_value_as_comment (key_file, pair->value);
+
+      comment = g_key_file_parse_value_as_comment (key_file, pair->value,
+                                                   (tmp->prev == key_node));
       g_string_append (string, comment);
       g_free (comment);
       
@@ -3565,7 +3571,8 @@ get_group_comment (GKeyFile       *key_file,
       if (string == NULL)
         string = g_string_sized_new (512);
 
-      comment = g_key_file_parse_value_as_comment (key_file, pair->value);
+      comment = g_key_file_parse_value_as_comment (key_file, pair->value,
+                                                   (tmp->prev == NULL));
       g_string_append (string, comment);
       g_free (comment);
 
@@ -3636,7 +3643,9 @@ g_key_file_get_top_comment (GKeyFile  *key_file,
  * @group_name. If both @key and @group_name are %NULL, then
  * @comment will be read from above the first group in the file.
  *
- * Note that the returned string includes the '#' comment markers.
+ * Note that the returned string does not include the '#' comment markers,
+ * but does include any whitespace after them (on each line). It includes
+ * the line breaks between lines, but does not include the final line break.
  *
  * Returns: a comment that should be freed with g_free()
  *
@@ -4542,7 +4551,8 @@ g_key_file_parse_boolean_as_value (GKeyFile *key_file,
 
 static gchar *
 g_key_file_parse_value_as_comment (GKeyFile    *key_file,
-                                   const gchar *value)
+                                   const gchar *value,
+                                   gboolean     is_final_line)
 {
   GString *string;
   gchar **lines;
@@ -4554,12 +4564,21 @@ g_key_file_parse_value_as_comment (GKeyFile    *key_file,
 
   for (i = 0; lines[i] != NULL; i++)
     {
-        if (lines[i][0] != '#')
-           g_string_append_printf (string, "%s\n", lines[i]);
-        else 
-           g_string_append_printf (string, "%s\n", lines[i] + 1);
+      const gchar *line = lines[i];
+
+      if (i != 0)
+        g_string_append_c (string, '\n');
+
+      if (line[0] == '#')
+        line++;
+      g_string_append (string, line);
     }
   g_strfreev (lines);
+
+  /* This function gets called once per line of a comment, but we don’t want
+   * to add a trailing newline. */
+  if (!is_final_line)
+    g_string_append_c (string, '\n');
 
   return g_string_free (string, FALSE);
 }

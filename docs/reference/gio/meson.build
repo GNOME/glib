@@ -28,6 +28,7 @@ if get_option('gtk_doc')
     'gdbusdaemon.h',
     'gdbusprivate.h',
     'gdelayedsettingsbackend.h',
+    'gdocumentportal.h',
     'gdummyfile.h',
     'gdummyproxyresolver.h',
     'gdummytlsbackend.h',
@@ -37,6 +38,9 @@ if get_option('gtk_doc')
     'giomodule-priv.h',
     'gioprivate.h',
     'giowin32-priv.h',
+    'gio_probes.h',
+    'gio_trace.h',
+    'gio-tool.h',
     'glocaldirectorymonitor.h',
     'glocalfileenumerator.h',
     'glocalfile.h',
@@ -55,7 +59,9 @@ if get_option('gtk_doc')
     'gnetworkmonitorportal.h',
     'gnotificationbackend.h',
     'gnotification-private.h',
+    'gopenuriportal.h',
     'gpollfilemonitor.h',
+    'gportalsupport.h',
     'gproxyresolverportal.h',
     'gregistrysettingsbackend.h',
     'gresourcefile.h',
@@ -69,6 +75,7 @@ if get_option('gtk_doc')
     'gsocks5proxy.h',
     'gsubprocesslauncher-private.h',
     'gthreadedresolver.h',
+    'gtrashportal.h',
     'gunionvolumemonitor.h',
     'gunixmount.h',
     'gunixresolver.h',
@@ -132,6 +139,8 @@ if get_option('gtk_doc')
     'GLIB_AVAILABLE_IN_2_52',
     'GLIB_AVAILABLE_IN_2_54',
     'GLIB_AVAILABLE_IN_2_56',
+    'GLIB_AVAILABLE_IN_2_58',
+    'GLIB_AVAILABLE_IN_2_60',
     'GLIB_DEPRECATED_IN_2_26',
     'GLIB_DEPRECATED_IN_2_26_FOR',
     'GLIB_DEPRECATED_IN_2_28',
@@ -164,6 +173,10 @@ if get_option('gtk_doc')
     'GLIB_DEPRECATED_IN_2_54_FOR',
     'GLIB_DEPRECATED_IN_2_56',
     'GLIB_DEPRECATED_IN_2_56_FOR',
+    'GLIB_DEPRECATED_IN_2_58',
+    'GLIB_DEPRECATED_IN_2_58_FOR',
+    'GLIB_DEPRECATED_IN_2_60',
+    'GLIB_DEPRECATED_IN_2_60_FOR',
   ]
 
   # FIXME: More win32 headers were added to fix building gio-scan
@@ -221,8 +234,8 @@ if get_option('gtk_doc')
     ],
     fixxref_args: [
       '--html-dir=' + docpath,
-      '--extra-dir=' + join_paths(meson.current_build_dir(), '../glib/html'),
-      '--extra-dir=' + join_paths(meson.current_build_dir(), '../gobject/html'),
+      '--extra-dir=' + join_paths('gio', '..', 'glib', 'html'),
+      '--extra-dir=' + join_paths('gio', '..', 'gobject', 'html'),
     ],
     install: true
   )

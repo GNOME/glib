@@ -64,6 +64,15 @@
  * A standard boolean type.
  * Variables of this type should only contain the value
  * %TRUE or %FALSE.
+ *
+ * Never directly compare the contents of a #gboolean variable with the values
+ * %TRUE or %FALSE. Use `if (condition)` to check a #gboolean is "true", instead
+ * of `if (condition == TRUE)`. Likewise use `if (!condition)` to check a
+ * #gboolean is "false".
+ *
+ * There is no validation when assigning to a #gboolean variable and so it could
+ * contain any value represented by a #gint. This is why the use of `if
+ * (condition)` is recommended. All non-zero values in C evaluate to "true".
  */
 
 /**
@@ -200,14 +209,6 @@
  */
 
 /**
- * G_MININT8:
- *
- * The minimum value which can be held in a #gint8.
- *
- * Since: 2.4
- */
-
-/**
  * G_MAXINT8:
  *
  * The maximum value which can be held in a #gint8.
@@ -239,14 +240,6 @@
  *
  * To print or scan values of this type, use
  * %G_GINT16_MODIFIER and/or %G_GINT16_FORMAT.
- */
-
-/**
- * G_MININT16:
- *
- * The minimum value which can be held in a #gint16.
- *
- * Since: 2.4
  */
 
 /**
@@ -329,14 +322,6 @@
  */
 
 /**
- * G_MININT32:
- *
- * The minimum value which can be held in a #gint32.
- *
- * Since: 2.4
- */
-
-/**
  * G_MAXINT32:
  *
  * The maximum value which can be held in a #gint32.
@@ -396,12 +381,6 @@
  *
  * To print or scan values of this type, use
  * %G_GINT64_MODIFIER and/or %G_GINT64_FORMAT.
- */
-
-/**
- * G_MININT64:
- *
- * The minimum value which can be held in a #gint64.
  */
 
 /**
@@ -1865,7 +1844,24 @@
  * macro will not work on an array allocated on the heap, only static
  * arrays or arrays on the stack.
  */
- 
+
+/**
+ * G_ALIGNOF
+ * @a: a type-name
+ *
+ * Return the minimal alignment required by the platform ABI for values of the given
+ * type. The address of a variable or struct member of the given type must always be
+ * a multiple of this alignment. For example, most platforms require int variables
+ * to be aligned at a 4-byte boundary, so `G_ALIGNOF (int)` is 4 on most platforms.
+ *
+ * Note this is not necessarily the same as the value returned by GCC’s
+ * `__alignof__` operator, which returns the preferred alignment for a type.
+ * The preferred alignment may be a stricter alignment than the minimal
+ * alignment.
+ *
+ * Since: 2.60
+ */
+
 /* Miscellaneous Macros {{{1 */
 
 /**
@@ -2096,15 +2092,29 @@
 /**
  * G_GNUC_MALLOC:
  *
- * Expands to the GNU C malloc function attribute if the compiler is gcc.
- * Declaring a function as malloc enables better optimization of the function.
- * A function can have the malloc attribute if it returns a pointer which is
- * guaranteed to not alias with any other pointer when the function returns
- * (in practice, this means newly allocated memory).
+ * Expands to the
+ * [GNU C `malloc` function attribute](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-functions-that-behave-like-malloc)
+ * if the compiler is gcc.
+ * Declaring a function as `malloc` enables better optimization of the function,
+ * but must only be done if the allocation behaviour of the function is fully
+ * understood, otherwise miscompilation can result.
+ *
+ * A function can have the `malloc` attribute if it returns a pointer which is
+ * guaranteed to not alias with any other pointer valid when the function
+ * returns, and moreover no pointers to valid objects occur in any storage
+ * addressed by the returned pointer.
+ *
+ * In practice, this means that `G_GNUC_MALLOC` can be used with any function
+ * which returns unallocated or zeroed-out memory, but not with functions which
+ * return initialised structures containing other pointers, or with functions
+ * that reallocate memory. This definition changed in GLib 2.58 to match the
+ * stricter definition introduced around GCC 5.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the
+ * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-functions-that-behave-like-malloc)
+ * for more details.
  *
  * Since: 2.6
  */
@@ -2267,6 +2277,22 @@
  */
 
 /**
+ * G_GNUC_FALLTHROUGH:
+ *
+ * Expands to the GNU C fallthrough statement attribute if the compiler is gcc.
+ * This allows declaring case statement to explicitly fall through in switch
+ * statements. To enable this feature, use -Wimplicit-fallthrough during
+ * compilation.
+ *
+ * Put the attribute right before the case statement you want to fall through
+ * to.
+ *
+ * See the GNU C documentation for more details.
+ *
+ * Since: 2.60
+ */
+
+/**
  * G_GNUC_UNUSED:
  *
  * Expands to the GNU C unused function attribute if the compiler is gcc.
@@ -2327,6 +2353,23 @@
  * See the
  * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-Wformat-3288)
  * for details.
+ */
+
+/**
+ * G_GNUC_STRFTIME:
+ * @format_idx: the index of the argument corresponding to
+ *     the format string (the arguments are numbered from 1)
+ *
+ * Expands to the GNU C strftime format function attribute if the compiler
+ * is gcc. This is used for declaring functions which take a format argument
+ * which is passed to strftime() or an API implementing its formats. It allows
+ * the compiler check the format passed to the function.
+ *
+ * See the
+ * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-Wformat-3288)
+ * for details.
+ *
+ * Since: 2.60
  */
 
 /**
@@ -2786,6 +2829,54 @@
  * where cleanup is not supported.
  *
  * Since: 2.44
+ */
+
+/* Warnings and Assertions {{{1 */
+
+/**
+ * SECTION:warnings
+ * @title: Warnings and Assertions
+ * @short_description: warnings and assertions to use in runtime code
+ *
+ * GLib defines several warning functions and assertions which can be used to
+ * warn of programmer errors when calling functions, and print error messages
+ * from command line programs.
+ *
+ * The g_return_if_fail(), g_return_val_if_fail(), g_return_if_reached() and
+ * g_return_val_if_reached() macros are intended as pre-condition assertions, to
+ * be used at the top of a public function to check that the function’s
+ * arguments are acceptable. Any failure of such a pre-condition assertion is
+ * considered a programming error on the part of the caller of the public API,
+ * and the program is considered to be in an undefined state afterwards. They
+ * are similar to the libc assert() function, but provide more context on
+ * failures.
+ *
+ * For example:
+ * |[<!-- language="C" -->
+ * gboolean
+ * g_dtls_connection_shutdown (GDtlsConnection  *conn,
+ *                             gboolean          shutdown_read,
+ *                             gboolean          shutdown_write,
+ *                             GCancellable     *cancellable,
+ *                             GError          **error)
+ * {
+ *   // local variable declarations
+ *
+ *   g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), FALSE);
+ *   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), FALSE);
+ *   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+ *
+ *   // function body
+ *
+ *   return return_val;
+ * }
+ * ]|
+ *
+ * g_print(), g_printerr() and g_set_print_handler() are intended to be used for
+ * output from command line applications, since they output to standard output
+ * and standard error by default — whereas functions like g_message() and
+ * g_log() may be redirected to special purpose message windows, files, or the
+ * system journal.
  */
 
 /* Windows Compatibility Functions {{{1 */

@@ -166,9 +166,11 @@ test_data_array (guchar *buffer, gsize len,
     case TEST_DATA_INT16:
     case TEST_DATA_UINT16:
       g_assert_cmpint (len % 2, ==, 0);
+      G_GNUC_FALLTHROUGH;
     case TEST_DATA_INT32:
     case TEST_DATA_UINT32:
       g_assert_cmpint (len % 4, ==, 0);
+      G_GNUC_FALLTHROUGH;
     case TEST_DATA_INT64:
     case TEST_DATA_UINT64:
       g_assert_cmpint (len % 8, ==, 0);

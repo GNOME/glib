@@ -869,7 +869,7 @@ my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
       subclass. For example, to handle
       <function>HelloWorld()</function> method invocations, set the
       vfunc for <function>handle_hello_hello_world()</function> in the
-      <type>MyAppFrobberIface</type> structure. Similary, to handle
+      <type>MyAppFrobberIface</type> structure. Similarly, to handle
       the <parameter>net.Corp.MyApp.Frobber:Verbose</parameter>
       property override the <parameter>:verbose</parameter> #GObject
       property from the subclass. To emit a signal, use
@@ -941,7 +941,7 @@ on_handle_hello_world (MyAppFrobber           *interface,
       received. The queue is drained in an idle handler (which is called from the
       <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
       of the thread where the skeleton object was
-      contructed) and will cause emissions of the <ulink
+      constructed) and will cause emissions of the <ulink
       url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties::PropertiesChanged</ulink>
       signal with all the properties that have changed. Use
       g_dbus_interface_skeleton_flush() or

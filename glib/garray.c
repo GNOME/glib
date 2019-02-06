@@ -139,9 +139,9 @@ struct _GRealArray
     g_array_elt_zero ((array), (array)->len, 1);                        \
 }G_STMT_END
 
-static guint g_nearest_pow        (gint        num) G_GNUC_CONST;
+static guint g_nearest_pow        (guint       num) G_GNUC_CONST;
 static void  g_array_maybe_expand (GRealArray *array,
-                                   gint        len);
+                                   guint       len);
 
 /**
  * g_array_new:
@@ -318,15 +318,15 @@ g_array_get_element_size (GArray *array)
  * @free_segment: if %TRUE the actual element data is freed as well
  *
  * Frees the memory allocated for the #GArray. If @free_segment is
- * %TRUE it frees the memory block holding the elements as well and
- * also each element if @array has a @element_free_func set. Pass
+ * %TRUE it frees the memory block holding the elements as well. Pass
  * %FALSE if you want to free the #GArray wrapper but preserve the
- * underlying array for use elsewhere. If the reference count of @array
- * is greater than one, the #GArray wrapper is preserved but the size
- * of @array will be set to zero.
+ * underlying array for use elsewhere. If the reference count of
+ * @array is greater than one, the #GArray wrapper is preserved but
+ * the size of  @array will be set to zero.
  *
- * If array elements contain dynamically-allocated memory, they should
- * be freed separately.
+ * If array contents point to dynamically-allocated memory, they should
+ * be freed separately if @free_seg is %TRUE and no @clear_func
+ * function has been set for @array.
  *
  * This function is not thread-safe. If using a #GArray from multiple
  * threads, use only the atomic g_array_ref() and g_array_unref()
@@ -789,7 +789,7 @@ g_array_sort_with_data (GArray           *farray,
  * such power does not fit in a guint
  */
 static guint
-g_nearest_pow (gint num)
+g_nearest_pow (guint num)
 {
   guint n = 1;
 
@@ -801,10 +801,16 @@ g_nearest_pow (gint num)
 
 static void
 g_array_maybe_expand (GRealArray *array,
-                      gint        len)
+                      guint       len)
 {
-  guint want_alloc = g_array_elt_len (array, array->len + len + 
-                                      array->zero_terminated);
+  guint want_alloc;
+
+  /* Detect potential overflow */
+  if G_UNLIKELY ((G_MAXUINT - array->len) < len)
+    g_error ("adding %u to array would overflow", len);
+
+  want_alloc = g_array_elt_len (array, array->len + len +
+                                array->zero_terminated);
 
   if (want_alloc > array->alloc)
     {
@@ -901,7 +907,7 @@ struct _GRealPtrArray
  */
 
 static void g_ptr_array_maybe_expand (GRealPtrArray *array,
-                                      gint           len);
+                                      guint          len);
 
 /**
  * g_ptr_array_new:
@@ -1160,8 +1166,12 @@ ptr_array_free (GPtrArray      *array,
 
 static void
 g_ptr_array_maybe_expand (GRealPtrArray *array,
-                          gint           len)
+                          guint          len)
 {
+  /* Detect potential overflow */
+  if G_UNLIKELY ((G_MAXUINT - array->len) < len)
+    g_error ("adding %u to array would overflow", len);
+
   if ((array->len + len) > array->alloc)
     {
       guint old_alloc = array->alloc;
@@ -1189,27 +1199,31 @@ g_ptr_array_set_size  (GPtrArray *array,
                        gint       length)
 {
   GRealPtrArray *rarray = (GRealPtrArray *)array;
+  guint length_unsigned;
 
   g_return_if_fail (rarray);
   g_return_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL));
+  g_return_if_fail (length >= 0);
 
-  if (length > rarray->len)
+  length_unsigned = (guint) length;
+
+  if (length_unsigned > rarray->len)
     {
-      int i;
-      g_ptr_array_maybe_expand (rarray, (length - rarray->len));
+      guint i;
+      g_ptr_array_maybe_expand (rarray, (length_unsigned - rarray->len));
       /* This is not 
        *     memset (array->pdata + array->len, 0,
-       *            sizeof (gpointer) * (length - array->len));
+       *            sizeof (gpointer) * (length_unsigned - array->len));
        * to make it really portable. Remember (void*)NULL needn't be
        * bitwise zero. It of course is silly not to use memset (..,0,..).
        */
-      for (i = rarray->len; i < length; i++)
+      for (i = rarray->len; i < length_unsigned; i++)
         rarray->pdata[i] = NULL;
     }
-  else if (length < rarray->len)
-    g_ptr_array_remove_range (array, length, rarray->len - length);
+  else if (length_unsigned < rarray->len)
+    g_ptr_array_remove_range (array, length_unsigned, rarray->len - length_unsigned);
 
-  rarray->len = length;
+  rarray->len = length_unsigned;
 }
 
 static gpointer
@@ -1505,7 +1519,7 @@ g_ptr_array_insert (GPtrArray *array,
   if (index_ < 0)
     index_ = rarray->len;
 
-  if (index_ < rarray->len)
+  if ((guint) index_ < rarray->len)
     memmove (&(rarray->pdata[index_ + 1]),
              &(rarray->pdata[index_]),
              (rarray->len - index_) * sizeof (gpointer));

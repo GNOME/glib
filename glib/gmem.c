@@ -170,8 +170,7 @@ g_realloc (gpointer mem,
                G_STRLOC, n_bytes);
     }
 
-  if (mem)
-    free (mem);
+  free (mem);
 
   TRACE (GLIB_MEM_REALLOC((void*) NULL, (void*)mem, 0, 0));
 
@@ -190,8 +189,7 @@ g_realloc (gpointer mem,
 void
 g_free (gpointer mem)
 {
-  if (G_LIKELY (mem))
-    free (mem);
+  free (mem);
   TRACE(GLIB_MEM_FREE((void*) mem));
 }
 
@@ -210,7 +208,11 @@ g_free (gpointer mem)
  * pointer is set to %NULL.
  *
  * A macro is also included that allows this function to be used without
- * pointer casts.
+ * pointer casts. This will mask any warnings about incompatible function types
+ * or calling conventions, so you must ensure that your @destroy function is
+ * compatible with being called as `GDestroyNotify` using the standard calling
+ * convention for the platform that GLib was compiled for; otherwise the program
+ * will experience undefined behaviour.
  *
  * Since: 2.34
  **/
@@ -300,8 +302,7 @@ g_try_realloc (gpointer mem,
   else
     {
       newmem = NULL;
-      if (mem)
-	free (mem);
+      free (mem);
     }
 
   TRACE (GLIB_MEM_REALLOC((void*) newmem, (void*)mem, (unsigned int) n_bytes, 1));

@@ -388,7 +388,7 @@ g_rand_set_seed_array (GRand         *rand,
                        const guint32 *seed,
                        guint          seed_length)
 {
-  int i, j, k;
+  guint i, j, k;
 
   g_return_if_fail (rand != NULL);
   g_return_if_fail (seed_length >= 1);

@@ -557,9 +557,11 @@ g_slist_copy (GSList *list)
  * In contrast with g_slist_copy(), this function uses @func to make a copy of
  * each list element, in addition to copying the list container itself.
  *
- * @func, as a #GCopyFunc, takes two arguments, the data to be copied and a user
- * pointer. It's safe to pass #NULL as user_data, if the copy function takes only
- * one argument.
+ * @func, as a #GCopyFunc, takes two arguments, the data to be copied
+ * and a @user_data pointer. On common processor architectures, it's safe to
+ * pass %NULL as @user_data if the copy function takes only one argument. You
+ * may get compiler warnings from this though if compiling with GCC’s
+ * `-Wcast-function-type` warning.
  *
  * For instance, if @list holds a list of GObjects, you can do:
  * |[<!-- language="C" --> 
@@ -571,7 +573,7 @@ g_slist_copy (GSList *list)
  * g_slist_free_full (another_list, g_object_unref);
  * ]|
  *
- * Returns: a full copy of @list, use #g_slist_free_full to free it
+ * Returns: a full copy of @list, use g_slist_free_full() to free it
  *
  * Since: 2.34
  */

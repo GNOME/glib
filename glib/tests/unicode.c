@@ -297,6 +297,13 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_NUSHU,                  0x1B170 },
     { G_UNICODE_SCRIPT_SOYOMBO,                0x11A50 },
     { G_UNICODE_SCRIPT_ZANABAZAR_SQUARE,       0x11A00 },
+    { G_UNICODE_SCRIPT_DOGRA,                  0x11800 },
+    { G_UNICODE_SCRIPT_GUNJALA_GONDI,          0x11D60 },
+    { G_UNICODE_SCRIPT_HANIFI_ROHINGYA,        0x10D00 },
+    { G_UNICODE_SCRIPT_MAKASAR,                0x11EE0 },
+    { G_UNICODE_SCRIPT_MEDEFAIDRIN,            0x16E40 },
+    { G_UNICODE_SCRIPT_OLD_SOGDIAN,            0x10F00 },
+    { G_UNICODE_SCRIPT_SOGDIAN,                0x10F30 },
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     g_assert_cmpint (g_unichar_get_script (examples[i].c), ==, examples[i].script);
@@ -895,6 +902,15 @@ test_iso15924 (void)
     { G_UNICODE_SCRIPT_NUSHU,                  "Nshu" },
     { G_UNICODE_SCRIPT_SOYOMBO,                "Soyo" },
     { G_UNICODE_SCRIPT_ZANABAZAR_SQUARE,       "Zanb" },
+
+    /* Unicode 11.0 additions */
+    { G_UNICODE_SCRIPT_DOGRA,                  "Dogr" },
+    { G_UNICODE_SCRIPT_GUNJALA_GONDI,          "Gong" },
+    { G_UNICODE_SCRIPT_HANIFI_ROHINGYA,        "Rohg" },
+    { G_UNICODE_SCRIPT_MAKASAR,                "Maka" },
+    { G_UNICODE_SCRIPT_MEDEFAIDRIN,            "Medf" },
+    { G_UNICODE_SCRIPT_OLD_SOGDIAN,            "Sogo" },
+    { G_UNICODE_SCRIPT_SOGDIAN,                "Sogd" },
   };
   guint i;
 

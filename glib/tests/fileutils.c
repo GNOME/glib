@@ -276,36 +276,36 @@ test_build_filename (void)
 #ifdef G_OS_WIN32
 
   /* Test also using the slash as file name separator */
-#define U "/"
+#define Z "/"
   /* check_string (g_build_filename (NULL), ""); */
-  check_string (g_build_filename (U, NULL), U);
-  check_string (g_build_filename (U"x", NULL), U"x");
-  check_string (g_build_filename ("x"U, NULL), "x"U);
-  check_string (g_build_filename ("", U"x", NULL), U"x");
-  check_string (g_build_filename ("", U"x", NULL), U"x");
-  check_string (g_build_filename (U, "x", NULL), U"x");
-  check_string (g_build_filename (U U, "x", NULL), U U"x");
-  check_string (g_build_filename (U S, "x", NULL), U S"x");
-  check_string (g_build_filename ("x"U, "", NULL), "x"U);
-  check_string (g_build_filename ("x"S"y", "z"U"a", NULL), "x"S"y"S"z"U"a");
-  check_string (g_build_filename ("x", U, NULL), "x"U);
-  check_string (g_build_filename ("x", U U, NULL), "x"U U);
-  check_string (g_build_filename ("x", S U, NULL), "x"S U);
-  check_string (g_build_filename (U"x", "y", NULL), U"x"U"y");
-  check_string (g_build_filename ("x", "y"U, NULL), "x"U"y"U);
-  check_string (g_build_filename (U"x"U, U"y"U, NULL), U"x"U"y"U);
-  check_string (g_build_filename (U"x"U U, U U"y"U, NULL), U"x"U"y"U);
-  check_string (g_build_filename ("x", U, "y",  NULL), "x"U"y");
-  check_string (g_build_filename ("x", U U, "y",  NULL), "x"U"y");
-  check_string (g_build_filename ("x", U S, "y",  NULL), "x"S"y");
-  check_string (g_build_filename ("x", S U, "y",  NULL), "x"U"y");
-  check_string (g_build_filename ("x", U "y", "z", NULL), "x"U"y"U"z");
+  check_string (g_build_filename (Z, NULL), Z);
+  check_string (g_build_filename (Z"x", NULL), Z"x");
+  check_string (g_build_filename ("x"Z, NULL), "x"Z);
+  check_string (g_build_filename ("", Z"x", NULL), Z"x");
+  check_string (g_build_filename ("", Z"x", NULL), Z"x");
+  check_string (g_build_filename (Z, "x", NULL), Z"x");
+  check_string (g_build_filename (Z Z, "x", NULL), Z Z"x");
+  check_string (g_build_filename (Z S, "x", NULL), Z S"x");
+  check_string (g_build_filename ("x"Z, "", NULL), "x"Z);
+  check_string (g_build_filename ("x"S"y", "z"Z"a", NULL), "x"S"y"S"z"Z"a");
+  check_string (g_build_filename ("x", Z, NULL), "x"Z);
+  check_string (g_build_filename ("x", Z Z, NULL), "x"Z Z);
+  check_string (g_build_filename ("x", S Z, NULL), "x"S Z);
+  check_string (g_build_filename (Z"x", "y", NULL), Z"x"Z"y");
+  check_string (g_build_filename ("x", "y"Z, NULL), "x"Z"y"Z);
+  check_string (g_build_filename (Z"x"Z, Z"y"Z, NULL), Z"x"Z"y"Z);
+  check_string (g_build_filename (Z"x"Z Z, Z Z"y"Z, NULL), Z"x"Z"y"Z);
+  check_string (g_build_filename ("x", Z, "y",  NULL), "x"Z"y");
+  check_string (g_build_filename ("x", Z Z, "y",  NULL), "x"Z"y");
+  check_string (g_build_filename ("x", Z S, "y",  NULL), "x"S"y");
+  check_string (g_build_filename ("x", S Z, "y",  NULL), "x"Z"y");
+  check_string (g_build_filename ("x", Z "y", "z", NULL), "x"Z"y"Z"z");
   check_string (g_build_filename ("x", S "y", "z", NULL), "x"S"y"S"z");
-  check_string (g_build_filename ("x", S "y", "z", U, "a", "b", NULL), "x"S"y"S"z"U"a"U"b");
-  check_string (g_build_filename (U"x"U, U"y"U, U"z"U, NULL), U"x"U"y"U"z"U);
-  check_string (g_build_filename (U U"x"U U, U U"y"U U, U U"z"U U, NULL), U U"x"U"y"U"z"U U);
+  check_string (g_build_filename ("x", S "y", "z", Z, "a", "b", NULL), "x"S"y"S"z"Z"a"Z"b");
+  check_string (g_build_filename (Z"x"Z, Z"y"Z, Z"z"Z, NULL), Z"x"Z"y"Z"z"Z);
+  check_string (g_build_filename (Z Z"x"Z Z, Z Z"y"Z Z, Z Z"z"Z Z, NULL), Z Z"x"Z"y"Z"z"Z Z);
 
-#undef U
+#undef Z
 
 #endif /* G_OS_WIN32 */
 
@@ -366,64 +366,64 @@ test_build_filenamev (void)
 #ifdef G_OS_WIN32
 
   /* Test also using the slash as file name separator */
-#define U "/"
+#define Z "/"
   args[0] = NULL;
   check_string (g_build_filenamev (args), "");
-  args[0] = U; args[1] = NULL;
-  check_string (g_build_filenamev (args), U);
-  args[0] = U"x"; args[1] = NULL;
-  check_string (g_build_filenamev (args), U"x");
-  args[0] = "x"U; args[1] = NULL;
-  check_string (g_build_filenamev (args), "x"U);
-  args[0] = ""; args[1] = U"x"; args[2] = NULL;
-  check_string (g_build_filenamev (args), U"x");
-  args[0] = ""; args[1] = U"x"; args[2] = NULL;
-  check_string (g_build_filenamev (args), U"x");
-  args[0] = U; args[1] = "x"; args[2] = NULL;
-  check_string (g_build_filenamev (args), U"x");
-  args[0] = U U; args[1] = "x"; args[2] = NULL;
-  check_string (g_build_filenamev (args), U U"x");
-  args[0] = U S; args[1] = "x"; args[2] = NULL;
-  check_string (g_build_filenamev (args), U S"x");
-  args[0] = "x"U; args[1] = ""; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"U);
-  args[0] = "x"S"y"; args[1] = "z"U"a"; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y"S"z"U"a");
-  args[0] = "x"; args[1] = U; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"U);
-  args[0] = "x"; args[1] = U U; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"U U);
-  args[0] = "x"; args[1] = S U; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"S U);
-  args[0] = U"x"; args[1] = "y"; args[2] = NULL;
-  check_string (g_build_filenamev (args), U"x"U"y");
-  args[0] = "x"; args[1] = "y"U; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"U"y"U);
-  args[0] = U"x"U; args[1] = U"y"U; args[2] = NULL;
-  check_string (g_build_filenamev (args), U"x"U"y"U);
-  args[0] = U"x"U U; args[1] = U U"y"U; args[2] = NULL;
-  check_string (g_build_filenamev (args), U"x"U"y"U);
-  args[0] = "x"; args[1] = U; args[2] = "y", args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"U"y");
-  args[0] = "x"; args[1] = U U; args[2] = "y", args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"U"y");
-  args[0] = "x"; args[1] = U S; args[2] = "y", args[3] = NULL;
+  args[0] = Z; args[1] = NULL;
+  check_string (g_build_filenamev (args), Z);
+  args[0] = Z"x"; args[1] = NULL;
+  check_string (g_build_filenamev (args), Z"x");
+  args[0] = "x"Z; args[1] = NULL;
+  check_string (g_build_filenamev (args), "x"Z);
+  args[0] = ""; args[1] = Z"x"; args[2] = NULL;
+  check_string (g_build_filenamev (args), Z"x");
+  args[0] = ""; args[1] = Z"x"; args[2] = NULL;
+  check_string (g_build_filenamev (args), Z"x");
+  args[0] = Z; args[1] = "x"; args[2] = NULL;
+  check_string (g_build_filenamev (args), Z"x");
+  args[0] = Z Z; args[1] = "x"; args[2] = NULL;
+  check_string (g_build_filenamev (args), Z Z"x");
+  args[0] = Z S; args[1] = "x"; args[2] = NULL;
+  check_string (g_build_filenamev (args), Z S"x");
+  args[0] = "x"Z; args[1] = ""; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x"Z);
+  args[0] = "x"S"y"; args[1] = "z"Z"a"; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x"S"y"S"z"Z"a");
+  args[0] = "x"; args[1] = Z; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x"Z);
+  args[0] = "x"; args[1] = Z Z; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x"Z Z);
+  args[0] = "x"; args[1] = S Z; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x"S Z);
+  args[0] = Z"x"; args[1] = "y"; args[2] = NULL;
+  check_string (g_build_filenamev (args), Z"x"Z"y");
+  args[0] = "x"; args[1] = "y"Z; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x"Z"y"Z);
+  args[0] = Z"x"Z; args[1] = Z"y"Z; args[2] = NULL;
+  check_string (g_build_filenamev (args), Z"x"Z"y"Z);
+  args[0] = Z"x"Z Z; args[1] = Z Z"y"Z; args[2] = NULL;
+  check_string (g_build_filenamev (args), Z"x"Z"y"Z);
+  args[0] = "x"; args[1] = Z; args[2] = "y", args[3] = NULL;
+  check_string (g_build_filenamev (args), "x"Z"y");
+  args[0] = "x"; args[1] = Z Z; args[2] = "y", args[3] = NULL;
+  check_string (g_build_filenamev (args), "x"Z"y");
+  args[0] = "x"; args[1] = Z S; args[2] = "y", args[3] = NULL;
   check_string (g_build_filenamev (args), "x"S"y");
-  args[0] = "x"; args[1] = S U; args[2] = "y", args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"U"y");
-  args[0] = "x"; args[1] = U "y"; args[2] = "z", args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"U"y"U"z");
+  args[0] = "x"; args[1] = S Z; args[2] = "y", args[3] = NULL;
+  check_string (g_build_filenamev (args), "x"Z"y");
+  args[0] = "x"; args[1] = Z "y"; args[2] = "z", args[3] = NULL;
+  check_string (g_build_filenamev (args), "x"Z"y"Z"z");
   args[0] = "x"; args[1] = S "y"; args[2] = "z", args[3] = NULL;
   check_string (g_build_filenamev (args), "x"S"y"S"z");
-  args[0] = "x"; args[1] = S "y"; args[2] = "z", args[3] = U;
+  args[0] = "x"; args[1] = S "y"; args[2] = "z", args[3] = Z;
   args[4] = "a"; args[5] = "b"; args[6] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y"S"z"U"a"U"b");
-  args[0] = U"x"U; args[1] = U"y"U; args[2] = U"z"U, args[3] = NULL;
-  check_string (g_build_filenamev (args), U"x"U"y"U"z"U);
-  args[0] = U U"x"U U; args[1] = U U"y"U U; args[2] = U U"z"U U, args[3] = NULL;
-  check_string (g_build_filenamev (args), U U"x"U"y"U"z"U U);
+  check_string (g_build_filenamev (args), "x"S"y"S"z"Z"a"Z"b");
+  args[0] = Z"x"Z; args[1] = Z"y"Z; args[2] = Z"z"Z, args[3] = NULL;
+  check_string (g_build_filenamev (args), Z"x"Z"y"Z"z"Z);
+  args[0] = Z Z"x"Z Z; args[1] = Z Z"y"Z Z; args[2] = Z Z"z"Z Z, args[3] = NULL;
+  check_string (g_build_filenamev (args), Z Z"x"Z"y"Z"z"Z Z);
 
-#undef U
+#undef Z
 
 #endif /* G_OS_WIN32 */
 }
@@ -538,57 +538,58 @@ test_format_size_for_display (void)
   check_string (g_format_size (0), "0 bytes");
   check_string (g_format_size (1), "1 byte");
   check_string (g_format_size (2), "2 bytes");
-  check_string (g_format_size (1000ULL), "1.0 kB");
-  check_string (g_format_size (1000ULL * 1000), "1.0 MB");
-  check_string (g_format_size (1000ULL * 1000 * 1000), "1.0 GB");
-  check_string (g_format_size (1000ULL * 1000 * 1000 * 1000), "1.0 TB");
-  check_string (g_format_size (1000ULL * 1000 * 1000 * 1000 * 1000), "1.0 PB");
-  check_string (g_format_size (1000ULL * 1000 * 1000 * 1000 * 1000 * 1000), "1.0 EB");
+  /* '\302\240' is a no-break space, to keep quantity and unit symbol together at line breaks*/
+  check_string (g_format_size (1000ULL), "1.0\302\240kB");
+  check_string (g_format_size (1000ULL * 1000), "1.0\302\240MB");
+  check_string (g_format_size (1000ULL * 1000 * 1000), "1.0\302\240GB");
+  check_string (g_format_size (1000ULL * 1000 * 1000 * 1000), "1.0\302\240TB");
+  check_string (g_format_size (1000ULL * 1000 * 1000 * 1000 * 1000), "1.0\302\240PB");
+  check_string (g_format_size (1000ULL * 1000 * 1000 * 1000 * 1000 * 1000), "1.0\302\240EB");
 
   check_string (g_format_size_full (0, G_FORMAT_SIZE_IEC_UNITS), "0 bytes");
   check_string (g_format_size_full (1, G_FORMAT_SIZE_IEC_UNITS), "1 byte");
   check_string (g_format_size_full (2, G_FORMAT_SIZE_IEC_UNITS), "2 bytes");
 
-  check_string (g_format_size_full (2048ULL, G_FORMAT_SIZE_IEC_UNITS), "2.0 KiB");
-  check_string (g_format_size_full (2048ULL * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0 MiB");
-  check_string (g_format_size_full (2048ULL * 1024 * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0 GiB");
-  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0 TiB");
-  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024 * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0 PiB");
-  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024 * 1024 * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0 EiB");
+  check_string (g_format_size_full (2048ULL, G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240KiB");
+  check_string (g_format_size_full (2048ULL * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240MiB");
+  check_string (g_format_size_full (2048ULL * 1024 * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240GiB");
+  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240TiB");
+  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024 * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240PiB");
+  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024 * 1024 * 1024, G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240EiB");
 
-  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_IEC_UNITS), "227.4 MiB");
-  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_DEFAULT), "238.5 MB");
-  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_LONG_FORMAT), "238.5 MB (238472938 bytes)");
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_IEC_UNITS), "227.4\302\240MiB");
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_DEFAULT), "238.5\302\240MB");
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_LONG_FORMAT), "238.5\302\240MB (238472938 bytes)");
 
 
   check_string (g_format_size_full (0, G_FORMAT_SIZE_BITS), "0 bits");
   check_string (g_format_size_full (1, G_FORMAT_SIZE_BITS), "1 bit");
   check_string (g_format_size_full (2, G_FORMAT_SIZE_BITS), "2 bits");
 
-  check_string (g_format_size_full (2000ULL, G_FORMAT_SIZE_BITS), "2.0 kb");
-  check_string (g_format_size_full (2000ULL * 1000, G_FORMAT_SIZE_BITS), "2.0 Mb");
-  check_string (g_format_size_full (2000ULL * 1000 * 1000, G_FORMAT_SIZE_BITS), "2.0 Gb");
-  check_string (g_format_size_full (2000ULL * 1000 * 1000 * 1000, G_FORMAT_SIZE_BITS), "2.0 Tb");
-  check_string (g_format_size_full (2000ULL * 1000 * 1000 * 1000 * 1000, G_FORMAT_SIZE_BITS), "2.0 Pb");
-  check_string (g_format_size_full (2000ULL * 1000 * 1000 * 1000 * 1000 * 1000, G_FORMAT_SIZE_BITS), "2.0 Eb");
+  check_string (g_format_size_full (2000ULL, G_FORMAT_SIZE_BITS), "2.0\302\240kb");
+  check_string (g_format_size_full (2000ULL * 1000, G_FORMAT_SIZE_BITS), "2.0\302\240Mb");
+  check_string (g_format_size_full (2000ULL * 1000 * 1000, G_FORMAT_SIZE_BITS), "2.0\302\240Gb");
+  check_string (g_format_size_full (2000ULL * 1000 * 1000 * 1000, G_FORMAT_SIZE_BITS), "2.0\302\240Tb");
+  check_string (g_format_size_full (2000ULL * 1000 * 1000 * 1000 * 1000, G_FORMAT_SIZE_BITS), "2.0\302\240Pb");
+  check_string (g_format_size_full (2000ULL * 1000 * 1000 * 1000 * 1000 * 1000, G_FORMAT_SIZE_BITS), "2.0\302\240Eb");
 
-  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_BITS), "238.5 Mb");
-  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_LONG_FORMAT), "238.5 Mb (238472938 bits)");
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_BITS), "238.5\302\240Mb");
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_LONG_FORMAT), "238.5\302\240Mb (238472938 bits)");
 
 
   check_string (g_format_size_full (0, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "0 bits");
   check_string (g_format_size_full (1, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "1 bit");
   check_string (g_format_size_full (2, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2 bits");
 
-  check_string (g_format_size_full (2048ULL, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0 Kib");
-  check_string (g_format_size_full (2048ULL * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0 Mib");
-  check_string (g_format_size_full (2048ULL * 1024 * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0 Gib");
-  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0 Tib");
-  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024 * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0 Pib");
-  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024 * 1024 * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0 Eib");
+  check_string (g_format_size_full (2048ULL, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240Kib");
+  check_string (g_format_size_full (2048ULL * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240Mib");
+  check_string (g_format_size_full (2048ULL * 1024 * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240Gib");
+  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240Tib");
+  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024 * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240Pib");
+  check_string (g_format_size_full (2048ULL * 1024 * 1024 * 1024 * 1024 * 1024, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "2.0\302\240Eib");
 
-  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "227.4 Mib");
-  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS | G_FORMAT_SIZE_LONG_FORMAT), "227.4 Mib (238472938 bits)");
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS), "227.4\302\240Mib");
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS | G_FORMAT_SIZE_LONG_FORMAT), "227.4\302\240Mib (238472938 bits)");
 }
 
 static void
@@ -887,6 +888,7 @@ test_stdio_wrappers (void)
   gint ret;
   struct utimbuf ut;
   GError *error = NULL;
+  GStatBuf path_statbuf, cwd_statbuf;
 
   /* The permissions tests here don’t work when running as root. */
 #ifdef G_OS_UNIX
@@ -912,15 +914,24 @@ test_stdio_wrappers (void)
   cwd = g_get_current_dir ();
   path = g_build_filename (cwd, "mkdir-test", NULL);
   g_free (cwd);
+#ifndef G_OS_WIN32
+  /* 0666 on directories means nothing to Windows, it only obeys ACLs */
   ret = g_chdir (path);
   g_assert_cmpint (errno, ==, EACCES);
   g_assert_cmpint (ret, ==, -1);
+#endif
   ret = g_chmod (path, 0777);
   g_assert_cmpint (ret, ==, 0);
   ret = g_chdir (path);
   g_assert_cmpint (ret, ==, 0);
   cwd = g_get_current_dir ();
-  g_assert_true (g_str_equal (cwd, path));
+  /* We essentially want to check that cwd == path, but we can’t compare the
+   * paths directly since the tests might be running under a symlink (for
+   * example, /tmp is sometimes a symlink). Compare the inode numbers instead. */
+  g_assert_cmpint (g_stat (cwd, &cwd_statbuf), ==, 0);
+  g_assert_cmpint (g_stat (path, &path_statbuf), ==, 0);
+  g_assert_true (cwd_statbuf.st_dev == path_statbuf.st_dev &&
+                 cwd_statbuf.st_ino == path_statbuf.st_ino);
   g_free (cwd);
   g_free (path);
 
@@ -937,6 +948,15 @@ test_stdio_wrappers (void)
   ret = g_open ("test-create", O_RDONLY, 0666);
   g_close (ret, &error);
   g_assert_no_error (error);
+
+#ifdef G_OS_WIN32
+  /* On Windows the 5 permission bit results in a read-only file
+   * that cannot be modified in any way (attribute changes included).
+   * Remove the read-only attribute via chmod().
+   */
+  ret = g_chmod ("test-create", 0666);
+  g_assert_cmpint (ret, ==, 0);
+#endif
 
   ut.actime = ut.modtime = (time_t)0;
   ret = g_utime ("test-create", &ut);
@@ -1002,6 +1022,139 @@ test_fopen_modes (void)
   g_free (path);
 }
 
+#ifdef G_OS_WIN32
+#include "../gstdio-private.c"
+
+static int
+g_wcscmp0 (const gunichar2 *str1,
+           const gunichar2 *str2)
+{
+  if (!str1)
+    return -(str1 != str2);
+  if (!str2)
+    return str1 != str2;
+  return wcscmp (str1, str2);
+}
+
+#define g_assert_cmpwcs(s1, cmp, s2, s1u8, s2u8) \
+G_STMT_START { \
+  const gunichar2 *__s1 = (s1), *__s2 = (s2); \
+  if (g_wcscmp0 (__s1, __s2) cmp 0) ; else \
+    g_assertion_message_cmpstr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                #s1u8 " " #cmp " " #s2u8, s1u8, #cmp, s2u8); \
+} G_STMT_END
+
+static void
+test_win32_pathstrip (void)
+{
+  gunichar2 *buf;
+  gsize i;
+#define IDENTITY_TEST(x) { x, x, FALSE }
+  struct
+  {
+    gunichar2 *in;
+    gunichar2 *out;
+    gboolean   result;
+  } testcases[] = {
+    IDENTITY_TEST (L"\\\\?\\V"),
+    IDENTITY_TEST (L"\\\\?\\Vo"),
+    IDENTITY_TEST (L"\\\\?\\Volume{0700f3d3-6d24-11e3-8b2f-806e6f6e6963}\\"),
+    IDENTITY_TEST (L"\\??\\V"),
+    IDENTITY_TEST (L"\\??\\Vo"),
+    IDENTITY_TEST (L"\\??\\Volume{0700f3d3-6d24-11e3-8b2f-806e6f6e6963}\\"),
+    IDENTITY_TEST (L"\\\\?\\\x0441:\\"),
+    IDENTITY_TEST (L"\\??\\\x0441:\\"),
+    IDENTITY_TEST (L"a:\\"),
+    IDENTITY_TEST (L"a:\\b\\c"),
+    IDENTITY_TEST (L"x"),
+#undef IDENTITY_TEST
+    {
+      L"\\\\?\\c:\\",
+             L"c:\\",
+      TRUE,
+    },
+    {
+      L"\\\\?\\C:\\",
+             L"C:\\",
+      TRUE,
+    },
+    {
+      L"\\\\?\\c:\\",
+             L"c:\\",
+      TRUE,
+    },
+    {
+      L"\\\\?\\C:\\",
+             L"C:\\",
+      TRUE,
+    },
+    {
+      L"\\\\?\\C:\\",
+             L"C:\\",
+      TRUE,
+    },
+    { 0, }
+  };
+
+  for (i = 0; testcases[i].in; i++)
+    {
+      gsize str_len = wcslen (testcases[i].in) + 1;
+      gchar *in_u8 = g_utf16_to_utf8 (testcases[i].in, -1, NULL, NULL, NULL);
+      gchar *out_u8 = g_utf16_to_utf8 (testcases[i].out, -1, NULL, NULL, NULL);
+
+      g_assert_nonnull (in_u8);
+      g_assert_nonnull (out_u8);
+
+      buf = g_new0 (gunichar2, str_len);
+      memcpy (buf, testcases[i].in, str_len * sizeof (gunichar2));
+      _g_win32_strip_extended_ntobjm_prefix (buf, &str_len);
+      g_assert_cmpwcs (buf, ==, testcases[i].out, in_u8, out_u8);
+      g_free (buf);
+      g_free (in_u8);
+      g_free (out_u8);
+    }
+  /* Check for correct behaviour on non-NUL-terminated strings */
+  for (i = 0; testcases[i].in; i++)
+    {
+      gsize str_len = wcslen (testcases[i].in) + 1;
+      wchar_t old_endchar;
+      gchar *in_u8 = g_utf16_to_utf8 (testcases[i].in, -1, NULL, NULL, NULL);
+      gchar *out_u8 = g_utf16_to_utf8 (testcases[i].out, -1, NULL, NULL, NULL);
+
+      g_assert_nonnull (in_u8);
+      g_assert_nonnull (out_u8);
+
+      buf = g_new0 (gunichar2, str_len);
+      memcpy (buf, testcases[i].in, (str_len) * sizeof (gunichar2));
+
+      old_endchar = buf[wcslen (testcases[i].out)];
+      str_len -= 1;
+
+      if (testcases[i].result)
+        {
+          /* Given "\\\\?\\C:\\" (len 7, unterminated),
+           * we should get "C:\\" (len 3, unterminated).
+           * Put a character different from "\\" (4-th character of the buffer)
+           * at the end of the unterminated source buffer, into a position
+           * where NUL-terminator would normally be. Then later test that 4-th character
+           * in the buffer is still the old "\\".
+           * After that terminate the string and use normal g_wcscmp0().
+           */
+          buf[str_len] = old_endchar - 1;
+        }
+
+      _g_win32_strip_extended_ntobjm_prefix (buf, &str_len);
+      g_assert_cmpuint (old_endchar, ==, buf[wcslen (testcases[i].out)]);
+      buf[str_len] = L'\0';
+      g_assert_cmpwcs (buf, ==, testcases[i].out, in_u8, out_u8);
+      g_free (buf);
+      g_free (in_u8);
+      g_free (out_u8);
+    }
+}
+
+#endif
+
 int
 main (int   argc,
       char *argv[])
@@ -1011,6 +1164,9 @@ main (int   argc,
 
   g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/merge_requests/");
 
+#ifdef G_OS_WIN32
+  g_test_add_func ("/fileutils/stdio-win32-pathstrip", test_win32_pathstrip);
+#endif
   g_test_add_func ("/fileutils/build-path", test_build_path);
   g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
   g_test_add_func ("/fileutils/build-filename", test_build_filename);

@@ -460,6 +460,7 @@ binding_chain (void)
   BindingSource *c = g_object_new (binding_source_get_type (), NULL);
   GBinding *binding_1, *binding_2;
 
+  g_test_bug_base ("http://bugzilla.gnome.org/");
   g_test_bug ("621782");
 
   /* A -> B, B -> C */
@@ -625,6 +626,83 @@ binding_unbind (void)
   g_object_unref (source);
 }
 
+/* When source or target die, so does the binding if there is no other ref */
+static void
+binding_unbind_weak (void)
+{
+  GBinding *binding;
+  BindingSource *source;
+  BindingTarget *target;
+
+  /* first source, then target */
+  source = g_object_new (binding_source_get_type (), NULL);
+  target = g_object_new (binding_target_get_type (), NULL);
+  binding = g_object_bind_property (source, "foo",
+                                    target, "bar",
+                                    G_BINDING_DEFAULT);
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+  g_assert_nonnull (binding);
+  g_object_unref (source);
+  g_assert_null (binding);
+  g_object_unref (target);
+  g_assert_null (binding);
+
+  /* first target, then source */
+  source = g_object_new (binding_source_get_type (), NULL);
+  target = g_object_new (binding_target_get_type (), NULL);
+  binding = g_object_bind_property (source, "foo",
+                                    target, "bar",
+                                    G_BINDING_DEFAULT);
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+  g_assert_nonnull (binding);
+  g_object_unref (target);
+  g_assert_null (binding);
+  g_object_unref (source);
+  g_assert_null (binding);
+
+  /* target and source are the same */
+  source = g_object_new (binding_source_get_type (), NULL);
+  binding = g_object_bind_property (source, "foo",
+                                    source, "bar",
+                                    G_BINDING_DEFAULT);
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+  g_assert_nonnull (binding);
+  g_object_unref (source);
+  g_assert_null (binding);
+}
+
+/* Test that every call to unbind() after the first is a noop */
+static void
+binding_unbind_multiple (void)
+{
+  BindingSource *source = g_object_new (binding_source_get_type (), NULL);
+  BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+  GBinding *binding;
+  guint i;
+
+  g_test_bug ("1373");
+
+  binding = g_object_bind_property (source, "foo",
+                                    target, "bar",
+                                    G_BINDING_DEFAULT);
+  g_object_ref (binding);
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+  g_assert_nonnull (binding);
+
+  /* this shouldn't crash */
+  for (i = 0; i < 50; i++)
+    {
+      g_binding_unbind (binding);
+      g_assert_nonnull (binding);
+    }
+
+  g_object_unref (binding);
+  g_assert_null (binding);
+
+  g_object_unref (source);
+  g_object_unref (target);
+}
+
 static void
 binding_fail (void)
 {
@@ -653,7 +731,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/binding/default", binding_default);
   g_test_add_func ("/binding/bidirectional", binding_bidirectional);
@@ -665,6 +743,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/invert-boolean", binding_invert_boolean);
   g_test_add_func ("/binding/same-object", binding_same_object);
   g_test_add_func ("/binding/unbind", binding_unbind);
+  g_test_add_func ("/binding/unbind-weak", binding_unbind_weak);
+  g_test_add_func ("/binding/unbind-multiple", binding_unbind_multiple);
   g_test_add_func ("/binding/fail", binding_fail);
 
   return g_test_run ();

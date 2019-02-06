@@ -2112,6 +2112,7 @@ set_overrides (GHashTable  *schema_table,
         }
 
       g_strfreev (groups);
+      g_key_file_free (key_file);
     }
 
   return TRUE;

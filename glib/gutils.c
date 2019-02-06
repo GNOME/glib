@@ -29,6 +29,7 @@
 #include "config.h"
 
 #include "gutils.h"
+#include "gutilsprivate.h"
 
 #include <stdarg.h>
 #include <stdlib.h>
@@ -117,10 +118,6 @@
 #    define CSIDL_PROFILE 40
 #  endif
 #  include <process.h>
-#endif
-
-#ifdef HAVE_CARBON
-#include <CoreServices/CoreServices.h>
 #endif
 
 #ifdef HAVE_CODESET
@@ -555,12 +552,13 @@ typedef struct
   gchar *home_dir;
 } UserDatabaseEntry;
 
+/* These must all be read/written with @g_utils_global held. */
 static  gchar   *g_user_data_dir = NULL;
 static  gchar  **g_system_data_dirs = NULL;
 static  gchar   *g_user_cache_dir = NULL;
 static  gchar   *g_user_config_dir = NULL;
+static  gchar   *g_user_runtime_dir = NULL;
 static  gchar  **g_system_config_dirs = NULL;
-
 static  gchar  **g_user_special_dirs = NULL;
 
 /* fifteen minutes of fame for everybody */
@@ -790,6 +788,79 @@ g_get_real_name (void)
   return entry->real_name;
 }
 
+/* Protected by @g_utils_global_lock. */
+static gchar *g_home_dir = NULL;  /* (owned) (nullable before initialised) */
+
+static gchar *
+g_build_home_dir (void)
+{
+  gchar *home_dir;
+
+  /* We first check HOME and use it if it is set */
+  home_dir = g_strdup (g_getenv ("HOME"));
+
+#ifdef G_OS_WIN32
+  /* Only believe HOME if it is an absolute path and exists.
+   *
+   * We only do this check on Windows for a couple of reasons.
+   * Historically, we only did it there because we used to ignore $HOME
+   * on UNIX.  There are concerns about enabling it now on UNIX because
+   * of things like autofs.  In short, if the user has a bogus value in
+   * $HOME then they get what they pay for...
+   */
+  if (home_dir != NULL)
+    {
+      if (!(g_path_is_absolute (home_dir) &&
+            g_file_test (home_dir, G_FILE_TEST_IS_DIR)))
+        g_clear_pointer (&home_dir, g_free);
+    }
+
+  /* In case HOME is Unix-style (it happens), convert it to
+   * Windows style.
+   */
+  if (home_dir != NULL)
+    {
+      gchar *p;
+      while ((p = strchr (home_dir, '/')) != NULL)
+        *p = '\\';
+    }
+
+  if (home_dir == NULL)
+    {
+      /* USERPROFILE is probably the closest equivalent to $HOME? */
+      if (g_getenv ("USERPROFILE") != NULL)
+        home_dir = g_strdup (g_getenv ("USERPROFILE"));
+    }
+
+  if (home_dir == NULL)
+    home_dir = get_special_folder (CSIDL_PROFILE);
+
+  if (home_dir == NULL)
+    home_dir = get_windows_directory_root ();
+#endif /* G_OS_WIN32 */
+
+  if (home_dir == NULL)
+    {
+      /* If we didn't get it from any of those methods, we will have
+       * to read the user database entry.
+       */
+      UserDatabaseEntry *entry = g_get_user_database_entry ();
+      home_dir = g_strdup (entry->home_dir);
+    }
+
+  /* If we have been denied access to /etc/passwd (for example, by an
+   * overly-zealous LSM), make up a junk value. The return value at this
+   * point is explicitly documented as ‘undefined’. */
+  if (home_dir == NULL)
+    {
+      g_warning ("Could not find home directory: $HOME is not set, and "
+                 "user database could not be read.");
+      home_dir = g_strdup ("/");
+    }
+
+  return g_steal_pointer (&home_dir);
+}
+
 /**
  * g_get_home_dir:
  *
@@ -819,87 +890,15 @@ g_get_real_name (void)
 const gchar *
 g_get_home_dir (void)
 {
-  static gchar *home_dir;
+  const gchar *home_dir;
 
-  if (g_once_init_enter (&home_dir))
-    {
-      gchar *tmp;
+  G_LOCK (g_utils_global);
 
-      /* We first check HOME and use it if it is set */
-      tmp = g_strdup (g_getenv ("HOME"));
+  if (g_home_dir == NULL)
+    g_home_dir = g_build_home_dir ();
+  home_dir = g_home_dir;
 
-#ifdef G_OS_WIN32
-      /* Only believe HOME if it is an absolute path and exists.
-       *
-       * We only do this check on Windows for a couple of reasons.
-       * Historically, we only did it there because we used to ignore $HOME
-       * on UNIX.  There are concerns about enabling it now on UNIX because
-       * of things like autofs.  In short, if the user has a bogus value in
-       * $HOME then they get what they pay for...
-       */
-      if (tmp)
-        {
-          if (!(g_path_is_absolute (tmp) &&
-                g_file_test (tmp, G_FILE_TEST_IS_DIR)))
-            {
-              g_free (tmp);
-              tmp = NULL;
-            }
-        }
-
-      /* In case HOME is Unix-style (it happens), convert it to
-       * Windows style.
-       */
-      if (tmp)
-        {
-          gchar *p;
-          while ((p = strchr (tmp, '/')) != NULL)
-            *p = '\\';
-        }
-
-      if (!tmp)
-        {
-          /* USERPROFILE is probably the closest equivalent to $HOME? */
-          if (g_getenv ("USERPROFILE") != NULL)
-            tmp = g_strdup (g_getenv ("USERPROFILE"));
-        }
-
-      if (!tmp)
-        tmp = get_special_folder (CSIDL_PROFILE);
-
-      if (!tmp)
-        tmp = get_windows_directory_root ();
-#endif /* G_OS_WIN32 */
-
-      if (!tmp)
-        {
-          /* If we didn't get it from any of those methods, we will have
-           * to read the user database entry.
-           */
-          UserDatabaseEntry *entry;
-
-          entry = g_get_user_database_entry ();
-
-          /* Strictly speaking, we should copy this, but we know that
-           * neither will ever be freed, so don't bother...
-           */
-          tmp = entry->home_dir;
-        }
-
-      /* If we have been denied access to /etc/passwd (for example, by an
-       * overly-zealous LSM), make up a junk value. The return value at this
-       * point is explicitly documented as ‘undefined’. Memory management is as
-       * immediately above: strictly this should be copied, but we know not
-       * copying it is OK. */
-      if (tmp == NULL)
-        {
-          g_warning ("Could not find home directory: $HOME is not set, and "
-                     "user database could not be read.");
-          tmp = "/";
-        }
-
-      g_once_init_leave (&home_dir, tmp);
-    }
+  G_UNLOCK (g_utils_global);
 
   return home_dir;
 }
@@ -1167,6 +1166,135 @@ g_set_application_name (const gchar *application_name)
     g_warning ("g_set_application_name() called multiple times");
 }
 
+/* Set @global_str to a copy of @new_value if it’s currently unset or has a
+ * different value. If its current value matches @new_value, do nothing. If
+ * replaced, we have to leak the old value as client code could still have
+ * pointers to it. */
+static void
+set_str_if_different (gchar       **global_str,
+                      const gchar  *type,
+                      const gchar  *new_value)
+{
+  if (*global_str == NULL ||
+      !g_str_equal (new_value, *global_str))
+    {
+      g_debug ("g_set_user_dirs: Setting %s to %s", type, new_value);
+
+      /* We have to leak the old value, as user code could be retaining pointers
+       * to it. */
+      *global_str = g_strdup (new_value);
+    }
+}
+
+static void
+set_strv_if_different (gchar                ***global_strv,
+                       const gchar            *type,
+                       const gchar  * const   *new_value)
+{
+  if (*global_strv == NULL ||
+      !g_strv_equal (new_value, (const gchar * const *) *global_strv))
+    {
+      gchar *new_value_str = g_strjoinv (":", (gchar **) new_value);
+      g_debug ("g_set_user_dirs: Setting %s to %s", type, new_value_str);
+      g_free (new_value_str);
+
+      /* We have to leak the old value, as user code could be retaining pointers
+       * to it. */
+      *global_strv = g_strdupv ((gchar **) new_value);
+    }
+}
+
+/*
+ * g_set_user_dirs:
+ * @first_dir_type: Type of the first directory to set
+ * @...: Value to set the first directory to, followed by additional type/value
+ *    pairs, followed by %NULL
+ *
+ * Set one or more ‘user’ directories to custom values. This is intended to be
+ * used by test code (particularly with the %G_TEST_OPTION_ISOLATE_DIRS option)
+ * to override the values returned by the following functions, so that test
+ * code can be run without touching an installed system and user data:
+ *
+ *  - g_get_home_dir() — use type `HOME`, pass a string
+ *  - g_get_user_cache_dir() — use type `XDG_CACHE_HOME`, pass a string
+ *  - g_get_system_config_dirs() — use type `XDG_CONFIG_DIRS`, pass a
+ *    %NULL-terminated string array
+ *  - g_get_user_config_dir() — use type `XDG_CONFIG_HOME`, pass a string
+ *  - g_get_system_data_dirs() — use type `XDG_DATA_DIRS`, pass a
+ *    %NULL-terminated string array
+ *  - g_get_user_data_dir() — use type `XDG_DATA_HOME`, pass a string
+ *  - g_get_user_runtime_dir() — use type `XDG_RUNTIME_DIR`, pass a string
+ *
+ * The list must be terminated with a %NULL type. All of the values must be
+ * non-%NULL — passing %NULL as a value won’t reset a directory. If a reference
+ * to a directory from the calling environment needs to be kept, copy it before
+ * the first call to g_set_user_dirs(). g_set_user_dirs() can be called multiple
+ * times.
+ *
+ * Since: 2.60
+ */
+/*< private > */
+void
+g_set_user_dirs (const gchar *first_dir_type,
+                 ...)
+{
+  va_list args;
+  const gchar *dir_type;
+
+  G_LOCK (g_utils_global);
+
+  va_start (args, first_dir_type);
+
+  for (dir_type = first_dir_type; dir_type != NULL; dir_type = va_arg (args, const gchar *))
+    {
+      gconstpointer dir_value = va_arg (args, gconstpointer);
+      g_assert (dir_value != NULL);
+
+      if (g_str_equal (dir_type, "HOME"))
+        set_str_if_different (&g_home_dir, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_CACHE_HOME"))
+        set_str_if_different (&g_user_cache_dir, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_CONFIG_DIRS"))
+        set_strv_if_different (&g_system_config_dirs, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_CONFIG_HOME"))
+        set_str_if_different (&g_user_config_dir, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_DATA_DIRS"))
+        set_strv_if_different (&g_system_data_dirs, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_DATA_HOME"))
+        set_str_if_different (&g_user_data_dir, dir_type, dir_value);
+      else if (g_str_equal (dir_type, "XDG_RUNTIME_DIR"))
+        set_str_if_different (&g_user_runtime_dir, dir_type, dir_value);
+      else
+        g_assert_not_reached ();
+    }
+
+  va_end (args);
+
+  G_UNLOCK (g_utils_global);
+}
+
+static gchar *
+g_build_user_data_dir (void)
+{
+  gchar *data_dir = NULL;
+  const gchar *data_dir_env = g_getenv ("XDG_DATA_HOME");
+
+  if (data_dir_env && data_dir_env[0])
+    data_dir = g_strdup (data_dir_env);
+#ifdef G_OS_WIN32
+  else
+    data_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
+#endif
+  if (!data_dir || !data_dir[0])
+    {
+      gchar *home_dir = g_build_home_dir ();
+      data_dir = g_build_filename (home_dir, ".local", "share", NULL);
+      g_free (home_dir);
+    }
+
+  return g_steal_pointer (&data_dir);
+}
+
 /**
  * g_get_user_data_dir:
  * 
@@ -1192,67 +1320,39 @@ g_set_application_name (const gchar *application_name)
 const gchar *
 g_get_user_data_dir (void)
 {
-  gchar *data_dir = NULL;
+  const gchar *user_data_dir;
 
   G_LOCK (g_utils_global);
 
-  if (!g_user_data_dir)
-    {
-      const gchar *data_dir_env = g_getenv ("XDG_DATA_HOME");
-
-      if (data_dir_env && data_dir_env[0])
-        data_dir = g_strdup (data_dir_env);
-#ifdef G_OS_WIN32
-      else
-        data_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
-#endif
-      if (!data_dir || !data_dir[0])
-	{
-          const gchar *home_dir = g_get_home_dir ();
-
-          if (home_dir)
-            data_dir = g_build_filename (home_dir, ".local", "share", NULL);
-	  else
-            data_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".local", "share", NULL);
-	}
-
-      g_user_data_dir = data_dir;
-    }
-  else
-    data_dir = g_user_data_dir;
+  if (g_user_data_dir == NULL)
+    g_user_data_dir = g_build_user_data_dir ();
+  user_data_dir = g_user_data_dir;
 
   G_UNLOCK (g_utils_global);
 
-  return data_dir;
+  return user_data_dir;
 }
 
-static void
-g_init_user_config_dir (void)
+static gchar *
+g_build_user_config_dir (void)
 {
   gchar *config_dir = NULL;
+  const gchar *config_dir_env = g_getenv ("XDG_CONFIG_HOME");
 
-  if (!g_user_config_dir)
-    {
-      const gchar *config_dir_env = g_getenv ("XDG_CONFIG_HOME");
-
-      if (config_dir_env && config_dir_env[0])
-	config_dir = g_strdup (config_dir_env);
+  if (config_dir_env && config_dir_env[0])
+    config_dir = g_strdup (config_dir_env);
 #ifdef G_OS_WIN32
-      else
-        config_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
+  else
+    config_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
 #endif
-      if (!config_dir || !config_dir[0])
-	{
-          const gchar *home_dir = g_get_home_dir ();
-
-          if (home_dir)
-            config_dir = g_build_filename (home_dir, ".config", NULL);
-	  else
-            config_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".config", NULL);
-	}
-
-      g_user_config_dir = config_dir;
+  if (!config_dir || !config_dir[0])
+    {
+      gchar *home_dir = g_build_home_dir ();
+      config_dir = g_build_filename (home_dir, ".config", NULL);
+      g_free (home_dir);
     }
+
+  return g_steal_pointer (&config_dir);
 }
 
 /**
@@ -1280,13 +1380,39 @@ g_init_user_config_dir (void)
 const gchar *
 g_get_user_config_dir (void)
 {
+  const gchar *user_config_dir;
+
   G_LOCK (g_utils_global);
 
-  g_init_user_config_dir ();
+  if (g_user_config_dir == NULL)
+    g_user_config_dir = g_build_user_config_dir ();
+  user_config_dir = g_user_config_dir;
 
   G_UNLOCK (g_utils_global);
 
-  return g_user_config_dir;
+  return user_config_dir;
+}
+
+static gchar *
+g_build_user_cache_dir (void)
+{
+  gchar *cache_dir = NULL;
+  const gchar *cache_dir_env = g_getenv ("XDG_CACHE_HOME");
+
+  if (cache_dir_env && cache_dir_env[0])
+    cache_dir = g_strdup (cache_dir_env);
+#ifdef G_OS_WIN32
+  else
+    cache_dir = get_special_folder (CSIDL_INTERNET_CACHE);
+#endif
+  if (!cache_dir || !cache_dir[0])
+    {
+      gchar *home_dir = g_build_home_dir ();
+      cache_dir = g_build_filename (home_dir, ".cache", NULL);
+      g_free (home_dir);
+    }
+
+  return g_steal_pointer (&cache_dir);
 }
 
 /**
@@ -1313,37 +1439,45 @@ g_get_user_config_dir (void)
 const gchar *
 g_get_user_cache_dir (void)
 {
-  gchar *cache_dir = NULL;
+  const gchar *user_cache_dir;
 
   G_LOCK (g_utils_global);
 
-  if (!g_user_cache_dir)
-    {
-      const gchar *cache_dir_env = g_getenv ("XDG_CACHE_HOME");
-
-      if (cache_dir_env && cache_dir_env[0])
-        cache_dir = g_strdup (cache_dir_env);
-#ifdef G_OS_WIN32
-      else
-        cache_dir = get_special_folder (CSIDL_INTERNET_CACHE);
-#endif
-      if (!cache_dir || !cache_dir[0])
-	{
-          const gchar *home_dir = g_get_home_dir ();
-
-          if (home_dir)
-            cache_dir = g_build_filename (home_dir, ".cache", NULL);
-	  else
-            cache_dir = g_build_filename (g_get_tmp_dir (), g_get_user_name (), ".cache", NULL);
-	}
-      g_user_cache_dir = cache_dir;
-    }
-  else
-    cache_dir = g_user_cache_dir;
+  if (g_user_cache_dir == NULL)
+    g_user_cache_dir = g_build_user_cache_dir ();
+  user_cache_dir = g_user_cache_dir;
 
   G_UNLOCK (g_utils_global);
 
-  return cache_dir;
+  return user_cache_dir;
+}
+
+static gchar *
+g_build_user_runtime_dir (void)
+{
+  gchar *runtime_dir = NULL;
+  const gchar *runtime_dir_env = g_getenv ("XDG_RUNTIME_DIR");
+
+  if (runtime_dir_env && runtime_dir_env[0])
+    runtime_dir = g_strdup (runtime_dir_env);
+  else
+    {
+      runtime_dir = g_build_user_cache_dir ();
+
+      /* The user should be able to rely on the directory existing
+       * when the function returns.  Probably it already does, but
+       * let's make sure.  Just do mkdir() directly since it will be
+       * no more expensive than a stat() in the case that the
+       * directory already exists and is a lot easier.
+       *
+       * $XDG_CACHE_HOME is probably ~/.cache/ so as long as $HOME
+       * exists this will work.  If the user changed $XDG_CACHE_HOME
+       * then they can make sure that it exists...
+       */
+      (void) g_mkdir (runtime_dir, 0700);
+    }
+
+  return g_steal_pointer (&runtime_dir);
 }
 
 /**
@@ -1368,90 +1502,28 @@ g_get_user_cache_dir (void)
 const gchar *
 g_get_user_runtime_dir (void)
 {
-  static const gchar *runtime_dir;
+  const gchar *user_runtime_dir;
 
-  if (g_once_init_enter (&runtime_dir))
-    {
-      const gchar *dir;
+  G_LOCK (g_utils_global);
 
-      dir = g_strdup (getenv ("XDG_RUNTIME_DIR"));
+  if (g_user_runtime_dir == NULL)
+    g_user_runtime_dir = g_build_user_runtime_dir ();
+  user_runtime_dir = g_user_runtime_dir;
 
-      if (dir == NULL)
-        {
-          /* No need to strdup this one since it is valid forever. */
-          dir = g_get_user_cache_dir ();
+  G_UNLOCK (g_utils_global);
 
-          /* The user should be able to rely on the directory existing
-           * when the function returns.  Probably it already does, but
-           * let's make sure.  Just do mkdir() directly since it will be
-           * no more expensive than a stat() in the case that the
-           * directory already exists and is a lot easier.
-           *
-           * $XDG_CACHE_HOME is probably ~/.cache/ so as long as $HOME
-           * exists this will work.  If the user changed $XDG_CACHE_HOME
-           * then they can make sure that it exists...
-           */
-          (void) g_mkdir (dir, 0700);
-        }
-
-      g_assert (dir != NULL);
-
-      g_once_init_leave (&runtime_dir, dir);
-    }
-
-  return runtime_dir;
+  return user_runtime_dir;
 }
 
-#ifdef HAVE_CARBON
+#ifdef HAVE_COCOA
 
-static gchar *
-find_folder (OSType type)
-{
-  gchar *filename = NULL;
-  FSRef  found;
-
-  if (FSFindFolder (kUserDomain, type, kDontCreateFolder, &found) == noErr)
-    {
-      CFURLRef url = CFURLCreateFromFSRef (kCFAllocatorSystemDefault, &found);
-
-      if (url)
-	{
-	  CFStringRef path = CFURLCopyFileSystemPath (url, kCFURLPOSIXPathStyle);
-
-	  if (path)
-	    {
-	      filename = g_strdup (CFStringGetCStringPtr (path, kCFStringEncodingUTF8));
-
-	      if (! filename)
-		{
-		  filename = g_new0 (gchar, CFStringGetLength (path) * 3 + 1);
-
-		  CFStringGetCString (path, filename,
-				      CFStringGetLength (path) * 3 + 1,
-				      kCFStringEncodingUTF8);
-		}
-
-	      CFRelease (path);
-	    }
-
-	  CFRelease (url);
-	}
-    }
-
-  return filename;
-}
+/* Implemented in gutils-macos.m */
+void load_user_special_dirs_macos (gchar **table);
 
 static void
 load_user_special_dirs (void)
 {
-  g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = find_folder (kDesktopFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = find_folder (kDocumentsFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = find_folder (kDesktopFolderType); /* XXX correct ? */
-  g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = find_folder (kMusicDocumentsFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_PICTURES] = find_folder (kPictureDocumentsFolderType);
-  g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = NULL;
-  g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = NULL;
-  g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = find_folder (kMovieDocumentsFolderType);
+  load_user_special_dirs_macos (g_user_special_dirs);
 }
 
 #elif defined(G_OS_WIN32)
@@ -1553,16 +1625,18 @@ load_user_special_dirs (void)
 static void
 load_user_special_dirs (void)
 {
+  gchar *config_dir = NULL;
   gchar *config_file;
   gchar *data;
   gchar **lines;
   gint n_lines, i;
   
-  g_init_user_config_dir ();
-  config_file = g_build_filename (g_user_config_dir,
+  config_dir = g_build_user_config_dir ();
+  config_file = g_build_filename (config_dir,
                                   "user-dirs.dirs",
                                   NULL);
-  
+  g_free (config_dir);
+
   if (!g_file_get_contents (config_file, &data, NULL, NULL))
     {
       g_free (config_file);
@@ -1669,7 +1743,9 @@ load_user_special_dirs (void)
       
       if (is_relative)
         {
-          g_user_special_dirs[directory] = g_build_filename (g_get_home_dir (), d, NULL);
+          gchar *home_dir = g_build_home_dir ();
+          g_user_special_dirs[directory] = g_build_filename (home_dir, d, NULL);
+          g_free (home_dir);
         }
       else
 	g_user_special_dirs[directory] = g_strdup (d);
@@ -1689,7 +1765,7 @@ load_user_special_dirs (void)
  * that the latest on-disk version is used. Call this only
  * if you just changed the data on disk yourself.
  *
- * Due to threadsafety issues this may cause leaking of strings
+ * Due to thread safety issues this may cause leaking of strings
  * that were previously returned from g_get_user_special_dir()
  * that can't be freed. We ensure to only leak the data for
  * the directories that actually changed value though.
@@ -1762,6 +1838,8 @@ g_reload_user_special_dirs_cache (void)
 const gchar *
 g_get_user_special_dir (GUserDirectory directory)
 {
+  const gchar *user_special_dir;
+
   g_return_val_if_fail (directory >= G_USER_DIRECTORY_DESKTOP &&
                         directory < G_USER_N_DIRECTORIES, NULL);
 
@@ -1775,12 +1853,17 @@ g_get_user_special_dir (GUserDirectory directory)
 
       /* Special-case desktop for historical compatibility */
       if (g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] == NULL)
-        g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = g_build_filename (g_get_home_dir (), "Desktop", NULL);
+        {
+          gchar *home_dir = g_build_home_dir ();
+          g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = g_build_filename (home_dir, "Desktop", NULL);
+          g_free (home_dir);
+        }
     }
+  user_special_dir = g_user_special_dirs[directory];
 
   G_UNLOCK (g_utils_global);
 
-  return g_user_special_dirs[directory];
+  return user_special_dir;
 }
 
 #ifdef G_OS_WIN32
@@ -1942,7 +2025,7 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void))
   gboolean should_call_g_get_system_data_dirs;
 
   should_call_g_get_system_data_dirs = TRUE;
-  /* These checks are the same as the ones that g_get_system_data_dirs() does.
+  /* These checks are the same as the ones that g_build_system_data_dirs() does.
    * Please keep them in sync.
    */
   G_LOCK (g_utils_global);
@@ -1985,6 +2068,30 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void))
 }
 
 #endif
+
+static gchar **
+g_build_system_data_dirs (void)
+{
+  gchar **data_dir_vector = NULL;
+  gchar *data_dirs = (gchar *) g_getenv ("XDG_DATA_DIRS");
+
+  /* These checks are the same as the ones that g_win32_get_system_data_dirs_for_module()
+   * does. Please keep them in sync.
+   */
+#ifndef G_OS_WIN32
+  if (!data_dirs || !data_dirs[0])
+    data_dirs = "/usr/local/share/:/usr/share/";
+
+  data_dir_vector = g_strsplit (data_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
+#else
+  if (!data_dirs || !data_dirs[0])
+    data_dir_vector = g_strdupv ((gchar **) g_win32_get_system_data_dirs_for_module_real (NULL));
+  else
+    data_dir_vector = g_strsplit (data_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
+#endif
+
+  return g_steal_pointer (&data_dir_vector);
+}
 
 /**
  * g_get_system_data_dirs:
@@ -2030,37 +2137,49 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void))
 const gchar * const * 
 g_get_system_data_dirs (void)
 {
-  gchar **data_dir_vector;
+  const gchar * const *system_data_dirs;
 
-  /* These checks are the same as the ones that g_win32_get_system_data_dirs_for_module()
-   * does. Please keep them in sync.
-   */
   G_LOCK (g_utils_global);
 
-  if (!g_system_data_dirs)
-    {
-      gchar *data_dirs = (gchar *) g_getenv ("XDG_DATA_DIRS");
-
-#ifndef G_OS_WIN32
-      if (!data_dirs || !data_dirs[0])
-          data_dirs = "/usr/local/share/:/usr/share/";
-
-      data_dir_vector = g_strsplit (data_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
-#else
-      if (!data_dirs || !data_dirs[0])
-        data_dir_vector = g_strdupv ((gchar **) g_win32_get_system_data_dirs_for_module_real (NULL));
-      else
-        data_dir_vector = g_strsplit (data_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
-#endif
-
-      g_system_data_dirs = data_dir_vector;
-    }
-  else
-    data_dir_vector = g_system_data_dirs;
+  if (g_system_data_dirs == NULL)
+    g_system_data_dirs = g_build_system_data_dirs ();
+  system_data_dirs = (const gchar * const *) g_system_data_dirs;
 
   G_UNLOCK (g_utils_global);
 
-  return (const gchar * const *) data_dir_vector;
+  return system_data_dirs;
+}
+
+static gchar **
+g_build_system_config_dirs (void)
+{
+  gchar **conf_dir_vector = NULL;
+  const gchar *conf_dirs = g_getenv ("XDG_CONFIG_DIRS");
+#ifdef G_OS_WIN32
+  if (conf_dirs)
+    {
+      conf_dir_vector = g_strsplit (conf_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
+    }
+  else
+    {
+      gchar *special_conf_dirs = get_special_folder (CSIDL_COMMON_APPDATA);
+
+      if (special_conf_dirs)
+        conf_dir_vector = g_strsplit (special_conf_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
+      else
+        /* Return empty list */
+        conf_dir_vector = g_strsplit ("", G_SEARCHPATH_SEPARATOR_S, 0);
+
+      g_free (special_conf_dirs);
+    }
+#else
+  if (!conf_dirs || !conf_dirs[0])
+    conf_dirs = "/etc/xdg";
+
+  conf_dir_vector = g_strsplit (conf_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
+#endif
+
+  return g_steal_pointer (&conf_dir_vector);
 }
 
 /**
@@ -2093,44 +2212,17 @@ g_get_system_data_dirs (void)
 const gchar * const *
 g_get_system_config_dirs (void)
 {
-  gchar **conf_dir_vector;
+  const gchar * const *system_config_dirs;
 
   G_LOCK (g_utils_global);
 
-  if (!g_system_config_dirs)
-    {
-      const gchar *conf_dirs = g_getenv ("XDG_CONFIG_DIRS");
-#ifdef G_OS_WIN32
-      if (conf_dirs)
-	{
-	  conf_dir_vector = g_strsplit (conf_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
-	}
-      else
-	{
-	  gchar *special_conf_dirs = get_special_folder (CSIDL_COMMON_APPDATA);
+  if (g_system_config_dirs == NULL)
+    g_system_config_dirs = g_build_system_config_dirs ();
+  system_config_dirs = (const gchar * const *) g_system_config_dirs;
 
-	  if (special_conf_dirs)
-	    conf_dir_vector = g_strsplit (special_conf_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
-	  else
-	    /* Return empty list */
-	    conf_dir_vector = g_strsplit ("", G_SEARCHPATH_SEPARATOR_S, 0);
-
-	  g_free (special_conf_dirs);
-	}
-#else
-      if (!conf_dirs || !conf_dirs[0])
-          conf_dirs = "/etc/xdg";
-
-      conf_dir_vector = g_strsplit (conf_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
-#endif
-
-      g_system_config_dirs = conf_dir_vector;
-    }
-  else
-    conf_dir_vector = g_system_config_dirs;
   G_UNLOCK (g_utils_global);
 
-  return (const gchar * const *) conf_dir_vector;
+  return system_config_dirs;
 }
 
 /**
@@ -2168,7 +2260,9 @@ g_nullify_pointer (gpointer *nullify_location)
  * Formats a size (for example the size of a file) into a human readable
  * string.  Sizes are rounded to the nearest size prefix (kB, MB, GB)
  * and are displayed rounded to the nearest tenth. E.g. the file size
- * 3292528 bytes will be converted into the string "3.2 MB".
+ * 3292528 bytes will be converted into the string "3.2 MB". The returned string
+ * is UTF-8, and may use a non-breaking space to separate the number and units,
+ * to ensure they aren’t separated when line wrapped.
  *
  * The prefix units base is 1000 (i.e. 1 kB is 1000 bytes).
  *
@@ -2241,36 +2335,60 @@ g_format_size_full (guint64          size,
 
   const struct Format formats[4][6] = {
     {
-      { KILOBYTE_FACTOR, N_("%.1f kB") },
-      { MEGABYTE_FACTOR, N_("%.1f MB") },
-      { GIGABYTE_FACTOR, N_("%.1f GB") },
-      { TERABYTE_FACTOR, N_("%.1f TB") },
-      { PETABYTE_FACTOR, N_("%.1f PB") },
-      { EXABYTE_FACTOR,  N_("%.1f EB") }
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { KILOBYTE_FACTOR, N_("%.1f kB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { MEGABYTE_FACTOR, N_("%.1f MB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { GIGABYTE_FACTOR, N_("%.1f GB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { TERABYTE_FACTOR, N_("%.1f TB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { PETABYTE_FACTOR, N_("%.1f PB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { EXABYTE_FACTOR,  N_("%.1f EB") }
     },
     {
-      { KIBIBYTE_FACTOR, N_("%.1f KiB") },
-      { MEBIBYTE_FACTOR, N_("%.1f MiB") },
-      { GIBIBYTE_FACTOR, N_("%.1f GiB") },
-      { TEBIBYTE_FACTOR, N_("%.1f TiB") },
-      { PEBIBYTE_FACTOR, N_("%.1f PiB") },
-      { EXBIBYTE_FACTOR, N_("%.1f EiB") }
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { KIBIBYTE_FACTOR, N_("%.1f KiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { MEBIBYTE_FACTOR, N_("%.1f MiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { GIBIBYTE_FACTOR, N_("%.1f GiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { TEBIBYTE_FACTOR, N_("%.1f TiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { PEBIBYTE_FACTOR, N_("%.1f PiB") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { EXBIBYTE_FACTOR, N_("%.1f EiB") }
     },
     {
-      { KILOBYTE_FACTOR, N_("%.1f kb") },
-      { MEGABYTE_FACTOR, N_("%.1f Mb") },
-      { GIGABYTE_FACTOR, N_("%.1f Gb") },
-      { TERABYTE_FACTOR, N_("%.1f Tb") },
-      { PETABYTE_FACTOR, N_("%.1f Pb") },
-      { EXABYTE_FACTOR,  N_("%.1f Eb") }
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { KILOBYTE_FACTOR, N_("%.1f kb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { MEGABYTE_FACTOR, N_("%.1f Mb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { GIGABYTE_FACTOR, N_("%.1f Gb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { TERABYTE_FACTOR, N_("%.1f Tb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { PETABYTE_FACTOR, N_("%.1f Pb") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { EXABYTE_FACTOR,  N_("%.1f Eb") }
     },
     {
-      { KIBIBYTE_FACTOR, N_("%.1f Kib") },
-      { MEBIBYTE_FACTOR, N_("%.1f Mib") },
-      { GIBIBYTE_FACTOR, N_("%.1f Gib") },
-      { TEBIBYTE_FACTOR, N_("%.1f Tib") },
-      { PEBIBYTE_FACTOR, N_("%.1f Pib") },
-      { EXBIBYTE_FACTOR, N_("%.1f Eib") }
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { KIBIBYTE_FACTOR, N_("%.1f Kib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { MEBIBYTE_FACTOR, N_("%.1f Mib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { GIBIBYTE_FACTOR, N_("%.1f Gib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { TEBIBYTE_FACTOR, N_("%.1f Tib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { PEBIBYTE_FACTOR, N_("%.1f Pib") },
+      /* Translators: Keep the no-break space between %.1f and the unit symbol */
+      { EXBIBYTE_FACTOR, N_("%.1f Eib") }
     }
   };
 
@@ -2503,7 +2621,7 @@ const gchar *g_get_tmp_dir_utf8 (void) { return g_get_tmp_dir (); }
 gboolean
 g_check_setuid (void)
 {
-#if defined(HAVE_SYS_AUXV_H)
+#if defined(HAVE_SYS_AUXV_H) && defined(HAVE_GETAUXVAL) && defined(AT_SECURE)
   unsigned long value;
   int errsv;
 

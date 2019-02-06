@@ -2,8 +2,9 @@
 
 set -e
 
-TAG="registry.gitlab.gnome.org/gnome/glib/master:v6"
+TAG="registry.gitlab.gnome.org/gnome/glib/master:v11"
 
+cd "$(dirname "$0")"
 docker build --build-arg HOST_USER_ID="$UID" --tag "${TAG}" \
     --file "Dockerfile" .
 

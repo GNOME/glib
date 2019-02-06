@@ -7,10 +7,18 @@ subdir('libcharset')
 if not use_system_pcre
   subdir('pcre')
 endif
+
+# TODO: gnulib_objects, pcre_objects and pcre_deps are a workaround for
+# <https://github.com/mesonbuild/meson/issues/3934> and
+# <https://github.com/mesonbuild/meson/issues/3937>. When we can depend
+# on a meson version where those are fixed, revert the commit that
+# introduced this workaround.
 if have_good_vsnprintf and have_good_snprintf
   gnulib_lib = []
+  gnulib_objects = []
 else
   subdir('gnulib')
+  gnulib_objects = [gnulib_lib.extract_all_objects()]
 endif
 
 glib_headers = files(
@@ -191,6 +199,7 @@ glib_sources = files(
   'gunidecomp.c',
   'gurifuncs.c',
   'gutils.c',
+  'gutilsprivate.h',
   'guuid.c',
   'gvariant.c',
   'gvariant-core.c',
@@ -213,9 +222,16 @@ if host_system == 'windows'
   glib_sources += [glib_win_res]
   glib_sources += files('gwin32.c', 'gspawn-win32.c', 'giowin32.c')
   platform_deps = [winsock2, cc.find_library('winmm')]
+  if cc.get_id() == 'msvc'
+    glib_sources += files('dirent/wdirent.c')
+  endif
 else
   glib_sources += files('glib-unix.c', 'gspawn.c', 'giounix.c')
   platform_deps = []
+endif
+
+if host_system == 'darwin'
+  glib_sources += files('gosxutils.m')
 endif
 
 glib_sources += files('gthread-@0@.c'.format(threads_implementation))
@@ -234,18 +250,29 @@ if use_pcre_static_flag
   pcre_static_args = ['-DPCRE_STATIC']
 endif
 
+if use_system_pcre
+  pcre_deps = [pcre]
+  pcre_objects = []
+else
+  pcre_deps = []
+  pcre_objects = [libpcre.extract_all_objects()]
+endif
+
+glib_c_args = ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
 libglib = library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
   sources : [deprecated_sources, glib_sources],
+  objects : [charset_lib.extract_all_objects()] + gnulib_objects + pcre_objects,
   version : library_version,
   soversion : soversion,
+  darwin_versions : darwin_versions,
   install : true,
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
-  link_with : [charset_lib, gnulib_lib],
-  dependencies : [pcre, thread_dep, libintl, librt] + libiconv + platform_deps,
-  c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
+  dependencies : pcre_deps + [thread_dep, libintl, librt] + libiconv + platform_deps,
+  c_args : glib_c_args,
+  objc_args : glib_c_args,
 )
 
 libglib_dep = declare_dependency(
@@ -256,7 +283,8 @@ libglib_dep = declare_dependency(
   # We sadly need to export configinc here because everyone includes <glib/*.h>
   include_directories : [configinc, glibinc])
 
-pkg.generate(libraries : [libglib, libintl],
+pkg.generate(libglib,
+  libraries : [libintl],
   libraries_private : [osx_ldflags, win32_ldflags],
   subdirs : ['glib-2.0'],
   extra_cflags : ['-I${libdir}/glib-2.0/include'] + win32_cflags,
@@ -303,7 +331,16 @@ else
     dependencies : [libglib_dep])
 endif
 
-install_data('gtester-report', install_dir : get_option('bindir'))
+report_conf = configuration_data()
+report_conf.set('GLIB_VERSION', glib_version)
+report_conf.set('PYTHON', python_name)
+configure_file(
+  input: 'gtester-report.in',
+  output: 'gtester-report',
+  install_dir: get_option('bindir'),
+  configuration: report_conf,
+  install_mode: 'rwxr-xr-x'
+)
 
 install_data('glib_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 

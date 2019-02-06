@@ -1440,6 +1440,15 @@ static const guint32 iso15924_tags[] =
     PACK ('N','s','h','u'), /* G_UNICODE_SCRIPT_NUSHU */
     PACK ('S','o','y','o'), /* G_UNICODE_SCRIPT_SOYOMBO */
     PACK ('Z','a','n','b'), /* G_UNICODE_SCRIPT_ZANABAZAR_SQUARE */
+
+  /* Unicode 11.0 additions */
+    PACK ('D','o','g','r'), /* G_UNICODE_SCRIPT_DOGRA */
+    PACK ('G','o','n','g'), /* G_UNICODE_SCRIPT_GUNJALA_GONDI */
+    PACK ('R','o','h','g'), /* G_UNICODE_SCRIPT_HANIFI_ROHINGYA */
+    PACK ('M','a','k','a'), /* G_UNICODE_SCRIPT_MAKASAR */
+    PACK ('M','e','d','f'), /* G_UNICODE_SCRIPT_MEDEFAIDRIN */
+    PACK ('S','o','g','o'), /* G_UNICODE_SCRIPT_OLD_SOGDIAN */
+    PACK ('S','o','g','d'), /* G_UNICODE_SCRIPT_SOGDIAN */
 #undef PACK
 };
 

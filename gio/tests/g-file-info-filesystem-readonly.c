@@ -19,10 +19,47 @@
  * if advised of the possibility of such damage.
  */
 
+#include <errno.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gunixmounts.h>
+
+static void
+run (GError **error,
+     const gchar *argv0,
+     ...)
+{
+  GPtrArray *args;
+  const gchar *arg;
+  va_list ap;
+  GSubprocess *subprocess;
+
+  args = g_ptr_array_new ();
+
+  va_start (ap, argv0);
+  g_ptr_array_add (args, (gchar *) argv0);
+  while ((arg = va_arg (ap, const gchar *)))
+    g_ptr_array_add (args, (gchar *) arg);
+  g_ptr_array_add (args, NULL);
+  va_end (ap);
+
+  subprocess = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
+  g_ptr_array_free (args, TRUE);
+
+  if (subprocess == NULL)
+    return;
+
+  g_subprocess_wait_check (subprocess, NULL, error);
+  g_object_unref (subprocess);
+}
+
+static void
+assert_remove (const gchar *file)
+{
+  if (g_remove (file) != 0)
+    g_error ("failed to remove %s: %s", file, g_strerror (errno));
+}
 
 static void
 test_filesystem_readonly (gconstpointer with_mount_monitor)
@@ -31,9 +68,9 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
   GFile *mounted_file;
   GUnixMountMonitor *mount_monitor = NULL;
   gchar *bindfs, *fusermount;
-  gchar *command_mount, *command_mount_ro, *command_umount;
   gchar *curdir, *dir_to_mount, *dir_mountpoint;
   gchar *file_in_mount, *file_in_mountpoint;
+  GError *error = NULL;
 
   /* installed by package 'bindfs' in Fedora */
   bindfs = g_find_program_in_path ("bindfs");
@@ -68,8 +105,8 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
 
   /* Use bindfs, which does not need root privileges, to mount the contents of one dir
    * into another dir (and do the mount as readonly as per passed '-o ro' option) */
-  command_mount_ro = g_strdup_printf ("%s -n -o ro '%s' '%s'", bindfs, dir_to_mount, dir_mountpoint);
-  g_spawn_command_line_sync (command_mount_ro, NULL, NULL, NULL, NULL);
+  run (&error, bindfs, "-n", "-o", "ro", dir_to_mount, dir_mountpoint, NULL);
+  g_assert_no_error (error);
 
   /* Let's check now, that the file is in indeed in a readonly filesystem */
   file_in_mountpoint = g_strdup_printf ("%s/example.txt", dir_mountpoint);
@@ -83,7 +120,9 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
     }
 
   file_info = g_file_query_filesystem_info (mounted_file,
-                                            G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, NULL, NULL);
+                                            G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (file_info);
   if (! g_file_info_get_attribute_boolean (file_info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
     {
       g_test_skip ("Failed to create readonly file needed to proceed further with the test");
@@ -91,10 +130,10 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
     }
 
   /* Now we unmount, and mount again but this time rw (not readonly) */
-  command_umount = g_strdup_printf ("%s -u '%s'", fusermount, dir_mountpoint);
-  g_spawn_command_line_sync (command_umount, NULL, NULL, NULL, NULL);
-  command_mount = g_strdup_printf ("%s -n '%s' '%s'", bindfs, dir_to_mount, dir_mountpoint);
-  g_spawn_command_line_sync (command_mount, NULL, NULL, NULL, NULL);
+  run (&error, fusermount, "-z", "-u", dir_mountpoint, NULL);
+  g_assert_no_error (error);
+  run (&error, bindfs, "-n", dir_to_mount, dir_mountpoint, NULL);
+  g_assert_no_error (error);
 
   if (with_mount_monitor)
     {
@@ -108,40 +147,28 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
   g_clear_object (&mounted_file);
   mounted_file = g_file_new_for_path (file_in_mountpoint);
   file_info = g_file_query_filesystem_info (mounted_file,
-                                            G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, NULL, NULL);
+                                            G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (file_info);
 
-  if (g_file_info_get_attribute_boolean (file_info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))
-    {
-      /* ¡¡ GIO still reports filesystem as being Readonly !!
-       * Let's check if that's true by trying to write to file */
-      GFileOutputStream *write_stream;
-      write_stream = g_file_append_to (mounted_file, G_FILE_CREATE_NONE, NULL, NULL);
-      if (write_stream != NULL)
-        {
-          /* The file has been opened for writing without error, so ¡¡ GIO IS WRONG !! */
-          g_object_unref (write_stream);
-          g_test_fail (); /* Marking test as FAILED */
-        }
-    }
+  g_assert_false (g_file_info_get_attribute_boolean (file_info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY));
 
   /* Clean up */
   g_clear_object (&mount_monitor);
   g_clear_object (&file_info);
   g_clear_object (&mounted_file);
-  g_spawn_command_line_sync (command_umount, NULL, NULL, NULL, NULL); /* unmount */
+  run (&error, fusermount, "-z", "-u", dir_mountpoint, NULL);
+  g_assert_no_error (error);
 
-  g_remove (file_in_mount);
-  g_remove (dir_to_mount);
-  g_remove (dir_mountpoint);
+  assert_remove (file_in_mount);
+  assert_remove (dir_to_mount);
+  assert_remove (dir_mountpoint);
 
   g_free (bindfs);
   g_free (fusermount);
   g_free (curdir);
   g_free (dir_to_mount);
   g_free (dir_mountpoint);
-  g_free (command_mount);
-  g_free (command_mount_ro);
-  g_free (command_umount);
   g_free (file_in_mount);
   g_free (file_in_mountpoint);
 }

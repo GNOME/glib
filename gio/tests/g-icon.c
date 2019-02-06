@@ -108,9 +108,28 @@ test_g_icon_to_string (void)
   g_object_unref (location);
 #endif
 
+  icon = g_themed_icon_new_with_default_fallbacks ("some-icon-symbolic");
+  g_themed_icon_append_name (G_THEMED_ICON (icon), "some-other-icon");
+  data = g_icon_to_string (icon);
+  g_assert_cmpstr (data, ==, ". GThemedIcon "
+                             "some-icon-symbolic some-symbolic some-other-icon some-other some "
+                             "some-icon some-other-icon-symbolic some-other-symbolic");
+  g_free (data);
+  g_object_unref (icon);
+
   icon = g_themed_icon_new ("network-server");
   data = g_icon_to_string (icon);
   g_assert_cmpstr (data, ==, "network-server");
+  icon2 = g_icon_new_for_string (data, &error);
+  g_assert_no_error (error);
+  g_assert (g_icon_equal (icon, icon2));
+  g_free (data);
+  g_object_unref (icon);
+  g_object_unref (icon2);
+
+  icon = g_themed_icon_new_with_default_fallbacks ("network-server");
+  data = g_icon_to_string (icon);
+  g_assert_cmpstr (data, ==, ". GThemedIcon network-server network network-server-symbolic network-symbolic");
   icon2 = g_icon_new_for_string (data, &error);
   g_assert_no_error (error);
   g_assert (g_icon_equal (icon, icon2));
@@ -371,7 +390,7 @@ test_themed_icon (void)
 {
   GIcon *icon1, *icon2, *icon3, *icon4;
   const gchar *const *names;
-  const gchar *names2[] = { "first", "testicon", "last", NULL };
+  const gchar *names2[] = { "first-symbolic", "testicon", "last", NULL };
   gchar *str;
   gboolean fallbacks;
   GVariant *variant;
@@ -382,17 +401,21 @@ test_themed_icon (void)
   g_assert (!fallbacks);
 
   names = g_themed_icon_get_names (G_THEMED_ICON (icon1));
-  g_assert_cmpint (g_strv_length ((gchar **)names), ==, 1);
+  g_assert_cmpint (g_strv_length ((gchar **)names), ==, 2);
   g_assert_cmpstr (names[0], ==, "testicon");
+  g_assert_cmpstr (names[1], ==, "testicon-symbolic");
 
-  g_themed_icon_prepend_name (G_THEMED_ICON (icon1), "first");
+  g_themed_icon_prepend_name (G_THEMED_ICON (icon1), "first-symbolic");
   g_themed_icon_append_name (G_THEMED_ICON (icon1), "last");
   names = g_themed_icon_get_names (G_THEMED_ICON (icon1));
-  g_assert_cmpint (g_strv_length ((gchar **)names), ==, 3);
-  g_assert_cmpstr (names[0], ==, "first");
+  g_assert_cmpint (g_strv_length ((gchar **)names), ==, 6);
+  g_assert_cmpstr (names[0], ==, "first-symbolic");
   g_assert_cmpstr (names[1], ==, "testicon");
   g_assert_cmpstr (names[2], ==, "last");
-  g_assert_cmpuint (g_icon_hash (icon1), ==, 2400773466U);
+  g_assert_cmpstr (names[3], ==, "first");
+  g_assert_cmpstr (names[4], ==, "testicon-symbolic");
+  g_assert_cmpstr (names[5], ==, "last-symbolic");
+  g_assert_cmpuint (g_icon_hash (icon1), ==, 1812785139);
 
   icon2 = g_themed_icon_new_from_names ((gchar**)names2, -1);
   g_assert (g_icon_equal (icon1, icon2));
@@ -448,11 +471,11 @@ test_emblemed_icon (void)
 
   emblem = emblems->data;
   g_assert (g_emblem_get_icon (emblem) == icon2);
-  g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_TAG);
+  g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_UNKNOWN);
 
   emblem = emblems->next->data;
   g_assert (g_emblem_get_icon (emblem) == icon2);
-  g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_UNKNOWN);
+  g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_TAG);
 
   g_emblemed_icon_clear_emblems (G_EMBLEMED_ICON (icon4));
   g_assert (g_emblemed_icon_get_emblems (G_EMBLEMED_ICON (icon4)) == NULL);

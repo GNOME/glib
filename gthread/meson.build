@@ -16,13 +16,15 @@ libgthread = library('gthread-2.0',
   sources : gthread_sources,
   version : library_version,
   soversion : soversion,
+  darwin_versions : darwin_versions,
   install : true,
   dependencies : [libglib_dep],
   c_args : ['-DG_LOG_DOMAIN="GThread"' ] + glib_hidden_visibility_args,
   link_args : glib_link_flags,
 )
 
-pkg.generate(libraries : [libgthread, thread_dep],
+pkg.generate(libgthread,
+  libraries : [thread_dep],
   requires : ['glib-2.0'],
   version : glib_version,
   install_dir : glib_pkgconfigreldir,
@@ -30,3 +32,5 @@ pkg.generate(libraries : [libgthread, thread_dep],
   name : 'GThread',
   description : 'Thread support for GLib',
 )
+
+libgthread_dep = declare_dependency(link_with : libgthread)

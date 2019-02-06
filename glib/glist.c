@@ -649,8 +649,10 @@ g_list_copy (GList *list)
  * container itself.
  *
  * @func, as a #GCopyFunc, takes two arguments, the data to be copied
- * and a @user_data pointer. It's safe to pass %NULL as user_data,
- * if the copy function takes only one argument.
+ * and a @user_data pointer. On common processor architectures, it's safe to
+ * pass %NULL as @user_data if the copy function takes only one argument. You
+ * may get compiler warnings from this though if compiling with GCC’s
+ * `-Wcast-function-type` warning.
  *
  * For instance, if @list holds a list of GObjects, you can do:
  * |[<!-- language="C" -->   

@@ -309,6 +309,8 @@ g_network_monitor_nm_initable_init (GInitable     *initable,
 
   if (!name_owner)
     {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   _("NetworkManager not running"));
       g_object_unref (proxy);
       return FALSE;
     }

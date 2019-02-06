@@ -21,7 +21,8 @@ pacman --noconfirm -S --needed \
     mingw-w64-$MSYS2_ARCH-python3 \
     mingw-w64-$MSYS2_ARCH-python3-pip \
     mingw-w64-$MSYS2_ARCH-toolchain \
-    mingw-w64-$MSYS2_ARCH-zlib
+    mingw-w64-$MSYS2_ARCH-zlib \
+    mingw-w64-$MSYS2_ARCH-libelf
 
 curl -O -J -L "https://github.com/linux-test-project/lcov/releases/download/v1.13/lcov-1.13.tar.gz"
 echo "44972c878482cc06a05fe78eaa3645cbfcbad6634615c3309858b207965d8a23  lcov-1.13.tar.gz" | sha256sum -c
@@ -32,7 +33,7 @@ mkdir -p _coverage
 mkdir -p _ccache
 export CCACHE_BASEDIR="$(pwd)"
 export CCACHE_DIR="${CCACHE_BASEDIR}/_ccache"
-pip3 install --upgrade --user meson==0.47.0
+pip3 install --upgrade --user meson==0.48.0
 export PATH="$HOME/.local/bin:$PATH"
 export CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
@@ -43,18 +44,18 @@ ninja
 
 "${LCOV}" \
     --quiet \
-    --rc lcov_branch_coverage=1 \
+    --config-file "${DIR}"/.gitlab-ci/lcovrc \
     --directory "${DIR}/_build" \
     --capture \
     --initial \
     --output-file "${DIR}/_coverage/${CI_JOB_NAME}-baseline.lcov"
 
 # FIXME: fix the test suite
-meson test --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} || true
+meson test --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} --no-suite flaky || true
 
 "${LCOV}" \
     --quiet \
-    --rc lcov_branch_coverage=1 \
+    --config-file "${DIR}"/.gitlab-ci/lcovrc \
     --directory "${DIR}/_build" \
     --capture \
     --output-file "${DIR}/_coverage/${CI_JOB_NAME}.lcov"

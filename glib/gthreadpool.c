@@ -31,6 +31,7 @@
 #include "gmain.h"
 #include "gtestutils.h"
 #include "gtimer.h"
+#include "gutils.h"
 
 /**
  * SECTION:thread_pools
@@ -401,10 +402,15 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
 
   if (!success)
     {
+      const gchar *prgname = g_get_prgname ();
+      gchar name[16] = "pool";
       GThread *thread;
 
+      if (prgname)
+        g_snprintf (name, sizeof (name), "pool-%s", prgname);
+
       /* No thread was found, we have to start a new one */
-      thread = g_thread_try_new ("pool", g_thread_pool_thread_proxy, pool, error);
+      thread = g_thread_try_new (name, g_thread_pool_thread_proxy, pool, error);
 
       if (thread == NULL)
         return FALSE;

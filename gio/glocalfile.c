@@ -66,6 +66,8 @@
 #include "glibintl.h"
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
+#include "gportalsupport.h"
+#include "gtrashportal.h"
 #endif
 
 #include "glib-private.h"
@@ -109,7 +111,7 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
 						g_local_file_file_iface_init))
 
-static char *find_mountpoint_for (const char *file, dev_t dev);
+static char *find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink);
 
 static void
 g_local_file_finalize (GObject *object)
@@ -791,7 +793,7 @@ get_mount_info (GFileInfo             *fs_info,
     {
       mount_info = 0;
 
-      mountpoint = find_mountpoint_for (path, buf.st_dev);
+      mountpoint = find_mountpoint_for (path, buf.st_dev, FALSE);
       if (mountpoint == NULL)
 	mountpoint = g_strdup ("/");
 
@@ -886,7 +888,7 @@ get_volume_for_path (const char *path)
 }
 
 static char *
-find_mountpoint_for (const char *file, dev_t dev)
+find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink)
 {
   wchar_t *wpath;
   char *utf8_path;
@@ -983,15 +985,20 @@ g_local_file_query_filesystem_info (GFile         *file,
   block_size = statfs_buffer.f_bsize;
   
   /* Many backends can't report free size (for instance the gvfs fuse
-     backend for backend not supporting this), and set f_bfree to 0,
-     but it can be 0 for real too. We treat the available == 0 and
-     free == 0 case as "both of these are invalid".
-   */
-#ifndef G_OS_WIN32
+   * backend for backend not supporting this), and set f_bfree to 0,
+   *  but it can be 0 for real too. We treat the available == 0 and
+   * free == 0 case as "both of these are invalid", but only on file systems
+   * which are known to not support this (otherwise we can omit metadata for
+   * systems which are legitimately full). */
+#if defined(__linux__)
   if (statfs_result == 0 &&
-      statfs_buffer.f_bavail == 0 && statfs_buffer.f_bfree == 0)
+      statfs_buffer.f_bavail == 0 && statfs_buffer.f_bfree == 0 &&
+      (/* linux/ncp_fs.h: NCP_SUPER_MAGIC == 0x564c */
+       statfs_buffer.f_type == 0x564c ||
+       /* man statfs: FUSE_SUPER_MAGIC == 0x65735546 */
+       statfs_buffer.f_type == 0x65735546))
     no_size = TRUE;
-#endif /* G_OS_WIN32 */
+#endif  /* __linux__ */
   
 #elif defined(USE_STATVFS)
   statfs_result = statvfs (local->filename, &statfs_buffer);
@@ -1127,7 +1134,7 @@ g_local_file_find_enclosing_mount (GFile         *file,
   if (g_lstat (local->filename, &buf) != 0)
     goto error;
 
-  mountpoint = find_mountpoint_for (local->filename, buf.st_dev);
+  mountpoint = find_mountpoint_for (local->filename, buf.st_dev, FALSE);
   if (mountpoint == NULL)
     goto error;
 
@@ -1579,19 +1586,65 @@ expand_symlink (const char *link)
 }
 
 static char *
-get_parent (const char *path, 
+expand_symlinks (const char *path,
+                 dev_t      *dev)
+{
+  char *tmp, *target;
+  GStatBuf target_stat;
+  int num_recursions;
+
+  target = g_strdup (path);
+
+  num_recursions = 0;
+  do
+    {
+      if (g_lstat (target, &target_stat) != 0)
+        {
+          g_free (target);
+          return NULL;
+        }
+
+      if (S_ISLNK (target_stat.st_mode))
+        {
+          tmp = target;
+          target = expand_symlink (target);
+          g_free (tmp);
+        }
+
+      num_recursions++;
+
+#ifdef MAXSYMLINKS
+      if (num_recursions > MAXSYMLINKS)
+#else
+      /* 40 is used in kernel sources currently:
+       * https://github.com/torvalds/linux/include/linux/namei.h
+       */
+      if (num_recursions > 40)
+#endif
+        {
+          g_free (target);
+          return NULL;
+        }
+    }
+  while (S_ISLNK (target_stat.st_mode));
+
+  if (dev)
+    *dev = target_stat.st_dev;
+
+  return target;
+}
+
+static char *
+get_parent (const char *path,
             dev_t      *parent_dev)
 {
-  char *parent, *tmp;
-  GStatBuf parent_stat;
-  int num_recursions;
+  char *parent, *res;
   char *path_copy;
 
   path_copy = strip_trailing_slashes (path);
   
   parent = g_path_get_dirname (path_copy);
-  if (strcmp (parent, ".") == 0 ||
-      strcmp (parent, path_copy) == 0)
+  if (strcmp (parent, ".") == 0)
     {
       g_free (parent);
       g_free (path_copy);
@@ -1599,32 +1652,10 @@ get_parent (const char *path,
     }
   g_free (path_copy);
 
-  num_recursions = 0;
-  do {
-    if (g_lstat (parent, &parent_stat) != 0)
-      {
-	g_free (parent);
-	return NULL;
-      }
-    
-    if (S_ISLNK (parent_stat.st_mode))
-      {
-	tmp = parent;
-	parent = expand_symlink (parent);
-	g_free (tmp);
-      }
-    
-    num_recursions++;
-    if (num_recursions > 12)
-      {
-	g_free (parent);
-	return NULL;
-      }
-  } while (S_ISLNK (parent_stat.st_mode));
+  res = expand_symlinks (parent, parent_dev);
+  g_free (parent);
 
-  *parent_dev = parent_stat.st_dev;
-  
-  return parent;
+  return res;
 }
 
 static char *
@@ -1635,10 +1666,12 @@ expand_all_symlinks (const char *path)
   dev_t parent_dev;
 
   parent = get_parent (path, &parent_dev);
-  if (parent)
+  if (parent == NULL)
+    return NULL;
+
+  if (g_strcmp0 (parent, "/") != 0)
     {
       parent_expanded = expand_all_symlinks (parent);
-      g_free (parent);
       basename = g_path_get_basename (path);
       res = g_build_filename (parent_expanded, basename, NULL);
       g_free (basename);
@@ -1646,26 +1679,40 @@ expand_all_symlinks (const char *path)
     }
   else
     res = g_strdup (path);
-  
+
+  g_free (parent);
+
   return res;
 }
 
 static char *
-find_mountpoint_for (const char *file, 
-                     dev_t       dev)
+find_mountpoint_for (const char *file,
+                     dev_t       dev,
+                     gboolean    resolve_basename_symlink)
 {
   char *dir, *parent;
   dev_t dir_dev, parent_dev;
 
-  dir = g_strdup (file);
+  if (resolve_basename_symlink)
+    {
+      dir = expand_symlinks (file, NULL);
+      if (dir == NULL)
+        return NULL;
+    }
+  else
+    dir = g_strdup (file);
+
   dir_dev = dev;
 
-  while (1) 
+  while (g_strcmp0 (dir, "/") != 0)
     {
       parent = get_parent (dir, &parent_dev);
       if (parent == NULL)
-        return dir;
-    
+        {
+          g_free (dir);
+          return NULL;
+        }
+
       if (parent_dev != dir_dev)
         {
           g_free (parent);
@@ -1675,38 +1722,25 @@ find_mountpoint_for (const char *file,
       g_free (dir);
       dir = parent;
     }
+
+  return dir;
 }
 
-static char *
-_g_local_file_find_topdir_for_internal (const char *file, dev_t file_dev)
+char *
+_g_local_file_find_topdir_for (const char *file)
 {
   char *dir;
   char *mountpoint = NULL;
   dev_t dir_dev;
 
   dir = get_parent (file, &dir_dev);
-  if (dir == NULL || dir_dev != file_dev)
-    {
-      g_free (dir);
+  if (dir == NULL)
+    return NULL;
 
-      return NULL;
-    }
-
-  mountpoint = find_mountpoint_for (dir, dir_dev);
+  mountpoint = find_mountpoint_for (dir, dir_dev, TRUE);
   g_free (dir);
 
   return mountpoint;
-}
-
-char *
-_g_local_file_find_topdir_for (const char *file)
-{
-  GStatBuf file_stat;
-
-  if (g_lstat (file, &file_stat) != 0)
-    return NULL;
-
-  return _g_local_file_find_topdir_for_internal (file, file_stat.st_dev);
 }
 
 static char *
@@ -1757,7 +1791,7 @@ try_make_relative (const char *path,
   base2 = expand_all_symlinks (base);
 
   relative = NULL;
-  if (path_has_prefix (path2, base2))
+  if (path2 != NULL && base2 != NULL && path_has_prefix (path2, base2))
     {
       relative = path2 + strlen (base2);
       while (*relative == '/')
@@ -1799,7 +1833,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   if (dir_dev == home_dev)
     return TRUE;
 
-  topdir = find_mountpoint_for (dirname, dir_dev);
+  topdir = find_mountpoint_for (dirname, dir_dev, TRUE);
   if (topdir == NULL)
     return FALSE;
 
@@ -1866,7 +1900,7 @@ _g_local_file_is_lost_found_dir (const char *path, dev_t path_dev)
   if (!g_str_has_suffix (path, "/lost+found"))
     goto out;
 
-  mount_dir = find_mountpoint_for (path, path_dev);
+  mount_dir = find_mountpoint_for (path, path_dev, FALSE);
   if (mount_dir == NULL)
     goto out;
 
@@ -1908,14 +1942,18 @@ g_local_file_trash (GFile         *file,
   char *original_name, *original_name_escaped;
   int i;
   char *data;
+  char *path;
   gboolean is_homedir_trash;
-  char delete_time[32];
+  char *delete_time = NULL;
   int fd;
   GStatBuf trash_stat, global_stat;
   char *dirname, *globaldir;
   GVfsClass *class;
   GVfs *vfs;
   int errsv;
+
+  if (glib_should_use_portal ())
+    return g_trash_portal_trash_file (file, error);
 
   if (g_lstat (local->filename, &file_stat) != 0)
     {
@@ -1932,6 +1970,24 @@ g_local_file_trash (GFile         *file,
 
   is_homedir_trash = FALSE;
   trashdir = NULL;
+
+  /* On overlayfs, a file's st_dev will be different to the home directory's.
+   * We still want to create our trash directory under the home directory, so
+   * instead we should stat the directory that the file we're deleting is in as
+   * this will have the same st_dev.
+   */
+  if (!S_ISDIR (file_stat.st_mode))
+    {
+      path = g_path_get_dirname (local->filename);
+      /* If the parent is a symlink to a different device then it might have
+       * st_dev equal to the home directory's, in which case we will end up
+       * trying to rename across a filesystem boundary, which doesn't work. So
+       * we use g_stat here instead of g_lstat, to know where the symlink
+       * points to. */
+      g_stat (path, &file_stat);
+      g_free (path);
+    }
+
   if (file_stat.st_dev == home_stat.st_dev)
     {
       is_homedir_trash = TRUE;
@@ -1962,8 +2018,7 @@ g_local_file_trash (GFile         *file,
       uid = geteuid ();
       g_snprintf (uid_str, sizeof (uid_str), "%lu", (unsigned long)uid);
 
-      topdir = _g_local_file_find_topdir_for_internal (local->filename,
-                                                       file_stat.st_dev);
+      topdir = _g_local_file_find_topdir_for (local->filename);
       if (topdir == NULL)
 	{
           g_set_io_error (error,
@@ -2137,16 +2192,17 @@ g_local_file_trash (GFile         *file,
   g_free (topdir);
   
   {
-    time_t t;
-    struct tm now;
-    t = time (NULL);
-    localtime_r (&t, &now);
-    delete_time[0] = 0;
-    strftime(delete_time, sizeof (delete_time), "%Y-%m-%dT%H:%M:%S", &now);
+    GDateTime *now = g_date_time_new_now_local ();
+    if (now != NULL)
+      delete_time = g_date_time_format (now, "%Y-%m-%dT%H:%M:%S");
+    else
+      delete_time = g_strdup ("9999-12-31T23:59:59");
+    g_date_time_unref (now);
   }
 
   data = g_strdup_printf ("[Trash Info]\nPath=%s\nDeletionDate=%s\n",
 			  original_name_escaped, delete_time);
+  g_free (delete_time);
 
   g_file_set_contents (infofile, data, -1, NULL);
 

@@ -26,7 +26,7 @@ def g_type_to_typenode (gtype):
         if typenode == 0:
             return None
         val = read_global_var ("static_fundamental_type_nodes")
-        if val == None:
+        if val is None:
             return None
         return val[typenode >> 2].address
 
@@ -132,7 +132,7 @@ def pretty_printer_lookup (val):
     return None
 
 def get_signal_name (id):
-    if id == None:
+    if id is None:
         return None
     id = long(id)
     if id == 0:
@@ -163,7 +163,7 @@ class SignalFrame(FrameDecorator):
     def read_var (self, frame, name, array = None):
         try:
             v = frame_var (frame, name)
-            if v == None or v.is_optimized_out:
+            if v is None or v.is_optimized_out:
                 return None
             if array != None:
                 array.append (v)
@@ -174,7 +174,7 @@ class SignalFrame(FrameDecorator):
     def read_object (self, frame, name, array = None):
         try:
             v = frame_var (frame, name)
-            if v == None or v.is_optimized_out:
+            if v is None or v.is_optimized_out:
                 return None
             v = v.cast (gdb.lookup_type("GObject").pointer())
             # Ensure this is a somewhat correct object pointer
@@ -323,7 +323,7 @@ class GFrameFilter(object):
         return GFrameDecorator(iterator)
 
 def register (obj):
-    if obj == None:
+    if obj is None:
         obj = gdb
 
     if HAVE_GDB_FRAMEDECORATOR:

@@ -55,6 +55,7 @@ struct _GListStore
   /* cache */
   guint last_position;
   GSequenceIter *last_iter;
+  gboolean last_position_valid;
 };
 
 enum
@@ -79,7 +80,8 @@ g_list_store_items_changed (GListStore *store,
   if (position <= store->last_position)
     {
       store->last_iter = NULL;
-      store->last_position = -1u;
+      store->last_position = 0;
+      store->last_position_valid = FALSE;
     }
 
   g_list_model_items_changed (G_LIST_MODEL (store), position, removed, added);
@@ -125,10 +127,8 @@ g_list_store_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_ITEM_TYPE: /* construct-only */
+      g_assert (g_type_is_a (g_value_get_gtype (value), G_TYPE_OBJECT));
       store->item_type = g_value_get_gtype (value);
-      if (!g_type_is_a (store->item_type, G_TYPE_OBJECT))
-        g_critical ("GListStore cannot store items of type '%s'. Items must be GObjects.",
-                    g_type_name (store->item_type));
       break;
 
     default:
@@ -181,11 +181,11 @@ g_list_store_get_item (GListModel *list,
   GListStore *store = G_LIST_STORE (list);
   GSequenceIter *it = NULL;
 
-  if (store->last_position != -1u)
+  if (store->last_position_valid)
     {
-      if (store->last_position == position + 1)
+      if (position < G_MAXUINT && store->last_position == position + 1)
         it = g_sequence_iter_prev (store->last_iter);
-      else if (store->last_position == position - 1)
+      else if (position > 0 && store->last_position == position - 1)
         it = g_sequence_iter_next (store->last_iter);
       else if (store->last_position == position)
         it = store->last_iter;
@@ -196,6 +196,7 @@ g_list_store_get_item (GListModel *list,
 
   store->last_iter = it;
   store->last_position = position;
+  store->last_position_valid = TRUE;
 
   if (g_sequence_iter_is_end (it))
     return NULL;
@@ -215,7 +216,8 @@ static void
 g_list_store_init (GListStore *store)
 {
   store->items = g_sequence_new (g_object_unref);
-  store->last_position = -1u;
+  store->last_position = 0;
+  store->last_position_valid = FALSE;
 }
 
 /**
@@ -486,8 +488,7 @@ g_list_store_splice (GListStore *store,
               return;
             }
 
-          it = g_sequence_insert_before (it, g_object_ref (additions[i]));
-          it = g_sequence_iter_next (it);
+          g_sequence_insert_before (it, g_object_ref (additions[i]));
         }
     }
 

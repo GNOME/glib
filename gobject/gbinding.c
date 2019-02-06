@@ -373,6 +373,7 @@ g_binding_unbind_internal (GBinding *binding,
                            gboolean  unref_binding)
 {
   gboolean source_is_target = binding->source == binding->target;
+  gboolean binding_was_removed = FALSE;
 
   /* dispose of the transformation data */
   if (binding->notify != NULL)
@@ -392,6 +393,7 @@ g_binding_unbind_internal (GBinding *binding,
 
       binding->source_notify = 0;
       binding->source = NULL;
+      binding_was_removed = TRUE;
     }
 
   if (binding->target != NULL)
@@ -404,9 +406,10 @@ g_binding_unbind_internal (GBinding *binding,
 
       binding->target_notify = 0;
       binding->target = NULL;
+      binding_was_removed = TRUE;
     }
 
-  if (unref_binding)
+  if (binding_was_removed && unref_binding)
     g_object_unref (binding);
 }
 
@@ -796,9 +799,11 @@ g_binding_unbind (GBinding *binding)
  * of bidirectional bindings, otherwise it will be ignored
  *
  * The binding will automatically be removed when either the @source or the
- * @target instances are finalized. To remove the binding without affecting the
- * @source and the @target you can just call g_object_unref() on the returned
- * #GBinding instance.
+ * @target instances are finalized. This will release the reference that is
+ * being held on the #GBinding instance; if you want to hold on to the
+ * #GBinding instance, you will need to hold a reference to it.
+ *
+ * To remove the binding, call g_binding_unbind().
  *
  * A #GObject can have multiple bindings.
  *

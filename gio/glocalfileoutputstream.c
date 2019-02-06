@@ -38,6 +38,7 @@
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #include "gfiledescriptorbased.h"
+#include <sys/uio.h>
 #endif
 
 #include "glib-private.h"
@@ -93,6 +94,14 @@ static gssize     g_local_file_output_stream_write        (GOutputStream      *s
 							   gsize               count,
 							   GCancellable       *cancellable,
 							   GError            **error);
+#ifdef G_OS_UNIX
+static gboolean   g_local_file_output_stream_writev       (GOutputStream       *stream,
+							   const GOutputVector *vectors,
+							   gsize                n_vectors,
+							   gsize               *bytes_written,
+							   GCancellable        *cancellable,
+							   GError             **error);
+#endif
 static gboolean   g_local_file_output_stream_close        (GOutputStream      *stream,
 							   GCancellable       *cancellable,
 							   GError            **error);
@@ -142,6 +151,9 @@ g_local_file_output_stream_class_init (GLocalFileOutputStreamClass *klass)
   gobject_class->finalize = g_local_file_output_stream_finalize;
 
   stream_class->write_fn = g_local_file_output_stream_write;
+#ifdef G_OS_UNIX
+  stream_class->writev_fn = g_local_file_output_stream_writev;
+#endif
   stream_class->close_fn = g_local_file_output_stream_close;
   file_stream_class->query_info = g_local_file_output_stream_query_info;
   file_stream_class->get_etag = g_local_file_output_stream_get_etag;
@@ -202,6 +214,89 @@ g_local_file_output_stream_write (GOutputStream  *stream,
   
   return res;
 }
+
+/* On Windows there is no equivalent API for files. The closest API to that is
+ * WriteFileGather() but it is useless in general: it requires, among other
+ * things, that each chunk is the size of a whole page and in memory aligned
+ * to a page. We can't possibly guarantee that in GLib.
+ */
+#ifdef G_OS_UNIX
+/* Macro to check if struct iovec and GOutputVector have the same ABI */
+#define G_OUTPUT_VECTOR_IS_IOVEC (sizeof (struct iovec) == sizeof (GOutputVector) && \
+      sizeof ((struct iovec *) 0)->iov_base == sizeof ((GOutputVector *) 0)->buffer && \
+      G_STRUCT_OFFSET (struct iovec, iov_base) == G_STRUCT_OFFSET (GOutputVector, buffer) && \
+      sizeof ((struct iovec *) 0)->iov_len == sizeof((GOutputVector *) 0)->size && \
+      G_STRUCT_OFFSET (struct iovec, iov_len) == G_STRUCT_OFFSET (GOutputVector, size))
+
+static gboolean
+g_local_file_output_stream_writev (GOutputStream        *stream,
+				   const GOutputVector  *vectors,
+				   gsize                 n_vectors,
+				   gsize                *bytes_written,
+				   GCancellable         *cancellable,
+				   GError              **error)
+{
+  GLocalFileOutputStream *file;
+  gssize res;
+  struct iovec *iov;
+
+  if (bytes_written)
+    *bytes_written = 0;
+
+  /* Clamp to G_MAXINT as writev() takes an integer for the number of vectors.
+   * We handle this like a short write in this case
+   */
+  if (n_vectors > G_MAXINT)
+    n_vectors = G_MAXINT;
+
+  file = G_LOCAL_FILE_OUTPUT_STREAM (stream);
+
+  if (G_OUTPUT_VECTOR_IS_IOVEC)
+    {
+      /* ABI is compatible */
+      iov = (struct iovec *) vectors;
+    }
+  else
+    {
+      gsize i;
+
+      /* ABI is incompatible */
+      iov = g_newa (struct iovec, n_vectors);
+      for (i = 0; i < n_vectors; i++)
+        {
+          iov[i].iov_base = (void *)vectors[i].buffer;
+          iov[i].iov_len = vectors[i].size;
+        }
+    }
+
+  while (1)
+    {
+      if (g_cancellable_set_error_if_cancelled (cancellable, error))
+        return FALSE;
+      res = writev (file->priv->fd, iov, n_vectors);
+      if (res == -1)
+        {
+          int errsv = errno;
+
+          if (errsv == EINTR)
+            continue;
+
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error writing to file: %s"),
+                       g_strerror (errsv));
+        }
+      else if (bytes_written)
+        {
+          *bytes_written = res;
+        }
+
+      break;
+    }
+
+  return res != -1;
+}
+#endif
 
 void
 _g_local_file_output_stream_set_do_close (GLocalFileOutputStream *out,

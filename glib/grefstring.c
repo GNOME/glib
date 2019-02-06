@@ -125,6 +125,38 @@ g_ref_string_new (const char *str)
   len = strlen (str);
   
   res = (char *) g_atomic_rc_box_dup (sizeof (char) * len + 1, str);
+
+  return res;
+}
+
+/**
+ * g_ref_string_new_len:
+ * @str: (not nullable): a string
+ * @len: length of @str to use, or -1 if @str is nul-terminated
+ *
+ * Creates a new reference counted string and copies the contents of @str
+ * into it, up to @len bytes.
+ *
+ * Since this function does not stop at nul bytes, it is the caller's
+ * responsibility to ensure that @str has at least @len addressable bytes.
+ *
+ * Returns: (transfer full) (not nullable): the newly created reference counted string
+ *
+ * Since: 2.58
+ */
+char *
+g_ref_string_new_len (const char *str, gssize len)
+{
+  char *res;
+
+  g_return_val_if_fail (str != NULL, NULL);
+
+  if (len < 0)
+    return g_ref_string_new (str);
+
+  /* allocate then copy as str[len] may not be readable */
+  res = (char *) g_atomic_rc_box_alloc ((gsize) len + 1);
+  memcpy (res, str, len);
   res[len] = '\0';
 
   return res;

@@ -1,6 +1,4 @@
 # for all subdirectories
-Makefile.in
-Makefile
 TAGS
 tags
 .libs
@@ -23,35 +21,7 @@ tags
 *.log
 *.trs
 
-# autofoo stuff here
-compile
-config.cache
-config.guess
-config.h
-config.h.in
-config.h-new
-config.log
-config.lt
-config.rpath
-config.status*
-config.sub
-configure
-depcomp
-aclocal.m4
-autom4te.cache
-stamp-*
-libtool
-ltmain.sh
-mingw32-config.cache
-missing
-install-sh
-glib-gettextize
-gtk-doc.make
-py-compile
-test-driver
-
 INSTALL
-ChangeLog
 /glib-lcov.info
 /glib-lcov/
 

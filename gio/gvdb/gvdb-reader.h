@@ -24,27 +24,21 @@
 
 typedef struct _GvdbTable GvdbTable;
 
-typedef gpointer (*GvdbRefFunc) (gpointer data);
-
 G_BEGIN_DECLS
 
+G_GNUC_INTERNAL
+GvdbTable *             gvdb_table_new_from_bytes                       (GBytes       *bytes,
+                                                                         gboolean      trusted,
+                                                                         GError      **error);
 G_GNUC_INTERNAL
 GvdbTable *             gvdb_table_new                                  (const gchar  *filename,
                                                                          gboolean      trusted,
                                                                          GError      **error);
 G_GNUC_INTERNAL
-GvdbTable *             gvdb_table_new_from_data                        (const void   *data,
-									 gsize         data_len,
-                                                                         gboolean      trusted,
-									 gpointer      user_data,
-									 GvdbRefFunc   ref,
-									 GDestroyNotify unref,
-									 GError      **error);
+void                    gvdb_table_free                                 (GvdbTable    *table);
 G_GNUC_INTERNAL
-GvdbTable *             gvdb_table_ref                                  (GvdbTable    *table);
-G_GNUC_INTERNAL
-void                    gvdb_table_unref                                (GvdbTable    *table);
-
+gchar **                gvdb_table_get_names                            (GvdbTable    *table,
+                                                                         gint         *length);
 G_GNUC_INTERNAL
 gchar **                gvdb_table_list                                 (GvdbTable    *table,
                                                                          const gchar  *key);
@@ -61,27 +55,8 @@ GVariant *              gvdb_table_get_value                            (GvdbTab
 G_GNUC_INTERNAL
 gboolean                gvdb_table_has_value                            (GvdbTable    *table,
                                                                          const gchar  *key);
-
 G_GNUC_INTERNAL
 gboolean                gvdb_table_is_valid                             (GvdbTable    *table);
-
-typedef void          (*GvdbWalkValueFunc)                              (const gchar       *name,
-                                                                         gsize              name_len,
-                                                                         GVariant          *value,
-                                                                         gpointer           user_data);
-typedef gboolean      (*GvdbWalkOpenFunc)                               (const gchar       *name,
-                                                                         gsize              name_len,
-                                                                         gpointer           user_data);
-typedef void          (*GvdbWalkCloseFunc)                              (gsize              name_len,
-                                                                         gpointer           user_data);
-
-G_GNUC_INTERNAL
-void                    gvdb_table_walk                                 (GvdbTable         *table,
-                                                                         const gchar       *key,
-                                                                         GvdbWalkOpenFunc   open_func,
-                                                                         GvdbWalkValueFunc  value_func,
-                                                                         GvdbWalkCloseFunc  close_func,
-                                                                         gpointer           user_data);
 
 G_END_DECLS
 

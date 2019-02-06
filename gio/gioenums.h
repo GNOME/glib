@@ -512,6 +512,9 @@ typedef enum {
  * ]|
  * but should instead treat all unrecognized error codes the same as
  * #G_IO_ERROR_FAILED.
+ *
+ * See also #GPollableReturn for a cheaper way of returning
+ * %G_IO_ERROR_WOULD_BLOCK to callers without allocating a #GError.
  **/
 typedef enum {
   G_IO_ERROR_FAILED,
@@ -1474,6 +1477,11 @@ typedef enum
  * @G_APPLICATION_CAN_OVERRIDE_APP_ID: Allow users to override the
  *     application ID from the command line with `--gapplication-app-id`.
  *     Since: 2.48
+ * @G_APPLICATION_ALLOW_REPLACEMENT: Allow another instance to take over
+ *     the bus name. Since: 2.60
+ * @G_APPLICATION_REPLACE: Take over from another instance. This flag is
+ *     usually set by passing `--gapplication-replace` on the commandline.
+ *     Since: 2.60
  *
  * Flags used to define the behaviour of a #GApplication.
  *
@@ -1491,14 +1499,17 @@ typedef enum
 
   G_APPLICATION_NON_UNIQUE =           (1 << 5),
 
-  G_APPLICATION_CAN_OVERRIDE_APP_ID =  (1 << 6)
+  G_APPLICATION_CAN_OVERRIDE_APP_ID =  (1 << 6),
+  G_APPLICATION_ALLOW_REPLACEMENT   =  (1 << 7),
+  G_APPLICATION_REPLACE             =  (1 << 8)
 } GApplicationFlags;
 
 /**
  * GTlsError:
  * @G_TLS_ERROR_UNAVAILABLE: No TLS provider is available
  * @G_TLS_ERROR_MISC: Miscellaneous TLS error
- * @G_TLS_ERROR_BAD_CERTIFICATE: A certificate could not be parsed
+ * @G_TLS_ERROR_BAD_CERTIFICATE: The certificate presented could not
+ *   be parsed or failed validation.
  * @G_TLS_ERROR_NOT_TLS: The TLS handshake failed because the
  *   peer does not seem to be a TLS server.
  * @G_TLS_ERROR_HANDSHAKE: The TLS handshake failed because the
@@ -1509,6 +1520,9 @@ typedef enum
  * @G_TLS_ERROR_EOF: The TLS connection was closed without proper
  *   notice, which may indicate an attack. See
  *   g_tls_connection_set_require_close_notify().
+ * @G_TLS_ERROR_INAPPROPRIATE_FALLBACK: The TLS handshake failed
+ *   because the client sent the fallback SCSV, indicating a protocol
+ *   downgrade attack. Since: 2.60
  *
  * An error code used with %G_TLS_ERROR in a #GError returned from a
  * TLS-related routine.
@@ -1522,7 +1536,8 @@ typedef enum {
   G_TLS_ERROR_NOT_TLS,
   G_TLS_ERROR_HANDSHAKE,
   G_TLS_ERROR_CERTIFICATE_REQUIRED,
-  G_TLS_ERROR_EOF
+  G_TLS_ERROR_EOF,
+  G_TLS_ERROR_INAPPROPRIATE_FALLBACK
 } GTlsError;
 
 /**
@@ -1589,6 +1604,10 @@ typedef enum {
  * g_tls_connection_set_rehandshake_mode().
  *
  * Since: 2.28
+ *
+ * Deprecated: 2.60. Changing the rehandshake mode is no longer
+ *   required for compatibility. Also, rehandshaking has been removed
+ *   from the TLS protocol in TLS 1.3.
  */
 typedef enum {
   G_TLS_REHANDSHAKE_NEVER,
@@ -1905,6 +1924,30 @@ typedef enum {
   G_NETWORK_CONNECTIVITY_PORTAL      = 3,
   G_NETWORK_CONNECTIVITY_FULL        = 4
 } GNetworkConnectivity;
+
+/**
+ * GPollableReturn:
+ * @G_POLLABLE_RETURN_FAILED: Generic error condition for when an operation fails.
+ * @G_POLLABLE_RETURN_OK: The operation was successfully finished.
+ * @G_POLLABLE_RETURN_WOULD_BLOCK: The operation would block.
+ *
+ * Return value for various IO operations that signal errors via the
+ * return value and not necessarily via a #GError.
+ *
+ * This enum exists to be able to return errors to callers without having to
+ * allocate a #GError. Allocating #GErrors can be quite expensive for
+ * regularly happening errors like %G_IO_ERROR_WOULD_BLOCK.
+ *
+ * In case of %G_POLLABLE_RETURN_FAILED a #GError should be set for the
+ * operation to give details about the error that happened.
+ *
+ * Since: 2.60
+ */
+typedef enum {
+  G_POLLABLE_RETURN_FAILED       = 0,
+  G_POLLABLE_RETURN_OK           = 1,
+  G_POLLABLE_RETURN_WOULD_BLOCK  = -G_IO_ERROR_WOULD_BLOCK
+} GPollableReturn;
 
 G_END_DECLS
 

@@ -113,13 +113,11 @@ recv_message (GIOChannel  *channel,
   gint fd = g_io_channel_unix_get_fd (channel);
   gboolean retval = TRUE;
 
-#ifdef VERBOSE
-  g_print ("gio-test: ...from %d:%s%s%s%s\n", fd,
+  g_debug ("gio-test: ...from %d:%s%s%s%s", fd,
 	   (cond & G_IO_ERR) ? " ERR" : "",
 	   (cond & G_IO_HUP) ? " HUP" : "",
 	   (cond & G_IO_IN)  ? " IN"  : "",
 	   (cond & G_IO_PRI) ? " PRI" : "");
-#endif
 
   if (cond & (G_IO_ERR | G_IO_HUP))
     {
@@ -140,9 +138,7 @@ recv_message (GIOChannel  *channel,
 	{
 	  if (nb == 0)
 	    {
-#ifdef VERBOSE
-	      g_print ("gio-test: ...from %d: EOF\n", fd);
-#endif
+	      g_debug ("gio-test: ...from %d: EOF", fd);
 	      shutdown_source (data);
 	      return FALSE;
 	    }
@@ -165,9 +161,7 @@ recv_message (GIOChannel  *channel,
       
       if (nb == 0)
 	{
-#ifdef VERBOSE
-	  g_print ("gio-test: ...from %d: EOF\n", fd);
-#endif
+	  g_debug ("gio-test: ...from %d: EOF", fd);
 	  shutdown_source (data);
 	  return FALSE;
 	}
@@ -176,9 +170,7 @@ recv_message (GIOChannel  *channel,
 
       g_assert_cmpint (nbytes, <, BUFSIZE);
       g_assert (nbytes >= 0 && nbytes < BUFSIZE);
-#ifdef VERBOSE      
-      g_print ("gio-test: ...from %d: %d bytes\n", fd, nbytes);
-#endif      
+      g_debug ("gio-test: ...from %d: %d bytes", fd, nbytes);
       if (nbytes > 0)
 	{
 	  error = read_all (fd, channel, buf, nbytes, &nb);
@@ -188,18 +180,14 @@ recv_message (GIOChannel  *channel,
 
 	  if (nb == 0)
 	    {
-#ifdef VERBOSE
-	      g_print ("gio-test: ...from %d: EOF\n", fd);
-#endif
+	      g_debug ("gio-test: ...from %d: EOF", fd);
 	      shutdown_source (data);
 	      return FALSE;
 	    }
       
 	  for (j = 0; j < nbytes; j++)
             g_assert (buf[j] == ' ' + ((nbytes + j) % 95));
-#ifdef VERBOSE
-	  g_print ("gio-test: ...from %d: OK\n", fd);
-#endif
+	  g_debug ("gio-test: ...from %d: OK", fd);
 	}
     }
   return retval;
@@ -214,11 +202,11 @@ recv_windows_message (GIOChannel  *channel,
 {
   GIOError error;
   MSG msg;
-  guint nb;
+  gsize nb;
   
   while (1)
     {
-      error = g_io_channel_read (channel, &msg, sizeof (MSG), &nb);
+      error = g_io_channel_read (channel, (gchar *) &msg, sizeof (MSG), &nb);
       
       if (error != G_IO_ERROR_NONE)
 	{
@@ -232,11 +220,16 @@ recv_windows_message (GIOChannel  *channel,
       break;
     }
 
-  g_print ("gio-test: ...Windows message for %#x: %d,%d,%d\n",
-	   msg.hwnd, msg.message, msg.wParam, msg.lParam);
+  g_print ("gio-test: ...Windows message for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
+	   msg.hwnd, msg.message, msg.wParam, (gintptr)msg.lParam);
 
   return TRUE;
 }
+
+LRESULT CALLBACK window_procedure (HWND   hwnd,
+                                   UINT   message,
+                                   WPARAM wparam,
+                                   LPARAM lparam);
 
 LRESULT CALLBACK 
 window_procedure (HWND hwnd,
@@ -244,8 +237,8 @@ window_procedure (HWND hwnd,
 		  WPARAM wparam,
 		  LPARAM lparam)
 {
-  g_print ("gio-test: window_procedure for %#x: %d,%d,%d\n",
-	   hwnd, message, wparam, lparam);
+  g_print ("gio-test: window_procedure for 0x%p: %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT "\n",
+	   hwnd, message, wparam, (gintptr)lparam);
   return DefWindowProc (hwnd, message, wparam, lparam);
 }
 
@@ -261,7 +254,6 @@ main (int    argc,
       
       GIOChannel *my_read_channel;
       gchar *cmdline;
-      guint *id;
       int i;
 #ifdef G_OS_WIN32
       GTimeVal start, end;
@@ -311,6 +303,7 @@ main (int    argc,
       for (i = 0; i < nkiddies; i++)
 	{
 	  int pipe_to_sub[2], pipe_from_sub[2];
+	  guint *id;
 	  
 	  if (pipe (pipe_to_sub) == -1 ||
 	      pipe (pipe_from_sub) == -1)
@@ -323,15 +316,16 @@ main (int    argc,
 	  
 	  id = g_new (guint, 1);
 	  *id =
-	    g_io_add_watch (my_read_channel,
-			    G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP,
-			    recv_message,
-			    id);
+	    g_io_add_watch_full (my_read_channel,
+				 G_PRIORITY_DEFAULT,
+				 G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP,
+				 recv_message,
+				 id, g_free);
 	  
 	  nrunning++;
 	  
 #ifdef G_OS_WIN32
-	  cmdline = g_strdup_printf ("%d:%d:%d",
+	  cmdline = g_strdup_printf ("%d:%d:0x%p",
 				     pipe_to_sub[0],
 				     pipe_from_sub[1],
 				     hwnd);
@@ -367,7 +361,6 @@ main (int    argc,
 
       g_main_loop_unref (main_loop);
       g_free (seqtab);
-      g_free (id);
     }
   else if (argc == 3)
     {
@@ -388,7 +381,7 @@ main (int    argc,
       sscanf (argv[2], "%d:%d%n", &readfd, &writefd, &n);
 
 #ifdef G_OS_WIN32
-      sscanf (argv[2] + n, ":%d", &hwnd);
+      sscanf (argv[2] + n, ":0x%p", &hwnd);
 #endif
       
       srand (tv.tv_sec ^ (tv.tv_usec / 1000) ^ readfd ^ (writefd << 4));
@@ -399,10 +392,8 @@ main (int    argc,
 	  buflen = rand() % BUFSIZE;
 	  for (j = 0; j < buflen; j++)
 	    buf[j] = ' ' + ((buflen + j) % 95);
-#ifdef VERBOSE
-	  g_print ("gio-test: child writing %d+%d bytes to %d\n",
+	  g_debug ("gio-test: child writing %d+%d bytes to %d",
 		   (int)(sizeof(i) + sizeof(buflen)), buflen, writefd);
-#endif
 	  write (writefd, &i, sizeof (i));
 	  write (writefd, &buflen, sizeof (buflen));
 	  write (writefd, buf, buflen);
@@ -413,15 +404,13 @@ main (int    argc,
 	      int msg = WM_USER + (rand() % 100);
 	      WPARAM wparam = rand ();
 	      LPARAM lparam = rand ();
-	      g_print ("gio-test: child posting message %d,%d,%d to %#x\n",
-		       msg, wparam, lparam, hwnd);
+	      g_print ("gio-test: child posting message %d,%" G_GUINTPTR_FORMAT ",%" G_GINTPTR_FORMAT " to 0x%p\n",
+		       msg, wparam, (gintptr)lparam, hwnd);
 	      PostMessage (hwnd, msg, wparam, lparam);
 	    }
 #endif
 	}
-#ifdef VERBOSE
-      g_print ("gio-test: child exiting, closing %d\n", writefd);
-#endif
+      g_debug ("gio-test: child exiting, closing %d", writefd);
       close (writefd);
     }
   else

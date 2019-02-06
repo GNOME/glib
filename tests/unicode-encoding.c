@@ -9,6 +9,7 @@
 
 static gint exit_status = 0;
 
+G_GNUC_PRINTF (1, 2)
 static void
 croak (char *format, ...)
 {
@@ -21,6 +22,7 @@ croak (char *format, ...)
   exit (1);
 }
 
+G_GNUC_PRINTF (1, 2)
 static void
 fail (char *format, ...)
 {

@@ -106,12 +106,12 @@ GLIB_AVAILABLE_IN_ALL
 gchar    *g_key_file_get_start_group        (GKeyFile             *key_file) G_GNUC_MALLOC;
 GLIB_AVAILABLE_IN_ALL
 gchar   **g_key_file_get_groups             (GKeyFile             *key_file,
-					     gsize                *length) G_GNUC_MALLOC;
+					     gsize                *length);
 GLIB_AVAILABLE_IN_ALL
 gchar   **g_key_file_get_keys               (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     gsize                *length,
-					     GError              **error) G_GNUC_MALLOC;
+					     GError              **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean  g_key_file_has_group              (GKeyFile             *key_file,
 					     const gchar          *group_name);
@@ -212,7 +212,7 @@ gchar   **g_key_file_get_string_list        (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
 					     gsize                *length,
-					     GError              **error) G_GNUC_MALLOC;
+					     GError              **error);
 GLIB_AVAILABLE_IN_ALL
 void      g_key_file_set_string_list        (GKeyFile             *key_file,
 					     const gchar          *group_name,
@@ -225,7 +225,7 @@ gchar   **g_key_file_get_locale_string_list (GKeyFile             *key_file,
 					     const gchar          *key,
 					     const gchar          *locale,
 					     gsize                *length,
-					     GError              **error) G_GNUC_MALLOC;
+					     GError              **error);
 GLIB_AVAILABLE_IN_ALL
 void      g_key_file_set_locale_string_list (GKeyFile             *key_file,
 					     const gchar          *group_name,

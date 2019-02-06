@@ -99,6 +99,7 @@ libgmodule = library('gmodule-2.0',
   sources : gmodule_sources,
   version : library_version,
   soversion : soversion,
+  darwin_versions : darwin_versions,
   install : true,
   include_directories : [configinc, gmoduleinc],
   dependencies : [libdl_dep, libglib_dep],
@@ -108,7 +109,8 @@ libgmodule = library('gmodule-2.0',
 
 supported_var = 'gmodule_supported=@0@'.format(g_module_impl != '0')
 
-pkg.generate(libraries : [libgmodule, thread_dep],
+pkg.generate(libgmodule,
+  libraries : [thread_dep],
   requires : ['glib-2.0'],
   version : glib_version,
   variables : [supported_var],
@@ -139,4 +141,5 @@ pkg.generate(libraries : [libgmodule, export_dynamic_ldflags],
 )
 
 libgmodule_dep = declare_dependency(link_with : libgmodule,
-  include_directories : gmoduleinc)
+  include_directories : [gmoduleinc],
+  dependencies : [libglib_dep])

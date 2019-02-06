@@ -152,6 +152,7 @@ typedef struct
 
 static DesktopFileDir *desktop_file_dirs;
 static guint           n_desktop_file_dirs;
+static const gchar    *desktop_file_dirs_config_dir = NULL;
 static const guint     desktop_file_dir_user_config_index = 0;
 static guint           desktop_file_dir_user_data_index;
 static GMutex          desktop_file_dir_lock;
@@ -1476,8 +1477,23 @@ static void
 desktop_file_dirs_lock (void)
 {
   gint i;
+  const gchar *user_config_dir = g_get_user_config_dir ();
 
   g_mutex_lock (&desktop_file_dir_lock);
+
+  /* If the XDG dirs configuration has changed (expected only during tests),
+   * clear and reload the state. */
+  if (g_strcmp0 (desktop_file_dirs_config_dir, user_config_dir) != 0)
+    {
+      g_debug ("%s: Resetting desktop app info dirs from %s to %s",
+               G_STRFUNC, desktop_file_dirs_config_dir, user_config_dir);
+
+      for (i = 0; i < n_desktop_file_dirs; i++)
+        desktop_file_dir_reset (&desktop_file_dirs[i]);
+      g_clear_pointer (&desktop_file_dirs, g_free);
+      n_desktop_file_dirs = 0;
+      desktop_file_dir_user_data_index = 0;
+    }
 
   if (desktop_file_dirs == NULL)
     {
@@ -1488,7 +1504,7 @@ desktop_file_dirs_lock (void)
       tmp = g_array_new (FALSE, FALSE, sizeof (DesktopFileDir));
 
       /* First, the configs.  Highest priority: the user's ~/.config */
-      desktop_file_dir_create_for_config (tmp, g_get_user_config_dir ());
+      desktop_file_dir_create_for_config (tmp, user_config_dir);
 
       /* Next, the system configs (/etc/xdg, and so on). */
       dirs = g_get_system_config_dirs ();
@@ -1504,9 +1520,11 @@ desktop_file_dirs_lock (void)
       for (i = 0; dirs[i]; i++)
         desktop_file_dir_create (tmp, dirs[i]);
 
-      /* The list of directories will never change after this. */
+      /* The list of directories will never change after this, unless
+       * g_get_user_config_dir() changes due to %G_TEST_OPTION_ISOLATE_DIRS. */
       desktop_file_dirs = (DesktopFileDir *) tmp->data;
       n_desktop_file_dirs = tmp->len;
+      desktop_file_dirs_config_dir = user_config_dir;
 
       g_array_free (tmp, FALSE);
     }
@@ -2852,7 +2870,10 @@ static void
 launch_uris_with_dbus (GDesktopAppInfo    *info,
                        GDBusConnection    *session_bus,
                        GList              *uris,
-                       GAppLaunchContext  *launch_context)
+                       GAppLaunchContext  *launch_context,
+                       GCancellable       *cancellable,
+                       GAsyncReadyCallback callback,
+                       gpointer            user_data)
 {
   GVariantBuilder builder;
   gchar *object_path;
@@ -2871,14 +2892,11 @@ launch_uris_with_dbus (GDesktopAppInfo    *info,
 
   g_variant_builder_add_value (&builder, g_desktop_app_info_make_platform_data (info, uris, launch_context));
 
-  /* This is non-blocking API.  Similar to launching via fork()/exec()
-   * we don't wait around to see if the program crashed during startup.
-   * This is what startup-notification's job is...
-   */
   object_path = object_path_from_appid (info->app_id);
   g_dbus_connection_call (session_bus, info->app_id, object_path, "org.freedesktop.Application",
                           uris ? "Open" : "Activate", g_variant_builder_end (&builder),
-                          NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+                          NULL, G_DBUS_CALL_FLAGS_NONE, -1,
+                          cancellable, callback, user_data);
   g_free (object_path);
 }
 
@@ -2886,7 +2904,10 @@ static gboolean
 g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
                                           GDBusConnection    *session_bus,
                                           GList              *uris,
-                                          GAppLaunchContext  *launch_context)
+                                          GAppLaunchContext  *launch_context,
+                                          GCancellable       *cancellable,
+                                          GAsyncReadyCallback callback,
+                                          gpointer            user_data)
 {
   GList *ruris = uris;
   char *app_id = NULL;
@@ -2903,7 +2924,8 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
     }
 #endif
 
-  launch_uris_with_dbus (info, session_bus, ruris, launch_context);
+  launch_uris_with_dbus (info, session_bus, ruris, launch_context,
+                         cancellable, callback, user_data);
 
   if (ruris != uris)
     g_list_free_full (ruris, g_free);
@@ -2934,7 +2956,12 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   if (session_bus && info->app_id)
-    g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context);
+    /* This is non-blocking API. Similar to launching via fork()/exec()
+     * we don't wait around to see if the program crashed during startup.
+     * This is what startup-notification's job is...
+     */
+    g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context,
+                                              NULL, NULL, NULL);
   else
     success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec, uris, launch_context,
                                                          spawn_flags, user_setup, user_setup_data,
@@ -2966,6 +2993,137 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
                                                   NULL, NULL, NULL, NULL,
                                                   -1, -1, -1,
                                                   error);
+}
+
+typedef struct
+{
+  GAppInfo *appinfo;
+  GList *uris;
+  GAppLaunchContext *context;
+} LaunchUrisData;
+
+static void
+launch_uris_data_free (LaunchUrisData *data)
+{
+  g_clear_object (&data->context);
+  g_list_free_full (data->uris, g_free);
+  g_free (data);
+}
+
+static void
+launch_uris_with_dbus_cb (GObject      *object,
+                          GAsyncResult *result,
+                          gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GError *error = NULL;
+
+  g_dbus_connection_call_finish (G_DBUS_CONNECTION (object), result, &error);
+  if (error != NULL)
+    {
+      g_dbus_error_strip_remote_error (error);
+      g_task_return_error (task, g_steal_pointer (&error));
+    }
+  else
+    g_task_return_boolean (task, TRUE);
+
+  g_object_unref (task);
+}
+
+static void
+launch_uris_flush_cb (GObject      *object,
+                      GAsyncResult *result,
+                      gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+
+  g_dbus_connection_flush_finish (G_DBUS_CONNECTION (object), result, NULL);
+  g_task_return_boolean (task, TRUE);
+  g_object_unref (task);
+}
+
+static void
+launch_uris_bus_get_cb (GObject      *object,
+                        GAsyncResult *result,
+                        gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GDesktopAppInfo *info = G_DESKTOP_APP_INFO (g_task_get_source_object (task));
+  LaunchUrisData *data = g_task_get_task_data (task);
+  GCancellable *cancellable = g_task_get_cancellable (task);
+  GDBusConnection *session_bus;
+  GError *error = NULL;
+
+  session_bus = g_bus_get_finish (result, NULL);
+
+  if (session_bus && info->app_id)
+    {
+      /* FIXME: The g_document_portal_add_documents() function, which is called
+       * from the g_desktop_app_info_launch_uris_with_dbus() function, still
+       * uses blocking calls.
+       */
+      g_desktop_app_info_launch_uris_with_dbus (info, session_bus,
+                                                data->uris, data->context,
+                                                cancellable,
+                                                launch_uris_with_dbus_cb,
+                                                g_steal_pointer (&task));
+    }
+  else
+    {
+      /* FIXME: The D-Bus message from the notify_desktop_launch() function
+       * can be still lost even if flush is called later. See:
+       * https://gitlab.freedesktop.org/dbus/dbus/issues/72
+       */
+      g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec,
+                                                 data->uris, data->context,
+                                                 _SPAWN_FLAGS_DEFAULT, NULL,
+                                                 NULL, NULL, NULL, -1, -1, -1,
+                                                 &error);
+      if (error != NULL)
+        {
+          g_task_return_error (task, g_steal_pointer (&error));
+          g_object_unref (task);
+        }
+      else
+        g_dbus_connection_flush (session_bus,
+                                 cancellable,
+                                 launch_uris_flush_cb,
+                                 g_steal_pointer (&task));
+    }
+
+  g_clear_object (&session_bus);
+}
+
+static void
+g_desktop_app_info_launch_uris_async (GAppInfo           *appinfo,
+                                      GList              *uris,
+                                      GAppLaunchContext  *context,
+                                      GCancellable       *cancellable,
+                                      GAsyncReadyCallback callback,
+                                      gpointer            user_data)
+{
+  GTask *task;
+  LaunchUrisData *data;
+
+  task = g_task_new (appinfo, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_desktop_app_info_launch_uris_async);
+
+  data = g_new0 (LaunchUrisData, 1);
+  data->uris = g_list_copy_deep (uris, (GCopyFunc) g_strdup, NULL);
+  data->context = (context != NULL) ? g_object_ref (context) : NULL;
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) launch_uris_data_free);
+
+  g_bus_get (G_BUS_TYPE_SESSION, cancellable, launch_uris_bus_get_cb, task);
+}
+
+static gboolean
+g_desktop_app_info_launch_uris_finish (GAppInfo     *appinfo,
+                                       GAsyncResult *result,
+                                       GError      **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, appinfo), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 static gboolean
@@ -3190,6 +3348,8 @@ ensure_dir (DirType   type,
     default:
       g_assert_not_reached ();
     }
+
+  g_debug ("%s: Ensuring %s", G_STRFUNC, path);
 
   errno = 0;
   if (g_mkdir_with_parents (path, 0700) == 0)
@@ -3856,6 +4016,8 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
   iface->supports_uris = g_desktop_app_info_supports_uris;
   iface->supports_files = g_desktop_app_info_supports_files;
   iface->launch_uris = g_desktop_app_info_launch_uris;
+  iface->launch_uris_async = g_desktop_app_info_launch_uris_async;
+  iface->launch_uris_finish = g_desktop_app_info_launch_uris_finish;
   iface->should_show = g_desktop_app_info_should_show;
   iface->set_as_default_for_type = g_desktop_app_info_set_as_default_for_type;
   iface->set_as_default_for_extension = g_desktop_app_info_set_as_default_for_extension;
@@ -4532,6 +4694,33 @@ g_desktop_app_info_get_boolean (GDesktopAppInfo *info,
 
   return g_key_file_get_boolean (info->keyfile,
                                  G_KEY_FILE_DESKTOP_GROUP, key, NULL);
+}
+
+/**
+ * g_desktop_app_info_get_string_list:
+ * @info: a #GDesktopAppInfo
+ * @key: the key to look up
+ * @length: (out) (optional): return location for the number of returned strings, or %NULL
+ *
+ * Looks up a string list value in the keyfile backing @info.
+ *
+ * The @key is looked up in the "Desktop Entry" group.
+ *
+ * Returns: (array zero-terminated=1 length=length) (element-type utf8) (transfer full):
+ *  a %NULL-terminated string array or %NULL if the specified
+ *  key cannot be found. The array should be freed with g_strfreev().
+ *
+ * Since: 2.60.0
+ */
+gchar **
+g_desktop_app_info_get_string_list (GDesktopAppInfo *info,
+                                    const char      *key,
+                                    gsize           *length)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
+
+  return g_key_file_get_string_list (info->keyfile,
+                                     G_KEY_FILE_DESKTOP_GROUP, key, length, NULL);
 }
 
 /**

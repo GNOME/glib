@@ -924,13 +924,9 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 	_g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_DELETE,
 					         writable);
 
-      /* Trashing is supported only if the parent device is the same */
       if (_g_file_attribute_matcher_matches_id (attribute_matcher, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_TRASH))
-        _g_file_info_set_attribute_boolean_by_id (info,
-                                                  G_FILE_ATTRIBUTE_ID_ACCESS_CAN_TRASH,
-                                                  writable &&
-                                                  parent_info->has_trash_dir &&
-                                                  parent_info->device == statbuf->st_dev);
+        _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_TRASH,
+                                                 writable && parent_info->has_trash_dir);
     }
 }
 
@@ -961,7 +957,8 @@ set_info_from_stat (GFileInfo             *info,
   else if (S_ISLNK (statbuf->st_mode))
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #elif defined (G_OS_WIN32)
-  if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK)
+  if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+      statbuf->reparse_tag == IO_REPARSE_TAG_MOUNT_POINT)
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #endif
 
@@ -1005,12 +1002,19 @@ set_info_from_stat (GFileInfo             *info,
 #elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atim.tv_nsec / 1000);
 #endif
-  
+
+#ifndef G_OS_WIN32
+  /* Microsoft uses st_ctime for file creation time,
+   * instead of file change time:
+   * https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/stat-functions#generic-text-routine-mappings
+   * Thank you, Microsoft!
+   */
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED, statbuf->st_ctime);
 #if defined (HAVE_STRUCT_STAT_ST_CTIMENSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, statbuf->st_ctimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, statbuf->st_ctim.tv_nsec / 1000);
+#endif
 #endif
 
 #if defined (HAVE_STRUCT_STAT_ST_BIRTHTIME) && defined (HAVE_STRUCT_STAT_ST_BIRTHTIMENSEC)
@@ -1023,6 +1027,8 @@ set_info_from_stat (GFileInfo             *info,
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_birthtime);
 #elif defined (HAVE_STRUCT_STAT_ST_BIRTHTIM)
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_birthtim);
+#elif defined (G_OS_WIN32)
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_ctime);
 #endif
 
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
@@ -1057,7 +1063,7 @@ make_valid_utf8 (const char *name)
 {
   GString *string;
   const gchar *remainder, *invalid;
-  gint remaining_bytes, valid_bytes;
+  gsize remaining_bytes, valid_bytes;
   
   string = NULL;
   remainder = name;
@@ -1065,7 +1071,7 @@ make_valid_utf8 (const char *name)
   
   while (remaining_bytes != 0) 
     {
-      if (g_utf8_validate (remainder, remaining_bytes, &invalid)) 
+      if (g_utf8_validate_len (remainder, remaining_bytes, &invalid))
 	break;
       valid_bytes = invalid - remainder;
     
@@ -1799,7 +1805,9 @@ _g_local_file_info_get (const char             *basename,
   is_symlink = stat_ok && S_ISLNK (statbuf.st_mode);
 #elif defined (G_OS_WIN32)
   /* glib already checked the FILE_ATTRIBUTE_REPARSE_POINT for us */
-  is_symlink = stat_ok && statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK; 
+  is_symlink = stat_ok &&
+      (statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+       statbuf.reparse_tag == IO_REPARSE_TAG_MOUNT_POINT);
 #else
   is_symlink = FALSE;
 #endif
@@ -1859,6 +1867,12 @@ _g_local_file_info_get (const char             *basename,
 
   if (statbuf.attributes & FILE_ATTRIBUTE_SYSTEM)
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_SYSTEM, TRUE);
+
+  if (statbuf.reparse_tag == IO_REPARSE_TAG_MOUNT_POINT)
+    _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_MOUNTPOINT, TRUE);
+
+  if (statbuf.reparse_tag != 0)
+    _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_REPARSE_POINT_TAG, statbuf.reparse_tag);
 #endif
 
   symlink_target = NULL;
@@ -2182,7 +2196,9 @@ set_unix_mode (char                       *filename,
     GWin32PrivateStat statbuf;
 
     res = GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (filename, &statbuf);
-    is_symlink = (res == 0 && statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK);
+    is_symlink = (res == 0 &&
+                  (statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+                   statbuf.reparse_tag == IO_REPARSE_TAG_MOUNT_POINT));
 #endif
     if (is_symlink)
       {

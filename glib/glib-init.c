@@ -20,8 +20,7 @@
 #include "config.h"
 
 #include "glib-init.h"
-
-#include "glib-private.h"
+#include "gmacros.h"
 #include "gtypes.h"
 #include "gutils.h"     /* for GDebugKey */
 #include "gconstructor.h"
@@ -40,10 +39,10 @@ G_STATIC_ASSERT (CHAR_BIT == 8);
 
 /* We assume that data pointers are the same size as function pointers... */
 G_STATIC_ASSERT (sizeof (gpointer) == sizeof (GFunc));
-G_STATIC_ASSERT (_g_alignof (gpointer) == _g_alignof (GFunc));
+G_STATIC_ASSERT (G_ALIGNOF (gpointer) == G_ALIGNOF (GFunc));
 /* ... and that all function pointers are the same size. */
 G_STATIC_ASSERT (sizeof (GFunc) == sizeof (GCompareDataFunc));
-G_STATIC_ASSERT (_g_alignof (GFunc) == _g_alignof (GCompareDataFunc));
+G_STATIC_ASSERT (G_ALIGNOF (GFunc) == G_ALIGNOF (GCompareDataFunc));
 
 /* We assume that "small" enums (those where all values fit in INT32_MIN
  * to INT32_MAX) are exactly int-sized. In particular, we assume that if
@@ -64,9 +63,9 @@ typedef enum {
 G_STATIC_ASSERT (sizeof (TestChar) == sizeof (int));
 G_STATIC_ASSERT (sizeof (TestShort) == sizeof (int));
 G_STATIC_ASSERT (sizeof (TestInt) == sizeof (int));
-G_STATIC_ASSERT (_g_alignof (TestChar) == _g_alignof (int));
-G_STATIC_ASSERT (_g_alignof (TestShort) == _g_alignof (int));
-G_STATIC_ASSERT (_g_alignof (TestInt) == _g_alignof (int));
+G_STATIC_ASSERT (G_ALIGNOF (TestChar) == G_ALIGNOF (int));
+G_STATIC_ASSERT (G_ALIGNOF (TestShort) == G_ALIGNOF (int));
+G_STATIC_ASSERT (G_ALIGNOF (TestInt) == G_ALIGNOF (int));
 
 /**
  * g_mem_gc_friendly:

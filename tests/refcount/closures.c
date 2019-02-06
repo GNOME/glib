@@ -153,19 +153,11 @@ my_test_class_init (GTestClass *klass)
   klass->test_signal2 = my_test_test_signal2;
 }
 
-static inline guint32
-quick_rand32 (void)
-{
-  static guint32 accu = 2147483563;
-  accu = 1664525 * accu + 1013904223;
-  return accu;
-}
-
 static void
 test_closure (GClosure *closure)
 {
   /* try to produce high contention in closure->ref_count */
-  guint i = 0, n = quick_rand32() % 199;
+  guint i = 0, n = g_random_int () % 199;
   for (i = 0; i < n; i++)
     g_closure_ref (closure);
   g_closure_sink (closure); /* NOP */
@@ -259,7 +251,19 @@ main (int    argc,
   thread1 = g_thread_create (thread1_main, closure, TRUE, NULL);
   thread2 = g_thread_create (thread2_main, closure, TRUE, NULL);
 
+  /* The 16-bit compare-and-swap operations currently used for closure
+   * refcounts are really slow on some ARM CPUs, notably Cortex-A57.
+   * Reduce the number of iterations so that the test completes in a
+   * finite time, but don't reduce it so much that the main thread
+   * starves the other threads and causes a test failure.
+   *
+   * https://gitlab.gnome.org/GNOME/glib/issues/1316
+   * aka https://bugs.debian.org/880883 */
+#if defined(__aarch64__) || defined(__arm__)
+  for (i = 0; i < 100000; i++)
+#else
   for (i = 0; i < 1000000; i++)
+#endif
     {
       static guint count = 0;
       test_emissions (object);

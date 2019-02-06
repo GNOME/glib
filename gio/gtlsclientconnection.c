@@ -105,14 +105,7 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
    *
    * If %TRUE, forces the connection to use a fallback version of TLS
    * or SSL, rather than trying to negotiate the best version of TLS
-   * to use. This can be used when talking to servers that don't
-   * implement version negotiation correctly and therefore refuse to
-   * handshake at all with a modern TLS handshake.
-   *
-   * Despite the property name, the fallback version is usually not
-   * SSL 3.0, because SSL 3.0 is generally disabled by the #GTlsBackend.
-   * #GTlsClientConnection will use the next-highest available version
-   * as the fallback version.
+   * to use. See g_tls_client_connection_set_use_ssl3().
    *
    * Since: 2.28
    *
@@ -304,14 +297,19 @@ g_tls_client_connection_get_use_ssl3 (GTlsClientConnection *conn)
  * @conn: the #GTlsClientConnection
  * @use_ssl3: whether to use the lowest-supported protocol version
  *
- * If @use_ssl3 is %TRUE, this forces @conn to use the lowest-supported
- * TLS protocol version rather than trying to properly negotiate the
- * highest mutually-supported protocol version with the peer. This can
- * be used when talking to broken TLS servers that exhibit protocol
- * version intolerance.
+ * Since 2.42.1, if @use_ssl3 is %TRUE, this forces @conn to use the
+ * lowest-supported TLS protocol version rather than trying to properly
+ * negotiate the highest mutually-supported protocol version with the
+ * peer. Be aware that SSL 3.0 is generally disabled by the
+ * #GTlsBackend, so the lowest-supported protocol version is probably
+ * not SSL 3.0.
  *
- * Be aware that SSL 3.0 is generally disabled by the #GTlsBackend, so
- * the lowest-supported protocol version is probably not SSL 3.0.
+ * Since 2.58, this may additionally cause an RFC 7507 fallback SCSV to
+ * be sent to the server, causing modern TLS servers to immediately
+ * terminate the connection. You should generally only use this function
+ * if you need to connect to broken servers that exhibit TLS protocol
+ * version intolerance, and when an initial attempt to connect to a
+ * server normally has already failed.
  *
  * Since: 2.28
  *

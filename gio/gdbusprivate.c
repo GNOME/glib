@@ -1817,6 +1817,7 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
 #define G_DBUS_DEBUG_RETURN         (1<<7)
 #define G_DBUS_DEBUG_EMISSION       (1<<8)
 #define G_DBUS_DEBUG_ADDRESS        (1<<9)
+#define G_DBUS_DEBUG_PROXY          (1<<10)
 
 static gint _gdbus_debug_flags = 0;
 
@@ -1890,6 +1891,13 @@ _g_dbus_debug_address (void)
   return (_gdbus_debug_flags & G_DBUS_DEBUG_ADDRESS) != 0;
 }
 
+gboolean
+_g_dbus_debug_proxy (void)
+{
+  _g_dbus_initialize ();
+  return (_gdbus_debug_flags & G_DBUS_DEBUG_PROXY) != 0;
+}
+
 G_LOCK_DEFINE_STATIC (print_lock);
 
 void
@@ -1938,7 +1946,8 @@ _g_dbus_initialize (void)
             { "incoming",       G_DBUS_DEBUG_INCOMING       },
             { "return",         G_DBUS_DEBUG_RETURN         },
             { "emission",       G_DBUS_DEBUG_EMISSION       },
-            { "address",        G_DBUS_DEBUG_ADDRESS        }
+            { "address",        G_DBUS_DEBUG_ADDRESS        },
+            { "proxy",          G_DBUS_DEBUG_PROXY          }
           };
 
           _gdbus_debug_flags = g_parse_debug_string (debug, keys, G_N_ELEMENTS (keys));

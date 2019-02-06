@@ -222,7 +222,7 @@ static void
 g_datalist_clear_i (GData **datalist)
 {
   GData *data;
-  gint i;
+  guint i;
 
   data = G_DATALIST_GET_POINTER (datalist);
   G_DATALIST_SET_POINTER (datalist, NULL);
@@ -254,7 +254,7 @@ void
 g_datalist_clear (GData **datalist)
 {
   GData *data;
-  gint i;
+  guint i;
 
   g_return_if_fail (datalist != NULL);
 
@@ -1119,7 +1119,7 @@ g_datalist_foreach (GData	   **datalist,
 		    gpointer         user_data)
 {
   GData *d;
-  int i, j, len;
+  guint i, j, len;
   GQuark *keys;
 
   g_return_if_fail (datalist != NULL);

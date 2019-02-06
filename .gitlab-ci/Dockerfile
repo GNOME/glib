@@ -1,9 +1,13 @@
 FROM fedora:27
 
 RUN dnf -y install \
+    autoconf \
+    automake \
+    bindfs \
     desktop-file-utils \
     elfutils-libelf-devel \
     findutils \
+    fuse \
     gamin-devel \
     gcc \
     gcc-c++ \
@@ -11,6 +15,20 @@ RUN dnf -y install \
     git \
     glibc-devel \
     glibc-headers \
+    glibc-langpack-de \
+    glibc-langpack-el \
+    glibc-langpack-el \
+    glibc-langpack-en \
+    glibc-langpack-es \
+    glibc-langpack-es \
+    glibc-langpack-fa \
+    glibc-langpack-fr \
+    glibc-langpack-hr \
+    glibc-langpack-ja \
+    glibc-langpack-lt \
+    glibc-langpack-pl \
+    glibc-langpack-ru \
+    glibc-langpack-tr \
     gtk-doc \
     itstool \
     lcov \
@@ -18,6 +36,7 @@ RUN dnf -y install \
     libffi-devel \
     libmount-devel \
     libselinux-devel \
+    libtool \
     libxslt \
     make \
     mingw64-gcc \
@@ -34,6 +53,7 @@ RUN dnf -y install \
     systemtap-sdt-devel \
     unzip \
     wget \
+    xz \
     zlib-devel \
  && dnf clean all
 
@@ -48,7 +68,7 @@ RUN rm -rf $ANDROID_NDK_PATH
 
 COPY cross_file_mingw64.txt /opt
 
-RUN pip3 install meson==0.47.0
+RUN pip3 install meson==0.48.0
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}

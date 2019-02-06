@@ -128,6 +128,7 @@ test_x11_autolaunch (void)
       g_unsetenv ("DISPLAY");
       g_unsetenv ("DBUS_SESSION_BUS_ADDRESS");
       g_unsetenv ("XDG_RUNTIME_DIR");
+      g_unsetenv ("G_MESSAGES_DEBUG");
       set_up_mock_dbus_launch ();
 
       print_address ();

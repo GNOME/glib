@@ -9,7 +9,7 @@ def read_global_var (symname):
     return gdb.selected_frame().read_var(symname)
 
 def g_quark_to_string (quark):
-    if quark == None:
+    if quark is None:
         return None
     quark = long(quark)
     if quark == 0:
@@ -171,7 +171,7 @@ def pretty_printer_lookup (val):
     return None
 
 def register (obj):
-    if obj == None:
+    if obj is None:
         obj = gdb
 
     obj.pretty_printers.append(pretty_printer_lookup)

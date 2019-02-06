@@ -89,11 +89,14 @@ test_dates (void)
 {
   GDate *d;
   GTimeVal tv;
+  time_t now;
 
   d = g_date_new ();
 
   /* today */
-  g_date_set_time (d, time (NULL));
+  now = time (NULL);
+  g_assert_cmpint (now, !=, (time_t) -1);
+  g_date_set_time (d, now);
   g_assert (g_date_valid (d));
 
   /* Unix epoch */
@@ -180,6 +183,65 @@ test_parse (void)
 }
 
 static void
+test_parse_locale_change (void)
+{
+  /* Checks that g_date_set_parse correctly changes locale specific data as
+   * necessary. In this particular case year adjustment, as Thai calendar is
+   * 543 years ahead of the Gregorian calendar. */
+
+  GDate date;
+
+  if (setlocale (LC_ALL, "th_TH") == NULL)
+    {
+      g_test_skip ("locale th_TH not available");
+      return;
+    }
+
+  g_date_set_parse (&date, "04/07/2519");
+
+  setlocale (LC_ALL, "C");
+  g_date_set_parse (&date, "07/04/76");
+  g_assert_cmpint (g_date_get_day (&date), ==, 4);
+  g_assert_cmpint (g_date_get_month (&date), ==, 7);
+  g_assert_cmpint (g_date_get_year (&date), ==, 1976);
+
+  setlocale (LC_ALL, "");
+}
+
+static void
+test_month_substring (void)
+{
+  GDate date;
+
+  g_test_bug ("793550");
+
+  if (setlocale (LC_ALL, "pl_PL") == NULL)
+    {
+      g_test_skip ("pl_PL locale not available");
+      return;
+    }
+
+  /* In Polish language September is "wrzesień" and August is "sierpień"
+   * abbreviated as "sie". The former used to be confused with the latter
+   * because "sie" is a substring of "wrzesień" and was matched first. */
+
+  g_date_set_parse (&date, "wrzesień 2018");
+  g_assert_true (g_date_valid (&date));
+  g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_SEPTEMBER);
+
+  g_date_set_parse (&date, "sie 2018");
+  g_assert_true (g_date_valid (&date));
+  g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_AUGUST);
+
+  g_date_set_parse (&date, "sierpień 2018");
+  g_assert_true (g_date_valid (&date));
+  g_assert_cmpint (g_date_get_month (&date), ==, G_DATE_AUGUST);
+
+  setlocale (LC_ALL, "");
+}
+
+
+static void
 test_month_names (void)
 {
 #if defined(HAVE_LANGINFO_ABALTMON) || defined(G_OS_WIN32)
@@ -192,6 +254,17 @@ test_month_names (void)
 #endif  /* defined(HAVE_LANGINFO_ABALTMON) || defined(G_OS_WIN32) */
 
   g_test_bug ("749206");
+
+  /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
+   * need the translations to be installed. We can’t mess around with
+   * bindtextdomain() here, as the compiled .gmo files in po/ are not in the
+   * right installed directory hierarchy to be successfully loaded by gettext. */
+  if (g_getenv ("G_TEST_BUILDDIR") != NULL)
+    {
+      g_test_skip ("Skipping due to running uninstalled. "
+                   "This test can only be run when the translations are installed.");
+      return;
+    }
 
   /* This test can only work (on non-Windows platforms) if libc supports
    * the %OB (etc.) format placeholders. If it doesn’t, strftime() (and hence
@@ -209,15 +282,21 @@ test_month_names (void)
   g_test_skip ("libc doesn’t support all alternative month names");
 #else
 
-#define TEST_DATE(d,m,y,f,o)                                    \
+#define TEST_DATE(d,m,y,f,o)                     G_STMT_START { \
+  gchar *o_casefold, *buf_casefold;                             \
   g_date_set_dmy (gdate, d, m, y);                              \
   g_date_strftime (buf, 100, f, gdate);                         \
-  g_assert_cmpstr (buf, ==, (o));                               \
+  buf_casefold = g_utf8_casefold (buf, -1);                     \
+  o_casefold = g_utf8_casefold ((o), -1);                       \
+  g_assert_cmpstr (buf_casefold, ==, o_casefold);               \
+  g_free (buf_casefold);                                        \
+  g_free (o_casefold);                                          \
   g_date_set_parse (gdate, buf);                                \
   g_assert (g_date_valid (gdate));                              \
   g_assert_cmpint (g_date_get_day (gdate), ==, d);              \
   g_assert_cmpint (g_date_get_month (gdate), ==, m);            \
-  g_assert_cmpint (g_date_get_year (gdate), ==, y);
+  g_assert_cmpint (g_date_get_year (gdate), ==, y);             \
+} G_STMT_END
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
 #ifdef G_OS_WIN32
@@ -245,7 +324,7 @@ test_month_names (void)
       TEST_DATE (1,  6, 2018,    "%Oh %Y",         "Jun 2018");
     }
   else
-    g_test_incomplete ("locale en_GB not available, skipping English month names test");
+    g_test_skip ("locale en_GB not available, skipping English month names test");
 
   setlocale (LC_ALL, "de_DE.utf-8");
 #ifdef G_OS_WIN32
@@ -261,7 +340,7 @@ test_month_names (void)
       TEST_DATE ( 1, 12, 2018,    "%Oh %Y",      "Dez 2018");
     }
   else
-    g_test_incomplete ("locale de_DE not available, skipping German month names test");
+    g_test_skip ("locale de_DE not available, skipping German month names test");
 
 
   setlocale (LC_ALL, "es_ES.utf-8");
@@ -278,7 +357,7 @@ test_month_names (void)
       TEST_DATE ( 1,  6, 2018,      "%Oh de %Y",         "jun de 2018");
     }
   else
-    g_test_incomplete ("locale es_ES not available, skipping Spanish month names test");
+    g_test_skip ("locale es_ES not available, skipping Spanish month names test");
 
   setlocale (LC_ALL, "fr_FR.utf-8");
 #ifdef G_OS_WIN32
@@ -294,7 +373,7 @@ test_month_names (void)
       TEST_DATE ( 1, 12, 2018,   "%Oh %Y",       "déc. 2018");
     }
   else
-    g_test_incomplete ("locale fr_FR not available, skipping French month names test");
+    g_test_skip ("locale fr_FR not available, skipping French month names test");
 
   /* Make sure that there are visible changes in some European languages.  */
   setlocale (LC_ALL, "el_GR.utf-8");
@@ -313,7 +392,7 @@ test_month_names (void)
       TEST_DATE ( 1,  8, 2018,   "%Ob %Y",            "Αύγ 2018");
     }
   else
-    g_test_incomplete ("locale el_GR not available, skipping Greek month names test");
+    g_test_skip ("locale el_GR not available, skipping Greek month names test");
 
   setlocale (LC_ALL, "hr_HR.utf-8");
 #ifdef G_OS_WIN32
@@ -331,7 +410,7 @@ test_month_names (void)
       TEST_DATE ( 1, 12, 2018,    "%Ob %Y",         "Pro 2018");
     }
   else
-    g_test_incomplete ("locale hr_HR not available, skipping Croatian month names test");
+    g_test_skip ("locale hr_HR not available, skipping Croatian month names test");
 
   setlocale (LC_ALL, "lt_LT.utf-8");
 #ifdef G_OS_WIN32
@@ -345,11 +424,11 @@ test_month_names (void)
       TEST_DATE ( 1,  4, 2018,      "%Y m. %OB",      "2018 m. balandis");
       TEST_DATE ( 1,  5, 2018,      "%Y m. %OB",        "2018 m. gegužė");
       TEST_DATE ( 1,  6, 2018,      "%Y m. %OB",      "2018 m. birželis");
-      TEST_DATE (17,  7, 2018, "%Y m. %b %e d.",     "2018 m. Lie 17 d.");
-      TEST_DATE ( 1,  8, 2018,      "%Y m. %Ob",           "2018 m. Rgp");
+      TEST_DATE (17,  7, 2018, "%Y m. %b %e d.",   "2018 m. liep. 17 d.");
+      TEST_DATE ( 1,  8, 2018,      "%Y m. %Ob",         "2018 m. rugp.");
     }
   else
-    g_test_incomplete ("locale lt_LT not available, skipping Lithuanian month names test");
+    g_test_skip ("locale lt_LT not available, skipping Lithuanian month names test");
 
   setlocale (LC_ALL, "pl_PL.utf-8");
 #ifdef G_OS_WIN32
@@ -367,7 +446,7 @@ test_month_names (void)
       TEST_DATE ( 1, 12, 2018,   "%Ob %Y",         "gru 2018");
     }
   else
-    g_test_incomplete ("locale pl_PL not available, skipping Polish month names test");
+    g_test_skip ("locale pl_PL not available, skipping Polish month names test");
 
   setlocale (LC_ALL, "ru_RU.utf-8");
 #ifdef G_OS_WIN32
@@ -388,7 +467,7 @@ test_month_names (void)
       TEST_DATE (20,  5, 2018, "%Ob, %d-е, %Y", "май, 20-е, 2018");
     }
   else
-    g_test_incomplete ("locale ru_RU not available, skipping Russian month names test");
+    g_test_skip ("locale ru_RU not available, skipping Russian month names test");
 
   g_date_free (gdate);
 
@@ -689,6 +768,8 @@ main (int argc, char** argv)
   g_test_add_func ("/date/julian", test_julian_constructor);
   g_test_add_func ("/date/dates", test_dates);
   g_test_add_func ("/date/parse", test_parse);
+  g_test_add_func ("/date/parse_locale_change", test_parse_locale_change);
+  g_test_add_func ("/date/month_substring", test_month_substring);
   g_test_add_func ("/date/month_names", test_month_names);
   g_test_add_func ("/date/clamp", test_clamp);
   g_test_add_func ("/date/order", test_order);

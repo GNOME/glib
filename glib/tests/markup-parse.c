@@ -145,85 +145,86 @@ test_in_chunks (const gchar       *contents,
   return 0;
 }
 
-static int
-test_file (const gchar *filename, GMarkupParseFlags flags)
+/* Load the given @filename and parse it multiple times with different chunking
+ * and length handling. All results should be equal. %TRUE is returned if the
+ * file was parsed successfully on every attempt; %FALSE if it failed to parse
+ * on every attempt. The test aborts if some attempts succeed and some fail. */
+static gboolean
+test_file (const gchar       *filename,
+           GMarkupParseFlags  flags)
 {
-  gchar *contents;
-  gsize  length;
-  GError *error;
+  gchar *contents = NULL, *contents_unterminated = NULL;
+  gsize length_bytes;
+  GError *local_error = NULL;
   GMarkupParseContext *context;
   gint line, col;
+  guint n_failures = 0;
+  guint n_tests = 0;
+  const gsize chunk_sizes_bytes[] = { 1, 2, 5, 12, 1024 };
+  gsize i;
+  GString *first_string = NULL;
 
-  error = NULL;
-  if (!g_file_get_contents (filename,
-                            &contents,
-                            &length,
-                            &error))
-    {
-      fprintf (stderr, "%s\n", error->message);
-      g_error_free (error);
-      return 1;
-    }
+  g_file_get_contents (filename, &contents, &length_bytes, &local_error);
+  g_assert_no_error (local_error);
 
+  /* Make a copy of the contents with no trailing nul. */
+  contents_unterminated = g_malloc (length_bytes);
+  if (contents_unterminated != NULL)
+    memcpy (contents_unterminated, contents, length_bytes);
+
+  /* Test with nul termination. */
   context = g_markup_parse_context_new (&parser, flags, NULL, NULL);
   g_assert (g_markup_parse_context_get_user_data (context) == NULL);
   g_markup_parse_context_get_position (context, &line, &col);
-  g_assert (line == 1 && col == 1);
+  g_assert_cmpint (line, ==, 1);
+  g_assert_cmpint (col, ==, 1);
 
-  if (!g_markup_parse_context_parse (context, contents, length, NULL))
-    {
-      g_markup_parse_context_free (context);
-      g_free (contents);
-      return 1;
-    }
-
-  if (!g_markup_parse_context_end_parse (context, NULL))
-    {
-      g_markup_parse_context_free (context);
-      g_free (contents);
-      return 1;
-    }
+  if (!g_markup_parse_context_parse (context, contents, -1, NULL) ||
+      !g_markup_parse_context_end_parse (context, NULL))
+    n_failures++;
+  n_tests++;
 
   g_markup_parse_context_free (context);
 
-  /* A byte at a time */
-  if (test_in_chunks (contents, length, 1, flags) != 0)
-    {
-      g_free (contents);
-      return 1;
-    }
+  /* FIXME: Swap out the error string so we only return one copy of it, not
+   * @n_tests copies. This should be fixed properly by eliminating the global
+   * state in this file. */
+  first_string = g_steal_pointer (&string);
+  string = g_string_new ("");
 
-  /* 2 bytes */
-  if (test_in_chunks (contents, length, 2, flags) != 0)
-    {
-      g_free (contents);
-      return 1;
-    }
+  /* With the length specified explicitly and a nul terminator present (since
+   * g_file_get_contents() always adds one). */
+  if (test_in_chunks (contents, length_bytes, length_bytes, flags) != 0)
+    n_failures++;
+  n_tests++;
 
-  /* 5 bytes */
-  if (test_in_chunks (contents, length, 5, flags) != 0)
-    {
-      g_free (contents);
-      return 1;
-    }
+  /* With the length specified explicitly and no nul terminator present. */
+  if (test_in_chunks (contents_unterminated, length_bytes, length_bytes, flags) != 0)
+    n_failures++;
+  n_tests++;
 
-  /* 12 bytes */
-  if (test_in_chunks (contents, length, 12, flags) != 0)
+  /* In various sized chunks. */
+  for (i = 0; i < G_N_ELEMENTS (chunk_sizes_bytes); i++)
     {
-      g_free (contents);
-      return 1;
-    }
-
-  /* 1024 bytes */
-  if (test_in_chunks (contents, length, 1024, flags) != 0)
-    {
-      g_free (contents);
-      return 1;
+      if (test_in_chunks (contents, length_bytes, chunk_sizes_bytes[i], flags) != 0)
+        n_failures++;
+      n_tests++;
     }
 
   g_free (contents);
+  g_free (contents_unterminated);
 
-  return 0;
+  /* FIXME: Restore the error string. */
+  g_string_free (string, TRUE);
+  string = g_steal_pointer (&first_string);
+
+  /* We expect the file to either always be parsed successfully, or never be
+   * parsed successfully. There’s a bug in GMarkup if it sometimes parses
+   * successfully depending on how you chunk or terminate the input. */
+  if (n_failures > 0)
+    g_assert_cmpint (n_failures, ==, n_tests);
+
+  return (n_failures == 0);
 }
 
 static gchar *
@@ -256,7 +257,7 @@ test_parse (gconstpointer d)
   gchar *expected;
   gboolean valid_input;
   GError *error = NULL;
-  gint res;
+  gboolean res;
 
   valid_input = strstr (filename, "valid") != NULL;
   expected_file = get_expected_filename (filename, 0);
@@ -265,7 +266,7 @@ test_parse (gconstpointer d)
   string = g_string_sized_new (0);
 
   res = test_file (filename, 0);
-  g_assert_cmpint (res, ==, valid_input ? 0 : 1);
+  g_assert_cmpint (res, ==, valid_input);
 
   g_file_get_contents (expected_file, &expected, NULL, &error);
   g_assert_no_error (error);
@@ -283,7 +284,7 @@ test_parse (gconstpointer d)
       string = g_string_sized_new (0);
 
       res = test_file (filename, G_MARKUP_TREAT_CDATA_AS_TEXT);
-      g_assert_cmpint (res, ==, valid_input ? 0 : 1);
+      g_assert_cmpint (res, ==, valid_input);
 
       g_file_get_contents (expected_file, &expected, NULL, &error);
       g_assert_no_error (error);

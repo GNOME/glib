@@ -1528,7 +1528,8 @@ g_subprocess_communicate_made_progress (GObject      *source_object,
 }
 
 static gboolean
-g_subprocess_communicate_cancelled (gpointer user_data)
+g_subprocess_communicate_cancelled (GCancellable *cancellable,
+                                    gpointer      user_data)
 {
   CommunicateState *state = user_data;
 
@@ -1580,7 +1581,9 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
     {
       state->cancellable_source = g_cancellable_source_new (cancellable);
       /* No ref held here, but we unref the source from state's free function */
-      g_source_set_callback (state->cancellable_source, g_subprocess_communicate_cancelled, state, NULL);
+      g_source_set_callback (state->cancellable_source,
+                             G_SOURCE_FUNC (g_subprocess_communicate_cancelled),
+                             state, NULL);
       g_source_attach (state->cancellable_source, g_main_context_get_thread_default ());
     }
 
@@ -1781,6 +1784,9 @@ g_subprocess_communicate_finish (GSubprocess   *subprocess,
  *
  * Like g_subprocess_communicate(), but validates the output of the
  * process as UTF-8, and returns it as a regular NUL terminated string.
+ *
+ * On error, @stdout_buf and @stderr_buf will be set to undefined values and
+ * should not be used.
  */
 gboolean
 g_subprocess_communicate_utf8 (GSubprocess   *subprocess,
@@ -1865,6 +1871,7 @@ communicate_result_validate_utf8 (const char            *stream_name,
       if (!g_utf8_validate (*return_location, -1, &end))
         {
           g_free (*return_location);
+          *return_location = NULL;
           g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                        "Invalid UTF-8 in child %s at offset %lu",
                        stream_name,
@@ -1897,6 +1904,7 @@ g_subprocess_communicate_utf8_finish (GSubprocess   *subprocess,
 {
   gboolean ret = FALSE;
   CommunicateState *state;
+  gchar *local_stdout_buf = NULL, *local_stderr_buf = NULL;
 
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
   g_return_val_if_fail (g_task_is_valid (result, subprocess), FALSE);
@@ -1910,11 +1918,11 @@ g_subprocess_communicate_utf8_finish (GSubprocess   *subprocess,
 
   /* TODO - validate UTF-8 while streaming, rather than all at once.
    */
-  if (!communicate_result_validate_utf8 ("stdout", stdout_buf,
+  if (!communicate_result_validate_utf8 ("stdout", &local_stdout_buf,
                                          state->stdout_buf,
                                          error))
     goto out;
-  if (!communicate_result_validate_utf8 ("stderr", stderr_buf,
+  if (!communicate_result_validate_utf8 ("stderr", &local_stderr_buf,
                                          state->stderr_buf,
                                          error))
     goto out;
@@ -1922,5 +1930,14 @@ g_subprocess_communicate_utf8_finish (GSubprocess   *subprocess,
   ret = TRUE;
  out:
   g_object_unref (result);
+
+  if (ret && stdout_buf != NULL)
+    *stdout_buf = g_steal_pointer (&local_stdout_buf);
+  if (ret && stderr_buf != NULL)
+    *stderr_buf = g_steal_pointer (&local_stderr_buf);
+
+  g_free (local_stderr_buf);
+  g_free (local_stdout_buf);
+
   return ret;
 }

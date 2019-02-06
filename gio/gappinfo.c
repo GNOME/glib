@@ -24,6 +24,7 @@
 #include "gappinfoprivate.h"
 #include "gcontextspecificgroup.h"
 #include "gtask.h"
+#include "gcancellable.h"
 
 #include "glibintl.h"
 #include <gioerror.h>
@@ -662,6 +663,86 @@ g_app_info_launch_uris (GAppInfo           *appinfo,
   return (* iface->launch_uris) (appinfo, uris, launch_context, error);
 }
 
+/**
+ * g_app_info_launch_uris_async:
+ * @appinfo: a #GAppInfo
+ * @uris: (nullable) (element-type utf8): a #GList containing URIs to launch.
+ * @context: (nullable): a #GAppLaunchContext or %NULL
+ * @cancellable: (nullable): a #GCancellable
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @user_data: (nullable): data to pass to @callback
+ *
+ * Async version of g_app_info_launch_uris().
+ *
+ * The @callback is invoked immediately after the application launch, but it
+ * waits for activation in case of D-Bus–activated applications and also provides
+ * extended error information for sandboxed applications, see notes for
+ * g_app_info_launch_default_for_uri_async().
+ *
+ * Since: 2.60
+ **/
+void
+g_app_info_launch_uris_async (GAppInfo           *appinfo,
+                              GList              *uris,
+                              GAppLaunchContext  *context,
+                              GCancellable       *cancellable,
+                              GAsyncReadyCallback callback,
+                              gpointer            user_data)
+{
+  GAppInfoIface *iface;
+
+  g_return_if_fail (G_IS_APP_INFO (appinfo));
+  g_return_if_fail (context == NULL || G_IS_APP_LAUNCH_CONTEXT (context));
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+  if (iface->launch_uris_async == NULL)
+    {
+      GTask *task;
+
+      task = g_task_new (appinfo, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_app_info_launch_uris_async);
+      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               "Operation not supported for the current backend.");
+      g_object_unref (task);
+
+      return;
+    }
+
+  (* iface->launch_uris_async) (appinfo, uris, context, cancellable, callback, user_data);
+}
+
+/**
+ * g_app_info_launch_uris_finish:
+ * @appinfo: a #GAppInfo
+ * @result: a #GAsyncResult
+ * @error: (nullable): a #GError
+ *
+ * Finishes a g_app_info_launch_uris_async() operation.
+ *
+ * Returns: %TRUE on successful launch, %FALSE otherwise.
+ *
+ * Since: 2.60
+ */
+gboolean
+g_app_info_launch_uris_finish (GAppInfo     *appinfo,
+                               GAsyncResult *result,
+                               GError      **error)
+{
+  GAppInfoIface *iface;
+
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), FALSE);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+  if (iface->launch_uris_finish == NULL)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           "Operation not supported for the current backend.");
+      return FALSE;
+    }
+
+  return (* iface->launch_uris_finish) (appinfo, result, error);
+}
 
 /**
  * g_app_info_should_show:
@@ -684,15 +765,31 @@ g_app_info_should_show (GAppInfo *appinfo)
   return (* iface->should_show) (appinfo);
 }
 
-static gboolean
-launch_default_for_uri (const char         *uri,
-                        GAppLaunchContext  *context,
-                        GError            **error)
+/**
+ * g_app_info_launch_default_for_uri:
+ * @uri: the uri to show
+ * @context: (nullable): an optional #GAppLaunchContext
+ * @error: (nullable): return location for an error, or %NULL
+ *
+ * Utility function that launches the default application
+ * registered to handle the specified uri. Synchronous I/O
+ * is done on the uri to detect the type of the file if
+ * required.
+ *
+ * The D-Bus–activated applications don't have to be started if your application
+ * terminates too soon after this function. To prevent this, use
+ * g_app_info_launch_default_for_uri() instead.
+ *
+ * Returns: %TRUE on success, %FALSE on error.
+ **/
+gboolean
+g_app_info_launch_default_for_uri (const char         *uri,
+                                   GAppLaunchContext  *launch_context,
+                                   GError            **error)
 {
   char *uri_scheme;
   GAppInfo *app_info = NULL;
-  GList l;
-  gboolean res;
+  gboolean res = FALSE;
 
   /* g_file_query_default_handler() calls
    * g_app_info_get_default_for_uri_scheme() too, but we have to do it
@@ -712,41 +809,18 @@ launch_default_for_uri (const char         *uri,
       g_object_unref (file);
     }
 
-  if (app_info == NULL)
-    return FALSE;
+  if (app_info)
+    {
+      GList l;
 
-  l.data = (char *)uri;
-  l.next = l.prev = NULL;
-  res = g_app_info_launch_uris (app_info, &l, context, error);
-
-  g_object_unref (app_info);
-
-  return res;
-}
-
-/**
- * g_app_info_launch_default_for_uri:
- * @uri: the uri to show
- * @context: (nullable): an optional #GAppLaunchContext
- * @error: (nullable): return location for an error, or %NULL
- *
- * Utility function that launches the default application
- * registered to handle the specified uri. Synchronous I/O
- * is done on the uri to detect the type of the file if
- * required.
- * 
- * Returns: %TRUE on success, %FALSE on error.
- **/
-gboolean
-g_app_info_launch_default_for_uri (const char         *uri,
-				   GAppLaunchContext  *launch_context,
-				   GError            **error)
-{
-  if (launch_default_for_uri (uri, launch_context, error))
-    return TRUE;
+      l.data = (char *)uri;
+      l.next = l.prev = NULL;
+      res = g_app_info_launch_uris (app_info, &l, launch_context, error);
+      g_object_unref (app_info);
+    }
 
 #ifdef G_OS_UNIX
-  if (glib_should_use_portal ())
+  if (!res && glib_should_use_portal ())
     {
       const char *parent_window = NULL;
 
@@ -757,11 +831,126 @@ g_app_info_launch_default_for_uri (const char         *uri,
         parent_window = g_environ_getenv (launch_context->priv->envp, "PARENT_WINDOW_ID");
 
       return g_openuri_portal_open_uri (uri, parent_window, error);
-
     }
 #endif
 
-  return FALSE;
+  return res;
+}
+
+typedef struct
+{
+  gchar *uri;
+  GAppLaunchContext *context;
+} LaunchDefaultForUriData;
+
+static void
+launch_default_for_uri_data_free (LaunchDefaultForUriData *data)
+{
+  g_free (data->uri);
+  g_clear_object (&data->context);
+  g_free (data);
+}
+
+#ifdef G_OS_UNIX
+static void
+launch_default_for_uri_portal_open_uri_cb (GObject      *object,
+                                           GAsyncResult *result,
+                                           gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GError *error = NULL;
+
+  if (g_openuri_portal_open_uri_finish (result, &error))
+    g_task_return_boolean (task, TRUE);
+  else
+    g_task_return_error (task, g_steal_pointer (&error));
+  g_object_unref (task);
+}
+#endif
+
+static void
+launch_default_for_uri_portal_open_uri (GTask *task, GError *error)
+{
+#ifdef G_OS_UNIX
+  LaunchDefaultForUriData *data = g_task_get_task_data (task);
+  GCancellable *cancellable = g_task_get_cancellable (task);
+
+  if (glib_should_use_portal ())
+    {
+      const char *parent_window = NULL;
+
+      /* Reset any error previously set by launch_default_for_uri */
+      g_error_free (error);
+
+      if (data->context && data->context->priv->envp)
+        parent_window = g_environ_getenv (data->context->priv->envp,
+                                          "PARENT_WINDOW_ID");
+
+      g_openuri_portal_open_uri_async (data->uri,
+                                       parent_window,
+                                       cancellable,
+                                       launch_default_for_uri_portal_open_uri_cb,
+                                       g_steal_pointer (&task));
+      return;
+    }
+#endif
+
+  g_task_return_error (task, g_steal_pointer (&error));
+  g_object_unref (task);
+}
+
+static void
+launch_default_for_uri_launch_uris_cb (GObject      *object,
+                                       GAsyncResult *result,
+                                       gpointer      user_data)
+{
+  GAppInfo *app_info = G_APP_INFO (object);
+  GTask *task = G_TASK (user_data);
+  GError *error = NULL;
+
+  if (g_app_info_launch_uris_finish (app_info, result, &error))
+    {
+      g_task_return_boolean (task, TRUE);
+      g_object_unref (task);
+    }
+  else
+    launch_default_for_uri_portal_open_uri (g_steal_pointer (&task), g_steal_pointer (&error));
+}
+
+static void
+launch_default_for_uri_launch_uris (GTask *task,
+                                    GAppInfo *app_info)
+{
+  GCancellable *cancellable = g_task_get_cancellable (task);
+  GList l;
+  LaunchDefaultForUriData *data = g_task_get_task_data (task);
+
+  l.data = (char *)data->uri;
+  l.next = l.prev = NULL;
+  g_app_info_launch_uris_async (app_info,
+                                &l,
+                                data->context,
+                                cancellable,
+                                launch_default_for_uri_launch_uris_cb,
+                                g_steal_pointer (&task));
+  g_object_unref (app_info);
+}
+
+static void
+launch_default_for_uri_default_handler_cb (GObject      *object,
+                                           GAsyncResult *result,
+                                           gpointer      user_data)
+{
+  GFile *file = G_FILE (object);
+  GTask *task = G_TASK (user_data);
+  GAppInfo *app_info = NULL;
+  GError *error = NULL;
+
+  app_info = g_file_query_default_handler_finish (file, result, &error);
+  if (app_info)
+    launch_default_for_uri_launch_uris (g_steal_pointer (&task), g_steal_pointer (&app_info));
+  else
+    launch_default_for_uri_portal_open_uri (g_steal_pointer (&task), g_steal_pointer (&error));
 }
 
 /**
@@ -769,7 +958,7 @@ g_app_info_launch_default_for_uri (const char         *uri,
  * @uri: the uri to show
  * @context: (nullable): an optional #GAppLaunchContext
  * @cancellable: (nullable): a #GCancellable
- * @callback: (nullable): a #GASyncReadyCallback to call when the request is done
+ * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
  * @user_data: (nullable): data to pass to @callback
  *
  * Async version of g_app_info_launch_default_for_uri().
@@ -778,6 +967,10 @@ g_app_info_launch_default_for_uri (const char         *uri,
  * error information in the case where the application is
  * sandboxed and the portal may present an application chooser
  * dialog to the user.
+ *
+ * This is also useful if you want to be sure that the D-Bus–activated
+ * applications are really started before termination and if you are interested
+ * in receiving error information from their activation.
  *
  * Since: 2.50
  */
@@ -788,32 +981,45 @@ g_app_info_launch_default_for_uri_async (const char          *uri,
                                          GAsyncReadyCallback  callback,
                                          gpointer             user_data)
 {
-  gboolean res;
-  GError *error = NULL;
   GTask *task;
+  char *uri_scheme;
+  GAppInfo *app_info = NULL;
+  LaunchDefaultForUriData *data;
 
-  res = launch_default_for_uri (uri, context, &error);
+  g_return_if_fail (uri != NULL);
 
-#ifdef G_OS_UNIX
-  if (!res && glib_should_use_portal ())
+  task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_app_info_launch_default_for_uri_async);
+
+  data = g_new (LaunchDefaultForUriData, 1);
+  data->uri = g_strdup (uri);
+  data->context = (context != NULL) ? g_object_ref (context) : NULL;
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) launch_default_for_uri_data_free);
+
+  /* g_file_query_default_handler_async() calls
+   * g_app_info_get_default_for_uri_scheme() too, but we have to do it
+   * here anyway in case GFile can't parse @uri correctly.
+   */
+  uri_scheme = g_uri_parse_scheme (uri);
+  if (uri_scheme && uri_scheme[0] != '\0')
+    /* FIXME: The following still uses blocking calls. */
+    app_info = g_app_info_get_default_for_uri_scheme (uri_scheme);
+  g_free (uri_scheme);
+
+  if (!app_info)
     {
-      const  char *parent_window = NULL;
+      GFile *file;
 
-      if (context && context->priv->envp)
-        parent_window = g_environ_getenv (context->priv->envp, "PARENT_WINDOW_ID");
-
-      g_openuri_portal_open_uri_async (uri, parent_window, cancellable, callback, user_data);
-      return;
+      file = g_file_new_for_uri (uri);
+      g_file_query_default_handler_async (file,
+                                          G_PRIORITY_DEFAULT,
+                                          cancellable,
+                                          launch_default_for_uri_default_handler_cb,
+                                          g_steal_pointer (&task));
+      g_object_unref (file);
     }
-#endif
-
-  task = g_task_new (context, cancellable, callback, user_data);
-  if (!res)
-    g_task_return_error (task, error);
   else
-    g_task_return_boolean (task, TRUE);
-
-  g_object_unref (task);
+    launch_default_for_uri_launch_uris (g_steal_pointer (&task), g_steal_pointer (&app_info));
 }
 
 /**
@@ -831,11 +1037,9 @@ gboolean
 g_app_info_launch_default_for_uri_finish (GAsyncResult  *result,
                                           GError       **error)
 {
-#ifdef G_OS_UNIX
-  return g_openuri_portal_open_uri_finish (result, error);
-#else
+  g_return_val_if_fail (g_task_is_valid (result, NULL), FALSE);
+
   return g_task_propagate_boolean (G_TASK (result), error);
-#endif
 }
 
 /**

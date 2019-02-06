@@ -164,13 +164,13 @@ gchar *g_filename_to_uri   (const gchar *filename,
 GLIB_AVAILABLE_IN_ALL
 gchar *g_filename_display_name (const gchar *filename) G_GNUC_MALLOC;
 GLIB_AVAILABLE_IN_ALL
-gboolean g_get_filename_charsets (const gchar ***charsets);
+gboolean g_get_filename_charsets (const gchar ***filename_charsets);
 
 GLIB_AVAILABLE_IN_ALL
 gchar *g_filename_display_basename (const gchar *filename) G_GNUC_MALLOC;
 
 GLIB_AVAILABLE_IN_ALL
-gchar **g_uri_list_extract_uris (const gchar *uri_list) G_GNUC_MALLOC;
+gchar **g_uri_list_extract_uris (const gchar *uri_list);
 
 G_END_DECLS
 

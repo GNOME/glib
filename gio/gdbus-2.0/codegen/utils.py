@@ -116,21 +116,21 @@ def lookup_annotation(annotations, key):
 
 def lookup_docs(annotations):
     s = lookup_annotation(annotations, 'org.gtk.GDBus.DocString')
-    if s == None:
+    if s is None:
         return ''
     else:
         return s
 
 def lookup_since(annotations):
     s = lookup_annotation(annotations, 'org.gtk.GDBus.Since')
-    if s == None:
+    if s is None:
         return ''
     else:
         return s
 
 def lookup_brief_docs(annotations):
     s = lookup_annotation(annotations, 'org.gtk.GDBus.DocString.Short')
-    if s == None:
+    if s is None:
         return ''
     else:
         return s

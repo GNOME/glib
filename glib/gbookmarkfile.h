@@ -146,7 +146,7 @@ GLIB_AVAILABLE_IN_ALL
 gchar **       g_bookmark_file_get_groups          (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    gsize          *length,
-						    GError        **error) G_GNUC_MALLOC;
+						    GError        **error);
 GLIB_AVAILABLE_IN_ALL
 void           g_bookmark_file_add_application     (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
@@ -161,7 +161,7 @@ GLIB_AVAILABLE_IN_ALL
 gchar **       g_bookmark_file_get_applications    (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
 						    gsize          *length,
-						    GError        **error) G_GNUC_MALLOC;
+						    GError        **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean       g_bookmark_file_set_app_info        (GBookmarkFile  *bookmark,
 						    const gchar    *uri,
@@ -228,7 +228,7 @@ GLIB_AVAILABLE_IN_ALL
 gint           g_bookmark_file_get_size            (GBookmarkFile  *bookmark);
 GLIB_AVAILABLE_IN_ALL
 gchar **       g_bookmark_file_get_uris            (GBookmarkFile  *bookmark,
-						    gsize          *length) G_GNUC_MALLOC;
+						    gsize          *length);
 GLIB_AVAILABLE_IN_ALL
 gboolean       g_bookmark_file_remove_group        (GBookmarkFile  *bookmark,
 						    const gchar    *uri,

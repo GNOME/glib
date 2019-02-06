@@ -803,6 +803,11 @@ test_remove_all (void)
   g_assert_cmpint (destroy_counter, ==, 0);
   g_assert_cmpint (destroy_key_counter, ==, 0);
 
+  /* Test stealing on an empty hash table. */
+  g_hash_table_steal_all (h);
+  g_assert_cmpint (destroy_counter, ==, 0);
+  g_assert_cmpint (destroy_key_counter, ==, 0);
+
   g_hash_table_insert (h, "abc", "ABC");
   g_hash_table_insert (h, "cde", "CDE");
   g_hash_table_insert (h, "xyz", "XYZ");
@@ -1233,6 +1238,113 @@ test_steal_extended (void)
   g_hash_table_unref (hash);
 }
 
+/* Test that passing %NULL to the optional g_hash_table_steal_extended()
+ * arguments works. */
+static void
+test_steal_extended_optional (void)
+{
+  GHashTable *hash;
+  const gchar *stolen_key = NULL, *stolen_value = NULL;
+
+  hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+
+  g_hash_table_insert (hash, "b", "B");
+  g_hash_table_insert (hash, "c", "C");
+  g_hash_table_insert (hash, "d", "D");
+  g_hash_table_insert (hash, "e", "E");
+  g_hash_table_insert (hash, "f", "F");
+
+  g_assert_true (g_hash_table_steal_extended (hash, "b",
+                                              (gpointer *) &stolen_key,
+                                              NULL));
+  g_assert_cmpstr (stolen_key, ==, "b");
+
+  g_assert_cmpuint (g_hash_table_size (hash), ==, 4);
+
+  g_assert_false (g_hash_table_steal_extended (hash, "b",
+                                               (gpointer *) &stolen_key,
+                                               NULL));
+  g_assert_null (stolen_key);
+
+  g_assert_true (g_hash_table_steal_extended (hash, "c",
+                                              NULL,
+                                              (gpointer *) &stolen_value));
+  g_assert_cmpstr (stolen_value, ==, "C");
+
+  g_assert_cmpuint (g_hash_table_size (hash), ==, 3);
+
+  g_assert_false (g_hash_table_steal_extended (hash, "c",
+                                               NULL,
+                                               (gpointer *) &stolen_value));
+  g_assert_null (stolen_value);
+
+  g_assert_true (g_hash_table_steal_extended (hash, "d", NULL, NULL));
+
+  g_assert_cmpuint (g_hash_table_size (hash), ==, 2);
+
+  g_assert_false (g_hash_table_steal_extended (hash, "d", NULL, NULL));
+
+  g_assert_cmpuint (g_hash_table_size (hash), ==, 2);
+
+  g_hash_table_unref (hash);
+}
+
+/* Test g_hash_table_lookup_extended() works with its optional parameters
+ * sometimes set to %NULL. */
+static void
+test_lookup_extended (void)
+{
+  GHashTable *hash;
+  const gchar *original_key = NULL, *value = NULL;
+
+  hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+  g_hash_table_insert (hash, g_strdup ("a"), g_strdup ("A"));
+  g_hash_table_insert (hash, g_strdup ("b"), g_strdup ("B"));
+  g_hash_table_insert (hash, g_strdup ("c"), g_strdup ("C"));
+  g_hash_table_insert (hash, g_strdup ("d"), g_strdup ("D"));
+  g_hash_table_insert (hash, g_strdup ("e"), g_strdup ("E"));
+  g_hash_table_insert (hash, g_strdup ("f"), g_strdup ("F"));
+
+  g_assert_true (g_hash_table_lookup_extended (hash, "a",
+                                               (gpointer *) &original_key,
+                                               (gpointer *) &value));
+  g_assert_cmpstr (original_key, ==, "a");
+  g_assert_cmpstr (value, ==, "A");
+
+  g_assert_true (g_hash_table_lookup_extended (hash, "b",
+                                               NULL,
+                                               (gpointer *) &value));
+  g_assert_cmpstr (value, ==, "B");
+
+  g_assert_true (g_hash_table_lookup_extended (hash, "c",
+                                               (gpointer *) &original_key,
+                                               NULL));
+  g_assert_cmpstr (original_key, ==, "c");
+
+  g_assert_true (g_hash_table_lookup_extended (hash, "d", NULL, NULL));
+
+  g_assert_false (g_hash_table_lookup_extended (hash, "not a key",
+                                                (gpointer *) &original_key,
+                                                (gpointer *) &value));
+  g_assert_null (original_key);
+  g_assert_null (value);
+
+  g_assert_false (g_hash_table_lookup_extended (hash, "not a key",
+                                                NULL,
+                                                (gpointer *) &value));
+  g_assert_null (value);
+
+  g_assert_false (g_hash_table_lookup_extended (hash, "not a key",
+                                                (gpointer *) &original_key,
+                                                NULL));
+  g_assert_null (original_key);
+
+  g_assert_false (g_hash_table_lookup_extended (hash, "not a key", NULL, NULL));
+
+  g_hash_table_unref (hash);
+}
+
 struct _GHashTable
 {
   gint             size;
@@ -1240,6 +1352,9 @@ struct _GHashTable
   guint            mask;
   gint             nnodes;
   gint             noccupied;  /* nnodes + tombstones */
+
+  guint            have_big_keys : 1;
+  guint            have_big_values : 1;
 
   gpointer        *keys;
   guint           *hashes;
@@ -1275,6 +1390,23 @@ count_keys (GHashTable *h, gint *unused, gint *occupied, gint *tombstones)
     }
 }
 
+#define BIG_ENTRY_SIZE (SIZEOF_VOID_P)
+#define SMALL_ENTRY_SIZE (SIZEOF_INT)
+
+#if SMALL_ENTRY_SIZE < BIG_ENTRY_SIZE
+# define USE_SMALL_ARRAYS
+#endif
+
+static gpointer
+fetch_key_or_value (gpointer a, guint index, gboolean is_big)
+{
+#ifdef USE_SMALL_ARRAYS
+  return is_big ? *(((gpointer *) a) + index) : GUINT_TO_POINTER (*(((guint *) a) + index));
+#else
+  return *(((gpointer *) a) + index);
+#endif
+}
+
 static void
 check_data (GHashTable *h)
 {
@@ -1282,14 +1414,9 @@ check_data (GHashTable *h)
 
   for (i = 0; i < h->size; i++)
     {
-      if (h->hashes[i] < 2)
+      if (h->hashes[i] >= 2)
         {
-          g_assert (h->keys[i] == NULL);
-          g_assert (h->values[i] == NULL);
-        }
-      else
-        {
-          g_assert_cmpint (h->hashes[i], ==, h->hash_func (h->keys[i]));
+          g_assert_cmpint (h->hashes[i], ==, h->hash_func (fetch_key_or_value (h->keys, i, h->have_big_keys)));
         }
     }
 }
@@ -1558,6 +1685,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/foreach", test_foreach);
   g_test_add_func ("/hash/foreach-steal", test_foreach_steal);
   g_test_add_func ("/hash/steal-extended", test_steal_extended);
+  g_test_add_func ("/hash/steal-extended/optional", test_steal_extended_optional);
+  g_test_add_func ("/hash/lookup-extended", test_lookup_extended);
 
   /* tests for individual bugs */
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);

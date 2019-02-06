@@ -27,7 +27,9 @@
 typedef struct
 {
   gchar *cert_pems[3];
+  gchar *cert_crlf_pem;
   gchar *key_pem;
+  gchar *key_crlf_pem;
   gchar *key8_pem;
 } Reference;
 
@@ -36,18 +38,20 @@ pem_parser (const Reference *ref)
 {
   GTlsCertificate *cert;
   gchar *pem;
+  gsize pem_len = 0;
   gchar *parsed_cert_pem = NULL;
   const gchar *parsed_key_pem = NULL;
   GError *error = NULL;
 
   /* Check PEM parsing in certificate, private key order. */
-  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-key.pem", NULL), &pem, NULL, &error);
+  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-key.pem", NULL), &pem, &pem_len, &error);
   g_assert_no_error (error);
-  g_assert (pem);
+  g_assert_nonnull (pem);
+  g_assert_cmpuint (pem_len, >=, 10);
 
   cert = g_tls_certificate_new_from_pem (pem, -1, &error);
   g_assert_no_error (error);
-  g_assert (cert);
+  g_assert_nonnull (cert);
 
   g_object_get (cert,
       "certificate-pem", &parsed_cert_pem,
@@ -61,8 +65,15 @@ pem_parser (const Reference *ref)
 
   g_object_unref (cert);
 
-  /* Make sure length is respected and parser detect invalid (truncated) PEM. */
+  /* Make sure length is respected and parser detect invalid PEM
+   * when cert is truncated. */
   cert = g_tls_certificate_new_from_pem (pem, 10, &error);
+  g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
+  g_clear_error (&error);
+
+  /* Make sure length is respected and parser detect invalid PEM
+   * when cert exists but key is truncated. */
+  cert = g_tls_certificate_new_from_pem (pem, pem_len - 10, &error);
   g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
   g_clear_error (&error);
   g_free (pem);
@@ -70,11 +81,11 @@ pem_parser (const Reference *ref)
   /* Check PEM parsing in private key, certificate order */
   g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "key-cert.pem", NULL), &pem, NULL, &error);
   g_assert_no_error (error);
-  g_assert (pem);
+  g_assert_nonnull (pem);
 
   cert = g_tls_certificate_new_from_pem (pem, -1, &error);
   g_assert_no_error (error);
-  g_assert (cert);
+  g_assert_nonnull (cert);
 
   g_object_get (cert,
       "certificate-pem", &parsed_cert_pem,
@@ -92,11 +103,11 @@ pem_parser (const Reference *ref)
   /* Check certificate only PEM */
   g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL), &pem, NULL, &error);
   g_assert_no_error (error);
-  g_assert (pem);
+  g_assert_nonnull (pem);
 
   cert = g_tls_certificate_new_from_pem (pem, -1, &error);
   g_assert_no_error (error);
-  g_assert (cert);
+  g_assert_nonnull (cert);
 
   g_object_get (cert,
       "certificate-pem", &parsed_cert_pem,
@@ -105,7 +116,7 @@ pem_parser (const Reference *ref)
   g_assert_cmpstr (parsed_cert_pem, ==, ref->cert_pems[0]);
   g_free (parsed_cert_pem);
   parsed_cert_pem = NULL;
-  g_assert (parsed_key_pem == NULL);
+  g_assert_null (parsed_key_pem);
 
   g_free (pem);
   g_object_unref (cert);
@@ -113,12 +124,12 @@ pem_parser (const Reference *ref)
   /* Check error with private key only PEM */
   g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL), &pem, NULL, &error);
   g_assert_no_error (error);
-  g_assert (pem);
+  g_assert_nonnull (pem);
 
   cert = g_tls_certificate_new_from_pem (pem, -1, &error);
   g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
   g_clear_error (&error);
-  g_assert (cert == NULL);
+  g_assert_null (cert);
   g_free (pem);
 }
 
@@ -136,12 +147,12 @@ pem_parser_handles_chain (const Reference *ref)
   /* Check that a chain with exactly three certificates is returned */
   g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-list.pem", NULL), &pem, NULL, &error);
   g_assert_no_error (error);
-  g_assert (pem);
+  g_assert_nonnull (pem);
 
   cert = original_cert = g_tls_certificate_new_from_pem (pem, -1, &error);
   g_free (pem);
   g_assert_no_error (error);
-  g_assert (cert);
+  g_assert_nonnull (cert);
 
   g_object_get (cert,
       "certificate-pem", &parsed_cert_pem,
@@ -156,11 +167,11 @@ pem_parser_handles_chain (const Reference *ref)
 
   /* Now test the second cert */
   issuer = g_tls_certificate_get_issuer (cert);
-  g_assert (issuer);
+  g_assert_nonnull (issuer);
 
   cert = issuer;
   issuer = g_tls_certificate_get_issuer (cert);
-  g_assert (issuer);
+  g_assert_nonnull (issuer);
 
   g_object_get (cert,
       "certificate-pem", &parsed_cert_pem,
@@ -170,12 +181,12 @@ pem_parser_handles_chain (const Reference *ref)
 
   /* Only the first cert should have a private key */
   parsed_key_pem = g_test_tls_connection_get_private_key_pem (cert);
-  g_assert (!parsed_key_pem);
+  g_assert_null (parsed_key_pem);
 
   /* Now test the final cert */
   cert = issuer;
   issuer = g_tls_certificate_get_issuer (cert);
-  g_assert (!issuer);
+  g_assert_null (issuer);
 
   g_object_get (cert,
       "certificate-pem", &parsed_cert_pem,
@@ -184,7 +195,7 @@ pem_parser_handles_chain (const Reference *ref)
   g_clear_pointer (&parsed_cert_pem, g_free);
 
   parsed_key_pem = g_test_tls_connection_get_private_key_pem (cert);
-  g_assert (!parsed_key_pem);
+  g_assert_null (parsed_key_pem);
 
   g_object_unref (original_cert);
 }
@@ -200,7 +211,7 @@ from_file (const Reference *ref)
   cert = g_tls_certificate_new_from_file (g_test_get_filename (G_TEST_DIST, "cert-tests", "key-cert.pem", NULL),
                                           &error);
   g_assert_no_error (error);
-  g_assert (cert);
+  g_assert_nonnull (cert);
 
   g_object_get (cert,
       "certificate-pem", &parsed_cert_pem,
@@ -227,7 +238,7 @@ from_files (const Reference *ref)
                                            g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL),
                                            &error);
   g_assert_no_error (error);
-  g_assert (cert);
+  g_assert_nonnull (cert);
 
   g_object_get (cert,
       "certificate-pem", &parsed_cert_pem,
@@ -247,7 +258,23 @@ from_files (const Reference *ref)
                                            &error);
   g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
   g_clear_error (&error);
-  g_assert (cert == NULL);
+  g_assert_null (cert);
+
+  /* Missing header private key */
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key_missing-header.pem", NULL),
+                                           &error);
+  g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
+  g_clear_error (&error);
+  g_assert_null (cert);
+
+  /* Missing footer private key */
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key_missing-footer.pem", NULL),
+                                           &error);
+  g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
+  g_clear_error (&error);
+  g_assert_null (cert);
 
   /* Missing certificate */
   cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL),
@@ -255,7 +282,7 @@ from_files (const Reference *ref)
                                            &error);
   g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
   g_clear_error (&error);
-  g_assert (cert == NULL);
+  g_assert_null (cert);
 
   /* Using this method twice with a file containing both private key and
    * certificate as a way to inforce private key presence is a fair use
@@ -264,10 +291,36 @@ from_files (const Reference *ref)
                                            g_test_get_filename (G_TEST_DIST, "cert-tests", "key-cert.pem", NULL),
                                            &error);
   g_assert_no_error (error);
-  g_assert (cert);
+  g_assert_nonnull (cert);
   g_object_unref (cert);
 }
 
+static void
+from_files_crlf (const Reference *ref)
+{
+  GTlsCertificate *cert;
+  gchar *parsed_cert_pem = NULL;
+  const gchar *parsed_key_pem = NULL;
+  GError *error = NULL;
+
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-crlf.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key-crlf.pem", NULL),
+                                           &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  g_object_get (cert,
+      "certificate-pem", &parsed_cert_pem,
+      NULL);
+  parsed_key_pem = g_test_tls_connection_get_private_key_pem (cert);
+  g_assert_cmpstr (parsed_cert_pem, ==, ref->cert_crlf_pem);
+  g_free (parsed_cert_pem);
+  parsed_cert_pem = NULL;
+  g_assert_cmpstr (parsed_key_pem, ==, ref->key_crlf_pem);
+  parsed_key_pem = NULL;
+
+  g_object_unref (cert);
+}
 
 static void
 from_files_pkcs8 (const Reference *ref)
@@ -281,7 +334,7 @@ from_files_pkcs8 (const Reference *ref)
                                            g_test_get_filename (G_TEST_DIST, "cert-tests", "key8.pem", NULL),
                                            &error);
   g_assert_no_error (error);
-  g_assert (cert);
+  g_assert_nonnull (cert);
 
   g_object_get (cert,
       "certificate-pem", &parsed_cert_pem,
@@ -294,6 +347,21 @@ from_files_pkcs8 (const Reference *ref)
   parsed_key_pem = NULL;
 
   g_object_unref (cert);
+}
+
+static void
+from_files_pkcs8enc (const Reference *ref)
+{
+  GTlsCertificate *cert;
+  GError *error = NULL;
+
+  /* Mare sure an error is returned for encrypted key */
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key8enc.pem", NULL),
+                                           &error);
+  g_assert_error (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE);
+  g_clear_error (&error);
+  g_assert_null (cert);
 }
 
 static void
@@ -347,27 +415,37 @@ main (int   argc,
   path = g_test_build_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL);
   g_file_get_contents (path, &ref.cert_pems[0], NULL, &error);
   g_assert_no_error (error);
-  g_assert (ref.cert_pems[0]);
+  g_assert_nonnull (ref.cert_pems[0]);
   g_free (path);
   path = g_test_build_filename (G_TEST_DIST, "cert-tests", "cert2.pem", NULL);
   g_file_get_contents (path, &ref.cert_pems[1], NULL, &error);
   g_assert_no_error (error);
-  g_assert (ref.cert_pems[1]);
+  g_assert_nonnull (ref.cert_pems[1]);
   g_free (path);
   path = g_test_build_filename (G_TEST_DIST, "cert-tests", "cert3.pem", NULL);
   g_file_get_contents (path, &ref.cert_pems[2], NULL, &error);
   g_assert_no_error (error);
-  g_assert (ref.cert_pems[2]);
+  g_assert_nonnull (ref.cert_pems[2]);
+  g_free (path);
+  path = g_test_build_filename (G_TEST_DIST, "cert-tests", "cert-crlf.pem", NULL);
+  g_file_get_contents (path, &ref.cert_crlf_pem, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (ref.cert_crlf_pem);
   g_free (path);
   path = g_test_build_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL);
   g_file_get_contents (path, &ref.key_pem, NULL, &error);
   g_assert_no_error (error);
-  g_assert (ref.key_pem);
+  g_assert_nonnull (ref.key_pem);
+  g_free (path);
+  path = g_test_build_filename (G_TEST_DIST, "cert-tests", "key-crlf.pem", NULL);
+  g_file_get_contents (path, &ref.key_crlf_pem, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (ref.key_crlf_pem);
   g_free (path);
   path = g_test_build_filename (G_TEST_DIST, "cert-tests", "key8.pem", NULL);
   g_file_get_contents (path, &ref.key8_pem, NULL, &error);
   g_assert_no_error (error);
-  g_assert (ref.key8_pem);
+  g_assert_nonnull (ref.key8_pem);
   g_free (path);
 
   g_test_add_data_func ("/tls-certificate/pem-parser",
@@ -378,8 +456,12 @@ main (int   argc,
                         &ref, (GTestDataFunc)from_file);
   g_test_add_data_func ("/tls-certificate/from_files",
                         &ref, (GTestDataFunc)from_files);
+  g_test_add_data_func ("/tls-certificate/from_files_crlf",
+                        &ref, (GTestDataFunc)from_files_crlf);
   g_test_add_data_func ("/tls-certificate/from_files_pkcs8",
                         &ref, (GTestDataFunc)from_files_pkcs8);
+  g_test_add_data_func ("/tls-certificate/from_files_pkcs8enc",
+                        &ref, (GTestDataFunc)from_files_pkcs8enc);
   g_test_add_data_func ("/tls-certificate/list_from_file",
                         &ref, (GTestDataFunc)list_from_file);
 
@@ -388,7 +470,9 @@ main (int   argc,
   g_free (ref.cert_pems[0]);
   g_free (ref.cert_pems[1]);
   g_free (ref.cert_pems[2]);
+  g_free (ref.cert_crlf_pem);
   g_free (ref.key_pem);
+  g_free (ref.key_crlf_pem);
   g_free (ref.key8_pem);
 
   return rtv;

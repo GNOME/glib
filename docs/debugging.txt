@@ -4,7 +4,7 @@ Traps (G_BREAKPOINT) and traces for the debuging
 
 Some code portions contain trap variables that can be set during
 debugging time if G_ENABLE_DEBUG has been defined upon compilation
-(use the --enable-debug=yes option to configure for this, macros.txt
+(use the --buildtype=debug option to configure for this, macros.txt
 covers more details).
 Such traps lead to immediate code halts to examine the current
 program state and backtrace.
@@ -36,6 +36,3 @@ supports an environment variable GOBJECT_DEBUG that can be set to a
 combination of the flags passed in to g_type_init() (currently
 "objects" and "signals") to trigger debugging messages about
 object bookkeeping and signal emissions during runtime.
-
-
-2000/02/04	Tim Janik

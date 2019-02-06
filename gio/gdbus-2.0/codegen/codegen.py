@@ -3,7 +3,7 @@
 
 # GDBus - GLib D-Bus Library
 #
-# Copyright (C) 2008-2011 Red Hat, Inc.
+# Copyright (C) 2008-2018 Red Hat, Inc.
 # Copyright (C) 2018 Iñigo Martínez <inigomartinez@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -433,6 +433,11 @@ class HeaderCodeGenerator:
             self.outfile.write('GType %sobject_get_type (void) G_GNUC_CONST;\n'
                                '\n'
                                %(self.ns_lower))
+            if self.generate_autocleanup == 'all':
+                self.outfile.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+                self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObject, g_object_unref)\n' % (self.namespace))
+                self.outfile.write('#endif\n')
+                self.outfile.write('\n')
             for i in self.ifaces:
                 if i.deprecated:
                     self.outfile.write('G_GNUC_DEPRECATED ')
@@ -614,17 +619,19 @@ class HeaderCodeGenerator:
 # ----------------------------------------------------------------------------------------------------
 
 class InterfaceInfoHeaderCodeGenerator:
-    def __init__(self, ifaces, namespace, header_name, use_pragma, outfile):
+    def __init__(self, ifaces, namespace, header_name, input_files_basenames, use_pragma, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_').replace(':', '_')
+        self.input_files_basenames = input_files_basenames
         self.use_pragma = use_pragma
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
 
     def generate_header_preamble(self):
-        self.outfile.write(LICENSE_STR.format(config.VERSION))
+        basenames = ', '.join(self.input_files_basenames)
+        self.outfile.write(LICENSE_STR.format(config.VERSION, basenames))
         self.outfile.write('\n')
 
         if self.use_pragma:
@@ -665,16 +672,18 @@ class InterfaceInfoHeaderCodeGenerator:
 # ----------------------------------------------------------------------------------------------------
 
 class InterfaceInfoBodyCodeGenerator:
-    def __init__(self, ifaces, namespace, header_name, outfile):
+    def __init__(self, ifaces, namespace, header_name, input_files_basenames, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.header_name = header_name
+        self.input_files_basenames = input_files_basenames
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
 
     def generate_body_preamble(self):
-        self.outfile.write(LICENSE_STR.format(config.VERSION))
+        basenames = ', '.join(self.input_files_basenames)
+        self.outfile.write(LICENSE_STR.format(config.VERSION, basenames))
         self.outfile.write('\n')
         self.outfile.write('#ifdef HAVE_CONFIG_H\n'
                            '#  include "config.h"\n'
@@ -691,7 +700,7 @@ class InterfaceInfoBodyCodeGenerator:
     def generate_array(self, array_name_lower, element_type, elements):
         self.outfile.write('const %s * const %s[] =\n' % (element_type, array_name_lower))
         self.outfile.write('{\n')
-        for (_, name) in sorted(elements, key=utils.version_cmp_key):
+        for (_, name) in elements:
             self.outfile.write('  &%s,\n' % name)
         self.outfile.write('  NULL,\n')
         self.outfile.write('};\n')
@@ -950,7 +959,8 @@ class CodeGenerator:
                            '{\n'
                            '  GDBusPropertyInfo parent_struct;\n'
                            '  const gchar *hyphen_name;\n'
-                           '  gboolean use_gvariant;\n'
+                           '  guint use_gvariant : 1;\n'
+                           '  guint emits_changed_signal : 1;\n'
                            '} _ExtendedGDBusPropertyInfo;\n'
                            '\n')
 
@@ -1068,7 +1078,7 @@ class CodeGenerator:
                            '\n')
 
     def generate_annotations(self, prefix, annotations):
-        if annotations == None:
+        if annotations is None:
             return
 
         n = 0
@@ -1129,10 +1139,10 @@ class CodeGenerator:
                                '\n')
 
         if len(args) > 0:
-            self.outfile.write('static const _ExtendedGDBusArgInfo * const %s_pointers[] =\n'
+            self.outfile.write('static const GDBusArgInfo * const %s_pointers[] =\n'
                              '{\n'%(prefix))
             for a in args:
-                self.outfile.write('  &%s_%s,\n'%(prefix, a.name))
+                self.outfile.write('  &%s_%s.parent_struct,\n'%(prefix, a.name))
             self.outfile.write('  NULL\n'
                                '};\n'
                                '\n')
@@ -1175,10 +1185,10 @@ class CodeGenerator:
                     self.outfile.write('};\n'
                                        '\n')
 
-                self.outfile.write('static const _ExtendedGDBusMethodInfo * const _%s_method_info_pointers[] =\n'
+                self.outfile.write('static const GDBusMethodInfo * const _%s_method_info_pointers[] =\n'
                                    '{\n'%(i.name_lower))
                 for m in i.methods:
-                    self.outfile.write('  &_%s_method_info_%s,\n'%(i.name_lower, m.name_lower))
+                    self.outfile.write('  &_%s_method_info_%s.parent_struct,\n'%(i.name_lower, m.name_lower))
                 self.outfile.write('  NULL\n'
                                    '};\n'
                                    '\n')
@@ -1209,10 +1219,10 @@ class CodeGenerator:
                     self.outfile.write('};\n'
                                        '\n')
 
-                self.outfile.write('static const _ExtendedGDBusSignalInfo * const _%s_signal_info_pointers[] =\n'
+                self.outfile.write('static const GDBusSignalInfo * const _%s_signal_info_pointers[] =\n'
                                    '{\n'%(i.name_lower))
                 for s in i.signals:
-                    self.outfile.write('  &_%s_signal_info_%s,\n'%(i.name_lower, s.name_lower))
+                    self.outfile.write('  &_%s_signal_info_%s.parent_struct,\n'%(i.name_lower, s.name_lower))
                 self.outfile.write('  NULL\n'
                                    '};\n'
                                    '\n')
@@ -1245,16 +1255,20 @@ class CodeGenerator:
                                        '  "%s",\n'
                                        %(p.name_hyphen))
                     if not utils.lookup_annotation(p.annotations, 'org.gtk.GDBus.C.ForceGVariant'):
-                        self.outfile.write('  FALSE\n')
+                        self.outfile.write('  FALSE,\n')
                     else:
+                        self.outfile.write('  TRUE,\n')
+                    if p.emits_changed_signal:
                         self.outfile.write('  TRUE\n')
+                    else:
+                        self.outfile.write('  FALSE\n')
                     self.outfile.write('};\n'
                                        '\n')
 
-                self.outfile.write('static const _ExtendedGDBusPropertyInfo * const _%s_property_info_pointers[] =\n'
+                self.outfile.write('static const GDBusPropertyInfo * const _%s_property_info_pointers[] =\n'
                                    '{\n'%(i.name_lower))
                 for p in i.properties:
-                    self.outfile.write('  &_%s_property_info_%s,\n'%(i.name_lower, p.name_lower))
+                    self.outfile.write('  &_%s_property_info_%s.parent_struct,\n'%(i.name_lower, p.name_lower))
                 self.outfile.write('  NULL\n'
                                    '};\n'
                                    '\n')
@@ -1518,7 +1532,10 @@ class CodeGenerator:
                     s = 'g_param_spec_boxed ("%s", "%s", "%s", G_TYPE_STRV'%(p.name_hyphen, p.name, p.name)
                 else:
                     print_error('Unsupported gtype "{}" for GParamSpec'.format(p.arg.gtype))
-                self.outfile.write('    %s, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));'%s);
+                flags = 'G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS'
+                if p.deprecated:
+                    flags = 'G_PARAM_DEPRECATED | ' + flags
+                self.outfile.write('    %s, %s));'%(s, flags));
                 self.outfile.write('\n')
 
         self.outfile.write('}\n'
@@ -1550,7 +1567,7 @@ class CodeGenerator:
             if p.arg.free_func != None:
                 self.outfile.write(' * <warning>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use %s_dup_%s() if on another thread.</warning>\n'
                                    ' *\n'
-                                   ' * Returns: (transfer none): The property value or %%NULL if the property is not set. Do not free the returned value, it belongs to @object.\n'
+                                   ' * Returns: (transfer none) (nullable): The property value or %%NULL if the property is not set. Do not free the returned value, it belongs to @object.\n'
                                    %(i.name_lower, p.name_lower))
             else:
                 self.outfile.write(' * Returns: The property value.\n')
@@ -1572,7 +1589,7 @@ class CodeGenerator:
                         ' *\n'
                         ' * %s\n'
                         ' *\n'
-                        ' * Returns: (transfer full): The property value or %%NULL if the property is not set. The returned value should be freed with %s().\n'
+                        ' * Returns: (transfer full) (nullable): The property value or %%NULL if the property is not set. The returned value should be freed with %s().\n'
                         %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint, p.arg.free_func), False))
                 self.write_gtkdoc_deprecated_and_since_and_close(p, self.outfile, 0)
                 self.outfile.write('%s\n'
@@ -1708,9 +1725,9 @@ class CodeGenerator:
                                ' * @proxy: A #%sProxy.\n'
                                %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.out_args:
-                self.outfile.write(' * @out_%s: (out)%s: Return location for return parameter or %%NULL to ignore.\n'%(a.name, ' ' + a.array_annotation if a.array_annotation else ''))
+                self.outfile.write(' * @out_%s: (out) (optional)%s: Return location for return parameter or %%NULL to ignore.\n'%(a.name, ' ' + a.array_annotation if a.array_annotation else ''))
             if unix_fd:
-                self.outfile.write(' * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.\n')
+                self.outfile.write(' * @out_fd_list: (out) (optional): Return location for a #GUnixFDList or %NULL to ignore.\n')
             self.outfile.write(self.docbook_gen.expand(
                     ' * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to %s_call_%s().\n'
                     ' * @error: Return location for error or %%NULL.\n'
@@ -1763,7 +1780,7 @@ class CodeGenerator:
             if unix_fd:
                 self.outfile.write(' * @fd_list: (nullable): A #GUnixFDList or %NULL.\n')
             for a in m.out_args:
-                self.outfile.write(' * @out_%s: (out)%s: Return location for return parameter or %%NULL to ignore.\n'%(a.name, ' ' + a.array_annotation if a.array_annotation else ''))
+                self.outfile.write(' * @out_%s: (out) (optional)%s: Return location for return parameter or %%NULL to ignore.\n'%(a.name, ' ' + a.array_annotation if a.array_annotation else ''))
             if unix_fd:
                 self.outfile.write(' * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.\n')
             self.outfile.write(self.docbook_gen.expand(
@@ -1948,7 +1965,7 @@ class CodeGenerator:
             self.outfile.write('  const _ExtendedGDBusPropertyInfo *info;\n'
                                '  GVariant *variant;\n'
                                '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
-                               '  info = _%s_property_info_pointers[prop_id - 1];\n'
+                               '  info = (const _ExtendedGDBusPropertyInfo *) _%s_property_info_pointers[prop_id - 1];\n'
                                '  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (object), info->parent_struct.name);\n'
                                '  if (info->use_gvariant)\n'
                                '    {\n'
@@ -2001,7 +2018,7 @@ class CodeGenerator:
             self.outfile.write('  const _ExtendedGDBusPropertyInfo *info;\n'
                                '  GVariant *variant;\n'
                                '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
-                               '  info = _%s_property_info_pointers[prop_id - 1];\n'
+                               '  info = (const _ExtendedGDBusPropertyInfo *) _%s_property_info_pointers[prop_id - 1];\n'
                                '  variant = g_dbus_gvalue_to_gvariant (value, G_VARIANT_TYPE (info->parent_struct.signature));\n'
                                '  g_dbus_proxy_call (G_DBUS_PROXY (object),\n'
                                '    "org.freedesktop.DBus.Properties.Set",\n'
@@ -2880,14 +2897,17 @@ class CodeGenerator:
                                '  const GValue *value,\n'
                                '  GParamSpec   *pspec)\n'
                                '{\n'%(i.name_lower))
-            self.outfile.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
+            self.outfile.write('  const _ExtendedGDBusPropertyInfo *info;\n'
+                               '  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
                                '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
+                               '  info = (const _ExtendedGDBusPropertyInfo *) _%s_property_info_pointers[prop_id - 1];\n'
                                '  g_mutex_lock (&skeleton->priv->lock);\n'
                                '  g_object_freeze_notify (object);\n'
                                '  if (!_g_value_equal (value, &skeleton->priv->properties[prop_id - 1]))\n'
                                '    {\n'
-                               '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)\n'
-                               '        _%s_schedule_emit_changed (skeleton, _%s_property_info_pointers[prop_id - 1], prop_id, &skeleton->priv->properties[prop_id - 1]);\n'
+                               '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL &&\n'
+                               '          info->emits_changed_signal)\n'
+                               '        _%s_schedule_emit_changed (skeleton, info, prop_id, &skeleton->priv->properties[prop_id - 1]);\n'
                                '      g_value_copy (value, &skeleton->priv->properties[prop_id - 1]);\n'
                                '      g_object_notify_by_pspec (object, pspec);\n'
                                '    }\n'
@@ -3053,9 +3073,12 @@ class CodeGenerator:
                     '   * Connect to the #GObject::notify signal to get informed of property changes.\n'
                     %(self.namespace, i.name_hyphen, i.camel_name, i.name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.outfile, 2)
-            self.outfile.write('  g_object_interface_install_property (iface, g_param_spec_object ("%s", "%s", "%s", %sTYPE_%s, G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS));\n'
+            flags = 'G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS'
+            if i.deprecated:
+                flags = 'G_PARAM_DEPRECATED | ' + flags
+            self.outfile.write('  g_object_interface_install_property (iface, g_param_spec_object ("%s", "%s", "%s", %sTYPE_%s, %s));\n'
                                '\n'
-                               %(i.name_hyphen, i.name_hyphen, i.name_hyphen, self.ns_upper, i.name_upper))
+                               %(i.name_hyphen, i.name_hyphen, i.name_hyphen, self.ns_upper, i.name_upper, flags))
         self.outfile.write('}\n'
                            '\n')
 
@@ -3067,7 +3090,7 @@ class CodeGenerator:
                     ' *\n'
                     ' * Gets the #%s instance for the D-Bus interface #%s on @object, if any.\n'
                     ' *\n'
-                    ' * Returns: (transfer full): A #%s that must be freed with g_object_unref() or %%NULL if @object does not implement the interface.\n'
+                    ' * Returns: (transfer full) (nullable): A #%s that must be freed with g_object_unref() or %%NULL if @object does not implement the interface.\n'
                     %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name, i.name, i.camel_name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.outfile, 0)
             self.outfile.write('%s *%sobject_get_%s (%sObject *object)\n'
@@ -3092,7 +3115,7 @@ class CodeGenerator:
                     ' *\n'
                     ' * <warning>It is not safe to use the returned object if you are on another thread than the one where the #GDBusObjectManagerClient or #GDBusObjectManagerServer for @object is running.</warning>\n'
                     ' *\n'
-                    ' * Returns: (transfer none): A #%s or %%NULL if @object does not implement the interface. Do not free the returned object, it is owned by @object.\n'
+                    ' * Returns: (transfer none) (nullable): A #%s or %%NULL if @object does not implement the interface. Do not free the returned object, it is owned by @object.\n'
                     %(self.ns_lower, i.name_upper.lower(), self.namespace, self.ns_lower, i.name_upper.lower(), i.camel_name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.outfile, 0)
             self.outfile.write('%s *%sobject_peek_%s (%sObject *object)\n'

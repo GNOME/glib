@@ -109,11 +109,18 @@ void                  g_tls_connection_set_require_close_notify    (GTlsConnecti
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_get_require_close_notify    (GTlsConnection       *conn);
 
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_60
 void                  g_tls_connection_set_rehandshake_mode        (GTlsConnection       *conn,
 								    GTlsRehandshakeMode   mode);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_60
 GTlsRehandshakeMode   g_tls_connection_get_rehandshake_mode        (GTlsConnection       *conn);
+
+GLIB_AVAILABLE_IN_2_60
+void                  g_tls_connection_set_advertised_protocols    (GTlsConnection       *conn,
+                                                                    const gchar * const  *protocols);
+
+GLIB_AVAILABLE_IN_2_60
+const gchar *         g_tls_connection_get_negotiated_protocol     (GTlsConnection       *conn);
 
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_handshake                   (GTlsConnection       *conn,

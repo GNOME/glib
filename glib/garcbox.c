@@ -168,6 +168,9 @@
  * The data will be freed when its reference count drops to
  * zero.
  *
+ * The allocated data is guaranteed to be suitably aligned for any
+ * built-in type.
+ *
  * Returns: (transfer full) (not nullable): a pointer to the allocated memory
  *
  * Since: 2.58
@@ -177,7 +180,7 @@ g_atomic_rc_box_alloc (gsize block_size)
 {
   g_return_val_if_fail (block_size > 0, NULL);
 
-  return g_rc_box_alloc_full (block_size, TRUE, FALSE);
+  return g_rc_box_alloc_full (block_size, STRUCT_ALIGNMENT, TRUE, FALSE);
 }
 
 /**
@@ -192,6 +195,9 @@ g_atomic_rc_box_alloc (gsize block_size)
  * The data will be freed when its reference count drops to
  * zero.
  *
+ * The allocated data is guaranteed to be suitably aligned for any
+ * built-in type.
+ *
  * Returns: (transfer full) (not nullable): a pointer to the allocated memory
  *
  * Since: 2.58
@@ -201,7 +207,7 @@ g_atomic_rc_box_alloc0 (gsize block_size)
 {
   g_return_val_if_fail (block_size > 0, NULL);
 
-  return g_rc_box_alloc_full (block_size, TRUE, TRUE);
+  return g_rc_box_alloc_full (block_size, STRUCT_ALIGNMENT, TRUE, TRUE);
 }
 
 /**
@@ -262,7 +268,7 @@ gpointer
   g_return_val_if_fail (block_size > 0, NULL);
   g_return_val_if_fail (mem_block != NULL, NULL);
 
-  res = g_rc_box_alloc_full (block_size, TRUE, FALSE);
+  res = g_rc_box_alloc_full (block_size, STRUCT_ALIGNMENT, TRUE, FALSE);
   memcpy (res, mem_block, block_size);
 
   return res;
@@ -339,13 +345,15 @@ g_atomic_rc_box_release_full (gpointer       mem_block,
 
   if (g_atomic_ref_count_dec (&real_box->ref_count))
     {
+      char *real_mem = (char *) real_box - real_box->private_offset;
+
       TRACE (GLIB_RCBOX_RELEASE (mem_block, 1));
 
       if (clear_func != NULL)
         clear_func (mem_block);
 
       TRACE (GLIB_RCBOX_FREE (mem_block));
-      g_free (real_box);
+      g_free (real_mem);
     }
 }
 

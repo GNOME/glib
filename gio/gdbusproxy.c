@@ -59,8 +59,7 @@
  * well-known name, the property cache is flushed when the name owner
  * vanishes and reloaded when a name owner appears.
  *
- * If a #GDBusProxy is used for a well-known name, the owner of the
- * name is tracked and can be read from
+ * The unique name owner of the proxy's name is tracked and can be read from
  * #GDBusProxy:g-name-owner. Connect to the #GObject::notify signal to
  * get notified of changes. Additionally, only signals and property
  * changes emitted from the current name owner are considered and
@@ -1236,11 +1235,14 @@ on_name_owner_changed_get_all_cb (GDBusConnection *connection,
        *
        * Either way, apps can know about this by using
        * get_cached_property_names() or get_cached_property().
-       *
-       * TODO: handle G_DBUS_DEBUG flag 'proxy' and, if enabled, log the
-       * fact that GetAll() failed
        */
-      //g_debug ("error: %d %d %s", error->domain, error->code, error->message);
+      if (G_UNLIKELY (_g_dbus_debug_proxy ()))
+        {
+          g_debug ("error: %d %d %s",
+                   error->domain,
+                   error->code,
+                   error->message);
+        }
       g_error_free (error);
     }
 
@@ -1433,11 +1435,14 @@ async_init_get_all_cb (GDBusConnection *connection,
        *
        * Either way, apps can know about this by using
        * get_cached_property_names() or get_cached_property().
-       *
-       * TODO: handle G_DBUS_DEBUG flag 'proxy' and, if enabled, log the
-       * fact that GetAll() failed
        */
-      //g_debug ("error: %d %d %s", error->domain, error->code, error->message);
+      if (G_UNLIKELY (_g_dbus_debug_proxy ()))
+        {
+          g_debug ("error: %d %d %s",
+                   error->domain,
+                   error->code,
+                   error->message);
+        }
       g_error_free (error);
     }
 
@@ -1769,7 +1774,8 @@ async_initable_init_first (GAsyncInitable *initable)
                                             (GDestroyNotify) signal_subscription_unref);
     }
 
-  if (proxy->priv->name != NULL && !g_dbus_is_unique_name (proxy->priv->name))
+  if (proxy->priv->name != NULL &&
+      (g_dbus_connection_get_flags (proxy->priv->connection) & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION))
     {
       proxy->priv->name_owner_changed_subscription_id =
         g_dbus_connection_signal_subscribe (proxy->priv->connection,
@@ -1996,6 +2002,10 @@ initable_iface_init (GInitableIface *initable_iface)
  * match rules for signals. Connect to the #GDBusProxy::g-signal signal
  * to handle signals from the remote object.
  *
+ * If both %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES and
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS are set, this constructor is
+ * guaranteed to complete immediately without blocking.
+ *
  * If @name is a well-known name and the
  * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START and %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION
  * flags aren't set and no name owner currently exists, the message bus
@@ -2095,6 +2105,10 @@ g_dbus_proxy_new_finish (GAsyncResult  *res,
  * If the %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets up
  * match rules for signals. Connect to the #GDBusProxy::g-signal signal
  * to handle signals from the remote object.
+ *
+ * If both %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES and
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS are set, this constructor is
+ * guaranteed to return immediately without blocking.
  *
  * If @name is a well-known name and the
  * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START and %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION
@@ -2723,7 +2737,8 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
               g_task_return_new_error (task,
                                        G_IO_ERROR,
                                        G_IO_ERROR_FAILED,
-                                       _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
+                                       _("Cannot invoke method; proxy is for the well-known name %s without an owner, and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"),
+                                       proxy->priv->name);
               g_object_unref (task);
             }
           G_UNLOCK (properties_lock);
@@ -2854,10 +2869,11 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
       destination = g_strdup (get_destination_for_call (proxy));
       if (destination == NULL)
         {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_FAILED,
-                               _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_FAILED,
+                       _("Cannot invoke method; proxy is for the well-known name %s without an owner, and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"),
+                       proxy->priv->name);
           ret = NULL;
           G_UNLOCK (properties_lock);
           goto out;

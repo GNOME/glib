@@ -142,7 +142,10 @@
       commands that are similar to traditional utilities, but let you
       use GIO locations instead of local files: for example you can use
       something like <filename>smb://server/resource/file.txt</filename>
-      as location.</para>
+      as a location.</para>
+    <para>Plain filenames which contain a colon will be interpreted as URIs
+      with an unknown protocol. To avoid this, prefix them with a path such as
+      <filename>./</filename>, or with the <literal>file:</literal> protocol.</para>
   </refsect1>
 
   <refsect1>
@@ -178,9 +181,9 @@
         <listitem>
           <para>Concatenates the given files and prints them to the standard
             output.</para>
-          <para>The cat command works just like the traditional cat utility.</para>
-          <para>Note: just pipe through cat if you need its formatting options
-            like -n, -T or other.</para>
+          <para>The <command>cat</command> command works just like the traditional <command>cat</command> utility.</para>
+          <para>Note: just pipe through <command>cat</command> if you need its formatting options
+            like <option>-n</option>, <option>-T</option> or other.</para>
         </listitem>
       </varlistentry>
 
@@ -195,13 +198,13 @@
           <para>Copies one or more files from <replaceable>SOURCE</replaceable>
             to <replaceable>DESTINATION</replaceable>. If more than one source
             is specified, the destination must be a directory.</para>
-          <para>The copy command is similar to the traditional cp utility.</para>
+          <para>The <command>copy</command> command is similar to the traditional <command>cp</command> utility.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>
               <varlistentry>
                 <term><option>-T</option>, <option>--no-target-directory</option></term>
-                <listitem><para>Don't copy into <replaceable>DESTINATION</replaceable> even if it is a directory.</para></listitem>
+                <listitem><para>Don’t copy into <replaceable>DESTINATION</replaceable> even if it is a directory.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-p</option>, <option>--progress</option></term>
@@ -235,7 +238,7 @@
         </term>
         <listitem>
           <para>Shows information about the given locations.</para>
-          <para>The info command is similar to the traditional ls utility.</para>
+          <para>The <command>info</command> command is similar to the traditional <command>ls</command> utility.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>
@@ -252,14 +255,14 @@
                 <term><option>-a</option> <option>--attributes=<replaceable>ATTRIBUTES</replaceable></option></term>
                 <listitem><para>The attributes to get.</para>
                   <para>Attributes can be specified with their GIO name, e.g.
-                    standard::icon, or just by namespace, e.g. unix, or by '*',
+                    <literal>standard::icon</literal>, or just by namespace, e.g. <literal>unix</literal>, or by <literal>*</literal>,
                     which matches all attributes. Several attributes or groups
                     of attributes can be specified, separated by comma.</para>
                   <para>By default, all attributes are listed.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-n</option>, <option>--nofollow-symlinks</option></term>
-                <listitem><para>Don't follow symbolic links.</para></listitem>
+                <listitem><para>Don’t follow symbolic links.</para></listitem>
               </varlistentry>
             </variablelist>
           </refsect3>
@@ -275,7 +278,7 @@
         <listitem>
           <para>Lists the contents of the given locations. If no location is
             given, the contents of the current directory are shown.</para>
-          <para>The list command is similar to the traditional ls utility.</para>
+          <para>The <command>list</command> command is similar to the traditional <command>ls</command> utility.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>
@@ -283,7 +286,7 @@
                 <term><option>-a</option> <option>--attributes=<replaceable>ATTRIBUTES</replaceable></option></term>
                 <listitem><para>The attributes to get.</para>
                   <para>Attributes can be specified with their GIO name, e.g.
-                    standard::icon, or just by namespace, e.g. unix, or by '*',
+                    <literal>standard::icon</literal>, or just by namespace, e.g. <literal>unix</literal>, or by <literal>*</literal>,
                     which matches all attributes. Several attributes or groups
                     of attributes can be specified, separated by comma.</para>
                   <para>By default, all attributes are listed.</para></listitem>
@@ -298,7 +301,7 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-n</option>, <option>--nofollow-symlinks</option></term>
-                <listitem><para>Don't follow symbolic links.</para></listitem>
+                <listitem><para>Don’t follow symbolic links.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-u</option>, <option>--print-uris</option></term>
@@ -316,12 +319,12 @@
           <arg choice="opt"><replaceable>HANDLER</replaceable></arg>
         </term>
         <listitem>
-          <para>If no handler is given, the mime command lists the
+          <para>If no handler is given, the <command>mime</command> command lists the
             registered and recommended applications for the mimetype.
             If a handler is given, it is set as the default handler for
             the mimetype.</para>
           <para>Handlers must be specified by their desktop file name,
-            including the extension. Example: org.gnome.gedit.desktop.</para>
+            including the extension. Example: <literal>org.gnome.gedit.desktop</literal>.</para>
         </listitem>
       </varlistentry>
 
@@ -333,7 +336,7 @@
         </term>
         <listitem>
           <para>Creates directories.</para>
-          <para>The mkdir command is similar to the traditional mkdir utility.</para>
+          <para>The <command>mkdir</command> command is similar to the traditional <command>mkdir</command> utility.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>
@@ -356,7 +359,7 @@
           <para>Monitors files or directories for changes, such as creation
             deletion, content and attribute changes, and mount and unmount
             operations affecting the monitored locations.</para>
-          <para>The monitor command uses the GIO file monitoring APIs to do
+          <para>The <command>monitor</command> command uses the GIO file monitoring APIs to do
             its job. GIO has different implementations for different platforms.
             The most common implementation on Linux uses inotify.</para>
           <refsect3>
@@ -374,11 +377,11 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-D</option>, <option>--direct=<replaceable>LOCATION</replaceable></option></term>
-                <listitem><para>Monitor the file directly. This allows to capture changes made via hardlinks.</para></listitem>
+                <listitem><para>Monitor the file directly. This allows changes made via hardlinks to be captured.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-s</option>, <option>--silent=<replaceable>LOCATION</replaceable></option></term>
-                <listitem><para>Monitor the file directly, but don't report changes.</para></listitem>
+                <listitem><para>Monitor the file directly, but don’t report changes.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-n</option>, <option>--no-moves</option></term>
@@ -400,15 +403,15 @@
           <arg choice="opt" rep="repeat"><replaceable>LOCATION</replaceable></arg>
         </term>
         <listitem>
-          <para>Provides commandline access to various aspects of GIOs mounting
+          <para>Provides commandline access to various aspects of GIO’s mounting
             functionality.</para>
           <para>Mounting refers to the traditional concept of arranging multiple
-            file systems and devices in a single tree, rooted at /. Classical
+            file systems and devices in a single tree, rooted at <filename>/</filename>. Classical
             mounting happens in the kernel and is controlle by the mount utility.
             GIO expands this concept by introducing mount daemons that can make
             file systems available to GIO applications without kernel
             involvement.</para>
-          <para>GIO mounts can require authentication, and the mount command
+          <para>GIO mounts can require authentication, and the <command>mount</command> command
             may ask for user IDs, passwords, and so on, when required.</para>
           <refsect3>
             <title>Options</title>
@@ -486,7 +489,7 @@
           <para>Moves one or more files from <replaceable>SOURCE</replaceable>
             to <replaceable>DESTINATION</replaceable>. If more than one source
             is specified, the destination must be a directory.</para>
-          <para>The move command is similar to the traditional mv utility.</para>
+          <para>The <command>move</command> command is similar to the traditional <command>mv</command> utility.</para>
         </listitem>
       </varlistentry>
 
@@ -501,7 +504,7 @@
           <para>GIO obtains this information from the shared-mime-info
             database, with per-user overrides stored in
             <filename><envar>$XDG_DATA_HOME</envar>/applications/mimeapps.list</filename>.</para>
-          <para>The mime command can be used to change the default handler for
+          <para>The <command>mime</command> command can be used to change the default handler for
             a mimetype.</para>
         </listitem>
       </varlistentry>
@@ -514,7 +517,7 @@
         </term>
         <listitem>
           <para>Renames a file.</para>
-          <para>The rename command is similar to the traditional rename utility.</para>
+          <para>The <command>rename</command> command is similar to the traditional <command>rename</command> utility.</para>
         </listitem>
       </varlistentry>
 
@@ -527,10 +530,10 @@
         <listitem>
           <para>Deletes each given file.</para>
           <para>This command removes files irreversibly. If you want a reversible
-            way to remove files, see the trash command.</para>
+            way to remove files, see the <command>trash</command> command.</para>
           <para>Note that not all URI schemes that are supported by GIO may
             allow deletion of files.</para>
-          <para> The remove command is similar to the traditional rm utility.</para>
+          <para>The <command>remove</command> command is similar to the traditional <command>rm</command> utility.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>
@@ -553,18 +556,18 @@
           <para>Reads from standard input and saves the data to the given
             location.</para>
           <para>This is similar to just redirecting output to a file using
-            traditional shell syntax, but the save command allows saving to
+            traditional shell syntax, but the <command>save</command> command allows saving to
             location that GIO can write to.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>
               <varlistentry>
                 <term><option>-b</option>, <option>--backup</option></term>
-                <listitem><para>Backup existing destination files.</para></listitem>
+                <listitem><para>Back up existing destination files.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-c</option>, <option>--create</option></term>
-                <listitem><para>Only create the destination if it doesn't exist yet.</para></listitem>
+                <listitem><para>Only create the destination if it doesn’t exist yet.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-a</option>, <option>--append</option></term>
@@ -580,11 +583,11 @@
               </varlistentry>
               <varlistentry>
                 <term><option>-v</option>, <option>--print-etag</option></term>
-                <listitem><para>Print the new etag in the end.</para></listitem>
+                <listitem><para>Print the new ETag in the end.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-e</option>, <option>--etag=<replaceable>ETAG</replaceable></option></term>
-                <listitem><para>The etag of the file that is overwritten.</para></listitem>
+                <listitem><para>The ETag of the file that is overwritten.</para></listitem>
               </varlistentry>
             </variablelist>
           </refsect3>
@@ -599,28 +602,30 @@
           <arg choice="plain" rep="repeat"><replaceable>VALUE</replaceable></arg>
         </term>
         <listitem>
-          <para>Allows to set a file attribute on a file.</para>
+          <para>Sets a file attribute on a file.</para>
           <para>File attributes can be specified with their GIO name, e.g
-            standard::icon. Note that not all GIO file attributes are writable.
-            Use the --query-writable option of the info command to list
+            <literal>standard::icon</literal>. Note that not all GIO file attributes are writable.
+            Use the <option>--query-writable</option> option of the <command>info</command> command to list
             writable file attributes.</para>
           <para>If the <replaceable>TYPE</replaceable> is unset,
             <replaceable>VALUE</replaceable> does not have to be specified.
-            If the type is stringv, multiple values can be given.</para>
+            If the <replaceable>TYPE</replaceable> is <literal>stringv</literal>, multiple values can be given.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>
               <varlistentry>
                 <term><option>-t</option>, <option>--type=<replaceable>TYPE</replaceable></option></term>
                 <listitem><para>Specifies the type of the attribute. Supported
-                  types are string, stringv, bytestring, boolean, uint32, int32,
-                  uint64, int64 and unset.</para>
-                  <para>If the type is not specified, string is assumed.</para>
+                  types are <literal>string</literal>, <literal>stringv</literal>,
+                  <literal>bytestring</literal>, <literal>boolean</literal>,
+                  <literal>uint32</literal>, <literal>int32</literal>,
+                  <literal>uint64</literal>, <literal>int64</literal> and <literal>unset</literal>.</para>
+                  <para>If the type is not specified, <literal>string</literal> is assumed.</para>
                 </listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-n</option>, <option>--nofollow-symlinks</option></term>
-                <listitem><para>Don't follow symbolic links.</para></listitem>
+                <listitem><para>Don’t follow symbolic links.</para></listitem>
               </varlistentry>
             </variablelist>
           </refsect3>
@@ -634,17 +639,17 @@
           <arg choice="opt" rep="repeat"><replaceable>LOCATION</replaceable></arg>
         </term>
         <listitem>
-          <para>Sends files or directories to the "Trashcan". This can be a
+          <para>Sends files or directories to the ‘Trashcan’. This can be a
             different folder depending on where the file is located, and not
             all file systems support this concept. In the common case that the
-            file lives inside a users home directory, the trash folder is
+            file lives inside a user’s home directory, the trash folder is
             <filename><envar>$XDG_DATA_HOME</envar>/Trash</filename>.</para>
           <para>Note that moving files to the trash does not free up space on
-            the file system until the "Trashcan" is emptied. If you are interested
-            in deleting a file irreversibly, see the remove command.</para>
-          <para>Inspecting and emptying the "Trashcan" is normally supported by
-            graphical file managers such as nautilus, but you can also see the
-            trash with the command: gio list trash://.</para>
+            the file system until the ‘Trashcan’ is emptied. If you are interested
+            in deleting a file irreversibly, see the <command>remove</command> command.</para>
+          <para>Inspecting and emptying the ‘Trashcan’ is normally supported by
+            graphical file managers such as Nautilus, but you can also see the
+            trash with the command: <command>gio list trash://</command>.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>
@@ -671,7 +676,7 @@
           <para>Lists the contents of the given locations recursively, in a
             tree-like format. If no location is given, it defaults to the current
             directory.</para>
-          <para>The tree command is similar to the traditional tree utility.</para>
+          <para>The <command>tree</command> command is similar to the traditional <command>tree</command> utility.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>

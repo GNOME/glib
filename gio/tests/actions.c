@@ -515,7 +515,7 @@ test_parse_detailed (void)
           expected = g_variant_parse (NULL, testcases[i].expected_target, NULL, NULL, NULL);
           g_assert (expected);
 
-          g_assert (g_variant_equal (expected, target));
+          g_assert_cmpvariant (expected, target);
           g_variant_unref (expected);
           g_variant_unref (target);
         }
@@ -1040,6 +1040,8 @@ test_property_actions (void)
   g_assert_cmpstr (name, ==, "keepalive");
   g_assert (enabled);
   g_free (name);
+  g_variant_type_free (ptype);
+  g_variant_type_free (stype);
   g_variant_unref (state);
 
   g_action_map_add_action (G_ACTION_MAP (group), G_ACTION (action));
