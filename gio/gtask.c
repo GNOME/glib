@@ -626,11 +626,14 @@ static gint tasks_running;
  * The base and multiplier below gives us 10 extra threads after about
  * a second of blocking, 30 after 5 seconds, 100 after a minute, and
  * 200 after 20 minutes.
+ *
+ * We specify maximum pool size of 330 to increase the waiting time up
+ * to around 30 minutes.
  */
 #define G_TASK_POOL_SIZE 10
 #define G_TASK_WAIT_TIME_BASE 100000
 #define G_TASK_WAIT_TIME_MULTIPLIER 1.03
-#define G_TASK_WAIT_TIME_MAX (30 * 60 * 1000000)
+#define G_TASK_WAIT_TIME_MAX_POOL_SIZE 330
 
 static void
 g_task_init (GTask *task)
@@ -1366,7 +1369,7 @@ g_task_thread_setup (void)
 
   if (tasks_running == G_TASK_POOL_SIZE)
     task_wait_time = G_TASK_WAIT_TIME_BASE;
-  else if (tasks_running > G_TASK_POOL_SIZE && task_wait_time < G_TASK_WAIT_TIME_MAX)
+  else if (tasks_running > G_TASK_POOL_SIZE && tasks_running < G_TASK_WAIT_TIME_MAX_POOL_SIZE)
     task_wait_time *= G_TASK_WAIT_TIME_MULTIPLIER;
 
   if (tasks_running >= G_TASK_POOL_SIZE)
@@ -1387,6 +1390,9 @@ g_task_thread_cleanup (void)
     g_thread_pool_set_max_threads (task_pool, tasks_running - 1, NULL);
   else if (tasks_running + tasks_pending < G_TASK_POOL_SIZE)
     g_source_set_ready_time (task_pool_manager, -1);
+
+  if (tasks_running > G_TASK_POOL_SIZE && tasks_running < G_TASK_WAIT_TIME_MAX_POOL_SIZE)
+    task_wait_time /= G_TASK_WAIT_TIME_MULTIPLIER;
 
   tasks_running--;
   g_mutex_unlock (&task_pool_mutex);
