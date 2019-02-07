@@ -38,6 +38,10 @@
 
 #include <string.h>
 
+/* As recommended by RFC 8305 this is the time it waits for a following
+   DNS response to come in (ipv4 waiting on ipv6 generally)
+ */
+#define HAPPY_EYEBALLS_RESOLUTION_DELAY_MS 50
 
 /**
  * SECTION:gnetworkaddress
@@ -1143,6 +1147,7 @@ got_ipv6_addresses (GObject      *source_object,
   GResolver *resolver = G_RESOLVER (source_object);
   GList *addresses;
   GError *error = NULL;
+  gboolean got_ipv4_first = FALSE;
 
   addresses = g_resolver_lookup_by_name_with_flags_finish (resolver, result, &error);
   if (!error)
@@ -1161,18 +1166,18 @@ got_ipv6_addresses (GObject      *source_object,
     {
       g_source_destroy (addr_enum->wait_source);
       g_clear_pointer (&addr_enum->wait_source, g_source_unref);
+      got_ipv4_first = TRUE;
     }
 
-  /* If we got an error before ipv4 then let it handle it.
+  /* If we got an error before ipv4 then let its response handle it.
    * If we get ipv6 response first or error second then
    * immediately complete the task.
    */
-  if (error != NULL && !addr_enum->last_error)
+  if (error != NULL && !addr_enum->last_error && !got_ipv4_first)
     {
       addr_enum->last_error = g_steal_pointer (&error);
 
-      /* This shouldn't happen often but avoid never responding. */
-      addr_enum->wait_source = g_timeout_source_new_seconds (1);
+      addr_enum->wait_source = g_timeout_source_new (HAPPY_EYEBALLS_RESOLUTION_DELAY_MS);
       g_source_set_callback (addr_enum->wait_source,
                              on_address_timeout,
                              addr_enum, NULL);
@@ -1180,13 +1185,19 @@ got_ipv6_addresses (GObject      *source_object,
     }
   else if (addr_enum->queued_task != NULL)
     {
+      GError *task_error = NULL;
+
+      /* If both errored just use the ipv6 one,
+         but if ipv6 errored and ipv4 didn't we don't error */
+      if (error != NULL && addr_enum->last_error)
+          task_error = g_steal_pointer (&error);
+
       g_clear_error (&addr_enum->last_error);
       complete_queued_task (addr_enum, g_steal_pointer (&addr_enum->queued_task),
-                            g_steal_pointer (&error));
+                            g_steal_pointer (&task_error));
     }
-  else if (error != NULL)
-    g_clear_error (&error);
 
+  g_clear_error (&error);
   g_object_unref (addr_enum);
 }
 
@@ -1229,7 +1240,7 @@ got_ipv4_addresses (GObject      *source_object,
   else if (addr_enum->queued_task != NULL)
     {
       addr_enum->last_error = g_steal_pointer (&error);
-      addr_enum->wait_source = g_timeout_source_new (50);
+      addr_enum->wait_source = g_timeout_source_new (HAPPY_EYEBALLS_RESOLUTION_DELAY_MS);
       g_source_set_callback (addr_enum->wait_source,
                              on_address_timeout,
                              addr_enum, NULL);
