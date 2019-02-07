@@ -622,13 +622,16 @@ happy_eyeballs_teardown (HappyEyeballsFixture *fixture,
   g_main_loop_unref (fixture->loop);
 }
 
+static const guint FAST_DELAY_LESS_THAN_TIMEOUT = 25;
+static const guint SLOW_DELAY_MORE_THAN_TIMEOUT = 100;
+
 static void
 test_happy_eyeballs_basic (HappyEyeballsFixture *fixture,
                            gconstpointer         user_data)
 {
   AsyncData data = { 0 };
 
-  data.delay_ms = 10;
+  data.delay_ms = FAST_DELAY_LESS_THAN_TIMEOUT;
   data.loop = fixture->loop;
 
   /* This just tests in the common case it gets all results */
@@ -648,7 +651,7 @@ test_happy_eyeballs_slow_ipv4 (HappyEyeballsFixture *fixture,
   /* If ipv4 dns response is a bit slow we just don't get them */
 
   data.loop = fixture->loop;
-  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, 25);
+  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, FAST_DELAY_LESS_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
@@ -665,7 +668,7 @@ test_happy_eyeballs_slow_ipv6 (HappyEyeballsFixture *fixture,
   /* If ipv6 is a bit slow it waits for them */
 
   data.loop = fixture->loop;
-  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, 25);
+  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, FAST_DELAY_LESS_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
@@ -682,7 +685,7 @@ test_happy_eyeballs_very_slow_ipv6 (HappyEyeballsFixture *fixture,
   /* If ipv6 is very slow we don't get them */
 
   data.loop = fixture->loop;
-  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, 200);
+  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, SLOW_DELAY_MORE_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
@@ -700,8 +703,8 @@ test_happy_eyeballs_slow_connection_and_ipv4 (HappyEyeballsFixture *fixture,
    * take long enough. */
 
   data.loop = fixture->loop;
-  data.delay_ms = 500;
-  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, 200);
+  data.delay_ms = SLOW_DELAY_MORE_THAN_TIMEOUT * 2;
+  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, SLOW_DELAY_MORE_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
@@ -721,7 +724,7 @@ test_happy_eyeballs_ipv6_error_ipv4_first (HappyEyeballsFixture *fixture,
   data.loop = fixture->loop;
   ipv6_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv6 Broken");
   mock_resolver_set_ipv6_error (fixture->mock_resolver, ipv6_error);
-  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, 25);
+  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, FAST_DELAY_LESS_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
@@ -743,7 +746,7 @@ test_happy_eyeballs_ipv6_error_ipv6_first (HappyEyeballsFixture *fixture,
   data.loop = fixture->loop;
   ipv6_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv6 Broken");
   mock_resolver_set_ipv6_error (fixture->mock_resolver, ipv6_error);
-  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, 25);
+  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, FAST_DELAY_LESS_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
@@ -765,7 +768,7 @@ test_happy_eyeballs_ipv4_error_ipv4_first (HappyEyeballsFixture *fixture,
   data.loop = fixture->loop;
   ipv4_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv4 Broken");
   mock_resolver_set_ipv4_error (fixture->mock_resolver, ipv4_error);
-  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, 25);
+  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, FAST_DELAY_LESS_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
@@ -787,7 +790,7 @@ test_happy_eyeballs_ipv4_error_ipv6_first (HappyEyeballsFixture *fixture,
   data.loop = fixture->loop;
   ipv4_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv4 Broken");
   mock_resolver_set_ipv4_error (fixture->mock_resolver, ipv4_error);
-  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, 25);
+  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, FAST_DELAY_LESS_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
@@ -838,7 +841,7 @@ test_happy_eyeballs_both_error_delays_1 (HappyEyeballsFixture *fixture,
   ipv6_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv6 Broken");
 
   mock_resolver_set_ipv4_error (fixture->mock_resolver, ipv4_error);
-  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, 25);
+  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, FAST_DELAY_LESS_THAN_TIMEOUT);
   mock_resolver_set_ipv6_error (fixture->mock_resolver, ipv6_error);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
@@ -866,7 +869,7 @@ test_happy_eyeballs_both_error_delays_2 (HappyEyeballsFixture *fixture,
 
   mock_resolver_set_ipv4_error (fixture->mock_resolver, ipv4_error);
   mock_resolver_set_ipv6_error (fixture->mock_resolver, ipv6_error);
-  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, 25);
+  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, FAST_DELAY_LESS_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
@@ -893,7 +896,7 @@ test_happy_eyeballs_both_error_delays_3 (HappyEyeballsFixture *fixture,
 
   mock_resolver_set_ipv4_error (fixture->mock_resolver, ipv4_error);
   mock_resolver_set_ipv6_error (fixture->mock_resolver, ipv6_error);
-  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, 200);
+  mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, SLOW_DELAY_MORE_THAN_TIMEOUT);
 
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
