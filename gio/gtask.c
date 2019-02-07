@@ -27,6 +27,8 @@
 
 #include "glibintl.h"
 
+#include <math.h>
+
 /**
  * SECTION:gtask
  * @short_description: Cancellable synchronous or asynchronous task
@@ -606,7 +608,6 @@ static GThreadPool *task_pool;
 static GMutex task_pool_mutex;
 static GPrivate task_private = G_PRIVATE_INIT (NULL);
 static GSource *task_pool_manager;
-static guint64 task_wait_time;
 static gint tasks_running;
 
 /* When the task pool fills up and blocks, and the program keeps
@@ -1353,14 +1354,14 @@ task_pool_manager_timeout (gpointer user_data)
 static void
 g_task_thread_setup (void)
 {
+  gint64 task_wait_time = G_TASK_WAIT_TIME_BASE;
+
   g_private_set (&task_private, GUINT_TO_POINTER (TRUE));
   g_mutex_lock (&task_pool_mutex);
   tasks_running++;
 
-  if (tasks_running == G_TASK_POOL_SIZE)
-    task_wait_time = G_TASK_WAIT_TIME_BASE;
-  else if (tasks_running > G_TASK_POOL_SIZE && task_wait_time < G_TASK_WAIT_TIME_MAX)
-    task_wait_time *= G_TASK_WAIT_TIME_MULTIPLIER;
+  if (tasks_running > G_TASK_POOL_SIZE)
+    task_wait_time = MIN (G_TASK_WAIT_TIME_BASE * powf (G_TASK_WAIT_TIME_MULTIPLIER, tasks_running), G_TASK_WAIT_TIME_MAX);
 
   if (tasks_running >= G_TASK_POOL_SIZE)
     g_source_set_ready_time (task_pool_manager, g_get_monotonic_time () + task_wait_time);
