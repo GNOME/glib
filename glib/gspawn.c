@@ -633,7 +633,7 @@ g_spawn_sync (const gchar          *working_directory,
  * a command line, and the C runtime startup code does a corresponding
  * reconstruction of an argument vector from the command line, to be
  * passed to main(). Complications arise when you have argument vector
- * elements that contain spaces of double quotes. The spawn*() functions
+ * elements that contain spaces or double quotes. The spawn*() functions
  * don't do any quoting or escaping, but on the other hand the startup
  * code does do unquoting and unescaping in order to enable receiving
  * arguments with embedded spaces or double quotes. To work around this
