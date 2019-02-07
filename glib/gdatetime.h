@@ -118,7 +118,7 @@ GDateTime *             g_date_time_new_from_timeval_local              (const G
 GLIB_AVAILABLE_IN_ALL
 GDateTime *             g_date_time_new_from_timeval_utc                (const GTimeVal *tv);
 
-GLIB_AVAILABLE_IN_2_58
+GLIB_AVAILABLE_IN_2_56
 GDateTime *             g_date_time_new_from_iso8601                    (const gchar    *text,
                                                                          GTimeZone      *default_tz);
 
@@ -263,11 +263,11 @@ GLIB_AVAILABLE_IN_ALL
 gchar *                 g_date_time_format                              (GDateTime      *datetime,
                                                                          const gchar    *format) G_GNUC_MALLOC;
 
-GLIB_AVAILABLE_IN_2_58
+GLIB_AVAILABLE_IN_2_60
 gboolean                g_date_time_is_same_day                         (GDateTime      *day1,
                                                                          GDateTime      *day2);
-GLIB_AVAILABLE_IN_2_58
-gint                    g_date_time_days_between                        (GDateTime      *end,
+GLIB_AVAILABLE_IN_2_60
+gint64                  g_date_time_days_between                        (GDateTime      *end,
                                                                          GDateTime      *begin);
 
 G_END_DECLS

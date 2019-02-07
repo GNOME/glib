@@ -1209,10 +1209,10 @@ test_GDateTime_is_same_day (void)
 
   dt1 = g_date_time_new_utc (2018, 7, 9, 0, 0, 0);
   dt2 = g_date_time_new_utc (2018, 7, 9, 15, 15, 15);
-  g_assert (g_date_time_is_same_day (dt1, dt2));
+  g_assert_true (g_date_time_is_same_day (dt1, dt2));
 
   dt3 = g_date_time_add_days (dt2, 1);
-  g_assert (!g_date_time_is_same_day (dt2, dt3));
+  g_assert_true (!g_date_time_is_same_day (dt2, dt3));
 
   g_date_time_unref (dt1);
   g_date_time_unref (dt2);
@@ -1220,7 +1220,7 @@ test_GDateTime_is_same_day (void)
 
   dt1 = g_date_time_new_utc (2017, 1, 1, 0, 0, 0);
   dt2 = g_date_time_new_utc (2018, 1, 1, 0, 0, 0);
-  g_assert (!g_date_time_is_same_day (dt1, dt2));
+  g_assert_true (!g_date_time_is_same_day (dt1, dt2));
 
   g_date_time_unref (dt1);
   g_date_time_unref (dt2);
@@ -1232,11 +1232,11 @@ test_GDateTime_days_between (void)
   GDateTime *dt1, *dt2, *dt3;
   dt1 = g_date_time_new_utc (2018, 7, 9, 14, 3, 15);
   dt2 = g_date_time_new_utc (2018, 7, 18, 12, 6, 9);
-  g_assert (g_date_time_days_between (dt2, dt1) == 9);
-  g_assert (g_date_time_days_between (dt1, dt2) == -9);
+  g_assert_true (g_date_time_days_between (dt2, dt1) == 9);
+  g_assert_true (g_date_time_days_between (dt1, dt2) == -9);
 
   dt3 = g_date_time_add_years (dt2, 1);
-  g_assert (g_date_time_days_between (dt3, dt2) == 365);
+  g_assert_true (g_date_time_days_between (dt3, dt2) == 365);
 
   g_date_time_unref (dt1);
   g_date_time_unref (dt2);
