@@ -17,6 +17,11 @@
  */
 
 #include <glib.h>
+#ifdef G_OS_WIN32
+#include <fcntl.h>
+#include <io.h>
+#include <stdio.h>
+#endif
 
 static void
 test_pass (void)
@@ -46,6 +51,14 @@ main (int   argc,
       char *argv[])
 {
   char *argv1;
+
+#ifdef G_OS_WIN32
+  /* Windows opens std streams in text mode, with \r\n EOLs.
+   * Sometimes it's easier to force a switch to binary mode than
+   * to account for extra \r in testcases.
+   */
+  setmode (fileno (stdout), O_BINARY);
+#endif
 
   g_return_val_if_fail (argc > 1, 1);
   argv1 = argv[1];
