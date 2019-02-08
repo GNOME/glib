@@ -173,7 +173,7 @@ g_winhttp_vfs_get_file_for_uri (GVfs       *vfs,
       return _g_winhttp_file_new (winhttp_vfs, uri);
 
   /* For other URIs fallback to the wrapped GVfs */
-  return g_vfs_parse_name (winhttp_vfs->wrapped_vfs, uri);
+  return g_vfs_get_file_for_uri (winhttp_vfs->wrapped_vfs, uri);
 }
 
 static const gchar * const *
