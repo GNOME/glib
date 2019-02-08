@@ -133,10 +133,13 @@ int main(int argc, char** argv)
   g_date_set_julian(d, 1);
   TEST("GDate's \"Julian\" epoch's first day is valid", g_date_valid(d));
 
+#ifndef G_OS_WIN32
   g_date_strftime(buf,100,"Our \"Julian\" epoch begins on a %A, in the month of %B, %x\n",
 		  d);
   g_print("%s", buf);
-
+#else
+  g_print ("But Windows FILETIME does not support dates before Jan 1 1601, so we can't strftime() the beginning of the \"Julian\" epoch.\n");
+#endif
   g_date_set_dmy(d, 10, 1, 2000);
 
   g_date_strftime(buf,100,"%x", d);
