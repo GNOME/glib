@@ -1037,15 +1037,7 @@ test_strtod (void)
   check_strtod_number (0.75, "%5.2f", " 0.75");
   check_strtod_number (-0.75, "%0.2f", "-0.75");
   check_strtod_number (-0.75, "%5.2f", "-0.75");
-#if defined(_MSC_VER) || defined(__MINGW32__)
-  /* FIXME: The included gnulib and the mingw-w64 implementation
-   * currently don't follow C99 and print 3 digits for the exponent.
-   * In case of mingw-w64 this was fixed but not released yet:
-   * https://sourceforge.net/p/mingw-w64/bugs/732/ */
-  check_strtod_number (1e99, "%0.e", "1e+099");
-#else
   check_strtod_number (1e99, "%.0e", "1e+99");
-#endif
 }
 
 static void

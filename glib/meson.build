@@ -16,7 +16,94 @@ endif
 if have_good_vsnprintf and have_good_snprintf
   gnulib_lib = []
   gnulib_objects = []
+  gnulib_libm_dependency = []
+  glib_conf.set ('gl_unused', '')
+  glib_conf.set ('gl_extern_inline', '')
 else
+  subdir ('gnulib/gl_extern_inline')
+  subdir ('gnulib/gl_cv_long_double_equals_double')
+  subdir ('gnulib/gl_cv_cc_double_expbit0')
+  subdir ('gnulib/gl_cv_func_printf_precision')
+  subdir ('gnulib/gl_cv_func_printf_enomem')
+  subdir ('gnulib/gl_cv_func_printf_flag_zero')
+  subdir ('gnulib/gl_cv_func_printf_flag_leftadjust')
+  subdir ('gnulib/gl_cv_func_printf_flag_grouping')
+  subdir ('gnulib/gl_cv_func_printf_directive_a')
+  subdir ('gnulib/gl_cv_func_printf_directive_f')
+  subdir ('gnulib/gl_cv_func_printf_directive_ls')
+  subdir ('gnulib/gl_cv_func_printf_long_double')
+  subdir ('gnulib/gl_cv_func_printf_infinite')
+  subdir ('gnulib/gl_cv_func_printf_infinite_long_double')
+
+  gl_unused = '''
+/* Define as a marker that can be attached to declarations that might not
+    be used.  This helps to reduce warnings, such as from
+    GCC -Wunused-parameter.  */
+#if __GNUC__ >= 3 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 7)
+# define _GL_UNUSED __attribute__ ((__unused__))
+#else
+# define _GL_UNUSED
+#endif
+'''
+  glib_conf.set ('gl_unused', gl_unused)
+  glib_conf.set ('gl_extern_inline', gl_extern_inline)
+
+  if (gl_cv_long_double_equals_double)
+    glib_conf.set ('HAVE_SAME_LONG_DOUBLE_AS_DOUBLE', 1)
+  endif
+
+  if (gl_cv_cc_double_expbit0_word >= 0 and
+      gl_cv_cc_double_expbit0_bit >= 0)
+    glib_conf.set('DBL_EXPBIT0_WORD', gl_cv_cc_double_expbit0_word)
+    glib_conf.set('DBL_EXPBIT0_BIT', gl_cv_cc_double_expbit0_bit)
+  endif
+
+  if not gl_cv_func_printf_precision
+    glib_conf.set('NEED_PRINTF_UNBOUNDED_PRECISION', 1)
+  endif
+
+  if not gl_cv_func_printf_enomem
+    glib_conf.set('NEED_PRINTF_ENOMEM', 1)
+  endif
+
+  if not gl_cv_func_printf_flag_leftadjust
+    glib_conf.set('NEED_PRINTF_FLAG_LEFTADJUST', 1)
+  endif
+
+  if not gl_cv_func_printf_flag_zero
+    glib_conf.set('NEED_PRINTF_FLAG_ZERO', 1)
+  endif
+
+  if not gl_cv_func_printf_flag_grouping
+    glib_conf.set('NEED_PRINTF_FLAG_GROUPING', 1)
+  endif
+
+  if not gl_cv_func_printf_directive_a
+    glib_conf.set('NEED_PRINTF_DIRECTIVE_A', 1)
+  endif
+
+  if not gl_cv_func_printf_directive_f
+    glib_conf.set('NEED_PRINTF_DIRECTIVE_F', 1)
+  endif
+
+  if not gl_cv_func_printf_directive_ls
+    glib_conf.set('NEED_PRINTF_DIRECTIVE_LS', 1)
+  endif
+
+  if (not gl_cv_func_printf_precision or
+      not gl_cv_func_printf_enomem)
+    glib_conf.set('NEED_PRINTF_DOUBLE', 1)
+    glib_conf.set('NEED_PRINTF_LONG_DOUBLE', 1)
+  endif
+
+  if not gl_cv_func_printf_infinite
+    glib_conf.set('NEED_PRINTF_INFINITE_DOUBLE', 1)
+  endif
+
+  if gl_cv_func_printf_long_double and gl_cv_func_printf_infinite_long_double != 'false'
+    glib_conf.set('NEED_PRINTF_INFINITE_LONG_DOUBLE', 1)
+  endif
+
   subdir('gnulib')
   gnulib_objects = [gnulib_lib.extract_all_objects()]
 endif
@@ -270,7 +357,7 @@ libglib = library('glib-2.0',
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
-  dependencies : pcre_deps + [thread_dep, libintl, librt] + libiconv + platform_deps,
+  dependencies : pcre_deps + [thread_dep, libintl, librt] + libiconv + platform_deps + gnulib_libm_dependency,
   c_args : glib_c_args,
   objc_args : glib_c_args,
 )
