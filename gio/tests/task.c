@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Red Hat, Inc.
+ * Copyright 2012-2019 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -665,12 +665,16 @@ asynchronous_cancellation_callback (GObject      *object,
                                     gpointer      user_data)
 {
   GError *error = NULL;
+  guint run_task_id;
 
   g_assert_null (object);
   g_assert_true (g_task_is_valid (result, object));
   g_assert_true (g_async_result_get_user_data (result) == user_data);
   g_assert_true (g_task_had_error (G_TASK (result)));
   g_assert_false (g_task_get_completed (G_TASK (result)));
+
+  run_task_id = GPOINTER_TO_UINT (g_task_get_task_data (G_TASK (result)));
+  g_assert_cmpuint (run_task_id, ==, 0);
 
   g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
@@ -706,8 +710,10 @@ asynchronous_cancellation_cancelled (GCancellable *cancellable,
   g_assert_true (cancellable == g_task_get_cancellable (task));
 
   run_task_id = GPOINTER_TO_UINT (g_task_get_task_data (task));
-  if (run_task_id != 0)
-    g_source_remove (run_task_id);
+  g_assert_cmpuint (run_task_id, !=, 0);
+
+  g_source_remove (run_task_id);
+  g_task_set_task_data (task, GUINT_TO_POINTER (0), NULL);
 
   g_task_return_boolean (task, FALSE);
   g_assert_false (g_task_get_completed (task));
@@ -723,8 +729,7 @@ asynchronous_cancellation_run_task (gpointer user_data)
   g_assert_true (G_IS_CANCELLABLE (cancellable));
   g_assert_false (g_cancellable_is_cancelled (cancellable));
 
-  g_task_set_task_data (task, GUINT_TO_POINTER (0), NULL);
-  return G_SOURCE_REMOVE;
+  return G_SOURCE_CONTINUE;
 }
 
 /* Test that cancellation is always asynchronous. The completion callback for
