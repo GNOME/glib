@@ -601,7 +601,7 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:296
 #, c-format
 msgid "Error creating directory “%s”: %s"
-msgstr "S'ha produït un error en crear el directori %s: %s"
+msgstr "S'ha produït un error en crear el directori «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:379
 #, c-format
@@ -1310,7 +1310,7 @@ msgstr "Error: massa arguments.\n"
 #: ../gio/gdbus-tool.c:2212 ../gio/gdbus-tool.c:2219
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
-msgstr "Error: %s no és un nom de bus conegut vàlid\n"
+msgstr "Error: %s no és un nom de bus conegut vàlid.\n"
 
 #: ../gio/gdesktopappinfo.c:2001 ../gio/gdesktopappinfo.c:4566
 msgid "Unnamed"
@@ -2521,7 +2521,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:475
 #, c-format
 msgid "Failed to parse <default> value of type “%s”: "
-msgstr "No s'ha pogut analitzar el valor <default> del tipus «%s»"
+msgstr "No s'ha pogut analitzar el valor <default> del tipus «%s»: "
 
 #: ../gio/glib-compile-schemas.c:492
 msgid ""
@@ -3187,7 +3187,7 @@ msgstr "S'ha produït un error en truncar el fitxer: %s"
 #: ../gio/glocalfileoutputstream.c:1045 ../gio/gsubprocess.c:380
 #, c-format
 msgid "Error opening file “%s”: %s"
-msgstr "S'ha produït un error en obrir el fitxer %s: %s"
+msgstr "S'ha produït un error en obrir el fitxer «%s»: %s"
 
 #: ../gio/glocalfileoutputstream.c:826
 msgid "Target file is a directory"
@@ -4117,7 +4117,7 @@ msgstr ""
 
 #: ../gio/gtlspassword.c:117
 msgid "The password entered is incorrect."
-msgstr "La contrasenya introduïda no és correcte."
+msgstr "La contrasenya introduïda no és correcta."
 
 #: ../gio/gunixconnection.c:166 ../gio/gunixconnection.c:563
 #, c-format
@@ -4416,7 +4416,7 @@ msgstr "%d/%m/%y"
 #: ../glib/gdatetime.c:208
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr "%H:%M:%S"
+msgstr "%-H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:211
@@ -4641,7 +4641,7 @@ msgstr[1] "No s'han pogut assignar %lu bytes per llegir el fitxer «%s»"
 #: ../glib/gfileutils.c:733
 #, c-format
 msgid "Error reading file “%s”: %s"
-msgstr "S'ha produït un error en llegir el fitxer %s: %s"
+msgstr "S'ha produït un error en llegir el fitxer «%s»: %s"
 
 #: ../glib/gfileutils.c:769
 #, c-format
