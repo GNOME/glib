@@ -657,8 +657,14 @@ name_callback (GObject      *object,
 /* test_asynchronous_cancellation: cancelled tasks are returned
  * asynchronously, i.e. not from inside the GCancellable::cancelled
  * handler.
+ *
+ * The test is set up further below in test_asynchronous_cancellation.
  */
 
+/* asynchronous_cancellation_callback represents the callback that the
+ * caller of a typical asynchronous API would have passed. See
+ * test_asynchronous_cancellation.
+ */
 static void
 asynchronous_cancellation_callback (GObject      *object,
                                     GAsyncResult *result,
@@ -685,6 +691,10 @@ asynchronous_cancellation_callback (GObject      *object,
   g_main_loop_quit (loop);
 }
 
+/* asynchronous_cancellation_cancel_task represents a user cancelling
+ * the ongoing operation. To make it somewhat realistic it is delayed
+ * by 50ms via a timeout GSource. See test_asynchronous_cancellation.
+ */
 static gboolean
 asynchronous_cancellation_cancel_task (gpointer user_data)
 {
@@ -700,6 +710,10 @@ asynchronous_cancellation_cancel_task (gpointer user_data)
   return G_SOURCE_REMOVE;
 }
 
+/* asynchronous_cancellation_cancelled is the GCancellable::cancelled
+ * handler that's used by the asynchronous implementation for
+ * cancelling itself.
+ */
 static void
 asynchronous_cancellation_cancelled (GCancellable *cancellable,
                                      gpointer      user_data)
@@ -719,6 +733,11 @@ asynchronous_cancellation_cancelled (GCancellable *cancellable,
   g_assert_false (g_task_get_completed (task));
 }
 
+/* asynchronous_cancellation_run_task represents the actual
+ * asynchronous work being done in an idle GSource as was mentioned
+ * above. This is effectively meant to be an infinite loop so that
+ * the only way to break out of it is via cancellation.
+ */
 static gboolean
 asynchronous_cancellation_run_task (gpointer user_data)
 {
@@ -733,7 +752,14 @@ asynchronous_cancellation_run_task (gpointer user_data)
 }
 
 /* Test that cancellation is always asynchronous. The completion callback for
- * a #GTask must not be called from inside the cancellation handler. */
+ * a #GTask must not be called from inside the cancellation handler.
+ *
+ * The body of the loop inside test_asynchronous_cancellation
+ * represents what would have been a typical asynchronous API call,
+ * and its implementation. They are fused together without an API
+ * boundary. The actual work done by this asynchronous API is
+ * represented by an idle GSource.
+ */
 static void
 test_asynchronous_cancellation (void)
 {
