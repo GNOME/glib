@@ -648,7 +648,7 @@ test_happy_eyeballs_slow_ipv4 (HappyEyeballsFixture *fixture,
 {
   AsyncData data = { 0 };
 
-  /* If ipv4 dns response is a bit slow we just don't get them */
+  /* If ipv4 dns response is a bit slow we still get everything */
 
   data.loop = fixture->loop;
   mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, FAST_DELAY_LESS_THAN_TIMEOUT);
@@ -656,7 +656,7 @@ test_happy_eyeballs_slow_ipv4 (HappyEyeballsFixture *fixture,
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
 
-  assert_list_matches_expected (data.addrs, fixture->input_ipv6_results);
+  assert_list_matches_expected (data.addrs, fixture->input_all_results);
 }
 
 static void
@@ -682,7 +682,7 @@ test_happy_eyeballs_very_slow_ipv6 (HappyEyeballsFixture *fixture,
 {
   AsyncData data = { 0 };
 
-  /* If ipv6 is very slow we don't get them */
+  /* If ipv6 is very slow we still get everything */
 
   data.loop = fixture->loop;
   mock_resolver_set_ipv6_delay_ms (fixture->mock_resolver, SLOW_DELAY_MORE_THAN_TIMEOUT);
@@ -690,7 +690,7 @@ test_happy_eyeballs_very_slow_ipv6 (HappyEyeballsFixture *fixture,
   g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
   g_main_loop_run (fixture->loop);
 
-  assert_list_matches_expected (data.addrs, fixture->input_ipv4_results);
+  assert_list_matches_expected (data.addrs, fixture->input_all_results);
 }
 
 static void
