@@ -428,6 +428,7 @@ if installed_tests_enabled
     'appinfo-test-static.desktop',
     'file.c',
     'org.gtk.test.dbusappinfo.desktop',
+    'test1.overlay',
     install_dir : installed_tests_execdir,
   )
   install_subdir('x-content', install_dir : installed_tests_execdir)
