@@ -1363,9 +1363,10 @@ test_env (void)
   GPtrArray *args;
   GInputStream *stdout_stream;
   gchar *result;
-  gchar *envp[] = { "ONE=1", "TWO=1", "THREE=3", "FOUR=1", NULL };
+  gchar *envp[] = { NULL, "ONE=1", "TWO=1", "THREE=3", "FOUR=1", NULL };
   gchar **split;
 
+  envp[0] = g_strdup_printf ("PATH=%s", g_getenv ("PATH"));
   args = get_test_subprocess_args ("env", NULL);
   launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
   g_subprocess_launcher_set_flags (launcher, G_SUBPROCESS_FLAGS_STDOUT_PIPE);
@@ -1379,6 +1380,7 @@ test_env (void)
   proc = g_subprocess_launcher_spawn (launcher, error, args->pdata[0], "env", NULL);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
+  g_free (envp[0]);
 
   stdout_stream = g_subprocess_get_stdout_pipe (proc);
 
