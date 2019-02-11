@@ -1025,7 +1025,10 @@ g_socket_listener_close (GSocketListener *listener)
  * ignore.
  *
  * Listens for TCP connections on any available port number for both
- * IPv6 and IPv4 (if each is available).
+ * IPv6 and IPv4 (if each is available). If possible, the #GSocketListener will
+ * listen on both IPv4 and IPv6 (listening on the same port on both). If
+ * listening on one of the socket families fails, the #GSocketListener will only
+ * listen on the other. If listening on both fails, an error will be returned.
  *
  * This is useful if you need to have a socket for incoming connections
  * but don't care about the specific port number.
