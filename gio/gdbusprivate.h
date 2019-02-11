@@ -109,6 +109,9 @@ gchar *_g_dbus_hexdump (const gchar *data, gsize len, guint indent);
 
 #ifdef G_OS_WIN32
 gchar *_g_dbus_win32_get_user_sid (void);
+
+void _g_dbus_win32_run_session_bus (void);
+gchar *_g_dbus_win32_get_session_address_dbus_launch (GError **error);
 #endif
 
 gchar *_g_dbus_get_machine_id (GError **error);
