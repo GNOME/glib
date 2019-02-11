@@ -1608,7 +1608,7 @@ test_get_available (gconstpointer user_data)
       g_assert_no_error (err);
     }
 
-  addr = g_inet_address_new_any (G_SOCKET_FAMILY_IPV4);
+  addr = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
   saddr = g_inet_socket_address_new (addr, 0);
 
   g_socket_bind (listener, saddr, TRUE, &err);
@@ -1801,7 +1801,7 @@ test_read_write (gconstpointer user_data)
   g_assert_no_error (err);
   g_assert (G_IS_SOCKET (client));
 
-  addr = g_inet_address_new_any (G_SOCKET_FAMILY_IPV4);
+  addr = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
   saddr = g_inet_socket_address_new (addr, 0);
 
   g_socket_bind (listener, saddr, TRUE, &err);
