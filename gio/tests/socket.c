@@ -757,7 +757,12 @@ test_ip_sync_dgram (GSocketFamily family)
     m[1].address = NULL;
     m[2].address = NULL;
     len = g_socket_send_messages (client, m, G_N_ELEMENTS (m), 0, NULL, &error);
+    /* This error code may vary between platforms and over time; it is not guaranteed API: */
+#ifndef G_OS_WIN32
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+#else
+    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_CONNECTED);
+#endif
     g_clear_error (&error);
     g_assert_cmpint (len, ==, -1);
 
