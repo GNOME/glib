@@ -1097,20 +1097,54 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
   return g_object_ref (sockaddr);
 }
 
+/*
+ * Each enumeration lazily initializes the internal address list from the
+ * master list. It does this since addresses come in asynchronously and
+ * they need to be resorted into the list already in use.
+ */
+static GSocketAddress *
+init_and_query_next_address (GNetworkAddressAddressEnumerator *addr_enum)
+{
+  GNetworkAddress *addr = addr_enum->addr;
+  GSocketAddress *sockaddr;
+
+  if (addr_enum->addresses == NULL)
+    {
+      addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr->priv->sockaddrs);
+      addr_enum->last_tail = g_list_last (addr_enum->addr->priv->sockaddrs);
+      if (addr_enum->current_item)
+        sockaddr = g_object_ref (addr_enum->current_item->data);
+      else
+        sockaddr = NULL;
+    }
+  else
+    {
+      GList *parent_tail = g_list_last (addr_enum->addr->priv->sockaddrs);
+
+      if (addr_enum->last_tail != parent_tail)
+        {
+          addr_enum->current_item = list_concat_interleaved (addr_enum->current_item, g_list_next (addr_enum->last_tail));
+          addr_enum->last_tail = parent_tail;
+        }
+
+      if (addr_enum->current_item->next)
+        {
+          addr_enum->current_item = g_list_next (addr_enum->current_item);
+          sockaddr = g_object_ref (addr_enum->current_item->data);
+        }
+      else
+        sockaddr = NULL;
+    }
+
+  return sockaddr;
+}
+
 static void
 complete_queued_task (GNetworkAddressAddressEnumerator *addr_enum,
                       GTask                            *task,
                       GError                           *error)
 {
-  GSocketAddress *sockaddr;
-
-  addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr_enum->addr->priv->sockaddrs);
-  addr_enum->last_tail = g_list_last (addr_enum->addr->priv->sockaddrs);
-
-  if (addr_enum->current_item)
-    sockaddr = g_object_ref (addr_enum->current_item->data);
-  else
-    sockaddr = NULL;
+  GSocketAddress *sockaddr = init_and_query_next_address (addr_enum);
 
   if (error)
     g_task_return_error (task, error);
@@ -1262,7 +1296,6 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
     G_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (enumerator);
   GSocketAddress *sockaddr;
   GTask *task;
-  GNetworkAddress *addr = addr_enum->addr;
 
   task = g_task_new (addr_enum, cancellable, callback, user_data);
   g_task_set_source_tag (task, g_network_address_address_enumerator_next_async);
@@ -1311,32 +1344,7 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
       g_object_unref (resolver);
     }
 
-  if (addr_enum->addresses == NULL)
-    {
-      g_assert (addr->priv->sockaddrs);
-
-      addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr->priv->sockaddrs);
-      sockaddr = g_object_ref (addr_enum->current_item->data);
-    }
-  else
-    {
-      GList *parent_tail = g_list_last (addr_enum->addr->priv->sockaddrs);
-
-      if (addr_enum->last_tail != parent_tail)
-        {
-          addr_enum->current_item = list_concat_interleaved (addr_enum->current_item, g_list_next (addr_enum->last_tail));
-          addr_enum->last_tail = parent_tail;
-        }
-
-      if (addr_enum->current_item->next)
-        {
-          addr_enum->current_item = g_list_next (addr_enum->current_item);
-          sockaddr = g_object_ref (addr_enum->current_item->data);
-        }
-      else
-        sockaddr = NULL;
-    }
-
+  sockaddr = init_and_query_next_address (addr_enum);
   g_task_return_pointer (task, sockaddr, g_object_unref);
   g_object_unref (task);
 }
