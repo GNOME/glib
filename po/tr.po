@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-02-10 14:36+0000\n"
-"PO-Revision-Date: 2019-02-12 17:19+0300\n"
+"POT-Creation-Date: 2019-02-12 14:21+0000\n"
+"PO-Revision-Date: 2019-02-12 17:25+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -1466,7 +1466,7 @@ msgstr "HTTP vekil sunucu bağlantısı başarısız: %i"
 
 #: gio/ghttpproxy.c:269
 msgid "HTTP proxy server closed connection unexpectedly."
-msgstr "HTTP vekil sunucusu bağlantıyı beklenmedik şekilde kesti."
+msgstr "HTTP vekil sunucusu bağlantıyı beklenmedik biçimde kesti."
 
 #: gio/gicon.c:298
 #, c-format
@@ -3466,7 +3466,7 @@ msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
 msgstr ""
-"Yinelemeli bir şekilde anahtar ve değerleri listele\n"
+"Özyinelemeli biçimde anahtar ve değerleri listele\n"
 "Eğer hiçbir ŞEMA verilmediyse, tüm anahtarları listele\n"
 
 #: gio/gsettings-tool.c:607
@@ -3941,7 +3941,7 @@ msgstr "“%s” tersine çözülürken hata: %s"
 #: gio/gthreadedresolver.c:830 gio/gthreadedresolver.c:880
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
-msgstr "“%s” için talep edilen türün DNS kaydı yok"
+msgstr "“%s” için istenen türün DNS kaydı yok"
 
 #: gio/gthreadedresolver.c:658 gio/gthreadedresolver.c:835
 #, c-format
@@ -5051,8 +5051,8 @@ msgstr "Belge boş veya yalnızca boşluk karakteri içeriyor"
 #: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr ""
-"Belge, açık açı parantezi “<” işaretinden hemen sonra beklenmedik bir "
-"şekilde bitti"
+"Belge, açık açı parantezi “<” işaretinden hemen sonra beklenmedik biçimde "
+"sonlandı"
 
 #: glib/gmarkup.c:1807 glib/gmarkup.c:1852
 #, c-format
@@ -5060,7 +5060,7 @@ msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
 "element opened"
 msgstr ""
-"Belge, ögeleri hala açıkken beklenmedik bir şekilde bitti - son açılan öge: "
+"Belge, ögeleri hala açıkken beklenmedik biçimde sonlandı - son açılan öge: "
 "“%s”"
 
 #: glib/gmarkup.c:1815
@@ -5069,50 +5069,50 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Belge beklenmedik bir şekilde bitti, etiketi bitiren kapalı açı parantezi "
-"ile biten <%s/> beklendi"
+"Belge beklenmedik biçimde sonlandı, etiketi bitiren kapalı açı parantezi ile "
+"biten <%s/> beklendi"
 
 #: glib/gmarkup.c:1821
 msgid "Document ended unexpectedly inside an element name"
-msgstr "Belge bir öge adının içinde beklenmedik bir şekilde bitti"
+msgstr "Belge bir öge adının içinde beklenmedik biçimde sonlandı"
 
 #: glib/gmarkup.c:1827
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Belge bir öznitelik adı içinde beklenmedik bir şekilde bitti"
+msgstr "Belge bir öznitelik adı içinde beklenmedik biçimde sonlandı"
 
 #: glib/gmarkup.c:1832
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Belge bir öge-açma etiketi içinde beklenmedik bir şekilde bitti."
+msgstr "Belge bir öge-açma etiketi içinde beklenmedik biçimde sonlandı."
 
 #: glib/gmarkup.c:1838
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Belge öznitelik adını takip eden eşittir işaretinden sonra beklenmedik bir "
-"şekilde bitti; öznitelik değeri yok"
+"Belge öznitelik adını takip eden eşittir işaretinden sonra beklenmedik "
+"biçimde sonlandı; öznitelik değeri yok"
 
 #: glib/gmarkup.c:1845
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Belge bir öznitelik değeri içinde iken beklenmedik bir şekilde bitti"
+msgstr "Belge bir öznitelik değeri içinde iken beklenmedik biçimde sonlandı"
 
 #: glib/gmarkup.c:1862
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr ""
-"Belge, “%s” ögesinin kapatma etiketi içinde beklenmedik bir şekilde bitti"
+"Belge, “%s” ögesinin kapatma etiketi içinde beklenmedik biçimde sonlandı"
 
 #: glib/gmarkup.c:1866
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
 msgstr ""
-"Belge, açık olmayan bir öge için kapatma etiketi içinde beklenmedik bir "
-"şekilde bitti"
+"Belge, açık olmayan bir öge için kapatma etiketi içinde beklenmedik biçimde "
+"sonlandı"
 
 #: glib/gmarkup.c:1872
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
-"Belge bir yorum veya işlem talimatı içindeyken beklenmedik bir şekilde bitti"
+"Belge bir yorum veya işlem talimatı içindeyken beklenmedik biçimde sonlandı"
 
 #: glib/goption.c:861
 msgid "[OPTION…]"
