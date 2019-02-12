@@ -1893,6 +1893,9 @@ endif
 have_bash = find_program('bash', required : false).found() # For completion scripts
 have_sh = find_program('sh', required : false).found() # For glib-gettextize
 
+# Some installed tests require a custom environment
+env_program = find_program('env', required: installed_tests_enabled)
+
 # FIXME: How to detect Solaris? https://github.com/mesonbuild/meson/issues/1578
 if host_system == 'sunos'
   glib_conf.set('_XOPEN_SOURCE_EXTENDED', 1)
