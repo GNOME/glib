@@ -1,4 +1,4 @@
 [Test]
 Type=session
-Exec=@installed_tests_dir@/@program@ --tap
+Exec=@env@@installed_tests_dir@/@program@ --tap
 Output=TAP

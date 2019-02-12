@@ -36,6 +36,7 @@ foreach test_name, extra_args : refcount_tests
     test_conf = configuration_data()
     test_conf.set('installed_tests_dir', installed_tests_execdir)
     test_conf.set('program', test_name)
+    test_conf.set('env', '')
     configure_file(
       input: installed_tests_template,
       output: test_name + '.test',
