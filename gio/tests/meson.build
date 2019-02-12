@@ -140,10 +140,15 @@ if host_machine.system() != 'windows'
           'slow-connect-preload.c',
           name_prefix : '',
           dependencies: cc.find_library('dl'),
+          install_dir : installed_tests_execdir,
+          install: installed_tests_enabled,
         )
       ],
       'env' : {
         'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(meson.current_build_dir())
+      },
+      'installed_tests_env' : {
+        'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(installed_tests_execdir),
       },
       'suite': ['flaky'],
     },
