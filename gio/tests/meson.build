@@ -124,7 +124,8 @@ if host_machine.system() != 'windows'
     'file' : {},
     'gdbus-peer' : {
       'dependencies' : [libgdbus_example_objectmanager_dep],
-      'install_rpath' : installed_tests_execdir
+      'install_rpath' : installed_tests_execdir,
+      'suite': ['flaky'],
     },
     'gdbus-peer-object-manager' : {},
     'live-g-file' : {},
