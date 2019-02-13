@@ -151,7 +151,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * When debugging a program or testing a change to an installed version, it is often useful to be able to
  * replace resources in the program or library, without recompiling, for debugging or quick hacking and testing
  * purposes. Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment variable to selectively overlay
- * resources with replacements from the filesystem.  It is a colon-separated list of substitutions to perform
+ * resources with replacements from the filesystem.  It is a %G_SEARCHPATH_SEPARATOR-separated list of substitutions to perform
  * during resource lookups.
  *
  * A substitution has the form
@@ -332,7 +332,7 @@ g_resource_find_overlay (const gchar    *path,
           gchar **parts;
           gint i, j;
 
-          parts = g_strsplit (envvar, ":", 0);
+          parts = g_strsplit (envvar, G_SEARCHPATH_SEPARATOR_S, 0);
 
           /* Sanity check the parts, dropping those that are invalid.
            * 'i' may grow faster than 'j'.
@@ -378,9 +378,9 @@ g_resource_find_overlay (const gchar    *path,
                   continue;
                 }
 
-              if (eq[1] != '/')
+              if (!g_path_is_absolute (eq + 1))
                 {
-                  g_critical ("G_RESOURCE_OVERLAYS segment '%s' lacks leading '/' after '='.  Ignoring", part);
+                  g_critical ("G_RESOURCE_OVERLAYS segment '%s' does not have an absolute path after '='.  Ignoring", part);
                   g_free (part);
                   continue;
                 }
