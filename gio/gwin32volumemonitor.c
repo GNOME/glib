@@ -127,7 +127,8 @@ get_mounts (GVolumeMonitor *volume_monitor)
       drives >>= 1;
       drive[0]++;
     }
-  return list;
+
+  return g_list_reverse (list);
 }
 
 /* actually 'mounting' volumes is out of GIOs business on win32, so no volumes are delivered either */
