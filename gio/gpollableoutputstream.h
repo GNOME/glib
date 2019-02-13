@@ -35,7 +35,7 @@ G_BEGIN_DECLS
 /**
  * GPollableOutputStream:
  *
- * An interface for a #GOutputStream that can be polled for readability.
+ * An interface for a #GOutputStream that can be polled for writeability.
  *
  * Since: 2.28
  */
