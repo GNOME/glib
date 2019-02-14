@@ -661,10 +661,10 @@ g_buffered_input_stream_real_fill (GBufferedInputStream  *stream,
   in_buffer = priv->end - priv->pos;
 
   /* Never fill more than can fit in the buffer */
-  count = MIN (count, priv->len - in_buffer);
+  count = MIN (count, (gssize) (priv->len - in_buffer));
 
   /* If requested length does not fit at end, compact */
-  if (priv->len - priv->end < count)
+  if ((gssize) (priv->len - priv->end) < count)
     compact_buffer (stream);
 
   base_stream = G_FILTER_INPUT_STREAM (stream)->base_stream;
@@ -896,7 +896,7 @@ g_buffered_input_stream_seek (GSeekable     *seekable,
   
   if (type == G_SEEK_CUR)
     {
-      if (offset <= priv->end - priv->pos && offset >= -priv->pos)
+      if (offset <= (goffset) (priv->end - priv->pos) && offset >= (goffset) -priv->pos)
 	{
 	  priv->pos += offset;
 	  return TRUE;
@@ -1072,10 +1072,10 @@ g_buffered_input_stream_real_fill_async (GBufferedInputStream *stream,
   in_buffer = priv->end - priv->pos;
 
   /* Never fill more than can fit in the buffer */
-  count = MIN (count, priv->len - in_buffer);
+  count = MIN (count, (gssize) (priv->len - in_buffer));
 
   /* If requested length does not fit at end, compact */
-  if (priv->len - priv->end < count)
+  if ((gssize) (priv->len - priv->end) < count)
     compact_buffer (stream);
 
   task = g_task_new (stream, cancellable, callback, user_data);
@@ -1158,7 +1158,7 @@ skip_fill_buffer_callback (GObject      *source_object,
   SkipAsyncData *data;
   GError *error;
   gssize nread;
-  gsize available;
+  gssize available;
 
   bstream = G_BUFFERED_INPUT_STREAM (source_object);
   priv = bstream->priv;
