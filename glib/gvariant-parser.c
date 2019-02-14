@@ -1923,7 +1923,8 @@ number_get_value (AST                 *ast,
         return number_overflow (ast, type, error);
       if (negative && abs_val > G_MAXINT16)
         return g_variant_new_int16 (G_MININT16);
-      return g_variant_new_int16 (negative ? -((gint16) abs_val) : abs_val);
+      return g_variant_new_int16 (negative ?
+                                  -((gint16) abs_val) : ((gint16) abs_val));
 
     case 'q':
       if (negative || abs_val > G_MAXUINT16)
@@ -1935,7 +1936,8 @@ number_get_value (AST                 *ast,
         return number_overflow (ast, type, error);
       if (negative && abs_val > G_MAXINT32)
         return g_variant_new_int32 (G_MININT32);
-      return g_variant_new_int32 (negative ? -((gint32) abs_val) : abs_val);
+      return g_variant_new_int32 (negative ?
+                                  -((gint32) abs_val) : ((gint32) abs_val));
 
     case 'u':
       if (negative || abs_val > G_MAXUINT32)
@@ -1947,7 +1949,8 @@ number_get_value (AST                 *ast,
         return number_overflow (ast, type, error);
       if (negative && abs_val > G_MAXINT64)
         return g_variant_new_int64 (G_MININT64);
-      return g_variant_new_int64 (negative ? -((gint64) abs_val) : abs_val);
+      return g_variant_new_int64 (negative ?
+                                  -((gint64) abs_val) : ((gint64) abs_val));
 
     case 't':
       if (negative)
@@ -1959,7 +1962,8 @@ number_get_value (AST                 *ast,
         return number_overflow (ast, type, error);
       if (negative && abs_val > G_MAXINT32)
         return g_variant_new_handle (G_MININT32);
-      return g_variant_new_handle (negative ? -((gint32) abs_val) : abs_val);
+      return g_variant_new_handle (negative ?
+                                   -((gint32) abs_val) : ((gint32) abs_val));
 
     default:
       return ast_type_error (ast, type, error);
@@ -2790,7 +2794,7 @@ g_variant_parse_error_print_context (GError      *error,
       if (!parse_num (error->message, colon, &point))
         goto out;
 
-      if (point >= strlen (source_str))
+      if (point >= ((gint) strlen (source_str)))
         /* the error is at the end of the input */
         add_last_line (err, source_str);
       else
