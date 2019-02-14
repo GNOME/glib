@@ -37,7 +37,7 @@ main (int argc, char *argv[])
 {
   pid_t pid = getpid ();
   char buf[50];
-  int r;
+  size_t r;
 
   if (argc < 2)
     return -1;
