@@ -376,15 +376,6 @@ typedef struct _GSourceIter
 #define SOURCE_DESTROYED(source) (((source)->flags & G_HOOK_FLAG_ACTIVE) == 0)
 #define SOURCE_BLOCKED(source) (((source)->flags & G_SOURCE_BLOCKED) != 0)
 
-#define SOURCE_UNREF(source, context)                       \
-   G_STMT_START {                                           \
-    if ((source)->ref_count > 1)                            \
-      (source)->ref_count--;                                \
-    else                                                    \
-      g_source_unref_internal ((source), (context), TRUE);  \
-   } G_STMT_END
-
-
 /* Forward declarations */
 
 static void g_source_unref_internal             (GSource      *source,
@@ -981,10 +972,10 @@ g_source_iter_next (GSourceIter *iter, GSource **source)
    */
 
   if (iter->source && iter->may_modify)
-    SOURCE_UNREF (iter->source, iter->context);
+    g_source_unref_internal (iter->source, iter->context, TRUE);
   iter->source = next_source;
   if (iter->source && iter->may_modify)
-    iter->source->ref_count++;
+    g_source_ref (iter->source);
 
   *source = iter->source;
   return *source != NULL;
@@ -998,7 +989,7 @@ g_source_iter_clear (GSourceIter *iter)
 {
   if (iter->source && iter->may_modify)
     {
-      SOURCE_UNREF (iter->source, iter->context);
+      g_source_unref_internal (iter->source, iter->context, TRUE);
       iter->source = NULL;
     }
 }
@@ -1139,7 +1130,7 @@ g_source_attach_unlocked (GSource      *source,
 
   source->context = context;
   source->source_id = id;
-  source->ref_count++;
+  g_source_ref (source);
 
   g_hash_table_insert (context->sources, GUINT_TO_POINTER (id), source);
 
@@ -1695,7 +1686,7 @@ g_source_set_funcs (GSource     *source,
 {
   g_return_if_fail (source != NULL);
   g_return_if_fail (source->context == NULL);
-  g_return_if_fail (source->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (funcs != NULL);
 
   source->source_funcs = funcs;
@@ -2070,19 +2061,9 @@ g_source_set_name_by_id (guint           tag,
 GSource *
 g_source_ref (GSource *source)
 {
-  GMainContext *context;
-  
   g_return_val_if_fail (source != NULL, NULL);
 
-  context = source->context;
-
-  if (context)
-    LOCK_CONTEXT (context);
-
-  source->ref_count++;
-
-  if (context)
-    UNLOCK_CONTEXT (context);
+  g_atomic_int_inc (&source->ref_count);
 
   return source;
 }
@@ -2098,12 +2079,11 @@ g_source_unref_internal (GSource      *source,
   GSourceCallbackFuncs *old_cb_funcs = NULL;
 
   g_return_if_fail (source != NULL);
-  
+
   if (!have_lock && context)
     LOCK_CONTEXT (context);
 
-  source->ref_count--;
-  if (source->ref_count == 0)
+  if (g_atomic_int_dec_and_test (&source->ref_count))
     {
       TRACE (GLIB_SOURCE_BEFORE_FREE (source, context,
                                       source->source_funcs->finalize));
@@ -2127,20 +2107,20 @@ g_source_unref_internal (GSource      *source,
 	{
           /* Temporarily increase the ref count again so that GSource methods
            * can be called from finalize(). */
-          source->ref_count++;
+          g_atomic_int_inc (&source->ref_count);
 	  if (context)
 	    UNLOCK_CONTEXT (context);
 	  source->source_funcs->finalize (source);
 	  if (context)
 	    LOCK_CONTEXT (context);
-          source->ref_count--;
+          g_atomic_int_add (&source->ref_count, -1);
 	}
 
       if (old_cb_funcs)
         {
           /* Temporarily increase the ref count again so that GSource methods
            * can be called from callback_funcs.unref(). */
-          source->ref_count++;
+          g_atomic_int_inc (&source->ref_count);
           if (context)
             UNLOCK_CONTEXT (context);
 
@@ -2148,7 +2128,7 @@ g_source_unref_internal (GSource      *source,
 
           if (context)
             LOCK_CONTEXT (context);
-          source->ref_count--;
+          g_atomic_int_add (&source->ref_count, -1);
         }
 
       g_free (source->name);
@@ -3218,7 +3198,7 @@ g_main_dispatch (GMainContext *context)
 	    }
 	}
       
-      SOURCE_UNREF (source, context);
+      g_source_unref_internal (source, context, TRUE);
     }
 
   g_ptr_array_set_size (context->pending_dispatches, 0);
@@ -3469,7 +3449,7 @@ g_main_context_prepare (GMainContext *context,
   for (i = 0; i < context->pending_dispatches->len; i++)
     {
       if (context->pending_dispatches->pdata[i])
-	SOURCE_UNREF ((GSource *)context->pending_dispatches->pdata[i], context);
+        g_source_unref_internal ((GSource *)context->pending_dispatches->pdata[i], context, TRUE);
     }
   g_ptr_array_set_size (context->pending_dispatches, 0);
   
@@ -3817,7 +3797,7 @@ g_main_context_check (GMainContext *context,
 
       if (source->flags & G_SOURCE_READY)
 	{
-	  source->ref_count++;
+          g_source_ref (source);
 	  g_ptr_array_add (context->pending_dispatches, source);
 
 	  n_ready++;
