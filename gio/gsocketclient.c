@@ -1567,7 +1567,7 @@ g_socket_client_connected_callback (GObject      *source,
   GProxy *proxy;
   const gchar *protocol;
 
-  if (g_cancellable_is_cancelled (attempt->cancellable) || task_completed_or_cancelled (data->task))
+  if (task_completed_or_cancelled (data->task) || g_cancellable_is_cancelled (attempt->cancellable))
     {
       g_object_unref (data->task);
       connection_attempt_unref (attempt);
