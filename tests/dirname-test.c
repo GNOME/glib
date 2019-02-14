@@ -53,7 +53,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  gint i;
+  gsize i;
   struct {
     gchar *filename;
     gchar *dirname;
