@@ -754,3 +754,19 @@ g_propagate_prefixed_error (GError      **dest,
       va_end (ap);
     }
 }
+
+/**
+ * g_error_is_ready:
+ * @param: a #GError instance to check
+ *
+ * This is a convenient method to check the status of the @err.
+ *
+ * Returns: %TRUE if the @err is ready to be used, %FALSE otherwise.
+ *
+ * Since: 2.59
+ */
+gboolean
+g_error_is_ready (GError **err)
+{
+  return (err == NULL || *err == NULL) ? TRUE : FALSE;
+}

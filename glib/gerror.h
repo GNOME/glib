@@ -112,6 +112,10 @@ void     g_propagate_prefixed_error   (GError       **dest,
                                        const gchar   *format,
                                        ...) G_GNUC_PRINTF (3, 4);
 
+/* g_error_is_ready: check for error status */
+GLIB_AVAILABLE_IN_ALL
+gboolean g_error_is_ready             (GError **err);
+
 G_END_DECLS
 
 #endif /* __G_ERROR_H__ */
