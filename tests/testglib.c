@@ -78,7 +78,7 @@ static void
 glist_test (void)
 {
   GList *list = NULL;
-  guint i;
+  gint i;
 
   for (i = 0; i < 10; i++)
     list = g_list_append (list, &test_nums[i]);
@@ -158,7 +158,7 @@ static void
 gslist_test (void)
 {
   GSList *slist = NULL;
-  guint i;
+  gint i;
 
   for (i = 0; i < 10; i++)
     slist = g_slist_append (slist, &test_nums[i]);
@@ -299,11 +299,11 @@ gnode_test (void)
   for (i = 0; i < g_node_n_children (node_B); i++)
     {
       node = g_node_nth_child (node_B, i);
-      g_assert (P2C (node->data) == ('C' + i));
+      g_assert (P2C (node->data) == ('C' + (gint) i));
     }
   
   for (i = 0; i < g_node_n_children (node_G); i++)
-    g_assert (g_node_child_position (node_G, g_node_nth_child (node_G, i)) == i);
+    g_assert (g_node_child_position (node_G, g_node_nth_child (node_G, i)) == (gint) i);
 
   /* we have built:                    A
    *                                 /   \
@@ -1094,7 +1094,7 @@ test_arrays (void)
   GByteArray *gbarray;
   GPtrArray *gparray;
   GArray *garray;
-  guint i;
+  gint i;
 
   gparray = g_ptr_array_new ();
   for (i = 0; i < 10000; i++)
