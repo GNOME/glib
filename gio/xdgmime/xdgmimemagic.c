@@ -316,7 +316,7 @@ _xdg_mime_magic_parse_magic_line (FILE              *magic_file,
   int c;
   int end_of_file;
   int indent = 0;
-  int bytes_read;
+  size_t bytes_read;
 
   assert (magic_file != NULL);
 
@@ -460,8 +460,9 @@ _xdg_mime_magic_parse_magic_line (FILE              *magic_file,
 	{
 	  _xdg_mime_magic_matchlet_free (matchlet);
 	  return XDG_MIME_MAGIC_EOF;
-	}
-      if (matchlet->range_length == -1)
+        }
+      /* FIXME: Is this test really needed ? */
+      if (matchlet->range_length == (unsigned int) -1)
 	{
 	  _xdg_mime_magic_matchlet_free (matchlet);
 	  return XDG_MIME_MAGIC_ERROR;
@@ -476,7 +477,7 @@ _xdg_mime_magic_parse_magic_line (FILE              *magic_file,
       if (matchlet->word_size > 1)
 	{
 #if LITTLE_ENDIAN
-	  int i;
+	  size_t i;
 #endif
 	  if (matchlet->value_length % matchlet->word_size != 0)
 	    {
@@ -522,7 +523,7 @@ _xdg_mime_magic_matchlet_compare_to_data (XdgMimeMagicMatchlet *matchlet,
 					  const void           *data,
 					  size_t                len)
 {
-  int i, j;
+  size_t i, j;
   for (i = matchlet->offset; i < matchlet->offset + matchlet->range_length; i++)
     {
       int valid_matchlet = TRUE;
