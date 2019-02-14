@@ -809,11 +809,11 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
  out:
   g_mutex_unlock (&worker->read_lock);
 
-  /* gives up the reference acquired when calling g_input_stream_read_async() */
-  _g_dbus_worker_unref (worker);
-
   /* check if there is any pending close */
   schedule_pending_close (worker);
+
+  /* gives up the reference acquired when calling g_input_stream_read_async() */
+  _g_dbus_worker_unref (worker);
 }
 
 /* called in private thread shared by all GDBusConnection instances (with read-lock held) */
