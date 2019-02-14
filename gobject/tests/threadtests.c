@@ -154,8 +154,8 @@ G_DEFINE_TYPE (PropTester, prop_tester, G_TYPE_OBJECT)
 static void
 prop_tester_init (PropTester* t)
 {
-  if (t->name == NULL)
-    ; /* neds unit test framework initialization: g_test_bug ("race initializing properties"); */
+  if (t->name == NULL) {};
+  /* neds unit test framework initialization: g_test_bug ("race initializing properties"); */
 }
 static void
 prop_tester_set_property (GObject        *object,
