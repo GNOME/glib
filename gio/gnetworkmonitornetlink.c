@@ -267,7 +267,7 @@ remove_network (GNetworkMonitorNetlink *nl,
   if (nl->priv->dump_networks)
     {
       GInetAddressMask **dump_networks = (GInetAddressMask **)nl->priv->dump_networks->pdata;
-      int i;
+      guint i;
 
       for (i = 0; i < nl->priv->dump_networks->len; i++)
         {
