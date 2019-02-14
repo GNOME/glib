@@ -259,7 +259,7 @@ stress_concurrent_initializers (void *user_data)
     LIST_256_TEST_INITIALIZERS (stress3),
     LIST_256_TEST_INITIALIZERS (stress4),
   };
-  int i;
+  gsize i;
   /* sync to main thread */
   g_mutex_lock (&tmutex);
   g_mutex_unlock (&tmutex);
