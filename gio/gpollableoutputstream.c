@@ -223,44 +223,72 @@ g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *str
 
   for (i = 0; i < n_vectors; i++)
     {
-      gssize res;
+      gsize vector_bytes_written;
+      GPollableReturn res;
 
       /* Would we overflow here? In that case simply return and let the caller
        * handle this like a short write */
       if (_bytes_written > G_MAXSIZE - vectors[i].size)
         break;
 
-      res = iface->write_nonblocking (stream, vectors[i].buffer, vectors[i].size, &err);
-      if (res == -1)
+      /* If the implementor provided write_nonblocking_pollable,
+       * use that, or fallback to write_nonblocking instead.*/
+      if (iface->write_nonblocking_pollable != NULL)
+        res = iface->write_nonblocking_pollable (stream,
+                                                 vectors[i].buffer,
+                                                 vectors[i].size,
+                                                 &vector_bytes_written,
+                                                 &err);
+      else
         {
-          if (bytes_written)
-            *bytes_written = _bytes_written;
+          gssize _res;
 
-          /* If something was written already we handle this like a short
-           * write and assume that the next call would either give the same
-           * error again or successfully finish writing without errors or data
-           * loss
-           */
-          if (_bytes_written > 0)
+          _res = iface->write_nonblocking (stream, vectors[i].buffer, vectors[i].size, &err);
+          if (_res == -1)
             {
-              g_clear_error (&err);
-              return G_POLLABLE_RETURN_OK;
-            }
-          else if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
-            {
-              g_clear_error (&err);
-              return G_POLLABLE_RETURN_WOULD_BLOCK;
+              if (g_error_matches (err, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
+                {
+                  g_clear_error (&err);
+                  res = G_POLLABLE_RETURN_WOULD_BLOCK;
+                }
+              else
+                res = G_POLLABLE_RETURN_FAILED;
             }
           else
             {
-              g_propagate_error (error, err);
-              return G_POLLABLE_RETURN_FAILED;
+              res = G_POLLABLE_RETURN_OK;
+              vector_bytes_written = (gsize) _res;
             }
         }
 
-      _bytes_written += res;
+      if (res != G_POLLABLE_RETURN_OK)
+      {
+        if (bytes_written)
+          *bytes_written = _bytes_written;
+
+        /* If something was written already we handle this like a short
+         * write and assume that the next call would either give the same
+         * error again or successfully finish writing without errors or data
+         * loss
+         */
+        if (_bytes_written > 0)
+          {
+            g_clear_error (&err);
+            return G_POLLABLE_RETURN_OK;
+          }
+        else if (res == G_POLLABLE_RETURN_WOULD_BLOCK)
+          return G_POLLABLE_RETURN_WOULD_BLOCK;
+        else
+          {
+            g_warn_if_fail (err == NULL);
+            g_propagate_error (error, err);
+            return G_POLLABLE_RETURN_FAILED;
+          }
+      }
+
+      _bytes_written += vector_bytes_written;
       /* if we had a short write break the loop here */
-      if (res < vectors[i].size)
+      if (vector_bytes_written < vectors[i].size)
         break;
     }
 
@@ -307,6 +335,7 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
 					    GError                **error)
 {
   gssize res;
+  GPollableOutputStreamInterface *iface = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream);
 
   g_return_val_if_fail (G_IS_POLLABLE_OUTPUT_STREAM (stream), -1);
   g_return_val_if_fail (buffer != NULL, 0);
@@ -327,8 +356,42 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
   if (cancellable)
     g_cancellable_push_current (cancellable);
 
-  res = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream)->
-    write_nonblocking (stream, buffer, count, error);
+  /* If the implementor provided write_nonblocking_pollable,
+   * use that, or fallback to write_nonblocking instead.*/
+  if (iface->write_nonblocking_pollable != NULL)
+    {
+      GPollableReturn _res;
+      gsize bytes_written = 0;
+
+      _res = iface->write_nonblocking_pollable (stream, buffer, count, &bytes_written, error);
+
+      switch (_res)
+        {
+        case G_POLLABLE_RETURN_OK:
+          g_warn_if_fail (error == NULL || *error == NULL);
+          res = bytes_written;
+          break;
+
+        case G_POLLABLE_RETURN_WOULD_BLOCK:
+          g_warn_if_fail (error == NULL || *error == NULL);
+          /* No error is set for WOULD_BLOCK so we need to do so ourselves */
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK,
+                               g_strerror (EAGAIN));
+          res = -1;
+          break;
+
+        case G_POLLABLE_RETURN_FAILED:
+          /* Error set by g_output_stream_write */
+          g_warn_if_fail (error == NULL || *error != NULL);
+          res = -1;
+          break;
+
+        default:
+          g_assert_not_reached ();
+        }
+    }
+  else
+    res = iface->write_nonblocking (stream, buffer, count, error);
 
   if (cancellable)
     g_cancellable_pop_current (cancellable);
