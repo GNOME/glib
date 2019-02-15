@@ -724,7 +724,7 @@ print_help (const char        *envvar,
         {
           extension = l->data;
 
-          g_print (" %*s - %d\n", width, g_io_extension_get_name (extension), g_io_extension_get_priority (extension));
+          g_print (" %*s - %d\n", (int) width, g_io_extension_get_name (extension), g_io_extension_get_priority (extension));
         }
     }
 }
