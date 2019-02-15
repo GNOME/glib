@@ -712,7 +712,7 @@ print_help (const char        *envvar,
     {
       GList *l;
       GIOExtension *extension;
-      int width = 0;
+      gsize width = 0;
 
       for (l = g_io_extension_point_get_extensions (ep); l; l = l->next)
         {
