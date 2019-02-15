@@ -49,6 +49,9 @@ typedef struct _GPollableOutputStreamInterface GPollableOutputStreamInterface;
  * @create_source: Creates a #GSource to poll the stream
  * @write_nonblocking: Does a non-blocking write or returns
  *   %G_IO_ERROR_WOULD_BLOCK
+ * @write_nonblocking_pollable: Same as @write_nonblocking but more
+ * efficient as it does not allocates errors if the call is going
+ * to block.
  * @writev_nonblocking: Does a vectored non-blocking write, or returns
  *   %G_POLLABLE_RETURN_WOULD_BLOCK
  *
@@ -68,6 +71,13 @@ typedef struct _GPollableOutputStreamInterface GPollableOutputStreamInterface;
  * its return value and error (if set) to a #GPollableReturn. You should
  * override this where possible to avoid having to allocate a #GError to return
  * %G_IO_ERROR_WOULD_BLOCK.
+ *
+ * The default implementation of @write_nonblocking, will call
+ * @write_nonblockign_pollable if provided, as its more efficient.
+ *
+ * The default implementation of @write_nonblocking_pollable, will call
+ * @write_nonblocking and tranlate the result, if @write_nonblocking_pollable
+ * is not provided by the implementor.
  *
  * Since: 2.28
  */
@@ -90,6 +100,11 @@ struct _GPollableOutputStreamInterface
 					 gsize                   n_vectors,
 					 gsize                  *bytes_written,
 					 GError                **error);
+  GPollableReturn (*write_nonblocking_pollable) (GPollableOutputStream  *stream,
+                                                 const void             *buffer,
+                                                 gsize                   count,
+                                                 gsize                  *bytes_written,
+                                                 GError                **error);
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -119,8 +134,15 @@ GPollableReturn g_pollable_output_stream_writev_nonblocking (GPollableOutputStre
 							     GCancellable           *cancellable,
 							     GError                **error);
 
+GLIB_AVAILABLE_IN_2_62
+GPollableReturn g_pollable_output_stream_write_nonblocking_pollable (GPollableOutputStream  *stream,
+                                                                     const void             *buffer,
+                                                                     gsize                   count,
+                                                                     gsize                  *bytes_written,
+                                                                     GCancellable           *cancellable,
+                                                                     GError                **error);
+
 G_END_DECLS
 
 
 #endif /* __G_POLLABLE_OUTPUT_STREAM_H__ */
-
