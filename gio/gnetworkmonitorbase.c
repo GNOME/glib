@@ -180,7 +180,7 @@ g_network_monitor_base_can_reach_sockaddr (GNetworkMonitorBase *base,
                                            GSocketAddress *sockaddr)
 {
   GInetAddress *iaddr;
-  int i;
+  guint i;
 
   if (!G_IS_INET_SOCKET_ADDRESS (sockaddr))
     return FALSE;
@@ -434,7 +434,7 @@ void
 g_network_monitor_base_add_network (GNetworkMonitorBase *monitor,
                                     GInetAddressMask    *network)
 {
-  int i;
+  guint i;
 
   for (i = 0; i < monitor->priv->networks->len; i++)
     {
@@ -481,7 +481,7 @@ void
 g_network_monitor_base_remove_network (GNetworkMonitorBase *monitor,
                                        GInetAddressMask    *network)
 {
-  int i;
+  guint i;
 
   for (i = 0; i < monitor->priv->networks->len; i++)
     {
