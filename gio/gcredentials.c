@@ -210,9 +210,9 @@ g_credentials_to_string (GCredentials *credentials)
   g_string_append (ret, "linux-ucred:");
   if (credentials->native.pid != -1)
     g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.pid);
-  if (credentials->native.uid != -1)
+  if (credentials->native.uid != (uid_t) -1)
     g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.uid);
-  if (credentials->native.gid != -1)
+  if (credentials->native.gid != (gid_t) -1)
     g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.gid);
   if (ret->str[ret->len - 1] == ',')
     ret->str[ret->len - 1] = '\0';
@@ -545,7 +545,7 @@ g_credentials_set_unix_user (GCredentials    *credentials,
   gboolean ret;
 
   g_return_val_if_fail (G_IS_CREDENTIALS (credentials), FALSE);
-  g_return_val_if_fail (uid != -1, FALSE);
+  g_return_val_if_fail (uid != (uid_t) -1, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   ret = FALSE;
