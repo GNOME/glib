@@ -2344,7 +2344,7 @@ g_output_stream_real_writev (GOutputStream         *stream,
 
       _bytes_written += res;
       /* if we had a short write break the loop here */
-      if (res < vectors[i].size)
+      if ((gsize) res < vectors[i].size)
         break;
     }
 
