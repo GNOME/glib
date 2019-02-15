@@ -310,7 +310,7 @@ read_data (GDataInputStream  *stream,
   res = g_input_stream_read (G_INPUT_STREAM (stream),
 			     buffer, size,
 			     NULL, NULL);
-  g_warn_if_fail (res == size);
+  g_warn_if_fail (res == (gssize) size);
   return TRUE;
 }
 
@@ -631,7 +631,7 @@ scan_for_newline (GDataInputStream *stream,
   GDataInputStreamPrivate *priv;
   const char *buffer;
   gsize start, end, peeked;
-  int i;
+  gsize i;
   gssize found_pos;
   int newline_len;
   gsize available, checked;
@@ -861,7 +861,7 @@ scan_for_chars (GDataInputStream *stream,
   GBufferedInputStream *bstream;
   const char *buffer;
   gsize start, end, peeked;
-  int i;
+  gsize i;
   gsize available, checked;
   const char *stop_char;
   const char *stop_end;
