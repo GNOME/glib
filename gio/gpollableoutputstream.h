@@ -49,6 +49,9 @@ typedef struct _GPollableOutputStreamInterface GPollableOutputStreamInterface;
  * @create_source: Creates a #GSource to poll the stream
  * @write_nonblocking: Does a non-blocking write or returns
  *   %G_IO_ERROR_WOULD_BLOCK
+ * @write_nonblocking_pollable: Same as @write_nonblocking but more
+ * efficient as it does not allocates errors if the call is going
+ * to block.
  *
  * The interface for pollable output streams.
  *
@@ -60,6 +63,13 @@ typedef struct _GPollableOutputStreamInterface GPollableOutputStreamInterface;
  * need to override it if it is possible that your @is_writable
  * implementation may return %TRUE when the stream is not actually
  * writable.
+ *
+ * The default implementation of @write_nonblocking, will call
+ * @write_nonblockign_pollable if provided, as its more efficient.
+ *
+ * If @write_nonblocking_pollable is called but not provided by the implementor
+ * the default implmentation will fallback to calling @write_nonblocking
+ * and tranlating the result.
  *
  * Since: 2.28
  */
@@ -82,6 +92,11 @@ struct _GPollableOutputStreamInterface
 					 gsize                   n_vectors,
 					 gsize                  *bytes_written,
 					 GError                **error);
+  GPollableReturn (*write_nonblocking_pollable) (GPollableOutputStream  *stream,
+                                                 const void             *buffer,
+                                                 gsize                   count,
+                                                 gsize                  *bytes_written,
+                                                 GError                **error);
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -110,6 +125,14 @@ GPollableReturn g_pollable_output_stream_writev_nonblocking (GPollableOutputStre
 							     gsize                  *bytes_written,
 							     GCancellable           *cancellable,
 							     GError                **error);
+
+GLIB_AVAILABLE_IN_2_62
+GPollableReturn g_pollable_output_stream_write_nonblocking_pollable (GPollableOutputStream  *stream,
+                                                                     const void             *buffer,
+                                                                     gsize                   count,
+                                                                     gsize                  *bytes_written,
+                                                                     GCancellable           *cancellable,
+                                                                     GError                **error);
 
 G_END_DECLS
 
