@@ -259,7 +259,8 @@ ignore_host (GSimpleProxyResolver *resolver,
   GSimpleProxyResolverPrivate *priv = resolver->priv;
   gchar *ascii_host = NULL;
   gboolean ignore = FALSE;
-  gint i, length, offset;
+  guint i;
+  gint length, offset;
 
   if (priv->ignore_ips)
     {
