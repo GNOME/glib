@@ -97,7 +97,7 @@ check_expected_events (RecordedEvent *expected,
                        GList         *recorded,
                        Environment    env)
 {
-  gint i, li;
+  guint i, li;
   GList *l;
 
   for (i = 0, li = 0, l = recorded; i < n_expected && l != NULL;)
