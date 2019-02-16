@@ -550,7 +550,7 @@ parse_resource_file (const gchar *filename,
                      gboolean     collect_data,
                      GHashTable  *files)
 {
-  GMarkupParser parser = { start_element, end_element, text };
+  GMarkupParser parser = { start_element, end_element, text, NULL, NULL };
   ParseState state = { 0, };
   GMarkupParseContext *context;
   GError *error = NULL;
