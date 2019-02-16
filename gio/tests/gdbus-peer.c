@@ -230,7 +230,8 @@ static const GDBusInterfaceVTable test_interface_vtable =
 {
   test_interface_method_call,
   test_interface_get_property,
-  NULL  /* set_property */
+  NULL,  /* set_property */
+  { 0 }
 };
 
 static void
@@ -1023,7 +1024,8 @@ static const GDBusInterfaceVTable dmp_interface_vtable =
 {
   dmp_on_method_call,
   NULL,  /* get_property */
-  NULL   /* set_property */
+  NULL,   /* set_property */
+  { 0 }
 };
 
 
