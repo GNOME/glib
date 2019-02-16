@@ -62,7 +62,7 @@ g_settings_set_mapping_int (const GValue       *value,
     }
   else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_UINT64))
     {
-      if (0 <= l && l <= G_MAXUINT64)
+      if (0 <= l && (guint64) l <= G_MAXUINT64)
         variant = g_variant_new_uint64 ((guint64) l);
     }
   else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_HANDLE))
@@ -117,7 +117,7 @@ g_settings_set_mapping_float (const GValue       *value,
     }
   else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_UINT64))
     {
-      if (0 <= l && l <= G_MAXUINT64)
+      if (0 <= l && (guint64) l <= G_MAXUINT64)
         variant = g_variant_new_uint64 ((guint64) l);
     }
   else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_HANDLE))
@@ -221,7 +221,7 @@ g_settings_get_mapping_int (GValue   *value,
   else if (G_VALUE_HOLDS_UINT64 (value))
     {
       g_value_set_uint64 (value, l);
-      return (0 <= l && l <= G_MAXUINT64);
+      return (0 <= l && (guint64) l <= G_MAXUINT64);
     }
   else if (G_VALUE_HOLDS_DOUBLE (value))
     {
@@ -266,7 +266,7 @@ g_settings_get_mapping_float (GValue   *value,
   else if (G_VALUE_HOLDS_UINT64 (value))
     {
       g_value_set_uint64 (value, l);
-      return (0 <= l && l <= G_MAXUINT64);
+      return (0 <= l && (guint64) l <= G_MAXUINT64);
     }
   else if (G_VALUE_HOLDS_DOUBLE (value))
     {
