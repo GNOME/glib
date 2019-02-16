@@ -1081,7 +1081,7 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
         {
           /* Index the interesting keys... */
           gchar **implements;
-          gint i;
+          guint i;
 
           for (i = 0; i < G_N_ELEMENTS (desktop_key_match_category); i++)
             {
@@ -1160,7 +1160,7 @@ static gboolean
 array_contains (GPtrArray *array,
                 const gchar *str)
 {
-  gint i;
+  guint i;
 
   for (i = 0; i < array->len; i++)
     if (g_str_equal (array->pdata[i], str))
@@ -1476,7 +1476,7 @@ desktop_file_dir_get_implementations (DesktopFileDir  *dir,
 static void
 desktop_file_dirs_lock (void)
 {
-  gint i;
+  guint i;
   const gchar *user_config_dir = g_get_user_config_dir ();
 
   g_mutex_lock (&desktop_file_dir_lock);
@@ -1499,7 +1499,6 @@ desktop_file_dirs_lock (void)
     {
       const char * const *dirs;
       GArray *tmp;
-      gint i;
 
       tmp = g_array_new (FALSE, FALSE, sizeof (DesktopFileDir));
 
@@ -4051,13 +4050,13 @@ get_list_of_mimetypes (const gchar *content_type,
 
   if (include_fallback)
     {
-      gint i;
+      guint i;
 
       /* Iterate the array as we grow it, until we have nothing more to add */
       for (i = 0; i < array->len; i++)
         {
           gchar **parents = _g_unix_content_type_get_parents (g_ptr_array_index (array, i));
-          gint j;
+          guint j;
 
           for (j = 0; parents[j]; j++)
             /* Don't add duplicates */
@@ -4082,7 +4081,7 @@ g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
 {
   GPtrArray *hits, *blacklist;
   gchar **types;
-  gint i, j;
+  guint i, j;
 
   hits = g_ptr_array_new ();
   blacklist = g_ptr_array_new ();
@@ -4280,7 +4279,7 @@ g_app_info_get_default_for_type (const char *content_type,
   GPtrArray *results;
   GAppInfo *info;
   gchar **types;
-  gint i, j, k;
+  guint i, j, k;
 
   g_return_val_if_fail (content_type != NULL, NULL);
 
@@ -4384,7 +4383,7 @@ g_desktop_app_info_get_implementations (const gchar *interface)
 {
   GList *result = NULL;
   GList **ptr;
-  gint i;
+  guint i;
 
   desktop_file_dirs_lock ();
 
@@ -4439,7 +4438,8 @@ g_desktop_app_info_search (const gchar *search_string)
   gchar ***results;
   gint n_categories = 0;
   gint start_of_category;
-  gint i, j;
+  guint i, j;
+  gint k;
 
   search_tokens = g_str_tokenize_and_fold (search_string, NULL, NULL);
 
@@ -4460,10 +4460,10 @@ g_desktop_app_info_search (const gchar *search_string)
   sort_total_search_results ();
 
   /* Count the total number of unique categories */
-  for (i = 0; i < static_total_results_size; i++)
-    if (static_total_results[i].category != last_category)
+  for (k = 0; k < static_total_results_size; k++)
+    if (static_total_results[k].category != last_category)
       {
-        last_category = static_total_results[i].category;
+        last_category = static_total_results[k].category;
         n_categories++;
       }
 
@@ -4471,11 +4471,11 @@ g_desktop_app_info_search (const gchar *search_string)
 
   /* Start loading into the results list */
   start_of_category = 0;
-  for (i = 0; i < n_categories; i++)
+  for (k = 0; k < n_categories; k++)
     {
       gint n_items_in_category = 0;
       gint this_category;
-      gint j;
+      gint l;
 
       this_category = static_total_results[start_of_category].category;
 
@@ -4483,14 +4483,14 @@ g_desktop_app_info_search (const gchar *search_string)
              static_total_results[start_of_category + n_items_in_category].category == this_category)
         n_items_in_category++;
 
-      results[i] = g_new (gchar *, n_items_in_category + 1);
-      for (j = 0; j < n_items_in_category; j++)
-        results[i][j] = g_strdup (static_total_results[start_of_category + j].app_name);
-      results[i][j] = NULL;
+      results[k] = g_new (gchar *, n_items_in_category + 1);
+      for (l = 0; l < n_items_in_category; l++)
+        results[k][l] = g_strdup (static_total_results[start_of_category + l].app_name);
+      results[k][l] = NULL;
 
       start_of_category += n_items_in_category;
     }
-  results[i] = NULL;
+  results[k] = NULL;
 
   desktop_file_dirs_unlock ();
 
@@ -4519,7 +4519,7 @@ g_app_info_get_all (void)
   GHashTable *apps;
   GHashTableIter iter;
   gpointer value;
-  int i;
+  guint i;
   GList *infos;
 
   apps = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
