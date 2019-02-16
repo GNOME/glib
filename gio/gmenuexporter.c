@@ -784,6 +784,7 @@ g_dbus_connection_export_menu_model (GDBusConnection  *connection,
 {
   const GDBusInterfaceVTable vtable = {
     g_menu_exporter_method_call,
+    NULL, NULL
   };
   GMenuExporter *exporter;
   guint id;
