@@ -842,8 +842,8 @@ do_echo_test (GSocketConnection *conn)
   GIOStream *iostream = G_IO_STREAM (conn);
   GInputStream *istream = g_io_stream_get_input_stream (iostream);
   GOutputStream *ostream = g_io_stream_get_output_stream (iostream);
-  gssize nread, total;
-  gsize nwrote;
+  gssize nread;
+  gsize nwrote, total;
   gchar buf[128];
   GError *error = NULL;
 
