@@ -56,7 +56,7 @@ do_tree (GFile *f, int level, guint64 pattern)
 {
   GFileEnumerator *enumerator;
   GError *error = NULL;
-  unsigned int n;
+  int n;
   GFileInfo *info;
 
   info = g_file_query_info (f,
