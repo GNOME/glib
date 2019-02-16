@@ -149,7 +149,7 @@ char *
 attribute_flags_to_string (GFileAttributeInfoFlags flags)
 {
   GString *s;
-  int i;
+  guint i;
   gboolean first;
   struct {
     guint32 mask;
