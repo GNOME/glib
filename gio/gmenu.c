@@ -162,7 +162,7 @@ g_menu_insert_item (GMenu     *menu,
   g_return_if_fail (G_IS_MENU (menu));
   g_return_if_fail (G_IS_MENU_ITEM (item));
 
-  if (position < 0 || position > menu->items->len)
+  if (position < 0 || (guint) position > menu->items->len)
     position = menu->items->len;
 
   new_item.attributes = g_hash_table_ref (item->attributes);
@@ -480,7 +480,7 @@ g_menu_remove (GMenu *menu,
                gint   position)
 {
   g_return_if_fail (G_IS_MENU (menu));
-  g_return_if_fail (0 <= position && position < menu->items->len);
+  g_return_if_fail (0 <= position && (guint) position < menu->items->len);
 
   g_menu_clear_item (&g_array_index (menu->items, struct item, position));
   g_array_remove_index (menu->items, position);
