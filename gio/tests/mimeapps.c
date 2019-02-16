@@ -5,7 +5,7 @@
 static gboolean
 strv_equal (gchar **strv, ...)
 {
-  gint count;
+  guint count;
   va_list list;
   const gchar *str;
   gboolean res;
