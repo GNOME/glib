@@ -914,7 +914,7 @@ test_happy_eyeballs_both_error_delays_3 (HappyEyeballsFixture *fixture,
 int
 main (int argc, char *argv[])
 {
-  gint i;
+  guint i;
   gchar *path;
 
   g_test_init (&argc, &argv, NULL);
