@@ -3915,6 +3915,7 @@ static GSourceFuncs socket_source_funcs =
   socket_source_dispatch,
   socket_source_finalize,
   (GSourceFunc)socket_source_closure_callback,
+  NULL
 };
 
 static GSource *
@@ -4360,7 +4361,7 @@ G_STMT_START { \
     else \
       /* ABI is incompatible */ \
       { \
-        gint i; \
+        guint i; \
  \
         _msg->msg_iov = g_newa (struct iovec, _message->num_vectors); \
         for (i = 0; i < _message->num_vectors; i++) \
@@ -4375,7 +4376,7 @@ G_STMT_START { \
   /* control */ \
   { \
     struct cmsghdr *cmsg; \
-    gint i; \
+    guint i; \
  \
     _msg->msg_controllen = 0; \
     for (i = 0; i < _message->num_control_messages; i++) \
@@ -4599,7 +4600,7 @@ g_socket_send_message (GSocket                *socket,
 		       GError                **error)
 {
   GPollableReturn res;
-  gsize bytes_written = 0;
+  gssize bytes_written = 0;
 
   res = g_socket_send_message_with_timeout (socket, address,
                                             vectors, num_vectors,
@@ -4955,7 +4956,7 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
 #if !defined (G_OS_WIN32) && defined (HAVE_SENDMMSG)
   {
     struct mmsghdr *msgvec;
-    gint i, num_sent;
+    guint i, num_sent;
 
 #ifdef UIO_MAXIOV
 #define MAX_NUM_MESSAGES UIO_MAXIOV
