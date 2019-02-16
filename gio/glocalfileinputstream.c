@@ -213,7 +213,7 @@ g_local_file_input_stream_skip (GInputStream  *stream,
       return -1;
     }
 
-  if (end - start > count)
+  if (end - start > (off_t) count)
     {
       end = lseek (file->priv->fd, count - (end - start), SEEK_CUR);
       if (end == -1)
