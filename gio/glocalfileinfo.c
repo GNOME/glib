@@ -163,14 +163,14 @@ read_link (const gchar *full_name)
 {
 #if defined (HAVE_READLINK) || defined (G_OS_WIN32)
   gchar *buffer;
-  guint size;
+  gsize size;
   
   size = 256;
   buffer = g_malloc (size);
   
   while (1)
     {
-      int read_size;
+      gssize read_size;
       
 #ifndef G_OS_WIN32
       read_size = readlink (full_name, buffer, size);
@@ -182,7 +182,7 @@ read_link (const gchar *full_name)
 	  g_free (buffer);
 	  return NULL;
 	}
-      if (read_size < size)
+      if ((gsize) read_size < size)
 	{
 	  buffer[read_size] = 0;
 	  return buffer;
@@ -907,7 +907,7 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 	      uid_t uid = geteuid ();
 
 	      if (uid == statbuf->st_uid ||
-		  uid == parent_info->owner ||
+                  uid == (uid_t) parent_info->owner ||
 		  uid == 0)
 		writable = TRUE;
 	    }
