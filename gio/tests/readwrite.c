@@ -73,8 +73,8 @@ verify_iostream (GFileIOStream *file_iostream)
   g_assert (res == 5);
   verify_pos (iostream, 15);
 
-  res = g_input_stream_skip (in, 10000, NULL, NULL);
-  g_assert (res == strlen (original_data) - 15);
+  n_bytes = g_input_stream_skip (in, 10000, NULL, NULL);
+  g_assert (n_bytes == strlen (original_data) - 15);
   verify_pos (iostream, strlen (original_data));
 
   res = g_seekable_seek (G_SEEKABLE (iostream),
