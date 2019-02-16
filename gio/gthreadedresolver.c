@@ -591,7 +591,7 @@ parse_res_txt (guchar  *answer,
   GVariant *record;
   GPtrArray *array;
   guchar *at = *p;
-  gsize len;
+  gssize len;
 
   array = g_ptr_array_new_with_free_func (g_free);
   while (at < end)
