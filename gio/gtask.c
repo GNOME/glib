@@ -2035,6 +2035,8 @@ GSourceFuncs trivial_source_funcs = {
   NULL, /* prepare */
   NULL, /* check */
   trivial_source_dispatch,
+  NULL,
+  NULL,
   NULL
 };
 
