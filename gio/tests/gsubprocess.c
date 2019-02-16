@@ -772,7 +772,7 @@ test_communicate_async (gconstpointer test_data)
   GSubprocessFlags flags = GPOINTER_TO_INT (test_data);
   GError *error = NULL;
   GPtrArray *args;
-  TestAsyncCommunicateData data = { flags, 0, };
+  TestAsyncCommunicateData data = { flags, FALSE, FALSE, NULL };
   GSubprocess *proc;
   GCancellable *cancellable = NULL;
   GBytes *input;
@@ -1023,7 +1023,7 @@ test_communicate_utf8_async (gconstpointer test_data)
   GSubprocessFlags flags = GPOINTER_TO_INT (test_data);
   GError *error = NULL;
   GPtrArray *args;
-  TestAsyncCommunicateData data = { flags, 0, };
+  TestAsyncCommunicateData data = { flags, FALSE, FALSE, NULL };
   GSubprocess *proc;
   GCancellable *cancellable = NULL;
 
@@ -1056,7 +1056,7 @@ test_communicate_utf8_cancelled_async (gconstpointer test_data)
   GSubprocessFlags flags = GPOINTER_TO_INT (test_data);
   GError *error = NULL;
   GPtrArray *args;
-  TestAsyncCommunicateData data = { flags, 0, };
+  TestAsyncCommunicateData data = { flags, FALSE, FALSE, NULL };
   GSubprocess *proc;
   GCancellable *cancellable = NULL;
 
@@ -1200,7 +1200,7 @@ test_communicate_utf8_async_invalid (void)
   GSubprocessFlags flags = G_SUBPROCESS_FLAGS_STDOUT_PIPE;
   GError *error = NULL;
   GPtrArray *args;
-  TestAsyncCommunicateData data = { flags, 0, };
+  TestAsyncCommunicateData data = { flags, FALSE, FALSE, NULL };
   GSubprocess *proc;
   GCancellable *cancellable = NULL;
 
