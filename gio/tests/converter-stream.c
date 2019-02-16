@@ -94,7 +94,7 @@ g_expander_converter_convert (GConverter *converter,
 {
   const guint8 *in, *in_end;
   guint8 v, *out;
-  int i;
+  gsize i;
   gsize block_size;
 
   in = inbuf;
@@ -210,7 +210,7 @@ g_compressor_converter_convert (GConverter *converter,
 {
   const guint8 *in, *in_end;
   guint8 v, *out;
-  int i;
+  gsize i;
   gsize block_size;
 
   in = inbuf;
@@ -231,7 +231,7 @@ g_compressor_converter_convert (GConverter *converter,
 	block_size = v * 1000;
 
       /* Not enough data */
-      if (in_end - in < block_size)
+      if (((gsize) (in_end - in)) < block_size)
 	{
 	  if (*bytes_read > 0)
 	    break;
@@ -254,7 +254,8 @@ g_compressor_converter_convert (GConverter *converter,
 	    }
 	}
 
-      if (v == 0 && in_end - in == block_size && (flags & G_CONVERTER_INPUT_AT_END) == 0)
+      if (v == 0 && ((gsize) (in_end - in)) == block_size &&
+          (flags & G_CONVERTER_INPUT_AT_END) == 0)
 	{
 	  if (*bytes_read > 0)
 	    break;
@@ -297,7 +298,7 @@ test_expander (void)
   GConverter *expander;
   GConverter *converter;
   GError *error;
-  int i;
+  gsize i;
 
   expander = g_expander_converter_new ();
 
@@ -393,7 +394,7 @@ test_compressor (void)
   GOutputStream *mem_out, *cstream_out;
   GConverter *expander, *compressor;
   GError *error;
-  int i;
+  gsize i;
 
   expander = g_expander_converter_new ();
   expanded = g_malloc (100*1000); /* Large enough */
@@ -972,7 +973,7 @@ test_converter_pollable (void)
   GPollableOutputStream *pollable_out;
   GConverter *expander, *compressor;
   GError *error;
-  int i;
+  gsize i;
 
   expander = g_expander_converter_new ();
   expanded = g_malloc (100*1000); /* Large enough */
@@ -1207,7 +1208,7 @@ main (int   argc,
     { "/converter-input-stream/charset/fallbacks", "UTF-8", "Some characters just don't fit into latin1: πא", "ISO-8859-1", "Some characters just don't fit into latin1: \\CF\\80\\D7\\90", 4 },
   };
 
-  gint i;
+  gsize i;
 
   g_test_init (&argc, &argv, NULL);
 
