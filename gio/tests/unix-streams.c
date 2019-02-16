@@ -665,8 +665,7 @@ test_write_async_wouldblock (void)
   GUnixOutputStream *os;
   gint fd[2];
   guint8 *data, *data_read;
-  guint i;
-  gint pipe_capacity;
+  guint i, pipe_capacity;
   gsize bytes_written = 0, bytes_read = 0;
 
   g_assert_cmpint (pipe (fd), ==, 0);
@@ -752,8 +751,7 @@ test_writev_async_wouldblock (void)
   GUnixOutputStream *os;
   gint fd[2];
   guint8 *data, *data_read;
-  guint i;
-  gint pipe_capacity;
+  guint i, pipe_capacity;
   gsize bytes_written = 0, bytes_read = 0;
   GOutputVector vectors[4];
 
