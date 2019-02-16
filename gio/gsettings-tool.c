@@ -193,7 +193,7 @@ static void
 gsettings_list_children (void)
 {
   gchar **children;
-  gint max = 0;
+  guint max = 0;
   gint i;
 
   children = g_settings_list_children (global_settings);
