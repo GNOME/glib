@@ -50,6 +50,7 @@ test_iface_get_type (void)
 	sizeof (TestIfaceClass),
 	(GBaseInitFunc)	iface_base_init,		/* base_init */
 	(GBaseFinalizeFunc) iface_base_finalize,	/* base_finalize */
+        NULL, NULL, NULL, 0, 0, NULL, NULL
       };
 
       test_iface_type = g_type_register_static (G_TYPE_INTERFACE, "TestIface", &test_iface_info, 0);
@@ -179,6 +180,7 @@ test_object_get_type (void)
 	sizeof (TestObject),
 	5,              /* n_preallocs */
 	(GInstanceInitFunc) test_object_init,
+        NULL
       };
       GInterfaceInfo iface_info = { test_object_test_iface_init, NULL, GUINT_TO_POINTER (42) };
 
@@ -346,6 +348,7 @@ derived_object_get_type (void)
 	sizeof (DerivedObject),
 	5,              /* n_preallocs */
 	(GInstanceInitFunc) derived_object_init,
+        NULL
       };
       GInterfaceInfo iface_info = { derived_object_test_iface_init, NULL, GUINT_TO_POINTER (87) };
 
