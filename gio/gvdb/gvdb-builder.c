@@ -454,7 +454,7 @@ static GString *
 file_builder_serialise (FileBuilder          *fb,
                         struct gvdb_pointer   root)
 {
-  struct gvdb_header header = { { 0, }, };
+  struct gvdb_header header = { { 0, 0 }, { 0 }, { 0 }, {{ 0 }, { 0 }}};
   GString *result;
 
   if (fb->byteswap)
