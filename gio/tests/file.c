@@ -238,7 +238,7 @@ read_cb (GObject      *source,
   g_assert_no_error (error);
 
   data->pos += size;
-  if (data->pos < strlen (data->data))
+  if ((gsize) data->pos < strlen (data->data))
     {
       g_input_stream_read_async (data->istream,
                                  data->buffer + data->pos,
@@ -366,7 +366,7 @@ written_cb (GObject      *source,
   g_assert_no_error (error);
 
   data->pos += size;
-  if (data->pos < strlen (data->data))
+  if ((gsize) data->pos < strlen (data->data))
     {
       g_output_stream_write_async (data->ostream,
                                    data->data + data->pos,
