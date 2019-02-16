@@ -256,8 +256,8 @@ static void
 child_setup (gpointer user_data)
 {
   ChildData *child_data = user_data;
-  gint i;
-  gint result;
+  guint i;
+  gint k, result;
   int errsv;
 
   /* We're on the child side now.  "Rename" the file descriptors in
@@ -267,12 +267,12 @@ child_setup (gpointer user_data)
    * should not be closed and if they should be closed then they should
    * have been created O_CLOEXEC.
    */
-  for (i = 0; i < 3; i++)
-    if (child_data->fds[i] != -1 && child_data->fds[i] != i)
+  for (k = 0; k < 3; k++)
+    if (child_data->fds[k] != -1 && child_data->fds[k] != k)
       {
         do
           {
-            result = dup2 (child_data->fds[i], i);
+            result = dup2 (child_data->fds[k], k);
             errsv = errno;
           }
         while (result == -1 && errsv == EINTR);
@@ -451,7 +451,7 @@ initable_init (GInitable     *initable,
 {
   GSubprocess *self = G_SUBPROCESS (initable);
 #ifdef G_OS_UNIX
-  ChildData child_data = { { -1, -1, -1 }, 0 };
+  ChildData child_data = { { -1, -1, -1 }, NULL, NULL, NULL, NULL };
 #endif
   gint *pipe_ptrs[3] = { NULL, NULL, NULL };
   gint pipe_fds[3] = { -1, -1, -1 };
@@ -575,7 +575,7 @@ initable_init (GInitable     *initable,
 
   {
     guint64 identifier;
-    gint s;
+    gsize s;
 
 #ifdef G_OS_WIN32
     identifier = (guint64) GetProcessId (self->pid);
