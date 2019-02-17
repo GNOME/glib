@@ -174,10 +174,10 @@ test_application_quit (GSimpleAction *action,
 }
 
 static const GActionEntry app_actions[] = {
-  { "frob",         test_application_frob              },
-  { "tweak",        test_application_tweak             },
-  { "twiddle",      test_application_twiddle           },
-  { "quit",         test_application_quit              }
+  { "frob",         test_application_frob,    NULL, NULL, NULL, { 0 } },
+  { "tweak",        test_application_tweak,   NULL, NULL, NULL, { 0 } },
+  { "twiddle",      test_application_twiddle, NULL, NULL, NULL, { 0 } },
+  { "quit",         test_application_quit,    NULL, NULL, NULL, { 0 } }
 };
 
 static void
