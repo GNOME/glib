@@ -197,7 +197,7 @@ static const PerformanceTest tests[] = {
 };
 
 static gboolean verbose = FALSE;
-static int n_threads = 0;
+static guint n_threads = 0;
 static gboolean list = FALSE;
 static int test_length = DEFAULT_TEST_TIME;
 
@@ -320,7 +320,7 @@ run_test (const PerformanceTest *test)
 static const PerformanceTest *
 find_test (const char *name)
 {
-  int i;
+  guint i;
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       if (strcmp (tests[i].name, name) == 0)
@@ -336,7 +336,8 @@ main (int   argc,
   const PerformanceTest *test;
   GOptionContext *context;
   GError *error = NULL;
-  int i;
+  guint i;
+  gint k;
 
   context = g_option_context_new ("GObject performance tests");
   g_option_context_add_main_entries (context, cmd_entries, NULL);
@@ -357,9 +358,9 @@ main (int   argc,
 
   if (argc > 1)
     {
-      for (i = 1; i < argc; i++)
+      for (k = 1; k < argc; k++)
 	{
-	  test = find_test (argv[i]);
+	  test = find_test (argv[k]);
 	  if (test)
 	    run_test (test);
 	}
