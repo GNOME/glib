@@ -1015,7 +1015,7 @@ static PerformanceTest tests[] = {
 static PerformanceTest *
 find_test (const char *name)
 {
-  int i;
+  gsize i;
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       if (strcmp (tests[i].name, name) == 0)
@@ -1030,7 +1030,8 @@ main (int   argc,
   PerformanceTest *test;
   GOptionContext *context;
   GError *error = NULL;
-  int i;
+  gint i;
+  gsize k;
 
   context = g_option_context_new ("GObject performance tests");
   g_option_context_add_main_entries (context, cmd_entries, NULL);
@@ -1051,8 +1052,8 @@ main (int   argc,
     }
   else
     {
-      for (i = 0; i < G_N_ELEMENTS (tests); i++)
-	run_test (&tests[i]);
+      for (k = 0; k < G_N_ELEMENTS (tests); k++)
+	run_test (&tests[k]);
     }
 
   return 0;
