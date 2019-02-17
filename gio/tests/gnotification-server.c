@@ -220,7 +220,7 @@ g_notification_server_bus_acquired (GDBusConnection *connection,
                                     gpointer         user_data)
 {
   const GDBusInterfaceVTable vtable = {
-    org_gtk_Notifications_method_call, NULL, NULL
+    org_gtk_Notifications_method_call, NULL, NULL, { 0 }
   };
   GNotificationServer *server = user_data;
 
