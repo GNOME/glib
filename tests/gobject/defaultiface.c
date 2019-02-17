@@ -116,14 +116,15 @@ test_dynamic_iface_default_finalize (TestStaticIfaceClass *iface)
 static void
 test_dynamic_iface_register (GTypeModule *module)
 {
-  const GTypeInfo iface_info =			
-    {								
+  const GTypeInfo iface_info =
+    {
       sizeof (TestDynamicIfaceClass),
       (GBaseInitFunc)	   NULL,
-      (GBaseFinalizeFunc)  NULL,				
+      (GBaseFinalizeFunc)  NULL,
       (GClassInitFunc)     test_dynamic_iface_default_init,
-      (GClassFinalizeFunc) test_dynamic_iface_default_finalize
-    };							
+      (GClassFinalizeFunc) test_dynamic_iface_default_finalize,
+      NULL, 0, 0, NULL, NULL
+    };
 
   test_dynamic_iface_type = g_type_module_register_type (module, G_TYPE_INTERFACE,
 							 "TestDynamicIface", &iface_info, 0);
