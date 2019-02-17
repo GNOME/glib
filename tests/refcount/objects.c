@@ -115,7 +115,7 @@ run_thread (GTest * test)
 int
 main (int argc, char **argv)
 {
-  gint i;
+  guint i;
   GTest *test1, *test2;
   GArray *test_threads;
   const guint n_threads = 5;
