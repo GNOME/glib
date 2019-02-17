@@ -1853,7 +1853,7 @@ check_object_manager (void)
   GError *error;
   GMainLoop *loop;
   OMData *om_data = NULL;
-  guint om_signal_id = -1;
+  gint om_signal_id = -1;
   GDBusObjectManager *pm = NULL;
   GList *object_proxies;
   GList *proxies;
