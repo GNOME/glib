@@ -54,10 +54,10 @@ static void
 startup (GApplication *app)
 {
   static GActionEntry actions[] = {
-    { "new", new_activated, NULL, NULL, NULL },
-    { "quit", quit_activated, NULL, NULL, NULL },
-    { "action1", action1_activated, NULL, NULL, NULL },
-    { "action2", action2_activated, "b", "false", change_action2 }
+    { "new", new_activated, NULL, NULL, NULL, { 0 } },
+    { "quit", quit_activated, NULL, NULL, NULL, { 0 } },
+    { "action1", action1_activated, NULL, NULL, NULL, { 0 } },
+    { "action2", action2_activated, "b", "false", change_action2, { 0 } }
   };
 
   g_action_map_add_action_entries (G_ACTION_MAP (app),
