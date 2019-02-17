@@ -132,7 +132,7 @@ test_methods (GDBusProxy *proxy)
 static gboolean
 strv_equal (gchar **strv, ...)
 {
-  gint count;
+  guint count;
   va_list list;
   const gchar *str;
   gboolean res;
@@ -155,7 +155,7 @@ strv_equal (gchar **strv, ...)
   va_end (list);
 
   if (res)
-    res = g_strv_length (strv) == count;
+    res = (g_strv_length (strv) == count);
 
   return res;
 }
