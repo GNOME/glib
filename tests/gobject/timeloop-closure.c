@@ -39,7 +39,7 @@ read_all (GIOChannel *channel, char *buf, int len)
   gsize count;
   GIOError err;
 
-  while (bytes_read < len)
+  while (bytes_read < (gsize) len)
     {
       err = g_io_channel_read (channel, buf + bytes_read, len - bytes_read, &count);
       if (err)
@@ -63,7 +63,7 @@ write_all (GIOChannel *channel, char *buf, int len)
   gsize count;
   GIOError err;
 
-  while (bytes_written < len)
+  while (bytes_written < (gsize) len)
     {
       err = g_io_channel_write (channel, buf + bytes_written, len - bytes_written, &count);
       if (err && err != G_IO_ERROR_AGAIN)
