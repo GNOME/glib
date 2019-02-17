@@ -67,12 +67,18 @@ prefix ## _get_type (void)					\
 								\
   if (!iface_type)						\
     {								\
-      const GTypeInfo iface_info =			\
+      const GTypeInfo iface_info =				\
       {								\
 	sizeof (name ## Class),					\
 	(GBaseInitFunc)	base_init,				\
 	(GBaseFinalizeFunc) NULL,				\
 	(GClassInitFunc) dflt_init,				\
+	(GClassFinalizeFunc) NULL,				\
+	NULL,           /* class_data */			\
+	0,							\
+	0,             /* n_prelocs */				\
+	(GInstanceInitFunc) NULL,				\
+	NULL							\
       };							\
 								\
       iface_type = g_type_register_static (G_TYPE_INTERFACE,	\
