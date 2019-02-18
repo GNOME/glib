@@ -1,3 +1,52 @@
+Overview of changes in GLib 2.59.3
+==================================
+
+* Fix support for g_get_user_special_dir() on macOS, including support for the Downloads directory (#1048)
+
+* Ensure that cancelling a GTask cannot cause its callback to be called synchronously (in the same call chain as the original *_async() call) (#1608)
+
+* Further fixes to the Happy Eyeballs (RFC 8305) implementation (#1644, #1680)
+
+* Various fixes for installation of installed tests (thanks to Iain Lane) (!649, !651)
+
+* Various fixes for tests when run on Windows (thanks to LRN) (!665, !667)
+
+* Bugs fixed:
+ - #535 gmacros: Try to use the standard __func__ first in G_STRFUNC
+ - #875 gio-gvfs on Windows: Don't mishandle other non-native URIs in gwinhttpvfs.c
+ - #1048 "Desktop" shortcut appears twice in file chooser sidebar on OSX
+ - #1608 Cancellation might not be asynchronous under certain circumstances
+ - #1644 network-address test failure in CI: IPv6 Broken (g-io-error-quark, 24)
+ - #1680 Regression: g_socket_client_connect_to_host_async() sometimes gets "Connection refused" when connecting to localhost
+ - #1686 gdbus-peer test is sometimes timing out
+ - !613 Use win32 io channel on windows for the protocol test
+ - !634 Win32: gio/gsocket.c: Set WSAEWOULDBLOCK on G_POLLABLE_RETURN_WOULD_BLOCK
+ - !638 gvariant-parser: Fix parsing of G_MININT* values in GVariant text format
+ - !640 tests: Tag socket-service test as ‘flaky’
+ - !641 Minor typo fixes to GSpawn documentation
+ - !645 gsocketlistener: Fix multiple returns of GTask when accepting sockets
+ - !647 gsocketclient: Ensure task is always returned on cancel
+ - !648 gio/tests/task: Run the worker indefinitely until it's cancelled
+ - !649 gio tests: Install test1.overlay file when building installed tests
+ - !650 gstring: fully document semantics of @len for g_string_insert_len
+ - !651 tests: Install the slow-connect-preload.so library and use it
+ - !667 GSubprocess fixes for W32 test suite
+ - !668 tests: Mark gdbus-peer test as flaky
+ - !669 GWin32VolumeMonitor: Sort the volumes correctly
+ - !670 gpollableoutputstream: Fix the description of the interface
+ - !672 Fix some tests when running as root
+
+* Translation updates:
+ - Catalan
+ - Danish
+ - French
+ - Indonesian
+ - Kazakh
+ - Portuguese (Brazil)
+ - Slovenian
+ - Turkish
+
+
 Overview of changes in GLib 2.59.2
 ==================================
 
