@@ -757,7 +757,12 @@ test_ip_sync_dgram (GSocketFamily family)
     m[1].address = NULL;
     m[2].address = NULL;
     len = g_socket_send_messages (client, m, G_N_ELEMENTS (m), 0, NULL, &error);
+    /* This error code may vary between platforms and over time; it is not guaranteed API: */
+#ifndef G_OS_WIN32
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+#else
+    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_CONNECTED);
+#endif
     g_clear_error (&error);
     g_assert_cmpint (len, ==, -1);
 
@@ -824,6 +829,10 @@ test_ip_sync_dgram_timeouts (GSocketFamily family)
   GCancellable *cancellable = NULL;
   GThread *cancellable_thread = NULL;
   gssize len;
+#ifdef G_OS_WIN32
+  GInetAddress *iaddr;
+  GSocketAddress *addr;
+#endif
 
   client = g_socket_new (family,
                          G_SOCKET_TYPE_DATAGRAM,
@@ -834,6 +843,16 @@ test_ip_sync_dgram_timeouts (GSocketFamily family)
   g_assert_cmpint (g_socket_get_family (client), ==, family);
   g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
   g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
+
+#ifdef G_OS_WIN32
+  /* Winsock can't recv() on unbound udp socket */
+  iaddr = g_inet_address_new_loopback (family);
+  addr = g_inet_socket_address_new (iaddr, 0);
+  g_object_unref (iaddr);
+  g_socket_bind (client, addr, TRUE, &error);
+  g_object_unref (addr);
+  g_assert_no_error (error);
+#endif
 
   /* No overall timeout: test the per-operation timeouts instead. */
   g_socket_set_timeout (client, 0);
@@ -1583,7 +1602,7 @@ test_get_available (gconstpointer user_data)
   GError *err = NULL;
   GSocket *listener, *server, *client;
   GInetAddress *addr;
-  GSocketAddress *saddr;
+  GSocketAddress *saddr, *boundaddr;
   gchar data[] = "0123456789abcdef";
   gchar buf[34];
   gssize nread;
@@ -1616,8 +1635,13 @@ test_get_available (gconstpointer user_data)
   g_object_unref (saddr);
   g_object_unref (addr);
 
-  saddr = g_socket_get_local_address (listener, &err);
+  boundaddr = g_socket_get_local_address (listener, &err);
   g_assert_no_error (err);
+
+  addr = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
+  saddr = g_inet_socket_address_new (addr, g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (boundaddr)));
+  g_object_unref (addr);
+  g_object_unref (boundaddr);
 
   if (socket_type == G_SOCKET_TYPE_STREAM)
     {
@@ -1780,7 +1804,7 @@ test_read_write (gconstpointer user_data)
   GError *err = NULL;
   GSocket *listener, *server, *client;
   GInetAddress *addr;
-  GSocketAddress *saddr;
+  GSocketAddress *saddr, *boundaddr;
   TestReadWriteData data;
   guint8 data_write[1024], data_read[1024];
   GSocketConnection *server_stream, *client_stream;
@@ -1809,11 +1833,17 @@ test_read_write (gconstpointer user_data)
   g_object_unref (saddr);
   g_object_unref (addr);
 
-  saddr = g_socket_get_local_address (listener, &err);
+  boundaddr = g_socket_get_local_address (listener, &err);
   g_assert_no_error (err);
 
   g_socket_listen (listener, &err);
   g_assert_no_error (err);
+
+  addr = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
+  saddr = g_inet_socket_address_new (addr, g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (boundaddr)));
+  g_object_unref (addr);
+  g_object_unref (boundaddr);
+
   g_socket_connect (client, saddr, NULL, &err);
   g_assert_no_error (err);
 
