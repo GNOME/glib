@@ -1860,7 +1860,7 @@ test_strinfo (void)
     "\0\0\0\xff";
   const guint32 *strinfo = (guint32 *) array;
   guint length = sizeof array / 4;
-  guint result;
+  guint result = 0;
 
   {
     /* build it and compare */
