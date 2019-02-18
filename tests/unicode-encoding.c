@@ -99,7 +99,7 @@ process (gint      line,
   const gchar *end;
   gboolean is_valid = g_utf8_validate (utf8, -1, &end);
   GError *error = NULL;
-  glong items_read, items_written;
+  gsize items_read, items_written;
 
   switch (status)
     {
@@ -159,7 +159,7 @@ process (gint      line,
 
       if (!ucs4_equal (ucs4_result, ucs4) ||
 	  items_read != strlen (utf8) ||
-	  items_written != ucs4_len)
+	  (gint) items_written != ucs4_len)
 	{
 	  fail ("line %d: results of conversion with status %d to ucs4 do not match expected.\n", line, status);
           print_ucs4 ("expected: ", ucs4, ucs4_len);
@@ -178,7 +178,7 @@ process (gint      line,
       ucs4_result = g_utf8_to_ucs4_fast (utf8, -1, &items_written);
 
       if (!ucs4_equal (ucs4_result, ucs4) ||
-	  items_written != ucs4_len)
+	  (gint) items_written != ucs4_len)
 	{
 	  fail ("line %d: results of fast conversion with status %d to ucs4 do not match expected.\n", line, status);
           print_ucs4 ("expected: ", ucs4, ucs4_len);
@@ -194,7 +194,7 @@ process (gint      line,
 	}
 
       if (strcmp (utf8_result, utf8) != 0 ||
-	  items_read != ucs4_len ||
+	  (gint) items_read != ucs4_len ||
 	  items_written != strlen (utf8))
 	{
 	  fail ("line %d: conversion back to utf8 did not match original\n", line);
@@ -258,7 +258,7 @@ process (gint      line,
 	}
 
       if (items_read != strlen (utf8) ||
-	  utf16_count (utf16_from_utf8) != items_written)
+	  utf16_count (utf16_from_utf8) != (gint) items_written)
 	{
 	  fail ("line %d: length error in conversion to ucs16\n", line);
 	  return;
@@ -270,8 +270,8 @@ process (gint      line,
 	  return;
 	}
 
-      if (items_read != ucs4_len ||
-	  utf16_count (utf16_from_ucs4) != items_written)
+      if ((gint) items_read != ucs4_len ||
+	  utf16_count (utf16_from_ucs4) != (gint) items_written)
 	{
 	  fail ("line %d: length error in conversion to ucs16\n", line);
 	  return;
@@ -290,7 +290,7 @@ process (gint      line,
 	  return;
 	}
 
-      if (items_read != utf16_count (utf16_from_utf8) ||
+      if ((gint) items_read != utf16_count (utf16_from_utf8) ||
 	  items_written != strlen (utf8))
 	{
 	  fail ("line %d: length error in conversion from ucs16 to utf8\n", line);
@@ -303,8 +303,8 @@ process (gint      line,
 	  return;
 	}
 
-      if (items_read != utf16_count (utf16_from_utf8) ||
-	  items_written != ucs4_len)
+      if ((gint) items_read != utf16_count (utf16_from_utf8) ||
+	  (gint) items_written != ucs4_len)
 	{
 	  fail ("line %d: length error in conversion from ucs16 to ucs4\n", line);
 	  return;
