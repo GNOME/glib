@@ -2173,7 +2173,7 @@ main (int argc, char **argv)
   gint retval;
   GOptionEntry entries[] = {
     { "version", 0, 0, G_OPTION_ARG_NONE, &show_version_and_exit, N_("Show program version and exit"), NULL },
-    { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
+    { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("Where to store the gschemas.compiled file"), N_("DIRECTORY") },
     { "strict", 0, 0, G_OPTION_ARG_NONE, &strict, N_("Abort on any errors in schemas"), NULL },
     { "dry-run", 0, 0, G_OPTION_ARG_NONE, &dry_run, N_("Do not write the gschema.compiled file"), NULL },
     { "allow-any-name", 0, 0, G_OPTION_ARG_NONE, &allow_any_name, N_("Do not enforce key name restrictions") },
