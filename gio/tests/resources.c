@@ -20,6 +20,7 @@
 #include <gio/gio.h>
 #include "gconstructor.h"
 #include "test_resources2.h"
+#include "digit_test_resources.h"
 
 static void
 test_resource (GResource *resource)
@@ -597,7 +598,7 @@ test_resource_binary_linked (void)
 
 /* Test resource whose xml file starts with more than one digit
  * and where no explicit c-name is given
- * Checks if resources are automatically registered and
+ * Checks if resources are sucessfully registered and
  * data can be found and read. */
 static void
 test_resource_digits (void)
@@ -962,6 +963,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   _g_test2_register_resource ();
+  _digit_test_register_resource ();
 
   g_test_add_func ("/resource/file", test_resource_file);
   g_test_add_func ("/resource/file-path", test_resource_file_path);
@@ -977,12 +979,12 @@ main (int   argc,
   /* This only uses automatic resources too, so it tests the constructors and destructors */
   g_test_add_func ("/resource/module", test_resource_module);
   g_test_add_func ("/resource/binary-linked", test_resource_binary_linked);
-  g_test_add_func ("/resource/digits", test_resource_digits);
 #endif
   g_test_add_func ("/resource/uri/query-info", test_uri_query_info);
   g_test_add_func ("/resource/uri/file", test_uri_file);
   g_test_add_func ("/resource/64k", test_resource_64k);
   g_test_add_func ("/resource/overlay", test_overlay);
+  g_test_add_func ("/resource/digits", test_resource_digits);
 
   return g_test_run();
 }
