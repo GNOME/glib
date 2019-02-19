@@ -27,6 +27,7 @@
 #include <gio/gdummyfile.h>
 #include <sys/types.h>
 #ifdef G_OS_UNIX
+#include <errno.h>
 #include <pwd.h>
 #endif
 #include <string.h>
@@ -158,17 +159,79 @@ g_local_vfs_parse_name (GVfs       *vfs,
 	  else
 	    {
               struct passwd *passwd_file_entry;
+              struct passwd pwd;
+              gpointer buffer = NULL;
               char *user_name;
+              glong buffer_size = -1;
 
-	      user_name = g_strndup (user_start, user_end - user_start);
-	      passwd_file_entry = getpwnam (user_name);
-	      g_free (user_name);
-	      
-	      if (passwd_file_entry != NULL &&
-		  passwd_file_entry->pw_dir != NULL)
-		user_prefix = g_strdup (passwd_file_entry->pw_dir);
-	      else
-		user_prefix = g_strdup (g_get_home_dir ());
+              user_name = g_strndup (user_start, user_end - user_start);
+
+#ifdef _SC_GETPW_R_SIZE_MAX
+              /* Get the recommended buffer size */
+              buffer_size = sysconf (_SC_GETPW_R_SIZE_MAX);
+#endif /* _SC_GETPW_R_SIZE_MAX */
+
+              if (buffer_size < 0)
+                buffer_size = 64;
+
+              do
+                {
+                  int retval, errsv;
+
+                  g_free (buffer);
+                  /* we allocate 6 extra bytes to work around a bug in
+                   * Mac OS < 10.3. See #156446
+                   */
+                  buffer = g_malloc (buffer_size + 6);
+
+                  errno = 0;
+                  retval = getpwnam_r (user_name, &pwd, buffer, buffer_size, &passwd_file_entry);
+                  errsv = errno;
+
+                  if (passwd_file_entry == NULL)
+                    {
+                      /* we bail out prematurely if the user id can't be found
+                       * (should be pretty rare case actually), or if the buffer
+                       * should be sufficiently big and lookups are still not
+                       * successful.
+                       */
+                      if (retval == 0 ||
+                          errsv == ENOENT || errsv == ESRCH ||
+                          errsv == EBADF || errsv == EPERM)
+                        {
+                          g_warning ("getpwuid_r(): failed due to unknown username (%s)",
+                                     user_name);
+                          break;
+                        }
+                      else if (errsv == ERANGE)
+                        {
+                          if (buffer_size > 32 * 1024)
+                            {
+                              g_warning ("getpwuid_r(): failed due to: %s.",
+                                         "not enough buffer space");
+                              break;
+                            }
+
+                          buffer_size *= 2;
+                          continue;
+                        }
+                      else
+                        {
+                          g_warning ("getpwuid_r(): failed due to: %s.",
+                                     g_strerror (errsv));
+                          break;
+                        }
+                    }
+                }
+              while (passwd_file_entry == NULL);
+
+              g_free (user_name);
+
+              if (passwd_file_entry != NULL &&
+                  passwd_file_entry->pw_dir != NULL)
+                user_prefix = g_strdup (passwd_file_entry->pw_dir);
+              else
+                user_prefix = g_strdup (g_get_home_dir ());
 	    }
 #else
 	  user_prefix = g_strdup (g_get_home_dir ());
