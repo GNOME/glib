@@ -110,9 +110,14 @@ gchar *_g_dbus_hexdump (const gchar *data, gsize len, guint indent);
 #ifdef G_OS_WIN32
 gchar *_g_dbus_win32_get_user_sid (void);
 
-void _g_dbus_win32_run_session_bus (void);
+/* The _g_dbus_win32_run_session_bus is exported from libgio dll on win32,
+ * but still is NOT part of API/ABI since it is declared in private header
+ * and used only by tool built from same sources.
+ */
+_GLIB_EXTERN void _g_dbus_win32_run_session_bus (void);
 gchar *_g_dbus_win32_get_session_address_dbus_launch (GError **error);
 #endif
+#define _GDBUS_ARG_WIN32_RUN_SESSION_BUS "_win32_run_session_bus"
 
 gchar *_g_dbus_get_machine_id (GError **error);
 

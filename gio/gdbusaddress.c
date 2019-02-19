@@ -1191,14 +1191,6 @@ get_session_address_dbus_launch (GError **error)
 /* end of G_OS_UNIX case */
 #elif defined(G_OS_WIN32)
 
-__declspec(dllexport) void CALLBACK g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow);
-
-__declspec(dllexport) void CALLBACK
-g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow)
-{
-  _g_dbus_win32_run_session_bus ();
-}
-
 static gchar *
 get_session_address_dbus_launch (GError **error)
 {
