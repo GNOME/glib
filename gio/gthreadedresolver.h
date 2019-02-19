@@ -34,6 +34,8 @@ typedef struct {
   GResolver parent_instance;
 
   GThreadPool *thread_pool;
+  GHashTable *dns_caches[3];
+  GMutex dns_cache_lock;
 } GThreadedResolver;
 
 typedef struct {
