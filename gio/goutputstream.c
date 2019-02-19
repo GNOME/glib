@@ -2410,32 +2410,76 @@ write_async_pollable (GPollableOutputStream *stream,
 {
   GError *error = NULL;
   WriteData *op = g_task_get_task_data (task);
-  gssize count_written;
+  GPollableOutputStreamInterface *iface = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream);
+  gsize count_written;
+  GPollableReturn res;
+  GSource *source;
 
   if (g_task_return_error_if_cancelled (task))
     return;
 
-  count_written = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream)->
-    write_nonblocking (stream, op->buffer, op->count_requested, &error);
-
-  if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
+  /* If the implementor provided write_nonblocking_pollable,
+   * use that, or fallback to write_nonblocking instead.*/
+  if (iface->write_nonblocking_pollable != NULL)
+    res = iface->write_nonblocking_pollable (stream,
+                                             op->buffer,
+                                             op->count_requested,
+                                             &count_written,
+                                             &error);
+  else
     {
-      GSource *source;
+      gssize _count_written;
 
-      g_error_free (error);
+      _count_written = iface->
+        write_nonblocking (stream, op->buffer, op->count_requested, &error);
 
+      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
+        {
+          g_warn_if_fail (_count_written == -1);
+          g_clear_error (&error);
+          res = G_POLLABLE_RETURN_WOULD_BLOCK;
+        }
+      else if (_count_written == -1)
+        {
+          g_warn_if_fail (error != NULL);
+          res = G_POLLABLE_RETURN_FAILED;
+        }
+      else
+        {
+          g_warn_if_fail (error == NULL);
+          count_written = (gsize) _count_written;
+          res = G_POLLABLE_RETURN_OK;
+        }
+    }
+
+  switch (res)
+    {
+    case G_POLLABLE_RETURN_OK:
+      /* Although g_output_stream_write takes a gsize, it actually expects
+       * a gssize and checks for it, so if this assetion is triggered the
+       * contract has been broken*/
+      g_assert (count_written <= G_MAXSSIZE);
+      g_warn_if_fail (error == NULL);
+      g_task_return_int (task, (gssize) count_written);
+      break;
+
+    case G_POLLABLE_RETURN_WOULD_BLOCK:
+      g_warn_if_fail (error == NULL);
       source = g_pollable_output_stream_create_source (stream,
                                                        g_task_get_cancellable (task));
       g_task_attach_source (task, source,
                             (GSourceFunc) write_async_pollable_ready);
       g_source_unref (source);
-      return;
-    }
+      break;
 
-  if (count_written == -1)
-    g_task_return_error (task, error);
-  else
-    g_task_return_int (task, count_written);
+    case G_POLLABLE_RETURN_FAILED:
+      g_warn_if_fail (error != NULL);
+      g_task_return_error (task, error);
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 static void
