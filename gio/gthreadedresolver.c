@@ -39,9 +39,124 @@
 
 G_DEFINE_TYPE (GThreadedResolver, g_threaded_resolver, G_TYPE_RESOLVER)
 
+/* These match Firefox */
+#define DNS_CACHE_MAX_SIZE 400
+#define DNS_CACHE_EXPIRE_SECONDS 60
+
+typedef struct {
+  GList *addresses; /* owned */
+  gint64 expiration;
+} CachedResponse;
+
+static void
+cached_response_free (CachedResponse *cache)
+{
+  g_resolver_free_addresses (cache->addresses);
+  g_free (cache);
+}
+
+static GHashTable *
+get_dns_cache_for_flags (GThreadedResolver        *gtr,
+                         GResolverNameLookupFlags  flags)
+{
+  /* A cache is kept for each type of response to avoid
+   * the over complication of combining or filtering results.
+   */
+  if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY)
+    return gtr->dns_caches[0];
+  else if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY)
+    return gtr->dns_caches[1];
+  else
+    return gtr->dns_caches[2];
+}
+
+static gpointer
+copy_object (gconstpointer obj, gpointer user_data)
+{
+  return g_object_ref (G_OBJECT (obj));
+}
+
+static GList *
+copy_addresses (GList *addresses)
+{
+  return g_list_copy_deep (addresses, copy_object, NULL);
+}
+
+static void
+update_dns_cache (GThreadedResolver        *gtr,
+                  const char               *hostname,
+                  GList                    *addresses,
+                  GResolverNameLookupFlags  flags)
+{
+  CachedResponse *cached;
+  GHashTable *cache;
+  gint64 now = g_get_monotonic_time ();
+  GHashTableIter iter;
+  size_t size = 0;
+
+  cache = get_dns_cache_for_flags (gtr, flags);
+  cached = g_new (CachedResponse, 1);
+  cached->addresses = copy_addresses (addresses);
+  cached->expiration = g_get_monotonic_time () + (DNS_CACHE_EXPIRE_SECONDS * 1000);
+
+  g_mutex_lock (&gtr->dns_cache_lock);
+
+  g_hash_table_insert (cache, g_strdup (hostname), cached);
+
+  /* Cleanup while we are at it. */
+  g_hash_table_iter_init (&iter, cache);
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer*) &cached))
+    {
+      if (cached->expiration <= now || size > DNS_CACHE_MAX_SIZE)
+        g_hash_table_iter_remove (&iter);
+      else
+        ++size;
+    }
+
+  g_mutex_unlock (&gtr->dns_cache_lock);
+}
+
+/*
+ * Returns: (transfer full): List of addresses
+ */
+static GList *
+query_dns_cache (GThreadedResolver        *gtr,
+                 const char               *hostname,
+                 GResolverNameLookupFlags  flags)
+{
+  CachedResponse *cached;
+  GHashTable *cache;
+  GList *addresses = NULL;
+  gint64 now = g_get_monotonic_time ();
+
+  cache = get_dns_cache_for_flags (gtr, flags);
+
+  g_mutex_lock (&gtr->dns_cache_lock);
+
+  cached = g_hash_table_lookup (cache, hostname);
+  if (cached && cached->expiration <= now)
+    addresses = copy_addresses (cached->addresses);
+
+  g_mutex_unlock (&gtr->dns_cache_lock);
+
+  return addresses;
+}
+
 static void
 g_threaded_resolver_init (GThreadedResolver *gtr)
 {
+  guint i;
+  for (i = 0; i < G_N_ELEMENTS (gtr->dns_caches); ++i)
+    gtr->dns_caches[i] = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) cached_response_free);
+}
+
+static void
+g_threaded_resolver_finalize (GObject *object)
+{
+  GThreadedResolver *gtr = (GThreadedResolver*) object;
+  guint i;
+  for (i = 0; i < G_N_ELEMENTS (gtr->dns_caches); ++i)
+    g_hash_table_destroy (gtr->dns_caches[i]);
 }
 
 static GResolverError
@@ -66,24 +181,46 @@ g_resolver_error_from_addrinfo_error (gint err)
 
 typedef struct {
   char *hostname;
-  int address_family;
+  GThreadedResolver *resolver;
+  GResolverNameLookupFlags flags;
 } LookupData;
 
 static LookupData *
-lookup_data_new (const char *hostname,
-                 int         address_family)
+lookup_data_new (GThreadedResolver        *gtr,
+                 const char               *hostname,
+                 GResolverNameLookupFlags  flags)
 {
   LookupData *data = g_new (LookupData, 1);
   data->hostname = g_strdup (hostname);
-  data->address_family = address_family;
+  data->resolver = g_object_ref (gtr);
+  data->flags = flags;
   return data;
 }
 
 static void
 lookup_data_free (LookupData *data)
 {
+  g_object_unref (data->resolver);
   g_free (data->hostname);
   g_free (data);
+}
+
+static int
+flags_to_family (GResolverNameLookupFlags flags)
+{
+  int address_family = AF_UNSPEC;
+
+  if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY)
+    address_family = AF_INET;
+
+  if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY)
+    {
+      address_family = AF_INET6;
+      /* You can only filter by one family at a time */
+      g_return_val_if_fail (!(flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY), address_family);
+    }
+
+  return address_family;
 }
 
 static void
@@ -109,7 +246,7 @@ do_lookup_by_name (GTask         *task,
   addrinfo_hints.ai_socktype = SOCK_STREAM;
   addrinfo_hints.ai_protocol = IPPROTO_TCP;
 
-  addrinfo_hints.ai_family = lookup_data->address_family;
+  addrinfo_hints.ai_family = flags_to_family (lookup_data->flags);
   retval = getaddrinfo (hostname, NULL, &addrinfo_hints, &res);
 
   if (retval == 0)
@@ -140,6 +277,7 @@ do_lookup_by_name (GTask         *task,
           addresses = g_list_reverse (addresses);
           g_task_return_pointer (task, addresses,
                                  (GDestroyNotify)g_resolver_free_addresses);
+          update_dns_cache (lookup_data->resolver, hostname, addresses, lookup_data->flags);
         }
       else
         {
@@ -166,46 +304,6 @@ do_lookup_by_name (GTask         *task,
 }
 
 static GList *
-lookup_by_name (GResolver     *resolver,
-                const gchar   *hostname,
-                GCancellable  *cancellable,
-                GError       **error)
-{
-  GTask *task;
-  GList *addresses;
-  LookupData *data;
-
-  data = lookup_data_new (hostname, AF_UNSPEC);
-  task = g_task_new (resolver, cancellable, NULL, NULL);
-  g_task_set_source_tag (task, lookup_by_name);
-  g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
-  g_task_set_return_on_cancel (task, TRUE);
-  g_task_run_in_thread_sync (task, do_lookup_by_name);
-  addresses = g_task_propagate_pointer (task, error);
-  g_object_unref (task);
-
-  return addresses;
-}
-
-static int
-flags_to_family (GResolverNameLookupFlags flags)
-{
-  int address_family = AF_UNSPEC;
-
-  if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY)
-    address_family = AF_INET;
-
-  if (flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY)
-    {
-      address_family = AF_INET6;
-      /* You can only filter by one family at a time */
-      g_return_val_if_fail (!(flags & G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY), address_family);
-    }
-
-  return address_family;
-}
-
-static GList *
 lookup_by_name_with_flags (GResolver                 *resolver,
                            const gchar               *hostname,
                            GResolverNameLookupFlags   flags,
@@ -215,17 +313,41 @@ lookup_by_name_with_flags (GResolver                 *resolver,
   GTask *task;
   GList *addresses;
   LookupData *data;
+  GList *cached;
+  GThreadedResolver *gtr = (GThreadedResolver*) resolver;
 
-  data = lookup_data_new (hostname, AF_UNSPEC);
   task = g_task_new (resolver, cancellable, NULL, NULL);
   g_task_set_source_tag (task, lookup_by_name_with_flags);
-  g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
   g_task_set_return_on_cancel (task, TRUE);
-  g_task_run_in_thread_sync (task, do_lookup_by_name);
+
+  cached = query_dns_cache (gtr, hostname, flags);
+  if (cached)
+      g_task_return_pointer (task, cached,
+                            (GDestroyNotify)g_resolver_free_addresses);
+  else
+    {
+      data = lookup_data_new (gtr, hostname, flags);
+      g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
+      g_task_run_in_thread_sync (task, do_lookup_by_name);
+    }
+
   addresses = g_task_propagate_pointer (task, error);
   g_object_unref (task);
 
   return addresses;
+}
+
+static GList *
+lookup_by_name (GResolver     *resolver,
+                const gchar   *hostname,
+                GCancellable  *cancellable,
+                GError       **error)
+{
+  return lookup_by_name_with_flags (resolver,
+                                    hostname,
+                                    G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT,
+                                    cancellable,
+                                    error);
 }
 
 static void
@@ -238,13 +360,24 @@ lookup_by_name_with_flags_async (GResolver                *resolver,
 {
   GTask *task;
   LookupData *data;
+  GList *cached;
+  GThreadedResolver *gtr = (GThreadedResolver*) resolver;
 
-  data = lookup_data_new (hostname, flags_to_family (flags));
   task = g_task_new (resolver, cancellable, callback, user_data);
   g_task_set_source_tag (task, lookup_by_name_with_flags_async);
-  g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
   g_task_set_return_on_cancel (task, TRUE);
-  g_task_run_in_thread (task, do_lookup_by_name);
+
+  cached = query_dns_cache (gtr, hostname, flags);
+  if (cached)
+      g_task_return_pointer (task, cached,
+                            (GDestroyNotify)g_resolver_free_addresses);
+  else
+    {
+      data = lookup_data_new (gtr, hostname, flags);
+      g_task_set_task_data (task, data, (GDestroyNotify)lookup_data_free);
+      g_task_run_in_thread (task, do_lookup_by_name);
+    }
+
   g_object_unref (task);
 }
 
@@ -1073,6 +1206,7 @@ static void
 g_threaded_resolver_class_init (GThreadedResolverClass *threaded_class)
 {
   GResolverClass *resolver_class = G_RESOLVER_CLASS (threaded_class);
+  GObjectClass *object_class = G_OBJECT_CLASS (threaded_class);
 
   resolver_class->lookup_by_name                   = lookup_by_name;
   resolver_class->lookup_by_name_async             = lookup_by_name_async;
@@ -1086,4 +1220,6 @@ g_threaded_resolver_class_init (GThreadedResolverClass *threaded_class)
   resolver_class->lookup_records                   = lookup_records;
   resolver_class->lookup_records_async             = lookup_records_async;
   resolver_class->lookup_records_finish            = lookup_records_finish;
+
+  object_class->finalize                          = g_threaded_resolver_finalize;
 }
