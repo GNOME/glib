@@ -408,7 +408,11 @@ g_socket_listener_add_address (GSocketListener  *listener,
  *
  * Helper function for g_socket_listener_add_address() that
  * creates a TCP/IP socket listening on IPv4 and IPv6 (if
- * supported) on the specified port on all interfaces.
+ * supported) on the specified port on all interfaces. If possible, the
+ * #GSocketListener will listen on both IPv4 and IPv6 (listening on the same
+ * port on both). If a socket family is supported, but listening on it fails,
+ * an error will be returned; success will only be returned if listening on all
+ * supported socket families succeeded.
  *
  * @source_object will be passed out in the various calls
  * to accept to identify this particular source, which is
