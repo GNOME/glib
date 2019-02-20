@@ -992,7 +992,7 @@ main (int argc, char **argv)
 	    {
 	      const char *first = G_CSET_A_2_Z G_CSET_a_2_z "_";
 	      const char *rest = G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "_";
-	      if (strchr ((i == 0) ? first : rest, base[i]) != NULL)
+	      if (strchr ((s->len == 0) ? first : rest, base[i]) != NULL)
 		g_string_append_c (s, base[i]);
 	      else if (base[i] == '-')
 		g_string_append_c (s, '_');

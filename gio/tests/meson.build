@@ -525,6 +525,27 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--c-name', '_g_test1',
                '@INPUT@'])
 
+  digit_test_resources_c = custom_target('digit_test_resources.c',
+    input : '111_digit_test.gresource.xml',
+    output : 'digit_test_resources.c',
+    command : [glib_compile_resources,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--sourcedir=' + meson.current_build_dir(),
+               '--generate-source',
+               '--manual-register',
+               '@INPUT@'])
+
+  digit_test_resources_h = custom_target('digit_test_resources.h',
+    input : '111_digit_test.gresource.xml',
+    output : 'digit_test_resources.h',
+    command : [glib_compile_resources,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--generate',
+               '--manual-register',
+               '@INPUT@'])
+
   # referenced by test.gresource.xml
   test_generated_txt = configure_file(input : 'test1.txt',
     output : 'test-generated.txt',
@@ -581,14 +602,14 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
       'resources' : {
         'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
                            test_resources2_h, test_resources_binary_c,
-                           test_resources_binary2],
+                           test_resources_binary2, digit_test_resources_c, digit_test_resources_h],
       },
     }
   else
     gio_tests += {
       'resources' : {
         'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
-                           test_resources2_h],
+                           test_resources2_h, digit_test_resources_c, digit_test_resources_h],
       },
     }
   endif

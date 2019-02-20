@@ -20,6 +20,7 @@
 #include <gio/gio.h>
 #include "gconstructor.h"
 #include "test_resources2.h"
+#include "digit_test_resources.h"
 
 static void
 test_resource (GResource *resource)
@@ -595,6 +596,38 @@ test_resource_binary_linked (void)
   #endif /* if __linux__ */
 }
 
+/* Test resource whose xml file starts with more than one digit
+ * and where no explicit c-name is given
+ * Checks if resources are sucessfully registered and
+ * data can be found and read. */
+static void
+test_resource_digits (void)
+{
+  GError *error = NULL;
+  gboolean found;
+  gsize size;
+  guint32 flags;
+  GBytes *data;
+
+  found = g_resources_get_info ("/digit_test/test1.txt",
+				G_RESOURCE_LOOKUP_FLAGS_NONE,
+				&size, &flags, &error);
+  g_assert_true (found);
+  g_assert_no_error (error);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpuint (flags, ==, 0);
+
+  data = g_resources_lookup_data ("/digit_test/test1.txt",
+				  G_RESOURCE_LOOKUP_FLAGS_NONE,
+				  &error);
+  g_assert_nonnull (data);
+  g_assert_no_error (error);
+  size = g_bytes_get_size (data);
+  g_assert_cmpint (size, ==, 6);
+  g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
+  g_bytes_unref (data);
+}
+
 static void
 test_resource_module (void)
 {
@@ -930,6 +963,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   _g_test2_register_resource ();
+  _digit_test_register_resource ();
 
   g_test_add_func ("/resource/file", test_resource_file);
   g_test_add_func ("/resource/file-path", test_resource_file_path);
@@ -950,6 +984,7 @@ main (int   argc,
   g_test_add_func ("/resource/uri/file", test_uri_file);
   g_test_add_func ("/resource/64k", test_resource_64k);
   g_test_add_func ("/resource/overlay", test_overlay);
+  g_test_add_func ("/resource/digits", test_resource_digits);
 
   return g_test_run();
 }
