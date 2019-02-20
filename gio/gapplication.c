@@ -42,6 +42,11 @@
 #include "glibintl.h"
 #include "gmarshal-internal.h"
 
+#ifdef G_OS_UNIX
+/* For g_unix_signal_source_new() */
+#include <glib-unix.h>
+#endif
+
 #include <string.h>
 
 /**
@@ -107,6 +112,20 @@
  * attempts to acquire the bus name of your application (which happens in
  * g_application_register()).  Unfortunately, this means that you cannot use
  * g_application_get_is_remote() to decide if you want to register object paths.
+ *
+ * #GApplication supports ‘restart data’ if it is supported by the platform.
+ * This is a way of saving application state at key times, so that the
+ * application can be restored to a similar state the next time it is run. The
+ * state would typically be saved before the user logs out, before the app is
+ * stopped to save resources, or whenever the app significantly changes state
+ * (such as opening a new document). In order to trigger saving state, call
+ * g_application_notify_restart_data_changed(). This function is automatically
+ * called when the process receives a `SIGTERM` signal (on Unix).
+ *
+ * In order to use restart data support, your application must fulfil a few
+ * criteria — see g_application_get_supports_restart_data(). Some #GApplication
+ * subclasses, such as #GtkApplication, may support this transparently by
+ * default.
  *
  * GApplication also implements the #GActionGroup and #GActionMap
  * interfaces and lets you easily export actions by adding them with
@@ -220,6 +239,10 @@
  * @handle_local_options: invoked locally after the parsing of the commandline
  *  options has occurred. Since: 2.40
  * @name_lost: invoked when another instance is taking over the name. Since: 2.60
+ * @build_restart_data: serialize the key parts of the application’s state so
+ *   that it can be saved as restart data. Since: 2.78
+ * @consume_restart_data: apply the restart data to the application’s state, to
+ *   restore the saved state. Since: 2.78
  *
  * Virtual function table for #GApplication.
  *
@@ -261,6 +284,10 @@ struct _GApplicationPrivate
 
   /* Allocated option strings, from g_application_add_main_option() */
   GSList             *option_strings;
+
+#ifdef G_OS_UNIX
+  GSource            *sigterm_source;  /* (nullable) (owned) */
+#endif
 };
 
 enum
@@ -1386,6 +1413,14 @@ g_application_finalize (GObject *object)
 {
   GApplication *application = G_APPLICATION (object);
 
+#ifdef G_OS_UNIX
+  if (application->priv->sigterm_source != NULL)
+    {
+      g_source_destroy (application->priv->sigterm_source);
+      g_clear_pointer (&application->priv->sigterm_source, g_source_unref);
+    }
+#endif  /* G_OS_UNIX */
+
   if (application->priv->inactivity_timeout_id)
     g_source_remove (application->priv->inactivity_timeout_id);
 
@@ -2361,6 +2396,20 @@ g_application_open (GApplication  *application,
                    0, files, n_files, hint);
 }
 
+#ifdef G_OS_UNIX
+static gboolean
+sigterm_cb (gpointer user_data)
+{
+  GApplication *application = G_APPLICATION (user_data);
+
+  /* Give the application a chance to save its restart data before the SIGTERM
+   * likely causes the application to exit. */
+  g_application_notify_restart_data_changed (application);
+
+  return G_SOURCE_CONTINUE;
+}
+#endif  /* G_OS_UNIX */
+
 /* Run {{{1 */
 /**
  * g_application_run:
@@ -2569,6 +2618,18 @@ g_application_run (GApplication  *application,
         g_timeout_add (10000, inactivity_timeout_expired, application);
     }
 
+#ifdef G_OS_UNIX
+  if (application->priv->is_registered &&
+      !application->priv->is_remote &&
+      g_application_get_supports_restart_data (application))
+    {
+      application->priv->sigterm_source = g_unix_signal_source_new (SIGTERM);
+      g_source_set_callback (application->priv->sigterm_source, sigterm_cb, application, NULL);
+      g_source_attach (application->priv->sigterm_source, context);
+    }
+#endif  /* G_OS_UNIX */
+
+  /* Run until the application is told to quit. */
   while (application->priv->use_count || application->priv->inactivity_timeout_id)
     {
       if (application->priv->must_quit_now)
@@ -2578,8 +2639,17 @@ g_application_run (GApplication  *application,
       status = 0;
     }
 
+  /* Shutdown */
   if (application->priv->is_registered && !application->priv->is_remote)
     {
+#ifdef G_OS_UNIX
+      if (application->priv->sigterm_source != NULL)
+        {
+          g_source_destroy (application->priv->sigterm_source);
+          g_clear_pointer (&application->priv->sigterm_source, g_source_unref);
+        }
+#endif  /* G_OS_UNIX */
+
       g_signal_emit (application, g_application_signals[SIGNAL_SHUTDOWN], 0);
 
       if (!application->priv->did_shutdown)
@@ -3138,6 +3208,138 @@ g_application_unbind_busy_property (GApplication *application,
     }
 
   g_signal_handler_disconnect (object, handler_id);
+}
+
+/* Session handling {{{1 */
+
+/**
+ * g_application_get_supports_restart_data:
+ * @application: a #GApplication
+ *
+ * Get whether the @application supports saving and loading restart data to
+ * restore its state after being restarted.
+ *
+ * As well as @application supporting restart data, the platform it’s running on
+ * must also support it for the feature to work.
+ *
+ * A #GApplication supports restart data if it
+ *  - does not have the %G_APPLICATION_NON_UNIQUE flag,
+ *  - implements #GApplicationClass.build_restart_data, and
+ *  - implements #GApplicationClass.consume_restart_data.
+ *
+ * Returns: %TRUE if @application supports restart data, %FALSE otherwise
+ * Since: 2.78
+ */
+gboolean
+g_application_get_supports_restart_data (GApplication *application)
+{
+  GApplicationClass *klass;
+
+  g_return_val_if_fail (G_IS_APPLICATION (application), FALSE);
+
+  klass = G_APPLICATION_GET_CLASS (application);
+
+  return (!(application->priv->flags & G_APPLICATION_NON_UNIQUE) &&
+          klass->build_restart_data != NULL &&
+          klass->consume_restart_data != NULL);
+}
+
+/**
+ * g_application_consume_restart_data:
+ * @application: a #GApplication
+ * @tag: (nullable): tag for versioning the data, or %NULL to not version it
+ * @data: (nullable): data to store for the next restart, or %NULL to clear it
+ *
+ * Set the restart data which will be used to restore the application’s state
+ * next time it’s restarted.
+ *
+ * Applications may be restarted after being interrupted by the system to save
+ * resources; or after they crash; or when restarting the computer. This list is
+ * not exhaustive.
+ *
+ * Calling g_application_consume_restart_data() will cause a notification to be
+ * sent to the session manager, which will cause the data to be saved at some
+ * point in the near future. It’s not guaranteed that the data has been saved by
+ * the time this function returns. Depending on system configuration, the data
+ * may not be saved at all. If g_application_consume_restart_data() is called
+ * multiple times, multiple notifications will be sent — this can be used to
+ * request that the restart data is saved after key interactions in your
+ * application’s interface (such as the user changing the set of open documents
+ * or tabs).
+ *
+ * It is an error to call this function if @application does not support restart
+ * data (see g_application_get_supports_restart_data()).
+ *
+ * If @tag is specified, it will be stored alongside the data and returned when
+ * the data is restored. It can be used to detect incompatibilities between the
+ * software and the data. For example, by setting it to the software version, a
+ * restart of an upgraded software version using data stored by an older version
+ * can be detected and handled. No format is mandated for @tag, other than that,
+ * if non-%NULL, it must be non-empty and valid UTF-8.
+ *
+ * If @data is %NULL, any stored restart data will be cleared. @tag will be
+ * ignored.
+ *
+ * If @data is non-%NULL, it may have any type. No type checks are performed on
+ * the data when it is loaded or saved. Applications are responsible for doing
+ * this if needed.
+ *
+ * The size of @data should be at most a few hundred kilobytes. If your
+ * application needs to store more state than this, such as unsaved and
+ * in-progress documents, they should be stored externally (in an autosave
+ * folder, for example), and a path to them stored in @data.
+ *
+ * If @data is a floating #GVariant, it will be consumed.
+ *
+ * Since: 2.78
+ */
+void
+g_application_consume_restart_data (GApplication *application,
+                                    const char   *tag,
+                                    GVariant     *data)
+{
+  GApplicationClass *klass;
+
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (g_application_get_supports_restart_data (application));
+  g_return_if_fail (tag == NULL || *tag != '\0');
+  g_return_if_fail (data != NULL);
+
+  /* Ensure the @data passed to consume_restart_data() is not floating. */
+  g_variant_ref_sink (data);
+
+  klass = G_APPLICATION_GET_CLASS (application);
+  klass->consume_restart_data (application, tag, data);
+
+  g_variant_unref (data);
+}
+
+/**
+ * g_application_notify_restart_data_changed:
+ * @application: a #GApplication
+ *
+ * Notify the platform that this application’s restart data has changed
+ * significantly.
+ *
+ * This should be used to notify the platform of significant changes in the
+ * state of the application, such as completing a setup process or changing the
+ * set of open documents.
+ *
+ * The platform may then query the application for its updated restart data and
+ * save it so that it can be loaded again when the application is next started.
+ *
+ * It is an error to call this function if @application does not support restart
+ * data (see g_application_get_supports_restart_data()).
+ *
+ * Since: 2.78
+ */
+void
+g_application_notify_restart_data_changed (GApplication *application)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (g_application_get_supports_restart_data (application));
+
+  g_application_impl_notify_restart_data_changed (application->priv->impl);
 }
 
 /* Epilogue {{{1 */

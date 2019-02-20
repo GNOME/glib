@@ -119,8 +119,55 @@ struct _GApplicationClass
                                                      GVariantDict              *options);
   gboolean                  (* name_lost)           (GApplication              *application);
 
+  /**
+   * GApplicationClass::build_restart_data:
+   * @application: a #GApplication
+   * @out_tag: (optional) (nullable) (out) (transfer full): return location for
+   *   a tag to version the restart data, or %NULL to ignore; the returned tag
+   *   may be %NULL if no restart data is being returned
+   *
+   * Serialize the key parts of the application’s state so that it can be saved
+   * as restart data.
+   *
+   * The returned #GVariant can have any type which is valid to send over D-Bus.
+   *
+   * Returns: (transfer full) (nullable): restart data for @application; this
+   *   may be a floating #GVariant
+   *
+   * Since: 2.78
+   */
+  GVariant                 *(* build_restart_data)  (GApplication              *application,
+                                                     char                     **out_tag);
+
+  /**
+   * GApplicationClass::consume_restart_data:
+   * @application: a #GApplication
+   * @tag: (nullable): a tag to version the restart data, or %NULL if none was
+   *   set
+   * @data: (not nullable): the restart data; this is guaranteed to not be
+   *   floating
+   *
+   * Apply the restart data to the application’s state, to restore the saved
+   * state.
+   *
+   * This will typically be called early in the lifetime of @application, so
+   * that it can initialize its state correctly according to @data.
+   *
+   * It will not be called if there is no restart data to load.
+   *
+   * Implementations should check that @tag matches what they expect (typically
+   * the current application version), and may discard the @data if there is a
+   * mismatch. This will typically mean that @data dates from a previous version
+   * of the application, and may not be compatible.
+   *
+   * Since: 2.78
+   */
+  void                      (* consume_restart_data)(GApplication              *application,
+                                                     const char                *tag,
+                                                     GVariant                  *data);
+
   /*< private >*/
-  gpointer padding[7];
+  gpointer padding[5];
 };
 
 GIO_AVAILABLE_IN_ALL
@@ -251,6 +298,15 @@ GIO_AVAILABLE_IN_2_44
 void                    g_application_unbind_busy_property              (GApplication             *application,
                                                                          gpointer                  object,
                                                                          const gchar              *property);
+
+GIO_AVAILABLE_IN_2_78
+gboolean                g_application_get_supports_restart_data         (GApplication             *application);
+GIO_AVAILABLE_IN_2_78
+void                    g_application_consume_restart_data              (GApplication             *application,
+                                                                         const char               *tag,
+                                                                         GVariant                 *data);
+GIO_AVAILABLE_IN_2_78
+void                    g_application_notify_restart_data_changed       (GApplication             *application);
 
 G_END_DECLS
 

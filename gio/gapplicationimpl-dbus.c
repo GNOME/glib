@@ -67,7 +67,8 @@ static const gchar org_gtk_Application_xml[] =
         "<arg type='a{sv}' name='platform-data' direction='in'/>"
         "<arg type='i' name='exit-status' direction='out'/>"
       "</method>"
-    "<property name='Busy' type='b' access='read'/>"
+      "<property name='Busy' type='b' access='read'/>"
+      "<property name='RestartData' type='sv' access='read'/>"
     "</interface>"
   "</node>";
 
@@ -130,6 +131,8 @@ struct _GApplicationImpl
 
 static GApplicationCommandLine *
 g_dbus_command_line_new (GDBusMethodInvocation *invocation);
+static GVariant *format_restart_data (const char *restart_data_tag,
+                                      GVariant   *restart_data);
 
 static GVariant *
 g_application_impl_get_property (GDBusConnection *connection,
@@ -141,9 +144,32 @@ g_application_impl_get_property (GDBusConnection *connection,
                                  gpointer      user_data)
 {
   GApplicationImpl *impl = user_data;
+  GApplicationClass *class;
+
+  class = G_APPLICATION_GET_CLASS (impl->app);
 
   if (strcmp (property_name, "Busy") == 0)
     return g_variant_new_boolean (impl->busy);
+  else if (strcmp (property_name, "RestartData") == 0)
+    {
+      GVariant *restart_data = NULL;
+      char *restart_data_tag = NULL;
+      GVariant *out = NULL;
+
+      /* Interpret a o.fdo.DBus.Properties.Get() call on the property as an
+       * explicit request to update the restart data. */
+      if (class->build_restart_data != NULL)
+        restart_data = class->build_restart_data (impl->app, &restart_data_tag);
+      if (restart_data != NULL)
+        g_variant_take_ref (restart_data);
+
+      out = format_restart_data (restart_data_tag, restart_data);
+
+      g_clear_pointer (&restart_data, g_variant_unref);
+      g_clear_pointer (&restart_data_tag, g_free);
+
+      return g_steal_pointer (&out);
+    }
 
   g_assert_not_reached ();
 
@@ -151,14 +177,16 @@ g_application_impl_get_property (GDBusConnection *connection,
 }
 
 static void
-send_property_change (GApplicationImpl *impl)
+send_property_change (GApplicationImpl *impl,
+                      const char       *property_name,
+                      GVariant         *value)
 {
   GVariantBuilder builder;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
   g_variant_builder_add (&builder,
                          "{sv}",
-                         "Busy", g_variant_new_boolean (impl->busy));
+                         property_name, value);
 
   g_dbus_connection_emit_signal (impl->session_bus,
                                  NULL,
@@ -594,8 +622,43 @@ g_application_impl_set_busy_state (GApplicationImpl *impl,
   if (impl->busy != busy)
     {
       impl->busy = busy;
-      send_property_change (impl);
+      send_property_change (impl, "Busy", g_variant_new_boolean (impl->busy));
     }
+}
+
+static GVariant *
+format_restart_data (const char *restart_data_tag,
+                     GVariant   *restart_data)
+{
+  /* The wire format of ‘no restart data’ is `("", <"">)`, since D-Bus doesn’t
+   * currently support maybe types. */
+  gboolean no_data = (restart_data == NULL);
+  return g_variant_new ("(sv)",
+                        (no_data || restart_data_tag == NULL) ? "" : restart_data_tag,
+                        no_data ? g_variant_new_string ("") : restart_data);
+}
+
+void
+g_application_impl_notify_restart_data_changed (GApplicationImpl *impl)
+{
+  GApplicationClass *app_class = G_APPLICATION_GET_CLASS (impl->app);
+  GVariant *restart_data = NULL;
+  char *restart_data_tag = NULL;
+  GVariant *out = NULL;
+
+  if (app_class->build_restart_data != NULL)
+    restart_data = app_class->build_restart_data (impl->app, &restart_data_tag);
+  if (restart_data != NULL)
+    g_variant_take_ref (restart_data);
+
+  out = format_restart_data (restart_data_tag, restart_data);
+
+  g_clear_pointer (&restart_data, g_variant_unref);
+  g_clear_pointer (&restart_data_tag, g_free);
+
+  send_property_change (impl, "RestartData", out);
+
+  g_variant_unref (out);
 }
 
 void

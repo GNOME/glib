@@ -3325,6 +3325,10 @@ g_application_set_option_context_description
 g_application_set_default
 g_application_get_default
 <SUBSECTION>
+g_application_get_supports_restart_data
+g_application_consume_restart_data
+g_application_notify_restart_data_changed
+<SUBSECTION>
 g_application_mark_busy
 g_application_unmark_busy
 g_application_get_is_busy
