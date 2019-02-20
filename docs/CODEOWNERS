@@ -1,0 +1,80 @@
+# These are the people responsible for subsystems in GLib; if you're opening
+# a merge request for files listed here, please add the following people to
+# the list of reviewers
+
+# The syntax of this file is defined by GitLab:
+#   https://docs.gitlab.com/ee/user/project/code_owners.html
+# Which, in turn, is similar to the .gitignore and .gitattributes files:
+#
+#  - comments start with `#`
+#  - the first column contains paths and globs
+#  - the second column contains GitLab user names or email addresses,
+#    separated by spaces
+#
+# The last matching glob (rather than the union of *all* matching globs) gives
+# the owners of a piece of code.
+#
+# If you want to be responsible for code reviews in specific sections of
+# the GLib code base, add yourself here.
+
+# Overall maintainers
+*	@pwithnall @ebassi
+
+# Build system
+meson.build		@xclaesse @nirbheek @pwithnall
+meson_options.txt	@xclaesse @nirbheek @pwithnall
+subprojects/		@xclaesse @nirbheek @pwithnall
+
+# CI integration
+.gitlab-ci*	@pwithnall @xclaesse @creiter
+
+# macOS support
+*osx*	@jralls @pwithnall @sdroege
+*.m	@jralls @pwithnall @sdroege
+
+# Windows support
+*win32*	@lrn @creiter @fanc999 @pwithnall @sdroege
+
+# Windows support (MSVC specific)
+*msvc*	@fanc999 @creiter @pwithnall @sdroege
+
+# Android support
+*android*	@xclaesse @pwithnall @sdroege
+
+# BSD support
+*bsd*		@jmatthew @ajacoutot @pwithnall
+*kqueue*	@jmatthew @ajacoutot @pwithnall
+
+# flatpak portals
+gio/*portal*	@matthiasc @alexl @pwithnall
+
+# Networking
+gio/g*{tcp,udp,tls,socket,resolver,proxy,network,inet,datagram}*	@mcatanzaro @pgriffis @pwithnall @sdroege
+
+# D-Bus
+gio/g*bus*	@smcv @pwithnall
+
+# I/O
+gio/g*{file,vfs,mount,drive,volume}*	@oholy @alexl @pwithnall @sdroege
+gio/g*stream*				@alexl @pwithnall @sdroege
+gio/gio-tool*				@oholy @alexl @pwithnall
+
+# Generic bits of GLib
+glib/	@ebassi @pwithnall @sdroege
+
+# GObject type system
+gobject/	@ebassi @pwithnall @sdroege
+
+# GVariant
+glib/gvariant*	@pwithnall @sdroege
+
+# grefcount, GRcBox and GRefString
+glib/gref{count,string}.[ch]	@ebassi @pwithnall @sdroege
+glib/grc*.[ch]			@ebassi @pwithnall @sdroege
+glib/garc*.[ch]			@ebassi @pwithnall @sdroege
+
+# Logging
+glib/gmessages.[ch]	@pwithnall @sdroege
+
+# Google clusterfuzz support
+fuzzing/	@pwithnall

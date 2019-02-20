@@ -167,7 +167,7 @@ core developers review your contribution.
 
 Each contribution is reviewed by the core developers of the GLib project.
 
-The [CODE-OWNERS](./docs/CODE-OWNERS) document contains the list of core
+The [CODEOWNERS](./docs/CODEOWNERS) document contains the list of core
 contributors to GLib and the areas for which they are responsible; you
 should ensure to receive their review and signoff on your changes.
 
