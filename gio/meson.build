@@ -754,7 +754,7 @@ gioenumtypes_c = custom_target('gioenumtypes_c',
              '--template', files('gioenumtypes.c.template'),
              '@INPUT@', gnetworking_h])
 
-gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h])
+gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h, gobjectenumtypes_h])
 
 # inotify
 if glib_conf.has('HAVE_SYS_INOTIFY_H') and have_func_inotify_init1
