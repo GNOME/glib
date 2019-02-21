@@ -87,7 +87,21 @@ on_timer (GCancellable *cancel)
 }
 
 static void
-test_happy_eyeballs_cancel (void)
+on_event (GSocketClient      *client,
+          GSocketClientEvent  event,
+          GSocketConnectable *connectable,
+          GIOStream          *connection,
+          gboolean           *got_completed_event)
+{
+  if (event == G_SOCKET_CLIENT_COMPLETE)
+    {
+      *got_completed_event = TRUE;
+      g_assert_null (connection);
+    }
+}
+
+static void
+test_happy_eyeballs_cancel_delayed (void)
 {
   GSocketClient *client;
   GSocketService *service;
@@ -95,6 +109,10 @@ test_happy_eyeballs_cancel (void)
   guint16 port;
   GMainLoop *loop;
   GCancellable *cancel;
+  gboolean got_completed_event = FALSE;
+
+  /* This just tests that cancellation works as expected, still emits the completed signal,
+   * and never returns a connection */
 
   loop = g_main_loop_new (NULL, FALSE);
 
@@ -107,8 +125,45 @@ test_happy_eyeballs_cancel (void)
   cancel = g_cancellable_new ();
   g_socket_client_connect_to_host_async (client, "localhost", port, cancel, on_connected_cancelled, loop);
   g_timeout_add (1, (GSourceFunc) on_timer, cancel);
+  g_signal_connect (client, "event", G_CALLBACK (on_event), &got_completed_event);
   g_main_loop_run (loop);
 
+  g_assert_true (got_completed_event);
+  g_main_loop_unref (loop);
+  g_object_unref (service);
+  g_object_unref (client);
+  g_object_unref (cancel);
+}
+
+static void
+test_happy_eyeballs_cancel_instant (void)
+{
+  GSocketClient *client;
+  GSocketService *service;
+  GError *error = NULL;
+  guint16 port;
+  GMainLoop *loop;
+  GCancellable *cancel;
+  gboolean got_completed_event = FALSE;
+
+  /* This tests the same things as above, test_happy_eyeballs_cancel_delayed(), but
+   * with different timing since it sends an already cancelled cancellable */
+
+  loop = g_main_loop_new (NULL, FALSE);
+
+  service = g_socket_service_new ();
+  port = g_socket_listener_add_any_inet_port (G_SOCKET_LISTENER (service), NULL, &error);
+  g_assert_no_error (error);
+  g_socket_service_start (service);
+
+  client = g_socket_client_new ();
+  cancel = g_cancellable_new ();
+  g_cancellable_cancel (cancel);
+  g_socket_client_connect_to_host_async (client, "localhost", port, cancel, on_connected_cancelled, loop);
+  g_signal_connect (client, "event", G_CALLBACK (on_event), &got_completed_event);
+  g_main_loop_run (loop);
+
+  g_assert_true (got_completed_event);
   g_main_loop_unref (loop);
   g_object_unref (service);
   g_object_unref (client);
@@ -121,7 +176,9 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/socket-client/happy-eyeballs/slow", test_happy_eyeballs);
-  g_test_add_func ("/socket-client/happy-eyeballs/cancellation", test_happy_eyeballs_cancel);
+  g_test_add_func ("/socket-client/happy-eyeballs/cancellation/instant", test_happy_eyeballs_cancel_instant);
+  g_test_add_func ("/socket-client/happy-eyeballs/cancellation/delayed", test_happy_eyeballs_cancel_delayed);
+
 
   return g_test_run ();
 }
