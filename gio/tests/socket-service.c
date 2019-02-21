@@ -222,6 +222,11 @@ test_threaded_712570 (void)
     g_main_context_iteration (NULL, TRUE);
   while (G_OBJECT (service)->ref_count > 3);
 
+  /* Wait some more iterations, as #GTask results are deferred to the next
+   * #GMainContext iteration, and propagation of a #GTask result takes an
+   * additional ref on the source object. */
+  g_main_context_iteration (NULL, FALSE);
+
   /* Drop our ref, then unlock the mutex and wait for the service to be
    * finalized. (Without the fix for 712570 it would hang forever here.)
    */
