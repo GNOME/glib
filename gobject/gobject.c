@@ -263,7 +263,6 @@ g_object_notify_queue_thaw (GObject            *object,
   GSList *slist;
   guint n_pspecs = 0;
 
-  g_return_if_fail (nqueue->freeze_count > 0);
   g_return_if_fail (g_atomic_int_get(&object->ref_count) > 0);
 
   G_LOCK(notify_lock);
