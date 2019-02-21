@@ -309,7 +309,7 @@ struct _GSourceCallback
 struct _GMainLoop
 {
   GMainContext *context;
-  gboolean is_running;
+  gboolean is_running; /* (atomic) */
   volatile gint ref_count;
 };
 
@@ -4087,16 +4087,14 @@ g_main_loop_run (GMainLoop *loop)
       LOCK_CONTEXT (loop->context);
 
       g_atomic_int_inc (&loop->ref_count);
+      g_atomic_int_set (&loop->is_running, TRUE);
 
-      if (!loop->is_running)
-	loop->is_running = TRUE;
-
-      while (loop->is_running && !got_ownership)
+      while (g_atomic_int_get (&loop->is_running) && !got_ownership)
         got_ownership = g_main_context_wait_internal (loop->context,
                                                       &loop->context->cond,
                                                       &loop->context->mutex);
       
-      if (!loop->is_running)
+      if (!g_atomic_int_get (&loop->is_running))
 	{
 	  UNLOCK_CONTEXT (loop->context);
 	  if (got_ownership)
@@ -4118,8 +4116,8 @@ g_main_loop_run (GMainLoop *loop)
     }
 
   g_atomic_int_inc (&loop->ref_count);
-  loop->is_running = TRUE;
-  while (loop->is_running)
+  g_atomic_int_set (&loop->is_running, TRUE);
+  while (g_atomic_int_get (&loop->is_running))
     g_main_context_iterate (loop->context, TRUE, TRUE, self);
 
   UNLOCK_CONTEXT (loop->context);
@@ -4146,7 +4144,7 @@ g_main_loop_quit (GMainLoop *loop)
   g_return_if_fail (g_atomic_int_get (&loop->ref_count) > 0);
 
   LOCK_CONTEXT (loop->context);
-  loop->is_running = FALSE;
+  g_atomic_int_set (&loop->is_running, FALSE);
   g_wakeup_signal (loop->context->wakeup);
 
   g_cond_broadcast (&loop->context->cond);
@@ -4170,7 +4168,7 @@ g_main_loop_is_running (GMainLoop *loop)
   g_return_val_if_fail (loop != NULL, FALSE);
   g_return_val_if_fail (g_atomic_int_get (&loop->ref_count) > 0, FALSE);
 
-  return loop->is_running;
+  return g_atomic_int_get (&loop->is_running);
 }
 
 /**
