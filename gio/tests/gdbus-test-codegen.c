@@ -583,10 +583,8 @@ on_name_acquired (GDBusConnection *connection,
                   gpointer         user_data)
 {
   GMainLoop *loop = user_data;
-
-  g_thread_new ("check-proxies",
-                check_proxies_in_thread,
-                loop);
+  GThread *thread = g_thread_new ("check-proxies", check_proxies_in_thread, loop);
+  g_thread_unref (thread);
 }
 
 static void
