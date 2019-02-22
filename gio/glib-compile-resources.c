@@ -999,6 +999,7 @@ main (int argc, char **argv)
 
 	    }
 
+	  g_free (base);
 	  c_name = g_string_free (s, FALSE);
 	}
     }
