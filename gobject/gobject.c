@@ -1100,7 +1100,7 @@ void
 g_object_run_dispose (GObject *object)
 {
   g_return_if_fail (G_IS_OBJECT (object));
-  g_return_if_fail (object->ref_count > 0);
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) > 0);
 
   g_object_ref (object);
   TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 0));
@@ -2818,7 +2818,7 @@ g_object_weak_ref (GObject    *object,
   
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
-  g_return_if_fail (object->ref_count >= 1);
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
   G_LOCK (weak_refs_mutex);
   wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_refs);
@@ -3000,7 +3000,7 @@ gpointer
   GObject *object = _object;
   gboolean was_floating;
   g_return_val_if_fail (G_IS_OBJECT (object), object);
-  g_return_val_if_fail (object->ref_count >= 1, object);
+  g_return_val_if_fail (g_atomic_int_get (&object->ref_count) >= 1, object);
   g_object_ref (object);
   was_floating = floating_flag_handler (object, -1);
   if (was_floating)
@@ -3023,7 +3023,7 @@ void
 g_object_force_floating (GObject *object)
 {
   g_return_if_fail (G_IS_OBJECT (object));
-  g_return_if_fail (object->ref_count >= 1);
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
   floating_flag_handler (object, +1);
 }
@@ -3104,7 +3104,7 @@ g_object_add_toggle_ref (GObject       *object,
   
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
-  g_return_if_fail (object->ref_count >= 1);
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
   g_object_ref (object);
 
@@ -4138,7 +4138,7 @@ g_object_watch_closure (GObject  *object,
   g_return_if_fail (closure != NULL);
   g_return_if_fail (closure->is_invalid == FALSE);
   g_return_if_fail (closure->in_marshal == FALSE);
-  g_return_if_fail (object->ref_count > 0);	/* this doesn't work on finalizing objects */
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) > 0);	/* this doesn't work on finalizing objects */
   
   g_closure_add_invalidate_notifier (closure, object, object_remove_closure);
   g_closure_add_marshal_guards (closure,
@@ -4184,7 +4184,7 @@ g_closure_new_object (guint    sizeof_closure,
   GClosure *closure;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
-  g_return_val_if_fail (object->ref_count > 0, NULL);     /* this doesn't work on finalizing objects */
+  g_return_val_if_fail (g_atomic_int_get (&object->ref_count) > 0, NULL);     /* this doesn't work on finalizing objects */
 
   closure = g_closure_new_simple (sizeof_closure, object);
   g_object_watch_closure (object, closure);
@@ -4212,7 +4212,7 @@ g_cclosure_new_object (GCallback callback_func,
   GClosure *closure;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
-  g_return_val_if_fail (object->ref_count > 0, NULL);     /* this doesn't work on finalizing objects */
+  g_return_val_if_fail (g_atomic_int_get (&object->ref_count) > 0, NULL);     /* this doesn't work on finalizing objects */
   g_return_val_if_fail (callback_func != NULL, NULL);
 
   closure = g_cclosure_new (callback_func, object, NULL);
@@ -4241,7 +4241,7 @@ g_cclosure_new_object_swap (GCallback callback_func,
   GClosure *closure;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
-  g_return_val_if_fail (object->ref_count > 0, NULL);     /* this doesn't work on finalizing objects */
+  g_return_val_if_fail (g_atomic_int_get (&object->ref_count) > 0, NULL);     /* this doesn't work on finalizing objects */
   g_return_val_if_fail (callback_func != NULL, NULL);
 
   closure = g_cclosure_new_swap (callback_func, object, NULL);
