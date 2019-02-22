@@ -183,7 +183,7 @@ static guint
 honeyman_hash (gconstpointer key)
 {
   const gchar *name = (const gchar *) key;
-  gint size;
+  gsize size;
   guint sum = 0;
 
   g_assert (name != NULL);
@@ -1347,7 +1347,7 @@ test_lookup_extended (void)
 
 struct _GHashTable
 {
-  gint             size;
+  gsize            size;
   gint             mod;
   guint            mask;
   gint             nnodes;
@@ -1374,7 +1374,7 @@ struct _GHashTable
 static void
 count_keys (GHashTable *h, gint *unused, gint *occupied, gint *tombstones)
 {
-  gint i;
+  gsize i;
 
   *unused = 0;
   *occupied = 0;
@@ -1410,7 +1410,7 @@ fetch_key_or_value (gpointer a, guint index, gboolean is_big)
 static void
 check_data (GHashTable *h)
 {
-  gint i;
+  gsize i;
 
   for (i = 0; i < h->size; i++)
     {
