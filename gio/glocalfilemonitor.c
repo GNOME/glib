@@ -788,11 +788,11 @@ g_local_file_monitor_start (GLocalFileMonitor *local_monitor,
 #endif
     }
 
+  g_source_attach ((GSource *) source, context);
+
   G_LOCAL_FILE_MONITOR_GET_CLASS (local_monitor)->start (local_monitor,
                                                          source->dirname, source->basename, source->filename,
                                                          source);
-
-  g_source_attach ((GSource *) source, context);
 }
 
 static void
