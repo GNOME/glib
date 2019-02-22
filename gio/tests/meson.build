@@ -150,7 +150,6 @@ if host_machine.system() != 'windows'
       'installed_tests_env' : {
         'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(installed_tests_execdir),
       },
-      'suite': ['flaky'],
     },
     'gschema-compile' : {'install' : false},
     'trash' : {},
