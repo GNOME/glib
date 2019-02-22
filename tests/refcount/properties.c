@@ -35,7 +35,7 @@ struct _GTestClass
 };
 
 static GType my_test_get_type (void);
-static volatile gboolean stopping;
+static gboolean stopping;
 
 static void my_test_class_init (GTestClass * klass);
 static void my_test_init (GTest * test);
@@ -177,7 +177,7 @@ run_thread (GTest * test)
 {
   gint i = 1;
   
-  while (!stopping) {
+  while (!g_atomic_int_get (&stopping)) {
     my_test_do_property (test);
     if ((i++ % 10000) == 0)
       {
@@ -210,14 +210,14 @@ main (int argc, char **argv)
     g_signal_connect (test, "notify::dummy", G_CALLBACK (dummy_notify), NULL);
   }
 
-  stopping = FALSE;
+  g_atomic_int_set (&stopping, FALSE);
 
   for (i = 0; i < N_THREADS; i++)
     test_threads[i] = g_thread_create ((GThreadFunc) run_thread, test_objects[i], TRUE, NULL);
 
   g_usleep (3000000);
 
-  stopping = TRUE;
+  g_atomic_int_set (&stopping, TRUE);
   g_print ("\nstopping\n");
 
   /* join all threads */
