@@ -1432,7 +1432,6 @@ g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
   else
     g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_COMPLETE, data->connectable, NULL);
 
-  g_clear_object (&data->connection);
   g_object_unref (data->task);
 }
 
@@ -1551,8 +1550,9 @@ g_socket_client_proxy_connect_callback (GObject      *object,
 }
 
 static gboolean
-task_completed_or_cancelled (GTask *task)
+task_completed_or_cancelled (GSocketClientAsyncConnectData *data)
 {
+  GTask *task = data->task;
   GCancellable *cancellable = g_task_get_cancellable (task);
   GError *error = NULL;
 
@@ -1561,7 +1561,10 @@ task_completed_or_cancelled (GTask *task)
   else if (cancellable && g_cancellable_set_error_if_cancelled (cancellable, &error))
     {
       if (!g_task_had_error (task))
-        g_task_return_error (task, g_steal_pointer (&error));
+        {
+          g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_COMPLETE, data->connectable, NULL);
+          g_task_return_error (task, g_steal_pointer (&error));
+        }
       g_clear_error (&error);
       return TRUE;
     }
@@ -1581,7 +1584,7 @@ g_socket_client_connected_callback (GObject      *source,
   GProxy *proxy;
   const gchar *protocol;
 
-  if (task_completed_or_cancelled (data->task) || g_cancellable_is_cancelled (attempt->cancellable))
+  if (task_completed_or_cancelled (data) || g_cancellable_is_cancelled (attempt->cancellable))
     {
       g_object_unref (data->task);
       connection_attempt_unref (attempt);
@@ -1715,7 +1718,7 @@ g_socket_client_enumerator_callback (GObject      *object,
   ConnectionAttempt *attempt;
   GError *error = NULL;
 
-  if (task_completed_or_cancelled (data->task))
+  if (task_completed_or_cancelled (data))
     {
       g_object_unref (data->task);
       return;
