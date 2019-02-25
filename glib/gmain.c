@@ -2084,33 +2084,32 @@ g_source_unref_internal (GSource      *source,
       TRACE (GLIB_SOURCE_BEFORE_FREE (source, context,
                                       source->source_funcs->finalize));
 
-      old_cb_data = source->callback_data;
-      old_cb_funcs = source->callback_funcs;
-
-      source->callback_data = NULL;
-      source->callback_funcs = NULL;
-
-      if (context)
-	{
-	  if (!SOURCE_DESTROYED (source))
-	    g_warning (G_STRLOC ": ref_count == 0, but source was still attached to a context!");
-	  source_remove_from_context (source, context);
-
-          g_hash_table_remove (context->sources, GUINT_TO_POINTER (source->source_id));
-	}
-
       if (source->source_funcs->finalize)
-	{
+        {
           /* Temporarily increase the ref count again so that GSource methods
            * can be called from finalize(). */
           g_atomic_int_inc (&source->ref_count);
-	  if (context)
-	    UNLOCK_CONTEXT (context);
-	  source->source_funcs->finalize (source);
-	  if (context)
-	    LOCK_CONTEXT (context);
-          g_atomic_int_add (&source->ref_count, -1);
-	}
+          if (context)
+            UNLOCK_CONTEXT (context);
+          source->source_funcs->finalize (source);
+          if (context)
+            LOCK_CONTEXT (context);
+
+          /* if the reference count happened to be increased in the meantime,
+           * e.g. from inside the finalize function or because the finalize
+           * function implements weak references and other code got a new
+           * reference before it finished, simply return from here.
+           */
+          if (g_atomic_int_add (&source->ref_count, -1) > 1)
+            {
+              if (!have_lock && context)
+                UNLOCK_CONTEXT (context);
+              return;
+            }
+        }
+
+      old_cb_data = source->callback_data;
+      old_cb_funcs = source->callback_funcs;
 
       if (old_cb_funcs)
         {
@@ -2124,8 +2123,31 @@ g_source_unref_internal (GSource      *source,
 
           if (context)
             LOCK_CONTEXT (context);
-          g_atomic_int_add (&source->ref_count, -1);
+
+          /* if the reference count happened to be increased in the meantime,
+           * e.g. from inside the finalize function or because the finalize
+           * function implements weak references and other code got a new
+           * reference before it finished, simply return from here.
+           */
+          if (g_atomic_int_add (&source->ref_count, -1) > 1)
+            {
+              if (!have_lock && context)
+                UNLOCK_CONTEXT (context);
+              return;
+            }
         }
+
+      source->callback_data = NULL;
+      source->callback_funcs = NULL;
+
+      if (context)
+	{
+	  if (!SOURCE_DESTROYED (source))
+	    g_warning (G_STRLOC ": ref_count == 0, but source was still attached to a context!");
+	  source_remove_from_context (source, context);
+
+          g_hash_table_remove (context->sources, GUINT_TO_POINTER (source->source_id));
+	}
 
       g_free (source->name);
       source->name = NULL;
