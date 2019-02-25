@@ -201,6 +201,16 @@
 }
 
 {
+	g-type-class-init-calloc
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:g_type_create_instance
+	...
+	fun:type_class_init_Wm
+}
+
+{
 	g-type-class-init
 	Memcheck:Leak
 	fun:g_type_create_instance
@@ -213,6 +223,26 @@
 	Memcheck:Leak
 	fun:malloc
 	...
+	fun:g_type_create_instance
+	...
+	fun:_g_io_module_get_default
+}
+
+{
+	g-io-module-default-singleton-calloc
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:g_type_create_instance
+	...
+	fun:_g_io_module_get_default
+}
+
+# This one seems to show up sometimes with g_type_create_instance() at the top
+# of the stack, as well.
+{
+	g-io-module-default-singleton
+	Memcheck:Leak
 	fun:g_type_create_instance
 	...
 	fun:_g_io_module_get_default
