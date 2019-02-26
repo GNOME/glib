@@ -3899,6 +3899,17 @@ test_parses (void)
     g_free (printed);
   }
 
+  /* pattern coalese of `MN` and `*` is `MN` */
+  {
+    GVariant *value = NULL;
+    GError *error = NULL;
+
+    value = g_variant_parse (NULL, "[[0], [], [nothing]]", NULL, NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpstr (g_variant_get_type_string (value), ==, "aami");
+    g_variant_unref (value);
+  }
+
 #ifndef _MSC_VER
   /* inf/nan strings are C99 features which Visual C++ does not support */
   /* inf/nan mini test */
@@ -3943,7 +3954,6 @@ test_parse_failures (void)
     "[4, 5, '']",               "1-2,7-9:",        "common type",
     "[[4], [], ['']]",          "1-4,10-14:",      "common type",
     "[[], [4], ['']]",          "5-8,10-14:",      "common type",
-    "[[0], [], [nothing]]",     "10-19:",          "common type",
     "just",                     "4:",              "expected value",
     "nothing",                  "0-7:",            "unable to infer",
     "just [4, '']",             "6-7,9-11:",       "common type",
