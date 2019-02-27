@@ -59,7 +59,7 @@ gboolean g_pollable_stream_write_all (GOutputStream  *stream,
 				      GCancellable   *cancellable,
 				      GError        **error);
 
-GLIB_AVAILABLE_IN_2_62
+GLIB_AVAILABLE_IN_2_60
 GPollableReturn g_pollable_stream_write_pollable     (GOutputStream  *stream,
                                                       const void     *buffer,
                                                       gsize           count,
@@ -68,7 +68,7 @@ GPollableReturn g_pollable_stream_write_pollable     (GOutputStream  *stream,
                                                       GCancellable   *cancellable,
                                                       GError        **error);
 
-GLIB_AVAILABLE_IN_2_62
+GLIB_AVAILABLE_IN_2_60
 GPollableReturn g_pollable_stream_write_all_pollable (GOutputStream  *stream,
                                                       const void     *buffer,
                                                       gsize           count,
