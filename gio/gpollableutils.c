@@ -260,6 +260,71 @@ g_pollable_stream_write (GOutputStream   *stream,
 }
 
 /**
+ * g_pollable_stream_write_pollable:
+ * @stream: a #GOutputStream.
+ * @buffer: (array length=count) (element-type guint8): the buffer
+ *   containing the data to write.
+ * @count: the number of bytes to write
+ * @blocking: whether to do blocking I/O
+ * @bytes_written: (out): location to store the number of bytes that was
+ *   written to the stream
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
+ * @error: location to store the error occurring, or %NULL to ignore
+ *
+ * Tries to write to @stream, as with g_output_stream_write() (if
+ * @blocking is %TRUE) or g_pollable_output_stream_write_nonblocking_pollable()
+ * (if @blocking is %FALSE). This can be used to more easily share
+ * code between blocking and non-blocking implementations of a method.
+ *
+ * If @blocking is %FALSE, then @stream must be a
+ * #GPollableOutputStream for which
+ * g_pollable_output_stream_can_poll() returns %TRUE or else the
+ * behavior is undefined. If @blocking is %TRUE, then @stream does not
+ * need to be a #GPollableOutputStream.
+ *
+ * Returns: %G_POLLABLE_RETURN_OK on success, _G_POLLABLE_RETURN_WOULD_BLOCK if
+ * the operation was going to block and %G_POLLABLE_RETURN_WOULD_BLOCK if there
+ * was an error
+ *
+ * Since: 2.62
+ */
+GPollableReturn
+g_pollable_stream_write_pollable (GOutputStream   *stream,
+                                  const void      *buffer,
+                                  gsize            count,
+                                  gboolean         blocking,
+                                  gsize           *bytes_written,
+                                  GCancellable    *cancellable,
+                                  GError         **error)
+{
+  if (blocking)
+    {
+      gssize res;
+
+      res = g_output_stream_write (stream,
+                                   buffer, count,
+                                   cancellable, error);
+      if ((gsize) res < 0)
+        return G_POLLABLE_RETURN_FAILED;
+      else
+        {
+          if (bytes_written)
+            *bytes_written = (gsize) res;
+
+          /* g_output_stream_write does not set WOULD_BLOCK */
+          return G_POLLABLE_RETURN_OK;
+        }
+    }
+  else
+    return g_pollable_output_stream_write_nonblocking_pollable (G_POLLABLE_OUTPUT_STREAM (stream),
+                                                                buffer,
+                                                                count,
+                                                                bytes_written,
+                                                                cancellable,
+                                                                error);
+}
+
+/**
  * g_pollable_stream_write_all:
  * @stream: a #GOutputStream.
  * @buffer: (array length=count) (element-type guint8): the buffer
@@ -331,4 +396,83 @@ g_pollable_stream_write_all (GOutputStream  *stream,
     *bytes_written = _bytes_written;
 
   return TRUE;
+}
+
+/**
+ * g_pollable_stream_write_all_pollable:
+ * @stream: a #GOutputStream.
+ * @buffer: (array length=count) (element-type guint8): the buffer
+ *   containing the data to write.
+ * @count: the number of bytes to write
+ * @blocking: whether to do blocking I/O
+ * @bytes_written: (out): location to store the number of bytes that was
+ *   written to the stream
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
+ * @error: location to store the error occurring, or %NULL to ignore
+ *
+ * Tries to write @count bytes to @stream, as with
+ * g_output_stream_write_all(), but using g_pollable_stream_write_pollable()
+ * rather than g_output_stream_write().
+ *
+ * On a successful write of @count bytes, %G_POLLABLE_RETURN_OK is returned, and
+ * @bytes_written is set to @count.
+ *
+ * if the operation is going to block %G_POLLABLE_RETURN_WOULD_BLOCK is returned
+ * immediatly and @error is not set.
+ *
+ * If there is an error during the operation, %G_POLLABLE_RETURN_FAILED is
+ * returned and @error is set to indicate the error status,
+ * @bytes_written is updated to contain the number of bytes written
+ * into the stream before the error occurred.
+ *
+ * As with g_pollable_stream_write(), if @blocking is %FALSE, then
+ * @stream must be a #GPollableOutputStream for which
+ * g_pollable_output_stream_can_poll() returns %TRUE or else the
+ * behavior is undefined. If @blocking is %TRUE, then @stream does not
+ * need to be a #GPollableOutputStream.
+ *
+ * Returns: %G_POLLABLE_RETURN_OK on success, _G_POLLABLE_RETURN_WOULD_BLOCK if
+ * the operation was going to block and %G_POLLABLE_RETURN_WOULD_BLOCK if there
+ * was an error
+ *
+ * Since: 2.62
+ */
+GPollableReturn
+g_pollable_stream_write_all_pollable (GOutputStream  *stream,
+                                      const void     *buffer,
+                                      gsize           count,
+                                      gboolean        blocking,
+                                      gsize          *bytes_written,
+                                      GCancellable   *cancellable,
+                                      GError        **error)
+{
+  gsize _bytes_written = 0;
+
+  while (_bytes_written < count)
+    {
+      gsize written = 0;
+      GPollableReturn res;
+
+      res = g_pollable_stream_write_pollable (stream,
+                                             (char *)buffer + _bytes_written,
+                                             count - _bytes_written,
+                                             blocking,
+                                             &written,
+                                             cancellable,
+                                             error);
+      if (res == G_POLLABLE_RETURN_FAILED)
+        {
+          if (bytes_written)
+            *bytes_written = _bytes_written;
+
+          return G_POLLABLE_RETURN_FAILED;
+        }
+
+      _bytes_written += written;
+    }
+
+  if (bytes_written)
+    *bytes_written = _bytes_written;
+
+  return G_POLLABLE_RETURN_OK;
 }
