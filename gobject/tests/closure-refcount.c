@@ -49,10 +49,7 @@ typedef struct {
 static GType my_test_get_type (void);
 G_DEFINE_TYPE (GTest, my_test, G_TYPE_OBJECT)
 
-/* --- variables --- */
 static volatile gboolean stopping = FALSE;
-static guint             test_signal1 = 0;
-static guint             test_signal2 = 0;
 static gboolean          seen_signal_handler = FALSE;
 static gboolean          seen_cleanup = FALSE;
 static gboolean          seen_test_int1 = FALSE;
@@ -71,10 +68,18 @@ my_test_init (GTest * test)
   test->test_pointer2 = TEST_POINTER2;
 }
 
-enum {
-  ARG_0,
-  ARG_TEST_PROP
-};
+typedef enum
+{
+  PROP_TEST_PROP = 1,
+} MyTestProperty;
+
+typedef enum
+{
+  SIGNAL_TEST_SIGNAL1,
+  SIGNAL_TEST_SIGNAL2,
+} MyTestSignal;
+
+static guint signals[SIGNAL_TEST_SIGNAL2 + 1] = { 0, };
 
 static void
 my_test_set_property (GObject      *object,
@@ -85,7 +90,7 @@ my_test_set_property (GObject      *object,
   GTest *test = MY_TEST (object);
   switch (prop_id)
     {
-    case ARG_TEST_PROP:
+    case PROP_TEST_PROP:
       test->value = g_value_get_int (value);
       break;
     default:
@@ -103,7 +108,7 @@ my_test_get_property (GObject    *object,
   GTest *test = MY_TEST (object);
   switch (prop_id)
     {
-    case ARG_TEST_PROP:
+    case PROP_TEST_PROP:
       g_value_set_int (value, test->value);
       break;
     default:
@@ -122,14 +127,14 @@ static void
 my_test_emit_test_signal1 (GTest *test,
                            gint   vint)
 {
-  g_signal_emit (G_OBJECT (test), test_signal1, 0, vint);
+  g_signal_emit (G_OBJECT (test), signals[SIGNAL_TEST_SIGNAL1], 0, vint);
 }
 
 static void
 my_test_emit_test_signal2 (GTest *test,
                            gint   vint)
 {
-  g_signal_emit (G_OBJECT (test), test_signal2, 0, vint);
+  g_signal_emit (G_OBJECT (test), signals[SIGNAL_TEST_SIGNAL2], 0, vint);
 }
 
 static void
@@ -140,14 +145,16 @@ my_test_class_init (GTestClass *klass)
   gobject_class->set_property = my_test_set_property;
   gobject_class->get_property = my_test_get_property;
 
-  test_signal1 = g_signal_new ("test-signal1", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
-                               G_STRUCT_OFFSET (GTestClass, test_signal1), NULL, NULL,
-                               g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
-  test_signal2 = g_signal_new ("test-signal2", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
-                               G_STRUCT_OFFSET (GTestClass, test_signal2), NULL, NULL,
-                               g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+  signals[SIGNAL_TEST_SIGNAL1] =
+      g_signal_new ("test-signal1", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GTestClass, test_signal1), NULL, NULL,
+                    g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+  signals[SIGNAL_TEST_SIGNAL2] =
+      g_signal_new ("test-signal2", G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GTestClass, test_signal2), NULL, NULL,
+                    g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
 
-  g_object_class_install_property (G_OBJECT_CLASS (klass), ARG_TEST_PROP,
+  g_object_class_install_property (G_OBJECT_CLASS (klass), PROP_TEST_PROP,
                                    g_param_spec_int ("test-prop", "Test Prop", "Test property",
                                                      0, 1, 0, G_PARAM_READWRITE));
   klass->test_signal2 = my_test_test_signal2;
