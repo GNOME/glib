@@ -184,7 +184,7 @@ thread1_main (gpointer data)
       if (i % 10000 == 0)
         {
           g_test_message ("Yielding from thread1");
-          g_thread_yield(); /* force context switch */
+          g_thread_yield (); /* force context switch */
           seen_thread1 = TRUE;
         }
     }
@@ -203,7 +203,7 @@ thread2_main (gpointer data)
       if (i % 10000 == 0)
         {
           g_test_message ("Yielding from thread2");
-          g_thread_yield(); /* force context switch */
+          g_thread_yield (); /* force context switch */
           seen_thread2 = TRUE;
         }
     }
@@ -278,7 +278,7 @@ test_closure_refcount (void)
       if (i % 10000 == 0)
         {
           g_test_message ("Yielding from main thread");
-          g_thread_yield(); /* force context switch */
+          g_thread_yield (); /* force context switch */
         }
     }
 
