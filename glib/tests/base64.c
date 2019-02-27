@@ -406,6 +406,42 @@ test_base64_decode_smallblock (gconstpointer blocksize_p)
     }
 }
 
+/* Test that calling g_base64_encode (NULL, 0) returns correct output. This is
+ * as per the first test vector in RFC 4648 §10.
+ * https://tools.ietf.org/html/rfc4648#section-10 */
+static void
+test_base64_encode_empty (void)
+{
+  gchar *encoded = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1698");
+
+  encoded = g_base64_encode (NULL, 0);
+  g_assert_cmpstr (encoded, ==, "");
+  g_free (encoded);
+
+  encoded = g_base64_encode ((const guchar *) "", 0);
+  g_assert_cmpstr (encoded, ==, "");
+  g_free (encoded);
+}
+
+/* Test that calling g_base64_decode ("", *) returns correct output. This is
+ * as per the first test vector in RFC 4648 §10. Note that calling
+ * g_base64_decode (NULL, *) is not allowed.
+ * https://tools.ietf.org/html/rfc4648#section-10 */
+static void
+test_base64_decode_empty (void)
+{
+  guchar *decoded = NULL;
+  gsize decoded_len;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1698");
+
+  decoded = g_base64_decode ("", &decoded_len);
+  g_assert_cmpstr ((gchar *) decoded, ==, "");
+  g_assert_cmpuint (decoded_len, ==, 0);
+  g_free (decoded);
+}
 
 int
 main (int argc, char *argv[])
@@ -454,6 +490,9 @@ main (int argc, char *argv[])
                         test_base64_decode_smallblock);
   g_test_add_data_func ("/base64/incremental/smallblock/4", GINT_TO_POINTER(4),
                         test_base64_decode_smallblock);
+
+  g_test_add_func ("/base64/encode/empty", test_base64_encode_empty);
+  g_test_add_func ("/base64/decode/empty", test_base64_decode_empty);
 
   return g_test_run ();
 }

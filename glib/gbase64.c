@@ -100,7 +100,7 @@ g_base64_encode_step (const guchar *in,
   char *outptr;
   const guchar *inptr;
 
-  g_return_val_if_fail (in != NULL, 0);
+  g_return_val_if_fail (in != NULL || len == 0, 0);
   g_return_val_if_fail (out != NULL, 0);
   g_return_val_if_fail (state != NULL, 0);
   g_return_val_if_fail (save != NULL, 0);
@@ -244,7 +244,7 @@ g_base64_encode_close (gboolean  break_lines,
 
 /**
  * g_base64_encode:
- * @data: (array length=len) (element-type guint8): the binary data to encode
+ * @data: (array length=len) (element-type guint8) (nullable): the binary data to encode
  * @len: the length of @data
  *
  * Encode a sequence of binary data into its Base-64 stringified
@@ -334,7 +334,7 @@ g_base64_decode_step (const gchar  *in,
   unsigned int v;
   int i;
 
-  g_return_val_if_fail (in != NULL, 0);
+  g_return_val_if_fail (in != NULL || len == 0, 0);
   g_return_val_if_fail (out != NULL, 0);
   g_return_val_if_fail (state != NULL, 0);
   g_return_val_if_fail (save != NULL, 0);
@@ -390,7 +390,7 @@ g_base64_decode_step (const gchar  *in,
 
 /**
  * g_base64_decode:
- * @text: zero-terminated string with base64 text to decode
+ * @text: (not nullable): zero-terminated string with base64 text to decode
  * @out_len: (out): The length of the decoded data is written here
  *
  * Decode a sequence of Base-64 encoded text into binary data.  Note
