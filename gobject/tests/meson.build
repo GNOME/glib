@@ -43,6 +43,7 @@ gobject_tests = {
     'source' : 'private.c',
   },
   'closure' : {},
+  'closure-refcount' : { 'suite': ['slow'] },
   'object' : {},
   'signal-handler' : {},
   'ifaceproperties' : {},
@@ -95,6 +96,13 @@ foreach test_name, extra_args : gobject_tests
 
   suite = ['gobject'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
+
+  # FIXME: https://gitlab.gnome.org/GNOME/glib/issues/1316
+  # aka https://bugs.debian.org/880883
+  if test_name == 'closure-refcount' and ['arm', 'aarch64'].contains(host_cpu_family)
+    timeout = timeout * 10
+  endif
+
   test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
     args: ['--tap'])
 endforeach
