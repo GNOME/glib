@@ -23,7 +23,6 @@ tests = {
   'completion-test' : {},
   'dirname-test' : {},
   'file-test' : {},
-  'env-test' : {},
   'gio-test' : {},
   'mapping-test' : {},
   'onceinit' : {},
