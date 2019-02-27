@@ -298,7 +298,7 @@ gssize                 g_socket_send_with_blocking      (GSocket                
 							 gboolean                 blocking,
 							 GCancellable            *cancellable,
 							 GError                 **error);
-GLIB_AVAILABLE_IN_2_62
+GLIB_AVAILABLE_IN_2_60
 GPollableReturn        g_socket_send_with_timeout       (GSocket       *socket,
                                                          const guint8  *buffer,
                                                          gsize          size,

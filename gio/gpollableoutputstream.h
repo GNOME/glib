@@ -126,7 +126,7 @@ GPollableReturn g_pollable_output_stream_writev_nonblocking (GPollableOutputStre
 							     GCancellable           *cancellable,
 							     GError                **error);
 
-GLIB_AVAILABLE_IN_2_62
+GLIB_AVAILABLE_IN_2_60
 GPollableReturn g_pollable_output_stream_write_nonblocking_pollable (GPollableOutputStream  *stream,
                                                                      const void             *buffer,
                                                                      gsize                   count,
