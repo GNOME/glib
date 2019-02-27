@@ -25,7 +25,6 @@ tests = {
   'file-test' : {},
   'env-test' : {},
   'gio-test' : {},
-  'mainloop-test' : {},
   'mapping-test' : {},
   'onceinit' : {},
   'qsort-test' : {},
