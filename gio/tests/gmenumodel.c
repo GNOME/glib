@@ -752,11 +752,11 @@ typedef struct
   GDBusServer *server;
 
   GThread *service_thread;
+  /* Protects server_connection and service_loop. */
   GMutex service_loop_lock;
   GCond service_loop_cond;
 
   GMainLoop *service_loop;
-  GMainLoop *loop;
 } PeerConnection;
 
 static gboolean
@@ -766,9 +766,10 @@ on_new_connection (GDBusServer *server,
 {
   PeerConnection *data = user_data;
 
+  g_mutex_lock (&data->service_loop_lock);
   data->server_connection = g_object_ref (connection);
-
-  g_main_loop_quit (data->loop);
+  g_cond_broadcast (&data->service_loop_cond);
+  g_mutex_unlock (&data->service_loop_lock);
 
   return TRUE;
 }
@@ -797,6 +798,15 @@ await_service_loop (PeerConnection *data)
 {
   g_mutex_lock (&data->service_loop_lock);
   while (data->service_loop == NULL)
+    g_cond_wait (&data->service_loop_cond, &data->service_loop_lock);
+  g_mutex_unlock (&data->service_loop_lock);
+}
+
+static void
+await_server_connection (PeerConnection *data)
+{
+  g_mutex_lock (&data->service_loop_lock);
+  while (data->server_connection == NULL)
     g_cond_wait (&data->service_loop_cond, &data->service_loop_lock);
   g_mutex_unlock (&data->service_loop_lock);
 }
@@ -874,7 +884,6 @@ peer_connection_up (PeerConnection *data)
   GError *error;
 
   memset (data, '\0', sizeof (PeerConnection));
-  data->loop = g_main_loop_new (NULL, FALSE);
 
   g_mutex_init (&data->service_loop_lock);
   g_cond_init (&data->service_loop_cond);
@@ -897,8 +906,7 @@ peer_connection_up (PeerConnection *data)
                                             &error);
   g_assert_no_error (error);
   g_assert (data->client_connection != NULL);
-  while (data->server_connection == NULL)
-    g_main_loop_run (data->loop);
+  await_server_connection (data);
 }
 
 static void
@@ -915,8 +923,6 @@ peer_connection_down (PeerConnection *data)
 
   g_mutex_clear (&data->service_loop_lock);
   g_cond_clear (&data->service_loop_cond);
-
-  g_main_loop_unref (data->loop);
 }
 
 struct roundtrip_state
