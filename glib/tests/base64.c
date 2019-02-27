@@ -406,6 +406,24 @@ test_base64_decode_smallblock (gconstpointer blocksize_p)
     }
 }
 
+/* Test that calling g_base64_encode (NULL, 0) returns correct output. This is
+ * as per the first test vector in RFC 4648 §10.
+ * https://tools.ietf.org/html/rfc4648#section-10 */
+static void
+test_base64_encode_empty (void)
+{
+  gchar *text = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1698");
+
+  text = g_base64_encode (NULL, 0);
+  g_assert_cmpstr (text, ==, "");
+  g_free (text);
+
+  text = g_base64_encode ((const guchar *) "", 0);
+  g_assert_cmpstr (text, ==, "");
+  g_free (text);
+}
 
 int
 main (int argc, char *argv[])
@@ -454,6 +472,8 @@ main (int argc, char *argv[])
                         test_base64_decode_smallblock);
   g_test_add_data_func ("/base64/incremental/smallblock/4", GINT_TO_POINTER(4),
                         test_base64_decode_smallblock);
+
+  g_test_add_func ("/base64/encode/empty", test_base64_encode_empty);
 
   return g_test_run ();
 }

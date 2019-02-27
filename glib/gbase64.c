@@ -100,7 +100,7 @@ g_base64_encode_step (const guchar *in,
   char *outptr;
   const guchar *inptr;
 
-  g_return_val_if_fail (in != NULL, 0);
+  g_return_val_if_fail (in != NULL || len == 0, 0);
   g_return_val_if_fail (out != NULL, 0);
   g_return_val_if_fail (state != NULL, 0);
   g_return_val_if_fail (save != NULL, 0);
