@@ -268,9 +268,7 @@ g_base64_encode (const guchar *data,
 
   /* We can use a smaller limit here, since we know the saved state is 0,
      +1 is needed for trailing \0, also check for unlikely integer overflow */
-  if (len >= ((G_MAXSIZE - 1) / 4 - 1) * 3)
-    g_error("%s: input too large for Base64 encoding (%"G_GSIZE_FORMAT" chars)",
-        G_STRLOC, len);
+  g_return_val_if_fail (len < ((G_MAXSIZE - 1) / 4 - 1) * 3, NULL);
 
   out = g_malloc ((len / 3 + 1) * 4 + 1);
 
