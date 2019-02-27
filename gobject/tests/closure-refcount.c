@@ -257,8 +257,8 @@ test_closure_refcount (void)
 
   stopping = FALSE;
 
-  thread1 = g_thread_create (thread1_main, closure, TRUE, NULL);
-  thread2 = g_thread_create (thread2_main, closure, TRUE, NULL);
+  thread1 = g_thread_new ("thread1", thread1_main, closure);
+  thread2 = g_thread_new ("thread2", thread2_main, closure);
 
   /* The 16-bit compare-and-swap operations currently used for closure
    * refcounts are really slow on some ARM CPUs, notably Cortex-A57.
