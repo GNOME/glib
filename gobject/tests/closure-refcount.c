@@ -64,7 +64,7 @@ static gboolean          seen_thread2 = FALSE;
 static void
 my_test_init (GTest * test)
 {
-  g_print ("init %p\n", test);
+  g_test_message ("Init %p", test);
 
   test->value = 0;
   test->test_pointer1 = TEST_POINTER1;
@@ -175,7 +175,7 @@ thread1_main (gpointer data)
       test_closure (closure);
       if (++count % 10000 == 0)
         {
-          g_printerr ("c");
+          g_test_message ("Yielding from thread1");
           g_thread_yield(); /* force context switch */
           seen_thread1 = TRUE;
         }
@@ -193,7 +193,7 @@ thread2_main (gpointer data)
       test_closure (closure);
       if (++count % 10000 == 0)
         {
-          g_printerr ("C");
+          g_test_message ("Yielding from thread2");
           g_thread_yield(); /* force context switch */
           seen_thread2 = TRUE;
         }
@@ -269,13 +269,13 @@ test_closure_refcount (void)
       test_emissions (object);
       if (++count % 10000 == 0)
         {
-          g_printerr (".\n");
+          g_test_message ("Yielding from main thread");
           g_thread_yield(); /* force context switch */
         }
     }
 
   stopping = TRUE;
-  g_print ("\nstopping\n");
+  g_test_message ("Stopping");
 
   /* wait for thread shutdown */
   g_thread_join (thread1);
@@ -284,7 +284,7 @@ test_closure_refcount (void)
   /* finalize object, destroy signals, run cleanup code */
   g_object_unref (object);
 
-  g_print ("stopped\n");
+  g_test_message ("Stopped");
 
   g_assert (seen_thread1 != FALSE);
   g_assert (seen_thread2 != FALSE);
