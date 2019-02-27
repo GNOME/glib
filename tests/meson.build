@@ -30,7 +30,6 @@ tests = {
   'mainloop-test' : {},
   'mapping-test' : {},
   'onceinit' : {},
-  'asyncqueue-test' : {},
   'qsort-test' : {},
   'relation-test' : {},
   'slice-concurrent' : {},
