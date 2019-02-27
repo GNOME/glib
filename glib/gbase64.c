@@ -160,7 +160,8 @@ g_base64_encode_step (const guchar *in,
       *state = already;
     }
 
-  if (len>0)
+  g_assert (len == 0 || len == 1 || len == 2);
+
     {
       char *saveout;
 
