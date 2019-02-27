@@ -176,11 +176,12 @@ static gpointer
 thread1_main (gpointer data)
 {
   GClosure *closure = data;
-  while (!stopping)
+  guint i = 0;
+
+  for (i = 0; !stopping; i++)
     {
-      static guint count = 0;
       test_closure (closure);
-      if (++count % 10000 == 0)
+      if (i % 10000 == 0)
         {
           g_test_message ("Yielding from thread1");
           g_thread_yield(); /* force context switch */
@@ -194,11 +195,12 @@ static gpointer
 thread2_main (gpointer data)
 {
   GClosure *closure = data;
-  while (!stopping)
+  guint i = 0;
+
+  for (i = 0; !stopping; i++)
     {
-      static guint count = 0;
       test_closure (closure);
-      if (++count % 10000 == 0)
+      if (i % 10000 == 0)
         {
           g_test_message ("Yielding from thread2");
           g_thread_yield(); /* force context switch */
@@ -272,9 +274,8 @@ test_closure_refcount (void)
   for (i = 0; i < 1000000; i++)
 #endif
     {
-      static guint count = 0;
       test_emissions (object);
-      if (++count % 10000 == 0)
+      if (i % 10000 == 0)
         {
           g_test_message ("Yielding from main thread");
           g_thread_yield(); /* force context switch */
