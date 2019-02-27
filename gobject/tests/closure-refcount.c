@@ -49,13 +49,18 @@ typedef struct {
 static GType my_test_get_type (void);
 G_DEFINE_TYPE (GTest, my_test, G_TYPE_OBJECT)
 
-static volatile gboolean stopping = FALSE;
-static gboolean          seen_signal_handler = FALSE;
-static gboolean          seen_cleanup = FALSE;
-static gboolean          seen_test_int1 = FALSE;
-static gboolean          seen_test_int2 = FALSE;
-static gboolean          seen_thread1 = FALSE;
-static gboolean          seen_thread2 = FALSE;
+/* Test state */
+typedef struct
+{
+  GClosure *closure;  /* (unowned) */
+  gboolean stopping;
+  gboolean seen_signal_handler;
+  gboolean seen_cleanup;
+  gboolean seen_test_int1;
+  gboolean seen_test_int2;
+  gboolean seen_thread1;
+  gboolean seen_thread2;
+} TestClosureRefcountData;
 
 /* --- functions --- */
 static void
@@ -173,38 +178,38 @@ test_closure (GClosure *closure)
 }
 
 static gpointer
-thread1_main (gpointer data)
+thread1_main (gpointer user_data)
 {
-  GClosure *closure = data;
+  TestClosureRefcountData *data = user_data;
   guint i = 0;
 
-  for (i = 0; !stopping; i++)
+  for (i = 0; !g_atomic_int_get (&data->stopping); i++)
     {
-      test_closure (closure);
+      test_closure (data->closure);
       if (i % 10000 == 0)
         {
           g_test_message ("Yielding from thread1");
           g_thread_yield (); /* force context switch */
-          seen_thread1 = TRUE;
+          g_atomic_int_set (&data->seen_thread1, TRUE);
         }
     }
   return NULL;
 }
 
 static gpointer
-thread2_main (gpointer data)
+thread2_main (gpointer user_data)
 {
-  GClosure *closure = data;
+  TestClosureRefcountData *data = user_data;
   guint i = 0;
 
-  for (i = 0; !stopping; i++)
+  for (i = 0; !g_atomic_int_get (&data->stopping); i++)
     {
-      test_closure (closure);
+      test_closure (data->closure);
       if (i % 10000 == 0)
         {
           g_test_message ("Yielding from thread2");
           g_thread_yield (); /* force context switch */
-          seen_thread2 = TRUE;
+          g_atomic_int_set (&data->seen_thread2, TRUE);
         }
     }
   return NULL;
@@ -213,20 +218,25 @@ thread2_main (gpointer data)
 static void
 test_signal_handler (GTest   *test,
                      gint     vint,
-                     gpointer data)
+                     gpointer user_data)
 {
-  g_assert_true (data == TEST_POINTER2);
+  TestClosureRefcountData *data = user_data;
+
   g_assert_true (test->test_pointer1 == TEST_POINTER1);
-  seen_signal_handler = TRUE;
-  seen_test_int1 |= vint == TEST_INT1;
-  seen_test_int2 |= vint == TEST_INT2;
+
+  data->seen_signal_handler = TRUE;
+  data->seen_test_int1 |= vint == TEST_INT1;
+  data->seen_test_int2 |= vint == TEST_INT2;
 }
 
 static void
-destroy_data (gpointer  data,
+destroy_data (gpointer  user_data,
               GClosure *closure)
 {
-  seen_cleanup = data == TEST_POINTER2;
+  TestClosureRefcountData *data = user_data;
+
+  data->seen_cleanup = TRUE;
+  g_assert_true (data->closure == closure);
   g_assert_cmpint (closure->ref_count, ==, 0);
 }
 
@@ -245,20 +255,22 @@ static void
 test_closure_refcount (void)
 {
   GThread *thread1, *thread2;
+  TestClosureRefcountData test_data = { 0, };
   GClosure *closure;
   GTest *object;
   guint i;
 
   object = g_object_new (G_TYPE_TEST, NULL);
-  closure = g_cclosure_new (G_CALLBACK (test_signal_handler), TEST_POINTER2, destroy_data);
+  closure = g_cclosure_new (G_CALLBACK (test_signal_handler), &test_data, destroy_data);
 
   g_signal_connect_closure (object, "test-signal1", closure, FALSE);
   g_signal_connect_closure (object, "test-signal2", closure, FALSE);
 
-  stopping = FALSE;
+  test_data.stopping = FALSE;
+  test_data.closure = closure;
 
-  thread1 = g_thread_new ("thread1", thread1_main, closure);
-  thread2 = g_thread_new ("thread2", thread2_main, closure);
+  thread1 = g_thread_new ("thread1", thread1_main, &test_data);
+  thread2 = g_thread_new ("thread2", thread2_main, &test_data);
 
   /* The 16-bit compare-and-swap operations currently used for closure
    * refcounts are really slow on some ARM CPUs, notably Cortex-A57.
@@ -282,7 +294,7 @@ test_closure_refcount (void)
         }
     }
 
-  stopping = TRUE;
+  g_atomic_int_set (&test_data.stopping, TRUE);
   g_test_message ("Stopping");
 
   /* wait for thread shutdown */
@@ -294,12 +306,12 @@ test_closure_refcount (void)
 
   g_test_message ("Stopped");
 
-  g_assert_true (seen_thread1);
-  g_assert_true (seen_thread2);
-  g_assert_true (seen_test_int1);
-  g_assert_true (seen_test_int2);
-  g_assert_true (seen_signal_handler);
-  g_assert_true (seen_cleanup);
+  g_assert_true (g_atomic_int_get (&test_data.seen_thread1));
+  g_assert_true (g_atomic_int_get (&test_data.seen_thread2));
+  g_assert_true (test_data.seen_test_int1);
+  g_assert_true (test_data.seen_test_int2);
+  g_assert_true (test_data.seen_signal_handler);
+  g_assert_true (test_data.seen_cleanup);
 }
 
 int
