@@ -228,17 +228,17 @@ test_emissions (GTest *test)
   my_test_emit_test_signal2 (test, TEST_INT2);
 }
 
-int
-main (int    argc,
-      char **argv)
+/* Test that closure refcounting works even when high contested between three
+ * threads (the main thread, thread1 and thread2). Both child threads are
+ * contesting refs/unrefs, while the main thread periodically emits signals
+ * which also do refs/unrefs on closures. */
+static void
+test_closure_refcount (void)
 {
   GThread *thread1, *thread2;
   GClosure *closure;
   GTest *object;
   guint i;
-
-  g_print ("START: %s\n", argv[0]);
-  g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | g_log_set_always_fatal (G_LOG_FATAL_MASK));
 
   object = g_object_new (G_TYPE_TEST, NULL);
   closure = g_cclosure_new (G_CALLBACK (test_signal_handler), TEST_POINTER2, destroy_data);
@@ -292,6 +292,15 @@ main (int    argc,
   g_assert (seen_test_int2 != FALSE);
   g_assert (seen_signal_handler != FALSE);
   g_assert (seen_cleanup != FALSE);
+}
 
-  return 0;
+int
+main (int argc,
+      char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/closure/refcount", test_closure_refcount);
+
+  return g_test_run ();
 }
