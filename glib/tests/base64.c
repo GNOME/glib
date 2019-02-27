@@ -443,6 +443,49 @@ test_base64_decode_empty (void)
   g_free (decoded);
 }
 
+/* Check all the RFC 4648 test vectors for base 64 encoding from §10.
+ * https://tools.ietf.org/html/rfc4648#section-10 */
+static void
+test_base64_encode_decode_rfc4648 (void)
+{
+  const struct
+    {
+      const gchar *decoded;  /* technically this should be a byte array, but all the test vectors are ASCII strings */
+      const gchar *encoded;
+    }
+  vectors[] =
+    {
+      { "", "" },
+      { "f", "Zg==" },
+      { "fo", "Zm8=" },
+      { "foo", "Zm9v" },
+      { "foob", "Zm9vYg==" },
+      { "fooba", "Zm9vYmE=" },
+      { "foobar", "Zm9vYmFy" },
+    };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      gchar *encoded = NULL;
+      guchar *decoded = NULL;
+      gsize expected_decoded_len = strlen (vectors[i].decoded);
+      gsize decoded_len;
+
+      g_test_message ("Vector %" G_GSIZE_FORMAT ": %s", i, vectors[i].decoded);
+
+      encoded = g_base64_encode ((const guchar *) vectors[i].decoded, expected_decoded_len);
+      g_assert_cmpstr (encoded, ==, vectors[i].encoded);
+
+      decoded = g_base64_decode (encoded, &decoded_len);
+      g_assert_cmpstr ((gchar *) decoded, ==, vectors[i].decoded);
+      g_assert_cmpuint (decoded_len, ==, expected_decoded_len);
+
+      g_free (encoded);
+      g_free (decoded);
+    }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -493,6 +536,8 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/base64/encode/empty", test_base64_encode_empty);
   g_test_add_func ("/base64/decode/empty", test_base64_decode_empty);
+
+  g_test_add_func ("/base64/encode-decode/rfc4648", test_base64_encode_decode_rfc4648);
 
   return g_test_run ();
 }
