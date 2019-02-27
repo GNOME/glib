@@ -77,6 +77,12 @@ test_types (void)
   g_assert_cmpint (s2, ==, 12);
   g_assert_cmpint (s, ==, 8);
 
+  g_assert (g_atomic_int_compare_and_exchange (&s, 8, G_MAXINT));
+  g_assert (s == G_MAXINT);
+
+  g_assert (g_atomic_int_compare_and_exchange (&s, G_MAXINT, G_MININT));
+  g_assert (s == G_MININT);
+
   g_atomic_pointer_set (&vp, 0);
   vp2 = g_atomic_pointer_get (&vp);
   g_assert (vp2 == 0);
