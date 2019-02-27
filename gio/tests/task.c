@@ -1317,6 +1317,7 @@ test_run_in_thread_nested (void)
  * tasks, they won't all run at once.
  */
 static GMutex overflow_mutex;
+static guint overflow_completed;
 
 static void
 run_overflow_task_thread (GTask        *task,
@@ -1329,16 +1330,19 @@ run_overflow_task_thread (GTask        *task,
   if (g_task_return_error_if_cancelled (task))
     {
       *result = 'X';
-      return;
+    }
+  else
+    {
+      /* Block until the main thread is ready. */
+      g_mutex_lock (&overflow_mutex);
+      g_mutex_unlock (&overflow_mutex);
+
+      *result = '.';
+
+      g_task_return_boolean (task, TRUE);
     }
 
-  /* Block until the main thread is ready. */
-  g_mutex_lock (&overflow_mutex);
-  g_mutex_unlock (&overflow_mutex);
-
-  *result = '.';
-
-  g_task_return_boolean (task, TRUE);
+  g_atomic_int_inc (&overflow_completed);
 }
 
 #define NUM_OVERFLOW_TASKS 1024
@@ -1382,8 +1386,10 @@ test_run_in_thread_overflow (void)
   g_mutex_unlock (&overflow_mutex);
 
   /* Wait for all tasks to complete. */
-  while (strlen (buf) != NUM_OVERFLOW_TASKS)
+  while (g_atomic_int_get (&overflow_completed) != NUM_OVERFLOW_TASKS)
     g_usleep (1000);
+
+  g_assert_cmpint (strlen (buf), ==, NUM_OVERFLOW_TASKS);
 
   i = strspn (buf, ".");
   /* Given the sleep times above, i should be 14 for normal, 40 for
