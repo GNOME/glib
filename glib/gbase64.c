@@ -105,7 +105,7 @@ g_base64_encode_step (const guchar *in,
   g_return_val_if_fail (state != NULL, 0);
   g_return_val_if_fail (save != NULL, 0);
 
-  if (len <= 0)
+  if (len == 0)
     return 0;
 
   inptr = in;
