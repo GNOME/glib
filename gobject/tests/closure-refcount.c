@@ -258,7 +258,7 @@ test_closure_refcount (void)
   TestClosureRefcountData test_data = { 0, };
   GClosure *closure;
   GTest *object;
-  guint i;
+  guint i, n_iterations;
 
   object = g_object_new (G_TYPE_TEST, NULL);
   closure = g_cclosure_new (G_CALLBACK (test_signal_handler), &test_data, destroy_data);
@@ -281,10 +281,21 @@ test_closure_refcount (void)
    * https://gitlab.gnome.org/GNOME/glib/issues/1316
    * aka https://bugs.debian.org/880883 */
 #if defined(__aarch64__) || defined(__arm__)
-  for (i = 0; i < 100000; i++)
+  n_iterations = 100000;
 #else
-  for (i = 0; i < 1000000; i++)
+  n_iterations = 1000000;
 #endif
+
+  /* Run the test for a reasonably high number of iterations, and ensure we
+   * don’t terminate until at least 10000 iterations have completed in both
+   * thread1 and thread2. Even though @n_iterations is high, we can’t guarantee
+   * that the scheduler allocates time fairly (or at all!) to thread1 or
+   * thread2. */
+  for (i = 0;
+       i < n_iterations ||
+       !g_atomic_int_get (&test_data.seen_thread1) ||
+       !g_atomic_int_get (&test_data.seen_thread2);
+       i++)
     {
       test_emissions (object);
       if (i % 10000 == 0)
