@@ -215,8 +215,8 @@ test_signal_handler (GTest   *test,
                      gint     vint,
                      gpointer data)
 {
-  g_assert (data == TEST_POINTER2);
-  g_assert (test->test_pointer1 == TEST_POINTER1);
+  g_assert_true (data == TEST_POINTER2);
+  g_assert_true (test->test_pointer1 == TEST_POINTER1);
   seen_signal_handler = TRUE;
   seen_test_int1 |= vint == TEST_INT1;
   seen_test_int2 |= vint == TEST_INT2;
@@ -227,7 +227,7 @@ destroy_data (gpointer  data,
               GClosure *closure)
 {
   seen_cleanup = data == TEST_POINTER2;
-  g_assert (closure->ref_count == 0);
+  g_assert_cmpint (closure->ref_count, ==, 0);
 }
 
 static void
@@ -294,12 +294,12 @@ test_closure_refcount (void)
 
   g_test_message ("Stopped");
 
-  g_assert (seen_thread1 != FALSE);
-  g_assert (seen_thread2 != FALSE);
-  g_assert (seen_test_int1 != FALSE);
-  g_assert (seen_test_int2 != FALSE);
-  g_assert (seen_signal_handler != FALSE);
-  g_assert (seen_cleanup != FALSE);
+  g_assert_true (seen_thread1);
+  g_assert_true (seen_thread2);
+  g_assert_true (seen_test_int1);
+  g_assert_true (seen_test_int2);
+  g_assert_true (seen_signal_handler);
+  g_assert_true (seen_cleanup);
 }
 
 int
