@@ -28,6 +28,7 @@
 #include "gioenumtypes.h"
 #include "gioerror.h"
 #include "glibintl.h"
+#include "errno.h"
 
 
 /**
@@ -98,10 +99,11 @@ static gboolean g_converter_output_stream_flush      (GOutputStream  *stream,
 
 static gboolean g_converter_output_stream_can_poll          (GPollableOutputStream *stream);
 static gboolean g_converter_output_stream_is_writable       (GPollableOutputStream *stream);
-static gssize   g_converter_output_stream_write_nonblocking (GPollableOutputStream  *stream,
-							     const void             *buffer,
-							     gsize                  size,
-							     GError               **error);
+static GPollableReturn g_converter_output_stream_write_nonblocking_pollable  (GPollableOutputStream  *stream,
+                                                                              const void             *buffer,
+                                                                              gsize                  size,
+                                                                              gsize                  *bytes_written,
+                                                                              GError               **error);
 
 static GSource *g_converter_output_stream_create_source     (GPollableOutputStream *stream,
 							     GCancellable          *cancellable);
@@ -147,7 +149,7 @@ g_converter_output_stream_pollable_iface_init (GPollableOutputStreamInterface *i
 {
   iface->can_poll = g_converter_output_stream_can_poll;
   iface->is_writable = g_converter_output_stream_is_writable;
-  iface->write_nonblocking = g_converter_output_stream_write_nonblocking;
+  iface->write_nonblocking_pollable = g_converter_output_stream_write_nonblocking_pollable;
   iface->create_source = g_converter_output_stream_create_source;
 }
 
@@ -359,7 +361,7 @@ buffer_append (Buffer *buffer,
 }
 
 
-static gboolean
+static GPollableReturn
 flush_buffer (GConverterOutputStream *stream,
 	      gboolean                blocking,
 	      GCancellable           *cancellable,
@@ -378,34 +380,35 @@ flush_buffer (GConverterOutputStream *stream,
   available = buffer_data_size (&priv->converted_buffer);
   if (available > 0)
     {
-      res = g_pollable_stream_write_all (base_stream,
-					 buffer_data (&priv->converted_buffer),
-					 available,
-					 blocking,
-					 &nwritten,
-					 cancellable,
-					 error);
+      res = g_pollable_stream_write_all_pollable (base_stream,
+                                                  buffer_data (&priv->converted_buffer),
+                                                  available,
+                                                  blocking,
+                                                  &nwritten,
+                                                  cancellable,
+                                                  error);
       buffer_consumed (&priv->converted_buffer, nwritten);
       return res;
     }
-  return TRUE;
+  return G_POLLABLE_RETURN_OK;
 }
 
 
-static gssize
+static GPollableReturn
 write_internal (GOutputStream  *stream,
-		const void     *buffer,
-		gsize           count,
-		gboolean        blocking,
-		GCancellable   *cancellable,
-		GError        **error)
+                const void     *buffer,
+                gsize           count,
+                gboolean        blocking,
+                gsize          *bytes_written,
+                GCancellable   *cancellable,
+                GError        **error)
 {
   GConverterOutputStream *cstream;
   GConverterOutputStreamPrivate *priv;
-  gssize retval;
   GConverterResult res;
+  GPollableReturn _res;
   gsize bytes_read;
-  gsize bytes_written;
+  gsize _bytes_written;
   GError *my_error;
   const char *to_convert;
   gsize to_convert_size, converted_bytes;
@@ -416,11 +419,15 @@ write_internal (GOutputStream  *stream,
 
   /* Write out all available pre-converted data and fail if
      not possible */
-  if (!flush_buffer (cstream, blocking, cancellable, error))
-    return -1;
+  _res = flush_buffer (cstream, blocking, cancellable, error);
+  if (_res != G_POLLABLE_RETURN_OK)
+       return _res;
 
   if (priv->finished)
-    return 0;
+    {
+      *bytes_written = 0;
+      return G_POLLABLE_RETURN_OK;
+    }
 
   /* Convert as much as possible */
   if (buffer_data_size (&priv->output_buffer) > 0)
@@ -456,12 +463,12 @@ write_internal (GOutputStream  *stream,
 				 buffer_tailspace (&priv->converted_buffer),
 				 0,
 				 &bytes_read,
-				 &bytes_written,
+				 &_bytes_written,
 				 &my_error);
 
       if (res != G_CONVERTER_ERROR)
 	{
-	  priv->converted_buffer.end += bytes_written;
+	  priv->converted_buffer.end += _bytes_written;
 	  converted_bytes += bytes_read;
 
 	  if (res == G_CONVERTER_FINISHED)
@@ -502,22 +509,23 @@ write_internal (GOutputStream  *stream,
 	      /* in the converting_from_buffer case we already appended this */
 
               g_error_free (my_error);
-	      return count; /* consume everything */
+              *bytes_written = count;
+	      return G_POLLABLE_RETURN_OK; /* consume everything */
 	    }
 
 	  /* Converted no data and got an normal error, return it */
 	  g_propagate_error (error, my_error);
-	  return -1;
+	  return G_POLLABLE_RETURN_FAILED;
 	}
     }
 
   if (converting_from_buffer)
     {
       buffer_consumed (&priv->output_buffer, converted_bytes);
-      retval = count;
+      *bytes_written = count;
     }
   else
-    retval = converted_bytes;
+    *bytes_written = converted_bytes;
 
   /* We now successfully consumed retval bytes, so we can't return an error,
      even if writing this to the base stream fails. If it does we'll just
@@ -525,7 +533,7 @@ write_internal (GOutputStream  *stream,
      write call. */
   flush_buffer (cstream, blocking, cancellable, NULL);
 
-  return retval;
+  return G_POLLABLE_RETURN_OK;
 }
 
 static gssize
@@ -535,7 +543,33 @@ g_converter_output_stream_write (GOutputStream  *stream,
 				 GCancellable   *cancellable,
 				 GError        **error)
 {
-  return write_internal (stream, buffer, count, TRUE, cancellable, error);
+  gsize bytes_written;
+  GPollableReturn res;
+
+  res = write_internal(stream, buffer, count, TRUE, &bytes_written,
+                       cancellable, error);
+
+  switch (res)
+    {
+    case G_POLLABLE_RETURN_OK:
+      g_warn_if_fail (error == NULL || *error == NULL);
+      return (gssize) bytes_written;
+
+    case G_POLLABLE_RETURN_WOULD_BLOCK:
+      g_warn_if_fail (error == NULL || *error == NULL);
+      /* No error is set for WOULD_BLOCK so we need to do so ourselves */
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK,
+                           g_strerror (EAGAIN));
+      return -1;
+
+    case G_POLLABLE_RETURN_FAILED:
+      /* Error set by g_output_stream_write */
+      g_warn_if_fail (error != NULL || *error != NULL);
+      return -1;
+
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 static gboolean
@@ -647,14 +681,15 @@ g_converter_output_stream_is_writable (GPollableOutputStream *stream)
   return g_pollable_output_stream_is_writable (G_POLLABLE_OUTPUT_STREAM (base_stream));
 }
 
-static gssize
-g_converter_output_stream_write_nonblocking (GPollableOutputStream  *stream,
-					     const void             *buffer,
-					     gsize                   count,
-					     GError                **error)
+static GPollableReturn
+g_converter_output_stream_write_nonblocking_pollable (GPollableOutputStream  *stream,
+                                                      const void             *buffer,
+                                                      gsize                   count,
+                                                      gsize                  *bytes_written,
+                                                      GError                **error)
 {
-  return write_internal (G_OUTPUT_STREAM (stream), buffer, count, FALSE,
-			 NULL, error);
+  return write_internal(G_OUTPUT_STREAM (stream), buffer, count,
+                        FALSE, bytes_written, NULL, error);
 }
 
 static GSource *
