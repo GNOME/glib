@@ -31,6 +31,7 @@
 
 #ifdef G_OS_WIN32
 #include "glib/glib-private.h"
+#include "gdbusprivate.h"
 #endif
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -2421,6 +2422,14 @@ main (gint argc, gchar *argv[])
         ret = 0;
       goto out;
     }
+#ifdef G_OS_WIN32
+  else if (g_strcmp0 (command, _GDBUS_ARG_WIN32_RUN_SESSION_BUS) == 0)
+    {
+      g_win32_run_session_bus (NULL, NULL, NULL, 0);
+      ret = 0;
+      goto out;
+    }
+#endif
   else if (g_strcmp0 (command, "complete") == 0 && argc == 4 && !request_completion)
     {
       const gchar *completion_line;
