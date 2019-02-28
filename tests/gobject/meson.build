@@ -37,7 +37,6 @@ gobject_tests = {
     'extra_sources' : ['testmodule.c'],
   },
   'override' : {},
-  'signals' : {},
   'singleton' : {},
   'references' : {},
   'testgobject' : {},
