@@ -183,7 +183,7 @@ thread1_main (gpointer user_data)
   TestClosureRefcountData *data = user_data;
   guint i = 0;
 
-  for (i = 0; !g_atomic_int_get (&data->stopping); i++)
+  for (i = 1; !g_atomic_int_get (&data->stopping); i++)
     {
       test_closure (data->closure);
       if (i % 10000 == 0)
@@ -202,7 +202,7 @@ thread2_main (gpointer user_data)
   TestClosureRefcountData *data = user_data;
   guint i = 0;
 
-  for (i = 0; !g_atomic_int_get (&data->stopping); i++)
+  for (i = 1; !g_atomic_int_get (&data->stopping); i++)
     {
       test_closure (data->closure);
       if (i % 10000 == 0)
@@ -291,7 +291,7 @@ test_closure_refcount (void)
    * thread1 and thread2. Even though @n_iterations is high, we can’t guarantee
    * that the scheduler allocates time fairly (or at all!) to thread1 or
    * thread2. */
-  for (i = 0;
+  for (i = 1;
        i < n_iterations ||
        !g_atomic_int_get (&test_data.seen_thread1) ||
        !g_atomic_int_get (&test_data.seen_thread2);
