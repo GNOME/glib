@@ -2292,8 +2292,6 @@ g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdsh
   if (g_getenv ("GDBUS_DAEMON_DEBUG") != NULL)
     open_console_window ();
 
-  loop = g_main_loop_new (NULL, FALSE);
-
   address = "nonce-tcp:";
   daemon = _g_dbus_daemon_new (address, NULL, &error);
   if (daemon == NULL)
@@ -2302,6 +2300,8 @@ g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdsh
       g_error_free (error);
       return;
     }
+
+  loop = g_main_loop_new (NULL, FALSE);
 
   /* There is a subtle detail with "idle-timeout" signal of dbus daemon:
    * It is fired on idle after last client disconnection,
