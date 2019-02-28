@@ -671,6 +671,20 @@ ast_array_get_pattern (AST    **array,
   gchar *pattern;
   gint i;
 
+  /* Find the pattern which applies to all children in the array, by l-folding a
+   * coalesce operation. This will not always work: for example, the GVariant:
+   *    [[0], [], [nothing]]
+   * has patterns:
+   *    MaMN, Ma*, Mam*
+   * which pairwise coalesce as:
+   *    MaMN + Ma* = MaN
+   *    MaN + Mam* = (doesn’t coalesce)
+   *
+   * However, the pattern MamN coalesces with all three child patterns. Finding
+   * this pattern would require trying all O(n_items^2) pairs, though, which is
+   * expensive. Just let it fail, and require the user to provide type
+   * annotations.
+   */
   pattern = ast_get_pattern (array[0], error);
 
   if (pattern == NULL)
@@ -705,8 +719,18 @@ ast_array_get_pattern (AST    **array,
               gchar *tmp2;
               gchar *m;
 
-              /* if 'j' reaches 'i' then we failed to find the pair */
-              g_assert (j < i);
+              /* if 'j' reaches 'i' then we failed to find the pair, which can
+               * happen due to only trying pairwise coalesces in order rather
+               * than between all pairs (see above). so just report an error
+               * for i. */
+              if (j >= i)
+                {
+                  ast_set_error (array[i], error, NULL,
+                                 G_VARIANT_PARSE_ERROR_NO_COMMON_TYPE,
+                                 "unable to find a common type");
+                  g_free (tmp);
+                  return NULL;
+                }
 
               tmp2 = ast_get_pattern (array[j], NULL);
               g_assert (tmp2 != NULL);
@@ -1921,6 +1945,8 @@ number_get_value (AST                 *ast,
     case 'n':
       if (abs_val - negative > G_MAXINT16)
         return number_overflow (ast, type, error);
+      if (negative && abs_val > G_MAXINT16)
+        return g_variant_new_int16 (G_MININT16);
       return g_variant_new_int16 (negative ? -((gint16) abs_val) : abs_val);
 
     case 'q':
@@ -1931,6 +1957,8 @@ number_get_value (AST                 *ast,
     case 'i':
       if (abs_val - negative > G_MAXINT32)
         return number_overflow (ast, type, error);
+      if (negative && abs_val > G_MAXINT32)
+        return g_variant_new_int32 (G_MININT32);
       return g_variant_new_int32 (negative ? -((gint32) abs_val) : abs_val);
 
     case 'u':
@@ -1941,6 +1969,8 @@ number_get_value (AST                 *ast,
     case 'x':
       if (abs_val - negative > G_MAXINT64)
         return number_overflow (ast, type, error);
+      if (negative && abs_val > G_MAXINT64)
+        return g_variant_new_int64 (G_MININT64);
       return g_variant_new_int64 (negative ? -((gint64) abs_val) : abs_val);
 
     case 't':
@@ -1951,6 +1981,8 @@ number_get_value (AST                 *ast,
     case 'h':
       if (abs_val - negative > G_MAXINT32)
         return number_overflow (ast, type, error);
+      if (negative && abs_val > G_MAXINT32)
+        return g_variant_new_handle (G_MININT32);
       return g_variant_new_handle (negative ? -((gint32) abs_val) : abs_val);
 
     default:

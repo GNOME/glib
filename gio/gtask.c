@@ -1,6 +1,6 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
- * Copyright 2011 Red Hat, Inc.
+ * Copyright 2011-2018 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -563,15 +563,22 @@ struct _GTask {
   /* This can’t be in the bit field because we access it from TRACE(). */
   gboolean thread_cancelled;
 
-  gboolean check_cancellable : 1;
-  gboolean completed : 1;
-  gboolean return_on_cancel : 1;
-  gboolean synchronous : 1;
+  /* Protected by the lock when task is threaded: */
   gboolean thread_complete : 1;
-  gboolean blocking_other_task : 1;
+  gboolean return_on_cancel : 1;
+  gboolean : 0;
+
+  /* Unprotected, but written to when task runs in thread: */
+  gboolean completed : 1;
   gboolean had_error : 1;
   gboolean result_set : 1;
   gboolean ever_returned : 1;
+  gboolean : 0;
+
+  /* Read-only once task runs in thread: */
+  gboolean check_cancellable : 1;
+  gboolean synchronous : 1;
+  gboolean blocking_other_task : 1;
 
   GError *error;
   union {
@@ -1260,9 +1267,18 @@ g_task_return (GTask           *task,
        */
       if (g_source_get_time (source) > task->creation_time)
         {
-          g_task_return_now (task);
-          g_object_unref (task);
-          return;
+          /* Finally, if the task has been cancelled, we shouldn't
+           * return synchronously from inside the
+           * GCancellable::cancelled handler. It's easier to run
+           * another iteration of the main loop than tracking how the
+           * cancellation was handled.
+           */
+          if (!g_cancellable_is_cancelled (task->cancellable))
+            {
+              g_task_return_now (task);
+              g_object_unref (task);
+              return;
+            }
         }
     }
 

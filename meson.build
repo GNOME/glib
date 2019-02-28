@@ -1,5 +1,5 @@
 project('glib', 'c', 'cpp',
-  version : '2.59.1',
+  version : '2.59.3',
   meson_version : '>= 0.48.0',
   default_options : [
     'buildtype=debugoptimized',
@@ -1892,6 +1892,9 @@ endif
 # Determine which user environment-dependent files that we want to install
 have_bash = find_program('bash', required : false).found() # For completion scripts
 have_sh = find_program('sh', required : false).found() # For glib-gettextize
+
+# Some installed tests require a custom environment
+env_program = find_program('env', required: installed_tests_enabled)
 
 # FIXME: How to detect Solaris? https://github.com/mesonbuild/meson/issues/1578
 if host_system == 'sunos'

@@ -8,12 +8,20 @@
 #include <gio/gfiledescriptorbased.h>
 #endif
 
+/* We write 2^1 + 2^2 ... + 2^10 or 2047 copies of "Hello World!\n"
+ * ultimately
+ */
+#define TOTAL_HELLOS 2047
+#define HELLO_WORLD "hello world!\n"
+
 #ifdef G_OS_WIN32
 #define LINEEND "\r\n"
 #define EXEEXT ".exe"
+#define SPLICELEN (TOTAL_HELLOS * (strlen (HELLO_WORLD) + 1)) /* because \r */
 #else
 #define LINEEND "\n"
 #define EXEEXT
+#define SPLICELEN (TOTAL_HELLOS * strlen (HELLO_WORLD))
 #endif
 
 static GPtrArray *
@@ -557,10 +565,7 @@ on_idle_multisplice (gpointer     user_data)
 {
   TestMultiSpliceData *data = user_data;
 
-  /* We write 2^1 + 2^2 ... + 2^10 or 2047 copies of "Hello World!\n"
-   * ultimately
-   */
-  if (data->counter >= 2047 || data->caught_error)
+  if (data->counter >= TOTAL_HELLOS || data->caught_error)
     {
       if (!g_output_stream_close (data->first_stdin, NULL, &data->error))
         data->caught_error = TRUE;
@@ -577,8 +582,8 @@ on_idle_multisplice (gpointer     user_data)
       for (i = 0; i < data->counter; i++)
         {
           gsize bytes_written;
-          if (!g_output_stream_write_all (data->first_stdin, "hello world!\n",
-                                          strlen ("hello world!\n"), &bytes_written,
+          if (!g_output_stream_write_all (data->first_stdin, HELLO_WORLD,
+                                          strlen (HELLO_WORLD), &bytes_written,
                                           NULL, &data->error))
             {
               data->caught_error = TRUE;
@@ -684,7 +689,7 @@ test_multi_1 (void)
   g_assert (!data.caught_error);
   g_assert_no_error (data.error);
 
-  g_assert_cmpint (g_memory_output_stream_get_data_size ((GMemoryOutputStream*)membuf), ==, 26611);
+  g_assert_cmpint (g_memory_output_stream_get_data_size ((GMemoryOutputStream*)membuf), ==, SPLICELEN);
 
   g_main_loop_unref (data.loop);
   g_object_unref (membuf);
@@ -732,7 +737,7 @@ on_communicate_complete (GObject               *proc,
       else
         stdout_data = g_bytes_get_data (stdout_bytes, &stdout_len);
 
-      g_assert_cmpmem (stdout_data, stdout_len, "# hello world\n", 14);
+      g_assert_cmpmem (stdout_data, stdout_len, "# hello world" LINEEND, 13 + strlen (LINEEND));
     }
   else
     {
@@ -834,7 +839,7 @@ test_communicate (gconstpointer test_data)
   if (flags & G_SUBPROCESS_FLAGS_STDOUT_PIPE)
     {
       stdout_data = g_bytes_get_data (stdout_bytes, &stdout_len);
-      g_assert_cmpmem (stdout_data, stdout_len, "# hello world\n", 14);
+      g_assert_cmpmem (stdout_data, stdout_len, "# hello world" LINEEND, 13 + strlen (LINEEND));
     }
   else
     g_assert_null (stdout_bytes);
@@ -1110,7 +1115,7 @@ test_communicate_utf8 (gconstpointer test_data)
   g_assert_no_error (error);
 
   if (flags & G_SUBPROCESS_FLAGS_STDOUT_PIPE)
-    g_assert_cmpstr (stdout_buf, ==, "# hello world\n");
+    g_assert_cmpstr (stdout_buf, ==, "# hello world" LINEEND);
   else
     g_assert_null (stdout_buf);
   if (flags & G_SUBPROCESS_FLAGS_STDERR_PIPE)
@@ -1358,9 +1363,10 @@ test_env (void)
   GPtrArray *args;
   GInputStream *stdout_stream;
   gchar *result;
-  gchar *envp[] = { "ONE=1", "TWO=1", "THREE=3", "FOUR=1", NULL };
+  gchar *envp[] = { NULL, "ONE=1", "TWO=1", "THREE=3", "FOUR=1", NULL };
   gchar **split;
 
+  envp[0] = g_strdup_printf ("PATH=%s", g_getenv ("PATH"));
   args = get_test_subprocess_args ("env", NULL);
   launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
   g_subprocess_launcher_set_flags (launcher, G_SUBPROCESS_FLAGS_STDOUT_PIPE);
@@ -1374,11 +1380,12 @@ test_env (void)
   proc = g_subprocess_launcher_spawn (launcher, error, args->pdata[0], "env", NULL);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
+  g_free (envp[0]);
 
   stdout_stream = g_subprocess_get_stdout_pipe (proc);
 
   result = splice_to_string (stdout_stream, error);
-  split = g_strsplit (result, "\n", -1);
+  split = g_strsplit (result, LINEEND, -1);
   g_assert_cmpstr (g_environ_getenv (split, "ONE"), ==, "1");
   g_assert_cmpstr (g_environ_getenv (split, "TWO"), ==, "2");
   g_assert_cmpstr (g_environ_getenv (split, "THREE"), ==, "3");
@@ -1425,7 +1432,7 @@ test_env_inherit (void)
   stdout_stream = g_subprocess_get_stdout_pipe (proc);
 
   result = splice_to_string (stdout_stream, error);
-  split = g_strsplit (result, "\n", -1);
+  split = g_strsplit (result, LINEEND, -1);
   g_assert_null (g_environ_getenv (split, "TEST_ENV_INHERIT1"));
   g_assert_cmpstr (g_environ_getenv (split, "TEST_ENV_INHERIT2"), ==, "2");
   g_assert_cmpstr (g_environ_getenv (split, "TWO"), ==, "2");
@@ -1447,11 +1454,15 @@ test_cwd (void)
   GInputStream *stdout_stream;
   gchar *result;
   const char *basename;
+  gchar *tmp_lineend;
+  const gchar *tmp_lineend_basename;
 
   args = get_test_subprocess_args ("cwd", NULL);
   launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE);
   g_subprocess_launcher_set_flags (launcher, G_SUBPROCESS_FLAGS_STDOUT_PIPE);
-  g_subprocess_launcher_set_cwd (launcher, "/tmp");
+  g_subprocess_launcher_set_cwd (launcher, g_get_tmp_dir ());
+  tmp_lineend = g_strdup_printf ("%s%s", g_get_tmp_dir (), LINEEND);
+  tmp_lineend_basename = g_strrstr (tmp_lineend, G_DIR_SEPARATOR_S);
 
   proc = g_subprocess_launcher_spawnv (launcher, (const char * const *)args->pdata, error);
   g_ptr_array_free (args, TRUE);
@@ -1461,9 +1472,10 @@ test_cwd (void)
 
   result = splice_to_string (stdout_stream, error);
 
-  basename = g_strrstr (result, "/");
+  basename = g_strrstr (result, G_DIR_SEPARATOR_S);
   g_assert (basename != NULL);
-  g_assert_cmpstr (basename, ==, "/tmp" LINEEND);
+  g_assert_cmpstr (basename, ==, tmp_lineend_basename);
+  g_free (tmp_lineend);
 
   g_free (result);
   g_object_unref (proc);
@@ -1719,7 +1731,7 @@ test_launcher_environment (void)
   g_subprocess_communicate_utf8 (proc, NULL, NULL, &out, NULL, &error);
   g_assert_no_error (error);
 
-  g_assert_cmpstr (out, ==, "C=D\nE=F\n");
+  g_assert_cmpstr (out, ==, "C=D" LINEEND "E=F" LINEEND);
   g_free (out);
 
   g_object_unref (proc);

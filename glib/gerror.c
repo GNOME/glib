@@ -126,6 +126,8 @@
  *   gint fd;
  *   int saved_errno;
  *
+ *   g_return_val_if_fail (error == NULL || *error == NULL, -1);
+ *
  *   fd = open ("file.txt", O_RDONLY);
  *   saved_errno = errno;
  *

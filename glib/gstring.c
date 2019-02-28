@@ -407,16 +407,18 @@ g_string_set_size (GString *string,
  * @pos: position in @string where insertion should
  *       happen, or -1 for at the end
  * @val: bytes to insert
- * @len: number of bytes of @val to insert
+ * @len: number of bytes of @val to insert, or -1 for all of @val
  *
  * Inserts @len bytes of @val into @string at @pos.
- * Because @len is provided, @val may contain embedded
- * nuls and need not be nul-terminated. If @pos is -1,
- * bytes are inserted at the end of the string.
  *
- * Since this function does not stop at nul bytes, it is
- * the caller's responsibility to ensure that @val has at
- * least @len addressable bytes.
+ * If @len is positive, @val may contain embedded nuls and need
+ * not be nul-terminated. It is the caller's responsibility to
+ * ensure that @val has at least @len addressable bytes.
+ *
+ * If @len is negative, @val must be nul-terminated and @len
+ * is considered to request the entire string length.
+ *
+ * If @pos is -1, bytes are inserted at the end of the string.
  *
  * Returns: (transfer none): @string
  */
@@ -600,15 +602,17 @@ g_string_append (GString     *string,
  * g_string_append_len:
  * @string: a #GString
  * @val: bytes to append
- * @len: number of bytes of @val to use
+ * @len: number of bytes of @val to use, or -1 for all of @val
  *
- * Appends @len bytes of @val to @string. Because @len is
- * provided, @val may contain embedded nuls and need not
- * be nul-terminated.
+ * Appends @len bytes of @val to @string.
  *
- * Since this function does not stop at nul bytes, it is
- * the caller's responsibility to ensure that @val has at
- * least @len addressable bytes.
+ * If @len is positive, @val may contain embedded nuls and need
+ * not be nul-terminated. It is the caller's responsibility to
+ * ensure that @val has at least @len addressable bytes.
+ *
+ * If @len is negative, @val must be nul-terminated and @len
+ * is considered to request the entire string length. This
+ * makes g_string_append_len() equivalent to g_string_append().
  *
  * Returns: (transfer none): @string
  */
@@ -680,15 +684,17 @@ g_string_prepend (GString     *string,
  * g_string_prepend_len:
  * @string: a #GString
  * @val: bytes to prepend
- * @len: number of bytes in @val to prepend
+ * @len: number of bytes in @val to prepend, or -1 for all of @val
  *
  * Prepends @len bytes of @val to @string.
- * Because @len is provided, @val may contain
- * embedded nuls and need not be nul-terminated.
  *
- * Since this function does not stop at nul bytes,
- * it is the caller's responsibility to ensure that
- * @val has at least @len addressable bytes.
+ * If @len is positive, @val may contain embedded nuls and need
+ * not be nul-terminated. It is the caller's responsibility to
+ * ensure that @val has at least @len addressable bytes.
+ *
+ * If @len is negative, @val must be nul-terminated and @len
+ * is considered to request the entire string length. This
+ * makes g_string_prepend_len() equivalent to g_string_prepend().
  *
  * Returns: (transfer none): @string
  */

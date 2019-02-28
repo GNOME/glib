@@ -773,6 +773,19 @@ g_socket_listener_accept (GSocketListener  *listener,
   return connection;
 }
 
+typedef struct
+{
+  GList *sources;  /* (element-type GSource) */
+  gboolean returned_yet;
+} AcceptSocketAsyncData;
+
+static void
+accept_socket_async_data_free (AcceptSocketAsyncData *data)
+{
+  free_sources (data->sources);
+  g_free (data);
+}
+
 static gboolean
 accept_ready (GSocket      *accept_socket,
 	      GIOCondition  condition,
@@ -782,6 +795,12 @@ accept_ready (GSocket      *accept_socket,
   GError *error = NULL;
   GSocket *socket;
   GObject *source_object;
+  AcceptSocketAsyncData *data = g_task_get_task_data (task);
+
+  /* Don’t call g_task_return_*() multiple times if we have multiple incoming
+   * connections in the same #GMainContext iteration. */
+  if (data->returned_yet)
+    return G_SOURCE_REMOVE;
 
   socket = g_socket_accept (accept_socket, g_task_get_cancellable (task), &error);
   if (socket)
@@ -798,8 +817,10 @@ accept_ready (GSocket      *accept_socket,
       g_task_return_error (task, error);
     }
 
+  data->returned_yet = TRUE;
   g_object_unref (task);
-  return FALSE;
+
+  return G_SOURCE_REMOVE;
 }
 
 /**
@@ -824,8 +845,8 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
 				       gpointer             user_data)
 {
   GTask *task;
-  GList *sources;
   GError *error = NULL;
+  AcceptSocketAsyncData *data = NULL;
 
   task = g_task_new (listener, cancellable, callback, user_data);
   g_task_set_source_tag (task, g_socket_listener_accept_socket_async);
@@ -837,12 +858,15 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
       return;
     }
 
-  sources = add_sources (listener,
+  data = g_new0 (AcceptSocketAsyncData, 1);
+  data->returned_yet = FALSE;
+  data->sources = add_sources (listener,
 			 accept_ready,
 			 task,
 			 cancellable,
 			 g_main_context_get_thread_default ());
-  g_task_set_task_data (task, sources, (GDestroyNotify) free_sources);
+  g_task_set_task_data (task, g_steal_pointer (&data),
+                        (GDestroyNotify) accept_socket_async_data_free);
 }
 
 /**

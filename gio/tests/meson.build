@@ -55,7 +55,7 @@ gio_tests = {
   'memory-output-stream' : {},
   'monitor' : {},
   'mount-operation' : {},
-  'network-address' : {'extra_sources': ['mock-resolver.c'], 'suite': ['flaky']},
+  'network-address' : {'extra_sources': ['mock-resolver.c']},
   'network-monitor' : {},
   'network-monitor-race' : {},
   'permission' : {},
@@ -141,12 +141,16 @@ if host_machine.system() != 'windows'
           'slow-connect-preload.c',
           name_prefix : '',
           dependencies: cc.find_library('dl'),
+          install_dir : installed_tests_execdir,
+          install: installed_tests_enabled,
         )
       ],
       'env' : {
         'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(meson.current_build_dir())
       },
-      'suite': ['flaky'],
+      'installed_tests_env' : {
+        'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(installed_tests_execdir),
+      },
     },
     'gschema-compile' : {'install' : false},
     'trash' : {},
@@ -428,6 +432,7 @@ if installed_tests_enabled
     'appinfo-test-static.desktop',
     'file.c',
     'org.gtk.test.dbusappinfo.desktop',
+    'test1.overlay',
     install_dir : installed_tests_execdir,
   )
   install_subdir('x-content', install_dir : installed_tests_execdir)
@@ -519,6 +524,27 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--c-name', '_g_test1',
                '@INPUT@'])
 
+  digit_test_resources_c = custom_target('digit_test_resources.c',
+    input : '111_digit_test.gresource.xml',
+    output : 'digit_test_resources.c',
+    command : [glib_compile_resources,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--sourcedir=' + meson.current_build_dir(),
+               '--generate-source',
+               '--manual-register',
+               '@INPUT@'])
+
+  digit_test_resources_h = custom_target('digit_test_resources.h',
+    input : '111_digit_test.gresource.xml',
+    output : 'digit_test_resources.h',
+    command : [glib_compile_resources,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--generate',
+               '--manual-register',
+               '@INPUT@'])
+
   # referenced by test.gresource.xml
   test_generated_txt = configure_file(input : 'test1.txt',
     output : 'test-generated.txt',
@@ -575,14 +601,14 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
       'resources' : {
         'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
                            test_resources2_h, test_resources_binary_c,
-                           test_resources_binary2],
+                           test_resources_binary2, digit_test_resources_c, digit_test_resources_h],
       },
     }
   else
     gio_tests += {
       'resources' : {
         'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
-                           test_resources2_h],
+                           test_resources2_h, digit_test_resources_c, digit_test_resources_h],
       },
     }
   endif
@@ -592,11 +618,21 @@ foreach test_name, extra_args : gio_tests
   source = extra_args.get('source', test_name + '.c')
   extra_sources = extra_args.get('extra_sources', [])
   install = installed_tests_enabled and extra_args.get('install', true)
+  installed_tests_env = extra_args.get('installed_tests_env', {})
 
   if install
     test_conf = configuration_data()
     test_conf.set('installed_tests_dir', installed_tests_execdir)
     test_conf.set('program', test_name)
+    test_env_override = ''
+    if installed_tests_env != {}
+      envs = []
+      foreach var, value : installed_tests_env
+         envs += '@0@=@1@'.format(var, value)
+      endforeach
+      test_env_override = '@0@ @1@ '.format(env_program.path(), ' '.join(envs))
+    endif
+    test_conf.set('env', test_env_override)
     configure_file(
       input: installed_tests_template_tap,
       output: test_name + '.test',

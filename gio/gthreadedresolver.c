@@ -940,8 +940,10 @@ do_lookup_records (GTask         *task,
    * What we have currently is not particularly worse than using res_query() in
    * worker threads, since it would transparently call res_init() for each new
    * worker thread. (Although the workers would get reused by the
-   * #GThreadPool.) */
-  struct __res_state res;
+   * #GThreadPool.)
+   *
+   * FreeBSD requires the state to be zero-filled before calling res_ninit(). */
+  struct __res_state res = { 0, };
   if (res_ninit (&res) != 0)
     {
       g_task_return_new_error (task, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
