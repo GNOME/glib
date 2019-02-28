@@ -2292,8 +2292,6 @@ g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdsh
   if (g_getenv ("GDBUS_DAEMON_DEBUG") != NULL)
     open_console_window ();
 
-  loop = g_main_loop_new (NULL, FALSE);
-
   address = "nonce-tcp:";
   daemon = _g_dbus_daemon_new (address, NULL, &error);
   if (daemon == NULL)
@@ -2302,6 +2300,8 @@ g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdsh
       g_error_free (error);
       return;
     }
+
+  loop = g_main_loop_new (NULL, FALSE);
 
   /* There is a subtle detail with "idle-timeout" signal of dbus daemon:
    * It is fired on idle after last client disconnection,
@@ -2322,6 +2322,8 @@ g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdsh
   g_object_unref (daemon);
 }
 
+static gboolean autolaunch_binary_absent = FALSE;
+
 gchar *
 _g_dbus_win32_get_session_address_dbus_launch (GError **error)
 {
@@ -2337,28 +2339,8 @@ _g_dbus_win32_get_session_address_dbus_launch (GError **error)
 
   release_mutex (init_mutex);
 
-  if (address == NULL)
+  if (address == NULL && !autolaunch_binary_absent)
     {
-      /* rundll32 doesn't support neither spaces, nor quotes in cmdline:
-       * https://support.microsoft.com/en-us/help/164787/info-windows-rundll-and-rundll32-interface
-       * Since the dll path may have spaces, it is used as working directory,
-       * and the plain dll name is passed as argument to rundll32 like
-       * "C:\Windows\System32\rundll32.exe" .\libgio-2.0-0.dll,g_win32_run_session_bus
-       *
-       * Using relative path to dll rises a question if correct dll is loaded.
-       * According to docs if relative path like .\libgio-2.0-0.dll is passed
-       * the System32 directory may be searched before current directory:
-       * https://docs.microsoft.com/en-us/windows/desktop/dlls/dynamic-link-library-search-order#standard-search-order-for-desktop-applications
-       * Internally rundll32 uses "undefined behavior" parameter combination
-       * LoadLibraryExW(".\libgio-2.0-0.dll", NULL, LOAD_WITH_ALTERED_SEARCH_PATH)
-       * Actual testing shows that if relative name starts from ".\"
-       * the current directory is searched before System32 (win7, win10 1607).
-       * So wrong dll would be loaded only if the BOTH of the following holds:
-       * - rundll32 will change so it would prefer system32 even for .\ paths
-       * - some app would place libgio-2.0-0.dll in system32 directory
-       *
-       * In point of that using .\libgio-2.0-0.dll looks fine.
-       */
       wchar_t gio_path[MAX_PATH + 2] = { 0 };
       int gio_path_len = GetModuleFileNameW (_g_io_win32_get_module (), gio_path, MAX_PATH + 1);
 
@@ -2368,8 +2350,7 @@ _g_dbus_win32_get_session_address_dbus_launch (GError **error)
 	  PROCESS_INFORMATION pi = { 0 };
 	  STARTUPINFOW si = { 0 };
 	  BOOL res = FALSE;
-	  wchar_t rundll_path[MAX_PATH + 100] = { 0 };
-	  wchar_t args[MAX_PATH*2 + 100] = { 0 };
+	  wchar_t exe_path[MAX_PATH + 100] = { 0 };
 	  /* calculate index of first char of dll file name inside full path */
 	  int gio_name_index = gio_path_len;
 	  for (; gio_name_index > 0; --gio_name_index)
@@ -2378,34 +2359,42 @@ _g_dbus_win32_get_session_address_dbus_launch (GError **error)
 	    if (prev_char == L'\\' || prev_char == L'/')
 	      break;
 	  }
-	  GetWindowsDirectoryW (rundll_path, MAX_PATH);
-	  wcscat (rundll_path, L"\\rundll32.exe");
-	  if (GetFileAttributesW (rundll_path) == INVALID_FILE_ATTRIBUTES)
-	    {
-	      GetSystemDirectoryW (rundll_path, MAX_PATH);
-	      wcscat (rundll_path, L"\\rundll32.exe");
-	    }
-
-	  wcscpy (args, L"\"");
-	  wcscat (args, rundll_path);
-	  wcscat (args, L"\" .\\");
-	  wcscat (args, gio_path + gio_name_index);
-#if defined(_WIN64) || defined(_M_X64) || defined(_M_AMD64)
-	  wcscat (args, L",g_win32_run_session_bus");
-#elif defined (_MSC_VER)
-	  wcscat (args, L",_g_win32_run_session_bus@16");
-#else
-	  wcscat (args, L",g_win32_run_session_bus@16");
-#endif
-
 	  gio_path[gio_name_index] = L'\0';
-	  res = CreateProcessW (rundll_path, args,
-				0, 0, FALSE,
-				NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW | DETACHED_PROCESS,
-				0, gio_path,
-				&si, &pi);
+	  wcscpy (exe_path, gio_path);
+	  wcscat (exe_path, L"\\gdbus.exe");
+
+	  if (GetFileAttributesW (exe_path) == INVALID_FILE_ATTRIBUTES)
+	    {
+	      /* warning won't be raised another time
+	       * since autolaunch_binary_absent would be already set.
+	       */
+	      autolaunch_binary_absent = TRUE;
+	      g_warning ("win32 session dbus binary not found: %S", exe_path );
+	    }
+	  else
+	    {
+	      wchar_t args[MAX_PATH*2 + 100] = { 0 };
+	      wcscpy (args, L"\"");
+	      wcscat (args, exe_path);
+	      wcscat (args, L"\" ");
+#define _L_PREFIX_FOR_EXPANDED(arg) L##arg
+#define _L_PREFIX(arg) _L_PREFIX_FOR_EXPANDED (arg)
+	      wcscat (args, _L_PREFIX (_GDBUS_ARG_WIN32_RUN_SESSION_BUS));
+#undef _L_PREFIX
+#undef _L_PREFIX_FOR_EXPANDED
+
+	      res = CreateProcessW (exe_path, args,
+				    0, 0, FALSE,
+				    NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW | DETACHED_PROCESS,
+				    0, gio_path,
+				    &si, &pi);
+	    }
 	  if (res)
-	    address = read_shm (DBUS_DAEMON_ADDRESS_INFO);
+	    {
+	      address = read_shm (DBUS_DAEMON_ADDRESS_INFO);
+	      if (address == NULL)
+		g_warning ("%S dbus binary failed to launch bus, maybe incompatible version", exe_path );
+	    }
 	}
     }
 
