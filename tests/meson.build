@@ -26,7 +26,6 @@ tests = {
   'mapping-test' : {},
   'onceinit' : {},
   'qsort-test' : {},
-  'relation-test' : {},
   'slice-concurrent' : {},
   'slice-threadinit' : {
     'dependencies' : [libgthread_dep],
