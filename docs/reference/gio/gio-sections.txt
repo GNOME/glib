@@ -2137,6 +2137,7 @@ g_socket_send_message
 g_socket_send_message_with_timeout
 g_socket_send_messages
 g_socket_send_with_blocking
+g_socket_send_with_timeout
 g_socket_close
 g_socket_is_closed
 g_socket_shutdown
