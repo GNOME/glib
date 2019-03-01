@@ -3234,11 +3234,31 @@ g_socket_receive_from (GSocket         *socket,
 #define G_SOCKET_DEFAULT_SEND_FLAGS 0
 #endif
 
-static gssize
+/* g_socket_send_with_timeout:
+ * @socket: a #GSocket
+ * @buffer: (array length=size) (element-type guint8): the buffer
+ *     containing the data to send.
+ * @size: the number of bytes to send
+ * @timeout_us: the maximum time (in microseconds) to wait, or -1
+ * @bytes_written: (out) (optional): location to store the number of bytes that were written to the socket
+ * @cancellable: (nullable): a %GCancellable or %NULL
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * This behaves exactly the same as g_socket_send(), except that
+ * the choice of blocking or non-blocking behavior is determined by
+ * the @timeout_us argument rather than by @socket's properties.
+ *
+ * Returns: Number of bytes written (which may be less than @size), or -1
+ * on error
+ *
+ * Since: 2.62
+ */
+GPollableReturn
 g_socket_send_with_timeout (GSocket       *socket,
                             const guint8  *buffer,
                             gsize          size,
                             gint64         timeout_us,
+                            gsize         *bytes_written,
                             GCancellable  *cancellable,
                             GError       **error)
 {
@@ -3247,16 +3267,20 @@ g_socket_send_with_timeout (GSocket       *socket,
 
   g_return_val_if_fail (G_IS_SOCKET (socket) && buffer != NULL, -1);
 
+
+  if (bytes_written)
+    *bytes_written = 0;
+
   start_time = g_get_monotonic_time ();
 
   if (!check_socket (socket, error))
-    return -1;
+    return G_POLLABLE_RETURN_FAILED;
 
   if (!check_timeout (socket, error))
-    return -1;
+    return G_POLLABLE_RETURN_FAILED;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
-    return -1;
+    return G_POLLABLE_RETURN_FAILED;
 
   while (1)
     {
@@ -3280,19 +3304,24 @@ g_socket_send_with_timeout (GSocket       *socket,
                 {
                   if (!block_on_timeout (socket, G_IO_OUT, timeout_us, start_time,
                                          cancellable, error))
-                    return -1;
+                    return G_POLLABLE_RETURN_FAILED;
 
                   continue;
                 }
+
+              return G_POLLABLE_RETURN_WOULD_BLOCK;
             }
 
 	  socket_set_error_lazy (error, errsv, _("Error sending data: %s"));
-	  return -1;
+          return G_POLLABLE_RETURN_FAILED;
 	}
       break;
     }
 
-  return ret;
+  if (bytes_written)
+    *bytes_written = ret;
+
+  return G_POLLABLE_RETURN_OK;
 }
 
 /**
@@ -3363,8 +3392,17 @@ g_socket_send_with_blocking (GSocket       *socket,
 			     GCancellable  *cancellable,
 			     GError       **error)
 {
-  return g_socket_send_with_timeout (socket, (const guint8 *) buffer, size,
-                                     blocking ? -1 : 0, cancellable, error);
+  gsize bytes_written;
+  GPollableReturn res;
+
+  res = g_socket_send_with_timeout (socket, (const guint8 *) buffer, size,
+                                     blocking ? -1 : 0, &bytes_written,
+                                     cancellable, error);
+
+  if (res == G_POLLABLE_RETURN_WOULD_BLOCK)
+    socket_set_error_lazy (error, EWOULDBLOCK, _("Error sending message: %s"));
+
+  return res == G_POLLABLE_RETURN_OK ? bytes_written : -1;
 }
 
 /**
