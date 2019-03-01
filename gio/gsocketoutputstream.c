@@ -169,17 +169,19 @@ g_socket_output_stream_pollable_is_writable (GPollableOutputStream *pollable)
   return g_socket_condition_check (output_stream->priv->socket, G_IO_OUT);
 }
 
-static gssize
-g_socket_output_stream_pollable_write_nonblocking (GPollableOutputStream  *pollable,
+static GPollableReturn
+g_socket_output_stream_pollable_write_nonblocking_pollable (GPollableOutputStream  *pollable,
 						   const void             *buffer,
 						   gsize                   size,
+						   gsize                  *bytes_written,
 						   GError                **error)
 {
   GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (pollable);
 
-  return g_socket_send_with_blocking (output_stream->priv->socket,
-				      buffer, size, FALSE,
-				      NULL, error);
+  return g_socket_send_with_timeout (output_stream->priv->socket,
+                                     buffer, size, FALSE,
+                                     bytes_written,
+                                     NULL, error);
 }
 
 static GPollableReturn
@@ -264,7 +266,7 @@ g_socket_output_stream_pollable_iface_init (GPollableOutputStreamInterface *ifac
 {
   iface->is_writable = g_socket_output_stream_pollable_is_writable;
   iface->create_source = g_socket_output_stream_pollable_create_source;
-  iface->write_nonblocking = g_socket_output_stream_pollable_write_nonblocking;
+  iface->write_nonblocking_pollable = g_socket_output_stream_pollable_write_nonblocking_pollable;
   iface->writev_nonblocking = g_socket_output_stream_pollable_writev_nonblocking;
 }
 
