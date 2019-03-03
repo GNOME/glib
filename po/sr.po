@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-01-24 14:43+0000\n"
-"PO-Revision-Date: 2019-03-01 16:14+0100\n"
+"POT-Creation-Date: 2019-03-01 15:15+0000\n"
+"PO-Revision-Date: 2019-03-03 17:22+0100\n"
 "Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
@@ -901,52 +901,52 @@ msgstr ""
 msgid "Cannot serialize message: "
 msgstr "Не могу да серијализујем поруку: "
 
-#: gio/gdbusmessage.c:2740
+#: gio/gdbusmessage.c:2739
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Тело поруке има потпис „%s“, али недостаје заглавље потписа"
 
-#: gio/gdbusmessage.c:2750
+#: gio/gdbusmessage.c:2749
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
 "“%s”"
 msgstr "Тело поруке има тип потписа „%s“, али потпис у пољу заглавља је „%s“"
 
-#: gio/gdbusmessage.c:2766
+#: gio/gdbusmessage.c:2765
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Тело поруке је празно,,, али је потпис у пољу заглавља „(%s)“"
 
-#: gio/gdbusmessage.c:3319
+#: gio/gdbusmessage.c:3318
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Добијена је грешка са телом поруке типа „%s“"
 
-#: gio/gdbusmessage.c:3327
+#: gio/gdbusmessage.c:3326
 msgid "Error return with empty body"
 msgstr "Добијена је грешка са празним телом поруке"
 
-#: gio/gdbusprivate.c:2066
+#: gio/gdbusprivate.c:2075
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Не могу да добавим профил физичких делова: %s"
 
-#: gio/gdbusprivate.c:2111
+#: gio/gdbusprivate.c:2120
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Не могу да учитам „/var/lib/dbus/machine-id“ или „/etc/machine-id“: "
 
-#: gio/gdbusproxy.c:1611
+#: gio/gdbusproxy.c:1617
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Грешка при позиву покрени услугу према називу за %s: "
 
-#: gio/gdbusproxy.c:1634
+#: gio/gdbusproxy.c:1640
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Неочекиван одговор %d од StartServiceByName(„%s“) метода"
 
-#: gio/gdbusproxy.c:2734 gio/gdbusproxy.c:2869
+#: gio/gdbusproxy.c:2740 gio/gdbusproxy.c:2875
 #, c-format
 msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
@@ -1254,7 +1254,7 @@ msgstr "Грешка: Превише аргумената.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Грешка: „%s“ није исправан назив добро знане магистрале.\n"
 
-#: gio/gdesktopappinfo.c:2041 gio/gdesktopappinfo.c:4680
+#: gio/gdesktopappinfo.c:2041 gio/gdesktopappinfo.c:4822
 msgid "Unnamed"
 msgstr "Неименовано"
 
@@ -1266,26 +1266,26 @@ msgstr "Датотека за радну површ не садржи Exec ун�
 msgid "Unable to find terminal required for application"
 msgstr "Не могу да нађем терминал ради покретања овог програма"
 
-#: gio/gdesktopappinfo.c:3222
+#: gio/gdesktopappinfo.c:3362
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Не могу да направим фасциклу за корисникова подешавања %s: %s"
 
-#: gio/gdesktopappinfo.c:3226
+#: gio/gdesktopappinfo.c:3366
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Не могу да направим фасциклу за корисникова МИМЕ подешавања %s: %s"
 
-#: gio/gdesktopappinfo.c:3466 gio/gdesktopappinfo.c:3490
+#: gio/gdesktopappinfo.c:3606 gio/gdesktopappinfo.c:3630
 msgid "Application information lacks an identifier"
 msgstr "Подацима о програму недостаје идентификатор"
 
-#: gio/gdesktopappinfo.c:3724
+#: gio/gdesktopappinfo.c:3864
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Не могу да направим датотеку радне површи %s"
 
-#: gio/gdesktopappinfo.c:3858
+#: gio/gdesktopappinfo.c:3998
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Произвољне одреднице за %s"
@@ -1351,7 +1351,7 @@ msgstr "Очекивано је ГЕмблем за иконицу ГЕмбле�
 #: gio/gfile.c:2008 gio/gfile.c:2063 gio/gfile.c:3738 gio/gfile.c:3793
 #: gio/gfile.c:4029 gio/gfile.c:4071 gio/gfile.c:4539 gio/gfile.c:4950
 #: gio/gfile.c:5035 gio/gfile.c:5125 gio/gfile.c:5222 gio/gfile.c:5309
-#: gio/gfile.c:5410 gio/gfile.c:7988 gio/gfile.c:8078 gio/gfile.c:8162
+#: gio/gfile.c:5410 gio/gfile.c:8113 gio/gfile.c:8203 gio/gfile.c:8287
 #: gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Радња није подржана"
@@ -1364,7 +1364,7 @@ msgstr "Радња није подржана"
 msgid "Containing mount does not exist"
 msgstr "Садржано монтирање не постоји"
 
-#: gio/gfile.c:2622 gio/glocalfile.c:2441
+#: gio/gfile.c:2622 gio/glocalfile.c:2446
 msgid "Can’t copy over directory"
 msgstr "Не могу да умножим преко директоријума"
 
@@ -1422,7 +1422,7 @@ msgstr "Имена датотека не могу да садрже „%c“"
 msgid "volume doesn’t implement mount"
 msgstr "није подржано монтирање диска"
 
-#: gio/gfile.c:6882
+#: gio/gfile.c:6884 gio/gfile.c:6930
 msgid "No application is registered as handling this file"
 msgstr "Ни један програм не може да отвори ову датотеку"
 
@@ -1673,7 +1673,7 @@ msgstr "Грешка писања на стандардни излаз"
 #: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:282 gio/gio-tool-list.c:165
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
-#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1212 gio/gio-tool-open.c:113
+#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1212 gio/gio-tool-open.c:70
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
 #: gio/gio-tool-trash.c:81 gio/gio-tool-tree.c:239
 msgid "LOCATION"
@@ -1694,7 +1694,7 @@ msgstr ""
 "као „smb://server/resource/datoteka.txt“ као место."
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:313 gio/gio-tool-mkdir.c:76
-#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1263 gio/gio-tool-open.c:139
+#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1263 gio/gio-tool-open.c:96
 #: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
 msgid "No locations given"
 msgstr "Није дато место"
@@ -2101,7 +2101,7 @@ msgstr ""
 msgid "Target %s is not a directory"
 msgstr "Циљ „%s“ није директоријум"
 
-#: gio/gio-tool-open.c:118
+#: gio/gio-tool-open.c:75
 msgid ""
 "Open files with the default application that\n"
 "is registered to handle files of this type."
@@ -2304,16 +2304,12 @@ msgid "Name of the output file"
 msgstr "Назив излазне датотеке"
 
 #: gio/glib-compile-resources.c:739
-#, fuzzy
-#| msgid ""
-#| "The directories where files are to be read from (default to current "
-#| "directory)"
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
 msgstr ""
-"Директоријуми из којих ће датотеке бити читане (основно је текући "
-"директоријум)"
+"Директоријуми из којих ће датотеке дефинисане у ДАТОТЕЦИ бити учитане "
+"(подразумевано: тренутни директоријум)"
 
 #: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2140
 #: gio/glib-compile-schemas.c:2169
@@ -2330,8 +2326,6 @@ msgid "Generate source header"
 msgstr "Ствара заглавље извора"
 
 #: gio/glib-compile-resources.c:742
-#, fuzzy
-#| msgid "Generate sourcecode used to link in the resource file into your code"
 msgid "Generate source code used to link in the resource file into your code"
 msgstr "Ствара изворни код коришћен да повеже датотеку ресурса у ваш код"
 
@@ -2340,10 +2334,8 @@ msgid "Generate dependency list"
 msgstr "Ствара списак зависности"
 
 #: gio/glib-compile-resources.c:744
-#, fuzzy
-#| msgid "name of the dependency file to generate"
 msgid "Name of the dependency file to generate"
-msgstr "назив датотеке зависности за стварање"
+msgstr "Назив датотеке зависности за стварање"
 
 #: gio/glib-compile-resources.c:745
 msgid "Include phony targets in the generated dependency file"
@@ -2730,8 +2722,7 @@ msgid "Ignoring this file.\n"
 msgstr "Занемарујем ову датотеку.\n"
 
 #: gio/glib-compile-schemas.c:1959
-#, fuzzy, c-format
-#| msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
+#, c-format
 msgid "No such key “%s” in schema “%s” as specified in override file “%s”"
 msgstr ""
 "Не постоји кључ „%s“ у шеми „%s“ као што је наведено у датотеци замене „%s“"
@@ -2758,15 +2749,12 @@ msgstr ""
 "понаособ, у шеми „%s“ (датотека премошћења „%s“)"
 
 #: gio/glib-compile-schemas.c:2011
-#, fuzzy, c-format
-#| msgid ""
-#| "error parsing key '%s' in schema '%s' as specified in override file '%s': "
-#| "%s."
+#, c-format
 msgid ""
 "error parsing key “%s” in schema “%s” as specified in override file “%s”: %s."
 msgstr ""
-"грешка у анализи кључа „%s“ у шеми „%s“ као што је наведено у датотеци "
-"замене „%s“: %s."
+"грешка у тумачењу кључа „%s“ у шеми „%s“ као што је наведено у датотеци "
+"премошћења „%s“: %s."
 
 #: gio/glib-compile-schemas.c:2021
 #, c-format
@@ -2774,28 +2762,22 @@ msgid "Ignoring override for this key.\n"
 msgstr "Занемарујем замену за овај кључ.\n"
 
 #: gio/glib-compile-schemas.c:2040
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is outside the "
-#| "range given in the schema"
+#, c-format
 msgid ""
 "override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema"
 msgstr ""
-"преклапање за кључ „%s“ у шеми „%s“ у преклопљеној датотеци „%s“ је изван "
+"премошћење за кључ „%s“ у шеми „%s“ у датотеци премошћења „%s“ је изван "
 "опсега датог у шеми"
 
 #: gio/glib-compile-schemas.c:2069
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is not in the "
-#| "list of valid choices"
+#, c-format
 msgid ""
 "override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices"
 msgstr ""
-"преклапање за кључ „%s“ у шеми „%s“ у преклопљеној датотеци „%s“ није у "
-"списку дозвољених избора"
+"премошћење за кључ „%s“ у шеми „%s“ у датотеци премошћења „%s“ није у списку "
+"дозвољених избора"
 
 #: gio/glib-compile-schemas.c:2140
 msgid "where to store the gschemas.compiled file"
@@ -2843,12 +2825,12 @@ msgstr "не радим ништа.\n"
 msgid "removed existing output file.\n"
 msgstr "уклоњена постојећа излазна датотека.\n"
 
-#: gio/glocalfile.c:544 gio/win32/gwinhttpfile.c:420
+#: gio/glocalfile.c:546 gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Неисправан назив датотеке %s"
 
-#: gio/glocalfile.c:1011
+#: gio/glocalfile.c:1013
 #, c-format
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Грешка добављања података о систему датотека за „%s“: %s"
@@ -2857,129 +2839,128 @@ msgstr "Грешка добављања података о систему да�
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
-#: gio/glocalfile.c:1150
+#: gio/glocalfile.c:1152
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "Нисам нашао садржано качење за датотеку „%s“"
 
-#: gio/glocalfile.c:1173
+#: gio/glocalfile.c:1175
 msgid "Can’t rename root directory"
 msgstr "Не могу да преименујем корени директоријум"
 
-#: gio/glocalfile.c:1191 gio/glocalfile.c:1214
+#: gio/glocalfile.c:1193 gio/glocalfile.c:1216
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "Грешка преименовања датотеке „%s“: %s"
 
-#: gio/glocalfile.c:1198
+#: gio/glocalfile.c:1200
 msgid "Can’t rename file, filename already exists"
 msgstr "Не могу да преименујем датотеку, назив датотеке већ постоји"
 
-#: gio/glocalfile.c:1211 gio/glocalfile.c:2317 gio/glocalfile.c:2345
-#: gio/glocalfile.c:2502 gio/glocalfileoutputstream.c:646
+#: gio/glocalfile.c:1213 gio/glocalfile.c:2322 gio/glocalfile.c:2350
+#: gio/glocalfile.c:2507 gio/glocalfileoutputstream.c:646
 msgid "Invalid filename"
 msgstr "Неисправан назив датотеке"
 
-#: gio/glocalfile.c:1379 gio/glocalfile.c:1394
+#: gio/glocalfile.c:1381 gio/glocalfile.c:1396
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "Грешка отварања датотеке „%s“: %s"
 
-#: gio/glocalfile.c:1519
+#: gio/glocalfile.c:1521
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "Грешка уклањања датотеке „%s“: %s"
 
-#: gio/glocalfile.c:1958
+#: gio/glocalfile.c:1963
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Грешка премештања датотеке „%s“ у смеће: %s"
 
-#: gio/glocalfile.c:1999
+#: gio/glocalfile.c:2004
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Не могу да направим директоријум за смеће %s: %s"
 
-#: gio/glocalfile.c:2020
+#: gio/glocalfile.c:2025
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Не могу да нађем корени директоријум да бацим у смеће „%s“"
 
-#: gio/glocalfile.c:2029
-#, fuzzy, c-format
-#| msgid "Copy (reflink/clone) between mounts is not supported"
+#: gio/glocalfile.c:2034
+#, c-format
 msgid "Trashing on system internal mounts is not supported"
-msgstr "Није подржано умножавање (reflink/clone) између монтираних уређаја"
+msgstr "Није подржано стварање смећа на системским унутрашњим тачкама качења"
 
-#: gio/glocalfile.c:2113 gio/glocalfile.c:2133
+#: gio/glocalfile.c:2118 gio/glocalfile.c:2138
 #, c-format
 msgid "Unable to find or create trash directory for %s"
 msgstr "Не могу да нађем или направим директоријум смећа за „%s“"
 
-#: gio/glocalfile.c:2168
+#: gio/glocalfile.c:2173
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Не могу да направим датотеку података смећа за „%s“: %s"
 
-#: gio/glocalfile.c:2228
+#: gio/glocalfile.c:2233
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Не могу да бацим у смеће датотеку „%s“ преко граница система датотека"
 
-#: gio/glocalfile.c:2232 gio/glocalfile.c:2288
+#: gio/glocalfile.c:2237 gio/glocalfile.c:2293
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Не могу да бацим датотеку „%s“ у смеће: %s"
 
-#: gio/glocalfile.c:2294
+#: gio/glocalfile.c:2299
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Не могу да бацим датотеку „%s“ у смеће"
 
-#: gio/glocalfile.c:2320
+#: gio/glocalfile.c:2325
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Грешка стварања директоријума „%s“: %s"
 
-#: gio/glocalfile.c:2349
+#: gio/glocalfile.c:2354
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Систем датотека не подржава симболичке везе"
 
-#: gio/glocalfile.c:2352
+#: gio/glocalfile.c:2357
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Грешка стварања симболичке везе „%s“: %s"
 
-#: gio/glocalfile.c:2358 glib/gfileutils.c:2138
+#: gio/glocalfile.c:2363 glib/gfileutils.c:2138
 msgid "Symbolic links not supported"
 msgstr "Симболичке везе нису подржане"
 
-#: gio/glocalfile.c:2413 gio/glocalfile.c:2448 gio/glocalfile.c:2505
+#: gio/glocalfile.c:2418 gio/glocalfile.c:2453 gio/glocalfile.c:2510
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Грешка премештања датотеке „%s“: %s"
 
-#: gio/glocalfile.c:2436
+#: gio/glocalfile.c:2441
 msgid "Can’t move directory over directory"
 msgstr "Не могу да преместим директоријум преко директоријума"
 
-#: gio/glocalfile.c:2462 gio/glocalfileoutputstream.c:1030
+#: gio/glocalfile.c:2467 gio/glocalfileoutputstream.c:1030
 #: gio/glocalfileoutputstream.c:1044 gio/glocalfileoutputstream.c:1059
 #: gio/glocalfileoutputstream.c:1076 gio/glocalfileoutputstream.c:1090
 msgid "Backup file creation failed"
 msgstr "Није успела израда резервне датотеке"
 
-#: gio/glocalfile.c:2481
+#: gio/glocalfile.c:2486
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Грешка уклањања циљне датотеке: %s"
 
-#: gio/glocalfile.c:2495
+#: gio/glocalfile.c:2500
 msgid "Move between mounts not supported"
 msgstr "Није подржано премештање између монтираних уређаја"
 
-#: gio/glocalfile.c:2686
+#: gio/glocalfile.c:2691
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Не могу да одредим искоришћеност диска за „%s“: %s"
@@ -3232,7 +3213,7 @@ msgstr "монтирање не подржава налажење врсте с�
 msgid "mount doesn’t implement synchronous content type guessing"
 msgstr "монтирање не подржава усклађено налажење врсте садржаја"
 
-#: gio/gnetworkaddress.c:384
+#: gio/gnetworkaddress.c:388
 #, c-format
 msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "Име домаћина „%s“ садржи „[“, али не и „]“"
@@ -3260,10 +3241,9 @@ msgid "Could not get network status: "
 msgstr "Не могу да добавим стање мреже: "
 
 #: gio/gnetworkmonitornm.c:313
-#, fuzzy, c-format
-#| msgid "NetworkManager version too old"
+#, c-format
 msgid "NetworkManager not running"
-msgstr "Издање управника мреже је превише старо"
+msgstr "Управник мреже није покренут"
 
 #: gio/gnetworkmonitornm.c:324
 #, c-format
@@ -3815,27 +3795,27 @@ msgstr "Грешка у затварању утичнице: %s"
 msgid "Waiting for socket condition: %s"
 msgstr "Чекам услов утичнице: %s"
 
-#: gio/gsocket.c:4612 gio/gsocket.c:4756 gio/gsocket.c:4841 gio/gsocket.c:5021
-#: gio/gsocket.c:5059
+#: gio/gsocket.c:4614 gio/gsocket.c:4616 gio/gsocket.c:4762 gio/gsocket.c:4847
+#: gio/gsocket.c:5027 gio/gsocket.c:5067 gio/gsocket.c:5069
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Грешка при слању поруке: %s"
 
-#: gio/gsocket.c:4783
+#: gio/gsocket.c:4789
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "Порука управљања Гутичницом није подржана на Виндоузу"
 
-#: gio/gsocket.c:5248 gio/gsocket.c:5321 gio/gsocket.c:5548
+#: gio/gsocket.c:5260 gio/gsocket.c:5333 gio/gsocket.c:5560
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Грешка при примању поруке: %s"
 
-#: gio/gsocket.c:5820
+#: gio/gsocket.c:5832
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Не могу да прочитам уверења утичнице: %s"
 
-#: gio/gsocket.c:5829
+#: gio/gsocket.c:5841
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "г_утичница_добавља_уверења није примењена за овај оперативни систем"
 
@@ -3853,15 +3833,15 @@ msgstr "Не могу да се повежем на „%s“: "
 msgid "Could not connect: "
 msgstr "Не могу да се повежем: "
 
-#: gio/gsocketclient.c:1032 gio/gsocketclient.c:1714
+#: gio/gsocketclient.c:1032 gio/gsocketclient.c:1749
 msgid "Unknown error on connect"
 msgstr "Непозната грешка везе"
 
-#: gio/gsocketclient.c:1086 gio/gsocketclient.c:1626
+#: gio/gsocketclient.c:1086 gio/gsocketclient.c:1657
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Посредовање преко везе која није ТЦП није подржано."
 
-#: gio/gsocketclient.c:1115 gio/gsocketclient.c:1652
+#: gio/gsocketclient.c:1115 gio/gsocketclient.c:1683
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "Протокол посредника „%s“ није подржан."
@@ -3986,7 +3966,7 @@ msgid "Temporarily unable to resolve “%s”"
 msgstr "Привремено не могу да разрешим „%s“"
 
 #: gio/gthreadedresolver.c:663 gio/gthreadedresolver.c:840
-#: gio/gthreadedresolver.c:948
+#: gio/gthreadedresolver.c:950
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Грешка у разрешивању „%s“"
@@ -4962,20 +4942,17 @@ msgid "Error on line %d char %d: "
 msgstr "Грешка у %d. реду, %d. знак: "
 
 #: glib/gmarkup.c:462 glib/gmarkup.c:545
-#, fuzzy, c-format
-#| msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+#, c-format
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
 msgstr "Неисправан УТФ-8 текст у имену — „%s“ није исправно"
 
 #: glib/gmarkup.c:473
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name"
+#, c-format
 msgid "“%s” is not a valid name"
 msgstr "„%s“ није исправан назив"
 
 #: glib/gmarkup.c:489
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name: '%c'"
+#, c-format
 msgid "“%s” is not a valid name: “%c”"
 msgstr "„%s“ није исправан назив: „%c“"
 
@@ -4985,10 +4962,7 @@ msgid "Error on line %d: %s"
 msgstr "Грешка у %d. реду: %s"
 
 #: glib/gmarkup.c:690
-#, fuzzy, c-format
-#| msgid ""
-#| "Failed to parse '%-.*s', which should have been a digit inside a "
-#| "character reference (&#234; for example) - perhaps the digit is too large"
+#, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
 "reference (&#234; for example) — perhaps the digit is too large"
@@ -4997,11 +4971,6 @@ msgstr ""
 "знаковне референце (на пример &#234;) — можда је цифра превелика"
 
 #: glib/gmarkup.c:702
-#, fuzzy
-#| msgid ""
-#| "Character reference did not end with a semicolon; most likely you used an "
-#| "ampersand character without intending to start an entity - escape "
-#| "ampersand as &amp;"
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand "
@@ -5012,15 +4981,11 @@ msgstr ""
 "&amp;"
 
 #: glib/gmarkup.c:728
-#, fuzzy, c-format
-#| msgid "Character reference '%-.*s' does not encode a permitted character"
+#, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr "Знаковна референца „%-.*s“ не представља дозвољени знак"
 
 #: glib/gmarkup.c:766
-#, fuzzy
-#| msgid ""
-#| "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
@@ -5028,16 +4993,11 @@ msgstr ""
 "&apos;"
 
 #: glib/gmarkup.c:774
-#, fuzzy, c-format
-#| msgid "Entity name '%-.*s' is not known"
+#, c-format
 msgid "Entity name “%-.*s” is not known"
 msgstr "Име ентитета „%-.*s“ није познато"
 
 #: glib/gmarkup.c:779
-#, fuzzy
-#| msgid ""
-#| "Entity did not end with a semicolon; most likely you used an ampersand "
-#| "character without intending to start an entity - escape ampersand as &amp;"
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity — escape ampersand as &amp;"
@@ -5050,10 +5010,7 @@ msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документ мора почети елементом (нпр. <књига>)"
 
 #: glib/gmarkup.c:1227
-#, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following a '<' character; it may not begin "
-#| "an element name"
+#, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
 "element name"
@@ -5062,10 +5019,7 @@ msgstr ""
 "њиме почети"
 
 #: glib/gmarkup.c:1270
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' character to end the empty-element tag "
-#| "'%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
 "“%s”"
@@ -5074,21 +5028,14 @@ msgstr ""
 "елемента „%s“"
 
 #: glib/gmarkup.c:1352
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '=' after attribute name '%s' of element "
-#| "'%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
 msgstr ""
 "Чудан знак „%s“, очекиван је „=“ после имена атрибута „%s“ елемента „%s“"
 
 #: glib/gmarkup.c:1394
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' or '/' character to end the start tag "
-#| "of element '%s', or optionally an attribute; perhaps you used an invalid "
-#| "character in an attribute name"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
 "element “%s”, or optionally an attribute; perhaps you used an invalid "
@@ -5099,10 +5046,7 @@ msgstr ""
 "имену атрибута"
 
 #: glib/gmarkup.c:1439
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected an open quote mark after the equals sign "
-#| "when giving value for attribute '%s' of element '%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when "
 "giving value for attribute “%s” of element “%s”"
@@ -5111,10 +5055,7 @@ msgstr ""
 "додели вредности атрибута „%s“ елемента „%s“"
 
 #: glib/gmarkup.c:1573
-#, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following the characters '</'; '%s' may not "
-#| "begin an element name"
+#, c-format
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not "
 "begin an element name"
@@ -5122,10 +5063,7 @@ msgstr ""
 "„%s“ није исправан знак након низа „</“; „%s“ не може започети назив елемента"
 
 #: glib/gmarkup.c:1611
-#, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following the close element name '%s'; the "
-#| "allowed character is '>'"
+#, c-format
 msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
 "allowed character is “>”"
@@ -5134,14 +5072,12 @@ msgstr ""
 "је „>“"
 
 #: glib/gmarkup.c:1623
-#, fuzzy, c-format
-#| msgid "Element '%s' was closed, no element is currently open"
+#, c-format
 msgid "Element “%s” was closed, no element is currently open"
 msgstr "Елемент „%s“ је затворен, нема тренутно отворених елемената"
 
 #: glib/gmarkup.c:1632
-#, fuzzy, c-format
-#| msgid "Element '%s' was closed, but the currently open element is '%s'"
+#, c-format
 msgid "Element “%s” was closed, but the currently open element is “%s”"
 msgstr "Елемент „%s“ је затворен, а тренутно отворен елемент је „%s“"
 
@@ -5150,18 +5086,13 @@ msgid "Document was empty or contained only whitespace"
 msgstr "Документ је празан или садржи само белине"
 
 #: glib/gmarkup.c:1799
-#, fuzzy
-#| msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr ""
 "Документ je завршен неочекивано непосредно након отворене косоугле заграде "
 "„<“"
 
 #: glib/gmarkup.c:1807 glib/gmarkup.c:1852
-#, fuzzy, c-format
-#| msgid ""
-#| "Document ended unexpectedly with elements still open - '%s' was the last "
-#| "element opened"
+#, c-format
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
 "element opened"
@@ -5203,17 +5134,15 @@ msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Документ je завршен неочекивано усред вредности атрибута"
 
 #: glib/gmarkup.c:1862
-#, fuzzy, c-format
-#| msgid "Document ended unexpectedly inside the close tag for element '%s'"
+#, c-format
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr "Документ je завршен неочекивано усред завршне ознаке елемента „%s“"
 
 #: glib/gmarkup.c:1866
-#, fuzzy
-#| msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
-msgstr "Документ je завршен неочекивано усред завршне ознаке елемента „%s“"
+msgstr ""
+"Документ je завршен неочекивано унутар завршне ознаке неотвореног елемента"
 
 #: glib/gmarkup.c:1872
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -5714,8 +5643,7 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "Нисам успео да читам из спојке порода (%s)"
 
 #: glib/gspawn.c:1653
-#, fuzzy, c-format
-#| msgid "Failed to execute child process “%s” (%s)"
+#, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Нисам успео да извршим потпроцес „%s“ (%s)"
 
@@ -5839,150 +5767,150 @@ msgid "Character out of range for UTF-16"
 msgstr "Знак ван опсега за УТФ-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2384
+#: glib/gutils.c:2339
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2386
+#: glib/gutils.c:2341
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2388
+#: glib/gutils.c:2343
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2390
+#: glib/gutils.c:2345
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2392
+#: glib/gutils.c:2347
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2394
+#: glib/gutils.c:2349
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2398
+#: glib/gutils.c:2353
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2400
+#: glib/gutils.c:2355
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2402
+#: glib/gutils.c:2357
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2404
+#: glib/gutils.c:2359
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2406
+#: glib/gutils.c:2361
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2408
+#: glib/gutils.c:2363
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2412
+#: glib/gutils.c:2367
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2414
+#: glib/gutils.c:2369
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2416
+#: glib/gutils.c:2371
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2418
+#: glib/gutils.c:2373
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2420
+#: glib/gutils.c:2375
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2422
+#: glib/gutils.c:2377
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2426
+#: glib/gutils.c:2381
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2428
+#: glib/gutils.c:2383
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2430
+#: glib/gutils.c:2385
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2432
+#: glib/gutils.c:2387
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2434
+#: glib/gutils.c:2389
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2436
+#: glib/gutils.c:2391
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2470 glib/gutils.c:2596
+#: glib/gutils.c:2425 glib/gutils.c:2551
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -5991,7 +5919,7 @@ msgstr[1] "%u бајта"
 msgstr[2] "%u бајта"
 msgstr[3] "Један бајт"
 
-#: glib/gutils.c:2474
+#: glib/gutils.c:2429
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6001,7 +5929,7 @@ msgstr[2] "%u битова"
 msgstr[3] "Један бит"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2541
+#: glib/gutils.c:2496
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6011,7 +5939,7 @@ msgstr[2] "%s бајтова"
 msgstr[3] "Један бајт"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2546
+#: glib/gutils.c:2501
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6025,32 +5953,32 @@ msgstr[3] "Један бит"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:2609
+#: glib/gutils.c:2564
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:2614
+#: glib/gutils.c:2569
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:2619
+#: glib/gutils.c:2574
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:2624
+#: glib/gutils.c:2579
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:2629
+#: glib/gutils.c:2584
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:2634
+#: glib/gutils.c:2589
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
