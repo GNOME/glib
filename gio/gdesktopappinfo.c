@@ -1099,6 +1099,18 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
                   /* Special handling: only match basename of first field */
                   gchar *space;
                   gchar *slash;
+                  gchar *tmp;
+
+                  /* For 'flatpak run' case, use --command if present. see gnome-shell#1013 */
+                  if ((tmp = g_strstr_len (raw, -1, "flatpak run")) &&
+                      (tmp = g_strstr_len (tmp, -1, "--command=")))
+                    {
+                      tmp = g_strdup (tmp + strlen("--command="));
+                      g_free (raw);
+                      raw = tmp;
+                      tmp = NULL;
+                      value = raw;
+                    }
 
                   /* Remove extra arguments, if any */
                   space = raw + strcspn (raw, " \t\n"); /* IFS */
