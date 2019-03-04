@@ -42,8 +42,8 @@ subprojects/		@xclaesse @nirbheek @pwithnall
 *android*	@xclaesse @pwithnall @sdroege
 
 # BSD support
-*bsd*		@jmatthew @ajacoutot @pwithnall
-*kqueue*	@jmatthew @ajacoutot @pwithnall
+*bsd*		@jmatthew @ajacoutot @lantw @pwithnall
+*kqueue*	@jmatthew @ajacoutot @lantw @pwithnall
 
 # flatpak portals
 gio/*portal*	@matthiasc @alexl @pwithnall
