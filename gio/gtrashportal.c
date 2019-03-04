@@ -37,6 +37,10 @@
 #define HAVE_O_CLOEXEC 1
 #endif
 
+#ifndef O_PATH
+#define O_PATH 0
+#endif
+
 static GXdpTrash *
 ensure_trash_portal (void)
 {
