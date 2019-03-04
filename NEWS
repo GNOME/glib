@@ -1,3 +1,49 @@
+Overview of changes in GLib 2.60.0
+==================================
+
+* Further fixes to the Happy Eyeballs (RFC 8305) implementation (#1653, #1679, #1693)
+
+* Add support for the XDG trash portal (#1676, !276)
+
+* Bugs fixed:
+ - #1653 gsocketclient-slow test is flaky
+ - #1658 keyfile settings backend: Consider tightening permissions
+ - #1668 Fill in CODE-OWNERS file
+ - #1675 glib-compile-resources: c_name generation issue
+ - #1676 Trash portal tries to open files as read-only but D-Bus API documents against that
+ - #1679 socket-service test is flaky
+ - #1693 Happy Eyeballs failure in gsocketclient-slow test
+ - #1697 gthreadresolver: do_lookup_records does res_ninit with an uninitialized state
+ - #1698 g_base64_encode(NULL, 0) causes critical warnings
+ - !276 Support the trash portal
+ - !639 gvariant-parser: Fix error handling when type coalescing fails
+ - !666 Socket fixes to W32 test suite
+ - !674 Update gvdb submodule
+ - !676 Initialize a variable
+ - !677 gerror: Add a missing precondition assertion in documentation
+ - !686 gio: Also support modules built with MSVC
+ - !688 gsocketclient: Fix critical on cancellation
+ - !689 glib-compile-resources: Fix a minor leak
+ - !691 gtask: Separate GTask fields memory locations to avoid data races
+ - !692 glib.supp: Add more variations of existing suppressions
+ - !696 Move closures refcount test to gobject/tests/
+ - !698 gthreadedresolver: Remove unused thread pool
+ - !699 tests: Fix closure-refcount to preserve old semantics
+ - !702 Rename gobjectenumtypes.[ch] to glib-enumtypes.[ch]
+ - !703 Clean up gmarshal.[ch]
+
+* Translation updates:
+ - Catalan
+ - Czech
+ - French
+ - Friulian
+ - German
+ - Italian
+ - Korean
+ - Romanian
+ - Serbian
+
+
 Overview of changes in GLib 2.59.3
 ==================================
 
