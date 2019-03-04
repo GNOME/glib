@@ -85,33 +85,41 @@ foreach tool: python_tools
   meson.override_find_program(tool, tool_bin)
 endforeach
 
+# Generate a header file containing the GObject enum types for the enums defined
+# in libglib.
+#
+# For now, we only include gunicode.h here, since GScriptType is needed for
+# Pango. More headers can be added as needed in future.
+#
 # We can't use gnome.mkenums() because the GNOME module looks for glib-mkenums
 # in PATH, which means you can't bootstrap glib with its own glib-mkenums.
-gobjectenumtypes_h = custom_target('gobjectenumtypes_h',
-  output : 'gobjectenumtypes.h',
+glib_enumtypes_input_headers = files(
+  '../glib/gunicode.h',
+)
+
+glib_enumtypes_h = custom_target('glib_enumtypes_h',
+  output : 'glib-enumtypes.h',
   capture : true,
-  input : '../glib/gunicode.h',
+  input : glib_enumtypes_input_headers,
   install : true,
   install_dir : join_paths(get_option('includedir'), 'glib-2.0/gobject'),
   command : [python, glib_mkenums,
-             '--template', files('gobjectenumtypes.h.template'),
+             '--template', files('glib-enumtypes.h.template'),
              '@INPUT@'])
 
-# For now, we only include gunicode.h here, since GScriptType is needed for pango
-# More headers can be added as needed
-gobjectenumtypes_c = custom_target('gobjectenumtypes_c',
-  output : 'gobjectenumtypes.c',
+glib_enumtypes_c = custom_target('glib_enumtypes_c',
+  output : 'glib-enumtypes.c',
   capture : true,
-  input : '../glib/gunicode.h',
-  depends : [gobjectenumtypes_h],
+  input : glib_enumtypes_input_headers,
+  depends : [glib_enumtypes_h],
   command : [python, glib_mkenums,
-             '--template', files('gobjectenumtypes.c.template'),
+             '--template', files('glib-enumtypes.c.template'),
              '@INPUT@'])
 
-gobjectenumtypes_dep = declare_dependency(sources : [gobjectenumtypes_h])
+glib_enumtypes_dep = declare_dependency(sources : [glib_enumtypes_h])
 
 libgobject = library('gobject-2.0',
-  gobject_dtrace_obj, gobject_dtrace_hdr, gobjectenumtypes_h, gobjectenumtypes_c,
+  gobject_dtrace_obj, gobject_dtrace_hdr, glib_enumtypes_h, glib_enumtypes_c,
   sources : gobject_sources,
   version : library_version,
   soversion : soversion,
@@ -134,7 +142,7 @@ pkg.generate(libgobject,
 
 libgobject_dep = declare_dependency(link_with : libgobject,
   include_directories : [gobjectinc],
-  dependencies : [libglib_dep, gobjectenumtypes_dep])
+  dependencies : [libglib_dep, glib_enumtypes_dep])
 
 executable('gobject-query', 'gobject-query.c',
   install : true,
