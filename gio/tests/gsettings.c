@@ -18,6 +18,31 @@ static gboolean backend_set;
  * to be compiled and installed in the same directory.
  */
 
+typedef struct
+{
+  gchar *tmp_dir;
+} Fixture;
+
+static void
+setup (Fixture       *fixture,
+       gconstpointer  user_data)
+{
+  GError *error = NULL;
+
+  fixture->tmp_dir = g_dir_make_tmp ("gio-test-gsettings_XXXXXX", &error);
+  g_assert_no_error (error);
+
+  g_test_message ("Using temporary directory: %s", fixture->tmp_dir);
+}
+
+static void
+teardown (Fixture       *fixture,
+          gconstpointer  user_data)
+{
+  g_assert_cmpint (g_rmdir (fixture->tmp_dir), ==, 0);
+  g_clear_pointer (&fixture->tmp_dir, g_free);
+}
+
 static void
 check_and_free (GVariant    *value,
                 const gchar *expected)
@@ -1701,7 +1726,8 @@ key_changed_cb (GSettings *settings, const gchar *key, gpointer data)
  * Test that using a keyfile works
  */
 static void
-test_keyfile (void)
+test_keyfile (Fixture       *fixture,
+              gconstpointer  user_data)
 {
   GSettingsBackend *kf_backend;
   GSettings *settings;
@@ -1712,11 +1738,11 @@ test_keyfile (void)
   gchar *data;
   gsize len;
   gboolean called = FALSE;
+  gchar *keyfile_path = NULL, *store_path = NULL;
 
-  g_remove ("keyfile/gsettings.store");
-  g_rmdir ("keyfile");
-
-  kf_backend = g_keyfile_settings_backend_new ("keyfile/gsettings.store", "/", "root");
+  keyfile_path = g_build_filename (fixture->tmp_dir, "keyfile", NULL);
+  store_path = g_build_filename (keyfile_path, "gsettings.store", NULL);
+  kf_backend = g_keyfile_settings_backend_new (store_path, "/", "root");
   settings = g_settings_new_with_backend ("org.gtk.test", kf_backend);
   g_object_unref (kf_backend);
 
@@ -1738,7 +1764,7 @@ test_keyfile (void)
   g_settings_apply (settings);
 
   keyfile = g_key_file_new ();
-  g_assert_true (g_key_file_load_from_file (keyfile, "keyfile/gsettings.store", 0, NULL));
+  g_assert_true (g_key_file_load_from_file (keyfile, store_path, 0, NULL));
 
   str = g_key_file_get_string (keyfile, "tests", "greeting", NULL);
   g_assert_cmpstr (str, ==, "'see if this works'");
@@ -1752,7 +1778,7 @@ test_keyfile (void)
   g_settings_reset (settings, "greeting");
   g_settings_apply (settings);
   keyfile = g_key_file_new ();
-  g_assert_true (g_key_file_load_from_file (keyfile, "keyfile/gsettings.store", 0, NULL));
+  g_assert_true (g_key_file_load_from_file (keyfile, store_path, 0, NULL));
 
   str = g_key_file_get_string (keyfile, "tests", "greeting", NULL);
   g_assert_null (str);
@@ -1762,7 +1788,7 @@ test_keyfile (void)
 
   g_key_file_set_string (keyfile, "tests", "greeting", "'howdy'");
   data = g_key_file_to_data (keyfile, &len, NULL);
-  g_file_set_contents ("keyfile/gsettings.store", data, len, &error);
+  g_file_set_contents (store_path, data, len, &error);
   g_assert_no_error (error);
   while (!called)
     g_main_context_iteration (NULL, FALSE);
@@ -1779,7 +1805,7 @@ test_keyfile (void)
   g_key_file_set_string (keyfile, "tests", "greeting", "he\"l🤗uń");
   g_free (data);
   data = g_key_file_to_data (keyfile, &len, NULL);
-  g_file_set_contents ("keyfile/gsettings.store", data, len, &error);
+  g_file_set_contents (store_path, data, len, &error);
   g_assert_no_error (error);
   while (!called)
     g_main_context_iteration (NULL, FALSE);
@@ -1800,7 +1826,7 @@ test_keyfile (void)
       g_signal_connect (settings, "writable-changed::greeting",
                         G_CALLBACK (key_changed_cb), &called);
 
-      g_chmod ("keyfile", 0500);
+      g_chmod (keyfile_path, 0500);
       while (!called)
         g_main_context_iteration (NULL, FALSE);
       g_signal_handlers_disconnect_by_func (settings, key_changed_cb, &called);
@@ -1813,7 +1839,13 @@ test_keyfile (void)
   g_free (data);
 
   g_object_unref (settings);
-  g_chmod ("keyfile", 0777);
+
+  /* Clean up the temporary directory. */
+  g_chmod (keyfile_path, 0777);
+  g_assert_cmpint (g_remove (store_path), ==, 0);
+  g_rmdir (keyfile_path);
+  g_free (store_path);
+  g_free (keyfile_path);
 }
 
 /* Test that getting child schemas works
@@ -2916,7 +2948,7 @@ main (int argc, char *argv[])
       g_test_add_func ("/gsettings/no-write-binding/subprocess/pass", test_no_write_binding_pass);
     }
 
-  g_test_add_func ("/gsettings/keyfile", test_keyfile);
+  g_test_add ("/gsettings/keyfile", Fixture, NULL, setup, test_keyfile, teardown);
   g_test_add_func ("/gsettings/child-schema", test_child_schema);
   g_test_add_func ("/gsettings/strinfo", test_strinfo);
   g_test_add_func ("/gsettings/enums", test_enums);
