@@ -37,6 +37,10 @@
 #define HAVE_O_CLOEXEC 1
 #endif
 
+#ifndef O_PATH
+#define O_PATH 0
+#endif
+
 static GXdpTrash *
 ensure_trash_portal (void)
 {
@@ -83,9 +87,9 @@ g_trash_portal_trash_file (GFile   *file,
   path = g_file_get_path (file);
 
   fd = g_open (path, O_RDWR | O_CLOEXEC);
-  if (fd == -1 && (errno == EACCES || errno == EISDIR))
-    /* If we don't have write access, fall back to read-only */
-    fd = g_open (path, O_CLOEXEC | O_RDONLY);
+  if (fd == -1 && errno == EISDIR)
+    /* If it is a directory, fall back to O_PATH */
+    fd = g_open (path, O_PATH | O_CLOEXEC | O_RDONLY);
 
   errsv = errno;
 
