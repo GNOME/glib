@@ -1,6 +1,6 @@
 /*** BEGIN file-header ***/
 #include "config.h"
-#include "gobjectenumtypes.h"
+#include "glib-enumtypes.h"
 #include <glib-object.h>
 
 /*** END file-header ***/

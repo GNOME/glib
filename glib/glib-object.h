@@ -34,7 +34,7 @@
 #include <gobject/gvalue.h>
 #include <gobject/gvaluearray.h>
 #include <gobject/gvaluetypes.h>
-#include <gobject/gobjectenumtypes.h>
+#include <gobject/glib-enumtypes.h>
 
 #include <gobject/gobject-autocleanups.h>
 
