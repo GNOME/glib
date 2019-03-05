@@ -1084,12 +1084,16 @@ g_variant_type_key (const GVariantType *type)
 const GVariantType *
 g_variant_type_value (const GVariantType *type)
 {
+#ifndef G_DISABLE_ASSERT
   const gchar *type_string;
+#endif
 
   g_return_val_if_fail (g_variant_type_check (type), NULL);
 
+#ifndef G_DISABLE_ASSERT
   type_string = g_variant_type_peek_string (type);
   g_assert (type_string[0] == '{');
+#endif
 
   return g_variant_type_next (g_variant_type_key (type));
 }

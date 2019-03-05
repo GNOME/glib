@@ -1311,7 +1311,9 @@ g_io_channel_set_encoding (GIOChannel	*channel,
 			   GError      **error)
 {
   GIConv read_cd, write_cd;
+#ifndef G_DISABLE_ASSERT
   gboolean did_encode;
+#endif
 
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
   g_return_val_if_fail ((error == NULL) || (*error == NULL), G_IO_STATUS_ERROR);
@@ -1335,7 +1337,9 @@ g_io_channel_set_encoding (GIOChannel	*channel,
       channel->partial_write_buf[0] = '\0';
     }
 
+#ifndef G_DISABLE_ASSERT
   did_encode = channel->do_encode;
+#endif
 
   if (!encoding || strcmp (encoding, "UTF8") == 0 || strcmp (encoding, "UTF-8") == 0)
     {

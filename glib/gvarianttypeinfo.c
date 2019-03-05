@@ -157,6 +157,7 @@ static void
 g_variant_type_info_check (const GVariantTypeInfo *info,
                            char                    container_class)
 {
+#ifndef G_DISABLE_ASSERT
   g_assert (!container_class || info->container_class == container_class);
 
   /* alignment can only be one of these */
@@ -185,6 +186,7 @@ g_variant_type_info_check (const GVariantTypeInfo *info,
       g_assert (0 <= index && index < 24);
       g_assert (g_variant_type_info_basic_chars[index][0] != ' ');
     }
+#endif  /* !G_DISABLE_ASSERT */
 }
 
 /* < private >
