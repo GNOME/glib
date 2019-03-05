@@ -87,17 +87,17 @@ test_rand (void)
   rand = g_rand_new_with_seed (first_numbers[0]);
 
   for (n = 1; n < G_N_ELEMENTS (first_numbers); n++)
-    g_assert (first_numbers[n] == g_rand_int (rand));
+    g_assert_cmpuint (first_numbers[n], ==, g_rand_int (rand));
 
   g_rand_set_seed (rand, 2);
   g_rand_set_seed_array (rand, seed_array, G_N_ELEMENTS (seed_array));
 
   for (n = 0; n < G_N_ELEMENTS (array_outputs); n++)
-    g_assert (array_outputs[n] == g_rand_int (rand));
+    g_assert_cmpuint (array_outputs[n], ==, g_rand_int (rand));
 
   copy = g_rand_copy (rand);
   for (n = 0; n < 100; n++)
-    g_assert (g_rand_int (copy) == g_rand_int (rand));
+    g_assert_cmpuint (g_rand_int (copy), ==, g_rand_int (rand));
 
   for (n = 1; n < 100000; n++)
     {
@@ -106,28 +106,34 @@ test_rand (void)
       gboolean b;
 
       i = g_rand_int_range (rand, 8,16);
-      g_assert (i >= 8 && i < 16);
+      g_assert_cmpint (i, >=, 8);
+      g_assert_cmpint (i, <, 16);
       
       i = g_random_int_range (8,16);
-      g_assert (i >= 8 && i < 16);
+      g_assert_cmpint (i, >=, 8);
+      g_assert_cmpint (i, <, 16);
 
       d = g_rand_double (rand);
-      g_assert (d >= 0 && d < 1);
+      g_assert_cmpfloat (d, >=, 0.0);
+      g_assert_cmpfloat (d, <, 1.0);
 
       d = g_random_double ();
-      g_assert (d >= 0 && d < 1);
+      g_assert_cmpfloat (d, >=, 0.0);
+      g_assert_cmpfloat (d, <, 1.0);
 
       d = g_rand_double_range (rand, -8, 32);
-      g_assert (d >= -8 && d < 32);
+      g_assert_cmpfloat (d, >=, -8.0);
+      g_assert_cmpfloat (d, <, 32.0);
  
       d = g_random_double_range (-8, 32);
-      g_assert (d >= -8 && d < 32);
+      g_assert_cmpfloat (d, >=, -8.0);
+      g_assert_cmpfloat (d, <, 32.0);
  
       b = g_random_boolean ();
-      g_assert (b == TRUE || b  == FALSE);
+      g_assert_true (b == TRUE || b  == FALSE);
  
       b = g_rand_boolean (rand);
-      g_assert (b == TRUE || b  == FALSE);     
+      g_assert_true (b == TRUE || b  == FALSE);
     }
 
   /* Statistical sanity check, count the number of ones
@@ -143,7 +149,7 @@ test_rand (void)
 
   proportion = (double)ones / (double)100000;
   /* 0.025 is overkill, but should suffice to test for some unreasonability */
-  g_assert (ABS (proportion - 0.25) < 0.025);
+  g_assert_cmpfloat (ABS (proportion - 0.25), <, 0.025);
 
   g_rand_free (rand);
   g_rand_free (copy);
@@ -158,8 +164,8 @@ test_double_range (void)
 
   d = g_random_double_range (-G_MAXDOUBLE, G_MAXDOUBLE);
 
-  g_assert (-G_MAXDOUBLE <= d);
-  g_assert (d < G_MAXDOUBLE);
+  g_assert_cmpfloat (-G_MAXDOUBLE, <=, d);
+  g_assert_cmpfloat (d, <, G_MAXDOUBLE);
 }
 
 int
