@@ -8,6 +8,11 @@ project('glib', 'c', 'cpp',
   ]
 )
 
+b_coverage = get_option('b_coverage')
+if b_coverage
+  add_global_arguments('-DG_COVERAGE', language: ['c', 'cpp'])
+endif
+
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 

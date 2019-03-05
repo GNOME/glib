@@ -1204,6 +1204,9 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 
   CloseHandle (event);
 
+#ifdef G_COVERAGE
+  __gcov_flush ();
+#endif
   /* Now the debugger is present, and we can try
    * resuming execution, re-triggering the exception,
    * which will be caught by debugger this time around.
