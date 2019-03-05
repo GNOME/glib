@@ -40,7 +40,7 @@ test_empty (void)
   file = g_mapped_file_new (g_test_get_filename (G_TEST_DIST, "empty", NULL), FALSE, &error);
   g_assert_no_error (error);
 
-  g_assert (g_mapped_file_get_contents (file) == NULL);
+  g_assert_null (g_mapped_file_get_contents (file));
 
   g_mapped_file_free (file);
 }
@@ -53,10 +53,10 @@ test_device (void)
   GMappedFile *file;
 
   file = g_mapped_file_new ("/dev/null", FALSE, &error);
-  g_assert (g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_INVAL) ||
-            g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NODEV) ||
-            g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOMEM));
-  g_assert (file == NULL);
+  g_assert_true (g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_INVAL) ||
+                 g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NODEV) ||
+                 g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOMEM));
+  g_assert_null (file);
   g_error_free (error);
 }
 #endif
@@ -71,7 +71,7 @@ test_nonexisting (void)
   file = g_mapped_file_new ("no-such-file", FALSE, &error);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_clear_error (&error);
-  g_assert (file == NULL);
+  g_assert_null (file);
 }
 
 static void
@@ -98,10 +98,10 @@ test_writable (void)
   g_assert_no_error (error);
 
   contents = g_mapped_file_get_contents (file);
-  g_assert (strncmp (contents, old, strlen (old)) == 0);
+  g_assert_cmpuint (strncmp (contents, old, strlen (old)), ==, 0);
 
   memcpy (contents, new, strlen (new));
-  g_assert (strncmp (contents, new, strlen (new)) == 0);
+  g_assert_cmpuint (strncmp (contents, new, strlen (new)), ==, 0);
 
   g_mapped_file_free (file);
 
@@ -110,7 +110,7 @@ test_writable (void)
   g_assert_no_error (error);
 
   contents = g_mapped_file_get_contents (file);
-  g_assert (strncmp (contents, old, strlen (old)) == 0);
+  g_assert_cmpuint (strncmp (contents, old, strlen (old)), ==, 0);
 
   g_mapped_file_free (file);
 
@@ -139,27 +139,27 @@ test_writable_fd (void)
   g_free (contents);
 
   fd = g_open (tmp_copy_path, O_RDWR, 0);
-  g_assert (fd != -1);
+  g_assert_cmpint (fd, !=, -1);
   file = g_mapped_file_new_from_fd (fd, TRUE, &error);
   g_assert_no_error (error);
 
   contents = g_mapped_file_get_contents (file);
-  g_assert (strncmp (contents, old, strlen (old)) == 0);
+  g_assert_cmpuint (strncmp (contents, old, strlen (old)), ==, 0);
 
   memcpy (contents, new, strlen (new));
-  g_assert (strncmp (contents, new, strlen (new)) == 0);
+  g_assert_cmpuint (strncmp (contents, new, strlen (new)), ==, 0);
 
   g_mapped_file_free (file);
   close (fd);
 
   error = NULL;
   fd = g_open (tmp_copy_path, O_RDWR, 0);
-  g_assert (fd != -1);
+  g_assert_cmpint (fd, !=, -1);
   file = g_mapped_file_new_from_fd (fd, TRUE, &error);
   g_assert_no_error (error);
 
   contents = g_mapped_file_get_contents (file);
-  g_assert (strncmp (contents, old, strlen (old)) == 0);
+  g_assert_cmpuint (strncmp (contents, old, strlen (old)), ==, 0);
 
   g_mapped_file_free (file);
 
