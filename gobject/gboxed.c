@@ -106,6 +106,7 @@ _g_boxed_type_init (void)
    */
   type = g_type_register_fundamental (G_TYPE_BOXED, g_intern_static_string ("GBoxed"), &info, &finfo,
 				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
+  (void) type;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
   g_assert (type == G_TYPE_BOXED);
 }
 

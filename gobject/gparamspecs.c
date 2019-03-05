@@ -1191,11 +1191,16 @@ void
 _g_param_spec_types_init (void)	
 {
   const guint n_types = 23;
-  GType type, *spec_types, *spec_types_bound;
+  GType type, *spec_types;
+#ifndef G_DISABLE_ASSERT
+  GType *spec_types_bound;
+#endif
 
   g_param_spec_types = g_new0 (GType, n_types);
   spec_types = g_param_spec_types;
+#ifndef G_DISABLE_ASSERT
   spec_types_bound = g_param_spec_types + n_types;
+#endif
   
   /* G_TYPE_PARAM_CHAR
    */
