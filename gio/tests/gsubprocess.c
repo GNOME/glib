@@ -73,11 +73,11 @@ test_noop (void)
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
   id = g_subprocess_get_identifier (proc);
-  g_assert (id != NULL);
+  g_assert_nonnull (id);
 
   g_subprocess_wait_check (proc, NULL, error);
   g_assert_no_error (local_error);
-  g_assert (g_subprocess_get_successful (proc));
+  g_assert_true (g_subprocess_get_successful (proc));
 
   g_object_unref (proc);
 }
@@ -93,7 +93,7 @@ check_ready (GObject      *source,
   ret = g_subprocess_wait_check_finish (G_SUBPROCESS (source),
                                         res,
                                         &error);
-  g_assert (ret);
+  g_assert_true (ret);
   g_assert_no_error (error);
 
   g_object_unref (source);
@@ -218,7 +218,7 @@ test_exit1_cancel_wait_check_cb (GObject      *source,
   data->cb_called = TRUE;
 
   ret = g_subprocess_wait_check_finish (subprocess, result, &error);
-  g_assert (!ret);
+  g_assert_false (ret);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
   g_clear_error (&error);
 
@@ -271,7 +271,7 @@ test_exit1_cancel_in_cb_wait_check_cb (GObject      *source,
   data->cb_called = TRUE;
 
   ret = g_subprocess_wait_check_finish (subprocess, result, &error);
-  g_assert (!ret);
+  g_assert_false (ret);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
   g_clear_error (&error);
 
@@ -501,7 +501,7 @@ test_cat_eof (void)
   /* Spawn 'cat' */
   cat = g_subprocess_new (G_SUBPROCESS_FLAGS_STDIN_PIPE | G_SUBPROCESS_FLAGS_STDOUT_PIPE, &error, "cat", NULL);
   g_assert_no_error (error);
-  g_assert (cat);
+  g_assert_nonnull (cat);
 
   /* Make sure that reading stdout blocks (until we cancel) */
   cancellable = g_cancellable_new ();
@@ -515,19 +515,19 @@ test_cat_eof (void)
   /* Close the stream (EOF on cat's stdin) */
   result = g_output_stream_close (g_subprocess_get_stdin_pipe (cat), NULL, &error);
   g_assert_no_error (error);
-  g_assert (result);
+  g_assert_true (result);
 
   /* Now check that reading cat's stdout gets us an EOF (since it quit) */
   s = g_input_stream_read (g_subprocess_get_stdout_pipe (cat), &buffer, sizeof buffer, NULL, &error);
   g_assert_no_error (error);
-  g_assert (!s);
+  g_assert_false (s);
 
   /* Check that the process has exited as a result of the EOF */
   result = g_subprocess_wait (cat, NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_subprocess_get_if_exited (cat));
+  g_assert_true (g_subprocess_get_if_exited (cat));
   g_assert_cmpint (g_subprocess_get_exit_status (cat), ==, 0);
-  g_assert (result);
+  g_assert_true (result);
 
   g_object_unref (cat);
 }
@@ -686,7 +686,7 @@ test_multi_1 (void)
 
   g_main_loop_run (data.loop);
 
-  g_assert (!data.caught_error);
+  g_assert_false (data.caught_error);
   g_assert_no_error (data.error);
 
   g_assert_cmpint (g_memory_output_stream_get_data_size ((GMemoryOutputStream*)membuf), ==, SPLICELEN);
@@ -1279,11 +1279,11 @@ on_request_quit_exited (GObject        *object,
   g_subprocess_wait_finish (subprocess, result, &error);
   g_assert_no_error (error);
 #ifdef G_OS_UNIX
-  g_assert (g_subprocess_get_if_signaled (subprocess));
-  g_assert (g_subprocess_get_term_sig (subprocess) == 9);
+  g_assert_true (g_subprocess_get_if_signaled (subprocess));
+  g_assert_cmpint (g_subprocess_get_term_sig (subprocess), ==, 9);
 #endif
   g_spawn_check_exit_status (g_subprocess_get_status (subprocess), &error);
-  g_assert (error != NULL);
+  g_assert_nonnull (error);
   g_clear_error (&error);
 
   g_main_loop_quit ((GMainLoop*)user_data);
@@ -1473,7 +1473,7 @@ test_cwd (void)
   result = splice_to_string (stdout_stream, error);
 
   basename = g_strrstr (result, G_DIR_SEPARATOR_S);
-  g_assert (basename != NULL);
+  g_assert_nonnull (basename);
   g_assert_cmpstr (basename, ==, tmp_lineend_basename);
   g_free (tmp_lineend);
 
@@ -1726,7 +1726,7 @@ test_launcher_environment (void)
   args = get_test_subprocess_args ("printenv", "A", "C", "E", NULL);
   proc = g_subprocess_launcher_spawnv (launcher, (const gchar **) args->pdata, &error);
   g_assert_no_error (error);
-  g_assert (proc);
+  g_assert_nonnull (proc);
 
   g_subprocess_communicate_utf8 (proc, NULL, NULL, &out, NULL, &error);
   g_assert_no_error (error);
