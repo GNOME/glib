@@ -181,6 +181,7 @@ ensure_attribute_hash (void)
 #define REGISTER_ATTRIBUTE(name) G_STMT_START{\
   guint _u = _lookup_attribute (G_FILE_ATTRIBUTE_ ## name); \
   /* use for generating the ID: g_print ("#define G_FILE_ATTRIBUTE_ID_%s (%u + %u)\n", #name + 17, _u & ~ID_MASK, _u & ID_MASK); */ \
+  (void) _u;  /* silence warnings when compiling with G_DISABLE_ASSERT */ \
   g_assert (_u == G_FILE_ATTRIBUTE_ID_ ## name); \
 }G_STMT_END
 
