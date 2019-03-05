@@ -43,7 +43,9 @@ enum {
 
 struct _GCancellablePrivate
 {
-  guint cancelled : 1;
+  /* Atomic so that g_cancellable_is_cancelled does not require holding the mutex. */
+  gboolean cancelled;
+  /* Access to fields below is protected by cancellable_mutex. */
   guint cancelled_running : 1;
   guint cancelled_running_waiting : 1;
 
@@ -269,12 +271,12 @@ g_cancellable_reset (GCancellable *cancellable)
       g_cond_wait (&cancellable_cond, &cancellable_mutex);
     }
 
-  if (priv->cancelled)
+  if (g_atomic_int_get (&priv->cancelled))
     {
       if (priv->wakeup)
         GLIB_PRIVATE_CALL (g_wakeup_acknowledge) (priv->wakeup);
 
-      priv->cancelled = FALSE;
+      g_atomic_int_set (&priv->cancelled, FALSE);
     }
 
   g_mutex_unlock (&cancellable_mutex);
@@ -292,7 +294,7 @@ g_cancellable_reset (GCancellable *cancellable)
 gboolean
 g_cancellable_is_cancelled (GCancellable *cancellable)
 {
-  return cancellable != NULL && cancellable->priv->cancelled;
+  return cancellable != NULL && g_atomic_int_get (&cancellable->priv->cancelled);
 }
 
 /**
@@ -404,7 +406,7 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
     {
       cancellable->priv->wakeup = GLIB_PRIVATE_CALL (g_wakeup_new) ();
 
-      if (cancellable->priv->cancelled)
+      if (g_atomic_int_get (&cancellable->priv->cancelled))
         GLIB_PRIVATE_CALL (g_wakeup_signal) (cancellable->priv->wakeup);
     }
 
@@ -440,11 +442,11 @@ g_cancellable_release_fd (GCancellable *cancellable)
     return;
 
   g_return_if_fail (G_IS_CANCELLABLE (cancellable));
-  g_return_if_fail (cancellable->priv->fd_refcount > 0);
 
   priv = cancellable->priv;
 
   g_mutex_lock (&cancellable_mutex);
+  g_assert (priv->fd_refcount > 0);
 
   priv->fd_refcount--;
   if (priv->fd_refcount == 0)
@@ -482,21 +484,20 @@ g_cancellable_cancel (GCancellable *cancellable)
 {
   GCancellablePrivate *priv;
 
-  if (cancellable == NULL ||
-      cancellable->priv->cancelled)
+  if (g_cancellable_is_cancelled (cancellable))
     return;
 
   priv = cancellable->priv;
 
   g_mutex_lock (&cancellable_mutex);
 
-  if (priv->cancelled)
+  if (g_atomic_int_get (&priv->cancelled))
     {
       g_mutex_unlock (&cancellable_mutex);
       return;
     }
 
-  priv->cancelled = TRUE;
+  g_atomic_int_set (&priv->cancelled, TRUE);
   priv->cancelled_running = TRUE;
 
   if (priv->wakeup)
@@ -562,7 +563,7 @@ g_cancellable_connect (GCancellable   *cancellable,
 
   g_mutex_lock (&cancellable_mutex);
 
-  if (cancellable->priv->cancelled)
+  if (g_atomic_int_get (&cancellable->priv->cancelled))
     {
       void (*_callback) (GCancellable *cancellable,
                          gpointer      user_data);
