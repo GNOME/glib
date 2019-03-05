@@ -362,7 +362,7 @@ static void
 token_stream_assert (TokenStream *stream,
                      const gchar *token)
 {
-  gboolean correct_token;
+  gboolean correct_token G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
   correct_token = token_stream_consume (stream, token);
   g_assert (correct_token);
