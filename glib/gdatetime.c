@@ -1304,7 +1304,10 @@ parse_iso8601_date (const gchar *text, gsize length,
 static GTimeZone *
 parse_iso8601_timezone (const gchar *text, gsize length, gssize *tz_offset)
 {
-  gint i, tz_length, offset_sign = 1, offset_hours, offset_minutes;
+  gint i, tz_length, offset_hours, offset_minutes;
+#ifndef G_DISABLE_ASSERT
+  gint offset_sign = 1;
+#endif
   GTimeZone *tz;
 
   /* UTC uses Z suffix  */
@@ -1318,7 +1321,9 @@ parse_iso8601_timezone (const gchar *text, gsize length, gssize *tz_offset)
   for (i = length - 1; i >= 0; i--)
     if (text[i] == '+' || text[i] == '-')
       {
+#ifndef G_DISABLE_ASSERT
         offset_sign = text[i] == '-' ? -1 : 1;
+#endif
         break;
       }
   if (i < 0)

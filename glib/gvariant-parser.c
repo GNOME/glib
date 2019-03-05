@@ -365,6 +365,7 @@ token_stream_assert (TokenStream *stream,
   gboolean correct_token;
 
   correct_token = token_stream_consume (stream, token);
+  (void) correct_token;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
   g_assert (correct_token);
 }
 
