@@ -58,7 +58,7 @@ void test_async_queue_sort (void)
   g_assert_cmpint (GPOINTER_TO_INT (g_async_queue_pop (q)), ==, 8);
   g_assert_cmpint (GPOINTER_TO_INT (g_async_queue_pop (q)), ==, 10);
 
-  g_assert (g_async_queue_try_pop (q) == NULL);
+  g_assert_null (g_async_queue_try_pop (q));
 
   g_async_queue_unref (q);
 }
@@ -78,18 +78,18 @@ test_async_queue_destroy (void)
 
   q = g_async_queue_new_full (destroy_notify);
 
-  g_assert (destroy_count == 0);
+  g_assert_cmpint (destroy_count, ==, 0);
 
   g_async_queue_push (q, GINT_TO_POINTER (1));
   g_async_queue_push (q, GINT_TO_POINTER (1));
   g_async_queue_push (q, GINT_TO_POINTER (1));
   g_async_queue_push (q, GINT_TO_POINTER (1));
 
-  g_assert (g_async_queue_length (q) == 4);
+  g_assert_cmpint (g_async_queue_length (q), ==, 4);
 
   g_async_queue_unref (q);
 
-  g_assert (destroy_count == 4);
+  g_assert_cmpint (destroy_count, ==, 4);
 }
 
 static GAsyncQueue *q;
@@ -183,7 +183,7 @@ test_async_queue_timed (void)
 
   start = g_get_monotonic_time ();
   val = g_async_queue_timeout_pop (q, G_USEC_PER_SEC / 10);
-  g_assert (val == NULL);
+  g_assert_null (val);
 
   end = g_get_monotonic_time ();
   diff = end - start;
@@ -197,7 +197,7 @@ test_async_queue_timed (void)
   g_get_current_time (&tv);
   g_time_val_add (&tv, G_USEC_PER_SEC / 10);
   val = g_async_queue_timed_pop (q, &tv);
-  g_assert (val == NULL);
+  g_assert_null (val);
 
   end = g_get_monotonic_time ();
   diff = end - start;
@@ -210,7 +210,7 @@ test_async_queue_timed (void)
   g_async_queue_lock (q);
   val = g_async_queue_timed_pop_unlocked (q, &tv);
   g_async_queue_unlock (q);
-  g_assert (val == NULL);
+  g_assert_null (val);
 
   end = g_get_monotonic_time ();
   diff = end - start;
@@ -238,7 +238,7 @@ test_async_queue_remove (void)
   g_assert_cmpint (GPOINTER_TO_INT (g_async_queue_pop (q)), ==, 2);
   g_assert_cmpint (GPOINTER_TO_INT (g_async_queue_pop (q)), ==, 1);
 
-  g_assert (g_async_queue_try_pop (q) == NULL);
+  g_assert_null (g_async_queue_try_pop (q));
 
   g_async_queue_unref (q);
 }
@@ -261,7 +261,7 @@ test_async_queue_push_front (void)
   g_assert_cmpint (GPOINTER_TO_INT (g_async_queue_pop (q)), ==, 2);
   g_assert_cmpint (GPOINTER_TO_INT (g_async_queue_pop (q)), ==, 7);
 
-  g_assert (g_async_queue_try_pop (q) == NULL);
+  g_assert_null (g_async_queue_try_pop (q));
 
   g_async_queue_unref (q);
 }
