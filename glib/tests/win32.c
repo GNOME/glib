@@ -114,7 +114,7 @@ test_veh_debug (void)
   /* Run a test that crashes and runs a debugger */
   g_test_trap_subprocess ("/win32/subprocess/debugee", 0, 0);
   g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("Exception code=0xc0000005*Debugger NOT invoked, attaching to*");
+  g_test_trap_assert_stderr ("Exception code=0xc0000005*Debugger invoked, attaching to*");
 }
 
 static void
