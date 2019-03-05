@@ -100,7 +100,7 @@ _g_boxed_type_init (void)
     NULL,                       /* value_table */
   };
   const GTypeFundamentalInfo finfo = { G_TYPE_FLAG_DERIVABLE, };
-  GType type;
+  GType type G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
   /* G_TYPE_BOXED
    */
