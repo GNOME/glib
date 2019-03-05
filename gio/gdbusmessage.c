@@ -1714,7 +1714,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 
               if (array_len == 0)
                 {
-                  GVariant *item;
+                  GVariant *item G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
                   item = parse_value_from_blob (buf,
                                                 element_type,
                                                 TRUE,
@@ -2345,7 +2345,10 @@ append_value_to_blob (GVariant            *value,
         {
           gsize len;
           const gchar *v;
+#ifndef G_DISABLE_ASSERT
           const gchar *end;
+#endif
+
           v = g_variant_get_string (value, &len);
           g_assert (g_utf8_validate (v, -1, &end) && (end == v + len));
           g_memory_buffer_put_uint32 (mbuf, len);

@@ -936,7 +936,7 @@ g_data_input_stream_read_until (GDataInputStream  *stream,
   /* If we're not at end of stream then we have a stop_char to consume. */
   if (result != NULL && g_buffered_input_stream_get_available (bstream) > 0)
     {
-      gsize res;
+      gsize res G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
       gchar b;
 
       res = g_input_stream_read (G_INPUT_STREAM (stream), &b, 1, NULL, NULL);

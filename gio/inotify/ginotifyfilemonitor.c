@@ -55,7 +55,7 @@ g_inotify_file_monitor_start (GLocalFileMonitor  *local_monitor,
                               GFileMonitorSource *source)
 {
   GInotifyFileMonitor *inotify_monitor = G_INOTIFY_FILE_MONITOR (local_monitor);
-  gboolean success;
+  gboolean success G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
   /* should already have been called, from is_supported() */
   success = _ih_startup ();
@@ -83,7 +83,9 @@ g_inotify_file_monitor_cancel (GFileMonitor *monitor)
 static void
 g_inotify_file_monitor_finalize (GObject *object)
 {
+#ifndef G_DISABLE_ASSERT
   GInotifyFileMonitor *inotify_monitor = G_INOTIFY_FILE_MONITOR (object);
+#endif
 
   /* must surely have been cancelled already */
   g_assert (!inotify_monitor->sub);
