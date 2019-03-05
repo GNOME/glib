@@ -327,6 +327,7 @@ if host_system == 'windows'
 else
   gtester = executable('gtester', 'gtester.c',
     install : true,
+    c_args : ['-UG_DISABLE_ASSERT'],
     include_directories : configinc,
     dependencies : [libglib_dep])
 endif
