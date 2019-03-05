@@ -1720,6 +1720,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
                                                 TRUE,
                                                 indent + 2,
                                                 NULL);
+                  (void) item;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
                   g_assert (item == NULL);
                 }
               else
@@ -2345,7 +2346,10 @@ append_value_to_blob (GVariant            *value,
         {
           gsize len;
           const gchar *v;
+#ifndef G_DISABLE_ASSERT
           const gchar *end;
+#endif
+
           v = g_variant_get_string (value, &len);
           g_assert (g_utf8_validate (v, -1, &end) && (end == v + len));
           g_memory_buffer_put_uint32 (mbuf, len);

@@ -940,6 +940,7 @@ g_data_input_stream_read_until (GDataInputStream  *stream,
       gchar b;
 
       res = g_input_stream_read (G_INPUT_STREAM (stream), &b, 1, NULL, NULL);
+      (void) res;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
       g_assert (res == 1);
     }
 

@@ -1467,6 +1467,7 @@ g_settings_schema_key_to_enum (GSettingsSchemaKey *key,
    * itself (which the schema compiler checks for validity).  If this assertion
    * fails then it's really a bug in GSettings or the schema compiler...
    */
+  (void) it_worked;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
   g_assert (it_worked);
 
   return result;
@@ -1504,6 +1505,7 @@ g_settings_schema_key_to_flags (GSettingsSchemaKey *key,
 
       it_worked = strinfo_enum_from_string (key->strinfo, key->strinfo_length, flag, &flag_value);
       /* as in g_settings_to_enum() */
+      (void) it_worked;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
       g_assert (it_worked);
 
       result |= flag_value;

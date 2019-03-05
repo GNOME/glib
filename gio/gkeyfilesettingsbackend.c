@@ -337,6 +337,7 @@ g_keyfile_settings_backend_write_one (gpointer key,
   gboolean success;
 
   success = set_to_keyfile (data->kfsb, key, value);
+  (void) success;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
   g_assert (success);
 
   return FALSE;

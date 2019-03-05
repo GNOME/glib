@@ -798,6 +798,7 @@ g_application_impl_command_line (GApplicationImpl    *impl,
                                                  org_gtk_private_CommandLine,
                                                  &vtable, &data, NULL, NULL);
   /* In theory we should try other paths... */
+  (void) object_id;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
   g_assert (object_id != 0);
 
 #ifdef G_OS_UNIX

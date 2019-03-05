@@ -584,6 +584,7 @@ initable_init (GInitable     *initable,
 #endif
 
     s = g_snprintf (self->identifier, sizeof self->identifier, "%"G_GUINT64_FORMAT, identifier);
+    (void) s;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
     g_assert (0 < s && s < sizeof self->identifier);
   }
 
