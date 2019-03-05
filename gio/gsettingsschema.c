@@ -1455,7 +1455,7 @@ gint
 g_settings_schema_key_to_enum (GSettingsSchemaKey *key,
                                GVariant           *value)
 {
-  gboolean it_worked;
+  gboolean it_worked G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
   guint result;
 
   it_worked = strinfo_enum_from_string (key->strinfo, key->strinfo_length,
@@ -1499,7 +1499,7 @@ g_settings_schema_key_to_flags (GSettingsSchemaKey *key,
   g_variant_iter_init (&iter, value);
   while (g_variant_iter_next (&iter, "&s", &flag))
     {
-      gboolean it_worked;
+      gboolean it_worked G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
       guint flag_value;
 
       it_worked = strinfo_enum_from_string (key->strinfo, key->strinfo_length, flag, &flag_value);

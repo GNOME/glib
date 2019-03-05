@@ -334,7 +334,7 @@ g_keyfile_settings_backend_write_one (gpointer key,
                                       gpointer user_data)
 {
   WriteManyData *data = user_data;
-  gboolean success;
+  gboolean success G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
   success = set_to_keyfile (data->kfsb, key, value);
   g_assert (success);

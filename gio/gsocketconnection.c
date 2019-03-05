@@ -389,7 +389,9 @@ g_socket_connection_set_property (GObject      *object,
 static void
 g_socket_connection_constructed (GObject *object)
 {
+#ifndef G_DISABLE_ASSERT
   GSocketConnection *connection = G_SOCKET_CONNECTION (object);
+#endif
 
   g_assert (connection->priv->socket != NULL);
 }
