@@ -1317,7 +1317,7 @@ test_run_in_thread_nested (void)
  * tasks, they won't all run at once.
  */
 static GMutex overflow_mutex;
-static int overflow_completed;
+static guint overflow_completed;
 
 static void
 run_overflow_task_thread (GTask        *task,
