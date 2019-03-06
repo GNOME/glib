@@ -2045,6 +2045,4 @@ if get_option('man')
 endif
 
 gnome = import('gnome')
-subdir('docs/reference/glib')
-subdir('docs/reference/gobject')
-subdir('docs/reference/gio')
+subdir('docs/reference')
