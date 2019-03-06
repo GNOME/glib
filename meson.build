@@ -1,5 +1,5 @@
 project('glib', 'c', 'cpp',
-  version : '2.60.0',
+  version : '2.61.0',
   meson_version : '>= 0.48.0',
   default_options : [
     'buildtype=debugoptimized',
@@ -2045,6 +2045,4 @@ if get_option('man')
 endif
 
 gnome = import('gnome')
-subdir('docs/reference/glib')
-subdir('docs/reference/gobject')
-subdir('docs/reference/gio')
+subdir('docs/reference')
