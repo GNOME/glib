@@ -126,6 +126,9 @@ g_quark_init (void)
  * If you want the GQuark to be created if it doesn't already exist,
  * use g_quark_from_string() or g_quark_from_static_string().
  *
+ * This function must not be used before library constructors have finished
+ * running.
+ *
  * Returns: the #GQuark associated with the string, or 0 if @string is
  *     %NULL or there is no #GQuark associated with it
  */
@@ -214,6 +217,10 @@ quark_from_string_locked (const gchar   *string,
  * not currently have an associated #GQuark, a new #GQuark is created,
  * using a copy of the string.
  *
+ * This function must not be used before library constructors have finished
+ * running. In particular, this means it cannot be used to initialize global
+ * variables in C++.
+ *
  * Returns: the #GQuark identifying the string, or 0 if @string is %NULL
  */
 GQuark
@@ -238,6 +245,10 @@ g_quark_from_string (const gchar *string)
  * statically allocated memory in dynamically loaded modules, if you
  * expect to ever unload the module again (e.g. do not use this
  * function in GTK+ theme engines).
+ *
+ * This function must not be used before library constructors have finished
+ * running. In particular, this means it cannot be used to initialize global
+ * variables in C++.
  *
  * Returns: the #GQuark identifying the string, or 0 if @string is %NULL
  */
@@ -325,6 +336,10 @@ quark_intern_string_locked (const gchar   *string,
  * can be compared for equality by comparing the pointers, instead of
  * using strcmp().
  *
+ * This function must not be used before library constructors have finished
+ * running. In particular, this means it cannot be used to initialize global
+ * variables in C++.
+ *
  * Returns: a canonical representation for the string
  *
  * Since: 2.10
@@ -343,6 +358,10 @@ g_intern_string (const gchar *string)
  * can be compared for equality by comparing the pointers, instead of
  * using strcmp(). g_intern_static_string() does not copy the string,
  * therefore @string must not be freed or modified.
+ *
+ * This function must not be used before library constructors have finished
+ * running. In particular, this means it cannot be used to initialize global
+ * variables in C++.
  *
  * Returns: a canonical representation for the string
  *
