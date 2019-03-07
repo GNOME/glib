@@ -1603,6 +1603,7 @@ typedef enum {
   G_TLS_AUTHENTICATION_REQUIRED
 } GTlsAuthenticationMode;
 
+#ifndef G_DISABLE_DEPRECATED
 /**
  * GTlsRehandshakeMode:
  * @G_TLS_REHANDSHAKE_NEVER: Never allow rehandshaking
@@ -1623,6 +1624,7 @@ typedef enum {
   G_TLS_REHANDSHAKE_SAFELY,
   G_TLS_REHANDSHAKE_UNSAFELY
 } GTlsRehandshakeMode;
+#endif  /* !G_DISABLE_DEPRECATED */
 
 /**
  * GTlsPasswordFlags:
