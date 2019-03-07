@@ -7964,7 +7964,7 @@ g_file_real_measure_disk_usage_finish (GFile         *file,
  *
  * By default, errors are only reported against the toplevel file
  * itself.  Errors found while recursing are silently ignored, unless
- * %G_FILE_DISK_USAGE_REPORT_ALL_ERRORS is given in @flags.
+ * %G_FILE_MEASURE_REPORT_ANY_ERROR is given in @flags.
  *
  * The returned size, @disk_usage, is in bytes and should be formatted
  * with g_format_size() in order to get something reasonable for showing
