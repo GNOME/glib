@@ -1045,7 +1045,7 @@ g_input_stream_skip_async (GInputStream        *stream,
  * 
  * Finishes a stream skip operation.
  * 
- * Returns: the size of the bytes skipped, or %-1 on error.
+ * Returns: the size of the bytes skipped, or `-1` on error.
  **/
 gssize
 g_input_stream_skip_finish (GInputStream  *stream,

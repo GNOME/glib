@@ -799,7 +799,7 @@ g_mount_operation_set_password_save (GMountOperation *op,
  * Gets a choice from the mount operation.
  *
  * Returns: an integer containing an index of the user's choice from 
- * the choice's list, or %0.
+ * the choice's list, or `0`.
  **/
 int
 g_mount_operation_get_choice (GMountOperation *op)

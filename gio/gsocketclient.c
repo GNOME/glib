@@ -457,7 +457,7 @@ g_socket_client_get_protocol (GSocketClient *client)
  * The sockets created by this object will use of the specified
  * protocol.
  *
- * If @protocol is %0 that means to use the default
+ * If @protocol is %G_SOCKET_PROTOCOL_DEFAULT that means to use the default
  * protocol for the socket family and type.
  *
  * Since: 2.22
