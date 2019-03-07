@@ -706,6 +706,13 @@
 	...
 	fun:g_private_set_alloc0
 }
+{
+	g_private_set_alloc0-calloc
+	Memcheck:Leak
+	fun:calloc
+	...
+	fun:g_private_set_alloc0
+}
 
 # Thread-private GMainContext stack
 {
