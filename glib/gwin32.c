@@ -1027,8 +1027,7 @@ static void *WinVEH_handle = NULL;
 
 #include "gwin32-private.c"
 
-/**
- * Handles exceptions (useful for debugging).
+/* Handles exceptions (useful for debugging).
  * Issues a DebugBreak() call if the process is being debugged (not really
  * useful - if the process is being debugged, this handler won't be invoked
  * anyway). If it is not, runs a debugger from G_DEBUGGER env var,
