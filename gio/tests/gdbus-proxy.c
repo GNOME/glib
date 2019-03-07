@@ -952,6 +952,7 @@ main (int   argc,
   ret = session_bus_run();
 
   g_dbus_node_info_unref (introspection_data);
+  g_main_loop_unref (loop);
 
   return ret;
 }
