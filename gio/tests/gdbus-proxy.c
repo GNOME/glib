@@ -49,7 +49,7 @@ test_methods (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "(s)");
   g_variant_get (result, "(&s)", &str);
   g_assert_cmpstr (str, ==, "You greeted me with 'Hey'. Thanks!");
@@ -64,13 +64,13 @@ test_methods (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_DBUS_ERROR);
-  g_assert (g_dbus_error_is_remote_error (error));
-  g_assert (g_dbus_error_is_remote_error (error));
-  g_assert (result == NULL);
+  g_assert_true (g_dbus_error_is_remote_error (error));
+  g_assert_true (g_dbus_error_is_remote_error (error));
+  g_assert_null (result);
   dbus_error_name = g_dbus_error_get_remote_error (error);
   g_assert_cmpstr (dbus_error_name, ==, "com.example.TestException");
   g_free (dbus_error_name);
-  g_assert (g_dbus_error_strip_remote_error (error));
+  g_assert_true (g_dbus_error_strip_remote_error (error));
   g_assert_cmpstr (error->message, ==, "Yo is not a proper greeting");
   g_clear_error (&error);
 
@@ -88,8 +88,8 @@ test_methods (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
-  g_assert (!g_dbus_error_is_remote_error (error));
-  g_assert (result == NULL);
+  g_assert_false (g_dbus_error_is_remote_error (error));
+  g_assert_null (result);
   g_clear_error (&error);
 
   /* Check that proxy-default timeouts work. */
@@ -104,7 +104,7 @@ test_methods (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
 
@@ -121,8 +121,8 @@ test_methods (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
-  g_assert (!g_dbus_error_is_remote_error (error));
-  g_assert (result == NULL);
+  g_assert_false (g_dbus_error_is_remote_error (error));
+  g_assert_null (result);
   g_clear_error (&error);
 
   /* clean up after ourselves */
@@ -179,7 +179,7 @@ test_properties (GDBusProxy *proxy)
 
   if (g_dbus_proxy_get_flags (proxy) & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES)
     {
-       g_assert (g_dbus_proxy_get_cached_property_names (proxy) == NULL);
+       g_assert_null (g_dbus_proxy_get_cached_property_names (proxy));
        return;
     }
 
@@ -188,32 +188,32 @@ test_properties (GDBusProxy *proxy)
    */
   names = g_dbus_proxy_get_cached_property_names (proxy);
 
-  g_assert (strv_equal (names,
-                        "PropertyThatWillBeInvalidated",
-                        "ab",
-                        "ad",
-                        "ai",
-                        "an",
-                        "ao",
-                        "aq",
-                        "as",
-                        "at",
-                        "au",
-                        "ax",
-                        "ay",
-                        "b",
-                        "d",
-                        "foo",
-                        "i",
-                        "n",
-                        "o",
-                        "q",
-                        "s",
-                        "t",
-                        "u",
-                        "x",
-                        "y",
-                        NULL));
+  g_assert_true (strv_equal (names,
+                             "PropertyThatWillBeInvalidated",
+                             "ab",
+                             "ad",
+                             "ai",
+                             "an",
+                             "ao",
+                             "aq",
+                             "as",
+                             "at",
+                             "au",
+                             "ax",
+                             "ay",
+                             "b",
+                             "d",
+                             "foo",
+                             "i",
+                             "n",
+                             "o",
+                             "q",
+                             "s",
+                             "t",
+                             "u",
+                             "x",
+                             "y",
+                             NULL));
 
   g_strfreev (names);
 
@@ -223,11 +223,11 @@ test_properties (GDBusProxy *proxy)
    * No need to test all properties - GVariant has already been tested
    */
   variant = g_dbus_proxy_get_cached_property (proxy, "y");
-  g_assert (variant != NULL);
+  g_assert_nonnull (variant);
   g_assert_cmpint (g_variant_get_byte (variant), ==, 1);
   g_variant_unref (variant);
   variant = g_dbus_proxy_get_cached_property (proxy, "o");
-  g_assert (variant != NULL);
+  g_assert_nonnull (variant);
   g_assert_cmpstr (g_variant_get_string (variant, NULL), ==, "/some/path");
   g_variant_unref (variant);
 
@@ -246,31 +246,31 @@ test_properties (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
   _g_assert_signal_received (proxy, "g-properties-changed");
   variant = g_dbus_proxy_get_cached_property (proxy, "y");
-  g_assert (variant != NULL);
+  g_assert_nonnull (variant);
   g_assert_cmpint (g_variant_get_byte (variant), ==, 42);
   g_variant_unref (variant);
 
   g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_byte (142));
   variant = g_dbus_proxy_get_cached_property (proxy, "y");
-  g_assert (variant != NULL);
+  g_assert_nonnull (variant);
   g_assert_cmpint (g_variant_get_byte (variant), ==, 142);
   g_variant_unref (variant);
 
   g_dbus_proxy_set_cached_property (proxy, "y", NULL);
   variant = g_dbus_proxy_get_cached_property (proxy, "y");
-  g_assert (variant == NULL);
+  g_assert_null (variant);
 
   /* Check that the invalidation feature of the PropertiesChanged()
    * signal works... First, check that we have a cached value of the
    * property (from the initial GetAll() call)
    */
   variant = g_dbus_proxy_get_cached_property (proxy, "PropertyThatWillBeInvalidated");
-  g_assert (variant != NULL);
+  g_assert_nonnull (variant);
   g_assert_cmpstr (g_variant_get_string (variant, NULL), ==, "InitialValue");
   g_variant_unref (variant);
   /* now ask to invalidate the property - this causes a
@@ -292,14 +292,14 @@ test_properties (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
   /* ... hence we wait for the g-properties-changed signal to be delivered */
   _g_assert_signal_received (proxy, "g-properties-changed");
   /* ... and now we finally, check that the cached value has been invalidated */
   variant = g_dbus_proxy_get_cached_property (proxy, "PropertyThatWillBeInvalidated");
-  g_assert (variant == NULL);
+  g_assert_null (variant);
 
   /* Now test that G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES works - we need a new proxy for that */
   error = NULL;
@@ -314,11 +314,11 @@ test_properties (GDBusProxy *proxy)
   g_assert_no_error (error);
 
   name_owner = g_dbus_proxy_get_name_owner (proxy2);
-  g_assert (name_owner != NULL);
+  g_assert_nonnull (name_owner);
   g_free (name_owner);
 
   variant = g_dbus_proxy_get_cached_property (proxy2, "PropertyThatWillBeInvalidated");
-  g_assert (variant != NULL);
+  g_assert_nonnull (variant);
   g_assert_cmpstr (g_variant_get_string (variant, NULL), ==, "OMGInvalidated"); /* from previous test */
   g_variant_unref (variant);
 
@@ -330,7 +330,7 @@ test_properties (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
 
@@ -338,7 +338,7 @@ test_properties (GDBusProxy *proxy)
   _g_assert_signal_received (proxy2, "g-properties-changed");
 
   variant = g_dbus_proxy_get_cached_property (proxy2, "PropertyThatWillBeInvalidated");
-  g_assert (variant != NULL);
+  g_assert_nonnull (variant);
   g_assert_cmpstr (g_variant_get_string (variant, NULL), ==, "OMGInvalidated2");
   g_variant_unref (variant);
 
@@ -384,12 +384,12 @@ test_proxy_signals_on_emit_signal_cb (GDBusProxy   *proxy,
                                      res,
                                      &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
 
   /* check that the signal was recieved before we got the method result */
-  g_assert (strlen (data->s->str) > 0);
+  g_assert_cmpuint (strlen (data->s->str), >, 0);
 
   /* break out of the loop */
   g_main_loop_quit (data->internal_loop);
@@ -428,11 +428,11 @@ test_signals (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
   /* check that we haven't received the signal just yet */
-  g_assert (strlen (s->str) == 0);
+  g_assert_cmpuint (strlen (s->str), ==, 0);
   /* and now wait for the signal */
   _g_assert_signal_received (proxy, "g-signal");
   g_assert_cmpstr (s->str,
@@ -487,7 +487,7 @@ test_bogus_method_return (GDBusProxy *proxy)
                                    &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_error_free (error);
-  g_assert (result == NULL);
+  g_assert_null (result);
 }
 
 #if 0 /* Disabled: see https://bugzilla.gnome.org/show_bug.cgi?id=658999 */
@@ -506,7 +506,7 @@ test_bogus_signal (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
 
@@ -546,7 +546,7 @@ test_bogus_property (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
 
@@ -652,16 +652,16 @@ test_expected_interface (GDBusProxy *proxy)
    * See https://bugzilla.gnome.org/show_bug.cgi?id=660886
    */
   value = g_dbus_proxy_get_cached_property (proxy, "d");
-  g_assert (value != NULL);
-  g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE_DOUBLE));
+  g_assert_nonnull (value);
+  g_assert_true (g_variant_is_of_type (value, G_VARIANT_TYPE_DOUBLE));
   g_assert_cmpfloat (g_variant_get_double (value), ==, 7.5);
   g_variant_unref (value);
   /* update it via the cached property... */
   g_dbus_proxy_set_cached_property (proxy, "d", g_variant_new_double (75.0));
   /* ... and finally check that it has changed */
   value = g_dbus_proxy_get_cached_property (proxy, "d");
-  g_assert (value != NULL);
-  g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE_DOUBLE));
+  g_assert_nonnull (value);
+  g_assert_true (g_variant_is_of_type (value, G_VARIANT_TYPE_DOUBLE));
   g_assert_cmpfloat (g_variant_get_double (value), ==, 75.0);
   g_variant_unref (value);
   /* now update it via the D-Bus interface... */
@@ -671,15 +671,15 @@ test_expected_interface (GDBusProxy *proxy)
                                   G_DBUS_CALL_FLAGS_NONE,
                                   -1, NULL, &error);
   g_assert_no_error (error);
-  g_assert (value != NULL);
+  g_assert_nonnull (value);
   g_assert_cmpstr (g_variant_get_type_string (value), ==, "()");
   g_variant_unref (value);
   /* ...ensure we receive the ::PropertiesChanged signal... */
   _g_assert_signal_received (proxy, "g-properties-changed");
   /* ... and finally check that it has changed */
   value = g_dbus_proxy_get_cached_property (proxy, "d");
-  g_assert (value != NULL);
-  g_assert (g_variant_is_of_type (value, G_VARIANT_TYPE_DOUBLE));
+  g_assert_nonnull (value);
+  g_assert_true (g_variant_is_of_type (value, G_VARIANT_TYPE_DOUBLE));
   g_assert_cmpfloat (g_variant_get_double (value), ==, 85.0);
   g_variant_unref (value);
 }
@@ -698,9 +698,9 @@ test_basic (GDBusProxy *proxy)
 
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
-  g_assert (g_dbus_proxy_get_connection (proxy) == connection);
-  g_assert (g_dbus_proxy_get_flags (proxy) == G_DBUS_PROXY_FLAGS_NONE);
-  g_assert (g_dbus_proxy_get_interface_info (proxy) == NULL);
+  g_assert_true (g_dbus_proxy_get_connection (proxy) == connection);
+  g_assert_cmpint (g_dbus_proxy_get_flags (proxy), ==, G_DBUS_PROXY_FLAGS_NONE);
+  g_assert_null (g_dbus_proxy_get_interface_info (proxy));
   g_assert_cmpstr (g_dbus_proxy_get_name (proxy), ==, "com.example.TestService");
   g_assert_cmpstr (g_dbus_proxy_get_object_path (proxy), ==, "/com/example/TestObject");
   g_assert_cmpstr (g_dbus_proxy_get_interface_name (proxy), ==, "com.example.Frob");
@@ -716,8 +716,8 @@ test_basic (GDBusProxy *proxy)
                 "g-default-timeout", &timeout,
                 NULL);
 
-  g_assert (conn == connection);
-  g_assert (info == NULL);
+  g_assert_true (conn == connection);
+  g_assert_null (info);
   g_assert_cmpint (flags, ==, G_DBUS_PROXY_FLAGS_NONE);
   g_assert_cmpstr (name, ==, "com.example.TestService");
   g_assert_cmpstr (path, ==, "/com/example/TestObject");
@@ -785,7 +785,7 @@ test_proxy (void)
   g_assert_no_error (error);
 
   /* this is safe; we explicitly kill the service later on */
-  g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
+  g_assert_true (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
   _g_assert_property_notify (proxy, "g-name-owner");
 
@@ -827,7 +827,7 @@ proxy_ready (GObject      *source,
   g_free (owner);
 
   /* this is safe; we explicitly kill the service later on */
-  g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
+  g_assert_true (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
   _g_assert_property_notify (proxy, "g-name-owner");
 
@@ -901,7 +901,7 @@ check_error (GObject      *source,
 
   reply = g_dbus_proxy_call_finish (G_DBUS_PROXY (source), result, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
-  g_assert (reply == NULL);
+  g_assert_null (reply);
   g_error_free (error);
 
   g_main_loop_quit (loop);
@@ -919,7 +919,7 @@ test_wellknown_noauto (void)
                                          NULL, "some.name.that.does.not.exist",
                                          "/", "some.interface", NULL, &error);
   g_assert_no_error (error);
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
 
   g_dbus_proxy_call (proxy, "method", NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, check_error, NULL);
   id = g_timeout_add (10000, fail_test, NULL);
@@ -938,7 +938,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   introspection_data = g_dbus_node_info_new_for_xml (frob_dbus_interface_xml, NULL);
-  g_assert (introspection_data != NULL);
+  g_assert_nonnull (introspection_data);
   frob_dbus_interface_info = introspection_data->interfaces[0];
 
   /* all the tests rely on a shared main loop */
