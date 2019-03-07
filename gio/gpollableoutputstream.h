@@ -49,6 +49,8 @@ typedef struct _GPollableOutputStreamInterface GPollableOutputStreamInterface;
  * @create_source: Creates a #GSource to poll the stream
  * @write_nonblocking: Does a non-blocking write or returns
  *   %G_IO_ERROR_WOULD_BLOCK
+ * @writev_nonblocking: Does a vectored non-blocking write, or returns
+ *   %G_POLLABLE_RETURN_WOULD_BLOCK
  *
  * The interface for pollable output streams.
  *
@@ -60,6 +62,12 @@ typedef struct _GPollableOutputStreamInterface GPollableOutputStreamInterface;
  * need to override it if it is possible that your @is_writable
  * implementation may return %TRUE when the stream is not actually
  * writable.
+ *
+ * The default implementation of @writev_nonblocking calls
+ * g_pollable_output_stream_write_nonblocking() for each vector, and converts
+ * its return value and error (if set) to a #GPollableReturn. You should
+ * override this where possible to avoid having to allocate a #GError to return
+ * %G_IO_ERROR_WOULD_BLOCK.
  *
  * Since: 2.28
  */
