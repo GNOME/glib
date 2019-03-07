@@ -82,6 +82,20 @@
 
 #undef G_INLINE_DEFINE_NEEDED
 
+/**
+ * G_INLINE_FUNC:
+ *
+ * This macro used to be used to conditionally define inline functions
+ * in a compatible way before this feature was supported in all
+ * compilers.  These days, GLib requires inlining support from the
+ * compiler, so your GLib-using programs can safely assume that the
+ * "inline" keywork works properly.
+ *
+ * Never use this macro anymore.  Just say "static inline".
+ *
+ * Deprecated: 2.48: Use "static inline" instead
+ */
+
 #ifndef G_DISABLE_DEPRECATED
 /* For historical reasons we need to continue to support those who
  * define G_IMPLEMENT_INLINES to mean "don't implement this here".
@@ -831,6 +845,22 @@
  * https://gitlab.gnome.org/GNOME/glib/merge_requests/538/diffs#note_390790.
  */
 
+/**
+ * G_ALIGNOF
+ * @type: a type-name
+ *
+ * Return the minimal alignment required by the platform ABI for values of the given
+ * type. The address of a variable or struct member of the given type must always be
+ * a multiple of this alignment. For example, most platforms require int variables
+ * to be aligned at a 4-byte boundary, so `G_ALIGNOF (int)` is 4 on most platforms.
+ *
+ * Note this is not necessarily the same as the value returned by GCC’s
+ * `__alignof__` operator, which returns the preferred alignment for a type.
+ * The preferred alignment may be a stricter alignment than the minimal
+ * alignment.
+ *
+ * Since: 2.60
+ */
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L && !defined(__cplusplus)
 #define G_ALIGNOF(type) _Alignof (type)
 #else

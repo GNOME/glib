@@ -338,6 +338,27 @@ void    g_test_queue_destroy            (GDestroyNotify destroy_func,
 #define g_test_queue_unref(gobject)     g_test_queue_destroy (g_object_unref, gobject)
 
 #ifndef G_DISABLE_DEPRECATED
+/**
+ * GTestTrapFlags:
+ * @G_TEST_TRAP_SILENCE_STDOUT: Redirect stdout of the test child to
+ *     `/dev/null` so it cannot be observed on the console during test
+ *     runs. The actual output is still captured though to allow later
+ *     tests with g_test_trap_assert_stdout().
+ * @G_TEST_TRAP_SILENCE_STDERR: Redirect stderr of the test child to
+ *     `/dev/null` so it cannot be observed on the console during test
+ *     runs. The actual output is still captured though to allow later
+ *     tests with g_test_trap_assert_stderr().
+ * @G_TEST_TRAP_INHERIT_STDIN: If this flag is given, stdin of the
+ *     child process is shared with stdin of its parent process.
+ *     It is redirected to `/dev/null` otherwise.
+ *
+ * Test traps are guards around forked tests.
+ * These flags determine what traps to set.
+ *
+ * Deprecated: #GTestTrapFlags is used only with g_test_trap_fork(),
+ * which is deprecated. g_test_trap_subprocess() uses
+ * #GTestSubprocessFlags.
+ */
 typedef enum {
   G_TEST_TRAP_SILENCE_STDOUT    = 1 << 7,
   G_TEST_TRAP_SILENCE_STDERR    = 1 << 8,
