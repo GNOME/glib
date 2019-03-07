@@ -23,7 +23,7 @@
  * descriptors that it contains, closing them when finalized.
  *
  * It may be wrapped in a #GUnixFDMessage and sent over a #GSocket in
- * the %G_SOCKET_ADDRESS_UNIX family by using g_socket_send_message()
+ * the %G_SOCKET_FAMILY_UNIX family by using g_socket_send_message()
  * and received using g_socket_receive_message().
  *
  * Note that `<gio/gunixfdlist.h>` belongs to the UNIX-specific GIO
