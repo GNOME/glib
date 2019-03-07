@@ -306,7 +306,7 @@ g_network_address_new (const gchar *hostname,
  * resolving `localhost`, and an IPv6 address for `localhost6`.
  *
  * g_network_address_get_hostname() will always return `localhost` for
- * #GNetworkAddresses created with this constructor.
+ * a #GNetworkAddress created with this constructor.
  *
  * Returns: (transfer full) (type GNetworkAddress): the new #GNetworkAddress
  *

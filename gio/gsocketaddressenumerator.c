@@ -30,7 +30,7 @@
  * #GSocketAddressEnumerator is an enumerator type for #GSocketAddress
  * instances. It is returned by enumeration functions such as
  * g_socket_connectable_enumerate(), which returns a #GSocketAddressEnumerator
- * to list all the #GSocketAddresses which could be used to connect to that
+ * to list each #GSocketAddress which could be used to connect to that
  * #GSocketConnectable.
  *
  * Enumeration is typically a blocking operation, so the asynchronous methods
