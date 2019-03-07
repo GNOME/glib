@@ -3629,6 +3629,11 @@ g_object_get_data (GObject     *object,
  *
  * If the object already had an association with that name,
  * the old association will be destroyed.
+ *
+ * Internally, the @key is converted to a #GQuark using g_quark_from_string().
+ * This means a copy of @key is kept permanently (even after @object has been
+ * finalized) — so it is recommended to only use a small, bounded set of values
+ * for @key in your program, to avoid the #GQuark storage growing unbounded.
  */
 void
 g_object_set_data (GObject     *object,
@@ -3706,6 +3711,9 @@ g_object_dup_data (GObject        *object,
  * It’s up to the caller to free this as needed, which may
  * or may not include using @old_destroy as sometimes replacement
  * should not destroy the object in the normal way.
+ *
+ * See g_object_set_data() for guidance on using a small, bounded set of values
+ * for @key.
  *
  * Returns: %TRUE if the existing value for @key was replaced
  *  by @newval, %FALSE otherwise.
