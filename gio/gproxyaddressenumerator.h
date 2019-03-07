@@ -40,7 +40,7 @@ G_BEGIN_DECLS
  * GProxyAddressEnumerator:
  *
  * A subclass of #GSocketAddressEnumerator that takes another address
- * enumerator and wraps its results in #GProxyAddresses as
+ * enumerator and wraps each of its results in a #GProxyAddress as
  * directed by the default #GProxyResolver.
  */
 
