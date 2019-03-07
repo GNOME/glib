@@ -80,14 +80,14 @@ typedef struct _GFileIface    		GFileIface;
  * @set_display_name: Sets the display name for a #GFile.
  * @set_display_name_async: Asynchronously sets a #GFile's display name.
  * @set_display_name_finish: Finishes asynchronously setting a #GFile's display name.
- * @query_settable_attributes: Returns a list of #GFileAttributes that can be set.
- * @_query_settable_attributes_async: Asynchronously gets a list of #GFileAttributes that can be set.
+ * @query_settable_attributes: Returns a list of #GFileAttributeInfos that can be set.
+ * @_query_settable_attributes_async: Asynchronously gets a list of #GFileAttributeInfos that can be set.
  * @_query_settable_attributes_finish: Finishes asynchronously querying settable attributes.
- * @query_writable_namespaces: Returns a list of #GFileAttribute namespaces that are writable.
- * @_query_writable_namespaces_async: Asynchronously gets a list of #GFileAttribute namespaces that are writable.
+ * @query_writable_namespaces: Returns a list of #GFileAttributeInfo namespaces that are writable.
+ * @_query_writable_namespaces_async: Asynchronously gets a list of #GFileAttributeInfo namespaces that are writable.
  * @_query_writable_namespaces_finish: Finishes asynchronously querying the writable namespaces.
- * @set_attribute: Sets a #GFileAttribute.
- * @set_attributes_from_info: Sets a #GFileAttribute with information from a #GFileInfo.
+ * @set_attribute: Sets a #GFileAttributeInfo.
+ * @set_attributes_from_info: Sets a #GFileAttributeInfo with information from a #GFileInfo.
  * @set_attributes_async: Asynchronously sets a file's attributes.
  * @set_attributes_finish: Finishes setting a file's attributes asynchronously.
  * @read_fn: Reads a file asynchronously.
