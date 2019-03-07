@@ -626,7 +626,9 @@ test_expected_interface (GDBusProxy *proxy)
       /* Also check that we complain if setting a cached property of the wrong type */
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
                              "*Trying to set property y of type s but according to the expected interface the type is y*");
-      g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_string ("error_me_out!"));
+      value = g_variant_ref_sink (g_variant_new_string ("error_me_out!"));
+      g_dbus_proxy_set_cached_property (proxy, "y", value);
+      g_variant_unref (value);
       g_test_assert_expected_messages ();
     }
 
