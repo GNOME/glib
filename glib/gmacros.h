@@ -106,6 +106,7 @@
 #else
 #  define G_INLINE_FUNC static inline
 #endif /* G_IMPLEMENT_INLINES */
+#endif  /* !G_DISABLE_DEPRECATED */
 
 /* Provide macros to feature the GCC function attribute.
  */
