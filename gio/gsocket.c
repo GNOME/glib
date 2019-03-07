@@ -5648,7 +5648,7 @@ g_socket_receive_messages_with_timeout (GSocket        *socket,
  *    which may be filled with an array of #GSocketControlMessages, or %NULL
  * @num_messages: (out): a pointer which will be filled with the number of
  *    elements in @messages, or %NULL
- * @flags: (type GSocketMsgFlags): (inout): a pointer to an int containing #GSocketMsgFlags flags
+ * @flags: (type GSocketMsgFlags) (inout): a pointer to an int containing #GSocketMsgFlags flags
  * @cancellable: a %GCancellable or %NULL
  * @error: a #GError pointer, or %NULL
  *
