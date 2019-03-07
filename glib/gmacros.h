@@ -82,6 +82,7 @@
 
 #undef G_INLINE_DEFINE_NEEDED
 
+#ifndef G_DISABLE_DEPRECATED
 /* For historical reasons we need to continue to support those who
  * define G_IMPLEMENT_INLINES to mean "don't implement this here".
  */

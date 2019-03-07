@@ -499,7 +499,9 @@ g_mem_set_vtable (GMemVTable *vtable)
  *
  * Deprecated: 2.46: Use other memory profiling tools instead
  */
+#ifndef G_DISABLE_DEPRECATED
 GMemVTable *glib_mem_profiler_table = &glib_mem_vtable;
+#endif
 
 /**
  * g_mem_profile:
