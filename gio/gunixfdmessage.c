@@ -22,7 +22,7 @@
  * This #GSocketControlMessage contains a #GUnixFDList.
  * It may be sent using g_socket_send_message() and received using
  * g_socket_receive_message() over UNIX sockets (ie: sockets in the
- * %G_SOCKET_ADDRESS_UNIX family). The file descriptors are copied
+ * %G_SOCKET_FAMILY_UNIX family). The file descriptors are copied
  * between processes by the kernel.
  *
  * For an easier way to send and receive file descriptors over
