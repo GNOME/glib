@@ -118,6 +118,13 @@ if get_option('gtk_doc')
     ]
   endif
 
+  ignore_sources = [
+    'kqueue',
+    'tests',
+    'gdbus-daemon-generated.c',
+    'xdp-dbus.c',
+  ]
+
   # FIXME: More win32 headers were added to fix building gio-scan
 
   # FIXME: ExampleAnimal docs aren't built
@@ -140,6 +147,9 @@ if get_option('gtk_doc')
     scan_args : gtkdoc_common_scan_args + [
       '--rebuild-types',
       '--ignore-headers=' + ' '.join(ignore_headers),
+    ],
+    mkdb_args : [
+      '--ignore-files=' + ' '.join(ignore_sources),
     ],
     content_files : [
       'overview.xml',
