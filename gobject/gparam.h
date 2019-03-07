@@ -260,6 +260,8 @@ struct _GParamSpecClass
   /*< private >*/
   gpointer	  dummy[4];
 };
+
+#ifndef G_DISABLE_DEPRECATED
 /**
  * GParameter:
  * @name: the parameter name
@@ -275,7 +277,7 @@ struct _GParameter /* auxiliary structure for _setv() variants */
   const gchar *name;
   GValue       value;
 };
-
+#endif  /* !G_DISABLE_DEPRECATED */
 
 /* --- prototypes --- */
 GLIB_AVAILABLE_IN_ALL

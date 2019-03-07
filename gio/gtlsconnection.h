@@ -109,11 +109,13 @@ void                  g_tls_connection_set_require_close_notify    (GTlsConnecti
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_get_require_close_notify    (GTlsConnection       *conn);
 
+#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_IN_2_60
 void                  g_tls_connection_set_rehandshake_mode        (GTlsConnection       *conn,
 								    GTlsRehandshakeMode   mode);
 GLIB_DEPRECATED_IN_2_60
 GTlsRehandshakeMode   g_tls_connection_get_rehandshake_mode        (GTlsConnection       *conn);
+#endif  /* !G_DISABLE_DEPRECATED */
 
 GLIB_AVAILABLE_IN_2_60
 void                  g_tls_connection_set_advertised_protocols    (GTlsConnection       *conn,

@@ -621,6 +621,7 @@ struct _GTypeQuery
  */
 #define G_TYPE_FROM_INTERFACE(g_iface)                          (((GTypeInterface*) (g_iface))->g_type)
 
+#ifndef G_DISABLE_DEPRECATED
 /**
  * G_TYPE_INSTANCE_GET_PRIVATE:
  * @instance: the instance of a type deriving from @private_type
@@ -639,6 +640,7 @@ struct _GTypeQuery
  * Returns: (not nullable): a pointer to the private data structure
  */
 #define G_TYPE_INSTANCE_GET_PRIVATE(instance, g_type, c_type)   ((c_type*) g_type_instance_get_private ((GTypeInstance*) (instance), (g_type)))
+#endif  /* !G_DISABLE_DEPRECATED */
 
 /**
  * G_TYPE_CLASS_GET_PRIVATE:
@@ -657,6 +659,7 @@ struct _GTypeQuery
  */
 #define G_TYPE_CLASS_GET_PRIVATE(klass, g_type, c_type)   ((c_type*) g_type_class_get_private ((GTypeClass*) (klass), (g_type)))
 
+#ifndef G_DISABLE_DEPRECATED
 /**
  * GTypeDebugFlags:
  * @G_TYPE_DEBUG_NONE: Print no messages
@@ -681,13 +684,17 @@ typedef enum	/*< skip >*/
   G_TYPE_DEBUG_INSTANCE_COUNT = 1 << 2,
   G_TYPE_DEBUG_MASK	= 0x07
 } GTypeDebugFlags;
-
+#endif  /* !G_DISABLE_DEPRECATED */
 
 /* --- prototypes --- */
 GLIB_DEPRECATED_IN_2_36
 void                  g_type_init                    (void);
+
+#ifndef G_DISABLE_DEPRECATED
 GLIB_DEPRECATED_IN_2_36
 void                  g_type_init_with_debug_flags   (GTypeDebugFlags  debug_flags);
+#endif
+
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_type_name                    (GType            type);
 GLIB_AVAILABLE_IN_ALL

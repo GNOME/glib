@@ -27,6 +27,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef G_DISABLE_DEPRECATED
+
 /**
  * G_TYPE_VALUE_ARRAY:
  *
@@ -98,6 +100,7 @@ GValueArray*	g_value_array_sort_with_data (GValueArray	*value_array,
 					      GCompareDataFunc	 compare_func,
 					      gpointer		 user_data);
 
+#endif  /* !G_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

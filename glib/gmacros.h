@@ -82,6 +82,7 @@
 
 #undef G_INLINE_DEFINE_NEEDED
 
+#ifndef G_DISABLE_DEPRECATED
 /* For historical reasons we need to continue to support those who
  * define G_IMPLEMENT_INLINES to mean "don't implement this here".
  */
@@ -91,6 +92,7 @@
 #else
 #  define G_INLINE_FUNC static inline
 #endif /* G_IMPLEMENT_INLINES */
+#endif  /* !G_DISABLE_DEPRECATED */
 
 /* Provide macros to feature the GCC function attribute.
  */
