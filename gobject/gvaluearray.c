@@ -55,6 +55,8 @@
  *   GArray *array = g_array_sized_new (FALSE, TRUE, sizeof (GValue), 10);
  *   g_array_set_clear_func (array, (GDestroyNotify) g_value_unset);
  * ]|
+ *
+ * Deprecated: 2.32: Use #GArray instead, as described above.
  */
 
 #define	GROUP_N_VALUES	(8)	/* power of 2 !! */
