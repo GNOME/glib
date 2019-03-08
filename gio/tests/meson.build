@@ -10,6 +10,7 @@ test_c_args = [
   '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
   '-DGLIB_MKENUMS="@0@"'.format(glib_mkenums),
   '-DGLIB_COMPILE_SCHEMAS="@0@"'.format(glib_compile_schemas.full_path()),
+  '-UG_DISABLE_ASSERT',
 ]
 
 if host_machine.system() == 'windows'
