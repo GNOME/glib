@@ -1714,13 +1714,12 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 
               if (array_len == 0)
                 {
-                  GVariant *item;
+                  GVariant *item G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
                   item = parse_value_from_blob (buf,
                                                 element_type,
                                                 TRUE,
                                                 indent + 2,
                                                 NULL);
-                  (void) item;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
                   g_assert (item == NULL);
                 }
               else

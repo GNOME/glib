@@ -435,7 +435,7 @@ _g_value_types_init (void)
     NULL,			/* value_table */
   };
   const GTypeFundamentalInfo finfo = { G_TYPE_FLAG_DERIVABLE, };
-  GType type;
+  GType type G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
   
   /* G_TYPE_CHAR / G_TYPE_UCHAR
    */
@@ -452,10 +452,8 @@ _g_value_types_init (void)
     };
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_CHAR, g_intern_static_string ("gchar"), &info, &finfo, 0);
-    (void) type;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
     g_assert (type == G_TYPE_CHAR);
     type = g_type_register_fundamental (G_TYPE_UCHAR, g_intern_static_string ("guchar"), &info, &finfo, 0);
-    (void) type;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
     g_assert (type == G_TYPE_UCHAR);
   }
 

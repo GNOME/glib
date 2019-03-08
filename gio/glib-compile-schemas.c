@@ -648,10 +648,9 @@ key_state_serialise (KeyState *state)
       else
         {
           GVariantBuilder builder;
-          gboolean checked;
+          gboolean checked G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
           checked = key_state_check (state, NULL);
-          (void) checked;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
           g_assert (checked);
 
           g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);

@@ -100,13 +100,12 @@ _g_boxed_type_init (void)
     NULL,                       /* value_table */
   };
   const GTypeFundamentalInfo finfo = { G_TYPE_FLAG_DERIVABLE, };
-  GType type;
+  GType type G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
   /* G_TYPE_BOXED
    */
   type = g_type_register_fundamental (G_TYPE_BOXED, g_intern_static_string ("GBoxed"), &info, &finfo,
 				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
-  (void) type;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
   g_assert (type == G_TYPE_BOXED);
 }
 

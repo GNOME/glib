@@ -774,7 +774,7 @@ g_application_impl_command_line (GApplicationImpl    *impl,
   const gchar *object_path = "/org/gtk/Application/CommandLine";
   GMainContext *context;
   CommandLineData data;
-  guint object_id;
+  guint object_id G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
   context = g_main_context_new ();
   data.loop = g_main_loop_new (context, FALSE);
@@ -798,7 +798,6 @@ g_application_impl_command_line (GApplicationImpl    *impl,
                                                  org_gtk_private_CommandLine,
                                                  &vtable, &data, NULL, NULL);
   /* In theory we should try other paths... */
-  (void) object_id;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
   g_assert (object_id != 0);
 
 #ifdef G_OS_UNIX

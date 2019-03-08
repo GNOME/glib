@@ -575,7 +575,7 @@ initable_init (GInitable     *initable,
 
   {
     guint64 identifier;
-    gint s;
+    gint s G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
 #ifdef G_OS_WIN32
     identifier = (guint64) GetProcessId (self->pid);
@@ -584,7 +584,6 @@ initable_init (GInitable     *initable,
 #endif
 
     s = g_snprintf (self->identifier, sizeof self->identifier, "%"G_GUINT64_FORMAT, identifier);
-    (void) s;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
     g_assert (0 < s && s < sizeof self->identifier);
   }
 

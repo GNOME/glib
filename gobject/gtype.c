@@ -4362,7 +4362,7 @@ gobject_init (void)
   const gchar *env_string;
   GTypeInfo info;
   TypeNode *node;
-  GType type;
+  GType type G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
   /* Ensure GLib is initialized first, see
    * https://bugzilla.gnome.org/show_bug.cgi?id=756139
@@ -4400,7 +4400,6 @@ gobject_init (void)
    */
   node = type_node_fundamental_new_W (G_TYPE_NONE, g_intern_static_string ("void"), 0);
   type = NODE_TYPE (node);
-  (void) type;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
   g_assert (type == G_TYPE_NONE);
 
   /* interface fundamental type G_TYPE_INTERFACE (!classed)
@@ -4409,7 +4408,6 @@ gobject_init (void)
   node = type_node_fundamental_new_W (G_TYPE_INTERFACE, g_intern_static_string ("GInterface"), G_TYPE_FLAG_DERIVABLE);
   type = NODE_TYPE (node);
   type_data_make_W (node, &info, NULL);
-  (void) type;  /* avoid warnings when compiling with G_DISABLE_ASSERT */
   g_assert (type == G_TYPE_INTERFACE);
 
   G_WRITE_UNLOCK (&type_rw_lock);
