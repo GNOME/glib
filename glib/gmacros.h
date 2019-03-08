@@ -98,15 +98,15 @@
 /**
  * G_GNUC_PURE:
  *
- * Expands to the GNU C pure function attribute if the compiler is gcc.
- * Declaring a function as pure enables better optimization of calls to
- * the function. A pure function has no effects except its return value
+ * Expands to the GNU C `pure` function attribute if the compiler is gcc.
+ * Declaring a function as `pure` enables better optimization of calls to
+ * the function. A `pure` function has no effects except its return value
  * and the return value depends only on the parameters and/or global
  * variables.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-pure-function-attribute) for more details.
  */
 
 /**
@@ -171,14 +171,14 @@
 /**
  * G_GNUC_NULL_TERMINATED:
  *
- * Expands to the GNU C sentinel function attribute if the compiler is gcc.
+ * Expands to the GNU C `sentinel` function attribute if the compiler is gcc.
  * This function attribute only applies to variadic functions and instructs
  * the compiler to check that the argument list is terminated with an
  * explicit %NULL.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-sentinel-function-attribute) for more details.
  *
  * Since: 2.8
  */
@@ -232,7 +232,7 @@
  * G_GNUC_ALLOC_SIZE:
  * @x: the index of the argument specifying the allocation size
  *
- * Expands to the GNU C alloc_size function attribute if the compiler
+ * Expands to the GNU C `alloc_size` function attribute if the compiler
  * is a new enough gcc. This attribute tells the compiler that the
  * function returns a pointer to memory of a size that is specified
  * by the @xth function parameter.
@@ -240,7 +240,7 @@
  * Place the attribute after the function declaration, just before the
  * semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-alloc_005fsize-function-attribute) for more details.
  *
  * Since: 2.18
  */
@@ -250,7 +250,7 @@
  * @x: the index of the argument specifying one factor of the allocation size
  * @y: the index of the argument specifying the second factor of the allocation size
  *
- * Expands to the GNU C alloc_size function attribute if the compiler is a
+ * Expands to the GNU C `alloc_size` function attribute if the compiler is a
  * new enough gcc. This attribute tells the compiler that the function returns
  * a pointer to memory of a size that is specified by the product of two
  * function parameters.
@@ -258,7 +258,7 @@
  * Place the attribute after the function declaration, just before the
  * semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-alloc_005fsize-function-attribute) for more details.
  *
  * Since: 2.18
  */
@@ -278,9 +278,9 @@
  * @arg_idx: the index of the first of the format arguments, or 0 if
  *     there are no format arguments
  *
- * Expands to the GNU C format function attribute if the compiler is gcc.
+ * Expands to the GNU C `format` function attribute if the compiler is gcc.
  * This is used for declaring functions which take a variable number of
- * arguments, with the same syntax as printf(). It allows the compiler
+ * arguments, with the same syntax as `printf()`. It allows the compiler
  * to type-check the arguments passed to the function.
  *
  * Place the attribute after the function declaration, just before the
@@ -305,9 +305,9 @@
  * @arg_idx: the index of the first of the format arguments, or 0 if
  *     there are no format arguments
  *
- * Expands to the GNU C format function attribute if the compiler is gcc.
+ * Expands to the GNU C `format` function attribute if the compiler is gcc.
  * This is used for declaring functions which take a variable number of
- * arguments, with the same syntax as scanf(). It allows the compiler
+ * arguments, with the same syntax as `scanf()`. It allows the compiler
  * to type-check the arguments passed to the function.
  *
  * See the
@@ -320,9 +320,9 @@
  * @format_idx: the index of the argument corresponding to
  *     the format string (the arguments are numbered from 1)
  *
- * Expands to the GNU C strftime format function attribute if the compiler
+ * Expands to the GNU C `strftime` format function attribute if the compiler
  * is gcc. This is used for declaring functions which take a format argument
- * which is passed to strftime() or an API implementing its formats. It allows
+ * which is passed to `strftime()` or an API implementing its formats. It allows
  * the compiler check the format passed to the function.
  *
  * See the
@@ -336,18 +336,18 @@
  * G_GNUC_FORMAT:
  * @arg_idx: the index of the argument
  *
- * Expands to the GNU C format_arg function attribute if the compiler
+ * Expands to the GNU C `format_arg` function attribute if the compiler
  * is gcc. This function attribute specifies that a function takes a
- * format string for a printf(), scanf(), strftime() or strfmon() style
- * function and modifies it, so that the result can be passed to a printf(),
- * scanf(), strftime() or strfmon() style function (with the remaining
+ * format string for a `printf()`, `scanf()`, `strftime()` or `strfmon()` style
+ * function and modifies it, so that the result can be passed to a `printf()`,
+ * `scanf()`, `strftime()` or `strfmon()` style function (with the remaining
  * arguments to the format function the same as they would have been
  * for the unmodified string).
  *
  * Place the attribute after the function declaration, just before the
  * semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-Wformat-nonliteral-1) for more details.
  *
  * |[<!-- language="C" -->
  * gchar *g_dgettext (gchar *domain_name, gchar *msgid) G_GNUC_FORMAT (2);
@@ -357,37 +357,37 @@
 /**
  * G_GNUC_NORETURN:
  *
- * Expands to the GNU C noreturn function attribute if the compiler is gcc.
+ * Expands to the GNU C `noreturn` function attribute if the compiler is gcc.
  * It is used for declaring functions which never return. It enables
  * optimization of the function, and avoids possible compiler warnings.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-noreturn-function-attribute) for more details.
  */
 
 /**
  * G_GNUC_CONST:
  *
- * Expands to the GNU C const function attribute if the compiler is gcc.
- * Declaring a function as const enables better optimization of calls to
- * the function. A const function doesn't examine any values except its
+ * Expands to the GNU C `const` function attribute if the compiler is gcc.
+ * Declaring a function as `const` enables better optimization of calls to
+ * the function. A `const` function doesn't examine any values except its
  * parameters, and has no effects except its return value.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-const-function-attribute) for more details.
  *
  * A function that has pointer arguments and examines the data pointed to
- * must not be declared const. Likewise, a function that calls a non-const
- * function usually must not be const. It doesn't make sense for a const
- * function to return void.
+ * must not be declared `const`. Likewise, a function that calls a non-`const`
+ * function usually must not be `const`. It doesn't make sense for a `const`
+ * function to return `void`.
  */
 
 /**
  * G_GNUC_UNUSED:
  *
- * Expands to the GNU C unused function attribute if the compiler is gcc.
+ * Expands to the GNU C `unused` function attribute if the compiler is gcc.
  * It is used for declaring functions and arguments which may never be used.
  * It avoids possible compiler warnings.
  *
@@ -400,20 +400,20 @@
  *                          gint other_argument) G_GNUC_UNUSED;
  * ]|
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-unused-function-attribute) for more details.
  */
 
 /**
  * G_GNUC_NO_INSTRUMENT:
  *
- * Expands to the GNU C no_instrument_function function attribute if the
+ * Expands to the GNU C `no_instrument_function` function attribute if the
  * compiler is gcc. Functions with this attribute will not be instrumented
  * for profiling, when the compiler is called with the
  * `-finstrument-functions` option.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-no_005finstrument_005ffunction-function-attribute) for more details.
  */
 
 #if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
@@ -460,15 +460,15 @@
 /**
  * G_GNUC_FALLTHROUGH:
  *
- * Expands to the GNU C fallthrough statement attribute if the compiler is gcc.
+ * Expands to the GNU C `fallthrough` statement attribute if the compiler is gcc.
  * This allows declaring case statement to explicitly fall through in switch
- * statements. To enable this feature, use -Wimplicit-fallthrough during
+ * statements. To enable this feature, use `-Wimplicit-fallthrough` during
  * compilation.
  *
  * Put the attribute right before the case statement you want to fall through
  * to.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html#index-fallthrough-statement-attribute) for more details.
  *
  * Since: 2.60
  */
@@ -481,14 +481,14 @@
 /**
  * G_GNUC_DEPRECATED:
  *
- * Expands to the GNU C deprecated attribute if the compiler is gcc.
- * It can be used to mark typedefs, variables and functions as deprecated.
+ * Expands to the GNU C `deprecated` attribute if the compiler is gcc.
+ * It can be used to mark `typedef`s, variables and functions as deprecated.
  * When called with the `-Wdeprecated-declarations` option,
  * gcc will generate warnings when deprecated interfaces are used.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-deprecated-function-attribute) for more details.
  *
  * Since: 2.2
  */
@@ -509,7 +509,7 @@
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-deprecated-function-attribute) for more details.
  *
  * Note that if @f is a macro, it will be expanded in the warning message.
  * You can enclose it in quotes to prevent this. (The quotes will show up
@@ -556,11 +556,11 @@
 /**
  * G_GNUC_MAY_ALIAS:
  *
- * Expands to the GNU C may_alias type attribute if the compiler is gcc.
+ * Expands to the GNU C `may_alias` type attribute if the compiler is gcc.
  * Types with this attribute will not be subjected to type-based alias
- * analysis, but are assumed to alias with any other type, just like char.
+ * analysis, but are assumed to alias with any other type, just like `char`.
  *
- * See the GNU C documentation for details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Type-Attributes.html#index-may_005falias-type-attribute) for details.
  *
  * Since: 2.14
  */
@@ -573,13 +573,13 @@
 /**
  * G_GNUC_WARN_UNUSED_RESULT:
  *
- * Expands to the GNU C warn_unused_result function attribute if the compiler
+ * Expands to the GNU C `warn_unused_result` function attribute if the compiler
  * is gcc. This function attribute makes the compiler emit a warning if the
  * result of a function call is ignored.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
- * See the GNU C documentation for more details.
+ * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-warn_005funused_005fresult-function-attribute) for more details.
  *
  * Since: 2.10
  */
