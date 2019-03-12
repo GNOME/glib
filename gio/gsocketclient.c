@@ -1006,6 +1006,7 @@ g_socket_client_connect (GSocketClient       *client,
       if (g_cancellable_is_cancelled (cancellable))
 	{
 	  g_clear_error (error);
+	  g_clear_error (&last_error);
 	  g_cancellable_set_error_if_cancelled (cancellable, error);
 	  break;
 	}
