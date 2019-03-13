@@ -826,7 +826,7 @@ class InterfaceInfoBodyCodeGenerator:
                     self.outfile.write('};\n')
                     self.outfile.write('\n')
 
-                    key = (m.since, '%s_interface__%s_signal' % (i.name_lower, s.name_lower))
+                    key = (s.since, '%s_interface__%s_signal' % (i.name_lower, s.name_lower))
                     signal_pointers.append(key)
 
                 self.generate_array('%s_interface_signals' % i.name_lower,
@@ -861,7 +861,7 @@ class InterfaceInfoBodyCodeGenerator:
                     self.outfile.write('};\n')
                     self.outfile.write('\n')
 
-                    key = (m.since, '%s_interface__%s_property' % (i.name_lower, p.name_lower))
+                    key = (p.since, '%s_interface__%s_property' % (i.name_lower, p.name_lower))
                     property_pointers.append(key)
 
                 self.generate_array('%s_interface_properties' % i.name_lower,
