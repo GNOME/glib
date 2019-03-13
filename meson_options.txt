@@ -89,3 +89,8 @@ option('nls',
        value : 'auto',
        yield: true,
        description : 'Enable native language support (translations)')
+
+option('oss_fuzz',
+       type : 'feature',
+       value : 'disabled',
+       description : 'Indicate oss-fuzz build environment')
