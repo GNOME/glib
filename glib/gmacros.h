@@ -106,6 +106,10 @@
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
+ * |[<!-- language="C" -->
+ * gboolean g_type_check_value (const GValue *value) G_GNUC_PURE;
+ * ]|
+ *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-pure-function-attribute) for more details.
  */
 
@@ -132,6 +136,10 @@
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
+ * |[<!-- language="C" -->
+ * gpointer g_malloc (gsize n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+ * ]|
+ *
  * See the
  * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-functions-that-behave-like-malloc)
  * for more details.
@@ -148,8 +156,17 @@
  * Declaring a function as `noinline` prevents the function from being
  * considered for inlining.
  *
- * The attribute may be placed before the declaration, right before the
- * `static` keyword.
+ * The attribute may be placed before the declaration or definition,
+ * right before the `static` keyword.
+ *
+ * |[<!-- language="C" -->
+ * G_GNUC_NO_INLINE
+ * static int
+ * do_not_inline_this (void)
+ * {
+ *   ...
+ * }
+ * ]|
  *
  * See the
  * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-noinline-function-attribute)
@@ -177,6 +194,11 @@
  * explicit %NULL.
  *
  * Place the attribute after the declaration, just before the semicolon.
+ *
+ * |[<!-- language="C" -->
+ * gchar *g_strconcat (const gchar *string1,
+ *                     ...) G_GNUC_NULL_TERMINATED;
+ * ]|
  *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-sentinel-function-attribute) for more details.
  *
@@ -240,6 +262,10 @@
  * Place the attribute after the function declaration, just before the
  * semicolon.
  *
+ * |[<!-- language="C" -->
+ * gpointer g_malloc (gsize n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+ * ]|
+ *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-alloc_005fsize-function-attribute) for more details.
  *
  * Since: 2.18
@@ -257,6 +283,11 @@
  *
  * Place the attribute after the function declaration, just before the
  * semicolon.
+ *
+ * |[<!-- language="C" -->
+ * gpointer g_malloc_n (gsize n_blocks,
+ *                      gsize n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1, 2);
+ * ]|
  *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-alloc_005fsize-function-attribute) for more details.
  *
@@ -310,6 +341,15 @@
  * arguments, with the same syntax as `scanf()`. It allows the compiler
  * to type-check the arguments passed to the function.
  *
+ * |[<!-- language="C" -->
+ * int my_scanf (MyStream *stream,
+ *               const char *format,
+ *               ...) G_GNUC_SCANF (2, 3);
+ * int my_vscanf (MyStream *stream,
+ *                const char *format,
+ *                va_list ap) G_GNUC_SCANF (2, 0);
+ * ]|
+ *
  * See the
  * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-Wformat-3288)
  * for details.
@@ -324,6 +364,12 @@
  * is gcc. This is used for declaring functions which take a format argument
  * which is passed to `strftime()` or an API implementing its formats. It allows
  * the compiler check the format passed to the function.
+ *
+ * |[<!-- language="C" -->
+ * gsize my_strftime (MyBuffer *buffer,
+ *                    const char *format,
+ *                    const struct tm *tm) G_GNUC_STRFTIME (2);
+ * ]|
  *
  * See the
  * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-Wformat-3288)
@@ -363,6 +409,10 @@
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
+ * |[<!-- language="C" -->
+ * void g_abort (void) G_GNUC_NORETURN;
+ * ]|
+ *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-noreturn-function-attribute) for more details.
  */
 
@@ -375,6 +425,10 @@
  * parameters, and has no effects except its return value.
  *
  * Place the attribute after the declaration, just before the semicolon.
+ *
+ * |[<!-- language="C" -->
+ * gchar g_ascii_tolower (gchar c) G_GNUC_CONST;
+ * ]|
  *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-const-function-attribute) for more details.
  *
@@ -412,6 +466,10 @@
  * `-finstrument-functions` option.
  *
  * Place the attribute after the declaration, just before the semicolon.
+ *
+ * |[<!-- language="C" -->
+ * int do_uninteresting_things (void) G_GNUC_NO_INSTRUMENT;
+ * ]|
  *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-no_005finstrument_005ffunction-function-attribute) for more details.
  */
@@ -468,6 +526,19 @@
  * Put the attribute right before the case statement you want to fall through
  * to.
  *
+ * |[<!-- language="C" -->
+ * switch (foo)
+ *   {
+ *     case 1:
+ *       g_message ("it's 1");
+ *       G_GNUC_FALLTHROUGH;
+ *     case 2:
+ *       g_message ("it's either 1 or 2");
+ *       break;
+ *   }
+ * ]|
+ *
+ *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Statement-Attributes.html#index-fallthrough-statement-attribute) for more details.
  *
  * Since: 2.60
@@ -487,6 +558,10 @@
  * gcc will generate warnings when deprecated interfaces are used.
  *
  * Place the attribute after the declaration, just before the semicolon.
+ *
+ * |[<!-- language="C" -->
+ * int my_mistake (void) G_GNUC_DEPRECATED;
+ * ]|
  *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-deprecated-function-attribute) for more details.
  *
@@ -508,6 +583,10 @@
  * custom deprecation messages.
  *
  * Place the attribute after the declaration, just before the semicolon.
+ *
+ * |[<!-- language="C" -->
+ * int my_mistake (void) G_GNUC_DEPRECATED_FOR(my_replacement);
+ * ]|
  *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-deprecated-function-attribute) for more details.
  *
@@ -578,6 +657,11 @@
  * result of a function call is ignored.
  *
  * Place the attribute after the declaration, just before the semicolon.
+ *
+ * |[<!-- language="C" -->
+ * GList *g_list_append (GList *list,
+ *                       gpointer data) G_GNUC_WARN_UNUSED_RESULT;
+ * ]|
  *
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-warn_005funused_005fresult-function-attribute) for more details.
  *
