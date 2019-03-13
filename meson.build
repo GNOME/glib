@@ -1859,24 +1859,27 @@ if host_system != 'windows' and get_option('xattr')
   endif
 endif
 
-# Test if we have strlcpy/strlcat with a compatible implementation:
-# https://bugzilla.gnome.org/show_bug.cgi?id=53933
-if cc_can_run
-  rres = cc.run('''#include <stdlib.h>
-                   #include <string.h>
-                   int main() {
-                     char p[10];
-                     (void) strlcpy (p, "hi", 10);
-                     if (strlcat (p, "bye", 0) != 3)
-                       return 1;
-                     return 0;
-                   }''',
-                name : 'OpenBSD strlcpy/strlcat')
-  if rres.compiled() and rres.returncode() == 0
+# If strlcpy is present (BSD and similar), check that it conforms to the BSD
+# specification. Specifically Solaris 8's strlcpy() does not, see
+# https://bugzilla.gnome.org/show_bug.cgi?id=53933 for further context.
+if cc.has_function('strlcpy')
+  if cc_can_run
+    rres = cc.run('''#include <stdlib.h>
+                    #include <string.h>
+                    int main() {
+                      char p[10];
+                      (void) strlcpy (p, "hi", 10);
+                      if (strlcat (p, "bye", 0) != 3)
+                        return 1;
+                      return 0;
+                    }''',
+                  name : 'OpenBSD strlcpy/strlcat')
+    if rres.compiled() and rres.returncode() == 0
+      glib_conf.set('HAVE_STRLCPY', 1)
+    endif
+  elif meson.get_cross_property('have_strlcpy', false)
     glib_conf.set('HAVE_STRLCPY', 1)
   endif
-elif meson.get_cross_property('have_strlcpy', false)
-  glib_conf.set('HAVE_STRLCPY', 1)
 endif
 
 python = import('python').find_installation('python3')
