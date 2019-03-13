@@ -778,7 +778,7 @@ g_app_info_should_show (GAppInfo *appinfo)
  *
  * The D-Bus–activated applications don't have to be started if your application
  * terminates too soon after this function. To prevent this, use
- * g_app_info_launch_default_for_uri() instead.
+ * g_app_info_launch_default_for_uri_async() instead.
  *
  * Returns: %TRUE on success, %FALSE on error.
  **/
