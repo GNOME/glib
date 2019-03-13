@@ -2054,6 +2054,16 @@
  * This macro can be used either inside or outside of a function body,
  * but must appear on a line by itself.
  *
+ * |[<!-- language="C" --
+ * static void
+ * test_deprecated_function (void)
+ * {
+ *   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+ *   g_assert_cmpint (my_mistake (), ==, 42);
+ *   G_GNUC_END_IGNORE_DEPRECATIONS
+ * }
+ * ]|
+ *
  * Since: 2.32
  */
 
@@ -2078,6 +2088,11 @@
  * meant to be portable across different compilers and must be placed
  * before the function declaration.
  *
+ * |[<!-- language="C" --
+ * G_DEPRECATED
+ * int my_mistake (void);
+ * ]|
+ *
  * Since: 2.32
  */
 
@@ -2089,6 +2104,11 @@
  * functions declarations as deprecated. Unlike %G_GNUC_DEPRECATED_FOR, it
  * is meant to be portable across different compilers and must be placed
  * before the function declaration.
+ *
+ * |[<!-- language="C" --
+ * G_DEPRECATED_FOR(my_replacement)
+ * int my_mistake (void);
+ * ]|
  *
  * Since: 2.32
  */
