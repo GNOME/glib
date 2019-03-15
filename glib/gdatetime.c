@@ -2779,7 +2779,7 @@ format_z (GString *outstr,
 }
 
 #ifdef HAVE_LANGINFO_OUTDIGIT
-/** Initializes the array with UTF-8 encoded alternate digits suitable for use
+/* Initializes the array with UTF-8 encoded alternate digits suitable for use
  * in current locale. Returns NULL when current locale does not use alternate
  * digits or there was an error converting them to UTF-8.
  */

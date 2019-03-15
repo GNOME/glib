@@ -1845,23 +1845,6 @@
  * arrays or arrays on the stack.
  */
 
-/**
- * G_ALIGNOF
- * @a: a type-name
- *
- * Return the minimal alignment required by the platform ABI for values of the given
- * type. The address of a variable or struct member of the given type must always be
- * a multiple of this alignment. For example, most platforms require int variables
- * to be aligned at a 4-byte boundary, so `G_ALIGNOF (int)` is 4 on most platforms.
- *
- * Note this is not necessarily the same as the value returned by GCC’s
- * `__alignof__` operator, which returns the preferred alignment for a type.
- * The preferred alignment may be a stricter alignment than the minimal
- * alignment.
- *
- * Since: 2.60
- */
-
 /* Miscellaneous Macros {{{1 */
 
 /**
@@ -1871,20 +1854,6 @@
  *
  * These macros provide more specialized features which are not
  * needed so often by application programmers.
- */
-
-/**
- * G_INLINE_FUNC:
- *
- * This macro used to be used to conditionally define inline functions
- * in a compatible way before this feature was supported in all
- * compilers.  These days, GLib requires inlining support from the
- * compiler, so your GLib-using programs can safely assume that the
- * "inline" keywork works properly.
- *
- * Never use this macro anymore.  Just say "static inline".
- *
- * Deprecated: 2.48: Use "static inline" instead
  */
 
 /**
