@@ -451,6 +451,15 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
                    address_entry);
       goto out;
     }
+  else if (s == address_entry)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Transport name in address element “%s” must not be empty"),
+                   address_entry);
+      goto out;
+    }
 
   transport_name = g_strndup (address_entry, s - address_entry);
   key_value_pairs = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
@@ -469,6 +478,17 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        _("Key/Value pair %d, “%s”, in address element “%s” does not contain an equal sign"),
+                       n,
+                       kv_pair,
+                       address_entry);
+          goto out;
+        }
+      else if (s == kv_pair)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"),
                        n,
                        kv_pair,
                        address_entry);
