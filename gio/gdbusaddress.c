@@ -158,22 +158,18 @@ is_valid_unix (const gchar  *address_entry,
         }
     }
 
-  if (path != NULL)
+  if ((path != NULL && tmpdir != NULL) ||
+      (tmpdir != NULL && abstract != NULL) ||
+      (abstract != NULL && path != NULL))
     {
-      if (tmpdir != NULL || abstract != NULL)
-        goto meaningless;
+      g_set_error (error,
+             G_IO_ERROR,
+             G_IO_ERROR_INVALID_ARGUMENT,
+             _("Meaningless key/value pair combination in address entry “%s”"),
+             address_entry);
+      goto out;
     }
-  else if (tmpdir != NULL)
-    {
-      if (path != NULL || abstract != NULL)
-        goto meaningless;
-    }
-  else if (abstract != NULL)
-    {
-      if (path != NULL || tmpdir != NULL)
-        goto meaningless;
-    }
-  else
+  else if (path == NULL && tmpdir == NULL && abstract == NULL)
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -183,16 +179,7 @@ is_valid_unix (const gchar  *address_entry,
       goto out;
     }
 
-
-  ret= TRUE;
-  goto out;
-
- meaningless:
-  g_set_error (error,
-               G_IO_ERROR,
-               G_IO_ERROR_INVALID_ARGUMENT,
-               _("Meaningless key/value pair combination in address entry “%s”"),
-               address_entry);
+  ret = TRUE;
 
  out:
   g_list_free (keys);
