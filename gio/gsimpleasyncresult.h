@@ -92,12 +92,9 @@ gboolean            g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResul
 
 
 
-#ifndef G_DISABLE_DEPRECATED
 GLIB_AVAILABLE_IN_2_32 /* Also deprecated, but can't mark something both AVAILABLE and DEPRECATED */
 void                g_simple_async_result_set_check_cancellable (GSimpleAsyncResult *simple,
                                                                  GCancellable       *check_cancellable);
-#endif  /* !G_DISABLE_DEPRECATED */
-
 GLIB_DEPRECATED_IN_2_46
 gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
 GLIB_DEPRECATED_IN_2_46

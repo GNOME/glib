@@ -337,7 +337,6 @@ void    g_test_queue_destroy            (GDestroyNotify destroy_func,
                                          gpointer       destroy_data);
 #define g_test_queue_unref(gobject)     g_test_queue_destroy (g_object_unref, gobject)
 
-#ifndef G_DISABLE_DEPRECATED
 /**
  * GTestTrapFlags:
  * @G_TEST_TRAP_SILENCE_STDOUT: Redirect stdout of the test child to
@@ -368,7 +367,6 @@ typedef enum {
 GLIB_DEPRECATED_IN_2_38_FOR (g_test_trap_subprocess)
 gboolean g_test_trap_fork               (guint64              usec_timeout,
                                          GTestTrapFlags       test_trap_flags);
-#endif  /* !G_DISABLE_DEPRECATED */
 
 typedef enum {
   G_TEST_SUBPROCESS_INHERIT_STDIN  = 1 << 0,

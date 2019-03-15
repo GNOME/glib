@@ -381,10 +381,7 @@ GLIB_VAR gboolean g_mem_gc_friendly;
 
 /* Memory profiler and checker, has to be enabled via g_mem_set_vtable()
  */
-#ifndef G_DISABLE_DEPRECATED
 GLIB_VAR GMemVTable	*glib_mem_profiler_table;
-#endif
-
 GLIB_DEPRECATED_IN_2_46
 void	g_mem_profile	(void);
 

@@ -97,9 +97,6 @@
  * Deprecated:2.32:POSIX threads are in use on all non-Windows systems.
  *                 Use G_OS_WIN32 to detect Windows.
  */
-#ifdef G_DISABLE_DEPRECATED
-#undef G_THREADS_IMPL_POSIX
-#endif
 
 /**
  * G_THREADS_IMPL_WIN32:
@@ -108,9 +105,7 @@
  *
  * Deprecated:2.32:Use G_OS_WIN32 to detect Windows.
  */
-#ifdef G_DISABLE_DEPRECATED
-#undef G_THREADS_IMPL_WIN32
-#endif
+
 
 /* {{{1 Exported Variables */
 

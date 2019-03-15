@@ -106,7 +106,7 @@
 #else
 #  define G_INLINE_FUNC static inline
 #endif /* G_IMPLEMENT_INLINES */
-#endif  /* !G_DISABLE_DEPRECATED */
+#endif /* !G_DISABLE_DEPRECATED */
 
 /* Provide macros to feature the GCC function attribute.
  */
@@ -874,7 +874,7 @@
 #else
 #define G_CONST_RETURN const
 #endif
-#endif
+#endif /* !G_DISABLE_DEPRECATED */
 
 /*
  * The G_LIKELY and G_UNLIKELY macros let the programmer give hints to 

@@ -33,8 +33,6 @@
 
 G_BEGIN_DECLS
 
-#ifndef G_DISABLE_DEPRECATED
-
 typedef struct _GTrashStack GTrashStack;
 struct _GTrashStack
 {
@@ -50,8 +48,6 @@ GLIB_DEPRECATED_IN_2_48
 gpointer  g_trash_stack_peek   (GTrashStack **stack_p);
 GLIB_DEPRECATED_IN_2_48
 guint     g_trash_stack_height (GTrashStack **stack_p);
-
-#endif  /* !G_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
