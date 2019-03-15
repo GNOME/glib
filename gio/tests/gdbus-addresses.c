@@ -64,20 +64,40 @@ assert_not_supported_address (const gchar *address)
   g_clear_error (&error);
 }
 
+/* Test that g_dbus_is_address() returns FALSE for various differently invalid
+ * input strings. */
+static void
+test_address_parsing (void)
+{
+  assert_not_supported_address ("some-imaginary-transport:foo=bar");
+  g_assert_true (g_dbus_is_address ("some-imaginary-transport:foo=bar"));
+
+  assert_not_supported_address ("some-imaginary-transport:foo=bar;unix:path=/this/is/valid");
+
+  g_assert_false (g_dbus_is_address (""));
+  g_assert_false (g_dbus_is_address (";"));
+  g_assert_false (g_dbus_is_address (":"));
+  g_assert_false (g_dbus_is_address ("=:;"));
+  g_assert_false (g_dbus_is_address (":=;:="));
+  g_assert_false (g_dbus_is_address ("transport-name:="));
+  g_assert_false (g_dbus_is_address ("transport-name:=bar"));
+
+  g_assert_false (g_dbus_is_address ("transport-name:foo"));
+  g_assert_false (g_dbus_is_address ("transport-name:foo=%00"));
+  g_assert_false (g_dbus_is_address ("transport-name:%00=bar"));
+
+  assert_not_supported_address ("magic-tractor:");
+}
+
 #ifdef G_OS_UNIX
 static void
 test_unix_address (void)
 {
-  assert_not_supported_address ("some-imaginary-transport:foo=bar");
   assert_is_supported_address ("unix:path=/tmp/dbus-test");
   assert_is_supported_address ("unix:abstract=/tmp/dbus-another-test");
   assert_not_supported_address ("unix:foo=bar");
   g_assert_false (g_dbus_is_address ("unix:path=/foo;abstract=/bar"));
   assert_is_supported_address ("unix:path=/tmp/concrete;unix:abstract=/tmp/abstract");
-  g_assert_true (g_dbus_is_address ("some-imaginary-transport:foo=bar"));
-
-  g_assert_true (g_dbus_is_address ("some-imaginary-transport:foo=bar;unix:path=/this/is/valid"));
-  assert_not_supported_address ("some-imaginary-transport:foo=bar;unix:path=/this/is/valid");
 }
 #endif
 
@@ -153,6 +173,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gdbus/empty-address", test_empty_address);
+  g_test_add_func ("/gdbus/address-parsing", test_address_parsing);
 #ifdef G_OS_UNIX
   g_test_add_func ("/gdbus/unix-address", test_unix_address);
 #endif
