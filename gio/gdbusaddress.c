@@ -456,7 +456,7 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
   key_value_pairs = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
   kv_pairs = g_strsplit (s + 1, ",", 0);
-  for (n = 0; kv_pairs != NULL && kv_pairs[n] != NULL; n++)
+  for (n = 0; kv_pairs[n] != NULL; n++)
     {
       const gchar *kv_pair = kv_pairs[n];
       gchar *key;
@@ -949,7 +949,7 @@ g_dbus_address_get_stream_sync (const gchar   *address,
   last_error = NULL;
 
   addr_array = g_strsplit (address, ";", 0);
-  if (addr_array != NULL && addr_array[0] == NULL)
+  if (addr_array[0] == NULL)
     {
       last_error = g_error_new_literal (G_IO_ERROR,
                                         G_IO_ERROR_INVALID_ARGUMENT,
