@@ -89,10 +89,12 @@ test_address_parsing (void)
   assert_not_supported_address ("magic-tractor:");
 }
 
-#ifdef G_OS_UNIX
 static void
 test_unix_address (void)
 {
+#ifndef G_OS_UNIX
+  g_test_skip ("unix transport is not supported on non-Unix platforms");
+#else
   assert_is_supported_address ("unix:path=/tmp/dbus-test");
   assert_is_supported_address ("unix:abstract=/tmp/dbus-another-test");
   assert_not_supported_address ("unix:foo=bar");
@@ -103,8 +105,8 @@ test_unix_address (void)
   assert_not_supported_address ("unix:tmpdir=/tmp,abstract=/tmp/foo");
   assert_not_supported_address ("unix:path=/tmp,abstract=/tmp/foo");
   assert_not_supported_address ("unix:");
-}
 #endif
+}
 
 static void
 test_nonce_tcp_address (void)
@@ -185,9 +187,7 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/empty-address", test_empty_address);
   g_test_add_func ("/gdbus/address-parsing", test_address_parsing);
-#ifdef G_OS_UNIX
   g_test_add_func ("/gdbus/unix-address", test_unix_address);
-#endif
   g_test_add_func ("/gdbus/nonce-tcp-address", test_nonce_tcp_address);
   g_test_add_func ("/gdbus/tcp-address", test_tcp_address);
   g_test_add_func ("/gdbus/autolaunch-address", test_autolaunch_address);
