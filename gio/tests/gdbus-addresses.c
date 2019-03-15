@@ -39,6 +39,18 @@ test_empty_address (void)
   g_error_free (error);
 }
 
+/* Test that g_dbus_is_supported_address() returns FALSE for an unparseable
+ * address. */
+static void
+test_unsupported_address (void)
+{
+  GError *error = NULL;
+
+  g_assert_false (g_dbus_is_supported_address (";", &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
+}
+
 static void
 assert_is_supported_address (const gchar *address)
 {
@@ -186,6 +198,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gdbus/empty-address", test_empty_address);
+  g_test_add_func ("/gdbus/unsupported-address", test_unsupported_address);
   g_test_add_func ("/gdbus/address-parsing", test_address_parsing);
   g_test_add_func ("/gdbus/unix-address", test_unix_address);
   g_test_add_func ("/gdbus/nonce-tcp-address", test_nonce_tcp_address);
