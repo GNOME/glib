@@ -516,24 +516,18 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
   ret = TRUE;
 
 out:
-  g_strfreev (kv_pairs);
   if (ret)
     {
       if (out_transport_name != NULL)
-        *out_transport_name = transport_name;
-      else
-        g_free (transport_name);
+        *out_transport_name = g_steal_pointer (&transport_name);
       if (out_key_value_pairs != NULL)
-        *out_key_value_pairs = key_value_pairs;
-      else if (key_value_pairs != NULL)
-        g_hash_table_unref (key_value_pairs);
+        *out_key_value_pairs = g_steal_pointer (&key_value_pairs);
     }
-  else
-    {
-      g_free (transport_name);
-      if (key_value_pairs != NULL)
-        g_hash_table_unref (key_value_pairs);
-    }
+
+  g_clear_pointer (&key_value_pairs, g_hash_table_unref);
+  g_free (transport_name);
+  g_strfreev (kv_pairs);
+
   return ret;
 }
 
