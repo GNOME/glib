@@ -112,12 +112,18 @@ test_nonce_tcp_address (void)
   assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar");
   assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,family=ipv6");
   assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,family=ipv4");
+  assert_is_supported_address ("nonce-tcp:host=localhost");
 
   assert_not_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,family=blah");
   assert_not_supported_address ("nonce-tcp:host=localhost,port=420000,noncefile=/foo/bar,family=ipv4");
   assert_not_supported_address ("nonce-tcp:host=,port=x42,noncefile=/foo/bar,family=ipv4");
   assert_not_supported_address ("nonce-tcp:host=,port=42x,noncefile=/foo/bar,family=ipv4");
   assert_not_supported_address ("nonce-tcp:host=,port=420000,noncefile=/foo/bar,family=ipv4");
+  assert_not_supported_address ("nonce-tcp:meaningless-key=blah");
+  assert_not_supported_address ("nonce-tcp:host=localhost,port=-1");
+  assert_not_supported_address ("nonce-tcp:host=localhost,port=420000");
+  assert_not_supported_address ("nonce-tcp:host=localhost,port=42x");
+  assert_not_supported_address ("nonce-tcp:host=localhost,port=");
 }
 
 static void
