@@ -44,6 +44,8 @@ assert_is_supported_address (const gchar *address)
 {
   GError *error = NULL;
 
+  g_assert_true (g_dbus_is_address (address));
+
   g_assert_true (g_dbus_is_supported_address (address, NULL));
   g_assert_true (g_dbus_is_supported_address (address, &error));
   g_assert_no_error (error);
@@ -53,6 +55,8 @@ static void
 assert_not_supported_address (const gchar *address)
 {
   GError *error = NULL;
+
+  g_assert_true (g_dbus_is_address (address));
 
   g_assert_false (g_dbus_is_supported_address (address, NULL));
   g_assert_false (g_dbus_is_supported_address (address, &error));
@@ -67,10 +71,8 @@ test_unix_address (void)
   assert_not_supported_address ("some-imaginary-transport:foo=bar");
   assert_is_supported_address ("unix:path=/tmp/dbus-test");
   assert_is_supported_address ("unix:abstract=/tmp/dbus-another-test");
-  g_assert_true (g_dbus_is_address ("unix:foo=bar"));
   assert_not_supported_address ("unix:foo=bar");
   g_assert_false (g_dbus_is_address ("unix:path=/foo;abstract=/bar"));
-  assert_not_supported_address ("unix:path=/foo;abstract=/bar");
   assert_is_supported_address ("unix:path=/tmp/concrete;unix:abstract=/tmp/abstract");
   g_assert_true (g_dbus_is_address ("some-imaginary-transport:foo=bar"));
 
