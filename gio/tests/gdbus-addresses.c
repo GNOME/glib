@@ -149,6 +149,7 @@ test_tcp_address (void)
   assert_not_supported_address ("tcp:host=localhost,port=-1");
   assert_not_supported_address ("tcp:host=localhost,port=420000");
   assert_not_supported_address ("tcp:host=localhost,port=42x");
+  assert_not_supported_address ("tcp:host=localhost,port=");
   assert_is_supported_address ("tcp:host=localhost,port=42,family=ipv4");
   assert_is_supported_address ("tcp:host=localhost,port=42,family=ipv6");
   assert_not_supported_address ("tcp:host=localhost,port=42,family=sopranos");
