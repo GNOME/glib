@@ -118,6 +118,13 @@ test_guess (void)
   g_assert_false (uncertain);
   g_free (res);
   g_free (expected);
+
+  res = g_content_type_guess (NULL, (guchar *)"some data which should not be looked at", 0, &uncertain);
+  expected = g_content_type_from_mime_type ("application/x-zerosize");
+  g_assert_content_type_equals (expected, res);
+  g_assert_false (uncertain);
+  g_free (res);
+  g_free (expected);
 }
 
 static void
