@@ -591,7 +591,7 @@ test_hash_misc (void)
   gint value = 120;
   gint *pvalue;
   GList *keys, *values;
-  gint keys_len, values_len;
+  guint keys_len, values_len;
   GHashTableIter iter;
   gpointer ikey, ivalue;
   int result_array[10000];
