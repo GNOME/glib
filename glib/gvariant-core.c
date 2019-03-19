@@ -336,7 +336,7 @@ g_variant_ensure_size (GVariant *value)
 {
   g_assert (value->state & STATE_LOCKED);
 
-  if (value->size == (gssize) -1)
+  if (value->size == (gsize) -1)
     {
       gpointer *children;
       gsize n_children;
