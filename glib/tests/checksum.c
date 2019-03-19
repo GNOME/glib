@@ -1016,7 +1016,7 @@ sum_to_digest (const gchar *sum, gsize *len)
 {
   gsize l;
   guint8 *digest;
-  gint i;
+  gsize i;
 
   g_assert (strlen (sum) % 2 == 0);
   l = strlen (sum) / 2;
@@ -1074,7 +1074,7 @@ static void
 test_checksum_string (gconstpointer d)
 {
   const ChecksumComputeTest *test = d;
-  int length;
+  gsize length;
   gchar *checksum;
 
   for (length = 0; length <= FIXED_LEN; length++)
@@ -1098,7 +1098,7 @@ test_checksum_bytes (gconstpointer d)
 {
   const ChecksumComputeTest *test = d;
   GBytes *input;
-  int length;
+  gsize length;
   gchar *checksum;
 
   for (length = 0; length <= FIXED_LEN; length++)
@@ -1179,7 +1179,7 @@ test_unsupported (void)
 int
 main (int argc, char *argv[])
 {
-  int length;
+  gsize length;
 
   g_test_init (&argc, &argv, NULL);
 
