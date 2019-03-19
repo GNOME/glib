@@ -158,22 +158,18 @@ is_valid_unix (const gchar  *address_entry,
         }
     }
 
-  if (path != NULL)
+  if ((path != NULL && tmpdir != NULL) ||
+      (tmpdir != NULL && abstract != NULL) ||
+      (abstract != NULL && path != NULL))
     {
-      if (tmpdir != NULL || abstract != NULL)
-        goto meaningless;
+      g_set_error (error,
+             G_IO_ERROR,
+             G_IO_ERROR_INVALID_ARGUMENT,
+             _("Meaningless key/value pair combination in address entry “%s”"),
+             address_entry);
+      goto out;
     }
-  else if (tmpdir != NULL)
-    {
-      if (path != NULL || abstract != NULL)
-        goto meaningless;
-    }
-  else if (abstract != NULL)
-    {
-      if (path != NULL || tmpdir != NULL)
-        goto meaningless;
-    }
-  else
+  else if (path == NULL && tmpdir == NULL && abstract == NULL)
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -183,16 +179,7 @@ is_valid_unix (const gchar  *address_entry,
       goto out;
     }
 
-
-  ret= TRUE;
-  goto out;
-
- meaningless:
-  g_set_error (error,
-               G_IO_ERROR,
-               G_IO_ERROR_INVALID_ARGUMENT,
-               _("Meaningless key/value pair combination in address entry “%s”"),
-               address_entry);
+  ret = TRUE;
 
  out:
   g_list_free (keys);
@@ -464,12 +451,21 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
                    address_entry);
       goto out;
     }
+  else if (s == address_entry)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Transport name in address element “%s” must not be empty"),
+                   address_entry);
+      goto out;
+    }
 
   transport_name = g_strndup (address_entry, s - address_entry);
   key_value_pairs = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
   kv_pairs = g_strsplit (s + 1, ",", 0);
-  for (n = 0; kv_pairs != NULL && kv_pairs[n] != NULL; n++)
+  for (n = 0; kv_pairs[n] != NULL; n++)
     {
       const gchar *kv_pair = kv_pairs[n];
       gchar *key;
@@ -482,6 +478,17 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        _("Key/Value pair %d, “%s”, in address element “%s” does not contain an equal sign"),
+                       n,
+                       kv_pair,
+                       address_entry);
+          goto out;
+        }
+      else if (s == kv_pair)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"),
                        n,
                        kv_pair,
                        address_entry);
@@ -509,24 +516,18 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
   ret = TRUE;
 
 out:
-  g_strfreev (kv_pairs);
   if (ret)
     {
       if (out_transport_name != NULL)
-        *out_transport_name = transport_name;
-      else
-        g_free (transport_name);
+        *out_transport_name = g_steal_pointer (&transport_name);
       if (out_key_value_pairs != NULL)
-        *out_key_value_pairs = key_value_pairs;
-      else if (key_value_pairs != NULL)
-        g_hash_table_unref (key_value_pairs);
+        *out_key_value_pairs = g_steal_pointer (&key_value_pairs);
     }
-  else
-    {
-      g_free (transport_name);
-      if (key_value_pairs != NULL)
-        g_hash_table_unref (key_value_pairs);
-    }
+
+  g_clear_pointer (&key_value_pairs, g_hash_table_unref);
+  g_free (transport_name);
+  g_strfreev (kv_pairs);
+
   return ret;
 }
 
@@ -962,7 +963,7 @@ g_dbus_address_get_stream_sync (const gchar   *address,
   last_error = NULL;
 
   addr_array = g_strsplit (address, ";", 0);
-  if (addr_array != NULL && addr_array[0] == NULL)
+  if (addr_array[0] == NULL)
     {
       last_error = g_error_new_literal (G_IO_ERROR,
                                         G_IO_ERROR_INVALID_ARGUMENT,

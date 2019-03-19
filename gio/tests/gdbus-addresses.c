@@ -39,10 +39,24 @@ test_empty_address (void)
   g_error_free (error);
 }
 
+/* Test that g_dbus_is_supported_address() returns FALSE for an unparseable
+ * address. */
+static void
+test_unsupported_address (void)
+{
+  GError *error = NULL;
+
+  g_assert_false (g_dbus_is_supported_address (";", &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_clear_error (&error);
+}
+
 static void
 assert_is_supported_address (const gchar *address)
 {
   GError *error = NULL;
+
+  g_assert_true (g_dbus_is_address (address));
 
   g_assert_true (g_dbus_is_supported_address (address, NULL));
   g_assert_true (g_dbus_is_supported_address (address, &error));
@@ -54,30 +68,57 @@ assert_not_supported_address (const gchar *address)
 {
   GError *error = NULL;
 
+  g_assert_true (g_dbus_is_address (address));
+
   g_assert_false (g_dbus_is_supported_address (address, NULL));
   g_assert_false (g_dbus_is_supported_address (address, &error));
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
   g_clear_error (&error);
 }
 
-#ifdef G_OS_UNIX
+/* Test that g_dbus_is_address() returns FALSE for various differently invalid
+ * input strings. */
+static void
+test_address_parsing (void)
+{
+  assert_not_supported_address ("some-imaginary-transport:foo=bar");
+  g_assert_true (g_dbus_is_address ("some-imaginary-transport:foo=bar"));
+
+  assert_not_supported_address ("some-imaginary-transport:foo=bar;unix:path=/this/is/valid");
+
+  g_assert_false (g_dbus_is_address (""));
+  g_assert_false (g_dbus_is_address (";"));
+  g_assert_false (g_dbus_is_address (":"));
+  g_assert_false (g_dbus_is_address ("=:;"));
+  g_assert_false (g_dbus_is_address (":=;:="));
+  g_assert_false (g_dbus_is_address ("transport-name:="));
+  g_assert_false (g_dbus_is_address ("transport-name:=bar"));
+
+  g_assert_false (g_dbus_is_address ("transport-name:foo"));
+  g_assert_false (g_dbus_is_address ("transport-name:foo=%00"));
+  g_assert_false (g_dbus_is_address ("transport-name:%00=bar"));
+
+  assert_not_supported_address ("magic-tractor:");
+}
+
 static void
 test_unix_address (void)
 {
-  assert_not_supported_address ("some-imaginary-transport:foo=bar");
+#ifndef G_OS_UNIX
+  g_test_skip ("unix transport is not supported on non-Unix platforms");
+#else
   assert_is_supported_address ("unix:path=/tmp/dbus-test");
   assert_is_supported_address ("unix:abstract=/tmp/dbus-another-test");
-  g_assert (g_dbus_is_address ("unix:foo=bar"));
   assert_not_supported_address ("unix:foo=bar");
-  g_assert (!g_dbus_is_address ("unix:path=/foo;abstract=/bar"));
-  assert_not_supported_address ("unix:path=/foo;abstract=/bar");
+  g_assert_false (g_dbus_is_address ("unix:path=/foo;abstract=/bar"));
   assert_is_supported_address ("unix:path=/tmp/concrete;unix:abstract=/tmp/abstract");
-  g_assert (g_dbus_is_address ("some-imaginary-transport:foo=bar"));
-
-  g_assert (g_dbus_is_address ("some-imaginary-transport:foo=bar;unix:path=/this/is/valid"));
-  assert_not_supported_address ("some-imaginary-transport:foo=bar;unix:path=/this/is/valid");
-}
+  assert_is_supported_address ("unix:tmpdir=/tmp");
+  assert_not_supported_address ("unix:tmpdir=/tmp,path=/tmp");
+  assert_not_supported_address ("unix:tmpdir=/tmp,abstract=/tmp/foo");
+  assert_not_supported_address ("unix:path=/tmp,abstract=/tmp/foo");
+  assert_not_supported_address ("unix:");
 #endif
+}
 
 static void
 test_nonce_tcp_address (void)
@@ -85,12 +126,18 @@ test_nonce_tcp_address (void)
   assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar");
   assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,family=ipv6");
   assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,family=ipv4");
+  assert_is_supported_address ("nonce-tcp:host=localhost");
 
   assert_not_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,family=blah");
   assert_not_supported_address ("nonce-tcp:host=localhost,port=420000,noncefile=/foo/bar,family=ipv4");
   assert_not_supported_address ("nonce-tcp:host=,port=x42,noncefile=/foo/bar,family=ipv4");
   assert_not_supported_address ("nonce-tcp:host=,port=42x,noncefile=/foo/bar,family=ipv4");
   assert_not_supported_address ("nonce-tcp:host=,port=420000,noncefile=/foo/bar,family=ipv4");
+  assert_not_supported_address ("nonce-tcp:meaningless-key=blah");
+  assert_not_supported_address ("nonce-tcp:host=localhost,port=-1");
+  assert_not_supported_address ("nonce-tcp:host=localhost,port=420000");
+  assert_not_supported_address ("nonce-tcp:host=localhost,port=42x");
+  assert_not_supported_address ("nonce-tcp:host=localhost,port=");
 }
 
 static void
@@ -102,6 +149,7 @@ test_tcp_address (void)
   assert_not_supported_address ("tcp:host=localhost,port=-1");
   assert_not_supported_address ("tcp:host=localhost,port=420000");
   assert_not_supported_address ("tcp:host=localhost,port=42x");
+  assert_not_supported_address ("tcp:host=localhost,port=");
   assert_is_supported_address ("tcp:host=localhost,port=42,family=ipv4");
   assert_is_supported_address ("tcp:host=localhost,port=42,family=ipv6");
   assert_not_supported_address ("tcp:host=localhost,port=42,family=sopranos");
@@ -151,9 +199,9 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gdbus/empty-address", test_empty_address);
-#ifdef G_OS_UNIX
+  g_test_add_func ("/gdbus/unsupported-address", test_unsupported_address);
+  g_test_add_func ("/gdbus/address-parsing", test_address_parsing);
   g_test_add_func ("/gdbus/unix-address", test_unix_address);
-#endif
   g_test_add_func ("/gdbus/nonce-tcp-address", test_nonce_tcp_address);
   g_test_add_func ("/gdbus/tcp-address", test_tcp_address);
   g_test_add_func ("/gdbus/autolaunch-address", test_autolaunch_address);
