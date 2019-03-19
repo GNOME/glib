@@ -271,7 +271,7 @@ int
 main (int argc, char *argv[])
 {
   gchar *path;
-  gint i;
+  guint i;
   const gchar *locale;
   CollateTest test[3];
 
