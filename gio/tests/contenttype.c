@@ -118,6 +118,14 @@ test_guess (void)
   g_assert_false (uncertain);
   g_free (res);
   g_free (expected);
+
+  /* The data below would be detected as a valid content type, but shouldn’t be read at all. */
+  res = g_content_type_guess (NULL, (guchar *)"%!PS-Adobe-2.0 EPSF-1.2", 0, &uncertain);
+  expected = g_content_type_from_mime_type ("application/x-zerosize");
+  g_assert_content_type_equals (expected, res);
+  g_assert_false (uncertain);
+  g_free (res);
+  g_free (expected);
 }
 
 static void
