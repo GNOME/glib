@@ -1815,7 +1815,7 @@ free_pending_nulls (GOptionContext *context,
 static char *
 platform_get_argv0 (void)
 {
-#if defined __linux
+#ifdef HAVE_PROC_SELF_CMDLINE
   char *cmdline;
   char *base_arg0;
   gsize len;
