@@ -1660,7 +1660,9 @@ g_filename_from_uri (const gchar *uri,
       return NULL;
     }
 	
-  if (has_case_prefix (path_part, "///")) 
+  if (has_case_prefix (path_part, "////"))
+    path_part += 1;
+  else if (has_case_prefix (path_part, "///"))
     path_part += 2;
   else if (has_case_prefix (path_part, "//"))
     {
