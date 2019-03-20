@@ -21,13 +21,14 @@
  * Authors: Colin Walters <walters@verbum.org>
  */
 
+#include "config.h"
 #include <glib.h>
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-#if defined __linux || defined __OpenBSD__
+#if defined HAVE_PROC_SELF_CMDLINE || defined __OpenBSD__
 static void
 test_platform_argv0 (void)
 {
@@ -56,7 +57,7 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, "no_g_set_prgname", NULL);
 
-#if defined __linux || defined __OpenBSD__
+#if defined HAVE_PROC_SELF_CMDLINE || defined __OpenBSD__
   g_test_add_func ("/option/argv0", test_platform_argv0);
 #endif
 
