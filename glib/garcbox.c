@@ -152,7 +152,7 @@
  *   g_atomic_rc_box_release_full (data, (GDestroyNotify) my_data_struct_clear);
  * }
  *
- * G_DEFINE_AUTOPTR_CLEANUP_FUNC (MyDataStruct, my_data_struct_clear)
+ * G_DEFINE_AUTOPTR_CLEANUP_FUNC (MyDataStruct, my_data_struct_release)
  * ]|
  *
  * Since: 2.58.
