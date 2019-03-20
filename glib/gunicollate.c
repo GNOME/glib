@@ -35,8 +35,11 @@
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gcharset.h"
-#ifndef __STDC_ISO_10646__
+#if !defined(__STDC_ISO_10646__) || defined(G_WITH_CYGWIN)
 #include "gconvert.h"
+#endif
+#ifdef G_WITH_CYGWIN
+#undef __STDC_ISO_10646__
 #endif
 
 
