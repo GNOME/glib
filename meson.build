@@ -188,10 +188,18 @@ if host_system == 'windows' and get_option('default_library') == 'static'
     glibconfig_conf.set('GOBJECT_STATIC_COMPILATION', '1')
 endif
 
-# FIXME: what about Cygwin (G_WITH_CYGWIN)
+# Cygwin glib port maintainers made it clear
+# (via the patches they apply) that they want no
+# part of glib W32 code, therefore we do not define
+# G_PLATFORM_WIN32 for host_system == 'cygwin'.
+# This makes G_PLATFORM_WIN32 a synonym for
+# G_OS_WIN32.
 if host_system == 'windows'
   glib_os = '''#define G_OS_WIN32
 #define G_PLATFORM_WIN32'''
+elif host_system == 'cygwin'
+  glib_os = '''#define G_OS_WIN32
+#define G_WITH_CYGWIN'''
 else
   glib_os = '#define G_OS_UNIX'
 endif
