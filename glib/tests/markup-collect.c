@@ -76,7 +76,7 @@ start (GMarkupParseContext  *context,
     }
 }
 
-static GMarkupParser parser = { start };
+static GMarkupParser parser = { start, NULL, NULL, NULL, NULL };
 
 struct test
 {
@@ -91,13 +91,13 @@ static struct test tests[] =
   { "<bool mb='y'>", "<bool(1) 1 0 -1>",
     G_MARKUP_ERROR_PARSE, "'bool'" },
 
-  { "<bool mb='false'/>", "<bool(1) 0 0 -1>" },
-  { "<bool mb='true'/>", "<bool(1) 1 0 -1>" },
-  { "<bool mb='t' ob='f' tri='1'/>", "<bool(1) 1 0 1>" },
-  { "<bool mb='y' ob='n' tri='0'/>", "<bool(1) 1 0 0>" },
+  { "<bool mb='false'/>", "<bool(1) 0 0 -1>", 0, NULL },
+  { "<bool mb='true'/>", "<bool(1) 1 0 -1>", 0, NULL },
+  { "<bool mb='t' ob='f' tri='1'/>", "<bool(1) 1 0 1>", 0, NULL },
+  { "<bool mb='y' ob='n' tri='0'/>", "<bool(1) 1 0 0>", 0, NULL },
 
-  { "<bool mb='y' my:attr='q'><my:tag/></bool>", "<bool(1) 1 0 -1>" },
-  { "<bool mb='y' my:attr='q'><my:tag>some <b>text</b> is in here</my:tag></bool>", "<bool(1) 1 0 -1>" },
+  { "<bool mb='y' my:attr='q'><my:tag/></bool>", "<bool(1) 1 0 -1>", 0, NULL },
+  { "<bool mb='y' my:attr='q'><my:tag>some <b>text</b> is in here</my:tag></bool>", "<bool(1) 1 0 -1>", 0, NULL },
 
   { "<bool ob='y'/>", "<bool(0) 0 0 -1>",
     G_MARKUP_ERROR_MISSING_ATTRIBUTE, "'mb'" },
@@ -108,7 +108,7 @@ static struct test tests[] =
   { "<bool mb='y' tri='y' tri='n'/>", "<bool(0) 0 0 -1>",
     G_MARKUP_ERROR_INVALID_CONTENT, "'tri'" },
 
-  { "<str cm='x' am='y'/>", "<str(1) x y (null) (null)>" },
+  { "<str cm='x' am='y'/>", "<str(1) x y (null) (null)>", 0, NULL },
 
   { "<str am='x' co='y'/>", "<str(0) (null) (null) (null) (null)>",
     G_MARKUP_ERROR_MISSING_ATTRIBUTE, "'cm'" },
@@ -165,7 +165,7 @@ test_collect (gconstpointer d)
     }
   else
     {
-      g_assert_error (error, G_MARKUP_ERROR, test->error_code);
+      g_assert_error (error, G_MARKUP_ERROR, (gint) test->error_code);
     }
 
   g_markup_parse_context_free (ctx);
@@ -194,7 +194,7 @@ start_element (GMarkupParseContext  *context,
 }
 
 static GMarkupParser cleanup_parser = {
-  start_element
+  start_element, NULL, NULL, NULL, NULL
 };
 
 static void
@@ -219,14 +219,14 @@ test_cleanup (void)
 int
 main (int argc, char **argv)
 {
-  int i;
+  gsize i;
   gchar *path;
 
   g_test_init (&argc, &argv, NULL);
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
-      path = g_strdup_printf ("/markup/collect/%d", i);
+      path = g_strdup_printf ("/markup/collect/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &tests[i], test_collect);
       g_free (path);
     }
