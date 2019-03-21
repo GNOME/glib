@@ -340,9 +340,19 @@ handle_ip_address (const char  *hostname,
   if (inet_aton (hostname, &ip4addr))
 #endif
     {
+#ifdef G_OS_WIN32
+      gchar *error_message = g_win32_error_message (WSAHOST_NOT_FOUND);
+#else
+      const gchar *error_message = gai_strerror (EAI_NONAME);
+#endif
       g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
                    _("Error resolving “%s”: %s"),
-                   hostname, gai_strerror (EAI_NONAME));
+                   hostname, error_message);
+
+#ifdef G_OS_WIN32
+      g_free (error_message);
+#endif
+
       return TRUE;
     }
 
