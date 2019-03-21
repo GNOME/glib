@@ -47,7 +47,7 @@ GSourceFuncs funcs = {
   prepare,
   check,
   dispatch,
-  NULL
+  NULL, NULL, NULL
 };
 
 static void
@@ -407,7 +407,7 @@ static GSourceFuncs counter_source_funcs = {
   counter_source_prepare,
   NULL,
   counter_source_dispatch,
-  NULL,
+  NULL, NULL, NULL
 };
 
 static GSource *
@@ -927,7 +927,7 @@ test_ready_time (void)
   GThread *thread;
   GSource *source;
   GSourceFuncs source_funcs = {
-    NULL, NULL, ready_time_dispatch
+    NULL, NULL, ready_time_dispatch, NULL, NULL, NULL
   };
   GMainLoop *loop;
 
@@ -1070,7 +1070,8 @@ trivial_finalize (GSource *source)
 static void
 test_unref_while_pending (void)
 {
-  static GSourceFuncs funcs = { trivial_prepare, NULL, NULL, trivial_finalize };
+  static GSourceFuncs funcs =
+    { trivial_prepare, NULL, NULL, trivial_finalize, NULL, NULL };
   GMainContext *context;
   GSource *source;
 
@@ -1128,7 +1129,7 @@ write_bytes (gint         fd,
   /* Detect if we run before we should */
   g_assert_cmpint (*to_write, >=, 0);
 
-  limit = MIN (*to_write, sizeof zeros);
+  limit = MIN ((gsize) *to_write, sizeof zeros);
   *to_write -= write (fd, zeros, limit);
 
   return TRUE;
@@ -1384,7 +1385,7 @@ static void
 test_source_unix_fd_api (void)
 {
   GSourceFuncs no_funcs = {
-    NULL, NULL, return_true
+    NULL, NULL, return_true, NULL, NULL, NULL
   };
   GSource *source_a;
   GSource *source_b;
