@@ -265,7 +265,10 @@ end_element (GMarkupParseContext  *context,
 static GMarkupParser parser =
 {
   start_element,
-  end_element
+  end_element,
+  NULL,
+  NULL,
+  NULL
 };
 
 typedef struct
@@ -332,14 +335,14 @@ test (gconstpointer user_data)
 TestCase test_cases[] = /* successful runs */
 {
     /* in */                    /* out */
-  { "<test/>",                  "<test></test>" },
-  { "<sub><foo/></sub>",        "<sub><<{foo}{/foo}>></sub>" },
-  { "<sub><foo/><bar/></sub>",  "<sub><<{foo}{/foo}{bar}{/bar}>></sub>" },
-  { "<foo><bar/></foo>",        "<foo>[[{foo}{bar}{/bar}{/foo}]]</foo>" },
-  { "<foo><x/><y/></foo>",      "<foo>[[{foo}{x}{/x}{y}{/y}{/foo}]]</foo>" },
-  { "<foo/>",                   "<foo>[[{foo}{/foo}]]</foo>" },
+  { "<test/>",                  "<test></test>",                            NULL },
+  { "<sub><foo/></sub>",        "<sub><<{foo}{/foo}>></sub>",               NULL },
+  { "<sub><foo/><bar/></sub>",  "<sub><<{foo}{/foo}{bar}{/bar}>></sub>",    NULL },
+  { "<foo><bar/></foo>",        "<foo>[[{foo}{bar}{/bar}{/foo}]]</foo>",    NULL },
+  { "<foo><x/><y/></foo>",      "<foo>[[{foo}{x}{/x}{y}{/y}{/foo}]]</foo>", NULL },
+  { "<foo/>",                   "<foo>[[{foo}{/foo}]]</foo>",               NULL },
   { "<sub><foo/></sub><bar/>",  "<sub><<{foo}{/foo}>></sub>"
-                                "<bar>[[{bar}{/bar}]]</bar>" }
+                                "<bar>[[{bar}{/bar}]]</bar>",               NULL }
 };
 
 TestCase error_cases[] = /* error cases */
@@ -356,7 +359,7 @@ TestCase error_cases[] = /* error cases */
 
 #define add_tests(func, basename, array) \
   G_STMT_START { \
-    int __add_tests_i;                                                  \
+    gsize __add_tests_i;                                                \
                                                                         \
     for (__add_tests_i  = 0;                                            \
          __add_tests_i < G_N_ELEMENTS (array);                          \
@@ -364,7 +367,8 @@ TestCase error_cases[] = /* error cases */
       {                                                                 \
         char *testname;                                                 \
                                                                         \
-        testname = g_strdup_printf ("%s/%d", basename, __add_tests_i);  \
+        testname = g_strdup_printf ("%s/%" G_GSIZE_FORMAT,              \
+                                    basename, __add_tests_i);           \
         g_test_add_data_func (testname, &array[__add_tests_i], func);   \
         g_free (testname);                                              \
       }                                                                 \
