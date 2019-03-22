@@ -1260,7 +1260,7 @@ g_sequence_set (GSequenceIter *iter,
  *
  * Since: 2.14
  */
-gint
+gsize
 g_sequence_get_length (GSequence *seq)
 {
   return node_get_length (seq->end_node) - 1;

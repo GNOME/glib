@@ -41,7 +41,7 @@ GSequence *    g_sequence_new                (GDestroyNotify            data_des
 GLIB_AVAILABLE_IN_ALL
 void           g_sequence_free               (GSequence                *seq);
 GLIB_AVAILABLE_IN_ALL
-gint           g_sequence_get_length         (GSequence                *seq);
+gsize          g_sequence_get_length         (GSequence                *seq);
 GLIB_AVAILABLE_IN_ALL
 void           g_sequence_foreach            (GSequence                *seq,
                                               GFunc                     func,
