@@ -1552,6 +1552,9 @@ g_unix_mounts_get (guint64 *time_read)
  * is set, it will be filled with a unix timestamp for checking
  * if the mounts have changed since with g_unix_mounts_changed_since().
  * 
+ * If more mounts have the same mount path, the last matching mount
+ * is returned.
+ *
  * Returns: (transfer full): a #GUnixMountEntry.
  **/
 GUnixMountEntry *
@@ -1568,8 +1571,13 @@ g_unix_mount_at (const char *mount_path,
     {
       mount_entry = l->data;
 
-      if (!found && strcmp (mount_path, mount_entry->mount_path) == 0)
-        found = mount_entry;
+      if (strcmp (mount_path, mount_entry->mount_path) == 0)
+        {
+          if (found != NULL)
+            g_unix_mount_free (found);
+
+          found = mount_entry;
+        }
       else
         g_unix_mount_free (mount_entry);
     }
@@ -1586,6 +1594,9 @@ g_unix_mount_at (const char *mount_path,
  * Gets a #GUnixMountEntry for a given file path. If @time_read
  * is set, it will be filled with a unix timestamp for checking
  * if the mounts have changed since with g_unix_mounts_changed_since().
+ *
+ * If more mounts have the same mount path, the last matching mount
+ * is returned.
  *
  * Returns: (transfer full): a #GUnixMountEntry.
  *
