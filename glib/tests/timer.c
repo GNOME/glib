@@ -208,7 +208,7 @@ test_timeval_from_iso8601 (void)
   };
   GTimeVal out;
   gboolean success;
-  gint i;
+  gsize i;
 
   /* Always run in UTC so the comparisons of parsed values are valid. */
   if (!g_setenv ("TZ", "UTC", TRUE))
@@ -250,7 +250,7 @@ test_timeval_to_iso8601 (void)
     { { 657454877, 0 }, "1990-11-01T10:21:17Z" },
     { { 17, 123400 }, "1970-01-01T00:00:17.123400Z" }
   };
-  gint i;
+  gsize i;
   gchar *out;
   GTimeVal val;
   gboolean ret;
