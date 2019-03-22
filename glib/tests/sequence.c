@@ -99,7 +99,7 @@ typedef struct SequenceInfo
 {
   GQueue *      queue;
   GSequence *   sequence;
-  int           n_items;
+  gsize         n_items;
 } SequenceInfo;
 
 typedef struct
@@ -337,7 +337,7 @@ get_random_range (SequenceInfo *seq,
                   GList **begin_link,
                   GList **end_link)
 {
-  int length = g_queue_get_length (seq->queue);
+  gsize length = g_queue_get_length (seq->queue);
   int b = g_random_int_range (0, length + 1);
   int e = g_random_int_range (b, length + 1);
 
@@ -368,7 +368,7 @@ get_random_range (SequenceInfo *seq,
 static gint
 get_random_position (SequenceInfo *seq)
 {
-  int length = g_queue_get_length (seq->queue);
+  gsize length = g_queue_get_length (seq->queue);
 
   g_assert (length == g_sequence_get_length (seq->sequence));
 
@@ -555,11 +555,11 @@ run_random_tests (gconstpointer d)
 
             for (i = 0; i < 10; ++i)
               {
-                int pos = get_random_position (seq);
+                gint pos = get_random_position (seq);
                 GSequenceIter *iter = g_sequence_get_iter_at_pos (seq->sequence, pos);
                 GList *link = g_queue_peek_nth_link (seq->queue, pos);
                 check_integrity (seq);
-                if (pos >= g_sequence_get_length (seq->sequence) || pos < 0)
+                if (pos < 0 || (gsize) pos >= g_sequence_get_length (seq->sequence))
                   {
                     g_assert (iter == g_sequence_get_end_iter (seq->sequence));
                     g_assert (link == NULL);
@@ -1387,7 +1387,7 @@ int
 main (int argc,
       char **argv)
 {
-  gint i;
+  gsize i;
   guint32 seed;
   gchar *path;
 
