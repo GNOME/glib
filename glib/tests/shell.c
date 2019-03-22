@@ -186,28 +186,28 @@ do_unquote_test (gconstpointer d)
 int
 main (int   argc, char *argv[])
 {
-  gint i;
+  gsize i;
   gchar *path;
 
   g_test_init (&argc, &argv, NULL);
 
   for (i = 0; i < G_N_ELEMENTS (cmdline_tests); i++)
     {
-      path = g_strdup_printf ("/shell/cmdline/%d", i);
+      path = g_strdup_printf ("/shell/cmdline/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &cmdline_tests[i], do_cmdline_test);
       g_free (path);
     }
 
   for (i = 0; i < G_N_ELEMENTS (quote_tests); i++)
     {
-      path = g_strdup_printf ("/shell/quote/%d", i);
+      path = g_strdup_printf ("/shell/quote/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &quote_tests[i], do_quote_test);
       g_free (path);
     }
 
   for (i = 0; i < G_N_ELEMENTS (unquote_tests); i++)
     {
-      path = g_strdup_printf ("/shell/unquote/%d", i);
+      path = g_strdup_printf ("/shell/unquote/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &unquote_tests[i], do_unquote_test);
       g_free (path);
     }
