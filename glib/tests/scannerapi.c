@@ -111,8 +111,8 @@ test_scanner_tokens (ScannerFixture *fix,
   gchar buf[] = "(\t\n\r\\){}";
   const gint buflen = strlen (buf);
   gchar tokbuf[] = "(\\){}";
-  const gint tokbuflen = strlen (tokbuf);
-  guint i;
+  const gsize tokbuflen = strlen (tokbuf);
+  gsize i;
 
   g_scanner_input_text (fix->scanner, buf, buflen);
 
