@@ -31,7 +31,7 @@ static char *echo_prog_path;
 static void
 multithreaded_test_run (GThreadFunc function)
 {
-  int i;
+  guint i;
   GPtrArray *threads = g_ptr_array_new ();
   guint n_threads;
 
