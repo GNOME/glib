@@ -157,7 +157,9 @@ do_lookup_by_name (GTask         *task,
 #ifdef G_OS_WIN32
       gchar *error_message = g_win32_error_message (WSAGetLastError ());
 #else
-      const gchar *error_message = gai_strerror (retval);
+      gchar *error_message = g_locale_to_utf8 (gai_strerror (retval), -1, NULL, NULL, NULL);
+      if (error_message == NULL)
+        error_message = g_strdup ("[Invalid UTF-8]");
 #endif
 
       g_task_return_new_error (task,
@@ -165,10 +167,7 @@ do_lookup_by_name (GTask         *task,
                                g_resolver_error_from_addrinfo_error (retval),
                                _("Error resolving “%s”: %s"),
                                hostname, error_message);
-
-#ifdef G_OS_WIN32
       g_free (error_message);
-#endif
     }
 
   if (res)
@@ -323,7 +322,9 @@ do_lookup_by_address (GTask         *task,
 #ifdef G_OS_WIN32
       gchar *error_message = g_win32_error_message (WSAGetLastError ());
 #else
-      const gchar *error_message = gai_strerror (retval);
+      gchar *error_message = g_locale_to_utf8 (gai_strerror (retval), -1, NULL, NULL, NULL);
+      if (error_message == NULL)
+        error_message = g_strdup ("[Invalid UTF-8]");
 #endif
 
       phys = g_inet_address_to_string (address);
@@ -334,9 +335,7 @@ do_lookup_by_address (GTask         *task,
                                phys ? phys : "(unknown)",
                                error_message);
       g_free (phys);
-#ifdef G_OS_WIN32
       g_free (error_message);
-#endif
     }
 }
 

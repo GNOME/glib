@@ -343,15 +343,14 @@ handle_ip_address (const char  *hostname,
 #ifdef G_OS_WIN32
       gchar *error_message = g_win32_error_message (WSAHOST_NOT_FOUND);
 #else
-      const gchar *error_message = gai_strerror (EAI_NONAME);
+      gchar *error_message = g_locale_to_utf8 (gai_strerror (EAI_NONAME), -1, NULL, NULL, NULL);
+      if (error_message == NULL)
+        error_message = g_strdup ("[Invalid UTF-8]");
 #endif
       g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
                    _("Error resolving “%s”: %s"),
                    hostname, error_message);
-
-#ifdef G_OS_WIN32
       g_free (error_message);
-#endif
 
       return TRUE;
     }
