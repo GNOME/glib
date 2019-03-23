@@ -967,3 +967,15 @@ xdg_mime_get_generic_icon (const char *mime)
 
   return _xdg_mime_icon_list_lookup (generic_icon_list, mime);
 }
+
+int
+xdg_mime_get_file_exts_from_mime_type (const char *mime_type,
+                                       char       *file_exts[],
+                                       int         n_file_exts)
+{
+  xdg_mime_init ();
+  return _xdg_glob_hash_lookup_mime_type (global_hash,
+                                          mime_type,
+                                          file_exts,
+                                          n_file_exts);
+}
