@@ -24,6 +24,7 @@
  */
 
 #include "config.h"
+#include <glib.h>
 
 #include "xdgmime.h"
 #include "xdgmimeint.h"
@@ -37,8 +38,14 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#ifdef G_OS_UNIX
 #include <sys/time.h>
 #include <unistd.h>
+#endif
+#ifdef G_OS_WIN32
+#include <time.h>
+#include <io.h>
+#endif
 #include <assert.h>
 #include <glib.h>
 
@@ -46,7 +53,7 @@ typedef struct XdgDirTimeList XdgDirTimeList;
 typedef struct XdgCallbackList XdgCallbackList;
 
 static int need_reread = TRUE;
-static time_t last_stat_time = 0;
+static gint64 last_stat_time = 0;
 
 static XdgGlobHash *global_hash = NULL;
 static XdgMimeMagic *global_magic = NULL;
@@ -78,7 +85,7 @@ enum
 
 struct XdgDirTimeList
 {
-  time_t mtime;
+  gint64 mtime;
   char *directory_name;
   int checked;
   XdgDirTimeList *next;
@@ -101,7 +108,7 @@ typedef int (*XdgDirectoryFunc) (const char *directory,
 
 static void
 xdg_dir_time_list_add (char   *file_name, 
-		       time_t  mtime)
+		       gint64  mtime)
 {
   XdgDirTimeList *list;
 
@@ -429,12 +436,10 @@ xdg_check_dirs (void)
 static int
 xdg_check_time_and_dirs (void)
 {
-  struct timeval tv;
-  time_t current_time;
+  gint64 current_time;
   int retval = FALSE;
 
-  gettimeofday (&tv, NULL);
-  current_time = tv.tv_sec;
+  current_time = g_get_real_time ();
 
   if (current_time >= last_stat_time + 5)
     {
