@@ -18,6 +18,7 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ *         Руслан Ижбулатов <lrn1986@gmail.com>
  */
 
 #include "config.h"
@@ -26,11 +27,15 @@
 #include <string.h>
 #include <stdio.h>
 #include "gcontenttype.h"
+#include "gcontenttypeprivate.h"
 #include "gthemedicon.h"
 #include "gicon.h"
 #include "glibintl.h"
 
 #include <windows.h>
+
+#define XDG_PREFIX _gio_xdg
+#include "xdgmime/xdgmime.h"
 
 static char *
 get_registry_classes_key (const char    *subdir,
@@ -93,7 +98,7 @@ g_content_type_equals (const gchar *type1,
   g_return_val_if_fail (type1 != NULL, FALSE);
   g_return_val_if_fail (type2 != NULL, FALSE);
 
-  if (g_ascii_strcasecmp (type1, type2) == 0)
+  if (_g_generic_content_type_equals (type1, type2))
     return TRUE;
 
   res = FALSE;
@@ -118,7 +123,8 @@ g_content_type_is_a (const gchar *type,
   g_return_val_if_fail (type != NULL, FALSE);
   g_return_val_if_fail (supertype != NULL, FALSE);
 
-  if (g_content_type_equals (type, supertype))
+  if (g_content_type_equals (type, supertype) ||
+      _g_generic_content_type_is_a (type, supertype))
     return TRUE;
 
   res = FALSE;
@@ -152,6 +158,9 @@ g_content_type_is_unknown (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
+  if (_g_generic_content_type_is_unknown (type))
+    return TRUE;
+
   return strcmp ("*", type) == 0;
 }
 
@@ -163,6 +172,15 @@ g_content_type_get_description (const gchar *type)
 
   g_return_val_if_fail (type != NULL, NULL);
 
+  /* Unknown check is very specific, do it first */
+  if (g_content_type_is_unknown (type))
+    return g_strdup (_("Unknown type"));
+
+  description = _g_generic_content_type_get_description (type);
+
+  if (description)
+    return description;
+
   progid = get_registry_classes_key (type, NULL);
   if (progid)
     {
@@ -172,9 +190,6 @@ g_content_type_get_description (const gchar *type)
       if (description)
         return description;
     }
-
-  if (g_content_type_is_unknown (type))
-    return g_strdup (_("Unknown type"));
 
   return g_strdup_printf (_("%s filetype"), type);
 }
@@ -186,6 +201,9 @@ g_content_type_get_mime_type (const gchar *type)
 
   g_return_val_if_fail (type != NULL, NULL);
 
+  if (type[0] != '.')
+    return _g_generic_content_type_get_mime_type (type);
+
   mime = get_registry_classes_key (type, L"Content Type");
   if (mime)
     return mime;
@@ -193,11 +211,20 @@ g_content_type_get_mime_type (const gchar *type)
     return g_strdup ("application/octet-stream");
   else if (*type == '.')
     return g_strdup_printf ("application/x-ext-%s", type+1);
-  else if (strcmp ("inode/directory", type) == 0)
-    return g_strdup (type);
-  /* TODO: Map "image" to "image/ *", etc? */
 
   return g_strdup ("application/octet-stream");
+}
+
+static gboolean
+extension_can_be_executable (const gchar *type)
+{
+  if (strcmp (type, ".exe") == 0 ||
+      strcmp (type, ".com") == 0 ||
+      strcmp (type, ".cmd") == 0 ||
+      strcmp (type, ".bat") == 0)
+    return TRUE;
+
+  return FALSE;
 }
 
 G_LOCK_DEFINE_STATIC (_type_icons);
@@ -219,7 +246,7 @@ g_content_type_get_icon (const gchar *type)
   */
   G_LOCK (_type_icons);
   if (!_type_icons)
-    _type_icons = g_hash_table_new (g_str_hash, g_str_equal);
+    _type_icons = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   name = g_hash_table_lookup (_type_icons, type);
   if (!name && type[0] == '.')
     {
@@ -240,11 +267,25 @@ g_content_type_get_icon (const gchar *type)
           name = NULL;
         }
       if (name)
-        g_hash_table_insert (_type_icons, g_strdup (type), g_strdup (name));
+        {
+          /* We can't free name later on, because it could be a string owned
+           * by the hash table. Ensure that it IS always a string owned by
+           * the hash table.
+           */
+          char *name2 = g_strdup (name);
+          g_free (name);
+          name = name2;
+          g_hash_table_insert (_type_icons, g_strdup (type), name);
+        }
       g_free (key);
     }
 
-  if (!name)
+  themed_icon = NULL;
+
+  if (!name && type[0] != '.')
+    themed_icon = _g_generic_content_type_get_icon (type);
+
+  if (!themed_icon && !name)
     {
       /* if no icon found, fall back to standard generic names */
       if (strcmp (type, "inode/directory") == 0)
@@ -255,7 +296,10 @@ g_content_type_get_icon (const gchar *type)
         name = "text-x-generic";
       g_hash_table_insert (_type_icons, g_strdup (type), g_strdup (name));
     }
-  themed_icon = g_themed_icon_new (name);
+
+  if (!themed_icon)
+    themed_icon = g_themed_icon_new (name);
+
   G_UNLOCK (_type_icons);
 
   return G_ICON (themed_icon);
@@ -278,9 +322,7 @@ g_content_type_can_be_executable (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
-  if (strcmp (type, ".exe") == 0 ||
-      strcmp (type, ".com") == 0 ||
-      strcmp (type, ".bat") == 0)
+  if (extension_can_be_executable (type))
     return TRUE;
 
   /* TODO: Also look at PATHEXT, which lists the extensions for
@@ -292,24 +334,29 @@ g_content_type_can_be_executable (const gchar *type)
    * a command name in cmd.exe, and it will run the application
    * associated with .jpg. Hard to say what this API actually means
    * with "executable".
+   *
+   *
+   * 1) non-binary files can only be run by ShellExecute*(), not by
+   * CreateProcess*().
+   * 2) _spawn*() is documented to run .exe, .com, .bat and .cmd (or a PE file
+   * with any extension, including zero-length one (filename ends in ".\0");
+   * for files with no extension (ends in "\0") it tries to append .exe,
+   * .bat and .com, then fails).
+   * This means that glib has no code (AFAIK) to run anything other than
+   * things listed above.
+   * 3) security-wise "executable" means "can be programmed". JPG files
+   * are not executable, since opening any JPG file will only ever run
+   * one kind of code (image viewer, usually), and the decision as to which
+   * code to run is made by the user (or whoever sets file associations),
+   * not by the author of the JPG file.
+   * Unless the viewer is vulnerable and JPG is a specially-formed file
+   * with executable code, that is ;)
    */
 
-  return FALSE;
-}
+  if (_g_generic_content_type_can_be_executable (type))
+    return TRUE;
 
-static gboolean
-looks_like_text (const guchar *data, 
-                 gsize         data_size)
-{
-  gsize i;
-  guchar c;
-  for (i = 0; i < data_size; i++)
-    {
-      c = data[i];
-      if (g_ascii_iscntrl (c) && !g_ascii_isspace (c) && c != '\b')
-        return FALSE;
-    }
-  return TRUE;
+  return FALSE;
 }
 
 gchar *
@@ -319,13 +366,16 @@ g_content_type_from_mime_type (const gchar *mime_type)
 
   g_return_val_if_fail (mime_type != NULL, NULL);
 
-  /* This is a hack to allow directories to have icons in filechooser */
-  if (strcmp ("inode/directory", mime_type) == 0)
-    return g_strdup (mime_type);
+  content_type = NULL;
+  if (mime_type[0] != '.')
+    content_type = _g_generic_content_type_from_mime_type (mime_type);
 
-  key = g_strconcat ("MIME\\DataBase\\Content Type\\", mime_type, NULL);
-  content_type = get_registry_classes_key (key, L"Extension");
-  g_free (key);
+  if (content_type == NULL)
+    {
+      key = g_strconcat ("MIME\\DataBase\\Content Type\\", mime_type, NULL);
+      content_type = get_registry_classes_key (key, L"Extension");
+      g_free (key);
+    }
 
   return content_type;
 }
@@ -336,11 +386,8 @@ g_content_type_guess (const gchar  *filename,
                       gsize         data_size,
                       gboolean     *result_uncertain)
 {
-  char *basename;
-  char *type;
-  char *dot;
-
-  type = NULL;
+  gchar *content_type;
+  gboolean uncertain;
 
   if (result_uncertain)
     *result_uncertain = FALSE;
@@ -349,22 +396,15 @@ g_content_type_guess (const gchar  *filename,
    * not documented and not allowed; guard against that */
   g_return_val_if_fail (data_size != (gsize) -1, g_strdup ("*"));
 
-  if (filename)
-    {
-      basename = g_path_get_basename (filename);
-      dot = strrchr (basename, '.');
-      if (dot)
-        type = g_strdup (dot);
-      g_free (basename);
-    }
+  content_type = _g_generic_content_type_guess (filename, data, data_size, &uncertain);
 
-  if (type)
-    return type;
+  if (content_type == NULL)
+    return NULL;
 
-  if (data && looks_like_text (data, data_size))
-    return g_strdup (".txt");
+  if (result_uncertain)
+    *result_uncertain = uncertain;
 
-  return g_strdup ("*");
+  return content_type;
 }
 
 GList *
@@ -400,12 +440,13 @@ g_content_types_get_registered (void)
       key_len = 256;
     }
   
-  return g_list_reverse (types);
+  types = g_list_reverse (types);
+
+  return g_list_concat (types, _g_generic_content_types_get_registered ());
 }
 
 gchar **
 g_content_type_guess_for_tree (GFile *root)
 {
-  /* FIXME: implement */
-  return NULL;
+  return _g_generic_content_type_guess_for_tree (root);
 }
