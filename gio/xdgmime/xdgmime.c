@@ -1470,10 +1470,14 @@ xdg_mime_get_file_exts_from_mime_type (const char *mime_type,
   if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_lookup_mime_type (mime_type,
                                              &file_exts[offset],
-                                             n_file_exts - offset) + offset;
+                                             n_file_exts - offset,
+                                             file_exts,
+                                             offset) + offset;
   else
     return _xdg_glob_hash_lookup_mime_type (global_hash,
                                             mime_type,
                                             &file_exts[offset],
-                                            n_file_exts - offset) + offset;
+                                            n_file_exts - offset,
+                                            file_exts,
+                                            offset) + offset;
 }
