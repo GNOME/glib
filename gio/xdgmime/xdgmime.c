@@ -40,6 +40,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <assert.h>
+#include <glib.h>
 
 typedef struct XdgDirTimeList XdgDirTimeList;
 typedef struct XdgCallbackList XdgCallbackList;
@@ -223,85 +224,29 @@ xdg_mime_init_from_directory (const char *directory)
 static void
 xdg_init_dirs (void)
 {
-  const char *xdg_data_home, *home, *xdg_data_dirs;
-  const char *ptr;
+  const gchar *xdg_data_home;
+  const gchar * const *xdg_data_dirs;
   size_t n_dirs = 0;
   size_t i, current_dir;
 
   assert (xdg_dirs == NULL);
 
-  xdg_data_home = getenv ("XDG_DATA_HOME");
-  home = getenv ("HOME");
-  xdg_data_dirs = getenv ("XDG_DATA_DIRS");
-
-  if (xdg_data_dirs == NULL)
-    xdg_data_dirs = "/usr/local/share/:/usr/share/";
+  xdg_data_home = g_get_user_data_dir ();
+  xdg_data_dirs = g_get_system_data_dirs ();
 
   /* Work out how many dirs we’re dealing with. */
-  if (xdg_data_home != NULL || home != NULL)
-    n_dirs++;
-  n_dirs++;  /* initial entry in @xdg_data_dirs */
-  for (i = 0; xdg_data_dirs[i] != '\0'; i++)
-    if (xdg_data_dirs[i] == ':')
-      n_dirs++;
+  n_dirs++; /* +1 for xdg_data_home */
+  for (i = 0; xdg_data_dirs[i] != NULL && xdg_data_dirs[i][0] != '\0'; i++)
+    n_dirs++; /* +1 for each datadir */
 
-  xdg_dirs = calloc (n_dirs + 1  /* NULL terminator */, sizeof (char *));
+  xdg_dirs = g_new0 (char *, n_dirs + 1  /* NULL terminator */);
   current_dir = 0;
 
-  /* $XDG_DATA_HOME */
-  if (xdg_data_home != NULL)
-    {
-      char *mime_subdir;
-
-      mime_subdir = malloc (strlen (xdg_data_home) + strlen ("/mime/") + 1);
-      strcpy (mime_subdir, xdg_data_home);
-      strcat (mime_subdir, "/mime/");
-
-      xdg_dirs[current_dir++] = mime_subdir;
-    }
-  else if (home != NULL)
-    {
-      char *guessed_xdg_home;
-
-      guessed_xdg_home = malloc (strlen (home) + strlen ("/.local/share/mime/") + 1);
-      strcpy (guessed_xdg_home, home);
-      strcat (guessed_xdg_home, "/.local/share/mime/");
-
-      xdg_dirs[current_dir++] = guessed_xdg_home;
-    }
+  xdg_dirs[current_dir++] = g_build_filename (xdg_data_home, "mime", NULL);
 
   /* $XDG_DATA_DIRS */
-  ptr = xdg_data_dirs;
-
-  while (*ptr != '\000')
-    {
-      const char *end_ptr;
-      char *dir;
-      int len;
-
-      end_ptr = ptr;
-      while (*end_ptr != ':' && *end_ptr != '\000')
-        end_ptr ++;
-
-      if (end_ptr == ptr)
-        {
-          ptr++;
-          continue;
-        }
-
-      if (*end_ptr == ':')
-        len = end_ptr - ptr;
-      else
-        len = end_ptr - ptr + 1;
-      dir = malloc (len + strlen ("/mime/") + 1);
-      strncpy (dir, ptr, len);
-      dir[len] = '\0';
-      strcat (dir, "/mime/");
-
-      xdg_dirs[current_dir++] = dir;
-
-      ptr = end_ptr;
-    }
+  for (i = 0; xdg_data_dirs[i] != NULL && xdg_data_dirs[i][0] != '\0'; i++)
+    xdg_dirs[current_dir++] = g_build_filename (xdg_data_dirs[i], "mime", NULL);
 
   /* NULL terminator */
   xdg_dirs[current_dir] = NULL;
@@ -340,17 +285,17 @@ xdg_mime_set_dirs (const char * const *dirs)
   size_t i;
 
   for (i = 0; xdg_dirs != NULL && xdg_dirs[i] != NULL; i++)
-    free (xdg_dirs[i]);
+    g_free (xdg_dirs[i]);
   if (xdg_dirs != NULL)
-    free (xdg_dirs[i]);
+    g_free (xdg_dirs);
   xdg_dirs = NULL;
 
   if (dirs != NULL)
     {
       for (i = 0; dirs[i] != NULL; i++);
-      xdg_dirs = calloc (i + 1  /* NULL terminator */, sizeof (char*));
+      xdg_dirs = g_new0 (char*, i + 1  /* NULL terminator */);
       for (i = 0; dirs[i] != NULL; i++)
-        xdg_dirs[i] = strdup (dirs[i]);
+        xdg_dirs[i] = g_strdup (dirs[i]);
       xdg_dirs[i] = NULL;
     }
 
@@ -602,7 +547,7 @@ xdg_mime_get_mime_type_for_file (const char  *file_name,
   if (data == NULL)
     return XDG_MIME_TYPE_UNKNOWN;
         
-  file = fopen (file_name, "r");
+  file = g_fopen (file_name, "rb");
   if (file == NULL)
     {
       free (data);

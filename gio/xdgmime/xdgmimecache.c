@@ -31,10 +31,14 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
-#include <fnmatch.h>
+#include <glib.h>
 #include <assert.h>
 
+#ifdef G_OS_WIN32
+#include <winsock2.h>
+#else
 #include <netinet/in.h> /* for ntohl/ntohs */
+#endif
 
 #ifdef HAVE_MMAP
 #include <sys/mman.h>
@@ -458,8 +462,7 @@ cache_glob_lookup_fnmatch (const char *file_name,
 	  ptr = cache->buffer + offset;
 	  mime_type = cache->buffer + mimetype_offset;
 
-	  /* FIXME: Not UTF-8 safe */
-	  if (fnmatch (ptr, file_name, 0) == 0)
+	  if (g_pattern_match_simple (ptr, file_name))
 	    {
 	      mime_types[n].mime = mime_type;
 	      mime_types[n].weight = weight;
@@ -825,7 +828,7 @@ _xdg_mime_cache_get_mime_type_for_file (const char  *file_name,
   if (data == NULL)
     return XDG_MIME_TYPE_UNKNOWN;
         
-  file = fopen (file_name, "r");
+  file = g_fopen (file_name, "rb");
   if (file == NULL)
     {
       free (data);

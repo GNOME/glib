@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include <fnmatch.h>
+#include <glib.h>
 
 #ifndef MAX
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
@@ -486,7 +486,7 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
     {
       for (list = glob_hash->full_list; list && n < n_mime_types; list = list->next)
         {
-          if (fnmatch ((const char *)list->data, file_name, 0) == 0)
+          if (g_pattern_match_simple ((const char *)list->data, file_name))
 	    {
 	      mimes[n].mime = list->mime_type;
 	      mimes[n].weight = list->weight;
@@ -648,47 +648,55 @@ _xdg_mime_glob_read_from_file (XdgGlobHash *glob_hash,
 			       const char  *file_name,
 			       int          version_two)
 {
-  FILE *glob_file;
-  char line[255];
-  char *p;
+  char *contents, *contents_end;
+  gsize contents_len;
+  char *line, *next_line, *p, *eol;
 
-  glob_file = fopen (file_name, "r");
-
-  if (glob_file == NULL)
+  if (!g_file_get_contents (file_name, &contents, &contents_len, NULL))
     return;
 
-  /* FIXME: Not UTF-8 safe.  Doesn't work if lines are greater than 255 chars.
-   * Blah */
-  while (fgets (line, 255, glob_file) != NULL)
+  contents_end = contents + contents_len;
+  next_line = contents;
+  while (next_line != NULL)
     {
       char *colon;
-      char *mimetype, *glob, *end;
+      char *mimetype, *glob;
       int weight;
       int case_sensitive;
+      size_t contents_left;
+      line = next_line;
+      contents_left = contents_end - line;
+
+      eol = memchr (line, '\n', contents_left);
+      if (eol != NULL)
+        {
+          next_line = eol + 1;
+        }
+      else
+        {
+          next_line = NULL;
+          eol = contents_end;
+        }
 
       if (line[0] == '#' || line[0] == 0)
-	continue;
-
-      end = line + strlen(line) - 1;
-      if (*end == '\n')
-	*end = 0;
+        continue;
 
       p = line;
+      weight = 50;
       if (version_two)
-	{
-	  colon = strchr (p, ':');
-	  if (colon == NULL)
-	    continue;
-	  *colon = 0;
+        {
+          colon = memchr (p, ':', (size_t) (eol - p));
+          if (colon == NULL)
+            continue;
+          *colon = 0;
           weight = atoi (p);
-	  p = colon + 1;
-	}
-      else
-	weight = 50;
+          p = colon + 1;
+        }
 
-      colon = strchr (p, ':');
+      colon = memchr (p, ':', (size_t) (eol - p));
       if (colon == NULL)
-	continue;
+        continue;
+
       *colon = 0;
 
       mimetype = p;
@@ -696,33 +704,34 @@ _xdg_mime_glob_read_from_file (XdgGlobHash *glob_hash,
       glob = p;
       case_sensitive = FALSE;
 
-      colon = strchr (p, ':');
+      colon = memchr (p, ':', (size_t) (eol - p));
       if (version_two && colon != NULL)
-	{
-	  char *flag;
+        {
+          char *flag;
 
-	  /* We got flags */
-	  *colon = 0;
-	  p = colon + 1;
+          /* We got flags */
+          *colon = 0;
+          p = colon + 1;
 
-	  /* Flags end at next colon */
-	  colon = strchr (p, ':');
-	  if (colon != NULL)
-	    *colon = 0;
+          /* Flags end at next colon */
+          colon = memchr (p, ':', (size_t) (eol - p));
+          if (colon != NULL)
+            *colon = 0;
 
-	  flag = strstr (p, "cs");
-	  if (flag != NULL &&
-	      /* Start or after comma */
-	      (flag == p ||
-	       flag[-1] == ',') &&
-	      /* ends with comma or end of string */
-	      (flag[2] == 0 ||
-	       flag[2] == ','))
-	    case_sensitive = TRUE;
-	}
+          flag = _xdg_memstr (p, "cs", (size_t) (eol - p));
+          if (flag != NULL &&
+              /* Start or after comma */
+              (flag == p ||
+               flag[-1] == ',') &&
+              /* ends with comma or end of string */
+              (&flag[2] >= contents_end ||
+               flag[2] == 0 ||
+               flag[2] == ','))
+            case_sensitive = TRUE;
+        }
 
       _xdg_glob_hash_append_glob (glob_hash, glob, mimetype, weight, case_sensitive);
     }
 
-  fclose (glob_file);
+  g_free (contents);
 }
