@@ -66,5 +66,9 @@ XdgGlobType  _xdg_glob_determine_type        (const char  *glob);
 #ifdef NOT_USED_IN_GIO
 void         _xdg_glob_hash_dump             (XdgGlobHash *glob_hash);
 #endif
+int          _xdg_glob_hash_lookup_mime_type (XdgGlobHash   *glob_hash,
+                                              const char    *mime_type,
+                                              char          *file_extensions[],
+                                              int            n_file_extensions);
 
 #endif /* __XDG_MIME_GLOB_H__ */

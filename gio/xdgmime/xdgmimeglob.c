@@ -735,3 +735,213 @@ _xdg_mime_glob_read_from_file (XdgGlobHash *glob_hash,
 
   g_free (contents);
 }
+
+typedef struct {
+  xdg_unichar_t *ext;
+  int weight;
+} ExtWeight;
+
+static xdg_unichar_t *
+assemble_extension (XdgGlobHashNode *glob_hash_node,
+                    xdg_unichar_t  **buffer,
+                    int             *buffer_len)
+{
+  int i, c;
+  xdg_unichar_t *result;
+  size_t result_len = *buffer_len + 1;
+
+  if (glob_hash_node->character)
+    result_len += 1;
+
+  result = malloc (sizeof (xdg_unichar_t) * (result_len));
+
+  if (glob_hash_node->character)
+    {
+      result[0] = glob_hash_node->character;
+      c = 1;
+    }
+  else
+    c = 0;
+
+  i = *buffer_len - 1;
+
+  while (i >= 0)
+    {
+      result[c] = (*buffer)[i];
+      i--;
+      c++;
+    }
+  result[c] = 0;
+  return result;
+}
+
+static int
+_xdg_glob_hash_node_lookup_mime_type (XdgGlobHashNode *glob_hash_node,
+                                      const char      *mime_type,
+                                      xdg_unichar_t  **buffer,
+                                      int             *buffer_len,
+                                      int             *buffer_size,
+                                      ExtWeight        file_exts[],
+                                      int              n_file_exts)
+{
+  int n = 0;
+
+  if (glob_hash_node == NULL)
+    return 0;
+
+  if (*buffer_len == *buffer_size - 1)
+    {
+      int new_size = *buffer_size * 2;
+      *buffer = realloc (*buffer, new_size * sizeof (xdg_unichar_t));
+      *buffer_size = new_size;
+    }
+
+  if (glob_hash_node->child)
+    {
+      if (glob_hash_node->character)
+        {
+          (*buffer)[*buffer_len] = glob_hash_node->character;
+          (*buffer_len) += 1;
+        }
+      n += _xdg_glob_hash_node_lookup_mime_type (glob_hash_node->child,
+                                                 mime_type,
+                                                 buffer,
+                                                 buffer_len,
+                                                 buffer_size,
+                                                 &file_exts[n],
+                                                 n_file_exts - n);
+
+      if (glob_hash_node->character)
+          (*buffer_len) -= 1;
+    }
+
+  if (glob_hash_node->next)
+    n +=_xdg_glob_hash_node_lookup_mime_type (glob_hash_node->next,
+                                              mime_type,
+                                              buffer,
+                                              buffer_len,
+                                              buffer_size,
+                                              &file_exts[n],
+                                              n_file_exts - n);
+
+  if (n < n_file_exts &&
+      glob_hash_node->mime_type &&
+      strcmp (glob_hash_node->mime_type, mime_type) == 0)
+    {
+      file_exts[n].ext = assemble_extension (glob_hash_node, buffer, buffer_len);
+      file_exts[n].weight = glob_hash_node->weight;
+      n++;
+    }
+
+  return n;
+}
+
+static int
+ucs4cmp (xdg_unichar_t *a, xdg_unichar_t *b)
+{
+  int i;
+  i = 0;
+  for (i = 0; a[i] != 0 && b[i] != 0; i++)
+    {
+      if (a[i] == b[i])
+        continue;
+
+      if (a[i] < b[i])
+        return -1;
+
+      return 1;
+    }
+
+  if (a[i] == 0)
+    return -1;
+
+  return 1;
+}
+
+static int
+filter_out_ext_dupes (ExtWeight exts[], int n_exts)
+{
+  int last;
+  int i, j;
+
+  last = n_exts;
+
+  for (i = 0; i < last; i++)
+    {
+      j = i + 1;
+      while (j < last)
+        {
+          if (ucs4cmp (exts[i].ext, exts[j].ext) == 0)
+            {
+              exts[i].weight = MAX (exts[i].weight, exts[j].weight);
+              last--;
+              exts[j].ext = exts[last].ext;
+              exts[j].weight = exts[last].weight;
+            }
+          else
+            j++;
+        }
+    }
+
+  return last;
+}
+
+static int compare_ext_weight (const void *a, const void *b)
+{
+  const ExtWeight *aa = (const ExtWeight *)a;
+  const ExtWeight *bb = (const ExtWeight *)b;
+
+  return bb->weight - aa->weight;
+}
+
+/* Look up @mime_type in @glob_hash, return corresponding
+ * extensions in @file_extensions (utf8), no more than @n_file_extensions
+ * of them.
+ * The return value is the number of extensions actually written to
+ * @file_extensions.
+ */
+int
+_xdg_glob_hash_lookup_mime_type (XdgGlobHash   *glob_hash,
+                                 const char    *mime_type,
+                                 char          *file_extensions[],
+                                 int            n_file_extensions)
+{
+  int n;
+  ExtWeight file_names[10];
+  int n_names = 10;
+  int n_result;
+  xdg_unichar_t *buffer;
+  int buffer_len;
+  int buffer_size;
+  int i;
+
+  buffer_size = 30;
+  buffer_len = 0;
+  buffer = malloc (buffer_size * sizeof (xdg_unichar_t));
+  n = _xdg_glob_hash_node_lookup_mime_type (glob_hash->simple_node,
+                                            mime_type,
+                                            &buffer,
+                                            &buffer_len,
+                                            &buffer_size,
+                                            file_names,
+                                            n_names);
+  n = filter_out_ext_dupes (file_names, n);
+
+  qsort (file_names, n, sizeof (ExtWeight), compare_ext_weight);
+
+  n_result = MIN (n, n_file_extensions);
+
+  for (i = 0; i < n_result; i++)
+    {
+      char *utf8 = g_ucs4_to_utf8 (file_names[i].ext, -1, NULL, NULL, NULL);
+      file_extensions[i] = utf8;
+      free (file_names[i].ext);
+    }
+
+  for (i = n_result; i < n; i++)
+    free (file_names[i].ext);
+
+  free (buffer);
+
+  return n_result;
+}

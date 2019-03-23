@@ -126,7 +126,9 @@ int          xdg_mime_register_reload_callback     (XdgMimeCallback  callback,
 #ifdef NOT_USED_IN_GIO
 void         xdg_mime_remove_callback              (int              callback_id);
 #endif
-
+int          xdg_mime_get_file_exts_from_mime_type (const char *mime_type,
+                                                    char       *file_exts[],
+                                                    int         n_file_exts);
 void xdg_mime_set_dirs (const char * const *dirs);
 
    /* Private versions of functions that don't call xdg_mime_init () */
