@@ -34,22 +34,6 @@
 #include "glibintl.h"
 
 
-/**
- * SECTION:gcontenttype
- * @short_description: Platform-specific content typing
- * @include: gio/gio.h
- *
- * A content type is a platform specific string that defines the type
- * of a file. On UNIX it is a
- * [MIME type](http://www.wikipedia.org/wiki/Internet_media_type)
- * like `text/plain` or `image/png`.
- * On Win32 it is an extension string like `.doc`, `.txt` or a perceived
- * string like `audio`. Such strings can be looked up in the registry at
- * `HKEY_CLASSES_ROOT`.
- * On macOS it is a [Uniform Type Identifier](https://en.wikipedia.org/wiki/Uniform_Type_Identifier)
- * such as `com.apple.application`.
- **/
-
 #include <dirent.h>
 
 #define XDG_PREFIX _gio_xdg
@@ -61,7 +45,7 @@ static void tree_magic_schedule_reload (void);
 G_LOCK_DEFINE_STATIC (gio_xdgmime);
 
 gsize
-_g_unix_content_type_get_sniff_len (void)
+_g_generic_content_type_get_sniff_len (void)
 {
   gsize size;
 
@@ -73,7 +57,7 @@ _g_unix_content_type_get_sniff_len (void)
 }
 
 gchar *
-_g_unix_content_type_unalias (const gchar *type)
+_g_generic_content_type_unalias (const gchar *type)
 {
   gchar *res;
 
@@ -85,7 +69,7 @@ _g_unix_content_type_unalias (const gchar *type)
 }
 
 gchar **
-_g_unix_content_type_get_parents (const gchar *type)
+_g_generic_content_type_get_parents (const gchar *type)
 {
   const gchar *umime;
   gchar **parents;
@@ -117,7 +101,7 @@ G_LOCK_DEFINE_STATIC (global_mime_dirs);
 static gchar **global_mime_dirs = NULL;
 
 static void
-_g_content_type_set_mime_dirs_locked (const char * const *dirs)
+_g_generic_content_type_set_mime_dirs_locked (const char * const *dirs)
 {
   g_clear_pointer (&global_mime_dirs, g_strfreev);
 
@@ -142,68 +126,23 @@ _g_content_type_set_mime_dirs_locked (const char * const *dirs)
   tree_magic_schedule_reload ();
 }
 
-/**
- * g_content_type_set_mime_dirs:
- * @dirs: (array zero-terminated=1) (nullable): %NULL-terminated list of
- *    directories to load MIME data from, including any `mime/` subdirectory,
- *    and with the first directory to try listed first
- *
- * Set the list of directories used by GIO to load the MIME database.
- * If @dirs is %NULL, the directories used are the default:
- *
- *  - the `mime` subdirectory of the directory in `$XDG_DATA_HOME`
- *  - the `mime` subdirectory of every directory in `$XDG_DATA_DIRS`
- *
- * This function is intended to be used when writing tests that depend on
- * information stored in the MIME database, in order to control the data.
- *
- * Typically, in case your tests use %G_TEST_OPTION_ISOLATE_DIRS, but they
- * depend on the system’s MIME database, you should call this function
- * with @dirs set to %NULL before calling g_test_init(), for instance:
- *
- * |[<!-- language="C" -->
- *   // Load MIME data from the system
- *   g_content_type_set_mime_dirs (NULL);
- *   // Isolate the environment
- *   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
- *
- *   …
- *
- *   return g_test_run ();
- * ]|
- *
- * Since: 2.60
- */
-/*< private >*/
 void
-g_content_type_set_mime_dirs (const gchar * const *dirs)
+_g_generic_content_type_set_mime_dirs (const gchar * const *dirs)
 {
   G_LOCK (global_mime_dirs);
-  _g_content_type_set_mime_dirs_locked (dirs);
+  _g_generic_content_type_set_mime_dirs_locked (dirs);
   G_UNLOCK (global_mime_dirs);
 }
 
-/**
- * g_content_type_get_mime_dirs:
- *
- * Get the list of directories which MIME data is loaded from. See
- * g_content_type_set_mime_dirs() for details.
- *
- * Returns: (transfer none) (array zero-terminated=1): %NULL-terminated list of
- *    directories to load MIME data from, including any `mime/` subdirectory,
- *    and with the first directory to try listed first
- * Since: 2.60
- */
-/*< private >*/
 const gchar * const *
-g_content_type_get_mime_dirs (void)
+_g_generic_content_type_get_mime_dirs (void)
 {
   const gchar * const *mime_dirs;
 
   G_LOCK (global_mime_dirs);
 
   if (global_mime_dirs == NULL)
-    _g_content_type_set_mime_dirs_locked (NULL);
+    _g_generic_content_type_set_mime_dirs_locked (NULL);
 
   mime_dirs = (const gchar * const *) global_mime_dirs;
 
@@ -213,18 +152,8 @@ g_content_type_get_mime_dirs (void)
   return mime_dirs;
 }
 
-/**
- * g_content_type_equals:
- * @type1: a content type string
- * @type2: a content type string
- *
- * Compares two content types for equality.
- *
- * Returns: %TRUE if the two strings are identical or equivalent,
- *     %FALSE otherwise.
- */
 gboolean
-g_content_type_equals (const gchar *type1,
+_g_generic_content_type_equals (const gchar *type1,
                        const gchar *type2)
 {
   gboolean res;
@@ -239,19 +168,9 @@ g_content_type_equals (const gchar *type1,
   return res;
 }
 
-/**
- * g_content_type_is_a:
- * @type: a content type string
- * @supertype: a content type string
- *
- * Determines if @type is a subset of @supertype.
- *
- * Returns: %TRUE if @type is a kind of @supertype,
- *     %FALSE otherwise.
- */
 gboolean
-g_content_type_is_a (const gchar *type,
-                     const gchar *supertype)
+_g_generic_content_type_is_a (const gchar *type,
+                              const gchar *supertype)
 {
   gboolean res;
 
@@ -265,39 +184,15 @@ g_content_type_is_a (const gchar *type,
   return res;
 }
 
-/**
- * g_content_type_is_mime_type:
- * @type: a content type string
- * @mime_type: a mime type string
- *
- * Determines if @type is a subset of @mime_type.
- * Convenience wrapper around g_content_type_is_a().
- *
- * Returns: %TRUE if @type is a kind of @mime_type,
- *     %FALSE otherwise.
- *
- * Since: 2.52
- */
 gboolean
-g_content_type_is_mime_type (const gchar *type,
-                             const gchar *mime_type)
+_g_generic_content_type_is_mime_type (const gchar *type,
+                                      const gchar *mime_type)
 {
-  return g_content_type_is_a (type, mime_type);
+  return _g_generic_content_type_is_a (type, mime_type);
 }
 
-/**
- * g_content_type_is_unknown:
- * @type: a content type string
- *
- * Checks if the content type is the generic "unknown" type.
- * On UNIX this is the "application/octet-stream" mimetype,
- * while on win32 it is "*" and on OSX it is a dynamic type
- * or octet-stream.
- *
- * Returns: %TRUE if the type is the unknown type.
- */
 gboolean
-g_content_type_is_unknown (const gchar *type)
+_g_generic_content_type_is_unknown (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
@@ -437,7 +332,7 @@ load_comment_for_mime (const char *mimetype)
 
   basename = g_strdup_printf ("%s.xml", mimetype);
 
-  dirs = g_content_type_get_mime_dirs ();
+  dirs = _g_generic_content_type_get_mime_dirs ();
   for (i = 0; dirs[i] != NULL; i++)
     {
       comment = load_comment_for_mime_helper (dirs[i], basename);
@@ -452,17 +347,8 @@ load_comment_for_mime (const char *mimetype)
   return g_strdup_printf (_("%s type"), mimetype);
 }
 
-/**
- * g_content_type_get_description:
- * @type: a content type string
- *
- * Gets the human readable description of the content type.
- *
- * Returns: a short description of the content type @type. Free the
- *     returned string with g_free()
- */
 gchar *
-g_content_type_get_description (const gchar *type)
+_g_generic_content_type_get_description (const gchar *type)
 {
   static GHashTable *type_comment_cache = NULL;
   gchar *comment;
@@ -493,17 +379,8 @@ g_content_type_get_description (const gchar *type)
   return comment;
 }
 
-/**
- * g_content_type_get_mime_type:
- * @type: a content type string
- *
- * Gets the mime type for the content type, if one is registered.
- *
- * Returns: (nullable) (transfer full): the registered mime type for the
- *     given @type, or %NULL if unknown; free with g_free().
- */
 char *
-g_content_type_get_mime_type (const char *type)
+_g_generic_content_type_get_mime_type (const char *type)
 {
   g_return_val_if_fail (type != NULL, NULL);
 
@@ -511,8 +388,8 @@ g_content_type_get_mime_type (const char *type)
 }
 
 static GIcon *
-g_content_type_get_icon_internal (const gchar *type,
-                                  gboolean     symbolic)
+_g_generic_content_type_get_icon_internal (const gchar *type,
+                                           gboolean     symbolic)
 {
   char *mimetype_icon;
   char *generic_mimetype_icon = NULL;
@@ -538,7 +415,7 @@ g_content_type_get_icon_internal (const gchar *type,
 
   icon_names[n++] = mimetype_icon;
 
-  generic_mimetype_icon = g_content_type_get_generic_icon_name (type);
+  generic_mimetype_icon = _g_generic_content_type_get_generic_icon_name (type);
   if (generic_mimetype_icon)
     icon_names[n++] = generic_mimetype_icon;
 
@@ -561,55 +438,20 @@ g_content_type_get_icon_internal (const gchar *type,
   return themed_icon;
 }
 
-/**
- * g_content_type_get_icon:
- * @type: a content type string
- *
- * Gets the icon for a content type.
- *
- * Returns: (transfer full): #GIcon corresponding to the content type. Free the returned
- *     object with g_object_unref()
- */
 GIcon *
-g_content_type_get_icon (const gchar *type)
+_g_generic_content_type_get_icon (const gchar *type)
 {
-  return g_content_type_get_icon_internal (type, FALSE);
+  return _g_generic_content_type_get_icon_internal (type, FALSE);
 }
 
-/**
- * g_content_type_get_symbolic_icon:
- * @type: a content type string
- *
- * Gets the symbolic icon for a content type.
- *
- * Returns: (transfer full): symbolic #GIcon corresponding to the content type.
- *     Free the returned object with g_object_unref()
- *
- * Since: 2.34
- */
 GIcon *
-g_content_type_get_symbolic_icon (const gchar *type)
+_g_generic_content_type_get_symbolic_icon (const gchar *type)
 {
-  return g_content_type_get_icon_internal (type, TRUE);
+  return _g_generic_content_type_get_icon_internal (type, TRUE);
 }
 
-/**
- * g_content_type_get_generic_icon_name:
- * @type: a content type string
- *
- * Gets the generic icon name for a content type.
- *
- * See the
- * [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
- * specification for more on the generic icon name.
- *
- * Returns: (nullable): the registered generic icon name for the given @type,
- *     or %NULL if unknown. Free with g_free()
- *
- * Since: 2.34
- */
 gchar *
-g_content_type_get_generic_icon_name (const gchar *type)
+_g_generic_content_type_get_generic_icon_name (const gchar *type)
 {
   const gchar *xdg_icon_name;
   gchar *icon_name;
@@ -640,23 +482,13 @@ g_content_type_get_generic_icon_name (const gchar *type)
   return icon_name;
 }
 
-/**
- * g_content_type_can_be_executable:
- * @type: a content type string
- *
- * Checks if a content type can be executable. Note that for instance
- * things like text files can be executables (i.e. scripts and batch files).
- *
- * Returns: %TRUE if the file type corresponds to a type that
- *     can be executable, %FALSE otherwise.
- */
 gboolean
-g_content_type_can_be_executable (const gchar *type)
+_g_generic_content_type_can_be_executable (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
-  if (g_content_type_is_a (type, "application/x-executable")  ||
-      g_content_type_is_a (type, "text/plain"))
+  if (_g_generic_content_type_is_a (type, "application/x-executable")  ||
+      _g_generic_content_type_is_a (type, "text/plain"))
     return TRUE;
 
   return FALSE;
@@ -680,19 +512,8 @@ looks_like_text (const guchar *data, gsize data_size)
   return TRUE;
 }
 
-/**
- * g_content_type_from_mime_type:
- * @mime_type: a mime type string
- *
- * Tries to find a content type based on the mime type name.
- *
- * Returns: (nullable): Newly allocated string with content type or
- *     %NULL. Free with g_free()
- *
- * Since: 2.18
- **/
 gchar *
-g_content_type_from_mime_type (const gchar *mime_type)
+_g_generic_content_type_from_mime_type (const gchar *mime_type)
 {
   char *umime;
 
@@ -706,27 +527,11 @@ g_content_type_from_mime_type (const gchar *mime_type)
   return umime;
 }
 
-/**
- * g_content_type_guess:
- * @filename: (nullable): a string, or %NULL
- * @data: (nullable) (array length=data_size): a stream of data, or %NULL
- * @data_size: the size of @data
- * @result_uncertain: (out) (optional): return location for the certainty
- *     of the result, or %NULL
- *
- * Guesses the content type based on example data. If the function is
- * uncertain, @result_uncertain will be set to %TRUE. Either @filename
- * or @data may be %NULL, in which case the guess will be based solely
- * on the other argument.
- *
- * Returns: a string indicating a guessed content type for the
- *     given data. Free with g_free()
- */
 gchar *
-g_content_type_guess (const gchar  *filename,
-                      const guchar *data,
-                      gsize         data_size,
-                      gboolean     *result_uncertain)
+_g_generic_content_type_guess (const gchar  *filename,
+                               const guchar *data,
+                               gsize         data_size,
+                               gboolean     *result_uncertain)
 {
   const char *name_mimetypes[10], *sniffed_mimetype;
   char *mimetype;
@@ -859,22 +664,22 @@ enumerate_mimetypes_subdir (const char *dir,
                             const char *prefix,
                             GHashTable *mimetypes)
 {
-  DIR *d;
-  struct dirent *ent;
+  GDir *d;
+  const gchar *d_name;
   char *mimetype;
 
-  d = opendir (dir);
+  d = g_dir_open (dir, 0, NULL);
   if (d)
     {
-      while ((ent = readdir (d)) != NULL)
+      while ((d_name = g_dir_read_name (d)) != NULL)
         {
-          if (g_str_has_suffix (ent->d_name, ".xml"))
+          if (g_str_has_suffix (d_name, ".xml"))
             {
-              mimetype = g_strdup_printf ("%s/%.*s", prefix, (int) strlen (ent->d_name) - 4, ent->d_name);
+              mimetype = g_strdup_printf ("%s/%.*s", prefix, (int) strlen (d_name) - 4, d_name);
               g_hash_table_replace (mimetypes, mimetype, NULL);
             }
         }
-      closedir (d);
+      g_dir_close (d);
     }
 }
 
@@ -882,42 +687,32 @@ static void
 enumerate_mimetypes_dir (const char *dir,
                          GHashTable *mimetypes)
 {
-  DIR *d;
-  struct dirent *ent;
+  GDir *d;
+  const gchar *d_name;
   const char *mimedir;
   char *name;
 
   mimedir = dir;
 
-  d = opendir (mimedir);
+  d = g_dir_open (mimedir, 0, NULL);
   if (d)
     {
-      while ((ent = readdir (d)) != NULL)
+      while ((d_name = g_dir_read_name (d)) != NULL)
         {
-          if (strcmp (ent->d_name, "packages") != 0)
+          if (strcmp (d_name, "packages") != 0)
             {
-              name = g_build_filename (mimedir, ent->d_name, NULL);
+              name = g_build_filename (mimedir, d_name, NULL);
               if (g_file_test (name, G_FILE_TEST_IS_DIR))
-                enumerate_mimetypes_subdir (name, ent->d_name, mimetypes);
+                enumerate_mimetypes_subdir (name, d_name, mimetypes);
               g_free (name);
             }
         }
-      closedir (d);
+      g_dir_close (d);
     }
 }
 
-/**
- * g_content_types_get_registered:
- *
- * Gets a list of strings containing all the registered content types
- * known to the system. The list and its data should be freed using
- * `g_list_free_full (list, g_free)`.
- *
- * Returns: (element-type utf8) (transfer full): list of the registered
- *     content types
- */
 GList *
-g_content_types_get_registered (void)
+_g_generic_content_types_get_registered (void)
 {
   const char * const *dirs;
   GHashTable *mimetypes;
@@ -928,7 +723,7 @@ g_content_types_get_registered (void)
 
   mimetypes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-  dirs = g_content_type_get_mime_dirs ();
+  dirs = _g_generic_content_type_get_mime_dirs ();
   for (i = 0; dirs[i] != NULL; i++)
     enumerate_mimetypes_dir (dirs[i], mimetypes);
 
@@ -1209,7 +1004,7 @@ tree_magic_init (void)
 
       tree_magic_shutdown ();
 
-      dirs = g_content_type_get_mime_dirs ();
+      dirs = _g_generic_content_type_get_mime_dirs ();
       for (i = 0; dirs[i] != NULL; i++)
         read_tree_magic_from_directory (dirs[i]);
     }
@@ -1487,30 +1282,8 @@ match_match (TreeMatch    *match,
     }
 }
 
-/**
- * g_content_type_guess_for_tree:
- * @root: the root of the tree to guess a type for
- *
- * Tries to guess the type of the tree with root @root, by
- * looking at the files it contains. The result is an array
- * of content types, with the best guess coming first.
- *
- * The types returned all have the form x-content/foo, e.g.
- * x-content/audio-cdda (for audio CDs) or x-content/image-dcf
- * (for a camera memory card). See the
- * [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
- * specification for more on x-content types.
- *
- * This function is useful in the implementation of
- * g_mount_guess_content_type().
- *
- * Returns: (transfer full) (array zero-terminated=1): an %NULL-terminated
- *     array of zero or more content types. Free with g_strfreev()
- *
- * Since: 2.18
- */
 gchar **
-g_content_type_guess_for_tree (GFile *root)
+_g_generic_content_type_guess_for_tree (GFile *root)
 {
   GPtrArray *types;
   GList *l;
