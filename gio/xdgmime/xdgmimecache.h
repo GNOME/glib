@@ -51,6 +51,7 @@ extern XdgMimeCache **_caches;
 XdgMimeCache *_xdg_mime_cache_new_from_file (const char   *file_name);
 XdgMimeCache *_xdg_mime_cache_ref           (XdgMimeCache *cache);
 void          _xdg_mime_cache_unref         (XdgMimeCache *cache);
+size_t        _xdg_mime_cache_get_size      (XdgMimeCache *cache);
 
 
 const char  *_xdg_mime_cache_get_mime_type_for_data       (const void *data,
