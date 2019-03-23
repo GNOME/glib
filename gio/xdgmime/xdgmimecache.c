@@ -23,13 +23,19 @@
  */
 
 #include "config.h"
+#include <glib.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <fcntl.h>
+#ifdef G_OS_UNIX
 #include <unistd.h>
+#endif
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
 #include <errno.h>
 #include <glib.h>
 #include <assert.h>
