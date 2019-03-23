@@ -808,10 +808,25 @@ _xdg_mime_get_ext (const char  *mime_type,
   return 0;
 }
 
+/* Same as xdg_mime_get_mime_type_for_data(),
+ * but also checks how the data fits into suggested types
+ * and eliminates them if it doesn't.
+ * The intention is to make filename-based sniffing
+ * and magic-sniffing integration tighter. For example,
+ * if there's a magic pattern for foo/bar, and foo/bar is
+ * on the suggestions list, but the data does *not* match
+ * foo/bar, remove it from the list of suggestions.
+ *
+ * NOTE: suggestions will be modified, so keep a copy if it
+ * would nee to be freed later.
+ */
 const char *
-xdg_mime_get_mime_type_for_data (const void *data,
-				 size_t      len,
-				 int        *result_prio)
+xdg_mime_get_mime_type_for_data_with_suggestions (const void  *data,
+                                                  size_t       len,
+                                                  int         *result_prio,
+                                                  const char **suggestions,
+                                                  int          suggestions_len,
+                                                  int          eliminate_only)
 {
   const char *mime_type;
 
@@ -823,15 +838,23 @@ xdg_mime_get_mime_type_for_data (const void *data,
 
   xdg_mime_init ();
 
-  if (_caches && n_nonempty_caches > 0)
-    mime_type = _xdg_mime_cache_get_mime_type_for_data (data, len, result_prio);
+  if (_caches && n_nonempty_caches > 0 && suggestions_len == 0)
+    mime_type = _xdg_mime_cache_get_mime_type_for_data_with_suggestions (data, len, result_prio, suggestions, suggestions_len, eliminate_only);
   else
-    mime_type = _xdg_mime_magic_lookup_data (global_magic, data, len, result_prio, NULL, 0);
+    mime_type = _xdg_mime_magic_lookup_data (global_magic, data, len, result_prio, suggestions, suggestions_len, eliminate_only);
 
   if (mime_type)
     return mime_type;
 
   return _xdg_binary_or_text_fallback(data, len);
+}
+
+const char *
+xdg_mime_get_mime_type_for_data (const void *data,
+                                 size_t      len,
+                                 int        *result_prio)
+{
+  return xdg_mime_get_mime_type_for_data_with_suggestions (data, len, result_prio, NULL, 0, FALSE);
 }
 
 #ifdef NOT_USED_IN_GIO
@@ -904,7 +927,7 @@ xdg_mime_get_mime_type_for_file (const char  *file_name,
     }
 
   mime_type = _xdg_mime_magic_lookup_data (global_magic, data, bytes_read, NULL,
-					   mime_types, n);
+					   mime_types, n, FALSE);
 
   free (data);
   fclose (file);

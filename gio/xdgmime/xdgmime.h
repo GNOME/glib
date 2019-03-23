@@ -50,6 +50,7 @@ typedef void (*XdgMimeDestroy)  (void *user_data);
   
 #ifdef XDG_PREFIX
 #define xdg_mime_get_mime_type_for_data       XDG_ENTRY(get_mime_type_for_data)
+#define xdg_mime_get_mime_type_for_data_with_suggestions XDG_ENTRY(get_mime_type_for_data_with_suggestions)
 #define xdg_mime_get_mime_type_for_file       XDG_ENTRY(get_mime_type_for_file)
 #define xdg_mime_get_mime_type_from_file_name XDG_ENTRY(get_mime_type_from_file_name)
 #define xdg_mime_get_mime_types_from_file_name XDG_ENTRY(get_mime_types_from_file_name)
@@ -86,6 +87,12 @@ extern const char xdg_mime_type_textplain[];
 const char  *xdg_mime_get_mime_type_for_data       (const void *data,
 						    size_t      len,
 						    int        *result_prio);
+const char  *xdg_mime_get_mime_type_for_data_with_suggestions   (const void  *data,
+                                                                 size_t       len,
+                                                                 int         *result_prio,
+                                                                 const char **suggestions,
+                                                                 int          suggestions_len,
+                                                                 int          eliminate_only);
 #ifdef NOT_USED_IN_GIO
 const char  *xdg_mime_get_mime_type_for_file       (const char *file_name,
                                                     struct stat *statbuf);

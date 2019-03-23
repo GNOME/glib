@@ -616,6 +616,7 @@ _g_generic_content_type_guess (const gchar  *filename,
   char *mimetype;
   int i;
   int n_name_mimetypes;
+  int n_nonnull_name_mimetypes;
   int sniffed_prio;
   gchar *actual_extension;
   gchar *sniffed_ext_mimetype;
@@ -670,16 +671,12 @@ _g_generic_content_type_guess (const gchar  *filename,
 
 #define APP_X_EXT_ "application/x-extension-"
 
-  /* Got an extension match, not a synthetic, and no conflicts. This is it. */
-  /* TODO: Is this correct? We're guessing based on filename *only*, even
-   * though we might have some data to sniff too. The caller already spent
-   * resources on I/O to get us that data, doing a mime/type data-matching
-   * should be cheap by comparison - this isn't about performance anymore.
-   */
+  /* Got an extension match, not a synthetic, no conflicts and no data. This is it. */
   if (n_name_mimetypes == 1 &&
       strncmp (name_mimetypes[0],
                APP_X_EXT_,
-               strlen (APP_X_EXT_)) != 0)
+               strlen (APP_X_EXT_)) != 0 &&
+      data == NULL)
     {
       gchar *s = g_strdup (name_mimetypes[0]);
       G_UNLOCK (gio_xdgmime);
@@ -688,14 +685,24 @@ _g_generic_content_type_guess (const gchar  *filename,
     }
 
   sniffed_ext_mimetype = NULL;
+  n_nonnull_name_mimetypes = n_name_mimetypes;
 
   if (data)
     {
-      sniffed_mimetype = xdg_mime_get_mime_type_for_data (data, data_size, &sniffed_prio);
+      sniffed_mimetype = xdg_mime_get_mime_type_for_data_with_suggestions (data,
+                                                                           data_size,
+                                                                           &sniffed_prio,
+                                                                           name_mimetypes,
+                                                                           n_name_mimetypes,
+                                                                           TRUE);
       if (sniffed_mimetype == XDG_MIME_TYPE_UNKNOWN &&
           data &&
           looks_like_text (data, data_size))
         sniffed_mimetype = "text/plain";
+
+      for (i = 0; i < n_name_mimetypes; i++)
+        if (name_mimetypes[i] == NULL)
+          n_nonnull_name_mimetypes -= 1;
 
       /* For security reasons we don't ever want to sniff desktop files
        * where we know the filename and it doesn't have a .desktop extension.
@@ -719,7 +726,7 @@ _g_generic_content_type_guess (const gchar  *filename,
         }
     }
 
-  if (n_name_mimetypes == 0)
+  if (n_nonnull_name_mimetypes == 0)
     {
       if (sniffed_mimetype == XDG_MIME_TYPE_UNKNOWN &&
           result_uncertain)
@@ -742,33 +749,39 @@ _g_generic_content_type_guess (const gchar  *filename,
                */
               for (i = 0; i < n_name_mimetypes; i++)
                 {
-                  if (strncmp (name_mimetypes[i], APP_X_EXT_, strlen (APP_X_EXT_)) != 0 &&
-                      xdg_mime_mime_type_subclass (name_mimetypes[i], sniffed_mimetype))
-                    {
-                      if (strstr (name_mimetypes[i], " ext="))
-                        g_warning ("Trying to add extension \"%s\" to content type \"%s\"",
-                                   actual_extension, name_mimetypes[i]);
-                      /* This nametype match is derived from (or the same as)
-                       * the sniffed type). This is probably it.
-                       */
-                      mimetype = maybe_add_ext (name_mimetypes[i], actual_extension);
-                      break;
-                    }
+                  if (name_mimetypes[i] == NULL || /* xdg_mime_get_mime_type_for_data_with_suggestions() can turn some of them into NULLs */
+                      strncmp (name_mimetypes[i], APP_X_EXT_, strlen (APP_X_EXT_)) == 0 ||
+                      !xdg_mime_mime_type_subclass (name_mimetypes[i], sniffed_mimetype))
+                    continue;
+                  if (strstr (name_mimetypes[i], " ext="))
+                    g_warning ("Trying to add extension \"%s\" to content type \"%s\"",
+                               actual_extension, name_mimetypes[i]);
+                  /* This nametype match is derived from (or the same as)
+                   * the sniffed type. This is probably it.
+                   */
+                  mimetype = maybe_add_ext (name_mimetypes[i], actual_extension);
+                  break;
                 }
             }
         }
 
       if (mimetype == NULL)
         {
-          if (strstr (name_mimetypes[0], " ext="))
-            g_warning ("Trying to add extension \"%s\" to content type \"%s\"",
-                       actual_extension, name_mimetypes[0]);
           /* Conflicts, and sniffed type was no help or not there.
            * Guess on the first one
            */
-          mimetype = maybe_add_ext (name_mimetypes[0], actual_extension);
-          if (result_uncertain)
-            *result_uncertain = TRUE;
+          for (i = 0; mimetype == NULL && i < n_name_mimetypes; i++)
+            {
+              if (name_mimetypes[i] == NULL)
+                continue;
+
+              if (strstr (name_mimetypes[i], " ext="))
+                g_warning ("Trying to add extension \"%s\" to content type \"%s\"",
+                           actual_extension, name_mimetypes[i]);
+              mimetype = maybe_add_ext (name_mimetypes[i], actual_extension);
+              if (result_uncertain)
+                *result_uncertain = TRUE;
+            }
         }
     }
 
