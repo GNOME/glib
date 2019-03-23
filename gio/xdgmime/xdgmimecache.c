@@ -24,6 +24,7 @@
 
 #include "config.h"
 #include <glib.h>
+#include <glib/gstdio.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,6 +49,8 @@
 
 #ifdef HAVE_MMAP
 #include <sys/mman.h>
+#elif defined(_WIN32)
+#include <windows.h>
 #else
 #warning Building xdgmime without MMAP support. Binary "mime.info" cache files will not be used.
 #endif
@@ -110,6 +113,8 @@ _xdg_mime_cache_unref (XdgMimeCache *cache)
     {
 #ifdef HAVE_MMAP
       munmap (cache->buffer, cache->size);
+#elif defined(_WIN32)
+      UnmapViewOfFile (cache->buffer);
 #endif
       free (cache);
     }
@@ -171,6 +176,55 @@ _xdg_mime_cache_new_from_file (const char *file_name)
  done:
   if (fd != -1)
     close (fd);
+#elif defined(_WIN32) /* HAVE_MMAP */
+  int fd = -1;
+  struct stat st;
+  char *buffer = NULL;
+  HANDLE mapping;
+  int minor;
+
+  /* Open the file and map it into memory */
+  do
+    fd = g_open (file_name, O_RDONLY|_O_BINARY, 0);
+  while (fd == -1 && errno == EINTR);
+
+  if (fd < 0)
+    return NULL;
+
+  if (fstat (fd, &st) < 0 || st.st_size < 4)
+    goto done;
+
+  mapping = CreateFileMapping ((HANDLE) _get_osfhandle (fd), NULL, PAGE_READONLY, 0, 0, NULL);
+
+  if (mapping == NULL)
+    goto done;
+
+  buffer = MapViewOfFileEx (mapping, FILE_MAP_READ, 0, 0, 0, NULL);
+  CloseHandle (mapping);
+
+  if (buffer == NULL)
+    goto done;
+
+  minor = GET_UINT16 (buffer, 2);
+  /* Verify version */
+  if (GET_UINT16 (buffer, 0) != MAJOR_VERSION ||
+      (minor < MINOR_VERSION_MIN ||
+       minor > MINOR_VERSION_MAX))
+    {
+      UnmapViewOfFile (buffer);
+
+      goto done;
+    }
+
+  cache = (XdgMimeCache *) malloc (sizeof (XdgMimeCache));
+  cache->minor = minor;
+  cache->ref_count = 1;
+  cache->buffer = buffer;
+  cache->size = st.st_size;
+
+ done:
+  if (fd != -1)
+    g_close (fd);
 
 #else /* HAVE_MMAP */
   cache = (XdgMimeCache *) malloc (sizeof (XdgMimeCache));
