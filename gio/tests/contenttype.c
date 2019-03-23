@@ -80,15 +80,19 @@ test_guess (void)
   g_free (expected);
 
   /* this is potentially ambiguous: it does not match the PO template format,
-   * but looks like text so it can't be Powerpoint */
+   * so it can't be gettext template - must be Powerpoint, though it's uncertain,
+   * as we don't have Powerpoint magic to match it with certainty.
+   */
   res = g_content_type_guess ("test.pot", (guchar *)"ABC abc", 7, &uncertain);
-  expected = g_content_type_from_mime_type ("text/x-gettext-translation-template");
+  expected = g_content_type_from_mime_type ("application/vnd.ms-powerpoint");
   g_assert_content_type_equals (expected, res);
-  g_assert (!uncertain);
+  g_assert (uncertain);
   g_free (res);
   g_free (expected);
 
-  res = g_content_type_guess ("test.pot", (guchar *)"msgid \"", 7, &uncertain);
+#define MINPOT "foo#, fuzzy\nmsgid \"\"\nmsgstr \"\"\n\"Project-Id-Version:bar"
+  res = g_content_type_guess ("test.pot", (guchar *) MINPOT, strlen (MINPOT), &uncertain);
+#undef MINPOT
   expected = g_content_type_from_mime_type ("text/x-gettext-translation-template");
   g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
