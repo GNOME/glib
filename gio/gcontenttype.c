@@ -728,7 +728,6 @@ g_content_type_guess (const gchar  *filename,
                       gsize         data_size,
                       gboolean     *result_uncertain)
 {
-  char *basename;
   const char *name_mimetypes[10], *sniffed_mimetype;
   char *mimetype;
   int i;
@@ -761,8 +760,19 @@ g_content_type_guess (const gchar  *filename,
         }
       else
         {
+          gchar *basename;
+          gchar *basename_utf8 = NULL;
+
           basename = g_path_get_basename (filename);
-          n_name_mimetypes = xdg_mime_get_mime_types_from_file_name (basename, name_mimetypes, 10);
+          if (basename)
+            basename_utf8 = g_filename_to_utf8 (basename, -1, NULL, NULL, NULL);
+
+          if (basename_utf8)
+            n_name_mimetypes = xdg_mime_get_mime_types_from_file_name (basename_utf8, name_mimetypes, 10);
+          else
+            n_name_mimetypes = 0;
+
+          g_free (basename_utf8);
           g_free (basename);
         }
     }

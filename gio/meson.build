@@ -372,6 +372,10 @@ gdbus_daemon_sources = [
   gdbus_daemon_generated,
 ]
 
+subdir('xdgmime')
+internal_deps += [xdgmime_lib]
+internal_objects += [xdgmime_lib.extract_all_objects()]
+
 if host_system != 'windows'
   unix_sources = files(
     'gfiledescriptorbased.c',
@@ -432,10 +436,6 @@ if host_system != 'windows'
       # intl.lib is not compatible with SAFESEH
       link_args : noseh_link_args)
   endif
-
-  subdir('xdgmime')
-  internal_deps += [xdgmime_lib]
-  internal_objects += [xdgmime_lib.extract_all_objects()]
 
   install_headers(gio_unix_include_headers, subdir : 'gio-unix-2.0/gio')
 

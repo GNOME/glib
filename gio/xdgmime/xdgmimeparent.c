@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include <fnmatch.h>
+#include <glib.h>
 
 #ifndef	FALSE
 #define	FALSE	(0)
@@ -122,75 +122,92 @@ void
 _xdg_mime_parent_read_from_file (XdgParentList *list,
 				 const char    *file_name)
 {
-  FILE *file;
-  char line[255];
-  int i, alloc;
+  char *contents, *contents_end;
+  gsize contents_len;
+  char *line, *next_line, *eol;
+  int alloc, i;
   XdgMimeParents *entry;
 
-  file = fopen (file_name, "r");
-
-  if (file == NULL)
+  if (!g_file_get_contents (file_name, &contents, &contents_len, NULL))
     return;
 
-  /* FIXME: Not UTF-8 safe.  Doesn't work if lines are greater than 255 chars.
-   * Blah */
   alloc = list->n_mimes + 16;
   list->parents = realloc (list->parents, alloc * sizeof (XdgMimeParents));
-  while (fgets (line, 255, file) != NULL)
-    {
-      char *sep;
-      if (line[0] == '#')
-	continue;
 
-      sep = strchr (line, ' ');
+  contents_end = contents + contents_len;
+  next_line = contents;
+  while (next_line != NULL)
+    {
+      size_t contents_left;
+      char *sep, *parent;
+      line = next_line;
+      contents_left = contents_end - line;
+
+      eol = memchr (line, '\n', contents_left);
+      if (eol != NULL)
+        {
+          next_line = eol + 1;
+        }
+      else
+        {
+          next_line = NULL;
+          eol = contents_end;
+        }
+
+      if (line[0] == '#')
+        continue;
+
+      sep = memchr (line, ' ', (size_t) (eol - line));
       if (sep == NULL)
-	continue;
+        continue;
       *(sep++) = '\000';
-      sep[strlen (sep) -1] = '\000';
       entry = NULL;
       for (i = 0; i < list->n_mimes; i++)
-	{
-	  if (strcmp (list->parents[i].mime, line) == 0)
-	    {
-	      entry = &(list->parents[i]);
-	      break;
-	    }
-	}
-      
+        {
+          if (strcmp (list->parents[i].mime, line) != 0)
+            continue;
+          entry = &(list->parents[i]);
+          break;
+        }
+
       if (!entry)
-	{
-	  if (list->n_mimes == alloc)
-	    {
-	      alloc <<= 1;
-	      list->parents = realloc (list->parents, 
-				       alloc * sizeof (XdgMimeParents));
-	    }
-	  list->parents[list->n_mimes].mime = strdup (line);
-	  list->parents[list->n_mimes].parents = NULL;
-	  entry = &(list->parents[list->n_mimes]);
-	  list->n_mimes++;
-	}
+        {
+          if (list->n_mimes == alloc)
+            {
+              alloc <<= 1;
+              list->parents = realloc (list->parents, 
+                                       alloc * sizeof (XdgMimeParents));
+            }
+          list->parents[list->n_mimes].mime = strdup (line);
+          list->parents[list->n_mimes].parents = NULL;
+          entry = &(list->parents[list->n_mimes]);
+          list->n_mimes++;
+        }
 
       if (!entry->parents)
-	{
-	  entry->n_parents = 1;
-	  entry->parents = malloc ((entry->n_parents + 1) * sizeof (char *));
-	}
+        {
+          entry->n_parents = 1;
+          entry->parents = malloc ((entry->n_parents + 1) * sizeof (char *));
+        }
       else
-	{
-	  entry->n_parents += 1;
-	  entry->parents = realloc (entry->parents, 
-				    (entry->n_parents + 2) * sizeof (char *));
-	}
-      entry->parents[entry->n_parents - 1] = strdup (sep);
+        {
+          entry->n_parents += 1;
+          entry->parents = realloc (entry->parents,
+                                    (entry->n_parents + 2) * sizeof (char *));
+        }
+
+      parent = malloc ((size_t) (eol - sep) + 1);
+      memcpy (parent, sep, (size_t) (eol - sep));
+      parent[(size_t) (eol - sep)] = '\000';
+      entry->parents[entry->n_parents - 1] = parent;
       entry->parents[entry->n_parents] = NULL;
     }
 
   list->parents = realloc (list->parents, 
-			   list->n_mimes * sizeof (XdgMimeParents));
+                           list->n_mimes * sizeof (XdgMimeParents));
 
-  fclose (file);  
-  
+  g_free (contents);
+
   if (list->n_mimes > 1)
     qsort (list->parents, list->n_mimes, 
            sizeof (XdgMimeParents), &parent_entry_cmp);

@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include <fnmatch.h>
+#include <glib.h>
 
 #ifndef	FALSE
 #define	FALSE	(0)
@@ -116,45 +116,64 @@ void
 _xdg_mime_alias_read_from_file (XdgAliasList *list,
 				const char   *file_name)
 {
-  FILE *file;
-  char line[255];
+  char *contents, *contents_end;
+  gsize contents_len;
+  char *line, *next_line, *eol;
   int alloc;
 
-  file = fopen (file_name, "r");
-
-  if (file == NULL)
+  if (!g_file_get_contents (file_name, &contents, &contents_len, NULL))
     return;
 
-  /* FIXME: Not UTF-8 safe.  Doesn't work if lines are greater than 255 chars.
-   * Blah */
   alloc = list->n_aliases + 16;
   list->aliases = realloc (list->aliases, alloc * sizeof (XdgAlias));
-  while (fgets (line, 255, file) != NULL)
-    {
-      char *sep;
-      if (line[0] == '#')
-	continue;
 
-      sep = strchr (line, ' ');
+  contents_end = contents + contents_len;
+  next_line = contents;
+  while (next_line != NULL)
+    {
+      size_t contents_left;
+      char *sep, *mime;
+      line = next_line;
+      contents_left = contents_end - line;
+
+      eol = memchr (line, '\n', contents_left);
+      if (eol != NULL)
+        {
+          next_line = eol + 1;
+        }
+      else
+        {
+          next_line = NULL;
+          eol = contents_end;
+        }
+
+      if (line[0] == '#')
+        continue;
+
+      sep = memchr (line, ' ', (size_t) (eol - line));
       if (sep == NULL)
-	continue;
+        continue;
+
       *(sep++) = '\000';
-      sep[strlen (sep) -1] = '\000';
+
       if (list->n_aliases == alloc)
-	{
-	  alloc <<= 1;
-	  list->aliases = realloc (list->aliases, 
-				   alloc * sizeof (XdgAlias));
-	}
+        {
+          alloc <<= 1;
+          list->aliases = realloc (list->aliases, alloc * sizeof (XdgAlias));
+        }
+
       list->aliases[list->n_aliases].alias = strdup (line);
-      list->aliases[list->n_aliases].mime_type = strdup (sep);
+      mime = malloc ((size_t) (eol - sep) + 1);
+      memcpy (mime, sep, (size_t) (eol - sep));
+      mime[(size_t) (eol - sep)] = '\000';
+      list->aliases[list->n_aliases].mime_type = mime;
       list->n_aliases++;
     }
-  list->aliases = realloc (list->aliases, 
-			   list->n_aliases * sizeof (XdgAlias));
 
-  fclose (file);  
-  
+  list->aliases = realloc (list->aliases, list->n_aliases * sizeof (XdgAlias));
+
+  g_free (contents);
+
   if (list->n_aliases > 1)
     qsort (list->aliases, list->n_aliases, 
            sizeof (XdgAlias), alias_entry_cmp);

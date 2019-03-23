@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include <fnmatch.h>
+#include <glib.h>
 
 #ifndef	FALSE
 #define	FALSE	(0)
@@ -115,45 +115,63 @@ void
 _xdg_mime_icon_read_from_file (XdgIconList *list,
 			       const char   *file_name)
 {
-  FILE *file;
-  char line[255];
+  char *contents, *contents_end;
+  gsize contents_len;
+  char *line, *next_line, *eol;
   int alloc;
 
-  file = fopen (file_name, "r");
-
-  if (file == NULL)
+  if (!g_file_get_contents (file_name, &contents, &contents_len, NULL))
     return;
 
-  /* FIXME: Not UTF-8 safe.  Doesn't work if lines are greater than 255 chars.
-   * Blah */
   alloc = list->n_icons + 16;
   list->icons = realloc (list->icons, alloc * sizeof (XdgIcon));
-  while (fgets (line, 255, file) != NULL)
-    {
-      char *sep;
-      if (line[0] == '#')
-	continue;
 
-      sep = strchr (line, ':');
+  contents_end = contents + contents_len;
+  next_line = contents;
+  while (next_line != NULL)
+    {
+      size_t contents_left;
+      char *sep, *icon_name;
+      line = next_line;
+      contents_left = contents_end - line;
+
+      eol = memchr (line, '\n', contents_left);
+      if (eol != NULL)
+        {
+          next_line = eol + 1;
+        }
+      else
+        {
+          next_line = NULL;
+          eol = contents_end;
+        }
+
+      if (line[0] == '#')
+        continue;
+
+      sep = memchr (line, ':', (size_t) (eol - line));
       if (sep == NULL)
-	continue;
+        continue;
+
       *(sep++) = '\000';
-      sep[strlen (sep) -1] = '\000';
       if (list->n_icons == alloc)
-	{
-	  alloc <<= 1;
-	  list->icons = realloc (list->icons, 
-				   alloc * sizeof (XdgIcon));
-	}
+        {
+          alloc <<= 1;
+          list->icons = realloc (list->icons, alloc * sizeof (XdgIcon));
+        }
+
       list->icons[list->n_icons].mime_type = strdup (line);
-      list->icons[list->n_icons].icon_name = strdup (sep);
+      icon_name = malloc ((size_t) (eol - sep) + 1);
+      memcpy (icon_name, sep, (size_t) (eol - sep));
+      icon_name[(size_t) (eol - sep)] = '\000';
+      list->icons[list->n_icons].icon_name = icon_name;
       list->n_icons++;
     }
-  list->icons = realloc (list->icons, 
-			   list->n_icons * sizeof (XdgIcon));
 
-  fclose (file);  
-  
+  list->icons = realloc (list->icons, list->n_icons * sizeof (XdgIcon));
+
+  g_free (contents);
+
   if (list->n_icons > 1)
     qsort (list->icons, list->n_icons, 
            sizeof (XdgIcon), icon_entry_cmp);

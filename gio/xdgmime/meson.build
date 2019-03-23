@@ -13,4 +13,5 @@ xdgmime_lib = static_library('xdgmime',
   sources : xdgmime_sources,
   include_directories : [configinc],
   pic : true,
+  dependencies : [libglib_dep],
   c_args : [ '-DXDG_PREFIX=_gio_xdg' ] + glib_hidden_visibility_args)

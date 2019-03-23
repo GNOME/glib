@@ -200,3 +200,20 @@ _xdg_binary_or_text_fallback(const void *data, size_t len)
 
   return XDG_MIME_TYPE_TEXTPLAIN;
 }
+
+char *
+_xdg_memstr (char *haystack, const char *needle, size_t len)
+{
+  size_t i, j;
+  size_t needle_len = strlen (needle);
+  for (i = 0; i < len; i++)
+    {
+      for (j = 0; j < needle_len && i + j < len; j++)
+        if (haystack[i+j] != needle[j])
+          break;
+      if (j < needle_len)
+        continue;
+      return &haystack[i];
+    }
+  return NULL;
+}
