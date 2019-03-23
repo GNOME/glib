@@ -196,7 +196,7 @@ _g_generic_content_type_is_unknown (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
-  return strcmp (XDG_MIME_TYPE_UNKNOWN, type) == 0;
+  return _xdg_mime_mime_type_cmp_ext (XDG_MIME_TYPE_UNKNOWN, type) == 0;
 }
 
 
@@ -460,6 +460,12 @@ _g_generic_content_type_get_generic_icon_name (const gchar *type)
   xdg_icon_name = xdg_mime_get_generic_icon (type);
   G_UNLOCK (gio_xdgmime);
 
+  /* TODO: an opportunity here. Define icon-name="..." content
+   * type parameter, and store icon name right with the content
+   * type value! This will ensure that any content type that comes
+   * with an icon name will retain it while being processed
+   * by GContentType APIs.
+   */
   if (!xdg_icon_name)
     {
       const char *p;
@@ -467,7 +473,11 @@ _g_generic_content_type_get_generic_icon_name (const gchar *type)
 
       p = strchr (type, '/');
       if (p == NULL)
-        p = type + strlen (type);
+        {
+          p = strchr (type, ';');
+          if (p == NULL)
+            p = type + strlen (type);
+        }
 
       icon_name = g_malloc (p - type + strlen (suffix) + 1);
       memcpy (icon_name, type, p - type);
@@ -527,6 +537,75 @@ _g_generic_content_type_from_mime_type (const gchar *mime_type)
   return umime;
 }
 
+/* Return a copy of @sniffed_mimetype, possibly
+ * with "; ext=.foo" added, where "foo" is
+ * either @actual_extension or the default extension
+ * that mime/type database has stored for @sniffed_mimetype.
+ * The point is to avoid losing the file extension
+ * when guessing file mime/type, because file extension
+ * has significance on some OSes (i.e. Windows).
+ */
+static gchar *
+maybe_add_ext (const gchar *sniffed_mimetype,
+               const gchar *actual_extension)
+{
+  gchar *ext = NULL;
+  int ext_n = 0;
+  const gchar *semicolon;
+  gchar *sniffed_ext_mimetype;
+
+  /* Get default extension for this mime/type */
+  ext_n = xdg_mime_get_file_exts_from_mime_type (sniffed_mimetype, &ext, 1);
+
+  if (ext_n == 1 && actual_extension != NULL)
+    {
+      /* See if this extension matches the actual extension */
+      if (strcmp (actual_extension, ext) != 0)
+        {
+          /* Extension of the sniffed type doesn't match actual extension.
+           * Disregard the sniffed one.
+           */
+          ext_n = 0;
+        }
+    }
+
+  semicolon = strchr (sniffed_mimetype, ';');
+
+  /* Only add the ext=... parameter if it's impossible to
+   * infer current file extension from the mime/type alone.
+   * Otherwise we end up with redundant things like
+   * application/x-extension-foo; ext=foo
+   * application/pdf; ext=pdf
+   * and so on.
+   * ext_n == 0 means that this mime/type either has
+   * no associated extension (so we have to add ext=...,
+   * otherwise we'll lose the extension), or its associated
+   * extension does not match the actual extension (thus we
+   * also have to add ext=..., otherwise we'll lose the
+   * non-standard extension).
+   */
+  if (ext_n == 0 && actual_extension != NULL)
+    {
+      /* This assumes that xdg sniffer (which gave us sniffed_mimetype) doesn't
+       * return a type with ext parameter.
+       * If it does, we'll end up with "mime/type; ext=.returned ext=.actual",
+       * and .returned takes precedence.
+       */
+      sniffed_ext_mimetype = g_strdup_printf ("%s%s ext=\"%s\"",
+                                              sniffed_mimetype,
+                                              semicolon ? "" : ";",
+                                              actual_extension);
+    }
+  else
+    {
+      sniffed_ext_mimetype = g_strdup (sniffed_mimetype);
+    }
+
+  g_free (ext);
+
+  return sniffed_ext_mimetype;
+}
+
 gchar *
 _g_generic_content_type_guess (const gchar  *filename,
                                const guchar *data,
@@ -538,6 +617,8 @@ _g_generic_content_type_guess (const gchar  *filename,
   int i;
   int n_name_mimetypes;
   int sniffed_prio;
+  gchar *actual_extension;
+  gchar *sniffed_ext_mimetype;
 
   sniffed_prio = 0;
   n_name_mimetypes = 0;
@@ -551,6 +632,8 @@ _g_generic_content_type_guess (const gchar  *filename,
   g_return_val_if_fail (data_size != (gsize) -1, g_strdup (XDG_MIME_TYPE_UNKNOWN));
 
   G_LOCK (gio_xdgmime);
+
+  actual_extension = NULL;
 
   if (filename)
     {
@@ -577,18 +660,34 @@ _g_generic_content_type_guess (const gchar  *filename,
           else
             n_name_mimetypes = 0;
 
+          if (strrchr (basename_utf8, '.') != NULL)
+            actual_extension = g_strdup (strrchr (basename_utf8, '.'));
+
           g_free (basename_utf8);
           g_free (basename);
         }
     }
 
-  /* Got an extension match, and no conflicts. This is it. */
-  if (n_name_mimetypes == 1)
+#define APP_X_EXT_ "application/x-extension-"
+
+  /* Got an extension match, not a synthetic, and no conflicts. This is it. */
+  /* TODO: Is this correct? We're guessing based on filename *only*, even
+   * though we might have some data to sniff too. The caller already spent
+   * resources on I/O to get us that data, doing a mime/type data-matching
+   * should be cheap by comparison - this isn't about performance anymore.
+   */
+  if (n_name_mimetypes == 1 &&
+      strncmp (name_mimetypes[0],
+               APP_X_EXT_,
+               strlen (APP_X_EXT_)) != 0)
     {
       gchar *s = g_strdup (name_mimetypes[0]);
       G_UNLOCK (gio_xdgmime);
+      g_free (actual_extension);
       return s;
     }
+
+  sniffed_ext_mimetype = NULL;
 
   if (data)
     {
@@ -605,8 +704,19 @@ _g_generic_content_type_guess (const gchar  *filename,
        * else.
        */
       if (filename != NULL &&
-          strcmp (sniffed_mimetype, "application/x-desktop") == 0)
-        sniffed_mimetype = "text/plain";
+          _xdg_mime_mime_type_cmp_ext (sniffed_mimetype, "application/x-desktop") == 0)
+        {
+          sniffed_mimetype = "text/plain";
+          sniffed_ext_mimetype = g_strdup (sniffed_mimetype);
+        }
+      else
+        {
+          /* Warn, because this will produce things like "foo/bar; ext=.one ext=.two" */
+          if (strstr (sniffed_mimetype, " ext="))
+            g_warning ("Trying to add extension \"%s\" to content type \"%s\"",
+                       actual_extension, sniffed_mimetype);
+          sniffed_ext_mimetype = maybe_add_ext (sniffed_mimetype, actual_extension);
+        }
     }
 
   if (n_name_mimetypes == 0)
@@ -615,7 +725,7 @@ _g_generic_content_type_guess (const gchar  *filename,
           result_uncertain)
         *result_uncertain = TRUE;
 
-      mimetype = g_strdup (sniffed_mimetype);
+      mimetype = sniffed_ext_mimetype ? g_strdup (sniffed_ext_mimetype) : g_strdup (sniffed_mimetype);
     }
   else
     {
@@ -623,20 +733,25 @@ _g_generic_content_type_guess (const gchar  *filename,
       if (sniffed_mimetype != XDG_MIME_TYPE_UNKNOWN)
         {
           if (sniffed_prio >= 80) /* High priority sniffing match, use that */
-            mimetype = g_strdup (sniffed_mimetype);
+            mimetype = sniffed_ext_mimetype ? g_strdup (sniffed_ext_mimetype) : g_strdup (sniffed_mimetype);
           else
             {
               /* There are conflicts between the name matches and we
                * have a sniffed type, use that as a tie breaker.
+               * Ignore synthetic mime/types.
                */
               for (i = 0; i < n_name_mimetypes; i++)
                 {
-                  if ( xdg_mime_mime_type_subclass (name_mimetypes[i], sniffed_mimetype))
+                  if (strncmp (name_mimetypes[i], APP_X_EXT_, strlen (APP_X_EXT_)) != 0 &&
+                      xdg_mime_mime_type_subclass (name_mimetypes[i], sniffed_mimetype))
                     {
+                      if (strstr (name_mimetypes[i], " ext="))
+                        g_warning ("Trying to add extension \"%s\" to content type \"%s\"",
+                                   actual_extension, name_mimetypes[i]);
                       /* This nametype match is derived from (or the same as)
                        * the sniffed type). This is probably it.
                        */
-                      mimetype = g_strdup (name_mimetypes[i]);
+                      mimetype = maybe_add_ext (name_mimetypes[i], actual_extension);
                       break;
                     }
                 }
@@ -645,14 +760,20 @@ _g_generic_content_type_guess (const gchar  *filename,
 
       if (mimetype == NULL)
         {
+          if (strstr (name_mimetypes[0], " ext="))
+            g_warning ("Trying to add extension \"%s\" to content type \"%s\"",
+                       actual_extension, name_mimetypes[0]);
           /* Conflicts, and sniffed type was no help or not there.
            * Guess on the first one
            */
-          mimetype = g_strdup (name_mimetypes[0]);
+          mimetype = maybe_add_ext (name_mimetypes[0], actual_extension);
           if (result_uncertain)
             *result_uncertain = TRUE;
         }
     }
+
+  g_free (sniffed_ext_mimetype);
+  g_free (actual_extension);
 
   G_UNLOCK (gio_xdgmime);
 
