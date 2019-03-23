@@ -129,6 +129,7 @@ void         xdg_mime_remove_callback              (int              callback_id
 int          xdg_mime_get_file_exts_from_mime_type (const char *mime_type,
                                                     char       *file_exts[],
                                                     int         n_file_exts);
+const char * xdg_mime_get_synthetic_mime_type_for_ext (const char *ext);
 void xdg_mime_set_dirs (const char * const *dirs);
 
    /* Private versions of functions that don't call xdg_mime_init () */
