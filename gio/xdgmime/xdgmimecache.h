@@ -63,6 +63,9 @@ const char  *_xdg_mime_cache_get_mime_type_for_data_with_suggestions (const void
                                                                       const char **suggestions,
                                                                       int          suggestions_len,
                                                                       int          eliminate_only);
+int          _xdg_mime_cache_lookup_mime_type (const char    *mime_type,
+                                               char          *file_extensions[],
+                                               int            n_file_extensions);
 #ifdef NOT_USED_IN_GIO
 const char  *_xdg_mime_cache_get_mime_type_for_file       (const char  *file_name,
 							   struct stat *statbuf);
