@@ -843,7 +843,7 @@ xdg_mime_get_mime_type_for_data_with_suggestions (const void  *data,
 
   xdg_mime_init ();
 
-  if (_caches && n_nonempty_caches > 0 && suggestions_len == 0)
+  if (_caches && n_nonempty_caches > 0)
     mime_type = _xdg_mime_cache_get_mime_type_for_data_with_suggestions (data, len, result_prio, suggestions, suggestions_len, eliminate_only);
   else
     mime_type = _xdg_mime_magic_lookup_data (global_magic, data, len, result_prio, suggestions, suggestions_len, eliminate_only);
@@ -1466,8 +1466,14 @@ xdg_mime_get_file_exts_from_mime_type (const char *mime_type,
     return offset;
 
   xdg_mime_init ();
-  return _xdg_glob_hash_lookup_mime_type (global_hash,
-                                          mime_type,
-                                          &file_exts[offset],
-                                          n_file_exts - offset) + offset;
+
+  if (_caches && n_nonempty_caches > 0)
+    return _xdg_mime_cache_lookup_mime_type (mime_type,
+                                             &file_exts[offset],
+                                             n_file_exts - offset) + offset;
+  else
+    return _xdg_glob_hash_lookup_mime_type (global_hash,
+                                            mime_type,
+                                            &file_exts[offset],
+                                            n_file_exts - offset) + offset;
 }
