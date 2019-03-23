@@ -542,6 +542,40 @@ char_valid_for_ext (char c, int is_quoted)
   return TRUE;
 }
 
+/* Looks for the .foo extension in a mime_type that has the
+ * application/x-extension-foo format and returns a new string ".foo" or NULL.
+ */
+char *
+_xdg_mime_get_x_ext (const char *mime_type)
+{
+  const char *prefix = "application/x-extension-";
+  const char *space;
+  size_t prefix_len = strlen (prefix);
+  size_t mime_len = strlen (mime_type);
+  size_t i;
+
+  if (strncmp (mime_type,
+               prefix,
+               prefix_len) != 0)
+    return NULL;
+
+  space = strchr (mime_type, ' ');
+
+  if (space != NULL)
+    mime_len = space - mime_type - 1;
+
+  if (mime_len - prefix_len == 0)
+    return NULL;
+
+  for (i = prefix_len; i < mime_len; i++)
+    {
+      if (!char_valid_for_par (mime_type[i]))
+        return NULL;
+    }
+
+  return g_strdup_printf (".%*s", (int) (mime_len - prefix_len), &mime_type[prefix_len]);
+}
+
 /* Looks for the ext=... parameter in the mime_type.
  * fills ext with the pointer to the part of
  * mime_type where ext begins (if it is quoted,
@@ -1358,30 +1392,46 @@ xdg_mime_get_file_exts_from_mime_type (const char *mime_type,
 {
   const char *mime_ext;
   int mime_ext_len;
+  char *x_ext;
   int needs_unescaping;
   int offset;
 
   if (n_file_exts == 0)
     return 0;
 
+  offset = 0;
+
+  /* if mime_type is application/x-extension-foo, it takes precedence over ext=.bar */
+  x_ext = _xdg_mime_get_x_ext (mime_type);
+  if (x_ext != NULL)
+    {
+      file_exts[offset] = x_ext;
+      offset += 1;
+    }
+
+  if (n_file_exts - offset == 0)
+    return offset;
+
+  /* TODO: Figure out whether it's OK to return both
+   * the '.foo' (from application/x-extension-foo) and '.bar'
+   * (from ext=.bar). Is it even possible to have both?
+   */
   /* Before we start digging into glob hash,
    * try to extract ; ext=... extension from
    * the mime/type we were given.
    */
-  offset = 0;
   mime_ext_len = _xdg_mime_get_ext (mime_type, &mime_ext, &needs_unescaping);
 
   if (mime_ext_len > 0 &&
       (x_ext == NULL ||
        strncmp (x_ext, mime_ext, MAX (mime_ext_len, strlen (x_ext))) != 0))
     {
-      offset = 1;
-
-      file_exts[0] = _xdg_mime_g_strndup (mime_ext, mime_ext_len, needs_unescaping);
-
-      if (n_file_exts - offset == 0)
-        return 1;
+      file_exts[offset] = _xdg_mime_g_strndup (mime_ext, mime_ext_len, needs_unescaping);
+      offset += 1;
     }
+
+  if (n_file_exts - offset == 0)
+    return offset;
 
   xdg_mime_init ();
   return _xdg_glob_hash_lookup_mime_type (global_hash,
