@@ -109,6 +109,15 @@ _xdg_mime_cache_unref (XdgMimeCache *cache)
     }
 }
 
+size_t
+_xdg_mime_cache_get_size (XdgMimeCache *cache)
+{
+  if (cache == NULL)
+    return 0;
+
+  return cache->size;
+}
+
 XdgMimeCache *
 _xdg_mime_cache_new_from_file (const char *file_name)
 {
