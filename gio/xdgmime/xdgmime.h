@@ -137,6 +137,8 @@ int          _xdg_mime_mime_type_equal             (const char *mime_a,
 int          _xdg_mime_mime_type_subclass          (const char *mime,
 						    const char *base);
 const char  *_xdg_mime_unalias_mime_type           (const char *mime);
+int          _xdg_mime_mime_type_cmp_ext           (const char *mime_a,
+                                                    const char *mime_b);
 
 
 #ifdef __cplusplus

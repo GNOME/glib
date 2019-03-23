@@ -350,7 +350,7 @@ cache_alias_lookup (const char *alias)
 
 	  offset = GET_UINT32 (cache->buffer, list_offset + 4 + 8 * mid);
 	  ptr = cache->buffer + offset;
-	  cmp = strcmp (ptr, alias);
+	  cmp = _xdg_mime_mime_type_cmp_ext (ptr, alias);
 	  
 	  if (cmp < 0)
 	    min = mid + 1;
@@ -402,7 +402,7 @@ cache_glob_lookup_literal (const char *file_name,
 
 	  offset = GET_UINT32 (cache->buffer, list_offset + 4 + 12 * mid);
 	  ptr = cache->buffer + offset;
-	  cmp = strcmp (ptr, file_name);
+	  cmp = _xdg_mime_mime_type_cmp_ext (ptr, file_name);
 
 	  if (cmp < 0)
 	    min = mid + 1;
@@ -631,7 +631,7 @@ filter_out_dupes (MimeWeight mimes[], int n_mimes)
       j = i + 1;
       while (j < last)
         {
-          if (strcmp (mimes[i].mime, mimes[j].mime) == 0)
+          if (_xdg_mime_mime_type_cmp_ext (mimes[i].mime, mimes[j].mime) == 0)
             {
               mimes[i].weight = MAX (mimes[i].weight, mimes[j].weight);
               last--;
@@ -883,13 +883,17 @@ ends_with (const char *str,
 {
   int length;
   int suffix_length;
+  const char *semicolon;
 
   length = strlen (str);
+  semicolon = strchr (str, ';');
+  if (semicolon != NULL)
+    length = semicolon - str;
   suffix_length = strlen (suffix);
   if (length < suffix_length)
     return 0;
 
-  if (strcmp (str + length - suffix_length, suffix) == 0)
+  if (strncmp (str + length - suffix_length, suffix, suffix_length) == 0)
     return 1;
 
   return 0;
@@ -913,7 +917,7 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
   umime = _xdg_mime_cache_unalias_mime_type (mime);
   ubase = _xdg_mime_cache_unalias_mime_type (base);
 
-  if (strcmp (umime, ubase) == 0)
+  if (_xdg_mime_mime_type_cmp_ext (umime, ubase) == 0)
     return 1;
 
   /* We really want to handle text/ * in GtkFileFilter, so we just
@@ -927,11 +931,11 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
 #endif
 
   /*  Handle special cases text/plain and application/octet-stream */
-  if (strcmp (ubase, "text/plain") == 0 && 
+  if (_xdg_mime_mime_type_cmp_ext (ubase, "text/plain") == 0 && 
       strncmp (umime, "text/", 5) == 0)
     return 1;
 
-  if (strcmp (ubase, "application/octet-stream") == 0 &&
+  if (_xdg_mime_mime_type_cmp_ext (ubase, "application/octet-stream") == 0 &&
       strncmp (umime, "inode/", 6) != 0)
     return 1;
  
@@ -955,7 +959,7 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
 	  med = (min + max)/2;
 	  
 	  offset = GET_UINT32 (cache->buffer, list_offset + 4 + 8 * med);
-	  cmp = strcmp (cache->buffer + offset, umime);
+	  cmp = _xdg_mime_mime_type_cmp_ext (cache->buffer + offset, umime);
 	  if (cmp < 0)
 	    min = med + 1;
 	  else if (cmp > 0)
@@ -1020,7 +1024,7 @@ _xdg_mime_cache_list_mime_parents (const char *mime)
 	  xdg_uint32_t mimetype_offset = GET_UINT32 (cache->buffer, list_offset + 4 + 8 * j);
 	  xdg_uint32_t parents_offset = GET_UINT32 (cache->buffer, list_offset + 4 + 8 * j + 4);
 
-	  if (strcmp (cache->buffer + mimetype_offset, mime) == 0)
+	  if (_xdg_mime_mime_type_cmp_ext (cache->buffer + mimetype_offset, mime) == 0)
 	    {
 	      xdg_uint32_t parent_mime_offset;
 	      xdg_uint32_t n_parents = GET_UINT32 (cache->buffer, parents_offset);
@@ -1034,7 +1038,7 @@ _xdg_mime_cache_list_mime_parents (const char *mime)
 		   */
 		  for (l = 0; l < p; l++)
 		    {
-		      if (strcmp (all_parents[l], cache->buffer + parent_mime_offset) == 0)
+		      if (_xdg_mime_mime_type_cmp_ext (all_parents[l], cache->buffer + parent_mime_offset) == 0)
 			break;
 		    }
 
@@ -1081,7 +1085,7 @@ cache_lookup_icon (const char *mime, int header)
 
           offset = GET_UINT32 (cache->buffer, list_offset + 4 + 8 * mid);
           ptr = cache->buffer + offset;
-          cmp = strcmp (ptr, mime);
+          cmp = _xdg_mime_mime_type_cmp_ext (ptr, mime);
          
           if (cmp < 0)
             min = mid + 1;

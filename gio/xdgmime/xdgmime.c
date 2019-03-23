@@ -714,6 +714,35 @@ xdg_mime_unalias_mime_type (const char *mime_type)
   return _xdg_mime_unalias_mime_type (mime_type);
 }
 
+/* Compares two mime/type strings.
+ * Use this instead of strcmp(), because this function
+ * correcly handles "mime/type; arbitrary=parameter" variants.
+ * It's advised to only test the result of this function
+ * to be == 0 or != 0, as its sign might not be meaningful.
+ */
+int
+_xdg_mime_mime_type_cmp_ext (const char *mime_a,
+                             const char *mime_b)
+{
+  const char *end_a, *end_b;
+  size_t len_a, len_b;
+
+  end_a = strchr (mime_a, ';');
+  end_b = strchr (mime_b, ';');
+
+  if (end_a == NULL)
+    len_a = strlen (mime_a);
+  else
+    len_a = end_a - mime_a;
+
+  if (end_b == NULL)
+    len_b = strlen (mime_b);
+  else
+    len_b = end_b - mime_b;
+
+  return strncmp (mime_a, mime_b, MAX (len_a, len_b));
+}
+
 int
 _xdg_mime_mime_type_equal (const char *mime_a,
 			   const char *mime_b)
@@ -723,7 +752,7 @@ _xdg_mime_mime_type_equal (const char *mime_a,
   unalias_a = _xdg_mime_unalias_mime_type (mime_a);
   unalias_b = _xdg_mime_unalias_mime_type (mime_b);
 
-  if (strcmp (unalias_a, unalias_b) == 0)
+  if (_xdg_mime_mime_type_cmp_ext (unalias_a, unalias_b) == 0)
     return 1;
 
   return 0;
@@ -759,13 +788,17 @@ ends_with (const char *str,
 {
   int length;
   int suffix_length;
+  const char *semicolon;
 
   length = strlen (str);
+  semicolon = strchr (str, ';');
+  if (semicolon != NULL)
+    length = semicolon - str;
   suffix_length = strlen (suffix);
   if (length < suffix_length)
     return 0;
 
-  if (strcmp (str + length - suffix_length, suffix) == 0)
+  if (strncmp (str + length - suffix_length, suffix, suffix_length) == 0)
     return 1;
 
   return 0;
@@ -791,7 +824,7 @@ _xdg_mime_mime_type_subclass (const char *mime,
   umime = _xdg_mime_unalias_mime_type (mime);
   ubase = _xdg_mime_unalias_mime_type (base);
 
-  if (strcmp (umime, ubase) == 0)
+  if (_xdg_mime_mime_type_cmp_ext (umime, ubase) == 0)
     return 1;
 
 #if 1  
@@ -802,11 +835,11 @@ _xdg_mime_mime_type_subclass (const char *mime,
 #endif
 
   /*  Handle special cases text/plain and application/octet-stream */
-  if (strcmp (ubase, "text/plain") == 0 && 
+  if (_xdg_mime_mime_type_cmp_ext (ubase, "text/plain") == 0 && 
       strncmp (umime, "text/", 5) == 0)
     return 1;
 
-  if (strcmp (ubase, "application/octet-stream") == 0 &&
+  if (_xdg_mime_mime_type_cmp_ext (ubase, "application/octet-stream") == 0 &&
       strncmp (umime, "inode/", 6) != 0)
     return 1;
   

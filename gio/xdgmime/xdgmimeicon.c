@@ -87,7 +87,7 @@ _xdg_mime_icon_list_free (XdgIconList *list)
 static int
 icon_entry_cmp (const void *v1, const void *v2)
 {
-  return strcmp (((XdgIcon *)v1)->mime_type, ((XdgIcon *)v2)->mime_type);
+  return _xdg_mime_mime_type_cmp_ext (((XdgIcon *)v1)->mime_type, ((XdgIcon *)v2)->mime_type);
 }
 
 const char  *

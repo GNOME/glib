@@ -88,7 +88,7 @@ _xdg_mime_alias_list_free (XdgAliasList *list)
 static int
 alias_entry_cmp (const void *v1, const void *v2)
 {
-  return strcmp (((XdgAlias *)v1)->alias, ((XdgAlias *)v2)->alias);
+  return _xdg_mime_mime_type_cmp_ext (((XdgAlias *)v1)->alias, ((XdgAlias *)v2)->alias);
 }
 
 const char  *

@@ -826,7 +826,7 @@ _xdg_glob_hash_node_lookup_mime_type (XdgGlobHashNode *glob_hash_node,
 
   if (n < n_file_exts &&
       glob_hash_node->mime_type &&
-      strcmp (glob_hash_node->mime_type, mime_type) == 0)
+      _xdg_mime_mime_type_cmp_ext (glob_hash_node->mime_type, mime_type) == 0)
     {
       file_exts[n].ext = assemble_extension (glob_hash_node, buffer, buffer_len);
       file_exts[n].weight = glob_hash_node->weight;
