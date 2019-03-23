@@ -467,6 +467,305 @@ xdg_mime_init (void)
     }
 }
 
+typedef enum {
+  /* foo/bar; xxx="..." yyy=...
+             ^         ^
+  */
+  XDG_PAR_SPACE,
+  /* foo/bar; xxx="..." yyy=...
+              ^         ^
+  */
+  XDG_PAR_PAR,
+  /* foo/bar; xxx="..." yyy=...
+                 ^         ^
+  */
+  XDG_PAR_EQ,
+  /* foo/bar; xxx="..." yyy=...
+                  ^
+  */
+  XDG_PAR_OPENQ,
+  /* foo/bar; xxx="..." yyy=...
+                   ^        ^
+  */
+  XDG_PAR_VAL,
+  /* foo/bar; xxx="..." yyy=...
+                      ^
+  */
+  XDG_PAR_CLOSEQ
+} parameter_parse_state;
+
+static int
+char_is_tspecial (char c)
+{
+  switch (c)
+    {
+    case '(':
+    case ')':
+    case '<':
+    case '>':
+    case '@':
+    case ',':
+    case ';':
+    case ':':
+    case '\\':
+    case '"':
+    case '/':
+    case '[':
+    case ']':
+    case '?':
+    case '=':
+      return TRUE;
+    }
+
+  return FALSE;
+}
+static int
+char_valid_for_par (char c)
+{
+  if (c <= 32 || c >= 127 || char_is_tspecial (c))
+    return FALSE;
+
+  return TRUE;
+}
+
+static int
+char_valid_for_ext (char c, int is_quoted)
+{
+  if (c <= 32 || c >= 127 || (!is_quoted && char_is_tspecial (c)))
+    return FALSE;
+
+  return TRUE;
+}
+
+/* Looks for the ext=... parameter in the mime_type.
+ * fills ext with the pointer to the part of
+ * mime_type where ext begins (if it is quoted,
+ * points at the first character after the quotes are
+ * opened).
+ * Returns the length of the ext (minus any quotes
+ * around it) or 0, if no ext is found.
+ */
+int
+_xdg_mime_get_ext (const char  *mime_type,
+                   const char **r_ext,
+                   int         *needs_unescaping)
+{
+  const char *p;
+  parameter_parse_state state;
+  int is_quoted;
+  int keep_going;
+  int ext_len;
+  int par_len;
+  const char *par;
+  const char *ext;
+
+  p = strchr (mime_type, ';');
+
+  if (p == NULL)
+    return 0;
+
+  p += 1;
+
+  /* Must be a space after ';' */
+  if (p[0] != ' ')
+    return 0;
+
+  state = XDG_PAR_SPACE;
+  keep_going = TRUE;
+  ext_len = 0;
+  par_len = 0;
+  par = NULL;
+  ext = NULL;
+  is_quoted = FALSE;
+
+  while (p[0] != '\0' && keep_going)
+    {
+      switch (state)
+        {
+        case XDG_PAR_SPACE:
+          p++;
+
+          ext_len = 0;
+          par_len = 0;
+          par = NULL;
+          ext = NULL;
+          is_quoted = FALSE;
+
+          switch (p[0])
+            {
+            case ' ': /* More spaces, skip */
+              continue;
+            case '\0': /* EOL */
+              keep_going = FALSE;
+              break;
+            default:
+              par = p;
+              par_len = 1;
+
+              if (char_valid_for_par (p[0]))
+                state = XDG_PAR_PAR; /* Param */
+              else
+                keep_going = FALSE; /* Invalid char */
+              break;
+            }
+          break;
+        case XDG_PAR_PAR:
+          p++;
+          switch (p[0])
+            {
+            case ' ': /* No spaces or EOLs in param name */
+            case '\0':
+              keep_going = FALSE;
+              break;
+            case '=': /* Param name ended */
+              state = XDG_PAR_EQ;
+              break;
+            default:
+              par_len += 1;
+
+              if (char_valid_for_par (p[0]))
+                continue; /* More chars in param name*/
+              else
+                keep_going = FALSE; /* Invalid char */
+              break;
+            }
+          break;
+        case XDG_PAR_EQ:
+          p++;
+          switch (p[0])
+            {
+            case ' ': /* No spaces or EOLs in param value */
+            case '\0':
+              keep_going = FALSE;
+              break;
+            case '"': /* Quoted param value */
+              state = XDG_PAR_OPENQ;
+              is_quoted = TRUE;
+              break;
+            default:
+              state = XDG_PAR_VAL; /* Unquoted param value */
+              ext = p;
+              ext_len = 1;
+              is_quoted = FALSE;
+
+              if (char_valid_for_ext (p[0], FALSE))
+                continue; /* More chars in param value */
+              else
+                keep_going = FALSE; /* Invalid char */
+              break;
+            }
+          break;
+        case XDG_PAR_OPENQ:
+          p++;
+          switch (p[0])
+            {
+            case ' ': /* No spaces, EOLs in param value */
+            case '\0':
+            case '"': /* No quotes as the first char of param value */
+              keep_going = FALSE;
+              break;
+            case '\\':
+              if (!is_quoted ||
+                  p[1] == '\0' ||
+                  !char_valid_for_ext (p[1], TRUE))
+                { /* Spurious backslash */
+                  keep_going = FALSE;
+                  break;
+                }
+              state = XDG_PAR_VAL; /* An escaped char in param value */
+              ext = p;
+              ext_len = 1;
+              p++;
+              ext_len += 1;
+              break;
+            default:
+              state = XDG_PAR_VAL;
+              ext = p;
+              ext_len = 1;
+
+              if (char_valid_for_ext (p[0], FALSE))
+                continue; /* More chars in param value */
+              else
+                keep_going = FALSE; /* Invalid char */
+              break;
+            }
+          break;
+        case XDG_PAR_VAL:
+          p++;
+          switch (p[0])
+            {
+            case '\0':
+            case ' ':
+              if (is_quoted)
+                { /* No spaces or EOLs in quoted values */
+                  keep_going = FALSE;
+                  break;
+                }
+              else if (par_len == 3 &&
+                  strncmp (par, "ext", 3) == 0)
+                { /* Param value ended, return it if it's an ext=... */
+                  *r_ext = ext;
+                  *needs_unescaping = FALSE;
+                  return ext_len;
+                }
+              state = XDG_PAR_SPACE; /* Param value ended, reset parser */
+              break;
+            case '"':
+              if (!is_quoted)
+                { /* No quotes in unquoted values */
+                  keep_going = FALSE;
+                  break;
+                }
+              else if (par_len == 3 &&
+                  strncmp (par, "ext", 3) == 0)
+                { /* Quoted param value ending, return it if it's an ext="..." */
+                  *r_ext = ext;
+                  *needs_unescaping = TRUE;
+                  return ext_len;
+                }
+              state = XDG_PAR_CLOSEQ; /* Quoted param value ending */
+              break;
+            case '\\':
+              ext_len += 2;
+              if (!is_quoted ||
+                  p[1] == '\0' ||
+                  !char_valid_for_ext (p[1], TRUE))
+                { /* Spurious backslash */
+                  keep_going = FALSE;
+                  break;
+                }
+              p++;
+              break;
+            default:
+              ext_len += 1;
+
+              if (char_valid_for_ext (p[0], FALSE))
+                continue; /* More chars in param value */
+              else
+                keep_going = FALSE; /* Invalid char */
+              break;
+            }
+          break;
+        case XDG_PAR_CLOSEQ:
+          p++;
+          switch (p[0])
+            {
+            case '\0':
+              keep_going = FALSE; /* EOL */
+              break;
+            case ' ':
+              state = XDG_PAR_SPACE; /* Quoted param value ended, reset parser */
+              break;
+            default:
+              keep_going = FALSE; /* Closing quote must be followed by space or EOL */
+              break;
+            }
+        }
+    }
+
+  return 0;
+}
+
 const char *
 xdg_mime_get_mime_type_for_data (const void *data,
 				 size_t      len,
@@ -1001,14 +1300,58 @@ xdg_mime_get_generic_icon (const char *mime)
   return _xdg_mime_icon_list_lookup (generic_icon_list, mime);
 }
 
+char *
+_xdg_mime_g_strndup (const char *mime_ext,
+                     int         mime_ext_len,
+                     int         needs_unescaping)
+{
+  char *result;
+
+  /* TODO: unescape if needed. */
+  (void) needs_unescaping;
+
+  result = g_malloc (mime_ext_len + 1);
+  strncpy (result, mime_ext, mime_ext_len);
+  result[mime_ext_len] = '\0';
+
+  return result;
+}
+
 int
 xdg_mime_get_file_exts_from_mime_type (const char *mime_type,
                                        char       *file_exts[],
                                        int         n_file_exts)
 {
+  const char *mime_ext;
+  int mime_ext_len;
+  int needs_unescaping;
+  int offset;
+
+  if (n_file_exts == 0)
+    return 0;
+
+  /* Before we start digging into glob hash,
+   * try to extract ; ext=... extension from
+   * the mime/type we were given.
+   */
+  offset = 0;
+  mime_ext_len = _xdg_mime_get_ext (mime_type, &mime_ext, &needs_unescaping);
+
+  if (mime_ext_len > 0 &&
+      (x_ext == NULL ||
+       strncmp (x_ext, mime_ext, MAX (mime_ext_len, strlen (x_ext))) != 0))
+    {
+      offset = 1;
+
+      file_exts[0] = _xdg_mime_g_strndup (mime_ext, mime_ext_len, needs_unescaping);
+
+      if (n_file_exts - offset == 0)
+        return 1;
+    }
+
   xdg_mime_init ();
   return _xdg_glob_hash_lookup_mime_type (global_hash,
                                           mime_type,
-                                          file_exts,
-                                          n_file_exts);
+                                          &file_exts[offset],
+                                          n_file_exts - offset) + offset;
 }

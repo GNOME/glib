@@ -139,8 +139,12 @@ int          _xdg_mime_mime_type_subclass          (const char *mime,
 const char  *_xdg_mime_unalias_mime_type           (const char *mime);
 int          _xdg_mime_mime_type_cmp_ext           (const char *mime_a,
                                                     const char *mime_b);
-
-
+int          _xdg_mime_get_ext                     (const char  *mime_type,
+                                                    const char **r_ext,
+                                                    int         *needs_unescaping);
+char *       _xdg_mime_g_strndup                   (const char *mime_ext,
+                                                    int         mime_ext_len,
+                                                    int         needs_unescaping);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
