@@ -1322,7 +1322,11 @@ get_content_type (const char          *basename,
 	{
 	  guchar sniff_buffer[4096];
 	  gsize sniff_length;
-	  int fd, errsv;
+
+#ifdef O_NOATIME
+	  int errsv;
+#endof
+	  int fd;
 
 	  sniff_length = _g_generic_content_type_get_sniff_len ();
 	  if (sniff_length > 4096)
