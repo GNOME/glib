@@ -920,10 +920,36 @@ cache_glob_lookup_mime_type (const char     *mime_type,
   return n;
 }
 
+static int
+filter_out_utf8_ext_dupes (char *file_extensions[],
+                           int   n_result,
+                           char *exclude[],
+                           int   n_exclude)
+{
+  int last;
+  int i, j, k;
+
+  last = n_result;
+
+  for (i = 0; i < last; i++)
+    for (j = 0; j < n_exclude; j++)
+      if (g_strcmp0 (file_extensions[i], exclude[j]) == 0)
+        {
+          g_clear_pointer (&file_extensions[i], g_free);
+          for (k = i + 1; k < last; k++)
+            file_extensions[k - 1] = file_extensions[k];
+          last -= 1;
+        }
+
+  return last;
+}
+
 int
 _xdg_mime_cache_lookup_mime_type (const char    *mime_type,
                                   char          *file_extensions[],
-                                  int            n_file_extensions)
+                                  int            n_file_extensions,
+                                  char          *exclude[],
+                                  int            n_exclude)
 {
   int n, n_result;
   ExtWeight file_names[10];
@@ -960,6 +986,15 @@ _xdg_mime_cache_lookup_mime_type (const char    *mime_type,
     free (file_names[i].ext);
 
   free (buffer);
+
+  /* This is somewhat suboptimal. Mostly the blame goes
+   * to xdgmime for not exposing its unichar type to glib,
+   * which forces us to shuttle things around in utf8
+   * instead of the ucs4 that is native to xdgmime.
+   * If exclude strings were ucs4, we could have exluded
+   * them much earlier (preferably - during lookup).
+   */
+  n_result = filter_out_utf8_ext_dupes (file_extensions, n_result, exclude, n_exclude);
 
   return n_result;
 }
