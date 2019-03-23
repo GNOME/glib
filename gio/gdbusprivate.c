@@ -1792,10 +1792,17 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
 
   if (data != NULL)
     {
-      g_cond_wait (&data->cond, &data->mutex);
-      g_mutex_unlock (&data->mutex);
+      /* Wait for flush operations to finish. */
+      g_mutex_lock (&worker->write_lock);
+      while (worker->write_num_messages_flushed < data->number_to_wait_for)
+        {
+          g_mutex_unlock (&worker->write_lock);
+          g_cond_wait (&data->cond, &data->mutex);
+          g_mutex_lock (&worker->write_lock);
+        }
+      g_mutex_unlock (&worker->write_lock);
 
-      /* note:the element is removed from worker->write_pending_flushes in flush_cb() above */
+      g_mutex_unlock (&data->mutex);
       g_cond_clear (&data->cond);
       g_mutex_clear (&data->mutex);
       if (data->error != NULL)
