@@ -69,6 +69,8 @@ void         _xdg_glob_hash_dump             (XdgGlobHash *glob_hash);
 int          _xdg_glob_hash_lookup_mime_type (XdgGlobHash   *glob_hash,
                                               const char    *mime_type,
                                               char          *file_extensions[],
-                                              int            n_file_extensions);
+                                              int            n_file_extensions,
+                                              char          *exclude[],
+                                              int            n_exclude);
 
 #endif /* __XDG_MIME_GLOB_H__ */
