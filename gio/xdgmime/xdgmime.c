@@ -62,6 +62,7 @@ static char **xdg_dirs = NULL;  /* NULL terminated */
 
 XdgMimeCache **_caches = NULL;
 static int n_caches = 0;
+static int n_nonempty_caches = 0;
 
 const char xdg_mime_type_unknown[] = "application/octet-stream";
 const char xdg_mime_type_empty[] = "application/x-zerosize";
@@ -157,6 +158,8 @@ xdg_mime_init_from_directory (const char *directory)
 	  _caches[n_caches] = cache;
           _caches[n_caches + 1] = NULL;
 	  n_caches++;
+          if (_xdg_mime_cache_get_size (cache) > 0)
+            n_nonempty_caches++;
 
 	  return FALSE;
 	}
@@ -820,7 +823,7 @@ xdg_mime_get_mime_type_for_data (const void *data,
 
   xdg_mime_init ();
 
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     mime_type = _xdg_mime_cache_get_mime_type_for_data (data, len, result_prio);
   else
     mime_type = _xdg_mime_magic_lookup_data (global_magic, data, len, result_prio, NULL, 0);
@@ -857,7 +860,7 @@ xdg_mime_get_mime_type_for_file (const char  *file_name,
 
   xdg_mime_init ();
 
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_get_mime_type_for_file (file_name, statbuf);
 
   base_name = _xdg_get_base_name (file_name);
@@ -919,7 +922,7 @@ xdg_mime_get_mime_type_from_file_name (const char *file_name)
 
   xdg_mime_init ();
 
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_get_mime_type_from_file_name (file_name);
 
   if (_xdg_glob_hash_lookup_file_name (global_hash, file_name, &mime_type, 1))
@@ -937,7 +940,7 @@ xdg_mime_get_mime_types_from_file_name (const char *file_name,
 {
   xdg_mime_init ();
   
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_get_mime_types_from_file_name (file_name, mime_types, n_mime_types);
   
   return _xdg_glob_hash_lookup_file_name (global_hash, file_name, mime_types, n_mime_types);
@@ -1017,6 +1020,7 @@ xdg_mime_shutdown (void)
       free (_caches);
       _caches = NULL;
       n_caches = 0;
+      n_nonempty_caches = 0;
     }
 
   for (list = callback_list; list; list = list->next)
@@ -1030,7 +1034,7 @@ xdg_mime_get_max_buffer_extents (void)
 {
   xdg_mime_init ();
   
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_get_max_buffer_extents ();
 
   return _xdg_mime_magic_get_buffer_extents (global_magic);
@@ -1041,7 +1045,7 @@ _xdg_mime_unalias_mime_type (const char *mime_type)
 {
   const char *lookup;
 
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_unalias_mime_type (mime_type);
 
   if ((lookup = _xdg_mime_alias_list_lookup (alias_list, mime_type)) != NULL)
@@ -1162,7 +1166,7 @@ _xdg_mime_mime_type_subclass (const char *mime,
   const char *umime, *ubase;
   const char **parents;
 
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_mime_type_subclass (mime, base);
 
   umime = _xdg_mime_unalias_mime_type (mime);
@@ -1216,7 +1220,7 @@ xdg_mime_list_mime_parents (const char *mime)
 
   xdg_mime_init ();
 
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_list_mime_parents (mime);
 
   umime = _xdg_mime_unalias_mime_type (mime);
@@ -1328,7 +1332,7 @@ xdg_mime_get_icon (const char *mime)
 {
   xdg_mime_init ();
   
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_get_icon (mime);
 
   return _xdg_mime_icon_list_lookup (icon_list, mime);
@@ -1339,7 +1343,7 @@ xdg_mime_get_generic_icon (const char *mime)
 {
   xdg_mime_init ();
   
-  if (_caches)
+  if (_caches && n_nonempty_caches > 0)
     return _xdg_mime_cache_get_generic_icon (mime);
 
   return _xdg_mime_icon_list_lookup (generic_icon_list, mime);
