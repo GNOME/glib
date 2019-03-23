@@ -498,6 +498,18 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
 
   n = filter_out_dupes (mimes, n);
 
+  if (n == 0)
+    {
+      const char *dot = strrchr (file_name, '.');
+
+      if (dot != NULL && dot[1] != '\0')
+        {
+          mimes[0].mime = xdg_mime_get_synthetic_mime_type_for_ext (dot + 1);
+          mimes[0].weight = 1;
+          n++;
+        }
+    }
+
   qsort (mimes, n, sizeof (MimeWeight), compare_mime_weight);
 
   if (n_mime_types < n)

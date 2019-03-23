@@ -56,6 +56,7 @@ static XdgDirTimeList *dir_time_list = NULL;
 static XdgCallbackList *callback_list = NULL;
 static XdgIconList *icon_list = NULL;
 static XdgIconList *generic_icon_list = NULL;
+static GHashTable *synthetic_ext_types = NULL;
 
 static char **xdg_dirs = NULL;  /* NULL terminated */
 
@@ -453,6 +454,10 @@ xdg_mime_init (void)
 
   if (need_reread)
     {
+      synthetic_ext_types = g_hash_table_new_full (g_str_hash,
+                                                   g_str_equal,
+                                                   g_free,
+                                                   g_free);
       global_hash = _xdg_glob_hash_new ();
       global_magic = _xdg_mime_magic_new ();
       alias_list = _xdg_mime_alias_list_new ();
@@ -962,7 +967,13 @@ xdg_mime_shutdown (void)
       _xdg_mime_icon_list_free (generic_icon_list);
       generic_icon_list = NULL;
     }
-  
+
+  if (synthetic_ext_types)
+    {
+      g_hash_table_unref (synthetic_ext_types);
+      synthetic_ext_types = NULL;
+    }
+
   if (_caches)
     {
       int i;
@@ -1298,6 +1309,29 @@ xdg_mime_get_generic_icon (const char *mime)
     return _xdg_mime_cache_get_generic_icon (mime);
 
   return _xdg_mime_icon_list_lookup (generic_icon_list, mime);
+}
+
+/* The assumption here is that the caller will
+ * dup the return value, then unlock the xdgmime mutex
+ * and only use the duped value afterwards.
+ */
+const char *
+xdg_mime_get_synthetic_mime_type_for_ext (const char *ext_without_dot)
+{
+  char *stype;
+
+  xdg_mime_init ();
+
+  stype = g_hash_table_lookup (synthetic_ext_types, ext_without_dot);
+
+  if (stype)
+    return (const char *) stype;
+
+  stype = g_strdup_printf ("application/x-extension-%s", ext_without_dot);
+
+  g_hash_table_insert (synthetic_ext_types, g_strdup (ext_without_dot), stype);
+
+  return (const char *) stype;
 }
 
 char *
