@@ -34,7 +34,7 @@
 #include "glibintl.h"
 
 
-#include <dirent.h>
+#include <glib/gstdio.h>
 
 #define XDG_PREFIX _gio_xdg
 #include "xdgmime/xdgmime.h"
