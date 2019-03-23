@@ -1194,13 +1194,6 @@ ostream_flush_cb (GObject      *source_object,
         }
     }
 
-  g_assert (data->flushers != NULL);
-  flush_data_list_complete (data->flushers, error);
-  g_list_free (data->flushers);
-
-  if (error != NULL)
-    g_error_free (error);
-
   /* Make sure we tell folks that we don't have additional
      flushes pending */
   g_mutex_lock (&data->worker->write_lock);
@@ -1208,6 +1201,12 @@ ostream_flush_cb (GObject      *source_object,
   g_assert (data->worker->output_pending == PENDING_FLUSH);
   data->worker->output_pending = PENDING_NONE;
   g_mutex_unlock (&data->worker->write_lock);
+
+  g_assert (data->flushers != NULL);
+  flush_data_list_complete (data->flushers, error);
+  g_list_free (data->flushers);
+  if (error != NULL)
+    g_error_free (error);
 
   /* OK, cool, finally kick off the next write */
   continue_writing (data->worker);
@@ -1376,6 +1375,10 @@ iostream_close_cb (GObject      *source_object,
 
   g_assert (worker->output_pending == PENDING_CLOSE);
   worker->output_pending = PENDING_NONE;
+
+  /* Ensure threads waiting for pending flushes to finish will be unblocked. */
+  worker->write_num_messages_flushed =
+    worker->write_num_messages_written + g_list_length(pending_flush_attempts);
 
   g_mutex_unlock (&worker->write_lock);
 
@@ -1792,10 +1795,17 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
 
   if (data != NULL)
     {
-      g_cond_wait (&data->cond, &data->mutex);
-      g_mutex_unlock (&data->mutex);
+      /* Wait for flush operations to finish. */
+      g_mutex_lock (&worker->write_lock);
+      while (worker->write_num_messages_flushed < data->number_to_wait_for)
+        {
+          g_mutex_unlock (&worker->write_lock);
+          g_cond_wait (&data->cond, &data->mutex);
+          g_mutex_lock (&worker->write_lock);
+        }
+      g_mutex_unlock (&worker->write_lock);
 
-      /* note:the element is removed from worker->write_pending_flushes in flush_cb() above */
+      g_mutex_unlock (&data->mutex);
       g_cond_clear (&data->cond);
       g_mutex_clear (&data->mutex);
       if (data->error != NULL)
