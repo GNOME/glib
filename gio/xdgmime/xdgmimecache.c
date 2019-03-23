@@ -780,6 +780,18 @@ cache_get_mime_type_for_data (const void *data,
 }
 
 const char *
+_xdg_mime_cache_get_mime_type_for_data_with_suggestions (const void  *data,
+                                                         size_t       len,
+                                                         int         *result_prio,
+                                                         const char **suggestions,
+                                                         int          suggestions_len,
+                                                         int          eliminate_only)
+{
+  /* FIXME: support for doing this via cache */
+  return cache_get_mime_type_for_data (data, len, result_prio, NULL, 0);
+}
+
+const char *
 _xdg_mime_cache_get_mime_type_for_data (const void *data,
 					size_t      len,
 					int        *result_prio)
