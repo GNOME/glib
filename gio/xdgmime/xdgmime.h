@@ -130,6 +130,7 @@ int          xdg_mime_get_file_exts_from_mime_type (const char *mime_type,
                                                     char       *file_exts[],
                                                     int         n_file_exts);
 const char * xdg_mime_get_synthetic_mime_type_for_ext (const char *ext);
+
 void xdg_mime_set_dirs (const char * const *dirs);
 
    /* Private versions of functions that don't call xdg_mime_init () */
@@ -143,6 +144,7 @@ int          _xdg_mime_mime_type_cmp_ext           (const char *mime_a,
 int          _xdg_mime_get_ext                     (const char  *mime_type,
                                                     const char **r_ext,
                                                     int         *needs_unescaping);
+char *       _xdg_mime_get_x_ext                   (const char *mime_type);
 char *       _xdg_mime_g_strndup                   (const char *mime_ext,
                                                     int         mime_ext_len,
                                                     int         needs_unescaping);
