@@ -376,6 +376,8 @@ subdir('xdgmime')
 internal_deps += [xdgmime_lib]
 internal_objects += [xdgmime_lib.extract_all_objects()]
 
+contenttype_sources += files('gcontenttype.c')
+
 if host_system != 'windows'
   unix_sources = files(
     'gfiledescriptorbased.c',
@@ -426,7 +428,7 @@ if host_system != 'windows'
     endif
     application_headers += files('gosxappinfo.h')
   else
-    contenttype_sources += files('gcontenttype.c')
+    contenttype_sources += files('gcontenttype-unix.c')
     appinfo_sources += files('gdesktopappinfo.c')
     gio_unix_include_headers += files('gdesktopappinfo.h')
 

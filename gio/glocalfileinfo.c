@@ -1317,14 +1317,14 @@ get_content_type (const char          *basename,
 
       content_type = g_content_type_guess (basename, NULL, 0, &result_uncertain);
       
-#if !defined(G_OS_WIN32) && !defined(HAVE_COCOA)
+#if !defined(HAVE_COCOA)
       if (!fast && result_uncertain && path != NULL)
 	{
 	  guchar sniff_buffer[4096];
 	  gsize sniff_length;
 	  int fd, errsv;
 
-	  sniff_length = _g_unix_content_type_get_sniff_len ();
+	  sniff_length = _g_generic_content_type_get_sniff_len ();
 	  if (sniff_length > 4096)
 	    sniff_length = 4096;
 

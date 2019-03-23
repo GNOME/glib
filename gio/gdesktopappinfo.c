@@ -727,7 +727,7 @@ desktop_file_dir_unindexed_get_tweaks (DesktopFileDir *dir,
   UnindexedMimeTweaks *tweaks;
   gchar *unaliased_type;
 
-  unaliased_type = _g_unix_content_type_unalias (mime_type);
+  unaliased_type = _g_generic_content_type_unalias (mime_type);
   tweaks = g_hash_table_lookup (dir->mime_tweaks, unaliased_type);
 
   if (tweaks == NULL)
@@ -4046,7 +4046,7 @@ get_list_of_mimetypes (const gchar *content_type,
   GPtrArray *array;
 
   array = g_ptr_array_new ();
-  unaliased = _g_unix_content_type_unalias (content_type);
+  unaliased = _g_generic_content_type_unalias (content_type);
   g_ptr_array_add (array, unaliased);
 
   if (include_fallback)
@@ -4056,7 +4056,7 @@ get_list_of_mimetypes (const gchar *content_type,
       /* Iterate the array as we grow it, until we have nothing more to add */
       for (i = 0; i < array->len; i++)
         {
-          gchar **parents = _g_unix_content_type_get_parents (g_ptr_array_index (array, i));
+          gchar **parents = _g_generic_content_type_get_parents (g_ptr_array_index (array, i));
           gint j;
 
           for (j = 0; parents[j]; j++)
