@@ -659,9 +659,10 @@ const char *
 _xdg_mime_magic_lookup_data (XdgMimeMagic *mime_magic,
 			     const void   *data,
 			     size_t        len,
-			     int           *result_prio,
+			     int          *result_prio,
                              const char   *mime_types[],
-                             int           n_mime_types)
+                             int           n_mime_types,
+                             int           eliminate_only)
 {
   XdgMimeMagicMatch *match;
   const char *mime_type;
@@ -676,7 +677,8 @@ _xdg_mime_magic_lookup_data (XdgMimeMagic *mime_magic,
 	{
 	  prio = match->priority;
 	  mime_type = match->mime_type;
-	  break;
+	  if (!eliminate_only)
+	    break;
 	}
       else 
 	{
@@ -689,7 +691,7 @@ _xdg_mime_magic_lookup_data (XdgMimeMagic *mime_magic,
 	}
     }
 
-  if (mime_type == NULL)
+  if (mime_type == NULL && !eliminate_only)
     {
       for (n = 0; n < n_mime_types; n++)
 	{

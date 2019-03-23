@@ -50,6 +50,7 @@ const char   *_xdg_mime_magic_lookup_data        (XdgMimeMagic *mime_magic,
 						  size_t        len,
 						  int          *result_prio,
 						  const char   *mime_types[],
-						  int           n_mime_types);
+						  int           n_mime_types,
+						  int           eliminiate_only);
 
 #endif /* __XDG_MIME_MAGIC_H__ */
