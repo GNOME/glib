@@ -139,7 +139,7 @@
 
 /* datalist pointer accesses have to be carried out atomically */
 #define G_DATALIST_GET_POINTER(datalist)						\
-  ((GData*) ((gsize) g_atomic_pointer_get (datalist) & ~(gsize) G_DATALIST_FLAGS_MASK_INTERNAL))
+  ((GData*) ((guintptr) g_atomic_pointer_get (datalist) & ~(guintptr) G_DATALIST_FLAGS_MASK_INTERNAL))
 
 #define G_DATALIST_SET_POINTER(datalist, pointer)       G_STMT_START {                  \
   gpointer _oldv, _newv;                                                                \
@@ -1195,7 +1195,7 @@ g_datalist_set_flags (GData **datalist,
   g_return_if_fail (datalist != NULL);
   g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
 
-  g_atomic_pointer_or (datalist, (gsize)flags);
+  g_atomic_pointer_or ((guintptr *) datalist, flags);
 }
 
 /**
@@ -1218,7 +1218,7 @@ g_datalist_unset_flags (GData **datalist,
   g_return_if_fail (datalist != NULL);
   g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
 
-  g_atomic_pointer_and (datalist, ~(gsize)flags);
+  g_atomic_pointer_and ((guintptr *) datalist, ~flags);
 }
 
 /**
