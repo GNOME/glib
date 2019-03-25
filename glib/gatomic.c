@@ -387,7 +387,7 @@ gssize
 (g_atomic_pointer_add) (volatile void *atomic,
                         gssize         val)
 {
-  return g_atomic_pointer_add ((volatile gpointer *) atomic, val);
+  return g_atomic_pointer_add ((volatile gssize *) atomic, val);
 }
 
 /**
@@ -411,7 +411,7 @@ gsize
 (g_atomic_pointer_and) (volatile void *atomic,
                         gsize          val)
 {
-  return g_atomic_pointer_and ((volatile gpointer *) atomic, val);
+  return g_atomic_pointer_and ((volatile gsize *) atomic, val);
 }
 
 /**
@@ -435,7 +435,7 @@ gsize
 (g_atomic_pointer_or) (volatile void *atomic,
                        gsize          val)
 {
-  return g_atomic_pointer_or ((volatile gpointer *) atomic, val);
+  return g_atomic_pointer_or ((volatile gsize *) atomic, val);
 }
 
 /**
@@ -459,7 +459,7 @@ gsize
 (g_atomic_pointer_xor) (volatile void *atomic,
                         gsize          val)
 {
-  return g_atomic_pointer_xor ((volatile gpointer *) atomic, val);
+  return g_atomic_pointer_xor ((volatile gsize *) atomic, val);
 }
 
 #elif defined (G_PLATFORM_WIN32)
