@@ -56,7 +56,13 @@
  *
  * ...and still compile successfully when -Werror=duplicated-branches is passed. */
 
+#if __GNUC__ && defined(__has_warning)
+#  if __has_warning("-Wduplicated-branches")
+#    pragma GCC diagnostic ignored "-Wduplicated-branches"
+#  endif
+#else
 #pragma GCC diagnostic ignored "-Wduplicated-branches"
+#endif
 
 /**
  * SECTION:hash_tables
