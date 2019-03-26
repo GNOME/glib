@@ -325,6 +325,11 @@ gboolean g_output_stream_set_pending   (GOutputStream             *stream,
 					GError                   **error);
 GLIB_AVAILABLE_IN_ALL
 void     g_output_stream_clear_pending (GOutputStream             *stream);
+GLIB_AVAILABLE_IN_2_62
+gint64   g_output_stream_get_retry_delay (GOutputStream           *stream);
+GLIB_AVAILABLE_IN_2_62
+void     g_output_stream_set_retry_delay (GOutputStream           *stream,
+                                          gint64                   max_delay);
 
 
 G_END_DECLS

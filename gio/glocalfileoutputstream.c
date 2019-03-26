@@ -311,6 +311,9 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 					  GError        **error)
 {
   GLocalFileStat final_stat;
+  gint64         max_delay;
+
+  max_delay = g_output_stream_get_retry_delay (G_OUTPUT_STREAM (file));
 
 #ifdef HAVE_FSYNC
   if (file->priv->sync_on_close &&
@@ -375,7 +378,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 	  if (link (file->priv->original_filename, file->priv->backup_filename) != 0)
 	    {
 	      /*  link failed or is not supported, try rename  */
-	      if (g_rename (file->priv->original_filename, file->priv->backup_filename) != 0)
+              if (g_rename_retry (file->priv->original_filename, file->priv->backup_filename, max_delay) != 0)
 		{
                   int errsv = errno;
 
@@ -388,7 +391,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 	    }
 #else
 	    /* If link not supported, just rename... */
-	  if (g_rename (file->priv->original_filename, file->priv->backup_filename) != 0)
+          if (g_rename_retry (file->priv->original_filename, file->priv->backup_filename, max_delay) != 0)
 	    {
               int errsv = errno;
 
@@ -406,7 +409,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 	goto err_out;
 
       /* tmp -> original */
-      if (g_rename (file->priv->tmp_filename, file->priv->original_filename) != 0)
+      if (g_rename_retry (file->priv->tmp_filename, file->priv->original_filename, max_delay) != 0)
 	{
           int errsv = errno;
 

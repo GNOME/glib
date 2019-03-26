@@ -53,6 +53,8 @@ struct _GOutputStreamPrivate {
   guint pending : 1;
   guint closing : 1;
   GAsyncReadyCallback outstanding_callback;
+
+  gint64 retry_delay;
 };
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GOutputStream, g_output_stream, G_TYPE_OBJECT)
@@ -2225,6 +2227,53 @@ g_output_stream_clear_pending (GOutputStream *stream)
   g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
   
   stream->priv->pending = FALSE;
+}
+
+/**
+ * g_output_stream_get_retry_delay:
+ * @stream: A #GOutputStream.
+ *
+ * See g_output_stream_set_retry_delay() for more details.
+ *
+ * Returns: the maximum delay in microseconds before abandoning after
+ * non-fatal failures.
+ **/
+gint64
+g_output_stream_get_retry_delay (GOutputStream *stream)
+{
+  g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), 0);
+
+  return stream->priv->retry_delay;
+}
+
+/**
+ * g_output_stream_set_retry_delay:
+ * @stream: A #GOutputStream.
+ * @max_delay: max delay in microseconds before abandonning.
+ *
+ * Any positive value for @max_delay will allow various methods to retry failed
+ * operations when non-fatal errors occured.
+ *
+ * A typical case is failure of closing the output stream when the temporary
+ * file could not override the original file if this one was locked by another
+ * process, which is a common issue on Windows (for instance you may fail
+ * writing a file because an antivirus or a cloud client is reading it in the
+ * same time as you, as they randomly check on files).
+ *
+ * Note that this value is used as a max delay taken by each individual action
+ * which might fail at first for unexpected reasons. It is up to the caller to
+ * set a reasonable value, depending on the context and application.
+ *
+ * By default, the retry delay of a #GOutputStream is 0 (which means basically
+ * non-fatal errors will be actually fatal).
+ **/
+void
+g_output_stream_set_retry_delay (GOutputStream *stream,
+                                 gint64         max_delay)
+{
+  g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
+
+  stream->priv->retry_delay = max_delay;
 }
 
 /*< internal >
