@@ -1116,10 +1116,14 @@ g_creat (const gchar *filename,
  * 
  * See your C library manual for more details about how rename() works
  * on your system. It is not possible in general on Windows to rename
- * a file that is open to some process.
+ * a file that is open to some process. When this happens, g_rename() will set
+ * errno to EBUSY, allowing you to address the issue appropriately (for
+ * instance by retrying after a bit).
  *
- * Returns: 0 if the renaming succeeded, -1 if an error occurred
- * 
+ * Returns: 0 if the renaming succeeded, -1 if an error occurred. In case of
+ * error, errno will be appropriately set (even on Windows where several common
+ * errors have been mapped to errno counterparts).
+ *
  * Since: 2.6
  */
 int
@@ -1159,8 +1163,8 @@ g_rename (const gchar *oldfilename,
 	  CASE (PATH_NOT_FOUND, ENOENT);
 	  CASE (ACCESS_DENIED, EACCES);
 	  CASE (NOT_SAME_DEVICE, EXDEV);
-	  CASE (LOCK_VIOLATION, EACCES);
-	  CASE (SHARING_VIOLATION, EACCES);
+	  CASE (LOCK_VIOLATION, EBUSY);
+	  CASE (SHARING_VIOLATION, EBUSY);
 	  CASE (FILE_EXISTS, EEXIST);
 	  CASE (ALREADY_EXISTS, EEXIST);
 #undef CASE
