@@ -44,7 +44,7 @@ GType g_cocoa_notification_backend_get_type (void);
 
 G_DEFINE_TYPE_WITH_CODE (GCocoaNotificationBackend, g_cocoa_notification_backend, G_TYPE_NOTIFICATION_BACKEND,
   _g_io_modules_ensure_extension_points_registered ();
-  g_io_extension_point_implement (G_NOTIFICATION_BACKEND_EXTENSION_POINT_NAME, g_define_type_id, "cocoa", 0));
+  g_io_extension_point_implement (G_NOTIFICATION_BACKEND_EXTENSION_POINT_NAME, g_define_type_id, "cocoa", 200));
 
 static NSString *
 nsstring_from_cstr (const char *cstr)
