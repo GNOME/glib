@@ -89,6 +89,11 @@ int g_unlink (const gchar *filename);
 GLIB_AVAILABLE_IN_ALL
 int g_rmdir  (const gchar *filename);
 
+GLIB_AVAILABLE_IN_2_62
+int g_rename_retry (const gchar *oldfilename,
+                    const gchar *newfilename,
+                    gint64       max_delay);
+
 #else /* ! G_OS_UNIX */
 
 /* Wrappers for C library functions that take pathname arguments. On
@@ -121,6 +126,11 @@ int g_creat     (const gchar *filename,
 GLIB_AVAILABLE_IN_ALL
 int g_rename    (const gchar *oldfilename,
                  const gchar *newfilename);
+
+GLIB_AVAILABLE_IN_2_62
+int g_rename_retry (const gchar *oldfilename,
+                    const gchar *newfilename,
+                    gint64       max_delay);
 
 GLIB_AVAILABLE_IN_ALL
 int g_mkdir     (const gchar *filename,

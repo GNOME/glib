@@ -1118,7 +1118,8 @@ g_creat (const gchar *filename,
  * on your system. It is not possible in general on Windows to rename
  * a file that is open to some process. When this happens, g_rename() will set
  * errno to EBUSY, allowing you to address the issue appropriately (for
- * instance by retrying after a bit).
+ * instance by retrying after a bit). If you simply want to retry for a given
+ * time, use g_rename_retry() instead.
  *
  * Returns: 0 if the renaming succeeded, -1 if an error occurred. In case of
  * error, errno will be appropriately set (even on Windows where several common
@@ -1180,6 +1181,49 @@ g_rename (const gchar *oldfilename,
 #else
   return rename (oldfilename, newfilename);
 #endif
+}
+
+/**
+ * g_rename_retry:
+ * @oldfilename: (type filename): a pathname in the GLib file name encoding
+ *     (UTF-8 on Windows)
+ * @newfilename: (type filename): a pathname in the GLib file name encoding
+ * @max_delay: max delay in microseconds before abandonning.
+ *
+ * A wrapper over g_rename(), which retries the operation when it fails for
+ * non-fatal reasons (typically when the rename fails with EBUSY, which may be
+ * a temporary resource lock). The call will fail if it still fails with EBUSY
+ * after @delay has passed.
+ * Note that the time precision may have limited precision, depending on
+ * hardware and operating system; don't rely on the exact length of the delay.
+ *
+ * Returns: 0 if the renaming succeeded, -1 if an error occurred. In case of
+ * error, errno will be appropriately set (even on Windows where several common
+ * errors have been mapped to errno counterparts).
+ *
+ * Since: 2.62
+ */
+int
+g_rename_retry (const gchar *oldfilename,
+                const gchar *newfilename,
+                gint64       max_delay)
+{
+  gint64 start;
+  int    retval;
+
+  retval = g_rename (oldfilename, newfilename);
+  start  = g_get_monotonic_time ();
+
+  while (retval != 0 && errno == EBUSY)
+    {
+      if (g_get_monotonic_time () - start > max_delay)
+        break;
+
+      g_usleep (100);
+      retval = g_rename (oldfilename, newfilename);
+    }
+
+  return retval;
 }
 
 /**
