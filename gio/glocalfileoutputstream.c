@@ -102,9 +102,10 @@ static gboolean   g_local_file_output_stream_writev       (GOutputStream       *
 							   GCancellable        *cancellable,
 							   GError             **error);
 #endif
-static gboolean   g_local_file_output_stream_close        (GOutputStream      *stream,
-							   GCancellable       *cancellable,
-							   GError            **error);
+static gboolean   g_local_file_output_stream_close_retry  (GOutputStream      *stream,
+                                                           GCancellable       *cancellable,
+                                                           gint64              max_delay,
+                                                           GError            **error);
 static GFileInfo *g_local_file_output_stream_query_info   (GFileOutputStream  *stream,
 							   const char         *attributes,
 							   GCancellable       *cancellable,
@@ -154,7 +155,7 @@ g_local_file_output_stream_class_init (GLocalFileOutputStreamClass *klass)
 #ifdef G_OS_UNIX
   stream_class->writev_fn = g_local_file_output_stream_writev;
 #endif
-  stream_class->close_fn = g_local_file_output_stream_close;
+  stream_class->close_fn_retry = g_local_file_output_stream_close_retry;
   file_stream_class->query_info = g_local_file_output_stream_query_info;
   file_stream_class->get_etag = g_local_file_output_stream_get_etag;
   file_stream_class->tell = g_local_file_output_stream_tell;
@@ -307,8 +308,9 @@ _g_local_file_output_stream_set_do_close (GLocalFileOutputStream *out,
 
 gboolean
 _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
-					  GCancellable   *cancellable,
-					  GError        **error)
+                                          GCancellable   *cancellable,
+                                          gint64          max_delay,
+                                          GError        **error)
 {
   GLocalFileStat final_stat;
 
@@ -375,7 +377,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 	  if (link (file->priv->original_filename, file->priv->backup_filename) != 0)
 	    {
 	      /*  link failed or is not supported, try rename  */
-	      if (g_rename (file->priv->original_filename, file->priv->backup_filename) != 0)
+              if (g_rename_retry (file->priv->original_filename, file->priv->backup_filename, max_delay) != 0)
 		{
                   int errsv = errno;
 
@@ -388,7 +390,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 	    }
 #else
 	    /* If link not supported, just rename... */
-	  if (g_rename (file->priv->original_filename, file->priv->backup_filename) != 0)
+          if (g_rename_retry (file->priv->original_filename, file->priv->backup_filename, max_delay) != 0)
 	    {
               int errsv = errno;
 
@@ -406,7 +408,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 	goto err_out;
 
       /* tmp -> original */
-      if (g_rename (file->priv->tmp_filename, file->priv->original_filename) != 0)
+      if (g_rename_retry (file->priv->tmp_filename, file->priv->original_filename, max_delay) != 0)
 	{
           int errsv = errno;
 
@@ -454,11 +456,11 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
   return FALSE;
 }
 
-
 static gboolean
-g_local_file_output_stream_close (GOutputStream  *stream,
-				  GCancellable   *cancellable,
-				  GError        **error)
+g_local_file_output_stream_close_retry (GOutputStream  *stream,
+                                        GCancellable   *cancellable,
+                                        gint64          max_delay,
+                                        GError        **error)
 {
   GLocalFileOutputStream *file;
 
@@ -466,8 +468,9 @@ g_local_file_output_stream_close (GOutputStream  *stream,
 
   if (file->priv->do_close)
     return _g_local_file_output_stream_really_close (file,
-						     cancellable,
-						     error);
+                                                     cancellable,
+                                                     max_delay,
+                                                     error);
   return TRUE;
 }
 

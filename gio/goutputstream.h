@@ -79,6 +79,10 @@ struct _GOutputStreamClass
   gboolean    (* close_fn)      (GOutputStream            *stream,
                                  GCancellable             *cancellable,
                                  GError                  **error);
+  gboolean    (* close_fn_retry)(GOutputStream            *stream,
+                                 GCancellable             *cancellable,
+                                 gint64                    max_delay,
+                                 GError                  **error);
 
   /* Async ops: (optional in derived classes) */
 
@@ -213,6 +217,11 @@ GLIB_AVAILABLE_IN_ALL
 gboolean g_output_stream_close         (GOutputStream             *stream,
 					GCancellable              *cancellable,
 					GError                   **error);
+GLIB_AVAILABLE_IN_2_62
+gboolean g_output_stream_close_retry   (GOutputStream             *stream,
+                                        GCancellable              *cancellable,
+                                        gint64                     max_delay,
+                                        GError                   **error);
 GLIB_AVAILABLE_IN_ALL
 void     g_output_stream_write_async   (GOutputStream             *stream,
 					const void                *buffer,

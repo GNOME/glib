@@ -94,7 +94,7 @@ g_local_file_io_stream_close (GIOStream  *stream,
 
   return
     _g_local_file_output_stream_really_close (G_LOCAL_FILE_OUTPUT_STREAM (file->output_stream),
-					      cancellable, error);
+                                              cancellable, 0, error);
 }
 
 static void

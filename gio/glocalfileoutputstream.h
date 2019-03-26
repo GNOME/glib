@@ -54,8 +54,9 @@ GType               _g_local_file_output_stream_get_type (void) G_GNUC_CONST;
 void     _g_local_file_output_stream_set_do_close (GLocalFileOutputStream *out,
 						   gboolean do_close);
 gboolean _g_local_file_output_stream_really_close (GLocalFileOutputStream *out,
-						   GCancellable   *cancellable,
-						   GError        **error);
+                                                   GCancellable   *cancellable,
+                                                   gint64          max_delay,
+                                                   GError        **error);
 
 GFileOutputStream * _g_local_file_output_stream_new      (int               fd);
 GFileOutputStream * _g_local_file_output_stream_open     (const char       *filename,

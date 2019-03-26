@@ -117,6 +117,7 @@ static gboolean g_output_stream_real_close_finish  (GOutputStream             *s
 						    GError                   **error);
 static gboolean g_output_stream_internal_close     (GOutputStream             *stream,
                                                     GCancellable              *cancellable,
+                                                    gint64                     max_delay,
                                                     GError                   **error);
 static void     g_output_stream_internal_close_async (GOutputStream           *stream,
                                                       int                      io_priority,
@@ -823,7 +824,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
   if (flags & G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET)
     {
       /* But write errors on close are bad! */
-      if (!g_output_stream_internal_close (stream, cancellable, error))
+      if (! g_output_stream_internal_close (stream, cancellable, 0, error))
         res = FALSE;
     }
 
@@ -838,6 +839,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
 static gboolean
 g_output_stream_internal_close (GOutputStream  *stream,
                                 GCancellable   *cancellable,
+                                gint64          max_delay,
                                 GError        **error)
 {
   GOutputStreamClass *class;
@@ -863,13 +865,18 @@ g_output_stream_internal_close (GOutputStream  *stream,
       /* flushing caused the error that we want to return,
        * but we still want to close the underlying stream if possible
        */
-      if (class->close_fn)
+      if (class->close_fn_retry)
+        class->close_fn_retry (stream, cancellable, max_delay, NULL);
+      else if (class->close_fn)
+        /* Retrying unsupported. */
         class->close_fn (stream, cancellable, NULL);
     }
   else
     {
       res = TRUE;
-      if (class->close_fn)
+      if (class->close_fn_retry)
+        class->close_fn_retry (stream, cancellable, max_delay, error);
+      else if (class->close_fn)
         res = class->close_fn (stream, cancellable, error);
     }
 
@@ -922,8 +929,37 @@ g_output_stream_internal_close (GOutputStream  *stream,
  **/
 gboolean
 g_output_stream_close (GOutputStream  *stream,
-		       GCancellable   *cancellable,
-		       GError        **error)
+                       GCancellable   *cancellable,
+                       GError        **error)
+{
+  return g_output_stream_close_retry (stream, cancellable, 0, error);
+}
+
+/**
+ * g_output_stream_close_retry:
+ * @stream: A #GOutputStream.
+ * @cancellable: (nullable): optional cancellable object
+ * @max_delay: max delay in microseconds before abandonning.
+ * @error: location to store the error occurring, or %NULL to ignore
+ *
+ * Closes the stream, releasing resources related to it.
+ * This is similar to g_output_stream_close() except that the function will
+ * retry closing when encountering non-fatal failures, such as busy resources,
+ * unless @max_delay passed (in which case, it will fail).
+ *
+ * Note that the delay is not for the whole closing process (even less if
+ * closing requires some flushing process which can take some time on big
+ * file). It only matters as a max delay taken by each individual action which
+ * might fail at first for unexpected reasons, such as files temporarily locked
+ * by another process which cannot be moved on Windows.
+ *
+ * Returns: %TRUE on success, %FALSE on failure
+ **/
+gboolean
+g_output_stream_close_retry (GOutputStream             *stream,
+                             GCancellable              *cancellable,
+                             gint64                     max_delay,
+                             GError                   **error)
 {
   gboolean res;
 
@@ -935,10 +971,10 @@ g_output_stream_close (GOutputStream  *stream,
   if (!g_output_stream_set_pending (stream, error))
     return FALSE;
 
-  res = g_output_stream_internal_close (stream, cancellable, error);
+  res = g_output_stream_internal_close (stream, cancellable, max_delay, error);
 
   g_output_stream_clear_pending (stream);
-  
+
   return res;
 }
 
@@ -2965,6 +3001,14 @@ close_async_thread (GTask        *task,
         class->close_fn (stream, cancellable, NULL);
       else
         result = class->close_fn (stream, cancellable, &error);
+    }
+  else if (class->close_fn_retry)
+    {
+      /* Make sure to close, even if the flush failed (see sync close) */
+      if (!result)
+        class->close_fn_retry (stream, cancellable, 0, NULL);
+      else
+        result = class->close_fn_retry (stream, cancellable, 0, &error);
     }
 
   if (result)
