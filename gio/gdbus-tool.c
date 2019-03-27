@@ -2051,7 +2051,7 @@ handle_monitor (gint        *argc,
 
 static gboolean opt_wait_activate_set = FALSE;
 static gchar *opt_wait_activate_name = NULL;
-static gint64 opt_wait_timeout = 0;  /* no timeout */
+static gint64 opt_wait_timeout_secs = 0;  /* no timeout */
 
 typedef enum {
   WAIT_STATE_RUNNING,  /* waiting to see the service */
@@ -2078,7 +2078,7 @@ static const GOptionEntry wait_entries[] =
     opt_wait_activate_cb,
     N_("Service to activate before waiting for the other one (well-known name)"),
     "[NAME]" },
-  { "timeout", 't', 0, G_OPTION_ARG_INT64, &opt_wait_timeout,
+  { "timeout", 't', 0, G_OPTION_ARG_INT64, &opt_wait_timeout_secs,
     N_("Timeout to wait for before exiting with an error (seconds); 0 for "
        "no timeout (default)"), "SECS" },
   { NULL }
@@ -2255,8 +2255,8 @@ handle_wait (gint        *argc,
                                              NULL, &wait_state, NULL);
 
   /* Safety timeout. */
-  if (opt_wait_timeout > 0)
-    timer_id = g_timeout_add (opt_wait_timeout, wait_timeout_cb, &wait_state);
+  if (opt_wait_timeout_secs > 0)
+    timer_id = g_timeout_add_seconds (opt_wait_timeout_secs, wait_timeout_cb, &wait_state);
 
   while (wait_state == WAIT_STATE_RUNNING)
     g_main_context_iteration (NULL, TRUE);
