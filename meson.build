@@ -592,6 +592,12 @@ if cc.has_header_symbol('dlfcn.h', 'RTLD_GLOBAL')
   glib_conf.set('HAVE_RTLD_GLOBAL', 1)
 endif
 
+have_rtld_next = false
+if cc.has_header_symbol('dlfcn.h', 'RTLD_NEXT')
+  have_rtld_next = true
+  glib_conf.set('HAVE_RTLD_NEXT', 1)
+endif
+
 # Check whether to use statfs or statvfs
 # Some systems have both statfs and statvfs, pick the most "native" for these
 if have_func_statfs and have_func_statvfs
