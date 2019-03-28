@@ -3,6 +3,7 @@ image: registry.gitlab.gnome.org/gnome/glib/master:v11
 stages:
   - build
   - coverage
+  - docs
   - deploy
 
 cache:
@@ -189,12 +190,29 @@ coverage:
     - bash -x ./.gitlab-ci/coverage-docker.sh
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
 
+api-reference:
+  stage: docs
+  except:
+    - tags
+  script:
+    - meson -Dgtk_doc=true _build .
+    - ninja -C _build
+    - ninja -C _build glib-doc gobject-doc gio-doc
+    - mv _build/docs/reference/glib/html _docs/glib
+    - mv _build/docs/reference/gobject/html _docs/gobject
+    - mv _build/docs/reference/gio/html _docs/gio
+  artifacts:
+    name: "glib-apidocs-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    paths:
+      - _docs
+
 pages:
   stage: deploy
   only:
     - master
   script:
-    - mv _coverage/ public/
+    - mv _coverage/ public/coverage/
+    - mv _docs/ public/docs/
   artifacts:
     paths:
       - public
