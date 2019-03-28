@@ -17,7 +17,7 @@
 #include <config.h>
 
 /* Specification.  */
-#include <math.h>
+#include <gnulib_math.h>
 
 #include <string.h>
 #include "isnanf-nolibm.h"
