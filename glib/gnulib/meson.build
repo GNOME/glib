@@ -51,10 +51,6 @@ unneeded_funcs = [
   'ILOGB',
   'ILOGBF',
   'ILOGBL',
-  'ISFINITE',
-  'ISINF',
-  'ISNAN',
-  'ISNANF',
   'LDEXPF',
   'LOG',
   'LOG10',
@@ -84,7 +80,6 @@ unneeded_funcs = [
   'ROUND',
   'ROUNDF',
   'ROUNDL',
-  'SIGNBIT',
   'SINF',
   'SINHF',
   'SINL',
@@ -110,9 +105,14 @@ endforeach
 needed_funcs = [
   'FREXP',
   'FREXPL',
+  'ISFINITE',
+  'ISINF',
+  'ISNAN',
   'ISNAND',
+  'ISNANF',
   'ISNANL',
   'LDEXPL',
+  'SIGNBIT',
 ]
 
 foreach f : needed_funcs
@@ -296,6 +296,29 @@ endif
 math_h_config.set ('REPLACE_LDEXPL', gl_cv_func_ldexpl_works ? 0 : 1)
 math_h_config.set ('HAVE_DECL_LDEXPL', gl_cv_func_ldexpl_decl ? 0 : 1)
 
+inf_tmpl = '''#include <math.h>
+              double x;
+              int main () {return @0@ (x);}
+           '''
+
+other_needed_math_sources = []
+# Some compilers may not have isfinite, isinf available
+foreach f: ['isfinite', 'isinf', 'isnan', 'isnanf', 'signbit']
+  links = cc.links (inf_tmpl.format('@0@'.format(f)),
+                    dependencies : [libm])
+  math_h_config.set ('HAVE_@0@'.format(f.to_upper()), links ? 1 : 0)
+  math_h_config.set ('HAVE_@0@_IN_LIBC'.format(f.to_upper()), links ? 1 : 0)
+  math_h_config.set ('REPLACE_@0@'.format(f.to_upper()), links ? 0 : 1)
+  set_variable ('have_@0@'.format(f), links)
+  if not links
+    if f == 'signbit'
+      other_needed_math_sources += [ 'signbitd.c', 'signbitf.c', 'signbitl.c' ]
+    elif f != 'isfinite' and f != 'isnan'
+      other_needed_math_sources += [ '@0@.c'.format(f) ]
+    endif
+  endif
+endforeach
+
 math_h = configure_file (input: 'gnulib_math.h.in',
                          output: 'gnulib_math.h',
                          configuration: math_h_config)
@@ -308,6 +331,8 @@ endif
 if not gl_cv_func_frexpl_works
   gnulib_sources += ['frexpl.c']
 endif
+
+gnulib_sources += other_needed_math_sources
 
 gnulib_lib = static_library('gnulib', gnulib_sources,
   dependencies : [libm],
