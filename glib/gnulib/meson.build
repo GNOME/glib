@@ -282,6 +282,7 @@ endif
 
 math_h_config.set ('REPLACE_FREXP', gl_cv_func_frexp_works ? 0 : 1)
 math_h_config.set ('REPLACE_FREXPL', gl_cv_func_frexpl_works ? 0 : 1)
+math_h_config.set ('HAVE_DECL_FREXPL', gl_cv_func_frexpl_decl ? 0 : 1)
 
 math_h_config.set ('REPLACE_ITOLD', 0)
 math_h_config.set ('REPLACE_HUGE_VAL', 0)
@@ -293,6 +294,7 @@ else
   gl_cv_func_ldexpl_works = false
 endif
 math_h_config.set ('REPLACE_LDEXPL', gl_cv_func_ldexpl_works ? 0 : 1)
+math_h_config.set ('HAVE_DECL_LDEXPL', gl_cv_func_ldexpl_decl ? 0 : 1)
 
 math_h = configure_file (input: 'gnulib_math.h.in',
                          output: 'gnulib_math.h',
