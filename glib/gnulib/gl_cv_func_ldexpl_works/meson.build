@@ -9,7 +9,11 @@ extern
 #ifdef __cplusplus
 "C"
 #endif
+
+#if !defined (_MSC_VER) || defined (TEST_LDEXPL_DECL)
 long double ldexpl (long double, int);
+#endif
+
 int main()
 {
   int result = 0;
@@ -43,3 +47,11 @@ else
     gl_cv_func_ldexpl_works = true
   endif
 endif
+
+ldexpl_test_decl = '''
+#define TEST_LDEXPL_DECL 1
+''' + ldexpl_test
+
+build_result = cc.compiles(ldexpl_test_decl,
+    name : 'ldexpl prototype can be re-listed')
+gl_cv_func_ldexpl_decl = build_result
