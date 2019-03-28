@@ -44,7 +44,8 @@ To update:
 * Run gnulib-tool --lgpl=2 --import --lib=libgnu --source-base=lib \
   --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=. \
   --no-conditional-dependencies --no-libtool --macro-prefix=gl \
-  isnand-nolibm isnanl-nolibm printf-frexpl vasnprintf
+  isnand-nolibm isnanf-nolibm isnanl-nolibm printf-frexpl \
+  signbit vasnprintf
 * Then pick out the files that are already in glib/gnulib subdirectory
   (the rest of the files are not needed):
 
@@ -56,6 +57,8 @@ gnulib_math.h.in (rename from math.in.h)
 isnan.c
 isnand.c
 isnand-nolibm.h
+isnanf.c
+isnanf-nolibm.h
 isnanl.c
 isnanl-nolibm.h
 printf-args.c
@@ -66,6 +69,9 @@ printf-frexpl.c
 printf-frexpl.h
 printf-parse.c
 printf-parse.h
+signbitd.c
+signbitf.c
+signbitl.c
 vasnprintf.c
 vasnprintf.h
 verify.h
