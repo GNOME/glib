@@ -51,10 +51,6 @@ unneeded_funcs = [
   'ILOGB',
   'ILOGBF',
   'ILOGBL',
-  'ISFINITE',
-  'ISINF',
-  'ISNAN',
-  'ISNANF',
   'LDEXPF',
   'LOG',
   'LOG10',
@@ -84,7 +80,6 @@ unneeded_funcs = [
   'ROUND',
   'ROUNDF',
   'ROUNDL',
-  'SIGNBIT',
   'SINF',
   'SINHF',
   'SINL',
@@ -110,9 +105,14 @@ endforeach
 needed_funcs = [
   'FREXP',
   'FREXPL',
+  'ISFINITE',
+  'ISINF',
+  'ISNAN',
   'ISNAND',
+  'ISNANF',
   'ISNANL',
   'LDEXPL',
+  'SIGNBIT',
 ]
 
 foreach f : needed_funcs
@@ -240,6 +240,21 @@ math_h_config.set ('HAVE_FREXPL', links ? 1 : 0)
 math_h_config.set ('HAVE_FREXPL_IN_LIBC', links ? 1 : 0)
 set_variable ('have_frexpl', links)
 
+inf_tmpl = '''#include <math.h>
+              double x;
+              int main () {return @0@ (x);}
+           '''
+
+# Some compilers may not have isfinite, isinf available
+foreach f: ['isfinite', 'isinf', 'isnan', 'isnanf', 'signbit']
+  links = cc.links (inf_tmpl.format('isfinite'),
+                    dependencies : [libm])
+  math_h_config.set ('HAVE_@0@'.format(f.to_upper()), links ? 1 : 0)
+  math_h_config.set ('HAVE_@0@_IN_LIBC'.format(f.to_upper()), links ? 1 : 0)
+  math_h_config.set ('REPLACE_@0@'.format(f.to_upper()), links ? 0 : 1)
+  set_variable ('have_@0@'.format(f), links)
+endforeach
+
 math_h_config.set ('INCLUDE_NEXT_AS_FIRST_DIRECTIVE', 'include')
 math_h_config.set ('NEXT_AS_FIRST_DIRECTIVE_MATH_H', '<math.h>')
 math_h_config.set ('PRAGMA_COLUMNS', '')
@@ -300,7 +315,7 @@ math_h = configure_file (input: 'gnulib_math.h.in',
                          output: 'gnulib_math.h',
                          configuration: math_h_config)
 
-gnulib_sources = ['asnprintf.c', 'printf.c', 'printf-args.c', 'printf-parse.c', 'printf-frexp.c', 'printf-frexpl.c', 'isnand.c', 'isnanl.c', 'vasnprintf.c']
+gnulib_sources = ['asnprintf.c', 'printf.c', 'printf-args.c', 'printf-parse.c', 'printf-frexp.c', 'printf-frexpl.c', 'isnand.c', 'isnanf.c', 'isnanl.c', 'isinf.c', 'signbitd.c', 'signbitf.c', 'signbitl.c', 'vasnprintf.c']
 
 if not gl_cv_func_frexp_works
   gnulib_sources += ['frexp.c']
