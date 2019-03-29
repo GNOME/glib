@@ -1693,39 +1693,38 @@ glibconfig_conf.set10('G_HAVE_GROWING_STACK', growing_stack)
 # USE_LIBICONV_GNU: Using GNU libiconv
 # USE_LIBICONV_NATIVE: Using a native impl of iconv in a separate library
 #
-# We should never use the MinGW C library's iconv. On Windows we use the
-# GNU implementation that ships with MinGW.
-
-# On Windows, just always use the built-in implementation
+# We should never use the MinGW C library's iconv because it may not be
+# available in the actual runtime environment. On Windows, we always use
+# the built-in implementation
+iconv_opt = get_option('iconv')
 if host_system == 'windows'
   libiconv = []
+  # We have a #include "win_iconv.c" in gconvert.c on Windows, so we don't need
+  # any external library for it
   glib_conf.set('USE_LIBICONV_NATIVE', true)
+  if iconv_opt != 'auto'
+    warning('-Diconv was set to @0@, which was ignored')
+  endif
 else
   found_iconv = false
-  iconv_opt = get_option('iconv')
-  if iconv_opt == 'libc'
-    if cc.has_function('iconv_open')
-      libiconv = []
-      found_iconv = true
-    endif
-  elif iconv_opt == 'gnu'
-    if cc.has_header_symbol('iconv.h', 'libiconv_open')
-      glib_conf.set('USE_LIBICONV_GNU', true)
-      libiconv = [cc.find_library('iconv')]
-      found_iconv = true
-    endif
-  elif iconv_opt == 'native'
-    if cc.has_header_symbol('iconv.h', 'iconv_open')
-      glib_conf.set('USE_LIBICONV_NATIVE', true)
-      libiconv = [cc.find_library('iconv')]
-      found_iconv = true
-    endif
+  if ['auto', 'libc'].contains(iconv_opt) and cc.has_function('iconv_open')
+    libiconv = []
+    found_iconv = true
+  endif
+  if not found_iconv and ['auto', 'native'].contains(iconv_opt) and cc.has_header_symbol('iconv.h', 'iconv_open')
+    glib_conf.set('USE_LIBICONV_NATIVE', true)
+    libiconv = [cc.find_library('iconv')]
+    found_iconv = true
+  endif
+  if not found_iconv and ['auto', 'gnu'].contains(iconv_opt) and cc.has_header_symbol('iconv.h', 'libiconv_open')
+    glib_conf.set('USE_LIBICONV_GNU', true)
+    libiconv = [cc.find_library('iconv')]
+    found_iconv = true
   endif
 
   if not found_iconv
     error('iconv implementation "@0@" not found'.format(iconv_opt))
   endif
-
 endif
 
 if get_option('internal_pcre')
