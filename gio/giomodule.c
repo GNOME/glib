@@ -1235,7 +1235,7 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (g_network_monitor_portal_get_type ());
       g_type_ensure (g_proxy_resolver_portal_get_type ());
 #endif
-#if HAVE_MAC_OS_X_VERSION_MIN_REQUIRED >= 1090
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1090
       g_type_ensure (g_cocoa_notification_backend_get_type ());
 #endif
 #ifdef G_OS_WIN32
