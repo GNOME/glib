@@ -95,7 +95,9 @@ cross-android_api21_arm64:
   <<: *cross-template
   script:
     # FIXME: add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=gnu -Dinternal_pcre=true _build
+    # We use -Diconv=auto to test that we successfully detect that iconv is not
+    # provided by android api 21, and detect the external iconv instead.
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=auto -Dinternal_pcre=true _build
     - ninja -C _build
 
 cross-android_api28_arm64:
@@ -173,10 +175,10 @@ freebsd-11-x86_64:
     LANG: en_US.UTF-8
   script:
     # We cannot use -Wl,--no-undefined because GLib uses 'environ' variable.
-    # FreeBSD iconv doesn't handle transliteration, so we use GNU libiconv here.
+    # FreeBSD iconv doesn't handle transliteration, so we use (external) GNU libiconv here.
     # FreeBSD supports xattr, but its API is different from Linux xattr.
     # FIXME: extattr(2) support: https://gitlab.gnome.org/GNOME/glib/issues/1404
-    - meson ${MESON_COMMON_OPTIONS} -Db_lundef=false -Diconv=gnu -Dxattr=false _build
+    - meson ${MESON_COMMON_OPTIONS} -Db_lundef=false -Diconv=external -Dxattr=false _build
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
   except:
