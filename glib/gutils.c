@@ -1037,7 +1037,8 @@ static gchar *g_prgname = NULL;
  * #GtkApplication::startup handler. The program name is found by
  * taking the last component of @argv[0].
  *
- * Returns: the name of the program. The returned string belongs 
+ * Returns: (nullable): the name of the program, or %NULL if it has not been
+ *     set yet. The returned string belongs
  *     to GLib and must not be modified or freed.
  */
 const gchar*
