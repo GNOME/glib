@@ -1690,9 +1690,6 @@ glibconfig_conf.set10('G_HAVE_GROWING_STACK', growing_stack)
 
 # Tests for iconv
 #
-# USE_LIBICONV_GNU: Using GNU libiconv
-# USE_LIBICONV_NATIVE: Using a native impl of iconv in a separate library
-#
 # We should never use the MinGW C library's iconv because it may not be
 # available in the actual runtime environment. On Windows, we always use
 # the built-in implementation
@@ -1701,7 +1698,6 @@ if host_system == 'windows'
   libiconv = []
   # We have a #include "win_iconv.c" in gconvert.c on Windows, so we don't need
   # any external library for it
-  glib_conf.set('USE_LIBICONV_NATIVE', true)
   if iconv_opt != 'auto'
     warning('-Diconv was set to @0@, which was ignored')
   endif
@@ -1711,13 +1707,7 @@ else
     libiconv = []
     found_iconv = true
   endif
-  if not found_iconv and ['auto', 'native'].contains(iconv_opt) and cc.has_header_symbol('iconv.h', 'iconv_open')
-    glib_conf.set('USE_LIBICONV_NATIVE', true)
-    libiconv = [cc.find_library('iconv')]
-    found_iconv = true
-  endif
-  if not found_iconv and ['auto', 'gnu'].contains(iconv_opt) and cc.has_header_symbol('iconv.h', 'libiconv_open')
-    glib_conf.set('USE_LIBICONV_GNU', true)
+  if not found_iconv and ['auto', 'external'].contains(iconv_opt) and cc.has_header_symbol('iconv.h', 'iconv_open')
     libiconv = [cc.find_library('iconv')]
     found_iconv = true
   endif
