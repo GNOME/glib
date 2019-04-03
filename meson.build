@@ -1898,6 +1898,53 @@ if cc.has_function('strlcpy')
   endif
 endif
 
+cmdline_test_code = '''
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#undef NDEBUG
+#include <assert.h>
+
+static int
+__getcmdline (void)
+{
+/* This code is a dumbed-down version of g_file_get_contents() */
+#define BUFSIZE 1024
+  char result[BUFSIZE];
+  struct stat stat_buf;
+
+  int fd = open ("/proc/self/cmdline", O_RDONLY|O_BINARY);
+  assert (fd >= 0);
+  assert (fstat (fd, &stat_buf) == 0);
+
+  if (stat_buf.st_size > 0 && S_ISREG (stat_buf.st_mode))
+    assert (read (fd, result, BUFSIZE) > 0);
+  else
+    {
+      FILE *f = fdopen (fd, "r");
+      assert (f != NULL);
+      assert (fread (result, 1, BUFSIZE, f) > 0);
+    }
+
+  return 0;
+}
+
+int
+main (void)
+{
+  exit (__getcmdline ());
+}'''
+
+if cc_can_run
+  rres = cc.run(cmdline_test_code, name : '/proc/self/cmdline')
+  have_proc_self_cmdline = rres.compiled() and rres.returncode() == 0
+else
+  have_proc_self_cmdline = meson.get_cross_property('have_proc_self_cmdline', false)
+endif
+
+glib_conf.set('HAVE_PROC_SELF_CMDLINE', have_proc_self_cmdline)
+
 python = import('python').find_installation('python3')
 # used for '#!/usr/bin/env <name>'
 python_name = 'python3'
