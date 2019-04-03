@@ -1101,8 +1101,21 @@ main (int argc, char **argv)
         }
       else
         {
-          /* For Visual Studio builds: Avoid surpassing the 65535-character limit for a string, GitLab issue #1580 */
-          g_fprintf (file, "#ifdef _MSC_VER\n");
+          /* Various compilers have length limits on string literals (after
+           * all concatenation):
+           *  - Visual Studio: Limit of 65535 bytes (issue #1580).
+           *  - ≤ C90: Limit of 509 bytes.
+           *  - C99: Limit of 4095 bytes (issue #1711).
+           *
+           * So we have to include two different formats of the data: one in
+           * long string literal form, and a fallback as an array (which takes
+           * longer for a compiler to parse). One them will be thrown away
+           * quickly by the preprocessor; unfortunately it does double the size
+           * of the .c file before compilation.
+           */
+          g_fprintf (file, "#if ((defined(_MSC_VER) && %" G_GSIZE_FORMAT "L >= 65535L) ||", data_size + 1 /* nul terminator */);
+          g_fprintf (file, "     ((!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L) && %" G_GSIZE_FORMAT "L >= 509L) ||", data_size + 1 /* nul terminator */);
+          g_fprintf (file, "     (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L && %" G_GSIZE_FORMAT "L >= 4095L))\n", data_size + 1 /* nul terminator */);
           g_fprintf (file,
                      "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = { {\n",
                      data_size + 1 /* nul terminator */, c_name);
@@ -1121,7 +1134,7 @@ main (int argc, char **argv)
           g_fprintf (file, "} };\n");
 
           /* For other compilers, use the long string approach */
-          g_fprintf (file, "#else /* _MSC_VER */\n");
+          g_fprintf (file, "#else /* if long string literals are supported */\n");
           g_fprintf (file,
                      "static const SECTION union { const guint8 data[%"G_GSIZE_FORMAT"]; const double alignment; void * const ptr;}  %s_resource_data = {\n  \"",
                      data_size + 1 /* nul terminator */, c_name);
@@ -1134,7 +1147,7 @@ main (int argc, char **argv)
             }
 
           g_fprintf (file, "\" };\n");
-          g_fprintf (file, "#endif /* !_MSC_VER */\n");
+          g_fprintf (file, "#endif /* if long string literals are supported */\n");
         }
 
       g_fprintf (file,

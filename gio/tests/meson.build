@@ -618,9 +618,21 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     ]
   endif
 
+  # Compile the tests once normally, and then again with -Woverlength-strings
+  # to check that no compiler warnings are generated.
   gio_tests += {
     'resources' : {
       'extra_sources' : resources_extra_sources,
+    },
+    'resources-overlength-strings-c89' : {
+      'source': 'resources.c',
+      'extra_sources' : resources_extra_sources,
+      'c_args' : cc.get_supported_arguments([ '-Woverlength-strings', '-std=c89' ]),
+    },
+    'resources-overlength-strings-c99' : {
+      'source': 'resources.c',
+      'extra_sources' : resources_extra_sources,
+      'c_args' : cc.get_supported_arguments([ '-Woverlength-strings', '-std=c99' ]),
     },
   }
 endif
