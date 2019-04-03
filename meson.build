@@ -1893,7 +1893,7 @@ cmdline_test_code = '''
 #include <assert.h>
 
 static int
-__getcmdline ()
+__getcmdline (void)
 {
 /* This code is a dumbed-down version of g_file_get_contents() */
 #define BUFSIZE 1024
@@ -1917,7 +1917,7 @@ __getcmdline ()
 }
 
 int
-main(void)
+main (void)
 {
   exit (__getcmdline ());
 }'''
