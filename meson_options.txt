@@ -5,9 +5,9 @@ option('runtime_libdir',
 
 option('iconv',
        type : 'combo',
-       choices : ['auto', 'libc', 'native', 'gnu'],
+       choices : ['auto', 'libc', 'external'],
        value : 'auto',
-       description : 'iconv implementation to use (\'libc\' = \'Part of the C stdlib\'; \'gnu\' = \'GNU\'s iconv\'; \'native\' = \'A separate iconv\'; \'auto\' = \'Auto-detect which iconv is available\')')
+       description : 'iconv implementation to use (\'libc\' = \'Part of the C library\'; \'external\' = \'External libiconv\'; \'auto\' = \'Auto-detect which iconv is available\')')
 
 option('charsetalias_dir',
        type : 'string',
