@@ -640,10 +640,8 @@ magazine_cache_trim (Allocator *allocator,
   /* trim magazine cache from tail */
   ChunkLink *current = magazine_chain_prev (allocator->magazines[ix]);
   ChunkLink *trash = NULL;
-  while ((stamp >= magazine_chain_uint_stamp (current) &&
-          stamp - magazine_chain_uint_stamp (current) >= allocator->config.working_set_msecs) ||
-         (stamp <= magazine_chain_uint_stamp (current) &&
-          magazine_chain_uint_stamp (current) - stamp >= allocator->config.working_set_msecs))
+  while (!G_APPROX_VALUE(stamp, magazine_chain_uint_stamp (current),
+                         allocator->config.working_set_msecs))
     {
       /* unlink */
       ChunkLink *prev = magazine_chain_prev (current);
