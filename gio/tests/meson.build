@@ -557,6 +557,15 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     copy : true,
     install : false)
 
+  resources_extra_sources = [
+    test_gresource,
+    test_resources_c,
+    test_resources2_c,
+    test_resources2_h,
+    digit_test_resources_c,
+    digit_test_resources_h,
+  ]
+
   # Create object file containing resource data
   # for testing the external data option
   if build_machine.system() == 'linux'
@@ -603,21 +612,17 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                  '@INPUT@',
                  '@OUTPUT@'])
 
-    gio_tests += {
-      'resources' : {
-        'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
-                           test_resources2_h, test_resources_binary_c,
-                           test_resources_binary2, digit_test_resources_c, digit_test_resources_h],
-      },
-    }
-  else
-    gio_tests += {
-      'resources' : {
-        'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
-                           test_resources2_h, digit_test_resources_c, digit_test_resources_h],
-      },
-    }
+    resources_extra_sources += [
+      test_resources_binary_c,
+      test_resources_binary2,
+    ]
   endif
+
+  gio_tests += {
+    'resources' : {
+      'extra_sources' : resources_extra_sources,
+    },
+  }
 endif
 
 foreach test_name, extra_args : gio_tests
