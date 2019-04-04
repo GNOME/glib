@@ -36,6 +36,10 @@
 
 #include <string.h>
 #include <stdio.h>
+#if defined _WIN32 || defined __WIN32__
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
 
 G_LOCK_DEFINE_STATIC (aliases);
 
@@ -227,6 +231,71 @@ g_get_codeset (void)
   g_get_charset (&charset);
 
   return g_strdup (charset);
+}
+
+/**
+ * g_get_console_charset:
+ * @charset: (out) (optional) (transfer none): return location for character set
+ *   name, or %NULL.
+ *
+ * Obtains the character set used by the console attached to the process,
+ * which is suitable for printing output to the terminal
+ *
+ * On most systems this matches the result returned by g_get_charset().
+ *
+ * On Windows the character set returned by this function is the
+ * output code page used by the console associated with the calling process.
+ * If the codepage can't be determined (for example beacuse there is no
+ * console attached) UTF-8 is assumed.
+ *
+ * The return value is %TRUE if the locale's encoding is UTF-8, in that
+ * case you can perhaps avoid calling g_convert().
+ *
+ * The string returned in @charset is not allocated, and should not be
+ * freed.
+ *
+ * Returns: %TRUE if the returned charset is UTF-8
+ */
+gboolean
+g_get_console_charset (const char **charset)
+{
+#if defined _WIN32 || defined __WIN32__
+  static GPrivate cache_private = G_PRIVATE_INIT (charset_cache_free);
+  GCharsetCache *cache = g_private_get (&cache_private);
+  unsigned int cp;
+  static char buf[2 + 10 + 1];
+  const gchar *raw;
+
+  if (!cache)
+    cache = g_private_set_alloc0 (&cache_private, sizeof (GCharsetCache));
+
+  cp = GetConsoleOutputCP ();
+  if (cp)
+    {
+      sprintf (buf, "CP%u", cp);
+      raw = buf;
+    }
+  else
+    raw = "UTF-8";
+
+  if (!(cache->raw && strcmp (cache->raw, raw) == 0))
+    {
+      const gchar *new_charset;
+
+      g_free (cache->raw);
+      g_free (cache->charset);
+      cache->raw = g_strdup (raw);
+      cache->is_utf8 = g_utf8_get_charset_internal (raw, &new_charset);
+      cache->charset = g_strdup (new_charset);
+    }
+
+  if (charset)
+    *charset = cache->charset;
+
+  return cache->is_utf8;
+#else
+  return g_get_charset (charset);
+#endif
 }
 
 #ifndef G_OS_WIN32
