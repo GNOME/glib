@@ -2291,7 +2291,7 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
       msg = g_string_new (message);
       escape_string (msg);
 
-      if (g_get_charset (&charset))
+      if (g_get_console_charset (&charset))
         {
           /* charset is UTF-8 already */
           g_string_append (gstring, msg->str);
@@ -3186,7 +3186,7 @@ g_print (const gchar *format,
     {
       const gchar *charset;
 
-      if (g_get_charset (&charset))
+      if (g_get_console_charset (&charset))
         fputs (string, stdout); /* charset is UTF-8 already */
       else
         {
@@ -3265,7 +3265,7 @@ g_printerr (const gchar *format,
     {
       const gchar *charset;
 
-      if (g_get_charset (&charset))
+      if (g_get_console_charset (&charset))
         fputs (string, stderr); /* charset is UTF-8 already */
       else
         {
