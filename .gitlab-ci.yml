@@ -34,7 +34,7 @@ fedora-x86_64:
     - ninja -C _build
     - mkdir -p _coverage
     - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
-    - meson test -C _build --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} --no-suite flaky
+    - .gitlab-ci/run-tests.sh
     - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
     # FIXME: We should run all installed tests, but do only this one for now
     # because it cannot run uninstalled. Reconfigure with dtrace disabled
@@ -43,12 +43,15 @@ fedora-x86_64:
     - ninja -C _build install
     - GLIB_TEST_COMPILATION=1 $HOME/glib-installed/libexec/installed-tests/glib/static-link.py $HOME/glib-installed/lib/pkgconfig
   artifacts:
+    reports:
+      junit: "_build/${CI_JOB_NAME}-report.xml"
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     paths:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
+      - "_build/${CI_JOB_NAME}-report.xml"
       - "_coverage"
 
 G_DISABLE_ASSERT:
@@ -66,14 +69,17 @@ G_DISABLE_ASSERT:
             -Dinstalled_tests=true
             _build
     - ninja -C _build
-    - meson test -C _build --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} --no-suite flaky
+    - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
+    reports:
+      junit: "_build/${CI_JOB_NAME}-report.xml"
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     paths:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
+      - "_build/${CI_JOB_NAME}-report.xml"
 
 .cross-template: &cross-template
   stage: build
@@ -166,16 +172,19 @@ freebsd-11-x86_64:
     # FIXME: extattr(2) support: https://gitlab.gnome.org/GNOME/glib/issues/1404
     - meson ${MESON_COMMON_OPTIONS} -Db_lundef=false -Diconv=gnu -Dxattr=false _build
     - ninja -C _build
-    - meson test -C _build --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" --no-suite flaky
+    - bash -x ./.gitlab-ci/run-tests.sh
   except:
     - tags
   artifacts:
+    reports:
+      junit: "_build/${CI_JOB_NAME}-report.xml"
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     paths:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
+      - "_build/${CI_JOB_NAME}-report.xml"
 
 coverage:
   stage: coverage
