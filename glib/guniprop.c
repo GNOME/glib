@@ -37,6 +37,13 @@
 #include "gwin32.h"
 #endif
 
+#define G_UNICHAR_FULLWIDTH_A 0xff21
+#define G_UNICHAR_FULLWIDTH_I 0xff29
+#define G_UNICHAR_FULLWIDTH_J 0xff2a
+#define G_UNICHAR_FULLWIDTH_F 0xff26
+#define G_UNICHAR_FULLWIDTH_a 0xff41
+#define G_UNICHAR_FULLWIDTH_f 0xff46
+
 #define ATTR_TABLE(Page) (((Page) <= G_UNICODE_LAST_PAGE_PART1) \
                           ? attr_table_part1[Page] \
                           : attr_table_part2[(Page) - 0xe00])
@@ -362,8 +369,8 @@ g_unichar_istitle (gunichar c)
 gboolean
 g_unichar_isxdigit (gunichar c)
 {
-  return ((c >= 'a' && c <= 'f')
-	  || (c >= 'A' && c <= 'F')
+  return ((c >= G_UNICHAR_FULLWIDTH_a && c <= G_UNICHAR_FULLWIDTH_f)
+	  || (c >= G_UNICHAR_FULLWIDTH_A && c <= G_UNICHAR_FULLWIDTH_F)
 	  || (TYPE (c) == G_UNICODE_DECIMAL_NUMBER));
 }
 
@@ -658,10 +665,10 @@ g_unichar_digit_value (gunichar c)
 int
 g_unichar_xdigit_value (gunichar c)
 {
-  if (c >= 'A' && c <= 'F')
-    return c - 'A' + 10;
-  if (c >= 'a' && c <= 'f')
-    return c - 'a' + 10;
+  if (c >= G_UNICHAR_FULLWIDTH_A && c <= G_UNICHAR_FULLWIDTH_F)
+    return c - G_UNICHAR_FULLWIDTH_A + 10;
+  if (c >= G_UNICHAR_FULLWIDTH_a && c <= G_UNICHAR_FULLWIDTH_f)
+    return c - G_UNICHAR_FULLWIDTH_a + 10;
   if (TYPE (c) == G_UNICODE_DECIMAL_NUMBER)
     return ATTTABLE (c >> 8, c & 0xff);
   return -1;
@@ -968,7 +975,8 @@ real_tolower (const gchar *str,
       last = p;
       p = g_utf8_next_char (p);
 
-      if (locale_type == LOCALE_TURKIC && c == 'I')
+      if (locale_type == LOCALE_TURKIC && (c == 'I' ||
+                                           c == G_UNICHAR_FULLWIDTH_I)
 	{
           if (g_utf8_get_char (p) == 0x0307)
             {
@@ -1004,7 +1012,8 @@ real_tolower (const gchar *str,
             }
         }
       else if (locale_type == LOCALE_LITHUANIAN && 
-               (c == 'I' || c == 'J' || c == 0x012e) && 
+               (c == 'I' || c == G_UNICHAR_FULLWIDTH_I ||
+                c == 'J' || c == G_UNICHAR_FULLWIDTH_J || c == 0x012e) &&
                has_more_above (p))
         {
           len += g_unichar_to_utf8 (g_unichar_tolower (c), out_buffer ? out_buffer + len : NULL); 
