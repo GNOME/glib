@@ -109,6 +109,10 @@ gchar*	              g_strcanon       (gchar        *string,
 					const gchar  *valid_chars,
 					gchar         substitutor);
 GLIB_AVAILABLE_IN_ALL
+gchar*	              g_strsanitize    (const gchar  *string,
+					const gchar  *valid_chars,
+					const gchar   substitutor);
+GLIB_AVAILABLE_IN_ALL
 const gchar *         g_strerror       (gint	      errnum) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_strsignal      (gint	      signum) G_GNUC_CONST;
