@@ -2051,6 +2051,48 @@ g_strcanon (gchar       *string,
 }
 
 /**
+ * g_strsanitize:
+ * @string: a nul-terminated array of bytes
+ * @valid_chars: bytes permitted in @string
+ * @substitutor: replacement character for disallowed bytes
+ *
+ * Create a copy of @string and sanitize it by replacing each
+ * character which is not in @valid_chars with @subtitutor and,
+ * finally returns the sanitez copy of @string. Note that the returned
+ * string has to be freed.
+ *
+ * |[<!-- language="C" -->
+ *   gchar *sanitized_str = g_strsanitize (str, "abc", '?');
+ *   g_ascii_strup (sanitized_str);
+ *   g_free (sanitized_str);
+ * ]|
+ *
+ * This function is preferred over g_strcanon() as you have an
+ * explicit control of the sanitized string.
+ *
+ * Returns: A sanitized copy of @string
+ */
+gchar *
+g_strsanitize (const gchar *string,
+               const gchar *valid_chars,
+               const gchar substitutor)
+{
+  gchar *c, *sanitized_string;
+
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (valid_chars != NULL, NULL);
+
+  sanitized_string = g_strdup (string);
+  for (c = sanitized_string; *c; c++)
+    {
+      if (!strchr (valid_chars, *c))
+        *c = substitutor;
+    }
+
+  return sanitized_string;
+}
+
+/**
  * g_strcompress:
  * @source: a string to compress
  *
