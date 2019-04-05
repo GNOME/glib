@@ -2051,6 +2051,43 @@ g_strcanon (gchar       *string,
 }
 
 /**
+ * g_strsanitize:
+ * @string: a nul-terminated array of bytes
+ * @valid_chars: bytes permitted in @string
+ * @substitutor: replacement character for disallowed bytes
+ *
+ * For each character in @string, if the character is not in @valid_chars,
+ * replaces the character with @substitutor. Modifies @string in place,
+ * and return @string itself, not a copy. The return value is to allow
+ * nesting such as
+ * |[<!-- language="C" -->
+ *   gchar *sanitized_str = g_strsanitize (str, "abc", '?');
+ *   g_ascii_strup (sanitized_str);
+ * ]|
+ *
+ * Returns: The sanitized @string
+ */
+gchar *
+g_strsanitize (const gchar *string,
+               const gchar *valid_chars,
+               const gchar substitutor)
+{
+  gchar *c, *sanitized_string;
+
+  g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (valid_chars != NULL, NULL);
+
+  sanitized_string = g_strdup (string);
+  for (c = sanitized_string; *c; c++)
+    {
+      if (!strchr (valid_chars, *c))
+        *c = substitutor;
+    }
+
+  return sanitized_string;
+}
+
+/**
  * g_strcompress:
  * @source: a string to compress
  *
