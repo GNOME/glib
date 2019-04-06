@@ -53,6 +53,12 @@ ninja
 # FIXME: fix the test suite
 meson test --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} --no-suite flaky || true
 
+python3 "${DIR}"/.gitlab-ci/meson-junit-report.py \
+        --project-name glib \
+        --job-id "${CI_JOB_NAME}" \
+        --output "${DIR}/_build/${CI_JOB_NAME}-report.xml" \
+        "${DIR}/_build/meson-logs/testlog.json"
+
 "${LCOV}" \
     --quiet \
     --config-file "${DIR}"/.gitlab-ci/lcovrc \
