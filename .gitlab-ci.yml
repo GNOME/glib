@@ -125,10 +125,13 @@ msys2-mingw32:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
   artifacts:
+    reports:
+      junit: "_build/%CI_JOB_NAME%-report.xml"
     name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
     when: always
     paths:
       - _build/meson-logs
+      - "_build/%CI_JOB_NAME%-report.xml"
       - _coverage/
 
 vs2017-x64:
