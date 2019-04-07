@@ -1910,6 +1910,9 @@ static int
 __getcmdline (void)
 {
 /* This code is a dumbed-down version of g_file_get_contents() */
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
 #define BUFSIZE 1024
   char result[BUFSIZE];
   struct stat stat_buf;
