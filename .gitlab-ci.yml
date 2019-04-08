@@ -143,10 +143,13 @@ vs2017-x64:
   script:
     - .gitlab-ci/test-msvc.bat
   artifacts:
+    reports:
+      junit: "_build/%CI_JOB_NAME%-report.xml"
     name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
     when: always
     paths:
       - _build/meson-logs
+      - "_build/%CI_JOB_NAME%-report.xml"
 
 freebsd-11-x86_64:
   stage: build
