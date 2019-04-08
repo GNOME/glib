@@ -14,6 +14,11 @@ meson test -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% --no-s
 
 :: FIXME: can we get code coverage support?
 
+
+python "%CD%\.gitlab-ci\meson-junit-report.py" --project-name glib ^
+--job-id "%CI_JOB_NAME%" --output "%CD%/_build/%CI_JOB_NAME%-report.xml" ^
+"%CD%/_build/meson-logs/testlog.json"
+
 goto :EOF
 :error
 exit /b 1
