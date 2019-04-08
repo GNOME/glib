@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <fcntl.h>
 #include <glib.h>
 #include <glocalfileenumerator.h>
 #include <glocalfileinfo.h>
@@ -27,7 +28,9 @@
 #include <gioerror.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "glibintl.h"
+#include "gtask.h"
 
 
 #define CHUNK_SIZE 1000
@@ -84,7 +87,23 @@ static GFileInfo *g_local_file_enumerator_next_file (GFileEnumerator  *enumerato
 static gboolean   g_local_file_enumerator_close     (GFileEnumerator  *enumerator,
 						     GCancellable     *cancellable,
 						     GError          **error);
-
+static GFileEnumerator *g_local_file_enumerator_enumerate_children        (GFileEnumerator      *enumerator,
+                                                                           const gchar          *child_name,
+                                                                           const gchar          *attributes,
+                                                                           GFileQueryInfoFlags   flags,
+                                                                           GCancellable         *cancellable,
+                                                                           GError              **error);
+static void             g_local_file_enumerator_enumerate_children_async  (GFileEnumerator      *enumerator,
+                                                                           const gchar          *child_name,
+                                                                           const gchar          *attributes,
+                                                                           GFileQueryInfoFlags   flags,
+                                                                           gint                  io_priority,
+                                                                           GCancellable         *cancellable,
+                                                                           GAsyncReadyCallback   callback,
+                                                                           gpointer              user_data);
+static GFileEnumerator *g_local_file_enumerator_enumerate_children_finish (GFileEnumerator      *enumerator,
+                                                                           GAsyncResult         *result,
+                                                                           GError              **error);
 
 static void
 free_entries (GLocalFileEnumerator *local)
@@ -140,6 +159,9 @@ g_local_file_enumerator_class_init (GLocalFileEnumeratorClass *klass)
 
   enumerator_class->next_file = g_local_file_enumerator_next_file;
   enumerator_class->close_fn = g_local_file_enumerator_close;
+  enumerator_class->enumerate_children = g_local_file_enumerator_enumerate_children;
+  enumerator_class->enumerate_children_async = g_local_file_enumerator_enumerate_children_async;
+  enumerator_class->enumerate_children_finish = g_local_file_enumerator_enumerate_children_finish;
 }
 
 static void
@@ -199,23 +221,54 @@ g_file_attribute_matcher_subtract_attributes (GFileAttributeMatcher *matcher,
 }
 #endif
 
+static GFileEnumerator *
+_g_local_file_enumerator_new_with_dir (GLocalFile           *file,
+#ifdef USE_GDIR
+				       GDir                 *dir,
+#else
+				       DIR                  *dir,
+#endif
+				       const char           *attributes,
+				       GFileQueryInfoFlags   flags,
+				       GCancellable         *cancellable,
+				       GError              **error)
+{
+  GLocalFileEnumerator *local;
+  char *filename = g_file_get_path (G_FILE (file));
+
+  local = g_object_new (G_TYPE_LOCAL_FILE_ENUMERATOR,
+                        "container", file,
+                        NULL);
+
+  local->dir = dir;
+  local->filename = filename;
+  local->matcher = g_file_attribute_matcher_new (attributes);
+#ifndef USE_GDIR
+  local->reduced_matcher = g_file_attribute_matcher_subtract_attributes (local->matcher,
+                                                                         G_LOCAL_FILE_INFO_NOSTAT_ATTRIBUTES","
+                                                                         "standard::type");
+#endif
+  local->flags = flags;
+
+  return G_FILE_ENUMERATOR (local);
+}
+
 GFileEnumerator *
-_g_local_file_enumerator_new (GLocalFile *file,
+_g_local_file_enumerator_new (GLocalFile           *file,
 			      const char           *attributes,
 			      GFileQueryInfoFlags   flags,
 			      GCancellable         *cancellable,
 			      GError              **error)
 {
-  GLocalFileEnumerator *local;
   char *filename = g_file_get_path (G_FILE (file));
 
 #ifdef USE_GDIR
   GError *dir_error;
   GDir *dir;
-  
+
   dir_error = NULL;
   dir = g_dir_open (filename, 0, error != NULL ? &dir_error : NULL);
-  if (dir == NULL) 
+  if (dir == NULL)
     {
       if (error != NULL)
 	{
@@ -246,22 +299,8 @@ _g_local_file_enumerator_new (GLocalFile *file,
     }
 
 #endif
-  
-  local = g_object_new (G_TYPE_LOCAL_FILE_ENUMERATOR,
-                        "container", file,
-                        NULL);
 
-  local->dir = dir;
-  local->filename = filename;
-  local->matcher = g_file_attribute_matcher_new (attributes);
-#ifndef USE_GDIR
-  local->reduced_matcher = g_file_attribute_matcher_subtract_attributes (local->matcher,
-                                                                         G_LOCAL_FILE_INFO_NOSTAT_ATTRIBUTES","
-                                                                         "standard::type");
-#endif
-  local->flags = flags;
-  
-  return G_FILE_ENUMERATOR (local);
+  return _g_local_file_enumerator_new_with_dir (file, dir, attributes, flags, cancellable, error);
 }
 
 #ifndef USE_GDIR
@@ -455,4 +494,176 @@ g_local_file_enumerator_close (GFileEnumerator  *enumerator,
     }
 
   return TRUE;
+}
+
+static GFileEnumerator *
+g_local_file_enumerator_enumerate_children (GFileEnumerator      *enumerator,
+                                            const gchar          *child_name,
+                                            const gchar          *attributes,
+                                            GFileQueryInfoFlags   flags,
+                                            GCancellable         *cancellable,
+                                            GError              **error)
+{
+#ifdef USE_GDIR
+  return G_FILE_ENUMERATOR_CLASS (g_local_file_enumerator_parent_class)->
+    enumerate_children (enumerator, child_name, attributes, flags, cancellable, error);
+#else
+  GLocalFileEnumerator *local = G_LOCAL_FILE_ENUMERATOR (enumerator);
+  GFile *child;
+  DIR *dir;
+  int fd;
+  int childfd;
+  GFileEnumerator *ret;
+
+  fd = dirfd (local->dir);
+  if (fd == -1)
+    goto handle_errno;
+
+  childfd = openat (fd, child_name, O_RDONLY|O_DIRECTORY);
+  if (childfd == -1)
+    goto handle_errno;
+
+  child = g_file_get_child (g_file_enumerator_get_container (enumerator), child_name);
+  dir = fdopendir (childfd);
+  ret = _g_local_file_enumerator_new_with_dir (G_LOCAL_FILE (child), dir, attributes, flags, cancellable, error);
+  g_clear_object (&child);
+
+  return g_steal_pointer (&ret);
+
+handle_errno:
+  {
+    int errsv = errno;
+
+    g_set_error (error, G_IO_ERROR,
+		 g_io_error_from_errno (errsv),
+		 "Error enumerating child '%s': %s",
+		 child_name, g_strerror (errsv));
+
+    return NULL;
+  }
+#endif
+}
+
+#ifndef USE_GDIR
+typedef struct
+{
+  GFile *child;
+  gchar *attributes;
+  GFileQueryInfoFlags flags;
+  gint fd;
+} EnumerateChildren;
+
+static void
+enumerate_children_free (gpointer data)
+{
+  EnumerateChildren *state = data;
+
+  if (state->fd != -1)
+    close (state->fd);
+  g_clear_pointer (&state->attributes, g_free);
+  g_clear_object (&state->child);
+  g_slice_free (EnumerateChildren, state);
+}
+
+static void
+enumerate_children_worker (GTask        *task,
+                           gpointer      source_object,
+                           gpointer      task_data,
+                           GCancellable *cancellable)
+{
+  EnumerateChildren *state = task_data;
+  GFileEnumerator *ret;
+  GError *error = NULL;
+  DIR *dir;
+
+  g_assert (G_IS_TASK (task));
+  g_assert (state != NULL);
+  g_assert (state->fd >= 0);
+  g_assert (G_IS_FILE (state->child));
+
+  dir = fdopendir (state->fd);
+  ret = _g_local_file_enumerator_new_with_dir (G_LOCAL_FILE (state->child),
+					       dir,
+					       state->attributes,
+					       state->flags,
+					       cancellable,
+					       &error);
+
+  if (error != NULL)
+    g_task_return_error (task, g_steal_pointer (&error));
+  else
+    g_task_return_pointer (task, g_steal_pointer (&ret), g_object_unref);
+}
+#endif
+
+static void
+g_local_file_enumerator_enumerate_children_async (GFileEnumerator     *enumerator,
+                                                  const gchar         *child_name,
+                                                  const gchar         *attributes,
+                                                  GFileQueryInfoFlags  flags,
+                                                  gint                 io_priority,
+                                                  GCancellable        *cancellable,
+                                                  GAsyncReadyCallback  callback,
+                                                  gpointer             user_data)
+{
+#ifdef USE_GDIR
+  G_FILE_ENUMERATOR_CLASS (g_local_file_enumerator_parent_class)->
+    enumerate_children_async (enumerator, child_name, attributes, flags, cancellable, callback, user_data);
+#else
+  GLocalFileEnumerator *self = G_LOCAL_FILE_ENUMERATOR (enumerator);
+  EnumerateChildren *state;
+  GTask *task;
+  int errsv;
+  int fd;
+
+  task = g_task_new (enumerator, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_local_file_enumerator_enumerate_children_async);
+  g_task_set_priority (task, io_priority);
+
+  fd = dirfd (self->dir);
+  if (fd == -1)
+    goto handle_errno;
+
+  fd = dup (fd);
+  if (fd == -1)
+    goto handle_errno;
+
+  state = g_slice_new0 (EnumerateChildren);
+  state->child = g_file_get_child (g_file_enumerator_get_container (enumerator), child_name);
+  state->fd = fd;
+  state->attributes = g_strdup (attributes);
+  state->flags = flags;
+
+  g_task_set_task_data (task, state, enumerate_children_free);
+  g_task_run_in_thread (task, enumerate_children_worker);
+
+  goto cleanup;
+
+handle_errno:
+  errsv = errno;
+  g_task_return_new_error (task,
+                           G_IO_ERROR,
+                           g_io_error_from_errno (errsv),
+                           "Error enumerating child '%s': %s",
+                           child_name, g_strerror (errsv));
+
+cleanup:
+  g_clear_object (&task);
+#endif
+}
+
+static GFileEnumerator *
+g_local_file_enumerator_enumerate_children_finish (GFileEnumerator  *enumerator,
+                                                   GAsyncResult     *result,
+                                                   GError          **error)
+{
+#ifdef USE_GDIR
+  return G_FILE_ENUMERATOR_CLASS (g_local_file_enumerator_parent_class)->
+    enumerate_children_finish (enumerator, result, error);
+#else
+  g_assert (G_IS_LOCAL_FILE_ENUMERATOR (enumerator));
+  g_assert (G_IS_TASK (result));
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+#endif
 }

@@ -249,6 +249,9 @@ g_file_enumerator_has_pending
 g_file_enumerator_set_pending
 g_file_enumerator_get_container
 g_file_enumerator_get_child
+g_file_enumerator_enumerate_children
+g_file_enumerator_enumerate_children_async
+g_file_enumerator_enumerate_children_finish
 <SUBSECTION Standard>
 GFileEnumeratorClass
 G_FILE_ENUMERATOR

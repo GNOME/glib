@@ -41,6 +41,7 @@ gio_tests = {
   'data-input-stream' : {},
   'data-output-stream' : {},
   'defaultvalue' : {'extra_sources' : [giotypefuncs_inc]},
+  'enumerator-children' : {},
   'fileattributematcher' : {},
   'filter-streams' : {},
   'giomodule' : {},

@@ -94,6 +94,23 @@ static void     g_file_enumerator_real_close_async       (GFileEnumerator      *
 static gboolean g_file_enumerator_real_close_finish      (GFileEnumerator      *enumerator,
 							  GAsyncResult         *res,
 							  GError              **error);
+static GFileEnumerator *g_file_enumerator_real_enumerate_children        (GFileEnumerator      *enumerator,
+                                                                          const gchar          *child_name,
+                                                                          const gchar          *attributes,
+                                                                          GFileQueryInfoFlags   flags,
+                                                                          GCancellable         *cancellable,
+                                                                          GError              **error);
+static void             g_file_enumerator_real_enumerate_children_async  (GFileEnumerator      *enumerator,
+                                                                          const gchar          *child_name,
+                                                                          const gchar          *attributes,
+                                                                          GFileQueryInfoFlags   flags,
+                                                                          int                   io_priority,
+                                                                          GCancellable         *cancellable,
+                                                                          GAsyncReadyCallback   callback,
+                                                                          gpointer              user_data);
+static GFileEnumerator *g_file_enumerator_real_enumerate_children_finish (GFileEnumerator      *enumerator,
+                                                                          GAsyncResult         *result,
+                                                                          GError              **error);
 
 static void
 g_file_enumerator_set_property (GObject      *object,
@@ -156,6 +173,9 @@ g_file_enumerator_class_init (GFileEnumeratorClass *klass)
   klass->next_files_finish = g_file_enumerator_real_next_files_finish;
   klass->close_async = g_file_enumerator_real_close_async;
   klass->close_finish = g_file_enumerator_real_close_finish;
+  klass->enumerate_children = g_file_enumerator_real_enumerate_children;
+  klass->enumerate_children_async = g_file_enumerator_real_enumerate_children_async;
+  klass->enumerate_children_finish = g_file_enumerator_real_enumerate_children_finish;
 
   g_object_class_install_property
     (gobject_class, PROP_CONTAINER,
@@ -867,3 +887,211 @@ g_file_enumerator_real_close_finish (GFileEnumerator  *enumerator,
   return g_task_propagate_boolean (G_TASK (result), error);
 }
 
+/**
+ * g_file_enumerator_enumerate_children:
+ * @enumerator: a #GFileEnumerator
+ * @child_name: the name of directory within @enumerator to enumerate
+ * @attributes: an attribute query string
+ * @flags: a set of #GFileQueryInfoFlags
+ * @cancellable: (nullable): a #GCancellable or %NULL
+ * @error: a location for a #GError, or %NULL
+ *
+ * Requests the enumeration of directory named @child_name that can be found
+ * within the directory represented by @enumerator.
+ *
+ * This is similar to calling g_file_enumerate_children() except that in some
+ * situations the POSIX openat() syscall may be used to avoid a race with
+ * rename() causing the enumerated directory to have moved.
+ *
+ * Additionally, the use of openat() may provide reduced overhead under
+ * certain situations.
+ *
+ * See g_file_enumerator_enumerate_children_async() for the asynchronous
+ * version of this function.
+ *
+ * Since: 2.62
+ */
+GFileEnumerator *
+g_file_enumerator_enumerate_children (GFileEnumerator      *enumerator,
+                                      const gchar          *child_name,
+                                      const gchar          *attributes,
+                                      GFileQueryInfoFlags   flags,
+                                      GCancellable         *cancellable,
+                                      GError              **error)
+{
+  g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), NULL);
+  g_return_val_if_fail (child_name != NULL, NULL);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), NULL);
+
+  return G_FILE_ENUMERATOR_GET_CLASS (enumerator)->enumerate_children (enumerator,
+                                                                       child_name,
+                                                                       attributes,
+                                                                       flags,
+                                                                       cancellable,
+                                                                       error);
+}
+
+/**
+ * g_file_enumerator_enumerate_children_async:
+ * @enumerator: a #GFileEnumerator
+ * @child_name: the name of directory within @enumerator to enumerate
+ * @attributes: an attribute query string
+ * @flags: a set of #GFileQueryInfoFlags
+ * @io_priority: the IO priority for the operation, or %G_PRIORITY_DEFAULT
+ * @cancellable: (nullable): a #GCancellable or %NULL
+ * @callback: a callback to execute upon completion of the operation
+ * @user_data: closure data for @callback
+ *
+ * Asynchronously requests the enumeration of directory named @child_name
+ * that can be found within the directory represented by @enumerator.
+ *
+ * This is similar to calling g_file_enumerate_children() except that in some
+ * situations the POSIX openat() syscall may be used to avoid a race with
+ * rename() causing the enumerated directory to have moved.
+ *
+ * Additionally, the use of openat() may provide reduced overhead under
+ * certain situations.
+ *
+ * See g_file_enumerator_enumerate_children() for the synchronous version
+ * of this function.
+ *
+ * Since: 2.62
+ */
+void
+g_file_enumerator_enumerate_children_async (GFileEnumerator     *enumerator,
+                                            const gchar         *child_name,
+                                            const gchar         *attributes,
+                                            GFileQueryInfoFlags  flags,
+                                            int                  io_priority,
+                                            GCancellable        *cancellable,
+                                            GAsyncReadyCallback  callback,
+                                            gpointer             user_data)
+{
+  g_return_if_fail (G_IS_FILE_ENUMERATOR (enumerator));
+  g_return_if_fail (child_name != NULL);
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  G_FILE_ENUMERATOR_GET_CLASS (enumerator)->enumerate_children_async (enumerator,
+                                                                      child_name,
+                                                                      attributes,
+                                                                      flags,
+                                                                      io_priority,
+                                                                      cancellable,
+                                                                      callback,
+                                                                      user_data);
+}
+
+/**
+ * g_file_enumerator_enumerate_children_finish:
+ * @self: a #GFileEnumerator
+ * @result: a #GAsyncResult provided to callback
+ * @error: a location for a #GError, or %NULL
+ *
+ * Completes an asynchronous request to
+ * g_file_enumerator_enumerate_children_async().
+ *
+ * Returns: (transfer full): a #GFileEnumerator if successful; otherwise %FALSE
+ *
+ * Since: 2.62
+ */
+GFileEnumerator *
+g_file_enumerator_enumerate_children_finish (GFileEnumerator  *enumerator,
+                                             GAsyncResult     *result,
+                                             GError          **error)
+{
+  g_return_val_if_fail (G_IS_FILE_ENUMERATOR (enumerator), NULL);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
+
+  return G_FILE_ENUMERATOR_GET_CLASS (enumerator)->enumerate_children_finish (enumerator,
+                                                                              result,
+                                                                              error);
+}
+
+static GFileEnumerator *
+g_file_enumerator_real_enumerate_children (GFileEnumerator      *enumerator,
+                                           const gchar          *child_name,
+                                           const gchar          *attributes,
+                                           GFileQueryInfoFlags   flags,
+                                           GCancellable         *cancellable,
+                                           GError              **error)
+{
+  GFileEnumerator *ret = NULL;
+  GFile *file;
+
+  g_assert (G_IS_FILE_ENUMERATOR (enumerator));
+  g_assert (child_name != NULL);
+  g_assert (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  file = g_file_get_child (enumerator->priv->container, child_name);
+  ret = g_file_enumerate_children (file, attributes, flags, cancellable, error);
+  g_clear_object (&file);
+
+  return g_steal_pointer (&ret);
+}
+
+static void
+g_file_enumerator_real_enumerate_children_cb (GObject      *object,
+                                              GAsyncResult *result,
+                                              gpointer      user_data)
+{
+  GFile *file = (GFile *)object;
+  GError *error = NULL;
+  GTask *task = user_data;
+  GFileEnumerator *ret;
+
+  g_assert (G_IS_FILE (file));
+  g_assert (G_IS_ASYNC_RESULT (result));
+  g_assert (G_IS_TASK (task));
+
+  ret = g_file_enumerate_children_finish (file, result, &error);
+
+  if (ret != NULL)
+    g_task_return_pointer (task, g_steal_pointer (&ret), g_object_unref);
+  else
+    g_task_return_error (task, g_steal_pointer (&error));
+
+  g_clear_object (&task);
+}
+
+static void
+g_file_enumerator_real_enumerate_children_async (GFileEnumerator     *enumerator,
+                                                 const gchar         *child_name,
+                                                 const gchar         *attributes,
+                                                 GFileQueryInfoFlags  flags,
+                                                 int                  io_priority,
+                                                 GCancellable        *cancellable,
+                                                 GAsyncReadyCallback  callback,
+                                                 gpointer             user_data)
+{
+  GTask *task;
+  GFile *file;
+
+  g_assert (G_IS_FILE_ENUMERATOR (enumerator));
+  g_assert (child_name != NULL);
+  g_assert (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  task = g_task_new (enumerator, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_enumerator_real_enumerate_children_async);
+  g_task_set_priority (task, io_priority);
+
+  file = g_file_get_child (enumerator->priv->container, child_name);
+  g_file_enumerate_children_async (file,
+                                   attributes,
+                                   flags,
+                                   io_priority,
+                                   cancellable,
+                                   g_file_enumerator_real_enumerate_children_cb,
+                                   g_steal_pointer (&task));
+  g_clear_object (&file);
+}
+
+static GFileEnumerator *
+g_file_enumerator_real_enumerate_children_finish (GFileEnumerator  *enumerator,
+                                                  GAsyncResult     *result,
+                                                  GError          **error)
+{
+  g_assert (G_IS_FILE_ENUMERATOR (enumerator));
+  g_assert (G_IS_TASK (result));
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+}

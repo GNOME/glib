@@ -82,12 +82,26 @@ struct _GFileEnumeratorClass
   gboolean    (* close_finish)      (GFileEnumerator      *enumerator,
                                      GAsyncResult         *result,
                                      GError              **error);
+  GFileEnumerator *(* enumerate_children)        (GFileEnumerator      *enumerator,
+                                                  const gchar          *child_name,
+                                                  const gchar          *attributes,
+                                                  GFileQueryInfoFlags   flags,
+                                                  GCancellable         *cancellable,
+                                                  GError              **error);
+  void             (* enumerate_children_async)  (GFileEnumerator      *enumerator,
+                                                  const gchar          *child_name,
+                                                  const gchar          *attributes,
+                                                  GFileQueryInfoFlags   flags,
+                                                  int                   io_priority,
+                                                  GCancellable         *cancellable,
+                                                  GAsyncReadyCallback   callback,
+                                                  gpointer              user_data);
+  GFileEnumerator *(* enumerate_children_finish) (GFileEnumerator      *enumerator,
+                                                  GAsyncResult         *result,
+                                                  GError              **error);
 
   /*< private >*/
   /* Padding for future expansion */
-  void (*_g_reserved1) (void);
-  void (*_g_reserved2) (void);
-  void (*_g_reserved3) (void);
   void (*_g_reserved4) (void);
   void (*_g_reserved5) (void);
   void (*_g_reserved6) (void);
@@ -145,7 +159,26 @@ gboolean   g_file_enumerator_iterate           (GFileEnumerator  *direnum,
                                                 GFile           **out_child,
                                                 GCancellable     *cancellable,
                                                 GError          **error);
-
+GLIB_AVAILABLE_IN_2_62
+GFileEnumerator *g_file_enumerator_enumerate_children        (GFileEnumerator      *enumerator,
+                                                              const gchar          *child_name,
+                                                              const gchar          *attributes,
+                                                              GFileQueryInfoFlags   flags,
+                                                              GCancellable         *cancellable,
+                                                              GError              **error);
+GLIB_AVAILABLE_IN_2_62
+void             g_file_enumerator_enumerate_children_async  (GFileEnumerator      *enumerator,
+                                                              const gchar          *child_name,
+                                                              const gchar          *attributes,
+                                                              GFileQueryInfoFlags   flags,
+                                                              int                   io_priority,
+                                                              GCancellable         *cancellable,
+                                                              GAsyncReadyCallback   callback,
+                                                              gpointer              user_data);
+GLIB_AVAILABLE_IN_2_62
+GFileEnumerator *g_file_enumerator_enumerate_children_finish (GFileEnumerator      *enumerator,
+                                                              GAsyncResult         *result,
+                                                              GError              **error);
 
 G_END_DECLS
 
