@@ -79,6 +79,11 @@ option('fam',
        value : false,
        description : 'Use fam for file system monitoring')
 
+option('tests',
+       type : 'boolean',
+       value : true,
+       description : 'Build the tests')
+
 option('installed_tests',
        type : 'boolean',
        value : false,

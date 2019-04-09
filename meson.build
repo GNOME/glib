@@ -74,6 +74,7 @@ installed_tests_execdir = join_paths(glib_libexecdir, 'installed-tests', meson.p
 installed_tests_enabled = get_option('installed_tests')
 installed_tests_template = files('template.test.in')
 installed_tests_template_tap = files('template-tap.test.in')
+with_tests = get_option('tests')
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
@@ -2056,7 +2057,9 @@ subdir('gthread')
 subdir('gmodule')
 subdir('gio')
 subdir('fuzzing')
-subdir('tests')
+if with_tests
+  subdir('tests')
+endif
 
 # xgettext is optional (on Windows for instance)
 if find_program('xgettext', required : get_option('nls')).found()
