@@ -994,4 +994,7 @@ if enable_systemtap
 endif
 
 subdir('fam')
-subdir('tests')
+# Don’t build the tests unless we can run them (either natively or in an exe wrapper)
+if build_tests
+    subdir('tests')
+endif
