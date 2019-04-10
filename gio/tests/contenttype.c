@@ -412,8 +412,6 @@ test_guess_svg_from_data (void)
                                      sizeof (svgfilecontent) - 1, &uncertain);
 #ifdef __APPLE__
   g_assert_cmpstr (res, ==, "public.svg-image");
-#elif defined(G_OS_WIN32)
-  g_test_skip ("svg type detection from content is not implemented on WIN32");
 #else
   g_assert_cmpstr (res, ==, "image/svg+xml");
 #endif
