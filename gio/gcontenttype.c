@@ -382,9 +382,15 @@ _g_generic_content_type_get_description (const gchar *type)
 char *
 _g_generic_content_type_get_mime_type (const char *type)
 {
+  const char *semicolon;
   g_return_val_if_fail (type != NULL, NULL);
 
-  return g_strdup (type);
+  semicolon = strchr (type, ';');
+
+  if (semicolon == NULL)
+    return g_strdup (type);
+
+  return g_strndup (type, (gsize) (semicolon - type));
 }
 
 static GIcon *
