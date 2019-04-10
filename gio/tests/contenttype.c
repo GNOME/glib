@@ -25,6 +25,8 @@ test_guess (void)
     "Type=Application\n"
     "Name=appinfo-test\n"
     "Exec=./appinfo-test --option\n";
+  guchar text_data[] = "foo bar \b baz 0123456789 ABCD EFGH ZZ";
+  guchar fb_data[] = "<FictionBook";
 
 #ifdef G_OS_WIN32
   existing_directory = (gchar *) g_getenv ("SYSTEMROOT");
@@ -120,6 +122,38 @@ test_guess (void)
   expected = g_content_type_from_mime_type ("image/x-eps");
   g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  /* data vaguely looks like text */
+  res = g_content_type_guess (NULL, text_data, sizeof (text_data) - 1, &uncertain);
+  expected = g_content_type_from_mime_type ("text/plain");
+  g_assert_content_type_equals (expected, res);
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  /* data fails the zip magic test, but vaguely looks like text */
+  res = g_content_type_guess ("foo.zip", text_data, sizeof (text_data) - 1, &uncertain);
+  expected = g_content_type_from_mime_type ("text/plain");
+  g_assert_content_type_equals (expected, res);
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  /* data looks like FictionBook, it's a high-priority match */
+  res = g_content_type_guess ("foo.fb2", fb_data, sizeof (fb_data) - 1, &uncertain);
+  expected = g_content_type_from_mime_type ("application/x-fictionbook+xml");
+  g_assert_content_type_equals (expected, res);
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+  /* No extension, no data to sniff -> completely unknown */
+  res = g_content_type_guess ("foo", NULL, 0, &uncertain);
+  expected = g_content_type_from_mime_type ("application/octet-stream");
+  g_assert_content_type_equals (expected, res);
+  g_assert (uncertain);
   g_free (res);
   g_free (expected);
 }
@@ -228,6 +262,7 @@ test_icon (void)
 {
   gchar *type;
   GIcon *icon;
+  const gchar *icon_name;
 
   type = g_content_type_from_mime_type ("text/plain");
   icon = g_content_type_get_icon (type);
@@ -262,6 +297,12 @@ test_icon (void)
     }
   g_object_unref (icon);
   g_free (type);
+
+  /* Extra parameters shouldn't interfere with icon names */
+  icon_name = g_content_type_get_generic_icon_name ("application/mbox");
+  g_assert_cmpstr ("text-x-generic", ==, icon_name);
+  icon_name = g_content_type_get_generic_icon_name ("application/mbox; ext=.png");
+  g_assert_cmpstr ("text-x-generic", ==, icon_name);
 }
 
 static void
