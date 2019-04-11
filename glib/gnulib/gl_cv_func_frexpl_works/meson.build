@@ -29,7 +29,11 @@ extern
 #ifdef __cplusplus
 "C"
 #endif
+
+#if !defined (_MSC_VER) || defined (TEST_FREXPL_DECL)
 long double frexpl (long double, int *);
+#endif
+
 int main()
 {
   int result = 0;
@@ -128,3 +132,11 @@ else
     gl_cv_func_frexpl_broken_beyond_repair = false
   endif
 endif
+
+frexpl_test_decl = '''
+#define TEST_FREXPL_DECL 1
+''' + frexpl_test
+
+build_result = cc.compiles(frexpl_test_decl,
+    name : 'frexpl prototype can be re-listed')
+gl_cv_func_frexpl_decl = build_result
