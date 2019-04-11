@@ -245,7 +245,7 @@ g_get_codeset (void)
  *
  * On Windows the character set returned by this function is the
  * output code page used by the console associated with the calling process.
- * If the codepage can't be determined (for example beacuse there is no
+ * If the codepage can't be determined (for example because there is no
  * console attached) UTF-8 is assumed.
  *
  * The return value is %TRUE if the locale's encoding is UTF-8, in that
