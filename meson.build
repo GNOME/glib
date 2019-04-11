@@ -1680,13 +1680,20 @@ glibconfig_conf.set10('G_HAVE_GROWING_STACK', growing_stack)
 # We should never use the MinGW C library's iconv. On Windows we use the
 # GNU implementation that ships with MinGW.
 
+iconv_opt = get_option('iconv')
+
+# On Darwin, the libc doesn't provide iconv. Instead, the OS provides libiconv
+# as a separate (non-GNU) library. Set the option to 'native'.
+if host_system == 'darwin' and iconv_opt == 'libc'
+  iconv_opt = 'native'
+endif
+
 # On Windows, just always use the built-in implementation
 if host_system == 'windows'
   libiconv = []
   glib_conf.set('USE_LIBICONV_NATIVE', true)
 else
   found_iconv = false
-  iconv_opt = get_option('iconv')
   if iconv_opt == 'libc'
     if cc.has_function('iconv_open')
       libiconv = []
