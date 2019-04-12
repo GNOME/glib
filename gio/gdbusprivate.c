@@ -492,9 +492,9 @@ _g_dbus_worker_emit_message_about_to_be_sent (GDBusWorker  *worker,
 {
   GDBusMessage *ret;
   if (!g_atomic_int_get (&worker->stopped))
-    ret = worker->message_about_to_be_sent_callback (worker, message, worker->user_data);
+    ret = worker->message_about_to_be_sent_callback (worker, g_steal_pointer (&message), worker->user_data);
   else
-    ret = message;
+    ret = g_steal_pointer (&message);
   return ret;
 }
 
@@ -506,13 +506,13 @@ _g_dbus_worker_queue_or_deliver_received_message (GDBusWorker  *worker,
   if (worker->frozen || g_queue_get_length (worker->received_messages_while_frozen) > 0)
     {
       /* queue up */
-      g_queue_push_tail (worker->received_messages_while_frozen, message);
+      g_queue_push_tail (worker->received_messages_while_frozen, g_steal_pointer (&message));
     }
   else
     {
       /* not frozen, nor anything in queue */
       _g_dbus_worker_emit_message_received (worker, message);
-      g_object_unref (message);
+      g_clear_object (&message);
     }
 }
 
@@ -529,7 +529,7 @@ unfreeze_in_idle_cb (gpointer user_data)
       while ((message = g_queue_pop_head (worker->received_messages_while_frozen)) != NULL)
         {
           _g_dbus_worker_emit_message_received (worker, message);
-          g_object_unref (message);
+          g_clear_object (&message);
         }
       worker->frozen = FALSE;
     }
@@ -796,7 +796,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
             }
 
           /* yay, got a message, go deliver it */
-          _g_dbus_worker_queue_or_deliver_received_message (worker, message);
+          _g_dbus_worker_queue_or_deliver_received_message (worker, g_steal_pointer (&message));
 
           /* start reading another message! */
           worker->read_buffer_bytes_wanted = 0;
