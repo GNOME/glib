@@ -110,6 +110,7 @@ g_threaded_socket_service_incoming (GSocketService    *service,
 {
   GThreadedSocketService *threaded;
   GThreadedSocketServiceData *data;
+  GError *local_error = NULL;
 
   threaded = G_THREADED_SOCKET_SERVICE (service);
 
@@ -123,9 +124,13 @@ g_threaded_socket_service_incoming (GSocketService    *service,
     g_socket_service_stop (service);
   G_UNLOCK (job_count);
 
-  g_thread_pool_push (threaded->priv->thread_pool, data, NULL);
+  if (!g_thread_pool_push (threaded->priv->thread_pool, data, &local_error))
+    {
+      g_warning ("Error handling incoming socket: %s", local_error->message);
+      g_threaded_socket_service_data_free (data);
+    }
 
-
+  g_clear_error (&local_error);
 
   return FALSE;
 }
