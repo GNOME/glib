@@ -76,6 +76,14 @@ typedef struct
 } GThreadedSocketServiceData;
 
 static void
+g_threaded_socket_service_data_free (GThreadedSocketServiceData *data)
+{
+  g_clear_object (&data->connection);
+  g_clear_object (&data->source_object);
+  g_slice_free (GThreadedSocketServiceData, data);
+}
+
+static void
 g_threaded_socket_service_func (gpointer _data,
 				gpointer user_data)
 {
@@ -86,17 +94,12 @@ g_threaded_socket_service_func (gpointer _data,
   g_signal_emit (threaded, g_threaded_socket_service_run_signal,
                  0, data->connection, data->source_object, &result);
 
-  g_object_unref (data->connection);
-  if (data->source_object)
-    g_object_unref (data->source_object);
-  g_slice_free (GThreadedSocketServiceData, data);
-
   G_LOCK (job_count);
   if (threaded->priv->job_count-- == threaded->priv->max_threads)
     g_socket_service_start (G_SOCKET_SERVICE (threaded));
   G_UNLOCK (job_count);
 
-  g_object_unref (threaded);
+  g_threaded_socket_service_data_free (data);
 }
 
 static gboolean
