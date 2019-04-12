@@ -1493,16 +1493,21 @@ filter_function (GDBusConnection *connection,
     }
   else
     {
+      if (g_dbus_message_get_sender (message) == NULL ||
+          g_dbus_message_get_destination (message) == NULL)
+        {
+          message = copy_if_locked (message);
+          if (message == NULL)
+            {
+              g_warning ("Failed to copy outgoing message");
+              return NULL;
+            }
+        }
+
       if (g_dbus_message_get_sender (message) == NULL)
-	{
-	  message = copy_if_locked (message);
-	  g_dbus_message_set_sender (message, DBUS_SERVICE_NAME);
-	}
+        g_dbus_message_set_sender (message, DBUS_SERVICE_NAME);
       if (g_dbus_message_get_destination (message) == NULL)
-	{
-	  message = copy_if_locked (message);
-	  g_dbus_message_set_destination (message, client->id);
-	}
+        g_dbus_message_set_destination (message, client->id);
     }
 
   return message;
