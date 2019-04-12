@@ -62,11 +62,10 @@ G_DEFINE_TYPE_WITH_PRIVATE (GThreadedSocketService,
                             g_threaded_socket_service,
                             G_TYPE_SOCKET_SERVICE)
 
-enum
+typedef enum
 {
-  PROP_0,
-  PROP_MAX_THREADS
-};
+  PROP_MAX_THREADS = 1,
+} GThreadedSocketServiceProperty;
 
 G_LOCK_DEFINE_STATIC(job_count);
 
@@ -173,7 +172,7 @@ g_threaded_socket_service_get_property (GObject    *object,
 {
   GThreadedSocketService *service = G_THREADED_SOCKET_SERVICE (object);
 
-  switch (prop_id)
+  switch ((GThreadedSocketServiceProperty) prop_id)
     {
       case PROP_MAX_THREADS:
 	g_value_set_int (value, service->priv->max_threads);
@@ -192,7 +191,7 @@ g_threaded_socket_service_set_property (GObject      *object,
 {
   GThreadedSocketService *service = G_THREADED_SOCKET_SERVICE (object);
 
-  switch (prop_id)
+  switch ((GThreadedSocketServiceProperty) prop_id)
     {
       case PROP_MAX_THREADS:
 	service->priv->max_threads = g_value_get_int (value);
