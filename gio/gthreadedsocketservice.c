@@ -71,32 +71,33 @@ G_LOCK_DEFINE_STATIC(job_count);
 
 typedef struct
 {
-  GSocketConnection *connection;
-  GObject *source_object;
+  GThreadedSocketService *service;  /* (owned) */
+  GSocketConnection *connection;  /* (owned) */
+  GObject *source_object;  /* (owned) (nullable) */
 } GThreadedSocketServiceData;
 
 static void
 g_threaded_socket_service_data_free (GThreadedSocketServiceData *data)
 {
+  g_clear_object (&data->service);
   g_clear_object (&data->connection);
   g_clear_object (&data->source_object);
   g_slice_free (GThreadedSocketServiceData, data);
 }
 
 static void
-g_threaded_socket_service_func (gpointer _data,
-				gpointer user_data)
+g_threaded_socket_service_func (gpointer job_data,
+                                gpointer user_data)
 {
-  GThreadedSocketService *threaded = user_data;
-  GThreadedSocketServiceData *data = _data;
+  GThreadedSocketServiceData *data = job_data;
   gboolean result;
 
-  g_signal_emit (threaded, g_threaded_socket_service_run_signal,
+  g_signal_emit (data->service, g_threaded_socket_service_run_signal,
                  0, data->connection, data->source_object, &result);
 
   G_LOCK (job_count);
-  if (threaded->priv->job_count-- == threaded->priv->max_threads)
-    g_socket_service_start (G_SOCKET_SERVICE (threaded));
+  if (data->service->priv->job_count-- == data->service->priv->max_threads)
+    g_socket_service_start (G_SOCKET_SERVICE (data->service));
   G_UNLOCK (job_count);
 
   g_threaded_socket_service_data_free (data);
@@ -112,16 +113,10 @@ g_threaded_socket_service_incoming (GSocketService    *service,
 
   threaded = G_THREADED_SOCKET_SERVICE (service);
 
-  data = g_slice_new (GThreadedSocketServiceData);
-
-  /* Ref the socket service for the thread */
-  g_object_ref (service);
-
+  data = g_slice_new0 (GThreadedSocketServiceData);
+  data->service = g_object_ref (threaded);
   data->connection = g_object_ref (connection);
-  if (source_object)
-    data->source_object = g_object_ref (source_object);
-  else
-    data->source_object = NULL;
+  data->source_object = (source_object != NULL) ? g_object_ref (source_object) : NULL;
 
   G_LOCK (job_count);
   if (++threaded->priv->job_count == threaded->priv->max_threads)
@@ -149,7 +144,7 @@ g_threaded_socket_service_constructed (GObject *object)
 
   service->priv->thread_pool =
     g_thread_pool_new  (g_threaded_socket_service_func,
-			service,
+			NULL,
 			service->priv->max_threads,
 			FALSE,
 			NULL);
@@ -161,6 +156,8 @@ g_threaded_socket_service_finalize (GObject *object)
 {
   GThreadedSocketService *service = G_THREADED_SOCKET_SERVICE (object);
 
+  /* All jobs in the pool hold a reference to this #GThreadedSocketService, so
+   * this should only be called once the pool is empty: */
   g_thread_pool_free (service->priv->thread_pool, FALSE, FALSE);
 
   G_OBJECT_CLASS (g_threaded_socket_service_parent_class)
