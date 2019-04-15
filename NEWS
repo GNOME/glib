@@ -1,3 +1,90 @@
+Overview of changes in GLib 2.61.0
+==================================
+
+* Changes to `iconv` configure options, including the default iconv
+  implementation on macOS — distributors may need to check their configure
+  scripts (#1557)
+
+* Build fixes when building GLib with `G_DISABLE_ASSERT` defined (#1708)
+
+* Fix documentation for `gdbus-tool wait` to use correct units (#1737)
+
+* Improvements to symlink handling on Windows (!269)
+
+* Add exception handling for crashes on Windows (!582)
+
+* Set `G_WITH_CYGWIN` again when GLib is built on Cygwin (this was a regression
+  from the autotools build) (!736)
+
+* Use `GCocoaNotificationBackend` by default on macOS, rather than
+  `GGtkNotificationBackend` (!745)
+
+* Use Windows symbol visibility when GLib is built on Cygwin, as PE binaries
+  are subject to W32 visibility mechanics — this affects the definition of
+  `_GLIB_EXTERN` (!752)
+
+* Add coloured output support to `gdbus introspect` (!761)
+
+* Bugs fixed:
+ - #682 docs: advise not to use non-literal strings as qdata keys
+ - #1177 gparted crashes due to g_quark_from_static_string used in global initialization
+ - #1258 the buffer written to by g_input_stream_read is not marked as an out parameter
+ - #1557 By default glib tries to use libc instead of native iconv on OSX
+ - #1566 Meld Windows shows error on startup "There was a problem starting c:\Program"
+ - #1614 GIO tests fail on FreeBSD CI with: Unexpected error from C library during 'pthread_mutex_lock': Invalid argument
+ - #1708 Building GLib with G_DISABLE_ASSERT fails
+ - #1709 GResource generation test incompatible with stable LLVM on Linux
+ - #1710 Crash in g_cancellable_cancel
+ - #1712 gdbus-proxy test is flaky
+ - #1724 unconditional check in fuzzing/meson.build
+ - #1725 gosxappinfo.h is not installed on macOS
+ - #1727 Cannot use trash folder with an NFS mount using automount / autofs
+ - #1728 GSocket does not support ENOTSOCK
+ - #1732 Win32: lookup_by_name_async segfaults for not available domains
+ - #1737 gdbus-tool wait command timeout argument incorrect unit reference
+ - !67 glib: update internal gnulib from upstream
+ - !269 Win32 symlink code refactoring
+ - !493 tests: Check that cancelling g_file_replace don't overwrite existing file
+ - !582 Basic W32 exception handling for glib
+ - !680 Fix warnings glib
+ - !690 Fix thread safety issues
+ - !694 gvariant-parser: Fix pattern coalesce of M and *
+ - !706 Fix data races in task test and gmenumodel test
+ - !709 Bump release version for 2.62 series
+ - !710 socket: Fix annotation for flags in g_socket_receive_message
+ - !712 gwin32: Fix comment for g_win32_veh_handler
+ - !716 Various minor documentation fixes
+ - !717 Improve formatting of GCC attribute documentation
+ - !718 GSocketClient - Free last error if a connection attempt fails and on retry the...
+ - !719 Handle an UNKNOWN NetworkManager connectivity as NONE
+ - !721 codegen: Fix use of uninitialised variable
+ - !723 Provide examples for GNUC attribute macros
+ - !724 meson: do a build-time check for strlcpy before attempting runtime check
+ - !728 gsocket: Remove (type) annotation from flags arguments
+ - !730 Improve gdbus-address parsing tests
+ - !735 docs: Use the right g_autoptr function when using an auxiliary function
+ - !736 Set G_WITH_CYGWIN again
+ - !737 gresolver: Don’t use gai_strerror() on Windows, as it isn’t threadsafe
+ - !741 Fix use-after-free triggered by gnome-session-binary
+ - !745 gcocoanotificationbackend: give more priority than the gtk one
+ - !749 gio: Add missing autocleanup definition for GSettingsSchema{Key,Source}
+ - !750 Check for RTLD_NEXT
+ - !752 Use W32 visibility for Cygwin
+ - !754 Check for /proc/self/cmdline
+ - !757 Fix gnulib build on older Visual Studio builds
+ - !760 Properly ensure the cocoa notification backend type
+ - !761 RFC: gdbus-tool: Add --color option for introspect
+ - !762 gutils: Add (nullable) annotation to g_get_prgname()
+ - !765 gslice: Use a convenience macro
+ - !769 ci: Generate a cover report for the test suite
+ - !772 tests: Check that option-argv0 test succeeds on Linux
+ - !776 tests: Only run --external-data test on GNU ld/objcopy
+ - !779 Fix 2.62 documentation symbols
+
+* Translation updates:
+ - Dutch
+
+
 Overview of changes in GLib 2.60.0
 ==================================
 
