@@ -25,7 +25,11 @@
 /* We are testing some deprecated APIs here */
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 
+#include <locale.h>
+
 #include "glib.h"
+
+#include "glib/gunidecomp.h"
 
 static void
 test_unichar_validate (void)
@@ -82,6 +86,15 @@ test_unichar_character_type (void)
     {
       g_assert_cmpint (g_unichar_type (examples[i].c), ==, examples[i].type);
     }
+
+  /* Testing TYPE() border cases */
+  g_assert_cmpint (g_unichar_type (0x3FF5), ==, 0x07);
+  g_assert_cmpint (g_unichar_type (0xFFEFF), ==, 0x03);
+  g_assert_cmpint (g_unichar_type (0xE0001), ==, 0x01);
+  g_assert_cmpint (g_unichar_type (G_UNICODE_LAST_CHAR), ==, 0x02);
+  g_assert_cmpint (g_unichar_type (G_UNICODE_LAST_CHAR + 1), ==, 0x02);
+  g_assert_cmpint (g_unichar_type (G_UNICODE_LAST_CHAR_PART1), ==, 0x02);
+  g_assert_cmpint (g_unichar_type (G_UNICODE_LAST_CHAR_PART1 + 1), ==, 0x02);
 }
 
 static void
@@ -378,26 +391,376 @@ test_mirror (void)
 }
 
 static void
+test_strup (void)
+{
+  char *str_up = NULL;
+  char *str = "AaZz09x;\x03\x45"
+    "\xFF\x21" /* Unichar 'A' */
+    "\xFF\x41"; /* Unichar 'a' */
+
+  str_up = g_utf8_strup (str, strlen (str));
+  /* Tricky, comparing two unicode strings with an ASCII function */
+  g_assert_cmpstr (str_up, ==, "AAZZ09X;\x03\x45\xFF!\xFF\x41");
+  g_free (str_up);
+}
+
+static void
+test_strdown (void)
+{
+  char *str_down = NULL;
+  char *str = "AaZz09x;\x03\x07"
+    "\xFF\x21" /* Unichar 'A' */
+    "\xFF\x41"; /* Unichar 'a' */
+
+  str_down = g_utf8_strdown (str, strlen (str));
+  /* Tricky, comparing two unicode strings with an ASCII function */
+  g_assert_cmpstr (str_down, ==, "aazz09x;\x03\x07\xFF!\xFF\x61");
+  g_free (str_down);
+}
+
+static void
+test_casefold (void)
+{
+  char *str_casefold = NULL;
+  char *str = "AaZz09x;"
+    "\xFF\x21" /* Unichar 'A' */
+    "\xFF\x41"; /* Unichar 'a' */
+
+  str_casefold = g_utf8_casefold (str, strlen (str));
+  /* Tricky, comparing two unicode strings with an ASCII function */
+  g_assert_cmpstr (str_casefold, ==,
+                   "aazz09x;\xFF\xBF\xBF\xBF\xBF\xBF!\xFF\xBF\xBF\xBF\xBF\xBF\x61");
+  g_free (str_casefold);
+}
+
+static void
 test_mark (void)
 {
   g_assert (g_unichar_ismark (0x0903));
   g_assert (g_unichar_ismark (0x20DD));
   g_assert (g_unichar_ismark (0xA806));
   g_assert (!g_unichar_ismark ('a'));
+
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_ismark (0x3FF5));
+  g_assert (!g_unichar_ismark (0xFFEFF));
+  g_assert (!g_unichar_ismark (0xE0001));
+  g_assert (!g_unichar_ismark (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_ismark (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_ismark (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_ismark (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_space (void)
+{
+  const gunichar fullwidth_a = 0xff41;
+
+  g_assert (!g_unichar_isspace ('a'));
+  g_assert (g_unichar_isspace (' '));
+  g_assert (g_unichar_isspace ('\t'));
+  g_assert (g_unichar_isspace ('\n'));
+  g_assert (g_unichar_isspace ('\r'));
+  g_assert (g_unichar_isspace ('\f'));
+  g_assert (!g_unichar_isspace (fullwidth_a));
+  g_assert (g_unichar_isspace (0x202F)); /* Unicode space separator */
+  g_assert (g_unichar_isspace (0x2028)); /* Unicode line separator */
+  g_assert (g_unichar_isspace (0x2029)); /* Unicide paragraph separator */
+
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_isspace (0x3FF5));
+  g_assert (!g_unichar_isspace (0xFFEFF));
+  g_assert (!g_unichar_isspace (0xE0001));
+  g_assert (!g_unichar_isspace (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_isspace (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_isspace (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_isspace (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_alnum (void)
+{
+  g_assert (!g_unichar_isalnum (' '));
+  g_assert (g_unichar_isalnum ('a'));
+  g_assert (g_unichar_isalnum ('z'));
+  g_assert (g_unichar_isalnum ('0'));
+  g_assert (g_unichar_isalnum ('9'));
+  g_assert (g_unichar_isalnum ('A'));
+  g_assert (g_unichar_isalnum ('Z'));
+  g_assert (!g_unichar_isalnum ('-'));
+  g_assert (!g_unichar_isalnum ('*'));
+  g_assert (g_unichar_isalnum (0xFF21)); /* Unichar fullwidth 'A' */
+  g_assert (g_unichar_isalnum (0xFF3A)); /* Unichar fullwidth 'Z' */
+  g_assert (g_unichar_isalnum (0xFF41)); /* Unichar fullwidth 'a' */
+  g_assert (g_unichar_isalnum (0xFF5A)); /* Unichar fullwidth 'z' */
+  g_assert (g_unichar_isalnum (0xFF10)); /* Unichar fullwidth '0' */
+  g_assert (g_unichar_isalnum (0xFF19)); /* Unichar fullwidth '9' */
+  g_assert (!g_unichar_isalnum (0xFF0A)); /* Unichar fullwidth '*' */
+
+  /* Testing TYPE() border cases */
+  g_assert (g_unichar_isalnum (0x3FF5));
+  g_assert (!g_unichar_isalnum (0xFFEFF));
+  g_assert (!g_unichar_isalnum (0xE0001));
+  g_assert (!g_unichar_isalnum (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_isalnum (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_isalnum (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_isalnum (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_alpha (void)
+{
+  g_assert (!g_unichar_isalpha (' '));
+  g_assert (g_unichar_isalpha ('a'));
+  g_assert (g_unichar_isalpha ('z'));
+  g_assert (!g_unichar_isalpha ('0'));
+  g_assert (!g_unichar_isalpha ('9'));
+  g_assert (g_unichar_isalpha ('A'));
+  g_assert (g_unichar_isalpha ('Z'));
+  g_assert (!g_unichar_isalpha ('-'));
+  g_assert (!g_unichar_isalpha ('*'));
+  g_assert (g_unichar_isalpha (0xFF21)); /* Unichar fullwidth 'A' */
+  g_assert (g_unichar_isalpha (0xFF3A)); /* Unichar fullwidth 'Z' */
+  g_assert (g_unichar_isalpha (0xFF41)); /* Unichar fullwidth 'a' */
+  g_assert (g_unichar_isalpha (0xFF5A)); /* Unichar fullwidth 'z' */
+  g_assert (!g_unichar_isalpha (0xFF10)); /* Unichar fullwidth '0' */
+  g_assert (!g_unichar_isalpha (0xFF19)); /* Unichar fullwidth '9' */
+  g_assert (!g_unichar_isalpha (0xFF0A)); /* Unichar fullwidth '*' */
+
+  /* Testing TYPE() border cases */
+  g_assert (g_unichar_isalpha (0x3FF5));
+  g_assert (!g_unichar_isalpha (0xFFEFF));
+  g_assert (!g_unichar_isalpha (0xE0001));
+  g_assert (!g_unichar_isalpha (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_isalpha (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_isalpha (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_isalpha (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_digit (void)
+{
+  g_assert (!g_unichar_isdigit (' '));
+  g_assert (!g_unichar_isdigit ('a'));
+  g_assert (g_unichar_isdigit ('0'));
+  g_assert (g_unichar_isdigit ('9'));
+  g_assert (!g_unichar_isdigit ('A'));
+  g_assert (!g_unichar_isdigit ('-'));
+  g_assert (!g_unichar_isdigit ('*'));
+  g_assert (!g_unichar_isdigit (0xFF21)); /* Unichar fullwidth 'A' */
+  g_assert (!g_unichar_isdigit (0xFF3a)); /* Unichar fullwidth 'Z' */
+  g_assert (!g_unichar_isdigit (0xFF41)); /* Unichar fullwidth 'a' */
+  g_assert (!g_unichar_isdigit (0xFF5A)); /* Unichar fullwidth 'z' */
+  g_assert (g_unichar_isdigit (0xFF10)); /* Unichar fullwidth '0' */
+  g_assert (g_unichar_isdigit (0xFF19)); /* Unichar fullwidth '9' */
+  g_assert (!g_unichar_isdigit (0xFF0A)); /* Unichar fullwidth '*' */
+
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_isdigit (0x3FF5));
+  g_assert (!g_unichar_isdigit (0xFFEFF));
+  g_assert (!g_unichar_isdigit (0xE0001));
+  g_assert (!g_unichar_isdigit (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_isdigit (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_isdigit (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_isdigit (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_digit_value (void)
+{
+  g_assert_cmpint (g_unichar_digit_value (' '), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value ('a'), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value ('0'), ==, 0);
+  g_assert_cmpint (g_unichar_digit_value ('9'), ==, 9);
+  g_assert_cmpint (g_unichar_digit_value ('A'), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value ('-'), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (0xFF21), ==, -1); /* Unichar 'A' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF3a), ==, -1); /* Unichar 'Z' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF41), ==, -1); /* Unichar 'a' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF5A), ==, -1); /* Unichar'z' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF10), ==, 0); /* Unichar '0' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF19), ==, 9); /* Unichar '9' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF0A), ==, -1); /* Unichar '*' */
+
+  /* Testing TYPE() border cases */
+  g_assert_cmpint (g_unichar_digit_value (0x3FF5), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (0xFFEFF), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (0xE0001), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (G_UNICODE_LAST_CHAR), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (G_UNICODE_LAST_CHAR + 1), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (G_UNICODE_LAST_CHAR_PART1), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (G_UNICODE_LAST_CHAR_PART1 + 1), ==, -1);
+}
+
+static void
+test_xdigit (void)
+{
+  g_assert (!g_unichar_isxdigit (' '));
+  g_assert (g_unichar_isxdigit ('a'));
+  g_assert (g_unichar_isxdigit ('f'));
+  g_assert (!g_unichar_isxdigit ('g'));
+  g_assert (!g_unichar_isxdigit ('z'));
+  g_assert (g_unichar_isxdigit ('0'));
+  g_assert (g_unichar_isxdigit ('9'));
+  g_assert (g_unichar_isxdigit ('A'));
+  g_assert (g_unichar_isxdigit ('F'));
+  g_assert (!g_unichar_isxdigit ('G'));
+  g_assert (!g_unichar_isxdigit ('Z'));
+  g_assert (!g_unichar_isxdigit ('-'));
+  g_assert (!g_unichar_isxdigit ('*'));
+  g_assert (g_unichar_isxdigit (0xFF21)); /* Unichar fullwidth 'A' */
+  g_assert (g_unichar_isxdigit (0xFF26)); /* Unichar fullwidth 'F' */
+  g_assert (!g_unichar_isxdigit (0xFF27)); /* Unichar fullwidth 'G' */
+  g_assert (!g_unichar_isxdigit (0xFF3a)); /* Unichar fullwidth 'Z' */
+  g_assert (g_unichar_isxdigit (0xFF41)); /* Unichar fullwidth 'a' */
+  g_assert (g_unichar_isxdigit (0xFF46)); /* Unichar fullwidth 'f' */
+  g_assert (!g_unichar_isxdigit (0xFF47)); /* Unichar fullwidth 'g' */
+  g_assert (!g_unichar_isxdigit (0xFF5A)); /* Unichar fullwidth 'z' */
+  g_assert (g_unichar_isxdigit (0xFF10)); /* Unichar fullwidth '0' */
+  g_assert (g_unichar_isxdigit (0xFF19)); /* Unichar fullwidth '9' */
+  g_assert (!g_unichar_isxdigit (0xFF0A)); /* Unichar fullwidth '*' */
+
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_isxdigit (0x3FF5));
+  g_assert (!g_unichar_isxdigit (0xFFEFF));
+  g_assert (!g_unichar_isxdigit (0xE0001));
+  g_assert (!g_unichar_isxdigit (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_isxdigit (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_isxdigit (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_isxdigit (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_xdigit_value (void)
+{
+  g_assert_cmpint (g_unichar_xdigit_value (' '), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value ('a'), ==, 10);
+  g_assert_cmpint (g_unichar_xdigit_value ('f'), ==, 15);
+  g_assert_cmpint (g_unichar_xdigit_value ('g'), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value ('0'), ==, 0);
+  g_assert_cmpint (g_unichar_xdigit_value ('9'), ==, 9);
+  g_assert_cmpint (g_unichar_xdigit_value ('A'), ==, 10);
+  g_assert_cmpint (g_unichar_xdigit_value ('F'), ==, 15);
+  g_assert_cmpint (g_unichar_xdigit_value ('G'), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value ('-'), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF21), ==, 10); /* Unichar 'A' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF26), ==, 15); /* Unichar 'F' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF27), ==, -1); /* Unichar 'G' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF3a), ==, -1); /* Unichar 'Z' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF41), ==, 10); /* Unichar 'a' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF46), ==, 15); /* Unichar 'f' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF47), ==, -1); /* Unichar 'g' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF5A), ==, -1); /* Unichar'z' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF10), ==, 0); /* Unichar '0' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF19), ==, 9); /* Unichar '9' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF0A), ==, -1); /* Unichar '*' */
+
+  /* Testing TYPE() border cases */
+  g_assert_cmpint (g_unichar_xdigit_value (0x3FF5), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (0xFFEFF), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (0xE0001), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (G_UNICODE_LAST_CHAR), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (G_UNICODE_LAST_CHAR + 1), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (G_UNICODE_LAST_CHAR_PART1), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (G_UNICODE_LAST_CHAR_PART1 + 1), ==, -1);
+}
+
+static void
+test_punctuation (void)
+{
+  g_assert (!g_unichar_ispunct (' '));
+  g_assert (!g_unichar_ispunct ('a'));
+  g_assert (g_unichar_ispunct ('.'));
+  g_assert (g_unichar_ispunct (','));
+  g_assert (g_unichar_ispunct (';'));
+  g_assert (g_unichar_ispunct (':'));
+  g_assert (g_unichar_ispunct ('-'));
+
+  g_assert (!g_unichar_ispunct (0xFF21)); /* Unichar fullwidth 'A' */
+  g_assert (g_unichar_ispunct (0x005F)); /* Unichar fullwidth '.' */
+  g_assert (g_unichar_ispunct (0x058A)); /* Unichar fullwidth '-' */
+
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_ispunct (0x3FF5));
+  g_assert (!g_unichar_ispunct (0xFFEFF));
+  g_assert (!g_unichar_ispunct (0xE0001));
+  g_assert (!g_unichar_ispunct (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_ispunct (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_ispunct (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_ispunct (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_cntrl (void)
+{
+  g_assert (g_unichar_iscntrl (0x08));
+  g_assert (!g_unichar_iscntrl ('a'));
+  g_assert (g_unichar_iscntrl (0x007F)); /* Unichar fullwidth <del> */
+  g_assert (g_unichar_iscntrl (0x009F)); /* Unichar fullwidth control */
+
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_iscntrl (0x3FF5));
+  g_assert (!g_unichar_iscntrl (0xFFEFF));
+  g_assert (!g_unichar_iscntrl (0xE0001));
+  g_assert (!g_unichar_iscntrl (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_iscntrl (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_iscntrl (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_iscntrl (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_graph (void)
+{
+  g_assert (g_unichar_iscntrl (0x08));
+  g_assert (!g_unichar_isgraph (' '));
+  g_assert (g_unichar_isgraph ('a'));
+  g_assert (g_unichar_isgraph ('0'));
+  g_assert (g_unichar_isgraph ('9'));
+  g_assert (g_unichar_isgraph ('A'));
+  g_assert (g_unichar_isgraph ('-'));
+  g_assert (g_unichar_isgraph ('*'));
+  g_assert (g_unichar_isgraph (0xff21)); /* Unichar fullwidth 'A' */
+  g_assert (g_unichar_isgraph (0xff3a)); /* Unichar fullwidth 'Z' */
+  g_assert (g_unichar_isgraph (0xff41)); /* Unichar fullwidth 'a' */
+  g_assert (g_unichar_isgraph (0xff5a)); /* Unichar fullwidth 'z' */
+  g_assert (g_unichar_isgraph (0xff10)); /* Unichar fullwidth '0' */
+  g_assert (g_unichar_isgraph (0xff19)); /* Unichar fullwidth '9' */
+  g_assert (g_unichar_isgraph (0xff0a)); /* Unichar fullwidth '*' */
+  g_assert (!g_unichar_isgraph (0x007F)); /* Unichar fullwidth <del> */
+  g_assert (!g_unichar_isgraph (0x009F)); /* Unichar fullwidth control */
+
+  /* Testing TYPE() border cases */
+  g_assert (g_unichar_isgraph (0x3FF5));
+  g_assert (g_unichar_isgraph (0xFFEFF));
+  g_assert (!g_unichar_isgraph (0xE0001));
+  g_assert (!g_unichar_isgraph (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_isgraph (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_isgraph (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_isgraph (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 static void
 test_zerowidth (void)
 {
   g_assert (!g_unichar_iszerowidth (0x00AD));
-  g_assert (!g_unichar_iszerowidth (0x00AD));
   g_assert (!g_unichar_iszerowidth (0x115F));
   g_assert (g_unichar_iszerowidth (0x1160));
   g_assert (g_unichar_iszerowidth (0x11AA));
   g_assert (g_unichar_iszerowidth (0x11FF));
   g_assert (!g_unichar_iszerowidth (0x1200));
+  g_assert (!g_unichar_iszerowidth (0x200A));
   g_assert (g_unichar_iszerowidth (0x200B));
+  g_assert (g_unichar_iszerowidth (0x200C));
   g_assert (g_unichar_iszerowidth (0x591));
+
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_iszerowidth (0x3FF5));
+  g_assert (!g_unichar_iszerowidth (0xFFEFF));
+  g_assert (g_unichar_iszerowidth (0xE0001));
+  g_assert (!g_unichar_iszerowidth (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_iszerowidth (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_iszerowidth (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_iszerowidth (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 static void
@@ -409,6 +772,15 @@ test_title (void)
   g_assert (!g_unichar_istitle ('a'));
   g_assert (!g_unichar_istitle ('A'));
 
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_istitle (0x3FF5));
+  g_assert (!g_unichar_istitle (0xFFEFF));
+  g_assert (!g_unichar_istitle (0xE0001));
+  g_assert (!g_unichar_istitle (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_istitle (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_istitle (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_istitle (G_UNICODE_LAST_CHAR_PART1 + 1));
+
   g_assert_cmphex (g_unichar_totitle (0x01c6), ==, 0x01c5);
   g_assert_cmphex (g_unichar_totitle (0x01c4), ==, 0x01c5);
   g_assert_cmphex (g_unichar_totitle (0x01c5), ==, 0x01c5);
@@ -416,17 +788,105 @@ test_title (void)
   g_assert_cmphex (g_unichar_totitle (0x1f88), ==, 0x1f88);
   g_assert_cmphex (g_unichar_totitle ('a'), ==, 'A');
   g_assert_cmphex (g_unichar_totitle ('A'), ==, 'A');
+
+  /* Testing TYPE() border cases */
+  g_assert_cmphex (g_unichar_totitle (0x3FF5), ==, 0x3FF5);
+  g_assert_cmphex (g_unichar_totitle (0xFFEFF), ==, 0xFFEFF);
+  g_assert_cmphex (g_unichar_totitle (0xDFFFF), ==, 0xDFFFF);
+  g_assert_cmphex (g_unichar_totitle (0xE0001), ==, 0xE0001);
+  g_assert_cmphex (g_unichar_totitle (G_UNICODE_LAST_CHAR), ==,
+                   G_UNICODE_LAST_CHAR);
+  g_assert_cmphex (g_unichar_totitle (G_UNICODE_LAST_CHAR + 1), ==,
+                   (G_UNICODE_LAST_CHAR + 1));
+  g_assert_cmphex (g_unichar_totitle (G_UNICODE_LAST_CHAR_PART1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_cmphex (g_unichar_totitle (G_UNICODE_LAST_CHAR_PART1 + 1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_upper (void)
+{
+  const gunichar fullwidth_a = 0xff41, fullwidth_A = 0xff21;
+
+  g_assert (!g_unichar_isupper (' '));
+  g_assert (!g_unichar_isupper ('0'));
+  g_assert (!g_unichar_isupper ('a'));
+  g_assert (g_unichar_isupper ('A'));
+  g_assert (!g_unichar_isupper (fullwidth_a));
+  g_assert (g_unichar_isupper (fullwidth_A));
+
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_isupper (0x3FF5));
+  g_assert (!g_unichar_isupper (0xFFEFF));
+  g_assert (!g_unichar_isupper (0xE0001));
+  g_assert (!g_unichar_isupper (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_isupper (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_isupper (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_isupper (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_lower (void)
+{
+  const gunichar fullwidth_a = 0xff41, fullwidth_A = 0xff21;
+
+  g_assert (!g_unichar_islower (' '));
+  g_assert (!g_unichar_islower ('0'));
+  g_assert (g_unichar_islower ('a'));
+  g_assert (!g_unichar_islower ('A'));
+  g_assert (g_unichar_islower (fullwidth_a));
+  g_assert (!g_unichar_islower (fullwidth_A));
+
+  /* Testing TYPE() border cases */
+  g_assert (!g_unichar_islower (0x3FF5));
+  g_assert (!g_unichar_islower (0xFFEFF));
+  g_assert (!g_unichar_islower (0xE0001));
+  g_assert (!g_unichar_islower (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_islower (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_islower (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_islower (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_print (void)
+{
+  const gunichar fullwidth_a = 0xff41, fullwidth_A = 0xff21;
+
+  g_assert (g_unichar_isprint (' '));
+  g_assert (g_unichar_isprint ('0'));
+  g_assert (g_unichar_isprint ('a'));
+  g_assert (g_unichar_isprint ('A'));
+  g_assert (g_unichar_isprint (fullwidth_a));
+  g_assert (g_unichar_isprint (fullwidth_A));
+
+  /* Testing TYPE() border cases */
+  g_assert (g_unichar_isprint (0x3FF5));
+  g_assert (g_unichar_isprint (0xFFEFF));
+  g_assert (!g_unichar_isprint (0xE0001));
+  g_assert (!g_unichar_isprint (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_isprint (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_isprint (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_isprint (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 static void
 test_cases (void)
 {
+  const gunichar fullwidth_a = 0xff41, fullwidth_A = 0xff21;
+
+  g_assert_cmphex (g_unichar_toupper (0x0), ==, 0x0);
+  g_assert_cmphex (g_unichar_tolower (0x0), ==, 0x0);
   g_assert_cmphex (g_unichar_toupper ('a'), ==, 'A');
   g_assert_cmphex (g_unichar_toupper ('A'), ==, 'A');
+  g_assert_cmphex (g_unichar_toupper (fullwidth_a), ==, fullwidth_A);
+  g_assert_cmphex (g_unichar_toupper (fullwidth_A), ==, fullwidth_A);
   g_assert_cmphex (g_unichar_toupper (0x01C5), ==, 0x01C4);
   g_assert_cmphex (g_unichar_toupper (0x01C6), ==, 0x01C4);
   g_assert_cmphex (g_unichar_tolower ('A'), ==, 'a');
   g_assert_cmphex (g_unichar_tolower ('a'), ==, 'a');
+  g_assert_cmphex (g_unichar_tolower (fullwidth_A), ==, fullwidth_a);
+  g_assert_cmphex (g_unichar_tolower (fullwidth_a), ==, fullwidth_a);
   g_assert_cmphex (g_unichar_tolower (0x01C4), ==, 0x01C6);
   g_assert_cmphex (g_unichar_tolower (0x01C5), ==, 0x01C6);
   g_assert_cmphex (g_unichar_tolower (0x1F8A), ==, 0x1F82);
@@ -434,6 +894,32 @@ test_cases (void)
   g_assert_cmphex (g_unichar_toupper (0x1F8A), ==, 0x1F8A);
   g_assert_cmphex (g_unichar_tolower (0x1FB2), ==, 0x1FB2);
   g_assert_cmphex (g_unichar_toupper (0x1FB2), ==, 0x1FB2);
+
+  /* Testing TYPE() border cases */
+  g_assert_cmphex (g_unichar_toupper (0x3FF5), ==, 0x3FF5);
+  g_assert_cmphex (g_unichar_toupper (0xFFEFF), ==, 0xFFEFF);
+  g_assert_cmphex (g_unichar_toupper (0xDFFFF), ==, 0xDFFFF);
+  g_assert_cmphex (g_unichar_toupper (0xE0001), ==, 0xE0001);
+  g_assert_cmphex (g_unichar_toupper (G_UNICODE_LAST_CHAR), ==,
+                   G_UNICODE_LAST_CHAR);
+  g_assert_cmphex (g_unichar_toupper (G_UNICODE_LAST_CHAR + 1), ==,
+                   (G_UNICODE_LAST_CHAR + 1));
+  g_assert_cmphex (g_unichar_toupper (G_UNICODE_LAST_CHAR_PART1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_cmphex (g_unichar_toupper (G_UNICODE_LAST_CHAR_PART1 + 1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1 + 1));
+
+  /* Testing TYPE() border cases */
+  g_assert_cmphex (g_unichar_tolower (0xDFFFF), ==, 0xDFFFF);
+  g_assert_cmphex (g_unichar_tolower (0xE0001), ==, 0xE0001);
+  g_assert_cmphex (g_unichar_tolower (G_UNICODE_LAST_CHAR), ==,
+                   G_UNICODE_LAST_CHAR);
+  g_assert_cmphex (g_unichar_tolower (G_UNICODE_LAST_CHAR + 1), ==,
+                   (G_UNICODE_LAST_CHAR + 1));
+  g_assert_cmphex (g_unichar_tolower (G_UNICODE_LAST_CHAR_PART1), ==,
+                   G_UNICODE_LAST_CHAR_PART1);
+  g_assert_cmphex (g_unichar_tolower (G_UNICODE_LAST_CHAR_PART1 + 1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 static void
@@ -446,6 +932,16 @@ test_defined (void)
   g_assert (g_unichar_isdefined ('a'));
   g_assert (!g_unichar_isdefined (0x10C49));
   g_assert (!g_unichar_isdefined (0x169D));
+
+  /* Testing TYPE() border cases */
+  g_assert (g_unichar_isdefined (0x3FF5));
+  g_assert (g_unichar_isdefined (0xFFEFF));
+  g_assert (!g_unichar_isdefined (0xDFFFF));
+  g_assert (g_unichar_isdefined (0xE0001));
+  g_assert (!g_unichar_isdefined (G_UNICODE_LAST_CHAR));
+  g_assert (!g_unichar_isdefined (G_UNICODE_LAST_CHAR + 1));
+  g_assert (!g_unichar_isdefined (G_UNICODE_LAST_CHAR_PART1));
+  g_assert (!g_unichar_isdefined (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 static void
@@ -949,8 +1445,24 @@ main (int   argc,
   g_test_add_func ("/unicode/script", test_unichar_script);
   g_test_add_func ("/unicode/combining-class", test_combining_class);
   g_test_add_func ("/unicode/mirror", test_mirror);
+  g_test_add_func ("/unicode/strup", test_strup);
+  g_test_add_func ("/unicode/strdown", test_strdown);
+  g_test_add_func ("/unicode/casefold", test_casefold);
   g_test_add_func ("/unicode/mark", test_mark);
   g_test_add_func ("/unicode/title", test_title);
+  g_test_add_func ("/unicode/upper", test_upper);
+  g_test_add_func ("/unicode/lower", test_lower);
+  g_test_add_func ("/unicode/print", test_print);
+  g_test_add_func ("/unicode/space", test_space);
+  g_test_add_func ("/unicode/alnum", test_alnum);
+  g_test_add_func ("/unicode/alpha", test_alpha);
+  g_test_add_func ("/unicode/digit", test_digit);
+  g_test_add_func ("/unicode/digit-value", test_digit_value);
+  g_test_add_func ("/unicode/xdigit", test_xdigit);
+  g_test_add_func ("/unicode/xdigit-value", test_xdigit_value);
+  g_test_add_func ("/unicode/punctuation", test_punctuation);
+  g_test_add_func ("/unicode/cntrl", test_cntrl);
+  g_test_add_func ("/unicode/graph", test_graph);
   g_test_add_func ("/unicode/zero-width", test_zerowidth);
   g_test_add_func ("/unicode/defined", test_defined);
   g_test_add_func ("/unicode/wide", test_wide);
