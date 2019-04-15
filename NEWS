@@ -1,3 +1,24 @@
+Overview of changes in GLib 2.60.1
+==================================
+
+* Fix documentation for `gdbus-tool wait` to use correct units
+
+* Bugs fixed:
+ - #1709 GResource generation test incompatible with stable LLVM on Linux
+ - #1725 gosxappinfo.h is not installed on macOS
+ - #1737 gdbus-tool wait command timeout argument incorrect unit reference
+ - !711 socket: Fix annotation for flags in g_socket_receive_message
+ - !722 Backport codegen: Fix use of uninitialised variable from !721 to glib-2-60
+ - !727 Backport !719 “Handle an UNKNOWN NetworkManager connectivity as NONE” to glib-2-60
+ - !729 Backport !728 “gsocket: Remove (type) annotation from flags arguments” to glib-2-60
+ - !758 gdbusaddress, win32: backport using cwd for running rundll32
+ - !775 meson: Hotfix for iconv detection on macOS
+
+* Translation updates:
+ - Basque
+ - Dutch
+
+
 Overview of changes in GLib 2.60.0
 ==================================
 
