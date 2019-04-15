@@ -551,9 +551,21 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
     copy : true,
     install : false)
 
-  # Create object file containing resource data
-  # for testing the external data option
-  if build_machine.system() == 'linux'
+  resources_extra_sources = [
+    test_gresource,
+    test_resources_c,
+    test_resources2_c,
+    test_resources2_h,
+    digit_test_resources_c,
+    digit_test_resources_h,
+  ]
+
+  # Create object file containing resource data for testing the --external-data
+  # option. Currently only GNU ld and GNU objcopy support the right options.
+  # Support for --add-symbol was added to LLVM objcopy in 2019
+  # (https://reviews.llvm.org/D58234). FIXME: This test could be enabled for
+  # LLVM once that support is in a stable release.
+  if build_machine.system() == 'linux' and cc.get_id() == 'gcc'
     test_gresource_binary = custom_target('test5.gresource',
       input : 'test5.gresource.xml',
       output : 'test5.gresource',
@@ -565,7 +577,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
       install_dir : installed_tests_execdir,
       install : installed_tests_enabled)
 
-	# Create resource data file
+    # Create resource data file
     test_resources_binary_c = custom_target('test_resources_binary.c',
       input : 'test5.gresource.xml',
       output : 'test_resources_binary.c',
@@ -578,7 +590,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                  '--c-name', '_g_binary_test1',
                  '@INPUT@'])
 
-	# Create object file containing resource data
+    # Create object file containing resource data
     test_resources_binary = custom_target('test_resources.o',
       input : test_gresource_binary,
       output : 'test_resources.o',
@@ -588,7 +600,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                  '@INPUT@',
                  '-o','@OUTPUT@'])
 
-	# Rename symbol to match the one in the C file
+    # Rename symbol to match the one in the C file
     test_resources_binary2 = custom_target('test_resources2.o',
       input : test_resources_binary,
       output : 'test_resources2.o',
@@ -597,21 +609,17 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                  '@INPUT@',
                  '@OUTPUT@'])
 
-    gio_tests += {
-      'resources' : {
-        'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
-                           test_resources2_h, test_resources_binary_c,
-                           test_resources_binary2, digit_test_resources_c, digit_test_resources_h],
-      },
-    }
-  else
-    gio_tests += {
-      'resources' : {
-        'extra_sources' : [test_gresource, test_resources_c, test_resources2_c,
-                           test_resources2_h, digit_test_resources_c, digit_test_resources_h],
-      },
-    }
+    resources_extra_sources += [
+      test_resources_binary_c,
+      test_resources_binary2,
+    ]
   endif
+
+  gio_tests += {
+    'resources' : {
+      'extra_sources' : resources_extra_sources,
+    },
+  }
 endif
 
 foreach test_name, extra_args : gio_tests
