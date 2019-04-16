@@ -1877,10 +1877,17 @@ platform_get_argv0 (void)
     return NULL;
 
   /* Skip leading whitespace. CommandLineToArgvW() is documented
-   * to behave weirdly with that
+   * to behave weirdly with that. The character codes below
+   * correspond to the *only* unicode characters that are
+   * considered to be spaces by CommandLineToArgvW(). The rest
+   * (such as 0xa0 - NO-BREAK SPACE) are treated as
+   * normal characters.
    */
-  while (cmdline[0] != L'\0' &&
-         (cmdline[0] == L' ' || cmdline[0] == L'\t'))
+  while (cmdline[0] == 0x09 ||
+         cmdline[0] == 0x0a ||
+         cmdline[0] == 0x0c ||
+         cmdline[0] == 0x0d ||
+         cmdline[0] == 0x20)
     cmdline++;
 
   wargv = CommandLineToArgvW (cmdline, &wargc);
