@@ -593,7 +593,7 @@ if cc.has_header_symbol('dlfcn.h', 'RTLD_GLOBAL')
 endif
 
 have_rtld_next = false
-if cc.has_header_symbol('dlfcn.h', 'RTLD_NEXT')
+if cc.has_header_symbol('dlfcn.h', 'RTLD_NEXT', args: '-D_GNU_SOURCE')
   have_rtld_next = true
   glib_conf.set('HAVE_RTLD_NEXT', 1)
 endif
