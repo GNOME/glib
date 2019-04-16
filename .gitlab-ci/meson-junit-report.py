@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 
+# Turns a Meson testlog.json file into a JUnit XML report
+#
+# Copyright 2019  GNOME Foundation
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+# Original author: Emmanuele Bassi
+
 import argparse
 import datetime
 import json
