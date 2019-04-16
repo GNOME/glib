@@ -194,6 +194,10 @@
 #include "gprintf.h"
 #include "glibintl.h"
 
+#if defined G_OS_WIN32
+#include <windows.h>
+#endif
+
 #define TRANSLATE(group, str) (((group)->translate_func ? (* (group)->translate_func) ((str), (group)->translate_data) : (str)))
 
 #define NO_ARG(entry) ((entry)->arg == G_OPTION_ARG_NONE ||       \
@@ -1859,6 +1863,51 @@ platform_get_argv0 (void)
    */
   base_arg0 = g_path_get_basename (*cmdline);
   g_free (cmdline);
+  return base_arg0;
+#elif defined G_OS_WIN32
+  const wchar_t *cmdline;
+  wchar_t **wargv;
+  int wargc;
+  gchar *utf8_buf = NULL;
+  char *base_arg0 = NULL;
+
+  /* Pretend it's const, since we're not allowed to free it */
+  cmdline = (const wchar_t *) GetCommandLineW ();
+  if (G_UNLIKELY (cmdline == NULL))
+    return NULL;
+
+  /* Skip leading whitespace. CommandLineToArgvW() is documented
+   * to behave weirdly with that. The character codes below
+   * correspond to the *only* unicode characters that are
+   * considered to be spaces by CommandLineToArgvW(). The rest
+   * (such as 0xa0 - NO-BREAK SPACE) are treated as
+   * normal characters.
+   */
+  while (cmdline[0] == 0x09 ||
+         cmdline[0] == 0x0a ||
+         cmdline[0] == 0x0c ||
+         cmdline[0] == 0x0d ||
+         cmdline[0] == 0x20)
+    cmdline++;
+
+  wargv = CommandLineToArgvW (cmdline, &wargc);
+  if (G_UNLIKELY (wargv == NULL))
+    return NULL;
+
+  if (wargc > 0)
+    utf8_buf = g_utf16_to_utf8 (wargv[0], -1, NULL, NULL, NULL);
+
+  LocalFree (wargv);
+
+  if (G_UNLIKELY (utf8_buf == NULL))
+    return NULL;
+
+  /* We could just return cmdline, but I think it's better
+   * to hold on to a smaller malloc block; the arguments
+   * could be large.
+   */
+  base_arg0 = g_path_get_basename (utf8_buf);
+  g_free (utf8_buf);
   return base_arg0;
 #endif
 

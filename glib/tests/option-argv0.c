@@ -51,7 +51,8 @@ test_platform_argv0 (void)
   /* This test must pass on platforms where platform_get_argv0()
    * is implemented. At the moment that means Linux/Cygwin,
    * (which uses /proc/self/cmdline) or OpenBSD (which uses
-   * sysctl and KERN_PROC_ARGS). On other platforms the test
+   * sysctl and KERN_PROC_ARGS) or Windows (which uses
+   * GetCommandlineW ()). On other platforms the test
    * is not expected to pass, but we'd still want to know
    * how it does (the test code itself doesn't use any platform-specific
    * functionality, the difference is internal to glib, so it's quite
@@ -60,7 +61,10 @@ test_platform_argv0 (void)
    * to prevent them from crashing hard on failed assertions,
    * and make them call g_test_skip() instead.
    */
-#if !defined HAVE_PROC_SELF_CMDLINE && !defined __OpenBSD__ && !defined __linux
+#if !defined HAVE_PROC_SELF_CMDLINE && \
+    !defined __OpenBSD__ && \
+    !defined __linux && \
+    !defined G_OS_WIN32
   fatal_errors = FALSE;
 #endif
 
