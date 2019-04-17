@@ -52,6 +52,8 @@ typedef enum {
   NM_CONNECTIVITY_FULL
 } NMConnectivityState;
 
+/* Copied from https://developer.gnome.org/libnm-util/stable/libnm-util-NetworkManager.html#NMState;
+ * used inline to avoid a NetworkManager dependency from GLib. */
 typedef enum {
   NM_STATE_UNKNOWN          = 0,
   NM_STATE_ASLEEP           = 10,
