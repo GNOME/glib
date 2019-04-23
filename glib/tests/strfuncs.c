@@ -199,6 +199,251 @@ test_is_to_digit (void)
   #undef TEST_DIGIT
 }
 
+/* Testing g_memdup() function with various positive and negative cases */
+static void
+test_memdup (void)
+{
+  gchar *str_dup = NULL;
+  const gchar *str = "The quick brown fox jumps over the lazy dog";
+
+  /* Testing negative cases */
+  g_assert_null (g_memdup (NULL, 1024));
+  g_assert_null (g_memdup (str, 0));
+  g_assert_null (g_memdup (NULL, 0));
+
+  /* Testing normal usage cases */
+  str_dup = g_memdup (str, strlen (str) + 1);
+  g_assert_nonnull (str_dup);
+  g_assert_cmpstr (str, ==, str_dup);
+
+  g_free (str_dup);
+}
+
+/* Testing g_strpcpy() function with various positive and negative cases */
+static void
+test_stpcpy (void)
+{
+  gchar *str = "The quick brown fox jumps over the lazy dog";
+  gchar str_cpy[45], *str_cpy_end = NULL;
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str_cpy_end = g_stpcpy (str_cpy, NULL);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str_cpy_end = g_stpcpy (NULL, str);
+  g_test_assert_expected_messages ();
+
+  /* Testing normal usage cases */
+  str_cpy_end = g_stpcpy (str_cpy, str);
+  g_assert_nonnull (str_cpy);
+  g_assert_true (str_cpy + strlen (str) == str_cpy_end);
+  g_assert_cmpstr (str, ==, str_cpy);
+  g_assert_cmpstr (str, ==, str_cpy_end - strlen (str));
+}
+
+/* Testing g_strlcpy() function with various positive and negative cases */
+static void
+test_strlcpy (void)
+{
+  gchar *str = "The quick brown fox jumps over the lazy dog";
+  gchar str_cpy[45];
+  gsize str_cpy_size = 0;
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str_cpy_size = g_strlcpy (str_cpy, NULL, 0);
+  g_test_assert_expected_messages ();
+  /* Returned 0 because g_strlcpy() failed */
+  g_assert_cmpint (str_cpy_size, ==, 0);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str_cpy_size = g_strlcpy (NULL, str, 0);
+  g_test_assert_expected_messages ();
+  /* Returned 0 because g_strlcpy() failed */
+  g_assert_cmpint (str_cpy_size, ==, 0);
+
+  str_cpy_size = g_strlcpy (str_cpy, "", 0);
+  g_assert_cmpint (str_cpy_size, ==, strlen(""));
+
+  /* Testing normal usage cases */
+  str_cpy_size = g_strlcpy (str_cpy, str, strlen (str) + 1);
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr (str, ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, strlen (str));
+
+  str_cpy_size = g_strlcpy (str_cpy, str, strlen (str));
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr ("The quick brown fox jumps over the lazy do", ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, strlen (str));
+
+  str_cpy_size = g_strlcpy (str_cpy, str, strlen (str) - 15);
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr ("The quick brown fox jumps o", ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, strlen (str));
+
+  str_cpy_size = g_strlcpy (str_cpy, str, 0);
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr ("The quick brown fox jumps o", ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, strlen (str));
+
+  str_cpy_size = g_strlcpy (str_cpy, str, strlen (str) + 15);
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr (str, ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, strlen (str));
+}
+
+/* Testing g_strlcat() function with various positive and negative cases */
+static void
+test_strlcat (void)
+{
+  gchar *str = "The quick brown fox jumps over the lazy dog";
+  gchar str_cpy[45] = { 0 };
+  gsize str_cpy_size = 0;
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str_cpy_size = g_strlcat (str_cpy, NULL, 0);
+  g_test_assert_expected_messages ();
+  /* Returned 0 because g_strlcpy() failed */
+  g_assert_cmpint (str_cpy_size, ==, 0);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str_cpy_size = g_strlcat (NULL, str, 0);
+  g_test_assert_expected_messages ();
+  /* Returned 0 because g_strlcpy() failed */
+  g_assert_cmpint (str_cpy_size, ==, 0);
+
+  str_cpy_size = g_strlcat (str_cpy, "", 0);
+  g_assert_cmpint (str_cpy_size, ==, strlen(""));
+
+  /* Testing normal usage cases */
+  str_cpy_size = g_strlcat (str_cpy, str, strlen (str) + 1);
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr (str, ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, strlen (str));
+
+  str_cpy_size = g_strlcat (str_cpy, str, strlen (str));
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr (str, ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, 2 * strlen (str));
+
+  str_cpy_size = g_strlcat (str_cpy, str, strlen (str) - 15);
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr (str, ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, 2 * strlen (str) - 15);
+
+  str_cpy_size = g_strlcat (str_cpy, str, 0);
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr (str, ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, strlen (str));
+
+  str_cpy_size = g_strlcat (str_cpy, str, strlen (str) + 15);
+  g_assert_nonnull (str_cpy);
+  g_assert_cmpstr ("The quick brown fox jumps over the lazy dogThe quick brow",
+                   ==, str_cpy);
+  g_assert_cmpint (str_cpy_size, ==, 2 * strlen (str));
+}
+
+/* Testing g_ascii_strdown() function with various positive and negative cases */
+static void
+test_ascii_strdown (void)
+{
+  const gchar *str_down = "the quick brown fox jumps over the lazy dog.";
+  const gchar *str_up = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.";
+  gchar* str;
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str = g_ascii_strdown (NULL, 0);
+  g_test_assert_expected_messages ();
+
+  str = g_ascii_strdown ("", 0);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "");
+  g_free (str);
+
+  str = g_ascii_strdown ("", -1);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "");
+  g_free (str);
+
+  /* Testing normal usage cases */
+  str = g_ascii_strdown (str_down, strlen (str_down));
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, str_down);
+  g_free (str);
+
+  str = g_ascii_strdown (str_up, strlen (str_up));
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, str_down);
+  g_free (str);
+
+  str = g_ascii_strdown (str_up, -1);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, str_down);
+  g_free (str);
+
+  str = g_ascii_strdown (str_up, 0);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "");
+  g_free (str);
+}
+
+/* Testing g_ascii_strup() function with various positive and negative cases */
+static void
+test_ascii_strup (void)
+{
+  const gchar *str_down = "the quick brown fox jumps over the lazy dog.";
+  const gchar *str_up = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.";
+  gchar* str;
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str = g_ascii_strup (NULL, 0);
+  g_test_assert_expected_messages ();
+
+  str = g_ascii_strup ("", 0);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "");
+  g_free (str);
+
+  str = g_ascii_strup ("", -1);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "");
+  g_free (str);
+
+  /* Testing normal usage cases */
+  str = g_ascii_strup (str_up, strlen (str_up));
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, str_up);
+  g_free (str);
+
+  str = g_ascii_strup (str_down, strlen (str_down));
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, str_up);
+  g_free (str);
+
+  str = g_ascii_strup (str_down, -1);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, str_up);
+  g_free (str);
+
+  str = g_ascii_strup (str_down, 0);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "");
+  g_free (str);
+}
+
 /* Testing g_strdup() function with various positive and negative cases */
 static void
 test_strdup (void)
@@ -302,6 +547,36 @@ test_strconcat (void)
   g_assert_null (g_strconcat (NULL, "bla", NULL));
 }
 
+/* Testing g_strjoinv() function with various positive and negative cases */
+static void
+test_strjoinv (void)
+{
+  gchar *strings[] = { "string1", "string2", NULL };
+  gchar *empty_strings[] = { NULL };
+  gchar *str;
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str = g_strjoinv (NULL, NULL);
+  g_test_assert_expected_messages ();
+
+  str = g_strjoinv (":", strings);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "string1:string2");
+  g_free (str);
+
+  str = g_strjoinv (NULL, strings);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "string1string2");
+  g_free (str);
+
+  str = g_strjoinv (NULL, empty_strings);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "");
+  g_free (str);
+}
+
 /* Testing g_strjoin() function with various positive and negative cases */
 static void
 test_strjoin (void)
@@ -346,26 +621,21 @@ test_strjoin (void)
 static void
 test_strcanon (void)
 {
-  gchar *str;
+  gchar *str, *ret;
 
-  if (g_test_undefined ())
-    {
-      gchar *ret;
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str = g_strcanon (NULL, "ab", 'y');
+  g_test_assert_expected_messages ();
+  g_assert_null (str);
 
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      str = g_strcanon (NULL, "ab", 'y');
-      g_test_assert_expected_messages ();
-      g_assert_null (str);
-
-      str = g_strdup ("abxabxab");
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      ret = g_strcanon (str, NULL, 'y');
-      g_test_assert_expected_messages ();
-      g_assert_null (ret);
-      g_free (str);
-    }
+  str = g_strdup ("abxabxab");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  ret = g_strcanon (str, NULL, 'y');
+  g_test_assert_expected_messages ();
+  g_assert_null (ret);
+  g_free (str);
 
   str = g_strdup ("abxabxab");
   str = g_strcanon (str, "ab", 'y');
@@ -382,22 +652,19 @@ test_strcompress_strescape (void)
   gchar *tmp;
 
   /* test compress */
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      str = g_strcompress (NULL);
-      g_test_assert_expected_messages ();
-      g_assert_null (str);
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str = g_strcompress (NULL);
+  g_test_assert_expected_messages ();
+  g_assert_null (str);
 
-      /* trailing slashes are not allowed */
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+  /* trailing slashes are not allowed */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
                              "*trailing \\*");
-      str = g_strcompress ("abc\\");
-      g_test_assert_expected_messages ();
-      g_assert_cmpstr (str, ==, "abc");
-      g_free (str);
-    }
+  str = g_strcompress ("abc\\");
+  g_test_assert_expected_messages ();
+  g_assert_cmpstr (str, ==, "abc");
+  g_free (str);
 
   str = g_strcompress ("abc\\\\\\\"\\b\\f\\n\\r\\t\\v\\003\\177\\234\\313\\12345z");
   g_assert_nonnull (str);
@@ -405,14 +672,11 @@ test_strcompress_strescape (void)
   g_free (str);
 
   /* test escape */
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      str = g_strescape (NULL, NULL);
-      g_test_assert_expected_messages ();
-      g_assert_null (str);
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str = g_strescape (NULL, NULL);
+  g_test_assert_expected_messages ();
+  g_assert_null (str);
 
   str = g_strescape ("abc\\\"\b\f\n\r\t\v\003\177\234\313", NULL);
   g_assert_nonnull (str);
@@ -440,20 +704,29 @@ test_ascii_strcasecmp (void)
 {
   gboolean res;
 
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      res = g_ascii_strcasecmp ("foo", NULL);
-      g_test_assert_expected_messages ();
-      g_assert_false (res);
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_ascii_strcasecmp ("foo", NULL);
+  g_test_assert_expected_messages ();
+  g_assert_false (res);
 
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      res = g_ascii_strcasecmp (NULL, "foo");
-      g_test_assert_expected_messages ();
-      g_assert_false (res);
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_ascii_strcasecmp (NULL, "foo");
+  g_test_assert_expected_messages ();
+  g_assert_false (res);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_ascii_strncasecmp ("foo", NULL, 0);
+  g_test_assert_expected_messages ();
+  g_assert_false (res);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_ascii_strncasecmp (NULL, "foo", 0);
+  g_test_assert_expected_messages ();
+  g_assert_false (res);
 
   res = g_ascii_strcasecmp ("FroboZZ", "frobozz");
   g_assert_cmpint (res, ==, 0);
@@ -496,6 +769,25 @@ test_ascii_strcasecmp (void)
 
   res = g_ascii_strcasecmp ("B", "A");
   g_assert_cmpint (res, >, 0);
+
+  /* g_ascii_strncasecmp() */
+  res = g_ascii_strncasecmp ("", "", 10);
+  g_assert_cmpint (res, ==, 0);
+
+  res = g_ascii_strncasecmp ("Frob0ZZ", "frob0zz", strlen ("frobozz"));
+  g_assert_cmpint (res, ==, 0);
+
+  res = g_ascii_strncasecmp ("Frob0ZZ", "frobozz", strlen ("frobozz"));
+  g_assert_cmpint (res, !=, 0);
+
+  res = g_ascii_strncasecmp ("frob0ZZ", "FroB0zz", strlen ("frobozz"));
+  g_assert_cmpint (res, ==, 0);
+
+  res = g_ascii_strncasecmp ("Frob0ZZ", "froB0zz", strlen ("frobozz") - 5);
+  g_assert_cmpint (res, ==, 0);
+
+  res = g_ascii_strncasecmp ("Frob0ZZ", "froB0zz", strlen ("frobozz") + 5);
+  g_assert_cmpint (res, ==, 0);
 }
 
 static void
@@ -517,13 +809,10 @@ do_test_strchug (const gchar *str, const gchar *expected)
 static void
 test_strchug (void)
 {
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      g_strchug (NULL);
-      g_test_assert_expected_messages ();
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  g_strchug (NULL);
+  g_test_assert_expected_messages ();
 
   do_test_strchug ("", "");
   do_test_strchug (" ", "");
@@ -553,13 +842,10 @@ do_test_strchomp (const gchar *str, const gchar *expected)
 static void
 test_strchomp (void)
 {
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      g_strchomp (NULL);
-      g_test_assert_expected_messages ();
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  g_strchomp (NULL);
+  g_test_assert_expected_messages ();
 
   do_test_strchomp ("", "");
   do_test_strchomp (" ", "");
@@ -570,6 +856,55 @@ test_strchomp (void)
   do_test_strchomp ("a a ", "a a");
 }
 
+/* Testing g_str_tokenize_and_fold() functions */
+static void
+test_str_tokenize_and_fold (void)
+{
+  const gchar *local_str = "en_GB";
+  const gchar *sample  = "The quick brown fox¸ jumps over the lazy dog.";
+  const gchar *special_cases = "quıck QUİCK QUİı QUıİ İıck ıİCK àìøş";
+  gchar **tokens, **alternates;
+  gchar
+    *expected_tokens[] =     \
+    {"the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", NULL},
+    *expected_tokens_alt[] = \
+    { "quick", "quick", "quii", "quii", "iick", "iick", "àìøş", NULL};
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  tokens = g_str_tokenize_and_fold (NULL, local_str, NULL);
+  g_test_assert_expected_messages ();
+
+  tokens = g_str_tokenize_and_fold (special_cases, local_str, &alternates);
+  g_assert_cmpint (g_strv_length (tokens), ==,
+                   g_strv_length (expected_tokens_alt));
+  g_assert_true (g_strv_equal ((const gchar * const *) tokens,
+                               (const gchar * const *) expected_tokens_alt));
+  g_strfreev (tokens);
+  g_strfreev (alternates);
+
+  tokens = g_str_tokenize_and_fold (sample, local_str, &alternates);
+  g_assert_cmpint (g_strv_length (tokens), ==, g_strv_length (expected_tokens));
+  g_assert_true (g_strv_equal ((const gchar * const *) tokens,
+                               (const gchar * const *) expected_tokens));
+  g_strfreev (tokens);
+  g_strfreev (alternates);
+
+  tokens = g_str_tokenize_and_fold (sample, local_str, NULL);
+  g_assert_cmpint (g_strv_length (tokens), ==, g_strv_length (expected_tokens));
+  g_assert_true (g_strv_equal ((const gchar * const *) tokens,
+                               (const gchar * const *) expected_tokens));
+  g_strfreev (tokens);
+
+  tokens = g_str_tokenize_and_fold (sample, NULL, &alternates);
+  g_assert_cmpint (g_strv_length (tokens), ==, g_strv_length (expected_tokens));
+  g_assert_true (g_strv_equal ((const gchar * const *) tokens,
+                               (const gchar * const *) expected_tokens));
+  g_strfreev (tokens);
+  g_strfreev (alternates);
+}
+
 /* Testing g_strreverse() function with various positive and negative cases */
 static void
 test_strreverse (void)
@@ -577,14 +912,11 @@ test_strreverse (void)
   gchar *str;
   gchar *p;
 
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      str = g_strreverse (NULL);
-      g_test_assert_expected_messages ();
-      g_assert_null (str);
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str = g_strreverse (NULL);
+  g_test_assert_expected_messages ();
+  g_assert_null (str);
 
   str = p = g_strdup ("abcde");
   str = g_strreverse (str);
@@ -610,6 +942,17 @@ test_strstr (void)
 
   haystack = g_strdup ("FooBarFooBarFoo");
 
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_strstr_len (NULL, 0, "xxx");
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_strstr_len ("xxx", 0, NULL);
+  g_test_assert_expected_messages ();
+
   /* strstr_len */
   res = g_strstr_len (haystack, 6, "xxx");
   g_assert_null (res);
@@ -633,6 +976,16 @@ test_strstr (void)
   g_assert_cmpstr (res, ==, "BarFooBarFoo");
 
   /* strrstr */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_strrstr (NULL, "xxx");
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_strrstr ("xxx", NULL);
+  g_test_assert_expected_messages ();
+
   res = g_strrstr (haystack, "xxx");
   g_assert_null (res);
 
@@ -648,6 +1001,16 @@ test_strstr (void)
   g_assert_cmpstr (res, ==, "BarFoo");
 
   /* strrstr_len */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_strrstr_len (NULL, 14, "xxx");
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_strrstr_len ("xxx", 14, NULL);
+  g_test_assert_expected_messages ();
+
   res = g_strrstr_len (haystack, 14, "xxx");
   g_assert_null (res);
 
@@ -677,26 +1040,78 @@ test_strstr (void)
   g_free (haystack);
 }
 
+/* Testing g_strtod() function with various positive and negative cases */
+static void
+test_strtod (void)
+{
+  gchar *str_end = NULL;
+  double value = 0.0;
+  const double gold_ratio = 1.61803398874989484;
+  const gchar *gold_ratio_str = "1.61803398874989484";
+  const gchar *minus_gold_ratio_str = "-1.61803398874989484";
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  value = g_strtod (NULL, NULL);
+  g_test_assert_expected_messages ();
+  g_assert_cmpfloat (value, ==, 0.0);
+
+  g_assert_cmpfloat (g_strtod ("\x00\x00\x00\x00", NULL), ==, 0.0);
+  g_assert_cmpfloat (g_strtod ("\x00\x00\x00\x00", &str_end), ==, 0.0);
+  g_assert_cmpstr (str_end, ==, "");
+  g_assert_cmpfloat (g_strtod ("\xff\xff\xff\xff", NULL), ==, 0.0);
+  g_assert_cmpfloat (g_strtod ("\xff\xff\xff\xff", &str_end), ==, 0.0);
+  g_assert_cmpstr (str_end, ==, "\xff\xff\xff\xff");
+
+  /* Testing normal usage cases */
+  g_assert_cmpfloat (g_strtod (gold_ratio_str, NULL), ==, gold_ratio);
+  g_assert_cmpfloat (g_strtod (gold_ratio_str, &str_end), ==, gold_ratio);
+  g_assert_true (str_end == gold_ratio_str + strlen (gold_ratio_str));
+  g_assert_cmpfloat (g_strtod (minus_gold_ratio_str, NULL), ==, -gold_ratio);
+  g_assert_cmpfloat (g_strtod (minus_gold_ratio_str, &str_end), ==, -gold_ratio);
+  g_assert_true (str_end == minus_gold_ratio_str + strlen (minus_gold_ratio_str));
+}
+
+/* Testing g_strdelimit() function */
+static void
+test_strdelimit (void)
+{
+  const gchar *const_string = "ABCDE<*>Q";
+  gchar *string;
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  string = g_strdelimit (NULL, "ABCDE", 'N');
+  g_test_assert_expected_messages ();
+
+  string = g_strdelimit (g_strdup (const_string), "<>", '?');
+  g_assert_cmpstr (string, ==, "ABCDE?*?Q");
+  g_free (string);
+
+  string = g_strdelimit (g_strdup (const_string), NULL, '?');
+  g_assert_cmpstr (string, ==, "ABCDE?*?Q");
+  g_free (string);
+}
+
 /* Testing g_str_has_prefix() */
 static void
 test_has_prefix (void)
 {
   gboolean res;
 
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      res = g_str_has_prefix ("foo", NULL);
-      g_test_assert_expected_messages ();
-      g_assert_false (res);
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_str_has_prefix ("foo", NULL);
+  g_test_assert_expected_messages ();
+  g_assert_false (res);
 
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      res = g_str_has_prefix (NULL, "foo");
-      g_test_assert_expected_messages ();
-      g_assert_false (res);
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_str_has_prefix (NULL, "foo");
+  g_test_assert_expected_messages ();
+  g_assert_false (res);
 
   res = g_str_has_prefix ("foo", "bar");
   g_assert_cmpint (res, ==, FALSE);
@@ -725,20 +1140,17 @@ test_has_suffix (void)
 {
   gboolean res;
 
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      res = g_str_has_suffix ("foo", NULL);
-      g_test_assert_expected_messages ();
-      g_assert_false (res);
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_str_has_suffix ("foo", NULL);
+  g_test_assert_expected_messages ();
+  g_assert_false (res);
 
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      res = g_str_has_suffix (NULL, "foo");
-      g_test_assert_expected_messages ();
-      g_assert_false (res);
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  res = g_str_has_suffix (NULL, "foo");
+  g_test_assert_expected_messages ();
+  g_assert_false (res);
 
   res = g_str_has_suffix ("foo", "bar");
   g_assert_false (res);
@@ -797,6 +1209,27 @@ strv_check (gchar **strv, ...)
 static void
 test_strsplit (void)
 {
+  gchar **string = NULL;
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  string = g_strsplit (NULL, ",", 0);
+  g_test_assert_expected_messages ();
+  g_assert_null (string);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  string = g_strsplit ("x", NULL, 0);
+  g_test_assert_expected_messages ();
+  g_assert_null (string);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion \'delimiter[0] != \'\\0\'*");
+  string = g_strsplit ("x", "", 0);
+  g_test_assert_expected_messages ();
+  g_assert_null (string);
+
   strv_check (g_strsplit ("", ",", 0), NULL);
   strv_check (g_strsplit ("x", ",", 0), "x", NULL);
   strv_check (g_strsplit ("x,y", ",", 0), "x", "y", NULL);
@@ -841,6 +1274,21 @@ test_strsplit (void)
 static void
 test_strsplit_set (void)
 {
+  gchar **string = NULL;
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  string = g_strsplit_set (NULL, ",/", 0);
+  g_test_assert_expected_messages ();
+  g_assert_null (string);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  string = g_strsplit_set ("", NULL, 0);
+  g_test_assert_expected_messages ();
+  g_assert_null (string);
+
   strv_check (g_strsplit_set ("", ",/", 0), NULL);
   strv_check (g_strsplit_set (":def/ghi:", ":/", -1), "", "def", "ghi", "", NULL);
   strv_check (g_strsplit_set ("abc:def/ghi", ":/", -1), "abc", "def", "ghi", NULL);
@@ -910,14 +1358,11 @@ test_strv_length (void)
   gchar **strv;
   guint l;
 
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      l = g_strv_length (NULL);
-      g_test_assert_expected_messages ();
-      g_assert_cmpint (l, ==, 0);
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  l = g_strv_length (NULL);
+  g_test_assert_expected_messages ();
+  g_assert_cmpint (l, ==, 0);
 
   strv = g_strsplit ("1,2,3,4", ",", -1);
   l = g_strv_length (strv);
@@ -995,13 +1440,10 @@ test_ascii_strtod (void)
   g_assert_true (our_inf > 1 && our_inf == our_inf / 2);
 
   /* Testing degenerated cases */
-  if (g_test_undefined ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                             "*assertion*!= NULL*");
-      d = g_ascii_strtod (NULL, NULL);
-      g_test_assert_expected_messages ();
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  d = g_ascii_strtod (NULL, NULL);
+  g_test_assert_expected_messages ();
 
   /* Testing normal cases */
   check_strtod_string ("123.123", 123.123, FALSE, 0);
@@ -1130,6 +1572,30 @@ test_strtoll (void)
   check_int64 ("-32768", "", 10, -32768, 0);
   check_int64 ("001", "", 10, 1, 0);
   check_int64 ("-001", "", 10, -1, 0);
+}
+
+/* Testing g_str_match_string() function with various cases */
+static void
+test_str_match_string (void)
+{
+  gboolean result = TRUE;
+  const gchar *str = "The quick brown fox¸ jumps over the lazy dog.";
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  result = g_str_match_string (NULL, "AAA", TRUE);
+  g_test_assert_expected_messages ();
+  g_assert_false (result);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  result = g_str_match_string (str, NULL, TRUE);
+  g_test_assert_expected_messages ();
+  g_assert_false (result);
+
+  g_assert_false (g_str_match_string (str, "AAA", TRUE));
+  g_assert_false (g_str_match_string (str, "AAA", FALSE));
 }
 
 /* Testing functions bounds */
@@ -1373,7 +1839,7 @@ test_strerror (void)
       g_assert_nonnull (str);
       g_assert_true (g_utf8_validate (str, -1, NULL));
       g_assert_true (!g_hash_table_contains (strs, str) || is_unknown);
-      g_hash_table_add (strs, (char *)str);
+      g_hash_table_add (strs, (gpointer) str);
     }
 
   g_hash_table_unref (strs);
@@ -1398,12 +1864,33 @@ test_strsignal (void)
 static void
 test_strup (void)
 {
-  gchar *s;
+  gchar *s = NULL;
 
-  s = g_strdup ("lower");
-  g_assert_cmpstr (g_strup (s), ==, "LOWER");
-  g_assert_cmpstr (g_strdown (s), ==, "lower");
-  g_assert_cmpint (g_strcasecmp ("lower", "LOWER"), ==, 0);
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  s = g_strup (NULL);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  s = g_strdown (NULL);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  g_strcasecmp (NULL, "ABCD");
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  g_strcasecmp ("abcd", NULL);
+  g_test_assert_expected_messages ();
+
+  s = g_strdup ("lower UPPER");
+  g_assert_cmpstr (g_strup (s), ==, "LOWER UPPER");
+  g_assert_cmpstr (g_strdown (s), ==, "lower upper");
+  g_assert_true (g_strcasecmp ("lower", "LOWER") == 0);
   g_free (s);
 }
 
@@ -1518,9 +2005,23 @@ test_transliteration (void)
 static void
 test_strv_contains (void)
 {
+  gboolean result = TRUE;
   const gchar *strv_simple[] = { "hello", "there", NULL };
   const gchar *strv_dupe[] = { "dupe", "dupe", NULL };
   const gchar *strv_empty[] = { NULL };
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  result = g_strv_contains (NULL, "hello");
+  g_test_assert_expected_messages ();
+  g_assert_false (result);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  result = g_strv_contains (strv_simple, NULL);
+  g_test_assert_expected_messages ();
+  g_assert_false (result);
 
   g_assert_true (g_strv_contains (strv_simple, "hello"));
   g_assert_true (g_strv_contains (strv_simple, "there"));
@@ -1537,6 +2038,7 @@ test_strv_contains (void)
 static void
 test_strv_equal (void)
 {
+  gboolean result = TRUE;
   const gchar *strv_empty[] = { NULL };
   const gchar *strv_empty2[] = { NULL };
   const gchar *strv_simple[] = { "hello", "you", NULL };
@@ -1544,6 +2046,19 @@ test_strv_equal (void)
   const gchar *strv_simple_reordered[] = { "you", "hello", NULL };
   const gchar *strv_simple_superset[] = { "hello", "you", "again", NULL };
   const gchar *strv_another[] = { "not", "a", "coded", "message", NULL };
+
+  /* Testing degenerated cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  result = g_strv_equal (NULL, strv_simple2);
+  g_test_assert_expected_messages ();
+  g_assert_false (result);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  result = g_strv_equal (strv_simple, NULL);
+  g_test_assert_expected_messages ();
+  g_assert_false (result);
 
   g_assert_true (g_strv_equal (strv_empty, strv_empty));
   g_assert_true (g_strv_equal (strv_empty, strv_empty2));
@@ -1585,8 +2100,11 @@ const TestData test_data[] = {
   { "+0", SIGNED, 10, -2,  2,  0, FALSE, 0                                   },
   { "-0", SIGNED, 10, -2,  2,  0, FALSE, 0                                   },
   { "-2", SIGNED, 10, -2,  2, -2, FALSE, 0                                   },
+  {"-02", SIGNED, 10, -2,  2, -2, FALSE, 0                                   },
   { "2",  SIGNED, 10, -2,  2,  2, FALSE, 0                                   },
+  { "02", SIGNED, 10, -2,  2,  2, FALSE, 0                                   },
   { "+2", SIGNED, 10, -2,  2,  2, FALSE, 0                                   },
+  {"+02", SIGNED, 10, -2,  2,  2, FALSE, 0                                   },
   { "3",  SIGNED, 10, -2,  2,  0, TRUE,  G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS },
   { "+3", SIGNED, 10, -2,  2,  0, TRUE,  G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS },
   { "-3", SIGNED, 10, -2,  2,  0, TRUE,  G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS },
@@ -1631,6 +2149,7 @@ const TestData test_data[] = {
   /* hexadecimal numbers */
   { "a",     SIGNED,   16,   0, 15, 10, FALSE, 0                             },
   { "a",     UNSIGNED, 16,   0, 15, 10, FALSE, 0                             },
+  { "0a",    UNSIGNED, 16,   0, 15, 10, FALSE, 0                             },
   { "0xa",   SIGNED,   16,   0, 15,  0, TRUE,  G_NUMBER_PARSER_ERROR_INVALID },
   { "0xa",   UNSIGNED, 16,   0, 15,  0, TRUE,  G_NUMBER_PARSER_ERROR_INVALID },
   { "-0xa",  SIGNED,   16, -15, 15,  0, TRUE,  G_NUMBER_PARSER_ERROR_INVALID },
@@ -1648,20 +2167,125 @@ static void
 test_ascii_string_to_number_usual (void)
 {
   gsize idx;
+  gboolean result;
+  GError *error = NULL;
+  const TestData *data;
+  gint value;
+  gint64 value64 = 0;
+
+  /* Testing degenerated cases */
+
+  /*** g_ascii_string_to_signed() ***/
+  data = &test_data[0]; /* Setting data to signed data */
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  result = g_ascii_string_to_signed (NULL,
+                                     data->base,
+                                     data->min,
+                                     data->max,
+                                     &value64,
+                                     &error);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion \'base >= 2 && base <= 36\'*");
+  result = g_ascii_string_to_signed (data->str,
+                                     1,
+                                     data->min,
+                                     data->max,
+                                     &value64,
+                                     &error);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion \'base >= 2 && base <= 36\'*");
+  result = g_ascii_string_to_signed (data->str,
+                                     40,
+                                     data->min,
+                                     data->max,
+                                     &value64,
+                                     &error);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion \'min <= max\'*");
+  result = g_ascii_string_to_signed (data->str,
+                                     data->base,
+                                     data->max,
+                                     data->min,
+                                     &value64,
+                                     &error);
+  g_test_assert_expected_messages ();
+
+  /* Catching first part of (error == NULL || *error == NULL) */
+  result = g_ascii_string_to_signed (data->str,
+                                     data->base,
+                                     data->min,
+                                     data->max,
+                                     &value64,
+                                     NULL);
+
+  /*** g_ascii_string_to_unsigned() ***/
+  data = &test_data[12]; /* Setting data to unsigned data */
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  result = g_ascii_string_to_unsigned (NULL,
+                                       data->base,
+                                       data->min,
+                                       data->max,
+                                       &value64,
+                                       &error);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion \'base >= 2 && base <= 36\'*");
+  result = g_ascii_string_to_unsigned (data->str,
+                                       1,
+                                       data->min,
+                                       data->max,
+                                       &value64,
+                                       &error);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion \'base >= 2 && base <= 36\'*");
+  result = g_ascii_string_to_unsigned (data->str,
+                                       40,
+                                       data->min,
+                                       data->max,
+                                       &value64,
+                                       &error);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion \'min <= max\'*");
+  result = g_ascii_string_to_unsigned (data->str,
+                                       data->base,
+                                       data->max,
+                                       data->min,
+                                       &value64,
+                                       &error);
+  g_test_assert_expected_messages ();
+
+  /* Catching first part of (error == NULL || *error == NULL) */
+  result = g_ascii_string_to_unsigned (data->str,
+                                       data->base,
+                                       data->min,
+                                       data->max,
+                                       &value64,
+                                       NULL);
 
   /* Testing usual cases */
   for (idx = 0; idx < G_N_ELEMENTS (test_data); ++idx)
     {
-      GError *error = NULL;
-      const TestData *data = &test_data[idx];
-      gboolean result;
-      gint value;
+      data = &test_data[idx];
 
       switch (data->sign_type)
         {
         case SIGNED:
           {
-            gint64 value64 = 0;
             result = g_ascii_string_to_signed (data->str,
                                                data->base,
                                                data->min,
@@ -1791,21 +2415,31 @@ main (int   argc,
   g_test_add_func ("/strfuncs/ascii-strcasecmp", test_ascii_strcasecmp);
   g_test_add_func ("/strfuncs/ascii-string-to-num/pathological", test_ascii_string_to_number_pathological);
   g_test_add_func ("/strfuncs/ascii-string-to-num/usual", test_ascii_string_to_number_usual);
+  g_test_add_func ("/strfuncs/ascii_strdown", test_ascii_strdown);
+  g_test_add_func ("/strfuncs/ascii_strdup", test_ascii_strup);
   g_test_add_func ("/strfuncs/ascii_strtod", test_ascii_strtod);
   g_test_add_func ("/strfuncs/bounds-check", test_bounds);
   g_test_add_func ("/strfuncs/has-prefix", test_has_prefix);
   g_test_add_func ("/strfuncs/has-suffix", test_has_suffix);
+  g_test_add_func ("/strfuncs/memdup", test_memdup);
+  g_test_add_func ("/strfuncs/stpcpy", test_stpcpy);
+  g_test_add_func ("/strfuncs/str_match_string", test_str_match_string);
+  g_test_add_func ("/strfuncs/str_tokenize_and_fold", test_str_tokenize_and_fold);
   g_test_add_func ("/strfuncs/strcanon", test_strcanon);
   g_test_add_func ("/strfuncs/strchomp", test_strchomp);
   g_test_add_func ("/strfuncs/strchug", test_strchug);
   g_test_add_func ("/strfuncs/strcompress-strescape", test_strcompress_strescape);
   g_test_add_func ("/strfuncs/strconcat", test_strconcat);
+  g_test_add_func ("/strfuncs/strdelimit", test_strdelimit);
   g_test_add_func ("/strfuncs/strdup", test_strdup);
   g_test_add_func ("/strfuncs/strdup-printf", test_strdup_printf);
   g_test_add_func ("/strfuncs/strdupv", test_strdupv);
   g_test_add_func ("/strfuncs/strerror", test_strerror);
   g_test_add_func ("/strfuncs/strip-context", test_strip_context);
   g_test_add_func ("/strfuncs/strjoin", test_strjoin);
+  g_test_add_func ("/strfuncs/strjoinv", test_strjoinv);
+  g_test_add_func ("/strfuncs/strlcat", test_strlcat);
+  g_test_add_func ("/strfuncs/strlcpy", test_strlcpy);
   g_test_add_func ("/strfuncs/strncasecmp", test_strncasecmp);
   g_test_add_func ("/strfuncs/strndup", test_strndup);
   g_test_add_func ("/strfuncs/strnfill", test_strnfill);
@@ -1814,6 +2448,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strsplit", test_strsplit);
   g_test_add_func ("/strfuncs/strsplit-set", test_strsplit_set);
   g_test_add_func ("/strfuncs/strstr", test_strstr);
+  g_test_add_func ("/strfuncs/strtod", test_strtod);
   g_test_add_func ("/strfuncs/strtoull-strtoll", test_strtoll);
   g_test_add_func ("/strfuncs/strup", test_strup);
   g_test_add_func ("/strfuncs/strv-contains", test_strv_contains);
