@@ -222,6 +222,7 @@ print_resolved_txt (const char *rrname,
           for (i = 0; contents[i] != NULL; i++)
             printf ("%s\n", contents[i]);
           g_variant_unref (t->data);
+          g_free (contents);
         }
       g_list_free (records);
     }
@@ -739,6 +740,7 @@ main (int argc, char **argv)
   g_source_remove (watch);
 #endif
   g_object_unref (cancellable);
+  g_option_context_free (context);
 
   return 0;
 }
