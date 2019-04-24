@@ -690,6 +690,8 @@ get_fs_type (long f_type)
       return "smackfs";
     case 0x517B:
       return "smb";
+    case 0xfe534d42:
+      return "smb2";
     case 0x534F434B:
       return "sockfs";
     case 0x73717368:
