@@ -27,11 +27,15 @@ def main():
         os.environ.get('CI_MERGE_REQUEST_TARGET_BRANCH_NAME')
     ci_merge_request_project_url = \
         os.environ.get('CI_MERGE_REQUEST_PROJECT_URL')
+    ci_project_url = os.environ.get('CI_PROJECT_URL')
     ci_commit_sha = os.environ.get('CI_COMMIT_SHA')
+    ci_commit_before_sha = os.environ.get('CI_COMMIT_BEFORE_SHA')
 
     if not ci_merge_request_target_branch_name:
-        print('Cannot triage non-merge request; trivially passed')
-        sys.exit(0)
+        #print('Cannot triage non-merge request; trivially passed')
+        #sys.exit(0)
+        ci_merge_request_target_branch_name = ci_commit_before_sha
+        ci_merge_request_project_url = ci_project_url
 
     subprocess.run([
         'git', 'fetch',
