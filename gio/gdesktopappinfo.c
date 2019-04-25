@@ -2514,6 +2514,10 @@ prepend_terminal_to_vector (int    *argc,
   term_argv = g_new0 (char *, 3);
 
   check = g_find_program_in_path ("gnome-terminal");
+  if (check == NULL)
+    check = g_find_program_in_path ("mate-terminal");
+  if (check == NULL)
+    check = g_find_program_in_path ("xfce4-terminal");
   if (check != NULL)
     {
       term_argv[0] = check;
