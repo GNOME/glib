@@ -94,7 +94,7 @@ break g_object_unref if _object == 0xcafebabe
     libraries is built with a combination of complex tools. Typically, the part of 
     the documentation which describes the behavior of each function is extracted
     from the specially-formatted source code comments by a tool named gtk-doc which
-    generates DocBook XML and merges this DocBook XML with a set of master XML 
+    generates DocBook XML and merges this DocBook XML with a set of template XML
     DocBook files. These XML DocBook files are finally processed with xsltproc
     (a small program part of the libxslt library) to generate the final HTML
     output. Other tools can be used to generate PDF output from the source XML.

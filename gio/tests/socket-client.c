@@ -431,7 +431,7 @@ main (int argc,
     {
       if (!g_socket_close (socket, &error))
 	{
-	  g_printerr ("Error closing master socket: %s\n",
+	  g_printerr ("Error closing socket: %s\n",
 		      error->message);
 	  return 1;
 	}

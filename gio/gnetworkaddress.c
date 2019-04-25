@@ -1108,7 +1108,7 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
 
 /*
  * Each enumeration lazily initializes the internal address list from the
- * master list. It does this since addresses come in asynchronously and
+ * main list. It does this since addresses come in asynchronously and
  * they need to be resorted into the list already in use.
  */
 static GSocketAddress *

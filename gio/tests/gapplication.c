@@ -140,7 +140,7 @@ basic (void)
 
   main_loop = g_main_loop_new (NULL, 0);
 
-  /* spawn the master */
+  /* spawn the main instance */
   spawn ("activated\n"
          "open file:///a file:///b\n"
          "exit status: 0\n", NULL,
@@ -191,7 +191,7 @@ test_remote_command_line (void)
                          NULL);
   g_object_unref (file);
 
-  /* spawn the master */
+  /* spawn the main instance */
   spawn (replies, NULL,
          "./cmd", NULL);
 
@@ -255,7 +255,7 @@ test_remote_actions (void)
 
   main_loop = g_main_loop_new (NULL, 0);
 
-  /* spawn the master */
+  /* spawn the main instance */
   spawn ("got ./cmd 0\n"
          "activate action1\n"
          "change action2 1\n"
