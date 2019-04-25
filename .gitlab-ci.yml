@@ -37,6 +37,14 @@ style-check-diff:
   script:
     - .gitlab-ci/run-style-check-diff.sh
 
+check-todos:
+  extends: .only-default
+  image: $DEBIAN_IMAGE
+  stage: style-check
+  allow_failure: true
+  script:
+    - .gitlab-ci/run-check-todos.sh
+
 fedora-x86_64:
   extends: .build
   image: $FEDORA_IMAGE
