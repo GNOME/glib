@@ -1,6 +1,7 @@
 image: registry.gitlab.gnome.org/gnome/glib/master:v11
 
 stages:
+  - triage
   - build
   - coverage
   - deploy
@@ -13,6 +14,16 @@ variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
+
+triage-todos:
+    stage: triage
+    variables:
+        # Only fetch up to 100 commits
+        GIT_DEPTH: "100"
+    script:
+        - python3 .gitlab-ci/triage-todos.py
+    only:
+        - merge_requests
 
 fedora-x86_64:
   stage: build
