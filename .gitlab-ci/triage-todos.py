@@ -30,8 +30,8 @@ def main():
     ci_commit_sha = os.environ.get('CI_COMMIT_SHA')
 
     if not ci_merge_request_target_branch_name:
-        print('Cannot triage non-merge request')
-        sys.exit(1)
+        print('Cannot triage non-merge request; trivially passed')
+        sys.exit(0)
 
     subprocess.run([
         'git', 'fetch',

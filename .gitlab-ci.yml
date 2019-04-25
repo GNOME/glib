@@ -15,26 +15,18 @@ variables:
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
 
-.only_default: &only_default
-  only:
-    - branches
-    - tags
-    - merge_requests
-
-
 triage-todos:
   stage: triage
+  except:
+    - tags
   variables:
     # Only fetch up to 100 commits
     GIT_DEPTH: "100"
   script:
     - python3 .gitlab-ci/triage-todos.py
-  only:
-    - merge_requests
 
 fedora-x86_64:
   stage: build
-  <<: *only_default
   except:
     - tags
   variables:
@@ -75,7 +67,6 @@ fedora-x86_64:
 
 G_DISABLE_ASSERT:
   stage: build
-  <<: *only_default
   except:
     - tags
   variables:
@@ -103,7 +94,6 @@ G_DISABLE_ASSERT:
 
 .cross-template: &cross-template
   stage: build
-  <<: *only_default
   except:
     - tags
   artifacts:
@@ -137,7 +127,6 @@ cross-mingw64:
 
 msys2-mingw32:
   stage: build
-  <<: *only_default
   except:
     - tags
   tags:
@@ -160,7 +149,6 @@ msys2-mingw32:
 
 vs2017-x64:
   stage: build
-  <<: *only_default
   except:
     - tags
   tags:
@@ -178,7 +166,6 @@ vs2017-x64:
 
 freebsd-11-x86_64:
   stage: build
-  <<: *only_default
   only:
     - branches@GNOME/glib
   tags:
@@ -220,7 +207,6 @@ freebsd-11-x86_64:
 
 coverage:
   stage: coverage
-  <<: *only_default
   except:
     - tags
   artifacts:
