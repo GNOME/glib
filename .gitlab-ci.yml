@@ -28,6 +28,14 @@ style-check-diff:
   script:
     - .gitlab-ci/run-style-check-diff.sh
 
+check-todos:
+  extends: .only-default
+  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
+  stage: style-check
+  allow_failure: true
+  script:
+    - .gitlab-ci/triage-todos.py
+
 fedora-x86_64:
   extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
