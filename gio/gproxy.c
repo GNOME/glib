@@ -52,7 +52,7 @@ g_proxy_default_init (GProxyInterface *iface)
  * g_proxy_get_default_for_protocol:
  * @protocol: the proxy protocol name (e.g. http, socks, etc)
  *
- * Lookup "gio-proxy" extension point for a proxy implementation that supports
+ * Find the `gio-proxy` extension point for a proxy implementation that supports
  * specified protocol.
  *
  * Returns: (transfer full): return a #GProxy or NULL if protocol

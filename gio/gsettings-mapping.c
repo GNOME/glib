@@ -498,7 +498,7 @@ g_settings_get_mapping (GValue   *value,
              return TRUE;
             }
 
-          g_warning ("Unable to lookup enum nick '%s' via GType", nick);
+          g_warning ("Unable to look up enum nick ‘%s’ via GType", nick);
           return FALSE;
         }
     }

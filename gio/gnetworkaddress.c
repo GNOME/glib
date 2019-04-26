@@ -1347,7 +1347,7 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
 
               addr_enum->state = RESOLVE_STATE_WAITING_ON_IPV4 | RESOLVE_STATE_WAITING_ON_IPV6;
               addr_enum->queued_task = g_steal_pointer (&task);
-              /* Lookup in parallel as per RFC 8305 */
+              /* Look up in parallel as per RFC 8305 */
               g_resolver_lookup_by_name_with_flags_async (resolver,
                                                           addr->priv->hostname,
                                                           G_RESOLVER_NAME_LOOKUP_FLAGS_IPV6_ONLY,
