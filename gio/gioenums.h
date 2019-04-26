@@ -735,7 +735,13 @@ typedef enum {
  * the mail exchanger hostname.
  *
  * %G_RESOLVER_RECORD_TXT records are returned as variants with the signature
- * `(as)`, representing an array of the strings in the text record.
+ * `(as)`, representing an array of the strings in the text record. Note: Most TXT
+ * records only contain a single string, but
+ * [RFC 1035](https://tools.ietf.org/html/rfc1035#section-3.3.14) does allow a
+ * record to contain multiple strings. The RFC which defines the interpretation
+ * of a specific TXT record will likely require concatenation of multiple
+ * strings if they are present, as with
+ * [RFC 7208](https://tools.ietf.org/html/rfc7208#section-3.3).
  *
  * %G_RESOLVER_RECORD_SOA records are returned as variants with the signature
  * `(ssuuuuu)`, representing a string containing the primary name server, a
