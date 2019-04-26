@@ -29,7 +29,6 @@
 #include <glib.h>
 
 /* Test our stdio wrappers here */
-#define G_STDIO_NO_WRAP_ON_UNIX
 #include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX

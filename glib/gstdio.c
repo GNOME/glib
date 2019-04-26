@@ -19,14 +19,13 @@
 #include "config.h"
 #include "glibconfig.h"
 
-#define G_STDIO_NO_WRAP_ON_UNIX
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
+#define G_STDIO_NO_WRAP_ON_UNIX
 #endif
 
 #ifdef G_OS_WIN32
@@ -935,6 +934,7 @@ g_access (const gchar *filename,
 #endif
 }
 
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_chmod:
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -982,6 +982,9 @@ g_chmod (const gchar *filename,
   return chmod (filename, mode);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
+
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_open:
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -1045,7 +1048,9 @@ g_open (const gchar *filename,
   return fd;
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_creat:
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -1104,7 +1109,9 @@ g_creat (const gchar *filename,
   return creat (filename, mode);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_rename:
  * @oldfilename: (type filename): a pathname in the GLib file name encoding
@@ -1177,7 +1184,9 @@ g_rename (const gchar *oldfilename,
   return rename (oldfilename, newfilename);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_mkdir: 
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -1221,6 +1230,7 @@ g_mkdir (const gchar *filename,
   return mkdir (filename, mode);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
 /**
  * g_chdir: 
@@ -1270,6 +1280,8 @@ g_chdir (const gchar *path)
  *
  * See g_stat() for more information.
  */
+
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_stat: 
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -1328,7 +1340,9 @@ g_stat (const gchar *filename,
   return stat (filename, buf);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_lstat: 
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -1377,6 +1391,7 @@ g_lstat (const gchar *filename,
   return g_stat (filename, buf);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
 /**
  * g_unlink:
@@ -1423,6 +1438,7 @@ g_unlink (const gchar *filename)
 #endif
 }
 
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_remove:
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -1477,6 +1493,7 @@ g_remove (const gchar *filename)
   return remove (filename);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
 /**
  * g_rmdir:
@@ -1520,6 +1537,7 @@ g_rmdir (const gchar *filename)
 #endif
 }
 
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_fopen:
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -1583,7 +1601,9 @@ g_fopen (const gchar *filename,
   return fopen (filename, mode);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_freopen:
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -1642,7 +1662,9 @@ g_freopen (const gchar *filename,
   return freopen (filename, mode, stream);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
+#ifndef G_STDIO_USE_POSIX_DIRECTLY
 /**
  * g_utime:
  * @filename: (type filename): a pathname in the GLib file name encoding
@@ -1685,6 +1707,7 @@ g_utime (const gchar    *filename,
   return utime (filename, utb);
 #endif
 }
+#endif /* !G_STDIO_USE_POSIX_DIRECTLY */
 
 /**
  * g_close:
