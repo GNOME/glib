@@ -1183,6 +1183,76 @@ g_utf8_casefold (const gchar *str,
 }
 
 /**
+ * g_utf8_strtitle:
+ * @str: an UTF8 string
+ *
+ * Return a copy of the string @str where the first letter of the
+ * string is titlecased (as defined by unicode) and all following
+ * characters are lowercase.
+ *
+ * Returns: a copy of @str converted to titlecase (as defined by unicode).
+ **/
+gchar *g_utf8_strtitle (const gchar *str,
+                        gssize       len)
+{
+  LocaleType locale_type;
+
+  gchar *upper_str;
+  gsize upper_len;
+
+  gunichar first_chr;
+  gchar first_str[8];
+  gsize first_len;
+
+  const gchar *tail_str;
+  gsize        tail_len;
+
+  gchar       *lower_str;
+  gsize        lower_len;
+
+  gchar       *title_str;
+
+  g_return_val_if_fail (str != NULL, NULL);
+
+  if (len == -1)
+    len = strlen (str);
+
+  /* Get first character capitalized */
+  locale_type = get_locale_type ();
+  upper_len = real_toupper (str, 8, NULL, locale_type);
+  upper_str = g_malloc (upper_len + 1);
+  real_toupper (str, 8, upper_str, locale_type);
+  upper_str[upper_len] = '\0';
+
+  first_chr = g_utf8_get_char_validated (upper_str, len);
+  if (first_chr == (gunichar) -1 || first_chr == (gunichar) -2)
+    return NULL;
+  first_len = g_unichar_to_utf8 (first_chr, first_str);
+
+  g_free (upper_str);
+
+  /* Get string tail lowered */
+  tail_str = g_utf8_next_char (str);
+  tail_len = len - (tail_str - str);
+
+  lower_str = g_utf8_strdown (tail_str, tail_len);
+  lower_len = strlen (lower_str);
+
+  /* Putting all together */
+  len = first_len + lower_len;
+  title_str = g_new (gchar, len + 1);
+  title_str[len] = '\0';
+
+  memcpy (title_str, first_str, first_len);
+  memcpy (title_str + first_len, lower_str, lower_len);
+
+  g_free (lower_str);
+
+  return title_str;
+}
+
+
+/**
  * g_unichar_get_mirror_char:
  * @ch: a Unicode character
  * @mirrored_ch: location to store the mirrored character

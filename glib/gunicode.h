@@ -861,6 +861,9 @@ gchar *g_utf8_strdown (const gchar *str,
 GLIB_AVAILABLE_IN_ALL
 gchar *g_utf8_casefold (const gchar *str,
                         gssize       len) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_ALL
+gchar *g_utf8_strtitle (const gchar *str,
+                        gssize       len) G_GNUC_MALLOC;
 
 /**
  * GNormalizeMode:
