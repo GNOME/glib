@@ -137,12 +137,12 @@ g_document_portal_add_documents (GList       *uris,
         {
           int fd;
 
-          fd = g_open (path, O_CLOEXEC | O_RDWR);
+          fd = g_open (path, O_CLOEXEC | O_RDWR, S_IRUSR | S_IWUSR);
           if (fd == -1 && (errno == EACCES || errno == EISDIR))
             {
               /* If we don't have write access, fall back to read-only,
                * and stop requesting the write permission */
-              fd = g_open (path, O_CLOEXEC | O_RDONLY);
+              fd = g_open (path, O_CLOEXEC | O_RDONLY, S_IRUSR | S_IWUSR);
               permissions[1] = NULL;
             }
           if (fd >= 0)
