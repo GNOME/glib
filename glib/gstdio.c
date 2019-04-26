@@ -19,7 +19,7 @@
 #include "config.h"
 #include "glibconfig.h"
 
-#define G_STDIO_NO_WRAP_ON_UNIX
+#define G_STDIO_USE_POSIX_DIRECTLY
 
 #include <sys/types.h>
 #include <sys/stat.h>

@@ -29,7 +29,7 @@
 #include <glib.h>
 
 /* Test our stdio wrappers here */
-#define G_STDIO_NO_WRAP_ON_UNIX
+#define G_STDIO_USE_POSIX_DIRECTLY
 #include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
