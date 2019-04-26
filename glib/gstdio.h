@@ -54,7 +54,7 @@ typedef struct stat GStatBuf;
 
 #endif
 
-#if defined(G_OS_UNIX) && !defined(G_STDIO_NO_WRAP_ON_UNIX)
+#if defined(G_OS_UNIX) && defined(G_STDIO_USE_POSIX_DIRECTLY)
 
 /* Just pass on to the system functions, so there's no potential for data
  * format mismatches, especially with large file interfaces. 
