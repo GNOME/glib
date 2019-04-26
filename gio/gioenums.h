@@ -727,24 +727,24 @@ typedef enum {
  * the variant tuples returned.
  *
  * %G_RESOLVER_RECORD_SRV records are returned as variants with the signature
- * '(qqqs)', containing a guint16 with the priority, a guint16 with the
- * weight, a guint16 with the port, and a string of the hostname.
+ * `(qqqs)`, containing a `guint16` with the priority, a `guint16` with the
+ * weight, a `guint16` with the port, and a string of the hostname.
  *
  * %G_RESOLVER_RECORD_MX records are returned as variants with the signature
- * '(qs)', representing a guint16 with the preference, and a string containing
+ * `(qs)`, representing a `guint16` with the preference, and a string containing
  * the mail exchanger hostname.
  *
  * %G_RESOLVER_RECORD_TXT records are returned as variants with the signature
- * '(as)', representing an array of the strings in the text record.
+ * `(as)`, representing an array of the strings in the text record.
  *
  * %G_RESOLVER_RECORD_SOA records are returned as variants with the signature
- * '(ssuuuuu)', representing a string containing the primary name server, a
- * string containing the administrator, the serial as a guint32, the refresh
- * interval as guint32, the retry interval as a guint32, the expire timeout
- * as a guint32, and the ttl as a guint32.
+ * `(ssuuuuu)`, representing a string containing the primary name server, a
+ * string containing the administrator, the serial as a `guint32`, the refresh
+ * interval as a `guint32`, the retry interval as a `guint32`, the expire timeout
+ * as a `guint32`, and the TTL as a `guint32`.
  *
  * %G_RESOLVER_RECORD_NS records are returned as variants with the signature
- * '(s)', representing a string of the hostname of the name server.
+ * `(s)`, representing a string of the hostname of the name server.
  *
  * Since: 2.34
  */
