@@ -418,6 +418,39 @@ test_title (void)
   g_assert_cmphex (g_unichar_totitle ('A'), ==, 'A');
 }
 
+/* Testing g_utf8-strtitle() function */
+static void
+test_utf8_strtitle (void)
+{
+  const gchar *str = "the quick brown fox jumps over the lazy dog";
+  const gchar *invalid_str = "\xFFhe quick brown fox jumps over the lazy dog";
+  const gchar *invalid2_str = "\xCE";
+  gchar *str_totitle = NULL;
+
+  /* Testing degenerated cases */
+   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  str_totitle = g_utf8_strtitle (NULL, -1);
+  g_test_assert_expected_messages ();
+
+  str_totitle = g_utf8_strtitle (invalid_str, -1);
+  g_assert_null (str_totitle);
+
+  str_totitle = g_utf8_strtitle (invalid2_str, -1);
+  g_assert_null (str_totitle);
+
+  /* Testing positive cases */
+  str_totitle = g_utf8_strtitle (str, -1);
+  g_assert_cmpstr (str_totitle, ==,
+                   "The quick brown fox jumps over the lazy dog");
+  g_free (str_totitle);
+
+  str_totitle = g_utf8_strtitle (str, strlen (str));
+  g_assert_cmpstr (str_totitle, ==,
+                   "The quick brown fox jumps over the lazy dog");
+  g_free (str_totitle);
+}
+
 static void
 test_cases (void)
 {
@@ -951,6 +984,7 @@ main (int   argc,
   g_test_add_func ("/unicode/mirror", test_mirror);
   g_test_add_func ("/unicode/mark", test_mark);
   g_test_add_func ("/unicode/title", test_title);
+  g_test_add_func ("/unicode/utf8-strtitle", test_utf8_strtitle);
   g_test_add_func ("/unicode/zero-width", test_zerowidth);
   g_test_add_func ("/unicode/defined", test_defined);
   g_test_add_func ("/unicode/wide", test_wide);
