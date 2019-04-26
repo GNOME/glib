@@ -49,7 +49,7 @@ usage (void)
 	fprintf (stderr, "       Use -s to do synchronous lookups.\n");
 	fprintf (stderr, "       Use -c NUMBER (and only a single resolvable argument) to test GSocketConnectable.\n");
 	fprintf (stderr, "       The given NUMBER determines how many times the connectable will be enumerated.\n");
-	fprintf (stderr, "       Use -t with MX, TXT, NS or SOA to lookup DNS records of those types.\n");
+	fprintf (stderr, "       Use -t with MX, TXT, NS or SOA to look up DNS records of those types.\n");
 	exit (1);
 }
 

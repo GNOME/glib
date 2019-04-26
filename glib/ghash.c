@@ -86,7 +86,7 @@
  * To insert a key and value into a #GHashTable, use
  * g_hash_table_insert().
  *
- * To lookup a value corresponding to a given key, use
+ * To look up a value corresponding to a given key, use
  * g_hash_table_lookup() and g_hash_table_lookup_extended().
  *
  * g_hash_table_lookup_extended() can also be used to simply
@@ -428,7 +428,7 @@ g_hash_table_hash_to_index (GHashTable *hash_table, guint hash)
 /*
  * g_hash_table_lookup_node:
  * @hash_table: our #GHashTable
- * @key: the key to lookup against
+ * @key: the key to look up against
  * @hash_return: key hash return location
  *
  * Performs a lookup in the hash table, preserving extra information

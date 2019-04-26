@@ -659,7 +659,7 @@ test_search (void)
   assert_search ("konq", "kde4-konqbrowser.desktop\n", TRUE, TRUE, NULL, NULL);
   assert_search ("kate", "kde4-kate.desktop\n", TRUE, TRUE, NULL, NULL);
 
-  /* make sure we can lookup apps by name properly */
+  /* make sure we can look up apps by name properly */
   assert_info ("kde4-kate.desktop",
                "kde4-kate.desktop\n"
                "Kate\n"

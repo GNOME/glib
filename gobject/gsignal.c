@@ -1243,13 +1243,13 @@ g_signal_lookup (const gchar *name,
     {
       /* give elaborate warnings */
       if (!g_type_name (itype))
-	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for invalid type id '%"G_GSIZE_FORMAT"'",
+	g_warning (G_STRLOC ": unable to look up signal \"%s\" for invalid type id '%"G_GSIZE_FORMAT"'",
 		   name, itype);
       else if (!G_TYPE_IS_INSTANTIATABLE (itype))
-	g_warning (G_STRLOC ": unable to lookup signal \"%s\" for non instantiatable type '%s'",
+	g_warning (G_STRLOC ": unable to look up signal \"%s\" for non instantiatable type '%s'",
 		   name, g_type_name (itype));
       else if (!g_type_class_peek (itype))
-	g_warning (G_STRLOC ": unable to lookup signal \"%s\" of unloaded type '%s'",
+	g_warning (G_STRLOC ": unable to look up signal \"%s\" of unloaded type '%s'",
 		   name, g_type_name (itype));
     }
   

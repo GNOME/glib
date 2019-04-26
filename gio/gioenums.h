@@ -715,11 +715,11 @@ typedef enum {
 
 /**
  * GResolverRecordType:
- * @G_RESOLVER_RECORD_SRV: lookup DNS SRV records for a domain
- * @G_RESOLVER_RECORD_MX: lookup DNS MX records for a domain
- * @G_RESOLVER_RECORD_TXT: lookup DNS TXT records for a name
- * @G_RESOLVER_RECORD_SOA: lookup DNS SOA records for a zone
- * @G_RESOLVER_RECORD_NS: lookup DNS NS records for a domain
+ * @G_RESOLVER_RECORD_SRV: look up DNS SRV records for a domain
+ * @G_RESOLVER_RECORD_MX: look up DNS MX records for a domain
+ * @G_RESOLVER_RECORD_TXT: look up DNS TXT records for a name
+ * @G_RESOLVER_RECORD_SOA: look up DNS SOA records for a zone
+ * @G_RESOLVER_RECORD_NS: look up DNS NS records for a domain
  *
  * The type of record that g_resolver_lookup_records() or
  * g_resolver_lookup_records_async() should retrieve. The records are returned

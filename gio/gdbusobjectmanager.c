@@ -188,7 +188,7 @@ g_dbus_object_manager_get_objects (GDBusObjectManager *manager)
 /**
  * g_dbus_object_manager_get_object:
  * @manager: A #GDBusObjectManager.
- * @object_path: Object path to lookup.
+ * @object_path: Object path to look up.
  *
  * Gets the #GDBusObjectProxy at @object_path, if any.
  *
@@ -209,8 +209,8 @@ g_dbus_object_manager_get_object (GDBusObjectManager *manager,
 /**
  * g_dbus_object_manager_get_interface:
  * @manager: A #GDBusObjectManager.
- * @object_path: Object path to lookup.
- * @interface_name: D-Bus interface name to lookup.
+ * @object_path: Object path to look up.
+ * @interface_name: D-Bus interface name to look up.
  *
  * Gets the interface proxy for @interface_name at @object_path, if
  * any.

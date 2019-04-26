@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 /**
  * GVfsFileLookupFunc:
  * @vfs: a #GVfs
- * @identifier: the identifier to lookup a #GFile for. This can either
+ * @identifier: the identifier to look up a #GFile for. This can either
  *     be an URI or a parse name as returned by g_file_get_parse_name()
  * @user_data: user data passed to the function
  *

@@ -2203,7 +2203,7 @@ g_source_unref (GSource *source)
  *
  * Finds a #GSource given a pair of context and ID.
  *
- * It is a programmer error to attempt to lookup a non-existent source.
+ * It is a programmer error to attempt to look up a non-existent source.
  *
  * More specifically: source IDs can be reissued after a source has been
  * destroyed and therefore it is never valid to use this function with a

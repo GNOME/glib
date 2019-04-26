@@ -226,7 +226,7 @@
  * type information would be allocated.
  * 
  * The type information cache, additionally, uses a #GHashTable to
- * store and lookup the cached items and stores a pointer to this
+ * store and look up the cached items and stores a pointer to this
  * hash table in static storage.  The hash table is freed when there
  * are zero items in the type cache.
  *
@@ -942,7 +942,7 @@ g_variant_new_dict_entry (GVariant *key,
 /**
  * g_variant_lookup: (skip)
  * @dictionary: a dictionary #GVariant
- * @key: the key to lookup in the dictionary
+ * @key: the key to look up in the dictionary
  * @format_string: a GVariant format string
  * @...: the arguments to unpack the value into
  *
@@ -1000,7 +1000,7 @@ g_variant_lookup (GVariant    *dictionary,
 /**
  * g_variant_lookup_value:
  * @dictionary: a dictionary #GVariant
- * @key: the key to lookup in the dictionary
+ * @key: the key to look up in the dictionary
  * @expected_type: (nullable): a #GVariantType, or %NULL
  *
  * Looks up a value in a dictionary #GVariant.
@@ -3947,7 +3947,7 @@ g_variant_dict_init (GVariantDict *dict,
 /**
  * g_variant_dict_lookup:
  * @dict: a #GVariantDict
- * @key: the key to lookup in the dictionary
+ * @key: the key to look up in the dictionary
  * @format_string: a GVariant format string
  * @...: the arguments to unpack the value into
  *
@@ -3994,7 +3994,7 @@ g_variant_dict_lookup (GVariantDict *dict,
 /**
  * g_variant_dict_lookup_value:
  * @dict: a #GVariantDict
- * @key: the key to lookup in the dictionary
+ * @key: the key to look up in the dictionary
  * @expected_type: (nullable): a #GVariantType, or %NULL
  *
  * Looks up a value in a #GVariantDict.
@@ -4034,7 +4034,7 @@ g_variant_dict_lookup_value (GVariantDict       *dict,
 /**
  * g_variant_dict_contains:
  * @dict: a #GVariantDict
- * @key: the key to lookup in the dictionary
+ * @key: the key to look up in the dictionary
  *
  * Checks if @key exists in @dict.
  *

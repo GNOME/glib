@@ -35,7 +35,7 @@
  * @short_description: TLS database type
  * @include: gio/gio.h
  *
- * #GTlsDatabase is used to lookup certificates and other information
+ * #GTlsDatabase is used to look up certificates and other information
  * from a certificate or key store. It is an abstract base class which
  * TLS library specific subtypes override.
  *
@@ -658,7 +658,7 @@ g_tls_database_create_certificate_handle (GTlsDatabase            *self,
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: (nullable): a #GError, or %NULL
  *
- * Lookup a certificate by its handle.
+ * Look up a certificate by its handle.
  *
  * The handle should have been created by calling
  * g_tls_database_create_certificate_handle() on a #GTlsDatabase object of
@@ -709,7 +709,7 @@ g_tls_database_lookup_certificate_for_handle (GTlsDatabase            *self,
  * @callback: callback to call when the operation completes
  * @user_data: the data to pass to the callback function
  *
- * Asynchronously lookup a certificate by its handle in the database. See
+ * Asynchronously look up a certificate by its handle in the database. See
  * g_tls_database_lookup_certificate_for_handle() for more information.
  *
  * Since: 2.30
@@ -777,7 +777,7 @@ g_tls_database_lookup_certificate_for_handle_finish (GTlsDatabase            *se
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: (nullable): a #GError, or %NULL
  *
- * Lookup the issuer of @certificate in the database.
+ * Look up the issuer of @certificate in the database.
  *
  * The #GTlsCertificate:issuer property
  * of @certificate is not modified, and the two certificates are not hooked
@@ -823,7 +823,7 @@ g_tls_database_lookup_certificate_issuer (GTlsDatabase           *self,
  * @callback: callback to call when the operation completes
  * @user_data: the data to pass to the callback function
  *
- * Asynchronously lookup the issuer of @certificate in the database. See
+ * Asynchronously look up the issuer of @certificate in the database. See
  * g_tls_database_lookup_certificate_issuer() for more information.
  *
  * Since: 2.30
@@ -889,7 +889,7 @@ g_tls_database_lookup_certificate_issuer_finish (GTlsDatabase          *self,
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: (nullable): a #GError, or %NULL
  *
- * Lookup certificates issued by this issuer in the database.
+ * Look up certificates issued by this issuer in the database.
  *
  * This function can block, use g_tls_database_lookup_certificates_issued_by_async() to perform
  * the lookup operation asynchronously.
@@ -931,7 +931,7 @@ g_tls_database_lookup_certificates_issued_by (GTlsDatabase           *self,
  * @callback: callback to call when the operation completes
  * @user_data: the data to pass to the callback function
  *
- * Asynchronously lookup certificates issued by this issuer in the database. See
+ * Asynchronously look up certificates issued by this issuer in the database. See
  * g_tls_database_lookup_certificates_issued_by() for more information.
  *
  * The database may choose to hold a reference to the issuer byte array for the duration

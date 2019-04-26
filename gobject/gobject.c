@@ -813,7 +813,7 @@ g_object_class_find_property (GObjectClass *class,
  * g_object_interface_find_property:
  * @g_iface: (type GObject.TypeInterface): any interface vtable for the
  *  interface, or the default vtable for the interface
- * @property_name: name of a property to lookup.
+ * @property_name: name of a property to look up.
  *
  * Find the #GParamSpec with the given name for an
  * interface. Generally, the interface vtable passed in as @g_iface

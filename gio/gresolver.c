@@ -1041,8 +1041,8 @@ g_resolver_free_targets (GList *targets)
 /**
  * g_resolver_lookup_records:
  * @resolver: a #GResolver
- * @rrname: the DNS name to lookup the record for
- * @record_type: the type of DNS record to lookup
+ * @rrname: the DNS name to look up the record for
+ * @record_type: the type of DNS record to look up
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: return location for a #GError, or %NULL
  *
@@ -1086,8 +1086,8 @@ g_resolver_lookup_records (GResolver            *resolver,
 /**
  * g_resolver_lookup_records_async:
  * @resolver: a #GResolver
- * @rrname: the DNS name to lookup the record for
- * @record_type: the type of DNS record to lookup
+ * @rrname: the DNS name to look up the record for
+ * @record_type: the type of DNS record to look up
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): callback to call after resolution completes
  * @user_data: (closure): data for @callback
