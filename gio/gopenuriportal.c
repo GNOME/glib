@@ -104,7 +104,7 @@ g_openuri_portal_open_uri (const char  *uri,
 
       path = g_file_get_path (file);
 
-      fd = g_open (path, O_RDONLY | O_CLOEXEC);
+      fd = g_open (path, O_RDONLY | O_CLOEXEC, S_IRUSR | S_IWUSR);
       errsv = errno;
       if (fd == -1)
         {
@@ -315,7 +315,7 @@ g_openuri_portal_open_uri_async (const char          *uri,
         g_object_set_data (G_OBJECT (task), "open-file", GINT_TO_POINTER (TRUE));
 
       path = g_file_get_path (file);
-      fd = g_open (path, O_RDONLY | O_CLOEXEC);
+      fd = g_open (path, O_RDONLY | O_CLOEXEC, S_IRUSR | S_IWUSR);
       errsv = errno;
       if (fd == -1)
         {
