@@ -94,7 +94,7 @@ installed_tests_template = files('template.test.in')
 installed_tests_template_tap = files('template-tap.test.in')
 
 # Don’t build the tests unless we can run them (either natively, in an exe wrapper, or by installing them for later use)
-build_tests = not meson.is_cross_build() or (meson.is_cross_build() and meson.has_exe_wrapper()) or installed_tests_enabled
+build_tests = get_option('tests') and (not meson.is_cross_build() or (meson.is_cross_build() and meson.has_exe_wrapper()) or installed_tests_enabled)
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
