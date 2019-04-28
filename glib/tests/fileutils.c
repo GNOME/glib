@@ -430,8 +430,34 @@ test_build_filenamev (void)
 
 #undef S
 
+
+/* Testing g_file_test() function */
 static void
-test_mkdir_with_parents_1 (const gchar *base)
+test_file_test (void)
+{
+  int ret;
+  gchar *filename;
+
+  /* Negative cases */
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion*!= NULL*");
+  g_assert_false (g_file_test (NULL, G_FILE_TEST_EXISTS));
+  g_test_assert_expected_messages ();
+
+  /* Positive cases */
+  g_remove ("/tmp/foo");
+  g_remove ("/tmp/bar");
+  filename = g_build_filename ("/tmp", "foo", NULL);
+  ret = symlink (filename, "/tmp/bar");
+  g_assert_cmpint (ret, ==, 0);
+  g_assert_true (g_file_test ("/tmp/bar", G_FILE_TEST_IS_SYMLINK));
+  g_free (filename);
+  g_remove ("/tmp/foo");
+  g_remove ("/tmp/bar");
+}
+
+static void
+check_mkdir_with_parents_1 (const gchar *base)
 {
   char *p0 = g_build_filename (base, "fum", NULL);
   char *p1 = g_build_filename (p0, "tem", NULL);
@@ -494,28 +520,36 @@ test_mkdir_with_parents_1 (const gchar *base)
   g_free (p0);
 }
 
+/* Testing g_mkdir_with_parents() function */
 static void
 test_mkdir_with_parents (void)
 {
   gchar *cwd;
+
+  /* Negative cases */
+  g_assert_cmpint (g_mkdir_with_parents ("", 0), ==, -1);
+  g_assert_cmpint (g_mkdir_with_parents (NULL, 0), ==, -1);
+  g_assert_cmpint (errno, ==, EINVAL);
+  g_assert_cmpint (g_mkdir_with_parents ("/etc/foo/bar", 0), ==, -1);
+
+  /* Positive cases */
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in subdir ./hum/");
-  test_mkdir_with_parents_1 ("hum");
+  check_mkdir_with_parents_1 ("hum");
   g_remove ("hum");
+
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
-  test_mkdir_with_parents_1 ("hii///haa/hee");
+  check_mkdir_with_parents_1 ("hii///haa/hee");
   g_remove ("hii/haa/hee");
   g_remove ("hii/haa");
   g_remove ("hii");
+
   cwd = g_get_current_dir ();
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in cwd: %s", cwd);
-  test_mkdir_with_parents_1 (cwd);
+  check_mkdir_with_parents_1 (cwd);
   g_free (cwd);
-
-  g_assert_cmpint (g_mkdir_with_parents (NULL, 0), ==, -1);
-  g_assert_cmpint (errno, ==, EINVAL);
 }
 
 static void
@@ -1398,22 +1432,23 @@ main (int   argc,
   g_test_add_func ("/fileutils/stdio-win32-pathstrip", test_win32_pathstrip);
   g_test_add_func ("/fileutils/stdio-win32-zero-terminate-symlink", test_win32_zero_terminate_symlink);
 #endif
-  g_test_add_func ("/fileutils/build-path", test_build_path);
-  g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
+  g_test_add_func ("/fileutils/basename", test_basename);
   g_test_add_func ("/fileutils/build-filename", test_build_filename);
   g_test_add_func ("/fileutils/build-filenamev", test_build_filenamev);
-  g_test_add_func ("/fileutils/mkdir-with-parents", test_mkdir_with_parents);
-  g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
-  g_test_add_func ("/fileutils/errors", test_file_errors);
-  g_test_add_func ("/fileutils/basename", test_basename);
+  g_test_add_func ("/fileutils/build-path", test_build_path);
+  g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
   g_test_add_func ("/fileutils/dir-make-tmp", test_dir_make_tmp);
+  g_test_add_func ("/fileutils/errors", test_file_errors);
   g_test_add_func ("/fileutils/file-open-tmp", test_file_open_tmp);
-  g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
-  g_test_add_func ("/fileutils/mkdtemp", test_mkdtemp);
-  g_test_add_func ("/fileutils/set-contents", test_set_contents);
-  g_test_add_func ("/fileutils/read-link", test_read_link);
-  g_test_add_func ("/fileutils/stdio-wrappers", test_stdio_wrappers);
+  g_test_add_func ("/fileutils/file_test", test_file_test);
   g_test_add_func ("/fileutils/fopen-modes", test_fopen_modes);
+  g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
+  g_test_add_func ("/fileutils/mkdir-with-parents", test_mkdir_with_parents);
+  g_test_add_func ("/fileutils/mkdtemp", test_mkdtemp);
+  g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
+  g_test_add_func ("/fileutils/read-link", test_read_link);
+  g_test_add_func ("/fileutils/set-contents", test_set_contents);
+  g_test_add_func ("/fileutils/stdio-wrappers", test_stdio_wrappers);
 
   return g_test_run ();
 }
