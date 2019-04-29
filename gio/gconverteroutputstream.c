@@ -687,7 +687,7 @@ g_converter_output_stream_write_nonblocking_pollable (GPollableOutputStream  *st
                                                       gsize                  *bytes_written,
                                                       GError                **error)
 {
-  return write_internal(G_OUTPUT_STREAM (stream), buffer, count,
+  return write_internal (G_OUTPUT_STREAM (stream), buffer, count,
                          FALSE, bytes_written, NULL, error);
 }
 
