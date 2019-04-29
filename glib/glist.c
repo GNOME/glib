@@ -441,14 +441,14 @@ g_list_insert_before (GList    *list,
                       GList    *sibling,
                       gpointer  data)
 {
-  if (!list)
+  if (list == NULL)
     {
       list = g_list_alloc ();
       list->data = data;
       g_return_val_if_fail (sibling == NULL, list);
       return list;
     }
-  else if (sibling)
+  else if (sibling != NULL)
     {
       GList *node;
 
@@ -457,7 +457,7 @@ g_list_insert_before (GList    *list,
       node->prev = sibling->prev;
       node->next = sibling;
       sibling->prev = node;
-      if (node->prev)
+      if (node->prev != NULL)
         {
           node->prev->next = node;
           return list;
@@ -472,9 +472,7 @@ g_list_insert_before (GList    *list,
     {
       GList *last;
 
-      last = list;
-      while (last->next)
-        last = last->next;
+      for (last = list; last->next != NULL; last = last->next) {}
 
       last->next = _g_list_alloc ();
       last->next->data = data;
