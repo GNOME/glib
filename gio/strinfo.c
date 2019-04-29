@@ -61,24 +61,24 @@
  *
  * The operations that someone may want to perform with the map:
  *
- *   - lookup if a string is valid (and not an alias)
- *   - lookup the integer value for a enum 'nick'
- *   - lookup the integer value for the target of an alias
- *   - lookup an alias and convert it to its target string
- *   - lookup the enum nick for a given value
+ *   - look up if a string is valid (and not an alias)
+ *   - look up the integer value for a enum 'nick'
+ *   - look up the integer value for the target of an alias
+ *   - look up an alias and convert it to its target string
+ *   - look up the enum nick for a given value
  *
- * In order to lookup if a string is valid, it is padded on either side
+ * In order to look up if a string is valid, it is padded on either side
  * (as described) and scanned for in the array.  For example, you might
  * look for "foo":
  *
  *                   xff 'f' 'o' 'o'   x00 x00 x00 xff
  *
- * In order to lookup the integer value for a nick, the string is padded
+ * In order to look up the integer value for a nick, the string is padded
  * on either side and scanned for in the array, as above.  Instead of
  * merely succeeding, we look at the integer value to the left of the
  * match.  This is the enum value.
  *
- * In order to lookup an alias and convert it to its target enum value,
+ * In order to look up an alias and convert it to its target enum value,
  * the string is padded on either side (as described, with 0xfe) and
  * scanned for.  For example, you might look for "baz":
  *
@@ -92,7 +92,7 @@
  * added past the start of the integer value to find the start of the
  * string.
  *
- * To lookup the enum nick for a given value, the value is searched for
+ * To look up the enum nick for a given value, the value is searched for
  * in the array.  To ensure that the value isn't matching the inside of a
  * string, we must check that it is either the first item in the array or
  * immediately preceded by the byte 0xff.  It must also be immediately
