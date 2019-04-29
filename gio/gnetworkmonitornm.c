@@ -52,6 +52,19 @@ typedef enum {
   NM_CONNECTIVITY_FULL
 } NMConnectivityState;
 
+/* Copied from https://developer.gnome.org/libnm-util/stable/libnm-util-NetworkManager.html#NMState;
+ * used inline to avoid a NetworkManager dependency from GLib. */
+typedef enum {
+  NM_STATE_UNKNOWN          = 0,
+  NM_STATE_ASLEEP           = 10,
+  NM_STATE_DISCONNECTED     = 20,
+  NM_STATE_DISCONNECTING    = 30,
+  NM_STATE_CONNECTING       = 40,
+  NM_STATE_CONNECTED_LOCAL  = 50,
+  NM_STATE_CONNECTED_SITE   = 60,
+  NM_STATE_CONNECTED_GLOBAL = 70,
+} NMState;
+
 struct _GNetworkMonitorNMPrivate
 {
   GDBusProxy *proxy;
@@ -155,10 +168,18 @@ sync_properties (GNetworkMonitorNM *nm,
                  gboolean           emit_signals)
 {
   GVariant *v;
+  NMState nm_state;
   NMConnectivityState nm_connectivity;
   gboolean new_network_available;
   gboolean new_network_metered;
   GNetworkConnectivity new_connectivity;
+
+  v = g_dbus_proxy_get_cached_property (nm->priv->proxy, "State");
+  if (!v)
+    return;
+
+  nm_state = g_variant_get_uint32 (v);
+  g_variant_unref (v);
 
   v = g_dbus_proxy_get_cached_property (nm->priv->proxy, "Connectivity");
   if (!v)
@@ -167,14 +188,26 @@ sync_properties (GNetworkMonitorNM *nm,
   nm_connectivity = g_variant_get_uint32 (v);
   g_variant_unref (v);
 
-  if (nm_connectivity == NM_CONNECTIVITY_UNKNOWN ||
-      nm_connectivity == NM_CONNECTIVITY_NONE)
+  if (nm_state <= NM_STATE_CONNECTED_LOCAL)
     {
       new_network_available = FALSE;
       new_network_metered = FALSE;
       new_connectivity = G_NETWORK_CONNECTIVITY_LOCAL;
     }
-  else
+  else if (nm_state <= NM_STATE_CONNECTED_SITE)
+    {
+      new_network_available = FALSE;
+      new_network_metered = FALSE;
+      if (nm_connectivity == NM_CONNECTIVITY_PORTAL)
+        {
+          new_connectivity = G_NETWORK_CONNECTIVITY_PORTAL;
+        }
+      else
+        {
+          new_connectivity = G_NETWORK_CONNECTIVITY_LIMITED;
+        }
+    }
+  else /* nm_state == NM_STATE_CONNECTED_FULL */
     {
 
       /* this is only available post NM 1.0 */
