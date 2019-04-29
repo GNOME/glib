@@ -72,7 +72,7 @@ typedef struct _GPollableOutputStreamInterface GPollableOutputStreamInterface;
  * override this where possible to avoid having to allocate a #GError to return
  * %G_IO_ERROR_WOULD_BLOCK.
  *
- * The default implementation of @write_nonblocking, will call
+ * The default implementation of @write_nonblocking will call
  * @write_nonblockign_pollable if provided, as its more efficient.
  *
  * The default implementation of @write_nonblocking_pollable, will call
