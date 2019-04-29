@@ -200,7 +200,7 @@ g_pollable_output_stream_default_write_nonblocking_pollable (GPollableOutputStre
         }
     }
   else
-    /* There shouldn't be any error set if write_fn is succesful */
+    /* There shouldn't be any error set if write_fn is successful */
     g_warn_if_fail (err == NULL);
 
   if (bytes_written)
