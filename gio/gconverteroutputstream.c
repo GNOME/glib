@@ -414,6 +414,7 @@ write_internal (GOutputStream  *stream,
   gsize to_convert_size, converted_bytes;
   gboolean converting_from_buffer;
 
+  g_return_val_if_fail (bytes_written != NULL, G_POLLABLE_RETURN_FAILED);
   *bytes_written = 0;
 
   cstream = G_CONVERTER_OUTPUT_STREAM (stream);

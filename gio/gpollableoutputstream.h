@@ -144,5 +144,4 @@ GPollableReturn g_pollable_output_stream_write_nonblocking_pollable (GPollableOu
 
 G_END_DECLS
 
-
 #endif /* __G_POLLABLE_OUTPUT_STREAM_H__ */
