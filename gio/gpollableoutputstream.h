@@ -76,7 +76,7 @@ typedef struct _GPollableOutputStreamInterface GPollableOutputStreamInterface;
  * @write_nonblocking_pollable if provided, as it’s more efficient.
  *
  * The default implementation of @write_nonblocking_pollable will call
- * @write_nonblocking and tranlate the result, if @write_nonblocking_pollable
+ * @write_nonblocking and translate the result, if @write_nonblocking_pollable
  * is not provided by the implementor.
  *
  * Since: 2.28
