@@ -546,7 +546,7 @@ g_converter_output_stream_write (GOutputStream  *stream,
   GPollableReturn res;
 
   res = write_internal (stream, buffer, count, TRUE, &bytes_written,
-                       cancellable, error);
+                        cancellable, error);
 
   switch (res)
     {
