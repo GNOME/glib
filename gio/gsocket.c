@@ -3234,7 +3234,8 @@ g_socket_receive_from (GSocket         *socket,
 #define G_SOCKET_DEFAULT_SEND_FLAGS 0
 #endif
 
-/* g_socket_send_with_timeout:
+/**
+ * g_socket_send_with_timeout:
  * @socket: a #GSocket
  * @buffer: (array length=size) (element-type guint8): the buffer
  *     containing the data to send.
