@@ -1449,6 +1449,12 @@ static const guint32 iso15924_tags[] =
     PACK ('M','e','d','f'), /* G_UNICODE_SCRIPT_MEDEFAIDRIN */
     PACK ('S','o','g','o'), /* G_UNICODE_SCRIPT_OLD_SOGDIAN */
     PACK ('S','o','g','d'), /* G_UNICODE_SCRIPT_SOGDIAN */
+
+  /* Unicode 12.0 additions */
+    PACK ('E','l','y','m'), /* G_UNICODE_SCRIPT_ELYMAIC */
+    PACK ('N','a','n','d'), /* G_UNICODE_SCRIPT_NANDINAGARI */
+    PACK ('H','m','n','p'), /* G_UNICODE_SCRIPT_NYIAKENG_PUACHUE_HMONG */
+    PACK ('W','c','h','o'), /* G_UNICODE_SCRIPT_WANCHO */
 #undef PACK
 };
 
