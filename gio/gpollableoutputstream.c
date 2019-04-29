@@ -200,7 +200,7 @@ g_pollable_output_stream_default_write_nonblocking_pollable (GPollableOutputStre
         }
     }
   else
-    /* There shouldn't be any error set if write_fn is succesful */
+    /* There shouldn't be any error set if write_fn is successful */
     g_warn_if_fail (err == NULL);
 
   if (bytes_written)
@@ -223,7 +223,7 @@ g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *str
 
   for (i = 0; i < n_vectors; i++)
     {
-      gsize vector_bytes_written;
+      gsize vector_bytes_written = 0;
       GPollableReturn res;
 
       /* Would we overflow here? In that case simply return and let the caller
@@ -381,7 +381,7 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
           break;
 
         case G_POLLABLE_RETURN_FAILED:
-          /* Error set by g_output_stream_write */
+          /* Error set by write_nonblocking_pollable() */
           g_warn_if_fail (error == NULL || *error != NULL);
           res = -1;
           break;

@@ -2456,8 +2456,8 @@ write_async_pollable (GPollableOutputStream *stream,
     {
     case G_POLLABLE_RETURN_OK:
       /* Although g_output_stream_write takes a gsize, it actually expects
-       * a gssize and checks for it, so if this assetion is triggered the
-       * contract has been broken*/
+       * a gssize and checks for it, so if this assertion is triggered the
+       * contract has been broken */
       g_assert (count_written <= G_MAXSSIZE);
       g_warn_if_fail (error == NULL);
       g_task_return_int (task, (gssize) count_written);
