@@ -223,7 +223,7 @@ g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *str
 
   for (i = 0; i < n_vectors; i++)
     {
-      gsize vector_bytes_written;
+      gsize vector_bytes_written = 0;
       GPollableReturn res;
 
       /* Would we overflow here? In that case simply return and let the caller
