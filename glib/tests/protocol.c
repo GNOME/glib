@@ -122,9 +122,9 @@ test_message (void)
           (gchar*)argv0,
           NULL,
           "--GTestSubprocess",
-          "-p", "/glib/testing/protocol/debug",
-          "-p", "/glib/testing/protocol/message",
           "-p", "/glib/testing/protocol/gtest-message",
+          "-p", "/glib/testing/protocol/message",
+          "-p", "/glib/testing/protocol/debug",
           NULL
   };
   GTestLogBuffer* tlb;
