@@ -282,7 +282,7 @@ g_pollable_stream_write (GOutputStream   *stream,
  * behavior is undefined. If @blocking is %TRUE, then @stream does not
  * need to be a #GPollableOutputStream.
  *
- * Returns: %G_POLLABLE_RETURN_OK on success, _G_POLLABLE_RETURN_WOULD_BLOCK if
+ * Returns: %G_POLLABLE_RETURN_OK on success, %G_POLLABLE_RETURN_WOULD_BLOCK if
  * the operation was going to block and %G_POLLABLE_RETURN_WOULD_BLOCK if there
  * was an error
  *
