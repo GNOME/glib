@@ -1242,6 +1242,11 @@ parse_args (gint    *argc_p,
           exit (0);
         }
     }
+
+  /* We've been prepending to test_paths, but its order matters, so
+   * permute it */
+  test_paths = g_slist_reverse (test_paths);
+
   /* collapse argv */
   e = 1;
   for (i = 1; i < argc; i++)
