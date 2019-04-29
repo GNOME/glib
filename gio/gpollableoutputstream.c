@@ -381,7 +381,7 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
           break;
 
         case G_POLLABLE_RETURN_FAILED:
-          /* Error set by g_output_stream_write */
+          /* Error set by write_nonblocking_pollable() */
           g_warn_if_fail (error == NULL || *error != NULL);
           res = -1;
           break;
