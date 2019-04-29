@@ -1163,6 +1163,8 @@ test_tap (void)
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
+  /* FIXME: Tests are run in an order that is the reverse of the order
+   * of -p options. */
   g_assert_nonnull (strstr (output, "\nok 1 /b/a\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /b/b\n"));
   g_assert_nonnull (strstr (output, "\nok 3 /c/a\n"));
