@@ -4,6 +4,8 @@ RUN dnf -y install \
     autoconf \
     automake \
     bindfs \
+    clang \
+    clang-analyzer \
     desktop-file-utils \
     elfutils-libelf-devel \
     findutils \
