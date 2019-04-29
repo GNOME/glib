@@ -304,6 +304,10 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_MEDEFAIDRIN,            0x16E40 },
     { G_UNICODE_SCRIPT_OLD_SOGDIAN,            0x10F00 },
     { G_UNICODE_SCRIPT_SOGDIAN,                0x10F30 },
+    { G_UNICODE_SCRIPT_ELYMAIC,                0x10FE0 },
+    { G_UNICODE_SCRIPT_NANDINAGARI,            0x119A0 },
+    { G_UNICODE_SCRIPT_NYIAKENG_PUACHUE_HMONG, 0x1E100 },
+    { G_UNICODE_SCRIPT_WANCHO,                 0x1E2C0 },
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     g_assert_cmpint (g_unichar_get_script (examples[i].c), ==, examples[i].script);
@@ -911,6 +915,12 @@ test_iso15924 (void)
     { G_UNICODE_SCRIPT_MEDEFAIDRIN,            "Medf" },
     { G_UNICODE_SCRIPT_OLD_SOGDIAN,            "Sogo" },
     { G_UNICODE_SCRIPT_SOGDIAN,                "Sogd" },
+
+    /* Unicode 12.0 additions */
+    { G_UNICODE_SCRIPT_ELYMAIC,                "Elym" },
+    { G_UNICODE_SCRIPT_NANDINAGARI,            "Nand" },
+    { G_UNICODE_SCRIPT_NYIAKENG_PUACHUE_HMONG, "Hmnp" },
+    { G_UNICODE_SCRIPT_WANCHO,                 "Wcho" },
   };
   guint i;
 

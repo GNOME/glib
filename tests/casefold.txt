@@ -1,4 +1,4 @@
-# Test cases generated from Unicode 11.0.0 data
+# Test cases generated from Unicode 12.0.0 data
 # by gen-casefold-txt.py. Do not edit.
 #
 # Some special hand crafted tests
@@ -1144,6 +1144,13 @@ Z	z
 Ꞵ	ꞵ
 Ꞷ	ꞷ
 Ꞹ	ꞹ
+Ꞻ	ꞻ
+Ꞽ	ꞽ
+Ꞿ	ꞿ
+Ꟃ	ꟃ
+Ꞔ	ꞔ
+Ʂ	ʂ
+Ᶎ	ᶎ
 ꭰ	Ꭰ
 ꭱ	Ꭱ
 ꭲ	Ꭲ

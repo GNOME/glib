@@ -607,7 +607,13 @@ typedef enum
   G_UNICODE_SCRIPT_MAKASAR,                /* Maka */
   G_UNICODE_SCRIPT_MEDEFAIDRIN,            /* Medf */
   G_UNICODE_SCRIPT_OLD_SOGDIAN,            /* Sogo */
-  G_UNICODE_SCRIPT_SOGDIAN                 /* Sogd */
+  G_UNICODE_SCRIPT_SOGDIAN,                /* Sogd */
+
+  /* Unicode 12.0 additions */
+  G_UNICODE_SCRIPT_ELYMAIC,                /* Elym */
+  G_UNICODE_SCRIPT_NANDINAGARI,            /* Nand */
+  G_UNICODE_SCRIPT_NYIAKENG_PUACHUE_HMONG, /* Rohg */
+  G_UNICODE_SCRIPT_WANCHO                  /* Wcho */
 } GUnicodeScript;
 
 GLIB_AVAILABLE_IN_ALL
