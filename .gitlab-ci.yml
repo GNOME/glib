@@ -1,5 +1,3 @@
-image: registry.gitlab.gnome.org/gnome/glib/master:v11
-
 stages:
   - build
   - coverage
@@ -15,6 +13,7 @@ variables:
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
 
 fedora-x86_64:
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v1
   stage: build
   except:
     - tags
@@ -55,6 +54,7 @@ fedora-x86_64:
       - "_coverage"
 
 G_DISABLE_ASSERT:
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v1
   stage: build
   except:
     - tags
@@ -93,6 +93,7 @@ G_DISABLE_ASSERT:
 
 cross-android_api21_arm64:
   <<: *cross-template
+  image: registry.gitlab.gnome.org/gnome/glib/android-ndk:v1
   script:
     # FIXME: add --werror
     # We use -Diconv=auto to test that we successfully detect that iconv is not
@@ -102,6 +103,7 @@ cross-android_api21_arm64:
 
 cross-android_api28_arm64:
   <<: *cross-template
+  image: registry.gitlab.gnome.org/gnome/glib/android-ndk:v1
   script:
     # FIXME: add --werror
     - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt -Dinternal_pcre=true _build
@@ -109,6 +111,7 @@ cross-android_api28_arm64:
 
 cross-mingw64:
   <<: *cross-template
+  image: registry.gitlab.gnome.org/gnome/glib/mingw:v1
   script:
     # FIXME: Add --werror
     - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
@@ -195,6 +198,7 @@ freebsd-11-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 coverage:
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v1
   stage: coverage
   except:
     - tags
@@ -217,6 +221,7 @@ pages:
       - public
 
 dist-job:
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v1
   stage: build
   only:
     - tags
