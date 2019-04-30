@@ -1125,6 +1125,94 @@ test_clear_full_noop (void)
   g_queue_free (queue);
 }
 
+/* Test g_queue_push_nth_link() with various combinations of position (before,
+ * in the middle of, or at the end of the queue) and various existing queues
+ * (empty, single element, multiple elements). */
+static void
+test_push_nth_link (void)
+{
+  GQueue *q;
+  q = g_queue_new ();
+
+  /* Push onto before the front of an empty queue (which results in it being
+   * added to the end of the queue). */
+  g_queue_push_nth_link (q, -1, g_list_prepend (NULL, GINT_TO_POINTER (1)));
+  check_integrity (q);
+  g_assert_cmpint (g_queue_get_length (q), ==, 1);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 0)), ==, 1);
+
+  g_queue_clear (q);
+
+  /* Push onto after the rear of an empty queue. */
+  g_queue_push_nth_link (q, 100, g_list_prepend (NULL, GINT_TO_POINTER (2)));
+  check_integrity (q);
+  g_assert_cmpint (g_queue_get_length (q), ==, 1);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 0)), ==, 2);
+
+  g_queue_clear (q);
+
+  /* Push onto the front of an empty queue. */
+  g_queue_push_nth_link (q, 0, g_list_prepend (NULL, GINT_TO_POINTER (3)));
+  check_integrity (q);
+  g_assert_cmpint (g_queue_get_length (q), ==, 1);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 0)), ==, 3);
+
+  g_queue_clear (q);
+
+  /* Push onto before the front of a non-empty queue (which results in it being
+   * added to the end of the queue). */
+  g_queue_push_head (q, GINT_TO_POINTER (4));
+  g_queue_push_nth_link (q, -1, g_list_prepend (NULL, GINT_TO_POINTER (5)));
+  check_integrity (q);
+  g_assert_cmpint (g_queue_get_length (q), ==, 2);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 0)), ==, 4);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 1)), ==, 5);
+
+  g_queue_clear (q);
+
+  /* Push onto after the rear of a non-empty queue. */
+  g_queue_push_head (q, GINT_TO_POINTER (6));
+  g_queue_push_nth_link (q, 100, g_list_prepend (NULL, GINT_TO_POINTER (7)));
+  check_integrity (q);
+  g_assert_cmpint (g_queue_get_length (q), ==, 2);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 0)), ==, 6);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 1)), ==, 7);
+
+  g_queue_clear (q);
+
+  /* Push onto the rear of a non-empty queue. */
+  g_queue_push_head (q, GINT_TO_POINTER (8));
+  g_queue_push_nth_link (q, 1, g_list_prepend (NULL, GINT_TO_POINTER (9)));
+  check_integrity (q);
+  g_assert_cmpint (g_queue_get_length (q), ==, 2);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 0)), ==, 8);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 1)), ==, 9);
+
+  g_queue_clear (q);
+
+  /* Push onto the front of a non-empty queue. */
+  g_queue_push_head (q, GINT_TO_POINTER (10));
+  g_queue_push_nth_link (q, 0, g_list_prepend (NULL, GINT_TO_POINTER (11)));
+  check_integrity (q);
+  g_assert_cmpint (g_queue_get_length (q), ==, 2);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 0)), ==, 11);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 1)), ==, 10);
+
+  g_queue_clear (q);
+
+  /* Push into the middle of a non-empty queue. */
+  g_queue_push_head (q, GINT_TO_POINTER (12));
+  g_queue_push_head (q, GINT_TO_POINTER (13));
+  g_queue_push_nth_link (q, 1, g_list_prepend (NULL, GINT_TO_POINTER (14)));
+  check_integrity (q);
+  g_assert_cmpint (g_queue_get_length (q), ==, 3);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 0)), ==, 13);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 1)), ==, 14);
+  g_assert_cmpint (GPOINTER_TO_INT (g_queue_peek_nth (q, 2)), ==, 12);
+
+  g_queue_free (q);
+}
+
 static void
 test_free_full (void)
 {
@@ -1199,6 +1287,7 @@ int main (int argc, char *argv[])
   g_test_add_func ("/queue/clear-full", test_clear_full);
   g_test_add_func ("/queue/clear-full/noop", test_clear_full_noop);
   g_test_add_func ("/queue/insert-sibling-link", test_insert_sibling_link);
+  g_test_add_func ("/queue/push-nth-link", test_push_nth_link);
 
   seed = g_test_rand_int_range (0, G_MAXINT);
   path = g_strdup_printf ("/queue/random/seed:%u", seed);
