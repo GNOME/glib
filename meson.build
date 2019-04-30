@@ -1,9 +1,14 @@
 subdir('cmph')
 
-custom_c_args = cc.get_supported_arguments([
-  '-Wno-old-style-definition',
-  '-Wno-cast-align',
-])
+custom_c_args = []
+
+if cc.get_id() != 'msvc'
+  custom_c_args = cc.get_supported_arguments([
+    '-Wno-old-style-definition',
+    '-Wno-cast-align',
+  ])
+endif
+
 girepo_gthash_lib = static_library('girepository-gthash',
   sources: 'gthash.c',
   include_directories : configinc,
@@ -21,11 +26,14 @@ girepo_gthash_dep = declare_dependency(
   include_directories: include_directories('.'),
 )
 
-custom_c_args = cc.get_supported_arguments([
-  '-Wno-unused-parameter',
-  '-Wno-duplicated-branches',
-  '-Wno-cast-align',
-])
+if cc.get_id() != 'msvc'
+  custom_c_args = cc.get_supported_arguments([
+    '-Wno-unused-parameter',
+    '-Wno-duplicated-branches',
+    '-Wno-cast-align',
+  ])
+endif
+
 girepo_internals_lib = static_library('girepository-internals',
   sources: [
     'girmodule.c',
@@ -145,13 +153,16 @@ girepo_gir_sources = files(
 
 install_headers(girepo_headers, subdir: 'gobject-introspection-1.0')
 
-custom_c_args = cc.get_supported_arguments([
-  '-Wno-unused-parameter',
-  '-Wno-duplicated-branches',
-  '-Wno-type-limits',
-  '-Wno-cast-align',
-  '-Wno-missing-field-initializers',
-])
+if cc.get_id() != 'msvc'
+  custom_c_args = cc.get_supported_arguments([
+    '-Wno-unused-parameter',
+    '-Wno-duplicated-branches',
+    '-Wno-type-limits',
+    '-Wno-cast-align',
+    '-Wno-missing-field-initializers',
+  ])
+endif
+
 girepo_lib = shared_library('girepository-1.0',
   sources: girepo_sources,
   include_directories : configinc,
