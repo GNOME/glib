@@ -1,8 +1,6 @@
 FROM fedora:29
 
 RUN dnf -y install \
-    autoconf \
-    automake \
     bindfs \
     clang \
     clang-analyzer \
@@ -38,14 +36,7 @@ RUN dnf -y install \
     libffi-devel \
     libmount-devel \
     libselinux-devel \
-    libtool \
     libxslt \
-    make \
-    mingw64-gcc \
-    mingw64-gcc-c++ \
-    mingw64-gettext \
-    mingw64-libffi \
-    mingw64-zlib \
     ncurses-compat-libs \
     ninja-build \
     pcre-devel \
@@ -58,17 +49,6 @@ RUN dnf -y install \
     xz \
     zlib-devel \
  && dnf clean all
-
-WORKDIR /opt
-ENV ANDROID_NDK_PATH /opt/android-ndk
-COPY android-download-ndk.sh .
-RUN ./android-download-ndk.sh
-COPY android-setup-env.sh .
-RUN ./android-setup-env.sh arm64 21
-RUN ./android-setup-env.sh arm64 28
-RUN rm -rf $ANDROID_NDK_PATH
-
-COPY cross_file_mingw64.txt /opt
 
 RUN pip3 install meson==0.48.0
 
