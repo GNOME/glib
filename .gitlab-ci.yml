@@ -53,6 +53,35 @@ fedora-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
       - "_coverage"
 
+debian-stable-x86_64:
+  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v1
+  stage: build
+  except:
+    - tags
+  script:
+    - meson ${MESON_COMMON_OPTIONS}
+            --werror
+            --default-library=both
+            --prefix=$HOME/glib-installed
+            --libdir=lib
+            -Dsystemtap=true
+            -Ddtrace=true
+            -Dfam=true
+            -Dinstalled_tests=true
+            _build
+    - ninja -C _build
+    - .gitlab-ci/run-tests.sh
+  artifacts:
+    reports:
+      junit: "_build/${CI_JOB_NAME}-report.xml"
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+      - "_build/${CI_JOB_NAME}-report.xml"
+
 G_DISABLE_ASSERT:
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v1
   stage: build
