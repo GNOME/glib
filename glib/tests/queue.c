@@ -1083,15 +1083,13 @@ test_clear_full (void)
   g_assert_true (three->freed);
   g_assert_true (four->freed);
 
+  g_assert_true (g_queue_is_empty (queue));
   check_integrity (queue);
 
   g_slice_free (QueueItem, one);
   g_slice_free (QueueItem, two);
   g_slice_free (QueueItem, three);
   g_slice_free (QueueItem, four);
-
-  g_assert_true (g_queue_is_empty (queue));
-
   g_queue_free (queue);
 }
 
