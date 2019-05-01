@@ -1,9 +1,11 @@
-FROM fedora:27
+FROM fedora:28
 
 RUN dnf -y install \
     autoconf \
     automake \
     bindfs \
+    clang \
+    clang-analyzer \
     desktop-file-utils \
     elfutils-libelf-devel \
     findutils \
@@ -39,11 +41,6 @@ RUN dnf -y install \
     libtool \
     libxslt \
     make \
-    mingw64-gcc \
-    mingw64-gcc-c++ \
-    mingw64-gettext \
-    mingw64-libffi \
-    mingw64-zlib \
     ncurses-compat-libs \
     ninja-build \
     pcre-devel \
@@ -65,8 +62,6 @@ COPY android-setup-env.sh .
 RUN ./android-setup-env.sh arm64 21
 RUN ./android-setup-env.sh arm64 28
 RUN rm -rf $ANDROID_NDK_PATH
-
-COPY cross_file_mingw64.txt /opt
 
 RUN pip3 install meson==0.48.0
 
