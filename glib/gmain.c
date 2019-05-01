@@ -1040,6 +1040,7 @@ find_source_list_for_priority (GMainContext *context,
        * context->source_lists without having to walk the list again.
        */
       last = g_list_append (last, source_list);
+      (void) last;
     }
   return source_list;
 }

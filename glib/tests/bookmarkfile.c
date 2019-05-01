@@ -175,6 +175,7 @@ test_misc (void)
                                         &error);
   g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_INVALID_VALUE);
   g_clear_error (&error);
+  g_assert_false (res);
 
   g_bookmark_file_set_mime_type (bookmark, 
                                  "file:///tmp/schedule1.ps",
