@@ -78,6 +78,10 @@ GLIB_AVAILABLE_IN_ALL
 GList*   g_list_insert_before           (GList            *list,
 					 GList            *sibling,
 					 gpointer          data) G_GNUC_WARN_UNUSED_RESULT;
+GLIB_AVAILABLE_IN_2_62
+GList*   g_list_insert_before_link      (GList            *list,
+					 GList            *sibling,
+					 GList            *link_) G_GNUC_WARN_UNUSED_RESULT;
 GLIB_AVAILABLE_IN_ALL
 GList*   g_list_concat                  (GList            *list1,
 					 GList            *list2) G_GNUC_WARN_UNUSED_RESULT;
