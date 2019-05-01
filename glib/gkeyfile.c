@@ -3317,6 +3317,7 @@ g_key_file_set_key_comment (GKeyFile     *key_file,
   pair->value = g_key_file_parse_comment_as_value (key_file, comment);
   
   key_node = g_list_insert (key_node, pair, 1);
+  (void) key_node;
 
   return TRUE;
 }

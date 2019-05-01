@@ -3694,6 +3694,9 @@ g_test_trap_assertions (const char     *domain,
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
+
+  (void) logged_child_output;  /* shut up scan-build about the final unread assignment */
+
   g_free (process_id);
 }
 
