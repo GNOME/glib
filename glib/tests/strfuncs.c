@@ -312,7 +312,7 @@ static void
 test_strlcat (void)
 {
   gchar *str = "The quick brown fox jumps over the lazy dog";
-  gchar str_cpy[45] = { 0 };
+  gchar str_cpy[60] = { 0 };
   gsize str_cpy_size = 0;
 
   if (g_test_undefined ())
