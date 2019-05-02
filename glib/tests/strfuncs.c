@@ -312,7 +312,7 @@ static void
 test_strlcat (void)
 {
   gchar *str = "The quick brown fox jumps over the lazy dog";
-  gchar str_cpy[45] = { 0 };
+  gchar str_cpy[60] = { 0 };
   gsize str_cpy_size = 0;
 
   if (g_test_undefined ())
@@ -340,28 +340,28 @@ test_strlcat (void)
    * Note that the @dest_size argument to g_strlcat() is normally meant to be
    * set to `sizeof (dest)`. We set it to various values `≤ sizeof (str_cpy)`
    * for testing purposes. */
+  g_assert_cmpuint (strlen (str) + 1, <=, sizeof (str_cpy));
   str_cpy_size = g_strlcat (str_cpy, str, strlen (str) + 1);
-  g_assert_nonnull (str_cpy);
   g_assert_cmpstr (str, ==, str_cpy);
   g_assert_cmpint (str_cpy_size, ==, strlen (str));
 
+  g_assert_cmpuint (strlen (str), <=, sizeof (str_cpy));
   str_cpy_size = g_strlcat (str_cpy, str, strlen (str));
-  g_assert_nonnull (str_cpy);
   g_assert_cmpstr (str, ==, str_cpy);
   g_assert_cmpint (str_cpy_size, ==, 2 * strlen (str));
 
+  g_assert_cmpuint (strlen (str) - 15, <=, sizeof (str_cpy));
   str_cpy_size = g_strlcat (str_cpy, str, strlen (str) - 15);
-  g_assert_nonnull (str_cpy);
   g_assert_cmpstr (str, ==, str_cpy);
   g_assert_cmpint (str_cpy_size, ==, 2 * strlen (str) - 15);
 
+  g_assert_cmpuint (0, <=, sizeof (str_cpy));
   str_cpy_size = g_strlcat (str_cpy, str, 0);
-  g_assert_nonnull (str_cpy);
   g_assert_cmpstr (str, ==, str_cpy);
   g_assert_cmpint (str_cpy_size, ==, strlen (str));
 
+  g_assert_cmpuint (strlen (str) + 15, <=, sizeof (str_cpy));
   str_cpy_size = g_strlcat (str_cpy, str, strlen (str) + 15);
-  g_assert_nonnull (str_cpy);
   g_assert_cmpstr ("The quick brown fox jumps over the lazy dogThe quick brow",
                    ==, str_cpy);
   g_assert_cmpint (str_cpy_size, ==, 2 * strlen (str));
