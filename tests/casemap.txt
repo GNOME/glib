@@ -1,4 +1,4 @@
-# Test cases generated from Unicode 11.0.0 data
+# Test cases generated from Unicode 12.0.0 data
 # by gen-casemap-txt.py. Do not edit.
 #
 # Some special hand crafted tests
@@ -541,7 +541,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ɿ	ɿ			#  27F
 	ʀ	ʀ	Ʀ	Ʀ	#  280
 	ʁ	ʁ			#  281
-	ʂ	ʂ			#  282
+	ʂ	ʂ	Ʂ	Ʂ	#  282
 	ʃ	ʃ	Ʃ	Ʃ	#  283
 	ʄ	ʄ			#  284
 	ʅ	ʅ			#  285
@@ -1398,7 +1398,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ᶋ	ᶋ			# 1D8B
 	ᶌ	ᶌ			# 1D8C
 	ᶍ	ᶍ			# 1D8D
-	ᶎ	ᶎ			# 1D8E
+	ᶎ	ᶎ	Ᶎ	Ᶎ	# 1D8E
 	ᶏ	ᶏ			# 1D8F
 	ᶐ	ᶐ			# 1D90
 	ᶑ	ᶑ			# 1D91
@@ -2383,7 +2383,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꞑ	ꞑ	Ꞑ	Ꞑ	# A791
 	Ꞓ	ꞓ		Ꞓ	# A792
 	ꞓ	ꞓ	Ꞓ	Ꞓ	# A793
-	ꞔ	ꞔ			# A794
+	ꞔ	ꞔ	Ꞔ	Ꞔ	# A794
 	ꞕ	ꞕ			# A795
 	Ꞗ	ꞗ		Ꞗ	# A796
 	ꞗ	ꞗ	Ꞗ	Ꞗ	# A797
@@ -2421,6 +2421,17 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꞷ	ꞷ	Ꞷ	Ꞷ	# A7B7
 	Ꞹ	ꞹ		Ꞹ	# A7B8
 	ꞹ	ꞹ	Ꞹ	Ꞹ	# A7B9
+	Ꞻ	ꞻ		Ꞻ	# A7BA
+	ꞻ	ꞻ	Ꞻ	Ꞻ	# A7BB
+	Ꞽ	ꞽ		Ꞽ	# A7BC
+	ꞽ	ꞽ	Ꞽ	Ꞽ	# A7BD
+	Ꞿ	ꞿ		Ꞿ	# A7BE
+	ꞿ	ꞿ	Ꞿ	Ꞿ	# A7BF
+	Ꟃ	ꟃ		Ꟃ	# A7C2
+	ꟃ	ꟃ	Ꟃ	Ꟃ	# A7C3
+	Ꞔ	ꞔ		Ꞔ	# A7C4
+	Ʂ	ʂ		Ʂ	# A7C5
+	Ᶎ	ᶎ		Ᶎ	# A7C6
 	ꟺ	ꟺ			# A7FA
 	ꬰ	ꬰ			# AB30
 	ꬱ	ꬱ			# AB31
@@ -2471,6 +2482,8 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꭣ	ꭣ			# AB63
 	ꭤ	ꭤ			# AB64
 	ꭥ	ꭥ			# AB65
+	ꭦ	ꭦ			# AB66
+	ꭧ	ꭧ			# AB67
 	ꭰ	ꭰ	Ꭰ	Ꭰ	# AB70
 	ꭱ	ꭱ	Ꭱ	Ꭱ	# AB71
 	ꭲ	ꭲ	Ꭲ	Ꭲ	# AB72
