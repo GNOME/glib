@@ -1977,28 +1977,28 @@ main (int   argc,
   g_test_add_func ("/fileutils/stdio-win32-pathstrip", test_win32_pathstrip);
   g_test_add_func ("/fileutils/stdio-win32-zero-terminate-symlink", test_win32_zero_terminate_symlink);
 #endif
-  g_test_add_func ("/fileutils/build-path", test_build_path);
-  g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
+  g_test_add_func ("/fileutils/basename", test_basename);
   g_test_add_func ("/fileutils/build-filename", test_build_filename);
   g_test_add_func ("/fileutils/build-filenamev", test_build_filenamev);
-  g_test_add_func ("/fileutils/mkdir-with-parents", test_mkdir_with_parents);
-  g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
-  g_test_add_func ("/fileutils/errors", test_file_errors);
-  g_test_add_func ("/fileutils/basename", test_basename);
+  g_test_add_func ("/fileutils/build-path", test_build_path);
+  g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
   g_test_add_func ("/fileutils/canonicalize-filename", test_canonicalize_filename);
   g_test_add_func ("/fileutils/dir-make-tmp", test_dir_make_tmp);
+  g_test_add_func ("/fileutils/errors", test_file_errors);
   g_test_add_func ("/fileutils/file-open-tmp", test_file_open_tmp);
-  g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
   g_test_add_func ("/fileutils/file_test", test_file_test);
+  g_test_add_func ("/fileutils/fopen-modes", test_fopen_modes);
+  g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
   g_test_add_func ("/fileutils/get-current-dir", test_get_current_dir);
+  g_test_add_func ("/fileutils/mkdir-with-parents", test_mkdir_with_parents);
   g_test_add_func ("/fileutils/mkdtemp", test_mkdtemp);
-  g_test_add_func ("/fileutils/set-and-get-contents", test_set_and_get_contents);
+  g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
   g_test_add_func ("/fileutils/path-get-dirname", test_path_get_dirname);
   g_test_add_func ("/fileutils/path-is-absolute", test_path_is_absolute);
   g_test_add_func ("/fileutils/path-skip-root", test_path_skip_root);
   g_test_add_func ("/fileutils/read-link", test_read_link);
+  g_test_add_func ("/fileutils/set-and-get-contents", test_set_and_get_contents);
   g_test_add_func ("/fileutils/stdio-wrappers", test_stdio_wrappers);
-  g_test_add_func ("/fileutils/fopen-modes", test_fopen_modes);
 
   return g_test_run ();
 }
