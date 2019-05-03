@@ -1,3 +1,19 @@
+Overview of changes in GLib 2.60.2
+==================================
+
+* Fix crash when displaying notifications on macOS (!786)
+
+* Improve network status detection with NetworkManager (!781)
+
+* Bugs fixed:
+ - !790 glib/gconstructor.h: Include stdlib.h for MSVC builds
+ - !793 Backport !786: “cocoanotificationbackend: do not release readonly property” to glib-2-60
+ - !803 Backport !781 “gnetworkmonitornm: Fix network available detection” to glib-2-60
+
+* Translation updates:
+ - Catalan
+
+
 Overview of changes in GLib 2.60.1
 ==================================
 
