@@ -84,7 +84,13 @@ _g_module_open (const gchar *file_name,
   success = SetThreadErrorMode (SEM_NOOPENFILEERRORBOX | SEM_FAILCRITICALERRORS, &old_mode);
   if (!success)
     set_error ("");
+
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+  handle = LoadPackagedLibrary (wfilename, 0);
+#else
   handle = LoadLibraryW (wfilename);
+#endif
+
   if (success)
     SetThreadErrorMode (old_mode, NULL);
   g_free (wfilename);
