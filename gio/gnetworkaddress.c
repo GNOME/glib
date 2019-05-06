@@ -66,7 +66,6 @@
 struct _GNetworkAddressPrivate {
   gchar *hostname;
   guint16 port;
-  GList *sockaddrs;
   gchar *scheme;
 
   gint64 resolver_serial;
@@ -105,7 +104,6 @@ g_network_address_finalize (GObject *object)
 
   g_free (addr->priv->hostname);
   g_free (addr->priv->scheme);
-  g_list_free_full (addr->priv->sockaddrs, g_object_unref);
 
   G_OBJECT_CLASS (g_network_address_parent_class)->finalize (object);
 }
@@ -220,49 +218,6 @@ g_network_address_get_property (GObject    *object,
 
 }
 
-/*
- * g_network_address_add_addresses:
- * @addr: A #GNetworkAddress
- * @addresses: (transfer full): List of #GSocketAddress
- * @resolver_serial: Serial of #GResolver used
- *
- * Consumes address list and adds them to internal list.
- */
-static void
-g_network_address_add_addresses (GNetworkAddress *addr,
-                                 GList           *addresses,
-                                 guint64          resolver_serial)
-{
-  GList *a;
-  GSocketAddress *sockaddr;
-
-  for (a = addresses; a; a = a->next)
-    {
-      sockaddr = g_inet_socket_address_new (a->data, addr->priv->port);
-      addr->priv->sockaddrs = g_list_append (addr->priv->sockaddrs, sockaddr);
-      g_object_unref (a->data);
-    }
-  g_list_free (addresses);
-
-  addr->priv->resolver_serial = resolver_serial;
-}
-
-static gboolean
-g_network_address_parse_sockaddr (GNetworkAddress *addr)
-{
-  GSocketAddress *sockaddr;
-
-  sockaddr = g_inet_socket_address_new_from_string (addr->priv->hostname,
-                                                    addr->priv->port);
-  if (sockaddr)
-    {
-      addr->priv->sockaddrs = g_list_append (addr->priv->sockaddrs, sockaddr);
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
 /**
  * g_network_address_new:
  * @hostname: the hostname
@@ -325,7 +280,8 @@ g_network_address_new_loopback (guint16 port)
 
   addrs = g_list_append (addrs, g_inet_address_new_loopback (AF_INET6));
   addrs = g_list_append (addrs, g_inet_address_new_loopback (AF_INET));
-  g_network_address_add_addresses (addr, g_steal_pointer (&addrs), 0);
+  //g_network_address_add_addresses (addr, g_steal_pointer (&addrs), 0);
+  g_critical("loopback not handled");
 
   return G_SOCKET_CONNECTABLE (addr);
 }
@@ -893,6 +849,7 @@ typedef struct {
   GSocketAddressEnumerator parent_instance;
 
   GNetworkAddress *addr; /* (owned) */
+  GList *sockaddrs; /* (owned) */
   GList *addresses; /* (owned) (nullable) */
   GList *last_tail; /* (unowned) (nullable) */
   GList *current_item; /* (unowned) (nullable) */
@@ -929,8 +886,53 @@ g_network_address_address_enumerator_finalize (GObject *object)
   g_object_unref (addr_enum->addr);
   g_clear_pointer (&addr_enum->addresses, g_list_free);
   g_clear_pointer (&addr_enum->context, g_main_context_unref);
+  g_list_free_full (addr_enum->sockaddrs, g_object_unref);
 
   G_OBJECT_CLASS (_g_network_address_address_enumerator_parent_class)->finalize (object);
+}
+
+/*
+ * g_network_address_add_addresses:
+ * @addr: A #GNetworkAddress
+ * @addresses: (transfer full): List of #GSocketAddress
+ * @resolver_serial: Serial of #GResolver used
+ *
+ * Consumes address list and adds them to internal list.
+ */
+static void
+g_network_address_add_addresses (GNetworkAddress *addr,
+                                 GNetworkAddressAddressEnumerator *addr_enum,
+                                 GList           *addresses,
+                                 guint64          resolver_serial)
+{
+  GList *a;
+  GSocketAddress *sockaddr;
+
+  for (a = addresses; a; a = a->next)
+    {
+      sockaddr = g_inet_socket_address_new (a->data, addr->priv->port);
+      addr_enum->sockaddrs = g_list_append (addr_enum->sockaddrs, sockaddr);
+      g_object_unref (a->data);
+    }
+  g_list_free (addresses);
+
+  addr->priv->resolver_serial = resolver_serial;
+}
+
+static gboolean
+g_network_address_parse_sockaddr (GNetworkAddress *addr, GNetworkAddressAddressEnumerator *addr_enum)
+{
+  GSocketAddress *sockaddr;
+
+  sockaddr = g_inet_socket_address_new_from_string (addr->priv->hostname,
+                                                    addr->priv->port);
+  if (sockaddr)
+    {
+      addr_enum->sockaddrs = g_list_append (addr_enum->sockaddrs, sockaddr);
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 static inline GSocketFamily
@@ -1071,13 +1073,13 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
           addr->priv->resolver_serial != serial)
         {
           /* Resolver has reloaded, discard cached addresses */
-          g_list_free_full (addr->priv->sockaddrs, g_object_unref);
-          addr->priv->sockaddrs = NULL;
+          g_list_free_full (addr_enum->sockaddrs, g_object_unref);
+          addr_enum->sockaddrs = NULL;
         }
 
-      if (!addr->priv->sockaddrs)
-        g_network_address_parse_sockaddr (addr);
-      if (!addr->priv->sockaddrs)
+      if (!addr_enum->sockaddrs)
+        g_network_address_parse_sockaddr (addr, addr_enum);
+      if (!addr_enum->sockaddrs)
         {
           GList *addresses;
 
@@ -1090,11 +1092,11 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
               return NULL;
             }
 
-          g_network_address_add_addresses (addr, g_steal_pointer (&addresses), serial);
+          g_network_address_add_addresses (addr, addr_enum, g_steal_pointer (&addresses), serial);
         }
 
-      addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr->priv->sockaddrs);
-      addr_enum->last_tail = g_list_last (addr->priv->sockaddrs);
+      addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr_enum->sockaddrs);
+      addr_enum->last_tail = g_list_last (addr_enum->sockaddrs);
       g_object_unref (resolver);
     }
 
@@ -1114,13 +1116,12 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
 static GSocketAddress *
 init_and_query_next_address (GNetworkAddressAddressEnumerator *addr_enum)
 {
-  GNetworkAddress *addr = addr_enum->addr;
   GSocketAddress *sockaddr;
 
   if (addr_enum->addresses == NULL)
     {
-      addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr->priv->sockaddrs);
-      addr_enum->last_tail = g_list_last (addr_enum->addr->priv->sockaddrs);
+      addr_enum->current_item = addr_enum->addresses = list_copy_interleaved (addr_enum->sockaddrs);
+      addr_enum->last_tail = g_list_last (addr_enum->sockaddrs);
       if (addr_enum->current_item)
         sockaddr = g_object_ref (addr_enum->current_item->data);
       else
@@ -1128,7 +1129,7 @@ init_and_query_next_address (GNetworkAddressAddressEnumerator *addr_enum)
     }
   else
     {
-      GList *parent_tail = g_list_last (addr_enum->addr->priv->sockaddrs);
+      GList *parent_tail = g_list_last (addr_enum->sockaddrs);
 
       if (addr_enum->last_tail != parent_tail)
         {
@@ -1201,7 +1202,7 @@ got_ipv6_addresses (GObject      *source_object,
       /* Regardless of which responds first we add them to the enumerator
        * which does mean the timing of next_async() will potentially change
        * the results */
-      g_network_address_add_addresses (addr_enum->addr, g_steal_pointer (&addresses),
+      g_network_address_add_addresses (addr_enum->addr, addr_enum, g_steal_pointer (&addresses),
                                        g_resolver_get_serial (resolver));
     }
   else
@@ -1265,7 +1266,7 @@ got_ipv4_addresses (GObject      *source_object,
   addresses = g_resolver_lookup_by_name_with_flags_finish (resolver, result, &error);
   if (!error)
     {
-      g_network_address_add_addresses (addr_enum->addr, g_steal_pointer (&addresses),
+      g_network_address_add_addresses (addr_enum->addr, addr_enum, g_steal_pointer (&addresses),
                                        g_resolver_get_serial (resolver));
     }
   else
@@ -1331,13 +1332,13 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
           addr->priv->resolver_serial != serial)
         {
           /* Resolver has reloaded, discard cached addresses */
-          g_list_free_full (addr->priv->sockaddrs, g_object_unref);
-          addr->priv->sockaddrs = NULL;
+          g_list_free_full (addr_enum->sockaddrs, g_object_unref);
+          addr_enum->sockaddrs = NULL;
         }
 
-      if (addr->priv->sockaddrs == NULL)
+      if (addr_enum->sockaddrs == NULL)
         {
-          if (g_network_address_parse_sockaddr (addr))
+          if (g_network_address_parse_sockaddr (addr, addr_enum))
             complete_queued_task (addr_enum, task, NULL);
           else
             {
