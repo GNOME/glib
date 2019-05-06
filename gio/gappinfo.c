@@ -1204,6 +1204,10 @@ g_app_launch_context_setenv (GAppLaunchContext *context,
                              const char        *variable,
                              const char        *value)
 {
+  g_return_if_fail (G_IS_APP_LAUNCH_CONTEXT (context));
+  g_return_if_fail (variable != NULL);
+  g_return_if_fail (value != NULL);
+
   if (!context->priv->envp)
     context->priv->envp = g_get_environ ();
 
@@ -1225,6 +1229,9 @@ void
 g_app_launch_context_unsetenv (GAppLaunchContext *context,
                                const char        *variable)
 {
+  g_return_if_fail (G_IS_APP_LAUNCH_CONTEXT (context));
+  g_return_if_fail (variable != NULL);
+
   if (!context->priv->envp)
     context->priv->envp = g_get_environ ();
 
@@ -1249,6 +1256,8 @@ g_app_launch_context_unsetenv (GAppLaunchContext *context,
 char **
 g_app_launch_context_get_environment (GAppLaunchContext *context)
 {
+  g_return_val_if_fail (G_IS_APP_LAUNCH_CONTEXT (context), NULL);
+
   if (!context->priv->envp)
     context->priv->envp = g_get_environ ();
 
