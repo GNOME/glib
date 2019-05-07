@@ -198,7 +198,7 @@ g_get_charset (const char **charset)
   raw = _g_locale_charset_raw ();
   G_UNLOCK (aliases);
 
-  if (!(cache->raw && strcmp (cache->raw, raw) == 0))
+  if (cache->raw == NULL || strcmp (cache->raw, raw) != 0)
     {
       const gchar *new_charset;
 
@@ -280,7 +280,7 @@ g_get_console_charset (const char **charset)
   else
     raw = "UTF-8";
 
-  if (!(cache->raw && strcmp (cache->raw, raw) == 0))
+  if (cache->raw == NULL || strcmp (cache->raw, raw) != 0)
     {
       const gchar *new_charset;
 
