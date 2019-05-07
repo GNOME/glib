@@ -29,6 +29,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
 
 static gboolean
 strv_check (const gchar * const *strv, ...)
@@ -333,6 +336,33 @@ test_codeset2 (void)
     }
   g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_passed ();
+}
+
+static void
+test_console_charset (void)
+{
+  const gchar *c1;
+  const gchar *c2;
+
+#ifdef G_OS_WIN32
+  /* set console output encoding to UTF-8;
+     this should never match the 8-bit codepage returned by g_get_charset */
+  const unsigned int initial_cp = GetConsoleOutputCP();
+  SetConsoleOutputCP(CP_UTF8);
+#endif
+
+  g_get_charset (&c1);
+  g_get_console_charset (&c2);
+
+#ifdef G_OS_WIN32
+  g_assert_cmpstr (c1, !=, c2);
+#else
+  g_assert_cmpstr (c1, ==, c2);
+#endif
+
+#ifdef G_OS_WIN32
+    SetConsoleOutputCP(initial_cp);
+#endif
 }
 
 static void
@@ -717,6 +747,7 @@ main (int   argc,
   g_test_add_func ("/utils/debug", test_debug);
   g_test_add_func ("/utils/codeset", test_codeset);
   g_test_add_func ("/utils/codeset2", test_codeset2);
+  g_test_add_func ("/utils/console-charset", test_console_charset);
   g_test_add_func ("/utils/basename", test_basename);
   g_test_add_func ("/utils/gettext", test_gettext);
   g_test_add_func ("/utils/username", test_username);
