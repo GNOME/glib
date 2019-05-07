@@ -170,6 +170,8 @@
  * time (&ttime);
  * gtime = (GTime)ttime;
  * ]|
+ *
+ * Deprecated: 2.62: This is not Y2038-safe. Use #GDateTime or #time_t instead.
  */
 
 /**
