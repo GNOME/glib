@@ -62,7 +62,8 @@
 <!ELEMENT aliases (alias+) >
 <!-- each alias element specifies an alias for one of the possible values -->
 <!ELEMENT alias EMPTY >
-<!ATTLIST alias value CDATA #REQUIRED >
+<!ATTLIST alias value  CDATA #REQUIRED
+                target CDATA #REQUIRED >
 
 <!ELEMENT child EMPTY >
 <!ATTLIST child name   CDATA #REQUIRED
