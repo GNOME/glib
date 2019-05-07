@@ -408,7 +408,7 @@ registry_cache_add_item (GNode         *parent,
   item->block_count = 0;
   item->readable = FALSE;
 
-  trace ("\treg cache: adding %s to %s\n",
+  trace ("\tregistry cache: adding %s to %s\n",
          name, ((RegistryCacheItem *)parent->data)->name);
 
   cache_node = g_node_new (item);
