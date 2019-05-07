@@ -1327,3 +1327,28 @@ g_list_sort_with_data (GList            *list,
 {
   return g_list_sort_real (list, (GFunc) compare_func, user_data);
 }
+
+/**
+ * g_clear_list_full: (skip)
+ * @list_ptr: a pointer to a #GList
+ * @free_func: the function to be called to free each element's data
+ *
+ * Frees all the memory used by a #GList, calls @free_func on every element's
+ * data and clears the pointer.
+ *
+ * @list_ptr must not be %NULL.
+ *
+ * If the list is %NULL then this function does nothing.
+ * Otherwise, the list is fully freed and the pointer is set to %NULL.
+ *
+ * Since: 2.62
+ **/
+void
+g_clear_list_full (GList          **list_ptr,
+                   GDestroyNotify   free_func)
+{
+  g_return_if_fail (list_ptr != NULL);
+
+  g_list_free_full (*list_ptr, free_func);
+  g_nullify_pointer ((gpointer *) list_ptr);
+}
