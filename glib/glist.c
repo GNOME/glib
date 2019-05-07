@@ -147,6 +147,20 @@
  * Returns: the next element, or %NULL if there are no more elements
  **/
 
+/**
+ * g_clear_list: (skip)
+ * @list_ptr: a pointer to a #GList
+ *
+ * Frees all the memory used by a #GList and clears the pointer.
+ *
+ * @list_ptr must not be %NULL.
+ *
+ * If the list is %NULL then this function does nothing.
+ * Otherwise, the list is freed and the pointer is set to %NULL.
+ *
+ * Since: 2.62
+ **/
+
 #define _g_list_alloc()         g_slice_new (GList)
 #define _g_list_alloc0()        g_slice_new0 (GList)
 #define _g_list_free1(list)     g_slice_free (GList, list)

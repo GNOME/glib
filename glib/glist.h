@@ -151,6 +151,8 @@ gpointer g_list_nth_data                (GList            *list,
 #define g_list_previous(list)	        ((list) ? (((GList *)(list))->prev) : NULL)
 #define g_list_next(list)	        ((list) ? (((GList *)(list))->next) : NULL)
 
+#define g_clear_list(list_ptr)	        g_clear_pointer ((list_ptr), g_list_free);
+
 G_END_DECLS
 
 #endif /* __G_LIST_H__ */
