@@ -138,6 +138,8 @@ gpointer g_slist_nth_data                (GSList           *list,
 
 #define  g_slist_next(slist)	         ((slist) ? (((GSList *)(slist))->next) : NULL)
 
+#define  g_clear_slist(slist_ptr)      g_clear_pointer ((slist_ptr), g_slist_free);
+
 G_END_DECLS
 
 #endif /* __G_SLIST_H__ */

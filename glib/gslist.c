@@ -101,6 +101,20 @@
  * Returns: the next element, or %NULL if there are no more elements.
  **/
 
+/**
+ * g_clear_slist: (skip)
+ * @slist_ptr: a pointer to a #GSList
+ *
+ * Frees all the memory used by a #GSList and clears the pointer.
+ *
+ * @slist_ptr must not be %NULL.
+ *
+ * If the slist is %NULL then this function does nothing.
+ * Otherwise, the slist is freed and the pointer is set to %NULL.
+ *
+ * Since: 2.62
+ **/
+
 #define _g_slist_alloc0()       g_slice_new0 (GSList)
 #define _g_slist_alloc()        g_slice_new (GSList)
 #define _g_slist_free1(slist)   g_slice_free (GSList, slist)
