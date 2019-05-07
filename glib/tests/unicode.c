@@ -25,7 +25,11 @@
 /* We are testing some deprecated APIs here */
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 
+#include <locale.h>
+
 #include "glib.h"
+
+#include "glib/gunidecomp.h"
 
 /* Test that g_unichar_validate() returns the correct value for various
  * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
@@ -86,6 +90,17 @@ test_unichar_character_type (void)
     {
       g_assert_cmpint (g_unichar_type (examples[i].c), ==, examples[i].type);
     }
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_cmpint (g_unichar_type (0x3FF5), ==, 0x07);
+  /* U+FFEFF Plane 15 Private Use */
+  g_assert_cmpint (g_unichar_type (0xFFEFF), ==, 0x03);
+  /* U+E0001 Language Tag */
+  g_assert_cmpint (g_unichar_type (0xE0001), ==, 0x01);
+  g_assert_cmpint (g_unichar_type (G_UNICODE_LAST_CHAR), ==, 0x02);
+  g_assert_cmpint (g_unichar_type (G_UNICODE_LAST_CHAR + 1), ==, 0x02);
+  g_assert_cmpint (g_unichar_type (G_UNICODE_LAST_CHAR_PART1), ==, 0x02);
+  g_assert_cmpint (g_unichar_type (G_UNICODE_LAST_CHAR_PART1 + 1), ==, 0x02);
 }
 
 /* Test that g_unichar_break_type() returns the correct value for various
@@ -393,6 +408,81 @@ test_mirror (void)
   g_assert_false (g_unichar_get_mirror_char ('a', &mirror));
 }
 
+/* Test that g_utf8_strup() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_strup (void)
+{
+  char *str_up = NULL;
+  const char *str = "AaZz09x;\x03\x45"
+    "\xEF\xBD\x81"  /* Unichar 'A' (U+FF21) */
+    "\xEF\xBC\xA1"; /* Unichar 'a' (U+FF41) */
+
+  /* Testing degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      str_up = g_utf8_strup (NULL, 0);
+      g_test_assert_expected_messages ();
+    }
+
+  str_up = g_utf8_strup (str, strlen (str));
+  /* Tricky, comparing two unicode strings with an ASCII function */
+  g_assert_cmpstr (str_up, ==, "AAZZ09X;\003E\357\274\241\357\274\241");
+  g_free (str_up);
+}
+
+/* Test that g_utf8_strdown() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_strdown (void)
+{
+  char *str_down = NULL;
+  const char *str = "AaZz09x;\x03\x07"
+    "\xEF\xBD\x81"  /* Unichar 'A' (U+FF21) */
+    "\xEF\xBC\xA1"; /* Unichar 'a' (U+FF41) */
+
+  /* Testing degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      str_down = g_utf8_strdown (NULL, 0);
+      g_test_assert_expected_messages ();
+    }
+
+  str_down = g_utf8_strdown (str, strlen (str));
+  /* Tricky, comparing two unicode strings with an ASCII function */
+  g_assert_cmpstr (str_down, ==, "aazz09x;\003\007\357\275\201\357\275\201");
+  g_free (str_down);
+}
+
+/* Test that g_utf8_casefold() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_casefold (void)
+{
+  char *str_casefold = NULL;
+  const char *str = "AaZz09x;"
+    "\xEF\xBD\x81"  /* Unichar 'A' (U+FF21) */
+    "\xEF\xBC\xA1"; /* Unichar 'a' (U+FF41) */
+
+  /* Testing degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      str_casefold = g_utf8_casefold (NULL, 0);
+      g_test_assert_expected_messages ();
+    }
+
+  str_casefold = g_utf8_casefold (str, strlen (str));
+  /* Tricky, comparing two unicode strings with an ASCII function */
+  g_assert_cmpstr (str_casefold, ==, "aazz09x;\357\275\201\357\275\201");
+  g_free (str_casefold);
+}
+
 /* Test that g_unichar_ismark() returns the correct value for various
  * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
 static void
@@ -402,6 +492,343 @@ test_mark (void)
   g_assert_true (g_unichar_ismark (0x20DD));
   g_assert_true (g_unichar_ismark (0xA806));
   g_assert_false (g_unichar_ismark ('a'));
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_ismark (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_ismark (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_ismark (0xE0001));
+  g_assert_false (g_unichar_ismark (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_ismark (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_ismark (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_ismark (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_isspace() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_space (void)
+{
+  g_assert_false (g_unichar_isspace ('a'));
+  g_assert_true (g_unichar_isspace (' '));
+  g_assert_true (g_unichar_isspace ('\t'));
+  g_assert_true (g_unichar_isspace ('\n'));
+  g_assert_true (g_unichar_isspace ('\r'));
+  g_assert_true (g_unichar_isspace ('\f'));
+  g_assert_false (g_unichar_isspace (0xff41)); /* Unicode fullwidth 'a' */
+  g_assert_true (g_unichar_isspace (0x202F)); /* Unicode space separator */
+  g_assert_true (g_unichar_isspace (0x2028)); /* Unicode line separator */
+  g_assert_true (g_unichar_isspace (0x2029)); /* Unicode paragraph separator */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_isspace (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_isspace (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_isspace (0xE0001));
+  g_assert_false (g_unichar_isspace (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isspace (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isspace (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isspace (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_isalnum() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_alnum (void)
+{
+  g_assert_false (g_unichar_isalnum (' '));
+  g_assert_true (g_unichar_isalnum ('a'));
+  g_assert_true (g_unichar_isalnum ('z'));
+  g_assert_true (g_unichar_isalnum ('0'));
+  g_assert_true (g_unichar_isalnum ('9'));
+  g_assert_true (g_unichar_isalnum ('A'));
+  g_assert_true (g_unichar_isalnum ('Z'));
+  g_assert_false (g_unichar_isalnum ('-'));
+  g_assert_false (g_unichar_isalnum ('*'));
+  g_assert_true (g_unichar_isalnum (0xFF21));  /* Unichar fullwidth 'A' */
+  g_assert_true (g_unichar_isalnum (0xFF3A));  /* Unichar fullwidth 'Z' */
+  g_assert_true (g_unichar_isalnum (0xFF41));  /* Unichar fullwidth 'a' */
+  g_assert_true (g_unichar_isalnum (0xFF5A));  /* Unichar fullwidth 'z' */
+  g_assert_true (g_unichar_isalnum (0xFF10));  /* Unichar fullwidth '0' */
+  g_assert_true (g_unichar_isalnum (0xFF19));  /* Unichar fullwidth '9' */
+  g_assert_false (g_unichar_isalnum (0xFF0A)); /* Unichar fullwidth '*' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_true (g_unichar_isalnum (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_isalnum (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_isalnum (0xE0001));
+  g_assert_false (g_unichar_isalnum (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isalnum (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isalnum (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isalnum (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_isalpha() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_alpha (void)
+{
+  g_assert_false (g_unichar_isalpha (' '));
+  g_assert_true (g_unichar_isalpha ('a'));
+  g_assert_true (g_unichar_isalpha ('z'));
+  g_assert_false (g_unichar_isalpha ('0'));
+  g_assert_false (g_unichar_isalpha ('9'));
+  g_assert_true (g_unichar_isalpha ('A'));
+  g_assert_true (g_unichar_isalpha ('Z'));
+  g_assert_false (g_unichar_isalpha ('-'));
+  g_assert_false (g_unichar_isalpha ('*'));
+  g_assert_true (g_unichar_isalpha (0xFF21));  /* Unichar fullwidth 'A' */
+  g_assert_true (g_unichar_isalpha (0xFF3A));  /* Unichar fullwidth 'Z' */
+  g_assert_true (g_unichar_isalpha (0xFF41));  /* Unichar fullwidth 'a' */
+  g_assert_true (g_unichar_isalpha (0xFF5A));  /* Unichar fullwidth 'z' */
+  g_assert_false (g_unichar_isalpha (0xFF10)); /* Unichar fullwidth '0' */
+  g_assert_false (g_unichar_isalpha (0xFF19)); /* Unichar fullwidth '9' */
+  g_assert_false (g_unichar_isalpha (0xFF0A)); /* Unichar fullwidth '*' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_true (g_unichar_isalpha (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_isalpha (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_isalpha (0xE0001));
+  g_assert_false (g_unichar_isalpha (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isalpha (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isalpha (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isalpha (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_isdigit() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_digit (void)
+{
+  g_assert_false (g_unichar_isdigit (' '));
+  g_assert_false (g_unichar_isdigit ('a'));
+  g_assert_true (g_unichar_isdigit ('0'));
+  g_assert_true (g_unichar_isdigit ('9'));
+  g_assert_false (g_unichar_isdigit ('A'));
+  g_assert_false (g_unichar_isdigit ('-'));
+  g_assert_false (g_unichar_isdigit ('*'));
+  g_assert_false (g_unichar_isdigit (0xFF21)); /* Unichar fullwidth 'A' */
+  g_assert_false (g_unichar_isdigit (0xFF3A)); /* Unichar fullwidth 'Z' */
+  g_assert_false (g_unichar_isdigit (0xFF41)); /* Unichar fullwidth 'a' */
+  g_assert_false (g_unichar_isdigit (0xFF5A)); /* Unichar fullwidth 'z' */
+  g_assert_true (g_unichar_isdigit (0xFF10));  /* Unichar fullwidth '0' */
+  g_assert_true (g_unichar_isdigit (0xFF19));  /* Unichar fullwidth '9' */
+  g_assert_false (g_unichar_isdigit (0xFF0A)); /* Unichar fullwidth '*' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_isdigit (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_isdigit (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_isdigit (0xE0001));
+  g_assert_false (g_unichar_isdigit (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isdigit (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isdigit (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isdigit (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_digit_value() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_digit_value (void)
+{
+  g_assert_cmpint (g_unichar_digit_value (' '), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value ('a'), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value ('0'), ==, 0);
+  g_assert_cmpint (g_unichar_digit_value ('9'), ==, 9);
+  g_assert_cmpint (g_unichar_digit_value ('A'), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value ('-'), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (0xFF21), ==, -1); /* Unichar 'A' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF3A), ==, -1); /* Unichar 'Z' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF41), ==, -1); /* Unichar 'a' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF5A), ==, -1); /* Unichar 'z' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF10), ==, 0);  /* Unichar '0' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF19), ==, 9);  /* Unichar '9' */
+  g_assert_cmpint (g_unichar_digit_value (0xFF0A), ==, -1); /* Unichar '*' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_cmpint (g_unichar_digit_value (0x3FF5), ==, -1);
+   /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_cmpint (g_unichar_digit_value (0xFFEFF), ==, -1);
+  /* U+E0001 Language Tag */
+  g_assert_cmpint (g_unichar_digit_value (0xE0001), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (G_UNICODE_LAST_CHAR), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (G_UNICODE_LAST_CHAR + 1), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (G_UNICODE_LAST_CHAR_PART1), ==, -1);
+  g_assert_cmpint (g_unichar_digit_value (G_UNICODE_LAST_CHAR_PART1 + 1), ==, -1);
+}
+
+/* Test that g_unichar_isxdigit() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_xdigit (void)
+{
+  g_assert_false (g_unichar_isxdigit (' '));
+  g_assert_true (g_unichar_isxdigit ('a'));
+  g_assert_true (g_unichar_isxdigit ('f'));
+  g_assert_false (g_unichar_isxdigit ('g'));
+  g_assert_false (g_unichar_isxdigit ('z'));
+  g_assert_true (g_unichar_isxdigit ('0'));
+  g_assert_true (g_unichar_isxdigit ('9'));
+  g_assert_true (g_unichar_isxdigit ('A'));
+  g_assert_true (g_unichar_isxdigit ('F'));
+  g_assert_false (g_unichar_isxdigit ('G'));
+  g_assert_false (g_unichar_isxdigit ('Z'));
+  g_assert_false (g_unichar_isxdigit ('-'));
+  g_assert_false (g_unichar_isxdigit ('*'));
+  g_assert_true (g_unichar_isxdigit (0xFF21));  /* Unichar fullwidth 'A' */
+  g_assert_true (g_unichar_isxdigit (0xFF26));  /* Unichar fullwidth 'F' */
+  g_assert_false (g_unichar_isxdigit (0xFF27)); /* Unichar fullwidth 'G' */
+  g_assert_false (g_unichar_isxdigit (0xFF3A)); /* Unichar fullwidth 'Z' */
+  g_assert_true (g_unichar_isxdigit (0xFF41));  /* Unichar fullwidth 'a' */
+  g_assert_true (g_unichar_isxdigit (0xFF46));  /* Unichar fullwidth 'f' */
+  g_assert_false (g_unichar_isxdigit (0xFF47)); /* Unichar fullwidth 'g' */
+  g_assert_false (g_unichar_isxdigit (0xFF5A)); /* Unichar fullwidth 'z' */
+  g_assert_true (g_unichar_isxdigit (0xFF10));  /* Unichar fullwidth '0' */
+  g_assert_true (g_unichar_isxdigit (0xFF19));  /* Unichar fullwidth '9' */
+  g_assert_false (g_unichar_isxdigit (0xFF0A)); /* Unichar fullwidth '*' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_isxdigit (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_isxdigit (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_isxdigit (0xE0001));
+  g_assert_false (g_unichar_isxdigit (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isxdigit (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isxdigit (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isxdigit (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_xdigit_value() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_xdigit_value (void)
+{
+  g_assert_cmpint (g_unichar_xdigit_value (' '), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value ('a'), ==, 10);
+  g_assert_cmpint (g_unichar_xdigit_value ('f'), ==, 15);
+  g_assert_cmpint (g_unichar_xdigit_value ('g'), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value ('0'), ==, 0);
+  g_assert_cmpint (g_unichar_xdigit_value ('9'), ==, 9);
+  g_assert_cmpint (g_unichar_xdigit_value ('A'), ==, 10);
+  g_assert_cmpint (g_unichar_xdigit_value ('F'), ==, 15);
+  g_assert_cmpint (g_unichar_xdigit_value ('G'), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value ('-'), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF21), ==, 10); /* Unichar 'A' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF26), ==, 15); /* Unichar 'F' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF27), ==, -1); /* Unichar 'G' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF3A), ==, -1); /* Unichar 'Z' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF41), ==, 10); /* Unichar 'a' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF46), ==, 15); /* Unichar 'f' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF47), ==, -1); /* Unichar 'g' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF5A), ==, -1); /* Unichar 'z' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF10), ==, 0);  /* Unichar '0' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF19), ==, 9);  /* Unichar '9' */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFF0A), ==, -1); /* Unichar '*' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_cmpint (g_unichar_xdigit_value (0x3FF5), ==, -1);
+   /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_cmpint (g_unichar_xdigit_value (0xFFEFF), ==, -1);
+  /* U+E0001 Language Tag */
+  g_assert_cmpint (g_unichar_xdigit_value (0xE0001), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (G_UNICODE_LAST_CHAR), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (G_UNICODE_LAST_CHAR + 1), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (G_UNICODE_LAST_CHAR_PART1), ==, -1);
+  g_assert_cmpint (g_unichar_xdigit_value (G_UNICODE_LAST_CHAR_PART1 + 1), ==, -1);
+}
+
+/* Test that g_unichar_ispunct() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_punctuation (void)
+{
+  g_assert_false (g_unichar_ispunct (' '));
+  g_assert_false (g_unichar_ispunct ('a'));
+  g_assert_true (g_unichar_ispunct ('.'));
+  g_assert_true (g_unichar_ispunct (','));
+  g_assert_true (g_unichar_ispunct (';'));
+  g_assert_true (g_unichar_ispunct (':'));
+  g_assert_true (g_unichar_ispunct ('-'));
+
+  g_assert_false (g_unichar_ispunct (0xFF21)); /* Unichar fullwidth 'A' */
+  g_assert_true (g_unichar_ispunct (0x005F));  /* Unichar fullwidth '.' */
+  g_assert_true (g_unichar_ispunct (0x058A));  /* Unichar fullwidth '-' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_ispunct (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_ispunct (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_ispunct (0xE0001));
+  g_assert_false (g_unichar_ispunct (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_ispunct (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_ispunct (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_ispunct (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_iscntrl() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_cntrl (void)
+{
+  g_assert_true (g_unichar_iscntrl (0x08));
+  g_assert_false (g_unichar_iscntrl ('a'));
+  g_assert_true (g_unichar_iscntrl (0x007F)); /* Unichar fullwidth <del> */
+  g_assert_true (g_unichar_iscntrl (0x009F)); /* Unichar fullwidth control */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_iscntrl (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_iscntrl (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_iscntrl (0xE0001));
+  g_assert_false (g_unichar_iscntrl (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_iscntrl (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_iscntrl (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_iscntrl (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_isgraph() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_graph (void)
+{
+  g_assert_false (g_unichar_isgraph (0x08));
+  g_assert_false (g_unichar_isgraph (' '));
+  g_assert_true (g_unichar_isgraph ('a'));
+  g_assert_true (g_unichar_isgraph ('0'));
+  g_assert_true (g_unichar_isgraph ('9'));
+  g_assert_true (g_unichar_isgraph ('A'));
+  g_assert_true (g_unichar_isgraph ('-'));
+  g_assert_true (g_unichar_isgraph ('*'));
+  g_assert_true (g_unichar_isgraph (0xFF21));  /* Unichar fullwidth 'A' */
+  g_assert_true (g_unichar_isgraph (0xFF3A));  /* Unichar fullwidth 'Z' */
+  g_assert_true (g_unichar_isgraph (0xFF41));  /* Unichar fullwidth 'a' */
+  g_assert_true (g_unichar_isgraph (0xFF5A));  /* Unichar fullwidth 'z' */
+  g_assert_true (g_unichar_isgraph (0xFF10));  /* Unichar fullwidth '0' */
+  g_assert_true (g_unichar_isgraph (0xFF19));  /* Unichar fullwidth '9' */
+  g_assert_true (g_unichar_isgraph (0xFF0A));  /* Unichar fullwidth '*' */
+  g_assert_false (g_unichar_isgraph (0x007F)); /* Unichar fullwidth <del> */
+  g_assert_false (g_unichar_isgraph (0x009F)); /* Unichar fullwidth control */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_true (g_unichar_isgraph (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_true (g_unichar_isgraph (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_isgraph (0xE0001));
+  g_assert_false (g_unichar_isgraph (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isgraph (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isgraph (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isgraph (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 /* Test that g_unichar_iszerowidth() returns the correct value for various
@@ -410,14 +837,26 @@ static void
 test_zerowidth (void)
 {
   g_assert_false (g_unichar_iszerowidth (0x00AD));
-  g_assert_false (g_unichar_iszerowidth (0x00AD));
   g_assert_false (g_unichar_iszerowidth (0x115F));
   g_assert_true (g_unichar_iszerowidth (0x1160));
   g_assert_true (g_unichar_iszerowidth (0x11AA));
   g_assert_true (g_unichar_iszerowidth (0x11FF));
   g_assert_false (g_unichar_iszerowidth (0x1200));
+  g_assert_false (g_unichar_iszerowidth (0x200A));
   g_assert_true (g_unichar_iszerowidth (0x200B));
+  g_assert_true (g_unichar_iszerowidth (0x200C));
   g_assert_true (g_unichar_iszerowidth (0x591));
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_iszerowidth (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_iszerowidth (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_true (g_unichar_iszerowidth (0xE0001));
+  g_assert_false (g_unichar_iszerowidth (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_iszerowidth (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_iszerowidth (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_iszerowidth (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 /* Test that g_unichar_istitle() returns the correct value for various
@@ -430,6 +869,18 @@ test_title (void)
   g_assert_true (g_unichar_istitle (0x1fcc));
   g_assert_false (g_unichar_istitle ('a'));
   g_assert_false (g_unichar_istitle ('A'));
+  g_assert_false (g_unichar_istitle (';'));
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_istitle (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_istitle (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_istitle (0xE0001));
+  g_assert_false (g_unichar_istitle (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_istitle (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_istitle (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_istitle (G_UNICODE_LAST_CHAR_PART1 + 1));
 
   g_assert_cmphex (g_unichar_totitle (0x01c6), ==, 0x01c5);
   g_assert_cmphex (g_unichar_totitle (0x01c4), ==, 0x01c5);
@@ -438,6 +889,94 @@ test_title (void)
   g_assert_cmphex (g_unichar_totitle (0x1f88), ==, 0x1f88);
   g_assert_cmphex (g_unichar_totitle ('a'), ==, 'A');
   g_assert_cmphex (g_unichar_totitle ('A'), ==, 'A');
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_cmphex (g_unichar_totitle (0x3FF5), ==, 0x3FF5);
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_cmphex (g_unichar_totitle (0xFFEFF), ==, 0xFFEFF);
+  g_assert_cmphex (g_unichar_totitle (0xDFFFF), ==, 0xDFFFF);
+  /* U+E0001 Language Tag */
+  g_assert_cmphex (g_unichar_totitle (0xE0001), ==, 0xE0001);
+  g_assert_cmphex (g_unichar_totitle (G_UNICODE_LAST_CHAR), ==,
+                   G_UNICODE_LAST_CHAR);
+  g_assert_cmphex (g_unichar_totitle (G_UNICODE_LAST_CHAR + 1), ==,
+                   (G_UNICODE_LAST_CHAR + 1));
+  g_assert_cmphex (g_unichar_totitle (G_UNICODE_LAST_CHAR_PART1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_cmphex (g_unichar_totitle (G_UNICODE_LAST_CHAR_PART1 + 1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_isupper() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_upper (void)
+{
+  g_assert_false (g_unichar_isupper (' '));
+  g_assert_false (g_unichar_isupper ('0'));
+  g_assert_false (g_unichar_isupper ('a'));
+  g_assert_true (g_unichar_isupper ('A'));
+  g_assert_false (g_unichar_isupper (0xff41)); /* Unicode fullwidth 'a' */
+  g_assert_true (g_unichar_isupper (0xff21)); /* Unicode fullwidth 'A' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_isupper (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_isupper (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_isupper (0xE0001));
+  g_assert_false (g_unichar_isupper (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isupper (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isupper (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isupper (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_islower() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_lower (void)
+{
+  g_assert_false (g_unichar_islower (' '));
+  g_assert_false (g_unichar_islower ('0'));
+  g_assert_true (g_unichar_islower ('a'));
+  g_assert_false (g_unichar_islower ('A'));
+  g_assert_true (g_unichar_islower (0xff41)); /* Unicode fullwidth 'a' */
+  g_assert_false (g_unichar_islower (0xff21)); /* Unicode fullwidth 'A' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_islower (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_islower (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_islower (0xE0001));
+  g_assert_false (g_unichar_islower (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_islower (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_islower (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_islower (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+/* Test that g_unichar_isprint() returns the correct value for various
+ * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
+static void
+test_print (void)
+{
+  g_assert_true (g_unichar_isprint (' '));
+  g_assert_true (g_unichar_isprint ('0'));
+  g_assert_true (g_unichar_isprint ('a'));
+  g_assert_true (g_unichar_isprint ('A'));
+  g_assert_true (g_unichar_isprint (0xff41)); /* Unicode fullwidth 'a' */
+  g_assert_true (g_unichar_isprint (0xff21)); /* Unicode fullwidth 'A' */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_true (g_unichar_isprint (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_true (g_unichar_isprint (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_isprint (0xE0001));
+  g_assert_false (g_unichar_isprint (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isprint (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isprint (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isprint (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 /* Test that g_unichar_toupper() and g_unichar_tolower() return the
@@ -446,12 +985,22 @@ test_title (void)
 static void
 test_cases (void)
 {
+  g_assert_cmphex (g_unichar_toupper (0x0), ==, 0x0);
+  g_assert_cmphex (g_unichar_tolower (0x0), ==, 0x0);
   g_assert_cmphex (g_unichar_toupper ('a'), ==, 'A');
   g_assert_cmphex (g_unichar_toupper ('A'), ==, 'A');
+  /* Unicode fullwidth 'a' == 'A' */
+  g_assert_cmphex (g_unichar_toupper (0xff41), ==, 0xff21);
+  /* Unicode fullwidth 'A' == 'A' */
+  g_assert_cmphex (g_unichar_toupper (0xff21), ==, 0xff21);
   g_assert_cmphex (g_unichar_toupper (0x01C5), ==, 0x01C4);
   g_assert_cmphex (g_unichar_toupper (0x01C6), ==, 0x01C4);
   g_assert_cmphex (g_unichar_tolower ('A'), ==, 'a');
   g_assert_cmphex (g_unichar_tolower ('a'), ==, 'a');
+  /* Unicode fullwidth 'A' == 'a' */
+  g_assert_cmphex (g_unichar_tolower (0xff21), ==, 0xff41);
+  /* Unicode fullwidth 'a' == 'a' */
+  g_assert_cmphex (g_unichar_tolower (0xff41), ==, 0xff41);
   g_assert_cmphex (g_unichar_tolower (0x01C4), ==, 0x01C6);
   g_assert_cmphex (g_unichar_tolower (0x01C5), ==, 0x01C6);
   g_assert_cmphex (g_unichar_tolower (0x1F8A), ==, 0x1F82);
@@ -459,6 +1008,47 @@ test_cases (void)
   g_assert_cmphex (g_unichar_toupper (0x1F8A), ==, 0x1F8A);
   g_assert_cmphex (g_unichar_tolower (0x1FB2), ==, 0x1FB2);
   g_assert_cmphex (g_unichar_toupper (0x1FB2), ==, 0x1FB2);
+
+  /* U+130 is a special case, it's a 'I' with a dot on top */
+  g_assert_cmphex (g_unichar_tolower (0x130), ==, 0x69);
+
+  /* Testing ATTTABLE() border cases */
+  g_assert_cmphex (g_unichar_toupper (0x1D6FE), ==, 0x1D6FE);
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_cmphex (g_unichar_toupper (0x3FF5), ==, 0x3FF5);
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_cmphex (g_unichar_toupper (0xFFEFF), ==, 0xFFEFF);
+  g_assert_cmphex (g_unichar_toupper (0xDFFFF), ==, 0xDFFFF);
+  /* U+E0001 Language Tag */
+  g_assert_cmphex (g_unichar_toupper (0xE0001), ==, 0xE0001);
+  g_assert_cmphex (g_unichar_toupper (G_UNICODE_LAST_CHAR), ==,
+                   G_UNICODE_LAST_CHAR);
+  g_assert_cmphex (g_unichar_toupper (G_UNICODE_LAST_CHAR + 1), ==,
+                   (G_UNICODE_LAST_CHAR + 1));
+  g_assert_cmphex (g_unichar_toupper (G_UNICODE_LAST_CHAR_PART1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_cmphex (g_unichar_toupper (G_UNICODE_LAST_CHAR_PART1 + 1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1 + 1));
+
+  /* Testing ATTTABLE() border cases */
+  g_assert_cmphex (g_unichar_tolower (0x1D6FA), ==, 0x1D6FA);
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_cmphex (g_unichar_tolower (0x3FF5), ==, 0x3FF5);
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_cmphex (g_unichar_tolower (0xFFEFF), ==, 0xFFEFF);
+  g_assert_cmphex (g_unichar_tolower (0xDFFFF), ==, 0xDFFFF);
+  /* U+E0001 Language Tag */
+  g_assert_cmphex (g_unichar_tolower (0xE0001), ==, 0xE0001);
+  g_assert_cmphex (g_unichar_tolower (G_UNICODE_LAST_CHAR), ==,
+                   G_UNICODE_LAST_CHAR);
+  g_assert_cmphex (g_unichar_tolower (G_UNICODE_LAST_CHAR + 1), ==,
+                   (G_UNICODE_LAST_CHAR + 1));
+  g_assert_cmphex (g_unichar_tolower (G_UNICODE_LAST_CHAR_PART1), ==,
+                   G_UNICODE_LAST_CHAR_PART1);
+  g_assert_cmphex (g_unichar_tolower (G_UNICODE_LAST_CHAR_PART1 + 1), ==,
+                   (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 /* Test that g_unichar_isdefined() returns the correct value for various
@@ -473,6 +1063,18 @@ test_defined (void)
   g_assert_true (g_unichar_isdefined ('a'));
   g_assert_false (g_unichar_isdefined (0x10C49));
   g_assert_false (g_unichar_isdefined (0x169D));
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_true (g_unichar_isdefined (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_true (g_unichar_isdefined (0xFFEFF));
+  g_assert_false (g_unichar_isdefined (0xDFFFF));
+  /* U+E0001 Language Tag */
+  g_assert_true (g_unichar_isdefined (0xE0001));
+  g_assert_false (g_unichar_isdefined (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isdefined (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isdefined (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isdefined (G_UNICODE_LAST_CHAR_PART1 + 1));
 }
 
 /* Test that g_unichar_iswide() returns the correct value for various
@@ -1001,24 +1603,40 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/unicode/alnum", test_alnum);
+  g_test_add_func ("/unicode/alpha", test_alpha);
   g_test_add_func ("/unicode/break-type", test_unichar_break_type);
   g_test_add_func ("/unicode/canonical-decomposition", test_canonical_decomposition);
+  g_test_add_func ("/unicode/casefold", test_casefold);
   g_test_add_func ("/unicode/cases", test_cases);
   g_test_add_func ("/unicode/character-type", test_unichar_character_type);
+  g_test_add_func ("/unicode/cntrl", test_cntrl);
   g_test_add_func ("/unicode/combining-class", test_combining_class);
   g_test_add_func ("/unicode/compose", test_compose);
   g_test_add_func ("/unicode/decompose", test_decompose);
   g_test_add_func ("/unicode/decompose-tail", test_decompose_tail);
   g_test_add_func ("/unicode/defined", test_defined);
+  g_test_add_func ("/unicode/digit", test_digit);
+  g_test_add_func ("/unicode/digit-value", test_digit_value);
   g_test_add_func ("/unicode/fully-decompose-canonical", test_fully_decompose_canonical);
   g_test_add_func ("/unicode/fully-decompose-len", test_fully_decompose_len);
+  g_test_add_func ("/unicode/graph", test_graph);
   g_test_add_func ("/unicode/iso15924", test_iso15924);
+  g_test_add_func ("/unicode/lower", test_lower);
   g_test_add_func ("/unicode/mark", test_mark);
   g_test_add_func ("/unicode/mirror", test_mirror);
+  g_test_add_func ("/unicode/print", test_print);
+  g_test_add_func ("/unicode/punctuation", test_punctuation);
   g_test_add_func ("/unicode/script", test_unichar_script);
+  g_test_add_func ("/unicode/space", test_space);
+  g_test_add_func ("/unicode/strdown", test_strdown);
+  g_test_add_func ("/unicode/strup", test_strup);
   g_test_add_func ("/unicode/title", test_title);
+  g_test_add_func ("/unicode/upper", test_upper);
   g_test_add_func ("/unicode/validate", test_unichar_validate);
   g_test_add_func ("/unicode/wide", test_wide);
+  g_test_add_func ("/unicode/xdigit", test_xdigit);
+  g_test_add_func ("/unicode/xdigit-value", test_xdigit_value);
   g_test_add_func ("/unicode/zero-width", test_zerowidth);
 
   return g_test_run();
