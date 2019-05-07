@@ -198,6 +198,8 @@ GLIB_AVAILABLE_IN_ALL
 void     g_queue_delete_link    (GQueue           *queue,
                                  GList            *link_);
 
+#define  g_clear_queue(queue_ptr) g_clear_pointer ((queue_ptr), g_queue_free);
+
 G_END_DECLS
 
 #endif /* __G_QUEUE_H__ */

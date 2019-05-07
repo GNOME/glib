@@ -58,6 +58,20 @@
 #include "gslice.h"
 
 /**
+ * g_clear_queue: (skip)
+ * @queue_ptr: a pointer to a #GQueue
+ *
+ * Frees all the memory used by a #GQueue and clears the pointer.
+ *
+ * @queue_ptr must not be %NULL.
+ *
+ * If the queue is %NULL then this function does nothing.
+ * Otherwise, the list is freed and the pointer is set to %NULL.
+ *
+ * Since: 2.62
+ **/
+
+/**
  * g_queue_new:
  *
  * Creates a new #GQueue.
