@@ -1188,3 +1188,31 @@ g_queue_insert_sorted (GQueue           *queue,
 
   g_queue_insert_before (queue, list, data);
 }
+
+/**
+ * g_clear_queue_full: (skip)
+ * @queue_ptr: a pointer to a #GQueue
+ * @free_func: the function to be called to free each element's data
+ *
+ * Frees all the memory used by a #GQueue, calls @free_func on every element's
+ * data and clears the pointer.
+ *
+ * @queue_ptr must not be %NULL.
+ *
+ * If the queue is %NULL then this function does nothing.
+ * Otherwise, the queue is fully freed and the pointer is set to %NULL.
+ *
+ * Since: 2.62
+ **/
+void
+g_clear_queue_full (GQueue          **queue_ptr,
+                    GDestroyNotify    free_func)
+{
+  g_return_if_fail (queue_ptr != NULL);
+
+  if (*queue_ptr)
+    {
+      g_queue_free_full (*queue_ptr, free_func);
+      g_nullify_pointer ((gpointer *) queue_ptr);
+    }
+}

@@ -197,6 +197,9 @@ void     g_queue_unlink         (GQueue           *queue,
 GLIB_AVAILABLE_IN_ALL
 void     g_queue_delete_link    (GQueue           *queue,
                                  GList            *link_);
+GLIB_AVAILABLE_IN_2_62
+void     g_clear_queue_full     (GQueue          **queue_ptr,
+                                 GDestroyNotify    free_func);
 
 #define  g_clear_queue(queue_ptr) g_clear_pointer ((queue_ptr), g_queue_free);
 
