@@ -1296,6 +1296,41 @@ test_clear_pointer (void)
   g_assert_false (four->freed);
 
   g_assert_null (queue);
+  g_clear_queue (&queue);
+
+  g_slice_free (QueueItem, one);
+  g_slice_free (QueueItem, two);
+  g_slice_free (QueueItem, three);
+  g_slice_free (QueueItem, four);
+}
+
+static void
+test_clear_pointer_full (void)
+{
+  QueueItem *one, *two, *three, *four;
+  GQueue *queue;
+
+  queue = g_queue_new ();
+  g_queue_push_tail (queue, one = new_item (1));
+  g_queue_push_tail (queue, two = new_item (2));
+  g_queue_push_tail (queue, three = new_item (3));
+  g_queue_push_tail (queue, four = new_item (4));
+
+  g_assert_cmpint (g_queue_get_length (queue), ==, 4);
+  g_assert_false (one->freed);
+  g_assert_false (two->freed);
+  g_assert_false (three->freed);
+  g_assert_false (four->freed);
+
+  g_clear_queue_full (&queue, free_func);
+
+  g_assert_true (one->freed);
+  g_assert_true (two->freed);
+  g_assert_true (three->freed);
+  g_assert_true (four->freed);
+
+  g_assert_null (queue);
+  g_clear_queue_full (&queue, free_func);
 
   g_slice_free (QueueItem, one);
   g_slice_free (QueueItem, two);
@@ -1322,6 +1357,7 @@ int main (int argc, char *argv[])
   g_test_add_func ("/queue/insert-sibling-link", test_insert_sibling_link);
   g_test_add_func ("/queue/push-nth-link", test_push_nth_link);
   g_test_add_func ("/queue/clear-pointer", test_clear_pointer);
+  g_test_add_func ("/queue/clear-pointer-full", test_clear_pointer_full);
 
   seed = g_test_rand_int_range (0, G_MAXINT);
   path = g_strdup_printf ("/queue/random/seed:%u", seed);
