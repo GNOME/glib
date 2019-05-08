@@ -272,6 +272,7 @@ g_get_console_charset (const char **charset)
   if (!cache)
     cache = g_private_set_alloc0 (&cache_private, sizeof (GCharsetCache));
 
+  /* first try to query $LANG (works for Cygwin/MSYS/MSYS2 and others using mintty) */
   locale = g_getenv ("LANG");
   if (locale != NULL && locale[0] != '\0')
     {
@@ -295,6 +296,7 @@ g_get_console_charset (const char **charset)
             }
         }
     }
+  /* next try querying console codepage using native win32 API */
   if (raw == NULL)
     {
       cp = GetConsoleOutputCP ();
@@ -303,7 +305,15 @@ g_get_console_charset (const char **charset)
           sprintf (buf, "CP%u", cp);
           raw = buf;
         }
+      else if (GetLastError () != ERROR_INVALID_HANDLE)
+      {
+        gchar *emsg = g_win32_error_message (GetLastError ());
+        g_warning ("Failed to determine console output code page: %s. "
+                   "Falling back to UTF-8", emsg);
+        g_free (emsg);
+      }
     }
+  /* fall-back to UTF-8 if the rest failed (it's a sane and universal default) */
   if (raw == NULL)
     raw = "UTF-8";
 
@@ -323,6 +333,7 @@ g_get_console_charset (const char **charset)
 
   return cache->is_utf8;
 #else
+  /* assume the locale settings match the console encoding on non-Windows OSs */
   return g_get_charset (charset);
 #endif
 }
