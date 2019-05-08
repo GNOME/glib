@@ -264,20 +264,47 @@ g_get_console_charset (const char **charset)
 #ifdef G_OS_WIN32
   static GPrivate cache_private = G_PRIVATE_INIT (charset_cache_free);
   GCharsetCache *cache = g_private_get (&cache_private);
+  const char *locale;
   unsigned int cp;
   static char buf[2 + 10 + 1];
-  const gchar *raw;
+  const gchar *raw = NULL;
 
   if (!cache)
     cache = g_private_set_alloc0 (&cache_private, sizeof (GCharsetCache));
 
-  cp = GetConsoleOutputCP ();
-  if (cp)
+  locale = getenv ("LANG");
+  if (locale != NULL && locale[0] != '\0')
     {
-      sprintf (buf, "CP%u", cp);
-      raw = buf;
+      /* If the locale name contains an encoding after the dot, return it.  */
+      const char *dot = strchr (locale, '.');
+
+      if (dot != NULL)
+        {
+          const char *modifier;
+
+          dot++;
+          /* Look for the possible @... trailer and remove it, if any.  */
+          modifier = strchr (dot, '@');
+          if (modifier == NULL)
+            raw = dot;
+          else if (modifier - dot < sizeof (buf))
+            {
+              memcpy (buf, dot, modifier - dot);
+              buf [modifier - dot] = '\0';
+              raw = buf;
+            }
+        }
     }
-  else
+  if (raw == NULL)
+    {
+      cp = GetConsoleOutputCP ();
+      if (cp)
+        {
+          sprintf (buf, "CP%u", cp);
+          raw = buf;
+        }
+    }
+  if (raw == NULL)
     raw = "UTF-8";
 
   if (cache->raw == NULL || strcmp (cache->raw, raw) != 0)
