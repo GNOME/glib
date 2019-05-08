@@ -2421,7 +2421,7 @@
  * are intended to be portable to those compilers.
  *
  * This is meant to be used to declare queues of a type with a cleanup
- * function.  The type of the variable is a GQueue *.  You
+ * function.  The type of the variable is a `GQueue *`.  You
  * must not add your own '*'.
  *
  * This macro can be used to avoid having to do explicit cleanups of
