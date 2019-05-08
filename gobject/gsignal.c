@@ -3893,3 +3893,33 @@ g_signal_accumulator_first_wins (GSignalInvocationHint *ihint,
   g_value_copy (handler_return, return_accu);
   return FALSE;
 }
+
+/**
+ * g_clear_signal_handler:
+ * @handler_id_ptr: A pointer to a handler ID (of type #gulong) of the handler to be disconnected.
+ * @instance: (type GObject.Object): The instance to remove the signal handler from.
+ *
+ * Disconnects a handler from @instance so it will not be called during
+ * any future or currently ongoing emissions of the signal it has been
+ * connected to. The @handler_id_ptr is then set to zero, which is never a valid handler ID value (see g_signal_connect()).
+ *
+ * If the handler ID is 0 then this function does nothing.
+ *
+ * A macro is also included that allows this function to be used without
+ * pointer casts.
+ *
+ * Since: 2.62
+ */
+#undef g_clear_signal_handler
+void
+g_clear_signal_handler (gulong   *handler_id_ptr,
+                        gpointer  instance)
+{
+  g_return_if_fail (handler_id_ptr != NULL);
+
+  if (*handler_id_ptr != 0)
+    {
+      g_signal_handler_disconnect (instance, *handler_id_ptr);
+      *handler_id_ptr = 0;
+    }
+}
