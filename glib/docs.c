@@ -2432,7 +2432,7 @@
  *
  * See also g_autolist(), g_autoptr() and g_steal_pointer().
  *
- * Since: 2.60
+ * Since: 2.62
  */
 
 
