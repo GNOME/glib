@@ -2422,7 +2422,7 @@
  *
  * This is meant to be used to declare queues of a type with a cleanup
  * function.  The type of the variable is a `GQueue *`.  You
- * must not add your own '*'.
+ * must not add your own `*`.
  *
  * This macro can be used to avoid having to do explicit cleanups of
  * local variables when exiting functions.  It often vastly simplifies
