@@ -861,6 +861,7 @@ g_signal_get_invocation_hint
 g_signal_type_cclosure_new
 g_signal_accumulator_first_wins
 g_signal_accumulator_true_handled
+g_clear_signal_handler
 <SUBSECTION Private>
 g_signal_handlers_destroy
 </SECTION>
