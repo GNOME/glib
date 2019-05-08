@@ -436,6 +436,26 @@ guint	 g_signal_handlers_disconnect_matched (gpointer		  instance,
 					       gpointer		  func,
 					       gpointer		  data);
 
+GLIB_AVAILABLE_IN_2_62
+void	 g_clear_signal_handler		      (gulong            *handler_id_ptr,
+					       gpointer           instance);
+
+#define  g_clear_signal_handler(handler_id_ptr, instance)           \
+  G_STMT_START {                                                    \
+    G_STATIC_ASSERT (sizeof *(handler_id_ptr) == sizeof (gulong) || \
+                     sizeof *(handler_id_ptr) == sizeof (guint));   \
+    gulong _handler_id;                                             \
+    if (sizeof *(handler_id_ptr) == sizeof (gulong))                \
+      _handler_id = *((gulong *) (handler_id_ptr));                 \
+    else                                                            \
+      _handler_id = *((guint *) (handler_id_ptr));                  \
+                                                                    \
+    if (*handler_id_ptr > 0)                                        \
+      {                                                             \
+        g_signal_handler_disconnect ((instance), _handler_id);      \
+        *handler_id_ptr = 0;                                        \
+      }                                                             \
+  } G_STMT_END
 
 /* --- overriding and chaining --- */
 GLIB_AVAILABLE_IN_ALL
