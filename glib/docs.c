@@ -2427,7 +2427,7 @@
  * This macro can be used to avoid having to do explicit cleanups of
  * local variables when exiting functions.  It often vastly simplifies
  * handling of error conditions, removing the need for various tricks
- * such as 'goto out' or repeating of cleanup code.  It is also helpful
+ * such as `goto out` or repeating of cleanup code.  It is also helpful
  * for non-error cases.
  *
  * See also g_autolist(), g_autoptr() and g_steal_pointer().
