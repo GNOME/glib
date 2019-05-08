@@ -564,6 +564,35 @@ test_autoslist (void)
   g_assert (freed2);
 }
 
+static void
+test_autoqueue (void)
+{
+  char data[1] = {0};
+  gboolean freed1 = FALSE;
+  gboolean freed2 = FALSE;
+  gboolean freed3 = FALSE;
+  GBytes *b1 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed1);
+  GBytes *b2 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed2);
+  GBytes *b3 = g_bytes_new_with_free_func (data, sizeof(data), mark_freed, &freed3);
+
+  {
+    g_autoqueue(GBytes) q = g_queue_new ();
+
+    g_queue_push_head (q, b1);
+    g_queue_push_tail (q, b3);
+  }
+
+  /* Only assert if autoptr works */
+#ifdef __GNUC__
+  g_assert (freed1);
+  g_assert (freed3);
+#endif
+  g_assert (!freed2);
+
+  g_bytes_unref (b2);
+  g_assert (freed2);
+}
+
 int
 main (int argc, gchar *argv[])
 {
@@ -620,6 +649,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/refstring", test_refstring);
   g_test_add_func ("/autoptr/autolist", test_autolist);
   g_test_add_func ("/autoptr/autoslist", test_autoslist);
+  g_test_add_func ("/autoptr/autoqueue", test_autoqueue);
 
   return g_test_run ();
 }
