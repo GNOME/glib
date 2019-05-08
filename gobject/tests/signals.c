@@ -1245,6 +1245,37 @@ test_signal_disconnect_wrong_object (void)
   g_object_unref (object3);
 }
 
+static void
+test_clear_signal_handler (void)
+{
+  GObject *test_obj;
+  gulong handler;
+
+  test_obj = g_object_new (test_get_type (), NULL);
+
+  handler = g_signal_connect (test_obj, "simple", G_CALLBACK (dont_reach), NULL);
+  g_assert_cmpuint (handler, >, 0);
+
+  g_clear_signal_handler (&handler, test_obj);
+  g_assert_cmpuint (handler, ==, 0);
+
+  g_signal_emit_by_name (test_obj, "simple");
+
+  g_clear_signal_handler (&handler, test_obj);
+
+  if (g_test_undefined ())
+    {
+      handler = g_random_int_range (0x01, 0xFF);
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "*instance '0x* has no handler with id *'");
+      g_clear_signal_handler (&handler, test_obj);
+      g_assert_cmpuint (handler, ==, 0);
+      g_test_assert_expected_messages ();
+    }
+
+  g_object_unref (test_obj);
+}
+
 /* --- */
 
 int
@@ -1270,6 +1301,7 @@ main (int argc,
   g_test_add_func ("/gobject/signals/stop-emission", test_stop_emission);
   g_test_add_func ("/gobject/signals/invocation-hint", test_invocation_hint);
   g_test_add_func ("/gobject/signals/test-disconnection-wrong-object", test_signal_disconnect_wrong_object);
+  g_test_add_func ("/gobject/signals/clear-signal-handler", test_clear_signal_handler);
 
   return g_test_run ();
 }
