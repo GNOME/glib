@@ -2224,7 +2224,7 @@
  * This macro can be used to avoid having to do explicit cleanups of
  * local variables when exiting functions.  It often vastly simplifies
  * handling of error conditions, removing the need for various tricks
- * such as 'goto out' or repeating of cleanup code.  It is also helpful
+ * such as `goto out` or repeating of cleanup code.  It is also helpful
  * for non-error cases.
  *
  * Consider the following example:
@@ -2251,8 +2251,8 @@
  * }
  * ]|
  *
- * You must initialize the variable in some way -- either by use of an
- * initialiser or by ensuring that an _init function will be called on
+ * You must initialize the variable in some way — either by use of an
+ * initialiser or by ensuring that an `_init` function will be called on
  * it unconditionally before it goes out of scope.
  *
  * Since: 2.44
@@ -2273,12 +2273,12 @@
  *
  * This is meant to be used to declare pointers to types with cleanup
  * functions.  The type of the variable is a pointer to @TypeName.  You
- * must not add your own '*'.
+ * must not add your own `*`.
  *
  * This macro can be used to avoid having to do explicit cleanups of
  * local variables when exiting functions.  It often vastly simplifies
  * handling of error conditions, removing the need for various tricks
- * such as 'goto out' or repeating of cleanup code.  It is also helpful
+ * such as `goto out` or repeating of cleanup code.  It is also helpful
  * for non-error cases.
  *
  * Consider the following example:
@@ -2308,7 +2308,7 @@
  * }
  * ]|
  *
- * You must initialise the variable in some way -- either by use of an
+ * You must initialise the variable in some way — either by use of an
  * initialiser or by ensuring that it is assigned to unconditionally
  * before it goes out of scope.
  *
@@ -2330,7 +2330,7 @@
  * This means it's useful for any type that is returned from
  * g_malloc().
  *
- * Otherwise, this macro has similar constraints as g_autoptr() - only
+ * Otherwise, this macro has similar constraints as g_autoptr(): only
  * supported on GCC and clang, the variable must be initialized, etc.
  *
  * |[
@@ -2365,13 +2365,13 @@
  * are intended to be portable to those compilers.
  *
  * This is meant to be used to declare lists of a type with a cleanup
- * function.  The type of the variable is a GList *.  You
- * must not add your own '*'.
+ * function.  The type of the variable is a `GList *`.  You
+ * must not add your own `*`.
  *
  * This macro can be used to avoid having to do explicit cleanups of
  * local variables when exiting functions.  It often vastly simplifies
  * handling of error conditions, removing the need for various tricks
- * such as 'goto out' or repeating of cleanup code.  It is also helpful
+ * such as `goto out` or repeating of cleanup code.  It is also helpful
  * for non-error cases.
  *
  * See also g_autoslist(), g_autoptr() and g_steal_pointer().
@@ -2393,13 +2393,13 @@
  * are intended to be portable to those compilers.
  *
  * This is meant to be used to declare lists of a type with a cleanup
- * function.  The type of the variable is a GSList *.  You
- * must not add your own '*'.
+ * function.  The type of the variable is a `GSList *`.  You
+ * must not add your own `*`.
  *
  * This macro can be used to avoid having to do explicit cleanups of
  * local variables when exiting functions.  It often vastly simplifies
  * handling of error conditions, removing the need for various tricks
- * such as 'goto out' or repeating of cleanup code.  It is also helpful
+ * such as `goto out` or repeating of cleanup code.  It is also helpful
  * for non-error cases.
  *
  * See also g_autolist(), g_autoptr() and g_steal_pointer().
@@ -2446,7 +2446,7 @@
  * The function will not be called if the variable to be cleaned up
  * contains %NULL.
  *
- * This will typically be the _free() or _unref() function for the given
+ * This will typically be the `_free()` or `_unref()` function for the given
  * type.
  *
  * With this definition, it will be possible to use g_autoptr() with
@@ -2469,7 +2469,7 @@
  *
  * Defines the appropriate cleanup function for a type.
  *
- * This will typically be the _clear() function for the given type.
+ * This will typically be the `_clear()` function for the given type.
  *
  * With this definition, it will be possible to use g_auto() with
  * @TypeName.
@@ -2501,7 +2501,7 @@
  * and file descriptors.
  *
  * @none specifies the "none" value for the type in question.  It is
- * probably something like %NULL or -1.  If the variable is found to
+ * probably something like %NULL or `-1`.  If the variable is found to
  * contain this value then the free function will not be called.
  *
  * |[
