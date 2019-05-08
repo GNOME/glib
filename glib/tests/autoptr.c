@@ -41,63 +41,63 @@ static void
 test_g_async_queue (void)
 {
   g_autoptr(GAsyncQueue) val = g_async_queue_new ();
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_bookmark_file (void)
 {
   g_autoptr(GBookmarkFile) val = g_bookmark_file_new ();
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_bytes (void)
 {
   g_autoptr(GBytes) val = g_bytes_new ("foo", 3);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_checksum (void)
 {
   g_autoptr(GChecksum) val = g_checksum_new (G_CHECKSUM_SHA256);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_date_time (void)
 {
   g_autoptr(GDateTime) val = g_date_time_new_now_utc ();
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_dir (void)
 {
   g_autoptr(GDir) val = g_dir_open (".", 0, NULL);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_error (void)
 {
   g_autoptr(GError) val = g_error_new_literal (G_FILE_ERROR, G_FILE_ERROR_FAILED, "oops");
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_hash_table (void)
 {
   g_autoptr(GHashTable) val = g_hash_table_new (NULL, NULL);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_hmac (void)
 {
   g_autoptr(GHmac) val = g_hmac_new (G_CHECKSUM_SHA256, (guint8*)"hello", 5);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -110,14 +110,14 @@ test_g_io_channel (void)
 #endif
 
   g_autoptr(GIOChannel) val = g_io_channel_new_file (devnull, "r", NULL);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_key_file (void)
 {
   g_autoptr(GKeyFile) val = g_key_file_new ();
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -125,57 +125,57 @@ test_g_list (void)
 {
   g_autoptr(GList) val = NULL;
   g_autoptr(GList) val2 = g_list_prepend (NULL, "foo");
-  g_assert (val == NULL);
-  g_assert (val2 != NULL);
+  g_assert_null (val);
+  g_assert_nonnull (val2);
 }
 
 static void
 test_g_array (void)
 {
   g_autoptr(GArray) val = g_array_new (0, 0, sizeof (gpointer));
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_ptr_array (void)
 {
   g_autoptr(GPtrArray) val = g_ptr_array_new ();
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_byte_array (void)
 {
   g_autoptr(GByteArray) val = g_byte_array_new ();
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_main_context (void)
 {
   g_autoptr(GMainContext) val = g_main_context_new ();
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_main_loop (void)
 {
   g_autoptr(GMainLoop) val = g_main_loop_new (NULL, TRUE);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_source (void)
 {
   g_autoptr(GSource) val = g_timeout_source_new_seconds (2);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_mapped_file (void)
 {
   g_autoptr(GMappedFile) val = g_mapped_file_new (g_test_get_filename (G_TEST_DIST, "keyfiletest.ini", NULL), FALSE, NULL);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -205,35 +205,35 @@ static void
 test_g_markup_parse_context (void)
 {
   g_autoptr(GMarkupParseContext) val = g_markup_parse_context_new (&parser,  0, NULL, NULL);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_node (void)
 {
   g_autoptr(GNode) val = g_node_new ("hello");
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_option_context (void)
 {
   g_autoptr(GOptionContext) val = g_option_context_new ("hello");
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_option_group (void)
 {
   g_autoptr(GOptionGroup) val = g_option_group_new ("hello", "world", "helpme", NULL, NULL);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_pattern_spec (void)
 {
   g_autoptr(GPatternSpec) val = g_pattern_spec_new ("plaid");
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -241,7 +241,7 @@ test_g_queue (void)
 {
   g_autoptr(GQueue) val = g_queue_new ();
   g_auto(GQueue) stackval = G_QUEUE_INIT;
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
   g_assert_null (stackval.head);
 }
 
@@ -249,14 +249,14 @@ static void
 test_g_rand (void)
 {
   g_autoptr(GRand) val = g_rand_new ();
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_regex (void)
 {
   g_autoptr(GRegex) val = g_regex_new (".*", 0, 0, NULL);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -274,14 +274,14 @@ test_g_scanner (void)
 {
   GScannerConfig config = { 0, };
   g_autoptr(GScanner) val = g_scanner_new (&config);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_sequence (void)
 {
   g_autoptr(GSequence) val = g_sequence_new (NULL);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -289,22 +289,22 @@ test_g_slist (void)
 {
   g_autoptr(GSList) val = NULL;
   g_autoptr(GSList) nonempty_val = g_slist_prepend (NULL, "hello");
-  g_assert (val == NULL);
-  g_assert (nonempty_val != NULL);
+  g_assert_null (val);
+  g_assert_nonnull (nonempty_val);
 }
 
 static void
 test_g_string (void)
 {
   g_autoptr(GString) val = g_string_new ("");
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_string_chunk (void)
 {
   g_autoptr(GStringChunk) val = g_string_chunk_new (42);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static gpointer
@@ -318,7 +318,7 @@ static void
 test_g_thread (void)
 {
   g_autoptr(GThread) val = g_thread_new ("bob", mythread, NULL);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -425,28 +425,28 @@ static void
 test_g_timer (void)
 {
   g_autoptr(GTimer) val = g_timer_new ();
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_time_zone (void)
 {
   g_autoptr(GTimeZone) val = g_time_zone_new ("UTC");
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_tree (void)
 {
   g_autoptr(GTree) val = g_tree_new ((GCompareFunc)strcmp);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_variant (void)
 {
   g_autoptr(GVariant) val = g_variant_new_string ("hello");
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -455,7 +455,7 @@ test_g_variant_builder (void)
   g_autoptr(GVariantBuilder) val = g_variant_builder_new (G_VARIANT_TYPE ("as"));
   g_auto(GVariantBuilder) stackval;
 
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
   g_variant_builder_init (&stackval, G_VARIANT_TYPE ("as"));
 }
 
@@ -464,7 +464,7 @@ test_g_variant_iter (void)
 {
   g_autoptr(GVariant) var = g_variant_new_fixed_array (G_VARIANT_TYPE_UINT32, "", 0, sizeof(guint32));
   g_autoptr(GVariantIter) val = g_variant_iter_new (var);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -475,21 +475,21 @@ test_g_variant_dict (void)
   g_autoptr(GVariantDict) val = g_variant_dict_new (data);
 
   g_variant_dict_init (&stackval, data);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_g_variant_type (void)
 {
   g_autoptr(GVariantType) val = g_variant_type_new ("s");
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
 test_strv (void)
 {
   g_auto(GStrv) val = g_strsplit("a:b:c", ":", -1);
-  g_assert (val != NULL);
+  g_assert_nonnull (val);
 }
 
 static void
@@ -526,13 +526,13 @@ test_autolist (void)
 
   /* Only assert if autoptr works */
 #ifdef __GNUC__
-  g_assert (freed1);
-  g_assert (freed3);
+  g_assert_true (freed1);
+  g_assert_true (freed3);
 #endif
-  g_assert (!freed2);
+  g_assert_false (freed2);
 
   g_bytes_unref (b2);
-  g_assert (freed2);
+  g_assert_true (freed2);
 }
 
 static void
@@ -555,13 +555,13 @@ test_autoslist (void)
 
   /* Only assert if autoptr works */
 #ifdef __GNUC__
-  g_assert (freed1);
-  g_assert (freed3);
+  g_assert_true (freed1);
+  g_assert_true (freed3);
 #endif
-  g_assert (!freed2);
+  g_assert_false (freed2);
 
   g_bytes_unref (b2);
-  g_assert (freed2);
+  g_assert_true (freed2);
 }
 
 static void
@@ -584,13 +584,13 @@ test_autoqueue (void)
 
   /* Only assert if autoptr works */
 #ifdef __GNUC__
-  g_assert (freed1);
-  g_assert (freed3);
+  g_assert_true (freed1);
+  g_assert_true (freed3);
 #endif
-  g_assert (!freed2);
+  g_assert_false (freed2);
 
   g_bytes_unref (b2);
-  g_assert (freed2);
+  g_assert_true (freed2);
 }
 
 int
