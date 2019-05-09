@@ -1624,6 +1624,7 @@ g_socket_client_connected_callback (GObject      *source,
           connection_attempt_unref (attempt);
         }
 
+      connection_attempt_unref (attempt);
       return;
     }
 
