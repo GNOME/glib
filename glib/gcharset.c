@@ -291,7 +291,7 @@ g_get_console_charset (const char **charset)
           else if (modifier - dot < sizeof (buf))
             {
               memcpy (buf, dot, modifier - dot);
-              buf [modifier - dot] = '\0';
+              buf[modifier - dot] = '\0';
               raw = buf;
             }
         }
