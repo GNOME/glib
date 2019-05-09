@@ -348,7 +348,7 @@ test_console_charset (void)
   /* set console output encoding to UTF-8;
      this should never match the 8-bit codepage returned by g_get_charset */
   const unsigned int initial_cp = GetConsoleOutputCP ();
-  SetConsoleOutputCP(CP_UTF8);
+  SetConsoleOutputCP (CP_UTF8);
 #endif
 
   g_get_charset (&c1);
