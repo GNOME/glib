@@ -345,23 +345,31 @@ test_console_charset (void)
   const gchar *c2;
 
 #ifdef G_OS_WIN32
-  /* set console output encoding to UTF-8;
-     this should never match the 8-bit codepage returned by g_get_charset */
+  /* store current environment and unset $LANG to make sure it does not interfere */
   const unsigned int initial_cp = GetConsoleOutputCP ();
-  SetConsoleOutputCP (CP_UTF8);
-#endif
+  const gchar *initial_lang = g_strdup (g_getenv ("LANG"));
+  g_unsetenv ("LANG");
 
+  /* set console output codepage to something specific (ISO-8859-1 aka CP28591) and query it */
+  SetConsoleOutputCP (28591);
+  g_get_console_charset (&c1);
+  g_assert_cmpstr (c1, ==, "ISO-8859-1");
+
+  /* set $LANG to something specific (should override the console output codepage) and query it */
+  g_setenv ("LANG", "de_DE.ISO-8859-15@euro", TRUE);
+  g_get_console_charset (&c2);
+  g_assert_cmpstr (c2, ==, "ISO-8859-15");
+
+  /* reset environment */
+  if (initial_cp)
+    SetConsoleOutputCP (initial_cp);
+  if (initial_lang)
+    g_setenv ("LANG", initial_lang, TRUE);
+#else
   g_get_charset (&c1);
   g_get_console_charset (&c2);
 
-#ifdef G_OS_WIN32
-  g_assert_cmpstr (c1, !=, c2);
-#else
   g_assert_cmpstr (c1, ==, c2);
-#endif
-
-#ifdef G_OS_WIN32
-  SetConsoleOutputCP (initial_cp);
 #endif
 }
 
