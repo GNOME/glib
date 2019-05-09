@@ -361,7 +361,7 @@ test_console_charset (void)
 #endif
 
 #ifdef G_OS_WIN32
-    SetConsoleOutputCP(initial_cp);
+  SetConsoleOutputCP (initial_cp);
 #endif
 }
 
