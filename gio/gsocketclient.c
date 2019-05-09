@@ -1616,6 +1616,7 @@ g_socket_client_connected_callback (GObject      *source,
           set_last_error (data, error);
           connection_attempt_remove (attempt);
           enumerator_next_async (data, FALSE);
+          connection_attempt_unref (attempt);
         }
       else
         {
