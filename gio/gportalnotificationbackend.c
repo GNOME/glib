@@ -25,6 +25,9 @@
 #include "gapplication.h"
 #include "gnotification-private.h"
 #include "gportalsupport.h"
+#include "gfileicon.h"
+#include "gfile.h"
+#include "gbytesicon.h"
 
 #define G_TYPE_PORTAL_NOTIFICATION_BACKEND  (g_portal_notification_backend_get_type ())
 #define G_PORTAL_NOTIFICATION_BACKEND(o)    (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_PORTAL_NOTIFICATION_BACKEND, GPortalNotificationBackend))
@@ -55,6 +58,29 @@ g_portal_notification_backend_send_notification (GNotificationBackend *backend,
                                                  const gchar          *id,
                                                  GNotification        *notification)
 {
+  GIcon *icon;
+
+  icon = g_notification_get_icon (notification);
+  if (G_IS_FILE_ICON (icon))
+    {
+      GFile *file;
+      GBytes *bytes;
+
+      /* convert a file icon to a bytes icon before
+       * sending the notification, since the portal
+       * will accept the latter, but not the former.
+       */
+      file = g_file_icon_get_file (G_FILE_ICON (icon));
+      bytes = g_file_load_bytes (file, NULL, NULL, NULL);
+      if (bytes)
+        {
+          icon = g_bytes_icon_new (bytes);
+          g_notification_set_icon (notification, icon);
+          g_object_unref (icon);
+          g_bytes_unref (bytes);
+        }
+    }
+
   g_dbus_connection_call (backend->dbus_connection,
                           "org.freedesktop.portal.Desktop",
                           "/org/freedesktop/portal/desktop",
