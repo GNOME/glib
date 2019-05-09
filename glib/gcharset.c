@@ -257,6 +257,8 @@ g_get_codeset (void)
  * freed.
  *
  * Returns: %TRUE if the returned charset is UTF-8
+ *
+ * Since: 2.62
  */
 gboolean
 g_get_console_charset (const char **charset)
@@ -291,7 +293,7 @@ g_get_console_charset (const char **charset)
           else if (modifier - dot < sizeof (buf))
             {
               memcpy (buf, dot, modifier - dot);
-              buf [modifier - dot] = '\0';
+              buf[modifier - dot] = '\0';
               raw = buf;
             }
         }
@@ -306,12 +308,12 @@ g_get_console_charset (const char **charset)
           raw = buf;
         }
       else if (GetLastError () != ERROR_INVALID_HANDLE)
-      {
-        gchar *emsg = g_win32_error_message (GetLastError ());
-        g_warning ("Failed to determine console output code page: %s. "
-                   "Falling back to UTF-8", emsg);
-        g_free (emsg);
-      }
+        {
+          gchar *emsg = g_win32_error_message (GetLastError ());
+          g_warning ("Failed to determine console output code page: %s. "
+                     "Falling back to UTF-8", emsg);
+          g_free (emsg);
+        }
     }
   /* fall-back to UTF-8 if the rest failed (it's a sane and universal default) */
   if (raw == NULL)
