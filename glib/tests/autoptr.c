@@ -414,6 +414,72 @@ test_g_rec_mutex_locker (void)
     g_thread_join (thread);
 }
 
+/* Thread function to check that an rw lock given in @data cannot be writer locked */
+static gpointer
+rw_lock_cannot_take_writer_lock_thread (gpointer data)
+{
+  GRWLock *lock = (GRWLock *) data;
+  g_assert_false (g_rw_lock_writer_trylock (lock));
+  return NULL;
+}
+
+/* Thread function to check that an rw lock given in @data can be reader locked */
+static gpointer
+rw_lock_can_take_reader_lock_thread (gpointer data)
+{
+  GRWLock *lock = (GRWLock *) data;
+  g_assert_true (g_rw_lock_reader_trylock (lock));
+  g_rw_lock_reader_unlock (lock);
+  return NULL;
+}
+
+static void
+test_g_rw_lock_lockers (void)
+{
+  GRWLock lock;
+  GThread *thread;
+
+  g_rw_lock_init (&lock);
+
+  if (TRUE)
+    {
+      g_autoptr(GRWLockWriterLocker) val = g_rw_lock_writer_locker_new (&lock);
+
+      g_assert_nonnull (val);
+
+      /* Verify that we cannot take another writer lock as a writer lock is currently held */
+      thread = g_thread_new ("rw lock cannot take writer lock", rw_lock_cannot_take_writer_lock_thread, &lock);
+      g_thread_join (thread);
+
+      /* Verify that we cannot take a reader lock as a writer lock is currently held */
+      g_assert_false (g_rw_lock_reader_trylock (&lock));
+    }
+
+  if (TRUE)
+    {
+      g_autoptr(GRWLockReaderLocker) val = g_rw_lock_reader_locker_new (&lock);
+
+      g_assert_nonnull (val);
+
+      /* Verify that we can take another reader lock from another thread */
+      thread = g_thread_new ("rw lock can take reader lock", rw_lock_can_take_reader_lock_thread, &lock);
+      g_thread_join (thread);
+
+      /* ... and also that recursive reader locking from the same thread works */
+      g_assert_true (g_rw_lock_reader_trylock (&lock));
+      g_rw_lock_reader_unlock (&lock);
+
+      /* Verify that we cannot take a writer lock as a reader lock is currently held */
+      thread = g_thread_new ("rw lock cannot take writer lock", rw_lock_cannot_take_writer_lock_thread, &lock);
+      g_thread_join (thread);
+    }
+
+  /* Verify that we can take a writer lock again: this can only work if all of
+   * the locks taken above have been correctly released. */
+  g_assert_true (g_rw_lock_writer_trylock (&lock));
+  g_rw_lock_writer_unlock (&lock);
+}
+
 static void
 test_g_cond (void)
 {
@@ -636,6 +702,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_mutex", test_g_mutex);
   g_test_add_func ("/autoptr/g_mutex_locker", test_g_mutex_locker);
   g_test_add_func ("/autoptr/g_rec_mutex_locker", test_g_rec_mutex_locker);
+  g_test_add_func ("/autoptr/g_rw_lock_lockers", test_g_rw_lock_lockers);
   g_test_add_func ("/autoptr/g_cond", test_g_cond);
   g_test_add_func ("/autoptr/g_timer", test_g_timer);
   g_test_add_func ("/autoptr/g_time_zone", test_g_time_zone);
