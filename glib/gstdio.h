@@ -54,12 +54,15 @@ typedef struct stat GStatBuf;
 
 #endif
 
-#if defined(G_OS_UNIX) && !defined(G_STDIO_NO_WRAP_ON_UNIX)
+#if defined(G_OS_UNIX) && !defined(G_STDIO_WRAP_ON_UNIX)
 
 /* Just pass on to the system functions, so there's no potential for data
  * format mismatches, especially with large file interfaces. 
  * A few functions can't be handled in this way, since they are not defined
  * in a portable system header that we could include here.
+ *
+ * #G_STDIO_WRAP_ON_UNIX is not public API and its behaviour is not guaranteed
+ * in future.
  */
 
 #ifndef __GTK_DOC_IGNORE__

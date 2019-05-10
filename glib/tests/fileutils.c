@@ -28,8 +28,8 @@
 
 #include <glib.h>
 
-/* Test our stdio wrappers here */
-#define G_STDIO_NO_WRAP_ON_UNIX
+/* Test our stdio wrappers here; this disables redefining (e.g.) g_open() to open() */
+#define G_STDIO_WRAP_ON_UNIX
 #include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
