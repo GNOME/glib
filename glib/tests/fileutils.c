@@ -37,8 +37,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <utime.h>
+#define ROOTDIR "/"
 #endif
+
 #include <fcntl.h>
+
 #ifdef G_OS_WIN32
 #include <windows.h>
 #include <sys/utime.h>
@@ -49,9 +52,10 @@
 #ifndef F_OK
 #define F_OK 0
 #endif
+#define ROOTDIR "C:" G_DIR_SEPARATOR_S
 #endif
 
-#define S G_DIR_SEPARATOR_S
+#define SEP G_DIR_SEPARATOR_S
 
 static void
 check_string (gchar *str, const gchar *expected)
@@ -287,28 +291,33 @@ test_build_filename (void)
     }
 
   /*  check_string (g_build_filename (NULL), "");*/
-  check_string (g_build_filename (S, NULL), S);
-  check_string (g_build_filename (S"x", NULL), S"x");
-  check_string (g_build_filename ("x"S, NULL), "x"S);
+  check_string (g_build_filename (SEP, NULL), SEP);
+  check_string (g_build_filename (SEP "x", NULL), SEP "x");
+  check_string (g_build_filename ("x" SEP, NULL), "x" SEP);
   check_string (g_build_filename ("", "x", NULL), "x");
-  check_string (g_build_filename ("", S"x", NULL), S"x");
-  check_string (g_build_filename (S, "x", NULL), S"x");
-  check_string (g_build_filename (S S, "x", NULL), S S"x");
+  check_string (g_build_filename ("", SEP "x", NULL), SEP "x");
+  check_string (g_build_filename (SEP, "x", NULL), SEP "x");
+  check_string (g_build_filename (SEP SEP, "x", NULL), SEP SEP "x");
   check_string (g_build_filename ("x", "", NULL), "x");
-  check_string (g_build_filename ("x"S, "", NULL), "x"S);
-  check_string (g_build_filename ("x", S, NULL), "x"S);
-  check_string (g_build_filename ("x", S S, NULL), "x"S S);
-  check_string (g_build_filename ("x", "y",  NULL), "x"S"y");
-  check_string (g_build_filename (S"x", "y", NULL), S"x"S"y");
-  check_string (g_build_filename ("x", "y"S, NULL), "x"S"y"S);
-  check_string (g_build_filename (S"x"S, S"y"S, NULL), S"x"S"y"S);
-  check_string (g_build_filename (S"x"S S, S S"y"S, NULL), S"x"S"y"S);
-  check_string (g_build_filename ("x", "", "y",  NULL), "x"S"y");
-  check_string (g_build_filename ("x", S, "y",  NULL), "x"S"y");
-  check_string (g_build_filename ("x", S S, "y",  NULL), "x"S"y");
-  check_string (g_build_filename ("x", "y", "z", NULL), "x"S"y"S"z");
-  check_string (g_build_filename (S"x"S, S"y"S, S"z"S, NULL), S"x"S"y"S"z"S);
-  check_string (g_build_filename (S S"x"S S, S S"y"S S, S S"z"S S, NULL), S S"x"S"y"S"z"S S);
+  check_string (g_build_filename ("x" SEP, "", NULL), "x" SEP);
+  check_string (g_build_filename ("x", SEP, NULL), "x" SEP);
+  check_string (g_build_filename ("x", SEP SEP, NULL), "x" SEP SEP);
+  check_string (g_build_filename ("x", "y",  NULL), "x" SEP "y");
+  check_string (g_build_filename (SEP "x", "y", NULL), SEP "x" SEP "y");
+  check_string (g_build_filename ("x", "y" SEP, NULL), "x" SEP "y" SEP);
+  check_string (g_build_filename (SEP "x" SEP, SEP "y" SEP, NULL),
+                SEP "x" SEP "y" SEP);
+  check_string (g_build_filename (SEP "x" SEP SEP, SEP SEP "y" SEP, NULL),
+                SEP "x" SEP "y" SEP);
+  check_string (g_build_filename ("x", "", "y",  NULL), "x" SEP "y");
+  check_string (g_build_filename ("x", SEP, "y",  NULL), "x" SEP "y");
+  check_string (g_build_filename ("x", SEP SEP, "y",  NULL), "x" SEP "y");
+  check_string (g_build_filename ("x", "y", "z", NULL), "x" SEP "y" SEP "z");
+  check_string (g_build_filename (SEP "x" SEP, SEP "y" SEP, SEP "z" SEP, NULL),
+                SEP "x" SEP "y" SEP "z" SEP);
+  check_string (g_build_filename (SEP SEP "x" SEP SEP, SEP SEP "y" SEP SEP,
+                                  SEP SEP "z" SEP SEP, NULL),
+                SEP SEP "x" SEP "y" SEP "z" SEP SEP);
 
   check_build_filename_valist ("x", "y", NULL);
 
@@ -324,23 +333,25 @@ test_build_filename (void)
   check_string (g_build_filename ("", Z"x", NULL), Z"x");
   check_string (g_build_filename (Z, "x", NULL), Z"x");
   check_string (g_build_filename (Z Z, "x", NULL), Z Z"x");
-  check_string (g_build_filename (Z S, "x", NULL), Z S"x");
+  check_string (g_build_filename (Z SEP, "x", NULL), Z SEP "x");
   check_string (g_build_filename ("x"Z, "", NULL), "x"Z);
-  check_string (g_build_filename ("x"S"y", "z"Z"a", NULL), "x"S"y"S"z"Z"a");
+  check_string (g_build_filename ("x"SEP "y", "z"Z"a", NULL),
+                "x" SEP "y" SEP "z"Z"a");
   check_string (g_build_filename ("x", Z, NULL), "x"Z);
   check_string (g_build_filename ("x", Z Z, NULL), "x"Z Z);
-  check_string (g_build_filename ("x", S Z, NULL), "x"S Z);
+  check_string (g_build_filename ("x", SEP Z, NULL), "x" SEP Z);
   check_string (g_build_filename (Z"x", "y", NULL), Z"x"Z"y");
   check_string (g_build_filename ("x", "y"Z, NULL), "x"Z"y"Z);
   check_string (g_build_filename (Z"x"Z, Z"y"Z, NULL), Z"x"Z"y"Z);
   check_string (g_build_filename (Z"x"Z Z, Z Z"y"Z, NULL), Z"x"Z"y"Z);
   check_string (g_build_filename ("x", Z, "y",  NULL), "x"Z"y");
   check_string (g_build_filename ("x", Z Z, "y",  NULL), "x"Z"y");
-  check_string (g_build_filename ("x", Z S, "y",  NULL), "x"S"y");
-  check_string (g_build_filename ("x", S Z, "y",  NULL), "x"Z"y");
+  check_string (g_build_filename ("x", Z SEP, "y",  NULL), "x" SEP "y");
+  check_string (g_build_filename ("x", SEP Z, "y",  NULL), "x"Z"y");
   check_string (g_build_filename ("x", Z "y", "z", NULL), "x"Z"y"Z"z");
-  check_string (g_build_filename ("x", S "y", "z", NULL), "x"S"y"S"z");
-  check_string (g_build_filename ("x", S "y", "z", Z, "a", "b", NULL), "x"S"y"S"z"Z"a"Z"b");
+  check_string (g_build_filename ("x", SEP "y", "z", NULL), "x" SEP "y" SEP "z");
+  check_string (g_build_filename ("x", SEP "y", "z", Z, "a", "b", NULL),
+                "x" SEP "y" SEP "z"Z"a"Z"b");
   check_string (g_build_filename (Z"x"Z, Z"y"Z, Z"z"Z, NULL), Z"x"Z"y"Z"z"Z);
   check_string (g_build_filename (Z Z"x"Z Z, Z Z"y"Z Z, Z Z"z"Z Z, NULL), Z Z"x"Z"y"Z"z"Z Z);
 
@@ -358,50 +369,51 @@ test_build_filenamev (void)
 
   args[0] = NULL;
   check_string (g_build_filenamev (args), "");
-  args[0] = S; args[1] = NULL;
-  check_string (g_build_filenamev (args), S);
-  args[0] = S"x"; args[1] = NULL;
-  check_string (g_build_filenamev (args), S"x");
-  args[0] = "x"S; args[1] = NULL;
-  check_string (g_build_filenamev (args), "x"S);
+  args[0] = SEP; args[1] = NULL;
+  check_string (g_build_filenamev (args), SEP);
+  args[0] = SEP "x"; args[1] = NULL;
+  check_string (g_build_filenamev (args), SEP"x");
+  args[0] = "x" SEP; args[1] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP);
   args[0] = ""; args[1] = "x"; args[2] = NULL;
   check_string (g_build_filenamev (args), "x");
-  args[0] = ""; args[1] = S"x"; args[2] = NULL;
-  check_string (g_build_filenamev (args), S"x");
-  args[0] = S; args[1] = "x"; args[2] = NULL;
-  check_string (g_build_filenamev (args), S"x");
-  args[0] = S S; args[1] = "x"; args[2] = NULL;
-  check_string (g_build_filenamev (args), S S"x");
+  args[0] = ""; args[1] = SEP "x"; args[2] = NULL;
+  check_string (g_build_filenamev (args), SEP "x");
+  args[0] = SEP; args[1] = "x"; args[2] = NULL;
+  check_string (g_build_filenamev (args), SEP "x");
+  args[0] = SEP SEP; args[1] = "x"; args[2] = NULL;
+  check_string (g_build_filenamev (args), SEP SEP "x");
   args[0] = "x"; args[1] = ""; args[2] = NULL;
   check_string (g_build_filenamev (args), "x");
-  args[0] = "x"S; args[1] = ""; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"S);
-  args[0] = "x"; args[1] = S; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"S);
-  args[0] = "x"; args[1] = S S; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"S S);
+  args[0] = "x" SEP; args[1] = ""; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP);
+  args[0] = "x"; args[1] = SEP; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP);
+  args[0] = "x"; args[1] = SEP SEP; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP SEP);
   args[0] = "x"; args[1] = "y"; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y");
-  args[0] = S"x"; args[1] = "y"; args[2] = NULL;
-  check_string (g_build_filenamev (args), S"x"S"y");
-  args[0] = "x"; args[1] = "y"S; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y"S);
-  args[0] = S"x"S; args[1] = S"y"S; args[2] = NULL;
-  check_string (g_build_filenamev (args), S"x"S"y"S);
-  args[0] = S"x"S S; args[1] = S S"y"S; args[2] = NULL;
-  check_string (g_build_filenamev (args), S"x"S"y"S);
+  check_string (g_build_filenamev (args), "x" SEP "y");
+  args[0] = SEP "x"; args[1] = "y"; args[2] = NULL;
+  check_string (g_build_filenamev (args), SEP "x" SEP "y");
+  args[0] = "x"; args[1] = "y" SEP; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP "y" SEP);
+  args[0] = SEP "x" SEP; args[1] = SEP "y" SEP; args[2] = NULL;
+  check_string (g_build_filenamev (args), SEP "x" SEP "y" SEP);
+  args[0] = SEP "x" SEP SEP; args[1] = SEP SEP "y" SEP; args[2] = NULL;
+  check_string (g_build_filenamev (args), SEP "x" SEP "y" SEP);
   args[0] = "x"; args[1] = ""; args[2] = "y"; args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y");
-  args[0] = "x"; args[1] = S; args[2] = "y"; args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y");
-  args[0] = "x"; args[1] = S S; args[2] = "y"; args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y");
+  check_string (g_build_filenamev (args), "x" SEP "y");
+  args[0] = "x"; args[1] = SEP; args[2] = "y"; args[3] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP "y");
+  args[0] = "x"; args[1] = SEP SEP; args[2] = "y"; args[3] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP "y");
   args[0] = "x"; args[1] = "y"; args[2] = "z"; args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y"S"z");
-  args[0] = S"x"S; args[1] = S"y"S; args[2] = S"z"S; args[3] = NULL;
-  check_string (g_build_filenamev (args), S"x"S"y"S"z"S);
-  args[0] = S S"x"S S; args[1] = S S"y"S S; args[2] = S S"z"S S; args[3] = NULL;
-  check_string (g_build_filenamev (args), S S"x"S"y"S"z"S S);
+  check_string (g_build_filenamev (args), "x" SEP "y" SEP "z");
+  args[0] = SEP "x" SEP; args[1] = SEP "y" SEP; args[2] = SEP "z" SEP; args[3] = NULL;
+  check_string (g_build_filenamev (args), SEP "x" SEP "y" SEP "z" SEP);
+  args[0] = SEP SEP "x" SEP SEP; args[1] = SEP SEP "y"SEP SEP;
+  args[2] = SEP SEP "z" SEP SEP; args[3] = NULL;
+  check_string (g_build_filenamev (args), SEP SEP "x"SEP "y" SEP "z" SEP SEP);
 
 #ifdef G_OS_WIN32
 
@@ -423,18 +435,18 @@ test_build_filenamev (void)
   check_string (g_build_filenamev (args), Z"x");
   args[0] = Z Z; args[1] = "x"; args[2] = NULL;
   check_string (g_build_filenamev (args), Z Z"x");
-  args[0] = Z S; args[1] = "x"; args[2] = NULL;
-  check_string (g_build_filenamev (args), Z S"x");
+  args[0] = Z SEP; args[1] = "x"; args[2] = NULL;
+  check_string (g_build_filenamev (args), Z SEP "x");
   args[0] = "x"Z; args[1] = ""; args[2] = NULL;
   check_string (g_build_filenamev (args), "x"Z);
-  args[0] = "x"S"y"; args[1] = "z"Z"a"; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y"S"z"Z"a");
+  args[0] = "x" SEP "y"; args[1] = "z"Z"a"; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP "y" SEP "z"Z"a");
   args[0] = "x"; args[1] = Z; args[2] = NULL;
   check_string (g_build_filenamev (args), "x"Z);
   args[0] = "x"; args[1] = Z Z; args[2] = NULL;
   check_string (g_build_filenamev (args), "x"Z Z);
-  args[0] = "x"; args[1] = S Z; args[2] = NULL;
-  check_string (g_build_filenamev (args), "x"S Z);
+  args[0] = "x"; args[1] = SEP Z; args[2] = NULL;
+  check_string (g_build_filenamev (args), "x"SEP Z);
   args[0] = Z"x"; args[1] = "y"; args[2] = NULL;
   check_string (g_build_filenamev (args), Z"x"Z"y");
   args[0] = "x"; args[1] = "y"Z; args[2] = NULL;
@@ -447,17 +459,17 @@ test_build_filenamev (void)
   check_string (g_build_filenamev (args), "x"Z"y");
   args[0] = "x"; args[1] = Z Z; args[2] = "y", args[3] = NULL;
   check_string (g_build_filenamev (args), "x"Z"y");
-  args[0] = "x"; args[1] = Z S; args[2] = "y", args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y");
-  args[0] = "x"; args[1] = S Z; args[2] = "y", args[3] = NULL;
+  args[0] = "x"; args[1] = Z SEP; args[2] = "y", args[3] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP "y");
+  args[0] = "x"; args[1] = SEP Z; args[2] = "y", args[3] = NULL;
   check_string (g_build_filenamev (args), "x"Z"y");
   args[0] = "x"; args[1] = Z "y"; args[2] = "z", args[3] = NULL;
   check_string (g_build_filenamev (args), "x"Z"y"Z"z");
-  args[0] = "x"; args[1] = S "y"; args[2] = "z", args[3] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y"S"z");
-  args[0] = "x"; args[1] = S "y"; args[2] = "z", args[3] = Z;
+  args[0] = "x"; args[1] = SEP "y"; args[2] = "z", args[3] = NULL;
+  check_string (g_build_filenamev (args), "x" SEP "y" SEP "z");
+  args[0] = "x"; args[1] = SEP "y"; args[2] = "z", args[3] = Z;
   args[4] = "a"; args[5] = "b"; args[6] = NULL;
-  check_string (g_build_filenamev (args), "x"S"y"S"z"Z"a"Z"b");
+  check_string (g_build_filenamev (args), "x" SEP "y" SEP "z"Z"a"Z"b");
   args[0] = Z"x"Z; args[1] = Z"y"Z; args[2] = Z"z"Z, args[3] = NULL;
   check_string (g_build_filenamev (args), Z"x"Z"y"Z"z"Z);
   args[0] = Z Z"x"Z Z; args[1] = Z Z"y"Z Z; args[2] = Z Z"z"Z Z, args[3] = NULL;
@@ -467,9 +479,6 @@ test_build_filenamev (void)
 
 #endif /* G_OS_WIN32 */
 }
-
-#undef S
-
 
 /* Testing g_file_test() function */
 static void
@@ -534,7 +543,7 @@ test_file_test (void)
 #endif
 
   /* Test for non-existing files or directories */
-  filename = g_build_filename ("/", "tmp", "foo", NULL);
+  filename = g_build_filename (SEP, "tmp", "foo", NULL);
   g_assert_false (g_file_test (filename, G_FILE_TEST_IS_REGULAR));
   g_assert_false (g_file_test (filename, G_FILE_TEST_IS_SYMLINK));
   g_assert_false (g_file_test (filename, G_FILE_TEST_IS_DIR));
@@ -543,7 +552,7 @@ test_file_test (void)
   g_free (filename);
 
   /* Test for existing directories */
-  filename = g_build_filename ("/", "tmp", NULL);
+  filename = g_build_filename (SEP, "tmp", NULL);
   g_assert_false (g_file_test (filename, G_FILE_TEST_IS_REGULAR));
   g_assert_false (g_file_test (filename, G_FILE_TEST_IS_SYMLINK));
   g_assert_true (g_file_test (filename, G_FILE_TEST_IS_DIR));
@@ -552,7 +561,7 @@ test_file_test (void)
   g_free (filename);
 
   /* Test for setuid directories */
-  filename = g_build_filename ("/", "tmp", "foo", NULL);
+  filename = g_build_filename (SEP, "tmp", "foo", NULL);
   g_assert_cmpint (g_mkdir (filename, 1777), ==, 0);
   g_assert_false (g_file_test (filename, G_FILE_TEST_IS_REGULAR));
   g_assert_false (g_file_test (filename, G_FILE_TEST_IS_SYMLINK));
@@ -564,7 +573,7 @@ test_file_test (void)
 
 
   /* Test for regular files */
-  filename = g_build_filename ("/", "tmp", "foo", NULL);
+  filename = g_build_filename (SEP, "tmp", "foo", NULL);
   f  = g_fopen (filename, "w");
   if (f == NULL)
     g_error ("failed: could not create '%s'", filename);
@@ -670,22 +679,22 @@ test_mkdir_with_parents (void)
   g_assert_cmpint (errno, ==, EINVAL);
   g_assert_cmpint (g_mkdir_with_parents (NULL, 0), ==, -1);
   g_assert_cmpint (errno, ==, EINVAL);
-  g_assert_cmpint (g_mkdir_with_parents ("/etc/foo/bar", 0), ==, -1);
+  g_assert_cmpint (g_mkdir_with_parents (SEP "etc" SEP "foo" SEP "bar", 0), ==, -1);
   g_assert_cmpint (errno, ==, EACCES);
-  g_assert_cmpint (g_mkdir_with_parents ("/tmp///", 0), ==, 0);
+  g_assert_cmpint (g_mkdir_with_parents (SEP "tmp" SEP SEP SEP, 0), ==, 0);
   g_assert_cmpint (errno, ==, EACCES);
 
   /* Positive cases */
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in subdir ./hum/");
-  check_mkdir_with_parents_1 ("hum/");
+  check_mkdir_with_parents_1 ("hum" SEP);
   g_remove ("hum");
 
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
-  check_mkdir_with_parents_1 ("hii///haa/hee");
-  g_remove ("hii/haa/hee");
-  g_remove ("hii/haa");
+  check_mkdir_with_parents_1 ("hii" SEP SEP SEP "haa" SEP "hee");
+  g_remove ("hii" SEP "haa" SEP "hee");
+  g_remove ("hii" SEP "haa");
   g_remove ("hii");
 
   cwd = g_get_current_dir ();
@@ -877,7 +886,7 @@ test_path_skip_root (void)
       g_assert_null (g_path_skip_root (NULL));
       g_test_assert_expected_messages ();
     }
-  g_assert_null (g_path_skip_root ("~/aaaa"));
+  g_assert_null (g_path_skip_root ("~" SEP "aaaa"));
 }
 
 /* Testing g_path_get_basename() function */
@@ -900,11 +909,11 @@ test_basename (void)
   g_free (path);
 
   /* Positive cases */
-  path = g_path_get_basename ("///");
+  path = g_path_get_basename (SEP SEP SEP);
   g_assert_cmpstr (path, ==, G_DIR_SEPARATOR_S);
   g_free (path);
 
-  path = g_path_get_basename ("/a/b/c/d");
+  path = g_path_get_basename (SEP "a" SEP "b" SEP "c" SEP "d");
   g_assert_cmpstr (path, ==, "d");
   g_free (path);
 
@@ -922,7 +931,7 @@ test_basename (void)
     }
 
   g_assert_cmpstr (g_basename (""), ==, "");
-  g_assert_cmpstr (g_basename ("////"), ==, "");
+  g_assert_cmpstr (g_basename (SEP SEP SEP SEP), ==, "");
 }
 
 /* Testing g_dir_make_tmp() function */
@@ -958,7 +967,7 @@ test_dir_make_tmp (void)
   g_assert_cmpint (g_rmdir (name), ==, 0);
   g_free (name);
 
-  name = g_dir_make_tmp ("test/XXXXXX", &error);
+  name = g_dir_make_tmp ("test" SEP "XXXXXX", &error);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
   g_clear_error (&error);
   g_assert_null (name);
@@ -1006,7 +1015,7 @@ test_file_open_tmp (void)
   close (fd);
 
   name = NULL;
-  fd = g_file_open_tmp ("test/XXXXXX", &name, &error);
+  fd = g_file_open_tmp ("test" SEP "XXXXXX", &name, &error);
   g_assert_cmpint (fd, ==, -1);
   g_assert_null (name);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
@@ -1128,8 +1137,8 @@ test_set_and_get_contents (void)
 
   /* Trying to get from an empty file */
   g_creat ("/tmp/foo", 0666);
-  g_file_set_contents ("/tmp/foo", "", 0, &error);
-  g_file_get_contents ("/tmp/foo", &buf, &len, &error);
+  g_file_set_contents (SEP "tmp" SEP "foo", "", 0, &error);
+  g_file_get_contents (SEP "tmp" SEP "foo", &buf, &len, &error);
   g_free (buf);
   g_remove ("/tmp/foo");
 
@@ -1163,17 +1172,17 @@ test_set_and_get_contents (void)
   g_remove (name);
   g_free (name);
 
-  filename = g_build_filename ("/", "tmp", NULL);
+  filename = g_build_filename (SEP, "tmp", NULL);
   g_assert_false (g_file_get_contents (filename, &buf, &len, NULL));
   g_free (filename);
 
-  filename = g_build_filename ("/", "etc", NULL);
+  filename = g_build_filename (SEP, "etc", NULL);
   g_assert_false (g_file_get_contents (filename, &buf, &len, NULL));
   g_free (filename);
 
   /* Negative cases */
-  filename = g_build_filename ("/", "etc", "foo", NULL);
-  g_assert_false (g_file_get_contents ("/etc/foo", &buf, NULL, &error));
+  filename = g_build_filename (SEP, "etc", "foo", NULL);
+  g_assert_false (g_file_get_contents (filename, &buf, NULL, &error));
   g_error_free (error);
   g_free (filename);
 }
@@ -1244,7 +1253,7 @@ test_read_link (void)
   g_free (badpath);
 
   /* Reading file with very long name (256 bytes) */
-  path = g_build_filename ("/", "tmp",
+  path = g_build_filename (SEP, "tmp",
                            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -1254,7 +1263,7 @@ test_read_link (void)
   g_remove (path);
   fd = g_open (path, O_CREAT | O_RDWR, 0666);
   g_assert_cmpint (fd, !=, -1);
-  newpath = g_build_filename ("/", "tmp", "symbolic-link", NULL);
+  newpath = g_build_filename (SEP, "tmp", "symbolic-link", NULL);
   g_remove (newpath);
   g_assert_cmpint (symlink (path, newpath), ==, 0);
   badpath = g_file_read_link (newpath, &error);
@@ -1290,8 +1299,8 @@ test_path_get_dirname (void)
     }
 
   /* Usual case */
-  path = g_path_get_dirname ("/tmp/foo");
-  g_assert_cmpstr (path, ==, "/tmp");
+  path = g_path_get_dirname (SEP "tmp" SEP "foo");
+  g_assert_cmpstr (path, ==, SEP "tmp");
   g_free (path);
 
   /* Border cases */
@@ -1299,8 +1308,8 @@ test_path_get_dirname (void)
   g_assert_cmpstr (path, ==, ".");
   g_free (path);
 
-  path = g_path_get_dirname ("//////");
-  g_assert_cmpstr (path, ==, "/");
+  path = g_path_get_dirname (SEP SEP SEP SEP SEP SEP);
+  g_assert_cmpstr (path, ==, SEP);
   g_free (path);
 }
 
@@ -1317,7 +1326,7 @@ test_get_current_dir (void)
   g_assert_nonnull (cwd);
   g_free (cwd);
 
-  g_setenv("PWD", "/root", TRUE);
+  g_setenv("PWD", SEP "root", TRUE);
   cwd = g_get_current_dir ();
   g_assert_nonnull (cwd);
   g_free (cwd);
@@ -1348,40 +1357,40 @@ test_canonicalize_filename (void)
 
   /* Positive cases */
   result = g_canonicalize_filename ("../../usr/bin", "/etc/foo");
-  g_assert_cmpstr (result, ==, "/usr/bin");
+  g_assert_cmpstr (result, ==, ROOTDIR "usr" SEP "bin");
   g_free (result);
 
   result = g_canonicalize_filename ("/usr/bin/sample.txt", "/etc/foo");
-  g_assert_cmpstr (result, ==, "/usr/bin/sample.txt");
+  g_assert_cmpstr (result, ==, ROOTDIR "usr" SEP "bin" SEP "sample.txt");
   g_free (result);
 
   result = g_canonicalize_filename ("../../../../../../../../bin/sample.txt", NULL);
-  g_assert_cmpstr (result, ==, "/bin/sample.txt");
+  g_assert_cmpstr (result, ==, ROOTDIR "bin" SEP "sample.txt");
   g_free (result);
 
   result = g_canonicalize_filename ("//////////////////..//////bin/sample.txt",
                                     "/etc////foo");
-  g_assert_cmpstr (result, ==, "/bin/sample.txt");
+  g_assert_cmpstr (result, ==, ROOTDIR "bin" SEP "sample.txt");
   g_free (result);
 
   result = g_canonicalize_filename ("./", "/etc/");
-  g_assert_cmpstr (result, ==, "/etc");
+  g_assert_cmpstr (result, ==, ROOTDIR "etc");
   g_free (result);
 
   result = g_canonicalize_filename (".a", "/etc/");
-  g_assert_cmpstr (result, ==, "/etc/.a");
+  g_assert_cmpstr (result, ==, ROOTDIR "etc" SEP ".a");
   g_free (result);
 
   result = g_canonicalize_filename ("..", "/etc/");
-  g_assert_cmpstr (result, ==, "/");
+  g_assert_cmpstr (result, ==, ROOTDIR);
   g_free (result);
 
   result = g_canonicalize_filename ("../", "/etc/");
-  g_assert_cmpstr (result, ==, "/");
+  g_assert_cmpstr (result, ==, ROOTDIR);
   g_free (result);
 
   result = g_canonicalize_filename ("..a", "/etc/");
-  g_assert_cmpstr (result, ==, "/etc/..a");
+  g_assert_cmpstr (result, ==, ROOTDIR "etc" SEP "..a");
   g_free (result);
 }
 
@@ -1405,7 +1414,7 @@ test_stdio_wrappers (void)
     }
 #endif
 
-  g_remove ("mkdir-test/test-create");
+  g_remove ("mkdir-test" SEP "test-create");
   g_assert_true (g_rmdir ("mkdir-test") == 0 || errno == ENOENT);
 
   g_assert_cmpint (g_stat ("mkdir-test", &buf), ==, -1);
@@ -1464,7 +1473,7 @@ test_stdio_wrappers (void)
   g_assert_cmpint (buf.st_mtime, ==, now);
 
   g_chdir ("..");
-  g_remove ("mkdir-test/test-create");
+  g_remove ("mkdir-test" SEP "test-create");
   g_rmdir ("mkdir-test");
 }
 
