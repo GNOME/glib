@@ -2484,7 +2484,7 @@ g_format_size_full (guint64          size,
        * found.
        */
 #ifndef G_OS_WIN32
-      formatted_number = g_strdup_printf ("%'"G_GUINT64_FORMAT, size);
+      formatted_number = g_strdup_printf ("%"G_GUINT64_FORMAT, size);
 #else
       formatted_number = g_strdup_printf ("%"G_GUINT64_FORMAT, size);
 #endif
