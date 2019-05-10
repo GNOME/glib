@@ -1628,7 +1628,7 @@ load_user_special_dirs (void)
   for (i = 0; i < n_lines; i++)
     {
       gchar *buffer = lines[i];
-      gchar *d, *p;
+      gchar *d, *p, *td;
       gint len;
       gboolean is_relative = FALSE;
       GUserDirectory directory;
@@ -1722,11 +1722,16 @@ load_user_special_dirs (void)
       if (is_relative)
         {
           gchar *home_dir = g_build_home_dir ();
-          g_user_special_dirs[directory] = g_build_filename (home_dir, d, NULL);
+          td = g_build_filename (home_dir, d, NULL);
           g_free (home_dir);
         }
       else
-	g_user_special_dirs[directory] = g_strdup (d);
+       td = g_strdup (d);
+
+      if (g_file_test (td, G_FILE_TEST_IS_DIR))
+        g_user_special_dirs[directory] = g_strdup (td);
+
+      g_free (td);
     }
 
   g_strfreev (lines);
