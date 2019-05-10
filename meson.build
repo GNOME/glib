@@ -1,5 +1,5 @@
 project('glib', 'c', 'cpp',
-  version : '2.61.0',
+  version : '2.61.1',
   meson_version : '>= 0.48.0',
   default_options : [
     'buildtype=debugoptimized',
