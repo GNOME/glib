@@ -2719,7 +2719,7 @@ msgid ""
 "desktop/” or “/system/” are deprecated."
 msgstr ""
 "Warnung: Schema »%s« hat den Pfad »%s«. Mit »/apps/«, »/desktop/« oder »/"
-"system/« beginnende Pfade gelten jecoh als veraltet."
+"system/« beginnende Pfade gelten jedoch als veraltet."
 
 #: gio/glib-compile-schemas.c:1271
 #, c-format
