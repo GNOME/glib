@@ -53,6 +53,13 @@
  *
  * ## Floating references # {#floating-ref}
  *
+ * **Note**: Floating references are a C convenience API and should not be
+ * used in modern GObject code. Language bindings in particular find the
+ * concept highly problematic, as floating references are not identifiable
+ * through annotations, and neither are deviations from the floating reference
+ * behavior, like types that inherit from #GInitiallyUnowned and still return
+ * a full reference from g_object_new().
+ *
  * GInitiallyUnowned is derived from GObject. The only difference between
  * the two is that the initial reference of a GInitiallyUnowned is flagged
  * as a "floating" reference. This means that it is not specifically
