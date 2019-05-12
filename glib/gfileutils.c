@@ -259,12 +259,15 @@ g_mkdir_with_parents (const gchar *pathname,
       
       if (!g_file_test (fn, G_FILE_TEST_EXISTS))
 	{
-	  if (g_mkdir (fn, mode) == -1 && errno != EEXIST && (p ? (errno != ENOENT) : (-1)))
+	  if (g_mkdir (fn, mode) == -1 && errno != EEXIST)
 	    {
 	      int errno_save = errno;
-	      g_free (fn);
-	      errno = errno_save;
-	      return -1;
+              if (p && errno != ENOENT)
+                {
+	          g_free (fn);
+	          errno = errno_save;
+	          return -1;
+		}
 	    }
 	}
       else if (!g_file_test (fn, G_FILE_TEST_IS_DIR))
