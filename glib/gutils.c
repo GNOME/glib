@@ -2478,16 +2478,7 @@ g_format_size_full (guint64          size,
           /* Translators: the %s in "%s bits" will always be replaced by a number. */
           translated_format = g_dngettext (GETTEXT_PACKAGE, "%s bit", "%s bits", plural_form);
         }
-      /* XXX: Windows doesn't support the "'" format modifier, so we
-       * must not use it there.  Instead, just display the number
-       * without separation.  Bug #655336 is open until a solution is
-       * found.
-       */
-#ifndef G_OS_WIN32
       formatted_number = g_strdup_printf ("%'"G_GUINT64_FORMAT, size);
-#else
-      formatted_number = g_strdup_printf ("%"G_GUINT64_FORMAT, size);
-#endif
 
       g_string_append (string, " (");
       g_string_append_printf (string, translated_format, formatted_number);
