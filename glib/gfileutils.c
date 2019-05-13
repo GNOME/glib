@@ -226,6 +226,20 @@ g_mkdir_with_parents (const gchar *pathname,
       return -1;
     }
 
+  /* try to create the full path first */
+  if (g_mkdir (pathname, mode) == 0)
+    return 0;
+  else if (errno == EEXIST)
+    {
+      if (!g_file_test (pathname, G_FILE_TEST_IS_DIR))
+        {
+          errno = ENOTDIR;
+          return -1;
+        }
+      return 0;
+    }
+
+  /* walk the full path and try creating each element */
   fn = g_strdup (pathname);
 
   if (g_path_is_absolute (fn))
