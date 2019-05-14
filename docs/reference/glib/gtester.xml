@@ -40,6 +40,9 @@
 <para><command>gtester</command> is a utility to run unit tests that have
 been written using the GLib test framework.
 </para>
+<para>Since GLib 2.62, <command>gtester-report</command> is deprecated. Use
+TAP for reporting test results instead, and feed it to the test harness provided
+by your build system.</para>
 <para>
 When called with the <option>-o</option> option, <command>gtester</command>
 writes an XML report of the test results, which can be converted

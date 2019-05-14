@@ -43,6 +43,7 @@ static gboolean     gtester_quiet = FALSE;
 static gboolean     gtester_verbose = FALSE;
 static gboolean     gtester_list_tests = FALSE;
 static gboolean     gtester_selftest = FALSE;
+static gboolean     gtester_ignore_deprecation = FALSE;
 static gboolean     subtest_running = FALSE;
 static gint         subtest_exitstatus = 0;
 static gboolean     subtest_io_pending = FALSE;
@@ -660,6 +661,11 @@ parse_args (gint    *argc_p,
             }
           argv[i] = NULL;
         }
+      else if (strcmp ("--i-know-this-is-deprecated", argv[i]) == 0)
+        {
+          gtester_ignore_deprecation = TRUE;
+          argv[i] = NULL;
+        }
     }
   /* collapse argv */
   e = 1;
@@ -690,6 +696,10 @@ main (int    argc,
       return 1;
     }
 
+  if (!gtester_ignore_deprecation)
+    g_warning ("Deprecated: Since GLib 2.62, gtester and gtester-report are "
+               "deprecated. Port to TAP.");
+
   if (output_filename)
     {
       int errsv;
@@ -700,6 +710,8 @@ main (int    argc,
     }
 
   test_log_printfe ("<?xml version=\"1.0\"?>\n");
+  test_log_printfe ("<!-- Deprecated: Since GLib 2.62, gtester and "
+                    "gtester-report are deprecated. Port to TAP. -->\n");
   test_log_printfe ("%s<gtester>\n", sindent (log_indent));
   log_indent += 2;
   for (ui = 1; ui < argc; ui++)

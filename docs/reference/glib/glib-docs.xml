@@ -136,6 +136,10 @@
   <chapter id="tools">
     <title>GLib Tools</title>
     <xi:include href="glib-gettextize.xml" />
+  </chapter>
+
+  <chapter id="deprecated-tools">
+    <title>Deprecated Tools</title>
     <xi:include href="gtester.xml" />
     <xi:include href="gtester-report.xml" />
   </chapter>

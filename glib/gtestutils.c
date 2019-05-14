@@ -60,7 +60,6 @@
  * SECTION:testing
  * @title: Testing
  * @short_description: a test framework
- * @see_also: [gtester][gtester], [gtester-report][gtester-report]
  *
  * GLib provides a framework for writing and maintaining unit tests
  * in parallel to the code they are testing. The API is designed according
@@ -235,7 +234,9 @@
  * If you don't have access to the Autotools TAP harness, you can use the
  * [gtester][gtester] and [gtester-report][gtester-report] tools, and use
  * the [glib.mk](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/glib.mk)
- * Automake template provided by GLib.
+ * Automake template provided by GLib. Note, however, that since GLib 2.62,
+ * [gtester][gtester] and [gtester-report][gtester-report] have been deprecated
+ * in favour of using TAP.
  */
 
 /**
