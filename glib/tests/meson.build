@@ -204,8 +204,7 @@ foreach test_name, extra_args : glib_tests
 
   suite = ['glib'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
-  test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
-    args : ['--tap'])
+  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach
 
 # test-spawn-echo helper binary required by the spawn tests above

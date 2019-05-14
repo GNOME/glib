@@ -103,7 +103,6 @@ foreach test_name, extra_args : tests
   extra_sources = extra_args.get('extra_sources', [])
   install = installed_tests_enabled and extra_args.get('install', true)
   template = extra_args.get('tap', false) ? installed_tests_template_tap : installed_tests_template
-  test_command_args = extra_args.get('tap', false) ? ['--tap'] : []
 
   if install
     test_conf = configuration_data()
@@ -131,8 +130,7 @@ foreach test_name, extra_args : tests
   suite = ['glib'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
-  test(test_name, exe, env : test_env, timeout : timeout, suite : suite,
-    args : test_command_args)
+  test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach
 
 foreach program_name, extra_args : test_extra_programs
