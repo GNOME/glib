@@ -882,6 +882,7 @@ test_title (void)
   g_assert_false (g_unichar_istitle (G_UNICODE_LAST_CHAR_PART1));
   g_assert_false (g_unichar_istitle (G_UNICODE_LAST_CHAR_PART1 + 1));
 
+  g_assert_cmphex (g_unichar_totitle (0x0000), ==, 0x0000);
   g_assert_cmphex (g_unichar_totitle (0x01c6), ==, 0x01c5);
   g_assert_cmphex (g_unichar_totitle (0x01c4), ==, 0x01c5);
   g_assert_cmphex (g_unichar_totitle (0x01c5), ==, 0x01c5);
