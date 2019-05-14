@@ -236,7 +236,8 @@
  * the [glib.mk](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/glib.mk)
  * Automake template provided by GLib. Note, however, that since GLib 2.62,
  * [gtester][gtester] and [gtester-report][gtester-report] have been deprecated
- * in favour of using TAP.
+ * in favour of using TAP. The `--tap` argument to tests is enabled by default
+ * as of GLib 2.62.
  */
 
 /**
@@ -833,7 +834,7 @@ static char       *test_trap_last_stdout = NULL;
 static char       *test_trap_last_stderr = NULL;
 static char       *test_uri_base = NULL;
 static gboolean    test_debug_log = FALSE;
-static gboolean    test_tap_log = FALSE;
+static gboolean    test_tap_log = TRUE;  /* default to TAP as of GLib 2.62; see #1619; the non-TAP output mode is deprecated */
 static gboolean    test_nonfatal_assertions = FALSE;
 static DestroyEntry *test_destroy_queue = NULL;
 static char       *test_argv0 = NULL;
@@ -1109,6 +1110,9 @@ parse_args (gint    *argc_p,
               test_log_fd = g_ascii_strtoull (argv[i], NULL, 0);
             }
           argv[i] = NULL;
+
+          /* Force non-TAP output when using gtester */
+          test_tap_log = FALSE;
         }
       else if (strcmp ("--GTestSkipCount", argv[i]) == 0 || strncmp ("--GTestSkipCount=", argv[i], 17) == 0)
         {
@@ -1136,6 +1140,10 @@ parse_args (gint    *argc_p,
           }
 #endif
           argv[i] = NULL;
+
+          /* Force non-TAP output when spawning a subprocess, since people often
+           * test the stdout/stderr of the subprocess strictly */
+          test_tap_log = FALSE;
         }
       else if (strcmp ("-p", argv[i]) == 0 || strncmp ("-p=", argv[i], 3) == 0)
         {
