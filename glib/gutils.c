@@ -2300,7 +2300,7 @@ g_format_size_full (guint64          size,
   struct Format
   {
     guint64 factor;
-    char string[9];
+    char string[10];
   };
 
   typedef enum
