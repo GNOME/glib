@@ -623,13 +623,19 @@ gunichar
 g_unichar_totitle (gunichar c)
 {
   unsigned int i;
+
+  /* We handle U+0000 explicitely because some elements in
+   * title_table[i][1] may be null. */
+  if (c == 0)
+    return c;
+
   for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
     {
       if (title_table[i][0] == c || title_table[i][1] == c
 	  || title_table[i][2] == c)
 	return title_table[i][0];
     }
-    
+
   if (TYPE (c) == G_UNICODE_LOWERCASE_LETTER)
     return g_unichar_toupper (c);
 
