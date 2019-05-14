@@ -38,6 +38,7 @@
 #include "gtestutils.h"
 #include "gslice.h"
 #include "grefcount.h"
+#include "gvalgrind.h"
 
 /* The following #pragma is here so we can do this...
  *
@@ -1016,6 +1017,7 @@ g_hash_table_new_full (GHashFunc      hash_func,
                        GDestroyNotify value_destroy_func)
 {
   GHashTable *hash_table;
+  gboolean small;
 
   hash_table = g_slice_new (GHashTable);
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
@@ -1033,13 +1035,23 @@ g_hash_table_new_full (GHashFunc      hash_func,
   hash_table->values             = hash_table->keys;
   hash_table->hashes             = g_new0 (guint, hash_table->size);
 
+  /* We want to use small arrays only if:
+   *   - we are running on a system where that makes sense (64 bit); and
+   *   - we are not running under valgrind.
+   */
+  small = FALSE;
+
 #ifdef USE_SMALL_ARRAYS
-  hash_table->have_big_keys = FALSE;
-  hash_table->have_big_values = FALSE;
-#else
-  hash_table->have_big_keys = TRUE;
-  hash_table->have_big_values = TRUE;
+  small = TRUE;
+
+# ifdef ENABLE_VALGRIND
+  if (RUNNING_ON_VALGRIND)
+    small = FALSE;
+# endif
 #endif
+
+  hash_table->have_big_keys = !small;
+  hash_table->have_big_values = !small;
 
   return hash_table;
 }
