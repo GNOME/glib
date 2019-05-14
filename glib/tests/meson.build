@@ -229,7 +229,7 @@ if not meson.is_cross_build() and host_system != 'windows'
   if xmllint.found()
     tmpsample_xml = custom_target('tmpsample.xml',
       output : 'tmpsample.xml',
-      command : [ gtester, '-k', '--quiet', '-o', '@OUTPUT@',
+      command : [ gtester, '-k', '--quiet', '--i-know-this-is-deprecated', '-o', '@OUTPUT@',
                   '--test-arg=--gtester-selftest', gtester])
 
     test('gtester-xmllint-check', xmllint,

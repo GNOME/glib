@@ -15,6 +15,10 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, see <http://www.gnu.org/licenses/>.
+
+# Deprecated: Since GLib 2.62, gtester and gtester-report have been deprecated
+# in favour of TAP.
+
 import datetime
 import optparse
 import sys, re, xml.dom.minidom
@@ -343,6 +347,9 @@ class HTMLReportWriter(ReportWriter):
     self.oprint ('<body>\n')
     self.oprint ('<h2>GTester Unit Test Report</h2>\n')
     self.handle_info ()
+    self.oprint ('<p style="color:red;font-weight:bold"><blink>'
+                 'Deprecated: Since GLib 2.62, gtester and gtester-report are '
+                 'deprecated. Port to TAP.</blink></p>\n');
     self.oprint ('<table id="ResultTable" width="100%" border="1">\n<tr>\n')
     self.oprint ('<th>Program / Testcase </th>\n')
     self.oprint ('<th style="width:8em">Duration (sec)</th>\n')
@@ -474,6 +481,10 @@ def main():
   options, files = parse_opts()
   if options is None:
     return 0
+
+  print("Deprecated: Since GLib 2.62, gtester and gtester-report are "
+        "deprecated. Port to TAP.", file=sys.stderr)
+
   xd = xml.dom.minidom.parse (files[0])
   rr = ReportReader()
   rr.trampoline (xd)
