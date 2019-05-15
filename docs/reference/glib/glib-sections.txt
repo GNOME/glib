@@ -3162,6 +3162,7 @@ g_test_failed
 g_test_message
 g_test_bug_base
 g_test_bug
+g_test_summary
 GTestLogFatalFunc
 g_test_log_set_fatal_handler
 

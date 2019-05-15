@@ -1906,6 +1906,7 @@ g_test_bug_base (const char *uri_pattern)
  * and @bug_uri_snippet.
  *
  * Since: 2.16
+ * See also: g_test_summary()
  */
 void
 g_test_bug (const char *bug_uri_snippet)
@@ -1926,6 +1927,31 @@ g_test_bug (const char *bug_uri_snippet)
     }
   else
     g_test_message ("Bug Reference: %s%s", test_uri_base, bug_uri_snippet);
+}
+
+/**
+ * g_test_summary:
+ * @summary: One or two sentences summarising what the test checks, and how it
+ *    checks it.
+ *
+ * Set the summary for a test, which describes what the test checks, and how it
+ * goes about checking it. This may be included in test report output, and is
+ * useful documentation for anyone reading the source code or modifying a test
+ * in future. It must be a single line.
+ *
+ * This should be called at the top of a test function.
+ *
+ * Since: 2.62
+ * See also: g_test_bug()
+ */
+void
+g_test_summary (const char *summary)
+{
+  g_return_if_fail (summary != NULL);
+  g_return_if_fail (strchr (summary, '\n') == NULL);
+  g_return_if_fail (strchr (summary, '\r') == NULL);
+
+  g_test_message ("%s summary: %s", test_run_name, summary);
 }
 
 /**

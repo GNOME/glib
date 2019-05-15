@@ -1209,6 +1209,43 @@ test_tap (void)
   g_ptr_array_unref (argv);
 }
 
+static void
+test_tap_summary (void)
+{
+  const char *testing_helper;
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+  gchar *output;
+
+  g_test_summary ("Test the output of g_test_summary() from the TAP output of a test.");
+
+  testing_helper = g_test_get_filename (G_TEST_BUILT, "testing-helper" EXEEXT, NULL);
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) testing_helper);
+  g_ptr_array_add (argv, "summary");
+  g_ptr_array_add (argv, "--tap");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, &output, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+  /* Note: The test path in the output is not `/tap/summary` because it’s the
+   * test path from testing-helper, not from this function. */
+  g_assert_nonnull (strstr (output, "\n# /summary summary: Tests that g_test_summary() "
+                                    "works with TAP, by outputting a known "
+                                    "summary message in testing-helper, and "
+                                    "checking for it in the TAP output later.\n"));
+  g_free (output);
+  g_ptr_array_unref (argv);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1288,6 +1325,7 @@ main (int   argc,
   g_test_add_func ("/misc/timeout", test_subprocess_timed_out);
 
   g_test_add_func ("/tap", test_tap);
+  g_test_add_func ("/tap/summary", test_tap_summary);
 
   return g_test_run();
 }

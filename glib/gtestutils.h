@@ -321,6 +321,8 @@ GLIB_AVAILABLE_IN_ALL
 void    g_test_bug_base                 (const char *uri_pattern);
 GLIB_AVAILABLE_IN_ALL
 void    g_test_bug                      (const char *bug_uri_snippet);
+GLIB_AVAILABLE_IN_2_62
+void    g_test_summary                  (const char *summary);
 /* measure test timings */
 GLIB_AVAILABLE_IN_ALL
 void    g_test_timer_start              (void);
