@@ -255,6 +255,7 @@ struct _GHashTable
   gint             nnodes;
   gint             noccupied;  /* nnodes + tombstones */
 
+  guint            use_small_arrays : 1;
   guint            have_big_keys : 1;
   guint            have_big_values : 1;
 
@@ -623,7 +624,7 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   if (!destruction)
     {
-      hash_table->keys   = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, FALSE);
+      hash_table->keys   = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, !hash_table->use_small_arrays);
       hash_table->values = hash_table->keys;
       hash_table->hashes = g_new0 (guint, hash_table->size);
     }
@@ -654,8 +655,8 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
         }
     }
 
-  hash_table->have_big_keys = FALSE;
-  hash_table->have_big_values = FALSE;
+  hash_table->have_big_keys = !hash_table->use_small_arrays;
+  hash_table->have_big_values = !hash_table->use_small_arrays;
 
   /* Destroy old storage space. */
   if (old_keys != old_values)
@@ -1017,9 +1018,25 @@ g_hash_table_new_full (GHashFunc      hash_func,
                        GDestroyNotify value_destroy_func)
 {
   GHashTable *hash_table;
-  gboolean small;
+  gboolean small = FALSE;
+
+  /* We want to use small arrays only if:
+   *   - we are running on a system where that makes sense (64 bit); and
+   *   - we are not running under valgrind.
+   */
+#ifdef USE_SMALL_ARRAYS
+  small = TRUE;
+# ifdef ENABLE_VALGRIND
+  if (RUNNING_ON_VALGRIND)
+    small = FALSE;
+# endif
+#endif
 
   hash_table = g_slice_new (GHashTable);
+
+  hash_table->use_small_arrays   = small;
+  hash_table->have_big_keys      = !small;
+  hash_table->have_big_values    = !small;
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   g_atomic_ref_count_init (&hash_table->ref_count);
   hash_table->nnodes             = 0;
@@ -1031,27 +1048,9 @@ g_hash_table_new_full (GHashFunc      hash_func,
 #endif
   hash_table->key_destroy_func   = key_destroy_func;
   hash_table->value_destroy_func = value_destroy_func;
-  hash_table->keys               = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, FALSE);
+  hash_table->keys               = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, !small);
   hash_table->values             = hash_table->keys;
   hash_table->hashes             = g_new0 (guint, hash_table->size);
-
-  /* We want to use small arrays only if:
-   *   - we are running on a system where that makes sense (64 bit); and
-   *   - we are not running under valgrind.
-   */
-  small = FALSE;
-
-#ifdef USE_SMALL_ARRAYS
-  small = TRUE;
-
-# ifdef ENABLE_VALGRIND
-  if (RUNNING_ON_VALGRIND)
-    small = FALSE;
-# endif
-#endif
-
-  hash_table->have_big_keys = !small;
-  hash_table->have_big_values = !small;
 
   return hash_table;
 }
