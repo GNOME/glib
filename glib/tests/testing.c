@@ -29,7 +29,7 @@
 #define G_LOG_DOMAIN "testing"
 
 #include <glib.h>
-
+#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -1214,6 +1214,8 @@ main (int   argc,
       char *argv[])
 {
   argv0 = argv[0];
+
+  setlocale (LC_ALL, "");
 
   g_test_init (&argc, &argv, NULL);
 
