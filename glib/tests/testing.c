@@ -1241,7 +1241,9 @@ test_tap_summary (void)
   g_assert_nonnull (strstr (output, "\n# /summary: Tests that g_test_summary() "
                                     "works with TAP, by outputting a known "
                                     "summary message in testing-helper, and "
-                                    "checking for it in the TAP output later.\n"));
+                                    "checking for it in the TAP output later. "
+                                    "Include newlines to test they don’t break "
+                                    "TAP output.\n"));
   g_free (output);
   g_ptr_array_unref (argv);
 }

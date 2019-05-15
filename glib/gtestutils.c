@@ -1019,7 +1019,13 @@ g_test_log (GTestLogType lbit,
       break;
     case G_TEST_LOG_MESSAGE:
       if (test_tap_log)
-        g_print ("# %s\n", string1);
+        {
+          /* Escape newlines to avoid breaking the TAP output. */
+          gchar *string1_escaped = g_strdup (string1);
+          g_strdelimit (string1_escaped, "\r\n", ' ');
+          g_print ("# %s\n", string1_escaped);
+          g_free (string1_escaped);
+        }
       else if (g_test_verbose ())
         g_print ("(MSG: %s)\n", string1);
       break;

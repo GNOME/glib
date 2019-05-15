@@ -52,7 +52,8 @@ test_summary (void)
 {
   g_test_summary ("Tests that g_test_summary() works with TAP, by outputting a "
                   "known summary message in testing-helper, and checking for "
-                  "it in the TAP output later.");
+                  "it in the TAP output later.\nInclude newlines to test they "
+                  "don’t break TAP output.");
 }
 
 int
