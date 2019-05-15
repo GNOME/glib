@@ -255,6 +255,7 @@ struct _GHashTable
   gint             nnodes;
   gint             noccupied;  /* nnodes + tombstones */
 
+  guint            use_small_arrays : 1;
   guint            have_big_keys : 1;
   guint            have_big_values : 1;
 
@@ -623,7 +624,7 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   if (!destruction)
     {
-      hash_table->keys   = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, FALSE);
+      hash_table->keys   = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, !hash_table->use_small_arrays);
       hash_table->values = hash_table->keys;
       hash_table->hashes = g_new0 (guint, hash_table->size);
     }
@@ -654,8 +655,8 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
         }
     }
 
-  hash_table->have_big_keys = FALSE;
-  hash_table->have_big_values = FALSE;
+  hash_table->have_big_keys = !hash_table->use_small_arrays;
+  hash_table->have_big_values = !hash_table->use_small_arrays;
 
   /* Destroy old storage space. */
   if (old_keys != old_values)
@@ -1046,6 +1047,7 @@ g_hash_table_new_full (GHashFunc      hash_func,
 #endif
   hash_table->key_destroy_func   = key_destroy_func;
   hash_table->value_destroy_func = value_destroy_func;
+  hash_table->use_small_arrays   = small;
   hash_table->have_big_keys      = !small;
   hash_table->have_big_values    = !small;
   hash_table->keys               = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, hash_table->have_big_keys);
