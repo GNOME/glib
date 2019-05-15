@@ -17,6 +17,7 @@
  */
 
 #include <glib.h>
+#include <locale.h>
 #ifdef G_OS_WIN32
 #include <fcntl.h>
 #include <io.h>
@@ -51,6 +52,8 @@ main (int   argc,
       char *argv[])
 {
   char *argv1;
+
+  setlocale (LC_ALL, "");
 
 #ifdef G_OS_WIN32
   /* Windows opens std streams in text mode, with \r\n EOLs.
