@@ -1019,22 +1019,6 @@ g_hash_table_new_full (GHashFunc      hash_func,
   GHashTable *hash_table;
   gboolean small;
 
-  hash_table = g_slice_new (GHashTable);
-  g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
-  g_atomic_ref_count_init (&hash_table->ref_count);
-  hash_table->nnodes             = 0;
-  hash_table->noccupied          = 0;
-  hash_table->hash_func          = hash_func ? hash_func : g_direct_hash;
-  hash_table->key_equal_func     = key_equal_func;
-#ifndef G_DISABLE_ASSERT
-  hash_table->version            = 0;
-#endif
-  hash_table->key_destroy_func   = key_destroy_func;
-  hash_table->value_destroy_func = value_destroy_func;
-  hash_table->keys               = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, FALSE);
-  hash_table->values             = hash_table->keys;
-  hash_table->hashes             = g_new0 (guint, hash_table->size);
-
   /* We want to use small arrays only if:
    *   - we are running on a system where that makes sense (64 bit); and
    *   - we are not running under valgrind.
@@ -1050,8 +1034,23 @@ g_hash_table_new_full (GHashFunc      hash_func,
 # endif
 #endif
 
-  hash_table->have_big_keys = !small;
-  hash_table->have_big_values = !small;
+  hash_table = g_slice_new (GHashTable);
+  g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
+  g_atomic_ref_count_init (&hash_table->ref_count);
+  hash_table->nnodes             = 0;
+  hash_table->noccupied          = 0;
+  hash_table->hash_func          = hash_func ? hash_func : g_direct_hash;
+  hash_table->key_equal_func     = key_equal_func;
+#ifndef G_DISABLE_ASSERT
+  hash_table->version            = 0;
+#endif
+  hash_table->key_destroy_func   = key_destroy_func;
+  hash_table->value_destroy_func = value_destroy_func;
+  hash_table->have_big_keys      = !small;
+  hash_table->have_big_values    = !small;
+  hash_table->keys               = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, hash_table->have_big_keys);
+  hash_table->values             = hash_table->keys;
+  hash_table->hashes             = g_new0 (guint, hash_table->size);
 
   return hash_table;
 }
