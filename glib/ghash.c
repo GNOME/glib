@@ -581,6 +581,8 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   gpointer *old_keys;
   gpointer *old_values;
   guint    *old_hashes;
+  gboolean old_have_big_keys;
+  gboolean old_have_big_values;
 
   /* If the hash table is already empty, there is nothing to be done. */
   if (hash_table->nnodes == 0)
@@ -610,10 +612,12 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
     }
 
   /* Keep the old storage space around to iterate over it. */
-  old_size = hash_table->size;
-  old_keys   = hash_table->keys;
-  old_values = hash_table->values;
-  old_hashes = hash_table->hashes;
+  old_size            = hash_table->size;
+  old_keys            = hash_table->keys;
+  old_values          = hash_table->values;
+  old_hashes          = hash_table->hashes;
+  old_have_big_keys   = hash_table->have_big_keys;
+  old_have_big_values = hash_table->have_big_values;
 
   /* Now create a new storage space; If the table is destroyed we can use the
    * shortcut of not creating a new storage. This saves the allocation at the
@@ -635,17 +639,20 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
       hash_table->hashes = NULL;
     }
 
+  hash_table->have_big_keys = !hash_table->use_small_arrays;
+  hash_table->have_big_values = !hash_table->use_small_arrays;
+
   for (i = 0; i < old_size; i++)
     {
       if (HASH_IS_REAL (old_hashes[i]))
         {
-          key = g_hash_table_fetch_key_or_value (old_keys, i, hash_table->have_big_keys);
-          value = g_hash_table_fetch_key_or_value (old_values, i, hash_table->have_big_values);
+          key = g_hash_table_fetch_key_or_value (old_keys, i, old_have_big_keys);
+          value = g_hash_table_fetch_key_or_value (old_values, i, old_have_big_values);
 
           old_hashes[i] = UNUSED_HASH_VALUE;
 
-          g_hash_table_assign_key_or_value (old_keys, i, hash_table->have_big_keys, NULL);
-          g_hash_table_assign_key_or_value (old_values, i, hash_table->have_big_values, NULL);
+          g_hash_table_assign_key_or_value (old_keys, i, old_have_big_keys, NULL);
+          g_hash_table_assign_key_or_value (old_values, i, old_have_big_values, NULL);
 
           if (hash_table->key_destroy_func != NULL)
             hash_table->key_destroy_func (key);
@@ -654,9 +661,6 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
             hash_table->value_destroy_func (value);
         }
     }
-
-  hash_table->have_big_keys = !hash_table->use_small_arrays;
-  hash_table->have_big_values = !hash_table->use_small_arrays;
 
   /* Destroy old storage space. */
   if (old_keys != old_values)
