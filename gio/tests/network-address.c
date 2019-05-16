@@ -426,7 +426,9 @@ typedef struct {
 } AsyncData;
 
 static void
-got_addr (GObject *source_object, GAsyncResult *result, gpointer user_data)
+got_addr (GObject      *source_object,
+          GAsyncResult *result,
+          gpointer      user_data)
 {
   GSocketAddressEnumerator *enumerator;
   AsyncData *data;
@@ -464,6 +466,30 @@ got_addr (GObject *source_object, GAsyncResult *result, gpointer user_data)
                                               got_addr, user_data);
     }
 }
+
+static void
+got_addr_ignored (GObject      *source_object,
+                  GAsyncResult *result,
+                  gpointer      user_data)
+{
+  GSocketAddressEnumerator *enumerator;
+  GSocketAddress *a;  /* owned */
+  GError *error = NULL;
+
+  /* This function simply ignores the returned addresses but keeps enumerating */
+
+  enumerator = G_SOCKET_ADDRESS_ENUMERATOR (source_object);
+
+  a = g_socket_address_enumerator_next_finish (enumerator, result, &error);
+  g_assert_no_error (error);
+  if (a != NULL)
+    {
+      g_object_unref (a);
+      g_socket_address_enumerator_next_async (enumerator, NULL,
+                                              got_addr_ignored, user_data);
+    }
+}
+
 
 static void
 test_loopback_async (void)
@@ -644,6 +670,39 @@ test_happy_eyeballs_basic (HappyEyeballsFixture *fixture,
   g_main_loop_run (fixture->loop);
 
   assert_list_matches_expected (data.addrs, fixture->input_all_results);
+}
+
+static void
+test_happy_eyeballs_parallel (HappyEyeballsFixture *fixture,
+                              gconstpointer         user_data)
+{
+  AsyncData data = { 0 };
+  GSocketAddressEnumerator *enumerator2;
+
+  enumerator2 = g_socket_connectable_enumerate (fixture->addr);
+
+  data.delay_ms = FAST_DELAY_LESS_THAN_TIMEOUT;
+  data.loop = fixture->loop;
+
+  /* We run multiple enumerations at once, the results shouldn't be affected. */
+
+  g_socket_address_enumerator_next_async (enumerator2, NULL, got_addr_ignored, &data);
+  g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
+  g_main_loop_run (fixture->loop);
+
+  assert_list_matches_expected (data.addrs, fixture->input_all_results);
+
+  /* Run again to ensure the cache from the previous one is correct */
+
+  data.addrs = NULL;
+  g_object_unref (enumerator2);
+
+  enumerator2 = g_socket_connectable_enumerate (fixture->addr);
+  g_socket_address_enumerator_next_async (enumerator2, NULL, got_addr, &data);
+  g_main_loop_run (fixture->loop);
+
+  assert_list_matches_expected (data.addrs, fixture->input_all_results);
+  g_object_unref (enumerator2);
 }
 
 static void
@@ -958,6 +1017,8 @@ main (int argc, char *argv[])
 
   g_test_add ("/network-address/happy-eyeballs/basic", HappyEyeballsFixture, NULL,
               happy_eyeballs_setup, test_happy_eyeballs_basic, happy_eyeballs_teardown);
+  g_test_add ("/network-address/happy-eyeballs/parallel", HappyEyeballsFixture, NULL,
+              happy_eyeballs_setup, test_happy_eyeballs_parallel, happy_eyeballs_teardown);
   g_test_add ("/network-address/happy-eyeballs/slow-ipv4", HappyEyeballsFixture, NULL,
               happy_eyeballs_setup, test_happy_eyeballs_slow_ipv4, happy_eyeballs_teardown);
   g_test_add ("/network-address/happy-eyeballs/slow-ipv6", HappyEyeballsFixture, NULL,
