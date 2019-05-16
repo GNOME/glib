@@ -577,6 +577,59 @@ array_clear_func (void)
   g_assert_cmpint (num_clear_func_invocations, ==, 10);
 }
 
+static gint
+cmpint (gconstpointer a, gconstpointer b)
+{
+  const gint *_a = a;
+  const gint *_b = b;
+
+  return *_a - *_b;
+}
+
+
+static void
+test_array_binary_search (void)
+{
+  GArray *garray;
+  guint i, matched_index;
+
+  garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 10000);
+
+  if (g_test_undefined ())
+    {
+      /* Testing degenerated cases */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_array_binary_search(NULL, &i, cmpint, NULL));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_array_binary_search(garray, &i, NULL, NULL));
+      g_test_assert_expected_messages ();
+    }
+
+  /* Testing for usual cases */
+  for (i = 0; i < 10000; i++) {
+    g_array_append_val (garray, i);
+  }
+
+  for (i = 0; i < 10000; i++) {
+    g_assert_true (g_array_binary_search(garray, &i, cmpint, NULL));
+  }
+
+  for (i = 0; i < 10000; i++) {
+    g_assert_true (g_array_binary_search(garray, &i, cmpint, &matched_index));
+    g_assert_cmpint(i, ==, matched_index);
+  }
+
+  i = 10001;
+  g_assert_false (g_array_binary_search(garray, &i, cmpint, NULL));
+  g_assert_false (g_array_binary_search(garray, &i, cmpint, &matched_index));
+
+  g_array_free (garray, TRUE);
+}
+
 static void
 pointer_array_add (void)
 {
@@ -1241,6 +1294,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/new/zero-terminated", array_new_zero_terminated);
   g_test_add_func ("/array/ref-count", array_ref_count);
   g_test_add_func ("/array/clear-func", array_clear_func);
+  g_test_add_func ("/array/binary-search", test_array_binary_search);
 
   for (i = 0; i < G_N_ELEMENTS (array_configurations); i++)
     {
