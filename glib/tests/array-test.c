@@ -577,6 +577,34 @@ array_clear_func (void)
   g_assert_cmpint (num_clear_func_invocations, ==, 10);
 }
 
+static gint
+cmpint (gconstpointer a, gconstpointer b)
+{
+  const gint *_a = a;
+  const gint *_b = b;
+
+  return *_a - *_b;
+}
+
+static void
+array_binary_search (void)
+{
+  gint i;
+  GArray *garray;
+
+  garray = g_array_sized_new (FALSE, FALSE, sizeof (gint), 10000);
+
+  for (i = 0; i < 10000; i++) {
+    g_array_append_val (garray, i);
+  }
+
+  for (i = 0; i < 10000; i++) {
+    g_assert_cmpint(i, ==, g_array_binary_search(garray, &i, cmpint));
+  }
+
+  g_array_free (garray, TRUE);
+}
+
 static void
 pointer_array_add (void)
 {
@@ -1241,6 +1269,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/new/zero-terminated", array_new_zero_terminated);
   g_test_add_func ("/array/ref-count", array_ref_count);
   g_test_add_func ("/array/clear-func", array_clear_func);
+  g_test_add_func ("/array/binary-search", array_binary_search);
 
   for (i = 0; i < G_N_ELEMENTS (array_configurations); i++)
     {
