@@ -577,6 +577,34 @@ array_clear_func (void)
   g_assert_cmpint (num_clear_func_invocations, ==, 10);
 }
 
+static gint
+cmpint (gconstpointer a, gconstpointer b)
+{
+  const gint *_a = a;
+  const gint *_b = b;
+
+  return *_a - *_b;
+}
+
+static void
+array_binary_search (void)
+{
+  gint i;
+  GArray *garray;
+
+  garray = g_array_sized_new (FALSE, FALSE, sizeof (gint), 10000);
+
+  for (i = 0; i < 10000; i++) {
+    g_array_append_val (garray, i);
+  }
+
+  for (i = 0; i < 10000; i++) {
+    g_assert_cmpint(i, ==, g_array_binary_search(garray, &i, cmpint));
+  }
+
+  g_array_free (garray, TRUE);
+}
+
 static void
 pointer_array_add (void)
 {
@@ -1255,6 +1283,7 @@ main (int argc, char *argv[])
       add_array_test ("/array/remove-range", &array_configurations[i], array_remove_range);
       add_array_test ("/array/sort", &array_configurations[i], array_sort);
       add_array_test ("/array/sort-with-data", &array_configurations[i], array_sort_with_data);
+      add_array_test ("/array/binary-search", &array_configurations[i], array_binary_search);
     }
 
   /* pointer arrays */

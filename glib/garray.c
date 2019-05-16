@@ -785,6 +785,52 @@ g_array_sort_with_data (GArray           *farray,
                      user_data);
 }
 
+/**
+ * g_array_binary_search:
+ * @array: a #GArray.
+ * @target: a pointer to the item to lookup.
+ * @compare_func: A #GCompareFunc used to locate @target.
+ * @Returns: index of the element matching @target if successful; otherwise -1.
+ *
+ * Binary searches @array for the index of the element matching @target.
+ * For this function to be effective, @array must be sorted.
+ *
+ * Since: 2.60
+ */
+gint
+g_array_binary_search (GArray        *farray,
+		       gconstpointer  target,
+		       GCompareFunc   compare_func)
+{
+  GRealArray *array = (GRealArray *) farray;
+  gint cmpval;
+  gint left;
+  gint middle;
+  gint right;
+
+  g_return_val_if_fail (array != NULL, -1);
+  g_return_val_if_fail (compare_func != NULL, -1);
+
+  if (G_LIKELY(array->len)) {
+    left = 0;
+    right = array->len;
+
+    while (left <= right) {
+      middle = (left + right) / 2;
+      cmpval = compare_func(array->data + (array->elt_size * middle), target);
+      if (cmpval < 0) {
+        left = middle + 1;
+      } else if (cmpval > 0) {
+        right = middle - 1;
+      } else {
+        return middle;
+      }
+    }
+  }
+
+  return -1;
+}
+
 /* Returns the smallest power of 2 greater than n, or n if
  * such power does not fit in a guint
  */
