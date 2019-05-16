@@ -785,6 +785,87 @@ g_array_sort_with_data (GArray           *farray,
                      user_data);
 }
 
+/**
+ * g_array_binary_search:
+ * @array: a #GArray.
+ * @target: a pointer to the item to look up.
+ * @compare_func: A #GCompareFunc used to locate @target.
+ * @out_match_index: (optional) (out caller-allocates): return location
+ *    for the index of the element, if found.
+ *
+ * Checks whether @target exists in @array by performing a binary
+ * search based on the given comparison function @compare_func which
+ * get pointers to items as arguments. If the element is found, %TRUE
+ * is returned and the element’s index is returned in @out_match_index
+ * (if non-%NULL). Otherwise, %FALSE is returned and @out_match_index
+ * is undefined. If @target exists multiple times in @array, the index
+ * of the first instance is returned. This search is using a binary
+ * search, so the @array must absolutely be sorted to return a correct
+ * result (if not, the function may produce false-negative).
+ *
+ * This example defines a comparison function and search an element in a #GArray:
+ * |[<!-- language="C" -->
+ * static gint*
+ * cmpint (gconstpointer a, gconstpointer b)
+ * {
+ *   const gint *_a = a;
+ *   const gint *_b = b;
+ *
+ *   return *_a - *_b;
+ * }
+ * ...
+ * gint i = 424242;
+ * guint matched_index;
+ * gboolean result = g_array_binary_search (garray, &i, cmpint, &matched_index);
+ * ...
+ * ]|
+ *
+ * Returns: %TRUE if @target is one of the elements of @array, %FALSE otherwise.
+ *
+ * Since: 2.62
+ */
+gboolean
+g_array_binary_search (GArray        *array,
+                       gconstpointer  target,
+                       GCompareFunc   compare_func,
+                       guint         *out_match_index)
+{
+  gboolean result = FALSE;
+  GRealArray *_array = (GRealArray *) array;
+  guint left, middle, right;
+  gint val;
+
+  g_return_val_if_fail (_array != NULL, FALSE);
+  g_return_val_if_fail (compare_func != NULL, FALSE);
+
+  if (G_LIKELY(_array->len))
+    {
+      left = 0;
+      right = _array->len - 1;
+
+      while (left <= right)
+        {
+          middle = (left + right) / 2;
+
+          val = compare_func (_array->data + (_array->elt_size * middle), target);
+          if (val < 0)
+            left = middle + 1;
+          else if (val > 0)
+            right = middle - 1;
+          else
+            {
+              result = TRUE;
+              break;
+            }
+        }
+    }
+
+  if (result && out_match_index != NULL)
+    *out_match_index = middle;
+
+  return result;
+}
+
 /* Returns the smallest power of 2 greater than n, or n if
  * such power does not fit in a guint
  */
