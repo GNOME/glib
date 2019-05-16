@@ -119,6 +119,11 @@ GLIB_AVAILABLE_IN_ALL
 void    g_array_sort_with_data    (GArray           *array,
 				   GCompareDataFunc  compare_func,
 				   gpointer          user_data);
+GLIB_AVAILABLE_IN_2_62
+gboolean g_array_binary_search    (GArray           *array,
+                                   gconstpointer     target,
+                                   GCompareFunc      compare_func,
+                                   guint            *out_match_index);
 GLIB_AVAILABLE_IN_ALL
 void    g_array_set_clear_func    (GArray           *array,
                                    GDestroyNotify    clear_func);
