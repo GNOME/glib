@@ -3899,7 +3899,7 @@ g_signal_accumulator_first_wins (GSignalInvocationHint *ihint,
  * @handler_id_ptr: A pointer to a handler ID (of type #gulong) of the handler to be disconnected.
  * @instance: (type GObject.Object): The instance to remove the signal handler from.
  *
- * Disconnects a handler from an instance so it will not be called during
+ * Disconnects a handler from @instance so it will not be called during
  * any future or currently ongoing emissions of the signal it has been
  * connected to. The @handler_id_ptr is then nullified.
  *
