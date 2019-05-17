@@ -3919,7 +3919,7 @@ g_clear_signal_handler (gulong   *handler_id_ptr,
 {
   g_return_if_fail (handler_id_ptr != NULL);
 
-  if (*handler_id_ptr > 0)
+  if (*handler_id_ptr != 0)
     {
       g_signal_handler_disconnect (instance, *handler_id_ptr);
       *handler_id_ptr = 0;
