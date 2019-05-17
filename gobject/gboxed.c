@@ -539,8 +539,8 @@ g_value_set_boxed_take_ownership (GValue       *value,
  * @v_boxed: (nullable): duplicated unowned boxed value to be set
  *
  * Sets the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed
- * and takes over the ownership of the callers reference to @v_boxed;
- * the caller doesn't have to unref it any more.
+ * and takes over the ownership of the caller’s reference to @v_boxed;
+ * the caller doesn’t have to unref it any more.
  *
  * Since: 2.4
  */

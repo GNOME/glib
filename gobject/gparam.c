@@ -1471,8 +1471,8 @@ g_value_set_param_take_ownership (GValue     *value,
  * @param: (nullable): the #GParamSpec to be set
  *
  * Sets the contents of a %G_TYPE_PARAM #GValue to @param and takes
- * over the ownership of the callers reference to @param; the caller
- * doesn't have to unref it any more.
+ * over the ownership of the caller’s reference to @param; the caller
+ * doesn’t have to unref it any more.
  *
  * Since: 2.4
  */
