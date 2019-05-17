@@ -3906,7 +3906,7 @@ g_signal_accumulator_first_wins (GSignalInvocationHint *ihint,
  * The @handler_id_ptr has to be a pointer to a valid signal handler id,
  * connected to a signal of @instance.
  *
- * If the handler is 0 then this function does nothing.
+ * If the handler ID is 0 then this function does nothing.
  * Otherwise, the list is fully freed and the pointer is set to %NULL.
  *
  * A macro is also included that allows this function to be used without
