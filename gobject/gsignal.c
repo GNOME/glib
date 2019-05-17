@@ -3901,7 +3901,7 @@ g_signal_accumulator_first_wins (GSignalInvocationHint *ihint,
  *
  * Disconnects a handler from @instance so it will not be called during
  * any future or currently ongoing emissions of the signal it has been
- * connected to. The @handler_id_ptr is then nullified.
+ * connected to. The @handler_id_ptr is then set to zero, which is never a valid handler ID value (see g_signal_connect()).
  *
  * The @handler_id_ptr has to be a pointer to a valid signal handler id,
  * connected to a signal of @instance.
