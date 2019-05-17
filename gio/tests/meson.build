@@ -678,7 +678,6 @@ foreach test_name, extra_args : gio_tests
     env : local_test_env,
     timeout : timeout,
     suite : suite,
-    args : ['--tap'],
     is_parallel : extra_args.get('is_parallel', true),
     depends : extra_args.get('depends', []),
   )
