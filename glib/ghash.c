@@ -641,10 +641,10 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   old_values = hash_table->values;
   old_hashes = hash_table->hashes;
 
-  g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   if (!destruction)
     /* Any accesses will see an empty table */
     {
+      g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
       hash_table->keys   = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, FALSE);
       hash_table->values = hash_table->keys;
       hash_table->hashes = g_new0 (guint, hash_table->size);
@@ -652,6 +652,7 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   else
     /* Will cause a quick crash on any attempted access */
     {
+      hash_table->size = hash_table->mod = hash_table->mask = 0;
       hash_table->keys   = NULL;
       hash_table->values = NULL;
       hash_table->hashes = NULL;
