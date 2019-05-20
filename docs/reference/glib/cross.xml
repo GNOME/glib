@@ -67,7 +67,7 @@ windres = 'x86_64-w64-mingw32-windres'
         Then execute the following commands:
       </para>
       <programlisting>
-meson --cross_file cross_file.txt builddir
+meson --cross-file cross_file.txt builddir
       </programlisting>
       <para>
         The complete list of cross properties follows. Most
