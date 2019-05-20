@@ -1094,6 +1094,36 @@ g_hash_table_iter_init (GHashTableIter *iter,
 }
 
 /**
+ * g_hash_table_iter_get_key_value:
+ * @iter: an initialized #GHashTableIter
+ * @key: (out) (optional): a location to store the key
+ * @value: (out) (optional) (nullable): a location to store the value
+ *
+ * Retrieves the key and/or value pointed by @iter.
+ * Can only be called after g_hash_table_iter_next() returned %TRUE.
+ *
+ * Since: 2.62
+ */
+void
+g_hash_table_iter_get_key_value (GHashTableIter *iter,
+                                 gpointer       *key,
+                                 gpointer       *value)
+{
+  RealIter *ri = (RealIter *) iter;
+
+  g_return_val_if_fail (iter != NULL, FALSE);
+#ifndef G_DISABLE_ASSERT
+  g_return_val_if_fail (ri->version == ri->hash_table->version, FALSE);
+#endif
+  g_return_val_if_fail (ri->position < (gssize) ri->hash_table->size, FALSE);
+
+  if (key != NULL)
+    *key = g_hash_table_fetch_key_or_value (ri->hash_table->keys, ri->position, ri->hash_table->have_big_keys);
+  if (value != NULL)
+    *value = g_hash_table_fetch_key_or_value (ri->hash_table->values, ri->position, ri->hash_table->have_big_values);
+}
+
+/**
  * g_hash_table_iter_next:
  * @iter: an initialized #GHashTableIter
  * @key: (out) (optional): a location to store the key
@@ -1533,6 +1563,53 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
   return TRUE;
 }
 
+/**
+ * g_hash_table_lookup_iter:
+ * @hash_table: a #GHashTable
+ * @lookup_key: the key to look up
+ * @iter: (out) (optional): an iterator pointing to the item (if the key is found)
+ *
+ * Looks up a key in the #GHashTable, returning the iterator pointing to this
+ * item and a #gboolean which is %TRUE if the key was found. This
+ * is useful if you need to pass the iterator to other functions, like
+ * g_hash_table_iter_remove or g_hash_table_iter_get_key_value.
+ *
+ * You can actually pass %NULL for @lookup_key to test
+ * whether the %NULL key exists, provided the hash and equal functions
+ * of @hash_table are %NULL-safe.
+ *
+ * Returns: %TRUE if the key was found in the #GHashTable
+ *
+ * Since: 2.62
+ */
+gboolean
+g_hash_table_lookup_iter (GHashTable     *hash_table,
+                          gconstpointer   lookup_key,
+                          GHashTableIter *iter)
+{
+  guint node_index;
+  guint node_hash;
+  RealIter* ri;
+
+  g_return_val_if_fail (hash_table != NULL, FALSE);
+
+  ri = (RealIter *) iter;
+
+  node_index = g_hash_table_lookup_node (hash_table, lookup_key, &node_hash);
+
+  if (!HASH_IS_REAL (hash_table->hashes[node_index]))
+    {
+      return FALSE;
+    }
+
+  if (ri) {
+    g_hash_table_iter_init (iter, hash_table);
+    ri->position = node_index;
+  }
+
+  return TRUE;
+}
+
 /*
  * g_hash_table_insert_internal:
  * @hash_table: our #GHashTable
@@ -1622,6 +1699,51 @@ g_hash_table_replace (GHashTable *hash_table,
                       gpointer    value)
 {
   return g_hash_table_insert_internal (hash_table, key, value, TRUE);
+}
+
+/**
+ * g_hash_table_insert_iter:
+ * @hash_table: a #GHashTable
+ * @key: a key to insert
+ * @iter: (out): an iterator to the existing or newly inserted item
+ *
+ * Inserts a new key and a %NULL value into a #GHashTable.
+ *
+ * If the key already exists in the #GHashTable
+ * then @iter is positioned to that item and the function returns.
+ * If you supplied a @key_destroy_func when creating the #GHashTable,
+ * the passed key is freed using that function.
+ *
+ * If the key was not in the #GHashTable, then it is added with a %NULL value
+ * and @iter is positioned to the newly inserted item. You may want to call
+ * g_hash_table_iter_replace() afterwards to set a value.
+ *
+ * Returns: %TRUE if the key did not exist yet
+ *
+ * Since: 2.62
+ */
+gboolean
+g_hash_table_insert_iter (GHashTable     *hash_table,
+                          gpointer        key,
+                          GHashTableIter *iter)
+{
+  guint key_hash;
+  guint node_index;
+  gboolean res;
+  RealIter* ri;
+
+  g_return_val_if_fail (hash_table != NULL, FALSE);
+
+  node_index = g_hash_table_lookup_node (hash_table, key, &key_hash);
+
+  res = g_hash_table_insert_node (hash_table, node_index, key_hash, key, NULL,
+    FALSE, FALSE);
+
+  g_hash_table_iter_init (iter, hash_table);
+  ri = (RealIter*) iter;
+  ri->position = node_index;
+
+  return res;
 }
 
 /**

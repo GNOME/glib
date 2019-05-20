@@ -71,6 +71,10 @@ GLIB_AVAILABLE_IN_ALL
 gboolean    g_hash_table_replace           (GHashTable     *hash_table,
                                             gpointer        key,
                                             gpointer        value);
+GLIB_AVAILABLE_IN_2_62
+gboolean    g_hash_table_insert_iter       (GHashTable     *hash_table,
+                                            gpointer        key,
+                                            GHashTableIter *iter);
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_hash_table_add               (GHashTable     *hash_table,
                                             gpointer        key);
@@ -100,6 +104,10 @@ gboolean    g_hash_table_lookup_extended   (GHashTable     *hash_table,
                                             gconstpointer   lookup_key,
                                             gpointer       *orig_key,
                                             gpointer       *value);
+GLIB_AVAILABLE_IN_2_62
+gboolean    g_hash_table_lookup_iter       (GHashTable     *hash_table,
+                                            gconstpointer   lookup_key,
+                                            GHashTable     *iter);
 GLIB_AVAILABLE_IN_ALL
 void        g_hash_table_foreach           (GHashTable     *hash_table,
                                             GHFunc          func,
@@ -129,6 +137,10 @@ gpointer *  g_hash_table_get_keys_as_array (GHashTable     *hash_table,
 GLIB_AVAILABLE_IN_ALL
 void        g_hash_table_iter_init         (GHashTableIter *iter,
                                             GHashTable     *hash_table);
+GLIB_AVAILABLE_IN_2_62
+void        g_hash_table_iter_get_key_value(GHashTableIter *iter,
+                                            gpointer       *key,
+                                            gpointer       *value);
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_hash_table_iter_next         (GHashTableIter *iter,
                                             gpointer       *key,
