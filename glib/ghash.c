@@ -558,6 +558,42 @@ g_hash_table_remove_node (GHashTable   *hash_table,
 }
 
 /*
+ * g_hash_table_setup_storage:
+ * @hash_table: our #GHashTable
+ *
+ * Initialise the hash table size, mask, mod, and arrays.
+ */
+static void
+g_hash_table_setup_storage (GHashTable *hash_table)
+{
+  gboolean small;
+
+  /* We want to use small arrays only if:
+   *   - we are running on a system where that makes sense (64 bit); and
+   *   - we are not running under valgrind.
+   */
+  small = FALSE;
+
+#ifdef USE_SMALL_ARRAYS
+  small = TRUE;
+
+# ifdef ENABLE_VALGRIND
+  if (RUNNING_ON_VALGRIND)
+    small = FALSE;
+# endif
+#endif
+
+  g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
+
+  hash_table->have_big_keys = !small;
+  hash_table->have_big_values = !small;
+
+  hash_table->keys   = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, hash_table->have_big_keys);
+  hash_table->values = hash_table->keys;
+  hash_table->hashes = g_new0 (guint, hash_table->size);
+}
+
+/*
  * g_hash_table_remove_all_nodes:
  * @hash_table: our #GHashTable
  * @notify: %TRUE if the destroy notify handlers are to be called
@@ -587,6 +623,8 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   gpointer *old_keys;
   gpointer *old_values;
   guint    *old_hashes;
+  gboolean  old_have_big_keys;
+  gboolean  old_have_big_values;
 
   /* If the hash table is already empty, there is nothing to be done. */
   if (hash_table->nnodes == 0)
@@ -637,18 +675,15 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
    * freeing them below.
    */
   old_size = hash_table->size;
+  old_have_big_keys = hash_table->have_big_keys;
+  old_have_big_values = hash_table->have_big_values;
   old_keys   = g_steal_pointer (&hash_table->keys);
   old_values = g_steal_pointer (&hash_table->values);
   old_hashes = g_steal_pointer (&hash_table->hashes);
 
   if (!destruction)
     /* Any accesses will see an empty table */
-    {
-      g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
-      hash_table->keys   = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, FALSE);
-      hash_table->values = hash_table->keys;
-      hash_table->hashes = g_new0 (guint, hash_table->size);
-    }
+    g_hash_table_setup_storage (hash_table);
   else
     /* Will cause a quick crash on any attempted access */
     hash_table->size = hash_table->mod = hash_table->mask = 0;
@@ -658,13 +693,13 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
     {
       if (HASH_IS_REAL (old_hashes[i]))
         {
-          key = g_hash_table_fetch_key_or_value (old_keys, i, hash_table->have_big_keys);
-          value = g_hash_table_fetch_key_or_value (old_values, i, hash_table->have_big_values);
+          key = g_hash_table_fetch_key_or_value (old_keys, i, old_have_big_keys);
+          value = g_hash_table_fetch_key_or_value (old_values, i, old_have_big_values);
 
           old_hashes[i] = UNUSED_HASH_VALUE;
 
-          g_hash_table_assign_key_or_value (old_keys, i, hash_table->have_big_keys, NULL);
-          g_hash_table_assign_key_or_value (old_values, i, hash_table->have_big_values, NULL);
+          g_hash_table_assign_key_or_value (old_keys, i, old_have_big_keys, NULL);
+          g_hash_table_assign_key_or_value (old_values, i, old_have_big_values, NULL);
 
           if (hash_table->key_destroy_func != NULL)
             hash_table->key_destroy_func (key);
@@ -673,9 +708,6 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
             hash_table->value_destroy_func (value);
         }
     }
-
-  hash_table->have_big_keys = FALSE;
-  hash_table->have_big_values = FALSE;
 
   /* Destroy old storage space. */
   if (old_keys != old_values)
@@ -1037,25 +1069,8 @@ g_hash_table_new_full (GHashFunc      hash_func,
                        GDestroyNotify value_destroy_func)
 {
   GHashTable *hash_table;
-  gboolean small;
-
-  /* We want to use small arrays only if:
-   *   - we are running on a system where that makes sense (64 bit); and
-   *   - we are not running under valgrind.
-   */
-  small = FALSE;
-
-#ifdef USE_SMALL_ARRAYS
-  small = TRUE;
-
-# ifdef ENABLE_VALGRIND
-  if (RUNNING_ON_VALGRIND)
-    small = FALSE;
-# endif
-#endif
 
   hash_table = g_slice_new (GHashTable);
-  g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   g_atomic_ref_count_init (&hash_table->ref_count);
   hash_table->nnodes             = 0;
   hash_table->noccupied          = 0;
@@ -1066,11 +1081,8 @@ g_hash_table_new_full (GHashFunc      hash_func,
 #endif
   hash_table->key_destroy_func   = key_destroy_func;
   hash_table->value_destroy_func = value_destroy_func;
-  hash_table->have_big_keys      = !small;
-  hash_table->have_big_values    = !small;
-  hash_table->keys               = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, hash_table->have_big_keys);
-  hash_table->values             = hash_table->keys;
-  hash_table->hashes             = g_new0 (guint, hash_table->size);
+
+  g_hash_table_setup_storage (hash_table);
 
   return hash_table;
 }
