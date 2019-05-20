@@ -107,7 +107,7 @@ gboolean    g_hash_table_lookup_extended   (GHashTable     *hash_table,
 GLIB_AVAILABLE_IN_2_62
 gboolean    g_hash_table_lookup_iter       (GHashTable     *hash_table,
                                             gconstpointer   lookup_key,
-                                            GHashTable     *iter);
+                                            GHashTableIter *iter);
 GLIB_AVAILABLE_IN_ALL
 void        g_hash_table_foreach           (GHashTable     *hash_table,
                                             GHFunc          func,

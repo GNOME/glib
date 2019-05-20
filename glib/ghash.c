@@ -1111,11 +1111,11 @@ g_hash_table_iter_get_key_value (GHashTableIter *iter,
 {
   RealIter *ri = (RealIter *) iter;
 
-  g_return_val_if_fail (iter != NULL, FALSE);
+  g_return_if_fail (iter != NULL);
 #ifndef G_DISABLE_ASSERT
-  g_return_val_if_fail (ri->version == ri->hash_table->version, FALSE);
+  g_return_if_fail (ri->version == ri->hash_table->version);
 #endif
-  g_return_val_if_fail (ri->position < (gssize) ri->hash_table->size, FALSE);
+  g_return_if_fail (ri->position < (gssize) ri->hash_table->size);
 
   if (key != NULL)
     *key = g_hash_table_fetch_key_or_value (ri->hash_table->keys, ri->position, ri->hash_table->have_big_keys);
