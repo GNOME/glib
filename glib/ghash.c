@@ -562,11 +562,18 @@ g_hash_table_remove_node (GHashTable   *hash_table,
  * @hash_table: our #GHashTable
  * @notify: %TRUE if the destroy notify handlers are to be called
  *
- * Removes all nodes from the table.  Since this may be a precursor to
- * freeing the table entirely, no resize is performed.
+ * Removes all nodes from the table.
  *
  * If @notify is %TRUE then the destroy notify functions are called
  * for the key and value of the hash node.
+ *
+ * Since this may be a precursor to freeing the table entirely, we'd
+ * ideally perform no resize, and we can indeed avoid that in some
+ * cases.  However: in the case that we'll be making callbacks to user
+ * code (via destroy notifies) we need to consider that the user code
+ * might call back into the table again.  In this case, we setup a new
+ * set of arrays so that any callers will see an empty (but valid)
+ * table.
  */
 static void
 g_hash_table_remove_all_nodes (GHashTable *hash_table,
@@ -588,6 +595,7 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   hash_table->nnodes = 0;
   hash_table->noccupied = 0;
 
+  /* Easy case: no callbacks, so we just zero out the arrays */
   if (!notify ||
       (hash_table->key_destroy_func == NULL &&
        hash_table->value_destroy_func == NULL))
@@ -608,32 +616,48 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
       return;
     }
 
-  /* Keep the old storage space around to iterate over it. */
+  /* Hard case: we need to do user callbacks.  There are two
+   * possibilities here:
+   *
+   *   1) there are no outstanding references on the table and therefore
+   *   nobody should be calling into it again (destroying == true)
+   *
+   *   2) there are outstanding references, and there may be future
+   *   calls into the table, either after we return, or from the destroy
+   *   notifies that we're about to do (destroying == false)
+   *
+   * We handle both cases by taking the current state of the table into
+   * local variables and replacing it with something else: in the "no
+   * outstanding references" cases we replace it with a bunch of
+   * null/zero values so that any access to the table will fail.  In the
+   * "may receive future calls" case, we reinitialise the struct to
+   * appear like a newly-created empty table.
+   *
+   * In both cases, we take over the references for the current state,
+   * freeing them below.
+   */
   old_size = hash_table->size;
   old_keys   = hash_table->keys;
   old_values = hash_table->values;
   old_hashes = hash_table->hashes;
 
-  /* Now create a new storage space; If the table is destroyed we can use the
-   * shortcut of not creating a new storage. This saves the allocation at the
-   * cost of not allowing any recursive access.
-   * However, the application doesn't own any reference anymore, so access
-   * is not allowed. If accesses are done, then either an assert or crash
-   * *will* happen. */
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   if (!destruction)
+    /* Any accesses will see an empty table */
     {
       hash_table->keys   = g_hash_table_realloc_key_or_value_array (NULL, hash_table->size, FALSE);
       hash_table->values = hash_table->keys;
       hash_table->hashes = g_new0 (guint, hash_table->size);
     }
   else
+    /* Will cause a quick crash on any attempted access */
     {
       hash_table->keys   = NULL;
       hash_table->values = NULL;
       hash_table->hashes = NULL;
     }
 
+  /* Now do the actual destroy notifies */
   for (i = 0; i < old_size; i++)
     {
       if (HASH_IS_REAL (old_hashes[i]))
