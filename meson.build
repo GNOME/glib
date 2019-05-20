@@ -1291,13 +1291,6 @@ if sizet_size == short_size
   glibconfig_conf.set_quoted('gsize_format', 'hu')
   glibconfig_conf.set_quoted('gssize_format', 'hi')
   glibconfig_conf.set('glib_msize_type', 'SHRT')
-elif sizet_size == int_size
-  glibconfig_conf.set('glib_size_type_define', 'int')
-  glibconfig_conf.set_quoted('gsize_modifier', '')
-  glibconfig_conf.set_quoted('gssize_modifier', '')
-  glibconfig_conf.set_quoted('gsize_format', 'u')
-  glibconfig_conf.set_quoted('gssize_format', 'i')
-  glibconfig_conf.set('glib_msize_type', 'INT')
 elif sizet_size == long_size
   glibconfig_conf.set('glib_size_type_define', 'long')
   glibconfig_conf.set_quoted('gsize_modifier', 'l')
@@ -1305,6 +1298,13 @@ elif sizet_size == long_size
   glibconfig_conf.set_quoted('gsize_format', 'lu')
   glibconfig_conf.set_quoted('gssize_format', 'li')
   glibconfig_conf.set('glib_msize_type', 'LONG')
+elif sizet_size == int_size
+  glibconfig_conf.set('glib_size_type_define', 'int')
+  glibconfig_conf.set_quoted('gsize_modifier', '')
+  glibconfig_conf.set_quoted('gssize_modifier', '')
+  glibconfig_conf.set_quoted('gsize_format', 'u')
+  glibconfig_conf.set_quoted('gssize_format', 'i')
+  glibconfig_conf.set('glib_msize_type', 'INT')
 elif sizet_size == long_long_size
   glibconfig_conf.set('glib_size_type_define', 'long long')
   glibconfig_conf.set_quoted('gsize_modifier', int64_m)
@@ -1595,9 +1595,8 @@ atomicdefine = '''
 # We know that we can always use real ("lock free") atomic operations with MSVC
 if cc.get_id() == 'msvc' or cc.links(atomictest, name : 'atomic ops')
   have_atomic_lock_free = true
-  if (host_system == 'android' or host_system == 'linux') and not cc.compiles(atomicdefine, name : 'atomic ops define')
-    # When building for armv5 on Linux, gcc provides
-    # __sync_bool_compare_and_swap but doesn't define
+  if cc.get_id() == 'gcc' and not cc.compiles(atomicdefine, name : 'atomic ops define')
+    # Old gcc release may provide __sync_bool_compare_and_swap but don't define
     # __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4
     glib_conf.set('__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4', true)
   endif
