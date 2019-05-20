@@ -637,9 +637,9 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
    * freeing them below.
    */
   old_size = hash_table->size;
-  old_keys   = hash_table->keys;
-  old_values = hash_table->values;
-  old_hashes = hash_table->hashes;
+  old_keys   = g_steal_pointer (&hash_table->keys);
+  old_values = g_steal_pointer (&hash_table->values);
+  old_hashes = g_steal_pointer (&hash_table->hashes);
 
   if (!destruction)
     /* Any accesses will see an empty table */
@@ -651,12 +651,7 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
     }
   else
     /* Will cause a quick crash on any attempted access */
-    {
-      hash_table->size = hash_table->mod = hash_table->mask = 0;
-      hash_table->keys   = NULL;
-      hash_table->values = NULL;
-      hash_table->hashes = NULL;
-    }
+    hash_table->size = hash_table->mod = hash_table->mask = 0;
 
   /* Now do the actual destroy notifies */
   for (i = 0; i < old_size; i++)
