@@ -533,6 +533,15 @@ mainlib_dep = declare_dependency(sources: enum_files[1], link_with: mainlib)
 You should not include the generates source file, otherwise it will be built
 twice.
 </para>
+
+<para>
+If you are generating C header and source files that do not require special
+templates, you can also use <literal>gnome.mkenums_simple()</literal>, which
+produces idiomatic GObject sources:
+</para>
+<informalexample><programlisting>
+enum_filess = gnome.mkenums_simple('enum-types', sources: project_headers)
+</programlisting></informalexample>
 </refsect1>
 
 <refsect1><title>Using glib-mkenums with Autotools</title>
