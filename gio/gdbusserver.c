@@ -608,8 +608,7 @@ g_dbus_server_stop (GDBusServer *server)
   /* Right now we don't have any transport not using the listener... */
   g_assert (server->is_using_listener);
   g_assert (server->run_signal_handler_id > 0);
-  g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
-  server->run_signal_handler_id = 0;
+  g_clear_signal_handler (&server->run_signal_handler_id, server->listener);
   g_socket_service_stop (G_SOCKET_SERVICE (server->listener));
   server->active = FALSE;
   g_object_notify (G_OBJECT (server), "active");
