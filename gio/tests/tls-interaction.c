@@ -673,18 +673,10 @@ static void
 teardown_without_loop (Test            *test,
                        gconstpointer    unused)
 {
-  gpointer weak_pointer = test->interaction;
-
-  g_object_add_weak_pointer (weak_pointer, &weak_pointer);
-
   g_object_unref (test->connection);
-
   g_object_unref (test->password);
 
-  g_object_unref (test->interaction);
-
-  g_assert (weak_pointer == NULL);
-
+  g_assert_finalize_object (test->interaction);
 }
 
 typedef struct {
