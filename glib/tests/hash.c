@@ -1345,6 +1345,104 @@ test_lookup_extended (void)
   g_hash_table_unref (hash);
 }
 
+static void
+test_lookup_iter (void)
+{
+  GHashTable *hash;
+  const gchar *original_key = NULL, *value = NULL;
+  GHashTableIter iter;
+
+  hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+  g_hash_table_insert (hash, g_strdup ("a"), g_strdup ("A"));
+  g_hash_table_insert (hash, g_strdup ("b"), g_strdup ("B"));
+  g_hash_table_insert (hash, g_strdup ("c"), g_strdup ("C"));
+  g_hash_table_insert (hash, g_strdup ("d"), g_strdup ("D"));
+  g_hash_table_insert (hash, g_strdup ("e"), g_strdup ("E"));
+  g_hash_table_insert (hash, g_strdup ("f"), g_strdup ("F"));
+
+  g_assert_true (g_hash_table_lookup_iter (hash, "a", &iter));
+  g_hash_table_iter_get_key_value (&iter, (gpointer *) &original_key,
+                                   (gpointer *) &value);
+  g_assert_cmpstr (original_key, ==, "a");
+  g_assert_cmpstr (value, ==, "A");
+
+  g_assert_true (g_hash_table_lookup_iter (hash, "b", &iter));
+  g_hash_table_iter_get_key_value (&iter, NULL, (gpointer *) &value);
+  g_assert_cmpstr (value, ==, "B");
+
+  g_assert_true (g_hash_table_lookup_iter (hash, "c", &iter));
+  g_hash_table_iter_get_key_value (&iter, (gpointer *) &original_key, NULL);
+  g_assert_cmpstr (original_key, ==, "c");
+
+  g_assert_true (g_hash_table_lookup_iter (hash, "d", NULL));
+
+  g_assert_false (g_hash_table_lookup_iter (hash, "not a key", &iter));
+  g_hash_table_iter_get_key_value (&iter, (gpointer *) &original_key,
+                                   (gpointer *) &value);
+  g_assert_cmpstr (original_key, ==, "c");
+  g_assert_cmpstr (value, ==, "C");
+
+  g_hash_table_unref (hash);
+}
+
+static void
+test_insert_iter (void)
+{
+  GHashTable *hash;
+  const gchar *original_key = NULL, *value = NULL;
+  GHashTableIter iter;
+  guint i = 0, inserted_count = 0;
+
+  hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+  for (i = 0; i != 26; i += 2) {
+    gchar letter_key[2] = { 'a' + i, '\0' };
+    gchar letter_value[2] = { 'A' + i, '\0' };
+    g_hash_table_insert (hash, g_strdup (letter_key),
+                         g_strdup (letter_value));
+  }
+  g_assert_cmpuint (13, ==, g_hash_table_size (hash));
+
+  for (i = 0; i != 26; ++i) {
+    gchar letter_key[2] = { 'a' + i, '\0' };
+    gchar letter_value[2] = { 'A' + i, '\0' };
+    gboolean inserted;
+
+    inserted = g_hash_table_insert_iter (hash, g_strdup (letter_key), NULL,
+                                         &iter);
+    if (!inserted) {
+      g_assert_true (i % 2 == 0);
+      g_hash_table_iter_get_key_value (&iter, (gpointer *) &original_key,
+                                       (gpointer *) &value);
+      g_assert_cmpstr (original_key, ==, letter_key);
+      g_assert_cmpstr (value, ==, letter_value);
+      g_hash_table_iter_replace (&iter, g_strdup_printf ("%s%s", letter_value,
+                                                         letter_value));
+      g_hash_table_iter_get_key_value (&iter, NULL, (gpointer *) &value);
+      g_assert_cmpuint (strlen (value), ==, 2);
+      g_assert_cmpint (value[0], ==, 'A' + i);
+      g_assert_cmpint (value[0], ==, value[1]);
+    }
+    else
+    {
+      inserted_count++;
+      g_assert_true (i % 2 == 1);
+      g_hash_table_iter_get_key_value (&iter, (gpointer *) &original_key,
+                                       (gpointer *) &value);
+      g_assert_cmpstr (original_key, ==, letter_key);
+      g_assert_true (value == NULL);
+      g_hash_table_iter_replace (&iter, g_strdup (letter_value));
+      g_hash_table_iter_get_key_value (&iter, NULL, (gpointer *) &value);
+      g_assert_cmpstr (value, ==, letter_value);
+    }
+  }
+  g_assert_cmpuint (26, ==, g_hash_table_size (hash));
+  g_assert_cmpuint (13, ==, inserted_count);
+
+  g_hash_table_unref (hash);
+}
+
 struct _GHashTable
 {
   gsize            size;
@@ -1687,6 +1785,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/steal-extended", test_steal_extended);
   g_test_add_func ("/hash/steal-extended/optional", test_steal_extended_optional);
   g_test_add_func ("/hash/lookup-extended", test_lookup_extended);
+  g_test_add_func ("/hash/lookup-iter", test_lookup_iter);
+  g_test_add_func ("/hash/insert-iter", test_insert_iter);
 
   /* tests for individual bugs */
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);

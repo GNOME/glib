@@ -429,53 +429,31 @@ g_hash_table_hash_to_index (GHashTable *hash_table, guint hash)
 }
 
 /*
- * g_hash_table_lookup_node:
+ * g_hash_table_lookup_node_from_hash:
  * @hash_table: our #GHashTable
  * @key: the key to look up against
- * @hash_return: key hash return location
+ * @hash_value: precomputed key hash
  *
  * Performs a lookup in the hash table, preserving extra information
  * usually needed for insertion.
- *
- * This function first computes the hash value of the key using the
- * user's hash function.
  *
  * If an entry in the table matching @key is found then this function
  * returns the index of that entry in the table, and if not, the
  * index of an unused node (empty or tombstone) where the key can be
  * inserted.
  *
- * The computed hash value is returned in the variable pointed to
- * by @hash_return. This is to save insertions from having to compute
- * the hash record again for the new record.
- *
  * Returns: index of the described node
  */
 static inline guint
-g_hash_table_lookup_node (GHashTable    *hash_table,
-                          gconstpointer  key,
-                          guint         *hash_return)
+g_hash_table_lookup_node_from_hash (GHashTable    *hash_table,
+                                    gconstpointer  key,
+                                    guint          hash_value)
 {
   guint node_index;
   guint node_hash;
-  guint hash_value;
   guint first_tombstone = 0;
   gboolean have_tombstone = FALSE;
   guint step = 0;
-
-  /* If this happens, then the application is probably doing too much work
-   * from a destroy notifier. The alternative would be to crash any second
-   * (as keys, etc. will be NULL).
-   * Applications need to either use g_hash_table_destroy, or ensure the hash
-   * table is empty prior to removing the last reference using g_hash_table_unref(). */
-  g_assert (!g_atomic_ref_count_compare (&hash_table->ref_count, 0));
-
-  hash_value = hash_table->hash_func (key);
-  if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
-    hash_value = 2;
-
-  *hash_return = hash_value;
-
   node_index = g_hash_table_hash_to_index (hash_table, hash_value);
   node_hash = hash_table->hashes[node_index];
 
@@ -515,6 +493,52 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
     return first_tombstone;
 
   return node_index;
+}
+
+/*
+ * g_hash_table_lookup_node:
+ * @hash_table: our #GHashTable
+ * @key: the key to look up against
+ * @hash_return: key hash return location
+ *
+ * Performs a lookup in the hash table, preserving extra information
+ * usually needed for insertion.
+ *
+ * This function first computes the hash value of the key using the
+ * user's hash function.
+ *
+ * If an entry in the table matching @key is found then this function
+ * returns the index of that entry in the table, and if not, the
+ * index of an unused node (empty or tombstone) where the key can be
+ * inserted.
+ *
+ * The computed hash value is returned in the variable pointed to
+ * by @hash_return. This is to save insertions from having to compute
+ * the hash record again for the new record.
+ *
+ * Returns: index of the described node
+ */
+static inline guint
+g_hash_table_lookup_node (GHashTable    *hash_table,
+                          gconstpointer  key,
+                          guint         *hash_return)
+{
+  guint hash_value;
+
+  /* If this happens, then the application is probably doing too much work
+   * from a destroy notifier. The alternative would be to crash any second
+   * (as keys, etc. will be NULL).
+   * Applications need to either use g_hash_table_destroy, or ensure the hash
+   * table is empty prior to removing the last reference using g_hash_table_unref(). */
+  g_assert (!g_atomic_ref_count_compare (&hash_table->ref_count, 0));
+
+  hash_value = hash_table->hash_func (key);
+  if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
+    hash_value = 2;
+
+  *hash_return = hash_value;
+
+  return g_hash_table_lookup_node_from_hash (hash_table, key, hash_value);
 }
 
 /*
@@ -1246,9 +1270,10 @@ g_hash_table_iter_remove (GHashTableIter *iter)
  * @node_index: pointer to node to insert/replace
  * @key_hash: key hash
  * @key: (nullable): key to replace with, or %NULL
- * @value: value to replace with
+ * @value: value to replace with (if @keep_new_val is %TRUE)
  * @keep_new_key: whether to replace the key in the node with @key
  * @reusing_key: whether @key was taken out of the existing node
+ * @keep_new_val: whether to replace the value in the node with @key
  *
  * Inserts a value at @node_index in the hash table and updates it.
  *
@@ -1265,13 +1290,15 @@ g_hash_table_insert_node (GHashTable *hash_table,
                           gpointer    new_key,
                           gpointer    new_value,
                           gboolean    keep_new_key,
-                          gboolean    reusing_key)
+                          gboolean    reusing_key,
+                          gboolean    keep_new_val)
 {
   gboolean already_exists;
   guint old_hash;
   gpointer key_to_free = NULL;
   gpointer key_to_keep = NULL;
   gpointer value_to_free = NULL;
+  gpointer value_to_keep = NULL;
 
   old_hash = hash_table->hashes[node_index];
   already_exists = HASH_IS_REAL (old_hash);
@@ -1281,16 +1308,16 @@ g_hash_table_insert_node (GHashTable *hash_table,
    * two (because writing the value will result in the set invariant
    * becoming broken).  Then deal with the value.
    *
-   * There are three cases for the key:
+   * There are three cases for the key (respectively the value):
    *
-   *  - entry already exists in table, reusing key:
-   *    free the just-passed-in new_key and use the existing value
+   *  - entry already exists in table, reusing key (resp. value):
+   *    free the just-passed-in new_key
    *
-   *  - entry already exists in table, not reusing key:
+   *  - entry already exists in table, not reusing key (resp. value):
    *    free the entry in the table, use the new key
    *
    *  - entry not already in table:
-   *    use the new key, free nothing
+   *    use the new key (resp. value), free nothing
    *
    * We update the hash at the same time...
    */
@@ -1300,7 +1327,16 @@ g_hash_table_insert_node (GHashTable *hash_table,
        * because we might change the value in the event that the two
        * arrays are shared.
        */
-      value_to_free = g_hash_table_fetch_key_or_value (hash_table->values, node_index, hash_table->have_big_values);
+      if (keep_new_val)
+        {
+          value_to_free = g_hash_table_fetch_key_or_value (hash_table->values, node_index, hash_table->have_big_values);
+          value_to_keep = new_value;
+        }
+      else
+        {
+          value_to_free = new_value;
+          value_to_keep = g_hash_table_fetch_key_or_value (hash_table->values, node_index, hash_table->have_big_values);
+        }
 
       if (keep_new_key)
         {
@@ -1317,14 +1353,15 @@ g_hash_table_insert_node (GHashTable *hash_table,
     {
       hash_table->hashes[node_index] = key_hash;
       key_to_keep = new_key;
+      value_to_keep = new_value;
     }
 
   /* Resize key/value arrays and split table as necessary */
-  g_hash_table_ensure_keyval_fits (hash_table, key_to_keep, new_value);
+  g_hash_table_ensure_keyval_fits (hash_table, key_to_keep, value_to_keep);
   g_hash_table_assign_key_or_value (hash_table->keys, node_index, hash_table->have_big_keys, key_to_keep);
 
   /* Step 3: Actually do the write */
-  g_hash_table_assign_key_or_value (hash_table->values, node_index, hash_table->have_big_values, new_value);
+  g_hash_table_assign_key_or_value (hash_table->values, node_index, hash_table->have_big_values, value_to_keep);
 
   /* Now, the bookkeeping... */
   if (!already_exists)
@@ -1389,7 +1426,7 @@ g_hash_table_iter_replace (GHashTableIter *iter,
 
   key = g_hash_table_fetch_key_or_value (ri->hash_table->keys, ri->position, ri->hash_table->have_big_keys);
 
-  g_hash_table_insert_node (ri->hash_table, ri->position, node_hash, key, value, TRUE, TRUE);
+  g_hash_table_insert_node (ri->hash_table, ri->position, node_hash, key, value, TRUE, TRUE, TRUE);
 
 #ifndef G_DISABLE_ASSERT
   ri->version++;
@@ -1641,7 +1678,7 @@ g_hash_table_insert_internal (GHashTable *hash_table,
 
   node_index = g_hash_table_lookup_node (hash_table, key, &key_hash);
 
-  return g_hash_table_insert_node (hash_table, node_index, key_hash, key, value, keep_new_key, FALSE);
+  return g_hash_table_insert_node (hash_table, node_index, key_hash, key, value, keep_new_key, FALSE, TRUE);
 }
 
 /**
@@ -1705,18 +1742,42 @@ g_hash_table_replace (GHashTable *hash_table,
  * g_hash_table_insert_iter:
  * @hash_table: a #GHashTable
  * @key: a key to insert
+ * @value: (optional): a value to insert
  * @iter: (out): an iterator to the existing or newly inserted item
  *
- * Inserts a new key and a %NULL value into a #GHashTable.
+ * Inserts a new key and a value into a #GHashTable.
  *
- * If the key already exists in the #GHashTable
- * then @iter is positioned to that item and the function returns.
+ * If @key already exists in the #GHashTable
+ * then @iter is positioned to that item and the function returns
+ * (the #GHashTable is not modified).
  * If you supplied a @key_destroy_func when creating the #GHashTable,
  * the passed key is freed using that function.
+ * If you supplied a @value_destroy_func when creating
+ * the #GHashTable, the old value is freed using that function.
  *
- * If the key was not in the #GHashTable, then it is added with a %NULL value
- * and @iter is positioned to the newly inserted item. You may want to call
- * g_hash_table_iter_replace() afterwards to set a value.
+ * If @key was not in the #GHashTable, then it is added with @value
+ * and @iter is positioned to the newly inserted item.
+ *
+ * A common use case is to pass a %NULL value and then call
+ * g_hash_table_iter_replace() afterwards to set it properly.
+ * Note that if you pass a %NULL value then you need to make sure that
+ * the supplied @value_destroy_func (if any) is %NULL-safe.
+ *
+ * |[<!-- language="C" -->
+ * if (g_hash_table_insert_iter (hash_table, g_strdup ("foo"), NULL, &iter))
+ *   {
+ *     // "foo" was not in the hash table
+ *     g_hash_table_iter_replace (&iter, GINT_TO_POINTER (0));
+ *   }
+ * else
+ *   {
+ *     // "foo" already existed
+ *     gpointer value;
+ *     g_hash_table_iter_get_key_value (&iter, NULL, &value);
+ *     value = GINT_TO_POINTER (GPOINTER_TO_INT (value) + 1);
+ *     g_hash_table_iter_replace (&iter, value);
+ *   }
+ * ]|
  *
  * Returns: %TRUE if the key did not exist yet
  *
@@ -1725,23 +1786,29 @@ g_hash_table_replace (GHashTable *hash_table,
 gboolean
 g_hash_table_insert_iter (GHashTable     *hash_table,
                           gpointer        key,
+                          gpointer        value,
                           GHashTableIter *iter)
 {
   guint key_hash;
   guint node_index;
   gboolean res;
   RealIter* ri;
+  gsize current_size;
 
   g_return_val_if_fail (hash_table != NULL, FALSE);
 
+  current_size = hash_table->size;
   node_index = g_hash_table_lookup_node (hash_table, key, &key_hash);
 
-  res = g_hash_table_insert_node (hash_table, node_index, key_hash, key, NULL,
-    FALSE, FALSE);
+  res = g_hash_table_insert_node (hash_table, node_index, key_hash, key, value,
+    FALSE, FALSE, FALSE);
 
   g_hash_table_iter_init (iter, hash_table);
   ri = (RealIter*) iter;
-  ri->position = node_index;
+  if G_UNLIKELY(current_size != hash_table->size)
+    ri->position = g_hash_table_lookup_node_from_hash (hash_table, key, key_hash);
+  else
+    ri->position = node_index;
 
   return res;
 }

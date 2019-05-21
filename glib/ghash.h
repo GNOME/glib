@@ -74,6 +74,7 @@ gboolean    g_hash_table_replace           (GHashTable     *hash_table,
 GLIB_AVAILABLE_IN_2_62
 gboolean    g_hash_table_insert_iter       (GHashTable     *hash_table,
                                             gpointer        key,
+                                            gpointer        value,
                                             GHashTableIter *iter);
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_hash_table_add               (GHashTable     *hash_table,
