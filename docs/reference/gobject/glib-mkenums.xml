@@ -153,15 +153,16 @@ The same as <literal>@type@</literal> with all letters uppercased (e.g. <literal
 <varlistentry>
 <term><literal>@filename@</literal></term>
 <listitem><para>
-The name of the input file currently being processed (e.g. <literal>foo.h</literal>).
+The full path of the input file currently being processed (e.g. <literal>/build/environment/project/src/foo.h</literal>).
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><literal>@basename@</literal></term>
 <listitem><para>
-The base name of the input file currently being processed (e.g. <literal>foo.h</literal>). Typically
-you want to use <literal>@basename@</literal> in place of <literal>@filename@</literal> in your templates, to improve the reproducibility of the build. (Since: 2.22)
+The base name of the input file currently being processed (e.g. <literal>foo.h</literal>).
+Typically you want to use <literal>@basename@</literal> in place of <literal>@filename@</literal>
+in your templates, to improve the reproducibility of the build. (Since: 2.22)
 </para></listitem>
 </varlistentry>
 </variablelist>
@@ -448,7 +449,7 @@ G_BEGIN_DECLS
 
 /*** BEGIN file-production ***/
 
-/* enumerations from "@filename@" */
+/* enumerations from "@basename@" */
 /*** END file-production ***/
 
 /*** BEGIN value-header ***/
@@ -473,7 +474,7 @@ file, similar to this:
 /*** END file-header ***/
 
 /*** BEGIN file-production ***/
-/* enumerations from "@filename@" */
+/* enumerations from "@basename@" */
 /*** END file-production ***/
 
 /*** BEGIN value-header ***/
