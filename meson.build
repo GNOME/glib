@@ -198,7 +198,7 @@ if host_system == 'windows'
   glib_os = '''#define G_OS_WIN32
 #define G_PLATFORM_WIN32'''
 elif host_system == 'cygwin'
-  glib_os = '''#define G_OS_WIN32
+  glib_os = '''#define G_OS_UNIX
 #define G_WITH_CYGWIN'''
 else
   glib_os = '#define G_OS_UNIX'
