@@ -484,8 +484,8 @@ out of the box in its "gnome" module.
 
 <para>
 In your <filename>meson.build</filename> file you will typically call the
-<literal>gnome.mkenums()</literal> method with a list of headers to inspect
-and the template files to use:
+<literal>gnome.mkenums_simple()</literal> method to generate idiomatic enumeration
+types from a list of headers to inspect:
 </para>
 <informalexample><programlisting>
 project_headers = [
@@ -495,10 +495,8 @@ project_headers = [
 ]
 
 gnome = import('gnome')
-enum_files = gnome.mkenums('enum-types',
+enum_files = gnome.mkenums_simple('enum-types',
   sources: project_headers,
-  c_template: 'enum-types.c.in',
-  h_template: 'enum-types.h.in',
 )
 </programlisting></informalexample>
 
@@ -530,9 +528,24 @@ internal dependency includes the generated header as a required source file:
 mainlib_dep = declare_dependency(sources: enum_files[1], link_with: mainlib)
 </programlisting></informalexample>
 <para>
-You should not include the generates source file, otherwise it will be built
-twice.
+You should not include the generated source file as well, otherwise it will
+be built separately for every target that depends on it, causing build
+failures.
 </para>
+
+<para>
+If you are generating C header and source files that require special
+templates, you can use <literal>gnome.mkenums()</literal> to provide those
+headers, for instance:
+</para>
+<informalexample><programlisting>
+enum_files = gnome.mkenums('enum-types',
+  sources: project_headers,
+  h_template: 'enum-types.h.in',
+  c_template: 'enum-types.c.in',
+  install_header: true,
+)
+</programlisting></informalexample>
 </refsect1>
 
 <refsect1><title>Using glib-mkenums with Autotools</title>
