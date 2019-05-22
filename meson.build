@@ -268,6 +268,7 @@ headers = [
   'termios.h',
   'unistd.h',
   'values.h',
+  'wchar.h',
   'xlocale.h',
 ]
 
@@ -1181,6 +1182,7 @@ glib_conf.set('SIZEOF_LONG_LONG', long_long_size)
 glib_conf.set('SIZEOF_SIZE_T', sizet_size)
 glib_conf.set('SIZEOF_SSIZE_T', ssizet_size)
 glib_conf.set('SIZEOF_VOID_P', voidp_size)
+glib_conf.set('SIZEOF_WCHAR_T', cc.sizeof('wchar_t', prefix: '#include <stddef.h>'))
 
 if short_size == 2
   gint16 = 'short'
