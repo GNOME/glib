@@ -505,6 +505,7 @@ struct _GKeyFile
   GKeyFileGroup *current_group;
 
   GString *parse_buffer; /* Holds up to one line of not-yet-parsed data */
+  GString *comment_buffer; /* Holds parsed comments that haven't been placed yet */
 
   gchar list_separator;
 
@@ -575,6 +576,7 @@ static void                  g_key_file_add_group              (GKeyFile        
 static gboolean              g_key_file_is_group_name          (const gchar *name);
 static gboolean              g_key_file_is_key_name            (const gchar *name);
 static void                  g_key_file_key_value_pair_free    (GKeyFileKeyValuePair   *pair);
+static gboolean              g_key_file_line_is_blank_line    (const gchar            *line);
 static gboolean              g_key_file_line_is_comment        (const gchar            *line);
 static gboolean              g_key_file_line_is_group          (const gchar            *line);
 static gboolean              g_key_file_line_is_key_value_pair (const gchar            *line);
@@ -633,6 +635,7 @@ g_key_file_init (GKeyFile *key_file)
   key_file->group_hash = g_hash_table_new (g_str_hash, g_str_equal);
   key_file->start_group = NULL;
   key_file->parse_buffer = g_string_sized_new (128);
+  key_file->comment_buffer = g_string_sized_new (128);
   key_file->list_separator = ';';
   key_file->flags = 0;
   key_file->locales = g_strdupv ((gchar **)g_get_language_names ());
@@ -653,6 +656,12 @@ g_key_file_clear (GKeyFile *key_file)
     {
       g_string_free (key_file->parse_buffer, TRUE);
       key_file->parse_buffer = NULL;
+    }
+
+  if (key_file->comment_buffer)
+    {
+      g_string_free (key_file->comment_buffer, TRUE);
+      key_file->comment_buffer = NULL;
     }
 
   tmp = key_file->groups;
@@ -1257,7 +1266,9 @@ g_key_file_parse_line (GKeyFile     *key_file,
   while (g_ascii_isspace (*line_start))
     line_start++;
 
-  if (g_key_file_line_is_comment (line_start))
+  if (g_key_file_line_is_blank_line (line_start))
+    g_key_file_parse_blank_line (key_file, line, length, &parse_error);
+  else if (g_key_file_line_is_comment (line_start))
     g_key_file_parse_comment (key_file, line, length, &parse_error);
   else if (g_key_file_line_is_group (line_start))
     g_key_file_parse_group (key_file, line_start,
@@ -1291,16 +1302,41 @@ g_key_file_parse_comment (GKeyFile     *key_file,
 			  GError      **error)
 {
   GKeyFileKeyValuePair *pair;
-  
+
   if (!(key_file->flags & G_KEY_FILE_KEEP_COMMENTS))
     return;
-  
+
   g_warn_if_fail (key_file->current_group != NULL);
+
+  g_string_append_printf (key_file->comment_buffer, "%s\n", line + 1);
+}
+
+static void
+g_key_file_parse_blank_line (GKeyFile     *key_file,
+			     GError      **error)
+{
+  GKeyFileKeyValuePair *pair;
+
+  if (!(key_file->flags & G_KEY_FILE_KEEP_COMMENTS))
+    return;
+
+  g_warn_if_fail (key_file->current_group != NULL);
+
+  if (key_file->comment_buffer->len > 0)
+    {
+        pair = g_slice_new (GKeyFileKeyValuePair);
+        pair->key = NULL;
+        pair->value = g_key_file_parse_comment_as_value (key_file, comment);
+
+        group->key_value_pairs =
+            g_list_prepend (key_file->current_group->key_value_pairs, pair);
+       g_string_truncate (key_file->comment_buffer, 0);
+    }
 
   pair = g_slice_new (GKeyFileKeyValuePair);
   pair->key = NULL;
   pair->value = g_strndup (line, length);
-  
+
   key_file->current_group->key_value_pairs =
     g_list_prepend (key_file->current_group->key_value_pairs, pair);
 }
@@ -1336,6 +1372,14 @@ g_key_file_parse_group (GKeyFile     *key_file,
 
   g_key_file_add_group (key_file, group_name);
   g_free (group_name);
+
+  if (key_file->comment_buffer->len > 0)
+    {
+       group->comment = g_slice_new (GKeyFileValuePair);
+       group->comment->key = NULL;
+       group->comment->value = g_key_file_parse_comment_as_value (keyfile, key_file->comment_buffer->str);
+       g_string_truncate (key_file->comment_buffer, 0);
+    }
 }
 
 static void
@@ -1486,7 +1530,7 @@ g_key_file_parse_data (GKeyFile     *key_file,
           if (key_file->parse_buffer->len > 0)
             g_key_file_flush_parse_buffer (key_file, &parse_error);
           else
-            g_key_file_parse_comment (key_file, "", 1, &parse_error);
+            g_key_file_parse_blank_line (key_file, &parse_error);
 
           if (parse_error)
             {
@@ -4115,6 +4159,11 @@ g_key_file_lookup_key_value_pair (GKeyFile      *key_file,
   return (GKeyFileKeyValuePair *) g_hash_table_lookup (group->lookup_map, key);
 }
 
+static gboolean
+g_key_file_line_is_blank_line (const gchar *line)
+{
+  return (*line == '\0' || *line == '\n');
+}
 /* Lines starting with # or consisting entirely of whitespace are merely
  * recorded, not parsed. This function assumes all leading whitespace
  * has been stripped.
@@ -4122,7 +4171,7 @@ g_key_file_lookup_key_value_pair (GKeyFile      *key_file,
 static gboolean
 g_key_file_line_is_comment (const gchar *line)
 {
-  return (*line == '#' || *line == '\0' || *line == '\n');
+  return *line == '#';
 }
 
 static gboolean 
