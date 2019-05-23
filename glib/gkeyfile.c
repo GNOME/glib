@@ -1313,18 +1313,40 @@ g_key_file_parse_group (GKeyFile     *key_file,
 {
   gchar *group_name;
   const gchar *group_name_start, *group_name_end;
-  
-  /* advance past opening '['
-   */
+
+  GKeyFileGroup *previous_group;
+  GKeyFileKeyValuePair *last_parsed_pair;
+
+  /* Check if the last parsed pair of previous group is a comment,
+   * if so move it to the current group in the 'comment' field. */
+  if (key_file)
+    {
+      previous_group =  (GKeyFileGroup *) key_file->groups->data;
+      if (previous_group)
+        {
+          last_parsed_pair = (GKeyFileKeyValuePair *) previous_group->key_value_pairs->data;
+          if (g_key_file_line_is_comment (last_parsed_pair->value))
+            {
+              /* Pop the first element of the key_value_pairs GList */
+              GList *tmp = previous_group->key_value_pairs;
+              previous_group->key_value_pairs = previous_group->key_value_pairs->next;
+              g_free (tmp);
+            }
+          else
+            last_parsed_pair = NULL;
+        }
+    }
+
+  /* advance past opening '[' */
   group_name_start = line + 1;
   group_name_end = line + length - 1;
-  
+
   while (*group_name_end != ']')
     group_name_end--;
 
-  group_name = g_strndup (group_name_start, 
+  group_name = g_strndup (group_name_start,
                           group_name_end - group_name_start);
-  
+
   if (!g_key_file_is_group_name (group_name))
     {
       g_set_error (error, G_KEY_FILE_ERROR,
@@ -1335,6 +1357,10 @@ g_key_file_parse_group (GKeyFile     *key_file,
     }
 
   g_key_file_add_group (key_file, group_name);
+
+  if (last_parsed_pair)
+    key_file->current_group->comment = last_parsed_pair;
+
   g_free (group_name);
 }
 
