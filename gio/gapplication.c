@@ -2458,6 +2458,28 @@ g_application_run (GApplication  *application,
                  sizeof (arguments[0]) * (argc + 1));
       }
   }
+#elif defined(__APPLE__)
+  {
+    gint i, j;
+
+    /*
+     * OSX adds an unexpected parameter on the format -psn_X_XXXXXX
+     * when opening the application using Launch Services. In order
+     * to avoid that GOption fails to parse this parameter we just
+     * skip it if it was provided.
+     * See: https://gitlab.gnome.org/GNOME/glib/issues/1784
+     */
+    arguments = g_new (gchar *, argc + 1);
+    for (i = 0, j = 0; i < argc; i++)
+      {
+        if (!g_str_has_prefix (argv[i], "-psn_"))
+          {
+            arguments[j] = g_strdup (argv[i]);
+            j++;
+          }
+      }
+    arguments[j] = NULL;
+  }
 #else
   {
     gint i;
