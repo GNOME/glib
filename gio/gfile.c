@@ -3271,12 +3271,12 @@ file_copy_fallback (GFile                  *source,
         out = (GOutputStream*)_g_local_file_output_stream_replace (_g_local_file_get_filename (G_LOCAL_FILE (destination)),
                                                                    FALSE, NULL,
                                                                    flags & G_FILE_COPY_BACKUP,
-                                                                   G_FILE_CREATE_REPLACE_DESTINATION,
-                                                                   info,
+                                                                   G_FILE_CREATE_REPLACE_DESTINATION |
+                                                                   G_FILE_CREATE_PRIVATE, info,
                                                                    cancellable, error);
       else
         out = (GOutputStream*)_g_local_file_output_stream_create (_g_local_file_get_filename (G_LOCAL_FILE (destination)),
-                                                                  FALSE, 0, info,
+                                                                  FALSE, G_FILE_CREATE_PRIVATE, info,
                                                                   cancellable, error);
     }
   else if (flags & G_FILE_COPY_OVERWRITE)
@@ -3284,12 +3284,13 @@ file_copy_fallback (GFile                  *source,
       out = (GOutputStream *)g_file_replace (destination,
                                              NULL,
                                              flags & G_FILE_COPY_BACKUP,
-                                             G_FILE_CREATE_REPLACE_DESTINATION,
+                                             G_FILE_CREATE_REPLACE_DESTINATION |
+                                             G_FILE_CREATE_PRIVATE,
                                              cancellable, error);
     }
   else
     {
-      out = (GOutputStream *)g_file_create (destination, 0, cancellable, error);
+      out = (GOutputStream *)g_file_create (destination, G_FILE_CREATE_PRIVATE, cancellable, error);
     }
 
   if (!out)
