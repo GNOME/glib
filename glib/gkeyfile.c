@@ -575,6 +575,7 @@ static void                  g_key_file_add_group              (GKeyFile        
 static gboolean              g_key_file_is_group_name          (const gchar *name);
 static gboolean              g_key_file_is_key_name            (const gchar *name);
 static void                  g_key_file_key_value_pair_free    (GKeyFileKeyValuePair   *pair);
+static gboolean              g_key_file_line_is_blank          (const gchar            *line);
 static gboolean              g_key_file_line_is_comment        (const gchar            *line);
 static gboolean              g_key_file_line_is_group          (const gchar            *line);
 static gboolean              g_key_file_line_is_key_value_pair (const gchar            *line);
@@ -1261,12 +1262,12 @@ g_key_file_parse_line (GKeyFile     *key_file,
     g_key_file_parse_comment (key_file, line, length, &parse_error);
   else if (g_key_file_line_is_group (line_start))
     g_key_file_parse_group (key_file, line_start,
-			    length - (line_start - line),
-			    &parse_error);
+                            length - (line_start - line),
+                            &parse_error);
   else if (g_key_file_line_is_key_value_pair (line_start))
     g_key_file_parse_key_value_pair (key_file, line_start,
-				     length - (line_start - line),
-				     &parse_error);
+                                     length - (line_start - line),
+                                     &parse_error);
   else
     {
       gchar *line_utf8 = g_utf8_make_valid (line, length);
@@ -1313,18 +1314,66 @@ g_key_file_parse_group (GKeyFile     *key_file,
 {
   gchar *group_name;
   const gchar *group_name_start, *group_name_end;
-  
-  /* advance past opening '['
-   */
+
+  GKeyFileGroup *previous_group;
+  GKeyFileKeyValuePair *group_top_comment = NULL;
+  GKeyFileKeyValuePair *current_pair = NULL;
+
+  /* Check if the last parsed pair of previous group is a 'comment',
+   * and if so move it to the current group in the 'comment' field. */
+  if (key_file && key_file->groups)
+    {
+      previous_group =  (GKeyFileGroup *) key_file->groups->data;
+      if (previous_group && previous_group->key_value_pairs)
+        {
+          group_top_comment =
+            (GKeyFileKeyValuePair *) previous_group->key_value_pairs->data;
+          if (g_key_file_line_is_comment (group_top_comment->value) &&
+              !g_key_file_line_is_blank (group_top_comment->value))
+            {
+              previous_group->key_value_pairs =
+                g_list_remove (previous_group->key_value_pairs, group_top_comment);
+
+              /* Gather all contiguous previous comments in group_top_comment */
+              if (!previous_group->key_value_pairs)
+                {
+                  current_pair =
+                    (GKeyFileKeyValuePair *) previous_group->key_value_pairs->data;
+                  while (g_key_file_line_is_comment (current_pair->value) &&
+                         !g_key_file_line_is_blank (current_pair->value))
+                    {
+                      gchar *str_concat =
+                        g_strconcat (group_top_comment->value, current_pair->value, NULL);
+                      g_free (group_top_comment->value);
+                      g_free (current_pair->value);
+                      group_top_comment->value = str_concat;
+
+                      previous_group->key_value_pairs =
+                        g_list_remove (previous_group->key_value_pairs, current_pair);
+
+                      if (!previous_group->key_value_pairs)
+                        break;
+
+                      current_pair =
+                        (GKeyFileKeyValuePair *) previous_group->key_value_pairs->data;
+                    }
+                }
+            }
+          else
+            group_top_comment = NULL;
+        }
+    }
+
+  /* advance past opening '[' */
   group_name_start = line + 1;
   group_name_end = line + length - 1;
-  
+
   while (*group_name_end != ']')
     group_name_end--;
 
-  group_name = g_strndup (group_name_start, 
+  group_name = g_strndup (group_name_start,
                           group_name_end - group_name_start);
-  
+
   if (!g_key_file_is_group_name (group_name))
     {
       g_set_error (error, G_KEY_FILE_ERROR,
@@ -1335,6 +1384,10 @@ g_key_file_parse_group (GKeyFile     *key_file,
     }
 
   g_key_file_add_group (key_file, group_name);
+
+  if (group_top_comment)
+    key_file->current_group->comment = group_top_comment;
+
   g_free (group_name);
 }
 
@@ -4123,6 +4176,13 @@ static gboolean
 g_key_file_line_is_comment (const gchar *line)
 {
   return (*line == '#' || *line == '\0' || *line == '\n');
+}
+
+/* To distinguish from comments and empty lines */
+static gboolean
+g_key_file_line_is_blank (const gchar *line)
+{
+  return (*line == '\0' || *line == '\n');
 }
 
 static gboolean 
