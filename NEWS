@@ -1,3 +1,109 @@
+Overview of changes in GLib 2.61.1
+==================================
+
+* `g_unichar_isxdigit()` and `g_unichar_xdigit_value()` now handle full-width
+  characters (U+FF21–U+FF26 and U+FF41–U+FF46) (#58)
+
+* Deprecate `gtester` utility and its test reporting format and enable TAP
+  output by default instead — the `--tap` option to tests is now a no-op
+  (#1441, #1619)
+
+* Add `g_test_summary()` to allow test authors to programmatically summarise
+  what each unit test in a test suite does (#1450)
+
+* Upgrade to Unicode Character Database v12.1 (#1713, !822)
+
+* More IPv6 Happy Eyeballs fixes to `GNetworkAddress` and `GSocketClient`
+  (#1747, #1771, #1774)
+
+* Fix valgrind and gdb support for the new `GHashTable` changes (#1749, #1780)
+
+* Fix GTask wait times growing faster than the number of task threads (#1683)
+
+* Change `GApplication` to ignore `-psn_*` arguments on the macOS command line,
+  as they are irrelevant (#1784)
+
+* Add `g_autoqueue()` helper macros, similar to `g_autolist()` (!474)
+
+* Add pre-allocated link helpers for `GList` and `GQueue`:
+ - `g_list_insert_before_link()`
+ - `g_queue_insert_before_link()`
+ - `g_queue_insert_after_link()`
+
+* Improve network availability detection with NetworkManager to treat lower
+  levels of connectivity as having reduced availability (!781)
+
+* Add `g_clear_signal_handler()` to allow disconnecting from a `GObject` signal
+  and clearing the signal handler ID to zero in a single call (!819)
+
+* Add `g_autoptr()` support for `GRWLock` (!825)
+
+* Define `G_OS_UNIX`, not `G_OS_WIN32`, when GLib is built agains Cygwin (!862)
+
+* Bugs fixed:
+ - #29 GScanner: should explicitly document modifiable fields (value, next_value, ...)
+ - #58 g_unichar_isxdigit() and g_unichar_xdigit_value() should deal with full-width a-fA-F
+ - #106 Boxed types should be documented better
+ - #135 g_unichar_totitle(0) returns 0x00001F88 instead of 0
+ - #429 g_format_size() is broken on Windows
+ - #1441 Deprecate gtester
+ - #1450 Add API for tests to describe what they're checking
+ - #1619 GTest should have a way to default to TAP
+ - #1683 GTask: task_wait_time is increased constantly when the number of running thread is greather than 10
+ - #1713 Upgrade to Unicode Character Database v12
+ - #1739 meson build failure libdl
+ - #1747 Critical in g_socket_client_async_connect_complete
+ - #1749 New GHashTable implementation confuses valgrind
+ - #1753 Remove memory leaks from gio/test/resolver.c
+ - #1755 Please revert #535 gmacros: Try to use the standard __func__ first in G_STRFUNC
+ - #1759 test_month_names: assertion failed
+ - #1760 Document for g_resolver_lookup_records why it returns a list of list of gchar*.
+ - #1763 tests: -p runs tests in the reverse of the specified order
+ - #1768 g_strlcat(): Possible buffer overflow in implementation
+ - #1771 GNetworkAddressAddressEnumerator unsafely modifies cache in GNetworkAddress
+ - #1774 Leaks in gsocketclient.c connection code
+ - #1776 glib/date test fails
+ - #1780 GDB pretty-printer for GHashTable no longer works
+ - #1782 Error in documentation for cross-compile.
+ - #1784 MacOS adds a -psn_X_XXXXXX parameter to the command line
+ - !474 Add g_autoqueue
+ - !476 Add pre-allocated link helpers for GList and GQueue
+ - !556 gtestutils: Make --tap compatible with -p and --GTestSkipCount
+ - !732 gsocket: Clarify in docs that `flags` arguments can be platform specific
+ - !766 W32: swap special g_get_prgname() for platform_get_argv0()
+ - !774 Only build tests if certain conditions are met.
+ - !780 Add copyright and licensing terms to test report generator
+ - !781 gnetworkmonitornm: Fix network available detection
+ - !782 build: Fix check for RTLD_NEXT
+ - !785 Remove monitor test
+ - !787 build: Remove */.gitignore files
+ - !791 glib/gconstructor.h: Include stdlib.h for MSVC builds
+ - !792 general: Remove a few unhelpful references to ‘master’
+ - !795 gdesktopappinfo: Add support for MATE and Xfce4 terminals
+ - !802 gio: tests, don't check for libdl on OpenBSD
+ - !806 Get to 100% coverage on GQueue tests
+ - !808 Update the Docker images used for CI
+ - !809 Modified version of !784 — Adding tests cases for a better coverage of glib/tests/strfuncs.c
+ - !813 gappinfo: Add precondition checks to GAppLaunchContext env methods
+ - !814 gschema.dtd: Add target attribute to alias
+ - !819 Clear signal handler
+ - !820 ci: Keep JUnit report script working on Debian stable
+ - !821 Various minor cleanups to autoptrs
+ - !822 glib: Update Unicode Character Database to version 12.1.0
+ - !825 Add autoptr support for GRWLock
+ - !831 build: (Long time after) post-release version bump
+ - !835 Fix typo in German translation
+ - !836 Document the best practices for binding GInitiallyUnowned
+ - !862 build: define G_OS_UNIX, not G_OS_WIN32 under cygwin
+
+* Translation updates:
+ - Basque
+ - Catalan
+ - German
+ - Indonesian
+ - Spanish
+
+
 Overview of changes in GLib 2.61.0
 ==================================
 
