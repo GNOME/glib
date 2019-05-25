@@ -1408,6 +1408,89 @@ test_run_in_thread_overflow (void)
   g_assert_cmpint (i + strspn (buf + i, "X"), ==, NUM_OVERFLOW_TASKS);
 }
 
+/* test_run_in_thread_destruction: source object and user data must be
+ * destroyed on the original thread, not the task thread
+ */
+
+#define SOURCE_OBJECT_TYPE_DESTRUCTION_THREAD_CHECKER (source_object_destruction_thread_checker_get_type())
+
+G_DECLARE_FINAL_TYPE (SourceObjectDestructionThreadChecker, source_object_destruction_thread_checker, SOURCE_OBJECT, DESTRUCTION_THREAD_CHECKER, GObject)
+
+struct _SourceObjectDestructionThreadChecker
+{
+  GObject parent_instance;
+};
+
+G_DEFINE_TYPE (SourceObjectDestructionThreadChecker, source_object_destruction_thread_checker, G_TYPE_OBJECT)
+
+static void
+source_object_destruction_thread_checker_finalize (GObject *object)
+{
+  g_assert_true (main_thread == g_thread_self ());
+
+  G_OBJECT_CLASS (source_object_destruction_thread_checker_parent_class)->finalize (object);
+}
+
+static void
+source_object_destruction_thread_checker_class_init (SourceObjectDestructionThreadCheckerClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = source_object_destruction_thread_checker_finalize;
+}
+
+static void
+source_object_destruction_thread_checker_init (SourceObjectDestructionThreadChecker *self)
+{
+}
+
+static void
+user_data_destruction_thread_checker (gpointer user_data)
+{
+  g_assert_true (main_thread == g_thread_self ());
+}
+
+static void
+destruction_thread_test_cb (GObject      *source_object,
+                            GAsyncResult *res,
+                            gpointer      user_data)
+{
+  g_main_loop_quit ((GMainLoop *)user_data);
+}
+
+static void
+destruction_thread_test_thread (GTask        *task,
+                                gpointer      source_object,
+                                gpointer      task_data,
+                                GCancellable *cancellable)
+{
+  g_assert_false (main_thread == g_thread_self ());
+  g_object_unref (source_object);
+}
+
+static void
+test_run_in_thread_destruction (void)
+{
+  SourceObjectDestructionThreadChecker *source_object;
+  GMainLoop *main_loop;
+  GTask *task;
+  int i;
+
+  main_loop = g_main_loop_new (NULL, FALSE);
+
+  for (i = 0; i < 1000000; i++)
+    {
+      source_object = g_object_new (SOURCE_OBJECT_TYPE_DESTRUCTION_THREAD_CHECKER, NULL);
+      task = g_task_new (source_object, NULL, destruction_thread_test_cb, main_loop);
+      g_task_set_task_data (task, NULL, user_data_destruction_thread_checker);
+      g_task_run_in_thread (task, destruction_thread_test_thread);
+      g_main_loop_run (main_loop);
+      g_object_unref (task);
+    }
+
+  g_main_loop_unref (main_loop);
+}
+
 /* test_return_on_cancel */
 
 GMutex roc_init_mutex, roc_finish_mutex;
@@ -2345,6 +2428,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/run-in-thread-priority", test_run_in_thread_priority);
   g_test_add_func ("/gtask/run-in-thread-nested", test_run_in_thread_nested);
   g_test_add_func ("/gtask/run-in-thread-overflow", test_run_in_thread_overflow);
+  g_test_add_func ("/gtask/run-in-thread-destruction", test_run_in_thread_destruction);
   g_test_add_func ("/gtask/return-on-cancel", test_return_on_cancel);
   g_test_add_func ("/gtask/return-on-cancel-sync", test_return_on_cancel_sync);
   g_test_add_func ("/gtask/return-on-cancel-atomic", test_return_on_cancel_atomic);
