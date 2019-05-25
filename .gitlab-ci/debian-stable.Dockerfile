@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM i386/debian:stretch
 
 RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     bindfs \

@@ -53,8 +53,8 @@ fedora-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
       - "_coverage"
 
-debian-stable-x86_64:
-  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v1
+debian-stable-i686:
+  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v2
   stage: build
   except:
     - tags
