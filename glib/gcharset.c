@@ -268,7 +268,7 @@ g_get_console_charset (const char **charset)
   GCharsetCache *cache = g_private_get (&cache_private);
   const gchar *locale;
   unsigned int cp;
-  static char buf[2 + 10 + 1];
+  char buf[2 + 20 + 1]; /* "CP" + G_MAXUINT64 (to be safe) in decimal form (20 bytes) + "\0" */
   const gchar *raw = NULL;
 
   if (!cache)
