@@ -103,7 +103,7 @@ libgmodule = library('gmodule-2.0',
   install : true,
   include_directories : [configinc, gmoduleinc],
   dependencies : [libdl_dep, libglib_dep],
-  c_args : ['-DG_LOG_DOMAIN="GModule"', '-DG_DISABLE_DEPRECATED'] + glib_hidden_visibility_args,
+  c_args : ['-DG_LOG_DOMAIN="GModule"'] + glib_hidden_visibility_args,
   link_args : [glib_link_flags],
 )
 
