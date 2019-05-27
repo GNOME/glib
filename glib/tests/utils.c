@@ -29,6 +29,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
 
 static gboolean
 strv_check (const gchar * const *strv, ...)
@@ -333,6 +336,42 @@ test_codeset2 (void)
     }
   g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_passed ();
+}
+
+static void
+test_console_charset (void)
+{
+  const gchar *c1;
+  const gchar *c2;
+
+#ifdef G_OS_WIN32
+  /* store current environment and unset $LANG to make sure it does not interfere */
+  const unsigned int initial_cp = GetConsoleOutputCP ();
+  gchar *initial_lang = g_strdup (g_getenv ("LANG"));
+  g_unsetenv ("LANG");
+
+  /* set console output codepage to something specific (ISO-8859-1 aka CP28591) and query it */
+  SetConsoleOutputCP (28591);
+  g_get_console_charset (&c1);
+  g_assert_cmpstr (c1, ==, "ISO-8859-1");
+
+  /* set $LANG to something specific (should override the console output codepage) and query it */
+  g_setenv ("LANG", "de_DE.ISO-8859-15@euro", TRUE);
+  g_get_console_charset (&c2);
+  g_assert_cmpstr (c2, ==, "ISO-8859-15");
+
+  /* reset environment */
+  if (initial_cp)
+    SetConsoleOutputCP (initial_cp);
+  if (initial_lang)
+    g_setenv ("LANG", initial_lang, TRUE);
+  g_free (initial_lang);
+#else
+  g_get_charset (&c1);
+  g_get_console_charset (&c2);
+
+  g_assert_cmpstr (c1, ==, c2);
+#endif
 }
 
 static void
@@ -717,6 +756,7 @@ main (int   argc,
   g_test_add_func ("/utils/debug", test_debug);
   g_test_add_func ("/utils/codeset", test_codeset);
   g_test_add_func ("/utils/codeset2", test_codeset2);
+  g_test_add_func ("/utils/console-charset", test_console_charset);
   g_test_add_func ("/utils/basename", test_basename);
   g_test_add_func ("/utils/gettext", test_gettext);
   g_test_add_func ("/utils/username", test_username);
