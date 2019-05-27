@@ -194,6 +194,10 @@ gchar *g_format_size        (guint64          size);
 GLIB_DEPRECATED_IN_2_30_FOR(g_format_size)
 gchar *g_format_size_for_display (goffset size);
 
+#define g_ATEXIT(proc)	(atexit (proc)) GLIB_DEPRECATED_MACRO_IN_2_32
+#define g_memmove(dest,src,len) \
+  G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END  GLIB_DEPRECATED_MACRO_IN_2_40_FOR(memmove)
+
 #ifndef G_DISABLE_DEPRECATED
 /**
  * GVoidFunc:
