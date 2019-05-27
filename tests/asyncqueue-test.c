@@ -1,6 +1,5 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
-#undef G_DISABLE_DEPRECATED
 
 #include <time.h>
 #include <stdlib.h>
