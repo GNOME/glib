@@ -850,7 +850,7 @@ find_relative_date (TimeZoneDate *buffer)
   else /* M.W.D */
     {
       guint days;
-      guint days_in_month = g_date_days_in_month (buffer->mon, buffer->year);
+      guint days_in_month = g_date_get_days_in_month (buffer->mon, buffer->year);
       GDateWeekday first_wday;
 
       g_date_set_dmy (&date, 1, buffer->mon, buffer->year);
