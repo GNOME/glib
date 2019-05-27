@@ -26,7 +26,6 @@ foreach version : stable_2_series_versions
 endforeach
 
 gtkdoc_common_scan_args = [
-  '--deprecated-guards=G_DISABLE_DEPRECATED',
   '--ignore-decorators=' + '|'.join(ignore_decorators),
 ]
 
