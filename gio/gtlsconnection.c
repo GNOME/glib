@@ -754,6 +754,7 @@ g_tls_connection_get_require_close_notify (GTlsConnection *conn)
  *   required for compatibility. Also, rehandshaking has been removed
  *   from the TLS protocol in TLS 1.3.
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_tls_connection_set_rehandshake_mode (GTlsConnection       *conn,
 				       GTlsRehandshakeMode   mode)
@@ -764,6 +765,7 @@ g_tls_connection_set_rehandshake_mode (GTlsConnection       *conn,
 		"rehandshake-mode", mode,
 		NULL);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_tls_connection_get_rehandshake_mode:
@@ -780,6 +782,7 @@ g_tls_connection_set_rehandshake_mode (GTlsConnection       *conn,
  *   required for compatibility. Also, rehandshaking has been removed
  *   from the TLS protocol in TLS 1.3.
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GTlsRehandshakeMode
 g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
 {
@@ -792,6 +795,7 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
 		NULL);
   return mode;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_tls_connection_set_advertised_protocols:

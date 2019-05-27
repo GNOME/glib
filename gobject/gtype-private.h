@@ -44,7 +44,9 @@ G_STMT_START { \
 
 G_BEGIN_DECLS
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 extern GTypeDebugFlags _g_type_debug_flags;
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 typedef struct _GRealClosure  GRealClosure;
 struct _GRealClosure

@@ -24,6 +24,10 @@
 
 #include "config.h"
 
+/* For the #GDesktopAppInfoLookup macros; since macro deprecation is implemented
+ * in the preprocessor, we need to define this before including glib.h*/
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>

@@ -356,7 +356,7 @@ void    g_test_queue_destroy            (GDestroyNotify destroy_func,
  * Test traps are guards around forked tests.
  * These flags determine what traps to set.
  *
- * Deprecated: #GTestTrapFlags is used only with g_test_trap_fork(),
+ * Deprecated: 2.38: #GTestTrapFlags is used only with g_test_trap_fork(),
  * which is deprecated. g_test_trap_subprocess() uses
  * #GTestSubprocessFlags.
  */
@@ -364,11 +364,13 @@ typedef enum {
   G_TEST_TRAP_SILENCE_STDOUT    = 1 << 7,
   G_TEST_TRAP_SILENCE_STDERR    = 1 << 8,
   G_TEST_TRAP_INHERIT_STDIN     = 1 << 9
-} GTestTrapFlags;
+} GTestTrapFlags GLIB_DEPRECATED_TYPE_IN_2_38_FOR(GTestSubprocessFlags);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED_IN_2_38_FOR (g_test_trap_subprocess)
 gboolean g_test_trap_fork               (guint64              usec_timeout,
                                          GTestTrapFlags       test_trap_flags);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 typedef enum {
   G_TEST_SUBPROCESS_INHERIT_STDIN  = 1 << 0,

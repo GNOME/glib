@@ -1,3 +1,6 @@
+/* We are testing some deprecated APIs here */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include <glib-object.h>
 
 typedef struct {
