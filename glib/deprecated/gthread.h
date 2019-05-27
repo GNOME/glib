@@ -128,8 +128,8 @@ void     g_thread_foreach      (GFunc             thread_func,
 #include <pthread.h>
 #endif
 
-#define g_static_mutex_get_mutex g_static_mutex_get_mutex_impl
-#define G_STATIC_MUTEX_INIT { NULL }
+#define g_static_mutex_get_mutex g_static_mutex_get_mutex_impl GLIB_DEPRECATED_MACRO_IN_2_32
+#define G_STATIC_MUTEX_INIT { NULL } GLIB_DEPRECATED_MACRO_IN_2_32_FOR(g_mutex_init)
 typedef struct
 {
   GMutex *mutex;
@@ -140,11 +140,11 @@ typedef struct
 } GStaticMutex;
 
 #define g_static_mutex_lock(mutex) \
-    g_mutex_lock (g_static_mutex_get_mutex (mutex))
+    g_mutex_lock (g_static_mutex_get_mutex (mutex)) GLIB_DEPRECATED_MACRO_IN_2_32_FOR(g_mutex_lock)
 #define g_static_mutex_trylock(mutex) \
-    g_mutex_trylock (g_static_mutex_get_mutex (mutex))
+    g_mutex_trylock (g_static_mutex_get_mutex (mutex)) GLIB_DEPRECATED_MACRO_IN_2_32_FOR(g_mutex_trylock)
 #define g_static_mutex_unlock(mutex) \
-    g_mutex_unlock (g_static_mutex_get_mutex (mutex))
+    g_mutex_unlock (g_static_mutex_get_mutex (mutex)) GLIB_DEPRECATED_MACRO_IN_2_32_FOR(g_mutex_unlock)
 
 GLIB_DEPRECATED_IN_2_32_FOR(g_mutex_init)
 void    g_static_mutex_init           (GStaticMutex *mutex);
@@ -171,7 +171,7 @@ struct _GStaticRecMutex
   } unused;
 };
 
-#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, 0, { 0 } }
+#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, 0, { 0 } } GLIB_DEPRECATED_MACRO_IN_2_32_FOR(g_rec_mutex_init)
 GLIB_DEPRECATED_IN_2_32_FOR(g_rec_mutex_init)
 void     g_static_rec_mutex_init        (GStaticRecMutex *mutex);
 
@@ -207,7 +207,7 @@ struct _GStaticRWLock
   guint want_to_write;
 };
 
-#define G_STATIC_RW_LOCK_INIT { G_STATIC_MUTEX_INIT, NULL, NULL, 0, FALSE, 0, 0 }
+#define G_STATIC_RW_LOCK_INIT { G_STATIC_MUTEX_INIT, NULL, NULL, 0, FALSE, 0, 0 } GLIB_DEPRECATED_MACRO_IN_2_32_FOR(g_rw_lock_init)
 
 GLIB_DEPRECATED_IN_2_32_FOR(g_rw_lock_init)
 void      g_static_rw_lock_init           (GStaticRWLock *lock);
@@ -243,7 +243,7 @@ struct _GStaticPrivate
   guint index;
 };
 
-#define G_STATIC_PRIVATE_INIT { 0 }
+#define G_STATIC_PRIVATE_INIT { 0 } GLIB_DEPRECATED_MACRO_IN_2_32_FOR(G_PRIVATE_INIT)
 GLIB_DEPRECATED_IN_2_32
 void     g_static_private_init           (GStaticPrivate *private_key);
 
@@ -271,7 +271,7 @@ gboolean g_thread_get_initialized        (void);
 
 GLIB_VAR gboolean g_threads_got_initialized;
 
-#define g_thread_supported()     (1)
+#define g_thread_supported()     (1) GLIB_DEPRECATED_MACRO_IN_2_32
 
 GLIB_DEPRECATED_IN_2_32
 GMutex *        g_mutex_new             (void);

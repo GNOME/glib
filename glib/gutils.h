@@ -311,8 +311,6 @@ void g_abort (void) G_GNUC_NORETURN G_ANALYZER_NORETURN;
 #endif
 #endif
 
-#ifndef G_DISABLE_DEPRECATED
-
 /*
  * This macro is deprecated. This DllMain() is too complex. It is
  * recommended to write an explicit minimal DLlMain() that just saves
@@ -331,7 +329,7 @@ void g_abort (void) G_GNUC_NORETURN G_ANALYZER_NORETURN;
  */
 
 #ifndef G_PLATFORM_WIN32
-# define G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name)
+# define G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name) GLIB_DEPRECATED_MACRO_IN_2_26
 #else
 # define G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name)			\
 static char *dll_name;							\
@@ -354,10 +352,7 @@ DllMain (HINSTANCE hinstDLL,						\
     }									\
 									\
   return TRUE;								\
-}
-
-#endif	/* !G_DISABLE_DEPRECATED */
-
+} GLIB_DEPRECATED_MACRO_IN_2_26
 #endif /* G_PLATFORM_WIN32 */
 
 G_END_DECLS
