@@ -1302,7 +1302,7 @@ g_strerror (gint errnum)
       g_strlcpy (buf, strerror (errnum), sizeof (buf));
       msg = buf;
 #endif
-      if (!g_get_charset (NULL))
+      if (!g_get_console_charset (NULL))
         {
           msg = g_locale_to_utf8 (msg, -1, NULL, NULL, &error);
           if (error)
@@ -1342,7 +1342,7 @@ g_strsignal (gint signum)
 
 #ifdef HAVE_STRSIGNAL
   msg = strsignal (signum);
-  if (!g_get_charset (NULL))
+  if (!g_get_console_charset (NULL))
     msg = tofree = g_locale_to_utf8 (msg, -1, NULL, NULL, NULL);
 #endif
 

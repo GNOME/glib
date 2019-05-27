@@ -2946,6 +2946,7 @@ GConvertError
 <SUBSECTION>
 g_get_charset
 g_get_codeset
+g_get_console_charset
 
 <SUBSECTION Private>
 g_convert_error_quark
