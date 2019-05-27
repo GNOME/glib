@@ -187,6 +187,7 @@ g_initable_new (GType          object_type,
  * Deprecated: 2.54: Use g_object_new_with_properties() and
  * g_initable_init() instead. See #GParameter for more information.
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 gpointer
 g_initable_newv (GType          object_type,
 		 guint          n_parameters,
@@ -198,9 +199,7 @@ g_initable_newv (GType          object_type,
 
   g_return_val_if_fail (G_TYPE_IS_INITABLE (object_type), NULL);
 
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   obj = g_object_newv (object_type, n_parameters, parameters);
-G_GNUC_END_IGNORE_DEPRECATIONS
 
   if (!g_initable_init (G_INITABLE (obj), cancellable, error))
     {
@@ -210,6 +209,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
   return (gpointer)obj;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_initable_new_valist:

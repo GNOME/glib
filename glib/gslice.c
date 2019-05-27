@@ -1397,7 +1397,9 @@ slab_allocator_free_chunk (gsize    chunk_size,
  */
 
 #if !(HAVE_POSIX_MEMALIGN || HAVE_MEMALIGN || HAVE_VALLOC)
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static GTrashStack *compat_valloc_trash = NULL;
+G_GNUC_END_IGNORE_DEPRECATIONS
 #endif
 
 static gpointer

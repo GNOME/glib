@@ -424,10 +424,14 @@ GObject*    g_object_new_with_properties      (GType           object_type,
                                                guint           n_properties,
                                                const char     *names[],
                                                const GValue    values[]);
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED_IN_2_54_FOR(g_object_new_with_properties)
 gpointer    g_object_newv		      (GType           object_type,
 					       guint	       n_parameters,
 					       GParameter     *parameters);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
 GLIB_AVAILABLE_IN_ALL
 GObject*    g_object_new_valist               (GType           object_type,
 					       const gchar    *first_property_name,

@@ -129,11 +129,13 @@ void                  g_dtls_connection_set_require_close_notify    (GDtlsConnec
 GLIB_AVAILABLE_IN_2_48
 gboolean              g_dtls_connection_get_require_close_notify    (GDtlsConnection       *conn);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED_IN_2_60
 void                  g_dtls_connection_set_rehandshake_mode        (GDtlsConnection       *conn,
                                                                      GTlsRehandshakeMode    mode);
 GLIB_DEPRECATED_IN_2_60
 GTlsRehandshakeMode   g_dtls_connection_get_rehandshake_mode        (GDtlsConnection       *conn);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 GLIB_AVAILABLE_IN_2_48
 gboolean              g_dtls_connection_handshake                   (GDtlsConnection       *conn,
