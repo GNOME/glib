@@ -96,17 +96,15 @@
  * Deprecated: 2.48: Use "static inline" instead
  */
 
-#ifndef G_DISABLE_DEPRECATED
 /* For historical reasons we need to continue to support those who
  * define G_IMPLEMENT_INLINES to mean "don't implement this here".
  */
 #ifdef G_IMPLEMENT_INLINES
-#  define G_INLINE_FUNC extern
+#  define G_INLINE_FUNC extern GLIB_DEPRECATED_MACRO_IN_2_48_FOR(static inline)
 #  undef  G_CAN_INLINE
 #else
-#  define G_INLINE_FUNC static inline
+#  define G_INLINE_FUNC static inline GLIB_DEPRECATED_MACRO_IN_2_48_FOR(static inline)
 #endif /* G_IMPLEMENT_INLINES */
-#endif /* !G_DISABLE_DEPRECATED */
 
 /* Provide macros to feature the GCC function attribute.
  */
@@ -707,19 +705,20 @@
  * Deprecated: 2.16: Use G_STRFUNC() instead
  */
 
-#ifndef G_DISABLE_DEPRECATED
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
  * macros, so we can refer to them as strings unconditionally.
  * usage not-recommended since gcc-3.0
+ *
+ * Mark them as deprecated since 2.26, since that’s when version macros were
+ * introduced.
  */
 #if defined (__GNUC__) && (__GNUC__ < 3)
-#define G_GNUC_FUNCTION         __FUNCTION__
-#define G_GNUC_PRETTY_FUNCTION  __PRETTY_FUNCTION__
+#define G_GNUC_FUNCTION         __FUNCTION__ GLIB_DEPRECATED_MACRO_IN_2_26_FOR(G_STRFUNC)
+#define G_GNUC_PRETTY_FUNCTION  __PRETTY_FUNCTION__ GLIB_DEPRECATED_MACRO_IN_2_26_FOR(G_STRFUNC)
 #else   /* !__GNUC__ */
-#define G_GNUC_FUNCTION         ""
-#define G_GNUC_PRETTY_FUNCTION  ""
+#define G_GNUC_FUNCTION         "" GLIB_DEPRECATED_MACRO_IN_2_26_FOR(G_STRFUNC)
+#define G_GNUC_PRETTY_FUNCTION  "" GLIB_DEPRECATED_MACRO_IN_2_26_FOR(G_STRFUNC)
 #endif  /* !__GNUC__ */
-#endif  /* !G_DISABLE_DEPRECATED */
 
 #if g_macro__has_feature(attribute_analyzer_noreturn) && defined(__clang_analyzer__)
 #define G_ANALYZER_ANALYZING 1
@@ -900,15 +899,11 @@
  * Deprecated: 2.30: API providers should replace all existing uses with
  * const and API consumers should adjust their code accordingly
  */
-
-/* Deprecated -- do not use. */
-#ifndef G_DISABLE_DEPRECATED
 #ifdef G_DISABLE_CONST_RETURNS
-#define G_CONST_RETURN
+#define G_CONST_RETURN GLIB_DEPRECATED_MACRO_IN_2_30_FOR(const)
 #else
-#define G_CONST_RETURN const
+#define G_CONST_RETURN const GLIB_DEPRECATED_MACRO_IN_2_30_FOR(const)
 #endif
-#endif /* !G_DISABLE_DEPRECATED */
 
 /*
  * The G_LIKELY and G_UNLIKELY macros let the programmer give hints to 
