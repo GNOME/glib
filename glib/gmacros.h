@@ -689,6 +689,24 @@
 #define G_GNUC_WARN_UNUSED_RESULT
 #endif /* __GNUC__ */
 
+/**
+ * G_GNUC_FUNCTION:
+ *
+ * Expands to "" on all modern compilers, and to  __FUNCTION__ on gcc
+ * version 2.x. Don't use it.
+ *
+ * Deprecated: 2.16: Use G_STRFUNC() instead
+ */
+
+/**
+ * G_GNUC_PRETTY_FUNCTION:
+ *
+ * Expands to "" on all modern compilers, and to __PRETTY_FUNCTION__
+ * on gcc version 2.x. Don't use it.
+ *
+ * Deprecated: 2.16: Use G_STRFUNC() instead
+ */
+
 #ifndef G_DISABLE_DEPRECATED
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
  * macros, so we can refer to them as strings unconditionally.
@@ -866,6 +884,22 @@
 #else
 #define G_ALIGNOF(type) (G_STRUCT_OFFSET (struct { char a; type b; }, b))
 #endif
+
+/**
+ * G_CONST_RETURN:
+ *
+ * If %G_DISABLE_CONST_RETURNS is defined, this macro expands
+ * to nothing. By default, the macro expands to const. The macro
+ * can be used in place of const for functions that return a value
+ * that should not be modified. The purpose of this macro is to allow
+ * us to turn on const for returned constant strings by default, while
+ * allowing programmers who find that annoying to turn it off. This macro
+ * should only be used for return values and for "out" parameters, it
+ * doesn't make sense for "in" parameters.
+ *
+ * Deprecated: 2.30: API providers should replace all existing uses with
+ * const and API consumers should adjust their code accordingly
+ */
 
 /* Deprecated -- do not use. */
 #ifndef G_DISABLE_DEPRECATED
