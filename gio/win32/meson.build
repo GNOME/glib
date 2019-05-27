@@ -12,4 +12,4 @@ giowin32_lib = static_library('giowin32',
   include_directories : [configinc, glibinc, gioinc, gmoduleinc],
   dependencies : [libintl, gioenumtypes_dep],
   pic : true,
-  c_args : [ '-DG_DISABLE_DEPRECATED' ] + gio_c_args)
+  c_args : gio_c_args)

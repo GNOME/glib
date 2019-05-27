@@ -3,7 +3,7 @@ if not get_option('fam')
 endif
 
 fam_dep = cc.find_library('fam')
-fam_c_args = ['-DG_DISABLE_DEPRECATED'] + gio_c_args
+fam_c_args = gio_c_args
 if cc.has_function('FAMNoExists', dependencies : fam_dep)
   fam_c_args += '-DHAVE_FAM_NO_EXISTS=1'
 endif

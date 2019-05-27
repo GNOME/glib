@@ -93,11 +93,10 @@ this range will trigger compiler warnings.
 </para>
 
 <para>
-The older deprecation mechanism of hiding deprecated interfaces
+Since GLib 2.62, the older deprecation mechanism of hiding deprecated interfaces
 entirely from the compiler by using the preprocessor symbol
-G_DISABLE_DEPRECATED is still used for deprecated macros,
-enumeration values, etc. To detect uses of these in your code,
-use the commandline option <literal>-DG_DISABLE_DEPRECATED</literal>.
+<literal>G_DISABLE_DEPRECATED</literal> has been removed. All deprecations
+are now handled using the above mechanism.
 </para>
 
 <para>
