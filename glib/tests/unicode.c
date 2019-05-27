@@ -64,7 +64,7 @@ test_unichar_character_type (void)
     { G_UNICODE_OTHER_LETTER,         0x3400 },
     { G_UNICODE_TITLECASE_LETTER,     0x01C5 },
     { G_UNICODE_UPPERCASE_LETTER,     0xFF21 },
-    { G_UNICODE_COMBINING_MARK,       0x0903 },
+    { G_UNICODE_SPACING_MARK,         0x0903 },
     { G_UNICODE_ENCLOSING_MARK,       0x20DD },
     { G_UNICODE_NON_SPACING_MARK,     0xA806 },
     { G_UNICODE_DECIMAL_NUMBER,       0xFF10 },
