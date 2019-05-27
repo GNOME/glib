@@ -198,7 +198,6 @@ gchar *g_format_size_for_display (goffset size);
 #define g_memmove(dest,src,len) \
   G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END  GLIB_DEPRECATED_MACRO_IN_2_40_FOR(memmove)
 
-#ifndef G_DISABLE_DEPRECATED
 /**
  * GVoidFunc:
  *
@@ -206,10 +205,13 @@ gchar *g_format_size_for_display (goffset size);
  * and has no return value. It is used to specify the type
  * function passed to g_atexit().
  */
-typedef void (*GVoidFunc) (void);
-#define ATEXIT(proc) g_ATEXIT(proc)
+typedef void (*GVoidFunc) (void) GLIB_DEPRECATED_TYPE_IN_2_32;
+#define ATEXIT(proc) g_ATEXIT(proc) GLIB_DEPRECATED_MACRO_IN_2_32
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED
 void	g_atexit		(GVoidFunc    func);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 #ifdef G_OS_WIN32
 /* It's a bad idea to wrap atexit() on Windows. If the GLib DLL calls
@@ -221,9 +223,7 @@ void	g_atexit		(GVoidFunc    func);
 #if (defined(__MINGW_H) && !defined(_STDLIB_H_)) || (defined(_MSC_VER) && !defined(_INC_STDLIB))
 int atexit (void (*)(void));
 #endif
-#define g_atexit(func) atexit(func)
-#endif
-
+#define g_atexit(func) atexit(func) GLIB_DEPRECATED_MACRO_IN_2_32
 #endif
 
 
