@@ -4555,6 +4555,9 @@ g_app_info_get_all (void)
  *
  * #GDesktopAppInfoLookup is an opaque data structure and can only be accessed
  * using the following functions.
+ *
+ * Deprecated: 2.28: The #GDesktopAppInfoLookup interface is deprecated and
+ *    unused by GIO.
  **/
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -4585,7 +4588,8 @@ g_desktop_app_info_lookup_default_init (GDesktopAppInfoLookupInterface *iface)
  *
  * Returns: (transfer full): #GAppInfo for given @uri_scheme or %NULL on error.
  *
- * Deprecated: The #GDesktopAppInfoLookup interface is deprecated and unused by gio.
+ * Deprecated: 2.28: The #GDesktopAppInfoLookup interface is deprecated and
+ *    unused by GIO.
  */
 GAppInfo *
 g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
