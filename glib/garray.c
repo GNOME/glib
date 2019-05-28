@@ -1000,6 +1000,34 @@ g_ptr_array_sized_new (guint reserved_size)
 }
 
 /**
+ * g_array_copy:
+ * @array: A #GArray.
+ *
+ * Create a shallow copy of a #GArray. If the array elements consist of
+ * pointers to data, the pointers are copied but the actual data is not.
+ *
+ * Returns: (transfer container): A copy of @array.
+ *
+ * Since: 2.62
+ **/
+GArray *
+g_array_copy (GArray *array)
+{
+  GRealArray *rarray = (GRealArray *) array;
+  GRealArray *new_rarray;
+
+  g_return_val_if_fail (rarray != NULL, NULL);
+
+  new_rarray =
+    (GRealArray *) g_array_sized_new (rarray->zero_terminated, rarray->clear,
+                                      rarray->elt_size, rarray->len);
+  new_rarray->len = rarray->len;
+  memcpy (new_rarray->data, rarray->data, rarray->alloc);
+
+  return (GArray *) new_rarray;
+}
+
+/**
  * g_ptr_array_new_with_free_func:
  * @element_free_func: (nullable): A function to free elements with
  *     destroy @array or %NULL
