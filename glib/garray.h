@@ -75,6 +75,8 @@ GArray* g_array_sized_new         (gboolean          zero_terminated,
 				   gboolean          clear_,
 				   guint             element_size,
 				   guint             reserved_size);
+GLIB_AVAILABLE_IN_2_62
+GArray* g_array_copy              (GArray           *array);
 GLIB_AVAILABLE_IN_ALL
 gchar*  g_array_free              (GArray           *array,
 				   gboolean          free_segment);
