@@ -2611,6 +2611,7 @@ g_string_chunk_free
 GArray
 g_array_new
 g_array_sized_new
+g_array_copy
 g_array_ref
 g_array_unref
 g_array_get_element_size
