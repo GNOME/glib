@@ -23,7 +23,6 @@
  */
 
 #undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -465,6 +464,41 @@ int_compare (gconstpointer p1, gconstpointer p2)
   const gint *i2 = p2;
 
   return *i1 - *i2;
+}
+
+static void
+array_copy (void)
+{
+  GArray *array, *array_copy;
+  gsize i;
+  const gsize array_size = 100;
+
+  g_test_summary ("Check g_array_copy() function");
+
+  /* Testing degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      array = g_array_copy (NULL);
+      g_test_assert_expected_messages ();
+
+      g_assert_null (array);
+    }
+
+  /* Testing simple copy */
+  array = g_array_new (FALSE, FALSE, sizeof (gsize));
+
+  for (i = 0; i < array_size; i++)
+    g_array_append_val (array, i);
+
+  array_copy = g_array_copy (array);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint (g_array_index (array, gsize, i), ==, i);
+
+  g_array_unref (array);
+  g_array_unref (array_copy);
 }
 
 static int
@@ -1241,6 +1275,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/new/zero-terminated", array_new_zero_terminated);
   g_test_add_func ("/array/ref-count", array_ref_count);
   g_test_add_func ("/array/clear-func", array_clear_func);
+  g_test_add_func ("/array/copy", array_copy);
 
   for (i = 0; i < G_N_ELEMENTS (array_configurations); i++)
     {
