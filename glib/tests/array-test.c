@@ -23,7 +23,6 @@
  */
 
 #undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,6 +37,19 @@ typedef struct
   gboolean zero_terminated;
   gboolean clear_;
 } ArrayTestData;
+
+/* Internal GArray structure */
+typedef struct
+{
+  guint8 *data;
+  guint   len;
+  guint   alloc;
+  guint   elt_size;
+  guint   zero_terminated : 1;
+  guint   clear : 1;
+  gatomicrefcount ref_count;
+  GDestroyNotify clear_func;
+} GRealArray;
 
 /* Assert that @garray contains @n_expected_elements as given in @expected_data.
  * @garray must contain #gint elements. */
@@ -465,6 +477,55 @@ int_compare (gconstpointer p1, gconstpointer p2)
   const gint *i2 = p2;
 
   return *i1 - *i2;
+}
+
+static void
+array_copy (gconstpointer test_data)
+{
+  GArray *array, *array_copy;
+  GRealArray *rarray, *rarray_copy;
+  gsize i;
+  const ArrayTestData *config = test_data;
+  const gsize array_size = 100;
+
+  g_test_summary ("Check g_array_copy() function");
+
+  /* Testing degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      array = g_array_copy (NULL);
+      g_test_assert_expected_messages ();
+
+      g_assert_null (array);
+    }
+
+  /* Testing simple copy */
+  array = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
+
+  for (i = 0; i < array_size; i++)
+    g_array_append_val (array, i);
+
+  array_copy = g_array_copy (array);
+
+  /* Compare Both GRealArray internal struct */
+  rarray = (GRealArray *) array;
+  rarray_copy = (GRealArray *) array_copy;
+
+  g_assert_cmpuint (rarray->len, ==, rarray_copy->len);
+  g_assert_cmpuint (rarray->alloc, ==, rarray_copy->alloc);
+  g_assert_cmpuint (rarray->elt_size, ==, rarray_copy->elt_size);
+  g_assert_cmpuint (rarray->zero_terminated, ==, rarray_copy->zero_terminated);
+  g_assert_cmpuint (rarray->clear, ==, rarray_copy->clear);
+
+  /* Compare both internal data */
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint (g_array_index (array, gint, i), ==,
+                      g_array_index (array_copy, gint, i));
+
+  g_array_unref (array);
+  g_array_unref (array_copy);
 }
 
 static int
@@ -1253,6 +1314,7 @@ main (int argc, char *argv[])
       add_array_test ("/array/remove-index", &array_configurations[i], array_remove_index);
       add_array_test ("/array/remove-index-fast", &array_configurations[i], array_remove_index_fast);
       add_array_test ("/array/remove-range", &array_configurations[i], array_remove_range);
+      add_array_test ("/array/copy", &array_configurations[i], array_copy);
       add_array_test ("/array/sort", &array_configurations[i], array_sort);
       add_array_test ("/array/sort-with-data", &array_configurations[i], array_sort_with_data);
     }
