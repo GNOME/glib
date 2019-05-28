@@ -820,6 +820,31 @@ test_happy_eyeballs_ipv6_error_ipv6_first (HappyEyeballsFixture *fixture,
 }
 
 static void
+test_happy_eyeballs_ipv6_error_ipv4_very_slow (HappyEyeballsFixture *fixture,
+                                               gconstpointer         user_data)
+{
+  AsyncData data = { 0 };
+  GError *ipv6_error;
+
+  g_test_bug ("merge_requests/865");
+  g_test_summary ("Ensure that we successfully return IPv4 results even when they come significantly later than an IPv6 failure.");
+
+  /* If ipv6 fails, ensuring that ipv6 errors before ipv4 finishes, we still get ipv4. */
+
+  data.loop = fixture->loop;
+  ipv6_error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_TIMED_OUT, "IPv6 Broken");
+  mock_resolver_set_ipv6_error (fixture->mock_resolver, ipv6_error);
+  mock_resolver_set_ipv4_delay_ms (fixture->mock_resolver, SLOW_DELAY_MORE_THAN_TIMEOUT);
+
+  g_socket_address_enumerator_next_async (fixture->enumerator, NULL, got_addr, &data);
+  g_main_loop_run (fixture->loop);
+
+  assert_list_matches_expected (data.addrs, fixture->input_ipv4_results);
+
+  g_error_free (ipv6_error);
+}
+
+static void
 test_happy_eyeballs_ipv4_error_ipv4_first (HappyEyeballsFixture *fixture,
                                            gconstpointer         user_data)
 {
@@ -977,6 +1002,7 @@ main (int argc, char *argv[])
   gchar *path;
 
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/");
 
   g_test_add_func ("/network-address/basic", test_basic);
 
@@ -1031,6 +1057,8 @@ main (int argc, char *argv[])
               happy_eyeballs_setup, test_happy_eyeballs_ipv6_error_ipv4_first, happy_eyeballs_teardown);
   g_test_add ("/network-address/happy-eyeballs/ipv6-error-ipv6-first", HappyEyeballsFixture, NULL,
               happy_eyeballs_setup, test_happy_eyeballs_ipv6_error_ipv6_first, happy_eyeballs_teardown);
+  g_test_add ("/network-address/happy-eyeballs/ipv6-error-ipv4-very-slow", HappyEyeballsFixture, NULL,
+              happy_eyeballs_setup, test_happy_eyeballs_ipv6_error_ipv4_very_slow, happy_eyeballs_teardown);
   g_test_add ("/network-address/happy-eyeballs/ipv4-error-ipv6-first", HappyEyeballsFixture, NULL,
               happy_eyeballs_setup, test_happy_eyeballs_ipv4_error_ipv6_first, happy_eyeballs_teardown);
   g_test_add ("/network-address/happy-eyeballs/ipv4-error-ipv4-first", HappyEyeballsFixture, NULL,
