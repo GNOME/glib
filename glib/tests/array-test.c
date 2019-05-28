@@ -23,7 +23,6 @@
  */
 
 #undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -465,6 +464,44 @@ int_compare (gconstpointer p1, gconstpointer p2)
   const gint *i2 = p2;
 
   return *i1 - *i2;
+}
+
+static void
+array_copy (gconstpointer test_data)
+{
+  GArray *array, *array_copy;
+  gsize i;
+  const ArrayTestData *config = test_data;
+  const gsize array_size = 100;
+
+  g_test_summary ("Check g_array_copy() function");
+
+  /* Testing degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      array = g_array_copy (NULL);
+      g_test_assert_expected_messages ();
+
+      g_assert_null (array);
+    }
+
+  /* Testing simple copy */
+  array = g_array_new (config->zero_terminated, config->clear_, sizeof (gsize));
+
+  for (i = 0; i < array_size; i++)
+    g_array_append_val (array, i);
+
+  array_copy = g_array_copy (array);
+  assert_int_array_zero_terminated (config, array_copy);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint (g_array_index (array, gsize, i), ==,
+                      g_array_index (array_copy, gsize, i));
+
+  g_array_unref (array);
+  g_array_unref (array_copy);
 }
 
 static int
@@ -1253,6 +1290,7 @@ main (int argc, char *argv[])
       add_array_test ("/array/remove-index", &array_configurations[i], array_remove_index);
       add_array_test ("/array/remove-index-fast", &array_configurations[i], array_remove_index_fast);
       add_array_test ("/array/remove-range", &array_configurations[i], array_remove_range);
+      add_array_test ("/array/copy", &array_configurations[i], array_copy);
       add_array_test ("/array/sort", &array_configurations[i], array_sort);
       add_array_test ("/array/sort-with-data", &array_configurations[i], array_sort_with_data);
     }
