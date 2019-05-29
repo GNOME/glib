@@ -74,6 +74,7 @@
 #include "gcredentials.h"
 #include "gcredentialsprivate.h"
 #include "glibintl.h"
+#include "gioprivate.h"
 
 #ifdef G_OS_WIN32
 /* For Windows XP runtime compatibility, but use the system's if_nametoindex() if available */
@@ -4960,14 +4961,11 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
     struct mmsghdr *msgvec;
     gint i, num_sent;
 
-#ifdef UIO_MAXIOV
-#define MAX_NUM_MESSAGES UIO_MAXIOV
-#else
-#define MAX_NUM_MESSAGES 1024
-#endif
-
-    if (num_messages > MAX_NUM_MESSAGES)
-      num_messages = MAX_NUM_MESSAGES;
+    /* Clamp the number of vectors if more given than we can write in one go.
+     * The caller has to handle short writes anyway.
+     */
+    if (num_messages > G_IOV_MAX)
+      num_messages = G_IOV_MAX;
 
     msgvec = g_newa (struct mmsghdr, num_messages);
 
@@ -5482,14 +5480,11 @@ g_socket_receive_messages_with_timeout (GSocket        *socket,
     struct mmsghdr *msgvec;
     guint i, num_received;
 
-#ifdef UIO_MAXIOV
-#define MAX_NUM_MESSAGES UIO_MAXIOV
-#else
-#define MAX_NUM_MESSAGES 1024
-#endif
-
-    if (num_messages > MAX_NUM_MESSAGES)
-      num_messages = MAX_NUM_MESSAGES;
+    /* Clamp the number of vectors if more given than we can write in one go.
+     * The caller has to handle short writes anyway.
+     */
+    if (num_messages > G_IOV_MAX)
+      num_messages = G_IOV_MAX;
 
     msgvec = g_newa (struct mmsghdr, num_messages);
 
