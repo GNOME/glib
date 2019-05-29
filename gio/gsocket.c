@@ -4960,14 +4960,26 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
     struct mmsghdr *msgvec;
     gint i, num_sent;
 
-#ifdef UIO_MAXIOV
+  /* 16 is the minimum value required by POSIX */
+#if defined(IOV_MAX)
+#define MAX_NUM_MESSAGES IOV_MAX
+#elif defined(UIO_MAXIOV)
 #define MAX_NUM_MESSAGES UIO_MAXIOV
 #else
-#define MAX_NUM_MESSAGES 1024
+#define MAX_NUM_MESSAGES 16
 #endif
+
+  /* sendmmsg() takes the number of messages as unsigned int so assert here
+   * that the constant above is smaller than that
+   */
+  {
+    G_STATIC_ASSERT (MAX_NUM_MESSAGES <= G_MAXUINT);
+  }
 
     if (num_messages > MAX_NUM_MESSAGES)
       num_messages = MAX_NUM_MESSAGES;
+
+#undef MAX_NUM_MESSAGES
 
     msgvec = g_newa (struct mmsghdr, num_messages);
 
@@ -5482,14 +5494,26 @@ g_socket_receive_messages_with_timeout (GSocket        *socket,
     struct mmsghdr *msgvec;
     guint i, num_received;
 
-#ifdef UIO_MAXIOV
+  /* 16 is the minimum value required by POSIX */
+#if defined(IOV_MAX)
+#define MAX_NUM_MESSAGES IOV_MAX
+#elif defined(UIO_MAXIOV)
 #define MAX_NUM_MESSAGES UIO_MAXIOV
 #else
-#define MAX_NUM_MESSAGES 1024
+#define MAX_NUM_MESSAGES 16
 #endif
+
+  /* recvmmsg() takes the number of messages as unsigned int so assert here
+   * that the constant above is smaller than that
+   */
+  {
+    G_STATIC_ASSERT (MAX_NUM_MESSAGES <= G_MAXUINT);
+  }
 
     if (num_messages > MAX_NUM_MESSAGES)
       num_messages = MAX_NUM_MESSAGES;
+
+#undef MAX_NUM_MESSAGES
 
     msgvec = g_newa (struct mmsghdr, num_messages);
 

@@ -143,11 +143,29 @@ g_socket_output_stream_writev (GOutputStream        *stream,
   GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (stream);
   GPollableReturn res;
 
+  /* 16 is the minimum value required by POSIX */
+#if defined(IOV_MAX)
+#define MAX_NUM_VECTORS IOV_MAX
+#elif defined(UIO_MAXIOV)
+#define MAX_NUM_VECTORS UIO_MAXIOV
+#else
+#define MAX_NUM_VECTORS 16
+#endif
+
+  /* sendmsg() takes the number of vectors as int so assert here
+   * that the constant above is smaller than that
+   */
+  {
+    G_STATIC_ASSERT (MAX_NUM_VECTORS <= G_MAXINT);
+  }
+
   /* Clamp the number of vectors if more given than we can write in one go.
    * The caller has to handle short writes anyway.
    */
-  if (n_vectors > G_MAXINT)
-    n_vectors = G_MAXINT;
+  if (n_vectors > MAX_NUM_VECTORS)
+    n_vectors = MAX_NUM_VECTORS;
+
+#undef MAX_NUM_VECTORS
 
   res = g_socket_send_message_with_timeout (output_stream->priv->socket, NULL,
                                             vectors, n_vectors,
@@ -191,11 +209,29 @@ g_socket_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *poll
 {
   GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (pollable);
 
+  /* 16 is the minimum value required by POSIX */
+#if defined(IOV_MAX)
+#define MAX_NUM_VECTORS IOV_MAX
+#elif defined(UIO_MAXIOV)
+#define MAX_NUM_VECTORS UIO_MAXIOV
+#else
+#define MAX_NUM_VECTORS 16
+#endif
+
+  /* sendmsg() takes the number of vectors as int so assert here
+   * that the constant above is smaller than that
+   */
+  {
+    G_STATIC_ASSERT (MAX_NUM_VECTORS <= G_MAXINT);
+  }
+
   /* Clamp the number of vectors if more given than we can write in one go.
    * The caller has to handle short writes anyway.
    */
-  if (n_vectors > G_MAXINT)
-    n_vectors = G_MAXINT;
+  if (n_vectors > MAX_NUM_VECTORS)
+    n_vectors = MAX_NUM_VECTORS;
+
+#undef MAX_NUM_VECTORS
 
   return g_socket_send_message_with_timeout (output_stream->priv->socket,
                                              NULL, vectors, n_vectors,
