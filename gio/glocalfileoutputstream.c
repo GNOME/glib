@@ -25,6 +25,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
+#include <limits.h>
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -243,11 +244,18 @@ g_local_file_output_stream_writev (GOutputStream        *stream,
   if (bytes_written)
     *bytes_written = 0;
 
-  /* Clamp to G_MAXINT as writev() takes an integer for the number of vectors.
-   * We handle this like a short write in this case
+#ifdef IOV_MAX
+#define MAX_VECTORS IOV_MAX
+#else
+#define MAX_VECTORS 1024
+#endif
+
+  /* Clamp to IOV_MAX as writev(). We handle this like a short write.
    */
-  if (n_vectors > G_MAXINT)
-    n_vectors = G_MAXINT;
+  if (n_vectors > MAX_VECTORS)
+    n_vectors = MAX_VECTORS;
+
+#undef MAX_VECTORS
 
   file = G_LOCAL_FILE_OUTPUT_STREAM (stream);
 
