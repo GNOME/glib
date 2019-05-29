@@ -24,10 +24,10 @@ pacman --noconfirm -S --needed \
     mingw-w64-$MSYS2_ARCH-zlib \
     mingw-w64-$MSYS2_ARCH-libelf
 
-curl -O -J -L "https://github.com/linux-test-project/lcov/releases/download/v1.13/lcov-1.13.tar.gz"
-echo "44972c878482cc06a05fe78eaa3645cbfcbad6634615c3309858b207965d8a23  lcov-1.13.tar.gz" | sha256sum -c
-tar -xzf lcov-1.13.tar.gz
-LCOV="$(pwd)/lcov-1.13/bin/lcov"
+curl -O -J -L "https://github.com/linux-test-project/lcov/releases/download/v1.14/lcov-1.14.tar.gz"
+echo "14995699187440e0ae4da57fe3a64adc0a3c5cf14feab971f8db38fb7d8f071a  lcov-1.14.tar.gz" | sha256sum -c
+tar -xzf lcov-1.14.tar.gz
+LCOV="$(pwd)/lcov-1.14/bin/lcov"
 
 mkdir -p _coverage
 mkdir -p _ccache
