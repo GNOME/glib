@@ -42,7 +42,9 @@ meson --werror --buildtype debug _build
 cd _build
 ninja
 
-"${LCOV}" \
+# FIXME: lcov doesn't support gcc9 yet:
+# https://github.com/linux-test-project/lcov/issues/58
+# "${LCOV}" \
     --quiet \
     --config-file "${DIR}"/.gitlab-ci/lcovrc \
     --directory "${DIR}/_build" \
@@ -59,7 +61,8 @@ python3 "${DIR}"/.gitlab-ci/meson-junit-report.py \
         --output "${DIR}/_build/${CI_JOB_NAME}-report.xml" \
         "${DIR}/_build/meson-logs/testlog.json"
 
-"${LCOV}" \
+# FIXME: see above
+# "${LCOV}" \
     --quiet \
     --config-file "${DIR}"/.gitlab-ci/lcovrc \
     --directory "${DIR}/_build" \
