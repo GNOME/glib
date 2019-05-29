@@ -4966,6 +4966,13 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
 #define MAX_NUM_MESSAGES 1024
 #endif
 
+  /* sendmmsg() takes the number of messages as unsigned int so assert here
+   * that the constant above is smaller than that
+   */
+  {
+    G_STATIC_ASSERT (MAX_NUM_MESSAGES <= G_MAXUINT);
+  }
+
     if (num_messages > MAX_NUM_MESSAGES)
       num_messages = MAX_NUM_MESSAGES;
 
