@@ -33,6 +33,7 @@
 #include "gioerror.h"
 #include "glibintl.h"
 #include "gfiledescriptorbased.h"
+#include "gioprivate.h"
 
 struct _GSocketOutputStreamPrivate
 {
@@ -146,8 +147,8 @@ g_socket_output_stream_writev (GOutputStream        *stream,
   /* Clamp the number of vectors if more given than we can write in one go.
    * The caller has to handle short writes anyway.
    */
-  if (n_vectors > G_MAXINT)
-    n_vectors = G_MAXINT;
+  if (n_vectors > G_IOV_MAX)
+    n_vectors = G_IOV_MAX;
 
   res = g_socket_send_message_with_timeout (output_stream->priv->socket, NULL,
                                             vectors, n_vectors,
@@ -194,8 +195,8 @@ g_socket_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *poll
   /* Clamp the number of vectors if more given than we can write in one go.
    * The caller has to handle short writes anyway.
    */
-  if (n_vectors > G_MAXINT)
-    n_vectors = G_MAXINT;
+  if (n_vectors > G_IOV_MAX)
+    n_vectors = G_IOV_MAX;
 
   return g_socket_send_message_with_timeout (output_stream->priv->socket,
                                              NULL, vectors, n_vectors,

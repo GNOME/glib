@@ -37,6 +37,7 @@
 #include "gasynchelper.h"
 #include "gfiledescriptorbased.h"
 #include "glibintl.h"
+#include "gioprivate.h"
 
 
 /**
@@ -425,11 +426,11 @@ g_unix_output_stream_writev (GOutputStream        *stream,
   if (bytes_written)
     *bytes_written = 0;
 
-  /* Clamp to G_MAXINT as writev() takes an integer for the number of vectors.
-   * We handle this like a short write in this case
+  /* Clamp the number of vectors if more given than we can write in one go.
+   * The caller has to handle short writes anyway.
    */
-  if (n_vectors > G_MAXINT)
-    n_vectors = G_MAXINT;
+  if (n_vectors > G_IOV_MAX)
+    n_vectors = G_IOV_MAX;
 
   unix_stream = G_UNIX_OUTPUT_STREAM (stream);
 
@@ -635,11 +636,11 @@ g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream
       return G_POLLABLE_RETURN_WOULD_BLOCK;
     }
 
-  /* Clamp to G_MAXINT as writev() takes an integer for the number of vectors.
-   * We handle this like a short write in this case
+  /* Clamp the number of vectors if more given than we can write in one go.
+   * The caller has to handle short writes anyway.
    */
-  if (n_vectors > G_MAXINT)
-    n_vectors = G_MAXINT;
+  if (n_vectors > G_IOV_MAX)
+    n_vectors = G_IOV_MAX;
 
   if (G_OUTPUT_VECTOR_IS_IOVEC)
     {
