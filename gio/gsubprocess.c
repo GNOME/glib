@@ -749,6 +749,11 @@ g_subprocess_newv (const gchar * const  *argv,
  *
  * On UNIX, returns the process ID as a decimal string.
  * On Windows, returns the result of GetProcessId() also as a string.
+ * If the subprocess has terminated, this will return %NULL.
+ *
+ * Returns: (nullable): the subprocess identifier, or %NULL if the subprocess
+ *    has terminated
+ * Since: 2.40
  */
 const gchar *
 g_subprocess_get_identifier (GSubprocess *subprocess)
