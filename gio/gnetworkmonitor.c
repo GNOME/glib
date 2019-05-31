@@ -321,7 +321,7 @@ g_network_monitor_default_init (GNetworkMonitorInterface *iface)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GNetworkMonitorInterface, network_changed),
                   NULL, NULL,
-                  g_cclosure_marshal_VOID__BOOLEAN,
+                  NULL,
                   G_TYPE_NONE, 1,
                   G_TYPE_BOOLEAN);
 
