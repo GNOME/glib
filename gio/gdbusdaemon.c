@@ -1714,7 +1714,7 @@ g_dbus_daemon_class_init (GDBusDaemonClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  0,
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+		  NULL,
 		  G_TYPE_NONE, 0);
 
   g_object_class_install_property (gobject_class,
