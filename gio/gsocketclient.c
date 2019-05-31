@@ -49,6 +49,7 @@
 #include <gio/gtlsclientconnection.h>
 #include <gio/ginetaddress.h>
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 /* As recommended by RFC 8305 this is the time it waits
  * on a connection before starting another concurrent attempt.
@@ -832,11 +833,14 @@ g_socket_client_class_init (GSocketClientClass *class)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GSocketClientClass, event),
 		  NULL, NULL,
-		  NULL,
+		  _g_cclosure_marshal_VOID__ENUM_OBJECT_OBJECT,
 		  G_TYPE_NONE, 3,
 		  G_TYPE_SOCKET_CLIENT_EVENT,
 		  G_TYPE_SOCKET_CONNECTABLE,
 		  G_TYPE_IO_STREAM);
+  g_signal_set_va_marshaller (signals[EVENT],
+                              G_TYPE_FROM_CLASS (class),
+                              _g_cclosure_marshal_VOID__ENUM_OBJECT_OBJECTv);
 
   g_object_class_install_property (gobject_class, PROP_FAMILY,
 				   g_param_spec_enum ("family",
