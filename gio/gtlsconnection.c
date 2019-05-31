@@ -29,6 +29,7 @@
 #include "gtlsdatabase.h"
 #include "gtlsinteraction.h"
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 /**
  * SECTION:gtlsconnection
@@ -345,10 +346,13 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GTlsConnectionClass, accept_certificate),
 		  g_signal_accumulator_true_handled, NULL,
-		  NULL,
+		  _g_cclosure_marshal_BOOLEAN__OBJECT_FLAGS,
 		  G_TYPE_BOOLEAN, 2,
 		  G_TYPE_TLS_CERTIFICATE,
 		  G_TYPE_TLS_CERTIFICATE_FLAGS);
+  g_signal_set_va_marshaller (signals[ACCEPT_CERTIFICATE],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_BOOLEAN__OBJECT_FLAGSv);
 }
 
 static void

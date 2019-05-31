@@ -526,6 +526,7 @@ gio_sources = files(
   'gioscheduler.c',
   'giostream.c',
   'gloadableicon.c',
+  'gmarshal-internal.c',
   'gmount.c',
   'gmemoryinputstream.c',
   'gmemoryoutputstream.c',
