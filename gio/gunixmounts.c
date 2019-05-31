@@ -1929,7 +1929,7 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  0,
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+		  NULL,
 		  G_TYPE_NONE, 0);
 
   /**
@@ -1944,7 +1944,7 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  0,
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+		  NULL,
 		  G_TYPE_NONE, 0);
 }
 

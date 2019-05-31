@@ -78,7 +78,7 @@ g_mount_default_init (GMountInterface *iface)
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (GMountIface, changed),
                 NULL, NULL,
-                g_cclosure_marshal_VOID__VOID,
+                NULL,
                 G_TYPE_NONE, 0);
 
   /**
@@ -95,7 +95,7 @@ g_mount_default_init (GMountInterface *iface)
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (GMountIface, unmounted),
                 NULL, NULL,
-                g_cclosure_marshal_VOID__VOID,
+                NULL,
                 G_TYPE_NONE, 0);
   /**
    * GMount::pre-unmount:
@@ -114,7 +114,7 @@ g_mount_default_init (GMountInterface *iface)
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (GMountIface, pre_unmount),
                 NULL, NULL,
-                g_cclosure_marshal_VOID__VOID,
+                NULL,
                 G_TYPE_NONE, 0);
 }
 
