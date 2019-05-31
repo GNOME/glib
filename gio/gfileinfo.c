@@ -834,7 +834,8 @@ _g_file_info_get_attribute_value (GFileInfo  *info,
  * This escapes things as needed to make the string valid
  * utf8.
  *
- * Returns: a UTF-8 string associated with the given @attribute.
+ * Returns: (nullable): a UTF-8 string associated with the given @attribute, or
+ *    %NULL if the attribute wasn’t set.
  *    When you're done with the string it must be freed with g_free().
  **/
 char *
