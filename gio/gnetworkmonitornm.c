@@ -196,7 +196,7 @@ sync_properties (GNetworkMonitorNM *nm,
     }
   else if (nm_state <= NM_STATE_CONNECTED_SITE)
     {
-      new_network_available = FALSE;
+      new_network_available = TRUE;
       new_network_metered = FALSE;
       if (nm_connectivity == NM_CONNECTIVITY_PORTAL)
         {
