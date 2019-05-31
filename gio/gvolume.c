@@ -93,7 +93,7 @@ g_volume_default_init (GVolumeInterface *iface)
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GVolumeIface, changed),
 		NULL, NULL,
-		g_cclosure_marshal_VOID__VOID,
+		NULL,
 		G_TYPE_NONE, 0);
 
   /**
@@ -108,7 +108,7 @@ g_volume_default_init (GVolumeInterface *iface)
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GVolumeIface, removed),
 		NULL, NULL,
-		g_cclosure_marshal_VOID__VOID,
+		NULL,
 		G_TYPE_NONE, 0);
 }
 

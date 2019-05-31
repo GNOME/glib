@@ -361,7 +361,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, reply),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__ENUM,
+		  NULL,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_MOUNT_OPERATION_RESULT);
 
@@ -382,7 +382,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, aborted),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+		  NULL,
 		  G_TYPE_NONE, 0);
 
   /**

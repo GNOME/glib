@@ -260,7 +260,7 @@ g_action_group_default_init (GActionGroupInterface *iface)
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GActionGroupInterface, action_added),
                   NULL, NULL,
-                  g_cclosure_marshal_VOID__STRING,
+                  NULL,
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
 
@@ -281,7 +281,7 @@ g_action_group_default_init (GActionGroupInterface *iface)
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GActionGroupInterface, action_removed),
                   NULL, NULL,
-                  g_cclosure_marshal_VOID__STRING,
+                  NULL,
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
 

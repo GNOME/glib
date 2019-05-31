@@ -141,7 +141,7 @@ g_cancellable_class_init (GCancellableClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GCancellableClass, cancelled),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+		  NULL,
 		  G_TYPE_NONE, 0);
   
 }

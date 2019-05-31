@@ -169,7 +169,7 @@ g_resolver_class_init (GResolverClass *resolver_class)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GResolverClass, reload),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+		  NULL,
 		  G_TYPE_NONE, 0);
 }
 

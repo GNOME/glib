@@ -395,7 +395,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
                   G_TYPE_SIMPLE_ACTION,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
                   0, NULL, NULL,
-                  g_cclosure_marshal_VOID__VARIANT,
+                  NULL,
                   G_TYPE_NONE, 1,
                   G_TYPE_VARIANT);
 
@@ -445,7 +445,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
                   G_TYPE_SIMPLE_ACTION,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
                   0, NULL, NULL,
-                  g_cclosure_marshal_VOID__VARIANT,
+                  NULL,
                   G_TYPE_NONE, 1,
                   G_TYPE_VARIANT);
 

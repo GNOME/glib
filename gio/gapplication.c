@@ -1532,7 +1532,7 @@ g_application_class_init (GApplicationClass *class)
   g_application_signals[SIGNAL_STARTUP] =
     g_signal_new (I_("startup"), G_TYPE_APPLICATION, G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GApplicationClass, startup),
-                  NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                  NULL, NULL, NULL, G_TYPE_NONE, 0);
 
   /**
    * GApplication::shutdown:
@@ -1544,7 +1544,7 @@ g_application_class_init (GApplicationClass *class)
   g_application_signals[SIGNAL_SHUTDOWN] =
     g_signal_new (I_("shutdown"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, shutdown),
-                  NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                  NULL, NULL, NULL, G_TYPE_NONE, 0);
 
   /**
    * GApplication::activate:
@@ -1556,7 +1556,7 @@ g_application_class_init (GApplicationClass *class)
   g_application_signals[SIGNAL_ACTIVATE] =
     g_signal_new (I_("activate"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, activate),
-                  NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                  NULL, NULL, NULL, G_TYPE_NONE, 0);
 
 
   /**

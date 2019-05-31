@@ -65,7 +65,7 @@ g_dbus_object_default_init (GDBusObjectIface *iface)
                 G_STRUCT_OFFSET (GDBusObjectIface, interface_added),
                 NULL,
                 NULL,
-                g_cclosure_marshal_VOID__OBJECT,
+                NULL,
                 G_TYPE_NONE,
                 1,
                 G_TYPE_DBUS_INTERFACE);
@@ -85,7 +85,7 @@ g_dbus_object_default_init (GDBusObjectIface *iface)
                 G_STRUCT_OFFSET (GDBusObjectIface, interface_removed),
                 NULL,
                 NULL,
-                g_cclosure_marshal_VOID__OBJECT,
+                NULL,
                 G_TYPE_NONE,
                 1,
                 G_TYPE_DBUS_INTERFACE);
