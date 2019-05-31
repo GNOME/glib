@@ -48,6 +48,7 @@
 #include "gsocketconnection.h"
 #include "gthreadedsocketservice.h"
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 struct _GThreadedSocketServicePrivate
 {
@@ -238,8 +239,12 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
     g_signal_new (I_("run"), G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GThreadedSocketServiceClass, run),
 		  g_signal_accumulator_true_handled, NULL,
-		  NULL, G_TYPE_BOOLEAN,
+		  _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECT,
+		  G_TYPE_BOOLEAN,
 		  2, G_TYPE_SOCKET_CONNECTION, G_TYPE_OBJECT);
+  g_signal_set_va_marshaller (g_threaded_socket_service_run_signal,
+			      G_TYPE_FROM_CLASS (class),
+			      _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECTv);
 
   g_object_class_install_property (gobject_class, PROP_MAX_THREADS,
 				   g_param_spec_int ("max-threads",

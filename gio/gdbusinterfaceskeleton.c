@@ -27,6 +27,7 @@
 #include "gdbusprivate.h"
 #include "gdbusmethodinvocation.h"
 #include "gdbusconnection.h"
+#include "gmarshal-internal.h"
 #include "gtask.h"
 #include "gioerror.h"
 
@@ -248,10 +249,13 @@ g_dbus_interface_skeleton_class_init (GDBusInterfaceSkeletonClass *klass)
                   G_STRUCT_OFFSET (GDBusInterfaceSkeletonClass, g_authorize_method),
                   _g_signal_accumulator_false_handled,
                   NULL,
-                  NULL,
+                  _g_cclosure_marshal_BOOLEAN__OBJECT,
                   G_TYPE_BOOLEAN,
                   1,
                   G_TYPE_DBUS_METHOD_INVOCATION);
+  g_signal_set_va_marshaller (signals[G_AUTHORIZE_METHOD_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_BOOLEAN__OBJECTv);
 }
 
 static void

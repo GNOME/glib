@@ -27,6 +27,7 @@
 #include "gdbusprivate.h"
 
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 /**
  * SECTION:gdbusauthobserver
@@ -198,11 +199,14 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
                   G_STRUCT_OFFSET (GDBusAuthObserverClass, authorize_authenticated_peer),
                   _g_signal_accumulator_false_handled,
                   NULL, /* accu_data */
-                  NULL,
+                  _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECT,
                   G_TYPE_BOOLEAN,
                   2,
                   G_TYPE_IO_STREAM,
                   G_TYPE_CREDENTIALS);
+  g_signal_set_va_marshaller (signals[AUTHORIZE_AUTHENTICATED_PEER_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECTv);
 
   /**
    * GDBusAuthObserver::allow-mechanism:
@@ -222,10 +226,13 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
                   G_STRUCT_OFFSET (GDBusAuthObserverClass, allow_mechanism),
                   _g_signal_accumulator_false_handled,
                   NULL, /* accu_data */
-                  NULL,
+                  _g_cclosure_marshal_BOOLEAN__STRING,
                   G_TYPE_BOOLEAN,
                   1,
                   G_TYPE_STRING);
+  g_signal_set_va_marshaller (signals[ALLOW_MECHANISM_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_BOOLEAN__STRINGv);
 }
 
 static void

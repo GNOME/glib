@@ -36,6 +36,7 @@
 #include "gdbusinterface.h"
 
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 /**
  * SECTION:gdbusobjectmanagerclient
@@ -517,7 +518,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
                   G_STRUCT_OFFSET (GDBusObjectManagerClientClass, interface_proxy_signal),
                   NULL,
                   NULL,
-                  NULL,
+                  _g_cclosure_marshal_VOID__OBJECT_OBJECT_STRING_STRING_VARIANT,
                   G_TYPE_NONE,
                   5,
                   G_TYPE_DBUS_OBJECT_PROXY,
@@ -525,6 +526,9 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
                   G_TYPE_STRING,
                   G_TYPE_STRING,
                   G_TYPE_VARIANT);
+  g_signal_set_va_marshaller (signals[INTERFACE_PROXY_SIGNAL_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_VOID__OBJECT_OBJECT_STRING_STRING_VARIANTv);
 
   /**
    * GDBusObjectManagerClient::interface-proxy-properties-changed:
@@ -556,13 +560,16 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
                   G_STRUCT_OFFSET (GDBusObjectManagerClientClass, interface_proxy_properties_changed),
                   NULL,
                   NULL,
-                  NULL,
+                  _g_cclosure_marshal_VOID__OBJECT_OBJECT_VARIANT_BOXED,
                   G_TYPE_NONE,
                   4,
                   G_TYPE_DBUS_OBJECT_PROXY,
                   G_TYPE_DBUS_PROXY,
                   G_TYPE_VARIANT,
                   G_TYPE_STRV);
+  g_signal_set_va_marshaller (signals[INTERFACE_PROXY_PROPERTIES_CHANGED_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_VOID__OBJECT_OBJECT_VARIANT_BOXEDv);
 }
 
 static void

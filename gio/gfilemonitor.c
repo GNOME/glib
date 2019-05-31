@@ -23,6 +23,7 @@
 
 #include "gfilemonitor.h"
 #include "gioenumtypes.h"
+#include "gmarshal-internal.h"
 #include "gfile.h"
 #include "gvfs.h"
 #include "glibintl.h"
@@ -181,9 +182,12 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
                                                 G_SIGNAL_RUN_LAST,
                                                 G_STRUCT_OFFSET (GFileMonitorClass, changed),
                                                 NULL, NULL,
-                                                NULL,
+                                                _g_cclosure_marshal_VOID__OBJECT_OBJECT_ENUM,
                                                 G_TYPE_NONE, 3,
                                                 G_TYPE_FILE, G_TYPE_FILE, G_TYPE_FILE_MONITOR_EVENT);
+  g_signal_set_va_marshaller (g_file_monitor_changed_signal,
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_VOID__OBJECT_OBJECT_ENUMv);
 
   g_object_class_install_property (object_class, PROP_RATE_LIMIT,
                                    g_param_spec_int ("rate-limit",

@@ -30,6 +30,7 @@
 #include "gsettings-mapping.h"
 #include "gsettingsschema-internal.h"
 #include "gaction.h"
+#include "gmarshal-internal.h"
 
 #include "strinfo.c"
 
@@ -777,8 +778,11 @@ g_settings_class_init (GSettingsClass *class)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSettingsClass, change_event),
                   g_signal_accumulator_true_handled, NULL,
-                  NULL,
+                  _g_cclosure_marshal_BOOLEAN__POINTER_INT,
                   G_TYPE_BOOLEAN, 2, G_TYPE_POINTER, G_TYPE_INT);
+  g_signal_set_va_marshaller (g_settings_signals[SIGNAL_CHANGE_EVENT],
+                              G_TYPE_FROM_CLASS (class),
+                              _g_cclosure_marshal_BOOLEAN__POINTER_INTv);
 
   /**
    * GSettings::writable-changed:
@@ -832,7 +836,11 @@ g_settings_class_init (GSettingsClass *class)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSettingsClass, writable_change_event),
                   g_signal_accumulator_true_handled, NULL,
-                  NULL, G_TYPE_BOOLEAN, 1, G_TYPE_UINT);
+                  _g_cclosure_marshal_BOOLEAN__UINT,
+                  G_TYPE_BOOLEAN, 1, G_TYPE_UINT);
+  g_signal_set_va_marshaller (g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT],
+                              G_TYPE_FROM_CLASS (class),
+                              _g_cclosure_marshal_BOOLEAN__UINTv);
 
   /**
    * GSettings:backend:

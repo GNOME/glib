@@ -26,6 +26,7 @@
 #include "gdbusutils.h"
 
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 /**
  * SECTION:gdbusobjectmanager
@@ -126,11 +127,14 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
                   G_STRUCT_OFFSET (GDBusObjectManagerIface, interface_added),
                   NULL,
                   NULL,
-                  NULL,
+                  _g_cclosure_marshal_VOID__OBJECT_OBJECT,
                   G_TYPE_NONE,
                   2,
                   G_TYPE_DBUS_OBJECT,
                   G_TYPE_DBUS_INTERFACE);
+  g_signal_set_va_marshaller (signals[INTERFACE_ADDED],
+                              G_TYPE_FROM_INTERFACE (iface),
+                              _g_cclosure_marshal_VOID__OBJECT_OBJECTv);
 
   /**
    * GDBusObjectManager::interface-removed:
@@ -152,11 +156,14 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
                   G_STRUCT_OFFSET (GDBusObjectManagerIface, interface_removed),
                   NULL,
                   NULL,
-                  NULL,
+                  _g_cclosure_marshal_VOID__OBJECT_OBJECT,
                   G_TYPE_NONE,
                   2,
                   G_TYPE_DBUS_OBJECT,
                   G_TYPE_DBUS_INTERFACE);
+  g_signal_set_va_marshaller (signals[INTERFACE_REMOVED],
+                              G_TYPE_FROM_INTERFACE (iface),
+                              _g_cclosure_marshal_VOID__OBJECT_OBJECTv);
 
 }
 
