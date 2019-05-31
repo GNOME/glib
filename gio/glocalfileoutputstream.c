@@ -42,6 +42,7 @@
 #endif
 
 #include "glib-private.h"
+#include "gioprivate.h"
 
 #ifdef G_OS_WIN32
 #include <io.h>
@@ -243,11 +244,11 @@ g_local_file_output_stream_writev (GOutputStream        *stream,
   if (bytes_written)
     *bytes_written = 0;
 
-  /* Clamp to G_MAXINT as writev() takes an integer for the number of vectors.
-   * We handle this like a short write in this case
+  /* Clamp the number of vectors if more given than we can write in one go.
+   * The caller has to handle short writes anyway.
    */
-  if (n_vectors > G_MAXINT)
-    n_vectors = G_MAXINT;
+  if (n_vectors > G_IOV_MAX)
+    n_vectors = G_IOV_MAX;
 
   file = G_LOCAL_FILE_OUTPUT_STREAM (stream);
 

@@ -35,6 +35,23 @@ gboolean g_output_stream_async_close_is_via_threads (GOutputStream *stream);
 void g_socket_connection_set_cached_remote_address (GSocketConnection *connection,
                                                     GSocketAddress    *address);
 
+/* POSIX defines IOV_MAX/UIO_MAXIOV as the maximum number of iovecs that can
+ * be sent in one go. We define our own version of it here as there are two
+ * possible names, and also define a fall-back value if none of the constants
+ * are defined */
+#if defined(IOV_MAX)
+#define G_IOV_MAX IOV_MAX
+#elif defined(UIO_MAXIOV)
+#define G_IOV_MAX UIO_MAXIOV
+#else
+/* 16 is the minimum value required by POSIX */
+#define G_IOV_MAX 16
+#endif
+
+/* The various functions taking iovecs as parameter use a plain int
+ * for the number of vectors. Limit it to G_MAXINT for this reason.
+ */
+G_STATIC_ASSERT (G_IOV_MAX <= G_MAXINT);
 
 G_END_DECLS
 
