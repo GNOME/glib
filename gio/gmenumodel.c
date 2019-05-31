@@ -22,6 +22,7 @@
 #include "gmenumodel.h"
 
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 /**
  * SECTION:gmenumodel
@@ -452,8 +453,12 @@ g_menu_model_class_init (GMenuModelClass *class)
   g_menu_model_items_changed_signal =
     g_signal_new (I_("items-changed"), G_TYPE_MENU_MODEL,
                   G_SIGNAL_RUN_LAST, 0, NULL, NULL,
-                  g_cclosure_marshal_generic, G_TYPE_NONE,
+                  _g_cclosure_marshal_VOID__INT_INT_INT,
+                  G_TYPE_NONE,
                   3, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);
+  g_signal_set_va_marshaller (g_menu_model_items_changed_signal,
+                              G_TYPE_FROM_CLASS (class),
+                              _g_cclosure_marshal_VOID__INT_INT_INTv);
 }
 
 /**

@@ -21,6 +21,7 @@
 #include "gactiongroup.h"
 #include "gaction.h"
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 /**
  * SECTION:gactiongroup
@@ -303,10 +304,13 @@ g_action_group_default_init (GActionGroupInterface *iface)
                   G_STRUCT_OFFSET (GActionGroupInterface,
                                    action_enabled_changed),
                   NULL, NULL,
-                  NULL,
+                  _g_cclosure_marshal_VOID__STRING_BOOLEAN,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_BOOLEAN);
+  g_signal_set_va_marshaller (g_action_group_signals[SIGNAL_ACTION_ENABLED_CHANGED],
+                              G_TYPE_FROM_INTERFACE (iface),
+                              _g_cclosure_marshal_VOID__STRING_BOOLEANv);
 
   /**
    * GActionGroup::action-state-changed:
@@ -327,10 +331,13 @@ g_action_group_default_init (GActionGroupInterface *iface)
                   G_STRUCT_OFFSET (GActionGroupInterface,
                                    action_state_changed),
                   NULL, NULL,
-                  NULL,
+                  _g_cclosure_marshal_VOID__STRING_VARIANT,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_VARIANT);
+  g_signal_set_va_marshaller (g_action_group_signals[SIGNAL_ACTION_STATE_CHANGED],
+                              G_TYPE_FROM_INTERFACE (iface),
+                              _g_cclosure_marshal_VOID__STRING_VARIANTv);
 }
 
 /**

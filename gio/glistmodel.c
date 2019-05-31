@@ -24,6 +24,7 @@
 
 #include "glistmodel.h"
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT)
 
@@ -141,9 +142,12 @@ g_list_model_default_init (GListModelInterface *iface)
                                               G_SIGNAL_RUN_LAST,
                                               0,
                                               NULL, NULL,
-                                              g_cclosure_marshal_generic,
+                                              _g_cclosure_marshal_VOID__UINT_UINT_UINT,
                                               G_TYPE_NONE,
                                               3, G_TYPE_UINT, G_TYPE_UINT, G_TYPE_UINT);
+  g_signal_set_va_marshaller (g_list_model_changed_signal,
+                              G_TYPE_FROM_INTERFACE (iface),
+                              _g_cclosure_marshal_VOID__UINT_UINT_UINTv);
 }
 
 /**

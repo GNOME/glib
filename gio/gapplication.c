@@ -38,6 +38,7 @@
 #include "gfile.h"
 
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 #include <string.h>
 
@@ -1572,8 +1573,12 @@ g_application_class_init (GApplicationClass *class)
   g_application_signals[SIGNAL_OPEN] =
     g_signal_new (I_("open"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, open),
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _g_cclosure_marshal_VOID__POINTER_INT_STRING,
                   G_TYPE_NONE, 3, G_TYPE_POINTER, G_TYPE_INT, G_TYPE_STRING);
+  g_signal_set_va_marshaller (g_application_signals[SIGNAL_OPEN],
+                              G_TYPE_FROM_CLASS (class),
+                              _g_cclosure_marshal_VOID__POINTER_INT_STRINGv);
 
   /**
    * GApplication::command-line:
@@ -1592,8 +1597,11 @@ g_application_class_init (GApplicationClass *class)
     g_signal_new (I_("command-line"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, command_line),
                   g_signal_accumulator_first_wins, NULL,
-                  NULL,
+                  _g_cclosure_marshal_INT__OBJECT,
                   G_TYPE_INT, 1, G_TYPE_APPLICATION_COMMAND_LINE);
+  g_signal_set_va_marshaller (g_application_signals[SIGNAL_COMMAND_LINE],
+                              G_TYPE_FROM_CLASS (class),
+                              _g_cclosure_marshal_INT__OBJECTv);
 
   /**
    * GApplication::handle-local-options:
@@ -1652,8 +1660,12 @@ g_application_class_init (GApplicationClass *class)
   g_application_signals[SIGNAL_HANDLE_LOCAL_OPTIONS] =
     g_signal_new (I_("handle-local-options"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, handle_local_options),
-                  g_application_handle_local_options_accumulator, NULL, NULL,
+                  g_application_handle_local_options_accumulator, NULL,
+                  _g_cclosure_marshal_INT__BOXED,
                   G_TYPE_INT, 1, G_TYPE_VARIANT_DICT);
+  g_signal_set_va_marshaller (g_application_signals[SIGNAL_HANDLE_LOCAL_OPTIONS],
+                              G_TYPE_FROM_CLASS (class),
+                              _g_cclosure_marshal_INT__BOXEDv);
 
   /**
    * GApplication::name-lost:
@@ -1672,8 +1684,12 @@ g_application_class_init (GApplicationClass *class)
   g_application_signals[SIGNAL_NAME_LOST] =
     g_signal_new (I_("name-lost"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, name_lost),
-                  g_signal_accumulator_true_handled, NULL, NULL,
+                  g_signal_accumulator_true_handled, NULL,
+                  _g_cclosure_marshal_BOOLEAN__VOID,
                   G_TYPE_BOOLEAN, 0);
+  g_signal_set_va_marshaller (g_application_signals[SIGNAL_NAME_LOST],
+                              G_TYPE_FROM_CLASS (class),
+                              _g_cclosure_marshal_BOOLEAN__VOIDv);
 }
 
 /* Application ID validity {{{1 */
