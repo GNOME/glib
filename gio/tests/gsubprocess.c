@@ -66,14 +66,11 @@ test_noop (void)
   GError **error = &local_error;
   GPtrArray *args;
   GSubprocess *proc;
-  const gchar *id;
 
   args = get_test_subprocess_args ("noop", NULL);
   proc = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
-  id = g_subprocess_get_identifier (proc);
-  g_assert_nonnull (id);
 
   g_subprocess_wait_check (proc, NULL, error);
   g_assert_no_error (local_error);
@@ -1297,11 +1294,15 @@ test_terminate (void)
   GSubprocess *proc;
   GPtrArray *args;
   GMainLoop *loop;
+  const gchar *id;
 
   args = get_test_subprocess_args ("sleep-forever", NULL);
   proc = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
+
+  id = g_subprocess_get_identifier (proc);
+  g_assert_nonnull (id);
 
   loop = g_main_loop_new (NULL, TRUE);
 
