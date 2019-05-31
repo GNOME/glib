@@ -1410,8 +1410,14 @@ g_signal_query (guint         signal_id,
  * in their class_init method by doing super_class->signal_handler = my_signal_handler.
  * Instead they will have to use g_signal_override_class_handler().
  *
- * If c_marshaller is %NULL, g_cclosure_marshal_generic() will be used as
- * the marshaller for this signal.
+ * If @c_marshaller is %NULL, g_cclosure_marshal_generic() will be used as
+ * the marshaller for this signal. In some simple cases, g_signal_new()
+ * will use a more optimized c_marshaller and va_marshaller for the signal
+ * instead of g_cclosure_marshal_generic().
+ *
+ * If @c_marshaller is non-%NULL, you need to also specify a va_marshaller
+ * using g_signal_set_va_marshaller() or the generic va_marshaller will
+ * be used.
  *
  * Returns: the signal id
  */
