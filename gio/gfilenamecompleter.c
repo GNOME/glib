@@ -105,7 +105,7 @@ g_filename_completer_class_init (GFilenameCompleterClass *klass)
 					  G_SIGNAL_RUN_LAST,
 					  G_STRUCT_OFFSET (GFilenameCompleterClass, got_completion_data),
 					  NULL, NULL,
-					  g_cclosure_marshal_VOID__VOID,
+					  NULL,
 					  G_TYPE_NONE, 0);
 }
 

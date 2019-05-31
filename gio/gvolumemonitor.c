@@ -94,7 +94,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                         G_SIGNAL_RUN_LAST,
                                         G_STRUCT_OFFSET (GVolumeMonitorClass, volume_added),
                                         NULL, NULL,
-                                        g_cclosure_marshal_VOID__OBJECT,
+                                        NULL,
                                         G_TYPE_NONE, 1, G_TYPE_VOLUME);
   
   /**
@@ -109,7 +109,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                           G_SIGNAL_RUN_LAST,
                                           G_STRUCT_OFFSET (GVolumeMonitorClass, volume_removed),
                                           NULL, NULL,
-                                          g_cclosure_marshal_VOID__OBJECT,
+                                          NULL,
                                           G_TYPE_NONE, 1, G_TYPE_VOLUME);
   
   /**
@@ -124,7 +124,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                           G_SIGNAL_RUN_LAST,
                                           G_STRUCT_OFFSET (GVolumeMonitorClass, volume_changed),
                                           NULL, NULL,
-                                          g_cclosure_marshal_VOID__OBJECT,
+                                          NULL,
                                           G_TYPE_NONE, 1, G_TYPE_VOLUME);
 
   /**
@@ -139,7 +139,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                        G_SIGNAL_RUN_LAST,
                                        G_STRUCT_OFFSET (GVolumeMonitorClass, mount_added),
                                        NULL, NULL,
-                                       g_cclosure_marshal_VOID__OBJECT,
+                                       NULL,
                                        G_TYPE_NONE, 1, G_TYPE_MOUNT);
 
   /**
@@ -154,7 +154,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                          G_SIGNAL_RUN_LAST,
                                          G_STRUCT_OFFSET (GVolumeMonitorClass, mount_removed),
                                          NULL, NULL,
-                                         g_cclosure_marshal_VOID__OBJECT,
+                                         NULL,
                                          G_TYPE_NONE, 1, G_TYPE_MOUNT);
 
   /**
@@ -172,7 +172,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                              G_SIGNAL_RUN_LAST,
                                              G_STRUCT_OFFSET (GVolumeMonitorClass, mount_pre_unmount),
                                              NULL, NULL,
-                                             g_cclosure_marshal_VOID__OBJECT,
+                                             NULL,
                                              G_TYPE_NONE, 1, G_TYPE_MOUNT);
 
   /**
@@ -187,7 +187,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                          G_SIGNAL_RUN_LAST,
                                          G_STRUCT_OFFSET (GVolumeMonitorClass, mount_changed),
                                          NULL, NULL,
-                                         g_cclosure_marshal_VOID__OBJECT,
+                                         NULL,
                                          G_TYPE_NONE, 1, G_TYPE_MOUNT);
 
   /**
@@ -202,7 +202,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
 					   G_SIGNAL_RUN_LAST,
 					   G_STRUCT_OFFSET (GVolumeMonitorClass, drive_connected),
 					   NULL, NULL,
-					   g_cclosure_marshal_VOID__OBJECT,
+					   NULL,
 					   G_TYPE_NONE, 1, G_TYPE_DRIVE);
   
   /**
@@ -217,7 +217,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
 					      G_SIGNAL_RUN_LAST,
 					      G_STRUCT_OFFSET (GVolumeMonitorClass, drive_disconnected),
 					      NULL, NULL,
-					      g_cclosure_marshal_VOID__OBJECT,
+					      NULL,
 					      G_TYPE_NONE, 1, G_TYPE_DRIVE);
 
   /**
@@ -232,7 +232,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                          G_SIGNAL_RUN_LAST,
                                          G_STRUCT_OFFSET (GVolumeMonitorClass, drive_changed),
                                          NULL, NULL,
-                                         g_cclosure_marshal_VOID__OBJECT,
+                                         NULL,
                                          G_TYPE_NONE, 1, G_TYPE_DRIVE);
 
   /**
@@ -249,7 +249,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                               G_SIGNAL_RUN_LAST,
                                               G_STRUCT_OFFSET (GVolumeMonitorClass, drive_eject_button),
                                               NULL, NULL,
-                                              g_cclosure_marshal_VOID__OBJECT,
+                                              NULL,
                                               G_TYPE_NONE, 1, G_TYPE_DRIVE);
 
   /**
@@ -266,7 +266,7 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
                                              G_SIGNAL_RUN_LAST,
                                              G_STRUCT_OFFSET (GVolumeMonitorClass, drive_stop_button),
                                              NULL, NULL,
-                                             g_cclosure_marshal_VOID__OBJECT,
+                                             NULL,
                                              G_TYPE_NONE, 1, G_TYPE_DRIVE);
 
 }
