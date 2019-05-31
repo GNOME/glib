@@ -111,6 +111,7 @@
 #include "giostream.h"
 #include "gasyncresult.h"
 #include "gtask.h"
+#include "gmarshal-internal.h"
 
 #ifdef G_OS_UNIX
 #include "gunixconnection.h"
@@ -1049,11 +1050,14 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
                                          G_STRUCT_OFFSET (GDBusConnectionClass, closed),
                                          NULL,
                                          NULL,
-                                         NULL,
+                                         _g_cclosure_marshal_VOID__BOOLEAN_BOXED,
                                          G_TYPE_NONE,
                                          2,
                                          G_TYPE_BOOLEAN,
                                          G_TYPE_ERROR);
+  g_signal_set_va_marshaller (signals[CLOSED_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_VOID__BOOLEAN_BOXEDv);
 }
 
 static void

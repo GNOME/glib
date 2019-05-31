@@ -42,6 +42,7 @@
 #endif
 
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 /**
  * SECTION:gdbusproxy
@@ -595,11 +596,14 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                      G_STRUCT_OFFSET (GDBusProxyClass, g_properties_changed),
                                                      NULL,
                                                      NULL,
-                                                     NULL,
+                                                     _g_cclosure_marshal_VOID__VARIANT_BOXED,
                                                      G_TYPE_NONE,
                                                      2,
                                                      G_TYPE_VARIANT,
                                                      G_TYPE_STRV | G_SIGNAL_TYPE_STATIC_SCOPE);
+  g_signal_set_va_marshaller (signals[PROPERTIES_CHANGED_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_VOID__VARIANT_BOXEDv);
 
   /**
    * GDBusProxy::g-signal:
@@ -618,12 +622,15 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                          G_STRUCT_OFFSET (GDBusProxyClass, g_signal),
                                          NULL,
                                          NULL,
-                                         NULL,
+                                         _g_cclosure_marshal_VOID__STRING_STRING_VARIANT,
                                          G_TYPE_NONE,
                                          3,
                                          G_TYPE_STRING,
                                          G_TYPE_STRING,
                                          G_TYPE_VARIANT);
+  g_signal_set_va_marshaller (signals[SIGNAL_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_VOID__STRING_STRING_VARIANTv);
 
 }
 
