@@ -250,7 +250,7 @@ g_atomic_rc_box_alloc0 (gsize block_size)
  * @block_size: the number of bytes to copy, must be greater than 0
  * @mem_block: (not nullable): the memory to copy
  *
- * Allocates a new block of data with atomit reference counting
+ * Allocates a new block of data with atomic reference counting
  * semantics, and copies @block_size bytes of @mem_block
  * into it.
  *
