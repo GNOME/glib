@@ -7,7 +7,7 @@ meson test \
         --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} \
         --no-suite flaky \
         -v \
-        --wrapper 'gdb -ex run -ex quit -batch --args' \
+        --wrapper 'valgrind' \
         contenttype
 
 exit_code=$?
