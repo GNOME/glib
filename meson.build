@@ -1836,16 +1836,15 @@ if host_system != 'windows' and get_option('xattr')
   if cc.has_function('getxattr') and cc.has_header('sys/xattr.h')
     glib_conf.set('HAVE_SYS_XATTR_H', 1)
     glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format('HAVE_SYS_XATTR_H')
+    glib_conf.set('HAVE_XATTR', 1)
   #failure. try libattr
   elif cc.has_header_symbol('attr/xattr.h', 'getxattr')
     glib_conf.set('HAVE_ATTR_XATTR_H', 1)
     glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format('HAVE_ATTR_XATTR_H')
     xattr_dep = [cc.find_library('xattr')]
-  else
-    error('No getxattr implementation found in C library or libxattr')
+    glib_conf.set('HAVE_XATTR', 1)
   endif
 
-  glib_conf.set('HAVE_XATTR', 1)
   if cc.compiles(glib_conf_prefix + '''
                  #include <stdio.h>
                  #ifdef HAVE_SYS_TYPES_H
