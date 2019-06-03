@@ -736,7 +736,7 @@ _g_get_unix_mounts (void)
                                              mntent.mnt_mountp,
                                              NULL,
                                              mntent.mnt_fstype,
-                                             mntent.mnt_opts,
+                                             mntent.mnt_mntopts,
                                              is_read_only);
 
       return_list = g_list_prepend (return_list, mount_entry);
