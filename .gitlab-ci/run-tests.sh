@@ -2,7 +2,10 @@
 
 set +e
 
-gdb -ex run -ex quit --args _build/glib/tests/contenttype
+gdb --args _build/glib/tests/contenttype <<END
+run
+quit
+END
 
 meson test \
         -C _build \
