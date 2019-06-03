@@ -2,7 +2,7 @@
 
 set +e
 
-gdb --args _build/glib/tests/contenttype <<END
+gdb --args _build/gio/tests/contenttype <<END
 run
 quit
 END
