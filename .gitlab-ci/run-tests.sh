@@ -6,7 +6,8 @@ meson test \
         -C _build \
         --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} \
         --no-suite flaky \
-        --wrapper gdb \
+        -v \
+        --wrapper 'gdb -ex run -ex quit --args' \
         contenttype
 
 exit_code=$?
