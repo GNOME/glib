@@ -2,6 +2,8 @@
 
 set +e
 
+gdb -ex run -ex quit --args _build/glib/tests/contenttype
+
 meson test \
         -C _build \
         --timeout-multiplier ${MESON_TEST_TIMEOUT_MULTIPLIER} \
