@@ -4,6 +4,7 @@ set +e
 
 gdb --args _build/gio/tests/contenttype <<END
 run
+backtrace
 quit
 END
 
