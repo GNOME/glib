@@ -328,9 +328,15 @@ test_tree (void)
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
+g_message ("loop %d", i);
       path = g_test_get_filename (G_TEST_DIST, tests[i], NULL);
+g_message ("path = %s", path);
       file = g_file_new_for_path (path);
+g_message ("file = %p", file);
       types = g_content_type_guess_for_tree (file);
+g_message ("types = %p", types);
+if (types != NULL)
+  g_message ("types[0] = %s", types[0]);
       g_assert_content_type_equals (types[0], tests[i]);
       g_strfreev (types);
       g_object_unref (file);
