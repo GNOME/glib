@@ -30,6 +30,7 @@
 #include <glib.h>
 #include "inotify-kernel.h"
 #include <sys/inotify.h>
+#include <sys/filio.h>
 #include <glib/glib-unix.h>
 
 #include "glib-private.h"
