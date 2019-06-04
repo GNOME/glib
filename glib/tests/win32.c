@@ -39,8 +39,8 @@ test_subst_pid_and_event (void)
   gchar debugger_enough[G_N_ELEMENTS (not_enough) + 1];
   gchar debugger_big[65535] = {0};
   gchar *output;
-  DWORD be = 0xFFFFFFFF;
-  guintptr bp = (guintptr) G_MAXSIZE;
+  guintptr be = (guintptr) 0xFFFFFFFF;
+  DWORD bp = G_MAXSIZE;
 
   /* %f is not valid */
   g_assert_false (_g_win32_subst_pid_and_event (debugger_3, G_N_ELEMENTS (debugger_3),
