@@ -542,6 +542,51 @@ properties_testv_getv (void)
 }
 
 static void
+properties_get_property (void)
+{
+  TestObject *test_obj;
+  struct {
+    const char *name;
+    GType gtype;
+    GValue value;
+  } test_props[] = {
+    { "foo", G_TYPE_INT, G_VALUE_INIT },
+    { "bar", G_TYPE_INVALID, G_VALUE_INIT },
+    { "bar", G_TYPE_STRING, G_VALUE_INIT },
+  };
+  int i;
+
+  g_test_summary ("g_object_get_property() accepts uninitialized, "
+                  "initialized, and transformable values");
+
+  for (i = 0; i < G_N_ELEMENTS (test_props); i++)
+    {
+      if (test_props[i].gtype != G_TYPE_INVALID)
+        g_value_init (&(test_props[i].value), test_props[i].gtype);
+    }
+
+  test_obj = (TestObject *) g_object_new_with_properties (test_object_get_type (), 0, NULL, NULL);
+
+  g_test_message ("Test g_object_get_property with an initialized value");
+  g_object_get_property (G_OBJECT (test_obj), test_props[0].name, &(test_props[0].value));
+  g_assert_cmpint (g_value_get_int (&(test_props[0].value)), ==, 42);
+
+  g_test_message ("Test g_object_get_property with an uninitialized value");
+  g_object_get_property (G_OBJECT (test_obj), test_props[1].name, &(test_props[1].value));
+  g_assert_true (g_value_get_boolean (&(test_props[1].value)));
+
+  g_test_message ("Test g_object_get_property with a transformable value");
+  g_object_get_property (G_OBJECT (test_obj), test_props[2].name, &(test_props[2].value));
+  g_assert_true (G_VALUE_HOLDS_STRING (&(test_props[2].value)));
+  g_assert_cmpstr (g_value_get_string (&(test_props[2].value)), ==, "TRUE");
+
+  for (i = 0; i < G_N_ELEMENTS (test_props); i++)
+    g_value_unset (&(test_props[i].value));
+
+  g_object_unref (test_obj);
+}
+
+static void
 properties_testv_notify_queue (void)
 {
   TestObject *test_obj;
@@ -599,6 +644,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/properties/notify", properties_notify);
   g_test_add_func ("/properties/notify-queue", properties_notify_queue);
   g_test_add_func ("/properties/construct", properties_construct);
+  g_test_add_func ("/properties/get-property", properties_get_property);
 
   g_test_add_func ("/properties/testv_with_no_properties",
       properties_testv_with_no_properties);
