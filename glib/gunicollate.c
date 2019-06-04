@@ -37,6 +37,9 @@
 #include "gcharset.h"
 #include "gconvert.h"
 
+#if SIZEOF_WCHAR_T == 4 && defined(__STDC_ISO_10646__)
+#define GUNICHAR_EQUALS_WCHAR_T 1
+#endif
 
 #ifdef _MSC_VER
 /* Workaround for bug in MSVCR80.DLL */
@@ -99,7 +102,7 @@ g_utf8_collate (const gchar *str1,
   g_free (str2_utf16);
   g_free (str1_utf16);
 
-#elif defined(HAVE_WCHAR_H) && SIZEOF_WCHAR_T == 4
+#elif defined(HAVE_WCHAR_H) && defined(GUNICHAR_EQUALS_WCHAR_T)
 
   gunichar *str1_norm;
   gunichar *str2_norm;
@@ -157,7 +160,7 @@ g_utf8_collate (const gchar *str1,
   return result;
 }
 
-#if defined(HAVE_WCHAR_H) && SIZEOF_WCHAR_T == 4
+#if defined(HAVE_WCHAR_H) && defined(GUNICHAR_EQUALS_WCHAR_T)
 /* We need UTF-8 encoding of numbers to encode the weights if
  * we are using wcsxfrm. However, we aren't encoding Unicode
  * characters, so we can't simply use g_unichar_to_utf8.
@@ -380,7 +383,7 @@ g_utf8_collate_key (const gchar *str,
   g_return_val_if_fail (str != NULL, NULL);
   result = carbon_collate_key (str, len);
 
-#elif defined(HAVE_WCHAR_H) && SIZEOF_WCHAR_T == 4
+#elif defined(HAVE_WCHAR_H) && defined(GUNICHAR_EQUALS_WCHAR_T)
 
   gsize xfrm_len;
   gunichar *str_norm;
