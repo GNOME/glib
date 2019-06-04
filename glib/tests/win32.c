@@ -39,8 +39,8 @@ test_subst_pid_and_event (void)
   gchar debugger_enough[G_N_ELEMENTS (not_enough) + 1];
   gchar debugger_big[65535] = {0};
   gchar *output;
-  DWORD be = 0xFFFFFFFF;
-  guintptr bp = (guintptr) G_MAXSIZE;
+  guintptr be = (guintptr) 0xFFFFFFFF;
+  DWORD bp = G_MAXSIZE;
 
   /* %f is not valid */
   g_assert_false (_g_win32_subst_pid_and_event (debugger_3, G_N_ELEMENTS (debugger_3),
@@ -59,7 +59,7 @@ test_subst_pid_and_event (void)
 
   g_assert_true (_g_win32_subst_pid_and_event (debugger_big, G_N_ELEMENTS (debugger_big),
                                                 "multipl%e big %e %entries and %pids are %provided here", bp, be));
-  output = g_strdup_printf ("multipl%lu big %lu %luntries and %lluids are %llurovided here", be, be, be, (guint64) bp, (guint64) bp);
+  output = g_strdup_printf ("multipl%llu big %llu %lluntries and %luids are %lurovided here", (guint64) be, (guint64) be, (guint64) be, bp, bp);
   g_assert_cmpstr (debugger_big, ==, output);
   g_free (output);
 }
