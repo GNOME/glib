@@ -209,6 +209,8 @@ typedef @g_pid_type@ GPid;
 #define G_SEARCHPATH_SEPARATOR '@g_searchpath_separator@'
 #define G_SEARCHPATH_SEPARATOR_S "@g_searchpath_separator@"
 
+#define GLIB_SYSTEM_DEFAULT_ANSI_CODEPAGE "@glib_system_default_ansi_codepage@"
+
 G_END_DECLS
 
 #endif /* __GLIBCONFIG_H__ */

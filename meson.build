@@ -1690,6 +1690,12 @@ endif
 
 glibconfig_conf.set10('G_HAVE_GROWING_STACK', growing_stack)
 
+if host_system == 'windows' and cc.get_id() == 'msvc'
+  glibconfig_conf.set('glib_system_default_ansi_codepage', '.ACP')
+else
+  glibconfig_conf.set('glib_system_default_ansi_codepage', '')
+endif
+
 # Tests for iconv
 #
 # We should never use the MinGW C library's iconv because it may not be
