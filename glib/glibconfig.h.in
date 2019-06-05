@@ -209,6 +209,8 @@ typedef @g_pid_type@ GPid;
 #define G_SEARCHPATH_SEPARATOR '@g_searchpath_separator@'
 #define G_SEARCHPATH_SEPARATOR_S "@g_searchpath_separator@"
 
+#define GLIB_DEFAULT_LOCALE_STRING "@glib_default_locale_string@"
+
 G_END_DECLS
 
 #endif /* __GLIBCONFIG_H__ */
