@@ -300,6 +300,14 @@ gboolean                g_unix_connection_create_pair                   (GUnixCo
  * byte to the stream, as this is required for credentials passing to
  * work on some implementations.
  *
+ * This method can be expected to be available on the following platforms:
+ *
+ * - Linux since GLib 2.26
+ * - FreeBSD since GLib 2.26
+ * - GNU/kFreeBSD since GLib 2.36
+ * - Solaris, Illumos and OpenSolaris since GLib 2.40
+ * - GNU/Hurd since GLib 2.40
+ *
  * Other ways to exchange credentials with a foreign peer includes the
  * #GUnixCredentialsMessage type and g_socket_get_credentials() function.
  *
@@ -449,6 +457,14 @@ g_unix_connection_send_credentials_finish (GUnixConnection *connection,
  * As well as reading the credentials this also reads (and discards) a
  * single byte from the stream, as this is required for credentials
  * passing to work on some implementations.
+ *
+ * This method can be expected to be available on the following platforms:
+ *
+ * - Linux since GLib 2.26
+ * - FreeBSD since GLib 2.26
+ * - GNU/kFreeBSD since GLib 2.36
+ * - Solaris, Illumos and OpenSolaris since GLib 2.40
+ * - GNU/Hurd since GLib 2.40
  *
  * Other ways to exchange credentials with a foreign peer includes the
  * #GUnixCredentialsMessage type and g_socket_get_credentials() function.
