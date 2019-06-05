@@ -160,7 +160,7 @@ main (gint   argc,
       return 1;
     }
 
-  setlocale (LC_ALL, "");
+  setlocale (LC_ALL, GLIB_SYSTEM_DEFAULT_ANSI_CODEPAGE);
 
   /* Be defensive and ensure we're linked to GObject */
   g_type_ensure (G_TYPE_OBJECT);
