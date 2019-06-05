@@ -84,4 +84,10 @@ typedef struct {
 GLIB_AVAILABLE_IN_ALL
 GLibPrivateVTable *glib__private__ (void);
 
+#ifdef G_OS_WIN32
+# define GLIB_DEFAULT_LOCALE ".ACP"
+#else
+# define GLIB_DEFAULT_LOCALE ""
+#endif
+
 #endif /* __GLIB_PRIVATE_H__ */
