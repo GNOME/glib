@@ -1539,7 +1539,7 @@ on_authorize_authenticated_peer (GDBusAuthObserver *observer,
 				 GCredentials      *credentials,
 				 gpointer           user_data)
 {
-  gboolean authorized = TRUE;
+  gboolean authorized = FALSE;
 
   if (credentials != NULL)
     {
@@ -1549,6 +1549,14 @@ on_authorize_authenticated_peer (GDBusAuthObserver *observer,
       authorized = g_credentials_is_same_user (credentials, own_credentials, NULL);
       g_object_unref (own_credentials);
     }
+#ifdef G_OS_WIN32
+  else
+    {
+      /* We allow ANONYMOUS authentication on Windows for now, in
+       * combination with the nonce-tcp transport. */
+      authorized = TRUE;
+    }
+#endif
 
   return authorized;
 }
