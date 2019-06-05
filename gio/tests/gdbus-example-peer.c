@@ -169,6 +169,74 @@ on_new_connection (GDBusServer *server,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static gboolean
+allow_mechanism_cb (GDBusAuthObserver *observer,
+                    const gchar *mechanism,
+                    G_GNUC_UNUSED gpointer user_data)
+{
+  /*
+   * In a production GDBusServer that only needs to work on modern Unix
+   * platforms, consider requiring EXTERNAL (credentials-passing),
+   * which is the recommended authentication mechanism for AF_UNIX
+   * sockets:
+   *
+   * if (g_strcmp0 (mechanism, "EXTERNAL") == 0)
+   *   return TRUE;
+   *
+   * return FALSE;
+   *
+   * For this example we accept everything.
+   */
+
+  g_print ("Considering whether to accept %s authentication...\n", mechanism);
+  return TRUE;
+}
+
+static gboolean
+authorize_authenticated_peer_cb (GDBusAuthObserver *observer,
+                                 G_GNUC_UNUSED GIOStream *stream,
+                                 GCredentials *credentials,
+                                 G_GNUC_UNUSED gpointer user_data)
+{
+  gboolean authorized = FALSE;
+
+  g_print ("Considering whether to authorize authenticated peer...\n");
+
+  if (credentials != NULL)
+    {
+      GCredentials *own_credentials;
+      gchar *credentials_string = NULL;
+
+      credentials_string = g_credentials_to_string (credentials);
+      g_print ("Peer's credentials: %s\n", credentials_string);
+      g_free (credentials_string);
+
+      own_credentials = g_credentials_new ();
+
+      credentials_string = g_credentials_to_string (own_credentials);
+      g_print ("Server's credentials: %s\n", credentials_string);
+      g_free (credentials_string);
+
+      if (g_credentials_is_same_user (credentials, own_credentials, NULL))
+        authorized = TRUE;
+
+      g_object_unref (own_credentials);
+    }
+
+  if (!authorized)
+    {
+      /* In most servers you'd want to reject this, but for this example
+       * we allow it. */
+      g_print ("A server would often not want to authorize this identity\n");
+      g_print ("Authorizing it anyway for demonstration purposes\n");
+      authorized = TRUE;
+    }
+
+  return authorized;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int argc, char *argv[])
 {
@@ -221,6 +289,7 @@ main (int argc, char *argv[])
 
   if (opt_server)
     {
+      GDBusAuthObserver *observer;
       GDBusServer *server;
       gchar *guid;
       GMainLoop *loop;
@@ -232,14 +301,20 @@ main (int argc, char *argv[])
       if (opt_allow_anonymous)
         server_flags |= G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS;
 
+      observer = g_dbus_auth_observer_new ();
+      g_signal_connect (observer, "allow-mechanism", G_CALLBACK (allow_mechanism_cb), NULL);
+      g_signal_connect (observer, "authorize-authenticated-peer", G_CALLBACK (authorize_authenticated_peer_cb), NULL);
+
       error = NULL;
       server = g_dbus_server_new_sync (opt_address,
                                        server_flags,
                                        guid,
-                                       NULL, /* GDBusAuthObserver */
+                                       observer,
                                        NULL, /* GCancellable */
                                        &error);
       g_dbus_server_start (server);
+
+      g_object_unref (observer);
       g_free (guid);
 
       if (server == NULL)
