@@ -25,9 +25,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef G_OS_WIN32
 #include "glib/glib-private.h"
-#endif
 
 static GSettingsSchemaSource   *global_schema_source;
 static GSettings               *global_settings;
@@ -743,7 +741,7 @@ main (int argc, char **argv)
   gchar *tmp;
 #endif
 
-  setlocale (LC_ALL, "");
+  setlocale (LC_ALL, GLIB_DEFAULT_LOCALE);
   textdomain (GETTEXT_PACKAGE);
 
 #ifdef G_OS_WIN32
