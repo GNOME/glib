@@ -41,9 +41,11 @@
  *
  * ## Controlling Authentication # {#auth-observer}
  *
- * For example, if you only want to allow D-Bus connections from
- * processes owned by the same uid as the server, you would use a
- * signal handler like the following:
+ * By default, a #GDBusServer or server-side #GDBusConnection will accept
+ * connections from any successfully authenticated user (but not from
+ * anonymous connections using the `ANONYMOUS` mechanism). If you only
+ * want to allow D-Bus connections from processes owned by the same uid
+ * as the server, you would use a signal handler like the following:
  * 
  * |[<!-- language="C" -->
  * static gboolean
