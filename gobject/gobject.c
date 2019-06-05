@@ -2607,7 +2607,7 @@ g_object_get_property (GObject	   *object,
       
       if (G_VALUE_TYPE (value) == G_TYPE_INVALID)
         {
-          /* uninitialized value */
+          /* zero-initialized value */
           g_value_init (value, pspec->value_type);
           prop_value = value;
         }
