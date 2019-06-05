@@ -754,7 +754,7 @@ main (int argc, char **argv)
   gchar *tmp;
 #endif
 
-  setlocale (LC_ALL, "");
+  setlocale (LC_ALL, GLIB_SYSTEM_DEFAULT_ANSI_CODEPAGE);
   textdomain (GETTEXT_PACKAGE);
 
 #ifdef G_OS_WIN32
