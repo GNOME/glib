@@ -39,7 +39,7 @@
  * signals you are interested in. Note that new signals may be added
  * in the future
  *
- * ## Controlling Authentication # {#auth-observer}
+ * ## Controlling Authorization # {#auth-observer}
  *
  * By default, a #GDBusServer or server-side #GDBusConnection will accept
  * connections from any successfully authenticated user (but not from
