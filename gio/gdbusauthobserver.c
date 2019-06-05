@@ -39,6 +39,30 @@
  * signals you are interested in. Note that new signals may be added
  * in the future
  *
+ * ## Controlling Authentication Mechanisms
+ *
+ * By default, a #GDBusServer or server-side #GDBusConnection will allow
+ * any authentication mechanism to be used. If you only
+ * want to allow D-Bus connections with the `EXTERNAL` mechanism,
+ * which makes use of credentials passing and is the recommended
+ * mechanism for modern Unix platforms such as Linux and the BSD family,
+ * you would use a signal handler like this:
+ *
+ * |[<!-- language="C" -->
+ * static gboolean
+ * on_allow_mechanism (GDBusAuthObserver *observer,
+ *                     const gchar       *mechanism,
+ *                     gpointer           user_data)
+ * {
+ *   if (g_strcmp0 (mechanism, "EXTERNAL") == 0)
+ *     {
+ *       return TRUE;
+ *     }
+ *
+ *   return FALSE;
+ * }
+ * ]|
+ *
  * ## Controlling Authorization # {#auth-observer}
  *
  * By default, a #GDBusServer or server-side #GDBusConnection will accept
