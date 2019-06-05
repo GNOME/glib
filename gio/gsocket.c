@@ -5750,6 +5750,13 @@ g_socket_receive_message (GSocket                 *socket,
  * the %G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented
  * by reading the %SO_PEERCRED option on the underlying socket.
  *
+ * This method can be expected to be available on the following platforms:
+ *
+ * - Linux since GLib 2.26
+ * - OpenBSD since GLib 2.30
+ * - Solaris, Illumos and OpenSolaris since GLib 2.40
+ * - NetBSD since GLib 2.42
+ *
  * Other ways to obtain credentials from a foreign peer includes the
  * #GUnixCredentialsMessage type and
  * g_unix_connection_send_credentials() /
