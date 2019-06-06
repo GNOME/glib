@@ -61,6 +61,64 @@ struct _GHmac
   GChecksum *digesto;
 };
 
+#ifdef __linux__
+#include <glib-unix.h>
+#endif
+
+static gboolean
+fips_mode_enabled (void)
+{
+#ifdef __linux__
+/* A onceinit must start zero valued, so we redefine truth by shifting it by 1 */
+#define ENABLED 2
+#define DISABLED 1
+  static gsize fips_enabled = 0;
+  static const char fips_path[] = "/proc/sys/crypto/fips_enabled";
+  
+  if (g_once_init_enter (&fips_enabled))
+    {
+      int fd = open (fips_path, O_RDONLY | O_CLOEXEC);
+
+      gsize ret = DISABLED;
+      if (fd < 0)
+        {
+          /* If the path doesn't exist, we are running on a very old kernel,
+           * or one without the FIPS module enabled.  Or (probably most likely)
+           * running in a chroot without /proc mounted.  We could try to
+           * detect the situation where e.g. /usr/lib/os-release exists and
+           * systemd is running and the kernel is new enough (i.e. looks like RHEL8)
+           * but...for now let's just ignore ENOENT.
+           */
+        }
+      else
+        {
+          char buf[1];
+          int r;
+          do
+            {
+              r = read (fd, buf, sizeof(buf));
+            }
+          while (r < 0 && errno == EINTR);
+          if (r != 1)
+            {
+              const char *errmsg = g_strerror (errno);
+              g_error ("Failed to read() from %s: %s", fips_path, errmsg);
+            }
+          if (buf[0] == '1')
+            ret = ENABLED;
+          else if (buf[0] != '0')
+            g_error ("%s has unexpected value '%c'", fips_path, buf[0]);
+          g_once_init_leave (&fips_enabled, ret);
+        }
+    }
+    return fips_enabled == ENABLED;
+#undef ENABLED
+#undef DISABLED
+#else
+  return FALSE;
+#endif
+}
+
 /**
  * g_hmac_new:
  * @digest_type: the desired type of digest
@@ -100,6 +158,15 @@ g_hmac_new (GChecksumType  digest_type,
   guchar *pad;
   gsize i, len;
   gsize block_size;
+
+  /* The API says this can return NULL but that will only happen
+   * in OOM conditions, and GLib aborts in other OOM conditions,
+   * and at least one real-world user of this API (cockpit)
+   * was observed to not check for NULL, so...let's abort with a clear
+   * error message rather than causing apps to segfault.
+   */
+  if (fips_mode_enabled ())
+    g_error ("g_hmac_new() is not available in FIPS mode");
 
   checksum = g_checksum_new (digest_type);
   g_return_val_if_fail (checksum != NULL, NULL);
