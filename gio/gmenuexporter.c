@@ -560,6 +560,10 @@ struct _GMenuExporter
   GMenuExporterMenu *root;
   GMenuExporterRemote *peer_remote;
   GHashTable *remotes;
+
+  GVariantBuilder *pending_report;
+  GSource         *pending_report_source;
+  GMainContext    *context;
 };
 
 static void
@@ -649,23 +653,39 @@ g_menu_exporter_unsubscribe (GMenuExporter *exporter,
     }
 }
 
-static void
-g_menu_exporter_report (GMenuExporter *exporter,
-                        GVariant      *report)
+static gboolean
+g_menu_exporter_send_report (gpointer user_data)
 {
-  GVariantBuilder builder;
-
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
-  g_variant_builder_open (&builder, G_VARIANT_TYPE_ARRAY);
-  g_variant_builder_add_value (&builder, report);
-  g_variant_builder_close (&builder);
+  GMenuExporter *exporter = user_data;
 
   g_dbus_connection_emit_signal (exporter->connection,
                                  NULL,
                                  exporter->object_path,
                                  "org.gtk.Menus", "Changed",
-                                 g_variant_builder_end (&builder),
+                                 g_variant_new ("(a(uuuuaa{sv}))",
+                                                exporter->pending_report),
                                  NULL);
+
+  g_clear_pointer (&exporter->pending_report, g_variant_builder_unref);
+  exporter->pending_report_source = NULL;
+
+  return FALSE;
+}
+
+static void
+g_menu_exporter_report (GMenuExporter *exporter,
+                        GVariant      *report)
+{
+  if (exporter->pending_report == NULL)
+    {
+      exporter->pending_report = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
+      exporter->pending_report_source = g_idle_source_new ();
+      g_source_set_callback (exporter->pending_report_source,
+                             g_menu_exporter_send_report, exporter, NULL);
+      g_source_attach (exporter->pending_report_source, exporter->context);
+    }
+
+  g_variant_builder_add_value (exporter->pending_report, report);
 }
 
 static void
@@ -710,6 +730,14 @@ g_menu_exporter_free (gpointer user_data)
 {
   GMenuExporter *exporter = user_data;
 
+  if (exporter->pending_report_source)
+    {
+      g_variant_builder_unref (exporter->pending_report);
+      g_source_destroy (exporter->pending_report_source);
+      g_source_unref (exporter->pending_report_source);
+    }
+
+  g_main_context_unref (exporter->context);
   g_menu_exporter_menu_free (exporter->root);
   g_clear_pointer (&exporter->peer_remote, g_menu_exporter_remote_free);
   g_hash_table_unref (exporter->remotes);
@@ -799,6 +827,7 @@ g_dbus_connection_export_menu_model (GDBusConnection  *connection,
       return 0;
     }
 
+  exporter->context = g_main_context_ref_thread_default ();
   exporter->connection = g_object_ref (connection);
   exporter->object_path = g_strdup (object_path);
   exporter->groups = g_hash_table_new (NULL, NULL);
