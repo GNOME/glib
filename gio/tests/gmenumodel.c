@@ -1020,6 +1020,7 @@ test_dbus_peer_roundtrip (void)
 }
 
 static gint items_changed_count;
+static gint change_signals;
 
 static void
 items_changed (GMenuModel *model,
@@ -1029,6 +1030,20 @@ items_changed (GMenuModel *model,
                gpointer    data)
 {
   items_changed_count++;
+}
+
+static GDBusMessage *
+filter_func (GDBusConnection *connection,
+             GDBusMessage    *message,
+             gboolean         incoming,
+             gpointer         user_data)
+{
+  change_signals +=
+    !incoming &&
+    g_dbus_message_get_message_type (message) == G_DBUS_MESSAGE_TYPE_SIGNAL &&
+    g_str_equal (g_dbus_message_get_interface (message), "org.gtk.Menus");
+
+  return message;
 }
 
 static gboolean
@@ -1051,9 +1066,13 @@ do_subscriptions (GDBusConnection *exporter_connection,
   GError *error = NULL;
   guint export_id;
   guint timeout_id;
+  guint filter_id;
 
+  change_signals = 0;
   timeout_id = add_timeout (60);
   loop = g_main_loop_new (NULL, FALSE);
+  filter_id = g_dbus_connection_add_filter (exporter_connection,
+                                            filter_func, NULL, NULL);
 
   menu = g_menu_new ();
 
@@ -1075,6 +1094,7 @@ do_subscriptions (GDBusConnection *exporter_connection,
   g_menu_append (menu, "item3", NULL);
 
   g_assert_cmpint (items_changed_count, ==, 0);
+  g_assert_cmpint (change_signals, ==, 0);
 
   /* We don't subscribe to change-notification until we look at the items */
   g_timeout_add (100, stop_loop, loop);
@@ -1088,12 +1108,14 @@ do_subscriptions (GDBusConnection *exporter_connection,
 
   /* We get all three items in one batch */
   g_assert_cmpint (items_changed_count, ==, 1);
+  g_assert_cmpint (change_signals, ==, 0);
   g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (proxy)), ==, 3);
 
   /* If we wait, we don't get any more */
   g_timeout_add (100, stop_loop, loop);
   g_main_loop_run (loop);
   g_assert_cmpint (items_changed_count, ==, 1);
+  g_assert_cmpint (change_signals, ==, 0);
   g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (proxy)), ==, 3);
 
   /* Now we're subscribed, we get changes individually */
@@ -1106,7 +1128,10 @@ do_subscriptions (GDBusConnection *exporter_connection,
   while (items_changed_count < 6)
     g_main_context_iteration (NULL, TRUE);
 
+  /* The exporter merges multiple change events into a single signal,
+   * so we should have 6 events but only 1 signal. */
   g_assert_cmpint (items_changed_count, ==, 6);
+  g_assert_cmpint (change_signals, ==, 1);
 
   g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (proxy)), ==, 4);
 
@@ -1117,6 +1142,8 @@ do_subscriptions (GDBusConnection *exporter_connection,
   g_timeout_add (100, stop_loop, loop);
   g_main_loop_run (loop);
 
+  g_dbus_connection_remove_filter (exporter_connection, filter_id);
+
   g_menu_remove (menu, 0);
   g_menu_remove (menu, 0);
 
@@ -1124,6 +1151,7 @@ do_subscriptions (GDBusConnection *exporter_connection,
   g_main_loop_run (loop);
 
   g_assert_cmpint (items_changed_count, ==, 6);
+  g_assert_cmpint (change_signals, ==, 1);
 
   g_dbus_connection_unexport_menu_model (exporter_connection, export_id);
   g_object_unref (menu);
