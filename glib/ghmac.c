@@ -39,6 +39,9 @@
  * @title: Secure HMAC Digests
  * @short_description: computes the HMAC for data
  *
+ * Since GLib 2.62, this API is entirely deprecated.  You should
+ * look for a full cryptographic library such as OpenSSL, NSS, etc.
+ *
  * HMACs should be used when producing a cookie or hash based on data
  * and a key. Simple mechanisms for using SHA1 and other algorithms to
  * digest a key and data together are vulnerable to various security
@@ -290,7 +293,9 @@ g_hmac_get_string (GHmac *hmac)
   buffer = g_alloca (digest_len);
 
   /* This is only called for its side-effect of updating hmac->digesto... */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_hmac_get_digest (hmac, buffer, &digest_len);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   /* ... because we get the string from the checksum rather than
    * stringifying buffer ourselves
    */
@@ -356,6 +361,7 @@ g_compute_hmac_for_data (GChecksumType  digest_type,
                          const guchar  *data,
                          gsize          length)
 {
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GHmac *hmac;
   gchar *retval;
 
@@ -369,6 +375,7 @@ g_compute_hmac_for_data (GChecksumType  digest_type,
   retval = g_strdup (g_hmac_get_string (hmac));
   g_hmac_unref (hmac);
 
+  G_GNUC_END_IGNORE_DEPRECATIONS
   return retval;
 }
 
@@ -404,7 +411,9 @@ g_compute_hmac_for_bytes (GChecksumType  digest_type,
 
   byte_data = g_bytes_get_data (data, &length);
   key_data = g_bytes_get_data (key, &key_len);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   return g_compute_hmac_for_data (digest_type, key_data, key_len, byte_data, length);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 
@@ -437,7 +446,8 @@ g_compute_hmac_for_string (GChecksumType  digest_type,
 
   if (length < 0)
     length = strlen (str);
-
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   return g_compute_hmac_for_data (digest_type, key, key_len,
                                   (const guchar *) str, length);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }

@@ -42,40 +42,40 @@ typedef struct _GHmac       GHmac;
 GLIB_AVAILABLE_IN_2_30
 GHmac *               g_hmac_new                    (GChecksumType  digest_type,
                                                      const guchar  *key,
-                                                     gsize          key_len);
+                                                     gsize          key_len) G_GNUC_DEPRECATED;
 GLIB_AVAILABLE_IN_2_30
-GHmac *               g_hmac_copy                   (const GHmac   *hmac);
+GHmac *               g_hmac_copy                   (const GHmac   *hmac) G_GNUC_DEPRECATED;
 GLIB_AVAILABLE_IN_2_30
-GHmac *               g_hmac_ref                    (GHmac         *hmac);
+GHmac *               g_hmac_ref                    (GHmac         *hmac) G_GNUC_DEPRECATED;
 GLIB_AVAILABLE_IN_2_30
-void                  g_hmac_unref                  (GHmac         *hmac);
+void                  g_hmac_unref                  (GHmac         *hmac) G_GNUC_DEPRECATED;
 GLIB_AVAILABLE_IN_2_30
 void                  g_hmac_update                 (GHmac         *hmac,
                                                      const guchar  *data,
-                                                     gssize         length);
+                                                     gssize         length) G_GNUC_DEPRECATED;
 GLIB_AVAILABLE_IN_2_30
-const gchar *         g_hmac_get_string             (GHmac         *hmac);
+const gchar *         g_hmac_get_string             (GHmac         *hmac) G_GNUC_DEPRECATED;
 GLIB_AVAILABLE_IN_2_30
 void                  g_hmac_get_digest             (GHmac         *hmac,
                                                      guint8        *buffer,
-                                                     gsize         *digest_len);
+                                                     gsize         *digest_len) G_GNUC_DEPRECATED;
 
 GLIB_AVAILABLE_IN_2_30
 gchar                *g_compute_hmac_for_data       (GChecksumType  digest_type,
                                                      const guchar  *key,
                                                      gsize          key_len,
                                                      const guchar  *data,
-                                                     gsize          length);
+                                                     gsize          length) G_GNUC_DEPRECATED;
 GLIB_AVAILABLE_IN_2_30
 gchar                *g_compute_hmac_for_string     (GChecksumType  digest_type,
                                                      const guchar  *key,
                                                      gsize          key_len,
                                                      const gchar   *str,
-                                                     gssize         length);
+                                                     gssize         length) G_GNUC_DEPRECATED;
 GLIB_AVAILABLE_IN_2_50
 gchar               *g_compute_hmac_for_bytes       (GChecksumType  digest_type,
                                                      GBytes        *key,
-                                                     GBytes        *data);
+                                                     GBytes        *data) G_GNUC_DEPRECATED;
 
 
 G_END_DECLS
