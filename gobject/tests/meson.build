@@ -56,6 +56,10 @@ if cc.get_id() != 'msvc'
   gobject_tests += {'autoptr' : {}}
 endif
 
+python_tests = [
+  'mkenums.py',
+]
+
 # FIXME: put common bits of test environment() in one location
 # Not entirely random of course, but at least it changes over time
 random_number = minor_version + meson.version().split('.').get(1).to_int()
@@ -106,10 +110,39 @@ foreach test_name, extra_args : gobject_tests
   test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach
 
-test(
-  'mkenums.py',
-  python,
-  args: files('mkenums.py'),
-  env: test_env,
-  suite: ['gobject'],
-)
+foreach test_name : python_tests
+  test(
+    test_name,
+    python,
+    args: files(test_name),
+    env: test_env,
+    suite: ['gobject'],
+  )
+
+  if installed_tests_enabled
+    install_data(
+      files(test_name),
+      install_dir: installed_tests_execdir,
+      install_mode: 'rwxr-xr-x',
+    )
+
+    test_conf = configuration_data()
+    test_conf.set('installed_tests_dir', installed_tests_execdir)
+    test_conf.set('program', test_name)
+    test_conf.set('env', '')
+    configure_file(
+      input: installed_tests_template_tap,
+      output: test_name + '.test',
+      install_dir: installed_tests_metadir,
+      configuration: test_conf,
+    )
+  endif
+endforeach
+
+# TAP test runner for Python tests
+if installed_tests_enabled
+  install_data(
+    files('taptestrunner.py'),
+    install_dir: installed_tests_execdir,
+  )
+endif
