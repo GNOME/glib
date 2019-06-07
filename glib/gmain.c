@@ -1266,7 +1266,10 @@ g_source_destroy_internal (GSource      *source,
  * destroyed.  The source cannot be subsequently added to another
  * context. It is safe to call this on sources which have already been
  * removed from their context.
- **/
+ *
+ * This does not unref the #GSource: if you still hold a reference, use
+ * g_source_unref() to drop it.
+ */
 void
 g_source_destroy (GSource *source)
 {
