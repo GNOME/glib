@@ -57,6 +57,7 @@ if cc.get_id() != 'msvc'
 endif
 
 python_tests = [
+  'genmarshal.py',
   'mkenums.py',
 ]
 
