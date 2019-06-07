@@ -127,6 +127,7 @@ glib_sources = files(
   'gbytes.c',
   'gcharset.c',
   'gchecksum.c',
+  'gchecksumprivate.h',
   'gconvert.c',
   'gdataset.c',
   'gdate.c',
@@ -137,7 +138,6 @@ glib_sources = files(
   'gfileutils.c',
   'ggettext.c',
   'ghash.c',
-  'ghmac.c',
   'ghmac-utils.c',
   'ghook.c',
   'ghostutils.c',
@@ -223,6 +223,12 @@ else
   glib_dtrace_hdr = []
 endif
 
+if get_option('gnutls')
+  glib_sources += files('ghmac-gnutls.c')
+else
+  glib_sources += files('ghmac.c')
+endif
+
 pcre_static_args = []
 
 if use_pcre_static_flag
@@ -239,7 +245,7 @@ libglib = library('glib-2.0',
   link_args : platform_ldflags + noseh_link_args,
   include_directories : configinc,
   link_with : [charset_lib, gnulib_lib],
-  dependencies : [pcre, thread_dep, libintl, librt] + libiconv + platform_deps,
+  dependencies : [pcre, thread_dep, libintl, librt] + libgnutls_dep + libiconv + platform_deps,
   c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
 )
 

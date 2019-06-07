@@ -125,7 +125,7 @@ libglib_2_0_la_SOURCES = 	\
 	gfileutils.c		\
 	ggettext.c		\
 	ghash.c			\
-	ghmac.c			\
+	ghmac-gnutls.c		\
 	ghmac-utils.c		\
 	ghook.c			\
 	ghostutils.c		\
@@ -352,11 +352,15 @@ pcre_lib = pcre/libpcre.la
 pcre_inc =
 endif
 
-libglib_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS) $(LIBSYSTEMD_CFLAGS)
+gnutls_libs = $(shell pkg-config --libs gnutls)
+gnutls_cflags = $(shell pkg-config --cflags gnutls)
+
+libglib_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS) $(LIBSYSTEMD_CFLAGS) $(gnutls_cflags)
 libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ $(pcre_lib) $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD) $(LIBSYSTEMD_LIBS)
 libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ $(glib_win32_res) $(glib_def)
 
 libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
+         $(gnutls_libs) \
 	 $(glib_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined)
