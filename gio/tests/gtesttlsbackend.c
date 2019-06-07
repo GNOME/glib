@@ -122,6 +122,27 @@ g_test_tls_certificate_verify (GTlsCertificate     *cert,
   return 0;
 }
 
+static GVariant *
+g_test_tls_certificate_serialize (GTlsCertificate  *cert,
+                                  GError          **error)
+{
+  char *certificate;
+
+  g_object_get (cert, "certificate-pem", &certificate, NULL);
+  return g_variant_new_take_string (g_steal_pointer (&certificate));
+}
+
+static GTlsCertificate *
+g_test_tls_certificate_deserialize (GVariant  *serialized_cert,
+                                    GError   **error)
+{
+  const char *certificate;
+
+  certificate = g_variant_get_string (serialized_cert, NULL);
+  return g_object_new (g_test_tls_certificate_get_type (),
+                       "certificate-pem", certificate, NULL);
+}
+
 static void
 g_test_tls_certificate_get_property (GObject    *object,
 				      guint       prop_id,
@@ -199,6 +220,8 @@ g_test_tls_certificate_class_init (GTestTlsCertificateClass *test_class)
   gobject_class->finalize = g_test_tls_certificate_finalize;
 
   certificate_class->verify = g_test_tls_certificate_verify;
+  certificate_class->serialize = g_test_tls_certificate_serialize;
+  certificate_class->deserialize = g_test_tls_certificate_deserialize;
 
   g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE, "certificate");
   g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE_PEM, "certificate-pem");

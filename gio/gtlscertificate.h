@@ -51,9 +51,14 @@ struct _GTlsCertificateClass
 				    GSocketConnectable  *identity,
 				    GTlsCertificate     *trusted_ca);
 
+  GVariant *            (* serialize)   (GTlsCertificate  *cert,
+                                         GError          **error);
+
+  GTlsCertificate *     (* deserialize) (GVariant         *serialized_certificate,
+                                         GError         **error);
   /*< private >*/
   /* Padding for future expansion */
-  gpointer padding[8];
+  gpointer padding[6];
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -86,6 +91,14 @@ GTlsCertificateFlags  g_tls_certificate_verify             (GTlsCertificate     
 GLIB_AVAILABLE_IN_2_34
 gboolean              g_tls_certificate_is_same            (GTlsCertificate     *cert_one,
                                                             GTlsCertificate     *cert_two);
+
+GLIB_AVAILABLE_IN_2_62
+GVariant *            g_tls_certificate_serialize          (GTlsCertificate     *cert,
+                                                            GError             **error);
+
+GLIB_AVAILABLE_IN_2_62
+GTlsCertificate *     g_tls_certificate_deserialize        (GVariant            *serialized_certificate,
+                                                            GError             **error);
 
 G_END_DECLS
 

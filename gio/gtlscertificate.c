@@ -750,3 +750,65 @@ g_tls_certificate_is_same (GTlsCertificate     *cert_one,
 
   return equal;
 }
+
+/**
+ * g_tls_certificate_serialize:
+ * @cert: a certificate to serialize
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Serializes the contents of a #GTlsCertificate. The contents
+ * of the returned data is implementation defined and may not
+ * be transferable to a different #GTlsBackend.
+ *
+ * Returns: A #GVariant if successful, %NULL if @error is set
+ *
+ * Since: 2.62
+ */
+GVariant *
+g_tls_certificate_serialize (GTlsCertificate  *cert,
+                             GError          **error)
+{
+  g_return_val_if_fail (cert != NULL, NULL);
+
+  if (G_TLS_CERTIFICATE_GET_CLASS (cert)->serialize == NULL)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "TLS backend does not support serialization");
+      return NULL;
+    }
+
+  return G_TLS_CERTIFICATE_GET_CLASS (cert)->serialize (cert, error);
+}
+
+/**
+ * g_tls_certificate_deserialize:
+ * @serialized_cert: a certificate to deserialize
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Deserializes the return value of g_tls_certificate_serialize() into a
+ * #GTlsCertificate. This will use the default #GTlsBackend to create the
+ * certificate.
+ *
+ * Returns: A #GTlsCertificate if successful, %NULL if @error is set
+ *
+ * Since: 2.62
+ */
+GTlsCertificate *
+g_tls_certificate_deserialize (GVariant  *serialized_cert,
+                               GError   **error)
+{
+  GTlsBackend *backend = g_tls_backend_get_default ();
+  GType cert_type = g_tls_backend_get_certificate_type (backend);
+  GTlsCertificateClass *klass = g_type_class_ref (cert_type);
+  GTlsCertificate *cert;
+
+  if (klass->deserialize == NULL)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "TLS backend does not support serialization");
+      g_type_class_unref (klass);
+      return NULL;
+    }
+
+  cert = klass->deserialize (serialized_cert, error);
+  g_type_class_unref (klass);
+  return cert;
+}
