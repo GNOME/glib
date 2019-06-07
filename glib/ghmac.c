@@ -33,6 +33,9 @@
 #include "gtypes.h"
 #include "glibintl.h"
 
+#ifdef HAVE_GNUTLS
+#error "build configuration error"
+#endif
 
 /**
  * SECTION:hmac

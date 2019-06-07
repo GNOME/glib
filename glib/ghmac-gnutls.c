@@ -34,6 +34,10 @@
 #include "gtypes.h"
 #include "glibintl.h"
 
+#ifndef HAVE_GNUTLS
+#error "build configuration error"
+#endif
+
 struct _GHmac
 {
   int ref_count;
