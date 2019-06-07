@@ -330,6 +330,7 @@ IN_ARGS = {
         'ctype': 'gpointer',
         'getter': 'g_marshal_value_peek_string',
         'box': ['g_strdup', 'g_free'],
+        'static-check': True,
     },
     'PARAM': {
         'signal': 'PARAM',
