@@ -237,6 +237,7 @@ glib_sources = files(
   'ggettext.c',
   'ghash.c',
   'ghmac.c',
+  'ghmac-utils.c',
   'ghook.c',
   'ghostutils.c',
   'giochannel.c',
