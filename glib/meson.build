@@ -288,7 +288,6 @@ glib_sources += files(
   'gfileutils.c',
   'ggettext.c',
   'ghash.c',
-  'ghmac.c',
   'ghmac-utils.c',
   'ghook.c',
   'ghostutils.c',
@@ -342,6 +341,8 @@ glib_sources += files(
   'gunidecomp.c',
   'guri.c',
   'gutils.c',
+  'gutilsprivate.h',
+  'gchecksumprivate.h',
   'guuid.c',
   'gvariant.c',
   'gvariant-core.c',
@@ -401,6 +402,12 @@ else
   glib_dtrace_hdr = []
 endif
 
+if get_option('gnutls')
+  glib_sources += files('ghmac-gnutls.c')
+else
+  glib_sources += files('ghmac.c')
+endif
+
 pcre2_static_args = []
 
 if use_pcre2_static_flag
@@ -422,6 +429,7 @@ libglib = library('glib-2.0',
   dependencies : [
     atomic_dep,
     gnulib_libm_dependency,
+    libgnutls_dep,
     libiconv,
     libintl_deps,
     libm,
