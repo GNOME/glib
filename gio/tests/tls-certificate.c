@@ -398,6 +398,39 @@ list_from_file (const Reference *ref)
   g_assert_cmpint (g_list_length (list), ==, 0);
 }
 
+static void
+serialization (const Reference *ref)
+{
+  GTlsCertificate *cert, *deserialized;
+  GVariant *serialized;
+  char *original_key, *deserialized_key;
+  GError *error = NULL;
+
+  cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL),
+                                           g_test_get_filename (G_TEST_DIST, "cert-tests", "key.pem", NULL),
+                                           &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  serialized = g_tls_certificate_serialize (cert, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (serialized);
+
+  deserialized = g_tls_certificate_deserialize (serialized, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (deserialized);
+
+  g_object_get (cert, "certificate-pem", &original_key, NULL);
+  g_object_get (deserialized, "certificate-pem", &deserialized_key, NULL);
+  g_assert_cmpstr (deserialized_key, ==, original_key);
+
+  g_object_unref (cert);
+  g_object_unref (deserialized);
+  g_variant_unref (serialized);
+  g_free (original_key);
+  g_free (deserialized_key);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -464,6 +497,8 @@ main (int   argc,
                         &ref, (GTestDataFunc)from_files_pkcs8enc);
   g_test_add_data_func ("/tls-certificate/list_from_file",
                         &ref, (GTestDataFunc)list_from_file);
+  g_test_add_data_func ("/tls-certificate/serialization",
+                        &ref, (GTestDataFunc)serialization);
 
   rtv = g_test_run();
 
