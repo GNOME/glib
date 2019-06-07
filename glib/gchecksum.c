@@ -22,7 +22,7 @@
 
 #include <string.h>
 
-#include "gchecksum.h"
+#include "gchecksumprivate.h"
 
 #include "gslice.h"
 #include "gmem.h"
@@ -176,9 +176,9 @@ sha_byte_reverse (guint32 *buffer,
 }
 #endif /* G_BYTE_ORDER == G_BIG_ENDIAN */
 
-static gchar *
-digest_to_string (guint8 *digest,
-                  gsize   digest_len)
+gchar *
+gchecksum_digest_to_string (guint8 *digest,
+                            gsize   digest_len)
 {
   gsize i, len = digest_len * 2;
   gchar *retval;
@@ -197,6 +197,7 @@ digest_to_string (guint8 *digest,
 
   return retval;
 }
+#define digest_to_string gchecksum_digest_to_string
 
 /*
  * MD5 Checksum
