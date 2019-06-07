@@ -126,6 +126,7 @@ libglib_2_0_la_SOURCES = 	\
 	ggettext.c		\
 	ghash.c			\
 	ghmac.c			\
+	ghmac-utils.c		\
 	ghook.c			\
 	ghostutils.c		\
 	giochannel.c    	\
