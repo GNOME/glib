@@ -1815,6 +1815,13 @@ if host_system == 'linux' and get_option('libmount')
   glib_conf.set('HAVE_LIBMOUNT', 1)
 endif
 
+# gnutls is used optionally by ghmac
+libgnutls_dep = []
+if get_option('gnutls')
+  libgnutls_dep = [dependency('gnutls', version : '>=3.6.7', required : true)]
+  glib_conf.set('HAVE_GNUTLS', 1)
+endif
+
 if host_system == 'windows'
   winsock2 = cc.find_library('ws2_32')
 endif

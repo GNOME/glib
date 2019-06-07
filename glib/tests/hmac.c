@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include <glib.h>
 #include <string.h>
 #include <stdlib.h>
@@ -427,6 +429,9 @@ test_hmac_ref_unref (void)
 static void
 test_hmac_copy (void)
 {
+#ifdef HAVE_GNUTLS
+  g_test_skip ("No g_hmac_copy with gnutls");
+#else
   GHmac *hmac, *check;
 
   hmac = g_hmac_new (G_CHECKSUM_SHA256, (guchar*)"aaa", 3);
@@ -435,6 +440,7 @@ test_hmac_copy (void)
   g_assert_cmpstr (g_hmac_get_string (hmac), ==, g_hmac_get_string (check));
   g_hmac_unref (check);
   g_hmac_unref (hmac);
+#endif
 }
 
 static void

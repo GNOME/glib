@@ -34,6 +34,11 @@ option('libmount',
        value : true,
        description : 'build with libmount support')
 
+option('gnutls',
+       type : 'boolean',
+       value : false,
+       description : 'build with gnutls support')
+
 option('internal_pcre',
        type : 'boolean',
        value : false,
