@@ -40,6 +40,7 @@ if get_option('gtk_doc')
     'gutilsprivate.h',
     'gvalgrind.h',
     'dirent.h',
+    'gchecksumprivate.h'
   ]
 
   docpath = join_paths(glib_datadir, 'gtk-doc', 'html')

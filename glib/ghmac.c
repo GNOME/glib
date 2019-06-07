@@ -33,6 +33,9 @@
 #include "gtypes.h"
 #include "glibintl.h"
 
+#ifdef HAVE_GNUTLS
+#error "build configuration error"
+#endif
 
 /**
  * SECTION:hmac
@@ -83,6 +86,18 @@ struct _GHmac
  *
  * Support for digests of type %G_CHECKSUM_SHA512 has been added in GLib 2.42.
  * Support for %G_CHECKSUM_SHA384 was added in GLib 2.52.
+ *
+ * Note that #GHmac creation may fail, in which case this function will
+ * return %NULL. Since there is no error parameter, it is not possible
+ * to indicate why.
+ *
+ * In Fedora, CentOS Stream, and Red Hat Enterprise Linux, GLib is
+ * configured to use GnuTLS to implement #GHmac in order to support FIPS
+ * compliance. This introduces additional failure possibilities that are
+ * not present in upstream GLib. For example, the creation of a #GHmac
+ * will fail if @digest_type is %G_CHECKSUM_MD5 and the system is
+ * running in FIPS mode. #GHmac creation may also fail if GLib is unable
+ * to load GnuTLS.
  *
  * Returns: the newly created #GHmac, or %NULL.
  *   Use g_hmac_unref() to free the memory allocated by it.

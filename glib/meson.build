@@ -252,7 +252,6 @@ glib_sources = files(
   'gfileutils.c',
   'ggettext.c',
   'ghash.c',
-  'ghmac.c',
   'ghmac-utils.c',
   'ghook.c',
   'ghostutils.c',
@@ -308,6 +307,7 @@ glib_sources = files(
   'guriprivate.h',
   'gutils.c',
   'gutilsprivate.h',
+  'gchecksumprivate.h',
   'guuid.c',
   'gvariant.c',
   'gvariant-core.c',
@@ -352,6 +352,12 @@ else
   glib_dtrace_hdr = []
 endif
 
+if get_option('gnutls')
+  glib_sources += files('ghmac-gnutls.c')
+else
+  glib_sources += files('ghmac.c')
+endif
+
 pcre_static_args = []
 
 if use_pcre_static_flag
@@ -378,7 +384,7 @@ libglib = library('glib-2.0',
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
-  dependencies : pcre_deps + [thread_dep, librt] + libintl_deps + libiconv + platform_deps + [gnulib_libm_dependency, libm] + [libsysprof_capture_dep],
+  dependencies : pcre_deps + [thread_dep, librt] + libgnutls_dep + libintl_deps + libiconv + platform_deps + [gnulib_libm_dependency, libm] + [libsysprof_capture_dep],
   c_args : glib_c_args,
   objc_args : glib_c_args,
 )

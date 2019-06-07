@@ -39,6 +39,11 @@ option('internal_pcre',
        value : false,
        description : 'whether to use internal PCRE')
 
+option('gnutls',
+       type : 'boolean',
+       value : false,
+       description : 'build with gnutls support')
+
 option('man',
        type : 'boolean',
        value : false,
