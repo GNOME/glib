@@ -37,6 +37,11 @@ option('libmount',
        value : 'auto',
        description : 'build with libmount support')
 
+option('gnutls',
+       type : 'boolean',
+       value : false,
+       description : 'build with gnutls support')
+
 option('man',
        type : 'boolean',
        value : false,
