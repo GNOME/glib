@@ -1,3 +1,25 @@
+Overview of changes in GLib 2.60.4
+==================================
+
+* Fixes to improved network status detection with NetworkManager (#1788)
+
+* Leak fixes to some `glib-genmarshal` generated code (#1793)
+
+* Further fixes to the Happy Eyeballs (RFC 8305) implementation (!865)
+
+* File system permissions fix to clamp down permissions in a small time window
+  when copying files (CVE-2019-12450, !876)
+
+* Bugs fixed:
+ - #1755 Please revert #535 gmacros: Try to use the standard __func__ first in G_STRFUNC
+ - #1788 GNetworkMonitor claims I am offline
+ - #1792 glib-genmarshal generated valist marshal does not respect static scope for some types
+ - #1793 glib-genmarshal generates wrong code for va marshaler for VARIANT type
+ - #1795 Fix mingw32 CI on older branches
+ - !865 gnetworkaddress: fix "happy eyeballs" logic
+ - !878 Backport !876 “gfile: Limit access to files when copying” to glib-2-60
+
+
 Overview of changes in GLib 2.60.3
 ==================================
 
