@@ -158,6 +158,29 @@ g_property_action_get_state_type (GAction *action)
 static GVariant *
 g_property_action_get_state_hint (GAction *action)
 {
+  GPropertyAction *paction = G_PROPERTY_ACTION (action);
+
+  if (paction->pspec->value_type == G_TYPE_INT)
+    {
+      GParamSpecInt *pspec = (GParamSpecInt *)paction->pspec;
+      return g_variant_new ("(ii)", pspec->minimum, pspec->maximum);
+    }
+  else if (paction->pspec->value_type == G_TYPE_UINT)
+    {
+      GParamSpecUInt *pspec = (GParamSpecUInt *)paction->pspec;
+      return g_variant_new ("(uu)", pspec->minimum, pspec->maximum);
+    }
+  else if (paction->pspec->value_type == G_TYPE_FLOAT)
+    {
+      GParamSpecFloat *pspec = (GParamSpecFloat *)paction->pspec;
+      return g_variant_new ("(dd)", (double)pspec->minimum, (double)pspec->maximum);
+    }
+  else if (paction->pspec->value_type == G_TYPE_DOUBLE)
+    {
+      GParamSpecDouble *pspec = (GParamSpecDouble *)paction->pspec;
+      return g_variant_new ("(dd)", pspec->minimum, pspec->maximum);
+    }
+
   return NULL;
 }
 
