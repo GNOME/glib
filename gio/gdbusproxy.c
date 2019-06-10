@@ -2926,7 +2926,8 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
  * g_dbus_proxy_call:
  * @proxy: A #GDBusProxy.
  * @method_name: Name of method to invoke.
- * @parameters: (nullable): A #GVariant tuple with parameters for the signal or %NULL if not passing parameters.
+ * @parameters: (nullable) (transfer none): A #GVariant tuple with parameters
+ *                for the signal or %NULL if not passing parameters.
  * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds (with %G_MAXINT meaning
  *                "infinite") or -1 to use the proxy default timeout.
@@ -2951,16 +2952,18 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
  * If the @parameters #GVariant is floating, it is consumed. This allows
  * convenient 'inline' use of g_variant_new(), e.g.:
  * |[<!-- language="C" -->
+ *  GVariant *parameters = g_variant_new ("(ss)",
+ *                                        "Thing One",
+ *                                        "Thing Two");
  *  g_dbus_proxy_call (proxy,
  *                     "TwoStrings",
- *                     g_variant_new ("(ss)",
- *                                    "Thing One",
- *                                    "Thing Two"),
+ *                     parameters,
  *                     G_DBUS_CALL_FLAGS_NONE,
  *                     -1,
  *                     NULL,
  *                     (GAsyncReadyCallback) two_strings_done,
  *                     &data);
+ *  g_variant_unref (parameters);
  * ]|
  *
  * If @proxy has an expected interface (see
@@ -3018,8 +3021,8 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
  * g_dbus_proxy_call_sync:
  * @proxy: A #GDBusProxy.
  * @method_name: Name of method to invoke.
- * @parameters: (nullable): A #GVariant tuple with parameters for the signal
- *              or %NULL if not passing parameters.
+ * @parameters: (nullable) (transfer none): A #GVariant tuple with parameters
+ *              for the signal or %NULL if not passing parameters.
  * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds (with %G_MAXINT meaning
  *                "infinite") or -1 to use the proxy default timeout.
@@ -3042,15 +3045,17 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
  * If the @parameters #GVariant is floating, it is consumed. This allows
  * convenient 'inline' use of g_variant_new(), e.g.:
  * |[<!-- language="C" -->
+ *  GVariant *parameters = g_variant_new ("(ss)",
+ *                                        "Thing One",
+ *                                        "Thing Two");
  *  g_dbus_proxy_call_sync (proxy,
  *                          "TwoStrings",
- *                          g_variant_new ("(ss)",
- *                                         "Thing One",
- *                                         "Thing Two"),
+ *                          parameters,
  *                          G_DBUS_CALL_FLAGS_NONE,
  *                          -1,
  *                          NULL,
  *                          &error);
+ *  g_variant_unref (parameters);
  * ]|
  *
  * The calling thread is blocked until a reply is received. See
