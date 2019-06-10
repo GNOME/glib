@@ -48,35 +48,23 @@ typedef struct
   GFileOutputStream *output_stream;
 } TestData;
 
-#if 0
 static void
-output_event (RecordedEvent *event)
+output_event (const RecordedEvent *event)
 {
   if (event->step >= 0)
-    g_print (">>>> step %d\n", event->step);
+    g_test_message (">>>> step %d", event->step);
   else
     {
       GTypeClass *class;
 
       class = g_type_class_ref (g_type_from_name ("GFileMonitorEvent"));
-      g_print ("%s file=%s other_file=%s\n",
-               g_enum_get_value (G_ENUM_CLASS (class), event->event_type)->value_nick,
-               event->file,
-               event->other_file);
+      g_test_message ("%s file=%s other_file=%s\n",
+                      g_enum_get_value (G_ENUM_CLASS (class), event->event_type)->value_nick,
+                      event->file,
+                      event->other_file);
       g_type_class_unref (class);
     }
 }
-
-static void
-output_events (GList *list)
-{
-  GList *l;
-
-  g_print (">>>output events\n");
-  for (l = list; l; l = l->next)
-    output_event ((RecordedEvent *)l->data);
-}
-#endif
 
 /* a placeholder for temp file names we don't want to compare */
 static const gchar DONT_CARE[] = "";
@@ -210,9 +198,20 @@ check_expected_events (RecordedEvent *expected,
               continue;
             }
           /* Run above checks under g_assert_* again to provide more useful
-           * error messages. */
+           * error messages. Print the expected and actual events first. */
           else
             {
+              GList *l;
+              gsize j;
+
+              g_test_message ("Recorded events:");
+              for (l = recorded; l != NULL; l = l->next)
+                output_event ((RecordedEvent *) l->data);
+
+              g_test_message ("Expected events:");
+              for (j = 0; j < n_expected; j++)
+                output_event (&expected[j]);
+
               g_assert_cmpint (e1->step, ==, e2->step);
               g_assert_cmpint (e1->event_type, ==, e2->event_type);
 
@@ -336,6 +335,8 @@ test_atomic_replace (void)
   data.monitor = g_file_monitor_file (data.file, G_FILE_MONITOR_WATCH_MOVES, NULL, &error);
   g_assert_no_error (error);
 
+  g_test_message ("Using GFileMonitor %s", G_OBJECT_TYPE_NAME (data.monitor));
+
   g_file_monitor_set_rate_limit (data.monitor, 200);
   g_signal_connect (data.monitor, "changed", G_CALLBACK (monitor_changed), &data);
 
@@ -345,7 +346,6 @@ test_atomic_replace (void)
 
   g_main_loop_run (data.loop);
 
-  /*output_events (data.events);*/
   check_expected_events (atomic_replace_output,
                          G_N_ELEMENTS (atomic_replace_output),
                          data.events,
@@ -439,6 +439,8 @@ test_file_changes (void)
   data.monitor = g_file_monitor_file (data.file, G_FILE_MONITOR_WATCH_MOVES, NULL, &error);
   g_assert_no_error (error);
 
+  g_test_message ("Using GFileMonitor %s", G_OBJECT_TYPE_NAME (data.monitor));
+
   g_file_monitor_set_rate_limit (data.monitor, 200);
   g_signal_connect (data.monitor, "changed", G_CALLBACK (monitor_changed), &data);
 
@@ -448,7 +450,6 @@ test_file_changes (void)
 
   g_main_loop_run (data.loop);
 
-  /*output_events (data.events);*/
   check_expected_events (change_output,
                          G_N_ELEMENTS (change_output),
                          data.events,
@@ -555,6 +556,8 @@ test_dir_monitor (void)
   data.monitor = g_file_monitor_directory (data.file, G_FILE_MONITOR_WATCH_MOVES, NULL, &error);
   g_assert_no_error (error);
 
+  g_test_message ("Using GFileMonitor %s", G_OBJECT_TYPE_NAME (data.monitor));
+
   g_file_monitor_set_rate_limit (data.monitor, 200);
   g_signal_connect (data.monitor, "changed", G_CALLBACK (monitor_changed), &data);
 
@@ -564,7 +567,6 @@ test_dir_monitor (void)
 
   g_main_loop_run (data.loop);
 
-  /*output_events (data.events);*/
   check_expected_events (dir_output,
                          G_N_ELEMENTS (dir_output),
                          data.events,
@@ -647,6 +649,8 @@ test_dir_non_existent (void)
   data.monitor = g_file_monitor_file (data.file, G_FILE_MONITOR_WATCH_MOVES, NULL, &error);
   g_assert_no_error (error);
 
+  g_test_message ("Using GFileMonitor %s", G_OBJECT_TYPE_NAME (data.monitor));
+
   g_file_monitor_set_rate_limit (data.monitor, 200);
   g_signal_connect (data.monitor, "changed", G_CALLBACK (monitor_changed), &data);
 
@@ -659,7 +663,6 @@ test_dir_non_existent (void)
 
   g_main_loop_run (data.loop);
 
-  /*output_events (data.events);*/
   check_expected_events (nodir_output,
                          G_N_ELEMENTS (nodir_output),
                          data.events,
@@ -757,6 +760,8 @@ test_cross_dir_moves (void)
   data[0].monitor = g_file_monitor_directory (data[0].file, 0, NULL, &error);
   g_assert_no_error (error);
 
+  g_test_message ("Using GFileMonitor 0 %s", G_OBJECT_TYPE_NAME (data[0].monitor));
+
   g_file_monitor_set_rate_limit (data[0].monitor, 200);
   g_signal_connect (data[0].monitor, "changed", G_CALLBACK (monitor_changed), &data[0]);
 
@@ -770,6 +775,8 @@ test_cross_dir_moves (void)
   data[1].monitor = g_file_monitor_directory (data[1].file, G_FILE_MONITOR_WATCH_MOVES, NULL, &error);
   g_assert_no_error (error);
 
+  g_test_message ("Using GFileMonitor 1 %s", G_OBJECT_TYPE_NAME (data[1].monitor));
+
   g_file_monitor_set_rate_limit (data[1].monitor, 200);
   g_signal_connect (data[1].monitor, "changed", G_CALLBACK (monitor_changed), &data[1]);
 
@@ -778,13 +785,6 @@ test_cross_dir_moves (void)
   g_timeout_add (500, cross_dir_step, data);
 
   g_main_loop_run (data[0].loop);
-
-#if 0
-  g_print ("monitor a:\n");
-  output_events (data[0].events);
-  g_print ("monitor b:\n");
-  output_events (data[1].events);
-#endif
 
   check_expected_events (cross_dir_a_output,
                          G_N_ELEMENTS (cross_dir_a_output),
@@ -945,6 +945,8 @@ test_file_hard_links (void)
   g_assert_no_error (error);
   g_assert_nonnull (data.monitor);
 
+  g_test_message ("Using GFileMonitor %s", G_OBJECT_TYPE_NAME (data.monitor));
+
   /* Change the file a bit. */
   g_file_monitor_set_rate_limit (data.monitor, 200);
   g_signal_connect (data.monitor, "changed", (GCallback) monitor_changed, &data);
@@ -953,7 +955,6 @@ test_file_hard_links (void)
   g_timeout_add (500, file_hard_links_step, &data);
   g_main_loop_run (data.loop);
 
-  /* output_events (data.events); */
   check_expected_events (file_hard_links_output,
                          G_N_ELEMENTS (file_hard_links_output),
                          data.events,
