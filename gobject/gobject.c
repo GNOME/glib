@@ -3977,8 +3977,8 @@ g_value_set_object_take_ownership (GValue  *value,
  * @v_object: (nullable): object value to be set
  *
  * Sets the contents of a %G_TYPE_OBJECT derived #GValue to @v_object
- * and takes over the ownership of the callers reference to @v_object;
- * the caller doesn't have to unref it any more (i.e. the reference
+ * and takes over the ownership of the caller’s reference to @v_object;
+ * the caller doesn’t have to unref it any more (i.e. the reference
  * count of the object is not increased).
  *
  * If you want the #GValue to hold its own reference to @v_object, use
