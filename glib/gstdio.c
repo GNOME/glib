@@ -19,7 +19,9 @@
 #include "config.h"
 #include "glibconfig.h"
 
-#define G_STDIO_NO_WRAP_ON_UNIX
+/* Don’t redefine (for example) g_open() to open(), since we actually want to
+ * define g_open() in this file and export it as a symbol. See gstdio.h. */
+#define G_STDIO_WRAP_ON_UNIX
 
 #include <sys/types.h>
 #include <sys/stat.h>
