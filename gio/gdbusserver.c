@@ -72,6 +72,11 @@
  *
  * An example of peer-to-peer communication with G-DBus can be found
  * in [gdbus-example-peer.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-peer.c).
+ *
+ * Note that a minimal #GDBusServer will accept connections from any
+ * peer. In many use-cases it will be necessary to add a #GDBusAuthObserver
+ * that only accepts connections that have successfully authenticated
+ * as the same user that is running the #GDBusServer.
  */
 
 /**
@@ -456,6 +461,10 @@ on_run (GSocketService    *service,
  *
  * Once constructed, you can use g_dbus_server_get_client_address() to
  * get a D-Bus address string that clients can use to connect.
+ *
+ * To have control over the available authentication mechanisms and
+ * the users that are authorized to connect, it is strongly recommended
+ * to provide a non-%NULL #GDBusAuthObserver.
  *
  * Connect to the #GDBusServer::new-connection signal to handle
  * incoming connections.
