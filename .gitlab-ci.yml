@@ -1,6 +1,7 @@
 stages:
   - build
   - coverage
+  - analysis
   - deploy
 
 cache:
@@ -238,6 +239,29 @@ coverage:
   script:
     - bash -x ./.gitlab-ci/coverage-docker.sh
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
+
+scan-build:
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v1
+  stage: analysis
+  except:
+    - tags
+  script:
+    - meson ${MESON_COMMON_OPTIONS}
+            --werror
+            --default-library=both
+            --prefix=$HOME/glib-installed
+            --libdir=lib
+            -Dsystemtap=true
+            -Ddtrace=true
+            -Dfam=true
+            -Dinstalled_tests=true
+            _build
+    - ninja -C _build scan-build
+  artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/meson-logs/scanbuild"
 
 pages:
   stage: deploy
