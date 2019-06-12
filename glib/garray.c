@@ -922,6 +922,48 @@ g_ptr_array_new (void)
   return g_ptr_array_sized_new (0);
 }
 
+static void
+add_ptr (gpointer p, GPtrArray *array) {
+  g_ptr_array_add (array, p);
+}
+
+/**
+ * g_ptr_array_copy:
+ * @array: #GPtrArray to duplicate
+ * @func: a copy function used to copy every element in the array
+ * @user_data: user data passed to the copy function @func, or %NULL
+ *
+ * Makes a full (deep) copy of a #GPtrArray.
+ *
+ * @func, as a #GCopyFunc, takes two arguments, the data to be copied
+ * and a @user_data pointer. On common processor architectures, it's safe to
+ * pass %NULL as @user_data if the copy function takes only one argument. You
+ * may get compiler warnings from this though if compiling with GCC’s
+ * `-Wcast-function-type` warning.
+ *
+ * Returns: a  #GPtrArray which is a deep copy of the initial #GPtrArray.
+ *
+ * Since: 2.60
+ **/
+GPtrArray *
+g_ptr_array_copy (GPtrArray *array,
+                  GCopyFunc  func,
+                  gpointer   user_data)
+{
+  GPtrArray* array_copy;
+
+  g_return_val_if_fail (array != NULL, NULL);
+
+  array_copy = g_ptr_array_sized_new (array->len);
+
+  if (func)
+    array_copy->pdata = func (array->pdata, user_data);
+  else
+    array_copy->pdata = array->pdata;
+
+  return array_copy;
+}
+
 /**
  * g_ptr_array_sized_new:
  * @reserved_size: number of pointers preallocated
@@ -1490,6 +1532,24 @@ g_ptr_array_add (GPtrArray *array,
   g_ptr_array_maybe_expand (rarray, 1);
 
   rarray->pdata[rarray->len++] = data;
+}
+
+/**
+ * g_ptr_array_append:
+ * @array: a #GPtrArray.
+ * @array_to_append: a #GPtrArray.
+ *
+ * Adds all pointers in array_to_append to the end of the pointer array.
+ * The array will grow in size automatically if necessary.
+ *
+ * Since: 2.60.5
+ **/
+void
+g_ptr_array_append (GPtrArray  *array,
+                    GPtrArray  *array_to_append)
+{
+  g_return_if_fail (array);
+  g_ptr_array_foreach(array_to_append, (GFunc) add_ptr, array);
 }
 
 /**

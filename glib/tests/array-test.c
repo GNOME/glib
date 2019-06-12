@@ -746,6 +746,69 @@ pointer_array_free_func (void)
   g_assert_cmpint (num_free_func_invocations, ==, 0);
 }
 
+static gpointer
+ptr_array_copy_func (gconstpointer src, gpointer userdata)
+{
+  gsize size = GPOINTER_TO_UINT (userdata);
+  gpointer data = g_malloc (size * sizeof (gsize));
+  return memcpy (data, src, size);
+}
+
+static void
+pointer_array_copy (void)
+{
+  gsize i, array_size = 1000;
+  GPtrArray *ptr_array, *ptr_array2;
+
+  ptr_array = g_ptr_array_sized_new (array_size);
+
+  for (i = 0; i < array_size; i++)
+    g_ptr_array_add (ptr_array, GINT_TO_POINTER (i));
+
+  /* Test simple copy */
+  ptr_array2 = g_ptr_array_copy (ptr_array, NULL, NULL);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint ((gsize) g_ptr_array_index (ptr_array2, i), ==,
+                      (gsize) GINT_TO_POINTER (i));
+
+  g_ptr_array_free (ptr_array2, TRUE);
+
+  /* Test copy through GCopyFunc */
+  ptr_array2 = g_ptr_array_copy (ptr_array, ptr_array_copy_func,
+                                 GUINT_TO_POINTER(array_size));
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint ((gsize) g_ptr_array_index (ptr_array2, i), ==,
+                      (gsize) GINT_TO_POINTER (i));
+
+  g_ptr_array_free (ptr_array2, TRUE);
+
+  /* Final cleanup */
+  g_ptr_array_free (ptr_array, TRUE);
+}
+
+static void
+pointer_array_append (void)
+{
+  gsize i, array_size = 1000;
+  GPtrArray *ptr_array, *ptr_array2;
+
+  ptr_array = g_ptr_array_sized_new (array_size);
+  ptr_array2 = g_ptr_array_sized_new (array_size);
+
+  for (i = 0; i < array_size; i++)
+    {
+      g_ptr_array_add (ptr_array, GINT_TO_POINTER (i));
+      g_ptr_array_add (ptr_array2, GINT_TO_POINTER (i));
+    }
+
+  g_ptr_array_append (ptr_array, ptr_array2);
+
+  g_ptr_array_free (ptr_array, TRUE);
+  g_ptr_array_free (ptr_array2, TRUE);
+}
+
 static gint
 ptr_compare (gconstpointer p1, gconstpointer p2)
 {
@@ -1262,6 +1325,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/pointerarray/insert", pointer_array_insert);
   g_test_add_func ("/pointerarray/ref-count", pointer_array_ref_count);
   g_test_add_func ("/pointerarray/free-func", pointer_array_free_func);
+  g_test_add_func ("/pointerarray/array_copy", pointer_array_copy);
+  g_test_add_func ("/pointerarray/array_append", pointer_array_append);
   g_test_add_func ("/pointerarray/sort", pointer_array_sort);
   g_test_add_func ("/pointerarray/sort-with-data", pointer_array_sort_with_data);
   g_test_add_func ("/pointerarray/find/empty", pointer_array_find_empty);
