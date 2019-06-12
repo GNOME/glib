@@ -162,6 +162,17 @@ G_DEFINE_TYPE_WITH_CODE (GDBusServer, g_dbus_server, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init))
 
 static void
+g_dbus_server_dispose (GObject *object)
+{
+  GDBusServer *server = G_DBUS_SERVER (object);
+
+  if (server->active)
+    g_dbus_server_stop (server);
+
+  G_OBJECT_CLASS (g_dbus_server_parent_class)->dispose (object);
+}
+
+static void
 g_dbus_server_finalize (GObject *object)
 {
   GDBusServer *server = G_DBUS_SERVER (object);
@@ -270,6 +281,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->dispose      = g_dbus_server_dispose;
   gobject_class->finalize     = g_dbus_server_finalize;
   gobject_class->set_property = g_dbus_server_set_property;
   gobject_class->get_property = g_dbus_server_get_property;
