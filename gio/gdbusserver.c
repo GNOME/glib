@@ -474,8 +474,8 @@ on_run (GSocketService    *service,
  *
  * #GDBusServer is used in this [example][gdbus-peer-to-peer].
  *
- * This is a synchronous failable constructor. See
- * g_dbus_server_new() for the asynchronous version.
+ * This is a synchronous failable constructor. There is currently no
+ * asynchronous version.
  *
  * Returns: A #GDBusServer or %NULL if @error is set. Free with
  * g_object_unref().
