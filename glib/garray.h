@@ -29,6 +29,7 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
+#include <glib/gnode.h>
 #include <glib/gtypes.h>
 
 G_BEGIN_DECLS
@@ -130,6 +131,10 @@ GLIB_AVAILABLE_IN_ALL
 GPtrArray* g_ptr_array_new                (void);
 GLIB_AVAILABLE_IN_ALL
 GPtrArray* g_ptr_array_new_with_free_func (GDestroyNotify    element_free_func);
+GLIB_AVAILABLE_IN_2_62
+GPtrArray *g_ptr_array_copy               (GPtrArray        *array,
+                                           GCopyFunc         func,
+                                           gpointer          user_data);
 GLIB_AVAILABLE_IN_ALL
 GPtrArray* g_ptr_array_sized_new          (guint             reserved_size);
 GLIB_AVAILABLE_IN_ALL
@@ -173,6 +178,9 @@ GPtrArray *g_ptr_array_remove_range       (GPtrArray        *array,
 GLIB_AVAILABLE_IN_ALL
 void       g_ptr_array_add                (GPtrArray        *array,
 					   gpointer          data);
+GLIB_AVAILABLE_IN_2_62
+void g_ptr_array_extend                   (GPtrArray        *array_to_extend,
+                                           GPtrArray        *array);
 GLIB_AVAILABLE_IN_2_40
 void       g_ptr_array_insert             (GPtrArray        *array,
                                            gint              index_,
