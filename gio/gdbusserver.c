@@ -101,6 +101,7 @@ struct _GDBusServer
 
   gchar *client_address;
 
+  gchar *unix_socket_path;
   GSocketListener *listener;
   gboolean is_using_listener;
   gulong run_signal_handler_id;
@@ -194,10 +195,20 @@ g_dbus_server_finalize (GObject *object)
       memset (server->nonce, '\0', 16);
       g_free (server->nonce);
     }
-  /* we could unlink the nonce file but I don't
-   * think it's really worth the effort/risk
-   */
-  g_free (server->nonce_file);
+
+  if (server->unix_socket_path)
+    {
+      if (g_unlink (server->unix_socket_path) != 0)
+        g_warning ("Failed to delete %s: %s", server->unix_socket_path, g_strerror (errno));
+      g_free (server->unix_socket_path);
+    }
+
+  if (server->nonce_file)
+    {
+      if (g_unlink (server->nonce_file) != 0)
+        g_warning ("Failed to delete %s: %s", server->nonce_file, g_strerror (errno));
+      g_free (server->nonce_file);
+    }
 
   g_main_context_unref (server->main_context_at_construction);
 
@@ -768,9 +779,12 @@ try_unix (GDBusServer  *server,
               break;
 
             case G_UNIX_SOCKET_ADDRESS_PATH:
-              server->client_address = g_strdup_printf ("unix:path=%s",
-                                                        g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address)));
-              break;
+              {
+                const char *address_path = g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address));
+                server->client_address = g_strdup_printf ("unix:path=%s", address_path);
+                server->unix_socket_path = g_strdup (address_path);
+                break;
+              }
 
             default:
               g_assert_not_reached ();
