@@ -1773,8 +1773,7 @@ main (int   argc,
   g_main_loop_unref (loop);
   g_free (test_guid);
   g_dbus_node_info_unref (introspection_data);
-  if (is_unix)
-    g_free (tmp_address);
+  g_free (tmp_address);
   if (tmpdir)
     {
       g_rmdir (tmpdir);
