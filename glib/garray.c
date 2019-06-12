@@ -923,6 +923,49 @@ g_ptr_array_new (void)
 }
 
 /**
+ * g_ptr_array_copy:
+ * @array: #GPtrArray to duplicate
+ * @func: a copy function used to copy every element in the array
+ * @user_data: user data passed to the copy function @func, or %NULL
+ *
+ * Makes a full (deep) copy of a #GPtrArray.
+ *
+ * @func, as a #GCopyFunc, takes two arguments, the data to be copied
+ * and a @user_data pointer. On common processor architectures, it's safe to
+ * pass %NULL as @user_data if the copy function takes only one argument. You
+ * may get compiler warnings from this though if compiling with GCC’s
+ * `-Wcast-function-type` warning.
+ *
+ * If @func is %NULL, then only the pointers (and not what they are
+ * pointing) are copied to the new #GPtrArray.
+ *
+ * Returns: a  #GPtrArray which is a deep copy of the initial #GPtrArray.
+ *
+ * Since: 2.62
+ **/
+GPtrArray *
+g_ptr_array_copy (GPtrArray *array,
+                  GCopyFunc  func,
+                  gpointer   user_data)
+{
+  gsize i;
+  GPtrArray* new_array;
+
+  g_return_val_if_fail (array != NULL, NULL);
+
+  new_array = g_ptr_array_sized_new (array->len);
+  for (i = 0; i < array->len; i++)
+    {
+      if (func)
+        new_array->pdata[i] = func (array->pdata[i], user_data);
+      else
+        new_array->pdata[i] = array->pdata[i];
+    }
+
+  return new_array;
+}
+
+/**
  * g_ptr_array_sized_new:
  * @reserved_size: number of pointers preallocated
  *
@@ -1490,6 +1533,72 @@ g_ptr_array_add (GPtrArray *array,
   g_ptr_array_maybe_expand (rarray, 1);
 
   rarray->pdata[rarray->len++] = data;
+}
+
+/**
+ * g_ptr_array_extend:
+ * @array_to_extend: a #GPtrArray.
+ * @array: a #GPtrArray.
+ * @func: a copy function used to copy every element in the array
+ * @user_data: user data passed to the copy function @func, or %NULL
+ *
+ * Adds all pointers of @array to the end of the array @array_to_extend.
+ * The array will grow in size automatically if needed.
+ *
+ * @func, as a #GCopyFunc, takes two arguments, the data to be copied
+ * and a @user_data pointer. On common processor architectures, it's safe to
+ * pass %NULL as @user_data if the copy function takes only one argument. You
+ * may get compiler warnings from this though if compiling with GCC’s
+ * `-Wcast-function-type` warning.
+ *
+ * If @func is %NULL, then only the pointers (and not what they are
+ * pointing) are copied to the new #GPtrArray.
+ *
+ * Since: 2.62
+ **/
+void
+g_ptr_array_extend (GPtrArray  *array_to_extend,
+                    GPtrArray  *array,
+                    GCopyFunc   func,
+                    gpointer    user_data)
+{
+  gsize i;
+  GRealPtrArray *rarray = (GRealPtrArray *) array_to_extend;
+
+  g_return_if_fail (rarray != NULL);
+  g_return_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL));
+
+  g_ptr_array_maybe_expand(rarray, array->len);
+
+  for (i = 0; i < array->len; i++)
+    {
+      if (func)
+        rarray->pdata[i] = func (array->pdata[i], user_data);
+      else
+        rarray->pdata[i + rarray->len] = array->pdata[i];
+    }
+
+  rarray->len += array->len;
+}
+
+/**
+ * g_ptr_array_extend_and_steal:
+ * @array_to_extend: a #GPtrArray.
+ * @array: a #GPtrArray.
+ *
+ * Adds all pointers of @array to the end of the pointer array @array_to_extend.
+ * The array will grow in size automatically if needed. And, unref the @array.
+ *
+ * Since: 2.62
+ **/
+void
+g_ptr_array_extend_and_steal (GPtrArray  *array_to_extend,
+                              GPtrArray  *array,
+                              GCopyFunc   func,
+                              gpointer    user_data)
+{
+  g_ptr_array_extend (array_to_extend, array, func, user_data);
+  g_ptr_array_unref (array);
 }
 
 /**
