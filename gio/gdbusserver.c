@@ -728,7 +728,7 @@ try_unix (GDBusServer  *server,
           g_set_error_literal (error,
                                G_IO_ERROR,
                                G_IO_ERROR_NOT_SUPPORTED,
-                               _("Abstract name space not supported"));
+                               _("Abstract namespace not supported"));
           goto out;
         }
       address = g_unix_socket_address_new_with_type (abstract,
