@@ -113,9 +113,13 @@ test_unix_address (void)
   g_assert_false (g_dbus_is_address ("unix:path=/foo;abstract=/bar"));
   assert_is_supported_address ("unix:path=/tmp/concrete;unix:abstract=/tmp/abstract");
   assert_is_supported_address ("unix:tmpdir=/tmp");
+  assert_is_supported_address ("unix:dir=/tmp");
   assert_not_supported_address ("unix:tmpdir=/tmp,path=/tmp");
   assert_not_supported_address ("unix:tmpdir=/tmp,abstract=/tmp/foo");
+  assert_not_supported_address ("unix:tmpdir=/tmp,dir=/tmp");
   assert_not_supported_address ("unix:path=/tmp,abstract=/tmp/foo");
+  assert_not_supported_address ("unix:path=/tmp,dir=/tmp");
+  assert_not_supported_address ("unix:abstract=/tmp/foo,dir=/tmp");
   assert_not_supported_address ("unix:");
 #endif
 }
