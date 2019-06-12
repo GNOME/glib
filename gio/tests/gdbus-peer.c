@@ -53,6 +53,7 @@ static gboolean is_unix = TRUE;
 static gboolean is_unix = FALSE;
 #endif
 
+static gchar *tmpdir = NULL;
 static gchar *tmp_address = NULL;
 static gchar *test_guid = NULL;
 static GMutex service_loop_lock;
@@ -263,6 +264,58 @@ on_proxy_signal_received_with_name_set (GDBusProxy *proxy,
   g_assert_cmpstr (sender_name, ==, ":1.42");
   g_assert_cmpstr (signal_name, ==, "PeerSignalWithNameSet");
   g_main_loop_quit (loop);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static void
+setup_test_address (void)
+{
+  if (is_unix)
+    {
+      g_test_message ("Testing with unix:tmpdir address");
+      if (g_unix_socket_address_abstract_names_supported ())
+	tmp_address = g_strdup ("unix:tmpdir=/tmp/gdbus-test-");
+      else
+	{
+	  tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
+	  tmp_address = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
+	}
+    }
+  else
+    tmp_address = g_strdup ("nonce-tcp:");
+}
+
+#ifdef G_OS_UNIX
+static void
+setup_dir_test_address (void)
+{
+  g_test_message ("Testing with unix:dir address");
+  tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
+  tmp_address = g_strdup_printf ("unix:dir=%s", tmpdir);
+}
+
+static void
+setup_path_test_address (void)
+{
+  g_test_message ("Testing with unix:path address");
+  tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
+  tmp_address = g_strdup_printf ("unix:path=%s/gdbus-peer-socket", tmpdir);
+}
+#endif
+
+static void
+teardown_test_address (void)
+{
+  g_free (tmp_address);
+  if (tmpdir)
+    {
+      /* Ensuring the rmdir succeeds also ensures any sockets created on the
+       * filesystem are also deleted.
+       */
+      g_assert_cmpint (g_rmdir (tmpdir), ==, 0);
+      g_clear_pointer (&tmpdir, g_free);
+    }
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -656,7 +709,7 @@ read_all_from_fd (gint fd, gsize *out_len, GError **error)
 #endif
 
 static void
-test_peer (void)
+do_test_peer (void)
 {
   GDBusConnection *c;
   GDBusConnection *c2;
@@ -977,6 +1030,27 @@ test_peer (void)
   g_thread_join (service_thread);
 }
 
+static void
+test_peer (void)
+{
+  /* Run this test multiple times using different address formats to ensure
+   * they all work.
+   */
+  setup_test_address ();
+  do_test_peer ();
+  teardown_test_address ();
+
+#ifdef G_OS_UNIX
+  setup_dir_test_address ();
+  do_test_peer ();
+  teardown_test_address ();
+
+  setup_path_test_address ();
+  do_test_peer ();
+  teardown_test_address ();
+#endif
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 typedef struct
@@ -1116,6 +1190,8 @@ delayed_message_processing (void)
   GThread *service_thread;
   guint n;
 
+  setup_test_address ();
+
   data = g_new0 (DmpData, 1);
 
   service_thread = g_thread_new ("dmp",
@@ -1160,6 +1236,7 @@ delayed_message_processing (void)
   g_main_loop_quit (data->loop);
   g_thread_join (service_thread);
   dmp_data_free (data);
+  teardown_test_address ();
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1620,6 +1697,8 @@ codegen_test_peer (void)
   GVariant            *value;
   const gchar         *s;
 
+  setup_test_address ();
+
   /* bring up a server - we run the server in a different thread to avoid deadlocks */
   service_thread = g_thread_new ("codegen_test_peer",
                                  codegen_service_thread_func,
@@ -1723,6 +1802,8 @@ codegen_test_peer (void)
   g_object_unref (animal1);
   g_object_unref (animal2);
   g_thread_join (service_thread);
+
+  teardown_test_address ();
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1734,7 +1815,6 @@ main (int   argc,
 {
   gint ret;
   GDBusNodeInfo *introspection_data = NULL;
-  gchar *tmpdir = NULL;
 
   g_test_init (&argc, &argv, NULL);
 
@@ -1743,19 +1823,6 @@ main (int   argc,
   test_interface_introspection_data = introspection_data->interfaces[0];
 
   test_guid = g_dbus_generate_guid ();
-
-  if (is_unix)
-    {
-      if (g_unix_socket_address_abstract_names_supported ())
-	tmp_address = g_strdup ("unix:tmpdir=/tmp/gdbus-test-");
-      else
-	{
-	  tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
-	  tmp_address = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
-	}
-    }
-  else
-    tmp_address = g_strdup ("nonce-tcp:");
 
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
@@ -1773,12 +1840,6 @@ main (int   argc,
   g_main_loop_unref (loop);
   g_free (test_guid);
   g_dbus_node_info_unref (introspection_data);
-  g_free (tmp_address);
-  if (tmpdir)
-    {
-      g_rmdir (tmpdir);
-      g_free (tmpdir);
-    }
 
   return ret;
 }
