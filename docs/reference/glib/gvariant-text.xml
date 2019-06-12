@@ -380,7 +380,7 @@
     inferencing in action.
    </para>
    <para>
-    <literal>[(1, 2), (3, 4.0)]</literal> causes the 2 to also be parsed as a double (but the 1 and 4 are still
+    <literal>[(1, 2), (3, 4.0)]</literal> causes the 2 to also be parsed as a double (but the 1 and 3 are still
     integers).
    </para>
    <para>
