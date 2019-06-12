@@ -1351,11 +1351,15 @@ test_nonce_tcp (void)
   g_error_free (error);
   g_assert (c == NULL);
 
-  g_free (nonce_file);
+  /* Recreate the nonce-file so we can ensure the server deletes it when stopped. */
+  g_assert_cmpint (g_creat (nonce_file, 0600), !=, -1);
 
   g_dbus_server_stop (server);
   g_object_unref (server);
   server = NULL;
+
+  g_assert_false (g_file_test (nonce_file, G_FILE_TEST_EXISTS));
+  g_free (nonce_file);
 
   g_main_loop_quit (service_loop);
   g_thread_join (service_thread);
