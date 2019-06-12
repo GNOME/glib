@@ -641,6 +641,7 @@ try_unix (GDBusServer  *server,
 {
   gboolean ret;
   const gchar *path;
+  const gchar *dir;
   const gchar *tmpdir;
   const gchar *abstract;
   GSocketAddress *address;
@@ -649,6 +650,7 @@ try_unix (GDBusServer  *server,
   address = NULL;
 
   path = g_hash_table_lookup (key_value_pairs, "path");
+  dir = g_hash_table_lookup (key_value_pairs, "dir");
   tmpdir = g_hash_table_lookup (key_value_pairs, "tmpdir");
   abstract = g_hash_table_lookup (key_value_pairs, "abstract");
 
@@ -656,20 +658,21 @@ try_unix (GDBusServer  *server,
     {
       address = g_unix_socket_address_new (path);
     }
-  else if (tmpdir != NULL)
+  else if (dir != NULL || tmpdir != NULL)
     {
       gint n;
       GString *s;
       GError *local_error;
 
     retry:
-      s = g_string_new (tmpdir);
+      s = g_string_new (tmpdir != NULL ? tmpdir : dir);
       g_string_append (s, "/dbus-");
       for (n = 0; n < 8; n++)
         g_string_append_c (s, random_ascii ());
 
-      /* prefer abstract namespace if available */
-      if (g_unix_socket_address_abstract_names_supported ())
+      /* prefer abstract namespace if available for tmpdir: addresses
+       * abstract namespace is disallowed for dir: addresses */
+      if (tmpdir != NULL && g_unix_socket_address_abstract_names_supported ())
         address = g_unix_socket_address_new_with_type (s->str,
                                                        -1,
                                                        G_UNIX_SOCKET_ADDRESS_ABSTRACT);
