@@ -703,7 +703,8 @@ register_tzi_to_tzi (RegTZI *reg, TIME_ZONE_INFORMATION *tzi)
 static gint
 rules_from_windows_time_zone (const gchar   *identifier,
                               gchar        **out_identifier,
-                              TimeZoneRule **rules)
+                              TimeZoneRule **rules,
+                              gboolean       copy_identifier)
 {
   HKEY key;
   gchar *subkey, *subkey_dynamic;
@@ -722,10 +723,12 @@ rules_from_windows_time_zone (const gchar   *identifier,
   if (n == 0)
     return 0;
 
-  g_assert (out_identifier != NULL);
+  g_assert (copy_identifier == FALSE || out_identifier != NULL);
   g_assert (rules != NULL);
 
-  *out_identifier = NULL;
+  if (copy_identifier)
+    *out_identifier = NULL;
+
   *rules = NULL;
   key_name = NULL;
 
@@ -855,7 +858,8 @@ failed:
       else
         (*rules)[rules_num - 1].start_year = (*rules)[rules_num - 2].start_year + 1;
 
-      *out_identifier = g_steal_pointer (&key_name);
+      if (copy_identifier)
+        *out_identifier = g_steal_pointer (&key_name);
 
       return rules_num;
     }
@@ -1392,9 +1396,15 @@ rules_from_identifier (const gchar   *identifier,
 
       /* Use US rules, Windows' default is Pacific Standard Time */
       if ((rules_num = rules_from_windows_time_zone ("Pacific Standard Time",
-                                                     out_identifier,
-                                                     rules)))
+                                                     NULL,
+                                                     rules,
+                                                     FALSE)))
         {
+          /* We don't want to hardcode our identifier here as
+           * "Pacific Standard Time", use what was passed in
+           */
+          *out_identifier = g_strdup (identifier);
+
           for (i = 0; i < rules_num - 1; i++)
             {
               (*rules)[i].std_offset = - tzr.std_offset;
@@ -1539,7 +1549,8 @@ g_time_zone_new (const gchar *identifier)
 #elif defined (G_OS_WIN32)
       if ((rules_num = rules_from_windows_time_zone (identifier,
                                                      &resolved_identifier,
-                                                     &rules)))
+                                                     &rules,
+                                                     TRUE)))
         {
           init_zone_from_rules (tz, rules, rules_num, g_steal_pointer (&resolved_identifier));
           g_free (rules);
