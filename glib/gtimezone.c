@@ -1395,6 +1395,12 @@ rules_from_identifier (const gchar   *identifier,
                                                      out_identifier,
                                                      rules)))
         {
+          /* We don't want to hardcode our identifier here as
+           * "Pacific Standard Time", use what was passed in
+           */
+          g_free (*out_identifier);
+          *out_identifier = g_strdup (identifier);
+
           for (i = 0; i < rules_num - 1; i++)
             {
               (*rules)[i].std_offset = - tzr.std_offset;
