@@ -769,27 +769,30 @@ try_unix (GDBusServer  *server,
       /* Fill out client_address if the connection attempt worked */
       if (ret)
         {
+          const char *address_path;
+          char *escaped_path;
+
           server->is_using_listener = TRUE;
+          address_path = g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address));
+          escaped_path = g_dbus_address_escape_value (address_path);
 
           switch (g_unix_socket_address_get_address_type (G_UNIX_SOCKET_ADDRESS (address)))
             {
             case G_UNIX_SOCKET_ADDRESS_ABSTRACT:
-              server->client_address = g_strdup_printf ("unix:abstract=%s",
-                                                        g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address)));
+              server->client_address = g_strdup_printf ("unix:abstract=%s", escaped_path);
               break;
 
             case G_UNIX_SOCKET_ADDRESS_PATH:
-              {
-                const char *address_path = g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address));
-                server->client_address = g_strdup_printf ("unix:path=%s", address_path);
-                server->unix_socket_path = g_strdup (address_path);
-                break;
-              }
+              server->client_address = g_strdup_printf ("unix:path=%s", escaped_path);
+              server->unix_socket_path = g_strdup (address_path);
+              break;
 
             default:
               g_assert_not_reached ();
               break;
             }
+
+          g_free (escaped_path);
         }
       g_object_unref (address);
     }
@@ -881,6 +884,7 @@ try_tcp (GDBusServer  *server,
       gsize bytes_written;
       gsize bytes_remaining;
       char *file_escaped;
+      char *host_escaped;
 
       server->nonce = g_new0 (guchar, 16);
       for (n = 0; n < 16; n++)
@@ -920,11 +924,13 @@ try_tcp (GDBusServer  *server,
         }
       if (!g_close (fd, error))
         goto out;
-      file_escaped = g_uri_escape_string (server->nonce_file, "/\\", FALSE);
+      host_escaped = g_dbus_address_escape_value (host);
+      file_escaped = g_dbus_address_escape_value (server->nonce_file);
       server->client_address = g_strdup_printf ("nonce-tcp:host=%s,port=%d,noncefile=%s",
-                                                host,
+                                                host_escaped,
                                                 port_num,
                                                 file_escaped);
+      g_free (host_escaped);
       g_free (file_escaped);
     }
   else
