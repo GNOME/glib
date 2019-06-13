@@ -22,7 +22,7 @@ many things that we value:
 Please, do not use the issue tracker for support questions. If you have
 questions on how to use GLib effectively, you can use:
 
- - the `#gtk+` IRC channel on irc.gnome.org
+ - the `#gtk` IRC channel on irc.gnome.org
  - the [gtk](https://mail.gnome.org/mailman/listinfo/gtk-list) mailing list,
    for general questions on GLib
  - the [gtk-devel](https://mail.gnome.org/mailman/listinfo/gtk-devel-list)
@@ -101,7 +101,7 @@ full branch coverage of the new code. GLib’s CI system generates code coverage
 reports which are viewable for each merge request.
 
 If proposing a large feature or change, it’s better to discuss it (on the
-`#gtk+` IRC channel or on the
+`#gtk` IRC channel or on the
 [gtk-devel](https://mail.gnome.org/mailman/listinfo/gtk-devel-list) mailing
 list) before putting time into writing an actionable issue — and certainly
 before putting time into writing a merge request.
