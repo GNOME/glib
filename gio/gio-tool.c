@@ -253,9 +253,20 @@ main (int argc, char **argv)
   const char *command;
   gboolean do_help;
 
+#ifdef G_OS_WIN32
+  gchar *localedir;
+#endif
+
   setlocale (LC_ALL, GLIB_DEFAULT_LOCALE);
   textdomain (GETTEXT_PACKAGE);
+
+#ifdef G_OS_WIN32
+  localedir = _glib_get_locale_dir ();
+  bindtextdomain (GETTEXT_PACKAGE, localedir);
+  g_free (localedir);
+#else
   bindtextdomain (GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+#endif
 
 #ifdef HAVE_BIND_TEXTDOMAIN_CODESET
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
