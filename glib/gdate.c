@@ -1447,12 +1447,14 @@ g_date_set_time_t (GDate *date,
  *
  * Deprecated: 2.10: Use g_date_set_time_t() instead.
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_date_set_time (GDate *date,
 		 GTime  time_)
 {
   g_date_set_time_t (date, (time_t) time_);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_date_set_time_val:

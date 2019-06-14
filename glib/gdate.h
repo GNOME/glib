@@ -45,7 +45,7 @@ G_BEGIN_DECLS
  * Pennington <hp@pobox.com>
  */
 
-typedef gint32  GTime;
+typedef gint32  GTime GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
 typedef guint16 GDateYear;
 typedef guint8  GDateDay;   /* day of the month */
 typedef struct _GDate GDate;
@@ -198,9 +198,11 @@ void         g_date_set_time_t            (GDate       *date,
 GLIB_AVAILABLE_IN_ALL
 void         g_date_set_time_val          (GDate       *date,
 					   GTimeVal    *timeval);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED_FOR(g_date_set_time_t)
 void         g_date_set_time              (GDate       *date,
                                            GTime        time_);
+G_GNUC_END_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_IN_ALL
 void         g_date_set_month             (GDate       *date,
                                            GDateMonth   month);
