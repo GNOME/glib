@@ -988,7 +988,7 @@
 #endif
 
 #if !defined(GLIB_DISABLE_DEPRECATION_WARNINGS) && \
-    (__GNUC__ > 5 || (__GNUC__ == 5 && __GNUC_MINOR__ >= 2) || \
+    (__GNUC__ > 6 || (__GNUC__ == 6 && __GNUC_MINOR__ >= 1) || \
      __clang_major__ > 3 || (__clang_major__ == 3 && __clang_minor__ >= 0))
 #define GLIB_DEPRECATED_ENUMERATOR G_DEPRECATED
 #define GLIB_DEPRECATED_ENUMERATOR_FOR(f) G_DEPRECATED_FOR(f)
