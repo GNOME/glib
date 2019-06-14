@@ -181,6 +181,9 @@ void       g_ptr_array_add                (GPtrArray        *array,
 GLIB_AVAILABLE_IN_2_62
 void g_ptr_array_extend                   (GPtrArray        *array_to_extend,
                                            GPtrArray        *array);
+GLIB_AVAILABLE_IN_2_62
+void g_ptr_array_extend_and_steal         (GPtrArray        *array_to_extend,
+                                           GPtrArray        *array);
 GLIB_AVAILABLE_IN_2_40
 void       g_ptr_array_insert             (GPtrArray        *array,
                                            gint              index_,
