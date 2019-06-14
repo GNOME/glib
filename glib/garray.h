@@ -131,7 +131,7 @@ GLIB_AVAILABLE_IN_ALL
 GPtrArray* g_ptr_array_new                (void);
 GLIB_AVAILABLE_IN_ALL
 GPtrArray* g_ptr_array_new_with_free_func (GDestroyNotify    element_free_func);
-GLIB_AVAILABLE_IN_2_60
+GLIB_AVAILABLE_IN_2_62
 GPtrArray *g_ptr_array_copy               (GPtrArray        *array,
                                            GCopyFunc         func,
                                            gpointer          user_data);
