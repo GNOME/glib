@@ -1564,6 +1564,24 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
 }
 
 /**
+ * g_ptr_array_extend_and_steal:
+ * @array_to_extend: a #GPtrArray.
+ * @array: a #GPtrArray.
+ *
+ * Adds all pointers of @array to the end of the pointer array @array_to_extend.
+ * The array will grow in size automatically if needed. And, unref the @array.
+ *
+ * Since: 2.62
+ **/
+void
+g_ptr_array_extend_and_steal (GPtrArray  *array_to_extend,
+                              GPtrArray  *array)
+{
+  g_ptr_array_extend (array_to_extend, array);
+  g_ptr_array_unref (array);
+}
+
+/**
  * g_ptr_array_insert:
  * @array: a #GPtrArray
  * @index_: the index to place the new element at, or -1 to append

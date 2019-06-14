@@ -840,6 +840,38 @@ pointer_array_extend (void)
   g_ptr_array_free (ptr_array2, TRUE);
 }
 
+/* Test the g_ptr_array_extend_and_steal() function */
+static void
+pointer_array_extend_and_steal (void)
+{
+  gsize i, array_size = 100;
+  GPtrArray *ptr_array, *ptr_array2;
+
+  g_test_summary ("Check g_ptr_array_extend() function");
+
+  ptr_array = g_ptr_array_sized_new (array_size / 2);
+  ptr_array2 = g_ptr_array_sized_new (array_size / 2);
+
+  for (i = 0; i < array_size / 2; i++)
+    {
+      gsize *tmp = g_malloc (sizeof (gsize)),
+        *tmp2 = g_malloc (sizeof (gsize));
+      *tmp = i;
+      *tmp2 = i + (array_size / 2);
+      g_ptr_array_add (ptr_array, tmp);
+      g_ptr_array_add (ptr_array2, tmp2);
+    }
+
+  g_ptr_array_extend_and_steal (ptr_array, ptr_array2);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array, i)), ==, i);
+
+  for (i = 0; i <  array_size; i++)
+      free(ptr_array->pdata[i]);
+  g_ptr_array_free (ptr_array, TRUE);
+}
+
 static gint
 ptr_compare (gconstpointer p1, gconstpointer p2)
 {
@@ -1358,6 +1390,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/pointerarray/free-func", pointer_array_free_func);
   g_test_add_func ("/pointerarray/array_copy", pointer_array_copy);
   g_test_add_func ("/pointerarray/array_extend", pointer_array_extend);
+  g_test_add_func ("/pointerarray/array_extend_and_steal", pointer_array_extend_and_steal);
   g_test_add_func ("/pointerarray/sort", pointer_array_sort);
   g_test_add_func ("/pointerarray/sort-with-data", pointer_array_sort_with_data);
   g_test_add_func ("/pointerarray/find/empty", pointer_array_find_empty);
