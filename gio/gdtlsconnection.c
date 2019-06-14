@@ -638,6 +638,7 @@ g_dtls_connection_get_require_close_notify (GDtlsConnection *conn)
  *   required for compatibility. Also, rehandshaking has been removed
  *   from the TLS protocol in TLS 1.3.
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_dtls_connection_set_rehandshake_mode (GDtlsConnection     *conn,
                                         GTlsRehandshakeMode  mode)
@@ -648,6 +649,7 @@ g_dtls_connection_set_rehandshake_mode (GDtlsConnection     *conn,
                 "rehandshake-mode", mode,
                 NULL);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_dtls_connection_get_rehandshake_mode:
@@ -660,6 +662,7 @@ g_dtls_connection_set_rehandshake_mode (GDtlsConnection     *conn,
  *
  * Since: 2.48
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GTlsRehandshakeMode
 g_dtls_connection_get_rehandshake_mode (GDtlsConnection       *conn)
 {
@@ -672,6 +675,7 @@ g_dtls_connection_get_rehandshake_mode (GDtlsConnection       *conn)
                 NULL);
   return mode;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_dtls_connection_handshake:

@@ -96,17 +96,15 @@
  * Deprecated: 2.48: Use "static inline" instead
  */
 
-#ifndef G_DISABLE_DEPRECATED
 /* For historical reasons we need to continue to support those who
  * define G_IMPLEMENT_INLINES to mean "don't implement this here".
  */
 #ifdef G_IMPLEMENT_INLINES
-#  define G_INLINE_FUNC extern
+#  define G_INLINE_FUNC extern GLIB_DEPRECATED_MACRO_IN_2_48_FOR(static inline)
 #  undef  G_CAN_INLINE
 #else
-#  define G_INLINE_FUNC static inline
+#  define G_INLINE_FUNC static inline GLIB_DEPRECATED_MACRO_IN_2_48_FOR(static inline)
 #endif /* G_IMPLEMENT_INLINES */
-#endif /* !G_DISABLE_DEPRECATED */
 
 /* Provide macros to feature the GCC function attribute.
  */
@@ -689,19 +687,38 @@
 #define G_GNUC_WARN_UNUSED_RESULT
 #endif /* __GNUC__ */
 
-#ifndef G_DISABLE_DEPRECATED
+/**
+ * G_GNUC_FUNCTION:
+ *
+ * Expands to "" on all modern compilers, and to  __FUNCTION__ on gcc
+ * version 2.x. Don't use it.
+ *
+ * Deprecated: 2.16: Use G_STRFUNC() instead
+ */
+
+/**
+ * G_GNUC_PRETTY_FUNCTION:
+ *
+ * Expands to "" on all modern compilers, and to __PRETTY_FUNCTION__
+ * on gcc version 2.x. Don't use it.
+ *
+ * Deprecated: 2.16: Use G_STRFUNC() instead
+ */
+
 /* Wrap the gcc __PRETTY_FUNCTION__ and __FUNCTION__ variables with
  * macros, so we can refer to them as strings unconditionally.
  * usage not-recommended since gcc-3.0
+ *
+ * Mark them as deprecated since 2.26, since that’s when version macros were
+ * introduced.
  */
 #if defined (__GNUC__) && (__GNUC__ < 3)
-#define G_GNUC_FUNCTION         __FUNCTION__
-#define G_GNUC_PRETTY_FUNCTION  __PRETTY_FUNCTION__
+#define G_GNUC_FUNCTION         __FUNCTION__ GLIB_DEPRECATED_MACRO_IN_2_26_FOR(G_STRFUNC)
+#define G_GNUC_PRETTY_FUNCTION  __PRETTY_FUNCTION__ GLIB_DEPRECATED_MACRO_IN_2_26_FOR(G_STRFUNC)
 #else   /* !__GNUC__ */
-#define G_GNUC_FUNCTION         ""
-#define G_GNUC_PRETTY_FUNCTION  ""
+#define G_GNUC_FUNCTION         "" GLIB_DEPRECATED_MACRO_IN_2_26_FOR(G_STRFUNC)
+#define G_GNUC_PRETTY_FUNCTION  "" GLIB_DEPRECATED_MACRO_IN_2_26_FOR(G_STRFUNC)
 #endif  /* !__GNUC__ */
-#endif  /* !G_DISABLE_DEPRECATED */
 
 #if g_macro__has_feature(attribute_analyzer_noreturn) && defined(__clang_analyzer__)
 #define G_ANALYZER_ANALYZING 1
@@ -867,14 +884,26 @@
 #define G_ALIGNOF(type) (G_STRUCT_OFFSET (struct { char a; type b; }, b))
 #endif
 
-/* Deprecated -- do not use. */
-#ifndef G_DISABLE_DEPRECATED
+/**
+ * G_CONST_RETURN:
+ *
+ * If %G_DISABLE_CONST_RETURNS is defined, this macro expands
+ * to nothing. By default, the macro expands to const. The macro
+ * can be used in place of const for functions that return a value
+ * that should not be modified. The purpose of this macro is to allow
+ * us to turn on const for returned constant strings by default, while
+ * allowing programmers who find that annoying to turn it off. This macro
+ * should only be used for return values and for "out" parameters, it
+ * doesn't make sense for "in" parameters.
+ *
+ * Deprecated: 2.30: API providers should replace all existing uses with
+ * const and API consumers should adjust their code accordingly
+ */
 #ifdef G_DISABLE_CONST_RETURNS
-#define G_CONST_RETURN
+#define G_CONST_RETURN GLIB_DEPRECATED_MACRO_IN_2_30_FOR(const)
 #else
-#define G_CONST_RETURN const
+#define G_CONST_RETURN const GLIB_DEPRECATED_MACRO_IN_2_30_FOR(const)
 #endif
-#endif /* !G_DISABLE_DEPRECATED */
 
 /*
  * The G_LIKELY and G_UNLIKELY macros let the programmer give hints to 
@@ -929,7 +958,7 @@
 #define _GLIB_EXTERN extern
 #endif
 
-/* These macros are used to mark deprecated functions in GLib headers,
+/* These macros are used to mark deprecated symbols in GLib headers,
  * and thus have to be exposed in installed headers. But please
  * do *not* use them in other projects. Instead, use G_DEPRECATED
  * or define your own wrappers around it.
@@ -943,6 +972,43 @@
 #define GLIB_DEPRECATED G_DEPRECATED _GLIB_EXTERN
 #define GLIB_DEPRECATED_FOR(f) G_DEPRECATED_FOR(f) _GLIB_EXTERN
 #define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min) _GLIB_EXTERN
+#endif
+
+#if !defined(GLIB_DISABLE_DEPRECATION_WARNINGS) && \
+    (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6) || \
+     __clang_major__ > 3 || (__clang_major__ == 3 && __clang_minor__ >= 4))
+#define _GLIB_GNUC_DO_PRAGMA(x) _Pragma(G_STRINGIFY (x))
+#define GLIB_DEPRECATED_MACRO _GLIB_GNUC_DO_PRAGMA(GCC warning "Deprecated pre-processor symbol")
+#define GLIB_DEPRECATED_MACRO_FOR(f) _GLIB_GNUC_DO_PRAGMA(GCC warning #f)
+#define GLIB_UNAVAILABLE_MACRO(maj,min) _GLIB_GNUC_DO_PRAGMA(GCC warning "Not available before " #maj "." #min)
+#else
+#define GLIB_DEPRECATED_MACRO
+#define GLIB_DEPRECATED_MACRO_FOR(f)
+#define GLIB_UNAVAILABLE_MACRO(maj,min)
+#endif
+
+#if !defined(GLIB_DISABLE_DEPRECATION_WARNINGS) && \
+    (__GNUC__ > 5 || (__GNUC__ == 5 && __GNUC_MINOR__ >= 2) || \
+     __clang_major__ > 3 || (__clang_major__ == 3 && __clang_minor__ >= 0))
+#define GLIB_DEPRECATED_ENUMERATOR G_DEPRECATED
+#define GLIB_DEPRECATED_ENUMERATOR_FOR(f) G_DEPRECATED_FOR(f)
+#define GLIB_UNAVAILABLE_ENUMERATOR(maj,min) G_UNAVAILABLE(maj,min)
+#else
+#define GLIB_DEPRECATED_ENUMERATOR
+#define GLIB_DEPRECATED_ENUMERATOR_FOR(f)
+#define GLIB_UNAVAILABLE_ENUMERATOR(maj,min)
+#endif
+
+#if !defined(GLIB_DISABLE_DEPRECATION_WARNINGS) && \
+    (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1) || \
+     __clang_major__ > 3 || (__clang_major__ == 3 && __clang_minor__ >= 0))
+#define GLIB_DEPRECATED_TYPE G_DEPRECATED
+#define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+#define GLIB_UNAVAILABLE_TYPE(maj,min) G_UNAVAILABLE(maj,min)
+#else
+#define GLIB_DEPRECATED_TYPE
+#define GLIB_DEPRECATED_TYPE_FOR(f)
+#define GLIB_UNAVAILABLE_TYPE(maj,min)
 #endif
 
 #ifndef __GI_SCANNER__

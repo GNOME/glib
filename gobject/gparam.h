@@ -156,9 +156,7 @@ typedef enum
   G_PARAM_CONSTRUCT_ONLY      = 1 << 3,
   G_PARAM_LAX_VALIDATION      = 1 << 4,
   G_PARAM_STATIC_NAME	      = 1 << 5,
-#ifndef G_DISABLE_DEPRECATED
-  G_PARAM_PRIVATE	      = G_PARAM_STATIC_NAME,
-#endif
+  G_PARAM_PRIVATE GLIB_DEPRECATED_ENUMERATOR_IN_2_26 = G_PARAM_STATIC_NAME,
   G_PARAM_STATIC_NICK	      = 1 << 6,
   G_PARAM_STATIC_BLURB	      = 1 << 7,
   /* User defined flags go here */
@@ -193,7 +191,7 @@ typedef enum
 /* --- typedefs & structures --- */
 typedef struct _GParamSpec      GParamSpec;
 typedef struct _GParamSpecClass GParamSpecClass;
-typedef struct _GParameter	GParameter;
+typedef struct _GParameter	GParameter GLIB_DEPRECATED_TYPE_IN_2_54;
 typedef struct _GParamSpecPool  GParamSpecPool;
 /**
  * GParamSpec: (ref-func g_param_spec_ref_sink) (unref-func g_param_spec_uref) (set-value-func g_value_set_param) (get-value-func g_value_get_param)
@@ -274,7 +272,7 @@ struct _GParameter /* auxiliary structure for _setv() variants */
 {
   const gchar *name;
   GValue       value;
-};
+} GLIB_DEPRECATED_TYPE_IN_2_54;
 
 
 /* --- prototypes --- */
