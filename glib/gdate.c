@@ -152,12 +152,12 @@
 /**
  * GTime:
  *
- * Simply a replacement for time_t. It has been deprecated
- * since it is not equivalent to time_t on 64-bit platforms
- * with a 64-bit time_t. Unrelated to #GTimer.
+ * Simply a replacement for `time_t`. It has been deprecated
+ * since it is not equivalent to `time_t` on 64-bit platforms
+ * with a 64-bit `time_t`. Unrelated to #GTimer.
  *
  * Note that #GTime is defined to always be a 32-bit integer,
- * unlike time_t which may be 64-bit on some systems. Therefore,
+ * unlike `time_t` which may be 64-bit on some systems. Therefore,
  * #GTime will overflow in the year 2038, and you cannot use the
  * address of a #GTime variable as argument to the UNIX time()
  * function.
