@@ -123,6 +123,8 @@
  * removed from a future version of GLib. A consequence of using `glong` for
  * `tv_sec` is that on 32-bit systems `GTimeVal` is subject to the year 2038
  * problem.
+ *
+ * Deprecated: 2.62: Use #GDateTime or #guint64 instead.
  */
 
 /**
