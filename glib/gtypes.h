@@ -113,6 +113,8 @@ typedef gboolean        (*GEqualFunc)           (gconstpointer  a,
 typedef void            (*GDestroyNotify)       (gpointer       data);
 typedef void            (*GFunc)                (gpointer       data,
                                                  gpointer       user_data);
+typedef gpointer        (*GCopyFunc)            (gconstpointer  src,
+                                                 gpointer       data);
 typedef guint           (*GHashFunc)            (gconstpointer  key);
 typedef void            (*GHFunc)               (gpointer       key,
                                                  gpointer       value,
