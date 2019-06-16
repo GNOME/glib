@@ -29,7 +29,6 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
-#include <glib/gnode.h>
 #include <glib/gtypes.h>
 
 G_BEGIN_DECLS
