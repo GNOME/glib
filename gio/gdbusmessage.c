@@ -873,7 +873,7 @@ g_dbus_message_set_message_type (GDBusMessage      *message,
                                  GDBusMessageType   type)
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
-  g_return_if_fail (type >=0 && type < 256);
+  g_return_if_fail ((guint) type >= 0 && (guint) type < 256);
 
   if (message->locked)
     {
@@ -920,7 +920,7 @@ g_dbus_message_set_flags (GDBusMessage       *message,
                           GDBusMessageFlags   flags)
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
-  g_return_if_fail (flags >=0 && flags < 256);
+  g_return_if_fail ((guint) flags >= 0 && (guint) flags < 256);
 
   if (message->locked)
     {
@@ -998,7 +998,7 @@ g_dbus_message_get_header (GDBusMessage             *message,
                            GDBusMessageHeaderField   header_field)
 {
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
-  g_return_val_if_fail (header_field >=0 && header_field < 256, NULL);
+  g_return_val_if_fail ((guint) header_field >= 0 && (guint) header_field < 256, NULL);
   return g_hash_table_lookup (message->headers, GUINT_TO_POINTER (header_field));
 }
 
@@ -1020,7 +1020,7 @@ g_dbus_message_set_header (GDBusMessage             *message,
                            GVariant                 *value)
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
-  g_return_if_fail (header_field >=0 && header_field < 256);
+  g_return_if_fail ((guint) header_field >= 0 && (guint) header_field < 256);
 
   if (message->locked)
     {
