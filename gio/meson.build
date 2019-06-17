@@ -996,7 +996,7 @@ if enable_systemtap
     output : '@0@.stp'.format(libgio.full_path().split('/').get(-1)),
     configuration : stp_cdata,
     install_dir : tapset_install_dir,
-    install : true)
+  )
 endif
 
 subdir('fam')
