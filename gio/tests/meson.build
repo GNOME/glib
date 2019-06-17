@@ -558,7 +558,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
   test_generated_txt = configure_file(input : 'test1.txt',
     output : 'test-generated.txt',
     copy : true,
-    install : false)
+  )
 
   resources_extra_sources = [
     test_gresource,

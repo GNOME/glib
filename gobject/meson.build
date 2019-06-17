@@ -75,7 +75,6 @@ foreach tool: python_tools
     input : tool + '.in',
     output : tool,
     configuration : python_tools_conf,
-    install : true,
     install_dir : glib_bindir,
   )
 
