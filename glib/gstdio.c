@@ -102,21 +102,34 @@ w32_error_to_errno (DWORD error_code)
     case ERROR_ACCESS_DENIED:
       return EACCES;
       break;
-    case ERROR_INVALID_HANDLE:
-      return EBADF;
+    case ERROR_ALREADY_EXISTS:
+    case ERROR_FILE_EXISTS:
+      return EEXIST;
+    case ERROR_FILE_NOT_FOUND:
+      return ENOENT;
       break;
     case ERROR_INVALID_FUNCTION:
       return EFAULT;
       break;
-    case ERROR_FILE_NOT_FOUND:
-      return ENOENT;
+    case ERROR_INVALID_HANDLE:
+      return EBADF;
       break;
-    case ERROR_PATH_NOT_FOUND:
-      return ENOENT; /* or ELOOP, or ENAMETOOLONG */
+    case ERROR_INVALID_PARAMETER:
+      return EINVAL;
+      break;
+    case ERROR_LOCK_VIOLATION:
+    case ERROR_SHARING_VIOLATION:
+      return EACCES;
       break;
     case ERROR_NOT_ENOUGH_MEMORY:
     case ERROR_OUTOFMEMORY:
       return ENOMEM;
+      break;
+    case ERROR_NOT_SAME_DEVICE:
+      return EXDEV;
+      break;
+    case ERROR_PATH_NOT_FOUND:
+      return ENOENT; /* or ELOOP, or ENAMETOOLONG */
       break;
     default:
       return EIO;
@@ -1154,20 +1167,7 @@ g_rename (const gchar *oldfilename,
   else
     {
       retval = -1;
-      switch (GetLastError ())
-	{
-#define CASE(a,b) case ERROR_##a: save_errno = b; break
-	  CASE (FILE_NOT_FOUND, ENOENT);
-	  CASE (PATH_NOT_FOUND, ENOENT);
-	  CASE (ACCESS_DENIED, EACCES);
-	  CASE (NOT_SAME_DEVICE, EXDEV);
-	  CASE (LOCK_VIOLATION, EACCES);
-	  CASE (SHARING_VIOLATION, EACCES);
-	  CASE (FILE_EXISTS, EEXIST);
-	  CASE (ALREADY_EXISTS, EEXIST);
-#undef CASE
-	default: save_errno = EIO;
-	}
+      save_errno = w32_error_to_errno (GetLastError ());
     }
 
   g_free (woldfilename);
