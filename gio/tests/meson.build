@@ -424,13 +424,20 @@ else
 endif
 
 foreach appinfo_test_desktop_file : appinfo_test_desktop_files
-  configure_file(
-    input: appinfo_test_desktop_file + '.in',
-    output: appinfo_test_desktop_file,
-    install_dir: installed_tests_execdir,
-    install: installed_tests_enabled,
-    configuration: cdata,
-  )
+  if installed_tests_enabled
+    configure_file(
+      input: appinfo_test_desktop_file + '.in',
+      output: appinfo_test_desktop_file,
+      install_dir: installed_tests_execdir,
+      configuration: cdata,
+    )
+  else
+    configure_file(
+      input: appinfo_test_desktop_file + '.in',
+      output: appinfo_test_desktop_file,
+      configuration: cdata,
+    )
+  endif
 endforeach
 
 if installed_tests_enabled
@@ -558,7 +565,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
   test_generated_txt = configure_file(input : 'test1.txt',
     output : 'test-generated.txt',
     copy : true,
-    install : false)
+  )
 
   resources_extra_sources = [
     test_gresource,
