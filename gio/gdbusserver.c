@@ -101,6 +101,7 @@ struct _GDBusServer
 
   gchar *client_address;
 
+  gchar *unix_socket_path;
   GSocketListener *listener;
   gboolean is_using_listener;
   gulong run_signal_handler_id;
@@ -162,6 +163,17 @@ G_DEFINE_TYPE_WITH_CODE (GDBusServer, g_dbus_server, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init))
 
 static void
+g_dbus_server_dispose (GObject *object)
+{
+  GDBusServer *server = G_DBUS_SERVER (object);
+
+  if (server->active)
+    g_dbus_server_stop (server);
+
+  G_OBJECT_CLASS (g_dbus_server_parent_class)->dispose (object);
+}
+
+static void
 g_dbus_server_finalize (GObject *object)
 {
   GDBusServer *server = G_DBUS_SERVER (object);
@@ -183,10 +195,20 @@ g_dbus_server_finalize (GObject *object)
       memset (server->nonce, '\0', 16);
       g_free (server->nonce);
     }
-  /* we could unlink the nonce file but I don't
-   * think it's really worth the effort/risk
-   */
-  g_free (server->nonce_file);
+
+  if (server->unix_socket_path)
+    {
+      if (g_unlink (server->unix_socket_path) != 0)
+        g_warning ("Failed to delete %s: %s", server->unix_socket_path, g_strerror (errno));
+      g_free (server->unix_socket_path);
+    }
+
+  if (server->nonce_file)
+    {
+      if (g_unlink (server->nonce_file) != 0)
+        g_warning ("Failed to delete %s: %s", server->nonce_file, g_strerror (errno));
+      g_free (server->nonce_file);
+    }
 
   g_main_context_unref (server->main_context_at_construction);
 
@@ -270,6 +292,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->dispose      = g_dbus_server_dispose;
   gobject_class->finalize     = g_dbus_server_finalize;
   gobject_class->set_property = g_dbus_server_set_property;
   gobject_class->get_property = g_dbus_server_get_property;
@@ -641,7 +664,7 @@ random_ascii (void)
   return ret;
 }
 
-/* note that address_entry has already been validated => exactly one of path, tmpdir or abstract keys are set */
+/* note that address_entry has already been validated => exactly one of path, dir, tmpdir, or abstract keys are set */
 static gboolean
 try_unix (GDBusServer  *server,
           const gchar  *address_entry,
@@ -650,6 +673,7 @@ try_unix (GDBusServer  *server,
 {
   gboolean ret;
   const gchar *path;
+  const gchar *dir;
   const gchar *tmpdir;
   const gchar *abstract;
   GSocketAddress *address;
@@ -658,6 +682,7 @@ try_unix (GDBusServer  *server,
   address = NULL;
 
   path = g_hash_table_lookup (key_value_pairs, "path");
+  dir = g_hash_table_lookup (key_value_pairs, "dir");
   tmpdir = g_hash_table_lookup (key_value_pairs, "tmpdir");
   abstract = g_hash_table_lookup (key_value_pairs, "abstract");
 
@@ -665,20 +690,21 @@ try_unix (GDBusServer  *server,
     {
       address = g_unix_socket_address_new (path);
     }
-  else if (tmpdir != NULL)
+  else if (dir != NULL || tmpdir != NULL)
     {
       gint n;
       GString *s;
       GError *local_error;
 
     retry:
-      s = g_string_new (tmpdir);
+      s = g_string_new (tmpdir != NULL ? tmpdir : dir);
       g_string_append (s, "/dbus-");
       for (n = 0; n < 8; n++)
         g_string_append_c (s, random_ascii ());
 
-      /* prefer abstract namespace if available */
-      if (g_unix_socket_address_abstract_names_supported ())
+      /* prefer abstract namespace if available for tmpdir: addresses
+       * abstract namespace is disallowed for dir: addresses */
+      if (tmpdir != NULL && g_unix_socket_address_abstract_names_supported ())
         address = g_unix_socket_address_new_with_type (s->str,
                                                        -1,
                                                        G_UNIX_SOCKET_ADDRESS_ABSTRACT);
@@ -713,7 +739,7 @@ try_unix (GDBusServer  *server,
           g_set_error_literal (error,
                                G_IO_ERROR,
                                G_IO_ERROR_NOT_SUPPORTED,
-                               _("Abstract name space not supported"));
+                               _("Abstract namespace not supported"));
           goto out;
         }
       address = g_unix_socket_address_new_with_type (abstract,
@@ -743,24 +769,30 @@ try_unix (GDBusServer  *server,
       /* Fill out client_address if the connection attempt worked */
       if (ret)
         {
+          const char *address_path;
+          char *escaped_path;
+
           server->is_using_listener = TRUE;
+          address_path = g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address));
+          escaped_path = g_dbus_address_escape_value (address_path);
 
           switch (g_unix_socket_address_get_address_type (G_UNIX_SOCKET_ADDRESS (address)))
             {
             case G_UNIX_SOCKET_ADDRESS_ABSTRACT:
-              server->client_address = g_strdup_printf ("unix:abstract=%s",
-                                                        g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address)));
+              server->client_address = g_strdup_printf ("unix:abstract=%s", escaped_path);
               break;
 
             case G_UNIX_SOCKET_ADDRESS_PATH:
-              server->client_address = g_strdup_printf ("unix:path=%s",
-                                                        g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address)));
+              server->client_address = g_strdup_printf ("unix:path=%s", escaped_path);
+              server->unix_socket_path = g_strdup (address_path);
               break;
 
             default:
               g_assert_not_reached ();
               break;
             }
+
+          g_free (escaped_path);
         }
       g_object_unref (address);
     }
@@ -852,6 +884,7 @@ try_tcp (GDBusServer  *server,
       gsize bytes_written;
       gsize bytes_remaining;
       char *file_escaped;
+      char *host_escaped;
 
       server->nonce = g_new0 (guchar, 16);
       for (n = 0; n < 16; n++)
@@ -891,11 +924,13 @@ try_tcp (GDBusServer  *server,
         }
       if (!g_close (fd, error))
         goto out;
-      file_escaped = g_uri_escape_string (server->nonce_file, "/\\", FALSE);
+      host_escaped = g_dbus_address_escape_value (host);
+      file_escaped = g_dbus_address_escape_value (server->nonce_file);
       server->client_address = g_strdup_printf ("nonce-tcp:host=%s,port=%d,noncefile=%s",
-                                                host,
+                                                host_escaped,
                                                 port_num,
                                                 file_escaped);
+      g_free (host_escaped);
       g_free (file_escaped);
     }
   else
