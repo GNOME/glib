@@ -2068,7 +2068,6 @@ if have_sh
   gettextize_conf.set('datarootdir', glib_datadir)
   gettextize_conf.set('datadir', glib_datadir)
   configure_file(input : 'glib-gettextize.in',
-    install : true,
     install_dir : glib_bindir,
     output : 'glib-gettextize',
     configuration : gettextize_conf)
