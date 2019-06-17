@@ -1,6 +1,7 @@
 project('glib', 'c', 'cpp',
   version : '2.61.2',
-  meson_version : '>= 0.48.0',
+  # NOTE: We keep this pinned at 0.49 because that's what Debian 10 ships
+  meson_version : '>= 0.49.2',
   default_options : [
     'buildtype=debugoptimized',
     'warning_level=1',
