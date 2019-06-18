@@ -854,6 +854,7 @@ g_date_time_replace_days (GDateTime *datetime,
 
 /* now/unix/timeval Constructors {{{1 */
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /*< internal >
  * g_date_time_new_from_timeval:
  * @tz: a #GTimeZone
@@ -887,6 +888,7 @@ g_date_time_new_from_timeval (GTimeZone      *tz,
   return g_date_time_from_instant (tz, tv->tv_usec +
                                    UNIX_TO_INSTANT (tv->tv_sec));
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /*< internal >
  * g_date_time_new_from_unix:
@@ -1084,7 +1086,10 @@ g_date_time_new_from_unix_utc (gint64 t)
  * Returns: a new #GDateTime, or %NULL
  *
  * Since: 2.26
+ * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use
+ *    g_date_time_new_from_unix_local() instead.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GDateTime *
 g_date_time_new_from_timeval_local (const GTimeVal *tv)
 {
@@ -1097,6 +1102,7 @@ g_date_time_new_from_timeval_local (const GTimeVal *tv)
 
   return datetime;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_date_time_new_from_timeval_utc:
@@ -1116,7 +1122,10 @@ g_date_time_new_from_timeval_local (const GTimeVal *tv)
  * Returns: a new #GDateTime, or %NULL
  *
  * Since: 2.26
+ * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use
+ *    g_date_time_new_from_unix_utc() instead.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GDateTime *
 g_date_time_new_from_timeval_utc (const GTimeVal *tv)
 {
@@ -1129,6 +1138,7 @@ g_date_time_new_from_timeval_utc (const GTimeVal *tv)
 
   return datetime;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /* Parse integers in the form d (week days), dd (hours etc), ddd (ordinal days) or dddd (years) */
 static gboolean
@@ -2533,7 +2543,10 @@ g_date_time_to_unix (GDateTime *datetime)
  * Returns: %TRUE if successful, else %FALSE
  *
  * Since: 2.26
+ * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use
+ *    g_date_time_to_unix() instead.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 gboolean
 g_date_time_to_timeval (GDateTime *datetime,
                         GTimeVal  *tv)
@@ -2543,6 +2556,7 @@ g_date_time_to_timeval (GDateTime *datetime,
 
   return TRUE;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /* Timezone queries {{{1 */
 /**
