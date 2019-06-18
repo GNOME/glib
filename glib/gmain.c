@@ -2631,7 +2631,11 @@ g_source_query_unix_fd (GSource  *source,
  * Equivalent to the UNIX gettimeofday() function, but portable.
  *
  * You may find g_get_real_time() to be more convenient.
+ *
+ * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use g_get_real_time()
+ *    instead.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_get_current_time (GTimeVal *result)
 {
@@ -2664,6 +2668,7 @@ g_get_current_time (GTimeVal *result)
   result->tv_usec = time64 % 1000000;
 #endif
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_get_real_time:
