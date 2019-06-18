@@ -526,6 +526,7 @@ gio_sources = files(
   'gioscheduler.c',
   'giostream.c',
   'gloadableicon.c',
+  'gmarshal-internal.c',
   'gmount.c',
   'gmemoryinputstream.c',
   'gmemoryoutputstream.c',
@@ -1004,3 +1005,14 @@ build_tests = not meson.is_cross_build() or (meson.is_cross_build() and meson.ha
 if build_tests
     subdir('tests')
 endif
+
+# The following is an example for building internal marshallers that are used
+# by GIO. We cannot guarantee glib-genmarshal availability while building GLib
+# so they are pre-generated and placed into gmarshal-internal.[ch].
+#
+# gmarshal_internal = gnome.genmarshal('gmarshal-internal',
+#   sources: 'gmarshal-internal.list',
+#   prefix: '_g_cclosure_marshal',
+#   valist_marshallers: true,
+#   internal: true,
+# )

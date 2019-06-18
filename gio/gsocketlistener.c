@@ -36,6 +36,7 @@
 #include <gio/gsocketconnection.h>
 #include <gio/ginetsocketaddress.h>
 #include "glibintl.h"
+#include "gmarshal-internal.h"
 
 
 /**
@@ -181,10 +182,14 @@ g_socket_listener_class_init (GSocketListenerClass *klass)
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSocketListenerClass, event),
-                  NULL, NULL, NULL,
+                  NULL, NULL,
+                  _g_cclosure_marshal_VOID__ENUM_OBJECT,
                   G_TYPE_NONE, 2,
                   G_TYPE_SOCKET_LISTENER_EVENT,
                   G_TYPE_SOCKET);
+  g_signal_set_va_marshaller (signals[EVENT],
+                              G_TYPE_FROM_CLASS (gobject_class),
+                              _g_cclosure_marshal_VOID__ENUM_OBJECTv);
 
   source_quark = g_quark_from_static_string ("g-socket-listener-source");
 }

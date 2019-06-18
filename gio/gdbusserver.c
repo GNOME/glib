@@ -42,6 +42,7 @@
 #include "ginetsocketaddress.h"
 #include "ginputstream.h"
 #include "giostream.h"
+#include "gmarshal-internal.h"
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
@@ -452,10 +453,13 @@ g_dbus_server_class_init (GDBusServerClass *klass)
                                                   G_STRUCT_OFFSET (GDBusServerClass, new_connection),
                                                   g_signal_accumulator_true_handled,
                                                   NULL, /* accu_data */
-                                                  NULL,
+                                                  _g_cclosure_marshal_BOOLEAN__OBJECT,
                                                   G_TYPE_BOOLEAN,
                                                   1,
                                                   G_TYPE_DBUS_CONNECTION);
+  g_signal_set_va_marshaller (_signals[NEW_CONNECTION_SIGNAL],
+                              G_TYPE_FROM_CLASS (klass),
+                              _g_cclosure_marshal_BOOLEAN__OBJECTv);
 }
 
 static void

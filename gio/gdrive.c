@@ -78,7 +78,7 @@ g_drive_default_init (GDriveInterface *iface)
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GDriveIface, changed),
 		NULL, NULL,
-		g_cclosure_marshal_VOID__VOID,
+		NULL,
 		G_TYPE_NONE, 0);
 
   /**
@@ -95,7 +95,7 @@ g_drive_default_init (GDriveInterface *iface)
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GDriveIface, disconnected),
 		NULL, NULL,
-		g_cclosure_marshal_VOID__VOID,
+		NULL,
 		G_TYPE_NONE, 0);
 
   /**
@@ -110,7 +110,7 @@ g_drive_default_init (GDriveInterface *iface)
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GDriveIface, eject_button),
 		NULL, NULL,
-		g_cclosure_marshal_VOID__VOID,
+		NULL,
 		G_TYPE_NONE, 0);
 
   /**
@@ -127,7 +127,7 @@ g_drive_default_init (GDriveInterface *iface)
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GDriveIface, stop_button),
 		NULL, NULL,
-		g_cclosure_marshal_VOID__VOID,
+		NULL,
 		G_TYPE_NONE, 0);
 }
 
