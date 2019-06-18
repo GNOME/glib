@@ -609,6 +609,139 @@ class TestGenmarshal(unittest.TestCase):
             ''').strip().format(**body_result.subs),
             body_result.out.strip())
 
+    def test_void_param_nostdinc(self):
+        """Test running with a basic VOID:PARAM list, but without the
+        standard marshallers, and with valist support enabled. This checks that
+        the valist marshaller for PARAM correctly skips a param copy if the
+        argument is static.
+
+        See issue #1792.
+        """
+        self.maxDiff = None  # TODO
+        (header_result, body_result) = \
+            self.runGenmarshalWithList('VOID:PARAM', '--quiet', '--nostdinc',
+                                       '--valist-marshaller')
+
+        self.assertEqual('', header_result.err)
+        self.assertEqual('', body_result.err)
+
+        self.assertEqual(dedent(
+            '''
+            /* {standard_top_comment} */
+            {standard_top_pragma}
+
+            G_BEGIN_DECLS
+
+            /* VOID:PARAM ({list_path}:1) */
+            extern
+            void g_cclosure_user_marshal_VOID__PARAM (GClosure     *closure,
+                                                      GValue       *return_value,
+                                                      guint         n_param_values,
+                                                      const GValue *param_values,
+                                                      gpointer      invocation_hint,
+                                                      gpointer      marshal_data);
+            extern
+            void g_cclosure_user_marshal_VOID__PARAMv (GClosure *closure,
+                                                       GValue   *return_value,
+                                                       gpointer  instance,
+                                                       va_list   args,
+                                                       gpointer  marshal_data,
+                                                       int       n_params,
+                                                       GType    *param_types);
+
+
+            G_END_DECLS
+
+            {standard_bottom_pragma}
+            ''').strip().format(**header_result.subs),
+            header_result.out.strip())
+
+        self.assertEqual(dedent(
+            '''
+            /* {standard_top_comment} */
+            {standard_marshal_peek_defines}
+
+            /* VOID:PARAM ({list_path}:1) */
+            void
+            g_cclosure_user_marshal_VOID__PARAM (GClosure     *closure,
+                                                 GValue       *return_value G_GNUC_UNUSED,
+                                                 guint         n_param_values,
+                                                 const GValue *param_values,
+                                                 gpointer      invocation_hint G_GNUC_UNUSED,
+                                                 gpointer      marshal_data)
+            {{
+              typedef void (*GMarshalFunc_VOID__PARAM) (gpointer data1,
+                                                        gpointer arg1,
+                                                        gpointer data2);
+              GCClosure *cc = (GCClosure *) closure;
+              gpointer data1, data2;
+              GMarshalFunc_VOID__PARAM callback;
+
+              g_return_if_fail (n_param_values == 2);
+
+              if (G_CCLOSURE_SWAP_DATA (closure))
+                {{
+                  data1 = closure->data;
+                  data2 = g_value_peek_pointer (param_values + 0);
+                }}
+              else
+                {{
+                  data1 = g_value_peek_pointer (param_values + 0);
+                  data2 = closure->data;
+                }}
+              callback = (GMarshalFunc_VOID__PARAM) (marshal_data ? marshal_data : cc->callback);
+
+              callback (data1,
+                        g_marshal_value_peek_param (param_values + 1),
+                        data2);
+            }}
+
+            void
+            g_cclosure_user_marshal_VOID__PARAMv (GClosure *closure,
+                                                  GValue   *return_value G_GNUC_UNUSED,
+                                                  gpointer  instance,
+                                                  va_list   args,
+                                                  gpointer  marshal_data,
+                                                  int       n_params,
+                                                  GType    *param_types)
+            {{
+              typedef void (*GMarshalFunc_VOID__PARAM) (gpointer data1,
+                                                        gpointer arg1,
+                                                        gpointer data2);
+              GCClosure *cc = (GCClosure *) closure;
+              gpointer data1, data2;
+              GMarshalFunc_VOID__PARAM callback;
+              gpointer arg0;
+              va_list args_copy;
+
+              G_VA_COPY (args_copy, args);
+              arg0 = (gpointer) va_arg (args_copy, gpointer);
+              if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
+                arg0 = g_param_spec_ref (arg0);
+              va_end (args_copy);
+
+
+              if (G_CCLOSURE_SWAP_DATA (closure))
+                {{
+                  data1 = closure->data;
+                  data2 = instance;
+                }}
+              else
+                {{
+                  data1 = instance;
+                  data2 = closure->data;
+                }}
+              callback = (GMarshalFunc_VOID__PARAM) (marshal_data ? marshal_data : cc->callback);
+
+              callback (data1,
+                        arg0,
+                        data2);
+              if ((param_types[0] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg0 != NULL)
+                g_param_spec_unref (arg0);
+            }}
+            ''').strip().format(**body_result.subs),
+            body_result.out.strip())
+
 
 if __name__ == '__main__':
     unittest.main(testRunner=taptestrunner.TAPTestRunner())
