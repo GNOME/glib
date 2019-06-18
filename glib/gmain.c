@@ -2639,34 +2639,14 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_get_current_time (GTimeVal *result)
 {
-#ifndef G_OS_WIN32
-  struct timeval r;
+  gint64 tv;
 
   g_return_if_fail (result != NULL);
 
-  /*this is required on alpha, there the timeval structs are int's
-    not longs and a cast only would fail horribly*/
-  gettimeofday (&r, NULL);
-  result->tv_sec = r.tv_sec;
-  result->tv_usec = r.tv_usec;
-#else
-  FILETIME ft;
-  guint64 time64;
+  tv = g_get_real_time ();
 
-  g_return_if_fail (result != NULL);
-
-  GetSystemTimeAsFileTime (&ft);
-  memmove (&time64, &ft, sizeof (FILETIME));
-
-  /* Convert from 100s of nanoseconds since 1601-01-01
-   * to Unix epoch. Yes, this is Y2038 unsafe.
-   */
-  time64 -= G_GINT64_CONSTANT (116444736000000000);
-  time64 /= 10;
-
-  result->tv_sec = time64 / 1000000;
-  result->tv_usec = time64 % 1000000;
-#endif
+  result->tv_sec = tv / 1000000;
+  result->tv_usec = tv % 1000000;
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
 
@@ -2690,11 +2670,29 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 gint64
 g_get_real_time (void)
 {
-  GTimeVal tv;
+#ifndef G_OS_WIN32
+  struct timeval r;
 
-  g_get_current_time (&tv);
+  /* this is required on alpha, there the timeval structs are ints
+   * not longs and a cast only would fail horribly */
+  gettimeofday (&r, NULL);
 
-  return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
+  return (((gint64) r.tv_sec) * 1000000) + r.tv_usec;
+#else
+  FILETIME ft;
+  guint64 time64;
+
+  GetSystemTimeAsFileTime (&ft);
+  memmove (&time64, &ft, sizeof (FILETIME));
+
+  /* Convert from 100s of nanoseconds since 1601-01-01
+   * to Unix epoch. Yes, this is Y2038 unsafe.
+   */
+  time64 -= G_GINT64_CONSTANT (116444736000000000);
+  time64 /= 10;
+
+  return time64;
+#endif
 }
 
 /**
