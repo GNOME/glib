@@ -56,6 +56,7 @@ void	 g_timer_continue        (GTimer      *timer);
 GLIB_AVAILABLE_IN_ALL
 gdouble  g_timer_elapsed         (GTimer      *timer,
 				  gulong      *microseconds);
+gboolean g_timer_is_active	     (GTimer      *timer);
 
 GLIB_AVAILABLE_IN_ALL
 void     g_usleep                (gulong       microseconds);

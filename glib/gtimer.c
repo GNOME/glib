@@ -237,6 +237,20 @@ g_timer_elapsed (GTimer *timer,
 }
 
 /**
+ * g_timer_is_active:
+ * @timer: a #GTimer.
+ *
+ * This function returns whether the timer is currently running.
+ **/
+gboolean
+g_timer_is_active (GTimer *timer)
+{
+  g_return_if_fail (timer != NULL);
+
+  return timer->active;
+}
+
+/**
  * g_usleep:
  * @microseconds: number of microseconds to pause
  *
@@ -270,7 +284,7 @@ g_usleep (gulong microseconds)
  * Adds the given number of microseconds to @time_. @microseconds can
  * also be negative to decrease the value of @time_.
  **/
-void 
+void
 g_time_val_add (GTimeVal *time_, glong microseconds)
 {
   g_return_if_fail (time_->tv_usec >= 0 && time_->tv_usec < G_USEC_PER_SEC);
@@ -294,7 +308,7 @@ g_time_val_add (GTimeVal *time_, glong microseconds)
        {
          time_->tv_usec += G_USEC_PER_SEC;
          time_->tv_sec--;
-       }      
+       }
     }
 }
 
@@ -305,7 +319,7 @@ static time_t
 mktime_utc (struct tm *tm)
 {
   time_t retval;
-  
+
 #ifndef HAVE_TIMEGM
   static const gint days_before[] =
   {
@@ -320,15 +334,15 @@ mktime_utc (struct tm *tm)
   retval = (tm->tm_year - 70) * 365;
   retval += (tm->tm_year - 68) / 4;
   retval += days_before[tm->tm_mon] + tm->tm_mday - 1;
-  
+
   if (tm->tm_year % 4 == 0 && tm->tm_mon < 2)
     retval -= 1;
-  
+
   retval = ((((retval * 24) + tm->tm_hour) * 60) + tm->tm_min) * 60 + tm->tm_sec;
 #else
   retval = timegm (tm);
 #endif /* !HAVE_TIMEGM */
-  
+
   return retval;
 }
 
@@ -385,7 +399,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       mon = strtoul (iso_date, (char **)&iso_date, 10);
       if (*iso_date++ != '-')
         return FALSE;
-      
+
       mday = strtoul (iso_date, (char **)&iso_date, 10);
     }
   else
@@ -424,10 +438,10 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       hour = val;
       iso_date++;
       min = strtoul (iso_date, (char **)&iso_date, 10);
-      
+
       if (*iso_date++ != ':')
         return FALSE;
-      
+
       sec = strtoul (iso_date, (char **)&iso_date, 10);
     }
   else
@@ -451,7 +465,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
   tm.tm_sec = sec;
 
   time_->tv_usec = 0;
-  
+
   if (*iso_date == ',' || *iso_date == '.')
     {
       glong mul = 100000;
@@ -466,7 +480,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       while (g_ascii_isdigit (*iso_date))
         iso_date++;
     }
-    
+
   /* Now parse the offset and convert tm to a time_t */
   if (*iso_date == 'Z')
     {
@@ -476,9 +490,9 @@ g_time_val_from_iso8601 (const gchar *iso_date,
   else if (*iso_date == '+' || *iso_date == '-')
     {
       gint sign = (*iso_date == '+') ? -1 : 1;
-      
+
       val = strtoul (iso_date + 1, (char **)&iso_date, 10);
-      
+
       if (*iso_date == ':')
         {
           /* hh:mm */
@@ -515,7 +529,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
 /**
  * g_time_val_to_iso8601:
  * @time_: a #GTimeVal
- * 
+ *
  * Converts @time_ into an RFC 3339 encoded string, relative to the
  * Coordinated Universal Time (UTC). This is one of the many formats
  * allowed by ISO 8601.
@@ -604,6 +618,6 @@ g_time_val_to_iso8601 (GTimeVal *time_)
                                 tm->tm_min,
                                 tm->tm_sec);
     }
-  
+
   return retval;
 }
