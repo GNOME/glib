@@ -4415,12 +4415,14 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
  *
  * Deprecated: 2.28: use g_source_get_time() instead
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_source_get_current_time (GSource  *source,
 			   GTimeVal *timeval)
 {
   g_get_current_time (timeval);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_source_get_time:
