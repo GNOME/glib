@@ -1470,13 +1470,17 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * The time to date conversion is done using the user's current timezone.
  *
  * Since: 2.10
+ * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use g_date_set_time_t()
+ *    instead.
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_date_set_time_val (GDate    *date,
 		     GTimeVal *timeval)
 {
   g_date_set_time_t (date, (time_t) timeval->tv_sec);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_date_set_month:

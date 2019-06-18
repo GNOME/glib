@@ -195,10 +195,10 @@ void         g_date_set_parse             (GDate       *date,
 GLIB_AVAILABLE_IN_ALL
 void         g_date_set_time_t            (GDate       *date,
 					   time_t       timet);
-GLIB_AVAILABLE_IN_ALL
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_DEPRECATED_IN_2_62_FOR(g_date_set_time_t)
 void         g_date_set_time_val          (GDate       *date,
 					   GTimeVal    *timeval);
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED_FOR(g_date_set_time_t)
 void         g_date_set_time              (GDate       *date,
                                            GTime        time_);
