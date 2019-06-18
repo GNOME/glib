@@ -1620,6 +1620,7 @@ async_init_start_service_by_name_cb (GDBusConnection *connection,
             }
           else
             {
+              g_dbus_error_strip_remote_error (error);
               g_prefix_error (&error,
                               _("Error calling StartServiceByName for %s: "),
                               proxy->priv->name);
