@@ -62,7 +62,7 @@ GLIB_AVAILABLE_IN_ALL
 void     g_usleep                (gulong       microseconds);
 
 GLIB_AVAILABLE_IN_ALL
-void     g_time_val_add          (GTimeVal    *time_, 
+void     g_time_val_add          (GTimeVal    *time_,
                                   glong        microseconds);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_time_val_from_iso8601 (const gchar *iso_date,
