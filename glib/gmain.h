@@ -570,8 +570,11 @@ GSource *g_timeout_source_new_seconds (guint interval);
 
 /* Miscellaneous functions
  */
-GLIB_AVAILABLE_IN_ALL
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_DEPRECATED_IN_2_62_FOR(g_get_real_time)
 void   g_get_current_time                 (GTimeVal       *result);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
 GLIB_AVAILABLE_IN_ALL
 gint64 g_get_monotonic_time               (void);
 GLIB_AVAILABLE_IN_ALL
