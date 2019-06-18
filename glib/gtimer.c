@@ -245,7 +245,7 @@ g_timer_elapsed (GTimer *timer,
 gboolean
 g_timer_is_active (GTimer *timer)
 {
-  g_return_if_fail (timer != NULL);
+  g_return_val_if_fail (timer != NULL, FALSE);
 
   return timer->active;
 }
