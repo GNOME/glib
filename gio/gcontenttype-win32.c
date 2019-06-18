@@ -83,6 +83,21 @@ get_registry_classes_key (const char    *subdir,
   return value_utf8;
 }
 
+/*< private >*/
+void
+g_content_type_set_mime_dirs (const gchar * const *dirs)
+{
+  /* noop on Windows */
+}
+
+/*< private >*/
+const gchar * const *
+g_content_type_get_mime_dirs (void)
+{
+  const gchar * const *mime_dirs = { NULL };
+  return mime_dirs;
+}
+
 gboolean
 g_content_type_equals (const gchar *type1,
                        const gchar *type2)
