@@ -23,7 +23,6 @@
  */
 
 #undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -746,6 +745,85 @@ pointer_array_free_func (void)
   g_assert_cmpint (num_free_func_invocations, ==, 0);
 }
 
+static gpointer
+ptr_array_copy_func (gconstpointer src, gpointer userdata)
+{
+  gsize *dst = g_malloc (sizeof (gsize));
+  *dst = *((gsize *) src);
+  return dst;
+}
+
+/* Test the g_ptr_array_copy() function */
+static void
+pointer_array_copy (void)
+{
+  GPtrArray *ptr_array, *ptr_array2;
+  gsize i;
+  const gsize array_size = 100;
+  gsize *array_test = g_malloc (array_size * sizeof (gsize));
+
+  g_test_summary ("Check all normal behaviour of stealing elements from one "
+                  "array to append to another, covering different array sizes "
+                  "and element copy functions");
+
+  if (g_test_undefined ())
+    {
+      /* Testing degenerated cases */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      ptr_array = g_ptr_array_copy (NULL, NULL, NULL);
+      g_test_assert_expected_messages ();
+      g_assert_cmpuint ((gsize) ptr_array, ==, (gsize) NULL);
+    }
+
+  /* Initializing array_test */
+  for (i = 0; i < array_size; i++)
+    array_test[i] = i;
+
+  /* Test copy an empty array */
+  ptr_array = g_ptr_array_sized_new (0);
+  ptr_array2 = g_ptr_array_copy (ptr_array, NULL, NULL);
+
+  g_ptr_array_unref (ptr_array);
+  g_ptr_array_unref (ptr_array2);
+
+  /* Test simple copy */
+  ptr_array = g_ptr_array_sized_new (array_size);
+
+  for (i = 0; i < array_size; i++)
+    g_ptr_array_add (ptr_array, &array_test[i]);
+
+  ptr_array2 = g_ptr_array_copy (ptr_array, NULL, NULL);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array2, i)), ==, i);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint ((gsize) g_ptr_array_index (ptr_array, i), ==,
+                      (gsize) g_ptr_array_index (ptr_array2, i));
+
+  g_ptr_array_free (ptr_array2, TRUE);
+
+  /* Test copy through GCopyFunc */
+  ptr_array2 = g_ptr_array_copy (ptr_array, ptr_array_copy_func, NULL);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array2, i)), ==, i);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint ((gsize) g_ptr_array_index (ptr_array, i), !=,
+                      (gsize) g_ptr_array_index (ptr_array2, i));
+
+  for (i = 0; i <  array_size; i++)
+    free(ptr_array2->pdata[i]);
+
+  g_ptr_array_free (ptr_array2, TRUE);
+
+  /* Final cleanup */
+  g_ptr_array_free (ptr_array, TRUE);
+  g_free (array_test);
+}
+
 static gint
 ptr_compare (gconstpointer p1, gconstpointer p2)
 {
@@ -1262,6 +1340,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/pointerarray/insert", pointer_array_insert);
   g_test_add_func ("/pointerarray/ref-count", pointer_array_ref_count);
   g_test_add_func ("/pointerarray/free-func", pointer_array_free_func);
+  g_test_add_func ("/pointerarray/array_copy", pointer_array_copy);
   g_test_add_func ("/pointerarray/sort", pointer_array_sort);
   g_test_add_func ("/pointerarray/sort-with-data", pointer_array_sort_with_data);
   g_test_add_func ("/pointerarray/find/empty", pointer_array_find_empty);
