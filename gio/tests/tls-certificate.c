@@ -398,6 +398,19 @@ list_from_file (const Reference *ref)
   g_assert_cmpint (g_list_length (list), ==, 0);
 }
 
+static void
+from_pkcs11_uri (void)
+{
+  GError *error = NULL;
+  GTlsCertificate *cert;
+
+  cert = g_tls_certificate_new_from_pkcs11_uri ("pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=ca-bundle.crt", &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  g_object_unref (cert);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -464,6 +477,9 @@ main (int   argc,
                         &ref, (GTestDataFunc)from_files_pkcs8enc);
   g_test_add_data_func ("/tls-certificate/list_from_file",
                         &ref, (GTestDataFunc)list_from_file);
+  g_test_add_func ("/tls-certificate/pkcs11-uri",
+                   from_pkcs11_uri);
+
 
   rtv = g_test_run();
 

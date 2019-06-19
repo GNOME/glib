@@ -60,7 +60,8 @@ enum
   PROP_CERTIFICATE_PEM,
   PROP_PRIVATE_KEY,
   PROP_PRIVATE_KEY_PEM,
-  PROP_ISSUER
+  PROP_ISSUER,
+  PROP_PKCS11_URI,
 };
 
 static void
@@ -74,7 +75,15 @@ g_tls_certificate_get_property (GObject    *object,
 				GValue     *value,
 				GParamSpec *pspec)
 {
-  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  switch (prop_id)
+    {
+      case PROP_PKCS11_URI:
+        /* Subclasses must override this property but this allows older backends to not fatally error */
+        g_value_set_static_string (value, NULL);
+        break;
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
 }
 
 static void
@@ -83,7 +92,13 @@ g_tls_certificate_set_property (GObject      *object,
 				const GValue *value,
 				GParamSpec   *pspec)
 {
-  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  switch (prop_id)
+    {
+      case PROP_PKCS11_URI:
+        break;
+      default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
 }
 
 static void
@@ -193,6 +208,26 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GTlsCertificate:pkcs11-uri:
+   *
+   * A URI referencing the PKCS \#11 object containing a certificate.
+   *
+   * If %NULL the certificate is either not backed by PKCS \#11 or the
+   * #GTlsBackend does not support PKCS \#11.
+   *
+   * Since: 2.62
+   */
+  g_object_class_install_property (gobject_class, PROP_PKCS11_URI,
+				   g_param_spec_string ("pkcs11-uri",
+							P_("PKCS #11 URI"),
+							P_("The PKCS #11 URI for the certificate"),
+							NULL,
+							G_PARAM_READWRITE |
+							G_PARAM_CONSTRUCT_ONLY |
+							G_PARAM_STATIC_STRINGS));
+
 }
 
 static GTlsCertificate *
@@ -589,6 +624,52 @@ g_tls_certificate_new_from_files (const gchar  *cert_file,
   g_free (cert_data);
   g_free (key_pem);
   return cert;
+}
+
+/**
+ * g_tls_certificate_new_from_pkcs11_uri:
+ * @uri: A PKCS \#11 URI for the certificate
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Creates a #GTlsCertificate from a PKCS \#11 URI. This function
+ * does not ensure the URI points to a valid object.
+ *
+ * Returns: the new certificate, or %NULL on error
+ *
+ * Since: 2.62
+ */
+GTlsCertificate *
+g_tls_certificate_new_from_pkcs11_uri (const gchar  *uri,
+                                       GError      **error)
+{
+  GObject *cert;
+  GTlsBackend *backend;
+
+  g_return_val_if_fail (uri, NULL);
+
+  backend = g_tls_backend_get_default ();
+
+  cert = g_initable_new (g_tls_backend_get_certificate_type (backend),
+                         NULL, error,
+                         "pkcs11-uri", uri,
+                         NULL);
+
+  if (cert != NULL)
+    {
+      gchar *objects_uri;
+
+      /* Old implementations might not override this property */
+      g_object_get (cert, "pkcs11-uri", &objects_uri, NULL);
+      if (objects_uri == NULL)
+        {
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "This GTlsBackend does not support creating PKCS #11 certificates");
+          g_object_unref (cert);
+          return NULL;
+        }
+      g_free (objects_uri);
+    }
+
+  return G_TLS_CERTIFICATE (cert);
 }
 
 /**
