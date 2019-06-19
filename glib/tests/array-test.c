@@ -942,6 +942,63 @@ pointer_array_extend (void)
   g_free (array_test);
 }
 
+/* Test the g_ptr_array_extend_and_steal() function */
+static void
+pointer_array_extend_and_steal (void)
+{
+  GPtrArray *ptr_array, *ptr_array2, *ptr_array3;
+  gsize i;
+  const gsize array_size = 100;
+  gsize *array_test = g_malloc (array_size * sizeof (gsize));
+
+  /* Initializing array_test */
+  for (i = 0; i < array_size; i++)
+    array_test[i] = i;
+
+  /* Testing simple extend_and_steal() */
+  ptr_array = g_ptr_array_sized_new (array_size / 2);
+  ptr_array2 = g_ptr_array_sized_new (array_size / 2);
+
+  for (i = 0; i < array_size / 2; i++)
+    {
+      g_ptr_array_add (ptr_array, &array_test[i]);
+      g_ptr_array_add (ptr_array2, &array_test[i + (array_size / 2)]);
+    }
+
+  g_ptr_array_extend_and_steal (ptr_array, ptr_array2);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array, i)), ==, i);
+
+  g_ptr_array_free (ptr_array, TRUE);
+
+  /* Testing extend_and_steal() with a pending reference to stolen array */
+  ptr_array = g_ptr_array_sized_new (array_size / 2);
+  ptr_array2 = g_ptr_array_sized_new (array_size / 2);
+
+  for (i = 0; i < array_size / 2; i++)
+    {
+      g_ptr_array_add (ptr_array, &array_test[i]);
+      g_ptr_array_add (ptr_array2, &array_test[i + (array_size / 2)]);
+    }
+
+  ptr_array3 = g_ptr_array_ref (ptr_array2);
+
+  g_ptr_array_extend_and_steal (ptr_array, ptr_array2);
+
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array, i)), ==, i);
+
+  g_assert_cmpuint (ptr_array3->len, ==, 0);
+  g_assert_null (ptr_array3->pdata);
+
+  g_ptr_array_free (ptr_array, TRUE);
+  g_ptr_array_free (ptr_array3, TRUE);
+
+  /* Final memory clean-up */
+  g_free (array_test);
+}
+
 static gint
 ptr_compare (gconstpointer p1, gconstpointer p2)
 {
@@ -1460,6 +1517,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/pointerarray/free-func", pointer_array_free_func);
   g_test_add_func ("/pointerarray/array_copy", pointer_array_copy);
   g_test_add_func ("/pointerarray/array_extend", pointer_array_extend);
+  g_test_add_func ("/pointerarray/array_extend_and_steal", pointer_array_extend_and_steal);
   g_test_add_func ("/pointerarray/sort", pointer_array_sort);
   g_test_add_func ("/pointerarray/sort-with-data", pointer_array_sort_with_data);
   g_test_add_func ("/pointerarray/find/empty", pointer_array_find_empty);
