@@ -1590,6 +1590,38 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
 }
 
 /**
+ * g_ptr_array_extend_and_steal:
+ * @array_to_extend: (transfer none): a #GPtrArray.
+ * @array: (transfer container): a #GPtrArray to add to the end of
+ *     @array_to_extend.
+ *
+ * Adds all the pointers in @array to the end of @array_to_extend, transferring
+ * ownership of each element from @array to @array_to_extend and modifying
+ * @array_to_extend in-place. @array is then freed.
+ *
+ * As with g_ptr_array_free(), @array will be destroyed if its reference count
+ * is 1. If its reference count is higher, it will be decremented and the
+ * length of @array set to zero.
+ *
+ * Since: 2.62
+ **/
+void
+g_ptr_array_extend_and_steal (GPtrArray  *array_to_extend,
+                              GPtrArray  *array)
+{
+  gpointer *pdata;
+
+  g_ptr_array_extend (array_to_extend, array, NULL, NULL);
+
+  /* Get rid of @array without triggering the GDestroyNotify attached
+   * to the elements moved from @array to @array_to_extend. */
+  pdata = g_steal_pointer (&array->pdata);
+  array->len = 0;
+  g_ptr_array_unref (array);
+  g_free (pdata);
+}
+
+/**
  * g_ptr_array_insert:
  * @array: a #GPtrArray
  * @index_: the index to place the new element at, or -1 to append
