@@ -1,0 +1,18 @@
+# See https://developer.gnome.org/programming-guidelines/unstable/c-coding-style.html.en
+BasedOnStyle: GNU
+AlwaysBreakAfterDefinitionReturnType: All
+BreakBeforeBinaryOperators: None
+BinPackParameters: false
+IncludeCategories:
+  - Regex:    '^"config\.h"'
+    Priority: 1
+  - Regex:    '^<.*'
+    Priority: 2
+  - Regex:    '^".*'
+    Priority: 3
+SpaceAfterCStyleCast: true
+# Our column limit is actually 80, but setting that results in clang-format
+# making a lot of dubious hanging-indent choices; disable it and assume the
+# developer will line wrap appropriately. clang-format will still check
+# existing hanging indents.
+ColumnLimit: 0
