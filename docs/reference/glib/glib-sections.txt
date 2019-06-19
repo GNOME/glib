@@ -2638,6 +2638,7 @@ GPtrArray
 g_ptr_array_new
 g_ptr_array_sized_new
 g_ptr_array_new_with_free_func
+g_ptr_array_copy
 g_ptr_array_new_full
 g_ptr_array_set_free_func
 g_ptr_array_ref
