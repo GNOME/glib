@@ -398,6 +398,38 @@ list_from_file (const Reference *ref)
   g_assert_cmpint (g_list_length (list), ==, 0);
 }
 
+static void
+from_pkcs11_uri (void)
+{
+  GError *error = NULL;
+  GTlsCertificate *cert;
+  gchar *pkcs11_uri = NULL;
+
+  cert = g_tls_certificate_new_from_pkcs11_uris ("pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=ca-bundle.crt", NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  g_object_get (cert, "pkcs11-uri", &pkcs11_uri, NULL);
+  g_assert_cmpstr ("pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=ca-bundle.crt", ==, pkcs11_uri);
+  g_free (pkcs11_uri);
+
+  g_object_unref (cert);
+}
+
+static void
+from_unsupported_pkcs11_uri (void)
+{
+  GError *error = NULL;
+  GTlsCertificate *cert;
+
+  /* This is a magic value in gtesttlsbackend.c simulating an unsupported backend */
+  cert = g_tls_certificate_new_from_pkcs11_uris ("unsupported", NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_assert_null (cert);
+
+  g_clear_error (&error);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -464,6 +496,11 @@ main (int   argc,
                         &ref, (GTestDataFunc)from_files_pkcs8enc);
   g_test_add_data_func ("/tls-certificate/list_from_file",
                         &ref, (GTestDataFunc)list_from_file);
+  g_test_add_func ("/tls-certificate/pkcs11-uri",
+                   from_pkcs11_uri);
+  g_test_add_func ("/tls-certificate/pkcs11-uri-unsupported",
+                   from_unsupported_pkcs11_uri);
+
 
   rtv = g_test_run();
 
