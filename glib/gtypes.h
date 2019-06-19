@@ -119,6 +119,20 @@ typedef void            (*GHFunc)               (gpointer       key,
                                                  gpointer       user_data);
 
 /**
+ * GCopyFunc:
+ * @src: (not nullable): A pointer to the data which should be copied
+ * @data: Additional data
+ *
+ * A function of this signature is used to copy the node data
+ * when doing a deep-copy of a tree.
+ *
+ * Returns: (not nullable): A pointer to the copy
+ *
+ * Since: 2.4
+ */
+typedef gpointer	(*GCopyFunc)            (gconstpointer  src,
+                                                 gpointer       data);
+/**
  * GFreeFunc:
  * @data: a data pointer
  *
