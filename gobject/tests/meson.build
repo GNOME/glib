@@ -115,7 +115,7 @@ foreach test_name : python_tests
   test(
     test_name,
     python,
-    args: files(test_name),
+    args: ['-B', files(test_name)],
     env: test_env,
     suite: ['gobject'],
   )
