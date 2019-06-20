@@ -239,6 +239,8 @@ g_timer_elapsed (GTimer *timer,
 /**
  * g_timer_is_active:
  * @timer: a #GTimer.
+ * 
+ * Exposes whether the timer is currently active.
  *
  * Returns: %TRUE if the timer is running, %FALSE otherwise
  * Since: 2.62
