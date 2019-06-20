@@ -571,8 +571,8 @@ decompose_hangul_step (gunichar  ch,
 /**
  * g_unichar_decompose:
  * @ch: a Unicode character
- * @a: return location for the first component of @ch
- * @b: return location for the second component of @ch
+ * @a: (out) (not optional): return location for the first component of @ch
+ * @b: (out) (not optional): return location for the second component of @ch
  *
  * Performs a single decomposition step of the
  * Unicode canonical decomposition algorithm.
@@ -646,7 +646,7 @@ g_unichar_decompose (gunichar  ch,
  * g_unichar_compose:
  * @a: a Unicode character
  * @b: a Unicode character
- * @ch: return location for the composed character
+ * @ch: (out) (not optional): return location for the composed character
  *
  * Performs a single composition step of the
  * Unicode canonical composition algorithm.
