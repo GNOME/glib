@@ -984,13 +984,13 @@ g_irepository_find_by_error_domain (GIRepository *repository,
  * returning a concrete class of #GLocalFile, which is a #GType we
  * see at runtime, but not statically.
  *
- * Since: 1.60
+ * Since: 1.62
  */
 void
 g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
                                            GType              gtype,
                                            guint             *n_interfaces_out,
-                                           GIInterfaceInfo  **interfaces_out)
+                                           GIInterfaceInfo ***interfaces_out)
 {
   GTypeInterfaceCache *cache;
 
@@ -1039,7 +1039,7 @@ g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
     }
 
   *n_interfaces_out = cache->n_interfaces;
-  *interfaces_out = *((GIInterfaceInfo**)&(cache->interfaces[0]));
+  *interfaces_out = (GIInterfaceInfo**)&cache->interfaces[0];
 }
 
 static void
