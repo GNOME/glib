@@ -1,4 +1,5 @@
 # for all subdirectories
+__pycache__
 TAGS
 tags
 .libs
