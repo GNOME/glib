@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python -B
 # coding=utf-8
 
 # Copyright (c) 2015 Remko Tronçon (https://el-tramo.be)
