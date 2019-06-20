@@ -104,12 +104,14 @@ test_timer_is_active (void)
   GTimer *timer;
   gboolean is_active;
 
-  timer = g_timer_new();
-  is_active = g_timer_is_active(timer);
-  g_assert_true(is_active);
-  g_timer_stop(timer);
-  is_active = g_timer_is_active(timer);
-  g_assert_false(is_active);
+  timer = g_timer_new ();
+  is_active = g_timer_is_active (timer);
+  g_assert_true (is_active);
+  g_timer_stop (timer);
+  is_active = g_timer_is_active (timer);
+  g_assert_false (is_active);
+
+  g_timer_destroy (timer);
 }
 
 static void
