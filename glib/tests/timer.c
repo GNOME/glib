@@ -99,6 +99,19 @@ test_timer_reset (void)
 }
 
 static void
+test_timer_is_active (void)
+{
+  GTimer *timer;
+
+  timer = g_timer_new();
+  gboolean is_active = g_timer_is_active(timer);
+  g_assert_true(is_active);
+  g_timer_stop(timer);
+  is_active = g_timer_is_active(timer);
+  g_assert_false(is_active);
+}
+
+static void
 test_timeval_add (void)
 {
   GTimeVal time = { 1, 0 };
