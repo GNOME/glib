@@ -1265,6 +1265,7 @@ g_timer_continue
 g_timer_elapsed
 g_timer_reset
 g_timer_destroy
+g_timer_is_active
 </SECTION>
 
 <SECTION>

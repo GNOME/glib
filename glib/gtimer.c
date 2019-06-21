@@ -237,6 +237,23 @@ g_timer_elapsed (GTimer *timer,
 }
 
 /**
+ * g_timer_is_active:
+ * @timer: a #GTimer.
+ * 
+ * Exposes whether the timer is currently active.
+ *
+ * Returns: %TRUE if the timer is running, %FALSE otherwise
+ * Since: 2.62
+ **/
+gboolean
+g_timer_is_active (GTimer *timer)
+{
+  g_return_val_if_fail (timer != NULL, FALSE);
+
+  return timer->active;
+}
+
+/**
  * g_usleep:
  * @microseconds: number of microseconds to pause
  *
