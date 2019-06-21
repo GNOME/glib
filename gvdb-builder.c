@@ -511,6 +511,10 @@ gvdb_table_write_contents (GHashTable   *table,
   FileBuilder *fb;
   GString *str;
 
+  g_return_val_if_fail (table != NULL, FALSE);
+  g_return_val_if_fail (filename != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
   fb = file_builder_new (byteswap);
   file_builder_add_hash (fb, table, &root);
   str = file_builder_serialise (fb, root);
