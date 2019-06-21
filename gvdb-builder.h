@@ -51,5 +51,16 @@ gboolean                gvdb_table_write_contents                       (GHashTa
                                                                          const gchar    *filename,
                                                                          gboolean        byteswap,
                                                                          GError        **error);
+G_GNUC_INTERNAL
+void                    gvdb_table_write_contents_async                 (GHashTable          *table,
+                                                                         const gchar         *filename,
+                                                                         gboolean             byteswap,
+                                                                         GCancellable        *cancellable,
+                                                                         GAsyncReadyCallback  callback,
+                                                                         gpointer             user_data);
+G_GNUC_INTERNAL
+gboolean                gvdb_table_write_contents_finish                (GHashTable          *table,
+                                                                         GAsyncResult        *result,
+                                                                         GError             **error);
 
 #endif /* __gvdb_builder_h__ */
