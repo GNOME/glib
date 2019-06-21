@@ -349,7 +349,7 @@ debug_objects_foreach (gpointer key,
 {
   GObject *object = value;
 
-  g_message ("[%p] stale %s\tref_count=%u",
+  g_message ("[%p] object %s\tref_count=%u",
 	     object,
 	     G_OBJECT_TYPE_NAME (object),
 	     object->ref_count);
@@ -362,6 +362,12 @@ debug_objects_foreach (gpointer key,
 G_DEFINE_DESTRUCTOR(debug_objects_atexit)
 #endif /* G_HAS_CONSTRUCTORS */
 
+struct TypeMetrics {
+  GType type;
+  int   instance_count;
+  int   instance_change;
+};
+
 static void
 debug_objects_atexit (void)
 {
@@ -372,6 +378,83 @@ debug_objects_atexit (void)
       g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
       G_UNLOCK (debug_objects);
     });
+}
+
+static gint
+metrics_sort (struct TypeMetrics *a, struct TypeMetrics *b)
+{
+  return b->instance_count - a->instance_count;
+}
+static GHashTable *old_histogram;
+
+static gboolean
+on_timeout (void)
+{
+  static int generation = 0;
+  static int old_debug_objects_count = 0;
+
+  if (_g_type_debug_flags & G_TYPE_DEBUG_OBJECTS) 
+    {
+      GHashTableIter iter;
+      gpointer object;
+      GHashTable *histogram = g_hash_table_new_full (NULL, NULL, NULL, g_free);
+      GList *metrics_list, *node;
+      int change;
+
+      G_LOCK (debug_objects);
+      change = debug_objects_count - old_debug_objects_count;
+      old_debug_objects_count = debug_objects_count;
+      g_message ("object sweep generation %d, %d total objects [a change of %s%d objects]", generation, debug_objects_count, change > 0? "+" : "", change);
+      g_hash_table_iter_init (&iter, debug_objects_ht);
+      while (g_hash_table_iter_next (&iter, NULL, &object))
+        {
+          GType type = G_OBJECT_TYPE (object);
+          struct TypeMetrics *old_metrics = NULL;
+          struct TypeMetrics *metrics;
+          int old_instance_count = 0;
+
+          if (old_histogram != NULL)
+            {
+              old_metrics = g_hash_table_lookup (old_histogram, (gpointer) type);
+
+	      if (old_metrics != NULL)
+                old_instance_count = old_metrics->instance_count;
+            }
+
+          metrics = g_hash_table_lookup (histogram, (gpointer) type);
+          if (metrics == NULL)
+            {
+	      metrics = g_new0 (struct TypeMetrics, 1);
+	      metrics->type = type;
+	      g_hash_table_insert (histogram, (gpointer)type, metrics);
+            }
+	  metrics->instance_count++;
+	  metrics->instance_change = metrics->instance_count - old_instance_count;
+        }
+      G_UNLOCK (debug_objects);
+
+      metrics_list = g_hash_table_get_values (histogram);
+      metrics_list = g_list_sort (metrics_list, (GCompareFunc) metrics_sort);
+      for (node = metrics_list; node != NULL; node = node->next)
+        {
+          struct TypeMetrics *metrics = node->data;
+          if (metrics->instance_change == 0) continue;
+          g_message ("%d : %d instances of %s [%s%d]\n",
+                     generation,
+                     metrics->instance_count,
+                     g_type_name (metrics->type),
+                     metrics->instance_change > 0? "+" : "",
+                     metrics->instance_change);
+        }
+      g_list_free (metrics_list);
+      g_message ("end of object sweep generation %d", generation);
+      generation++;
+      if (old_histogram != NULL) 
+        g_hash_table_unref (old_histogram);
+      old_histogram = histogram;
+    };
+
+  return G_SOURCE_CONTINUE;
 }
 #endif	/* G_ENABLE_DEBUG */
 
@@ -416,6 +499,15 @@ _g_object_type_init (void)
   g_assert (type == G_TYPE_OBJECT);
   g_value_register_transform_func (G_TYPE_OBJECT, G_TYPE_OBJECT, g_value_object_transform_value);
 
+  {
+    char *cmdline = "";
+
+    g_file_get_contents ("/proc/self/cmdline", &cmdline, NULL, NULL);
+
+    if (strstr (cmdline, "gnome-shell") != NULL)
+      _g_type_debug_flags |= G_TYPE_DEBUG_OBJECTS;
+  }
+
 #if G_ENABLE_DEBUG
   /* We cannot use GOBJECT_IF_DEBUG here because of the G_HAS_CONSTRUCTORS
    * conditional in between, as the C spec leaves conditionals inside macro
@@ -430,6 +522,7 @@ _g_object_type_init (void)
 # ifndef G_HAS_CONSTRUCTORS
       g_atexit (debug_objects_atexit);
 # endif /* G_HAS_CONSTRUCTORS */
+      g_timeout_add_seconds (30, (GSourceFunc) on_timeout, NULL);
     }
 #endif /* G_ENABLE_DEBUG */
 }
