@@ -28,6 +28,12 @@
 #include <gmodule.h>
 #include <string.h>
 
+#ifdef _MSC_VER
+# define MODULE_FILENAME_PREFIX ""
+#else
+# define MODULE_FILENAME_PREFIX "lib"
+#endif
+
 gchar* global_state;
 
 G_MODULE_EXPORT void g_clash_func (void);
@@ -84,8 +90,8 @@ main (int    argc,
   if (!g_module_supported ())
     g_error ("dynamic modules not supported");
 
-  plugin_a = g_test_build_filename (G_TEST_BUILT, "libmoduletestplugin_a", NULL);
-  plugin_b = g_test_build_filename (G_TEST_BUILT, "libmoduletestplugin_b", NULL);
+  plugin_a = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_a", NULL);
+  plugin_b = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_b", NULL);
 
   /* module handles */
   
