@@ -22,6 +22,12 @@
 #include "test_resources2.h"
 #include "digit_test_resources.h"
 
+#ifdef _MSC_VER
+# define MODULE_FILENAME_PREFIX ""
+#else
+# define MODULE_FILENAME_PREFIX "lib"
+#endif
+
 static void
 test_resource (GResource *resource)
 {
@@ -641,7 +647,9 @@ test_resource_module (void)
   if (g_module_supported ())
     {
       /* For in-tree, this will find the .la file and use it to get to the .so in .libs/ */
-      module = g_io_module_new (g_test_get_filename (G_TEST_BUILT, "libresourceplugin",  NULL));
+      module = g_io_module_new (g_test_get_filename (G_TEST_BUILT,
+                                                     MODULE_FILENAME_PREFIX "resourceplugin",
+                                                     NULL));
 
       error = NULL;
 
