@@ -131,9 +131,12 @@ g_list_model_default_init (GListModelInterface *iface)
    * @removed: the number of items removed
    * @added: the number of items added
    *
-   * This signal is emitted whenever items were added or removed to
-   * @list. At @position, @removed items were removed and @added items
-   * were added in their place.
+   * This signal is emitted whenever items were added to or removed
+   * from @list. At @position, @removed items were removed and @added
+   * items were added in their place.
+   *
+   * Note: If @removed != @added, the positions of all later items
+   * in the model change.
    *
    * Since: 2.44
    */
