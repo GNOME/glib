@@ -1539,9 +1539,9 @@ g_file_query_filesystem_info_finish (GFile         *file,
  *
  * Gets a #GMount for the #GFile.
  *
- * If the #GFileIface for @file does not have a mount (e.g.
- * possibly a remote share), @error will be set to %G_IO_ERROR_NOT_FOUND
- * and %NULL will be returned.
+ * If the #GFileIface for @file does not have a mount (for example,
+ * for a local file on the root file system), @error will be set to
+ * %G_IO_ERROR_NOT_FOUND and %NULL will be returned.
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
