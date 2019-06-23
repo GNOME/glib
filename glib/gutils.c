@@ -1003,8 +1003,32 @@ g_get_host_name (void)
       gchar *utmp;
 
 #ifndef G_OS_WIN32
-      gchar *tmp = g_malloc (sizeof (gchar) * 100);
-      failed = (gethostname (tmp, sizeof (gchar) * 100) == -1);
+      glong max;
+      gsize size;
+      const gsize size_large = (gsize) 256 * 256;
+      gchar *tmp;
+
+      max = sysconf (_SC_HOST_NAME_MAX);
+      if (max > 0)
+        size = (gsize) max + 1;
+      else
+#ifdef HOST_NAME_MAX
+        size = HOST_NAME_MAX + 1;
+#else
+        /* _POSIX_HOST_NAME_MAX is defined to be 255, so 'size' is 256 here. */
+        size = _POSIX_HOST_NAME_MAX + 1;
+#endif
+
+      tmp = g_malloc (size);
+      failed = (gethostname (tmp, size) == -1);
+      if (failed && size < size_large)
+        {
+          /* Try again with a larger buffer if 'size' may be too small. */
+          g_free (tmp);
+          tmp = g_malloc (size_large);
+          failed = (gethostname (tmp, size_large) == -1);
+        }
+
       if (failed)
         g_clear_pointer (&tmp, g_free);
       utmp = tmp;
