@@ -162,14 +162,15 @@ GValue*
 g_value_init (GValue *value,
 	      GType   g_type)
 {
+  GTypeValueTable *value_table;
   /* g_return_val_if_fail (G_TYPE_IS_VALUE (g_type), NULL);	be more elaborate below */
   g_return_val_if_fail (value != NULL, NULL);
   /* g_return_val_if_fail (G_VALUE_TYPE (value) == 0, NULL);	be more elaborate below */
 
-  if (G_TYPE_IS_VALUE (g_type) && G_VALUE_TYPE (value) == 0)
-    {
-      GTypeValueTable *value_table = g_type_value_table_peek (g_type);
+  value_table = g_type_value_table_peek (g_type);
 
+  if (value_table && G_VALUE_TYPE (value) == 0)
+    {
       /* setup and init */
       value_meminit (value, g_type);
       value_table->value_init (value);
@@ -181,11 +182,9 @@ g_value_init (GValue *value,
 	       g_type_name (G_VALUE_TYPE (value)));
   else /* !G_TYPE_IS_VALUE (g_type) */
     g_warning ("%s: cannot initialize GValue with type '%s', %s",
-	       G_STRLOC,
-	       g_type_name (g_type),
-	       g_type_value_table_peek (g_type) ?
-	       "this type is abstract with regards to GValue use, use a more specific (derived) type" :
-	       "this type has no GTypeValueTable implementation");
+               G_STRLOC,
+               g_type_name (g_type),
+               value_table ? "this type is abstract with regards to GValue use, use a more specific (derived) type" : "this type has no GTypeValueTable implementation");
   return value;
 }
 
@@ -200,14 +199,16 @@ void
 g_value_copy (const GValue *src_value,
 	      GValue       *dest_value)
 {
-  g_return_if_fail (G_IS_VALUE (src_value));
-  g_return_if_fail (G_IS_VALUE (dest_value));
+  g_return_if_fail (src_value);
+  g_return_if_fail (dest_value);
   g_return_if_fail (g_value_type_compatible (G_VALUE_TYPE (src_value), G_VALUE_TYPE (dest_value)));
   
   if (src_value != dest_value)
     {
       GType dest_type = G_VALUE_TYPE (dest_value);
       GTypeValueTable *value_table = g_type_value_table_peek (dest_type);
+
+      g_return_if_fail (value_table);
 
       /* make sure dest_value's value is free()d */
       if (value_table->value_free)
@@ -233,11 +234,12 @@ g_value_reset (GValue *value)
 {
   GTypeValueTable *value_table;
   GType g_type;
-  
-  g_return_val_if_fail (G_IS_VALUE (value), NULL);
-  
+
+  g_return_val_if_fail (value, NULL);
   g_type = G_VALUE_TYPE (value);
+
   value_table = g_type_value_table_peek (g_type);
+  g_return_val_if_fail (value_table, NULL);
 
   /* make sure value's value is free()d */
   if (value_table->value_free)
@@ -267,9 +269,10 @@ g_value_unset (GValue *value)
   if (value->g_type == 0)
     return;
 
-  g_return_if_fail (G_IS_VALUE (value));
+  g_return_if_fail (value);
 
   value_table = g_type_value_table_peek (G_VALUE_TYPE (value));
+  g_return_if_fail (value_table);
 
   if (value_table->value_free)
     value_table->value_free (value);
@@ -290,9 +293,10 @@ g_value_fits_pointer (const GValue *value)
 {
   GTypeValueTable *value_table;
 
-  g_return_val_if_fail (G_IS_VALUE (value), FALSE);
+  g_return_val_if_fail (value, FALSE);
 
   value_table = g_type_value_table_peek (G_VALUE_TYPE (value));
+  g_return_val_if_fail (value_table, FALSE);
 
   return value_table->value_peek_pointer != NULL;
 }
@@ -312,9 +316,11 @@ g_value_peek_pointer (const GValue *value)
 {
   GTypeValueTable *value_table;
 
-  g_return_val_if_fail (G_IS_VALUE (value), NULL);
+  g_return_val_if_fail (value, NULL);
 
   value_table = g_type_value_table_peek (G_VALUE_TYPE (value));
+  g_return_val_if_fail (value_table, NULL);
+
   if (!value_table->value_peek_pointer)
     {
       g_return_val_if_fail (g_value_fits_pointer (value) == TRUE, NULL);
@@ -340,16 +346,17 @@ g_value_set_instance (GValue  *value,
   GTypeValueTable *value_table;
   GTypeCValue cvalue;
   gchar *error_msg;
-  
-  g_return_if_fail (G_IS_VALUE (value));
+
+  g_return_if_fail (value);
+  g_type = G_VALUE_TYPE (value);
+  value_table = g_type_value_table_peek (g_type);
+  g_return_if_fail (value_table);
+
   if (instance)
     {
       g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
       g_return_if_fail (g_value_type_compatible (G_TYPE_FROM_INSTANCE (instance), G_VALUE_TYPE (value)));
     }
-  
-  g_type = G_VALUE_TYPE (value);
-  value_table = g_type_value_table_peek (g_type);
   
   g_return_if_fail (strcmp (value_table->collect_format, "p") == 0);
   
@@ -543,8 +550,8 @@ gboolean
 g_value_type_transformable (GType src_type,
 			    GType dest_type)
 {
-  g_return_val_if_fail (G_TYPE_IS_VALUE (src_type), FALSE);
-  g_return_val_if_fail (G_TYPE_IS_VALUE (dest_type), FALSE);
+  g_return_val_if_fail (src_type, FALSE);
+  g_return_val_if_fail (dest_type, FALSE);
 
   return (g_value_type_compatible (src_type, dest_type) ||
 	  transform_func_lookup (src_type, dest_type) != NULL);
@@ -564,8 +571,12 @@ gboolean
 g_value_type_compatible (GType src_type,
 			 GType dest_type)
 {
-  g_return_val_if_fail (G_TYPE_IS_VALUE (src_type), FALSE);
-  g_return_val_if_fail (G_TYPE_IS_VALUE (dest_type), FALSE);
+  g_return_val_if_fail (src_type, FALSE);
+  g_return_val_if_fail (dest_type, FALSE);
+
+  /* Fast path */
+  if (src_type == dest_type)
+    return TRUE;
 
   return (g_type_is_a (src_type, dest_type) &&
 	  g_type_value_table_peek (dest_type) == g_type_value_table_peek (src_type));
@@ -593,8 +604,8 @@ g_value_transform (const GValue *src_value,
 {
   GType dest_type;
 
-  g_return_val_if_fail (G_IS_VALUE (src_value), FALSE);
-  g_return_val_if_fail (G_IS_VALUE (dest_value), FALSE);
+  g_return_val_if_fail (src_value, FALSE);
+  g_return_val_if_fail (dest_value, FALSE);
 
   dest_type = G_VALUE_TYPE (dest_value);
   if (g_value_type_compatible (G_VALUE_TYPE (src_value), dest_type))
