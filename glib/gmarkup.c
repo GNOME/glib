@@ -2872,9 +2872,10 @@ g_markup_collect_attributes (const gchar         *element_name,
           g_assert_not_reached ();
         }
 
-      type = va_arg (ap, GMarkupCollectType);
-      attr = va_arg (ap, const char *);
       written++;
+      type = va_arg (ap, GMarkupCollectType);
+      if (type != G_MARKUP_COLLECT_INVALID)
+        attr = va_arg (ap, const char *);
     }
   va_end (ap);
 
@@ -2950,7 +2951,8 @@ failure:
         }
 
       type = va_arg (ap, GMarkupCollectType);
-      attr = va_arg (ap, const char *);
+      if (type != G_MARKUP_COLLECT_INVALID)
+        attr = va_arg (ap, const char *);
     }
   va_end (ap);
 
