@@ -1266,8 +1266,15 @@ test_clear_signal_handler (void)
   if (g_test_undefined ())
     {
       handler = g_random_int_range (0x01, 0xFF);
+
+#ifdef G_OS_WIN32
+      /* on Windows the '%x' printf modifier does not prefix values with '0x' */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "*instance '* has no handler with id *'");
+#else
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
                              "*instance '0x* has no handler with id *'");
+#endif
       g_clear_signal_handler (&handler, test_obj);
       g_assert_cmpuint (handler, ==, 0);
       g_test_assert_expected_messages ();
