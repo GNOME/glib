@@ -351,10 +351,10 @@ gvdb_table_get_names (GvdbTable *table,
                       gsize     *length)
 {
   gchar **names;
-  gint n_names;
-  gint filled;
-  gint total;
-  gint i;
+  guint n_names;
+  guint filled;
+  guint total;
+  guint i;
 
   /* We generally proceed by iterating over the list of items in the
    * hash table (in order of appearance) recording them into an array.
