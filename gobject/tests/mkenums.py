@@ -72,7 +72,7 @@ class TestMkenums(unittest.TestCase):
             print('Response file contains:', contents)
             f.write(contents)
             f.flush()
-        return f.name
+            return f.name
 
     def runMkenums(self, *args):
         if self.rspfile:
