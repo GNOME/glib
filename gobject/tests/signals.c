@@ -1267,7 +1267,7 @@ test_clear_signal_handler (void)
     {
       handler = g_random_int_range (0x01, 0xFF);
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                             "*instance '0x* has no handler with id *'");
+                             "*instance '* has no handler with id *'");
       g_clear_signal_handler (&handler, test_obj);
       g_assert_cmpuint (handler, ==, 0);
       g_test_assert_expected_messages ();
