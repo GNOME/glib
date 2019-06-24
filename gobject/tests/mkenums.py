@@ -24,6 +24,7 @@ import collections
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import textwrap
 import unittest
@@ -46,11 +47,14 @@ class TestMkenums(unittest.TestCase):
     parsing and generation code out into a library and unit test that, and
     convert this test to just check command line behaviour.
     """
+    # Track the cwd, we want to back out to that to clean up our tempdir
+    cwd = ''
     rspfile = False
 
     def setUp(self):
         self.timeout_seconds = 10  # seconds per test
         self.tmpdir = tempfile.TemporaryDirectory()
+        self.cwd = os.getcwd()
         os.chdir(self.tmpdir.name)
         print('tmpdir:', self.tmpdir.name)
         if 'G_TEST_BUILDDIR' in os.environ:
@@ -62,6 +66,7 @@ class TestMkenums(unittest.TestCase):
         print('rspfile: {}, mkenums:'.format(self.rspfile), self.__mkenums)
 
     def tearDown(self):
+        os.chdir(self.cwd)
         self.tmpdir.cleanup()
 
     def _write_rspfile(self, argv):
@@ -79,6 +84,12 @@ class TestMkenums(unittest.TestCase):
             rspfile = self._write_rspfile(args)
             args = ['@' + rspfile]
         argv = [self.__mkenums]
+
+        # shebang lines are not supported on native
+        # Windows consoles
+        if os.name == 'nt':
+            argv.insert(0, sys.executable)
+
         argv.extend(args)
         print('Running:', argv)
 
@@ -86,13 +97,15 @@ class TestMkenums(unittest.TestCase):
         env['LC_ALL'] = 'C.UTF-8'
         print('Environment:', env)
 
+        # We want to ensure consistent line endings...
         info = subprocess.run(argv, timeout=self.timeout_seconds,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
-                              env=env)
+                              env=env,
+                              universal_newlines=True)
         info.check_returncode()
-        out = info.stdout.decode('utf-8').strip()
-        err = info.stderr.decode('utf-8').strip()
+        out = info.stdout.strip()
+        err = info.stderr.strip()
 
         # Known substitutions for standard boilerplate
         subs = {
@@ -111,7 +124,8 @@ class TestMkenums(unittest.TestCase):
 
     def runMkenumsWithTemplate(self, template_contents, *args):
         with tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
-                                         suffix='.template') as template_file:
+                                         suffix='.template',
+                                         delete=False) as template_file:
             # Write out the template.
             template_file.write(template_contents.encode('utf-8'))
             print(template_file.name + ':', template_contents)
@@ -191,7 +205,8 @@ file-tail
 
     def runMkenumsWithHeader(self, h_contents, encoding='utf-8'):
         with tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
-                                         suffix='.h') as h_file:
+                                         suffix='.h',
+                                         delete=False) as h_file:
             # Write out the header to be scanned.
             h_file.write(h_contents.encode(encoding))
             print(h_file.name + ':', h_contents)
@@ -381,9 +396,9 @@ comment: {standard_bottom_comment}
         '''
 
         with tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
-                                         suffix='1.h') as h_file1, \
+                                         suffix='1.h', delete=False) as h_file1, \
                 tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
-                                            suffix='2.h') as h_file2:
+                                            suffix='2.h', delete=False) as h_file2:
             # Write out the headers.
             h_file1.write(h_contents1.encode('utf-8'))
             h_file2.write(h_contents2.encode('utf-8'))
