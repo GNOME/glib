@@ -450,6 +450,13 @@ file_builder_new (gboolean byteswap)
   return builder;
 }
 
+static void
+file_builder_free (FileBuilder *fb)
+{
+  g_queue_free (fb->chunks);
+  g_slice_free (FileBuilder, fb);
+}
+
 static GString *
 file_builder_serialise (FileBuilder          *fb,
                         struct gvdb_pointer   root)
@@ -494,9 +501,6 @@ file_builder_serialise (FileBuilder          *fb,
       g_slice_free (FileChunk, chunk);
     }
 
-  g_queue_free (fb->chunks);
-  g_slice_free (FileBuilder, fb);
-
   return result;
 }
 
@@ -518,6 +522,7 @@ gvdb_table_write_contents (GHashTable   *table,
   fb = file_builder_new (byteswap);
   file_builder_add_hash (fb, table, &root);
   str = file_builder_serialise (fb, root);
+  file_builder_free (fb);
 
   status = g_file_set_contents (filename, str->str, str->len, error);
   g_string_free (str, TRUE);
@@ -594,6 +599,7 @@ gvdb_table_write_contents_async (GHashTable          *table,
   file_builder_add_hash (fb, table, &root);
   str = file_builder_serialise (fb, root);
   bytes = g_string_free_to_bytes (str);
+  file_builder_free (fb);
 
   file = g_file_new_for_path (filename);
   data = write_contents_data_new (bytes, file);
