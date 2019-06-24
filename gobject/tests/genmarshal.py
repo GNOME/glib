@@ -24,6 +24,7 @@ import collections
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 from textwrap import dedent
 import unittest
@@ -46,9 +47,13 @@ class TestGenmarshal(unittest.TestCase):
     parsing and generation code out into a library and unit test that, and
     convert this test to just check command line behaviour.
     """
+    # Track the cwd, we want to back out to that to clean up our tempdir
+    cwd = ''
+
     def setUp(self):
         self.timeout_seconds = 10  # seconds per test
         self.tmpdir = tempfile.TemporaryDirectory()
+        self.cwd = os.getcwd()
         os.chdir(self.tmpdir.name)
         print('tmpdir:', self.tmpdir.name)
         if 'G_TEST_BUILDDIR' in os.environ:
@@ -60,10 +65,17 @@ class TestGenmarshal(unittest.TestCase):
         print('genmarshal:', self.__genmarshal)
 
     def tearDown(self):
+        os.chdir(self.cwd)
         self.tmpdir.cleanup()
 
     def runGenmarshal(self, *args):
         argv = [self.__genmarshal]
+
+        # shebang lines are not supported on native
+        # Windows consoles
+        if os.name == 'nt':
+            argv.insert(0, sys.executable)
+
         argv.extend(args)
         print('Running:', argv)
 
@@ -71,13 +83,15 @@ class TestGenmarshal(unittest.TestCase):
         env['LC_ALL'] = 'C.UTF-8'
         print('Environment:', env)
 
+        # We want to ensure consistent line endings...
         info = subprocess.run(argv, timeout=self.timeout_seconds,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
-                              env=env)
+                              env=env,
+                              universal_newlines=True)
         info.check_returncode()
-        out = info.stdout.decode('utf-8').strip()
-        err = info.stderr.decode('utf-8').strip()
+        out = info.stdout.strip()
+        err = info.stderr.strip()
 
         # Known substitutions for standard boilerplate
         subs = {
@@ -156,7 +170,8 @@ class TestGenmarshal(unittest.TestCase):
 
     def runGenmarshalWithList(self, list_contents, *args):
         with tempfile.NamedTemporaryFile(dir=self.tmpdir.name,
-                                         suffix='.list') as list_file:
+                                         suffix='.list',
+                                         delete=False) as list_file:
             # Write out the list.
             list_file.write(list_contents.encode('utf-8'))
             print(list_file.name + ':', list_contents)
