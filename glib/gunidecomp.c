@@ -521,9 +521,9 @@ _g_utf8_normalize_wc (const gchar    *str,
  * a legacy encoding or pass it to a system with
  * less capable Unicode handling.
  *
- * Returns: a newly allocated string, that is the
- *   normalized form of @str, or %NULL if @str is not
- *   valid UTF-8.
+ * Returns: (nullable): a newly allocated string, that
+ *   is the normalized form of @str, or %NULL if @str
+ *   is not valid UTF-8.
  **/
 gchar *
 g_utf8_normalize (const gchar    *str,
