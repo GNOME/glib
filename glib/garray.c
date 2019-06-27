@@ -923,6 +923,52 @@ g_ptr_array_new (void)
 }
 
 /**
+ * g_ptr_array_copy:
+ * @array: #GPtrArray to duplicate
+ * @func: (nullable): a copy function used to copy every element in the array
+ * @user_data: user data passed to the copy function @func, or %NULL
+ *
+ * Makes a full (deep) copy of a #GPtrArray.
+ *
+ * @func, as a #GCopyFunc, takes two arguments, the data to be copied
+ * and a @user_data pointer. On common processor architectures, it's safe to
+ * pass %NULL as @user_data if the copy function takes only one argument. You
+ * may get compiler warnings from this though if compiling with GCC’s
+ * `-Wcast-function-type` warning.
+ *
+ * If @func is %NULL, then only the pointers (and not what they are
+ * pointing to) are copied to the new #GPtrArray.
+ *
+ * Returns: (transfer full): a deep copy of the initial #GPtrArray.
+ *
+ * Since: 2.62
+ **/
+GPtrArray *
+g_ptr_array_copy (GPtrArray *array,
+                  GCopyFunc  func,
+                  gpointer   user_data)
+{
+  gsize i;
+  GPtrArray *new_array;
+
+  g_return_val_if_fail (array != NULL, NULL);
+
+  new_array = g_ptr_array_sized_new (array->len);
+  if (func != NULL)
+    {
+      for (i = 0; i < array->len; i++)
+        new_array->pdata[i] = func (array->pdata[i], user_data);
+    }
+  else
+    {
+      memcpy (new_array->pdata, array->pdata,
+              array->len * sizeof (*array->pdata));
+    }
+
+  return new_array;
+}
+
+/**
  * g_ptr_array_sized_new:
  * @reserved_size: number of pointers preallocated
  *
@@ -1490,6 +1536,89 @@ g_ptr_array_add (GPtrArray *array,
   g_ptr_array_maybe_expand (rarray, 1);
 
   rarray->pdata[rarray->len++] = data;
+}
+
+/**
+ * g_ptr_array_extend:
+ * @array_to_extend: a #GPtrArray.
+ * @array: (transfer none): a #GPtrArray to add to the end of @array_to_extend.
+ * @func: (nullable): a copy function used to copy every element in the array
+ * @user_data: user data passed to the copy function @func, or %NULL
+ *
+ * Adds all pointers of @array to the end of the array @array_to_extend.
+ * The array will grow in size automatically if needed. @array_to_extend is
+ * modified in-place.
+ *
+ * @func, as a #GCopyFunc, takes two arguments, the data to be copied
+ * and a @user_data pointer. On common processor architectures, it's safe to
+ * pass %NULL as @user_data if the copy function takes only one argument. You
+ * may get compiler warnings from this though if compiling with GCC’s
+ * `-Wcast-function-type` warning.
+ *
+ * If @func is %NULL, then only the pointers (and not what they are
+ * pointing to) are copied to the new #GPtrArray.
+ *
+ * Since: 2.62
+ **/
+void
+g_ptr_array_extend (GPtrArray  *array_to_extend,
+                    GPtrArray  *array,
+                    GCopyFunc   func,
+                    gpointer    user_data)
+{
+  GRealPtrArray *rarray_to_extend = (GRealPtrArray *) array_to_extend;
+  gsize i;
+
+  g_return_if_fail (array_to_extend != NULL);
+  g_return_if_fail (array != NULL);
+
+  g_ptr_array_maybe_expand (rarray_to_extend, array->len);
+
+  if (func != NULL)
+    {
+      for (i = 0; i < array->len; i++)
+        rarray_to_extend->pdata[i + rarray_to_extend->len] =
+          func (array->pdata[i], user_data);
+    }
+  else
+    {
+      memcpy (rarray_to_extend->pdata + rarray_to_extend->len, array->pdata,
+              array->len * sizeof (*array->pdata));
+    }
+
+  rarray_to_extend->len += array->len;
+}
+
+/**
+ * g_ptr_array_extend_and_steal:
+ * @array_to_extend: (transfer none): a #GPtrArray.
+ * @array: (transfer container): a #GPtrArray to add to the end of
+ *     @array_to_extend.
+ *
+ * Adds all the pointers in @array to the end of @array_to_extend, transferring
+ * ownership of each element from @array to @array_to_extend and modifying
+ * @array_to_extend in-place. @array is then freed.
+ *
+ * As with g_ptr_array_free(), @array will be destroyed if its reference count
+ * is 1. If its reference count is higher, it will be decremented and the
+ * length of @array set to zero.
+ *
+ * Since: 2.62
+ **/
+void
+g_ptr_array_extend_and_steal (GPtrArray  *array_to_extend,
+                              GPtrArray  *array)
+{
+  gpointer *pdata;
+
+  g_ptr_array_extend (array_to_extend, array, NULL, NULL);
+
+  /* Get rid of @array without triggering the GDestroyNotify attached
+   * to the elements moved from @array to @array_to_extend. */
+  pdata = g_steal_pointer (&array->pdata);
+  array->len = 0;
+  g_ptr_array_unref (array);
+  g_free (pdata);
 }
 
 /**
