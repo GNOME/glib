@@ -597,7 +597,8 @@ magazine_cache_update_stamp (void)
     {
       GTimeVal tv;
       g_get_current_time (&tv);
-      allocator->last_stamp = tv.tv_sec * 1000 + tv.tv_usec / 1000; /* milli seconds */
+      /* last_stamp is in milliseconds */
+      allocator->last_stamp = (tv.tv_sec * 1000 + tv.tv_usec / 1000) % UINT_MAX;
       allocator->stamp_counter = 0;
     }
   else
