@@ -1516,7 +1516,7 @@ test_iso15924 (void)
     { G_UNICODE_SCRIPT_KHUDAWADI,              "Sind" },
     { G_UNICODE_SCRIPT_LINEAR_A,               "Lina" },
     { G_UNICODE_SCRIPT_MAHAJANI,               "Mahj" },
-    { G_UNICODE_SCRIPT_MANICHAEAN,             "Manu" },
+    { G_UNICODE_SCRIPT_MANICHAEAN,             "Mani" },
     { G_UNICODE_SCRIPT_MENDE_KIKAKUI,          "Mend" },
     { G_UNICODE_SCRIPT_MODI,                   "Modi" },
     { G_UNICODE_SCRIPT_MRO,                    "Mroo" },

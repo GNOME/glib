@@ -1425,7 +1425,7 @@ static const guint32 iso15924_tags[] =
     PACK ('S','i','n','d'), /* G_UNICODE_SCRIPT_KHUDAWADI */
     PACK ('L','i','n','a'), /* G_UNICODE_SCRIPT_LINEAR_A */
     PACK ('M','a','h','j'), /* G_UNICODE_SCRIPT_MAHAJANI */
-    PACK ('M','a','n','u'), /* G_UNICODE_SCRIPT_MANICHAEAN */
+    PACK ('M','a','n','i'), /* G_UNICODE_SCRIPT_MANICHAEAN */
     PACK ('M','e','n','d'), /* G_UNICODE_SCRIPT_MENDE_KIKAKUI */
     PACK ('M','o','d','i'), /* G_UNICODE_SCRIPT_MODI */
     PACK ('M','r','o','o'), /* G_UNICODE_SCRIPT_MRO */
