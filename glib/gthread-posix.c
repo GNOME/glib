@@ -1441,6 +1441,7 @@ g_cond_wait_until (GCond  *cond,
   struct timespec span;
   guint sampled;
   int res;
+  gboolean success;
 
   if (end_time < 0)
     return FALSE;
@@ -1460,9 +1461,10 @@ g_cond_wait_until (GCond  *cond,
   sampled = cond->i[0];
   g_mutex_unlock (mutex);
   res = syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, &span);
+  success = (res < 0 && errno == ETIMEDOUT) ? FALSE : TRUE;
   g_mutex_lock (mutex);
 
-  return (res < 0 && errno == ETIMEDOUT) ? FALSE : TRUE;
+  return success;
 }
 
 #endif
