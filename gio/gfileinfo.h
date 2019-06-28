@@ -1049,6 +1049,8 @@ goffset           g_file_info_get_size               (GFileInfo         *info);
 GLIB_AVAILABLE_IN_ALL
 void              g_file_info_get_modification_time  (GFileInfo         *info,
 						      GTimeVal          *result);
+GLIB_AVAILABLE_IN_2_62
+GDateTime *       g_file_info_get_modification_date_time (GFileInfo     *info);
 GLIB_AVAILABLE_IN_ALL
 const char *      g_file_info_get_symlink_target     (GFileInfo         *info);
 GLIB_AVAILABLE_IN_ALL
@@ -1096,6 +1098,9 @@ void              g_file_info_set_size               (GFileInfo         *info,
 GLIB_AVAILABLE_IN_ALL
 void              g_file_info_set_modification_time  (GFileInfo         *info,
 						      GTimeVal          *mtime);
+GLIB_AVAILABLE_IN_2_62
+void              g_file_info_set_modification_date_time (GFileInfo     *info,
+                                                          GDateTime     *mtime);
 GLIB_AVAILABLE_IN_ALL
 void              g_file_info_set_symlink_target     (GFileInfo         *info,
 						      const char        *symlink_target);
