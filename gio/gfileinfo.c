@@ -1753,7 +1753,11 @@ g_file_info_get_size (GFileInfo *info)
  *
  * Gets the modification time of the current @info and sets it
  * in @result.
+ *
+ * Deprecated: 2.62: Use g_file_info_get_modification_date_time() instead, as
+ *    #GTimeVal is deprecated due to the year 2038 problem.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_file_info_get_modification_time (GFileInfo *info,
 				   GTimeVal  *result)
@@ -1775,6 +1779,7 @@ g_file_info_get_modification_time (GFileInfo *info,
   value = g_file_info_find_value (info, attr_mtime_usec);
   result->tv_usec = _g_file_attribute_value_get_uint32 (value);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_file_info_get_modification_date_time:
@@ -2153,7 +2158,11 @@ g_file_info_set_size (GFileInfo *info,
  *
  * Sets the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute in the file
  * info to the given time value.
+ *
+ * Deprecated: 2.62: Use g_file_info_set_modification_date_time() instead, as
+ *    #GTimeVal is deprecated due to the year 2038 problem.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_file_info_set_modification_time (GFileInfo *info,
 				   GTimeVal  *mtime)
@@ -2177,6 +2186,7 @@ g_file_info_set_modification_time (GFileInfo *info,
   if (value)
     _g_file_attribute_value_set_uint32 (value, mtime->tv_usec);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_file_info_set_modification_date_time:
