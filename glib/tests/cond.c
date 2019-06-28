@@ -270,6 +270,100 @@ test_wait_until (void)
   g_cond_clear (&cond);
 }
 
+#ifdef __linux__
+
+#include <pthread.h>
+#include <signal.h>
+#include <unistd.h>
+
+static pthread_t main_thread;
+
+static void *
+mutex_holder (void *data)
+{
+  GMutex *lock = data;
+
+  g_mutex_lock (lock);
+
+  /* Let the lock become contended */
+  g_usleep (G_TIME_SPAN_SECOND);
+
+  /* Interrupt the wait on the other thread */
+  pthread_kill (main_thread, SIGHUP);
+
+  /* If we don't sleep here, then the g_mutex_unlock() below will clear
+   * the mutex, causing the interrupted futex call in the other thread
+   * to return success (which is not what we want).
+   *
+   * The other thread needs to have time to wake up and see that the
+   * lock is still contended.
+   */
+  g_usleep (G_TIME_SPAN_SECOND / 10);
+
+  g_mutex_unlock (lock);
+
+  return NULL;
+}
+
+static void
+signal_handler (int sig)
+{
+}
+
+static void
+test_wait_until_errno (void)
+{
+  gboolean result;
+  GMutex lock;
+  GCond cond;
+
+  struct sigaction act = { { signal_handler, } }; /* important: no SA_RESTART (we want EINTR) */
+
+  g_test_summary ("Check proper handling of errno in g_cond_wait_until with a contended mutex");
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/");
+  g_test_bug ("merge_requests/957");
+
+  g_mutex_init (&lock);
+  g_cond_init (&cond);
+
+  main_thread = pthread_self ();
+  sigaction (SIGHUP, &act, NULL);
+
+  g_mutex_lock (&lock);
+
+  /* We create an annoying worker thread that will do two things:
+   *
+   *   1) hold the lock that we want to reacquire after returning from
+   *      the condition variable wait
+   *
+   *   2) send us a signal to cause our wait on the contended lock to
+   *      return EINTR, clobbering the errno return from the condition
+   *      variable
+   */
+  g_thread_unref (g_thread_new ("mutex-holder", mutex_holder, &lock));
+
+  result = g_cond_wait_until (&cond, &lock,
+                              g_get_monotonic_time () + G_TIME_SPAN_SECOND / 50);
+
+  /* Even after all that disruption, we should still successfully return
+   * 'timed out'.
+   */
+  g_assert_false (result);
+
+  g_mutex_unlock (&lock);
+
+  g_cond_clear (&cond);
+  g_mutex_clear (&lock);
+}
+
+#else
+static void
+test_wait_until_errno (void)
+{
+  g_test_skip ("We only test this on Linux");
+}
+#endif
+
 int
 main (int argc, char *argv[])
 {
@@ -278,6 +372,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/cond1", test_cond1);
   g_test_add_func ("/thread/cond2", test_cond2);
   g_test_add_func ("/thread/cond/wait-until", test_wait_until);
+  g_test_add_func ("/thread/cond/wait-until/contended-and-interrupted", test_wait_until_errno);
 
   return g_test_run ();
 }
