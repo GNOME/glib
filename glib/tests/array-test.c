@@ -466,6 +466,58 @@ int_compare (gconstpointer p1, gconstpointer p2)
   return *i1 - *i2;
 }
 
+static void
+array_copy (gconstpointer test_data)
+{
+  GArray *array, *array_copy;
+  gsize i;
+  const ArrayTestData *config = test_data;
+  const gsize array_size = 100;
+
+  /* Testing degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      array = g_array_copy (NULL);
+      g_test_assert_expected_messages ();
+
+      g_assert_null (array);
+    }
+
+  /* Testing simple copy */
+  array = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
+
+  for (i = 0; i < array_size; i++)
+    g_array_append_val (array, i);
+
+  array_copy = g_array_copy (array);
+
+  /* Check internal data */
+  for (i = 0; i < array_size; i++)
+    g_assert_cmpuint (g_array_index (array, gint, i), ==,
+                      g_array_index (array_copy, gint, i));
+
+  /* Check internal parameters ('zero_terminated' flag) */
+  if (config->zero_terminated)
+    {
+      const gint *data = (const gint *) array_copy->data;
+      g_assert_cmpint (data[array_copy->len], ==, 0);
+    }
+
+  /* Check internal parameters ('clear' flag) */
+  if (config->clear_)
+    {
+      g_array_set_size (array_copy, array_copy->len + 5);
+      for (i = array_copy->len; i < array_copy->len + 5; i++)
+        g_assert_cmpint (g_array_index (array_copy, gint, i), ==, 0);
+    }
+
+  /* Clean-up */
+  g_array_unref (array);
+  g_array_unref (array_copy);
+}
+
 static int
 int_compare_data (gconstpointer p1, gconstpointer p2, gpointer data)
 {
@@ -1506,6 +1558,7 @@ main (int argc, char *argv[])
       add_array_test ("/array/remove-index", &array_configurations[i], array_remove_index);
       add_array_test ("/array/remove-index-fast", &array_configurations[i], array_remove_index_fast);
       add_array_test ("/array/remove-range", &array_configurations[i], array_remove_range);
+      add_array_test ("/array/copy", &array_configurations[i], array_copy);
       add_array_test ("/array/sort", &array_configurations[i], array_sort);
       add_array_test ("/array/sort-with-data", &array_configurations[i], array_sort_with_data);
     }
