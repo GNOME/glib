@@ -592,6 +592,7 @@ g_async_queue_timeout_pop_unlocked (GAsyncQueue *queue,
  *
  * Deprecated: use g_async_queue_timeout_pop().
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 gpointer
 g_async_queue_timed_pop (GAsyncQueue *queue,
                          GTimeVal    *end_time)
@@ -615,6 +616,7 @@ g_async_queue_timed_pop (GAsyncQueue *queue,
 
   return retval;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_async_queue_timed_pop_unlocked:
@@ -636,6 +638,7 @@ g_async_queue_timed_pop (GAsyncQueue *queue,
  *
  * Deprecated: use g_async_queue_timeout_pop_unlocked().
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 gpointer
 g_async_queue_timed_pop_unlocked (GAsyncQueue *queue,
                                   GTimeVal    *end_time)
@@ -654,6 +657,7 @@ g_async_queue_timed_pop_unlocked (GAsyncQueue *queue,
 
   return g_async_queue_pop_intern_unlocked (queue, TRUE, m_end_time);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_async_queue_length:
