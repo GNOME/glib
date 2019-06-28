@@ -1046,9 +1046,11 @@ GLIB_AVAILABLE_IN_ALL
 const char *      g_file_info_get_content_type       (GFileInfo         *info);
 GLIB_AVAILABLE_IN_ALL
 goffset           g_file_info_get_size               (GFileInfo         *info);
-GLIB_AVAILABLE_IN_ALL
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_DEPRECATED_IN_2_62_FOR(g_file_info_get_modification_date_time)
 void              g_file_info_get_modification_time  (GFileInfo         *info,
-						      GTimeVal          *result);
+                                                      GTimeVal          *result);
+G_GNUC_END_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_IN_2_62
 GDateTime *       g_file_info_get_modification_date_time (GFileInfo     *info);
 GLIB_AVAILABLE_IN_ALL
@@ -1095,9 +1097,11 @@ void              g_file_info_set_content_type       (GFileInfo         *info,
 GLIB_AVAILABLE_IN_ALL
 void              g_file_info_set_size               (GFileInfo         *info,
 						      goffset            size);
-GLIB_AVAILABLE_IN_ALL
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_DEPRECATED_IN_2_62_FOR(g_file_info_set_modification_date_time)
 void              g_file_info_set_modification_time  (GFileInfo         *info,
-						      GTimeVal          *mtime);
+                                                      GTimeVal          *mtime);
+G_GNUC_END_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_IN_2_62
 void              g_file_info_set_modification_date_time (GFileInfo     *info,
                                                           GDateTime     *mtime);
