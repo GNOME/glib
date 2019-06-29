@@ -1632,10 +1632,10 @@ done_query:
  * For example:
  * |[<!-- language="C" -->
  * const GLogField fields[] = {
- *   { "MESSAGE", "This is a debug message.", -1 },
  *   { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
  *   { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 },
  *   { "MY_APPLICATION_STATE", state_object, 0 },
+ *   { "MESSAGE", "This is a debug message.", -1 },
  * };
  * g_log_structured_array (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields));
  * ]|
