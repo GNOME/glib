@@ -734,21 +734,13 @@
 #ifndef __GI_SCANNER__ /* The static assert macro really confuses the introspection parser */
 #define G_PASTE_ARGS(identifier1,identifier2) identifier1 ## identifier2
 #define G_PASTE(identifier1,identifier2)      G_PASTE_ARGS (identifier1, identifier2)
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-#define G_STATIC_ASSERT(expr) _Static_assert (expr, "Expression evaluates to false")
-#define G_STATIC_ASSERT_EXPR(expr) _Static_assert (expr, "Expression evaluates to false")
-#elif defined(__cplusplus) && __cplusplus >= 201103L
-#define G_STATIC_ASSERT(expr) static_assert (expr, "Expression evaluates to false")
-#define G_STATIC_ASSERT_EXPR(expr) static_assert (expr, "Expression evaluates to false")
-#else
 #ifdef __COUNTER__
 #define G_STATIC_ASSERT(expr) typedef char G_PASTE (_GStaticAssertCompileTimeAssertion_, __COUNTER__)[(expr) ? 1 : -1] G_GNUC_UNUSED
 #else
 #define G_STATIC_ASSERT(expr) typedef char G_PASTE (_GStaticAssertCompileTimeAssertion_, __LINE__)[(expr) ? 1 : -1] G_GNUC_UNUSED
 #endif
 #define G_STATIC_ASSERT_EXPR(expr) ((void) sizeof (char[(expr) ? 1 : -1]))
-#endif /* __STDC_VERSION__ */
-#endif /* !__GI_SCANNER__ */
+#endif
 
 /* Provide a string identifying the current code position */
 #if defined(__GNUC__) && (__GNUC__ < 3) && !defined(__cplusplus)
