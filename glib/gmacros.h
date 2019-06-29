@@ -734,20 +734,21 @@
 #ifndef __GI_SCANNER__ /* The static assert macro really confuses the introspection parser */
 #define G_PASTE_ARGS(identifier1,identifier2) identifier1 ## identifier2
 #define G_PASTE(identifier1,identifier2)      G_PASTE_ARGS (identifier1, identifier2)
+/* Use a more readable G_STATIC_ASSERT implementation when C11 or C++11 are available.
+ * Can't use it for G_STATIC_ASSERT_EXPR because it does not return an expression.
+ */
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 #define G_STATIC_ASSERT(expr) _Static_assert (expr, "Expression evaluates to false")
-#define G_STATIC_ASSERT_EXPR(expr) _Static_assert (expr, "Expression evaluates to false")
 #elif defined(__cplusplus) && __cplusplus >= 201103L
 #define G_STATIC_ASSERT(expr) static_assert (expr, "Expression evaluates to false")
-#define G_STATIC_ASSERT_EXPR(expr) static_assert (expr, "Expression evaluates to false")
 #else
 #ifdef __COUNTER__
 #define G_STATIC_ASSERT(expr) typedef char G_PASTE (_GStaticAssertCompileTimeAssertion_, __COUNTER__)[(expr) ? 1 : -1] G_GNUC_UNUSED
 #else
 #define G_STATIC_ASSERT(expr) typedef char G_PASTE (_GStaticAssertCompileTimeAssertion_, __LINE__)[(expr) ? 1 : -1] G_GNUC_UNUSED
-#endif
-#define G_STATIC_ASSERT_EXPR(expr) ((void) sizeof (char[(expr) ? 1 : -1]))
+#endif /* __COUNTER__ */
 #endif /* __STDC_VERSION__ */
+#define G_STATIC_ASSERT_EXPR(expr) ((void) sizeof (char[(expr) ? 1 : -1]))
 #endif /* !__GI_SCANNER__ */
 
 /* Provide a string identifying the current code position */

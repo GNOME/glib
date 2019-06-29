@@ -20,6 +20,12 @@
 
 #include <glib.h>
 
+/* Test static assert macros */
+#if G_STATIC_ASSERT_EXPR (sizeof (char) == 1)
+G_STATIC_ASSERT (sizeof (gint) == 4);
+#endif
+
+
 /* Test G_ALIGNOF() gives the same results as the G_STRUCT_OFFSET fallback. This
  * should be the minimal alignment for the given type.
  *
