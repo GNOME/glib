@@ -3396,7 +3396,7 @@ g_main_context_wait (GMainContext *context,
 /**
  * g_main_context_prepare:
  * @context: a #GMainContext
- * @priority: location to store priority of highest priority
+ * @priority: (out) (optional): location to store priority of highest priority
  *            source already ready.
  *
  * Prepares to poll sources within a main loop. The resulting information
