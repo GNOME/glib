@@ -67,15 +67,14 @@ on_weak_notify_timeout (gpointer user_data)
 }
 
 static gboolean
-dispose_on_idle (gpointer object)
+unref_on_idle (gpointer object)
 {
-  g_object_run_dispose (object);
   g_object_unref (object);
   return FALSE;
 }
 
 static gboolean
-_g_object_dispose_and_wait_weak_notify (gpointer object)
+_g_object_unref_and_wait_weak_notify (gpointer object)
 {
   WeakNotifyData data;
   guint timeout_id;
@@ -87,7 +86,7 @@ _g_object_dispose_and_wait_weak_notify (gpointer object)
 
   /* Drop the ref in an idle callback, this is to make sure the mainloop
    * is already running when weak notify happens */
-  g_idle_add (dispose_on_idle, object);
+  g_idle_add (unref_on_idle, object);
 
   /* Make sure we don't block forever */
   timeout_id = g_timeout_add (30 * 1000, on_weak_notify_timeout, &data);
@@ -820,7 +819,7 @@ g_test_dbus_down (GTestDBus *self)
     stop_daemon (self);
 
   if (connection != NULL)
-    _g_object_dispose_and_wait_weak_notify (connection);
+    _g_object_unref_and_wait_weak_notify (connection);
 
   g_test_dbus_unset ();
   _g_bus_forget_singleton (G_BUS_TYPE_SESSION);
