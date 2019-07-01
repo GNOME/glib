@@ -472,9 +472,6 @@ test_bus_own_name (void)
   g_object_unref (c2);
 
   session_bus_down ();
-
-  /* See https://bugzilla.gnome.org/show_bug.cgi?id=711807 */
-  g_usleep (1000000);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
