@@ -150,7 +150,7 @@ is_valid_unix (const gchar  *address_entry,
         tmpdir = g_hash_table_lookup (key_value_pairs, key);
       else if (g_strcmp0 (key, "abstract") == 0)
         abstract = g_hash_table_lookup (key_value_pairs, key);
-      else
+      else if (g_strcmp0 (key, "guid") != 0)
         {
           g_set_error (error,
                        G_IO_ERROR,
@@ -224,7 +224,7 @@ is_valid_nonce_tcp (const gchar  *address_entry,
         family = g_hash_table_lookup (key_value_pairs, key);
       else if (g_strcmp0 (key, "noncefile") == 0)
         nonce_file = g_hash_table_lookup (key_value_pairs, key);
-      else
+      else if (g_strcmp0 (key, "guid") != 0)
         {
           g_set_error (error,
                        G_IO_ERROR,
@@ -305,7 +305,7 @@ is_valid_tcp (const gchar  *address_entry,
         port = g_hash_table_lookup (key_value_pairs, key);
       else if (g_strcmp0 (key, "family") == 0)
         family = g_hash_table_lookup (key_value_pairs, key);
-      else
+      else if (g_strcmp0 (key, "guid") != 0)
         {
           g_set_error (error,
                        G_IO_ERROR,
