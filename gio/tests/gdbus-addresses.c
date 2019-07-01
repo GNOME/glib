@@ -108,7 +108,9 @@ test_unix_address (void)
   g_test_skip ("unix transport is not supported on non-Unix platforms");
 #else
   assert_is_supported_address ("unix:path=/tmp/dbus-test");
+  assert_is_supported_address ("unix:path=/tmp/dbus-test,guid=0");
   assert_is_supported_address ("unix:abstract=/tmp/dbus-another-test");
+  assert_is_supported_address ("unix:abstract=/tmp/dbus-another-test,guid=1000");
   assert_not_supported_address ("unix:foo=bar");
   g_assert_false (g_dbus_is_address ("unix:path=/foo;abstract=/bar"));
   assert_is_supported_address ("unix:path=/tmp/concrete;unix:abstract=/tmp/abstract");
@@ -128,9 +130,11 @@ static void
 test_nonce_tcp_address (void)
 {
   assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar");
+  assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,guid=0");
   assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,family=ipv6");
   assert_is_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,family=ipv4");
   assert_is_supported_address ("nonce-tcp:host=localhost");
+  assert_is_supported_address ("nonce-tcp:host=localhost,guid=1000");
 
   assert_not_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=/foo/bar,family=blah");
   assert_not_supported_address ("nonce-tcp:host=localhost,port=420000,noncefile=/foo/bar,family=ipv4");
@@ -148,8 +152,10 @@ static void
 test_tcp_address (void)
 {
   assert_is_supported_address ("tcp:host=localhost");
+  assert_is_supported_address ("tcp:host=localhost,guid=1000");
   assert_not_supported_address ("tcp:host=localhost,noncefile=/tmp/foo");
   assert_is_supported_address ("tcp:host=localhost,port=42");
+  assert_is_supported_address ("tcp:host=localhost,port=42,guid=1000");
   assert_not_supported_address ("tcp:host=localhost,port=-1");
   assert_not_supported_address ("tcp:host=localhost,port=420000");
   assert_not_supported_address ("tcp:host=localhost,port=42x");
