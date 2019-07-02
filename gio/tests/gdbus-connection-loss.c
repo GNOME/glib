@@ -136,9 +136,10 @@ main (int   argc,
 
   ret = g_test_run();
 
+  g_object_unref (c);
+
   session_bus_down ();
 
-  g_object_unref (c);
   g_main_loop_unref (loop);
 
   return ret;
