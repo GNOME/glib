@@ -80,7 +80,7 @@ g_winhttp_file_init (GWinHttpFile *winhttp)
  * @vfs: GWinHttpVfs to use
  * @uri: URI of the GWinHttpFile to create.
  *
- * Returns: new winhttp #GFile.
+ * Returns: (nullable): new winhttp #GFile, or %NULL if there was an error constructing it.
  */
 GFile *
 _g_winhttp_file_new (GWinHttpVfs *vfs,
