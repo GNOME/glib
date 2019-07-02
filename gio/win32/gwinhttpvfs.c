@@ -165,15 +165,25 @@ g_winhttp_vfs_get_file_for_uri (GVfs       *vfs,
 {
   GWinHttpVfs *winhttp_vfs = G_WINHTTP_VFS (vfs);
   int i;
+  GFile *ret = NULL;
 
   /* If it matches one of "our" schemes, handle it */
   for (i = 0; i < G_N_ELEMENTS (winhttp_uri_schemes); i++)
-    if (g_ascii_strncasecmp (uri, winhttp_uri_schemes[i], strlen (winhttp_uri_schemes[i])) == 0 &&
-        uri[strlen (winhttp_uri_schemes[i])] == ':')
-      return _g_winhttp_file_new (winhttp_vfs, uri);
+    {
+      if (g_ascii_strncasecmp (uri, winhttp_uri_schemes[i], strlen (winhttp_uri_schemes[i])) == 0 &&
+          uri[strlen (winhttp_uri_schemes[i])] == ':')
+        {
+          ret = _g_winhttp_file_new (winhttp_vfs, uri);
+        }
+    }
 
   /* For other URIs fallback to the wrapped GVfs */
-  return g_vfs_get_file_for_uri (winhttp_vfs->wrapped_vfs, uri);
+  if (ret == NULL)
+    ret = g_vfs_get_file_for_uri (winhttp_vfs->wrapped_vfs, uri);
+
+  g_assert (ret != NULL);
+
+  return g_steal_pointer (&ret);
 }
 
 static const gchar * const *
