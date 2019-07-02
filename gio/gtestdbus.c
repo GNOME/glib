@@ -84,8 +84,9 @@ _g_object_unref_and_wait_weak_notify (gpointer object)
 
   g_object_weak_ref (object, (GWeakNotify) g_main_loop_quit, data.loop);
 
-  /* Drop the ref in an idle callback, this is to make sure the mainloop
-   * is already running when weak notify happens */
+  /* Drop the strong ref held by the caller in an idle callback. This is to
+   * make sure the mainloop is already running when weak notify happens (when
+   * all other strong ref holders have dropped theirs). */
   g_idle_add (unref_on_idle, object);
 
   /* Make sure we don't block forever */
