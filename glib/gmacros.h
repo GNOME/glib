@@ -736,7 +736,9 @@
 #define G_PASTE(identifier1,identifier2)      G_PASTE_ARGS (identifier1, identifier2)
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 #define G_STATIC_ASSERT(expr) _Static_assert (expr, "Expression evaluates to false")
-#elif defined(__cplusplus) && __cplusplus >= 201103L
+#elif (defined(__cplusplus) && __cplusplus >= 201103L) || \
+      (defined(__cplusplus) && defined (_MSC_VER) && (_MSC_VER >= 1600)) || \
+      (defined (_MSC_VER) && (_MSC_VER >= 1800))
 #define G_STATIC_ASSERT(expr) static_assert (expr, "Expression evaluates to false")
 #else
 #ifdef __COUNTER__
