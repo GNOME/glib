@@ -679,9 +679,18 @@ g_utf8_get_char_validated (const gchar *p,
 			   gssize       max_len)
 {
   gunichar result;
+  gssize i, first_uchar;
+  const gssize utf8_char_max_size = 4;
 
   if (max_len == 0)
     return (gunichar)-2;
+
+  /* Check if first character has a nul byte.
+   * Note: the max_len < 0 case is also included as a corner case */
+  first_uchar = (max_len < utf8_char_max_size) ? max_len : 4;
+  for (i = 0; i < first_uchar; i++)
+    if (p[i] == '\0')
+      return (gunichar) -2;
 
   result = g_utf8_get_char_extended (p, max_len);
 
