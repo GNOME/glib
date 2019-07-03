@@ -315,6 +315,10 @@ test_utf8_get_char_validated (void)
     /* It seems odd that the return value differs with the length input, but
      * that’s how it’s documented: */
     { "", 0, (gunichar) -2 },
+    { "\0", 1, (gunichar) -2 },
+    { "AB", 3, (gunichar) -2 },
+    { "A\0B", 3, (gunichar) -2 },
+    { "\0AB", 3, (gunichar) -2 },
     { "", -1, (gunichar) 0 },
     /* Normal inputs: */
     { "hello", 5, (gunichar) 'h' },
