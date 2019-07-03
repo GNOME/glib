@@ -2163,7 +2163,8 @@ g_socket_bind (GSocket         *socket,
 }
 
 #ifdef G_OS_WIN32
-static gulong g_socket_w32_get_adapter_ipv4_addr (const gchar *name_or_ip)
+static gulong
+g_socket_w32_get_adapter_ipv4_addr (const gchar *name_or_ip)
 {
   ULONG bufsize = 15000; /* MS-recommended initial bufsize */
   DWORD ret = ERROR_BUFFER_OVERFLOW;
