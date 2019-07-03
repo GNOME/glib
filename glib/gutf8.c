@@ -665,7 +665,7 @@ g_utf8_get_char_extended (const  gchar *p,
  * overlong encodings of valid characters.
  *
  * Note that g_utf8_get_char_validated() returns (gunichar)-2 if
- * @max_len is positive and any of the bytes in the first UTF-8 character
+ * @max_len is positive and any of the bytes in the whole UTF-8 character
  * sequence are nul.
  * 
  * Returns: the resulting character. If @p points to a partial
@@ -679,9 +679,16 @@ g_utf8_get_char_validated (const gchar *p,
 			   gssize       max_len)
 {
   gunichar result;
+  gssize i;
 
   if (max_len == 0)
     return (gunichar)-2;
+
+  /* Check if the whole sequence has a nul byte.
+   * Note: the max_len < 0 case is also included as a corner case */
+  for (i = 0; i < max_len; i++)
+    if (p[i] == '\0')
+      return (gunichar) -2;
 
   result = g_utf8_get_char_extended (p, max_len);
 
