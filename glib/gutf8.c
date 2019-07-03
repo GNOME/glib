@@ -685,6 +685,11 @@ g_utf8_get_char_validated (const gchar *p,
 
   result = g_utf8_get_char_extended (p, max_len);
 
+  /* Disallow codepoint U+0000 as it’s a nul byte,
+   * and all string handling in GLib is nul-terminated */
+  if (result == 0 && max_len > 0)
+    return (gunichar) -2;
+
   if (result & 0x80000000)
     return result;
   else if (!UNICODE_VALID (result))
