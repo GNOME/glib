@@ -679,9 +679,16 @@ g_utf8_get_char_validated (const gchar *p,
 			   gssize       max_len)
 {
   gunichar result;
+  gsize i;
 
   if (max_len == 0)
     return (gunichar)-2;
+
+  /* Check if character sequence has a nul byte */
+  if (max_len > 0)
+    for (i = 0; i < (gsize) max_len; i++)
+      if (p[i] == '\0')
+        return (gunichar) -2;
 
   result = g_utf8_get_char_extended (p, max_len);
 
