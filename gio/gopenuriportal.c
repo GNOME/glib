@@ -279,7 +279,7 @@ g_openuri_portal_open_uri_async (const char          *uri,
         if (sender[i] == '.')
           sender[i] = '_';
 
-      handle = g_strdup_printf ("/org/fredesktop/portal/desktop/request/%s/%s", sender, token);
+      handle = g_strdup_printf ("/org/freedesktop/portal/desktop/request/%s/%s", sender, token);
       g_object_set_data_full (G_OBJECT (task), "handle", handle, g_free);
       g_free (sender);
 
