@@ -1327,6 +1327,7 @@ test_GDateTime_printf (void)
  * that long, and it will cause the test to fail if dst isn't big
  * enough.
  */
+  gchar *old_lc_all;
   gchar *old_lc_messages;
   gchar dst[64];
   struct tm tt;
@@ -1356,6 +1357,9 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   g_assert_cmpstr (p, ==, (o));                                 \
   g_date_time_unref (dt);                                       \
   g_free (p);                                   } G_STMT_END
+
+  old_lc_all = g_strdup (g_getenv ("LC_ALL"));
+  g_unsetenv ("LC_ALL");
 
   old_lc_messages = g_strdup (g_getenv ("LC_MESSAGES"));
   g_setenv ("LC_MESSAGES", "C", TRUE);
@@ -1434,6 +1438,10 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   else
     g_unsetenv ("LC_MESSAGES");
   g_free (old_lc_messages);
+
+  if (old_lc_all != NULL)
+    g_setenv ("LC_ALL", old_lc_all, TRUE);
+  g_free (old_lc_all);
 }
 
 static void
