@@ -25,6 +25,11 @@
 #include <glib/gstdio.h>
 #include <locale.h>
 
+#ifdef G_OS_WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 #define ASSERT_DATE(dt,y,m,d) G_STMT_START { \
   g_assert_nonnull ((dt)); \
   g_assert_cmpint ((y), ==, g_date_time_get_year ((dt))); \
@@ -1029,6 +1034,13 @@ test_GDateTime_new_full (void)
   GTimeZone *tz, *dt_tz;
   GDateTime *dt;
 
+#ifdef G_OS_WIN32
+  LCID currLcid = GetThreadLocale ();
+  LANGID currLangId = LANGIDFROMLCID (currLcid);
+  LANGID en = MAKELANGID (LANG_ENGLISH, SUBLANG_ENGLISH_US);
+  SetThreadUILanguage (en);
+#endif
+
   dt = g_date_time_new_utc (2009, 12, 11, 12, 11, 10);
   g_assert_cmpint (2009, ==, g_date_time_get_year (dt));
   g_assert_cmpint (12, ==, g_date_time_get_month (dt));
@@ -1063,6 +1075,7 @@ test_GDateTime_new_full (void)
                     g_date_time_get_timezone_abbreviation (dt));
   g_assert_cmpstr ("Pacific Standard Time", ==,
                    g_time_zone_get_identifier (dt_tz));
+  SetThreadUILanguage (currLangId);
 #endif
   g_assert (!g_date_time_is_daylight_savings (dt));
   g_date_time_unref (dt);
@@ -1333,6 +1346,11 @@ test_GDateTime_printf (void)
   struct tm tt;
   time_t t;
 
+#ifdef G_OS_WIN32
+  gchar *current_tz = NULL;
+  DYNAMIC_TIME_ZONE_INFORMATION dtz_info;
+#endif
+
 #define TEST_PRINTF(f,o)                        G_STMT_START {  \
 GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   gchar *__p = g_date_time_format (__dt, (f));                  \
@@ -1430,7 +1448,14 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
 #ifdef G_OS_UNIX
   TEST_PRINTF ("%Z", dst);
 #elif defined G_OS_WIN32
-  TEST_PRINTF ("%Z", "Pacific Standard Time");
+  g_assert (GetDynamicTimeZoneInformation (&dtz_info) != TIME_ZONE_ID_INVALID);
+  if (wcscmp (dtz_info.StandardName, L"") != 0)
+    current_tz = g_utf16_to_utf8 (dtz_info.StandardName, -1, NULL, NULL, NULL);
+  else
+    current_tz = g_utf16_to_utf8 (dtz_info.DaylightName, -1, NULL, NULL, NULL);
+
+  TEST_PRINTF ("%Z", current_tz);
+  g_free (current_tz);
 #endif
 
   if (old_lc_messages != NULL)
@@ -2391,6 +2416,12 @@ test_identifier (void)
   GTimeZone *tz;
   gchar *old_tz = g_strdup (g_getenv ("TZ"));
 
+#ifdef G_OS_WIN32
+  const char *recife_tz = "SA Eastern Standard Time";
+#else
+  const char *recife_tz = "America/Recife";
+#endif
+
   tz = g_time_zone_new ("UTC");
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_time_zone_unref (tz);
@@ -2420,10 +2451,10 @@ test_identifier (void)
   g_time_zone_unref (tz);
 
   /* Local timezone tests. */
-  if (g_setenv ("TZ", "America/Recife", TRUE))
+  if (g_setenv ("TZ", recife_tz, TRUE))
     {
       tz = g_time_zone_new_local ();
-      g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "America/Recife");
+      g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, recife_tz);
       g_time_zone_unref (tz);
     }
 
