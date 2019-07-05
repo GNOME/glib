@@ -2408,6 +2408,12 @@ test_identifier (void)
   GTimeZone *tz;
   gchar *old_tz = g_strdup (g_getenv ("TZ"));
 
+#ifdef G_OS_WIN32
+  const char *recife_tz = "SA Eastern Standard Time";
+#else
+  const char *recife_tz = "America/Recife";
+#endif
+
   tz = g_time_zone_new ("UTC");
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_time_zone_unref (tz);
@@ -2437,21 +2443,12 @@ test_identifier (void)
   g_time_zone_unref (tz);
 
   /* Local timezone tests. */
-#ifdef G_OS_WIN32
-  if (g_setenv ("TZ", "SA Eastern Standard Time", TRUE))
+  if (g_setenv ("TZ", recife_tz, TRUE))
     {
       tz = g_time_zone_new_local ();
-      g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "SA Eastern Standard Time");
+      g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, recife_tz);
       g_time_zone_unref (tz);
     }
-#else
-  if (g_setenv ("TZ", "America/Recife", TRUE))
-    {
-      tz = g_time_zone_new_local ();
-      g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "America/Recife");
-      g_time_zone_unref (tz);
-    }
-#endif
 
   if (g_setenv ("TZ", "some rubbish", TRUE))
     {
