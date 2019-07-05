@@ -2215,6 +2215,8 @@
  *
  * The variable is cleaned up in a way appropriate to its type when the
  * variable goes out of scope.  The type must support this.
+ * The way to clean up the type must have been defined using one of the macros
+ * G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC() or G_DEFINE_AUTO_CLEANUP_FREE_FUNC().
  *
  * This feature is only supported on GCC and clang.  This macro is not
  * defined on other compilers and should not be used in programs that
@@ -2269,6 +2271,8 @@
  *
  * The variable is cleaned up in a way appropriate to its type when the
  * variable goes out of scope.  The type must support this.
+ * The way to clean up the type must have been defined using the macro
+ * G_DEFINE_AUTOPTR_CLEANUP_FUNC().
  *
  * This feature is only supported on GCC and clang.  This macro is not
  * defined on other compilers and should not be used in programs that
