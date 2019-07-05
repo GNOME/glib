@@ -77,6 +77,12 @@ void          g_task_set_source_tag        (GTask               *task,
 GLIB_AVAILABLE_IN_2_60
 void          g_task_set_name              (GTask               *task,
                                             const gchar         *name);
+GLIB_AVAILABLE_IN_2_60
+void          g_task_set_name              (GTask               *task,
+                                            const gchar         *name);
+GLIB_AVAILABLE_IN_2_62
+void          g_task_set_complete_in_idle  (GTask               *task,
+                                            gboolean             complete_in_idle);
 
 GLIB_AVAILABLE_IN_2_36
 gpointer      g_task_get_source_object     (GTask               *task);
@@ -94,6 +100,8 @@ GLIB_AVAILABLE_IN_2_36
 gpointer      g_task_get_source_tag        (GTask               *task);
 GLIB_AVAILABLE_IN_2_60
 const gchar  *g_task_get_name              (GTask               *task);
+GLIB_AVAILABLE_IN_2_62
+gboolean      g_task_get_complete_in_idle  (GTask               *task);
 
 GLIB_AVAILABLE_IN_2_36
 gboolean      g_task_is_valid              (gpointer             result,

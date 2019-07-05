@@ -579,6 +579,7 @@ struct _GTask {
   gboolean check_cancellable : 1;
   gboolean synchronous : 1;
   gboolean blocking_other_task : 1;
+  gboolean complete_in_idle : 1;
 
   GError *error;
   union {
@@ -1021,6 +1022,31 @@ g_task_set_name (GTask       *task,
 }
 
 /**
+ * g_task_set_complete_in_idle:
+ * @task: the #GTask
+ * @complete_in_idle: whether #GTask will always complete in idle
+ *
+ * Sets or clears the @task's complete-in-idle flag. If this is %FALSE
+ * (default) then the task's callback may be invoked immediately. When set
+ * to %TRUE, the callback invocation will always be deferred and run from
+ * the next GMainContext iteration. This only makes sense for tasks that
+ * are not running in a thread and may avoid side effects from the user's
+ * callback function.
+ *
+ * See also g_task_return_pointer().
+ *
+ * Since: 2.62
+ */
+void
+g_task_set_complete_in_idle (GTask    *task,
+                             gboolean  complete_in_idle)
+{
+  g_return_if_fail (G_IS_TASK (task));
+
+  task->complete_in_idle = complete_in_idle;
+}
+
+/**
  * g_task_get_source_object:
  * @task: a #GTask
  *
@@ -1199,6 +1225,23 @@ g_task_get_name (GTask *task)
   return task->name;
 }
 
+/**
+ * g_task_get_complete_in_idle:
+ * @task: the #GTask
+ *
+ * Gets the @task's complete-in-idle flag. See g_task_set_complete_in_idle()
+ * and g_task_return_pointer() for more details.
+ *
+ * Since: 2.62
+ */
+gboolean
+g_task_get_complete_in_idle (GTask    *task)
+{
+  g_return_val_if_fail (G_IS_TASK (task), FALSE);
+
+  return task->complete_in_idle;
+}
+
 static void
 g_task_return_now (GTask *task)
 {
@@ -1259,28 +1302,32 @@ g_task_return (GTask           *task,
 
   g_object_ref (task);
 
-  /* See if we can complete the task immediately. First, we have to be
-   * running inside the task's thread/GMainContext.
+  /* See if we can complete the task immediately. Check that the
+   * complete-in-idle flag is not set. If not, then first check that
+   * we are running inside the task's thread/GMainContext.
    */
-  source = g_main_current_source ();
-  if (source && g_source_get_context (source) == task->context)
+  if (!task->complete_in_idle)
     {
-      /* Second, we can only complete immediately if this is not the
-       * same iteration of the main loop that the task was created in.
-       */
-      if (g_source_get_time (source) > task->creation_time)
+      source = g_main_current_source ();
+      if (source && g_source_get_context (source) == task->context)
         {
-          /* Finally, if the task has been cancelled, we shouldn't
-           * return synchronously from inside the
-           * GCancellable::cancelled handler. It's easier to run
-           * another iteration of the main loop than tracking how the
-           * cancellation was handled.
+          /* Second, we can only complete immediately if this is not the
+           * same iteration of the main loop that the task was created in.
            */
-          if (!g_cancellable_is_cancelled (task->cancellable))
+          if (g_source_get_time (source) > task->creation_time)
             {
-              g_task_return_now (task);
-              g_object_unref (task);
-              return;
+              /* Finally, if the task has been cancelled, we shouldn't
+               * return synchronously from inside the
+               * GCancellable::cancelled handler. It's easier to run
+               * another iteration of the main loop than tracking how the
+               * cancellation was handled.
+               */
+              if (!g_cancellable_is_cancelled (task->cancellable))
+                {
+                  g_task_return_now (task);
+                  g_object_unref (task);
+                  return;
+                }
             }
         }
     }
@@ -1668,10 +1715,13 @@ g_task_propagate_error (GTask   *task,
  * the task will not actually be completed until the #GTaskThreadFunc
  * exits.
  *
- * Note that since the task may be completed before returning from
- * g_task_return_pointer(), you cannot assume that @result is still
- * valid after calling this, unless you are still holding another
- * reference on it.
+ * If the complete-in-idle flag has not been set, then the task may be
+ * completed before returning from g_task_return_pointer() and you
+ * cannot assume that @result is still valid after calling this, unless
+ * you are still holding another reference on it. You can set the flag
+ * by calling g_task_set_complete_in_idle(). In this case it is
+ * guaranteed that the callback will only be invoked in the next
+ * iteration of the proper #GMainContext.
  *
  * Since: 2.36
  */
