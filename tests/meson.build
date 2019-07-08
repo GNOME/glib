@@ -43,6 +43,9 @@ tests = {
   'threadpool-test' : {'suite' : ['slow']},
   'type-test' : {},
   'unicode-caseconv' : {},
+  'unicode-data' : {
+    'extra_sources' : 'test-common.c',
+  }, 
   'unicode-encoding' : {},
   'module-test' : {
     'dependencies' : [libgmodule_dep],
