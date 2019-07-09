@@ -2626,6 +2626,7 @@ g_array_remove_index_fast
 g_array_remove_range
 g_array_sort
 g_array_sort_with_data
+g_array_binary_search
 g_array_index
 g_array_set_size
 g_array_set_clear_func
