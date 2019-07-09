@@ -382,6 +382,11 @@ test_extra_programs += {
   },
 }
 
+gdbus_example_objectmanager_sources = files(
+  'gdbus-example-objectmanager-client.c',
+  'gdbus-example-objectmanager-server.c',
+)
+
 if cc.get_id() != 'msvc'
   test_extra_programs += {
     # These three are manual-run tests because they need a session bus but don't bring one up themselves
