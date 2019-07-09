@@ -1959,6 +1959,7 @@ G_RESOLVER_GET_CLASS
 G_TYPE_RESOLVER
 G_TYPE_RESOLVER_ERROR
 G_TYPE_RESOLVER_RECORD_TYPE
+G_TYPE_RESOLVER_NAME_LOOKUP_FLAGS
 
 <SUBSECTION Private>
 GResolverPrivate
@@ -1966,6 +1967,7 @@ g_resolver_get_type
 g_resolver_error_quark
 g_resolver_record_type_get_type
 g_resolver_error_get_type
+g_resolver_name_lookup_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -3679,6 +3681,10 @@ g_pollable_source_new_full
 g_pollable_stream_read
 g_pollable_stream_write
 g_pollable_stream_write_all
+<SUBSECTION Standard>
+G_TYPE_POLLABLE_RETURN
+<SUBSECTION Private>
+g_pollable_return_get_type
 </SECTION>
 
 <SECTION>
