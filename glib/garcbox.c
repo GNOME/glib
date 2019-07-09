@@ -155,7 +155,7 @@
  * G_DEFINE_AUTOPTR_CLEANUP_FUNC (MyDataStruct, my_data_struct_release)
  * ]|
  *
- * Since: 2.58.
+ * Since: 2.58
  */
 
 /**
