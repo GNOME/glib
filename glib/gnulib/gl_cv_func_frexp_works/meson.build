@@ -96,7 +96,7 @@ else
     gl_cv_func_frexp_works = false
     gl_cv_func_frexp_broken_beyond_repair = true
   elif host_system == 'windows'
-    if cc.get_id () == 'msvc'
+    if cc.get_id () == 'msvc' or cc.get_id() == 'clang-cl'
       gl_cv_func_frexp_works = true
       gl_cv_func_frexp_broken_beyond_repair = false
     else

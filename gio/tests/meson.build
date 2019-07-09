@@ -97,7 +97,7 @@ test_env.set('GIO_LAUNCH_DESKTOP', meson.build_root() + '/gio/gio-launch-desktop
 # 1.2.14 required for dbus_message_set_serial
 dbus1_dep = dependency('dbus-1', required : false, version : '>= 1.2.14')
 if not dbus1_dep.found()
-  if cc.get_id() == 'msvc'
+  if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
     # MSVC: Search for the DBus library by the configuration, which corresponds
     # to the output of CMake builds of DBus.  Note that debugoptimized
     # is really a Release build with .PDB files.
@@ -382,7 +382,7 @@ test_extra_programs += {
   },
 }
 
-if cc.get_id() != 'msvc'
+if cc.get_id() != 'msvc' and cc.get_id() != 'clang-cl'
   test_extra_programs += {
     # These three are manual-run tests because they need a session bus but don't bring one up themselves
     # FIXME: these build but don't seem to work!
