@@ -297,8 +297,8 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
 
   </section>
 
-  <xi:include href="../gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
-  <xi:include href="../gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
+  <xi:include href="../../../../gio/tests/gdbus-object-manager-example/objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
+  <xi:include href="../../../../gio/tests/gdbus-object-manager-example/objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
   <xi:include href="../gdbus-object-manager-example/xml/ExampleAnimal.xml"/>
   <xi:include href="../gdbus-object-manager-example/xml/ExampleCat.xml"/>
   <xi:include href="../gdbus-object-manager-example/xml/ExampleObject.xml"/>
