@@ -1,3 +1,19 @@
+Overview of changes in GLib 2.60.5
+==================================
+
+* Fix implicit use of the `GKeyfileSettingsBackend` (#1822)
+
+* Fix opening a URI using the ‘Open URI’ portal (!968)
+
+* Bugs fixed:
+ - !910 Backport !909 “D-Bus auth mechanism improvements” to glib-2-60
+ - !949 Backport !945 “Avoid overrunning stack at the end of the varargs.” to glib-2-60
+ - !956 Backport !954 “Fix the ISO 15924 code for Manichaean” to glib-2-60
+ - !958 gthread: fix minor errno problem in GCond
+ - !969 Backport !968 ”Fix typo in request handle” to glib-2-60
+ - !977 Backport !974 “Ensure that the keyfile settings backend exists” to glib-2-60
+
+
 Overview of changes in GLib 2.60.4
 ==================================
 
