@@ -1021,7 +1021,7 @@
 
 #ifndef __GI_SCANNER__
 
-#ifdef __GNUC__
+#if defined (__GNUC__) || defined (__clang__)
 
 /* these macros are private */
 #define _GLIB_AUTOPTR_FUNC_NAME(TypeName) glib_autoptr_cleanup_##TypeName
