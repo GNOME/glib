@@ -97,6 +97,7 @@ void     g_async_initable_new_async        (GType                 object_type,
 					    ...);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 GLIB_DEPRECATED_IN_2_54_FOR(g_object_new_with_properties and g_async_initable_init_async)
 void     g_async_initable_newv_async       (GType                 object_type,
 					    guint                 n_parameters,
@@ -105,6 +106,7 @@ void     g_async_initable_newv_async       (GType                 object_type,
 					    GCancellable         *cancellable,
 					    GAsyncReadyCallback   callback,
 					    gpointer              user_data);
+
 G_GNUC_END_IGNORE_DEPRECATIONS
 
 GLIB_AVAILABLE_IN_ALL
