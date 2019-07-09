@@ -45,7 +45,7 @@ if g_module_impl == 'G_MODULE_IMPL_DL'
   # FIXME: check for OSF1/5.0 RTLD_GLOBAL brokenness (is this still relevant?)
 
   # Check whether we need preceding underscores
-  if cc.get_id() == 'msvc'
+  if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
     message('Building for MSVC: assuming that symbols are prefixed with underscore')
     g_module_need_uscore = 1
   elif meson.has_exe_wrapper()
