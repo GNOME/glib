@@ -69,11 +69,12 @@ gchar ** g_content_type_guess_for_tree    (GFile        *root);
 GLIB_AVAILABLE_IN_ALL
 GList *  g_content_types_get_registered   (void);
 
-/*< private >*/
+#ifndef __GTK_DOC_IGNORE__
 GLIB_AVAILABLE_IN_2_60
 const gchar * const *g_content_type_get_mime_dirs (void);
 GLIB_AVAILABLE_IN_2_60
 void                 g_content_type_set_mime_dirs (const gchar * const *dirs);
+#endif /* __GTK_DOC_IGNORE__ */
 
 G_END_DECLS
 
