@@ -224,7 +224,7 @@ g_network_address_get_property (GObject    *object,
 
 }
 
-/**
+/*
  * inet_addresses_to_inet_socket_addresses:
  * @addresses: (transfer full): #GList of #GInetAddress
  *
