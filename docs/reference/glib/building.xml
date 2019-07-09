@@ -158,7 +158,7 @@
         <para>
           The optional SELinux support in GIO requires libselinux.
           To build GLib without SELinux support, use the
-          <option>-Dselinux=false</option> option.
+          <option>-Dselinux=disabled</option> option.
         </para>
       </listitem>
       <listitem>
@@ -317,8 +317,9 @@
     </formalpara>
 
     <formalpara>
-      <title><option>-Dselinux=false</option> and
-        <option>-Dselinux=true</option></title>
+      <title><option>-Dselinux=auto</option>,
+        <option>-Dselinux=enabled</option> or
+        <option>-Dselinux=disabled</option></title>
 
       <para>
         By default, GLib will detect if libselinux is available and
