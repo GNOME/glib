@@ -3233,7 +3233,6 @@ g_utf8_skip
 <TITLE>I18N</TITLE>
 <FILE>i18n</FILE>
 <INCLUDE>glib.h,glib/gi18n.h</INCLUDE>
-_
 Q_
 C_
 N_

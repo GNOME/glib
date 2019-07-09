@@ -511,7 +511,7 @@ g_dngettext (const gchar *domain,
  * workflow.
  */
 
-/**
+/*
  * _:
  * @String: the string to be translated
  *
