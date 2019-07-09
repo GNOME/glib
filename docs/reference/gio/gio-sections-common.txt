@@ -720,27 +720,6 @@ GUnixInputStreamPrivate
 </SECTION>
 
 <SECTION>
-<FILE>gwin32inputstream</FILE>
-<TITLE>GWin32InputStream</TITLE>
-GWin32InputStream
-g_win32_input_stream_new
-g_win32_input_stream_set_close_handle
-g_win32_input_stream_get_close_handle
-g_win32_input_stream_get_handle
-<SUBSECTION Standard>
-GWin32InputStreamClass
-G_WIN32_INPUT_STREAM
-G_IS_WIN32_INPUT_STREAM
-G_TYPE_WIN32_INPUT_STREAM
-G_WIN32_INPUT_STREAM_CLASS
-G_IS_WIN32_INPUT_STREAM_CLASS
-G_WIN32_INPUT_STREAM_GET_CLASS
-<SUBSECTION Private>
-g_win32_input_stream_get_type
-GWin32InputStreamPrivate
-</SECTION>
-
-<SECTION>
 <FILE>gmemoryinputstream</FILE>
 <TITLE>GMemoryInputStream</TITLE>
 GMemoryInputStream
@@ -1022,27 +1001,6 @@ G_UNIX_OUTPUT_STREAM_GET_CLASS
 <SUBSECTION Private>
 g_unix_output_stream_get_type
 GUnixOutputStreamPrivate
-</SECTION>
-
-<SECTION>
-<FILE>gwin32outputstream</FILE>
-<TITLE>GWin32OutputStream</TITLE>
-GWin32OutputStream
-g_win32_output_stream_new
-g_win32_output_stream_set_close_handle
-g_win32_output_stream_get_close_handle
-g_win32_output_stream_get_handle
-<SUBSECTION Standard>
-GWin32OutputStreamClass
-G_WIN32_OUTPUT_STREAM
-G_IS_WIN32_OUTPUT_STREAM
-G_TYPE_WIN32_OUTPUT_STREAM
-G_WIN32_OUTPUT_STREAM_CLASS
-G_IS_WIN32_OUTPUT_STREAM_CLASS
-G_WIN32_OUTPUT_STREAM_GET_CLASS
-<SUBSECTION Private>
-g_win32_output_stream_get_type
-GWin32OutputStreamPrivate
 </SECTION>
 
 <SECTION>
@@ -4698,75 +4656,4 @@ g_list_store_sort
 G_TYPE_LIST_STORE
 <SUBSECTION Private>
 g_list_store_get_type
-</SECTION>
-
-<SECTION>
-<FILE>gwin32registrykey</FILE>
-
-<SUBSECTION>
-GWin32RegistrySubkeyIter
-g_win32_registry_subkey_iter_copy
-g_win32_registry_subkey_iter_free
-g_win32_registry_subkey_iter_assign
-
-<SUBSECTION>
-GWin32RegistryValueIter
-g_win32_registry_value_iter_copy
-g_win32_registry_value_iter_free
-g_win32_registry_value_iter_assign
-
-<SUBSECTION>
-GWin32RegistryKey
-g_win32_registry_key_new
-g_win32_registry_key_new_w
-g_win32_registry_key_get_child
-g_win32_registry_key_get_child_w
-
-<SUBSECTION>
-g_win32_registry_subkey_iter_init
-g_win32_registry_subkey_iter_clear
-g_win32_registry_subkey_iter_n_subkeys
-g_win32_registry_subkey_iter_next
-g_win32_registry_subkey_iter_get_name
-g_win32_registry_subkey_iter_get_name_w
-
-<SUBSECTION>
-g_win32_registry_value_iter_init
-g_win32_registry_value_iter_clear
-g_win32_registry_value_iter_n_values
-g_win32_registry_value_iter_next
-GWin32RegistryValueType
-g_win32_registry_value_iter_get_value_type
-g_win32_registry_value_iter_get_name
-g_win32_registry_value_iter_get_name_w
-g_win32_registry_value_iter_get_data
-g_win32_registry_value_iter_get_data_w
-
-<SUBSECTION>
-g_win32_registry_key_get_value
-g_win32_registry_key_get_value_w
-g_win32_registry_key_get_path
-g_win32_registry_key_get_path_w
-GWin32RegistryKeyWatchCallbackFunc
-GWin32RegistryKeyWatcherFlags
-g_win32_registry_key_watch
-g_win32_registry_key_has_changed
-g_win32_registry_key_erase_change_indicator
-
-<SUBSECTION Standard>
-GWin32RegistryKeyClass
-
-<SUBSECTION Private>
-GWin32RegistryKeyPrivate
-g_win32_registry_key_get_type
-g_win32_registry_subkey_iter_get_type
-g_win32_registry_value_iter_get_type
-G_TYPE_WIN32_REGISTRY_KEY
-G_WIN32_REGISTRY_KEY
-G_WIN32_REGISTRY_KEY_CLASS
-G_IS_WIN32_REGISTRY_KEY
-G_IS_WIN32_REGISTRY_KEY_CLASS
-G_WIN32_REGISTRY_KEY_GET_CLASS
-G_TYPE_WIN32_REGISTRY_SUBKEY_ITER
-G_TYPE_WIN32_REGISTRY_VALUE_ITER
 </SECTION>
