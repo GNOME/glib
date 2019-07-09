@@ -72,8 +72,6 @@
         <xi:include href="xml/gdataoutputstream.xml"/>
         <xi:include href="xml/gunixinputstream.xml"/>
         <xi:include href="xml/gunixoutputstream.xml"/>
-        <xi:include href="xml/gwin32inputstream.xml"/>
-        <xi:include href="xml/gwin32outputstream.xml"/>
         <xi:include href="xml/gconverterinputstream.xml"/>
         <xi:include href="xml/gconverteroutputstream.xml"/>
         <xi:include href="xml/gpollableinputstream.xml"/>
@@ -219,10 +217,7 @@
         <xi:include href="xml/glistmodel.xml"/>
         <xi:include href="xml/gliststore.xml"/>
     </chapter>
-    <chapter id='registry'>
-        <title>Win32 registry support</title>
-        <xi:include href="xml/gwin32registrykey.xml"/>
-    </chapter>
+
     <chapter id="application">
         <title>Application support</title>
         <xi:include href="xml/gapplication.xml"/>
@@ -264,6 +259,7 @@
         <title>GIO Testing</title>
         <xi:include href="xml/gtestdbus.xml"/>
     </chapter>
+    <xi:include href="gio-docs-platform.xml"/>
   </part>
 
   <part id="migrating">
