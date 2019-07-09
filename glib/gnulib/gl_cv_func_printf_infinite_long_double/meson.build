@@ -195,7 +195,7 @@ if gl_cv_func_printf_long_double
         gl_cv_func_printf_infinite_long_double = 'true'
       elif host_system == 'windows'
         # Guess yes on MSVC, no on mingw.
-        if cc.get_id() == 'msvc'
+        if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
           gl_cv_func_printf_infinite = 'true'
         else
           gl_cv_func_printf_infinite = 'false'

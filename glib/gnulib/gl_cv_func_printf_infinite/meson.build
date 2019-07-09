@@ -123,7 +123,7 @@ else
     gl_cv_func_printf_infinite = true
   elif host_system.startswith ('windows')
     # Guess yes on MSVC, no on mingw.
-    if cc.get_id() == 'msvc'
+    if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
       gl_cv_func_printf_infinite = true
     else
       gl_cv_func_printf_infinite = false
