@@ -209,7 +209,8 @@ if get_option('gtk_doc')
       '--extra-dir=' + join_paths('gio', '..', 'glib', 'html'),
       '--extra-dir=' + join_paths('gio', '..', 'gobject', 'html'),
     ],
-    install: true
+    install: true,
+    check: true,
   )
 endif
 
