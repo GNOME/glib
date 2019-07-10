@@ -2344,7 +2344,7 @@ g_settings_get_has_unapplied (GSettings *settings)
  * Resets @key to its default value.
  *
  * This call resets the key, as much as possible, to its default value.
- * That might the value specified in the schema or the one set by the
+ * That might be the value specified in the schema or the one set by the
  * administrator.
  **/
 void
