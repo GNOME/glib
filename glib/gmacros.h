@@ -581,7 +581,7 @@
  *
  * Since: 2.2
  */
-#if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)
+#if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1) || defined (__clang__)
 #define G_GNUC_DEPRECATED __attribute__((__deprecated__))
 #else
 #define G_GNUC_DEPRECATED
@@ -610,7 +610,7 @@
  *
  * Since: 2.26
  */
-#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5) || defined (__clang__)
 #define G_GNUC_DEPRECATED_FOR(f)                        \
   __attribute__((deprecated("Use " #f " instead")))
 #else
@@ -629,7 +629,7 @@
   _Pragma ("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
 #define G_GNUC_END_IGNORE_DEPRECATIONS			\
   _Pragma ("GCC diagnostic pop")
-#elif defined (_MSC_VER) && (_MSC_VER >= 1500)
+#elif defined (_MSC_VER) && (_MSC_VER >= 1500) && !defined (__clang__)
 #define G_GNUC_BEGIN_IGNORE_DEPRECATIONS		\
   __pragma (warning (push))  \
   __pragma (warning (disable : 4996))
@@ -938,7 +938,7 @@
 #define G_UNLIKELY(expr) (expr)
 #endif
 
-#if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)
+#if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1) || defined (__clang__)
 #define G_DEPRECATED __attribute__((__deprecated__))
 #elif defined(_MSC_VER) && (_MSC_VER >= 1300)
 #define G_DEPRECATED __declspec(deprecated)
@@ -946,7 +946,7 @@
 #define G_DEPRECATED
 #endif
 
-#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5) || defined (__clang__)
 #define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
 #elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
 #define G_DEPRECATED_FOR(f) __declspec(deprecated("is deprecated. Use '" #f "' instead"))
@@ -954,7 +954,7 @@
 #define G_DEPRECATED_FOR(f) G_DEPRECATED
 #endif
 
-#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5) || defined (__clang__)
 #define G_UNAVAILABLE(maj,min) __attribute__((deprecated("Not available before " #maj "." #min)))
 #elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
 #define G_UNAVAILABLE(maj,min) __declspec(deprecated("is not available before " #maj "." #min))
