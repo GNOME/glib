@@ -407,7 +407,7 @@
             functionality.</para>
           <para>Mounting refers to the traditional concept of arranging multiple
             file systems and devices in a single tree, rooted at <filename>/</filename>. Classical
-            mounting happens in the kernel and is controlle by the mount utility.
+            mounting happens in the kernel and is controlled by the mount utility.
             GIO expands this concept by introducing mount daemons that can make
             file systems available to GIO applications without kernel
             involvement.</para>
