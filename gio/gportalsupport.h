@@ -24,6 +24,7 @@ G_BEGIN_DECLS
 
 gboolean glib_should_use_portal (void);
 gboolean glib_network_available_in_sandbox (void);
+gboolean glib_has_dconf_access_in_sandbox (void);
 
 G_END_DECLS
 

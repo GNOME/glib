@@ -23,6 +23,7 @@
 static gboolean flatpak_info_read;
 static gboolean use_portal;
 static gboolean network_available;
+static gboolean dconf_access;
 
 static void
 read_flatpak_info (void)
@@ -40,17 +41,27 @@ read_flatpak_info (void)
 
       use_portal = TRUE;
       network_available = FALSE;
+      dconf_access = FALSE;
 
       keyfile = g_key_file_new ();
       if (g_key_file_load_from_file (keyfile, path, G_KEY_FILE_NONE, NULL))
         {
           char **shared = NULL;
+          char *dconf_policy = NULL;
 
           shared = g_key_file_get_string_list (keyfile, "Context", "shared", NULL, NULL);
           if (shared)
             {
               network_available = g_strv_contains ((const char * const *)shared, "network");
               g_strfreev (shared);
+            }
+
+          dconf_policy = g_key_file_get_string (keyfile, "Session Bus Policy", "ca.desrt.dconf", NULL);
+          if (dconf_policy)
+            {
+              if (strcmp (dconf_policy, "talk") == 0)
+                dconf_access = TRUE;
+              g_free (dconf_policy);
             }
         }
 
@@ -64,6 +75,7 @@ read_flatpak_info (void)
       if (var && var[0] == '1')
         use_portal = TRUE;
       network_available = TRUE;
+      dconf_access = TRUE;
     }
 }
 
@@ -81,3 +93,9 @@ glib_network_available_in_sandbox (void)
   return network_available;
 }
 
+gboolean
+glib_has_dconf_access_in_sandbox (void)
+{
+  read_flatpak_info ();
+  return dconf_access;
+}
