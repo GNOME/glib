@@ -646,7 +646,6 @@ test_resource_module (void)
 
   if (g_module_supported ())
     {
-      /* For in-tree, this will find the .la file and use it to get to the .so in .libs/ */
       module = g_io_module_new (g_test_get_filename (G_TEST_BUILT,
                                                      MODULE_FILENAME_PREFIX "resourceplugin",
                                                      NULL));
