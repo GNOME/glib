@@ -1,8 +1,8 @@
 gmoduleconf_conf = configuration_data()
 
-g_module_need_uscore = 0
-g_module_broken_rtld_global = 0
-g_module_have_dlerror = 0
+g_module_need_uscore = false
+g_module_broken_rtld_global = false
+g_module_have_dlerror = false
 
 libdl_dep = [ ]
 g_module_lib_args = [ ]
@@ -32,7 +32,7 @@ endif
 # additional checks for G_MODULE_IMPL_DL
 # FIXME: check for OSF1/5.0 RTLD_GLOBAL brokenness (is this still relevant?)
 if g_module_impl == 'G_MODULE_IMPL_DL' and cc.has_function('dlerror', args : g_module_lib_args)
-  g_module_have_dlerror = 1
+  g_module_have_dlerror = true
 endif
 
 # Done, have we got an implementation?
@@ -42,10 +42,10 @@ if g_module_impl == ''
 endif
 
 gmoduleconf_conf.set('G_MODULE_IMPL', g_module_impl)
-gmoduleconf_conf.set('G_MODULE_SUPPORTED', g_module_impl != '0')
-gmoduleconf_conf.set('G_MODULE_HAVE_DLERROR', g_module_have_dlerror)
+gmoduleconf_conf.set10('G_MODULE_SUPPORTED', g_module_impl != '0')
+gmoduleconf_conf.set10('G_MODULE_HAVE_DLERROR', g_module_have_dlerror)
 gmoduleconf_conf.set10('G_MODULE_NEED_USCORE', g_module_need_uscore)
-gmoduleconf_conf.set('G_MODULE_BROKEN_RTLD_GLOBAL', g_module_broken_rtld_global)
+gmoduleconf_conf.set10('G_MODULE_BROKEN_RTLD_GLOBAL', g_module_broken_rtld_global)
 
 gmoduleconf_h = configure_file(input : 'gmoduleconf.h.in',
                                output : 'gmoduleconf.h',
