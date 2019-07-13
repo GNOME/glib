@@ -6,7 +6,8 @@ g_module_have_dlerror = false
 
 libdl_dep = [ ]
 g_module_lib_args = [ ]
-g_module_impl = ''
+g_module_impl = 'G_MODULE_IMPL_NONE'
+g_module_supported = false
 
 # Check whether we need preceding underscores
 g_module_need_uscore = cc.symbols_have_underscore_prefix()
@@ -36,13 +37,14 @@ if g_module_impl == 'G_MODULE_IMPL_DL' and cc.has_function('dlerror', args : g_m
 endif
 
 # Done, have we got an implementation?
-if g_module_impl == ''
-  g_module_impl = '0'
+if g_module_impl == 'G_MODULE_IMPL_NONE'
   message('WARNING: No suitable GModule implementation found!')
+else
+  g_module_supported = true
 endif
 
 gmoduleconf_conf.set('G_MODULE_IMPL', g_module_impl)
-gmoduleconf_conf.set10('G_MODULE_SUPPORTED', g_module_impl != '0')
+gmoduleconf_conf.set10('G_MODULE_SUPPORTED', g_module_supported)
 gmoduleconf_conf.set10('G_MODULE_HAVE_DLERROR', g_module_have_dlerror)
 gmoduleconf_conf.set10('G_MODULE_NEED_USCORE', g_module_need_uscore)
 gmoduleconf_conf.set10('G_MODULE_BROKEN_RTLD_GLOBAL', g_module_broken_rtld_global)
@@ -76,7 +78,7 @@ libgmodule = library('gmodule-2.0',
   link_args : [glib_link_flags],
 )
 
-supported_var = 'gmodule_supported=@0@'.format(g_module_impl != '0')
+supported_var = 'gmodule_supported=@0@'.format(g_module_supported)
 
 pkg.generate(libgmodule,
   libraries : [thread_dep],
