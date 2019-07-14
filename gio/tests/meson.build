@@ -469,22 +469,24 @@ endif
 
 if not meson.is_cross_build() or meson.has_exe_wrapper()
 
-  plugin_resources_c = custom_target('plugin-resources.c',
-    input : 'test4.gresource.xml',
-    output : 'plugin-resources.c',
-    command : [glib_compile_resources,
-               '--target=@OUTPUT@',
-               '--sourcedir=' + meson.current_source_dir(),
-               '--generate-source',
-               '--c-name', '_g_plugin',
-               '@INPUT@'])
+  if get_option('default_library') != 'static'
+    plugin_resources_c = custom_target('plugin-resources.c',
+      input : 'test4.gresource.xml',
+      output : 'plugin-resources.c',
+      command : [glib_compile_resources,
+		 '--target=@OUTPUT@',
+		 '--sourcedir=' + meson.current_source_dir(),
+		 '--generate-source',
+		 '--c-name', '_g_plugin',
+		 '@INPUT@'])
 
-  shared_module('resourceplugin', 'resourceplugin.c', plugin_resources_c,
-    link_args : export_dynamic_ldflags,
-    dependencies : common_gio_tests_deps,
-    install_dir : installed_tests_execdir,
-    install : installed_tests_enabled
-  )
+    shared_module('resourceplugin', 'resourceplugin.c', plugin_resources_c,
+      link_args : export_dynamic_ldflags,
+      dependencies : common_gio_tests_deps,
+      install_dir : installed_tests_execdir,
+      install : installed_tests_enabled
+    )
+  endif
 
   # referenced by test2.gresource.xml
   big_test_resource = custom_target(

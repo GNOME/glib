@@ -21,6 +21,7 @@
  */
 
 #include <gio/gio.h>
+#include "gconstructor.h"
 
 #ifdef _MSC_VER
 # define MODULE_FILENAME_PREFIX ""
@@ -75,6 +76,63 @@ test_module_scan_all_with_scope (void)
   g_test_trap_assert_passed ();
 }
 
+static void
+test_resource_module (void)
+{
+  GIOModule *module;
+  gboolean found;
+  gsize size;
+  guint32 flags;
+  GBytes *data;
+  GError *error;
+
+  if (g_module_supported ())
+    {
+      module = g_io_module_new (g_test_get_filename (G_TEST_BUILT,
+                                                     MODULE_FILENAME_PREFIX "resourceplugin",
+                                                     NULL));
+
+      error = NULL;
+
+      found = g_resources_get_info ("/resourceplugin/test1.txt",
+                                    G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                    &size, &flags, &error);
+      g_assert (!found);
+      g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+      g_clear_error (&error);
+
+      g_type_module_use (G_TYPE_MODULE (module));
+
+      found = g_resources_get_info ("/resourceplugin/test1.txt",
+                                    G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                    &size, &flags, &error);
+      g_assert (found);
+      g_assert_no_error (error);
+      g_assert_cmpint (size, ==, 6);
+      g_assert_cmpuint (flags, ==, 0);
+
+      data = g_resources_lookup_data ("/resourceplugin/test1.txt",
+                                      G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                      &error);
+      g_assert (data != NULL);
+      g_assert_no_error (error);
+      size = g_bytes_get_size (data);
+      g_assert_cmpint (size, ==, 6);
+      g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test1\n");
+      g_bytes_unref (data);
+
+      g_type_module_unuse (G_TYPE_MODULE (module));
+
+      found = g_resources_get_info ("/resourceplugin/test1.txt",
+                                    G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                    &size, &flags, &error);
+      g_assert (!found);
+      g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+      g_clear_error (&error);
+    }
+}
+
+
 int
 main (int argc, char *argv[])
 {
@@ -82,6 +140,9 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/giomodule/module-scan-all", test_module_scan_all);
   g_test_add_func ("/giomodule/module-scan-all-with-scope", test_module_scan_all_with_scope);
+#ifdef G_HAS_CONSTRUCTORS
+  g_test_add_func ("/giomodule/resource-module", test_resource_module);
+#endif
 
   return g_test_run ();
 }
