@@ -29,57 +29,6 @@
 #endif
 
 static void
-test_extension_point (void)
-{
-  GIOExtensionPoint *ep, *ep2;
-  GIOExtension *ext;
-  GList *list;
-  GType req;
-  GTypeClass *class;
-
-  ep = g_io_extension_point_lookup ("test-extension-point");
-  g_assert_null (ep);
-  ep = g_io_extension_point_register ("test-extension-point");
-  ep2 = g_io_extension_point_lookup ("test-extension-point");
-  g_assert (ep2 == ep);
-
-  req = g_io_extension_point_get_required_type (ep);
-  g_assert (req == G_TYPE_INVALID);
-  g_io_extension_point_set_required_type (ep, G_TYPE_OBJECT);
-  req = g_io_extension_point_get_required_type (ep);
-  g_assert (req == G_TYPE_OBJECT);
-
-  list = g_io_extension_point_get_extensions (ep);
-  g_assert_null (list);
-
-  g_io_extension_point_implement ("test-extension-point",
-                                  G_TYPE_VFS,
-                                  "extension1",
-                                  10);
-
-  g_io_extension_point_implement ("test-extension-point",
-                                  G_TYPE_OBJECT,
-                                  "extension2",
-                                  20);
-
-  list = g_io_extension_point_get_extensions (ep);
-  g_assert_cmpint (g_list_length (list), ==, 2);
-  
-  ext = list->data;
-  g_assert_cmpstr (g_io_extension_get_name (ext), ==, "extension2");
-  g_assert (g_io_extension_get_type (ext) == G_TYPE_OBJECT);
-  g_assert (g_io_extension_get_priority (ext) == 20);
-  class = g_io_extension_ref_class (ext);
-  g_assert (class == g_type_class_peek (G_TYPE_OBJECT));
-  g_type_class_unref (class);
-
-  ext = list->next->data;
-  g_assert_cmpstr (g_io_extension_get_name (ext), ==, "extension1");
-  g_assert (g_io_extension_get_type (ext) == G_TYPE_VFS);
-  g_assert (g_io_extension_get_priority (ext) == 10);
-}
-
-static void
 test_module_scan_all (void)
 {
   if (g_test_subprocess ())
@@ -131,7 +80,6 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/giomodule/extension-point", test_extension_point);
   g_test_add_func ("/giomodule/module-scan-all", test_module_scan_all);
   g_test_add_func ("/giomodule/module-scan-all-with-scope", test_module_scan_all_with_scope);
 

@@ -41,9 +41,9 @@ gio_tests = {
   'data-input-stream' : {},
   'data-output-stream' : {},
   'defaultvalue' : {'extra_sources' : [giotypefuncs_inc]},
+  'extension-point' : {},
   'fileattributematcher' : {},
   'filter-streams' : {},
-  'giomodule' : {},
   'gsubprocess' : {},
   'g-file' : {},
   'g-file-info' : {},
@@ -338,6 +338,11 @@ endif # unix
 #  Test programs buildable on Windows only
 if host_machine.system() == 'windows'
   gio_tests += {'win32-streams' : {}}
+endif
+
+#  Test programs for dynamic builds
+if get_option('default_library') != 'static'
+  gio_tests += {'giomodule' : {}}
 endif
 
 if cc.get_id() != 'msvc'
