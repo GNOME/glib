@@ -1630,6 +1630,11 @@ guint     g_type_get_type_registration_serial (void);
  * Note that private structs added with this macros must have a struct
  * name of the form @TN Private.
  *
+ * The private instance data can be retrieved using the automatically generated
+ * getter function `t_n_get_instance_private()`.
+ *
+ * See also: G_ADD_PRIVATE()
+ *
  * Since: 2.38
  */
 #define G_DEFINE_TYPE_WITH_PRIVATE(TN, t_n, T_P)            G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, 0, G_ADD_PRIVATE (TN))
@@ -1694,6 +1699,7 @@ guint     g_type_get_type_registration_serial (void);
  *                         gtk_gadget,
  *                         GTK_TYPE_WIDGET,
  *                         0,
+ *                         G_ADD_PRIVATE (GtkGadget)
  *                         G_IMPLEMENT_INTERFACE (TYPE_GIZMO,
  *                                                gtk_gadget_gizmo_init));
  * ]|
@@ -1702,10 +1708,17 @@ guint     g_type_get_type_registration_serial (void);
  * static void     gtk_gadget_init       (GtkGadget      *self);
  * static void     gtk_gadget_class_init (GtkGadgetClass *klass);
  * static gpointer gtk_gadget_parent_class = NULL;
+ * static gint     GtkGadget_private_offset;
  * static void     gtk_gadget_class_intern_init (gpointer klass)
  * {
  *   gtk_gadget_parent_class = g_type_class_peek_parent (klass);
+ *   if (GtkGadget_private_offset != 0)
+ *     g_type_class_adjust_private_offset (klass, &GtkGadget_private_offset);
  *   gtk_gadget_class_init ((GtkGadgetClass*) klass);
+ * }
+ * static inline gpointer gtk_gadget_get_instance_private (GtkGadget *self)
+ * {
+ *   return (G_STRUCT_MEMBER_P (self, GtkGadget_private_offset));
  * }
  *
  * GType
@@ -1722,6 +1735,10 @@ guint     g_type_get_type_registration_serial (void);
  *                                        sizeof (GtkGadget),
  *                                        (GInstanceInitFunc) gtk_gadget_init,
  *                                        0);
+ *       {
+ *         GtkGadget_private_offset =
+ *           g_type_add_instance_private (g_define_type_id, sizeof (GtkGadgetPrivate));
+ *       }
  *       {
  *         const GInterfaceInfo g_implement_interface_info = {
  *           (GInterfaceInitFunc) gtk_gadget_gizmo_init
@@ -1866,9 +1883,9 @@ guint     g_type_get_type_registration_serial (void);
  * Also note that private structs added with these macros must have a struct
  * name of the form `TypeNamePrivate`.
  *
- * It is safe to call _get_instance_private on %NULL or invalid object since
- * it's only adding an offset to the instance pointer. In that case the returned
- * pointer must not be dereferenced.
+ * It is safe to call the `_get_instance_private` function on %NULL or invalid
+ * objects since it's only adding an offset to the instance pointer. In that
+ * case the returned pointer must not be dereferenced.
  *
  * Since: 2.38
  */
