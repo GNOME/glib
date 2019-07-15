@@ -57,8 +57,12 @@ read_flatpak_info (void)
             }
 
           dconf_policy = g_key_file_get_string (keyfile, "Session Bus Policy", "ca.desrt.dconf", NULL);
-          if (strcmp (dconf_policy, "talk") == 0)
-            dconf_access = TRUE;
+          if (dconf_policy)
+            {
+              if (strcmp (dconf_policy, "talk") == 0)
+                dconf_access = TRUE;
+              g_free (dconf_policy);
+            }
         }
 
       g_key_file_unref (keyfile);
