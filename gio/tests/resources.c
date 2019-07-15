@@ -18,6 +18,7 @@
 
 #include <string.h>
 #include <gio/gio.h>
+#include <glibconfig.h>
 #include "gconstructor.h"
 #include "test_resources2.h"
 #include "digit_test_resources.h"
@@ -643,6 +644,13 @@ test_resource_module (void)
   guint32 flags;
   GBytes *data;
   GError *error;
+
+#ifdef GLIB_STATIC_COMPILATION
+  /* The resource module is statically linked with a separate copy
+   * of a GLib so g_static_resource_init won't work as expected. */
+  g_test_skip ("Resource modules aren't supported in static builds.");
+  return;
+#endif
 
   if (g_module_supported ())
     {
