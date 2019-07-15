@@ -740,7 +740,8 @@ g_keyfile_settings_backend_set_property (GObject      *object,
     case PROP_FILENAME:
       /* Construct only. */
       g_assert (kfsb->file == NULL);
-      kfsb->file = g_file_new_for_path (g_value_get_string (value));
+      if (g_value_get_string (value))
+        kfsb->file = g_file_new_for_path (g_value_get_string (value));
       break;
 
     case PROP_ROOT_PATH:
