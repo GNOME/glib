@@ -2696,7 +2696,7 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * then call g_dbus_connection_new_finish() to get the result of the
  * operation.
  *
- * This is a asynchronous failable constructor. See
+ * This is an asynchronous failable constructor. See
  * g_dbus_connection_new_sync() for the synchronous
  * version.
  *
@@ -2835,13 +2835,13 @@ g_dbus_connection_new_sync (GIOStream             *stream,
  * %G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS flags.
  *
  * When the operation is finished, @callback will be invoked. You can
- * then call g_dbus_connection_new_finish() to get the result of the
- * operation.
+ * then call g_dbus_connection_new_for_address_finish() to get the result of
+ * the operation.
  *
  * If @observer is not %NULL it may be used to control the
  * authentication process.
  *
- * This is a asynchronous failable constructor. See
+ * This is an asynchronous failable constructor. See
  * g_dbus_connection_new_for_address_sync() for the synchronous
  * version.
  *

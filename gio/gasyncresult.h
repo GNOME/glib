@@ -38,7 +38,7 @@ G_BEGIN_DECLS
  * GAsyncResult:
  *
  * Holds results information for an asynchronous operation,
- * usually passed directly to a asynchronous _finish() operation.
+ * usually passed directly to an asynchronous _finish() operation.
  **/
 typedef struct _GAsyncResultIface    GAsyncResultIface;
 
