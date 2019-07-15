@@ -21,6 +21,7 @@
  */
 
 #include <gio/gio.h>
+#include <glibconfig.h>
 
 #ifdef _MSC_VER
 # define MODULE_FILENAME_PREFIX ""
@@ -82,6 +83,13 @@ test_extension_point (void)
 static void
 test_module_scan_all (void)
 {
+#ifdef GLIB_STATIC_COMPILATION
+  /* The plugin module is statically linked with a separate copy
+   * of GLib so g_io_extension_point_implement won't work. */
+  g_test_skip ("GIOExtensionPoint with dynamic modules isn't supported in static builds.");
+  return;
+#endif
+
   if (g_test_subprocess ())
     {
       GIOExtensionPoint *ep;
@@ -104,6 +112,12 @@ test_module_scan_all (void)
 static void
 test_module_scan_all_with_scope (void)
 {
+#ifdef GLIB_STATIC_COMPILATION
+  /* Disabled for the same reason as test_module_scan_all. */
+  g_test_skip ("GIOExtensionPoint with dynamic modules isn't supported in static builds.");
+  return;
+#endif
+
   if (g_test_subprocess ())
     {
       GIOExtensionPoint *ep;
