@@ -647,7 +647,7 @@ test_resource_module (void)
 
 #ifdef GLIB_STATIC_COMPILATION
   /* The resource module is statically linked with a separate copy
-   * a GLib so g_static_resource_init won't work as expected. */
+   * of a GLib so g_static_resource_init won't work as expected. */
   g_test_skip ("Resource modules aren't supported in static builds.");
   return;
 #endif

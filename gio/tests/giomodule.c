@@ -113,7 +113,7 @@ static void
 test_module_scan_all_with_scope (void)
 {
 #ifdef GLIB_STATIC_COMPILATION
-  // Disabled for the same reason as test_module_scan_all.
+  /* Disabled for the same reason as test_module_scan_all. */
   g_test_skip ("GIOExtensionPoint with dynamic modules isn't supported in static builds.");
   return;
 #endif
