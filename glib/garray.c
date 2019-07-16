@@ -845,7 +845,7 @@ g_array_binary_search (GArray        *array,
 
       while (left <= right)
         {
-          middle = (left + right) / 2;
+          middle = left + (right - left) / 2;
 
           val = compare_func (_array->data + (_array->elt_size * middle), target);
           if (val < 0)
