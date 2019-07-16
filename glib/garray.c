@@ -848,15 +848,17 @@ g_array_binary_search (GArray        *array,
           middle = left + (right - left) / 2;
 
           val = compare_func (_array->data + (_array->elt_size * middle), target);
-          if (val < 0)
-            left = middle + 1;
-          else if (val > 0)
-            right = middle - 1;
-          else
+          if (val == 0)
             {
               result = TRUE;
               break;
             }
+          else if (val < 0)
+            left = middle + 1;
+          else if (/* val > 0 && */ middle > 0)
+            right = middle - 1;
+          else
+            break;  /* element not found */
         }
     }
 
