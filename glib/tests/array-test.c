@@ -939,6 +939,8 @@ pointer_array_copy (void)
   ptr_array = g_ptr_array_sized_new (0);
   ptr_array2 = g_ptr_array_copy (ptr_array, NULL, NULL);
 
+  g_assert_cmpuint (ptr_array2->len, ==, ptr_array->len);
+
   g_ptr_array_unref (ptr_array);
   g_ptr_array_unref (ptr_array2);
 
@@ -950,6 +952,7 @@ pointer_array_copy (void)
 
   ptr_array2 = g_ptr_array_copy (ptr_array, NULL, NULL);
 
+  g_assert_cmpuint (ptr_array2->len, ==, ptr_array->len);
   for (i = 0; i < array_size; i++)
     g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array2, i)), ==, i);
 
@@ -962,6 +965,7 @@ pointer_array_copy (void)
   /* Test copy through GCopyFunc */
   ptr_array2 = g_ptr_array_copy (ptr_array, ptr_array_copy_func, NULL);
 
+  g_assert_cmpuint (ptr_array2->len, ==, ptr_array->len);
   for (i = 0; i < array_size; i++)
     g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array2, i)), ==, i);
 
