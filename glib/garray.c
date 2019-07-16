@@ -1020,6 +1020,9 @@ g_ptr_array_new (void)
  * If @func is %NULL, then only the pointers (and not what they are
  * pointing to) are copied to the new #GPtrArray.
  *
+ * The copy of @array will have the same #GDestroyNotify for its elements as
+ * @array.
+ *
  * Returns: (transfer full): a deep copy of the initial #GPtrArray.
  *
  * Since: 2.62
@@ -1035,6 +1038,8 @@ g_ptr_array_copy (GPtrArray *array,
   g_return_val_if_fail (array != NULL, NULL);
 
   new_array = g_ptr_array_sized_new (array->len);
+  g_ptr_array_set_free_func (new_array, ((GRealPtrArray *) array)->element_free_func);
+
   if (func != NULL)
     {
       for (i = 0; i < array->len; i++)
