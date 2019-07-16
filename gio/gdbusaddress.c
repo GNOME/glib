@@ -1261,8 +1261,8 @@ get_session_address_platform_specific (GError **error)
  * The returned address will be in the
  * [D-Bus address format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
  *
- * Returns: a valid D-Bus address string for @bus_type or %NULL if
- *     @error is set
+ * Returns: (transfer full): a valid D-Bus address string for @bus_type or
+ *     %NULL if @error is set
  *
  * Since: 2.26
  */
