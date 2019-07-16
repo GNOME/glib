@@ -1941,6 +1941,18 @@ g_test_bug (const char *bug_uri_snippet)
  *
  * This should be called at the top of a test function.
  *
+ * For example:
+ * |[<!-- language="C" -->
+ * static void
+ * test_array_sort (void)
+ * {
+ *   g_test_summary ("Test my_array_sort() sorts the array correctly and stably, "
+ *                   "including testing zero length and one-element arrays.");
+ *
+ *   …
+ * }
+ * ]|
+ *
  * Since: 2.62
  * See also: g_test_bug()
  */
