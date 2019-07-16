@@ -677,6 +677,9 @@ test_array_binary_search (void)
 
   g_assert_true (g_array_binary_search (garray, &i, cmpint, NULL));
 
+  i = 0;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
   i = 2;
   g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
 
@@ -684,26 +687,32 @@ test_array_binary_search (void)
 
   /* Testing array of size 2 */
   garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 2);
-  for (i = 0; i < 2; i++)
+  for (i = 1; i < 3; i++)
     g_array_append_val (garray, i);
 
-  for (i = 0; i < 2; i++)
+  for (i = 1; i < 3; i++)
     g_assert_true (g_array_binary_search (garray, &i, cmpint, NULL));
 
-  i = 3;
+  i = 0;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  i = 4;
   g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
 
   g_array_free (garray, TRUE);
 
   /* Testing array of size 3 */
   garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 3);
-  for (i = 0; i < 3; i++)
+  for (i = 1; i < 4; i++)
     g_array_append_val (garray, i);
 
-  for (i = 0; i < 3; i++)
+  for (i = 1; i < 4; i++)
     g_assert_true (g_array_binary_search (garray, &i, cmpint, NULL));
 
-  i = 4;
+  i = 0;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  i = 5;
   g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
 
   g_array_free (garray, TRUE);
@@ -711,22 +720,42 @@ test_array_binary_search (void)
   /* Testing array of size 10000 */
   garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 10000);
 
-  for (i = 0; i < 10000; i++)
+  for (i = 1; i < 10001; i++)
     g_array_append_val (garray, i);
 
-  for (i = 0; i < 10000; i++)
+  for (i = 1; i < 10001; i++)
     g_assert_true (g_array_binary_search (garray, &i, cmpint, NULL));
 
-  for (i = 0; i < 10000; i++)
+  for (i = 1; i < 10001; i++)
     {
       g_assert_true (g_array_binary_search (garray, &i, cmpint, &matched_index));
-      g_assert_cmpint (i, ==, matched_index);
+      g_assert_cmpint (i, ==, matched_index + 1);
     }
 
   /* Testing negative result */
-  i = 10001;
+  i = 0;
   g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
   g_assert_false (g_array_binary_search (garray, &i, cmpint, &matched_index));
+
+  i = 10002;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, &matched_index));
+
+  g_array_free (garray, TRUE);
+
+  /* Test for a not-found element in the middle of the array. */
+  garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 3);
+  for (i = 1; i < 10; i += 2)
+    g_array_append_val (garray, i);
+
+  i = 0;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  i = 2;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  i = 10;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
 
   g_array_free (garray, TRUE);
 }
