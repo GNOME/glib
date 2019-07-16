@@ -1051,6 +1051,8 @@ g_ptr_array_copy (GPtrArray *array,
               array->len * sizeof (*array->pdata));
     }
 
+  new_array->len = array->len;
+
   return new_array;
 }
 
