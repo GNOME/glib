@@ -508,8 +508,9 @@ array_copy (gconstpointer test_data)
   /* Check internal parameters ('clear' flag) */
   if (config->clear_)
     {
-      g_array_set_size (array_copy, array_copy->len + 5);
-      for (i = array_copy->len; i < array_copy->len + 5; i++)
+      guint old_length = array_copy->len;
+      g_array_set_size (array_copy, old_length + 5);
+      for (i = old_length; i < old_length + 5; i++)
         g_assert_cmpint (g_array_index (array_copy, gint, i), ==, 0);
     }
 
