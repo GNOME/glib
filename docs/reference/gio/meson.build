@@ -81,14 +81,16 @@ if get_option('gtk_doc')
     'gunixresolver.h',
     'gunixvolume.h',
     'gunixvolumemonitor.h',
+    'gwin32networkmonitor.h',
     'gwin32appinfo.h',
     'gwin32mount.h',
-    'gwin32registrykey.h',
     'gwin32resolver.h',
     'gwin32volumemonitor.h',
     'thumbnail-verify.h',
     'xdp-dbus.h',
   ]
+
+  sections_files = files('gio-sections-common.txt')
 
   if host_system == 'windows'
     ignore_headers += [
@@ -104,6 +106,8 @@ if get_option('gtk_doc')
       'gdesktopappinfo.h',
       'gosxappinfo.h',
     ]
+    sections_files += files('gio-sections-win32.txt')
+    platform_file = files('gio-docs-win32.xml')
   else
     if glib_have_cocoa
       ignore_headers += ['gdesktopappinfo.h']
@@ -112,10 +116,11 @@ if get_option('gtk_doc')
     endif
 
     ignore_headers += [
-      'gwin32networkmonitor.h',
       'gwin32inputstream.h',
       'gwin32outputstream.h',
+      'gwin32registrykey.h',
     ]
+    platform_file = files('gio-docs-unix.xml')
   endif
 
   ignore_sources = [
@@ -124,8 +129,6 @@ if get_option('gtk_doc')
     'gdbus-daemon-generated.c',
     'xdp-dbus.c',
   ]
-
-  # FIXME: More win32 headers were added to fix building gio-scan
 
   # FIXME: ExampleAnimal docs aren't built
 
@@ -136,6 +139,19 @@ if get_option('gtk_doc')
     input: 'version.xml.in',
     output: 'version.xml',
     configuration: version_conf
+  )
+
+  concat_files_helper = find_program('concat-files-helper.py')
+  configure_file(
+    output : 'gio-sections.txt',
+    input : sections_files,
+    command : [concat_files_helper, '@OUTPUT@', '@INPUT@'],
+  )
+
+  configure_file(
+    output : 'gio-docs-platform.xml',
+    input : platform_file,
+    copy : true,
   )
 
   gnome.gtkdoc('gio',

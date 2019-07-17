@@ -1,0 +1,6 @@
+<chapter id='win32-support'>
+    <title>Win32 support</title>
+    <xi:include href="xml/gwin32registrykey.xml"/>
+    <xi:include href="xml/gwin32inputstream.xml"/>
+    <xi:include href="xml/gwin32outputstream.xml"/>
+</chapter>
