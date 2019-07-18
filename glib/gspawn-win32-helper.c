@@ -177,16 +177,8 @@ myInvalidParameterHandler(const wchar_t *expression,
 #endif
 
 
-#ifndef HELPER_CONSOLE
-int _stdcall
-WinMain (struct HINSTANCE__ *hInstance,
-	 struct HINSTANCE__ *hPrevInstance,
-	 char               *lpszCmdLine,
-	 int                 nCmdShow)
-#else
 int
 main (int ignored_argc, char **ignored_argv)
-#endif
 {
   int child_err_report_fd = -1;
   int helper_sync_fd = -1;
@@ -386,4 +378,15 @@ main (int ignored_argc, char **ignored_argv)
   g_strfreev (argv);
 
   return 0;
+}
+
+/* It is not the existence of this function to decide over
+ * console/windows, just one bit set by /subsystem:? */
+int _stdcall
+WinMain (struct HINSTANCE__ *hInstance,
+	 struct HINSTANCE__ *hPrevInstance,
+	 char               *lpszCmdLine,
+	 int                 nCmdShow)
+{
+  return main (__argc, __argv);
 }
