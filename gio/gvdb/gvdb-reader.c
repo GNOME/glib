@@ -332,7 +332,7 @@ gvdb_table_list_from_item (GvdbTable                    *table,
 /**
  * gvdb_table_get_names:
  * @table: a #GvdbTable
- * @length: (optional): the number of items returned, or %NULL
+ * @length: (out) (optional): the number of items returned, or %NULL
  *
  * Gets a list of all names contained in @table.
  *

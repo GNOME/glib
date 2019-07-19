@@ -853,8 +853,8 @@ g_tree_lookup (GTree         *tree,
  * g_tree_lookup_extended:
  * @tree: a #GTree
  * @lookup_key: the key to look up
- * @orig_key: (optional) (nullable): returns the original key
- * @value: (optional) (nullable): returns the value associated with the key
+ * @orig_key: (out) (optional) (nullable): returns the original key
+ * @value: (out) (optional) (nullable): returns the value associated with the key
  * 
  * Looks up a key in the #GTree, returning the original key and the
  * associated value. This is useful if you need to free the memory
