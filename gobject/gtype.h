@@ -1420,8 +1420,8 @@ guint     g_type_get_type_registration_serial (void);
  * @OBJ_NAME: The bare name of the type, in all caps (like 'WIDGET')
  * @ParentName: the name of the parent type, in camel case (like GtkWidget)
  *
- * A convenience macro for emitting the usual declarations in the header file for a type which will is intended
- * to be subclassed.
+ * A convenience macro for emitting the usual declarations in the
+ * header file for a type which is intended to be subclassed.
  *
  * You might use it in a header as follows:
  *
