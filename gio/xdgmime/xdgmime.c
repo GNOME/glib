@@ -118,7 +118,26 @@ xdg_dir_time_list_add (char   *file_name,
   list->next = dir_time_list;
   dir_time_list = list;
 }
- 
+
+static void
+xdg_dirs_free (void)
+{
+  size_t i;
+
+  /*g_message (__FUNCTION__);*/
+  printf("V\n");
+
+  if (xdg_dirs)
+    {
+
+      for (i = 0; xdg_dirs[i] != NULL; i ++)
+        free (xdg_dirs[i]);
+
+      free (xdg_dirs);
+      xdg_dirs = NULL;
+    }
+}
+
 static void
 xdg_dir_time_list_free (XdgDirTimeList *list)
 {
@@ -339,11 +358,7 @@ xdg_mime_set_dirs (const char * const *dirs)
 {
   size_t i;
 
-  for (i = 0; xdg_dirs != NULL && xdg_dirs[i] != NULL; i++)
-    free (xdg_dirs[i]);
-  if (xdg_dirs != NULL)
-    free (xdg_dirs[i]);
-  xdg_dirs = NULL;
+  xdg_dirs_free ();
 
   if (dirs != NULL)
     {
@@ -741,6 +756,8 @@ xdg_mime_shutdown (void)
 
   for (list = callback_list; list; list = list->next)
     (list->callback) (list->data);
+
+  xdg_dirs_free ();
 
   need_reread = TRUE;
 }
