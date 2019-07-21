@@ -496,6 +496,45 @@ xdg_check_time_and_dirs (void)
   return retval;
 }
 
+static void
+free_globals (void)
+{
+  if (global_hash)
+    {
+      _xdg_glob_hash_free (global_hash);
+      global_hash = NULL;
+    }
+  if (global_magic)
+    {
+      _xdg_mime_magic_free (global_magic);
+      global_magic = NULL;
+    }
+
+  if (alias_list)
+    {
+      _xdg_mime_alias_list_free (alias_list);
+      alias_list = NULL;
+    }
+
+  if (parent_list)
+    {
+      _xdg_mime_parent_list_free (parent_list);
+      parent_list = NULL;
+    }
+
+  if (icon_list)
+    {
+      _xdg_mime_icon_list_free (icon_list);
+      icon_list = NULL;
+    }
+
+  if (generic_icon_list)
+    {
+      _xdg_mime_icon_list_free (generic_icon_list);
+      generic_icon_list = NULL;
+    }
+}
+
 /* Called in every public function.  It reloads the hash function if need be.
  */
 static void
@@ -508,6 +547,8 @@ xdg_mime_init (void)
 
   if (need_reread)
     {
+      free_globals ();
+
       global_hash = _xdg_glob_hash_new ();
       global_magic = _xdg_mime_magic_new ();
       alias_list = _xdg_mime_alias_list_new ();
@@ -684,42 +725,9 @@ xdg_mime_shutdown (void)
       xdg_dir_time_list_free (dir_time_list);
       dir_time_list = NULL;
     }
-	
-  if (global_hash)
-    {
-      _xdg_glob_hash_free (global_hash);
-      global_hash = NULL;
-    }
-  if (global_magic)
-    {
-      _xdg_mime_magic_free (global_magic);
-      global_magic = NULL;
-    }
 
-  if (alias_list)
-    {
-      _xdg_mime_alias_list_free (alias_list);
-      alias_list = NULL;
-    }
+  free_globals ();
 
-  if (parent_list)
-    {
-      _xdg_mime_parent_list_free (parent_list);
-      parent_list = NULL;
-    }
-
-  if (icon_list)
-    {
-      _xdg_mime_icon_list_free (icon_list);
-      icon_list = NULL;
-    }
-
-  if (generic_icon_list)
-    {
-      _xdg_mime_icon_list_free (generic_icon_list);
-      generic_icon_list = NULL;
-    }
-  
   if (_caches)
     {
       int i;
