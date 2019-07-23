@@ -198,7 +198,9 @@ G_BEGIN_DECLS
 
 /* Reserved fundamental type numbers to create new fundamental
  * type IDs with G_TYPE_MAKE_FUNDAMENTAL().
- * Send email to gtk-devel-list@gnome.org for reservations.
+ *
+ * Open an issue on https://gitlab.gnome.org/GNOME/glib/issues/new for
+ * reservations.
  */
 /**
  * G_TYPE_FUNDAMENTAL_SHIFT:
