@@ -126,7 +126,7 @@
  */
 
 
-#define REPORT_BUG      "please report occurrence circumstances to gtk-devel-list@gnome.org"
+#define REPORT_BUG      "please report occurrence circumstances to https://gitlab.gnome.org/GNOME/glib/issues/new"
 
 /* --- typedefs --- */
 typedef struct _SignalNode   SignalNode;
