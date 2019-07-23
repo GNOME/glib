@@ -1,24 +1,16 @@
 General Information
 ===================
 
-GLib is the low-level core
-library that forms the basis for projects such as GTK+ and GNOME. It
-provides data structure handling for C, portability wrappers, and
-interfaces for such runtime functionality as an event loop, threads,
-dynamic loading, and an object system.
+GLib is the low-level core library that forms the basis for projects such
+as GTK and GNOME. It provides data structure handling for C, portability
+wrappers, and interfaces for such runtime functionality as an event loop,
+threads, dynamic loading, and an object system.
 
 The official download locations are:
-  ftp://ftp.gtk.org/pub/glib
-  http://download.gnome.org/sources/glib
+  https://download.gnome.org/sources/glib
 
 The official web site is:
-  http://www.gtk.org/
-
-Information about mailing lists can be found at
-  http://www.gtk.org/mailing-lists.php
-
-To subscribe, send mail to gtk-list-request@gnome.org
-with the subject "subscribe".
+  https://www.gtk.org/
 
 Installation
 ============
