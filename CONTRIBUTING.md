@@ -23,10 +23,7 @@ Please, do not use the issue tracker for support questions. If you have
 questions on how to use GLib effectively, you can use:
 
  - the `#gtk` IRC channel on irc.gnome.org
- - the [gtk](https://mail.gnome.org/mailman/listinfo/gtk-list) mailing list,
-   for general questions on GLib
- - the [gtk-devel](https://mail.gnome.org/mailman/listinfo/gtk-devel-list)
-   mailing list, for questions on developing GLib itself
+ - the [`glib` tag on GNOME's Discourse](https://discourse.gnome.org/tags/glib)
 
 You can also look at the [`glib` tag on Stack
 Overflow](https://stackoverflow.com/questions/tagged/glib).
@@ -101,10 +98,9 @@ full branch coverage of the new code. GLib’s CI system generates code coverage
 reports which are viewable for each merge request.
 
 If proposing a large feature or change, it’s better to discuss it (on the
-`#gtk` IRC channel or on the
-[gtk-devel](https://mail.gnome.org/mailman/listinfo/gtk-devel-list) mailing
-list) before putting time into writing an actionable issue — and certainly
-before putting time into writing a merge request.
+`#gtk` IRC channel or on [Discourse](https://discourse.gnome.org) before
+putting time into writing an actionable issue — and certainly before putting
+time into writing a merge request.
 
 ## Your first contribution
 
@@ -180,9 +176,9 @@ of each commit between at least two people.
 With each code review, we intend to:
 
  0. Identify if this is a desirable change or new feature. Ideally for larger
-    features this will have been discussed (in an issue, on IRC, or on the
-    mailing list) already, so that effort isn’t wasted on putting together merge
-    requests which will be rejected.
+    features this will have been discussed (in an issue, on IRC, or on Discourse)
+    already, so that effort isn’t wasted on putting together merge requests
+    which will be rejected.
  0. Check the design of any new API.
  0. Provide realistic estimates of how long a review might take, if it can’t
     happen immediately.
