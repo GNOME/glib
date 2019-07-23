@@ -16,7 +16,7 @@
   <license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
   <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/glib/issues/new"/>
   <download-page rdf:resource="http://download.gnome.org/sources/glib/" />
-  <mailing-list rdf:resource="mailto:gtk-devel-list@gnome.org" />
+  <mailing-list rdf:resource="https://discourse.gnome.org/tags/glib/" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
 
   <programming-language>C</programming-language>
