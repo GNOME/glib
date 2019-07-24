@@ -2022,7 +2022,7 @@ test_z (void)
   tz = g_time_zone_new ("+00:00");
   dt = g_date_time_new (tz, 1, 1, 1, 0, 0, 0);
   p = g_date_time_format (dt, "%:::z");
-  g_assert_cmpstr (p, ==, "+00");
+  g_assert_cmpstr (p, ==, "Z");
   g_free (p);
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
