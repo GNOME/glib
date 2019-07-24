@@ -21,6 +21,9 @@
  * Author: Matthias Clasen
  */
 
+/* We test a few deprecated APIs here. */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS 1
+
 #include "glib.h"
 
 static void
