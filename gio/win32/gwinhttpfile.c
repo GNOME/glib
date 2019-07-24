@@ -439,31 +439,6 @@ g_winhttp_file_set_display_name (GFile         *file,
   return NULL;
 }
 
-static time_t
-mktime_utc (SYSTEMTIME *t)
-{
-  time_t retval;
-
-  static const gint days_before[] =
-  {
-    0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
-  };
-
-  if (t->wMonth < 1 || t->wMonth > 12)
-    return (time_t) -1;
-
-  retval = (t->wYear - 1970) * 365;
-  retval += (t->wYear - 1968) / 4;
-  retval += days_before[t->wMonth-1] + t->wDay - 1;
-
-  if (t->wYear % 4 == 0 && t->wMonth < 3)
-    retval -= 1;
-
-  retval = ((((retval * 24) + t->wHour) * 60) + t->wMinute) * 60 + t->wSecond;
-
-  return retval;
-}
-
 static GFileInfo *
 g_winhttp_file_query_info (GFile                *file,
                            const char           *attributes,
@@ -603,12 +578,15 @@ g_winhttp_file_query_info (GFile                *file,
       last_modified.wYear >= 1970 &&
       last_modified.wYear < 2038)
     {
-      GTimeVal tv;
+      GDateTime *dt = NULL, *dt2 = NULL;
 
-      tv.tv_sec = mktime_utc (&last_modified);
-      tv.tv_usec = last_modified.wMilliseconds * 1000;
+      dt = g_date_time_new_from_unix_utc (last_modified.wMilliseconds / 1000);
+      dt2 = g_date_time_add_seconds (dt, (last_modified.wMilliseconds % 1000) / 1000);
 
-      g_file_info_set_modification_time (info, &tv);
+      g_file_info_set_modification_date_time (info, dt2);
+
+      g_date_time_unref (dt2);
+      g_date_time_unref (dt);
     }
 
   g_file_attribute_matcher_unref (matcher);
