@@ -1464,7 +1464,8 @@ g_file_info_get_deletion_date (GFileInfo *info)
   static guint32 attr = 0;
   GFileAttributeValue *value;
   const char *date_str;
-  GTimeVal tv;
+  GTimeZone *local_tz = NULL;
+  GDateTime *dt = NULL;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
 
@@ -1476,10 +1477,11 @@ g_file_info_get_deletion_date (GFileInfo *info)
   if (!date_str)
     return NULL;
 
-  if (g_time_val_from_iso8601 (date_str, &tv) == FALSE)
-    return NULL;
+  local_tz = g_time_zone_new_local ();
+  dt = g_date_time_new_from_iso8601 (date_str, local_tz);
+  g_time_zone_unref (local_tz);
 
-  return g_date_time_new_from_timeval_local (&tv);
+  return g_steal_pointer (&dt);
 }
 
 /**
