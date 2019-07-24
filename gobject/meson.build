@@ -75,7 +75,6 @@ foreach tool: python_tools
     input : tool + '.in',
     output : tool,
     configuration : python_tools_conf,
-    install : true,
     install_dir : glib_bindir,
   )
 
@@ -163,7 +162,7 @@ if enable_systemtap
     output : '@0@.stp'.format(libgobject.full_path().split('/').get(-1)),
     configuration : stp_cdata,
     install_dir : tapset_install_dir,
-    install : true)
+  )
 endif
 
 # Don’t build the tests unless we can run them (either natively or in an exe wrapper)
