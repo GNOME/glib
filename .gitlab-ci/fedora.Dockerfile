@@ -52,7 +52,7 @@ RUN dnf -y install \
     zlib-devel \
  && dnf clean all
 
-RUN pip3 install meson==0.48.0
+RUN pip3 install meson==0.49.2
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}
