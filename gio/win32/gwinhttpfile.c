@@ -603,12 +603,15 @@ g_winhttp_file_query_info (GFile                *file,
       last_modified.wYear >= 1970 &&
       last_modified.wYear < 2038)
     {
-      GTimeVal tv;
+      GDateTime *dt = NULL, *dt2 = NULL;
 
-      tv.tv_sec = mktime_utc (&last_modified);
-      tv.tv_usec = last_modified.wMilliseconds * 1000;
+      dt = g_date_time_new_from_unix_utc (last_modified.wMilliseconds / 1000);
+      dt2 = g_date_time_add_seconds (dt, (last_modified.wMilliseconds % 1000) / 1000);
 
-      g_file_info_set_modification_time (info, &tv);
+      g_file_info_set_modification_date_time (info, dt2);
+
+      g_date_time_unref (dt2);
+      g_date_time_unref (dt);
     }
 
   g_file_attribute_matcher_unref (matcher);
