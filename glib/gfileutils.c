@@ -1318,7 +1318,7 @@ get_tmp_file (gchar            *tmpl,
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   static const int NLETTERS = sizeof (letters) - 1;
   glong value;
-  GTimeVal tv;
+  gint64 now_us;
   static int counter = 0;
 
   g_return_val_if_fail (tmpl != NULL, -1);
@@ -1333,8 +1333,8 @@ get_tmp_file (gchar            *tmpl,
     }
 
   /* Get some more or less random data.  */
-  g_get_current_time (&tv);
-  value = (tv.tv_usec ^ tv.tv_sec) + counter++;
+  now_us = g_get_real_time ();
+  value = ((now_us % G_USEC_PER_SEC) ^ (now_us / G_USEC_PER_SEC)) + counter++;
 
   for (count = 0; count < 100; value += 7777, ++count)
     {

@@ -49,6 +49,7 @@
 #include "gmem.h"
 #include "gtestutils.h"
 #include "gthread.h"
+#include "gtimer.h"
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
@@ -220,7 +221,6 @@ g_rand_new (void)
   guint32 seed[4];
 #ifdef G_OS_UNIX
   static gboolean dev_urandom_exists = TRUE;
-  GTimeVal now;
 
   if (dev_urandom_exists)
     {
@@ -254,10 +254,10 @@ g_rand_new (void)
     }
 
   if (!dev_urandom_exists)
-    {  
-      g_get_current_time (&now);
-      seed[0] = now.tv_sec;
-      seed[1] = now.tv_usec;
+    {
+      gint64 now_us = g_get_real_time ();
+      seed[0] = now_us / G_USEC_PER_SEC;
+      seed[1] = now_us % G_USEC_PER_SEC;
       seed[2] = getpid ();
       seed[3] = getppid ();
     }
