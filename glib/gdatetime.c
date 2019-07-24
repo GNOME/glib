@@ -2774,14 +2774,21 @@ format_z (GString *outstr,
       break;
 
     case 3:
-      g_string_append_printf (outstr, "%c%02d", sign, hours);
-
-      if (minutes != 0 || seconds != 0)
+      if (offset == 0)
         {
-          g_string_append_printf (outstr, ":%02d", minutes);
+          g_string_append_c (outstr, 'Z');
+        }
+      else
+        {
+          g_string_append_printf (outstr, "%c%02d", sign, hours);
 
-          if (seconds != 0)
-            g_string_append_printf (outstr, ":%02d", seconds);
+          if (minutes != 0 || seconds != 0)
+            {
+              g_string_append_printf (outstr, ":%02d", minutes);
+
+              if (seconds != 0)
+                g_string_append_printf (outstr, ":%02d", seconds);
+            }
         }
       break;
 
@@ -3345,8 +3352,8 @@ g_date_time_format_utf8 (GDateTime   *datetime,
  *   This is a gnulib strftime() extension. Since: 2.38
  * - \%::z: the time zone as an offset from UTC (+hh:mm:ss). This is a
  *   gnulib strftime() extension. Since: 2.38
- * - \%:::z: the time zone as an offset from UTC, with : to necessary
- *   precision (e.g., -04, +05:30). This is a gnulib strftime() extension. Since: 2.38
+ * - \%:::z: the time zone as an offset from UTC, with `:` to necessary
+ *   precision (e.g., `Z`, `-04`, `+05:30`). This is a gnulib strftime() extension. Since: 2.38
  * - \%Z: the time zone or name or abbreviation
  * - \%\%: a literal \% character
  *
