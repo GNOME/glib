@@ -134,10 +134,16 @@ struct _GDateTime
 #define UNIX_EPOCH_START     719163
 #define INSTANT_TO_UNIX(instant) \
   ((instant)/USEC_PER_SECOND - UNIX_EPOCH_START * SEC_PER_DAY)
+#define INSTANT_TO_UNIX_USECS(instant) \
+  ((instant) - UNIX_EPOCH_START * SEC_PER_DAY * USEC_PER_SECOND)
 #define UNIX_TO_INSTANT(unix) \
   (((gint64) (unix) + UNIX_EPOCH_START * SEC_PER_DAY) * USEC_PER_SECOND)
+#define UNIX_USECS_TO_INSTANT(unix_usecs) \
+  ((gint64) (unix_usecs) + UNIX_EPOCH_START * SEC_PER_DAY * USEC_PER_SECOND)
 #define UNIX_TO_INSTANT_IS_VALID(unix) \
   ((gint64) (unix) <= INSTANT_TO_UNIX (G_MAXINT64))
+#define UNIX_USECS_TO_INSTANT_IS_VALID(unix_usecs) \
+  ((gint64) (unix_usecs) <= INSTANT_TO_UNIX_USECS (G_MAXINT64))
 
 #define DAYS_IN_4YEARS    1461    /* days in 4 years */
 #define DAYS_IN_100YEARS  36524   /* days in 100 years */
@@ -893,9 +899,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 /*< internal >
  * g_date_time_new_from_unix:
  * @tz: a #GTimeZone
- * @t: the Unix time
+ * @usecs: the Unix time, in microseconds since the epoch
  *
- * Creates a #GDateTime corresponding to the given Unix time @t in the
+ * Creates a #GDateTime corresponding to the given Unix time @t_us in the
  * given time zone @tz.
  *
  * Unix time is the number of seconds that have elapsed since 1970-01-01
@@ -913,12 +919,12 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  **/
 static GDateTime *
 g_date_time_new_from_unix (GTimeZone *tz,
-                           gint64     secs)
+                           gint64     usecs)
 {
-  if (!UNIX_TO_INSTANT_IS_VALID (secs))
+  if (!UNIX_USECS_TO_INSTANT_IS_VALID (usecs))
     return NULL;
 
-  return g_date_time_from_instant (tz, UNIX_TO_INSTANT (secs));
+  return g_date_time_from_instant (tz, UNIX_USECS_TO_INSTANT (usecs));
 }
 
 /**
@@ -943,11 +949,11 @@ g_date_time_new_from_unix (GTimeZone *tz,
 GDateTime *
 g_date_time_new_now (GTimeZone *tz)
 {
-  GTimeVal tv;
+  gint64 now_us;
 
-  g_get_current_time (&tv);
+  now_us = g_get_real_time ();
 
-  return g_date_time_new_from_timeval (tz, &tv);
+  return g_date_time_new_from_unix (tz, now_us);
 }
 
 /**
@@ -1027,8 +1033,11 @@ g_date_time_new_from_unix_local (gint64 t)
   GDateTime *datetime;
   GTimeZone *local;
 
+  if (t > G_MAXINT64 / USEC_PER_SECOND)
+    return NULL;
+
   local = g_time_zone_new_local ();
-  datetime = g_date_time_new_from_unix (local, t);
+  datetime = g_date_time_new_from_unix (local, t * USEC_PER_SECOND);
   g_time_zone_unref (local);
 
   return datetime;
@@ -1059,8 +1068,11 @@ g_date_time_new_from_unix_utc (gint64 t)
   GDateTime *datetime;
   GTimeZone *utc;
 
+  if (t > G_MAXINT64 / USEC_PER_SECOND)
+    return NULL;
+
   utc = g_time_zone_new_utc ();
-  datetime = g_date_time_new_from_unix (utc, t);
+  datetime = g_date_time_new_from_unix (utc, t * USEC_PER_SECOND);
   g_time_zone_unref (utc);
 
   return datetime;
