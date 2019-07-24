@@ -1,9 +1,9 @@
-FROM debian:stretch
+FROM debian:buster
 
 RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     bindfs \
     clang \
-    clang-tools-4.0 \
+    clang-tools-7 \
     dbus \
     desktop-file-utils \
     elfutils \
@@ -61,7 +61,7 @@ RUN locale-gen de_DE.UTF-8 \
 
 ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
 
-RUN pip3 install meson==0.48.0
+RUN pip3 install meson==0.49.2
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}
