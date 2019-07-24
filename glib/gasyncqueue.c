@@ -584,7 +584,7 @@ g_async_queue_timeout_pop_unlocked (GAsyncQueue *queue,
  *
  * If no data is received before @end_time, %NULL is returned.
  *
- * To easily calculate @end_time, a combination of g_get_current_time()
+ * To easily calculate @end_time, a combination of g_get_real_time()
  * and g_time_val_add() can be used.
  *
  * Returns: data from the queue or %NULL, when no data is
@@ -628,7 +628,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  *
  * If no data is received before @end_time, %NULL is returned.
  *
- * To easily calculate @end_time, a combination of g_get_current_time()
+ * To easily calculate @end_time, a combination of g_get_real_time()
  * and g_time_val_add() can be used.
  *
  * This function must be called while holding the @queue's lock.
