@@ -361,13 +361,12 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       SyncThreadData data1;
       SyncThreadData data2;
       SyncThreadData data3;
-      GTimeVal start_time;
-      GTimeVal end_time;
+      gint64 start_time, end_time;
       guint elapsed_msec;
 
       do_async = (n == 0);
 
-      g_get_current_time (&start_time);
+      start_time = g_get_real_time ();
 
       data1.proxy = proxy;
       data1.msec = 40;
@@ -397,10 +396,9 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       g_thread_join (thread2);
       g_thread_join (thread3);
 
-      g_get_current_time (&end_time);
+      end_time = g_get_real_time ();
 
-      elapsed_msec = ((end_time.tv_sec * G_USEC_PER_SEC + end_time.tv_usec) -
-                      (start_time.tv_sec * G_USEC_PER_SEC + start_time.tv_usec)) / 1000;
+      elapsed_msec = (end_time - start_time) / 1000;
 
       //g_debug ("Elapsed time for %s = %d msec", n == 0 ? "async" : "sync", elapsed_msec);
 
