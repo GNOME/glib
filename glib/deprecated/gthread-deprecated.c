@@ -1540,7 +1540,7 @@ g_cond_free (GCond *cond)
  * This function can be used even if g_thread_init() has not yet been
  * called, and, in that case, will immediately return %TRUE.
  *
- * To easily calculate @abs_time a combination of g_get_current_time()
+ * To easily calculate @abs_time a combination of g_get_real_time()
  * and g_time_val_add() can be used.
  *
  * Returns: %TRUE if @cond was signalled, or %FALSE on timeout
