@@ -311,6 +311,7 @@ test_GDateTime_get_hour (void)
   g_date_time_unref (dt);
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_GDateTime_get_microsecond (void)
 {
@@ -322,6 +323,7 @@ test_GDateTime_get_microsecond (void)
   g_assert_cmpint (tv.tv_usec, ==, g_date_time_get_microsecond (dt));
   g_date_time_unref (dt);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_GDateTime_get_year (void)
@@ -358,6 +360,7 @@ test_GDateTime_hash (void)
   g_hash_table_destroy (h);
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_GDateTime_new_from_timeval (void)
 {
@@ -480,6 +483,7 @@ test_GDateTime_new_from_timeval_utc (void)
   g_assert_cmpint (tv.tv_usec, ==, tv2.tv_usec);
   g_date_time_unref (dt);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_GDateTime_new_from_iso8601 (void)
@@ -1238,6 +1242,7 @@ test_GDateTime_get_utc_offset (void)
 #endif
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_GDateTime_to_timeval (void)
 {
@@ -1254,6 +1259,7 @@ test_GDateTime_to_timeval (void)
   g_assert_cmpint (tv1.tv_usec, ==, tv2.tv_usec);
   g_date_time_unref (dt);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_GDateTime_to_local (void)
