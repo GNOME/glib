@@ -14,7 +14,7 @@ variables:
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
 
 fedora-x86_64:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v1
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v2
   stage: build
   except:
     - tags
@@ -55,7 +55,7 @@ fedora-x86_64:
       - "_coverage"
 
 debian-stable-x86_64:
-  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v1
+  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v3
   stage: build
   except:
     - tags
@@ -84,7 +84,7 @@ debian-stable-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 G_DISABLE_ASSERT:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v1
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v2
   stage: build
   except:
     - tags
