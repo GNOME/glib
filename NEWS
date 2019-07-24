@@ -1,3 +1,12 @@
+Overview of changes in GLib 2.60.6
+==================================
+
+* Fix various bugs with use of the `GKeyfileSettingsBackend` within flatpaks (!984, !985, #1825)
+
+* Bugs fixed:
+ - !993 Backport !984, !985 keyfile/portal fixes to glib-2-60
+
+
 Overview of changes in GLib 2.60.5
 ==================================
 
