@@ -91,6 +91,7 @@
 #include <gio/gloadableicon.h>
 #include <gio/gmemoryinputstream.h>
 #include <gio/gmemoryoutputstream.h>
+#include <gio/gmemorymonitor.h>
 #include <gio/gmount.h>
 #include <gio/gmountoperation.h>
 #include <gio/gnativesocketaddress.h>

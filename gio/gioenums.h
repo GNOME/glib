@@ -1964,6 +1964,27 @@ typedef enum {
   G_POLLABLE_RETURN_WOULD_BLOCK  = -G_IO_ERROR_WOULD_BLOCK
 } GPollableReturn;
 
+/**
+ * GMemoryMonitorWarningLevel:
+ * @G_MEMORY_MONITOR_WARNING_LEVEL_LOW: Memory on the device is low, processes
+ *   should free up unneeded resources so they can be used elsewhere.
+ * @G_MEMORY_MONITOR_WARNING_LEVEL_MEDIUM: Same as @G_MEMORY_MONITOR_WARNING_LEVEL_LOW
+ *   but the device has even less free memory, so processes should try harder to free
+ *   up unneeded resources. If your process does not need to stay running, it is a
+ *   good time for it to quit.
+ * @G_MEMORY_MONITOR_WARNING_LEVEL_CRITICAL: The system will start kill()'ing processes
+ *   to reclaim memory, including background processes.
+ *
+ * Memory availability warning levels.
+ *
+ * Since: 2.64
+ */
+typedef enum {
+  G_MEMORY_MONITOR_WARNING_LEVEL_LOW,
+  G_MEMORY_MONITOR_WARNING_LEVEL_MEDIUM,
+  G_MEMORY_MONITOR_WARNING_LEVEL_CRITICAL
+} GMemoryMonitorWarningLevel;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */
