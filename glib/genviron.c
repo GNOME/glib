@@ -42,6 +42,7 @@
 #include "gunicode.h"
 #include "gconvert.h"
 #include "gquark.h"
+#include "gthreadprivate.h"
 
 /* Environ array functions {{{1 */
 static gboolean
@@ -299,6 +300,13 @@ g_setenv (const gchar *variable,
   g_return_val_if_fail (strchr (variable, '=') == NULL, FALSE);
   g_return_val_if_fail (value != NULL, FALSE);
 
+#ifndef G_DISABLE_CHECKS
+  /* FIXME: This will be upgraded to a g_warning() in a future release of GLib.
+   * See https://gitlab.gnome.org/GNOME/glib/issues/715 */
+  if (g_thread_n_created () > 0)
+    g_debug ("setenv()/putenv() are not thread-safe and should not be used after threads are created");
+#endif
+
 #ifdef HAVE_SETENV
   result = setenv (variable, value, overwrite);
 #else
@@ -354,6 +362,13 @@ g_unsetenv (const gchar *variable)
 {
   g_return_if_fail (variable != NULL);
   g_return_if_fail (strchr (variable, '=') == NULL);
+
+#ifndef G_DISABLE_CHECKS
+  /* FIXME: This will be upgraded to a g_warning() in a future release of GLib.
+   * See https://gitlab.gnome.org/GNOME/glib/issues/715 */
+  if (g_thread_n_created () > 0)
+    g_debug ("unsetenv() is not thread-safe and should not be used after threads are created");
+#endif
 
 #ifdef HAVE_UNSETENV
   unsetenv (variable);
