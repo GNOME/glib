@@ -4171,6 +4171,23 @@ GDBusObjectManagerServerPrivate
 </SECTION>
 
 <SECTION>
+<FILE>gmemorymonitor</FILE>
+<TITLE>GMemoryMonitor</TITLE>
+GMemoryMonitor
+GMemoryMonitorFlags
+GMemoryMonitorInterface
+GMemoryMonitorWarningLevel
+G_MEMORY_MONITOR_EXTENSION_POINT_NAME
+g_memory_monitor_dup_default
+<SUBSECTION Standard>
+g_memory_monitor_get_type
+G_TYPE_MEMORY_MONITOR
+G_MEMORY_MONITOR
+G_IS_MEMORY_MONITOR
+G_MEMORY_MONITOR_GET_INTERFACE
+</SECTION>
+
+<SECTION>
 <FILE>gnetworkmonitor</FILE>
 <TITLE>GNetworkMonitor</TITLE>
 GNetworkMonitor

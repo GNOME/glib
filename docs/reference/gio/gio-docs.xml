@@ -232,6 +232,7 @@
         <xi:include href="xml/gremoteactiongroup.xml"/>
         <xi:include href="xml/gactiongroupexporter.xml"/>
         <xi:include href="xml/gdbusactiongroup.xml"/>
+        <xi:include href="xml/gmemorymonitor.xml"/>
         <xi:include href="xml/gmenumodel.xml"/>
         <xi:include href="xml/gmenu.xml"/>
         <xi:include href="xml/gmenuexporter.xml"/>

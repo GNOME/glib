@@ -122,6 +122,7 @@ typedef struct _GLoadableIcon                 GLoadableIcon; /* Dummy typedef */
 typedef struct _GBytesIcon                    GBytesIcon;
 typedef struct _GMemoryInputStream            GMemoryInputStream;
 typedef struct _GMemoryOutputStream           GMemoryOutputStream;
+typedef struct _GMemoryMonitor                GMemoryMonitor;
 
 /**
  * GMount:
