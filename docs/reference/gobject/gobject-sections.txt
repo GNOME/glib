@@ -322,6 +322,9 @@ g_weak_ref_clear
 g_weak_ref_get
 g_weak_ref_set
 
+<SUBSECTION Testing>
+g_assert_finalize_object
+
 <SUBSECTION Standard>
 G_INITIALLY_UNOWNED
 G_INITIALLY_UNOWNED_CLASS
