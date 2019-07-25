@@ -42,6 +42,9 @@
 #include "gnotificationbackend.h"
 #include "ginitable.h"
 #include "gnetworkmonitor.h"
+#include "gmemorymonitor.h"
+#include "gmemorymonitorportal.h"
+#include "gmemorymonitordbus.h"
 #ifdef G_OS_WIN32
 #include "gregistrysettingsbackend.h"
 #endif
@@ -1025,6 +1028,9 @@ extern GType _g_network_monitor_netlink_get_type (void);
 extern GType _g_network_monitor_nm_get_type (void);
 #endif
 
+extern GType _g_memory_monitor_dbus_get_type (void);
+extern GType _g_memory_monitor_portal_get_type (void);
+
 #ifdef G_OS_UNIX
 extern GType g_fdo_notification_backend_get_type (void);
 extern GType g_gtk_notification_backend_get_type (void);
@@ -1235,6 +1241,7 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (g_fdo_notification_backend_get_type ());
       g_type_ensure (g_gtk_notification_backend_get_type ());
       g_type_ensure (g_portal_notification_backend_get_type ());
+      g_type_ensure (_g_memory_monitor_portal_get_type ());
       g_type_ensure (g_network_monitor_portal_get_type ());
       g_type_ensure (g_proxy_resolver_portal_get_type ());
 #endif
@@ -1253,6 +1260,7 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (_g_socks4_proxy_get_type ());
       g_type_ensure (_g_socks5_proxy_get_type ());
       g_type_ensure (_g_dummy_tls_backend_get_type ());
+      g_type_ensure (_g_memory_monitor_dbus_get_type ());
       g_type_ensure (g_network_monitor_base_get_type ());
 #ifdef HAVE_NETLINK
       g_type_ensure (_g_network_monitor_netlink_get_type ());
