@@ -81,6 +81,8 @@ gboolean g_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_se
 
 gpointer        g_thread_proxy                  (gpointer      thread);
 
+guint           g_thread_n_created              (void);
+
 gpointer        g_private_set_alloc0            (GPrivate       *key,
                                                  gsize           size);
 
