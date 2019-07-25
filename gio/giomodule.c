@@ -42,6 +42,9 @@
 #include "gnotificationbackend.h"
 #include "ginitable.h"
 #include "gnetworkmonitor.h"
+#include "gmemorymonitor.h"
+#include "gmemorymonitorportal.h"
+#include "gmemorymonitordbus.h"
 #ifdef G_OS_WIN32
 #include "gregistrysettingsbackend.h"
 #endif
@@ -1025,6 +1028,9 @@ extern GType _g_network_monitor_netlink_get_type (void);
 extern GType _g_network_monitor_nm_get_type (void);
 #endif
 
+extern GType g_memory_monitor_dbus_get_type (void);
+extern GType g_memory_monitor_portal_get_type (void);
+
 #ifdef G_OS_UNIX
 extern GType g_fdo_notification_backend_get_type (void);
 extern GType g_gtk_notification_backend_get_type (void);
@@ -1127,6 +1133,9 @@ _g_io_modules_ensure_extension_points_registered (void)
 
       ep = g_io_extension_point_register (G_NOTIFICATION_BACKEND_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_NOTIFICATION_BACKEND);
+
+      ep = g_io_extension_point_register (G_MEMORY_MONITOR_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_MEMORY_MONITOR);
     }
   
   G_UNLOCK (registered_extensions);
@@ -1235,6 +1244,8 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (g_fdo_notification_backend_get_type ());
       g_type_ensure (g_gtk_notification_backend_get_type ());
       g_type_ensure (g_portal_notification_backend_get_type ());
+      g_type_ensure (g_memory_monitor_dbus_get_type ());
+      g_type_ensure (g_memory_monitor_portal_get_type ());
       g_type_ensure (g_network_monitor_portal_get_type ());
       g_type_ensure (g_proxy_resolver_portal_get_type ());
 #endif
