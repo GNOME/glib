@@ -845,18 +845,20 @@ g_array_binary_search (GArray        *array,
 
       while (left <= right)
         {
-          middle = (left + right) / 2;
+          middle = left + (right - left) / 2;
 
           val = compare_func (_array->data + (_array->elt_size * middle), target);
-          if (val < 0)
-            left = middle + 1;
-          else if (val > 0)
-            right = middle - 1;
-          else
+          if (val == 0)
             {
               result = TRUE;
               break;
             }
+          else if (val < 0)
+            left = middle + 1;
+          else if (/* val > 0 && */ middle > 0)
+            right = middle - 1;
+          else
+            break;  /* element not found */
         }
     }
 
@@ -1020,6 +1022,9 @@ g_ptr_array_new (void)
  * If @func is %NULL, then only the pointers (and not what they are
  * pointing to) are copied to the new #GPtrArray.
  *
+ * The copy of @array will have the same #GDestroyNotify for its elements as
+ * @array.
+ *
  * Returns: (transfer full): a deep copy of the initial #GPtrArray.
  *
  * Since: 2.62
@@ -1035,6 +1040,8 @@ g_ptr_array_copy (GPtrArray *array,
   g_return_val_if_fail (array != NULL, NULL);
 
   new_array = g_ptr_array_sized_new (array->len);
+  g_ptr_array_set_free_func (new_array, ((GRealPtrArray *) array)->element_free_func);
+
   if (func != NULL)
     {
       for (i = 0; i < array->len; i++)
@@ -1045,6 +1052,8 @@ g_ptr_array_copy (GPtrArray *array,
       memcpy (new_array->pdata, array->pdata,
               array->len * sizeof (*array->pdata));
     }
+
+  new_array->len = array->len;
 
   return new_array;
 }
