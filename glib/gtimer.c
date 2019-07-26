@@ -578,7 +578,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * function has been deprecated. Equivalent functionality is available using:
  * |[
  * GDateTime *dt = g_date_time_new_from_unix_utc (time_val);
- * iso8601_string = g_date_time_format (dt, "%Y-%m-%dT%H:%M:%S%:::z");
+ * iso8601_string = g_date_time_format_iso8601 (dt);
  * g_date_time_unref (dt);
  * ]|
  *
@@ -590,7 +590,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  *
  * Since: 2.12
  * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use
- *    g_date_time_format(dt, "%Y-%m-%dT%H:%M:%S%:::z") instead.
+ *    g_date_time_format_iso8601(dt) instead.
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 gchar *
