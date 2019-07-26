@@ -1597,7 +1597,7 @@ static gchar *
 timestamp_to_iso8601 (time_t timestamp)
 {
   GDateTime *dt = g_date_time_new_from_unix_utc (timestamp);
-  gchar *iso8601_string = g_date_time_format (dt, "%Y-%m-%dT%H:%M:%S%:::z");
+  gchar *iso8601_string = g_date_time_format_iso8601 (dt);
   g_date_time_unref (dt);
 
   return g_steal_pointer (&iso8601_string);
