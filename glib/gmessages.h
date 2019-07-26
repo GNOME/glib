@@ -296,7 +296,7 @@ void g_log_structured_standard (const gchar    *log_domain,
 #endif  /* G_LOG_DOMAIN */
 
 #if defined(G_HAVE_ISO_VARARGS) && !G_ANALYZER_ANALYZING
-#ifdef G_LOG_USE_STRUCTURED
+#if defined(G_LOG_USE_STRUCTURED) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_56
 #define g_error(...)  G_STMT_START {                                            \
                         g_log_structured_standard (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, \
                                                    __FILE__, G_STRINGIFY (__LINE__), \
@@ -345,7 +345,7 @@ void g_log_structured_standard (const gchar    *log_domain,
                                __VA_ARGS__)
 #endif
 #elif defined(G_HAVE_GNUC_VARARGS)  && !G_ANALYZER_ANALYZING
-#ifdef G_LOG_USE_STRUCTURED
+#if defined(G_LOG_USE_STRUCTURED) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_56
 #define g_error(format...)   G_STMT_START {                                          \
                                g_log_structured_standard (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, \
                                                           __FILE__, G_STRINGIFY (__LINE__), \
