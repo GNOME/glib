@@ -179,7 +179,6 @@ configure_file(input : 'gdump.c',
   output : 'gdump.c',
   copy: true,
   install_dir: join_paths(get_option('datadir'), 'gobject-introspection-1.0'),
-  install : true,
 )
 
 girepo_dep = declare_dependency(
