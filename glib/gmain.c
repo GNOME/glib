@@ -2686,7 +2686,7 @@ g_get_real_time (void)
   memmove (&time64, &ft, sizeof (FILETIME));
 
   /* Convert from 100s of nanoseconds since 1601-01-01
-   * to Unix epoch. Yes, this is Y2038 unsafe.
+   * to Unix epoch. This is Y2038 safe.
    */
   time64 -= G_GINT64_CONSTANT (116444736000000000);
   time64 /= 10;
