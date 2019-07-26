@@ -263,6 +263,13 @@ GLIB_AVAILABLE_IN_ALL
 gchar *                 g_date_time_format                              (GDateTime      *datetime,
                                                                          const gchar    *format) G_GNUC_MALLOC;
 
+GLIB_AVAILABLE_IN_2_60
+gboolean                g_date_time_is_same_day                         (GDateTime      *day1,
+                                                                         GDateTime      *day2);
+GLIB_AVAILABLE_IN_2_60
+gint64                  g_date_time_days_between                        (GDateTime      *end,
+                                                                         GDateTime      *begin);
+
 G_END_DECLS
 
 #endif /* __G_DATE_TIME_H__ */

@@ -3393,6 +3393,68 @@ g_date_time_format (GDateTime   *datetime,
   return g_string_free (outstr, FALSE);
 }
 
+/**
+ * g_date_time_is_same_day:
+ * @day1: a #GDateTime to compare against @day2 
+ * @day2: a #GDateTime to compare to
+ * 
+ * Convinience function to compare if the two dates occur on the same calendar day.
+ * See g_date_time_days_between() for more details on how this function works.
+ * 
+ * Returns: %TRUE if @day1 and @day2 occur on the same calendar day.
+ * 
+ * Since 2.58
+ */
+gboolean
+g_date_time_is_same_day (GDateTime *day1, GDateTime *day2)
+{
+  g_return_val_if_fail (day1 != NULL, FALSE);
+  g_return_val_if_fail (day2 != NULL, FALSE);
+
+  return g_date_time_days_between (day1, day2) == 0;
+}
+
+/**
+ * g_date_time_days_between:
+ * @end: a #GDateTime to compare against @day2 
+ * @begin: a #GDateTime to compare to
+ * 
+ * Returns the difference in days between the two dates.
+ * If @begin > @end the returned difference will be negative.
+ * 
+ * At the time of conversion both dates are converted to the local timezone.
+ * This means that the outcome of this function can change depending
+ * on your current local timezone.
+ * 
+ * Returns: a #gint containing the difference in days
+ * 
+ * Since 2.58
+ */
+gint64
+g_date_time_days_between (GDateTime *end, GDateTime *begin)
+{
+  GDateTime* local1;
+  GDateTime* local2;
+  gint db;
+
+  g_return_val_if_fail (end != NULL, FALSE);
+  g_return_val_if_fail (begin != NULL, FALSE);
+
+  local1 = g_date_time_new_local (g_date_time_get_year (end),
+                                  g_date_time_get_month (end),
+                                  g_date_time_get_day_of_month (end),
+                                  0, 0, 0);
+  local2 = g_date_time_new_local (g_date_time_get_year (begin),
+                                  g_date_time_get_month (begin),
+                                  g_date_time_get_day_of_month (begin),
+                                  0, 0, 0);
+
+  db = g_date_time_difference (local1, local2) / G_TIME_SPAN_DAY;
+
+  g_date_time_unref (local1);
+  g_date_time_unref (local2);
+  return db;
+}
 
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */
