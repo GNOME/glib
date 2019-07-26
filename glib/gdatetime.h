@@ -262,6 +262,8 @@ GDateTime *             g_date_time_to_utc                              (GDateTi
 GLIB_AVAILABLE_IN_ALL
 gchar *                 g_date_time_format                              (GDateTime      *datetime,
                                                                          const gchar    *format) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_2_62
+gchar *                 g_date_time_format_iso8601                      (GDateTime      *datetime) G_GNUC_MALLOC;
 
 G_END_DECLS
 

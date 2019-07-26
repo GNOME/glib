@@ -3393,6 +3393,49 @@ g_date_time_format (GDateTime   *datetime,
   return g_string_free (outstr, FALSE);
 }
 
+/**
+ * g_date_time_format_iso8601:
+ * @datetime: A #GDateTime
+ *
+ * Format @datetime in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601),
+ * including the date, time and time zone, and return that as a UTF-8 encoded
+ * string.
+ *
+ * Returns: a newly allocated string formatted in ISO 8601 format
+ *     or %NULL in the case that there was an error. The string
+ *     should be freed with g_free().
+ * Since: 2.62
+ */
+gchar *
+g_date_time_format_iso8601 (GDateTime *datetime)
+{
+  GString *outstr = NULL;
+  gchar *main_date = NULL;
+  gint64 offset;
+
+  /* Main date and time. */
+  main_date = g_date_time_format (datetime, "%Y-%m-%dT%H:%M:%S");
+  outstr = g_string_new (main_date);
+  g_free (main_date);
+
+  /* Timezone. Format it as `%:::z` unless the offset is zero, in which case
+   * we can simply use `Z`. */
+  offset = g_date_time_get_utc_offset (datetime);
+
+  if (offset == 0)
+    {
+      g_string_append_c (outstr, 'Z');
+    }
+  else
+    {
+      gchar *time_zone = g_date_time_format (datetime, "%:::z");
+      g_string_append (outstr, time_zone);
+      g_free (time_zone);
+    }
+
+  return g_string_free (outstr, FALSE);
+}
+
 
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */
