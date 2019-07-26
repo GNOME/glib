@@ -508,8 +508,9 @@ array_copy (gconstpointer test_data)
   /* Check internal parameters ('clear' flag) */
   if (config->clear_)
     {
-      g_array_set_size (array_copy, array_copy->len + 5);
-      for (i = array_copy->len; i < array_copy->len + 5; i++)
+      guint old_length = array_copy->len;
+      g_array_set_size (array_copy, old_length + 5);
+      for (i = old_length; i < old_length + 5; i++)
         g_assert_cmpint (g_array_index (array_copy, gint, i), ==, 0);
     }
 
@@ -676,6 +677,9 @@ test_array_binary_search (void)
 
   g_assert_true (g_array_binary_search (garray, &i, cmpint, NULL));
 
+  i = 0;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
   i = 2;
   g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
 
@@ -683,26 +687,32 @@ test_array_binary_search (void)
 
   /* Testing array of size 2 */
   garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 2);
-  for (i = 0; i < 2; i++)
+  for (i = 1; i < 3; i++)
     g_array_append_val (garray, i);
 
-  for (i = 0; i < 2; i++)
+  for (i = 1; i < 3; i++)
     g_assert_true (g_array_binary_search (garray, &i, cmpint, NULL));
 
-  i = 3;
+  i = 0;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  i = 4;
   g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
 
   g_array_free (garray, TRUE);
 
   /* Testing array of size 3 */
   garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 3);
-  for (i = 0; i < 3; i++)
+  for (i = 1; i < 4; i++)
     g_array_append_val (garray, i);
 
-  for (i = 0; i < 3; i++)
+  for (i = 1; i < 4; i++)
     g_assert_true (g_array_binary_search (garray, &i, cmpint, NULL));
 
-  i = 4;
+  i = 0;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  i = 5;
   g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
 
   g_array_free (garray, TRUE);
@@ -710,22 +720,42 @@ test_array_binary_search (void)
   /* Testing array of size 10000 */
   garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 10000);
 
-  for (i = 0; i < 10000; i++)
+  for (i = 1; i < 10001; i++)
     g_array_append_val (garray, i);
 
-  for (i = 0; i < 10000; i++)
+  for (i = 1; i < 10001; i++)
     g_assert_true (g_array_binary_search (garray, &i, cmpint, NULL));
 
-  for (i = 0; i < 10000; i++)
+  for (i = 1; i < 10001; i++)
     {
       g_assert_true (g_array_binary_search (garray, &i, cmpint, &matched_index));
-      g_assert_cmpint (i, ==, matched_index);
+      g_assert_cmpint (i, ==, matched_index + 1);
     }
 
   /* Testing negative result */
-  i = 10001;
+  i = 0;
   g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
   g_assert_false (g_array_binary_search (garray, &i, cmpint, &matched_index));
+
+  i = 10002;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, &matched_index));
+
+  g_array_free (garray, TRUE);
+
+  /* Test for a not-found element in the middle of the array. */
+  garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 3);
+  for (i = 1; i < 10; i += 2)
+    g_array_append_val (garray, i);
+
+  i = 0;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  i = 2;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  i = 10;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
 
   g_array_free (garray, TRUE);
 }
@@ -938,6 +968,8 @@ pointer_array_copy (void)
   ptr_array = g_ptr_array_sized_new (0);
   ptr_array2 = g_ptr_array_copy (ptr_array, NULL, NULL);
 
+  g_assert_cmpuint (ptr_array2->len, ==, ptr_array->len);
+
   g_ptr_array_unref (ptr_array);
   g_ptr_array_unref (ptr_array2);
 
@@ -949,6 +981,7 @@ pointer_array_copy (void)
 
   ptr_array2 = g_ptr_array_copy (ptr_array, NULL, NULL);
 
+  g_assert_cmpuint (ptr_array2->len, ==, ptr_array->len);
   for (i = 0; i < array_size; i++)
     g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array2, i)), ==, i);
 
@@ -960,16 +993,15 @@ pointer_array_copy (void)
 
   /* Test copy through GCopyFunc */
   ptr_array2 = g_ptr_array_copy (ptr_array, ptr_array_copy_func, NULL);
+  g_ptr_array_set_free_func (ptr_array2, g_free);
 
+  g_assert_cmpuint (ptr_array2->len, ==, ptr_array->len);
   for (i = 0; i < array_size; i++)
     g_assert_cmpuint (*((gsize *) g_ptr_array_index (ptr_array2, i)), ==, i);
 
   for (i = 0; i < array_size; i++)
     g_assert_cmpuint ((gsize) g_ptr_array_index (ptr_array, i), !=,
                       (gsize) g_ptr_array_index (ptr_array2, i));
-
-  for (i = 0; i <  array_size; i++)
-    free(ptr_array2->pdata[i]);
 
   g_ptr_array_free (ptr_array2, TRUE);
 
