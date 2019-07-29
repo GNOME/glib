@@ -268,8 +268,8 @@ update_cached_property (GDBusProxy   *proxy,
 
 static void
 proxy_signal_cb (GDBusProxy        *proxy,
-                 gchar             *sender_name,
-                 gchar             *signal_name,
+                 const gchar       *sender_name,
+                 const gchar       *signal_name,
                  GVariant          *parameters,
                  GNetworkMonitorNM *nm)
 {
