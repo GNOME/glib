@@ -391,7 +391,7 @@ g_network_monitor_nm_class_init (GNetworkMonitorNMClass *nl_class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (nl_class);
 
-  gobject_class->finalize  = g_network_monitor_nm_finalize;
+  gobject_class->finalize = g_network_monitor_nm_finalize;
   gobject_class->get_property = g_network_monitor_nm_get_property;
 
   g_object_class_override_property (gobject_class, PROP_NETWORK_AVAILABLE, "network-available");
