@@ -33,7 +33,7 @@ typedef struct {
 GType foo_get_type (void);
 
 G_DEFINE_INTERFACE_WITH_CODE (Foo, foo, G_TYPE_OBJECT,
-                              g_type_interface_add_prerequisite (g_define_type_id, bar_get_type ());)
+                              g_type_interface_add_prerequisite (g_define_type_id, bar_get_type ()))
 
 static void
 foo_default_init (FooInterface *iface)
