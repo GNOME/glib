@@ -1917,6 +1917,18 @@ typedef enum {
 } GNotificationPriority;
 
 /**
+ * GMemoryMonitorFlags:
+ * @G_MEMORY_MONITOR_FLAGS_NONE: No flags set.
+ *
+ * #GMemoryMonitorFlags qualify the low memory warnings sent by
+ * #GMemoryMonitor. There are no special flags for now.
+ *
+ * Since: 2.64
+ */
+typedef enum {
+ G_MEMORY_MONITOR_FLAGS_NONE         = 0
+} GMemoryMonitorFlags;
+/**
  * GNetworkConnectivity:
  * @G_NETWORK_CONNECTIVITY_LOCAL: The host is not configured with a
  *   route to the Internet; it may or may not be connected to a local

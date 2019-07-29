@@ -4173,6 +4173,7 @@ GDBusObjectManagerServerPrivate
 <FILE>gmemorymonitor</FILE>
 <TITLE>GMemoryMonitor</TITLE>
 GMemoryMonitor
+GMemoryMonitorFlags
 GMemoryMonitorInterface
 G_MEMORY_MONITOR_EXTENSION_POINT_NAME
 g_memory_monitor_get_default
