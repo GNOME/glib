@@ -24,9 +24,9 @@
 #include "giomodule-priv.h"
 #include "glibintl.h"
 #include "glib/gstdio.h"
-#include "gmemorymonitor.h"
 #include "gdbusproxy.h"
 
+static GInitableIface *parent_iface;
 static void g_memory_monitor_dbus_iface_init (GMemoryMonitorInterface *iface);
 static void g_memory_monitor_dbus_initable_iface_init (GInitableIface *iface);
 
@@ -36,7 +36,6 @@ struct _GMemoryMonitorDbus
   guint signal_id;
 };
 
-#define g_memory_monitor_dbus_get_type _g_memory_monitor_dbus_get_type
 G_DEFINE_TYPE_WITH_CODE (GMemoryMonitorDbus, g_memory_monitor_dbus, G_TYPE_MEMORY_MONITOR,
                          G_IMPLEMENT_INTERFACE (G_TYPE_MEMORY_MONITOR,
                                                 g_memory_monitor_dbus_iface_init)
@@ -73,10 +72,8 @@ g_memory_monitor_dbus_initable_init (GInitable     *initable,
 {
   GMemoryMonitorDbus *dbus = G_MEMORY_MONITOR_DBUS (initable);
   GDBusProxy *proxy;
-  GInitableIface *parent_iface;
   gchar *name_owner = NULL;
 
-  parent_iface = g_type_interface_peek_parent (G_MEMORY_MONITOR_DBUS_GET_INITABLE_IFACE (initable));
   if (!parent_iface->init (initable, cancellable, error))
     return FALSE;
 
@@ -143,5 +140,7 @@ g_memory_monitor_dbus_iface_init (GMemoryMonitorInterface *monitor_iface)
 static void
 g_memory_monitor_dbus_initable_iface_init (GInitableIface *iface)
 {
+  parent_iface = g_type_interface_peek_parent (iface);
+
   iface->init = g_memory_monitor_dbus_initable_init;
 }

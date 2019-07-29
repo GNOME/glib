@@ -23,7 +23,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_MEMORY_MONITOR_PORTAL         (_g_memory_monitor_portal_get_type ())
+#define G_TYPE_MEMORY_MONITOR_PORTAL         (g_memory_monitor_portal_get_type ())
 G_DECLARE_FINAL_TYPE (GMemoryMonitorPortal, g_memory_monitor_portal, G, MEMORY_MONITOR_PORTAL, GObject)
 
 GType _g_memory_monitor_portal_get_type (void);
