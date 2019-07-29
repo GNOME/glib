@@ -311,6 +311,7 @@ test_GDateTime_get_hour (void)
   g_date_time_unref (dt);
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_GDateTime_get_microsecond (void)
 {
@@ -322,6 +323,7 @@ test_GDateTime_get_microsecond (void)
   g_assert_cmpint (tv.tv_usec, ==, g_date_time_get_microsecond (dt));
   g_date_time_unref (dt);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_GDateTime_get_year (void)
@@ -358,6 +360,7 @@ test_GDateTime_hash (void)
   g_hash_table_destroy (h);
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_GDateTime_new_from_timeval (void)
 {
@@ -480,6 +483,7 @@ test_GDateTime_new_from_timeval_utc (void)
   g_assert_cmpint (tv.tv_usec, ==, tv2.tv_usec);
   g_date_time_unref (dt);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_GDateTime_new_from_iso8601 (void)
@@ -1238,6 +1242,7 @@ test_GDateTime_get_utc_offset (void)
 #endif
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_GDateTime_to_timeval (void)
 {
@@ -1254,6 +1259,7 @@ test_GDateTime_to_timeval (void)
   g_assert_cmpint (tv1.tv_usec, ==, tv2.tv_usec);
   g_date_time_unref (dt);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_GDateTime_to_local (void)
@@ -2066,6 +2072,30 @@ test_z (void)
   g_time_zone_unref (tz);
 }
 
+static void
+test_format_iso8601 (void)
+{
+  GTimeZone *tz = NULL;
+  GDateTime *dt = NULL;
+  gchar *p = NULL;
+
+  tz = g_time_zone_new_utc ();
+  dt = g_date_time_new (tz, 2019, 6, 26, 15, 1, 5);
+  p = g_date_time_format_iso8601 (dt);
+  g_assert_cmpstr (p, ==, "2019-06-26T15:01:05Z");
+  g_free (p);
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
+
+  tz = g_time_zone_new_offset (-60 * 60);
+  dt = g_date_time_new (tz, 2019, 6, 26, 15, 1, 5);
+  p = g_date_time_format_iso8601 (dt);
+  g_assert_cmpstr (p, ==, "2019-06-26T15:01:05-01");
+  g_free (p);
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
+}
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-y2k"
 static void
@@ -2556,6 +2586,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
   g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
   g_test_add_func ("/GDateTime/format_unrepresentable", test_format_unrepresentable);
+  g_test_add_func ("/GDateTime/format_iso8601", test_format_iso8601);
   g_test_add_func ("/GDateTime/strftime", test_strftime);
   g_test_add_func ("/GDateTime/strftime/error_handling", test_GDateTime_strftime_error_handling);
   g_test_add_func ("/GDateTime/modifiers", test_modifiers);

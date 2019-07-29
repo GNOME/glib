@@ -134,10 +134,16 @@ struct _GDateTime
 #define UNIX_EPOCH_START     719163
 #define INSTANT_TO_UNIX(instant) \
   ((instant)/USEC_PER_SECOND - UNIX_EPOCH_START * SEC_PER_DAY)
+#define INSTANT_TO_UNIX_USECS(instant) \
+  ((instant) - UNIX_EPOCH_START * SEC_PER_DAY * USEC_PER_SECOND)
 #define UNIX_TO_INSTANT(unix) \
   (((gint64) (unix) + UNIX_EPOCH_START * SEC_PER_DAY) * USEC_PER_SECOND)
+#define UNIX_USECS_TO_INSTANT(unix_usecs) \
+  ((gint64) (unix_usecs) + UNIX_EPOCH_START * SEC_PER_DAY * USEC_PER_SECOND)
 #define UNIX_TO_INSTANT_IS_VALID(unix) \
   ((gint64) (unix) <= INSTANT_TO_UNIX (G_MAXINT64))
+#define UNIX_USECS_TO_INSTANT_IS_VALID(unix_usecs) \
+  ((gint64) (unix_usecs) <= INSTANT_TO_UNIX_USECS (G_MAXINT64))
 
 #define DAYS_IN_4YEARS    1461    /* days in 4 years */
 #define DAYS_IN_100YEARS  36524   /* days in 100 years */
@@ -854,6 +860,7 @@ g_date_time_replace_days (GDateTime *datetime,
 
 /* now/unix/timeval Constructors {{{1 */
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /*< internal >
  * g_date_time_new_from_timeval:
  * @tz: a #GTimeZone
@@ -887,13 +894,14 @@ g_date_time_new_from_timeval (GTimeZone      *tz,
   return g_date_time_from_instant (tz, tv->tv_usec +
                                    UNIX_TO_INSTANT (tv->tv_sec));
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /*< internal >
  * g_date_time_new_from_unix:
  * @tz: a #GTimeZone
- * @t: the Unix time
+ * @usecs: the Unix time, in microseconds since the epoch
  *
- * Creates a #GDateTime corresponding to the given Unix time @t in the
+ * Creates a #GDateTime corresponding to the given Unix time @t_us in the
  * given time zone @tz.
  *
  * Unix time is the number of seconds that have elapsed since 1970-01-01
@@ -911,12 +919,12 @@ g_date_time_new_from_timeval (GTimeZone      *tz,
  **/
 static GDateTime *
 g_date_time_new_from_unix (GTimeZone *tz,
-                           gint64     secs)
+                           gint64     usecs)
 {
-  if (!UNIX_TO_INSTANT_IS_VALID (secs))
+  if (!UNIX_USECS_TO_INSTANT_IS_VALID (usecs))
     return NULL;
 
-  return g_date_time_from_instant (tz, UNIX_TO_INSTANT (secs));
+  return g_date_time_from_instant (tz, UNIX_USECS_TO_INSTANT (usecs));
 }
 
 /**
@@ -941,11 +949,11 @@ g_date_time_new_from_unix (GTimeZone *tz,
 GDateTime *
 g_date_time_new_now (GTimeZone *tz)
 {
-  GTimeVal tv;
+  gint64 now_us;
 
-  g_get_current_time (&tv);
+  now_us = g_get_real_time ();
 
-  return g_date_time_new_from_timeval (tz, &tv);
+  return g_date_time_new_from_unix (tz, now_us);
 }
 
 /**
@@ -1025,8 +1033,11 @@ g_date_time_new_from_unix_local (gint64 t)
   GDateTime *datetime;
   GTimeZone *local;
 
+  if (t > G_MAXINT64 / USEC_PER_SECOND)
+    return NULL;
+
   local = g_time_zone_new_local ();
-  datetime = g_date_time_new_from_unix (local, t);
+  datetime = g_date_time_new_from_unix (local, t * USEC_PER_SECOND);
   g_time_zone_unref (local);
 
   return datetime;
@@ -1057,8 +1068,11 @@ g_date_time_new_from_unix_utc (gint64 t)
   GDateTime *datetime;
   GTimeZone *utc;
 
+  if (t > G_MAXINT64 / USEC_PER_SECOND)
+    return NULL;
+
   utc = g_time_zone_new_utc ();
-  datetime = g_date_time_new_from_unix (utc, t);
+  datetime = g_date_time_new_from_unix (utc, t * USEC_PER_SECOND);
   g_time_zone_unref (utc);
 
   return datetime;
@@ -1084,7 +1098,10 @@ g_date_time_new_from_unix_utc (gint64 t)
  * Returns: a new #GDateTime, or %NULL
  *
  * Since: 2.26
+ * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use
+ *    g_date_time_new_from_unix_local() instead.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GDateTime *
 g_date_time_new_from_timeval_local (const GTimeVal *tv)
 {
@@ -1097,6 +1114,7 @@ g_date_time_new_from_timeval_local (const GTimeVal *tv)
 
   return datetime;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_date_time_new_from_timeval_utc:
@@ -1116,7 +1134,10 @@ g_date_time_new_from_timeval_local (const GTimeVal *tv)
  * Returns: a new #GDateTime, or %NULL
  *
  * Since: 2.26
+ * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use
+ *    g_date_time_new_from_unix_utc() instead.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GDateTime *
 g_date_time_new_from_timeval_utc (const GTimeVal *tv)
 {
@@ -1129,6 +1150,7 @@ g_date_time_new_from_timeval_utc (const GTimeVal *tv)
 
   return datetime;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /* Parse integers in the form d (week days), dd (hours etc), ddd (ordinal days) or dddd (years) */
 static gboolean
@@ -2533,7 +2555,10 @@ g_date_time_to_unix (GDateTime *datetime)
  * Returns: %TRUE if successful, else %FALSE
  *
  * Since: 2.26
+ * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use
+ *    g_date_time_to_unix() instead.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 gboolean
 g_date_time_to_timeval (GDateTime *datetime,
                         GTimeVal  *tv)
@@ -2543,6 +2568,7 @@ g_date_time_to_timeval (GDateTime *datetime,
 
   return TRUE;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /* Timezone queries {{{1 */
 /**
@@ -3388,6 +3414,49 @@ g_date_time_format (GDateTime   *datetime,
     {
       g_string_free (outstr, TRUE);
       return NULL;
+    }
+
+  return g_string_free (outstr, FALSE);
+}
+
+/**
+ * g_date_time_format_iso8601:
+ * @datetime: A #GDateTime
+ *
+ * Format @datetime in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601),
+ * including the date, time and time zone, and return that as a UTF-8 encoded
+ * string.
+ *
+ * Returns: a newly allocated string formatted in ISO 8601 format
+ *     or %NULL in the case that there was an error. The string
+ *     should be freed with g_free().
+ * Since: 2.62
+ */
+gchar *
+g_date_time_format_iso8601 (GDateTime *datetime)
+{
+  GString *outstr = NULL;
+  gchar *main_date = NULL;
+  gint64 offset;
+
+  /* Main date and time. */
+  main_date = g_date_time_format (datetime, "%Y-%m-%dT%H:%M:%S");
+  outstr = g_string_new (main_date);
+  g_free (main_date);
+
+  /* Timezone. Format it as `%:::z` unless the offset is zero, in which case
+   * we can simply use `Z`. */
+  offset = g_date_time_get_utc_offset (datetime);
+
+  if (offset == 0)
+    {
+      g_string_append_c (outstr, 'Z');
+    }
+  else
+    {
+      gchar *time_zone = g_date_time_format (datetime, "%:::z");
+      g_string_append (outstr, time_zone);
+      g_free (time_zone);
     }
 
   return g_string_free (outstr, FALSE);

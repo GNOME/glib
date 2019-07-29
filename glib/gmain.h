@@ -544,9 +544,11 @@ GLIB_AVAILABLE_IN_ALL
 void     g_source_remove_child_source (GSource        *source,
 				       GSource        *child_source);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED_IN_2_28_FOR(g_source_get_time)
 void     g_source_get_current_time (GSource        *source,
                                     GTimeVal       *timeval);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 GLIB_AVAILABLE_IN_ALL
 gint64   g_source_get_time         (GSource        *source);
@@ -568,8 +570,11 @@ GSource *g_timeout_source_new_seconds (guint interval);
 
 /* Miscellaneous functions
  */
-GLIB_AVAILABLE_IN_ALL
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_DEPRECATED_IN_2_62_FOR(g_get_real_time)
 void   g_get_current_time                 (GTimeVal       *result);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
 GLIB_AVAILABLE_IN_ALL
 gint64 g_get_monotonic_time               (void);
 GLIB_AVAILABLE_IN_ALL

@@ -1983,6 +1983,7 @@ g_date_time_to_utc
 
 <SUBSECTION>
 g_date_time_format
+g_date_time_format_iso8601
 </SECTION>
 
 <SECTION>

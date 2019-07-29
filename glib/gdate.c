@@ -118,11 +118,13 @@
  * Similar to the struct timeval returned by the gettimeofday()
  * UNIX system call.
  *
- * GLib is attempting to unify around the use of 64bit integers to
+ * GLib is attempting to unify around the use of 64-bit integers to
  * represent microsecond-precision time. As such, this type will be
  * removed from a future version of GLib. A consequence of using `glong` for
  * `tv_sec` is that on 32-bit systems `GTimeVal` is subject to the year 2038
  * problem.
+ *
+ * Deprecated: 2.62: Use #GDateTime or #guint64 instead.
  */
 
 /**
@@ -152,12 +154,12 @@
 /**
  * GTime:
  *
- * Simply a replacement for time_t. It has been deprecated
- * since it is not equivalent to time_t on 64-bit platforms
- * with a 64-bit time_t. Unrelated to #GTimer.
+ * Simply a replacement for `time_t`. It has been deprecated
+ * since it is not equivalent to `time_t` on 64-bit platforms
+ * with a 64-bit `time_t`. Unrelated to #GTimer.
  *
  * Note that #GTime is defined to always be a 32-bit integer,
- * unlike time_t which may be 64-bit on some systems. Therefore,
+ * unlike `time_t` which may be 64-bit on some systems. Therefore,
  * #GTime will overflow in the year 2038, and you cannot use the
  * address of a #GTime variable as argument to the UNIX time()
  * function.
@@ -1447,12 +1449,14 @@ g_date_set_time_t (GDate *date,
  *
  * Deprecated: 2.10: Use g_date_set_time_t() instead.
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_date_set_time (GDate *date,
 		 GTime  time_)
 {
   g_date_set_time_t (date, (time_t) time_);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_date_set_time_val:
@@ -1466,13 +1470,17 @@ g_date_set_time (GDate *date,
  * The time to date conversion is done using the user's current timezone.
  *
  * Since: 2.10
+ * Deprecated: 2.62: #GTimeVal is not year-2038-safe. Use g_date_set_time_t()
+ *    instead.
  */
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_date_set_time_val (GDate    *date,
 		     GTimeVal *timeval)
 {
   g_date_set_time_t (date, (time_t) timeval->tv_sec);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_date_set_month:
