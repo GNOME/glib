@@ -51,7 +51,7 @@ struct _GMemoryMonitorInterface {
 };
 
 GLIB_AVAILABLE_IN_2_32
-GType                 g_memory_monitor_get_type              (void) G_GNUC_CONST;
+GType                g_memory_monitor_get_type              (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_32
 GMemoryMonitor      *g_memory_monitor_get_default           (void);
 

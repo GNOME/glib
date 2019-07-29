@@ -24,7 +24,7 @@
 #include "xdp-dbus.h"
 #include "gportalsupport.h"
 
-static GInitableIface *initable_parent_iface;
+static GInitableIface *parent_iface;
 static void g_memory_monitor_portal_iface_init (GMemoryMonitorInterface *iface);
 static void g_memory_monitor_portal_initable_iface_init (GInitableIface *iface);
 
@@ -34,7 +34,6 @@ struct _GMemoryMonitorPortal
   guint signal_id;
 };
 
-#define g_memory_monitor_portal_get_type _g_memory_monitor_portal_get_type
 G_DEFINE_TYPE_WITH_CODE (GMemoryMonitorPortal, g_memory_monitor_portal, G_TYPE_MEMORY_MONITOR,
                          G_IMPLEMENT_INTERFACE (G_TYPE_MEMORY_MONITOR,
                                                 g_memory_monitor_portal_iface_init)
@@ -73,6 +72,9 @@ g_memory_monitor_portal_initable_init (GInitable     *initable,
   GDBusProxy *proxy;
   gchar *name_owner = NULL;
 
+  if (!parent_iface->init (initable, cancellable, error))
+    return FALSE;
+
   if (!glib_should_use_portal ())
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Not using portals");
@@ -109,9 +111,6 @@ g_memory_monitor_portal_initable_init (GInitable     *initable,
 
   portal->proxy = proxy;
 
-  if (!initable_parent_iface->init (initable, cancellable, error))
-    return FALSE;
-
   return TRUE;
 }
 
@@ -125,7 +124,7 @@ g_memory_monitor_portal_finalize (GObject *object)
     {
       g_signal_handler_disconnect (portal->proxy,
                                    portal->signal_id);
-      portal->ignal_id = 0;
+      portal->signal_id = 0;
     }
   g_clear_object (&portal->proxy);
 
@@ -148,7 +147,7 @@ g_memory_monitor_portal_iface_init (GMemoryMonitorInterface *monitor_iface)
 static void
 g_memory_monitor_portal_initable_iface_init (GInitableIface *iface)
 {
-  initable_parent_iface = g_type_interface_peek_parent (iface);
+  parent_iface = g_type_interface_peek_parent (iface);
 
   iface->init = g_memory_monitor_portal_initable_init;
 }
