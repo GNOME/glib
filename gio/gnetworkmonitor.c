@@ -68,7 +68,7 @@
  */
 
 G_DEFINE_INTERFACE_WITH_CODE (GNetworkMonitor, g_network_monitor, G_TYPE_OBJECT,
-                              g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_INITABLE);)
+                              g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_INITABLE))
 
 
 enum {
