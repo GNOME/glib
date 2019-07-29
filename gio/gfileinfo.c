@@ -1464,7 +1464,8 @@ g_file_info_get_deletion_date (GFileInfo *info)
   static guint32 attr = 0;
   GFileAttributeValue *value;
   const char *date_str;
-  GTimeVal tv;
+  GTimeZone *local_tz = NULL;
+  GDateTime *dt = NULL;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
 
@@ -1476,10 +1477,11 @@ g_file_info_get_deletion_date (GFileInfo *info)
   if (!date_str)
     return NULL;
 
-  if (g_time_val_from_iso8601 (date_str, &tv) == FALSE)
-    return NULL;
+  local_tz = g_time_zone_new_local ();
+  dt = g_date_time_new_from_iso8601 (date_str, local_tz);
+  g_time_zone_unref (local_tz);
 
-  return g_date_time_new_from_timeval_local (&tv);
+  return g_steal_pointer (&dt);
 }
 
 /**
@@ -1753,7 +1755,11 @@ g_file_info_get_size (GFileInfo *info)
  *
  * Gets the modification time of the current @info and sets it
  * in @result.
+ *
+ * Deprecated: 2.62: Use g_file_info_get_modification_date_time() instead, as
+ *    #GTimeVal is deprecated due to the year 2038 problem.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_file_info_get_modification_time (GFileInfo *info,
 				   GTimeVal  *result)
@@ -1774,6 +1780,47 @@ g_file_info_get_modification_time (GFileInfo *info,
   result->tv_sec = _g_file_attribute_value_get_uint64 (value);
   value = g_file_info_find_value (info, attr_mtime_usec);
   result->tv_usec = _g_file_attribute_value_get_uint32 (value);
+}
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+/**
+ * g_file_info_get_modification_date_time:
+ * @info: a #GFileInfo.
+ *
+ * Gets the modification time of the current @info and returns it as a
+ * #GDateTime.
+ *
+ * Returns: (transfer full) (nullable): modification time, or %NULL if unknown
+ * Since: 2.62
+ */
+GDateTime *
+g_file_info_get_modification_date_time (GFileInfo *info)
+{
+  static guint32 attr_mtime = 0, attr_mtime_usec;
+  GFileAttributeValue *value, *value_usec;
+  GDateTime *dt = NULL, *dt2 = NULL;
+
+  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
+
+  if (attr_mtime == 0)
+    {
+      attr_mtime = lookup_attribute (G_FILE_ATTRIBUTE_TIME_MODIFIED);
+      attr_mtime_usec = lookup_attribute (G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC);
+    }
+
+  value = g_file_info_find_value (info, attr_mtime);
+  if (value == NULL)
+    return NULL;
+
+  value_usec = g_file_info_find_value (info, attr_mtime_usec);
+  if (value_usec == NULL)
+    return NULL;
+
+  dt = g_date_time_new_from_unix_utc (_g_file_attribute_value_get_uint64 (value));
+  dt2 = g_date_time_add_seconds (dt, _g_file_attribute_value_get_uint32 (value_usec) / (gdouble) G_USEC_PER_SEC);
+  g_date_time_unref (dt);
+
+  return g_steal_pointer (&dt2);
 }
 
 /**
@@ -2113,7 +2160,11 @@ g_file_info_set_size (GFileInfo *info,
  *
  * Sets the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute in the file
  * info to the given time value.
+ *
+ * Deprecated: 2.62: Use g_file_info_set_modification_date_time() instead, as
+ *    #GTimeVal is deprecated due to the year 2038 problem.
  **/
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_file_info_set_modification_time (GFileInfo *info,
 				   GTimeVal  *mtime)
@@ -2136,6 +2187,41 @@ g_file_info_set_modification_time (GFileInfo *info,
   value = g_file_info_create_value (info, attr_mtime_usec);
   if (value)
     _g_file_attribute_value_set_uint32 (value, mtime->tv_usec);
+}
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+/**
+ * g_file_info_set_modification_date_time:
+ * @info: a #GFileInfo.
+ * @mtime: (not nullable): a #GDateTime.
+ *
+ * Sets the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute in the file
+ * info to the given date/time value.
+ *
+ * Since: 2.62
+ */
+void
+g_file_info_set_modification_date_time (GFileInfo *info,
+                                        GDateTime *mtime)
+{
+  static guint32 attr_mtime = 0, attr_mtime_usec;
+  GFileAttributeValue *value;
+
+  g_return_if_fail (G_IS_FILE_INFO (info));
+  g_return_if_fail (mtime != NULL);
+
+  if (attr_mtime == 0)
+    {
+      attr_mtime = lookup_attribute (G_FILE_ATTRIBUTE_TIME_MODIFIED);
+      attr_mtime_usec = lookup_attribute (G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC);
+    }
+
+  value = g_file_info_create_value (info, attr_mtime);
+  if (value)
+    _g_file_attribute_value_set_uint64 (value, g_date_time_to_unix (mtime));
+  value = g_file_info_create_value (info, attr_mtime_usec);
+  if (value)
+    _g_file_attribute_value_set_uint32 (value, g_date_time_get_microsecond (mtime));
 }
 
 /**
