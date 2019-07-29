@@ -68,6 +68,7 @@ typedef enum {
 struct _GNetworkMonitorNMPrivate
 {
   GDBusProxy *proxy;
+  guint signal_id;
 
   GNetworkConnectivity connectivity;
   gboolean network_available;
@@ -360,8 +361,8 @@ g_network_monitor_nm_initable_init (GInitable     *initable,
       return FALSE;
     }
 
-  g_signal_connect (G_OBJECT (proxy), "g-signal",
-                    G_CALLBACK (proxy_signal_cb), nm);
+  nm->priv->signal_id = g_signal_connect (G_OBJECT (proxy), "g-signal",
+                                          G_CALLBACK (proxy_signal_cb), nm);
   nm->priv->proxy = proxy;
   sync_properties (nm, FALSE);
 
@@ -373,6 +374,13 @@ g_network_monitor_nm_finalize (GObject *object)
 {
   GNetworkMonitorNM *nm = G_NETWORK_MONITOR_NM (object);
 
+  if (nm->priv->proxy != NULL &&
+      nm->priv->signal_id != 0)
+    {
+      g_signal_handler_disconnect (nm->priv->proxy,
+                                   nm->priv->signal_id);
+      nm->priv->signal_id = 0;
+    }
   g_clear_object (&nm->priv->proxy);
 
   G_OBJECT_CLASS (g_network_monitor_nm_parent_class)->finalize (object);
