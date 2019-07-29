@@ -1395,6 +1395,8 @@ g_application_finalize (GObject *object)
   if (application->priv->actions)
     g_object_unref (application->priv->actions);
 
+  g_clear_object (&application->priv->remote_actions);
+
   if (application->priv->notifications)
     g_object_unref (application->priv->notifications);
 
