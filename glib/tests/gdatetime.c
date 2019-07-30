@@ -499,6 +499,9 @@ test_GDateTime_new_from_iso8601 (void)
   dt = g_date_time_new_from_iso8601 ("not a date", NULL);
   g_assert_null (dt);
 
+  dt = g_date_time_new_from_iso8601 (" +55", NULL);
+  g_assert_null (dt);
+
   /* Check common case */
   dt = g_date_time_new_from_iso8601 ("2016-08-24T22:10:42Z", NULL);
   ASSERT_DATE (dt, 2016, 8, 24);
