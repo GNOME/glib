@@ -166,6 +166,36 @@ g_array_new (gboolean zero_terminated,
 }
 
 /**
+ * g_array_steal:
+ * @array: a #GArray.
+ *
+ * Returns: the element data, which should be freed using g_free().
+ *
+ * Frees the data in the array and resets the size to zero, while
+ * the underlying array is preserved for use elsewhere and returned
+ * to the caller.
+ *
+ * If the array was created with the @zero_terminate property
+ * set to %TRUE, the returned data is zero terminated too.
+ *
+ * If array elements contain dynamically-allocated memory,
+ * the array elements should also be freed by the caller.
+ *
+ * Since: 2.64
+ */
+gpointer
+g_array_steal (GArray *array)
+{
+  GRealArray *rarray = (GRealArray *) array;
+  gpointer segment = (gpointer) rarray->data;
+
+  rarray->data  = NULL;
+  rarray->len   = 0;
+  rarray->alloc = 0;
+  return segment;
+}
+
+/**
  * g_array_sized_new:
  * @zero_terminated: %TRUE if the array should have an extra element at
  *     the end with all bits cleared
@@ -1011,6 +1041,34 @@ GPtrArray*
 g_ptr_array_new (void)
 {
   return g_ptr_array_sized_new (0);
+}
+
+/**
+ * g_ptr_array_steal:
+ * @array: a #GPtrArray.
+ *
+ * Returns: the element data, which should be freed using g_free().
+ *
+ * Frees the data in the array and resets the size to zero, while
+ * the underlying array is preserved for use elsewhere and returned
+ * to the caller.
+ *
+ * Even if set, the #GDestroyNotify function will never be called
+ * on the current contents of the array and the caller is
+ * responsible for freeing the array elements.
+ *
+ * Since: 2.64
+ */
+gpointer *
+g_ptr_array_steal (GPtrArray *array)
+{
+  GRealPtrArray *rarray = (GRealPtrArray *) array;
+  gpointer *segment = (gpointer *) rarray->pdata;
+
+  rarray->pdata = NULL;
+  rarray->len   = 0;
+  rarray->alloc = 0;
+  return segment;
 }
 
 /**
@@ -2000,6 +2058,24 @@ GByteArray*
 g_byte_array_new (void)
 {
   return (GByteArray *)g_array_sized_new (FALSE, FALSE, 1, 0);
+}
+
+/**
+ * g_byte_array_steal:
+ * @array: a #GByteArray.
+ *
+ * Returns: the element data, which should be freed using g_free().
+ *
+ * Frees the data in the array and resets the size to zero, while
+ * the underlying array is preserved for use elsewhere and returned
+ * to the caller.
+ *
+ * Since: 2.64
+ */
+guint8 *
+g_byte_array_steal (GByteArray *array)
+{
+  return (guint8 *) g_array_steal ((GArray *) array);
 }
 
 /**
