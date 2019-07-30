@@ -522,15 +522,11 @@ test_GDateTime_new_from_iso8601 (void)
   dt = g_date_time_new_from_iso8601 (" 2016-08-24T22:10:42Z", NULL);
   g_assert_null (dt);
 
-  /* Check lowercase time separator or space allowed */
+  /* Check lowercase time separator or space not allowed */
   dt = g_date_time_new_from_iso8601 ("2016-08-24t22:10:42Z", NULL);
-  ASSERT_DATE (dt, 2016, 8, 24);
-  ASSERT_TIME (dt, 22, 10, 42, 0);
-  g_date_time_unref (dt);
+  g_assert_null (dt);
   dt = g_date_time_new_from_iso8601 ("2016-08-24 22:10:42Z", NULL);
-  ASSERT_DATE (dt, 2016, 8, 24);
-  ASSERT_TIME (dt, 22, 10, 42, 0);
-  g_date_time_unref (dt);
+  g_assert_null (dt);
 
   /* Check dates without separators allowed */
   dt = g_date_time_new_from_iso8601 ("20160824T22:10:42Z", NULL);

@@ -1425,7 +1425,7 @@ parse_iso8601_time (const gchar *text, gsize length,
  * [ISO 8601 formatted string](https://en.wikipedia.org/wiki/ISO_8601)
  * @text. ISO 8601 strings of the form <date><sep><time><tz> are supported.
  *
- * <sep> is the separator and can be either 'T', 't' or ' '.
+ * <sep> is the separator and must be 'T'.
  *
  * <date> is in the form:
  *
@@ -1472,10 +1472,10 @@ g_date_time_new_from_iso8601 (const gchar *text, GTimeZone *default_tz)
 
   g_return_val_if_fail (text != NULL, NULL);
 
-  /* Count length of string and find date / time separator ('T', 't', or ' ') */
+  /* Count length of string and find date / time separator ('T') */
   for (length = 0; text[length] != '\0'; length++)
     {
-      if (date_length < 0 && (text[length] == 'T' || text[length] == 't' || text[length] == ' '))
+      if (date_length < 0 && text[length] == 'T')
         date_length = length;
     }
 
