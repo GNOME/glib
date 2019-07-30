@@ -70,6 +70,8 @@ GLIB_AVAILABLE_IN_ALL
 GArray* g_array_new               (gboolean          zero_terminated,
 				   gboolean          clear_,
 				   guint             element_size);
+GLIB_AVAILABLE_IN_2_64
+gpointer g_array_steal            (GArray           *array);
 GLIB_AVAILABLE_IN_ALL
 GArray* g_array_sized_new         (gboolean          zero_terminated,
 				   gboolean          clear_,
@@ -137,6 +139,8 @@ GLIB_AVAILABLE_IN_ALL
 GPtrArray* g_ptr_array_new                (void);
 GLIB_AVAILABLE_IN_ALL
 GPtrArray* g_ptr_array_new_with_free_func (GDestroyNotify    element_free_func);
+GLIB_AVAILABLE_IN_2_64
+gpointer  *g_ptr_array_steal              (GPtrArray        *array);
 GLIB_AVAILABLE_IN_2_62
 GPtrArray *g_ptr_array_copy               (GPtrArray        *array,
                                            GCopyFunc         func,
@@ -227,6 +231,8 @@ GByteArray* g_byte_array_new               (void);
 GLIB_AVAILABLE_IN_ALL
 GByteArray* g_byte_array_new_take          (guint8           *data,
                                             gsize             len);
+GLIB_AVAILABLE_IN_2_64
+guint8     *g_byte_array_steal             (GByteArray       *array);
 GLIB_AVAILABLE_IN_ALL
 GByteArray* g_byte_array_sized_new         (guint             reserved_size);
 GLIB_AVAILABLE_IN_ALL
