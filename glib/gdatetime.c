@@ -1327,9 +1327,7 @@ static GTimeZone *
 parse_iso8601_timezone (const gchar *text, gsize length, gssize *tz_offset)
 {
   gint i, tz_length, offset_hours, offset_minutes;
-#ifndef G_DISABLE_ASSERT
   gint offset_sign = 1;
-#endif
   GTimeZone *tz;
 
   /* UTC uses Z suffix  */
@@ -1343,9 +1341,7 @@ parse_iso8601_timezone (const gchar *text, gsize length, gssize *tz_offset)
   for (i = length - 1; i >= 0; i--)
     if (text[i] == '+' || text[i] == '-')
       {
-#ifndef G_DISABLE_ASSERT
         offset_sign = text[i] == '-' ? -1 : 1;
-#endif
         break;
       }
   if (i < 0)
@@ -1380,8 +1376,14 @@ parse_iso8601_timezone (const gchar *text, gsize length, gssize *tz_offset)
   tz = g_time_zone_new (text + i);
 
   /* Double-check that the GTimeZone matches our interpretation of the timezone.
-   * Failure would indicate a bug either here of in the GTimeZone code. */
-  g_assert (g_time_zone_get_offset (tz, 0) == offset_sign * (offset_hours * 3600 + offset_minutes * 60));
+   * This can fail because our interpretation is less strict than (for example)
+   * parse_time() in gtimezone.c, which restricts the range of the parsed
+   * integers. */
+  if (g_time_zone_get_offset (tz, 0) != offset_sign * (offset_hours * 3600 + offset_minutes * 60))
+    {
+      g_time_zone_unref (tz);
+      return NULL;
+    }
 
   return tz;
 }
