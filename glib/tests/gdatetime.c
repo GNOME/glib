@@ -793,6 +793,112 @@ test_GDateTime_new_from_iso8601 (void)
   g_assert_null (dt);
 }
 
+typedef struct {
+  gboolean success;
+  const gchar *in;
+
+  /* Expected result: */
+  guint year;
+  guint month;
+  guint day;
+  guint hour;
+  guint minute;
+  guint second;
+  guint microsecond;
+  GTimeSpan utc_offset;
+} Iso8601ParseTest;
+
+static void
+test_GDateTime_new_from_iso8601_2 (void)
+{
+  const Iso8601ParseTest tests[] = {
+    { TRUE, "1990-11-01T10:21:17Z", 1990, 11, 1, 10, 21, 17, 0, 0 },
+    { TRUE, "19901101T102117Z", 1990, 11, 1, 10, 21, 17, 0, 0 },
+    { TRUE, "1970-01-01T00:00:17.12Z", 1970, 1, 1, 0, 0, 17, 120000, 0 },
+    { TRUE, "1970-01-01T00:00:17.1234Z", 1970, 1, 1, 0, 0, 17, 123400, 0 },
+    { TRUE, "1970-01-01T00:00:17.123456Z", 1970, 1, 1, 0, 0, 17, 123456, 0 },
+    { TRUE, "1980-02-22T12:36:00+02:00", 1980, 2, 22, 12, 36, 0, 0, 2 * G_TIME_SPAN_HOUR },
+    { FALSE, "   ", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "x", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "123x", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2001-10+x", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "1980-02-22T", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2001-10-08Tx", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2001-10-08T10:11x", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "Wed Dec 19 17:20:20 GMT 2007", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "1980-02-22T10:36:00Zulu", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2T0+819855292164632335", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { TRUE, "2018-08-03T14:08:05.446178377+01:00", 2018, 8, 3, 14, 8, 5, 446178, 1 * G_TIME_SPAN_HOUR },
+    { FALSE, "2147483648-08-03T14:08:05.446178377+01:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2018-13-03T14:08:05.446178377+01:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2018-00-03T14:08:05.446178377+01:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2018-08-00T14:08:05.446178377+01:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2018-08-32T14:08:05.446178377+01:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2018-08-03T24:08:05.446178377+01:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2018-08-03T14:60:05.446178377+01:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2018-08-03T14:08:63.446178377+01:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2018-08-03T14:08:05.446178377+100:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { TRUE, "20180803T140805.446178377+0100", 2018, 8, 3, 14, 8, 5, 446178, 1 * G_TIME_SPAN_HOUR },
+    { FALSE, "21474836480803T140805.446178377+0100", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "20181303T140805.446178377+0100", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "20180003T140805.446178377+0100", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "20180800T140805.446178377+0100", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "20180832T140805.446178377+0100", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "20180803T240805.446178377+0100", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "20180803T146005.446178377+0100", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "20180803T140863.446178377+0100", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "20180803T140805.446178377+10000", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "-0005-01-01T00:00:00Z", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "2018-08-06", 0, 0, 0, 0, 0, 0, 0, 0 },
+    /* This is not accepted by g_time_val_from_iso8601(), but is accepted by g_date_time_new_from_iso8601():
+    { FALSE, "2018-08-06 13:51:00Z", 0, 0, 0, 0, 0, 0, 0, 0 },
+    * */
+    { TRUE, "20180803T140805,446178377+0100", 2018, 8, 3, 14, 8, 5, 446178, 1 * G_TIME_SPAN_HOUR },
+    { TRUE, "2018-08-03T14:08:05.446178377-01:00", 2018, 8, 3, 14, 8, 5, 446178, -1 * G_TIME_SPAN_HOUR },
+    { FALSE, "2018-08-03T14:08:05.446178377 01:00", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { TRUE, "1990-11-01T10:21:17", 1990, 11, 1, 10, 21, 17, 0, 0 },
+    /* These are accepted by g_time_val_from_iso8601(), but not by g_date_time_new_from_iso8601():
+    { TRUE, "19901101T102117+5", 1990, 11, 1, 10, 21, 17, 0, 5 * G_TIME_SPAN_HOUR },
+    { TRUE, "19901101T102117+3:15", 1990, 11, 1, 10, 21, 17, 0, 3 * G_TIME_SPAN_HOUR + 15 * G_TIME_SPAN_MINUTE },
+    { TRUE, "  1990-11-01T10:21:17Z  ", 1990, 11, 1, 10, 21, 17, 0, 0 },
+    { FALSE, "2018-08-03T14:08:05.446178377+01:60", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "20180803T140805.446178377+0160", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { TRUE, "+1980-02-22T12:36:00+02:00", 1980, 2, 22, 12, 36, 0, 0, 2 * G_TIME_SPAN_HOUR },
+    { TRUE, "1990-11-01T10:21:17     ", 1990, 11, 1, 10, 21, 17, 0, 0 },
+    */
+  };
+  GTimeZone *tz = NULL;
+  GDateTime *dt = NULL;
+  gsize i;
+
+  g_test_summary ("Further parser tests for g_date_time_new_from_iso8601(), "
+                  "checking success and failure using test vectors.");
+
+  tz = g_time_zone_new_utc ();
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      g_test_message ("Vector %" G_GSIZE_FORMAT ": %s", i, tests[i].in);
+
+      dt = g_date_time_new_from_iso8601 (tests[i].in, tz);
+      if (tests[i].success)
+        {
+          g_assert_nonnull (dt);
+          ASSERT_DATE (dt, tests[i].year, tests[i].month, tests[i].day);
+          ASSERT_TIME (dt, tests[i].hour, tests[i].minute, tests[i].second, tests[i].microsecond);
+          g_assert_cmpint (g_date_time_get_utc_offset (dt), ==, tests[i].utc_offset);
+        }
+      else
+        {
+          g_assert_null (dt);
+        }
+
+      g_clear_pointer (&dt, g_date_time_unref);
+    }
+
+  g_time_zone_unref (tz);
+}
+
 static void
 test_GDateTime_to_unix (void)
 {
@@ -2584,6 +2690,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/new_from_timeval_utc", test_GDateTime_new_from_timeval_utc);
   g_test_add_func ("/GDateTime/new_from_timeval/overflow", test_GDateTime_new_from_timeval_overflow);
   g_test_add_func ("/GDateTime/new_from_iso8601", test_GDateTime_new_from_iso8601);
+  g_test_add_func ("/GDateTime/new_from_iso8601/2", test_GDateTime_new_from_iso8601_2);
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
