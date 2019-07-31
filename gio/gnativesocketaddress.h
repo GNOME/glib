@@ -53,10 +53,10 @@ struct _GNativeSocketAddressClass
   GSocketAddressClass parent_class;
 };
 
-GLIB_AVAILABLE_IN_2_46
+GLIB_AVAILABLE_IN_2_62
 GType           g_native_socket_address_get_type        (void) G_GNUC_CONST;
 
-GLIB_AVAILABLE_IN_2_46
+GLIB_AVAILABLE_IN_2_62
 GSocketAddress *g_native_socket_address_new            (gpointer        native,
                                                         gsize           len);
 

@@ -142,7 +142,7 @@ g_native_socket_address_init (GNativeSocketAddress *address)
  *
  * Returns: a new #GNativeSocketAddress
  *
- * Since: 2.46
+ * Since: 2.62
  */
 GSocketAddress *
 g_native_socket_address_new (gpointer        native,
