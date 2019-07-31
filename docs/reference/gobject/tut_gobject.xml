@@ -485,14 +485,14 @@ viewer_file_set_property (GObject      *object,
   switch (property_id)
     {
     case PROP_FILENAME:
-      g_free (self-&gt;priv-&gt;filename);
-      self-&gt;priv-&gt;filename = g_value_dup_string (value);
-      g_print ("filename: %s\n", self-&gt;priv-&gt;filename);
+      g_free (self-&gt;filename);
+      self-&gt;filename = g_value_dup_string (value);
+      g_print ("filename: %s\n", self-&gt;filename);
       break;
 
     case PROP_ZOOM_LEVEL:
-      self-&gt;priv-&gt;zoom_level = g_value_get_uint (value);
-      g_print ("zoom level: &percnt;u\n", self-&gt;priv-&gt;zoom_level);
+      self-&gt;zoom_level = g_value_get_uint (value);
+      g_print ("zoom level: &percnt;u\n", self-&gt;zoom_level);
       break;
 
     default:
@@ -513,11 +513,11 @@ viewer_file_get_property (GObject    *object,
   switch (property_id)
     {
     case PROP_FILENAME:
-      g_value_set_string (value, self-&gt;priv-&gt;filename);
+      g_value_set_string (value, self-&gt;filename);
       break;
 
     case PROP_ZOOM_LEVEL:
-      g_value_set_uint (value, self-&gt;priv-&gt;zoom_level);
+      g_value_set_uint (value, self-&gt;zoom_level);
       break;
 
     default:
