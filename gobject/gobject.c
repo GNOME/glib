@@ -2573,6 +2573,7 @@ g_object_set_property (GObject	    *object,
  *
  *  - an empty #GValue initialized by %G_VALUE_INIT, which will be
  *    automatically initialized with the expected type of the property
+ *    (since GLib 2.60)
  *  - a #GValue initialized with the expected type of the property
  *  - a #GValue initialized with a type to which the expected type
  *    of the property can be transformed
@@ -2607,7 +2608,7 @@ g_object_get_property (GObject	   *object,
       
       if (G_VALUE_TYPE (value) == G_TYPE_INVALID)
         {
-          /* uninitialized value */
+          /* zero-initialized value */
           g_value_init (value, pspec->value_type);
           prop_value = value;
         }
