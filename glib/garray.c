@@ -1795,7 +1795,32 @@ g_ptr_array_insert (GPtrArray *array,
  *
  * Note that the comparison function for g_ptr_array_sort() doesn't
  * take the pointers from the array as arguments, it takes pointers to
- * the pointers in the array.
+ * the pointers in the array. Here is a full example of usage:
+ *
+ * |[<!-- language="C" -->
+ * typedef struct
+ * {
+ *   gchar *name;
+ *   gint size;
+ * } FileListEntry;
+ *
+ * static gint
+ * sort_filelist (gconstpointer a, gconstpointer b)
+ * {
+ *   const FileListEntry *entry1 = *((FileListEntry **) a);
+ *   const FileListEntry *entry2 = *((FileListEntry **) b);
+ *
+ *   return g_ascii_strcasecmp (entry1->name, entry2->name);
+ * }
+ *
+ * …
+ * g_autoptr (GPtrArray) file_list = NULL;
+ *
+ * // initialize file_list array and load with many FileListEntry entries
+ * ...
+ * // now sort it with
+ * g_ptr_array_sort (file_list, (GCompareFunc) sort_filelist);
+ * ]|
  *
  * This is guaranteed to be a stable sort since version 2.32.
  */
@@ -1824,7 +1849,52 @@ g_ptr_array_sort (GPtrArray    *array,
  *
  * Note that the comparison function for g_ptr_array_sort_with_data()
  * doesn't take the pointers from the array as arguments, it takes
- * pointers to the pointers in the array.
+ * pointers to the pointers in the array. Here is a full example of use:
+ *
+ * |[<!-- language="C" -->
+ * typedef enum { SORT_NAME, SORT_SIZE } SortMode;
+ *
+ * typedef struct
+ * {
+ *   gchar *name;
+ *   gint size;
+ * } FileListEntry;
+ *
+ * static gint
+ * sort_filelist (gconstpointer a, gconstpointer b, gpointer user_data)
+ * {
+ *   gint order;
+ *   const SortMode *sort_mode = GPOINTER_TO_INT (user_data);
+ *   const FileListEntry *entry1 = *((FileListEntry **) a);
+ *   const FileListEntry *entry2 = *((FileListEntry **) b);
+ *
+ *   switch (*sort_mode)
+ *     {
+ *     case SORT_NAME:
+ *       order = g_ascii_strcasecmp (entry1->name, entry2->name);
+ *       break;
+ *     case SORT_SIZE:
+ *       order = entry1->size - entry2->size;
+ *       break;
+ *     default:
+ *       order = 0;
+ *       break;
+ *     }
+ *   return order;
+ * }
+ *
+ * ...
+ * g_autoptr (GPtrArray) file_list = NULL;
+ * SortMode sort_mode;
+ *
+ * // initialize file_list array and load with many FileListEntry entries
+ * ...
+ * // now sort it with
+ * sort_mode = SORT_NAME;
+ * g_ptr_array_sort_with_data (file_list,
+ *                             (GCompareFunc) sort_filelist,
+ *                             GINT_TO_POINTER (sort_mode));
+ * ]|
  *
  * This is guaranteed to be a stable sort since version 2.32.
  */
