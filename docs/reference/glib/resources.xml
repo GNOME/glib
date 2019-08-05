@@ -53,8 +53,8 @@ under those terms.
 </para>
 
 <para>
-If you want to discuss your branch before or after developing it, mail
-<ulink url="mailto:gtk-devel-list@gnome.org">gtk-devel-list@gnome.org</ulink>. 
+If you want to discuss your branch before or after developing it, open a
+topic on <ulink url="https://discourse.gnome.org/tags/glib">Discourse</ulink>.
 But be sure to create the GitLab merge request as well; if the branch is only
 on the list and not in GitLab, it's likely to slip through the cracks.
 </para>
@@ -62,48 +62,13 @@ on the list and not in GitLab, it's likely to slip through the cracks.
 </refsect1>
 
 <refsect1>
-<title>Mailing lists</title>
+<title>Discussions and user questions</title>
 
 <para>
-There are several mailing lists dedicated to GTK+ and related
-libraries. Discussion of GLib generally takes place on these lists.
-You can subscribe or view the archives of these lists on 
-<ulink url="http://mail.gnome.org">http://mail.gnome.org</ulink>.
-</para>
-
-<para>
-<variablelist>
-
-<varlistentry>
-<term><ulink url="mailto:gtk-list@gnome.org">gtk-list@gnome.org</ulink></term>
-<listitem><para>
-gtk-list covers general GTK+ (and GLib) topics; questions about using GLib 
-in programs, GLib from a user standpoint, announcements of GLib-related projects
-would all be on-topic. The bulk of the traffic consists of GTK+ programming 
-questions.
-</para></listitem>
-</varlistentry>
-
-<varlistentry>
-<term><ulink url="mailto:gtk-devel-list@gnome.org">gtk-devel-list@gnome.org</ulink></term>
-<listitem><para>
-gtk-devel-list is for discussion of work on GTK+ (and GLib) itself, it is 
-<emphasis>not</emphasis> for asking questions about how to use GTK+ (or GLib) 
-in applications. gtk-devel-list is appropriate for discussion of branches,
-bugs, proposed features, and so on.
-</para></listitem>
-</varlistentry>
-
-<varlistentry>
-<term><ulink url="mailto:gtk-doc-list@gnome.org">gtk-doc-list@gnome.org</ulink></term>
-<listitem><para>
-gtk-doc-list is for discussion of the <application>gtk-doc</application> 
-documentation system (used to document GTK+ and Glib), and for work on the GTK+
-(and GLib) documentation.
-</para></listitem>
-</varlistentry>
-
-</variablelist>
+The <ulink url="https://gitlab.gnome.org/GNOME/glib/issues">GLib issue tracker</ulink>
+is meant for discussions with actionable topics. If you want to ask a question
+about using GLib, or discuss new features, you should use
+<ulink url="https://discourse.gnome.org/tags/glib">the glib tag on Discourse</ulink>.
 </para>
 
 </refsect1>
