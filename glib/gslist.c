@@ -39,7 +39,12 @@
  * @short_description: linked lists that can be iterated in one direction
  *
  * The #GSList structure and its associated functions provide a
- * standard singly-linked list data structure.
+ * standard singly-linked list data structure. The benefit of this
+ * data-structure is to provide insertion/deletion operations in O(1)
+ * complexity where access/search operations are in O(n). The benefit
+ * of #GSList over #GList (doubly linked list) is that they are lighter
+ * in space as they only need to retain one pointer but it double the
+ * cost of the worst case access/search operations.
  *
  * Each element in the list contains a piece of data, together with a
  * pointer which links to the next element in the list. Using this
