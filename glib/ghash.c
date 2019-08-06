@@ -68,13 +68,14 @@
  *     given a key the value can be found quickly
  *
  * A #GHashTable provides associations between keys and values which is
- * optimized so that given a key, the associated value can be found
- * very quickly.
+ * optimized so that given a key, the associated value can be found,
+ * inserted or removed in amortized O(1). All operations going through
+ * each element take O(n) time (list all keys/values, table resize, etc.).
  *
  * Note that neither keys nor values are copied when inserted into the
  * #GHashTable, so they must exist for the lifetime of the #GHashTable.
  * This means that the use of static strings is OK, but temporary
- * strings (i.e. those created in buffers and those returned by GTK+
+ * strings (i.e. those created in buffers and those returned by GTK
  * widgets) should be copied with g_strdup() before being inserted.
  *
  * If keys or values are dynamically allocated, you must be careful to
