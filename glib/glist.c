@@ -40,7 +40,12 @@
  * @short_description: linked lists that can be iterated over in both directions
  *
  * The #GList structure and its associated functions provide a standard
- * doubly-linked list data structure.
+ * doubly-linked list data structure. The benefit of this data-structure
+ * is to provide insertion/deletion operations in O(1) complexity where
+ * access/search operations are in O(n). The benefit of #GList over
+ * #GSList (singly linked list) is that the worst case on access/search
+ * operations is divided by two which comes at a cost in space as we need
+ * to retain two pointers in place of one.
  *
  * Each element in the list contains a piece of data, together with
  * pointers which link to the previous and next elements in the list.
