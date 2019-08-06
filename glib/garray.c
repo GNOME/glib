@@ -58,16 +58,20 @@
  *
  * To create a new array use g_array_new().
  *
- * To add elements to an array, use g_array_append_val(),
- * g_array_append_vals(), g_array_prepend_val(), g_array_prepend_vals(),
- * g_array_insert_val() and g_array_insert_vals().
+ * To add elements to an array with a cost of O(n) at worst, use
+ * g_array_append_val(), g_array_append_vals(), g_array_prepend_val(),
+ * g_array_prepend_vals(), g_array_insert_val() and g_array_insert_vals().
  *
- * To access an element of an array (to read it or write it),
+ * To access an element of an array in O(1) (to read it or to write it),
  * use g_array_index().
  *
  * To set the size of an array, use g_array_set_size().
  *
  * To free an array, use g_array_unref() or g_array_free().
+ *
+ * All the sort functions are internally calling a quick-sort (or similar)
+ * function with an average cost of O(n log(n)) and a worst case
+ * cost of O(n^2).
  *
  * Here is an example that stores integers in a #GArray:
  * |[<!-- language="C" -->
