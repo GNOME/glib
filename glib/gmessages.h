@@ -454,6 +454,23 @@ g_debug (const gchar *format,
 #endif  /* !__GNUC__ */
 
 /**
+ * g_warning_once:
+ *
+ * Logs a warning only once.
+ *
+ * g_warning_once() calls g_warning() with the passed message the first time
+ * the statement is executed; subsequent times it is a no-op.
+ *
+ * Since: 2.62.
+ */
+#define g_warning_once(...) \
+  do { \
+    static volatile gint has_warned = 0; \
+    if (g_atomic_int_compare_and_exchange (&has_warned, 0, 1)) \
+      g_warning (__VA_ARGS__); \
+  } while (0)
+
+/**
  * GPrintFunc:
  * @string: the message to output
  *
