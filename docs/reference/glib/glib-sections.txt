@@ -1411,6 +1411,7 @@ g_log
 g_logv
 g_message
 g_warning
+g_warning_once
 g_critical
 g_error
 g_info
