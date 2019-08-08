@@ -548,6 +548,8 @@ test_g_parse_debug_string (void)
 static void
 log_warning_error_tests (void)
 {
+  gint i;
+
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE,
                          "*is a g_message test*");
   g_message ("this is a g_message test.");
@@ -566,6 +568,12 @@ log_warning_error_tests (void)
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
                          "*harmless warning*");
   g_warning ("harmless warning with parameters: %d %s %#x", 42, "Boo", 12345);
+  g_test_assert_expected_messages ();
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+			 "*harmless single warning*");
+  for (i = 0; i < 10; i++)
+    g_warning_once ("harmless single warning");
   g_test_assert_expected_messages ();
 
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
