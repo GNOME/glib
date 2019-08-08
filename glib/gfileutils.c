@@ -262,7 +262,7 @@ g_mkdir_with_parents (const gchar *pathname,
 	  if (g_mkdir (fn, mode) == -1 && errno != EEXIST)
 	    {
 	      int errno_save = errno;
-              if (p && errno != ENOENT)
+	      if (errno != ENOENT || !p)
                 {
 	          g_free (fn);
 	          errno = errno_save;
