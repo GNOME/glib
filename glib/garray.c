@@ -874,12 +874,22 @@ g_array_binary_search (GArray        *array,
 static guint
 g_nearest_pow (guint num)
 {
-  guint n = 1;
+  guint n;
 
-  while (n < num && n > 0)
-    n <<= 1;
+  if (num == 0)
+    return 1;
 
-  return n ? n : num;
+  n = num - 1;
+  n |= n >> 1;
+  n |= n >> 2;
+  n |= n >> 4;
+  n |= n >> 8;
+  n |= n >> 16;
+#if GLIB_SIZEOF_INT == 8
+  n |= n >> 32;
+#endif
+
+  return n + 1;
 }
 
 static void
