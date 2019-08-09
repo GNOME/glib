@@ -297,6 +297,33 @@ typedef gsize GType;
  */
 #define G_TYPE_OPTION_GROUP (g_option_group_get_type ())
 
+/**
+ * G_TYPE_TREE:
+ *
+ * The #GType for #GTree.
+ *
+ * Since: 2.64
+ */
+#define G_TYPE_TREE (g_tree_get_type ())
+
+/**
+ * G_TYPE_QUEUE:
+ *
+ * The #GType for #GQueue.
+ *
+ * Since: 2.64
+ */
+#define G_TYPE_QUEUE (g_queue_get_type ())
+
+/**
+ * G_TYPE_NODE:
+ *
+ * The #GType for #GNode.
+ *
+ * Since: 2.64
+ */
+#define G_TYPE_NODE (g_node_get_type ())
+
 GLIB_AVAILABLE_IN_ALL
 GType   g_date_get_type            (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
@@ -353,6 +380,12 @@ GLIB_AVAILABLE_IN_2_40
 GType   g_mapped_file_get_type (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_44
 GType   g_option_group_get_type    (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_62 // FIXME: should be 2_64 and not 2_62
+GType   g_tree_get_type            (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_62 // FIXME: should be 2_64 and not 2_62
+GType   g_queue_get_type           (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_62 // FIXME: should be 2_64 and not 2_62
+GType   g_node_get_type            (void) G_GNUC_CONST;
 
 GLIB_DEPRECATED_FOR('G_TYPE_VARIANT')
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;
