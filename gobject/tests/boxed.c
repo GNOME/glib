@@ -615,6 +615,78 @@ test_boxed_checksum (void)
   g_value_unset (&value);
 }
 
+static gint
+treecmp (gconstpointer a, gconstpointer b)
+{
+  return (a < b) ? -1 : (a > b);
+}
+
+static void
+test_boxed_tree (void)
+{
+  GTree *t, *t2;
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_TREE);
+  g_assert_true (G_VALUE_HOLDS_BOXED (&value));
+
+  t = g_tree_new (treecmp);
+  g_value_take_boxed (&value, t);
+
+  t2 = g_value_get_boxed (&value);
+  g_assert_true (t == t2);
+
+  t2 = g_value_dup_boxed (&value);
+  g_assert_true (t == t2); /* trees use ref/unref for copy/free */
+  g_tree_unref (t2);
+
+  g_value_unset (&value);
+}
+
+static void
+test_boxed_queue (void)
+{
+  GQueue *q, *q2;
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_QUEUE);
+  g_assert_true (G_VALUE_HOLDS_BOXED (&value));
+
+  q = g_queue_new ();
+  g_value_take_boxed (&value, q);
+
+  q2 = g_value_get_boxed (&value);
+  g_assert_true (q == q2);
+
+  q2 = g_value_dup_boxed (&value);
+  g_assert_true (q != q2);
+  g_queue_free (q2);
+
+  g_value_unset (&value);
+}
+
+static void
+test_boxed_node (void)
+{
+  GNode *n, *n2;
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_NODE);
+  g_assert_true (G_VALUE_HOLDS_BOXED (&value));
+
+  n = g_node_new (NULL);
+  g_value_take_boxed (&value, n);
+
+  n2 = g_value_get_boxed (&value);
+  g_assert_true (n == n2);
+
+  n2 = g_value_dup_boxed (&value);
+  g_assert_true (n != n2);
+  g_node_destroy (n2);
+
+  g_value_unset (&value);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -644,6 +716,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/boxed/markup", test_boxed_markup);
   g_test_add_func ("/boxed/thread", test_boxed_thread);
   g_test_add_func ("/boxed/checksum", test_boxed_checksum);
+  g_test_add_func ("/boxed/tree", test_boxed_tree);
+  g_test_add_func ("/boxed/queue", test_boxed_queue);
+  g_test_add_func ("/boxed/node", test_boxed_node);
 
   return g_test_run ();
 }
