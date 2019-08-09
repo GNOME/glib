@@ -441,6 +441,7 @@ g_mapped_file_get_type
 g_markup_parse_context_get_type
 g_thread_get_type
 g_option_group_get_type
+g_tree_get_type
 </SECTION>
 
 <SECTION>
