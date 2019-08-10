@@ -40,10 +40,10 @@ _g_win32_subst_pid_and_event (char       *debugger,
   char event_str[STR_BUFFER_SIZE] = {0};
   gsize event_str_len;
 #undef STR_BUFFER_SIZE
-  snprintf (pid_str, G_N_ELEMENTS (pid_str), "%lu", pid);
+  _snprintf_s (pid_str, G_N_ELEMENTS (pid_str), "%lu", pid);
   pid_str[G_N_ELEMENTS (pid_str) - 1] = 0;
   pid_str_len = strlen (pid_str);
-  snprintf (event_str, G_N_ELEMENTS (pid_str), "%Iu", event);
+  _snprintf_s (event_str, G_N_ELEMENTS (pid_str), "%Iu", event);
   event_str[G_N_ELEMENTS (pid_str) - 1] = 0;
   event_str_len = strlen (event_str);
 
