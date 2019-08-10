@@ -12,7 +12,7 @@ endif
 # <https://github.com/mesonbuild/meson/issues/3937>. When we can depend
 # on a meson version where those are fixed, revert the commit that
 # introduced this workaround.
-if have_good_vsnprintf and have_good_snprintf
+if have_good_vsnprintf and have_good_snprintf and have_good_printf
   gnulib_lib = []
   gnulib_objects = []
   gnulib_libm_dependency = []
