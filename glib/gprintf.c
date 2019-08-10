@@ -319,7 +319,7 @@ g_vasprintf (gchar      **string,
   gint len;
   g_return_val_if_fail (string != NULL, -1);
 
-#if !defined(HAVE_GOOD_PRINTF)
+#if !defined(USE_SYSTEM_PRINTF)
 
   len = _g_gnulib_vasprintf (string, format, args);
   if (len < 0)
