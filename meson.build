@@ -923,10 +923,6 @@ endif
 glibconfig_conf.set('GLIB_USING_SYSTEM_PRINTF',
                     have_good_vsnprintf and have_good_snprintf and have_good_printf)
 
-# Check whether the printf() family supports Unix98 %n$ positional parameters
-# AC_FUNC_PRINTF_UNIX98
-# Nothing uses HAVE_UNIX98_PRINTF
-
 
 # Check for nl_langinfo and CODESET
 if cc.links('''#include <langinfo.h>
