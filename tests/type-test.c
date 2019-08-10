@@ -123,6 +123,7 @@ main (int   argc,
 #ifndef G_OS_WIN32
 #  define SCAN_FORMAT64 FORMAT64
 #else
+#  define sscanf sscanf_s
 #  define SCAN_FORMAT64 "%I64d %I64u\n"
 #endif
   string = g_strdup_printf (FORMAT64, gi64t1, gu64t1);
@@ -138,6 +139,7 @@ main (int   argc,
 #ifndef G_OS_WIN32
 #  define SCAN_FORMATSIZE FORMATSIZE
 #else
+#  define sscanf sscanf_s
 #  define SCAN_FORMATSIZE "%Id %Iu\n"
 #endif
   string = g_strdup_printf (FORMATSIZE, gsst1, gst1);
