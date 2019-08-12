@@ -89,7 +89,7 @@ endian = 'little'
 [properties]
 c_args = ['-I${prefix_path}/include']
 c_link_args = ['-L${prefix_path}/lib64',
-               '-fuse-ld=gold']
+               '-fuse-ld=gold', '-Wl,-flto=gold']
 
 [binaries]
 c = '${toolchain_path}/bin/${CC}'
