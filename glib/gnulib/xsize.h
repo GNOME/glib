@@ -58,7 +58,7 @@ _GL_INLINE_HEADER_BEGIN
   ((N) <= G_MAXSIZE ? (size_t) (N) : G_MAXSIZE)
 
 /* Sum of two sizes, with overflow check.  */
-XSIZE_INLINE size_t
+inline size_t
 #if __GNUC__ >= 3
 __attribute__ ((__pure__))
 #endif
@@ -69,7 +69,7 @@ xsum (size_t size1, size_t size2)
 }
 
 /* Sum of three sizes, with overflow check.  */
-XSIZE_INLINE size_t
+inline size_t
 #if __GNUC__ >= 3
 __attribute__ ((__pure__))
 #endif
@@ -79,7 +79,7 @@ xsum3 (size_t size1, size_t size2, size_t size3)
 }
 
 /* Sum of four sizes, with overflow check.  */
-XSIZE_INLINE size_t
+inline size_t
 #if __GNUC__ >= 3
 __attribute__ ((__pure__))
 #endif
@@ -89,7 +89,7 @@ xsum4 (size_t size1, size_t size2, size_t size3, size_t size4)
 }
 
 /* Maximum of two sizes, with overflow check.  */
-XSIZE_INLINE size_t
+inline size_t
 #if __GNUC__ >= 3
 __attribute__ ((__pure__))
 #endif
