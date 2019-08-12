@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-06-24 16:19+0000\n"
-"PO-Revision-Date: 2019-07-08 15:27+0700\n"
+"POT-Creation-Date: 2019-08-06 14:34+0000\n"
+"PO-Revision-Date: 2019-08-12 13:01+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -330,11 +330,11 @@ msgstr "Tidak dapat membuka pengubah dari \"%s\" ke \"%s\""
 msgid "%s type"
 msgstr "tipe %s"
 
-#: gio/gcontenttype-win32.c:177
+#: gio/gcontenttype-win32.c:192
 msgid "Unknown type"
 msgstr "Tipe tak dikenal"
 
-#: gio/gcontenttype-win32.c:179
+#: gio/gcontenttype-win32.c:194
 #, c-format
 msgid "%s filetype"
 msgstr "tipe berkas %s"
@@ -1254,7 +1254,7 @@ msgstr "Galat: Terlalu banyak argumen.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Galat: %s bukan nama bus yang dikenal baik dan valid\n"
 
-#: gio/gdesktopappinfo.c:2045 gio/gdesktopappinfo.c:4834
+#: gio/gdesktopappinfo.c:2045 gio/gdesktopappinfo.c:4843
 msgid "Unnamed"
 msgstr "Tanpa nama"
 
@@ -1262,31 +1262,31 @@ msgstr "Tanpa nama"
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Berkas desktop tak menyatakan ruas Exec"
 
-#: gio/gdesktopappinfo.c:2718
+#: gio/gdesktopappinfo.c:2727
 msgid "Unable to find terminal required for application"
 msgstr "Tak bisa temukan terminal yang diperlukan bagi aplikasi"
 
-#: gio/gdesktopappinfo.c:3370
+#: gio/gdesktopappinfo.c:3379
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Tak bisa membuat folder %s untuk konfigurasi aplikasi bagi pengguna: %s"
 
-#: gio/gdesktopappinfo.c:3374
+#: gio/gdesktopappinfo.c:3383
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Tak bisa membuat folder %s untuk konfigurasi MIME bagi pengguna: %s"
 
-#: gio/gdesktopappinfo.c:3614 gio/gdesktopappinfo.c:3638
+#: gio/gdesktopappinfo.c:3623 gio/gdesktopappinfo.c:3647
 msgid "Application information lacks an identifier"
 msgstr "Informasi aplikasi tak punya identifier"
 
-#: gio/gdesktopappinfo.c:3872
+#: gio/gdesktopappinfo.c:3881
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Tak bisa membuat berkas desktop pengguna %s"
 
-#: gio/gdesktopappinfo.c:4006
+#: gio/gdesktopappinfo.c:4015
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definisi gubahan bagi %s"
@@ -2970,7 +2970,7 @@ msgstr "Sistem berkas tak mendukung taut simbolik"
 msgid "Error making symbolic link %s: %s"
 msgstr "Galat saat membuat taut simbolis %s: %s"
 
-#: gio/glocalfile.c:2363 glib/gfileutils.c:2155
+#: gio/glocalfile.c:2363 glib/gfileutils.c:2172
 msgid "Symbolic links not supported"
 msgstr "Taut simbolik tidak didukung"
 
@@ -3280,12 +3280,12 @@ msgstr "Tak bisa membuat pemantau jaringan: "
 msgid "Could not get network status: "
 msgstr "Tak bisa mendapat status jaringan: "
 
-#: gio/gnetworkmonitornm.c:347
+#: gio/gnetworkmonitornm.c:348
 #, c-format
 msgid "NetworkManager not running"
 msgstr "NetworkManager tidak berjalan"
 
-#: gio/gnetworkmonitornm.c:358
+#: gio/gnetworkmonitornm.c:359
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "Versi NetworkManager terlalu tua"
@@ -3701,7 +3701,7 @@ msgstr "Soket tak valid, inisialisasi gagal karena: %s"
 msgid "Socket is already closed"
 msgstr "Soket telah ditutup"
 
-#: gio/gsocket.c:404 gio/gsocket.c:3028 gio/gsocket.c:4245 gio/gsocket.c:4303
+#: gio/gsocket.c:404 gio/gsocket.c:3134 gio/gsocket.c:4351 gio/gsocket.c:4409
 msgid "Socket I/O timed out"
 msgstr "I/O soket kehabisan waktu"
 
@@ -3755,107 +3755,107 @@ msgstr "tak bisa mendengarkan: %s"
 msgid "Error binding to address: %s"
 msgstr "Galat saat mengikat ke alamat: %s"
 
-#: gio/gsocket.c:2216 gio/gsocket.c:2253 gio/gsocket.c:2363 gio/gsocket.c:2388
-#: gio/gsocket.c:2461 gio/gsocket.c:2519 gio/gsocket.c:2537
+#: gio/gsocket.c:2332 gio/gsocket.c:2369 gio/gsocket.c:2479 gio/gsocket.c:2504
+#: gio/gsocket.c:2567 gio/gsocket.c:2625 gio/gsocket.c:2643
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Galat saat bergabung dengan grup multicast: %s"
 
-#: gio/gsocket.c:2217 gio/gsocket.c:2254 gio/gsocket.c:2364 gio/gsocket.c:2389
-#: gio/gsocket.c:2462 gio/gsocket.c:2520 gio/gsocket.c:2538
+#: gio/gsocket.c:2333 gio/gsocket.c:2370 gio/gsocket.c:2480 gio/gsocket.c:2505
+#: gio/gsocket.c:2568 gio/gsocket.c:2626 gio/gsocket.c:2644
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Galat saat meninggalkan grup multicast: %s"
 
-#: gio/gsocket.c:2218
+#: gio/gsocket.c:2334
 msgid "No support for source-specific multicast"
 msgstr "Tak ada dukungan bagi multicast spesifik sumber"
 
-#: gio/gsocket.c:2365
+#: gio/gsocket.c:2481
 msgid "Unsupported socket family"
 msgstr "Keluarga soket tak didukung"
 
-#: gio/gsocket.c:2390
+#: gio/gsocket.c:2506
 msgid "source-specific not an IPv4 address"
 msgstr "spesifik sumber bukan alamat IPv4"
 
-#: gio/gsocket.c:2408 gio/gsocket.c:2437 gio/gsocket.c:2487
-#, c-format
-msgid "Interface not found: %s"
-msgstr "Antarmuka tidak ditemukan: %s"
-
-#: gio/gsocket.c:2424
+#: gio/gsocket.c:2530
 #, c-format
 msgid "Interface name too long"
 msgstr "Nama antarmuka terlalu panjang"
 
-#: gio/gsocket.c:2463
+#: gio/gsocket.c:2543 gio/gsocket.c:2593
+#, c-format
+msgid "Interface not found: %s"
+msgstr "Antarmuka tidak ditemukan: %s"
+
+#: gio/gsocket.c:2569
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Tak ada dukungan bagi multicast spesifik sumber IPV4"
 
-#: gio/gsocket.c:2521
+#: gio/gsocket.c:2627
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Tak ada dukungan bagi multicast spesifik sumber IPV6"
 
-#: gio/gsocket.c:2730
+#: gio/gsocket.c:2836
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Galat saat menerima sambungan: %s"
 
-#: gio/gsocket.c:2856
+#: gio/gsocket.c:2962
 msgid "Connection in progress"
 msgstr "Penyambungan tengah berlangsung"
 
-#: gio/gsocket.c:2907
+#: gio/gsocket.c:3013
 msgid "Unable to get pending error: "
 msgstr "Tak bisa mendapat kesalahan yang tertunda: "
 
-#: gio/gsocket.c:3093
+#: gio/gsocket.c:3199
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Galat saat menerima data: %s"
 
-#: gio/gsocket.c:3290
+#: gio/gsocket.c:3396
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Galat saat mengirim data: %s"
 
-#: gio/gsocket.c:3477
+#: gio/gsocket.c:3583
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Tak bisa mematikan soket: %s"
 
-#: gio/gsocket.c:3558
+#: gio/gsocket.c:3664
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Galat saat menutup soket: %s"
 
-#: gio/gsocket.c:4238
+#: gio/gsocket.c:4344
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Menunggu kondisi soket: %s"
 
-#: gio/gsocket.c:4616 gio/gsocket.c:4618 gio/gsocket.c:4765 gio/gsocket.c:4850
-#: gio/gsocket.c:5028 gio/gsocket.c:5068 gio/gsocket.c:5070
+#: gio/gsocket.c:4722 gio/gsocket.c:4724 gio/gsocket.c:4871 gio/gsocket.c:4956
+#: gio/gsocket.c:5134 gio/gsocket.c:5174 gio/gsocket.c:5176
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
-#: gio/gsocket.c:4792
+#: gio/gsocket.c:4898
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage tak didukung pada Windows"
 
-#: gio/gsocket.c:5261 gio/gsocket.c:5334 gio/gsocket.c:5560
+#: gio/gsocket.c:5367 gio/gsocket.c:5440 gio/gsocket.c:5666
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
-#: gio/gsocket.c:5841
+#: gio/gsocket.c:5947
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Tak bisa membaca kredensial soket: %s"
 
-#: gio/gsocket.c:5850
+#: gio/gsocket.c:5956
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials tidak diimplementasikan untuk OS ini"
 
@@ -4198,75 +4198,80 @@ msgstr "Jalankan layanan dbus"
 msgid "Wrong args\n"
 msgstr "Arg salah\n"
 
-#: glib/gbookmarkfile.c:754
+#: glib/gbookmarkfile.c:756
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
 msgstr "Atribut \"%s\" yang tidak diharapkan untuk elemen \"%s\""
 
-#: glib/gbookmarkfile.c:765 glib/gbookmarkfile.c:836 glib/gbookmarkfile.c:846
-#: glib/gbookmarkfile.c:955
+#: glib/gbookmarkfile.c:767 glib/gbookmarkfile.c:838 glib/gbookmarkfile.c:848
+#: glib/gbookmarkfile.c:960
 #, c-format
 msgid "Attribute “%s” of element “%s” not found"
 msgstr "Atribut \"%s\" dari elemen \"%s\" tak ditemukan"
 
-#: glib/gbookmarkfile.c:1164 glib/gbookmarkfile.c:1229
-#: glib/gbookmarkfile.c:1293 glib/gbookmarkfile.c:1303
+#: glib/gbookmarkfile.c:1169 glib/gbookmarkfile.c:1234
+#: glib/gbookmarkfile.c:1298 glib/gbookmarkfile.c:1308
 #, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "Tag \"%s\" yang tak diharapkan, diharapkan tag \"%s\""
 
-#: glib/gbookmarkfile.c:1189 glib/gbookmarkfile.c:1203
-#: glib/gbookmarkfile.c:1271 glib/gbookmarkfile.c:1317
+#: glib/gbookmarkfile.c:1194 glib/gbookmarkfile.c:1208
+#: glib/gbookmarkfile.c:1276 glib/gbookmarkfile.c:1322
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
 msgstr "Tag \"%s\" yang tak diharapkan di dalam \"%s\""
 
-#: glib/gbookmarkfile.c:1813
+#: glib/gbookmarkfile.c:1616
+#, c-format
+msgid "Invalid date/time ‘%s’ in bookmark file"
+msgstr "Tanggal/waktu ‘%s’ tidak valid dalam berkas penanda taut"
+
+#: glib/gbookmarkfile.c:1822
 msgid "No valid bookmark file found in data dirs"
 msgstr "Tak ditemukan penanda buku yang valid di direktori data"
 
-#: glib/gbookmarkfile.c:2014
+#: glib/gbookmarkfile.c:2023
 #, c-format
 msgid "A bookmark for URI “%s” already exists"
 msgstr "Penanda taut untuk URI \"%s\" telah ada"
 
-#: glib/gbookmarkfile.c:2060 glib/gbookmarkfile.c:2218
-#: glib/gbookmarkfile.c:2303 glib/gbookmarkfile.c:2383
-#: glib/gbookmarkfile.c:2468 glib/gbookmarkfile.c:2551
-#: glib/gbookmarkfile.c:2629 glib/gbookmarkfile.c:2708
-#: glib/gbookmarkfile.c:2750 glib/gbookmarkfile.c:2847
-#: glib/gbookmarkfile.c:2968 glib/gbookmarkfile.c:3158
-#: glib/gbookmarkfile.c:3234 glib/gbookmarkfile.c:3402
-#: glib/gbookmarkfile.c:3491 glib/gbookmarkfile.c:3580
-#: glib/gbookmarkfile.c:3699
+#: glib/gbookmarkfile.c:2069 glib/gbookmarkfile.c:2227
+#: glib/gbookmarkfile.c:2312 glib/gbookmarkfile.c:2392
+#: glib/gbookmarkfile.c:2477 glib/gbookmarkfile.c:2560
+#: glib/gbookmarkfile.c:2638 glib/gbookmarkfile.c:2717
+#: glib/gbookmarkfile.c:2759 glib/gbookmarkfile.c:2856
+#: glib/gbookmarkfile.c:2977 glib/gbookmarkfile.c:3167
+#: glib/gbookmarkfile.c:3243 glib/gbookmarkfile.c:3411
+#: glib/gbookmarkfile.c:3500 glib/gbookmarkfile.c:3589
+#: glib/gbookmarkfile.c:3708
 #, c-format
 msgid "No bookmark found for URI “%s”"
 msgstr "Tak ditemukan penanda taut untuk URI \"%s\""
 
-#: glib/gbookmarkfile.c:2392
+#: glib/gbookmarkfile.c:2401
 #, c-format
 msgid "No MIME type defined in the bookmark for URI “%s”"
 msgstr ""
 "Tidak ada jenis MIME yang didefinisikan pada penanda taut untuk URI \"%s\""
 
-#: glib/gbookmarkfile.c:2477
+#: glib/gbookmarkfile.c:2486
 #, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
 msgstr ""
 "Tidak ada flag privat yang ditetapkan dalam penanda taut untuk URI \"%s\""
 
-#: glib/gbookmarkfile.c:2856
+#: glib/gbookmarkfile.c:2865
 #, c-format
 msgid "No groups set in bookmark for URI “%s”"
 msgstr "Tidak ada grup yang ditetapkan dalam penanda taut untuk URI \"%s\""
 
-#: glib/gbookmarkfile.c:3255 glib/gbookmarkfile.c:3412
+#: glib/gbookmarkfile.c:3264 glib/gbookmarkfile.c:3421
 #, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
 msgstr ""
 "Tak ditemukan aplikasi terdaftar dengan nama \"%s\" bagi penanda taut \"%s\""
 
-#: glib/gbookmarkfile.c:3435
+#: glib/gbookmarkfile.c:3444
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Gagal mengembangkan baris eksekusi \"%s\" dengan URI \"%s\""
@@ -4324,25 +4329,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "Nama path \"%s\" bukan lokasi absolut"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:214
+#: glib/gdatetime.c:220
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %d %b %Y %r %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:217
+#: glib/gdatetime.c:223
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:220
+#: glib/gdatetime.c:226
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:223
+#: glib/gdatetime.c:229
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4363,62 +4368,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:262
+#: glib/gdatetime.c:268
 msgctxt "full month name"
 msgid "January"
 msgstr "Januari"
 
-#: glib/gdatetime.c:264
+#: glib/gdatetime.c:270
 msgctxt "full month name"
 msgid "February"
 msgstr "Februari"
 
-#: glib/gdatetime.c:266
+#: glib/gdatetime.c:272
 msgctxt "full month name"
 msgid "March"
 msgstr "Maret"
 
-#: glib/gdatetime.c:268
+#: glib/gdatetime.c:274
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: glib/gdatetime.c:270
+#: glib/gdatetime.c:276
 msgctxt "full month name"
 msgid "May"
 msgstr "Mei"
 
-#: glib/gdatetime.c:272
+#: glib/gdatetime.c:278
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: glib/gdatetime.c:274
+#: glib/gdatetime.c:280
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: glib/gdatetime.c:276
+#: glib/gdatetime.c:282
 msgctxt "full month name"
 msgid "August"
 msgstr "Agustus"
 
-#: glib/gdatetime.c:278
+#: glib/gdatetime.c:284
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: glib/gdatetime.c:280
+#: glib/gdatetime.c:286
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: glib/gdatetime.c:282
+#: glib/gdatetime.c:288
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: glib/gdatetime.c:284
+#: glib/gdatetime.c:290
 msgctxt "full month name"
 msgid "December"
 msgstr "Desember"
@@ -4440,132 +4445,132 @@ msgstr "Desember"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:316
+#: glib/gdatetime.c:322
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: glib/gdatetime.c:318
+#: glib/gdatetime.c:324
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: glib/gdatetime.c:320
+#: glib/gdatetime.c:326
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: glib/gdatetime.c:322
+#: glib/gdatetime.c:328
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: glib/gdatetime.c:324
+#: glib/gdatetime.c:330
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mei"
 
-#: glib/gdatetime.c:326
+#: glib/gdatetime.c:332
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: glib/gdatetime.c:328
+#: glib/gdatetime.c:334
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: glib/gdatetime.c:330
+#: glib/gdatetime.c:336
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Ags"
 
-#: glib/gdatetime.c:332
+#: glib/gdatetime.c:338
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:340
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:342
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:344
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Des"
 
-#: glib/gdatetime.c:353
+#: glib/gdatetime.c:359
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Senin"
 
-#: glib/gdatetime.c:355
+#: glib/gdatetime.c:361
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Selasa"
 
-#: glib/gdatetime.c:357
+#: glib/gdatetime.c:363
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Rabu"
 
-#: glib/gdatetime.c:359
+#: glib/gdatetime.c:365
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Kamis"
 
-#: glib/gdatetime.c:361
+#: glib/gdatetime.c:367
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Jumat"
 
-#: glib/gdatetime.c:363
+#: glib/gdatetime.c:369
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sabtu"
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:371
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Minggu"
 
-#: glib/gdatetime.c:380
+#: glib/gdatetime.c:386
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Sen"
 
-#: glib/gdatetime.c:382
+#: glib/gdatetime.c:388
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Sel"
 
-#: glib/gdatetime.c:384
+#: glib/gdatetime.c:390
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Rab"
 
-#: glib/gdatetime.c:386
+#: glib/gdatetime.c:392
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Kam"
 
-#: glib/gdatetime.c:388
+#: glib/gdatetime.c:394
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Jum"
 
-#: glib/gdatetime.c:390
+#: glib/gdatetime.c:396
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sab"
 
-#: glib/gdatetime.c:392
+#: glib/gdatetime.c:398
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Min"
@@ -4587,62 +4592,62 @@ msgstr "Min"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:456
+#: glib/gdatetime.c:462
 msgctxt "full month name with day"
 msgid "January"
 msgstr "Januari"
 
-#: glib/gdatetime.c:458
+#: glib/gdatetime.c:464
 msgctxt "full month name with day"
 msgid "February"
 msgstr "Februari"
 
-#: glib/gdatetime.c:460
+#: glib/gdatetime.c:466
 msgctxt "full month name with day"
 msgid "March"
 msgstr "Maret"
 
-#: glib/gdatetime.c:462
+#: glib/gdatetime.c:468
 msgctxt "full month name with day"
 msgid "April"
 msgstr "April"
 
-#: glib/gdatetime.c:464
+#: glib/gdatetime.c:470
 msgctxt "full month name with day"
 msgid "May"
 msgstr "Mei"
 
-#: glib/gdatetime.c:466
+#: glib/gdatetime.c:472
 msgctxt "full month name with day"
 msgid "June"
 msgstr "Juni"
 
-#: glib/gdatetime.c:468
+#: glib/gdatetime.c:474
 msgctxt "full month name with day"
 msgid "July"
 msgstr "Juli"
 
-#: glib/gdatetime.c:470
+#: glib/gdatetime.c:476
 msgctxt "full month name with day"
 msgid "August"
 msgstr "Agustus"
 
-#: glib/gdatetime.c:472
+#: glib/gdatetime.c:478
 msgctxt "full month name with day"
 msgid "September"
 msgstr "September"
 
-#: glib/gdatetime.c:474
+#: glib/gdatetime.c:480
 msgctxt "full month name with day"
 msgid "October"
 msgstr "Oktober"
 
-#: glib/gdatetime.c:476
+#: glib/gdatetime.c:482
 msgctxt "full month name with day"
 msgid "November"
 msgstr "November"
 
-#: glib/gdatetime.c:478
+#: glib/gdatetime.c:484
 msgctxt "full month name with day"
 msgid "December"
 msgstr "Desember"
@@ -4664,74 +4669,74 @@ msgstr "Desember"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:543
+#: glib/gdatetime.c:549
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "Jan"
 
-#: glib/gdatetime.c:545
+#: glib/gdatetime.c:551
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "Feb"
 
-#: glib/gdatetime.c:547
+#: glib/gdatetime.c:553
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "Mar"
 
-#: glib/gdatetime.c:549
+#: glib/gdatetime.c:555
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "Apr"
 
-#: glib/gdatetime.c:551
+#: glib/gdatetime.c:557
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "Mei"
 
-#: glib/gdatetime.c:553
+#: glib/gdatetime.c:559
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "Jun"
 
-#: glib/gdatetime.c:555
+#: glib/gdatetime.c:561
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "Jul"
 
-#: glib/gdatetime.c:557
+#: glib/gdatetime.c:563
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "Ags"
 
-#: glib/gdatetime.c:559
+#: glib/gdatetime.c:565
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "Sep"
 
-#: glib/gdatetime.c:561
+#: glib/gdatetime.c:567
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "Okt"
 
-#: glib/gdatetime.c:563
+#: glib/gdatetime.c:569
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "Nov"
 
-#: glib/gdatetime.c:565
+#: glib/gdatetime.c:571
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "Des"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:582
+#: glib/gdatetime.c:588
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:585
+#: glib/gdatetime.c:591
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -4741,79 +4746,79 @@ msgstr "PM"
 msgid "Error opening directory “%s”: %s"
 msgstr "Galat saat membuka direktori \"%s\": %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:808
+#: glib/gfileutils.c:733 glib/gfileutils.c:825
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
 msgstr[0] "Tidak dapat mengalokasikan %lu bita untuk membaca berkas \"%s\""
 msgstr[1] "Tidak dapat mengalokasikan %lu bita untuk membaca berkas \"%s\""
 
-#: glib/gfileutils.c:733
+#: glib/gfileutils.c:750
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Galat saat membaca berkas \"%s\": %s"
 
-#: glib/gfileutils.c:769
+#: glib/gfileutils.c:786
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Berkas \"%s\" terlalu besar"
 
-#: glib/gfileutils.c:833
+#: glib/gfileutils.c:850
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Gagal membaca dari berkas \"%s\": %s"
 
-#: glib/gfileutils.c:881 glib/gfileutils.c:953
+#: glib/gfileutils.c:898 glib/gfileutils.c:970
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Gagal membuka berkas \"%s\": %s"
 
-#: glib/gfileutils.c:893
+#: glib/gfileutils.c:910
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Gagal mendapat atribut berkas \"%s\": fstat() gagal: %s"
 
-#: glib/gfileutils.c:923
+#: glib/gfileutils.c:940
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Gagal membuka berkas \"%s\": fdopen() gagal: %s"
 
-#: glib/gfileutils.c:1022
+#: glib/gfileutils.c:1039
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Gagal mengubah nama berkas \"%s\" menjadi \"%s\": g_rename() gagal: %s"
 
-#: glib/gfileutils.c:1057 glib/gfileutils.c:1575
+#: glib/gfileutils.c:1074 glib/gfileutils.c:1592
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Gagal membuat berkas \"%s\": %s"
 
-#: glib/gfileutils.c:1084
+#: glib/gfileutils.c:1101
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Gagal menulis berkas \"%s\": write() gagal: %s"
 
-#: glib/gfileutils.c:1127
+#: glib/gfileutils.c:1144
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Gagal menulis berkas \"%s\": fsync() gagal: %s"
 
-#: glib/gfileutils.c:1262
+#: glib/gfileutils.c:1279
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Berkas \"%s\" yang ada tidak dapat dibuang: g_unlink() gagal: %s"
 
-#: glib/gfileutils.c:1541
+#: glib/gfileutils.c:1558
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Templat \"%s\" tidak valid, tidak boleh mengandung \"%s\""
 
-#: glib/gfileutils.c:1554
+#: glib/gfileutils.c:1571
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Templat \"%s\" tidak memuat XXXXXX"
 
-#: glib/gfileutils.c:2112 glib/gfileutils.c:2140
+#: glib/gfileutils.c:2129 glib/gfileutils.c:2157
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Gagal membaca taut simbolik \"%s\": %s"
