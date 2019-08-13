@@ -522,6 +522,59 @@ test_mkdir_with_parents (void)
   g_assert_cmpint (errno, ==, EINVAL);
 }
 
+/* Reproducer for https://gitlab.gnome.org/GNOME/glib/issues/1852 */
+static void
+test_mkdir_with_parents_permission (void)
+{
+#ifdef G_OS_UNIX
+  gchar *tmpdir;
+  gchar *subdir;
+  gchar *subdir2;
+  gchar *subdir3;
+  GError *error = NULL;
+  int result;
+  int saved_errno;
+
+  tmpdir = g_dir_make_tmp ("test-fileutils.XXXXXX", &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (tmpdir);
+
+  subdir = g_build_filename (tmpdir, "sub", NULL);
+  subdir2 = g_build_filename (subdir, "sub2", NULL);
+  subdir3 = g_build_filename (subdir2, "sub3", NULL);
+  g_assert_cmpint (g_mkdir (subdir, 0700) == 0 ? 0 : errno, ==, 0);
+  g_assert_cmpint (g_chmod (subdir, 0) == 0 ? 0 : errno, ==, 0);
+
+  if (g_mkdir (subdir2, 0700) == 0)
+    {
+      g_test_skip ("have CAP_DAC_OVERRIDE or equivalent, cannot test");
+    }
+  else
+    {
+      result = g_mkdir_with_parents (subdir2, 0700);
+      saved_errno = errno;
+      g_assert_cmpint (result, ==, -1);
+      g_assert_cmpint (saved_errno, ==, EACCES);
+
+      result = g_mkdir_with_parents (subdir3, 0700);
+      saved_errno = errno;
+      g_assert_cmpint (result, ==, -1);
+      g_assert_cmpint (saved_errno, ==, EACCES);
+
+      g_assert_cmpint (g_chmod (subdir, 0700) == 0 ? 0 : errno, ==, 0);
+    }
+
+  g_assert_cmpint (g_remove (subdir) == 0 ? 0 : errno, ==, 0);
+  g_assert_cmpint (g_remove (tmpdir) == 0 ? 0 : errno, ==, 0);
+  g_free (subdir3);
+  g_free (subdir2);
+  g_free (subdir);
+  g_free (tmpdir);
+#else
+  g_test_skip ("cannot test without Unix-style permissions");
+#endif
+}
+
 static void
 test_format_size_for_display (void)
 {
@@ -1407,6 +1460,7 @@ main (int   argc,
   g_test_add_func ("/fileutils/build-filename", test_build_filename);
   g_test_add_func ("/fileutils/build-filenamev", test_build_filenamev);
   g_test_add_func ("/fileutils/mkdir-with-parents", test_mkdir_with_parents);
+  g_test_add_func ("/fileutils/mkdir-with-parents-permission", test_mkdir_with_parents_permission);
   g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
   g_test_add_func ("/fileutils/errors", test_file_errors);
   g_test_add_func ("/fileutils/basename", test_basename);
