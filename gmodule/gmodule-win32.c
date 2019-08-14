@@ -39,12 +39,6 @@
 #include <sys/cygwin.h>
 #endif
 
-/* Default family is DESKTOP_APP which is DESKTOP | APP
- * We want to know when we're only building for apps */
-#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) && !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
-#define G_WINAPI_ONLY_APP
-#endif
-
 static void
 set_error (const gchar *format,
 	   ...)
