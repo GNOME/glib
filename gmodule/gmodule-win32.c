@@ -39,12 +39,6 @@
 #include <sys/cygwin.h>
 #endif
 
-/* Default family is DESKTOP_APP which is DESKTOP | APP
- * We want to know when we're only building for apps */
-#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) && !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
-#define G_WINAPI_ONLY_APP
-#endif
-
 static void
 set_error (const gchar *format,
 	   ...)
@@ -93,7 +87,7 @@ _g_module_open (const gchar *file_name,
 
   /* When building for UWP, load app asset DLLs instead of filesystem DLLs.
    * Needs MSVC, Windows 8 and newer, and is only usable from apps. */
-#if _WIN32_WINNT >= 0x0602 && defined(G_WINAPI_ONLY_APP)
+#if _WIN32_WINNT >= 0x0602 && G_WINAPI_ONLY_APP
   handle = LoadPackagedLibrary (wfilename, 0);
 #else
   handle = LoadLibraryW (wfilename);
