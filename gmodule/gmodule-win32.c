@@ -127,8 +127,11 @@ find_in_any_module_using_toolhelp (const gchar *symbol_name)
   HANDLE snapshot; 
   MODULEENTRY32 me32;
 
-  gpointer p;
+  gpointer p = NULL;
 
+  /* Under UWP, Module32Next and Module32First are not available since we're
+   * not allowed to search in the address space of arbitrary loaded DLLs */
+#if !defined(G_WINAPI_ONLY_APP)
   if ((snapshot = CreateToolhelp32Snapshot (TH32CS_SNAPMODULE, 0)) == (HANDLE) -1)
     return NULL;
 
@@ -143,6 +146,7 @@ find_in_any_module_using_toolhelp (const gchar *symbol_name)
     }
 
   CloseHandle (snapshot);
+#endif
 
   return p;
 }
