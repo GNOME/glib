@@ -825,7 +825,15 @@ g_io_win32_check (GSource *source)
     case G_IO_WIN32_WINDOWS_MESSAGES:
       if (channel->debug)
 	g_print (" MSG\n");
+#ifndef G_WINAPI_ONLY_APP
       return (PeekMessage (&msg, channel->hwnd, 0, 0, PM_NOREMOVE));
+#else
+      /* We do not allow creation of GIOChannels for win32 window messages
+       * since they are not available on UWP */
+      g_critical ("Cannot check for win32 window messages using GIOChannel since "
+          "GLib was built for Universal Windows Platform apps");
+      return FALSE;
+#endif
 
     case G_IO_WIN32_FILE_DESC:
       if (channel->debug)
@@ -843,6 +851,7 @@ g_io_win32_check (GSource *source)
     case G_IO_WIN32_CONSOLE:
       if (channel->debug)
 	g_print (" CON\n");
+#ifndef G_WINAPI_ONLY_APP
       if (watch->channel->is_writeable)
 	return TRUE;
       else if (watch->channel->is_readable)
@@ -863,6 +872,12 @@ g_io_win32_check (GSource *source)
 	      ReadConsoleInput ((HANDLE) watch->pollfd.fd, &buffer, 1, &n);
 	    }
         }
+#else
+      /* We do not allow creation of console GIOChannels since consoles are
+       * not available on UWP */
+      g_critical ("Cannot check for console messages using GIOChannel since "
+          "GLib was built for Universal Windows Platform apps");
+#endif
       return FALSE;
 
     case G_IO_WIN32_SOCKET:
@@ -1038,6 +1053,7 @@ g_io_win32_msg_read (GIOChannel *channel,
 
   *bytes_read = 0;
 
+#ifndef G_WINAPI_ONLY_APP
   if (count < sizeof (MSG))
     {
       g_set_error_literal (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
@@ -1055,6 +1071,14 @@ g_io_win32_msg_read (GIOChannel *channel,
   *bytes_read = sizeof (MSG);
 
   return G_IO_STATUS_NORMAL;
+#else
+  /* Win32 Window handles are not available on UWP, so we can't read messages
+   * from them either, and PeekMessage is not allowed. */
+  g_set_error_literal (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED,
+                       "Cannot read win32 window messages since "
+                       "GLib was built for Universal Windows Platform apps");
+  return G_IO_STATUS_ERROR;
+#endif
 }
 
 static GIOStatus
@@ -1069,6 +1093,7 @@ g_io_win32_msg_write (GIOChannel  *channel,
 
   *bytes_written = 0;
 
+#ifndef G_WINAPI_ONLY_APP
   if (count != sizeof (MSG))
     {
       g_set_error_literal (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
@@ -1091,6 +1116,14 @@ g_io_win32_msg_write (GIOChannel  *channel,
   *bytes_written = sizeof (MSG);
 
   return G_IO_STATUS_NORMAL;
+#else
+  /* Win32 Window handles are not available on UWP, so we can't write messages
+   * to them either, and PostMessage is not allowed. */
+  g_set_error_literal (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_FAILED,
+                       "Cannot write win32 window message since "
+                       "GLib was built for Universal Windows Platform apps");
+  return G_IO_STATUS_ERROR;
+#endif
 }
 
 static GIOStatus
@@ -1965,6 +1998,11 @@ static GIOFuncs win32_channel_sock_funcs = {
  * This function creates a #GIOChannel that can be used to poll for
  * Windows messages for the window in question.
  *
+ * Since 2.64, when GLib has been built for the Universal Windows Platform,
+ * calling this function will trigger a g_critical() and using the returned
+ * channel with any other API will fail. This is because Win32 messages are
+ * not allowed when running as a Windows Store App.
+ *
  * Returns: a new #GIOChannel.
  **/
 GIOChannel *
@@ -1986,9 +2024,16 @@ g_io_channel_win32_new_messages (guint hwnd)
   win32_channel->type = G_IO_WIN32_WINDOWS_MESSAGES;
   win32_channel->hwnd = (HWND) hwnd;
 
+#ifndef G_WINAPI_ONLY_APP
   /* XXX: check this. */
   channel->is_readable = IsWindow (win32_channel->hwnd);
   channel->is_writeable = IsWindow (win32_channel->hwnd);
+#else
+  /* Win32 Window handles are not available on UWP, so we can't create
+   * a channel to handle messages from them. Even IsWindow is not allowed. */
+  g_critical ("win32 window message I/O will not work since "
+      "GLib was built for Universal Windows Platform apps");
+#endif
 
   channel->is_seekable = FALSE;
 
@@ -2016,6 +2061,12 @@ g_io_channel_win32_new_fd_internal (gint             fd,
 
   if (st->st_mode & _S_IFCHR) /* console */
     {
+#ifdef G_WINAPI_ONLY_APP
+      /* The console is not available on UWP, so we can't create
+       * a channel to read/write from the console */
+      g_critical ("console I/O will not work since "
+          "GLib was built for Universal Windows Platform apps");
+#endif
       channel->funcs = &win32_channel_console_funcs;
       win32_channel->type = G_IO_WIN32_CONSOLE;
       g_io_win32_console_get_flags_internal (channel);
@@ -2056,6 +2107,11 @@ g_io_channel_win32_new_fd_internal (gint             fd,
  * thread. Your code should call only g_io_channel_read().
  *
  * This function is available only in GLib on Windows.
+ *
+ * Since 2.64, when GLib has been built for the Universal Windows Platform,
+ * calling this function on a console fd will trigger a g_critical() and using
+ * the returned channel with any other API will fail. This is because usage of
+ * console APIs is not allowed when running as a Windows Store App.
  *
  * Returns: a new #GIOChannel.
  **/
@@ -2200,7 +2256,14 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
       break;
 
     case G_IO_WIN32_CONSOLE:
+#ifndef G_WINAPI_ONLY_APP
       fd->fd = _get_osfhandle (win32_channel->fd);
+#else
+      /* There is no console on UWP apps */
+      g_critical ("Cannot create a PollFD to handle console I/O since "
+          "GLib was built for Universal Windows Platform apps");
+      fd->fd = -1;
+#endif
       break;
 
     case G_IO_WIN32_SOCKET:
@@ -2208,7 +2271,14 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
       break;
       
     case G_IO_WIN32_WINDOWS_MESSAGES:
+#ifndef G_WINAPI_ONLY_APP
       fd->fd = G_WIN32_MSG_HANDLE;
+#else
+      /* Win32 Window handles are not available on UWP */
+      g_critical ("Cannot create a PollFD to handle win32 window messages since "
+          "GLib was built for Universal Windows Platform apps");
+      fd->fd = -1;
+#endif
       break;
 
     default:
