@@ -403,6 +403,10 @@ glib_link_flags = cc.get_supported_link_arguments(warning_c_link_args)
 # Windows Support (7+)
 if host_system == 'windows'
   glib_conf.set('_WIN32_WINNT', '0x0601')
+  winapi = 'WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) && !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)'
+  glib_conf.set('G_WINAPI_ONLY_APP', cc.get_define(winapi))
+else
+  glib_conf.set('G_WINAPI_ONLY_APP', '0')
 endif
 
 functions = [
