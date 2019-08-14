@@ -397,6 +397,9 @@ g_tls_client_connection_get_accepted_cas (GTlsClientConnection *conn)
  * behavior, you must not use this function.
  *
  * Since: 2.46
+ *
+ * Deprecated: 2.62: use a lower-level TLS library directly if you
+ * require this degree of control over session resumption.
  */
 void
 g_tls_client_connection_copy_session_state (GTlsClientConnection *conn,
