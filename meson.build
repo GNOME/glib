@@ -400,9 +400,22 @@ add_project_arguments(cc.get_supported_arguments(warning_c_args), language: 'c')
 # improve this.
 glib_link_flags = cc.get_supported_link_arguments(warning_c_link_args)
 
-# Windows Support (7+)
+# Windows SDK requirements and checks
+glib_conf.set('G_WINAPI_ONLY_APP', '0')
 if host_system == 'windows'
-  glib_conf.set('_WIN32_WINNT', '0x0601')
+  # We require Windows 7+
+  winver = '0x0601'
+  glib_conf.set('_WIN32_WINNT', winver)
+  # Check whether we're building for UWP apps
+  code = '''
+  #define _WIN32_WINNT @0@
+  #include <windows.h>
+  #if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) && !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+  #error "Not an app"
+  #endif'''.format(winver)
+  if cc.compiles(code, name : 'building for UWP')
+    glib_conf.set('G_WINAPI_ONLY_APP', '1')
+  endif
 endif
 
 functions = [
