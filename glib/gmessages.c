@@ -1358,7 +1358,9 @@ g_logv (const gchar   *log_domain,
 
           if ((test_level & G_LOG_FLAG_FATAL) && !masquerade_fatal)
             {
-#ifdef G_OS_WIN32
+              /* MessageBox is allowed on UWP apps only when building against
+               * the debug CRT, which will set -D_DEBUG */
+#if defined(G_OS_WIN32) && (defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP))
               if (win32_keep_fatal_message)
                 {
                   gchar *locale_msg = g_locale_from_utf8 (fatal_msg_buf, -1, NULL, NULL, NULL);
@@ -1366,7 +1368,7 @@ g_logv (const gchar   *log_domain,
                   MessageBox (NULL, locale_msg, NULL,
                               MB_ICONERROR|MB_SETFOREGROUND);
                 }
-#endif /* !G_OS_WIN32 */
+#endif
 
               _g_log_abort (!(test_level & G_LOG_FLAG_RECURSION));
 	    }
@@ -2675,7 +2677,9 @@ handled:
   /* Abort if the message was fatal. */
   if (log_level & G_LOG_FLAG_FATAL)
     {
-#ifdef G_OS_WIN32
+      /* MessageBox is allowed on UWP apps only when building against
+       * the debug CRT, which will set -D_DEBUG */
+#if defined(G_OS_WIN32) && (defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP))
       if (!g_test_initialized ())
         {
           gchar *locale_msg = NULL;
