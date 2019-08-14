@@ -192,9 +192,13 @@ g_on_error_query (const gchar *prg_name)
   if (!prg_name)
     prg_name = g_get_prgname ();
 
+  /* MessageBox is allowed on UWP apps only when building against
+   * the debug CRT, which will set -D_DEBUG */
+#if defined(_DEBUG) || !G_WINAPI_ONLY_APP
   MessageBox (NULL, "g_on_error_query called, program terminating",
               (prg_name && *prg_name) ? prg_name : NULL,
               MB_OK|MB_ICONERROR);
+#endif
   _exit(0);
 #endif
 }
