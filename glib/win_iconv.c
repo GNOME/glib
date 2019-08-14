@@ -60,6 +60,12 @@
 #define FLAG_TRANSLIT           2 /* //TRANSLIT */
 #define FLAG_IGNORE             4 /* //IGNORE */
 
+/* Default family is DESKTOP_APP which is DESKTOP | APP
+ * We want to know when we're only building for apps */
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP) && !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#define G_WINAPI_ONLY_APP
+#endif
+
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 typedef unsigned int uint;
@@ -729,7 +735,13 @@ load_mlang(void)
     HMODULE h;
     if (ConvertINetString != NULL)
         return TRUE;
+  /* When building for UWP, load app asset DLLs instead of filesystem DLLs.
+   * Needs MSVC, Windows 8 and newer, and is only usable from apps. */
+#if _WIN32_WINNT >= 0x0602 && defined(G_WINAPI_ONLY_APP)
+    h = LoadPackagedLibrary(TEXT("mlang.dll"), 0);
+#else
     h = LoadLibrary(TEXT("mlang.dll"));
+#endif
     if (!h)
         return FALSE;
     ConvertINetString = (CONVERTINETSTRING)GetProcAddressA(h, "ConvertINetString");
