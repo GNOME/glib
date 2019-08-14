@@ -215,12 +215,9 @@ g_struct_info_find_method (GIStructInfo *info,
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header = (Header *)rinfo->typelib->data;
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = rinfo->offset + header->struct_blob_size
-    + blob->n_fields * header->field_blob_size;
-
+  offset = g_struct_get_field_offset (info, blob->n_fields);
   return _g_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
 }
 
