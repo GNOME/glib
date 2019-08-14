@@ -77,7 +77,7 @@ void                  g_tls_client_connection_set_use_ssl3         (GTlsClientCo
 GLIB_AVAILABLE_IN_ALL
 GList *               g_tls_client_connection_get_accepted_cas     (GTlsClientConnection    *conn);
 
-GLIB_AVAILABLE_IN_2_46
+GLIB_DEPRECATED_IN_2_62
 void                  g_tls_client_connection_copy_session_state   (GTlsClientConnection    *conn,
                                                                     GTlsClientConnection    *source);
 
