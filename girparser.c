@@ -309,6 +309,10 @@ locate_gir (GIrParser  *parser,
   if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
     return path;
   g_free (path);
+  path = g_build_filename (UNINSTALLED_GIR_DIR, girname, NULL);
+  if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+    return path;
+  g_free (path);
   return NULL;
 }
 
