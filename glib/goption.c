@@ -1829,9 +1829,10 @@ platform_get_argv0 (void)
 			    &len,
 			    NULL))
     return NULL;
+
   /* Sanity check for a NUL terminator. */
-  if (!memchr (cmdline, 0, len))
-    return NULL;
+  g_assert (memchr (cmdline, 0, len));
+
   /* We could just return cmdline, but I think it's better
    * to hold on to a smaller malloc block; the arguments
    * could be large.
