@@ -95,28 +95,6 @@
 #ifdef G_OS_WIN32
 #  include <direct.h>
 #  include <shlobj.h>
-   /* older SDK (e.g. msvc 5.0) does not have these*/
-#  ifndef CSIDL_MYMUSIC
-#    define CSIDL_MYMUSIC 13
-#  endif
-#  ifndef CSIDL_MYVIDEO
-#    define CSIDL_MYVIDEO 14
-#  endif
-#  ifndef CSIDL_INTERNET_CACHE
-#    define CSIDL_INTERNET_CACHE 32
-#  endif
-#  ifndef CSIDL_COMMON_APPDATA
-#    define CSIDL_COMMON_APPDATA 35
-#  endif
-#  ifndef CSIDL_MYPICTURES
-#    define CSIDL_MYPICTURES 0x27
-#  endif
-#  ifndef CSIDL_COMMON_DOCUMENTS
-#    define CSIDL_COMMON_DOCUMENTS 46
-#  endif
-#  ifndef CSIDL_PROFILE
-#    define CSIDL_PROFILE 40
-#  endif
 #  include <process.h>
 #endif
 
