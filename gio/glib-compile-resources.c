@@ -476,7 +476,10 @@ end_element (GMarkupParseContext  *context,
 	      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
 			   _("Error compressing file %s"),
 			   real_file);
-	      goto cleanup;
+              g_object_unref (compressor);
+              g_object_unref (out);
+              g_object_unref (out2);
+              goto cleanup;
 	    }
 
 	  g_free (data->content);
