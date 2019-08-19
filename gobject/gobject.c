@@ -1729,7 +1729,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
             break;
           }
 
-      if (j == n_params)
+      if (value == NULL)
         {
           value = &cvalues[cvals_used++];
           g_value_init (value, pspec->value_type);
@@ -1855,7 +1855,7 @@ g_object_new_internal (GObjectClass          *class,
                 break;
               }
 
-          if (j == n_params)
+          if (value == NULL)
             value = g_param_spec_get_default_value (pspec);
 
           object_set_property (object, pspec, value, nqueue);
