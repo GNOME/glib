@@ -302,7 +302,9 @@ stack_trace (const char * const *args)
       execvp (args[0], (char **) args);      /* exec gdb */
 
       /* Print failure to original stderr */
-      close (2); dup (old_err);
+      close (2);
+      if (old_err >= 0)
+        dup (old_err);
       perror ("exec gdb failed");
       _exit (0);
     }
