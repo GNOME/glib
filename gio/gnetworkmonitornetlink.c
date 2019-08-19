@@ -392,7 +392,7 @@ read_netlink_messages (GNetworkMonitorNetlink  *nl,
               if (!nl->priv->dump_networks &&
                   rtmsg->rtm_family == AF_INET6 &&
                   rtmsg->rtm_dst_len != 0 &&
-                  UNALIGNED_IN6_IS_ADDR_MC_LINKLOCAL (dest))
+                  (dest && UNALIGNED_IN6_IS_ADDR_MC_LINKLOCAL (dest)))
                 continue;
 
               if (msg->nlmsg_type == RTM_NEWROUTE)
