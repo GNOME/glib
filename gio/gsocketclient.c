@@ -1671,6 +1671,7 @@ g_socket_client_connected_callback (GObject      *source,
           G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
           _("Proxying over a non-TCP connection is not supported."));
 
+      g_object_unref (proxy);
       enumerator_next_async (data, FALSE);
     }
   else if (g_hash_table_contains (data->client->priv->app_proxies, protocol))
