@@ -280,7 +280,7 @@ g_application_impl_method_call (GDBusConnection       *connection,
     }
   else if (g_str_equal (method_name, "ActivateAction"))
     {
-      GVariant *parameter = NULL;
+      GVariant *parameter;
       GVariant *platform_data;
       GVariantIter *iter;
       const gchar *name;
@@ -288,7 +288,8 @@ g_application_impl_method_call (GDBusConnection       *connection,
       /* Only on the freedesktop interface */
 
       g_variant_get (parameters, "(&sav@a{sv})", &name, &iter, &platform_data);
-      g_variant_iter_next (iter, "v", &parameter);
+      if (!g_variant_iter_next (iter, "v", &parameter))
+        parameter = NULL;
       g_variant_iter_free (iter);
 
       class->before_emit (impl->app, platform_data);
