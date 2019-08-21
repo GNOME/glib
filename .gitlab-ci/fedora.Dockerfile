@@ -47,6 +47,7 @@ RUN dnf -y install \
     shared-mime-info \
     systemtap-sdt-devel \
     unzip \
+    valgrind \
     wget \
     xz \
     zlib-devel \
