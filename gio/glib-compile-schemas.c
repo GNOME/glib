@@ -1991,7 +1991,7 @@ set_overrides (GHashTable  *schema_table,
                     {
                       fprintf (stderr,
                                _("Cannot provide per-desktop overrides for "
-                                 "localised key “%s” in schema “%s” (override "
+                                 "localized key “%s” in schema “%s” (override "
                                  "file “%s”); ignoring override for this key."),
                            key, group, filename);
                       fprintf (stderr, "\n");
@@ -2000,7 +2000,7 @@ set_overrides (GHashTable  *schema_table,
 
                   fprintf (stderr,
                            _("Cannot provide per-desktop overrides for "
-                             "localised key “%s” in schema “%s” (override "
+                             "localized key “%s” in schema “%s” (override "
                              "file “%s”) and --strict was specified; exiting."),
                            key, group, filename);
                   fprintf (stderr, "\n");
