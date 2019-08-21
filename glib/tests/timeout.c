@@ -188,7 +188,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("");
 
   g_test_add_func ("/timeout/seconds", test_seconds);
   g_test_add_func ("/timeout/weeks-overflow", test_weeks_overflow);
