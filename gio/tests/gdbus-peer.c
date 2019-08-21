@@ -1053,6 +1053,76 @@ test_peer (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+test_peer_signals (void)
+{
+  GDBusConnection *c;
+  GDBusProxy *proxy;
+  GError *error = NULL;
+  PeerData data;
+  GThread *service_thread;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1620");
+
+  setup_test_address ();
+  memset (&data, '\0', sizeof (PeerData));
+  data.current_connections = g_ptr_array_new_with_free_func (g_object_unref);
+
+  /* bring up a server - we run the server in a different thread to avoid deadlocks */
+  service_thread = g_thread_new ("test_peer",
+                                 service_thread_func,
+                                 &data);
+  await_service_loop ();
+  g_assert_nonnull (server);
+
+  /* bring up a connection and accept it */
+  data.accept_connection = TRUE;
+  c = g_dbus_connection_new_for_address_sync (g_dbus_server_get_client_address (server),
+                                              G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                              NULL, /* GDBusAuthObserver */
+                                              NULL, /* cancellable */
+                                              &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (c);
+  while (data.current_connections->len < 1)
+    g_main_loop_run (loop);
+  g_assert_cmpint (data.current_connections->len, ==, 1);
+  g_assert_cmpint (data.num_connection_attempts, ==, 1);
+  g_assert_null (g_dbus_connection_get_unique_name (c));
+  g_assert_cmpstr (g_dbus_connection_get_guid (c), ==, test_guid);
+
+  /* Check that we can create a proxy with a non-NULL bus name, even though it's
+   * irrelevant in the non-message-bus case. Since the server runs in another
+   * thread it's fine to use synchronous blocking API here.
+   */
+  proxy = g_dbus_proxy_new_sync (c,
+                                 G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
+                                 G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
+                                 NULL,
+                                 ":1.1", /* bus_name */
+                                 "/org/gtk/GDBus/PeerTestObject",
+                                 "org.gtk.GDBus.PeerTestInterface",
+                                 NULL, /* GCancellable */
+                                 &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (proxy);
+
+  /* unref the server and stop listening for new connections */
+  g_dbus_server_stop (server);
+  g_clear_object (&server);
+
+  g_object_unref (c);
+  g_ptr_array_unref (data.current_connections);
+  g_object_unref (proxy);
+
+  g_main_loop_quit (service_loop);
+  g_thread_join (service_thread);
+
+  teardown_test_address ();
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 typedef struct
 {
   GDBusServer *server;
@@ -1828,6 +1898,7 @@ main (int   argc,
   loop = g_main_loop_new (NULL, FALSE);
 
   g_test_add_func ("/gdbus/peer-to-peer", test_peer);
+  g_test_add_func ("/gdbus/peer-to-peer/signals", test_peer_signals);
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
   g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
 
