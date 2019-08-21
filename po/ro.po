@@ -10,10 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-07-29 13:00+0000\n"
-"PO-Revision-Date: 2019-08-05 13:14+0300\n"
-"Last-Translator: Florentina Mușat <florentina.musat.28 [at] gmail [dot] "
-"com>\n"
+"POT-Creation-Date: 2019-08-21 17:54+0000\n"
+"PO-Revision-Date: 2019-08-21 22:20+0200\n"
+"Last-Translator: Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
 "sourceforge.net>\n"
 "Language: ro\n"
@@ -2802,7 +2801,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1993
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localised key “%s” in schema "
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”); ignoring override for this key."
 msgstr ""
 "Nu se pot furniza suprascrierile per-desktop pentru cheia localizată „%s” în "
@@ -2812,7 +2811,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:2002
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localised key “%s” in schema "
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”) and --strict was specified; exiting."
 msgstr ""
 "Nu se pot furniza suprascrierile per-desktop pentru cheia localizată „%s” în "
@@ -3341,12 +3340,12 @@ msgstr "Nu s-a putut crea monitorul de rețea: "
 msgid "Could not get network status: "
 msgstr "Nu s-a putut obține starea rețelei: "
 
-#: gio/gnetworkmonitornm.c:347
+#: gio/gnetworkmonitornm.c:348
 #, c-format
 msgid "NetworkManager not running"
 msgstr "NetworkManager nu rulează"
 
-#: gio/gnetworkmonitornm.c:358
+#: gio/gnetworkmonitornm.c:359
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "Versiunea de NetworkManager este prea veche"
