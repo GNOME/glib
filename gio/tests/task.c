@@ -2321,7 +2321,6 @@ main (int argc, char **argv)
   int ret;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("");
 
   loop = g_main_loop_new (NULL, FALSE);
   main_thread = g_thread_self ();
