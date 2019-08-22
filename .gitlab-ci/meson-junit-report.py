@@ -52,6 +52,7 @@ for line in args.infile:
     duration = data['duration']
     return_code = data['returncode']
     log = data['stdout']
+    log_stderr = data.get('stderr', '')
 
     unit = {
         'suite': suite_name,
@@ -59,6 +60,7 @@ for line in args.infile:
         'duration': duration,
         'returncode': return_code,
         'stdout': log,
+        'stderr': log_stderr,
     }
 
     units = suites.setdefault(suite_name, [])
@@ -103,7 +105,7 @@ for name, units in suites.items():
         failure.set('classname', '{}/{}'.format(args.project_name, unit['suite']))
         failure.set('name', unit['name'])
         failure.set('type', 'error')
-        failure.text = unit['stdout']
+        failure.text = unit['stdout'] + '\n' + unit['stderr']
 
 output = ET.tostring(testsuites, encoding='unicode')
 outfile.write(output)
