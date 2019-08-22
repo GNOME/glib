@@ -7053,7 +7053,6 @@ distribute_method_call (GDBusConnection *connection,
   const gchar *object_path;
   const gchar *interface_name;
   const gchar *member;
-  const gchar *path;
   gchar *subtree_path;
   gchar *needle;
 
@@ -7061,8 +7060,9 @@ distribute_method_call (GDBusConnection *connection,
 
   interface_name = g_dbus_message_get_interface (message);
   member = g_dbus_message_get_member (message);
-  path = g_dbus_message_get_path (message);
-  subtree_path = g_strdup (path);
+  object_path = g_dbus_message_get_path (message);
+  g_assert (object_path != NULL);
+  subtree_path = g_strdup (object_path);
   needle = strrchr (subtree_path, '/');
   if (needle != NULL && needle != subtree_path)
     {
@@ -7085,14 +7085,11 @@ distribute_method_call (GDBusConnection *connection,
                "      invoked by name %s\n"
                "      serial %d\n",
                interface_name, member,
-               path,
+               object_path,
                g_dbus_message_get_sender (message) != NULL ? g_dbus_message_get_sender (message) : "(none)",
                g_dbus_message_get_serial (message));
       _g_dbus_debug_print_unlock ();
     }
-
-  object_path = g_dbus_message_get_path (message);
-  g_assert (object_path != NULL);
 
   eo = g_hash_table_lookup (connection->map_object_path_to_eo, object_path);
   if (eo != NULL)
