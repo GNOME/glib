@@ -152,6 +152,24 @@
 }
 
 {
+	g-type-register-fundamental
+	Memcheck:Leak
+	match-leak-kinds:possible,reachable
+	fun:malloc
+	...
+	fun:g_type_register_fundamental
+}
+
+{
+	g-type-register-fundamental-calloc
+	Memcheck:Leak
+	match-leak-kinds:possible,reachable
+	fun:calloc
+	...
+	fun:g_type_register_fundamental
+}
+
+{
 	g-type-add-interface-dynamic
 	Memcheck:Leak
 	match-leak-kinds:reachable
