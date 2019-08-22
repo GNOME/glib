@@ -2,6 +2,7 @@
 
 set +e
 
+echo "${CI_PROJECT_DIR}"
 pwd
 ls
 
