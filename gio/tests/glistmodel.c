@@ -798,6 +798,7 @@ test_store_past_end (void)
   g_assert_cmpint (g_list_model_get_n_items (model), ==, 1);
   item = g_list_model_get_item (model, 0);
   g_assert_nonnull (item);
+  g_object_unref (item);
   item = g_list_model_get_item (model, G_MAXUINT);
   g_assert_null (item);
 

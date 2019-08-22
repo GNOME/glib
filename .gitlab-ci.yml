@@ -131,6 +131,9 @@ valgrind:
                  --wrap "valgrind --tool=memcheck --error-exitcode=1 --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/glib.supp"
                  --no-suite no-valgrind
                  --no-suite slow
+  # FIXME: Remove this when we have zero valgrind leaks.
+  # https://gitlab.gnome.org/GNOME/glib/issues/333
+  allow_failure: true
   artifacts:
     reports:
       junit: "_build/${CI_JOB_NAME}-report.xml"

@@ -136,7 +136,7 @@
 {
 	g-type-register-static-realloc
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:possible,reachable
 	fun:realloc
 	...
 	fun:g_type_register_static
@@ -149,6 +149,15 @@
 	fun:calloc
 	...
 	fun:g_type_register_static
+}
+
+{
+	g-type-register-fundamental-calloc
+	Memcheck:Leak
+	match-leak-kinds:possible,reachable
+	fun:calloc
+	...
+	fun:g_type_register_fundamental
 }
 
 {
