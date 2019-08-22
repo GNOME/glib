@@ -128,7 +128,7 @@ valgrind:
             _build
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
-                 --wrap 'valgrind --tool=memcheck --error-exitcode=1 --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite --suppressions=${CI_PROJECT_DIR}/glib.supp'
+                 --wrap "valgrind --tool=memcheck --error-exitcode=1 --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite --suppressions=${CI_PROJECT_DIR}/glib.supp"
                  --no-suite no-valgrind
                  --no-suite slow
   artifacts:
