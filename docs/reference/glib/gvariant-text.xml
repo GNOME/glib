@@ -38,7 +38,7 @@
 
    <informalexample><programlisting>[[1, 2, 3], [4, 5, 6.0]]</programlisting></informalexample>
 
-   is parsed as a array of arrays of doubles (type '<literal>aad</literal>').
+   is parsed as an array of arrays of doubles (type '<literal>aad</literal>').
   </para>
 
   <para>

@@ -510,7 +510,7 @@ connection_get_cb (GObject      *source_object,
  * Like g_bus_own_name() but takes a #GDBusConnection instead of a
  * #GBusType.
  *
- * Returns: an identifier (never 0) that an be used with
+ * Returns: an identifier (never 0) that can be used with
  *     g_bus_unown_name() to stop owning the name
  *
  * Since: 2.26
@@ -620,7 +620,7 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  * Simply register objects to be exported in @bus_acquired_handler and
  * unregister the objects (if any) in @name_lost_handler.
  *
- * Returns: an identifier (never 0) that an be used with
+ * Returns: an identifier (never 0) that can be used with
  *     g_bus_unown_name() to stop owning the name.
  *
  * Since: 2.26
@@ -805,7 +805,7 @@ bus_own_name_free_func (gpointer user_data)
  * Version of g_bus_own_name() using closures instead of callbacks for
  * easier binding in other languages.
  *
- * Returns: an identifier (never 0) that an be used with
+ * Returns: an identifier (never 0) that can be used with
  *     g_bus_unown_name() to stop owning the name.
  *
  * Since: 2.26
@@ -843,7 +843,7 @@ g_bus_own_name_with_closures (GBusType            bus_type,
  * Version of g_bus_own_name_on_connection() using closures instead of
  * callbacks for easier binding in other languages.
  *
- * Returns: an identifier (never 0) that an be used with
+ * Returns: an identifier (never 0) that can be used with
  *     g_bus_unown_name() to stop owning the name.
  *
  * Since: 2.26

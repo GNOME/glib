@@ -450,7 +450,7 @@ probe glib.timeout_add = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT
 }
 
 /**
- * probe glib.timeout_dispatch - Called when an timeout #GSource is dispatched
+ * probe glib.timeout_dispatch - Called when a timeout #GSource is dispatched
  * @source: the timeout #GSource
  * @context: the #GMainContext the timeout source was in
  * @func: the timeout callback function

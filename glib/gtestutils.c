@@ -627,7 +627,7 @@
 
 /**
  * g_assert_cmpfloat:
- * @n1: an floating point number
+ * @n1: a floating point number
  * @cmp: The comparison operator to use.
  *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
  * @n2: another floating point number
@@ -644,7 +644,7 @@
 
 /**
  * g_assert_cmpfloat_with_epsilon:
- * @n1: an floating point number
+ * @n1: a floating point number
  * @n2: another floating point number
  * @epsilon: a numeric value that expresses the expected tolerance
  *   between @n1 and @n2

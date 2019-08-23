@@ -805,7 +805,7 @@ g_tls_interaction_request_certificate_async (GTlsInteraction              *inter
  * @result: the result passed to the callback
  * @error: an optional location to place an error on failure
  *
- * Complete an request certificate user interaction request. This should be once
+ * Complete a request certificate user interaction request. This should be once
  * the g_tls_interaction_request_certificate_async() completion callback is called.
  *
  * If %G_TLS_INTERACTION_HANDLED is returned, then the #GTlsConnection

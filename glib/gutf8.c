@@ -382,7 +382,7 @@ g_utf8_offset_to_pointer  (const gchar *str,
  * @str: a UTF-8 encoded string
  * @pos: a pointer to a position within @str
  * 
- * Converts from a pointer to position within a string to a integer
+ * Converts from a pointer to position within a string to an integer
  * character offset.
  *
  * Since 2.10, this function allows @pos to be before @str, and returns

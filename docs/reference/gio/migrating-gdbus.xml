@@ -12,7 +12,7 @@
 
     <para>
       The central concepts of D-Bus are modelled in a very similar way
-      in dbus-glib and GDBus. Both have a objects representing connections,
+      in dbus-glib and GDBus. Both have objects representing connections,
       proxies and method invocations. But there are some important
       differences:
       <itemizedlist>

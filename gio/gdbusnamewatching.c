@@ -553,7 +553,7 @@ connection_get_cb (GObject      *source_object,
  *
  * Starts watching @name on the bus specified by @bus_type and calls
  * @name_appeared_handler and @name_vanished_handler when the name is
- * known to have a owner respectively known to lose its
+ * known to have an owner respectively known to lose its
  * owner. Callbacks will be invoked in the
  * [thread-default main context][g-main-context-push-thread-default]
  * of the thread you are calling this function from.
@@ -581,7 +581,7 @@ connection_get_cb (GObject      *source_object,
  * @name_appeared_handler and destroy them again (if any) in
  * @name_vanished_handler.
  *
- * Returns: An identifier (never 0) that an be used with
+ * Returns: An identifier (never 0) that can be used with
  * g_bus_unwatch_name() to stop watching the name.
  *
  * Since: 2.26
@@ -643,7 +643,7 @@ g_bus_watch_name (GBusType                  bus_type,
  * Like g_bus_watch_name() but takes a #GDBusConnection instead of a
  * #GBusType.
  *
- * Returns: An identifier (never 0) that an be used with
+ * Returns: An identifier (never 0) that can be used with
  * g_bus_unwatch_name() to stop watching the name.
  *
  * Since: 2.26
@@ -793,7 +793,7 @@ bus_watch_name_free_func (gpointer user_data)
  * Version of g_bus_watch_name() using closures instead of callbacks for
  * easier binding in other languages.
  *
- * Returns: An identifier (never 0) that an be used with
+ * Returns: An identifier (never 0) that can be used with
  * g_bus_unwatch_name() to stop watching the name.
  *
  * Since: 2.26
@@ -827,7 +827,7 @@ g_bus_watch_name_with_closures (GBusType                 bus_type,
  * Version of g_bus_watch_name_on_connection() using closures instead of callbacks for
  * easier binding in other languages.
  *
- * Returns: An identifier (never 0) that an be used with
+ * Returns: An identifier (never 0) that can be used with
  * g_bus_unwatch_name() to stop watching the name.
  *
  * Since: 2.26

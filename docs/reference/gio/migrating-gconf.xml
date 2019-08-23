@@ -134,7 +134,7 @@
 
     <section><title>Change sets</title>
       <para>
-        GConf has a a concept of a set of changes which can be applied or reverted
+        GConf has a concept of a set of changes which can be applied or reverted
         at once: #GConfChangeSet (GConf doesn't actually apply changes atomically,
         which is one of its shortcomings).
       </para>

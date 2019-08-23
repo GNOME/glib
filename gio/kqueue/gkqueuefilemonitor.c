@@ -265,7 +265,7 @@ g_kqueue_file_monitor_start (GLocalFileMonitor *local_monitor,
   /* For a directory monitor, create a subscription object anyway.
    * It will be used for directory diff calculation routines. 
    * Wait, directory diff in a GKqueueFileMonitor?
-   * Yes, it is. When a file monitor is started on an non-existent
+   * Yes, it is. When a file monitor is started on a non-existent
    * file, GIO uses a GKqueueFileMonitor object for that. If a directory
    * will be created under that path, GKqueueFileMonitor will have to
    * handle the directory notifications. */

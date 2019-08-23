@@ -485,7 +485,7 @@ write_internal (GOutputStream  *stream,
 
 	  if (converted_bytes > 0)
 	    {
-	      /* We got an conversion error, but we did convert some bytes before
+	      /* We got a conversion error, but we did convert some bytes before
 		 that, so handle those before reporting the error */
 	      g_error_free (my_error);
 	      break;
@@ -505,7 +505,7 @@ write_internal (GOutputStream  *stream,
 	      return count; /* consume everything */
 	    }
 
-	  /* Converted no data and got an normal error, return it */
+	  /* Converted no data and got a normal error, return it */
 	  g_propagate_error (error, my_error);
 	  return -1;
 	}

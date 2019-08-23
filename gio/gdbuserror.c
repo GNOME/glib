@@ -335,7 +335,7 @@ static GHashTable *dbus_error_name_to_re = NULL;
 
 /**
  * g_dbus_error_register_error:
- * @error_domain: A #GQuark for a error domain.
+ * @error_domain: A #GQuark for an error domain.
  * @error_code: An error code.
  * @dbus_error_name: A D-Bus error name.
  *
@@ -401,7 +401,7 @@ g_dbus_error_register_error (GQuark       error_domain,
 
 /**
  * g_dbus_error_unregister_error:
- * @error_domain: A #GQuark for a error domain.
+ * @error_domain: A #GQuark for an error domain.
  * @error_code: An error code.
  * @dbus_error_name: A D-Bus error name.
  *

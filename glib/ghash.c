@@ -98,7 +98,7 @@
  * To remove a key and value, use g_hash_table_remove().
  *
  * To call a function for each key and value pair use
- * g_hash_table_foreach() or use a iterator to iterate over the
+ * g_hash_table_foreach() or use an iterator to iterate over the
  * key/value pairs in the hash table, see #GHashTableIter.
  *
  * To destroy a #GHashTable use g_hash_table_destroy().

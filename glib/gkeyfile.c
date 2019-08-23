@@ -3119,7 +3119,7 @@ g_key_file_get_double  (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @value: an double value
+ * @value: a double value
  *
  * Associates a new double value with @key under @group_name.
  * If @key cannot be found then it is created. 
