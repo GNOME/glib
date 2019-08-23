@@ -2672,7 +2672,7 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
 /**
  * g_dbus_connection_new:
  * @stream: a #GIOStream
- * @guid: (nullable): the GUID to use if a authenticating as a server or %NULL
+ * @guid: (nullable): the GUID to use if authenticating as a server or %NULL
  * @flags: flags describing how to make the connection
  * @observer: (nullable): a #GDBusAuthObserver or %NULL
  * @cancellable: (nullable): a #GCancellable or %NULL
@@ -2765,7 +2765,7 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
 /**
  * g_dbus_connection_new_sync:
  * @stream: a #GIOStream
- * @guid: (nullable): the GUID to use if a authenticating as a server or %NULL
+ * @guid: (nullable): the GUID to use if authenticating as a server or %NULL
  * @flags: flags describing how to make the connection
  * @observer: (nullable): a #GDBusAuthObserver or %NULL
  * @cancellable: (nullable): a #GCancellable or %NULL

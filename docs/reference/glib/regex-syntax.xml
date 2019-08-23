@@ -2177,7 +2177,7 @@ written like this (ignore whitespace and line breaks):
 </programlisting>
 
 <para>
-The first part of the pattern is a DEFINE group inside which a another group
+The first part of the pattern is a DEFINE group inside which another group
 named "byte" is defined. This matches an individual component of an IPv4
 address (a number less than 256). When matching takes place, this part of the
 pattern is skipped because DEFINE acts like a false condition.

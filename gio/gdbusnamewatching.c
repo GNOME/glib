@@ -553,7 +553,7 @@ connection_get_cb (GObject      *source_object,
  *
  * Starts watching @name on the bus specified by @bus_type and calls
  * @name_appeared_handler and @name_vanished_handler when the name is
- * known to have a owner respectively known to lose its
+ * known to have an owner respectively known to lose its
  * owner. Callbacks will be invoked in the
  * [thread-default main context][g-main-context-push-thread-default]
  * of the thread you are calling this function from.

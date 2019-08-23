@@ -379,7 +379,7 @@ viewer_file_class_init (ViewerFileClass *klass)
     </para>
 
     <para>
-      Some people sometimes need to complete the initialization of a instance
+      Some people sometimes need to complete the initialization of an instance
       of a type only after the properties passed to the constructors have been
       set. This is possible through the use of the <function>constructor()</function>
       class method as described in <xref linkend="gobject-instantiation"/> or,

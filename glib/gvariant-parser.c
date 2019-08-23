@@ -2813,7 +2813,7 @@ g_variant_parse_error_print_context (GError      *error,
         /* the error is at the end of the input */
         add_last_line (err, source_str);
       else
-        /* otherwise just treat it as a error at a thin range */
+        /* otherwise just treat it as an error at a thin range */
         add_lines_from_range (err, source_str, source_str + point, source_str + point + 1, NULL, NULL);
     }
   else
