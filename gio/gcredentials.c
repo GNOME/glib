@@ -363,7 +363,7 @@ credentials_native_type_check (GCredentialsType  requested_type,
  * Gets a pointer to native credentials of type @native_type from
  * @credentials.
  *
- * It is a programming error (which will cause an warning to be
+ * It is a programming error (which will cause a warning to be
  * logged) to use this method if there is no #GCredentials support for
  * the OS or if @native_type isn't supported by the OS.
  *
@@ -401,7 +401,7 @@ g_credentials_get_native (GCredentials     *credentials,
  * Copies the native credentials of type @native_type from @native
  * into @credentials.
  *
- * It is a programming error (which will cause an warning to be
+ * It is a programming error (which will cause a warning to be
  * logged) to use this method if there is no #GCredentials support for
  * the OS or if @native_type isn't supported by the OS.
  *

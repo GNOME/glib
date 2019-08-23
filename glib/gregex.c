@@ -2054,7 +2054,7 @@ g_regex_get_string_number (const GRegex *regex,
  * As a special case, the result of splitting the empty string ""
  * is an empty vector, not a vector containing a single string.
  * The reason for this special case is that being able to represent
- * a empty vector is typically more useful than consistent handling
+ * an empty vector is typically more useful than consistent handling
  * of empty elements. If you do need to represent empty elements,
  * you'll need to check for the empty string before calling this
  * function.
@@ -2101,7 +2101,7 @@ g_regex_split_simple (const gchar        *pattern,
  *
  * As a special case, the result of splitting the empty string "" is an
  * empty vector, not a vector containing a single string. The reason for
- * this special case is that being able to represent a empty vector is
+ * this special case is that being able to represent an empty vector is
  * typically more useful than consistent handling of empty elements. If
  * you do need to represent empty elements, you'll need to check for the
  * empty string before calling this function.
@@ -2144,7 +2144,7 @@ g_regex_split (const GRegex     *regex,
  *
  * As a special case, the result of splitting the empty string "" is an
  * empty vector, not a vector containing a single string. The reason for
- * this special case is that being able to represent a empty vector is
+ * this special case is that being able to represent an empty vector is
  * typically more useful than consistent handling of empty elements. If
  * you do need to represent empty elements, you'll need to check for the
  * empty string before calling this function.

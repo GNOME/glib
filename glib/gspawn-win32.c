@@ -207,7 +207,7 @@ protect_argv (gchar  **argv,
    * rather different than what Unix shells do. See stdargv.c in the C
    * runtime sources (in the Platform SDK, in src/crt).
    *
-   * Note that an new_argv[0] constructed by this function should
+   * Note that a new_argv[0] constructed by this function should
    * *not* be passed as the filename argument to a spawn* or exec*
    * family function. That argument should be the real file name
    * without any quoting.

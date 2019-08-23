@@ -23,7 +23,7 @@
 
 /* A GAtomicArray is a growable, mutable array of data
  * generally of the form of a header of a specific size and
- * then a array of items of a fixed size.
+ * then an array of items of a fixed size.
  *
  * It is possible to do lock-less read transactions from the
  * array without any protection against other reads or writes,

@@ -434,7 +434,7 @@ g_rand_set_seed_array (GRand         *rand,
  * @rand_: a #GRand
  *
  * Returns a random #gboolean from @rand_.
- * This corresponds to a unbiased coin toss.
+ * This corresponds to an unbiased coin toss.
  *
  * Returns: a random #gboolean
  */
@@ -634,7 +634,7 @@ get_global_random (void)
  * g_random_boolean:
  *
  * Returns a random #gboolean.
- * This corresponds to a unbiased coin toss.
+ * This corresponds to an unbiased coin toss.
  *
  * Returns: a random #gboolean
  */

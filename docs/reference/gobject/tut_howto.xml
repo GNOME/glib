@@ -379,7 +379,7 @@ viewer_file_class_init (ViewerFileClass *klass)
     </para>
 
     <para>
-      Some people sometimes need to complete the initialization of a instance
+      Some people sometimes need to complete the initialization of an instance
       of a type only after the properties passed to the constructors have been
       set. This is possible through the use of the <function>constructor()</function>
       class method as described in <xref linkend="gobject-instantiation"/> or,
@@ -1381,7 +1381,7 @@ viewer_audio_file_init (ViewerAudioFile *self)
 
     <para>
       To call the base class implementation of an interface
-      method from an derived class where than interface method has been
+      method from a derived class where than interface method has been
       overridden, stash away the pointer returned from
       <function><link linkend="g-type-interface-peek-parent">g_type_interface_peek_parent</link></function>
       in a global variable.

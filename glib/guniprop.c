@@ -535,7 +535,7 @@ g_unichar_iswide_cjk (gunichar c)
  * Converts a character to uppercase.
  * 
  * Returns: the result of converting @c to uppercase.
- *               If @c is not an lowercase or titlecase character,
+ *               If @c is not a lowercase or titlecase character,
  *               or has no upper case equivalent @c is returned unchanged.
  **/
 gunichar

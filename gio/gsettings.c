@@ -1442,7 +1442,7 @@ g_settings_set_enum (GSettings   *settings,
  * to the flags value that it represents.
  *
  * In order to use this function the type of the value must be an array
- * of strings and it must be marked in the schema file as an flags type.
+ * of strings and it must be marked in the schema file as a flags type.
  *
  * It is a programmer error to give a @key that isn't contained in the
  * schema for @settings or is not marked as a flags type.

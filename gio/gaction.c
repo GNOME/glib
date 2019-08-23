@@ -403,7 +403,7 @@ g_action_activate (GAction  *action,
 
 /**
  * g_action_name_is_valid:
- * @action_name: an potential action name
+ * @action_name: a potential action name
  *
  * Checks if @action_name is valid.
  *

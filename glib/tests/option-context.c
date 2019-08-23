@@ -1186,7 +1186,7 @@ callback_returns_false (void)
   g_strfreev (argv_copy);
   g_free (argv);
 
-  /* And again, this time with a optional arg variant, with argument */
+  /* And again, this time with an optional arg variant, with argument */
   context = g_option_context_new (NULL);
   g_option_context_add_main_entries (context, entries, NULL);
 
@@ -1203,7 +1203,7 @@ callback_returns_false (void)
   g_strfreev (argv_copy);
   g_free (argv);
 
-  /* And again, this time with a optional arg variant, without argument */
+  /* And again, this time with an optional arg variant, without argument */
   context = g_option_context_new (NULL);
   g_option_context_add_main_entries (context, entries, NULL);
 
