@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-08-06 14:34+0000\n"
-"PO-Revision-Date: 2019-08-14 10:00+0100\n"
+"POT-Creation-Date: 2019-08-21 17:54+0000\n"
+"PO-Revision-Date: 2019-08-23 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -547,19 +547,19 @@ msgstr "Errorea “%s” gako sorta irakurtzeko irekitzean: "
 #: gio/gdbusauthmechanismsha1.c:369 gio/gdbusauthmechanismsha1.c:687
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
-msgstr "“%2$s“(e)ngo gako sortako %1$d. lerroa (“%3$s“ edukiarekin) gaizki osatuta dago"
+msgstr "“%2$s”(e)ngo gako sortako %1$d. lerroa (“%3$s” edukiarekin) gaizki osatuta dago"
 
 #: gio/gdbusauthmechanismsha1.c:383 gio/gdbusauthmechanismsha1.c:701
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
-msgstr "“%2$s“(e)ngo gako sortako %1$d. lerroko aurreneko tokena (“%3$s“ edukiarekin) gaizki osatuta dago"
+msgstr "“%2$s”(e)ngo gako sortako %1$d. lerroko aurreneko tokena (“%3$s” edukiarekin) gaizki osatuta dago"
 
 #: gio/gdbusauthmechanismsha1.c:397 gio/gdbusauthmechanismsha1.c:715
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
-msgstr "“%2$s“(e)ngo gako sortako %1$d. lerroko bigarren tokena (“%3$s“ edukiarekin) gaizki osatuta dago"
+msgstr "“%2$s”(e)ngo gako sortako %1$d. lerroko bigarren tokena (“%3$s” edukiarekin) gaizki osatuta dago"
 
 #: gio/gdbusauthmechanismsha1.c:421
 #, c-format
@@ -728,7 +728,7 @@ msgstr[1] "%lu byte irakurtzea nahi ziren, baina %lu lortu da"
 #: gio/gdbusmessage.c:1376
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
-msgstr "NUL bytea espero zen “%s” katearen ondoren, baina “%d“ bytea aurkitu da"
+msgstr "NUL bytea espero zen “%s” katearen ondoren, baina “%d” bytea aurkitu da"
 
 #: gio/gdbusmessage.c:1395
 #, c-format
@@ -847,7 +847,7 @@ msgstr "Mezuaren gorputza hutsik dago, baina goiburuaren eremuko sinadura “(%s
 #: gio/gdbusmessage.c:3321
 #, c-format
 msgid "Error return with body of type “%s”"
-msgstr "Errorearen itzulera “'%s“ motako gorputzarekin"
+msgstr "Errorearen itzulera “'%s” motako gorputzarekin"
 
 #: gio/gdbusmessage.c:3329
 msgid "Error return with empty body"
@@ -932,7 +932,7 @@ msgstr "Komandoak:\n"
 "  emit       Seinale bat igortzen du\n"
 "  wait        Zain egon bus-izen bat agertu arte\n"
 "\n"
-"Erabili “%s KOMANDOA --help“ komando bakoitzari dagokion laguntza lortzeko.\n"
+"Erabili “%s KOMANDOA --help” komando bakoitzari dagokion laguntza lortzeko.\n"
 
 #: gio/gdbus-tool.c:197 gio/gdbus-tool.c:264 gio/gdbus-tool.c:336
 #: gio/gdbus-tool.c:360 gio/gdbus-tool.c:846 gio/gdbus-tool.c:1183
@@ -1102,7 +1102,7 @@ msgstr "Errorea: “%s” metodoaren izena baliogabea da\n"
 #: gio/gdbus-tool.c:1144
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
-msgstr "Errorea “%2$s“ motako %1$d parametroa analizatzean: %3$s\n"
+msgstr "Errorea “%2$s” motako %1$d parametroa analizatzean: %3$s\n"
 
 #: gio/gdbus-tool.c:1630
 msgid "Destination name to introspect"
@@ -1217,14 +1217,14 @@ msgstr "%s(r)en definizio pertsonalizatua"
 
 #: gio/gdrive.c:417
 msgid "drive doesn’t implement eject"
-msgstr "gailuak ez dauka “egotzi“ inplementatuta"
+msgstr "gailuak ez dauka “egotzi” inplementatuta"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gdrive.c:495
 msgid "drive doesn’t implement eject or eject_with_operation"
-msgstr "gailuak ez dauka “egotzi“ edo “egotzi eragiketarekin“ inplementatuta"
+msgstr "gailuak ez dauka “egotzi” edo “egotzi eragiketarekin” inplementatuta"
 
 #: gio/gdrive.c:571
 msgid "drive doesn’t implement polling for media"
@@ -1232,11 +1232,11 @@ msgstr "gailuak ez dauka euskarria eskaneatzeko inplementaziorik"
 
 #: gio/gdrive.c:778
 msgid "drive doesn’t implement start"
-msgstr "gailuak ez dauka “abiatu“ inplementatuta"
+msgstr "gailuak ez dauka “abiatu” inplementatuta"
 
 #: gio/gdrive.c:880
 msgid "drive doesn’t implement stop"
-msgstr "gailuak ez dauka “gelditu“ inplementatuta"
+msgstr "gailuak ez dauka “gelditu” inplementatuta"
 
 #: gio/gdummytlsbackend.c:195 gio/gdummytlsbackend.c:317
 #: gio/gdummytlsbackend.c:509
@@ -1341,7 +1341,7 @@ msgstr "Zakarrontzira botatzea ez dago onartuta"
 #: gio/gfile.c:4293
 #, c-format
 msgid "File names cannot contain “%c”"
-msgstr "Fitxategi-izenek ezin dute “%c“ eduki"
+msgstr "Fitxategi-izenek ezin dute “%c” eduki"
 
 #: gio/gfile.c:6774 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
@@ -1508,7 +1508,7 @@ msgstr "Mantendu fitxategiarekin lekuz aldatzean"
 
 #: gio/gio-tool.c:205
 msgid "“version” takes no arguments"
-msgstr "“version“ ez du argumenturik hartzen"
+msgstr "“version” ez du argumenturik hartzen"
 
 #: gio/gio-tool.c:207 gio/gio-tool.c:223 glib/goption.c:861
 msgid "Usage:"
@@ -1540,7 +1540,7 @@ msgstr "Zerrendatu kokalekuen edukia"
 
 #: gio/gio-tool.c:233
 msgid "Get or set the handler for a mimetype"
-msgstr "lortu edo ezarri MIME mota baten kudeatzailea"
+msgstr "Lortu edo ezarri MIME mota baten maneiatzailea"
 
 #: gio/gio-tool.c:234
 msgid "Create directories"
@@ -1760,7 +1760,7 @@ msgid ""
 "like smb://server/resource/file.txt as location. File attributes can\n"
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
 "namespace, e.g. unix, or by “*”, which matches all attributes"
-msgstr "“ls“ tresna bezala erabiltzen da “gio info“, baina GIOren kokalekuak erabiliz \n"
+msgstr "“ls” tresna bezala erabiltzen da “gio info“, baina GIOren kokalekuak erabiliz \n"
 "lokaleko fitxategien ordez. Adibidez, honelako zerbait erabil dezakezu\n"
 "kokaleku gisa: smb://zerbitzaria/baliabidea/fitxategia.txt. Fitxategiaren\n"
 "atributuak haien GIO izenekin zehatz daiteke, adibidez, standard::icon edo\n"
@@ -1800,24 +1800,24 @@ msgstr "MIMEMOTA"
 
 #: gio/gio-tool-mime.c:71
 msgid "HANDLER"
-msgstr "KUDEATZAILEA"
+msgstr "MANEIATZAILEA"
 
 #: gio/gio-tool-mime.c:76
 msgid "Get or set the handler for a mimetype."
-msgstr "Lortu edo ezarri MIME mota baten kudeatzailea."
+msgstr "Lortu edo ezarri MIME mota baten maneiatzailea."
 
 #: gio/gio-tool-mime.c:78
 msgid ""
 "If no handler is given, lists registered and recommended applications\n"
 "for the mimetype. If a handler is given, it is set as the default\n"
 "handler for the mimetype."
-msgstr "Ez bada kudeatzailerik ematen, MIME motarentzako erregistratutako\n"
-"eta gomendatutako aplikazio guztiak zerrendatzen ditu. Kudeatzaile\n"
-"bat ematen bada, MIME motaren kudeatzaile lehenetsi gisa ezarriko da."
+msgstr "Ez bada maneiatzailerik ematen, MIME motarentzako erregistratutako\n"
+"eta gomendatutako aplikazio guztiak zerrendatzen ditu. Maneiatzaile\n"
+"bat ematen bada, MIME motaren maneiatzaile lehenetsi gisa ezarriko da."
 
 #: gio/gio-tool-mime.c:100
 msgid "Must specify a single mimetype, and maybe a handler"
-msgstr "MIME mota bakarra zehaztu behar da, eta agian kudeatzaile bat"
+msgstr "MIME mota bakarra zehaztu behar da, eta agian maneiatzaile bat"
 
 #: gio/gio-tool-mime.c:116
 #, c-format
@@ -1848,12 +1848,12 @@ msgstr "Ez dago gomendatutako aplikaziorik\n"
 #: gio/gio-tool-mime.c:162
 #, c-format
 msgid "Failed to load info for handler “%s”"
-msgstr "Huts egin du ”%s” kudeatzailearen informazioa kargatzean"
+msgstr "Huts egin du ”%s” maneiatzailearen informazioa kargatzean"
 
 #: gio/gio-tool-mime.c:168
 #, c-format
 msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
-msgstr "Huts egin du “%s” kudeatzaile lehenetsi gisa ezartzean “%s”(r)entzako: %s\n"
+msgstr "Huts egin du “%s” maneiatzaile lehenetsi gisa ezartzean “%s”(r)entzako: %s\n"
 
 #: gio/gio-tool-mkdir.c:31
 msgid "Create parent directories"
@@ -2440,7 +2440,7 @@ msgstr "“%s” izena baliogabea: izenak letra minuskula batekin hasi behar dir
 msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
 "and hyphen (“-”) are permitted"
-msgstr "“%s” izena baliogabea: “%c“ karakterea baliogabea. soilik letra minuskulak, zenbakiak eta hipenazioa (“-“) onartzen dira."
+msgstr "“%s” izena baliogabea: “%c” karakterea baliogabea. soilik letra minuskulak, zenbakiak eta hipenazioa (“-“) onartzen dira."
 
 #: gio/glib-compile-schemas.c:828
 #, c-format
@@ -2464,7 +2464,7 @@ msgstr "<child name='%s'> jadanik zehaztuta"
 
 #: gio/glib-compile-schemas.c:943
 msgid "Cannot add keys to a “list-of” schema"
-msgstr "Ezin zaio gakorik gehitu “list-of“ eskema bati"
+msgstr "Ezin zaio gakorik gehitu “list-of” eskema bati"
 
 #: gio/glib-compile-schemas.c:954
 #, c-format
@@ -2596,7 +2596,7 @@ msgstr "Abisua: definitu gabeko erreferentzia  <schema id='%s'/>-erako"
 #. Translators: Do not translate "--strict".
 #: gio/glib-compile-schemas.c:1833 gio/glib-compile-schemas.c:1912
 msgid "--strict was specified; exiting."
-msgstr "--strict zehaztu da; irtetzen."
+msgstr "--strict zehaztu da; irteten."
 
 #: gio/glib-compile-schemas.c:1845
 msgid "This entire file has been ignored."
@@ -2623,30 +2623,30 @@ msgstr "Ez dago “%s” gakorik “%s” eskeman, gainidazteko “%s” fitxate
 #: gio/glib-compile-schemas.c:1993
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localised key “%s” in schema "
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”); ignoring override for this key."
-msgstr "Ezin dira mahaigainaren araberako gaindidazteak hornitu “%s” gako lokalizatuetarako “%s” eskeman (gainidatzi “%s” fitxategia); gako honen gainidazteari ezikusi egiten."
+msgstr "Ezin dira mahaigainaren araberako gainidazteak hornitu “%s” gako lokalizatuetarako “%s” eskeman (gainidatzi “%s” fitxategia); gako honen gainidazteari ezikusi egiten."
 
 #: gio/glib-compile-schemas.c:2002
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localised key “%s” in schema "
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”) and --strict was specified; exiting."
-msgstr "Ezin dira mahaigainaren araberako gaindidazteak hornitu “%s” gako lokalizatuetarako “%s” eskeman (gainidatzi “%s” fitxategia), eta --strict zehaztu da; irteten."
+msgstr "Ezin dira mahaigainaren araberako gainidazteak hornitu “%s” gako lokalizatuetarako “%s” eskeman (gainidatzi “%s” fitxategia), eta --strict zehaztu da; irteten."
 
 #: gio/glib-compile-schemas.c:2026
 #, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. Ignoring override for this key."
-msgstr "Errorea “%s” gakoa (“%s“ eskemakoa) analizatzean “%s” gainidazte-fitxategian ageri den bezala: %s. Gako honen gainidazteari ezikusi egiten."
+msgstr "Errorea “%s” gakoa (“%s” eskemakoa) analizatzean “%s” gainidazte-fitxategian ageri den bezala: %s. Gako honen gainidazteari ezikusi egiten."
 
 #: gio/glib-compile-schemas.c:2038
 #, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. --strict was specified; exiting."
-msgstr "Errorea “%s” gakoa (“%s“ eskemakoa) analizatzean “%s” gainidazte-fitxategian ageri den bezala: %s. --strict zehaztu da; irteten."
+msgstr "Errorea “%s” gakoa (“%s” eskemakoa) analizatzean “%s” gainidazte-fitxategian ageri den bezala: %s. --strict zehaztu da; irteten."
 
 #: gio/glib-compile-schemas.c:2065
 #, c-format
@@ -2879,7 +2879,7 @@ msgstr " (baliogabeko kodeketa)"
 #: gio/glocalfileinfo.c:1798 gio/glocalfileoutputstream.c:909
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
-msgstr "Errorea “'%s“ fitxategiaren informazioa eskuratzean: %s"
+msgstr "Errorea “'%s” fitxategiaren informazioa eskuratzean: %s"
 
 #: gio/glocalfileinfo.c:2068
 #, c-format
@@ -3060,35 +3060,35 @@ msgstr "Bilaketa eskatu da korrontearen amaieraren ondoren"
 #. * don't implement unmount.
 #: gio/gmount.c:399
 msgid "mount doesn’t implement “unmount”"
-msgstr "muntaiak ez dauka “unmount“ (desmuntatu) inplementatuta"
+msgstr "muntaiak ez dauka “unmount” (desmuntatu) inplementatuta"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: gio/gmount.c:475
 msgid "mount doesn’t implement “eject”"
-msgstr "muntaiak ez dauka “eject“ (egotzi) inplementatuta"
+msgstr "muntaiak ez dauka “eject” (egotzi) inplementatuta"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: gio/gmount.c:553
 msgid "mount doesn’t implement “unmount” or “unmount_with_operation”"
-msgstr "muntaiak ez dauka “unmount“ (desmuntatzea) edo “unmount_with_operation“ (desmuntatu eragiketarekin) inplementatuta"
+msgstr "muntaiak ez dauka “unmount” (desmuntatzea) edo “unmount_with_operation” (desmuntatu eragiketarekin) inplementatuta"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gmount.c:638
 msgid "mount doesn’t implement “eject” or “eject_with_operation”"
-msgstr "muntaiak ez dauka “eject“ (egotzi) edo “eject_with_operation“ (egotzi eragiketarekin) inplementatuta"
+msgstr "muntaiak ez dauka “eject” (egotzi) edo “eject_with_operation” (egotzi eragiketarekin) inplementatuta"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 #: gio/gmount.c:726
 msgid "mount doesn’t implement “remount”"
-msgstr "muntaiak ez dauka “remount“ (birmuntaketa) inplementatuta"
+msgstr "muntaiak ez dauka “remount” (birmuntaketa) inplementatuta"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -3811,7 +3811,7 @@ msgstr "Konexioa ukatuta SOCKSv5 proxy-aren bidez."
 
 #: gio/gsocks5proxy.c:386
 msgid "SOCKSv5 proxy does not support “connect” command."
-msgstr "SOCKSv5 proxy-ak ez du “connect“ komandoa onartzen."
+msgstr "SOCKSv5 proxy-ak ez du “connect” komandoa onartzen."
 
 #: gio/gsocks5proxy.c:392
 msgid "SOCKSv5 proxy does not support provided address type."
@@ -3969,14 +3969,14 @@ msgstr "UNIX-eko domeinuen socket helbide abstraktuak ez daude sistema honetan o
 
 #: gio/gvolume.c:438
 msgid "volume doesn’t implement eject"
-msgstr "bolumenak ez dauka “egotzi“ inplementatuta"
+msgstr "bolumenak ez dauka “egotzi” inplementatuta"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gvolume.c:515
 msgid "volume doesn’t implement eject or eject_with_operation"
-msgstr "bolumenak ez dauka “egotzi“ edo “egotzi eragiketarekin“ inplementatuta"
+msgstr "bolumenak ez dauka “egotzi” edo “egotzi eragiketarekin” inplementatuta"
 
 #: gio/gwin32inputstream.c:185
 #, c-format
@@ -4038,13 +4038,13 @@ msgstr "Okerreko argumentuak\n"
 #: glib/gbookmarkfile.c:756
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
-msgstr "“%2$s“ elementuaren ustekabeko “%1$s“ atributua"
+msgstr "“%2$s” elementuaren ustekabeko “%1$s” atributua"
 
 #: glib/gbookmarkfile.c:767 glib/gbookmarkfile.c:838 glib/gbookmarkfile.c:848
 #: glib/gbookmarkfile.c:960
 #, c-format
 msgid "Attribute “%s” of element “%s” not found"
-msgstr "“%2$s“ elementuaren “%1$s“ atributua ez da aurkitu"
+msgstr "“%2$s” elementuaren “%1$s” atributua ez da aurkitu"
 
 #: glib/gbookmarkfile.c:1169 glib/gbookmarkfile.c:1234
 #: glib/gbookmarkfile.c:1298 glib/gbookmarkfile.c:1308
@@ -4056,7 +4056,7 @@ msgstr "Ustekabeko “%s” etiketa, “%s” espero zen"
 #: glib/gbookmarkfile.c:1276 glib/gbookmarkfile.c:1322
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
-msgstr "“%2$s“ barruan ustekabeko “%1$s“ etiketa"
+msgstr "“%2$s” barruan ustekabeko “%1$s” etiketa"
 
 #: glib/gbookmarkfile.c:1616
 #, c-format
@@ -4746,7 +4746,7 @@ msgstr "Gako-fitxategiak “%s” gakoa dauka ('%s taldean), baina dagokion bali
 #: glib/gkeyfile.c:2814 glib/gkeyfile.c:2891
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
-msgstr "“%2$s“ taldeko “%1$s“ gakoaren balioa “%3$s“ da, “%4$s“ izan ordez."
+msgstr "“%2$s” taldeko “%1$s” gakoaren balioa “%3$s” da, “%4$s” izan ordez."
 
 #: glib/gkeyfile.c:4283
 msgid "Key file contains escape character at end of line"
@@ -4780,7 +4780,7 @@ msgstr "“%s” balioa ezin da boolear gisa interpretatu"
 #: glib/gmappedfile.c:129
 #, c-format
 msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
-msgstr "Huts egin du “%s%s%s%s“ fitxategiaren atributuak lortzean. fstat() funtzioak huts egin du: %s"
+msgstr "Huts egin du “%s%s%s%s” fitxategiaren atributuak lortzean. fstat() funtzioak huts egin du: %s"
 
 #: glib/gmappedfile.c:195
 #, c-format
@@ -5000,22 +5000,22 @@ msgstr "Aukerak:"
 #: glib/goption.c:1117 glib/goption.c:1187
 #, c-format
 msgid "Cannot parse integer value “%s” for %s"
-msgstr "Ezin da “%2$s“(r)en “%1$s“ osoko balioa analizatu"
+msgstr "Ezin da “%2$s“(r)en “%1$s” osoko balioa analizatu"
 
 #: glib/goption.c:1127 glib/goption.c:1195
 #, c-format
 msgid "Integer value “%s” for %s out of range"
-msgstr "%2$s(r)en “%1$s“ osoko balioa barrutitik kanpo"
+msgstr "%2$s(r)en “%1$s” osoko balioa barrutitik kanpo"
 
 #: glib/goption.c:1152
 #, c-format
 msgid "Cannot parse double value “%s” for %s"
-msgstr "Ezin da “%2$s“(r)en “%1$s“ balio bikoitza analizatu"
+msgstr "Ezin da “%2$s“(r)en “%1$s” balio bikoitza analizatu"
 
 #: glib/goption.c:1160
 #, c-format
 msgid "Double value “%s” for %s out of range"
-msgstr "%2$s(r)en “%1$s“ balio bikoitza barrutitik kanpo"
+msgstr "%2$s(r)en “%1$s” balio bikoitza barrutitik kanpo"
 
 #: glib/goption.c:1452 glib/goption.c:1531
 #, c-format
