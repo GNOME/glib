@@ -44,7 +44,7 @@
  * of a type identifier and a specific value of that type.
  * The type identifier within a #GValue structure always determines the
  * type of the associated value.
- * To create a undefined #GValue structure, simply create a zero-filled
+ * To create an undefined #GValue structure, simply create a zero-filled
  * #GValue structure. To initialize the #GValue, use the g_value_init()
  * function. A #GValue cannot be used until it is initialized.
  * The basic type operations (such as freeing and copying) are determined
