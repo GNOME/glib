@@ -671,7 +671,7 @@ Overview of changes in GLib 2.59.0
  - #538 Add helpers to redirect XDG_*_HOME to a temp dir for unit tests
  - #542 gdbus-codegen does not honor "Property.EmitsChangedSignal" annotations
  - #656 check for -Werror=format-security broken
- - #734 Provide a way to instantiate a GDBusProxy-derived class from a GDBusConnection and a object path without blocking
+ - #734 Provide a way to instantiate a GDBusProxy-derived class from a GDBusConnection and an object path without blocking
  - #827 gmain: Clarify that g_source_set_callback() is safe on attached sources
  - #1055 Provide alignment macros
  - #1119 GVolumeMonitor: Results don't reflect current state but state when application was launched

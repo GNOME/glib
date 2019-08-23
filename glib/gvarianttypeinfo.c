@@ -546,7 +546,7 @@ tuple_align (gsize offset,
  *
  * Imagine we want to find the start of the "i" in the type "(su(qx)ni)".
  * That's a string followed by a uint32, then a tuple containing a
- * uint16 and a int64, then an int16, then our "i".  In order to get to
+ * uint16 and an int64, then an int16, then our "i".  In order to get to
  * our "i" we:
  *
  * Start at the end of the string, align to 4 (for the uint32), add 4.
@@ -660,7 +660,7 @@ tuple_set_base_info (TupleInfo *info)
     {
       /* the empty tuple: '()'.
        *
-       * has a size of 1 and an no alignment requirement.
+       * has a size of 1 and a no alignment requirement.
        *
        * It has a size of 1 (not 0) for two practical reasons:
        *

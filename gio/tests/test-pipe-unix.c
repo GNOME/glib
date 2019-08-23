@@ -41,7 +41,7 @@
  * @error: used to raise an error
  *
  * Return a "pipe to self" connecting @is to @os. This can be used
- * as a unidirectional pipe to or from a child process, for instance.
+ * as an unidirectional pipe to or from a child process, for instance.
  *
  * See test_bidi_pipe() if you want to emulate a bidirectional pipe
  * via a pair of unidirectional pipes.
@@ -87,7 +87,7 @@ test_pipe (GInputStream  **is,
  * @error: used to raise an error
  *
  * Return two #GIOStreams connected to each other with pipes.
- * The "left" input stream is connected by a unidirectional pipe
+ * The "left" input stream is connected by an unidirectional pipe
  * to the "right" output stream, and vice versa. This can be used
  * as a bidirectional pipe to a child process, for instance.
  *

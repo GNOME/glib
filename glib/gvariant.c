@@ -426,7 +426,7 @@ NUMERIC_TYPE (BYTE, byte, guint8)
  **/
 /**
  * g_variant_get_int16:
- * @value: a int16 #GVariant instance
+ * @value: an int16 #GVariant instance
  *
  * Returns the 16-bit signed integer value of @value.
  *
@@ -476,7 +476,7 @@ NUMERIC_TYPE (UINT16, uint16, guint16)
  **/
 /**
  * g_variant_get_int32:
- * @value: a int32 #GVariant instance
+ * @value: an int32 #GVariant instance
  *
  * Returns the 32-bit signed integer value of @value.
  *
@@ -526,7 +526,7 @@ NUMERIC_TYPE (UINT32, uint32, guint32)
  **/
 /**
  * g_variant_get_int64:
- * @value: a int64 #GVariant instance
+ * @value: an int64 #GVariant instance
  *
  * Returns the 64-bit signed integer value of @value.
  *
