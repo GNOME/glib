@@ -2655,7 +2655,7 @@ g_object_get_property (GObject	   *object,
  *
  * The signal specs expected by this function have the form
  * "modifier::signal_name", where modifier can be one of the following:
- * * - signal: equivalent to g_signal_connect_data (..., NULL, 0)
+ * - signal: equivalent to g_signal_connect_data (..., NULL, 0)
  * - object-signal, object_signal: equivalent to g_signal_connect_object (..., 0)
  * - swapped-signal, swapped_signal: equivalent to g_signal_connect_data (..., NULL, G_CONNECT_SWAPPED)
  * - swapped_object_signal, swapped-object-signal: equivalent to g_signal_connect_object (..., G_CONNECT_SWAPPED)

@@ -82,7 +82,7 @@ protect_wargv (gint       argc,
    * rather different than what Unix shells do. See stdargv.c in the C
    * runtime sources (in the Platform SDK, in src/crt).
    *
-   * Note that an new_wargv[0] constructed by this function should
+   * Note that a new_wargv[0] constructed by this function should
    * *not* be passed as the filename argument to a _wspawn* or _wexec*
    * family function. That argument should be the real file name
    * without any quoting.

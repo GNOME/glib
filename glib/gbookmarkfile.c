@@ -203,7 +203,7 @@ struct _GBookmarkFile
   gchar *description;
 
   /* we store our items in a list and keep a copy inside
-   * an hash table for faster lookup performances
+   * a hash table for faster lookup performances
    */
   GList *items;
   GHashTable *items_by_uri;
