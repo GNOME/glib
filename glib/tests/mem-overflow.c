@@ -200,7 +200,7 @@ empty_alloc (void)
 }
 #endif
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && __GNUC__ > 6
 #pragma GCC diagnostic pop
 #endif
 
