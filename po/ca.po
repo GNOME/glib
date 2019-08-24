@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-07-29 13:00+0000\n"
+"POT-Creation-Date: 2019-08-21 17:54+0000\n"
 "PO-Revision-Date: 2019-04-17 18:01+0200\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -1047,7 +1047,7 @@ msgid ""
 msgstr ""
 "Ordres:\n"
 "  help         Mostra aquesta informació\n"
-"  introspect   Introspecciona un objecte remot\n"
+"  introspect   Examina un objecte remot\n"
 "  monitor      Fa un seguiment d'un objecte remot\n"
 "  call         Invoca un mètode en l'objecte remot\n"
 "  emit         Emet un senyal\n"
@@ -1231,11 +1231,11 @@ msgstr ""
 
 #: gio/gdbus-tool.c:1630
 msgid "Destination name to introspect"
-msgstr "Nom de destinació a introspeccionar"
+msgstr "Nom de destinació a examinar"
 
 #: gio/gdbus-tool.c:1631
 msgid "Object path to introspect"
-msgstr "Camí a l'objecte a introspeccionar"
+msgstr "Camí a l'objecte a examinar"
 
 #: gio/gdbus-tool.c:1632
 msgid "Print XML"
@@ -1243,7 +1243,7 @@ msgstr "Imprimeix XML"
 
 #: gio/gdbus-tool.c:1633
 msgid "Introspect children"
-msgstr "Introspecciona el fill"
+msgstr "Examina el fill"
 
 #: gio/gdbus-tool.c:1634
 msgid "Only print properties"
@@ -1251,7 +1251,7 @@ msgstr "Només mostra les propietats"
 
 #: gio/gdbus-tool.c:1723
 msgid "Introspect a remote object."
-msgstr "Introspecciona un objecte remot."
+msgstr "Examina un objecte remot."
 
 #: gio/gdbus-tool.c:1929
 msgid "Destination name to monitor"
@@ -2817,8 +2817,9 @@ msgstr ""
 "No existeix la clau «%s» en l'esquema «%s» tal com especifica el fitxer de "
 "sobreescriptura «%s»; s'ignora la sobreescriptura d'aquesta clau."
 
-#: gio/glib-compile-schemas.c:1971
 # c-format
+#: gio/glib-compile-schemas.c:1971
+#, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
 "strict was specified; exiting."
@@ -2828,21 +2829,24 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:1993
 #, c-format
+#| msgid ""
 msgid ""
-"Cannot provide per-desktop overrides for localised key “%s” in schema "
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”); ignoring override for this key."
 msgstr ""
-"No es pot proveir la sobreescriptura per escriptori de claus traduïdes «%s» "
-"a l'esquema «%s» (fitxer de sobreescriptura «%s»); s'ignora la sobreescriptura d'aquesta clau."
+"No es pot proveir la sobreescriptura per escriptori de la clau traduïda «%s» "
+"a l'esquema «%s» (fitxer de sobreescriptura «%s»); s'ignora la "
+"sobreescriptura d'aquesta clau."
 
 #: gio/glib-compile-schemas.c:2002
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localised key “%s” in schema "
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”) and --strict was specified; exiting."
 msgstr ""
-"No es pot proveir la sobreescriptura per escriptori de claus traduïdes «%s» "
-"a l'esquema «%s» (fitxer de sobreescriptura «%s») i s'ha especificat --strict; se surt."
+"No es pot proveir la sobreescriptura per escriptori de la clau traduïda «%s» "
+"a l'esquema «%s» (fitxer de sobreescriptura «%s») i s'ha especificat --"
+"strict; se surt."
 
 #: gio/glib-compile-schemas.c:2026
 #, c-format
@@ -2851,7 +2855,8 @@ msgid ""
 "%s. Ignoring override for this key."
 msgstr ""
 "S'ha produït un error en analitzar la clau «%s» en l'esquema «%s» tal com "
-"especifica el fitxer de sobreescriptura «%s»: %s. S'ignora la sobreescriptura d'aquesta clau."
+"especifica el fitxer de sobreescriptura «%s»: %s. S'ignora la "
+"sobreescriptura d'aquesta clau."
 
 #: gio/glib-compile-schemas.c:2038
 #, c-format
@@ -2860,7 +2865,8 @@ msgid ""
 "%s. --strict was specified; exiting."
 msgstr ""
 "S'ha produït un error en analitzar la clau «%s» en l'esquema «%s» tal com "
-"especifica el fitxer de sobreescriptura «%s»: %s. S'ha especificat --strict; se surt."
+"especifica el fitxer de sobreescriptura «%s»: %s. S'ha especificat --strict; "
+"se surt."
 
 #: gio/glib-compile-schemas.c:2065
 #, c-format
@@ -2869,7 +2875,8 @@ msgid ""
 "range given in the schema; ignoring override for this key."
 msgstr ""
 "la sobreescriptura de la clau «%s» de l'esquema «%s» en el fitxer de "
-"sobreescriptura «%s» és fora de l'interval de l'esquema donat; s'ignora la sobreescriptura d'aquesta clau."
+"sobreescriptura «%s» és fora de l'interval de l'esquema donat; s'ignora la "
+"sobreescriptura d'aquesta clau."
 
 #: gio/glib-compile-schemas.c:2075
 #, c-format
@@ -2878,7 +2885,8 @@ msgid ""
 "range given in the schema and --strict was specified; exiting."
 msgstr ""
 "La sobreescriptura de la clau «%s» de l'esquema «%s» en el fitxer de "
-"sobreescriptura «%s» és fora de l'interval de l'esquema donat i s'ha especificat --strict; se surt."
+"sobreescriptura «%s» és fora de l'interval de l'esquema donat i s'ha "
+"especificat --strict; se surt."
 
 #: gio/glib-compile-schemas.c:2101
 #, c-format
@@ -2887,7 +2895,8 @@ msgid ""
 "list of valid choices; ignoring override for this key."
 msgstr ""
 "La sobreescriptura de la clau «%s» de l'esquema «%s» en el fitxer de "
-"sobreescriptura «%s» no és a la llista de valors vàlids; s'ignora la sobreescriptura d'aquesta clau."
+"sobreescriptura «%s» no és a la llista de valors vàlids; s'ignora la "
+"sobreescriptura d'aquesta clau."
 
 #: gio/glib-compile-schemas.c:2111
 #, c-format
@@ -2896,7 +2905,8 @@ msgid ""
 "list of valid choices and --strict was specified; exiting."
 msgstr ""
 "La sobreescriptura de la clau «%s» de l'esquema «%s» en el fitxer de "
-"sobreescriptura «%s» no és a la llista de valors vàlids i s'ha especificat --strict; se surt."
+"sobreescriptura «%s» no és a la llista de valors vàlids i s'ha especificat --"
+"strict; se surt."
 
 #: gio/glib-compile-schemas.c:2173
 msgid "Where to store the gschemas.compiled file"
@@ -2934,7 +2944,8 @@ msgstr "No s'ha trobat cap fitxer d'esquemes: no es fa res."
 
 #: gio/glib-compile-schemas.c:2271
 msgid "No schema files found: removed existing output file."
-msgstr "No s'ha trobat cap fitxer d'esquemes: suprimeix el fitxer de sortida actual."
+msgstr ""
+"No s'ha trobat cap fitxer d'esquemes: suprimeix el fitxer de sortida actual."
 
 #: gio/glocalfile.c:546 gio/win32/gwinhttpfile.c:420
 #, c-format
@@ -3368,12 +3379,12 @@ msgstr "No s'ha pogut crear el monitor de xarxa: "
 msgid "Could not get network status: "
 msgstr "No s'ha pogut obtenir l'estat de la xarxa: "
 
-#: gio/gnetworkmonitornm.c:347
+#: gio/gnetworkmonitornm.c:348
 #, c-format
 msgid "NetworkManager not running"
 msgstr "El NetworkManager no s'està executant"
 
-#: gio/gnetworkmonitornm.c:358
+#: gio/gnetworkmonitornm.c:359
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "La versió del NetworkManager és massa antiga"
