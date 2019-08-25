@@ -154,6 +154,24 @@
 }
 
 {
+	g-type-add-interface-static-realloc
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:realloc
+	...
+	fun:g_type_add_interface_static
+}
+
+{
+	g-type-add-interface-static-calloc
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:calloc
+	...
+	fun:g_type_add_interface_static
+}
+
+{
 	g-test-rand-init
 	Memcheck:Leak
 	fun:calloc
@@ -187,6 +205,7 @@
 {
 	g-quark-table-resize
 	Memcheck:Leak
+	...
 	fun:g_hash_table_resize
 	...
 	fun:quark_new
@@ -203,9 +222,8 @@
 {
 	g-type-class-init-calloc
 	Memcheck:Leak
+	match-leak-kinds:reachable
 	fun:calloc
-	...
-	fun:g_type_create_instance
 	...
 	fun:type_class_init_Wm
 }
@@ -215,6 +233,92 @@
 	Memcheck:Leak
 	fun:g_type_create_instance
 	...
+	fun:type_class_init_Wm
+}
+
+{
+	g-object-do-class-init-signals
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	...
+	fun:g_signal_new
+	...
+	fun:type_class_init_Wm
+}
+
+{
+	g-type-prerequisites
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:realloc
+	...
+	fun:type_iface_add_prerequisite_W
+}
+
+{
+	g-type-add-interface-check
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_type_add_interface_check
+	...
+	fun:type_class_init_Wm
+}
+
+{
+	g-type-add-interface-check-realloc
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:realloc
+	...
+	fun:g_type_add_interface_check
+	...
+	fun:type_class_init_Wm
+}
+
+{
+	g-object-class-install-property
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:validate_and_install_class_property
+	...
+	fun:type_class_init_Wm
+}
+
+{
+	g-param-spec-pool-new
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_param_spec_pool_new
+	...
+	fun:type_class_init_Wm
+}
+
+# weak_locations_lock in gobject.c
+{
+	g-weak-ref-lock
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_rw_lock_get_impl
+	...
+	fun:g_weak_ref_set
+}
+
+{
+	g-object-base-class-init-construct-pproperties
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_slist_copy
+	fun:g_object_base_class_init
 	fun:type_class_init_Wm
 }
 
