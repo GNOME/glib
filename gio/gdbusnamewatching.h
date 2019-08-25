@@ -36,7 +36,7 @@ G_BEGIN_DECLS
  * @name_owner: Unique name of the owner of the name being watched.
  * @user_data: User data passed to g_bus_watch_name().
  *
- * Invoked when the name being watched is known to have to have a owner.
+ * Invoked when the name being watched is known to have to have an owner.
  *
  * Since: 2.26
  */
@@ -52,7 +52,7 @@ typedef void (*GBusNameAppearedCallback) (GDBusConnection *connection,
  * @name: The name being watched.
  * @user_data: User data passed to g_bus_watch_name().
  *
- * Invoked when the name being watched is known not to have to have a owner.
+ * Invoked when the name being watched is known not to have to have an owner.
  *
  * This is also invoked when the #GDBusConnection on which the watch was
  * established has been closed.  In that case, @connection will be

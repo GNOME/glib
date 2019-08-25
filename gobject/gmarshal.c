@@ -2040,7 +2040,7 @@ g_cclosure_marshal_VOID__VARIANTv (GClosure     *closure,
  *   marshaller, see g_closure_set_marshal() and
  *   g_closure_set_meta_marshal()
  *
- * A #GClosureMarshal function for use with signals with a unsigned int
+ * A #GClosureMarshal function for use with signals with an unsigned int
  * and a pointer as arguments.
  */
 /* VOID:UINT,POINTER */

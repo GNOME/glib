@@ -140,16 +140,16 @@ typedef struct _GFileIface    		GFileIface;
  * @replace_readwrite_async: Asynchronously replaces file read/write. Since 2.22.
  * @replace_readwrite_finish: Finishes an asynchronous replace read/write. Since 2.22.
  * @start_mountable: Starts a mountable object. Since 2.22.
- * @start_mountable_finish: Finishes an start operation. Since 2.22.
+ * @start_mountable_finish: Finishes a start operation. Since 2.22.
  * @stop_mountable: Stops a mountable. Since 2.22.
- * @stop_mountable_finish: Finishes an stop operation. Since 2.22.
+ * @stop_mountable_finish: Finishes a stop operation. Since 2.22.
  * @supports_thread_contexts: a boolean that indicates whether the #GFile implementation supports thread-default contexts. Since 2.22.
  * @unmount_mountable_with_operation: Unmounts a mountable object using a #GMountOperation. Since 2.22.
  * @unmount_mountable_with_operation_finish: Finishes an unmount operation using a #GMountOperation. Since 2.22.
  * @eject_mountable_with_operation: Ejects a mountable object using a #GMountOperation. Since 2.22.
  * @eject_mountable_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
  * @poll_mountable: Polls a mountable object for media changes. Since 2.22.
- * @poll_mountable_finish: Finishes an poll operation for media changes. Since 2.22.
+ * @poll_mountable_finish: Finishes a poll operation for media changes. Since 2.22.
  * @measure_disk_usage: Recursively measures the disk usage of @file. Since 2.38
  * @measure_disk_usage_async: Asynchronously recursively measures the disk usage of @file. Since 2.38
  * @measure_disk_usage_finish: Finishes an asynchronous recursive measurement of the disk usage of @file. Since 2.38

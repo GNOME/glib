@@ -728,7 +728,7 @@ g_notification_get_priority_nick (GNotification *notification)
 /*< private >
  * g_notification_serialize:
  *
- * Serializes @notification into an floating variant of type a{sv}.
+ * Serializes @notification into a floating variant of type a{sv}.
  *
  * Returns: the serialized @notification as a floating variant.
  */

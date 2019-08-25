@@ -3270,7 +3270,7 @@ g_type_default_interface_peek (GType g_type)
 /**
  * g_type_default_interface_unref:
  * @g_iface: (type GObject.TypeInterface): the default vtable
- *     structure for a interface, as returned by g_type_default_interface_ref()
+ *     structure for an interface, as returned by g_type_default_interface_ref()
  *
  * Decrements the reference count for the type corresponding to the
  * interface default vtable @g_iface. If the type is dynamic, then
@@ -4782,7 +4782,7 @@ g_type_class_get_instance_private_offset (gpointer g_class)
 
 /**
  * g_type_add_class_private:
- * @class_type: GType of an classed type
+ * @class_type: GType of a classed type
  * @private_size: size of private structure
  *
  * Registers a private class structure for a classed type;

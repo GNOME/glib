@@ -747,7 +747,7 @@ g_date_time_to_instant (GDateTime *datetime)
 /*< internal >
  * g_date_time_from_instant:
  * @tz: a #GTimeZone
- * @instant: a instant in time
+ * @instant: an instant in time
  *
  * Creates a #GDateTime from a time zone and an instant.
  *
