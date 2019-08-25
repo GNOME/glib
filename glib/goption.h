@@ -75,6 +75,8 @@ typedef struct _GOptionEntry   GOptionEntry;
  *     where aliasing is necessary to model some legacy commandline interface.
  *     It is not safe to use this option, unless all option groups are under
  *     your direct control. Since 2.8.
+ * @G_OPTION_FLAG_APPEND_EMPTY_LINE: This flag adds an empty line after the
+ *     one of the option, allowing to visually group options. Since: 2.63.1.
  *
  * Flags which modify individual options.
  */
@@ -87,7 +89,8 @@ typedef enum
   G_OPTION_FLAG_NO_ARG		= 1 << 3,
   G_OPTION_FLAG_FILENAME	= 1 << 4,
   G_OPTION_FLAG_OPTIONAL_ARG    = 1 << 5,
-  G_OPTION_FLAG_NOALIAS	        = 1 << 6
+  G_OPTION_FLAG_NOALIAS           = 1 << 6,
+  G_OPTION_FLAG_APPEND_EMPTY_LINE = 1 << 7
 } GOptionFlags;
 
 /**
