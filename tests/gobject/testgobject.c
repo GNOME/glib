@@ -416,7 +416,7 @@ main (int   argc,
   g_print ("MAIN: emit test-signal:\n");
   g_signal_emit_by_name (dobject, "test-signal", sigarg, NULL, &string);
   g_message ("signal return: \"%s\"", string);
-  g_assert (strcmp (string, "<default_handler><default_handler>") == 0);
+  g_assert_cmpstr (string, ==, "<default_handler><default_handler><default_handler>");
   g_free (string);
 
   g_print ("MAIN: call iface print-string on test and derived object:\n");
