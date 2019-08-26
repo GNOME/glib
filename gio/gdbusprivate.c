@@ -2234,6 +2234,10 @@ unpublish_session_bus (void)
   release_mutex (init_mutex);
 }
 
+/* _getch, SetConsoleTitle, PostQuitMessage, TranslateMessage, DispatchMessage
+ * are all disallowed when building a UWP app. We can allow them when building
+ * for a debug target even on UWP because that's allowed. */
+#if defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP)
 static void
 wait_console_window (void)
 {
@@ -2263,13 +2267,6 @@ open_console_window (void)
     }
 }
 
-static void
-idle_timeout_cb (GDBusDaemon *daemon, gpointer user_data)
-{
-  GMainLoop *loop = user_data;
-  g_main_loop_quit (loop);
-}
-
 /* Satisfies STARTF_FORCEONFEEDBACK */
 static void
 turn_off_the_starting_cursor (void)
@@ -2288,6 +2285,14 @@ turn_off_the_starting_cursor (void)
       DispatchMessage (&msg);
     }
 }
+#endif /* defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP) */
+
+static void
+idle_timeout_cb (GDBusDaemon *daemon, gpointer user_data)
+{
+  GMainLoop *loop = user_data;
+  g_main_loop_quit (loop);
+}
 
 __declspec(dllexport) void __stdcall
 g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdshow)
@@ -2297,10 +2302,12 @@ g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdsh
   const char *address;
   GError *error = NULL;
 
+#if defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP)
   turn_off_the_starting_cursor ();
 
   if (g_getenv ("GDBUS_DAEMON_DEBUG") != NULL)
     open_console_window ();
+#endif
 
   address = "nonce-tcp:";
   daemon = _g_dbus_daemon_new (address, NULL, &error);
