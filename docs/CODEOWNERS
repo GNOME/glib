@@ -33,10 +33,13 @@ subprojects/		@xclaesse @nirbheek @pwithnall
 *.m	@jralls @pwithnall @sdroege
 
 # Windows support
-*win32*	@lrn @creiter @fanc999 @pwithnall @sdroege
+*win32*	@lrn @creiter @fanc999 @pwithnall @sdroege @nirbheek
 
-# Windows support (MSVC specific)
-*msvc*	@fanc999 @creiter @pwithnall @sdroege
+# Windows support (MSVC-specific)
+*msvc*	@fanc999 @creiter @pwithnall @sdroege @nirbheek
+
+# Windows support (UWP-specific)
+*uwp*   @nirbheek
 
 # Android support
 *android*	@xclaesse @pwithnall @sdroege
