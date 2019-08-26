@@ -506,6 +506,8 @@
             <filename><envar>$XDG_DATA_HOME</envar>/applications/mimeapps.list</filename>.</para>
           <para>The <command>mime</command> command can be used to change the default handler for
             a mimetype.</para>
+          <para>Environment variables will not be set on the application, as it
+            may be an existing process which is activated to handle the new file.</para>
         </listitem>
       </varlistentry>
 
