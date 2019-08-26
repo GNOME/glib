@@ -1914,7 +1914,7 @@ msgstr ""
 "poden\n"
 "especificar-se amb el seu nom GIO. Per exemple, standard::icon o usant només "
 "el\n"
-"nom d'espais, p. ex. unix, o usant «*», que coincideix amb tots els atributs."
+"nom d'espais, p. ex. unix, o usant «*», que coincideix amb tots els atributs"
 
 #: gio/gio-tool-list.c:36 gio/gio-tool-tree.c:32
 msgid "Show hidden files"
@@ -2151,7 +2151,7 @@ msgstr "Munta o desmunta les ubicacions."
 
 #: gio/gio-tool-move.c:42
 msgid "Don’t use copy and delete fallback"
-msgstr "No usis el sistema alternatiu de copia i esborrat"
+msgstr "No usis el sistema alternatiu de còpia i esborrat"
 
 #: gio/gio-tool-move.c:99
 msgid "Move one or more files from SOURCE to DEST."
@@ -2165,7 +2165,7 @@ msgid ""
 msgstr ""
 "gio move és similar a l'eina tradicional mv, però usant ubicacions GIO\n"
 "en comptes de fitxers locals: per exemple, podeu usar quelcom com ara\n"
-"smb://servidor/recurs/fitxer.txt com a ubicació."
+"smb://servidor/recurs/fitxer.txt com a ubicació"
 
 #: gio/gio-tool-move.c:143
 #, c-format
@@ -2629,18 +2629,18 @@ msgid ""
 "and hyphen (“-”) are permitted"
 msgstr ""
 "El nom «%s» no és vàlid: el caràcter «%c» no és vàlid. Només es permeten "
-"lletres minúscules, nombres i el guionet («-»)."
+"lletres minúscules, nombres i el guionet («-»)"
 
 #: gio/glib-compile-schemas.c:828
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
 msgstr ""
-"El nom «%s» no és vàlid: no es poden posar dos guionets seguits («--»)."
+"El nom «%s» no és vàlid: no es poden posar dos guionets seguits («--»)"
 
 #: gio/glib-compile-schemas.c:837
 #, c-format
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
-msgstr "El nom «%s» no és vàlid: l'últim caràcter no pot ser un guionet («-»)."
+msgstr "El nom «%s» no és vàlid: l'últim caràcter no pot ser un guionet («-»)"
 
 #: gio/glib-compile-schemas.c:845
 #, c-format
@@ -3396,7 +3396,7 @@ msgstr "El flux de sortida no implementa l'escriptura"
 #: gio/goutputstream.c:472 gio/goutputstream.c:1533
 #, c-format
 msgid "Sum of vectors passed to %s too large"
-msgstr "La suma de vectors donada a %s és massa llarga"
+msgstr "La suma de vectors donada a %s és massa gran"
 
 #: gio/goutputstream.c:736 gio/goutputstream.c:1761
 msgid "Source stream is already closed"
@@ -4345,7 +4345,7 @@ msgstr "No s'esperava l'etiqueta «%s» dins «%s»"
 #: glib/gbookmarkfile.c:1616
 #, c-format
 msgid "Invalid date/time ‘%s’ in bookmark file"
-msgstr "La data/hora «%s» és no és vàlida al fitxer d'adreces d'interès"
+msgstr "La data/hora «%s» no és vàlida al fitxer d'adreces d'interès"
 
 #: glib/gbookmarkfile.c:1822
 msgid "No valid bookmark file found in data dirs"
@@ -5129,7 +5129,7 @@ msgid ""
 "reference (&#234; for example) — perhaps the digit is too large"
 msgstr ""
 "No s'ha pogut analitzar «%-.*s»: hi hauria d'haver hagut un dígit dins un "
-"caràcter de referència (per exemple &#234;). Potser el dígit és massa gran."
+"caràcter de referència (per exemple &#234;). Potser el dígit és massa gran"
 
 #: glib/gmarkup.c:702
 msgid ""
@@ -5165,7 +5165,7 @@ msgid ""
 msgstr ""
 "L'entitat no acaba amb un punt i coma. Segurament heu utilitzat un caràcter "
 "«&» sense intenció d'iniciar una entitat. Substituïu el caràcter «&» per "
-"&amp;."
+"&amp;"
 
 #: glib/gmarkup.c:1187
 msgid "Document must begin with an element (e.g. <book>)"
@@ -5271,7 +5271,7 @@ msgid ""
 "the tag <%s/>"
 msgstr ""
 "El document ha acabat de manera inesperada. S'esperava trobar un símbol «>» "
-"que acabés l'etiqueta <%s/>."
+"que acabés l'etiqueta <%s/>"
 
 #: glib/gmarkup.c:1821
 msgid "Document ended unexpectedly inside an element name"
@@ -5293,7 +5293,7 @@ msgid ""
 "name; no attribute value"
 msgstr ""
 "El document ha acabat de manera inesperada després d'un signe d'igual "
-"després d'un nom d'atribut. No hi ha cap valor d'atribut."
+"després d'un nom d'atribut. No hi ha cap valor d'atribut"
 
 #: glib/gmarkup.c:1845
 msgid "Document ended unexpectedly while inside an attribute value"
