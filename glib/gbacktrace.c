@@ -293,7 +293,8 @@ stack_trace (const char * const *args)
     {
       /* Save stderr for printing failure below */
       int old_err = dup (2);
-      fcntl (old_err, F_SETFD, fcntl (old_err, F_GETFD) | FD_CLOEXEC);
+      if (old_err != -1)
+        fcntl (old_err, F_SETFD, fcntl (old_err, F_GETFD) | FD_CLOEXEC);
 
       close (0); dup (in_fd[0]);   /* set the stdin to the in pipe */
       close (1); dup (out_fd[1]);  /* set the stdout to the out pipe */
@@ -302,7 +303,11 @@ stack_trace (const char * const *args)
       execvp (args[0], (char **) args);      /* exec gdb */
 
       /* Print failure to original stderr */
-      close (2); dup (old_err);
+      if (old_err != -1)
+        {
+          close (2);
+          dup (old_err);
+        }
       perror ("exec gdb failed");
       _exit (0);
     }
