@@ -119,7 +119,8 @@ gpointer g_try_realloc_n  (gpointer	 mem,
     *_pp = NULL;                                                               \
     if (_ptr)                                                                  \
       (destroy) (_ptr);                                                        \
-  } G_STMT_END
+  } G_STMT_END                                                                 \
+  GLIB_AVAILABLE_MACRO_IN_2_34
 #else /* __GNUC__ */
 #define g_clear_pointer(pp, destroy) \
   G_STMT_START {                                                               \
@@ -137,7 +138,8 @@ gpointer g_try_realloc_n  (gpointer	 mem,
         *_pp.out = NULL;                                                       \
         _destroy (_p);                                                         \
       }                                                                        \
-  } G_STMT_END
+  } G_STMT_END                                                                 \
+  GLIB_AVAILABLE_MACRO_IN_2_34
 #endif /* __GNUC__ */
 
 /**

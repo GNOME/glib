@@ -619,7 +619,8 @@ void    g_clear_handle_id (guint           *tag_ptr,
         *_tag_ptr = 0;                                     \
         clear_func (_handle_id);                           \
       }                                                    \
-  } G_STMT_END
+  } G_STMT_END                                             \
+  GLIB_AVAILABLE_MACRO_IN_2_56
 
 /* Idles, child watchers and timeouts */
 GLIB_AVAILABLE_IN_ALL
