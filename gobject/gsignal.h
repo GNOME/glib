@@ -450,7 +450,8 @@ void	 g_clear_signal_handler		      (gulong            *handler_id_ptr,
         g_signal_handler_disconnect ((instance), _handler_id);      \
         *(handler_id_ptr) = 0;                                      \
       }                                                             \
-  } G_STMT_END
+  } G_STMT_END                                                      \
+  GLIB_AVAILABLE_MACRO_IN_2_62
 
 /* --- overriding and chaining --- */
 GLIB_AVAILABLE_IN_ALL
