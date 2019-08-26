@@ -128,6 +128,7 @@ valgrind:
             _build
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
+                 --log-file _build/meson-logs/testlog-valgrind.json
                  --wrap "valgrind --tool=memcheck --error-exitcode=1 --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/glib.supp"
                  --no-suite no-valgrind
                  --no-suite slow
