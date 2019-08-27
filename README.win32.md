@@ -121,7 +121,7 @@ To do a build using Meson, do the following:
   version and build platform (Win32/x86, x64, etc.) that will be used in all
   the following steps.
 
-- Create an empty directory/folder for the build inside your glib sources
+- Create an empty directory/folder for the build inside your GLib sources
   directory, say, `_builddir`, and `cd` into it.
 
 - Setup the build using Meson:
