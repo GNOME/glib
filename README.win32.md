@@ -124,7 +124,7 @@ To do a build using Meson, do the following:
 - Create an empty directory/folder for the build inside your GLib sources
   directory, say, `_builddir`, and `cd` into it.
 
-- Setup the build using Meson:
+- Set up the build using Meson:
 
 ```cmd
 > meson .. --buildtype=<release|debug|debugoptimized> --prefix=<path> [--backend=vs]
