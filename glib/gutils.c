@@ -1154,6 +1154,87 @@ g_set_application_name (const gchar *application_name)
     g_warning ("g_set_application_name() called multiple times");
 }
 
+/**
+ * g_get_os_info:
+ * @key_name: a key for the OS info being requested, for example %G_OS_INFO_KEY_NAME.
+ *
+ * Get information about the operating system.
+ *
+ * On Linux this comes from the /etc/os-release file. On other systems, it may
+ * come from a variety of sources. You can either use the standard key names
+ * like %G_OS_INFO_KEY_NAME or pass any UTF-8 string key name. For example,
+ * /etc/os-release provides a number of other less commonly used values that may
+ * be useful. No key is guaranteed to be provided, so the caller should always
+ * check if the result is %NULL.
+ *
+ * Returns: (nullable): The associated value for the requested key or %NULL if
+ *   this information is not provided.
+ *
+ * Since: 2.64
+ **/
+gchar *
+g_get_os_info (const gchar *key_name)
+{
+  gchar *buffer = NULL;
+  GStrv lines;
+  int i;
+  gchar *result = NULL;
+  GError *error = NULL;
+
+  g_return_val_if_fail (key_name != NULL, NULL);
+
+  if (!g_file_get_contents ("/etc/os-release", &buffer, NULL, &error))
+    {
+      gboolean file_missing;
+
+      file_missing = g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+      g_clear_error (&error);
+
+      if (!file_missing ||
+          !g_file_get_contents ("/usr/lib/os-release", &buffer, NULL, NULL))
+        return NULL;
+    }
+
+  lines = g_strsplit (buffer, "\n", -1);
+  g_free (buffer);
+  for (i = 0; lines[i] != NULL && result == NULL; i++)
+    {
+      const gchar *line = lines[i];
+      GStrv tokens;
+
+      /* Skip comments */
+      if (g_str_has_prefix (line, "#"))
+        continue;
+
+      tokens = g_strsplit (line, "=", 2);
+      if (g_strv_length (tokens) >= 2 && g_str_equal (tokens[0], key_name))
+        {
+          const gchar *value;
+
+          value = tokens[1];
+          result = g_shell_unquote (value, NULL);
+          if (result == NULL)
+             result = g_strdup (value);
+        }
+
+        g_strfreev (tokens);
+    }
+  g_strfreev (lines);
+
+  /* Default values in spec */
+  if (result == NULL)
+    {
+      if (g_str_equal (key_name, G_OS_INFO_KEY_NAME))
+        return g_strdup ("Linux");
+      if (g_str_equal (key_name, G_OS_INFO_KEY_ID))
+        return g_strdup ("linux");
+      if (g_str_equal (key_name, G_OS_INFO_KEY_PRETTY_NAME))
+        return g_strdup ("Linux");
+    }
+
+  return g_steal_pointer (&result);
+}
+
 /* Set @global_str to a copy of @new_value if it’s currently unset or has a
  * different value. If its current value matches @new_value, do nothing. If
  * replaced, we have to leak the old value as client code could still have
