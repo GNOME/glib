@@ -1153,6 +1153,169 @@ g_set_application_name (const gchar *application_name)
     g_warning ("g_set_application_name() called multiple times");
 }
 
+/**
+ * G_OS_INFO_KEY_NAME:
+ *
+ * A key to get the name of the operating system excluding version information suitable for presentation to the user, e.g. "YoYoOS"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_PRETTY_NAME:
+ *
+ * A key to get the name of the operating system in a format suitable for presentation to the user, e.g. "YoYoOS Foo"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_VERSION:
+ *
+ * A key to get the operating system version suitable for presentation to the user, e.g. "42 (Foo)"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_VERSION_CODENAME:
+ *
+ * A key to get a codename identifying the operating system release suitable for processing by scripts or usage in generated filenames, e.g. "foo"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_VERSION_ID:
+ *
+ * A key to get the version of the operating system suitable for processing by scripts or usage in generated filenames, e.g. "42"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_ID:
+ *
+ * A key to get an ID identifying the operating system suitable for processing by scripts or usage in generated filenames, e.g. "yoyoos"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_HOME_URL:
+ *
+ * A key to get the homepage for the operating system, e.g. "https://www.yoyo-os.com/"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_DOCUMENTATION_URL:
+ *
+ * A key to get the documentation page for the operating system, e.g. "https://docs.yoyo-os.com/"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_SUPPORT_URL:
+ *
+ * A key to get the support page for the operating system, e.g. "https://support.yoyo-os.com/"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_BUG_REPORT_URL:
+ *
+ * A key to get the bug reporting page for the operating system, e.g. "https://bugs.yoyo-os.com/"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * G_OS_INFO_KEY_PRIVACY_POLICY_URL:
+ *
+ * A key to get the privacy policy for the operating system, e.g. "https://privacy.yoyo-os.com/"
+ *
+ * Since: 2.62
+ */
+
+/**
+ * g_get_os_info:
+ * @key_name: a key for the OS info being requested.
+ *
+ * Get information about the operating system.
+ *
+ * Returns: (nullable): The associated value to the requested key or %NULL if this information is not provided.
+ * Since: 2.62
+ **/
+gchar *
+g_get_os_info (const gchar *key_name)
+{
+  gchar *buffer = NULL;
+  GStrv lines;
+  int i;
+  gchar *result = NULL;
+  GError *error = NULL;
+
+  g_return_val_if_fail (key_name != NULL, NULL);
+
+  if (!g_file_get_contents ("/etc/os-release", &buffer, NULL, &error))
+    {
+      gboolean file_missing;
+
+      file_missing = g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+      g_clear_error (&error);
+
+      if (!file_missing ||
+          !g_file_get_contents ("/usr/lib/os-release", &buffer, NULL, NULL))
+        return NULL;
+    }
+
+  lines = g_strsplit (buffer, "\n", -1);
+  g_free (buffer);
+  for (i = 0; lines[i] != NULL && result == NULL; i++)
+    {
+      gchar *line = lines[i];
+      GStrv tokens;
+
+      /* Skip comments */
+      if (g_str_has_prefix (line, "#"))
+        continue;
+
+      tokens = g_strsplit (line, "=", 2);
+      if (g_strv_length (tokens) >= 2 && g_str_equal (tokens[0], key_name))
+        {
+          const gchar *value;
+          gchar *unquoted_value;
+
+          value = tokens[1];
+          unquoted_value = g_shell_unquote (value, NULL);
+          if (unquoted_value != NULL)
+             result = unquoted_value;
+          else
+             result = g_strdup (value);
+        }
+
+        g_strfreev (tokens);
+    }
+  g_strfreev (lines);
+
+  /* Default values in spec */
+  if (result == NULL)
+    {
+      if (g_str_equal (key_name, G_OS_INFO_KEY_NAME))
+        return g_strdup ("Linux");
+      if (g_str_equal (key_name, G_OS_INFO_KEY_ID))
+        return g_strdup ("linux");
+      if (g_str_equal (key_name, G_OS_INFO_KEY_PRETTY_NAME))
+        return g_strdup ("Linux");
+    }
+
+  return result;
+}
+
 /* Set @global_str to a copy of @new_value if it’s currently unset or has a
  * different value. If its current value matches @new_value, do nothing. If
  * replaced, we have to leak the old value as client code could still have

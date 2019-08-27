@@ -65,6 +65,20 @@ GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_application_name (void);
 GLIB_AVAILABLE_IN_ALL
 void                  g_set_application_name (const gchar *application_name);
+GLIB_AVAILABLE_IN_2_62
+gchar *               g_get_os_info          (const gchar *key_name);
+
+#define G_OS_INFO_KEY_NAME               "NAME"
+#define G_OS_INFO_KEY_PRETTY_NAME        "PRETTY_NAME"
+#define G_OS_INFO_KEY_VERSION            "VERSION"
+#define G_OS_INFO_KEY_VERSION_CODENAME   "VERSION_CODENAME"
+#define G_OS_INFO_KEY_VERSION_ID         "VERSION_ID"
+#define G_OS_INFO_KEY_ID                 "ID"
+#define G_OS_INFO_KEY_HOME_URL           "HOME_URL"
+#define G_OS_INFO_KEY_DOCUMENTATION_URL  "DOCUMENTATION_URL"
+#define G_OS_INFO_KEY_SUPPORT_URL        "SUPPORT_URL"
+#define G_OS_INFO_KEY_BUG_REPORT_URL     "BUG_REPORT_URL"
+#define G_OS_INFO_KEY_PRIVACY_POLICY_URL "PRIVACY_POLICY_URL"
 
 GLIB_AVAILABLE_IN_ALL
 void      g_reload_user_special_dirs_cache     (void);
