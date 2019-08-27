@@ -1912,6 +1912,11 @@ missing_arg_test (void)
   g_strfreev (argv_copy);
   g_free (argv);
   g_option_context_free (context);
+
+  /* Checking g_option_context_parse_strv on NULL args */
+  context = g_option_context_new (NULL);
+  g_assert_true (g_option_context_parse_strv (context, NULL, NULL));
+  g_option_context_free (context);
 }
 
 static gchar *test_arg;
