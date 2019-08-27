@@ -268,6 +268,153 @@ test_return_from_same_iteration (void)
   g_assert_true (same_notification_emitted);
 }
 
+/* test_return_from_next_iteration: calling g_task_return_* from the
+ * loop iteration after the task was created in completes the task in the
+ * same loop iteratoin.
+ */
+gboolean next_result = FALSE;
+gboolean next_notification_emitted = FALSE;
+
+static void
+next_callback (GObject      *object,
+               GAsyncResult *result,
+               gpointer      user_data)
+{
+  gboolean *result_out = user_data;
+  GError *error = NULL;
+
+  g_assert (object == NULL);
+  g_assert (g_task_is_valid (result, object));
+  g_assert (g_async_result_get_user_data (result) == user_data);
+  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
+
+  *result_out = g_task_propagate_boolean (G_TASK (result), &error);
+  g_assert_no_error (error);
+
+  g_assert (!g_task_had_error (G_TASK (result)));
+
+  g_main_loop_quit (loop);
+}
+
+static gboolean
+next_start (gpointer user_data)
+{
+  gpointer *weak_pointer = user_data;
+  GTask *task;
+
+  task = g_task_new (NULL, NULL, next_callback, &next_result);
+  *weak_pointer = task;
+  g_object_add_weak_pointer (G_OBJECT (task), weak_pointer);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &next_notification_emitted);
+
+  g_idle_add (idle_quit_loop, NULL);
+  g_main_loop_run (loop);
+
+  g_task_return_boolean (task, TRUE);
+  g_object_unref (task);
+
+  /* next_callback should have been invoked immediately */
+  g_assert_true (next_result);
+  g_assert_null (*weak_pointer);
+  g_assert_true (next_notification_emitted);
+
+  return FALSE;
+}
+
+static void
+test_return_from_next_iteration (void)
+{
+  gpointer weak_pointer;
+
+  g_idle_add (next_start, &weak_pointer);
+  g_main_loop_run (loop);
+
+  g_assert_true (next_result);
+  g_assert_null (weak_pointer);
+  g_assert_true (next_notification_emitted);
+}
+
+/* test_return_from_next_iteration: calling g_task_return_* from the
+ * correct main context always uses idle completion if complete-in-idle is
+ * set.
+ */
+gboolean idle_result = FALSE;
+gboolean idle_notification_emitted = FALSE;
+
+static void
+idle_callback (GObject      *object,
+               GAsyncResult *result,
+               gpointer      user_data)
+{
+  gboolean *result_out = user_data;
+  GError *error = NULL;
+
+  g_assert (object == NULL);
+  g_assert (g_task_is_valid (result, object));
+  g_assert (g_async_result_get_user_data (result) == user_data);
+  g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
+
+  *result_out = g_task_propagate_boolean (G_TASK (result), &error);
+  g_assert_no_error (error);
+
+  g_assert (!g_task_had_error (G_TASK (result)));
+
+  g_main_loop_quit (loop);
+}
+
+static gboolean
+idle_start (gpointer user_data)
+{
+  gpointer *weak_pointer = user_data;
+  GTask *task;
+
+  task = g_task_new (NULL, NULL, idle_callback, &idle_result);
+  g_task_set_complete_in_idle (task, TRUE);
+  *weak_pointer = task;
+  g_object_add_weak_pointer (G_OBJECT (task), weak_pointer);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &idle_notification_emitted);
+
+  g_idle_add (idle_quit_loop, NULL);
+  g_main_loop_run (loop);
+
+  g_task_return_boolean (task, TRUE);
+  g_object_unref (task);
+
+  /* idle_callback should not have been invoked because complete-in-idle is
+   * set (i.e. same as next_start but with the flag set). */
+  g_assert (idle_result == FALSE);
+  g_assert (*weak_pointer == task);
+  g_assert_false (idle_notification_emitted);
+
+  return FALSE;
+}
+
+static void
+test_return_from_idle_iteration (void)
+{
+  gpointer weak_pointer;
+
+  g_idle_add (idle_start, &weak_pointer);
+  g_main_loop_run (loop);
+
+  /* We are still in the same mainloop iteration, so it shouldn't have
+   * reported back just yet. */
+  g_assert (idle_result == FALSE);
+  g_assert (weak_pointer);
+  g_assert_false (idle_notification_emitted);
+
+  /* The tasks idle_callback will quit the mainloop */
+  g_main_loop_run (loop);
+
+  g_assert_true (idle_result);
+  g_assert_null (weak_pointer);
+  g_assert_true (idle_notification_emitted);
+}
+
 /* test_return_from_toplevel: calling g_task_return_* from outside any
  * main loop completes the task inside the main loop.
  */
@@ -2329,6 +2476,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/basic", test_basic);
   g_test_add_func ("/gtask/error", test_error);
   g_test_add_func ("/gtask/return-from-same-iteration", test_return_from_same_iteration);
+  g_test_add_func ("/gtask/return-from-next-iteration", test_return_from_next_iteration);
+  g_test_add_func ("/gtask/return-from-idle-iteration", test_return_from_idle_iteration);
   g_test_add_func ("/gtask/return-from-toplevel", test_return_from_toplevel);
   g_test_add_func ("/gtask/return-from-anon-thread", test_return_from_anon_thread);
   g_test_add_func ("/gtask/return-from-wrong-thread", test_return_from_wrong_thread);
