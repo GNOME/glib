@@ -2663,6 +2663,39 @@ notify_desktop_launch (GDBusConnection  *session_bus,
   g_object_unref (msg);
 }
 
+static GList *
+maybe_rewrite_uris (GDesktopAppInfo *info,
+                    GDBusConnection *session_bus,
+                    GList           *uris)
+{
+  GList *ruris = uris;
+  char *app_id = NULL;
+
+  if (session_bus == NULL)
+    return ruris;
+
+#ifdef G_OS_UNIX
+  app_id = g_desktop_app_info_get_string (info, "X-Flatpak");
+  if (!app_id)
+    {
+      char *snap_name = g_desktop_app_info_get_string (info, "X-SnapInstanceName");
+      if (snap_name && *snap_name)
+        app_id = g_strconcat ("snap.", snap_name, NULL);
+      g_free (snap_name);
+    }
+
+  if (app_id && *app_id)
+    {
+      ruris = g_document_portal_add_documents (uris, app_id, NULL);
+      if (ruris == NULL)
+        ruris = uris;
+    }
+
+  g_free (app_id);
+#endif
+  return ruris;
+}
+
 #define _SPAWN_FLAGS_DEFAULT (G_SPAWN_SEARCH_PATH)
 
 static gboolean
@@ -2682,6 +2715,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
                                            GError                    **error)
 {
   gboolean completed = FALSE;
+  GList *ruris;
   GList *old_uris;
   GList *dup_uris;
 
@@ -2697,11 +2731,13 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
   else
     envp = g_get_environ ();
 
+  ruris = maybe_rewrite_uris (info, session_bus, uris);
+
   /* The GList* passed to expand_application_parameters() will be modified
    * internally by expand_macro(), so we need to pass a copy of it instead,
    * and also use that copy to control the exit condition of the loop below.
    */
-  dup_uris = g_list_copy (uris);
+  dup_uris = g_list_copy (ruris);
   do
     {
       GPid pid;
@@ -2831,6 +2867,8 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
 
  out:
   g_list_free (dup_uris);
+  if (ruris != uris)
+    g_list_free_full (ruris, g_free);
   g_strfreev (argv);
   g_strfreev (envp);
 
@@ -2926,28 +2964,17 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
                                           GAsyncReadyCallback callback,
                                           gpointer            user_data)
 {
-  GList *ruris = uris;
-  char *app_id = NULL;
+  GList *ruris;
 
   g_return_val_if_fail (info != NULL, FALSE);
 
-#ifdef G_OS_UNIX
-  app_id = g_desktop_app_info_get_string (info, "X-Flatpak");
-  if (app_id && *app_id)
-    {
-      ruris = g_document_portal_add_documents (uris, app_id, NULL);
-      if (ruris == NULL)
-        ruris = uris;
-    }
-#endif
+  ruris = maybe_rewrite_uris (info, session_bus, uris);
 
   launch_uris_with_dbus (info, session_bus, ruris, launch_context,
                          cancellable, callback, user_data);
 
   if (ruris != uris)
     g_list_free_full (ruris, g_free);
-
-  g_free (app_id);
 
   return TRUE;
 }
