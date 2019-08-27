@@ -2708,8 +2708,8 @@ g_option_context_get_description (GOptionContext *context)
 /**
  * g_option_context_parse_strv:
  * @context: a #GOptionContext
- * @arguments: (inout) (array zero-terminated=1): a pointer to the
- *    command line arguments (which must be in UTF-8 on Windows)
+ * @arguments: (inout) (array null-terminated=1) (allow-none): a pointer
+ *    to the command line arguments (which must be in UTF-8 on Windows)
  * @error: a return location for errors
  *
  * Parses the command line arguments.
@@ -2743,7 +2743,7 @@ g_option_context_parse_strv (GOptionContext   *context,
   gint argc;
 
   context->strv_mode = TRUE;
-  argc = g_strv_length (*arguments);
+  argc = arguments && *arguments ? g_strv_length (*arguments) : 0;
   success = g_option_context_parse (context, &argc, arguments, error);
   context->strv_mode = FALSE;
 
