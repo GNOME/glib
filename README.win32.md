@@ -108,7 +108,7 @@ For all compilers, you will need the following:
 ## Building with MinGW-GCC
 
 Open your MSYS or [MSYS2](https://www.msys2.org/) shell where you have the
-MinGW-GCC toolchain installed, and build glib [like any other Meson
+MinGW-GCC toolchain installed, and build GLib [like any other Meson
 project](https://mesonbuild.com/Quick-guide.html#compiling-a-meson-project).
 
 ## Building with Visual Studio 2015 or newer
