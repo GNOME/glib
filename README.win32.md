@@ -152,7 +152,7 @@ The steps are the same as above, with the following notes about issues that you 
 If you are building GLib-based libraries or applications, or GLib itself
 and you see a `C4819` error (or warning, before `C4819` is treated as an error
 in `msvc_recommended_pragmas.h`), please be advised that this error/warning should
-not be disregarded, as this likely means portions of the build is not being
+not be disregarded, as this likely means portions of the build are not being
 done correctly, as this is an issue of Visual Studio running on CJK (East Asian)
 locales.  This is an issue that also affects builds of other projects, such as
 QT, Firefox, LibreOffice/OpenOffice, Pango and GTK, along with many other projects.
