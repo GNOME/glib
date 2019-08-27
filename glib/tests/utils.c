@@ -517,6 +517,20 @@ test_desktop_special_dir (void)
   g_assert (dir2 != NULL);
 }
 
+static void
+test_os_info (void)
+{
+#if defined (G_OS_UNIX) || defined (G_OS_WIN32)
+  gchar *name;
+
+  name = g_get_os_info (G_OS_INFO_KEY_NAME);
+  g_assert (name != NULL);
+  g_free (name);
+#else
+  g_test_skip ("g_get_os_info() not supported on this platform");
+#endif
+}
+
 static gboolean
 source_test (gpointer data)
 {
@@ -767,6 +781,7 @@ main (int   argc,
 #endif
   g_test_add_func ("/utils/specialdir", test_special_dir);
   g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
+  g_test_add_func ("/utils/os-info", test_os_info);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
   g_test_add_func ("/utils/clear-pointer-cast", test_clear_pointer_cast);
   g_test_add_func ("/utils/clear-pointer/side-effects", test_clear_pointer_side_effects);
