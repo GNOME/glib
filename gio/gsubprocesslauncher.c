@@ -227,7 +227,7 @@ g_subprocess_launcher_new (GSubprocessFlags flags)
 
 /**
  * g_subprocess_launcher_set_environ:
- * @self: a #GSubprocess
+ * @self: a #GSubprocessLauncher
  * @env: (array zero-terminated=1) (element-type filename) (transfer none):
  *     the replacement environment
  *
@@ -266,7 +266,7 @@ g_subprocess_launcher_set_environ (GSubprocessLauncher  *self,
 
 /**
  * g_subprocess_launcher_setenv:
- * @self: a #GSubprocess
+ * @self: a #GSubprocessLauncher
  * @variable: (type filename): the environment variable to set,
  *     must not contain '='
  * @value: (type filename): the new value for the variable
@@ -292,7 +292,7 @@ g_subprocess_launcher_setenv (GSubprocessLauncher *self,
 
 /**
  * g_subprocess_launcher_unsetenv:
- * @self: a #GSubprocess
+ * @self: a #GSubprocessLauncher
  * @variable: (type filename): the environment variable to unset,
  *     must not contain '='
  *
@@ -313,7 +313,7 @@ g_subprocess_launcher_unsetenv (GSubprocessLauncher *self,
 
 /**
  * g_subprocess_launcher_getenv:
- * @self: a #GSubprocess
+ * @self: a #GSubprocessLauncher
  * @variable: (type filename): the environment variable to get
  *
  * Returns the value of the environment variable @variable in the
@@ -336,7 +336,7 @@ g_subprocess_launcher_getenv (GSubprocessLauncher *self,
 
 /**
  * g_subprocess_launcher_set_cwd:
- * @self: a #GSubprocess
+ * @self: a #GSubprocessLauncher
  * @cwd: (type filename): the cwd for launched processes
  *
  * Sets the current working directory that processes will be launched
