@@ -721,6 +721,28 @@ elif cc.links(clock_gettime_test_code, args : '-lrt', name : 'clock_gettime in l
   librt = cc.find_library('rt')
 endif
 
+dlopen_dlsym_test_code = '''
+#include <dlfcn.h>
+int glib_underscore_test (void) { return 42; }
+int main (int argc, char ** argv) {
+  void *f1 = (void*)0, *f2 = (void*)0, *handle;
+  handle = dlopen ((void*)0, 0);
+  if (handle) {
+    f1 = dlsym (handle, "glib_underscore_test");
+    f2 = dlsym (handle, "_glib_underscore_test");
+  }
+  return (!f2 || f1);
+}'''
+libdl_dep = []
+if cc.links(dlopen_dlsym_test_code, name : 'dlopen() and dlsym() in system libraries')
+  have_dlopen_dlsym = true
+elif cc.links(dlopen_dlsym_test_code, args : '-ldl', name : 'dlopen() and dlsym() in libdl')
+  have_dlopen_dlsym = true
+  libdl_dep = cc.find_library('dl')
+else
+  have_dlopen_dlsym = false
+endif
+
 # if statfs() takes 2 arguments (Posix) or 4 (Solaris)
 if have_func_statfs
   if cc.compiles(glib_conf_prefix + '''
