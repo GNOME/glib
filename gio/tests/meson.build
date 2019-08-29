@@ -140,17 +140,13 @@ if host_machine.system() != 'windows'
   }
 
   if have_rtld_next
-    # FIXME: This list will probably grow; see
-    # https://gitlab.gnome.org/GNOME/glib/issues/1739
-    no_libdl_systems = ['freebsd', 'netbsd', 'openbsd']
-
     gio_tests += {
       'gsocketclient-slow' : {
         'depends' : [
           shared_library('slow-connect-preload',
             'slow-connect-preload.c',
             name_prefix : '',
-            dependencies: cc.find_library('dl', required: not no_libdl_systems.contains(host_machine.system())),
+            dependencies: libdl_dep,
             install_dir : installed_tests_execdir,
             install: installed_tests_enabled,
           )
