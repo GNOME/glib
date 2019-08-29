@@ -672,6 +672,7 @@ gio_headers = files(
   'gmemoryinputstream.h',
   'gmemoryoutputstream.h',
   'gmountoperation.h',
+  'gnativesocketaddress.h',
   'gnativevolumemonitor.h',
   'gnetworkaddress.h',
   'gnetworkmonitor.h',
