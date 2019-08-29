@@ -655,6 +655,7 @@ g_option_context_add_main_entries (GOptionContext      *context,
                                    const GOptionEntry  *entries,
                                    const gchar         *translation_domain)
 {
+  g_return_if_fail (context != NULL);
   g_return_if_fail (entries != NULL);
 
   if (!context->main_group)
@@ -840,6 +841,8 @@ g_option_context_get_help (GOptionContext *context,
   const gchar *rest_description;
   GString *string;
   guchar token;
+
+  g_return_val_if_fail (context != NULL, NULL);
 
   string = g_string_sized_new (1024);
 
@@ -1958,6 +1961,8 @@ g_option_context_parse (GOptionContext   *context,
   gint i, j, k;
   GList *list;
 
+  g_return_val_if_fail (context != NULL, FALSE);
+
   /* Set program name */
   if (!g_get_prgname())
     {
@@ -2405,6 +2410,7 @@ g_option_group_add_entries (GOptionGroup       *group,
 {
   gsize i, n_entries;
 
+  g_return_if_fail (group != NULL);
   g_return_if_fail (entries != NULL);
 
   for (n_entries = 0; entries[n_entries].long_name != NULL; n_entries++) ;
@@ -2744,6 +2750,8 @@ g_option_context_parse_strv (GOptionContext   *context,
 {
   gboolean success;
   gint argc;
+
+  g_return_val_if_fail (context != NULL, FALSE);
 
   context->strv_mode = TRUE;
   argc = arguments && *arguments ? g_strv_length (*arguments) : 0;
