@@ -465,12 +465,12 @@ ViewerFile *file = g_object_new (VIEWER_TYPE_FILE, NULL);
 /* Implementation                               */
 /************************************************/
 
-enum
+typedef enum
 {
   PROP_FILENAME = 1,
   PROP_ZOOM_LEVEL,
   N_PROPERTIES
-};
+} ViewerFileProperty;
 
 static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
 
@@ -482,7 +482,7 @@ viewer_file_set_property (GObject      *object,
 {
   ViewerFile *self = VIEWER_FILE (object);
 
-  switch (property_id)
+  switch ((ViewerFileProperty) property_id)
     {
     case PROP_FILENAME:
       g_free (self-&gt;filename);
@@ -510,7 +510,7 @@ viewer_file_get_property (GObject    *object,
 {
   ViewerFile *self = VIEWER_FILE (object);
 
-  switch (property_id)
+  switch ((ViewerFileProperty) property_id)
     {
     case PROP_FILENAME:
       g_value_set_string (value, self-&gt;filename);
