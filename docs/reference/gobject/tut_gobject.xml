@@ -65,6 +65,8 @@ struct _ViewerFile
   GObject parent_instance;
 
   /* instance members */
+  gchar *filename;
+  guint zoom_level;
 };
 
 /* will create viewer_file_get_type and set viewer_file_parent_class */
@@ -81,11 +83,24 @@ viewer_file_constructed (GObject *obj)
 }
 
 static void
+viewer_file_finalize (GObject *obj)
+{
+  ViewerFile *self = VIEWER_FILE (obj);
+
+  g_free (self->filename);
+
+  /* Always chain up to the parent finalize function to complete object
+   * destruction. */
+  G_OBJECT_CLASS (viewer_file_parent_class)-&gt;finalize (obj);
+}
+
+static void
 viewer_file_class_init (ViewerFileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class-&gt;constructed = viewer_file_constructed;
+  object_class-&gt;finalize = viewer_file_finalize;
 }
 
 static void
