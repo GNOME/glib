@@ -1,5 +1,4 @@
-General Information
-===================
+# GLib
 
 GLib is the low-level core library that forms the basis for projects such
 as GTK and GNOME. It provides data structure handling for C, portability
@@ -7,48 +6,39 @@ wrappers, and interfaces for such runtime functionality as an event loop,
 threads, dynamic loading, and an object system.
 
 The official download locations are:
-  https://download.gnome.org/sources/glib
+  <https://download.gnome.org/sources/glib>
 
 The official web site is:
-  https://www.gtk.org/
+  <https://www.gtk.org/>
 
-Installation
-============
+## Installation
 
-See the file 'INSTALL'
+See the file '[INSTALL.in](INSTALL.in)'
 
-How to report bugs
-==================
+## How to report bugs
 
 Bugs should be reported to the GNOME issue tracking system.
-(https://gitlab.gnome.org/GNOME/glib/issues/new). You will need
+(<https://gitlab.gnome.org/GNOME/glib/issues/new>). You will need
 to create an account for yourself.
 
 In the bug report please include:
 
 * Information about your system. For instance:
-
-   - What operating system and version
-   - For Linux, what version of the C library
-
-  And anything else you think is relevant.
-
+  * What operating system and version
+  * For Linux, what version of the C library
+  * And anything else you think is relevant.
 * How to reproduce the bug.
-
-  If you can reproduce it with one of the test programs that are built
+  * If you can reproduce it with one of the test programs that are built
   in the tests/ subdirectory, that will be most convenient.  Otherwise,
   please include a short test program that exhibits the behavior.
   As a last resort, you can also provide a pointer to a larger piece
   of software that can be downloaded.
-
 * If the bug was a crash, the exact text that was printed out
   when the crash occured.
-
 * Further information such as stack traces may be useful, but
   is not necessary.
 
-Patches
-=======
+## Patches
 
 Patches should also be submitted as merge requests to gitlab.gnome.org. If the
 patch fixes an existing issue, please refer to the issue in your commit message
@@ -58,15 +48,15 @@ Closes: #123
 Otherwise, create a new merge request that introduces the change, filing a
 separate issue is not required.
 
-Notes about GLib 2.48
-=====================
+## Notes
+
+### Notes about GLib 2.48
 
 * The system copy of PCRE is now used by default to implement GRegex.
   Configure with --with-pcre=internal if a system PCRE version
   is unavailable or undesired.
 
-Notes about GLib 2.46
-=====================
+### Notes about GLib 2.46
 
 * GTask no longer imposes a fixed limit on the number of tasks that
   can be run_in_thread() simultaneously, since doing this inevitably
@@ -83,8 +73,7 @@ Notes about GLib 2.46
   you). If you have a very large number of tasks to run, and don't
   want them to all run at once, you should rate-limit them yourself.
 
-Notes about GLib 2.40
-=====================
+### Notes about GLib 2.40
 
 * g_test_run() no longer runs tests in exactly the order they are
   registered; instead, it groups them according to test suites (ie,
@@ -101,8 +90,7 @@ Notes about GLib 2.40
   (The behavior actually changed in GLib 2.36, but it was not
   documented at the time, since we didn't realize it mattered.)
 
-Notes about GLib 2.36
-=====================
+### Notes about GLib 2.36
 
 * It is no longer necessary to call g_type_init().  If you are
   loading GLib as a dynamic module, you should be careful to avoid
@@ -126,8 +114,7 @@ Notes about GLib 2.36
   the previous behavior was clearly broken, so it seems unlikely that
   anyone was using it.
 
-Notes about GLib 2.34
-=====================
+### Notes about GLib 2.34
 
 * GIO now looks for thumbnails in XDG_CACHE_HOME, following a
   recent alignment of the thumbnail spec with the basedir spec.
@@ -136,8 +123,7 @@ Notes about GLib 2.34
   max_idle_time settings have been changed to 2 and 15*1000,
   respectively.
 
-Notes about GLib 2.32
-=====================
+### Notes about GLib 2.32
 
 * It is no longer necessary to use g_thread_init() or to link against
   libgthread.  libglib is now always thread-enabled. Custom thread
@@ -182,28 +168,24 @@ Notes about GLib 2.32
   or
     G_MESSAGES_DEBUG=all
 
-Notes about GLib 2.30
-=====================
+### Notes about GLib 2.30
 
 * GObject includes a generic marshaller, g_cclosure_marshal_generic.
   To use it, simply specify NULL as the marshaller in g_signal_new().
   The generic marshaller is implemented with libffi, and consequently
   GObject depends on libffi now.
 
-Notes about GLib 2.28
-=====================
+### Notes about GLib 2.28
 
 * The GApplication API has changed compared to the version that was
   included in the 2.25 development snapshots. Existing users will need
   adjustments.
 
-Notes about GLib 2.26
-=====================
+### Notes about GLib 2.26
 
 * Nothing noteworthy.
 
-Notes about GLib 2.24
-=====================
+### Notes about GLib 2.24
 
 * It is now allowed to call g_thread_init(NULL) multiple times, and
   to call glib functions before g_thread_init(NULL) is called
@@ -222,15 +204,13 @@ Notes about GLib 2.24
   may not rely on nul-termination here so any breakage caused by this change
   is a bug in application code.
 
-Notes about GLib 2.22
-=====================
+### Notes about GLib 2.22
 
 * Repeated calls to g_simple_async_result_set_op_res_gpointer used
   to leak the data. This has been fixed to always call the provided
   destroy notify.
 
-Notes about GLib 2.20
-=====================
+### Notes about GLib 2.20
 
 * The functions for launching applications (e.g. g_app_info_launch() +
   friends) now passes a FUSE file:// URI if possible (requires gvfs
@@ -244,8 +224,7 @@ Notes about GLib 2.20
   the result of g_file_get_uri() after having constructed a GFile
   object with the given URI.
 
-Notes about GLib 2.18
-=====================
+### Notes about GLib 2.18
 
 * The recommended way of using GLib has always been to only include the
   toplevel headers glib.h, glib-object.h and gio.h. GLib enforces this by
@@ -254,15 +233,13 @@ Notes about GLib 2.18
   default for GLib headers (it is turned on for GObject and GIO).
   To turn it on, define the preprocessor symbol G_DISABLE_SINGLE_INCLUDES.
 
-Notes about GLib 2.16
-=====================
+### Notes about GLib 2.16
 
 * GLib now includes GIO, which adds optional dependencies against libattr
   and libselinux for extended attribute and SELinux support. Use
   --disable-xattr and --disable-selinux to build without these.
 
-Notes about GLib 2.10
-=====================
+### Notes about GLib 2.10
 
 * The functions g_snprintf() and g_vsnprintf() have been removed from
   the gprintf.h header, since they are already declared in glib.h. This
@@ -294,8 +271,7 @@ Notes about GLib 2.10
   carefully. g_object_compat_control() has been added to GLib 2.8.5
   to help with the transition.
 
-Notes about GLib 2.6.0
-======================
+### Notes about GLib 2.6.0
 
 * GLib 2.6 introduces the concept of 'GLib filename encoding', which is the
   on-disk encoding on Unix, but UTF-8 on Windows. All GLib functions
