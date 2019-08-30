@@ -447,6 +447,9 @@ void    g_assertion_message             (const char     *domain,
                                          int             line,
                                          const char     *func,
                                          const char     *message);
+#if defined (_MSC_VER)
+__declspec(noreturn)
+#endif
 GLIB_AVAILABLE_IN_ALL
 void    g_assertion_message_expr        (const char     *domain,
                                          const char     *file,
