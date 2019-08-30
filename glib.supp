@@ -323,6 +323,16 @@
 }
 
 {
+        g-type-class-ref
+        Memcheck:Leak
+        fun:calloc
+        ...
+        fun:type_class_init_Wm
+        ...
+        fun:g_type_class_ref
+}
+
+{
 	g-io-module-default-singleton-malloc
 	Memcheck:Leak
 	fun:malloc
