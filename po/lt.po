@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-07-29 13:00+0000\n"
-"PO-Revision-Date: 2019-08-18 22:14+0300\n"
+"POT-Creation-Date: 2019-08-27 13:18+0000\n"
+"PO-Revision-Date: 2019-09-01 22:33+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -122,8 +122,8 @@ msgstr "Komandą, kuriai atspausdinti detalią pagalbą"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Programos identifikatorius D-Bus formatu (pvz.: org.example.viewer)"
 
-#: gio/gapplication-tool.c:72 gio/glib-compile-resources.c:735
-#: gio/glib-compile-resources.c:741 gio/glib-compile-resources.c:769
+#: gio/gapplication-tool.c:72 gio/glib-compile-resources.c:738
+#: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
 #: gio/gresource-tool.c:500 gio/gresource-tool.c:566
 msgid "FILE"
 msgstr "FAILAS"
@@ -371,9 +371,6 @@ msgstr "Beprasmė rakto/reikšmės poros kombinacija adreso įvestyje „%s“"
 
 #: gio/gdbusaddress.c:180
 #, c-format
-#| msgid ""
-#| "Address “%s” is invalid (need exactly one of path, tmpdir or abstract "
-#| "keys)"
 msgid ""
 "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract "
 "keys)"
@@ -416,9 +413,6 @@ msgstr ""
 
 #: gio/gdbusaddress.c:494
 #, c-format
-#| msgid ""
-#| "Key/Value pair %d, “%s”, in address element “%s” does not contain an "
-#| "equal sign"
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"
 msgstr ""
@@ -971,7 +965,6 @@ msgstr ""
 "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START požymiu"
 
 #: gio/gdbusserver.c:746
-#| msgid "Abstract name space not supported"
 msgid "Abstract namespace not supported"
 msgstr "Abstrakti vardų sritis nepalaikoma"
 
@@ -2303,20 +2296,20 @@ msgstr "Klaida skaitant failą %s: %s"
 msgid "Error compressing file %s"
 msgstr "Klaida spaudžiant failą: %s"
 
-#: gio/glib-compile-resources.c:538
+#: gio/glib-compile-resources.c:541
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "tekstas negali būti viduje <%s>"
 
-#: gio/glib-compile-resources.c:734 gio/glib-compile-schemas.c:2172
+#: gio/glib-compile-resources.c:737 gio/glib-compile-schemas.c:2172
 msgid "Show program version and exit"
 msgstr "Parodyti programos versiją ir išeiti"
 
-#: gio/glib-compile-resources.c:735
+#: gio/glib-compile-resources.c:738
 msgid "Name of the output file"
 msgstr "Išvesties failo pavadinimas"
 
-#: gio/glib-compile-resources.c:736
+#: gio/glib-compile-resources.c:739
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
@@ -2324,56 +2317,56 @@ msgstr ""
 "Katalogai, iš kurių skaityti faile nurodytus failus (numatyta iš esamo "
 "katalogo)"
 
-#: gio/glib-compile-resources.c:736 gio/glib-compile-schemas.c:2173
+#: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2202
 msgid "DIRECTORY"
 msgstr "KATALOGAS"
 
-#: gio/glib-compile-resources.c:737
+#: gio/glib-compile-resources.c:740
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Generuoti išvestį formatu pagal pasirinkto tikslo failo plėtinį"
 
-#: gio/glib-compile-resources.c:738
+#: gio/glib-compile-resources.c:741
 msgid "Generate source header"
 msgstr "Generuoti šaltinio antraštę"
 
-#: gio/glib-compile-resources.c:739
+#: gio/glib-compile-resources.c:742
 msgid "Generate source code used to link in the resource file into your code"
 msgstr "Generuoti kodą, naudojamą išteklių failo įrišimui į jūsų kodą"
 
-#: gio/glib-compile-resources.c:740
+#: gio/glib-compile-resources.c:743
 msgid "Generate dependency list"
 msgstr "Generuoti priklausomybių sąrašą"
 
-#: gio/glib-compile-resources.c:741
+#: gio/glib-compile-resources.c:744
 msgid "Name of the dependency file to generate"
 msgstr "Generuojamo priklausomybių failo pavadinimas"
 
-#: gio/glib-compile-resources.c:742
+#: gio/glib-compile-resources.c:745
 msgid "Include phony targets in the generated dependency file"
 msgstr "Įtraukti į sugeneruotą priklausomybių failą netikras paskirtis"
 
-#: gio/glib-compile-resources.c:743
+#: gio/glib-compile-resources.c:746
 msgid "Don’t automatically create and register resource"
 msgstr "Automatiškai negeneruoti ir neregistruoti ištekliaus"
 
-#: gio/glib-compile-resources.c:744
+#: gio/glib-compile-resources.c:747
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Neeksportuoti funkcijų; deklaruoti jas G_GNUC_INTERNAL"
 
-#: gio/glib-compile-resources.c:745
+#: gio/glib-compile-resources.c:748
 msgid ""
 "Don’t embed resource data in the C file; assume it's linked externally "
 "instead"
 msgstr ""
 "Neįtraukti ištekliaus duomenų C faile; laikyti, kad jis susiejamas išoriškai"
 
-#: gio/glib-compile-resources.c:746
+#: gio/glib-compile-resources.c:749
 msgid "C identifier name used for the generated source code"
 msgstr "C identifikatoriaus vardas, naudojamas generuojamame kode"
 
-#: gio/glib-compile-resources.c:772
+#: gio/glib-compile-resources.c:775
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2383,7 +2376,7 @@ msgstr ""
 "Resursų specifikacijos failai turi turėti plėtinį .gresource.xml,\n"
 "o resurso failas turi plėtinį gresource."
 
-#: gio/glib-compile-resources.c:794
+#: gio/glib-compile-resources.c:797
 msgid "You should give exactly one file name\n"
 msgstr "Turite nurodyti vienintelį failo pavadinimą\n"
 
@@ -2724,23 +2717,19 @@ msgstr "Įspėjimas: neapibrėžta nuoroda į <schema id='%s'/>"
 
 #. Translators: Do not translate "--strict".
 #: gio/glib-compile-schemas.c:1833 gio/glib-compile-schemas.c:1912
-#| msgid "--strict was specified; exiting.\n"
 msgid "--strict was specified; exiting."
 msgstr "--strict buvo nurodyta; išeinama."
 
 #: gio/glib-compile-schemas.c:1845
-#| msgid "This entire file has been ignored.\n"
 msgid "This entire file has been ignored."
 msgstr "Visas failas nepaisomas."
 
 #: gio/glib-compile-schemas.c:1908
-#| msgid "Ignoring this file.\n"
 msgid "Ignoring this file."
 msgstr "Nepaisoma šio failo."
 
 #: gio/glib-compile-schemas.c:1963
 #, c-format
-#| msgid "No such key “%s” in schema “%s” as specified in override file “%s”"
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
 "override for this key."
@@ -2750,7 +2739,6 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:1971
 #, c-format
-#| msgid "No such key “%s” in schema “%s” as specified in override file “%s”"
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
 "strict was specified; exiting."
@@ -2761,32 +2749,29 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1993
 #, c-format
 #| msgid ""
-#| "cannot provide per-desktop overrides for localised key “%s” in schema "
-#| "“%s” (override file “%s”)"
+#| "Cannot provide per-desktop overrides for localised key “%s” in schema "
+#| "“%s” (override file “%s”); ignoring override for this key."
 msgid ""
-"Cannot provide per-desktop overrides for localised key “%s” in schema "
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”); ignoring override for this key."
 msgstr ""
-"negalima pateikti darbalaukio pakeitimų lokalizuotam raktui „%s“ schemoje "
+"Negalima pateikti darbalaukio pakeitimų lokalizuotam raktui „%s“ schemoje "
 "„%s“ (perrašomas failas „%s“); nepaisoma šio rakto perrašymo."
 
 #: gio/glib-compile-schemas.c:2002
 #, c-format
 #| msgid ""
-#| "cannot provide per-desktop overrides for localised key “%s” in schema "
-#| "“%s” (override file “%s”)"
+#| "Cannot provide per-desktop overrides for localised key “%s” in schema "
+#| "“%s” (override file “%s”) and --strict was specified; exiting."
 msgid ""
-"Cannot provide per-desktop overrides for localised key “%s” in schema "
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”) and --strict was specified; exiting."
 msgstr ""
-"negalima pateikti darbalaukio pakeitimų lokalizuotam raktui „%s“ schemoje "
+"Negalima pateikti darbalaukio pakeitimų lokalizuotam raktui „%s“ schemoje "
 "„%s“ (perrašomas failas „%s“) ir buvo nurodyta --strict; išeinama."
 
 #: gio/glib-compile-schemas.c:2026
 #, c-format
-#| msgid ""
-#| "error parsing key “%s” in schema “%s” as specified in override file “%s”: "
-#| "%s."
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. Ignoring override for this key."
@@ -2796,9 +2781,6 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:2038
 #, c-format
-#| msgid ""
-#| "error parsing key “%s” in schema “%s” as specified in override file “%s”: "
-#| "%s."
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. --strict was specified; exiting."
@@ -2808,9 +2790,6 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:2065
 #, c-format
-#| msgid ""
-#| "override for key “%s” in schema “%s” in override file “%s” is outside the "
-#| "range given in the schema"
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema; ignoring override for this key."
@@ -2820,9 +2799,6 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:2075
 #, c-format
-#| msgid ""
-#| "override for key “%s” in schema “%s” in override file “%s” is outside the "
-#| "range given in the schema"
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema and --strict was specified; exiting."
@@ -2832,9 +2808,6 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:2101
 #, c-format
-#| msgid ""
-#| "override for key “%s” in schema “%s” in override file “%s” is not in the "
-#| "list of valid choices"
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices; ignoring override for this key."
@@ -2844,9 +2817,6 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:2111
 #, c-format
-#| msgid ""
-#| "override for key “%s” in schema “%s” in override file “%s” is not in the "
-#| "list of valid choices"
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices and --strict was specified; exiting."
@@ -2855,7 +2825,6 @@ msgstr ""
 "leistinų pasirinkimų ir buvo nurodyta --strict; išeinama."
 
 #: gio/glib-compile-schemas.c:2173
-#| msgid "where to store the gschemas.compiled file"
 msgid "Where to store the gschemas.compiled file"
 msgstr "Kur saugoti gschemas.compiled failą"
 
@@ -2882,17 +2851,14 @@ msgstr ""
 "o podėlio failas yra vadinamas gschemas.compiled."
 
 #: gio/glib-compile-schemas.c:2226
-#| msgid "You should give exactly one directory name\n"
 msgid "You should give exactly one directory name"
 msgstr "Turite nurodyti vienintelį katalogo pavadinimą"
 
 #: gio/glib-compile-schemas.c:2269
-#| msgid "No schema files found: "
 msgid "No schema files found: doing nothing."
 msgstr "Nerasti schemų failai: nieko nedaroma."
 
 #: gio/glib-compile-schemas.c:2271
-#| msgid "removed existing output file.\n"
 msgid "No schema files found: removed existing output file."
 msgstr "Nerasti schemų failai: pašalintas egzistuojanti išvesties failas."
 
@@ -3317,12 +3283,12 @@ msgstr "Nepavyko sukurti tiklo stebėtojo: "
 msgid "Could not get network status: "
 msgstr "Nepavyko gauti tinklo būsenos: "
 
-#: gio/gnetworkmonitornm.c:347
+#: gio/gnetworkmonitornm.c:348
 #, c-format
 msgid "NetworkManager not running"
 msgstr "NetworkManager neveikia"
 
-#: gio/gnetworkmonitornm.c:358
+#: gio/gnetworkmonitornm.c:359
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "Per sena NetworkManager versija"
@@ -5269,7 +5235,7 @@ msgstr "Klaida apdorojant parametrą %s"
 msgid "Missing argument for %s"
 msgstr "%s trūksta argumento"
 
-#: glib/goption.c:2181
+#: glib/goption.c:2182
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nežinomas parametras %s"
@@ -5837,150 +5803,150 @@ msgid "Character out of range for UTF-16"
 msgstr "Simbolis neatitinka UTF-16 simbolių diapazono"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2348
+#: glib/gutils.c:2326
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2350
+#: glib/gutils.c:2328
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2352
+#: glib/gutils.c:2330
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2354
+#: glib/gutils.c:2332
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2356
+#: glib/gutils.c:2334
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2358
+#: glib/gutils.c:2336
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2362
+#: glib/gutils.c:2340
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2364
+#: glib/gutils.c:2342
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2366
+#: glib/gutils.c:2344
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2368
+#: glib/gutils.c:2346
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2370
+#: glib/gutils.c:2348
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2372
+#: glib/gutils.c:2350
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2376
+#: glib/gutils.c:2354
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2378
+#: glib/gutils.c:2356
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2380
+#: glib/gutils.c:2358
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2382
+#: glib/gutils.c:2360
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2384
+#: glib/gutils.c:2362
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2386
+#: glib/gutils.c:2364
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2390
+#: glib/gutils.c:2368
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2392
+#: glib/gutils.c:2370
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2394
+#: glib/gutils.c:2372
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2396
+#: glib/gutils.c:2374
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2398
+#: glib/gutils.c:2376
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2400
+#: glib/gutils.c:2378
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2434 glib/gutils.c:2551
+#: glib/gutils.c:2412 glib/gutils.c:2529
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -5988,7 +5954,7 @@ msgstr[0] "%u baitas"
 msgstr[1] "%u baitai"
 msgstr[2] "%u baitų"
 
-#: glib/gutils.c:2438
+#: glib/gutils.c:2416
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -5997,7 +5963,7 @@ msgstr[1] "%u bitai"
 msgstr[2] "%u bitų"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2505
+#: glib/gutils.c:2483
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6006,7 +5972,7 @@ msgstr[1] "%s baitai"
 msgstr[2] "%s baitų"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2510
+#: glib/gutils.c:2488
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6019,32 +5985,32 @@ msgstr[2] "%s bitų"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:2564
+#: glib/gutils.c:2542
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:2569
+#: glib/gutils.c:2547
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:2574
+#: glib/gutils.c:2552
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:2579
+#: glib/gutils.c:2557
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:2584
+#: glib/gutils.c:2562
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:2589
+#: glib/gutils.c:2567
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
