@@ -24,6 +24,11 @@
 #pragma warning(disable:4101) /* unreferenced local variable */
 #pragma warning(error:4150)
 
+/* G_NORETURN */
+#pragma warning(error:4646) /* function declared with __declspec(noreturn) has non-void return type */
+#pragma warning(error:4715) /* 'function': not all control paths return a value */
+#pragma warning(error:4098) /* 'void' function returning a value */
+
 #pragma warning(disable:4244)	/* No possible loss of data warnings */
 #pragma warning(disable:4305)   /* No truncation from int to char warnings */
 

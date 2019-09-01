@@ -917,6 +917,76 @@
 #define G_CONST_RETURN const GLIB_DEPRECATED_MACRO_IN_2_30_FOR(const)
 #endif
 
+/**
+ * G_NORETURN:
+ *
+ * Expands to the GNU C or MSVC `noreturn` function attribute depending on
+ * the compiler. It is used for declaring functions which never return.
+ * Enables optimization of the function, and avoids possible compiler warnings.
+ *
+ * Note that %G_NORETURN supersedes the previous %G_GNUC_NORETURN macro, which
+ * will eventually be deprecated. %G_NORETURN supports more platforms.
+ *
+ * Place the attribute before the function declaration as follows:
+ *
+ * |[<!-- language="C" -->
+ * G_NORETURN void g_abort (void);
+ * ]|
+ *
+ * Since: 2.68
+ */
+/* Note: We can’t annotate this with GLIB_AVAILABLE_MACRO_IN_2_68 because it’s
+ * used within the GLib headers in function declarations which are always
+ * evaluated when a header is included. This results in warnings in third party
+ * code which includes glib.h, even if the third party code doesn’t use the new
+ * macro itself. */
+#if (3 <= __GNUC__ || (__GNUC__ == 2 && 8 <= __GNUC_MINOR__)) || (0x5110 <= __SUNPRO_C)
+  /* For compatibility with G_NORETURN_FUNCPTR on clang, use
+     __attribute__((__noreturn__)), not _Noreturn.  */
+# define G_NORETURN __attribute__ ((__noreturn__))
+#elif 1200 <= _MSC_VER
+  /* Use MSVC specific syntax.  */
+# define G_NORETURN __declspec (noreturn)
+  /* Use ISO C++11 syntax when the compiler supports it.  */
+#elif (__cplusplus >= 201103 && !(__GNUC__ == 4 && __GNUC_MINOR__ == 7)) || (_MSC_VER >= 1900)
+# define G_NORETURN [[noreturn]]
+  /* Use ISO C11 syntax when the compiler supports it.  */
+#elif __STDC_VERSION__ >= 201112 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7)
+# define G_NORETURN _Noreturn
+#else
+# define G_NORETURN /* empty */
+#endif
+
+/**
+ * G_NORETURN_FUNCPTR:
+ *
+ * Expands to the GNU C or MSVC `noreturn` function attribute depending on
+ * the compiler. It is used for declaring function pointers which never return.
+ * Enables optimization of the function, and avoids possible compiler warnings.
+ *
+ * Place the attribute before the function declaration as follows:
+ *
+ * |[<!-- language="C" -->
+ * G_NORETURN_FUNCPTR void (*funcptr) (void);
+ * ]|
+ *
+ * Note that if the function is not a function pointer, you can simply use
+ * the %G_NORETURN macro as follows:
+ *
+ * |[<!-- language="C" -->
+ * G_NORETURN void g_abort (void);
+ * ]|
+ *
+ * Since: 2.68
+ */
+#if (3 <= __GNUC__ || (__GNUC__ == 2 && 8 <= __GNUC_MINOR__)) || (0x5110 <= __SUNPRO_C)
+# define G_NORETURN_FUNCPTR __attribute__ ((__noreturn__))      \
+  GLIB_AVAILABLE_MACRO_IN_2_68
+#else
+# define G_NORETURN_FUNCPTR /* empty */         \
+  GLIB_AVAILABLE_MACRO_IN_2_68
+#endif
+
 /*
  * The G_LIKELY and G_UNLIKELY macros let the programmer give hints to 
  * the compiler about the expected result of an expression. Some compilers
