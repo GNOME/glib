@@ -19,7 +19,7 @@ if cc.get_id() == 'msvc'
   # If a warning is completely useless and spammy, use '/wdXXXX' to suppress it
   # If a warning is harmless but hard to fix, use '/woXXXX' so it's shown once
   # NOTE: Only add warnings here if you are sure they're spurious
-  add_project_arguments('/wd4035', '/wd4715', '/wd4116',
+  add_project_arguments('/wc4646', '/wc4715', '/wd4035', '/wd4715', '/wd4116',
     '/wd4046', '/wd4068', '/wo4090', '/FImsvc_recommended_pragmas.h',language : 'c')
   # Disable SAFESEH with MSVC for plugins and libs that use external deps that
   # are built with MinGW
