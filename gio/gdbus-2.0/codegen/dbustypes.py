@@ -260,6 +260,7 @@ class Method:
         self.doc_string = ''
         self.since = ''
         self.deprecated = False
+        self.unix_fd = False
 
     def post_process(self, interface_prefix, cns, cns_upper, cns_lower, containing_iface):
         if len(self.doc_string) == 0:
@@ -290,6 +291,9 @@ class Method:
 
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
             self.deprecated = True
+
+        if utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.UnixFD'):
+            self.unix_fd = True
 
         for a in self.annotations:
             a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
