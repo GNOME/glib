@@ -204,6 +204,8 @@ g_delayed_settings_backend_reset (GSettingsBackend *backend,
   g_tree_insert (delayed->priv->delayed, g_strdup (key), NULL);
   g_mutex_unlock (&delayed->priv->lock);
 
+  g_settings_backend_changed (backend, key, origin_tag);
+
   if (was_empty)
     g_delayed_settings_backend_notify_unapplied (delayed);
 }
