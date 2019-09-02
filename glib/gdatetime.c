@@ -1353,8 +1353,14 @@ parse_iso8601_timezone (const gchar *text, gsize length, gssize *tz_offset)
   tz = g_time_zone_new (text + i);
 
   /* Double-check that the GTimeZone matches our interpretation of the timezone.
-   * Failure would indicate a bug either here of in the GTimeZone code. */
-  g_assert (g_time_zone_get_offset (tz, 0) == offset_sign * (offset_hours * 3600 + offset_minutes * 60));
+   * This can fail because our interpretation is less strict than (for example)
+   * parse_time() in gtimezone.c, which restricts the range of the parsed
+   * integers. */
+  if (g_time_zone_get_offset (tz, 0) != offset_sign * (offset_hours * 3600 + offset_minutes * 60))
+    {
+      g_time_zone_unref (tz);
+      return NULL;
+    }
 
   return tz;
 }
