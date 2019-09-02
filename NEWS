@@ -1,3 +1,79 @@
+Overview of changes in GLib 2.61.3
+==================================
+
+* Support setting thread name on BSD systems (#1761)
+
+* Install previously-uninstalled headers for public `GNativeSocketAddress`
+  object (#1854)
+
+* Very initial support for Windows apps (UWP) (!1057)
+
+* Add various new valgrind suppressions to `glib.supp` (#1879, !1075)
+
+* Bugs fixed:
+ - #83 Optimisation for g_nearest_pow() in garray.c
+ - #512 GSignal: accumulator function not called to accumulate G_SIGNAL_RUN_CLEANUP object handler return values
+ - #873 allow NULL arguments to parse_strv
+ - #905 Patches from static analysis run on 2.40
+ - #1057 goption: add sanity check to input parameters
+ - #1309 GSettings object stops emitting "changed" signal on g_settings_reset after call to g_settings_delay
+ - #1620 GDBus criticals from GVfs with GLib master
+ - #1761 Setting thread-name on BSD systems
+ - #1803 GDK_SCALE=X is not respected when using "gio open"
+ - #1819 Invalid characters in Open Location dialog crashes GIMP
+ - #1852 Regression: g_mkdir_with_parents() returns 0 on failure
+ - #1854 glib/gio: GNativeSocketAddress headers not installed.
+ - #1860 g_clear_handle_id does not trigger GLIB_VERSION_MAX_ALLOWED warning
+ - #1863 Potential invalid writes on g_utf8_strreverse
+ - #1867 A couple of en_GBisms
+ - #1870 GSettingsBackend watches not thread-safe
+ - #1879 Incomplete valgrind suppressions - 16 KiB leak reported by valgrind from loading libglib-2.0.so
+ - #1880 glib/gbacktrace.c: If dup2 happened to return -1, don't call dup2 with same value
+ - #1881 GIO_USE_VOLUME_MONITOR and GIO_USE_FILE_MONITOR do not work as documented
+ - !1002 Remove mentions of mailing lists from the documentation
+ - !1011 gapplication: Fix a leaking GRemoteActionGroup member
+ - !1015 Post-release version bump
+ - !1016 gnetworkmonitornm fixups
+ - !1017 Improve ISO 8601 parsing by GDateTime
+ - !1023 g_object_get_property: Improve documentation for use of G_VALUE_INIT
+ - !1026 gutf8: Assert that written memory stays in bounds
+ - !1027 gfileutils: Fix error propagation for other than ENOENT
+ - !1031 meson: build gnulib if printf isn't good enough
+ - !1032 meson: small printf check cleanups
+ - !1033 win32: don't assume the format specifier for the stdlib printf/scanf like functions
+ - !1034 glib/tests/fileutils: Add a reproducer for #1852
+ - !1036 cond test: Don't make assumptions about struct sigaction member order
+ - !1037 Meson: Override glib-compile-resources/schemas
+ - !1044 Relax use of g_test_bug() to not require g_test_bug_base() to be called first
+ - !1049 minor typos in the documentation
+ - !1050 tests: Fix a pragma warning on FreeBSD
+ - !1054 gerror: Add a docs paragraph about not displaying errors verbatim in UI
+ - !1057 Some (probably) easy uwp patches
+ - !1059 Update win32 readme, add myself to codeowners
+ - !1066 libffi.wrap: Meson port has moved to FDO gitlab
+ - !1068 gsubprocesslauncher.c: fix documentation
+ - !1071 meson: Move libdl_dep to the top level
+ - !1074 Adjust README formatting
+ - !1075 glib.supp: add suppression for g_type_class_ref()
+
+* Translation updates:
+ - Basque
+ - Catalan
+ - Czech
+ - English (United Kingdom)
+ - French
+ - Galician
+ - German
+ - Hungarian
+ - Indonesian
+ - Korean
+ - Lithuanian
+ - Polish
+ - Romanian
+ - Spanish
+ - Swedish
+
+
 Overview of changes in GLib 2.61.2
 ==================================
 
