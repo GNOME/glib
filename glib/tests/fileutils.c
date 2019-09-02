@@ -548,6 +548,7 @@ test_mkdir_with_parents_permission (void)
   if (g_mkdir (subdir2, 0700) == 0)
     {
       g_test_skip ("have CAP_DAC_OVERRIDE or equivalent, cannot test");
+      g_remove (subdir2);
     }
   else
     {
