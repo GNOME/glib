@@ -2589,6 +2589,31 @@ test_standalone_interface_info (void)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+static gboolean
+handle_hello_fd (FooiGenFDPassing *object,
+                 GDBusMethodInvocation *invocation,
+                 GUnixFDList *fd_list,
+                 const gchar *arg_greeting)
+{
+  foo_igen_fdpassing_complete_hello_fd (object, invocation, fd_list, arg_greeting);
+  return TRUE;
+}
+
+/* Test that generated code for methods includes GUnixFDList arguments if
+ * the method is explicitly annotated as C.UnixFD.
+ */
+static void
+test_unix_fd_list (void)
+{
+  FooiGenFDPassingIface iface;
+
+  /* This method is explicitly annotated. */
+  iface.handle_hello_fd = handle_hello_fd;
+
+  (void) iface;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
 
 int
 main (int   argc,
@@ -2603,6 +2628,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/codegen/autocleanups", test_autocleanups);
   g_test_add_func ("/gdbus/codegen/deprecations", test_deprecations);
   g_test_add_func ("/gdbus/codegen/standalone-interface-info", test_standalone_interface_info);
+  g_test_add_func ("/gdbus/codegen/unix-fd-list", test_unix_fd_list);
 
   return session_bus_run ();
 }
