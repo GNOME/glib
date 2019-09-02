@@ -1,3 +1,16 @@
+Overview of changes in GLib 2.60.7
+==================================
+
+* Bugs fixed:
+ - #1819 Invalid characters in Open Location dialog crashes GIMP
+ - #1847 Setting GLIB_VERSION_{MIN_REQUIRED, MAX_ALLOWED} to before 2.56 triggers warnings
+ - !1012 Backport !1009 “gapplication: remove inactivity_timeout source on finalize” to glib-2-60
+ - !1013 Backport !1008 “gmessages: Only use structured logs if GLIB_VERSION_MAX_ALLOWED is ≥2.56” to glib-2-60
+ - !1061 Backport !966 “Resolve "Invalid characters in Open Location dialog crashes GIMP"” to glib-2-60
+ - !1065 Backport !1040 “GSettingsBackend - Fix thread-safety during destruction of GSettings instances...” to glib-2-60
+ - !1081 Backport !1017 “gdatetime: Avoid an assertion failure when parsing some ISO 8601 dates” to glib-2-60
+
+
 Overview of changes in GLib 2.60.6
 ==================================
 
