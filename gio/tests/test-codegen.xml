@@ -481,6 +481,15 @@
       <arg name="greeting" direction="in" type="s"/>
       <arg name="response" direction="out" type="s"/>
     </method>
+    <method name="NoAnnotation">
+      <arg name="greeting" direction="in" type="h"/>
+      <arg name="greeting_locale" direction="in" type="s"/>
+      <arg name="response" direction="out" type="h"/>
+      <arg name="response_locale" direction="out" type="s"/>
+    </method>
+    <method name="NoAnnotationNested">
+      <arg name="files" type="a{sh}" direction="in"/>
+    </method>
   </interface>
 
   <interface name="Naming">
