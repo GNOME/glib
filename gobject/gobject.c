@@ -162,6 +162,29 @@ enum {
   PROP_NONE
 };
 
+#define OPTIONAL_FLAG_IN_CONSTRUCTION 1<<0
+#define OPTIONAL_FLAG_HAS_SIGNAL_HANDLER 1<<1 /* Set if object ever had a signal handler */
+
+#if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P == 8
+#define HAVE_OPTIONAL_FLAGS
+#endif
+
+typedef struct
+{
+  GTypeInstance  g_type_instance;
+
+  /*< private >*/
+  volatile guint ref_count;
+#ifdef HAVE_OPTIONAL_FLAGS
+  volatile guint optional_flags;
+#endif
+  GData         *qdata;
+} GObjectReal;
+
+G_STATIC_ASSERT(sizeof(GObject) == sizeof(GObjectReal));
+G_STATIC_ASSERT(G_STRUCT_OFFSET(GObject, ref_count) == G_STRUCT_OFFSET(GObjectReal, ref_count));
+G_STATIC_ASSERT(G_STRUCT_OFFSET(GObject, qdata) == G_STRUCT_OFFSET(GObjectReal, qdata));
+
 
 /* --- prototypes --- */
 static void	g_object_base_class_init		(GObjectClass	*class);
@@ -1008,10 +1031,83 @@ g_object_interface_list_properties (gpointer      g_iface,
   return pspecs;
 }
 
+static inline guint
+object_get_optional_flags (GObject *object)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  GObjectReal *real = (GObjectReal *)object;
+  return (guint)g_atomic_int_get (&real->optional_flags);
+#else
+  return 0;
+#endif
+}
+
+static inline void
+object_set_optional_flags (GObject *object,
+                          guint flags)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  GObjectReal *real = (GObjectReal *)object;
+  g_atomic_int_or (&real->optional_flags, flags);
+#endif
+}
+
+static inline void
+object_unset_optional_flags (GObject *object,
+                            guint flags)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  GObjectReal *real = (GObjectReal *)object;
+  g_atomic_int_and (&real->optional_flags, ~flags);
+#endif
+}
+
+gboolean
+_g_object_has_signal_handler  (GObject *object)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  return (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_SIGNAL_HANDLER) != 0;
+#else
+  return TRUE;
+#endif
+}
+
+void
+_g_object_set_has_signal_handler (GObject     *object)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  object_set_optional_flags (object, OPTIONAL_FLAG_HAS_SIGNAL_HANDLER);
+#endif
+}
+
 static inline gboolean
 object_in_construction (GObject *object)
 {
+#ifdef HAVE_OPTIONAL_FLAGS
+  return (object_get_optional_flags (object) & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
+#else
   return g_datalist_id_get_data (&object->qdata, quark_in_construction) != NULL;
+#endif
+}
+
+static inline void
+set_object_in_construction (GObject *object)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  object_set_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
+#else
+  g_datalist_id_set_data (&object->qdata, quark_in_construction, object);
+#endif
+}
+
+static inline void
+unset_object_in_construction (GObject *object)
+{
+#ifdef HAVE_OPTIONAL_FLAGS
+  object_unset_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
+#else
+  g_datalist_id_set_data (&object->qdata, quark_in_construction, NULL);
+#endif
 }
 
 static void
@@ -1030,7 +1126,7 @@ g_object_init (GObject		*object,
   if (CLASS_HAS_CUSTOM_CONSTRUCTOR (class))
     {
       /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
-      g_datalist_id_set_data (&object->qdata, quark_in_construction, object);
+      set_object_in_construction (object);
     }
 
   GOBJECT_IF_DEBUG (OBJECTS,
@@ -1766,7 +1862,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
    */
   newly_constructed = object_in_construction (object);
   if (newly_constructed)
-    g_datalist_id_set_data (&object->qdata, quark_in_construction, NULL);
+    unset_object_in_construction (object);
 
   if (CLASS_HAS_PROPS (class))
     {

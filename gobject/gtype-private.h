@@ -23,6 +23,7 @@
 
 #include "gboxed.h"
 #include "gclosure.h"
+#include "gobject.h"
 
 /*< private >
  * GOBJECT_IF_DEBUG:
@@ -91,6 +92,9 @@ void        _g_closure_invoke_va (GClosure       *closure,
 				  va_list         args,
 				  int             n_params,
 				  GType          *param_types);
+
+gboolean    _g_object_has_signal_handler     (GObject     *object);
+void        _g_object_set_has_signal_handler (GObject     *object);
 
 /**
  * _G_DEFINE_TYPE_EXTENDED_WITH_PRELUDE:
