@@ -883,7 +883,7 @@ g_nearest_pow (guint num)
   n |= n >> 4;
   n |= n >> 8;
   n |= n >> 16;
-#if GLIB_SIZEOF_INT == 8
+#if SIZEOF_INT == 8
   n |= n >> 32;
 #endif
 
