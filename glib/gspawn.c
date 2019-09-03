@@ -1116,7 +1116,7 @@ write_all (gint fd, gconstpointer vbuf, gsize to_write)
 
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)). */
-G_GNUC_NORETURN
+G_NORETURN
 static void
 write_err_and_exit (gint fd, gint msg)
 {
