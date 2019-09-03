@@ -506,8 +506,7 @@
 #endif
 #define G_GNUC_FORMAT( arg_idx )                \
   __attribute__((__format_arg__ (arg_idx)))
-#define G_GNUC_NORETURN                         \
-  __attribute__((__noreturn__))
+#define G_GNUC_NORETURN GLIB_DEPRECATED_MACRO_IN_2_64_FOR(G_NORETURN)
 #define G_GNUC_CONST                            \
   __attribute__((__const__))
 #define G_GNUC_UNUSED                           \
