@@ -37,7 +37,7 @@ static const gchar *info = NULL;
 static GCancellable *cancellable = NULL;
 static gint return_value = 0;
 
-static void G_GNUC_NORETURN
+static G_NORETURN void
 usage (void)
 {
   fprintf (stderr, "Usage: proxy [-s] (uri|host:port|ip:port|path|srv/protocol/domain)\n");
