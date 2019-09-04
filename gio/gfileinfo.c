@@ -1790,6 +1790,10 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Gets the modification time of the current @info and returns it as a
  * #GDateTime.
  *
+ * This requires the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute. If
+ * %G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC is provided, the resulting #GDateTime
+ * will have microsecond precision.
+ *
  * Returns: (transfer full) (nullable): modification time, or %NULL if unknown
  * Since: 2.62
  */
@@ -1812,11 +1816,12 @@ g_file_info_get_modification_date_time (GFileInfo *info)
   if (value == NULL)
     return NULL;
 
+  dt = g_date_time_new_from_unix_utc (_g_file_attribute_value_get_uint64 (value));
+
   value_usec = g_file_info_find_value (info, attr_mtime_usec);
   if (value_usec == NULL)
-    return NULL;
+    return g_steal_pointer (&dt);
 
-  dt = g_date_time_new_from_unix_utc (_g_file_attribute_value_get_uint64 (value));
   dt2 = g_date_time_add_seconds (dt, _g_file_attribute_value_get_uint32 (value_usec) / (gdouble) G_USEC_PER_SEC);
   g_date_time_unref (dt);
 
