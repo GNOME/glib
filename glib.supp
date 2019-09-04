@@ -109,7 +109,7 @@
 {
 	gobject-init-calloc
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:possible,reachable
 	fun:calloc
 	...
 	fun:gobject_init_ctor
