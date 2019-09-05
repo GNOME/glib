@@ -170,6 +170,7 @@ name_new (GDBusDaemon *daemon, const char *str)
 static Name *
 name_ref (Name *name)
 {
+  g_assert (name->refcount > 0);
   name->refcount++;
   return name;
 }
@@ -177,6 +178,7 @@ name_ref (Name *name)
 static void
 name_unref (Name *name)
 {
+  g_assert (name->refcount > 0);
   if (--name->refcount == 0)
     {
       g_hash_table_remove (name->daemon->names, name->name);
