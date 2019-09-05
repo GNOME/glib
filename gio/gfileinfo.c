@@ -1783,6 +1783,30 @@ g_file_info_get_modification_time (GFileInfo *info,
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
 
+static GDateTime *
+_get_date_time (GFileInfo *info, guint32 attr_time, guint32 attr_time_usec)
+{
+  GFileAttributeValue *value, *value_usec;
+  GDateTime *dt = NULL, *dt2 = NULL;
+
+  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
+
+  value = g_file_info_find_value (info, attr_time);
+  if (value == NULL)
+    return NULL;
+
+  dt = g_date_time_new_from_unix_utc (_g_file_attribute_value_get_uint64 (value));
+
+  value_usec = g_file_info_find_value (info, attr_time_usec);
+  if (value_usec == NULL)
+    return g_steal_pointer (&dt);
+
+  dt2 = g_date_time_add_seconds (dt, _g_file_attribute_value_get_uint32 (value_usec) / (gdouble) G_USEC_PER_SEC);
+  g_date_time_unref (dt);
+
+  return g_steal_pointer (&dt2);
+}
+
 /**
  * g_file_info_get_modification_date_time:
  * @info: a #GFileInfo.
@@ -1797,10 +1821,6 @@ GDateTime *
 g_file_info_get_modification_date_time (GFileInfo *info)
 {
   static guint32 attr_mtime = 0, attr_mtime_usec;
-  GFileAttributeValue *value, *value_usec;
-  GDateTime *dt = NULL, *dt2 = NULL;
-
-  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
   if (attr_mtime == 0)
     {
@@ -1808,19 +1828,31 @@ g_file_info_get_modification_date_time (GFileInfo *info)
       attr_mtime_usec = lookup_attribute (G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC);
     }
 
-  value = g_file_info_find_value (info, attr_mtime);
-  if (value == NULL)
-    return NULL;
+  return _get_date_time (info, attr_mtime, attr_mtime_usec);
+}
 
-  value_usec = g_file_info_find_value (info, attr_mtime_usec);
-  if (value_usec == NULL)
-    return NULL;
+/**
+ * g_file_info_get_access_date_time:
+ * @info: a #GFileInfo.
+ *
+ * Gets the access time of the current @info and returns it as a
+ * #GDateTime.
+ *
+ * Returns: (transfer full) (nullable): access time, or %NULL if unknown
+ * Since: 2.62
+ */
+GDateTime *
+g_file_info_get_access_date_time (GFileInfo *info)
+{
+  static guint32 attr_atime = 0, attr_atime_usec;
 
-  dt = g_date_time_new_from_unix_utc (_g_file_attribute_value_get_uint64 (value));
-  dt2 = g_date_time_add_seconds (dt, _g_file_attribute_value_get_uint32 (value_usec) / (gdouble) G_USEC_PER_SEC);
-  g_date_time_unref (dt);
+  if (attr_atime == 0)
+    {
+      attr_atime = lookup_attribute (G_FILE_ATTRIBUTE_TIME_ACCESS);
+      attr_atime_usec = lookup_attribute (G_FILE_ATTRIBUTE_TIME_ACCESS_USEC);
+    }
 
-  return g_steal_pointer (&dt2);
+  return _get_date_time (info, attr_atime, attr_atime_usec);
 }
 
 /**

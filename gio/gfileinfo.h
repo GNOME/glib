@@ -1053,6 +1053,8 @@ void              g_file_info_get_modification_time  (GFileInfo         *info,
 G_GNUC_END_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_IN_2_62
 GDateTime *       g_file_info_get_modification_date_time (GFileInfo     *info);
+GLIB_AVAILABLE_IN_2_62
+GDateTime *       g_file_info_get_access_date_time (GFileInfo     *info);
 GLIB_AVAILABLE_IN_ALL
 const char *      g_file_info_get_symlink_target     (GFileInfo         *info);
 GLIB_AVAILABLE_IN_ALL
