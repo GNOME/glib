@@ -141,6 +141,66 @@ test_g_file_info (void)
   g_object_unref (info_copy);
 }
 
+static void
+test_g_file_info_modification_time (void)
+{
+  GFile *file = NULL;
+  GFileIOStream *io_stream = NULL;
+  GFileInfo *info = NULL;
+  GDateTime *dt = NULL, *dt_usecs = NULL, *dt_new = NULL, *dt_new_usecs = NULL;
+  GTimeSpan ts;
+  GError *error = NULL;
+
+  g_test_summary ("Test that getting the modification time of a file works.");
+
+  file = g_file_new_tmp ("g-file-info-test-XXXXXX", &io_stream, &error);
+  g_assert_no_error (error);
+
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_TIME_MODIFIED,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  g_assert_no_error (error);
+
+  /* Check the modification time is retrievable. */
+  dt = g_file_info_get_modification_date_time (info);
+  g_assert_nonnull (dt);
+
+  /* Try again with microsecond precision. */
+  g_clear_object (&info);
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_TIME_MODIFIED "," G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  g_assert_no_error (error);
+
+  dt_usecs = g_file_info_get_modification_date_time (info);
+  g_assert_nonnull (dt_usecs);
+
+  ts = g_date_time_difference (dt_usecs, dt);
+  g_assert_cmpint (ts, >, 0);
+  g_assert_cmpint (ts, <, G_USEC_PER_SEC);
+
+  /* Try round-tripping the modification time. */
+  dt_new = g_date_time_add (dt_usecs, G_USEC_PER_SEC + 50);
+  g_file_info_set_modification_date_time (info, dt_new);
+
+  dt_new_usecs = g_file_info_get_modification_date_time (info);
+  ts = g_date_time_difference (dt_new_usecs, dt_new);
+  g_assert_cmpint (ts, ==, 0);
+
+  /* Clean up. */
+  g_clear_object (&io_stream);
+  g_file_delete (file, NULL, NULL);
+  g_clear_object (&file);
+
+  g_clear_object (&info);
+  g_date_time_unref (dt);
+  g_date_time_unref (dt_usecs);
+  g_date_time_unref (dt_new);
+  g_date_time_unref (dt_new_usecs);
+}
+
 #ifdef G_OS_WIN32
 static void
 test_internal_enhanced_stdio (void)
@@ -564,6 +624,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/g-file-info/test_g_file_info", test_g_file_info);
+  g_test_add_func ("/g-file-info/test_g_file_info/modification-time", test_g_file_info_modification_time);
 #ifdef G_OS_WIN32
   g_test_add_func ("/g-file-info/internal-enhanced-stdio", test_internal_enhanced_stdio);
 #endif
