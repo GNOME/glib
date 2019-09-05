@@ -10,6 +10,9 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(HasNonVoidCleanup, non_void_cleanup)
 static void
 test_autofree (void)
 {
+#ifdef __clang_analyzer__
+  g_test_skip ("autofree tests aren’t understood by the clang analyser");
+#else
   g_autofree gchar *p = NULL;
   g_autofree gchar *p2 = NULL;
   g_autofree gchar *alwaysnull = NULL;
@@ -35,6 +38,7 @@ test_autofree (void)
     }
 
   g_assert_null (alwaysnull);
+#endif  /* __clang_analyzer__ */
 }
 
 static void
@@ -592,6 +596,9 @@ test_autolist (void)
 
     l = g_list_prepend (l, b1);
     l = g_list_prepend (l, b3);
+
+    /* Squash warnings about dead stores */
+    (void) l;
   }
 
   /* Only assert if autoptr works */
