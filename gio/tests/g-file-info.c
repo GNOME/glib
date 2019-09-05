@@ -46,10 +46,10 @@ test_assigned_values (GFileInfo *info)
   GFileType type;
   
   /*  Test for attributes presence */
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME) == TRUE);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME) == TRUE);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE) == TRUE);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_COPY_NAME) == FALSE);
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME));
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME));
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE));
+  g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_COPY_NAME));
 	
   /*  Retrieve data back and compare */
   
@@ -61,7 +61,7 @@ test_assigned_values (GFileInfo *info)
   
   g_assert_cmpstr (name, ==, TEST_NAME);
   g_assert_cmpstr (display_name, ==, TEST_DISPLAY_NAME);
-  g_assert (mistake == NULL);
+  g_assert_null (mistake);
   g_assert_cmpint (size, ==, TEST_SIZE);
   g_assert_cmpstr (name, ==, g_file_info_get_name (info));
   g_assert_cmpstr (display_name, ==, g_file_info_get_display_name (info));
@@ -84,8 +84,8 @@ test_g_file_info (void)
   
   /*  Test for empty instance */
   attr_list = g_file_info_list_attributes (info, NULL);
-  g_assert (attr_list != NULL);
-  g_assert (*attr_list == NULL);
+  g_assert_nonnull (attr_list);
+  g_assert_null (*attr_list);
   g_strfreev (attr_list);
 
   g_file_info_set_attribute_byte_string (info, G_FILE_ATTRIBUTE_STANDARD_NAME, TEST_NAME);
@@ -95,50 +95,110 @@ test_g_file_info (void)
 	
   /*  The attr list should not be empty now */
   attr_list = g_file_info_list_attributes (info, NULL);
-  g_assert (attr_list != NULL);
-  g_assert (*attr_list != NULL);
+  g_assert_nonnull (attr_list);
+  g_assert_nonnull (*attr_list);
   g_strfreev (attr_list);
 
   test_assigned_values (info);
 	
   /*  Test dups */
   info_dup = g_file_info_dup (info);
-  g_assert (info_dup != NULL);
+  g_assert_nonnull (info_dup);
   test_assigned_values (info_dup);
   
   info_copy = g_file_info_new ();
   g_file_info_copy_into (info_dup, info_copy);
-  g_assert (info_copy != NULL);
+  g_assert_nonnull (info_copy);
   test_assigned_values (info_copy);
 
   /*  Test remove attribute */
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == FALSE);
+  g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER));
   g_file_info_set_attribute_int32 (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER, 10);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == TRUE);
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER));
 
-  g_assert (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == G_FILE_ATTRIBUTE_TYPE_INT32);
-  g_assert (g_file_info_get_attribute_status (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) != G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING);
+  g_assert_cmpint (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER), ==, G_FILE_ATTRIBUTE_TYPE_INT32);
+  g_assert_cmpint (g_file_info_get_attribute_status (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER), !=, G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING);
 
   g_file_info_remove_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == FALSE);
-  g_assert (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == G_FILE_ATTRIBUTE_TYPE_INVALID);
+  g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER));
+  g_assert_cmpint (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER), ==, G_FILE_ATTRIBUTE_TYPE_INVALID);
 
   matcher = g_file_attribute_matcher_new (G_FILE_ATTRIBUTE_STANDARD_NAME ","
                                           G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
 
-  g_assert (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME) == TRUE);
-  g_assert (g_file_attribute_matcher_matches_only (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME) == FALSE);
-  g_assert (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_SIZE) == FALSE);
+  g_assert_true (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME));
+  g_assert_false (g_file_attribute_matcher_matches_only (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME));
+  g_assert_false (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_SIZE));
 
   g_file_info_set_attribute_mask (info, matcher);
   g_file_attribute_matcher_unref (matcher);
 
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE) == FALSE);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME) == TRUE);
+  g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE));
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME));
 
   g_object_unref (info);
   g_object_unref (info_dup);
   g_object_unref (info_copy);
+}
+
+static void
+test_g_file_info_modification_time (void)
+{
+  GFile *file = NULL;
+  GFileIOStream *io_stream = NULL;
+  GFileInfo *info = NULL;
+  GDateTime *dt = NULL, *dt_usecs = NULL, *dt_new = NULL, *dt_new_usecs = NULL;
+  GTimeSpan ts;
+  GError *error = NULL;
+
+  g_test_summary ("Test that getting the modification time of a file works.");
+
+  file = g_file_new_tmp ("g-file-info-test-XXXXXX", &io_stream, &error);
+  g_assert_no_error (error);
+
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_TIME_MODIFIED,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  g_assert_no_error (error);
+
+  /* Check the modification time is retrievable. */
+  dt = g_file_info_get_modification_date_time (info);
+  g_assert_nonnull (dt);
+
+  /* Try again with microsecond precision. */
+  g_clear_object (&info);
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_TIME_MODIFIED "," G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  g_assert_no_error (error);
+
+  dt_usecs = g_file_info_get_modification_date_time (info);
+  g_assert_nonnull (dt_usecs);
+
+  ts = g_date_time_difference (dt_usecs, dt);
+  g_assert_cmpint (ts, >, 0);
+  g_assert_cmpint (ts, <, G_USEC_PER_SEC);
+
+  /* Try round-tripping the modification time. */
+  dt_new = g_date_time_add (dt_usecs, G_USEC_PER_SEC + 50);
+  g_file_info_set_modification_date_time (info, dt_new);
+
+  dt_new_usecs = g_file_info_get_modification_date_time (info);
+  ts = g_date_time_difference (dt_new_usecs, dt_new);
+  g_assert_cmpint (ts, ==, 0);
+
+  /* Clean up. */
+  g_clear_object (&io_stream);
+  g_file_delete (file, NULL, NULL);
+  g_clear_object (&file);
+
+  g_clear_object (&info);
+  g_date_time_unref (dt);
+  g_date_time_unref (dt_usecs);
+  g_date_time_unref (dt_new);
+  g_date_time_unref (dt_new_usecs);
 }
 
 #ifdef G_OS_WIN32
@@ -564,6 +624,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/g-file-info/test_g_file_info", test_g_file_info);
+  g_test_add_func ("/g-file-info/test_g_file_info/modification-time", test_g_file_info_modification_time);
 #ifdef G_OS_WIN32
   g_test_add_func ("/g-file-info/internal-enhanced-stdio", test_internal_enhanced_stdio);
 #endif
