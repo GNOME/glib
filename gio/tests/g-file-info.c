@@ -46,10 +46,10 @@ test_assigned_values (GFileInfo *info)
   GFileType type;
   
   /*  Test for attributes presence */
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME) == TRUE);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME) == TRUE);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE) == TRUE);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_COPY_NAME) == FALSE);
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME));
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME));
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE));
+  g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_COPY_NAME));
 	
   /*  Retrieve data back and compare */
   
@@ -61,7 +61,7 @@ test_assigned_values (GFileInfo *info)
   
   g_assert_cmpstr (name, ==, TEST_NAME);
   g_assert_cmpstr (display_name, ==, TEST_DISPLAY_NAME);
-  g_assert (mistake == NULL);
+  g_assert_null (mistake);
   g_assert_cmpint (size, ==, TEST_SIZE);
   g_assert_cmpstr (name, ==, g_file_info_get_name (info));
   g_assert_cmpstr (display_name, ==, g_file_info_get_display_name (info));
@@ -84,8 +84,8 @@ test_g_file_info (void)
   
   /*  Test for empty instance */
   attr_list = g_file_info_list_attributes (info, NULL);
-  g_assert (attr_list != NULL);
-  g_assert (*attr_list == NULL);
+  g_assert_nonnull (attr_list);
+  g_assert_null (*attr_list);
   g_strfreev (attr_list);
 
   g_file_info_set_attribute_byte_string (info, G_FILE_ATTRIBUTE_STANDARD_NAME, TEST_NAME);
@@ -95,46 +95,46 @@ test_g_file_info (void)
 	
   /*  The attr list should not be empty now */
   attr_list = g_file_info_list_attributes (info, NULL);
-  g_assert (attr_list != NULL);
-  g_assert (*attr_list != NULL);
+  g_assert_nonnull (attr_list);
+  g_assert_nonnull (*attr_list);
   g_strfreev (attr_list);
 
   test_assigned_values (info);
 	
   /*  Test dups */
   info_dup = g_file_info_dup (info);
-  g_assert (info_dup != NULL);
+  g_assert_nonnull (info_dup);
   test_assigned_values (info_dup);
   
   info_copy = g_file_info_new ();
   g_file_info_copy_into (info_dup, info_copy);
-  g_assert (info_copy != NULL);
+  g_assert_nonnull (info_copy);
   test_assigned_values (info_copy);
 
   /*  Test remove attribute */
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == FALSE);
+  g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER));
   g_file_info_set_attribute_int32 (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER, 10);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == TRUE);
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER));
 
-  g_assert (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == G_FILE_ATTRIBUTE_TYPE_INT32);
-  g_assert (g_file_info_get_attribute_status (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) != G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING);
+  g_assert_cmpint (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER), ==, G_FILE_ATTRIBUTE_TYPE_INT32);
+  g_assert_cmpint (g_file_info_get_attribute_status (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER), !=, G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING);
 
   g_file_info_remove_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == FALSE);
-  g_assert (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER) == G_FILE_ATTRIBUTE_TYPE_INVALID);
+  g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER));
+  g_assert_cmpint (g_file_info_get_attribute_type (info, G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER), ==, G_FILE_ATTRIBUTE_TYPE_INVALID);
 
   matcher = g_file_attribute_matcher_new (G_FILE_ATTRIBUTE_STANDARD_NAME ","
                                           G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
 
-  g_assert (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME) == TRUE);
-  g_assert (g_file_attribute_matcher_matches_only (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME) == FALSE);
-  g_assert (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_SIZE) == FALSE);
+  g_assert_true (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME));
+  g_assert_false (g_file_attribute_matcher_matches_only (matcher, G_FILE_ATTRIBUTE_STANDARD_NAME));
+  g_assert_false (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_SIZE));
 
   g_file_info_set_attribute_mask (info, matcher);
   g_file_attribute_matcher_unref (matcher);
 
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE) == FALSE);
-  g_assert (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME) == TRUE);
+  g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE));
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_NAME));
 
   g_object_unref (info);
   g_object_unref (info_dup);
