@@ -1465,10 +1465,11 @@ filter_function (GDBusConnection *connection,
 		 gpointer         user_data)
 {
   Client *client = user_data;
-  const char *types[] = {"invalid", "method_call", "method_return", "error", "signal" };
 
   if (0)
-    g_printerr ("%s%s %s %d(%d) sender: %s destination: %s %s %s.%s\n",
+    {
+      const char *types[] = {"invalid", "method_call", "method_return", "error", "signal" };
+      g_printerr ("%s%s %s %d(%d) sender: %s destination: %s %s %s.%s\n",
 		client->id,
 		incoming? "->" : "<-",
 		types[g_dbus_message_get_message_type (message)],
@@ -1479,6 +1480,7 @@ filter_function (GDBusConnection *connection,
 		g_dbus_message_get_path (message),
 		g_dbus_message_get_interface (message),
 		g_dbus_message_get_member (message));
+    }
 
   if (incoming)
     {
