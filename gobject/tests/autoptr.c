@@ -113,6 +113,9 @@ test_autolist (void)
 
     l = g_list_prepend (l, tac1);
     l = g_list_prepend (l, tac2);
+
+    /* Squash warnings about dead stores */
+    (void) l;
   }
 
   /* Only assert if autoptr works */
