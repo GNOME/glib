@@ -1,3 +1,20 @@
+Overview of changes in GLib 2.62.0
+==================================
+
+* Fix new `GFileInfo` APIs to work when `G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC`
+  was not queried (!1087)
+
+* Bugs fixed:
+ - #487 Add valgrind test runs to CI
+ - !1084 garray: Fix reference to GLIB_SIZEOF_INT
+ - !1086 glib.supp: make gobject_init() calloc also of the possible kind
+ - !1087 fileinfo: ignore USEC if not available
+
+* Translation updates:
+ - Friulian
+ - Portuguese (Brazil)
+
+
 Overview of changes in GLib 2.61.3
 ==================================
 
