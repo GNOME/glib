@@ -141,11 +141,16 @@ if get_option('gtk_doc')
     configuration: version_conf
   )
 
+  # FIXME: configure_file() does not support more than one file in input
+  # argument. If input argument is omitted then meson checks that all items in
+  # the command array are strings. But if we have an input then extra files
+  # can be passed in command array.
+  # See https://github.com/mesonbuild/meson/issues/5893
   concat_files_helper = find_program('concat-files-helper.py')
   configure_file(
     output : 'gio-sections.txt',
-    input : sections_files,
-    command : [concat_files_helper, '@OUTPUT@', '@INPUT@'],
+    input : sections_files[0],
+    command : [concat_files_helper, '@OUTPUT@'] + sections_files,
   )
 
   configure_file(
