@@ -596,6 +596,9 @@ g_io_channel_purge (GIOChannel *channel)
  * given @channel. For example, if condition is #G_IO_IN, the source will 
  * be dispatched when there's data available for reading.
  *
+ * The callback function invoked by the #GSource should be added with
+ * g_source_set_callback(), but it has type #GIOFunc (not #GSourceFunc).
+ *
  * g_io_add_watch() is a simpler interface to this same functionality, for 
  * the case where you want to add the source to the default main loop context 
  * at the default priority.
