@@ -90,7 +90,8 @@ if get_option('gtk_doc')
     'xdp-dbus.h',
   ]
 
-  sections_files = files('gio-sections-common.txt')
+  section_files_common = files('gio-sections-common.txt')
+  section_files_extra = []
 
   if host_system == 'windows'
     ignore_headers += [
@@ -106,7 +107,7 @@ if get_option('gtk_doc')
       'gdesktopappinfo.h',
       'gosxappinfo.h',
     ]
-    sections_files += files('gio-sections-win32.txt')
+    section_files_extra += files('gio-sections-win32.txt')
     platform_file = files('gio-docs-win32.xml')
   else
     if glib_have_cocoa
@@ -141,11 +142,16 @@ if get_option('gtk_doc')
     configuration: version_conf
   )
 
+  # FIXME: configure_file() does not support more than one file in input
+  # argument. If input argument is omitted then meson checks that all items in
+  # the command array are strings. But if we have an input then extra files
+  # can be passed in command array.
+  # See https://github.com/mesonbuild/meson/issues/5893
   concat_files_helper = find_program('concat-files-helper.py')
   configure_file(
     output : 'gio-sections.txt',
-    input : sections_files,
-    command : [concat_files_helper, '@OUTPUT@', '@INPUT@'],
+    input : section_files_common,
+    command : [concat_files_helper, '@OUTPUT@', '@INPUT@'] + section_files_extra,
   )
 
   configure_file(
