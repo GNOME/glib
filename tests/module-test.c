@@ -90,8 +90,8 @@ main (int    argc,
   if (!g_module_supported ())
     g_error ("dynamic modules not supported");
 
-  plugin_a = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_a", NULL);
-  plugin_b = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_b", NULL);
+  plugin_a = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_a_" MODULE_TYPE, NULL);
+  plugin_b = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_b_" MODULE_TYPE, NULL);
 
   /* module handles */
   
