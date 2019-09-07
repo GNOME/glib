@@ -15,10 +15,6 @@ elif host_system == 'aix'
   g_module_impl = 'G_MODULE_IMPL_AR'
 elif have_dlopen_dlsym
   g_module_impl = 'G_MODULE_IMPL_DL'
-# NSLinkModule (dyld) in system libraries (Darwin)
-elif cc.has_function('NSLinkModule')
-  g_module_impl = 'G_MODULE_IMPL_DYLD'
-  g_module_need_uscore = 1
 endif
 
 # additional checks for G_MODULE_IMPL_DL

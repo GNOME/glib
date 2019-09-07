@@ -283,8 +283,6 @@ g_module_set_error (const gchar *error)
 #include "gmodule-dl.c"
 #elif	(G_MODULE_IMPL == G_MODULE_IMPL_WIN32)
 #include "gmodule-win32.c"
-#elif	(G_MODULE_IMPL == G_MODULE_IMPL_DYLD)
-#include "gmodule-dyld.c"
 #elif	(G_MODULE_IMPL == G_MODULE_IMPL_AR)
 #include "gmodule-ar.c"
 #else
