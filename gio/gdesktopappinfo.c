@@ -2485,7 +2485,8 @@ expand_application_parameters (GDesktopAppInfo   *info,
 }
 
 static gboolean
-prepend_terminal_to_vector (int    *argc,
+prepend_terminal_to_vector (char   *desktop_id,
+                            int    *argc,
                             char ***argv)
 {
 #ifndef G_OS_WIN32
@@ -2496,6 +2497,7 @@ prepend_terminal_to_vector (int    *argc,
   int term_argc = 0;
   char *check;
   char **the_argv;
+  GAppInfo *handler;
 
   g_return_val_if_fail (argc != NULL, FALSE);
   g_return_val_if_fail (argv != NULL, FALSE);
@@ -2517,43 +2519,69 @@ prepend_terminal_to_vector (int    *argc,
   term_argc = 2;
   term_argv = g_new0 (char *, 3);
 
-  check = g_find_program_in_path ("gnome-terminal");
-  if (check != NULL)
+  /* First try finding a registered Terminal=true handler */
+  handler = g_app_info_get_default_for_type ("x-terminal-handler/standard", 
+                                             FALSE);
+
+  if (handler != NULL)
     {
+      check = g_strdup (g_app_info_get_executable (handler));
+
       term_argv[0] = check;
-      /* Since 2017, gnome-terminal has preferred `--` over `-x` or `-e`. */
-      term_argv[1] = g_strdup ("--");
+
+      if (desktop_id != NULL &&
+          g_strv_contains (g_app_info_get_supported_types (handler),
+                           "x-terminal-handler/enhanced"))
+        {
+          term_argv[1] = g_strdup_printf ("--desktop-id=%s", desktop_id);
+          term_argv[2] = g_strdup ("-e");
+        }
+      else
+        {
+          term_argv[1] = g_strdup ("-e");
+        }
     }
   else
     {
-      if (check == NULL)
-        check = g_find_program_in_path ("mate-terminal");
-      if (check == NULL)
-        check = g_find_program_in_path ("xfce4-terminal");
+      /* Fallback to a hardcoded list */
+      check = g_find_program_in_path ("gnome-terminal");
       if (check != NULL)
         {
           term_argv[0] = check;
-          /* Note that gnome-terminal takes -x and
-           * as -e in gnome-terminal is broken we use that. */
-          term_argv[1] = g_strdup ("-x");
+          /* Since 2017, gnome-terminal has preferred `--` over `-x` or `-e`. */
+          term_argv[1] = g_strdup ("--");
         }
       else
         {
           if (check == NULL)
-            check = g_find_program_in_path ("nxterm");
+            check = g_find_program_in_path ("mate-terminal");
           if (check == NULL)
-            check = g_find_program_in_path ("color-xterm");
-          if (check == NULL)
-            check = g_find_program_in_path ("rxvt");
-          if (check == NULL)
-            check = g_find_program_in_path ("dtterm");
-          if (check == NULL)
+            check = g_find_program_in_path ("xfce4-terminal");
+          if (check != NULL)
             {
-              check = g_strdup ("xterm");
-              g_debug ("Couldn’t find a terminal: falling back to xterm");
+              term_argv[0] = check;
+              /* Note that gnome-terminal takes -x and
+              * as -e in gnome-terminal is broken we use that. */
+              term_argv[1] = g_strdup ("-x");
             }
-          term_argv[0] = check;
-          term_argv[1] = g_strdup ("-e");
+          else
+            {
+              if (check == NULL)
+                check = g_find_program_in_path ("nxterm");
+              if (check == NULL)
+                check = g_find_program_in_path ("color-xterm");
+              if (check == NULL)
+                check = g_find_program_in_path ("rxvt");
+              if (check == NULL)
+                check = g_find_program_in_path ("dtterm");
+              if (check == NULL)
+                {
+                  check = g_strdup ("xterm");
+                  g_debug ("Couldn’t find a terminal: falling back to xterm");
+                }
+              term_argv[0] = check;
+              term_argv[1] = g_strdup ("-e");
+            }
         }
     }
 
@@ -2575,6 +2603,8 @@ prepend_terminal_to_vector (int    *argc,
   /* we use g_free here as we sucked all the inner strings
    * out from it into real_argv */
   g_free (term_argv);
+  g_clear_object (&handler);
+  
   return TRUE;
 #else
   return FALSE;
@@ -2721,7 +2751,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
         launched_uris = g_list_prepend (launched_uris, iter->data);
       launched_uris = g_list_reverse (launched_uris);
 
-      if (info->terminal && !prepend_terminal_to_vector (&argc, &argv))
+      if (info->terminal && !prepend_terminal_to_vector (info->desktop_id, &argc, &argv))
         {
           g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                                _("Unable to find terminal required for application"));
