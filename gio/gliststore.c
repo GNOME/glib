@@ -494,3 +494,86 @@ g_list_store_splice (GListStore *store,
 
   g_list_store_items_changed (store, position, n_removals, n_additions);
 }
+
+/**
+ * g_list_store_find_with_equal_func:
+ * @store: a #GListStore
+ * @item: (type GObject): an item
+ * @equal_func: (scope call): A custom equality check function
+ * @position: (out) (optional): the first position of @item, if it was found.
+ *
+ * Looks up the given @item in the list store by looping over the items and
+ * comparing them with @compare_func until the first occurrence of @item which
+ * matches. If @item was not found, then @position will not be set, and this
+ * method will return %FALSE.
+ *
+ * Returns: Whether @store contains @item. If it was found, @position will be
+ * set to the position where @item occurred for the first time.
+ *
+ * Since: 2.64
+ */
+gboolean
+g_list_store_find_with_equal_func (GListStore *store,
+                                   gpointer    item,
+                                   GEqualFunc  equal_func,
+                                   guint      *position)
+{
+  GSequenceIter *iter, *begin, *end;
+
+  g_return_val_if_fail (G_IS_LIST_STORE (store), FALSE);
+  g_return_val_if_fail (g_type_is_a (G_OBJECT_TYPE (item), store->item_type),
+                        FALSE);
+  g_return_val_if_fail (equal_func != NULL, FALSE);
+
+  /* NOTE: We can't use g_sequence_lookup() or g_sequence_search(), because we
+   * can't assume the sequence is sorted. */
+  begin = g_sequence_get_begin_iter (store->items);
+  end = g_sequence_get_end_iter (store->items);
+
+  iter = begin;
+  while (iter != end)
+    {
+      gpointer iter_item;
+
+      iter_item = g_sequence_get (iter);
+      if (equal_func (iter_item, item))
+        {
+          if (position)
+            *position = g_sequence_iter_get_position (iter);
+          return TRUE;
+        }
+
+      iter = g_sequence_iter_next (iter);
+    }
+
+  return FALSE;
+}
+
+/**
+ * g_list_store_find:
+ * @store: a #GListStore
+ * @item: (type GObject): an item
+ * @position: (out) (optional): the first position of @item, if it was found.
+ *
+ * Looks up the given @item in the list store by looping over the items until
+ * the first occurrence of @item. If @item was not found, then @position will
+ * not be set, and this method will return %FALSE.
+ *
+ * If you need to compare the two items with a custom comparison function, use
+ * g_list_store_find_with_equal_func() with a custom #GEqualFunc instead.
+ *
+ * Returns: Whether @store contains @item. If it was found, @position will be
+ * set to the position where @item occurred for the first time.
+ *
+ * Since: 2.64
+ */
+gboolean
+g_list_store_find (GListStore *store,
+                   gpointer    item,
+                   guint      *position)
+{
+  return g_list_store_find_with_equal_func (store,
+                                            item,
+                                            g_direct_equal,
+                                            position);
+}

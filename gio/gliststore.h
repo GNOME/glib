@@ -72,6 +72,17 @@ void                    g_list_store_splice                             (GListSt
                                                                          gpointer   *additions,
                                                                          guint       n_additions);
 
+GLIB_AVAILABLE_IN_2_64
+gboolean                g_list_store_find                               (GListStore *store,
+                                                                         gpointer    item,
+                                                                         guint      *position);
+
+GLIB_AVAILABLE_IN_2_64
+gboolean                g_list_store_find_with_equal_func               (GListStore *store,
+                                                                         gpointer    item,
+                                                                         GEqualFunc  equal_func,
+                                                                         guint      *position);
+
 G_END_DECLS
 
 #endif /* __G_LIST_STORE_H__ */
