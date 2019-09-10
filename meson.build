@@ -163,6 +163,15 @@ if cc.get_id() != 'msvc'
   ])
 endif
 
+lib_version = '1.0.0'
+lib_version_arr = lib_version.split('.')
+lib_version_major = lib_version_arr[0].to_int()
+lib_version_minor = lib_version_arr[1].to_int()
+lib_version_micro = lib_version_arr[2].to_int()
+
+osx_current = lib_version_major + 1
+lib_osx_version = [osx_current, '@0@.@1@'.format(osx_current, lib_version_minor)]
+
 girepo_lib = shared_library('girepository-1.0',
   sources: girepo_sources,
   include_directories : configinc,
@@ -170,7 +179,8 @@ girepo_lib = shared_library('girepository-1.0',
           custom_c_args,
   dependencies: [glib_dep, gobject_dep, gmodule_dep,
                  gio_dep, girepo_internals_dep],
-  version: '1.0.0',
+  version: lib_version,
+  darwin_versions: lib_osx_version,
   install: true,
 )
 
