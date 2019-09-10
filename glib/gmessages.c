@@ -2228,6 +2228,9 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   time_t now_secs;
   struct tm *now_tm;
   gchar time_buf[128];
+	const gchar *linenum = NULL;
+	const gchar *filename = NULL;
+	const gchar *codefunc = NULL;
 
   /* Extract some common fields. */
   for (i = 0; (message == NULL || log_domain == NULL) && i < n_fields; i++)
@@ -2238,6 +2241,12 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
         message = field->value;
       else if (g_strcmp0 (field->key, "GLIB_DOMAIN") == 0)
         log_domain = field->value;
+      else if (g_strcmp0 (field->key, "CODE_FILE") == 0)
+        filename = field->value;
+      else if (g_strcmp0 (field->key, "CODE_LINE") == 0)
+        linenum = field->value;
+      else if (g_strcmp0 (field->key, "CODE_FUNC") == 0)
+        codefunc = field->value;
     }
 
   /* Format things. */
@@ -2280,6 +2289,9 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
                           use_color ? "\033[34m" : "",
                           time_buf, (gint) ((now / 1000) % 1000),
                           color_reset (use_color));
+
+	if (filename && linenum && codefunc)
+		g_string_append_printf (gstring, "%s:%s:%s: ", filename, linenum, codefunc);
 
   if (message == NULL)
     {
