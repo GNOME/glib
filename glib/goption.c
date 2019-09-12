@@ -729,9 +729,14 @@ print_entry (GOptionGroup       *group,
   if (entry->arg_description)
     g_string_append_printf (str, "=%s", TRANSLATE (group, entry->arg_description));
 
-  g_string_append_printf (string, "%s%*s %s\n", str->str,
-                          (int) (max_length + 4 - _g_utf8_strwidth (str->str)), "",
-                          entry->description ? TRANSLATE (group, entry->description) : "");
+  if (entry->flags & G_OPTION_FLAG_APPEND_EMPTY_LINE)
+    g_string_append_printf (string, "%s%*s %s\n\n", str->str,
+                            (int) (max_length + 4 - _g_utf8_strwidth (str->str)), "",
+                            entry->description ? TRANSLATE (group, entry->description) : "");
+  else
+    g_string_append_printf (string, "%s%*s %s\n", str->str,
+                            (int) (max_length + 4 - _g_utf8_strwidth (str->str)), "",
+                            entry->description ? TRANSLATE (group, entry->description) : "");
   g_string_free (str, TRUE);
 }
 
