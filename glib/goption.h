@@ -76,7 +76,7 @@ typedef struct _GOptionEntry   GOptionEntry;
  *     It is not safe to use this option, unless all option groups are under
  *     your direct control. Since 2.8.
  * @G_OPTION_FLAG_APPEND_EMPTY_LINE: This flag adds an empty line after the
- *     one of the option, allowing to visually group options. Since: 2.63.1.
+ *     one of the option, allowing to visually group options. Since: 2.64.
  *
  * Flags which modify individual options.
  */
