@@ -965,7 +965,9 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
 	      for (j = 0; j < n_parents; j++)
 		{
 		  parent_offset = GET_UINT32 (cache->buffer, offset + 4 + 4 * j);
-		  if (_xdg_mime_cache_mime_type_subclass (cache->buffer + parent_offset, ubase))
+		  if (strcmp (cache->buffer + parent_offset, mime) != 0 &&
+		      strcmp (cache->buffer + parent_offset, umime) != 0 &&
+		      _xdg_mime_cache_mime_type_subclass (cache->buffer + parent_offset, ubase))
 		    return 1;
 		}
 
