@@ -1613,6 +1613,7 @@ g_remove
 g_rmdir
 g_fopen
 g_freopen
+g_fsync
 g_chmod
 g_access
 g_creat
