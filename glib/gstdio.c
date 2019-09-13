@@ -1642,6 +1642,31 @@ g_freopen (const gchar *filename,
 }
 
 /**
+ * g_fsync:
+ * @fd: a file descriptor
+ *
+ * A wrapper for the POSIX fsync() function (_commit() on Windows).
+ * The fsync() function is used to synchronize a file's in-core
+ * state with that of the disk.
+ *
+ * See the C library manual for more details about fsync().
+ *
+ * Returns: 0 on success, or -1 if an error occurred.
+ * The return value can be used exactly like the return value from fsync().
+ *
+ * Since: 2.64
+ */
+gint
+g_fsync (gint fd)
+{
+#ifdef G_OS_WIN32
+  return _commit (fd);
+#else
+  return fsync (fd);
+#endif
+}
+
+/**
  * g_utime:
  * @filename: (type filename): a pathname in the GLib file name encoding
  *     (UTF-8 on Windows)
