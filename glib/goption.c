@@ -735,6 +735,12 @@ print_entry (GOptionGroup       *group,
   g_string_free (str, TRUE);
 }
 
+static inline void
+append_visual_group_separator (GString *string)
+{
+  g_string_append (string, "\n");
+}
+
 static gboolean
 group_has_visible_entries (GOptionContext *context,
                            GOptionGroup *group,
@@ -841,6 +847,7 @@ g_option_context_get_help (GOptionContext *context,
   const gchar *rest_description;
   GString *string;
   guchar token;
+  gchar *visual_group;
 
   g_return_val_if_fail (context != NULL, NULL);
 
@@ -1005,6 +1012,7 @@ g_option_context_get_help (GOptionContext *context,
       g_string_append (string, "\n");
     }
 
+  visual_group = NULL;
   if (group)
     {
       /* Print a certain group */
@@ -1014,9 +1022,19 @@ g_option_context_get_help (GOptionContext *context,
           g_string_append (string, TRANSLATE (group, group->description));
           g_string_append (string, "\n");
           for (i = 0; i < group->n_entries; i++)
-            print_entry (group, max_length, &group->entries[i], string, aliases);
+            {
+              if (i != 0
+               && g_strcmp0 (visual_group, group->entries[i].visual_group) != 0)
+                append_visual_group_separator (string);
+
+              print_entry (group, max_length, &group->entries[i], string, aliases);
+
+              visual_group = g_strdup (group->entries[i].visual_group);
+            }
           g_string_append (string, "\n");
         }
+
+      visual_group = NULL;
     }
   else if (!main_help)
     {
@@ -1030,17 +1048,29 @@ g_option_context_get_help (GOptionContext *context,
 
           if (group_has_visible_entries (context, g, FALSE))
             {
+              gboolean is_first_visible_entry = TRUE;
               g_string_append (string, g->description);
               g_string_append (string, "\n");
               for (i = 0; i < g->n_entries; i++)
                 if (!(g->entries[i].flags & G_OPTION_FLAG_IN_MAIN))
-                  print_entry (g, max_length, &g->entries[i], string, aliases);
+                  {
+                    if (!is_first_visible_entry
+                     && g_strcmp0 (visual_group, g->entries[i].visual_group) != 0)
+                      append_visual_group_separator (string);
+
+                    print_entry (g, max_length, &g->entries[i], string, aliases);
+
+                    is_first_visible_entry = FALSE;
+                    visual_group = g_strdup (g->entries[i].visual_group);
+                  }
 
               g_string_append (string, "\n");
             }
 
           list = list->next;
         }
+
+      visual_group = NULL;
     }
 
   /* Print application options if --help or --help-all has been specified */
@@ -1057,8 +1087,16 @@ g_option_context_get_help (GOptionContext *context,
       g_string_append (string, "\n");
       if (context->main_group)
         for (i = 0; i < context->main_group->n_entries; i++)
-          print_entry (context->main_group, max_length,
-                       &context->main_group->entries[i], string, aliases);
+          {
+            if (i != 0
+             && g_strcmp0 (visual_group, context->main_group->entries[i].visual_group) != 0)
+              append_visual_group_separator (string);
+
+            print_entry (context->main_group, max_length,
+                         &context->main_group->entries[i], string, aliases);
+
+            visual_group = g_strdup (context->main_group->entries[i].visual_group);
+          }
 
       while (list != NULL)
         {
@@ -1067,7 +1105,14 @@ g_option_context_get_help (GOptionContext *context,
           /* Print main entries from other groups */
           for (i = 0; i < g->n_entries; i++)
             if (g->entries[i].flags & G_OPTION_FLAG_IN_MAIN)
-              print_entry (g, max_length, &g->entries[i], string, aliases);
+              {
+                if (g_strcmp0 (visual_group, g->entries[i].visual_group) != 0)
+                  append_visual_group_separator (string);
+
+                print_entry (g, max_length, &g->entries[i], string, aliases);
+
+                visual_group = g_strdup (g->entries[i].visual_group);
+              }
 
           list = list->next;
         }

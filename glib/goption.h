@@ -250,6 +250,9 @@ GQuark g_option_error_quark (void);
  *     by the option in `--help` output. The @arg_description is translated
  *     using the @translate_func of the group, see
  *     g_option_group_set_translation_domain().
+ * @visual_group: a name that identifies a group of options. When displaying
+ *     help, options that are contiguous and have the same @visual_group are
+ *     kept grouped, and are separatated from other groups by an empty line.
  * 
  * A GOptionEntry struct defines a single option. To have an effect, they
  * must be added to a #GOptionGroup with g_option_context_add_main_entries()
@@ -266,6 +269,8 @@ struct _GOptionEntry
   
   const gchar *description;
   const gchar *arg_description;
+
+  const gchar *visual_group;
 };
 
 /**
