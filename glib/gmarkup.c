@@ -2917,7 +2917,6 @@ g_markup_collect_attributes (const gchar         *element_name,
 failure:
   /* replay the above to free allocations */
   type = first_type;
-  attr = first_attr;
 
   va_start (ap, first_attr);
   while (type != G_MARKUP_COLLECT_INVALID)
@@ -2952,7 +2951,10 @@ failure:
 
       type = va_arg (ap, GMarkupCollectType);
       if (type != G_MARKUP_COLLECT_INVALID)
-        attr = va_arg (ap, const char *);
+        {
+          attr = va_arg (ap, const char *);
+          (void) attr;
+        }
     }
   va_end (ap);
 

@@ -1313,7 +1313,7 @@ g_logv (const gchar   *log_domain,
     {
       GLogLevelFlags test_level;
 
-      test_level = 1 << i;
+      test_level = 1L << i;
       if (log_level & test_level)
 	{
 	  GLogDomain *domain;

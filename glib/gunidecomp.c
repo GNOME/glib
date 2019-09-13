@@ -443,6 +443,7 @@ _g_utf8_normalize_wc (const gchar    *str,
     {
       g_unicode_canonical_ordering (wc_buffer + last_start, n_wc - last_start);
       last_start = n_wc;
+      (void) last_start;
     }
 	  
   wc_buffer[n_wc] = 0;
