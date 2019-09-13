@@ -43,6 +43,10 @@ void g_socket_connection_set_cached_remote_address (GSocketConnection *connectio
 #define G_IOV_MAX IOV_MAX
 #elif defined(UIO_MAXIOV)
 #define G_IOV_MAX UIO_MAXIOV
+#elif defined(__APPLE__)
+/* For macOS/iOS, UIO_MAXIOV is documented in writev(2), but <sys/uio.h>
+ * only declares it if defined(KERNEL) */
+#define G_IOV_MAX 512
 #else
 /* 16 is the minimum value required by POSIX */
 #define G_IOV_MAX 16
