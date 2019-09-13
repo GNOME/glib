@@ -866,6 +866,9 @@ test_set_contents (void)
   fd = g_file_open_tmp (NULL, &name, &error);
   g_assert_no_error (error);
   write (fd, "a", 1);
+#ifdef G_OS_UNIX
+  g_assert_cmpint (g_fsync (fd), ==, 0);
+#endif
   close (fd);
 
   ret = g_file_get_contents (name, &buf, &len, &error);
