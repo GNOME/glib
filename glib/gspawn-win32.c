@@ -303,6 +303,8 @@ static gboolean
 make_pipe (gint     p[2],
            GError **error)
 {
+  /* pipes are not available on UWP */
+#ifndef G_WINAPI_ONLY_APP
   if (_pipe (p, 4096, _O_BINARY) < 0)
     {
       int errsv = errno;
@@ -314,6 +316,12 @@ make_pipe (gint     p[2],
     }
   else
     return TRUE;
+#else
+    g_set_error_literal (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+                         _("Creation of pipes is not allowed since "
+                           "GLib was built for Universal Windows Platform apps"));
+    return FALSE;
+#endif
 }
 
 /* The helper process writes a status report back to us, through a
@@ -488,6 +496,8 @@ do_spawn_directly (gint                 *exit_status,
       return FALSE;
     }
 
+  /* Spawning processes is not allowed on UWP */
+#ifndef G_WINAPI_ONLY_APP
   if (flags & G_SPAWN_SEARCH_PATH)
     if (wenvp != NULL)
       rc = _wspawnvpe (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
@@ -498,8 +508,10 @@ do_spawn_directly (gint                 *exit_status,
       rc = _wspawnve (mode, wargv0, (const wchar_t **) wargv, (const wchar_t **) wenvp);
     else
       rc = _wspawnv (mode, wargv0, (const wchar_t **) wargv);
-
   errsv = errno;
+#else
+  errsv = ENOSYS;
+#endif
 
   g_free (wargv0);
   g_strfreev ((gchar **) wargv);
@@ -753,12 +765,16 @@ do_spawn_with_fds (gint                 *exit_status,
   whelper = g_utf8_to_utf16 (helper_process, -1, NULL, NULL, NULL);
   g_free (helper_process);
 
+  /* Spawning processes is not allowed on UWP */
+#ifndef G_WINAPI_ONLY_APP
   if (wenvp != NULL)
     rc = _wspawnvpe (P_NOWAIT, whelper, (const wchar_t **) wargv, (const wchar_t **) wenvp);
   else
     rc = _wspawnvp (P_NOWAIT, whelper, (const wchar_t **) wargv);
-
   errsv = errno;
+#else
+  errsv = ENOSYS;
+#endif
 
   g_free (whelper);
   g_strfreev ((gchar **) wargv);
