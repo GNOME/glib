@@ -146,16 +146,29 @@ poll_rest (GPollFD *msg_fd,
       /* Wait for either messages or handles
        * -> Use MsgWaitForMultipleObjectsEx
        */
+#ifndef G_WINAPI_ONLY_APP
+      const gchar *wait_func_name = "MsgWaitForMultipleObjectsEx";
+#else
+      const gchar *wait_func_name = "[UWP] WaitForMultipleObjectsEx";
+#endif
       if (_g_main_poll_debug)
-	g_print ("  MsgWaitForMultipleObjectsEx(%d, %d)\n", nhandles, timeout_ms);
+        g_print ("  %s(%d, %d)\n", wait_func_name, nhandles, timeout_ms);
 
+#ifndef G_WINAPI_ONLY_APP
       ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout_ms,
 					   QS_ALLINPUT, MWMO_ALERTABLE);
+#else
+      /* Win32 Window handles are not available on UWP, and hence we cannot
+       * handle message broadcasts from them, and cannot use MsgWait*.
+       * XXX: Is there a way to assert that @msg_fd is from a GIOWin32Channel of
+       * type G_IO_WIN32_FILE_DESC or G_IO_WIN32_SOCKET? */
+      ready = WaitForMultipleObjectsEx (nhandles, handles, FALSE, timeout_ms, TRUE);
+#endif
 
       if (ready == WAIT_FAILED)
 	{
 	  gchar *emsg = g_win32_error_message (GetLastError ());
-	  g_warning ("MsgWaitForMultipleObjectsEx failed: %s", emsg);
+	  g_warning ("%s failed: %s", wait_func_name, emsg);
 	  g_free (emsg);
 	}
     }
@@ -446,10 +459,12 @@ g_poll (GPollFD *fds,
     }
 
   /* Wait for at least one thread to return */
+#ifndef G_WINAPI_ONLY_APP
   if (msg_fd != NULL)
     ready = MsgWaitForMultipleObjectsEx (nthreads, thread_handles, timeout,
                                          QS_ALLINPUT, MWMO_ALERTABLE);
   else
+#endif
     ready = WaitForMultipleObjects (nthreads, thread_handles, timeout > 0, timeout);
 
   /* Signal the stop in case any of the threads did not stop yet */
