@@ -198,6 +198,7 @@ G_LOCK_DEFINE_STATIC (time_zones);
 static GHashTable/*<string?, GTimeZone>*/ *time_zones;
 static GTimeZone *tz_utc = NULL;
 static GTimeZone *tz_local = NULL;
+static char *tz_local_name = NULL;
 
 #define MIN_TZYEAR 1916 /* Daylight Savings started in WWI */
 #define MAX_TZYEAR 2999 /* And it's not likely ever to go away, but
@@ -216,6 +217,9 @@ void
 g_time_zone_unref (GTimeZone *tz)
 {
   int ref_count;
+
+  if (tz == NULL)
+    return NULL;
 
 again:
   ref_count = g_atomic_int_get (&tz->ref_count);
@@ -1688,8 +1692,18 @@ g_time_zone_new_utc (void)
 GTimeZone *
 g_time_zone_new_local (void)
 {
+  char *tzenv = getenv ("TZ");
+  
+  if ((tz_local_name == NULL && tz_local_name != tzenv) ||
+    strcmp(tz_local_name, tzenv) != 0)
+    { /* Time Zone changed, flush it. */
+      g_time_zone_unref(tz_local);
+      tz_local = NULL;
+      g_free(tz_local_name);
+      tz_local_name = g_strdup (tzenv);
+    }
   if (tz_local == NULL)
-    tz_local = g_time_zone_new (getenv ("TZ"));
+    tz_local = g_time_zone_new (tzenv);
   return g_time_zone_ref (tz_local);
 }
 
