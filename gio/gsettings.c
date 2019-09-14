@@ -2469,7 +2469,7 @@ g_settings_get_child (GSettings   *settings,
  *
  * Returns: (transfer full) (element-type utf8): a list of the keys on
  *    @settings, in no defined order
- * Deprecated: 2.46: Use g_settings_schema_list_keys instead().
+ * Deprecated: 2.46: Use g_settings_schema_list_keys() instead.
  */
 gchar **
 g_settings_list_keys (GSettings *settings)
