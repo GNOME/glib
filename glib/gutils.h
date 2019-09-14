@@ -311,6 +311,9 @@ g_bit_storage_impl (gulong number)
 #  define g_abort() abort ()
 #else
 GLIB_AVAILABLE_IN_2_50
+#ifdef _MSC_VER
+__declspec(noreturn)
+#endif
 void g_abort (void) G_GNUC_NORETURN G_ANALYZER_NORETURN;
 #endif
 #endif
