@@ -47,6 +47,12 @@
 #include <sys/resource.h>
 #endif /* HAVE_SYS_RESOURCE_H */
 
+#ifdef __FreeBSD__
+#include <sys/param.h>
+#include <sys/sysctl.h>
+#include <sys/user.h>
+#endif
+
 #ifdef __linux__
 #include <sys/syscall.h>  /* for syscall and SYS_getdents64 */
 #endif
@@ -1127,6 +1133,69 @@ set_cloexec (void *data, gint fd)
 }
 
 #ifndef HAVE_FDWALK
+
+#ifdef __FreeBSD__
+static int
+fdwalk2(int (*func)(void *, int), void *udata, int *ret) {
+  char *buf = NULL, *buf_end, *ptr;
+  size_t bufsz = 0, tmp = 0;
+  struct kinfo_file *kf;
+  int uret = 0;
+  int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_FILEDESC, 0 };
+
+  if (func == NULL)
+    return EINVAL;
+
+  /* Get files info. */
+  mib[3] = (int) getpid ();
+  for (;;) {
+    if (0 != sysctl (mib, nitems(mib), NULL, &bufsz, NULL, 0)) {
+err_out:
+      free(buf);
+      return errno;
+    }
+    ptr = (char *) realloc (buf, bufsz);
+    if (ptr == NULL)
+      goto err_out;
+    buf = ptr;
+    if (sysctl (mib, nitems(mib), buf, &bufsz, NULL, 0) == 0) {
+      /* https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240573
+       * If new files opened before next sysctl() call
+       * then kernel silently truncate result data.
+       * Re check required size to decrease chances
+       * to lost data. */
+      if (sysctl (mib, nitems(mib), NULL, &tmp, NULL, 0) != 0)
+        goto err_out;
+      if (tmp > bufsz)
+        continue; /* More files opened, retry. */
+      break; /* Ok. */
+    }
+    if (errno != ENOMEM)
+      goto err_out;;
+  }
+
+  /* Walk. */
+  buf_end = (buf + bufsz);
+  for (ptr = buf; ptr < buf_end; ptr += kf->kf_structsize) {
+    kf = (struct kinfo_file *) (void *) ptr;
+    if (kf->kf_structsize == 0)
+      break;
+    if (kf->kf_fd < 0)
+      continue;
+    uret = func (udata, kf->kf_fd);
+    if (uret != 0)
+      break;
+  }
+  free (buf);
+
+  if (ret != NULL) {
+    (*ret) = uret;
+  }
+
+  return 0;
+}
+#endif
+
 #ifdef __linux__
 struct linux_dirent64
 {
@@ -1174,6 +1243,12 @@ fdwalk (int (*cb)(void *data, int fd), void *data)
   
 #ifdef HAVE_SYS_RESOURCE_H
   struct rlimit rl;
+#endif
+
+#ifdef __FreeBSD__
+  if (fdwalk2(cb, data, &res) == 0)
+      return res;
+  /* If any sysctl/malloc call fails continue with the fall back method */
 #endif
 
 #ifdef __linux__
