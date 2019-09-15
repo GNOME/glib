@@ -1760,7 +1760,11 @@ else
     found_iconv = true
   endif
   if not found_iconv and ['auto', 'external'].contains(iconv_opt) and cc.has_header_symbol('iconv.h', 'iconv_open')
-    libiconv = [cc.find_library('iconv')]
+    dirs = []
+    if host_system == 'freebsd'
+      dirs += '/usr/local/lib'
+    endif
+    libiconv = [cc.find_library('iconv', dirs: dirs)]
     found_iconv = true
   endif
 
@@ -1989,9 +1993,9 @@ endif
 
 glib_conf.set('HAVE_PROC_SELF_CMDLINE', have_proc_self_cmdline)
 
-python = import('python').find_installation('python3')
 # used for '#!/usr/bin/env <name>'
-python_name = 'python3'
+python_name = get_option('python_name')
+python = import('python').find_installation(python_name)
 
 python_version = python.language_version()
 python_version_req = '>=3.4'
