@@ -14,7 +14,7 @@ foreach service_file : dbus_service_files
     configure_file(
       input: service_file + '.in',
       output: service_file,
-      install_dir: test_dbus_servicesdir,
+      install_dir: installed_tests_execdir / 'services',
       configuration: cdata,
     )
   else
