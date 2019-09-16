@@ -25,8 +25,21 @@ static GTestDBus *singleton = NULL;
 void
 session_bus_up (void)
 {
+  gchar *relative, *servicesdir;
   g_assert (singleton == NULL);
   singleton = g_test_dbus_new (G_TEST_DBUS_NONE);
+
+  /* We ignore deprecations here so that gdbus-test-codegen-old can
+   * build successfully despite these two functions not being
+   * available in GLib 2.36 */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  relative = g_test_build_filename (G_TEST_BUILT, "services", NULL);
+  servicesdir = g_canonicalize_filename (relative, NULL);
+  G_GNUC_END_IGNORE_DEPRECATIONS
+  g_free (relative);
+
+  g_test_dbus_add_service_dir (singleton, servicesdir);
+  g_free (servicesdir);
   g_test_dbus_up (singleton);
 }
 
