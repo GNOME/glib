@@ -5,9 +5,15 @@ common_gio_tests_deps = [
   libgio_dep,
 ]
 
+if installed_tests_enabled
+  test_dbus_servicesdir = installed_tests_execdir / 'services'
+else
+  test_dbus_servicesdir = meson.current_build_dir() / 'services'
+endif
+
 test_c_args = [
   '-DG_LOG_DOMAIN="GLib-GIO"',
-  '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
+  '-DTEST_SERVICES="@0@"'.format(test_dbus_servicesdir),
   '-DGLIB_MKENUMS="@0@"'.format(glib_mkenums),
   '-DGLIB_COMPILE_SCHEMAS="@0@"'.format(glib_compile_schemas.full_path()),
   '-UG_DISABLE_ASSERT',
@@ -298,6 +304,30 @@ if host_machine.system() != 'windows'
         },
       }
     endif
+
+    fake_document_portal_generated = custom_target('fake-document-portal-generated',
+        input :   ['../org.freedesktop.portal.Documents.xml'],
+        output :  ['fake-document-portal-generated.h',
+                   'fake-document-portal-generated.c'],
+        depend_files : gdbus_codegen_built_files,
+        command : [python, gdbus_codegen,
+                   '--interface-prefix', 'org.freedesktop.portal.',
+                   '--output-directory', '@OUTDIR@',
+                   '--generate-c-code', 'fake-document-portal-generated',
+                   '--c-namespace', 'Fake',
+                   '--annotate', 'org.freedesktop.portal.Documents.Add()',
+                                 'org.gtk.GDBus.C.UnixFD', 'true',
+                   '--annotate', 'org.freedesktop.portal.Documents.AddNamed()',
+                                 'org.gtk.GDBus.C.UnixFD', 'true',
+                   '--annotate', 'org.freedesktop.portal.Documents.AddFull()',
+                                 'org.gtk.GDBus.C.UnixFD', 'true',
+                   '@INPUT@'])
+
+    test_extra_programs += {
+      'fake-document-portal' : {
+        'extra_sources': fake_document_portal_generated,
+      },
+    }
   endif # have_dbus_daemon
 
   # This test is currently unreliable
@@ -698,5 +728,5 @@ foreach program_name, extra_args : test_extra_programs
   )
 endforeach
 
-# FIXME: subdir('services')
+subdir('services')
 subdir('modules')
