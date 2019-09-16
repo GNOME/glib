@@ -18,6 +18,12 @@
  * Author: Xavier Claessens <xavier.claessens@collabora.co.uk>
  */
 
+/* This code is built into the gdbus-test-codegen-old test where these
+ * macros are defined. They cause problems for some API calls in this
+ * file. */
+#undef GLIB_VERSION_MIN_REQUIRED
+#undef GLIB_VERSION_MAX_ALLOWED
+
 #include "gdbus-sessionbus.h"
 
 static GTestDBus *singleton = NULL;
@@ -25,9 +31,16 @@ static GTestDBus *singleton = NULL;
 void
 session_bus_up (void)
 {
+  gchar *relative, *servicesdir;
   g_assert (singleton == NULL);
   singleton = g_test_dbus_new (G_TEST_DBUS_NONE);
-  g_test_dbus_add_service_dir (singleton, TEST_SERVICES);
+
+  relative = g_test_build_filename (G_TEST_BUILT, "services", NULL);
+  servicesdir = g_canonicalize_filename (relative, NULL);
+  g_free (relative);
+
+  g_test_dbus_add_service_dir (singleton, servicesdir);
+  g_free (servicesdir);
   g_test_dbus_up (singleton);
 }
 
