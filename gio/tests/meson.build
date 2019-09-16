@@ -5,15 +5,8 @@ common_gio_tests_deps = [
   libgio_dep,
 ]
 
-if installed_tests_enabled
-  test_dbus_servicesdir = installed_tests_execdir / 'services'
-else
-  test_dbus_servicesdir = meson.current_build_dir() / 'services'
-endif
-
 test_c_args = [
   '-DG_LOG_DOMAIN="GLib-GIO"',
-  '-DTEST_SERVICES="@0@"'.format(test_dbus_servicesdir),
   '-DGLIB_MKENUMS="@0@"'.format(glib_mkenums),
   '-DGLIB_COMPILE_SCHEMAS="@0@"'.format(glib_compile_schemas.full_path()),
   '-UG_DISABLE_ASSERT',
