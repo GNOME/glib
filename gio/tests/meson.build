@@ -474,6 +474,7 @@ if installed_tests_enabled
     'appinfo-test-static.desktop',
     'file.c',
     'org.gtk.test.dbusappinfo.desktop',
+    'org.gtk.test.dbusappinfo.flatpak.desktop',
     'test1.overlay',
     install_dir : installed_tests_execdir,
   )
