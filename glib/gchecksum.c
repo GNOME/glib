@@ -52,7 +52,7 @@
  * Support for checksums has been added in GLib 2.16
  **/
 
-#define IS_VALID_TYPE(type)     ((type) >= G_CHECKSUM_MD5 && (type) <= G_CHECKSUM_SHA384)
+#define IS_VALID_TYPE(type)     ((type) >= G_CHECKSUM_MD5 && (type) <= G_CHECKSUM_SM3)
 
 /* The fact that these are lower case characters is part of the ABI */
 static const gchar hex_digits[] = "0123456789abcdef";
@@ -100,6 +100,17 @@ typedef struct
   guchar digest[SHA256_DIGEST_LEN];
 } Sha256sum;
 
+#define SM3_DATASIZE         64
+#define SM3_DIGEST_LEN       32
+typedef struct
+{
+  guint32 buf[8];
+  guint32 bits[2];
+  guint8  data[SM3_DATASIZE];
+
+  guchar digest[SM3_DIGEST_LEN];
+} Sm3sum;
+
 /* SHA2 is common thing for SHA-384, SHA-512, SHA-512/224 and SHA-512/256 */
 #define SHA2_BLOCK_LEN         128 /* 1024 bits message block */
 #define SHA384_DIGEST_LEN       48
@@ -128,6 +139,7 @@ struct _GChecksum
     Sha1sum sha1;
     Sha256sum sha256;
     Sha512sum sha512;
+    Sm3sum sm3;
   } sum;
 };
 
@@ -1065,9 +1077,6 @@ sha256_sum_close (Sha256sum *sha256)
   PUT_UINT32 (sha256->buf[7], sha256->digest, 28);
 }
 
-#undef PUT_UINT32
-#undef GET_UINT32
-
 static gchar *
 sha256_sum_to_string (Sha256sum *sha256)
 {
@@ -1398,6 +1407,216 @@ sha512_sum_digest (Sha512sum *sha512,
 
 #undef PUT_UINT64
 
+static void
+sm3_sum_init (Sm3sum *sm3)
+{
+  sm3->buf[0] = 0x7380166f;
+  sm3->buf[1] = 0x4914b2b9;
+  sm3->buf[2] = 0x172442d7;
+  sm3->buf[3] = 0xda8a0600;
+  sm3->buf[4] = 0xa96f30bc;
+  sm3->buf[5] = 0x163138aa;
+  sm3->buf[6] = 0xe38dee4d;
+  sm3->buf[7] = 0xb0fb0e4e;
+
+  sm3->bits[0] = sm3->bits[1] = 0;
+}
+
+static void
+sm3_transform (guint32      buf[8],
+               guint8 const data[64])
+{
+  guint32 A, B, C, D, E, F, G, H;
+  guint32 SS1, SS2, TT1, TT2, Tj, W[68], WP[64];
+  int i;
+
+  GET_UINT32 (W[0],  data,  0);
+  GET_UINT32 (W[1],  data,  4);
+  GET_UINT32 (W[2],  data,  8);
+  GET_UINT32 (W[3],  data, 12);
+  GET_UINT32 (W[4],  data, 16);
+  GET_UINT32 (W[5],  data, 20);
+  GET_UINT32 (W[6],  data, 24);
+  GET_UINT32 (W[7],  data, 28);
+  GET_UINT32 (W[8],  data, 32);
+  GET_UINT32 (W[9],  data, 36);
+  GET_UINT32 (W[10], data, 40);
+  GET_UINT32 (W[11], data, 44);
+  GET_UINT32 (W[12], data, 48);
+  GET_UINT32 (W[13], data, 52);
+  GET_UINT32 (W[14], data, 56);
+  GET_UINT32 (W[15], data, 60);
+
+#define ROTL32(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
+#define FF0(x,y,z) ((x) ^ (y) ^ (z))
+#define FF1(x,y,z) (((x) & (y)) | ((x) & (z)) | ((y) & (z)))
+#define GG0(x,y,z) ( (x) ^ (y) ^ (z))
+#define GG1(x,y,z) (((x) & (y)) | ( (~(x)) & (z)) )
+#define P0(x) ((x) ^  ROTL32((x), 9) ^ ROTL32((x),17))
+#define P1(x) ((x) ^  ROTL32((x),15) ^ ROTL32((x),23))
+
+  for (i = 16; i < 68; i++ )
+  {
+    W[i] = P1(W[i - 16] ^ W[i - 9] ^ ROTL32(W[i - 3], 15)) ^
+      ROTL32(W[i - 13], 7 ) ^ W[i - 6];
+  }
+
+  for (i =  0; i < 64; i++)
+  {
+    WP[i] = W[i] ^ W[i + 4];
+  }
+
+  A = buf[0];
+  B = buf[1];
+  C = buf[2];
+  D = buf[3];
+  E = buf[4];
+  F = buf[5];
+  G = buf[6];
+  H = buf[7];
+
+  for (i = 0; i < 64; i++)
+  {
+    if (i < 16)
+    {
+      Tj = 0x79cc4519;
+      SS1 = ROTL32(ROTL32(A, 12) + E + ROTL32(Tj, i), 7);
+      SS2 = SS1 ^ ROTL32(A, 12);
+      TT1 = FF0(A, B, C) + D + SS2 + WP[i];
+      TT2 = GG0(E, F, G) + H + SS1 + W[i];
+    }
+    else
+    {
+      Tj = 0x7a879d8a;
+      SS1 = ROTL32(ROTL32(A, 12) + E + ROTL32(Tj, i), 7);
+      SS2 = SS1 ^ ROTL32(A, 12);
+      TT1 = FF1(A, B, C) + D + SS2 + WP[i];
+      TT2 = GG1(E, F, G) + H + SS1 + W[i];
+    }
+
+    D = C;
+    C = ROTL32(B, 9);
+    B = A;
+    A = TT1;
+    H = G;
+    G = ROTL32(F, 19);
+    F = E;
+    E = P0(TT2);
+  }
+
+#undef FF0
+#undef FF1
+#undef GG0
+#undef GG1
+#undef SHL
+#undef ROTL32
+#undef P0
+#undef P1
+
+  buf[0] ^= A;
+  buf[1] ^= B;
+  buf[2] ^= C;
+  buf[3] ^= D;
+  buf[4] ^= E;
+  buf[5] ^= F;
+  buf[6] ^= G;
+  buf[7] ^= H;
+}
+
+static void
+sm3_sum_update (Sm3sum *sm3, const guchar *buffer, gsize length)
+{
+  guint32 left, fill;
+  const guint8 *input = buffer;
+
+  if ( length == 0 )
+    return;
+
+  left = sm3->bits[0] & 0x3F;
+  fill = 64 - left;
+
+  sm3->bits[0] += length;
+  sm3->bits[0] &= 0xFFFFFFFF;
+
+  if ( sm3->bits[0] < length )
+    sm3->bits[1]++;
+
+  if (left && length >= fill )
+  {
+    memcpy((sm3->data + left), input, fill);
+    sm3_transform (sm3->buf, sm3->data);
+    length -= fill;
+    input += fill;
+
+    left = 0;
+  }
+
+  while (length >= SM3_DATASIZE)
+  {
+    sm3_transform (sm3->buf, input);
+    length -= SM3_DATASIZE;
+    input += SM3_DATASIZE;
+  }
+
+  if ( length > 0 )
+  {
+    memcpy((sm3->data + left), input, length);
+  }
+}
+
+static guint8 sm3_padding[64] =
+{
+  0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
+static void
+sm3_sum_close (Sm3sum *sm3)
+{
+  guint32 last, padn;
+  guint32 high, low;
+  guint8 msglen[8];
+
+  high = (sm3->bits[0] >> 29)
+       | (sm3->bits[1] <<  3);
+  low = (sm3->bits[0] <<  3);
+
+  PUT_UINT32 (high, msglen, 0);
+  PUT_UINT32 (low,  msglen, 4);
+
+  last = sm3->bits[0] & 0x3F;
+  padn = (last < 56) ? (56 - last) : (120 - last);
+
+  sm3_sum_update (sm3, (unsigned char *) sm3_padding, padn);
+  sm3_sum_update (sm3, msglen, 8);
+
+  PUT_UINT32 (sm3->buf[0], sm3->digest,  0);
+  PUT_UINT32 (sm3->buf[1], sm3->digest,  4);
+  PUT_UINT32 (sm3->buf[2], sm3->digest,  8);
+  PUT_UINT32 (sm3->buf[3], sm3->digest, 12);
+  PUT_UINT32 (sm3->buf[4], sm3->digest, 16);
+  PUT_UINT32 (sm3->buf[5], sm3->digest, 20);
+  PUT_UINT32 (sm3->buf[6], sm3->digest, 24);
+  PUT_UINT32 (sm3->buf[7], sm3->digest, 28);
+}
+
+#undef PUT_UINT32
+#undef GET_UINT32
+
+static gchar *
+sm3_sum_to_string (Sm3sum *sm3)
+{
+  return digest_to_string (sm3->digest, SM3_DIGEST_LEN);
+}
+
+static void
+sm3_sum_digest (Sm3sum *sm3, guint8 *digest)
+{
+  memcpy (digest, sm3->digest, SM3_DIGEST_LEN);
+}
+
 /*
  * Public API
  */
@@ -1434,6 +1653,9 @@ g_checksum_type_get_length (GChecksumType checksum_type)
       break;
     case G_CHECKSUM_SHA512:
       len = SHA512_DIGEST_LEN;
+      break;
+    case G_CHECKSUM_SM3:
+      len = SM3_DIGEST_LEN;
       break;
     default:
       len = -1;
@@ -1514,6 +1736,9 @@ g_checksum_reset (GChecksum *checksum)
       break;
     case G_CHECKSUM_SHA512:
       sha512_sum_init (&(checksum->sum.sha512));
+      break;
+    case G_CHECKSUM_SM3:
+      sm3_sum_init (&(checksum->sum.sm3));
       break;
     default:
       g_assert_not_reached ();
@@ -1614,6 +1839,9 @@ g_checksum_update (GChecksum    *checksum,
     case G_CHECKSUM_SHA512:
       sha512_sum_update (&(checksum->sum.sha512), data, length);
       break;
+    case G_CHECKSUM_SM3:
+      sm3_sum_update (&(checksum->sum.sm3), data, length);
+      break;
     default:
       g_assert_not_reached ();
       break;
@@ -1668,6 +1896,10 @@ g_checksum_get_string (GChecksum *checksum)
     case G_CHECKSUM_SHA512:
       sha512_sum_close (&(checksum->sum.sha512));
       str = sha512_sum_to_string (&(checksum->sum.sha512));
+      break;
+    case G_CHECKSUM_SM3:
+      sm3_sum_close (&(checksum->sum.sm3));
+      str = sm3_sum_to_string (&(checksum->sum.sm3));
       break;
     default:
       g_assert_not_reached ();
@@ -1751,6 +1983,14 @@ g_checksum_get_digest (GChecksum  *checksum,
           str = sha512_sum_to_string (&(checksum->sum.sha512));
         }
       sha512_sum_digest (&(checksum->sum.sha512), buffer);
+      break;
+    case G_CHECKSUM_SM3:
+      if (checksum_open)
+        {
+          sm3_sum_close (&(checksum->sum.sm3));
+          str = sm3_sum_to_string (&(checksum->sum.sm3));
+        }
+      sm3_sum_digest (&(checksum->sum.sm3), buffer);
       break;
     default:
       g_assert_not_reached ();
