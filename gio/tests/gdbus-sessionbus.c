@@ -27,6 +27,7 @@ session_bus_up (void)
 {
   g_assert (singleton == NULL);
   singleton = g_test_dbus_new (G_TEST_DBUS_NONE);
+  g_test_dbus_add_service_dir (singleton, TEST_SERVICES);
   g_test_dbus_up (singleton);
 }
 
