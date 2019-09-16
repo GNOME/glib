@@ -77,6 +77,9 @@ static GMemVTable glib_mem_vtable = {
  * new with delete and new[] with delete[]. Otherwise bad things can happen,
  * since these allocators may use different memory pools (and new/delete call
  * constructors and destructors).
+ *
+ * Since GLib 2.46 g_malloc() is hardcoded to always use the system malloc
+ * implementation.
  */
 
 /* --- functions --- */
@@ -457,7 +460,7 @@ g_try_realloc_n (gpointer mem,
  * 
  * Checks whether the allocator used by g_malloc() is the system's
  * malloc implementation. If it returns %TRUE memory allocated with
- * malloc() can be used interchangeable with memory allocated using g_malloc().
+ * malloc() can be used interchangeably with memory allocated using g_malloc().
  * This function is useful for avoiding an extra copy of allocated memory returned
  * by a non-GLib-based API.
  *
