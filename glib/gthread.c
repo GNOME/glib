@@ -833,6 +833,14 @@ g_thread_proxy (gpointer data)
  * To free the struct returned by this function, use g_thread_unref().
  * Note that g_thread_join() implicitly unrefs the #GThread as well.
  *
+ * New threads by default inherit their scheduler policy (POSIX) or thread
+ * priority (Windows) of the thread creating the new thread.
+ *
+ * This behaviour changed in GLib 2.64: before threads on Windows were not
+ * inheriting the thread priority but were spawned with the default priority.
+ * Starting with GLib 2.64 the behaviour is now consistent between Windows and
+ * POSIX and all threads inherit their parent thread's priority.
+ *
  * Returns: the new #GThread
  *
  * Since: 2.32
