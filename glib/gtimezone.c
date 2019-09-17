@@ -196,6 +196,8 @@ struct _GTimeZone
 
 G_LOCK_DEFINE_STATIC (time_zones);
 static GHashTable/*<string?, GTimeZone>*/ *time_zones;
+G_LOCK_DEFINE_STATIC (tz_utc);
+G_LOCK_DEFINE_STATIC (tz_local);
 static GTimeZone *tz_utc = NULL;
 static GTimeZone *tz_local = NULL;
 static char *tz_local_name = NULL;
@@ -1669,14 +1671,14 @@ g_time_zone_new_utc (void)
 {
   GTimeZone *tz;
 
-  G_LOCK (time_zones);
+  G_LOCK (tz_utc);
 
   if (tz_utc == NULL)
     tz_utc = g_time_zone_new ("UTC");
 
   tz = g_time_zone_ref (tz_utc);
 
-  G_UNLOCK (time_zones);
+  G_UNLOCK (tz_utc);
 
   return tz;
 }
@@ -1704,7 +1706,7 @@ g_time_zone_new_local (void)
   char *tzenv = getenv ("TZ");
   GTimeZone *tz;
 
-  G_LOCK (time_zones);
+  G_LOCK (tz_local);
 
   if (g_strcmp0 (tz_local_name, tzenv) != 0)
     { /* Time Zone changed, flush it. */
@@ -1718,7 +1720,7 @@ g_time_zone_new_local (void)
 
   tz = g_time_zone_ref (tz_local);
 
-  G_UNLOCK (time_zones);
+  G_UNLOCK (tz_local);
 
   return tz;
 }
