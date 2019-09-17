@@ -440,9 +440,11 @@ g_system_thread_new (GThreadFunc   proxy,
   GThreadWin32 *thread;
   GRealThread *base_thread;
   guint ignore;
+  const gchar *message = NULL;
 
   thread = g_slice_new0 (GThreadWin32);
   thread->proxy = proxy;
+  thread->handle = (HANDLE) NULL;
   base_thread = (GRealThread*)thread;
   base_thread->ref_count = 2;
   base_thread->ours = TRUE;
@@ -451,19 +453,60 @@ g_system_thread_new (GThreadFunc   proxy,
   base_thread->thread.data = data;
   base_thread->name = g_strdup (name);
 
-  thread->handle = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_win32_proxy, thread, 0, &ignore);
+  thread->handle = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_win32_proxy, thread,
+                                            inherit_sched ? CREATE_SUSPENDED : 0, &ignore);
 
   if (thread->handle == NULL)
     {
-      gchar *win_error = g_win32_error_message (GetLastError ());
-      g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN,
-                   "Error creating thread: %s", win_error);
-      g_free (win_error);
-      g_slice_free (GThreadWin32, thread);
-      return NULL;
+      message = "Error creating thread";
+      goto error;
+    }
+
+  /* If thread priority inheritance is requested then we need to manually
+   * set the thread priority of the new process to the priority of the current
+   * thread. We also have to start the thread suspended and resume it after
+   * actually setting the priority here.
+   *
+   * Otherwise the default behaviour is what we want: all new threads are
+   * created with NORMAL thread priority
+   */
+  if (inherit_sched)
+    {
+      HANDLE current_thread = GetCurrentThread ();
+      int prio = GetThreadPriority (current_thread);
+
+      if (prio == THREAD_PRIORITY_ERROR_RETURN)
+        {
+          message = "Error getting current thread priority";
+          goto error;
+        }
+
+      if (SetThreadPriority (thread->handle, prio) == 0)
+        {
+          message = "Error setting new thread priority";
+          goto error;
+        }
+
+      if (ResumeThread (thread->handle) == -1)
+        {
+          message = "Error resuming new thread";
+          goto error;
+        }
     }
 
   return (GRealThread *) thread;
+
+error:
+  {
+    gchar *win_error = g_win32_error_message (GetLastError ());
+    g_set_error (error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN,
+                 "%s: %s", message, win_error);
+    g_free (win_error);
+    if (thread->handle)
+      CloseHandle (thread->handle);
+    g_slice_free (GThreadWin32, thread);
+    return NULL;
+  }
 }
 
 void
