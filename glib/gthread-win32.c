@@ -431,6 +431,7 @@ g_thread_win32_proxy (gpointer data)
 GRealThread *
 g_system_thread_new (GThreadFunc   proxy,
                      gulong        stack_size,
+                     gboolean      inherit_sched,
                      const char   *name,
                      GThreadFunc   func,
                      gpointer      data,

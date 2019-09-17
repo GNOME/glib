@@ -32,6 +32,7 @@
 #include "gtestutils.h"
 #include "gtimer.h"
 #include "gutils.h"
+#include "gthreadprivate.h"
 
 /**
  * SECTION:thread_pools
@@ -409,8 +410,17 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
       if (prgname)
         g_snprintf (name, sizeof (name), "pool-%s", prgname);
 
-      /* No thread was found, we have to start a new one */
-      thread = g_thread_try_new (name, g_thread_pool_thread_proxy, pool, error);
+      /* No thread was found, we have to start a new one
+       *
+       * We don't use g_thread_try_new() here as that by default causes the
+       * new thread to inherit the thread priority of the calling thread.
+       * Doing so can cause the thread pool to accidentally have threads with
+       * different priorities, and to accidentally e.g. have threads with
+       * real-time priorities.
+       *
+       * Instead we create a thread with default priority here.
+       */
+      thread = g_thread_new_internal (name, g_thread_proxy, g_thread_pool_thread_proxy, pool, 0, FALSE, error);
 
       if (thread == NULL)
         return FALSE;

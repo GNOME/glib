@@ -1155,6 +1155,7 @@ g_system_thread_free (GRealThread *thread)
 GRealThread *
 g_system_thread_new (GThreadFunc   proxy,
                      gulong        stack_size,
+                     gboolean      inherit_sched,
                      const char   *name,
                      GThreadFunc   func,
                      gpointer      data,
@@ -1189,6 +1190,24 @@ g_system_thread_new (GThreadFunc   proxy,
       pthread_attr_setstacksize (&attr, stack_size);
     }
 #endif /* HAVE_PTHREAD_ATTR_SETSTACKSIZE */
+
+#ifdef HAVE_PTHREAD_ATTR_SETINHERITSCHED
+  if (inherit_sched)
+    {
+      /* While this is the default, better be explicit about it */
+      pthread_attr_setinheritsched (&attr, PTHREAD_INHERIT_SCHED);
+    }
+  else
+    {
+      pthread_attr_setinheritsched (&attr, PTHREAD_EXPLICIT_SCHED);
+      /* Work around bug in glibc 2.8, see
+       * https://linux.die.net/man/3/pthread_attr_setinheritsched
+       */
+#ifdef HAVE_PTHREAD_ATTR_SETSCHEDPOLICY
+      pthread_attr_setschedpolicy (&attr, SCHED_OTHER);
+#endif /* HAVE_PTHREAD_ATTR_SETSCHEDPOLICY */
+    }
+#endif /* HAVE_PTHREAD_ATTR_SETINHERITSCHED */
 
   ret = pthread_create (&thread->system_thread, &attr, (void* (*)(void*))proxy, thread);
 

@@ -845,7 +845,7 @@ g_thread_new (const gchar *name,
   GError *error = NULL;
   GThread *thread;
 
-  thread = g_thread_new_internal (name, g_thread_proxy, func, data, 0, &error);
+  thread = g_thread_new_internal (name, g_thread_proxy, func, data, 0, TRUE, &error);
 
   if G_UNLIKELY (thread == NULL)
     g_error ("creating thread '%s': %s", name ? name : "", error->message);
@@ -876,7 +876,7 @@ g_thread_try_new (const gchar  *name,
                   gpointer      data,
                   GError      **error)
 {
-  return g_thread_new_internal (name, g_thread_proxy, func, data, 0, error);
+  return g_thread_new_internal (name, g_thread_proxy, func, data, 0, TRUE, error);
 }
 
 GThread *
@@ -885,12 +885,13 @@ g_thread_new_internal (const gchar   *name,
                        GThreadFunc    func,
                        gpointer       data,
                        gsize          stack_size,
+                       gboolean       inherit_sched,
                        GError       **error)
 {
   g_return_val_if_fail (func != NULL, NULL);
 
-  return (GThread*) g_system_thread_new (proxy, stack_size, name,
-                                         func, data, error);
+  return (GThread*) g_system_thread_new (proxy, stack_size, inherit_sched,
+                                         name, func, data, error);
 }
 
 /**
