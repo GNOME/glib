@@ -1146,14 +1146,17 @@ fdwalk2(int (*func)(void *, int), void *udata, int *ret) {
   if (func == NULL)
     return EINVAL;
 
-  /* Get files info. */
+  /* Try to get files info. */
   mib[3] = (int) getpid ();
   for (;;) {
+    /* Get memory size required for read array of struct kinfo_file. */
     if (0 != sysctl (mib, nitems(mib), NULL, &bufsz, NULL, 0)) {
 err_out:
       free(buf);
       return errno;
     }
+    /* Allocate required memory size and try to files info. */
+    bufsz += (sizeof(struct kinfo_file) * 64); /* A bit more space. */
     ptr = (char *) realloc (buf, bufsz);
     if (ptr == NULL)
       goto err_out;
@@ -1171,10 +1174,10 @@ err_out:
       break; /* Ok. */
     }
     if (errno != ENOMEM)
-      goto err_out;;
+      goto err_out;
   }
 
-  /* Walk. */
+  /* Walk trouth all received struct kinfo_file. */
   buf_end = (buf + bufsz);
   for (ptr = buf; ptr < buf_end; ptr += kf->kf_structsize) {
     kf = (struct kinfo_file *) (void *) ptr;
