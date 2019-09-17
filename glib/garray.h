@@ -231,7 +231,7 @@ GByteArray* g_byte_array_new               (void);
 GLIB_AVAILABLE_IN_ALL
 GByteArray* g_byte_array_new_take          (guint8           *data,
                                             gsize             len);
-GLIB_AVAILABLE_IN_2_62
+GLIB_AVAILABLE_IN_2_64
 guint8     *g_byte_array_steal             (GByteArray       *array);
 GLIB_AVAILABLE_IN_ALL
 GByteArray* g_byte_array_sized_new         (guint             reserved_size);
