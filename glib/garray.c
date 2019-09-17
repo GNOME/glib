@@ -1054,7 +1054,7 @@ g_ptr_array_new (void)
  * to the caller.
  *
  * <note><para>Even if set, the #GDestroyNotify function will never
- * be called on the current contents of the array.</para></note>
+ * be called on the current contents of the array and the caller is responsible for freeing the array elements.</para></note>
  *
  * Since: 2.64
  */
