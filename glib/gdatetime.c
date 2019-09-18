@@ -1220,6 +1220,8 @@ g_date_time_new_ordinal (GTimeZone *tz, gint year, gint ordinal_day, gint hour, 
     return NULL;
 
   dt = g_date_time_new (tz, year, 1, 1, hour, minute, seconds);
+  if (dt == NULL)
+    return NULL;
   dt->days += ordinal_day - 1;
 
   return dt;
