@@ -370,7 +370,7 @@ libglib_dep = declare_dependency(
   include_directories : [configinc, glibinc])
 
 pkg.generate(libglib,
-  libraries : [libintl],
+  libraries : [libglib, libintl],
   libraries_private : [osx_ldflags, win32_ldflags],
   subdirs : ['glib-2.0'],
   extra_cflags : ['-I${libdir}/glib-2.0/include'] + win32_cflags,
