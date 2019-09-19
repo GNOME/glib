@@ -53,6 +53,7 @@ gio_tests = {
   'inet-address' : {},
   'io-stream' : {},
   'memory-input-stream' : {},
+  'memory-monitor' : {},
   'memory-output-stream' : {},
   'mount-operation' : {},
   'network-address' : {'extra_sources': ['mock-resolver.c']},
