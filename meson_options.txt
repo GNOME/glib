@@ -1,3 +1,8 @@
+option('python_name',
+       type : 'string',
+       value : 'python3',
+       description : 'Python name, for FreeBSD may be python3.6')
+
 option('runtime_libdir',
        type : 'string',
        value : '',
