@@ -1148,7 +1148,6 @@ close_func (void *data, int fd)
   return 0;
 }
 
-#ifndef HAVE_FDWALK
 #ifdef __linux__
 struct linux_dirent64
 {
@@ -1188,8 +1187,21 @@ filename_to_fd (const char *p)
 #endif
 
 static int
-fdwalk (int (*cb)(void *data, int fd), void *data)
+safe_fdwalk (int (*cb)(void *data, int fd), void *data)
 {
+#if 0
+  /* Use fdwalk function provided by the system if it is known to be
+   * async-signal safe.
+   *
+   * Currently there are no operating systems known to provide a safe
+   * implementation, so this section is not used for now.
+   */
+  return fdwalk (cb, data);
+#else
+  /* Fallback implementation of fdwalk. It should be async-signal safe, but it
+   * may be slow on non-Linux operating systems, especially on systems allowing
+   * very high number of open file descriptors.
+   */
   gint open_max;
   gint fd;
   gint res = 0;
@@ -1244,8 +1256,8 @@ fdwalk (int (*cb)(void *data, int fd), void *data)
           break;
 
   return res;
+#endif
 }
-#endif /* HAVE_FDWALK */
 
 static void
 safe_closefrom (int lowfd)
@@ -1275,7 +1287,7 @@ safe_closefrom (int lowfd)
    */
   (void) fcntl (lowfd, F_CLOSEM);
 #else
-  (void) fdwalk (close_func, GINT_TO_POINTER (lowfd));
+  (void) safe_fdwalk (close_func, GINT_TO_POINTER (lowfd));
 #endif
 }
 
@@ -1407,7 +1419,7 @@ do_exec (gint                  child_err_report_fd,
         }
       else
         {
-          fdwalk (set_cloexec, GINT_TO_POINTER (3));
+          safe_fdwalk (set_cloexec, GINT_TO_POINTER (3));
         }
     }
   else
