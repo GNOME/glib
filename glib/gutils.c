@@ -301,8 +301,8 @@ g_find_program_in_path (const gchar *program)
  * the program is found, the return value contains the full name
  * including the type suffix.
  *
- * Returns: (type filename): a newly-allocated string with the absolute path,
- *     or %NULL
+ * Returns: (type filename) (transfer full) (nullable): a newly-allocated
+ *   string with the absolute path, or %NULL
  **/
 #ifdef G_OS_WIN32
 static gchar *
@@ -735,7 +735,7 @@ g_get_user_database_entry (void)
  * encoding, or something else, and there is no guarantee that it is even
  * consistent on a machine. On Windows, it is always UTF-8.
  *
- * Returns: (type filename): the user name of the current user.
+ * Returns: (type filename) (transfer none): the user name of the current user.
  */
 const gchar *
 g_get_user_name (void)
@@ -756,7 +756,7 @@ g_get_user_name (void)
  * real user name cannot be determined, the string "Unknown" is 
  * returned.
  *
- * Returns: (type filename): the user's real name.
+ * Returns: (type filename) (transfer none): the user's real name.
  */
 const gchar *
 g_get_real_name (void)
@@ -865,7 +865,7 @@ g_build_home_dir (void)
  * should either directly check the `HOME` environment variable yourself
  * or unset it before calling any functions in GLib.
  *
- * Returns: (type filename): the current user's home directory
+ * Returns: (type filename) (transfer none): the current user's home directory
  */
 const gchar *
 g_get_home_dir (void)
@@ -901,7 +901,7 @@ g_get_home_dir (void)
  * it is always UTF-8. The return value is never %NULL or the empty
  * string.
  *
- * Returns: (type filename): the directory to use for temporary files.
+ * Returns: (type filename) (transfer none): the directory to use for temporary files.
  */
 const gchar *
 g_get_tmp_dir (void)
@@ -966,7 +966,7 @@ g_get_tmp_dir (void)
  *
  * The encoding of the returned string is UTF-8.
  *
- * Returns: the host name of the machine.
+ * Returns: (transfer none): the host name of the machine.
  *
  * Since: 2.8
  */
@@ -1046,9 +1046,9 @@ static gchar *g_prgname = NULL;
  * #GtkApplication::startup handler. The program name is found by
  * taking the last component of @argv[0].
  *
- * Returns: (nullable): the name of the program, or %NULL if it has not been
- *     set yet. The returned string belongs
- *     to GLib and must not be modified or freed.
+ * Returns: (nullable) (transfer none): the name of the program,
+ *   or %NULL if it has not been set yet. The returned string belongs
+ *   to GLib and must not be modified or freed.
  */
 const gchar*
 g_get_prgname (void)
@@ -1100,7 +1100,8 @@ static gchar *g_application_name = NULL;
  * g_get_prgname() (which may be %NULL if g_set_prgname() has also not
  * been called).
  * 
- * Returns: human-readable application name. may return %NULL
+ * Returns: (transfer none) (nullable): human-readable application
+ *   name. May return %NULL
  *
  * Since: 2.2
  **/
@@ -1300,8 +1301,9 @@ g_build_user_data_dir (void)
  * Note that in this case on Windows it will be the same
  * as what g_get_user_config_dir() returns.
  *
- * Returns: (type filename): a string owned by GLib that must not be modified
- *               or freed.
+ * Returns: (type filename) (transfer none): a string owned by GLib that must
+ *   not be modified or freed.
+ *
  * Since: 2.6
  **/
 const gchar *
@@ -1360,8 +1362,8 @@ g_build_user_config_dir (void)
  * Note that in this case on Windows it will be  the same
  * as what g_get_user_data_dir() returns.
  *
- * Returns: (type filename): a string owned by GLib that must not be modified
- *               or freed.
+ * Returns: (type filename) (transfer none): a string owned by GLib that
+ *   must not be modified or freed.
  * Since: 2.6
  **/
 const gchar *
@@ -1419,8 +1421,8 @@ g_build_user_cache_dir (void)
  * `C:\Documents and Settings\username\Local Settings\Temporary Internet Files`.
  * See the [documentation for `CSIDL_INTERNET_CACHE`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb762494%28v=vs.85%29.aspx#csidl_internet_cache).
  *
- * Returns: (type filename): a string owned by GLib that must not be modified
- *               or freed.
+ * Returns: (type filename) (transfer none): a string owned by GLib that
+ *   must not be modified or freed.
  * Since: 2.6
  **/
 const gchar *
@@ -2258,8 +2260,8 @@ g_nullify_pointer (gpointer *nullify_location)
  * See g_format_size_full() for more options about how the size might be
  * formatted.
  *
- * Returns: a newly-allocated formatted string containing a human readable
- *     file size
+ * Returns: (transfer full): a newly-allocated formatted string containing
+ *   a human readable file size
  *
  * Since: 2.30
  */
@@ -2297,8 +2299,8 @@ g_format_size (guint64 size)
  * This function is similar to g_format_size() but allows for flags
  * that modify the output. See #GFormatSizeFlags.
  *
- * Returns: a newly-allocated formatted string containing a human
- *     readable file size
+ * Returns: (transfer full): a newly-allocated formatted string
+ *   containing a human readable file size
  *
  * Since: 2.30
  */
@@ -2514,8 +2516,8 @@ g_format_size_full (guint64          size,
  *
  * This string should be freed with g_free() when not needed any longer.
  *
- * Returns: a newly-allocated formatted string containing a human
- *     readable file size
+ * Returns: (transfer full): a newly-allocated formatted string
+ *   containing a human readable file size
  *
  * Since: 2.16
  *
