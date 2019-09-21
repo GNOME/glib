@@ -512,7 +512,7 @@ test_threaded_singleton (void)
       /* We want to be the last ref, so let it finish setting up */
       for (j = 0; j < 100; j++)
         {
-          guint r = g_atomic_int_get (&G_OBJECT (c)->ref_count);
+          guint r = (guint) g_atomic_int_get (&G_OBJECT (c)->ref_count);
 
           if (r == 1)
             break;

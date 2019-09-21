@@ -1416,7 +1416,7 @@ void
 g_cond_wait (GCond  *cond,
              GMutex *mutex)
 {
-  guint sampled = g_atomic_int_get (&cond->i[0]);
+  guint sampled = (guint) g_atomic_int_get (&cond->i[0]);
 
   g_mutex_unlock (mutex);
   syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, NULL);
