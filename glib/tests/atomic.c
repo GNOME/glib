@@ -32,7 +32,7 @@ test_types (void)
   cspp = &csp;
 
   g_atomic_int_set (&u, 5);
-  u2 = g_atomic_int_get (&u);
+  u2 = (guint) g_atomic_int_get (&u);
   g_assert_cmpint (u2, ==, 5);
   res = g_atomic_int_compare_and_exchange (&u, 6, 7);
   g_assert (!res);
@@ -67,13 +67,13 @@ test_types (void)
   res = g_atomic_int_dec_and_test (&s);
   g_assert (!res);
   g_assert_cmpint (s, ==, 6);
-  s2 = g_atomic_int_and (&s, 5);
+  s2 = (gint) g_atomic_int_and (&s, 5);
   g_assert_cmpint (s2, ==, 6);
   g_assert_cmpint (s, ==, 4);
-  s2 = g_atomic_int_or (&s, 8);
+  s2 = (gint) g_atomic_int_or (&s, 8);
   g_assert_cmpint (s2, ==, 4);
   g_assert_cmpint (s, ==, 12);
-  s2 = g_atomic_int_xor (&s, 4);
+  s2 = (gint) g_atomic_int_xor (&s, 4);
   g_assert_cmpint (s2, ==, 12);
   g_assert_cmpint (s, ==, 8);
 
@@ -98,7 +98,7 @@ test_types (void)
   res = g_atomic_pointer_compare_and_exchange (&gs, 0, 0);
   g_assert (res);
   g_assert (gs == 0);
-  gs2 = g_atomic_pointer_add (&gs, 5);
+  gs2 = (gsize) g_atomic_pointer_add (&gs, 5);
   g_assert (gs2 == 0);
   g_assert (gs == 5);
   gs2 = g_atomic_pointer_and (&gs, 6);
@@ -133,7 +133,7 @@ test_types (void)
 #undef g_atomic_pointer_xor
 
   g_atomic_int_set ((gint*)&u, 5);
-  u2 = g_atomic_int_get ((gint*)&u);
+  u2 = (guint) g_atomic_int_get ((gint*)&u);
   g_assert_cmpint (u2, ==, 5);
   res = g_atomic_int_compare_and_exchange ((gint*)&u, 6, 7);
   g_assert (!res);
@@ -167,13 +167,13 @@ test_types (void)
   res = g_atomic_int_dec_and_test (&s);
   g_assert (!res);
   g_assert_cmpint (s, ==, 6);
-  s2 = g_atomic_int_and ((guint*)&s, 5);
+  s2 = (gint) g_atomic_int_and ((guint*)&s, 5);
   g_assert_cmpint (s2, ==, 6);
   g_assert_cmpint (s, ==, 4);
-  s2 = g_atomic_int_or ((guint*)&s, 8);
+  s2 = (gint) g_atomic_int_or ((guint*)&s, 8);
   g_assert_cmpint (s2, ==, 4);
   g_assert_cmpint (s, ==, 12);
-  s2 = g_atomic_int_xor ((guint*)&s, 4);
+  s2 = (gint) g_atomic_int_xor ((guint*)&s, 4);
   g_assert_cmpint (s2, ==, 12);
   g_assert_cmpint (s, ==, 8);
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -203,7 +203,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   res = g_atomic_pointer_compare_and_exchange (&gs, 0, 0);
   g_assert (res);
   g_assert (gs == 0);
-  gs2 = g_atomic_pointer_add (&gs, 5);
+  gs2 = (gsize) g_atomic_pointer_add (&gs, 5);
   g_assert (gs2 == 0);
   g_assert (gs == 5);
   gs2 = g_atomic_pointer_and (&gs, 6);
