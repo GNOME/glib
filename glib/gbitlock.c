@@ -224,7 +224,7 @@ g_bit_lock (volatile gint *address,
     guint mask = 1u << lock_bit;
     guint v;
 
-    v = g_atomic_int_get (address);
+    v = (guint) g_atomic_int_get (address);
     if (v & mask)
       {
         guint class = ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
