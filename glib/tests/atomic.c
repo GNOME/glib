@@ -35,14 +35,14 @@ test_types (void)
   u2 = (guint) g_atomic_int_get (&u);
   g_assert_cmpint (u2, ==, 5);
   res = g_atomic_int_compare_and_exchange (&u, 6, 7);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_cmpint (u, ==, 5);
   g_atomic_int_add (&u, 1);
   g_assert_cmpint (u, ==, 6);
   g_atomic_int_inc (&u);
   g_assert_cmpint (u, ==, 7);
   res = g_atomic_int_dec_and_test (&u);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_cmpint (u, ==, 6);
   u2 = g_atomic_int_and (&u, 5);
   g_assert_cmpint (u2, ==, 6);
@@ -58,14 +58,14 @@ test_types (void)
   s2 = g_atomic_int_get (&s);
   g_assert_cmpint (s2, ==, 5);
   res = g_atomic_int_compare_and_exchange (&s, 6, 7);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_cmpint (s, ==, 5);
   g_atomic_int_add (&s, 1);
   g_assert_cmpint (s, ==, 6);
   g_atomic_int_inc (&s);
   g_assert_cmpint (s, ==, 7);
   res = g_atomic_int_dec_and_test (&s);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_cmpint (s, ==, 6);
   s2 = (gint) g_atomic_int_and (&s, 5);
   g_assert_cmpint (s2, ==, 6);
@@ -79,40 +79,40 @@ test_types (void)
 
   g_atomic_pointer_set (&vp, 0);
   vp2 = g_atomic_pointer_get (&vp);
-  g_assert (vp2 == 0);
+  g_assert_true (vp2 == 0);
   res = g_atomic_pointer_compare_and_exchange (&vp, 0, 0);
-  g_assert (res);
-  g_assert (vp == 0);
+  g_assert_true (res);
+  g_assert_true (vp == 0);
 
   g_atomic_pointer_set (&ip, 0);
   ip2 = g_atomic_pointer_get (&ip);
-  g_assert (ip2 == 0);
+  g_assert_true (ip2 == 0);
   res = g_atomic_pointer_compare_and_exchange (&ip, 0, 0);
-  g_assert (res);
-  g_assert (ip == 0);
+  g_assert_true (res);
+  g_assert_true (ip == 0);
 
   g_atomic_pointer_set (&gs, 0);
   vp2 = g_atomic_pointer_get (&gs);
   gs2 = (gsize) vp2;
-  g_assert (gs2 == 0);
+  g_assert_cmpuint (gs2, ==, 0);
   res = g_atomic_pointer_compare_and_exchange (&gs, 0, 0);
-  g_assert (res);
-  g_assert (gs == 0);
+  g_assert_true (res);
+  g_assert_cmpuint (gs, ==, 0);
   gs2 = (gsize) g_atomic_pointer_add (&gs, 5);
-  g_assert (gs2 == 0);
-  g_assert (gs == 5);
+  g_assert_cmpuint (gs2, ==, 0);
+  g_assert_cmpuint (gs, ==, 5);
   gs2 = g_atomic_pointer_and (&gs, 6);
-  g_assert (gs2 == 5);
-  g_assert (gs == 4);
+  g_assert_cmpuint (gs2, ==, 5);
+  g_assert_cmpuint (gs, ==, 4);
   gs2 = g_atomic_pointer_or (&gs, 8);
-  g_assert (gs2 == 4);
-  g_assert (gs == 12);
+  g_assert_cmpuint (gs2, ==, 4);
+  g_assert_cmpuint (gs, ==, 12);
   gs2 = g_atomic_pointer_xor (&gs, 4);
-  g_assert (gs2 == 12);
-  g_assert (gs == 8);
+  g_assert_cmpuint (gs2, ==, 12);
+  g_assert_cmpuint (gs, ==, 8);
 
-  g_assert (g_atomic_int_get (csp) == s);
-  g_assert (g_atomic_pointer_get (cspp) == csp);
+  g_assert_cmpint (g_atomic_int_get (csp), ==, s);
+  g_assert_true (g_atomic_pointer_get (cspp) == csp);
 
   /* repeat, without the macros */
 #undef g_atomic_int_set
@@ -136,14 +136,14 @@ test_types (void)
   u2 = (guint) g_atomic_int_get ((gint*)&u);
   g_assert_cmpint (u2, ==, 5);
   res = g_atomic_int_compare_and_exchange ((gint*)&u, 6, 7);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_cmpint (u, ==, 5);
   g_atomic_int_add ((gint*)&u, 1);
   g_assert_cmpint (u, ==, 6);
   g_atomic_int_inc ((gint*)&u);
   g_assert_cmpint (u, ==, 7);
   res = g_atomic_int_dec_and_test ((gint*)&u);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_cmpint (u, ==, 6);
   u2 = g_atomic_int_and (&u, 5);
   g_assert_cmpint (u2, ==, 6);
@@ -158,14 +158,14 @@ test_types (void)
   s2 = g_atomic_int_get (&s);
   g_assert_cmpint (s2, ==, 5);
   res = g_atomic_int_compare_and_exchange (&s, 6, 7);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_cmpint (s, ==, 5);
   g_atomic_int_add (&s, 1);
   g_assert_cmpint (s, ==, 6);
   g_atomic_int_inc (&s);
   g_assert_cmpint (s, ==, 7);
   res = g_atomic_int_dec_and_test (&s);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_cmpint (s, ==, 6);
   s2 = (gint) g_atomic_int_and ((guint*)&s, 5);
   g_assert_cmpint (s2, ==, 6);
@@ -184,40 +184,40 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
   g_atomic_pointer_set (&vp, 0);
   vp2 = g_atomic_pointer_get (&vp);
-  g_assert (vp2 == 0);
+  g_assert_true (vp2 == 0);
   res = g_atomic_pointer_compare_and_exchange (&vp, 0, 0);
-  g_assert (res);
-  g_assert (vp == 0);
+  g_assert_true (res);
+  g_assert_true (vp == 0);
 
   g_atomic_pointer_set (&ip, 0);
   ip2 = g_atomic_pointer_get (&ip);
-  g_assert (ip2 == 0);
+  g_assert_true (ip2 == 0);
   res = g_atomic_pointer_compare_and_exchange (&ip, 0, 0);
-  g_assert (res);
-  g_assert (ip == 0);
+  g_assert_true (res);
+  g_assert_true (ip == 0);
 
   g_atomic_pointer_set (&gs, 0);
   vp = g_atomic_pointer_get (&gs);
   gs2 = (gsize) vp;
-  g_assert (gs2 == 0);
+  g_assert_cmpuint (gs2, ==, 0);
   res = g_atomic_pointer_compare_and_exchange (&gs, 0, 0);
-  g_assert (res);
-  g_assert (gs == 0);
+  g_assert_true (res);
+  g_assert_cmpuint (gs, ==, 0);
   gs2 = (gsize) g_atomic_pointer_add (&gs, 5);
-  g_assert (gs2 == 0);
-  g_assert (gs == 5);
+  g_assert_cmpuint (gs2, ==, 0);
+  g_assert_cmpuint (gs, ==, 5);
   gs2 = g_atomic_pointer_and (&gs, 6);
-  g_assert (gs2 == 5);
-  g_assert (gs == 4);
+  g_assert_cmpuint (gs2, ==, 5);
+  g_assert_cmpuint (gs, ==, 4);
   gs2 = g_atomic_pointer_or (&gs, 8);
-  g_assert (gs2 == 4);
-  g_assert (gs == 12);
+  g_assert_cmpuint (gs2, ==, 4);
+  g_assert_cmpuint (gs, ==, 12);
   gs2 = g_atomic_pointer_xor (&gs, 4);
-  g_assert (gs2 == 12);
-  g_assert (gs == 8);
+  g_assert_cmpuint (gs2, ==, 12);
+  g_assert_cmpuint (gs, ==, 8);
 
-  g_assert (g_atomic_int_get (csp) == s);
-  g_assert (g_atomic_pointer_get (cspp) == csp);
+  g_assert_cmpint (g_atomic_int_get (csp), ==, s);
+  g_assert_true (g_atomic_pointer_get (cspp) == csp);
 }
 
 #define THREADS 10
