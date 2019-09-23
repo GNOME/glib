@@ -603,7 +603,7 @@ g_bus_watch_name (GBusType                  bus_type,
 
   client = g_new0 (Client, 1);
   client->ref_count = 1;
-  client->id = g_atomic_int_add (&next_global_id, 1); /* TODO: uh oh, handle overflow */
+  client->id = (guint) g_atomic_int_add (&next_global_id, 1); /* TODO: uh oh, handle overflow */
   client->name = g_strdup (name);
   client->flags = flags;
   client->name_appeared_handler = name_appeared_handler;
@@ -665,7 +665,7 @@ guint g_bus_watch_name_on_connection (GDBusConnection          *connection,
 
   client = g_new0 (Client, 1);
   client->ref_count = 1;
-  client->id = g_atomic_int_add (&next_global_id, 1); /* TODO: uh oh, handle overflow */
+  client->id = (guint) g_atomic_int_add (&next_global_id, 1); /* TODO: uh oh, handle overflow */
   client->name = g_strdup (name);
   client->flags = flags;
   client->name_appeared_handler = name_appeared_handler;
