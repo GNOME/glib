@@ -120,32 +120,68 @@ G_END_DECLS
 
 #else /* defined(__ATOMIC_SEQ_CST) */
 
+/* We want to achieve __ATOMIC_SEQ_CST semantics here. See
+ * https://en.cppreference.com/w/c/atomic/memory_order#Constants. For load
+ * operations, that means performing an *acquire*:
+ * > A load operation with this memory order performs the acquire operation on
+ * > the affected memory location: no reads or writes in the current thread can
+ * > be reordered before this load. All writes in other threads that release
+ * > the same atomic variable are visible in the current thread.
+ *
+ * “no reads or writes in the current thread can be reordered before this load”
+ * is implemented using a compiler barrier (a no-op `__asm__` section) to
+ * prevent instruction reordering. Writes in other threads are synchronised
+ * using `__sync_synchronize()`. It’s unclear from the GCC documentation whether
+ * `__sync_synchronize()` acts as a compiler barrier, hence our explicit use of
+ * one.
+ *
+ * For store operations, `__ATOMIC_SEQ_CST` means performing a *release*:
+ * > A store operation with this memory order performs the release operation:
+ * > no reads or writes in the current thread can be reordered after this store.
+ * > All writes in the current thread are visible in other threads that acquire
+ * > the same atomic variable (see Release-Acquire ordering below) and writes
+ * > that carry a dependency into the atomic variable become visible in other
+ * > threads that consume the same atomic (see Release-Consume ordering below).
+ *
+ * “no reads or writes in the current thread can be reordered after this store”
+ * is implemented using a compiler barrier to prevent instruction reordering.
+ * “All writes in the current thread are visible in other threads” is implemented
+ * using `__sync_synchronize()`; similarly for “writes that carry a dependency”.
+ */
 #define g_atomic_int_get(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
+    gint gaig_result;                                                        \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ *(atomic) : 1);                                  \
+    gaig_result = (gint) *(atomic);                                          \
     __sync_synchronize ();                                                   \
-    (gint) *(atomic);                                                        \
+    __asm__ __volatile__ ("" : : : "memory");                                \
+    gaig_result;                                                             \
   }))
 #define g_atomic_int_set(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (newval) : 1);                                   \
-    *(atomic) = (newval);                                                    \
     __sync_synchronize ();                                                   \
+    __asm__ __volatile__ ("" : : : "memory");                                \
+    *(atomic) = (newval);                                                    \
   }))
 #define g_atomic_pointer_get(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
+    gpointer gapg_result;                                                    \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
+    gapg_result = (gpointer) *(atomic);                                      \
     __sync_synchronize ();                                                   \
-    (gpointer) *(atomic);                                                    \
+    __asm__ __volatile__ ("" : : : "memory");                                \
+    gapg_result;                                                             \
   }))
 #define g_atomic_pointer_set(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : NULL);                                \
-    *(atomic) = (__typeof__ (*(atomic))) (gsize) (newval);                   \
     __sync_synchronize ();                                                   \
+    __asm__ __volatile__ ("" : : : "memory");                                \
+    *(atomic) = (__typeof__ (*(atomic))) (gsize) (newval);                   \
   }))
 
 #endif /* !defined(__ATOMIC_SEQ_CST) */
