@@ -1241,6 +1241,8 @@ g_date_time_new_week (GTimeZone *tz, gint year, gint week, gint week_day, gint h
     return NULL;
 
   dt = g_date_time_new (tz, year, 1, 4, 0, 0, 0);
+  if (dt == NULL)
+    return NULL;
   g_date_time_get_week_number (dt, NULL, &jan4_week_day, NULL);
   g_date_time_unref (dt);
 
