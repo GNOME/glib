@@ -949,6 +949,12 @@ g_variant_get_data_as_bytes (GVariant *value)
   data = value->contents.serialised.data;
   size = value->size;
 
+  if (data == NULL)
+    {
+      g_assert (size == 0);
+      data = bytes_data;
+    }
+
   if (data == bytes_data && size == bytes_size)
     return g_bytes_ref (value->contents.serialised.bytes);
   else
