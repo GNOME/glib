@@ -868,6 +868,7 @@ test_GDateTime_new_from_iso8601_2 (void)
     */
     { FALSE, "1719W462 407777-07", 0, 0, 0, 0, 0, 0, 0, 0 },
     { FALSE, "4011090 260528Z", 0, 0, 0, 0, 0, 0, 0, 0 },
+    { FALSE, "0000W011 228214-22", 0, 0, 0, 0, 0, 0, 0, 0 },
   };
   GTimeZone *tz = NULL;
   GDateTime *dt = NULL;
