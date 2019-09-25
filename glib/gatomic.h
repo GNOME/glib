@@ -178,10 +178,12 @@ G_END_DECLS
   }))
 #define g_atomic_pointer_and(atomic, val) \
   (G_GNUC_EXTENSION ({                                                       \
+    volatile guintptr *gapa_atomic = (volatile guintptr *) (atomic);         \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
+    G_STATIC_ASSERT (sizeof *(atomic) == sizeof (guintptr));                 \
     (void) (0 ? (gpointer) *(atomic) : NULL);                                \
     (void) (0 ? (val) ^ (val) : 1);                                          \
-    (gsize) __atomic_fetch_and ((atomic), (val), __ATOMIC_SEQ_CST);          \
+    (gsize) __atomic_fetch_and (gapa_atomic, (val), __ATOMIC_SEQ_CST);       \
   }))
 #define g_atomic_pointer_or(atomic, val) \
   (G_GNUC_EXTENSION ({                                                       \
