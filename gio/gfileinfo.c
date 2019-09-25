@@ -2163,8 +2163,9 @@ g_file_info_set_size (GFileInfo *info,
  * @info: a #GFileInfo.
  * @mtime: a #GTimeVal.
  *
- * Sets the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute in the file
- * info to the given time value.
+ * Sets the %G_FILE_ATTRIBUTE_TIME_MODIFIED and
+ * %G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the
+ * given time value.
  *
  * Deprecated: 2.62: Use g_file_info_set_modification_date_time() instead, as
  *    #GTimeVal is deprecated due to the year 2038 problem.
@@ -2200,8 +2201,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * @info: a #GFileInfo.
  * @mtime: (not nullable): a #GDateTime.
  *
- * Sets the %G_FILE_ATTRIBUTE_TIME_MODIFIED attribute in the file
- * info to the given date/time value.
+ * Sets the %G_FILE_ATTRIBUTE_TIME_MODIFIED and
+ * %G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC attributes in the file info to the
+ * given date/time value.
  *
  * Since: 2.62
  */
