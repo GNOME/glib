@@ -420,7 +420,7 @@ static const guint16 days_in_year[2][14] =
 gboolean     
 g_date_valid_month (GDateMonth m)
 { 
-  return ( (m > G_DATE_BAD_MONTH) && (m < 13) );
+  return (((gint) m > G_DATE_BAD_MONTH) && ((gint) m < 13));
 }
 
 /**
@@ -466,7 +466,7 @@ g_date_valid_day (GDateDay d)
 gboolean     
 g_date_valid_weekday (GDateWeekday w)
 {
-  return ( (w > G_DATE_BAD_WEEKDAY) && (w < 8) );
+  return (((gint) w > G_DATE_BAD_WEEKDAY) && ((gint) w < 8));
 }
 
 /**
