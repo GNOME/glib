@@ -1297,7 +1297,7 @@ sane_dup2 (gint fd1, gint fd2)
 
   do
     ret = dup2 (fd1, fd2);
-  while (ret < 0 && errno == EINTR);
+  while (ret < 0 && (errno == EINTR || errno == EBUSY));
 
   return ret;
 }
