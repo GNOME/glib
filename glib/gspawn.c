@@ -1131,10 +1131,9 @@ sane_close (gint fd)
 {
   gint ret;
 
- retry:
-  ret = close (fd);
-  if (ret < 0 && errno == EINTR)
-    goto retry;
+  do
+    ret = close (fd);
+  while (ret < 0 && errno == EINTR);
 
   return ret;
 }
@@ -1296,10 +1295,9 @@ sane_dup2 (gint fd1, gint fd2)
 {
   gint ret;
 
- retry:
-  ret = dup2 (fd1, fd2);
-  if (ret < 0 && errno == EINTR)
-    goto retry;
+  do
+    ret = dup2 (fd1, fd2);
+  while (ret < 0 && errno == EINTR);
 
   return ret;
 }
@@ -1309,10 +1307,9 @@ sane_open (const char *path, gint mode)
 {
   gint ret;
 
- retry:
-  ret = open (path, mode);
-  if (ret < 0 && errno == EINTR)
-    goto retry;
+  do
+    ret = open (path, mode);
+  while (ret < 0 && errno == EINTR);
 
   return ret;
 }
