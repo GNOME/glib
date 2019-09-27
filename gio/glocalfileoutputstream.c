@@ -979,7 +979,7 @@ handle_overwrite_open (const char    *filename,
 	    fchown (tmpfd, original_stat.st_uid, original_stat.st_gid) == -1 ||
 #endif
 #ifdef HAVE_FCHMOD
-	    fchmod (tmpfd, original_stat.st_mode) == -1 ||
+	    fchmod (tmpfd, original_stat.st_mode & ~S_IFMT) == -1 ||
 #endif
 	    0
 	    )
