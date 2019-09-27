@@ -3188,6 +3188,7 @@ file_copy_fallback (GFile                  *source,
   const char *target;
   char *attrs_to_read;
   gboolean do_set_attributes = FALSE;
+  GFileCreateFlags create_flags;
 
   /* need to know the file type */
   info = g_file_query_info (source,
@@ -3278,18 +3279,21 @@ file_copy_fallback (GFile                  *source,
    * If a future API like g_file_replace_with_info() is added, switch
    * this code to use that.
    */
+  create_flags = G_FILE_CREATE_PRIVATE;
+  if (flags & G_FILE_COPY_OVERWRITE)
+    create_flags |= G_FILE_CREATE_REPLACE_DESTINATION;
+
   if (G_IS_LOCAL_FILE (destination))
     {
       if (flags & G_FILE_COPY_OVERWRITE)
         out = (GOutputStream*)_g_local_file_output_stream_replace (_g_local_file_get_filename (G_LOCAL_FILE (destination)),
                                                                    FALSE, NULL,
                                                                    flags & G_FILE_COPY_BACKUP,
-                                                                   G_FILE_CREATE_REPLACE_DESTINATION |
-                                                                   G_FILE_CREATE_PRIVATE, info,
+                                                                   create_flags, info,
                                                                    cancellable, error);
       else
         out = (GOutputStream*)_g_local_file_output_stream_create (_g_local_file_get_filename (G_LOCAL_FILE (destination)),
-                                                                  FALSE, G_FILE_CREATE_PRIVATE, info,
+                                                                  FALSE, create_flags, info,
                                                                   cancellable, error);
     }
   else if (flags & G_FILE_COPY_OVERWRITE)
@@ -3297,13 +3301,12 @@ file_copy_fallback (GFile                  *source,
       out = (GOutputStream *)g_file_replace (destination,
                                              NULL,
                                              flags & G_FILE_COPY_BACKUP,
-                                             G_FILE_CREATE_REPLACE_DESTINATION |
-                                             G_FILE_CREATE_PRIVATE,
+                                             create_flags,
                                              cancellable, error);
     }
   else
     {
-      out = (GOutputStream *)g_file_create (destination, G_FILE_CREATE_PRIVATE, cancellable, error);
+      out = (GOutputStream *)g_file_create (destination, create_flags, cancellable, error);
     }
 
   if (!out)
