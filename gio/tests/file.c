@@ -846,10 +846,10 @@ test_async_delete (void)
   g_object_unref (file);
 }
 
-#ifdef G_OS_UNIX
 static void
 test_copy_preserve_mode (void)
 {
+#ifdef G_OS_UNIX
   GFile *tmpfile;
   GFile *dest_tmpfile;
   GFileInfo *dest_info;
@@ -896,8 +896,10 @@ test_copy_preserve_mode (void)
   g_clear_object (&tmpfile);
   g_clear_object (&dest_tmpfile);
   g_clear_object (&dest_info);
-}
+#else  /* if !G_OS_UNIX */
+  g_test_skip ("File permissions tests can only be run on Unix")
 #endif
+}
 
 static gchar *
 splice_to_string (GInputStream   *stream,
@@ -1755,9 +1757,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/replace-load", test_replace_load);
   g_test_add_func ("/file/replace-cancel", test_replace_cancel);
   g_test_add_func ("/file/async-delete", test_async_delete);
-#ifdef G_OS_UNIX
   g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);
-#endif
   g_test_add_func ("/file/measure", test_measure);
   g_test_add_func ("/file/measure-async", test_measure_async);
   g_test_add_func ("/file/load-bytes", test_load_bytes);
