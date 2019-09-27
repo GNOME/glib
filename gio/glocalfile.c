@@ -2330,13 +2330,13 @@ g_local_file_make_directory (GFile         *file,
   return TRUE;
 }
 
+#ifdef HAVE_SYMLINK
 static gboolean
 g_local_file_make_symbolic_link (GFile         *file,
 				 const char    *symlink_value,
 				 GCancellable  *cancellable,
 				 GError       **error)
 {
-#ifdef HAVE_SYMLINK
   GLocalFile *local = G_LOCAL_FILE (file);
   
   if (symlink (symlink_value, local->filename) == -1)
@@ -2359,12 +2359,8 @@ g_local_file_make_symbolic_link (GFile         *file,
       return FALSE;
     }
   return TRUE;
-#else
-  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, _("Symbolic links not supported"));
-  return FALSE;
-#endif
 }
-
+#endif
 
 static gboolean
 g_local_file_copy (GFile                  *source,
@@ -2979,7 +2975,9 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->delete_file = g_local_file_delete;
   iface->trash = g_local_file_trash;
   iface->make_directory = g_local_file_make_directory;
+#ifdef HAVE_SYMLINK
   iface->make_symbolic_link = g_local_file_make_symbolic_link;
+#endif
   iface->copy = g_local_file_copy;
   iface->move = g_local_file_move;
   iface->monitor_dir = g_local_file_monitor_dir;
