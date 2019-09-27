@@ -984,7 +984,7 @@ set_info_from_stat (GFileInfo             *info,
   /* Mostly pointless on Windows.
    * Still, it allows for S_ISREG/S_ISDIR and IWRITE (read-only) checks.
    */
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_MODE, statbuf->st_mode);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_MODE, statbuf->st_mode & ~S_IFMT);
 #if defined (HAVE_STRUCT_STAT_ST_BLKSIZE)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCK_SIZE, statbuf->st_blksize);
 #endif
