@@ -3278,8 +3278,22 @@ file_copy_fallback (GFile                  *source,
    *
    * If a future API like g_file_replace_with_info() is added, switch
    * this code to use that.
+   *
+   * Use %G_FILE_CREATE_PRIVATE unless
+   *  - we were told to create the file with default permissions (i.e. the
+   *    process’ umask),
+   *  - or if the source file is on a file system which doesn’t support
+   *    `unix::mode` (in which case it probably also makes sense to create the
+   *    destination with default permissions because the source cannot be
+   *    private),
+   *  - or if the destination file is a `GLocalFile`, in which case we can
+   *    directly open() it with the permissions from the source file.
    */
-  create_flags = G_FILE_CREATE_PRIVATE;
+  create_flags = G_FILE_CREATE_NONE;
+  if (!(flags & G_FILE_COPY_TARGET_DEFAULT_PERMS) &&
+      g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_UNIX_MODE) &&
+      !G_IS_LOCAL_FILE (destination))
+    create_flags |= G_FILE_CREATE_PRIVATE;
   if (flags & G_FILE_COPY_OVERWRITE)
     create_flags |= G_FILE_CREATE_REPLACE_DESTINATION;
 
@@ -3289,11 +3303,13 @@ file_copy_fallback (GFile                  *source,
         out = (GOutputStream*)_g_local_file_output_stream_replace (_g_local_file_get_filename (G_LOCAL_FILE (destination)),
                                                                    FALSE, NULL,
                                                                    flags & G_FILE_COPY_BACKUP,
-                                                                   create_flags, info,
+                                                                   create_flags,
+                                                                   (flags & G_FILE_COPY_TARGET_DEFAULT_PERMS) ? NULL : info,
                                                                    cancellable, error);
       else
         out = (GOutputStream*)_g_local_file_output_stream_create (_g_local_file_get_filename (G_LOCAL_FILE (destination)),
-                                                                  FALSE, create_flags, info,
+                                                                  FALSE, create_flags,
+                                                                  (flags & G_FILE_COPY_TARGET_DEFAULT_PERMS) ? NULL : info,
                                                                   cancellable, error);
     }
   else if (flags & G_FILE_COPY_OVERWRITE)
