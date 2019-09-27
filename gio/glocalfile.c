@@ -2363,20 +2363,6 @@ g_local_file_make_symbolic_link (GFile         *file,
 #endif
 
 static gboolean
-g_local_file_copy (GFile                  *source,
-		   GFile                  *destination,
-		   GFileCopyFlags          flags,
-		   GCancellable           *cancellable,
-		   GFileProgressCallback   progress_callback,
-		   gpointer                progress_callback_data,
-		   GError                **error)
-{
-  /* Fall back to default copy */
-  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "Copy not supported");
-  return FALSE;
-}
-
-static gboolean
 g_local_file_move (GFile                  *source,
 		   GFile                  *destination,
 		   GFileCopyFlags          flags,
@@ -2978,7 +2964,6 @@ g_local_file_file_iface_init (GFileIface *iface)
 #ifdef HAVE_SYMLINK
   iface->make_symbolic_link = g_local_file_make_symbolic_link;
 #endif
-  iface->copy = g_local_file_copy;
   iface->move = g_local_file_move;
   iface->monitor_dir = g_local_file_monitor_dir;
   iface->monitor_file = g_local_file_monitor_file;
