@@ -29,7 +29,7 @@
 
       On FreeBSD:
       <literallayout>
-        <userinput>env CFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -Wl,--disable-new-dtags" meson -Dxattr=false -Dsystemtap=true -Dinstalled_tests=true -Diconv=external -Db_lundef=false _build</userinput>
+        <userinput>env CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib -Wl,--disable-new-dtags" meson -Dxattr=false -Dinstalled_tests=true -Diconv=external -Db_lundef=false _build</userinput>
         <userinput>ninja -C _build</userinput>
       </literallayout>
     </para>
@@ -127,11 +127,12 @@
       </listitem>
       <listitem>
         <para>
-          Python 3.4 or newer. System must complain <ulink
+          Python 3.5 or newer is required. Your system Python must
+          conform to <ulink
           url="https://www.python.org/dev/peps/pep-0394/">PEP 394
           </ulink>
-          For FreeBSD <function>lang/python3</function> port must be
-          installed.
+          For FreeBSD, this means that the
+          <function>lang/python3</function> port must be installed.
         </para>
       </listitem>
       <listitem>
