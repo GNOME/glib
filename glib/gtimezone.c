@@ -220,9 +220,6 @@ g_time_zone_unref (GTimeZone *tz)
 {
   int ref_count;
 
-  if (tz == NULL)
-    return;
-
 again:
   ref_count = g_atomic_int_get (&tz->ref_count);
 
@@ -281,8 +278,6 @@ again:
 GTimeZone *
 g_time_zone_ref (GTimeZone *tz)
 {
-  if (tz == NULL)
-    return NULL;
   g_assert (tz->ref_count > 0);
 
   g_atomic_int_inc (&tz->ref_count);
@@ -1710,9 +1705,8 @@ g_time_zone_new_local (void)
 
   if (g_strcmp0 (tz_local_name, tzenv) != 0)
     { /* Time Zone changed, flush it. */
-      g_time_zone_unref (tz_local);
-      tz_local = NULL;
-      g_free (tz_local_name);
+      g_clear_pointer (&tz_local, g_time_zone_unref);
+      g_clear_pointer (&tz_local_name, g_free);
       tz_local_name = g_strdup (tzenv);
     }
   if (tz_local == NULL)
