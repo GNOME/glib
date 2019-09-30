@@ -439,9 +439,6 @@ static void block_source (GSource *source);
 
 static GMainContext *glib_worker_context;
 
-G_LOCK_DEFINE_STATIC (main_loop);
-static GMainContext *default_main_context;
-
 #ifndef G_OS_WIN32
 
 
@@ -667,36 +664,46 @@ g_main_context_new (void)
 
 /**
  * g_main_context_default:
- * 
+ *
  * Returns the global default main context. This is the main context
  * used for main loop functions when a main loop is not explicitly
  * specified, and corresponds to the "main" main loop. See also
  * g_main_context_get_thread_default().
- * 
+ *
  * Returns: (transfer none): the global default main context.
  **/
 GMainContext *
 g_main_context_default (void)
 {
-  /* Slow, but safe */
-  
-  G_LOCK (main_loop);
+  static GMainContext *volatile default_main_context;
+  static gsize initalized = 0;
+  GMainContext *context;
 
-  if (!default_main_context)
+  context = g_atomic_pointer_get (&default_main_context);
+  if (G_LIKELY (context))
+    goto done;
+
+  if (!g_once_init_enter (&initalized))
     {
-      default_main_context = g_main_context_new ();
-
-      TRACE (GLIB_MAIN_CONTEXT_DEFAULT (default_main_context));
-
-#ifdef G_MAIN_POLL_DEBUG
-      if (_g_main_poll_debug)
-	g_print ("default context=%p\n", default_main_context);
-#endif
+      context = g_atomic_pointer_get (&default_main_context);
+      goto done;
     }
 
-  G_UNLOCK (main_loop);
+  context = g_main_context_new ();
 
-  return default_main_context;
+  TRACE (GLIB_MAIN_CONTEXT_DEFAULT (default_main_context));
+
+#ifdef G_MAIN_POLL_DEBUG
+  if (_g_main_poll_debug)
+    g_print ("default context=%p\n", default_main_context);
+#endif
+
+  g_atomic_pointer_set (&default_main_context, context);
+
+  g_once_init_leave (&initalized, 1);
+
+done:
+  return context;
 }
 
 static void
