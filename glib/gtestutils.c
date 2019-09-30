@@ -661,9 +661,9 @@
 
 /**
  * g_assert_cmpmem:
- * @m1: pointer to a buffer
+ * @m1: (nullable): pointer to a buffer
  * @l1: length of @m1
- * @m2: pointer to another buffer
+ * @m2: (nullable): pointer to another buffer
  * @l2: length of @m2
  *
  * Debugging macro to compare memory regions. If the comparison fails,
@@ -674,6 +674,8 @@
  * the same as `g_assert_true (l1 == l2 && memcmp (m1, m2, l1) == 0)`.
  * The advantage of this macro is that it can produce a message that
  * includes the actual values of @l1 and @l2.
+ *
+ * @m1 may be %NULL if (and only if) @l1 is zero; similarly for @m2 and @l2.
  *
  * |[<!-- language="C" -->
  *   g_assert_cmpmem (buf->data, buf->len, expected, sizeof (expected));
