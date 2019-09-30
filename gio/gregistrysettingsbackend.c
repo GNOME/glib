@@ -98,7 +98,7 @@
 //#define TRACE
 
 /* GSettings' limit */
-#define MAX_KEY_NAME_LENGTH   32
+#define MAX_KEY_NAME_LENGTH   128
 
 /* Testing (on Windows XP SP3) shows that WaitForMultipleObjects fails with
  * "The parameter is incorrect" after 64 watches. We need one for the
