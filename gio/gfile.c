@@ -3188,6 +3188,10 @@ file_copy_fallback (GFile                  *source,
   const char *target;
   char *attrs_to_read;
   gboolean do_set_attributes = FALSE;
+  GFileInfo *fs_info = NULL;
+#ifdef HAVE_SPLICE
+  const gchar *fs_type;
+#endif
 
   /* need to know the file type */
   info = g_file_query_info (source,
@@ -3337,7 +3341,20 @@ file_copy_fallback (GFile                  *source,
 #endif
 
 #ifdef HAVE_SPLICE
-  if (G_IS_FILE_DESCRIPTOR_BASED (in) && G_IS_FILE_DESCRIPTOR_BASED (out))
+  fs_info = g_file_query_filesystem_info (source,
+                                          G_FILE_ATTRIBUTE_FILESYSTEM_TYPE,
+                                          cancellable,
+                                          error);
+  fs_type = g_file_info_get_attribute_string (fs_info,
+                                              G_FILE_ATTRIBUTE_FILESYSTEM_TYPE);
+
+  /* Prevent usage of splice() on CIFS as it causes hangs in some cases, see:
+   * https://bugzilla.kernel.org/show_bug.cgi?id=198349
+   */
+  if (g_strcmp0 (fs_type, "cifs") != 0 &&
+      g_strcmp0 (fs_type, "smb") != 0 &&
+      g_strcmp0 (fs_type, "smb2") != 0 &&
+      G_IS_FILE_DESCRIPTOR_BASED (in) && G_IS_FILE_DESCRIPTOR_BASED (out))
     {
       GError *splice_err = NULL;
 
@@ -3399,6 +3416,7 @@ file_copy_fallback (GFile                  *source,
     }
 
   g_clear_object (&info);
+  g_clear_object (&fs_info);
 
   return ret;
 }
