@@ -1822,7 +1822,7 @@ g_file_info_get_modification_date_time (GFileInfo *info)
   if (value_usec == NULL)
     return g_steal_pointer (&dt);
 
-  dt2 = g_date_time_add_seconds (dt, _g_file_attribute_value_get_uint32 (value_usec) / (gdouble) G_USEC_PER_SEC);
+  dt2 = g_date_time_add (dt, _g_file_attribute_value_get_uint32 (value_usec));
   g_date_time_unref (dt);
 
   return g_steal_pointer (&dt2);
