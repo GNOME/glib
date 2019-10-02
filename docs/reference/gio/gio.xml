@@ -226,6 +226,10 @@
                 <term><option>-P</option>, <option>--no-dereference</option></term>
                 <listitem><para>Never follow symbolic links.</para></listitem>
               </varlistentry>
+              <varlistentry>
+                <term><option>--default-permissions</option></term>
+                <listitem><para>Use the default permissions of the current process for the destination file, rather than copying the permissions of the source file.</para></listitem>
+              </varlistentry>
             </variablelist>
           </refsect3>
         </listitem>
