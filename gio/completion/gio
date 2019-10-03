@@ -43,7 +43,8 @@ __gio_location() {
     if [[ $cur =~ "/"$ ]]; then
         dir="$cur"
     elif [[ $cur =~ "/" ]]; then
-        dir="$(dirname "$cur")/"
+        # Subtract basename because dirname cmd doesn't work well with schemes
+        dir=${cur%$(basename "$cur")}
     fi
 
     # List daemon mounts, just if dir is not specified, or looks like scheme
