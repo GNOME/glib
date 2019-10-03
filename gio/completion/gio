@@ -47,17 +47,15 @@ __gio_location() {
         dir=${cur%$(basename "$cur")}
     fi
 
-    # List mounts and volumes, just if dir is not specified, or looks like scheme
-    local mounts=()
-    if [[ $dir == "" ]] || [[ $dir =~ ":"$ && ! $dir =~ "/" ]]; then
-        while IFS=$'\n' read mount; do
-            # Do not care about local mounts
-            [[ "$mount" =~ ^"file:" ]] && continue
+    # List volumes and mounts
+    local mounts=( )
+    while IFS=$'\n' read mount; do
+        # Do not care about local mounts
+        [[ "$mount" =~ ^"file:" ]] && continue
 
-            # Use only matching mounts
-            [[ "$mount" =~ ^"$cur" && "$mount" != "$cur" ]] && mounts+=("$mount")
-        done < <(gio mount -li | sed -n -r 's/^ *(default_location|activation_root)=(.*)$/\2/p' | sort -u)
-    fi
+        # Use only matching mounts
+        [[ "$mount" =~ ^"$cur" && "$mount" != "$cur" ]] && mounts+=("$mount")
+    done < <(gio mount -li | sed -n -r 's/^ *(default_location|activation_root)=(.*)$/\2/p' | sort -u)
 
     # Workaround to unescape dir name (e.g. "\ " -> " ")
     declare -a tmp="( ${dir} )"
