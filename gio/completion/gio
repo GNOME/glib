@@ -47,7 +47,7 @@ __gio_location() {
         dir=${cur%$(basename "$cur")}
     fi
 
-    # List daemon mounts, just if dir is not specified, or looks like scheme
+    # List mounts and volumes, just if dir is not specified, or looks like scheme
     local mounts=()
     if [[ $dir == "" ]] || [[ $dir =~ ":"$ && ! $dir =~ "/" ]]; then
         while IFS=$'\n' read mount; do
@@ -56,7 +56,7 @@ __gio_location() {
 
             # Use only matching mounts
             [[ "$mount" =~ ^"$cur" && "$mount" != "$cur" ]] && mounts+=("$mount")
-        done < <(gio mount -l | sed -n -r 's/^ *Mount\([0-9]+\): .* -> (.*)$/\1/p')
+        done < <(gio mount -li | sed -n -r 's/^ *(default_location|activation_root)=(.*)$/\2/p' | sort -u)
     fi
 
     # Workaround to unescape dir name (e.g. "\ " -> " ")
