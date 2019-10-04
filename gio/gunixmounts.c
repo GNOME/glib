@@ -165,7 +165,7 @@ static guint64 mount_poller_time = 0;
 #endif
 #elif defined (HAVE_SYS_MNTTAB_H)
 #include <sys/mnttab.h>
-#ifdef _sun
+#if defined(__sun) && !defined(mnt_opts)
 #define mnt_opts mnt_mntopts
 #endif
 #endif
