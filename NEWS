@@ -1,3 +1,40 @@
+Overview of changes in GLib 2.62.1
+==================================
+
+* Fix regression in g_file_copy() when passing
+  `G_FILE_COPY_TARGET_DEFAULT_PERMS` flag; the destination permissions would be
+  private rather than following the process’ umask (!1142)
+
+* Several `GDateTime` parsing fixes (!1127)
+
+* Always build the tests if installed-tests are enabled, so that the tests can
+  actually be installed (!1141)
+
+* Bugs fixed:
+ - #174 g_file_copy always preserves  permissions, even if G_FILE_COPY_ALL_METADATA flag is not set
+ - #1865 g_variant_get_data_as_bytes fails after serializing a variant
+ - #1875 Segfault and Overflow in __gio_xdg_cache_mime_type_subclass() with Wps-Office installed
+ - #1887 glib 2.62.0 breaks loading dylibs as modules
+ - #1888 2.62: docs build on Windows broken
+ - !1021 docs: Remove priv pointers from the tutorial example
+ - !1094 Backport to 2.62: gmodule: use dl implementation on macOS
+ - !1101 Backport !1092 “Fix doc build on Windows” to glib-2-62
+ - !1102 Backport !1080 “tests: Fix skipping mkdir-with-parents-permission test” to glib-2-62
+ - !1103 Backport !1085 “xdgmime: Prevent infinite loops from badly-formed MIME registrations” to glib-2-62
+ - !1127 Backport !1125 and !1115 GDateTime parsing fixes to glib-2-62
+ - !1128 Backport !1043 “gvariant: Handle empty serialisations in get_child_value()” to glib-2-62
+ - !1140 [2.62] g_file_info_get_modification_date_time: Calculate in integer domain
+ - !1141 [2.62] Always build tests if we enabled installed-tests
+ - !1142 Backport !1134 Fix for file copy permissions to glib-2-62
+
+* Translation updates:
+ - Danish
+ - Italian
+ - Panjabi
+ - Serbian
+ - Turkish
+
+
 Overview of changes in GLib 2.62.0
 ==================================
 
