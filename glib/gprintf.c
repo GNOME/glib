@@ -330,6 +330,8 @@ g_vasprintf (gchar      **string,
   len = vasprintf (string, format, args);
   if (len < 0)
     *string = NULL;
+  else if (*string == NULL)
+    abort();
 
 #else
 
