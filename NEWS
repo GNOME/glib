@@ -1,3 +1,77 @@
+Overview of changes in GLib 2.63.0
+==================================
+
+* Add g_fsync() API (#35)
+
+* Fix regression in g_file_copy() when passing
+  `G_FILE_COPY_TARGET_DEFAULT_PERMS` flag; the destination permissions would be
+  private rather than following the process’ umask (!1142)
+
+* Several `GDateTime` parsing fixes (!1127)
+
+* Always build the tests if installed-tests are enabled, so that the tests can
+  actually be installed (!1141)
+
+* Rework atomic function implementations to use memory barrier in the correct
+  place (when compiler intrinsics aren’t providing the atomics), and fix
+  signedness issues (#1449, #1565)
+
+* Use the OS’ `fdwalk()` function (if safe) to speed up `g_spawn_*()` on BSD (#1638)
+
+* Remove the macOS `dyld` `GModule` implementation in favour of `dl` instead (!1093)
+
+* Bump Python requirement to ≥ 3.5, which we implicitly relied on anyway through
+  our Meson dependency (!1132)
+
+* Bugs fixed:
+ - #35 add g_fsync to API
+ - #174 g_file_copy always preserves  permissions, even if G_FILE_COPY_ALL_METADATA flag is not set
+ - #259 docs: fix a misunderstanding in g_type_add_interface_*
+ - #767 g_signal_lookup fails if class is not referenced
+ - #1052 g_io_write_chars calls abort when given a null byte as input
+ - #1449 glib fallback atomic int/ptr get/set have memory barrier in wrong place
+ - #1565 Signedness of atomic operations
+ - #1638 g_spawn_*() is extremely slow under certain circumstances
+ - #1809 Provide API for working with PKCS11 backed certificates
+ - #1843 TSAN false positive with g_atomic_pointer_get/g_atomic_pointer_set under Clang
+ - #1865 g_variant_get_data_as_bytes fails after serializing a variant
+ - #1875 Segfault and Overflow in __gio_xdg_cache_mime_type_subclass() with Wps-Office installed
+ - #1887 glib 2.62.0 breaks loading dylibs as modules
+ - #1888 2.62: docs build on Windows broken
+ - #1897 glib 2.62.0 fails test 'test_writev_no_vectors' wih gcc7
+ - !1020 docs: Remove priv pointers from the tutorial example
+ - !1062 gtype: mark the inline functions in G_DECLARE_*_TYPE() as UNUSED
+ - !1080 tests: Fix skipping mkdir-with-parents-permission test
+ - !1088 Various small scan-build fixes
+ - !1090 giochannel: Clarify type of GSource callback in documentation
+ - !1093 gmodule: remove macOS dyld implementation
+ - !1095 Define G_IOV_MAX to 512 on macOS/iOS
+ - !1099 gmem: clarify that g_malloc always uses the system allocator
+ - !1109 doc: fix typo in gio/gsettings.c
+ - !1110 gio: Add missing "gio remove" option to bash completion script
+ - !1112 Add version macros for GLib 2.64
+ - !1115 gdatetime: Fix error handling in g_date_time_new_ordinal()
+ - !1116 gmarkup: Add a limit on the number of attributes in an element
+ - !1119 Annotate the return value of various utility functions
+ - !1124 docs: Fix typo in GConverter{Input,Output}Stream section titles
+ - !1125 gdatetime: Fix error handling in g_date_time_new_week()
+ - !1126 fileinfo: Mention that usec mtimes are set
+ - !1129 gdate: Fix tautological comparison warnings on Android
+ - !1130 Improve GLIB_DEPRECATED_MACRO_FOR output
+ - !1131 gio/gfileinfo: fix param reference in doc comment
+ - !1132 build: Bump Python requirement to ≥ 3.5
+ - !1137 gregistrysettings: bump key name length to 2048
+ - !1138 Always build tests if we enabled installed-tests
+ - !1139 g_file_info_get_modification_date_time: Calculate in integer domain
+
+* Translation updates:
+ - Danish
+ - Italian
+ - Panjabi
+ - Serbian
+ - Turkish
+
+
 Overview of changes in GLib 2.62.0
 ==================================
 
