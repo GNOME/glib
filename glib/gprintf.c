@@ -20,6 +20,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <errno.h>
 
 #include "gprintf.h"
 #include "gprintfint.h"
@@ -327,9 +328,18 @@ g_vasprintf (gchar      **string,
 
 #elif defined (HAVE_VASPRINTF)
 
-  len = vasprintf (string, format, args);
-  if (len < 0)
-    *string = NULL;
+  {
+    int saved_errno;
+    len = vasprintf (string, format, args);
+    saved_errno = errno;
+    if (len < 0)
+      {
+        if (saved_errno == ENOMEM)
+          g_error ("%s: failed to allocate memory", G_STRLOC);
+        else
+          *string = NULL;
+      }
+  }
 
 #else
 
