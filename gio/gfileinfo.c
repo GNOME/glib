@@ -564,7 +564,7 @@ g_file_info_find_value_by_name (GFileInfo  *info,
  *
  * Checks if a file info structure has an attribute named @attribute.
  *
- * Returns: %TRUE if @Ginfo has an attribute named @attribute,
+ * Returns: %TRUE if @info has an attribute named @attribute,
  *     %FALSE otherwise.
  **/
 gboolean
@@ -588,7 +588,7 @@ g_file_info_has_attribute (GFileInfo  *info,
  * Checks if a file info structure has an attribute in the
  * specified @name_space.
  *
- * Returns: %TRUE if @Ginfo has an attribute in @name_space,
+ * Returns: %TRUE if @info has an attribute in @name_space,
  *     %FALSE otherwise.
  *
  * Since: 2.22
