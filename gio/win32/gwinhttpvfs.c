@@ -121,12 +121,13 @@ static void
 g_winhttp_vfs_init (GWinHttpVfs *vfs)
 {
   wchar_t *wagent;
+  const gchar *prgname = g_get_prgname ();
 
   vfs->wrapped_vfs = g_vfs_get_local ();
 
-  wagent = g_utf8_to_utf16 (g_get_prgname (), -1, NULL, NULL, NULL);
-
-  if (!wagent)
+  if (prgname)
+    wagent = g_utf8_to_utf16 (prgname, -1, NULL, NULL, NULL);
+  else
     wagent = g_utf8_to_utf16 ("GWinHttpVfs", -1, NULL, NULL, NULL);
 
   vfs->session = (G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpOpen)
