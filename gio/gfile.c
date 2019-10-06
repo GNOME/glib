@@ -936,7 +936,7 @@ g_file_get_child_for_display_name (GFile      *file,
  * of @prefix.
  *
  * Virtual: prefix_matches
- * Returns:  %TRUE if the @files's parent, grandparent, etc is @prefix,
+ * Returns:  %TRUE if the @file's parent, grandparent, etc is @prefix,
  *     %FALSE otherwise.
  */
 gboolean
