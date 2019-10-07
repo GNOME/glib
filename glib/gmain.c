@@ -675,35 +675,26 @@ g_main_context_new (void)
 GMainContext *
 g_main_context_default (void)
 {
-  static GMainContext *volatile default_main_context;
-  static gsize initalized = 0;
-  GMainContext *context;
+  static GMainContext *default_main_context;
 
-  context = g_atomic_pointer_get (&default_main_context);
-  if (G_LIKELY (context))
-    goto done;
-
-  if (!g_once_init_enter (&initalized))
+  if (g_once_init_enter (&default_main_context))
     {
-      context = g_atomic_pointer_get (&default_main_context);
-      goto done;
-    }
+      GMainContext *context;
 
-  context = g_main_context_new ();
+      context = g_main_context_new ();
 
-  TRACE (GLIB_MAIN_CONTEXT_DEFAULT (context));
+      TRACE (GLIB_MAIN_CONTEXT_DEFAULT (context));
 
 #ifdef G_MAIN_POLL_DEBUG
-  if (_g_main_poll_debug)
-    g_print ("default context=%p\n", context);
+      if (_g_main_poll_debug)
+        g_print ("default context=%p\n", context);
 #endif
 
-  g_atomic_pointer_set (&default_main_context, context);
+      g_once_init_leave ((gsize *) &default_main_context, (gsize) context);
 
-  g_once_init_leave (&initalized, 1);
+    }
 
-done:
-  return context;
+  return default_main_context;
 }
 
 static void
