@@ -2805,6 +2805,7 @@ g_string_chunk_free
 <FILE>arrays</FILE>
 GArray
 g_array_new
+g_array_steal
 g_array_sized_new
 g_array_copy
 g_array_ref
@@ -2833,6 +2834,7 @@ g_array_free
 <FILE>arrays_pointer</FILE>
 GPtrArray
 g_ptr_array_new
+g_ptr_array_steal
 g_ptr_array_sized_new
 g_ptr_array_new_with_free_func
 g_ptr_array_copy
@@ -2868,6 +2870,7 @@ g_ptr_array_find_with_equal_func
 <SUBSECTION>
 GByteArray
 g_byte_array_new
+g_byte_array_steal
 g_byte_array_new_take
 g_byte_array_sized_new
 g_byte_array_ref
