@@ -166,6 +166,57 @@ g_array_new (gboolean zero_terminated,
 }
 
 /**
+ * g_array_steal:
+ * @array: a #GArray.
+ * @len: (optional) (out caller-allocates): pointer to retrieve the number of
+ *    elements of the original array
+ *
+ * Frees the data in the array and resets the size to zero, while
+ * the underlying array is preserved for use elsewhere and returned
+ * to the caller.
+ *
+ * If the array was created with the @zero_terminate property
+ * set to %TRUE, the returned data is zero terminated too.
+ *
+ * If array elements contain dynamically-allocated memory,
+ * the array elements should also be freed by the caller.
+ *
+ * A short example of use:
+ * |[<!-- language="C" -->
+ * ...
+ * gpointer data;
+ * gsize data_len;
+ * data = g_array_steal (some_array, &data_len);
+ * ...
+ * ]|
+
+ * Returns: (transfer full): the element data, which should be
+ *     freed using g_free().
+ *
+ * Since: 2.64
+ */
+gpointer
+g_array_steal (GArray *array,
+               gsize *len)
+{
+  GRealArray *rarray;
+  gpointer segment;
+
+  g_return_val_if_fail (array != NULL, NULL);
+
+  rarray = (GRealArray *) array;
+  segment = (gpointer) rarray->data;
+
+  if (len != NULL)
+    *len = rarray->len;
+
+  rarray->data  = NULL;
+  rarray->len   = 0;
+  rarray->alloc = 0;
+  return segment;
+}
+
+/**
  * g_array_sized_new:
  * @zero_terminated: %TRUE if the array should have an extra element at
  *     the end with all bits cleared
@@ -1011,6 +1062,46 @@ GPtrArray*
 g_ptr_array_new (void)
 {
   return g_ptr_array_sized_new (0);
+}
+
+/**
+ * g_ptr_array_steal:
+ * @array: a #GPtrArray.
+ * @len: (optional) (out caller-allocates): pointer to retrieve the number of
+ *    elements of the original array
+ *
+ * Frees the data in the array and resets the size to zero, while
+ * the underlying array is preserved for use elsewhere and returned
+ * to the caller.
+ *
+ * Even if set, the #GDestroyNotify function will never be called
+ * on the current contents of the array and the caller is
+ * responsible for freeing the array elements.
+ *
+ * Returns: (transfer full): the element data, which should be
+ *     freed using g_free().
+ *
+ * Since: 2.64
+ */
+gpointer *
+g_ptr_array_steal (GPtrArray *array,
+                   gsize *len)
+{
+  GRealPtrArray *rarray;
+  gpointer *segment;
+
+  g_return_val_if_fail (array != NULL, NULL);
+
+  rarray = (GRealPtrArray *) array;
+  segment = (gpointer *) rarray->pdata;
+
+  if (len != NULL)
+    *len = rarray->len;
+
+  rarray->pdata = NULL;
+  rarray->len   = 0;
+  rarray->alloc = 0;
+  return segment;
 }
 
 /**
@@ -2070,6 +2161,28 @@ GByteArray*
 g_byte_array_new (void)
 {
   return (GByteArray *)g_array_sized_new (FALSE, FALSE, 1, 0);
+}
+
+/**
+ * g_byte_array_steal:
+ * @array: a #GByteArray.
+ * @len: (optional) (out caller-allocates): pointer to retrieve the number of
+ *    elements of the original array
+ *
+ * Frees the data in the array and resets the size to zero, while
+ * the underlying array is preserved for use elsewhere and returned
+ * to the caller.
+ *
+ * Returns: (transfer full): the element data, which should be
+ *     freed using g_free().
+ *
+ * Since: 2.64
+ */
+guint8 *
+g_byte_array_steal (GByteArray *array,
+                    gsize *len)
+{
+  return (guint8 *) g_array_steal ((GArray *) array, len);
 }
 
 /**
