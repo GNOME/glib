@@ -146,6 +146,7 @@ test_nonce_tcp_address (void)
   assert_not_supported_address ("nonce-tcp:host=localhost,port=420000");
   assert_not_supported_address ("nonce-tcp:host=localhost,port=42x");
   assert_not_supported_address ("nonce-tcp:host=localhost,port=");
+  assert_not_supported_address ("nonce-tcp:host=localhost,port=42,noncefile=");
 }
 
 static void
