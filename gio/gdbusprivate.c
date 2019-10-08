@@ -1791,12 +1791,10 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
 
       schedule_writing_unlocked (worker, NULL, data, NULL);
     }
-  g_mutex_unlock (&worker->write_lock);
 
   if (data != NULL)
     {
       /* Wait for flush operations to finish. */
-      g_mutex_lock (&worker->write_lock);
       while (worker->write_num_messages_flushed < data->number_to_wait_for)
         {
           g_mutex_unlock (&worker->write_lock);
@@ -1815,6 +1813,8 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
         }
       g_free (data);
     }
+   else
+    g_mutex_unlock (&worker->write_lock);
 
   return ret;
 }
