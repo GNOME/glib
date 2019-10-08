@@ -302,7 +302,7 @@ hostname_is_localhost (const char *hostname)
   size_t len = strlen (hostname);
   const char *p;
 
-  /* Match "localhost", "localhost.", and "*.localhost" */
+  /* Match "localhost", "localhost.", "*.localhost" and "*.localhost." */
   if (len < strlen ("localhost"))
     return FALSE;
 
