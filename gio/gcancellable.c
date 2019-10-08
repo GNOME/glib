@@ -725,7 +725,7 @@ static GSourceFuncs cancellable_source_funcs =
 };
 
 /**
- * g_cancellable_source_new: (skip)
+ * g_cancellable_source_new:
  * @cancellable: (nullable): a #GCancellable, or %NULL
  *
  * Creates a source that triggers if @cancellable is cancelled and
