@@ -144,7 +144,7 @@ lookup_by_name (GResolver    *resolver,
 {
   GList *result = NULL;
   GTask *task = g_task_new (resolver, cancellable, NULL, NULL);
-  g_task_set_task_data (task, GUINT_TO_POINTER(G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT), NULL);
+  g_task_set_task_data (task, GUINT_TO_POINTER (G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT), NULL);
   g_task_run_in_thread_sync (task, do_lookup_by_name);
   result = g_task_propagate_pointer (task, error);
   g_object_unref (task);
