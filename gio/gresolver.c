@@ -324,7 +324,7 @@ hostname_is_localhost (const char *hostname)
 
   len -= p - hostname;
 
-  return g_ascii_strncasecmp (p, "localhost", MAX(len, strlen ("localhost"))) == 0;
+  return g_ascii_strncasecmp (p, "localhost", MAX (len, strlen ("localhost"))) == 0;
 }
 
 /* Note that this does not follow the "FALSE means @error is set"
