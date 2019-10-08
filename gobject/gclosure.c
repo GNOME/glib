@@ -134,6 +134,15 @@ G_STMT_START {                                                                  
 #define DEC_ASSIGN(cl,f,n) (void) (cl->f -= 1, *(n) = cl->f)
 #endif
 
+/*
+ * ClosureInt16 is used in g_closure_[ref|unref]() to access the
+ * ref_count bitfield.
+ */
+typedef union {
+	GClosure closure;
+	volatile gint16 vint16;
+} ClosureInt16;
+
 enum {
   FNOTIFY,
   INOTIFY,
@@ -543,13 +552,14 @@ closure_try_remove_fnotify (GClosure       *closure,
 GClosure*
 g_closure_ref (GClosure *closure)
 {
-  guint new_ref_count;
+  ClosureInt16 *cunion = (ClosureInt16*) closure;
+
   g_return_val_if_fail (closure != NULL, NULL);
   g_return_val_if_fail (closure->ref_count > 0, NULL);
   g_return_val_if_fail (closure->ref_count < CLOSURE_MAX_REF_COUNT, NULL);
 
-  INC_ASSIGN (closure, ref_count, &new_ref_count);
-  g_return_val_if_fail (new_ref_count > 1, NULL);
+  g_atomic_int16_inc (&cunion->vint16);
+  g_return_val_if_fail (closure->ref_count > 1, NULL);
 
   return closure;
 }
@@ -600,7 +610,7 @@ g_closure_invalidate (GClosure *closure)
 void
 g_closure_unref (GClosure *closure)
 {
-  guint new_ref_count;
+  ClosureInt16 *cunion = (ClosureInt16*) closure;
 
   g_return_if_fail (closure != NULL);
   g_return_if_fail (closure->ref_count > 0);
@@ -608,9 +618,7 @@ g_closure_unref (GClosure *closure)
   if (closure->ref_count == 1)	/* last unref, invalidate first */
     g_closure_invalidate (closure);
 
-  DEC_ASSIGN (closure, ref_count, &new_ref_count);
-
-  if (new_ref_count == 0)
+  if (g_atomic_int16_dec_and_test (&cunion->vint16))
     {
       closure_invoke_notifiers (closure, FNOTIFY);
       g_free (closure->notifiers);
