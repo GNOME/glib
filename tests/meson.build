@@ -19,7 +19,6 @@ tests = {
   'testglib' : {'tap' : true},
   'testgdate' : {},
   'datetime' : {},
-  'atomic-test' : {},
   'bit-test' : {},
   'child-test' : {},
   'completion-test' : {},
