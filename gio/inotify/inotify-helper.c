@@ -193,7 +193,7 @@ ih_event_callback (ik_event_t  *event,
            * properly. If not, the assumption we have made about event->mask
            * only ever having a single bit set (apart from IN_ISDIR) is false.
            * The kernel documentation is lacking here. */
-          g_assert (event_flags != -1);
+          g_assert ((int) event_flags != -1);
           interesting = g_file_monitor_source_handle_event (sub->user_data, event_flags,
                                                             event->name, NULL, other, event->timestamp);
 
@@ -201,7 +201,7 @@ ih_event_callback (ik_event_t  *event,
             g_object_unref (other);
         }
     }
-  else if (event_flags != -1)
+  else if ((int) event_flags != -1)
     /* unpaired event -- no 'other' field */
     interesting = g_file_monitor_source_handle_event (sub->user_data, event_flags,
                                                       event->name, NULL, NULL, event->timestamp);
