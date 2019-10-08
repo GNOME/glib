@@ -2589,6 +2589,61 @@ test_standalone_interface_info (void)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+static gboolean
+handle_hello_fd (FooiGenFDPassing *object,
+                 GDBusMethodInvocation *invocation,
+                 GUnixFDList *fd_list,
+                 const gchar *arg_greeting)
+{
+  foo_igen_fdpassing_complete_hello_fd (object, invocation, fd_list, arg_greeting);
+  return TRUE;
+}
+
+static gboolean
+handle_no_annotation (FooiGenFDPassing *object,
+                      GDBusMethodInvocation *invocation,
+                      GUnixFDList *fd_list,
+                      GVariant *arg_greeting,
+                      const gchar *arg_greeting_locale)
+{
+  foo_igen_fdpassing_complete_no_annotation (object, invocation, fd_list, arg_greeting, arg_greeting_locale);
+  return TRUE;
+}
+
+static gboolean
+handle_no_annotation_nested (FooiGenFDPassing *object,
+                             GDBusMethodInvocation *invocation,
+                             GUnixFDList *fd_list,
+                             GVariant *arg_files)
+{
+  foo_igen_fdpassing_complete_no_annotation_nested (object, invocation, fd_list);
+  return TRUE;
+}
+
+/* Test that generated code for methods includes GUnixFDList arguments if:
+ * - the method is explicitly annotated as C.UnixFD; or
+ * - the method signature contains the type 'h'
+ */
+static void
+test_unix_fd_list (void)
+{
+  FooiGenFDPassingIface iface;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1726");
+
+  /* This method is explicitly annotated. */
+  iface.handle_hello_fd = handle_hello_fd;
+  /* This one is not, but it's got an in and out 'h' parameter so should
+   * automatically grow GUnixFDList arguments.
+   */
+  iface.handle_no_annotation = handle_no_annotation;
+  /* This method has an 'h' inside a complex type. */
+  iface.handle_no_annotation_nested = handle_no_annotation_nested;
+
+  (void) iface;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
 
 int
 main (int   argc,
@@ -2603,6 +2658,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/codegen/autocleanups", test_autocleanups);
   g_test_add_func ("/gdbus/codegen/deprecations", test_deprecations);
   g_test_add_func ("/gdbus/codegen/standalone-interface-info", test_standalone_interface_info);
+  g_test_add_func ("/gdbus/codegen/unix-fd-list", test_unix_fd_list);
 
   return session_bus_run ();
 }
