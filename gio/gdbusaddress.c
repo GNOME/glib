@@ -265,9 +265,17 @@ is_valid_nonce_tcp (const gchar  *address_entry,
       /* TODO: validate host */
     }
 
-  nonce_file = nonce_file; /* To avoid -Wunused-but-set-variable */
+  if (nonce_file != NULL && *nonce_file == '\0')
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Error in address “%s” — the “%s” attribute is malformed"),
+                   address_entry, "noncefile");
+      goto out;
+    }
 
-  ret= TRUE;
+  ret = TRUE;
 
  out:
   g_list_free (keys);
