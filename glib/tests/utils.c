@@ -520,15 +520,30 @@ test_desktop_special_dir (void)
 static void
 test_os_info (void)
 {
-#if defined (G_OS_UNIX) || defined (G_OS_WIN32)
   gchar *name;
+  gchar *contents = NULL;
 
+  /* Whether this is implemented or not, it must not crash */
   name = g_get_os_info (G_OS_INFO_KEY_NAME);
-  g_assert (name != NULL);
-  g_free (name);
+  g_test_message ("%s: %s",
+                  G_OS_INFO_KEY_NAME,
+                  name == NULL ? "(null)" : name);
+
+#if defined (G_OS_WIN32) || defined (__APPLE__)
+  /* These OSs have a special case so NAME should always succeed */
+  g_assert_nonnull (name);
+#elif defined (G_OS_UNIX)
+  if (g_file_get_contents ("/etc/os-release", &contents, NULL, NULL) ||
+      g_file_get_contents ("/usr/lib/os-release", &contents, NULL, NULL))
+    g_assert_nonnull (name);
+  else
+    g_test_skip ("os-release(5) API not implemented on this platform");
 #else
   g_test_skip ("g_get_os_info() not supported on this platform");
 #endif
+
+  g_free (name);
+  g_free (contents);
 }
 
 static gboolean
