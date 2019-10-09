@@ -575,6 +575,26 @@ log_warning_error_tests (void)
 }
 
 static void
+log_warning_rate_limited_tests (void)
+{
+#if defined(G_HAVE_ISO_VARARGS) || defined(G_HAVE_GNUC_VARARGS)
+  int i;
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*harmless single warning 1*");
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*harmless single warning 2*");
+  for (i = 0; i < 10; i++)
+    g_warning_once ("harmless single warning 1");
+  for (i = 0; i < 10; i++)
+    g_warning_once ("harmless single warning 2");
+  g_test_assert_expected_messages ();
+#else
+  g_test_skip ("Variadic macro support not available");
+#endif
+}
+
+static void
 timer_tests (void)
 {
   GTimer *timer, *timer2;
@@ -1684,6 +1704,7 @@ main (int   argc,
   g_test_add_func ("/testglib/Parse Debug Strings", test_g_parse_debug_string);
   g_test_add_func ("/testglib/GMemChunk (deprecated)", test_mem_chunks);
   g_test_add_func ("/testglib/Warnings & Errors", log_warning_error_tests);
+  g_test_add_func ("/testglib/Warnings (rate limited)", log_warning_rate_limited_tests);
   g_test_add_func ("/testglib/Timers (slow)", timer_tests);
 
   return g_test_run();
