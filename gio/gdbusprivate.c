@@ -408,6 +408,7 @@ typedef struct
   GMutex  mutex;
   GCond   cond;
   guint64 number_to_wait_for;
+  gboolean finished;
   GError *error;
 } FlushData;
 
@@ -1158,6 +1159,7 @@ flush_data_list_complete (const GList  *flushers,
       f->error = error != NULL ? g_error_copy (error) : NULL;
 
       g_mutex_lock (&f->mutex);
+      f->finished = TRUE;
       g_cond_signal (&f->cond);
       g_mutex_unlock (&f->mutex);
     }
@@ -1787,6 +1789,7 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
       g_mutex_init (&data->mutex);
       g_cond_init (&data->cond);
       data->number_to_wait_for = worker->write_num_messages_written + pending_writes;
+      data->finished = FALSE;
       g_mutex_lock (&data->mutex);
 
       schedule_writing_unlocked (worker, NULL, data, NULL);
@@ -1796,14 +1799,10 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
   if (data != NULL)
     {
       /* Wait for flush operations to finish. */
-      g_mutex_lock (&worker->write_lock);
-      while (worker->write_num_messages_flushed < data->number_to_wait_for)
+      while (!data->finished)
         {
-          g_mutex_unlock (&worker->write_lock);
           g_cond_wait (&data->cond, &data->mutex);
-          g_mutex_lock (&worker->write_lock);
         }
-      g_mutex_unlock (&worker->write_lock);
 
       g_mutex_unlock (&data->mutex);
       g_cond_clear (&data->cond);
