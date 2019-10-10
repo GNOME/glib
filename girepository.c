@@ -1036,6 +1036,8 @@ g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
 
       g_hash_table_insert (repository->priv->interfaces_for_gtype, (gpointer) gtype,
                            cache);
+
+      g_free (interfaces);
     }
 
   *n_interfaces_out = cache->n_interfaces;
