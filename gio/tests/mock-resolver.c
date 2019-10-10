@@ -112,6 +112,12 @@ do_lookup_by_name (GTask         *task,
       else
         g_task_return_pointer (task, g_list_copy_deep (self->ipv6_results, copy_object, NULL), NULL);
     }
+  else if (flags == G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT)
+    {
+      /* This is only the minimal implementation needed for some tests */
+      g_assert (self->ipv4_error == NULL && self->ipv6_error == NULL && self->ipv6_results == NULL);
+      g_task_return_pointer (task, g_list_copy_deep (self->ipv4_results, copy_object, NULL), NULL);
+    }
   else
     g_assert_not_reached ();
 }
@@ -129,6 +135,22 @@ lookup_by_name_with_flags_async (GResolver                *resolver,
   g_task_run_in_thread (task, do_lookup_by_name);
   g_object_unref (task);
 }
+
+static GList *
+lookup_by_name (GResolver    *resolver,
+                const gchar  *hostname,
+                GCancellable *cancellable,
+                GError       **error)
+{
+  GList *result = NULL;
+  GTask *task = g_task_new (resolver, cancellable, NULL, NULL);
+  g_task_set_task_data (task, GUINT_TO_POINTER (G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT), NULL);
+  g_task_run_in_thread_sync (task, do_lookup_by_name);
+  result = g_task_propagate_pointer (task, error);
+  g_object_unref (task);
+  return result;
+}
+
 
 static GList *
 lookup_by_name_with_flags_finish (GResolver     *resolver,
@@ -160,6 +182,7 @@ mock_resolver_class_init (MockResolverClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   resolver_class->lookup_by_name_with_flags_async  = lookup_by_name_with_flags_async;
   resolver_class->lookup_by_name_with_flags_finish = lookup_by_name_with_flags_finish;
+  resolver_class->lookup_by_name = lookup_by_name;
   object_class->finalize = mock_resolver_finalize;
 }
 
