@@ -463,13 +463,6 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
   gboolean have_tombstone = FALSE;
   guint step = 0;
 
-  /* If this happens, then the application is probably doing too much work
-   * from a destroy notifier. The alternative would be to crash any second
-   * (as keys, etc. will be NULL).
-   * Applications need to either use g_hash_table_destroy, or ensure the hash
-   * table is empty prior to removing the last reference using g_hash_table_unref(). */
-  g_assert (!g_atomic_ref_count_compare (&hash_table->ref_count, 0));
-
   hash_value = hash_table->hash_func (key);
   if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
     hash_value = 2;
