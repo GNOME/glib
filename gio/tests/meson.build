@@ -115,7 +115,15 @@ if dbus1_dep.found()
     'gdbus-serialization' : {
       'extra_sources' : ['gdbus-tests.c'],
       'dependencies' : [dbus1_dep],
-    }
+    },
+    'gdbus-server-auth' : {
+      'dependencies' : [dbus1_dep],
+    },
+  }
+else
+  # We can build a cut-down version of this test without libdbus
+  gio_tests += {
+    'gdbus-server-auth' : {},
   }
 endif
 
