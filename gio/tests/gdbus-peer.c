@@ -43,6 +43,10 @@
 #include <errno.h>
 #endif
 
+#ifdef HAVE_DBUS1
+#include <dbus/dbus.h>
+#endif
+
 #include "gdbus-tests.h"
 
 #include "gdbus-object-manager-example/objectmanager-gen.h"
@@ -1878,6 +1882,398 @@ codegen_test_peer (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+typedef enum
+{
+  INTEROP_FLAGS_EXTERNAL = (1 << 0),
+  INTEROP_FLAGS_ANONYMOUS = (1 << 1),
+  INTEROP_FLAGS_SHA1 = (1 << 2),
+  INTEROP_FLAGS_NONE = 0
+} InteropFlags;
+
+static gboolean
+allow_external_cb (G_GNUC_UNUSED GDBusAuthObserver *observer,
+                   const char *mechanism,
+                   G_GNUC_UNUSED gpointer user_data)
+{
+  if (g_strcmp0 (mechanism, "EXTERNAL") == 0)
+    {
+      g_debug ("Accepting EXTERNAL authentication");
+      return TRUE;
+    }
+  else
+    {
+      g_debug ("Rejecting \"%s\" authentication: not EXTERNAL", mechanism);
+      return FALSE;
+    }
+}
+
+static gboolean
+allow_anonymous_cb (G_GNUC_UNUSED GDBusAuthObserver *observer,
+                    const char *mechanism,
+                    G_GNUC_UNUSED gpointer user_data)
+{
+  if (g_strcmp0 (mechanism, "ANONYMOUS") == 0)
+    {
+      g_debug ("Accepting ANONYMOUS authentication");
+      return TRUE;
+    }
+  else
+    {
+      g_debug ("Rejecting \"%s\" authentication: not ANONYMOUS", mechanism);
+      return FALSE;
+    }
+}
+
+static gboolean
+allow_sha1_cb (G_GNUC_UNUSED GDBusAuthObserver *observer,
+               const char *mechanism,
+               G_GNUC_UNUSED gpointer user_data)
+{
+  if (g_strcmp0 (mechanism, "DBUS_COOKIE_SHA1") == 0)
+    {
+      g_debug ("Accepting DBUS_COOKIE_SHA1 authentication");
+      return TRUE;
+    }
+  else
+    {
+      g_debug ("Rejecting \"%s\" authentication: not DBUS_COOKIE_SHA1",
+               mechanism);
+      return FALSE;
+    }
+}
+
+static gboolean
+allow_any_mechanism_cb (G_GNUC_UNUSED GDBusAuthObserver *observer,
+                        const char *mechanism,
+                        G_GNUC_UNUSED gpointer user_data)
+{
+  g_debug ("Accepting \"%s\" authentication", mechanism);
+  return TRUE;
+}
+
+static gboolean
+authorize_any_authenticated_peer_cb (G_GNUC_UNUSED GDBusAuthObserver *observer,
+                                     G_GNUC_UNUSED GIOStream *stream,
+                                     GCredentials *credentials,
+                                     G_GNUC_UNUSED gpointer user_data)
+{
+  if (credentials == NULL)
+    {
+      g_debug ("Authorizing peer with no credentials");
+    }
+  else
+    {
+      gchar *str = g_credentials_to_string (credentials);
+
+      g_debug ("Authorizing peer with credentials: %s", str);
+      g_free (str);
+    }
+
+  return TRUE;
+}
+
+static GDBusMessage *
+whoami_filter_cb (GDBusConnection *connection,
+                  GDBusMessage *message,
+                  gboolean incoming,
+                  G_GNUC_UNUSED gpointer user_data)
+{
+  if (!incoming)
+    return message;
+
+  if (g_dbus_message_get_message_type (message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL &&
+      g_strcmp0 (g_dbus_message_get_member (message), "WhoAmI") == 0)
+    {
+      GDBusMessage *reply = g_dbus_message_new_method_reply (message);
+      GCredentials *credentials = g_dbus_connection_get_peer_credentials (connection);
+      gint64 uid = -1;
+      gint64 pid = -1;
+
+      if (credentials != NULL)
+        {
+          uid = (gint64) g_credentials_get_unix_user (credentials, NULL);
+          pid = (gint64) g_credentials_get_unix_pid (credentials, NULL);
+        }
+
+      g_dbus_message_set_body (reply,
+                               g_variant_new ("(xx)", uid, pid));
+      g_dbus_connection_send_message (connection, reply,
+                                      G_DBUS_SEND_MESSAGE_FLAGS_NONE,
+                                      NULL, NULL);
+
+      /* handled */
+      g_object_unref (message);
+      return NULL;
+    }
+
+  return message;
+}
+
+static gboolean
+new_connection_from_libdbus_cb (G_GNUC_UNUSED GDBusServer *server,
+                                GDBusConnection *connection,
+                                G_GNUC_UNUSED gpointer user_data)
+{
+  GCredentials *credentials = g_dbus_connection_get_peer_credentials (connection);
+
+  if (credentials == NULL)
+    {
+      g_debug ("New connection from peer with no credentials");
+    }
+  else
+    {
+      gchar *str = g_credentials_to_string (credentials);
+
+      g_debug ("New connection from peer with credentials: %s", str);
+      g_free (str);
+    }
+
+  g_object_ref (connection);
+  g_dbus_connection_add_filter (connection, whoami_filter_cb, NULL, NULL);
+  return TRUE;
+}
+
+typedef struct
+{
+  DBusError error;
+  DBusConnection *conn;
+  DBusMessage *call;
+  DBusMessage *reply;
+} LibdbusCall;
+
+static void
+libdbus_call_task_cb (GTask *task,
+                      G_GNUC_UNUSED gpointer source_object,
+                      gpointer task_data,
+                      G_GNUC_UNUSED GCancellable *cancellable)
+{
+  LibdbusCall *libdbus_call = task_data;
+
+  libdbus_call->reply = dbus_connection_send_with_reply_and_block (libdbus_call->conn,
+                                                                   libdbus_call->call,
+                                                                   -1,
+                                                                   &libdbus_call->error);
+}
+
+static void
+mark_completed_cb (G_GNUC_UNUSED GObject *source_object,
+                   GAsyncResult *res,
+                   gpointer user_data)
+{
+  gboolean *done = user_data;
+
+  g_assert_nonnull (done);
+  g_assert_false (*done);
+  *done = TRUE;
+}
+
+static void
+do_test_peer_libdbus_client (const char *listenable_address,
+                             InteropFlags flags)
+{
+#ifdef HAVE_DBUS1
+  GError *error = NULL;
+  GDBusServer *server;
+  GDBusAuthObserver *observer;
+  GDBusServerFlags server_flags = G_DBUS_SERVER_FLAGS_RUN_IN_THREAD;
+  gchar *guid;
+  const char *connectable_address;
+  gsize i;
+  /* GNOME/glib#1831 seems to involve a race condition, so try a few times
+   * to see if we can trigger it. */
+  gsize n = 20;
+  gboolean tcp = FALSE;
+
+  if (g_str_has_prefix (listenable_address, "tcp:") ||
+      g_str_has_prefix (listenable_address, "nonce-tcp:"))
+    tcp = TRUE;
+
+  g_test_message ("Testing GDBus server at %s / libdbus client, with flags: "
+                  "external:%s "
+                  "anonymous:%s "
+                  "sha1:%s "
+                  "tcp:%s",
+                  listenable_address,
+                  (flags & INTEROP_FLAGS_EXTERNAL) ? "true" : "false",
+                  (flags & INTEROP_FLAGS_ANONYMOUS) ? "true" : "false",
+                  (flags & INTEROP_FLAGS_SHA1) ? "true" : "false",
+                  tcp ? "true" : "false");
+
+#ifndef G_OS_UNIX
+  if (g_str_has_prefix (listenable_address, "unix:"))
+    {
+      g_test_skip ("unix: addresses only work on Unix");
+      return;
+    }
+#endif
+
+#if !defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED) \
+  && !defined(G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED)
+  if (flags & INTEROP_FLAGS_EXTERNAL)
+    {
+      g_test_skip ("EXTERNAL authentication not implemented on this platform");
+      return;
+    }
+#endif
+
+  if (flags & INTEROP_FLAGS_ANONYMOUS)
+    server_flags |= G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS;
+
+  observer = g_dbus_auth_observer_new ();
+
+  if (flags & INTEROP_FLAGS_EXTERNAL)
+    g_signal_connect (observer, "allow-mechanism",
+                      G_CALLBACK (allow_external_cb), NULL);
+  else if (flags & INTEROP_FLAGS_ANONYMOUS)
+    g_signal_connect (observer, "allow-mechanism",
+                      G_CALLBACK (allow_anonymous_cb), NULL);
+  else if (flags & INTEROP_FLAGS_SHA1)
+    g_signal_connect (observer, "allow-mechanism",
+                      G_CALLBACK (allow_sha1_cb), NULL);
+  else
+    g_signal_connect (observer, "allow-mechanism",
+                      G_CALLBACK (allow_any_mechanism_cb), NULL);
+
+  g_signal_connect (observer, "authorize-authenticated-peer",
+                    G_CALLBACK (authorize_any_authenticated_peer_cb),
+                    NULL);
+
+  guid = g_dbus_generate_guid ();
+  server = g_dbus_server_new_sync (listenable_address,
+                                   server_flags,
+                                   guid,
+                                   observer,
+                                   NULL,
+                                   &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (server);
+  g_signal_connect (server, "new-connection",
+                    G_CALLBACK (new_connection_from_libdbus_cb), NULL);
+  g_dbus_server_start (server);
+  connectable_address = g_dbus_server_get_client_address (server);
+
+  for (i = 0; i < n; i++)
+    {
+      LibdbusCall libdbus_call = { DBUS_ERROR_INIT, NULL, NULL, NULL };
+      GTask *task;
+      gint64 uid, pid;
+      gboolean done = FALSE;
+
+      libdbus_call.conn = dbus_connection_open_private (connectable_address,
+                                                        &libdbus_call.error);
+      g_assert_cmpstr (libdbus_call.error.name, ==, NULL);
+      g_assert_nonnull (libdbus_call.conn);
+
+      libdbus_call.call = dbus_message_new_method_call (NULL, "/",
+                                                        "com.example.Test",
+                                                        "WhoAmI");
+
+      if (libdbus_call.call == NULL)
+        g_error ("Out of memory");
+
+      task = g_task_new (NULL, NULL, mark_completed_cb, &done);
+      g_task_set_task_data (task, &libdbus_call, NULL);
+      g_task_run_in_thread (task, libdbus_call_task_cb);
+
+      while (!done)
+        g_main_context_iteration (NULL, TRUE);
+
+      g_assert_cmpstr (libdbus_call.error.name, ==, NULL);
+      g_assert_nonnull (libdbus_call.reply);
+
+      dbus_message_get_args (libdbus_call.reply, &libdbus_call.error,
+                             DBUS_TYPE_INT64, &uid,
+                             DBUS_TYPE_INT64, &pid,
+                             DBUS_TYPE_INVALID);
+      g_assert_cmpstr (libdbus_call.error.name, ==, NULL);
+
+      g_debug ("Server says client is uid %" G_GINT64_FORMAT ", pid %" G_GINT64_FORMAT,
+               uid, pid);
+
+#ifdef G_OS_UNIX
+      if (flags & (INTEROP_FLAGS_ANONYMOUS | INTEROP_FLAGS_SHA1) || tcp)
+        {
+          /* No assertion. There is no guarantee whether credentials will be
+           * passed even though we didn't send them. Conversely, if
+           * credentials were not passed,
+           * g_dbus_connection_get_peer_credentials() always returns the
+           * credentials of the socket, and not the uid that a
+           * client might have proved it has by using DBUS_COOKIE_SHA1. */
+        }
+      else    /* We should prefer EXTERNAL whenever it is allowed. */
+        {
+#ifdef __linux__
+          /* We know that we interop on Linux. */
+          g_assert_cmpint (uid, ==, getuid ());
+          g_assert_cmpint (pid, ==, getpid ());
+#else
+          g_test_message ("Please open a merge request to add appropriate "
+                          "assertions for your platform");
+#endif
+        }
+#endif
+
+      dbus_connection_close (libdbus_call.conn);
+      dbus_connection_unref (libdbus_call.conn);
+      dbus_message_unref (libdbus_call.call);
+      dbus_message_unref (libdbus_call.reply);
+      g_clear_object (&task);
+    }
+
+  g_dbus_server_stop (server);
+  g_clear_object (&server);
+  g_clear_object (&observer);
+  g_free (guid);
+
+#else /* !HAVE_DBUS1 */
+  g_test_skip ("Testing interop with libdbus not supported");
+#endif /* !HAVE_DBUS1 */
+}
+
+static void
+test_peer_libdbus_client (void)
+{
+  do_test_peer_libdbus_client ("unix:tmpdir=/tmp/gdbus-test", INTEROP_FLAGS_NONE);
+}
+
+static void
+test_peer_libdbus_client_tcp (void)
+{
+  do_test_peer_libdbus_client ("tcp:host=127.0.0.1", INTEROP_FLAGS_NONE);
+}
+
+static void
+test_peer_libdbus_client_anonymous (void)
+{
+  do_test_peer_libdbus_client ("unix:tmpdir=/tmp/gdbus-test", INTEROP_FLAGS_ANONYMOUS);
+}
+
+static void
+test_peer_libdbus_client_anonymous_tcp (void)
+{
+  do_test_peer_libdbus_client ("tcp:host=127.0.0.1", INTEROP_FLAGS_ANONYMOUS);
+}
+
+static void
+test_peer_libdbus_client_external (void)
+{
+  do_test_peer_libdbus_client ("unix:tmpdir=/tmp/gdbus-test", INTEROP_FLAGS_EXTERNAL);
+}
+
+static void
+test_peer_libdbus_client_sha1 (void)
+{
+  do_test_peer_libdbus_client ("unix:tmpdir=/tmp/gdbus-test", INTEROP_FLAGS_SHA1);
+}
+
+static void
+test_peer_libdbus_client_sha1_tcp (void)
+{
+  do_test_peer_libdbus_client ("tcp:host=127.0.0.1", INTEROP_FLAGS_SHA1);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 
 int
 main (int   argc,
@@ -1898,6 +2294,13 @@ main (int   argc,
   loop = g_main_loop_new (NULL, FALSE);
 
   g_test_add_func ("/gdbus/peer-to-peer", test_peer);
+  g_test_add_func ("/gdbus/peer-to-peer/libdbus-client", test_peer_libdbus_client);
+  g_test_add_func ("/gdbus/peer-to-peer/libdbus-client/tcp", test_peer_libdbus_client_tcp);
+  g_test_add_func ("/gdbus/peer-to-peer/libdbus-client/anonymous", test_peer_libdbus_client_anonymous);
+  g_test_add_func ("/gdbus/peer-to-peer/libdbus-client/anonymous/tcp", test_peer_libdbus_client_anonymous_tcp);
+  g_test_add_func ("/gdbus/peer-to-peer/libdbus-client/external", test_peer_libdbus_client_external);
+  g_test_add_func ("/gdbus/peer-to-peer/libdbus-client/sha1", test_peer_libdbus_client_sha1);
+  g_test_add_func ("/gdbus/peer-to-peer/libdbus-client/sha1/tcp", test_peer_libdbus_client_sha1_tcp);
   g_test_add_func ("/gdbus/peer-to-peer/signals", test_peer_signals);
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
   g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
