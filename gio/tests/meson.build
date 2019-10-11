@@ -121,10 +121,15 @@ endif
 
 #  Test programs buildable on UNIX only
 if host_machine.system() != 'windows'
+  peer_deps = [libgdbus_example_objectmanager_dep]
+  if dbus1_dep.found()
+    peer_deps += dbus1_dep
+  endif
+
   gio_tests += {
     'file' : {},
     'gdbus-peer' : {
-      'dependencies' : [libgdbus_example_objectmanager_dep],
+      'dependencies' : peer_deps,
       'install_rpath' : installed_tests_execdir
     },
     'gdbus-peer-object-manager' : {},
