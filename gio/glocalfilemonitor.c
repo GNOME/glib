@@ -46,7 +46,7 @@ struct _GFileMonitorSource {
   GSource       source;
 
   GMutex        lock;
-  gpointer      instance;
+  GWeakRef      instance_ref;
   GFileMonitorFlags flags;
   gchar        *dirname;
   gchar        *basename;
@@ -348,6 +348,7 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
                                     gint64              event_time)
 {
   gboolean interesting = TRUE;
+  GFileMonitor *instance = NULL;
 
   g_assert (!child || is_basename (child));
   g_assert (!rename_to || is_basename (rename_to));
@@ -359,7 +360,8 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
   g_mutex_lock (&fms->lock);
 
   /* monitor is already gone -- don't bother */
-  if (!fms->instance)
+  instance = g_weak_ref_get (&fms->instance_ref);
+  if (instance == NULL)
     {
       g_mutex_unlock (&fms->lock);
       return TRUE;
@@ -450,6 +452,7 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
   g_file_monitor_source_update_ready_time (fms);
 
   g_mutex_unlock (&fms->lock);
+  g_clear_object (&instance);
 
   return interesting;
 }
@@ -500,9 +503,11 @@ g_file_monitor_source_dispatch (GSource     *source,
   QueuedEvent *event;
   GQueue event_queue;
   gint64 now;
+  GFileMonitor *instance = NULL;
 
   /* make sure the monitor still exists */
-  if (!fms->instance)
+  instance = g_weak_ref_get (&fms->instance_ref);
+  if (instance == NULL)
     return FALSE;
 
   now = g_source_get_time (source);
@@ -550,15 +555,18 @@ g_file_monitor_source_dispatch (GSource     *source,
 
   g_file_monitor_source_update_ready_time (fms);
 
+  g_clear_object (&instance);
   g_mutex_unlock (&fms->lock);
 
   /* We now have our list of events to deliver */
   while ((event = g_queue_pop_head (&event_queue)))
     {
       /* an event handler could destroy 'instance', so check each time */
-      if (fms->instance)
-        g_file_monitor_emit_event (fms->instance, event->child, event->other, event->event_type);
+      instance = g_weak_ref_get (&fms->instance_ref);
+      if (instance != NULL)
+        g_file_monitor_emit_event (instance, event->child, event->other, event->event_type);
 
+      g_clear_object (&instance);
       queued_event_free (event);
     }
 
@@ -568,31 +576,28 @@ g_file_monitor_source_dispatch (GSource     *source,
 static void
 g_file_monitor_source_dispose (GFileMonitorSource *fms)
 {
+  GHashTableIter iter;
+  gpointer seqiter;
+  QueuedEvent *event;
+
   g_mutex_lock (&fms->lock);
 
-  if (fms->instance)
+  g_hash_table_iter_init (&iter, fms->pending_changes_table);
+  while (g_hash_table_iter_next (&iter, NULL, &seqiter))
     {
-      GHashTableIter iter;
-      gpointer seqiter;
-      QueuedEvent *event;
-
-      g_hash_table_iter_init (&iter, fms->pending_changes_table);
-      while (g_hash_table_iter_next (&iter, NULL, &seqiter))
-        {
-          g_hash_table_iter_remove (&iter);
-          g_sequence_remove (seqiter);
-        }
-
-      while ((event = g_queue_pop_head (&fms->event_queue)))
-        queued_event_free (event);
-
-      g_assert (g_sequence_is_empty (fms->pending_changes));
-      g_assert (g_hash_table_size (fms->pending_changes_table) == 0);
-      g_assert (fms->event_queue.length == 0);
-      fms->instance = NULL;
-
-      g_file_monitor_source_update_ready_time (fms);
+      g_hash_table_iter_remove (&iter);
+      g_sequence_remove (seqiter);
     }
+
+  while ((event = g_queue_pop_head (&fms->event_queue)))
+    queued_event_free (event);
+
+  g_assert (g_sequence_is_empty (fms->pending_changes));
+  g_assert (g_hash_table_size (fms->pending_changes_table) == 0);
+  g_assert (fms->event_queue.length == 0);
+  g_weak_ref_set (&fms->instance_ref, NULL);
+
+  g_file_monitor_source_update_ready_time (fms);
 
   g_mutex_unlock (&fms->lock);
 
@@ -605,7 +610,9 @@ g_file_monitor_source_finalize (GSource *source)
   GFileMonitorSource *fms = (GFileMonitorSource *) source;
 
   /* should already have been cleared in dispose of the monitor */
-  g_assert (fms->instance == NULL);
+  g_assert (g_weak_ref_get (&fms->instance_ref) == NULL);
+  g_weak_ref_clear (&fms->instance_ref);
+
   g_assert (g_sequence_is_empty (fms->pending_changes));
   g_assert (g_hash_table_size (fms->pending_changes_table) == 0);
   g_assert (fms->event_queue.length == 0);
@@ -653,7 +660,7 @@ g_file_monitor_source_new (gpointer           instance,
   g_source_set_name (source, "GFileMonitorSource");
 
   g_mutex_init (&fms->lock);
-  fms->instance = instance;
+  g_weak_ref_init (&fms->instance_ref, instance);
   fms->pending_changes = g_sequence_new (pending_change_free);
   fms->pending_changes_table = g_hash_table_new (str_hash0, str_equal0);
   fms->rate_limit = DEFAULT_RATE_LIMIT;
