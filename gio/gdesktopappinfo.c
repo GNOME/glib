@@ -1329,6 +1329,7 @@ desktop_file_dir_reset (DesktopFileDir *dir)
   if (dir->monitor)
     {
       g_signal_handlers_disconnect_by_func (dir->monitor, desktop_file_dir_changed, dir);
+      g_file_monitor_cancel (dir->monitor);
       g_object_unref (dir->monitor);
       dir->monitor = NULL;
     }
