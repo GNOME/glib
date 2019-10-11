@@ -143,6 +143,7 @@ G_DEFINE_TYPE_WITH_CODE (GDesktopAppInfo, g_desktop_app_info, G_TYPE_OBJECT,
 
 typedef struct
 {
+  gatomicrefcount             ref_count;
   gchar                      *path;
   gchar                      *alternatively_watching;
   gboolean                    is_config;
@@ -154,16 +155,34 @@ typedef struct
   GHashTable                 *memory_implementations;
 } DesktopFileDir;
 
-static DesktopFileDir *desktop_file_dirs;
-static guint           n_desktop_file_dirs;
+static GPtrArray      *desktop_file_dirs = NULL;
 static const gchar    *desktop_file_dirs_config_dir = NULL;
-static const guint     desktop_file_dir_user_config_index = 0;
-static guint           desktop_file_dir_user_data_index;
+static DesktopFileDir *desktop_file_dir_user_config = NULL;  /* (owned) */
+static DesktopFileDir *desktop_file_dir_user_data = NULL;  /* (owned) */
 static GMutex          desktop_file_dir_lock;
 static const gchar    *gio_launch_desktop_path = NULL;
 
 /* Monitor 'changed' signal handler {{{2 */
 static void desktop_file_dir_reset (DesktopFileDir *dir);
+
+static DesktopFileDir *
+desktop_file_dir_ref (DesktopFileDir *dir)
+{
+  g_atomic_ref_count_inc (&dir->ref_count);
+
+  return dir;
+}
+
+static void
+desktop_file_dir_unref (DesktopFileDir *dir)
+{
+  if (g_atomic_ref_count_dec (&dir->ref_count))
+    {
+      desktop_file_dir_reset (dir);
+      g_free (dir->path);
+      g_free (dir);
+    }
+}
 
 /*< internal >
  * desktop_file_dir_get_alternative_dir:
@@ -270,11 +289,15 @@ static gboolean
 desktop_file_dir_app_name_is_masked (DesktopFileDir *dir,
                                      const gchar    *app_name)
 {
-  while (dir > desktop_file_dirs)
-    {
-      dir--;
+  guint i;
 
-      if (dir->app_names && g_hash_table_contains (dir->app_names, app_name))
+  for (i = 0; i < desktop_file_dirs->len; i++)
+    {
+      DesktopFileDir *i_dir = g_ptr_array_index (desktop_file_dirs, i);
+
+      if (dir == i_dir)
+        return FALSE;
+      if (i_dir->app_names && g_hash_table_contains (i_dir->app_names, app_name))
         return TRUE;
     }
 
@@ -1251,44 +1274,41 @@ desktop_file_dir_unindexed_get_implementations (DesktopFileDir  *dir,
 /* DesktopFileDir "API" {{{2 */
 
 /*< internal >
- * desktop_file_dir_create:
- * @array: the #GArray to add a new item to
+ * desktop_file_dir_new:
  * @data_dir: an XDG_DATA_DIR
  *
- * Creates a #DesktopFileDir for the corresponding @data_dir, adding it
- * to @array.
+ * Creates a #DesktopFileDir for the corresponding @data_dir.
  */
-static void
-desktop_file_dir_create (GArray      *array,
-                         const gchar *data_dir)
+static DesktopFileDir *
+desktop_file_dir_new (const gchar *data_dir)
 {
-  DesktopFileDir dir = { 0, };
+  DesktopFileDir *dir = g_new0 (DesktopFileDir, 1);
 
-  dir.path = g_build_filename (data_dir, "applications", NULL);
+  g_atomic_ref_count_init (&dir->ref_count);
+  dir->path = g_build_filename (data_dir, "applications", NULL);
 
-  g_array_append_val (array, dir);
+  return g_steal_pointer (&dir);
 }
 
 /*< internal >
- * desktop_file_dir_create:
- * @array: the #GArray to add a new item to
+ * desktop_file_dir_new_for_config:
  * @config_dir: an XDG_CONFIG_DIR
  *
- * Just the same as desktop_file_dir_create() except that it does not
+ * Just the same as desktop_file_dir_new() except that it does not
  * add the "applications" directory.  It also marks the directory as
  * config-only, which prevents us from attempting to find desktop files
  * here.
  */
-static void
-desktop_file_dir_create_for_config (GArray      *array,
-                                    const gchar *config_dir)
+static DesktopFileDir *
+desktop_file_dir_new_for_config (const gchar *config_dir)
 {
-  DesktopFileDir dir = { 0, };
+  DesktopFileDir *dir = g_new0 (DesktopFileDir, 1);
 
-  dir.path = g_strdup (config_dir);
-  dir.is_config = TRUE;
+  g_atomic_ref_count_init (&dir->ref_count);
+  dir->path = g_strdup (config_dir);
+  dir->is_config = TRUE;
 
-  g_array_append_val (array, dir);
+  return g_steal_pointer (&dir);
 }
 
 /*< internal >
@@ -1340,6 +1360,14 @@ desktop_file_dir_reset (DesktopFileDir *dir)
   dir->is_setup = FALSE;
 }
 
+static void
+closure_notify_cb (gpointer  data,
+                   GClosure *closure)
+{
+  DesktopFileDir *dir = data;
+  desktop_file_dir_unref (dir);
+}
+
 /*< internal >
  * desktop_file_dir_init:
  * @dir: a #DesktopFileDir
@@ -1368,7 +1396,9 @@ desktop_file_dir_init (DesktopFileDir *dir)
    * we will fall back to polling.
    */
   dir->monitor = g_local_file_monitor_new_in_worker (watch_dir, TRUE, G_FILE_MONITOR_NONE,
-                                                     desktop_file_dir_changed, dir, NULL);
+                                                     desktop_file_dir_changed,
+                                                     desktop_file_dir_ref (dir),
+                                                     closure_notify_cb, NULL);
 
   desktop_file_dir_unindexed_init (dir);
 
@@ -1487,55 +1517,51 @@ desktop_file_dirs_lock (void)
 
   /* If the XDG dirs configuration has changed (expected only during tests),
    * clear and reload the state. */
-  if (g_strcmp0 (desktop_file_dirs_config_dir, user_config_dir) != 0)
+  if (desktop_file_dirs_config_dir != NULL &&
+      g_strcmp0 (desktop_file_dirs_config_dir, user_config_dir) != 0)
     {
       g_debug ("%s: Resetting desktop app info dirs from %s to %s",
                G_STRFUNC, desktop_file_dirs_config_dir, user_config_dir);
 
-      for (i = 0; i < n_desktop_file_dirs; i++)
-        desktop_file_dir_reset (&desktop_file_dirs[i]);
-      g_clear_pointer (&desktop_file_dirs, g_free);
-      n_desktop_file_dirs = 0;
-      desktop_file_dir_user_data_index = 0;
+      g_ptr_array_set_size (desktop_file_dirs, 0);
+      g_clear_pointer (&desktop_file_dir_user_config, desktop_file_dir_unref);
+      g_clear_pointer (&desktop_file_dir_user_data, desktop_file_dir_unref);
     }
 
-  if (desktop_file_dirs == NULL)
+  if (desktop_file_dirs == NULL || desktop_file_dirs->len == 0)
     {
       const char * const *dirs;
-      GArray *tmp;
       gint i;
 
-      tmp = g_array_new (FALSE, FALSE, sizeof (DesktopFileDir));
+      if (desktop_file_dirs == NULL)
+        desktop_file_dirs = g_ptr_array_new_with_free_func ((GDestroyNotify) desktop_file_dir_unref);
 
       /* First, the configs.  Highest priority: the user's ~/.config */
-      desktop_file_dir_create_for_config (tmp, user_config_dir);
+      desktop_file_dir_user_config = desktop_file_dir_new_for_config (user_config_dir);
+      g_ptr_array_add (desktop_file_dirs, desktop_file_dir_ref (desktop_file_dir_user_config));
 
       /* Next, the system configs (/etc/xdg, and so on). */
       dirs = g_get_system_config_dirs ();
       for (i = 0; dirs[i]; i++)
-        desktop_file_dir_create_for_config (tmp, dirs[i]);
+        g_ptr_array_add (desktop_file_dirs, desktop_file_dir_new_for_config (dirs[i]));
 
       /* Now the data.  Highest priority: the user's ~/.local/share/applications */
-      desktop_file_dir_user_data_index = tmp->len;
-      desktop_file_dir_create (tmp, g_get_user_data_dir ());
+      desktop_file_dir_user_data = desktop_file_dir_new (g_get_user_data_dir ());
+      g_ptr_array_add (desktop_file_dirs, desktop_file_dir_ref (desktop_file_dir_user_data));
 
       /* Following that, XDG_DATA_DIRS/applications, in order */
       dirs = g_get_system_data_dirs ();
       for (i = 0; dirs[i]; i++)
-        desktop_file_dir_create (tmp, dirs[i]);
+        g_ptr_array_add (desktop_file_dirs, desktop_file_dir_new (dirs[i]));
 
       /* The list of directories will never change after this, unless
        * g_get_user_config_dir() changes due to %G_TEST_OPTION_ISOLATE_DIRS. */
-      desktop_file_dirs = (DesktopFileDir *) tmp->data;
-      n_desktop_file_dirs = tmp->len;
       desktop_file_dirs_config_dir = user_config_dir;
-
-      g_array_free (tmp, FALSE);
     }
 
-  for (i = 0; i < n_desktop_file_dirs; i++)
-    if (!desktop_file_dirs[i].is_setup)
-      desktop_file_dir_init (&desktop_file_dirs[i]);
+  for (i = 0; i < desktop_file_dirs->len; i++)
+    if (!((DesktopFileDir *) g_ptr_array_index (desktop_file_dirs, i))->is_setup)
+      desktop_file_dir_init (g_ptr_array_index (desktop_file_dirs, i));
 }
 
 static void
@@ -1549,8 +1575,8 @@ desktop_file_dirs_invalidate_user_config (void)
 {
   g_mutex_lock (&desktop_file_dir_lock);
 
-  if (n_desktop_file_dirs)
-    desktop_file_dir_reset (&desktop_file_dirs[desktop_file_dir_user_config_index]);
+  if (desktop_file_dir_user_config != NULL)
+    desktop_file_dir_reset (desktop_file_dir_user_config);
 
   g_mutex_unlock (&desktop_file_dir_lock);
 }
@@ -1560,8 +1586,8 @@ desktop_file_dirs_invalidate_user_data (void)
 {
   g_mutex_lock (&desktop_file_dir_lock);
 
-  if (n_desktop_file_dirs)
-    desktop_file_dir_reset (&desktop_file_dirs[desktop_file_dir_user_data_index]);
+  if (desktop_file_dir_user_data != NULL)
+    desktop_file_dir_reset (desktop_file_dir_user_data);
 
   g_mutex_unlock (&desktop_file_dir_lock);
 }
@@ -1950,9 +1976,9 @@ g_desktop_app_info_new (const char *desktop_id)
 
   desktop_file_dirs_lock ();
 
-  for (i = 0; i < n_desktop_file_dirs; i++)
+  for (i = 0; i < desktop_file_dirs->len; i++)
     {
-      appinfo = desktop_file_dir_get_app (&desktop_file_dirs[i], desktop_id);
+      appinfo = desktop_file_dir_get_app (g_ptr_array_index (desktop_file_dirs, i), desktop_id);
 
       if (appinfo)
         break;
@@ -4109,8 +4135,8 @@ g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
   desktop_file_dirs_lock ();
 
   for (i = 0; types[i]; i++)
-    for (j = 0; j < n_desktop_file_dirs; j++)
-      desktop_file_dir_mime_lookup (&desktop_file_dirs[j], types[i], hits, blacklist);
+    for (j = 0; j < desktop_file_dirs->len; j++)
+      desktop_file_dir_mime_lookup (g_ptr_array_index (desktop_file_dirs, j), types[i], hits, blacklist);
 
   /* We will keep the hits past unlocking, so we must dup them */
   for (i = 0; i < hits->len; i++)
@@ -4312,21 +4338,21 @@ g_app_info_get_default_for_type (const char *content_type,
   for (i = 0; types[i]; i++)
     {
       /* Collect all the default apps for this type */
-      for (j = 0; j < n_desktop_file_dirs; j++)
-        desktop_file_dir_default_lookup (&desktop_file_dirs[j], types[i], results);
+      for (j = 0; j < desktop_file_dirs->len; j++)
+        desktop_file_dir_default_lookup (g_ptr_array_index (desktop_file_dirs, j), types[i], results);
 
       /* Consider the associations as well... */
-      for (j = 0; j < n_desktop_file_dirs; j++)
-        desktop_file_dir_mime_lookup (&desktop_file_dirs[j], types[i], results, blacklist);
+      for (j = 0; j < desktop_file_dirs->len; j++)
+        desktop_file_dir_mime_lookup (g_ptr_array_index (desktop_file_dirs, j), types[i], results, blacklist);
 
       /* (If any), see if one of those apps is installed... */
       for (j = 0; j < results->len; j++)
         {
           const gchar *desktop_id = g_ptr_array_index (results, j);
 
-          for (k = 0; k < n_desktop_file_dirs; k++)
+          for (k = 0; k < desktop_file_dirs->len; k++)
             {
-              info = (GAppInfo *) desktop_file_dir_get_app (&desktop_file_dirs[k], desktop_id);
+              info = (GAppInfo *) desktop_file_dir_get_app (g_ptr_array_index (desktop_file_dirs, k), desktop_id);
 
               if (info)
                 {
@@ -4405,8 +4431,8 @@ g_desktop_app_info_get_implementations (const gchar *interface)
 
   desktop_file_dirs_lock ();
 
-  for (i = 0; i < n_desktop_file_dirs; i++)
-    desktop_file_dir_get_implementations (&desktop_file_dirs[i], &result, interface);
+  for (i = 0; i < desktop_file_dirs->len; i++)
+    desktop_file_dir_get_implementations (g_ptr_array_index (desktop_file_dirs, i), &result, interface);
 
   desktop_file_dirs_unlock ();
 
@@ -4464,11 +4490,11 @@ g_desktop_app_info_search (const gchar *search_string)
 
   reset_total_search_results ();
 
-  for (i = 0; i < n_desktop_file_dirs; i++)
+  for (i = 0; i < desktop_file_dirs->len; i++)
     {
       for (j = 0; search_tokens[j]; j++)
         {
-          desktop_file_dir_search (&desktop_file_dirs[i], search_tokens[j]);
+          desktop_file_dir_search (g_ptr_array_index (desktop_file_dirs, i), search_tokens[j]);
           merge_token_results (j == 0);
         }
       merge_directory_results ();
@@ -4543,8 +4569,8 @@ g_app_info_get_all (void)
 
   desktop_file_dirs_lock ();
 
-  for (i = 0; i < n_desktop_file_dirs; i++)
-    desktop_file_dir_get_all (&desktop_file_dirs[i], apps);
+  for (i = 0; i < desktop_file_dirs->len; i++)
+    desktop_file_dir_get_all (g_ptr_array_index (desktop_file_dirs, i), apps);
 
   desktop_file_dirs_unlock ();
 

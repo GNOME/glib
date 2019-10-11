@@ -87,6 +87,7 @@ g_local_file_monitor_new_in_worker (const gchar           *pathname,
                                     GFileMonitorFlags      flags,
                                     GFileMonitorCallback   callback,
                                     gpointer               user_data,
+                                    GClosureNotify         destroy_user_data,
                                     GError               **error);
 
 /* for implementations of GLocalFileMonitor */

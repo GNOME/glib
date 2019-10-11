@@ -887,6 +887,7 @@ g_local_file_monitor_new_in_worker (const gchar           *pathname,
                                     GFileMonitorFlags      flags,
                                     GFileMonitorCallback   callback,
                                     gpointer               user_data,
+                                    GClosureNotify         destroy_user_data,
                                     GError               **error)
 {
   GLocalFileMonitor *monitor;
@@ -899,7 +900,8 @@ g_local_file_monitor_new_in_worker (const gchar           *pathname,
   if (monitor)
     {
       if (callback)
-        g_signal_connect (monitor, "changed", G_CALLBACK (callback), user_data);
+        g_signal_connect_data (monitor, "changed", G_CALLBACK (callback),
+                               user_data, destroy_user_data, 0  /* flags */);
 
       g_local_file_monitor_start (monitor, pathname, is_directory, flags, GLIB_PRIVATE_CALL(g_get_worker_context) ());
     }
