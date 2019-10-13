@@ -29,6 +29,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#ifdef G_OS_UNIX
+#include <sys/utsname.h>
+#endif
 #ifdef G_OS_WIN32
 #include <windows.h>
 #endif
@@ -522,6 +525,9 @@ test_os_info (void)
 {
   gchar *name;
   gchar *contents = NULL;
+#ifdef G_OS_UNIX
+  struct utsname info;
+#endif
 
   /* Whether this is implemented or not, it must not crash */
   name = g_get_os_info (G_OS_INFO_KEY_NAME);
@@ -534,7 +540,8 @@ test_os_info (void)
   g_assert_nonnull (name);
 #elif defined (G_OS_UNIX)
   if (g_file_get_contents ("/etc/os-release", &contents, NULL, NULL) ||
-      g_file_get_contents ("/usr/lib/os-release", &contents, NULL, NULL))
+      g_file_get_contents ("/usr/lib/os-release", &contents, NULL, NULL) ||
+      uname (&info) == 0)
     g_assert_nonnull (name);
   else
     g_test_skip ("os-release(5) API not implemented on this platform");
