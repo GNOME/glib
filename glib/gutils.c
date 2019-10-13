@@ -1177,7 +1177,7 @@ g_get_os_info (const gchar *key_name)
 {
 #if defined (__APPLE__)
   if (g_strcmp0 (key_name, G_OS_INFO_KEY_NAME) == 0)
-    return g_strdup (_("macOS"));
+    return g_strdup ("macOS");
   else
     return NULL;
 #elif defined (G_OS_UNIX)
@@ -1236,7 +1236,7 @@ g_get_os_info (const gchar *key_name)
   return g_steal_pointer (&result);
 #elif defined (G_OS_WIN32)
   if (g_strcmp0 (key_name, G_OS_INFO_KEY_NAME) == 0)
-    return g_strdup (_("Windows"));
+    return g_strdup ("Windows");
   else
     return NULL;
 #endif
