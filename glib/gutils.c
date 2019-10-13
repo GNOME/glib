@@ -42,6 +42,7 @@
 #include <sys/stat.h>
 #ifdef G_OS_UNIX
 #include <pwd.h>
+#include <sys/utsname.h>
 #include <unistd.h>
 #endif
 #include <sys/types.h>
@@ -1350,56 +1351,17 @@ get_windows_version (gboolean with_windows)
 }
 #endif
 
-/**
- * g_get_os_info:
- * @key_name: a key for the OS info being requested, for example %G_OS_INFO_KEY_NAME.
- *
- * Get information about the operating system.
- *
- * On Linux this comes from the /etc/os-release file. On other systems, it may
- * come from a variety of sources. You can either use the standard key names
- * like %G_OS_INFO_KEY_NAME or pass any UTF-8 string key name. For example,
- * /etc/os-release provides a number of other less commonly used values that may
- * be useful. No key is guaranteed to be provided, so the caller should always
- * check if the result is %NULL.
- *
- * Returns: (nullable): The associated value for the requested key or %NULL if
- *   this information is not provided.
- *
- * Since: 2.64
- **/
-gchar *
-g_get_os_info (const gchar *key_name)
+#ifdef G_OS_UNIX
+static gchar *
+get_os_info_from_os_release (const gchar *key_name,
+                             const gchar *buffer)
 {
-#if defined (__APPLE__)
-  if (g_strcmp0 (key_name, G_OS_INFO_KEY_NAME) == 0)
-    return g_strdup ("macOS");
-  else
-    return NULL;
-#elif defined (G_OS_UNIX)
-  gchar *buffer;
-  gchar *prefix;
   GStrv lines;
-  int i;
+  gchar *prefix;
+  size_t i;
   gchar *result = NULL;
-  GError *error = NULL;
-
-  g_return_val_if_fail (key_name != NULL, NULL);
-
-  if (!g_file_get_contents ("/etc/os-release", &buffer, NULL, &error))
-    {
-      gboolean file_missing;
-
-      file_missing = g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
-      g_clear_error (&error);
-
-      if (!file_missing ||
-          !g_file_get_contents ("/usr/lib/os-release", &buffer, NULL, NULL))
-        return NULL;
-    }
 
   lines = g_strsplit (buffer, "\n", -1);
-  g_free (buffer);
   prefix = g_strdup_printf ("%s=", key_name);
   for (i = 0; lines[i] != NULL; i++)
     {
@@ -1431,6 +1393,150 @@ g_get_os_info (const gchar *key_name)
     }
 #endif
 
+  return g_steal_pointer (&result);
+}
+
+static gchar *
+get_os_info_from_uname (const gchar *key_name)
+{
+  struct utsname info;
+
+  if (uname (&info) == -1)
+    return NULL;
+
+  if (strcmp (key_name, G_OS_INFO_KEY_NAME) == 0)
+    return g_strdup (info.sysname);
+  else if (strcmp (key_name, G_OS_INFO_KEY_VERSION) == 0)
+    return g_strdup (info.release);
+  else if (strcmp (key_name, G_OS_INFO_KEY_PRETTY_NAME) == 0)
+    return g_strdup_printf ("%s %s", info.sysname, info.release);
+  else if (strcmp (key_name, G_OS_INFO_KEY_ID) == 0)
+    {
+      gchar *result = g_ascii_strdown (info.sysname, -1);
+
+      g_strcanon (result, "abcdefghijklmnopqrstuvwxyz0123456789_-.", '_');
+      return g_steal_pointer (&result);
+    }
+  else if (strcmp (key_name, G_OS_INFO_KEY_VERSION_ID) == 0)
+    {
+      /* We attempt to convert the version string to the format returned by
+       * config.guess, which is the script used to generate target triplets
+       * in GNU autotools. There are a lot of rules in the script. We only
+       * implement a few rules which are easy to understand here.
+       *
+       * config.guess can be found at https://savannah.gnu.org/projects/config.
+       */
+      gchar *result;
+
+      if (strcmp (info.sysname, "NetBSD") == 0)
+        {
+          /* sed -e 's,[-_].*,,' */
+          gssize len = G_MAXSSIZE;
+          const gchar *c;
+
+          if ((c = strchr (info.release, '-')) != NULL)
+            len = MIN (len, c - info.release);
+          if ((c = strchr (info.release, '_')) != NULL)
+            len = MIN (len, c - info.release);
+          if (len == G_MAXSSIZE)
+            len = -1;
+
+          result = g_ascii_strdown (info.release, len);
+        }
+      else if (strcmp (info.sysname, "GNU") == 0)
+        {
+          /* sed -e 's,/.*$,,' */
+          gssize len = -1;
+          const gchar *c = strchr (info.release, '/');
+
+          if (c != NULL)
+            len = c - info.release;
+
+          result = g_ascii_strdown (info.release, len);
+        }
+      else if (g_str_has_prefix (info.sysname, "GNU/") ||
+               strcmp (info.sysname, "FreeBSD") == 0 ||
+               strcmp (info.sysname, "DragonFly") == 0)
+        {
+          /* sed -e 's,[-(].*,,' */
+          gssize len = G_MAXSSIZE;
+          const gchar *c;
+
+          if ((c = strchr (info.release, '-')) != NULL)
+            len = MIN (len, c - info.release);
+          if ((c = strchr (info.release, '(')) != NULL)
+            len = MIN (len, c - info.release);
+          if (len == G_MAXSSIZE)
+            len = -1;
+
+          result = g_ascii_strdown (info.release, len);
+        }
+      else
+        result = g_ascii_strdown (info.release, -1);
+
+      g_strcanon (result, "abcdefghijklmnopqrstuvwxyz0123456789_-.", '_');
+      return g_steal_pointer (&result);
+    }
+  else
+    return NULL;
+}
+#endif
+
+/**
+ * g_get_os_info:
+ * @key_name: a key for the OS info being requested, for example %G_OS_INFO_KEY_NAME.
+ *
+ * Get information about the operating system.
+ *
+ * On Linux this comes from the /etc/os-release file. On other systems, it may
+ * come from a variety of sources. You can either use the standard key names
+ * like %G_OS_INFO_KEY_NAME or pass any UTF-8 string key name. For example,
+ * /etc/os-release provides a number of other less commonly used values that may
+ * be useful. No key is guaranteed to be provided, so the caller should always
+ * check if the result is %NULL.
+ *
+ * Returns: (nullable): The associated value for the requested key or %NULL if
+ *   this information is not provided.
+ *
+ * Since: 2.64
+ **/
+gchar *
+g_get_os_info (const gchar *key_name)
+{
+#if defined (__APPLE__)
+  if (g_strcmp0 (key_name, G_OS_INFO_KEY_NAME) == 0)
+    return g_strdup ("macOS");
+  else
+    return NULL;
+#elif defined (G_OS_UNIX)
+  const gchar * const os_release_files[] = { "/etc/os-release", "/usr/lib/os-release" };
+  gsize i;
+  gchar *buffer = NULL;
+  gchar *result = NULL;
+
+  g_return_val_if_fail (key_name != NULL, NULL);
+
+  for (i = 0; i < G_N_ELEMENTS (os_release_files); i++)
+    {
+      GError *error = NULL;
+      gboolean file_missing;
+
+      if (g_file_get_contents (os_release_files[i], &buffer, NULL, &error))
+        break;
+
+      file_missing = g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+      g_clear_error (&error);
+
+      if (!file_missing)
+        return NULL;
+    }
+
+  if (buffer != NULL)
+    result = get_os_info_from_os_release (key_name, buffer);
+  else
+    result = get_os_info_from_uname (key_name);
+
+  g_free (buffer);
   return g_steal_pointer (&result);
 #elif defined (G_OS_WIN32)
   if (g_strcmp0 (key_name, G_OS_INFO_KEY_NAME) == 0)
