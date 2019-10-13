@@ -1418,6 +1418,7 @@ g_get_os_info (const gchar *key_name)
   g_strfreev (lines);
   g_free (prefix);
 
+#ifdef __linux__
   /* Default values in spec */
   if (result == NULL)
     {
@@ -1428,6 +1429,7 @@ g_get_os_info (const gchar *key_name)
       if (g_str_equal (key_name, G_OS_INFO_KEY_PRETTY_NAME))
         return g_strdup ("Linux");
     }
+#endif
 
   return g_steal_pointer (&result);
 #elif defined (G_OS_WIN32)
