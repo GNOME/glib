@@ -81,6 +81,18 @@
  */
 #undef G_CREDENTIALS_SPOOFING_SUPPORTED
 
+/*
+ * G_CREDENTIALS_PREFER_MESSAGE_PASSING:
+ *
+ * Defined to 1 if the data structure transferred by the message-passing
+ * API is strictly more informative than the one transferred by the
+ * `getsockopt()`-style API, and hence should be preferred, even for
+ * protocols like D-Bus that are defined in terms of the credentials of
+ * the (process that opened the) socket, as opposed to the credentials
+ * of an individual message.
+ */
+#undef G_CREDENTIALS_PREFER_MESSAGE_PASSING
+
 #ifdef __linux__
 #define G_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_USE_LINUX_UCRED 1
@@ -100,6 +112,12 @@
 #define G_CREDENTIALS_NATIVE_SIZE (sizeof (struct cmsgcred))
 #define G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED 1
 #define G_CREDENTIALS_SPOOFING_SUPPORTED 1
+/* GLib doesn't implement it yet, but FreeBSD's getsockopt()-style API
+ * is getpeereid(), which is not as informative as struct cmsgcred -
+ * it does not tell us the PID. As a result, libdbus prefers to use
+ * SCM_CREDS, and if we implement getpeereid() in future, we should
+ * do the same. */
+#define G_CREDENTIALS_PREFER_MESSAGE_PASSING 1
 
 #elif defined(__NetBSD__)
 #define G_CREDENTIALS_SUPPORTED 1
