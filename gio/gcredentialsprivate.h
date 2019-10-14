@@ -22,6 +22,65 @@
 #include "gio/gcredentials.h"
 #include "gio/gnetworking.h"
 
+/*
+ * G_CREDENTIALS_SUPPORTED:
+ *
+ * Defined to 1 if GCredentials works.
+ */
+#undef G_CREDENTIALS_SUPPORTED
+
+/*
+ * G_CREDENTIALS_USE_LINUX_UCRED, etc.:
+ *
+ * Defined to 1 if GCredentials uses Linux `struct ucred`, etc.
+ */
+#undef G_CREDENTIALS_USE_LINUX_UCRED
+#undef G_CREDENTIALS_USE_FREEBSD_CMSGCRED
+#undef G_CREDENTIALS_USE_NETBSD_UNPCBID
+#undef G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
+#undef G_CREDENTIALS_USE_SOLARIS_UCRED
+
+/*
+ * G_CREDENTIALS_NATIVE_TYPE:
+ *
+ * Defined to one of G_CREDENTIALS_TYPE_LINUX_UCRED, etc.
+ */
+#undef G_CREDENTIALS_NATIVE_TYPE
+
+/*
+ * G_CREDENTIALS_NATIVE_SIZE:
+ *
+ * Defined to the size of the %G_CREDENTIALS_NATIVE_TYPE
+ */
+#undef G_CREDENTIALS_NATIVE_SIZE
+
+/*
+ * G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED:
+ *
+ * Defined to 1 if we have a message-passing API in which credentials
+ * are attached to a particular message, such as `SCM_CREDENTIALS` on Linux
+ * or `SCM_CREDS` on FreeBSD.
+ */
+#undef G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+
+/*
+ * G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED:
+ *
+ * Defined to 1 if we have a `getsockopt()`-style API in which one end of
+ * a socket connection can directly query the credentials of the process
+ * that initiated the other end, such as `getsockopt SO_PEERCRED` on Linux
+ * or `getpeereid()` on multiple operating systems.
+ */
+#undef G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED
+
+/*
+ * G_CREDENTIALS_SPOOFING_SUPPORTED:
+ *
+ * Defined to 1 if privileged processes can spoof their credentials when
+ * using the message-passing API.
+ */
+#undef G_CREDENTIALS_SPOOFING_SUPPORTED
+
 #ifdef __linux__
 #define G_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_USE_LINUX_UCRED 1
