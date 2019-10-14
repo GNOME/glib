@@ -1154,6 +1154,202 @@ g_set_application_name (const gchar *application_name)
     g_warning ("g_set_application_name() called multiple times");
 }
 
+#ifdef G_OS_WIN32
+/* For the past versions we can just
+ * hardcode all the names.
+ */
+static const struct winver
+{
+  gint major;
+  gint minor;
+  gint sp;
+  const char *version;
+  const char *spversion;
+} versions[] =
+{
+  {6, 2, 0, "8", ""},
+  {6, 1, 1, "7", " SP1"},
+  {6, 1, 0, "7", ""},
+  {6, 0, 2, "Vista", " SP2"},
+  {6, 0, 1, "Vista", " SP1"},
+  {6, 0, 0, "Vista", ""},
+  {5, 1, 3, "XP", " SP3"},
+  {5, 1, 2, "XP", " SP2"},
+  {5, 1, 1, "XP", " SP1"},
+  {5, 1, 0, "XP", ""},
+  {0, 0, 0, NULL, NULL},
+};
+
+static gchar *
+get_registry_str (HKEY root_key, const wchar_t *path, const wchar_t *value_name)
+{
+  HKEY key_handle;
+  DWORD req_value_data_size;
+  DWORD req_value_data_size2;
+  LONG status;
+  DWORD value_type_w;
+  DWORD value_type_w2;
+  char *req_value_data;
+  gchar *result;
+
+  status = RegOpenKeyExW (root_key, path, 0, KEY_READ, &key_handle);
+  if (status != ERROR_SUCCESS)
+    return NULL;
+
+  req_value_data_size = 0;
+  status = RegQueryValueExW (key_handle,
+                             value_name,
+                             NULL,
+                             &value_type_w,
+                             NULL,
+                             &req_value_data_size);
+
+  if (status != ERROR_MORE_DATA && status != ERROR_SUCCESS)
+    {
+      RegCloseKey (key_handle);
+
+      return NULL;
+    }
+
+  req_value_data = g_malloc (req_value_data_size);
+  req_value_data_size2 = req_value_data_size;
+
+  status = RegQueryValueExW (key_handle,
+                             value_name,
+                             NULL,
+                             &value_type_w2,
+                             (gpointer) req_value_data,
+                             &req_value_data_size2);
+
+  result = NULL;
+
+  if (status == ERROR_SUCCESS && value_type_w2 == REG_SZ)
+    result = g_utf16_to_utf8 ((gunichar2 *) req_value_data,
+                              req_value_data_size / sizeof (gunichar2),
+                              NULL,
+                              NULL,
+                              NULL);
+
+  g_free (req_value_data);
+  RegCloseKey (key_handle);
+
+  return result;
+}
+
+/* Windows 8.1 can be either plain or with Update 1,
+ * depending on its build number (9200 or 9600).
+ */
+static gchar *
+get_windows_8_1_update (void)
+{
+  gchar *current_build;
+  gchar *result = NULL;
+
+  current_build = get_registry_str (HKEY_LOCAL_MACHINE,
+                                    L"SOFTWARE"
+                                    L"\\Microsoft"
+                                    L"\\Windows NT"
+                                    L"\\CurrentVersion",
+                                    L"CurrentBuild");
+
+  if (current_build != NULL)
+    {
+      wchar_t *end;
+      long build = wcstol ((const wchar_t *) current_build, &end, 10);
+
+      if (build <= INT_MAX &&
+          build >= INT_MIN &&
+          errno == 0 &&
+          *end == L'\0')
+        {
+          if (build >= 9600)
+            result = g_strdup ("Update 1");
+        }
+    }
+
+  g_clear_pointer (&current_build, g_free);
+
+  return result;
+}
+
+static gchar *
+get_windows_version (gboolean with_windows)
+{
+  GString *version = g_string_new (NULL);
+
+  if (g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_ANY))
+    {
+      gchar *win10_release;
+
+      g_string_append (version, "10");
+
+      if (!g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_WORKSTATION))
+        g_string_append (version, " Server");
+
+      /* Windows 10 is identified by its release number, such as
+       * 1511, 1607, 1703, 1709, 1803, 1809 or 1903.
+       * The first version of Windows 10 has no release number.
+       */
+      win10_release = get_registry_str (HKEY_LOCAL_MACHINE,
+                                        L"SOFTWARE"
+                                        L"\\Microsoft"
+                                        L"\\Windows NT"
+                                        L"\\CurrentVersion",
+                                        L"ReleaseId");
+
+      if (win10_release != NULL)
+        g_string_append_printf (version, " %s", win10_release);
+
+      g_free (win10_release);
+    }
+  else if (g_win32_check_windows_version (6, 3, 0, G_WIN32_OS_ANY))
+    {
+      gchar *win81_update;
+
+      g_string_append (version, "8.1");
+
+      if (!g_win32_check_windows_version (6, 3, 0, G_WIN32_OS_WORKSTATION))
+        g_string_append (version, " Server");
+
+      win81_update = get_windows_8_1_update ();
+
+      if (win81_update != NULL)
+        g_string_append_printf (version, " %s", win81_update);
+
+      g_free (win81_update);
+    }
+  else
+    {
+      gint i;
+
+      for (i = 0; versions[i].major > 0; i++)
+        {
+          if (!g_win32_check_windows_version (versions[i].major, versions[i].minor, versions[i].sp, G_WIN32_OS_ANY))
+            continue;
+
+          g_string_append (version, versions[i].version);
+
+          if (!g_win32_check_windows_version (versions[i].major, versions[i].minor, versions[i].sp, G_WIN32_OS_WORKSTATION))
+            g_string_append (version, " Server");
+
+          g_string_append (version, versions[i].spversion);
+        }
+    }
+
+  if (version->len == 0)
+    {
+      g_string_free (version, TRUE);
+
+      return NULL;
+    }
+
+  if (with_windows)
+    g_string_prepend (version, "Windows ");
+
+  return g_string_free (version, FALSE);
+}
+#endif
+
 /**
  * g_get_os_info:
  * @key_name: a key for the OS info being requested, for example %G_OS_INFO_KEY_NAME.
@@ -1236,7 +1432,39 @@ g_get_os_info (const gchar *key_name)
   return g_steal_pointer (&result);
 #elif defined (G_OS_WIN32)
   if (g_strcmp0 (key_name, G_OS_INFO_KEY_NAME) == 0)
-    return g_strdup (_("Windows"));
+    return g_strdup ("Windows");
+  else if (g_strcmp0 (key_name, G_OS_INFO_KEY_ID) == 0)
+    return g_strdup ("windows");
+  else if (g_strcmp0 (key_name, G_OS_INFO_KEY_PRETTY_NAME) == 0)
+    /* Windows XP SP2 or Windows 10 1903 or Windows 7 Server SP1 */
+    return get_windows_version (TRUE);
+  else if (g_strcmp0 (key_name, G_OS_INFO_KEY_VERSION) == 0)
+    /* XP SP2 or 10 1903 or 7 Server SP1 */
+    return get_windows_version (FALSE);
+  else if (g_strcmp0 (key_name, G_OS_INFO_KEY_VERSION_ID) == 0)
+    {
+      /* xp_sp2 or 10_1903 or 7_server_sp1 */
+      gchar *result;
+      gchar *version = get_windows_version (FALSE);
+
+      if (version == NULL)
+        return NULL;
+
+      result = g_ascii_strdown (version, -1);
+      g_free (version);
+
+      return g_strcanon (result, "abcdefghijklmnopqrstuvwxyz0123456789_-.", '_');
+    }
+  else if (g_strcmp0 (key_name, G_OS_INFO_KEY_HOME_URL) == 0)
+    return g_strdup ("https://microsoft.com/windows/");
+  else if (g_strcmp0 (key_name, G_OS_INFO_KEY_DOCUMENTATION_URL) == 0)
+    return g_strdup ("https://docs.microsoft.com/");
+  else if (g_strcmp0 (key_name, G_OS_INFO_KEY_SUPPORT_URL) == 0)
+    return g_strdup ("https://support.microsoft.com/");
+  else if (g_strcmp0 (key_name, G_OS_INFO_KEY_BUG_REPORT_URL) == 0)
+    return g_strdup ("https://support.microsoft.com/contactus/");
+  else if (g_strcmp0 (key_name, G_OS_INFO_KEY_PRIVACY_POLICY_URL) == 0)
+    return g_strdup ("https://privacy.microsoft.com/");
   else
     return NULL;
 #endif
