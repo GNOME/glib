@@ -31,6 +31,7 @@
 #include "gdbusutils.h"
 #include "gioenumtypes.h"
 #include "gcredentials.h"
+#include "gcredentialsprivate.h"
 #include "gdbusprivate.h"
 #include "giostream.h"
 #include "gdatainputstream.h"
@@ -996,9 +997,31 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
 
   g_data_input_stream_set_newline_type (dis, G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
 
-  /* first read the NUL-byte */
+  /* read the NUL-byte, possibly with credentials attached */
 #ifdef G_OS_UNIX
-  if (G_IS_UNIX_CONNECTION (auth->priv->stream))
+#ifndef G_CREDENTIALS_PREFER_MESSAGE_PASSING
+  if (G_IS_SOCKET_CONNECTION (auth->priv->stream))
+    {
+      GSocket *sock = g_socket_connection_get_socket (G_SOCKET_CONNECTION (auth->priv->stream));
+
+      local_error = NULL;
+      credentials = g_socket_get_credentials (sock, &local_error);
+
+      if (credentials == NULL && !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
+        {
+          g_propagate_error (error, local_error);
+          goto out;
+        }
+      else
+        {
+          /* Clear the error indicator, so we can retry with
+           * g_unix_connection_receive_credentials() if necessary */
+          g_clear_error (&local_error);
+        }
+    }
+#endif
+
+  if (credentials == NULL && G_IS_UNIX_CONNECTION (auth->priv->stream))
     {
       local_error = NULL;
       credentials = g_unix_connection_receive_credentials (G_UNIX_CONNECTION (auth->priv->stream),
