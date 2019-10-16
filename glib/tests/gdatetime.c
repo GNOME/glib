@@ -2585,11 +2585,11 @@ test_identifier (void)
   g_time_zone_unref (tz);
 
   /* System timezone. We can’t change this, but we can at least assert that
-   * the identifier is non-NULL and doesn’t start with a slash. */
+   * the identifier is non-NULL and non-empty. */
   tz = g_time_zone_new (NULL);
+  g_test_message ("System time zone identifier: %s", g_time_zone_get_identifier (tz));
   g_assert_nonnull (g_time_zone_get_identifier (tz));
   g_assert_cmpstr (g_time_zone_get_identifier (tz), !=, "");
-  g_assert_true (*g_time_zone_get_identifier (tz) != '/');
   g_time_zone_unref (tz);
 
   /* Local timezone tests. */
