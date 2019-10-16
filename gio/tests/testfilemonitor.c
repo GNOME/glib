@@ -27,6 +27,8 @@ setup (Fixture       *fixture,
   fixture->tmp_dir = g_file_new_for_path (path);
 
   g_test_message ("Using temporary directory: %s", path);
+
+  g_free (path);
 }
 
 static void
