@@ -387,6 +387,7 @@ test_atomic_replace (Fixture       *fixture,
 
   g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data.loop);
+  g_file_monitor_cancel (data.monitor);
   g_object_unref (data.monitor);
   g_object_unref (data.file);
 }
@@ -492,6 +493,7 @@ test_file_changes (Fixture       *fixture,
 
   g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data.loop);
+  g_file_monitor_cancel (data.monitor);
   g_object_unref (data.monitor);
   g_object_unref (data.file);
 }
@@ -610,6 +612,7 @@ test_dir_monitor (Fixture       *fixture,
 
   g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data.loop);
+  g_file_monitor_cancel (data.monitor);
   g_object_unref (data.monitor);
   g_object_unref (data.file);
 }
@@ -707,6 +710,7 @@ test_dir_non_existent (Fixture       *fixture,
 
   g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data.loop);
+  g_file_monitor_cancel (data.monitor);
   g_object_unref (data.monitor);
   g_object_unref (data.file);
 }
@@ -1001,6 +1005,7 @@ test_file_hard_links (Fixture       *fixture,
 
   g_list_free_full (data.events, (GDestroyNotify) free_recorded_event);
   g_main_loop_unref (data.loop);
+  g_file_monitor_cancel (data.monitor);
   g_object_unref (data.monitor);
   g_object_unref (data.file);
   g_object_unref (data.output_stream);
