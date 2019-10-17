@@ -1415,9 +1415,9 @@ test_rm_isolate_dirs (void)
  * - `--verbose`: Run tests verbosely.
  * - `-q`, `--quiet`: Run tests quietly.
  * - `-p PATH`: Execute all tests matching the given path.
- * - `-s PATH`: Skip all tests matching the given path.
  *   This can also be used to force a test to run that would otherwise
  *   be skipped (ie, a test whose name contains "/subprocess").
+ * - `-s PATH`: Skip all tests matching the given path.
  * - `-m {perf|slow|thorough|quick|undefined|no-undefined}`: Execute tests according to these test modes:
  *
  *   `perf`: Performance tests, may take long and report results (off by default).
