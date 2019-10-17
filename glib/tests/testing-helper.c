@@ -120,6 +120,7 @@ main (int   argc,
       g_test_add_func ("/b/a", test_pass);
       g_test_add_func ("/b/b", test_pass);
       g_test_add_func ("/c/a", test_pass);
+      g_test_add_func ("/c/b", test_pass);
       g_test_add_func ("/d/a", test_pass);
     }
   else if (g_strcmp0 (argv1, "summary") == 0)
