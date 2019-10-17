@@ -2709,6 +2709,13 @@ g_test_run_suite_internal (GTestSuite *suite,
 
   g_return_val_if_fail (suite != NULL, -1);
 
+  if (g_slist_find_custom (test_paths_skipped, old_name, (GCompareFunc)g_strcmp0))
+    {
+    if (g_test_verbose ())
+      g_print ("GTest: skipping: %s\n", old_name);
+    return 0;
+    }
+
   g_test_log (G_TEST_LOG_START_SUITE, suite->name, NULL, 0, NULL);
 
   for (iter = suite->cases; iter; iter = iter->next)
