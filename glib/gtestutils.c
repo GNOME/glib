@@ -2709,34 +2709,42 @@ g_test_run_suite_internal (GTestSuite *suite,
 
   g_return_val_if_fail (suite != NULL, -1);
 
-  g_test_log (G_TEST_LOG_START_SUITE, suite->name, NULL, 0, NULL);
-
-  for (iter = suite->cases; iter; iter = iter->next)
+  if (!g_slist_find_custom (test_paths_skipped, old_name, (GCompareFunc)g_strcmp0))
     {
-      GTestCase *tc = iter->data;
+      g_test_log (G_TEST_LOG_START_SUITE, suite->name, NULL, 0, NULL);
 
-      test_run_name = g_build_path ("/", old_name, tc->name, NULL);
-      if (test_should_run (test_run_name, path))
+      for (iter = suite->cases; iter; iter = iter->next)
         {
-          if (!test_case_run (tc))
-            n_bad++;
+          GTestCase *tc = iter->data;
+
+          test_run_name = g_build_path ("/", old_name, tc->name, NULL);
+          if (test_should_run (test_run_name, path))
+            {
+              if (!test_case_run (tc))
+                n_bad++;
+            }
+          g_free (test_run_name);
         }
-      g_free (test_run_name);
+
+      for (iter = suite->suites; iter; iter = iter->next)
+        {
+          GTestSuite *ts = iter->data;
+
+          test_run_name = g_build_path ("/", old_name, ts->name, NULL);
+          if (!path || path_has_prefix (path, test_run_name))
+            n_bad += g_test_run_suite_internal (ts, path);
+          g_free (test_run_name);
+        }
+
+      g_test_log (G_TEST_LOG_STOP_SUITE, suite->name, NULL, 0, NULL);
     }
-
-  for (iter = suite->suites; iter; iter = iter->next)
+  else
     {
-      GTestSuite *ts = iter->data;
-
-      test_run_name = g_build_path ("/", old_name, ts->name, NULL);
-      if (!path || path_has_prefix (path, test_run_name))
-        n_bad += g_test_run_suite_internal (ts, path);
-      g_free (test_run_name);
+    if (g_test_verbose ())
+      g_print ("GTest: skipping: %s\n", old_name);
     }
 
   test_run_name = old_name;
-
-  g_test_log (G_TEST_LOG_STOP_SUITE, suite->name, NULL, 0, NULL);
 
   return n_bad;
 }
@@ -2745,26 +2753,33 @@ static int
 g_test_suite_count (GTestSuite *suite)
 {
   int n = 0;
+  gchar *old_name = test_run_name;
   GSList *iter;
 
   g_return_val_if_fail (suite != NULL, -1);
 
-  for (iter = suite->cases; iter; iter = iter->next)
+  if (!g_slist_find_custom (test_paths_skipped, old_name, (GCompareFunc)g_strcmp0))
     {
-      GTestCase *tc = iter->data;
 
-      if (strcmp (tc->name, "subprocess") != 0)
-        n++;
+      for (iter = suite->cases; iter; iter = iter->next)
+        {
+          GTestCase *tc = iter->data;
+
+          if (strcmp (tc->name, "subprocess") != 0)
+            n++;
+        }
+
+      for (iter = suite->suites; iter; iter = iter->next)
+        {
+          GTestSuite *ts = iter->data;
+
+          test_run_name = g_build_path ("/", old_name, ts->name, NULL);
+          if (strcmp (ts->name, "subprocess") != 0)
+            n += g_test_suite_count (ts);
+        }
     }
 
-  for (iter = suite->suites; iter; iter = iter->next)
-    {
-      GTestSuite *ts = iter->data;
-
-      if (strcmp (ts->name, "subprocess") != 0)
-        n += g_test_suite_count (ts);
-    }
-
+  test_run_name = old_name;
   return n;
 }
 
@@ -2793,9 +2808,8 @@ g_test_run_suite (GTestSuite *suite)
   g_return_val_if_fail (g_test_run_once == TRUE, -1);
 
   g_test_run_once = FALSE;
-  test_count = g_test_suite_count (suite);
-
   test_run_name = g_strdup_printf ("/%s", suite->name);
+  test_count = g_test_suite_count (suite);
 
   if (test_paths)
     {
