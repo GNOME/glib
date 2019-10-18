@@ -92,7 +92,7 @@ test_types (void)
   g_assert_true (ip == 0);
 
   g_atomic_pointer_set (&gs, 0);
-  vp2 = g_atomic_pointer_get (&gs);
+  vp2 = (gpointer) g_atomic_pointer_get (&gs);
   gs2 = (gsize) vp2;
   g_assert_cmpuint (gs2, ==, 0);
   res = g_atomic_pointer_compare_and_exchange (&gs, 0, 0);
