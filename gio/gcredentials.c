@@ -262,6 +262,35 @@ g_credentials_to_string (GCredentials *credentials)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#if G_CREDENTIALS_USE_LINUX_UCRED
+/*
+ * Check whether @native contains invalid data. If getsockopt SO_PEERCRED
+ * is used on a TCP socket, it succeeds but yields a credentials structure
+ * with pid 0, uid -1 and gid -1. Similarly, if SO_PASSCRED is used on a
+ * receiving Unix socket when the sending socket did not also enable
+ * SO_PASSCRED, it can succeed but yield a credentials structure with
+ * pid 0, uid /proc/sys/kernel/overflowuid and gid
+ * /proc/sys/kernel/overflowgid.
+ */
+static gboolean
+linux_ucred_check_valid (struct ucred  *native,
+                         GError       **error)
+{
+  if (native->pid == 0
+      || native->uid == -1
+      || native->gid == -1)
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_DATA,
+                           _("GCredentials contains invalid data"));
+      return FALSE;
+    }
+
+  return TRUE;
+}
+#endif
+
 /**
  * g_credentials_is_same_user:
  * @credentials: A #GCredentials.
@@ -291,7 +320,8 @@ g_credentials_is_same_user (GCredentials  *credentials,
 
   ret = FALSE;
 #if G_CREDENTIALS_USE_LINUX_UCRED
-  if (credentials->native.uid == other_credentials->native.uid)
+  if (linux_ucred_check_valid (&credentials->native, NULL)
+      && credentials->native.uid == other_credentials->native.uid)
     ret = TRUE;
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   if (credentials->native.cmcred_euid == other_credentials->native.cmcred_euid)
@@ -450,7 +480,10 @@ g_credentials_get_unix_user (GCredentials    *credentials,
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
 #if G_CREDENTIALS_USE_LINUX_UCRED
-  ret = credentials->native.uid;
+  if (linux_ucred_check_valid (&credentials->native, error))
+    ret = credentials->native.uid;
+  else
+    ret = -1;
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   ret = credentials->native.cmcred_euid;
 #elif G_CREDENTIALS_USE_NETBSD_UNPCBID
@@ -496,7 +529,10 @@ g_credentials_get_unix_pid (GCredentials    *credentials,
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
 #if G_CREDENTIALS_USE_LINUX_UCRED
-  ret = credentials->native.pid;
+  if (linux_ucred_check_valid (&credentials->native, error))
+    ret = credentials->native.pid;
+  else
+    ret = -1;
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   ret = credentials->native.cmcred_pid;
 #elif G_CREDENTIALS_USE_NETBSD_UNPCBID
