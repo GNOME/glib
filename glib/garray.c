@@ -1078,6 +1078,39 @@ g_ptr_array_new (void)
  * on the current contents of the array and the caller is
  * responsible for freeing the array elements.
  *
+ * An example of use:
+ * |[<!-- language="C" -->
+ * g_autoptr(GPtrArray) chunk_buffer = g_ptr_array_new_with_free_func (g_bytes_unref);
+ *
+ * // Some part of your application appends a number of chunks to the pointer array.
+ * g_ptr_array_add (chunk_buffer, g_bytes_new_static ("hello", 5));
+ * g_ptr_array_add (chunk_buffer, g_bytes_new_static ("world", 5));
+ *
+ * …
+ *
+ * // Periodically, the chunks need to be sent as an array-and-length to some
+ * // other part of the program.
+ * GBytes **chunks;
+ * gsize n_chunks;
+ *
+ * chunks = g_ptr_array_steal (chunk_buffer, &n_chunks);
+ * for (gsize i = 0; i < n_chunks; i++)
+ *   {
+ *     // Do something with each chunk here, and then free them, since
+ *     // g_ptr_array_steal() transfers ownership of all the elements and the
+ *     // array to the caller.
+ *     …
+ *
+ *     g_bytes_unref (chunks[i]);
+ *   }
+ *
+ * g_free (chunks);
+ *
+ * // After calling g_ptr_array_steal(), the pointer array can be reused for the
+ * // next set of chunks.
+ * g_assert (chunk_buffer->len == 0);
+ * ]|
+ *
  * Returns: (transfer full): the element data, which should be
  *     freed using g_free().
  *
