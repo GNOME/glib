@@ -2602,27 +2602,24 @@ handle_hello_fd (FooiGenFDPassing *object,
 static gboolean
 handle_no_annotation (FooiGenFDPassing *object,
                       GDBusMethodInvocation *invocation,
-                      GUnixFDList *fd_list,
                       GVariant *arg_greeting,
                       const gchar *arg_greeting_locale)
 {
-  foo_igen_fdpassing_complete_no_annotation (object, invocation, fd_list, arg_greeting, arg_greeting_locale);
+  foo_igen_fdpassing_complete_no_annotation (object, invocation, arg_greeting, arg_greeting_locale);
   return TRUE;
 }
 
 static gboolean
 handle_no_annotation_nested (FooiGenFDPassing *object,
                              GDBusMethodInvocation *invocation,
-                             GUnixFDList *fd_list,
                              GVariant *arg_files)
 {
-  foo_igen_fdpassing_complete_no_annotation_nested (object, invocation, fd_list);
+  foo_igen_fdpassing_complete_no_annotation_nested (object, invocation);
   return TRUE;
 }
 
-/* Test that generated code for methods includes GUnixFDList arguments if:
- * - the method is explicitly annotated as C.UnixFD; or
- * - the method signature contains the type 'h'
+/* Test that generated code for methods includes GUnixFDList arguments if and
+ * only if the method is explicitly annotated as C.UnixFD.
  */
 static void
 test_unix_fd_list (void)
@@ -2633,8 +2630,9 @@ test_unix_fd_list (void)
 
   /* This method is explicitly annotated. */
   iface.handle_hello_fd = handle_hello_fd;
-  /* This one is not, but it's got an in and out 'h' parameter so should
-   * automatically grow GUnixFDList arguments.
+
+  /* This one is not annotated; even though it's got an in and out 'h' parameter, for
+   * backwards compatibility we cannot emit GUnixFDList arguments.
    */
   iface.handle_no_annotation = handle_no_annotation;
   /* This method has an 'h' inside a complex type. */
