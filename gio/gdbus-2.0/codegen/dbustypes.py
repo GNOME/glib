@@ -284,14 +284,10 @@ class Method:
         for a in self.in_args:
             a.post_process(interface_prefix, cns, cns_upper, cns_lower, arg_count)
             arg_count += 1
-            if 'h' in a.signature:
-                self.unix_fd = True
 
         for a in self.out_args:
             a.post_process(interface_prefix, cns, cns_upper, cns_lower, arg_count)
             arg_count += 1
-            if 'h' in a.signature:
-                self.unix_fd = True
 
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
             self.deprecated = True
