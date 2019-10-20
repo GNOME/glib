@@ -204,6 +204,20 @@ typedef gboolean (*GSourceFunc)       (gpointer user_data);
 typedef void     (*GChildWatchFunc)   (GPid     pid,
                                        gint     status,
                                        gpointer user_data);
+
+
+/**
+ * GSourceDisposeFunc:
+ * @source: #GSource that is currently being disposed
+ *
+ * Dispose function for @source. See g_source_set_dispose_function() for
+ * details.
+ *
+ * Since: 2.64
+ */
+GLIB_AVAILABLE_TYPE_IN_2_64
+typedef void (*GSourceDisposeFunc)       (GSource *source);
+
 struct _GSource
 {
   /*< private >*/
@@ -536,6 +550,13 @@ GMainContext *g_main_loop_get_context (GMainLoop    *loop);
 GLIB_AVAILABLE_IN_ALL
 GSource *g_source_new             (GSourceFuncs   *source_funcs,
                                    guint           struct_size);
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_IN_2_64
+void     g_source_set_dispose_function (GSource            *source,
+                                        GSourceDisposeFunc  dispose);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
 GLIB_AVAILABLE_IN_ALL
 GSource *g_source_ref             (GSource        *source);
 GLIB_AVAILABLE_IN_ALL
