@@ -1,3 +1,12 @@
+Overview of changes in GLib 2.62.2
+==================================
+
+* Bugs fixed:
+ - #1896 Use after free when calling g_dbus_connection_flush_sync() in a dedicated thread
+ - !1154 Backport !1152 “gwinhttpvfs: Handle g_get_prgname() returning NULL” to glib-2-62
+ - !1156 Backport !1146 Solaris fixes to glib-2-62
+
+
 Overview of changes in GLib 2.62.1
 ==================================
 
