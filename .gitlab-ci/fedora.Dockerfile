@@ -5,6 +5,7 @@ RUN dnf -y install \
     clang \
     clang-analyzer \
     dbus-daemon \
+    dbus-devel \
     desktop-file-utils \
     elfutils-libelf-devel \
     findutils \
