@@ -44,7 +44,7 @@ msgstr "Sobreescriu l'identificador de l'aplicació"
 
 #: gio/gapplication.c:569
 msgid "Replace the running instance"
-msgstr "Reemplaça una instància en execució"
+msgstr "Reemplaça la instància en execució"
 
 #: gio/gapplication-tool.c:45 gio/gapplication-tool.c:46 gio/gio-tool.c:227
 #: gio/gresource-tool.c:493 gio/gsettings-tool.c:567
@@ -2669,7 +2669,7 @@ msgid ""
 "to modify value"
 msgstr ""
 "La <key name='%s'> emmascara la <key name='%s'> a <schema id='%s'>. "
-"Utilitzeu <override> per modificar-ne el valor."
+"Utilitzeu <override> per modificar-ne el valor"
 
 #: gio/glib-compile-schemas.c:983
 #, c-format
