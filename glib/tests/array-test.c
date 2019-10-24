@@ -1325,6 +1325,150 @@ pointer_array_sort (void)
   g_ptr_array_free (gparray, TRUE);
 }
 
+/* Please keep pointer_array_sort_example() in sync with the doc-comment
+ * of g_ptr_array_sort() */
+
+typedef struct
+{
+  gchar *name;
+  gint size;
+} FileListEntry;
+
+static void
+file_list_entry_free (gpointer p)
+{
+  FileListEntry *entry = p;
+
+  g_free (entry->name);
+  g_free (entry);
+}
+
+static gint
+sort_filelist (gconstpointer a, gconstpointer b)
+{
+   const FileListEntry *entry1 = *((FileListEntry **) a);
+   const FileListEntry *entry2 = *((FileListEntry **) b);
+
+   return g_ascii_strcasecmp (entry1->name, entry2->name);
+}
+
+static void
+pointer_array_sort_example (void)
+{
+  GPtrArray *file_list = NULL;
+  FileListEntry *entry;
+
+  g_test_summary ("Check that the doc-comment for g_ptr_array_sort() is correct");
+
+  file_list = g_ptr_array_new_with_free_func (file_list_entry_free);
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("README");
+  entry->size = 42;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("empty");
+  entry->size = 0;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("aardvark");
+  entry->size = 23;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  g_ptr_array_sort (file_list, sort_filelist);
+
+  g_assert_cmpuint (file_list->len, ==, 3);
+  entry = g_ptr_array_index (file_list, 0);
+  g_assert_cmpstr (entry->name, ==, "aardvark");
+  entry = g_ptr_array_index (file_list, 1);
+  g_assert_cmpstr (entry->name, ==, "empty");
+  entry = g_ptr_array_index (file_list, 2);
+  g_assert_cmpstr (entry->name, ==, "README");
+
+  g_ptr_array_unref (file_list);
+}
+
+/* Please keep pointer_array_sort_with_data_example() in sync with the
+ * doc-comment of g_ptr_array_sort_with_data() */
+
+typedef enum { SORT_NAME, SORT_SIZE } SortMode;
+
+static gint
+sort_filelist_how (gconstpointer a, gconstpointer b, gpointer user_data)
+{
+  gint order;
+  const SortMode sort_mode = GPOINTER_TO_INT (user_data);
+  const FileListEntry *entry1 = *((FileListEntry **) a);
+  const FileListEntry *entry2 = *((FileListEntry **) b);
+
+  switch (sort_mode)
+    {
+    case SORT_NAME:
+      order = g_ascii_strcasecmp (entry1->name, entry2->name);
+      break;
+    case SORT_SIZE:
+      order = entry1->size - entry2->size;
+      break;
+    default:
+      order = 0;
+      break;
+    }
+  return order;
+}
+
+static void
+pointer_array_sort_with_data_example (void)
+{
+  GPtrArray *file_list = NULL;
+  FileListEntry *entry;
+  SortMode sort_mode;
+
+  g_test_summary ("Check that the doc-comment for g_ptr_array_sort_with_data() is correct");
+
+  file_list = g_ptr_array_new_with_free_func (file_list_entry_free);
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("README");
+  entry->size = 42;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("empty");
+  entry->size = 0;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  entry = g_new0 (FileListEntry, 1);
+  entry->name = g_strdup ("aardvark");
+  entry->size = 23;
+  g_ptr_array_add (file_list, g_steal_pointer (&entry));
+
+  sort_mode = SORT_NAME;
+  g_ptr_array_sort_with_data (file_list, sort_filelist_how, GINT_TO_POINTER (sort_mode));
+
+  g_assert_cmpuint (file_list->len, ==, 3);
+  entry = g_ptr_array_index (file_list, 0);
+  g_assert_cmpstr (entry->name, ==, "aardvark");
+  entry = g_ptr_array_index (file_list, 1);
+  g_assert_cmpstr (entry->name, ==, "empty");
+  entry = g_ptr_array_index (file_list, 2);
+  g_assert_cmpstr (entry->name, ==, "README");
+
+  sort_mode = SORT_SIZE;
+  g_ptr_array_sort_with_data (file_list, sort_filelist_how, GINT_TO_POINTER (sort_mode));
+
+  g_assert_cmpuint (file_list->len, ==, 3);
+  entry = g_ptr_array_index (file_list, 0);
+  g_assert_cmpstr (entry->name, ==, "empty");
+  entry = g_ptr_array_index (file_list, 1);
+  g_assert_cmpstr (entry->name, ==, "aardvark");
+  entry = g_ptr_array_index (file_list, 2);
+  g_assert_cmpstr (entry->name, ==, "README");
+
+  g_ptr_array_unref (file_list);
+}
+
 static void
 pointer_array_sort_with_data (void)
 {
@@ -1837,7 +1981,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/pointerarray/array_extend", pointer_array_extend);
   g_test_add_func ("/pointerarray/array_extend_and_steal", pointer_array_extend_and_steal);
   g_test_add_func ("/pointerarray/sort", pointer_array_sort);
+  g_test_add_func ("/pointerarray/sort/example", pointer_array_sort_example);
   g_test_add_func ("/pointerarray/sort-with-data", pointer_array_sort_with_data);
+  g_test_add_func ("/pointerarray/sort-with-data/example", pointer_array_sort_with_data_example);
   g_test_add_func ("/pointerarray/find/empty", pointer_array_find_empty);
   g_test_add_func ("/pointerarray/find/non-empty", pointer_array_find_non_empty);
   g_test_add_func ("/pointerarray/steal", pointer_array_steal);
