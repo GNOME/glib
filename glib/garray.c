@@ -1955,11 +1955,11 @@ g_ptr_array_sort (GPtrArray    *array,
  * sort_filelist (gconstpointer a, gconstpointer b, gpointer user_data)
  * {
  *   gint order;
- *   const SortMode *sort_mode = GPOINTER_TO_INT (user_data);
+ *   const SortMode sort_mode = GPOINTER_TO_INT (user_data);
  *   const FileListEntry *entry1 = *((FileListEntry **) a);
  *   const FileListEntry *entry2 = *((FileListEntry **) b);
  *
- *   switch (*sort_mode)
+ *   switch (sort_mode)
  *     {
  *     case SORT_NAME:
  *       order = g_ascii_strcasecmp (entry1->name, entry2->name);
