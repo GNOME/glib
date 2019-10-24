@@ -1146,7 +1146,7 @@ g_ptr_array_copy (GPtrArray *array,
       for (i = 0; i < array->len; i++)
         new_array->pdata[i] = func (array->pdata[i], user_data);
     }
-  else
+  else if (array->len > 0)
     {
       memcpy (new_array->pdata, array->pdata,
               array->len * sizeof (*array->pdata));
@@ -1797,7 +1797,7 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
         rarray_to_extend->pdata[i + rarray_to_extend->len] =
           func (array->pdata[i], user_data);
     }
-  else
+  else if (array->len > 0)
     {
       memcpy (rarray_to_extend->pdata + rarray_to_extend->len, array->pdata,
               array->len * sizeof (*array->pdata));
