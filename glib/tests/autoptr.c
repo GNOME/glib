@@ -162,6 +162,30 @@ test_g_main_context (void)
 }
 
 static void
+test_g_main_context_pusher (void)
+{
+  GMainContext *context, *old_thread_default;
+
+  context = g_main_context_new ();
+  old_thread_default = g_main_context_get_thread_default ();
+  g_assert_false (old_thread_default == context);
+
+  if (TRUE)
+    {
+      g_autoptr(GMainContextPusher) val = g_main_context_pusher_new (context);
+
+      /* Check it’s now the thread-default main context */
+      g_assert_true (g_main_context_get_thread_default () == context);
+    }
+
+  /* Check it’s now the old thread-default main context */
+  g_assert_false (g_main_context_get_thread_default () == context);
+  g_assert_true (g_main_context_get_thread_default () == old_thread_default);
+
+  g_main_context_unref (context);
+}
+
+static void
 test_g_main_loop (void)
 {
   g_autoptr(GMainLoop) val = g_main_loop_new (NULL, TRUE);
@@ -692,6 +716,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_ptr_array", test_g_ptr_array);
   g_test_add_func ("/autoptr/g_byte_array", test_g_byte_array);
   g_test_add_func ("/autoptr/g_main_context", test_g_main_context);
+  g_test_add_func ("/autoptr/g_main_context_pusher", test_g_main_context_pusher);
   g_test_add_func ("/autoptr/g_main_loop", test_g_main_loop);
   g_test_add_func ("/autoptr/g_source", test_g_source);
   g_test_add_func ("/autoptr/g_mapped_file", test_g_mapped_file);
