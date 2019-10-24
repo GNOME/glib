@@ -1874,6 +1874,8 @@ g_ptr_array_insert (GPtrArray *array,
   rarray->pdata[index_] = data;
 }
 
+/* Please keep this doc-comment in sync with pointer_array_sort_example()
+ * in glib/tests/array-test.c */
 /**
  * g_ptr_array_sort:
  * @array: a #GPtrArray
@@ -1910,7 +1912,7 @@ g_ptr_array_insert (GPtrArray *array,
  * // initialize file_list array and load with many FileListEntry entries
  * ...
  * // now sort it with
- * g_ptr_array_sort (file_list, (GCompareFunc) sort_filelist);
+ * g_ptr_array_sort (file_list, sort_filelist);
  * ]|
  *
  * This is guaranteed to be a stable sort since version 2.32.
@@ -1929,6 +1931,8 @@ g_ptr_array_sort (GPtrArray    *array,
                      NULL);
 }
 
+/* Please keep this doc-comment in sync with
+ * pointer_array_sort_with_data_example() in glib/tests/array-test.c */
 /**
  * g_ptr_array_sort_with_data:
  * @array: a #GPtrArray
@@ -1955,11 +1959,11 @@ g_ptr_array_sort (GPtrArray    *array,
  * sort_filelist (gconstpointer a, gconstpointer b, gpointer user_data)
  * {
  *   gint order;
- *   const SortMode *sort_mode = GPOINTER_TO_INT (user_data);
+ *   const SortMode sort_mode = GPOINTER_TO_INT (user_data);
  *   const FileListEntry *entry1 = *((FileListEntry **) a);
  *   const FileListEntry *entry2 = *((FileListEntry **) b);
  *
- *   switch (*sort_mode)
+ *   switch (sort_mode)
  *     {
  *     case SORT_NAME:
  *       order = g_ascii_strcasecmp (entry1->name, entry2->name);
@@ -1983,7 +1987,7 @@ g_ptr_array_sort (GPtrArray    *array,
  * // now sort it with
  * sort_mode = SORT_NAME;
  * g_ptr_array_sort_with_data (file_list,
- *                             (GCompareFunc) sort_filelist,
+ *                             sort_filelist,
  *                             GINT_TO_POINTER (sort_mode));
  * ]|
  *
