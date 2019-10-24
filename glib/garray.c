@@ -1874,6 +1874,8 @@ g_ptr_array_insert (GPtrArray *array,
   rarray->pdata[index_] = data;
 }
 
+/* Please keep this doc-comment in sync with pointer_array_sort_example()
+ * in glib/tests/array-test.c */
 /**
  * g_ptr_array_sort:
  * @array: a #GPtrArray
@@ -1929,6 +1931,8 @@ g_ptr_array_sort (GPtrArray    *array,
                      NULL);
 }
 
+/* Please keep this doc-comment in sync with
+ * pointer_array_sort_with_data_example() in glib/tests/array-test.c */
 /**
  * g_ptr_array_sort_with_data:
  * @array: a #GPtrArray
