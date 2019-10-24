@@ -782,6 +782,11 @@ g_main_context_invoke
 g_main_context_invoke_full
 
 <SUBSECTION>
+GMainContextPusher
+g_main_context_pusher_new
+g_main_context_pusher_free
+
+<SUBSECTION>
 g_main_context_get_thread_default
 g_main_context_ref_thread_default
 g_main_context_push_thread_default
