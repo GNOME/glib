@@ -595,7 +595,7 @@ g_param_spec_get_redirect_target (GParamSpec *pspec)
 /**
  * g_param_value_set_default:
  * @pspec: a valid #GParamSpec
- * @value: a #GValue of correct type for @pspec
+ * @value: (inout): a #GValue of correct type for @pspec
  *
  * Sets @value to its default value as specified in @pspec.
  */
