@@ -1910,7 +1910,7 @@ g_ptr_array_insert (GPtrArray *array,
  * // initialize file_list array and load with many FileListEntry entries
  * ...
  * // now sort it with
- * g_ptr_array_sort (file_list, (GCompareFunc) sort_filelist);
+ * g_ptr_array_sort (file_list, sort_filelist);
  * ]|
  *
  * This is guaranteed to be a stable sort since version 2.32.
@@ -1983,7 +1983,7 @@ g_ptr_array_sort (GPtrArray    *array,
  * // now sort it with
  * sort_mode = SORT_NAME;
  * g_ptr_array_sort_with_data (file_list,
- *                             (GCompareFunc) sort_filelist,
+ *                             sort_filelist,
  *                             GINT_TO_POINTER (sort_mode));
  * ]|
  *
