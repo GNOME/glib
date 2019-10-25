@@ -37,6 +37,7 @@
 #include "gslice.h"
 #include "gdatetime.h"
 #include "gdate.h"
+#include "genviron.h"
 
 #ifdef G_OS_WIN32
 
@@ -196,6 +197,8 @@ struct _GTimeZone
 
 G_LOCK_DEFINE_STATIC (time_zones);
 static GHashTable/*<string?, GTimeZone>*/ *time_zones;
+G_LOCK_DEFINE_STATIC (tz_local);
+static GTimeZone *tz_local = NULL;
 
 #define MIN_TZYEAR 1916 /* Daylight Savings started in WWI */
 #define MAX_TZYEAR 2999 /* And it's not likely ever to go away, but
@@ -1657,10 +1660,20 @@ g_time_zone_new (const gchar *identifier)
  *
  * Since: 2.26
  **/
+static gpointer
+g_time_zone_utc_init (gpointer data)
+{
+  return g_time_zone_new ("UTC");
+}
+
 GTimeZone *
 g_time_zone_new_utc (void)
 {
-  return g_time_zone_new ("UTC");
+  static GOnce utc_once = G_ONCE_INIT;
+
+  g_once (&utc_once, g_time_zone_utc_init, NULL);
+
+  return g_time_zone_ref ((GTimeZone *)utc_once.retval);
 }
 
 /**
@@ -1683,7 +1696,23 @@ g_time_zone_new_utc (void)
 GTimeZone *
 g_time_zone_new_local (void)
 {
-  return g_time_zone_new (getenv ("TZ"));
+  const gchar *tzenv = g_getenv ("TZ");
+  GTimeZone *tz;
+
+  G_LOCK (tz_local);
+
+  /* Is time zone changed and must be flushed? */
+  if (tz_local && g_strcmp0 (g_time_zone_get_identifier (tz_local), tzenv))
+    g_clear_pointer (&tz_local, g_time_zone_unref);
+
+  if (tz_local == NULL)
+    tz_local = g_time_zone_new (tzenv);
+
+  tz = g_time_zone_ref (tz_local);
+
+  G_UNLOCK (tz_local);
+
+  return tz;
 }
 
 /**
