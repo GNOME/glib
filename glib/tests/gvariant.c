@@ -4180,6 +4180,29 @@ test_parser_integer_bounds (void)
 #undef test_bound
 }
 
+/* Test that #GVariants which recurse too deeply are rejected. */
+static void
+test_parser_recursion (void)
+{
+  GVariant *value = NULL;
+  GError *local_error = NULL;
+  const guint recursion_depth = G_VARIANT_MAX_RECURSION_DEPTH + 1;
+  gchar *silly_dict = g_malloc0 (recursion_depth * 2 + 1);
+  gsize i;
+
+  for (i = 0; i < recursion_depth; i++)
+    {
+      silly_dict[i] = '{';
+      silly_dict[recursion_depth * 2 - i - 1] = '}';
+    }
+
+  value = g_variant_parse (NULL, silly_dict, NULL, NULL, &local_error);
+  g_assert_error (local_error, G_VARIANT_PARSE_ERROR, G_VARIANT_PARSE_ERROR_RECURSION);
+  g_assert_null (value);
+  g_error_free (local_error);
+  g_free (silly_dict);
+}
+
 static void
 test_parse_bad_format_char (void)
 {
@@ -5154,6 +5177,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/byteswap", test_gv_byteswap);
   g_test_add_func ("/gvariant/parser", test_parses);
   g_test_add_func ("/gvariant/parser/integer-bounds", test_parser_integer_bounds);
+  g_test_add_func ("/gvariant/parser/recursion", test_parser_recursion);
   g_test_add_func ("/gvariant/parse-failures", test_parse_failures);
   g_test_add_func ("/gvariant/parse-positional", test_parse_positional);
   g_test_add_func ("/gvariant/parse/subprocess/bad-format-char", test_parse_bad_format_char);
