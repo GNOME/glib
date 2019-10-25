@@ -1309,7 +1309,7 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * `DESKTOP_STARTUP_ID` for the launched operation, if supported.
  *
  * Startup notification IDs are defined in the 
- * [FreeDesktop.Org Startup Notifications standard](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt").
+ * [FreeDesktop.Org Startup Notifications standard](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
  *
  * Returns: a startup notification ID for the application, or %NULL if
  *     not supported.
