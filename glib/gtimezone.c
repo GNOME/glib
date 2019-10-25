@@ -1676,20 +1676,19 @@ g_time_zone_new (const gchar *identifier)
  *
  * Since: 2.26
  **/
-static gpointer
-g_time_zone_utc_init (gpointer data)
-{
-  return g_time_zone_new ("UTC");
-}
-
 GTimeZone *
 g_time_zone_new_utc (void)
 {
-  static GOnce utc_once = G_ONCE_INIT;
+  static GTimeZone *utc = NULL;
+  static gsize initialised;
 
-  g_once (&utc_once, g_time_zone_utc_init, NULL);
+  if (g_once_init_enter (&initialised))
+    {
+      utc = g_time_zone_new ("UTC");
+      g_once_init_leave (&initialised, TRUE);
+    }
 
-  return g_time_zone_ref ((GTimeZone *)utc_once.retval);
+  return g_time_zone_ref (utc);
 }
 
 /**
