@@ -595,7 +595,8 @@ g_param_spec_get_redirect_target (GParamSpec *pspec)
 /**
  * g_param_value_set_default:
  * @pspec: a valid #GParamSpec
- * @value: a #GValue of correct type for @pspec
+ * @value: a #GValue of correct type for @pspec; since 2.64, you
+ *   can also pass an empty #GValue, initialized with %G_VALUE_INIT
  *
  * Sets @value to its default value as specified in @pspec.
  */
@@ -604,10 +605,18 @@ g_param_value_set_default (GParamSpec *pspec,
 			   GValue     *value)
 {
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
-  g_return_if_fail (G_IS_VALUE (value));
-  g_return_if_fail (PSPEC_APPLIES_TO_VALUE (pspec, value));
 
-  g_value_reset (value);
+  if (G_VALUE_TYPE (value) == G_TYPE_INVALID)
+    {
+      g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+    }
+  else
+    {
+      g_return_if_fail (G_IS_VALUE (value));
+      g_return_if_fail (PSPEC_APPLIES_TO_VALUE (pspec, value));
+      g_value_reset (value);
+    }
+
   G_PARAM_SPEC_GET_CLASS (pspec)->value_set_default (pspec, value);
 }
 
