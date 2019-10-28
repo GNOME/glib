@@ -292,7 +292,7 @@ ensure_keyring_directory (GError **error)
       goto out;
     }
 
-  if (g_mkdir (path, 0700) != 0)
+  if (g_mkdir_with_parents (path, 0700) != 0)
     {
       int errsv = errno;
       g_set_error (error,
