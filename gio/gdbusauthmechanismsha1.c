@@ -48,6 +48,7 @@ struct _GDBusAuthMechanismSha1Private
   gboolean is_client;
   gboolean is_server;
   GDBusAuthMechanismState state;
+  gchar *reject_reason;  /* non-NULL iff (state == G_DBUS_AUTH_MECHANISM_STATE_REJECTED) */
 
   /* used on the client side */
   gchar *to_send;
@@ -101,6 +102,7 @@ _g_dbus_auth_mechanism_sha1_finalize (GObject *object)
 {
   GDBusAuthMechanismSha1 *mechanism = G_DBUS_AUTH_MECHANISM_SHA1 (object);
 
+  g_free (mechanism->priv->reject_reason);
   g_free (mechanism->priv->to_send);
 
   g_free (mechanism->priv->cookie);
@@ -963,7 +965,8 @@ mechanism_server_data_receive (GDBusAuthMechanism   *mechanism,
   tokens = g_strsplit (data, " ", 0);
   if (g_strv_length (tokens) != 2)
     {
-      g_warning ("Malformed data '%s'", data);
+      g_free (m->priv->reject_reason);
+      m->priv->reject_reason = g_strdup_printf ("Malformed data '%s'", data);
       m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
       goto out;
     }
@@ -979,6 +982,8 @@ mechanism_server_data_receive (GDBusAuthMechanism   *mechanism,
     }
   else
     {
+      g_free (m->priv->reject_reason);
+      m->priv->reject_reason = g_strdup_printf ("SHA-1 mismatch");
       m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
     }
 
@@ -1014,7 +1019,8 @@ mechanism_server_data_send (GDBusAuthMechanism   *mechanism,
                                &m->priv->cookie,
                                &error))
     {
-      g_warning ("Error adding entry to keyring: %s", error->message);
+      g_free (m->priv->reject_reason);
+      m->priv->reject_reason = g_strdup_printf ("Error adding entry to keyring: %s", error->message);
       g_error_free (error);
       m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
       goto out;
@@ -1042,10 +1048,7 @@ mechanism_server_get_reject_reason (GDBusAuthMechanism   *mechanism)
   g_return_val_if_fail (m->priv->is_server && !m->priv->is_client, NULL);
   g_return_val_if_fail (m->priv->state == G_DBUS_AUTH_MECHANISM_STATE_REJECTED, NULL);
 
-  /* can never end up here because we are never in the REJECTED state */
-  g_assert_not_reached ();
-
-  return NULL;
+  return g_strdup (m->priv->reject_reason);
 }
 
 static void
@@ -1128,7 +1131,8 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
   tokens = g_strsplit (data, " ", 0);
   if (g_strv_length (tokens) != 3)
     {
-      g_warning ("Malformed data '%s'", data);
+      g_free (m->priv->reject_reason);
+      m->priv->reject_reason = g_strdup_printf ("Malformed data '%s'", data);
       m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
       goto out;
     }
@@ -1137,7 +1141,8 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
   cookie_id = g_ascii_strtoll (tokens[1], &endp, 10);
   if (*endp != '\0')
     {
-      g_warning ("Malformed cookie_id '%s'", tokens[1]);
+      g_free (m->priv->reject_reason);
+      m->priv->reject_reason = g_strdup_printf ("Malformed cookie_id '%s'", tokens[1]);
       m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
       goto out;
     }
@@ -1147,7 +1152,8 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
   cookie = keyring_lookup_entry (cookie_context, cookie_id, &error);
   if (cookie == NULL)
     {
-      g_warning ("Problems looking up entry in keyring: %s", error->message);
+      g_free (m->priv->reject_reason);
+      m->priv->reject_reason = g_strdup_printf ("Problems looking up entry in keyring: %s", error->message);
       g_error_free (error);
       m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
       goto out;
