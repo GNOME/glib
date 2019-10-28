@@ -613,6 +613,12 @@ g_dbus_server_start (GDBusServer *server)
     return;
   /* Right now we don't have any transport not using the listener... */
   g_assert (server->is_using_listener);
+  server->run_signal_handler_id = g_signal_connect_data (G_SOCKET_SERVICE (server->listener),
+                                                         "run",
+                                                         G_CALLBACK (on_run),
+                                                         g_object_ref (server),
+                                                         (GClosureNotify) g_object_unref,
+                                                         0  /* flags */);
   g_socket_service_start (G_SOCKET_SERVICE (server->listener));
   server->active = TRUE;
   g_object_notify (G_OBJECT (server), "active");
@@ -1162,15 +1168,7 @@ initable_init (GInitable     *initable,
 
   if (ret)
     {
-      if (last_error != NULL)
-        g_error_free (last_error);
-
-      /* Right now we don't have any transport not using the listener... */
-      g_assert (server->is_using_listener);
-      server->run_signal_handler_id = g_signal_connect (G_SOCKET_SERVICE (server->listener),
-                                                        "run",
-                                                        G_CALLBACK (on_run),
-                                                        server);
+      g_clear_error (&last_error);
     }
   else
     {
