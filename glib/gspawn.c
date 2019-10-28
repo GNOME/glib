@@ -372,7 +372,6 @@ g_spawn_sync (const gchar          *working_directory,
   gint outpipe = -1;
   gint errpipe = -1;
   GPid pid;
-  fd_set fds;
   gint ret;
   GString *outstr = NULL;
   GString *errstr = NULL;
@@ -435,16 +434,16 @@ g_spawn_sync (const gchar          *working_directory,
          (outpipe >= 0 ||
           errpipe >= 0))
     {
-      FD_ZERO (&fds);
-      if (outpipe >= 0)
-        FD_SET (outpipe, &fds);
-      if (errpipe >= 0)
-        FD_SET (errpipe, &fds);
-          
-      ret = select (MAX (outpipe, errpipe) + 1,
-                    &fds,
-                    NULL, NULL,
-                    NULL /* no timeout */);
+      /* Any negative FD in the array is ignored, so we can use a fixed length.
+       * We can use UNIX FDs here without worrying about Windows HANDLEs because
+       * the Windows implementation is entirely in gspawn-win32.c. */
+      GPollFD fds[] =
+        {
+          { outpipe, G_IO_IN | G_IO_HUP | G_IO_ERR, 0 },
+          { errpipe, G_IO_IN | G_IO_HUP | G_IO_ERR, 0 },
+        };
+
+      ret = g_poll (fds, G_N_ELEMENTS (fds), -1  /* no timeout */);
 
       if (ret < 0)
         {
@@ -458,13 +457,13 @@ g_spawn_sync (const gchar          *working_directory,
           g_set_error (error,
                        G_SPAWN_ERROR,
                        G_SPAWN_ERROR_READ,
-                       _("Unexpected error in select() reading data from a child process (%s)"),
+                       _("Unexpected error in reading data from a child process (%s)"),
                        g_strerror (errsv));
               
           break;
         }
 
-      if (outpipe >= 0 && FD_ISSET (outpipe, &fds))
+      if (outpipe >= 0 && fds[0].revents != 0)
         {
           switch (read_data (outstr, outpipe, error))
             {
@@ -483,7 +482,7 @@ g_spawn_sync (const gchar          *working_directory,
             break;
         }
 
-      if (errpipe >= 0 && FD_ISSET (errpipe, &fds))
+      if (errpipe >= 0 && fds[1].revents != 0)
         {
           switch (read_data (errstr, errpipe, error))
             {
