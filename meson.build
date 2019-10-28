@@ -1320,28 +1320,86 @@ else
   glibconfig_conf.set('g_searchpath_separator', ':')
 endif
 
-if sizet_size == short_size
+g_sizet_compatibility = {
+  'short': sizet_size == short_size,
+  'int': sizet_size == int_size,
+  'long': sizet_size == long_size,
+  'long long': sizet_size == long_long_size,
+}
+
+# Do separate checks for gcc/clang (and ignore other compilers for now), since
+# we need to explicitly pass -Werror to the compilers.
+# FIXME: https://github.com/mesonbuild/meson/issues/5399
+# We can’t simplify these checks using a foreach loop because dictionary keys
+# have to be string literals.
+# FIXME: https://github.com/mesonbuild/meson/issues/5231
+if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+  g_sizet_compatibility += {
+    'short': g_sizet_compatibility['short'] and cc.compiles(
+        '''#include <stddef.h>
+        size_t f (size_t *i) { return *i + 1; }
+        int main (void) {
+          unsigned short i = 0;
+          f (&i);
+          return 0;
+        }''',
+        args: ['-Werror'],
+        name : 'GCC size_t typedef is short'),
+    'int': g_sizet_compatibility['int'] and cc.compiles(
+        '''#include <stddef.h>
+        size_t f (size_t *i) { return *i + 1; }
+        int main (void) {
+          unsigned int i = 0;
+          f (&i);
+          return 0;
+        }''',
+        args: ['-Werror'],
+        name : 'GCC size_t typedef is int'),
+    'long': g_sizet_compatibility['long'] and cc.compiles(
+        '''#include <stddef.h>
+        size_t f (size_t *i) { return *i + 1; }
+        int main (void) {
+          unsigned long i = 0;
+          f (&i);
+          return 0;
+        }''',
+        args: ['-Werror'],
+        name : 'GCC size_t typedef is long'),
+    'long long': g_sizet_compatibility['long long'] and cc.compiles(
+        '''#include <stddef.h>
+        size_t f (size_t *i) { return *i + 1; }
+        int main (void) {
+          unsigned long long i = 0;
+          f (&i);
+          return 0;
+        }''',
+        args: ['-Werror'],
+        name : 'GCC size_t typedef is long long'),
+  }
+endif
+
+if g_sizet_compatibility['short']
   glibconfig_conf.set('glib_size_type_define', 'short')
   glibconfig_conf.set_quoted('gsize_modifier', 'h')
   glibconfig_conf.set_quoted('gssize_modifier', 'h')
   glibconfig_conf.set_quoted('gsize_format', 'hu')
   glibconfig_conf.set_quoted('gssize_format', 'hi')
   glibconfig_conf.set('glib_msize_type', 'SHRT')
-elif sizet_size == int_size
+elif g_sizet_compatibility['int']
   glibconfig_conf.set('glib_size_type_define', 'int')
   glibconfig_conf.set_quoted('gsize_modifier', '')
   glibconfig_conf.set_quoted('gssize_modifier', '')
   glibconfig_conf.set_quoted('gsize_format', 'u')
   glibconfig_conf.set_quoted('gssize_format', 'i')
   glibconfig_conf.set('glib_msize_type', 'INT')
-elif sizet_size == long_size
+elif g_sizet_compatibility['long']
   glibconfig_conf.set('glib_size_type_define', 'long')
   glibconfig_conf.set_quoted('gsize_modifier', 'l')
   glibconfig_conf.set_quoted('gssize_modifier', 'l')
   glibconfig_conf.set_quoted('gsize_format', 'lu')
   glibconfig_conf.set_quoted('gssize_format', 'li')
   glibconfig_conf.set('glib_msize_type', 'LONG')
-elif sizet_size == long_long_size
+elif g_sizet_compatibility['long long']
   glibconfig_conf.set('glib_size_type_define', 'long long')
   glibconfig_conf.set_quoted('gsize_modifier', int64_m)
   glibconfig_conf.set_quoted('gssize_modifier', int64_m)
