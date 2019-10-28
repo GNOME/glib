@@ -179,6 +179,8 @@ g_dbus_server_finalize (GObject *object)
 {
   GDBusServer *server = G_DBUS_SERVER (object);
 
+  g_assert (!server->active);
+
   if (server->authentication_observer != NULL)
     g_object_unref (server->authentication_observer);
 
@@ -197,19 +199,8 @@ g_dbus_server_finalize (GObject *object)
       g_free (server->nonce);
     }
 
-  if (server->unix_socket_path)
-    {
-      if (g_unlink (server->unix_socket_path) != 0)
-        g_warning ("Failed to delete %s: %s", server->unix_socket_path, g_strerror (errno));
-      g_free (server->unix_socket_path);
-    }
-
-  if (server->nonce_file)
-    {
-      if (g_unlink (server->nonce_file) != 0)
-        g_warning ("Failed to delete %s: %s", server->nonce_file, g_strerror (errno));
-      g_free (server->nonce_file);
-    }
+  g_free (server->unix_socket_path);
+  g_free (server->nonce_file);
 
   g_main_context_unref (server->main_context_at_construction);
 
@@ -648,6 +639,18 @@ g_dbus_server_stop (GDBusServer *server)
   g_socket_service_stop (G_SOCKET_SERVICE (server->listener));
   server->active = FALSE;
   g_object_notify (G_OBJECT (server), "active");
+
+  if (server->unix_socket_path)
+    {
+      if (g_unlink (server->unix_socket_path) != 0)
+        g_warning ("Failed to delete %s: %s", server->unix_socket_path, g_strerror (errno));
+    }
+
+  if (server->nonce_file)
+    {
+      if (g_unlink (server->nonce_file) != 0)
+        g_warning ("Failed to delete %s: %s", server->nonce_file, g_strerror (errno));
+    }
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
