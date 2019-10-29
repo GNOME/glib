@@ -514,9 +514,8 @@ get_body_signature (GVariant *value)
 }
 
 /* If @value is floating, this assumes ownership. */
-static void
-check_serialization (GVariant *value,
-                     const gchar *expected_dbus_1_output)
+static gchar *
+get_and_check_serialization (GVariant *value)
 {
   guchar *blob;
   gsize blob_size;
@@ -525,7 +524,7 @@ check_serialization (GVariant *value,
   GDBusMessage *recovered_message;
   GError *error;
   DBusError dbus_error;
-  gchar *s;
+  gchar *s = NULL;
   guint n;
 
   message = g_dbus_message_new ();
@@ -597,9 +596,6 @@ check_serialization (GVariant *value,
       s = dbus_1_message_print (dbus_1_message);
       dbus_message_unref (dbus_1_message);
 
-      g_assert_cmpstr (s, ==, expected_dbus_1_output);
-      g_free (s);
-
       /* Then serialize back and check that the body is identical */
 
       error = NULL;
@@ -624,6 +620,18 @@ check_serialization (GVariant *value,
     }
 
   g_object_unref (message);
+
+  return g_steal_pointer (&s);
+}
+
+/* If @value is floating, this assumes ownership. */
+static void
+check_serialization (GVariant *value,
+                     const gchar *expected_dbus_1_output)
+{
+  gchar *s = get_and_check_serialization (value);
+  g_assert_cmpstr (s, ==, expected_dbus_1_output);
+  g_free (s);
 }
 
 static void
@@ -665,6 +673,8 @@ test_message_serialize_complex (void)
 {
   GError *error;
   GVariant *value;
+  guint i;
+  gchar *serialization = NULL;
 
   error = NULL;
 
@@ -724,6 +734,37 @@ test_message_serialize_complex (void)
                        "    unix-fd: (not extracted)\n");
   g_variant_unref (value);
 #endif
+
+  /* Deep nesting of variants (just below the recursion limit). */
+  value = g_variant_new_string ("buried");
+  for (i = 0; i < 64; i++)
+    value = g_variant_new_variant (value);
+  value = g_variant_new_tuple (&value, 1);
+
+  serialization = get_and_check_serialization (value);
+  g_assert_nonnull (serialization);
+  g_assert_true (g_str_has_prefix (serialization,
+                                   "value 0:   variant:\n"
+                                   "    variant:\n"
+                                   "      variant:\n"));
+  g_free (serialization);
+
+  /* Deep nesting of arrays and structs (just below the recursion limit).
+   * See https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-signature */
+  value = g_variant_new_string ("hello");
+  for (i = 0; i < 32; i++)
+    value = g_variant_new_tuple (&value, 1);
+  for (i = 0; i < 32; i++)
+    value = g_variant_new_array (NULL, &value, 1);
+  value = g_variant_new_tuple (&value, 1);
+
+  serialization = get_and_check_serialization (value);
+  g_assert_nonnull (serialization);
+  g_assert_true (g_str_has_prefix (serialization,
+                                   "value 0:   array:\n"
+                                   "    array:\n"
+                                   "      array:\n"));
+  g_free (serialization);
 }
 
 
@@ -1252,6 +1293,126 @@ test_message_parse_over_long_signature_header (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Test that an invalid header in a D-Bus message (specifically, containing too
+ * many levels of nested variant) is gracefully handled with an error rather
+ * than a crash. The set of bytes here come almost directly from fuzzer output. */
+static void
+test_message_parse_deep_header_nesting (void)
+{
+  const guint8 data[] = {
+    'l',  /* little-endian byte order */
+    0x20,  /* message type */
+    0x20,  /* message flags */
+    0x01,  /* major protocol version */
+    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0x20, 0x20, 0x20, 0x20,  /* message serial */
+    /* a{yv} of header fields:
+     * (things start to be even more invalid below here) */
+    0x20, 0x20, 0x20, 0x00,  /* array length (in bytes) */
+      0x20,  /* array key (this is not currently a valid header field) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'v',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      /* Critically, this contains 64 nested variants (minus two for the
+       * ‘arbitrary valid content’ below, but ignoring two for the `a{yv}`
+       * above), which in total exceeds %G_DBUS_MAX_TYPE_DEPTH. */
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      /* Some arbitrary valid content inside the innermost variant: */
+      0x01, 'y', 0x00, 0xcc,
+    /* (message body length missing) */
+  };
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+/* Test that an invalid body in a D-Bus message (specifically, containing too
+ * many levels of nested variant) is gracefully handled with an error rather
+ * than a crash. The set of bytes here are a modified version of the bytes from
+ * test_message_parse_deep_header_nesting(). */
+static void
+test_message_parse_deep_body_nesting (void)
+{
+  const guint8 data[] = {
+    'l',  /* little-endian byte order */
+    0x20,  /* message type */
+    0x20,  /* message flags */
+    0x01,  /* major protocol version */
+    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0x20, 0x20, 0x20, 0x20,  /* message serial */
+    /* a{yv} of header fields: */
+    0x07, 0x00, 0x00, 0x00,  /* array length (in bytes) */
+      0x08,  /* array key (signature field) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'g',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x01, 'v', 0x00,
+    /* End-of-header padding to reach an 8-byte boundary: */
+    0x00,
+    /* Message body: over 64 levels of nested variant, which is not valid: */
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    /* Some arbitrary valid content inside the innermost variant: */
+    0x01, 'y', 0x00, 0xcc,
+  };
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1283,6 +1444,10 @@ main (int   argc,
                    test_message_parse_multiple_signature_header);
   g_test_add_func ("/gdbus/message-parse/over-long-signature-header",
                    test_message_parse_over_long_signature_header);
+  g_test_add_func ("/gdbus/message-parse/deep-header-nesting",
+                   test_message_parse_deep_header_nesting);
+  g_test_add_func ("/gdbus/message-parse/deep-body-nesting",
+                   test_message_parse_deep_body_nesting);
 
   return g_test_run();
 }
