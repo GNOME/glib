@@ -1252,6 +1252,126 @@ test_message_parse_over_long_signature_header (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Test that an invalid header in a D-Bus message (specifically, containing too
+ * many levels of nested variant) is gracefully handled with an error rather
+ * than a crash. The set of bytes here come almost directly from fuzzer output. */
+static void
+test_message_parse_deep_header_nesting (void)
+{
+  const guint8 data[] = {
+    'l',  /* little-endian byte order */
+    0x20,  /* message type */
+    0x20,  /* message flags */
+    0x01,  /* major protocol version */
+    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0x20, 0x20, 0x20, 0x20,  /* message serial */
+    /* a{yv} of header fields:
+     * (things start to be even more invalid below here) */
+    0x20, 0x20, 0x20, 0x00,  /* array length (in bytes) */
+      0x20,  /* array key (this is not currently a valid header field) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'v',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      /* Critically, this contains 64 nested variants (minus two for the
+       * ‘arbitrary valid content’ below, but ignoring two for the `a{yv}`
+       * above), which in total exceeds %G_DBUS_MAX_TYPE_DEPTH. */
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      /* Some arbitrary valid content inside the innermost variant: */
+      0x01, 'y', 0x00, 0xcc,
+    /* (message body length missing) */
+  };
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+/* Test that an invalid body in a D-Bus message (specifically, containing too
+ * many levels of nested variant) is gracefully handled with an error rather
+ * than a crash. The set of bytes here are a modified version of the bytes from
+ * test_message_parse_deep_header_nesting(). */
+static void
+test_message_parse_deep_body_nesting (void)
+{
+  const guint8 data[] = {
+    'l',  /* little-endian byte order */
+    0x20,  /* message type */
+    0x20,  /* message flags */
+    0x01,  /* major protocol version */
+    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0x20, 0x20, 0x20, 0x20,  /* message serial */
+    /* a{yv} of header fields: */
+    0x07, 0x00, 0x00, 0x00,  /* array length (in bytes) */
+      0x08,  /* array key (signature field) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'g',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x01, 'v', 0x00,
+    /* End-of-header padding to reach an 8-byte boundary: */
+    0x00,
+    /* Message body: over 64 levels of nested variant, which is not valid: */
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    0x01, 'v', 0x00, 0x01, 'v', 0x00,
+    /* Some arbitrary valid content inside the innermost variant: */
+    0x01, 'y', 0x00, 0xcc,
+  };
+  gsize size = sizeof (data);
+  GDBusMessage *message = NULL;
+  GError *local_error = NULL;
+
+  message = g_dbus_message_new_from_blob ((guchar *) data, size,
+                                          G_DBUS_CAPABILITY_FLAGS_NONE,
+                                          &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (message);
+
+  g_clear_error (&local_error);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1283,6 +1403,10 @@ main (int   argc,
                    test_message_parse_multiple_signature_header);
   g_test_add_func ("/gdbus/message-parse/over-long-signature-header",
                    test_message_parse_over_long_signature_header);
+  g_test_add_func ("/gdbus/message-parse/deep-header-nesting",
+                   test_message_parse_deep_header_nesting);
+  g_test_add_func ("/gdbus/message-parse/deep-body-nesting",
+                   test_message_parse_deep_body_nesting);
 
   return g_test_run();
 }
