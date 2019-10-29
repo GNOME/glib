@@ -1259,6 +1259,7 @@ dmp_thread_func (gpointer user_data)
   data->loop = g_main_loop_new (data->context, FALSE);
   g_main_loop_run (data->loop);
 
+  g_dbus_server_stop (data->server);
   g_main_context_pop_thread_default (data->context);
 
   g_free (guid);
