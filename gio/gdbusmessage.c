@@ -1443,8 +1443,8 @@ parse_value_from_blob (GMemoryBuffer       *buf,
                        guint                indent,
                        GError             **error)
 {
-  GVariant *ret;
-  GError *local_error;
+  GVariant *ret = NULL;
+  GError *local_error = NULL;
 #ifdef DEBUG_SERIALIZER
   gboolean is_leaf;
 #endif /* DEBUG_SERIALIZER */
@@ -1465,12 +1465,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
     }
 #endif /* DEBUG_SERIALIZER */
 
-  ret = NULL;
-
 #ifdef DEBUG_SERIALIZER
   is_leaf = TRUE;
 #endif /* DEBUG_SERIALIZER */
-  local_error = NULL;
   switch (type_string[0])
     {
     case 'b': /* G_VARIANT_TYPE_BOOLEAN */
