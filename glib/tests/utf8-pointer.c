@@ -97,46 +97,60 @@ test_find (void)
    * U+0041 Latin Capital Letter A (\101)
    * U+1EB6 Latin Capital Letter A With Breve And Dot Below (\341\272\266)
    */
-  const gchar *str = "\340\254\213\360\220\244\200\101\341\272\266\0\101";
-  const gchar *p = str + strlen (str);
+#define TEST_STR "\340\254\213\360\220\244\200\101\341\272\266\0\101"
+  const gchar *str = TEST_STR;
+  const gsize str_size = sizeof TEST_STR;
+#undef TEST_STR
+  gchar *str_copy = g_malloc (str_size);
+  const gchar *p = str_copy + (str_size - 1);
   const gchar *q;
+  /* We have to copy @str into memory, otherwise GCC overoptimises the code
+   * when LTO is enabled
+   * See https://gitlab.gnome.org/GNOME/glib/issues/1917 for details */
+  memcpy (str_copy, str, str_size);
 
-  q = g_utf8_find_prev_char (str, p);
-  g_assert (q == str + 8);
-  q = g_utf8_find_prev_char (str, q);
-  g_assert (q == str + 7);
-  q = g_utf8_find_prev_char (str, q);
-  g_assert (q == str + 3);
-  q = g_utf8_find_prev_char (str, q);
-  g_assert (q == str);
-  q = g_utf8_find_prev_char (str, q);
+  q = g_utf8_find_prev_char (str_copy, p);
+  g_assert (q == str_copy + 12);
+  q = g_utf8_find_prev_char (str_copy, q);
+  g_assert (q == str_copy + 11);
+  q = g_utf8_find_prev_char (str_copy, q);
+  g_assert (q == str_copy + 8);
+  q = g_utf8_find_prev_char (str_copy, q);
+  g_assert (q == str_copy + 7);
+  q = g_utf8_find_prev_char (str_copy, q);
+  g_assert (q == str_copy + 3);
+  q = g_utf8_find_prev_char (str_copy, q);
+  g_assert (q == str_copy);
+  q = g_utf8_find_prev_char (str_copy, q);
   g_assert (q == NULL);
 
-  p = str + 2;
+  p = str_copy + 2;
   q = g_utf8_find_next_char (p, NULL);
-  g_assert (q == str + 3);
+  g_assert (q == str_copy + 3);
   q = g_utf8_find_next_char (q, NULL);
-  g_assert (q == str + 7);
+  g_assert (q == str_copy + 7);
 
-  q = g_utf8_find_next_char (p, str + 6);
-  g_assert (q == str + 3);
-  q = g_utf8_find_next_char (q, str + 6);
+  q = g_utf8_find_next_char (p, str_copy + 6);
+  g_assert (q == str_copy + 3);
+  q = g_utf8_find_next_char (q, str_copy + 6);
   g_assert (q == NULL);
 
-  q = g_utf8_find_next_char (str, str);
+  q = g_utf8_find_next_char (str_copy, str_copy);
   g_assert (q == NULL);
 
-  q = g_utf8_find_next_char (str + strlen (str), NULL);
-  g_assert (q == str + strlen (str) + 1);
+  q = g_utf8_find_next_char (str_copy + strlen (str_copy), NULL);
+  g_assert (q == str_copy + strlen (str_copy) + 1);
 
   /* Check return values when reaching the end of the string,
    * with @end set and unset. */
-  q = g_utf8_find_next_char (str + 10, NULL);
+  q = g_utf8_find_next_char (str_copy + 10, NULL);
   g_assert_nonnull (q);
   g_assert (*q == '\0');
 
-  q = g_utf8_find_next_char (str + 10, str + 11);
+  q = g_utf8_find_next_char (str_copy + 10, str_copy + 11);
   g_assert_null (q);
+
+  g_free (str_copy);
 }
 
 int main (int argc, char *argv[])
