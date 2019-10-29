@@ -729,7 +729,7 @@ g_object_class_install_properties (GObjectClass  *oclass,
   gint i;
 
   g_return_if_fail (G_IS_OBJECT_CLASS (oclass));
-  g_return_if_fail (n_pspecs > 1);
+  g_return_if_fail (n_pspecs >= 1);
   g_return_if_fail (pspecs[0] == NULL);
 
   if (CLASS_HAS_DERIVED_CLASS (oclass))
