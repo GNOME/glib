@@ -51,6 +51,13 @@ def generate_namespace(namespace):
 
     return (ns, ns_upper, ns_lower)
 
+def generate_header_guard(header_name):
+    # There might be more characters that are safe to use than these, but lets
+    # stay conservative.
+    safe_valid_chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    return ''.join(map(lambda c: c if c in safe_valid_chars else '_',
+                       header_name.upper()))
+
 class HeaderCodeGenerator:
     def __init__(self, ifaces, namespace, generate_objmanager,
                  generate_autocleanup, header_name, input_files_basenames,
@@ -59,7 +66,7 @@ class HeaderCodeGenerator:
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.generate_objmanager = generate_objmanager
         self.generate_autocleanup = generate_autocleanup
-        self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_').replace(':', '_')
+        self.header_guard = generate_header_guard(header_name)
         self.input_files_basenames = input_files_basenames
         self.use_pragma = use_pragma
         self.outfile = outfile
@@ -613,7 +620,7 @@ class InterfaceInfoHeaderCodeGenerator:
     def __init__(self, ifaces, namespace, header_name, input_files_basenames, use_pragma, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
-        self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_').replace(':', '_')
+        self.header_guard = generate_header_guard(header_name)
         self.input_files_basenames = input_files_basenames
         self.use_pragma = use_pragma
         self.outfile = outfile
