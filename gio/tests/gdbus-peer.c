@@ -313,7 +313,8 @@ teardown_test_address (void)
       /* Ensuring the rmdir succeeds also ensures any sockets created on the
        * filesystem are also deleted.
        */
-      g_assert_cmpint (g_rmdir (tmpdir), ==, 0);
+      g_assert_cmpstr (g_rmdir (tmpdir) == 0 ? "OK" : g_strerror (errno),
+                       ==, "OK");
       g_clear_pointer (&tmpdir, g_free);
     }
 }
