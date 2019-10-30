@@ -122,7 +122,13 @@ test_find (void)
   q = g_utf8_find_prev_char (str_copy, q);
   g_assert (q == str_copy);
   q = g_utf8_find_prev_char (str_copy, q);
-  g_assert (q == NULL);
+  g_assert_null (q);
+  p = str_copy + 4;
+  q = g_utf8_find_prev_char (str_copy, p);
+  g_assert (q == str_copy + 3);
+  p = str_copy + 2;
+  q = g_utf8_find_prev_char (str_copy, p);
+  g_assert (q == str_copy);
 
   p = str_copy + 2;
   q = g_utf8_find_next_char (p, NULL);
@@ -133,10 +139,10 @@ test_find (void)
   q = g_utf8_find_next_char (p, str_copy + 6);
   g_assert (q == str_copy + 3);
   q = g_utf8_find_next_char (q, str_copy + 6);
-  g_assert (q == NULL);
+  g_assert_null (q);
 
   q = g_utf8_find_next_char (str_copy, str_copy);
-  g_assert (q == NULL);
+  g_assert_null (q);
 
   q = g_utf8_find_next_char (str_copy + strlen (str_copy), NULL);
   g_assert (q == str_copy + strlen (str_copy) + 1);
