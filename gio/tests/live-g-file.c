@@ -202,8 +202,8 @@ test_create_structure (gconstpointer test_data)
   g_assert (root != NULL);
 
   /*  create root directory  */
-  res = g_file_make_directory (root, NULL, NULL);
-  /*  don't care about errors here  */
+  g_file_make_directory (root, NULL, &error);
+  g_assert_no_error (error);
 
   /*  create any other items  */
   for (i = 0; i < G_N_ELEMENTS (sample_struct); i++)
@@ -285,11 +285,11 @@ test_create_structure (gconstpointer test_data)
   g_assert (outds != NULL);
   for (i = 0; i < PATTERN_FILE_SIZE; i++)
     {
-      res = g_data_output_stream_put_byte (outds, i % 256, NULL, &error);
+      g_data_output_stream_put_byte (outds, i % 256, NULL, &error);
       g_assert_no_error (error);
     }
 
-  res = g_output_stream_close (G_OUTPUT_STREAM (outs), NULL, &error);
+  g_output_stream_close (G_OUTPUT_STREAM (outs), NULL, &error);
   g_assert_no_error (error);
   g_object_unref (outds);
   g_object_unref (outs);
