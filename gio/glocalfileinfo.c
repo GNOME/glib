@@ -504,7 +504,10 @@ get_xattrs (const char            *path,
 	}
 
       if (list_res_size == -1)
-	return;
+        {
+          g_free (list);
+          return;
+        }
 
       attr = list;
       while (list_res_size > 0)
