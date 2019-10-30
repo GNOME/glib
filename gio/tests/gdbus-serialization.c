@@ -627,7 +627,7 @@ check_serialization (GVariant *value,
 }
 
 static void
-message_serialize_basic (void)
+test_message_serialize_basic (void)
 {
   check_serialization (NULL, "");
 
@@ -661,7 +661,7 @@ message_serialize_basic (void)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-message_serialize_complex (void)
+test_message_serialize_complex (void)
 {
   GError *error;
   GVariant *value;
@@ -749,7 +749,7 @@ replace (char       *blob,
 }
 
 static void
-message_serialize_invalid (void)
+test_message_serialize_invalid (void)
 {
   guint n;
 
@@ -842,7 +842,7 @@ message_serialize_invalid (void)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-message_serialize_header_checks (void)
+test_message_serialize_header_checks (void)
 {
   GDBusMessage *message;
   GDBusMessage *reply;
@@ -996,7 +996,7 @@ message_serialize_header_checks (void)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-message_parse_empty_arrays_of_arrays (void)
+test_message_parse_empty_arrays_of_arrays (void)
 {
   GVariant *body;
   GError *error = NULL;
@@ -1052,7 +1052,7 @@ message_parse_empty_arrays_of_arrays (void)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-test_double_array (void)
+test_message_serialize_double_array (void)
 {
   GVariantBuilder builder;
   GVariant *body;
@@ -1262,15 +1262,19 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
-  g_test_add_func ("/gdbus/message-serialize-basic", message_serialize_basic);
-  g_test_add_func ("/gdbus/message-serialize-complex", message_serialize_complex);
-  g_test_add_func ("/gdbus/message-serialize-invalid", message_serialize_invalid);
-  g_test_add_func ("/gdbus/message-serialize-header-checks", message_serialize_header_checks);
+  g_test_add_func ("/gdbus/message-serialize/basic",
+                   test_message_serialize_basic);
+  g_test_add_func ("/gdbus/message-serialize/complex",
+                   test_message_serialize_complex);
+  g_test_add_func ("/gdbus/message-serialize/invalid",
+                   test_message_serialize_invalid);
+  g_test_add_func ("/gdbus/message-serialize/header-checks",
+                   test_message_serialize_header_checks);
+  g_test_add_func ("/gdbus/message-serialize/double-array",
+                   test_message_serialize_double_array);
 
-  g_test_add_func ("/gdbus/message-parse-empty-arrays-of-arrays",
-      message_parse_empty_arrays_of_arrays);
-
-  g_test_add_func ("/gdbus/message-serialize/double-array", test_double_array);
+  g_test_add_func ("/gdbus/message-parse/empty-arrays-of-arrays",
+                   test_message_parse_empty_arrays_of_arrays);
   g_test_add_func ("/gdbus/message-parse/non-signature-header",
                    test_message_parse_non_signature_header);
   g_test_add_func ("/gdbus/message-parse/empty-signature-header",
