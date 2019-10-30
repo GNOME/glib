@@ -414,7 +414,7 @@ test_check_start_and_stop (gpointer user_data)
     }
 
     run_next = FALSE;
-    return TRUE;
+    return continue_timeout;
   }
 
   if (test_number == 3) {

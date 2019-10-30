@@ -2543,7 +2543,7 @@ g_variant_new_parsed_va (const gchar *format,
       ast_free (ast);
     }
 
-  if (result == NULL)
+  if (error != NULL)
     g_error ("g_variant_new_parsed: %s", error->message);
 
   if (*stream.stream)
