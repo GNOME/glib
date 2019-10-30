@@ -188,7 +188,7 @@ test_create_structure (gconstpointer test_data)
   GFile *root;
   GFile *child;
   gboolean res;
-  GError *error;
+  GError *error = NULL;
   GFileOutputStream *outs;
   GDataOutputStream *outds;
   guint i;
@@ -241,7 +241,6 @@ test_create_structure (gconstpointer test_data)
 
       if ((item.mode > 0) && (posix_compat))
 	{
-	  error = NULL;
 	  res =
 	    g_file_set_attribute_uint32 (child, G_FILE_ATTRIBUTE_UNIX_MODE,
 					 item.mode,
@@ -277,7 +276,6 @@ test_create_structure (gconstpointer test_data)
   child = g_file_get_child (root, "pattern_file");
   g_assert (child != NULL);
 
-  error = NULL;
   outs =
     g_file_replace (child, NULL, FALSE, G_FILE_CREATE_NONE, NULL, &error);
   g_assert_no_error (error);
@@ -287,11 +285,10 @@ test_create_structure (gconstpointer test_data)
   g_assert (outds != NULL);
   for (i = 0; i < PATTERN_FILE_SIZE; i++)
     {
-      error = NULL;
       res = g_data_output_stream_put_byte (outds, i % 256, NULL, &error);
       g_assert_no_error (error);
     }
-  error = NULL;
+
   res = g_output_stream_close (G_OUTPUT_STREAM (outs), NULL, &error);
   g_assert_no_error (error);
   g_object_unref (outds);
