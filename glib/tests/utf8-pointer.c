@@ -123,9 +123,11 @@ test_find (void)
   g_assert (q == str_copy);
   q = g_utf8_find_prev_char (str_copy, q);
   g_assert_null (q);
+
   p = str_copy + 4;
   q = g_utf8_find_prev_char (str_copy, p);
   g_assert (q == str_copy + 3);
+
   p = str_copy + 2;
   q = g_utf8_find_prev_char (str_copy, p);
   g_assert (q == str_copy);
