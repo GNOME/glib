@@ -110,6 +110,17 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
       } \
   } \
   G_STMT_END
+#define g_assert_no_errno(expr)         G_STMT_START { \
+                                             int __ret = expr; \
+                                             int __errsv = errno; \
+                                             if (__ret < 0) \
+                                               { \
+                                                 gchar *__msg; \
+                                                 __msg = g_strdup_printf ("assertion failed (" #expr " >= 0): errno %i: %s", __errsv, g_strerror (__errsv)); \
+                                                 g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, __msg); \
+                                                 g_free (__msg); \
+                                               } \
+                                        } G_STMT_END
 #define g_assert_no_error(err)          G_STMT_START { \
                                              if (err) \
                                                g_assertion_message_error (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
