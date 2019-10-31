@@ -660,6 +660,24 @@
  */
 
 /**
+ * g_assert_no_errno:
+ * @expr: the expression to check
+ *
+ * Debugging macro to check that an expression has a non-negative return value,
+ * as used by traditional POSIX functions (such as `rmdir()`) to indicate
+ * success.
+ *
+ * If the assertion fails (i.e. the @expr returns a negative value), an error
+ * message is logged and the testcase is marked as failed. The error message
+ * will contain the value of `errno` and its human-readable message from
+ * g_strerror().
+ *
+ * This macro will clear the value of `errno` before executing @expr.
+ *
+ * Since: 2.66
+ */
+
+/**
  * g_assert_cmpmem:
  * @m1: (nullable): pointer to a buffer
  * @l1: length of @m1
