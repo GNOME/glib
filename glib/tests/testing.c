@@ -28,7 +28,6 @@
 #undef G_LOG_DOMAIN
 #define G_LOG_DOMAIN "testing"
 
-#include <errno.h>
 #include <glib.h>
 #include <locale.h>
 #include <stdlib.h>
@@ -113,7 +112,7 @@ test_assertions_bad_cmpfloat_epsilon (void)
 static int
 return_errno (void)
 {
-  errno = -5;  /* arbitrary non-zero value */
+  errno = ERANGE;  /* arbitrary non-zero value */
   return -1;
 }
 

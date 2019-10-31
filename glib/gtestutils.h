@@ -27,6 +27,7 @@
 #include <glib/gstring.h>
 #include <glib/gerror.h>
 #include <glib/gslist.h>
+#include <errno.h>
 #include <string.h>
 
 G_BEGIN_DECLS
@@ -111,8 +112,10 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
   } \
   G_STMT_END
 #define g_assert_no_errno(expr)         G_STMT_START { \
-                                             int __ret = expr; \
-                                             int __errsv = errno; \
+                                             int __ret, __errsv; \
+                                             errno = 0; \
+                                             __ret = expr; \
+                                             __errsv = errno; \
                                              if (__ret < 0) \
                                                { \
                                                  gchar *__msg; \

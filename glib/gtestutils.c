@@ -672,8 +672,7 @@
  * will contain the value of `errno` and its human-readable message from
  * g_strerror().
  *
- * In order to use this macro, you will typically need to include `errno.h` to
- * access the declaration of `errno`.
+ * This macro will clear the value of `errno` before executing @expr.
  *
  * Since: 2.64
  */
