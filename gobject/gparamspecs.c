@@ -912,8 +912,11 @@ param_value_array_validate (GParamSpec *pspec,
 		  g_param_value_set_default (element_spec, element);
 		  changed++;
 		}
-	      /* validate array value against element_spec */
-	      changed += g_param_value_validate (element_spec, element);
+              else
+                {
+	          /* validate array value against element_spec */
+	          changed += g_param_value_validate (element_spec, element);
+                }
 	    }
 	}
     }

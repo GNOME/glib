@@ -307,7 +307,7 @@ void		g_param_value_set_default	(GParamSpec    *pspec,
 						 GValue	       *value);
 GLIB_AVAILABLE_IN_ALL
 gboolean	g_param_value_defaults		(GParamSpec    *pspec,
-						 GValue	       *value);
+						 const GValue  *value);
 GLIB_AVAILABLE_IN_ALL
 gboolean	g_param_value_validate		(GParamSpec    *pspec,
 						 GValue	       *value);

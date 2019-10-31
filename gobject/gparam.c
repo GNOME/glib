@@ -595,7 +595,8 @@ g_param_spec_get_redirect_target (GParamSpec *pspec)
 /**
  * g_param_value_set_default:
  * @pspec: a valid #GParamSpec
- * @value: a #GValue of correct type for @pspec
+ * @value: a #GValue of correct type for @pspec; since 2.64, you
+ *   can also pass an empty #GValue, initialized with %G_VALUE_INIT
  *
  * Sets @value to its default value as specified in @pspec.
  */
@@ -604,10 +605,18 @@ g_param_value_set_default (GParamSpec *pspec,
 			   GValue     *value)
 {
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
-  g_return_if_fail (G_IS_VALUE (value));
-  g_return_if_fail (PSPEC_APPLIES_TO_VALUE (pspec, value));
 
-  g_value_reset (value);
+  if (G_VALUE_TYPE (value) == G_TYPE_INVALID)
+    {
+      g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+    }
+  else
+    {
+      g_return_if_fail (G_IS_VALUE (value));
+      g_return_if_fail (PSPEC_APPLIES_TO_VALUE (pspec, value));
+      g_value_reset (value);
+    }
+
   G_PARAM_SPEC_GET_CLASS (pspec)->value_set_default (pspec, value);
 }
 
@@ -621,8 +630,8 @@ g_param_value_set_default (GParamSpec *pspec,
  * Returns: whether @value contains the canonical default for this @pspec
  */
 gboolean
-g_param_value_defaults (GParamSpec *pspec,
-			GValue     *value)
+g_param_value_defaults (GParamSpec   *pspec,
+			const GValue *value)
 {
   GValue dflt_value = G_VALUE_INIT;
   gboolean defaults;
@@ -631,7 +640,6 @@ g_param_value_defaults (GParamSpec *pspec,
   g_return_val_if_fail (G_IS_VALUE (value), FALSE);
   g_return_val_if_fail (PSPEC_APPLIES_TO_VALUE (pspec, value), FALSE);
 
-  g_value_init (&dflt_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
   G_PARAM_SPEC_GET_CLASS (pspec)->value_set_default (pspec, &dflt_value);
   defaults = G_PARAM_SPEC_GET_CLASS (pspec)->values_cmp (pspec, value, &dflt_value) == 0;
   g_value_unset (&dflt_value);
