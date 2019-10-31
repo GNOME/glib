@@ -1833,8 +1833,10 @@ platform_get_argv0 (void)
 			    NULL))
     return NULL;
 
-  /* Sanity check for a NUL terminator. */
-  g_assert (memchr (cmdline, 0, len));
+  /* g_file_get_contents() guarantees to put a NUL immediately after the
+   * file's contents (at cmdline[len] here), even if the file itself was
+   * not NUL-terminated. */
+  g_assert (memchr (cmdline, 0, len + 1));
 
   /* We could just return cmdline, but I think it's better
    * to hold on to a smaller malloc block; the arguments
