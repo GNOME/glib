@@ -273,14 +273,9 @@ setup_test_address (void)
 {
   if (is_unix)
     {
-      g_test_message ("Testing with unix:tmpdir address");
-      if (g_unix_socket_address_abstract_names_supported ())
-	tmp_address = g_strdup ("unix:tmpdir=/tmp/gdbus-test-");
-      else
-	{
-	  tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
-	  tmp_address = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
-	}
+      g_test_message ("Testing with unix:dir address");
+      tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
+      tmp_address = g_strdup_printf ("unix:dir=%s", tmpdir);
     }
   else
     tmp_address = g_strdup ("nonce-tcp:");
@@ -288,11 +283,11 @@ setup_test_address (void)
 
 #ifdef G_OS_UNIX
 static void
-setup_dir_test_address (void)
+setup_tmpdir_test_address (void)
 {
-  g_test_message ("Testing with unix:dir address");
+  g_test_message ("Testing with unix:tmpdir address");
   tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
-  tmp_address = g_strdup_printf ("unix:dir=%s", tmpdir);
+  tmp_address = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
 }
 
 static void
@@ -313,7 +308,8 @@ teardown_test_address (void)
       /* Ensuring the rmdir succeeds also ensures any sockets created on the
        * filesystem are also deleted.
        */
-      g_assert_cmpint (g_rmdir (tmpdir), ==, 0);
+      g_assert_cmpstr (g_rmdir (tmpdir) == 0 ? "OK" : g_strerror (errno),
+                       ==, "OK");
       g_clear_pointer (&tmpdir, g_free);
     }
 }
@@ -1044,7 +1040,7 @@ test_peer (void)
   teardown_test_address ();
 
 #ifdef G_OS_UNIX
-  setup_dir_test_address ();
+  setup_tmpdir_test_address ();
   do_test_peer ();
   teardown_test_address ();
 
@@ -1258,6 +1254,7 @@ dmp_thread_func (gpointer user_data)
   data->loop = g_main_loop_new (data->context, FALSE);
   g_main_loop_run (data->loop);
 
+  g_dbus_server_stop (data->server);
   g_main_context_pop_thread_default (data->context);
 
   g_free (guid);

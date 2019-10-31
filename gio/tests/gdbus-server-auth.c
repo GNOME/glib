@@ -17,6 +17,9 @@
 
 #include "config.h"
 
+#include <errno.h>
+
+#include <glib/gstdio.h>
 #include <gio/gio.h>
 
 #ifdef HAVE_DBUS1
@@ -30,6 +33,7 @@ typedef enum
   INTEROP_FLAGS_SHA1 = (1 << 2),
   INTEROP_FLAGS_TCP = (1 << 3),
   INTEROP_FLAGS_LIBDBUS = (1 << 4),
+  INTEROP_FLAGS_ABSTRACT = (1 << 5),
   INTEROP_FLAGS_NONE = 0
 } InteropFlags;
 
@@ -245,18 +249,19 @@ assert_expected_uid_pid (InteropFlags flags,
 }
 
 static void
-do_test_server_auth (const char *listenable_address,
-                     InteropFlags flags)
+do_test_server_auth (InteropFlags flags)
 {
   GError *error = NULL;
-  GDBusServer *server;
-  GDBusAuthObserver *observer;
+  gchar *tmpdir = NULL;
+  gchar *listenable_address = NULL;
+  GDBusServer *server = NULL;
+  GDBusAuthObserver *observer = NULL;
   GDBusServerFlags server_flags = G_DBUS_SERVER_FLAGS_RUN_IN_THREAD;
-  gchar *guid;
+  gchar *guid = NULL;
   const char *connectable_address;
-  GDBusConnection *client;
+  GDBusConnection *client = NULL;
   GAsyncResult *result = NULL;
-  GVariant *tuple;
+  GVariant *tuple = NULL;
   gint64 uid, pid;
 #ifdef HAVE_DBUS1
   /* GNOME/glib#1831 seems to involve a race condition, so try a few times
@@ -265,37 +270,47 @@ do_test_server_auth (const char *listenable_address,
   gsize n = 20;
 #endif
 
-  if (g_str_has_prefix (listenable_address, "tcp:") ||
-      g_str_has_prefix (listenable_address, "nonce-tcp:"))
-    g_assert_cmpint (flags & INTEROP_FLAGS_TCP, !=, 0);
+  if (flags & INTEROP_FLAGS_TCP)
+    {
+      listenable_address = g_strdup ("tcp:host=127.0.0.1");
+    }
   else
-    g_assert_cmpint (flags & INTEROP_FLAGS_TCP, ==, 0);
+    {
+#ifdef G_OS_UNIX
+      gchar *escaped;
+
+      tmpdir = g_dir_make_tmp ("gdbus-server-auth-XXXXXX", &error);
+      g_assert_no_error (error);
+      escaped = g_dbus_address_escape_value (tmpdir);
+      listenable_address = g_strdup_printf ("unix:%s=%s",
+                                            (flags & INTEROP_FLAGS_ABSTRACT) ? "tmpdir" : "dir",
+                                            escaped);
+      g_free (escaped);
+#else
+      g_test_skip ("unix: addresses only work on Unix");
+      goto out;
+#endif
+    }
 
   g_test_message ("Testing GDBus server at %s / libdbus client, with flags: "
                   "external:%s "
                   "anonymous:%s "
                   "sha1:%s "
+                  "abstract:%s "
                   "tcp:%s",
                   listenable_address,
                   (flags & INTEROP_FLAGS_EXTERNAL) ? "true" : "false",
                   (flags & INTEROP_FLAGS_ANONYMOUS) ? "true" : "false",
                   (flags & INTEROP_FLAGS_SHA1) ? "true" : "false",
+                  (flags & INTEROP_FLAGS_ABSTRACT) ? "true" : "false",
                   (flags & INTEROP_FLAGS_TCP) ? "true" : "false");
-
-#ifndef G_OS_UNIX
-  if (g_str_has_prefix (listenable_address, "unix:"))
-    {
-      g_test_skip ("unix: addresses only work on Unix");
-      return;
-    }
-#endif
 
 #if !defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED) \
   && !defined(G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED)
   if (flags & INTEROP_FLAGS_EXTERNAL)
     {
       g_test_skip ("EXTERNAL authentication not implemented on this platform");
-      return;
+      goto out;
     }
 #endif
 
@@ -333,6 +348,7 @@ do_test_server_auth (const char *listenable_address,
   g_signal_connect (server, "new-connection", G_CALLBACK (new_connection_cb), NULL);
   g_dbus_server_start (server);
   connectable_address = g_dbus_server_get_client_address (server);
+  g_test_message ("Connectable address: %s", connectable_address);
 
   result = NULL;
   g_dbus_connection_new_for_address (connectable_address,
@@ -425,52 +441,67 @@ do_test_server_auth (const char *listenable_address,
   g_test_skip ("Testing interop with libdbus not supported");
 #endif /* !HAVE_DBUS1 */
 
-  g_dbus_server_stop (server);
+out:
+  if (server != NULL)
+    g_dbus_server_stop (server);
+
+  if (tmpdir != NULL)
+    g_assert_cmpstr (g_rmdir (tmpdir) == 0 ? "OK" : g_strerror (errno),
+                     ==, "OK");
+
   g_clear_object (&server);
   g_clear_object (&observer);
   g_free (guid);
+  g_free (listenable_address);
+  g_free (tmpdir);
 }
 
 static void
 test_server_auth (void)
 {
-  do_test_server_auth ("unix:tmpdir=/tmp/gdbus-test", INTEROP_FLAGS_NONE);
+  do_test_server_auth (INTEROP_FLAGS_NONE);
+}
+
+static void
+test_server_auth_abstract (void)
+{
+  do_test_server_auth (INTEROP_FLAGS_ABSTRACT);
 }
 
 static void
 test_server_auth_tcp (void)
 {
-  do_test_server_auth ("tcp:host=127.0.0.1", INTEROP_FLAGS_TCP);
+  do_test_server_auth (INTEROP_FLAGS_TCP);
 }
 
 static void
 test_server_auth_anonymous (void)
 {
-  do_test_server_auth ("unix:tmpdir=/tmp/gdbus-test", INTEROP_FLAGS_ANONYMOUS);
+  do_test_server_auth (INTEROP_FLAGS_ANONYMOUS);
 }
 
 static void
 test_server_auth_anonymous_tcp (void)
 {
-  do_test_server_auth ("tcp:host=127.0.0.1", INTEROP_FLAGS_ANONYMOUS | INTEROP_FLAGS_TCP);
+  do_test_server_auth (INTEROP_FLAGS_ANONYMOUS | INTEROP_FLAGS_TCP);
 }
 
 static void
 test_server_auth_external (void)
 {
-  do_test_server_auth ("unix:tmpdir=/tmp/gdbus-test", INTEROP_FLAGS_EXTERNAL);
+  do_test_server_auth (INTEROP_FLAGS_EXTERNAL);
 }
 
 static void
 test_server_auth_sha1 (void)
 {
-  do_test_server_auth ("unix:tmpdir=/tmp/gdbus-test", INTEROP_FLAGS_SHA1);
+  do_test_server_auth (INTEROP_FLAGS_SHA1);
 }
 
 static void
 test_server_auth_sha1_tcp (void)
 {
-  do_test_server_auth ("tcp:host=127.0.0.1", INTEROP_FLAGS_SHA1 | INTEROP_FLAGS_TCP);
+  do_test_server_auth (INTEROP_FLAGS_SHA1 | INTEROP_FLAGS_TCP);
 }
 
 int
@@ -480,6 +511,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gdbus/server-auth", test_server_auth);
+  g_test_add_func ("/gdbus/server-auth/abstract", test_server_auth_abstract);
   g_test_add_func ("/gdbus/server-auth/tcp", test_server_auth_tcp);
   g_test_add_func ("/gdbus/server-auth/anonymous", test_server_auth_anonymous);
   g_test_add_func ("/gdbus/server-auth/anonymous/tcp", test_server_auth_anonymous_tcp);
