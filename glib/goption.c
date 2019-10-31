@@ -1833,8 +1833,15 @@ platform_get_argv0 (void)
 			    NULL))
     return NULL;
 
-  /* Sanity check for a NUL terminator. */
-  g_assert (memchr (cmdline, 0, len));
+  /* Sanity check for a NUL terminator. While the kernel guarantees to provide
+   * nul-terminated strings in `cmdline`, processes can modify the data in that
+   * file, and could theoretically end up with something non-nul-terminated, so
+   * we have to be robust to that. (See #1923.) */
+  if (!memchr (cmdline, 0, len))
+    {
+      g_free (cmdline);
+      return NULL;
+    }
 
   /* We could just return cmdline, but I think it's better
    * to hold on to a smaller malloc block; the arguments
