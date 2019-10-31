@@ -108,6 +108,27 @@ test_assertions_bad_cmpfloat_epsilon (void)
   exit (0);
 }
 
+/* Emulates something like rmdir() failing. */
+static int
+return_errno (void)
+{
+  errno = ERANGE;  /* arbitrary non-zero value */
+  return -1;
+}
+
+/* Emulates something like rmdir() succeeding. */
+static int
+return_no_errno (void)
+{
+  return 0;
+}
+
+static void
+test_assertions_bad_no_errno (void)
+{
+  g_assert_no_errno (return_errno ());
+}
+
 static void
 test_assertions (void)
 {
@@ -137,6 +158,7 @@ test_assertions (void)
   g_assert_cmpmem (NULL, 0, NULL, 0);
   g_assert_cmpmem (NULL, 0, "foot", 0);
   g_assert_cmpmem ("foo", 0, NULL, 0);
+  g_assert_no_errno (return_no_errno ());
 
   v1 = g_variant_new_parsed ("['hello', 'there']");
   v2 = g_variant_new_parsed ("['hello', 'there']");
@@ -177,6 +199,10 @@ test_assertions (void)
   g_test_trap_assert_stderr ("*assertion failed*NULL*");
 
   g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpfloat_epsilon", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
+
+  g_test_trap_subprocess ("/misc/assertions/subprocess/bad_no_errno", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*assertion failed*");
 }
@@ -1282,6 +1308,7 @@ main (int   argc,
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpmem_data", test_assertions_bad_cmpmem_data);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpmem_null", test_assertions_bad_cmpmem_null);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpfloat_epsilon", test_assertions_bad_cmpfloat_epsilon);
+  g_test_add_func ("/misc/assertions/subprocess/bad_no_errno", test_assertions_bad_no_errno);
   g_test_add_data_func ("/misc/test-data", (void*) 0xc0c0baba, test_data_test);
   g_test_add ("/misc/primetoul", Fixturetest, (void*) 0xc0cac01a, fixturetest_setup, fixturetest_test, fixturetest_teardown);
   if (g_test_perf())
