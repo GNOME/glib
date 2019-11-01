@@ -1488,10 +1488,10 @@ get_os_info_from_uname (const gchar *key_name)
  *
  * Get information about the operating system.
  *
- * On Linux this comes from the /etc/os-release file. On other systems, it may
+ * On Linux this comes from the `/etc/os-release` file. On other systems, it may
  * come from a variety of sources. You can either use the standard key names
  * like %G_OS_INFO_KEY_NAME or pass any UTF-8 string key name. For example,
- * /etc/os-release provides a number of other less commonly used values that may
+ * `/etc/os-release` provides a number of other less commonly used values that may
  * be useful. No key is guaranteed to be provided, so the caller should always
  * check if the result is %NULL.
  *
