@@ -22,6 +22,9 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
+/* For G_CREDENTIALS_*_SUPPORTED */
+#include <gio/gcredentialsprivate.h>
+
 #ifdef HAVE_DBUS1
 #include <dbus/dbus.h>
 #endif
@@ -440,6 +443,10 @@ do_test_server_auth (InteropFlags flags)
 #else /* !HAVE_DBUS1 */
   g_test_skip ("Testing interop with libdbus not supported");
 #endif /* !HAVE_DBUS1 */
+
+  /* No practical effect, just to avoid -Wunused-label under some
+   * combinations of #ifdefs */
+  goto out;
 
 out:
   if (server != NULL)
