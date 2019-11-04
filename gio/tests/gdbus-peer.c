@@ -437,52 +437,8 @@ static gpointer
 service_thread_func (gpointer user_data)
 {
   PeerData *data = user_data;
-  GDBusAuthObserver *observer, *o;
-  GError *error;
-  GDBusServerFlags f;
-  gchar *a, *g;
-  gboolean b;
 
   g_main_context_push_thread_default (data->service_context);
-
-  error = NULL;
-  observer = g_dbus_auth_observer_new ();
-  server = g_dbus_server_new_sync (tmp_address,
-                                   G_DBUS_SERVER_FLAGS_NONE,
-                                   test_guid,
-                                   observer,
-                                   NULL, /* cancellable */
-                                   &error);
-  g_assert_no_error (error);
-
-  g_signal_connect (server,
-                    "new-connection",
-                    G_CALLBACK (on_new_connection),
-                    data);
-  g_signal_connect (observer,
-                    "authorize-authenticated-peer",
-                    G_CALLBACK (on_authorize_authenticated_peer),
-                    data);
-
-  g_assert_cmpint (g_dbus_server_get_flags (server), ==, G_DBUS_SERVER_FLAGS_NONE);
-  g_assert_cmpstr (g_dbus_server_get_guid (server), ==, test_guid);
-  g_object_get (server,
-                "flags", &f,
-                "address", &a,
-                "guid", &g,
-                "active", &b,
-                "authentication-observer", &o,
-                NULL);
-  g_assert_cmpint (f, ==, G_DBUS_SERVER_FLAGS_NONE);
-  g_assert_cmpstr (a, ==, tmp_address);
-  g_assert_cmpstr (g, ==, test_guid);
-  g_assert (!b);
-  g_assert (o == observer);
-  g_free (a);
-  g_free (g);
-  g_object_unref (o);
-
-  g_object_unref (observer);
 
   g_dbus_server_start (server);
 
@@ -732,6 +688,54 @@ do_test_peer (void)
   g_assert (!g_dbus_error_is_remote_error (error));
   g_clear_error (&error);
   g_assert (c == NULL);
+
+  g_main_context_push_thread_default (data.service_context);
+    {
+      GDBusAuthObserver *observer, *o;
+      GDBusServerFlags f;
+      gchar *a, *g;
+      gboolean b;
+
+      error = NULL;
+      observer = g_dbus_auth_observer_new ();
+      server = g_dbus_server_new_sync (tmp_address,
+                                       G_DBUS_SERVER_FLAGS_NONE,
+                                       test_guid,
+                                       observer,
+                                       NULL, /* cancellable */
+                                       &error);
+      g_assert_no_error (error);
+
+      g_signal_connect (server,
+                        "new-connection",
+                        G_CALLBACK (on_new_connection),
+                        &data);
+      g_signal_connect (observer,
+                        "authorize-authenticated-peer",
+                        G_CALLBACK (on_authorize_authenticated_peer),
+                        &data);
+
+      g_assert_cmpint (g_dbus_server_get_flags (server), ==, G_DBUS_SERVER_FLAGS_NONE);
+      g_assert_cmpstr (g_dbus_server_get_guid (server), ==, test_guid);
+      g_object_get (server,
+                    "flags", &f,
+                    "address", &a,
+                    "guid", &g,
+                    "active", &b,
+                    "authentication-observer", &o,
+                    NULL);
+      g_assert_cmpint (f, ==, G_DBUS_SERVER_FLAGS_NONE);
+      g_assert_cmpstr (a, ==, tmp_address);
+      g_assert_cmpstr (g, ==, test_guid);
+      g_assert (!b);
+      g_assert (o == observer);
+      g_free (a);
+      g_free (g);
+      g_object_unref (o);
+
+      g_object_unref (observer);
+    }
+  g_main_context_pop_thread_default (data.service_context);
 
   /* bring up a server - we run the server in a different thread to avoid deadlocks */
   service_thread = g_thread_new ("test_peer",
@@ -1229,24 +1233,8 @@ static gpointer
 dmp_thread_func (gpointer user_data)
 {
   DmpData *data = user_data;
-  GError *error;
-  gchar *guid;
 
   g_main_context_push_thread_default (data->context);
-
-  error = NULL;
-  guid = g_dbus_generate_guid ();
-  data->server = g_dbus_server_new_sync (tmp_address,
-                                         G_DBUS_SERVER_FLAGS_NONE,
-                                         guid,
-                                         NULL, /* GDBusAuthObserver */
-                                         NULL, /* GCancellable */
-                                         &error);
-  g_assert_no_error (error);
-  g_signal_connect (data->server,
-                    "new-connection",
-                    G_CALLBACK (dmp_on_new_connection),
-                    data);
 
   g_dbus_server_start (data->server);
 
@@ -1256,7 +1244,6 @@ dmp_thread_func (gpointer user_data)
   g_dbus_server_stop (data->server);
   g_main_context_pop_thread_default (data->context);
 
-  g_free (guid);
   return NULL;
 }
 
@@ -1276,10 +1263,27 @@ delayed_message_processing (void)
   data = g_new0 (DmpData, 1);
   data->context = g_main_context_new ();
 
+  g_main_context_push_thread_default (data->context);
+    {
+      error = NULL;
+      data->server = g_dbus_server_new_sync (tmp_address,
+                                             G_DBUS_SERVER_FLAGS_NONE,
+                                             test_guid,
+                                             NULL, /* GDBusAuthObserver */
+                                             NULL, /* GCancellable */
+                                             &error);
+      g_assert_no_error (error);
+      g_signal_connect (data->server,
+                        "new-connection",
+                        G_CALLBACK (dmp_on_new_connection),
+                        data);
+    }
+  g_main_context_pop_thread_default (data->context);
+
   service_thread = g_thread_new ("dmp",
                                  dmp_thread_func,
                                  data);
-  while (data->server == NULL || !g_dbus_server_is_active (data->server))
+  while (!g_dbus_server_is_active (data->server))
     g_thread_yield ();
 
   for (n = 0; n < 5; n++)
@@ -1366,30 +1370,8 @@ static gpointer
 nonce_tcp_service_thread_func (gpointer user_data)
 {
   PeerData *data = user_data;
-  GDBusAuthObserver *observer;
-  GError *error;
 
   g_main_context_push_thread_default (data->service_context);
-
-  error = NULL;
-  observer = g_dbus_auth_observer_new ();
-  server = g_dbus_server_new_sync ("nonce-tcp:",
-                                   G_DBUS_SERVER_FLAGS_NONE,
-                                   test_guid,
-                                   observer,
-                                   NULL, /* cancellable */
-                                   &error);
-  g_assert_no_error (error);
-
-  g_signal_connect (server,
-                    "new-connection",
-                    G_CALLBACK (nonce_tcp_on_new_connection),
-                    data);
-  g_signal_connect (observer,
-                    "authorize-authenticated-peer",
-                    G_CALLBACK (nonce_tcp_on_authorize_authenticated_peer),
-                    data);
-  g_object_unref (observer);
 
   g_dbus_server_start (server);
 
@@ -1426,6 +1408,33 @@ test_nonce_tcp (void)
 
   error = NULL;
   server = NULL;
+
+  g_main_context_push_thread_default (data.service_context);
+    {
+      GDBusAuthObserver *observer;
+
+      error = NULL;
+      observer = g_dbus_auth_observer_new ();
+      server = g_dbus_server_new_sync ("nonce-tcp:",
+                                       G_DBUS_SERVER_FLAGS_NONE,
+                                       test_guid,
+                                       observer,
+                                       NULL, /* cancellable */
+                                       &error);
+      g_assert_no_error (error);
+
+      g_signal_connect (server,
+                        "new-connection",
+                        G_CALLBACK (nonce_tcp_on_new_connection),
+                        &data);
+      g_signal_connect (observer,
+                        "authorize-authenticated-peer",
+                        G_CALLBACK (nonce_tcp_on_authorize_authenticated_peer),
+                        &data);
+      g_object_unref (observer);
+    }
+  g_main_context_pop_thread_default (data.service_context);
+
   service_thread = g_thread_new ("nonce-tcp-service",
                                  nonce_tcp_service_thread_func,
                                  &data);
@@ -1576,23 +1585,8 @@ static gpointer
 tcp_anonymous_service_thread_func (gpointer user_data)
 {
   PeerData *data = user_data;
-  GError *error;
 
   g_main_context_push_thread_default (data->service_context);
-
-  error = NULL;
-  server = g_dbus_server_new_sync ("tcp:",
-                                   G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS,
-                                   test_guid,
-                                   NULL, /* GDBusObserver* */
-                                   NULL, /* GCancellable* */
-                                   &error);
-  g_assert_no_error (error);
-
-  g_signal_connect (server,
-                    "new-connection",
-                    G_CALLBACK (tcp_anonymous_on_new_connection),
-                    data);
 
   g_dbus_server_start (server);
 
@@ -1619,6 +1613,24 @@ test_tcp_anonymous (void)
 
   test_guid = g_dbus_generate_guid ();
   loop = g_main_loop_new (NULL, FALSE);
+
+  g_main_context_push_thread_default (data.service_context);
+    {
+      error = NULL;
+      server = g_dbus_server_new_sync ("tcp:",
+                                       G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS,
+                                       test_guid,
+                                       NULL, /* GDBusObserver* */
+                                       NULL, /* GCancellable* */
+                                       &error);
+      g_assert_no_error (error);
+
+      g_signal_connect (server,
+                        "new-connection",
+                        G_CALLBACK (tcp_anonymous_on_new_connection),
+                        &data);
+    }
+  g_main_context_pop_thread_default (data.service_context);
 
   service_thread = g_thread_new ("tcp-anon-service",
                                  tcp_anonymous_service_thread_func,
@@ -1732,36 +1744,13 @@ codegen_on_new_connection (GDBusServer *server,
 static gpointer
 codegen_service_thread_func (gpointer user_data)
 {
-  PeerData *peer_data = user_data;
-  ExampleAnimal  *animal;
-  GError         *error = NULL;
+  PeerData *data = user_data;
 
   g_main_context_push_thread_default (data->service_context);
 
-  /* Create the animal in the right thread context */
-  animal = example_animal_skeleton_new ();
-
-  /* Handle Poke() D-Bus method invocations on the .Animal interface */
-  g_signal_connect (animal, "handle-poke",
-                    G_CALLBACK (codegen_on_animal_poke),
-                    NULL); /* user_data */
-
-  codegen_server = g_dbus_server_new_sync (tmp_address,
-                                           G_DBUS_SERVER_FLAGS_NONE,
-                                           test_guid,
-                                           NULL, /* observer */
-                                           NULL, /* cancellable */
-                                           &error);
-  g_assert_no_error (error);
   g_dbus_server_start (codegen_server);
 
-  g_signal_connect (codegen_server, "new-connection",
-                    G_CALLBACK (codegen_on_new_connection),
-                    animal);
-
   run_service_loop (data->service_context);
-
-  g_object_unref (animal);
 
   g_main_context_pop_thread_default (data->service_context);
 
@@ -1792,6 +1781,7 @@ codegen_test_peer (void)
   GError              *error = NULL;
   GVariant            *value;
   const gchar         *s;
+  ExampleAnimal       *animal;
 
   memset (&data, '\0', sizeof (PeerData));
   data.service_context = g_main_context_new ();
@@ -1802,6 +1792,30 @@ codegen_test_peer (void)
   setup_test_address ();
 
   /* bring up a server - we run the server in a different thread to avoid deadlocks */
+  g_main_context_push_thread_default (data.service_context);
+    {
+      /* Create the animal in the right thread context */
+      animal = example_animal_skeleton_new ();
+
+      /* Handle Poke() D-Bus method invocations on the .Animal interface */
+      g_signal_connect (animal, "handle-poke",
+                        G_CALLBACK (codegen_on_animal_poke),
+                        NULL); /* user_data */
+
+      codegen_server = g_dbus_server_new_sync (tmp_address,
+                                               G_DBUS_SERVER_FLAGS_NONE,
+                                               test_guid,
+                                               NULL, /* observer */
+                                               NULL, /* cancellable */
+                                               &error);
+      g_assert_no_error (error);
+
+      g_signal_connect (codegen_server, "new-connection",
+                        G_CALLBACK (codegen_on_new_connection),
+                        animal);
+    }
+  g_main_context_pop_thread_default (data.service_context);
+
   service_thread = g_thread_new ("codegen_test_peer",
                                  codegen_service_thread_func,
                                  NULL);
@@ -1907,6 +1921,7 @@ codegen_test_peer (void)
 
   teardown_test_address ();
 
+  g_object_unref (animal);
   g_main_loop_unref (loop);
   g_free (test_guid);
   g_main_context_unref (data.service_context);
