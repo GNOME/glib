@@ -278,7 +278,7 @@ setup_test_address (void)
       tmp_address = g_strdup_printf ("unix:dir=%s", tmpdir);
     }
   else
-    tmp_address = g_strdup ("nonce-tcp:");
+    tmp_address = g_strdup ("nonce-tcp:host=127.0.0.1");
 }
 
 #ifdef G_OS_UNIX
@@ -726,7 +726,7 @@ do_test_peer (void)
   c = g_dbus_connection_new_for_address_sync (is_unix ? "unix:path=/tmp/gdbus-test-does-not-exist-pid" :
                                               /* NOTE: Even if something is listening on port 12345 the connection
                                                * will fail because the nonce file doesn't exist */
-                                              "nonce-tcp:host=localhost,port=12345,noncefile=this-does-not-exist-gdbus",
+                                              "nonce-tcp:host=127.0.0.1,port=12345,noncefile=this-does-not-exist-gdbus",
                                               G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
                                               NULL, /* GDBusAuthObserver */
                                               NULL, /* cancellable */
@@ -1375,7 +1375,7 @@ nonce_tcp_service_thread_func (gpointer user_data)
 
   error = NULL;
   observer = g_dbus_auth_observer_new ();
-  server = g_dbus_server_new_sync ("nonce-tcp:",
+  server = g_dbus_server_new_sync ("nonce-tcp:host=127.0.0.1",
                                    G_DBUS_SERVER_FLAGS_NONE,
                                    test_guid,
                                    observer,
@@ -1584,7 +1584,7 @@ tcp_anonymous_service_thread_func (gpointer user_data)
   g_main_context_push_thread_default (service_context);
 
   error = NULL;
-  server = g_dbus_server_new_sync ("tcp:",
+  server = g_dbus_server_new_sync ("tcp:host=127.0.0.1",
                                    G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS,
                                    test_guid,
                                    NULL, /* GDBusObserver* */
