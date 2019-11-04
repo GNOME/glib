@@ -1421,7 +1421,28 @@ test_nonce_tcp (void)
                                        observer,
                                        NULL, /* cancellable */
                                        &error);
+
+#ifdef EADDRNOTAVAIL
+      if (server == NULL)
+        {
+          /* There is no specific GSocket error code for EADDRNOTAVAIL so the
+           * best we can do here is string matching on the error message... */
+          if (g_str_has_prefix (error->message, "Error binding to address") &&
+              g_str_has_suffix (error->message, g_strerror (EADDRNOTAVAIL)))
+            {
+              gchar *message = g_strdup_printf ("%s; see https://gitlab.gnome.org/GNOME/glib/issues/1912",
+                                                error->message);
+              g_test_incomplete (message);
+              g_free (message);
+              g_object_unref (observer);
+              g_main_context_pop_thread_default (data.service_context);
+              goto out;
+            }
+        }
+#endif
+
       g_assert_no_error (error);
+      g_assert_nonnull (server);
 
       g_signal_connect (server,
                         "new-connection",
@@ -1439,7 +1460,6 @@ test_nonce_tcp (void)
                                  nonce_tcp_service_thread_func,
                                  &data);
   await_service_loop ();
-  g_assert (server != NULL);
 
   /* bring up a connection and accept it */
   data.accept_connection = TRUE;
@@ -1536,6 +1556,7 @@ test_nonce_tcp (void)
   g_main_loop_quit (service_loop);
   g_thread_join (service_thread);
 
+out:
   g_ptr_array_unref (data.current_connections);
 
   g_main_loop_unref (loop);
