@@ -22,6 +22,8 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
+#include <gio/gcredentialsprivate.h>
+
 #ifdef HAVE_DBUS1
 #include <dbus/dbus.h>
 #endif
@@ -441,7 +443,11 @@ do_test_server_auth (InteropFlags flags)
   g_test_skip ("Testing interop with libdbus not supported");
 #endif /* !HAVE_DBUS1 */
 
+#if !defined(G_OS_UNIX) || \
+  (!defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED) \
+   && !defined(G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED))
 out:
+#endif
   if (server != NULL)
     g_dbus_server_stop (server);
 
