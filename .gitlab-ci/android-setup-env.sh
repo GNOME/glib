@@ -95,6 +95,7 @@ c_link_args = ['-L${prefix_path}/lib64',
 c = '${toolchain_path}/bin/${CC}'
 cpp = '${toolchain_path}/bin/${CXX}'
 ar = '${toolchain_path}/bin/${AR}'
+ld = '${toolchain_path}/bin/${LD}'
 strip = '${toolchain_path}/bin/${STRIP}'
 pkgconfig = '${PKG_CONFIG}'
 EOM
