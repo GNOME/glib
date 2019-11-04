@@ -14,7 +14,7 @@ variables:
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
 
 fedora-x86_64:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v3
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: build
   except:
     - tags
@@ -55,7 +55,7 @@ fedora-x86_64:
       - "_coverage"
 
 debian-stable-x86_64:
-  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v3
+  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v4
   stage: build
   except:
     - tags
@@ -84,7 +84,7 @@ debian-stable-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 G_DISABLE_ASSERT:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v3
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: build
   except:
     - tags
@@ -112,7 +112,7 @@ G_DISABLE_ASSERT:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 valgrind:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v3
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: analysis
   except:
     - tags
@@ -289,7 +289,7 @@ freebsd-12-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 coverage:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v3
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: coverage
   except:
     - tags
@@ -302,7 +302,7 @@ coverage:
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
 
 scan-build:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v3
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: analysis
   except:
     - tags
@@ -335,7 +335,7 @@ pages:
       - public
 
 dist-job:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v3
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: build
   only:
     - tags
