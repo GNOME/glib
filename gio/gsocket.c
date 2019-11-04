@@ -364,6 +364,50 @@ _win32_unset_event_mask (GSocket *socket, int mask)
   recv (sockfd, (gpointer)buf, len, flags)
 #endif
 
+static gchar *
+address_to_string (GSocketAddress *address)
+{
+  GString *ret = g_string_new ("");
+
+  if (G_IS_INET_SOCKET_ADDRESS (address))
+    {
+      GInetSocketAddress *isa = G_INET_SOCKET_ADDRESS (address);
+      GInetAddress *ia = g_inet_socket_address_get_address (isa);
+      GSocketFamily family = g_inet_address_get_family (ia);
+      gchar *tmp;
+
+      /* Represent IPv6 addresses in URL style:
+       * ::1 port 12345 -> [::1]:12345 */
+      if (family == G_SOCKET_FAMILY_IPV6)
+        g_string_append_c (ret, '[');
+
+      tmp = g_inet_address_to_string (ia);
+      g_string_append (ret, tmp);
+      g_free (tmp);
+
+      if (family == G_SOCKET_FAMILY_IPV6)
+        {
+          guint32 scope = g_inet_socket_address_get_scope_id (isa);
+
+          if (scope != 0)
+            g_string_append_printf (ret, "%%%u", scope);
+
+          g_string_append_c (ret, ']');
+        }
+
+      g_string_append_c (ret, ':');
+
+      g_string_append_printf (ret, "%u", g_inet_socket_address_get_port (isa));
+    }
+  else
+    {
+      /* For unknown address types, just show the type */
+      g_string_append_printf (ret, "(%s)", G_OBJECT_TYPE_NAME (address));
+    }
+
+  return g_string_free (ret, FALSE);
+}
+
 static gboolean
 check_socket (GSocket *socket,
 	      GError **error)
@@ -2153,9 +2197,13 @@ g_socket_bind (GSocket         *socket,
 	    g_socket_address_get_native_size (address)) < 0)
     {
       int errsv = get_socket_errno ();
+      gchar *address_string = address_to_string (address);
+
       g_set_error (error,
 		   G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("Error binding to address: %s"), socket_strerror (errsv));
+		   _("Error binding to address %s: %s"),
+		   address_string, socket_strerror (errsv));
+      g_free (address_string);
       return FALSE;
     }
 
