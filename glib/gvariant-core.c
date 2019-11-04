@@ -554,7 +554,8 @@ g_variant_new_from_bytes (const GVariantType *type,
                           aligned_size) != 0)
         g_error ("posix_memalign failed");
 
-      memcpy (aligned_data, g_bytes_get_data (bytes, NULL), aligned_size);
+      if (aligned_size != 0)
+        memcpy (aligned_data, g_bytes_get_data (bytes, NULL), aligned_size);
 
       bytes = owned_bytes = g_bytes_new_with_free_func (aligned_data,
                                                         aligned_size,
