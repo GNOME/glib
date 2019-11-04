@@ -365,7 +365,7 @@ g_bytes_equal (gconstpointer bytes1,
   g_return_val_if_fail (bytes2 != NULL, FALSE);
 
   return b1->size == b2->size &&
-         memcmp (b1->data, b2->data, b1->size) == 0;
+         (b1->size == 0 || memcmp (b1->data, b2->data, b1->size) == 0);
 }
 
 /**
