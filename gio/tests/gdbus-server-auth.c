@@ -22,6 +22,8 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 
+#include <gio/gcredentialsprivate.h>
+
 #ifdef HAVE_DBUS1
 #include <dbus/dbus.h>
 #endif
