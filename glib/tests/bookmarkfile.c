@@ -28,7 +28,7 @@ test_load_from_data_dirs (void)
 
   res = g_bookmark_file_load_from_data_dirs (bookmark, "no-such-bookmark-file.xbel", &path, &error);
 
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_assert_null (path);
   g_error_free (error);
@@ -49,19 +49,19 @@ test_to_file (void)
 
   filename = g_test_get_filename (G_TEST_DIST, "bookmarks", "valid-01.xbel", NULL);
   res = g_bookmark_file_load_from_file (bookmark, filename, &error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_no_error (error);
 
   res = g_bookmark_file_to_file (bookmark, "out.xbel", &error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_no_error (error);
 
   res = g_file_get_contents (filename, &in, NULL, &error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_no_error (error);
 
   res = g_file_get_contents ("out.xbel", &out, NULL, &error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_no_error (error);
   remove ("out.xbel");
 
@@ -84,28 +84,28 @@ test_move_item (void)
 
   filename = g_test_get_filename (G_TEST_DIST, "bookmarks", "valid-01.xbel", NULL);
   res = g_bookmark_file_load_from_file (bookmark, filename, &error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_no_error (error);
 
   res = g_bookmark_file_move_item (bookmark,
                                    "file:///home/zefram/Documents/milan-stuttgart.ps",
                                    "file:///tmp/schedule.ps",
                                    &error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_no_error (error);
 
   res = g_bookmark_file_move_item (bookmark,
                                    "file:///tmp/schedule.ps",
                                    "file:///tmp/schedule.ps",
                                    &error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_no_error (error);
 
   res = g_bookmark_file_move_item (bookmark,
                                    "file:///no-such-file.xbel",
                                    "file:///tmp/schedule.ps",
                                    &error);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
   g_clear_error (&error);
 
@@ -113,7 +113,7 @@ test_move_item (void)
                                    "file:///tmp/schedule.ps",
                                    NULL,
                                    &error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_no_error (error);
 
   g_bookmark_file_free (bookmark);
@@ -135,7 +135,7 @@ test_misc (void)
 
   filename = g_test_get_filename (G_TEST_DIST, "bookmarks", "valid-01.xbel", NULL);
   res = g_bookmark_file_load_from_file (bookmark, filename, &error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_no_error (error);
 
   res = g_bookmark_file_get_icon (bookmark,
@@ -143,7 +143,7 @@ test_misc (void)
                                   NULL,
                                   NULL,
                                   &error);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_no_error (error);
 
   res = g_bookmark_file_get_icon (bookmark,
@@ -151,7 +151,7 @@ test_misc (void)
                                   NULL,
                                   NULL,
                                   &error);
-  g_assert (!res);
+  g_assert_false (res);
   g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
   g_clear_error (&error);
 
@@ -194,7 +194,7 @@ test_misc (void)
                                         "file:///tmp/schedule2.ps",
                                         &error);
   g_assert_no_error (error);
-  g_assert (res);
+  g_assert_true (res);
 
   time (&now);
   g_bookmark_file_set_added (bookmark,
@@ -204,7 +204,7 @@ test_misc (void)
                                  "file:///tmp/schedule3.ps",
                                  &error);
   g_assert_no_error (error);
-  g_assert (t == now);
+  g_assert_cmpint (t, ==, now);
 
   g_bookmark_file_set_modified (bookmark,
                                 "file:///tmp/schedule4.ps",
@@ -213,7 +213,7 @@ test_misc (void)
                                     "file:///tmp/schedule4.ps",
                                     &error);
   g_assert_no_error (error);
-  g_assert (t == now);
+  g_assert_cmpint (t, ==, now);
 
   g_bookmark_file_set_visited (bookmark,
                                "file:///tmp/schedule5.ps",
@@ -222,7 +222,7 @@ test_misc (void)
                                    "file:///tmp/schedule5.ps",
                                    &error);
   g_assert_no_error (error);
-  g_assert (t == now);
+  g_assert_cmpint (t, ==, now);
 
   g_bookmark_file_set_icon (bookmark,
                             "file:///tmp/schedule6.ps",
@@ -234,7 +234,7 @@ test_misc (void)
                                   NULL, 
                                   &error);
   g_assert_no_error (error);
-  g_assert (res);
+  g_assert_true (res);
   g_assert_cmpstr (s, ==, "application-x-postscript");
   g_free (s);
 
@@ -247,14 +247,14 @@ test_misc (void)
                                   NULL, 
                                   &error);
   g_assert_no_error (error);
-  g_assert (!res);
+  g_assert_false (res);
 
   res = g_bookmark_file_has_application (bookmark,
                                          "file:///tmp/schedule7.ps",
                                          "foo",
                                          &error);
   g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
-  g_assert (!res);
+  g_assert_false (res);
   g_clear_error (&error);
 
   g_bookmark_file_add_application (bookmark, 
@@ -266,13 +266,13 @@ test_misc (void)
                                       &exec, &count, &t,
                                       &error);
   g_assert_no_error (error);
-  g_assert (res);
+  g_assert_true (res);
   cmd = g_strconcat (g_get_prgname (), " file:///tmp/schedule7.ps", NULL);
   g_assert_cmpstr (exec, ==, cmd);
   g_free (cmd);
   g_free (exec);
   g_assert_cmpuint (count, ==, 1);
-  g_assert (t == now);
+  g_assert_cmpint (t, ==, now);
 
   g_bookmark_file_free (bookmark);
 }
@@ -308,19 +308,19 @@ test_query (GBookmarkFile *bookmark)
 
   for (i = 0; i < uris_len; i++)
     {
-      g_assert (g_bookmark_file_has_item (bookmark, uris[i]));
+      g_assert_true (g_bookmark_file_has_item (bookmark, uris[i]));
       error = NULL;
       mime = g_bookmark_file_get_mime_type (bookmark, uris[i], &error);
-      g_assert (mime != NULL);
+      g_assert_nonnull (mime);
       g_assert_no_error (error);
       g_free (mime);
     }
   g_strfreev (uris);
 
-  g_assert (!g_bookmark_file_has_item (bookmark, "file:///no/such/uri"));
+  g_assert_false (g_bookmark_file_has_item (bookmark, "file:///no/such/uri"));
   error = NULL;
   mime = g_bookmark_file_get_mime_type (bookmark, "file:///no/such/uri", &error);
-  g_assert (mime == NULL);
+  g_assert_null (mime);
   g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
   g_error_free (error);
   g_free (mime);
@@ -376,18 +376,18 @@ test_modify (GBookmarkFile *bookmark)
   g_assert_no_error (error);
   g_assert_cmpstr (text, ==, "a description");
   g_free (text);
-  g_assert (g_bookmark_file_get_is_private (bookmark, TEST_URI_0, &error));
+  g_assert_true (g_bookmark_file_get_is_private (bookmark, TEST_URI_0, &error));
   g_assert_no_error (error);
   stamp = g_bookmark_file_get_added (bookmark, TEST_URI_0, &error);
   g_assert_no_error (error);
-  g_assert (stamp == now);
+  g_assert_cmpint (stamp, ==, now);
   stamp = g_bookmark_file_get_modified (bookmark, TEST_URI_0, &error);
   g_assert_no_error (error);
-  g_assert (stamp == now);
+  g_assert_cmpint (stamp, ==, now);
   stamp = g_bookmark_file_get_visited (bookmark, TEST_URI_0, &error);
   g_assert_no_error (error);
-  g_assert (stamp == now);
-  g_assert (g_bookmark_file_get_icon (bookmark, TEST_URI_0, &icon, &mime, &error));
+  g_assert_cmpint (stamp, ==, now);
+  g_assert_true (g_bookmark_file_get_icon (bookmark, TEST_URI_0, &icon, &mime, &error));
   g_assert_no_error (error);
   g_assert_cmpstr (icon, ==, "testicon");
   g_assert_cmpstr (mime, ==, "image/png");
@@ -419,21 +419,21 @@ test_modify (GBookmarkFile *bookmark)
   if (g_test_verbose ())
     g_printerr ("\t=> check application...");
   g_bookmark_file_set_mime_type (bookmark, TEST_URI_0, TEST_MIME);
-  g_assert (!g_bookmark_file_has_application (bookmark, TEST_URI_0, TEST_APP_NAME, NULL));
+  g_assert_false (g_bookmark_file_has_application (bookmark, TEST_URI_0, TEST_APP_NAME, NULL));
   g_bookmark_file_add_application (bookmark, TEST_URI_0,
 				   TEST_APP_NAME,
 				   TEST_APP_EXEC);
-  g_assert (g_bookmark_file_has_application (bookmark, TEST_URI_0, TEST_APP_NAME, NULL));
+  g_assert_true (g_bookmark_file_has_application (bookmark, TEST_URI_0, TEST_APP_NAME, NULL));
   g_bookmark_file_get_app_info (bookmark, TEST_URI_0, TEST_APP_NAME,
 		  		&text,
 				&count,
 				&stamp,
 				&error);
   g_assert_no_error (error);
-  g_assert (count == 1);
-  g_assert (stamp == g_bookmark_file_get_modified (bookmark, TEST_URI_0, NULL));
+  g_assert_cmpuint (count, ==, 1);
+  g_assert_cmpint (stamp, ==, g_bookmark_file_get_modified (bookmark, TEST_URI_0, NULL));
   g_free (text);
-  g_assert (g_bookmark_file_remove_application (bookmark, TEST_URI_0, TEST_APP_NAME, &error));
+  g_assert_true (g_bookmark_file_remove_application (bookmark, TEST_URI_0, TEST_APP_NAME, &error));
   g_assert_no_error (error);
   g_bookmark_file_add_application (bookmark, TEST_URI_0, TEST_APP_NAME, TEST_APP_EXEC);
   apps = g_bookmark_file_get_applications (bookmark, TEST_URI_0, &length, &error);
@@ -455,11 +455,11 @@ test_modify (GBookmarkFile *bookmark)
 
   if (g_test_verbose ())
     g_printerr ("\t=> check groups...");
-  g_assert (!g_bookmark_file_has_group (bookmark, TEST_URI_1, "Test", NULL));
+  g_assert_false (g_bookmark_file_has_group (bookmark, TEST_URI_1, "Test", NULL));
   g_bookmark_file_add_group (bookmark, TEST_URI_1, "Test");
-  g_assert (g_bookmark_file_has_group (bookmark, TEST_URI_1, "Test", NULL));
-  g_assert (!g_bookmark_file_has_group (bookmark, TEST_URI_1, "Fail", NULL));
-  g_assert (g_bookmark_file_remove_group (bookmark, TEST_URI_1, "Test", &error));
+  g_assert_true (g_bookmark_file_has_group (bookmark, TEST_URI_1, "Test", NULL));
+  g_assert_false (g_bookmark_file_has_group (bookmark, TEST_URI_1, "Fail", NULL));
+  g_assert_true (g_bookmark_file_remove_group (bookmark, TEST_URI_1, "Test", &error));
   g_assert_no_error (error);
   groups = g_bookmark_file_get_groups (bookmark, TEST_URI_1, NULL, &error);
   g_assert_cmpint (g_strv_length (groups), ==, 0);
@@ -480,9 +480,9 @@ test_modify (GBookmarkFile *bookmark)
 
   if (g_test_verbose ())
     g_printerr ("\t=> check remove...");
-  g_assert (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error) == TRUE);
+  g_assert_true (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error));
   g_assert_no_error (error);
-  g_assert (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error) == FALSE);
+  g_assert_false (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error));
   g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
   g_clear_error (&error);
   if (g_test_verbose ())
@@ -501,7 +501,7 @@ test_file (gconstpointer d)
   GError *error;
 
   bookmark_file = g_bookmark_file_new ();
-  g_assert (bookmark_file != NULL);
+  g_assert_nonnull (bookmark_file);
 
   success = test_load (bookmark_file, filename);
 
@@ -519,7 +519,7 @@ test_file (gconstpointer d)
 
   g_bookmark_file_free (bookmark_file);
 
-  g_assert (success == (strstr (filename, "fail") == NULL));
+  g_assert_true (success == (strstr (filename, "fail") == NULL));
 }
 
 int
