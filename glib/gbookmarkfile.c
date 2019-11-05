@@ -775,13 +775,22 @@ parse_bookmark_element (GMarkupParseContext  *context,
   item = bookmark_item_new (uri);
 
   if (added != NULL && !timestamp_from_iso8601 (added, &item->added, error))
-    return;
+    {
+      bookmark_item_free (item);
+      return;
+    }
 
   if (modified != NULL && !timestamp_from_iso8601 (modified, &item->modified, error))
-    return;
+    {
+      bookmark_item_free (item);
+      return;
+    }
 
   if (visited != NULL && !timestamp_from_iso8601 (visited, &item->visited, error))
-    return;
+    {
+      bookmark_item_free (item);
+      return;
+    }
 
   add_error = NULL;
   g_bookmark_file_add_item (parse_data->bookmark_file,
