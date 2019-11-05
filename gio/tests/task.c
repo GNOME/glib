@@ -2009,6 +2009,47 @@ test_return_pointer (void)
   g_assert_null (task);
 }
 
+static void
+test_return_value (void)
+{
+  GObject *object;
+  GValue value = G_VALUE_INIT;
+  GValue ret = G_VALUE_INIT;
+  GTask *task;
+  GError *error = NULL;
+
+  object = (GObject *)g_dummy_object_new ();
+  g_assert_cmpint (object->ref_count, ==, 1);
+  g_object_add_weak_pointer (object, (gpointer *)&object);
+
+  g_value_init (&value, G_TYPE_OBJECT);
+  g_value_set_object (&value, object);
+  g_assert_cmpint (object->ref_count, ==, 2);
+
+  task = g_task_new (NULL, NULL, NULL, NULL);
+  g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
+  g_task_return_value (task, &value);
+  g_assert_cmpint (object->ref_count, ==, 3);
+
+  g_assert_true (g_task_propagate_value (task, &ret, &error));
+  g_assert_no_error (error);
+  g_assert_true (g_value_get_object (&ret) == object);
+  g_assert_cmpint (object->ref_count, ==, 3);
+
+  g_object_unref (task);
+  g_assert_nonnull (task);
+  wait_for_completed_notification (task);
+  g_assert_null (task);
+
+  g_assert_cmpint (object->ref_count, ==, 3);
+  g_value_unset (&ret);
+  g_assert_cmpint (object->ref_count, ==, 2);
+  g_value_unset (&value);
+  g_assert_cmpint (object->ref_count, ==, 1);
+  g_object_unref (object);
+  g_assert_null (object);
+}
+
 /* test_object_keepalive: GTask takes a ref on its source object */
 
 static GObject *keepalive_object;
@@ -2348,6 +2389,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/return-on-cancel-sync", test_return_on_cancel_sync);
   g_test_add_func ("/gtask/return-on-cancel-atomic", test_return_on_cancel_atomic);
   g_test_add_func ("/gtask/return-pointer", test_return_pointer);
+  g_test_add_func ("/gtask/return-value", test_return_value);
   g_test_add_func ("/gtask/object-keepalive", test_object_keepalive);
   g_test_add_func ("/gtask/legacy-error", test_legacy_error);
   g_test_add_func ("/gtask/return/in-idle/error-first", test_return_in_idle_error_first);

@@ -4459,6 +4459,7 @@ g_task_get_name
 g_task_return_boolean
 g_task_return_int
 g_task_return_pointer
+g_task_return_value
 g_task_return_error
 g_task_return_new_error
 g_task_return_error_if_cancelled
@@ -4466,6 +4467,7 @@ g_task_return_error_if_cancelled
 g_task_propagate_boolean
 g_task_propagate_int
 g_task_propagate_pointer
+g_task_propagate_value
 g_task_had_error
 g_task_get_completed
 <SUBSECTION>
