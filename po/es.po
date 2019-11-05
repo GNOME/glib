@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-10-28 20:45+0000\n"
-"PO-Revision-Date: 2019-10-29 15:26+0100\n"
+"POT-Creation-Date: 2019-11-05 12:32+0000\n"
+"PO-Revision-Date: 2019-11-05 15:06+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -321,7 +321,7 @@ msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 msgid "Error during conversion: %s"
 msgstr "Falló durante la conversión: %s"
 
-#: gio/gcharsetconverter.c:445 gio/gsocket.c:1094
+#: gio/gcharsetconverter.c:445 gio/gsocket.c:1138
 msgid "Cancellable initialization not supported"
 msgstr "La inicialización cancelable no eestá soportada"
 
@@ -573,12 +573,12 @@ msgstr ""
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Cancelado a través de GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:262
+#: gio/gdbusauthmechanismsha1.c:264
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Error al obtener la información de la carpeta «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:274
+#: gio/gdbusauthmechanismsha1.c:276
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
@@ -586,24 +586,24 @@ msgstr ""
 "Los permisos de la carpeta «%s» están mal formados. Se esperaba el modo "
 "0700, se obtuvo 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:299
+#: gio/gdbusauthmechanismsha1.c:301
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Error al crear la carpeta %s: %s"
 
-#: gio/gdbusauthmechanismsha1.c:346
+#: gio/gdbusauthmechanismsha1.c:348
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Error al abrir el depósito de claves «%s» para su lectura: "
 
-#: gio/gdbusauthmechanismsha1.c:369 gio/gdbusauthmechanismsha1.c:687
+#: gio/gdbusauthmechanismsha1.c:371 gio/gdbusauthmechanismsha1.c:689
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "La línea %d del depósito de claves en «%s» con contenido «%s» está mal "
 "formada"
 
-#: gio/gdbusauthmechanismsha1.c:383 gio/gdbusauthmechanismsha1.c:701
+#: gio/gdbusauthmechanismsha1.c:385 gio/gdbusauthmechanismsha1.c:703
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -611,7 +611,7 @@ msgstr ""
 "El primer token de la línea %d del depósito de claves en «%s» con contenido "
 "«%s» está mal formado"
 
-#: gio/gdbusauthmechanismsha1.c:397 gio/gdbusauthmechanismsha1.c:715
+#: gio/gdbusauthmechanismsha1.c:399 gio/gdbusauthmechanismsha1.c:717
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -619,37 +619,37 @@ msgstr ""
 "El segundo token de la línea %d del depósito de claves en «%s» con contenido "
 "«%s» está mal formado"
 
-#: gio/gdbusauthmechanismsha1.c:421
+#: gio/gdbusauthmechanismsha1.c:423
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "No se encontró la «cookie» con ID %d en el depósito de claves en «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:503
+#: gio/gdbusauthmechanismsha1.c:505
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Error al eliminar el archivo de bloqueo antiguo «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:535
+#: gio/gdbusauthmechanismsha1.c:537
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Error al crear el archivo de bloqueo «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:566
+#: gio/gdbusauthmechanismsha1.c:568
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Error al cerrar (desenlazar) el archivo de bloqueo «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:577
+#: gio/gdbusauthmechanismsha1.c:579
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Error al desenlazar el archivo de bloqueo «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:654
+#: gio/gdbusauthmechanismsha1.c:656
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Error al abrir el depósito de claves «%s» para su escritura:"
 
-#: gio/gdbusauthmechanismsha1.c:850
+#: gio/gdbusauthmechanismsha1.c:852
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr ""
@@ -997,27 +997,27 @@ msgstr ""
 "%sconocido y el proxy se construyó con la opción "
 "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: gio/gdbusserver.c:746
+#: gio/gdbusserver.c:755
 msgid "Abstract namespace not supported"
 msgstr "Espacio de nombres abstracto no soportado"
 
-#: gio/gdbusserver.c:839
+#: gio/gdbusserver.c:848
 msgid "Cannot specify nonce file when creating a server"
 msgstr ""
 "No se puede especificar el archivo de número usado una sola vez al crear un "
 "servidor"
 
-#: gio/gdbusserver.c:921
+#: gio/gdbusserver.c:930
 #, c-format
 msgid "Error writing nonce file at “%s”: %s"
 msgstr "Error al escribir el archivo de número usado una sola vez en «%s»: %s"
 
-#: gio/gdbusserver.c:1094
+#: gio/gdbusserver.c:1103
 #, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
 msgstr "La cadena «%s» no es un GUID válido de D-Bus"
 
-#: gio/gdbusserver.c:1134
+#: gio/gdbusserver.c:1143
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
 msgstr "No se puede escuchar en un transporte no soportado «%s»"
@@ -3059,97 +3059,97 @@ msgstr "No se soporta mover archivos entre puntos de montaje"
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "No se pudo determinar el uso de disco de %s: %s"
 
-#: gio/glocalfileinfo.c:752
+#: gio/glocalfileinfo.c:755
 msgid "Attribute value must be non-NULL"
 msgstr "El valor del atributo de ser no nulo"
 
-#: gio/glocalfileinfo.c:759
+#: gio/glocalfileinfo.c:762
 msgid "Invalid attribute type (string expected)"
 msgstr "Tipo de atributo no válido (se esperaba una cadena)"
 
-#: gio/glocalfileinfo.c:766
+#: gio/glocalfileinfo.c:769
 msgid "Invalid extended attribute name"
 msgstr "Nombre extendido del atributo no válido"
 
-#: gio/glocalfileinfo.c:806
+#: gio/glocalfileinfo.c:809
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Error al establecer el atributo extendido «%s»: %s"
 
-#: gio/glocalfileinfo.c:1634
+#: gio/glocalfileinfo.c:1637
 msgid " (invalid encoding)"
 msgstr " (codificación no válida)"
 
-#: gio/glocalfileinfo.c:1798 gio/glocalfileoutputstream.c:909
+#: gio/glocalfileinfo.c:1801 gio/glocalfileoutputstream.c:909
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Error al obtener la información del archivo «%s»: %s"
 
-#: gio/glocalfileinfo.c:2068
+#: gio/glocalfileinfo.c:2071
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Error al obtener la información del descriptor del archivo: %s"
 
-#: gio/glocalfileinfo.c:2113
+#: gio/glocalfileinfo.c:2116
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint32)"
 
-#: gio/glocalfileinfo.c:2131
+#: gio/glocalfileinfo.c:2134
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipo de atributo no válido (se esperaba uint64)"
 
-#: gio/glocalfileinfo.c:2150 gio/glocalfileinfo.c:2169
+#: gio/glocalfileinfo.c:2153 gio/glocalfileinfo.c:2172
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tipo de atributo no válido (se esperaba una cadena byte)"
 
-#: gio/glocalfileinfo.c:2216
+#: gio/glocalfileinfo.c:2219
 msgid "Cannot set permissions on symlinks"
 msgstr "No se pueden establecer permisos en enlaces simbólicos"
 
-#: gio/glocalfileinfo.c:2232
+#: gio/glocalfileinfo.c:2235
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error al establecer permisos: %s"
 
-#: gio/glocalfileinfo.c:2283
+#: gio/glocalfileinfo.c:2286
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Error al establecer el propietario: %s"
 
-#: gio/glocalfileinfo.c:2306
+#: gio/glocalfileinfo.c:2309
 msgid "symlink must be non-NULL"
 msgstr "el enlace simbólico debe ser no nulo"
 
-#: gio/glocalfileinfo.c:2316 gio/glocalfileinfo.c:2335
-#: gio/glocalfileinfo.c:2346
+#: gio/glocalfileinfo.c:2319 gio/glocalfileinfo.c:2338
+#: gio/glocalfileinfo.c:2349
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error al establecer el enlace simbólico: %s"
 
-#: gio/glocalfileinfo.c:2325
+#: gio/glocalfileinfo.c:2328
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Error al establecer el enlace simbólico: el archivo no es un enlace simbólico"
 
-#: gio/glocalfileinfo.c:2451
+#: gio/glocalfileinfo.c:2454
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Error al establecer o modificar el tiempo de acceso: %s"
 
-#: gio/glocalfileinfo.c:2474
+#: gio/glocalfileinfo.c:2477
 msgid "SELinux context must be non-NULL"
 msgstr "El contexto SELinux debe ser no nulo"
 
-#: gio/glocalfileinfo.c:2489
+#: gio/glocalfileinfo.c:2492
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Error al establecer el contexto SELinux: %s"
 
-#: gio/glocalfileinfo.c:2496
+#: gio/glocalfileinfo.c:2499
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux no está activado en este sistema"
 
-#: gio/glocalfileinfo.c:2588
+#: gio/glocalfileinfo.c:2591
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Establecer el atributo %s no está soportado"
@@ -3755,176 +3755,177 @@ msgstr "Se proporcionó un nombre de esquema vacío\n"
 msgid "No such key “%s”\n"
 msgstr "No existe la clave «%s»\n"
 
-#: gio/gsocket.c:374
+#: gio/gsocket.c:418
 msgid "Invalid socket, not initialized"
 msgstr "Socket no válido, no inicializado"
 
-#: gio/gsocket.c:381
+#: gio/gsocket.c:425
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Socket no válido, falló la instalación debido a: %s"
 
-#: gio/gsocket.c:389
+#: gio/gsocket.c:433
 msgid "Socket is already closed"
 msgstr "El socket ya está cerrado"
 
-#: gio/gsocket.c:404 gio/gsocket.c:3134 gio/gsocket.c:4351 gio/gsocket.c:4409
+#: gio/gsocket.c:448 gio/gsocket.c:3182 gio/gsocket.c:4399 gio/gsocket.c:4457
 msgid "Socket I/O timed out"
 msgstr "Expiró la E/S del socket"
 
-#: gio/gsocket.c:539
+#: gio/gsocket.c:583
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "creando el GSocket desde fd: %s"
 
-#: gio/gsocket.c:568 gio/gsocket.c:622 gio/gsocket.c:629
+#: gio/gsocket.c:612 gio/gsocket.c:666 gio/gsocket.c:673
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "No se pudo crear el socket: %s"
 
-#: gio/gsocket.c:622
+#: gio/gsocket.c:666
 msgid "Unknown family was specified"
 msgstr "Se especificó una familia desconocida"
 
-#: gio/gsocket.c:629
+#: gio/gsocket.c:673
 msgid "Unknown protocol was specified"
 msgstr "Se especificó un protocolo desconocido"
 
-#: gio/gsocket.c:1120
+#: gio/gsocket.c:1164
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr ""
 "No se pueden usar operaciones de datagrama en un zócalo que no es de "
 "datagrama."
 
-#: gio/gsocket.c:1137
+#: gio/gsocket.c:1181
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
 "No se pueden usar operaciones de datagrama en un zócalo sin un tiempo de "
 "expiración establecido."
 
-#: gio/gsocket.c:1944
+#: gio/gsocket.c:1988
 #, c-format
 msgid "could not get local address: %s"
 msgstr "no se pudo obtener la dirección local: %s"
 
-#: gio/gsocket.c:1990
+#: gio/gsocket.c:2034
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "no se pudo obtener la dirección remota: %s"
 
-#: gio/gsocket.c:2056
+#: gio/gsocket.c:2100
 #, c-format
 msgid "could not listen: %s"
 msgstr "no se pudo escuchar: %s"
 
-#: gio/gsocket.c:2158
+#: gio/gsocket.c:2204
 #, c-format
-msgid "Error binding to address: %s"
-msgstr "Error al vincular con la dirección: %s"
+#| msgid "Error binding to address: %s"
+msgid "Error binding to address %s: %s"
+msgstr "Error al vincular con la dirección %s: %s"
 
-#: gio/gsocket.c:2332 gio/gsocket.c:2369 gio/gsocket.c:2479 gio/gsocket.c:2504
-#: gio/gsocket.c:2567 gio/gsocket.c:2625 gio/gsocket.c:2643
+#: gio/gsocket.c:2380 gio/gsocket.c:2417 gio/gsocket.c:2527 gio/gsocket.c:2552
+#: gio/gsocket.c:2615 gio/gsocket.c:2673 gio/gsocket.c:2691
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Error al unirse al grupo de multicast: %s"
 
-#: gio/gsocket.c:2333 gio/gsocket.c:2370 gio/gsocket.c:2480 gio/gsocket.c:2505
-#: gio/gsocket.c:2568 gio/gsocket.c:2626 gio/gsocket.c:2644
+#: gio/gsocket.c:2381 gio/gsocket.c:2418 gio/gsocket.c:2528 gio/gsocket.c:2553
+#: gio/gsocket.c:2616 gio/gsocket.c:2674 gio/gsocket.c:2692
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Error al abandonar al grupo de multicast: %s"
 
-#: gio/gsocket.c:2334
+#: gio/gsocket.c:2382
 msgid "No support for source-specific multicast"
 msgstr "No se soporta el multicast específico de la fuente"
 
-#: gio/gsocket.c:2481
+#: gio/gsocket.c:2529
 msgid "Unsupported socket family"
 msgstr "Familia del socket no soportada"
 
-#: gio/gsocket.c:2506
+#: gio/gsocket.c:2554
 msgid "source-specific not an IPv4 address"
 msgstr "la fuente específica no es una dirección IPv4"
 
-#: gio/gsocket.c:2530
+#: gio/gsocket.c:2578
 #, c-format
 msgid "Interface name too long"
 msgstr "El nombre de la interfaz es demasiado largo"
 
-#: gio/gsocket.c:2543 gio/gsocket.c:2593
+#: gio/gsocket.c:2591 gio/gsocket.c:2641
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Interfaz no encontrada: %s"
 
-#: gio/gsocket.c:2569
+#: gio/gsocket.c:2617
 msgid "No support for IPv4 source-specific multicast"
 msgstr "No se soporta el multicast específico de la fuente para IPv4"
 
-#: gio/gsocket.c:2627
+#: gio/gsocket.c:2675
 msgid "No support for IPv6 source-specific multicast"
 msgstr "No se soporta el multicast específico de la fuente para IPv6"
 
-#: gio/gsocket.c:2836
+#: gio/gsocket.c:2884
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Error al aceptar la conexión: %s"
 
-#: gio/gsocket.c:2962
+#: gio/gsocket.c:3010
 msgid "Connection in progress"
 msgstr "Conexión en progreso"
 
-#: gio/gsocket.c:3013
+#: gio/gsocket.c:3061
 msgid "Unable to get pending error: "
 msgstr "No se pudo obtener el error pendiente: "
 
-#: gio/gsocket.c:3199
+#: gio/gsocket.c:3247
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Error al recibir los datos: %s"
 
-#: gio/gsocket.c:3396
+#: gio/gsocket.c:3444
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Error al enviar los datos: %s"
 
-#: gio/gsocket.c:3583
+#: gio/gsocket.c:3631
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "No se pudo desconectar el socket: %s"
 
-#: gio/gsocket.c:3664
+#: gio/gsocket.c:3712
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Error al cerrar el socket: %s"
 
-#: gio/gsocket.c:4344
+#: gio/gsocket.c:4392
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Esperando la condición del socket: %s"
 
-#: gio/gsocket.c:4722 gio/gsocket.c:4724 gio/gsocket.c:4871 gio/gsocket.c:4956
-#: gio/gsocket.c:5134 gio/gsocket.c:5174 gio/gsocket.c:5176
+#: gio/gsocket.c:4770 gio/gsocket.c:4772 gio/gsocket.c:4919 gio/gsocket.c:5004
+#: gio/gsocket.c:5182 gio/gsocket.c:5222 gio/gsocket.c:5224
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Error al enviar el mensaje: %s"
 
-#: gio/gsocket.c:4898
+#: gio/gsocket.c:4946
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage no está soportado en Windows"
 
-#: gio/gsocket.c:5367 gio/gsocket.c:5440 gio/gsocket.c:5666
+#: gio/gsocket.c:5415 gio/gsocket.c:5488 gio/gsocket.c:5714
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Error al recibir el mensaje: %s"
 
-#: gio/gsocket.c:5947
+#: gio/gsocket.c:5995
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "No se pudieron leer las credenciales del socket: %s"
 
-#: gio/gsocket.c:5956
+#: gio/gsocket.c:6004
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials no está implementado en este SO"
 
@@ -4284,74 +4285,74 @@ msgstr "Argumentos incorrectos\n"
 msgid "Unexpected attribute “%s” for element “%s”"
 msgstr "Atributo inesperado «%s» para el elemento «%s»"
 
-#: glib/gbookmarkfile.c:767 glib/gbookmarkfile.c:838 glib/gbookmarkfile.c:848
-#: glib/gbookmarkfile.c:960
+#: glib/gbookmarkfile.c:767 glib/gbookmarkfile.c:847 glib/gbookmarkfile.c:857
+#: glib/gbookmarkfile.c:969
 #, c-format
 msgid "Attribute “%s” of element “%s” not found"
 msgstr "El atributo «%s» del elemento «%s» no se ha encontrado"
 
-#: glib/gbookmarkfile.c:1169 glib/gbookmarkfile.c:1234
-#: glib/gbookmarkfile.c:1298 glib/gbookmarkfile.c:1308
+#: glib/gbookmarkfile.c:1178 glib/gbookmarkfile.c:1243
+#: glib/gbookmarkfile.c:1307 glib/gbookmarkfile.c:1317
 #, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "Etiqueta «%s» inesperada, se esperaba la etiqueta «%s»"
 
-#: glib/gbookmarkfile.c:1194 glib/gbookmarkfile.c:1208
-#: glib/gbookmarkfile.c:1276 glib/gbookmarkfile.c:1322
+#: glib/gbookmarkfile.c:1203 glib/gbookmarkfile.c:1217
+#: glib/gbookmarkfile.c:1285 glib/gbookmarkfile.c:1331
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
 msgstr "Etiqueta «%s» inesperada dentro de «%s»"
 
-#: glib/gbookmarkfile.c:1616
+#: glib/gbookmarkfile.c:1625
 #, c-format
 msgid "Invalid date/time ‘%s’ in bookmark file"
 msgstr "Fecha/hora «%s» no válida en el archivo de marcadores"
 
-#: glib/gbookmarkfile.c:1822
+#: glib/gbookmarkfile.c:1831
 msgid "No valid bookmark file found in data dirs"
 msgstr ""
 "No se pudo encontrar ningún archivo de marcadores válido en las carpetas de "
 "datos"
 
-#: glib/gbookmarkfile.c:2023
+#: glib/gbookmarkfile.c:2032
 #, c-format
 msgid "A bookmark for URI “%s” already exists"
 msgstr "Ya existe un marcador para el URI «%s»"
 
-#: glib/gbookmarkfile.c:2069 glib/gbookmarkfile.c:2227
-#: glib/gbookmarkfile.c:2312 glib/gbookmarkfile.c:2392
-#: glib/gbookmarkfile.c:2477 glib/gbookmarkfile.c:2560
-#: glib/gbookmarkfile.c:2638 glib/gbookmarkfile.c:2717
-#: glib/gbookmarkfile.c:2759 glib/gbookmarkfile.c:2856
-#: glib/gbookmarkfile.c:2977 glib/gbookmarkfile.c:3167
-#: glib/gbookmarkfile.c:3243 glib/gbookmarkfile.c:3411
-#: glib/gbookmarkfile.c:3500 glib/gbookmarkfile.c:3589
-#: glib/gbookmarkfile.c:3708
+#: glib/gbookmarkfile.c:2078 glib/gbookmarkfile.c:2236
+#: glib/gbookmarkfile.c:2321 glib/gbookmarkfile.c:2401
+#: glib/gbookmarkfile.c:2486 glib/gbookmarkfile.c:2569
+#: glib/gbookmarkfile.c:2647 glib/gbookmarkfile.c:2726
+#: glib/gbookmarkfile.c:2768 glib/gbookmarkfile.c:2865
+#: glib/gbookmarkfile.c:2986 glib/gbookmarkfile.c:3176
+#: glib/gbookmarkfile.c:3252 glib/gbookmarkfile.c:3420
+#: glib/gbookmarkfile.c:3509 glib/gbookmarkfile.c:3598
+#: glib/gbookmarkfile.c:3717
 #, c-format
 msgid "No bookmark found for URI “%s”"
 msgstr "No se encontró un marcador para el URI «%s»"
 
-#: glib/gbookmarkfile.c:2401
+#: glib/gbookmarkfile.c:2410
 #, c-format
 msgid "No MIME type defined in the bookmark for URI “%s”"
 msgstr "Ningún tipo MIME definido en el marcador para la URI «%s»"
 
-#: glib/gbookmarkfile.c:2486
+#: glib/gbookmarkfile.c:2495
 #, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
 msgstr "No se ha definido ningún flag privado en el marcador para el URI «%s»"
 
-#: glib/gbookmarkfile.c:2865
+#: glib/gbookmarkfile.c:2874
 #, c-format
 msgid "No groups set in bookmark for URI “%s”"
 msgstr "No se ha establecido ningún grupo en el marcador para el URI «%s»"
 
-#: glib/gbookmarkfile.c:3264 glib/gbookmarkfile.c:3421
+#: glib/gbookmarkfile.c:3273 glib/gbookmarkfile.c:3430
 #, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
 msgstr "Ninguna aplicación con nombre «%s» registró un marcador para «%s»"
 
-#: glib/gbookmarkfile.c:3444
+#: glib/gbookmarkfile.c:3453
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Falló la expansión de lalinea ejecutable «%s» con el URI «%s»"
@@ -5332,7 +5333,7 @@ msgstr "Error al analizar la opción: %s"
 msgid "Missing argument for %s"
 msgstr "Falta un argumento para %s"
 
-#: glib/goption.c:2187
+#: glib/goption.c:2189
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"
@@ -5748,7 +5749,6 @@ msgstr "Falló en la lectura de datos desde el proceso hijo (%s)"
 
 #: glib/gspawn.c:460
 #, c-format
-#| msgid "Unexpected error in select() reading data from a child process (%s)"
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Error inesperado al leer datos desde el proceso hijo (%s)"
 
