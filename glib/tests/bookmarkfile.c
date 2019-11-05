@@ -49,20 +49,20 @@ test_to_file (void)
 
   filename = g_test_get_filename (G_TEST_DIST, "bookmarks", "valid-01.xbel", NULL);
   res = g_bookmark_file_load_from_file (bookmark, filename, &error);
-  g_assert_true (res);
   g_assert_no_error (error);
+  g_assert_true (res);
 
   res = g_bookmark_file_to_file (bookmark, "out.xbel", &error);
-  g_assert_true (res);
   g_assert_no_error (error);
+  g_assert_true (res);
 
   res = g_file_get_contents (filename, &in, NULL, &error);
-  g_assert_true (res);
   g_assert_no_error (error);
+  g_assert_true (res);
 
   res = g_file_get_contents ("out.xbel", &out, NULL, &error);
-  g_assert_true (res);
   g_assert_no_error (error);
+  g_assert_true (res);
   remove ("out.xbel");
 
   g_assert_cmpstr (in, ==, out);
