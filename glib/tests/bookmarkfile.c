@@ -127,7 +127,7 @@ test_misc (void)
   gboolean res;
   GError *error = NULL;
   gchar *s;
-  time_t now, t;
+  time_t before, after, t;
   gchar *cmd, *exec;
   guint count;
 
@@ -196,7 +196,8 @@ test_misc (void)
   g_assert_no_error (error);
   g_assert_true (res);
 
-  time (&now);
+  time (&before);
+
   g_bookmark_file_set_added (bookmark,
                              "file:///tmp/schedule3.ps",
                              (time_t)-1);
@@ -204,7 +205,12 @@ test_misc (void)
                                  "file:///tmp/schedule3.ps",
                                  &error);
   g_assert_no_error (error);
-  g_assert_cmpint (t, ==, now);
+
+  time (&after);
+  g_assert_cmpint (before, <=, t);
+  g_assert_cmpint (t, <=, after);
+
+  time (&before);
 
   g_bookmark_file_set_modified (bookmark,
                                 "file:///tmp/schedule4.ps",
@@ -213,7 +219,12 @@ test_misc (void)
                                     "file:///tmp/schedule4.ps",
                                     &error);
   g_assert_no_error (error);
-  g_assert_cmpint (t, ==, now);
+
+  time (&after);
+  g_assert_cmpint (before, <=, t);
+  g_assert_cmpint (t, <=, after);
+
+  time (&before);
 
   g_bookmark_file_set_visited (bookmark,
                                "file:///tmp/schedule5.ps",
@@ -222,7 +233,10 @@ test_misc (void)
                                    "file:///tmp/schedule5.ps",
                                    &error);
   g_assert_no_error (error);
-  g_assert_cmpint (t, ==, now);
+
+  time (&after);
+  g_assert_cmpint (before, <=, t);
+  g_assert_cmpint (t, <=, after);
 
   g_bookmark_file_set_icon (bookmark,
                             "file:///tmp/schedule6.ps",
@@ -257,7 +271,9 @@ test_misc (void)
   g_assert_false (res);
   g_clear_error (&error);
 
-  g_bookmark_file_add_application (bookmark, 
+  time (&before);
+
+  g_bookmark_file_add_application (bookmark,
                                    "file:///tmp/schedule7.ps",
                                    NULL, NULL);
   res = g_bookmark_file_get_app_info (bookmark,
@@ -272,7 +288,9 @@ test_misc (void)
   g_free (cmd);
   g_free (exec);
   g_assert_cmpuint (count, ==, 1);
-  g_assert_cmpint (t, ==, now);
+  time (&after);
+  g_assert_cmpint (before, <=, t);
+  g_assert_cmpint (t, <=, after);
 
   g_bookmark_file_free (bookmark);
 }
@@ -364,9 +382,15 @@ test_modify (GBookmarkFile *bookmark)
   g_bookmark_file_set_is_private (bookmark, TEST_URI_0, TRUE);
   time (&now);
   g_bookmark_file_set_added (bookmark, TEST_URI_0, now);
-  g_bookmark_file_set_modified (bookmark, TEST_URI_0, now);
   g_bookmark_file_set_visited (bookmark, TEST_URI_0, now);
   g_bookmark_file_set_icon (bookmark, TEST_URI_0, "testicon", "image/png");
+
+  /* Check the modification date by itself, as it’s updated whenever we modify
+   * other properties. */
+  g_bookmark_file_set_modified (bookmark, TEST_URI_0, now);
+  stamp = g_bookmark_file_get_modified (bookmark, TEST_URI_0, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (stamp, ==, now);
 
   text = g_bookmark_file_get_title (bookmark, TEST_URI_0, &error);
   g_assert_no_error (error);
@@ -379,9 +403,6 @@ test_modify (GBookmarkFile *bookmark)
   g_assert_true (g_bookmark_file_get_is_private (bookmark, TEST_URI_0, &error));
   g_assert_no_error (error);
   stamp = g_bookmark_file_get_added (bookmark, TEST_URI_0, &error);
-  g_assert_no_error (error);
-  g_assert_cmpint (stamp, ==, now);
-  stamp = g_bookmark_file_get_modified (bookmark, TEST_URI_0, &error);
   g_assert_no_error (error);
   g_assert_cmpint (stamp, ==, now);
   stamp = g_bookmark_file_get_visited (bookmark, TEST_URI_0, &error);
