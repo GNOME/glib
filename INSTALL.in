@@ -9,6 +9,16 @@ Simple install procedure
   [ Become root if necessary ]
   % ninja -C _build install                 # install GLib
 
+Potential Installation gotchas
+==============================
+- meson may try to build this in x86 mode if using a Visual Studio Developer Command Prompt and it opens in x86 mode by default
+x64 or x86_64 mode is required
+Please run meson/ninja with:
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat
+
+Instead of the default:
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\Tools\VsDevCmd.bat
+
 Requirements
 ============
 
