@@ -711,7 +711,7 @@ handler_insert (guint    signal_id,
   HandlerList *hlist;
   
   g_assert (handler->prev == NULL && handler->next == NULL); /* paranoid */
-  
+
   hlist = handler_list_ensure (signal_id, instance);
   if (!hlist->handlers)
     {
@@ -2349,7 +2349,10 @@ g_signal_connect_closure_by_id (gpointer  instance,
       else
 	{
 	  Handler *handler = handler_new (signal_id, instance, after);
-	  
+
+          if (G_TYPE_IS_OBJECT (node->itype))
+            _g_object_set_has_signal_handler ((GObject *)instance);
+
 	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
 	  handler->closure = g_closure_ref (closure);
@@ -2413,6 +2416,9 @@ g_signal_connect_closure (gpointer     instance,
       else
 	{
 	  Handler *handler = handler_new (signal_id, instance, after);
+
+          if (G_TYPE_IS_OBJECT (node->itype))
+            _g_object_set_has_signal_handler ((GObject *)instance);
 
 	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
@@ -2514,6 +2520,9 @@ g_signal_connect_data (gpointer       instance,
       else
 	{
 	  Handler *handler = handler_new (signal_id, instance, after);
+
+          if (G_TYPE_IS_OBJECT (node->itype))
+            _g_object_set_has_signal_handler ((GObject *)instance);
 
 	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
@@ -3125,7 +3134,14 @@ g_signal_emitv (const GValue *instance_and_params,
       (node->single_va_closure == SINGLE_VA_CLOSURE_EMPTY_MAGIC ||
        _g_closure_is_void (node->single_va_closure, instance)))
     {
-      HandlerList* hlist = handler_list_lookup (node->signal_id, instance);
+      HandlerList* hlist;
+
+      /* single_va_closure is only true for GObjects, so fast path if no handler ever connected to the signal */
+      if (_g_object_has_signal_handler ((GObject *)instance))
+        hlist = handler_list_lookup (node->signal_id, instance);
+      else
+        hlist = NULL;
+
       if (hlist == NULL || hlist->handlers == NULL)
 	{
 	  /* nothing to do to emit this signal */
@@ -3208,7 +3224,7 @@ g_signal_emit_valist (gpointer instance,
 
   if (node->single_va_closure != NULL)
     {
-      HandlerList* hlist = handler_list_lookup (node->signal_id, instance);
+      HandlerList* hlist;
       Handler *fastpath_handler = NULL;
       Handler *l;
       GClosure *closure = NULL;
@@ -3229,6 +3245,12 @@ g_signal_emit_valist (gpointer instance,
 	  else
 	    fastpath = FALSE;
 	}
+
+      /* single_va_closure is only true for GObjects, so fast path if no handler ever connected to the signal */
+      if (_g_object_has_signal_handler ((GObject *)instance))
+        hlist = handler_list_lookup (node->signal_id, instance);
+      else
+        hlist = NULL;
 
       for (l = hlist ? hlist->handlers : NULL; fastpath && l != NULL; l = l->next)
 	{
