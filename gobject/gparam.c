@@ -640,6 +640,7 @@ g_param_value_defaults (GParamSpec   *pspec,
   g_return_val_if_fail (G_IS_VALUE (value), FALSE);
   g_return_val_if_fail (PSPEC_APPLIES_TO_VALUE (pspec, value), FALSE);
 
+  g_value_init (&dflt_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
   G_PARAM_SPEC_GET_CLASS (pspec)->value_set_default (pspec, &dflt_value);
   defaults = G_PARAM_SPEC_GET_CLASS (pspec)->values_cmp (pspec, value, &dflt_value) == 0;
   g_value_unset (&dflt_value);
