@@ -98,65 +98,80 @@ test_find (void)
    * U+1EB6 Latin Capital Letter A With Breve And Dot Below (\341\272\266)
    */
 #define TEST_STR "\340\254\213\360\220\244\200\101\341\272\266\0\101"
-  const gchar *str = TEST_STR;
   const gsize str_size = sizeof TEST_STR;
+  const gchar *str = TEST_STR;
+  const gchar str_array[] = TEST_STR;
+  const gchar * volatile str_volatile = TEST_STR;
 #undef TEST_STR
   gchar *str_copy = g_malloc (str_size);
-  const gchar *p = str_copy + (str_size - 1);
+  const gchar *p;
   const gchar *q;
-  /* We have to copy @str into memory, otherwise GCC overoptimises the code
-   * when LTO is enabled
-   * See https://gitlab.gnome.org/GNOME/glib/issues/1917 for details */
   memcpy (str_copy, str, str_size);
 
-  q = g_utf8_find_prev_char (str_copy, p);
-  g_assert (q == str_copy + 12);
-  q = g_utf8_find_prev_char (str_copy, q);
-  g_assert (q == str_copy + 11);
-  q = g_utf8_find_prev_char (str_copy, q);
-  g_assert (q == str_copy + 8);
-  q = g_utf8_find_prev_char (str_copy, q);
-  g_assert (q == str_copy + 7);
-  q = g_utf8_find_prev_char (str_copy, q);
-  g_assert (q == str_copy + 3);
-  q = g_utf8_find_prev_char (str_copy, q);
-  g_assert (q == str_copy);
-  q = g_utf8_find_prev_char (str_copy, q);
-  g_assert_null (q);
+#define TEST_SET(STR)  \
+  G_STMT_START { \
+    p = STR + (str_size - 1); \
+    \
+    q = g_utf8_find_prev_char (STR, p); \
+    g_assert (q == STR + 12); \
+    q = g_utf8_find_prev_char (STR, q); \
+    g_assert (q == STR + 11); \
+    q = g_utf8_find_prev_char (STR, q); \
+    g_assert (q == STR + 8); \
+    q = g_utf8_find_prev_char (STR, q); \
+    g_assert (q == STR + 7); \
+    q = g_utf8_find_prev_char (STR, q); \
+    g_assert (q == STR + 3); \
+    q = g_utf8_find_prev_char (STR, q); \
+    g_assert (q == STR); \
+    q = g_utf8_find_prev_char (STR, q); \
+    g_assert_null (q); \
+    \
+    p = STR + 4; \
+    q = g_utf8_find_prev_char (STR, p); \
+    g_assert (q == STR + 3); \
+    \
+    p = STR + 2; \
+    q = g_utf8_find_prev_char (STR, p); \
+    g_assert (q == STR); \
+    \
+    p = STR + 2; \
+    q = g_utf8_find_next_char (p, NULL); \
+    g_assert (q == STR + 3); \
+    q = g_utf8_find_next_char (q, NULL); \
+    g_assert (q == STR + 7); \
+    \
+    q = g_utf8_find_next_char (p, STR + 6); \
+    g_assert (q == STR + 3); \
+    q = g_utf8_find_next_char (q, STR + 6); \
+    g_assert_null (q); \
+    \
+    q = g_utf8_find_next_char (STR, STR); \
+    g_assert_null (q); \
+    \
+    q = g_utf8_find_next_char (STR + strlen (STR), NULL); \
+    g_assert (q == STR + strlen (STR) + 1); \
+    \
+    /* Check return values when reaching the end of the string, \
+     * with @end set and unset. */ \
+    q = g_utf8_find_next_char (STR + 10, NULL); \
+    g_assert_nonnull (q); \
+    g_assert (*q == '\0'); \
+    \
+    q = g_utf8_find_next_char (STR + 10, STR + 11); \
+    g_assert_null (q); \
+  } G_STMT_END
 
-  p = str_copy + 4;
-  q = g_utf8_find_prev_char (str_copy, p);
-  g_assert (q == str_copy + 3);
+  TEST_SET(str_array);
+  TEST_SET(str_copy);
+  TEST_SET(str_volatile);
+  /* Starting with GCC 8 tests on @str with "-O2 -flto" in CFLAGS fail due to
+   * (incorrect?) constant propagation of @str into @g_utf8_find_prev_char. It
+   * doesn't happen if @TEST_STR doesn't contain \0 in the middle but the tests
+   * should cover all corner cases.
+   * For instance, see https://gitlab.gnome.org/GNOME/glib/issues/1917 */
 
-  p = str_copy + 2;
-  q = g_utf8_find_prev_char (str_copy, p);
-  g_assert (q == str_copy);
-
-  p = str_copy + 2;
-  q = g_utf8_find_next_char (p, NULL);
-  g_assert (q == str_copy + 3);
-  q = g_utf8_find_next_char (q, NULL);
-  g_assert (q == str_copy + 7);
-
-  q = g_utf8_find_next_char (p, str_copy + 6);
-  g_assert (q == str_copy + 3);
-  q = g_utf8_find_next_char (q, str_copy + 6);
-  g_assert_null (q);
-
-  q = g_utf8_find_next_char (str_copy, str_copy);
-  g_assert_null (q);
-
-  q = g_utf8_find_next_char (str_copy + strlen (str_copy), NULL);
-  g_assert (q == str_copy + strlen (str_copy) + 1);
-
-  /* Check return values when reaching the end of the string,
-   * with @end set and unset. */
-  q = g_utf8_find_next_char (str_copy + 10, NULL);
-  g_assert_nonnull (q);
-  g_assert (*q == '\0');
-
-  q = g_utf8_find_next_char (str_copy + 10, str_copy + 11);
-  g_assert_null (q);
+#undef TEST_SET
 
   g_free (str_copy);
 }
