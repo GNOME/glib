@@ -13,6 +13,12 @@ variables:
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
 
+style-check-diff:
+  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
+  stage: build
+  script:
+    - git diff -U0 --no-color origin/master | ./clang-format-diff.py -binary "clang-format-7" -p1
+
 fedora-x86_64:
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: build
