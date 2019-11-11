@@ -3,6 +3,7 @@ stages:
   - coverage
   - analysis
   - deploy
+  - style-check
 
 cache:
   paths:
@@ -12,6 +13,15 @@ variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
+
+style-check-diff:
+  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
+  stage: style-check
+  allow_failure: true
+  only:
+    - merge_request
+  script:
+    - git diff -U0 --no-color ${CI_MERGE_REQUEST_TARGET_BRANCH_SHA} | ./clang-format-diff.py -binary "clang-format-7" -p1
 
 fedora-x86_64:
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
