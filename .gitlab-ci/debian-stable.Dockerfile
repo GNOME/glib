@@ -4,6 +4,7 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     bindfs \
     clang \
     clang-tools-7 \
+    clang-format-7 \
     dbus \
     desktop-file-utils \
     elfutils \
