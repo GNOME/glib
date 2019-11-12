@@ -1194,6 +1194,11 @@ get_iso8601_seconds (const gchar *text, gsize length, gdouble *value)
 
   if (length > 2 && !(text[i] == '.' || text[i] == ','))
     return FALSE;
+
+  /* Ignore leap seconds, see g_date_time_new_from_iso8601() */
+  if (v >= 60.0 && v <= 61.0)
+    v = 59.0;
+
   i++;
   if (i == length)
     return FALSE;
@@ -1432,6 +1437,10 @@ parse_iso8601_time (const gchar *text, gsize length,
  * @text. ISO 8601 strings of the form <date><sep><time><tz> are supported, with
  * some extensions from [RFC 3339](https://tools.ietf.org/html/rfc3339) as
  * mentioned below.
+ *
+ * Note that as #GDateTime "is oblivious to leap seconds", leap seconds information
+ * in an ISO-8601 string will be ignored, so a `23:59:60` time would be parsed as
+ * `23:59:59`.
  *
  * <sep> is the separator and can be either 'T', 't' or ' '. The latter two
  * separators are an extension from
