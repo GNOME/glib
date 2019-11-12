@@ -456,16 +456,16 @@ test_variant_signal (void)
 
   v = g_variant_new_boolean (TRUE);
   g_variant_ref (v);
-  g_assert (g_variant_is_floating (v));
+  g_assert_true (g_variant_is_floating (v));
   g_signal_emit_by_name (test, "variant-changed-no-slot", v);
-  g_assert (!g_variant_is_floating (v));
+  g_assert_false (g_variant_is_floating (v));
   g_variant_unref (v);
 
   v = g_variant_new_boolean (TRUE);
   g_variant_ref (v);
-  g_assert (g_variant_is_floating (v));
+  g_assert_true (g_variant_is_floating (v));
   g_signal_emit_by_name (test, "variant-changed", v);
-  g_assert (!g_variant_is_floating (v));
+  g_assert_false (g_variant_is_floating (v));
   g_variant_unref (v);
 
   g_object_unref (test);
@@ -486,7 +486,7 @@ on_generic_marshaller_1 (Test *obj,
   g_assert_cmpint (v_uchar, ==, 43);
   g_assert_cmpint (v_int, ==, 4096);
   g_assert_cmpint (v_long, ==, 8192);
-  g_assert (v_pointer == NULL);
+  g_assert_null (v_pointer);
   g_assert_cmpfloat (v_double, >, 0.0);
   g_assert_cmpfloat (v_double, <, 1.0);
   g_assert_cmpfloat (v_float, >, 5.0);
@@ -755,7 +755,7 @@ custom_marshaller_callback (Test                  *test,
 {
   GSignalInvocationHint *ihint;
 
-  g_assert (hint != &dont_use_this);
+  g_assert_true (hint != &dont_use_this);
 
   ihint = g_signal_get_invocation_hint (test);
 
@@ -802,7 +802,7 @@ all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, g
   g_assert_cmpstr (str, ==, "Test");
   g_assert_cmpstr (g_param_spec_get_nick (param), ==, "nick");
   g_assert_cmpstr (g_bytes_get_data (bytes, NULL), ==, "Blah");
-  g_assert (ptr == &enum_type);
+  g_assert_true (ptr == &enum_type);
   g_assert_cmpuint (g_variant_get_uint16 (var), == , 99);
   g_assert_cmpint (i64, ==, G_MAXINT64 - 1234);
   g_assert_cmpuint (ui64, ==, G_MAXUINT64 - 123456);
@@ -811,7 +811,7 @@ all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, g
 static void
 all_types_handler_cb (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, guint f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64, gpointer user_data)
 {
-  g_assert (user_data == &flags_type);
+  g_assert_true (user_data == &flags_type);
   all_types_handler (test, i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, obj, var, i64, ui64);
 }
 
@@ -1092,15 +1092,15 @@ test_introspection (void)
   for (i = 0; i < n_ids; i++)
     {
       name = g_signal_name (ids[i]);
-      g_assert (in_set (name, names));
+      g_assert_true (in_set (name, names));
     }
 
   g_signal_query (simple_id, &query);
   g_assert_cmpuint (query.signal_id, ==, simple_id);
   g_assert_cmpstr (query.signal_name, ==, "simple");
-  g_assert (query.itype == test_get_type ());
-  g_assert (query.signal_flags == G_SIGNAL_RUN_LAST);
-  g_assert (query.return_type == G_TYPE_NONE);
+  g_assert_true (query.itype == test_get_type ());
+  g_assert_cmpint (query.signal_flags, ==, G_SIGNAL_RUN_LAST);
+  g_assert_cmpint (query.return_type, ==, G_TYPE_NONE);
   g_assert_cmpuint (query.n_params, ==, 0);
 
   g_free (ids);
@@ -1130,7 +1130,7 @@ test_block_handler (void)
 
   handler = g_signal_handler_find (test1, G_SIGNAL_MATCH_ID, simple_id, 0, NULL, NULL, NULL);
 
-  g_assert (handler == handler1);
+  g_assert_true (handler == handler1);
 
   g_assert_cmpint (count1, ==, 0);
   g_assert_cmpint (count2, ==, 0);
@@ -1239,7 +1239,7 @@ test_signal_disconnect_wrong_object (void)
   g_test_assert_expected_messages ();
 
   /* it's still connected */
-  g_assert (g_signal_handler_is_connected (object, signal_id));
+  g_assert_true (g_signal_handler_is_connected (object, signal_id));
 
   g_object_unref (object);
   g_object_unref (object2);
