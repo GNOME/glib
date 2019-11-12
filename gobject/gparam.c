@@ -41,11 +41,14 @@
  *
  * ## Parameter names # {#canonical-parameter-names}
  *
- * Parameter names need to start with a letter (a-z or A-Z).
- * Subsequent characters can be letters, numbers or a '-'.
- * All other characters are replaced by a '-' during construction.
- * The result of this replacement is called the canonical name of
- * the parameter.
+ * A property name consists of segments consisting of ASCII letters and
+ * digits, separated by either the `-` or `_` character. The first
+ * character of a property name must be a letter. These are the same rules as
+ * for signal naming (see g_signal_new()).
+ *
+ * When creating and looking up a #GParamSpec, either separator can be
+ * used, but they cannot be mixed. Using `-` is considerably more
+ * efficient, and is the ‘canonical form’. Using `_` is discouraged.
  */
 
 
@@ -401,15 +404,9 @@ is_canonical (const gchar *key)
  *
  * Creates a new #GParamSpec instance.
  *
- * A property name consists of segments consisting of ASCII letters and
- * digits, separated by either the '-' or '_' character. The first
- * character of a property name must be a letter. Names which violate these
- * rules lead to undefined behaviour.
- *
- * When creating and looking up a #GParamSpec, either separator can be
- * used, but they cannot be mixed. Using '-' is considerably more
- * efficient and in fact required when using property names as detail
- * strings for signals.
+ * See [canonical parameter names][canonical-parameter-names] for details of
+ * the rules for @name. Names which violate these rules lead to undefined
+ * behaviour.
  *
  * Beyond the name, #GParamSpecs have two more descriptive
  * strings associated with them, the @nick, which should be suitable
