@@ -110,6 +110,26 @@ test_param_strings (void)
 }
 
 static void
+test_param_invalid_name (gconstpointer test_data)
+{
+  const gchar *invalid_name = test_data;
+
+  g_test_summary ("Test that properties cannot be created with invalid names");
+
+  if (g_test_subprocess ())
+    {
+      GParamSpec *p;
+      p = g_param_spec_int (invalid_name, "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
+      g_param_spec_unref (p);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*is_valid_property_name (name)*");
+}
+
+static void
 test_param_convert (void)
 {
   GParamSpec *p;
@@ -836,6 +856,9 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/param/value", test_param_value);
   g_test_add_func ("/param/strings", test_param_strings);
+  g_test_add_data_func ("/param/invalid-name/colon", "my_int:hello", test_param_invalid_name);
+  g_test_add_data_func ("/param/invalid-name/first-char", "7zip", test_param_invalid_name);
+  g_test_add_data_func ("/param/invalid-name/empty", "", test_param_invalid_name);
   g_test_add_func ("/param/qdata", test_param_qdata);
   g_test_add_func ("/param/validate", test_param_validate);
   g_test_add_func ("/param/convert", test_param_convert);

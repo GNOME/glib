@@ -358,6 +358,8 @@ g_param_spec_get_blurb (GParamSpec *pspec)
   return NULL;
 }
 
+/* @key must have already been validated with is_valid()
+ * Modifies @key in place. */
 static void
 canonicalize_key (gchar *key)
 {
@@ -367,28 +369,37 @@ canonicalize_key (gchar *key)
     {
       gchar c = *p;
       
-      if (c != '-' &&
-	  (c < '0' || c > '9') &&
-	  (c < 'A' || c > 'Z') &&
-	  (c < 'a' || c > 'z'))
-	*p = '-';
+      if (c == '_')
+        *p = '-';
     }
 }
 
+/* @key must have already been validated with is_valid() */
 static gboolean
 is_canonical (const gchar *key)
 {
+  return (strchr (key, '_') == NULL);
+}
+
+static gboolean
+is_valid_property_name (const gchar *key)
+{
   const gchar *p;
+
+  /* First character must be a letter. */
+  if ((key[0] < 'A' || key[0] > 'Z') &&
+      (key[0] < 'a' || key[0] > 'z'))
+    return FALSE;
 
   for (p = key; *p != 0; p++)
     {
-      gchar c = *p;
+      const gchar c = *p;
       
-      if (c != '-' &&
-	  (c < '0' || c > '9') &&
-	  (c < 'A' || c > 'Z') &&
-	  (c < 'a' || c > 'z'))
-	return FALSE;
+      if (c != '-' && c != '_' &&
+          (c < '0' || c > '9') &&
+          (c < 'A' || c > 'Z') &&
+          (c < 'a' || c > 'z'))
+        return FALSE;
     }
 
   return TRUE;
@@ -428,7 +439,7 @@ g_param_spec_internal (GType        param_type,
   
   g_return_val_if_fail (G_TYPE_IS_PARAM (param_type) && param_type != G_TYPE_PARAM, NULL);
   g_return_val_if_fail (name != NULL, NULL);
-  g_return_val_if_fail ((name[0] >= 'A' && name[0] <= 'Z') || (name[0] >= 'a' && name[0] <= 'z'), NULL);
+  g_return_val_if_fail (is_valid_property_name (name), NULL);
   g_return_val_if_fail (!(flags & G_PARAM_STATIC_NAME) || is_canonical (name), NULL);
   
   pspec = (gpointer) g_type_create_instance (param_type);
