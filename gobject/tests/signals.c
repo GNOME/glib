@@ -1403,6 +1403,31 @@ test_parse_name_invalid (void)
   g_type_class_unref (test_class);
 }
 
+static void
+test_signals_invalid_name (gconstpointer test_data)
+{
+  const gchar *signal_name = test_data;
+
+  g_test_summary ("Check that g_signal_new() rejects invalid signal names.");
+
+  if (g_test_subprocess ())
+    {
+      g_signal_new (signal_name,
+                    test_get_type (),
+                    G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE,
+                    0,
+                    NULL, NULL,
+                    NULL,
+                    G_TYPE_NONE,
+                    0);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*is_valid_signal_name (signal_name)*");
+}
+
 /* --- */
 
 int
@@ -1432,6 +1457,9 @@ main (int argc,
   g_test_add_func ("/gobject/signals/lookup", test_lookup);
   g_test_add_func ("/gobject/signals/parse-name", test_parse_name);
   g_test_add_func ("/gobject/signals/parse-name/invalid", test_parse_name_invalid);
+  g_test_add_data_func ("/gobject/signals/invalid-name/colon", "my_int:hello", test_signals_invalid_name);
+  g_test_add_data_func ("/gobject/signals/invalid-name/first-char", "7zip", test_signals_invalid_name);
+  g_test_add_data_func ("/gobject/signals/invalid-name/empty", "", test_signals_invalid_name);
 
   return g_test_run ();
 }
