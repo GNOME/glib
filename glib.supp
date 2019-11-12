@@ -898,7 +898,7 @@
 {
 	g_main_context_push_thread_default
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:definite,reachable
 	fun:malloc
 	...
 	fun:g_queue_new
