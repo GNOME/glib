@@ -1403,12 +1403,14 @@ g_signal_query (guint         signal_id,
  * Creates a new signal. (This is usually done in the class initializer.)
  *
  * A signal name consists of segments consisting of ASCII letters and
- * digits, separated by either the '-' or '_' character. The first
+ * digits, separated by either the `-` or `_` character. The first
  * character of a signal name must be a letter. Names which violate these
- * rules lead to undefined behaviour of the GSignal system.
+ * rules lead to undefined behaviour. These are the same rules as for property
+ * naming (see g_param_spec_internal()).
  *
  * When registering a signal and looking up a signal, either separator can
- * be used, but they cannot be mixed.
+ * be used, but they cannot be mixed. Using `-` is considerably more efficient.
+ * Using `_` is discouraged.
  *
  * If 0 is used for @class_offset subclasses cannot override the class handler
  * in their class_init method by doing super_class->signal_handler = my_signal_handler.
