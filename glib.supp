@@ -880,7 +880,7 @@
 {
 	g_private_set_alloc0
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:definite,reachable
 	fun:malloc
 	...
 	fun:g_private_set_alloc0
@@ -888,7 +888,7 @@
 {
 	g_private_set_alloc0-calloc
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:definite,reachable
 	fun:calloc
 	...
 	fun:g_private_set_alloc0
