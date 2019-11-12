@@ -91,9 +91,9 @@ test_param_strings (void)
   GParamSpec *p;
 
   /* test canonicalization */
-  p = g_param_spec_int ("my_int:bla", "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
+  p = g_param_spec_int ("my_int", "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
 
-  g_assert_cmpstr (g_param_spec_get_name (p), ==, "my-int-bla");
+  g_assert_cmpstr (g_param_spec_get_name (p), ==, "my-int");
   g_assert_cmpstr (g_param_spec_get_nick (p), ==, "My Int");
   g_assert_cmpstr (g_param_spec_get_blurb (p), ==, "Blurb");
 
