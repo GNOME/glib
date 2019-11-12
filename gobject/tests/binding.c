@@ -243,8 +243,8 @@ celsius_to_fahrenheit (GBinding     *binding,
 {
   gdouble celsius, fahrenheit;
 
-  g_assert (G_VALUE_HOLDS (from_value, G_TYPE_DOUBLE));
-  g_assert (G_VALUE_HOLDS (to_value, G_TYPE_DOUBLE));
+  g_assert_true (G_VALUE_HOLDS (from_value, G_TYPE_DOUBLE));
+  g_assert_true (G_VALUE_HOLDS (to_value, G_TYPE_DOUBLE));
 
   celsius = g_value_get_double (from_value);
   fahrenheit = (9 * celsius / 5) + 32.0;
@@ -265,8 +265,8 @@ fahrenheit_to_celsius (GBinding     *binding,
 {
   gdouble celsius, fahrenheit;
 
-  g_assert (G_VALUE_HOLDS (from_value, G_TYPE_DOUBLE));
-  g_assert (G_VALUE_HOLDS (to_value, G_TYPE_DOUBLE));
+  g_assert_true (G_VALUE_HOLDS (from_value, G_TYPE_DOUBLE));
+  g_assert_true (G_VALUE_HOLDS (to_value, G_TYPE_DOUBLE));
 
   fahrenheit = g_value_get_double (from_value);
   celsius = 5 * (fahrenheit - 32.0) / 9;
@@ -291,8 +291,8 @@ binding_default (void)
                                     G_BINDING_DEFAULT);
 
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
-  g_assert ((BindingSource *) g_binding_get_source (binding) == source);
-  g_assert ((BindingTarget *) g_binding_get_target (binding) == target);
+  g_assert_true ((BindingSource *) g_binding_get_source (binding) == source);
+  g_assert_true ((BindingTarget *) g_binding_get_target (binding) == target);
   g_assert_cmpstr (g_binding_get_source_property (binding), ==, "foo");
   g_assert_cmpstr (g_binding_get_target_property (binding), ==, "bar");
   g_assert_cmpint (g_binding_get_flags (binding), ==, G_BINDING_DEFAULT);
@@ -310,7 +310,7 @@ binding_default (void)
 
   g_object_unref (source);
   g_object_unref (target);
-  g_assert (binding == NULL);
+  g_assert_null (binding);
 }
 
 static void
@@ -369,7 +369,7 @@ binding_bidirectional (void)
 
   g_object_unref (source);
   g_object_unref (target);
-  g_assert (binding == NULL);
+  g_assert_null (binding);
 }
 
 static void
@@ -403,8 +403,8 @@ binding_transform_default (void)
                 "target-property", &trg_prop,
                 "flags", &flags,
                 NULL);
-  g_assert (src == source);
-  g_assert (trg == target);
+  g_assert_true (src == source);
+  g_assert_true (trg == target);
   g_assert_cmpstr (src_prop, ==, "foo");
   g_assert_cmpstr (trg_prop, ==, "double-value");
   g_assert_cmpint (flags, ==, G_BINDING_BIDIRECTIONAL);
@@ -421,7 +421,7 @@ binding_transform_default (void)
 
   g_object_unref (target);
   g_object_unref (source);
-  g_assert (binding == NULL);
+  g_assert_null (binding);
 }
 
 static void
@@ -448,7 +448,7 @@ binding_transform (void)
   g_object_unref (source);
   g_object_unref (target);
 
-  g_assert (unused_data);
+  g_assert_true (unused_data);
 }
 
 static void
@@ -479,8 +479,8 @@ binding_transform_closure (void)
   g_object_unref (source);
   g_object_unref (target);
 
-  g_assert (unused_data_1);
-  g_assert (unused_data_2);
+  g_assert_true (unused_data_1);
+  g_assert_true (unused_data_2);
 }
 
 static void
@@ -508,9 +508,9 @@ binding_chain (void)
 
   /* unbind A -> B and B -> C */
   g_object_unref (binding_1);
-  g_assert (binding_1 == NULL);
+  g_assert_null (binding_1);
   g_object_unref (binding_2);
-  g_assert (binding_2 == NULL);
+  g_assert_null (binding_2);
 
   /* bind A -> C directly */
   binding_2 = g_object_bind_property (a, "foo", c, "foo", G_BINDING_BIDIRECTIONAL);
@@ -575,16 +575,16 @@ binding_invert_boolean (void)
                                     target, "toggle",
                                     G_BINDING_BIDIRECTIONAL | G_BINDING_INVERT_BOOLEAN);
 
-  g_assert (source->toggle);
-  g_assert (!target->toggle);
+  g_assert_true (source->toggle);
+  g_assert_false (target->toggle);
 
   g_object_set (source, "toggle", FALSE, NULL);
-  g_assert (!source->toggle);
-  g_assert (target->toggle);
+  g_assert_false (source->toggle);
+  g_assert_true (target->toggle);
 
   g_object_set (target, "toggle", FALSE, NULL);
-  g_assert (source->toggle);
-  g_assert (!target->toggle);
+  g_assert_true (source->toggle);
+  g_assert_false (target->toggle);
 
   g_object_unref (binding);
   g_object_unref (source);
@@ -613,7 +613,7 @@ binding_same_object (void)
   g_assert_cmpint (source->bar, ==, 30);
 
   g_object_unref (source);
-  g_assert (binding == NULL);
+  g_assert_null (binding);
 }
 
 static void
@@ -635,7 +635,7 @@ binding_unbind (void)
   g_assert_cmpint (source->foo, !=, target->bar);
 
   g_binding_unbind (binding);
-  g_assert (binding == NULL);
+  g_assert_null (binding);
 
   g_object_set (source, "foo", 0, NULL);
   g_assert_cmpint (source->foo, !=, target->bar);
@@ -652,7 +652,7 @@ binding_unbind (void)
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
 
   g_binding_unbind (binding);
-  g_assert (binding == NULL);
+  g_assert_null (binding);
 
   g_object_unref (source);
 }
@@ -754,7 +754,7 @@ binding_fail (void)
 
   g_object_unref (source);
   g_object_unref (target);
-  g_assert (binding == NULL);
+  g_assert_null (binding);
 }
 
 int
