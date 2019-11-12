@@ -539,7 +539,8 @@ g_binding_get_property (GObject    *gobject,
       break;
 
     case PROP_SOURCE_PROPERTY:
-      g_value_set_string (value, binding->source_property);
+      /* @source_property is interned, so we don’t need to take a copy */
+      g_value_set_static_string (value, binding->source_property);
       break;
 
     case PROP_TARGET:
@@ -547,7 +548,8 @@ g_binding_get_property (GObject    *gobject,
       break;
 
     case PROP_TARGET_PROPERTY:
-      g_value_set_string (value, binding->target_property);
+      /* @target_property is interned, so we don’t need to take a copy */
+      g_value_set_static_string (value, binding->target_property);
       break;
 
     case PROP_FLAGS:
