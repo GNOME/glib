@@ -8,7 +8,7 @@ typedef struct _BindingSource
 
   gint foo;
   gint bar;
-  gdouble value;
+  gdouble double_value;
   gboolean toggle;
 } BindingSource;
 
@@ -23,7 +23,7 @@ enum
 
   PROP_SOURCE_FOO,
   PROP_SOURCE_BAR,
-  PROP_SOURCE_VALUE,
+  PROP_SOURCE_DOUBLE_VALUE,
   PROP_SOURCE_TOGGLE
 };
 
@@ -48,8 +48,8 @@ binding_source_set_property (GObject      *gobject,
       source->bar = g_value_get_int (value);
       break;
 
-    case PROP_SOURCE_VALUE:
-      source->value = g_value_get_double (value);
+    case PROP_SOURCE_DOUBLE_VALUE:
+      source->double_value = g_value_get_double (value);
       break;
 
     case PROP_SOURCE_TOGGLE:
@@ -79,8 +79,8 @@ binding_source_get_property (GObject    *gobject,
       g_value_set_int (value, source->bar);
       break;
 
-    case PROP_SOURCE_VALUE:
-      g_value_set_double (value, source->value);
+    case PROP_SOURCE_DOUBLE_VALUE:
+      g_value_set_double (value, source->double_value);
       break;
 
     case PROP_SOURCE_TOGGLE:
@@ -110,8 +110,8 @@ binding_source_class_init (BindingSourceClass *klass)
                                                      -1, 100,
                                                      0,
                                                      G_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class, PROP_SOURCE_VALUE,
-                                   g_param_spec_double ("value", "Value", "Value",
+  g_object_class_install_property (gobject_class, PROP_SOURCE_DOUBLE_VALUE,
+                                   g_param_spec_double ("double-value", "Value", "Value",
                                                         -100.0, 200.0,
                                                         0.0,
                                                         G_PARAM_READWRITE));
@@ -131,7 +131,7 @@ typedef struct _BindingTarget
   GObject parent_instance;
 
   gint bar;
-  gdouble value;
+  gdouble double_value;
   gboolean toggle;
 } BindingTarget;
 
@@ -145,7 +145,7 @@ enum
   PROP_TARGET_0,
 
   PROP_TARGET_BAR,
-  PROP_TARGET_VALUE,
+  PROP_TARGET_DOUBLE_VALUE,
   PROP_TARGET_TOGGLE
 };
 
@@ -166,8 +166,8 @@ binding_target_set_property (GObject      *gobject,
       target->bar = g_value_get_int (value);
       break;
 
-    case PROP_TARGET_VALUE:
-      target->value = g_value_get_double (value);
+    case PROP_TARGET_DOUBLE_VALUE:
+      target->double_value = g_value_get_double (value);
       break;
 
     case PROP_TARGET_TOGGLE:
@@ -193,8 +193,8 @@ binding_target_get_property (GObject    *gobject,
       g_value_set_int (value, target->bar);
       break;
 
-    case PROP_TARGET_VALUE:
-      g_value_set_double (value, target->value);
+    case PROP_TARGET_DOUBLE_VALUE:
+      g_value_set_double (value, target->double_value);
       break;
 
     case PROP_TARGET_TOGGLE:
@@ -219,8 +219,8 @@ binding_target_class_init (BindingTargetClass *klass)
                                                      -1, 100,
                                                      0,
                                                      G_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class, PROP_TARGET_VALUE,
-                                   g_param_spec_double ("value", "Value", "Value",
+  g_object_class_install_property (gobject_class, PROP_TARGET_DOUBLE_VALUE,
+                                   g_param_spec_double ("double-value", "Value", "Value",
                                                         -100.0, 200.0,
                                                         0.0,
                                                         G_PARAM_READWRITE));
@@ -391,7 +391,7 @@ binding_transform_default (void)
   GBindingFlags flags;
 
   binding = g_object_bind_property (source, "foo",
-                                    target, "value",
+                                    target, "double-value",
                                     G_BINDING_BIDIRECTIONAL);
 
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
@@ -406,7 +406,7 @@ binding_transform_default (void)
   g_assert (src == source);
   g_assert (trg == target);
   g_assert_cmpstr (src_prop, ==, "foo");
-  g_assert_cmpstr (trg_prop, ==, "value");
+  g_assert_cmpstr (trg_prop, ==, "double-value");
   g_assert_cmpint (flags, ==, G_BINDING_BIDIRECTIONAL);
   g_object_unref (src);
   g_object_unref (trg);
@@ -414,9 +414,9 @@ binding_transform_default (void)
   g_free (trg_prop);
 
   g_object_set (source, "foo", 24, NULL);
-  g_assert_cmpfloat (target->value, ==, 24.0);
+  g_assert_cmpfloat (target->double_value, ==, 24.0);
 
-  g_object_set (target, "value", 69.0, NULL);
+  g_object_set (target, "double-value", 69.0, NULL);
   g_assert_cmpint (source->foo, ==, 69);
 
   g_object_unref (target);
@@ -432,18 +432,18 @@ binding_transform (void)
   GBinding *binding G_GNUC_UNUSED;
   gboolean unused_data = FALSE;
 
-  binding = g_object_bind_property_full (source, "value",
-                                         target, "value",
+  binding = g_object_bind_property_full (source, "double-value",
+                                         target, "double-value",
                                          G_BINDING_BIDIRECTIONAL,
                                          celsius_to_fahrenheit,
                                          fahrenheit_to_celsius,
                                          &unused_data, data_free);
 
-  g_object_set (source, "value", 24.0, NULL);
-  g_assert_cmpfloat (target->value, ==, ((9 * 24.0 / 5) + 32.0));
+  g_object_set (source, "double-value", 24.0, NULL);
+  g_assert_cmpfloat (target->double_value, ==, ((9 * 24.0 / 5) + 32.0));
 
-  g_object_set (target, "value", 69.0, NULL);
-  g_assert_cmpfloat (source->value, ==, (5 * (69.0 - 32.0) / 9));
+  g_object_set (target, "double-value", 69.0, NULL);
+  g_assert_cmpfloat (source->double_value, ==, (5 * (69.0 - 32.0) / 9));
 
   g_object_unref (source);
   g_object_unref (target);
@@ -464,17 +464,17 @@ binding_transform_closure (void)
 
   f2c_clos = g_cclosure_new (G_CALLBACK (fahrenheit_to_celsius), &unused_data_2, (GClosureNotify) data_free);
 
-  binding = g_object_bind_property_with_closures (source, "value",
-                                                  target, "value",
+  binding = g_object_bind_property_with_closures (source, "double-value",
+                                                  target, "double-value",
                                                   G_BINDING_BIDIRECTIONAL,
                                                   c2f_clos,
                                                   f2c_clos);
 
-  g_object_set (source, "value", 24.0, NULL);
-  g_assert_cmpfloat (target->value, ==, ((9 * 24.0 / 5) + 32.0));
+  g_object_set (source, "double-value", 24.0, NULL);
+  g_assert_cmpfloat (target->double_value, ==, ((9 * 24.0 / 5) + 32.0));
 
-  g_object_set (target, "value", 69.0, NULL);
-  g_assert_cmpfloat (source->value, ==, (5 * (69.0 - 32.0) / 9));
+  g_object_set (target, "double-value", 69.0, NULL);
+  g_assert_cmpfloat (source->double_value, ==, (5 * (69.0 - 32.0) / 9));
 
   g_object_unref (source);
   g_object_unref (target);
@@ -742,14 +742,14 @@ binding_fail (void)
   GBinding *binding;
 
   /* double -> boolean is not supported */
-  binding = g_object_bind_property (source, "value",
+  binding = g_object_bind_property (source, "double-value",
                                     target, "toggle",
                                     G_BINDING_DEFAULT);
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
 
   g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_WARNING,
                          "*Unable to convert*double*boolean*");
-  g_object_set (source, "value", 1.0, NULL);
+  g_object_set (source, "double-value", 1.0, NULL);
   g_test_assert_expected_messages ();
 
   g_object_unref (source);
