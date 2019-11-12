@@ -1331,6 +1331,9 @@ g_signal_lookup (const gchar *name,
       else if (!g_type_class_peek (itype))
 	g_warning (G_STRLOC ": unable to look up signal \"%s\" of unloaded type '%s'",
 		   name, g_type_name (itype));
+      else if (!is_valid_signal_name (name))
+        g_warning (G_STRLOC ": unable to look up invalid signal name \"%s\" on type '%s'",
+                   name, g_type_name (itype));
     }
   
   return signal_id;
