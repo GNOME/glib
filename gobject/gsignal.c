@@ -340,6 +340,29 @@ LOOKUP_SIGNAL_NODE (guint signal_id)
 
 
 /* --- functions --- */
+/* @key must have already been validated with is_valid()
+ * Modifies @key in place. */
+static void
+canonicalize_key (gchar *key)
+{
+  gchar *p;
+
+  for (p = key; *p != 0; p++)
+    {
+      gchar c = *p;
+
+      if (c == '_')
+        *p = '-';
+    }
+}
+
+/* @key must have already been validated with is_valid() */
+static gboolean
+is_canonical (const gchar *key)
+{
+  return (strchr (key, '_') == NULL);
+}
+
 static inline guint
 signal_id_lookup (const gchar *name,
                   GType  itype)
@@ -383,7 +406,22 @@ signal_id_lookup (const gchar *name,
 	}
     }
   g_free (ifaces);
-  
+
+  /* If the @name is non-canonical, try again. This is the slow path — people
+   * should use canonical names in their queries if they want performance. */
+  if (!is_canonical (name))
+    {
+      guint signal_id;
+      gchar *name_copy = g_strdup (name);
+      canonicalize_key (name_copy);
+
+      signal_id = signal_id_lookup (name_copy, itype);
+
+      g_free (name_copy);
+
+      return signal_id;
+    }
+
   return 0;
 }
 
