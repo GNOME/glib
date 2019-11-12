@@ -1312,6 +1312,30 @@ test_lookup (void)
 }
 
 static void
+test_lookup_invalid (void)
+{
+  g_test_summary ("Test that g_signal_lookup() emits a warning if looking up an invalid signal name.");
+
+  if (g_test_subprocess ())
+    {
+      GTypeClass *test_class;
+      guint signal_id;
+
+      test_class = g_type_class_ref (test_get_type ());
+
+      signal_id = g_signal_lookup ("", test_get_type ());
+      g_assert_cmpint (signal_id, ==, 0);
+
+      g_type_class_unref (test_class);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*WARNING*unable to look up invalid signal name*");
+}
+
+static void
 test_parse_name (void)
 {
   GTypeClass *test_class;
@@ -1455,6 +1479,7 @@ main (int argc,
   g_test_add_func ("/gobject/signals/test-disconnection-wrong-object", test_signal_disconnect_wrong_object);
   g_test_add_func ("/gobject/signals/clear-signal-handler", test_clear_signal_handler);
   g_test_add_func ("/gobject/signals/lookup", test_lookup);
+  g_test_add_func ("/gobject/signals/lookup/invalid", test_lookup_invalid);
   g_test_add_func ("/gobject/signals/parse-name", test_parse_name);
   g_test_add_func ("/gobject/signals/parse-name/invalid", test_parse_name_invalid);
   g_test_add_data_func ("/gobject/signals/invalid-name/colon", "my_int:hello", test_signals_invalid_name);
