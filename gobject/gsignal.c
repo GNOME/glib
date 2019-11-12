@@ -98,6 +98,10 @@
  * detail part of the signal specification upon connection) serves as a
  * wildcard and matches any detail argument passed in to emission.
  *
+ * While the @detail argument is typically used to pass an object property name
+ * (as with #GObject::notify), no specific format is mandated for the detail
+ * string, other than that it must be non-empty.
+ *
  * ## Memory management of signal handlers # {#signal-memory-management}
  *
  * If you are connecting handlers to signals and using a #GObject instance as
@@ -1158,6 +1162,9 @@ signal_parse_name (const gchar *name,
       gchar buffer[32];
       guint l = colon - name;
       
+      if (colon[2] == '\0')
+        return 0;
+
       if (l < 32)
 	{
 	  memcpy (buffer, name, l);
@@ -1175,7 +1182,7 @@ signal_parse_name (const gchar *name,
 	}
       
       if (signal_id && detail_p)
-	*detail_p = colon[2] ? (force_quark ? g_quark_from_string : g_quark_try_string) (colon + 2) : 0;
+        *detail_p = (force_quark ? g_quark_from_string : g_quark_try_string) (colon + 2);
     }
   else
     signal_id = 0;
