@@ -314,6 +314,37 @@ binding_default (void)
 }
 
 static void
+binding_canonicalisation (void)
+{
+  BindingSource *source = g_object_new (binding_source_get_type (), NULL);
+  BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+  GBinding *binding;
+
+  g_test_summary ("Test that bindings set up with non-canonical property names work");
+
+  binding = g_object_bind_property (source, "double_value",
+                                    target, "double_value",
+                                    G_BINDING_DEFAULT);
+
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+  g_assert_true ((BindingSource *) g_binding_get_source (binding) == source);
+  g_assert_true ((BindingTarget *) g_binding_get_target (binding) == target);
+  g_assert_cmpstr (g_binding_get_source_property (binding), ==, "double-value");
+  g_assert_cmpstr (g_binding_get_target_property (binding), ==, "double-value");
+  g_assert_cmpint (g_binding_get_flags (binding), ==, G_BINDING_DEFAULT);
+
+  g_object_set (source, "double-value", 24.0, NULL);
+  g_assert_cmpfloat (target->double_value, ==, source->double_value);
+
+  g_object_set (target, "double-value", 69.0, NULL);
+  g_assert_cmpfloat (source->double_value, !=, target->double_value);
+
+  g_object_unref (target);
+  g_object_unref (source);
+  g_assert_null (binding);
+}
+
+static void
 binding_bidirectional (void)
 {
   BindingSource *source = g_object_new (binding_source_get_type (), NULL);
@@ -734,6 +765,7 @@ main (int argc, char *argv[])
   g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/binding/default", binding_default);
+  g_test_add_func ("/binding/canonicalisation", binding_canonicalisation);
   g_test_add_func ("/binding/bidirectional", binding_bidirectional);
   g_test_add_func ("/binding/transform", binding_transform);
   g_test_add_func ("/binding/transform-default", binding_transform_default);

@@ -423,6 +423,53 @@ g_binding_finalize (GObject *gobject)
   G_OBJECT_CLASS (g_binding_parent_class)->finalize (gobject);
 }
 
+/* @key must have already been validated with is_valid()
+ * Modifies @key in place. */
+static void
+canonicalize_key (gchar *key)
+{
+  gchar *p;
+
+  for (p = key; *p != 0; p++)
+    {
+      gchar c = *p;
+
+      if (c == '_')
+        *p = '-';
+    }
+}
+
+/* @key must have already been validated with is_valid() */
+static gboolean
+is_canonical (const gchar *key)
+{
+  return (strchr (key, '_') == NULL);
+}
+
+static gboolean
+is_valid_property_name (const gchar *key)
+{
+  const gchar *p;
+
+  /* First character must be a letter. */
+  if ((key[0] < 'A' || key[0] > 'Z') &&
+      (key[0] < 'a' || key[0] > 'z'))
+    return FALSE;
+
+  for (p = key; *p != 0; p++)
+    {
+      const gchar c = *p;
+
+      if (c != '-' && c != '_' &&
+          (c < '0' || c > '9') &&
+          (c < 'A' || c > 'Z') &&
+          (c < 'a' || c > 'z'))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
 static void
 g_binding_set_property (GObject      *gobject,
                         guint         prop_id,
@@ -437,17 +484,35 @@ g_binding_set_property (GObject      *gobject,
       binding->source = g_value_get_object (value);
       break;
 
-    case PROP_SOURCE_PROPERTY:
-      binding->source_property = g_intern_string (g_value_get_string (value));
-      break;
-
     case PROP_TARGET:
       binding->target = g_value_get_object (value);
       break;
 
+    case PROP_SOURCE_PROPERTY:
     case PROP_TARGET_PROPERTY:
-      binding->target_property = g_intern_string (g_value_get_string (value));
-      break;
+      {
+        gchar *name_copy = NULL;
+        const gchar *name = g_value_get_string (value);
+        const gchar **dest;
+
+        /* Ensure the name we intern is canonical. */
+        if (!is_canonical (name))
+          {
+            name_copy = g_value_dup_string (value);
+            canonicalize_key (name_copy);
+            name = name_copy;
+          }
+
+        if (prop_id == PROP_SOURCE_PROPERTY)
+          dest = &binding->source_property;
+        else
+          dest = &binding->target_property;
+
+        *dest = g_intern_string (name);
+
+        g_free (name_copy);
+        break;
+      }
 
     case PROP_FLAGS:
       binding->flags = g_value_get_flags (value);
@@ -606,7 +671,10 @@ g_binding_class_init (GBindingClass *klass)
    * GBinding:source-property:
    *
    * The name of the property of #GBinding:source that should be used
-   * as the source of the binding
+   * as the source of the binding.
+   *
+   * This should be in [canonical form][canonical-parameter-names] to get the
+   * best performance.
    *
    * Since: 2.26
    */
@@ -622,7 +690,10 @@ g_binding_class_init (GBindingClass *klass)
    * GBinding:target-property:
    *
    * The name of the property of #GBinding:target that should be used
-   * as the target of the binding
+   * as the target of the binding.
+   *
+   * This should be in [canonical form][canonical-parameter-names] to get the
+   * best performance.
    *
    * Since: 2.26
    */
@@ -835,8 +906,10 @@ g_object_bind_property_full (gpointer               source,
 
   g_return_val_if_fail (G_IS_OBJECT (source), NULL);
   g_return_val_if_fail (source_property != NULL, NULL);
+  g_return_val_if_fail (is_valid_property_name (source_property), NULL);
   g_return_val_if_fail (G_IS_OBJECT (target), NULL);
   g_return_val_if_fail (target_property != NULL, NULL);
+  g_return_val_if_fail (is_valid_property_name (target_property), NULL);
 
   if (source == target && g_strcmp0 (source_property, target_property) == 0)
     {
