@@ -145,8 +145,8 @@ typedef enum
 
 
 /* --- prototypes --- */
-static inline guint		signal_id_lookup	(GQuark		  quark,
-							 GType		  itype);
+static inline guint   signal_id_lookup  (const gchar *name,
+                                         GType        itype);
 static	      void		signal_destroy_R	(SignalNode	 *signal_node);
 static inline HandlerList*	handler_list_ensure	(guint		  signal_id,
 							 gpointer	  instance);
@@ -341,13 +341,15 @@ LOOKUP_SIGNAL_NODE (guint signal_id)
 
 /* --- functions --- */
 static inline guint
-signal_id_lookup (GQuark quark,
-		  GType  itype)
+signal_id_lookup (const gchar *name,
+                  GType  itype)
 {
+  GQuark quark;
   GType *ifaces, type = itype;
   SignalKey key;
   guint n_ifaces;
 
+  quark = g_quark_try_string (name);
   key.quark = quark;
 
   /* try looking up signals for this type and its ancestors */
@@ -1080,7 +1082,7 @@ signal_parse_name (const gchar *name,
   
   if (!colon)
     {
-      signal_id = signal_id_lookup (g_quark_try_string (name), itype);
+      signal_id = signal_id_lookup (name, itype);
       if (signal_id && detail_p)
 	*detail_p = 0;
     }
@@ -1093,7 +1095,7 @@ signal_parse_name (const gchar *name,
 	{
 	  memcpy (buffer, name, l);
 	  buffer[l] = 0;
-	  signal_id = signal_id_lookup (g_quark_try_string (buffer), itype);
+	  signal_id = signal_id_lookup (buffer, itype);
 	}
       else
 	{
@@ -1101,7 +1103,7 @@ signal_parse_name (const gchar *name,
 	  
 	  memcpy (signal, name, l);
 	  signal[l] = 0;
-	  signal_id = signal_id_lookup (g_quark_try_string (signal), itype);
+	  signal_id = signal_id_lookup (signal, itype);
 	  g_free (signal);
 	}
       
@@ -1241,7 +1243,7 @@ g_signal_lookup (const gchar *name,
   g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), 0);
   
   SIGNAL_LOCK ();
-  signal_id = signal_id_lookup (g_quark_try_string (name), itype);
+  signal_id = signal_id_lookup (name, itype);
   SIGNAL_UNLOCK ();
   if (!signal_id)
     {
@@ -1658,7 +1660,7 @@ g_signal_newv (const gchar       *signal_name,
   
   SIGNAL_LOCK ();
   
-  signal_id = signal_id_lookup (g_quark_try_string (name), itype);
+  signal_id = signal_id_lookup (name, itype);
   node = LOOKUP_SIGNAL_NODE (signal_id);
   if (node && !node->destroyed)
     {
