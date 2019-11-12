@@ -160,11 +160,11 @@ typedef enum
 /**
  * GSignalMatchType:
  * @G_SIGNAL_MATCH_ID: The signal id must be equal.
- * @G_SIGNAL_MATCH_DETAIL: The signal detail be equal.
+ * @G_SIGNAL_MATCH_DETAIL: The signal detail must be equal.
  * @G_SIGNAL_MATCH_CLOSURE: The closure must be the same.
  * @G_SIGNAL_MATCH_FUNC: The C closure callback must be the same.
  * @G_SIGNAL_MATCH_DATA: The closure data must be the same.
- * @G_SIGNAL_MATCH_UNBLOCKED: Only unblocked signals may matched.
+ * @G_SIGNAL_MATCH_UNBLOCKED: Only unblocked signals may be matched.
  * 
  * The match types specify what g_signal_handlers_block_matched(),
  * g_signal_handlers_unblock_matched() and g_signal_handlers_disconnect_matched()
