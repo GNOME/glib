@@ -180,7 +180,8 @@ test_class_init (TestClass *klass)
                 NULL,
                 G_TYPE_NONE,
                 0);
-  simple2_id = g_signal_new ("simple-2",
+  /* Deliberately install this one in non-canonical form to check that’s handled correctly: */
+  simple2_id = g_signal_new ("simple_2",
                 G_TYPE_FROM_CLASS (klass),
                 G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE,
                 0,

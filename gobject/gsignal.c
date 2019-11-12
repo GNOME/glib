@@ -363,6 +363,35 @@ is_canonical (const gchar *key)
   return (strchr (key, '_') == NULL);
 }
 
+static gboolean
+is_valid_signal_name (const gchar *key)
+{
+  const gchar *p;
+
+  /* FIXME: We allow this, against our own documentation (the leading `-` is
+   * invalid), because GTK has historically used this. */
+  if (g_str_equal (key, "-gtk-private-changed"))
+    return TRUE;
+
+  /* First character must be a letter. */
+  if ((key[0] < 'A' || key[0] > 'Z') &&
+      (key[0] < 'a' || key[0] > 'z'))
+    return FALSE;
+
+  for (p = key; *p != 0; p++)
+    {
+      const gchar c = *p;
+
+      if (c != '-' && c != '_' &&
+          (c < '0' || c > '9') &&
+          (c < 'A' || c > 'Z') &&
+          (c < 'a' || c > 'z'))
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
 static inline guint
 signal_id_lookup (const gchar *name,
                   GType  itype)
@@ -1331,13 +1360,7 @@ g_signal_list_ids (GType  itype,
   for (i = 0; i < n_nodes; i++)
     if (keys[i].itype == itype)
       {
-	const gchar *name = g_quark_to_string (keys[i].quark);
-	
-	/* Signal names with "_" in them are aliases to the same
-	 * name with "-" instead of "_".
-	 */
-	if (!strchr (name, '_'))
-	  g_array_append_val (result, keys[i].signal_id);
+        g_array_append_val (result, keys[i].signal_id);
       }
   *n_ids = result->len;
   SIGNAL_UNLOCK ();
@@ -1676,7 +1699,8 @@ g_signal_newv (const gchar       *signal_name,
                guint              n_params,
                GType		 *param_types)
 {
-  gchar *name;
+  const gchar *name;
+  gchar *signal_name_copy = NULL;
   guint signal_id, i;
   SignalNode *node;
   GSignalCMarshaller builtin_c_marshaller;
@@ -1684,6 +1708,7 @@ g_signal_newv (const gchar       *signal_name,
   GSignalCVaMarshaller va_marshaller;
   
   g_return_val_if_fail (signal_name != NULL, 0);
+  g_return_val_if_fail (is_valid_signal_name (signal_name), 0);
   g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), 0);
   if (n_params)
     g_return_val_if_fail (param_types != NULL, 0);
@@ -1693,8 +1718,16 @@ g_signal_newv (const gchar       *signal_name,
   if (!accumulator)
     g_return_val_if_fail (accu_data == NULL, 0);
 
-  name = g_strdup (signal_name);
-  g_strdelimit (name, G_STR_DELIMITERS ":^", '_');  /* FIXME do character checks like for types */
+  if (!is_canonical (signal_name))
+    {
+      signal_name_copy = g_strdup (signal_name);
+      canonicalize_key (signal_name_copy);
+      name = signal_name_copy;
+    }
+  else
+    {
+      name = signal_name;
+    }
   
   SIGNAL_LOCK ();
   
@@ -1706,7 +1739,7 @@ g_signal_newv (const gchar       *signal_name,
                  name,
                  type_debug_name (node->itype),
                  G_TYPE_IS_INTERFACE (node->itype) ? "interface" : "class ancestry");
-      g_free (name);
+      g_free (signal_name_copy);
       SIGNAL_UNLOCK ();
       return 0;
     }
@@ -1716,7 +1749,7 @@ g_signal_newv (const gchar       *signal_name,
                  name,
                  type_debug_name (itype),
                  type_debug_name (node->itype));
-      g_free (name);
+      g_free (signal_name_copy);
       SIGNAL_UNLOCK ();
       return 0;
     }
@@ -1725,7 +1758,7 @@ g_signal_newv (const gchar       *signal_name,
       {
 	g_warning (G_STRLOC ": parameter %d of type '%s' for signal \"%s::%s\" is not a value type",
 		   i + 1, type_debug_name (param_types[i]), type_debug_name (itype), name);
-	g_free (name);
+	g_free (signal_name_copy);
 	SIGNAL_UNLOCK ();
 	return 0;
       }
@@ -1733,7 +1766,7 @@ g_signal_newv (const gchar       *signal_name,
     {
       g_warning (G_STRLOC ": return value of type '%s' for signal \"%s::%s\" is not a value type",
 		 type_debug_name (return_type), type_debug_name (itype), name);
-      g_free (name);
+      g_free (signal_name_copy);
       SIGNAL_UNLOCK ();
       return 0;
     }
@@ -1742,7 +1775,7 @@ g_signal_newv (const gchar       *signal_name,
     {
       g_warning (G_STRLOC ": signal \"%s::%s\" has return type '%s' and is only G_SIGNAL_RUN_FIRST",
 		 type_debug_name (itype), name, type_debug_name (return_type));
-      g_free (name);
+      g_free (signal_name_copy);
       SIGNAL_UNLOCK ();
       return 0;
     }
@@ -1758,12 +1791,8 @@ g_signal_newv (const gchar       *signal_name,
       g_signal_nodes = g_renew (SignalNode*, g_signal_nodes, g_n_signal_nodes);
       g_signal_nodes[signal_id] = node;
       node->itype = itype;
-      node->name = name;
       key.itype = itype;
-      key.quark = g_quark_from_string (node->name);
       key.signal_id = signal_id;
-      g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key);
-      g_strdelimit (name, "_", '-');
       node->name = g_intern_string (name);
       key.quark = g_quark_from_string (name);
       g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key);
@@ -1851,7 +1880,7 @@ g_signal_newv (const gchar       *signal_name,
 
   SIGNAL_UNLOCK ();
 
-  g_free (name);
+  g_free (signal_name_copy);
 
   return signal_id;
 }
