@@ -81,6 +81,7 @@ struct _GIRepositoryPrivate
   GHashTable *info_by_gtype; /* GType -> GIBaseInfo */
   GHashTable *info_by_error_domain; /* GQuark -> GIBaseInfo */
   GHashTable *interfaces_for_gtype; /* GType -> GTypeInterfaceCache */
+  GHashTable *unknown_gtypes; /* hashset of GType */
 };
 
 G_DEFINE_TYPE_WITH_CODE (GIRepository, g_irepository, G_TYPE_OBJECT, G_ADD_PRIVATE (GIRepository));
@@ -144,6 +145,7 @@ g_irepository_init (GIRepository *repository)
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
                              (GDestroyNotify) gtype_interface_cache_free);
+  repository->priv->unknown_gtypes = g_hash_table_new (NULL, NULL);
 }
 
 static void
@@ -156,6 +158,7 @@ g_irepository_finalize (GObject *object)
   g_hash_table_destroy (repository->priv->info_by_gtype);
   g_hash_table_destroy (repository->priv->info_by_error_domain);
   g_hash_table_destroy (repository->priv->interfaces_for_gtype);
+  g_hash_table_destroy (repository->priv->unknown_gtypes);
 
   (* G_OBJECT_CLASS (g_irepository_parent_class)->finalize) (G_OBJECT (repository));
 }
@@ -438,6 +441,9 @@ register_internal (GIRepository *repository,
 
       g_hash_table_insert (repository->priv->typelibs, key, (void *)typelib);
     }
+
+  /* These types might be resolved now, clear the cache */
+  g_hash_table_remove_all (repository->priv->unknown_gtypes);
 
   return namespace;
 }
@@ -814,6 +820,9 @@ g_irepository_find_by_gtype (GIRepository *repository,
   if (cached != NULL)
     return g_base_info_ref (cached);
 
+  if (g_hash_table_contains (repository->priv->unknown_gtypes, (gpointer)gtype))
+    return NULL;
+
   data.gtype_name = g_type_name (gtype);
   data.result_typelib = NULL;
 
@@ -849,7 +858,11 @@ g_irepository_find_by_gtype (GIRepository *repository,
 			   g_base_info_ref (cached));
       return cached;
     }
-  return NULL;
+  else
+    {
+      g_hash_table_add (repository->priv->unknown_gtypes, (gpointer) gtype);
+      return NULL;
+    }
 }
 
 /**
