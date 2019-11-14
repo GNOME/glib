@@ -103,7 +103,7 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
   /**
    * GTlsClientConnection:use-ssl3:
    *
-   * This property is ignored.
+   * Since GLib 2.64, this property is deprecated and ignored.
    *
    * Since: 2.28
    *
