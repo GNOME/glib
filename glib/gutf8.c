@@ -139,11 +139,12 @@ const gchar * const g_utf8_skip = utf8_skip_data;
  * Returns: (transfer none) (nullable): a pointer to the found character or %NULL.
  */
 gchar *
-g_utf8_find_prev_char (const char *str,
-		       const char *p)
+g_utf8_find_prev_char (const gchar *str,
+		       const gchar *p)
 {
-  for (--p; p >= str; --p)
+  while (p > str)
     {
+      --p;
       if ((*p & 0xc0) != 0x80)
 	return (gchar *)p;
     }
