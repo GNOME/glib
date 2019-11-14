@@ -139,7 +139,8 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 							 TRUE,
 							 G_PARAM_READWRITE |
 							 G_PARAM_CONSTRUCT |
-							 G_PARAM_STATIC_STRINGS));
+							 G_PARAM_STATIC_STRINGS |
+							 G_PARAM_DEPRECATED));
   /**
    * GTlsConnection:database:
    *
