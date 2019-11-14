@@ -103,14 +103,11 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
   /**
    * GTlsClientConnection:use-ssl3:
    *
-   * If %TRUE, forces the connection to use a fallback version of TLS
-   * or SSL, rather than trying to negotiate the best version of TLS
-   * to use. See g_tls_client_connection_set_use_ssl3().
+   * Since GLib 2.64, this property is ignored.
    *
    * Since: 2.28
    *
-   * Deprecated: 2.56: SSL 3.0 is insecure, and this property does not
-   * generally enable or disable it, despite its name.
+   * Deprecated: 2.56: SSL 3.0 is insecure.
    */
   g_object_interface_install_property (iface,
 				       g_param_spec_boolean ("use-ssl3",
@@ -270,16 +267,13 @@ g_tls_client_connection_set_server_identity (GTlsClientConnection *conn,
  * g_tls_client_connection_get_use_ssl3:
  * @conn: the #GTlsClientConnection
  *
- * Gets whether @conn will force the lowest-supported TLS protocol
- * version rather than attempt to negotiate the highest mutually-
- * supported version of TLS; see g_tls_client_connection_set_use_ssl3().
+ * Since GLib 2.64, SSL 3.0 is no longer supported.
  *
- * Returns: whether @conn will use the lowest-supported TLS protocol version
+ * Returns: %FALSE
  *
  * Since: 2.28
  *
- * Deprecated: 2.56: SSL 3.0 is insecure, and this function does not
- * actually indicate whether it is enabled.
+ * Deprecated: 2.56: SSL 3.0 is insecure.
  */
 gboolean
 g_tls_client_connection_get_use_ssl3 (GTlsClientConnection *conn)
@@ -289,32 +283,19 @@ g_tls_client_connection_get_use_ssl3 (GTlsClientConnection *conn)
   g_return_val_if_fail (G_IS_TLS_CLIENT_CONNECTION (conn), 0);
 
   g_object_get (G_OBJECT (conn), "use-ssl3", &use_ssl3, NULL);
-  return use_ssl3;
+  return FALSE;
 }
 
 /**
  * g_tls_client_connection_set_use_ssl3:
  * @conn: the #GTlsClientConnection
- * @use_ssl3: whether to use the lowest-supported protocol version
+ * @use_ssl3: a #gboolean, ignored
  *
- * Since 2.42.1, if @use_ssl3 is %TRUE, this forces @conn to use the
- * lowest-supported TLS protocol version rather than trying to properly
- * negotiate the highest mutually-supported protocol version with the
- * peer. Be aware that SSL 3.0 is generally disabled by the
- * #GTlsBackend, so the lowest-supported protocol version is probably
- * not SSL 3.0.
- *
- * Since 2.58, this may additionally cause an RFC 7507 fallback SCSV to
- * be sent to the server, causing modern TLS servers to immediately
- * terminate the connection. You should generally only use this function
- * if you need to connect to broken servers that exhibit TLS protocol
- * version intolerance, and when an initial attempt to connect to a
- * server normally has already failed.
+ * Since GLib 2.64, this function does nothing.
  *
  * Since: 2.28
  *
- * Deprecated: 2.56: SSL 3.0 is insecure, and this function does not
- * generally enable or disable it, despite its name.
+ * Deprecated: 2.56: SSL 3.0 is insecure.
  */
 void
 g_tls_client_connection_set_use_ssl3 (GTlsClientConnection *conn,
@@ -322,7 +303,7 @@ g_tls_client_connection_set_use_ssl3 (GTlsClientConnection *conn,
 {
   g_return_if_fail (G_IS_TLS_CLIENT_CONNECTION (conn));
 
-  g_object_set (G_OBJECT (conn), "use-ssl3", use_ssl3, NULL);
+  g_object_set (G_OBJECT (conn), "use-ssl3", FALSE, NULL);
 }
 
 /**
