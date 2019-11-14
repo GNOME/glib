@@ -730,27 +730,17 @@ g_tls_connection_get_require_close_notify (GTlsConnection *conn)
  * @conn: a #GTlsConnection
  * @mode: the rehandshaking mode
  *
- * Sets how @conn behaves with respect to rehandshaking requests, when
- * TLS 1.2 or older is in use.
+ * Since GLib 2.64, changing the rehandshake mode is no longer supported
+ * and will have no effect.
  *
- * %G_TLS_REHANDSHAKE_NEVER means that it will never agree to
- * rehandshake after the initial handshake is complete. (For a client,
- * this means it will refuse rehandshake requests from the server, and
- * for a server, this means it will close the connection with an error
- * if the client attempts to rehandshake.)
- *
- * %G_TLS_REHANDSHAKE_SAFELY means that the connection will allow a
- * rehandshake only if the other end of the connection supports the
- * TLS `renegotiation_info` extension. This is the default behavior,
- * but means that rehandshaking will not work against older
+ * With TLS 1.2, the connection will allow a rehandshake only if the
+ * other end of the connection supports the TLS `renegotiation_info`
+ * extension. This means that rehandshaking will not work against older
  * implementations that do not support that extension.
  *
- * %G_TLS_REHANDSHAKE_UNSAFELY means that the connection will allow
- * rehandshaking even without the `renegotiation_info` extension. On
- * the server side in particular, this is not recommended, since it
- * leaves the server open to certain attacks. However, this mode is
- * necessary if you need to allow renegotiation with older client
- * software.
+ * With TLS 1.3, rehandshaking has been removed from the TLS protocol,
+ * replaced by separate post-handshake authentication and rekey
+ * operations.
  *
  * Since: 2.28
  *
@@ -766,7 +756,7 @@ g_tls_connection_set_rehandshake_mode (GTlsConnection       *conn,
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
 
   g_object_set (G_OBJECT (conn),
-		"rehandshake-mode", mode,
+		"rehandshake-mode", G_TLS_REHANDSHAKE_SAFELY,
 		NULL);
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -778,7 +768,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Gets @conn rehandshaking mode. See
  * g_tls_connection_set_rehandshake_mode() for details.
  *
- * Returns: @conn's rehandshaking mode
+ * Returns: %G_TLS_REHANDSHAKE_SAFELY
  *
  * Since: 2.28
  *
@@ -792,12 +782,12 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
 {
   GTlsRehandshakeMode mode;
 
-  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), G_TLS_REHANDSHAKE_NEVER);
+  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), G_TLS_REHANDSHAKE_SAFELY);
 
   g_object_get (G_OBJECT (conn),
 		"rehandshake-mode", &mode,
 		NULL);
-  return mode;
+  return G_TLS_REHANDSHAKE_SAFELY;
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
 
