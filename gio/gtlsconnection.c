@@ -195,6 +195,8 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * g_tls_connection_set_rehandshake_mode().
    *
    * Since: 2.28
+   *
+   * Deprecated: 2.60: The rehandshake mode is ignored.
    */
   g_object_class_install_property (gobject_class, PROP_REHANDSHAKE_MODE,
 				   g_param_spec_enum ("rehandshake-mode",
