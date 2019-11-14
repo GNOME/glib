@@ -67,7 +67,7 @@ G_BEGIN_DECLS
  * 
  * Cast a function pointer to a #GCallback.
  */
-#define	G_CALLBACK(f)			 ((GCallback) (f))
+#define	G_CALLBACK(f)			 ((GCallback) ((void (*) (void)) (f)))
 
 
 /* -- typedefs --- */
