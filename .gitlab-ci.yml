@@ -103,7 +103,8 @@ installed-tests:
   except:
     - tags
   before_script:
-    - dnf install -y gnome-desktop-testing
+    # FIXME move to docker image
+    - sudo dnf install -y gnome-desktop-testing python3-dbusmock xdg-desktop-portal
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -111,8 +112,29 @@ installed-tests:
             -Dfam=true
             -Dinstalled_tests=true
             _build
-    - ninja -C _build
     - ninja -C _build install
+    # FIXME install libportal
+    - git clone https://github.com/flatpak/libportal.git
+    - cd libportal/
+    - meson ${MESON_COMMON_OPTIONS} _build --prefix=/usr --libdir=/usr/lib64
+    - ninja -C _build
+    - sudo ninja -C _build install
+    - cd ..
+    # FIXME Install newer xdg-desktop-portal
+    - sudo dnf install -y autoconf automake gettext-devel libtool diffutils fontconfig-devel json-glib-devel geoclue2-devel pipewire-devel fuse-devel make
+    - git clone --single-branch --branch wip/hadess/memory-monitor https://github.com/flatpak/xdg-desktop-portal.git
+    - cd xdg-desktop-portal
+    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-dependency-tracking && make && sudo make install
+    # FIXME install newer gobject-introspection
+    - sudo dnf install -y meson flex bison python3-devel
+    - git clone --single-branch --branch wip/hadess/add-memory-monitor https://gitlab.gnome.org/GNOME/gobject-introspection.git
+    - cd gobject-introspection
+    - /usr/bin/meson ${MESON_COMMON_OPTIONS} _build --prefix=/usr --libdir=/usr/lib64
+    - ninja -C _build
+    - sudo ninja -C _build install
+    - cd ..
+    # FIXME Update python-dbusmock
+    - sudo dnf install -y https://kojipkgs.fedoraproject.org//work/tasks/2365/39162365/python3-dbusmock-0.18.3-2.fc31.noarch.rpm
     - gnome-desktop-testing-runner glib
   artifacts:
     reports:
