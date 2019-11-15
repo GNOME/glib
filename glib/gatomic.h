@@ -85,7 +85,9 @@ G_END_DECLS
 #if defined(G_ATOMIC_LOCK_FREE) && defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4)
 
 /* We prefer the new C11-style atomic extension of GCC if available */
-#if defined(__ATOMIC_SEQ_CST)
+/* FIXME: Temporarily disabled on FreeBSD due to CI failures:
+ * https://gitlab.gnome.org/GNOME/glib/issues/1940 */
+#if defined(__ATOMIC_SEQ_CST) && !defined(__FreeBSD__)
 
 #define g_atomic_int_get(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
