@@ -88,7 +88,9 @@ installed-tests:
   except:
     - tags
   before_script:
-    - dnf install -y gnome-desktop-testing
+    - dnf install -y gnome-desktop-testing python-dbusmock xdg-desktop-portal
+    # FIXME Update python-dbusmock
+    - rpm -Uvh https://kojipkgs.fedoraproject.org//work/tasks/680/39010680/python3-dbusmock-0.18.3-2.fc32.noarch.rpm
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -125,6 +127,16 @@ installed-tests:
             -Dinstalled_tests=true
             _build
     - ninja -C _build install
+    # FIXME install libportal
+    - git clone git@github.com:flatpak/libportal.git
+    - cd libportal/
+    - meson ${MESON_COMMON_OPTIONS} _build
+    - ninja -C _build install
+    - cd ..
+    # FIXME Install newer xdg-desktop-portal
+    - git clone --single-branch --branch wip/hadess/memory-monitor git@github.com:flatpak/xdg-desktop-portal.git
+    - cd xdg-desktop-portal
+    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 && make && make install
     - gnome-desktop-testing-runner glib
   artifacts:
     reports:
