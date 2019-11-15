@@ -50,12 +50,6 @@ fedora-x86_64:
     - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
     - .gitlab-ci/run-tests.sh
     - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
-    # FIXME: We should run all installed tests, but do only this one for now
-    # because it cannot run uninstalled. Reconfigure with dtrace disabled
-    # because it breaks static link.
-    - meson configure -Ddtrace=false _build
-    - ninja -C _build install
-    - GLIB_TEST_COMPILATION=1 $HOME/glib-installed/libexec/installed-tests/glib/static-link.py $HOME/glib-installed/lib/pkgconfig
   artifacts:
     reports:
       junit: "_build/${CI_JOB_NAME}-report.xml"
@@ -95,6 +89,34 @@ debian-stable-x86_64:
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
       - "_build/${CI_JOB_NAME}-report.xml"
+
+installed-tests:
+  extends: .only-default
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  stage: build
+  script:
+    # dtrace is disabled because it breaks the static-link.py test
+    - meson ${MESON_COMMON_OPTIONS}
+            --werror
+            --prefix=/usr --libdir=/usr/lib64
+            -Dfam=true
+            -Dinstalled_tests=true
+            -Ddefault_library=both
+            -Ddtrace=false
+            _build
+    - ninja -C _build
+    - sudo ninja -C _build install
+    - gnome-desktop-testing-runner
+            --report-directory=_build/installed-tests-report/failed/
+            glib
+  artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+      - "_build/installed-tests-report/"
 
 G_DISABLE_ASSERT:
   extends: .only-default
