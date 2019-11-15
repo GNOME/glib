@@ -83,6 +83,33 @@ debian-stable-x86_64:
       - "_build/meson-logs"
       - "_build/${CI_JOB_NAME}-report.xml"
 
+installed-tests:
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+  stage: build
+  except:
+    - tags
+  before_script:
+    - dnf install -y gnome-desktop-testing
+  script:
+    - meson ${MESON_COMMON_OPTIONS}
+            --werror
+            --prefix=/usr --libdir=/usr/lib64
+            -Dfam=true
+            -Dinstalled_tests=true
+            _build
+    - ninja -C _build install
+    - gnome-desktop-testing-runner glib
+  artifacts:
+    reports:
+      junit: "_build/${CI_JOB_NAME}-report.xml"
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+      - "_build/${CI_JOB_NAME}-report.xml"
+
 G_DISABLE_ASSERT:
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: build
