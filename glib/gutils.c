@@ -993,6 +993,7 @@ g_get_host_name (void)
       const gsize size_large = (gsize) 256 * 256;
       gchar *tmp;
 
+#ifdef _SC_HOST_NAME_MAX
       max = sysconf (_SC_HOST_NAME_MAX);
       if (max > 0 && max <= G_MAXSIZE - 1)
         size = (gsize) max + 1;
@@ -1001,8 +1002,11 @@ g_get_host_name (void)
         size = HOST_NAME_MAX + 1;
 #else
         size = _POSIX_HOST_NAME_MAX + 1;
-#endif
-
+#endif /* HOST_NAME_MAX */
+#else
+      /* Fallback to some reasonable value */
+      size = 256;
+#endif /* _SC_HOST_NAME_MAX */
       tmp = g_malloc (size);
       failed = (gethostname (tmp, size) == -1);
       if (failed && size < size_large)
