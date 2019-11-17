@@ -553,6 +553,7 @@ _kqsub_cancel (kqueue_sub *sub)
   /* WARNING: Before calling this function, you must hold a lock on kq_lock
    * or you will cause use-after-free in g_kqueue_file_monitor_callback. */
 
+  gboolean ok = TRUE;
   struct kevent ev;
 
   /* Remove the event and close the file descriptor to automatically
@@ -563,7 +564,7 @@ _kqsub_cancel (kqueue_sub *sub)
       if (kevent (kq_queue, &ev, 1, NULL, 0, NULL) == -1)
         {
           g_warning ("Unable to remove event for %s: %s", sub->filename, g_strerror (errno));
-          return FALSE;
+          ok = FALSE;
         }
       close (sub->fd);
       sub->fd = -1;
@@ -577,7 +578,7 @@ _kqsub_cancel (kqueue_sub *sub)
       sub->deps = NULL;
     }
 
-  return TRUE;
+  return ok;
 }
 
 gboolean
