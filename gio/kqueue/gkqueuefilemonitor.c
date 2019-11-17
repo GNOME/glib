@@ -122,7 +122,7 @@ static gboolean g_kqueue_file_monitor_is_supported (void);
 
 static kqueue_sub	*_kqsub_new (gchar *, gchar *, GKqueueFileMonitor *, GFileMonitorSource *);
 static void		 _kqsub_free (kqueue_sub *);
-static gboolean		 _kqsub_cancel (kqueue_sub *);
+static void		 _kqsub_cancel (kqueue_sub *);
 
 
 #ifndef O_EVTONLY
@@ -547,7 +547,7 @@ _kqsub_free (kqueue_sub *sub)
   g_slice_free (kqueue_sub, sub);
 }
 
-static gboolean
+static void
 _kqsub_cancel (kqueue_sub *sub)
 {
   /* WARNING: Before calling this function, you must hold a lock on kq_lock
@@ -563,7 +563,6 @@ _kqsub_cancel (kqueue_sub *sub)
       if (kevent (kq_queue, &ev, 1, NULL, 0, NULL) == -1)
         {
           g_warning ("Unable to remove event for %s: %s", sub->filename, g_strerror (errno));
-          return FALSE;
         }
       close (sub->fd);
       sub->fd = -1;
@@ -576,8 +575,6 @@ _kqsub_cancel (kqueue_sub *sub)
       dl_free (sub->deps);
       sub->deps = NULL;
     }
-
-  return TRUE;
 }
 
 gboolean
