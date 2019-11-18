@@ -1,8 +1,8 @@
 stages:
   - build
-  - coverage
-  - analysis
-  - deploy
+  # coverage
+  # analysis
+  # deploy
 
 cache:
   paths:
@@ -13,212 +13,212 @@ variables:
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
 
-fedora-x86_64:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
-  stage: build
-  except:
-    - tags
-  variables:
-    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
-  script:
-    - meson ${MESON_COMMON_OPTIONS}
-            --werror
-            --default-library=both
-            --prefix=$HOME/glib-installed
-            --libdir=lib
-            -Dsystemtap=true
-            -Ddtrace=true
-            -Dfam=true
-            -Dinstalled_tests=true
-            _build
-    - ninja -C _build
-    - mkdir -p _coverage
-    - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
-    - .gitlab-ci/run-tests.sh
-    - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
-    # FIXME: We should run all installed tests, but do only this one for now
-    # because it cannot run uninstalled. Reconfigure with dtrace disabled
-    # because it breaks static link.
-    - meson configure -Ddtrace=false _build
-    - ninja -C _build install
-    - GLIB_TEST_COMPILATION=1 $HOME/glib-installed/libexec/installed-tests/glib/static-link.py $HOME/glib-installed/lib/pkgconfig
-  artifacts:
-    reports:
-      junit: "_build/${CI_JOB_NAME}-report.xml"
-    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    when: always
-    paths:
-      - "_build/config.h"
-      - "_build/glib/glibconfig.h"
-      - "_build/meson-logs"
-      - "_build/${CI_JOB_NAME}-report.xml"
-      - "_coverage"
-
-debian-stable-x86_64:
-  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v4
-  stage: build
-  except:
-    - tags
-  script:
-    - meson ${MESON_COMMON_OPTIONS}
-            --werror
-            --default-library=both
-            --prefix=$HOME/glib-installed
-            --libdir=lib
-            -Dsystemtap=true
-            -Ddtrace=true
-            -Dfam=true
-            -Dinstalled_tests=true
-            _build
-    - ninja -C _build
-    - .gitlab-ci/run-tests.sh
-  artifacts:
-    reports:
-      junit: "_build/${CI_JOB_NAME}-report.xml"
-    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    when: always
-    paths:
-      - "_build/config.h"
-      - "_build/glib/glibconfig.h"
-      - "_build/meson-logs"
-      - "_build/${CI_JOB_NAME}-report.xml"
-
-G_DISABLE_ASSERT:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
-  stage: build
-  except:
-    - tags
-  variables:
-    CPPFLAGS: "-DG_DISABLE_ASSERT"
-  script:
-    - meson ${MESON_COMMON_OPTIONS}
-            --werror
-            -Dsystemtap=true
-            -Ddtrace=true
-            -Dfam=true
-            -Dinstalled_tests=true
-            _build
-    - ninja -C _build
-    - bash -x ./.gitlab-ci/run-tests.sh
-  artifacts:
-    reports:
-      junit: "_build/${CI_JOB_NAME}-report.xml"
-    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    when: always
-    paths:
-      - "_build/config.h"
-      - "_build/glib/glibconfig.h"
-      - "_build/meson-logs"
-      - "_build/${CI_JOB_NAME}-report.xml"
-
-valgrind:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
-  stage: analysis
-  except:
-    - tags
-  variables:
-    MESON_TEST_TIMEOUT_MULTIPLIER: 10
-  script:
-    - meson ${MESON_COMMON_OPTIONS}
-            --werror
-            -Dsystemtap=true
-            -Ddtrace=true
-            -Dfam=true
-            -Dinstalled_tests=true
-            _build
-    - ninja -C _build
-    - bash -x ./.gitlab-ci/run-tests.sh
-                 --log-file _build/meson-logs/testlog-valgrind.json
-                 --wrap "valgrind --tool=memcheck --error-exitcode=1 --track-origins=yes --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/glib.supp"
-                 --no-suite no-valgrind
-                 --no-suite slow
-  # FIXME: Remove this when we have zero valgrind leaks.
-  # https://gitlab.gnome.org/GNOME/glib/issues/333
-  allow_failure: true
-  artifacts:
-    reports:
-      junit: "_build/${CI_JOB_NAME}-report.xml"
-    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    when: always
-    paths:
-      - "_build/config.h"
-      - "_build/glib/glibconfig.h"
-      - "_build/meson-logs"
-
-.cross-template: &cross-template
-  stage: build
-  except:
-    - tags
-  artifacts:
-    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    when: always
-    paths:
-      - "_build/meson-logs"
-
-cross-android_api21_arm64:
-  <<: *cross-template
-  image: registry.gitlab.gnome.org/gnome/glib/android-ndk:v1
-  script:
-    # FIXME: add --werror
-    # We use -Diconv=auto to test that we successfully detect that iconv is not
-    # provided by android api 21, and detect the external iconv instead.
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=auto -Dinternal_pcre=true _build
-    - ninja -C _build
-
-cross-android_api28_arm64:
-  <<: *cross-template
-  image: registry.gitlab.gnome.org/gnome/glib/android-ndk:v1
-  script:
-    # FIXME: add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt -Dinternal_pcre=true _build
-    - ninja -C _build
-
-cross-mingw64:
-  <<: *cross-template
-  image: registry.gitlab.gnome.org/gnome/glib/mingw:v1
-  script:
-    # FIXME: Add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
-    - ninja -C _build
-
-msys2-mingw32:
-  stage: build
-  except:
-    - tags
-  tags:
-    - win32
-  variables:
-    MSYSTEM: "MINGW32"
-    CHERE_INVOKING: "yes"
-  script:
-    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
-    - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
-  artifacts:
-    reports:
-      junit: "_build/%CI_JOB_NAME%-report.xml"
-    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
-    when: always
-    paths:
-      - _build/meson-logs
-      - "_build/%CI_JOB_NAME%-report.xml"
-      - _coverage/
-
-vs2017-x64:
-  stage: build
-  except:
-    - tags
-  tags:
-    - win32
-  script:
-    - .gitlab-ci/test-msvc.bat
-  artifacts:
-    reports:
-      junit: "_build/%CI_JOB_NAME%-report.xml"
-    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
-    when: always
-    paths:
-      - _build/meson-logs
-      - "_build/%CI_JOB_NAME%-report.xml"
+#fedora-x86_64:
+#  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+#  stage: build
+#  except:
+#    - tags
+#  variables:
+#    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
+#  script:
+#    - meson ${MESON_COMMON_OPTIONS}
+#            --werror
+#            --default-library=both
+#            --prefix=$HOME/glib-installed
+#            --libdir=lib
+#            -Dsystemtap=true
+#            -Ddtrace=true
+#            -Dfam=true
+#            -Dinstalled_tests=true
+#            _build
+#    - ninja -C _build
+#    - mkdir -p _coverage
+#    - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
+#    - .gitlab-ci/run-tests.sh
+#    - lcov --config-file .gitlab-ci/lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
+#    # FIXME: We should run all installed tests, but do only this one for now
+#    # because it cannot run uninstalled. Reconfigure with dtrace disabled
+#    # because it breaks static link.
+#    - meson configure -Ddtrace=false _build
+#    - ninja -C _build install
+#    - GLIB_TEST_COMPILATION=1 $HOME/glib-installed/libexec/installed-tests/glib/static-link.py $HOME/glib-installed/lib/pkgconfig
+#  artifacts:
+#    reports:
+#      junit: "_build/${CI_JOB_NAME}-report.xml"
+#    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+#    when: always
+#    paths:
+#      - "_build/config.h"
+#      - "_build/glib/glibconfig.h"
+#      - "_build/meson-logs"
+#      - "_build/${CI_JOB_NAME}-report.xml"
+#      - "_coverage"
+#
+#debian-stable-x86_64:
+#  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v4
+#  stage: build
+#  except:
+#    - tags
+#  script:
+#    - meson ${MESON_COMMON_OPTIONS}
+#            --werror
+#            --default-library=both
+#            --prefix=$HOME/glib-installed
+#            --libdir=lib
+#            -Dsystemtap=true
+#            -Ddtrace=true
+#            -Dfam=true
+#            -Dinstalled_tests=true
+#            _build
+#    - ninja -C _build
+#    - .gitlab-ci/run-tests.sh
+#  artifacts:
+#    reports:
+#      junit: "_build/${CI_JOB_NAME}-report.xml"
+#    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+#    when: always
+#    paths:
+#      - "_build/config.h"
+#      - "_build/glib/glibconfig.h"
+#      - "_build/meson-logs"
+#      - "_build/${CI_JOB_NAME}-report.xml"
+#
+#G_DISABLE_ASSERT:
+#  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+#  stage: build
+#  except:
+#    - tags
+#  variables:
+#    CPPFLAGS: "-DG_DISABLE_ASSERT"
+#  script:
+#    - meson ${MESON_COMMON_OPTIONS}
+#            --werror
+#            -Dsystemtap=true
+#            -Ddtrace=true
+#            -Dfam=true
+#            -Dinstalled_tests=true
+#            _build
+#    - ninja -C _build
+#    - bash -x ./.gitlab-ci/run-tests.sh
+#  artifacts:
+#    reports:
+#      junit: "_build/${CI_JOB_NAME}-report.xml"
+#    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+#    when: always
+#    paths:
+#      - "_build/config.h"
+#      - "_build/glib/glibconfig.h"
+#      - "_build/meson-logs"
+#      - "_build/${CI_JOB_NAME}-report.xml"
+#
+#valgrind:
+#  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+#  stage: analysis
+#  except:
+#    - tags
+#  variables:
+#    MESON_TEST_TIMEOUT_MULTIPLIER: 10
+#  script:
+#    - meson ${MESON_COMMON_OPTIONS}
+#            --werror
+#            -Dsystemtap=true
+#            -Ddtrace=true
+#            -Dfam=true
+#            -Dinstalled_tests=true
+#            _build
+#    - ninja -C _build
+#    - bash -x ./.gitlab-ci/run-tests.sh
+#                 --log-file _build/meson-logs/testlog-valgrind.json
+#                 --wrap "valgrind --tool=memcheck --error-exitcode=1 --track-origins=yes --leak-check=full --leak-resolution=high --num-callers=50 --show-leak-kinds=definite,possible --show-error-list=yes --suppressions=${CI_PROJECT_DIR}/glib.supp"
+#                 --no-suite no-valgrind
+#                 --no-suite slow
+#  # FIXME: Remove this when we have zero valgrind leaks.
+#  # https://gitlab.gnome.org/GNOME/glib/issues/333
+#  allow_failure: true
+#  artifacts:
+#    reports:
+#      junit: "_build/${CI_JOB_NAME}-report.xml"
+#    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+#    when: always
+#    paths:
+#      - "_build/config.h"
+#      - "_build/glib/glibconfig.h"
+#      - "_build/meson-logs"
+#
+#.cross-template: &cross-template
+#  stage: build
+#  except:
+#    - tags
+#  artifacts:
+#    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+#    when: always
+#    paths:
+#      - "_build/meson-logs"
+#
+#cross-android_api21_arm64:
+#  <<: *cross-template
+#  image: registry.gitlab.gnome.org/gnome/glib/android-ndk:v1
+#  script:
+#    # FIXME: add --werror
+#    # We use -Diconv=auto to test that we successfully detect that iconv is not
+#    # provided by android api 21, and detect the external iconv instead.
+#    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=auto -Dinternal_pcre=true _build
+#    - ninja -C _build
+#
+#cross-android_api28_arm64:
+#  <<: *cross-template
+#  image: registry.gitlab.gnome.org/gnome/glib/android-ndk:v1
+#  script:
+#    # FIXME: add --werror
+#    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt -Dinternal_pcre=true _build
+#    - ninja -C _build
+#
+#cross-mingw64:
+#  <<: *cross-template
+#  image: registry.gitlab.gnome.org/gnome/glib/mingw:v1
+#  script:
+#    # FIXME: Add --werror
+#    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
+#    - ninja -C _build
+#
+#msys2-mingw32:
+#  stage: build
+#  except:
+#    - tags
+#  tags:
+#    - win32
+#  variables:
+#    MSYSTEM: "MINGW32"
+#    CHERE_INVOKING: "yes"
+#  script:
+#    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
+#    - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
+#  artifacts:
+#    reports:
+#      junit: "_build/%CI_JOB_NAME%-report.xml"
+#    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
+#    when: always
+#    paths:
+#      - _build/meson-logs
+#      - "_build/%CI_JOB_NAME%-report.xml"
+#      - _coverage/
+#
+#vs2017-x64:
+#  stage: build
+#  except:
+#    - tags
+#  tags:
+#    - win32
+#  script:
+#    - .gitlab-ci/test-msvc.bat
+#  artifacts:
+#    reports:
+#      junit: "_build/%CI_JOB_NAME%-report.xml"
+#    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
+#    when: always
+#    paths:
+#      - _build/meson-logs
+#      - "_build/%CI_JOB_NAME%-report.xml"
 
 freebsd-11-x86_64:
   stage: build
@@ -288,68 +288,68 @@ freebsd-12-x86_64:
       - "_build/meson-logs"
       - "_build/${CI_JOB_NAME}-report.xml"
 
-coverage:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
-  stage: coverage
-  except:
-    - tags
-  artifacts:
-    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    paths:
-      - _coverage/
-  script:
-    - bash -x ./.gitlab-ci/coverage-docker.sh
-  coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
-
-scan-build:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
-  stage: analysis
-  except:
-    - tags
-  script:
-    - meson ${MESON_COMMON_OPTIONS}
-            --werror
-            --default-library=both
-            --prefix=$HOME/glib-installed
-            --libdir=lib
-            -Dsystemtap=true
-            -Ddtrace=true
-            -Dfam=true
-            -Dinstalled_tests=true
-            _scan_build
-    - ninja -C _scan_build scan-build
-  artifacts:
-    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
-    when: always
-    paths:
-      - "_scan_build/meson-logs/scanbuild"
-
-pages:
-  stage: deploy
-  only:
-    - master
-  script:
-    - mv _coverage/ public/
-  artifacts:
-    paths:
-      - public
-
-dist-job:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
-  stage: build
-  only:
-    - tags
-  script:
-    - meson --buildtype release --fatal-meson-warnings -Dgtk_doc=true -Dman=true _build
-    - cd _build
-    - ninja dist
-    - ninja glib-doc gobject-doc gio-doc
-    - tar -c -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib html
-    - tar -c -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gobject html
-    - tar -c -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gio html
-  artifacts:
-    paths:
-      - "${CI_PROJECT_DIR}/_build/glib-docs.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gobject-docs.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gio-docs.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/meson-dist/glib-*.tar.xz"
+#coverage:
+#  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+#  stage: coverage
+#  except:
+#    - tags
+#  artifacts:
+#    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+#    paths:
+#      - _coverage/
+#  script:
+#    - bash -x ./.gitlab-ci/coverage-docker.sh
+#  coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
+#
+#scan-build:
+#  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+#  stage: analysis
+#  except:
+#    - tags
+#  script:
+#    - meson ${MESON_COMMON_OPTIONS}
+#            --werror
+#            --default-library=both
+#            --prefix=$HOME/glib-installed
+#            --libdir=lib
+#            -Dsystemtap=true
+#            -Ddtrace=true
+#            -Dfam=true
+#            -Dinstalled_tests=true
+#            _scan_build
+#    - ninja -C _scan_build scan-build
+#  artifacts:
+#    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+#    when: always
+#    paths:
+#      - "_scan_build/meson-logs/scanbuild"
+#
+#pages:
+#  stage: deploy
+#  only:
+#    - master
+#  script:
+#    - mv _coverage/ public/
+#  artifacts:
+#    paths:
+#      - public
+#
+#dist-job:
+#  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+#  stage: build
+#  only:
+#    - tags
+#  script:
+#    - meson --buildtype release --fatal-meson-warnings -Dgtk_doc=true -Dman=true _build
+#    - cd _build
+#    - ninja dist
+#    - ninja glib-doc gobject-doc gio-doc
+#    - tar -c -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib html
+#    - tar -c -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gobject html
+#    - tar -c -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gio html
+#  artifacts:
+#    paths:
+#      - "${CI_PROJECT_DIR}/_build/glib-docs.tar.xz"
+#      - "${CI_PROJECT_DIR}/_build/gobject-docs.tar.xz"
+#      - "${CI_PROJECT_DIR}/_build/gio-docs.tar.xz"
+#      - "${CI_PROJECT_DIR}/_build/meson-dist/glib-*.tar.xz"
