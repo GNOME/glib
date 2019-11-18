@@ -107,7 +107,7 @@ G_DEFINE_TYPE_WITH_CODE (GKqueueFileMonitor, g_kqueue_file_monitor, G_TYPE_LOCAL
 static inline unsigned int
 note_all (void)
 {
-  unsigned int notes = NOTE_DELETE | NOTE_WRITE | NOTE_EXTEND | NOTE_ATTRIB | NOTE_RENAME;
+  unsigned int notes = NOTE_DELETE | NOTE_WRITE | NOTE_EXTEND | NOTE_ATTRIB | NOTE_RENAME | NOTE_REVOKE;
 #ifdef NOTE_TRUNCATE
   notes |= NOTE_TRUNCATE;
 #endif
