@@ -1,3 +1,29 @@
+Overview of changes in GLib 2.62.3
+==================================
+
+* Use `poll()` in `g_spawn_sync()` rather than `select()`, which is subject to
+  FD limits (#954)
+
+* Fix undefined behaviour with `g_utf8_find_prev_char()` (#1917)
+
+* Bugs fixed:
+ - #954 The g_spawn_sync() function uses select() which has limitations
+ - #1318 rare failure in gdbus-peer test: invalid uninstantiatable type '(null)' in cast to 'GDBusServer'
+ - #1897 glib 2.62.0 fails test 'test_writev_no_vectors' wih gcc7
+ - #1903 use-after-free in mimeapps test causes intermittent segfault during testing
+ - #1916 objcopy not used from cross-compilation file in GIO tests
+ - #1917 Test utf8-pointer fails with static build, LTO, optimisations, and new GCC
+ - !1174 Backport !1164 “use-after-free fix in mimeapps test” to glib-2-62
+ - !1184 Backport !1173 “gvariant: Limit recursion in g_variant_parse()” to glib-2-62
+ - !1194 Backport !1176, !1183, !1188, !1191 to `glib-2-62`
+ - !1203 Backport !1192, !1193, !1197 Fixes for gdbus-peer tests to glib-2-62
+ - !1207 Backport !1206 “goption: Relax assertion to avoid being broken by kdeinit5” to glib-2-62
+ - !1215 [2.62] gdbus-peer: Specifically listen on 127.0.0.1
+ - !1219 Backport !1218 “gdb: Fix GHashTable pretty printer off-by-one error”
+ - !1222 Backport !1221 “Add NOTE_REVOKE to the list of the monitoring events” to glib-2-62
+ - !1228 Backport !1199 “gunicode: Fix UB in gutf8.c and utf8-pointer test” to glib-2-62
+
+
 Overview of changes in GLib 2.62.2
 ==================================
 
