@@ -43,8 +43,6 @@ RUN dnf -y install \
     ncurses-compat-libs \
     ninja-build \
     pcre-devel \
-    python3 \
-    python3-pip \
     python3-wheel \
     shared-mime-info \
     systemtap-sdt-devel \
