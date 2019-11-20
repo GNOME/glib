@@ -187,6 +187,7 @@ G_END_DECLS
 
 #define g_atomic_pointer_compare_and_exchange(atomic, oldval, newval) \
   (G_GNUC_EXTENSION ({                                                       \
+    G_STATIC_ASSERT (sizeof (oldval) == sizeof (gpointer));                  \
     __typeof__ ((oldval)) gapcae_oldval = (oldval);                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : NULL);                                \
