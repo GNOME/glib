@@ -31,6 +31,7 @@ RUN dnf -y install \
     glibc-langpack-pl \
     glibc-langpack-ru \
     glibc-langpack-tr \
+    gnome-desktop-testing \
     gtk-doc \
     itstool \
     lcov \
