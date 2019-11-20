@@ -1746,6 +1746,82 @@ test_nfds (void)
   g_main_context_unref (ctx);
 }
 
+static gboolean source_finalize_called = FALSE;
+static guint source_dispose_called = 0;
+static gboolean source_dispose_recycle = FALSE;
+
+static void
+finalize (GSource *source)
+{
+  g_assert_false (source_finalize_called);
+  source_finalize_called = TRUE;
+}
+
+static void
+dispose (GSource *source)
+{
+  /* Dispose must always be called before finalize */
+  g_assert_false (source_finalize_called);
+
+  if (source_dispose_recycle)
+    g_source_ref (source);
+  source_dispose_called++;
+}
+
+static GSourceFuncs source_funcs = {
+  prepare,
+  check,
+  dispatch,
+  finalize
+};
+
+static void
+test_maincontext_source_finalization (void)
+{
+  GSource *source;
+
+  /* Check if GSource destruction without dispose function works and calls the
+   * finalize function as expected */
+  source_finalize_called = FALSE;
+  source_dispose_called = 0;
+  source_dispose_recycle = FALSE;
+  source = g_source_new (&source_funcs, sizeof (GSource));
+  g_source_unref (source);
+  g_assert_cmpint (source_dispose_called, ==, 0);
+  g_assert_true (source_finalize_called);
+
+  /* Check if GSource destruction with dispose function works and calls the
+   * dispose and finalize function as expected */
+  source_finalize_called = FALSE;
+  source_dispose_called = 0;
+  source_dispose_recycle = FALSE;
+  source = g_source_new (&source_funcs, sizeof (GSource));
+  g_source_set_dispose_function (source, dispose);
+  g_source_unref (source);
+  g_assert_cmpint (source_dispose_called, ==, 1);
+  g_assert_true (source_finalize_called);
+
+  /* Check if GSource destruction with dispose function works and recycling
+   * the source from dispose works without calling the finalize function */
+  source_finalize_called = FALSE;
+  source_dispose_called = 0;
+  source_dispose_recycle = TRUE;
+  source = g_source_new (&source_funcs, sizeof (GSource));
+  g_source_set_dispose_function (source, dispose);
+  g_source_unref (source);
+  g_assert_cmpint (source_dispose_called, ==, 1);
+  g_assert_false (source_finalize_called);
+
+  /* Check if the source is properly recycled */
+  g_assert_cmpint (source->ref_count, ==, 1);
+
+  /* And then get rid of it properly */
+  source_dispose_recycle = FALSE;
+  g_source_unref (source);
+  g_assert_cmpint (source_dispose_called, ==, 2);
+  g_assert_true (source_finalize_called);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1753,6 +1829,7 @@ main (int argc, char *argv[])
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/maincontext/basic", test_maincontext_basic);
+  g_test_add_func ("/maincontext/source_finalization", test_maincontext_source_finalization);
   g_test_add_func ("/mainloop/basic", test_mainloop_basic);
   g_test_add_func ("/mainloop/timeouts", test_timeouts);
   g_test_add_func ("/mainloop/priorities", test_priorities);
