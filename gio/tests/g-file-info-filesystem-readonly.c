@@ -61,6 +61,24 @@ assert_remove (const gchar *file)
     g_error ("failed to remove %s: %s", file, g_strerror (errno));
 }
 
+static gboolean
+fuse_module_loaded (void)
+{
+  char *contents = NULL;
+  gboolean ret;
+
+  if (!g_file_get_contents ("/proc/modules", &contents, NULL, NULL) ||
+      contents == NULL)
+    {
+      g_free (contents);
+      return FALSE;
+    }
+
+  ret = (strstr (contents, "\nfuse ") != NULL);
+  g_free (contents);
+  return ret;
+}
+
 static void
 test_filesystem_readonly (gconstpointer with_mount_monitor)
 {
@@ -82,6 +100,18 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
     {
       /* We need these because "mount --bind" requires root privileges */
       g_test_skip ("'bindfs' and 'fusermount' commands are needed to run this test");
+      g_free (fusermount);
+      g_free (bindfs);
+      return;
+    }
+
+  /* If the fuse module is loaded but there's no /dev/fuse, then we're
+   * we're probably in a rootless container and won't be able to
+   * use bindfs to run our tests */
+  if (fuse_module_loaded () &&
+      !g_file_test ("/dev/fuse", G_FILE_TEST_EXISTS))
+    {
+      g_test_skip ("fuse support is needed to run this test (rootless container?)");
       g_free (fusermount);
       g_free (bindfs);
       return;
