@@ -578,8 +578,10 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * G_FILE_ATTRIBUTE_UNIX_MODE:
  *
  * A key in the "unix" namespace for getting the mode of the file
- * (e.g. whether the file is a regular file, symlink, etc). See lstat()
- * documentation. This attribute is only available for UNIX file systems.
+ * (e.g. whether the file is a regular file, symlink, etc). See the
+ * documentation for `lstat()`: this attribute is equivalent to the `st_mode`
+ * member of `struct stat`, and includes both the file type and permissions.
+ * This attribute is only available for UNIX file systems.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_UNIX_MODE "unix::mode"                   /* uint32 */
