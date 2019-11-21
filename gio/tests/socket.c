@@ -1130,6 +1130,12 @@ test_timed_wait (void)
   gint64 start_time;
   gint poll_duration;
 
+  if (!g_test_thorough ())
+    {
+      g_test_skip ("Not running timing heavy test");
+      return;
+    }
+
   data = create_server (G_SOCKET_FAMILY_IPV4, echo_server_thread, FALSE, &error);
   if (error != NULL)
     {
