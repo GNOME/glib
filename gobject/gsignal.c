@@ -2216,7 +2216,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
               g_free (error);
 
               /* we purposely leak the value here, it might not be
-               * in a sane state if an error condition occoured
+               * in a sane state if an error condition occurred
                */
               while (i--)
                 g_value_unset (param_values + i);
@@ -3408,7 +3408,7 @@ g_signal_emit_valist (gpointer instance,
 	  g_free (error);
 
 	  /* we purposely leak the value here, it might not be
-	   * in a sane state if an error condition occoured
+	   * in a sane state if an error condition occurred
 	   */
 	  while (i--)
 	    g_value_unset (param_values + i);
