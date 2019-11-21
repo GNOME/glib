@@ -72,6 +72,17 @@
 static void stack_trace (const char * const *args);
 #endif
 
+/* Default to using LLDB for backtraces on macOS. */
+#ifdef __APPLE__
+#define USE_LLDB
+#endif
+
+#ifdef USE_LLDB
+#define DEBUGGER "lldb"
+#else
+#define DEBUGGER "gdb"
+#endif
+
 /* People want to hit this from their debugger... */
 GLIB_AVAILABLE_IN_ALL volatile gboolean glib_on_error_halt;
 volatile gboolean glib_on_error_halt = TRUE;
@@ -231,7 +242,7 @@ g_on_error_stack_trace (const gchar *prg_name)
 #if defined(G_OS_UNIX)
   pid_t pid;
   gchar buf[16];
-  const gchar *args[4] = { "gdb", NULL, NULL, NULL };
+  const gchar *args[5] = { DEBUGGER, NULL, NULL, NULL, NULL };
   int status;
 
   if (!prg_name)
@@ -239,8 +250,14 @@ g_on_error_stack_trace (const gchar *prg_name)
 
   _g_sprintf (buf, "%u", (guint) getpid ());
 
+#ifdef USE_LLDB
+  args[1] = prg_name;
+  args[2] = "-p";
+  args[3] = buf;
+#else
   args[1] = prg_name;
   args[2] = buf;
+#endif
 
   pid = fork ();
   if (pid == 0)
@@ -250,11 +267,19 @@ g_on_error_stack_trace (const gchar *prg_name)
     }
   else if (pid == (pid_t) -1)
     {
-      perror ("unable to fork gdb");
+      perror ("unable to fork " DEBUGGER);
       return;
     }
 
-  waitpid (pid, &status, 0);
+  /* Wait until the child really terminates. On Mac OS X waitpid ()
+   * will also return when the child is being stopped due to tracing.
+   */
+  while (1)
+    {
+      pid_t retval = waitpid (pid, &status, 0);
+      if (WIFEXITED (retval) || WIFSIGNALED (retval))
+        break;
+    }
 #else
   if (IsDebuggerPresent ())
     G_BREAKPOINT ();
@@ -273,6 +298,8 @@ stack_trace_sigchld (int signum)
   stack_trace_done = TRUE;
 }
 
+#define BUFSIZE 1024
+
 static void
 stack_trace (const char * const *args)
 {
@@ -282,8 +309,8 @@ stack_trace (const char * const *args)
   fd_set fdset;
   fd_set readset;
   struct timeval tv;
-  int sel, idx, state;
-  char buffer[256];
+  int sel, idx, state, line_idx;
+  char buffer[BUFSIZE];
   char c;
 
   stack_trace_done = FALSE;
@@ -315,7 +342,7 @@ stack_trace (const char * const *args)
           close (2);
           dup (old_err);
         }
-      perror ("exec gdb failed");
+      perror ("exec " DEBUGGER " failed");
       _exit (0);
     }
   else if (pid == (pid_t) -1)
@@ -327,11 +354,19 @@ stack_trace (const char * const *args)
   FD_ZERO (&fdset);
   FD_SET (out_fd[0], &fdset);
 
+#ifdef USE_LLDB
+  write (in_fd[1], "bt\n", 3);
+  write (in_fd[1], "p x = 0\n", 8);
+  write (in_fd[1], "process detach\n", 15);
+  write (in_fd[1], "quit\n", 5);
+#else
   write (in_fd[1], "backtrace\n", 10);
   write (in_fd[1], "p x = 0\n", 8);
   write (in_fd[1], "quit\n", 5);
+#endif
 
   idx = 0;
+  line_idx = 0;
   state = 0;
 
   while (1)
@@ -348,10 +383,15 @@ stack_trace (const char * const *args)
         {
           if (read (out_fd[0], &c, 1))
             {
+              line_idx += 1;
               switch (state)
                 {
                 case 0:
+#ifdef USE_LLDB
+                  if (c == '*' || (c == ' ' && line_idx == 1))
+#else
                   if (c == '#')
+#endif
                     {
                       state = 1;
                       idx = 0;
@@ -359,13 +399,15 @@ stack_trace (const char * const *args)
                     }
                   break;
                 case 1:
-                  buffer[idx++] = c;
+                  if (idx < BUFSIZE)
+                    buffer[idx++] = c;
                   if ((c == '\n') || (c == '\r'))
                     {
                       buffer[idx] = 0;
                       _g_fprintf (stdout, "%s", buffer);
                       state = 0;
                       idx = 0;
+                      line_idx = 0;
                     }
                   break;
                 default:
