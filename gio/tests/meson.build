@@ -65,7 +65,7 @@ gio_tests = {
   'simple-async-result' : {},
   'simple-proxy' : {},
   'sleepy-stream' : {},
-  'socket' : {},
+  'socket' : {'is_parallel': false},
   'socket-listener' : {},
   'socket-service' : {},
   'srvtarget' : {},
