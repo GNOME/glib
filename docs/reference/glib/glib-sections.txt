@@ -2503,6 +2503,7 @@ g_list_delete_link
 g_list_remove_all
 g_list_free
 g_list_free_full
+g_clear_list
 
 <SUBSECTION>
 g_list_alloc

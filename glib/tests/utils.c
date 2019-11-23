@@ -760,6 +760,24 @@ test_int_limits (void)
   g_free (str);
 }
 
+static void
+test_clear_list (void)
+{
+    GList *list = NULL;
+
+    list = g_list_prepend (list, "test");
+    g_assert_nonnull (list);
+
+    g_clear_list (&list, NULL);
+    g_assert_null (list);
+
+    list = g_list_prepend (list, g_malloc (16));
+    g_assert_nonnull (list);
+
+    g_clear_list (&list, g_free);
+    g_assert_null (list);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -814,6 +832,7 @@ main (int   argc,
   g_test_add_func ("/utils/atexit", test_atexit);
   g_test_add_func ("/utils/check-setuid", test_check_setuid);
   g_test_add_func ("/utils/int-limits", test_int_limits);
+  g_test_add_func ("/utils/clear-list", test_clear_list);
 
   return g_test_run ();
 }
