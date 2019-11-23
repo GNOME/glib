@@ -1313,3 +1313,32 @@ g_list_sort_with_data (GList            *list,
 {
   return g_list_sort_real (list, (GFunc) compare_func, user_data);
 }
+
+/**
+ * g_clear_list: (skip)
+ * @list_ptr: (not nullable): a #GList return location
+ * @destroy: (nullable): the function to pass to g_list_free_full() or %NULL to not free elements
+ *
+ * Clears a pointer to a #GList, freeing it and, optionally, freeing its elements using @destroy.
+ *
+ * @list_ptr must be a valid pointer. If @list_ptr points to a null #GList, this does nothing.
+ *
+ * Since: 2.64
+ */
+void
+(g_clear_list) (GList          **list_ptr,
+                GDestroyNotify   destroy)
+{
+  GList *list;
+
+  list = *list_ptr;
+  if (list)
+    {
+      *list_ptr = NULL;
+
+      if (destroy)
+        g_list_free_full (list, destroy);
+      else
+        g_list_free (list);
+    }
+}
