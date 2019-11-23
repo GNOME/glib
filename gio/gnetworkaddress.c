@@ -1238,11 +1238,13 @@ got_ipv6_addresses (GObject      *source_object,
   GNetworkAddressAddressEnumerator *addr_enum = user_data;
   GResolver *resolver = G_RESOLVER (source_object);
   GList *addresses;
+  gboolean got_addresses;
   GError *error = NULL;
 
   addr_enum->state ^= RESOLVE_STATE_WAITING_ON_IPV6;
 
   addresses = g_resolver_lookup_by_name_with_flags_finish (resolver, result, &error);
+  got_addresses = addresses != NULL;
   if (!error)
     g_network_address_address_enumerator_add_addresses (addr_enum, g_steal_pointer (&addresses), resolver);
   else
@@ -1255,11 +1257,11 @@ got_ipv6_addresses (GObject      *source_object,
       g_clear_pointer (&addr_enum->wait_source, g_source_unref);
     }
 
-  /* If we got an error before ipv4 then let its response handle it.
+  /* If we got an error or no addresses before ipv4 then let its response handle it.
    * If we get ipv6 response first or error second then
    * immediately complete the task.
    */
-  if (error != NULL && !addr_enum->last_error && (addr_enum->state & RESOLVE_STATE_WAITING_ON_IPV4))
+  if ((error != NULL || !got_addresses) && !addr_enum->last_error && (addr_enum->state & RESOLVE_STATE_WAITING_ON_IPV4))
     {
       /* ipv6 lookup failed, but ipv4 is still outstanding.  wait. */
       addr_enum->last_error = g_steal_pointer (&error);
