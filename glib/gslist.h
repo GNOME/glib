@@ -136,6 +136,27 @@ GLIB_AVAILABLE_IN_ALL
 gpointer g_slist_nth_data                (GSList           *list,
 					  guint             n);
 
+GLIB_AVAILABLE_IN_2_64
+void     g_clear_slist                   (GSList          **slist_ptr,
+                                          GDestroyNotify    destroy);
+
+#define  g_clear_slist(slist_ptr, destroy)       \
+  G_STMT_START {                                 \
+    GSList *_slist;                              \
+                                                 \
+    _slist = *(slist_ptr);                       \
+    if (_slist)                                  \
+      {                                          \
+        *slist_ptr = NULL;                       \
+                                                 \
+        if ((destroy) != NULL)                   \
+          g_slist_free_full (_slist, (destroy)); \
+        else                                     \
+          g_slist_free (_slist);                 \
+      }                                          \
+  } G_STMT_END                                   \
+  GLIB_AVAILABLE_MACRO_IN_2_64
+
 #define  g_slist_next(slist)	         ((slist) ? (((GSList *)(slist))->next) : NULL)
 
 G_END_DECLS
