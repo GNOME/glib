@@ -147,6 +147,10 @@ GLIB_AVAILABLE_IN_ALL
 gpointer g_list_nth_data                (GList            *list,
 					 guint             n);
 
+GLIB_AVAILABLE_IN_2_64
+void     g_clear_list                   (GList            **list_ptr,
+                                         GDestroyNotify     destroy);
+
 
 #define g_list_previous(list)	        ((list) ? (((GList *)(list))->prev) : NULL)
 #define g_list_next(list)	        ((list) ? (((GList *)(list))->next) : NULL)
