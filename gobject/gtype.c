@@ -3407,7 +3407,7 @@ g_type_depth (GType type)
  * @root_type: immediate parent of the returned type
  *
  * Given a @leaf_type and a @root_type which is contained in its
- * anchestry, return the type that @root_type is the immediate parent
+ * ancestry, return the type that @root_type is the immediate parent
  * of. In other words, this function determines the type that is
  * derived directly from @root_type which is also a base class of
  * @leaf_type.  Given a root type and a leaf type, this function can
