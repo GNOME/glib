@@ -442,6 +442,15 @@ gdbus-codegen --c-namespace MyApp                           \
           <replaceable>MICRO</replaceable> are optional. The version number may not be smaller
           than <literal>2.30</literal>.
         </para>
+        <para>
+          If the version number is <literal>2.64</literal> or greater, the generated code will
+          have the following features: (1) If a method has <literal>h</literal> (file
+          descriptor) parameter(s), a <type>GUnixFDList</type> parameter will exist in the
+          generated code for it (whereas previously the annotation
+          <literal>org.gtk.GDBus.C.UnixFD</literal> was required), and (2) Method call functions will
+          have two additional arguments to allow the user to specify <type>GDBusCallFlags</type>
+          and a timeout value, as is possible when using <function>g_dbus_proxy_call()</function>.
+        </para>
       </listitem>
     </varlistentry>
 
