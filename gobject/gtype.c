@@ -1689,6 +1689,51 @@ g_type_interface_prerequisites (GType  interface_type,
     }
 }
 
+/**
+ * g_type_interface_instantiable_prerequisite:
+ * @interface_type: an interface type
+ *
+ * Returns the instantiable prerequisite of an interface type.
+ *
+ * If the interface type has no instantiable prerequisite, 0 is returned.
+ *
+ * Since: 2.64
+ *
+ * Returns: the instantiable prerequisite type or 0 if none
+ **/
+GType
+g_type_interface_instantiable_prerequisite (GType interface_type)
+{
+  TypeNode *inode = NULL;
+  TypeNode *iface;
+  guint i;
+
+  g_return_val_if_fail (G_TYPE_IS_INTERFACE (interface_type), G_TYPE_INVALID);
+
+  iface = lookup_type_node_I (interface_type);
+  if (iface == NULL)
+    return 0;
+
+  G_READ_LOCK (&type_rw_lock);
+
+  for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
+    {
+      GType prerequisite = IFACE_NODE_PREREQUISITES (iface)[i];
+      TypeNode *node = lookup_type_node_I (prerequisite);
+      if (node->is_instantiatable)
+        {
+          if (!inode || type_node_is_a_L (node, inode))
+            inode = node;
+        }
+    }
+
+  G_READ_UNLOCK (&type_rw_lock);
+
+  if (inode)
+    return NODE_TYPE (inode);
+  else
+    return 0;
+}
 
 static IFaceHolder*
 type_iface_peek_holder_L (TypeNode *iface,

@@ -52,6 +52,7 @@ test_interface_prerequisite (void)
   g_assert_cmpint (n_prereqs, ==, 2);
   g_assert (prereqs[0] == bar_get_type ());
   g_assert (prereqs[1] == G_TYPE_OBJECT);
+  g_assert (g_type_interface_instantiable_prerequisite (foo_get_type ()) == G_TYPE_OBJECT);
 
   iface = g_type_default_interface_ref (foo_get_type ());
   parent = g_type_interface_peek_parent (iface);
