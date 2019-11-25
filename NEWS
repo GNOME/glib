@@ -1,3 +1,59 @@
+Overview of changes in GLib 2.63.2
+==================================
+
+* Use `lldb` rather than `gdb` on macOS for debugging (#1004)
+
+* Switch the atomic builtins from `__sync_fetch_*()` to the slightly more modern
+  `__atomic_*()` (#1750)
+
+* Fix calculation of `gsize` width on various platforms (including OpenBSD) (#1777)
+
+* Fix undefined behaviour causing brokenness in `g_utf8_find_prev_char()` when
+  compiling with GCC ≥ 8 (#1917)
+
+* Revert UNIX mode changes in `G_FILE_ATTRIBUTE_ID_UNIX_MODE` which broke OSTree (#1934)
+
+* Slightly improve performance for signal emissions when no handlers are connected (!1083)
+
+* Add `g_task_return_value()` and `g_task_propagate_value()` APIs to allow
+  `GTask` to be used from language bindings more easily (!1216)
+
+* Fix a file monitoring crash on kqueue-based systems (BSD) (!1221)
+
+* Bugs fixed:
+ - #1004 [PATCH] Make gbacktrace use lldb on Mac OS X
+ - #1552 CI: Add code style checks
+ - #1750 Switch from  __sync_fetch_*() to __atomic_*() in glib/gatomic.h
+ - #1777 gsize: improper typedef on (at least) OpenBSD
+ - #1895 Regression: glib does not compile on centos 6: "objcopy: unrecognized option '--add-symbol'"
+ - #1917 Test utf8-pointer fails with static build, LTO, optimisations, and new GCC
+ - #1930 glib/tests/bookmarkfile.c:385:test_modify: assertion failed: (stamp == now)
+ - #1934 ostree tests broken since bfdc5fc4fc84ef8518d2d1a328c8482cf5a38e98: File '/tmp/test-tmp-libostree_test-basic-user.sh.test-QB4SA0/diff-test2' is not empty
+ - #1938 GDateTime doesn't support leap seconds
+ - #1940 atomics test fails on FreeBSD CI since !1123
+ - !1039 Improve documentation for footgun function g_tls_client_connection_copy_session_state()
+ - !1083 Use the GObject hole on 64bit arches for some flags to improve performance
+ - !1202 CI updates after !1177
+ - !1208 gutils: Slightly improve docs formatting for g_get_os_info()
+ - !1209 Make ld executable configurable
+ - !1210 gdbus-server-auth test: Include gcredentialsprivate.h
+ - !1213 gsocket: Improve diagnostics on bind() failure
+ - !1214 gvariant, gbytes: Avoid memcmp (NULL, ., 0) or memcmp (., NULL, 0)
+ - !1216 Make GTask more binding-friendly
+ - !1218 gdb: Fix GHashTable pretty printer off-by-one error
+ - !1220 gparam: fix memory leak in g_param_value_defaults()
+ - !1221 Add NOTE_REVOKE to the list of the monitoring events
+ - !1225 gtlsconnection: clarify handshake() documentation
+ - !1227 Deprecate old GTlsConnection functionality even harder!
+ - !1231 Fix build on old libc that does not define _SC_HOST_NAME_MAX
+ - !1238 gstrfuncs: use gsize type internally for strv functions
+ - !1242 gfileinfo: Clarify the documentation for G_FILE_ATTRIBUTE_UNIX_MODE
+ - !1243 docs: Fix "occurred" typos in API documentation
+
+* Translation updates:
+ - Spanish
+
+
 Overview of changes in GLib 2.63.1
 ==================================
 
