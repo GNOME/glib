@@ -25,7 +25,12 @@
 
 #include "gdbus-tests.h"
 
+#ifdef GLIB_MIN_VERSION_2_64
+#include "gdbus-test-codegen-generated-min-version-2-64.h"
+#else
 #include "gdbus-test-codegen-generated.h"
+#endif
+
 #include "gdbus-test-codegen-generated-interface-info.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -878,6 +883,10 @@ check_bar_proxy (FooiGenBar *proxy,
                                                      "/a/path",
                                                      "asig",
                                                      "bytestring\xff",
+#ifdef GLIB_MIN_VERSION_2_64
+                                                     G_DBUS_CALL_FLAGS_NONE,
+                                                     -1,
+#endif
                                                      &ret_val_byte,
                                                      &ret_val_boolean,
                                                      &ret_val_int16,
@@ -913,6 +922,10 @@ check_bar_proxy (FooiGenBar *proxy,
                                                          array_of_objpaths,
                                                          array_of_signatures,
                                                          array_of_bytestrings,
+#ifdef GLIB_MIN_VERSION_2_64
+                                                         G_DBUS_CALL_FLAGS_NONE,
+                                                         -1,
+#endif
                                                          &ret_array_of_strings,
                                                          &ret_array_of_objpaths,
                                                          &ret_array_of_signatures,
@@ -946,7 +959,11 @@ check_bar_proxy (FooiGenBar *proxy,
    * unimplemented methods.
    */
   error = NULL;
+#ifdef GLIB_MIN_VERSION_2_64
+  ret = foo_igen_bar_call_unimplemented_method_sync (proxy, G_DBUS_CALL_FLAGS_NONE, -1, NULL /* GCancellable */, &error);
+#else
   ret = foo_igen_bar_call_unimplemented_method_sync (proxy, NULL /* GCancellable */, &error);
+#endif
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD);
   g_error_free (error);
   error = NULL;
@@ -957,7 +974,11 @@ check_bar_proxy (FooiGenBar *proxy,
                     G_CALLBACK (on_test_signal),
                     data);
   error = NULL;
+#ifdef GLIB_MIN_VERSION_2_64
+  ret = foo_igen_bar_call_request_signal_emission_sync (proxy, 0, G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+#else
   ret = foo_igen_bar_call_request_signal_emission_sync (proxy, 0, NULL, &error);
+#endif
   g_assert_no_error (error);
   g_assert (ret);
 
@@ -1011,7 +1032,11 @@ check_bar_proxy (FooiGenBar *proxy,
                     G_CALLBACK (on_g_properties_changed),
                     data);
   error = NULL;
+#ifdef GLIB_MIN_VERSION_2_64
+  ret = foo_igen_bar_call_request_multi_property_mods_sync (proxy, G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+#else
   ret = foo_igen_bar_call_request_multi_property_mods_sync (proxy, NULL, &error);
+#endif
   g_assert_no_error (error);
   g_assert (ret);
   g_main_loop_run (thread_loop);
@@ -1077,6 +1102,10 @@ check_bar_proxy (FooiGenBar *proxy,
    */
   error = NULL;
   foo_igen_bar_call_property_cancellation (proxy,
+#ifdef GLIB_MIN_VERSION_2_64
+                                           G_DBUS_CALL_FLAGS_NONE,
+                                           -1,
+#endif
                                            NULL, /* GCancellable */
                                            (GAsyncReadyCallback) on_property_cancellation_cb,
                                            data);
@@ -1159,6 +1188,10 @@ check_bat_proxy (FooiGenBat *proxy,
                                        g_variant_new_string ("a string"),
                                        g_variant_new_bytestring ("a bytestring\xff"),
                                        g_variant_new ("(i)", 4200),
+#ifdef GLIB_MIN_VERSION_2_64
+                                       G_DBUS_CALL_FLAGS_NONE,
+                                       -1,
+#endif
                                        &ret_i,
                                        &ret_s,
                                        &ret_ay,
@@ -1191,18 +1224,30 @@ check_authorize_proxy (FooiGenAuthorize *proxy,
   /* Check that g-authorize-method works as intended */
 
   error = NULL;
+#ifdef GLIB_MIN_VERSION_2_64
+  ret = foo_igen_authorize_call_check_not_authorized_sync (proxy, G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+#else
   ret = foo_igen_authorize_call_check_not_authorized_sync (proxy, NULL, &error);
+#endif
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED);
   g_error_free (error);
   g_assert (!ret);
 
   error = NULL;
+#ifdef GLIB_MIN_VERSION_2_64
+  ret = foo_igen_authorize_call_check_authorized_sync (proxy, G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+#else
   ret = foo_igen_authorize_call_check_authorized_sync (proxy, NULL, &error);
+#endif
   g_assert_no_error (error);
   g_assert (ret);
 
   error = NULL;
+#ifdef GLIB_MIN_VERSION_2_64
+  ret = foo_igen_authorize_call_check_not_authorized_from_object_sync (proxy, G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+#else
   ret = foo_igen_authorize_call_check_not_authorized_from_object_sync (proxy, NULL, &error);
+#endif
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PENDING);
   g_error_free (error);
   g_assert (!ret);
@@ -1219,7 +1264,11 @@ get_self_via_proxy (FooiGenMethodThreads *proxy_1)
   gpointer self;
 
   error = NULL;
+#ifdef GLIB_MIN_VERSION_2_64
+  ret = foo_igen_method_threads_call_get_self_sync (proxy_1, &self_str, G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+#else
   ret = foo_igen_method_threads_call_get_self_sync (proxy_1, &self_str, NULL, &error);
+#endif
   g_assert_no_error (error);
   g_assert (ret);
 
