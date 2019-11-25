@@ -1703,8 +1703,11 @@ class CodeGenerator:
             self.outfile.write(')"')
             for a in m.in_args:
                 self.outfile.write(',\n                   arg_%s'%(a.name))
+            # for the rationale on why we use
+            # G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION here, see
+            # https://gitlab.gnome.org/GNOME/glib/merge_requests/1250
             self.outfile.write('),\n'
-                               '    G_DBUS_CALL_FLAGS_NONE,\n'
+                               '    G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION,\n'
                                '    -1,\n')
             if m.unix_fd:
                 self.outfile.write('    fd_list,\n')
@@ -1815,8 +1818,11 @@ class CodeGenerator:
             self.outfile.write(')"')
             for a in m.in_args:
                 self.outfile.write(',\n                   arg_%s'%(a.name))
+            # for the rationale on why we use
+            # G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION here, see
+            # https://gitlab.gnome.org/GNOME/glib/merge_requests/1250
             self.outfile.write('),\n'
-                               '    G_DBUS_CALL_FLAGS_NONE,\n'
+                               '    G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION,\n'
                                '    -1,\n')
             if m.unix_fd:
                 self.outfile.write('    fd_list,\n'
@@ -2006,6 +2012,9 @@ class CodeGenerator:
                            '  GParamSpec   *pspec G_GNUC_UNUSED)\n'
                            '{\n'%(i.name_lower))
         if len(i.properties) > 0:
+            # for the rationale on why we use
+            # G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION here, see
+            # https://gitlab.gnome.org/GNOME/glib/merge_requests/1250
             self.outfile.write('  const _ExtendedGDBusPropertyInfo *info;\n'
                                '  GVariant *variant;\n'
                                '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
@@ -2014,7 +2023,7 @@ class CodeGenerator:
                                '  g_dbus_proxy_call (G_DBUS_PROXY (object),\n'
                                '    "org.freedesktop.DBus.Properties.Set",\n'
                                '    g_variant_new ("(ssv)", "%s", info->parent_struct.name, variant),\n'
-                               '    G_DBUS_CALL_FLAGS_NONE,\n'
+                               '    G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION,\n'
                                '    -1,\n'
                                '    NULL, (GAsyncReadyCallback) %s_proxy_set_property_cb, (GDBusPropertyInfo *) &info->parent_struct);\n'
                                '  g_variant_unref (variant);\n'
