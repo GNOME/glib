@@ -65,6 +65,7 @@ g_type_default_interface_unref
 g_type_children
 g_type_interfaces
 g_type_interface_prerequisites
+g_type_interface_instantiable_prerequisite
 g_type_set_qdata
 g_type_get_qdata
 g_type_query
