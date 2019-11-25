@@ -73,6 +73,10 @@ class HeaderCodeGenerator:
         self.glib_min_version = glib_min_version
         self.outfile = outfile
 
+        self.glib_min_version_is_2_64 = (glib_min_version[0] > 2 or
+                                         (glib_min_version[0] == 2 and
+                                          glib_min_version[1] >= 64))
+
     # ----------------------------------------------------------------------------------------------------
 
     def generate_header_preamble(self):
@@ -222,6 +226,8 @@ class HeaderCodeGenerator:
                                        '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.in_args:
                         self.outfile.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
+                    if self.glib_min_version_is_2_64:
+                        self.outfile.write('    GDBusCallFlags call_flags,\n')
                     if m.unix_fd:
                         self.outfile.write(',\n    GUnixFDList *fd_list')
                     self.outfile.write(',\n'
@@ -249,6 +255,8 @@ class HeaderCodeGenerator:
                                        '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.in_args:
                         self.outfile.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
+                    if self.glib_min_version_is_2_64:
+                        self.outfile.write('    GDBusCallFlags call_flags,\n')
                     if m.unix_fd:
                         self.outfile.write(',\n    GUnixFDList  *fd_list')
                     for a in m.out_args:
@@ -915,6 +923,10 @@ class CodeGenerator:
         self.docbook_gen = docbook_gen
         self.glib_min_version = glib_min_version
         self.outfile = outfile
+
+        self.glib_min_version_is_2_64 = (glib_min_version[0] > 2 or
+                                         (glib_min_version[0] == 2 and
+                                          glib_min_version[1] >= 64))
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -1666,6 +1678,9 @@ class CodeGenerator:
                                %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
                 self.outfile.write(' * @arg_%s: Argument to pass with the method invocation.\n'%(a.name))
+            if self.glib_min_version_is_2_64:
+                self.outfile.write(' * @call_flags: #GDBusCallFlags. If you want to allow interactive '
+                                   '       authorization be sure to set %G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION.\n')
             if m.unix_fd:
                 self.outfile.write(' * @fd_list: (nullable): A #GUnixFDList or %NULL.\n')
             self.outfile.write(self.docbook_gen.expand(
@@ -1685,6 +1700,8 @@ class CodeGenerator:
                                '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
                 self.outfile.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
+            if self.glib_min_version_is_2_64:
+                self.outfile.write('    GDBusCallFlags call_flags,\n')
             if m.unix_fd:
                 self.outfile.write(',\n    GUnixFDList *fd_list')
             self.outfile.write(',\n'
@@ -1703,9 +1720,12 @@ class CodeGenerator:
             self.outfile.write(')"')
             for a in m.in_args:
                 self.outfile.write(',\n                   arg_%s'%(a.name))
-            self.outfile.write('),\n'
-                               '    G_DBUS_CALL_FLAGS_NONE,\n'
-                               '    -1,\n')
+            self.outfile.write('),\n')
+            if self.glib_min_version_is_2_64:
+                self.outfile.write('    call_flags,\n')
+            else:
+                self.outfile.write('    G_DBUS_CALL_FLAGS_NONE,\n')
+            self.outfile.write('    -1,\n')
             if m.unix_fd:
                 self.outfile.write('    fd_list,\n')
             self.outfile.write('    cancellable,\n'
@@ -1771,6 +1791,9 @@ class CodeGenerator:
                                %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
                 self.outfile.write(' * @arg_%s: Argument to pass with the method invocation.\n'%(a.name))
+            if self.glib_min_version_is_2_64:
+                self.outfile.write(' * @call_flags: #GDBusCallFlags. If you want to allow interactive '
+                                   '       authorization be sure to set %G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION.\n')
             if m.unix_fd:
                 self.outfile.write(' * @fd_list: (nullable): A #GUnixFDList or %NULL.\n')
             for a in m.out_args:
@@ -1793,6 +1816,8 @@ class CodeGenerator:
                                '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
                 self.outfile.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
+            if self.glib_min_version_is_2_64:
+                self.outfile.write('    GDBusCallFlags call_flags,\n')
             if m.unix_fd:
                 self.outfile.write(',\n    GUnixFDList  *fd_list')
             for a in m.out_args:
@@ -1815,9 +1840,12 @@ class CodeGenerator:
             self.outfile.write(')"')
             for a in m.in_args:
                 self.outfile.write(',\n                   arg_%s'%(a.name))
-            self.outfile.write('),\n'
-                               '    G_DBUS_CALL_FLAGS_NONE,\n'
-                               '    -1,\n')
+            self.outfile.write('),\n')
+            if self.glib_min_version_is_2_64:
+                self.outfile.write('    call_flags,\n')
+            else:
+                self.outfile.write('    G_DBUS_CALL_FLAGS_NONE,\n')
+            self.outfile.write('    -1,\n')
             if m.unix_fd:
                 self.outfile.write('    fd_list,\n'
                                    '    out_fd_list,\n')
