@@ -447,6 +447,44 @@ G_END_DECLS
         self.assertEqual('', result.err)
         self.assertEqual(result.out.strip().count('GUnixFDList'), 18)
 
+    def test_call_flags_and_timeout_method_args(self):
+        """Test that generated method call functions have @call_flags and
+        @timeout_msec args if and only if GLib >= 2.64.
+        """
+        interface_xml = '''
+            <node>
+              <interface name="org.project.UsefulInterface">
+                <method name="UsefulMethod"/>
+              </interface>
+            </node>'''
+
+        # Try without specifying --glib-min-version.
+        result = self.runCodegenWithInterface(interface_xml,
+                                              '--output', '/dev/stdout',
+                                              '--header')
+        self.assertEqual('', result.err)
+        self.assertEqual(result.out.strip().count('GDBusCallFlags call_flags,'), 0)
+        self.assertEqual(result.out.strip().count('gint timeout_msec,'), 0)
+
+        # Specify an old --glib-min-version.
+        result = self.runCodegenWithInterface(interface_xml,
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-min-version', '2.32')
+        self.assertEqual('', result.err)
+        self.assertEqual(result.out.strip().count('GDBusCallFlags call_flags,'), 0)
+        self.assertEqual(result.out.strip().count('gint timeout_msec,'), 0)
+
+        # Specify a --glib-min-version ≥ 2.64. The two arguments should be
+        # present for both the async and sync method call functions.
+        result = self.runCodegenWithInterface(interface_xml,
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-min-version', '2.64')
+        self.assertEqual('', result.err)
+        self.assertEqual(result.out.strip().count('GDBusCallFlags call_flags,'), 2)
+        self.assertEqual(result.out.strip().count('gint timeout_msec,'), 2)
+
 
 if __name__ == '__main__':
     unittest.main(testRunner=taptestrunner.TAPTestRunner())
