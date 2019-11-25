@@ -65,7 +65,7 @@ fedora-x86_64:
       - "_coverage"
 
 debian-stable-x86_64:
-  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v4
+  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
   stage: build
   except:
     - tags
