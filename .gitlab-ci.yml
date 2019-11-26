@@ -26,7 +26,7 @@ style-check-diff:
   stage: style-check
   allow_failure: true
   script:
-    - git diff -U0 --no-color ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}.. | ./clang-format-diff.py -binary "clang-format-7" -p1
+    - git diff -U0 --no-color origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}.. | ./clang-format-diff.py -binary "clang-format-7" -p1
 
 fedora-x86_64:
   <<: *only-default
@@ -232,7 +232,6 @@ freebsd-11-x86_64:
   stage: build
   only:
     - branches@GNOME/glib
-    - merge_requests
   tags:
     # To run a FreeBSD builder, install gitlab-runner package and start both
     # gitlab-runner and dbus service because we need /var/lib/dbus/machine-id.
@@ -272,7 +271,6 @@ freebsd-12-x86_64:
   stage: build
   only:
     - branches@GNOME/glib
-    - merge_requests
   tags:
     - freebsd-12
   variables:
