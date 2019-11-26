@@ -1011,7 +1011,7 @@ mount_with_id (const char *id)
 
   if (outstanding_mounts == 0)
     {
-      print_error ("%s: %s", id, _("No volume for given id"));
+      print_error ("%s: %s", id, _("No volume for given ID"));
       success = FALSE;
     }
 }
