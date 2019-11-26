@@ -53,7 +53,7 @@ static gboolean tcrypt_hidden = FALSE;
 static gboolean tcrypt_system = FALSE;
 static guint tcrypt_pim = 0;
 static const char *unmount_scheme = NULL;
-static const char *mount_device_file = NULL;
+static const char *mount_id = NULL;
 static const char *stop_device_file = NULL;
 static gboolean success = TRUE;
 
@@ -61,7 +61,7 @@ static gboolean success = TRUE;
 static const GOptionEntry entries[] =
 {
   { "mountable", 'm', 0, G_OPTION_ARG_NONE, &mount_mountable, N_("Mount as mountable"), NULL },
-  { "device", 'd', 0, G_OPTION_ARG_STRING, &mount_device_file, N_("Mount volume with device file"), N_("DEVICE") },
+  { "device", 'd', 0, G_OPTION_ARG_STRING, &mount_id, N_("Mount volume with device file, or other identifier"), N_("ID") },
   { "unmount", 'u', 0, G_OPTION_ARG_NONE, &mount_unmount, N_("Unmount"), NULL},
   { "eject", 'e', 0, G_OPTION_ARG_NONE, &mount_eject, N_("Eject"), NULL},
   { "stop", 't', 0, G_OPTION_ARG_STRING, &stop_device_file, N_("Stop drive with device file"), N_("DEVICE") },
@@ -950,7 +950,7 @@ mount_with_device_file_cb (GObject *object,
   GVolume *volume;
   gboolean succeeded;
   GError *error = NULL;
-  gchar *device_path = (gchar *)user_data;
+  gchar *id = (gchar *)user_data;
 
   volume = G_VOLUME (object);
 
@@ -958,7 +958,7 @@ mount_with_device_file_cb (GObject *object,
 
   if (!succeeded)
     {
-      print_error ("%s: %s", device_path, error->message);
+      print_error ("%s: %s", id, error->message);
       g_error_free (error);
       success = FALSE;
     }
@@ -972,14 +972,14 @@ mount_with_device_file_cb (GObject *object,
       root = g_mount_get_root (mount);
       mount_path = g_file_get_path (root);
 
-      g_print (_("Mounted %s at %s\n"), device_path, mount_path);
+      g_print (_("Mounted %s at %s\n"), id, mount_path);
 
       g_object_unref (mount);
       g_object_unref (root);
       g_free (mount_path);
     }
 
-  g_free (device_path);
+  g_free (id);
 
   outstanding_mounts--;
 
@@ -988,7 +988,7 @@ mount_with_device_file_cb (GObject *object,
 }
 
 static void
-mount_with_device_file (const char *device_file)
+mount_with_id (const char *id)
 {
   GList *volumes;
   GList *l;
@@ -997,10 +997,12 @@ mount_with_device_file (const char *device_file)
   for (l = volumes; l != NULL; l = l->next)
     {
       GVolume *volume = G_VOLUME (l->data);
-      gchar *id;
+      gchar *device;
+      gchar *uuid;
 
-      id = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
-      if (g_strcmp0 (id, device_file) == 0)
+      device = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+      uuid = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_UUID);
+      if (g_strcmp0 (device, id) == 0 || g_strcmp0 (uuid, id) == 0)
         {
           GMountOperation *op;
 
@@ -1011,20 +1013,21 @@ mount_with_device_file (const char *device_file)
                           op,
                           NULL,
                           mount_with_device_file_cb,
-                          id);
+                          g_strdup (id));
 
           g_object_unref (op);
 
           outstanding_mounts++;
         }
-      else
-        g_free (id);
+
+      g_free (device);
+      g_free (uuid);
     }
   g_list_free_full (volumes, g_object_unref);
 
   if (outstanding_mounts == 0)
     {
-      print_error ("%s: %s", device_file, _("No volume for device file"));
+      print_error ("%s: %s", id, _("No volume for given ID"));
       success = FALSE;
     }
 }
@@ -1236,8 +1239,8 @@ handle_mount (int argc, char *argv[], gboolean do_help)
 
   if (mount_list)
     list_monitor_items ();
-  else if (mount_device_file != NULL)
-    mount_with_device_file (mount_device_file);
+  else if (mount_id != NULL)
+    mount_with_id (mount_id);
   else if (stop_device_file)
     stop_with_device_file (stop_device_file);
   else if (unmount_scheme != NULL)
