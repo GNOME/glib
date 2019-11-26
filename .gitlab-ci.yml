@@ -26,7 +26,8 @@ style-check-diff:
   stage: style-check
   allow_failure: true
   script:
-    - git diff -U0 --no-color origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}.. | ./clang-format-diff.py -binary "clang-format-7" -p1
+    - common_ancestor=$(diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}) <(git rev-list --first-parent HEAD) | head -1) &&
+      git diff -U0 --no-color ${common_ancestor} | ./clang-format-diff.py -binary "clang-format-7" -p1
 
 fedora-x86_64:
   <<: *only-default
