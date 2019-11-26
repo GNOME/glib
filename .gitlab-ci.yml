@@ -26,6 +26,8 @@ style-check-diff:
   stage: style-check
   allow_failure: true
   script:
+    - git rev-list --first-parent origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}} | head -5
+    - git rev-list --first-parent HEAD | head -5
     - diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}) <(git rev-list --first-parent HEAD) | head -1
     - git diff -U0 --no-color $(diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}) <(git rev-list --first-parent HEAD) | head -1) | ./clang-format-diff.py -binary "clang-format-7" -p1
 
