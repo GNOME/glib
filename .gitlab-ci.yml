@@ -34,7 +34,7 @@ style-check-diff:
     - echo ${CI_DEFAULT_BRANCH}
     - echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
     - echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA}
-    - git diff -U0 --no-color ${CI_MERGE_REQUEST_TARGET_BRANCH_SHA} | ./clang-format-diff.py -binary "clang-format-7" -p1
+    - git diff -U0 --no-color ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME} | ./clang-format-diff.py -binary "clang-format-7" -p1
 
 fedora-x86_64:
   <<: *only-default
@@ -43,6 +43,12 @@ fedora-x86_64:
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
+    - echo ${CI_MERGE_REQUEST_TARGET_BRANCH_SHA}
+    - echo ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+    - echo ${CI_COMMIT_BEFORE_SHA}
+    - echo ${CI_DEFAULT_BRANCH}
+    - echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
+    - echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA}
     - meson ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
