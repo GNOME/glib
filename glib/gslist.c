@@ -101,6 +101,20 @@
  * Returns: the next element, or %NULL if there are no more elements.
  **/
 
+/**
+ * g_clear_slist: (skip)
+ * @slist_ptr: a pointer to a #GSList
+ *
+ * Frees all the memory used by a #GSList and clears the pointer.
+ *
+ * @slist_ptr must not be %NULL.
+ *
+ * If the slist is %NULL then this function does nothing.
+ * Otherwise, the slist is freed and the pointer is set to %NULL.
+ *
+ * Since: 2.62
+ **/
+
 #define _g_slist_alloc0()       g_slice_new0 (GSList)
 #define _g_slist_alloc()        g_slice_new (GSList)
 #define _g_slist_free1(slist)   g_slice_free (GSList, slist)
@@ -1064,4 +1078,29 @@ g_slist_sort_with_data (GSList           *list,
                         gpointer          user_data)
 {
   return g_slist_sort_real (list, (GFunc) compare_func, user_data);
+}
+
+/**
+ * g_clear_slist_full: (skip)
+ * @slist_ptr: a pointer to a #GSList
+ * @free_func: the function to be called to free each element's data
+ *
+ * Frees all the memory used by a #GSList, calls @free_func on every element's
+ * data and clears the pointer.
+ *
+ * @slist_ptr must not be %NULL.
+ *
+ * If the slist is %NULL then this function does nothing.
+ * Otherwise, the slist is fully freed and the pointer is set to %NULL.
+ *
+ * Since: 2.62
+ **/
+void
+g_clear_slist_full (GSList         **slist_ptr,
+                    GDestroyNotify   free_func)
+{
+  g_return_if_fail (slist_ptr != NULL);
+
+  g_slist_free_full (*slist_ptr, free_func);
+  g_nullify_pointer ((gpointer *) slist_ptr);
 }

@@ -614,6 +614,114 @@ test_list_insert_before_link (void)
   g_assert_cmpint (g_list_length (list), ==, 5);
 }
 
+static void
+test_clear (void)
+{
+  ListItem *one, *two, *three;
+  GSList *slist = NULL;
+  GList *list = NULL;
+
+  slist = g_slist_prepend (slist, one = new_item (1));
+  slist = g_slist_prepend (slist, two = new_item (2));
+  slist = g_slist_prepend (slist, three = new_item (3));
+  g_assert_false (one->freed);
+  g_assert_false (two->freed);
+  g_assert_false (three->freed);
+  g_assert_nonnull (slist);
+  g_clear_slist (&slist);
+  g_assert_null (slist);
+  g_assert_false (one->freed);
+  g_assert_false (two->freed);
+  g_assert_false (three->freed);
+  g_slice_free (ListItem, one);
+  g_slice_free (ListItem, two);
+  g_slice_free (ListItem, three);
+
+  g_clear_slist (&slist);
+  g_assert_null (slist);
+
+  list = g_list_prepend (list, one = new_item (1));
+  list = g_list_prepend (list, two = new_item (2));
+  list = g_list_prepend (list, three = new_item (3));
+  g_assert_false (one->freed);
+  g_assert_false (two->freed);
+  g_assert_false (three->freed);
+  g_assert_nonnull (list);
+  g_clear_list (&list);
+  g_assert_null (list);
+  g_assert_false (one->freed);
+  g_assert_false (two->freed);
+  g_assert_false (three->freed);
+  g_slice_free (ListItem, one);
+  g_slice_free (ListItem, two);
+  g_slice_free (ListItem, three);
+
+  g_clear_list (&list);
+  g_assert_null (list);
+}
+
+static void
+test_clear_full (void)
+{
+  ListItem *one, *two, *three;
+  GSList *slist = NULL;
+  GList *list = NULL;
+
+  slist = g_slist_prepend (slist, one = new_item (1));
+  slist = g_slist_prepend (slist, two = new_item (2));
+  slist = g_slist_prepend (slist, three = new_item (3));
+  g_assert_false (one->freed);
+  g_assert_false (two->freed);
+  g_assert_false (three->freed);
+  g_assert_nonnull (slist);
+  g_clear_slist_full (&slist, free_func);
+  g_assert_null (slist);
+  g_assert_true (one->freed);
+  g_assert_true (two->freed);
+  g_assert_true (three->freed);
+  g_slice_free (ListItem, one);
+  g_slice_free (ListItem, two);
+  g_slice_free (ListItem, three);
+
+  g_clear_slist_full (&slist, free_func);
+  g_assert_null (slist);
+
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*failed*");
+      g_clear_slist_full (NULL, NULL);
+      g_test_assert_expected_messages ();
+    }
+
+  list = g_list_prepend (list, one = new_item (1));
+  list = g_list_prepend (list, two = new_item (2));
+  list = g_list_prepend (list, three = new_item (3));
+  g_assert_false (one->freed);
+  g_assert_false (two->freed);
+  g_assert_false (three->freed);
+  g_assert_nonnull (list);
+  g_clear_list_full (&list, free_func);
+  g_assert_null (list);
+  g_assert_true (one->freed);
+  g_assert_true (two->freed);
+  g_assert_true (three->freed);
+  g_slice_free (ListItem, one);
+  g_slice_free (ListItem, two);
+  g_slice_free (ListItem, three);
+
+  g_clear_list_full (&list, free_func);
+  g_assert_null (list);
+
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*failed*");
+      g_clear_list_full (NULL, NULL);
+      g_test_assert_expected_messages ();
+    }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -645,6 +753,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/list/prepend", test_prepend);
   g_test_add_func ("/list/position", test_position);
   g_test_add_func ("/list/double-free", test_double_free);
+  g_test_add_func ("/list/clear", test_clear);
+  g_test_add_func ("/list/clear_full", test_clear_full);
 
   return g_test_run ();
 }

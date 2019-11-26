@@ -135,8 +135,13 @@ GSList*  g_slist_sort_with_data          (GSList           *list,
 GLIB_AVAILABLE_IN_ALL
 gpointer g_slist_nth_data                (GSList           *list,
 					  guint             n);
+GLIB_AVAILABLE_IN_2_62
+void     g_clear_slist_full              (GSList          **list_ptr,
+					  GDestroyNotify    free_func);
 
 #define  g_slist_next(slist)	         ((slist) ? (((GSList *)(slist))->next) : NULL)
+
+#define  g_clear_slist(slist_ptr)      g_clear_pointer ((slist_ptr), g_slist_free);
 
 G_END_DECLS
 
