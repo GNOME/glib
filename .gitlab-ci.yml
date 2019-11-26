@@ -1,9 +1,9 @@
 stages:
+  - style-check
   - build
   - coverage
   - analysis
   - deploy
-  - style-check
 
 cache:
   paths:
