@@ -34,6 +34,10 @@ style-check-diff:
     - echo ${CI_DEFAULT_BRANCH}
     - echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
     - echo ${CI_MERGE_REQUEST_SOURCE_BRANCH_SHA}
+    - git status
+    - git log HEAD~10
+    - git remote
+    - git branch
     - git diff -U0 --no-color ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME} | ./clang-format-diff.py -binary "clang-format-7" -p1
 
 fedora-x86_64:
