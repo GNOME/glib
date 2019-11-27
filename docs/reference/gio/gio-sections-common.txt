@@ -4657,6 +4657,8 @@ g_list_store_remove
 g_list_store_remove_all
 g_list_store_splice
 g_list_store_sort
+g_list_store_find
+g_list_store_find_with_equal_func
 <SUBSECTION Standard>
 G_TYPE_LIST_STORE
 <SUBSECTION Private>
