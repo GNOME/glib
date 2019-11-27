@@ -962,22 +962,6 @@ mount_with_device_file_cb (GObject *object,
       g_error_free (error);
       success = FALSE;
     }
-  else
-    {
-      GMount *mount;
-      GFile *root;
-      char *mount_path;
-
-      mount = g_volume_get_mount (volume);
-      root = g_mount_get_root (mount);
-      mount_path = g_file_get_path (root);
-
-      g_print (_("Mounted %s at %s\n"), id, mount_path);
-
-      g_object_unref (mount);
-      g_object_unref (root);
-      g_free (mount_path);
-    }
 
   g_free (id);
 
