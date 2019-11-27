@@ -21,13 +21,14 @@ variables:
     - tags
 
 style-check-diff:
+  <<: *only-default
   image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
   stage: style-check
   allow_failure: true
-  only:
-    - merge_request
   script:
-    - git diff -U0 --no-color ${CI_MERGE_REQUEST_TARGET_BRANCH_SHA} | ./clang-format-diff.py -binary "clang-format-7" -p1
+    - git remote add upstream https://gitlab.gnome.org/GNOME/glib.git
+    - git fetch upstream
+    - git diff -U0 --no-color $(diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent upstream/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}) <(git rev-list --first-parent HEAD) | head -1) | ./clang-format-diff.py -binary "clang-format-7" -p1
 
 fedora-x86_64:
   <<: *only-default
