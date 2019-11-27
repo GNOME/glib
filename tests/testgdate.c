@@ -157,6 +157,115 @@ int main(int argc, char** argv)
   
   g_date_free(d);
 
+  {
+    /* Check that an invalid date is properly copied */
+    GDate *copy;
+    GDate original;
+
+    d = g_date_new ();
+    d->day = 31;
+    d->julian_days = 365;
+    memcpy (&original, d, sizeof (GDate));
+
+    copy = g_date_copy (d);
+    TEST("Copied date is not valid", !g_date_valid (copy));
+    TEST("Date is using nor the julian nor dmy format", !copy->julian && !copy->dmy);
+    TEST("Structure matches the original", memcmp (d, copy, sizeof (GDate)) == 0);
+    TEST("Original date has not been modified", memcmp (&original, d, sizeof (GDate)) == 0);
+
+    g_date_free (d);
+    g_date_free (copy);
+  }
+
+  {
+    /* Check that a Julian date is properly copied */
+    GDate *copy;
+    GDate original;
+
+    d = g_date_new_julian (365);
+    memcpy (&original, d, sizeof (GDate));
+
+    copy = g_date_copy (d);
+    TEST("Copied julian date is valid", g_date_valid (copy));
+    TEST("Date is using julian format", copy->julian && !copy->dmy);
+    TEST("Date matches the original", copy->julian_days == d->julian_days);
+    TEST("Original date has not been modified", memcmp (&original, d, sizeof (GDate)) == 0);
+
+    g_date_free (d);
+    g_date_free (copy);
+  }
+
+  {
+    /* Check that DMY date is properly copied */
+    GDate *copy;
+    GDate original;
+
+    d = g_date_new_dmy (31, 12, 1985);
+    memcpy (&original, d, sizeof (GDate));
+
+    copy = g_date_copy (d);
+    TEST("Copied dmy date is valid", g_date_valid (copy));
+    TEST("Date is using dmy format", copy->dmy && !copy->julian);
+    TEST("Date matches the original", copy->day == d->day &&
+                                      copy->month == d->month &&
+                                      copy->year == d->year);
+    TEST("Original date has not been modified", memcmp (&original, d, sizeof (GDate)) == 0);
+
+    g_date_free (d);
+    g_date_free (copy);
+  }
+
+  {
+    /* Check that DMY date and julian days are properly copied */
+    GDate *copy;
+    GDate original;
+
+    d = g_date_new_dmy (31, 12, 1985);
+
+    /* Force computation of julian days */
+    g_date_get_julian (d);
+    g_assert_true (d->julian);
+    memcpy (&original, d, sizeof (GDate));
+
+    copy = g_date_copy (d);
+    TEST("Copied date is valid", g_date_valid (copy));
+    TEST("Date is using dmy and julian format", copy->dmy && copy->julian);
+    TEST("Date matches the original", copy->day == d->day &&
+                                      copy->month == d->month &&
+                                      copy->year == d->year &&
+                                      copy->julian_days == d->julian_days);
+    TEST("Original date has not been modified", memcmp (&original, d, sizeof (GDate)) == 0);
+
+    g_date_free (d);
+    g_date_free (copy);
+  }
+
+  {
+    /* Check that a Julian date and DMY days are properly copied */
+    GDate *copy;
+    GDate original;
+
+    d = g_date_new_julian (365);
+
+    /* Force computation of dmy values */
+    g_date_get_year (d);
+    g_assert_true (d->dmy);
+    memcpy (&original, d, sizeof (GDate));
+
+    copy = g_date_copy (d);
+
+    TEST("Copied date is valid", g_date_valid (copy));
+    TEST("Date is using dmy and julian format", copy->dmy && copy->julian);
+    TEST("Date matches the original", copy->day == d->day &&
+                                      copy->month == d->month &&
+                                      copy->year == d->year &&
+                                      copy->julian_days == d->julian_days);
+    TEST("Original date has not been modified", memcmp (&original, d, sizeof (GDate)) == 0);
+
+    g_date_free (d);
+    g_date_free (copy);
+  }
+
   j = G_DATE_BAD_JULIAN;
 
   i = 0;
