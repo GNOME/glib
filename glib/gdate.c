@@ -368,7 +368,12 @@ g_date_copy (const GDate *date)
   g_return_val_if_fail (date != NULL, NULL);
 
   if (g_date_valid (date))
-    res = g_date_new_julian (g_date_get_julian (date));
+    {
+      if (date->julian)
+        res = g_date_new_julian (date->julian_days);
+      else
+        res = g_date_new_dmy (date->day, date->month, date->year);
+    }
   else
     {
       res = g_date_new ();
