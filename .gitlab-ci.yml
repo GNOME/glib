@@ -32,7 +32,7 @@ style-check-diff:
 
 fedora-x86_64:
   <<: *only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: build
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
@@ -100,7 +100,7 @@ debian-stable-x86_64:
 
 G_DISABLE_ASSERT:
   <<: *only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: build
   variables:
     CPPFLAGS: "-DG_DISABLE_ASSERT"
@@ -127,7 +127,7 @@ G_DISABLE_ASSERT:
 
 valgrind:
   <<: *only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: analysis
   variables:
     MESON_TEST_TIMEOUT_MULTIPLIER: 10
@@ -298,7 +298,7 @@ freebsd-12-x86_64:
 
 coverage:
   <<: *only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: coverage
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
@@ -310,7 +310,7 @@ coverage:
 
 scan-build:
   <<: *only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: analysis
   script:
     - meson ${MESON_COMMON_OPTIONS}
@@ -341,7 +341,7 @@ pages:
       - public
 
 dist-job:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
+  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: build
   only:
     - tags
