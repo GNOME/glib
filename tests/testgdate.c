@@ -157,6 +157,55 @@ int main(int argc, char** argv)
   
   g_date_free(d);
 
+  {
+    /* Check that an unitialized date is properly copied */
+    GDate *copy;
+
+    d = g_date_new ();
+    d->day = 31;
+    d->julian_days = 365;
+    copy = g_date_copy (d);
+
+    TEST("Copied date is not valid", !g_date_valid (copy));
+    TEST("Date is using nor the julianr or dmy format", !copy->julian && !copy->dmy);
+    TEST("Structure matches the original", memcmp (d, copy, sizeof (GDate)) == 0);
+
+    g_date_free (d);
+    g_date_free (copy);
+  }
+
+  {
+    /* Check that a Julian date is properly copied */
+    GDate *copy;
+
+    d = g_date_new_julian (365);
+    copy = g_date_copy (d);
+
+    TEST("Copied julian date is valid", g_date_valid (copy));
+    TEST("Date is using julian format", copy->julian && !copy->dmy);
+    TEST("Date matches the original", copy->julian_days == d->julian_days);
+
+    g_date_free (d);
+    g_date_free (copy);
+  }
+
+  {
+    /* Check that a DMY date is properly copied */
+    GDate *copy;
+
+    d = g_date_new_dmy (31, 12, 1985);
+    copy = g_date_copy (d);
+
+    TEST("Copied dmy date is valid", g_date_valid (copy));
+    TEST("Date is using dmy format", copy->dmy && !copy->julian);
+    TEST("Date matches the original", copy->day == d->day &&
+                                      copy->month == d->month &&
+                                      copy->year == d->year);
+
+    g_date_free (d);
+    g_date_free (copy);
+  }
+
   j = G_DATE_BAD_JULIAN;
 
   i = 0;
