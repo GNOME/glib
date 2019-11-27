@@ -88,8 +88,18 @@ fi
 TAG="registry.gitlab.gnome.org/gnome/glib/${base}:${base_version}"
 
 if [ $build == 1 ]; then
+        if docker --help |& grep -q podman; then
+                # Docker is actually implemented by podman, and its OCI output
+                # is incompatible with some of the dockerd instances on GitLab
+                # CI runners.
+                format="--format docker"
+        else
+                format=""
+        fi
+
         echo -e "\e[1;32mBUILDING\e[0m: ${base} as ${TAG}"
         sudo docker build \
+                ${format} \
                 --build-arg HOST_USER_ID="$UID" \
                 --tag "${TAG}" \
                 --file "${base}.Dockerfile" .
