@@ -56,6 +56,9 @@
 #include "garray.h"
 #endif
 
+static void g_date_update_dmy (const GDate *date);
+static void g_date_update_julian (const GDate *date);
+
 /**
  * SECTION:date
  * @title: Date and Time Functions
@@ -368,7 +371,20 @@ g_date_copy (const GDate *date)
   g_return_val_if_fail (date != NULL, NULL);
 
   if (g_date_valid (date))
-    res = g_date_new_julian (g_date_get_julian (date));
+    {
+      if (date->julian)
+        {
+          res = g_date_new_julian (date->julian_days);
+          if (date->dmy)
+            g_date_update_dmy (res);
+        }
+      else
+        {
+          res = g_date_new_dmy (date->day, date->month, date->year);
+          if (date->julian)
+            g_date_update_julian (res);
+        }
+    }
   else
     {
       res = g_date_new ();
