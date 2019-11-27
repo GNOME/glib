@@ -1,9 +1,9 @@
 stages:
+  - style-check
   - build
   - coverage
   - analysis
   - deploy
-  - style-check
 
 cache:
   paths:
@@ -14,20 +14,26 @@ variables:
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
 
+.only-default: &only-default
+  only:
+    - branches
+  except:
+    - tags
+
 style-check-diff:
+  <<: *only-default
   image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
   stage: style-check
   allow_failure: true
-  only:
-    - merge_request
   script:
-    - git diff -U0 --no-color ${CI_MERGE_REQUEST_TARGET_BRANCH_SHA} | ./clang-format-diff.py -binary "clang-format-7" -p1
+    - git remote add upstream https://gitlab.gnome.org/GNOME/glib.git
+    - git fetch upstream
+    - git diff -U0 --no-color $(diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent upstream/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}) <(git rev-list --first-parent HEAD) | head -1) | ./clang-format-diff.py -binary "clang-format-7" -p1
 
 fedora-x86_64:
+  <<: *only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: build
-  except:
-    - tags
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
@@ -65,10 +71,9 @@ fedora-x86_64:
       - "_coverage"
 
 debian-stable-x86_64:
+  <<: *only-default
   image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
   stage: build
-  except:
-    - tags
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -94,10 +99,9 @@ debian-stable-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 G_DISABLE_ASSERT:
+  <<: *only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: build
-  except:
-    - tags
   variables:
     CPPFLAGS: "-DG_DISABLE_ASSERT"
   script:
@@ -122,10 +126,9 @@ G_DISABLE_ASSERT:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 valgrind:
+  <<: *only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: analysis
-  except:
-    - tags
   variables:
     MESON_TEST_TIMEOUT_MULTIPLIER: 10
   script:
@@ -156,9 +159,8 @@ valgrind:
       - "_build/meson-logs"
 
 .cross-template: &cross-template
+  <<: *only-default
   stage: build
-  except:
-    - tags
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
@@ -192,9 +194,8 @@ cross-mingw64:
     - ninja -C _build
 
 msys2-mingw32:
+  <<: *only-default
   stage: build
-  except:
-    - tags
   tags:
     - win32
   variables:
@@ -214,9 +215,8 @@ msys2-mingw32:
       - _coverage/
 
 vs2017-x64:
+  <<: *only-default
   stage: build
-  except:
-    - tags
   tags:
     - win32
   script:
@@ -258,8 +258,6 @@ freebsd-11-x86_64:
     - meson ${MESON_COMMON_OPTIONS} -Db_lundef=false -Diconv=external -Dxattr=false _build
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
-  except:
-    - tags
   artifacts:
     reports:
       junit: "_build/${CI_JOB_NAME}-report.xml"
@@ -299,10 +297,9 @@ freebsd-12-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 coverage:
+  <<: *only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: coverage
-  except:
-    - tags
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     paths:
@@ -312,10 +309,9 @@ coverage:
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
 
 scan-build:
+  <<: *only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v4
   stage: analysis
-  except:
-    - tags
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
