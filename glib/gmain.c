@@ -227,7 +227,7 @@ typedef struct _GSourceCallback GSourceCallback;
 
 typedef enum
 {
-  G_SOURCE_READY = 1 << G_HOOK_FLAG_USER_SHIFT,
+     G_SOURCE_READY = 1 << G_HOOK_FLAG_USER_SHIFT,
   G_SOURCE_CAN_RECURSE = 1 << (G_HOOK_FLAG_USER_SHIFT + 1),
   G_SOURCE_BLOCKED = 1 << (G_HOOK_FLAG_USER_SHIFT + 2)
 } GSourceFlags;
