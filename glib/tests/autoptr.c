@@ -70,6 +70,13 @@ test_g_checksum (void)
 }
 
 static void
+test_g_date (void)
+{
+  g_autoptr(GDate) val = g_date_new ();
+  g_assert_nonnull (val);
+}
+
+static void
 test_g_date_time (void)
 {
   g_autoptr(GDateTime) val = g_date_time_new_now_utc ();
@@ -704,6 +711,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_bookmark_file", test_g_bookmark_file);
   g_test_add_func ("/autoptr/g_bytes", test_g_bytes);
   g_test_add_func ("/autoptr/g_checksum", test_g_checksum);
+  g_test_add_func ("/autoptr/g_date", test_g_date);
   g_test_add_func ("/autoptr/g_date_time", test_g_date_time);
   g_test_add_func ("/autoptr/g_dir", test_g_dir);
   g_test_add_func ("/autoptr/g_error", test_g_error);
