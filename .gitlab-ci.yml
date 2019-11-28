@@ -106,8 +106,11 @@ installed-tests:
             _build
     - ninja -C _build
     - sudo ninja -C _build install
+    # FIXME: Add update until stable https://bodhi.fedoraproject.org/updates/FEDORA-2019-161b129d4d
+    - sudo dnf upgrade -y --enablerepo=updates-testing --advisory=FEDORA-2019-161b129d4d
     - GLIB_TEST_COMPILATION=1 gnome-desktop-testing-runner
             --report-directory=_build/installed-tests-report/failed/
+            --log-directory=_build/installed-tests-report/logs/
             glib
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
