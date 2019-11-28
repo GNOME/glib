@@ -14,14 +14,14 @@ variables:
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
 
-.only-default: &only-default
+.only-default:
   only:
     - branches
   except:
     - tags
 
 style-check-diff:
-  <<: *only-default
+  extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
   stage: style-check
   allow_failure: true
@@ -31,7 +31,7 @@ style-check-diff:
     - git diff -U0 --no-color $(diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent upstream/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}) <(git rev-list --first-parent HEAD) | head -1) | ./clang-format-diff.py -binary "clang-format-7" -p1
 
 fedora-x86_64:
-  <<: *only-default
+  extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: build
   variables:
@@ -71,7 +71,7 @@ fedora-x86_64:
       - "_coverage"
 
 debian-stable-x86_64:
-  <<: *only-default
+  extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
   stage: build
   script:
@@ -99,7 +99,7 @@ debian-stable-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 G_DISABLE_ASSERT:
-  <<: *only-default
+  extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: build
   variables:
@@ -126,7 +126,7 @@ G_DISABLE_ASSERT:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 valgrind:
-  <<: *only-default
+  extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: analysis
   variables:
@@ -159,7 +159,7 @@ valgrind:
       - "_build/meson-logs"
 
 .cross-template: &cross-template
-  <<: *only-default
+  extends: .only-default
   stage: build
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
@@ -194,7 +194,7 @@ cross-mingw64:
     - ninja -C _build
 
 msys2-mingw32:
-  <<: *only-default
+  extends: .only-default
   stage: build
   tags:
     - win32
@@ -215,7 +215,7 @@ msys2-mingw32:
       - _coverage/
 
 vs2017-x64:
-  <<: *only-default
+  extends: .only-default
   stage: build
   tags:
     - win32
@@ -297,7 +297,7 @@ freebsd-12-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 coverage:
-  <<: *only-default
+  extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: coverage
   artifacts:
@@ -309,7 +309,7 @@ coverage:
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
 
 scan-build:
-  <<: *only-default
+  extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: analysis
   script:
