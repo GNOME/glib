@@ -106,7 +106,7 @@ installed-tests:
             _build
     - ninja -C _build
     - sudo ninja -C _build install
-    - gnome-desktop-testing-runner
+    - GLIB_TEST_COMPILATION=1 gnome-desktop-testing-runner
             --report-directory=_build/installed-tests-report/failed/
             glib
   artifacts:
