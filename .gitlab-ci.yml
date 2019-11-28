@@ -108,6 +108,8 @@ installed-tests:
             _build
     - ninja -C _build
     - sudo ninja -C _build install
+    # FIXME https://bodhi.fedoraproject.org/updates/FEDORA-2019-161b129d4d
+    - sudo dnf update -y https://kojipkgs.fedoraproject.org//packages/gnome-desktop-testing/2018.1/1.fc30/x86_64/gnome-desktop-testing-2018.1-1.fc30.x86_64.rpm
     - GLIB_TEST_COMPILATION=1 gnome-desktop-testing-runner
             --report-directory=_build/installed-tests-report/failed/
             --log-directory=_build/installed-tests-report/logs/
