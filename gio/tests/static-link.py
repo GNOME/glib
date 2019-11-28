@@ -28,7 +28,7 @@ if not 'GLIB_TEST_COMPILATION' in os.environ:
 If you wish to run this test, set GLIB_TEST_COMPILATION=1 in the env,
 and make sure you have glib build dependencies installed, including
 meson.''')
-  sys.exit(0)
+  sys.exit(77)
 
 if len(sys.argv) != 2:
   print('Usage: {} <gio-2.0.pc dir>'.format(os.path.basename(sys.argv[0])))
