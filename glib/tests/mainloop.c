@@ -25,25 +25,29 @@
 #include <stdio.h>
 #include <string.h>
 
-static gboolean cb (gpointer data)
+static gboolean
+cb (gpointer data)
 {
   return FALSE;
 }
 
-static gboolean prepare (GSource *source, gint *time)
+static gboolean
+prepare (GSource *source, gint *time)
 {
   return FALSE;
 }
-static gboolean check (GSource *source)
+static gboolean
+check (GSource *source)
 {
   return FALSE;
 }
-static gboolean dispatch (GSource *source, GSourceFunc cb, gpointer date)
+static gboolean
+dispatch (GSource *source, GSourceFunc cb, gpointer date)
 {
   return FALSE;
 }
 
-GSourceFuncs funcs = {
+static GSourceFuncs funcs = {
   prepare,
   check,
   dispatch,
@@ -930,7 +934,7 @@ test_ready_time (void)
 {
   GThread *thread;
   GSource *source;
-  GSourceFuncs source_funcs = {
+  static GSourceFuncs source_funcs = {
     NULL, NULL, ready_time_dispatch
   };
   GMainLoop *loop;
@@ -1387,7 +1391,7 @@ return_true (GSource *source, GSourceFunc callback, gpointer user_data)
 static void
 test_source_unix_fd_api (void)
 {
-  GSourceFuncs no_funcs = {
+  static GSourceFuncs no_funcs = {
     NULL, NULL, return_true
   };
   GSource *source_a;
