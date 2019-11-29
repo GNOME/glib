@@ -3427,11 +3427,6 @@ link_handlers_to_unregistered_apps (void)
           (handler->executable_folded == NULL))
         continue;
 
-      hndexe_fc_basename = g_utf8_casefold (handler->executable_basename, -1);
-
-      if (hndexe_fc_basename == NULL)
-        continue;
-
       g_hash_table_iter_init (&app_iter, apps_by_id);
 
       while (g_hash_table_iter_next (&app_iter,
@@ -3450,6 +3445,11 @@ link_handlers_to_unregistered_apps (void)
         }
 
       if (handler->app != NULL)
+        continue;
+
+      hndexe_fc_basename = g_utf8_casefold (handler->executable_basename, -1);
+
+      if (hndexe_fc_basename == NULL)
         continue;
 
       g_hash_table_iter_init (&app_iter, apps_by_exe);
