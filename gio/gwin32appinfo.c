@@ -139,6 +139,13 @@ struct _GWin32AppInfoHandler {
   /* Pointer to a location within @executable */
   gchar *executable_basename;
 
+  /* If not NULL, then @executable and its derived fields contain the name
+   * of a DLL file (without the name of the function that rundll32.exe should
+   * invoke), and this field contains the name of the function to be invoked.
+   * The application is then invoked as 'rundll32.exe "dll_path",dll_function other_arguments...'.
+   */
+  gchar *dll_function;
+
   /* Icon of the application for this handler */
   GIcon *icon;
 
@@ -212,6 +219,13 @@ struct _GWin32AppInfoApplication {
 
   /* Pointer to a location within @executable */
   gchar *executable_basename;
+
+  /* If not NULL, then @executable and its derived fields contain the name
+   * of a DLL file (without the name of the function that rundll32.exe should
+   * invoke), and this field contains the name of the function to be invoked.
+   * The application is then invoked as 'rundll32.exe "dll_path",dll_function other_arguments...'.
+   */
+  gchar *dll_function;
 
   /* Explicitly supported URLs, hashmap from map-owned gchar ptr (schema,
    * UTF-8, folded) -> a GWin32AppInfoHandler
@@ -294,6 +308,7 @@ g_win32_appinfo_handler_dispose (GObject *object)
   g_clear_pointer (&handler->proxy_command, g_free);
   g_clear_pointer (&handler->executable_folded, g_free);
   g_clear_pointer (&handler->executable, g_free);
+  g_clear_pointer (&handler->dll_function, g_free);
   g_clear_object (&handler->key);
   g_clear_object (&handler->proxy_key);
   g_clear_object (&handler->icon);
@@ -332,6 +347,7 @@ g_win32_appinfo_application_dispose (GObject *object)
   g_clear_pointer (&app->command_u8, g_free);
   g_clear_pointer (&app->executable_folded, g_free);
   g_clear_pointer (&app->executable, g_free);
+  g_clear_pointer (&app->dll_function, g_free);
   g_clear_pointer (&app->supported_urls, g_hash_table_destroy);
   g_clear_pointer (&app->supported_exts, g_hash_table_destroy);
   g_clear_object (&app->icon);
@@ -853,17 +869,114 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
   return TRUE;
 }
 
+/**
+ * rundll32 accepts many different commandlines. Among them is this:
+ * > rundll32.exe "c:/program files/foo/bar.dll",,, , ,,,, , function_name %1
+ * rundll32 just reads the first argument as a potentially quoted
+ * filename until the quotation ends (if quoted) or until a comma,
+ * or until a space. Then ignores all subsequent spaces (if any) and commas (if any;
+ * at least one comma is mandatory only if the filename is not quoted),
+ * and then interprets the rest of the commandline (until a space or a NUL-byte)
+ * as a name of a function.
+ * When GLib tries to run a program, it attempts to correctly re-quote the arguments,
+ * turning the first argument into "c:/program files/foo/bar.dll,,,".
+ * This breaks rundll32 parsing logic.
+ * Try to work around this by ensuring that the syntax is like this:
+ * > rundll32.exe "c:/program files/foo/bar.dll" function_name
+ * This syntax is valid for rundll32 *and* GLib spawn routines won't break it.
+ */
+static void
+fixup_insane_microsoft_rundll_commandline (gunichar2 *commandline)
+{
+  size_t len;
+  gunichar2 *p;
+  gunichar2 *first_argument = NULL;
+  gboolean quoted;
+  gunichar2 *first_char_after_filename = NULL;
+
+  p = commandline;
+  quoted = FALSE;
+  len = wcslen (commandline);
+
+  while (p < &commandline[len])
+    {
+      switch (p[0])
+        {
+        case L'"':
+          quoted = !quoted;
+          break;
+        case L' ':
+          if (!quoted)
+            {
+              first_argument = p;
+              while (first_argument < &commandline[len] && first_argument[0] == L' ')
+                first_argument++;
+              p = &commandline[len];
+            }
+          break;
+        default:
+          break;
+        }
+      p += 1;
+    }
+
+  g_assert_nonnull (first_argument);
+
+  quoted = FALSE;
+  p = first_argument;
+
+  if (p[0] == L'"')
+    {
+      quoted = TRUE;
+      p += 1;
+    }
+
+  while (p < &commandline[len])
+    {
+      switch (p[0])
+        {
+        case L'"':
+          if (quoted)
+            {
+              first_char_after_filename = &p[1];
+              p = &commandline[len];
+            }
+          break;
+        case L' ':
+        case L',':
+          if (!quoted)
+            {
+              first_char_after_filename = p;
+              p = &commandline[len];
+            }
+          break;
+        default:
+          break;
+        }
+      p += 1;
+    }
+
+  g_assert_nonnull (first_char_after_filename);
+
+  if (first_char_after_filename[0] == L',')
+    first_char_after_filename[0] = L' ';
+  /* Else everything is ok (first char after filename is ' ' or the first char
+   * of the function name - either way this will work).
+   */
+}
 
 static void
 extract_executable (gunichar2  *commandline,
                     gchar     **ex_out,
                     gchar     **ex_basename_out,
                     gchar     **ex_folded_out,
-                    gchar     **ex_folded_basename_out)
+                    gchar     **ex_folded_basename_out,
+                    gchar     **dll_function_out)
 {
   gchar *ex;
   gchar *ex_folded;
   gunichar2 *p;
+  gunichar2 *first_argument;
   gboolean quoted;
   size_t len;
   size_t execlen;
@@ -875,6 +988,7 @@ extract_executable (gunichar2  *commandline,
   found = FALSE;
   len = wcslen (commandline);
   p = commandline;
+  first_argument = NULL;
 
   while (p < &commandline[len])
     {
@@ -887,6 +1001,9 @@ extract_executable (gunichar2  *commandline,
           if (!quoted)
             {
               execlen = p - commandline;
+              first_argument = p;
+              while (first_argument < &commandline[len] && first_argument[0] == L' ')
+                first_argument++;
               p = &commandline[len];
               found = TRUE;
             }
@@ -917,6 +1034,137 @@ extract_executable (gunichar2  *commandline,
     g_assert_not_reached ();
 
   g_free (exepart);
+
+  if (dll_function_out)
+    *dll_function_out = NULL;
+
+  /* See if the executable basename is "rundll32.exe". If so, then
+   * parse the rest of the commandline as r'"?path-to-dll"?[ ]*,*[ ]*dll_function_to_invoke'
+   */
+  /* Using just "rundll32.exe", without an absolute path, seems
+   * very exploitable, but MS does that sometimes, so we have
+   * to accept that.
+   */
+  if ((g_strcmp0 (ex_folded, "rundll32.exe") == 0 ||
+       g_str_has_suffix (ex_folded, "\\rundll32.exe") ||
+       g_str_has_suffix (ex_folded, "/rundll32.exe")) &&
+       first_argument != NULL)
+    {
+      /* Corner cases:
+       * > rundll32.exe c:\some,file,with,commas.dll,some_function
+       * is treated by rundll32 as:
+       * dll=c:\some
+       * function=file,with,commas.dll,some_function
+       * unless the dll name is surrounded by double quotation marks:
+       * > rundll32.exe "c:\some,file,with,commas.dll",some_function
+       * in which case everything works normally.
+       * Also, quoting only works if it surrounds the file name, i.e:
+       * > rundll32.exe "c:\some,file"",with,commas.dll",some_function
+       * will not work.
+       * Also, comma is optional when filename is quoted or when function
+       * name is separated from the filename by space(s):
+       * > rundll32.exe "c:\some,file,with,commas.dll"some_function
+       * will work,
+       * > rundll32.exe c:\some_dll_without_commas_or_spaces.dll some_function
+       * will work too.
+       * Also, any number of commas is accepted:
+       * > rundll32.exe c:\some_dll_without_commas_or_spaces.dll , , ,,, , some_function
+       * both work just fine.
+       * Good job, Microsoft!
+       */
+      gunichar2 *filename_end = NULL;
+      size_t filename_len = 0;
+      gunichar2 *function_begin = NULL;
+      size_t function_len = 0;
+      gunichar2 *dllpart;
+      quoted = FALSE;
+      p = first_argument;
+
+      if (p[0] == L'"')
+        {
+          quoted = TRUE;
+          p += 1;
+        }
+
+      while (p < &commandline[len])
+        {
+          switch (p[0])
+            {
+            case L'"':
+              if (quoted)
+                {
+                  filename_end = p;
+                  p = &commandline[len];
+                }
+              break;
+            case L' ':
+            case L',':
+              if (!quoted)
+                {
+                  filename_end = p;
+                  p = &commandline[len];
+                }
+              break;
+            default:
+              break;
+            }
+          p += 1;
+        }
+
+      if (filename_end == NULL && !quoted)
+        filename_end = &commandline[len];
+
+      if (filename_end != NULL)
+        {
+          function_begin = filename_end;
+          if (quoted)
+            function_begin += 1;
+          while (function_begin[0] == L',' || function_begin[0] == L' ')
+            function_begin += 1;
+          if (function_begin[0] != L'\0')
+            {
+              gunichar2 *space = wcschr (function_begin, L' ');
+
+              if (space)
+                function_len = space - function_begin;
+              else
+                function_len = wcslen (function_begin);
+
+              p = first_argument;
+              filename_len = filename_end - first_argument;
+
+              if (quoted)
+                {
+                  p += 1;
+                  filename_len -= 1;
+                }
+
+              dllpart = g_wcsdup (p, (filename_len + 1) * sizeof (gunichar2));
+              dllpart[filename_len] = L'\0';
+
+              g_debug ("Dismissing wrapper `%s', using `%S' as the executable DLL that runs %*S",
+                       ex,
+                       dllpart,
+                       function_len, function_begin);
+
+              /*
+               * Free our previous output candidate (rundll32) and replace it with the DLL path,
+               * scoop up the function name, if needed, then proceed forward as if nothing has changed.
+               */
+              g_free (ex);
+              g_free (ex_folded);
+
+              if (dll_function_out)
+                *dll_function_out = g_utf16_to_utf8 (function_begin, function_len, NULL, NULL, NULL);
+
+              if (!utf8_and_fold (dllpart, &ex, &ex_folded))
+                /* Currently no code to handle this case. It shouldn't happen though... */
+                g_assert_not_reached ();
+
+              g_free (dllpart);
+            }
+        }
+    }
 
   if (ex_out)
     {
@@ -1069,7 +1317,10 @@ get_url_association (const gunichar2 *schema)
                           &handler_rec->executable,
                           &handler_rec->executable_basename,
                           &handler_rec->executable_folded,
-                          NULL);
+                          NULL,
+                          &handler_rec->dll_function);
+      if (handler_rec->dll_function != NULL)
+        fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (program_id_folded),
@@ -1211,7 +1462,10 @@ get_file_ext (const gunichar2 *ext)
                                       &handler_rec->executable,
                                       &handler_rec->executable_basename,
                                       &handler_rec->executable_folded,
-                                      NULL);
+                                      NULL,
+                                      &handler_rec->dll_function);
+                  if (handler_rec->dll_function != NULL)
+                    fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -1329,7 +1583,10 @@ get_file_ext (const gunichar2 *ext)
                                       &handler_rec->executable,
                                       &handler_rec->executable_basename,
                                       &handler_rec->executable_folded,
-                                      NULL);
+                                      NULL,
+                                      &handler_rec->dll_function);
+                  if (handler_rec->dll_function != NULL)
+                    fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -1637,6 +1894,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
   gchar *app_executable_basename;
   gchar *app_executable_folded;
   gchar *app_executable_folded_basename;
+  gchar *app_dll_function;
   GWin32RegistryKey *associations;
 
   app_key_path = g_wcsdup (input_app_key_path, -1);
@@ -1721,7 +1979,10 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                       &app_executable,
                       &app_executable_basename,
                       &app_executable_folded,
-                      &app_executable_folded_basename);
+                      &app_executable_folded_basename,
+                      &app_dll_function);
+  if (app_dll_function != NULL)
+    fixup_insane_microsoft_rundll_commandline (shell_open_command);
 
   app = g_hash_table_lookup (apps_by_id, canonical_name_folded);
 
@@ -1747,6 +2008,9 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
       app->user_specific = user_specific;
       app->default_app = default_app;
+
+      if (app_dll_function)
+        app->dll_function = g_strdup (app_dll_function);
 
       g_hash_table_insert (apps_by_id,
                            g_strdup (canonical_name_folded),
@@ -1970,7 +2234,10 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                                       &handler_rec->executable,
                                       &handler_rec->executable_basename,
                                       &handler_rec->executable_folded,
-                                      NULL);
+                                      NULL,
+                                      &handler_rec->dll_function);
+                  if (handler_rec->dll_function != NULL)
+                    fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -2126,7 +2393,10 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                                       &handler_rec->executable,
                                       &handler_rec->executable_basename,
                                       &handler_rec->executable_folded,
-                                      NULL);
+                                      NULL,
+                                      &handler_rec->dll_function);
+                  if (handler_rec->dll_function != NULL)
+                    fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -2197,6 +2467,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   g_clear_pointer (&app_executable, g_free);
   g_clear_pointer (&app_executable_folded, g_free);
+  g_clear_pointer (&app_dll_function, g_free);
   g_clear_pointer (&fallback_friendly_name, g_free);
   g_clear_pointer (&description, g_free);
   g_clear_pointer (&icon_source, g_free);
@@ -2295,7 +2566,8 @@ read_exeapps (void)
                           &appexe,
                           &appexe_basename,
                           &appexe_folded,
-                          &appexe_folded_basename);
+                          &appexe_folded_basename,
+                          NULL);
 
       shell_open_command_key =
           g_win32_registry_key_get_child_w (incapable_app,
@@ -2384,6 +2656,21 @@ read_exeapps (void)
       if (app == NULL)
         {
           app = g_object_new (G_TYPE_WIN32_APPINFO_APPLICATION, NULL);
+
+          if (shell_open_command)
+            {
+              gchar *dll_function;
+
+              extract_executable (shell_open_command,
+                                  NULL,
+                                  NULL,
+                                  NULL,
+                                  NULL,
+                                  &dll_function);
+              if (dll_function != NULL)
+                fixup_insane_microsoft_rundll_commandline (shell_open_command);
+              g_clear_pointer (&dll_function, g_free);
+            }
 
           app->command =
               shell_open_command ? g_wcsdup (shell_open_command, -1) : NULL;
@@ -2594,7 +2881,10 @@ read_class_extension (GWin32RegistryKey *classes_root,
                           &handler_rec->executable,
                           &handler_rec->executable_basename,
                           &handler_rec->executable_folded,
-                          NULL);
+                          NULL,
+                          &handler_rec->dll_function);
+      if (handler_rec->dll_function != NULL)
+        fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (ext_folded),
@@ -2712,7 +3002,10 @@ read_class_url (GWin32RegistryKey *classes_root,
                           &handler_rec->executable,
                           &handler_rec->executable_basename,
                           &handler_rec->executable_folded,
-                          NULL);
+                          NULL,
+                          &handler_rec->dll_function);
+      if (handler_rec->dll_function != NULL)
+        fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (program_id_folded),
@@ -4398,13 +4691,17 @@ g_app_info_create_from_commandline (const char           *commandline,
     }
 
   app->command = g_utf8_to_utf16 (commandline, -1, NULL, NULL, NULL);
-  app->command_u8 = g_strdup (commandline);
 
   extract_executable (app->command,
                       &app->executable,
                       &app->executable_basename,
                       &app->executable_folded,
-                      NULL);
+                      NULL,
+                      &app->dll_function);
+  if (app->dll_function != NULL)
+    fixup_insane_microsoft_rundll_commandline (app->command);
+
+  app->command_u8 = g_strdup (commandline);
 
   app->no_open_with = FALSE;
   app->user_specific = FALSE;
