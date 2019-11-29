@@ -25,25 +25,29 @@
 #include <stdio.h>
 #include <string.h>
 
-static gboolean cb (gpointer data)
+static gboolean
+cb (gpointer data)
 {
   return FALSE;
 }
 
-static gboolean prepare (GSource *source, gint *time)
+static gboolean
+prepare (GSource *source, gint *time)
 {
   return FALSE;
 }
-static gboolean check (GSource *source)
+static gboolean
+check (GSource *source)
 {
   return FALSE;
 }
-static gboolean dispatch (GSource *source, GSourceFunc cb, gpointer date)
+static gboolean
+dispatch (GSource *source, GSourceFunc cb, gpointer date)
 {
   return FALSE;
 }
 
-GSourceFuncs funcs = {
+static GSourceFuncs funcs = {
   prepare,
   check,
   dispatch,
