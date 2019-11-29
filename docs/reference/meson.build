@@ -29,6 +29,10 @@ gtkdoc_common_scan_args = [
   '--ignore-decorators=' + '|'.join(ignore_decorators),
 ]
 
+if get_option('gtk_doc')
+  dependency('gtk-doc', version : '>=1.32')
+endif
+
 subdir('gio')
 subdir('glib')
 subdir('gobject')
