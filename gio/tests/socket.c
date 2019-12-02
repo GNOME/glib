@@ -342,6 +342,7 @@ test_ip_async (GSocketFamily family)
       g_clear_error (&error);
       return;
     }
+  g_assert_nonnull (data);
 
   addr = g_socket_get_local_address (data->server, &error);
   g_assert_no_error (error);
