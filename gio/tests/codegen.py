@@ -362,6 +362,41 @@ G_END_DECLS
                 # The output should be the same.
                 self.assertEqual(result1.out, result2.out)
 
+    def test_glib_min_version_invalid(self):
+        """Test running with an invalid --glib-min-version."""
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.runCodegenWithInterface('',
+                                         '--output', '/dev/stdout',
+                                         '--body',
+                                         '--glib-min-version', 'hello mum')
+
+    def test_glib_min_version_too_low(self):
+        """Test running with a --glib-min-version which is too low (and hence
+        probably a typo)."""
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.runCodegenWithInterface('',
+                                         '--output', '/dev/stdout',
+                                         '--body',
+                                         '--glib-min-version', '2.6')
+
+    def test_glib_min_version_major_only(self):
+        """Test running with a --glib-min-version which contains only a major version."""
+        result = self.runCodegenWithInterface('',
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-min-version', '3')
+        self.assertEqual('', result.err)
+        self.assertNotEqual('', result.out.strip())
+
+    def test_glib_min_version_with_micro(self):
+        """Test running with a --glib-min-version which contains a micro version."""
+        result = self.runCodegenWithInterface('',
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-min-version', '2.46.2')
+        self.assertEqual('', result.err)
+        self.assertNotEqual('', result.out.strip())
+
 
 if __name__ == '__main__':
     unittest.main(testRunner=taptestrunner.TAPTestRunner())
