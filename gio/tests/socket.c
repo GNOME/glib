@@ -342,6 +342,7 @@ test_ip_async (GSocketFamily family)
       g_clear_error (&error);
       return;
     }
+  g_assert_notnull (data);
 
   addr = g_socket_get_local_address (data->server, &error);
   g_assert_no_error (error);
@@ -446,9 +447,9 @@ test_ip_sync (GSocketFamily family)
   gchar buf[128];
 
   data = create_server (family, echo_server_thread, FALSE, &error);
-  if (error != NULL)
+  if (data == NULL)
     {
-      gchar *message = g_strdup_printf ("Failed to create server: %s", error->message);
+      gchar *message = g_strdup_printf ("Failed to create server: %s", error ? error->message : "unknown error");
       g_test_skip (message);
       g_free (message);
       g_clear_error (&error);
