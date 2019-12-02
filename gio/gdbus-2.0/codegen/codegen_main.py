@@ -256,12 +256,17 @@ def codegen_main():
     else:
         glib_min_version = (2, 30)
 
+    glib_min_version_is_2_64 = (glib_min_version[0] > 2 or
+                                (glib_min_version[0] == 2 and
+                                 glib_min_version[1] >= 64))
+
     all_ifaces = []
     input_files_basenames = []
     for fname in sorted(args.files + args.xml_files):
         with open(fname, 'rb') as f:
             xml_data = f.read()
-        parsed_ifaces = parser.parse_dbus_xml(xml_data)
+        parsed_ifaces = parser.parse_dbus_xml(xml_data,
+                                              h_type_implies_unix_fd=glib_min_version_is_2_64)
         all_ifaces.extend(parsed_ifaces)
         input_files_basenames.append(os.path.basename(fname))
 
