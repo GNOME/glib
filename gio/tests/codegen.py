@@ -397,6 +397,56 @@ G_END_DECLS
         self.assertEqual('', result.err)
         self.assertNotEqual('', result.out.strip())
 
+    def test_unix_fd_types_and_annotations(self):
+        """Test an interface with `h` arguments, no annotation, and GLib < 2.64.
+
+        See issue #1726.
+        """
+        interface_xml = '''
+            <node>
+              <interface name="FDPassing">
+                <method name="HelloFD">
+                  <annotation name="org.gtk.GDBus.C.UnixFD" value="1"/>
+                  <arg name="greeting" direction="in" type="s"/>
+                  <arg name="response" direction="out" type="s"/>
+                </method>
+                <method name="NoAnnotation">
+                  <arg name="greeting" direction="in" type="h"/>
+                  <arg name="greeting_locale" direction="in" type="s"/>
+                  <arg name="response" direction="out" type="h"/>
+                  <arg name="response_locale" direction="out" type="s"/>
+                </method>
+                <method name="NoAnnotationNested">
+                  <arg name="files" type="a{sh}" direction="in"/>
+                </method>
+              </interface>
+            </node>'''
+
+        # Try without specifying --glib-min-version.
+        result = self.runCodegenWithInterface(interface_xml,
+                                              '--output', '/dev/stdout',
+                                              '--header')
+        self.assertEqual('', result.err)
+        self.assertEqual(result.out.strip().count('GUnixFDList'), 6)
+
+        # Specify an old --glib-min-version.
+        result = self.runCodegenWithInterface(interface_xml,
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-min-version', '2.32')
+        self.assertEqual('', result.err)
+        self.assertEqual(result.out.strip().count('GUnixFDList'), 6)
+
+        # Specify a --glib-min-version ≥ 2.64. There should be more
+        # mentions of `GUnixFDList` now, since the annotation is not needed to
+        # trigger its use.
+        result = self.runCodegenWithInterface(interface_xml,
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-min-version', '2.64')
+        self.assertEqual('', result.err)
+        self.assertEqual(result.out.strip().count('GUnixFDList'), 18)
+
 
 if __name__ == '__main__':
     unittest.main(testRunner=taptestrunner.TAPTestRunner())
