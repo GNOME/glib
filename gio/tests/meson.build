@@ -87,6 +87,10 @@ test_extra_programs = {
   'gsubprocess-testprog' : {},
 }
 
+python_tests = [
+  'codegen.py',
+]
+
 test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
@@ -713,6 +717,43 @@ foreach program_name, extra_args : test_extra_programs
       install : install,
   )
 endforeach
+
+foreach test_name : python_tests
+  test(
+    test_name,
+    python,
+    args: ['-B', files(test_name)],
+    env: test_env,
+    suite: ['gio', 'no-valgrind'],
+  )
+
+  if installed_tests_enabled
+    install_data(
+      files(test_name),
+      install_dir: installed_tests_execdir,
+      install_mode: 'rwxr-xr-x',
+    )
+
+    test_conf = configuration_data()
+    test_conf.set('installed_tests_dir', installed_tests_execdir)
+    test_conf.set('program', test_name)
+    test_conf.set('env', '')
+    configure_file(
+      input: installed_tests_template_tap,
+      output: test_name + '.test',
+      install_dir: installed_tests_metadir,
+      configuration: test_conf,
+    )
+  endif
+endforeach
+
+# TAP test runner for Python tests
+if installed_tests_enabled
+  install_data(
+    files('taptestrunner.py'),
+    install_dir: installed_tests_execdir,
+  )
+endif
 
 # FIXME: subdir('services')
 subdir('modules')
