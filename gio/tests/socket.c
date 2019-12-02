@@ -140,7 +140,10 @@ create_server_full (GSocketFamily   family,
     {
       g_socket_set_option (data->server, IPPROTO_IPV6, IPV6_V6ONLY, FALSE, NULL);
       if (!g_socket_speaks_ipv4 (data->server))
-        goto error;
+        {
+          /* FIXME: Set error */
+          goto error;
+        }
     }
 #endif
 
