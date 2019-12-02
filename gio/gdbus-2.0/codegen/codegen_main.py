@@ -167,6 +167,8 @@ def codegen_main():
                             help='Use "pragma once" as the inclusion guard')
     arg_parser.add_argument('--annotate', nargs=3, action='append', metavar='WHAT KEY VALUE',
                             help='Add annotation (may be used several times)')
+    arg_parser.add_argument('--glib-min-version', metavar='VERSION',
+                            help='Minimum version of GLib to be supported by the outputted code (default: 2.30)')
 
     group = arg_parser.add_mutually_exclusive_group()
     group.add_argument('--generate-c-code', metavar='OUTFILES',
@@ -233,6 +235,27 @@ def codegen_main():
         c_file = args.output
         header_name = os.path.splitext(os.path.basename(c_file))[0] + '.h'
 
+    # Check the minimum GLib version. The minimum --glib-min-version is 2.30,
+    # because that’s when gdbus-codegen was introduced. Support 1, 2 or 3
+    # component versions, but ignore the micro component if it’s present.
+    if args.glib_min_version:
+        try:
+            parts = args.glib_min_version.split('.', 3)
+            glib_min_version = (int(parts[0]),
+                                int(parts[1] if len(parts) > 1 else 0))
+            # Ignore micro component, but still validate it:
+            _ = int(parts[2] if len(parts) > 2 else 0)
+        except (ValueError, IndexError):
+            print_error('Unrecognized --glib-min-version string ‘{}’'.format(
+                args.glib_min_version))
+
+        if glib_min_version[0] < 2 or \
+           (glib_min_version[0] == 2 and glib_min_version[1] < 30):
+            print_error('Invalid --glib-min-version string ‘{}’: minimum '
+                        'version is 2.30'.format(args.glib_min_version))
+    else:
+        glib_min_version = (2, 30)
+
     all_ifaces = []
     input_files_basenames = []
     for fname in sorted(args.files + args.xml_files):
@@ -262,6 +285,7 @@ def codegen_main():
                                               header_name,
                                               input_files_basenames,
                                               args.pragma_once,
+                                              glib_min_version,
                                               outfile)
             gen.generate()
 
@@ -273,6 +297,7 @@ def codegen_main():
                                         header_name,
                                         input_files_basenames,
                                         docbook_gen,
+                                        glib_min_version,
                                         outfile)
             gen.generate()
 
@@ -283,6 +308,7 @@ def codegen_main():
                                                            header_name,
                                                            input_files_basenames,
                                                            args.pragma_once,
+                                                           glib_min_version,
                                                            outfile)
             gen.generate()
 
@@ -292,6 +318,7 @@ def codegen_main():
                                                          args.c_namespace,
                                                          header_name,
                                                          input_files_basenames,
+                                                         glib_min_version,
                                                          outfile)
             gen.generate()
 
