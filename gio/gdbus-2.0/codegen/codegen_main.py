@@ -149,7 +149,7 @@ def apply_annotations(iface_list, annotation_list):
 
 def codegen_main():
     arg_parser = argparse.ArgumentParser(description='D-Bus code and documentation generator')
-    arg_parser.add_argument('files', metavar='FILE', nargs='*',
+    arg_parser.add_argument('files', metavar='FILE', nargs='+',
                             help='D-Bus introspection XML file')
     arg_parser.add_argument('--xml-files', metavar='FILE', action='append', default=[],
                             help=argparse.SUPPRESS)
