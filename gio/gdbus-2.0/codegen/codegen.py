@@ -1562,7 +1562,7 @@ class CodeGenerator:
                     ' *\n'
                     %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint), False))
             if p.arg.free_func != None:
-                self.outfile.write(' * <warning>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use %s_dup_%s() if on another thread.</warning>\n'
+                self.outfile.write(' * The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use %s_dup_%s() if on another thread.\n'
                                    ' *\n'
                                    ' * Returns: (transfer none) (nullable): The property value or %%NULL if the property is not set. Do not free the returned value, it belongs to @object.\n'
                                    %(i.name_lower, p.name_lower))
@@ -3104,7 +3104,7 @@ class CodeGenerator:
                     ' *\n'
                     ' * Like %sobject_get_%s() but doesn\'t increase the reference count on the returned object.\n'
                     ' *\n'
-                    ' * <warning>It is not safe to use the returned object if you are on another thread than the one where the #GDBusObjectManagerClient or #GDBusObjectManagerServer for @object is running.</warning>\n'
+                    ' * It is not safe to use the returned object if you are on another thread than the one where the #GDBusObjectManagerClient or #GDBusObjectManagerServer for @object is running.\n'
                     ' *\n'
                     ' * Returns: (transfer none) (nullable): A #%s or %%NULL if @object does not implement the interface. Do not free the returned object, it is owned by @object.\n'
                     %(self.ns_lower, i.name_upper.lower(), self.namespace, self.ns_lower, i.name_upper.lower(), i.camel_name), False))
