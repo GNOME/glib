@@ -29,6 +29,9 @@ gtkdoc_common_scan_args = [
   '--ignore-decorators=' + '|'.join(ignore_decorators),
 ]
 
+# Fallback to subproject if system version is too old.
+dependency('gtk-doc', version : '>=1.32', fallback : ['gtk-doc', 'dummy_dep'])
+
 subdir('gio')
 subdir('glib')
 subdir('gobject')
