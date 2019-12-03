@@ -920,7 +920,7 @@ fixup_insane_microsoft_rundll_commandline (gunichar2 *commandline)
       p += 1;
     }
 
-  g_assert_nonnull (first_argument);
+  g_assert (first_argument != NULL);
 
   quoted = FALSE;
   p = first_argument;
