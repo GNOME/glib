@@ -744,7 +744,29 @@ utf8_and_fold (const gunichar2  *str,
   return TRUE;
 }
 
+/* Slow and dirty validator for UTF-16 strings */
+static gboolean
+g_utf16_validate (const gunichar2  *str,
+		  glong             len)
+{
+  gchar *tmp;
 
+  if (str == NULL)
+    return FALSE;
+
+  tmp = g_utf16_to_utf8 (str, len, NULL, NULL, NULL);
+
+  if (tmp == NULL)
+    return FALSE;
+
+  g_free (tmp);
+
+  return TRUE;
+}
+
+/* Does a UTF-16 validity check on *proxy_command and/or *program_command.
+ * Fails if that check doesn't pass.
+ */
 static gboolean
 follow_class_chain_to_handler (const gunichar2    *program_id,
                                gsize               program_id_size,
@@ -788,8 +810,9 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
                                                     NULL);
       if (got_value && val_type == G_WIN32_REGISTRY_VALUE_STR)
         {
-          if ((program_id_u8 != NULL || program_id_folded != NULL) &&
-              !utf8_and_fold (program_id, program_id_u8, program_id_folded))
+          if (((program_id_u8 != NULL || program_id_folded != NULL) &&
+              !utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
+              !g_utf16_validate (*program_command, -1))
             {
               g_object_unref (key);
               g_free (program_command);
@@ -821,18 +844,15 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
                                                 (void **) proxy_id,
                                                 &proxy_id_size,
                                                 NULL);
+  g_object_unref (key);
+
   if (!got_value ||
       (val_type != G_WIN32_REGISTRY_VALUE_STR))
     {
-      g_object_unref (key);
       g_clear_pointer (proxy_id, g_free);
+
       return FALSE;
     }
-
-  if (proxy_key)
-    *proxy_key = key;
-  else
-    g_object_unref (key);
 
   key = _g_win32_registry_key_build_and_new_w (NULL, HKCR, *proxy_id,
                                                SHELL_OPEN_COMMAND, NULL);
@@ -840,8 +860,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
   if (key == NULL)
     {
       g_clear_pointer (proxy_id, g_free);
-      if (proxy_key)
-        g_clear_object (proxy_key);
+
       return FALSE;
     }
 
@@ -852,12 +871,17 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
                                                 (void **) proxy_command,
                                                 NULL,
                                                 NULL);
-  g_object_unref (key);
+
+  if (proxy_key)
+    *proxy_key = key;
+  else
+    g_object_unref (key);
 
   if (!got_value ||
       val_type != G_WIN32_REGISTRY_VALUE_STR ||
       ((program_id_u8 != NULL || program_id_folded != NULL) &&
-       !utf8_and_fold (program_id, program_id_u8, program_id_folded)))
+       !utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
+      !g_utf16_validate (*proxy_command, -1))
     {
       g_clear_pointer (proxy_id, g_free);
       g_clear_pointer (proxy_command, g_free);
@@ -965,6 +989,10 @@ fixup_broken_microsoft_rundll_commandline (gunichar2 *commandline)
    */
 }
 
+/* Make sure @commandline is a valid UTF-16 string before
+ * calling this function!
+ * follow_class_chain_to_handler() does perform such validation.
+ */
 static void
 extract_executable (gunichar2  *commandline,
                     gchar     **ex_out,
@@ -1963,7 +1991,9 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                                               NULL,
                                               NULL);
 
-  if (success && vtype != G_WIN32_REGISTRY_VALUE_STR)
+  if (success &&
+      (vtype != G_WIN32_REGISTRY_VALUE_STR ||
+       !g_utf16_validate (shell_open_command, -1)))
     {
       /* Must have a command */
       g_clear_pointer (&shell_open_command, g_free);
@@ -2514,8 +2544,6 @@ read_exeapps (void)
 {
   GWin32RegistryKey *applications_key;
   GWin32RegistrySubkeyIter app_iter;
-  gunichar2 *app_exe_basename;
-  gsize app_exe_basename_len;
 
   applications_key =
       g_win32_registry_key_new_w (L"HKEY_CLASSES_ROOT\\Applications", NULL);
@@ -2531,6 +2559,8 @@ read_exeapps (void)
 
   while (g_win32_registry_subkey_iter_next (&app_iter, TRUE, NULL))
     {
+      gunichar2 *app_exe_basename;
+      gsize app_exe_basename_len;
       GWin32RegistryKey *incapable_app;
       gunichar2 *friendly_app_name;
       gboolean success;
@@ -2551,7 +2581,8 @@ read_exeapps (void)
       if (!g_win32_registry_subkey_iter_get_name_w (&app_iter,
                                                     &app_exe_basename,
                                                     &app_exe_basename_len,
-                                                    NULL))
+                                                    NULL) ||
+          !g_utf16_validate (app_exe_basename, app_exe_basename_len))
         continue;
 
       incapable_app =
@@ -2586,7 +2617,9 @@ read_exeapps (void)
                                                       NULL,
                                                       NULL);
 
-          if (success && vtype != G_WIN32_REGISTRY_VALUE_STR)
+          if (success &&
+              (vtype != G_WIN32_REGISTRY_VALUE_STR ||
+               !g_utf16_validate (shell_open_command, -1)))
             {
               g_clear_pointer (&shell_open_command, g_free);
             }
@@ -4672,12 +4705,19 @@ g_app_info_create_from_commandline (const char           *commandline,
 {
   GWin32AppInfo *info;
   GWin32AppInfoApplication *app;
+  gunichar2 *app_command;
 
   g_return_val_if_fail (commandline, NULL);
 
-  info = g_object_new (G_TYPE_WIN32_APP_INFO, NULL);
+  app_command = g_utf8_to_utf16 (commandline, -1, NULL, NULL, NULL);
 
+  if (app_command == NULL)
+    return NULL;
+
+  info = g_object_new (G_TYPE_WIN32_APP_INFO, NULL);
   app = g_object_new (G_TYPE_WIN32_APPINFO_APPLICATION, NULL);
+
+  app->command = app_command;
 
   if (application_name)
     {
@@ -4690,8 +4730,6 @@ g_app_info_create_from_commandline (const char           *commandline,
       app->canonical_name_folded = g_utf8_casefold (application_name, -1);
     }
 
-  app->command = g_utf8_to_utf16 (commandline, -1, NULL, NULL, NULL);
-
   extract_executable (app->command,
                       &app->executable,
                       &app->executable_basename,
@@ -4701,7 +4739,7 @@ g_app_info_create_from_commandline (const char           *commandline,
   if (app->dll_function != NULL)
     fixup_broken_microsoft_rundll_commandline (app->command);
 
-  app->command_u8 = g_strdup (commandline);
+  app->command_u8 = g_utf16_to_utf8 (app->command, -1, NULL, NULL, NULL);
 
   app->no_open_with = FALSE;
   app->user_specific = FALSE;
