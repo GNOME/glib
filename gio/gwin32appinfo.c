@@ -886,7 +886,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
  * This syntax is valid for rundll32 *and* GLib spawn routines won't break it.
  */
 static void
-fixup_insane_microsoft_rundll_commandline (gunichar2 *commandline)
+fixup_broken_microsoft_rundll_commandline (gunichar2 *commandline)
 {
   size_t len;
   gunichar2 *p;
@@ -1320,7 +1320,7 @@ get_url_association (const gunichar2 *schema)
                           NULL,
                           &handler_rec->dll_function);
       if (handler_rec->dll_function != NULL)
-        fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+        fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (program_id_folded),
@@ -1465,7 +1465,7 @@ get_file_ext (const gunichar2 *ext)
                                       NULL,
                                       &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
-                    fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+                    fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -1586,7 +1586,7 @@ get_file_ext (const gunichar2 *ext)
                                       NULL,
                                       &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
-                    fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+                    fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -1982,7 +1982,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                       &app_executable_folded_basename,
                       &app_dll_function);
   if (app_dll_function != NULL)
-    fixup_insane_microsoft_rundll_commandline (shell_open_command);
+    fixup_broken_microsoft_rundll_commandline (shell_open_command);
 
   app = g_hash_table_lookup (apps_by_id, canonical_name_folded);
 
@@ -2237,7 +2237,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                                       NULL,
                                       &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
-                    fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+                    fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -2396,7 +2396,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                                       NULL,
                                       &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
-                    fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+                    fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -2668,7 +2668,7 @@ read_exeapps (void)
                                   NULL,
                                   &dll_function);
               if (dll_function != NULL)
-                fixup_insane_microsoft_rundll_commandline (shell_open_command);
+                fixup_broken_microsoft_rundll_commandline (shell_open_command);
               g_clear_pointer (&dll_function, g_free);
             }
 
@@ -2884,7 +2884,7 @@ read_class_extension (GWin32RegistryKey *classes_root,
                           NULL,
                           &handler_rec->dll_function);
       if (handler_rec->dll_function != NULL)
-        fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+        fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (ext_folded),
@@ -3005,7 +3005,7 @@ read_class_url (GWin32RegistryKey *classes_root,
                           NULL,
                           &handler_rec->dll_function);
       if (handler_rec->dll_function != NULL)
-        fixup_insane_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+        fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (program_id_folded),
@@ -4699,7 +4699,7 @@ g_app_info_create_from_commandline (const char           *commandline,
                       NULL,
                       &app->dll_function);
   if (app->dll_function != NULL)
-    fixup_insane_microsoft_rundll_commandline (app->command);
+    fixup_broken_microsoft_rundll_commandline (app->command);
 
   app->command_u8 = g_strdup (commandline);
 
