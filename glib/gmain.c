@@ -361,6 +361,8 @@ struct _GSourcePrivate
    * let it remain empty on Windows) to avoid #ifdef all over the place.
    */
   GSList *fds;
+
+  GSourceDisposeFunc dispose;
 };
 
 typedef struct _GSourceIter
@@ -926,6 +928,40 @@ g_source_new (GSourceFuncs *source_funcs,
   return source;
 }
 
+/**
+ * g_source_set_dispose_function:
+ * @source: A #GSource to set the dispose function on
+ * @dispose: #GSourceDisposeFunc to set on the source
+ *
+ * Set @dispose as dispose function on @source. @dispose will be called once
+ * the reference count of @source reaches 0 but before any of the state of the
+ * source is freed, especially before the finalize function is called.
+ *
+ * This means that at this point @source is still a valid #GSource and it is
+ * allow for the reference count to increase again until @dispose returns.
+ *
+ * The dispose function can be used to clear any "weak" references to the
+ * @source in other data structures in a thread-safe way where it is possible
+ * for another thread to increase the reference count of @source again while
+ * it is being freed.
+ *
+ * The finalize function can not be used for this purpose as at that point
+ * @source is already partially freed and not valid anymore.
+ *
+ * This should only ever be called from #GSource implementations.
+ *
+ * Since: 2.64
+ **/
+void
+g_source_set_dispose_function (GSource            *source,
+			       GSourceDisposeFunc  dispose)
+{
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (source->priv->dispose == NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
+  source->priv->dispose = dispose;
+}
+
 /* Holds context's lock */
 static void
 g_source_iter_init (GSourceIter  *iter,
@@ -1185,6 +1221,8 @@ g_source_attach (GSource      *source,
 {
   guint result = 0;
 
+  g_return_val_if_fail (source != NULL, 0);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
   g_return_val_if_fail (source->context == NULL, 0);
   g_return_val_if_fail (!SOURCE_DESTROYED (source), 0);
   
@@ -1282,6 +1320,7 @@ g_source_destroy (GSource *source)
   GMainContext *context;
   
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   
   context = source->context;
   
@@ -1313,6 +1352,7 @@ g_source_get_id (GSource *source)
   guint result;
   
   g_return_val_if_fail (source != NULL, 0);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
   g_return_val_if_fail (source->context != NULL, 0);
 
   LOCK_CONTEXT (source->context);
@@ -1342,6 +1382,8 @@ g_source_get_id (GSource *source)
 GMainContext *
 g_source_get_context (GSource *source)
 {
+  g_return_val_if_fail (source != NULL, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, NULL);
   g_return_val_if_fail (source->context != NULL || !SOURCE_DESTROYED (source), NULL);
 
   return source->context;
@@ -1373,6 +1415,7 @@ g_source_add_poll (GSource *source,
   GMainContext *context;
   
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (fd != NULL);
   g_return_if_fail (!SOURCE_DESTROYED (source));
   
@@ -1409,6 +1452,7 @@ g_source_remove_poll (GSource *source,
   GMainContext *context;
   
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (fd != NULL);
   g_return_if_fail (!SOURCE_DESTROYED (source));
   
@@ -1459,7 +1503,9 @@ g_source_add_child_source (GSource *source,
   GMainContext *context;
 
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (child_source != NULL);
+  g_return_if_fail (g_atomic_int_get (&child_source->ref_count) > 0);
   g_return_if_fail (!SOURCE_DESTROYED (source));
   g_return_if_fail (!SOURCE_DESTROYED (child_source));
   g_return_if_fail (child_source->context == NULL);
@@ -1520,7 +1566,9 @@ g_source_remove_child_source (GSource *source,
   GMainContext *context;
 
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (child_source != NULL);
+  g_return_if_fail (g_atomic_int_get (&child_source->ref_count) > 0);
   g_return_if_fail (child_source->priv->parent_source == source);
   g_return_if_fail (!SOURCE_DESTROYED (source));
   g_return_if_fail (!SOURCE_DESTROYED (child_source));
@@ -1603,6 +1651,7 @@ g_source_set_callback_indirect (GSource              *source,
   GSourceCallbackFuncs *old_cb_funcs;
   
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (callback_funcs != NULL || callback_data == NULL);
 
   context = source->context;
@@ -1665,6 +1714,7 @@ g_source_set_callback (GSource        *source,
   GSourceCallback *new_callback;
 
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
   TRACE (GLIB_SOURCE_SET_CALLBACK (source, func, data, notify));
 
@@ -1778,6 +1828,7 @@ g_source_set_priority (GSource  *source,
   GMainContext *context;
 
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (source->priv->parent_source == NULL);
 
   context = source->context;
@@ -1801,6 +1852,7 @@ gint
 g_source_get_priority (GSource *source)
 {
   g_return_val_if_fail (source != NULL, 0);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
 
   return source->priority;
 }
@@ -1843,15 +1895,7 @@ g_source_set_ready_time (GSource *source,
   GMainContext *context;
 
   g_return_if_fail (source != NULL);
-  /* We deliberately don't check for ref_count > 0 here, because that
-   * breaks cancellable_source_cancelled() in GCancellable: it has no
-   * way to find out that the last-unref has happened until the
-   * finalize() function is called, but that's too late, because the
-   * ref_count already has already reached 0 before that time.
-   * However, priv is only poisoned (set to NULL) after finalize(),
-   * so we can use this as a simple guard against use-after-free.
-   * See https://bugzilla.gnome.org/show_bug.cgi?id=791754 */
-  g_return_if_fail (source->priv != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
   context = source->context;
 
@@ -1895,6 +1939,7 @@ gint64
 g_source_get_ready_time (GSource *source)
 {
   g_return_val_if_fail (source != NULL, -1);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, -1);
 
   return source->priv->ready_time;
 }
@@ -1916,6 +1961,7 @@ g_source_set_can_recurse (GSource  *source,
   GMainContext *context;
   
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
   context = source->context;
 
@@ -1944,6 +1990,7 @@ gboolean
 g_source_get_can_recurse (GSource  *source)
 {
   g_return_val_if_fail (source != NULL, FALSE);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, FALSE);
   
   return (source->flags & G_SOURCE_CAN_RECURSE) != 0;
 }
@@ -1980,6 +2027,7 @@ g_source_set_name (GSource    *source,
   GMainContext *context;
 
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
   context = source->context;
 
@@ -2015,6 +2063,7 @@ const char *
 g_source_get_name (GSource *source)
 {
   g_return_val_if_fail (source != NULL, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, NULL);
 
   return source->name;
 }
@@ -2071,6 +2120,9 @@ GSource *
 g_source_ref (GSource *source)
 {
   g_return_val_if_fail (source != NULL, NULL);
+  /* We allow ref_count == 0 here to allow the dispose function to resurrect
+   * the GSource if needed */
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) >= 0, NULL);
 
   g_atomic_int_inc (&source->ref_count);
 
@@ -2094,6 +2146,28 @@ g_source_unref_internal (GSource      *source,
 
   if (g_atomic_int_dec_and_test (&source->ref_count))
     {
+      /* If there's a dispose function, call this first */
+      if (source->priv->dispose)
+        {
+          /* Temporarily increase the ref count again so that GSource methods
+           * can be called from dispose(). */
+          g_atomic_int_inc (&source->ref_count);
+          if (context)
+            UNLOCK_CONTEXT (context);
+          source->priv->dispose (source);
+          if (context)
+            LOCK_CONTEXT (context);
+
+          /* Now the reference count might be bigger than 0 again, in which
+           * case we simply return from here before freeing the source */
+          if (!g_atomic_int_dec_and_test (&source->ref_count))
+            {
+              if (!have_lock && context)
+                UNLOCK_CONTEXT (context);
+              return;
+            }
+        }
+
       TRACE (GLIB_SOURCE_BEFORE_FREE (source, context,
                                       source->source_funcs->finalize));
 
@@ -2114,6 +2188,8 @@ g_source_unref_internal (GSource      *source,
 
       if (source->source_funcs->finalize)
 	{
+          gint old_ref_count;
+
           /* Temporarily increase the ref count again so that GSource methods
            * can be called from finalize(). */
           g_atomic_int_inc (&source->ref_count);
@@ -2122,11 +2198,14 @@ g_source_unref_internal (GSource      *source,
 	  source->source_funcs->finalize (source);
 	  if (context)
 	    LOCK_CONTEXT (context);
-          g_atomic_int_add (&source->ref_count, -1);
+          old_ref_count = g_atomic_int_add (&source->ref_count, -1);
+          g_warn_if_fail (old_ref_count == 1);
 	}
 
       if (old_cb_funcs)
         {
+          gint old_ref_count;
+
           /* Temporarily increase the ref count again so that GSource methods
            * can be called from callback_funcs.unref(). */
           g_atomic_int_inc (&source->ref_count);
@@ -2137,7 +2216,8 @@ g_source_unref_internal (GSource      *source,
 
           if (context)
             LOCK_CONTEXT (context);
-          g_atomic_int_add (&source->ref_count, -1);
+          old_ref_count = g_atomic_int_add (&source->ref_count, -1);
+          g_warn_if_fail (old_ref_count == 1);
         }
 
       g_free (source->name);
@@ -2181,6 +2261,7 @@ void
 g_source_unref (GSource *source)
 {
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
   g_source_unref_internal (source, source->context, FALSE);
 }
@@ -2484,6 +2565,7 @@ g_source_add_unix_fd (GSource      *source,
   GPollFD *poll_fd;
 
   g_return_val_if_fail (source != NULL, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, NULL);
   g_return_val_if_fail (!SOURCE_DESTROYED (source), NULL);
 
   poll_fd = g_new (GPollFD, 1);
@@ -2537,6 +2619,7 @@ g_source_modify_unix_fd (GSource      *source,
   GPollFD *poll_fd;
 
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (g_slist_find (source->priv->fds, tag));
 
   context = source->context;
@@ -2574,6 +2657,7 @@ g_source_remove_unix_fd (GSource  *source,
   GPollFD *poll_fd;
 
   g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (g_slist_find (source->priv->fds, tag));
 
   context = source->context;
@@ -2622,6 +2706,7 @@ g_source_query_unix_fd (GSource  *source,
   GPollFD *poll_fd;
 
   g_return_val_if_fail (source != NULL, 0);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
   g_return_val_if_fail (g_slist_find (source->priv->fds, tag), 0);
 
   poll_fd = tag;
@@ -3052,6 +3137,8 @@ g_main_current_source (void)
 gboolean
 g_source_is_destroyed (GSource *source)
 {
+  g_return_val_if_fail (source != NULL, TRUE);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, TRUE);
   return SOURCE_DESTROYED (source);
 }
 
@@ -4452,6 +4539,8 @@ g_source_get_time (GSource *source)
   GMainContext *context;
   gint64 result;
 
+  g_return_val_if_fail (source != NULL, 0);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
   g_return_val_if_fail (source->context != NULL, 0);
 
   context = source->context;
