@@ -79,6 +79,7 @@ gio_tests = {
   'tls-interaction' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-database' : {'extra_sources' : ['gtesttlsbackend.c']},
   'gdbus-address-get-session' : {},
+  'win32-appinfo' : {},
 }
 
 test_extra_programs = {
@@ -341,7 +342,9 @@ endif # unix
 
 #  Test programs buildable on Windows only
 if host_machine.system() == 'windows'
-  gio_tests += {'win32-streams' : {}}
+  gio_tests += {
+    'win32-streams' : {},
+  }
 endif
 
 if cc.get_id() != 'msvc'
