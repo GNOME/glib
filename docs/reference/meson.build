@@ -19,9 +19,24 @@ ignore_decorators = [
 
 foreach version : stable_2_series_versions
   ignore_decorators += [
+    # Note that gtkdoc is going to use those in regex, and the longest match
+    # must come first. That's why '_FOR()' variant comes first.
+    # gtkdoc special-case '()' and replace it by a regex matching a symbol name.
     'GLIB_AVAILABLE_IN_2_' + version,
+    'GLIB_DEPRECATED_IN_2_' + version + '_FOR()',
     'GLIB_DEPRECATED_IN_2_' + version,
-    'GLIB_DEPRECATED_IN_2_' + version + '_FOR',
+
+    'GLIB_AVAILABLE_ENUMERATOR_IN_2_' + version,
+    'GLIB_DEPRECATED_ENUMERATOR_IN_2_' + version + '_FOR()',
+    'GLIB_DEPRECATED_ENUMERATOR_IN_2_' + version,
+
+    'GLIB_AVAILABLE_MACRO_IN_2_' + version,
+    'GLIB_DEPRECATED_MACRO_IN_2_' + version + '_FOR()',
+    'GLIB_DEPRECATED_MACRO_IN_2_' + version,
+
+    'GLIB_AVAILABLE_TYPE_IN_2_' + version,
+    'GLIB_DEPRECATED_TYPE_IN_2_' + version + '_FOR()',
+    'GLIB_DEPRECATED_TYPE_IN_2_' + version,
   ]
 endforeach
 
