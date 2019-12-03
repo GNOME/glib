@@ -893,101 +893,8 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
   return TRUE;
 }
 
-/**
- * rundll32 accepts many different commandlines. Among them is this:
- * > rundll32.exe "c:/program files/foo/bar.dll",,, , ,,,, , function_name %1
- * rundll32 just reads the first argument as a potentially quoted
- * filename until the quotation ends (if quoted) or until a comma,
- * or until a space. Then ignores all subsequent spaces (if any) and commas (if any;
- * at least one comma is mandatory only if the filename is not quoted),
- * and then interprets the rest of the commandline (until a space or a NUL-byte)
- * as a name of a function.
- * When GLib tries to run a program, it attempts to correctly re-quote the arguments,
- * turning the first argument into "c:/program files/foo/bar.dll,,,".
- * This breaks rundll32 parsing logic.
- * Try to work around this by ensuring that the syntax is like this:
- * > rundll32.exe "c:/program files/foo/bar.dll" function_name
- * This syntax is valid for rundll32 *and* GLib spawn routines won't break it.
- */
-static void
-fixup_broken_microsoft_rundll_commandline (gunichar2 *commandline)
-{
-  size_t len;
-  gunichar2 *p;
-  gunichar2 *first_argument = NULL;
-  gboolean quoted;
-  gunichar2 *first_char_after_filename = NULL;
-
-  p = commandline;
-  quoted = FALSE;
-  len = wcslen (commandline);
-
-  while (p < &commandline[len])
-    {
-      switch (p[0])
-        {
-        case L'"':
-          quoted = !quoted;
-          break;
-        case L' ':
-          if (!quoted)
-            {
-              first_argument = p;
-              while (first_argument < &commandline[len] && first_argument[0] == L' ')
-                first_argument++;
-              p = &commandline[len];
-            }
-          break;
-        default:
-          break;
-        }
-      p += 1;
-    }
-
-  g_assert (first_argument != NULL);
-
-  quoted = FALSE;
-  p = first_argument;
-
-  if (p[0] == L'"')
-    {
-      quoted = TRUE;
-      p += 1;
-    }
-
-  while (p < &commandline[len])
-    {
-      switch (p[0])
-        {
-        case L'"':
-          if (quoted)
-            {
-              first_char_after_filename = &p[1];
-              p = &commandline[len];
-            }
-          break;
-        case L' ':
-        case L',':
-          if (!quoted)
-            {
-              first_char_after_filename = p;
-              p = &commandline[len];
-            }
-          break;
-        default:
-          break;
-        }
-      p += 1;
-    }
-
-  g_assert (first_char_after_filename != NULL);
-
-  if (first_char_after_filename[0] == L',')
-    first_char_after_filename[0] = L' ';
-  /* Else everything is ok (first char after filename is ' ' or the first char
-   * of the function name - either way this will work).
-   */
-}
+/* for _g_win32_fixup_broken_microsoft_rundll_commandline() */
+#include "giowin32-private.c"
 
 /* Make sure @commandline is a valid UTF-16 string before
  * calling this function!
@@ -1348,7 +1255,7 @@ get_url_association (const gunichar2 *schema)
                           NULL,
                           &handler_rec->dll_function);
       if (handler_rec->dll_function != NULL)
-        fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+        _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (program_id_folded),
@@ -1493,7 +1400,7 @@ get_file_ext (const gunichar2 *ext)
                                       NULL,
                                       &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
-                    fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+                    _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -1614,7 +1521,7 @@ get_file_ext (const gunichar2 *ext)
                                       NULL,
                                       &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
-                    fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+                    _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -2012,7 +1919,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                       &app_executable_folded_basename,
                       &app_dll_function);
   if (app_dll_function != NULL)
-    fixup_broken_microsoft_rundll_commandline (shell_open_command);
+    _g_win32_fixup_broken_microsoft_rundll_commandline (shell_open_command);
 
   app = g_hash_table_lookup (apps_by_id, canonical_name_folded);
 
@@ -2267,7 +2174,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                                       NULL,
                                       &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
-                    fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+                    _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -2426,7 +2333,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                                       NULL,
                                       &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
-                    fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+                    _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -2701,7 +2608,7 @@ read_exeapps (void)
                                   NULL,
                                   &dll_function);
               if (dll_function != NULL)
-                fixup_broken_microsoft_rundll_commandline (shell_open_command);
+                _g_win32_fixup_broken_microsoft_rundll_commandline (shell_open_command);
               g_clear_pointer (&dll_function, g_free);
             }
 
@@ -2917,7 +2824,7 @@ read_class_extension (GWin32RegistryKey *classes_root,
                           NULL,
                           &handler_rec->dll_function);
       if (handler_rec->dll_function != NULL)
-        fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+        _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (ext_folded),
@@ -3038,7 +2945,7 @@ read_class_url (GWin32RegistryKey *classes_root,
                           NULL,
                           &handler_rec->dll_function);
       if (handler_rec->dll_function != NULL)
-        fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
+        _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (program_id_folded),
@@ -4737,7 +4644,7 @@ g_app_info_create_from_commandline (const char           *commandline,
                       NULL,
                       &app->dll_function);
   if (app->dll_function != NULL)
-    fixup_broken_microsoft_rundll_commandline (app->command);
+    _g_win32_fixup_broken_microsoft_rundll_commandline (app->command);
 
   app->command_u8 = g_utf16_to_utf8 (app->command, -1, NULL, NULL, NULL);
 
