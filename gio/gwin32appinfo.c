@@ -1145,7 +1145,7 @@ extract_executable (gunichar2  *commandline,
               g_debug ("Dismissing wrapper `%s', using `%S' as the executable DLL that runs %*S",
                        ex,
                        dllpart,
-                       function_len, function_begin);
+                       (int) function_len, function_begin);
 
               /*
                * Free our previous output candidate (rundll32) and replace it with the DLL path,
