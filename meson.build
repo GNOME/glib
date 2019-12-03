@@ -142,11 +142,6 @@ g_have_gnuc_visibility = cc.compiles('''
   {
   }
   void
-  __attribute__ ((visibility ("protected")))
-       f_protected (void)
-  {
-  }
-  void
   __attribute__ ((visibility ("default")))
        f_default (void)
   {
@@ -155,7 +150,6 @@ g_have_gnuc_visibility = cc.compiles('''
   {
     f_hidden();
     f_internal();
-    f_protected();
     f_default();
     return 0;
   }
