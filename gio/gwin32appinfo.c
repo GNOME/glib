@@ -956,7 +956,7 @@ fixup_insane_microsoft_rundll_commandline (gunichar2 *commandline)
       p += 1;
     }
 
-  g_assert_nonnull (first_char_after_filename);
+  g_assert (first_char_after_filename != NULL);
 
   if (first_char_after_filename[0] == L',')
     first_char_after_filename[0] = L' ';
