@@ -983,7 +983,7 @@ extract_executable (gunichar2  *commandline,
   if ((g_strcmp0 (ex_folded, "rundll32.exe") == 0 ||
        g_str_has_suffix (ex_folded, "\\rundll32.exe") ||
        g_str_has_suffix (ex_folded, "/rundll32.exe")) &&
-       first_argument != NULL)
+      first_argument != NULL)
     {
       /* Corner cases:
        * > rundll32.exe c:\some,file,with,commas.dll,some_function
