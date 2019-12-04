@@ -3,7 +3,8 @@ g_utf16_len (const gunichar2 *str)
 {
   gsize result;
 
-  for (result = 0; str[0] != 0; str++, result++);
+  for (result = 0; str[0] != 0; str++, result++)
+    ;
 
   return result;
 }
