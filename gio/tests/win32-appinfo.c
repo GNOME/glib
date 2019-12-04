@@ -70,6 +70,10 @@ test_win32_rundll32_fixup (void)
       "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
     },
     {
+      "\"some path with spaces\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
+      "\"some path with spaces\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
+    },
+    {
       "rundll32.exe foo.bar,baz",
       "rundll32.exe foo.bar baz",
     },
