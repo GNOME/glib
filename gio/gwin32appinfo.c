@@ -811,7 +811,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
       if (got_value && val_type == G_WIN32_REGISTRY_VALUE_STR)
         {
           if (((program_id_u8 != NULL || program_id_folded != NULL) &&
-              !utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
+               !utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
               !g_utf16_validate (*program_command, -1))
             {
               g_object_unref (key);
