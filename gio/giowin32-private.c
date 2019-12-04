@@ -1,3 +1,13 @@
+static gsize
+g_utf16_len (const gunichar2 *str)
+{
+  gsize result;
+
+  for (result = 0; str[0] != 0; str++, result++);
+
+  return result;
+}
+
 /**
  * rundll32 accepts many different commandlines. Among them is this:
  * > rundll32.exe "c:/program files/foo/bar.dll",,, , ,,,, , function_name %1
@@ -30,7 +40,7 @@ _g_win32_fixup_broken_microsoft_rundll_commandline (gunichar2 *commandline)
 
   p = commandline;
   quoted = FALSE;
-  len = wcslen (commandline);
+  len = g_utf16_len (commandline);
 
   while (p < &commandline[len])
     {

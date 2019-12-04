@@ -22,25 +22,36 @@
 #include <glib/glib.h>
 #include <gio/gio.h>
 #include <malloc.h>
-#include <wchar.h>
 
 #include "../giowin32-private.c"
 
 static int
-g_wcscmp0 (const gunichar2 *str1,
-           const gunichar2 *str2)
+g_utf16_cmp0 (const gunichar2 *str1,
+              const gunichar2 *str2)
 {
   if (!str1)
     return -(str1 != str2);
   if (!str2)
     return str1 != str2;
-  return wcscmp (str1, str2);
+
+  while (TRUE)
+    {
+      if (str1[0] > str2[0])
+        return 1;
+      else if (str1[0] < str2[0])
+        return -1;
+      else if (str1[0] == 0 && str2[0] == 0)
+        return 0;
+
+      str1++;
+      str2++;
+    }
 }
 
-#define g_assert_cmpwcs(s1, cmp, s2, s1u8, s2u8) \
+#define g_assert_cmputf16(s1, cmp, s2, s1u8, s2u8) \
 G_STMT_START { \
   const gunichar2 *__s1 = (s1), *__s2 = (s2); \
-  if (g_wcscmp0 (__s1, __s2) cmp 0) ; else \
+  if (g_utf16_cmp0 (__s1, __s2) cmp 0) ; else \
     g_assertion_message_cmpstr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                 #s1u8 " " #cmp " " #s2u8, s1u8, #cmp, s2u8); \
 } G_STMT_END
@@ -121,7 +132,7 @@ test_win32_rundll32_fixup (void)
       out_u8 = g_utf16_to_utf8 (cases[i].fixed, -1, NULL, NULL, NULL);
       g_assert_nonnull (out_u8);
 
-      g_assert_cmpwcs (argument, ==, cases[i].fixed, in_u8, out_u8);
+      g_assert_cmputf16 (argument, ==, cases[i].fixed, in_u8, out_u8);
 
       g_free (out_u8);
       g_free (in_u8);
