@@ -5434,6 +5434,7 @@ g_variant_get (GVariant    *value,
 {
   va_list ap;
 
+  g_return_if_fail (value != NULL);
   g_return_if_fail (valid_format_string (format_string, TRUE, value));
 
   /* if any direct-pointer-access formats are in use, flatten first */
