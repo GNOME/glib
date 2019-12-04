@@ -172,6 +172,12 @@ test_timeouts (void)
   GMainLoop *loop;
   GSource *source;
 
+  if (!g_test_thorough ())
+    {
+      g_test_skip ("Not running timing heavy test");
+      return;
+    }
+
   a = b = c = 0;
 
   ctx = g_main_context_new ();
