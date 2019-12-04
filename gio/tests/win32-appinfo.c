@@ -62,56 +62,56 @@ test_win32_rundll32_fixup (void)
   guint i;
 
   struct {
-    const gunichar2 *orig;
-    const gunichar2 *fixed;
+    const char *orig;
+    const char *fixed;
   } cases[] = {
     {
-      L"%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
-      L"%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
+      "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
+      "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
     },
     {
-      L"rundll32.exe foo.bar,baz",
-      L"rundll32.exe foo.bar baz",
+      "rundll32.exe foo.bar,baz",
+      "rundll32.exe foo.bar baz",
     },
     {
-      L"rundll32.exe \"foo bar\",baz",
-      L"rundll32.exe \"foo bar\" baz",
+      "rundll32.exe \"foo bar\",baz",
+      "rundll32.exe \"foo bar\" baz",
     },
     {
-      L"\"rundll32.exe\" \"foo bar\",baz",
-      L"\"rundll32.exe\" \"foo bar\" baz",
+      "\"rundll32.exe\" \"foo bar\",baz",
+      "\"rundll32.exe\" \"foo bar\" baz",
     },
     {
-      L"\"rundll32.exe\" \"foo bar\",, , ,,, , ,,baz",
-      L"\"rundll32.exe\" \"foo bar\" , , ,,, , ,,baz",
+      "\"rundll32.exe\" \"foo bar\",, , ,,, , ,,baz",
+      "\"rundll32.exe\" \"foo bar\" , , ,,, , ,,baz",
     },
     {
-      L"\"rundll32.exe\" foo.bar,,,,,,,,,baz",
-      L"\"rundll32.exe\" foo.bar ,,,,,,,,baz",
+      "\"rundll32.exe\" foo.bar,,,,,,,,,baz",
+      "\"rundll32.exe\" foo.bar ,,,,,,,,baz",
     },
     {
-      L"\"rundll32.exe\" foo.bar baz",
-      L"\"rundll32.exe\" foo.bar baz",
+      "\"rundll32.exe\" foo.bar baz",
+      "\"rundll32.exe\" foo.bar baz",
     },
     {
-      L"\"RuNdlL32.exe\" foo.bar baz",
-      L"\"RuNdlL32.exe\" foo.bar baz",
+      "\"RuNdlL32.exe\" foo.bar baz",
+      "\"RuNdlL32.exe\" foo.bar baz",
     },
     {
-      L"%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
-      L"%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
+      "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
+      "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
     },
     {
-      L"\"rundll32.exe\" \"foo bar,\"baz",
-      L"\"rundll32.exe\" \"foo bar,\"baz",
+      "\"rundll32.exe\" \"foo bar,\"baz",
+      "\"rundll32.exe\" \"foo bar,\"baz",
     },
     {
-      L"\"rundll32.exe\" some,thing",
-      L"\"rundll32.exe\" some thing",
+      "\"rundll32.exe\" some,thing",
+      "\"rundll32.exe\" some thing",
     },
     {
-      L"\"rundll32.exe\" some, thing",
-      L"\"rundll32.exe\" some  thing",
+      "\"rundll32.exe\" some, thing",
+      "\"rundll32.exe\" some  thing",
     },
     /* Commands with "rundll32" (without the .exe suffix) do exist,
      * but GLib currently does not recognize them, so there's no point
@@ -121,22 +121,17 @@ test_win32_rundll32_fixup (void)
 
   for (i = 0; i < G_N_ELEMENTS (cases); i++)
     {
-      gunichar2 *argument = wcsdup (cases[i].orig);
-      gchar *in_u8;
-      gchar *out_u8;
+      gunichar2 *argument = g_utf8_to_utf16 (cases[i].orig, -1, NULL, NULL, NULL);
+      gunichar2 *expected = g_utf8_to_utf16 (cases[i].fixed, -1, NULL, NULL, NULL);
 
+      g_assert_nonnull (argument);
+      g_assert_nonnull (expected);
       _g_win32_fixup_broken_microsoft_rundll_commandline (argument);
 
-      in_u8 = g_utf16_to_utf8 (argument, -1, NULL, NULL, NULL);
-      g_assert_nonnull (in_u8);
-      out_u8 = g_utf16_to_utf8 (cases[i].fixed, -1, NULL, NULL, NULL);
-      g_assert_nonnull (out_u8);
+      g_assert_cmputf16 (argument, ==, expected, cases[i].orig, cases[i].fixed);
 
-      g_assert_cmputf16 (argument, ==, cases[i].fixed, in_u8, out_u8);
-
-      g_free (out_u8);
-      g_free (in_u8);
-      free (argument);
+      g_free (argument);
+      g_free (expected);
     }
 }
 
