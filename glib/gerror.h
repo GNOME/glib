@@ -77,11 +77,14 @@ gboolean g_error_matches       (const GError  *error,
  * some sanity checks.
  */
 GLIB_AVAILABLE_IN_ALL
-void     g_set_error           (GError       **err,
-                                GQuark         domain,
-                                gint           code,
-                                const gchar   *format,
-                                ...) G_GNUC_PRINTF (4, 5);
+void g_set_error_orig (GError **err,
+                       GQuark domain,
+                       gint code,
+                       const gchar *file,
+                       const gchar *function,
+                       guint line,
+                       const gchar *format,
+                       ...) G_GNUC_PRINTF (7, 8);
 
 GLIB_AVAILABLE_IN_ALL
 void     g_set_error_literal   (GError       **err,
@@ -111,6 +114,9 @@ void     g_propagate_prefixed_error   (GError       **dest,
                                        GError        *src,
                                        const gchar   *format,
                                        ...) G_GNUC_PRINTF (3, 4);
+
+#define g_set_error(pperr, domain, code, format, ...) \
+  g_set_error_orig (pperr, domain, code, __FILE__, __FUNCTION__, __LINE__, format __VA_OPT__ (, ) __VA_ARGS__)
 
 G_END_DECLS
 
