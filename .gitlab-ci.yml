@@ -94,7 +94,13 @@ installed-tests:
   extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: build
+  before_script:
+    # FIXME move to docker image
+    - sudo dnf install -y gnome-desktop-testing python3-dbusmock xdg-desktop-portal
   script:
+    # FIXME Install xdg-desktop-portal build deps before compiling glib,
+    # so it doesn't overwrite our own glib build
+    - sudo dnf install -y autoconf automake gettext-devel libtool diffutils fontconfig-devel json-glib-devel geoclue2-devel pipewire-devel fuse-devel make
     # dtrace is disabled because it breaks the static-link.py test
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -106,6 +112,32 @@ installed-tests:
             _build
     - ninja -C _build
     - sudo ninja -C _build install
+    # FIXME install libportal to build new xdg-desktop-portal
+    - git clone https://github.com/flatpak/libportal.git
+    - cd libportal/
+    - meson ${MESON_COMMON_OPTIONS} _build --prefix=/usr --libdir=/usr/lib64
+    - ninja -C _build
+    - sudo ninja -C _build install
+    - cd ..
+    # FIXME Install newer xdg-desktop-portal with
+    # GMemoryMonitor support, see:
+    # https://github.com/flatpak/xdg-desktop-portal/pull/365
+    - git clone --single-branch --branch wip/hadess/memory-monitor https://github.com/flatpak/xdg-desktop-portal.git
+    - cd xdg-desktop-portal
+    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-dependency-tracking && make && sudo make install
+    - cd ..
+    # FIXME install newer gobject-introspection
+    # with GMemoryMonitor support, see:
+    # https://gitlab.gnome.org/GNOME/gobject-introspection/merge_requests/193
+    - sudo dnf install -y meson flex bison python3-devel
+    - git clone --single-branch --branch wip/hadess/add-memory-monitor https://gitlab.gnome.org/GNOME/gobject-introspection.git
+    - cd gobject-introspection
+    - /usr/bin/meson _build --prefix=/usr --libdir=/usr/lib64
+    - ninja -C _build
+    - sudo ninja -C _build install
+    - cd ..
+    # FIXME: Add update until stable https://bodhi.fedoraproject.org/updates/FEDORA-2019-e830287661
+    - sudo dnf upgrade -y --enablerepo=updates-testing --advisory=FEDORA-2019-e830287661
     # FIXME: Add update until stable https://bodhi.fedoraproject.org/updates/FEDORA-2019-161b129d4d
     - sudo dnf upgrade -y --enablerepo=updates-testing --advisory=FEDORA-2019-161b129d4d
     # Work-around https://gitlab.gnome.org/GNOME/gnome-desktop-testing/merge_requests/2
