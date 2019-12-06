@@ -5,7 +5,7 @@
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
  License as published by the Free Software Foundation; either
- version 2.1 of the License, or (at your option) any later version.
+ version 2 of the License, or (at your option) any later version.
 
  This library is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,25 +26,32 @@
        The OpenURI portal allows sandboxed applications to open
        URIs (e.g. a http: link to the applications homepage)
        under the control of the user.
+
+       This documentation describes version 3 of this interface.
   -->
   <interface name="org.freedesktop.portal.OpenURI">
     <!--
         OpenURI:
-        @parent_window: Identifier for the application window
+        @parent_window: Identifier for the application window, see <link linkend="parent_window">Common Conventions</link>
         @uri: The uri to open
         @options: Vardict with optional further onformation
         @handle: Object path for the #org.freedesktop.portal.Request object representing this call
 
         Asks to open a uri.
 
-        The @parent_window identifier must be of the form "x11:$XID" for an X11
-        window. Support for other window systems may be added in the future.
-
         Note that file:// uris are explicitly not supported by this method.
-        To request opening local files, use org.freedesktop.portal.OpenFile().
+        To request opening local files, use org.freedesktop.portal.OpenURI.OpenFile().
 
         Supported keys in the @options vardict include:
         <variablelist>
+          <varlistentry>
+            <term>handle_token s</term>
+            <listitem><para>
+              A string that will be used as the last element of the @handle. Must be a valid
+              object path element. See the #org.freedesktop.portal.Request documentation for
+              more information about the @handle.
+            </para></listitem>
+          </varlistentry>
           <varlistentry>
             <term>writable b</term>
             <listitem><para>
@@ -53,6 +60,15 @@
               This key only takes effect the uri points to a local file that
               is exported in the document portal, and the chosen application
               is sandboxed itself.
+            </para></listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>ask b</term>
+            <listitem><para>
+              Whether to ask the user to choose an app. If this is not passed, or false,
+              the portal may use a default or pick the last choice.
+            </para><para>
+              The ask option was introduced in version 3 of the interface.
             </para></listitem>
           </varlistentry>
         </variablelist>
@@ -67,18 +83,23 @@
 
     <!--
         OpenFile:
-        @parent_window: Identifier for the application window
+        @parent_window: Identifier for the application window, see <link linkend="parent_window">Common Conventions</link>
         @fd: File descriptor for the file to open
         @options: Vardict with optional further onformation
         @handle: Object path for the #org.freedesktop.portal.Request object representing this call
 
         Asks to open a local file.
 
-        The @parent_window identifier must be of the form "x11:$XID" for an X11
-        window. Support for other window systems may be added in the future.
-
         Supported keys in the @options vardict include:
         <variablelist>
+          <varlistentry>
+            <term>handle_token s</term>
+            <listitem><para>
+              A string that will be used as the last element of the @handle. Must be a valid
+              object path element. See the #org.freedesktop.portal.Request documentation for
+              more information about the @handle.
+            </para></listitem>
+          </varlistentry>
           <varlistentry>
             <term>writable b</term>
             <listitem><para>
@@ -89,11 +110,52 @@
               is sandboxed itself.
             </para></listitem>
           </varlistentry>
+          <varlistentry>
+            <term>ask b</term>
+            <listitem><para>
+              Whether to ask the user to choose an app. If this is not passed, or false,
+              the portal may use a default or pick the last choice.
+            </para><para>
+              The ask option was introduced in version 3 of the interface.
+            </para></listitem>
+          </varlistentry>
         </variablelist>
 
         The OpenFile method was introduced in version 2 of the OpenURI portal API.
     -->
     <method name="OpenFile">
+      <annotation name="org.gtk.GDBus.C.UnixFD" value="true"/>
+      <arg type="s" name="parent_window" direction="in"/>
+      <arg type="h" name="fd" direction="in"/>
+      <arg type="a{sv}" name="options" direction="in"/>
+      <arg type="o" name="handle" direction="out"/>
+    </method>
+
+    <!--
+        OpenDirectory:
+        @parent_window: Identifier for the application window, see <link linkend="parent_window">Common Conventions</link>
+        @fd: File descriptor for a file
+        @options: Vardict with optional further onformation
+        @handle: Object path for the #org.freedesktop.portal.Request object representing this call
+
+        Asks to open the directory containing a local file in the file browser.
+
+        Supported keys in the @options vardict include:
+        <variablelist>
+          <varlistentry>
+            <term>handle_token s</term>
+            <listitem><para>
+              A string that will be used as the last element of the @handle. Must be a valid
+              object path element. See the #org.freedesktop.portal.Request documentation for
+              more information about the @handle.
+            </para></listitem>
+          </varlistentry>
+        </variablelist>
+
+        The OpenDirectory method was introduced in version 3 of the OpenURI portal API.
+    -->
+    <method name="OpenDirectory">
+      <annotation name="org.gtk.GDBus.C.UnixFD" value="true"/>
       <arg type="s" name="parent_window" direction="in"/>
       <arg type="h" name="fd" direction="in"/>
       <arg type="a{sv}" name="options" direction="in"/>
