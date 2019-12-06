@@ -192,16 +192,18 @@ handle_list (int argc, char *argv[], gboolean do_help)
 
   g_option_context_free (context);
 
-  if (attributes != NULL)
-    show_long = TRUE;
-
-  attributes = g_strconcat (G_FILE_ATTRIBUTE_STANDARD_NAME ","
-                            G_FILE_ATTRIBUTE_STANDARD_TYPE ","
-                            G_FILE_ATTRIBUTE_STANDARD_SIZE ","
-                            G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
-                            attributes != NULL ? "," : "",
-                            attributes,
-                            NULL);
+  if (attributes == NULL)
+    {
+      attributes = g_strconcat (G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                G_FILE_ATTRIBUTE_STANDARD_TYPE ","
+                                G_FILE_ATTRIBUTE_STANDARD_SIZE ","
+                                G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
+                                NULL);
+    }
+  else
+    {
+      show_long = TRUE;
+    }
 
   res = TRUE;
   if (argc > 1)
