@@ -320,12 +320,6 @@ if host_machine.system() != 'windows'
                    '--output-directory', '@OUTDIR@',
                    '--generate-c-code', 'fake-document-portal-generated',
                    '--c-namespace', 'Fake',
-                   '--annotate', 'org.freedesktop.portal.Documents.Add()',
-                                 'org.gtk.GDBus.C.UnixFD', 'true',
-                   '--annotate', 'org.freedesktop.portal.Documents.AddNamed()',
-                                 'org.gtk.GDBus.C.UnixFD', 'true',
-                   '--annotate', 'org.freedesktop.portal.Documents.AddFull()',
-                                 'org.gtk.GDBus.C.UnixFD', 'true',
                    '@INPUT@'])
 
     test_extra_programs += {
