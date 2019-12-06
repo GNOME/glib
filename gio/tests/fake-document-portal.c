@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Canonical Limited
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors: James Henstridge <james.henstridge@canonical.com>
+ */
+
 /* A stub implementation of xdg-document-portal covering enough to
  * support g_document_portal_add_documents */
 
@@ -54,7 +73,7 @@ on_bus_acquired (GDBusConnection *connection,
   FakeDocuments *interface;
   GError *error = NULL;
 
-  g_print ("Acquired a message bus connection\n");
+  g_test_message ("Acquired a message bus connection\n");
 
   interface = fake_documents_skeleton_new ();
   g_signal_connect (interface,
@@ -78,7 +97,7 @@ on_name_acquired (GDBusConnection *connection,
                   const gchar     *name,
                   gpointer         user_data)
 {
-  g_print ("Acquired the name %s\n", name);
+  g_test_message ("Acquired the name %s\n", name);
 }
 
 static void
@@ -86,7 +105,7 @@ on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
-  g_print ("Lost the name %s\n", name);
+  g_test_message ("Lost the name %s\n", name);
 }
 
 

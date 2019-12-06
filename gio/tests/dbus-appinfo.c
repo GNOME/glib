@@ -302,7 +302,7 @@ on_flatpak_activate (GApplication *app,
   g_application_hold (app);
 
   uri = g_filename_to_uri (g_desktop_app_info_get_filename (flatpak_appinfo), NULL, NULL);
-  g_assert (uri != NULL);
+  g_assert_nonnull (uri);
   uris = g_list_prepend (NULL, uri);
   g_app_info_launch_uris_async (G_APP_INFO (flatpak_appinfo), uris, NULL,
                                 NULL, on_flatpak_launch_uris_finish, app);
@@ -321,7 +321,7 @@ on_flatpak_open (GApplication  *app,
   g_assert_cmpint (n_files, ==, 1);
   /* The file has been exported via the document portal */
   f = g_file_new_for_uri ("file:///document-portal/document-id/org.gtk.test.dbusappinfo.flatpak.desktop");
-  g_assert (g_file_equal (files[0], f));
+  g_assert_true (g_file_equal (files[0], f));
   g_object_unref (f);
 }
 
@@ -334,11 +334,13 @@ test_flatpak_doc_export (void)
   GApplication *app;
   int status;
 
+  g_test_summary ("Test that files launched via Flatpak apps are made available via the document portal.");
+
   desktop_file = g_test_build_filename (G_TEST_DIST,
                                         "org.gtk.test.dbusappinfo.flatpak.desktop",
                                         NULL);
   flatpak_appinfo = g_desktop_app_info_new_from_filename (desktop_file);
-  g_assert (appinfo != NULL);
+  g_assert_nonnull (flatpak_appinfo);
   g_free (desktop_file);
 
   app = g_application_new ("org.gtk.test.dbusappinfo.flatpak",

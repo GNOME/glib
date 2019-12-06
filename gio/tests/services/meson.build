@@ -1,5 +1,5 @@
 dbus_service_files = [
-  'org.freedesktop.portal.Documents.service'
+  'org.freedesktop.portal.Documents.service',
 ]
 
 srcdir_cdata = configuration_data()
