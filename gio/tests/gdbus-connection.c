@@ -1256,6 +1256,10 @@ main (int   argc,
       char *argv[])
 {
   int ret;
+
+  /* FIXME: Add debug for https://gitlab.gnome.org/GNOME/glib/issues/1957 */
+  g_setenv ("G_DBUS_DEBUG", "all", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */
