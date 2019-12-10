@@ -86,10 +86,10 @@ g_trash_portal_trash_file (GFile   *file,
 
   path = g_file_get_path (file);
 
-  fd = g_open (path, O_RDWR | O_CLOEXEC);
+  fd = g_open (path, O_RDWR | O_CLOEXEC | O_NOFOLLOW);
   if (fd == -1 && errno == EISDIR)
     /* If it is a directory, fall back to O_PATH */
-    fd = g_open (path, O_PATH | O_CLOEXEC | O_RDONLY);
+    fd = g_open (path, O_PATH | O_CLOEXEC | O_RDONLY | O_NOFOLLOW);
 
   errsv = errno;
 
