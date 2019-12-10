@@ -54,7 +54,7 @@ _g_win32_fixup_broken_microsoft_rundll_commandline (gunichar2 *commandline)
           if (!quoted)
             {
               first_argument = p;
-              while (first_argument < &commandline[len] && first_argument[0] == L' ')
+              while (first_argument[0] == L' ')
                 first_argument++;
               p = &commandline[len];
             }
