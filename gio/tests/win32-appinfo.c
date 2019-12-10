@@ -59,7 +59,7 @@ G_STMT_START { \
 static void
 test_win32_rundll32_fixup (void)
 {
-  guint i;
+  gsize i;
 
   struct {
     const char *orig;
