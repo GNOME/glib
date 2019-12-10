@@ -147,6 +147,6 @@ main (int   argc,
 
   g_test_add_func ("/appinfo/win32-rundll32-fixup", test_win32_rundll32_fixup);
 
-  return g_test_run();
+  return g_test_run ();
 }
 
