@@ -989,7 +989,7 @@ g_settings_schema_get_value (GSettingsSchema *schema,
  * database: those located at the path returned by this function.
  *
  * Relocatable schemas can be referenced by other schemas and can
- * threfore describe multiple sets of keys at different locations.  For
+ * therefore describe multiple sets of keys at different locations.  For
  * relocatable schemas, this function will return %NULL.
  *
  * Returns: (transfer none): the path of the schema, or %NULL
