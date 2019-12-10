@@ -347,6 +347,34 @@ freebsd-12-x86_64:
       - "_build/meson-logs"
       - "_build/${CI_JOB_NAME}-report.xml"
 
+macos:
+  extends: .only-default
+  stage: build
+  only:
+    - branches@GNOME/glib
+  tags:
+    - macos
+  before_script:
+    - pip3 install --user meson==0.49.2
+    - export PATH=/Users/gitlabrunner/Library/Python/3.7/bin:$PATH
+  script:
+    - meson ${MESON_COMMON_OPTIONS}
+            --werror
+            _build
+    - ninja -C _build
+    # FIXME: Multiple unit tests currently fails
+    - .gitlab-ci/run-tests.sh || true
+  artifacts:
+    reports:
+      junit: "_build/${CI_JOB_NAME}-report.xml"
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+      - "_build/${CI_JOB_NAME}-report.xml"
+
 coverage:
   extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
