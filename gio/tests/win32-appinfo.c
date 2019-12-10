@@ -1,5 +1,5 @@
 /* GLib testing framework examples and tests
- * Copyright (C) 2008 Red Hat, Inc
+ * Copyright (C) 2019 Руслан Ижбулатов <lrn1986@gmail.com>
  *
  * This work is provided "as is"; redistribution and modification
  * in whole or in part, in any medium, physical or electronic is
