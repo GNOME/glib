@@ -135,86 +135,134 @@ test_utf16_strfuncs (void)
 
 struct {
   const char *orig;
+  const char *executable;
+  const char *executable_basename;
   gboolean    is_rundll32;
   const char *fixed;
 } rundll32_commandlines[] = {
   {
     "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
+    "%SystemRoot%\\System32\\rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
   },
   {
+    "%SystemRoot%\\System32/rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
+    "%SystemRoot%\\System32/rundll32.exe",
+    "rundll32.exe",
+    TRUE,
+    "%SystemRoot%\\System32/rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
+  },
+  {
     "\"some path with spaces\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
+    "some path with spaces\\rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "\"some path with spaces\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
   },
   {
     "rundll32.exe foo.bar,baz",
+    "rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "rundll32.exe foo.bar baz",
   },
   {
+    "rundll32.exe",
+    "rundll32.exe",
     "rundll32.exe",
     FALSE,
     NULL,
   },
   {
     "rundll32.exe ,foobar",
+    "rundll32.exe",
+    "rundll32.exe",
     FALSE,
     NULL,
   },
   {
     "rundll32.exe   ,foobar",
+    "rundll32.exe",
+    "rundll32.exe",
+    FALSE,
+    NULL,
+  },
+  {
+    "rundll32.exe foo.dll",
+    "rundll32.exe",
+    "rundll32.exe",
     FALSE,
     NULL,
   },
   {
     "rundll32.exe \"foo bar\",baz",
+    "rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "rundll32.exe \"foo bar\" baz",
   },
   {
     "\"rundll32.exe\" \"foo bar\",baz",
+    "rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "\"rundll32.exe\" \"foo bar\" baz",
   },
   {
     "\"rundll32.exe\" \"foo bar\",, , ,,, , ,,baz",
+    "rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "\"rundll32.exe\" \"foo bar\" , , ,,, , ,,baz",
   },
   {
     "\"rundll32.exe\" foo.bar,,,,,,,,,baz",
+    "rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "\"rundll32.exe\" foo.bar ,,,,,,,,baz",
   },
   {
     "\"rundll32.exe\" foo.bar baz",
+    "rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "\"rundll32.exe\" foo.bar baz",
   },
   {
     "\"RuNdlL32.exe\" foo.bar baz",
+    "RuNdlL32.exe",
+    "RuNdlL32.exe",
     TRUE,
     "\"RuNdlL32.exe\" foo.bar baz",
   },
   {
     "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
+    "%SystemRoot%\\System32\\rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
   },
   {
     "\"rundll32.exe\" \"foo bar,\"baz",
+    "rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "\"rundll32.exe\" \"foo bar,\"baz",
   },
   {
     "\"rundll32.exe\" some,thing",
+    "rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "\"rundll32.exe\" some thing",
   },
   {
     "\"rundll32.exe\" some, thing",
+    "rundll32.exe",
+    "rundll32.exe",
     TRUE,
     "\"rundll32.exe\" some  thing",
   },
@@ -260,6 +308,10 @@ test_win32_extract_executable (void)
     {
       gunichar2 *argument;
       gchar *dll_function;
+      gchar *executable;
+      gchar *executable_basename;
+      gchar *executable_folded;
+      gchar *executable_folded_basename;
 
       argument = g_utf8_to_utf16 (rundll32_commandlines[i].orig, -1, NULL, NULL, NULL);
 
@@ -271,6 +323,16 @@ test_win32_extract_executable (void)
         g_assert_null (dll_function);
 
       g_free (dll_function);
+
+      _g_win32_extract_executable (argument, &executable, &executable_basename, &executable_folded, &executable_folded_basename, NULL);
+
+      g_assert_cmpstr (rundll32_commandlines[i].executable, ==, executable);
+      g_assert_cmpstr (rundll32_commandlines[i].executable_basename, ==, executable_basename);
+
+      g_free (executable);
+      g_free (executable_basename);
+      g_free (executable_folded);
+      g_free (executable_folded_basename);
       g_free (argument);
     }
 }
