@@ -112,6 +112,7 @@ installed-tests:
             _build
     - ninja -C _build
     - sudo ninja -C _build install
+    - sudo chown -R `id -un`:`id -gn` _build/
     # FIXME Install newer xdg-desktop-portal with
     # GMemoryMonitor support, see:
     # https://github.com/flatpak/xdg-desktop-portal/pull/365
