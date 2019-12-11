@@ -31,7 +31,7 @@ RUN dnf -y install \
     glibc-langpack-pl \
     glibc-langpack-ru \
     glibc-langpack-tr \
-    gnome-desktop-testing \
+    "gnome-desktop-testing >= 2018.1" \
     gtk-doc \
     itstool \
     lcov \
@@ -43,7 +43,7 @@ RUN dnf -y install \
     ncurses-compat-libs \
     ninja-build \
     pcre-devel \
-    python3-dbusmock \
+    "python3-dbusmock >= 0.18.3-2" \
     python3-pygments \
     python3-wheel \
     shared-mime-info \
