@@ -480,17 +480,6 @@ static GWin32RegistryKey *applications_key;
 /* Watch this key */
 static GWin32RegistryKey *classes_root_key;
 
-static gunichar2 *
-g_wcsdup (const gunichar2 *str, gssize str_size)
-{
-  if (str_size == -1)
-    {
-      str_size = wcslen (str) + 1;
-      str_size *= sizeof (gunichar2);
-    }
-  return g_memdup (str, str_size);
-}
-
 #define URL_ASSOCIATIONS L"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\"
 #define USER_CHOICE L"\\UserChoice"
 #define OPEN_WITH_PROGIDS L"\\OpenWithProgids"
@@ -501,6 +490,12 @@ g_wcsdup (const gunichar2 *str, gssize str_size)
 #define SHELL_OPEN_COMMAND L"\\shell\\open\\command"
 #define REG_PATH_MAX 256
 #define REG_PATH_MAX_SIZE (REG_PATH_MAX * sizeof (gunichar2))
+
+/* for g_wcsdup(),
+ *     _g_win32_extract_executable(),
+ *     _g_win32_fixup_broken_microsoft_rundll_commandline()
+ */
+#include "giowin32-private.c"
 
 static gunichar2 *
 read_resource_string (gunichar2 *res)
@@ -710,40 +705,6 @@ _g_win32_registry_key_build_and_new_w (GError **error, ...)
   return key;
 }
 
-
-static gboolean
-utf8_and_fold (const gunichar2  *str,
-               gchar           **str_u8,
-               gchar           **str_u8_folded)
-{
-  gchar *u8;
-  gchar *folded;
-  u8 = g_utf16_to_utf8 (str, -1, NULL, NULL, NULL);
-
-  if (u8 == NULL)
-    return FALSE;
-
-  folded = g_utf8_casefold (u8, -1);
-
-  if (folded == NULL)
-    {
-      g_free (u8);
-      return FALSE;
-    }
-
-  if (str_u8)
-    *str_u8 = u8;
-  else
-    g_free (u8);
-
-  if (str_u8_folded)
-    *str_u8_folded = folded;
-  else
-    g_free (folded);
-
-  return TRUE;
-}
-
 /* Slow and dirty validator for UTF-16 strings */
 static gboolean
 g_utf16_validate (const gunichar2  *str,
@@ -811,7 +772,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
       if (got_value && val_type == G_WIN32_REGISTRY_VALUE_STR)
         {
           if (((program_id_u8 != NULL || program_id_folded != NULL) &&
-               !utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
+               !g_utf16_to_utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
               !g_utf16_validate (*program_command, -1))
             {
               g_object_unref (key);
@@ -880,7 +841,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
   if (!got_value ||
       val_type != G_WIN32_REGISTRY_VALUE_STR ||
       ((program_id_u8 != NULL || program_id_folded != NULL) &&
-       !utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
+       !g_utf16_to_utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
       !g_utf16_validate (*proxy_command, -1))
     {
       g_clear_pointer (proxy_id, g_free);
@@ -891,267 +852,6 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
     }
 
   return TRUE;
-}
-
-/* for _g_win32_fixup_broken_microsoft_rundll_commandline() */
-#include "giowin32-private.c"
-
-/* Make sure @commandline is a valid UTF-16 string before
- * calling this function!
- * follow_class_chain_to_handler() does perform such validation.
- */
-static void
-extract_executable (gunichar2  *commandline,
-                    gchar     **ex_out,
-                    gchar     **ex_basename_out,
-                    gchar     **ex_folded_out,
-                    gchar     **ex_folded_basename_out,
-                    gchar     **dll_function_out)
-{
-  gchar *ex;
-  gchar *ex_folded;
-  gunichar2 *p;
-  gunichar2 *first_argument;
-  gboolean quoted;
-  size_t len;
-  size_t execlen;
-  gunichar2 *exepart;
-  gboolean found;
-
-  quoted = FALSE;
-  execlen = 0;
-  found = FALSE;
-  len = wcslen (commandline);
-  p = commandline;
-  first_argument = NULL;
-
-  while (p < &commandline[len])
-    {
-      switch (p[0])
-        {
-        case L'"':
-          quoted = !quoted;
-          break;
-        case L' ':
-          if (!quoted)
-            {
-              execlen = p - commandline;
-              first_argument = p;
-              while (first_argument < &commandline[len] && first_argument[0] == L' ')
-                first_argument++;
-              p = &commandline[len];
-              found = TRUE;
-            }
-          break;
-        default:
-          break;
-        }
-      p += 1;
-    }
-
-  if (!found)
-    execlen = len;
-
-  exepart = g_wcsdup (commandline, (execlen + 1) * sizeof (gunichar2));
-  exepart[execlen] = L'\0';
-
-  p = &exepart[0];
-
-  while (execlen > 0 && exepart[0] == L'"' && exepart[execlen - 1] == L'"')
-    {
-      p = &exepart[1];
-      exepart[execlen - 1] = L'\0';
-      execlen -= 2;
-    }
-
-  if (!utf8_and_fold (p, &ex, &ex_folded))
-    /* Currently no code to handle this case. It shouldn't happen though... */
-    g_assert_not_reached ();
-
-  g_free (exepart);
-
-  if (dll_function_out)
-    *dll_function_out = NULL;
-
-  /* See if the executable basename is "rundll32.exe". If so, then
-   * parse the rest of the commandline as r'"?path-to-dll"?[ ]*,*[ ]*dll_function_to_invoke'
-   */
-  /* Using just "rundll32.exe", without an absolute path, seems
-   * very exploitable, but MS does that sometimes, so we have
-   * to accept that.
-   */
-  if ((g_strcmp0 (ex_folded, "rundll32.exe") == 0 ||
-       g_str_has_suffix (ex_folded, "\\rundll32.exe") ||
-       g_str_has_suffix (ex_folded, "/rundll32.exe")) &&
-      first_argument != NULL)
-    {
-      /* Corner cases:
-       * > rundll32.exe c:\some,file,with,commas.dll,some_function
-       * is treated by rundll32 as:
-       * dll=c:\some
-       * function=file,with,commas.dll,some_function
-       * unless the dll name is surrounded by double quotation marks:
-       * > rundll32.exe "c:\some,file,with,commas.dll",some_function
-       * in which case everything works normally.
-       * Also, quoting only works if it surrounds the file name, i.e:
-       * > rundll32.exe "c:\some,file"",with,commas.dll",some_function
-       * will not work.
-       * Also, comma is optional when filename is quoted or when function
-       * name is separated from the filename by space(s):
-       * > rundll32.exe "c:\some,file,with,commas.dll"some_function
-       * will work,
-       * > rundll32.exe c:\some_dll_without_commas_or_spaces.dll some_function
-       * will work too.
-       * Also, any number of commas is accepted:
-       * > rundll32.exe c:\some_dll_without_commas_or_spaces.dll , , ,,, , some_function
-       * both work just fine.
-       * Good job, Microsoft!
-       */
-      gunichar2 *filename_end = NULL;
-      size_t filename_len = 0;
-      gunichar2 *function_begin = NULL;
-      size_t function_len = 0;
-      gunichar2 *dllpart;
-      quoted = FALSE;
-      p = first_argument;
-
-      if (p[0] == L'"')
-        {
-          quoted = TRUE;
-          p += 1;
-        }
-
-      while (p < &commandline[len])
-        {
-          switch (p[0])
-            {
-            case L'"':
-              if (quoted)
-                {
-                  filename_end = p;
-                  p = &commandline[len];
-                }
-              break;
-            case L' ':
-            case L',':
-              if (!quoted)
-                {
-                  filename_end = p;
-                  p = &commandline[len];
-                }
-              break;
-            default:
-              break;
-            }
-          p += 1;
-        }
-
-      if (filename_end == NULL && !quoted)
-        filename_end = &commandline[len];
-
-      if (filename_end != NULL)
-        {
-          function_begin = filename_end;
-          if (quoted)
-            function_begin += 1;
-          while (function_begin[0] == L',' || function_begin[0] == L' ')
-            function_begin += 1;
-          if (function_begin[0] != L'\0')
-            {
-              gunichar2 *space = wcschr (function_begin, L' ');
-
-              if (space)
-                function_len = space - function_begin;
-              else
-                function_len = wcslen (function_begin);
-
-              p = first_argument;
-              filename_len = filename_end - first_argument;
-
-              if (quoted)
-                {
-                  p += 1;
-                  filename_len -= 1;
-                }
-
-              dllpart = g_wcsdup (p, (filename_len + 1) * sizeof (gunichar2));
-              dllpart[filename_len] = L'\0';
-
-              g_debug ("Dismissing wrapper `%s', using `%S' as the executable DLL that runs %*S",
-                       ex,
-                       dllpart,
-                       (int) function_len, function_begin);
-
-              /*
-               * Free our previous output candidate (rundll32) and replace it with the DLL path,
-               * scoop up the function name, if needed, then proceed forward as if nothing has changed.
-               */
-              g_free (ex);
-              g_free (ex_folded);
-
-              if (dll_function_out)
-                *dll_function_out = g_utf16_to_utf8 (function_begin, function_len, NULL, NULL, NULL);
-
-              if (!utf8_and_fold (dllpart, &ex, &ex_folded))
-                /* Currently no code to handle this case. It shouldn't happen though... */
-                g_assert_not_reached ();
-
-              g_free (dllpart);
-            }
-        }
-    }
-
-  if (ex_out)
-    {
-      *ex_out = ex;
-
-      if (ex_basename_out)
-        {
-          *ex_basename_out = &ex[strlen (ex) - 1];
-
-          while (*ex_basename_out > ex)
-            {
-              if ((*ex_basename_out)[0] == '/' ||
-                  (*ex_basename_out)[0] == '\\')
-                {
-                  *ex_basename_out += 1;
-                  break;
-                }
-
-              *ex_basename_out -= 1;
-            }
-        }
-    }
-  else
-    {
-      g_free (ex);
-    }
-
-  if (ex_folded_out)
-    {
-      *ex_folded_out = ex_folded;
-
-      if (ex_folded_basename_out)
-        {
-          *ex_folded_basename_out = &ex_folded[strlen (ex_folded) - 1];
-
-          while (*ex_folded_basename_out > ex_folded)
-            {
-              if ((*ex_folded_basename_out)[0] == '/' ||
-                  (*ex_folded_basename_out)[0] == '\\')
-                {
-                  *ex_folded_basename_out += 1;
-                  break;
-                }
-
-              *ex_folded_basename_out -= 1;
-            }
-        }
-    }
-  else
-    {
-      g_free (ex_folded);
-    }
 }
 
 static void
@@ -1181,7 +881,7 @@ get_url_association (const gunichar2 *schema)
   if (user_choice == NULL)
     return;
 
-  if (!utf8_and_fold (schema, &schema_u8, &schema_folded))
+  if (!g_utf16_to_utf8_and_fold (schema, &schema_u8, &schema_folded))
     {
       g_object_unref (user_choice);
       return;
@@ -1248,12 +948,12 @@ get_url_association (const gunichar2 *schema)
       handler_rec->proxy_id = proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
       handler_rec->proxy_command =
           proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-      extract_executable (proxy_command ? proxy_command : program_command,
-                          &handler_rec->executable,
-                          &handler_rec->executable_basename,
-                          &handler_rec->executable_folded,
-                          NULL,
-                          &handler_rec->dll_function);
+      _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                   &handler_rec->executable,
+                                   &handler_rec->executable_basename,
+                                   &handler_rec->executable_folded,
+                                   NULL,
+                                   &handler_rec->dll_function);
       if (handler_rec->dll_function != NULL)
         _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
@@ -1333,7 +1033,7 @@ get_file_ext (const gunichar2 *ext)
   if (user_choice == NULL && open_with_progids == NULL)
     return;
 
-  if (!utf8_and_fold (ext, &ext_u8, &ext_folded))
+  if (!g_utf16_to_utf8_and_fold (ext, &ext_u8, &ext_folded))
     {
       g_clear_object (&user_choice);
       g_clear_object (&open_with_progids);
@@ -1393,12 +1093,12 @@ get_file_ext (const gunichar2 *ext)
                       proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
                   handler_rec->proxy_command =
                       proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-                  extract_executable (proxy_command ? proxy_command : program_command,
-                                      &handler_rec->executable,
-                                      &handler_rec->executable_basename,
-                                      &handler_rec->executable_folded,
-                                      NULL,
-                                      &handler_rec->dll_function);
+                  _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                               &handler_rec->executable,
+                                               &handler_rec->executable_basename,
+                                               &handler_rec->executable_folded,
+                                               NULL,
+                                               &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
                     _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
@@ -1514,12 +1214,12 @@ get_file_ext (const gunichar2 *ext)
                       proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
                   handler_rec->proxy_command =
                       proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-                  extract_executable (proxy_command ? proxy_command : program_command,
-                                      &handler_rec->executable,
-                                      &handler_rec->executable_basename,
-                                      &handler_rec->executable_folded,
-                                      NULL,
-                                      &handler_rec->dll_function);
+                  _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                               &handler_rec->executable,
+                                               &handler_rec->executable_basename,
+                                               &handler_rec->executable_folded,
+                                               NULL,
+                                               &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
                     _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
@@ -1845,7 +1545,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   canonical_name += 1;
 
-  if (!utf8_and_fold (canonical_name, &canonical_name_u8, &canonical_name_folded))
+  if (!g_utf16_to_utf8_and_fold (canonical_name, &canonical_name_u8, &canonical_name_folded))
     {
       g_free (app_key_path);
       return;
@@ -1912,12 +1612,12 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
       return;
     }
 
-  extract_executable (shell_open_command,
-                      &app_executable,
-                      &app_executable_basename,
-                      &app_executable_folded,
-                      &app_executable_folded_basename,
-                      &app_dll_function);
+  _g_win32_extract_executable (shell_open_command,
+                               &app_executable,
+                               &app_executable_basename,
+                               &app_executable_folded,
+                               &app_executable_folded_basename,
+                               &app_dll_function);
   if (app_dll_function != NULL)
     _g_win32_fixup_broken_microsoft_rundll_commandline (shell_open_command);
 
@@ -2167,12 +1867,12 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                       proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
                   handler_rec->proxy_command =
                       proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-                  extract_executable (proxy_command ? proxy_command : program_command,
-                                      &handler_rec->executable,
-                                      &handler_rec->executable_basename,
-                                      &handler_rec->executable_folded,
-                                      NULL,
-                                      &handler_rec->dll_function);
+                  _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                               &handler_rec->executable,
+                                               &handler_rec->executable_basename,
+                                               &handler_rec->executable_folded,
+                                               NULL,
+                                               &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
                     _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
@@ -2188,9 +1888,9 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                   g_clear_object (&proxy_key);
                 }
 
-                if (utf8_and_fold (file_extension,
-                                   &file_extension_u8,
-                                   &file_extension_folded))
+                if (g_utf16_to_utf8_and_fold (file_extension,
+                                              &file_extension_u8,
+                                              &file_extension_folded))
                   {
                     ext = g_hash_table_lookup (extensions,
                                                file_extension_folded);
@@ -2326,12 +2026,12 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                       proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
                   handler_rec->proxy_command =
                       proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-                  extract_executable (proxy_command ? proxy_command : program_command,
-                                      &handler_rec->executable,
-                                      &handler_rec->executable_basename,
-                                      &handler_rec->executable_folded,
-                                      NULL,
-                                      &handler_rec->dll_function);
+                  _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                               &handler_rec->executable,
+                                               &handler_rec->executable_basename,
+                                               &handler_rec->executable_folded,
+                                               NULL,
+                                               &handler_rec->dll_function);
                   if (handler_rec->dll_function != NULL)
                     _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
@@ -2347,9 +2047,9 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                   g_clear_object (&proxy_key);
                 }
 
-                if (utf8_and_fold (url_schema,
-                                   &schema_u8,
-                                   &schema_folded))
+                if (g_utf16_to_utf8_and_fold (url_schema,
+                                              &schema_u8,
+                                              &schema_folded))
                   {
                     schema = g_hash_table_lookup (urls,
                                                   schema_folded);
@@ -2500,12 +2200,12 @@ read_exeapps (void)
       if (incapable_app == NULL)
         continue;
 
-      extract_executable (app_exe_basename,
-                          &appexe,
-                          &appexe_basename,
-                          &appexe_folded,
-                          &appexe_folded_basename,
-                          NULL);
+      _g_win32_extract_executable (app_exe_basename,
+                                   &appexe,
+                                   &appexe_basename,
+                                   &appexe_folded,
+                                   &appexe_folded_basename,
+                                   NULL);
 
       shell_open_command_key =
           g_win32_registry_key_get_child_w (incapable_app,
@@ -2601,12 +2301,12 @@ read_exeapps (void)
             {
               gchar *dll_function;
 
-              extract_executable (shell_open_command,
-                                  NULL,
-                                  NULL,
-                                  NULL,
-                                  NULL,
-                                  &dll_function);
+              _g_win32_extract_executable (shell_open_command,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           &dll_function);
               if (dll_function != NULL)
                 _g_win32_fixup_broken_microsoft_rundll_commandline (shell_open_command);
               g_clear_pointer (&dll_function, g_free);
@@ -2669,9 +2369,9 @@ read_exeapps (void)
                                                                 NULL)) ||
                       (ext_name_len <= 0) ||
                       (ext_name[0] != L'.') ||
-                      (!utf8_and_fold (ext_name,
-                                       &ext_u8,
-                                       &ext_folded)))
+                      (!g_utf16_to_utf8_and_fold (ext_name,
+                                                  &ext_u8,
+                                                  &ext_folded)))
                     continue;
 
                   file_extn = NULL;
@@ -2817,12 +2517,12 @@ read_class_extension (GWin32RegistryKey *classes_root,
       handler_rec->proxy_id = proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
       handler_rec->proxy_command =
           proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-      extract_executable (proxy_command ? proxy_command : program_command,
-                          &handler_rec->executable,
-                          &handler_rec->executable_basename,
-                          &handler_rec->executable_folded,
-                          NULL,
-                          &handler_rec->dll_function);
+      _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                   &handler_rec->executable,
+                                   &handler_rec->executable_basename,
+                                   &handler_rec->executable_folded,
+                                   NULL,
+                                   &handler_rec->dll_function);
       if (handler_rec->dll_function != NULL)
         _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
@@ -2938,12 +2638,12 @@ read_class_url (GWin32RegistryKey *classes_root,
       handler_rec->proxy_id = proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
       handler_rec->proxy_command =
           proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-      extract_executable (proxy_command ? proxy_command : program_command,
-                          &handler_rec->executable,
-                          &handler_rec->executable_basename,
-                          &handler_rec->executable_folded,
-                          NULL,
-                          &handler_rec->dll_function);
+      _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                   &handler_rec->executable,
+                                   &handler_rec->executable_basename,
+                                   &handler_rec->executable_folded,
+                                   NULL,
+                                   &handler_rec->dll_function);
       if (handler_rec->dll_function != NULL)
         _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
@@ -3065,9 +2765,9 @@ link_chosen_handlers (void)
 
           if (handler->proxy_command &&
               handler->proxy_id &&
-              utf8_and_fold (handler->proxy_id,
-                             NULL,
-                             &proxy_id_folded))
+              g_utf16_to_utf8_and_fold (handler->proxy_id,
+                                        NULL,
+                                        &proxy_id_folded))
             {
               GWin32AppInfoHandler *proxy;
 
@@ -3123,9 +2823,9 @@ link_chosen_handlers (void)
 
           if (handler->proxy_command &&
               handler->proxy_id &&
-              utf8_and_fold (handler->proxy_id,
-                             NULL,
-                             &proxy_id_folded))
+              g_utf16_to_utf8_and_fold (handler->proxy_id,
+                                        NULL,
+                                        &proxy_id_folded))
             {
               GWin32AppInfoHandler *proxy;
 
@@ -4637,12 +4337,12 @@ g_app_info_create_from_commandline (const char           *commandline,
       app->canonical_name_folded = g_utf8_casefold (application_name, -1);
     }
 
-  extract_executable (app->command,
-                      &app->executable,
-                      &app->executable_basename,
-                      &app->executable_folded,
-                      NULL,
-                      &app->dll_function);
+  _g_win32_extract_executable (app->command,
+                               &app->executable,
+                               &app->executable_basename,
+                               &app->executable_folded,
+                               NULL,
+                               &app->dll_function);
   if (app->dll_function != NULL)
     _g_win32_fixup_broken_microsoft_rundll_commandline (app->command);
 
