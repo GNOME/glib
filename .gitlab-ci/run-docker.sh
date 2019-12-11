@@ -15,6 +15,13 @@ read_arg() {
     fi
 }
 
+SUDO_CMD="sudo"
+if `docker -v | grep -q podman` ; then
+        # Using podman
+        SUDO_CMD=""
+        BUILDAH_FORMAT=docker
+fi
+
 set -e
 
 build=0
@@ -89,7 +96,7 @@ TAG="registry.gitlab.gnome.org/gnome/glib/${base}:${base_version}"
 
 if [ $build == 1 ]; then
         echo -e "\e[1;32mBUILDING\e[0m: ${base} as ${TAG}"
-        sudo docker build \
+        $SUDO_CMD docker build \
                 --build-arg HOST_USER_ID="$UID" \
                 --tag "${TAG}" \
                 --file "${base}.Dockerfile" .
@@ -100,16 +107,16 @@ if [ $push == 1 ]; then
         echo -e "\e[1;32mPUSHING\e[0m: ${base} as ${TAG}"
 
         if [ $no_login == 0 ]; then
-                sudo docker login registry.gitlab.gnome.org
+                $SUDO_CMD docker login registry.gitlab.gnome.org
         fi
 
-        sudo docker push $TAG
+        $SUDO_CMD docker push $TAG
         exit $?
 fi
 
 if [ $run == 1 ]; then
         echo -e "\e[1;32mRUNNING\e[0m: ${base} as ${TAG}"
-        sudo docker run \
+        $SUDO_CMD docker run \
                 --rm \
                 --volume "$(pwd)/..:/home/user/app" \
                 --workdir "/home/user/app" \
