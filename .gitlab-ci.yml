@@ -122,7 +122,7 @@ installed-tests:
     # FIXME Install newer xdg-desktop-portal with
     # GMemoryMonitor support, see:
     # https://github.com/flatpak/xdg-desktop-portal/pull/365
-    - git clone --single-branch --branch wip/hadess/memory-monitor https://github.com/flatpak/xdg-desktop-portal.git
+    - git clone --single-branch https://github.com/flatpak/xdg-desktop-portal.git
     - cd xdg-desktop-portal
     - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-dependency-tracking && make && sudo make install
     - cd ..
