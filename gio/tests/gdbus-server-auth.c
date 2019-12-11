@@ -515,6 +515,9 @@ int
 main (int   argc,
       char *argv[])
 {
+  /* FIXME: Add debug for https://gitlab.gnome.org/GNOME/glib/issues/1954 */
+  g_setenv ("G_DBUS_DEBUG", "all", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gdbus/server-auth", test_server_auth);
