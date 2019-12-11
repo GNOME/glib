@@ -94,9 +94,6 @@ installed-tests:
   extends: .only-default
   image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
   stage: build
-  before_script:
-    # FIXME move to docker image
-    - sudo dnf install -y gnome-desktop-testing python3-dbusmock xdg-desktop-portal
   script:
     # FIXME Install xdg-desktop-portal build deps before compiling glib,
     # so it doesn't overwrite our own glib build
