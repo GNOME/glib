@@ -54,6 +54,22 @@ RUN dnf -y install \
     xdg-desktop-portal \
     xz \
     zlib-devel \
+ && dnf -y install \
+    meson \
+    flex \
+    bison \
+    python3-devel \
+    autoconf \
+    automake \
+    gettext-devel \
+    libtool \
+    diffutils \
+    fontconfig-devel \
+    json-glib-devel \
+    geoclue2-devel \
+    pipewire-devel \
+    fuse-devel \
+    make \
  && dnf clean all
 
 RUN pip3 install meson==0.52.1

@@ -126,9 +126,6 @@ installed-tests:
   image: $FEDORA_IMAGE
   stage: build
   script:
-    # FIXME Install xdg-desktop-portal build deps before compiling glib,
-    # so it doesn't overwrite our own glib build
-    - sudo dnf install -y autoconf automake gettext-devel libtool diffutils fontconfig-devel json-glib-devel geoclue2-devel pipewire-devel fuse-devel make
     # dtrace is disabled because it breaks the static-link.py test
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -151,7 +148,6 @@ installed-tests:
     # FIXME install newer gobject-introspection
     # with GMemoryMonitor support, see:
     # https://gitlab.gnome.org/GNOME/gobject-introspection/merge_requests/193
-    - sudo dnf install -y meson flex bison python3-devel
     - git clone --single-branch https://gitlab.gnome.org/GNOME/gobject-introspection.git
     - cd gobject-introspection
     - /usr/bin/meson _build --prefix=/usr --libdir=/usr/lib64
