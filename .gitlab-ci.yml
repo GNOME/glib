@@ -112,13 +112,6 @@ installed-tests:
             _build
     - ninja -C _build
     - sudo ninja -C _build install
-    # FIXME install libportal to build new xdg-desktop-portal
-    - git clone https://github.com/flatpak/libportal.git
-    - cd libportal/
-    - meson ${MESON_COMMON_OPTIONS} _build --prefix=/usr --libdir=/usr/lib64
-    - ninja -C _build
-    - sudo ninja -C _build install
-    - cd ..
     # FIXME Install newer xdg-desktop-portal with
     # GMemoryMonitor support, see:
     # https://github.com/flatpak/xdg-desktop-portal/pull/365
@@ -126,7 +119,7 @@ installed-tests:
     - cd xdg-desktop-portal
     # FIXME Force-enable portal memory monitor until 2.63.3 is released
     - sed -i 's/2, 63, 3/2, 63, 2/' src/memory-monitor.c
-    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-dependency-tracking && make && sudo make install
+    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-libportal --disable-dependency-tracking && make && sudo make install
     - cd ..
     # FIXME install newer gobject-introspection
     # with GMemoryMonitor support, see:
