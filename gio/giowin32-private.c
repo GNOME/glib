@@ -45,12 +45,6 @@ g_utf16_to_utf8_and_fold (const gunichar2  *str,
 
   folded = g_utf8_casefold (u8, -1);
 
-  if (folded == NULL)
-    {
-      g_free (u8);
-      return FALSE;
-    }
-
   if (str_u8)
     *str_u8 = u8;
   else
