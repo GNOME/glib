@@ -132,7 +132,7 @@ installed-tests:
     # with GMemoryMonitor support, see:
     # https://gitlab.gnome.org/GNOME/gobject-introspection/merge_requests/193
     - sudo dnf install -y meson flex bison python3-devel
-    - git clone --single-branch --branch wip/hadess/add-memory-monitor https://gitlab.gnome.org/GNOME/gobject-introspection.git
+    - git clone --single-branch https://gitlab.gnome.org/GNOME/gobject-introspection.git
     - cd gobject-introspection
     - /usr/bin/meson _build --prefix=/usr --libdir=/usr/lib64
     - ninja -C _build
