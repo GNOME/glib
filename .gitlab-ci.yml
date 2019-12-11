@@ -108,6 +108,8 @@ installed-tests:
     - sudo ninja -C _build install
     # FIXME: Add update until stable https://bodhi.fedoraproject.org/updates/FEDORA-2019-161b129d4d
     - sudo dnf upgrade -y --enablerepo=updates-testing --advisory=FEDORA-2019-161b129d4d
+    # Work-around https://gitlab.gnome.org/GNOME/gnome-desktop-testing/merge_requests/2
+    - mkdir -p _build/installed-tests-report/logs/
     - GLIB_TEST_COMPILATION=1 gnome-desktop-testing-runner
             --report-directory=_build/installed-tests-report/failed/
             --log-directory=_build/installed-tests-report/logs/
