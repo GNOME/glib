@@ -53,6 +53,9 @@ RUN dnf -y install \
     xdg-desktop-portal \
     xz \
     zlib-devel \
+ && dnf -y builddep \
+    xdg-desktop-portal \
+    gobject-introspection \
  && dnf clean all
 
 RUN pip3 install meson==0.49.2
