@@ -57,6 +57,83 @@ G_STMT_START { \
 } G_STMT_END
 
 struct {
+  gsize len;
+  const gunichar2 utf16[10];
+  const gchar *utf8;
+  const gchar *utf8_folded;
+} string_cases[] = {
+  {
+    1,
+    { 0x0020, 0x0000 },
+    " ",
+    " ",
+  },
+  {
+    2,
+    { 0x0020, 0xd800, 0x0000 },
+    NULL,
+    NULL,
+  },
+};
+
+static void
+test_utf16_strfuncs (void)
+{
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (string_cases); i++)
+    {
+      gsize len;
+      gunichar2 *str;
+      gboolean success;
+      gchar *utf8;
+      gchar *utf8_folded;
+
+      len = g_utf16_len (string_cases[i].utf16);
+      g_assert_cmpuint (len, ==, string_cases[i].len);
+
+      str = g_wcsdup (string_cases[i].utf16, string_cases[i].len);
+      g_assert_cmpmem (string_cases[i].utf16, len, str, len);
+      g_free (str);
+
+      str = g_wcsdup (string_cases[i].utf16, -1);
+      g_assert_cmpmem (string_cases[i].utf16, len, str, len);
+      g_free (str);
+
+      success = g_utf16_to_utf8_and_fold (string_cases[i].utf16, NULL, NULL);
+
+      if (string_cases[i].utf8 == NULL)
+        g_assert_false (success);
+      else
+        g_assert_true (success);
+
+      utf8 = NULL;
+      success = g_utf16_to_utf8_and_fold (string_cases[i].utf16, &utf8, NULL);
+
+      if (string_cases[i].utf8 != NULL)
+        {
+          g_assert_true (success);
+          g_assert_cmpstr (string_cases[i].utf8, ==, utf8);
+        }
+
+      g_free (utf8);
+
+      utf8 = NULL;
+      utf8_folded = NULL;
+      success = g_utf16_to_utf8_and_fold (string_cases[i].utf16, &utf8, &utf8_folded);
+
+      if (string_cases[i].utf8 != NULL)
+        {
+          g_assert_true (success);
+          g_assert_cmpstr (string_cases[i].utf8_folded, ==, utf8_folded);
+        }
+
+      g_free (utf8);
+      g_free (utf8_folded);
+    }
+}
+
+struct {
   const char *orig;
   gboolean    is_rundll32;
   const char *fixed;
@@ -204,6 +281,7 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/appinfo/utf16-strfuncs", test_utf16_strfuncs);
   g_test_add_func ("/appinfo/win32-extract-executable", test_win32_extract_executable);
   g_test_add_func ("/appinfo/win32-rundll32-fixup", test_win32_rundll32_fixup);
 
