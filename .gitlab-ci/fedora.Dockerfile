@@ -43,12 +43,14 @@ RUN dnf -y install \
     ncurses-compat-libs \
     ninja-build \
     pcre-devel \
+    python3-dbusmock \
     python3-wheel \
     shared-mime-info \
     systemtap-sdt-devel \
     unzip \
     valgrind \
     wget \
+    xdg-desktop-portal \
     xz \
     zlib-devel \
  && dnf clean all
