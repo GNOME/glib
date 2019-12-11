@@ -56,86 +56,145 @@ G_STMT_START { \
                                 #s1u8 " " #cmp " " #s2u8, s1u8, #cmp, s2u8); \
 } G_STMT_END
 
+struct {
+  const char *orig;
+  gboolean    is_rundll32;
+  const char *fixed;
+} rundll32_commandlines[] = {
+  {
+    "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
+    TRUE,
+    "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
+  },
+  {
+    "\"some path with spaces\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
+    TRUE,
+    "\"some path with spaces\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
+  },
+  {
+    "rundll32.exe foo.bar,baz",
+    TRUE,
+    "rundll32.exe foo.bar baz",
+  },
+  {
+    "rundll32.exe",
+    FALSE,
+    NULL,
+  },
+  {
+    "rundll32.exe ,foobar",
+    FALSE,
+    NULL,
+  },
+  {
+    "rundll32.exe   ,foobar",
+    FALSE,
+    NULL,
+  },
+  {
+    "rundll32.exe \"foo bar\",baz",
+    TRUE,
+    "rundll32.exe \"foo bar\" baz",
+  },
+  {
+    "\"rundll32.exe\" \"foo bar\",baz",
+    TRUE,
+    "\"rundll32.exe\" \"foo bar\" baz",
+  },
+  {
+    "\"rundll32.exe\" \"foo bar\",, , ,,, , ,,baz",
+    TRUE,
+    "\"rundll32.exe\" \"foo bar\" , , ,,, , ,,baz",
+  },
+  {
+    "\"rundll32.exe\" foo.bar,,,,,,,,,baz",
+    TRUE,
+    "\"rundll32.exe\" foo.bar ,,,,,,,,baz",
+  },
+  {
+    "\"rundll32.exe\" foo.bar baz",
+    TRUE,
+    "\"rundll32.exe\" foo.bar baz",
+  },
+  {
+    "\"RuNdlL32.exe\" foo.bar baz",
+    TRUE,
+    "\"RuNdlL32.exe\" foo.bar baz",
+  },
+  {
+    "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
+    TRUE,
+    "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
+  },
+  {
+    "\"rundll32.exe\" \"foo bar,\"baz",
+    TRUE,
+    "\"rundll32.exe\" \"foo bar,\"baz",
+  },
+  {
+    "\"rundll32.exe\" some,thing",
+    TRUE,
+    "\"rundll32.exe\" some thing",
+  },
+  {
+    "\"rundll32.exe\" some, thing",
+    TRUE,
+    "\"rundll32.exe\" some  thing",
+  },
+  /* Commands with "rundll32" (without the .exe suffix) do exist,
+   * but GLib currently does not recognize them, so there's no point
+   * in testing these.
+   */
+};
+
 static void
 test_win32_rundll32_fixup (void)
 {
   gsize i;
 
-  struct {
-    const char *orig;
-    const char *fixed;
-  } cases[] = {
+  for (i = 0; i < G_N_ELEMENTS (rundll32_commandlines); i++)
     {
-      "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
-      "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
-    },
-    {
-      "\"some path with spaces\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
-      "\"some path with spaces\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
-    },
-    {
-      "rundll32.exe foo.bar,baz",
-      "rundll32.exe foo.bar baz",
-    },
-    {
-      "rundll32.exe \"foo bar\",baz",
-      "rundll32.exe \"foo bar\" baz",
-    },
-    {
-      "\"rundll32.exe\" \"foo bar\",baz",
-      "\"rundll32.exe\" \"foo bar\" baz",
-    },
-    {
-      "\"rundll32.exe\" \"foo bar\",, , ,,, , ,,baz",
-      "\"rundll32.exe\" \"foo bar\" , , ,,, , ,,baz",
-    },
-    {
-      "\"rundll32.exe\" foo.bar,,,,,,,,,baz",
-      "\"rundll32.exe\" foo.bar ,,,,,,,,baz",
-    },
-    {
-      "\"rundll32.exe\" foo.bar baz",
-      "\"rundll32.exe\" foo.bar baz",
-    },
-    {
-      "\"RuNdlL32.exe\" foo.bar baz",
-      "\"RuNdlL32.exe\" foo.bar baz",
-    },
-    {
-      "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
-      "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll,\" ImageView_Fullscreen %1",
-    },
-    {
-      "\"rundll32.exe\" \"foo bar,\"baz",
-      "\"rundll32.exe\" \"foo bar,\"baz",
-    },
-    {
-      "\"rundll32.exe\" some,thing",
-      "\"rundll32.exe\" some thing",
-    },
-    {
-      "\"rundll32.exe\" some, thing",
-      "\"rundll32.exe\" some  thing",
-    },
-    /* Commands with "rundll32" (without the .exe suffix) do exist,
-     * but GLib currently does not recognize them, so there's no point
-     * in testing these.
-     */
-  };
+      gunichar2 *argument;
+      gunichar2 *expected;
 
-  for (i = 0; i < G_N_ELEMENTS (cases); i++)
-    {
-      gunichar2 *argument = g_utf8_to_utf16 (cases[i].orig, -1, NULL, NULL, NULL);
-      gunichar2 *expected = g_utf8_to_utf16 (cases[i].fixed, -1, NULL, NULL, NULL);
+      if (!rundll32_commandlines[i].is_rundll32)
+        continue;
+
+      argument = g_utf8_to_utf16 (rundll32_commandlines[i].orig, -1, NULL, NULL, NULL);
+      expected = g_utf8_to_utf16 (rundll32_commandlines[i].fixed, -1, NULL, NULL, NULL);
 
       g_assert_nonnull (argument);
       g_assert_nonnull (expected);
       _g_win32_fixup_broken_microsoft_rundll_commandline (argument);
 
-      g_assert_cmputf16 (argument, ==, expected, cases[i].orig, cases[i].fixed);
+      g_assert_cmputf16 (argument, ==, expected, rundll32_commandlines[i].orig, rundll32_commandlines[i].fixed);
 
       g_free (argument);
       g_free (expected);
+    }
+}
+
+static void
+test_win32_extract_executable (void)
+{
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (rundll32_commandlines); i++)
+    {
+      gunichar2 *argument;
+      gchar *dll_function;
+
+      argument = g_utf8_to_utf16 (rundll32_commandlines[i].orig, -1, NULL, NULL, NULL);
+
+      _g_win32_extract_executable (argument, NULL, NULL, NULL, NULL, &dll_function);
+
+      if (rundll32_commandlines[i].is_rundll32)
+        g_assert_nonnull (dll_function);
+      else
+        g_assert_null (dll_function);
+
+      g_free (dll_function);
+      g_free (argument);
     }
 }
 
@@ -145,6 +204,7 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/appinfo/win32-extract-executable", test_win32_extract_executable);
   g_test_add_func ("/appinfo/win32-rundll32-fixup", test_win32_rundll32_fixup);
 
   return g_test_run ();
