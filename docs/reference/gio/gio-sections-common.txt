@@ -4176,6 +4176,7 @@ GDBusObjectManagerServerPrivate
 GMemoryMonitor
 GMemoryMonitorFlags
 GMemoryMonitorInterface
+GMemoryMonitorWarningLevel
 G_MEMORY_MONITOR_EXTENSION_POINT_NAME
 g_memory_monitor_dup_default
 <SUBSECTION Standard>
@@ -4184,7 +4185,6 @@ G_TYPE_MEMORY_MONITOR
 G_MEMORY_MONITOR
 G_IS_MEMORY_MONITOR
 G_MEMORY_MONITOR_GET_INTERFACE
-g_memory_connectivity_get_type
 </SECTION>
 
 <SECTION>
