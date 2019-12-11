@@ -324,15 +324,17 @@ test_win32_extract_executable (void)
 
       g_free (dll_function);
 
+      executable = NULL;
+      executable_basename = NULL;
+      executable_folded = NULL;
+      executable_folded_basename = NULL;
       _g_win32_extract_executable (argument, &executable, &executable_basename, &executable_folded, &executable_folded_basename, NULL);
 
       g_assert_cmpstr (rundll32_commandlines[i].executable, ==, executable);
       g_assert_cmpstr (rundll32_commandlines[i].executable_basename, ==, executable_basename);
 
       g_free (executable);
-      g_free (executable_basename);
       g_free (executable_folded);
-      g_free (executable_folded_basename);
       g_free (argument);
     }
 }
