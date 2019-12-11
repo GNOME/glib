@@ -2013,7 +2013,7 @@ g_task_return_value (GTask  *task,
 /**
  * g_task_propagate_value:
  * @task: a #GTask
- * @value: (out) (caller-allocates): return location for the #GValue
+ * @value: (out caller-allocates): return location for the #GValue
  * @error: return location for a #GError
  *
  * Gets the result of @task as a #GValue, and transfers ownership of
