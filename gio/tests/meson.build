@@ -53,6 +53,7 @@ gio_tests = {
   'inet-address' : {},
   'io-stream' : {},
   'memory-input-stream' : {},
+  'memory-monitor' : {},
   'memory-output-stream' : {},
   'mount-operation' : {},
   'network-address' : {'extra_sources': ['mock-resolver.c']},
@@ -476,6 +477,31 @@ if installed_tests_enabled
   install_subdir('static-link', install_dir : installed_tests_execdir)
   install_data('static-link.py', install_dir : installed_tests_execdir)
 endif
+
+memory_monitor_tests = [
+  'memory-monitor-dbus',
+  'memory-monitor-portal',
+]
+
+foreach memory_monitor_test : memory_monitor_tests
+  cdata = configuration_data()
+  cdata.set('installed_tests_dir', installed_tests_execdir)
+  cdata.set('program', memory_monitor_test + '.py')
+  configure_file(
+    input: installed_tests_template,
+    output: memory_monitor_test + '.test',
+    install_dir: installed_tests_metadir,
+    configuration: cdata
+  )
+  cdata = configuration_data()
+  cdata.set('libexecdir', join_paths(glib_prefix, get_option('libexecdir')))
+  configure_file(
+    input: memory_monitor_test + '.py.in',
+    output: memory_monitor_test + '.py',
+    install_dir : installed_tests_execdir,
+    configuration: cdata,
+  )
+endforeach
 
 if not meson.is_cross_build() or meson.has_exe_wrapper()
 

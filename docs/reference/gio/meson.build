@@ -50,6 +50,8 @@ if get_option('gtk_doc')
     'glocalfilemonitor.h',
     'glocalfileoutputstream.h',
     'glocalvfs.h',
+    'gmemorymonitordbus.h',
+    'gmemorymonitorportal.h',
     'gmountprivate.h',
     'gnativevolumemonitor.h',
     'gnetworkingprivate.h',
