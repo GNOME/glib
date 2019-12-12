@@ -73,6 +73,10 @@ class HeaderCodeGenerator:
         self.glib_min_version = glib_min_version
         self.outfile = outfile
 
+        self.glib_min_version_is_2_64 = (glib_min_version[0] > 2 or
+                                        (glib_min_version[0] == 2 and
+                                         glib_min_version[1] >= 64))
+
     # ----------------------------------------------------------------------------------------------------
 
     def generate_header_preamble(self):
@@ -220,6 +224,8 @@ class HeaderCodeGenerator:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('void %s_call_%s (\n'
                                        '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
+                    if self.glib_min_version_is_2_64:
+                        self.outfile.write('    GDBusCallFlags call_flags,\n')
                     for a in m.in_args:
                         self.outfile.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
                     if m.unix_fd:
@@ -247,6 +253,8 @@ class HeaderCodeGenerator:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('gboolean %s_call_%s_sync (\n'
                                        '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
+                    if self.glib_min_version_is_2_64:
+                        self.outfile.write('    GDBusCallFlags call_flags,\n')
                     for a in m.in_args:
                         self.outfile.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
                     if m.unix_fd:
@@ -277,7 +285,11 @@ class HeaderCodeGenerator:
                     # setter
                     if p.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
-                    self.outfile.write('void %s_set_%s (%s *object, %svalue);\n'%(i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in, ))
+                    self.outfile.write('void %s_set_%s (\n'%(i.name_lower, p.name_lower))
+                    self.outfile.write('    %s *object,\n'%(i.camel_name))
+                    if self.glib_min_version_is_2_64:
+                        self.outfile.write('    GDBusCallFlags call_flags,\n')
+                    self.outfile.write('    %svalue);\n'%(p.arg.ctype_in))
                     self.outfile.write('\n')
 
             # Then the proxy
@@ -915,6 +927,10 @@ class CodeGenerator:
         self.docbook_gen = docbook_gen
         self.glib_min_version = glib_min_version
         self.outfile = outfile
+
+        self.glib_min_version_is_2_64 = (glib_min_version[0] > 2 or
+                                        (glib_min_version[0] == 2 and
+                                         glib_min_version[1] >= 64))
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -1621,6 +1637,7 @@ class CodeGenerator:
             self.outfile.write('void\n'
                                '%s_set_%s (%s *object, %svalue)\n'
                                '{\n'%(i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in, ))
+            #TODO use g_object_set_data() here to store #GDBusCallFlags ?
             self.outfile.write('  g_object_set (G_OBJECT (object), "%s", value, NULL);\n'%(p.name_hyphen))
             self.outfile.write('}\n')
             self.outfile.write('\n')
