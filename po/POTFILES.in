@@ -101,6 +101,7 @@ gio/glocalfilemonitor.c
 gio/glocalfileoutputstream.c
 gio/glocalvfs.c
 gio/gmemoryinputstream.c
+gio/gmemorymonitor.c
 gio/gmemoryoutputstream.c
 gio/gmenumodel.c
 gio/gmount.c
