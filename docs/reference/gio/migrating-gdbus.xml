@@ -241,9 +241,6 @@ on_name_acquired (GDBusConnection *connection,
     </para>
   </section>
 
-  <section>
-    <title>Generating code and docs</title>
-
   <section id="gdbus-example-gdbus-codegen">
     <title>Using gdbus-codegen</title>
 
@@ -270,12 +267,7 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
       generated. Additionally, two XML files
       <filename>generated-docs-org.gtk.GDBus.Example.ObjectManager.Animal</filename> and
       <filename>generated-docs-org.gtk.GDBus.Example.ObjectManager.Cat</filename>
-      with Docbook XML are generated. For an example of what the docs look
-      like see <link
-      linkend="gdbus-interface-org-gtk-GDBus-Example-ObjectManager-Animal">the Animal D-Bus interface documentation</link>.
-      and
-      <link
-      linkend="gdbus-interface-org-gtk-GDBus-Example-ObjectManager-Cat">the Cat D-Bus interface documentation</link>.
+      with Docbook XML are generated.
     </para>
     <para>
       While the contents of <filename>generated-code.h</filename> and
@@ -284,25 +276,8 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
       linkend="gdbus-codegen">gdbus-codegen</link></command> manual
       page, brief examples of how this generated code can be used can be found in
       <xref linkend="gdbus-example-codegen-server"/>
-      and <xref
-      linkend="gdbus-example-codegen-client"/>. Additionally, since
-      the generated code has 100% gtk-doc coverage, see
-      #ExampleAnimal, #ExampleCat, #ExampleObject and
-      #ExampleObjectManagerClient pages for documentation.
+      and <xref linkend="gdbus-example-codegen-client"/>.
     </para>
-
-    <example id="gdbus-example-codegen-server"><title>Server-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../gdbus-example-objectmanager-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
-
-    <example id="gdbus-example-codegen-client"><title>Client-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../gdbus-example-objectmanager-client.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
-
-  </section>
-
-  <xi:include href="../gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
-  <xi:include href="../gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
-  <xi:include href="../gdbus-object-manager-example/xml/ExampleAnimal.xml"/>
-  <xi:include href="../gdbus-object-manager-example/xml/ExampleCat.xml"/>
-  <xi:include href="../gdbus-object-manager-example/xml/ExampleObject.xml"/>
-  <xi:include href="../gdbus-object-manager-example/xml/ExampleObjectManagerClient.xml"/>
 
   </section>
 
