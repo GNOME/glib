@@ -112,25 +112,21 @@ installed-tests:
             _build
     - ninja -C _build
     - sudo ninja -C _build install
-    # FIXME install libportal to build new xdg-desktop-portal
-    - git clone https://github.com/flatpak/libportal.git
-    - cd libportal/
-    - meson ${MESON_COMMON_OPTIONS} _build --prefix=/usr --libdir=/usr/lib64
-    - ninja -C _build
-    - sudo ninja -C _build install
-    - cd ..
+    - sudo chown -R `id -un`:`id -gn` _build/
     # FIXME Install newer xdg-desktop-portal with
     # GMemoryMonitor support, see:
     # https://github.com/flatpak/xdg-desktop-portal/pull/365
-    - git clone --single-branch --branch wip/hadess/memory-monitor https://github.com/flatpak/xdg-desktop-portal.git
+    - git clone --single-branch https://github.com/flatpak/xdg-desktop-portal.git
     - cd xdg-desktop-portal
-    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-dependency-tracking && make && sudo make install
+    # FIXME Force-enable portal memory monitor until 2.63.3 is released
+    - sed -i 's/2, 63, 3/2, 63, 2/' src/memory-monitor.c
+    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-libportal --disable-dependency-tracking && make && sudo make install
     - cd ..
     # FIXME install newer gobject-introspection
     # with GMemoryMonitor support, see:
     # https://gitlab.gnome.org/GNOME/gobject-introspection/merge_requests/193
     - sudo dnf install -y meson flex bison python3-devel
-    - git clone --single-branch --branch wip/hadess/add-memory-monitor https://gitlab.gnome.org/GNOME/gobject-introspection.git
+    - git clone --single-branch https://gitlab.gnome.org/GNOME/gobject-introspection.git
     - cd gobject-introspection
     - /usr/bin/meson _build --prefix=/usr --libdir=/usr/lib64
     - ninja -C _build
