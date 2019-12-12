@@ -100,7 +100,7 @@ test_utf16_strfuncs (void)
       g_assert_cmpmem (string_cases[i].utf16, len, str, len);
       g_free (str);
 
-      success = g_utf16_to_utf8_and_fold (string_cases[i].utf16, NULL, NULL);
+      success = g_utf16_to_utf8_and_fold (string_cases[i].utf16, -1, NULL, NULL);
 
       if (string_cases[i].utf8 == NULL)
         g_assert_false (success);
@@ -108,7 +108,7 @@ test_utf16_strfuncs (void)
         g_assert_true (success);
 
       utf8 = NULL;
-      success = g_utf16_to_utf8_and_fold (string_cases[i].utf16, &utf8, NULL);
+      success = g_utf16_to_utf8_and_fold (string_cases[i].utf16, -1, &utf8, NULL);
 
       if (string_cases[i].utf8 != NULL)
         {
@@ -120,7 +120,7 @@ test_utf16_strfuncs (void)
 
       utf8 = NULL;
       utf8_folded = NULL;
-      success = g_utf16_to_utf8_and_fold (string_cases[i].utf16, &utf8, &utf8_folded);
+      success = g_utf16_to_utf8_and_fold (string_cases[i].utf16, -1, &utf8, &utf8_folded);
 
       if (string_cases[i].utf8 != NULL)
         {
@@ -162,11 +162,25 @@ struct {
     "\"some path with spaces\\rundll32.exe\" \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
   },
   {
+    "    \"some path with spaces\\rundll32.exe\"\"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\",ImageView_Fullscreen %1",
+    "some path with spaces\\rundll32.exe",
+    "rundll32.exe",
+    TRUE,
+    "    \"some path with spaces\\rundll32.exe\"\"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\" ImageView_Fullscreen %1",
+  },
+  {
     "rundll32.exe foo.bar,baz",
     "rundll32.exe",
     "rundll32.exe",
     TRUE,
     "rundll32.exe foo.bar baz",
+  },
+  {
+    "  rundll32.exe foo.bar,baz",
+    "rundll32.exe",
+    "rundll32.exe",
+    TRUE,
+    "  rundll32.exe foo.bar baz",
   },
   {
     "rundll32.exe",

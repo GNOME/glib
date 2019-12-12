@@ -772,7 +772,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
       if (got_value && val_type == G_WIN32_REGISTRY_VALUE_STR)
         {
           if (((program_id_u8 != NULL || program_id_folded != NULL) &&
-               !g_utf16_to_utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
+               !g_utf16_to_utf8_and_fold (program_id, -1, program_id_u8, program_id_folded)) ||
               !g_utf16_validate (*program_command, -1))
             {
               g_object_unref (key);
@@ -841,7 +841,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
   if (!got_value ||
       val_type != G_WIN32_REGISTRY_VALUE_STR ||
       ((program_id_u8 != NULL || program_id_folded != NULL) &&
-       !g_utf16_to_utf8_and_fold (program_id, program_id_u8, program_id_folded)) ||
+       !g_utf16_to_utf8_and_fold (program_id, -1, program_id_u8, program_id_folded)) ||
       !g_utf16_validate (*proxy_command, -1))
     {
       g_clear_pointer (proxy_id, g_free);
@@ -881,7 +881,7 @@ get_url_association (const gunichar2 *schema)
   if (user_choice == NULL)
     return;
 
-  if (!g_utf16_to_utf8_and_fold (schema, &schema_u8, &schema_folded))
+  if (!g_utf16_to_utf8_and_fold (schema, -1, &schema_u8, &schema_folded))
     {
       g_object_unref (user_choice);
       return;
@@ -1033,7 +1033,7 @@ get_file_ext (const gunichar2 *ext)
   if (user_choice == NULL && open_with_progids == NULL)
     return;
 
-  if (!g_utf16_to_utf8_and_fold (ext, &ext_u8, &ext_folded))
+  if (!g_utf16_to_utf8_and_fold (ext, -1, &ext_u8, &ext_folded))
     {
       g_clear_object (&user_choice);
       g_clear_object (&open_with_progids);
@@ -1545,7 +1545,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   canonical_name += 1;
 
-  if (!g_utf16_to_utf8_and_fold (canonical_name, &canonical_name_u8, &canonical_name_folded))
+  if (!g_utf16_to_utf8_and_fold (canonical_name, -1, &canonical_name_u8, &canonical_name_folded))
     {
       g_free (app_key_path);
       return;
@@ -1889,6 +1889,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                 }
 
                 if (g_utf16_to_utf8_and_fold (file_extension,
+                                              -1,
                                               &file_extension_u8,
                                               &file_extension_folded))
                   {
@@ -2048,6 +2049,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                 }
 
                 if (g_utf16_to_utf8_and_fold (url_schema,
+                                              -1,
                                               &schema_u8,
                                               &schema_folded))
                   {
@@ -2370,6 +2372,7 @@ read_exeapps (void)
                       (ext_name_len <= 0) ||
                       (ext_name[0] != L'.') ||
                       (!g_utf16_to_utf8_and_fold (ext_name,
+                                                  -1,
                                                   &ext_u8,
                                                   &ext_folded)))
                     continue;
@@ -2766,6 +2769,7 @@ link_chosen_handlers (void)
           if (handler->proxy_command &&
               handler->proxy_id &&
               g_utf16_to_utf8_and_fold (handler->proxy_id,
+                                        -1,
                                         NULL,
                                         &proxy_id_folded))
             {
@@ -2824,6 +2828,7 @@ link_chosen_handlers (void)
           if (handler->proxy_command &&
               handler->proxy_id &&
               g_utf16_to_utf8_and_fold (handler->proxy_id,
+                                        -1,
                                         NULL,
                                         &proxy_id_folded))
             {

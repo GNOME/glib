@@ -1,7 +1,7 @@
-static gsize
+static gssize
 g_utf16_len (const gunichar2 *str)
 {
-  gsize result;
+  gssize result;
 
   for (result = 0; str[0] != 0; str++, result++)
     ;
@@ -33,12 +33,13 @@ g_utf16_wchr (const gunichar2 *str, const wchar_t wchr)
 
 static gboolean
 g_utf16_to_utf8_and_fold (const gunichar2  *str,
+                          gssize            length,
                           gchar           **str_u8,
                           gchar           **str_u8_folded)
 {
   gchar *u8;
   gchar *folded;
-  u8 = g_utf16_to_utf8 (str, -1, NULL, NULL, NULL);
+  u8 = g_utf16_to_utf8 (str, length, NULL, NULL, NULL);
 
   if (u8 == NULL)
     return FALSE;
@@ -58,79 +59,189 @@ g_utf16_to_utf8_and_fold (const gunichar2  *str,
   return TRUE;
 }
 
-/* Make sure @commandline is a valid UTF-16 string before
- * calling this function!
- * follow_class_chain_to_handler() does perform such validation.
+static const gunichar2 *
+g_utf16_find_basename (const gunichar2 *filename,
+                       gssize           len)
+{
+  const gunichar2 *result;
+
+  if (len < 0)
+    len = g_utf16_len (filename);
+
+  result = &filename[len - 1];
+
+  while (result > filename)
+    {
+      if ((wchar_t) result[0] == L'/' ||
+          (wchar_t) result[0] == L'\\')
+        {
+          result += 1;
+          break;
+        }
+
+      result -= 1;
+    }
+
+  return result;
+}
+
+static const gchar *
+g_utf8_find_basename (const gchar *filename,
+                      gssize       len)
+{
+  const gchar *result;
+
+  if (len < 0)
+    len = strlen (filename);
+
+  result = &filename[len - 1];
+
+  while (result > filename)
+    {
+      if (result[0] == '/' ||
+          result[0] == '\\')
+        {
+          result += 1;
+          break;
+        }
+
+      result -= 1;
+    }
+
+  return result;
+}
+
+/**
+ * Parses @commandline, figuring out what the filename being invoked
+ * is. All returned strings are pointers into @commandline.
+ * @commandline must be a valid UTF-16 string and not be NULL.
+ * @after_executable is the first character after executable
+ * (usually a space, but not always).
+ * If @comma_separator is TRUE, accepts ',' as a separator between
+ * the filename and the following argument.
  */
 static void
-_g_win32_extract_executable (gunichar2  *commandline,
-                             gchar     **ex_out,
-                             gchar     **ex_basename_out,
-                             gchar     **ex_folded_out,
-                             gchar     **ex_folded_basename_out,
-                             gchar     **dll_function_out)
+_g_win32_parse_filename (const gunichar2  *commandline,
+                         gboolean          comma_separator,
+                         const gunichar2 **executable_start,
+                         gssize           *executable_len,
+                         const gunichar2 **executable_basename,
+                         const gunichar2 **after_executable)
 {
-  gchar *ex;
-  gchar *ex_folded;
-  gunichar2 *p;
-  gunichar2 *first_argument;
+  const gunichar2 *p;
+  const gunichar2 *first_argument;
   gboolean quoted;
-  size_t len;
-  size_t execlen;
-  gunichar2 *exepart;
+  gssize len;
+  gssize execlen;
   gboolean found;
+
+  while ((wchar_t) commandline[0] == L' ')
+    commandline++;
 
   quoted = FALSE;
   execlen = 0;
   found = FALSE;
+  first_argument = NULL;
+
+  if ((wchar_t) commandline[0] == L'"')
+    {
+      quoted = TRUE;
+      commandline += 1;
+    }
+
   len = g_utf16_len (commandline);
   p = commandline;
-  first_argument = NULL;
 
   while (p < &commandline[len])
     {
       switch ((wchar_t) p[0])
         {
         case L'"':
-          quoted = !quoted;
+          if (quoted)
+            {
+              first_argument = p + 1;
+              /* Note: this is a valid commandline for opening "c:/file.txt":
+               * > "notepad"c:/file.txt
+               */
+              p = &commandline[len];
+              found = TRUE;
+            }
+          else
+            execlen += 1;
           break;
         case L' ':
           if (!quoted)
             {
-              execlen = p - commandline;
               first_argument = p;
-              while ((wchar_t) first_argument[0] == L' ')
-                first_argument++;
               p = &commandline[len];
               found = TRUE;
             }
+          else
+            execlen += 1;
+          break;
+        case L',':
+          if (!quoted && comma_separator)
+            {
+              first_argument = p;
+              p = &commandline[len];
+              found = TRUE;
+            }
+          else
+            execlen += 1;
           break;
         default:
+          execlen += 1;
           break;
         }
       p += 1;
     }
 
   if (!found)
-    execlen = len;
+    first_argument = &commandline[len];
 
-  exepart = g_wcsdup (commandline, (execlen + 1) * sizeof (gunichar2));
-  exepart[execlen] = 0;
+  if (executable_start)
+    *executable_start = commandline;
 
-  p = &exepart[0];
+  if (executable_len)
+    *executable_len = execlen;
 
-  while (execlen > 0 && exepart[0] == L'"' && exepart[execlen - 1] == L'"')
-    {
-      p = &exepart[1];
-      exepart[execlen - 1] = 0;
-      execlen -= 2;
-    }
+  if (executable_basename)
+    *executable_basename = g_utf16_find_basename (commandline, execlen);
 
-  if (!g_utf16_to_utf8_and_fold (p, &ex, &ex_folded))
+  if (after_executable)
+    *after_executable = first_argument;
+}
+
+/* Make sure @commandline is a valid UTF-16 string before
+ * calling this function!
+ * follow_class_chain_to_handler() does perform such validation.
+ */
+static void
+_g_win32_extract_executable (const gunichar2  *commandline,
+                             gchar           **ex_out,
+                             gchar           **ex_basename_out,
+                             gchar           **ex_folded_out,
+                             gchar           **ex_folded_basename_out,
+                             gchar           **dll_function_out)
+{
+  gchar *ex;
+  gchar *ex_folded;
+  const gunichar2 *first_argument;
+  const gunichar2 *executable;
+  const gunichar2 *executable_basename;
+  gboolean quoted;
+  gssize execlen;
+
+  _g_win32_parse_filename (commandline, FALSE, &executable, &execlen, &executable_basename, &first_argument);
+
+  commandline = executable;
+
+  while ((wchar_t) first_argument[0] == L' ')
+    first_argument++;
+
+  if (!g_utf16_to_utf8_and_fold (executable, (gssize) execlen, &ex, &ex_folded))
     /* Currently no code to handle this case. It shouldn't happen though... */
     g_assert_not_reached ();
-
-  g_free (exepart);
 
   if (dll_function_out)
     *dll_function_out = NULL;
@@ -145,7 +256,7 @@ _g_win32_extract_executable (gunichar2  *commandline,
   if ((g_strcmp0 (ex_folded, "rundll32.exe") == 0 ||
        g_str_has_suffix (ex_folded, "\\rundll32.exe") ||
        g_str_has_suffix (ex_folded, "/rundll32.exe")) &&
-      first_argument != NULL &&
+      first_argument[0] != 0 &&
       dll_function_out != NULL)
     {
       /* Corner cases:
@@ -167,59 +278,31 @@ _g_win32_extract_executable (gunichar2  *commandline,
        * will work too.
        * Also, any number of commas is accepted:
        * > rundll32.exe c:\some_dll_without_commas_or_spaces.dll , , ,,, , some_function
-       * both work just fine.
+       * works just fine.
+       * And the ultimate example is:
+       * > "rundll32.exe""c:\some,file,with,commas.dll"some_function
+       * and it also works.
        * Good job, Microsoft!
        */
-      gunichar2 *filename_end = NULL;
-      size_t filename_len = 0;
-      gunichar2 *function_begin = NULL;
-      size_t function_len = 0;
-      gunichar2 *dllpart;
+      const gunichar2 *filename_end = NULL;
+      gssize filename_len = 0;
+      gssize function_len = 0;
+      const gunichar2 *dllpart;
+
       quoted = FALSE;
-      p = first_argument;
 
-      if ((wchar_t) p[0] == L'"')
+      if ((wchar_t) first_argument[0] == L'"')
+        quoted = TRUE;
+
+      _g_win32_parse_filename (first_argument, TRUE, &dllpart, &filename_len, NULL, &filename_end);
+
+      if (filename_end[0] != 0 && filename_len > 0)
         {
-          quoted = TRUE;
-          p += 1;
-        }
+          const gunichar2 *function_begin = filename_end;
 
-      while (p < &commandline[len])
-        {
-          switch ((wchar_t) p[0])
-            {
-            case L'"':
-              if (quoted)
-                {
-                  filename_end = p;
-                  p = &commandline[len];
-                }
-              break;
-            case L' ':
-            case L',':
-              if (!quoted)
-                {
-                  filename_end = p;
-                  p = &commandline[len];
-                }
-              break;
-            default:
-              filename_len += 1;
-              break;
-            }
-          p += 1;
-        }
-
-      if (filename_end == NULL && !quoted)
-        filename_end = &commandline[len];
-
-      if (filename_end != NULL && filename_len > 0)
-        {
-          function_begin = filename_end;
-          if (quoted)
-            function_begin += 1;
           while ((wchar_t) function_begin[0] == L',' || (wchar_t) function_begin[0] == L' ')
             function_begin += 1;
+
           if (function_begin[0] != 0)
             {
               gchar *dllpart_utf8;
@@ -232,19 +315,10 @@ _g_win32_extract_executable (gunichar2  *commandline,
               else
                 function_len = g_utf16_len (function_begin);
 
-              p = first_argument;
-              filename_len = filename_end - first_argument;
-
               if (quoted)
-                {
-                  p += 1;
-                  filename_len -= 1;
-                }
+                first_argument += 1;
 
-              dllpart = g_wcsdup (p, (filename_len + 1) * sizeof (gunichar2));
-              dllpart[filename_len] = 0;
-
-              if (!g_utf16_to_utf8_and_fold (dllpart, &dllpart_utf8, &dllpart_utf8_folded))
+              if (!g_utf16_to_utf8_and_fold (first_argument, filename_len, &dllpart_utf8, &dllpart_utf8_folded))
                 g_assert_not_reached ();
 
               function_utf8 = g_utf16_to_utf8 (function_begin, function_len, NULL, NULL, NULL);
@@ -268,8 +342,6 @@ _g_win32_extract_executable (gunichar2  *commandline,
 
               ex = dllpart_utf8;
               ex_folded = dllpart_utf8_folded;
-
-              g_free (dllpart);
             }
         }
     }
@@ -279,21 +351,7 @@ _g_win32_extract_executable (gunichar2  *commandline,
       *ex_out = ex;
 
       if (ex_basename_out)
-        {
-          *ex_basename_out = &ex[strlen (ex) - 1];
-
-          while (*ex_basename_out > ex)
-            {
-              if ((*ex_basename_out)[0] == '/' ||
-                  (*ex_basename_out)[0] == '\\')
-                {
-                  *ex_basename_out += 1;
-                  break;
-                }
-
-              *ex_basename_out -= 1;
-            }
-        }
+        *ex_basename_out = (gchar *) g_utf8_find_basename (ex, -1);
     }
   else
     {
@@ -305,21 +363,7 @@ _g_win32_extract_executable (gunichar2  *commandline,
       *ex_folded_out = ex_folded;
 
       if (ex_folded_basename_out)
-        {
-          *ex_folded_basename_out = &ex_folded[strlen (ex_folded) - 1];
-
-          while (*ex_folded_basename_out > ex_folded)
-            {
-              if ((*ex_folded_basename_out)[0] == '/' ||
-                  (*ex_folded_basename_out)[0] == '\\')
-                {
-                  *ex_folded_basename_out += 1;
-                  break;
-                }
-
-              *ex_folded_basename_out -= 1;
-            }
-        }
+        *ex_folded_basename_out = (gchar *) g_utf8_find_basename (ex_folded, -1);
     }
   else
     {
@@ -351,78 +395,18 @@ _g_win32_extract_executable (gunichar2  *commandline,
 static void
 _g_win32_fixup_broken_microsoft_rundll_commandline (gunichar2 *commandline)
 {
-  size_t len;
-  gunichar2 *p;
-  gunichar2 *first_argument = NULL;
-  gboolean quoted;
-  gunichar2 *first_char_after_filename = NULL;
+  const gunichar2 *first_argument;
+  gunichar2 *after_first_argument;
 
-  p = commandline;
-  quoted = FALSE;
-  len = g_utf16_len (commandline);
+  _g_win32_parse_filename (commandline, FALSE, NULL, NULL, NULL, &first_argument);
 
-  while (p < &commandline[len])
-    {
-      switch (p[0])
-        {
-        case L'"':
-          quoted = !quoted;
-          break;
-        case L' ':
-          if (!quoted)
-            {
-              first_argument = p;
-              while (first_argument[0] == L' ')
-                first_argument++;
-              p = &commandline[len];
-            }
-          break;
-        default:
-          break;
-        }
-      p += 1;
-    }
+  while ((wchar_t) first_argument[0] == L' ')
+    first_argument++;
 
-  g_assert (first_argument != NULL);
+  _g_win32_parse_filename (first_argument, TRUE, NULL, NULL, NULL, (const gunichar2 **) &after_first_argument);
 
-  quoted = FALSE;
-  p = first_argument;
-
-  if (p[0] == L'"')
-    {
-      quoted = TRUE;
-      p += 1;
-    }
-
-  while (p < &commandline[len])
-    {
-      switch (p[0])
-        {
-        case L'"':
-          if (quoted)
-            {
-              first_char_after_filename = &p[1];
-              p = &commandline[len];
-            }
-          break;
-        case L' ':
-        case L',':
-          if (!quoted)
-            {
-              first_char_after_filename = p;
-              p = &commandline[len];
-            }
-          break;
-        default:
-          break;
-        }
-      p += 1;
-    }
-
-  g_assert (first_char_after_filename != NULL);
-
-  if (first_char_after_filename[0] == L',')
-    first_char_after_filename[0] = L' ';
+  if ((wchar_t) after_first_argument[0] == L',')
+    after_first_argument[0] = 0x0020;
   /* Else everything is ok (first char after filename is ' ' or the first char
    * of the function name - either way this will work).
    */
