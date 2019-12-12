@@ -10,19 +10,19 @@ test_param_value (void)
   GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_PARAM);
-  g_assert (G_VALUE_HOLDS_PARAM (&value));
+  g_assert_true (G_VALUE_HOLDS_PARAM (&value));
 
   p = g_param_spec_int ("my-int", "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
 
   g_value_take_param (&value, p);
   p2 = g_value_get_param (&value);
-  g_assert (p2 == p);
+  g_assert_true (p2 == p);
 
   pp = g_param_spec_uint ("my-uint", "My UInt", "Blurb", 0, 10, 5, G_PARAM_READWRITE);
   g_value_set_param (&value, pp);
 
   p2 = g_value_dup_param (&value);
-  g_assert (p2 == pp); /* param specs use ref/unref for copy/free */
+  g_assert_true (p2 == pp); /* param specs use ref/unref for copy/free */
   g_param_spec_unref (p2);
 
   g_value_unset (&value);
@@ -57,7 +57,7 @@ test_param_qdata (void)
   g_assert_cmpint (destroy_count, ==, 1);
   g_assert_cmpstr (g_param_spec_steal_qdata (p, q), ==, "blabla");
   g_assert_cmpint (destroy_count, ==, 1);
-  g_assert (g_param_spec_get_qdata (p, q) == NULL);
+  g_assert_null (g_param_spec_get_qdata (p, q));
 
   g_param_spec_ref_sink (p);
 
@@ -74,12 +74,12 @@ test_param_validate (void)
 
   g_value_init (&value, G_TYPE_INT);
   g_value_set_int (&value, 100);
-  g_assert (!g_param_value_defaults (p, &value));
-  g_assert (g_param_value_validate (p, &value));
+  g_assert_false (g_param_value_defaults (p, &value));
+  g_assert_true (g_param_value_validate (p, &value));
   g_assert_cmpint (g_value_get_int (&value), ==, 20);
 
   g_param_value_set_default (p, &value);
-  g_assert (g_param_value_defaults (p, &value));
+  g_assert_true (g_param_value_defaults (p, &value));
   g_assert_cmpint (g_value_get_int (&value), ==, 10);
 
   g_param_spec_unref (p);
@@ -91,9 +91,9 @@ test_param_strings (void)
   GParamSpec *p;
 
   /* test canonicalization */
-  p = g_param_spec_int ("my_int:bla", "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
+  p = g_param_spec_int ("my_int", "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
 
-  g_assert_cmpstr (g_param_spec_get_name (p), ==, "my-int-bla");
+  g_assert_cmpstr (g_param_spec_get_name (p), ==, "my-int");
   g_assert_cmpstr (g_param_spec_get_nick (p), ==, "My Int");
   g_assert_cmpstr (g_param_spec_get_blurb (p), ==, "Blurb");
 
@@ -104,9 +104,29 @@ test_param_strings (void)
 
   g_assert_cmpstr (g_param_spec_get_name (p), ==, "my-int");
   g_assert_cmpstr (g_param_spec_get_nick (p), ==, "my-int");
-  g_assert (g_param_spec_get_blurb (p) == NULL);
+  g_assert_null (g_param_spec_get_blurb (p));
 
   g_param_spec_unref (p);
+}
+
+static void
+test_param_invalid_name (gconstpointer test_data)
+{
+  const gchar *invalid_name = test_data;
+
+  g_test_summary ("Test that properties cannot be created with invalid names");
+
+  if (g_test_subprocess ())
+    {
+      GParamSpec *p;
+      p = g_param_spec_int (invalid_name, "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
+      g_param_spec_unref (p);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*is_valid_property_name (name)*");
 }
 
 static void
@@ -123,10 +143,10 @@ test_param_convert (void)
   g_value_init (&v2, G_TYPE_INT);
   g_value_set_int (&v2, -4);
 
-  g_assert (!g_param_value_convert (p, &v1, &v2, TRUE));
+  g_assert_false (g_param_value_convert (p, &v1, &v2, TRUE));
   g_assert_cmpint (g_value_get_int (&v2), ==, -4);
 
-  g_assert (g_param_value_convert (p, &v1, &v2, FALSE));
+  g_assert_true (g_param_value_convert (p, &v1, &v2, FALSE));
   g_assert_cmpint (g_value_get_int (&v2), ==, 20);
 
   g_param_spec_unref (p);
@@ -139,11 +159,11 @@ test_value_transform (void)
   GValue dest = G_VALUE_INIT;
 
 #define CHECK_INT_CONVERSION(type, getter, value)                       \
-  g_assert (g_value_type_transformable (G_TYPE_INT, type));             \
+  g_assert_true (g_value_type_transformable (G_TYPE_INT, type));        \
   g_value_init (&src, G_TYPE_INT);                                      \
   g_value_init (&dest, type);                                           \
   g_value_set_int (&src, value);                                        \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpint (g_value_get_##getter (&dest), ==, value);            \
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
@@ -171,11 +191,11 @@ test_value_transform (void)
   CHECK_INT_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
 
 #define CHECK_UINT_CONVERSION(type, getter, value)                      \
-  g_assert (g_value_type_transformable (G_TYPE_UINT, type));            \
+  g_assert_true (g_value_type_transformable (G_TYPE_UINT, type));       \
   g_value_init (&src, G_TYPE_UINT);                                     \
   g_value_init (&dest, type);                                           \
   g_value_set_uint (&src, value);                                       \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpuint (g_value_get_##getter (&dest), ==, value);           \
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
@@ -196,11 +216,11 @@ test_value_transform (void)
   CHECK_UINT_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
 
 #define CHECK_LONG_CONVERSION(type, getter, value)                      \
-  g_assert (g_value_type_transformable (G_TYPE_LONG, type));            \
+  g_assert_true (g_value_type_transformable (G_TYPE_LONG, type));       \
   g_value_init (&src, G_TYPE_LONG);                                     \
   g_value_init (&dest, type);                                           \
   g_value_set_long (&src, value);                                       \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpint (g_value_get_##getter (&dest), ==, value);            \
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
@@ -221,11 +241,11 @@ test_value_transform (void)
   CHECK_LONG_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
 
 #define CHECK_ULONG_CONVERSION(type, getter, value)                     \
-  g_assert (g_value_type_transformable (G_TYPE_ULONG, type));           \
+  g_assert_true (g_value_type_transformable (G_TYPE_ULONG, type));      \
   g_value_init (&src, G_TYPE_ULONG);                                    \
   g_value_init (&dest, type);                                           \
   g_value_set_ulong (&src, value);                                      \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpuint (g_value_get_##getter (&dest), ==, value);           \
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
@@ -246,11 +266,11 @@ test_value_transform (void)
   CHECK_ULONG_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
 
 #define CHECK_INT64_CONVERSION(type, getter, value)                     \
-  g_assert (g_value_type_transformable (G_TYPE_INT64, type));           \
+  g_assert_true (g_value_type_transformable (G_TYPE_INT64, type));      \
   g_value_init (&src, G_TYPE_INT64);                                    \
   g_value_init (&dest, type);                                           \
   g_value_set_int64 (&src, value);                                      \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpint (g_value_get_##getter (&dest), ==, value);            \
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
@@ -271,11 +291,11 @@ test_value_transform (void)
   CHECK_INT64_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
 
 #define CHECK_UINT64_CONVERSION(type, getter, value)                    \
-  g_assert (g_value_type_transformable (G_TYPE_UINT64, type));          \
+  g_assert_true (g_value_type_transformable (G_TYPE_UINT64, type));     \
   g_value_init (&src, G_TYPE_UINT64);                                   \
   g_value_init (&dest, type);                                           \
   g_value_set_uint64 (&src, value);                                     \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpuint (g_value_get_##getter (&dest), ==, value);           \
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
@@ -296,11 +316,11 @@ test_value_transform (void)
   CHECK_UINT64_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
 
 #define CHECK_FLOAT_CONVERSION(type, getter, value)                    \
-  g_assert (g_value_type_transformable (G_TYPE_FLOAT, type));          \
+  g_assert_true (g_value_type_transformable (G_TYPE_FLOAT, type));     \
   g_value_init (&src, G_TYPE_FLOAT);                                   \
   g_value_init (&dest, type);                                          \
   g_value_set_float (&src, value);                                     \
-  g_assert (g_value_transform (&src, &dest));                          \
+  g_assert_true (g_value_transform (&src, &dest));                     \
   g_assert_cmpfloat (g_value_get_##getter (&dest), ==, value);         \
   g_value_unset (&src);                                                \
   g_value_unset (&dest);
@@ -321,11 +341,11 @@ test_value_transform (void)
   CHECK_FLOAT_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
 
 #define CHECK_DOUBLE_CONVERSION(type, getter, value)                    \
-  g_assert (g_value_type_transformable (G_TYPE_DOUBLE, type));          \
+  g_assert_true (g_value_type_transformable (G_TYPE_DOUBLE, type));     \
   g_value_init (&src, G_TYPE_DOUBLE);                                   \
   g_value_init (&dest, type);                                           \
   g_value_set_double (&src, value);                                     \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpfloat (g_value_get_##getter (&dest), ==, value);          \
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
@@ -346,14 +366,14 @@ test_value_transform (void)
   CHECK_DOUBLE_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
 
 #define CHECK_BOOLEAN_CONVERSION(type, setter, value)                   \
-  g_assert (g_value_type_transformable (type, G_TYPE_BOOLEAN));         \
+  g_assert_true (g_value_type_transformable (type, G_TYPE_BOOLEAN));    \
   g_value_init (&src, type);                                            \
   g_value_init (&dest, G_TYPE_BOOLEAN);                                 \
   g_value_set_##setter (&src, value);                                   \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpint (g_value_get_boolean (&dest), ==, TRUE);              \
   g_value_set_##setter (&src, 0);                                       \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpint (g_value_get_boolean (&dest), ==, FALSE);             \
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
@@ -366,11 +386,11 @@ test_value_transform (void)
   CHECK_BOOLEAN_CONVERSION(G_TYPE_UINT64, uint64, 12345678)
 
 #define CHECK_STRING_CONVERSION(int_type, setter, int_value)            \
-  g_assert (g_value_type_transformable (int_type, G_TYPE_STRING));      \
+  g_assert_true (g_value_type_transformable (int_type, G_TYPE_STRING)); \
   g_value_init (&src, int_type);                                        \
   g_value_init (&dest, G_TYPE_STRING);                                  \
   g_value_set_##setter (&src, int_value);                               \
-  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_true (g_value_transform (&src, &dest));                      \
   g_assert_cmpstr (g_value_get_string (&dest), ==, #int_value);         \
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
@@ -384,12 +404,12 @@ test_value_transform (void)
   CHECK_STRING_CONVERSION(G_TYPE_FLOAT, float, 0.500000)
   CHECK_STRING_CONVERSION(G_TYPE_DOUBLE, double, -1.234567)
 
-  g_assert (!g_value_type_transformable (G_TYPE_STRING, G_TYPE_CHAR));
+  g_assert_false (g_value_type_transformable (G_TYPE_STRING, G_TYPE_CHAR));
   g_value_init (&src, G_TYPE_STRING);
   g_value_init (&dest, G_TYPE_CHAR);
   g_value_set_static_string (&src, "bla");
   g_value_set_schar (&dest, 'c');
-  g_assert (!g_value_transform (&src, &dest));
+  g_assert_false (g_value_transform (&src, &dest));
   g_assert_cmpint (g_value_get_schar (&dest), ==, 'c');
   g_value_unset (&src);
   g_value_unset (&dest);
@@ -757,7 +777,7 @@ test_param_implement (void)
               {
               case 0:
                 /* make sure the other table agrees */
-                g_assert (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type] == 0);
+                g_assert_cmpint (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type], ==, 0);
                 g_test_trap_assert_failed ();
                 g_test_trap_assert_stderr ("*Interface property does not exist*");
                 continue;
@@ -820,7 +840,7 @@ test_param_default (void)
   param = g_param_spec_int ("my-int", "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
   def = g_param_spec_get_default_value (param);
 
-  g_assert (G_VALUE_HOLDS (def, G_TYPE_INT));
+  g_assert_true (G_VALUE_HOLDS (def, G_TYPE_INT));
   g_assert_cmpint (g_value_get_int (def), ==, 10);
 
   g_param_spec_unref (param);
@@ -836,6 +856,9 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/param/value", test_param_value);
   g_test_add_func ("/param/strings", test_param_strings);
+  g_test_add_data_func ("/param/invalid-name/colon", "my_int:hello", test_param_invalid_name);
+  g_test_add_data_func ("/param/invalid-name/first-char", "7zip", test_param_invalid_name);
+  g_test_add_data_func ("/param/invalid-name/empty", "", test_param_invalid_name);
   g_test_add_func ("/param/qdata", test_param_qdata);
   g_test_add_func ("/param/validate", test_param_validate);
   g_test_add_func ("/param/convert", test_param_convert);

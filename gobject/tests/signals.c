@@ -180,7 +180,16 @@ test_class_init (TestClass *klass)
                 NULL,
                 G_TYPE_NONE,
                 0);
-  simple2_id = g_signal_new ("simple-2",
+  g_signal_new ("simple-detailed",
+                G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
+                0,
+                NULL, NULL,
+                NULL,
+                G_TYPE_NONE,
+                0);
+  /* Deliberately install this one in non-canonical form to check that’s handled correctly: */
+  simple2_id = g_signal_new ("simple_2",
                 G_TYPE_FROM_CLASS (klass),
                 G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE,
                 0,
@@ -455,16 +464,16 @@ test_variant_signal (void)
 
   v = g_variant_new_boolean (TRUE);
   g_variant_ref (v);
-  g_assert (g_variant_is_floating (v));
+  g_assert_true (g_variant_is_floating (v));
   g_signal_emit_by_name (test, "variant-changed-no-slot", v);
-  g_assert (!g_variant_is_floating (v));
+  g_assert_false (g_variant_is_floating (v));
   g_variant_unref (v);
 
   v = g_variant_new_boolean (TRUE);
   g_variant_ref (v);
-  g_assert (g_variant_is_floating (v));
+  g_assert_true (g_variant_is_floating (v));
   g_signal_emit_by_name (test, "variant-changed", v);
-  g_assert (!g_variant_is_floating (v));
+  g_assert_false (g_variant_is_floating (v));
   g_variant_unref (v);
 
   g_object_unref (test);
@@ -485,7 +494,7 @@ on_generic_marshaller_1 (Test *obj,
   g_assert_cmpint (v_uchar, ==, 43);
   g_assert_cmpint (v_int, ==, 4096);
   g_assert_cmpint (v_long, ==, 8192);
-  g_assert (v_pointer == NULL);
+  g_assert_null (v_pointer);
   g_assert_cmpfloat (v_double, >, 0.0);
   g_assert_cmpfloat (v_double, <, 1.0);
   g_assert_cmpfloat (v_float, >, 5.0);
@@ -754,7 +763,7 @@ custom_marshaller_callback (Test                  *test,
 {
   GSignalInvocationHint *ihint;
 
-  g_assert (hint != &dont_use_this);
+  g_assert_true (hint != &dont_use_this);
 
   ihint = g_signal_get_invocation_hint (test);
 
@@ -801,7 +810,7 @@ all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, g
   g_assert_cmpstr (str, ==, "Test");
   g_assert_cmpstr (g_param_spec_get_nick (param), ==, "nick");
   g_assert_cmpstr (g_bytes_get_data (bytes, NULL), ==, "Blah");
-  g_assert (ptr == &enum_type);
+  g_assert_true (ptr == &enum_type);
   g_assert_cmpuint (g_variant_get_uint16 (var), == , 99);
   g_assert_cmpint (i64, ==, G_MAXINT64 - 1234);
   g_assert_cmpuint (ui64, ==, G_MAXUINT64 - 123456);
@@ -810,7 +819,7 @@ all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, g
 static void
 all_types_handler_cb (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, guint f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64, gpointer user_data)
 {
-  g_assert (user_data == &flags_type);
+  g_assert_true (user_data == &flags_type);
   all_types_handler (test, i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, obj, var, i64, ui64);
 }
 
@@ -1064,6 +1073,7 @@ test_introspection (void)
   gint i;
   const gchar *names[] = {
     "simple",
+    "simple-detailed",
     "simple-2",
     "generic-marshaller-1",
     "generic-marshaller-2",
@@ -1091,15 +1101,15 @@ test_introspection (void)
   for (i = 0; i < n_ids; i++)
     {
       name = g_signal_name (ids[i]);
-      g_assert (in_set (name, names));
+      g_assert_true (in_set (name, names));
     }
 
   g_signal_query (simple_id, &query);
   g_assert_cmpuint (query.signal_id, ==, simple_id);
   g_assert_cmpstr (query.signal_name, ==, "simple");
-  g_assert (query.itype == test_get_type ());
-  g_assert (query.signal_flags == G_SIGNAL_RUN_LAST);
-  g_assert (query.return_type == G_TYPE_NONE);
+  g_assert_true (query.itype == test_get_type ());
+  g_assert_cmpint (query.signal_flags, ==, G_SIGNAL_RUN_LAST);
+  g_assert_cmpint (query.return_type, ==, G_TYPE_NONE);
   g_assert_cmpuint (query.n_params, ==, 0);
 
   g_free (ids);
@@ -1129,7 +1139,7 @@ test_block_handler (void)
 
   handler = g_signal_handler_find (test1, G_SIGNAL_MATCH_ID, simple_id, 0, NULL, NULL, NULL);
 
-  g_assert (handler == handler1);
+  g_assert_true (handler == handler1);
 
   g_assert_cmpint (count1, ==, 0);
   g_assert_cmpint (count2, ==, 0);
@@ -1238,7 +1248,7 @@ test_signal_disconnect_wrong_object (void)
   g_test_assert_expected_messages ();
 
   /* it's still connected */
-  g_assert (g_signal_handler_is_connected (object, signal_id));
+  g_assert_true (g_signal_handler_is_connected (object, signal_id));
 
   g_object_unref (object);
   g_object_unref (object2);
@@ -1276,6 +1286,172 @@ test_clear_signal_handler (void)
   g_object_unref (test_obj);
 }
 
+static void
+test_lookup (void)
+{
+  GTypeClass *test_class;
+  guint signal_id, saved_signal_id;
+
+  g_test_summary ("Test that g_signal_lookup() works with a variety of inputs.");
+
+  test_class = g_type_class_ref (test_get_type ());
+
+  signal_id = g_signal_lookup ("all-types", test_get_type ());
+  g_assert_cmpint (signal_id, !=, 0);
+
+  saved_signal_id = signal_id;
+
+  /* Try with a non-canonical name. */
+  signal_id = g_signal_lookup ("all_types", test_get_type ());
+  g_assert_cmpint (signal_id, ==, saved_signal_id);
+
+  /* Looking up a non-existent signal should return nothing. */
+  g_assert_cmpint (g_signal_lookup ("nope", test_get_type ()), ==, 0);
+
+  g_type_class_unref (test_class);
+}
+
+static void
+test_lookup_invalid (void)
+{
+  g_test_summary ("Test that g_signal_lookup() emits a warning if looking up an invalid signal name.");
+
+  if (g_test_subprocess ())
+    {
+      GTypeClass *test_class;
+      guint signal_id;
+
+      test_class = g_type_class_ref (test_get_type ());
+
+      signal_id = g_signal_lookup ("", test_get_type ());
+      g_assert_cmpint (signal_id, ==, 0);
+
+      g_type_class_unref (test_class);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*WARNING*unable to look up invalid signal name*");
+}
+
+static void
+test_parse_name (void)
+{
+  GTypeClass *test_class;
+  guint signal_id, saved_signal_id;
+  gboolean retval;
+  GQuark detail, saved_detail;
+
+  g_test_summary ("Test that g_signal_parse_name() works with a variety of inputs.");
+
+  test_class = g_type_class_ref (test_get_type ());
+
+  /* Simple test. */
+  retval = g_signal_parse_name ("simple-detailed", test_get_type (), &signal_id, &detail, TRUE);
+  g_assert_true (retval);
+  g_assert_cmpint (signal_id, !=, 0);
+  g_assert_cmpint (detail, ==, 0);
+
+  saved_signal_id = signal_id;
+
+  /* Simple test with detail. */
+  retval = g_signal_parse_name ("simple-detailed::a-detail", test_get_type (), &signal_id, &detail, TRUE);
+  g_assert_true (retval);
+  g_assert_cmpint (signal_id, ==, saved_signal_id);
+  g_assert_cmpint (detail, !=, 0);
+
+  saved_detail = detail;
+
+  /* Simple test with the same detail again. */
+  retval = g_signal_parse_name ("simple-detailed::a-detail", test_get_type (), &signal_id, &detail, FALSE);
+  g_assert_true (retval);
+  g_assert_cmpint (signal_id, ==, saved_signal_id);
+  g_assert_cmpint (detail, ==, saved_detail);
+
+  /* Simple test with a new detail. */
+  retval = g_signal_parse_name ("simple-detailed::another-detail", test_get_type (), &signal_id, &detail, FALSE);
+  g_assert_true (retval);
+  g_assert_cmpint (signal_id, ==, saved_signal_id);
+  g_assert_cmpint (detail, ==, 0);  /* we didn’t force the quark */
+
+  /* Canonicalisation shouldn’t affect the results. */
+  retval = g_signal_parse_name ("simple_detailed::a-detail", test_get_type (), &signal_id, &detail, FALSE);
+  g_assert_true (retval);
+  g_assert_cmpint (signal_id, ==, saved_signal_id);
+  g_assert_cmpint (detail, ==, saved_detail);
+
+  /* Details don’t have to look like property names. */
+  retval = g_signal_parse_name ("simple-detailed::hello::world", test_get_type (), &signal_id, &detail, TRUE);
+  g_assert_true (retval);
+  g_assert_cmpint (signal_id, ==, saved_signal_id);
+  g_assert_cmpint (detail, !=, 0);
+
+  /* Trying to parse a detail for a signal which isn’t %G_SIGNAL_DETAILED should fail. */
+  retval = g_signal_parse_name ("all-types::a-detail", test_get_type (), &signal_id, &detail, FALSE);
+  g_assert_false (retval);
+
+  g_type_class_unref (test_class);
+}
+
+static void
+test_parse_name_invalid (void)
+{
+  GTypeClass *test_class;
+  gsize i;
+  guint signal_id;
+  GQuark detail;
+  const gchar *vectors[] =
+    {
+      "",
+      "7zip",
+      "invalid:signal",
+      "simple-detailed::",
+      "simple-detailed:",
+      ":",
+      "::",
+      ":valid-detail",
+      "::valid-detail",
+    };
+
+  g_test_summary ("Test that g_signal_parse_name() ignores a variety of invalid inputs.");
+
+  test_class = g_type_class_ref (test_get_type ());
+
+  for (i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      g_test_message ("Parser input: %s", vectors[i]);
+      g_assert_false (g_signal_parse_name (vectors[i], test_get_type (), &signal_id, &detail, TRUE));
+    }
+
+  g_type_class_unref (test_class);
+}
+
+static void
+test_signals_invalid_name (gconstpointer test_data)
+{
+  const gchar *signal_name = test_data;
+
+  g_test_summary ("Check that g_signal_new() rejects invalid signal names.");
+
+  if (g_test_subprocess ())
+    {
+      g_signal_new (signal_name,
+                    test_get_type (),
+                    G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE,
+                    0,
+                    NULL, NULL,
+                    NULL,
+                    G_TYPE_NONE,
+                    0);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*is_valid_signal_name (signal_name)*");
+}
+
 /* --- */
 
 int
@@ -1302,6 +1478,13 @@ main (int argc,
   g_test_add_func ("/gobject/signals/invocation-hint", test_invocation_hint);
   g_test_add_func ("/gobject/signals/test-disconnection-wrong-object", test_signal_disconnect_wrong_object);
   g_test_add_func ("/gobject/signals/clear-signal-handler", test_clear_signal_handler);
+  g_test_add_func ("/gobject/signals/lookup", test_lookup);
+  g_test_add_func ("/gobject/signals/lookup/invalid", test_lookup_invalid);
+  g_test_add_func ("/gobject/signals/parse-name", test_parse_name);
+  g_test_add_func ("/gobject/signals/parse-name/invalid", test_parse_name_invalid);
+  g_test_add_data_func ("/gobject/signals/invalid-name/colon", "my_int:hello", test_signals_invalid_name);
+  g_test_add_data_func ("/gobject/signals/invalid-name/first-char", "7zip", test_signals_invalid_name);
+  g_test_add_data_func ("/gobject/signals/invalid-name/empty", "", test_signals_invalid_name);
 
   return g_test_run ();
 }
