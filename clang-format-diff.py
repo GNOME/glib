@@ -125,8 +125,8 @@ def main():
             if diff_string:
                 format_line_counter += sys.stdout.write(diff_string)
 
-        if format_line_counter > 0:
-            sys.exit(1)
+    if format_line_counter > 0:
+        sys.exit(1)
 
 
 if __name__ == '__main__':
