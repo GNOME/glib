@@ -378,12 +378,11 @@ g_hash_table_realloc_key_or_value_array (gpointer a, guint size, G_GNUC_UNUSED g
 }
 
 static inline gpointer
-g_hash_table_fetch_key_or_value (gpointer a, guint index, gboolean is_big)
-{
+g_hash_table_fetch_key_or_value(gpointer a, guint index, gboolean is_big) {
 #ifndef USE_SMALL_ARRAYS
   is_big = TRUE;
 #endif
-  return is_big ? *(((gpointer *) a) + index) : GUINT_TO_POINTER (*(((guint *) a) + index));
+  return is_big ? *(((gpointer *) a) + index) :      GUINT_TO_POINTER (*(((guint *) a) + index));
 }
 
 static inline void

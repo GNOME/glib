@@ -171,7 +171,8 @@ g_list_model_default_init (GListModelInterface *iface)
 GType
 g_list_model_get_item_type (GListModel *list)
 {
-  g_return_val_if_fail (G_IS_LIST_MODEL (list), G_TYPE_NONE);
+  g_return_val_if_fail(G_IS_LIST_MODEL(list),
+G_TYPE_NONE);
 
   return G_LIST_MODEL_GET_IFACE (list)->get_item_type (list);
 }
