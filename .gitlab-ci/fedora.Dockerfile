@@ -53,7 +53,7 @@ RUN dnf -y install \
     zlib-devel \
  && dnf clean all
 
-RUN pip3 install meson==0.49.2
+RUN pip3 install meson==0.52.1
 
 # Enable sudo for wheel users
 RUN sed -i -e 's/# %wheel/%wheel/' -e '0,/%wheel/{s/%wheel/# %wheel/}' /etc/sudoers
