@@ -29,6 +29,18 @@ struct _TestAutoCleanupBaseClass {
   GObjectClass parent_class;
 };
 
+G_DEFINE_TYPE (TestAutoCleanupBase, test_base_auto_cleanup, G_TYPE_OBJECT)
+
+static void
+test_base_auto_cleanup_class_init (TestAutoCleanupBaseClass *class)
+{
+}
+
+static void
+test_base_auto_cleanup_init (TestAutoCleanupBase *tac)
+{
+}
+
 G_DECLARE_FINAL_TYPE (TestAutoCleanup, test_auto_cleanup, TEST, AUTO_CLEANUP, TestAutoCleanupBase)
 
 struct _TestAutoCleanup
@@ -195,6 +207,19 @@ test_autoqueue (void)
   g_assert_null (tac3);
 }
 
+static void
+test_autoclass (void)
+{
+  g_autoptr (TestAutoCleanupBaseClass) base_class_ptr = NULL;
+  g_autoptr (TestAutoCleanupClass) class_ptr = NULL;
+
+  base_class_ptr = g_type_class_ref (test_base_auto_cleanup_get_type ());
+  class_ptr = g_type_class_ref (test_auto_cleanup_get_type ());
+
+  g_assert_nonnull (base_class_ptr);
+  g_assert_nonnull (class_ptr);
+}
+
 int
 main (int argc, gchar *argv[])
 {
@@ -205,6 +230,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/autolist", test_autolist);
   g_test_add_func ("/autoptr/autoslist", test_autoslist);
   g_test_add_func ("/autoptr/autoqueue", test_autoqueue);
+  g_test_add_func ("/autoptr/autoclass", test_autoclass);
 
   return g_test_run ();
 }
