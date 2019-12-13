@@ -24,6 +24,9 @@ test_types (void)
   guint u, u2;
   gint s, s2;
   gpointer vp, vp2;
+  const char *vp_str;
+  const char *volatile vp_str_vol;
+  const char *str = "Hello";
   int *ip, *ip2;
   gsize gs, gs2;
   gboolean res;
@@ -86,6 +89,14 @@ test_types (void)
   res = g_atomic_pointer_compare_and_exchange (&vp, NULL, NULL);
   g_assert_true (res);
   g_assert_true (vp == 0);
+
+  g_atomic_pointer_set (&vp_str, NULL);
+  res = g_atomic_pointer_compare_and_exchange (&vp_str, NULL, str);
+  g_assert_true (res);
+
+  g_atomic_pointer_set (&vp_str_vol, NULL);
+  res = g_atomic_pointer_compare_and_exchange (&vp_str_vol, NULL, str);
+  g_assert_true (res);
 
   g_atomic_pointer_set (&ip, 0);
   ip2 = g_atomic_pointer_get (&ip);
@@ -194,6 +205,14 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   res = g_atomic_pointer_compare_and_exchange (&vp, NULL, NULL);
   g_assert_true (res);
   g_assert_true (vp == 0);
+
+  g_atomic_pointer_set (&vp_str, NULL);
+  res = g_atomic_pointer_compare_and_exchange (&vp_str, NULL, (char *) str);
+  g_assert_true (res);
+
+  g_atomic_pointer_set (&vp_str_vol, NULL);
+  res = g_atomic_pointer_compare_and_exchange (&vp_str_vol, NULL, (char *) str);
+  g_assert_true (res);
 
   g_atomic_pointer_set (&ip, 0);
   ip2 = g_atomic_pointer_get (&ip);
