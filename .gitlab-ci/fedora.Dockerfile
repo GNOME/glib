@@ -44,6 +44,7 @@ RUN dnf -y install \
     ninja-build \
     pcre-devel \
     python3-dbusmock \
+    python3-pygments \
     python3-wheel \
     shared-mime-info \
     systemtap-sdt-devel \
@@ -55,7 +56,7 @@ RUN dnf -y install \
     zlib-devel \
  && dnf clean all
 
-RUN pip3 install meson==0.49.2
+RUN pip3 install meson==0.52.1
 
 # Enable sudo for wheel users
 RUN sed -i -e 's/# %wheel/%wheel/' -e '0,/%wheel/{s/%wheel/# %wheel/}' /etc/sudoers
