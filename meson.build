@@ -353,7 +353,6 @@ endforeach
 # Compiler flags
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   warning_c_args = [
-    '-Wall',
     '-Wduplicated-branches',
     '-Wimplicit-fallthrough',
     '-Wmisleading-indentation',
