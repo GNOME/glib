@@ -97,6 +97,7 @@ gobject_tests = {
   'closure' : {},
   'closure-refcount' : { 'suite': ['slow'] },
   'object' : {},
+  'internal-type': {},
   'signal-handler' : {},
   'ifaceproperties' : {},
   'signals' : {
