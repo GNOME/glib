@@ -10,6 +10,7 @@ cache:
     - _ccache/
 
 variables:
+  FEDORA_IMAGE: registry.gitlab.gnome.org/gnome/glib/fedora:v6
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
@@ -30,12 +31,15 @@ style-check-diff:
 
 fedora-x86_64:
   extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  image: $FEDORA_IMAGE
   stage: build
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
-    - meson ${MESON_COMMON_OPTIONS}
+    # FIXME: Cannot use MESON_COMMON_OPTIONS here because meson warns about gtkdoc
+    # feature introduced in 0.52 but we only depends on 0.49. So we cannot build
+    # with --fatal-meson-warnings.
+    - meson --buildtype debug
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
@@ -93,7 +97,7 @@ debian-stable-x86_64:
 
 installed-tests:
   extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  image: $FEDORA_IMAGE
   stage: build
   before_script:
     # FIXME move to docker image
@@ -152,7 +156,7 @@ installed-tests:
 
 G_DISABLE_ASSERT:
   extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  image: $FEDORA_IMAGE
   stage: build
   variables:
     CPPFLAGS: "-DG_DISABLE_ASSERT"
@@ -179,7 +183,7 @@ G_DISABLE_ASSERT:
 
 valgrind:
   extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  image: $FEDORA_IMAGE
   stage: analysis
   variables:
     MESON_TEST_TIMEOUT_MULTIPLIER: 10
@@ -350,7 +354,7 @@ freebsd-12-x86_64:
 
 coverage:
   extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  image: $FEDORA_IMAGE
   stage: coverage
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
@@ -362,7 +366,7 @@ coverage:
 
 scan-build:
   extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  image: $FEDORA_IMAGE
   stage: analysis
   script:
     - meson ${MESON_COMMON_OPTIONS}
@@ -393,12 +397,14 @@ pages:
       - public
 
 dist-job:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  image: $FEDORA_IMAGE
   stage: build
   only:
     - tags
   script:
-    - meson --buildtype release --fatal-meson-warnings -Dgtk_doc=true -Dman=true _build
+    # FIXME: Cannot use --fatal-meson-warnings here because meson warns about gtkdoc
+    # feature introduced in 0.52 but we only depends on 0.49.
+    - meson --buildtype release -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
     - ninja glib-doc gobject-doc gio-doc
