@@ -1325,12 +1325,6 @@ g_signal_lookup (const gchar *name,
       if (!g_type_name (itype))
 	g_warning (G_STRLOC ": unable to look up signal \"%s\" for invalid type id '%"G_GSIZE_FORMAT"'",
 		   name, itype);
-      else if (!G_TYPE_IS_INSTANTIATABLE (itype))
-	g_warning (G_STRLOC ": unable to look up signal \"%s\" for non instantiatable type '%s'",
-		   name, g_type_name (itype));
-      else if (!g_type_class_peek (itype))
-	g_warning (G_STRLOC ": unable to look up signal \"%s\" of unloaded type '%s'",
-		   name, g_type_name (itype));
       else if (!is_valid_signal_name (name))
         g_warning (G_STRLOC ": unable to look up invalid signal name \"%s\" on type '%s'",
                    name, g_type_name (itype));
