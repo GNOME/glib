@@ -118,8 +118,6 @@ installed-tests:
     # https://github.com/flatpak/xdg-desktop-portal/pull/365
     - git clone --single-branch https://github.com/flatpak/xdg-desktop-portal.git
     - cd xdg-desktop-portal
-    # FIXME Force-enable portal memory monitor until 2.63.3 is released
-    - sed -i 's/2, 63, 3/2, 63, 2/' src/memory-monitor.c
     - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-libportal --disable-dependency-tracking && make && sudo make install
     - cd ..
     # FIXME install newer gobject-introspection

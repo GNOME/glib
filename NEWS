@@ -1,3 +1,66 @@
+Overview of changes in GLib 2.63.3
+==================================
+
+* Add a `--glib-min-version` argument to `gdbus-codegen` which controls breaks in the API of generated code (#1726)
+
+* Add `g_clear_list()` API to clear `GList`s to `NULL` (#1943)
+
+* Add a `GMemoryMonitor` API to be notified of memory pressure situations using the low-memory-monitor project (!1005)
+
+* Add support for dispose functions for `GSource` implementations (!1175)
+
+* Tighten up validation of GObject signal and property names, allowing performance improvements (!1224)
+
+* Fix installation path of GIO modules on MSVC to be the bindir (!1254)
+
+* Bugs fixed:
+ - #650 g_signal_lookup gives too many warnings
+ - #1011 GListStore, easily find if the item is already inserted
+ - #1130 gdbus-codegen: Add an option to strictly generate markdown in source comments
+ - #1687 glocalvfs.c uses non-thread-safe getpwnam()
+ - #1726 Warn when method/signal uses type 'h' but lacks GDBus.C.UnixFD annotation
+ - #1935 Assert in _kqsub_free seems to be too strict
+ - #1943 Consider g_clear_list()
+ - #1947 Documentation clarification for g_uuid_string_random()
+ - #1953 Documentation for g_type_init() and others missing from online gtk-doc documentation
+ - #1961 A typo in the comment of `g_settings_schema_get_path`: threfore -> therefore
+ - !1005 gio: Add GMemoryMonitor to monitor for low-memory
+ - !1172 gptrarray: Add an example to the g_ptr_array_steal() docs
+ - !1175 Implement a dispose function for GSource
+ - !1223 Add additional valgrind suppressions
+ - !1224 Signal name handling improvements
+ - !1230 ci: Run installed-tests on Fedora
+ - !1235 Add sudo to Fedora docker image
+ - !1239 tests: Run "timeout tests" sequentially
+ - !1248 ci: Update all Debian CI runners to use v5 of the Dockerfile
+ - !1249 gio-tool-mount: Allow mounting by the given UUID
+ - !1252 ci: Fix running all jobs on merge requests
+ - !1253 gthread: Fix "zero as null pointer" warning
+ - !1254 giomodule: gio modules are no longer installed in bindir on MSVC
+ - !1255 ci: Build Docker images rather than OCI images if using podman
+ - !1256 gdate: Add autoptr support
+ - !1258 Minor CI fixups
+ - !1261 gtk-doc: Ensure we have recent enough version
+ - !1262 tests: Add tests for the gdbus-codegen executable
+ - !1265 build: don't check for protected visibility
+ - !1267 Revert "doc: Workaround gtkdoc-scan bug leading to undocumented symbols"
+ - !1268 ci: Work-around successful installed tests having no logs
+ - !1269 gvariant: Add guard to g_variant_get()
+ - !1271 tests: Enable GDBus debug for a number of unreliable tests
+ - !1274 trash portal: Don't follow symlinks
+ - !1275 Small doc correction
+ - !1277 Various gtk-doc improvements
+ - !1278 Update installed tests CI
+ - !1280 clang-format-diff: Output diff for multiple files, not just one
+ - !1282 Revert "Revert "docs: remove GDBusObjectManager example""
+ - !1284 Update POTFILES.in 191212
+ - !1287 atomic/tests: test g_atomic_pointer_compare_and_exchange() with const pointers
+ - !1289 gtype: Define auto-cleanup functions for Module class
+
+* Translation updates:
+ - Spanish
+
+
 Overview of changes in GLib 2.63.2
 ==================================
 
