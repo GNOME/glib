@@ -4174,7 +4174,6 @@ GDBusObjectManagerServerPrivate
 <FILE>gmemorymonitor</FILE>
 <TITLE>GMemoryMonitor</TITLE>
 GMemoryMonitor
-GMemoryMonitorFlags
 GMemoryMonitorInterface
 GMemoryMonitorWarningLevel
 G_MEMORY_MONITOR_EXTENSION_POINT_NAME
@@ -4185,6 +4184,8 @@ G_TYPE_MEMORY_MONITOR
 G_MEMORY_MONITOR
 G_IS_MEMORY_MONITOR
 G_MEMORY_MONITOR_GET_INTERFACE
+G_TYPE_MEMORY_MONITOR_WARNING_LEVEL
+g_memory_monitor_warning_level_get_type
 </SECTION>
 
 <SECTION>
