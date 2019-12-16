@@ -823,11 +823,13 @@ G_POLLFD_FORMAT
 GSource
 GSourceDummyMarshal
 GSourceFuncs
+GSourceDisposeFunc
 GSourceCallbackFuncs
 g_source_new
 g_source_ref
 g_source_unref
 g_source_set_funcs
+g_source_set_dispose_function
 g_source_attach
 g_source_destroy
 g_source_is_destroyed
