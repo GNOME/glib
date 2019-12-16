@@ -58,6 +58,10 @@
 
 #include "glibintl.h"
 
+/* See https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-signature
+ * This is 64 containers plus 1 value within them. */
+#define G_DBUS_MAX_TYPE_DEPTH (64 + 1)
+
 typedef struct _GMemoryBuffer GMemoryBuffer;
 struct _GMemoryBuffer
 {
@@ -1439,16 +1443,26 @@ read_bytes (GMemoryBuffer  *mbuf,
 static GVariant *
 parse_value_from_blob (GMemoryBuffer       *buf,
                        const GVariantType  *type,
+                       guint                max_depth,
                        gboolean             just_align,
                        guint                indent,
                        GError             **error)
 {
-  GVariant *ret;
-  GError *local_error;
+  GVariant *ret = NULL;
+  GError *local_error = NULL;
 #ifdef DEBUG_SERIALIZER
   gboolean is_leaf;
 #endif /* DEBUG_SERIALIZER */
   const gchar *type_string;
+
+  if (max_depth == 0)
+    {
+      g_set_error_literal (&local_error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Value nested too deeply"));
+      goto fail;
+    }
 
   type_string = g_variant_type_peek_string (type);
 
@@ -1465,12 +1479,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
     }
 #endif /* DEBUG_SERIALIZER */
 
-  ret = NULL;
-
 #ifdef DEBUG_SERIALIZER
   is_leaf = TRUE;
 #endif /* DEBUG_SERIALIZER */
-  local_error = NULL;
   switch (type_string[0])
     {
     case 'b': /* G_VARIANT_TYPE_BOOLEAN */
@@ -1690,6 +1701,17 @@ parse_value_from_blob (GMemoryBuffer       *buf,
                   goto fail;
                 }
 
+              if (max_depth == 1)
+                {
+                  /* If we had recursed into parse_value_from_blob() again to
+                   * parse the array values, this would have been emitted. */
+                  g_set_error_literal (&local_error,
+                                       G_IO_ERROR,
+                                       G_IO_ERROR_INVALID_ARGUMENT,
+                                       _("Value nested too deeply"));
+                  goto fail;
+                }
+
               ensure_input_padding (buf, fixed_size);
               array_data = read_bytes (buf, array_len, &local_error);
               if (array_data == NULL)
@@ -1717,6 +1739,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
                   GVariant *item G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
                   item = parse_value_from_blob (buf,
                                                 element_type,
+                                                max_depth - 1,
                                                 TRUE,
                                                 indent + 2,
                                                 NULL);
@@ -1731,6 +1754,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
                       GVariant *item;
                       item = parse_value_from_blob (buf,
                                                     element_type,
+                                                    max_depth - 1,
                                                     FALSE,
                                                     indent + 2,
                                                     &local_error);
@@ -1770,6 +1794,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
               key_type = g_variant_type_key (type);
               key = parse_value_from_blob (buf,
                                            key_type,
+                                           max_depth - 1,
                                            FALSE,
                                            indent + 2,
                                            &local_error);
@@ -1778,6 +1803,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
               value_type = g_variant_type_value (type);
               value = parse_value_from_blob (buf,
                                              value_type,
+                                             max_depth - 1,
                                              FALSE,
                                              indent + 2,
                                              &local_error);
@@ -1812,6 +1838,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
                   GVariant *item;
                   item = parse_value_from_blob (buf,
                                                 element_type,
+                                                max_depth - 1,
                                                 FALSE,
                                                 indent + 2,
                                                 &local_error);
@@ -1858,9 +1885,26 @@ parse_value_from_blob (GMemoryBuffer       *buf,
                                sig);
                   goto fail;
                 }
+
+              if (max_depth <= g_variant_type_string_get_depth_ (sig))
+                {
+                  /* Catch the type nesting being too deep without having to
+                   * parse the data. We don’t have to check this for static
+                   * container types (like arrays and tuples, above) because
+                   * the g_variant_type_string_is_valid() check performed before
+                   * the initial parse_value_from_blob() call should check the
+                   * static type nesting. */
+                  g_set_error_literal (&local_error,
+                                       G_IO_ERROR,
+                                       G_IO_ERROR_INVALID_ARGUMENT,
+                                       _("Value nested too deeply"));
+                  goto fail;
+                }
+
               variant_type = g_variant_type_new (sig);
               value = parse_value_from_blob (buf,
                                              variant_type,
+                                             max_depth - 1,
                                              FALSE,
                                              indent + 2,
                                              &local_error);
@@ -2098,6 +2142,7 @@ g_dbus_message_new_from_blob (guchar                *blob,
 #endif /* DEBUG_SERIALIZER */
   headers = parse_value_from_blob (&mbuf,
                                    G_VARIANT_TYPE ("a{yv}"),
+                                   G_DBUS_MAX_TYPE_DEPTH + 2 /* for the a{yv} */,
                                    FALSE,
                                    2,
                                    error);
@@ -2169,6 +2214,7 @@ g_dbus_message_new_from_blob (guchar                *blob,
 #endif /* DEBUG_SERIALIZER */
           message->body = parse_value_from_blob (&mbuf,
                                                  variant_type,
+                                                 G_DBUS_MAX_TYPE_DEPTH + 1 /* for the surrounding tuple */,
                                                  FALSE,
                                                  2,
                                                  error);
