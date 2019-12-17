@@ -18,12 +18,6 @@
  * Author: Xavier Claessens <xavier.claessens@collabora.co.uk>
  */
 
-/* This code is built into the gdbus-test-codegen-old test where these
- * macros are defined. They cause problems for some API calls in this
- * file. */
-#undef GLIB_VERSION_MIN_REQUIRED
-#undef GLIB_VERSION_MAX_ALLOWED
-
 #include "gdbus-sessionbus.h"
 
 static GTestDBus *singleton = NULL;
@@ -35,8 +29,13 @@ session_bus_up (void)
   g_assert (singleton == NULL);
   singleton = g_test_dbus_new (G_TEST_DBUS_NONE);
 
+  /* We ignore deprecations here so that gdbus-test-codegen-old can
+   * build successfully despite these two functions not being
+   * available in GLib 2.36 */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   relative = g_test_build_filename (G_TEST_BUILT, "services", NULL);
   servicesdir = g_canonicalize_filename (relative, NULL);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_free (relative);
 
   g_test_dbus_add_service_dir (singleton, servicesdir);
