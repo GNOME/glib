@@ -29,6 +29,7 @@ static char *attributes = NULL;
 static gboolean show_hidden = FALSE;
 static gboolean show_long = FALSE;
 static gboolean nofollow_symlinks = FALSE;
+static gboolean print_display_names = FALSE;
 static gboolean print_uris = FALSE;
 
 static const GOptionEntry entries[] = {
@@ -36,6 +37,7 @@ static const GOptionEntry entries[] = {
   { "hidden", 'h', 0, G_OPTION_ARG_NONE, &show_hidden, N_("Show hidden files"), NULL },
   { "long", 'l', 0, G_OPTION_ARG_NONE, &show_long, N_("Use a long listing format"), NULL },
   { "nofollow-symlinks", 'n', 0, G_OPTION_ARG_NONE, &nofollow_symlinks, N_("Don’t follow symbolic links"), NULL},
+  { "print-display-names", 'd', 0, G_OPTION_ARG_NONE, &print_display_names, N_("Print display names"), NULL },
   { "print-uris", 'u', 0, G_OPTION_ARG_NONE, &print_uris, N_("Print full URIs"), NULL},
   { NULL }
 };
@@ -54,7 +56,11 @@ show_file_listing (GFileInfo *info, GFile *parent)
   if ((g_file_info_get_is_hidden (info)) && !show_hidden)
     return;
 
-  name = g_file_info_get_name (info);
+  if (print_display_names)
+    name = g_file_info_get_display_name (info);
+  else
+    name = g_file_info_get_name (info);
+
   if (name == NULL)
     name = "";
 
@@ -81,7 +87,8 @@ show_file_listing (GFileInfo *info, GFile *parent)
       char *val_as_string;
 
       if (!show_long ||
-          strcmp (attributes[i], G_FILE_ATTRIBUTE_STANDARD_NAME) == 0 ||
+          (!print_display_names && strcmp (attributes[i], G_FILE_ATTRIBUTE_STANDARD_NAME) == 0) ||
+          (print_display_names && strcmp (attributes[i], G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME) == 0) ||
           strcmp (attributes[i], G_FILE_ATTRIBUTE_STANDARD_SIZE) == 0 ||
           strcmp (attributes[i], G_FILE_ATTRIBUTE_STANDARD_TYPE) == 0 ||
           strcmp (attributes[i], G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN) == 0)
@@ -195,7 +202,8 @@ handle_list (int argc, char *argv[], gboolean do_help)
   if (attributes != NULL)
     show_long = TRUE;
 
-  attributes = g_strconcat (G_FILE_ATTRIBUTE_STANDARD_NAME ","
+  attributes = g_strconcat (!print_display_names ? G_FILE_ATTRIBUTE_STANDARD_NAME "," : "",
+                            print_display_names ? G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME "," : "",
                             G_FILE_ATTRIBUTE_STANDARD_TYPE ","
                             G_FILE_ATTRIBUTE_STANDARD_SIZE ","
                             G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
