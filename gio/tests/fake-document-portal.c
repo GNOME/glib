@@ -73,7 +73,7 @@ on_bus_acquired (GDBusConnection *connection,
   FakeDocuments *interface;
   GError *error = NULL;
 
-  g_test_message ("Acquired a message bus connection\n");
+  g_test_message ("Acquired a message bus connection");
 
   interface = fake_documents_skeleton_new ();
   g_signal_connect (interface,
@@ -97,7 +97,7 @@ on_name_acquired (GDBusConnection *connection,
                   const gchar     *name,
                   gpointer         user_data)
 {
-  g_test_message ("Acquired the name %s\n", name);
+  g_test_message ("Acquired the name %s", name);
 }
 
 static void
@@ -105,7 +105,7 @@ on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
-  g_test_message ("Lost the name %s\n", name);
+  g_test_message ("Lost the name %s", name);
 }
 
 
