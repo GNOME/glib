@@ -37,56 +37,47 @@
 #define HAVE_O_CLOEXEC 1
 #endif
 
-static GXdpDocuments *documents;
-static char *documents_mountpoint;
-
 static gboolean
-init_document_portal (void)
+get_document_portal (GXdpDocuments **documents,
+                     char          **documents_mountpoint,
+                     GError        **error)
 {
-  static gsize documents_inited = 0;
+  GDBusConnection *connection = NULL;
 
-  if (g_once_init_enter (&documents_inited))
+  *documents = NULL;
+  *documents_mountpoint = NULL;
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
+  if (connection == NULL)
     {
-      GError *error = NULL;
-      GDBusConnection *connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-
-      if (connection != NULL)
-        {
-          documents = gxdp_documents_proxy_new_sync (connection, 0,
-                                                     "org.freedesktop.portal.Documents",
-                                                     "/org/freedesktop/portal/documents",
-                                                     NULL, &error);
-          if (documents != NULL)
-            {
-              gxdp_documents_call_get_mount_point_sync (documents,
-                                                        &documents_mountpoint,
-                                                        NULL, &error);
-
-              if (error != NULL)
-                {
-                  g_warning ("Cannot get document portal mount point: %s", error->message);
-                  g_error_free (error);
-                }
-            }
-          else
-            {
-              g_warning ("Cannot create document portal proxy: %s", error->message);
-              g_error_free (error);
-            }
-
-          g_object_unref (connection);
-        }
-      else
-        {
-          g_warning ("Cannot connect to session bus when initializing document portal: %s",
-                     error->message);
-          g_error_free (error);
-        }
-
-      g_once_init_leave (&documents_inited, 1);
+      g_prefix_error (error, "Cannot connect to session bus when initializing document portal: ");
+      goto out;
     }
 
-  return (documents != NULL && documents_mountpoint != NULL);
+  *documents = gxdp_documents_proxy_new_sync (connection,
+                                              G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
+                                              G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
+                                              "org.freedesktop.portal.Documents",
+                                              "/org/freedesktop/portal/documents",
+                                              NULL, error);
+  if (*documents == NULL)
+    {
+      g_prefix_error (error, "Cannot create document portal proxy: ");
+      goto out;
+    }
+
+  if (!gxdp_documents_call_get_mount_point_sync (*documents,
+                                                 documents_mountpoint,
+                                                 NULL, error))
+    {
+      g_clear_object (documents);
+      g_prefix_error (error, "Cannot get document portal mount point: ");
+      goto out;
+    }
+
+out:
+  g_clear_object (&connection);
+  return *documents != NULL;
 }
 
 /* Flags accepted by org.freedesktop.portal.Documents.AddFull */
@@ -102,6 +93,8 @@ g_document_portal_add_documents (GList       *uris,
                                  const char  *app_id,
                                  GError     **error)
 {
+  GXdpDocuments *documents = NULL;
+  char *documents_mountpoint = NULL;
   int length;
   GList *ruris = NULL;
   gboolean *as_is;
@@ -113,10 +106,8 @@ g_document_portal_add_documents (GList       *uris,
   char **doc_ids = NULL;
   GVariant *extra_out = NULL;
 
-  if (!init_document_portal ())
+  if (!get_document_portal (&documents, &documents_mountpoint, error))
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
-                   "Document portal is not available");
       return NULL;
     }
 
@@ -213,6 +204,8 @@ g_document_portal_add_documents (GList       *uris,
     }
 
 out:
+  g_clear_object (&documents);
+  g_clear_pointer (&documents_mountpoint, g_free);
   g_clear_object (&fd_list);
   g_clear_pointer (&extra_out, g_variant_unref);
   g_clear_pointer (&doc_ids, g_strfreev);
