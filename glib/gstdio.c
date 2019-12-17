@@ -1528,24 +1528,24 @@ g_rmdir (const gchar *filename)
  *     (UTF-8 on Windows)
  * @mode: a string describing the mode in which the file should be opened
  *
- * A wrapper for the stdio fopen() function. The fopen() function
+ * A wrapper for the stdio `fopen()` function. The `fopen()` function
  * opens a file and associates a new stream with it.
  * 
  * Because file descriptors are specific to the C library on Windows,
- * and a file descriptor is part of the FILE struct, the FILE* returned
+ * and a file descriptor is part of the `FILE` struct, the `FILE*` returned
  * by this function makes sense only to functions in the same C library.
  * Thus if the GLib-using code uses a different C library than GLib does,
  * the FILE* returned by this function cannot be passed to C library
- * functions like fprintf() or fread().
+ * functions like `fprintf()` or `fread()`.
  *
- * See your C library manual for more details about fopen().
+ * See your C library manual for more details about `fopen()`.
  *
- * As close() and fclose() are part of the C library, this implies that it is
+ * As `close()` and `fclose()` are part of the C library, this implies that it is
  * currently impossible to close a file if the application C library and the C library
  * used by GLib are different. Convenience functions like g_file_set_contents()
  * avoid this problem.
  *
- * Returns: A FILE* if the file was successfully opened, or %NULL if
+ * Returns: A `FILE*` if the file was successfully opened, or %NULL if
  *     an error occurred
  * 
  * Since: 2.6
