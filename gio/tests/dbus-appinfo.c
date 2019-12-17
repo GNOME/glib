@@ -361,18 +361,10 @@ test_flatpak_doc_export (void)
 int
 main (int argc, char **argv)
 {
-  int ret;
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/appinfo/dbusappinfo", test_dbus_appinfo);
   g_test_add_func ("/appinfo/flatpak-doc-export", test_flatpak_doc_export);
 
-  session_bus_up ();
-  ret = g_test_run ();
-  /* gdocumentportal.c holds a reference to the session bus
-   * connection, which prevents session_bus_down from completing
-   * successfully. */
-  session_bus_stop ();
-  return ret;
+  return session_bus_run ();
 }
