@@ -247,16 +247,6 @@ xdp_dbus_generated = custom_target('xdp-dbus',
                '--output-directory', '@OUTDIR@',
                '--generate-c-code', 'xdp-dbus',
                '--c-namespace', 'GXdp',
-               '--annotate', 'org.freedesktop.portal.Documents.Add()',
-                             'org.gtk.GDBus.C.UnixFD', 'true',
-               '--annotate', 'org.freedesktop.portal.Documents.AddNamed()',
-                             'org.gtk.GDBus.C.UnixFD', 'true',
-               '--annotate', 'org.freedesktop.portal.Documents.AddFull()',
-                             'org.gtk.GDBus.C.UnixFD', 'true',
-               '--annotate', 'org.freedesktop.portal.OpenURI.OpenFile()',
-                             'org.gtk.GDBus.C.UnixFD', 'true',
-               '--annotate', 'org.freedesktop.portal.Trash.TrashFile()',
-                             'org.gtk.GDBus.C.UnixFD', 'true',
                '@INPUT@'])
 
 # Generate gdbus-generated.{c,h}
