@@ -50,6 +50,29 @@
  *
  * See #GMemoryMonitorWarningLevel for details on the various warning levels.
  *
+ * |[<!-- language="C" -->
+ * static void
+ * warning_cb (GMemoryMonitor *m, GMemoryMonitorWarningLevel level)
+ * {
+ *   g_debug ("Warning level: %d", level);
+ *   if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
+ *     drop_caches ();
+ * }
+ *
+ * static GMemoryMonitor *
+ * monitor_low_memory (void)
+ * {
+ *   GMemoryMonitor *m;
+ *   m = g_memory_monitor_dup_default ();
+ *   g_signal_connect (G_OBJECT (m), "low-memory-warning",
+ *                     G_CALLBACK (warning_cb), NULL);
+ *   return m;
+ * }
+ * ]|
+ *
+ * Don't forget to disconnect the #GMemoryMonitor::low-memory-warning
+ * signal, and unref the #GMemoryMonitor itself when exiting.
+ *
  * Since: 2.64
  */
 
