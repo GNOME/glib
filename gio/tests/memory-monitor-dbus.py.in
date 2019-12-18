@@ -38,8 +38,12 @@ class TestLowMemoryMonitor(dbusmock.DBusTestCase):
         klass.dbus_con = klass.get_dbus(True)
 
     def setUp(self):
-        (self.p_mock, self.obj_lmm) = self.spawn_server_template(
-            'low_memory_monitor', {}, stdout=subprocess.PIPE)
+        try:
+            (self.p_mock, self.obj_lmm) = self.spawn_server_template(
+                'low_memory_monitor', {}, stdout=subprocess.PIPE)
+        except ModuleNotFoundError:
+            raise unittest.SkipTest("Low memory monitor dbusmock template not "
+                                    "found. Requires dbusmock ≥ 0.18.4.")
         # set log to nonblocking
         flags = fcntl.fcntl(self.p_mock.stdout, fcntl.F_GETFL)
         fcntl.fcntl(self.p_mock.stdout, fcntl.F_SETFL, flags | os.O_NONBLOCK)
