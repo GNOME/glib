@@ -1980,13 +1980,10 @@ typedef enum {
  *
  * Note that because new values might be added, it is recommended that applications check
  * #GMemoryMonitorWarningLevel as ranges, for example:
- * <example>
- *  <title>Comparing memory warning levels</title>
- *  <programlisting>
+ * |[<!-- language="C" -->
  * if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
  *   drop_caches ();
- *  </programlisting>
- * </example>
+ * ]|
  *
  * Since: 2.64
  */
