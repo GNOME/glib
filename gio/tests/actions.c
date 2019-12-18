@@ -890,7 +890,7 @@ do_export (gpointer data)
   bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
   path = g_strdup_printf("/%p", data);
 
-  for (i = 0; i < 100000; i++)
+  for (i = 0; i < 10000; i++)
     {
       id = g_dbus_connection_export_action_group (bus, path, G_ACTION_GROUP (group), &error);
       g_assert_no_error (error);
