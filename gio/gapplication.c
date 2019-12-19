@@ -129,7 +129,7 @@
  * initialization for all of these in a single place.
  *
  * Regardless of which of these entry points is used to start the
- * application, GApplication passes some "platform data from the
+ * application, GApplication passes some ‘platform data’ from the
  * launching instance to the primary instance, in the form of a
  * #GVariant dictionary mapping strings to variants. To use platform
  * data, override the @before_emit or @after_emit virtual functions
