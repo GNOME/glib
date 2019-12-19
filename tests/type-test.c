@@ -106,10 +106,19 @@ main (int   argc,
   gi32t1 = -0x3AFAFAFA;
   gu32t1 = 0xFAFAFAFA; 
 
-#define FORMAT "%" G_GINT16_FORMAT " %" G_GINT32_FORMAT \
-               " %" G_GUINT16_FORMAT " %" G_GUINT32_FORMAT "\n"
-  string = g_strdup_printf (FORMAT, gi16t1, gi32t1, gu16t1, gu32t1);
-  sscanf (string, FORMAT, &gi16t2, &gi32t2, &gu16t2, &gu32t2);
+#define PRINTF_FORMAT "%" G_GINT16_FORMAT \
+                      " %" G_GINT32_FORMAT \
+                      " %" G_GUINT16_FORMAT \
+                      " %" G_GUINT32_FORMAT \
+                      "\n"
+  string = g_strdup_printf (PRINTF_FORMAT, gi16t1, gi32t1, gu16t1, gu32t1);
+
+#define SCANF_FORMAT "%" G_GINT16_SCANF_FORMAT \
+                     " %" G_GINT32_SCANF_FORMAT \
+                     " %" G_GUINT16_SCANF_FORMAT \
+                     " %" G_GUINT32_SCANF_FORMAT \
+                     "\n"
+  sscanf (string, SCANF_FORMAT, &gi16t2, &gi32t2, &gu16t2, &gu32t2);
   g_free (string);
   g_assert (gi16t1 == gi16t2);
   g_assert (gi32t1 == gi32t2);
