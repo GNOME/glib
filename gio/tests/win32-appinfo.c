@@ -56,30 +56,31 @@ G_STMT_START { \
                                 #s1u8 " " #cmp " " #s2u8, s1u8, #cmp, s2u8); \
 } G_STMT_END
 
-struct {
-  gsize len;
-  const gunichar2 utf16[10];
-  const gchar *utf8;
-  const gchar *utf8_folded;
-} string_cases[] = {
-  {
-    1,
-    { 0x0020, 0x0000 },
-    " ",
-    " ",
-  },
-  {
-    2,
-    { 0x0020, 0xd800, 0x0000 },
-    NULL,
-    NULL,
-  },
-};
-
 static void
 test_utf16_strfuncs (void)
 {
   gsize i;
+
+  struct {
+    gsize len;
+    const gunichar2 utf16[10];
+    const gchar *utf8;
+    const gchar *utf8_folded;
+  } string_cases[] = {
+    {
+      1,
+      { 0x0020, 0x0000 },
+      " ",
+      " ",
+    },
+    {
+      2,
+      { 0x0020, 0xd800, 0x0000 },
+      NULL,
+      NULL,
+    },
+  };
+
 
   for (i = 0; i < G_N_ELEMENTS (string_cases); i++)
     {
