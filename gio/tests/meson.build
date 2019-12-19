@@ -342,9 +342,7 @@ endif # unix
 
 #  Test programs buildable on Windows only
 if host_machine.system() == 'windows'
-  gio_tests += {
-    'win32-streams' : {},
-  }
+  gio_tests += {'win32-streams' : {}}
 endif
 
 if cc.get_id() != 'msvc'
