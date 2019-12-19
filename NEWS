@@ -1,3 +1,17 @@
+Overview of changes in GLib 2.62.4
+==================================
+
+* Apply recursion depth limits to variants in D-Bus messages (!1290)
+
+* Bugs fixed:
+ - #1938 GDateTime doesn't support leap seconds
+ - !1240 Backport !1233 “gdatetime: Handle leap seconds in ISO8601 dates” to glib-2-62
+ - !1257 Backport !1232 “kqueue: Do not return early from _kqsub_cancel” to glib-2-62
+ - !1266 Backport !1265 “build: don't check for protected visibility” to glib-2-62
+ - !1276 Backport !1274 “trash portal: Don't follow symlinks” to glib-2-62
+ - !1290 Backport !1201 “gdbusmessage: Limit recursion of variants in D-Bus messages” to glib-2-62
+
+
 Overview of changes in GLib 2.62.3
 ==================================
 
