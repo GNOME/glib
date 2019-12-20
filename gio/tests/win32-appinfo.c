@@ -92,7 +92,7 @@ test_utf16_strfuncs (void)
       len = g_utf16_len (string_cases[i].utf16);
       g_assert_cmpuint (len, ==, string_cases[i].len);
 
-      str = (gunichar2 *) g_utf16_find_basename (string_cases[0].utf16, -1);
+      str = (gunichar2 *) g_utf16_find_basename (string_cases[i].utf16, -1);
       /* This only works because all testcases lack separators */
       g_assert_true (string_cases[i].utf16 == str);
 
