@@ -115,6 +115,13 @@ g_utf16_find_basename (const gunichar2 *filename,
   return result;
 }
 
+/* Finds the last directory separator in @filename,
+ * returns a pointer to the position after that separator.
+ * If the string ends with a separator, returned value
+ * will be pointing at the NUL terminator.
+ * If the string does not contain separators, returns the
+ * string itself.
+ */
 static const gchar *
 g_utf8_find_basename (const gchar *filename,
                       gssize       len)
@@ -123,6 +130,8 @@ g_utf8_find_basename (const gchar *filename,
 
   if (len < 0)
     len = strlen (filename);
+  if (len == 0)
+    return filename;
 
   result = &filename[len - 1];
 
