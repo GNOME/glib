@@ -80,6 +80,13 @@ g_utf16_to_utf8_and_fold (const gunichar2  *str,
   return TRUE;
 }
 
+/* Finds the last directory separator in @filename,
+ * returns a pointer to the position after that separator.
+ * If the string ends with a separator, returned value
+ * will be pointing at the NUL terminator.
+ * If the string does not contain separators, returns the
+ * string itself.
+ */
 static const gunichar2 *
 g_utf16_find_basename (const gunichar2 *filename,
                        gssize           len)
