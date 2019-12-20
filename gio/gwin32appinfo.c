@@ -4328,7 +4328,7 @@ g_app_info_create_from_commandline (const char           *commandline,
   info = g_object_new (G_TYPE_WIN32_APP_INFO, NULL);
   app = g_object_new (G_TYPE_WIN32_APPINFO_APPLICATION, NULL);
 
-  app->command = app_command;
+  app->command = g_steal_pointer (&app_command);
 
   if (application_name)
     {
