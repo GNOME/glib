@@ -81,7 +81,6 @@ test_utf16_strfuncs (void)
     },
   };
 
-
   for (i = 0; i < G_N_ELEMENTS (string_cases); i++)
     {
       gsize len;
@@ -92,6 +91,10 @@ test_utf16_strfuncs (void)
 
       len = g_utf16_len (string_cases[i].utf16);
       g_assert_cmpuint (len, ==, string_cases[i].len);
+
+      str = (gunichar2 *) g_utf16_find_basename (string_cases[0].utf16, -1);
+      /* This only works because all testcases lack separators */
+      g_assert_true (string_cases[i].utf16 == str);
 
       str = g_wcsdup (string_cases[i].utf16, string_cases[i].len);
       g_assert_cmpmem (string_cases[i].utf16, len, str, len);
@@ -115,6 +118,8 @@ test_utf16_strfuncs (void)
         {
           g_assert_true (success);
           g_assert_cmpstr (string_cases[i].utf8, ==, utf8);
+          /* This only works because all testcases lack separators */
+          g_assert_true (utf8 == g_utf8_find_basename (utf8, len));
         }
 
       g_free (utf8);
