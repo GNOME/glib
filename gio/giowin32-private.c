@@ -68,14 +68,14 @@ g_utf16_to_utf8_and_fold (const gunichar2  *str,
   folded = g_utf8_casefold (u8, -1);
 
   if (str_u8)
-    *str_u8 = u8;
-  else
-    g_free (u8);
+    *str_u8 = g_steal_pointer (&u8);
+
+  g_free (u8);
 
   if (str_u8_folded)
-    *str_u8_folded = folded;
-  else
-    g_free (folded);
+    *str_u8_folded = g_steal_pointer (&folded);
+
+  g_free (folded);
 
   return TRUE;
 }
@@ -350,9 +350,9 @@ _g_win32_extract_executable (const gunichar2  *commandline,
                        function_utf8);
 
               if (dll_function_out)
-                *dll_function_out = function_utf8;
-              else
-                g_free (function_utf8);
+                *dll_function_out = g_steal_pointer (&function_utf8);
+
+              g_free (function_utf8);
 
               /*
                * Free our previous output candidate (rundll32) and replace it with the DLL path,
@@ -369,27 +369,23 @@ _g_win32_extract_executable (const gunichar2  *commandline,
 
   if (ex_out)
     {
-      *ex_out = ex;
-
       if (ex_basename_out)
         *ex_basename_out = (gchar *) g_utf8_find_basename (ex, -1);
-    }
-  else
-    {
-      g_free (ex);
+        
+      *ex_out = g_steal_pointer (&ex);
     }
 
+  g_free (ex);
+    
   if (ex_folded_out)
     {
-      *ex_folded_out = ex_folded;
-
       if (ex_folded_basename_out)
         *ex_folded_basename_out = (gchar *) g_utf8_find_basename (ex_folded, -1);
+
+      *ex_folded_out = g_steal_pointer (&ex_folded);
     }
-  else
-    {
-      g_free (ex_folded);
-    }
+
+  g_free (ex_folded);
 }
 
 /**
