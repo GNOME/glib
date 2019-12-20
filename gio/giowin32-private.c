@@ -37,7 +37,7 @@ g_wcsdup (const gunichar2 *str, gssize str_len)
     str_len = g_utf16_len (str);
 
   g_assert (str_len <= G_MAXSIZE / sizeof (gunichar2) - 1);
-  str_size = (len + 1) * sizeof (gunichar2);
+  str_size = (str_len + 1) * sizeof (gunichar2);
 
   return g_memdup (str, str_size);
 }
