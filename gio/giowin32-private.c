@@ -29,13 +29,15 @@ g_utf16_len (const gunichar2 *str)
 }
 
 static gunichar2 *
-g_wcsdup (const gunichar2 *str, gssize str_size)
+g_wcsdup (const gunichar2 *str, gssize str_len)
 {
-  if (str_size == -1)
-    {
-      str_size = g_utf16_len (str) + 1;
-      str_size *= sizeof (gunichar2);
-    }
+  gssize str_size;
+  
+  if (str_len == -1)
+    str_len = g_utf16_len (str);
+
+  g_assert (str_len <= G_MAXSIZE / sizeof (gunichar2) - 1);
+  str_size = (len + 1) * sizeof (gunichar2);
 
   return g_memdup (str, str_size);
 }
