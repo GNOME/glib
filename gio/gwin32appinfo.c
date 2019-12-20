@@ -1646,8 +1646,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
       app->user_specific = user_specific;
       app->default_app = default_app;
 
-      if (app_dll_function)
-        app->dll_function = g_strdup (app_dll_function);
+      app->dll_function = g_strdup (app_dll_function);
 
       g_hash_table_insert (apps_by_id,
                            g_strdup (canonical_name_folded),
