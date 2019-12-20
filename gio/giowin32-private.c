@@ -88,6 +88,8 @@ g_utf16_find_basename (const gunichar2 *filename,
 
   if (len < 0)
     len = g_utf16_len (filename);
+  if (len == 0)
+    return filename;  
 
   result = &filename[len - 1];
 
