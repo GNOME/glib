@@ -154,6 +154,13 @@ struct {
     "%SystemRoot%\\System32\\rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\"  ImageView_Fullscreen %1",
   },
   {
+    "%SystemRoot%/System32/rundll32.exe \"%ProgramFiles%/Windows Photo Viewer/PhotoViewer.dll\", ImageView_Fullscreen %1",
+    "%SystemRoot%/System32/rundll32.exe",
+    "rundll32.exe",
+    TRUE,
+    "%SystemRoot%/System32/rundll32.exe \"%ProgramFiles%/Windows Photo Viewer/PhotoViewer.dll\"  ImageView_Fullscreen %1",
+  },
+  {
     "%SystemRoot%\\System32/rundll32.exe \"%ProgramFiles%\\Windows Photo Viewer\\PhotoViewer.dll\", ImageView_Fullscreen %1",
     "%SystemRoot%\\System32/rundll32.exe",
     "rundll32.exe",
