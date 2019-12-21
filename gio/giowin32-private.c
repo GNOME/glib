@@ -367,8 +367,8 @@ _g_win32_extract_executable (const gunichar2  *commandline,
                        dllpart_utf8,
                        function_utf8);
 
-              if (dll_function_out)
-                *dll_function_out = g_steal_pointer (&function_utf8);
+              /* We only take this branch when dll_function_out is not NULL */
+              *dll_function_out = g_steal_pointer (&function_utf8);
 
               g_free (function_utf8);
 

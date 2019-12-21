@@ -68,6 +68,12 @@ test_utf16_strfuncs (void)
     const gchar *utf8_folded;
   } string_cases[] = {
     {
+      0,
+      { 0x0000 },
+      "",
+      "",
+    },
+    {
       1,
       { 0x0020, 0x0000 },
       " ",
@@ -287,6 +293,28 @@ struct {
     "\"rundll32.exe\" some thing",
   },
   {
+    "\"rundll32.exe\" some,",
+    "rundll32.exe",
+    "rundll32.exe",
+    FALSE,
+    "\"rundll32.exe\" some,",
+  },
+  /* These filenames are not allowed on Windows, but our function doesn't care about that */
+  {
+    "run\"dll32.exe foo\".bar,baz",
+    "run\"dll32.exe",
+    "run\"dll32.exe",
+    FALSE,
+    NULL,
+  },
+  {
+    "run,dll32.exe foo.bar,baz",
+    "run,dll32.exe",
+    "run,dll32.exe",
+    FALSE,
+    NULL,
+  },
+  {
     "\"rundll32.exe\" some, thing",
     "rundll32.exe",
     "rundll32.exe",
@@ -359,11 +387,67 @@ test_win32_extract_executable (void)
 
       g_assert_cmpstr (rundll32_commandlines[i].executable, ==, executable);
       g_assert_cmpstr (rundll32_commandlines[i].executable_basename, ==, executable_basename);
+      g_assert_nonnull (executable_folded);
 
       g_free (executable);
       g_free (executable_folded);
+
+      /* Check the corner-case where we don't want to know where basename is */
+      executable = NULL;
+      executable_folded = NULL;
+      _g_win32_extract_executable (argument, &executable, NULL, &executable_folded, NULL, NULL);
+
+      g_assert_cmpstr (rundll32_commandlines[i].executable, ==, executable);
+      g_assert_nonnull (executable_folded);
+
+      g_free (executable);
+      g_free (executable_folded);
+
       g_free (argument);
     }
+}
+
+static void
+test_win32_parse_filename (void)
+{
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (rundll32_commandlines); i++)
+    {
+      gunichar2 *argument;
+      argument = g_utf8_to_utf16 (rundll32_commandlines[i].orig, -1, NULL, NULL, NULL);
+      /* Just checking that it doesn't blow up on various (sometimes incorrect) strings */
+      _g_win32_parse_filename (argument, FALSE, NULL, NULL, NULL, NULL);
+      g_free (argument);
+    }
+}
+
+static void
+do_fail_on_broken_utf16_1 (void)
+{
+  const gunichar2 utf16[] = { 0xd800, 0x0000 };
+  _g_win32_extract_executable (utf16, NULL, NULL, NULL, NULL, NULL);
+}
+
+static void
+do_fail_on_broken_utf16_2 (void)
+{
+  /* "rundll32.exe <invalid utf16> r" */
+  gchar *dll_function;
+  const gunichar2 utf16[] = { 0x0072, 0x0075, 0x006E, 0x0064, 0x006C, 0x006C, 0x0033, 0x0032,
+                              0x002E, 0x0065, 0x0078, 0x0065, 0x0020, 0xd800, 0x0020, 0x0072, 0x0000 };
+  _g_win32_extract_executable (utf16, NULL, NULL, NULL, NULL, &dll_function);
+}
+
+static void
+test_fail_on_broken_utf16 (void)
+{
+  g_test_trap_subprocess ("/appinfo/subprocess/win32-assert-broken-utf16_1", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*GLib-GIO:ERROR:*giowin32-private.c:*:_g_win32_extract_executable: code should not be reached*");
+  g_test_trap_subprocess ("/appinfo/subprocess/win32-assert-broken-utf16_2", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*GLib-GIO:ERROR:*giowin32-private.c:*:_g_win32_extract_executable: code should not be reached*");
 }
 
 int
@@ -375,6 +459,11 @@ main (int   argc,
   g_test_add_func ("/appinfo/utf16-strfuncs", test_utf16_strfuncs);
   g_test_add_func ("/appinfo/win32-extract-executable", test_win32_extract_executable);
   g_test_add_func ("/appinfo/win32-rundll32-fixup", test_win32_rundll32_fixup);
+  g_test_add_func ("/appinfo/win32-parse-filename", test_win32_parse_filename);
+  g_test_add_func ("/appinfo/win32-utf16-conversion-fail", test_fail_on_broken_utf16);
+
+  g_test_add_func ("/appinfo/subprocess/win32-assert-broken-utf16_1", do_fail_on_broken_utf16_1);
+  g_test_add_func ("/appinfo/subprocess/win32-assert-broken-utf16_2", do_fail_on_broken_utf16_2);
 
   return g_test_run ();
 }
