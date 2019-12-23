@@ -521,6 +521,7 @@ g_param_value_defaults
 g_param_value_validate
 g_param_value_convert
 g_param_values_cmp
+g_param_is_valid_property_name
 g_param_spec_get_name
 g_param_spec_get_name_quark
 g_param_spec_get_nick

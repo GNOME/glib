@@ -395,6 +395,9 @@ GLIB_AVAILABLE_IN_ALL
 GType	g_param_type_register_static	(const gchar		  *name,
 					 const GParamSpecTypeInfo *pspec_info);
 
+GLIB_AVAILABLE_IN_2_66
+gboolean g_param_is_valid_property_name (const gchar              *name);
+
 /* For registering builting types */
 GType  _g_param_type_register_static_constant (const gchar              *name,
 					       const GParamSpecTypeInfo *pspec_info,
