@@ -370,30 +370,12 @@ is_canonical (const gchar *key)
 static gboolean
 is_valid_signal_name (const gchar *key)
 {
-  const gchar *p;
-
   /* FIXME: We allow this, against our own documentation (the leading `-` is
    * invalid), because GTK has historically used this. */
   if (g_str_equal (key, "-gtk-private-changed"))
     return TRUE;
 
-  /* First character must be a letter. */
-  if ((key[0] < 'A' || key[0] > 'Z') &&
-      (key[0] < 'a' || key[0] > 'z'))
-    return FALSE;
-
-  for (p = key; *p != 0; p++)
-    {
-      const gchar c = *p;
-
-      if (c != '-' && c != '_' &&
-          (c < '0' || c > '9') &&
-          (c < 'A' || c > 'Z') &&
-          (c < 'a' || c > 'z'))
-        return FALSE;
-    }
-
-  return TRUE;
+  return g_param_is_valid_property_name (key);
 }
 
 static inline guint
