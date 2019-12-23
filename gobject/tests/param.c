@@ -846,6 +846,32 @@ test_param_default (void)
   g_param_spec_unref (param);
 }
 
+static void
+test_param_is_valid_name (void)
+{
+  const gchar *valid_names[] =
+    {
+      "property",
+      "i",
+      "multiple-segments",
+      "segment0-SEGMENT1",
+      "using_underscores",
+    };
+  const gchar *invalid_names[] =
+    {
+      "",
+      "7zip",
+      "my_int:hello",
+    };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (valid_names); i++)
+    g_assert_true (g_param_is_valid_property_name (valid_names[i]));
+
+  for (i = 0; i < G_N_ELEMENTS (invalid_names); i++)
+    g_assert_false (g_param_is_valid_property_name (invalid_names[i]));
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -881,6 +907,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/value/transform", test_value_transform);
   g_test_add_func ("/param/default", test_param_default);
+  g_test_add_func ("/param/is-valid-name", test_param_is_valid_name);
 
   return g_test_run ();
 }
