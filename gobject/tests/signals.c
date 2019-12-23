@@ -1452,6 +1452,32 @@ test_signals_invalid_name (gconstpointer test_data)
   g_test_trap_assert_stderr ("*CRITICAL*is_valid_signal_name (signal_name)*");
 }
 
+static void
+test_signal_is_valid_name (void)
+{
+  const gchar *valid_names[] =
+    {
+      "signal",
+      "i",
+      "multiple-segments",
+      "segment0-SEGMENT1",
+      "using_underscores",
+    };
+  const gchar *invalid_names[] =
+    {
+      "",
+      "7zip",
+      "my_int:hello",
+    };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (valid_names); i++)
+    g_assert_true (g_signal_is_valid_name (valid_names[i]));
+
+  for (i = 0; i < G_N_ELEMENTS (invalid_names); i++)
+    g_assert_false (g_signal_is_valid_name (invalid_names[i]));
+}
+
 /* --- */
 
 int
@@ -1485,6 +1511,7 @@ main (int argc,
   g_test_add_data_func ("/gobject/signals/invalid-name/colon", "my_int:hello", test_signals_invalid_name);
   g_test_add_data_func ("/gobject/signals/invalid-name/first-char", "7zip", test_signals_invalid_name);
   g_test_add_data_func ("/gobject/signals/invalid-name/empty", "", test_signals_invalid_name);
+  g_test_add_func ("/gobject/signals/is-valid-name", test_signal_is_valid_name);
 
   return g_test_run ();
 }
