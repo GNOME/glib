@@ -35,27 +35,54 @@ struct  _GRealThread
 };
 
 /* system thread implementation (gthread-posix.c, gthread-win32.c) */
+
+/* Platform-specific scheduler settings for a thread */
+typedef struct _GThreadSchedulerSettings GThreadSchedulerSettings;
+
+/* TODO: Add the same for macOS and the BSDs */
+#if defined(__linux__)
+struct _GThreadSchedulerSettings
+{
+  struct sched_attr *attr;
+};
+
+#define HAVE_GTHREAD_SCHEDULER_SETTINGS 1
+
+#elif defined(G_OS_WIN32)
+struct _GThreadSchedulerSettings
+{
+  gint thread_prio;
+};
+
+#define HAVE_GTHREAD_SCHEDULER_SETTINGS 1
+#endif
+
 void            g_system_thread_wait            (GRealThread  *thread);
 
-GRealThread *   g_system_thread_new             (GThreadFunc   proxy,
-                                                 gulong        stack_size,
-                                                 const char   *name,
-                                                 GThreadFunc   func,
-                                                 gpointer      data,
-                                                 GError      **error);
+GRealThread *g_system_thread_new (GThreadFunc proxy,
+                                  gulong stack_size,
+                                  const GThreadSchedulerSettings *scheduler_settings,
+                                  const char *name,
+                                  GThreadFunc func,
+                                  gpointer data,
+                                  GError **error);
 void            g_system_thread_free            (GRealThread  *thread);
 
 void            g_system_thread_exit            (void);
 void            g_system_thread_set_name        (const gchar  *name);
 
+void g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings);
 
 /* gthread.c */
-GThread *       g_thread_new_internal           (const gchar  *name,
-                                                 GThreadFunc   proxy,
-                                                 GThreadFunc   func,
-                                                 gpointer      data,
-                                                 gsize         stack_size,
-                                                 GError      **error);
+GThread *g_thread_new_internal (const gchar *name,
+                                GThreadFunc proxy,
+                                GThreadFunc func,
+                                gpointer data,
+                                gsize stack_size,
+                                const GThreadSchedulerSettings *scheduler_settings,
+                                GError **error);
+
+void g_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings);
 
 gpointer        g_thread_proxy                  (gpointer      thread);
 
