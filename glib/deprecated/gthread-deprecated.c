@@ -372,7 +372,7 @@ g_thread_create_full (GThreadFunc       func,
   GThread *thread;
 
   thread = g_thread_new_internal (NULL, g_deprecated_thread_proxy,
-                                  func, data, stack_size, error);
+                                  func, data, stack_size, NULL, error);
 
   if (thread && !joinable)
     {
