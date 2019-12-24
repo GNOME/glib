@@ -853,7 +853,7 @@ g_thread_new (const gchar *name,
   GError *error = NULL;
   GThread *thread;
 
-  thread = g_thread_new_internal (name, g_thread_proxy, func, data, 0, &error);
+  thread = g_thread_new_internal (name, g_thread_proxy, func, data, 0, NULL, &error);
 
   if G_UNLIKELY (thread == NULL)
     g_error ("creating thread '%s': %s", name ? name : "", error->message);
@@ -884,21 +884,29 @@ g_thread_try_new (const gchar  *name,
                   gpointer      data,
                   GError      **error)
 {
-  return g_thread_new_internal (name, g_thread_proxy, func, data, 0, error);
+  return g_thread_new_internal (name, g_thread_proxy, func, data, 0, NULL, error);
 }
 
 GThread *
-g_thread_new_internal (const gchar   *name,
-                       GThreadFunc    proxy,
-                       GThreadFunc    func,
-                       gpointer       data,
-                       gsize          stack_size,
-                       GError       **error)
+g_thread_new_internal (const gchar                    *name,
+                       GThreadFunc                     proxy,
+                       GThreadFunc                     func,
+                       gpointer                        data,
+                       gsize                           stack_size,
+                       const GThreadSchedulerSettings *scheduler_settings,
+                       GError                        **error)
 {
   g_return_val_if_fail (func != NULL, NULL);
 
-  return (GThread*) g_system_thread_new (proxy, stack_size, name,
-                                         func, data, error);
+  return (GThread*) g_system_thread_new (proxy, stack_size, scheduler_settings,
+                                         name, func, data, error);
+}
+
+void
+g_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings)
+{
+  g_return_if_fail (scheduler_settings != NULL);
+  g_system_thread_get_scheduler_settings (scheduler_settings);
 }
 
 /**
