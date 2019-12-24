@@ -428,20 +428,27 @@ g_thread_win32_proxy (gpointer data)
   return 0;
 }
 
+void
+g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings)
+{
+  HANDLE current_thread = GetCurrentThread ();
+  scheduler_settings->thread_prio = GetThreadPriority (current_thread);
+}
+
 GRealThread *
-g_system_thread_new (GThreadFunc   proxy,
-                     gulong        stack_size,
-                     const char   *name,
-                     GThreadFunc   func,
-                     gpointer      data,
-                     GError      **error)
+g_system_thread_new (GThreadFunc proxy,
+                     gulong stack_size,
+                     const GThreadSchedulerSettings *scheduler_settings,
+                     const char *name,
+                     GThreadFunc func,
+                     gpointer data,
+                     GError **error)
 {
   GThreadWin32 *thread;
   GRealThread *base_thread;
   guint ignore;
   const gchar *message = NULL;
-  HANDLE current_thread;
-  int current_prio;
+  int thread_prio;
 
   thread = g_slice_new0 (GThreadWin32);
   thread->proxy = proxy;
@@ -472,15 +479,23 @@ g_system_thread_new (GThreadFunc   proxy,
    * priority.
    */
 
-  current_thread = GetCurrentThread ();
-  current_prio = GetThreadPriority (current_thread);
-  if (current_prio == THREAD_PRIORITY_ERROR_RETURN)
+  if (scheduler_settings)
+    {
+      thread_prio = scheduler_settings->thread_prio;
+    }
+  else
+    {
+      HANDLE current_thread = GetCurrentThread ();
+      thread_prio = GetThreadPriority (current_thread);
+    }
+
+  if (thread_prio == THREAD_PRIORITY_ERROR_RETURN)
     {
       message = "Error getting current thread priority";
       goto error;
     }
 
-  if (SetThreadPriority (thread->handle, current_prio) == 0)
+  if (SetThreadPriority (thread->handle, thread_prio) == 0)
     {
       message = "Error setting new thread priority";
       goto error;
