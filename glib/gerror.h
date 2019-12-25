@@ -47,6 +47,35 @@ struct _GError
   gchar       *message;
 };
 
+#define G_DEFINE_ERROR_TYPE(ErrorType, error_type)                    \
+GQuark                                                                \
+error_type##_quark (void)                                             \
+{                                                                     \
+  static GQuark q;                                                    \
+                                                                      \
+  if G_UNLIKELY (q == 0)                                              \
+    q = g_error_domain_register_static (#ErrorType,                   \
+                                        sizeof (ErrorType##Instance), \
+                                        error_type##_copy,            \
+                                        error_type##_free);           \
+                                                                      \
+  return q;                                                           \
+}
+
+typedef void (*GErrorCopy)(GError *dest_error, const GError *src_error);
+
+GLIB_AVAILABLE_IN_2_64
+GQuark   g_error_domain_register_static (const char     *error_type_name,
+                                         gsize           error_type_size,
+                                         GErrorCopy      error_type_copy,
+                                         GDestroyNotify  error_type_destroy);
+
+GLIB_AVAILABLE_IN_2_64
+GQuark   g_error_domain_register (const char     *error_type_name,
+                                  gsize           error_type_size,
+                                  GErrorCopy      error_type_copy,
+                                  GDestroyNotify  error_type_destroy);
+
 GLIB_AVAILABLE_IN_ALL
 GError*  g_error_new           (GQuark         domain,
                                 gint           code,
