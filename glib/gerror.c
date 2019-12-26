@@ -382,6 +382,20 @@
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 
+static GError *
+g_error_new_steal (GQuark  domain,
+                   gint    code,
+                   gchar  *message)
+{
+  GError *error = g_slice_new (GError);
+
+  error->domain = domain;
+  error->code = code;
+  error->message = message;
+
+  return error;
+}
+
 /**
  * g_error_new_valist:
  * @domain: error domain
@@ -402,8 +416,6 @@ g_error_new_valist (GQuark       domain,
                     const gchar *format,
                     va_list      args)
 {
-  GError *error;
-
   /* Historically, GError allowed this (although it was never meant to work),
    * and it has significant use in the wild, which g_return_val_if_fail
    * would break. It should maybe g_return_val_if_fail in GLib 4.
@@ -412,13 +424,7 @@ g_error_new_valist (GQuark       domain,
   g_warn_if_fail (domain != 0);
   g_warn_if_fail (format != NULL);
 
-  error = g_slice_new (GError);
-
-  error->domain = domain;
-  error->code = code;
-  error->message = g_strdup_vprintf (format, args);
-
-  return error;
+  return g_error_new_steal (domain, code, g_strdup_vprintf (format, args));
 }
 
 /**
@@ -470,18 +476,10 @@ g_error_new_literal (GQuark         domain,
                      gint           code,
                      const gchar   *message)
 {
-  GError* err;
-
   g_return_val_if_fail (message != NULL, NULL);
   g_return_val_if_fail (domain != 0, NULL);
 
-  err = g_slice_new (GError);
-
-  err->domain = domain;
-  err->code = code;
-  err->message = g_strdup (message);
-
-  return err;
+  return g_error_new_steal (domain, code, g_strdup (message));
 }
 
 /**
@@ -511,20 +509,14 @@ g_error_free (GError *error)
 GError*
 g_error_copy (const GError *error)
 {
-  GError *copy;
- 
   g_return_val_if_fail (error != NULL, NULL);
   /* See g_error_new_valist for why these don't return */
   g_warn_if_fail (error->domain != 0);
   g_warn_if_fail (error->message != NULL);
 
-  copy = g_slice_new (GError);
-
-  *copy = *error;
-
-  copy->message = g_strdup (error->message);
-
-  return copy;
+  return g_error_new_steal (error->domain,
+                            error->code,
+                            g_strdup (error->message));
 }
 
 /**
