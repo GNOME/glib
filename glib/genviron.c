@@ -321,7 +321,11 @@ g_setenv (const gchar *variable,
 /* According to the Single Unix Specification, environ is not
  * in any system header, although unistd.h often declares it.
  */
+#if defined(__FreeBSD__)
+extern __attribute__((__weak__)) char **environ;
+#else
 extern char **environ;
+#endif
 #endif
 
 /**
