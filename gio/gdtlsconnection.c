@@ -691,15 +691,15 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  *
  * On the client side, it is never necessary to call this method;
  * although the connection needs to perform a handshake after
- * connecting (or after sending a "STARTTLS"-type command) and may
- * need to rehandshake later if the server requests it,
- * #GDtlsConnection will handle this for you automatically when you try
- * to send or receive data on the connection. However, you can call
- * g_dtls_connection_handshake() manually if you want to know for sure
- * whether the initial handshake succeeded or failed (as opposed to
- * just immediately trying to write to @conn, in which
- * case if it fails, it may not be possible to tell if it failed
- * before or after completing the handshake).
+ * connecting, #GDtlsConnection will handle this for you automatically
+ * when you try to send or receive data on the connection. You can call
+ * g_dtls_connection_handshake() manually if you want to know whether
+ * the initial handshake succeeded or failed (as opposed to just
+ * immediately trying to use @conn to read or write, in which case,
+ * if it fails, it may not be possible to tell if it failed before
+ * or after completing the handshake), but beware that servers may reject
+ * client authentication after the handshake has completed, so a
+ * successful handshake does not indicate the connection will be usable.
  *
  * Likewise, on the server side, although a handshake is necessary at
  * the beginning of the communication, you do not need to call this
