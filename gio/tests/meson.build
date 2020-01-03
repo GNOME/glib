@@ -79,6 +79,7 @@ gio_tests = {
   'tls-interaction' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-database' : {'extra_sources' : ['gtesttlsbackend.c']},
   'gdbus-address-get-session' : {},
+  'gsocketclient' : {'extra_sources' : ['mock-resolver.c']},
 }
 
 test_extra_programs = {
