@@ -691,8 +691,14 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  *
  * On the client side, it is never necessary to call this method;
  * although the connection needs to perform a handshake after
+<<<<<<< HEAD
  * connecting, #GDtlsConnection will handle this for you automatically
  * when you try to send or receive data on the connection. You can call
+=======
+ * connecting (or after sending a "STARTTLS"-type command),
+ * #GDtlsConnection will handle this for you automatically when you try
+ * to send or receive data on the connection. You can call
+>>>>>>> 682addc2f... Sync GDtlsConnection handshake docs with GTlsConnection
  * g_dtls_connection_handshake() manually if you want to know whether
  * the initial handshake succeeded or failed (as opposed to just
  * immediately trying to use @conn to read or write, in which case,
