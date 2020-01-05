@@ -1794,7 +1794,7 @@ g_socket_client_enumerator_callback (GObject      *object,
   attempt->connection = (GIOStream *)g_socket_connection_factory_create_connection (socket);
   attempt->timeout_source = g_timeout_source_new (HAPPY_EYEBALLS_CONNECTION_ATTEMPT_TIMEOUT_MS);
   g_source_set_callback (attempt->timeout_source, on_connection_attempt_timeout, attempt, NULL);
-  g_source_attach (attempt->timeout_source, g_main_context_get_thread_default ());
+  g_source_attach (attempt->timeout_source, g_task_get_context (data->task));
   data->connection_attempts = g_slist_append (data->connection_attempts, attempt);
 
   if (g_task_get_cancellable (data->task))
