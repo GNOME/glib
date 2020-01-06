@@ -689,7 +689,10 @@ g_get_user_database_entry (void)
                 /* split the gecos field and substitute '&' */
                 gecos_fields = g_strsplit (pw->pw_gecos, ",", 0);
                 name_parts = g_strsplit (gecos_fields[0], "&", 0);
-                pw->pw_name[0] = g_ascii_toupper (pw->pw_name[0]);
+                if (pw->pw_name != NULL)
+                  {
+                    pw->pw_name[0] = g_ascii_toupper (pw->pw_name[0]);
+                  }
                 e.real_name = g_strjoinv (pw->pw_name, name_parts);
                 g_strfreev (gecos_fields);
                 g_strfreev (name_parts);
