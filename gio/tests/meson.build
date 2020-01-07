@@ -298,6 +298,7 @@ if host_machine.system() != 'windows'
       'gdbus-proxy-well-known-name' : {'extra_sources' : extra_sources},
       'gdbus-test-codegen' : {
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
+        'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_32'],
       },
       'gdbus-threading' : {
         'extra_sources' : extra_sources,
@@ -319,7 +320,7 @@ if host_machine.system() != 'windows'
       'gdbus-test-codegen-min-version-2-64' : {
         'source' : 'gdbus-test-codegen.c',
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated_min_version_2_64, gdbus_test_codegen_generated_interface_info],
-        'c_args' : ['-DGLIB_MIN_VERSION_2_64=1'],
+        'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_64'],
       },
       'gapplication' : {'extra_sources' : extra_sources},
     }
