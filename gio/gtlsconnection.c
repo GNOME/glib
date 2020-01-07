@@ -734,16 +734,9 @@ g_tls_connection_get_require_close_notify (GTlsConnection *conn)
  * @mode: the rehandshaking mode
  *
  * Since GLib 2.64, changing the rehandshake mode is no longer supported
- * and will have no effect.
- *
- * With TLS 1.2, the connection will allow a rehandshake only if the
- * other end of the connection supports the TLS `renegotiation_info`
- * extension. This means that rehandshaking will not work against older
- * implementations that do not support that extension.
- *
- * With TLS 1.3, rehandshaking has been removed from the TLS protocol,
- * replaced by separate post-handshake authentication and rekey
- * operations.
+ * and will have no effect. With TLS 1.3, rehandshaking has been removed from
+ * the TLS protocol, replaced by separate post-handshake authentication and
+ * rekey operations.
  *
  * Since: 2.28
  *
@@ -787,6 +780,9 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
 
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), G_TLS_REHANDSHAKE_SAFELY);
 
+  /* Continue to call g_object_get(), even though the return value is
+   * ignored, so that behavior doesn’t change for derived classes.
+   */
   g_object_get (G_OBJECT (conn),
 		"rehandshake-mode", &mode,
 		NULL);
@@ -895,14 +891,11 @@ g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
  * the beginning of the communication, you do not need to call this
  * function explicitly unless you want clearer error reporting.
  *
- * If TLS 1.2 or older is in use, you may call
- * g_tls_connection_handshake() after the initial handshake to
- * rehandshake; however, this usage is deprecated because rehandshaking
- * is no longer part of the TLS protocol in TLS 1.3. Accordingly, the
- * behavior of calling this function after the initial handshake is now
- * undefined, except it is guaranteed to be reasonable and
- * nondestructive so as to preserve compatibility with code written for
- * older versions of GLib.
+ * Previously, calling g_tls_connection_handshake() after the initial
+ * handshake would trigger a rehandshake; however, this usage was
+ * deprecated in GLib 2.60 because rehandshaking was removed from the
+ * TLS protocol in TLS 1.3. Since GLib 2.64, calling this function after
+ * the initial handshake will no longer do anything.
  *
  * When using a #GTlsConnection created by #GSocketClient, the
  * #GSocketClient performs the initial handshake, so calling this
