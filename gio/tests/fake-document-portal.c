@@ -20,6 +20,10 @@
 /* A stub implementation of xdg-document-portal covering enough to
  * support g_document_portal_add_documents */
 
+#include <glib.h>
+#include <gio/gio.h>
+#include <gio/gunixfdlist.h>
+
 #include "fake-document-portal-generated.h"
 
 static gboolean
@@ -36,18 +40,22 @@ on_handle_get_mount_point (FakeDocuments         *object,
 static gboolean
 on_handle_add_full (FakeDocuments         *object,
                     GDBusMethodInvocation *invocation,
-                    GVariant              *o_path_fds,
+                    GUnixFDList           *o_path_fds,
                     guint                  flags,
                     const gchar           *app_id,
-                    const gchar           *permissions,
+                    const gchar * const   *permissions,
                     gpointer               user_data)
 {
   const gchar **doc_ids = NULL;
   GVariant *extra_out = NULL;
   gsize length, i;
 
-  length = g_variant_get_size (o_path_fds);
-  doc_ids = g_new0 (const gchar *, length);
+  if (o_path_fds != NULL)
+    length = g_unix_fd_list_get_length (o_path_fds);
+  else
+    length = 0;
+
+  doc_ids = g_new0 (const gchar *, length + 1  /* NULL terminator */);
   for (i = 0; i < length; i++)
     {
       doc_ids[i] = "document-id";
