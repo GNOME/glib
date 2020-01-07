@@ -164,9 +164,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
    *
    * Since: 2.48
    *
-   * Deprecated: 2.60. Changing the rehandshake mode is no longer
-   *   required for compatibility. Also, rehandshaking has been removed
-   *   from the TLS protocol in TLS 1.3.
+   * Deprecated: 2.60: The rehandshake mode is ignored.
    */
   g_object_interface_install_property (iface,
                                        g_param_spec_enum ("rehandshake-mode",
@@ -615,26 +613,10 @@ g_dtls_connection_get_require_close_notify (GDtlsConnection *conn)
  * @conn: a #GDtlsConnection
  * @mode: the rehandshaking mode
  *
- * Sets how @conn behaves with respect to rehandshaking requests.
- *
- * %G_TLS_REHANDSHAKE_NEVER means that it will never agree to
- * rehandshake after the initial handshake is complete. (For a client,
- * this means it will refuse rehandshake requests from the server, and
- * for a server, this means it will close the connection with an error
- * if the client attempts to rehandshake.)
- *
- * %G_TLS_REHANDSHAKE_SAFELY means that the connection will allow a
- * rehandshake only if the other end of the connection supports the
- * TLS `renegotiation_info` extension. This is the default behavior,
- * but means that rehandshaking will not work against older
- * implementations that do not support that extension.
- *
- * %G_TLS_REHANDSHAKE_UNSAFELY means that the connection will allow
- * rehandshaking even without the `renegotiation_info` extension. On
- * the server side in particular, this is not recommended, since it
- * leaves the server open to certain attacks. However, this mode is
- * necessary if you need to allow renegotiation with older client
- * software.
+ * Since GLib 2.64, changing the rehandshake mode is no longer supported
+ * and will have no effect. With TLS 1.3, rehandshaking has been removed from
+ * the TLS protocol, replaced by separate post-handshake authentication and
+ * rekey operations.
  *
  * Since: 2.48
  *
@@ -650,7 +632,7 @@ g_dtls_connection_set_rehandshake_mode (GDtlsConnection     *conn,
   g_return_if_fail (G_IS_DTLS_CONNECTION (conn));
 
   g_object_set (G_OBJECT (conn),
-                "rehandshake-mode", mode,
+                "rehandshake-mode", G_TLS_REHANDSHAKE_SAFELY,
                 NULL);
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -662,22 +644,29 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Gets @conn rehandshaking mode. See
  * g_dtls_connection_set_rehandshake_mode() for details.
  *
- * Returns: @conn's rehandshaking mode
+ * Returns: %G_TLS_REHANDSHAKE_SAFELY
  *
  * Since: 2.48
+ *
+ * Deprecated: 2.64. Changing the rehandshake mode is no longer
+ *   required for compatibility. Also, rehandshaking has been removed
+ *   from the TLS protocol in TLS 1.3.
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GTlsRehandshakeMode
-g_dtls_connection_get_rehandshake_mode (GDtlsConnection       *conn)
+g_dtls_connection_get_rehandshake_mode (GDtlsConnection *conn)
 {
   GTlsRehandshakeMode mode;
 
-  g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), G_TLS_REHANDSHAKE_NEVER);
+  g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), G_TLS_REHANDSHAKE_SAFELY);
 
+  /* Continue to call g_object_get(), even though the return value is
+   * ignored, so that behavior doesn’t change for derived classes.
+   */
   g_object_get (G_OBJECT (conn),
                 "rehandshake-mode", &mode,
                 NULL);
-  return mode;
+  return G_TLS_REHANDSHAKE_SAFELY;
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
 
@@ -705,14 +694,11 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * the beginning of the communication, you do not need to call this
  * function explicitly unless you want clearer error reporting.
  *
- * If TLS 1.2 or older is in use, you may call
- * g_dtls_connection_handshake() after the initial handshake to
- * rehandshake; however, this usage is deprecated because rehandshaking
- * is no longer part of the TLS protocol in TLS 1.3. Accordingly, the
- * behavior of calling this function after the initial handshake is now
- * undefined, except it is guaranteed to be reasonable and
- * nondestructive so as to preserve compatibility with code written for
- * older versions of GLib.
+ * Previously, calling g_dtls_connection_handshake() after the initial
+ * handshake would trigger a rehandshake; however, this usage was
+ * deprecated in GLib 2.60 because rehandshaking was removed from the
+ * TLS protocol in TLS 1.3. Since GLib 2.64, calling this function after
+ * the initial handshake will no longer do anything.
  *
  * #GDtlsConnection::accept_certificate may be emitted during the
  * handshake.
