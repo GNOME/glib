@@ -1068,6 +1068,17 @@ set_info_from_stat (GFileInfo             *info,
     }
 }
 
+#ifdef HAVE_STATX
+
+static void
+set_info_from_statx (GFileInfo             *info,
+                     struct statx          *statxbuf)
+{
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statxbuf->stx_btime.tv_sec);
+}
+
+#endif
+
 #ifndef G_OS_WIN32
 
 static char *
@@ -1760,6 +1771,9 @@ _g_local_file_info_get (const char             *basename,
 #elif defined (G_OS_WIN32)
   GWin32PrivateStat statbuf2;
 #endif
+#ifdef HAVE_STATX
+  struct statx statxbuf;
+#endif
   int res;
   gboolean stat_ok;
   gboolean is_symlink, symlink_broken;
@@ -1850,7 +1864,16 @@ _g_local_file_info_get (const char             *basename,
     }
 
   if (stat_ok)
-    set_info_from_stat (info, &statbuf, attribute_matcher);
+    {
+      set_info_from_stat (info, &statbuf, attribute_matcher);
+
+#ifdef HAVE_STATX
+      res = statx (AT_FDCWD, path, AT_NO_AUTOMOUNT, STATX_BTIME, &statxbuf);
+
+      if (res == 0)
+        set_info_from_statx (info, &statxbuf);
+#endif
+    }
 
 #ifdef G_OS_UNIX
   if (stat_ok && _g_local_file_is_lost_found_dir (path, statbuf.st_dev))
