@@ -445,7 +445,7 @@ gdbus-codegen --c-namespace MyApp                           \
         <para>
           If the version number is <literal>2.64</literal> or greater, the generated code will
           have the following features: (1) If a method has <literal>h</literal> (file
-          descriptor) parameter(s), <literal>GUnixFDList</literal> parameter(s) will exist in the
+          descriptor) parameter(s), a <type>GUnixFDList</type> parameter will exist in the
           generated code for it (whereas previously the annotation
           <literal>org.gtk.GDBus.C.UnixFD</literal> was required), and (2) Method call functions will
           have two additional arguments to allow the user to specify <type>GDBusCallFlags</type>
