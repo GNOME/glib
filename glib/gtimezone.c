@@ -1231,7 +1231,7 @@ parse_julian_boundary (gchar** pos, TimeZoneDate *boundary,
   boundary->mday = (int) g_date_get_day (&date);
   boundary->wday = 0;
 
-  if (!ignore_leap && day >= 59)
+  if (ignore_leap && day >= 59)
     boundary->mday++;
 
   return TRUE;
@@ -1255,13 +1255,13 @@ parse_tz_boundary (const gchar  *identifier,
   else if (*pos == 'J')
     {
       ++pos;
-      if (!parse_julian_boundary (&pos, boundary, FALSE))
+      if (!parse_julian_boundary (&pos, boundary, TRUE))
         return FALSE ;
     }
   /* Julian date which counts Feb 29 in leap years */
   else if (*pos >= '0' && '9' >= *pos)
     {
-      if (!parse_julian_boundary (&pos, boundary, TRUE))
+      if (!parse_julian_boundary (&pos, boundary, FALSE))
         return FALSE;
     }
   else
