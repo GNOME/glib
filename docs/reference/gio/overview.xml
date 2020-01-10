@@ -466,10 +466,9 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
       <title><envar>GSETTINGS_SCHEMA_DIR</envar></title>
 
       <para>
-        This variable can be set to the name of a directory that is
-        considered in addition to the <filename>glib-2.0/schemas</filename>
-        subdirectories of the XDG system data dirs when looking
-        for compiled schemas for #GSettings.
+        This variable can be set to the names of directories to consider when looking for compiled schemas for #GSettings,
+        in addition to the <filename>glib-2.0/schemas</filename>
+        subdirectories of the XDG system data dirs. To specify multiple directories, use <constant>G_SEARCHPATH_SEPARATOR_S</constant> as a separator.
       </para>
     </formalpara>
 
