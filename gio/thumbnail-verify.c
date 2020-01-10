@@ -222,7 +222,11 @@ out:
 gboolean
 thumbnail_verify (const char     *thumbnail_path,
                   const gchar    *file_uri,
+#ifdef HAVE_STATX
+                  const struct statx   *file_stat_buf)
+#else
                   const GLocalFileStat *file_stat_buf)
+#endif
 {
   gboolean thumbnail_is_valid = FALSE;
   ExpectedInfo expected_info;
@@ -232,8 +236,13 @@ thumbnail_verify (const char     *thumbnail_path,
     return FALSE;
 
   expected_info.uri = file_uri;
+#ifdef HAVE_STATX
+  expected_info.mtime = file_stat_buf->stx_mtime.tv_sec;
+  expected_info.size = file_stat_buf->stx_size;
+#else
   expected_info.mtime = (guint64) file_stat_buf->st_mtime;
   expected_info.size = file_stat_buf->st_size;
+#endif
 
   file = g_mapped_file_new (thumbnail_path, FALSE, NULL);
   if (file)

@@ -91,7 +91,11 @@ test_validity (void)
   /* Run all the tests. */
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
+#ifdef HAVE_STATX
+      struct statx stat_buf;
+#else
       GLocalFileStat stat_buf;
+#endif
       const gchar *thumbnail_path;
       gchar *file_uri;
       gboolean result;
@@ -99,8 +103,13 @@ test_validity (void)
       thumbnail_path = g_test_get_filename (G_TEST_DIST, "thumbnails",
                                             tests[i].filename, NULL);
       file_uri = g_strconcat ("file:///tmp/", tests[i].filename, NULL);
+#ifdef HAVE_STATX
+      stat_buf.stx_mtime.tv_sec = tests[i].mtime;
+      stat_buf.stx_size = tests[i].size;
+#else
       stat_buf.st_mtime = tests[i].mtime;
       stat_buf.st_size = tests[i].size;
+#endif
 
       result = thumbnail_verify (thumbnail_path, file_uri, &stat_buf);
 

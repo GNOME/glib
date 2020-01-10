@@ -25,6 +25,10 @@
 
 gboolean   thumbnail_verify                   (const gchar            *thumbnail_path,
                                                const gchar            *file_uri,
+#ifdef HAVE_STATX
+                                               const struct statx     *file_stat_buf);
+#else
                                                const GLocalFileStat   *file_stat_buf);
+#endif
 
 #endif /* _thumbnail_verify_h_ */
