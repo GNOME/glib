@@ -436,6 +436,12 @@ gdbus-codegen --c-namespace MyApp                           \
           released.
         </para>
         <para>
+          Note that some version parameters introduce incompatible changes: all callers
+          of the generated code might need to be updated, and if the generated code is part of
+          a library's API or ABI, then increasing the version parameter can result in an API
+          or ABI break.
+        </para>
+        <para>
           The version number must be of the form
           <literal><replaceable>MAJOR</replaceable>.<replaceable>MINOR</replaceable>.<replaceable>MICRO</replaceable></literal>,
           where all parts are integers. <replaceable>MINOR</replaceable> and
