@@ -1072,7 +1072,7 @@ set_info_from_stat (GFileInfo             *info,
 
 static void
 set_info_from_statx (GFileInfo    *info,
-                     struct statx *statxbuf)
+                     const struct statx *statxbuf)
 {
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statxbuf->stx_btime.tv_sec);
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED_USEC, statxbuf->stx_btime.tv_nsec / 1000);
