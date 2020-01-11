@@ -32,7 +32,9 @@ static gunichar2 *
 g_wcsdup (const gunichar2 *str, gssize str_len)
 {
   gssize str_size;
-  
+
+  g_return_val_if_fail (str != NULL, NULL);
+
   if (str_len == -1)
     str_len = g_utf16_len (str);
 
@@ -269,6 +271,7 @@ _g_win32_extract_executable (const gunichar2  *commandline,
   const gunichar2 *executable;
   const gunichar2 *executable_basename;
   gboolean quoted;
+  gboolean folded;
   gssize execlen;
 
   _g_win32_parse_filename (commandline, FALSE, &executable, &execlen, &executable_basename, &first_argument);
@@ -278,9 +281,9 @@ _g_win32_extract_executable (const gunichar2  *commandline,
   while ((wchar_t) first_argument[0] == L' ')
     first_argument++;
 
-  if (!g_utf16_to_utf8_and_fold (executable, (gssize) execlen, &ex, &ex_folded))
-    /* Currently no code to handle this case. It shouldn't happen though... */
-    g_assert_not_reached ();
+  folded = g_utf16_to_utf8_and_fold (executable, (gssize) execlen, &ex, &ex_folded);
+  /* This should never fail as @executable has to be valid UTF-16. */
+  g_assert (folded);
 
   if (dll_function_out)
     *dll_function_out = NULL;
@@ -347,6 +350,7 @@ _g_win32_extract_executable (const gunichar2  *commandline,
               gchar *dllpart_utf8;
               gchar *dllpart_utf8_folded;
               gchar *function_utf8;
+              gboolean folded;
               const gunichar2 *space = g_utf16_wchr (function_begin, L' ');
 
               if (space)
@@ -357,8 +361,8 @@ _g_win32_extract_executable (const gunichar2  *commandline,
               if (quoted)
                 first_argument += 1;
 
-              if (!g_utf16_to_utf8_and_fold (first_argument, filename_len, &dllpart_utf8, &dllpart_utf8_folded))
-                g_assert_not_reached ();
+              folded = g_utf16_to_utf8_and_fold (first_argument, filename_len, &dllpart_utf8, &dllpart_utf8_folded);
+              g_assert (folded);
 
               function_utf8 = g_utf16_to_utf8 (function_begin, function_len, NULL, NULL, NULL);
               
