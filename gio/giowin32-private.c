@@ -98,7 +98,7 @@ g_utf16_find_basename (const gunichar2 *filename,
   if (len < 0)
     len = g_utf16_len (filename);
   if (len == 0)
-    return filename;  
+    return filename;
 
   result = &filename[len - 1];
 
@@ -365,7 +365,7 @@ _g_win32_extract_executable (const gunichar2  *commandline,
               g_assert (folded);
 
               function_utf8 = g_utf16_to_utf8 (function_begin, function_len, NULL, NULL, NULL);
-              
+
               g_debug ("Dismissing wrapper `%s', using `%s' as the executable DLL that runs %s",
                        ex,
                        dllpart_utf8,
@@ -393,12 +393,12 @@ _g_win32_extract_executable (const gunichar2  *commandline,
     {
       if (ex_basename_out)
         *ex_basename_out = (gchar *) g_utf8_find_basename (ex, -1);
-        
+
       *ex_out = g_steal_pointer (&ex);
     }
 
   g_free (ex);
-    
+
   if (ex_folded_out)
     {
       if (ex_folded_basename_out)
