@@ -366,11 +366,6 @@ _g_win32_extract_executable (const gunichar2  *commandline,
 
               function_utf8 = g_utf16_to_utf8 (function_begin, function_len, NULL, NULL, NULL);
 
-              g_debug ("Dismissing wrapper `%s', using `%s' as the executable DLL that runs %s",
-                       ex,
-                       dllpart_utf8,
-                       function_utf8);
-
               /* We only take this branch when dll_function_out is not NULL */
               *dll_function_out = g_steal_pointer (&function_utf8);
 
