@@ -38,6 +38,15 @@ export PATH="$HOME/.local/bin:$PATH"
 export CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
 
+if [ -d "$HOME/subprojects" ]; then
+  cp -r $HOME/subprojects/* subprojects/
+else
+  meson subprojects download
+  rm subprojects/*.wrap
+  cp -r subprojects $HOME
+  git reset --hard HEAD
+fi
+
 meson --werror --buildtype debug _build
 cd _build
 ninja
