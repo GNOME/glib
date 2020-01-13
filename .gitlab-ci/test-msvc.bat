@@ -6,6 +6,17 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary
 
 :: FIXME: make warnings fatal
 pip3 install --upgrade --user meson==0.49.2  || goto :error
+
+:: Cache subprojects
+IF EXISTS c:\subprojects (
+  xcopy c:\glib-subprojects\* subprojects\
+) ELSE (
+  meson subprojects download
+  del subprojects\*.wrap
+  xcopy subprojects c:\glib-subprojects
+  git reset --hard HEAD
+)
+
 meson _build || goto :error
 ninja -C _build || goto :error
 
