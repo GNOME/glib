@@ -38,6 +38,13 @@ export PATH="$HOME/.local/bin:$PATH"
 export CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
 
+if [ -d "$HOME/glib-subprojects" ]; then
+  cp -r $HOME/glib-subprojects/* subprojects/
+else
+  meson subprojects download
+  rsync -a subprojects $HOME/glib-subprojects --exclude=*.wrap
+fi
+
 meson --werror --buildtype debug _build
 cd _build
 ninja
