@@ -24,6 +24,11 @@ variables:
   except:
     - tags
 
+.build:
+  extends: .only-default
+  before_script:
+    - cp -r $HOME/subprojects/* subprojects/
+
 style-check-diff:
   extends: .only-default
   image: $DEBIAN_IMAGE
@@ -33,7 +38,7 @@ style-check-diff:
     - .gitlab-ci/run-style-check-diff.sh
 
 fedora-x86_64:
-  extends: .only-default
+  extends: .build
   image: $FEDORA_IMAGE
   stage: build
   variables:
@@ -67,7 +72,7 @@ fedora-x86_64:
       - "_coverage"
 
 debian-stable-x86_64:
-  extends: .only-default
+  extends: .build
   image: $DEBIAN_IMAGE
   stage: build
   script:
@@ -95,7 +100,7 @@ debian-stable-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 installed-tests:
-  extends: .only-default
+  extends: .build
   image: $FEDORA_IMAGE
   stage: build
   script:
@@ -151,7 +156,7 @@ installed-tests:
       - "_build/installed-tests-report/"
 
 G_DISABLE_ASSERT:
-  extends: .only-default
+  extends: .build
   image: $FEDORA_IMAGE
   stage: build
   variables:
@@ -178,7 +183,7 @@ G_DISABLE_ASSERT:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 valgrind:
-  extends: .only-default
+  extends: .build
   image: $FEDORA_IMAGE
   stage: analysis
   variables:
@@ -211,7 +216,7 @@ valgrind:
       - "_build/meson-logs"
 
 .cross-template: &cross-template
-  extends: .only-default
+  extends: .build
   stage: build
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
@@ -390,7 +395,7 @@ coverage:
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
 
 scan-build:
-  extends: .only-default
+  extends: .build
   image: $FEDORA_IMAGE
   stage: analysis
   script:
