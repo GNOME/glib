@@ -14,6 +14,7 @@ variables:
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v6"
   ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v2"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v2"
+  WINDOWS_IMAGE: "registry.gitlab.gnome.org/gnome/glib/windows:v2"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS_NO_WARNING: "--buildtype debug --wrap-mode=nodownload"
@@ -293,11 +294,25 @@ msys2-mingw32:
 
 vs2017-x64:
   extends: .only-default
+  image: $WINDOWS_IMAGE
   stage: build
   tags:
-    - win32
+    - windows
   script:
-    - .gitlab-ci/test-msvc.bat
+    # Make sure powershell exists on errors
+    # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_preference_variables?view=powershell-6
+    - $ErrorActionPreference = "Stop"
+    # Copy cached subprojects to not require download
+    - cp -r C:/subprojects/* subprojects/
+    # For some reason, options are separated by newline instead of space, so we
+    # have to replace them first.
+    - $env:MESON_COMMON_OPTIONS = $env:MESON_COMMON_OPTIONS.replace("`n"," ")
+    # Gitlab executes PowerShell in docker, but VsDevCmd.bat is a batch script.
+    # Environment variables substitutions is done by PowerShell before calling
+    # cmd.exe, that's why we use $env:FOO instead of %FOO%
+    - cmd.exe /C "C:\BuildTools\Common7\Tools\VsDevCmd.bat -host_arch=amd64 -arch=$env:ARCH &&
+        meson build $env:MESON_COMMON_OPTIONS &&
+        ninja -C build"
   artifacts:
     reports:
       junit: "_build/%CI_JOB_NAME%-report.xml"
