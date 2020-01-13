@@ -16,7 +16,7 @@ variables:
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v2"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
-  MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
+  MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings --wrap-mode=nodownload"
 
 .only-default:
   only:
@@ -403,7 +403,7 @@ dist-job:
   only:
     - tags
   script:
-    - meson --buildtype release --fatal-meson-warnings -Dgtk_doc=true -Dman=true _build
+    - meson ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
     - ninja glib-doc gobject-doc gio-doc
