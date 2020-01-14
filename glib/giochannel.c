@@ -1669,8 +1669,13 @@ g_io_channel_read_line (GIOChannel  *channel,
 
   if (status == G_IO_STATUS_NORMAL)
     {
+      gchar *line;
+
+      /* Copy the read bytes (including any embedded nuls) and nul-terminate. */
       g_assert (USE_BUF (channel));
-      *str_return = g_strndup (USE_BUF (channel)->str, got_length);
+      line = g_memdup (USE_BUF (channel)->str, got_length + 1);
+      line[got_length] = '\0';
+      *str_return = g_steal_pointer (&line);
       g_string_erase (USE_BUF (channel), 0, got_length);
     }
   else
