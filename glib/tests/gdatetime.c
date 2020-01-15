@@ -2432,8 +2432,8 @@ test_posix_parse (void)
   g_date_time_unref (gdt2);
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,280,77");
-  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,280,77");
+  tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,279,76");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,279,76");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "NZST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 12 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2533,6 +2533,48 @@ test_posix_parse (void)
   g_date_time_unref (gdt1);
   g_date_time_unref (gdt2);
   g_time_zone_unref (tz);
+
+  tz = g_time_zone_new ("VIR-00:30");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-00:30");
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (30 * 60));
+  g_assert_false (g_time_zone_is_dst (tz, 0));
+
+  tz = g_time_zone_new ("VIR-00:30VID,0/00:00:00,365/23:59:59");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-00:30VID,0/00:00:00,365/23:59:59");
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (30 * 60));
+  g_assert_false (g_time_zone_is_dst (tz, 0));
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 1), ==, "VID");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 1), ==, (90 * 60));
+  g_assert_true (g_time_zone_is_dst (tz, 1));
+
+  tz = g_time_zone_new ("VIR-02:30VID,0/00:00:00,365/23:59:59");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-02:30VID,0/00:00:00,365/23:59:59");
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (150 * 60));
+  g_assert_false (g_time_zone_is_dst (tz, 0));
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 1), ==, "VID");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 1), ==, (210 * 60));
+  g_assert_true (g_time_zone_is_dst (tz, 1));
+
+  tz = g_time_zone_new ("VIR-02:30VID-04:30,0/00:00:00,365/23:59:59");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-02:30VID-04:30,0/00:00:00,365/23:59:59");
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (150 * 60));
+  g_assert_false (g_time_zone_is_dst (tz, 0));
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 1), ==, "VID");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 1), ==, (270 * 60));
+  g_assert_true (g_time_zone_is_dst (tz, 1));
+
+  tz = g_time_zone_new ("VIR-12:00VID-13:00,0/00:00:00,365/23:59:59");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-12:00VID-13:00,0/00:00:00,365/23:59:59");
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (720 * 60));
+  g_assert_false (g_time_zone_is_dst (tz, 0));
+  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 1), ==, "VID");
+  g_assert_cmpint (g_time_zone_get_offset (tz, 1), ==, (780 * 60));
+  g_assert_true (g_time_zone_is_dst (tz, 1));
 }
 
 static void
