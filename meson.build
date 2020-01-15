@@ -1718,6 +1718,9 @@ else
   if cc.has_header_symbol('pthread.h', 'pthread_attr_setstacksize')
     glib_conf.set('HAVE_PTHREAD_ATTR_SETSTACKSIZE', 1)
   endif
+  if cc.has_header_symbol('pthread.h', 'pthread_attr_setinheritsched')
+    glib_conf.set('HAVE_PTHREAD_ATTR_SETINHERITSCHED', 1)
+  endif
   if cc.has_header_symbol('pthread.h', 'pthread_condattr_setclock')
     glib_conf.set('HAVE_PTHREAD_CONDATTR_SETCLOCK', 1)
   endif
