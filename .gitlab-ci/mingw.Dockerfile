@@ -67,4 +67,7 @@ RUN useradd -u $HOST_USER_ID -ms /bin/bash user
 USER user
 WORKDIR /home/user
 
+COPY cache-subprojects.sh .
+RUN ./cache-subprojects.sh
+
 ENV LANG C.UTF-8

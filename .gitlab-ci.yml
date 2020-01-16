@@ -10,9 +10,13 @@ cache:
     - _ccache/
 
 variables:
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v6"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v6"
+  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v2"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v2"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
-  MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings"
+  MESON_COMMON_OPTIONS: "--buildtype debug --fatal-meson-warnings --wrap-mode=nodownload"
 
 .only-default:
   only:
@@ -20,17 +24,22 @@ variables:
   except:
     - tags
 
+.build:
+  extends: .only-default
+  before_script:
+    - cp -r $HOME/subprojects/* subprojects/
+
 style-check-diff:
   extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
+  image: $DEBIAN_IMAGE
   stage: style-check
   allow_failure: true
   script:
     - .gitlab-ci/run-style-check-diff.sh
 
 fedora-x86_64:
-  extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  extends: .build
+  image: $FEDORA_IMAGE
   stage: build
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
@@ -63,8 +72,8 @@ fedora-x86_64:
       - "_coverage"
 
 debian-stable-x86_64:
-  extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/debian-stable:v5
+  extends: .build
+  image: $DEBIAN_IMAGE
   stage: build
   script:
     - meson ${MESON_COMMON_OPTIONS}
@@ -91,12 +100,9 @@ debian-stable-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 installed-tests:
-  extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  extends: .build
+  image: $FEDORA_IMAGE
   stage: build
-  before_script:
-    # FIXME move to docker image
-    - sudo dnf install -y gnome-desktop-testing python3-dbusmock xdg-desktop-portal
   script:
     # FIXME Install xdg-desktop-portal build deps before compiling glib,
     # so it doesn't overwrite our own glib build
@@ -150,8 +156,8 @@ installed-tests:
       - "_build/installed-tests-report/"
 
 G_DISABLE_ASSERT:
-  extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  extends: .build
+  image: $FEDORA_IMAGE
   stage: build
   variables:
     CPPFLAGS: "-DG_DISABLE_ASSERT"
@@ -177,8 +183,8 @@ G_DISABLE_ASSERT:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 valgrind:
-  extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  extends: .build
+  image: $FEDORA_IMAGE
   stage: analysis
   variables:
     MESON_TEST_TIMEOUT_MULTIPLIER: 10
@@ -210,7 +216,7 @@ valgrind:
       - "_build/meson-logs"
 
 .cross-template: &cross-template
-  extends: .only-default
+  extends: .build
   stage: build
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
@@ -220,7 +226,7 @@ valgrind:
 
 cross-android_api21_arm64:
   <<: *cross-template
-  image: registry.gitlab.gnome.org/gnome/glib/android-ndk:v1
+  image: $ANDROID_IMAGE
   script:
     # FIXME: add --werror
     # We use -Diconv=auto to test that we successfully detect that iconv is not
@@ -230,7 +236,7 @@ cross-android_api21_arm64:
 
 cross-android_api28_arm64:
   <<: *cross-template
-  image: registry.gitlab.gnome.org/gnome/glib/android-ndk:v1
+  image: $ANDROID_IMAGE
   script:
     # FIXME: add --werror
     - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt -Dinternal_pcre=true _build
@@ -238,7 +244,7 @@ cross-android_api28_arm64:
 
 cross-mingw64:
   <<: *cross-template
-  image: registry.gitlab.gnome.org/gnome/glib/mingw:v1
+  image: $MINGW_IMAGE
   script:
     # FIXME: Add --werror
     - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
@@ -378,7 +384,7 @@ macos:
 
 coverage:
   extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  image: $FEDORA_IMAGE
   stage: coverage
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
@@ -389,8 +395,8 @@ coverage:
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
 
 scan-build:
-  extends: .only-default
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  extends: .build
+  image: $FEDORA_IMAGE
   stage: analysis
   script:
     - meson ${MESON_COMMON_OPTIONS}
@@ -421,12 +427,12 @@ pages:
       - public
 
 dist-job:
-  image: registry.gitlab.gnome.org/gnome/glib/fedora:v5
+  image: $FEDORA_IMAGE
   stage: build
   only:
     - tags
   script:
-    - meson --buildtype release --fatal-meson-warnings -Dgtk_doc=true -Dman=true _build
+    - meson ${MESON_COMMON_OPTIONS} --buildtype release -Dgtk_doc=true -Dman=true _build
     - cd _build
     - ninja dist
     - ninja glib-doc gobject-doc gio-doc
