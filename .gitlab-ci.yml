@@ -283,6 +283,8 @@ vs2017-x64:
     # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_preference_variables?view=powershell-6
     - $ErrorActionPreference = "Stop"
     - cp -r C:/subprojects/* subprojects/
+    - ls C:/subprojects
+    - ls subprojects/
     # For some reason, options are separated by newline instead of space, so we
     # have to replace them first.
     - $env:MESON_COMMON_OPTIONS = $env:MESON_COMMON_OPTIONS.replace("`n"," ")
