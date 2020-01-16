@@ -345,6 +345,7 @@ initialise_schema_sources (void)
     {
       const gchar * const *dirs;
       const gchar *path;
+      gchar **extra_schema_dirs;
       gint i;
 
       /* iterate in reverse: count up, then count down */
@@ -357,7 +358,15 @@ initialise_schema_sources (void)
       try_prepend_data_dir (g_get_user_data_dir ());
 
       if ((path = g_getenv ("GSETTINGS_SCHEMA_DIR")) != NULL)
-        try_prepend_dir (path);
+        {
+          extra_schema_dirs = g_strsplit (path, G_SEARCHPATH_SEPARATOR_S, 0);
+          for (i = 0; extra_schema_dirs[i]; i++);
+
+          while (i--)
+            try_prepend_dir (extra_schema_dirs[i]);
+
+          g_strfreev (extra_schema_dirs);
+        }
 
       g_once_init_leave (&initialised, TRUE);
     }
