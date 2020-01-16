@@ -68,7 +68,7 @@
 #include <windows.h>
 #endif
 
-#if defined(__linux__)
+#if defined(HAVE_SYS_SCHED_GETATTR)
 #include <sys/syscall.h>
 #endif
 
@@ -1167,7 +1167,7 @@ g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_sett
 {
   /* FIXME: Implement the same for macOS and the BSDs so it doesn't go through
    * the fallback code using an additional thread. */
-#if defined(__linux__)
+#if defined(HAVE_SYS_SCHED_GETATTR)
   pid_t tid;
   int res;
   /* FIXME: The struct definition does not seem to be possible to pull in
@@ -1210,7 +1210,7 @@ g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_sett
 #endif
 }
 
-#if defined(__linux__)
+#if defined(HAVE_SYS_SCHED_GETATTR)
 static void *
 linux_pthread_proxy (void *data)
 {
@@ -1284,7 +1284,7 @@ g_system_thread_new (GThreadFunc proxy,
     }
 #endif /* HAVE_PTHREAD_ATTR_SETINHERITSCHED */
 
-#if defined(__linux__)
+#if defined(HAVE_SYS_SCHED_GETATTR)
   ret = pthread_create (&thread->system_thread, &attr, linux_pthread_proxy, thread);
 #else
   ret = pthread_create (&thread->system_thread, &attr, (void* (*)(void*))proxy, thread);
