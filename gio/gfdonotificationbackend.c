@@ -25,6 +25,7 @@
 #include "giomodule-priv.h"
 #include "gnotification-private.h"
 #include "gdbusconnection.h"
+#include "gdbusnamewatching.h"
 #include "gactiongroup.h"
 #include "gaction.h"
 #include "gthemedicon.h"
@@ -41,6 +42,8 @@ typedef GNotificationBackendClass       GFdoNotificationBackendClass;
 struct _GFdoNotificationBackend
 {
   GNotificationBackend parent;
+
+  guint   bus_name_id;
 
   guint   notify_subscription;
   GSList *notifications;
@@ -202,6 +205,20 @@ notify_signal (GDBusConnection *connection,
     {
       backend->notifications = g_slist_remove (backend->notifications, n);
       freedesktop_notification_free (n);
+    }
+}
+
+static void
+name_vanished_handler_cb (GDBusConnection *connection,
+                          const gchar     *name,
+                          gpointer         user_data)
+{
+  GFdoNotificationBackend *backend = user_data;
+
+  if (backend->notifications)
+    {
+      g_slist_free_full (backend->notifications, freedesktop_notification_free);
+      backend->notifications = NULL;
     }
 }
 
@@ -370,6 +387,12 @@ g_fdo_notification_backend_dispose (GObject *object)
 {
   GFdoNotificationBackend *backend = G_FDO_NOTIFICATION_BACKEND (object);
 
+  if (backend->bus_name_id)
+    {
+      g_bus_unwatch_name (backend->bus_name_id);
+      backend->bus_name_id = 0;
+    }
+
   if (backend->notify_subscription)
     {
       GDBusConnection *session_bus;
@@ -406,6 +429,17 @@ g_fdo_notification_backend_send_notification (GNotificationBackend *backend,
 {
   GFdoNotificationBackend *self = G_FDO_NOTIFICATION_BACKEND (backend);
   FreedesktopNotification *n, *tmp;
+
+  if (self->bus_name_id == 0)
+    {
+      self->bus_name_id = g_bus_watch_name_on_connection (backend->dbus_connection,
+                                                          "org.freedesktop.Notifications",
+                                                          G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                                          NULL,
+                                                          name_vanished_handler_cb,
+                                                          backend,
+                                                          NULL);
+    }
 
   if (self->notify_subscription == 0)
     {
