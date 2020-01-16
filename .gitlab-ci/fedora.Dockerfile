@@ -43,12 +43,14 @@ RUN dnf -y install \
     ncurses-compat-libs \
     ninja-build \
     pcre-devel \
+    python3-dbusmock \
     python3-wheel \
     shared-mime-info \
     systemtap-sdt-devel \
     unzip \
     valgrind \
     wget \
+    xdg-desktop-portal \
     xz \
     zlib-devel \
  && dnf clean all
@@ -64,5 +66,8 @@ RUN useradd -u $HOST_USER_ID -G wheel -ms /bin/bash user
 
 USER user
 WORKDIR /home/user
+
+COPY cache-subprojects.sh .
+RUN ./cache-subprojects.sh
 
 ENV LANG C.UTF-8
