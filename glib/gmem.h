@@ -74,6 +74,10 @@ GLIB_AVAILABLE_IN_2_34
 void     g_clear_pointer  (gpointer      *pp,
                            GDestroyNotify destroy);
 
+void     g_clear_pointer_with (gpointer     *pp,
+                               gpointer      instance,
+                               GFunc         destroy);
+
 GLIB_AVAILABLE_IN_ALL
 gpointer g_malloc         (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 GLIB_AVAILABLE_IN_ALL
@@ -137,6 +141,39 @@ gpointer g_try_realloc_n  (gpointer	 mem,
       { 								       \
         *_pp.out = NULL;                                                       \
         _destroy (_p);                                                         \
+      }                                                                        \
+  } G_STMT_END                                                                 \
+  GLIB_AVAILABLE_MACRO_IN_2_34
+#endif /* __GNUC__ */
+
+#if defined(g_has_typeof) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_58
+#define g_clear_pointer_with(pp, instance, destroy)                            \
+  G_STMT_START {                                                               \
+    G_STATIC_ASSERT (sizeof *(pp) == sizeof (gpointer));                       \
+    __typeof__((pp)) _pp = (pp);                                               \
+    __typeof__(*(pp)) _ptr = *_pp;                                             \
+    __typeof__((instance)) _instance = (instance);                             \
+    *_pp = NULL;                                                               \
+    if (_ptr)                                                                  \
+      (destroy) (_instance, _ptr);                                             \
+  } G_STMT_END                                                                 \
+  GLIB_AVAILABLE_MACRO_IN_2_34
+#else /* __GNUC__ */
+#define g_clear_pointer_with(pp, instance, destroy)                            \
+  G_STMT_START {                                                               \
+    G_STATIC_ASSERT (sizeof *(pp) == sizeof (gpointer));                       \
+    /* Only one access, please; work around type aliasing */                   \
+    union { char *in; gpointer *out; } _pp;                                    \
+    gpointer _p;                                                               \
+    /* This assignment is needed to avoid a gcc warning */                     \
+    GFunc _destroy = (GFunc) (destroy);                                        \
+                                                                               \
+    _pp.in = (char *) (pp);                                                    \
+    _p = *_pp.out;                                                             \
+    if (_p)                                                                    \
+      {                                                                        \
+        *_pp.out = NULL;                                                       \
+        _destroy (instance, _p);                                               \
       }                                                                        \
   } G_STMT_END                                                                 \
   GLIB_AVAILABLE_MACRO_IN_2_34
