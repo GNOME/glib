@@ -634,6 +634,63 @@ test_clear_pointer_side_effects (void)
   g_free (my_string_array);
 }
 
+typedef struct _MyThing
+{
+  gint the_thing;
+} MyThing;
+
+typedef struct _MyInstanceType
+{
+  MyThing *thing;
+  int counter;
+} MyInstanceType;
+
+static MyThing *
+my_instance_type_add_thing (MyInstanceType *instance)
+{
+  g_assert_null (instance->thing);
+
+  instance->thing = g_new0 (MyThing, 1);
+  instance->thing->the_thing = 42;
+
+  instance->counter++;
+
+  return instance->thing;
+}
+
+static void
+my_instance_type_remove_thing (MyInstanceType *instance,
+                               MyThing        *thing)
+{
+  g_assert_nonnull (thing);
+  g_assert (thing == instance->thing);
+  g_assert_cmpint (instance->thing->the_thing, ==, 42);
+
+  instance->counter--;
+
+  g_clear_pointer (&instance->thing, g_free);
+}
+
+static void
+test_clear_pointer_with (void)
+{
+  MyInstanceType instance = { 0 };
+  MyThing *thing;
+
+  thing = my_instance_type_add_thing (&instance);
+  g_assert_nonnull (thing);
+  g_assert_nonnull (instance.thing);
+  g_assert_cmpint (instance.counter, ==, 1);
+
+  g_clear_pointer_with (&thing, &instance, my_instance_type_remove_thing);
+  g_assert_null (thing);
+  g_assert_null (instance.thing);
+  g_assert_cmpint (instance.counter, ==, 0);
+
+  g_clear_pointer_with (&thing, &instance, my_instance_type_remove_thing);
+  g_assert_cmpint (instance.counter, ==, 0);
+}
+
 static int obj_count;
 
 static void
@@ -855,6 +912,7 @@ main (int   argc,
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
   g_test_add_func ("/utils/clear-pointer-cast", test_clear_pointer_cast);
   g_test_add_func ("/utils/clear-pointer/side-effects", test_clear_pointer_side_effects);
+  g_test_add_func ("/utils/clear-pointer-with", test_clear_pointer_with);
   g_test_add_func ("/utils/take-pointer", test_take_pointer);
   g_test_add_func ("/utils/clear-source", test_clear_source);
   g_test_add_func ("/utils/misc-mem", test_misc_mem);

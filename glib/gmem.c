@@ -235,6 +235,49 @@ g_clear_pointer (gpointer      *pp,
 }
 
 /**
+ * g_clear_pointer_with: (skip)
+ * @pp: (not nullable): a pointer to a variable, struct member etc. holding a
+ *    pointer
+ * @instance: (nullable): a pointer to the first argument to destroy function
+ * @destroy: a function to which a instance gpointer can be passed as first
+ * argument, and to-be destroyed gpointer can be passed as the second, to
+ * destroy *@pp
+ *
+ * Clears a reference to a variable, using a function where the variable is
+ * passed as the second argument.
+ *
+ * @pp must not be %NULL.
+ *
+ * If the reference is %NULL then this function does nothing.
+ * Otherwise, the variable is destroyed using @destroy and the
+ * pointer is set to %NULL.
+ *
+ * A macro is also included that allows this function to be used without
+ * pointer casts. This will mask any warnings about incompatible function types
+ * or calling conventions, so you must ensure that your @destroy function is
+ * compatible with being called as `GFunc` using the standard calling
+ * convention for the platform that GLib was compiled for; otherwise the program
+ * will experience undefined behaviour.
+ *
+ * Since: 2.64
+ **/
+#undef g_clear_pointer_with
+void
+g_clear_pointer_with (gpointer *pp,
+                      gpointer  instance,
+                      GFunc     destroy)
+{
+  gpointer _p;
+
+  _p = *pp;
+  if (_p)
+    {
+      *pp = NULL;
+      destroy (instance, _p);
+    }
+}
+
+/**
  * g_try_malloc:
  * @n_bytes: number of bytes to allocate.
  * 
