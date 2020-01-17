@@ -3600,15 +3600,16 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* called in any thread */
-/* must hold lock when calling this (except if connection->finalizing is TRUE) */
-static void
+/* must hold lock when calling this (except if connection->finalizing is TRUE)
+ * returns the number of removed subscribers */
+static guint
 unsubscribe_id_internal (GDBusConnection *connection,
-                         guint            subscription_id,
-                         GPtrArray       *out_removed_subscribers)
+                         guint            subscription_id)
 {
   SignalData *signal_data;
   GPtrArray *signal_data_array;
   guint n;
+  guint n_removed = 0;
 
   signal_data = g_hash_table_lookup (connection->map_id_to_signal_data,
                                      GUINT_TO_POINTER (subscription_id));
@@ -3627,7 +3628,7 @@ unsubscribe_id_internal (GDBusConnection *connection,
 
       g_warn_if_fail (g_hash_table_remove (connection->map_id_to_signal_data,
                                            GUINT_TO_POINTER (subscription_id)));
-      g_ptr_array_add (out_removed_subscribers, signal_subscriber_ref (subscriber));
+      n_removed++;
       g_ptr_array_remove_index_fast (signal_data->subscribers, n);
 
       if (signal_data->subscribers->len == 0)
@@ -3669,7 +3670,7 @@ unsubscribe_id_internal (GDBusConnection *connection,
   g_assert_not_reached ();
 
  out:
-  ;
+  return n_removed;
 }
 
 /**
@@ -3686,23 +3687,17 @@ void
 g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
                                       guint            subscription_id)
 {
-  GPtrArray *subscribers;
+  guint n_subscribers_removed;
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
   g_return_if_fail (check_initialized (connection));
 
-  subscribers = g_ptr_array_new_with_free_func ((GDestroyNotify) signal_subscriber_unref);
-
   CONNECTION_LOCK (connection);
-  unsubscribe_id_internal (connection,
-                           subscription_id,
-                           subscribers);
+  n_subscribers_removed = unsubscribe_id_internal (connection, subscription_id);
   CONNECTION_UNLOCK (connection);
 
   /* invariant */
-  g_assert (subscribers->len == 0 || subscribers->len == 1);
-
-  g_ptr_array_unref (subscribers);
+  g_assert (n_subscribers_removed == 0 || n_subscribers_removed == 1);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -3965,7 +3960,6 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
   GHashTableIter iter;
   gpointer key;
   GArray *ids;
-  GPtrArray *subscribers;
   guint n;
 
   ids = g_array_new (FALSE, FALSE, sizeof (guint));
@@ -3976,17 +3970,12 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
       g_array_append_val (ids, subscription_id);
     }
 
-  subscribers = g_ptr_array_new_with_free_func ((GDestroyNotify) signal_subscriber_unref);
   for (n = 0; n < ids->len; n++)
     {
       guint subscription_id = g_array_index (ids, guint, n);
-      unsubscribe_id_internal (connection,
-                               subscription_id,
-                               subscribers);
+      unsubscribe_id_internal (connection, subscription_id);
     }
   g_array_free (ids, TRUE);
-
-  g_ptr_array_unref (subscribers);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
