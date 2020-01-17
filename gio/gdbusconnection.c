@@ -3248,6 +3248,7 @@ signal_data_free (SignalData *signal_data)
 
 typedef struct
 {
+  /* All fields are immutable after construction. */
   gatomicrefcount ref_count;
   GDBusSignalCallback callback;
   gpointer user_data;
@@ -3268,6 +3269,14 @@ signal_subscriber_unref (SignalSubscriber *subscriber)
 {
   if (g_atomic_ref_count_dec (&subscriber->ref_count))
     {
+      /* Destroy the user data. It doesn’t matter which thread
+       * signal_subscriber_unref() is called in (or whether it’s called with a
+       * lock held), as call_destroy_notify() always defers to the next
+       * #GMainContext iteration. */
+      call_destroy_notify (subscriber->context,
+                           subscriber->user_data_free_func,
+                           subscriber->user_data);
+
       g_main_context_unref (subscriber->context);
       g_free (subscriber);
     }
@@ -3658,7 +3667,6 @@ g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
                                       guint            subscription_id)
 {
   GPtrArray *subscribers;
-  guint n;
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
   g_return_if_fail (check_initialized (connection));
@@ -3673,17 +3681,6 @@ g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
 
   /* invariant */
   g_assert (subscribers->len == 0 || subscribers->len == 1);
-
-  /* call GDestroyNotify without lock held */
-  for (n = 0; n < subscribers->len; n++)
-    {
-      SignalSubscriber *subscriber = subscribers->pdata[n];
-      call_destroy_notify (subscriber->context,
-                           subscriber->user_data_free_func,
-                           subscriber->user_data);
-      subscriber->user_data_free_func = NULL;
-      subscriber->user_data = NULL;
-    }
 
   g_ptr_array_unref (subscribers);
 }
@@ -3971,17 +3968,6 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
                                subscribers);
     }
   g_array_free (ids, TRUE);
-
-  /* call GDestroyNotify without lock held */
-  for (n = 0; n < subscribers->len; n++)
-    {
-      SignalSubscriber *subscriber = subscribers->pdata[n];
-      call_destroy_notify (subscriber->context,
-                           subscriber->user_data_free_func,
-                           subscriber->user_data);
-      subscriber->user_data_free_func = NULL;
-      subscriber->user_data = NULL;
-    }
 
   g_ptr_array_unref (subscribers);
 }
