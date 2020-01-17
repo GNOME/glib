@@ -3229,17 +3229,8 @@ typedef struct
   gchar *object_path;
   gchar *arg0;
   GDBusSignalFlags flags;
-  GArray *subscribers;
+  GPtrArray *subscribers;  /* (owned) (element-type SignalSubscriber) */
 } SignalData;
-
-typedef struct
-{
-  GDBusSignalCallback callback;
-  gpointer user_data;
-  GDestroyNotify user_data_free_func;
-  guint id;
-  GMainContext *context;
-} SignalSubscriber;
 
 static void
 signal_data_free (SignalData *signal_data)
@@ -3251,8 +3242,35 @@ signal_data_free (SignalData *signal_data)
   g_free (signal_data->member);
   g_free (signal_data->object_path);
   g_free (signal_data->arg0);
-  g_array_free (signal_data->subscribers, TRUE);
+  g_ptr_array_unref (signal_data->subscribers);
   g_free (signal_data);
+}
+
+typedef struct
+{
+  gatomicrefcount ref_count;
+  GDBusSignalCallback callback;
+  gpointer user_data;
+  GDestroyNotify user_data_free_func;
+  guint id;
+  GMainContext *context;
+} SignalSubscriber;
+
+static SignalSubscriber *
+signal_subscriber_ref (SignalSubscriber *subscriber)
+{
+  g_atomic_ref_count_inc (&subscriber->ref_count);
+  return subscriber;
+}
+
+static void
+signal_subscriber_unref (SignalSubscriber *subscriber)
+{
+  if (g_atomic_ref_count_dec (&subscriber->ref_count))
+    {
+      g_main_context_unref (subscriber->context);
+      g_free (subscriber);
+    }
 }
 
 static gchar *
@@ -3440,7 +3458,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 {
   gchar *rule;
   SignalData *signal_data;
-  SignalSubscriber subscriber;
+  SignalSubscriber *subscriber;
   GPtrArray *signal_data_array;
   const gchar *sender_unique_name;
 
@@ -3481,17 +3499,19 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   else
     sender_unique_name = "";
 
-  subscriber.callback = callback;
-  subscriber.user_data = user_data;
-  subscriber.user_data_free_func = user_data_free_func;
-  subscriber.id = (guint) g_atomic_int_add (&_global_subscriber_id, 1); /* TODO: overflow etc. */
-  subscriber.context = g_main_context_ref_thread_default ();
+  subscriber = g_new0 (SignalSubscriber, 1);
+  subscriber->ref_count = 1;
+  subscriber->callback = callback;
+  subscriber->user_data = user_data;
+  subscriber->user_data_free_func = user_data_free_func;
+  subscriber->id = (guint) g_atomic_int_add (&_global_subscriber_id, 1); /* TODO: overflow etc. */
+  subscriber->context = g_main_context_ref_thread_default ();
 
   /* see if we've already have this rule */
   signal_data = g_hash_table_lookup (connection->map_rule_to_signal_data, rule);
   if (signal_data != NULL)
     {
-      g_array_append_val (signal_data->subscribers, subscriber);
+      g_ptr_array_add (signal_data->subscribers, subscriber);
       g_free (rule);
       goto out;
     }
@@ -3505,8 +3525,8 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   signal_data->object_path           = g_strdup (object_path);
   signal_data->arg0                  = g_strdup (arg0);
   signal_data->flags                 = flags;
-  signal_data->subscribers           = g_array_new (FALSE, FALSE, sizeof (SignalSubscriber));
-  g_array_append_val (signal_data->subscribers, subscriber);
+  signal_data->subscribers           = g_ptr_array_new_with_free_func ((GDestroyNotify) signal_subscriber_unref);
+  g_ptr_array_add (signal_data->subscribers, subscriber);
 
   g_hash_table_insert (connection->map_rule_to_signal_data,
                        signal_data->rule,
@@ -3536,12 +3556,12 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
  out:
   g_hash_table_insert (connection->map_id_to_signal_data,
-                       GUINT_TO_POINTER (subscriber.id),
+                       GUINT_TO_POINTER (subscriber->id),
                        signal_data);
 
   CONNECTION_UNLOCK (connection);
 
-  return subscriber.id;
+  return subscriber->id;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -3551,7 +3571,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 static void
 unsubscribe_id_internal (GDBusConnection *connection,
                          guint            subscription_id,
-                         GArray          *out_removed_subscribers)
+                         GPtrArray       *out_removed_subscribers)
 {
   SignalData *signal_data;
   GPtrArray *signal_data_array;
@@ -3567,16 +3587,19 @@ unsubscribe_id_internal (GDBusConnection *connection,
 
   for (n = 0; n < signal_data->subscribers->len; n++)
     {
-      SignalSubscriber *subscriber;
+      SignalSubscriber *subscriber = signal_data->subscribers->pdata[n];
 
-      subscriber = &(g_array_index (signal_data->subscribers, SignalSubscriber, n));
       if (subscriber->id != subscription_id)
         continue;
 
+      /* It’s OK to rearrange the array order using the ‘fast’ #GPtrArray
+       * removal functions, since we’re going to exit the loop below anyway — we
+       * never move on to the next element. Secondly, subscription IDs are
+       * guaranteed to be unique. */
       g_warn_if_fail (g_hash_table_remove (connection->map_id_to_signal_data,
                                            GUINT_TO_POINTER (subscription_id)));
-      g_array_append_val (out_removed_subscribers, *subscriber);
-      g_array_remove_index (signal_data->subscribers, n);
+      g_ptr_array_add (out_removed_subscribers, signal_subscriber_ref (subscriber));
+      g_ptr_array_remove_index_fast (signal_data->subscribers, n);
 
       if (signal_data->subscribers->len == 0)
         {
@@ -3634,13 +3657,13 @@ void
 g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
                                       guint            subscription_id)
 {
-  GArray *subscribers;
+  GPtrArray *subscribers;
   guint n;
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
   g_return_if_fail (check_initialized (connection));
 
-  subscribers = g_array_new (FALSE, FALSE, sizeof (SignalSubscriber));
+  subscribers = g_ptr_array_new_with_free_func ((GDestroyNotify) signal_subscriber_unref);
 
   CONNECTION_LOCK (connection);
   unsubscribe_id_internal (connection,
@@ -3654,15 +3677,15 @@ g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
   /* call GDestroyNotify without lock held */
   for (n = 0; n < subscribers->len; n++)
     {
-      SignalSubscriber *subscriber;
-      subscriber = &(g_array_index (subscribers, SignalSubscriber, n));
+      SignalSubscriber *subscriber = subscribers->pdata[n];
       call_destroy_notify (subscriber->context,
                            subscriber->user_data_free_func,
                            subscriber->user_data);
-      g_main_context_unref (subscriber->context);
+      subscriber->user_data_free_func = NULL;
+      subscriber->user_data = NULL;
     }
 
-  g_array_free (subscribers, TRUE);
+  g_ptr_array_unref (subscribers);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -3852,11 +3875,9 @@ schedule_callbacks (GDBusConnection *connection,
 
       for (m = 0; m < signal_data->subscribers->len; m++)
         {
-          SignalSubscriber *subscriber;
+          SignalSubscriber *subscriber = signal_data->subscribers->pdata[m];
           GSource *idle_source;
           SignalInstance *signal_instance;
-
-          subscriber = &(g_array_index (signal_data->subscribers, SignalSubscriber, m));
 
           signal_instance = g_new0 (SignalInstance, 1);
           signal_instance->subscription_id = subscriber->id;
@@ -3930,7 +3951,7 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
   GHashTableIter iter;
   gpointer key;
   GArray *ids;
-  GArray *subscribers;
+  GPtrArray *subscribers;
   guint n;
 
   ids = g_array_new (FALSE, FALSE, sizeof (guint));
@@ -3941,7 +3962,7 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
       g_array_append_val (ids, subscription_id);
     }
 
-  subscribers = g_array_new (FALSE, FALSE, sizeof (SignalSubscriber));
+  subscribers = g_ptr_array_new_with_free_func ((GDestroyNotify) signal_subscriber_unref);
   for (n = 0; n < ids->len; n++)
     {
       guint subscription_id = g_array_index (ids, guint, n);
@@ -3954,15 +3975,15 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
   /* call GDestroyNotify without lock held */
   for (n = 0; n < subscribers->len; n++)
     {
-      SignalSubscriber *subscriber;
-      subscriber = &(g_array_index (subscribers, SignalSubscriber, n));
+      SignalSubscriber *subscriber = subscribers->pdata[n];
       call_destroy_notify (subscriber->context,
                            subscriber->user_data_free_func,
                            subscriber->user_data);
-      g_main_context_unref (subscriber->context);
+      subscriber->user_data_free_func = NULL;
+      subscriber->user_data = NULL;
     }
 
-  g_array_free (subscribers, TRUE);
+  g_ptr_array_unref (subscribers);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
