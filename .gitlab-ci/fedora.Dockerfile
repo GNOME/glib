@@ -1,6 +1,7 @@
 FROM fedora:30
 
-RUN dnf -y install \
+RUN dnf -y update \
+ && dnf -y install \
     bindfs \
     clang \
     clang-analyzer \
