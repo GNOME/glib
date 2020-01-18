@@ -116,7 +116,9 @@ static guint max_idle_time = 15 * 1000;
 
 #ifdef HAVE_GTHREAD_SCHEDULER_SETTINGS
 static GThreadSchedulerSettings shared_thread_scheduler_settings;
-#else
+static gboolean have_shared_thread_scheduler_settings = FALSE;
+#endif
+
 typedef struct
 {
   /* Either thread or error are set in the end. Both transfer-full. */
@@ -127,7 +129,6 @@ typedef struct
 
 static GCond spawn_thread_cond;
 static GAsyncQueue *spawn_thread_queue;
-#endif
 
 static void             g_thread_pool_queue_push_unlocked (GRealThreadPool  *pool,
                                                            gpointer          data);
@@ -294,7 +295,6 @@ g_thread_pool_wait_for_new_task (GRealThreadPool *pool)
   return task;
 }
 
-#ifndef HAVE_GTHREAD_SCHEDULER_SETTINGS
 static gpointer
 g_thread_pool_spawn_thread (gpointer data)
 {
@@ -326,7 +326,6 @@ g_thread_pool_spawn_thread (gpointer data)
 
   return NULL;
 }
-#endif
 
 static gpointer
 g_thread_pool_thread_proxy (gpointer data)
@@ -476,22 +475,27 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
            * going via our helper thread.
            */
 #ifdef HAVE_GTHREAD_SCHEDULER_SETTINGS
-          thread = g_thread_new_internal (name, g_thread_proxy, g_thread_pool_thread_proxy, pool, 0, &shared_thread_scheduler_settings, error);
-#else
-          SpawnThreadData spawn_thread_data = { (GThreadPool *) pool, NULL, NULL };
-
-          g_async_queue_lock (spawn_thread_queue);
-
-          g_async_queue_push_unlocked (spawn_thread_queue, &spawn_thread_data);
-
-          while (!spawn_thread_data.thread && !spawn_thread_data.error)
-            g_cond_wait (&spawn_thread_cond, _g_async_queue_get_mutex (spawn_thread_queue));
-
-          thread = spawn_thread_data.thread;
-          if (!thread)
-            g_propagate_error (error, g_steal_pointer (&spawn_thread_data.error));
-          g_async_queue_unlock (spawn_thread_queue);
+          if (have_shared_thread_scheduler_settings)
+            {
+              thread = g_thread_new_internal (name, g_thread_proxy, g_thread_pool_thread_proxy, pool, 0, &shared_thread_scheduler_settings, error);
+            }
+          else
 #endif
+          {
+            SpawnThreadData spawn_thread_data = { (GThreadPool *) pool, NULL, NULL };
+
+            g_async_queue_lock (spawn_thread_queue);
+
+            g_async_queue_push_unlocked (spawn_thread_queue, &spawn_thread_data);
+
+            while (!spawn_thread_data.thread && !spawn_thread_data.error)
+              g_cond_wait (&spawn_thread_cond, _g_async_queue_get_mutex (spawn_thread_queue));
+
+            thread = spawn_thread_data.thread;
+            if (!thread)
+              g_propagate_error (error, g_steal_pointer (&spawn_thread_data.error));
+            g_async_queue_unlock (spawn_thread_queue);
+          }
         }
 
       if (thread == NULL)
@@ -606,12 +610,17 @@ g_thread_pool_new (GFunc      func,
       if (!exclusive)
         {
 #ifdef HAVE_GTHREAD_SCHEDULER_SETTINGS
-          g_thread_get_scheduler_settings (&shared_thread_scheduler_settings);
-#else
-          spawn_thread_queue = g_async_queue_new ();
-          g_cond_init (&spawn_thread_cond);
-          g_thread_new ("pool-spawner", g_thread_pool_spawn_thread, NULL);
+          if (g_thread_get_scheduler_settings (&shared_thread_scheduler_settings))
+            {
+              have_shared_thread_scheduler_settings = TRUE;
+            }
+          else
 #endif
+          {
+            spawn_thread_queue = g_async_queue_new ();
+            g_cond_init (&spawn_thread_cond);
+            g_thread_new ("pool-spawner", g_thread_pool_spawn_thread, NULL);
+          }
         }
     }
   G_UNLOCK (init);

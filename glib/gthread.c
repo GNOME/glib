@@ -902,11 +902,11 @@ g_thread_new_internal (const gchar *name,
                                           name, func, data, error);
 }
 
-void
+gboolean
 g_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings)
 {
   g_return_if_fail (scheduler_settings != NULL);
-  g_system_thread_get_scheduler_settings (scheduler_settings);
+  return g_system_thread_get_scheduler_settings (scheduler_settings);
 }
 
 /**
