@@ -428,11 +428,13 @@ g_thread_win32_proxy (gpointer data)
   return 0;
 }
 
-void
+gboolean
 g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings)
 {
   HANDLE current_thread = GetCurrentThread ();
   scheduler_settings->thread_prio = GetThreadPriority (current_thread);
+
+  return TRUE;
 }
 
 GRealThread *
