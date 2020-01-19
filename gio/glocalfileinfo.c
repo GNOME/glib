@@ -2123,7 +2123,7 @@ get_uint32 (const GFileAttributeValue  *value,
   return TRUE;
 }
 
-#ifdef HAVE_UTIMES
+#if defined (HAVE_UTIMES) || defined (G_OS_WIN32)
 static gboolean
 get_uint64 (const GFileAttributeValue  *value,
 	    guint64                    *val_out,
@@ -2356,7 +2356,180 @@ set_symlink (char                       *filename,
 }
 #endif
 
-#ifdef HAVE_UTIMES
+#if defined (G_OS_WIN32)
+/* From
+ * https://support.microsoft.com/en-ca/help/167296/how-to-convert-a-unix-time-t-to-a-win32-filetime-or-systemtime
+ * FT = UT * 10000000 + 116444736000000000.
+ * Converts unix epoch time (a signed 64-bit integer) to FILETIME.
+ * Can optionally use a more precise timestamp that has
+ * a fraction of a second expressed in nanoseconds.
+ * UT must be between January 1st of year 1601 and December 31st of year 30827.
+ * nsec must be non-negative and < 1000000000.
+ * Returns TRUE if conversion succeeded, FALSE otherwise.
+ *
+ * The function that does the reverse can be found in
+ * glib/gstdio.c.
+ */
+static gboolean
+_g_win32_unix_time_to_filetime (gint64     ut,
+                                gint32     nsec,
+                                FILETIME  *ft,
+                                GError   **error)
+{
+  gint64 result;
+  /* 1 unit of FILETIME is 100ns */
+  const gint64 hundreds_of_usec_per_sec = 10000000;
+  /* The difference between January 1, 1601 UTC (FILETIME epoch) and UNIX epoch
+   * in hundreds of nanoseconds.
+   */
+  const gint64 filetime_unix_epoch_offset = 116444736000000000;
+  /* This is the maximum timestamp that SYSTEMTIME can
+   * represent (last millisecond of the year 30827).
+   * Since FILETIME and SYSTEMTIME are both used on Windows,
+   * we use this as a limit (FILETIME can support slightly
+   * larger interval, up to year 30828).
+   */
+  const gint64 max_systemtime = 0x7fff35f4f06c58f0;
+
+  g_return_val_if_fail (ft != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (nsec < 0)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_INVALID_DATA,
+                   _("Extra nanoseconds %d for UNIX timestamp %lld are negative"),
+                   nsec, ut);
+      return FALSE;
+    }
+
+  if (nsec >= hundreds_of_usec_per_sec * 100)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_INVALID_DATA,
+                   _("Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"),
+                   nsec, ut);
+      return FALSE;
+    }
+
+  if (ut >= (G_MAXINT64 / hundreds_of_usec_per_sec) ||
+      (ut * hundreds_of_usec_per_sec) >= (G_MAXINT64 - filetime_unix_epoch_offset))
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_INVALID_DATA,
+                   _("UNIX timestamp %lld does not fit into 64 bits"),
+                   ut);
+      return FALSE;
+    }
+
+  result = ut * hundreds_of_usec_per_sec + filetime_unix_epoch_offset + nsec / 100;
+
+  if (result >= max_systemtime || result < 0)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_INVALID_DATA,
+                   _("UNIX timestamp %lld is outside of the range supported by Windows"),
+                   ut);
+      return FALSE;
+    }
+
+  ft->dwLowDateTime = (DWORD) (result);
+  ft->dwHighDateTime = (DWORD) (result >> 32);
+
+  return TRUE;
+}
+
+static gboolean
+set_mtime_atime (const char                 *filename,
+		 const GFileAttributeValue  *mtime_value,
+		 const GFileAttributeValue  *mtime_usec_value,
+		 const GFileAttributeValue  *atime_value,
+		 const GFileAttributeValue  *atime_usec_value,
+		 GError                    **error)
+{
+  BOOL res;
+  guint64 val = 0;
+  guint32 val_usec = 0;
+  gunichar2 *filename_utf16;
+  SECURITY_ATTRIBUTES sec = { sizeof (SECURITY_ATTRIBUTES), NULL, FALSE };
+  HANDLE file_handle;
+  FILETIME mtime;
+  FILETIME atime;
+  FILETIME *p_mtime = NULL;
+  FILETIME *p_atime = NULL;
+  DWORD gle;
+
+  /* ATIME */
+  if (atime_value)
+    {
+      if (!get_uint64 (atime_value, &val, error))
+        return FALSE;
+      val_usec = 0;
+      if (atime_usec_value &&
+          !get_uint32 (atime_usec_value, &val_usec, error))
+	return FALSE;
+      if (!_g_win32_unix_time_to_filetime (val, val_usec, &atime, error))
+        return FALSE;
+      p_atime = &atime;
+    }
+
+  /* MTIME */
+  if (mtime_value)
+    {
+      if (!get_uint64 (mtime_value, &val, error))
+	return FALSE;
+      val_usec = 0;
+      if (mtime_usec_value &&
+          !get_uint32 (mtime_usec_value, &val_usec, error))
+	return FALSE;
+      if (!_g_win32_unix_time_to_filetime (val, val_usec, &mtime, error))
+        return FALSE;
+      p_mtime = &mtime;
+    }
+
+  filename_utf16 = g_utf8_to_utf16 (filename, -1, NULL, NULL, error);
+
+  if (filename_utf16 == NULL)
+    {
+      g_prefix_error (error,
+                      _("File name “%s” cannot be converted to UTF-16"),
+                      filename);
+      return FALSE;
+    }
+
+  file_handle = CreateFileW (filename_utf16,
+                             FILE_WRITE_ATTRIBUTES,
+                             FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
+                             &sec,
+                             OPEN_EXISTING,
+                             FILE_FLAG_BACKUP_SEMANTICS,
+                             NULL);
+  gle = GetLastError ();
+  g_clear_pointer (&filename_utf16, g_free);
+
+  if (file_handle == INVALID_HANDLE_VALUE)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   g_io_error_from_errno (gle),
+                   _("File “%s” cannot be opened: Windows Error %lu"),
+                   filename, gle);
+
+      return FALSE;
+    }
+
+  res = SetFileTime (file_handle, NULL, p_atime, p_mtime);
+  gle = GetLastError ();
+  CloseHandle (file_handle);
+
+  if (!res)
+    g_set_error (error, G_IO_ERROR,
+                 g_io_error_from_errno (gle),
+                 _("Error setting modification or access time for file “%s”: %lu"),
+                 filename, gle);
+
+  return res;
+}
+#elif defined (HAVE_UTIMES)
 static int
 lazy_stat (char        *filename, 
            struct stat *statbuf, 
@@ -2536,7 +2709,7 @@ _g_local_file_info_set_attribute (char                 *filename,
     return set_symlink (filename, &value, error);
 #endif
 
-#ifdef HAVE_UTIMES
+#if defined (HAVE_UTIMES) || defined (G_OS_WIN32)
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_TIME_MODIFIED) == 0)
     return set_mtime_atime (filename, &value, NULL, NULL, NULL, error);
   else if (strcmp (attribute, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC) == 0)
@@ -2603,9 +2776,11 @@ _g_local_file_info_set_attributes  (char                 *filename,
   GFileAttributeValue *value;
 #ifdef G_OS_UNIX
   GFileAttributeValue *uid, *gid;
-#ifdef HAVE_UTIMES
+#endif
+#if defined (HAVE_UTIMES) || defined (G_OS_WIN32)
   GFileAttributeValue *mtime, *mtime_usec, *atime, *atime_usec;
 #endif
+#if defined (G_OS_UNIX) || defined (G_OS_WIN32)
   GFileAttributeStatus status;
 #endif
   gboolean res;
@@ -2676,7 +2851,7 @@ _g_local_file_info_set_attributes  (char                 *filename,
 	
     }
 
-#ifdef HAVE_UTIMES
+#if defined (HAVE_UTIMES) || defined (G_OS_WIN32)
   /* Group all time settings into one call
    * Change times as the last thing to avoid it changing due to metadata changes
    */

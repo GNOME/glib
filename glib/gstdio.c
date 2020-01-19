@@ -166,6 +166,9 @@ _g_win32_fix_mode (wchar_t *mode)
  * UT = (FT - 116444736000000000) / 10000000.
  * Converts FILETIME to unix epoch time in form
  * of a signed 64-bit integer (can be negative).
+ *
+ * The function that does the reverse can be found in
+ * gio/glocalfileinfo.c.
  */
 static gint64
 _g_win32_filetime_to_unix_time (const FILETIME *ft,
