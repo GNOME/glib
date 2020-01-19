@@ -126,7 +126,7 @@ _g_local_file_info_create_etag (GLocalFileStat *statbuf)
   sec = statbuf->st_mtime;
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
   usec = statbuf->st_mtimensec / 1000;
-#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
+#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC) || defined (G_OS_WIN32)
   usec = statbuf->st_mtim.tv_nsec / 1000;
 #else
   usec = 0;
@@ -1004,14 +1004,14 @@ set_info_from_stat (GFileInfo             *info,
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, statbuf->st_mtime);
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtimensec / 1000);
-#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
+#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC) || defined (G_OS_WIN32)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtim.tv_nsec / 1000);
 #endif
   
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, statbuf->st_atime);
 #if defined (HAVE_STRUCT_STAT_ST_ATIMENSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atimensec / 1000);
-#elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
+#elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC) || defined (G_OS_WIN32)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atim.tv_nsec / 1000);
 #endif
 
@@ -1040,7 +1040,8 @@ set_info_from_stat (GFileInfo             *info,
 #elif defined (HAVE_STRUCT_STAT_ST_BIRTHTIM)
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_birthtim);
 #elif defined (G_OS_WIN32)
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_ctime);
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_ctim.tv_sec);
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED_USEC, statbuf->st_ctim.tv_nsec / 1000);
 #endif
 
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
