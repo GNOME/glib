@@ -1162,7 +1162,7 @@ g_system_thread_free (GRealThread *thread)
   g_slice_free (GThreadPosix, pt);
 }
 
-void
+gboolean
 g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings)
 {
   /* FIXME: Implement the same for macOS and the BSDs so it doesn't go through
@@ -1202,11 +1202,18 @@ g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_sett
             }
           else
             {
-              g_error ("Failed to get thread scheduler attributes: %s", g_strerror (errsv));
+              g_debug ("Failed to get thread scheduler attributes: %s", g_strerror (errsv));
+              g_free (scheduler_settings->attr);
+
+              return FALSE;
             }
         }
     }
   while (res == -1);
+
+  return TRUE;
+#else
+  return FALSE;
 #endif
 }
 
