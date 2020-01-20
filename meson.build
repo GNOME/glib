@@ -1731,7 +1731,7 @@ else
     glib_conf.set('HAVE_PTHREAD_GETNAME_NP', 1)
   endif
 
-  if cc.has_header_symbol('sys/syscall.h', 'SYS_sched_getattr,')
+  if cc.has_header_symbol('sys/syscall.h', 'SYS_sched_getattr')
     glib_conf.set('HAVE_SYS_SCHED_GETATTR', 1)
   endif
 

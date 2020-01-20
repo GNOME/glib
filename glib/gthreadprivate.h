@@ -74,7 +74,7 @@ void            g_system_thread_free            (GRealThread  *thread);
 void            g_system_thread_exit            (void);
 void            g_system_thread_set_name        (const gchar  *name);
 
-void g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings);
+gboolean        g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings);
 
 /* gthread.c */
 GThread *g_thread_new_internal (const gchar *name,
@@ -85,7 +85,7 @@ GThread *g_thread_new_internal (const gchar *name,
                                 const GThreadSchedulerSettings *scheduler_settings,
                                 GError **error);
 
-void g_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings);
+gboolean g_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_settings);
 
 gpointer        g_thread_proxy                  (gpointer      thread);
 
