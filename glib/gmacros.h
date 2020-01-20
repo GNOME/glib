@@ -1096,4 +1096,16 @@
 
 #endif /* __GI_SCANNER__ */
 
+/**
+ * g_sizeof_member:
+ * @struct_type: a structure type, e.g. #GtkWidget
+ * @member: a field in the structure, e.g. @window
+ *
+ * Returns: thee size of @member in the struct definition without having a
+ * declared instance of @struct_type.
+ *
+ * Since: 2.64
+ */
+#define g_sizeof_member(struct_type, member) sizeof (((struct_type *) 0)->member)
+
 #endif /* __G_MACROS_H__ */

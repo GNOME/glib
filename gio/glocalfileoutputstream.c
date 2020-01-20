@@ -224,9 +224,9 @@ g_local_file_output_stream_write (GOutputStream  *stream,
 #ifdef G_OS_UNIX
 /* Macro to check if struct iovec and GOutputVector have the same ABI */
 #define G_OUTPUT_VECTOR_IS_IOVEC (sizeof (struct iovec) == sizeof (GOutputVector) && \
-      sizeof ((struct iovec *) 0)->iov_base == sizeof ((GOutputVector *) 0)->buffer && \
+      g_sizeof_member (struct iovec, iov_base) == g_sizeof_member (GOutputVector, buffer) && \
       G_STRUCT_OFFSET (struct iovec, iov_base) == G_STRUCT_OFFSET (GOutputVector, buffer) && \
-      sizeof ((struct iovec *) 0)->iov_len == sizeof((GOutputVector *) 0)->size && \
+      g_sizeof_member (struct iovec, iov_len) == g_sizeof_member (GOutputVector, size) && \
       G_STRUCT_OFFSET (struct iovec, iov_len) == G_STRUCT_OFFSET (GOutputVector, size))
 
 static gboolean
