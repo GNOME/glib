@@ -148,6 +148,11 @@ call_handler_data_free (CallHandlerData *data)
 static void
 actually_do_call (Client *client, GDBusConnection *connection, const gchar *name_owner, CallType call_type)
 {
+  /* The client might have been cancelled (g_bus_unwatch_name()) while we were
+   * sitting in the #GMainContext dispatch queue. */
+  if (client->cancelled)
+    return;
+
   switch (call_type)
     {
     case CALL_TYPE_NAME_APPEARED:
