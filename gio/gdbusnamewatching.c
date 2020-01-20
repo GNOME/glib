@@ -234,13 +234,12 @@ call_appeared_handler (Client *client)
 }
 
 static void
-call_vanished_handler (Client  *client,
-                       gboolean ignore_cancelled)
+call_vanished_handler (Client *client)
 {
   if (client->previous_call != PREVIOUS_CALL_VANISHED)
     {
       client->previous_call = PREVIOUS_CALL_VANISHED;
-      if (((!client->cancelled) || ignore_cancelled) && client->name_vanished_handler != NULL)
+      if (!client->cancelled && client->name_vanished_handler != NULL)
         {
           do_call (client, CALL_TYPE_NAME_VANISHED);
         }
@@ -296,7 +295,7 @@ on_connection_disconnected (GDBusConnection *connection,
   client->name_owner_changed_subscription_id = 0;
   client->connection = NULL;
 
-  call_vanished_handler (client, FALSE);
+  call_vanished_handler (client);
 
   client_unref (client);
 }
@@ -345,7 +344,7 @@ on_name_owner_changed (GDBusConnection *connection,
     {
       g_free (client->name_owner);
       client->name_owner = NULL;
-      call_vanished_handler (client, FALSE);
+      call_vanished_handler (client);
     }
 
   if (new_owner != NULL && strlen (new_owner) > 0)
@@ -390,7 +389,7 @@ get_name_owner_cb (GObject      *source_object,
     }
   else
     {
-      call_vanished_handler (client, FALSE);
+      call_vanished_handler (client);
     }
 
   client->initialized = TRUE;
@@ -450,7 +449,7 @@ start_service_by_name_cb (GObject      *source_object,
       else
         {
           g_warning ("Unexpected reply %d from StartServiceByName() method", start_service_result);
-          call_vanished_handler (client, FALSE);
+          call_vanished_handler (client);
           client->initialized = TRUE;
         }
     }
@@ -529,7 +528,7 @@ connection_get_cb (GObject      *source_object,
   client->connection = g_bus_get_finish (res, NULL);
   if (client->connection == NULL)
     {
-      call_vanished_handler (client, FALSE);
+      call_vanished_handler (client);
       goto out;
     }
 
