@@ -39,26 +39,18 @@ struct  _GRealThread
 /* system thread implementation (gthread-posix.c, gthread-win32.c) */
 
 /* Platform-specific scheduler settings for a thread */
-typedef struct _GThreadSchedulerSettings GThreadSchedulerSettings;
-
-/* TODO: Add the same for macOS and the BSDs */
+typedef struct
+{
 #if defined(HAVE_SYS_SCHED_GETATTR)
-/* This is for modern Linux */
-struct _GThreadSchedulerSettings
-{
+  /* This is for modern Linux */
   struct sched_attr *attr;
-};
-
-#define HAVE_GTHREAD_SCHEDULER_SETTINGS 1
-
 #elif defined(G_OS_WIN32)
-struct _GThreadSchedulerSettings
-{
   gint thread_prio;
-};
-
-#define HAVE_GTHREAD_SCHEDULER_SETTINGS 1
+#else
+  /* TODO: Add support for macOS and the BSDs */
+  void *dummy;
 #endif
+} GThreadSchedulerSettings;
 
 void            g_system_thread_wait            (GRealThread  *thread);
 

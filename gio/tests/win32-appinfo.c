@@ -21,7 +21,7 @@
 
 #include <glib/glib.h>
 #include <gio/gio.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 #include "../giowin32-private.c"
 
