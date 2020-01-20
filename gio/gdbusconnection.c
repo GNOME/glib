@@ -3468,6 +3468,24 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * signal is unsubscribed from, and may be called after @connection
  * has been destroyed.)
  *
+ * As @callback is potentially invoked in a different thread from where it’s
+ * emitted, it’s possible for this to happen after
+ * g_dbus_connection_signal_unsubscribe() has been called in another thread.
+ * Due to this, @user_data should have a strong reference which is freed with
+ * @user_data_free_func, rather than pointing to data whose lifecycle is tied
+ * to the signal subscription. For example, if a #GObject is used to store the
+ * subscription ID from g_dbus_connection_signal_subscribe(), a strong reference
+ * to that #GObject must be passed to @user_data, and g_object_unref() passed to
+ * @user_data_free_func. You are responsible for breaking the resulting
+ * reference count cycle by explicitly unsubscribing from the signal when
+ * dropping the last external reference to the #GObject. Alternatively, a weak
+ * reference may be used.
+ *
+ * It is guaranteed that if you unsubscribe from a signal using
+ * g_dbus_connection_signal_unsubscribe() from the same thread which made the
+ * corresponding g_dbus_connection_signal_subscribe() call, @callback will not
+ * be invoked after g_dbus_connection_signal_unsubscribe() returns.
+ *
  * The returned subscription identifier is an opaque value which is guaranteed
  * to never be zero.
  *
