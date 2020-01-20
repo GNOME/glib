@@ -1096,4 +1096,18 @@
 
 #endif /* __GI_SCANNER__ */
 
+/**
+ * G_SIZEOF_MEMBER:
+ * @struct_type: a structure type, e.g. #GOutputVector
+ * @member: a field in the structure, e.g. `size`
+ *
+ * Returns: the size of @member in the struct definition without having a
+ * declared instance of @struct_type.
+ *
+ * Since: 2.64
+ */
+#define G_SIZEOF_MEMBER(struct_type, member) \
+    GLIB_AVAILABLE_MACRO_IN_2_64 \
+    sizeof (((struct_type *) 0)->member)
+
 #endif /* __G_MACROS_H__ */
