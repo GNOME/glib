@@ -139,6 +139,13 @@ struct _GWin32AppInfoHandler {
   /* Pointer to a location within @executable */
   gchar *executable_basename;
 
+  /* If not NULL, then @executable and its derived fields contain the name
+   * of a DLL file (without the name of the function that rundll32.exe should
+   * invoke), and this field contains the name of the function to be invoked.
+   * The application is then invoked as 'rundll32.exe "dll_path",dll_function other_arguments...'.
+   */
+  gchar *dll_function;
+
   /* Icon of the application for this handler */
   GIcon *icon;
 
@@ -212,6 +219,13 @@ struct _GWin32AppInfoApplication {
 
   /* Pointer to a location within @executable */
   gchar *executable_basename;
+
+  /* If not NULL, then @executable and its derived fields contain the name
+   * of a DLL file (without the name of the function that rundll32.exe should
+   * invoke), and this field contains the name of the function to be invoked.
+   * The application is then invoked as 'rundll32.exe "dll_path",dll_function other_arguments...'.
+   */
+  gchar *dll_function;
 
   /* Explicitly supported URLs, hashmap from map-owned gchar ptr (schema,
    * UTF-8, folded) -> a GWin32AppInfoHandler
@@ -294,6 +308,7 @@ g_win32_appinfo_handler_dispose (GObject *object)
   g_clear_pointer (&handler->proxy_command, g_free);
   g_clear_pointer (&handler->executable_folded, g_free);
   g_clear_pointer (&handler->executable, g_free);
+  g_clear_pointer (&handler->dll_function, g_free);
   g_clear_object (&handler->key);
   g_clear_object (&handler->proxy_key);
   g_clear_object (&handler->icon);
@@ -332,6 +347,7 @@ g_win32_appinfo_application_dispose (GObject *object)
   g_clear_pointer (&app->command_u8, g_free);
   g_clear_pointer (&app->executable_folded, g_free);
   g_clear_pointer (&app->executable, g_free);
+  g_clear_pointer (&app->dll_function, g_free);
   g_clear_pointer (&app->supported_urls, g_hash_table_destroy);
   g_clear_pointer (&app->supported_exts, g_hash_table_destroy);
   g_clear_object (&app->icon);
@@ -464,17 +480,6 @@ static GWin32RegistryKey *applications_key;
 /* Watch this key */
 static GWin32RegistryKey *classes_root_key;
 
-static gunichar2 *
-g_wcsdup (const gunichar2 *str, gssize str_size)
-{
-  if (str_size == -1)
-    {
-      str_size = wcslen (str) + 1;
-      str_size *= sizeof (gunichar2);
-    }
-  return g_memdup (str, str_size);
-}
-
 #define URL_ASSOCIATIONS L"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\"
 #define USER_CHOICE L"\\UserChoice"
 #define OPEN_WITH_PROGIDS L"\\OpenWithProgids"
@@ -485,6 +490,12 @@ g_wcsdup (const gunichar2 *str, gssize str_size)
 #define SHELL_OPEN_COMMAND L"\\shell\\open\\command"
 #define REG_PATH_MAX 256
 #define REG_PATH_MAX_SIZE (REG_PATH_MAX * sizeof (gunichar2))
+
+/* for g_wcsdup(),
+ *     _g_win32_extract_executable(),
+ *     _g_win32_fixup_broken_microsoft_rundll_commandline()
+ */
+#include "giowin32-private.c"
 
 static gunichar2 *
 read_resource_string (gunichar2 *res)
@@ -694,41 +705,29 @@ _g_win32_registry_key_build_and_new_w (GError **error, ...)
   return key;
 }
 
-
+/* Slow and dirty validator for UTF-16 strings */
 static gboolean
-utf8_and_fold (const gunichar2  *str,
-               gchar           **str_u8,
-               gchar           **str_u8_folded)
+g_utf16_validate (const gunichar2  *str,
+		  glong             len)
 {
-  gchar *u8;
-  gchar *folded;
-  u8 = g_utf16_to_utf8 (str, -1, NULL, NULL, NULL);
+  gchar *tmp;
 
-  if (u8 == NULL)
+  if (str == NULL)
     return FALSE;
 
-  folded = g_utf8_casefold (u8, -1);
+  tmp = g_utf16_to_utf8 (str, len, NULL, NULL, NULL);
 
-  if (folded == NULL)
-    {
-      g_free (u8);
-      return FALSE;
-    }
+  if (tmp == NULL)
+    return FALSE;
 
-  if (str_u8)
-    *str_u8 = u8;
-  else
-    g_free (u8);
-
-  if (str_u8_folded)
-    *str_u8_folded = folded;
-  else
-    g_free (folded);
+  g_free (tmp);
 
   return TRUE;
 }
 
-
+/* Does a UTF-16 validity check on *proxy_command and/or *program_command.
+ * Fails if that check doesn't pass.
+ */
 static gboolean
 follow_class_chain_to_handler (const gunichar2    *program_id,
                                gsize               program_id_size,
@@ -772,8 +771,9 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
                                                     NULL);
       if (got_value && val_type == G_WIN32_REGISTRY_VALUE_STR)
         {
-          if ((program_id_u8 != NULL || program_id_folded != NULL) &&
-              !utf8_and_fold (program_id, program_id_u8, program_id_folded))
+          if (((program_id_u8 != NULL || program_id_folded != NULL) &&
+               !g_utf16_to_utf8_and_fold (program_id, -1, program_id_u8, program_id_folded)) ||
+              !g_utf16_validate (*program_command, -1))
             {
               g_object_unref (key);
               g_free (program_command);
@@ -805,18 +805,15 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
                                                 (void **) proxy_id,
                                                 &proxy_id_size,
                                                 NULL);
+  g_object_unref (key);
+
   if (!got_value ||
       (val_type != G_WIN32_REGISTRY_VALUE_STR))
     {
-      g_object_unref (key);
       g_clear_pointer (proxy_id, g_free);
+
       return FALSE;
     }
-
-  if (proxy_key)
-    *proxy_key = key;
-  else
-    g_object_unref (key);
 
   key = _g_win32_registry_key_build_and_new_w (NULL, HKCR, *proxy_id,
                                                SHELL_OPEN_COMMAND, NULL);
@@ -824,8 +821,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
   if (key == NULL)
     {
       g_clear_pointer (proxy_id, g_free);
-      if (proxy_key)
-        g_clear_object (proxy_key);
+
       return FALSE;
     }
 
@@ -836,12 +832,17 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
                                                 (void **) proxy_command,
                                                 NULL,
                                                 NULL);
-  g_object_unref (key);
+
+  if (proxy_key)
+    *proxy_key = key;
+  else
+    g_object_unref (key);
 
   if (!got_value ||
       val_type != G_WIN32_REGISTRY_VALUE_STR ||
       ((program_id_u8 != NULL || program_id_folded != NULL) &&
-       !utf8_and_fold (program_id, program_id_u8, program_id_folded)))
+       !g_utf16_to_utf8_and_fold (program_id, -1, program_id_u8, program_id_folded)) ||
+      !g_utf16_validate (*proxy_command, -1))
     {
       g_clear_pointer (proxy_id, g_free);
       g_clear_pointer (proxy_command, g_free);
@@ -851,124 +852,6 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
     }
 
   return TRUE;
-}
-
-
-static void
-extract_executable (gunichar2  *commandline,
-                    gchar     **ex_out,
-                    gchar     **ex_basename_out,
-                    gchar     **ex_folded_out,
-                    gchar     **ex_folded_basename_out)
-{
-  gchar *ex;
-  gchar *ex_folded;
-  gunichar2 *p;
-  gboolean quoted;
-  size_t len;
-  size_t execlen;
-  gunichar2 *exepart;
-  gboolean found;
-
-  quoted = FALSE;
-  execlen = 0;
-  found = FALSE;
-  len = wcslen (commandline);
-  p = commandline;
-
-  while (p < &commandline[len])
-    {
-      switch (p[0])
-        {
-        case L'"':
-          quoted = !quoted;
-          break;
-        case L' ':
-          if (!quoted)
-            {
-              execlen = p - commandline;
-              p = &commandline[len];
-              found = TRUE;
-            }
-          break;
-        default:
-          break;
-        }
-      p += 1;
-    }
-
-  if (!found)
-    execlen = len;
-
-  exepart = g_wcsdup (commandline, (execlen + 1) * sizeof (gunichar2));
-  exepart[execlen] = L'\0';
-
-  p = &exepart[0];
-
-  while (execlen > 0 && exepart[0] == L'"' && exepart[execlen - 1] == L'"')
-    {
-      p = &exepart[1];
-      exepart[execlen - 1] = L'\0';
-      execlen -= 2;
-    }
-
-  if (!utf8_and_fold (p, &ex, &ex_folded))
-    /* Currently no code to handle this case. It shouldn't happen though... */
-    g_assert_not_reached ();
-
-  g_free (exepart);
-
-  if (ex_out)
-    {
-      *ex_out = ex;
-
-      if (ex_basename_out)
-        {
-          *ex_basename_out = &ex[strlen (ex) - 1];
-
-          while (*ex_basename_out > ex)
-            {
-              if ((*ex_basename_out)[0] == '/' ||
-                  (*ex_basename_out)[0] == '\\')
-                {
-                  *ex_basename_out += 1;
-                  break;
-                }
-
-              *ex_basename_out -= 1;
-            }
-        }
-    }
-  else
-    {
-      g_free (ex);
-    }
-
-  if (ex_folded_out)
-    {
-      *ex_folded_out = ex_folded;
-
-      if (ex_folded_basename_out)
-        {
-          *ex_folded_basename_out = &ex_folded[strlen (ex_folded) - 1];
-
-          while (*ex_folded_basename_out > ex_folded)
-            {
-              if ((*ex_folded_basename_out)[0] == '/' ||
-                  (*ex_folded_basename_out)[0] == '\\')
-                {
-                  *ex_folded_basename_out += 1;
-                  break;
-                }
-
-              *ex_folded_basename_out -= 1;
-            }
-        }
-    }
-  else
-    {
-      g_free (ex_folded);
-    }
 }
 
 static void
@@ -998,7 +881,7 @@ get_url_association (const gunichar2 *schema)
   if (user_choice == NULL)
     return;
 
-  if (!utf8_and_fold (schema, &schema_u8, &schema_folded))
+  if (!g_utf16_to_utf8_and_fold (schema, -1, &schema_u8, &schema_folded))
     {
       g_object_unref (user_choice);
       return;
@@ -1065,11 +948,14 @@ get_url_association (const gunichar2 *schema)
       handler_rec->proxy_id = proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
       handler_rec->proxy_command =
           proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-      extract_executable (proxy_command ? proxy_command : program_command,
-                          &handler_rec->executable,
-                          &handler_rec->executable_basename,
-                          &handler_rec->executable_folded,
-                          NULL);
+      _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                   &handler_rec->executable,
+                                   &handler_rec->executable_basename,
+                                   &handler_rec->executable_folded,
+                                   NULL,
+                                   &handler_rec->dll_function);
+      if (handler_rec->dll_function != NULL)
+        _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (program_id_folded),
@@ -1147,7 +1033,7 @@ get_file_ext (const gunichar2 *ext)
   if (user_choice == NULL && open_with_progids == NULL)
     return;
 
-  if (!utf8_and_fold (ext, &ext_u8, &ext_folded))
+  if (!g_utf16_to_utf8_and_fold (ext, -1, &ext_u8, &ext_folded))
     {
       g_clear_object (&user_choice);
       g_clear_object (&open_with_progids);
@@ -1207,11 +1093,14 @@ get_file_ext (const gunichar2 *ext)
                       proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
                   handler_rec->proxy_command =
                       proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-                  extract_executable (proxy_command ? proxy_command : program_command,
-                                      &handler_rec->executable,
-                                      &handler_rec->executable_basename,
-                                      &handler_rec->executable_folded,
-                                      NULL);
+                  _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                               &handler_rec->executable,
+                                               &handler_rec->executable_basename,
+                                               &handler_rec->executable_folded,
+                                               NULL,
+                                               &handler_rec->dll_function);
+                  if (handler_rec->dll_function != NULL)
+                    _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -1325,11 +1214,14 @@ get_file_ext (const gunichar2 *ext)
                       proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
                   handler_rec->proxy_command =
                       proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-                  extract_executable (proxy_command ? proxy_command : program_command,
-                                      &handler_rec->executable,
-                                      &handler_rec->executable_basename,
-                                      &handler_rec->executable_folded,
-                                      NULL);
+                  _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                               &handler_rec->executable,
+                                               &handler_rec->executable_basename,
+                                               &handler_rec->executable_folded,
+                                               NULL,
+                                               &handler_rec->dll_function);
+                  if (handler_rec->dll_function != NULL)
+                    _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -1637,6 +1529,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
   gchar *app_executable_basename;
   gchar *app_executable_folded;
   gchar *app_executable_folded_basename;
+  gchar *app_dll_function;
   GWin32RegistryKey *associations;
 
   app_key_path = g_wcsdup (input_app_key_path, -1);
@@ -1652,7 +1545,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   canonical_name += 1;
 
-  if (!utf8_and_fold (canonical_name, &canonical_name_u8, &canonical_name_folded))
+  if (!g_utf16_to_utf8_and_fold (canonical_name, -1, &canonical_name_u8, &canonical_name_folded))
     {
       g_free (app_key_path);
       return;
@@ -1705,7 +1598,9 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                                               NULL,
                                               NULL);
 
-  if (success && vtype != G_WIN32_REGISTRY_VALUE_STR)
+  if (success &&
+      (vtype != G_WIN32_REGISTRY_VALUE_STR ||
+       !g_utf16_validate (shell_open_command, -1)))
     {
       /* Must have a command */
       g_clear_pointer (&shell_open_command, g_free);
@@ -1717,11 +1612,14 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
       return;
     }
 
-  extract_executable (shell_open_command,
-                      &app_executable,
-                      &app_executable_basename,
-                      &app_executable_folded,
-                      &app_executable_folded_basename);
+  _g_win32_extract_executable (shell_open_command,
+                               &app_executable,
+                               &app_executable_basename,
+                               &app_executable_folded,
+                               &app_executable_folded_basename,
+                               &app_dll_function);
+  if (app_dll_function != NULL)
+    _g_win32_fixup_broken_microsoft_rundll_commandline (shell_open_command);
 
   app = g_hash_table_lookup (apps_by_id, canonical_name_folded);
 
@@ -1747,6 +1645,8 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
       app->user_specific = user_specific;
       app->default_app = default_app;
+
+      app->dll_function = g_strdup (app_dll_function);
 
       g_hash_table_insert (apps_by_id,
                            g_strdup (canonical_name_folded),
@@ -1966,11 +1866,14 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                       proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
                   handler_rec->proxy_command =
                       proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-                  extract_executable (proxy_command ? proxy_command : program_command,
-                                      &handler_rec->executable,
-                                      &handler_rec->executable_basename,
-                                      &handler_rec->executable_folded,
-                                      NULL);
+                  _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                               &handler_rec->executable,
+                                               &handler_rec->executable_basename,
+                                               &handler_rec->executable_folded,
+                                               NULL,
+                                               &handler_rec->dll_function);
+                  if (handler_rec->dll_function != NULL)
+                    _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -1984,9 +1887,10 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                   g_clear_object (&proxy_key);
                 }
 
-                if (utf8_and_fold (file_extension,
-                                   &file_extension_u8,
-                                   &file_extension_folded))
+                if (g_utf16_to_utf8_and_fold (file_extension,
+                                              -1,
+                                              &file_extension_u8,
+                                              &file_extension_folded))
                   {
                     ext = g_hash_table_lookup (extensions,
                                                file_extension_folded);
@@ -2122,11 +2026,14 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                       proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
                   handler_rec->proxy_command =
                       proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-                  extract_executable (proxy_command ? proxy_command : program_command,
-                                      &handler_rec->executable,
-                                      &handler_rec->executable_basename,
-                                      &handler_rec->executable_folded,
-                                      NULL);
+                  _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                               &handler_rec->executable,
+                                               &handler_rec->executable_basename,
+                                               &handler_rec->executable_folded,
+                                               NULL,
+                                               &handler_rec->dll_function);
+                  if (handler_rec->dll_function != NULL)
+                    _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
                   read_handler_icon (proxy_key,
                                      program_key,
                                      &handler_rec->icon);
@@ -2140,9 +2047,10 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                   g_clear_object (&proxy_key);
                 }
 
-                if (utf8_and_fold (url_schema,
-                                   &schema_u8,
-                                   &schema_folded))
+                if (g_utf16_to_utf8_and_fold (url_schema,
+                                              -1,
+                                              &schema_u8,
+                                              &schema_folded))
                   {
                     schema = g_hash_table_lookup (urls,
                                                   schema_folded);
@@ -2197,6 +2105,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   g_clear_pointer (&app_executable, g_free);
   g_clear_pointer (&app_executable_folded, g_free);
+  g_clear_pointer (&app_dll_function, g_free);
   g_clear_pointer (&fallback_friendly_name, g_free);
   g_clear_pointer (&description, g_free);
   g_clear_pointer (&icon_source, g_free);
@@ -2243,8 +2152,6 @@ read_exeapps (void)
 {
   GWin32RegistryKey *applications_key;
   GWin32RegistrySubkeyIter app_iter;
-  gunichar2 *app_exe_basename;
-  gsize app_exe_basename_len;
 
   applications_key =
       g_win32_registry_key_new_w (L"HKEY_CLASSES_ROOT\\Applications", NULL);
@@ -2260,6 +2167,8 @@ read_exeapps (void)
 
   while (g_win32_registry_subkey_iter_next (&app_iter, TRUE, NULL))
     {
+      gunichar2 *app_exe_basename;
+      gsize app_exe_basename_len;
       GWin32RegistryKey *incapable_app;
       gunichar2 *friendly_app_name;
       gboolean success;
@@ -2280,7 +2189,8 @@ read_exeapps (void)
       if (!g_win32_registry_subkey_iter_get_name_w (&app_iter,
                                                     &app_exe_basename,
                                                     &app_exe_basename_len,
-                                                    NULL))
+                                                    NULL) ||
+          !g_utf16_validate (app_exe_basename, app_exe_basename_len))
         continue;
 
       incapable_app =
@@ -2291,11 +2201,12 @@ read_exeapps (void)
       if (incapable_app == NULL)
         continue;
 
-      extract_executable (app_exe_basename,
-                          &appexe,
-                          &appexe_basename,
-                          &appexe_folded,
-                          &appexe_folded_basename);
+      _g_win32_extract_executable (app_exe_basename,
+                                   &appexe,
+                                   &appexe_basename,
+                                   &appexe_folded,
+                                   &appexe_folded_basename,
+                                   NULL);
 
       shell_open_command_key =
           g_win32_registry_key_get_child_w (incapable_app,
@@ -2314,7 +2225,9 @@ read_exeapps (void)
                                                       NULL,
                                                       NULL);
 
-          if (success && vtype != G_WIN32_REGISTRY_VALUE_STR)
+          if (success &&
+              (vtype != G_WIN32_REGISTRY_VALUE_STR ||
+               !g_utf16_validate (shell_open_command, -1)))
             {
               g_clear_pointer (&shell_open_command, g_free);
             }
@@ -2385,6 +2298,21 @@ read_exeapps (void)
         {
           app = g_object_new (G_TYPE_WIN32_APPINFO_APPLICATION, NULL);
 
+          if (shell_open_command)
+            {
+              gchar *dll_function;
+
+              _g_win32_extract_executable (shell_open_command,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           &dll_function);
+              if (dll_function != NULL)
+                _g_win32_fixup_broken_microsoft_rundll_commandline (shell_open_command);
+              g_clear_pointer (&dll_function, g_free);
+            }
+
           app->command =
               shell_open_command ? g_wcsdup (shell_open_command, -1) : NULL;
 
@@ -2442,9 +2370,10 @@ read_exeapps (void)
                                                                 NULL)) ||
                       (ext_name_len <= 0) ||
                       (ext_name[0] != L'.') ||
-                      (!utf8_and_fold (ext_name,
-                                       &ext_u8,
-                                       &ext_folded)))
+                      (!g_utf16_to_utf8_and_fold (ext_name,
+                                                  -1,
+                                                  &ext_u8,
+                                                  &ext_folded)))
                     continue;
 
                   file_extn = NULL;
@@ -2590,11 +2519,14 @@ read_class_extension (GWin32RegistryKey *classes_root,
       handler_rec->proxy_id = proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
       handler_rec->proxy_command =
           proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-      extract_executable (proxy_command ? proxy_command : program_command,
-                          &handler_rec->executable,
-                          &handler_rec->executable_basename,
-                          &handler_rec->executable_folded,
-                          NULL);
+      _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                   &handler_rec->executable,
+                                   &handler_rec->executable_basename,
+                                   &handler_rec->executable_folded,
+                                   NULL,
+                                   &handler_rec->dll_function);
+      if (handler_rec->dll_function != NULL)
+        _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (ext_folded),
@@ -2708,11 +2640,14 @@ read_class_url (GWin32RegistryKey *classes_root,
       handler_rec->proxy_id = proxy_id ? g_wcsdup (proxy_id, -1) : NULL;
       handler_rec->proxy_command =
           proxy_command ? g_wcsdup (proxy_command, -1) : NULL;
-      extract_executable (proxy_command ? proxy_command : program_command,
-                          &handler_rec->executable,
-                          &handler_rec->executable_basename,
-                          &handler_rec->executable_folded,
-                          NULL);
+      _g_win32_extract_executable (proxy_command ? proxy_command : program_command,
+                                   &handler_rec->executable,
+                                   &handler_rec->executable_basename,
+                                   &handler_rec->executable_folded,
+                                   NULL,
+                                   &handler_rec->dll_function);
+      if (handler_rec->dll_function != NULL)
+        _g_win32_fixup_broken_microsoft_rundll_commandline (handler_rec->handler_command ? handler_rec->handler_command : handler_rec->proxy_command);
       read_handler_icon (proxy_key, program_key, &handler_rec->icon);
       g_hash_table_insert (handlers,
                            g_strdup (program_id_folded),
@@ -2832,9 +2767,10 @@ link_chosen_handlers (void)
 
           if (handler->proxy_command &&
               handler->proxy_id &&
-              utf8_and_fold (handler->proxy_id,
-                             NULL,
-                             &proxy_id_folded))
+              g_utf16_to_utf8_and_fold (handler->proxy_id,
+                                        -1,
+                                        NULL,
+                                        &proxy_id_folded))
             {
               GWin32AppInfoHandler *proxy;
 
@@ -2890,9 +2826,10 @@ link_chosen_handlers (void)
 
           if (handler->proxy_command &&
               handler->proxy_id &&
-              utf8_and_fold (handler->proxy_id,
-                             NULL,
-                             &proxy_id_folded))
+              g_utf16_to_utf8_and_fold (handler->proxy_id,
+                                        -1,
+                                        NULL,
+                                        &proxy_id_folded))
             {
               GWin32AppInfoHandler *proxy;
 
@@ -3134,11 +3071,6 @@ link_handlers_to_unregistered_apps (void)
           (handler->executable_folded == NULL))
         continue;
 
-      hndexe_fc_basename = g_utf8_casefold (handler->executable_basename, -1);
-
-      if (hndexe_fc_basename == NULL)
-        continue;
-
       g_hash_table_iter_init (&app_iter, apps_by_id);
 
       while (g_hash_table_iter_next (&app_iter,
@@ -3157,6 +3089,11 @@ link_handlers_to_unregistered_apps (void)
         }
 
       if (handler->app != NULL)
+        continue;
+
+      hndexe_fc_basename = g_utf8_casefold (handler->executable_basename, -1);
+
+      if (hndexe_fc_basename == NULL)
         continue;
 
       g_hash_table_iter_init (&app_iter, apps_by_exe);
@@ -4379,12 +4316,19 @@ g_app_info_create_from_commandline (const char           *commandline,
 {
   GWin32AppInfo *info;
   GWin32AppInfoApplication *app;
+  gunichar2 *app_command;
 
   g_return_val_if_fail (commandline, NULL);
 
-  info = g_object_new (G_TYPE_WIN32_APP_INFO, NULL);
+  app_command = g_utf8_to_utf16 (commandline, -1, NULL, NULL, NULL);
 
+  if (app_command == NULL)
+    return NULL;
+
+  info = g_object_new (G_TYPE_WIN32_APP_INFO, NULL);
   app = g_object_new (G_TYPE_WIN32_APPINFO_APPLICATION, NULL);
+
+  app->command = g_steal_pointer (&app_command);
 
   if (application_name)
     {
@@ -4397,14 +4341,16 @@ g_app_info_create_from_commandline (const char           *commandline,
       app->canonical_name_folded = g_utf8_casefold (application_name, -1);
     }
 
-  app->command = g_utf8_to_utf16 (commandline, -1, NULL, NULL, NULL);
-  app->command_u8 = g_strdup (commandline);
+  _g_win32_extract_executable (app->command,
+                               &app->executable,
+                               &app->executable_basename,
+                               &app->executable_folded,
+                               NULL,
+                               &app->dll_function);
+  if (app->dll_function != NULL)
+    _g_win32_fixup_broken_microsoft_rundll_commandline (app->command);
 
-  extract_executable (app->command,
-                      &app->executable,
-                      &app->executable_basename,
-                      &app->executable_folded,
-                      NULL);
+  app->command_u8 = g_utf16_to_utf8 (app->command, -1, NULL, NULL, NULL);
 
   app->no_open_with = FALSE;
   app->user_specific = FALSE;
