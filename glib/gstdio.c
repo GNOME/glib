@@ -309,6 +309,7 @@ _g_win32_fill_privatestat (const struct __stat64            *statbuf,
                            GWin32PrivateStat                *buf)
 {
   buf->st_dev = statbuf->st_dev;
+  buf->st_ino = statbuf->st_ino;
   buf->st_mode = statbuf->st_mode;
   buf->volume_serial = handle_info->dwVolumeSerialNumber;
   buf->file_index = (((guint64) handle_info->nFileIndexHigh) << 32) | handle_info->nFileIndexLow;
