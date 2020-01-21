@@ -37,6 +37,7 @@
  * @include: gio/gio.h
  *
  * Convenience API for owning bus names.
+ * WIP: This is a test comment.
  *
  * A simple example for owning a name can be found in
  * [gdbus-example-own-name.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-own-name.c) 
