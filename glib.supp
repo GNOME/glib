@@ -464,6 +464,17 @@
 }
 
 {
+	g-task-thread-pool-init
+	Memcheck:Leak
+	match-leak-kinds:possible,reachable,definite
+	fun:malloc
+	...
+	fun:g_thread_new
+	...
+	fun:g_task_thread_pool_init
+}
+
+{
 	g-io-module-default-proxy-resolver-gnome
 	Memcheck:Leak
 	match-leak-kinds:reachable
