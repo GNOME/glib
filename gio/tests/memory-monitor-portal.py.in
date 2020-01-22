@@ -51,7 +51,11 @@ class TestLowMemoryMonitorPortal(dbusmock.DBusTestCase):
         fcntl.fcntl(self.p_mock.stdout, fcntl.F_SETFL, flags | os.O_NONBLOCK)
         self.last_warning = -1
         self.dbusmock = dbus.Interface(self.obj_lmm, dbusmock.MOCK_IFACE)
-        self.xdp = subprocess.Popen([XDG_DESKTOP_PORTAL_PATH])
+        try:
+            self.xdp = subprocess.Popen([XDG_DESKTOP_PORTAL_PATH])
+        except FileNotFoundError:
+            raise unittest.SkipTest("xdg-desktop-portal not available")
+
         try:
             self.wait_for_bus_object('org.freedesktop.portal.Desktop',
                                      '/org/freedesktop/portal/desktop')
