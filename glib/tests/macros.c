@@ -50,6 +50,13 @@ test_alignof_fallback (void)
   check_alignof (struct { char a; int b; });
 }
 
+static void
+test_struct_sizeof_member (void)
+{
+    G_STATIC_ASSERT (G_SIZEOF_MEMBER (struct { char a; int b; }, a) == sizeof (char));
+    g_assert_cmpint (G_SIZEOF_MEMBER (struct { char a; int b; }, b), ==, sizeof (int));
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -58,6 +65,7 @@ main (int   argc,
 
   g_test_add_func ("/alignof/fallback", test_alignof_fallback);
   g_test_add_func ("/assert/static", test_assert_static);
+  g_test_add_func ("/struct/sizeof_member", test_struct_sizeof_member);
 
   return g_test_run ();
 }
