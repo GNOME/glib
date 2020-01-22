@@ -2437,7 +2437,7 @@ _g_win32_unix_time_to_filetime (gint64     ut,
 }
 
 static gboolean
-set_mtime_atime (char                       *filename,
+set_mtime_atime (const char                 *filename,
 		 const GFileAttributeValue  *mtime_value,
 		 const GFileAttributeValue  *mtime_usec_value,
 		 const GFileAttributeValue  *atime_value,
