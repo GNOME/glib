@@ -2399,7 +2399,7 @@ _g_win32_unix_time_to_filetime (gint64     ut,
   if (nsec < 0)
     {
       g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
+                   G_IO_ERROR_INVALID_DATA,
                    _("Extra nanoseconds %d for UNIX timestamp %lld are negative"),
                    nsec, ut);
       return FALSE;
@@ -2408,7 +2408,7 @@ _g_win32_unix_time_to_filetime (gint64     ut,
   if (nsec >= hundreds_of_usec_per_sec * 100)
     {
       g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
+                   G_IO_ERROR_INVALID_DATA,
                    _("Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"),
                    nsec, ut);
       return FALSE;
@@ -2417,7 +2417,7 @@ _g_win32_unix_time_to_filetime (gint64     ut,
   if (ut >= limit1 || ut >= limit2)
     {
       g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
+                   G_IO_ERROR_INVALID_DATA,
                    _("UNIX timestamp %lld does not fit into 64 bits"),
                    ut);
       return FALSE;
@@ -2428,7 +2428,7 @@ _g_win32_unix_time_to_filetime (gint64     ut,
   if (result >= max_systemtime || result < 0)
     {
       g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
+                   G_IO_ERROR_INVALID_DATA,
                    _("UNIX timestamp %lld is outside of the range supported by Windows"),
                    ut);
       return FALSE;
