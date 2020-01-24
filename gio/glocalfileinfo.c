@@ -2390,8 +2390,6 @@ _g_win32_unix_time_to_filetime (gint64     ut,
    * larger interval, up to year 30828).
    */
   const gint64 max_systemtime = 0x7fff35f4f06c58f0;
-  const gint64 limit1 = G_MAXINT64 / hundreds_of_usec_per_sec;
-  const gint64 limit2 = G_MAXINT64 - filetime_unix_epoch_offset;
 
   g_return_val_if_fail (ft != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
@@ -2414,7 +2412,8 @@ _g_win32_unix_time_to_filetime (gint64     ut,
       return FALSE;
     }
 
-  if (ut >= limit1 || ut >= limit2)
+  if (ut >= (G_MAXINT64 / hundreds_of_usec_per_sec) ||
+      (ut * hundreds_of_usec_per_sec) >= (G_MAXINT64 - filetime_unix_epoch_offset))
     {
       g_set_error (error, G_IO_ERROR,
                    G_IO_ERROR_INVALID_DATA,
