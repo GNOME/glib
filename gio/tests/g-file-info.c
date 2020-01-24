@@ -233,6 +233,8 @@ test_internal_enhanced_stdio (void)
   GTimeSpan ts;
   /* Just before SYSTEMTIME limit (Jan 1 30827) */
   const gint64 one_sec_before_systemtime_limit = 910670515199;
+  gboolean retval;
+  GError *local_error = NULL;
 
 
   programdata_dir_w = NULL;
@@ -654,11 +656,14 @@ test_internal_enhanced_stdio (void)
                                    G_FILE_ATTRIBUTE_TIME_MODIFIED,
                                    one_sec_before_systemtime_limit + G_USEC_PER_SEC * 2);
   g_file_info_set_attribute_uint32 (fi_p0, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC, 0);
-  g_assert_false (g_file_set_attributes_from_info (gf_p0,
-                                                   fi_p0,
-                                                   G_FILE_QUERY_INFO_NONE,
-                                                   NULL,
-                                                   NULL));
+  retval = g_file_set_attributes_from_info (gf_p0,
+                                            fi_p0,
+                                            G_FILE_QUERY_INFO_NONE,
+                                            NULL,
+                                            &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA);
+  g_assert_false (retval);
+  g_clear_error (&local_error);
 
   g_object_unref (fi_p0);
   g_object_unref (fi_p1);
