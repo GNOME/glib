@@ -2366,6 +2366,9 @@ set_symlink (char                       *filename,
  * UT must be between January 1st of year 1601 and December 31st of year 30827.
  * nsec must be non-negative and < 1000000000.
  * Returns TRUE if conversion succeeded, FALSE otherwise.
+ *
+ * The function that does the reverse can be found in
+ * glib/gstdio.c.
  */
 static gboolean
 _g_win32_unix_time_to_filetime (gint64     ut,
@@ -2430,8 +2433,8 @@ _g_win32_unix_time_to_filetime (gint64     ut,
       return FALSE;
     }
 
-  ft->dwLowDateTime = (guint32) (result & 0x00000000FFFFFFFFL);
-  ft->dwHighDateTime = (guint32) ((result >> 32) & 0x00000000FFFFFFFFL);
+  ft->dwLowDateTime = (DWORD) (result);
+  ft->dwHighDateTime = (DWORD) (result >> 32);
 
   return TRUE;
 }
