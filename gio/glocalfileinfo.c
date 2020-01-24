@@ -2394,6 +2394,7 @@ _g_win32_unix_time_to_filetime (gint64     ut,
   const gint64 limit2 = G_MAXINT64 - filetime_unix_epoch_offset;
 
   g_return_val_if_fail (ft != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   if (nsec < 0)
     {
