@@ -2457,6 +2457,7 @@ set_mtime_atime (const char                 *filename,
   FILETIME atime;
   FILETIME *p_mtime = NULL;
   FILETIME *p_atime = NULL;
+  DWORD gle;
 
   /* ATIME */
   if (atime_value)
@@ -2503,31 +2504,28 @@ set_mtime_atime (const char                 *filename,
                              OPEN_EXISTING,
                              FILE_FLAG_BACKUP_SEMANTICS,
                              NULL);
+  gle = GetLastError ();
+  g_clear_pointer (&filename_utf16, g_free);
+
   if (file_handle == INVALID_HANDLE_VALUE)
     {
-      DWORD gle = GetLastError ();
       g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
+                   g_io_error_from_errno (gle),
                    _("File “%s” cannot be opened: Windows Error %lu"),
                    filename, gle);
-      g_clear_pointer (&filename_utf16, g_free);
 
       return FALSE;
     }
 
   res = SetFileTime (file_handle, NULL, p_atime, p_mtime);
+  gle = GetLastError ();
+  CloseHandle (file_handle);
 
   if (!res)
-    {
-      DWORD gle = GetLastError ();
-      g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   _("Error setting modification or access time for file “%s”: %lu"),
-                   filename, gle);
-    }
-
-  CloseHandle (file_handle);
-  g_clear_pointer (&filename_utf16, g_free);
+    g_set_error (error, G_IO_ERROR,
+                 g_io_error_from_errno (gle),
+                 _("Error setting modification or access time for file “%s”: %lu"),
+                 filename, gle);
 
   return res;
 }
