@@ -579,42 +579,41 @@ g_thread_pool_new (GFunc      func,
 
   G_LOCK (init);
   if (!unused_thread_queue)
-    {
       unused_thread_queue = g_async_queue_new ();
-      /* For the very first non-exclusive thread-pool we remember the thread
-       * scheduler settings of the thread creating the pool, if supported by
-       * the GThread implementation. This is then used for making sure that
-       * all threads created on the non-exclusive thread-pool have the same
-       * scheduler settings, and more importantly don't just inherit them
-       * from the thread that just happened to push a new task and caused
-       * a new thread to be created.
-       *
-       * Not doing so could cause real-time priority threads or otherwise
-       * threads with problematic scheduler settings to be part of the
-       * non-exclusive thread-pools.
-       *
-       * If this is not supported by the GThread implementation then we here
-       * start a thread that will inherit the scheduler settings from this
-       * very thread and whose only purpose is to spawn new threads with the
-       * same settings for use by the non-exclusive thread-pools.
-       *
-       *
-       * For non-exclusive thread-pools this is not required as all threads
-       * are created immediately below and are running forever, so they will
-       * automatically inherit the scheduler settings from this very thread.
-       */
-      if (!exclusive)
+
+  /* For the very first non-exclusive thread-pool we remember the thread
+   * scheduler settings of the thread creating the pool, if supported by
+   * the GThread implementation. This is then used for making sure that
+   * all threads created on the non-exclusive thread-pool have the same
+   * scheduler settings, and more importantly don't just inherit them
+   * from the thread that just happened to push a new task and caused
+   * a new thread to be created.
+   *
+   * Not doing so could cause real-time priority threads or otherwise
+   * threads with problematic scheduler settings to be part of the
+   * non-exclusive thread-pools.
+   *
+   * If this is not supported by the GThread implementation then we here
+   * start a thread that will inherit the scheduler settings from this
+   * very thread and whose only purpose is to spawn new threads with the
+   * same settings for use by the non-exclusive thread-pools.
+   *
+   *
+   * For non-exclusive thread-pools this is not required as all threads
+   * are created immediately below and are running forever, so they will
+   * automatically inherit the scheduler settings from this very thread.
+   */
+  if (!exclusive && !have_shared_thread_scheduler_settings && !spawn_thread_queue)
+    {
+      if (g_thread_get_scheduler_settings (&shared_thread_scheduler_settings))
         {
-          if (g_thread_get_scheduler_settings (&shared_thread_scheduler_settings))
-            {
-              have_shared_thread_scheduler_settings = TRUE;
-            }
-          else
-            {
-              spawn_thread_queue = g_async_queue_new ();
-              g_cond_init (&spawn_thread_cond);
-              g_thread_new ("pool-spawner", g_thread_pool_spawn_thread, NULL);
-            }
+          have_shared_thread_scheduler_settings = TRUE;
+        }
+      else
+        {
+          spawn_thread_queue = g_async_queue_new ();
+          g_cond_init (&spawn_thread_cond);
+          g_thread_new ("pool-spawner", g_thread_pool_spawn_thread, NULL);
         }
     }
   G_UNLOCK (init);
