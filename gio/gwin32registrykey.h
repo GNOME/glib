@@ -241,6 +241,7 @@ gboolean         g_win32_registry_value_iter_get_data_w      (GWin32RegistryValu
 
 GLIB_AVAILABLE_IN_2_46
 gboolean         g_win32_registry_key_get_value              (GWin32RegistryKey               *key,
+                                                              const gchar                    **mui_dll_dirs,
                                                               gboolean                         auto_expand,
                                                               const gchar                     *value_name,
                                                               GWin32RegistryValueType         *value_type,
@@ -250,6 +251,7 @@ gboolean         g_win32_registry_key_get_value              (GWin32RegistryKey 
 
 GLIB_AVAILABLE_IN_2_46
 gboolean         g_win32_registry_key_get_value_w            (GWin32RegistryKey               *key,
+                                                              const gunichar2                **mui_dll_dirs,
                                                               gboolean                         auto_expand,
                                                               const gunichar2                 *value_name,
                                                               GWin32RegistryValueType         *value_type,
@@ -275,6 +277,9 @@ gboolean         g_win32_registry_key_has_changed            (GWin32RegistryKey 
 
 GLIB_AVAILABLE_IN_2_46
 void             g_win32_registry_key_erase_change_indicator (GWin32RegistryKey               *key);
+
+const gunichar2 **g_win32_registry_get_os_dirs_w (void);
+const gchar     **g_win32_registry_get_os_dirs   (void);
 
 G_END_DECLS
 
