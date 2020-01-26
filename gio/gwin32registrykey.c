@@ -1934,6 +1934,8 @@ g_win32_registry_get_os_dirs (void)
                                                               -1, NULL, NULL, NULL);
           if (new_mui_os_dirs[new_array_index] != NULL)
             new_array_index += 1;
+          else
+            g_critical ("Failed to convert to a system directory #%zu to UTF-8", array_index);
         }
 
       g_once_init_leave (&mui_os_dirs, new_mui_os_dirs);
@@ -2026,23 +2028,44 @@ g_win32_registry_key_get_value (GWin32RegistryKey        *key,
   if (mui_dll_dirs != NULL &&
       mui_dll_dirs != mui_os_dirs)
     {
-      gsize mui_dll_dirs_index;
+      gsize i;
 
       mui_dll_dirs_count = g_strv_length ((gchar **) mui_dll_dirs);
 
-      if (mui_dll_dirs_count > 0)
+      if (mui_dll_dirs_count == 0)
         {
-          mui_dll_dirs_utf16 = g_new0 (gunichar2 *, mui_dll_dirs_count + 1);
+          g_free (value_name_w);
 
-          for (mui_dll_dirs_count = 0, mui_dll_dirs_index = 0;
-               mui_dll_dirs[mui_dll_dirs_index] != NULL;
-               mui_dll_dirs_index++)
-            {
-              mui_dll_dirs_utf16[mui_dll_dirs_count] = g_utf8_to_utf16 (mui_dll_dirs[mui_dll_dirs_index],
-                                                                        -1, NULL, NULL, NULL);
-              if (mui_dll_dirs_utf16[mui_dll_dirs_count] != NULL)
-                mui_dll_dirs_count += 1;
-            }
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                       "The mui_dll_dirs array 0x%p has no strings in it",
+                       mui_dll_dirs);
+
+          return FALSE;
+        }
+
+      mui_dll_dirs_utf16 = g_new0 (gunichar2 *, mui_dll_dirs_count + 1);
+
+      for (i = 0; mui_dll_dirs[i] != NULL; i++)
+        {
+          mui_dll_dirs_utf16[i] = g_utf8_to_utf16 (mui_dll_dirs[i], -1, NULL, NULL, error);
+
+          if (mui_dll_dirs_utf16[i] == NULL)
+            break;
+        }
+
+      if (mui_dll_dirs[i] != NULL)
+        {
+          g_prefix_error (error,
+                          "A mui_dll_dirs string #%zu `%s' failed to convert: ",
+                          i, mui_dll_dirs[i]);
+
+          for (i = 0; i < mui_dll_dirs_count; i++)
+            g_free (mui_dll_dirs_utf16[i]);
+
+          g_free (mui_dll_dirs_utf16);
+          g_free (value_name_w);
+
+          return FALSE;
         }
     }
   else if (mui_dll_dirs != NULL &&
