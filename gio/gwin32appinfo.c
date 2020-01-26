@@ -497,80 +497,6 @@ static GWin32RegistryKey *classes_root_key;
  */
 #include "giowin32-private.c"
 
-static gunichar2 *
-read_resource_string (gunichar2 *res)
-{
-  gunichar2 *id_str;
-  gunichar2 *id_str_end;
-  gunichar2 *filename_str;
-  unsigned long id;
-  HMODULE resource_module;
-  gunichar2 *buffer;
-  int string_length;
-  int buffer_length;
-
-  if (res == NULL || res[0] != L'@')
-    return res;
-
-  id_str = wcsrchr (res, L'-');
-
-  if (id_str == NULL || id_str[-1] != L',')
-    return res;
-
-  id_str += 1;
-
-  id = wcstoul (id_str, &id_str_end, 10);
-
-  if (id_str_end == id_str || id_str_end[0] != L'\0' || id == ULONG_MAX)
-    return res;
-
-  filename_str = &res[1];
-  id_str[-2] = L'\0';
-
-  resource_module = LoadLibraryExW (filename_str,
-                                    0,
-                                    LOAD_LIBRARY_AS_DATAFILE |
-                                    LOAD_LIBRARY_AS_IMAGE_RESOURCE);
-
-  g_free (res);
-
-  if (resource_module == NULL)
-    return NULL;
-
-  buffer_length = 256;
-  string_length = buffer_length - 1;
-
-  while (TRUE)
-    {
-      buffer = g_malloc (buffer_length * sizeof (gunichar2));
-      string_length = LoadStringW (resource_module, id, buffer, buffer_length);
-
-      if (string_length != 0 && string_length == buffer_length - 1)
-        {
-          g_free (buffer);
-          buffer_length *= 2;
-        }
-      else
-        {
-          if (string_length == 0)
-            g_clear_pointer (&buffer, g_free);
-
-          break;
-        }
-    }
-
-  FreeLibrary (resource_module);
-
-  if (buffer)
-    {
-      gunichar2 *result = g_wcsdup (buffer, -1);
-      g_free (buffer);
-      return result;
-    }
-
-  return NULL;
-}
-
 static void
 read_handler_icon (GWin32RegistryKey  *proxy_key,
                    GWin32RegistryKey  *program_key,
@@ -1687,7 +1613,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   friendly_name = NULL;
   success = g_win32_registry_key_get_value_w (capabilities,
-                                              NULL,
+                                              g_win32_registry_get_os_dirs_w (),
                                               TRUE,
                                               L"LocalizedString",
                                               &vtype,
@@ -1695,10 +1621,8 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
                                               NULL,
                                               NULL);
 
-  if (success && (vtype != G_WIN32_REGISTRY_VALUE_STR || friendly_name[0] != L'@'))
+  if (success && vtype != G_WIN32_REGISTRY_VALUE_STR)
     g_clear_pointer (&friendly_name, g_free);
-
-  friendly_name = read_resource_string (friendly_name);
 
   if (friendly_name && app->localized_pretty_name == NULL)
     {
@@ -1713,7 +1637,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   description = NULL;
   success = g_win32_registry_key_get_value_w (capabilities,
-                                              NULL,
+                                              g_win32_registry_get_os_dirs_w (),
                                               TRUE,
                                               L"ApplicationDescription",
                                               &vtype,
@@ -1723,8 +1647,6 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   if (success && vtype != G_WIN32_REGISTRY_VALUE_STR)
     g_clear_pointer (&description, g_free);
-
-  description = read_resource_string (description);
 
   if (description && app->description == NULL)
     {
@@ -1780,7 +1702,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   narrow_application_name = NULL;
   success = g_win32_registry_key_get_value_w (capabilities,
-                                              NULL,
+                                              g_win32_registry_get_os_dirs_w (),
                                               TRUE,
                                               L"ApplicationName",
                                               &vtype,
@@ -1790,8 +1712,6 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   if (success && vtype != G_WIN32_REGISTRY_VALUE_STR)
     g_clear_pointer (&narrow_application_name, g_free);
-
-  narrow_application_name = read_resource_string (narrow_application_name);
 
   /* TODO: do something with the narrow name. Maybe make a kind of sub-app?
    * Narrow name is a more precise name of the application in given context.
@@ -2252,7 +2172,7 @@ read_exeapps (void)
 
       friendly_app_name = NULL;
       success = g_win32_registry_key_get_value_w (incapable_app,
-                                                  NULL,
+                                                  g_win32_registry_get_os_dirs_w (),
                                                   TRUE,
                                                   L"FriendlyAppName",
                                                   &vtype,
@@ -2262,8 +2182,6 @@ read_exeapps (void)
 
       if (success && vtype != G_WIN32_REGISTRY_VALUE_STR)
         g_clear_pointer (&friendly_app_name, g_free);
-
-      friendly_app_name = read_resource_string (friendly_app_name);
 
       no_open_with = FALSE;
       success = g_win32_registry_key_get_value_w (incapable_app,
