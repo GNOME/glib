@@ -601,6 +601,7 @@ read_handler_icon (GWin32RegistryKey  *proxy_key,
           gchar *default_value;
 
           if (g_win32_registry_key_get_value (icon_key,
+                                              NULL,
                                               TRUE,
                                               "",
                                               &default_type,
@@ -763,6 +764,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
   if (key != NULL)
     {
       got_value = g_win32_registry_key_get_value_w (key,
+                                                    NULL,
                                                     TRUE,
                                                     L"",
                                                     &val_type,
@@ -799,6 +801,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
     return FALSE;
 
   got_value = g_win32_registry_key_get_value_w (key,
+                                                NULL,
                                                 TRUE,
                                                 L"",
                                                 &val_type,
@@ -826,6 +829,7 @@ follow_class_chain_to_handler (const gunichar2    *program_id,
     }
 
   got_value = g_win32_registry_key_get_value_w (key,
+                                                NULL,
                                                 TRUE,
                                                 L"",
                                                 &val_type,
@@ -890,6 +894,7 @@ get_url_association (const gunichar2 *schema)
   schema_rec = g_hash_table_lookup (urls, schema_folded);
 
   if (!g_win32_registry_key_get_value_w (user_choice,
+                                         NULL,
                                          TRUE,
                                          L"Progid",
                                          &val_type,
@@ -1054,6 +1059,7 @@ get_file_ext (const gunichar2 *ext)
   if (user_choice != NULL)
     {
       if (g_win32_registry_key_get_value_w (user_choice,
+                                            NULL,
                                             TRUE,
                                             L"Progid",
                                             &val_type,
@@ -1336,6 +1342,7 @@ collect_capable_apps_from_clients (GPtrArray *capable_apps,
         continue;
 
       if (g_win32_registry_key_get_value_w (system_client_type,
+                                            NULL,
                                             TRUE,
                                             L"",
                                             &default_type,
@@ -1591,6 +1598,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
   shell_open_command = NULL;
 
   success = g_win32_registry_key_get_value_w (shell_open_command_key,
+                                              NULL,
                                               TRUE,
                                               L"",
                                               &vtype,
@@ -1655,6 +1663,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   fallback_friendly_name = NULL;
   success = g_win32_registry_key_get_value_w (appkey,
+                                              NULL,
                                               TRUE,
                                               L"",
                                               &vtype,
@@ -1678,6 +1687,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   friendly_name = NULL;
   success = g_win32_registry_key_get_value_w (capabilities,
+                                              NULL,
                                               TRUE,
                                               L"LocalizedString",
                                               &vtype,
@@ -1703,6 +1713,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   description = NULL;
   success = g_win32_registry_key_get_value_w (capabilities,
+                                              NULL,
                                               TRUE,
                                               L"ApplicationDescription",
                                               &vtype,
@@ -1731,6 +1742,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
   if (default_icon_key != NULL)
     {
       success = g_win32_registry_key_get_value_w (default_icon_key,
+                                                  NULL,
                                                   TRUE,
                                                   L"",
                                                   &vtype,
@@ -1747,6 +1759,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
   if (icon_source == NULL)
     {
       success = g_win32_registry_key_get_value_w (capabilities,
+                                                  NULL,
                                                   TRUE,
                                                   L"ApplicationIcon",
                                                   &vtype,
@@ -1767,6 +1780,7 @@ read_capable_app (gunichar2 *input_app_key_path, gboolean user_specific, gboolea
 
   narrow_application_name = NULL;
   success = g_win32_registry_key_get_value_w (capabilities,
+                                              NULL,
                                               TRUE,
                                               L"ApplicationName",
                                               &vtype,
@@ -2218,6 +2232,7 @@ read_exeapps (void)
       if (shell_open_command_key != NULL)
         {
           success = g_win32_registry_key_get_value_w (shell_open_command_key,
+                                                      NULL,
                                                       TRUE,
                                                       L"",
                                                       &vtype,
@@ -2237,6 +2252,7 @@ read_exeapps (void)
 
       friendly_app_name = NULL;
       success = g_win32_registry_key_get_value_w (incapable_app,
+                                                  NULL,
                                                   TRUE,
                                                   L"FriendlyAppName",
                                                   &vtype,
@@ -2251,6 +2267,7 @@ read_exeapps (void)
 
       no_open_with = FALSE;
       success = g_win32_registry_key_get_value_w (incapable_app,
+                                                  NULL,
                                                   TRUE,
                                                   L"NoOpenWith",
                                                   &vtype,
@@ -2272,6 +2289,7 @@ read_exeapps (void)
       {
         success =
             g_win32_registry_key_get_value_w (default_icon_key,
+                                              NULL,
                                               TRUE,
                                               L"",
                                               &vtype,
@@ -2590,6 +2608,7 @@ read_class_url (GWin32RegistryKey *classes_root,
     return;
 
   success = g_win32_registry_key_get_value_w (class_key,
+                                              NULL,
                                               TRUE,
                                               L"URL Protocol",
                                               &vtype,
@@ -3980,6 +3999,7 @@ get_appath_for_exe (gunichar2 *exe_basename)
     return NULL;
 
   got_value = g_win32_registry_key_get_value_w (apppath_key,
+                                                NULL,
                                                 TRUE,
                                                 L"Path",
                                                 &val_type,

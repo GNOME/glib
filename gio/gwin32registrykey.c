@@ -1839,6 +1839,98 @@ g_win32_registry_key_get_path_w (GWin32RegistryKey *key)
 }
 
 /**
+ * g_win32_registry_get_os_dirs_w:
+ *
+ * Returns a list of directories for DLL lookups.
+ * Can be used with g_win32_registry_key_get_value_w().
+ *
+ * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of UTF-16 strings.
+ */
+const gunichar2 **
+g_win32_registry_get_os_dirs_w (void)
+{
+  static gunichar2 **mui_os_dirs = NULL;
+
+  if (g_once_init_enter (&mui_os_dirs))
+    {
+      gunichar2 **new_mui_os_dirs;
+      gunichar2 *system32 = NULL;
+      gunichar2 *syswow64 = NULL;
+      UINT buffer_size;
+      gsize index = 0;
+
+      buffer_size = GetSystemWow64DirectoryW (NULL, 0);
+
+      if (buffer_size > 0)
+        {
+          UINT copied;
+          syswow64 = g_malloc (buffer_size * sizeof (gunichar2));
+          copied = GetSystemWow64DirectoryW (syswow64, buffer_size);
+          if (copied <= 0)
+            g_clear_pointer (&syswow64, g_free);
+        }
+
+      buffer_size = GetSystemDirectoryW (NULL, 0);
+
+      if (buffer_size > 0)
+        {
+          UINT copied;
+          system32 = g_malloc (buffer_size * sizeof (gunichar2));
+          copied = GetSystemDirectoryW (system32, buffer_size);
+          if (copied <= 0)
+            g_clear_pointer (&system32, g_free);
+        }
+
+      new_mui_os_dirs = g_new0 (gunichar2 *, 3);
+
+      if (system32 != NULL)
+        new_mui_os_dirs[index++] = system32;
+
+      if (syswow64 != NULL)
+        new_mui_os_dirs[index++] = syswow64;
+
+      new_mui_os_dirs[index++] = NULL;
+
+      g_once_init_leave (&mui_os_dirs, new_mui_os_dirs);
+    }
+
+  return (const gunichar2 **) mui_os_dirs;
+}
+
+/**
+ * g_win32_registry_get_os_dirs:
+ *
+ * Returns a list of directories for DLL lookups.
+ * Can be used with g_win32_registry_key_get_value().
+ *
+ * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of UTF-8 strings.
+ */
+const gchar **
+g_win32_registry_get_os_dirs (void)
+{
+  static gchar **mui_os_dirs = NULL;
+  const gunichar2 **mui_os_dirs_utf16 = g_win32_registry_get_os_dirs_w ();
+
+  if (g_once_init_enter (&mui_os_dirs))
+    {
+      gchar **new_mui_os_dirs;
+      gsize index = 0;
+
+      for (index = 0; mui_os_dirs_utf16[index] != NULL; index++)
+        ;
+
+      new_mui_os_dirs = g_new0 (gchar *, index + 1);
+
+      for (index = 0; mui_os_dirs_utf16[index] != NULL; index++)
+        new_mui_os_dirs[index] = g_utf16_to_utf8 (mui_os_dirs_utf16[index], -1, NULL, NULL, NULL);
+
+      g_once_init_leave (&mui_os_dirs, new_mui_os_dirs);
+    }
+
+  return (const gchar **) mui_os_dirs;
+}
+
+/**
  * g_win32_registry_key_get_value:
  * @key: (in) (transfer none): a #GWin32RegistryKey
  * @auto_expand: (in) %TRUE to automatically expand G_WIN32_REGISTRY_VALUE_EXPAND_STR
@@ -1854,12 +1946,30 @@ g_win32_registry_key_get_path_w (GWin32RegistryKey *key)
  * Get data from a value of a key. String data is guaranteed to be
  * appropriately terminated and will be in UTF-8.
  *
+ * When not %NULL, @mui_dll_dirs indicates that RegLoadMUIString() API
+ * should be used instead of the usual RegQueryValueEx(). This implies
+ * that the value being queried is of type REG_SZ (if it is not, the function
+ * fails), and that this string must undergo special processing
+ * (see SHLoadIndirectString() documentation for an explanation on what
+ * kinds of strings are processed) to get the result.
+ *
+ * If no specific MUI DLL directories need to be used, pass
+ * the return value of g_win32_registry_get_os_dirs() as @mui_dll_dirs
+ * (as an bonus, the value from g_win32_registry_get_os_dirs()
+ * does not add any extra UTF8->UTF16 conversion overhead).
+ *
+ * @auto_expand works with @mui_dll_dirs, but only affects the processed
+ * string, making it somewhat useless. The unprocessed string is always expanded
+ * internally, if its type is REG_EXPAND_SZ - there is no need to enable
+ * @auto_expand for this to work.
+ *
  * Returns: %TRUE on success, %FALSE on failure.
  *
  * Since: 2.46
  **/
 gboolean
 g_win32_registry_key_get_value (GWin32RegistryKey        *key,
+                                const gchar             **mui_dll_dirs,
                                 gboolean                  auto_expand,
                                 const gchar              *value_name,
                                 GWin32RegistryValueType  *value_type,
@@ -1874,6 +1984,8 @@ g_win32_registry_key_get_value (GWin32RegistryKey        *key,
   gchar *value_data_u8;
   gsize value_data_u8_len;
   gboolean result;
+  gsize mui_dll_dirs_count;
+  gunichar2 **mui_dll_dirs_utf16;
 
   g_return_val_if_fail (G_IS_WIN32_REGISTRY_KEY (key), FALSE);
   g_return_val_if_fail (value_name != NULL, FALSE);
@@ -1889,7 +2001,30 @@ g_win32_registry_key_get_value (GWin32RegistryKey        *key,
   if (value_name_w == NULL)
     return FALSE;
 
+  mui_dll_dirs_utf16 = NULL;
+
+  if (mui_dll_dirs != NULL &&
+      mui_dll_dirs != g_win32_registry_get_os_dirs ())
+    {
+      for (mui_dll_dirs_count = 0; mui_dll_dirs[mui_dll_dirs_count] != NULL; mui_dll_dirs_count++)
+        ;
+
+      if (mui_dll_dirs_count > 0)
+        {
+          mui_dll_dirs_utf16 = g_new0 (gunichar2 *, mui_dll_dirs_count + 1);
+
+          for (mui_dll_dirs_count = 0; mui_dll_dirs[mui_dll_dirs_count] != NULL; mui_dll_dirs_count++)
+            mui_dll_dirs_utf16[mui_dll_dirs_count] = g_utf8_to_utf16 (mui_dll_dirs[mui_dll_dirs_count], -1, NULL, NULL, NULL);
+        }
+    }
+  else if (mui_dll_dirs != NULL &&
+           mui_dll_dirs == g_win32_registry_get_os_dirs ())
+    {
+      mui_dll_dirs_utf16 = (gunichar2 **) g_win32_registry_get_os_dirs_w ();
+    }
+
   result = g_win32_registry_key_get_value_w (key,
+                                             (const gunichar2 **) mui_dll_dirs_utf16,
                                              auto_expand,
                                              value_name_w,
                                              &value_type_g,
@@ -1898,6 +2033,14 @@ g_win32_registry_key_get_value (GWin32RegistryKey        *key,
                                              error);
 
   g_free (value_name_w);
+  if (mui_dll_dirs_utf16 != NULL &&
+      mui_dll_dirs != g_win32_registry_get_os_dirs ())
+    {
+      gsize index;
+      for (index = 0; mui_dll_dirs_utf16[index] != NULL; index++)
+        g_free (mui_dll_dirs_utf16[index]);
+      g_free (mui_dll_dirs_utf16);
+    }
 
   if (!result)
     return FALSE;
@@ -1944,9 +2087,98 @@ g_win32_registry_key_get_value (GWin32RegistryKey        *key,
   return TRUE;
 }
 
+/* A wrapper that calls either RegQueryValueExW() or
+ * RegLoadMUIStringW() depending on the value of the
+ * last argument.
+ * Apart from the extra argument, the function behaves
+ * just like RegQueryValueExW(), with a few caveats.
+ */
+static LSTATUS
+MuiRegQueryValueExW (HKEY              hKey,
+                     LPCWSTR           lpValueName,
+                     LPDWORD           lpReserved,
+                     LPDWORD           lpType,
+                     LPBYTE            lpData,
+                     LPDWORD           lpcbData,
+                     const gunichar2 **mui_dll_dirs)
+{
+  gsize dir_index;
+  LSTATUS result = ERROR_PATH_NOT_FOUND;
+  DWORD bufsize;
+  DWORD data_size;
+  PVOID old_value;
+
+  if (mui_dll_dirs == NULL)
+    return RegQueryValueExW (hKey, lpValueName, lpReserved, lpType, lpData, lpcbData);
+
+  bufsize = 0;
+
+  if (lpcbData != NULL)
+    bufsize = *lpcbData;
+
+  if (mui_dll_dirs[0] != NULL)
+    {
+      /* Optimization: check that the value actually exists,
+       * before we start trying different mui dll dirs
+       */
+      result = RegQueryValueExW (hKey, lpValueName, NULL, NULL, NULL, 0);
+
+      if (result == ERROR_FILE_NOT_FOUND)
+        return result;
+    }
+
+  Wow64DisableWow64FsRedirection (&old_value);
+
+  /* Try with NULL dir first */
+  result = RegLoadMUIStringW (hKey,
+                              lpValueName,
+                              (wchar_t *) lpData,
+                              bufsize,
+                              &data_size,
+                              0,
+                              NULL);
+
+  /* Not a MUI value, load normally */
+  if (result == ERROR_INVALID_DATA)
+    {
+      Wow64RevertWow64FsRedirection (old_value);
+
+      return RegQueryValueExW (hKey, lpValueName, lpReserved, lpType, lpData, lpcbData);
+    }
+
+  for (dir_index = 0;
+       result == ERROR_FILE_NOT_FOUND &&
+       mui_dll_dirs[dir_index] != NULL;
+       dir_index++)
+    result = RegLoadMUIStringW (hKey,
+                                lpValueName,
+                                (wchar_t *) lpData,
+                                bufsize,
+                                &data_size,
+                                0,
+                                mui_dll_dirs[dir_index]);
+
+  Wow64RevertWow64FsRedirection (old_value);
+
+  if (lpcbData != NULL &&
+      result == ERROR_MORE_DATA)
+    *lpcbData = data_size;
+
+  if (lpType != NULL &&
+      result != ERROR_INVALID_DATA &&
+      result != ERROR_FILE_NOT_FOUND)
+    *lpType = REG_SZ;
+
+  return result;
+}
+
 /**
  * g_win32_registry_key_get_value_w:
  * @key: (in) (transfer none): a #GWin32RegistryKey
+ * @mui_dll_dirs: (in) (transfer none) (optional): a %NULL-terminated
+ *     array of directory names where the OS
+ *     should look for a DLL indicated in a MUI string, if the
+ *     DLL path in the string is not absolute
  * @auto_expand: (in) %TRUE to automatically expand G_WIN32_REGISTRY_VALUE_EXPAND_STR
  *     to G_WIN32_REGISTRY_VALUE_STR.
  * @value_name: (in) (transfer none): name of the value to get (in UTF-16).
@@ -1957,8 +2189,6 @@ g_win32_registry_key_get_value (GWin32RegistryKey        *key,
  *   by @value_data.
  * @error: (nullable): a pointer to %NULL #GError, or %NULL
  *
- * Get data from a value of a key.
- *
  * Get data from a value of a key. String data is guaranteed to be
  * appropriately terminated and will be in UTF-16.
  *
@@ -1968,12 +2198,28 @@ g_win32_registry_key_get_value (GWin32RegistryKey        *key,
  * termination cannot be checked and fixed unless the data is retreived
  * too.
  *
+ * When not %NULL, @mui_dll_dirs indicates that RegLoadMUIString() API
+ * should be used instead of the usual RegQueryValueEx(). This implies
+ * that the value being queried is of type REG_SZ (if it is not, the function
+ * fails), and that this string must undergo special processing
+ * (see SHLoadIndirectString() documentation for an explanation on what
+ * kinds of strings are processed) to get the result.
+ *
+ * If no specific MUI DLL directories need to be used, pass
+ * the return value of g_win32_registry_get_os_dirs_w() as @mui_dll_dirs.
+ *
+ * @auto_expand works with @mui_dll_dirs, but only affects the processed
+ * string, making it somewhat useless. The unprocessed string is always expanded
+ * internally, if its type is REG_EXPAND_SZ - there is no need to enable
+ * @auto_expand for this to work.
+ *
  * Returns: %TRUE on success, %FALSE on failure.
  *
  * Since: 2.46
  **/
 gboolean
 g_win32_registry_key_get_value_w (GWin32RegistryKey        *key,
+                                  const gunichar2         **mui_dll_dirs,
                                   gboolean                  auto_expand,
                                   const gunichar2          *value_name,
                                   GWin32RegistryValueType  *value_type,
@@ -2000,12 +2246,13 @@ g_win32_registry_key_get_value_w (GWin32RegistryKey        *key,
                         value_data_size != NULL, FALSE);
 
   req_value_data_size = 0;
-  status = RegQueryValueExW (key->priv->handle,
-                             value_name,
-                             NULL,
-                             &value_type_w,
-                             NULL,
-                             &req_value_data_size);
+  status = MuiRegQueryValueExW (key->priv->handle,
+                                value_name,
+                                NULL,
+                                &value_type_w,
+                                NULL,
+                                &req_value_data_size,
+                                mui_dll_dirs);
 
   if (status != ERROR_MORE_DATA && status != ERROR_SUCCESS)
     {
@@ -2032,12 +2279,13 @@ g_win32_registry_key_get_value_w (GWin32RegistryKey        *key,
 
   req_value_data = g_malloc (req_value_data_size + sizeof (gunichar2) * 2);
   req_value_data_size2 = req_value_data_size;
-  status = RegQueryValueExW (key->priv->handle,
-                             value_name,
-                             NULL,
-                             &value_type_w2,
-                             (gpointer) req_value_data,
-                             &req_value_data_size2);
+  status = MuiRegQueryValueExW (key->priv->handle,
+                                value_name,
+                                NULL,
+                                &value_type_w2,
+                                (gpointer) req_value_data,
+                                &req_value_data_size2,
+                                mui_dll_dirs);
 
   if (status != ERROR_SUCCESS)
     {
