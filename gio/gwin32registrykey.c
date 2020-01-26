@@ -1934,6 +1934,8 @@ g_win32_registry_get_os_dirs (void)
                                                               -1, NULL, NULL, NULL);
           if (new_mui_os_dirs[new_array_index] != NULL)
             new_array_index += 1;
+          else
+            g_critical ("Failed to convert to a system directory #%zu to UTF-8", array_index);
         }
 
       g_once_init_leave (&mui_os_dirs, new_mui_os_dirs);
@@ -2042,6 +2044,9 @@ g_win32_registry_key_get_value (GWin32RegistryKey        *key,
                                                                         -1, NULL, NULL, NULL);
               if (mui_dll_dirs_utf16[mui_dll_dirs_count] != NULL)
                 mui_dll_dirs_count += 1;
+              else
+                g_critical ("Failed to convert directory #%zu `%s' to UTF-16",
+                            mui_dll_dirs_index, mui_dll_dirs[mui_dll_dirs_index]);
             }
         }
     }
