@@ -1934,6 +1934,8 @@ g_win32_registry_get_os_dirs (void)
                                                               -1, NULL, NULL, NULL);
           if (new_mui_os_dirs[new_array_index] != NULL)
             new_array_index += 1;
+          else
+            g_critical ("Failed to convert to a system directory #%zu to UTF-8", array_index);
         }
 
       g_once_init_leave (&mui_os_dirs, new_mui_os_dirs);
