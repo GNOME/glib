@@ -887,6 +887,16 @@
 	fun:g_dbus_error_quark
 }
 
+# g_win32_registry_get_os_dirs_w*() caches an array of strings that is allocated only once.
+{
+	g_win32_registry_get_os_dirs
+	Memcheck:Leak
+	match-leak-kinds:reachable,definite
+	fun:malloc
+	...
+	fun:g_win32_registry_get_os_dirs*
+}
+
 # Thread-private data allocated once per thread
 {
 	g_private_set_alloc0
