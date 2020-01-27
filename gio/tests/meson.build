@@ -231,17 +231,17 @@ if host_machine.system() != 'windows'
                    '--generate-docbook', 'gdbus-test-codegen-generated-doc',
                    annotate_args,
                    '@INPUT@'])
-    # Generate gdbus-test-codegen-generated-min-version-2-64.{c,h}
-    gdbus_test_codegen_generated_min_version_2_64 = custom_target('gdbus-test-codegen-generated-min-version-2-64',
+    # Generate gdbus-test-codegen-generated-min-required-2-64.{c,h}
+    gdbus_test_codegen_generated_min_required_2_64 = custom_target('gdbus-test-codegen-generated-min-required-2-64',
         input :   ['test-codegen.xml'],
-        output :  ['gdbus-test-codegen-generated-min-version-2-64.h',
-                   'gdbus-test-codegen-generated-min-version-2-64.c'],
+        output :  ['gdbus-test-codegen-generated-min-required-2-64.h',
+                   'gdbus-test-codegen-generated-min-required-2-64.c'],
         depend_files : gdbus_codegen_built_files,
         command : [python, gdbus_codegen,
-                   '--glib-min-version', '2.64',
+                   '--glib-min-required', '2.64',
                    '--interface-prefix', 'org.project.',
                    '--output-directory', '@OUTDIR@',
-                   '--generate-c-code', 'gdbus-test-codegen-generated-min-version-2-64',
+                   '--generate-c-code', 'gdbus-test-codegen-generated-min-required-2-64',
                    '--c-generate-object-manager',
                    '--c-generate-autocleanup', 'all',
                    '--c-namespace', 'Foo_iGen',
@@ -318,9 +318,9 @@ if host_machine.system() != 'windows'
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36',
                     '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36'],
       },
-      'gdbus-test-codegen-min-version-2-64' : {
+      'gdbus-test-codegen-min-required-2-64' : {
         'source' : 'gdbus-test-codegen.c',
-        'extra_sources' : [extra_sources, gdbus_test_codegen_generated_min_version_2_64, gdbus_test_codegen_generated_interface_info],
+        'extra_sources' : [extra_sources, gdbus_test_codegen_generated_min_required_2_64, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_64'],
       },
       'gapplication' : {'extra_sources' : extra_sources},

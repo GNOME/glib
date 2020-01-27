@@ -26,7 +26,7 @@
 #include "gdbus-tests.h"
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_64
-#include "gdbus-test-codegen-generated-min-version-2-64.h"
+#include "gdbus-test-codegen-generated-min-required-2-64.h"
 #else
 #include "gdbus-test-codegen-generated.h"
 #endif
@@ -2693,7 +2693,7 @@ handle_no_annotation_nested (FooiGenFDPassing *object,
 /* Test that generated code for methods includes GUnixFDList arguments
  * unconditionally if the method is explicitly annotated as C.UnixFD, and only
  * emits GUnixFDList arguments when there's merely an 'h' parameter if
- * --glib-min-version=2.64 or greater.
+ * --glib-min-required=2.64 or greater.
  */
 static void
 test_unix_fd_list (void)
@@ -2707,7 +2707,7 @@ test_unix_fd_list (void)
 
   /* This one is not annotated; even though it's got an in and out 'h'
    * parameter, for backwards compatibility we cannot emit GUnixFDList
-   * arguments unless --glib-min-version >= 2.64 was used.
+   * arguments unless --glib-min-required >= 2.64 was used.
    */
   iface.handle_no_annotation = handle_no_annotation;
 
