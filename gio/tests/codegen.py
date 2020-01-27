@@ -384,7 +384,8 @@ G_END_DECLS
         result = self.runCodegenWithInterface('',
                                               '--output', '/dev/stdout',
                                               '--header',
-                                              '--glib-min-required', '3')
+                                              '--glib-min-required', '3',
+                                              '--glib-max-allowed', '3.2')
         self.assertEqual('', result.err)
         self.assertNotEqual('', result.out.strip())
 
@@ -396,6 +397,55 @@ G_END_DECLS
                                               '--glib-min-required', '2.46.2')
         self.assertEqual('', result.err)
         self.assertNotEqual('', result.out.strip())
+
+    def test_glib_max_allowed_too_low(self):
+        """Test running with a --glib-max-allowed which is too low (and hence
+        probably a typo)."""
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.runCodegenWithInterface('',
+                                         '--output', '/dev/stdout',
+                                         '--body',
+                                         '--glib-max-allowed', '2.6')
+
+    def test_glib_max_allowed_major_only(self):
+        """Test running with a --glib-max-allowed which contains only a major version."""
+        result = self.runCodegenWithInterface('',
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-max-allowed', '3')
+        self.assertEqual('', result.err)
+        self.assertNotEqual('', result.out.strip())
+
+    def test_glib_max_allowed_with_micro(self):
+        """Test running with a --glib-max-allowed which contains a micro version."""
+        result = self.runCodegenWithInterface('',
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-max-allowed', '2.46.2')
+        self.assertEqual('', result.err)
+        self.assertNotEqual('', result.out.strip())
+
+    def test_glib_max_allowed_unstable(self):
+        """Test running with a --glib-max-allowed which is unstable. It should
+        be rounded up to the next stable version number, and hence should not
+        end up less than --glib-min-required."""
+        result = self.runCodegenWithInterface('',
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-max-allowed', '2.63',
+                                              '--glib-min-required', '2.64')
+        self.assertEqual('', result.err)
+        self.assertNotEqual('', result.out.strip())
+
+    def test_glib_max_allowed_less_than_min_required(self):
+        """Test running with a --glib-max-allowed which is less than
+        --glib-min-required."""
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.runCodegenWithInterface('',
+                                         '--output', '/dev/stdout',
+                                         '--body',
+                                         '--glib-max-allowed', '2.62',
+                                         '--glib-min-required', '2.64')
 
     def test_unix_fd_types_and_annotations(self):
         """Test an interface with `h` arguments, no annotation, and GLib < 2.64.

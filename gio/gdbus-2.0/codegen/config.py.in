@@ -20,3 +20,5 @@
 # Author: David Zeuthen <davidz@redhat.com>
 
 VERSION = "@VERSION@"
+MAJOR_VERSION = @MAJOR_VERSION@
+MINOR_VERSION = @MINOR_VERSION@

@@ -169,6 +169,8 @@ def codegen_main():
                             help='Add annotation (may be used several times)')
     arg_parser.add_argument('--glib-min-required', metavar='VERSION',
                             help='Minimum version of GLib to be supported by the outputted code (default: 2.30)')
+    arg_parser.add_argument('--glib-max-allowed', metavar='VERSION',
+                            help='Maximum version of GLib to be used by the outputted code (default: current GLib version)')
 
     group = arg_parser.add_mutually_exclusive_group()
     group.add_argument('--generate-c-code', metavar='OUTFILES',
@@ -255,6 +257,28 @@ def codegen_main():
                         'version is 2.30'.format(args.glib_min_required))
     else:
         glib_min_required = (2, 30)
+
+    # And the maximum GLib version.
+    if args.glib_max_allowed:
+        try:
+            parts = args.glib_max_allowed.split('.', 3)
+            glib_max_allowed = (int(parts[0]),
+                                int(parts[1] if len(parts) > 1 else 0))
+            # Ignore micro component, but still validate it:
+            _ = int(parts[2] if len(parts) > 2 else 0)
+        except (ValueError, IndexError):
+            print_error('Unrecognized --glib-max-allowed string ‘{}’'.format(
+                args.glib_max_allowed))
+    else:
+        glib_max_allowed = (config.MAJOR_VERSION, config.MINOR_VERSION)
+
+    # Round --glib-max-allowed up to the next stable release.
+    glib_max_allowed = \
+        (glib_max_allowed[0], glib_max_allowed[1] + (glib_max_allowed[1] % 2))
+
+    if glib_max_allowed < glib_min_required:
+        print_error('Invalid versions: --glib-min-required ({}) must be '
+                    'less than or equal to --glib-max-allowed ({})'.format(glib_min_required, glib_max_allowed))
 
     glib_min_required_is_2_64 = (glib_min_required[0] > 2 or
                                  (glib_min_required[0] == 2 and
