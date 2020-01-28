@@ -735,7 +735,8 @@ typedef void (*verb_command_func) (gpointer         handler_data1,
 static gunichar2 *                 decide_which_id_to_use (const gunichar2    *program_id,
                                                            GWin32RegistryKey **return_key,
                                                            gchar             **return_handler_id_u8,
-                                                           gchar             **return_handler_id_u8_folded);
+                                                           gchar             **return_handler_id_u8_folded,
+                                                           gunichar2         **return_uwp_aumid);
 
 static GWin32AppInfoURLSchema *    get_schema_object      (const gunichar2 *schema,
                                                            const gchar     *schema_u8,
@@ -1049,13 +1050,17 @@ get_url_association (const gunichar2          *program_id,
   const reg_verb *preferred_verb;
   gchar *handler_id_u8;
   gchar *handler_id_u8_folded;
+  gunichar2 *uwp_aumid;
   GWin32RegistryKey *handler_key;
 
   if ((handler_id = decide_which_id_to_use (program_id,
                                             &handler_key,
                                             &handler_id_u8,
-                                            &handler_id_u8_folded)) == NULL)
+                                            &handler_id_u8_folded,
+                                            &uwp_aumid)) == NULL)
     return;
+
+  g_clear_pointer (&uwp_aumid, g_free);
 
   if (!get_verbs (handler_key, &preferred_verb, &verbs, L"", L"Shell"))
     {
@@ -1121,6 +1126,7 @@ get_file_ext (const gunichar2            *program_id,
   GList *verbs;
   gchar *handler_id_u8;
   gchar *handler_id_u8_folded;
+  gunichar2 *uwp_aumid;
   GWin32RegistryKey *handler_key;
   GWin32AppInfoFileExtension *file_extn;
   gchar *file_extension_u8;
@@ -1129,8 +1135,11 @@ get_file_ext (const gunichar2            *program_id,
   if ((handler_id = decide_which_id_to_use (program_id,
                                             &handler_key,
                                             &handler_id_u8,
-                                            &handler_id_u8_folded)) == NULL)
+                                            &handler_id_u8_folded,
+                                            &uwp_aumid)) == NULL)
     return;
+
+  g_clear_pointer (&uwp_aumid, g_free);
 
   if (!g_utf16_to_utf8_and_fold (file_extension,
                                  -1,
@@ -1205,12 +1214,15 @@ static gunichar2 *
 decide_which_id_to_use (const gunichar2    *program_id,
                         GWin32RegistryKey **return_key,
                         gchar             **return_handler_id_u8,
-                        gchar             **return_handler_id_u8_folded)
+                        gchar             **return_handler_id_u8_folded,
+                        gunichar2         **return_uwp_aumid)
 {
   GWin32RegistryKey *key;
+  GWin32RegistryKey *uwp_key;
   GWin32RegistryValueType val_type;
   gunichar2 *proxy_id;
   gunichar2 *return_id;
+  gunichar2 *uwp_aumid;
   gboolean got_value;
   gchar *handler_id_u8;
   gchar *handler_id_u8_folded;
@@ -1219,23 +1231,54 @@ decide_which_id_to_use (const gunichar2    *program_id,
   if (return_key)
     *return_key = NULL;
 
-  /* Check the proxy first */
+  if (return_uwp_aumid)
+    *return_uwp_aumid = NULL;
+
   key = g_win32_registry_key_get_child_w (classes_root_key, program_id, NULL);
 
   if (key == NULL)
     return NULL;
 
+  /* Check for UWP first */
+  uwp_aumid = NULL;
+  uwp_key = g_win32_registry_key_get_child_w (key, L"Application", NULL);
+
+  if (uwp_key != NULL)
+    {
+      got_value = g_win32_registry_key_get_value_w (uwp_key,
+                                                    NULL,
+                                                    TRUE,
+                                                    L"AppUserModelID",
+                                                    &val_type,
+                                                    (void **) &uwp_aumid,
+                                                    NULL,
+                                                    NULL);
+      if (got_value && val_type != G_WIN32_REGISTRY_VALUE_STR)
+        g_clear_pointer (&uwp_aumid, g_free);
+
+      if (uwp_aumid == NULL)
+        g_debug ("ProgramID %S looks like a UWP application, but isn't",
+                 program_id);
+
+      g_object_unref (uwp_key);
+    }
+
+  /* Then check for proxy */
   proxy_id = NULL;
-  got_value = g_win32_registry_key_get_value_w (key,
-                                                NULL,
-                                                TRUE,
-                                                L"",
-                                                &val_type,
-                                                (void **) &proxy_id,
-                                                NULL,
-                                                NULL);
-  if (got_value && val_type != G_WIN32_REGISTRY_VALUE_STR)
-    g_clear_pointer (&proxy_id, g_free);
+
+  if (uwp_aumid == NULL)
+    {
+      got_value = g_win32_registry_key_get_value_w (key,
+                                                    NULL,
+                                                    TRUE,
+                                                    L"",
+                                                    &val_type,
+                                                    (void **) &proxy_id,
+                                                    NULL,
+                                                    NULL);
+      if (got_value && val_type != G_WIN32_REGISTRY_VALUE_STR)
+        g_clear_pointer (&proxy_id, g_free);
+    }
 
   return_id = NULL;
 
@@ -1277,6 +1320,9 @@ decide_which_id_to_use (const gunichar2    *program_id,
   if (return_handler_id_u8_folded)
     *return_handler_id_u8_folded = g_steal_pointer (&handler_id_u8_folded);
   g_clear_pointer (&handler_id_u8_folded, g_free);
+  if (return_uwp_aumid)
+    *return_uwp_aumid = g_steal_pointer (&uwp_aumid);
+  g_clear_pointer (&uwp_aumid, g_free);
 
   if (return_id == NULL && return_key)
     *return_key = g_steal_pointer (&key);
