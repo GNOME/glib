@@ -192,6 +192,13 @@ struct _GWin32AppInfoHandler {
 
   /* Verbs that this handler supports */
   GPtrArray *verbs; /* of GWin32AppInfoShellVerb */
+
+  /* AppUserModelID for a UWP application. When this is not NULL,
+   * this handler launches a UWP application.
+   * UWP applications are launched using a COM interface and have no commandlines,
+   * and the verbs will reflect that too.
+   */
+  gunichar2 *uwp_aumid;
 };
 
 struct _GWin32AppInfoShellVerb {
@@ -202,6 +209,11 @@ struct _GWin32AppInfoShellVerb {
 
   /* User-friendly (localized) verb name. */
   gchar *verb_displayname;
+
+  /* %TRUE if this verb is for a UWP app.
+   * It means that @command, @executable and @dll_function are %NULL.
+   */
+  gboolean is_uwp;
 
   /* shell/verb/command */
   gunichar2 *command;
@@ -320,6 +332,14 @@ struct _GWin32AppInfoApplication {
   /* Set to TRUE for applications that are machine-wide defaults (i.e. default
    * browser) */
   gboolean default_app;
+
+  /* At the moment we do not support getting UWP application info
+   * from the OS. That is, if a file extension is associated with
+   * a UWP app, we can launch it, but we can't read a list of
+   * UWP apps and see which extensions are associated with each one
+   * of them.
+   * That is why there's no uwp_aumid field here.
+   */
 };
 
 #define G_TYPE_WIN32_APPINFO_URL_SCHEMA           (g_win32_appinfo_url_schema_get_type ())
@@ -373,6 +393,7 @@ g_win32_appinfo_handler_dispose (GObject *object)
   g_clear_object (&handler->key);
   g_clear_object (&handler->icon);
   g_clear_pointer (&handler->verbs, g_ptr_array_unref);
+  g_clear_pointer (&handler->uwp_aumid, g_free);
   G_OBJECT_CLASS (g_win32_appinfo_handler_parent_class)->dispose (object);
 }
 
@@ -744,7 +765,8 @@ static GWin32AppInfoURLSchema *    get_schema_object      (const gunichar2 *sche
 
 static GWin32AppInfoHandler *      get_handler_object     (const gchar       *handler_id_u8_folded,
                                                            GWin32RegistryKey *handler_key,
-                                                           const gunichar2   *handler_id);
+                                                           const gunichar2   *handler_id,
+                                                           const gunichar2   *uwp_aumid);
 
 static GWin32AppInfoFileExtension *get_ext_object         (const gunichar2 *ext,
                                                            const gchar     *ext_u8,
@@ -1060,14 +1082,18 @@ get_url_association (const gunichar2          *program_id,
                                             &uwp_aumid)) == NULL)
     return;
 
-  g_clear_pointer (&uwp_aumid, g_free);
-
-  if (!get_verbs (handler_key, &preferred_verb, &verbs, L"", L"Shell"))
+  if (uwp_aumid != NULL)
+    {
+      verbs = NULL;
+      preferred_verb = NULL;
+    }
+  else if (!get_verbs (handler_key, &preferred_verb, &verbs, L"", L"Shell"))
     {
       g_clear_pointer (&handler_id, g_free);
       g_clear_pointer (&handler_id_u8, g_free);
       g_clear_pointer (&handler_id_u8_folded, g_free);
       g_clear_object (&handler_key);
+      /* and uwp_aumid is already NULL */
 
       return;
     }
@@ -1078,7 +1104,8 @@ get_url_association (const gunichar2          *program_id,
 
   handler_rec = get_handler_object (handler_id_u8_folded,
                                     handler_key,
-                                    handler_id);
+                                    handler_id,
+                                    uwp_aumid);
 
   if (is_user_choice || schema_rec->chosen_handler == NULL)
     g_set_object (&schema_rec->chosen_handler, handler_rec);
@@ -1094,18 +1121,21 @@ get_url_association (const gunichar2          *program_id,
                          g_strdup (schema_rec->schema_u8_folded),
                          g_object_ref (handler_rec));
 
-  process_verbs_commands (g_steal_pointer (&verbs),
-                          preferred_verb,
-                          HKCR,
-                          handler_id,
-                          TRUE,
-                          handler_add_verb,
-                          handler_rec,
-                          app);
+  /* UWP apps get their verbs elsewhere */
+  if (uwp_aumid == NULL)
+    process_verbs_commands (g_steal_pointer (&verbs),
+                            preferred_verb,
+                            HKCR,
+                            handler_id,
+                            TRUE,
+                            handler_add_verb,
+                            handler_rec,
+                            app);
 
   g_clear_pointer (&handler_id_u8, g_free);
   g_clear_pointer (&handler_id_u8_folded, g_free);
   g_clear_pointer (&handler_id, g_free);
+  g_clear_pointer (&uwp_aumid, g_free);
 }
 
 /* Grabs a file extension association (from HKCR\.ext or similar).
@@ -1139,8 +1169,6 @@ get_file_ext (const gunichar2            *program_id,
                                             &uwp_aumid)) == NULL)
     return;
 
-  g_clear_pointer (&uwp_aumid, g_free);
-
   if (!g_utf16_to_utf8_and_fold (file_extension,
                                  -1,
                                  &file_extension_u8,
@@ -1149,12 +1177,18 @@ get_file_ext (const gunichar2            *program_id,
       g_clear_pointer (&handler_id, g_free);
       g_clear_pointer (&handler_id_u8, g_free);
       g_clear_pointer (&handler_id_u8_folded, g_free);
+      g_clear_pointer (&uwp_aumid, g_free);
       g_clear_object (&handler_key);
 
       return;
     }
 
-  if (!get_verbs (handler_key, &preferred_verb, &verbs, L"", L"Shell"))
+  if (uwp_aumid != NULL)
+    {
+      verbs = NULL;
+      preferred_verb = NULL;
+    }
+  else if (!get_verbs (handler_key, &preferred_verb, &verbs, L"", L"Shell"))
     {
       g_clear_pointer (&handler_id, g_free);
       g_clear_pointer (&handler_id_u8, g_free);
@@ -1162,6 +1196,7 @@ get_file_ext (const gunichar2            *program_id,
       g_clear_object (&handler_key);
       g_clear_pointer (&file_extension_u8, g_free);
       g_clear_pointer (&file_extension_u8_folded, g_free);
+      /* and uwp_aumid is already NULL */
 
       return;
     }
@@ -1170,7 +1205,8 @@ get_file_ext (const gunichar2            *program_id,
 
   handler_rec = get_handler_object (handler_id_u8_folded,
                                     handler_key,
-                                    handler_id);
+                                    handler_id,
+                                    uwp_aumid);
 
   if (is_user_choice || file_extn->chosen_handler == NULL)
     g_set_object (&file_extn->chosen_handler, handler_rec);
@@ -1188,18 +1224,21 @@ get_file_ext (const gunichar2            *program_id,
   g_clear_pointer (&file_extension_u8_folded, g_free);
   g_clear_object (&handler_key);
 
-  process_verbs_commands (g_steal_pointer (&verbs),
-                          preferred_verb,
-                          HKCR,
-                          handler_id,
-                          TRUE,
-                          handler_add_verb,
-                          handler_rec,
-                          app);
+  /* UWP apps get their verbs elsewhere */
+  if (uwp_aumid == NULL)
+    process_verbs_commands (g_steal_pointer (&verbs),
+                            preferred_verb,
+                            HKCR,
+                            handler_id,
+                            TRUE,
+                            handler_add_verb,
+                            handler_rec,
+                            app);
 
   g_clear_pointer (&handler_id, g_free);
   g_clear_pointer (&handler_id_u8, g_free);
   g_clear_pointer (&handler_id_u8_folded, g_free);
+  g_clear_pointer (&uwp_aumid, g_free);
 }
 
 /* Returns either a @program_id or the string from
@@ -1502,7 +1541,8 @@ get_schema_object (const gunichar2 *schema,
 static GWin32AppInfoHandler *
 get_handler_object (const gchar       *handler_id_u8_folded,
                     GWin32RegistryKey *handler_key,
-                    const gunichar2   *handler_id)
+                    const gunichar2   *handler_id,
+                    const gunichar2   *uwp_aumid)
 {
   GWin32AppInfoHandler *handler_rec;
 
@@ -1515,6 +1555,8 @@ get_handler_object (const gchar       *handler_id_u8_folded,
   handler_rec->key = g_object_ref (handler_key);
   handler_rec->handler_id = g_wcsdup (handler_id, -1);
   handler_rec->handler_id_folded = g_strdup (handler_id_u8_folded);
+  if (uwp_aumid)
+    handler_rec->uwp_aumid = g_wcsdup (uwp_aumid, -1);
   read_handler_icon (handler_key, &handler_rec->icon);
   g_hash_table_insert (handlers, g_strdup (handler_id_u8_folded), handler_rec);
 
@@ -1545,6 +1587,7 @@ handler_add_verb (gpointer           handler_data1,
   shverb->verb_displayname = g_strdup (verb_displayname);
   shverb->command = g_wcsdup (command_line, -1);
   shverb->command_utf8 = g_strdup (command_line_utf8);
+  shverb->is_uwp = FALSE; /* This function is for non-UWP verbs only */
   if (app_rec)
     shverb->app = g_object_ref (app_rec);
 
@@ -2791,6 +2834,9 @@ link_handlers_to_unregistered_apps (void)
     {
       gsize vi;
 
+      if (handler->uwp_aumid != NULL)
+        continue;
+
       for (vi = 0; vi < handler->verbs->len; vi++)
         {
           GWin32AppInfoShellVerb *handler_verb;
@@ -2914,6 +2960,9 @@ link_handlers_to_fake_apps (void)
         {
           gsize vi;
 
+          if (handler->uwp_aumid != NULL)
+            continue;
+
           for (vi = 0; vi < handler->verbs->len; vi++)
             {
               GWin32AppInfoShellVerb *handler_verb;
@@ -2963,6 +3012,9 @@ link_handlers_to_fake_apps (void)
                                      (gpointer *) &handler))
         {
           gsize vi;
+
+          if (handler->uwp_aumid != NULL)
+            continue;
 
           for (vi = 0; vi < handler->verbs->len; vi++)
             {
