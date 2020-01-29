@@ -1101,8 +1101,10 @@
  * @struct_type: a structure type, e.g. #GOutputVector
  * @member: a field in the structure, e.g. `size`
  *
- * Returns: the size of @member in the struct definition without having a
+ * Returns the size of @member in the struct definition without having a
  * declared instance of @struct_type.
+ *
+ * Returns: the size of @member in bytes.
  *
  * Since: 2.64
  */
