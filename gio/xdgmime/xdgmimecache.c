@@ -48,6 +48,10 @@
 #include "xdgmimecache.h"
 #include "xdgmimeint.h"
 
+#ifndef MIN
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#endif
+
 #ifndef MAX
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 #endif
@@ -175,42 +179,29 @@ cache_magic_matchlet_compare_to_data (XdgMimeCache *cache,
   xdg_uint32_t data_length = GET_UINT32 (cache->buffer, offset + 12);
   xdg_uint32_t data_offset = GET_UINT32 (cache->buffer, offset + 16);
   xdg_uint32_t mask_offset = GET_UINT32 (cache->buffer, offset + 20);
-  
+  int end;
   int i, j;
+  const unsigned char *_buffer = cache->buffer;
+  const unsigned char *_data = data;
+  
+  if (len < data_length)
+    return FALSE;
 
-  for (i = range_start; i < range_start + range_length; i++)
+  if (mask_offset == 0)
+    return memmem (_data + range_start, MIN (range_length + data_length, len), _buffer + data_offset, data_length) != NULL;
+
+  end = MIN (range_start + range_length, len - data_length);
+
+  for (i = range_start; i < end; i++)
     {
-      int valid_matchlet = TRUE;
-      
-      if (i + data_length > len)
-	return FALSE;
-
-      if (mask_offset)
-	{
-	  for (j = 0; j < data_length; j++)
-	    {
-	      if ((((unsigned char *)cache->buffer)[data_offset + j] & ((unsigned char *)cache->buffer)[mask_offset + j]) !=
-		  ((((unsigned char *) data)[j + i]) & ((unsigned char *)cache->buffer)[mask_offset + j]))
-		{
-		  valid_matchlet = FALSE;
-		  break;
-		}
-	    }
+      for (j = 0; j < data_length; j++)
+        {
+          if ((_buffer[data_offset + j] & _buffer[mask_offset + j]) !=
+              (_data[i + j] & _buffer[mask_offset + j]))
+            break;
 	}
-      else
-	{
-	  for (j = 0; j < data_length; j++)
-	    {
-	      if (((unsigned char *)cache->buffer)[data_offset + j] != ((unsigned char *) data)[j + i])
-		{
-		  valid_matchlet = FALSE;
-		  break;
-		}
-	    }
-	}
-      
-      if (valid_matchlet)
-	return TRUE;
+      if (j == data_length)
+        return TRUE;
     }
   
   return FALSE;  
