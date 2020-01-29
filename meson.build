@@ -1923,9 +1923,11 @@ glib_conf.set_quoted('GLIB_LOCALE_DIR', join_paths(glib_datadir, 'locale'))
 # libmount is only used by gio, but we need to fetch the libs to generate the
 # pkg-config file below
 libmount_dep = []
-if host_system == 'linux' and get_option('libmount')
-  libmount_dep = [dependency('mount', version : '>=2.23', required : true)]
-  glib_conf.set('HAVE_LIBMOUNT', 1)
+if host_system == 'linux'
+  libmount_dep = dependency('mount', version : '>=2.23', required : get_option('libmount'))
+  if libmount_dep.found()
+    glib_conf.set('HAVE_LIBMOUNT', 1)
+  endif
 endif
 
 if host_system == 'windows'
@@ -1935,8 +1937,9 @@ endif
 selinux_dep = []
 if host_system == 'linux'
   selinux_dep = dependency('libselinux', required: get_option('selinux'))
-
-  glib_conf.set('HAVE_SELINUX', selinux_dep.found())
+  if selinux_dep.found()
+    glib_conf.set('HAVE_SELINUX', 1)
+  endif
 endif
 
 xattr_dep = []
