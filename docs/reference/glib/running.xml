@@ -156,8 +156,8 @@ How to run and debug your GLib application
         </listitem>
       </varlistentry>
     </variablelist>
-    The special value all can be used to turn on all debug options.
-    The special value help can be used to print all available options.
+    The special value <literal>all</literal> can be used to turn on all debug options.
+    The special value <literal>help</literal> can be used to print all available options.
   </para>
 </formalpara>
 
@@ -207,8 +207,8 @@ How to run and debug your GLib application
         </listitem>
       </varlistentry>
     </variablelist>
-    The special value all can be used to turn on all options.
-    The special value help can be used to print all available options.
+    The special value <literal>all</literal> can be used to turn on all options.
+    The special value <literal>help</literal> can be used to print all available options.
   </para>
 </formalpara>
 
