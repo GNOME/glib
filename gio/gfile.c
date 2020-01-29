@@ -534,37 +534,6 @@ g_file_get_path (GFile *file)
   return (* iface->get_path) (file);
 }
 
-/* Original commit introducing this in libgsystem:
- *
- *  fileutil: Handle recent: and trash: URIs
- *
- *  The gs_file_get_path_cached() was rather brittle in its handling
- *  of URIs. It would assert() when a GFile didn't have a backing path
- *  (such as when handling trash: or recent: URIs), and didn't know
- *  how to get the target URI for those items either.
- *
- *  Make sure that we do not assert() when a backing path cannot be
- *  found, and handle recent: and trash: URIs.
- *
- *  https://bugzilla.gnome.org/show_bug.cgi?id=708435
- */
-static char *
-file_get_target_path (GFile *file)
-{
-  GFileInfo *info;
-  const char *target;
-  char *path;
-
-  info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_TARGET_URI, G_FILE_QUERY_INFO_NONE, NULL, NULL);
-  if (info == NULL)
-    return NULL;
-  target = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_TARGET_URI);
-  path = g_filename_from_uri (target, NULL, NULL);
-  g_object_unref (info);
-
-  return path;
-}
-
 static const char *
 file_peek_path_generic (GFile *file)
 {
@@ -591,11 +560,7 @@ file_peek_path_generic (GFile *file)
       if (path != NULL)
         break;
 
-      if (g_file_has_uri_scheme (file, "trash") ||
-          g_file_has_uri_scheme (file, "recent"))
-        new_path = file_get_target_path (file);
-      else
-        new_path = g_file_get_path (file);
+      new_path = g_file_get_path (file);
       if (new_path == NULL)
         return NULL;
 
