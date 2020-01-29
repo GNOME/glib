@@ -568,7 +568,7 @@ file_peek_path_generic (GFile *file)
       if (g_object_replace_qdata ((GObject *) file, _file_path_quark,
                                   NULL, (gpointer) new_path,
                                   (GDestroyNotify) g_free, NULL))
-        break;
+        return new_path;
       else
         g_free (new_path);
     }
