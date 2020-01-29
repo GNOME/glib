@@ -33,6 +33,78 @@
 #include "glibconfig.h"
 #include "glib_trace.h"
 
+#define HAVE_SYSPROF_CAPTURE
+#ifdef HAVE_SYSPROF_CAPTURE
+#include <unistd.h>
+#include <sysprof-capture.h>
+
+static SysprofCaptureWriter *writer = NULL;
+static gboolean running = FALSE;
+
+static void
+profiler_atexit (void)
+{
+g_print ("glib profiler atexit\n");
+  if (writer)
+    sysprof_capture_writer_unref (writer);
+}
+
+static void
+profiler_start (int fd)
+{
+  if (writer)
+    return;
+
+  sysprof_clock_init ();
+
+  if (fd == -1)
+    {
+      gchar *filename;
+
+      filename = g_strdup_printf ("glib.%d.syscap", getpid ());
+      g_print ("Writing profiling data to %s\n", filename);
+      writer = sysprof_capture_writer_new (filename, 16*1024);
+      g_free (filename);
+    }
+  else if (fd > 2)
+    writer = sysprof_capture_writer_new_from_fd (fd, 16*1024);
+
+  if (writer)
+    running = TRUE;
+
+  atexit (profiler_atexit);
+}
+
+static void
+profiler_init (void)
+{
+  if (g_getenv ("GLIB_TRACE_FD"))
+    {
+      g_print ("Found GLIB_TRACE_FD, using it\n");
+      profiler_start (atoi (g_getenv ("GLIB_TRACE_FD")));
+    }
+  else if (g_getenv ("GLIB_TRACE"))
+    profiler_start (-1);
+}
+
+static void
+profiler_add_mark (gint64      start,
+                   guint64     duration,
+                   const char *name,
+                   const char *message)
+{
+  if (!running)
+    return;
+
+g_print ("glib profiler add mark\n");
+  sysprof_capture_writer_add_mark (writer,
+                                   start,
+                                   -1, getpid (),
+                                   duration,
+                                   "glib", name, message);
+}
+#endif
+
 /* Uncomment the next line (and the corresponding line in gpoll.c) to
  * enable debugging printouts if the environment variable
  * G_MAIN_POLL_DEBUG is set to some value.
@@ -619,6 +691,8 @@ g_main_context_new (void)
       if (getenv ("G_MAIN_POLL_DEBUG") != NULL)
         _g_main_poll_debug = TRUE;
 #endif
+
+      profiler_init ();
 
       g_once_init_leave (&initialised, TRUE);
     }
@@ -3236,6 +3310,7 @@ g_main_dispatch (GMainContext *context)
 	  GSourceCallbackFuncs *cb_funcs;
 	  gpointer cb_data;
 	  gboolean need_destroy;
+          gint64 before;
 
 	  gboolean (*dispatch) (GSource *,
 				GSourceFunc,
@@ -3267,12 +3342,14 @@ g_main_dispatch (GMainContext *context)
           current->source = source;
           current->depth++;
 
+          before = g_get_monotonic_time ();
           TRACE (GLIB_MAIN_BEFORE_DISPATCH (g_source_get_name (source), source,
                                             dispatch, callback, user_data));
           need_destroy = !(* dispatch) (source, callback, user_data);
           TRACE (GLIB_MAIN_AFTER_DISPATCH (g_source_get_name (source), source,
                                            dispatch, need_destroy));
-
+          profiler_add_mark (before * 1000, (g_get_monotonic_time () - before) * 1000, "dispatch source", g_source_get_name (source));
+            
           current->source = prev_source;
           current->depth--;
 

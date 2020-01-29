@@ -322,6 +322,9 @@ endif
 
 glib_sources += files('gthread-@0@.c'.format(threads_implementation))
 
+
+profiler_dep = dependency('sysprof-capture-3', static: true, required: true)
+
 if enable_dtrace
   glib_dtrace_obj = dtrace_obj_gen.process('glib_probes.d')
   glib_dtrace_hdr = dtrace_hdr_gen.process('glib_probes.d')
@@ -356,7 +359,7 @@ libglib = library('glib-2.0',
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
-  dependencies : pcre_deps + [thread_dep, libintl, librt] + libiconv + platform_deps + gnulib_libm_dependency,
+  dependencies : pcre_deps + [profiler_dep, thread_dep, libintl, librt] + libiconv + platform_deps + gnulib_libm_dependency,
   c_args : glib_c_args,
   objc_args : glib_c_args,
 )
