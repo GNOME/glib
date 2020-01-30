@@ -332,9 +332,6 @@ _g_win32_fill_privatestat (const struct __stat64            *statbuf,
   buf->st_ctim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftCreationTime, &buf->st_ctim.tv_nsec);
   buf->st_mtim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftLastWriteTime, &buf->st_mtim.tv_nsec);
   buf->st_atim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftLastAccessTime, &buf->st_atim.tv_nsec);
-  buf->st_ctime = buf->st_ctim.tv_sec;
-  buf->st_mtime = buf->st_mtim.tv_sec;
-  buf->st_atime = buf->st_atim.tv_sec;
 }
 
 /* Read the link data from a symlink/mountpoint represented
@@ -1334,9 +1331,9 @@ g_stat (const gchar *filename,
   buf->st_gid = w32_buf.st_gid;
   buf->st_rdev = w32_buf.st_dev;
   buf->st_size = w32_buf.st_size;
-  buf->st_atime = w32_buf.st_atime;
-  buf->st_mtime = w32_buf.st_mtime;
-  buf->st_ctime = w32_buf.st_ctime;
+  buf->st_atime = w32_buf.st_atim.tv_sec;
+  buf->st_mtime = w32_buf.st_mtim.tv_sec;
+  buf->st_ctime = w32_buf.st_ctim.tv_sec;
 
   return retval;
 #else
@@ -1383,9 +1380,9 @@ g_lstat (const gchar *filename,
   buf->st_gid = w32_buf.st_gid;
   buf->st_rdev = w32_buf.st_dev;
   buf->st_size = w32_buf.st_size;
-  buf->st_atime = w32_buf.st_atime;
-  buf->st_mtime = w32_buf.st_mtime;
-  buf->st_ctime = w32_buf.st_ctime;
+  buf->st_atime = w32_buf.st_atim.tv_sec;
+  buf->st_mtime = w32_buf.st_mtim.tv_sec;
+  buf->st_ctime = w32_buf.st_ctim.tv_sec;
 
   return retval;
 #else

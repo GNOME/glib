@@ -99,7 +99,11 @@ test_validity (void)
       thumbnail_path = g_test_get_filename (G_TEST_DIST, "thumbnails",
                                             tests[i].filename, NULL);
       file_uri = g_strconcat ("file:///tmp/", tests[i].filename, NULL);
+#ifdef G_OS_WIN32
+      stat_buf.st_mtim.tv_sec = tests[i].mtime;
+#else
       stat_buf.st_mtime = tests[i].mtime;
+#endif
       stat_buf.st_size = tests[i].size;
 
       result = thumbnail_verify (thumbnail_path, file_uri, &stat_buf);

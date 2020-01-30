@@ -43,9 +43,6 @@ struct _GWin32PrivateStat
   guint16 st_gid;
   guint32 st_nlink;
   guint64 st_size;
-  gint64 st_ctime;
-  gint64 st_atime;
-  gint64 st_mtime;
   gtimespec st_ctim;
   gtimespec st_atim;
   gtimespec st_mtim;

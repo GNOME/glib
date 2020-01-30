@@ -123,13 +123,18 @@ _g_local_file_info_create_etag (GLocalFileStat *statbuf)
 {
   glong sec, usec;
 
+#if defined (G_OS_WIN32)
+  sec = statbuf->st_mtim.tv_sec;
+  usec = statbuf->st_mtim.tv_nsec / 1000;
+#else
   sec = statbuf->st_mtime;
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
   usec = statbuf->st_mtimensec / 1000;
-#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC) || defined (G_OS_WIN32)
+#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
   usec = statbuf->st_mtim.tv_nsec / 1000;
 #else
   usec = 0;
+#endif
 #endif
 
   return g_strdup_printf ("%lu:%lu", sec, usec);
@@ -1000,19 +1005,26 @@ set_info_from_stat (GFileInfo             *info,
                                            statbuf->allocated_size);
 
 #endif
-  
+
+#if defined (G_OS_WIN32)
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, statbuf->st_mtim.tv_sec);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtim.tv_nsec / 1000);
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, statbuf->st_atim.tv_sec);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atim.tv_nsec / 1000);
+#else
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, statbuf->st_mtime);
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtimensec / 1000);
-#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC) || defined (G_OS_WIN32)
+#elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtim.tv_nsec / 1000);
 #endif
   
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, statbuf->st_atime);
 #if defined (HAVE_STRUCT_STAT_ST_ATIMENSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atimensec / 1000);
-#elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC) || defined (G_OS_WIN32)
+#elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atim.tv_nsec / 1000);
+#endif
 #endif
 
 #ifndef G_OS_WIN32
