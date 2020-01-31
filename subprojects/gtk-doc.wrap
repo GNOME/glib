@@ -1,0 +1,4 @@
+[wrap-git]
+directory=gtk-doc
+url=https://gitlab.gnome.org/GNOME/gtk-doc.git
+revision=master

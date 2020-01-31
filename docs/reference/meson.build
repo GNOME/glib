@@ -45,9 +45,14 @@ gtkdoc_common_scan_args = [
 ]
 
 if get_option('gtk_doc')
+  if not meson.version().version_compare('>=0.52.0')
+    error('Building documentation requires Meson >= 0.52.0.')
+  endif
   # Check we have the minimum gtk-doc version required. Older versions won't
   # generate correct documentation.
-  dependency('gtk-doc', version : '>=1.32')
+  dependency('gtk-doc', version : '>=1.32',
+    fallback : ['gtk-doc', 'dummy_dep'],
+    default_options : ['tests=false'])
 endif
 
 subdir('gio')
