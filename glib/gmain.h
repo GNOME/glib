@@ -188,7 +188,7 @@ typedef gboolean (*GSourceFunc)       (gpointer user_data);
  *
  * Since: 2.58
  */
-#define G_SOURCE_FUNC(f) ((GSourceFunc) (void (*)(void)) (f))
+#define G_SOURCE_FUNC(f) ((GSourceFunc) (void (*)(void)) (f)) GLIB_AVAILABLE_MACRO_IN_2_58
 
 /**
  * GChildWatchFunc:
