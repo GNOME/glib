@@ -251,8 +251,7 @@ def codegen_main():
             print_error('Unrecognized --glib-min-required string ‘{}’'.format(
                 args.glib_min_required))
 
-        if glib_min_required[0] < 2 or \
-           (glib_min_required[0] == 2 and glib_min_required[1] < 30):
+        if glib_min_required < (2, 30):
             print_error('Invalid --glib-min-required string ‘{}’: minimum '
                         'version is 2.30'.format(args.glib_min_required))
     else:
@@ -280,17 +279,13 @@ def codegen_main():
         print_error('Invalid versions: --glib-min-required ({}) must be '
                     'less than or equal to --glib-max-allowed ({})'.format(glib_min_required, glib_max_allowed))
 
-    glib_min_required_is_2_64 = (glib_min_required[0] > 2 or
-                                 (glib_min_required[0] == 2 and
-                                  glib_min_required[1] >= 64))
-
     all_ifaces = []
     input_files_basenames = []
     for fname in sorted(args.files + args.xml_files):
         with open(fname, 'rb') as f:
             xml_data = f.read()
         parsed_ifaces = parser.parse_dbus_xml(xml_data,
-                                              h_type_implies_unix_fd=glib_min_required_is_2_64)
+                                              h_type_implies_unix_fd=(glib_min_required >= (2, 64)))
         all_ifaces.extend(parsed_ifaces)
         input_files_basenames.append(os.path.basename(fname))
 
