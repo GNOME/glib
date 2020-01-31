@@ -362,40 +362,90 @@ G_END_DECLS
                 # The output should be the same.
                 self.assertEqual(result1.out, result2.out)
 
-    def test_glib_min_version_invalid(self):
-        """Test running with an invalid --glib-min-version."""
+    def test_glib_min_required_invalid(self):
+        """Test running with an invalid --glib-min-required."""
         with self.assertRaises(subprocess.CalledProcessError):
             self.runCodegenWithInterface('',
                                          '--output', '/dev/stdout',
                                          '--body',
-                                         '--glib-min-version', 'hello mum')
+                                         '--glib-min-required', 'hello mum')
 
-    def test_glib_min_version_too_low(self):
-        """Test running with a --glib-min-version which is too low (and hence
+    def test_glib_min_required_too_low(self):
+        """Test running with a --glib-min-required which is too low (and hence
         probably a typo)."""
         with self.assertRaises(subprocess.CalledProcessError):
             self.runCodegenWithInterface('',
                                          '--output', '/dev/stdout',
                                          '--body',
-                                         '--glib-min-version', '2.6')
+                                         '--glib-min-required', '2.6')
 
-    def test_glib_min_version_major_only(self):
-        """Test running with a --glib-min-version which contains only a major version."""
+    def test_glib_min_required_major_only(self):
+        """Test running with a --glib-min-required which contains only a major version."""
         result = self.runCodegenWithInterface('',
                                               '--output', '/dev/stdout',
                                               '--header',
-                                              '--glib-min-version', '3')
+                                              '--glib-min-required', '3',
+                                              '--glib-max-allowed', '3.2')
         self.assertEqual('', result.err)
         self.assertNotEqual('', result.out.strip())
 
-    def test_glib_min_version_with_micro(self):
-        """Test running with a --glib-min-version which contains a micro version."""
+    def test_glib_min_required_with_micro(self):
+        """Test running with a --glib-min-required which contains a micro version."""
         result = self.runCodegenWithInterface('',
                                               '--output', '/dev/stdout',
                                               '--header',
-                                              '--glib-min-version', '2.46.2')
+                                              '--glib-min-required', '2.46.2')
         self.assertEqual('', result.err)
         self.assertNotEqual('', result.out.strip())
+
+    def test_glib_max_allowed_too_low(self):
+        """Test running with a --glib-max-allowed which is too low (and hence
+        probably a typo)."""
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.runCodegenWithInterface('',
+                                         '--output', '/dev/stdout',
+                                         '--body',
+                                         '--glib-max-allowed', '2.6')
+
+    def test_glib_max_allowed_major_only(self):
+        """Test running with a --glib-max-allowed which contains only a major version."""
+        result = self.runCodegenWithInterface('',
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-max-allowed', '3')
+        self.assertEqual('', result.err)
+        self.assertNotEqual('', result.out.strip())
+
+    def test_glib_max_allowed_with_micro(self):
+        """Test running with a --glib-max-allowed which contains a micro version."""
+        result = self.runCodegenWithInterface('',
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-max-allowed', '2.46.2')
+        self.assertEqual('', result.err)
+        self.assertNotEqual('', result.out.strip())
+
+    def test_glib_max_allowed_unstable(self):
+        """Test running with a --glib-max-allowed which is unstable. It should
+        be rounded up to the next stable version number, and hence should not
+        end up less than --glib-min-required."""
+        result = self.runCodegenWithInterface('',
+                                              '--output', '/dev/stdout',
+                                              '--header',
+                                              '--glib-max-allowed', '2.63',
+                                              '--glib-min-required', '2.64')
+        self.assertEqual('', result.err)
+        self.assertNotEqual('', result.out.strip())
+
+    def test_glib_max_allowed_less_than_min_required(self):
+        """Test running with a --glib-max-allowed which is less than
+        --glib-min-required."""
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.runCodegenWithInterface('',
+                                         '--output', '/dev/stdout',
+                                         '--body',
+                                         '--glib-max-allowed', '2.62',
+                                         '--glib-min-required', '2.64')
 
     def test_unix_fd_types_and_annotations(self):
         """Test an interface with `h` arguments, no annotation, and GLib < 2.64.
@@ -422,28 +472,28 @@ G_END_DECLS
               </interface>
             </node>'''
 
-        # Try without specifying --glib-min-version.
+        # Try without specifying --glib-min-required.
         result = self.runCodegenWithInterface(interface_xml,
                                               '--output', '/dev/stdout',
                                               '--header')
         self.assertEqual('', result.err)
         self.assertEqual(result.out.strip().count('GUnixFDList'), 6)
 
-        # Specify an old --glib-min-version.
+        # Specify an old --glib-min-required.
         result = self.runCodegenWithInterface(interface_xml,
                                               '--output', '/dev/stdout',
                                               '--header',
-                                              '--glib-min-version', '2.32')
+                                              '--glib-min-required', '2.32')
         self.assertEqual('', result.err)
         self.assertEqual(result.out.strip().count('GUnixFDList'), 6)
 
-        # Specify a --glib-min-version ≥ 2.64. There should be more
+        # Specify a --glib-min-required ≥ 2.64. There should be more
         # mentions of `GUnixFDList` now, since the annotation is not needed to
         # trigger its use.
         result = self.runCodegenWithInterface(interface_xml,
                                               '--output', '/dev/stdout',
                                               '--header',
-                                              '--glib-min-version', '2.64')
+                                              '--glib-min-required', '2.64')
         self.assertEqual('', result.err)
         self.assertEqual(result.out.strip().count('GUnixFDList'), 18)
 
@@ -458,7 +508,7 @@ G_END_DECLS
               </interface>
             </node>'''
 
-        # Try without specifying --glib-min-version.
+        # Try without specifying --glib-min-required.
         result = self.runCodegenWithInterface(interface_xml,
                                               '--output', '/dev/stdout',
                                               '--header')
@@ -466,21 +516,21 @@ G_END_DECLS
         self.assertEqual(result.out.strip().count('GDBusCallFlags call_flags,'), 0)
         self.assertEqual(result.out.strip().count('gint timeout_msec,'), 0)
 
-        # Specify an old --glib-min-version.
+        # Specify an old --glib-min-required.
         result = self.runCodegenWithInterface(interface_xml,
                                               '--output', '/dev/stdout',
                                               '--header',
-                                              '--glib-min-version', '2.32')
+                                              '--glib-min-required', '2.32')
         self.assertEqual('', result.err)
         self.assertEqual(result.out.strip().count('GDBusCallFlags call_flags,'), 0)
         self.assertEqual(result.out.strip().count('gint timeout_msec,'), 0)
 
-        # Specify a --glib-min-version ≥ 2.64. The two arguments should be
+        # Specify a --glib-min-required ≥ 2.64. The two arguments should be
         # present for both the async and sync method call functions.
         result = self.runCodegenWithInterface(interface_xml,
                                               '--output', '/dev/stdout',
                                               '--header',
-                                              '--glib-min-version', '2.64')
+                                              '--glib-min-required', '2.64')
         self.assertEqual('', result.err)
         self.assertEqual(result.out.strip().count('GDBusCallFlags call_flags,'), 2)
         self.assertEqual(result.out.strip().count('gint timeout_msec,'), 2)
