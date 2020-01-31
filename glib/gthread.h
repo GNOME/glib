@@ -283,6 +283,8 @@ typedef void GMutexLocker;
  * g_mutex_locker_free(). Using g_mutex_unlock() on @mutex
  * while a #GMutexLocker exists can lead to undefined behaviour.
  *
+ * No allocation is performed, it is equivalent to a g_mutex_lock() call.
+ *
  * This is intended to be used with g_autoptr().  Note that g_autoptr()
  * is only available when using GCC or clang, so the following example
  * will only work with those compilers:
@@ -328,6 +330,8 @@ g_mutex_locker_new (GMutex *mutex)
  *
  * Unlock @locker's mutex. See g_mutex_locker_new() for details.
  *
+ * No memory is freed, it is equivalent to a g_mutex_unlock() call.
+ *
  * Since: 2.44
  */
 static inline void
@@ -351,6 +355,8 @@ typedef void GRecMutexLocker;
  * Lock @rec_mutex and return a new #GRecMutexLocker. Unlock with
  * g_rec_mutex_locker_free(). Using g_rec_mutex_unlock() on @rec_mutex
  * while a #GRecMutexLocker exists can lead to undefined behaviour.
+ *
+ * No allocation is performed, it is equivalent to a g_rec_mutex_lock() call.
  *
  * This is intended to be used with g_autoptr().  Note that g_autoptr()
  * is only available when using GCC or clang, so the following example
@@ -397,6 +403,8 @@ g_rec_mutex_locker_new (GRecMutex *rec_mutex)
  *
  * Unlock @locker's recursive mutex. See g_rec_mutex_locker_new() for details.
  *
+ * No memory is freed, it is equivalent to a g_rec_mutex_unlock() call.
+ *
  * Since: 2.60
  */
 static inline void
@@ -421,6 +429,8 @@ typedef void GRWLockWriterLocker;
  * Unlock with g_rw_lock_writer_locker_free(). Using g_rw_lock_writer_unlock()
  * on @rw_lock while a #GRWLockWriterLocker exists can lead to undefined
  * behaviour.
+ *
+ * No allocation is performed, it is equivalent to a g_rw_lock_writer_lock() call.
  *
  * This is intended to be used with g_autoptr().  Note that g_autoptr()
  * is only available when using GCC or clang, so the following example
@@ -498,6 +508,8 @@ g_rw_lock_writer_locker_new (GRWLock *rw_lock)
  * Release a write lock on @locker's read-write lock. See
  * g_rw_lock_writer_locker_new() for details.
  *
+ * No memory is freed, it is equivalent to a g_rw_lock_writer_unlock() call.
+ *
  * Since: 2.62
  */
 static inline void
@@ -523,6 +535,8 @@ typedef void GRWLockReaderLocker;
  * on @rw_lock while a #GRWLockReaderLocker exists can lead to undefined
  * behaviour.
  *
+ * No allocation is performed, it is equivalent to a g_rw_lock_reader_lock() call.
+ *
  * This is intended to be used with g_autoptr(). For a code sample, see
  * g_rw_lock_writer_locker_new().
  *
@@ -542,6 +556,8 @@ g_rw_lock_reader_locker_new (GRWLock *rw_lock)
  *
  * Release a read lock on @locker's read-write lock. See
  * g_rw_lock_reader_locker_new() for details.
+ *
+ * No memory is freed, it is equivalent to a g_rw_lock_reader_unlock() call.
  *
  * Since: 2.62
  */
