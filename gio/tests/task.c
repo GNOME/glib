@@ -1117,6 +1117,44 @@ test_run_in_thread_sync (void)
   g_object_unref (task);
 }
 
+/* test_run_in_thread_await */
+
+static void
+test_run_in_thread_await (gconstpointer data)
+{
+  GTask *task;
+  gboolean thread_ran = FALSE;
+  gssize ret;
+  gboolean notification_emitted = FALSE;
+  GError *error = NULL;
+  guint sleep_time = GPOINTER_TO_UINT (data);
+
+  task = g_task_new (NULL, NULL, run_in_thread_sync_callback, NULL);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb,
+                    &notification_emitted);
+
+  g_task_set_task_data (task, &thread_ran, NULL);
+  g_task_run_in_thread (task, run_in_thread_sync_thread);
+  if (sleep_time)
+    g_usleep (sleep_time);
+  g_task_await (task);
+
+  g_assert (thread_ran == TRUE);
+  g_assert (task != NULL);
+  g_assert (!g_task_had_error (task));
+  g_assert_true (g_task_get_completed (task));
+  g_assert_true (notification_emitted);
+
+  ret = g_task_propagate_int (task, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (ret, ==, magic);
+
+  g_assert (!g_task_had_error (task));
+
+  g_object_unref (task);
+}
+
 /* test_run_in_thread_priority */
 
 static GMutex fake_task_mutex, last_fake_task_mutex;
@@ -2382,6 +2420,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/return-if-cancelled", test_return_if_cancelled);
   g_test_add_func ("/gtask/run-in-thread", test_run_in_thread);
   g_test_add_func ("/gtask/run-in-thread-sync", test_run_in_thread_sync);
+  g_test_add_data_func ("/gtask/run-in-thread-await", GUINT_TO_POINTER (0), test_run_in_thread_await);
+  g_test_add_data_func ("/gtask/run-in-thread-sleep-and-await", GUINT_TO_POINTER (50), test_run_in_thread_await);
   g_test_add_func ("/gtask/run-in-thread-priority", test_run_in_thread_priority);
   g_test_add_func ("/gtask/run-in-thread-nested", test_run_in_thread_nested);
   g_test_add_func ("/gtask/run-in-thread-overflow", test_run_in_thread_overflow);

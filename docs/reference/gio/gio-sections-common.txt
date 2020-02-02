@@ -4490,6 +4490,7 @@ g_task_get_completed
 <SUBSECTION>
 g_task_run_in_thread
 g_task_run_in_thread_sync
+g_task_await
 GTaskThreadFunc
 g_task_attach_source
 <SUBSECTION>

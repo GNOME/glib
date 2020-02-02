@@ -1204,6 +1204,9 @@ g_task_get_name (GTask *task)
 static void
 g_task_return_now (GTask *task)
 {
+  if (task->completed)
+    return;
+
   TRACE (GIO_TASK_BEFORE_RETURN (task, task->source_object, task->callback,
                                  task->callback_data));
 
@@ -1345,9 +1348,9 @@ g_task_thread_complete (GTask *task)
   if (task->cancellable)
     g_signal_handlers_disconnect_by_func (task->cancellable, task_thread_cancelled, task);
 
-  if (task->synchronous)
-    g_cond_signal (&task->cond);
-  else
+  g_cond_signal (&task->cond);
+
+  if (!task->synchronous)
     g_task_return (task, G_TASK_RETURN_FROM_THREAD);
 }
 
@@ -1573,6 +1576,49 @@ g_task_run_in_thread_sync (GTask           *task,
 
   task->synchronous = TRUE;
   g_task_start_task_thread (task, task_func);
+
+  while (!task->thread_complete)
+    g_cond_wait (&task->cond, &task->lock);
+
+  g_mutex_unlock (&task->lock);
+
+  TRACE (GIO_TASK_BEFORE_RETURN (task, task->source_object,
+                                 NULL  /* callback */,
+                                 NULL  /* callback data */));
+
+  /* Notify of completion in this thread. */
+  task->completed = TRUE;
+  g_object_notify (G_OBJECT (task), "completed");
+
+  g_object_unref (task);
+}
+
+/**
+ * g_task_await:
+ * @task: a #GTask that g_task_run_in_thread() has been called on
+ *     but that hasn't completed yet.
+ *
+ * Waits for @task to return a task run via g_task_run_in_thread() or be
+ * cancelled. You can use g_task_propagate_pointer(), etc, afterward
+ * to get the result of @task_func.
+ *
+ * The `callback` registered with @task will not be invoked when @task_func
+ * returns. #GTask:completed will be set to %TRUE just before this function
+ * returns.
+ **/
+void
+g_task_await (GTask *task)
+{
+  g_return_if_fail (G_IS_TASK (task));
+  g_return_if_fail (G_TASK_IS_THREADED (task));
+  /* FIXME: How to test? This one fails because of NULL != g_main_context_get_default()
+  g_return_if_fail (task->context == g_main_context_get_thread_default ());
+  */
+  g_return_if_fail (!task->completed);
+
+  g_object_ref (task);
+
+  g_mutex_lock (&task->lock);
 
   while (!task->thread_complete)
     g_cond_wait (&task->cond, &task->lock);
