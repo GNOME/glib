@@ -512,6 +512,8 @@ static GMutex    g_once_mutex;
 static GCond     g_once_cond;
 static GSList   *g_once_init_list = NULL;
 
+static volatile guint g_thread_n_created_counter = 0;
+
 static void g_thread_cleanup (gpointer data);
 static GPrivate     g_thread_specific_private = G_PRIVATE_INIT (g_thread_cleanup);
 
@@ -807,6 +809,12 @@ g_thread_proxy (gpointer data)
   return NULL;
 }
 
+guint
+g_thread_n_created (void)
+{
+  return g_atomic_int_get (&g_thread_n_created_counter);
+}
+
 /**
  * g_thread_new:
  * @name: (nullable): an (optional) name for the new thread
@@ -897,6 +905,8 @@ g_thread_new_internal (const gchar *name,
                        GError **error)
 {
   g_return_val_if_fail (func != NULL, NULL);
+
+  g_atomic_int_inc (&g_thread_n_created_counter);
 
   return (GThread *) g_system_thread_new (proxy, stack_size, scheduler_settings,
                                           name, func, data, error);
