@@ -478,7 +478,7 @@
 {
 	g-threaded-resolver-getaddrinfo-config
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:reachable,definite
 	fun:malloc
 	...
 	fun:__resolv_conf_allocate
