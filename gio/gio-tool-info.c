@@ -178,18 +178,29 @@ show_info (GFile *file, GFileInfo *info)
       if (entry != NULL)
         {
           gchar *device;
+          const gchar *root;
+          gchar *root_string = NULL;
           gchar *mount;
           gchar *fs;
           gchar *options;
 
           device = g_strescape (g_unix_mount_get_device_path (entry), NULL);
+          root = g_unix_mount_get_root_path (entry);
+          if (root != NULL && g_strcmp0 (root, "/") != 0)
+            {
+              escaped = g_strescape (root, NULL);
+              root_string = g_strconcat ("[", escaped, "]", NULL);
+              g_free (escaped);
+            }
           mount = g_strescape (g_unix_mount_get_mount_path (entry), NULL);
           fs = g_strescape (g_unix_mount_get_fs_type (entry), NULL);
           options = g_strescape (g_unix_mount_get_options (entry), NULL);
 
-          g_print (_("unix mount: %s %s %s %s\n"), device, mount, fs, options);
+          g_print (_("unix mount: %s%s %s %s %s\n"), device,
+                   root_string ? root_string : "", mount, fs, options);
 
           g_free (device);
+          g_free (root_string);
           g_free (mount);
           g_free (fs);
           g_free (options);
