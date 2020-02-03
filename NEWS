@@ -1,3 +1,62 @@
+Overview of changes in GLib 2.63.5
+==================================
+
+* Fix behaviour of `g_file_move()` fallback code to not follow symlinks (#986)
+
+* Rename `--glib-min-version` argument of `gdbus-codegen` to `--glib-min-required`
+  (this is not an API break as `--glib-min-version` was added earlier in the
+  2.63 cycle) (#1993)
+
+* Add gtk-doc checks to CI and fix a number of documentation issues
+  (thanks to Xavier Claessens) (!978)
+
+* Add `G_SIZEOF_MEMBER()` macro (!1333)
+
+* Add a debug message if `g_setenv()` or `g_unsetenv()` are used after any
+  threads have been spawned — this will be upgraded to a warning in future (!1337, #715)
+
+* Skip memory monitor tests if xdg-desktop-portal or dbusmock are not available (!1296, !1338)
+
+* Change the `libmount` configure option from a boolean to a Meson `feature` (!1344)
+
+* Do not return `target-uri` from `g_file_peek_path()` when called on trash/recent files (!1346)
+
+* Drop new TLS certificate API for PKCS #11 backed certificates, as the implementation
+  is not ready yet (this is not an API break as the API was added earlier in the
+  2.63 cycle) (!1347)
+
+* Bugs fixed:
+ - #986 g_file_move: remove G_FILE_COPY_NOFOLLOW_SYMLINKS section
+ - #1551 CI: Add checks for `TODO` in MRs
+ - #1925 Large number of routes installed into kernel cause high cpu usage
+ - #1993 Rename gdbus-codegen --glib-min-version argument to --glib-min-required and add --glib-max-allowed
+ - #2012 spawn_thread_queue not initialised in GThreadPool
+ - #2020 g_network_monitor_base_add_network() improperly unrefs GInetAddressMask
+ - !978 Various fixes to make gtkdoc-check pass on glib
+ - !1018 docs: tag enclose 'all' and 'help' values
+ - !1170 Avoid C++20 deprecated assignment to volatile
+ - !1296 tests: Skip GMemoryMonitor tests if the dbusmock template is not available
+ - !1307 Remove global declaration of GMemoryMonitor
+ - !1322 gmain: Mark G_SOURCE_FUNC as available in 2.58
+ - !1333 Add and use G_SIZEOF_MEMBER() macro
+ - !1337 genviron: Message if g_setenv()/g_unsetenv() are used after threads spawned
+ - !1338 tests: Skip GMemoryMonitor tests if xdg-desktop-portal is not available
+ - !1344 meson: libmount autodectection
+ - !1345 gio-tool-info: Print unix mount information where available
+ - !1346 gfile: Do not return target-uri from g_file_peek_path()
+ - !1347 Revert "gtlscertificate: Add support for PKCS #11 backed certificates"
+ - !1348 ghash: Clarify that g_hash_table_add() always consumes the key
+ - !1349 doc: Clarify that _locker_new() does not actually allocate memory
+ - !1351 glib.supp: update g-threaded-resolver-getaddrinfo-config
+
+* Translation updates:
+ - Japanese
+ - Lithuanian
+ - Malay
+ - Portuguese (Brazil)
+ - Swedish
+
+
 Overview of changes in GLib 2.63.4
 ==================================
 
