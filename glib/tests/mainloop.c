@@ -1832,6 +1832,50 @@ test_maincontext_source_finalization (void)
   g_assert_true (source_finalize_called);
 }
 
+typedef struct {
+  GSource source;
+
+  GSource *other_source;
+} SourceWithSource;
+
+static void
+finalize_source_with_source (GSource *source)
+{
+  SourceWithSource *s = (SourceWithSource *) source;
+
+  if (s->other_source) {
+    g_source_destroy (s->other_source);
+    g_source_unref (s->other_source);
+    s->other_source = NULL;
+  }
+}
+
+static GSourceFuncs source_with_source_funcs = {
+  NULL,
+  NULL,
+  NULL,
+  finalize_source_with_source
+};
+
+static void
+test_maincontext_source_finalization_from_source (void)
+{
+  GMainContext *c = g_main_context_new ();
+  GSource *s1, *s2;
+
+  s1 = g_source_new (&source_with_source_funcs, sizeof (SourceWithSource));
+  s2 = g_source_new (&source_with_source_funcs, sizeof (SourceWithSource));
+  ((SourceWithSource *)s1)->other_source = g_source_ref (s2);
+
+  g_source_attach (s1, c);
+  g_source_attach (s2, c);
+
+  g_source_unref (s1);
+  g_source_unref (s2);
+
+  g_main_context_unref (c);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1840,6 +1884,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/maincontext/basic", test_maincontext_basic);
   g_test_add_func ("/maincontext/source_finalization", test_maincontext_source_finalization);
+  g_test_add_func ("/maincontext/source_finalization_from_source", test_maincontext_source_finalization_from_source);
   g_test_add_func ("/mainloop/basic", test_mainloop_basic);
   g_test_add_func ("/mainloop/timeouts", test_timeouts);
   g_test_add_func ("/mainloop/priorities", test_priorities);
