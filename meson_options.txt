@@ -30,8 +30,8 @@ option('xattr',
        description : 'build with xattr support')
 
 option('libmount',
-       type : 'boolean',
-       value : true,
+       type : 'feature',
+       value : 'auto',
        description : 'build with libmount support')
 
 option('internal_pcre',
