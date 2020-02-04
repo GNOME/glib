@@ -55,6 +55,12 @@
 #define G_TEST_DIR_MODE (S_IWRITE | S_IREAD)
 #endif
 
+#ifdef G_OS_WIN32
+#define ROOTDIR "C:\\"
+#else
+#define ROOTDIR G_DIR_SEPARATOR_S
+#endif
+
 #define S G_DIR_SEPARATOR_S
 
 static void
@@ -65,9 +71,19 @@ check_string (gchar *str, const gchar *expected)
   g_free (str);
 }
 
+/* Testing g_build_path() function */
 static void
 test_build_path (void)
 {
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_build_path (NULL, "", NULL));
+      g_test_assert_expected_messages ();
+    }
+
 /*  check_string (g_build_path ("", NULL), "");*/
   check_string (g_build_path ("", "", NULL), "");
   check_string (g_build_path ("", "x", NULL), "x");
@@ -129,6 +145,7 @@ test_build_path (void)
   check_string (g_build_path ("::", "::::x::::", "::::y::::", "::::z::::", NULL), "::::x::y::z::::");
 }
 
+/* Testing g_build_pathv() function */
 static void
 test_build_pathv (void)
 {
@@ -251,9 +268,35 @@ test_build_pathv (void)
 }
 
 static void
+check_build_filename_valist (const gchar *first_element, ...)
+{
+  gchar *str;
+  va_list args;
+
+  va_start (args, first_element);
+  str = g_build_filename_valist (first_element, &args);
+  va_end (args);
+
+  g_assert_nonnull (str);
+  g_free (str);
+}
+
+/* Testing g_build_filename() and g_build_filename_valist() functions */
+static void
 test_build_filename (void)
 {
-/*  check_string (g_build_filename (NULL), "");*/
+  va_list args = { 0 };
+
+  /* Degenerated cases (g_build_filename_valist()) */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_build_filename_valist (NULL, &args));
+      g_test_assert_expected_messages ();
+    }
+
+  /*  check_string (g_build_filename (NULL), "");*/
   check_string (g_build_filename (S, NULL), S);
   check_string (g_build_filename (S"x", NULL), S"x");
   check_string (g_build_filename ("x"S, NULL), "x"S);
@@ -276,6 +319,8 @@ test_build_filename (void)
   check_string (g_build_filename ("x", "y", "z", NULL), "x"S"y"S"z");
   check_string (g_build_filename (S"x"S, S"y"S, S"z"S, NULL), S"x"S"y"S"z"S);
   check_string (g_build_filename (S S"x"S S, S S"y"S S, S S"z"S S, NULL), S S"x"S"y"S"z"S S);
+
+  check_build_filename_valist ("x", "y", NULL);
 
 #ifdef G_OS_WIN32
 
@@ -315,6 +360,7 @@ test_build_filename (void)
 
 }
 
+/* Testing g_build_filenamev() function */
 static void
 test_build_filenamev (void)
 {
@@ -432,10 +478,156 @@ test_build_filenamev (void)
 #endif /* G_OS_WIN32 */
 }
 
-#undef S
+/* Testing g_file_test() function */
+static void
+test_file_test (void)
+{
+  FILE *f;
+  gchar *filename, *path;
+
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_file_test (NULL, G_FILE_TEST_EXISTS));
+      g_test_assert_expected_messages ();
+    }
+
+    /* Positive cases */
+#ifdef HAVE_READLINK
+#ifdef G_OS_UNIX
+  g_remove ("/tmp/foo");
+  g_remove ("/tmp/bar");
+  g_assert_cmpint (symlink ("/tmp/foo", "/tmp/bar"), ==, 0);
+
+  /* Testing dead symlink */
+  g_assert_false (g_file_test ("/tmp/bar", G_FILE_TEST_IS_REGULAR));
+  g_assert_true (g_file_test ("/tmp/bar", G_FILE_TEST_IS_SYMLINK));
+  g_assert_false (g_file_test ("/tmp/bar", G_FILE_TEST_IS_DIR));
+  g_assert_false (g_file_test ("/tmp/bar", G_FILE_TEST_IS_EXECUTABLE));
+  g_assert_false (g_file_test ("/tmp/bar", G_FILE_TEST_EXISTS));
+
+  g_assert_false (g_file_test ("/tmp/foo", G_FILE_TEST_IS_REGULAR));
+  g_assert_false (g_file_test ("/tmp/foo", G_FILE_TEST_IS_SYMLINK));
+  g_assert_false (g_file_test ("/tmp/foo", G_FILE_TEST_IS_DIR));
+  g_assert_false (g_file_test ("/tmp/foo", G_FILE_TEST_IS_EXECUTABLE));
+  g_assert_false (g_file_test ("/tmp/foo", G_FILE_TEST_EXISTS));
+
+  /* Testing correct symlink */
+  f = g_fopen ("/tmp/foo", "w");
+  if (f == NULL)
+    g_error ("failed: could not create /tmp/foo");
+
+  g_assert_true (g_file_test ("/tmp/bar", G_FILE_TEST_IS_REGULAR));
+  g_assert_true (g_file_test ("/tmp/bar", G_FILE_TEST_IS_SYMLINK));
+  g_assert_false (g_file_test ("/tmp/bar", G_FILE_TEST_IS_DIR));
+  g_assert_false (g_file_test ("/tmp/bar", G_FILE_TEST_IS_EXECUTABLE));
+  g_assert_true (g_file_test ("/tmp/bar", G_FILE_TEST_EXISTS));
+
+  g_assert_true (g_file_test ("/tmp/foo", G_FILE_TEST_IS_REGULAR));
+  g_assert_false (g_file_test ("/tmp/foo", G_FILE_TEST_IS_SYMLINK));
+  g_assert_false (g_file_test ("/tmp/foo", G_FILE_TEST_IS_DIR));
+  g_assert_false (g_file_test ("/tmp/foo", G_FILE_TEST_IS_EXECUTABLE));
+  g_assert_true (g_file_test ("/tmp/foo", G_FILE_TEST_EXISTS));
+
+  fclose (f);
+
+  g_remove ("/tmp/bar");
+  g_remove ("/tmp/foo");
+#endif
+#else
+  g_test_skip ("Symbolic links not supported");
+#endif
+
+  /* Test for non-existing files or directories */
+  filename = g_build_filename (".", "tmp", "foo", NULL);
+  g_remove (filename);
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_REGULAR));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_SYMLINK));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_DIR));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_EXECUTABLE));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_EXISTS));
+  g_free (filename);
+
+  /* Test for existing directories */
+  path = g_build_filename (".", "tmp", NULL);
+  g_remove (path);
+  g_assert_cmpint (g_mkdir (path, 0777), ==, 0);
+  g_assert_false (g_file_test (path, G_FILE_TEST_IS_REGULAR));
+  g_assert_false (g_file_test (path, G_FILE_TEST_IS_SYMLINK));
+  g_assert_true (g_file_test (path, G_FILE_TEST_IS_DIR));
+#ifdef G_OS_UNIX
+  g_assert_true (g_file_test (path, G_FILE_TEST_IS_EXECUTABLE));
+#else /* Non UNIX file-systems */
+  g_assert_false (g_file_test (path, G_FILE_TEST_IS_EXECUTABLE));
+#endif
+  g_assert_true (g_file_test (path, G_FILE_TEST_EXISTS));
+  g_remove (path);
+  g_free (path);
+
+#ifdef G_OS_UNIX
+  /* Test for setuid directories */
+  path = g_build_filename (".", "tmp", NULL);
+  g_remove (path);
+  g_assert_cmpint (g_mkdir (path, 1777), ==, 0);
+  g_assert_false (g_file_test (path, G_FILE_TEST_IS_REGULAR));
+  g_assert_false (g_file_test (path, G_FILE_TEST_IS_SYMLINK));
+  g_assert_true (g_file_test (path, G_FILE_TEST_IS_DIR));
+  g_assert_true (g_file_test (path, G_FILE_TEST_IS_EXECUTABLE));
+  g_assert_true (g_file_test (path, G_FILE_TEST_EXISTS));
+  g_rmdir (path);
+  g_free (path);
+#else
+  g_test_skip ("Setuid rights on directories are not supported");
+#endif
+
+  /* Test for regular files */
+  path = g_build_filename (".", "tmp", NULL);
+  g_assert_cmpint (g_mkdir (path, 0777), ==, 0);
+  filename = g_build_filename (".", "tmp", "foo", NULL);
+  f = g_fopen (filename, "w");
+  if (f == NULL)
+    g_error ("failed: could not create '%s'", filename);
+  g_assert_true (g_file_test (filename, G_FILE_TEST_IS_REGULAR));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_SYMLINK));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_DIR));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_EXECUTABLE));
+  g_assert_true (g_file_test (filename, G_FILE_TEST_EXISTS));
+
+  /* Check for executable files */
+  g_assert_cmpint (g_chmod (filename, 0777), ==, 0);
+  g_assert_true (g_file_test (filename, G_FILE_TEST_IS_REGULAR));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_SYMLINK));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_DIR));
+#ifdef G_OS_UNIX
+  g_assert_true (g_file_test (filename, G_FILE_TEST_IS_EXECUTABLE));
+#else /* Non UNIX file-systems */
+  g_assert_false (g_file_test (path, G_FILE_TEST_IS_EXECUTABLE));
+#endif
+  g_assert_true (g_file_test (filename, G_FILE_TEST_EXISTS));
+
+  /* Check for setuid files */
+#ifdef G_OS_UNIX
+  g_assert_cmpint (g_chmod (filename, 1777), ==, 0);
+  g_assert_true (g_file_test (filename, G_FILE_TEST_IS_REGULAR));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_SYMLINK));
+  g_assert_false (g_file_test (filename, G_FILE_TEST_IS_DIR));
+  g_assert_true (g_file_test (filename, G_FILE_TEST_IS_EXECUTABLE));
+  g_assert_true (g_file_test (filename, G_FILE_TEST_EXISTS));
+#else
+  g_test_skip ("Setuid rights on files are not supported");
+#endif
+
+  fclose (f);
+  g_remove (filename);
+  g_free (filename);
+  g_rmdir (path);
+  g_free (path);
+}
 
 static void
-test_mkdir_with_parents_1 (const gchar *base)
+check_mkdir_with_parents_1 (const gchar *base)
 {
   char *p0 = g_build_filename (base, "fum", NULL);
   char *p1 = g_build_filename (p0, "tem", NULL);
@@ -498,28 +690,48 @@ test_mkdir_with_parents_1 (const gchar *base)
   g_free (p0);
 }
 
+/* Testing g_mkdir_with_parents() function */
 static void
 test_mkdir_with_parents (void)
 {
   gchar *cwd;
+
+  /* Degenerated cases */
+  g_assert_cmpint (g_mkdir_with_parents ("", 0), ==, -1);
+  g_assert_cmpint (errno, ==, EINVAL);
+  g_assert_cmpint (g_mkdir_with_parents (NULL, 0), ==, -1);
+  g_assert_cmpint (errno, ==, EINVAL);
+#ifdef G_OS_WIN32
+  g_assert_cmpint (g_mkdir_with_parents ("/windows/foo/bar", 0), ==, -1);
+#else
+  g_assert_cmpint (g_mkdir_with_parents ("/etc/foo/bar", 0), ==, -1);
+#endif
+  g_assert_cmpint (errno, ==, EACCES);
+#ifdef G_OS_WIN32
+  g_assert_cmpint (g_mkdir_with_parents ("/temp///", 0), ==, 0);
+#else
+  g_assert_cmpint (g_mkdir_with_parents ("/tmp///", 0), ==, 0);
+#endif
+  g_assert_cmpint (errno, ==, EEXIST);
+
+  /* Positive cases */
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in subdir ./hum/");
-  test_mkdir_with_parents_1 ("hum");
+  check_mkdir_with_parents_1 ("hum/");
   g_remove ("hum");
+
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
-  test_mkdir_with_parents_1 ("hii///haa/hee");
+  check_mkdir_with_parents_1 ("hii///haa/hee");
   g_remove ("hii/haa/hee");
   g_remove ("hii/haa");
   g_remove ("hii");
+
   cwd = g_get_current_dir ();
   if (g_test_verbose())
     g_printerr ("checking g_mkdir_with_parents() in cwd: %s", cwd);
-  test_mkdir_with_parents_1 (cwd);
+  check_mkdir_with_parents_1 (cwd);
   g_free (cwd);
-
-  g_assert_cmpint (g_mkdir_with_parents (NULL, 0), ==, -1);
-  g_assert_cmpint (errno, ==, EINVAL);
 }
 
 /* Reproducer for https://gitlab.gnome.org/GNOME/glib/issues/1852 */
@@ -576,6 +788,7 @@ test_mkdir_with_parents_permission (void)
 #endif
 }
 
+/* Testing g_format_size_for_display() function */
 static void
 test_format_size_for_display (void)
 {
@@ -650,9 +863,13 @@ test_format_size_for_display (void)
   check_string (g_format_size_full (238472938, G_FORMAT_SIZE_BITS | G_FORMAT_SIZE_IEC_UNITS | G_FORMAT_SIZE_LONG_FORMAT), "227.4\302\240Mib (238472938 bits)");
 }
 
+/* Testing g_file_error_from_errno() function */
 static void
 test_file_errors (void)
 {
+  /* Reaching default */
+  g_assert_cmpint (g_file_error_from_errno (0xff), ==, G_FILE_ERROR_FAILED);
+
 #ifdef EEXIST
   g_assert_cmpint (g_file_error_from_errno (EEXIST), ==, G_FILE_ERROR_EXIST);
 #endif
@@ -727,43 +944,111 @@ test_file_errors (void)
 #endif
 }
 
+/* Testing g_path_is_absolute() function */
+static void
+test_path_is_absolute (void)
+{
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_path_is_absolute (NULL));
+      g_test_assert_expected_messages ();
+    }
+}
+
+/* Testing g_path_skip_root() function */
+static void
+test_path_skip_root (void)
+{
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_path_skip_root (NULL));
+      g_test_assert_expected_messages ();
+    }
+  g_assert_null (g_path_skip_root ("~/aaaa"));
+}
+
+/* Testing g_path_get_basename() function */
 static void
 test_basename (void)
 {
-  gchar *b;
+  gchar *path;
 
-  b = g_path_get_basename ("");
-  g_assert_cmpstr (b, ==, ".");
-  g_free (b);
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_path_get_basename (NULL));
+      g_test_assert_expected_messages ();
+    }
 
-  b = g_path_get_basename ("///");
-  g_assert_cmpstr (b, ==, G_DIR_SEPARATOR_S);
-  g_free (b);
+  path = g_path_get_basename ("");
+  g_assert_cmpstr (path, ==, ".");
+  g_free (path);
 
-  b = g_path_get_basename ("/a/b/c/d");
-  g_assert_cmpstr (b, ==, "d");
-  g_free (b);
+  /* Positive cases */
+  path = g_path_get_basename ("///");
+  g_assert_cmpstr (path, ==, G_DIR_SEPARATOR_S);
+  g_free (path);
+
+  path = g_path_get_basename ("/a/b/c/d");
+  g_assert_cmpstr (path, ==, "d");
+  g_free (path);
+
+  path = g_path_get_basename ("abcd");
+  g_assert_cmpstr (path, ==, "abcd");
+  g_free (path);
+
+  /* Deprecated g_basename() function */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_basename (NULL));
+      g_test_assert_expected_messages ();
+    }
+
+  g_assert_cmpstr (g_basename (""), ==, "");
+  g_assert_cmpstr (g_basename ("////"), ==, "");
 }
 
+/* Testing g_dir_make_tmp() function */
 static void
 test_dir_make_tmp (void)
 {
   gchar *name;
   GError *error = NULL;
-  gint ret;
+
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_assert_null (g_dir_make_tmp ("test", NULL));
+
+      error = g_error_new (G_IO_ERR, G_IO_ERROR_INVAL, "error");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*error == NULL || *error == NULL*");
+      g_assert_null (g_dir_make_tmp ("test", &error));
+      g_test_assert_expected_messages ();
+      g_error_free (error);
+      error = NULL;
+    }
 
   name = g_dir_make_tmp ("testXXXXXXtest", &error);
   g_assert_no_error (error);
   g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
-  ret = g_rmdir (name);
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (g_rmdir (name), ==, 0);
   g_free (name);
 
   name = g_dir_make_tmp (NULL, &error);
   g_assert_no_error (error);
   g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
-  ret = g_rmdir (name);
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (g_rmdir (name), ==, 0);
   g_free (name);
 
   name = g_dir_make_tmp ("test/XXXXXX", &error);
@@ -777,12 +1062,25 @@ test_dir_make_tmp (void)
   g_assert_null (name);
 }
 
+/* Testing g_file_open_tmp() function */
 static void
 test_file_open_tmp (void)
 {
   gchar *name = NULL;
   GError *error = NULL;
   gint fd;
+
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      error = g_error_new (G_IO_ERR, G_IO_ERROR_INVAL, "error");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*error == NULL || *error == NULL*");
+      g_assert_cmpint (g_file_open_tmp (name, &name, &error), ==, -1);
+      g_test_assert_expected_messages ();
+      g_error_free (error);
+      error = NULL;
+    }
 
   fd = g_file_open_tmp ("testXXXXXXtest", &name, &error);
   g_assert_cmpint (fd, !=, -1);
@@ -814,6 +1112,7 @@ test_file_open_tmp (void)
   g_clear_error (&error);
 }
 
+/* Testing g_mkstemp() function */
 static void
 test_mkstemp (void)
 {
@@ -834,90 +1133,222 @@ test_mkstemp (void)
   g_free (name);
 }
 
+/* Testing g_mkdtemp() function */
 static void
 test_mkdtemp (void)
 {
   gchar *name;
-  gchar *ret;
 
-  name = g_strdup ("testXXXXXXtest"),
-  ret = g_mkdtemp (name);
-  g_assert (ret == name);
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_mkdtemp (NULL));
+      g_test_assert_expected_messages ();
+    }
+
+  g_assert_null (g_mkdtemp ("test"));
+
+  g_assert_null (g_mkdtemp ("testXXXXXtest"));
+
+  name = g_strdup ("testXXXXXXtest");
+  g_assert_cmpstr (g_mkdtemp (name), ==, name);
   g_assert_null (strstr (name, "XXXXXX"));
   g_rmdir (name);
   g_free (name);
 
-  name = g_strdup ("testYYYYYYtest"),
-  ret = g_mkdtemp (name);
-  g_assert_null (ret);
+  name = g_strdup ("testYYYYYYtest");
+  g_assert_null (g_mkdtemp (name));
   g_free (name);
 }
 
+/* Testing g_file_get_contents() and g_file_set_contents() functions */
 static void
-test_set_contents (void)
+test_set_and_get_contents (void)
 {
   GError *error = NULL;
   gint fd;
-  gchar *name;
-  gchar *buf;
-  gsize len;
-  gboolean ret;
+  gchar *filename, *name = "/tmp";
+  gchar *buf = "test";
+  gsize len = 0;
 
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      /* Degenerated cases (get_contents()) */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_file_get_contents (NULL, &buf, &len, &error));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_file_get_contents (name, NULL, &len, &error));
+      g_test_assert_expected_messages ();
+
+      /* Degenerated cases (set_contents()) */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_file_set_contents (NULL, buf, 10, &error));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_file_set_contents (NULL, buf, 0, &error));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_false (g_file_set_contents (name, NULL, 10, &error));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*length >= -1*");
+      g_assert_false (g_file_set_contents (name, buf, -2, &error));
+      g_test_assert_expected_messages ();
+
+      g_assert_false (g_file_set_contents (name, buf, 10, NULL));
+
+      error = g_error_new (G_IO_ERR, G_IO_ERROR_INVAL, "error");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*error == NULL || *error == NULL*");
+      g_assert_false (g_file_set_contents (name, buf, 10, &error));
+      g_test_assert_expected_messages ();
+      g_error_free (error);
+      error = NULL;
+    }
+
+    /* Trying to get from an empty file */
+#ifdef G_OS_WIN32
+  filename = g_build_filename ("/", "temp", "foo", NULL);
+#else
+  filename = g_build_filename ("/", "tmp", "foo", NULL);
+#endif
+  g_creat (filename, 0666);
+  g_file_set_contents (filename, "", 0, &error);
+  if (error)
+    {
+      g_error_free (error);
+      error = NULL;
+    }
+  g_file_get_contents (filename, &buf, &len, &error);
+  if (error)
+    {
+      g_error_free (error);
+      error = NULL;
+    }
+  g_free (buf);
+  g_remove (filename);
+  g_free (filename);
+
+  /* Positive cases */
   fd = g_file_open_tmp (NULL, &name, &error);
   g_assert_no_error (error);
   write (fd, "a", 1);
   g_assert_cmpint (g_fsync (fd), ==, 0);
   close (fd);
 
-  ret = g_file_get_contents (name, &buf, &len, &error);
-  g_assert_true (ret);
+  g_assert_true (g_file_get_contents (name, &buf, NULL, &error));
   g_assert_no_error (error);
   g_assert_cmpstr (buf, ==, "a");
   g_free (buf);
 
-  ret = g_file_set_contents (name, "b", 1, &error);
-  g_assert_true (ret);
+  g_assert_true (g_file_get_contents (name, &buf, &len, &error));
+  g_assert_no_error (error);
+  g_assert_cmpstr (buf, ==, "a");
+  g_free (buf);
+
+  g_assert_true (g_file_set_contents (name, "b", 1, &error));
   g_assert_no_error (error);
 
-  ret = g_file_get_contents (name, &buf, &len, &error);
-  g_assert_true (ret);
+  g_assert_true (g_file_get_contents (name, &buf, &len, &error));
   g_assert_no_error (error);
   g_assert_cmpstr (buf, ==, "b");
   g_free (buf);
 
+  g_assert_true (g_file_set_contents (name, "b", -1, &error));
+  g_assert_no_error (error);
+
   g_remove (name);
   g_free (name);
+
+#ifdef G_OS_WIN32
+  filename = g_build_filename ("/", "temp", NULL);
+#else
+  filename = g_build_filename ("/", "tmp", NULL);
+#endif
+  g_assert_false (g_file_get_contents (filename, &buf, &len, NULL));
+  g_free (filename);
+
+#ifdef G_OS_WIN32
+  filename = g_build_filename ("/", "windows", NULL);
+#else
+  filename = g_build_filename ("/", "etc", NULL);
+#endif
+  g_assert_false (g_file_get_contents (filename, &buf, &len, NULL));
+  g_free (filename);
+
+  /* Negative cases */
+#ifdef G_OS_WIN32
+  filename = g_build_filename ("/", "windows", "foo", NULL);
+#else
+  filename = g_build_filename ("/", "etc", "foo", NULL);
+#endif
+  g_assert_false (g_file_get_contents (filename, &buf, NULL, &error));
+  g_error_free (error);
+  g_free (filename);
 }
 
+/* Testing g_file_read_link() function */
 static void
 test_read_link (void)
 {
 #ifdef HAVE_READLINK
 #ifdef G_OS_UNIX
-  int ret;
   const gchar *oldpath;
   gchar *cwd;
   gchar *newpath;
   gchar *badpath;
   gchar *path;
   GError *error = NULL;
+  int fd;
 
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_file_read_link (NULL, &error));
+      g_test_assert_expected_messages ();
+
+      g_assert_null (g_file_read_link ("path", NULL));
+
+      error = g_error_new (G_IO_ERR, G_IO_ERROR_INVAL, "error");
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*error == NULL || *error == NULL*");
+      g_assert_null (g_file_read_link ("path", &error));
+      g_test_assert_expected_messages ();
+      g_error_free (error);
+      error = NULL;
+    }
+
+  /* Positive cases */
   cwd = g_get_current_dir ();
 
   oldpath = g_test_get_filename (G_TEST_DIST, "4096-random-bytes", NULL);
   newpath = g_build_filename (cwd, "page-of-junk", NULL);
   badpath = g_build_filename (cwd, "4097-random-bytes", NULL);
-  remove (newpath);
-  ret = symlink (oldpath, newpath);
-  g_assert_cmpint (ret, ==, 0);
+  g_remove (newpath);
+
+  g_assert_cmpint (symlink (oldpath, newpath), ==, 0);
   path = g_file_read_link (newpath, &error);
   g_assert_no_error (error);
   g_assert_cmpstr (path, ==, oldpath);
   g_free (path);
+  g_remove (newpath);
 
-  remove (newpath);
-  ret = symlink (badpath, newpath);
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (symlink (badpath, newpath), ==, 0);
   path = g_file_read_link (newpath, &error);
   g_assert_no_error (error);
   g_assert_cmpstr (path, ==, badpath);
@@ -925,13 +1356,40 @@ test_read_link (void)
 
   path = g_file_read_link (oldpath, &error);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
-  g_assert_null (path);
   g_error_free (error);
+  error = NULL;
+  g_assert_null (path);
+  g_remove (newpath);
 
-  remove (newpath);
   g_free (cwd);
   g_free (newpath);
   g_free (badpath);
+
+  /* Reading file with very long name (256 bytes) */
+  path = g_build_filename ("/", "tmp",
+                           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                           "aaaaaa",
+                           NULL);
+  g_remove (path);
+  fd = g_open (path, O_CREAT | O_RDWR, 0666);
+  g_assert_cmpint (fd, !=, -1);
+  newpath = g_build_filename ("/", "tmp", "symbolic-link", NULL);
+  g_remove (newpath);
+  g_assert_cmpint (symlink (path, newpath), ==, 0);
+  badpath = g_file_read_link (newpath, &error);
+  g_assert_cmpint (strlen (badpath), ==, 256);
+  g_assert_nonnull (badpath);
+
+  g_remove (newpath);
+  g_remove (path);
+
+  g_free (path);
+  g_free (badpath);
+  g_free (newpath);
 
 #endif
 #else
@@ -939,12 +1397,141 @@ test_read_link (void)
 #endif
 }
 
+/* Testing g_path_get_dirname() function */
+static void
+test_path_get_dirname (void)
+{
+  gchar *path;
+
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_assert_null (g_path_get_dirname (NULL));
+      g_test_assert_expected_messages ();
+    }
+
+  /* Usual case */
+  path = g_path_get_dirname ("/tmp/foo");
+  g_assert_cmpstr (path, ==, "/tmp");
+  g_free (path);
+
+  /* Border cases */
+  path = g_path_get_dirname (".");
+  g_assert_cmpstr (path, ==, ".");
+  g_free (path);
+
+  path = g_path_get_dirname ("//////");
+  g_assert_cmpstr (path, ==, "/");
+  g_free (path);
+}
+
+/* Testing g_get_current_dir() function */
+static void
+test_get_current_dir (void)
+{
+  gchar *cwd, *pwd;
+
+  pwd = g_strdup (g_getenv ("PWD"));
+
+  g_unsetenv ("PWD");
+  cwd = g_get_current_dir ();
+  g_assert_nonnull (cwd);
+  g_free (cwd);
+
+  g_setenv ("PWD", "/root", TRUE);
+  cwd = g_get_current_dir ();
+  g_assert_nonnull (cwd);
+  g_free (cwd);
+
+  g_setenv ("PWD", pwd, TRUE);
+  g_free (pwd);
+}
+
+/* Testing g_canonicalize_filename() function */
+static void
+test_canonicalize_filename (void)
+{
+  gchar *result, *path;
+
+  /* Degenerated cases */
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*relative_to == NULL || g_path_is_absolute (relative_to)*");
+      g_assert_null (g_canonicalize_filename (NULL, "./sample.txt"));
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*relative_to == NULL || g_path_is_absolute (relative_to)*");
+      g_assert_null (g_canonicalize_filename ("/usr/bin/l", "./sample.txt"));
+      g_test_assert_expected_messages ();
+    }
+
+  /* Positive cases */
+  result = g_canonicalize_filename ("../../usr/bin", "/etc/foo");
+  path = g_build_filename (S, "usr", "bin", NULL);
+  g_assert_cmpstr (result, ==, path);
+  g_free (path);
+  g_free (result);
+
+  result = g_canonicalize_filename ("/usr/bin/sample.txt", "/etc/foo");
+  path = g_build_filename (S, "usr", "bin", "sample.txt", NULL);
+  g_assert_cmpstr (result, ==, path);
+  g_free (path);
+  g_free (result);
+
+  result = g_canonicalize_filename ("../../../../../../../../bin/sample.txt", NULL);
+  path = g_build_filename (ROOTDIR, "bin", "sample.txt", NULL);
+  g_assert_cmpstr (result, ==, path);
+  g_free (path);
+  g_free (result);
+
+  result = g_canonicalize_filename ("//////////////////..//////bin/sample.txt",
+                                    "/etc////foo");
+  path = g_build_filename (S, "bin", "sample.txt", NULL);
+  g_assert_cmpstr (result, ==, path);
+  g_free (path);
+  g_free (result);
+
+  result = g_canonicalize_filename ("./", "/etc/");
+  path = g_build_filename (S, "etc", NULL);
+  g_assert_cmpstr (result, ==, path);
+  g_free (path);
+  g_free (result);
+
+  result = g_canonicalize_filename (".a", "/etc/");
+  path = g_build_filename (S, "etc", ".a", NULL);
+  g_assert_cmpstr (result, ==, path);
+  g_free (path);
+  g_free (result);
+
+  result = g_canonicalize_filename ("..", "/etc/");
+  path = g_build_filename (S, NULL);
+  g_assert_cmpstr (result, ==, path);
+  g_free (path);
+  g_free (result);
+
+  result = g_canonicalize_filename ("../", "/etc/");
+  path = g_build_filename (S, NULL);
+  g_assert_cmpstr (result, ==, path);
+  g_free (path);
+  g_free (result);
+
+  result = g_canonicalize_filename ("..a", "/etc/");
+  path = g_build_filename (S, "etc", "..a", NULL);
+  g_assert_cmpstr (result, ==, path);
+  g_free (path);
+  g_free (result);
+}
+
 static void
 test_stdio_wrappers (void)
 {
+  int fd;
   GStatBuf buf;
   gchar *cwd, *path;
-  gint ret;
   struct utimbuf ut;
   GError *error = NULL;
   GStatBuf path_statbuf, cwd_statbuf;
@@ -960,15 +1547,11 @@ test_stdio_wrappers (void)
 #endif
 
   g_remove ("mkdir-test/test-create");
-  ret = g_rmdir ("mkdir-test");
-  g_assert (ret == 0 || errno == ENOENT);
+  g_assert_true (g_rmdir ("mkdir-test") == 0 || errno == ENOENT);
 
-  ret = g_stat ("mkdir-test", &buf);
-  g_assert_cmpint (ret, ==, -1);
-  ret = g_mkdir ("mkdir-test", 0666);
-  g_assert_cmpint (ret, ==, 0);
-  ret = g_stat ("mkdir-test", &buf);
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (g_stat ("mkdir-test", &buf), ==, -1);
+  g_assert_cmpint (g_mkdir ("mkdir-test", 0666), ==, 0);
+  g_assert_cmpint (g_stat ("mkdir-test", &buf), ==, 0);
   g_assert_cmpint (S_ISDIR (buf.st_mode), !=, 0);
 
   cwd = g_get_current_dir ();
@@ -976,14 +1559,11 @@ test_stdio_wrappers (void)
   g_free (cwd);
 #ifndef G_OS_WIN32
   /* 0666 on directories means nothing to Windows, it only obeys ACLs */
-  ret = g_chdir (path);
+  g_assert_cmpint (g_chdir (path), ==, -1);
   g_assert_cmpint (errno, ==, EACCES);
-  g_assert_cmpint (ret, ==, -1);
 #endif
-  ret = g_chmod (path, 0777);
-  g_assert_cmpint (ret, ==, 0);
-  ret = g_chdir (path);
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (g_chmod (path, 0777), ==, 0);
+  g_assert_cmpint (g_chdir (path), ==, 0);
   cwd = g_get_current_dir ();
   /* We essentially want to check that cwd == path, but we can’t compare the
    * paths directly since the tests might be running under a symlink (for
@@ -995,18 +1575,16 @@ test_stdio_wrappers (void)
   g_free (cwd);
   g_free (path);
 
-  ret = g_creat ("test-creat", G_TEST_DIR_MODE);
-  g_close (ret, &error);
+  fd = g_creat ("test-creat", G_TEST_DIR_MODE);
+  g_close (fd, &error);
   g_assert_no_error (error);
 
-  ret = g_access ("test-creat", F_OK);
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (g_access ("test-creat", F_OK), ==, 0);
 
-  ret = g_rename ("test-creat", "test-create");
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (g_rename ("test-creat", "test-create"), ==, 0);
 
-  ret = g_open ("test-create", O_RDONLY, 0666);
-  g_close (ret, &error);
+  fd = g_open ("test-create", O_RDONLY, 0666);
+  g_close (fd, &error);
   g_assert_no_error (error);
 
 #ifdef G_OS_WIN32
@@ -1014,18 +1592,15 @@ test_stdio_wrappers (void)
    * that cannot be modified in any way (attribute changes included).
    * Remove the read-only attribute via chmod().
    */
-  ret = g_chmod ("test-create", 0666);
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (g_chmod ("test-create", 0666), ==, 0);
 #endif
 
   now = time (NULL);
 
   ut.actime = ut.modtime = now;
-  ret = g_utime ("test-create", &ut);
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (g_utime ("test-create", &ut), ==, 0);
 
-  ret = g_lstat ("test-create", &buf);
-  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (g_lstat ("test-create", &buf), ==, 0);
   g_assert_cmpint (buf.st_atime, ==, now);
   g_assert_cmpint (buf.st_mtime, ==, now);
 
@@ -1457,23 +2032,29 @@ main (int   argc,
   g_test_add_func ("/fileutils/stdio-win32-pathstrip", test_win32_pathstrip);
   g_test_add_func ("/fileutils/stdio-win32-zero-terminate-symlink", test_win32_zero_terminate_symlink);
 #endif
-  g_test_add_func ("/fileutils/build-path", test_build_path);
-  g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
+  g_test_add_func ("/fileutils/basename", test_basename);
   g_test_add_func ("/fileutils/build-filename", test_build_filename);
   g_test_add_func ("/fileutils/build-filenamev", test_build_filenamev);
+  g_test_add_func ("/fileutils/build-path", test_build_path);
+  g_test_add_func ("/fileutils/build-pathv", test_build_pathv);
+  g_test_add_func ("/fileutils/canonicalize-filename", test_canonicalize_filename);
+  g_test_add_func ("/fileutils/dir-make-tmp", test_dir_make_tmp);
+  g_test_add_func ("/fileutils/errors", test_file_errors);
+  g_test_add_func ("/fileutils/file-open-tmp", test_file_open_tmp);
+  g_test_add_func ("/fileutils/file_test", test_file_test);
+  g_test_add_func ("/fileutils/fopen-modes", test_fopen_modes);
+  g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
+  g_test_add_func ("/fileutils/get-current-dir", test_get_current_dir);
   g_test_add_func ("/fileutils/mkdir-with-parents", test_mkdir_with_parents);
   g_test_add_func ("/fileutils/mkdir-with-parents-permission", test_mkdir_with_parents_permission);
-  g_test_add_func ("/fileutils/format-size-for-display", test_format_size_for_display);
-  g_test_add_func ("/fileutils/errors", test_file_errors);
-  g_test_add_func ("/fileutils/basename", test_basename);
-  g_test_add_func ("/fileutils/dir-make-tmp", test_dir_make_tmp);
-  g_test_add_func ("/fileutils/file-open-tmp", test_file_open_tmp);
-  g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
   g_test_add_func ("/fileutils/mkdtemp", test_mkdtemp);
-  g_test_add_func ("/fileutils/set-contents", test_set_contents);
+  g_test_add_func ("/fileutils/mkstemp", test_mkstemp);
+  g_test_add_func ("/fileutils/path-get-dirname", test_path_get_dirname);
+  g_test_add_func ("/fileutils/path-is-absolute", test_path_is_absolute);
+  g_test_add_func ("/fileutils/path-skip-root", test_path_skip_root);
   g_test_add_func ("/fileutils/read-link", test_read_link);
+  g_test_add_func ("/fileutils/set-and-get-contents", test_set_and_get_contents);
   g_test_add_func ("/fileutils/stdio-wrappers", test_stdio_wrappers);
-  g_test_add_func ("/fileutils/fopen-modes", test_fopen_modes);
 
   return g_test_run ();
 }
