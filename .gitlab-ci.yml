@@ -10,7 +10,7 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v7"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v8"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v6"
   ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v2"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v2"
