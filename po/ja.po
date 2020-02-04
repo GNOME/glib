@@ -27,8 +27,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-02-03 13:14+0000\n"
-"PO-Revision-Date: 2020-01-31 00:00+0900\n"
+"POT-Creation-Date: 2020-01-31 12:56+0000\n"
+"PO-Revision-Date: 2020-02-05 02:30+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -441,7 +441,7 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
 "“%s”"
 msgstr ""
-"アドレス要素“%3$s”の %1$d 番目のキー/値のペア“%2$s”のキーまたは値をアンエス"
+"アドレス要素“%3$s”の %1$d 番目のキー/値のペア“%2$s”のキーまたは値のアンエス"
 "ケープ中にエラーが発生しました"
 
 #: gio/gdbusaddress.c:588
@@ -450,7 +450,7 @@ msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
 "“path” or “abstract” to be set"
 msgstr ""
-"アドレス“%s”にエラーがあります — UNIX トランスポートはキー“path”または "
+"アドレス“%s”にエラーがあります — UNIX トランスポートはキー“path”または"
 "“abstract”のどちらかが設定されている必要があります"
 
 #: gio/gdbusaddress.c:624
@@ -470,12 +470,12 @@ msgstr "アドレス“%s”にエラーがあります — noncefile 属性が�
 
 #: gio/gdbusaddress.c:673
 msgid "Error auto-launching: "
-msgstr "自動起動時にエラーが発生しました: "
+msgstr "自動起動中にエラーが発生しました: "
 
 #: gio/gdbusaddress.c:726
 #, c-format
 msgid "Error opening nonce file “%s”: %s"
-msgstr "nonce ファイル“%s”のオープン中にエラーが発生しました: %s"
+msgstr "nonce ファイル“%s”を開くときにエラーが発生しました: %s"
 
 #: gio/gdbusaddress.c:745
 #, c-format
@@ -587,7 +587,7 @@ msgstr "ディレクトリ“%s”の作成中にエラーが発生しました:
 #: gio/gdbusauthmechanismsha1.c:348
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
-msgstr "キーリング“%s”を読み取り用にオープン中にエラーが発生しました: "
+msgstr "キーリング“%s”を読み取り用に開くときにエラーが発生しました: "
 
 #: gio/gdbusauthmechanismsha1.c:371 gio/gdbusauthmechanismsha1.c:689
 #, c-format
@@ -611,7 +611,7 @@ msgstr ""
 #: gio/gdbusauthmechanismsha1.c:423
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
-msgstr "“%2$s”のキーリングの id %1$d のクッキーを見つけられませんでした"
+msgstr "“%2$s”のキーリングの id %1$d のクッキーが見つかりませんでした"
 
 #: gio/gdbusauthmechanismsha1.c:505
 #, c-format
@@ -626,7 +626,7 @@ msgstr "ロックファイル“%s”の作成中にエラーが発生しまし�
 #: gio/gdbusauthmechanismsha1.c:568
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
-msgstr "(unlink した) ロックファイル“%s”のクローズ中にエラーが発生しました: %s"
+msgstr "(unlink した) ロックファイル“%s”を閉じるときにエラーが発生しました: %s"
 
 #: gio/gdbusauthmechanismsha1.c:579
 #, c-format
@@ -636,7 +636,7 @@ msgstr "ロックファイル“%s”の unlink 中にエラーが発生しま�
 #: gio/gdbusauthmechanismsha1.c:656
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
-msgstr "キーリング“%s”を書き込み用にオープン中にエラーが発生しました: "
+msgstr "キーリング“%s”を書き込み用に開くときにエラーが発生しました: "
 
 #: gio/gdbusauthmechanismsha1.c:852
 #, c-format
@@ -956,7 +956,7 @@ msgstr "/var/lib/dbus/machine-id または /etc/machine-id を読みこめませ
 #: gio/gdbusproxy.c:1625
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
-msgstr "%s を StartServiceByName で呼び出し中にエラーが発生しました: "
+msgstr "%s を StartServiceByName で呼び出すときにエラーが発生しました: "
 
 #: gio/gdbusproxy.c:1648
 #, c-format
@@ -1107,7 +1107,7 @@ msgstr "接続中にエラーが発生しました: %s\n"
 #: gio/gdbus-tool.c:690
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
-msgstr "エラー: %s は正しい一意なバス名ではありません。\n"
+msgstr "エラー: %s は正しいユニークなバス名ではありません。\n"
 
 #: gio/gdbus-tool.c:709 gio/gdbus-tool.c:1020 gio/gdbus-tool.c:1814
 msgid "Error: Object path is not specified\n"
@@ -1121,12 +1121,12 @@ msgstr "エラー: %s は正しいオブジェクトパスではありません\
 
 #: gio/gdbus-tool.c:752
 msgid "Error: Signal name is not specified\n"
-msgstr "エラー: シグナル名が指定されていません\n"
+msgstr "エラー: シグナル名を指定していません\n"
 
 #: gio/gdbus-tool.c:766
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
-msgstr "エラー: シグナル名“%s”が正しくありません\n"
+msgstr "エラー: シグナル名“%s”は正しくありません\n"
 
 #: gio/gdbus-tool.c:778
 #, c-format
@@ -1147,7 +1147,7 @@ msgstr "パラメーター %d の解析中にエラーが発生しました: %s\
 #: gio/gdbus-tool.c:853
 #, c-format
 msgid "Error flushing connection: %s\n"
-msgstr ""
+msgstr "接続のフラッシュ中にエラーが発生しました: %s\n"
 
 #: gio/gdbus-tool.c:880
 msgid "Destination name to invoke method on"
@@ -1171,7 +1171,7 @@ msgstr "リモートオブジェクトでメソッドを起動します。"
 
 #: gio/gdbus-tool.c:994 gio/gdbus-tool.c:1788 gio/gdbus-tool.c:2028
 msgid "Error: Destination is not specified\n"
-msgstr "エラー: 対象が指定されていません\n"
+msgstr "エラー: 対象を指定していません\n"
 
 #: gio/gdbus-tool.c:1005 gio/gdbus-tool.c:1805 gio/gdbus-tool.c:2039
 #, c-format
@@ -1180,7 +1180,7 @@ msgstr "エラー: %s は正しいバス名ではありません\n"
 
 #: gio/gdbus-tool.c:1055
 msgid "Error: Method name is not specified\n"
-msgstr "エラー: メソッド名が指定されていません\n"
+msgstr "エラー: メソッド名を指定していません\n"
 
 #: gio/gdbus-tool.c:1066
 #, c-format
@@ -1190,7 +1190,7 @@ msgstr "エラー: メソッド名“%s”は正しくありません\n"
 #: gio/gdbus-tool.c:1144
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
-msgstr "型“%2$s”のパラメーター %1$d を解析中にエラーが発生しました: %3$s\n"
+msgstr "型“%2$s”のパラメーター %1$d の解析中にエラーが発生しました: %3$s\n"
 
 #: gio/gdbus-tool.c:1630
 msgid "Destination name to introspect"
@@ -1230,7 +1230,7 @@ msgstr "リモートのオブジェクトをモニターします。"
 
 #: gio/gdbus-tool.c:2013
 msgid "Error: can’t monitor a non-message-bus connection\n"
-msgstr ""
+msgstr "エラー: non-message-bus 接続を監視できません\n"
 
 #: gio/gdbus-tool.c:2137
 msgid "Service to activate before waiting for the other one (well-known name)"
@@ -1305,26 +1305,26 @@ msgstr "%s に対する独自の設定"
 
 #: gio/gdrive.c:417
 msgid "drive doesn’t implement eject"
-msgstr "ドライブが「取り出し」を実装していません"
+msgstr "ドライブは eject を実装していません"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gdrive.c:495
 msgid "drive doesn’t implement eject or eject_with_operation"
-msgstr "ドライブが eject または eject_with_operation を実装していません"
+msgstr "ドライブは eject または eject_with_operation を実装していません"
 
 #: gio/gdrive.c:571
 msgid "drive doesn’t implement polling for media"
-msgstr "ドライブがポーリングによるメディアの検出を実装していません"
+msgstr "ドライブはポーリングによるメディアの検出を実装していません"
 
 #: gio/gdrive.c:778
 msgid "drive doesn’t implement start"
-msgstr "ドライブが「開始」を実装していません"
+msgstr "ドライブは start を実装していません"
 
 #: gio/gdrive.c:880
 msgid "drive doesn’t implement stop"
-msgstr "ドライブが「停止」を実装していません"
+msgstr "ドライブは stop を実装していません"
 
 #: gio/gdummytlsbackend.c:195 gio/gdummytlsbackend.c:317
 #: gio/gdummytlsbackend.c:509
@@ -1360,12 +1360,12 @@ msgstr "GEmblemedIcon のエンコーディングにあるトークン数 (%d) �
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon に対する GEmblem を想定していました"
 
-#: gio/gfile.c:1044 gio/gfile.c:1282 gio/gfile.c:1420 gio/gfile.c:1658
-#: gio/gfile.c:1713 gio/gfile.c:1771 gio/gfile.c:1855 gio/gfile.c:1912
-#: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3722 gio/gfile.c:3777
-#: gio/gfile.c:4055 gio/gfile.c:4523 gio/gfile.c:4934 gio/gfile.c:5019
-#: gio/gfile.c:5109 gio/gfile.c:5206 gio/gfile.c:5293 gio/gfile.c:5394
-#: gio/gfile.c:8098 gio/gfile.c:8188 gio/gfile.c:8272
+#: gio/gfile.c:1076 gio/gfile.c:1314 gio/gfile.c:1452 gio/gfile.c:1690
+#: gio/gfile.c:1745 gio/gfile.c:1803 gio/gfile.c:1887 gio/gfile.c:1944
+#: gio/gfile.c:2008 gio/gfile.c:2063 gio/gfile.c:3754 gio/gfile.c:3809
+#: gio/gfile.c:4087 gio/gfile.c:4555 gio/gfile.c:4966 gio/gfile.c:5051
+#: gio/gfile.c:5141 gio/gfile.c:5238 gio/gfile.c:5325 gio/gfile.c:5426
+#: gio/gfile.c:8130 gio/gfile.c:8220 gio/gfile.c:8304
 #: gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "サポートしていない操作です"
@@ -1374,73 +1374,73 @@ msgstr "サポートしていない操作です"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#: gio/gfile.c:1543
+#: gio/gfile.c:1575
 msgid "Containing mount does not exist"
 msgstr "マウントを含んでいるものはありません"
 
-#: gio/gfile.c:2590 gio/glocalfile.c:2428
+#: gio/gfile.c:2622 gio/glocalfile.c:2428
 msgid "Can’t copy over directory"
 msgstr "ディレクトリ全体をコピーできません"
 
-#: gio/gfile.c:2650
+#: gio/gfile.c:2682
 msgid "Can’t copy directory over directory"
 msgstr "ディレクトリからディレクトリへコピーできません"
 
-#: gio/gfile.c:2658
+#: gio/gfile.c:2690
 msgid "Target file exists"
 msgstr "対象のファイルが存在します"
 
-#: gio/gfile.c:2677
+#: gio/gfile.c:2709
 msgid "Can’t recursively copy directory"
 msgstr "ディレクトリを再帰的にコピーできません"
 
-#: gio/gfile.c:2952
+#: gio/gfile.c:2984
 msgid "Splice not supported"
 msgstr "splice はサポートしていません"
 
-#: gio/gfile.c:2956 gio/gfile.c:3001
+#: gio/gfile.c:2988 gio/gfile.c:3033
 #, c-format
 msgid "Error splicing file: %s"
-msgstr "ファイルを splice 中にエラーが発生しました: %s"
+msgstr "ファイルの splice 中にエラーが発生しました: %s"
 
-#: gio/gfile.c:3117
+#: gio/gfile.c:3149
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "マウント間のコピー (reflink/clone) はサポートしていません"
 
-#: gio/gfile.c:3121
+#: gio/gfile.c:3153
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "コピー (reflink/clone) はサポートしていないか無効です"
 
-#: gio/gfile.c:3126
+#: gio/gfile.c:3158
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "コピー (reflink/clone) はサポートしていないか動作しませんでした"
 
-#: gio/gfile.c:3190
+#: gio/gfile.c:3222
 msgid "Can’t copy special file"
 msgstr "特別なファイルはコピーできません"
 
-#: gio/gfile.c:4003
+#: gio/gfile.c:4035
 msgid "Invalid symlink value given"
 msgstr "指定したシンボリックリンクは間違っています"
 
-#: gio/gfile.c:4013 glib/gfileutils.c:2172
+#: gio/gfile.c:4045 glib/gfileutils.c:2172
 msgid "Symbolic links not supported"
 msgstr "シンボリックリンクはサポートしていません"
 
-#: gio/gfile.c:4164
+#: gio/gfile.c:4196
 msgid "Trash not supported"
 msgstr "ゴミ箱はサポートしていません"
 
-#: gio/gfile.c:4276
+#: gio/gfile.c:4308
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "ファイル名に“%c”を含めることはできません"
 
-#: gio/gfile.c:6757 gio/gvolume.c:364
+#: gio/gfile.c:6789 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "ボリュームはマウントを実装していません"
 
-#: gio/gfile.c:6868 gio/gfile.c:6914
+#: gio/gfile.c:6900 gio/gfile.c:6946
 msgid "No application is registered as handling this file"
 msgstr "このファイルを扱うアプリケーションが登録されていません"
 
@@ -1557,7 +1557,7 @@ msgstr "アドレスを指定していません"
 #: gio/ginetaddressmask.c:190
 #, c-format
 msgid "Length %u is too long for address"
-msgstr "アドレスの長さ %u は長すぎます"
+msgstr "長さ %u はアドレスには長すぎます"
 
 #: gio/ginetaddressmask.c:223
 msgid "Address has bits set beyond prefix length"
@@ -1579,7 +1579,7 @@ msgstr "サポートしていないソケットアドレスです"
 
 #: gio/ginputstream.c:188
 msgid "Input stream doesn’t implement read"
-msgstr "入力ストリームで読み込みを実装していません"
+msgstr "入力ストリームは読み込みを実装していません"
 
 #. Translators: This is an error you get if there is already an
 #. * operation running against this stream when you try to start
@@ -1689,7 +1689,7 @@ msgid "Error writing to stdout"
 msgstr "標準出力への書き込み中にエラーが発生しました"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:333 gio/gio-tool-list.c:172
+#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:282 gio/gio-tool-list.c:172
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
@@ -1711,7 +1711,7 @@ msgstr ""
 "gio cat は通常の cat と同じように動作しますが、ローカルファイルの代わりに "
 "GIO のロケーションを使用します (例: smb://server/resource/file.txt)。"
 
-#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
+#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:313 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
 #: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
 msgid "No locations given"
@@ -1783,88 +1783,78 @@ msgstr "%s はディレクトリではありません"
 msgid "%s: overwrite “%s”? "
 msgstr "%s: “%s”を上書きしますか? "
 
-#: gio/gio-tool-info.c:37
+#: gio/gio-tool-info.c:34
 msgid "List writable attributes"
 msgstr "書込み可能な属性一覧を表示する"
 
-#: gio/gio-tool-info.c:38
+#: gio/gio-tool-info.c:35
 msgid "Get file system info"
 msgstr "ファイルシステムの情報を取得する"
 
-#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:36 gio/gio-tool-list.c:36
 msgid "The attributes to get"
 msgstr "指定した属性を取得する"
 
-#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:36 gio/gio-tool-list.c:36
 msgid "ATTRIBUTES"
 msgstr ""
 
-#: gio/gio-tool-info.c:40 gio/gio-tool-list.c:39 gio/gio-tool-set.c:34
+#: gio/gio-tool-info.c:37 gio/gio-tool-list.c:39 gio/gio-tool-set.c:34
 msgid "Don’t follow symbolic links"
 msgstr "シンボリックリンクをたどらない"
 
-#: gio/gio-tool-info.c:78
+#: gio/gio-tool-info.c:75
 msgid "attributes:\n"
 msgstr "属性:\n"
 
 #. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:134
+#: gio/gio-tool-info.c:127
 #, c-format
 msgid "display name: %s\n"
 msgstr "表示名: %s\n"
 
 #. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:139
+#: gio/gio-tool-info.c:132
 #, c-format
 msgid "edit name: %s\n"
 msgstr "編集名: %s\n"
 
-#: gio/gio-tool-info.c:145
+#: gio/gio-tool-info.c:138
 #, c-format
 msgid "name: %s\n"
 msgstr "名前: %s\n"
 
-#: gio/gio-tool-info.c:152
+#: gio/gio-tool-info.c:145
 #, c-format
 msgid "type: %s\n"
 msgstr "種類: %s\n"
 
-#: gio/gio-tool-info.c:158
+#: gio/gio-tool-info.c:151
 msgid "size: "
 msgstr "サイズ: "
 
-#: gio/gio-tool-info.c:163
+#: gio/gio-tool-info.c:156
 msgid "hidden\n"
 msgstr "非表示\n"
 
-#: gio/gio-tool-info.c:166
+#: gio/gio-tool-info.c:159
 #, c-format
 msgid "uri: %s\n"
 msgstr "URI: %s\n"
 
-#: gio/gio-tool-info.c:172
-#, c-format
-msgid "local path: %s\n"
-msgstr ""
-
-#: gio/gio-tool-info.c:199
-#, c-format
-msgid "unix mount: %s%s %s %s %s\n"
-msgstr ""
-
-#: gio/gio-tool-info.c:279
+#: gio/gio-tool-info.c:228
 msgid "Settable attributes:\n"
 msgstr "設定可能な属性:\n"
 
-#: gio/gio-tool-info.c:303
+#: gio/gio-tool-info.c:252
 msgid "Writable attribute namespaces:\n"
 msgstr "書込み可能な属性の名前空間:\n"
 
-#: gio/gio-tool-info.c:338
+#: gio/gio-tool-info.c:287
 msgid "Show information about locations."
 msgstr "場所についての情報を表示します。"
 
-#: gio/gio-tool-info.c:340
+#: gio/gio-tool-info.c:289
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -2125,14 +2115,16 @@ msgid ""
 "Open files with the default application that\n"
 "is registered to handle files of this type."
 msgstr ""
+"この種類のファイルに関連付けられているデフォ\n"
+"ルトのアプリケーションでファイルを開きます。"
 
 #: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:31
 msgid "Ignore nonexistent files, never prompt"
-msgstr ""
+msgstr "存在しないファイルを無視する (プロンプトを表示しない)"
 
 #: gio/gio-tool-remove.c:52
 msgid "Delete the given files."
-msgstr ""
+msgstr "指定したファイルを削除します。"
 
 #: gio/gio-tool-rename.c:45
 msgid "NAME"
@@ -2140,38 +2132,36 @@ msgstr ""
 
 #: gio/gio-tool-rename.c:50
 msgid "Rename a file."
-msgstr ""
+msgstr "ファイル名を変更します。"
 
 #: gio/gio-tool-rename.c:70
-#, fuzzy
-#| msgid "Missing argument for %s"
 msgid "Missing argument"
-msgstr "%s の引数がありません"
+msgstr "引数がありません"
 
 #: gio/gio-tool-rename.c:76 gio/gio-tool-save.c:190 gio/gio-tool-set.c:137
 msgid "Too many arguments"
-msgstr ""
+msgstr "引数が多すぎます"
 
 #: gio/gio-tool-rename.c:95
 #, c-format
 msgid "Rename successful. New uri: %s\n"
-msgstr ""
+msgstr "名前を変更できました。新しい URI: %s\n"
 
 #: gio/gio-tool-save.c:50
 msgid "Only create if not existing"
-msgstr ""
+msgstr "存在しない場合のみ作成する"
 
 #: gio/gio-tool-save.c:51
 msgid "Append to end of file"
-msgstr ""
+msgstr "ファイルの末尾に追記する"
 
 #: gio/gio-tool-save.c:52
 msgid "When creating, restrict access to the current user"
-msgstr ""
+msgstr "作成時に現在のユーザーへのアクセスを制限する"
 
 #: gio/gio-tool-save.c:53
 msgid "When replacing, replace as if the destination did not exist"
-msgstr ""
+msgstr "置換時に対象が存在しないかのように置換する"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:55
@@ -2181,34 +2171,32 @@ msgstr ""
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:57
 msgid "The etag of the file being overwritten"
-msgstr ""
+msgstr "ファイル上書きの etag を指定する"
 
 #: gio/gio-tool-save.c:57
 msgid "ETAG"
-msgstr ""
+msgstr "ETAG"
 
 #: gio/gio-tool-save.c:113
-#, fuzzy
-#| msgid "Error reading from handle: %s"
 msgid "Error reading from standard input"
-msgstr "ハンドルから読み込む際にエラー: %s"
+msgstr "標準入力からの読み取り中にエラーが発生しました"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:139
 msgid "Etag not available\n"
-msgstr ""
+msgstr "etag は利用できません\n"
 
 #: gio/gio-tool-save.c:163
 msgid "Read from standard input and save to DEST."
-msgstr ""
+msgstr "標準入力から読み取って DEST に保存します。"
 
 #: gio/gio-tool-save.c:183
 msgid "No destination given"
-msgstr ""
+msgstr "対象を指定していません"
 
 #: gio/gio-tool-set.c:33
 msgid "Type of the attribute"
-msgstr ""
+msgstr "属性の種類を指定する"
 
 #: gio/gio-tool-set.c:33
 msgid "TYPE"
@@ -2224,47 +2212,40 @@ msgstr ""
 
 #: gio/gio-tool-set.c:93
 msgid "Set a file attribute of LOCATION."
-msgstr ""
+msgstr "場所のファイル属性を設定します。"
 
 #: gio/gio-tool-set.c:113
-#, fuzzy
-#| msgid "No connection endpoint specified"
 msgid "Location not specified"
-msgstr "接続の終端が指定されていません"
+msgstr "場所を指定していません"
 
 #: gio/gio-tool-set.c:120
-#, fuzzy
 msgid "Attribute not specified"
-msgstr "エラー: 対象が指定されていません\n"
+msgstr "属性を指定していません"
 
 #: gio/gio-tool-set.c:130
-#, fuzzy
 msgid "Value not specified"
-msgstr "エラー: 対象が指定されていません\n"
+msgstr "値を指定していません"
 
 #: gio/gio-tool-set.c:180
-#, fuzzy, c-format
-#| msgid "Invalid attribute type (string expected)"
+#, c-format
 msgid "Invalid attribute type “%s”"
-msgstr "属性の種類が無効です (文字列を想定していた)"
+msgstr "属性の種類“%s”は不正です"
 
 #: gio/gio-tool-trash.c:32
 msgid "Empty the trash"
-msgstr ""
+msgstr "ゴミ箱を空にする"
 
 #: gio/gio-tool-trash.c:86
-#, fuzzy
-#| msgid "The file descriptor to write to"
 msgid "Move files or directories to the trash."
-msgstr "書き込むファイルのファイル・ディスクリプターです"
+msgstr "ファイルやディレクトリをゴミ箱へ移動します。"
 
 #: gio/gio-tool-tree.c:33
 msgid "Follow symbolic links, mounts and shortcuts"
-msgstr ""
+msgstr "シンボリックリンク、マウント、ショートカットをたどる"
 
 #: gio/gio-tool-tree.c:244
 msgid "List contents of directories in a tree-like format."
-msgstr ""
+msgstr "ディレクトリの内容をツリー形式で一覧表示します。"
 
 #: gio/glib-compile-resources.c:140 gio/glib-compile-schemas.c:1514
 #, c-format
@@ -2274,27 +2255,27 @@ msgstr "要素 <%s> は <%s> 内に含められません"
 #: gio/glib-compile-resources.c:144
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
-msgstr "要素 <%s> はトップレベルでは使えません"
+msgstr "要素 <%s> はトップレベルでは使用できません"
 
 #: gio/glib-compile-resources.c:234
 #, c-format
 msgid "File %s appears multiple times in the resource"
-msgstr ""
+msgstr "リソース内にファイル %s が複数回出現しています"
 
 #: gio/glib-compile-resources.c:245
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to locate “%s” in any source directory"
-msgstr "'%s' というディレクトリへ移動できませんでした (%s)"
+msgstr "ソースディレクトリに“%s”がありません"
 
 #: gio/glib-compile-resources.c:256
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to locate “%s” in current directory"
-msgstr "'%s' というディレクトリへ移動できませんでした (%s)"
+msgstr "現在のディレクトリに“%s”がありません"
 
 #: gio/glib-compile-resources.c:290
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown processing option “%s”"
-msgstr "%s は不明なオプションです"
+msgstr "“%s”は不明なオプションです"
 
 #. Translators: the first %s is a gresource XML attribute,
 #. * the second %s is an environment variable, and the third
@@ -2305,16 +2286,17 @@ msgstr "%s は不明なオプションです"
 #, c-format
 msgid "%s preprocessing requested, but %s is not set, and %s is not in PATH"
 msgstr ""
+"%s の前処理が要求されましたが %s の設定がなく %s も PATH にありません"
 
 #: gio/glib-compile-resources.c:457
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading file %s: %s"
-msgstr "'%s' の読み出し中にエラー: %s"
+msgstr "ファイル %s の読み取り中にエラーが発生しました: %s"
 
 #: gio/glib-compile-resources.c:477
-#, fuzzy, c-format
+#, c-format
 msgid "Error compressing file %s"
-msgstr "ファイルをオープンする際にエラー: %s"
+msgstr "ファイル %s の圧縮中にエラーが発生しました"
 
 #: gio/glib-compile-resources.c:541
 #, c-format
@@ -2323,28 +2305,29 @@ msgstr "文字列は <%s> 内に含められません"
 
 #: gio/glib-compile-resources.c:737 gio/glib-compile-schemas.c:2172
 msgid "Show program version and exit"
-msgstr ""
+msgstr "プログラムのバージョンを表示して終了する"
 
 #: gio/glib-compile-resources.c:738
-#, fuzzy
 msgid "Name of the output file"
-msgstr "アイコンの名前です"
+msgstr "出力ファイル名を指定する"
 
 #: gio/glib-compile-resources.c:739
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
 msgstr ""
+"対象のファイルを読み込むディレクトリを指定する (デフォルト: 現在のディレクトリ)"
 
 #: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2202
 msgid "DIRECTORY"
-msgstr "DIRECTORY"
+msgstr ""
 
 #: gio/glib-compile-resources.c:740
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
+""
 
 #: gio/glib-compile-resources.c:741
 msgid "Generate source header"
@@ -2372,7 +2355,7 @@ msgstr ""
 
 #: gio/glib-compile-resources.c:747
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
-msgstr ""
+msgstr "関数をエクスポートしない (G_GNUC_INTERNAL を使用してください)"
 
 #: gio/glib-compile-resources.c:748
 msgid ""
@@ -2390,10 +2373,13 @@ msgid ""
 "Resource specification files have the extension .gresource.xml,\n"
 "and the resource file have the extension called .gresource."
 msgstr ""
+"リソース仕様をコンパイルして、リソースファイルを生成します。\n"
+"リソース仕様ファイルの拡張子は .gresource.xml、\n"
+"リソースファイルの拡張子は .gresource です。"
 
 #: gio/glib-compile-resources.c:797
 msgid "You should give exactly one file name\n"
-msgstr ""
+msgstr "ファイル名を一つだけ指定してください\n"
 
 #: gio/glib-compile-schemas.c:92
 #, c-format
@@ -2401,22 +2387,19 @@ msgid "nick must be a minimum of 2 characters"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:103
-#, fuzzy, c-format
-#| msgid "Invalid symlink value given"
+#, c-format
 msgid "Invalid numeric value"
-msgstr "指定したシンボリックリンクは間違っています"
+msgstr "不正な数値です"
 
 #: gio/glib-compile-schemas.c:111
-#, fuzzy, c-format
-#| msgid "<%s id='%s'> already specified"
+#, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<%s id='%s'> は既に定義されています"
+msgstr "<value nick='%s'/> はすでに定義されています"
 
 #: gio/glib-compile-schemas.c:119
-#, fuzzy, c-format
-#| msgid "<key name='%s'> already specified"
+#, c-format
 msgid "value='%s' already specified"
-msgstr "<key name='%s'> は既に定義されています"
+msgstr "value='%s' はすでに定義されています"
 
 #: gio/glib-compile-schemas.c:133
 #, c-format
@@ -2429,10 +2412,9 @@ msgid "<%s> must contain at least one <value>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:314
-#, fuzzy, c-format
-#| msgid "No connection endpoint specified"
+#, c-format
 msgid "<%s> is not contained in the specified range"
-msgstr "接続の終端が指定されていません"
+msgstr ""
 
 #: gio/glib-compile-schemas.c:326
 #, c-format
@@ -2450,10 +2432,8 @@ msgid "<%s> contains a string not in <choices>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:372
-#, fuzzy
-#| msgid "<key name='%s'> already specified"
 msgid "<range/> already specified for this key"
-msgstr "<key name='%s'> は既に定義されています"
+msgstr "<range/> はすでにこのキーで定義されています"
 
 #: gio/glib-compile-schemas.c:390
 #, c-format
@@ -2468,11 +2448,11 @@ msgstr ""
 #: gio/glib-compile-schemas.c:432
 #, c-format
 msgid "unsupported l10n category: %s"
-msgstr ""
+msgstr "サポートしていない l10n のカテゴリーです: %s"
 
 #: gio/glib-compile-schemas.c:440
 msgid "l10n requested, but no gettext domain given"
-msgstr ""
+msgstr "l10n が要求されましたが gettext ドメインの指定がありません"
 
 #: gio/glib-compile-schemas.c:452
 msgid "translation context given for value without l10n enabled"
@@ -2481,7 +2461,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:474
 #, c-format
 msgid "Failed to parse <default> value of type “%s”: "
-msgstr ""
+msgstr "“%s”の <default> 値の解析に失敗しました: "
 
 #: gio/glib-compile-schemas.c:491
 msgid ""
@@ -2489,10 +2469,8 @@ msgid ""
 msgstr ""
 
 #: gio/glib-compile-schemas.c:500
-#, fuzzy
-#| msgid "<child name='%s'> already specified"
 msgid "<choices> already specified for this key"
-msgstr "<child name='%s'> は既に定義されています"
+msgstr "<choices> はすでにこのキーで定義されています"
 
 #: gio/glib-compile-schemas.c:512
 #, c-format
@@ -2500,10 +2478,9 @@ msgid "<choices> not allowed for keys of type “%s”"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:528
-#, fuzzy, c-format
-#| msgid "<child name='%s'> already specified"
+#, c-format
 msgid "<choice value='%s'/> already given"
-msgstr "<child name='%s'> は既に定義されています"
+msgstr ""
 
 #: gio/glib-compile-schemas.c:543
 #, c-format
@@ -2511,10 +2488,8 @@ msgid "<choices> must contain at least one <choice>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:557
-#, fuzzy
-#| msgid "<child name='%s'> already specified"
 msgid "<aliases> already specified for this key"
-msgstr "<child name='%s'> は既に定義されています"
+msgstr "<aliases> はすでにこのキーで定義されています"
 
 #: gio/glib-compile-schemas.c:561
 msgid ""
@@ -2535,10 +2510,9 @@ msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:594
-#, fuzzy, c-format
-#| msgid "<%s id='%s'> already specified"
+#, c-format
 msgid "<alias value='%s'/> already specified"
-msgstr "<%s id='%s'> は既に定義されています"
+msgstr "<alias value='%s'/> はすでに定義されています"
 
 #: gio/glib-compile-schemas.c:604
 #, c-format
@@ -2556,62 +2530,50 @@ msgid "<aliases> must contain at least one <alias>"
 msgstr ""
 
 #: gio/glib-compile-schemas.c:797
-#, fuzzy
-#| msgid "empty names are not permitted"
 msgid "Empty names are not permitted"
 msgstr "空の名前は使用できません"
 
 #: gio/glib-compile-schemas.c:807
-#, fuzzy, c-format
-#| msgid "invalid name '%s': names must begin with a lowercase letter"
+#, c-format
 msgid "Invalid name “%s”: names must begin with a lowercase letter"
-msgstr "不正な名前 '%s': 名前の先頭は小文字のみが使用できます"
+msgstr "名前“%s”は不正です: 名前の先頭は小文字のみが使用できます"
 
 #: gio/glib-compile-schemas.c:819
-#, fuzzy, c-format
-#| msgid ""
-#| "invalid name '%s': invalid character '%c'; only lowercase letters, "
-#| "numbers and hyphen ('-') are permitted."
+#, c-format
 msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
 "and hyphen (“-”) are permitted"
 msgstr ""
-"不正な名前 '%s': 不正な文字 '%c': 小文字、数字、およびハイフン ('-') のみが使"
-"用できます"
+"名前“%s”の“%c”は不正です: 小文字、数字、ハイフン (“-”) のみが使用できます"
 
 #: gio/glib-compile-schemas.c:828
-#, fuzzy, c-format
-#| msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
+#, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
-msgstr "不正な名前 '%s': 連続するハイフン ('--') は使用できません"
+msgstr "名前“%s”は不正です: 連続するハイフン (“--”) は使用できません"
 
 #: gio/glib-compile-schemas.c:837
-#, fuzzy, c-format
-#| msgid "invalid name '%s': the last character may not be a hyphen ('-')."
+#, c-format
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
-msgstr "不正な名前 '%s': 名前の末尾にハイフン ('-') は使用できません"
+msgstr "名前“%s”は不正です: ハイフン (“-”) は名前の末尾に使用できません"
 
 #: gio/glib-compile-schemas.c:845
-#, fuzzy, c-format
-#| msgid "invalid name '%s': maximum length is 1024"
+#, c-format
 msgid "Invalid name “%s”: maximum length is 1024"
-msgstr "不正な名前 '%s': 最大長は 1024 です"
+msgstr "名前“%s”は不正です: 最大長は 1024 です"
 
 #: gio/glib-compile-schemas.c:917
 #, c-format
 msgid "<child name='%s'> already specified"
-msgstr "<child name='%s'> は既に定義されています"
+msgstr "<child name='%s'> はすでに定義されています"
 
 #: gio/glib-compile-schemas.c:943
-#, fuzzy
-#| msgid "cannot add keys to a 'list-of' schema"
 msgid "Cannot add keys to a “list-of” schema"
-msgstr "'list-of' 属性を持つスキーマにキーを追加できません"
+msgstr "“list-of”属性を持つスキーマにキーを追加できません"
 
 #: gio/glib-compile-schemas.c:954
 #, c-format
 msgid "<key name='%s'> already specified"
-msgstr "<key name='%s'> は既に定義されています"
+msgstr "<key name='%s'> はすでに定義されています"
 
 #: gio/glib-compile-schemas.c:972
 #, c-format
@@ -2620,19 +2582,15 @@ msgid ""
 "to modify value"
 msgstr ""
 "<key name='%1$s'> は <schema id='%3$s'> 中の <key name='%2$s'> を隠してしまい"
-"ます。値の変更は <override> を使ってください"
+"ます。値の変更は <override> を使用してください"
 
 #: gio/glib-compile-schemas.c:983
-#, fuzzy, c-format
-#| msgid ""
-#| "exactly one of 'type', 'enum' or 'flags' must be specified as an "
-#| "attribute to <key>"
+#, c-format
 msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
 "to <key>"
 msgstr ""
-"<key> の属性としては、'type'、'enum'、あるいは 'flags' のどれかひとつだけが指"
-"定できます"
+"<key> の属性としては、“type”、“enum”、“flags”のどれか一つだけが指定できます"
 
 #: gio/glib-compile-schemas.c:1002
 #, c-format
@@ -2640,54 +2598,46 @@ msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> は (まだ) 定義されていません。"
 
 #: gio/glib-compile-schemas.c:1017
-#, fuzzy, c-format
-#| msgid "invalid GVariant type string '%s'"
+#, c-format
 msgid "Invalid GVariant type string “%s”"
-msgstr "正しくない GVariant 型の文字列 '%s'"
+msgstr "“%s”は不正な GVariant 型の文字列です"
 
 #: gio/glib-compile-schemas.c:1047
-#, fuzzy
-#| msgid "<override> given but schema isn't extending anything"
 msgid "<override> given but schema isn’t extending anything"
 msgstr "<override> が指定されましたが、スキーマは何も拡張していません"
 
 #: gio/glib-compile-schemas.c:1060
-#, fuzzy, c-format
-#| msgid "no <key name='%s'> to override"
+#, c-format
 msgid "No <key name='%s'> to override"
 msgstr "オーバーライドする <key name='%s'> がありません"
 
 #: gio/glib-compile-schemas.c:1068
 #, c-format
 msgid "<override name='%s'> already specified"
-msgstr "<override name='%s'> は既に定義されています"
+msgstr "<override name='%s'> はすでに定義されています"
 
 #: gio/glib-compile-schemas.c:1141
 #, c-format
 msgid "<schema id='%s'> already specified"
-msgstr "<schema id='%s'> は既に定義されています"
+msgstr "<schema id='%s'> はすでに定義されています"
 
 #: gio/glib-compile-schemas.c:1153
-#, fuzzy, c-format
-#| msgid "<schema id='%s'> extends not-yet-existing schema '%s'"
+#, c-format
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
-msgstr "<schema id='%s'> はまだ存在していないスキーマ '%s' を拡張しています"
+msgstr "<schema id='%s'> はまだ存在していないスキーマ“%s”を拡張しています"
 
 #: gio/glib-compile-schemas.c:1169
-#, fuzzy, c-format
-#| msgid "<schema id='%s'> is list of not-yet-existing schema '%s'"
+#, c-format
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
-msgstr "<schema id='%s'> はまだ存在していないスキーマ '%s' のリストです"
+msgstr "<schema id='%s'> はまだ存在していないスキーマ“%s”のリストです"
 
 #: gio/glib-compile-schemas.c:1177
-#, fuzzy, c-format
-#| msgid "Can not be a list of a schema with a path"
+#, c-format
 msgid "Cannot be a list of a schema with a path"
 msgstr "path 属性を持つスキーマのリストにはなれません"
 
 #: gio/glib-compile-schemas.c:1187
-#, fuzzy, c-format
-#| msgid "Can not extend a schema with a path"
+#, c-format
 msgid "Cannot extend a schema with a path"
 msgstr "path 属性を持つスキーマを拡張できません"
 
@@ -2700,28 +2650,23 @@ msgstr ""
 "ます"
 
 #: gio/glib-compile-schemas.c:1207
-#, fuzzy, c-format
-#| msgid ""
-#| "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but "
-#| "'%s' does not extend '%s'"
+#, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
 "does not extend “%s”"
 msgstr ""
 "<schema id='%s' list-of='%s'> は <schema id='%s' list-of='%s'> を拡張していま"
-"すが、'%s' は '%s' を拡張してません"
+"すが、“%s”は“%s”を拡張してません"
 
 #: gio/glib-compile-schemas.c:1224
-#, fuzzy, c-format
-#| msgid "a path, if given, must begin and end with a slash"
+#, c-format
 msgid "A path, if given, must begin and end with a slash"
-msgstr "パスを指定する場合、その先頭および末尾はスラッシュでなければなりません"
+msgstr "パスを指定する場合、その先頭および末尾はスラッシュである必要があります"
 
 #: gio/glib-compile-schemas.c:1231
-#, fuzzy, c-format
-#| msgid "the path of a list must end with ':/'"
+#, c-format
 msgid "The path of a list must end with “:/”"
-msgstr "リストのパスの末尾は ':/' でなければなりません"
+msgstr "リストのパスの末尾は“:/”である必要があります"
 
 #: gio/glib-compile-schemas.c:1240
 #, c-format
@@ -2733,13 +2678,12 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1270
 #, c-format
 msgid "<%s id='%s'> already specified"
-msgstr "<%s id='%s'> は既に定義されています"
+msgstr "<%s id='%s'> はすでに定義されています"
 
 #: gio/glib-compile-schemas.c:1420 gio/glib-compile-schemas.c:1436
-#, fuzzy, c-format
-#| msgid "Element <%s> not allowed inside <%s>"
+#, c-format
 msgid "Only one <%s> element allowed inside <%s>"
-msgstr "要素 <%s> は <%s> 内に含められません"
+msgstr ""
 
 #: gio/glib-compile-schemas.c:1518
 #, c-format
@@ -2748,47 +2692,39 @@ msgstr "要素 <%s> はトップレベルでは使用できません"
 
 #: gio/glib-compile-schemas.c:1536
 msgid "Element <default> is required in <key>"
-msgstr ""
+msgstr "<key> 内に要素 <default> が必要です"
 
 #: gio/glib-compile-schemas.c:1626
-#, fuzzy, c-format
-#| msgid "text may not appear inside <%s>"
+#, c-format
 msgid "Text may not appear inside <%s>"
 msgstr "文字列は <%s> 内に含められません"
 
 #: gio/glib-compile-schemas.c:1694
 #, c-format
 msgid "Warning: undefined reference to <schema id='%s'/>"
-msgstr ""
+msgstr "警告: <schema id='%s'/> への定義されていない参照です"
 
 #. Translators: Do not translate "--strict".
 #: gio/glib-compile-schemas.c:1833 gio/glib-compile-schemas.c:1912
-#, fuzzy
-#| msgid "--strict was specified; exiting.\n"
 msgid "--strict was specified; exiting."
-msgstr "--strict が指定されました。終了します。\n"
+msgstr "--strict が指定されました。終了します。"
 
 #: gio/glib-compile-schemas.c:1845
-#, fuzzy
-#| msgid "This entire file has been ignored.\n"
 msgid "This entire file has been ignored."
-msgstr "このファイルを無視しました。\n"
+msgstr "このファイルを無視しました。"
 
 #: gio/glib-compile-schemas.c:1908
-#, fuzzy
-#| msgid "Ignoring this file.\n"
 msgid "Ignoring this file."
-msgstr "このファイルを無視します。\n"
+msgstr "このファイルを無視します。"
 
 #: gio/glib-compile-schemas.c:1963
-#, fuzzy, c-format
-#| msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
+#, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
 "override for this key."
 msgstr ""
-"オーバーライドファイル '%3$s' で指定されたスキーマ '%2$s' のキー '%1$s' は存"
-"在しません"
+"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”は存"
+"在しません。このキーのオーバーライドを無視します。"
 
 #: gio/glib-compile-schemas.c:1971
 #, fuzzy, c-format
@@ -2797,8 +2733,8 @@ msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
 "strict was specified; exiting."
 msgstr ""
-"オーバーライドファイル '%3$s' で指定されたスキーマ '%2$s' のキー '%1$s' は存"
-"在しません"
+"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”は存"
+"在しません。--strict が指定されたため終了します。"
 
 #: gio/glib-compile-schemas.c:1993
 #, c-format
@@ -2815,86 +2751,64 @@ msgid ""
 msgstr ""
 
 #: gio/glib-compile-schemas.c:2026
-#, fuzzy, c-format
-#| msgid ""
-#| "error parsing key '%s' in schema '%s' as specified in override file '%s': "
-#| "%s."
+#, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. Ignoring override for this key."
 msgstr ""
-"オーバーライドファイル '%3$s' で指定されたスキーマ '%2$s' のキー '%1$s' の"
-"パースでエラー発生: %4$s."
+"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”の"
+"解析中にエラーが発生しました: %4$s: このキーのオーバーライドを無視します。"
 
 #: gio/glib-compile-schemas.c:2038
-#, fuzzy, c-format
-#| msgid ""
-#| "error parsing key '%s' in schema '%s' as specified in override file '%s': "
-#| "%s."
+#, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. --strict was specified; exiting."
 msgstr ""
-"オーバーライドファイル '%3$s' で指定されたスキーマ '%2$s' のキー '%1$s' の"
-"パースでエラー発生: %4$s."
+"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”の"
+"解析中にエラーが発生しました: %4$s: --strict が指定されたため終了します。"
 
 #: gio/glib-compile-schemas.c:2065
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is outside the "
-#| "range given in the schema"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema; ignoring override for this key."
 msgstr ""
-"オーバーライドファイル '%3$s' で指定されたスキーマ '%2$s' のキー '%1$s' の"
-"オーバーライド値が、スキーマで定義された有効な範囲内にありません"
+"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”の"
+"オーバーライド値が、スキーマで定義された有効な範囲内にありません。このキー"
+"のオーバーライドを無視します。"
 
 #: gio/glib-compile-schemas.c:2075
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is outside the "
-#| "range given in the schema"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema and --strict was specified; exiting."
 msgstr ""
-"オーバーライドファイル '%3$s' で指定されたスキーマ '%2$s' のキー '%1$s' の"
-"オーバーライド値が、スキーマで定義された有効な範囲内にありません"
+"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”の"
+"オーバーライド値が、スキーマで定義された有効な範囲内にありません。--strict"
+" が指定されたため終了します。"
 
 #: gio/glib-compile-schemas.c:2101
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is not in the "
-#| "list of valid choices"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices; ignoring override for this key."
 msgstr ""
-"オーバーライドファイル '%3$s' で指定されたスキーマ '%2$s' のキー '%1$s' の"
-"オーバーライド値が、スキーマで定義された有効な範囲内にありません"
 
 #: gio/glib-compile-schemas.c:2111
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is not in the "
-#| "list of valid choices"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices and --strict was specified; exiting."
 msgstr ""
-"オーバーライドファイル '%3$s' で指定されたスキーマ '%2$s' のキー '%1$s' の"
-"オーバーライド値が、スキーマで定義された有効な範囲内にありません"
 
 #: gio/glib-compile-schemas.c:2173
-#, fuzzy
-#| msgid "where to store the gschemas.compiled file"
 msgid "Where to store the gschemas.compiled file"
 msgstr "gschemas.compiled の出力先を指定する"
 
 #: gio/glib-compile-schemas.c:2174
 msgid "Abort on any errors in schemas"
-msgstr "スキーマ内にエラーを検出すれば処理を中止する"
+msgstr "スキーマ内にエラーを検出したら処理を中止する"
 
 #: gio/glib-compile-schemas.c:2175
 msgid "Do not write the gschema.compiled file"
@@ -2912,139 +2826,120 @@ msgid ""
 msgstr ""
 "すべての GSettings スキーマファイルをコンパイルして、スキーマキャッシュを生成"
 "します。\n"
-"スキーマファイルの拡張子は .gschema.xml でなければなりません。\n"
+"スキーマファイルの拡張子は .gschema.xml である必要があります。\n"
 "キャッシュファイルの名称は gschemas.compiled となります。"
 
 #: gio/glib-compile-schemas.c:2226
-#, fuzzy
-#| msgid "You should give exactly one directory name\n"
 msgid "You should give exactly one directory name"
-msgstr "ディレクトリ名をひとつだけ指定してください\n"
+msgstr "ディレクトリ名を一つだけ指定してください"
 
 #: gio/glib-compile-schemas.c:2269
-#, fuzzy
-#| msgid "No schema files found: "
 msgid "No schema files found: doing nothing."
-msgstr "スキーマファイルが見つかりません: "
+msgstr "スキーマファイルが見つかりません: 何もしません。"
 
 #: gio/glib-compile-schemas.c:2271
-#, fuzzy
-#| msgid "removed existing output file.\n"
 msgid "No schema files found: removed existing output file."
-msgstr "既存の出力ファイル (gschemas.compiled) を削除しました。\n"
+msgstr "スキーマファイルが見つかりません: 既存の出力ファイルを削除しました。"
 
 #: gio/glocalfile.c:546 gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
-msgstr "ファイル名が無効です: %s"
+msgstr "%s は不正なファイル名です"
 
 #: gio/glocalfile.c:1013
-#, fuzzy, c-format
-#| msgid "Error getting filesystem info: %s"
+#, c-format
 msgid "Error getting filesystem info for %s: %s"
-msgstr "ファイルシステムの情報を取得する際にエラー: %s"
+msgstr ""
+"%s のファイルシステム情報取得中にエラーが発生しました: %s"
 
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
 #: gio/glocalfile.c:1152
-#, fuzzy, c-format
-#| msgid "Containing mount does not exist"
+#, c-format
 msgid "Containing mount for file %s not found"
-msgstr "マウントを含んでいるものはありません"
+msgstr ""
 
 #: gio/glocalfile.c:1175
-#, fuzzy
-#| msgid "Can't rename root directory"
 msgid "Can’t rename root directory"
-msgstr "ルート・ディレクトリの名前は変更できません"
+msgstr "ルートディレクトリの名前は変更できません"
 
 #: gio/glocalfile.c:1193 gio/glocalfile.c:1216
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming file %s: %s"
-msgstr "'%s' の読み出し中にエラー: %s"
+msgstr "ファイル %s の名前変更中にエラーが発生しました: %s"
 
 #: gio/glocalfile.c:1200
-#, fuzzy
 msgid "Can’t rename file, filename already exists"
-msgstr "ファイル名を変更できません (既に存在しているため)"
+msgstr "ファイル名を変更できません (すでに存在しているため)"
 
 #: gio/glocalfile.c:1213 gio/glocalfile.c:2322 gio/glocalfile.c:2350
 #: gio/glocalfile.c:2489 gio/glocalfileoutputstream.c:647
 msgid "Invalid filename"
-msgstr "無効なファイル名です"
+msgstr "不正なファイル名です"
 
 #: gio/glocalfile.c:1381 gio/glocalfile.c:1396
-#, fuzzy, c-format
-#| msgid "Error opening file '%s': %s"
+#, c-format
 msgid "Error opening file %s: %s"
-msgstr "'%s' というファイルをオープンする際にエラー: %s"
+msgstr "ファイル %s を開くときにエラーが発生しました: %s"
 
 #: gio/glocalfile.c:1521
-#, fuzzy, c-format
-#| msgid "Error removing file: %s"
+#, c-format
 msgid "Error removing file %s: %s"
-msgstr "ファイルを削除する際にエラー: %s"
+msgstr "ファイル %s の削除中にエラーが発生しました: %s"
 
 #: gio/glocalfile.c:1963
-#, fuzzy, c-format
-#| msgid "Error trashing file: %s"
+#, c-format
 msgid "Error trashing file %s: %s"
-msgstr "ファイルをゴミ箱へ移動する際にエラー: %s"
+msgstr "ファイル %s をゴミ箱へ移動するときにエラーが発生しました: %s"
 
 #: gio/glocalfile.c:2004
 #, c-format
 msgid "Unable to create trash dir %s: %s"
-msgstr "ゴミ箱のディレクトリ (%s) の生成に失敗しました: %s"
+msgstr "ゴミ箱ディレクトリ %s を作成できません: %s"
 
 #: gio/glocalfile.c:2025
-#, fuzzy, c-format
-#| msgid "Unable to find toplevel directory for trash"
+#, c-format
 msgid "Unable to find toplevel directory to trash %s"
-msgstr "ゴミ箱のトップレベルなディレクトリが見つかりません"
+msgstr ""
+"%s のゴミ箱のためのトップレベルディレクトリが見つかりません"
 
 #: gio/glocalfile.c:2034
-#, fuzzy, c-format
-#| msgid "Move between mounts not supported"
+#, c-format
 msgid "Trashing on system internal mounts is not supported"
-msgstr "マウント間の移動はサポートしていません"
+msgstr ""
 
 #: gio/glocalfile.c:2118 gio/glocalfile.c:2138
-#, fuzzy, c-format
-#| msgid "Unable to find or create trash directory"
+#, c-format
 msgid "Unable to find or create trash directory for %s"
-msgstr "ゴミ箱ディレクトリが存在しないか生成できません"
+msgstr ""
+"%s のゴミ箱ディレクトリが存在しないか作成できません"
 
 #: gio/glocalfile.c:2173
-#, fuzzy, c-format
-#| msgid "Unable to create trashing info file: %s"
+#, c-format
 msgid "Unable to create trashing info file for %s: %s"
-msgstr "ゴミ箱の情報ファイルを生成できません: %s"
+msgstr "%s のゴミ箱情報ファイルを作成できません: %s"
 
 #: gio/glocalfile.c:2233
-#, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
+#, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
-msgstr "ファイルをゴミ箱へ移動できません: %s"
+msgstr "ファイル %s を別のファイルシステムのゴミ箱へ移動できません"
 
 #: gio/glocalfile.c:2237 gio/glocalfile.c:2293
-#, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
+#, c-format
 msgid "Unable to trash file %s: %s"
-msgstr "ファイルをゴミ箱へ移動できません: %s"
+msgstr "ファイル %s をゴミ箱へ移動できません: %s"
 
 #: gio/glocalfile.c:2299
-#, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
+#, c-format
 msgid "Unable to trash file %s"
-msgstr "ファイルをゴミ箱へ移動できません: %s"
+msgstr "ファイル %s をゴミ箱へ移動できません"
 
 #: gio/glocalfile.c:2325
-#, fuzzy, c-format
-#| msgid "Error creating directory '%s': %s"
+#, c-format
 msgid "Error creating directory %s: %s"
-msgstr "ディレクトリ'%s' を生成する際にエラー: %s"
+msgstr "ディレクトリ %s の作成中にエラーが発生しました: %s"
 
 #: gio/glocalfile.c:2354
 #, c-format
@@ -3052,20 +2947,16 @@ msgid "Filesystem does not support symbolic links"
 msgstr "シンボリックリンクをファイルシステムがサポートしていません"
 
 #: gio/glocalfile.c:2357
-#, fuzzy, c-format
-#| msgid "Error making symbolic link: %s"
+#, c-format
 msgid "Error making symbolic link %s: %s"
-msgstr "シンボリックリンクを生成する際にエラー: %s"
+msgstr "シンボリックリンク %s の作成中にエラーが発生しました: %s"
 
 #: gio/glocalfile.c:2400 gio/glocalfile.c:2435 gio/glocalfile.c:2492
-#, fuzzy, c-format
-#| msgid "Error moving file: %s"
+#, c-format
 msgid "Error moving file %s: %s"
-msgstr "ファイルを移動する際にエラー: %s"
+msgstr "ファイル %s の移動中にエラーが発生しました: %s"
 
 #: gio/glocalfile.c:2423
-#, fuzzy
-#| msgid "Can't move directory over directory"
 msgid "Can’t move directory over directory"
 msgstr "ディレクトリからディレクトリへ移動できません"
 
@@ -3073,22 +2964,21 @@ msgstr "ディレクトリからディレクトリへ移動できません"
 #: gio/glocalfileoutputstream.c:1045 gio/glocalfileoutputstream.c:1060
 #: gio/glocalfileoutputstream.c:1077 gio/glocalfileoutputstream.c:1091
 msgid "Backup file creation failed"
-msgstr "バックアップ・ファイルの生成に失敗しました"
+msgstr "バックアップファイルの作成に失敗しました"
 
 #: gio/glocalfile.c:2468
 #, c-format
 msgid "Error removing target file: %s"
-msgstr "対象となるファイルを削除する際にエラー: %s"
+msgstr "対象となるファイルの削除中にエラーが発生しました: %s"
 
 #: gio/glocalfile.c:2482
 msgid "Move between mounts not supported"
 msgstr "マウント間の移動はサポートしていません"
 
 #: gio/glocalfile.c:2673
-#, fuzzy, c-format
-#| msgid "Could not load schemas from %s: %s\n"
+#, c-format
 msgid "Could not determine the disk usage of %s: %s"
-msgstr "'%s' からスキーマを読み込めませんでした: %s\n"
+msgstr "%s のディスク使用量を確認できませんでした: %s"
 
 #: gio/glocalfileinfo.c:755
 msgid "Attribute value must be non-NULL"
@@ -3096,58 +2986,56 @@ msgstr "属性値を NULL にしないでください"
 
 #: gio/glocalfileinfo.c:762
 msgid "Invalid attribute type (string expected)"
-msgstr "属性の種類が無効です (文字列を想定していた)"
+msgstr "属性の種類が不正です (文字列を想定していた)"
 
 #: gio/glocalfileinfo.c:769
 msgid "Invalid extended attribute name"
-msgstr "拡張属性の名前が無効です"
+msgstr "拡張属性の名前が不正です"
 
 #: gio/glocalfileinfo.c:809
-#, fuzzy, c-format
-#| msgid "Error setting extended attribute '%s': %s"
+#, c-format
 msgid "Error setting extended attribute “%s”: %s"
-msgstr "'%s' という拡張属性をセットする際にエラー: %s"
+msgstr "“%s”という拡張属性の設定中にエラーが発生しました: %s"
 
 #: gio/glocalfileinfo.c:1637
 msgid " (invalid encoding)"
-msgstr " (無効なエンコーディング)"
+msgstr " (不正なエンコーディング)"
 
 #: gio/glocalfileinfo.c:1801 gio/glocalfileoutputstream.c:909
-#, fuzzy, c-format
-#| msgid "Error when getting information for file '%s': %s"
+#, c-format
 msgid "Error when getting information for file “%s”: %s"
-msgstr "ファイル '%s' の情報を取得する際にエラー: %s"
+msgstr "ファイル“%s”の情報取得中にエラーが発生しました: %s"
 
 #: gio/glocalfileinfo.c:2071
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
-msgstr "ファイルディスクリプターの情報を取得する際にエラー: %s"
+msgstr "ファイルディスクリプターの情報取得中にエラーが発生しました: %s"
 
 #: gio/glocalfileinfo.c:2116
 msgid "Invalid attribute type (uint32 expected)"
-msgstr "属性の種類が無効です (uint32 型を想定していた)"
+msgstr "属性の種類が不正です (uint32 型を想定していた)"
 
 #: gio/glocalfileinfo.c:2134
 msgid "Invalid attribute type (uint64 expected)"
-msgstr "属性の種類が無効です (uint64 型を想定していた)"
+msgstr "属性の種類が不正です (uint64 型を想定していた)"
 
 #: gio/glocalfileinfo.c:2153 gio/glocalfileinfo.c:2172
 msgid "Invalid attribute type (byte string expected)"
-msgstr "属性の種類が無効です (バイト型の文字列を想定していた)"
+msgstr "属性の種類が不正です (バイト型の文字列を想定していた)"
 
 #: gio/glocalfileinfo.c:2219
 msgid "Cannot set permissions on symlinks"
-msgstr "シンボリックリンクにはアクセス権をセットできません"
+msgstr "シンボリックリンクにはアクセス権を設定できません"
 
 #: gio/glocalfileinfo.c:2235
 #, c-format
 msgid "Error setting permissions: %s"
-msgstr "アクセス権をセットする際にエラー: %s"
+msgstr "アクセス権の設定中にエラーが発生しました: %s"
 
 #: gio/glocalfileinfo.c:2286
 #, c-format
 msgid "Error setting owner: %s"
-msgstr "所有者をセットする際にエラー: %s"
+msgstr "所有者の設定中にエラーが発生しました: %s"
 
 #: gio/glocalfileinfo.c:2309
 msgid "symlink must be non-NULL"
@@ -3157,16 +3045,18 @@ msgstr "シンボリックリンクを NULL にしないでください"
 #: gio/glocalfileinfo.c:2349
 #, c-format
 msgid "Error setting symlink: %s"
-msgstr "シンボリックリンクをセットする際にエラー: %s"
+msgstr "シンボリックリンクの設定中にエラーが発生しました: %s"
 
 #: gio/glocalfileinfo.c:2328
 msgid "Error setting symlink: file is not a symlink"
-msgstr "シンボリックリンクの指定でエラー: ファイルがリンクではない"
+msgstr ""
+"シンボリックリンクの設定中にエラーが発生しました: ファイルがリンクではありません"
 
 #: gio/glocalfileinfo.c:2454
 #, c-format
 msgid "Error setting modification or access time: %s"
-msgstr "最終更新日時、あるいは最終アクセス日時をセットする際にエラー: %s"
+msgstr ""
+"最終更新日時または最終アクセス日時の設定中にエラーが発生しました: %s"
 
 #: gio/glocalfileinfo.c:2477
 msgid "SELinux context must be non-NULL"
@@ -3175,7 +3065,7 @@ msgstr "SELinux のコンテキストを NULL にしないでください"
 #: gio/glocalfileinfo.c:2492
 #, c-format
 msgid "Error setting SELinux context: %s"
-msgstr "SELinux のコンテキストを指定する際にエラー: %s"
+msgstr "SELinux のコンテキスト指定中にエラーが発生しました: %s"
 
 #: gio/glocalfileinfo.c:2499
 msgid "SELinux is not enabled on this system"
@@ -3184,62 +3074,61 @@ msgstr "このシステムでは SELinux が有効になっていません"
 #: gio/glocalfileinfo.c:2591
 #, c-format
 msgid "Setting attribute %s not supported"
-msgstr "%s という属性値はセットできません"
+msgstr "%s という属性値は設定できません"
 
 #: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:792
 #, c-format
 msgid "Error reading from file: %s"
-msgstr "ファイルから読み込む際にエラー: %s"
+msgstr "ファイルからの読み取り中にエラーが発生しました: %s"
 
 #: gio/glocalfileinputstream.c:199 gio/glocalfileinputstream.c:211
 #: gio/glocalfileinputstream.c:225 gio/glocalfileinputstream.c:333
 #: gio/glocalfileoutputstream.c:554 gio/glocalfileoutputstream.c:1109
 #, c-format
 msgid "Error seeking in file: %s"
-msgstr "ファイルでシークする際にエラー: %s"
+msgstr "ファイルでシークするときにエラーが発生しました: %s"
 
 #: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:344
 #: gio/glocalfileoutputstream.c:438
 #, c-format
 msgid "Error closing file: %s"
-msgstr "ファイルを閉じる際にエラー: %s"
+msgstr "ファイルを閉じるときにエラーが発生しました: %s"
 
 #: gio/glocalfilemonitor.c:865
 msgid "Unable to find default local file monitor type"
-msgstr "ローカルファイルを監視するデフォルト・モニターの種類が見つかりません"
+msgstr "ローカルファイルを監視するデフォルトモニターの種類が見つかりません"
 
 #: gio/glocalfileoutputstream.c:209 gio/glocalfileoutputstream.c:287
 #: gio/glocalfileoutputstream.c:324 gio/glocalfileoutputstream.c:813
 #, c-format
 msgid "Error writing to file: %s"
-msgstr "ファイルに書き込む際にエラー: %s"
+msgstr "ファイルへの書き込み中にエラーが発生しました: %s"
 
 #: gio/glocalfileoutputstream.c:371
 #, c-format
 msgid "Error removing old backup link: %s"
-msgstr "古いバックアップのリンクを削除する際にエラー: %s"
+msgstr "古いバックアップリンクの削除中にエラーが発生しました: %s"
 
 #: gio/glocalfileoutputstream.c:385 gio/glocalfileoutputstream.c:398
 #, c-format
 msgid "Error creating backup copy: %s"
-msgstr "バックアップのコピーを生成する際にエラー: %s"
+msgstr "バックアップのコピー作成中にエラーが発生しました: %s"
 
 #: gio/glocalfileoutputstream.c:416
 #, c-format
 msgid "Error renaming temporary file: %s"
-msgstr "作業用のファイル名を変更する際にエラー: %s"
+msgstr "一時ファイルの名前変更中にエラーが発生しました: %s"
 
 #: gio/glocalfileoutputstream.c:600 gio/glocalfileoutputstream.c:1160
 #, c-format
 msgid "Error truncating file: %s"
-msgstr "ファイルを切りつめる際にエラー: %s"
+msgstr "ファイルの切りつめ中にエラーが発生しました: %s"
 
 #: gio/glocalfileoutputstream.c:653 gio/glocalfileoutputstream.c:891
 #: gio/glocalfileoutputstream.c:1141 gio/gsubprocess.c:380
-#, fuzzy, c-format
-#| msgid "Error opening file '%s': %s"
+#, c-format
 msgid "Error opening file “%s”: %s"
-msgstr "'%s' というファイルをオープンする際にエラー: %s"
+msgstr "ファイル“%s”を開くときにエラーが発生しました: %s"
 
 #: gio/glocalfileoutputstream.c:922
 msgid "Target file is a directory"
@@ -3256,7 +3145,7 @@ msgstr "ファイルが外部で変更されました"
 #: gio/glocalfileoutputstream.c:1125
 #, c-format
 msgid "Error removing old file: %s"
-msgstr "古いファイルを削除する際にエラー: %s"
+msgstr "古いファイルの削除中にエラーが発生しました: %s"
 
 #: gio/gmemoryinputstream.c:474 gio/gmemoryoutputstream.c:772
 msgid "Invalid GSeekType supplied"
@@ -3264,11 +3153,11 @@ msgstr "不正な GSeekType が指定されました"
 
 #: gio/gmemoryinputstream.c:484
 msgid "Invalid seek request"
-msgstr "無効なシークの要求です"
+msgstr "不正なシーク要求です"
 
 #: gio/gmemoryinputstream.c:508
 msgid "Cannot truncate GMemoryInputStream"
-msgstr "GMemoryInputStream を切りつめることはできません"
+msgstr "GMemoryInputStream を切りつめられません"
 
 #: gio/gmemoryoutputstream.c:567
 msgid "Memory output stream not resizable"
@@ -3276,7 +3165,7 @@ msgstr "メモリ出力ストリームの大きさは変更できません"
 
 #: gio/gmemoryoutputstream.c:583
 msgid "Failed to resize memory output stream"
-msgstr "メモリ出力ストリームの大きさを変更できませんでした"
+msgstr "メモリ出力ストリームの大きさ変更に失敗しました"
 
 #: gio/gmemoryoutputstream.c:673
 msgid ""
@@ -3297,56 +3186,44 @@ msgstr "ストリームの最後を越えてシークするようリクエスト
 #. * message for mount objects that
 #. * don't implement unmount.
 #: gio/gmount.c:399
-#, fuzzy
-#| msgid "mount doesn't implement \"unmount\""
 msgid "mount doesn’t implement “unmount”"
-msgstr "mount は \"unmount\" を実装していません"
+msgstr "mount は“unmount”を実装していません"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: gio/gmount.c:475
-#, fuzzy
-#| msgid "mount doesn't implement \"eject\""
 msgid "mount doesn’t implement “eject”"
-msgstr "mount は \"eject\" を実装していません"
+msgstr "mount は“eject”を実装していません"
 
 #
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: gio/gmount.c:553
-#, fuzzy
-#| msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgid "mount doesn’t implement “unmount” or “unmount_with_operation”"
 msgstr ""
-"mount は \"unmount\" あるいは \"unmount_with_operation\" を実装していません"
+"mount は“unmount”または“unmount_with_operation”を実装していません"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gmount.c:638
-#, fuzzy
-#| msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgid "mount doesn’t implement “eject” or “eject_with_operation”"
 msgstr ""
-"mount は \"eject\" あるいは \"eject_with_operation\" を実装していません"
+"mount は“eject”または“eject_with_operation”を実装していません"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 #: gio/gmount.c:726
-#, fuzzy
-#| msgid "mount doesn't implement \"remount\""
 msgid "mount doesn’t implement “remount”"
-msgstr "mount は \"remount\" を実装していません"
+msgstr "mount は“remount”を実装していません"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: gio/gmount.c:808
-#, fuzzy
-#| msgid "mount doesn't implement content type guessing"
 msgid "mount doesn’t implement content type guessing"
 msgstr "mount にはメディアの種類を推測するような実装はありません"
 
@@ -3354,53 +3231,47 @@ msgstr "mount にはメディアの種類を推測するような実装はあり
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: gio/gmount.c:895
-#, fuzzy
-#| msgid "mount doesn't implement synchronous content type guessing"
 msgid "mount doesn’t implement synchronous content type guessing"
 msgstr "mount には同期させてメディアの種類を推測するような実装はありません"
 
 #: gio/gnetworkaddress.c:415
-#, fuzzy, c-format
-#| msgid "Hostname '%s' contains '[' but not ']'"
+#, c-format
 msgid "Hostname “%s” contains “[” but not “]”"
-msgstr "ホスト名 '%s' に '[' が含まれていますが ']' がありません"
+msgstr "ホスト名“%s”に“[”が含まれていますが“]”がありません"
 
 #: gio/gnetworkmonitorbase.c:219 gio/gnetworkmonitorbase.c:323
 msgid "Network unreachable"
-msgstr ""
+msgstr "ネットワークが到達不能です"
 
 #: gio/gnetworkmonitorbase.c:257 gio/gnetworkmonitorbase.c:287
 msgid "Host unreachable"
-msgstr ""
+msgstr "ホストが到達不能です"
 
 #: gio/gnetworkmonitornetlink.c:99 gio/gnetworkmonitornetlink.c:111
 #: gio/gnetworkmonitornetlink.c:130
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create network monitor: %s"
-msgstr "リモートのアドレスを取得できませんでした: %s"
+msgstr "ネットワークモニターを作成できませんでした: %s"
 
 #: gio/gnetworkmonitornetlink.c:120
 msgid "Could not create network monitor: "
-msgstr ""
+msgstr "ネットワークモニターを作成できませんでした: "
 
 #: gio/gnetworkmonitornetlink.c:183
-#, fuzzy
 msgid "Could not get network status: "
-msgstr "リモートのアドレスを取得できませんでした: %s"
+msgstr "ネットワークのステータスを取得できませんでした: "
 
 #: gio/gnetworkmonitornm.c:348
 #, c-format
 msgid "NetworkManager not running"
-msgstr ""
+msgstr "NetworkManager が起動していません"
 
 #: gio/gnetworkmonitornm.c:359
 #, c-format
 msgid "NetworkManager version too old"
-msgstr ""
+msgstr "NetworkManager のバージョンが古すぎます"
 
 #: gio/goutputstream.c:232 gio/goutputstream.c:775
-#, fuzzy
-#| msgid "Output stream doesn't implement write"
 msgid "Output stream doesn’t implement write"
 msgstr "出力ストリームは書き込みを実装していません"
 
@@ -3411,49 +3282,44 @@ msgstr ""
 
 #: gio/goutputstream.c:736 gio/goutputstream.c:1761
 msgid "Source stream is already closed"
-msgstr "ソース・ストリームは既に閉じています"
+msgstr "ソースストリームはすでに閉じています"
 
 #: gio/gresolver.c:386 gio/gthreadedresolver.c:150 gio/gthreadedresolver.c:168
-#, fuzzy, c-format
-#| msgid "Error resolving '%s': %s"
+#, c-format
 msgid "Error resolving “%s”: %s"
-msgstr "'%s' の解決中にエラー: %s"
+msgstr "“%s”の解決中にエラーが発生しました: %s"
 
 #. Translators: The placeholder is for a function name.
 #: gio/gresolver.c:455 gio/gresolver.c:613
-#, fuzzy, c-format
-#| msgid "Input stream doesn't implement read"
+#, c-format
 msgid "%s not implemented"
-msgstr "入力ストリームで読み込みを実装していません"
+msgstr "%s は実装していません"
 
 #: gio/gresolver.c:981 gio/gresolver.c:1033
-#, fuzzy
-#| msgid "Invalid filename"
 msgid "Invalid domain"
-msgstr "無効なファイル名です"
+msgstr "不正なドメインです"
 
 #: gio/gresource.c:665 gio/gresource.c:924 gio/gresource.c:963
 #: gio/gresource.c:1087 gio/gresource.c:1159 gio/gresource.c:1232
 #: gio/gresource.c:1313 gio/gresourcefile.c:476 gio/gresourcefile.c:599
 #: gio/gresourcefile.c:736
-#, fuzzy, c-format
+#, c-format
 msgid "The resource at “%s” does not exist"
-msgstr "対象となるファイルはディレクトリです"
+msgstr ""
 
 #: gio/gresource.c:830
-#, fuzzy, c-format
+#, c-format
 msgid "The resource at “%s” failed to decompress"
-msgstr "対象となるファイルはディレクトリです"
+msgstr ""
 
 #: gio/gresourcefile.c:732
-#, fuzzy, c-format
+#, c-format
 msgid "The resource at “%s” is not a directory"
-msgstr "対象となるファイルはディレクトリです"
+msgstr ""
 
 #: gio/gresourcefile.c:940
-#, fuzzy
 msgid "Input stream doesn’t implement seek"
-msgstr "入力ストリームで読み込みを実装していません"
+msgstr "入力ストリームはシークを実装していません"
 
 #: gio/gresource-tool.c:499
 msgid "List sections containing resources in an elf FILE"
@@ -3487,9 +3353,8 @@ msgid "Extract a resource file to stdout"
 msgstr ""
 
 #: gio/gresource-tool.c:525
-#, fuzzy
 msgid "FILE PATH"
-msgstr "PATH"
+msgstr ""
 
 #: gio/gresource-tool.c:539
 msgid ""
@@ -3508,7 +3373,7 @@ msgid ""
 msgstr ""
 
 #: gio/gresource-tool.c:553
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage:\n"
 "  gresource %s%s%s %s\n"
@@ -3516,8 +3381,8 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"用法:\n"
-"  gsettings %s %s\n"
+"使用法:\n"
+"  gresource %s%s%s %s\n"
 "\n"
 "%s\n"
 "\n"
@@ -3541,9 +3406,8 @@ msgid ""
 msgstr ""
 
 #: gio/gresource-tool.c:577
-#, fuzzy
 msgid "[PATH]"
-msgstr "PATH"
+msgstr ""
 
 #: gio/gresource-tool.c:579
 msgid "  PATH      An (optional) resource path (may be partial)\n"
@@ -3558,22 +3422,19 @@ msgid "  PATH      A resource path\n"
 msgstr ""
 
 #: gio/gsettings-tool.c:49 gio/gsettings-tool.c:70 gio/gsettings-tool.c:906
-#, fuzzy, c-format
-#| msgid "No such schema '%s'\n"
+#, c-format
 msgid "No such schema “%s”\n"
-msgstr "スキーマ '%s' は存在しません\n"
+msgstr "スキーマ“%s”は存在しません\n"
 
 #: gio/gsettings-tool.c:55
-#, fuzzy, c-format
-#| msgid "Schema '%s' is not relocatable (path must not be specified)\n"
+#, c-format
 msgid "Schema “%s” is not relocatable (path must not be specified)\n"
-msgstr "スキーマ '%s' は再配置可能ではありません (パスは指定できません)\n"
+msgstr "スキーマ“%s”は再配置可能ではありません (パスは指定できません)\n"
 
 #: gio/gsettings-tool.c:76
-#, fuzzy, c-format
-#| msgid "Schema '%s' is relocatable (path must be specified)\n"
+#, c-format
 msgid "Schema “%s” is relocatable (path must be specified)\n"
-msgstr "スキーマ '%s' は再配置可能です (パスを指定する必要があります)\n"
+msgstr "スキーマ“%s”は再配置可能です (パスを指定する必要があります)\n"
 
 #: gio/gsettings-tool.c:90
 msgid "Empty path given.\n"
@@ -3581,11 +3442,11 @@ msgstr "パスが空です。\n"
 
 #: gio/gsettings-tool.c:96
 msgid "Path must begin with a slash (/)\n"
-msgstr "パスの先頭はスラッシュ (/) でなければなりません\n"
+msgstr "パスの先頭はスラッシュ (/) である必要があります\n"
 
 #: gio/gsettings-tool.c:102
 msgid "Path must end with a slash (/)\n"
-msgstr "パスの末尾はスラッシュ (/) でなければなりません\n"
+msgstr "パスの末尾はスラッシュ (/) である必要があります\n"
 
 #: gio/gsettings-tool.c:108
 msgid "Path must not contain two adjacent slashes (//)\n"
@@ -3625,7 +3486,7 @@ msgid ""
 "If no SCHEMA is given, list all keys\n"
 msgstr ""
 "キーと値の一覧を再帰的に表示する\n"
-"SCHEMA を指定しない場合、すべてのキーにたいして一覧を表示する\n"
+"SCHEMA を指定しない場合、すべてのキーに対して一覧を表示する\n"
 
 #: gio/gsettings-tool.c:605
 msgid "[SCHEMA[:PATH]]"
@@ -3645,10 +3506,8 @@ msgid "Query the range of valid values for KEY"
 msgstr "KEY の値の有効な範囲を確認する"
 
 #: gio/gsettings-tool.c:622
-#, fuzzy
-#| msgid "Query the range of valid values for KEY"
 msgid "Query the description for KEY"
-msgstr "KEY の値の有効な範囲を確認する"
+msgstr "KEY の説明を確認する"
 
 #: gio/gsettings-tool.c:628
 msgid "Set the value of KEY to VALUE"
@@ -3676,9 +3535,9 @@ msgid ""
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
-"KEY の値が変更されるのを監視する。\n"
-"KEY を指定しない場合、SCHEMA 内のすべてのキーを監視する。\n"
-"^C で監視を止める。\n"
+"KEY の値が変更されるのを監視します。\n"
+"KEY を指定しない場合、SCHEMA 内のすべてのキーを監視します。\n"
+"^C で監視を止めます。\n"
 
 #: gio/gsettings-tool.c:655
 msgid "SCHEMA[:PATH] [KEY]"
@@ -3761,7 +3620,7 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"用法:\n"
+"使用法:\n"
 "  gsettings [--schemadir SCHEMADIR] %s %s\n"
 "\n"
 "%s\n"
@@ -3797,37 +3656,34 @@ msgid "Could not load schemas from %s: %s\n"
 msgstr "'%s' からスキーマを読み込めませんでした: %s\n"
 
 #: gio/gsettings-tool.c:785
-#, fuzzy
-#| msgid "No schema files found: "
 msgid "No schemas installed\n"
-msgstr "スキーマファイルが見つかりません: "
+msgstr "スキーマがインストールされていません\n"
 
 #: gio/gsettings-tool.c:864
 msgid "Empty schema name given\n"
 msgstr "スキーマ名が空です\n"
 
 #: gio/gsettings-tool.c:919
-#, fuzzy, c-format
-#| msgid "No such key '%s'\n"
+#, c-format
 msgid "No such key “%s”\n"
-msgstr "キー '%s' は存在しません\n"
+msgstr "キー“%s”は存在しません\n"
 
 #: gio/gsocket.c:418
 msgid "Invalid socket, not initialized"
-msgstr "無効なソケットです。初期化されていません"
+msgstr "初期化されていない不正なソケットです"
 
 #: gio/gsocket.c:425
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr "無効なソケットです。初期化に失敗しました: %s"
+msgstr "不正なソケットです。初期化に失敗しました: %s"
 
 #: gio/gsocket.c:433
 msgid "Socket is already closed"
-msgstr "ソースは既に閉じられています"
+msgstr "ソースはすでに閉じられています"
 
 #: gio/gsocket.c:448 gio/gsocket.c:3182 gio/gsocket.c:4399 gio/gsocket.c:4457
 msgid "Socket I/O timed out"
-msgstr ""
+msgstr "ソケット I/O がタイムアウトしました"
 
 #: gio/gsocket.c:583
 #, c-format
@@ -3840,9 +3696,8 @@ msgid "Unable to create socket: %s"
 msgstr "ソケットを作成できません: %s"
 
 #: gio/gsocket.c:666
-#, fuzzy
 msgid "Unknown family was specified"
-msgstr "不明なプロトコルが指定されました"
+msgstr ""
 
 #: gio/gsocket.c:673
 msgid "Unknown protocol was specified"
@@ -3874,32 +3729,29 @@ msgid "could not listen: %s"
 msgstr "listen できませんでした: %s"
 
 #: gio/gsocket.c:2204
-#, fuzzy, c-format
-#| msgid "Error binding to address: %s"
+#, c-format
 msgid "Error binding to address %s: %s"
-msgstr "アドレスに bind 時にエラー: %s"
+msgstr "アドレス %s への bind 中にエラーが発生しました: %s"
 
 #: gio/gsocket.c:2380 gio/gsocket.c:2417 gio/gsocket.c:2527 gio/gsocket.c:2552
 #: gio/gsocket.c:2615 gio/gsocket.c:2673 gio/gsocket.c:2691
-#, fuzzy, c-format
+#, c-format
 msgid "Error joining multicast group: %s"
-msgstr "アプリケーションを起動する際にエラー: %s"
+msgstr "マルチキャストグループへの join 中にエラーが発生しました: %s"
 
 #: gio/gsocket.c:2381 gio/gsocket.c:2418 gio/gsocket.c:2528 gio/gsocket.c:2553
 #: gio/gsocket.c:2616 gio/gsocket.c:2674 gio/gsocket.c:2692
-#, fuzzy, c-format
+#, c-format
 msgid "Error leaving multicast group: %s"
-msgstr "アプリケーションを起動する際にエラー: %s"
+msgstr "マルチキャストグループからの leave 中にエラーが発生しました: %s"
 
 #: gio/gsocket.c:2382
 msgid "No support for source-specific multicast"
-msgstr ""
+msgstr "SSM (送信元特定マルチキャスト) はサポートしていません"
 
 #: gio/gsocket.c:2529
-#, fuzzy
-#| msgid "Unsupported socket address"
 msgid "Unsupported socket family"
-msgstr "サポートしていないソケット・アドレスです"
+msgstr ""
 
 #: gio/gsocket.c:2554
 msgid "source-specific not an IPv4 address"
@@ -3908,55 +3760,53 @@ msgstr ""
 #: gio/gsocket.c:2578
 #, c-format
 msgid "Interface name too long"
-msgstr ""
+msgstr "インターフェース名が長すぎます"
 
 #: gio/gsocket.c:2591 gio/gsocket.c:2641
 #, c-format
 msgid "Interface not found: %s"
-msgstr ""
+msgstr "インターフェースが見つかりませんでした: %s"
 
 #: gio/gsocket.c:2617
 msgid "No support for IPv4 source-specific multicast"
-msgstr ""
+msgstr "IPv4 SSM (送信元特定マルチキャスト) はサポートしていません"
 
 #: gio/gsocket.c:2675
 msgid "No support for IPv6 source-specific multicast"
-msgstr ""
+msgstr "IPv6 SSM (送信元特定マルチキャスト) はサポートしていません"
 
 #: gio/gsocket.c:2884
 #, c-format
 msgid "Error accepting connection: %s"
-msgstr "接続を accept する時にエラー: %s"
+msgstr "接続を accept するときにエラーが発生しました: %s"
 
 #: gio/gsocket.c:3010
 msgid "Connection in progress"
 msgstr "接続中"
 
 #: gio/gsocket.c:3061
-#, fuzzy
-#| msgid "Unable to get pending error: %s"
 msgid "Unable to get pending error: "
-msgstr "エラーをペンディングできません: %s"
+msgstr "エラーをペンディングできません: "
 
 #: gio/gsocket.c:3247
 #, c-format
 msgid "Error receiving data: %s"
-msgstr "データの受信時にエラー: %s"
+msgstr "データ受信中にエラーが発生しました: %s"
 
 #: gio/gsocket.c:3444
 #, c-format
 msgid "Error sending data: %s"
-msgstr "データの送信時にエラー: %s"
+msgstr "データ送信中にエラーが発生しました: %s"
 
 #: gio/gsocket.c:3631
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to shutdown socket: %s"
-msgstr "ソケットを作成できません: %s"
+msgstr ""
 
 #: gio/gsocket.c:3712
 #, c-format
 msgid "Error closing socket: %s"
-msgstr "ソケットを閉じる際にエラー: %s"
+msgstr "ソケットを閉じるときにエラーが発生しました: %s"
 
 #: gio/gsocket.c:4392
 #, c-format
@@ -3967,63 +3817,56 @@ msgstr "ソケットの指定された状態を wait: %s"
 #: gio/gsocket.c:5182 gio/gsocket.c:5222 gio/gsocket.c:5224
 #, c-format
 msgid "Error sending message: %s"
-msgstr "メッセージを送信中にエラー: %s"
+msgstr "メッセージの送信中にエラーが発生しました: %s"
 
 #: gio/gsocket.c:4946
-#, fuzzy
-#| msgid "GSocketControlMessage not supported on windows"
 msgid "GSocketControlMessage not supported on Windows"
-msgstr "GSocketControlMessage は Windows ではサポートされていません"
+msgstr "GSocketControlMessage は Windows ではサポートしていません"
 
 #: gio/gsocket.c:5415 gio/gsocket.c:5488 gio/gsocket.c:5714
 #, c-format
 msgid "Error receiving message: %s"
-msgstr "メッセージを受信中にエラー: %s"
+msgstr "メッセージの受信中にエラーが発生しました: %s"
 
 #: gio/gsocket.c:5995
-#, fuzzy, c-format
-#| msgid "Unable to create socket: %s"
+#, c-format
 msgid "Unable to read socket credentials: %s"
-msgstr "ソケットを作成できません: %s"
+msgstr ""
 
 #: gio/gsocket.c:6004
 msgid "g_socket_get_credentials not implemented for this OS"
-msgstr ""
+msgstr "この OS では g_socket_get_credentials は実装されていません"
 
 #: gio/gsocketclient.c:182
 #, c-format
 msgid "Could not connect to proxy server %s: "
-msgstr ""
+msgstr "プロキシサーバー %s に接続できませんでした: "
 
 #: gio/gsocketclient.c:196
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s: "
-msgstr "'%s' から '%s' へ変換するコンバーターを開けませんでした: %s"
+msgstr "%s に接続できませんでした: "
 
 #: gio/gsocketclient.c:198
-#, fuzzy
 msgid "Could not connect: "
-msgstr "listen できませんでした: %s"
+msgstr "接続できませんでした: "
 
 #: gio/gsocketclient.c:1037 gio/gsocketclient.c:1764
 msgid "Unknown error on connect"
-msgstr "接続時に原因不明のエラー"
+msgstr "接続時に原因不明のエラーが発生しました"
 
 #: gio/gsocketclient.c:1091 gio/gsocketclient.c:1672
-#, fuzzy
-#| msgid "Proxy protocol '%s' is not supported."
 msgid "Proxying over a non-TCP connection is not supported."
-msgstr "プロキシのプロトコル '%s' がサポートされていません"
+msgstr ""
 
 #: gio/gsocketclient.c:1120 gio/gsocketclient.c:1698
-#, fuzzy, c-format
-#| msgid "Proxy protocol '%s' is not supported."
+#, c-format
 msgid "Proxy protocol “%s” is not supported."
-msgstr "プロキシのプロトコル '%s' がサポートされていません"
+msgstr "プロキシのプロトコル“%s”はサポートしていません。"
 
 #: gio/gsocketlistener.c:230
 msgid "Listener is already closed"
-msgstr "受信を待つ Listener は既に閉じています"
+msgstr "受信を待つ Listener はすでに閉じています"
 
 #: gio/gsocketlistener.c:276
 msgid "Added socket is closed"
@@ -4032,20 +3875,20 @@ msgstr "追加されたソケットは閉じています"
 #: gio/gsocks4aproxy.c:118
 #, c-format
 msgid "SOCKSv4 does not support IPv6 address “%s”"
-msgstr ""
+msgstr "SOCKSv4 は IPv6 アドレス“%s”をサポートしていません"
 
 #: gio/gsocks4aproxy.c:136
 msgid "Username is too long for SOCKSv4 protocol"
-msgstr ""
+msgstr "SOCKSv4 プロトコルのユーザー名が長すぎます"
 
 #: gio/gsocks4aproxy.c:153
 #, c-format
 msgid "Hostname “%s” is too long for SOCKSv4 protocol"
-msgstr ""
+msgstr "SOCKSv4 プロトコルのホスト名“%s”が長すぎます"
 
 #: gio/gsocks4aproxy.c:179
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr ""
+msgstr "サーバーが SOCKSv4 プロキシサーバーではありません。"
 
 #: gio/gsocks4aproxy.c:186
 msgid "Connection through SOCKSv4 server was rejected"
@@ -4053,42 +3896,44 @@ msgstr ""
 
 #: gio/gsocks5proxy.c:153 gio/gsocks5proxy.c:324 gio/gsocks5proxy.c:334
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr ""
+msgstr "サーバーが SOCKSv5 プロキシサーバーではありません。"
 
 #: gio/gsocks5proxy.c:167
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr ""
+msgstr "SOCKSv5 プロキシは認証が必要です。"
 
 #: gio/gsocks5proxy.c:177
 msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
 msgstr ""
+"SOCKSv5 プロキシは GLib がサポートしていない認証方式が必要です。"
 
 #: gio/gsocks5proxy.c:206
 msgid "Username or password is too long for SOCKSv5 protocol."
-msgstr ""
+msgstr "SOCKSv5 プロトコルのユーザー名またはパスワードが長すぎます。"
 
 #: gio/gsocks5proxy.c:236
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
+"ユーザー名またはパスワードに誤りがあるため、SOCKSv5 認証に失敗しました。"
 
 #: gio/gsocks5proxy.c:286
 #, c-format
 msgid "Hostname “%s” is too long for SOCKSv5 protocol"
-msgstr ""
+msgstr "SOCKSv5 プロトコルのホスト名“%s”が長すぎます"
 
 #: gio/gsocks5proxy.c:348
 msgid "The SOCKSv5 proxy server uses unknown address type."
-msgstr ""
+msgstr "SOCKSv5 プロキシサーバーが不明なアドレス形式を使用しています。"
 
 #: gio/gsocks5proxy.c:355
 msgid "Internal SOCKSv5 proxy server error."
-msgstr ""
+msgstr "SOCKSv5 プロキシサーバーの内部エラーです。"
 
 #: gio/gsocks5proxy.c:361
 msgid "SOCKSv5 connection not allowed by ruleset."
-msgstr ""
+msgstr "ルールセットで SOCKSv5 接続が許可されていません。"
 
 #: gio/gsocks5proxy.c:368
 msgid "Host unreachable through SOCKSv5 server."
@@ -4104,31 +3949,29 @@ msgstr ""
 
 #: gio/gsocks5proxy.c:386
 msgid "SOCKSv5 proxy does not support “connect” command."
-msgstr ""
+msgstr "SOCKSv5 プロキシが“connect”コマンドをサポートしていません。"
 
 #: gio/gsocks5proxy.c:392
 msgid "SOCKSv5 proxy does not support provided address type."
-msgstr ""
+msgstr "SOCKSv5 プロキシが指定したアドレス形式をサポートしていません。"
 
 #: gio/gsocks5proxy.c:398
 msgid "Unknown SOCKSv5 proxy error."
-msgstr ""
+msgstr "不明な SOCKSv5 プロキシエラーです。"
 
 #: gio/gthemedicon.c:595
-#, fuzzy, c-format
-#| msgid "Can't handle version %d of GThemedIcon encoding"
+#, c-format
 msgid "Can’t handle version %d of GThemedIcon encoding"
 msgstr "バージョン %d の GThemedIcon のエンコーディングはサポートしていません"
 
 #: gio/gthreadedresolver.c:152
 msgid "No valid addresses were found"
-msgstr ""
+msgstr "正しいアドレスが見つかりませんでした"
 
 #: gio/gthreadedresolver.c:334
-#, fuzzy, c-format
-#| msgid "Error reverse-resolving '%s': %s"
+#, c-format
 msgid "Error reverse-resolving “%s”: %s"
-msgstr "'%s' の逆引き中にエラー: %s"
+msgstr "“%s”の逆引き中にエラーが発生しました: %s"
 
 #: gio/gthreadedresolver.c:671 gio/gthreadedresolver.c:750
 #: gio/gthreadedresolver.c:848 gio/gthreadedresolver.c:898
@@ -4137,43 +3980,43 @@ msgid "No DNS record of the requested type for “%s”"
 msgstr ""
 
 #: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:853
-#, fuzzy, c-format
-#| msgid "Temporarily unable to resolve '%s'"
+#, c-format
 msgid "Temporarily unable to resolve “%s”"
-msgstr "一時的に '%s' を解決することができません"
+msgstr "一時的に“%s”を解決できません"
 
 #: gio/gthreadedresolver.c:681 gio/gthreadedresolver.c:858
 #: gio/gthreadedresolver.c:968
-#, fuzzy, c-format
-#| msgid "Error resolving '%s'"
+#, c-format
 msgid "Error resolving “%s”"
-msgstr "'%s' の解決時にエラー"
+msgstr "“%s”の解決中にエラーが発生しました"
 
 #: gio/gtlscertificate.c:243
 msgid "No PEM-encoded private key found"
-msgstr ""
+msgstr "PEM でエンコードされた秘密鍵が見つかりませんでした"
 
 #: gio/gtlscertificate.c:253
 msgid "Cannot decrypt PEM-encoded private key"
-msgstr ""
+msgstr "PEM でエンコードされた秘密鍵を復号できません"
 
 #: gio/gtlscertificate.c:264
 msgid "Could not parse PEM-encoded private key"
-msgstr ""
+msgstr "PEM でエンコードされた秘密鍵を解析できませんでした"
 
 #: gio/gtlscertificate.c:291
 msgid "No PEM-encoded certificate found"
-msgstr ""
+msgstr "PEM でエンコードされた証明書が見つかりませんでした"
 
 #: gio/gtlscertificate.c:300
 msgid "Could not parse PEM-encoded certificate"
-msgstr ""
+msgstr "PEM でエンコードされた証明書を解析できませんでした"
 
 #: gio/gtlspassword.c:111
 msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
+"これは、あなたのアクセスがロックアウトされる前の、正しいパスワードを入力す"
+"る最後の機会です。"
 
 #. Translators: This is not the 'This is the last chance' string. It is
 #. * displayed when more than one attempt is allowed.
@@ -4182,73 +4025,76 @@ msgid ""
 "Several passwords entered have been incorrect, and your access will be "
 "locked out after further failures."
 msgstr ""
+"これまで入力したパスワードは正しくありません。このまま正しくないパスワ"
+"ードを入力し続けると、アクセスがロックアウトされます。"
 
 #: gio/gtlspassword.c:117
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "入力したパスワードは正しくありません。"
 
 #: gio/gunixconnection.c:166 gio/gunixconnection.c:579
-#, fuzzy, c-format
-#| msgid "Expecting 1 control message, got %d"
+#, c-format
 msgid "Expecting 1 control message, got %d"
 msgid_plural "Expecting 1 control message, got %d"
-msgstr[0] "コントロールメッセージを一つ待ち受けていましたが、%d 受信しました"
+msgstr[0] "コントロールメッセージを一つ待ち受けていましたが、%d 個受信しました"
 
 #: gio/gunixconnection.c:182 gio/gunixconnection.c:591
 msgid "Unexpected type of ancillary data"
-msgstr "想定してない種類の補助データです"
+msgstr "想定していない種類の補助データです"
 
 #: gio/gunixconnection.c:200
-#, fuzzy, c-format
-#| msgid "Expecting one fd, but got %d\n"
+#, c-format
 msgid "Expecting one fd, but got %d\n"
 msgid_plural "Expecting one fd, but got %d\n"
 msgstr[0] ""
-"ファイルディスクリプターを一つ待ち受けていましたが、%d 受信しました\n"
+"ファイルディスクリプターを一つ待ち受けていましたが、%d 個受信しました\n"
 
 #: gio/gunixconnection.c:219
 msgid "Received invalid fd"
-msgstr "無効なファイルディスクリプターを受けとりました"
+msgstr "不正なファイルディスクリプターを受けとりました"
 
 #: gio/gunixconnection.c:363
 msgid "Error sending credentials: "
-msgstr "クレデンシャル送信時にエラー: "
+msgstr "クレデンシャル送信中にエラーが発生しました: "
 
 #: gio/gunixconnection.c:520
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr ""
+"ソケットの SO_PASSCRED が有効になっているかどうか確認中にエラ"
+"ーが発生しました: %s"
 
 #: gio/gunixconnection.c:536
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
-msgstr "SO_PASSCRED を有効にする際にエラー: %s"
+msgstr "SO_PASSCRED を有効にするときにエラーが発生しました: %s"
 
 #: gio/gunixconnection.c:565
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
+""
 
 #: gio/gunixconnection.c:605
-#, fuzzy, c-format
+#, c-format
 msgid "Not expecting control message, but got %d"
-msgstr "コントロールメッセージを一つ待ち受けていましたが、%d 受信しました"
+msgstr "コントロールメッセージを待ち受けていませんでしたが、%d 個受信しました"
 
 #: gio/gunixconnection.c:630
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
-msgstr ""
+msgstr "SO_PASSCRED の無効化中にエラーが発生しました: %s"
 
 #: gio/gunixinputstream.c:372 gio/gunixinputstream.c:393
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from file descriptor: %s"
-msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
+msgstr "ファイルディスクリプターの読み取り中にエラーが発生しました: %s"
 
 #: gio/gunixinputstream.c:426 gio/gunixoutputstream.c:535
 #: gio/gwin32inputstream.c:217 gio/gwin32outputstream.c:204
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing file descriptor: %s"
-msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
+msgstr "ファイルディスクリプターを閉じるときにエラーが発生しました: %s"
 
 #: gio/gunixmounts.c:2664 gio/gunixmounts.c:2717
 msgid "Filesystem root"
@@ -4257,47 +4103,41 @@ msgstr "ファイルシステムのルート"
 #: gio/gunixoutputstream.c:372 gio/gunixoutputstream.c:392
 #: gio/gunixoutputstream.c:479 gio/gunixoutputstream.c:499
 #: gio/gunixoutputstream.c:676
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing to file descriptor: %s"
-msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
+msgstr "ファイルディスクリプターへの書き込み中にエラーが発生しました: %s"
 
 #: gio/gunixsocketaddress.c:243
-#, fuzzy
-#| msgid "Abstract unix domain socket addresses not supported on this system"
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr ""
-"抽象化されたUNIXドメインソケットのアドレスはこのシステムではサポートされてい"
+"抽象化された UNIX ドメインソケットのアドレスはこのシステムではサポートされてい"
 "ません"
 
 #: gio/gvolume.c:438
-#, fuzzy
-#| msgid "volume doesn't implement eject"
 msgid "volume doesn’t implement eject"
-msgstr "ボリュームは「取り出し」を実装していません"
+msgstr "ボリュームは eject を実装していません"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gvolume.c:515
-#, fuzzy
-#| msgid "volume doesn't implement eject or eject_with_operation"
 msgid "volume doesn’t implement eject or eject_with_operation"
-msgstr "ボリュームは eject  あるいは eject_with_operation を実装していません"
+msgstr "ボリュームは eject または eject_with_operation を実装していません"
 
 #: gio/gwin32inputstream.c:185
 #, c-format
 msgid "Error reading from handle: %s"
-msgstr "ハンドルから読み込む際にエラー: %s"
+msgstr "ハンドルから読み込むときにエラーが発生しました: %s"
 
 #: gio/gwin32inputstream.c:232 gio/gwin32outputstream.c:219
 #, c-format
 msgid "Error closing handle: %s"
-msgstr "ハンドルを閉じる際にエラー: %s"
+msgstr "ハンドルを閉じるときにエラーが発生しました: %s"
 
 #: gio/gwin32outputstream.c:172
 #, c-format
 msgid "Error writing to handle: %s"
-msgstr "ハンドルに書き込む際にエラー: %s"
+msgstr "ハンドルに書き込むときにエラーが発生しました: %s"
 
 #: gio/gzlibcompressor.c:394 gio/gzlibdecompressor.c:347
 msgid "Not enough memory"
@@ -4325,64 +4165,57 @@ msgid "Ignored, for compat with GTestDbus"
 msgstr ""
 
 #: gio/tests/gdbus-daemon.c:20
-#, fuzzy
-#| msgid "Print help"
 msgid "Print address"
-msgstr "ヘルプを表示する"
+msgstr "アドレスを表示する"
 
 #: gio/tests/gdbus-daemon.c:21
 msgid "Print address in shell mode"
-msgstr ""
+msgstr "シェルモードでアドレスを表示する"
 
 #: gio/tests/gdbus-daemon.c:28
 msgid "Run a dbus service"
-msgstr ""
+msgstr "dbus サービスを実行する"
 
 #: gio/tests/gdbus-daemon.c:42
 msgid "Wrong args\n"
-msgstr ""
+msgstr "引数が間違っています\n"
 
 #: glib/gbookmarkfile.c:756
-#, fuzzy, c-format
-#| msgid "Unexpected attribute '%s' for element '%s'"
+#, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
-msgstr "'%s' は '%s' という要素に対して想定外の属性です"
+msgstr "“%s”は“%s”という要素に対して想定外の属性です"
 
 #: glib/gbookmarkfile.c:767 glib/gbookmarkfile.c:847 glib/gbookmarkfile.c:857
 #: glib/gbookmarkfile.c:969
-#, fuzzy, c-format
-#| msgid "Attribute '%s' of element '%s' not found"
+#, c-format
 msgid "Attribute “%s” of element “%s” not found"
-msgstr "'%s' という属性は '%s' という要素にはありません"
+msgstr "“%s”という属性は“%s”という要素にはありません"
 
 #: glib/gbookmarkfile.c:1178 glib/gbookmarkfile.c:1243
 #: glib/gbookmarkfile.c:1307 glib/gbookmarkfile.c:1317
-#, fuzzy, c-format
-#| msgid "Unexpected tag '%s', tag '%s' expected"
+#, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
-msgstr "'%s' は想定外のタグです (想定していたタグは '%s')"
+msgstr "“%s”は想定外のタグです (想定していたタグは“%s”)"
 
 #: glib/gbookmarkfile.c:1203 glib/gbookmarkfile.c:1217
 #: glib/gbookmarkfile.c:1285 glib/gbookmarkfile.c:1331
-#, fuzzy, c-format
-#| msgid "Unexpected tag '%s' inside '%s'"
+#, c-format
 msgid "Unexpected tag “%s” inside “%s”"
-msgstr "'%s' は '%s' の中では想定外のタグです"
+msgstr "“%s”は“%s”の中では想定外のタグです"
 
 #: glib/gbookmarkfile.c:1625
 #, c-format
 msgid "Invalid date/time ‘%s’ in bookmark file"
-msgstr ""
+msgstr "ブックマークファイルの日付/時間‘%s’は不正です"
 
 #: glib/gbookmarkfile.c:1831
 msgid "No valid bookmark file found in data dirs"
-msgstr "データ・ディレクトリの中に妥当なブックマーク・ファイルはありません"
+msgstr "データディレクトリに正しいブックマークファイルがありません"
 
 #: glib/gbookmarkfile.c:2032
-#, fuzzy, c-format
-#| msgid "A bookmark for URI '%s' already exists"
+#, c-format
 msgid "A bookmark for URI “%s” already exists"
-msgstr "'%s' という URI のブックマークが既に存在しています"
+msgstr "URI “%s”のブックマークはすでに存在します"
 
 #: glib/gbookmarkfile.c:2078 glib/gbookmarkfile.c:2236
 #: glib/gbookmarkfile.c:2321 glib/gbookmarkfile.c:2401
@@ -4393,48 +4226,39 @@ msgstr "'%s' という URI のブックマークが既に存在しています"
 #: glib/gbookmarkfile.c:3252 glib/gbookmarkfile.c:3420
 #: glib/gbookmarkfile.c:3509 glib/gbookmarkfile.c:3598
 #: glib/gbookmarkfile.c:3717
-#, fuzzy, c-format
-#| msgid "No bookmark found for URI '%s'"
+#, c-format
 msgid "No bookmark found for URI “%s”"
-msgstr "'%s' という URI のブックマークが見つかりませんでした"
+msgstr "URI “%s”のブックマークが見つかりませんでした"
 
 #: glib/gbookmarkfile.c:2410
-#, fuzzy, c-format
-#| msgid "No MIME type defined in the bookmark for URI '%s'"
+#, c-format
 msgid "No MIME type defined in the bookmark for URI “%s”"
-msgstr "'%s' という URI のブックマークには MIME 型が定義されていません"
+msgstr "URI “%s”のブックマークで MIME 型が定義されていません"
 
 #: glib/gbookmarkfile.c:2495
-#, fuzzy, c-format
-#| msgid "No private flag has been defined in bookmark for URI '%s'"
+#, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
 msgstr ""
-"'%s' という URI のブックマークにはプライベートではないフラグが定義されていま"
-"す"
+"URI “%s”のブックマークにはプライベートではないフラグが定義されています"
 
 #: glib/gbookmarkfile.c:2874
-#, fuzzy, c-format
-#| msgid "No groups set in bookmark for URI '%s'"
+#, c-format
 msgid "No groups set in bookmark for URI “%s”"
-msgstr "'%s' という URI のブックマークにはグループがありません"
+msgstr "URI “%s”のブックマークにグループがありません"
 
 #: glib/gbookmarkfile.c:3273 glib/gbookmarkfile.c:3430
-#, fuzzy, c-format
-#| msgid "No application with name '%s' registered a bookmark for '%s'"
+#, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
-msgstr "アプリケーションの '%s' は '%s' というブックマークを登録していません"
+msgstr "アプリケーション“%s”は“%s”というブックマークを登録していません"
 
 #: glib/gbookmarkfile.c:3453
-#, fuzzy, c-format
-#| msgid "Failed to expand exec line '%s' with URI '%s'"
+#, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
-msgstr "コマンドラインの '%s' を '%s' という URI に展開できませんでした"
+msgstr "コマンドラインの“%s”を“%s”という URI に展開できませんでした"
 
 #: glib/gconvert.c:466
-#, fuzzy
-#| msgid "Invalid sequence in conversion input"
 msgid "Unrepresentable character in conversion input"
-msgstr "変換する入力で無効なシーケンスがあります"
+msgstr "変換する入力に表現できない文字があります"
 
 #: glib/gconvert.c:493 glib/gutf8.c:871 glib/gutf8.c:1083 glib/gutf8.c:1220
 #: glib/gutf8.c:1324
@@ -4442,58 +4266,47 @@ msgid "Partial character sequence at end of input"
 msgstr "入力の最後に不完全な文字シーケンスがあります"
 
 #: glib/gconvert.c:762
-#, fuzzy, c-format
-#| msgid "Cannot convert fallback '%s' to codeset '%s'"
+#, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
-msgstr "フォールバック '%s' を '%s' という文字集合に変換できません"
+msgstr "フォールバック“%s”を“%s”という文字集合に変換できません"
 
 #: glib/gconvert.c:934
-#, fuzzy
-#| msgid "Invalid byte sequence in conversion input"
 msgid "Embedded NUL byte in conversion input"
-msgstr "変換する入力に無効なバイトの並びがあります"
+msgstr "変換する入力に埋め込まれた NUL バイトがあります"
 
 #: glib/gconvert.c:955
-#, fuzzy
-#| msgid "Invalid byte sequence in conversion input"
 msgid "Embedded NUL byte in conversion output"
-msgstr "変換する入力に無効なバイトの並びがあります"
+msgstr "変換する出力に埋め込まれた NUL バイトがあります"
 
 #: glib/gconvert.c:1640
-#, fuzzy, c-format
-#| msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+#, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
-msgstr "'%s' は \"file\" スキームの絶対 URI ではありません"
+msgstr "“%s”は“file”スキームの絶対 URI ではありません"
 
 #: glib/gconvert.c:1650
-#, fuzzy, c-format
-#| msgid "The local file URI '%s' may not include a '#'"
+#, c-format
 msgid "The local file URI “%s” may not include a “#”"
-msgstr "'#' を含んだ '%s' はローカルファイルの URI としては正しくありません"
+msgstr "“#”を含んだ“%s”は正しいローカルファイル URI ではありません"
 
 #: glib/gconvert.c:1667
-#, fuzzy, c-format
-#| msgid "The URI '%s' is invalid"
+#, c-format
 msgid "The URI “%s” is invalid"
-msgstr "'%s' という URI は正しくありません"
+msgstr "URI “%s”は正しくありません"
 
 #: glib/gconvert.c:1679
-#, fuzzy, c-format
-#| msgid "The hostname of the URI '%s' is invalid"
+#, c-format
 msgid "The hostname of the URI “%s” is invalid"
-msgstr "URI に含まれる '%s' というホスト名は間違っています"
+msgstr "URI “%s”のホスト名は正しくありません"
 
 #: glib/gconvert.c:1695
-#, fuzzy, c-format
-#| msgid "The URI '%s' contains invalidly escaped characters"
+#, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
-msgstr "'%s' という URI に無効なエスケープ文字が含まれています"
+msgstr "URI “%s”は不正なエスケープ文字を含んでいます"
 
 #: glib/gconvert.c:1767
-#, fuzzy, c-format
-#| msgid "The pathname '%s' is not an absolute path"
+#, c-format
 msgid "The pathname “%s” is not an absolute path"
-msgstr "'%s' は絶対パスではありません"
+msgstr "“%s”は絶対パスではありません"
 
 #. Translators: this is the preferred format for expressing the date and the time
 #: glib/gdatetime.c:220
@@ -4909,392 +4722,327 @@ msgid "PM"
 msgstr "午後"
 
 #: glib/gdir.c:154
-#, fuzzy, c-format
-#| msgid "Error opening directory '%s': %s"
+#, c-format
 msgid "Error opening directory “%s”: %s"
-msgstr "'%s' を開く時にエラー: %s"
+msgstr "ディレクトリ“%s”を開くときにエラーが発生しました: %s"
 
 #: glib/gfileutils.c:733 glib/gfileutils.c:825
-#, fuzzy, c-format
-#| msgid "Could not allocate %lu bytes to read file \"%s\""
+#, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
-msgstr[0] "%lu バイトを確保できませんでした (ファイル \"%s\" の読み込みに必要)"
+msgstr[0] "%lu バイトを確保できませんでした (ファイル“%s”の読み込みに必要)"
 
 #: glib/gfileutils.c:750
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading file “%s”: %s"
-msgstr "'%s' の読み出し中にエラー: %s"
+msgstr "ファイル“%s”の読み取り中にエラーが発生しました: %s"
 
 #: glib/gfileutils.c:786
-#, fuzzy, c-format
-#| msgid "File \"%s\" is too large"
+#, c-format
 msgid "File “%s” is too large"
-msgstr "'%s' のサイズが大きすぎます"
+msgstr "ファイル“%s”のサイズが大きすぎます"
 
 #: glib/gfileutils.c:850
-#, fuzzy, c-format
-#| msgid "Failed to read from file '%s': %s"
+#, c-format
 msgid "Failed to read from file “%s”: %s"
-msgstr "'%s' が読めません: %s"
+msgstr "ファイル“%s”からの読み取りに失敗しました: %s"
 
 #: glib/gfileutils.c:898 glib/gfileutils.c:970
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': %s"
+#, c-format
 msgid "Failed to open file “%s”: %s"
-msgstr "'%s' を開けません: %s"
+msgstr "ファイル“%s”を開くのに失敗しました: %s"
 
 #: glib/gfileutils.c:910
-#, fuzzy, c-format
-#| msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+#, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
-msgstr "'%s' の属性を取得できません: fstat() に失敗しました: %s"
+msgstr "ファイル“%s”の属性を取得できません: fstat() に失敗しました: %s"
 
 #: glib/gfileutils.c:940
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': fdopen() failed: %s"
+#, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
-msgstr "'%s' を開けません: fdopen() に失敗しました: %s"
+msgstr "ファイル“%s”を開けません: fdopen() に失敗しました: %s"
 
 #: glib/gfileutils.c:1039
-#, fuzzy, c-format
-#| msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+#, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
-"'%s' から '%s' にファイル名を変更できません: g_rename() に失敗しました: %s"
+"“%s”から“%s”にファイル名を変更できません: g_rename() に失敗しました: %s"
 
 #: glib/gfileutils.c:1074 glib/gfileutils.c:1592
-#, fuzzy, c-format
-#| msgid "Failed to create file '%s': %s"
+#, c-format
 msgid "Failed to create file “%s”: %s"
-msgstr "'%s' というファイルを生成できませんでした: %s"
+msgstr "ファイル“%s”の作成に失敗しました: %s"
 
 #: glib/gfileutils.c:1101
-#, fuzzy, c-format
-#| msgid "Failed to write file '%s': fwrite() failed: %s"
+#, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
-msgstr "'%s' への書き込みに失敗しました: fwrite() に失敗しました: %s"
+msgstr "ファイル“%s”へ書き込めません: write() に失敗しました: %s"
 
 #: glib/gfileutils.c:1144
-#, fuzzy, c-format
-#| msgid "Failed to write file '%s': fsync() failed: %s"
+#, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
-msgstr "'%s' への書き込みに失敗しました: fsync() に失敗しました: %s"
+msgstr "ファイル“%s”へ書き込めません: fsync() に失敗しました: %s"
 
 #: glib/gfileutils.c:1279
-#, fuzzy, c-format
-#| msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+#, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
-"'%s' という既存のファイルを削除できませんでした: g_unlink() に失敗しました: "
+"既存のファイル“%s”を削除できませんでした: g_unlink() に失敗しました: "
 "%s"
 
 #: glib/gfileutils.c:1558
-#, fuzzy, c-format
-#| msgid "Template '%s' invalid, should not contain a '%s'"
+#, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
-msgstr "'%s' というテンプレートは間違っています ('%s' を含めないこと)"
+msgstr "テンプレート“%s”は不正です (“%s”を含めないこと)"
 
 #: glib/gfileutils.c:1571
-#, fuzzy, c-format
-#| msgid "Template '%s' doesn't contain XXXXXX"
+#, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
-msgstr "'%s' というテンプレートに XXXXXX が含まれていません"
+msgstr "テンプレート“%s”に XXXXXX が含まれていません"
 
 #: glib/gfileutils.c:2129 glib/gfileutils.c:2157
-#, fuzzy, c-format
-#| msgid "Failed to read the symbolic link '%s': %s"
+#, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
-msgstr "シンボリックリンク '%s' の読み込みが失敗: %s"
+msgstr "シンボリックリンク“%s”の読み取りに失敗しました: %s"
 
 #: glib/giochannel.c:1396
-#, fuzzy, c-format
-#| msgid "Could not open converter from '%s' to '%s': %s"
+#, c-format
 msgid "Could not open converter from “%s” to “%s”: %s"
-msgstr "'%s' から '%s' へ変換するコンバーターを開けませんでした: %s"
+msgstr "“%s”から“%s”へ変換するコンバーターを開けませんでした: %s"
 
 #: glib/giochannel.c:1741
-#, fuzzy
-#| msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
-msgstr "g_io_channel_read_line_string では raw モードで読めません"
+msgstr "g_io_channel_read_line_string では raw モードで読み取れません"
 
 #: glib/giochannel.c:1788 glib/giochannel.c:2046 glib/giochannel.c:2133
 msgid "Leftover unconverted data in read buffer"
-msgstr "変換されていないデータが読みこみバッファーに残っています"
+msgstr "変換されていないデータが読み込みバッファーに残っています"
 
 #: glib/giochannel.c:1869 glib/giochannel.c:1946
 msgid "Channel terminates in a partial character"
 msgstr "チャンネルが不完全な文字で終わっています"
 
 #: glib/giochannel.c:1932
-#, fuzzy
-#| msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
-msgstr "g_io_channel_read_to_end では raw モードで読めません"
+msgstr "g_io_channel_read_to_end では raw モードで読み取れません"
 
 #: glib/gkeyfile.c:789
 msgid "Valid key file could not be found in search dirs"
-msgstr "検索ディレクトリには妥当なキー・ファイルがありませんでした"
+msgstr "検索ディレクトリに正しいキーファイルがありませんでした"
 
 #: glib/gkeyfile.c:826
 msgid "Not a regular file"
 msgstr "通常のファイルではありません"
 
 #: glib/gkeyfile.c:1275
-#, fuzzy, c-format
-#| msgid ""
-#| "Key file contains line '%s' which is not a key-value pair, group, or "
-#| "comment"
+#, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
 msgstr ""
-"キー・ファイルの行 '%s' がキー/値のペア、グループ、またはコメントではありませ"
-"ん"
+"キーファイルの行“%s”がキー/値のペア、グループ、またはコメントではありません"
 
 #: glib/gkeyfile.c:1332
 #, c-format
 msgid "Invalid group name: %s"
-msgstr "グループ名が無効です: %s"
+msgstr "グループ名が不正です: %s"
 
 #: glib/gkeyfile.c:1354
 msgid "Key file does not start with a group"
-msgstr "キー・ファイルがグループで始まっていません"
+msgstr "キーファイルがグループで始まっていません"
 
 #: glib/gkeyfile.c:1380
 #, c-format
 msgid "Invalid key name: %s"
-msgstr "キーの名前が無効です: %s"
+msgstr "キーの名前が不正です: %s"
 
 #: glib/gkeyfile.c:1407
-#, fuzzy, c-format
-#| msgid "Key file contains unsupported encoding '%s'"
+#, c-format
 msgid "Key file contains unsupported encoding “%s”"
-msgstr "キー・ファイルにサポートしてないエンコーディング '%s' があります"
+msgstr "キーファイルにサポートしてないエンコーディング“%s”があります"
 
 #: glib/gkeyfile.c:1650 glib/gkeyfile.c:1823 glib/gkeyfile.c:3276
 #: glib/gkeyfile.c:3340 glib/gkeyfile.c:3470 glib/gkeyfile.c:3602
 #: glib/gkeyfile.c:3748 glib/gkeyfile.c:3977 glib/gkeyfile.c:4044
-#, fuzzy, c-format
-#| msgid "Key file does not have group '%s'"
+#, c-format
 msgid "Key file does not have group “%s”"
-msgstr "キー・ファイルにグループ '%s' がありません"
+msgstr "キーファイルにグループ“%s”がありません"
 
 #: glib/gkeyfile.c:1778
-#, fuzzy, c-format
-#| msgid "Key file does not have key '%s' in group '%s'"
+#, c-format
 msgid "Key file does not have key “%s” in group “%s”"
-msgstr "キー・ファイルにはグループ '%2$s' のキー '%1$s' がありません"
+msgstr "キーファイルにグループ“%2$s”のキー“%1$s”がありません"
 
 #: glib/gkeyfile.c:1940 glib/gkeyfile.c:2056
-#, fuzzy, c-format
-#| msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+#, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
-msgstr "キー・ファイルのキー '%s' の値 '%s' が UTF-8 ではありません"
+msgstr "キーファイルのキー“%s”の値“%s”が UTF-8 ではありません"
 
 #: glib/gkeyfile.c:1960 glib/gkeyfile.c:2076 glib/gkeyfile.c:2518
-#, fuzzy, c-format
-#| msgid ""
-#| "Key file contains key '%s' which has a value that cannot be interpreted."
+#, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
-msgstr "キー・ファイルに解釈できない値を持つキー '%s' が含まれています。"
+msgstr "キーファイルに解釈できない値を持つキー“%s”が含まれています。"
 
 #: glib/gkeyfile.c:2736 glib/gkeyfile.c:3105
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
 "interpreted."
 msgstr ""
-"キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
+"グループ“%2$s”のキーファイルに解釈できない値を持つキー“%1$s”が含まれていま"
+"す。"
 
 #: glib/gkeyfile.c:2814 glib/gkeyfile.c:2891
-#, fuzzy, c-format
+#, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr ""
-"キー・ファイルのグループ '%2$s' にあるキー '%1$s' の値を解釈できませんでした"
 
 #: glib/gkeyfile.c:4284
 msgid "Key file contains escape character at end of line"
-msgstr "キー・ファイルの行末にエスケープ文字が含まれています"
+msgstr "キーファイルの行末にエスケープ文字が含まれています"
 
 #: glib/gkeyfile.c:4306
-#, fuzzy, c-format
-#| msgid "Key file contains invalid escape sequence '%s'"
+#, c-format
 msgid "Key file contains invalid escape sequence “%s”"
-msgstr "キー・ファイルに無効なエスケープ・シーケンス '%s' が含まれています"
+msgstr "キーファイルに不正なエスケープシーケンス“%s”が含まれています"
 
 #: glib/gkeyfile.c:4450
-#, fuzzy, c-format
-#| msgid "Value '%s' cannot be interpreted as a number."
+#, c-format
 msgid "Value “%s” cannot be interpreted as a number."
-msgstr "値 '%s' を数値として解釈できません"
+msgstr "値“%s”を数値として解釈できません。"
 
 #: glib/gkeyfile.c:4464
-#, fuzzy, c-format
-#| msgid "Integer value '%s' out of range"
+#, c-format
 msgid "Integer value “%s” out of range"
-msgstr "整数値 '%s' は範囲外の値です"
+msgstr "Integer 値“%s”は範囲外の値です"
 
 #: glib/gkeyfile.c:4497
-#, fuzzy, c-format
-#| msgid "Value '%s' cannot be interpreted as a float number."
+#, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
-msgstr "値 '%s' を実数値として解釈できません"
+msgstr "値“%s”を Float として解釈できません。"
 
 #: glib/gkeyfile.c:4536
-#, fuzzy, c-format
-#| msgid "Value '%s' cannot be interpreted as a boolean."
+#, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
-msgstr "値 '%s' を論理値として解釈できません"
+msgstr "値“%s”を論理値として解釈できません"
 
 #: glib/gmappedfile.c:129
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
-msgstr "'%s' の属性の取得できません: fstat() に失敗しました: %s"
+msgstr "ファイル“%s%s%s%s”の属性を取得できません: fstat() に失敗しました: %s"
 
 #: glib/gmappedfile.c:195
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
-msgstr "ファイル '%s' のマップに失敗しました: mmap() が失敗: %s"
+msgstr "%s%s%s%s をマップできません: mmap() に失敗しました: %s"
 
 #: glib/gmappedfile.c:262
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': open() failed: %s"
+#, c-format
 msgid "Failed to open file “%s”: open() failed: %s"
-msgstr "ファイル '%s' を開けません: open() が失敗: %s"
+msgstr "ファイル“%s”を開けません: open() に失敗しました: %s"
 
 #: glib/gmarkup.c:398 glib/gmarkup.c:440
 #, c-format
 msgid "Error on line %d char %d: "
-msgstr "%d 行の %d 文字目でエラー: "
+msgstr "%d 行の %d 文字目にエラーがあります: "
 
 #: glib/gmarkup.c:462 glib/gmarkup.c:545
-#, fuzzy, c-format
-#| msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+#, c-format
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
-msgstr "名前はUTF-8として正しくない文字列です - '%s' は妥当ではありません"
+msgstr "名前に UTF-8 として正しくない文字列があります — “%s”は不正です"
 
 #: glib/gmarkup.c:473
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name "
+#, c-format
 msgid "“%s” is not a valid name"
-msgstr "'%s' は妥当な名前ではありません "
+msgstr "“%s”は正しい名前ではありません"
 
 #: glib/gmarkup.c:489
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name: '%c' "
+#, c-format
 msgid "“%s” is not a valid name: “%c”"
-msgstr "'%s' は妥当な名前ではありません: '%c' "
+msgstr "“%s”は正しい名前ではありません: “%c”"
 
 #: glib/gmarkup.c:613
 #, c-format
 msgid "Error on line %d: %s"
-msgstr "%d 行目でエラー: %s"
+msgstr "%d 行目にエラーがあります: %s"
 
 #: glib/gmarkup.c:690
-#, fuzzy, c-format
-#| msgid ""
-#| "Failed to parse '%-.*s', which should have been a digit inside a "
-#| "character reference (&#234; for example) - perhaps the digit is too large"
+#, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
 "reference (&#234; for example) — perhaps the digit is too large"
 msgstr ""
-"'%-.*s' をパースできません。文字参照の範囲内の数字でなければなりません (例: "
+"“%-.*s”を解析できません。文字参照の範囲内の数字である必要があります (例: "
 "&#234;) 数字が大きすぎる可能性もあります"
 
 #: glib/gmarkup.c:702
-#, fuzzy
-#| msgid ""
-#| "Character reference did not end with a semicolon; most likely you used an "
-#| "ampersand character without intending to start an entity - escape "
-#| "ampersand as &amp;"
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand "
 "as &amp;"
 msgstr ""
-"文字参照がセミコロンで終わっていません。エンティティのつもりもないのにアンパ"
-"サンド文字を使っているのかもしれません。アンパサンドは &amp; とエスケープして"
+"文字参照がセミコロンで終わっていません。エンティティでもないのにアンパサン"
+"ドを使用したのではないでしょうか。アンパサンドは &amp; のようにエスケープして"
 "ください"
 
 #: glib/gmarkup.c:728
-#, fuzzy, c-format
-#| msgid "Character reference '%-.*s' does not encode a permitted character"
+#, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
-msgstr "文字参照 '%-.*s' が使用可能な文字をエンコードしていません"
+msgstr "文字参照“%-.*s”が使用可能な文字をエンコードしていません"
 
 #: glib/gmarkup.c:766
-#, fuzzy
-#| msgid ""
-#| "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"空のエンティティ '&;' があります; 正しいエンティティは: &amp; &quot; &lt; "
+"空のエンティティ“&;”があります; 正しいエンティティは: &amp; &quot; &lt; "
 "&gt; &apos;"
 
 #: glib/gmarkup.c:774
-#, fuzzy, c-format
-#| msgid "Entity name '%-.*s' is not known"
+#, c-format
 msgid "Entity name “%-.*s” is not known"
-msgstr "エンティティ名 '%-.*s' というのは不明です"
+msgstr "エンティティ名“%-.*s”は不明です"
 
 #: glib/gmarkup.c:779
-#, fuzzy
-#| msgid ""
-#| "Entity did not end with a semicolon; most likely you used an ampersand "
-#| "character without intending to start an entity - escape ampersand as &amp;"
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity — escape ampersand as &amp;"
 msgstr ""
 "エンティティがセミコロンで終わってません。エンティティでもないのにアンパサン"
-"ドを使ったのではないでしょうか。アンパサンドは &amp; のようにエスケープしてく"
-"ださい"
+"ドを使用したのではないでしょうか。アンパサンドは &amp; のようにエスケープして"
+"ください"
 
 #: glib/gmarkup.c:1193
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "ドキュメントは要素 (例 <book>) で始まってなくてはなりません"
+msgstr "ドキュメントは要素 (例 <book>) で始まっている必要があります"
 
 #: glib/gmarkup.c:1233
-#, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following a '<' character; it may not begin "
-#| "an element name"
+#, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' は '<' に続く文字としては正しくありません。おそらく要素名の開始になって"
+"“%s”は“<”に続く文字として正しくありません。おそらく要素名の開始になって"
 "いません"
 
 #: glib/gmarkup.c:1276
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' character to end the empty-element tag "
-#| "'%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
 "“%s”"
 msgstr ""
-"おかしな文字 '%s' があります。空の要素のタグ '%s' の最後は '>' でなくてはなり"
+"おかしな文字“%s”があります。空の要素のタグ“%s”の最後は“>”でなくてはなり"
 "ません"
 
 #: glib/gmarkup.c:1346
 #, c-format
 msgid "Too many attributes in element “%s”"
-msgstr ""
+msgstr "要素“%s”の属性が多すぎます"
 
 #: glib/gmarkup.c:1366
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '=' after attribute name '%s' of element "
-#| "'%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
-msgstr "おかしな文字 '%s' です。属性名'%s' (要素 '%s') の後には '=' が必要です"
+msgstr "おかしな文字“%s”です。属性名“%s” (要素“%s”) の後には“=”が必要です"
 
 #: glib/gmarkup.c:1408
 #, fuzzy, c-format
