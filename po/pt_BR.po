@@ -1,5 +1,5 @@
 # Brazilian Portuguese translation of glib.
-# Copyright (C) 2001-2019 Free Software Foundation, Inc.
+# Copyright (C) 2020 Free Software Foundation, Inc.
 # This file is distributed under the same license as the glib package.
 # Gustavo Noronha Silva <kov@debian.org>, 2001-2005
 # Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2006-2009.
@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2019-12-24 10:14+0000\n"
-"PO-Revision-Date: 2020-01-27 14:57-0300\n"
+"POT-Creation-Date: 2020-02-03 13:14+0000\n"
+"PO-Revision-Date: 2020-02-06 20:49-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -405,7 +405,6 @@ msgstr ""
 #: gio/gdbusaddress.c:247 gio/gdbusaddress.c:258 gio/gdbusaddress.c:273
 #: gio/gdbusaddress.c:336 gio/gdbusaddress.c:347
 #, c-format
-#| msgid "Error in address “%s” — the port attribute is malformed"
 msgid "Error in address “%s” — the “%s” attribute is malformed"
 msgstr "Erro no endereço “%s” — o atributo “%s” está malformado"
 
@@ -534,7 +533,7 @@ msgstr ""
 "Não foi possível determinar o endereço de barramento da sessão (sem "
 "implementação para este SO)"
 
-#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7180
+#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7191
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -543,7 +542,7 @@ msgstr ""
 "Não foi possível determinar o endereço de barramento da variável de ambiente "
 "DBUS_STARTER_BUS_TYPE — valor desconhecido “%s”"
 
-#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7189
+#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7200
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -670,81 +669,81 @@ msgstr ""
 "Foram encontrados sinalizadores sem suporte ao construir uma conexão do lado "
 "do cliente"
 
-#: gio/gdbusconnection.c:4151 gio/gdbusconnection.c:4498
+#: gio/gdbusconnection.c:4162 gio/gdbusconnection.c:4509
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Nenhuma interface “org.freedesktop.DBus.Properties” no objeto no caminho %s"
 
-#: gio/gdbusconnection.c:4293
+#: gio/gdbusconnection.c:4304
 #, c-format
 msgid "No such property “%s”"
 msgstr "Nenhuma propriedade “%s”"
 
-#: gio/gdbusconnection.c:4305
+#: gio/gdbusconnection.c:4316
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "A propriedade “%s” não pode ser lida"
 
-#: gio/gdbusconnection.c:4316
+#: gio/gdbusconnection.c:4327
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "A propriedade “%s” não pode ser escrita"
 
-#: gio/gdbusconnection.c:4336
+#: gio/gdbusconnection.c:4347
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Erro ao definir a propriedade “%s”: o tipo esperado é “%s”, mas obteve “%s”"
 
-#: gio/gdbusconnection.c:4441 gio/gdbusconnection.c:4649
-#: gio/gdbusconnection.c:6620
+#: gio/gdbusconnection.c:4452 gio/gdbusconnection.c:4660
+#: gio/gdbusconnection.c:6631
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Nenhuma interface “%s”"
 
-#: gio/gdbusconnection.c:4867 gio/gdbusconnection.c:7129
+#: gio/gdbusconnection.c:4878 gio/gdbusconnection.c:7140
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Nenhuma interface “%s” no objeto no caminho %s"
 
-#: gio/gdbusconnection.c:4965
+#: gio/gdbusconnection.c:4976
 #, c-format
 msgid "No such method “%s”"
 msgstr "Método inexistente “%s”"
 
-#: gio/gdbusconnection.c:4996
+#: gio/gdbusconnection.c:5007
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "O tipo da mensagem, “%s”, não equivale ao tipo esperado “%s”"
 
-#: gio/gdbusconnection.c:5194
+#: gio/gdbusconnection.c:5205
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Um objeto já foi exportado para a interface %s em %s"
 
-#: gio/gdbusconnection.c:5420
+#: gio/gdbusconnection.c:5431
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Não foi possível obter a propriedade %s.%s"
 
-#: gio/gdbusconnection.c:5476
+#: gio/gdbusconnection.c:5487
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Não foi possível definir a propriedade %s.%s"
 
-#: gio/gdbusconnection.c:5654
+#: gio/gdbusconnection.c:5665
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "O método “%s” retornou o tipo “%s”, mas é esperado “%s”"
 
-#: gio/gdbusconnection.c:6731
+#: gio/gdbusconnection.c:6742
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "O método “%s” na interface “%s” com a assinatura “%s” não existe"
 
-#: gio/gdbusconnection.c:6852
+#: gio/gdbusconnection.c:6863
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Uma subárvore já foi exportada para %s"
@@ -1398,12 +1397,12 @@ msgstr "Número inválido de tokens (%d) na codificação GEmblemedIcon"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Esperado um GEmblem para o GEmblemedIcon"
 
-#: gio/gfile.c:1076 gio/gfile.c:1314 gio/gfile.c:1452 gio/gfile.c:1690
-#: gio/gfile.c:1745 gio/gfile.c:1803 gio/gfile.c:1887 gio/gfile.c:1944
-#: gio/gfile.c:2008 gio/gfile.c:2063 gio/gfile.c:3758 gio/gfile.c:3813
-#: gio/gfile.c:4091 gio/gfile.c:4559 gio/gfile.c:4970 gio/gfile.c:5055
-#: gio/gfile.c:5145 gio/gfile.c:5242 gio/gfile.c:5329 gio/gfile.c:5430
-#: gio/gfile.c:8134 gio/gfile.c:8224 gio/gfile.c:8308
+#: gio/gfile.c:1044 gio/gfile.c:1282 gio/gfile.c:1420 gio/gfile.c:1658
+#: gio/gfile.c:1713 gio/gfile.c:1771 gio/gfile.c:1855 gio/gfile.c:1912
+#: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3722 gio/gfile.c:3777
+#: gio/gfile.c:4055 gio/gfile.c:4523 gio/gfile.c:4934 gio/gfile.c:5019
+#: gio/gfile.c:5109 gio/gfile.c:5206 gio/gfile.c:5293 gio/gfile.c:5394
+#: gio/gfile.c:8098 gio/gfile.c:8188 gio/gfile.c:8272
 #: gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Operação sem suporte"
@@ -1412,73 +1411,73 @@ msgstr "Operação sem suporte"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#: gio/gfile.c:1575
+#: gio/gfile.c:1543
 msgid "Containing mount does not exist"
 msgstr "Ponto de montagem contido não existe"
 
-#: gio/gfile.c:2622 gio/glocalfile.c:2428
+#: gio/gfile.c:2590 gio/glocalfile.c:2428
 msgid "Can’t copy over directory"
 msgstr "Não é possível copiar sobre diretório"
 
-#: gio/gfile.c:2682
+#: gio/gfile.c:2650
 msgid "Can’t copy directory over directory"
 msgstr "Não é possível copiar diretório sobre diretório"
 
-#: gio/gfile.c:2690
+#: gio/gfile.c:2658
 msgid "Target file exists"
 msgstr "Arquivo alvo existe"
 
-#: gio/gfile.c:2709
+#: gio/gfile.c:2677
 msgid "Can’t recursively copy directory"
 msgstr "Não é possível copiar o diretório recursivamente"
 
-#: gio/gfile.c:2984
+#: gio/gfile.c:2952
 msgid "Splice not supported"
 msgstr "Não há suporte a união de arquivos"
 
-#: gio/gfile.c:2988 gio/gfile.c:3033
+#: gio/gfile.c:2956 gio/gfile.c:3001
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Erro ao unir o arquivo: %s"
 
-#: gio/gfile.c:3149
+#: gio/gfile.c:3117
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Não há suporte a copiar (reflink/clone) entre montagens"
 
-#: gio/gfile.c:3153
+#: gio/gfile.c:3121
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Não há suporte a copiar (reflink/clone) ou é inválido"
 
-#: gio/gfile.c:3158
+#: gio/gfile.c:3126
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Não há suporte a copiar (reflink/clone) ou não funcionou"
 
-#: gio/gfile.c:3222
+#: gio/gfile.c:3190
 msgid "Can’t copy special file"
 msgstr "Não é possível copiar o arquivo especial"
 
-#: gio/gfile.c:4039
+#: gio/gfile.c:4003
 msgid "Invalid symlink value given"
 msgstr "Fornecido valor inválido de link simbólico"
 
-#: gio/gfile.c:4049 glib/gfileutils.c:2172
+#: gio/gfile.c:4013 glib/gfileutils.c:2172
 msgid "Symbolic links not supported"
 msgstr "Não há suporte a links simbólicos"
 
-#: gio/gfile.c:4200
+#: gio/gfile.c:4164
 msgid "Trash not supported"
 msgstr "Não há suporte para lixeira"
 
-#: gio/gfile.c:4312
+#: gio/gfile.c:4276
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Nomes de arquivo não podem conter “%c”"
 
-#: gio/gfile.c:6793 gio/gvolume.c:364
+#: gio/gfile.c:6757 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "volume não implementa montagem"
 
-#: gio/gfile.c:6904 gio/gfile.c:6950
+#: gio/gfile.c:6868 gio/gfile.c:6914
 msgid "No application is registered as handling this file"
 msgstr "Nenhum aplicativo está registrado como manipulador deste arquivo"
 
@@ -1726,7 +1725,7 @@ msgid "Error writing to stdout"
 msgstr "Erro ao gravar para a saída padrão"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:282 gio/gio-tool-list.c:172
+#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:333 gio/gio-tool-list.c:172
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
@@ -1749,7 +1748,7 @@ msgstr ""
 "usando locais GIO em vez de arquivos locais: por exemplo, você pode\n"
 "usar alguma coisa como smb://servidor/recurso/arquivo.txt como local."
 
-#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:313 gio/gio-tool-mkdir.c:76
+#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
 #: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
 msgid "No locations given"
@@ -1822,78 +1821,88 @@ msgstr "O destino %s não é um diretório"
 msgid "%s: overwrite “%s”? "
 msgstr "%s: sobrescrever “%s”? "
 
-#: gio/gio-tool-info.c:34
+#: gio/gio-tool-info.c:37
 msgid "List writable attributes"
 msgstr "Lista os atributos graváveis"
 
-#: gio/gio-tool-info.c:35
+#: gio/gio-tool-info.c:38
 msgid "Get file system info"
 msgstr "Obtém informação de sistema de arquivos"
 
-#: gio/gio-tool-info.c:36 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
 msgid "The attributes to get"
 msgstr "Os atributos a obter"
 
-#: gio/gio-tool-info.c:36 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
 msgid "ATTRIBUTES"
 msgstr "ATRIBUTOS"
 
-#: gio/gio-tool-info.c:37 gio/gio-tool-list.c:39 gio/gio-tool-set.c:34
+#: gio/gio-tool-info.c:40 gio/gio-tool-list.c:39 gio/gio-tool-set.c:34
 msgid "Don’t follow symbolic links"
 msgstr "Não segue links simbólicos"
 
-#: gio/gio-tool-info.c:75
+#: gio/gio-tool-info.c:78
 msgid "attributes:\n"
 msgstr "atributos:\n"
 
 #. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:127
+#: gio/gio-tool-info.c:134
 #, c-format
 msgid "display name: %s\n"
 msgstr "nome de exibição: %s\n"
 
 #. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:132
+#: gio/gio-tool-info.c:139
 #, c-format
 msgid "edit name: %s\n"
 msgstr "nome para edição: %s\n"
 
-#: gio/gio-tool-info.c:138
+#: gio/gio-tool-info.c:145
 #, c-format
 msgid "name: %s\n"
 msgstr "nome: %s\n"
 
-#: gio/gio-tool-info.c:145
+#: gio/gio-tool-info.c:152
 #, c-format
 msgid "type: %s\n"
 msgstr "tipo: %s\n"
 
-#: gio/gio-tool-info.c:151
+#: gio/gio-tool-info.c:158
 msgid "size: "
 msgstr "tamanho: "
 
-#: gio/gio-tool-info.c:156
+#: gio/gio-tool-info.c:163
 msgid "hidden\n"
 msgstr "oculto\n"
 
-#: gio/gio-tool-info.c:159
+#: gio/gio-tool-info.c:166
 #, c-format
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
-#: gio/gio-tool-info.c:228
+#: gio/gio-tool-info.c:172
+#, c-format
+msgid "local path: %s\n"
+msgstr "caminho local: %s\n"
+
+#: gio/gio-tool-info.c:199
+#, c-format
+msgid "unix mount: %s%s %s %s %s\n"
+msgstr "montagem unix: %s%s %s %s %s\n"
+
+#: gio/gio-tool-info.c:279
 msgid "Settable attributes:\n"
 msgstr "Atributos definíveis:\n"
 
-#: gio/gio-tool-info.c:252
+#: gio/gio-tool-info.c:303
 msgid "Writable attribute namespaces:\n"
 msgstr "Atributos graváveis no namespace:\n"
 
-#: gio/gio-tool-info.c:287
+#: gio/gio-tool-info.c:338
 msgid "Show information about locations."
 msgstr "Mostra informações sobre locais."
 
-#: gio/gio-tool-info.c:289
+#: gio/gio-tool-info.c:340
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1917,7 +1926,6 @@ msgid "Use a long listing format"
 msgstr "Usa um formato de listagem longa"
 
 #: gio/gio-tool-list.c:40
-#| msgid "display name: %s\n"
 msgid "Print display names"
 msgstr "Exibe nomes de exibição"
 
@@ -2057,7 +2065,6 @@ msgid "Mount as mountable"
 msgstr "Monta como montável"
 
 #: gio/gio-tool-mount.c:64
-#| msgid "Mount volume with device file"
 msgid "Mount volume with device file, or other identifier"
 msgstr "Monta o volume com o arquivo de dispositivo ou outro identificador"
 
@@ -2135,7 +2142,6 @@ msgid "No drive for device file"
 msgstr "Nenhuma unidade para o arquivo de dispositivo"
 
 #: gio/gio-tool-mount.c:1014
-#| msgid "No volume for device file"
 msgid "No volume for given ID"
 msgstr "Nenhum volume para o ID dado"
 
@@ -3311,11 +3317,11 @@ msgstr ""
 msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "Nome da máquina “%s” contém “[” mas não “]”"
 
-#: gio/gnetworkmonitorbase.c:211 gio/gnetworkmonitorbase.c:315
+#: gio/gnetworkmonitorbase.c:219 gio/gnetworkmonitorbase.c:323
 msgid "Network unreachable"
 msgstr "Rede inalcançável"
 
-#: gio/gnetworkmonitorbase.c:249 gio/gnetworkmonitorbase.c:279
+#: gio/gnetworkmonitorbase.c:257 gio/gnetworkmonitorbase.c:287
 msgid "Host unreachable"
 msgstr "Máquina inalcançável"
 
@@ -3807,7 +3813,6 @@ msgstr "não foi possível escutar: %s"
 
 #: gio/gsocket.c:2204
 #, c-format
-#| msgid "Error binding to address: %s"
 msgid "Error binding to address %s: %s"
 msgstr "Erro ao vincular ao endereço %s: %s"
 
@@ -4068,30 +4073,25 @@ msgstr "Temporariamente sem condições de resolver “%s”"
 msgid "Error resolving “%s”"
 msgstr "Erro ao resolver “%s”"
 
-#: gio/gtlscertificate.c:298
+#: gio/gtlscertificate.c:243
 msgid "No PEM-encoded private key found"
 msgstr "Chave privada codificada com PEM não localizada"
 
-#: gio/gtlscertificate.c:308
+#: gio/gtlscertificate.c:253
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "Não foi possível decodificar uma chave privada codificada com PEM"
 
-#: gio/gtlscertificate.c:319
+#: gio/gtlscertificate.c:264
 msgid "Could not parse PEM-encoded private key"
 msgstr "Não foi possível analisar chave privada codificada com PEM"
 
-#: gio/gtlscertificate.c:346
+#: gio/gtlscertificate.c:291
 msgid "No PEM-encoded certificate found"
 msgstr "Certificado codificado com PEM não localizado"
 
-#: gio/gtlscertificate.c:355
+#: gio/gtlscertificate.c:300
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Não foi possível analisar certificado codificado com PEM"
-
-#: gio/gtlscertificate.c:710
-msgid "This GTlsBackend does not support creating PKCS #11 certificates"
-msgstr ""
-"Este GTlsBackend não oferece suporte à criação de certificados PKCS #11"
 
 #: gio/gtlspassword.c:111
 msgid ""
@@ -5120,7 +5120,6 @@ msgstr ""
 
 #: glib/gmarkup.c:1346
 #, c-format
-#| msgid "Unexpected attribute “%s” for element “%s”"
 msgid "Too many attributes in element “%s”"
 msgstr "Número excessivo de atributos no elemento “%s”"
 
@@ -5716,7 +5715,6 @@ msgstr "Falha ao ler dados de processo filho (%s)"
 
 #: glib/gspawn.c:460
 #, c-format
-#| msgid "Unexpected error in select() reading data from a child process (%s)"
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Erro inesperado na leitura de dados de um processo filho (%s)"
 
@@ -6081,6 +6079,10 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "This GTlsBackend does not support creating PKCS #11 certificates"
+#~ msgstr ""
+#~ "Este GTlsBackend não oferece suporte à criação de certificados PKCS #11"
 
 #~ msgid "Error in address “%s” — the family attribute is malformed"
 #~ msgstr "Erro no endereço “%s” — o atributo família está malformada"
