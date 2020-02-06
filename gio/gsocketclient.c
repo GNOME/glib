@@ -1460,6 +1460,9 @@ g_socket_client_async_connect_complete (ConnectionAttempt *attempt)
     {
       GError *error = NULL;
 
+      data->completed = TRUE;
+      cancel_all_attempts (data);
+
       if (g_cancellable_set_error_if_cancelled (g_task_get_cancellable (data->task), &error))
         {
           g_debug ("GSocketClient: Connection cancelled!");
@@ -1472,9 +1475,6 @@ g_socket_client_async_connect_complete (ConnectionAttempt *attempt)
           g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_COMPLETE, data->connectable, attempt->connection);
           g_task_return_pointer (data->task, g_steal_pointer (&attempt->connection), g_object_unref);
         }
-
-      data->completed = TRUE;
-      cancel_all_attempts (data);
     }
 
   connection_attempt_unref (attempt);
@@ -1608,9 +1608,9 @@ complete_connection_with_error (GSocketClientAsyncConnectData *data,
 {
   g_debug ("GSocketClient: Connection failed: %s", error->message);
   g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_COMPLETE, data->connectable, NULL);
-  g_task_return_error (data->task, error);
-  cancel_all_attempts (data);
   data->completed = TRUE;
+  cancel_all_attempts (data);
+  g_task_return_error (data->task, error);
 }
 
 static gboolean
@@ -1678,11 +1678,14 @@ try_next_succesful_connection (GSocketClientAsyncConnectData *data)
     }
   else if ((proxy = g_proxy_get_default_for_protocol (protocol)))
     {
+      GIOStream *connection = attempt->connection;
+      GProxyAddress *proxy_addr = attempt->proxy_addr;
+
       g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_PROXY_NEGOTIATING, data->connectable, attempt->connection);
       g_debug ("GSocketClient: Starting proxy connection");
       g_proxy_connect_async (proxy,
-                             attempt->connection,
-                             attempt->proxy_addr,
+                             connection,
+                             proxy_addr,
                              g_task_get_cancellable (data->task),
                              g_socket_client_proxy_connect_callback,
                              g_steal_pointer (&attempt));
@@ -1786,8 +1789,8 @@ g_socket_client_connected_callback (GObject      *source,
      at the TLS/Proxy layer. If those layers fail we will move on to the next
      connection.
    */
-  data->successful_connections = g_slist_append (data->successful_connections, connection_attempt_ref (attempt));
   connection_attempt_remove (attempt);
+  data->successful_connections = g_slist_append (data->successful_connections, g_steal_pointer (&attempt));
   try_next_connection_or_finish (data, FALSE);
 }
 
@@ -1847,8 +1850,7 @@ g_socket_client_enumerator_callback (GObject      *object,
        */
       if (data->enumerated_at_least_once)
         {
-          /* If nothing is still in progress the task failed. */
-          // FIXME: try_next_connection_or_finish() maybe?
+          /* If nothing is still in progress, the task failed. */
           g_debug ("OK: %p %d", data->connection_attempts, data->connection_in_progress);
           if (!data->connection_attempts && !data->connection_in_progress)
             goto enumeration_failed;
@@ -1859,10 +1861,11 @@ g_socket_client_enumerator_callback (GObject      *object,
 enumeration_failed:
           if (data->last_error)
             {
+              g_clear_error (&error);
               error = data->last_error;
               data->last_error = NULL;
             }
-          else
+          else if (!error)
             {
               g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_FAILED,
                 _("Unknown error on connect"));
