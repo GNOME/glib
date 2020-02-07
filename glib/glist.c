@@ -175,6 +175,13 @@ g_list_alloc (void)
  *
  * If list elements contain dynamically-allocated memory, you should
  * either use g_list_free_full() or free them manually first.
+ *
+ * It can be combined with g_steal_pointer() to ensure the list head pointer
+ * is not left dangling:
+ * |[<!-- language="C" -->
+ * GList *list_of_borrowed_things = …;  /<!-- -->* (transfer container) *<!-- -->/
+ * g_list_free (g_steal_pointer (&list_of_borrowed_things));
+ * ]|
  */
 void
 g_list_free (GList *list)
@@ -213,6 +220,15 @@ g_list_free_1 (GList *list)
  *
  * @free_func must not modify the list (eg, by removing the freed
  * element from it).
+ *
+ * It can be combined with g_steal_pointer() to ensure the list head pointer
+ * is not left dangling ­— this also has the nice property that the head pointer
+ * is cleared before any of the list elements are freed, to prevent double frees
+ * from @free_func:
+ * |[<!-- language="C" -->
+ * GList *list_of_owned_things = …;  /<!-- -->* (transfer full) (element-type GObject) *<!-- -->/
+ * g_list_free_full (g_steal_pointer (&list_of_owned_things), g_object_unref);
+ * ]|
  *
  * Since: 2.28
  */
