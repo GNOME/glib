@@ -338,6 +338,6 @@ gnulib_lib = static_library('gnulib', gnulib_sources,
   dependencies : [libm],
   include_directories : [configinc, glibinc, include_directories ('.')],
   pic : true,
-  c_args : ['-DGCC_LINT=1', '-DLIBDIR="@0@"'.format(get_option('libdir')), '-DGLIB_COMPILATION', '-DG_LOG_DOMAIN="GLib"' ] + glib_hidden_visibility_args + extra_gnulib_args)
+  c_args : ['-DGCC_LINT=1', '-DLIBDIR="@0@"'.format(glib_libdir), '-DGLIB_COMPILATION', '-DG_LOG_DOMAIN="GLib"' ] + glib_hidden_visibility_args + extra_gnulib_args)
 
 gnulib_libm_dependency = [libm]

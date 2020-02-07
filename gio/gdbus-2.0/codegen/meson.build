@@ -24,7 +24,7 @@ gdbus_codegen = configure_file(input : 'gdbus-codegen.in',
   # Provide tools for others when we're a subproject and they use the Meson GNOME module
 meson.override_find_program('gdbus-codegen', gdbus_codegen)
 
-codegen_dir = join_paths(get_option('datadir'), 'glib-2.0/codegen')
+codegen_dir = join_paths(glib_datadir, 'glib-2.0', 'codegen')
 
 gdbus_codegen_built_files = []
 gdbus_codegen_built_files += configure_file(input : 'config.py.in',
