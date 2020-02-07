@@ -817,9 +817,10 @@ libgio = library('gio-2.0',
   link_args : [noseh_link_args, glib_link_flags],
 )
 
-giomodulesdir = get_option('gio_module_dir')
-if giomodulesdir == ''
-  giomodulesdir = join_paths('${libdir}', 'gio', 'modules')
+if get_option('gio_module_dir') != ''
+  pkgconfig_giomodulesdir = join_paths('${prefix}', get_option('gio_module_dir'))
+else
+  pkgconfig_giomodulesdir = join_paths('${libdir}', 'gio', 'modules')
 endif
 
 schemas_subdir = join_paths('glib-2.0', 'schemas')
@@ -830,7 +831,7 @@ pkg.generate(libgio,
   variables : ['datadir=' + join_paths('${prefix}', get_option('datadir')),
                'schemasdir=' + join_paths('${datadir}', schemas_subdir),
                'bindir=' + join_paths('${prefix}', get_option('bindir')),
-               'giomoduledir=' + giomodulesdir,
+               'giomoduledir=' + pkgconfig_giomodulesdir,
                'gio=' + join_paths('${bindir}', 'gio'),
                'gio_querymodules=' + join_paths('${bindir}', 'gio-querymodules'),
                'glib_compile_schemas=' + join_paths('${bindir}', 'glib-compile-schemas'),

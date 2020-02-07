@@ -63,12 +63,19 @@ glib_libexecdir = join_paths(glib_prefix, get_option('libexecdir'))
 glib_datadir = join_paths(glib_prefix, get_option('datadir'))
 glib_pkgdatadir = join_paths(glib_datadir, 'glib-2.0')
 glib_includedir = join_paths(glib_prefix, get_option('includedir'))
-glib_giomodulesdir = get_option('gio_module_dir')
-if glib_giomodulesdir == ''
+if get_option('gio_module_dir') != ''
+  glib_giomodulesdir = join_paths(glib_prefix, get_option('gio_module_dir'))
+else
   glib_giomodulesdir = join_paths(glib_libdir, 'gio', 'modules')
 endif
 
 glib_pkgconfigreldir = join_paths(glib_libdir, 'pkgconfig')
+
+if get_option('charsetalias_dir') != ''
+  glib_charsetaliasdir = join_paths(glib_prefix, get_option('charsetalias_dir'))
+else
+  glib_charsetaliasdir = glib_libdir
+endif
 
 installed_tests_metadir = join_paths(glib_datadir, 'installed-tests', meson.project_name())
 installed_tests_execdir = join_paths(glib_libexecdir, 'installed-tests', meson.project_name())
@@ -2151,7 +2158,7 @@ if get_option('man')
     'http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl',
     '@INPUT@',
   ]
-  man1_dir = get_option('mandir') + '/man1'
+  man1_dir = join_paths(glib_prefix, get_option('mandir'), 'man1')
 endif
 
 gnome = import('gnome')
