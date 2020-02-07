@@ -75,7 +75,7 @@ class TestLowMemoryMonitor(dbusmock.DBusTestCase):
         self.dbusmock.EmitWarning(100)
         # Wait 2 seconds or until warning
         timeout = 2
-        while timeout > 0 or self.last_warning != 100:
+        while timeout > 0 and self.last_warning != 100:
             time.sleep(0.5)
             timeout -= 0.5
             self.main_context.iteration(False)
@@ -84,7 +84,7 @@ class TestLowMemoryMonitor(dbusmock.DBusTestCase):
         self.dbusmock.EmitWarning(255)
         # Wait 2 seconds or until warning
         timeout = 2
-        while timeout > 0 or self.last_warning != 255:
+        while timeout > 0 and self.last_warning != 255:
             time.sleep(0.5)
             timeout -= 0.5
             self.main_context.iteration(False)
