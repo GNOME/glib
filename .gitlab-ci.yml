@@ -10,7 +10,7 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v7"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v8"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v6"
   ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v2"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v2"
@@ -126,9 +126,6 @@ installed-tests:
   image: $FEDORA_IMAGE
   stage: build
   script:
-    # FIXME Install xdg-desktop-portal build deps before compiling glib,
-    # so it doesn't overwrite our own glib build
-    - sudo dnf install -y autoconf automake gettext-devel libtool diffutils fontconfig-devel json-glib-devel geoclue2-devel pipewire-devel fuse-devel make
     # dtrace is disabled because it breaks the static-link.py test
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -151,17 +148,12 @@ installed-tests:
     # FIXME install newer gobject-introspection
     # with GMemoryMonitor support, see:
     # https://gitlab.gnome.org/GNOME/gobject-introspection/merge_requests/193
-    - sudo dnf install -y meson flex bison python3-devel
     - git clone --single-branch https://gitlab.gnome.org/GNOME/gobject-introspection.git
     - cd gobject-introspection
     - /usr/bin/meson _build --prefix=/usr --libdir=/usr/lib64
     - ninja -C _build
     - sudo ninja -C _build install
     - cd ..
-    # FIXME: Add update until stable https://bodhi.fedoraproject.org/updates/FEDORA-2019-e830287661
-    - sudo dnf upgrade -y --enablerepo=updates-testing --advisory=FEDORA-2019-e830287661
-    # FIXME: Add update until stable https://bodhi.fedoraproject.org/updates/FEDORA-2019-161b129d4d
-    - sudo dnf upgrade -y --enablerepo=updates-testing --advisory=FEDORA-2019-161b129d4d
     # Work-around https://gitlab.gnome.org/GNOME/gnome-desktop-testing/merge_requests/2
     - mkdir -p _build/installed-tests-report/logs/
     - GLIB_TEST_COMPILATION=1 gnome-desktop-testing-runner

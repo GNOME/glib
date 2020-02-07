@@ -1,6 +1,7 @@
 FROM fedora:30
 
-RUN dnf -y install \
+RUN dnf -y update \
+ && dnf -y install \
     bindfs \
     clang \
     clang-analyzer \
@@ -31,7 +32,7 @@ RUN dnf -y install \
     glibc-langpack-pl \
     glibc-langpack-ru \
     glibc-langpack-tr \
-    gnome-desktop-testing \
+    "gnome-desktop-testing >= 2018.1" \
     gtk-doc \
     itstool \
     lcov \
@@ -43,7 +44,7 @@ RUN dnf -y install \
     ncurses-compat-libs \
     ninja-build \
     pcre-devel \
-    python3-dbusmock \
+    "python3-dbusmock >= 0.18.3-2" \
     python3-pygments \
     python3-wheel \
     shared-mime-info \
@@ -54,6 +55,22 @@ RUN dnf -y install \
     xdg-desktop-portal \
     xz \
     zlib-devel \
+ && dnf -y install \
+    meson \
+    flex \
+    bison \
+    python3-devel \
+    autoconf \
+    automake \
+    gettext-devel \
+    libtool \
+    diffutils \
+    fontconfig-devel \
+    json-glib-devel \
+    geoclue2-devel \
+    pipewire-devel \
+    fuse-devel \
+    make \
  && dnf clean all
 
 RUN pip3 install meson==0.52.1
