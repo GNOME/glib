@@ -91,6 +91,7 @@ glib_tests = {
   'testing' : {},
   'test-printf' : {},
   'thread' : {},
+  'thread-pool' : {},
   'timeout' : {},
   'timer' : {},
   'tree' : {},
