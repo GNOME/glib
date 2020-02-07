@@ -612,7 +612,7 @@ gvdb_table_write_contents_async (GHashTable          *table,
                                  g_bytes_get_data (bytes, NULL),
                                  g_bytes_get_size (bytes),
                                  NULL, FALSE,
-                                 G_FILE_CREATE_PRIVATE | G_FILE_CREATE_REPLACE_DESTINATION,
+                                 G_FILE_CREATE_PRIVATE,
                                  cancellable, replace_contents_cb, g_steal_pointer (&task));
 
   g_bytes_unref (bytes);
