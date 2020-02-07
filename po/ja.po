@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-02-06 23:52+0000\n"
-"PO-Revision-Date: 2020-02-06 02:46+0900\n"
+"PO-Revision-Date: 2020-02-08 00:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -55,7 +55,7 @@ msgstr "アプリケーションの ID をオーバーライドする"
 
 #: gio/gapplication.c:569
 msgid "Replace the running instance"
-msgstr "実行中のインスタンスを置換する"
+msgstr "実行中のインスタンスを置き換える"
 
 #: gio/gapplication-tool.c:45 gio/gapplication-tool.c:46 gio/gio-tool.c:227
 #: gio/gresource-tool.c:493 gio/gsettings-tool.c:567
@@ -64,7 +64,7 @@ msgstr "ヘルプを表示する"
 
 #: gio/gapplication-tool.c:47 gio/gresource-tool.c:494 gio/gresource-tool.c:562
 msgid "[COMMAND]"
-msgstr ""
+msgstr "[コマンド]"
 
 #: gio/gapplication-tool.c:49 gio/gio-tool.c:228
 msgid "Print version"
@@ -94,7 +94,7 @@ msgstr "アプリケーションを起動する (開くファイルを指定)"
 
 #: gio/gapplication-tool.c:57
 msgid "APPID [FILE…]"
-msgstr ""
+msgstr "APPID [ファイル…]"
 
 #: gio/gapplication-tool.c:59
 msgid "Activate an action"
@@ -179,7 +179,7 @@ msgstr "引数:\n"
 
 #: gio/gapplication-tool.c:133 gio/gio-tool.c:224
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[引数…]"
 
 #: gio/gapplication-tool.c:134
 #, c-format
@@ -202,7 +202,8 @@ msgid ""
 "%s command requires an application id to directly follow\n"
 "\n"
 msgstr ""
-"%s コマンドはアプリケーション ID を直接指定する必要があります\n"
+"%s コマンドはアプリケーション ID を直に続けて指定する必要があり"
+"ます\n"
 "\n"
 
 #: gio/gapplication-tool.c:171
@@ -388,7 +389,7 @@ msgstr "サポートしていないキー“%s”がアドレスエントリー�
 #: gio/gdbusaddress.c:171
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
-msgstr "アドレスエントリー“%s”に意味の無いキー/値のペアの組み合わせがあります"
+msgstr "アドレスエントリー“%s”に意味のないキー/値のペアの組み合わせがあります"
 
 #: gio/gdbusaddress.c:180
 #, c-format
@@ -530,8 +531,8 @@ msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "— unknown value “%s”"
 msgstr ""
-"DBUS_STARTER_BUS_TYPE 環境変数からバスアドレスを決定できません — 値“%s”は不明"
-"です"
+"DBUS_STARTER_BUS_TYPE 環境変数からバスアドレスを決定できません — “%s”は不明な"
+"値です"
 
 #: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7200
 msgid ""
@@ -937,7 +938,7 @@ msgstr "空のボディでエラーが返りました"
 #: gio/gdbusprivate.c:2242
 #, c-format
 msgid "(Type any character to close this window)\n"
-msgstr ""
+msgstr "(任意の文字を入力すると、このウィンドウを閉じます)\n"
 
 #: gio/gdbusprivate.c:2416
 #, c-format
@@ -951,7 +952,7 @@ msgstr "ハードウェアプロファイルを取得できません: %s"
 
 #: gio/gdbusprivate.c:2484
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr "/var/lib/dbus/machine-id または /etc/machine-id を読みこめません: "
+msgstr "/var/lib/dbus/machine-id または /etc/machine-id を読み込めません: "
 
 #: gio/gdbusproxy.c:1625
 #, c-format
@@ -1194,35 +1195,35 @@ msgstr "型“%2$s”のパラメーター %1$d の解析中にエラーが発�
 
 #: gio/gdbus-tool.c:1630
 msgid "Destination name to introspect"
-msgstr "イントロスペクトする対象の名前"
+msgstr "イントロスペクト先の名前を指定する"
 
 #: gio/gdbus-tool.c:1631
 msgid "Object path to introspect"
-msgstr "イントロスペクトするオブジェクトパス"
+msgstr "イントロスペクトするオブジェクトパスを指定する"
 
 #: gio/gdbus-tool.c:1632
 msgid "Print XML"
-msgstr "XML を表示"
+msgstr "XML を表示する"
 
 #: gio/gdbus-tool.c:1633
 msgid "Introspect children"
-msgstr ""
+msgstr "子をイントロスペクトする"
 
 #: gio/gdbus-tool.c:1634
 msgid "Only print properties"
-msgstr ""
+msgstr "プロパティのみを表示する"
 
 #: gio/gdbus-tool.c:1723
 msgid "Introspect a remote object."
-msgstr "リモートオブジェクトをイントロスペクト。"
+msgstr "リモートオブジェクトをイントロスペクトします。"
 
 #: gio/gdbus-tool.c:1929
 msgid "Destination name to monitor"
-msgstr "モニターする対象の名前"
+msgstr "モニター先の名前を指定する"
 
 #: gio/gdbus-tool.c:1930
 msgid "Object path to monitor"
-msgstr "モニターするオブジェクトパス"
+msgstr "モニターするオブジェクトパスを指定する"
 
 #: gio/gdbus-tool.c:1955
 msgid "Monitor a remote object."
@@ -1244,11 +1245,11 @@ msgstr ""
 
 #: gio/gdbus-tool.c:2188
 msgid "[OPTION…] BUS-NAME"
-msgstr ""
+msgstr "[オプション…] BUS-NAME"
 
 #: gio/gdbus-tool.c:2189
 msgid "Wait for a bus name to appear."
-msgstr ""
+msgstr "バス名の表示を待ちます。"
 
 #: gio/gdbus-tool.c:2265
 msgid "Error: A service to activate for must be specified.\n"
@@ -1417,7 +1418,7 @@ msgstr "コピー (reflink/clone) はサポートしていないか動作しま�
 
 #: gio/gfile.c:3190
 msgid "Can’t copy special file"
-msgstr "特別なファイルはコピーできません"
+msgstr "スペシャルファイルはコピーできません"
 
 #: gio/gfile.c:4003
 msgid "Invalid symlink value given"
@@ -1496,7 +1497,7 @@ msgstr ""
 
 #: gio/ghttpproxy.c:159
 msgid "HTTP proxy connection not allowed"
-msgstr "HTTP プロキシ接続は許可していません"
+msgstr "HTTP プロキシ接続は許可されていません"
 
 #: gio/ghttpproxy.c:164
 msgid "HTTP proxy authentication failed"
@@ -1625,11 +1626,11 @@ msgstr "一つ以上のファイルをコピーする"
 
 #: gio/gio-tool.c:231
 msgid "Show information about locations"
-msgstr ""
+msgstr "場所についての情報を表示する"
 
 #: gio/gio-tool.c:232
 msgid "List the contents of locations"
-msgstr ""
+msgstr "場所の内容を一覧表示する"
 
 #: gio/gio-tool.c:233
 msgid "Get or set the handler for a mimetype"
@@ -1677,7 +1678,7 @@ msgstr "ファイルやディレクトリをゴミ箱へ移動する"
 
 #: gio/gio-tool.c:244
 msgid "Lists the contents of locations in a tree"
-msgstr ""
+msgstr "ツリー形式で場所の内容を一覧表示する"
 
 #: gio/gio-tool.c:246
 #, c-format
@@ -1735,7 +1736,7 @@ msgstr "すべての属性を保持する"
 
 #: gio/gio-tool-copy.c:47 gio/gio-tool-move.c:41 gio/gio-tool-save.c:49
 msgid "Backup existing destination files"
-msgstr "既存の対象ファイルをバックアップする"
+msgstr "既存の対象ファイル (DEST) をバックアップする"
 
 #: gio/gio-tool-copy.c:48
 msgid "Never follow symbolic links"
@@ -1845,7 +1846,7 @@ msgstr "URI: %s\n"
 #: gio/gio-tool-info.c:172
 #, c-format
 msgid "local path: %s\n"
-msgstr ""
+msgstr "ローカルパス: %s\n"
 
 #: gio/gio-tool-info.c:199
 #, c-format
@@ -2104,7 +2105,7 @@ msgstr ""
 
 #: gio/gio-tool-move.c:99
 msgid "Move one or more files from SOURCE to DEST."
-msgstr "一つ以上のファイルを SOURCE から DEST に移動します。"
+msgstr "一つ以上のファイルを SOURCE から DEST へ移動します。"
 
 #: gio/gio-tool-move.c:101
 msgid ""
@@ -2171,7 +2172,7 @@ msgstr "作成時に現在のユーザーへのアクセスを制限する"
 
 #: gio/gio-tool-save.c:53
 msgid "When replacing, replace as if the destination did not exist"
-msgstr "置換時に対象が存在しないかのように置換する"
+msgstr "置換時に置換先が存在しないかのように置換する"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:55
@@ -2732,18 +2733,17 @@ msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
 "override for this key."
 msgstr ""
-"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”は存在しま"
-"せん。このキーのオーバーライドを無視します。"
+"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”がありませ"
+"ん。このキーのオーバーライドを無視します。"
 
 #: gio/glib-compile-schemas.c:1971
-#, fuzzy, c-format
-#| msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
+#, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
 "strict was specified; exiting."
 msgstr ""
-"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”は存在しま"
-"せん。--strict が指定されたため終了します。"
+"オーバーライドファイル“%3$s”で指定されたスキーマ“%2$s”のキー“%1$s”がありませ"
+"ん。--strict が指定されたため終了します。"
 
 #: gio/glib-compile-schemas.c:1993
 #, c-format
@@ -2975,7 +2975,7 @@ msgstr "バックアップファイルの作成に失敗しました"
 #: gio/glocalfile.c:2468
 #, c-format
 msgid "Error removing target file: %s"
-msgstr "対象となるファイルの削除中にエラーが発生しました: %s"
+msgstr "対象ファイルの削除中にエラーが発生しました: %s"
 
 #: gio/glocalfile.c:2482
 msgid "Move between mounts not supported"
@@ -3001,7 +3001,7 @@ msgstr "拡張属性の名前が不正です"
 #: gio/glocalfileinfo.c:809
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
-msgstr "“%s”という拡張属性の設定中にエラーが発生しました: %s"
+msgstr "拡張属性“%s”の設定中にエラーが発生しました: %s"
 
 #: gio/glocalfileinfo.c:1637
 msgid " (invalid encoding)"
@@ -3411,7 +3411,7 @@ msgstr ""
 
 #: gio/gresource-tool.c:577
 msgid "[PATH]"
-msgstr ""
+msgstr "[パス]"
 
 #: gio/gresource-tool.c:579
 msgid "  PATH      An (optional) resource path (may be partial)\n"
@@ -3419,7 +3419,7 @@ msgstr ""
 
 #: gio/gresource-tool.c:580
 msgid "PATH"
-msgstr "PATH"
+msgstr ""
 
 #: gio/gresource-tool.c:582
 msgid "  PATH      A resource path\n"
@@ -3428,7 +3428,7 @@ msgstr ""
 #: gio/gsettings-tool.c:49 gio/gsettings-tool.c:70 gio/gsettings-tool.c:906
 #, c-format
 msgid "No such schema “%s”\n"
-msgstr "スキーマ“%s”は存在しません\n"
+msgstr "スキーマ“%s”がありません\n"
 
 #: gio/gsettings-tool.c:55
 #, c-format
@@ -3594,7 +3594,7 @@ msgid ""
 "Use “gsettings help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
-"用法:\n"
+"使用法:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
 "\n"
 "コマンド:\n"
@@ -3670,7 +3670,7 @@ msgstr "スキーマ名が空です\n"
 #: gio/gsettings-tool.c:919
 #, c-format
 msgid "No such key “%s”\n"
-msgstr "キー“%s”は存在しません\n"
+msgstr "キー“%s”がありません\n"
 
 #: gio/gsocket.c:418
 msgid "Invalid socket, not initialized"
@@ -4924,7 +4924,7 @@ msgstr "値“%s”を Float として解釈できません。"
 #: glib/gkeyfile.c:4536
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
-msgstr "値“%s”を論理値として解釈できません"
+msgstr "値“%s”を論理値として解釈できません。"
 
 #: glib/gmappedfile.c:129
 #, c-format
@@ -4994,7 +4994,7 @@ msgstr "文字参照“%-.*s”が使用可能な文字をエンコードして�
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"空のエンティティ“&;”があります; 正しいエンティティは: &amp; &quot; &lt; &gt; "
+"空のエンティティ“&;”があります。正しいエンティティ: &amp; &quot; &lt; &gt; "
 "&apos;"
 
 #: glib/gmarkup.c:774
@@ -5275,7 +5275,7 @@ msgstr "パターンの終端に \\c があります"
 
 #: glib/gregex.c:335
 msgid "unrecognized character following \\"
-msgstr "\\ の後ろに認識できない文字があります"
+msgstr "\\ の後に認識できない文字があります"
 
 #: glib/gregex.c:338
 msgid "numbers out of order in {} quantifier"
@@ -5307,7 +5307,7 @@ msgstr "想定外の繰り返しです"
 
 #: glib/gregex.c:360
 msgid "unrecognized character after (? or (?-"
-msgstr "'(?' または '(?-' の後ろに認識できない文字があります"
+msgstr "'(?' または '(?-' の後に認識できない文字があります"
 
 #: glib/gregex.c:363
 msgid "POSIX named classes are supported only within a class"
@@ -5323,7 +5323,7 @@ msgstr "存在しないサブパターンへの参照です"
 
 #: glib/gregex.c:372
 msgid "missing ) after comment"
-msgstr "コメントの後ろに ')' がありません"
+msgstr "コメントの後に ')' がありません"
 
 #: glib/gregex.c:375
 msgid "regular expression is too large"
@@ -5343,7 +5343,7 @@ msgstr "コードがオーバーフローしました"
 
 #: glib/gregex.c:390
 msgid "unrecognized character after (?<"
-msgstr "'(?<' の後ろに認識できない文字があります"
+msgstr "'(?<' の後に認識できない文字があります"
 
 #: glib/gregex.c:393
 msgid "lookbehind assertion is not fixed length"
@@ -5351,7 +5351,7 @@ msgstr "後読み (lookbehind assertion) が固定長ではありません"
 
 #: glib/gregex.c:396
 msgid "malformed number or name after (?("
-msgstr "'(?(' の後ろに不正な形式の数値または名前があります"
+msgstr "'(?(' の後に不正な形式の数値または名前があります"
 
 #: glib/gregex.c:399
 msgid "conditional group contains more than two branches"
@@ -5398,7 +5398,7 @@ msgstr "繰り返しの呼び出しが無限ループになっています"
 
 #: glib/gregex.c:438
 msgid "unrecognized character after (?P"
-msgstr "(?P の後ろに認識できない文字があります"
+msgstr "(?P の後に認識できない文字があります"
 
 #: glib/gregex.c:441
 msgid "missing terminator in subpattern name"
@@ -5414,7 +5414,7 @@ msgstr "不正な \\P または \\p のシーケンスです"
 
 #: glib/gregex.c:450
 msgid "unknown property name after \\P or \\p"
-msgstr "\\P または \\p の後ろにあるプロパティ名が不明です"
+msgstr "\\P または \\p の後にあるプロパティ名が不明です"
 
 #: glib/gregex.c:453
 msgid "subpattern name is too long (maximum 32 characters)"
@@ -5468,11 +5468,11 @@ msgstr "数値が大きすぎます"
 
 #: glib/gregex.c:492
 msgid "missing subpattern name after (?&"
-msgstr "(?& の後ろにサブパターンの名前がありません"
+msgstr "(?& の後にサブパターンの名前がありません"
 
 #: glib/gregex.c:495
 msgid "digit expected after (?+"
-msgstr "(?+ の後ろは数値を想定していました"
+msgstr "(?+ の後は数値を想定していました"
 
 #: glib/gregex.c:498
 msgid "] is an invalid data character in JavaScript compatibility mode"
@@ -5611,7 +5611,7 @@ msgstr "子プロセスからデータを読み取れません (%s)"
 #: glib/gspawn.c:460
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
-msgstr "子プロセスからのデータ読み出し中に想定外のエラーが発生しました (%s)"
+msgstr "子プロセスからのデータ読み取り中に想定外のエラーが発生しました (%s)"
 
 #: glib/gspawn.c:545
 #, c-format
@@ -5676,7 +5676,7 @@ msgstr "子プロセスの fork に失敗しました (%s)"
 #: glib/gspawn.c:1948
 #, c-format
 msgid "Unknown error executing child process “%s”"
-msgstr "子プロセス“%s”の実行時に不明なエラーが発生しました"
+msgstr "子プロセス“%s”の起動時に不明なエラーが発生しました"
 
 #: glib/gspawn.c:1972
 #, c-format
@@ -5934,7 +5934,7 @@ msgstr[0] "%s バイト"
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
-msgstr[0] "%s バイト"
+msgstr[0] "%s ビット"
 
 #. Translators: this is from the deprecated function g_format_size_for_display() which uses 'KB' to
 #. * mean 1024 bytes.  I am aware that 'KB' is not correct, but it has been preserved for reasons of
@@ -5985,21 +5985,8 @@ msgstr "%.1f EB"
 #~ "メッセージには %d 個の fd が含まれていますが、ヘッダーフィールドでは %d 個"
 #~ "の fd があることになってます"
 
-#~ msgid "; ignoring override for this key.\n"
-#~ msgstr "。このキーのオーバーライドを無視します。\n"
-
-#~ msgid " and --strict was specified; exiting.\n"
-#~ msgstr "。--strict が指定されました。終了します。\n"
-
-#~ msgid "Ignoring override for this key.\n"
-#~ msgstr "このキーのオーバーライドを無視します。\n"
-
 #~ msgid "doing nothing.\n"
 #~ msgstr "何もしません。\n"
-
-#~ msgid "Unable to find default local directory monitor type"
-#~ msgstr ""
-#~ "ローカルディレクトリを監視するデフォルトモニターの種類が見つかりません"
 
 #~ msgid "association changes not supported on win32"
 #~ msgstr "win32 で組み合わせの変更はサポートしていません"
@@ -6010,9 +5997,6 @@ msgstr "%.1f EB"
 #~ msgid "Unable to get pending error: %s"
 #~ msgstr "エラーをペンディングできません: %s"
 
-#~ msgid "Abnormal program termination spawning command line '%s': %s"
-#~ msgstr "コマンドライン '%s' の起動が異常終了しました: %s"
-
 #~ msgid "Command line '%s' exited with non-zero exit status %d: %s"
 #~ msgstr "コマンドライン '%s' が非ゼロの終了コード %d で終了しました: %s"
 
@@ -6022,23 +6006,11 @@ msgstr "%.1f EB"
 #~ msgid "workspace limit for empty substrings reached"
 #~ msgstr "空の部分文字列に対する作業領域の上限に達しました"
 
-#~ msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-#~ msgstr ""
-#~ "ここに大/小文字の変換を行うエスケープ (\\l、\\L、\\u、\\U) を挿入できませ"
-#~ "ん"
-
 #~ msgid "repeating a DEFINE group is not allowed"
 #~ msgstr "DEFINE グループは繰り返せません"
 
 #~ msgid "File is empty"
 #~ msgstr "ファイルが空です"
-
-#~ msgid ""
-#~ "Key file contains key '%s' which has value that cannot be interpreted."
-#~ msgstr "キー・ファイルのキー '%s' の値を解釈できませんでした"
-
-#~ msgid "Error stating file '%s': %s"
-#~ msgstr "'%s' というファイルの状態を取得する際にエラー: %s"
 
 #~ msgctxt "GDateTime"
 #~ msgid "am"
@@ -6047,18 +6019,6 @@ msgstr "%.1f EB"
 #~ msgctxt "GDateTime"
 #~ msgid "pm"
 #~ msgstr "午後"
-
-#~ msgid "Type of return value is incorrect, got '%s', expected '%s'"
-#~ msgstr ""
-#~ "返り値の型が正しくありません。'%s' を受け取りましたが、期待したのは '%s' "
-#~ "です"
-
-#~ msgid ""
-#~ "Trying to set property %s of type %s but according to the expected "
-#~ "interface the type is %s"
-#~ msgstr ""
-#~ "型 %2$s のプロパティ %1$s を設定しようとしましたが、期待するインターフェイ"
-#~ "スによれば型は %3$s です"
 
 #~ msgid ""
 #~ "Commands:\n"
@@ -6087,9 +6047,6 @@ msgstr "%.1f EB"
 #~ msgid "Reached maximum data array limit"
 #~ msgstr "データ配列の上限に到達しました"
 
-#~ msgid "do not hide entries"
-#~ msgstr "エントリを隠さない"
-
 #~ msgid ""
 #~ "Character '%s' is not valid at the start of an entity name; the & "
 #~ "character begins an entity; if this ampersand isn't supposed to be an "
@@ -6117,34 +6074,10 @@ msgstr "%.1f EB"
 #~ msgid "Invalid UTF-8 encoded text - not a start char"
 #~ msgstr "UTF-8 として正しくない文字列です (文字で始まっていません)"
 
-#~ msgid "file"
-#~ msgstr "ファイル"
-
-#~ msgid "The file containing the icon"
-#~ msgstr "アイコンの情報を格納したファイルです"
-
-#~ msgid "An array containing the icon names"
-#~ msgstr "アイコンの名前を格納した配列です"
-
-#~ msgid "use default fallbacks"
-#~ msgstr "デフォルトのフォールバックを使用する"
-
 #~ msgid ""
 #~ "Whether to use default fallbacks found by shortening the name at '-' "
 #~ "characters. Ignores names after the first if multiple names are given."
 #~ msgstr ""
 #~ "'-' という代替え文字で名前を省略するデフォルトのフォールバックを使用するか"
-#~ "どうかです (複数の名前を指定すると一番最初の名前より後ろの名前をすべて無視"
+#~ "どうかです (複数の名前を指定すると一番最初の名前より後の名前をすべて無視"
 #~ "します)"
-
-#~ msgid "File descriptor"
-#~ msgstr "ファイルディスクリプター"
-
-#~ msgid "The file descriptor to read from"
-#~ msgstr "読み込むファイルのファイルディスクリプターです"
-
-#~ msgid "Close file descriptor"
-#~ msgstr "ファイルディスクリプターを閉じるかどうか"
-
-#~ msgid "Whether to close the file descriptor when the stream is closed"
-#~ msgstr "ストリームが閉じたらファイルディスクリプターを閉じるかどうかです"
