@@ -27,8 +27,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-02-06 23:52+0000\n"
-"PO-Revision-Date: 2020-02-08 00:00+0900\n"
+"POT-Creation-Date: 2020-02-07 20:17+0000\n"
+"PO-Revision-Date: 2020-02-08 20:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -170,7 +170,7 @@ msgstr ""
 
 #: gio/gapplication-tool.c:101
 msgid "Usage:\n"
-msgstr "使用法:\n"
+msgstr "用法:\n"
 
 #: gio/gapplication-tool.c:114 gio/gresource-tool.c:556
 #: gio/gsettings-tool.c:694
@@ -202,8 +202,7 @@ msgid ""
 "%s command requires an application id to directly follow\n"
 "\n"
 msgstr ""
-"%s コマンドはアプリケーション ID を直に続けて指定する必要があり"
-"ます\n"
+"%s コマンドはアプリケーション ID を直に続けて指定する必要があります\n"
 "\n"
 
 #: gio/gapplication-tool.c:171
@@ -938,7 +937,7 @@ msgstr "空のボディでエラーが返りました"
 #: gio/gdbusprivate.c:2242
 #, c-format
 msgid "(Type any character to close this window)\n"
-msgstr "(任意の文字を入力すると、このウィンドウを閉じます)\n"
+msgstr "(このウィンドウを閉じるには、何か文字を入力してください)\n"
 
 #: gio/gdbusprivate.c:2416
 #, c-format
@@ -1195,11 +1194,11 @@ msgstr "型“%2$s”のパラメーター %1$d の解析中にエラーが発�
 
 #: gio/gdbus-tool.c:1630
 msgid "Destination name to introspect"
-msgstr "イントロスペクト先の名前を指定する"
+msgstr "イントロスペクト先の名前"
 
 #: gio/gdbus-tool.c:1631
 msgid "Object path to introspect"
-msgstr "イントロスペクトするオブジェクトパスを指定する"
+msgstr "イントロスペクトするオブジェクトパス"
 
 #: gio/gdbus-tool.c:1632
 msgid "Print XML"
@@ -1211,7 +1210,7 @@ msgstr "子をイントロスペクトする"
 
 #: gio/gdbus-tool.c:1634
 msgid "Only print properties"
-msgstr "プロパティのみを表示する"
+msgstr "プロパティのみ表示する"
 
 #: gio/gdbus-tool.c:1723
 msgid "Introspect a remote object."
@@ -1219,15 +1218,15 @@ msgstr "リモートオブジェクトをイントロスペクトします。"
 
 #: gio/gdbus-tool.c:1929
 msgid "Destination name to monitor"
-msgstr "モニター先の名前を指定する"
+msgstr "監視先の名前"
 
 #: gio/gdbus-tool.c:1930
 msgid "Object path to monitor"
-msgstr "モニターするオブジェクトパスを指定する"
+msgstr "監視するオブジェクトパス"
 
 #: gio/gdbus-tool.c:1955
 msgid "Monitor a remote object."
-msgstr "リモートのオブジェクトをモニターします。"
+msgstr "リモートオブジェクトを監視します。"
 
 #: gio/gdbus-tool.c:2013
 msgid "Error: can’t monitor a non-message-bus connection\n"
@@ -1594,11 +1593,11 @@ msgstr ""
 
 #: gio/gio-tool.c:160
 msgid "Copy with file"
-msgstr ""
+msgstr "ファイルと共にコピー"
 
 #: gio/gio-tool.c:164
 msgid "Keep with file when moved"
-msgstr ""
+msgstr "ファイルが移動時に保持"
 
 #: gio/gio-tool.c:205
 msgid "“version” takes no arguments"
@@ -1606,7 +1605,7 @@ msgstr "“version”は引数を取りません"
 
 #: gio/gio-tool.c:207 gio/gio-tool.c:223 glib/goption.c:864
 msgid "Usage:"
-msgstr "使用法:"
+msgstr "用法:"
 
 #: gio/gio-tool.c:210
 msgid "Print version information and exit."
@@ -1709,8 +1708,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
-"gio cat は通常の cat と同じように動作するツールで、ローカルファイルの代わり"
-"に GIO ロケーションを使用できます (例: smb://server/resource/file.txt)。"
+"gio cat は伝統的な cat ユーティリティのように動作するツールで、ローカ"
+"ルファイルの代わりに GIO ロケーションを使用できます (例: "
+"smb://server/resource/file.txt)。"
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
@@ -1771,8 +1771,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
-"gio copy は通常の cp に似たツールで、ローカルファイルの代わりに GIO ロケー"
-"ションを使用できます (例: smb://server/resource/file.txt)。"
+"gio copy は伝統的な cp ユーティリティに似たツールで、ローカルファイルの"
+"代わりに GIO ロケーションを使用できます (例: "
+"smb://server/resource/file.txt)。"
 
 #: gio/gio-tool-copy.c:149
 #, c-format
@@ -1794,7 +1795,7 @@ msgstr "ファイルシステムの情報を取得する"
 
 #: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
 msgid "The attributes to get"
-msgstr "指定した属性を取得する"
+msgstr "取得する属性"
 
 #: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
 msgid "ATTRIBUTES"
@@ -1859,7 +1860,7 @@ msgstr "設定可能な属性:\n"
 
 #: gio/gio-tool-info.c:303
 msgid "Writable attribute namespaces:\n"
-msgstr "書込み可能な属性の名前空間:\n"
+msgstr "書込み属性の名前空間:\n"
 
 #: gio/gio-tool-info.c:338
 msgid "Show information about locations."
@@ -1921,9 +1922,9 @@ msgid ""
 "for the mimetype. If a handler is given, it is set as the default\n"
 "handler for the mimetype."
 msgstr ""
-"ハンドラを指定しない場合、MIME タイプに関連付けられたアプリケーションと推奨ア"
-"プリケーションの一覧を表示します。ハンドラを指定した場合、そのハンドラを "
-"MIME タイプのデフォルトのハンドラとして設定します。"
+"ハンドラを指定しない場合、MIME タイプに登録されているアプリケーションと推"
+"奨されているアプリケーションの一覧を表示します。ハンドラを指定した場合、そ"
+"のハンドラを MIME タイプのデフォルトのハンドラとして設定します。"
 
 #: gio/gio-tool-mime.c:100
 msgid "Must specify a single mimetype, and maybe a handler"
@@ -1941,19 +1942,19 @@ msgstr "“%s”のデフォルトのアプリケーション: %s\n"
 
 #: gio/gio-tool-mime.c:127
 msgid "Registered applications:\n"
-msgstr "関連付けられたアプリケーション:\n"
+msgstr "登録されているアプリケーション:\n"
 
 #: gio/gio-tool-mime.c:129
 msgid "No registered applications\n"
-msgstr "関連付けられたアプリケーションがありません\n"
+msgstr "登録されているアプリケーションはありません\n"
 
 #: gio/gio-tool-mime.c:140
 msgid "Recommended applications:\n"
-msgstr "推奨アプリケーション:\n"
+msgstr "推奨されているアプリケーション:\n"
 
 #: gio/gio-tool-mime.c:142
 msgid "No recommended applications\n"
-msgstr "推奨アプリケーションがありません\n"
+msgstr "推奨されているアプリケーションはありません\n"
 
 #: gio/gio-tool-mime.c:162
 #, c-format
@@ -1979,8 +1980,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/mydir as location."
 msgstr ""
-"gio mkdir は通常の mkdir に似たツールで、ローカルファイルの代わりに GIO ロ"
-"ケーションを使用できます (例: smb://server/resource/mydir)。"
+"gio mkdir は伝統的な mkdir ユーティリティに似たツールで、ローカルファイ"
+"ルの代わりに GIO ロケーションを使用できます (例: "
+"smb://server/resource/mydir)。"
 
 #: gio/gio-tool-monitor.c:37
 msgid "Monitor a directory (default: depends on type)"
@@ -2069,7 +2071,7 @@ msgstr "その他の情報を表示する"
 
 #: gio/gio-tool-mount.c:75
 msgid "The numeric PIM when unlocking a VeraCrypt volume"
-msgstr "VeraCrypt ボリュームのロックを解除する PIM 値を指定する"
+msgstr "VeraCrypt ボリュームのロックを解除する PIM 値"
 
 #: gio/gio-tool-mount.c:75
 msgid "PIM"
@@ -2113,8 +2115,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location"
 msgstr ""
-"gio move は通常の mv に似たツールで、ローカルファイルの代わりに GIO ロケー"
-"ションを使用できます (例: smb://server/resource/file.txt)"
+"gio move は伝統的な mv ユーティリティに似たツールで、ローカルファイルの"
+"代わりに GIO ロケーションを使用できます (例: "
+"smb://server/resource/file.txt)"
 
 #: gio/gio-tool-move.c:143
 #, c-format
@@ -2126,8 +2129,8 @@ msgid ""
 "Open files with the default application that\n"
 "is registered to handle files of this type."
 msgstr ""
-"この種類のファイルに関連付けられているデフォ\n"
-"ルトのアプリケーションでファイルを開きます。"
+"この種類のファイルを扱うよう登録された、\n"
+"デフォルトのアプリケーションでファイルを開きます。"
 
 #: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:31
 msgid "Ignore nonexistent files, never prompt"
@@ -2168,7 +2171,7 @@ msgstr "ファイルの末尾に追記する"
 
 #: gio/gio-tool-save.c:52
 msgid "When creating, restrict access to the current user"
-msgstr "作成時に現在のユーザーへのアクセスを制限する"
+msgstr "ファイルを作成するときに現在のユーザーのみにアクセスを制限する"
 
 #: gio/gio-tool-save.c:53
 msgid "When replacing, replace as if the destination did not exist"
@@ -2177,12 +2180,12 @@ msgstr "置換時に置換先が存在しないかのように置換する"
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:55
 msgid "Print new etag at end"
-msgstr ""
+msgstr "新しい etag を最後に出力する"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:57
 msgid "The etag of the file being overwritten"
-msgstr "ファイル上書きの etag を指定する"
+msgstr "上書き対象のファイルの etag"
 
 #: gio/gio-tool-save.c:57
 msgid "ETAG"
@@ -2207,7 +2210,7 @@ msgstr "対象を指定していません"
 
 #: gio/gio-tool-set.c:33
 msgid "Type of the attribute"
-msgstr "属性の種類を指定する"
+msgstr "属性の種類"
 
 #: gio/gio-tool-set.c:33
 msgid "TYPE"
@@ -2319,14 +2322,14 @@ msgstr "プログラムのバージョンを表示して終了する"
 
 #: gio/glib-compile-resources.c:738
 msgid "Name of the output file"
-msgstr "出力ファイル名を指定する"
+msgstr "出力ファイル名"
 
 #: gio/glib-compile-resources.c:739
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
 msgstr ""
-"対象のファイルを読み込むディレクトリを指定する (デフォルト: 現在のディレクト"
+"対象のファイル (FILE) を読み込むディレクトリ (デフォルト: 現在のディレクト"
 "リ)"
 
 #: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173
@@ -2813,7 +2816,7 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:2173
 msgid "Where to store the gschemas.compiled file"
-msgstr "gschemas.compiled の出力先を指定する"
+msgstr "gschemas.compiled ファイルの出力先"
 
 #: gio/glib-compile-schemas.c:2174
 msgid "Abort on any errors in schemas"
@@ -3385,7 +3388,7 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"使用法:\n"
+"用法:\n"
 "  gresource %s%s%s %s\n"
 "\n"
 "%s\n"
@@ -3594,7 +3597,7 @@ msgid ""
 "Use “gsettings help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
-"使用法:\n"
+"用法:\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
 "\n"
 "コマンド:\n"
@@ -3624,7 +3627,7 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"使用法:\n"
+"用法:\n"
 "  gsettings [--schemadir SCHEMADIR] %s %s\n"
 "\n"
 "%s\n"
@@ -5414,7 +5417,7 @@ msgstr "不正な \\P または \\p のシーケンスです"
 
 #: glib/gregex.c:450
 msgid "unknown property name after \\P or \\p"
-msgstr "\\P または \\p の後にあるプロパティ名が不明です"
+msgstr "\\P または \\p の後に不明なプロパティ名があります"
 
 #: glib/gregex.c:453
 msgid "subpattern name is too long (maximum 32 characters)"
@@ -6079,5 +6082,5 @@ msgstr "%.1f EB"
 #~ "characters. Ignores names after the first if multiple names are given."
 #~ msgstr ""
 #~ "'-' という代替え文字で名前を省略するデフォルトのフォールバックを使用するか"
-#~ "どうかです (複数の名前を指定すると一番最初の名前より後の名前をすべて無視"
-#~ "します)"
+#~ "どうかです (複数の名前を指定すると一番最初の名前より後の名前をすべて無視し"
+#~ "ます)"
