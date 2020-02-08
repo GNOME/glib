@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-01-31 12:56+0000\n"
-"PO-Revision-Date: 2020-02-02 22:15+0200\n"
+"POT-Creation-Date: 2020-02-06 23:52+0000\n"
+"PO-Revision-Date: 2020-02-08 14:26+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -385,7 +385,6 @@ msgstr ""
 #: gio/gdbusaddress.c:247 gio/gdbusaddress.c:258 gio/gdbusaddress.c:273
 #: gio/gdbusaddress.c:336 gio/gdbusaddress.c:347
 #, c-format
-#| msgid "Error in address “%s” — the port attribute is malformed"
 msgid "Error in address “%s” — the “%s” attribute is malformed"
 msgstr "Klaida adrese „%s“ — neteisingai suformuotas atributas „%s“"
 
@@ -1359,12 +1358,12 @@ msgstr "Netinkamas leksemų skaičius (%d) GEmblemedIcon koduotėje"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Tikėtasi GEmblem skirto GEmblemedIcon"
 
-#: gio/gfile.c:1076 gio/gfile.c:1314 gio/gfile.c:1452 gio/gfile.c:1690
-#: gio/gfile.c:1745 gio/gfile.c:1803 gio/gfile.c:1887 gio/gfile.c:1944
-#: gio/gfile.c:2008 gio/gfile.c:2063 gio/gfile.c:3754 gio/gfile.c:3809
-#: gio/gfile.c:4087 gio/gfile.c:4555 gio/gfile.c:4966 gio/gfile.c:5051
-#: gio/gfile.c:5141 gio/gfile.c:5238 gio/gfile.c:5325 gio/gfile.c:5426
-#: gio/gfile.c:8130 gio/gfile.c:8220 gio/gfile.c:8304
+#: gio/gfile.c:1044 gio/gfile.c:1282 gio/gfile.c:1420 gio/gfile.c:1658
+#: gio/gfile.c:1713 gio/gfile.c:1771 gio/gfile.c:1855 gio/gfile.c:1912
+#: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3722 gio/gfile.c:3777
+#: gio/gfile.c:4055 gio/gfile.c:4523 gio/gfile.c:4934 gio/gfile.c:5019
+#: gio/gfile.c:5109 gio/gfile.c:5206 gio/gfile.c:5293 gio/gfile.c:5394
+#: gio/gfile.c:8098 gio/gfile.c:8188 gio/gfile.c:8272
 #: gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Operacija nepalaikoma"
@@ -1373,73 +1372,73 @@ msgstr "Operacija nepalaikoma"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#: gio/gfile.c:1575
+#: gio/gfile.c:1543
 msgid "Containing mount does not exist"
 msgstr "Tėvinis prijungimo taškas neegzistuoja"
 
-#: gio/gfile.c:2622 gio/glocalfile.c:2428
+#: gio/gfile.c:2590 gio/glocalfile.c:2428
 msgid "Can’t copy over directory"
 msgstr "Negalima kopijuoti ant aplanko viršaus"
 
-#: gio/gfile.c:2682
+#: gio/gfile.c:2650
 msgid "Can’t copy directory over directory"
 msgstr "Negalima kopijuoti aplanko ant aplanko"
 
-#: gio/gfile.c:2690
+#: gio/gfile.c:2658
 msgid "Target file exists"
 msgstr "Nurodytas failas jau egzistuoja"
 
-#: gio/gfile.c:2709
+#: gio/gfile.c:2677
 msgid "Can’t recursively copy directory"
 msgstr "Negalima rekursyviai kopijuoti aplanko"
 
-#: gio/gfile.c:2984
+#: gio/gfile.c:2952
 msgid "Splice not supported"
 msgstr "Skaidymas nepalaikomas"
 
-#: gio/gfile.c:2988 gio/gfile.c:3033
+#: gio/gfile.c:2956 gio/gfile.c:3001
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Klaida skaidant failą: %s"
 
-#: gio/gfile.c:3149
+#: gio/gfile.c:3117
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Kopijavimas (reflink/clone) tarp prijungimo taškų nepalaikomas"
 
-#: gio/gfile.c:3153
+#: gio/gfile.c:3121
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopijavimas (reflink/clone) nepalaikomas arba netinkamas"
 
-#: gio/gfile.c:3158
+#: gio/gfile.c:3126
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Kopijavimas (reflink/clone) nepalaikomas arba nesuveikė"
 
-#: gio/gfile.c:3222
+#: gio/gfile.c:3190
 msgid "Can’t copy special file"
 msgstr "Negalima kopijuoti specialaus failo"
 
-#: gio/gfile.c:4035
+#: gio/gfile.c:4003
 msgid "Invalid symlink value given"
 msgstr "Netaisyklinga simbolinės nuorodos reikšmė"
 
-#: gio/gfile.c:4045 glib/gfileutils.c:2172
+#: gio/gfile.c:4013 glib/gfileutils.c:2172
 msgid "Symbolic links not supported"
 msgstr "Simbolinės nuorodos nepalaikomos"
 
-#: gio/gfile.c:4196
+#: gio/gfile.c:4164
 msgid "Trash not supported"
 msgstr "Šiukšlės nepalaikomos"
 
-#: gio/gfile.c:4308
+#: gio/gfile.c:4276
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Failų pavadinimuose negali būti '%c'"
 
-#: gio/gfile.c:6789 gio/gvolume.c:364
+#: gio/gfile.c:6757 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "tomas nepalaiko prijungimo"
 
-#: gio/gfile.c:6900 gio/gfile.c:6946
+#: gio/gfile.c:6868 gio/gfile.c:6914
 msgid "No application is registered as handling this file"
 msgstr "Nėra programos, priregistruotos kaip skaitančios šį failą"
 
@@ -1687,7 +1686,7 @@ msgid "Error writing to stdout"
 msgstr "Klaida rašant į standartinę išvestį"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:282 gio/gio-tool-list.c:172
+#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:333 gio/gio-tool-list.c:172
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
@@ -1710,7 +1709,7 @@ msgstr ""
 "GIO vietas vietoj vietinių failų: pavyzdžiui, galite kaip vietą naudoti\n"
 "smb://serveris/išteklius/failas.txt."
 
-#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:313 gio/gio-tool-mkdir.c:76
+#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
 #: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
 msgid "No locations given"
@@ -1783,78 +1782,88 @@ msgstr "Paskirtis %s nėra katalogas"
 msgid "%s: overwrite “%s”? "
 msgstr "%s: perrašyti „%s“? "
 
-#: gio/gio-tool-info.c:34
+#: gio/gio-tool-info.c:37
 msgid "List writable attributes"
 msgstr "Išvardinti keičiamus atributus"
 
-#: gio/gio-tool-info.c:35
+#: gio/gio-tool-info.c:38
 msgid "Get file system info"
 msgstr "Gauti failų sistemos informaciją"
 
-#: gio/gio-tool-info.c:36 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
 msgid "The attributes to get"
 msgstr "Kuriuos atributus gauti"
 
-#: gio/gio-tool-info.c:36 gio/gio-tool-list.c:36
+#: gio/gio-tool-info.c:39 gio/gio-tool-list.c:36
 msgid "ATTRIBUTES"
 msgstr "ATRIBUTAI"
 
-#: gio/gio-tool-info.c:37 gio/gio-tool-list.c:39 gio/gio-tool-set.c:34
+#: gio/gio-tool-info.c:40 gio/gio-tool-list.c:39 gio/gio-tool-set.c:34
 msgid "Don’t follow symbolic links"
 msgstr "Nesekti simbolinėmis nuorodomis"
 
-#: gio/gio-tool-info.c:75
+#: gio/gio-tool-info.c:78
 msgid "attributes:\n"
 msgstr "atributai:\n"
 
 #. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:127
+#: gio/gio-tool-info.c:134
 #, c-format
 msgid "display name: %s\n"
 msgstr "rodomas pavadinimas: %s\n"
 
 #. Translators: This is a noun and represents and attribute of a file
-#: gio/gio-tool-info.c:132
+#: gio/gio-tool-info.c:139
 #, c-format
 msgid "edit name: %s\n"
 msgstr "keičiamas pavadinimas: %s\n"
 
-#: gio/gio-tool-info.c:138
+#: gio/gio-tool-info.c:145
 #, c-format
 msgid "name: %s\n"
 msgstr "pavadinimas: %s\n"
 
-#: gio/gio-tool-info.c:145
+#: gio/gio-tool-info.c:152
 #, c-format
 msgid "type: %s\n"
 msgstr "tipas: %s\n"
 
-#: gio/gio-tool-info.c:151
+#: gio/gio-tool-info.c:158
 msgid "size: "
 msgstr "dydis: "
 
-#: gio/gio-tool-info.c:156
+#: gio/gio-tool-info.c:163
 msgid "hidden\n"
 msgstr "paslėptas\n"
 
-#: gio/gio-tool-info.c:159
+#: gio/gio-tool-info.c:166
 #, c-format
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
-#: gio/gio-tool-info.c:228
+#: gio/gio-tool-info.c:172
+#, c-format
+msgid "local path: %s\n"
+msgstr "vietinis kelias: %s\n"
+
+#: gio/gio-tool-info.c:199
+#, c-format
+msgid "unix mount: %s%s %s %s %s\n"
+msgstr "unix prijungimas: %s%s %s %s %s\n"
+
+#: gio/gio-tool-info.c:279
 msgid "Settable attributes:\n"
 msgstr "Nustatomi atributai:\n"
 
-#: gio/gio-tool-info.c:252
+#: gio/gio-tool-info.c:303
 msgid "Writable attribute namespaces:\n"
 msgstr "Rašomų atributų vardų sritys:\n"
 
-#: gio/gio-tool-info.c:287
+#: gio/gio-tool-info.c:338
 msgid "Show information about locations."
 msgstr "Rodyti informaciją apie vietas."
 
-#: gio/gio-tool-info.c:289
+#: gio/gio-tool-info.c:340
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1877,7 +1886,6 @@ msgid "Use a long listing format"
 msgstr "Naudoti ilgą išvardinimo formatą"
 
 #: gio/gio-tool-list.c:40
-#| msgid "display name: %s\n"
 msgid "Print display names"
 msgstr "Atspausdinti vaizduoklių pavadinimus"
 
@@ -2019,7 +2027,6 @@ msgid "Mount as mountable"
 msgstr "Prijungti kaip prijungiamą"
 
 #: gio/gio-tool-mount.c:64
-#| msgid "Mount volume with device file"
 msgid "Mount volume with device file, or other identifier"
 msgstr "Prijungti laikmeną su įrenginio failu ar kitu identifikatoriumi"
 
@@ -2097,7 +2104,6 @@ msgid "No drive for device file"
 msgstr "Nėra laikmenos ar įrenginio failo"
 
 #: gio/gio-tool-mount.c:1014
-#| msgid "No volume for device file"
 msgid "No volume for given ID"
 msgstr "Nėra laikmenos pateiktam ID"
 
@@ -3764,7 +3770,6 @@ msgstr "nepavyko klausytis: %s"
 
 #: gio/gsocket.c:2204
 #, c-format
-#| msgid "Error binding to address: %s"
 msgid "Error binding to address %s: %s"
 msgstr "Susiejimo su adresu %s klaida: %s"
 
@@ -5069,7 +5074,6 @@ msgstr ""
 
 #: glib/gmarkup.c:1346
 #, c-format
-#| msgid "Unexpected attribute “%s” for element “%s”"
 msgid "Too many attributes in element “%s”"
 msgstr "Per daug atributų elemente „%s“"
 
@@ -5657,7 +5661,6 @@ msgstr "Nepavyko gauti duomenis iš antrinio proceso (%s)"
 
 #: glib/gspawn.c:460
 #, c-format
-#| msgid "Unexpected error in select() reading data from a child process (%s)"
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Netikėta klaida skaitant duomenis žiš antrinio proceso (%s)"
 
