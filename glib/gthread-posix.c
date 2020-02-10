@@ -1211,6 +1211,19 @@ g_system_thread_get_scheduler_settings (GThreadSchedulerSettings *scheduler_sett
     }
   while (res == -1);
 
+  /* Try setting them on the current thread to see if any system policies are
+   * in place that would disallow doing so */
+  res = syscall (SYS_sched_setattr, tid, scheduler_settings->attr, flags);
+  if (res == -1)
+  {
+    int errsv = errno;
+
+    g_debug ("Failed to set thread scheduler attributes: %s", g_strerror (errsv));
+    g_free (scheduler_settings->attr);
+
+    return FALSE;
+  }
+
   return TRUE;
 #else
   return FALSE;
