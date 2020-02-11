@@ -6,5 +6,6 @@ gdbus_object_manager_example_doc = gnome.gtkdoc('gdbus-object-manager-example',
   scan_args : gtkdoc_common_scan_args + [
     '--rebuild-types',
   ],
+  install : false,
 )
 
