@@ -1045,6 +1045,8 @@ g_source_iter_next (GSourceIter *iter, GSource **source)
   if (next_source && iter->may_modify)
     g_source_ref (next_source);
 
+  if (next_source && iter->may_modify)
+    g_source_ref(next_source);
   if (iter->source && iter->may_modify)
     g_source_unref_internal (iter->source, iter->context, TRUE);
   iter->source = next_source;
