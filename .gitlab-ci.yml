@@ -28,6 +28,7 @@ variables:
 .build:
   extends: .only-default
   before_script:
+    - bash .gitlab-ci/show-execution-environment.sh
     - cp -r $HOME/subprojects/* subprojects/
 
 style-check-diff:
@@ -278,6 +279,7 @@ msys2-mingw32:
     CHERE_INVOKING: "yes"
   script:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
+    - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
   artifacts:
     reports:
@@ -325,6 +327,8 @@ freebsd-11-x86_64:
     LDFLAGS: -L/usr/local/lib -Wl,--disable-new-dtags
     # FreeBSD doesn't have C.UTF-8 locale.
     LANG: en_US.UTF-8
+  before_script:
+    - bash .gitlab-ci/show-execution-environment.sh
   script:
     # We cannot use -Wl,--no-undefined because GLib uses 'environ' variable.
     # FreeBSD iconv doesn't handle transliteration, so we use (external) GNU libiconv here.
@@ -354,6 +358,8 @@ freebsd-12-x86_64:
     CPPFLAGS: -I/usr/local/include
     LDFLAGS: -L/usr/local/lib -Wl,--disable-new-dtags
     LANG: en_US.UTF-8
+  before_script:
+    - bash .gitlab-ci/show-execution-environment.sh
   script:
     - meson ${MESON_COMMON_OPTIONS} -Db_lundef=false -Diconv=external -Dxattr=false _build
     - ninja -C _build
@@ -379,6 +385,7 @@ macos:
   tags:
     - macos
   before_script:
+    - bash .gitlab-ci/show-execution-environment.sh
     - pip3 install --user meson==0.49.2
     - pip3 install --user ninja
     - export PATH=/Users/gitlabrunner/Library/Python/3.7/bin:$PATH
@@ -414,6 +421,8 @@ coverage:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     paths:
       - _coverage/
+  before_script:
+    - bash .gitlab-ci/show-execution-environment.sh
   script:
     - bash -x ./.gitlab-ci/coverage-docker.sh
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
