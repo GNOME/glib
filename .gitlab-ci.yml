@@ -16,7 +16,7 @@ variables:
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v2"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
-  MESON_COMMON_OPTIONS_NO_WARNING: "--buildtype debug --wrap-mode=nodownload"
+  MESON_COMMON_OPTIONS_NO_WARNING: "--buildtype debug"
   MESON_COMMON_OPTIONS: "${MESON_COMMON_OPTIONS_NO_WARNING} --fatal-meson-warnings"
 
 .only-default:
@@ -28,7 +28,7 @@ variables:
 .build:
   extends: .only-default
   before_script:
-    - cp -r $HOME/subprojects/* subprojects/
+    - "cp -r $HOME/subprojects/* subprojects/ || :"
 
 style-check-diff:
   extends: .only-default
