@@ -630,13 +630,25 @@ g_once_impl (GOnce       *once,
 
   if (once->status != G_ONCE_STATUS_READY)
     {
+      gpointer retval;
+
       once->status = G_ONCE_STATUS_PROGRESS;
       g_mutex_unlock (&g_once_mutex);
 
-      once->retval = func (arg);
+      retval = func (arg);
 
       g_mutex_lock (&g_once_mutex);
+/* We prefer the new C11-style atomic extension of GCC if available. If not,
+ * fall back to always locking. */
+#if defined(G_ATOMIC_LOCK_FREE) && defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) && defined(__ATOMIC_SEQ_CST)
+      /* Only the second store needs to be atomic, as the two writes are related
+       * by a happens-before relationship here. */
+      once->retval = retval;
+      __atomic_store_n (&once->status, G_ONCE_STATUS_READY, __ATOMIC_RELEASE);
+#else
+      once->retval = retval;
       once->status = G_ONCE_STATUS_READY;
+#endif
       g_cond_broadcast (&g_once_cond);
     }
 
