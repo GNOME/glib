@@ -34,10 +34,12 @@ do_once (gpointer data)
 }
 
 static void
-test_once1 (void)
+test_once_single_threaded (void)
 {
   GOnce once = G_ONCE_INIT;
   gpointer res;
+
+  g_test_summary ("Test g_once() usage from a single thread");
 
   g_assert (once.status == G_ONCE_STATUS_NOTCALLED);
 
@@ -51,9 +53,11 @@ test_once1 (void)
 }
 
 static void
-test_once2 (void)
+test_once_init_single_threaded (void)
 {
   static gsize init = 0;
+
+  g_test_summary ("Test g_once_init_{enter,leave}() usage from a single thread");
 
   if (g_once_init_enter (&init))
     {
@@ -96,15 +100,17 @@ thread_func (gpointer data)
 }
 
 static void
-test_once3 (void)
+test_once_init_multi_threaded (void)
 {
   gint i;
   GThread *threads[THREADS];
 
+  g_test_summary ("Test g_once_init_{enter,leave}() usage from multiple threads");
+
   shared = 0;
 
   for (i = 0; i < THREADS; i++)
-    threads[i] = g_thread_new ("once3", thread_func, NULL);
+    threads[i] = g_thread_new ("once-init-multi-threaded", thread_func, NULL);
 
   for (i = 0; i < THREADS; i++)
     g_thread_join (threads[i]);
@@ -113,9 +119,11 @@ test_once3 (void)
 }
 
 static void
-test_once4 (void)
+test_once_init_string (void)
 {
   static const gchar *val;
+
+  g_test_summary ("Test g_once_init_{enter,leave}() usage with a string");
 
   if (g_once_init_enter (&val))
     g_once_init_leave (&val, "foo");
@@ -128,10 +136,10 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/thread/once1", test_once1);
-  g_test_add_func ("/thread/once2", test_once2);
-  g_test_add_func ("/thread/once3", test_once3);
-  g_test_add_func ("/thread/once4", test_once4);
+  g_test_add_func ("/once/single-threaded", test_once_single_threaded);
+  g_test_add_func ("/once-init/single-threaded", test_once_init_single_threaded);
+  g_test_add_func ("/once-init/multi-threaded", test_once_init_multi_threaded);
+  g_test_add_func ("/once-init/string", test_once_init_string);
 
   return g_test_run ();
 }
