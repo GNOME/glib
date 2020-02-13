@@ -105,7 +105,7 @@ foreach test_name, extra_args : gobject_tests
 
   # FIXME: https://gitlab.gnome.org/GNOME/glib/issues/1316
   # aka https://bugs.debian.org/880883
-  if test_name == 'closure-refcount' and ['arm', 'aarch64'].contains(host_cpu_family)
+  if test_name == 'closure-refcount' and ['arm', 'aarch64'].contains(host_machine.cpu_family())
     timeout = timeout * 10
   endif
 

@@ -147,7 +147,6 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
 #define G_THREADS_ENABLED
 #define G_THREADS_IMPL_@g_threads_impl_def@
 
-#mesondefine G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
 #mesondefine G_ATOMIC_LOCK_FREE
 
 #define GINT16_TO_@g_bs_native@(val)	((gint16) (val))
