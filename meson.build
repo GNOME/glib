@@ -1676,18 +1676,6 @@ foreach d : inet_defines
   glibconfig_conf.set(d[1], val)
 endforeach
 
-# We need a more robust approach here...
-host_cpu_family = host_machine.cpu_family()
-if host_cpu_family == 'x86' or host_cpu_family == 'x86_64' or host_cpu_family == 's390' or host_cpu_family == 's390x' or host_cpu_family.startswith('arm') or host_cpu_family == 'aarch64' or host_cpu_family.startswith('crisv32') or host_cpu_family.startswith('etrax')
-  glib_memory_barrier_needed = false
-elif host_cpu_family.startswith('sparc') or host_cpu_family.startswith('alpha') or host_cpu_family.startswith('powerpc') or host_cpu_family == 'ia64'
-  glib_memory_barrier_needed = true
-else
-  warning('Unknown host cpu: ' + host_cpu_family)
-  glib_memory_barrier_needed = true
-endif
-glibconfig_conf.set('G_ATOMIC_OP_MEMORY_BARRIER_NEEDED', glib_memory_barrier_needed)
-
 # We need to decide at configure time if GLib will use real atomic
 # operations ("lock free") or emulated ones with a mutex.  This is
 # because we must put this information in glibconfig.h so we know if
