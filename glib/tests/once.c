@@ -52,6 +52,73 @@ test_once_single_threaded (void)
   g_assert_cmpint (GPOINTER_TO_INT (res), ==, 1);
 }
 
+static GOnce once_multi_threaded = G_ONCE_INIT;
+static gint once_multi_threaded_counter = 0;
+static GCond once_multi_threaded_cond;
+static GMutex once_multi_threaded_mutex;
+static guint once_multi_threaded_n_threads_waiting = 0;
+
+static gpointer
+do_once_multi_threaded (gpointer data)
+{
+  gint old_value;
+
+  /* While this function should only ever be executed once, by one thread,
+   * we should use atomics to ensure that if there were a bug, writes to
+   * `once_multi_threaded_counter` from multiple threads would not get lost and
+   * mean the test erroneously succeeded. */
+  old_value = g_atomic_int_add (&once_multi_threaded_counter, 1);
+
+  return GINT_TO_POINTER (old_value + 1);
+}
+
+static gpointer
+once_thread_func (gpointer data)
+{
+  gpointer res;
+  guint n_threads_expected = GPOINTER_TO_UINT (data);
+
+  /* Don’t immediately call g_once(), otherwise the first thread to be created
+   * will end up calling the once-function, and there will be very little
+   * contention. */
+  g_mutex_lock (&once_multi_threaded_mutex);
+
+  once_multi_threaded_n_threads_waiting++;
+  g_cond_broadcast (&once_multi_threaded_cond);
+
+  while (once_multi_threaded_n_threads_waiting < n_threads_expected)
+    g_cond_wait (&once_multi_threaded_cond, &once_multi_threaded_mutex);
+  g_mutex_unlock (&once_multi_threaded_mutex);
+
+  /* Actually run the test. */
+  res = g_once (&once_multi_threaded, do_once_multi_threaded, NULL);
+  g_assert_cmpint (GPOINTER_TO_INT (res), ==, 1);
+
+  return NULL;
+}
+
+static void
+test_once_multi_threaded (void)
+{
+  guint i;
+  GThread *threads[1000];
+
+  g_test_summary ("Test g_once() usage from multiple threads");
+
+  for (i = 0; i < G_N_ELEMENTS (threads); i++)
+    threads[i] = g_thread_new ("once-multi-threaded",
+                               once_thread_func,
+                               GUINT_TO_POINTER (G_N_ELEMENTS (threads)));
+
+  /* All threads have started up, so start the test. */
+  g_cond_broadcast (&once_multi_threaded_cond);
+
+  for (i = 0; i < G_N_ELEMENTS (threads); i++)
+    g_thread_join (threads[i]);
+
+  g_assert_cmpint (g_atomic_int_get (&once_multi_threaded_counter), ==, 1);
+}
+
 static void
 test_once_init_single_threaded (void)
 {
@@ -137,6 +204,7 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/once/single-threaded", test_once_single_threaded);
+  g_test_add_func ("/once/multi-threaded", test_once_multi_threaded);
   g_test_add_func ("/once-init/single-threaded", test_once_init_single_threaded);
   g_test_add_func ("/once-init/multi-threaded", test_once_init_multi_threaded);
   g_test_add_func ("/once-init/string", test_once_init_string);
