@@ -22,6 +22,7 @@
 
 #include <glib/glib.h>
 #include <gio/gio.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -114,6 +115,63 @@ static gboolean test_suite;
 static gboolean write_test;
 static gboolean verbose;
 static gboolean posix_compat;
+
+#ifdef G_OS_UNIX
+/*
+ * check_cap_dac_override:
+ * @tmpdir: A temporary directory in which we can create and delete files
+ *
+ * Check whether the current process can bypass DAC permissions.
+ *
+ * Traditionally, "privileged" processes (those with effective uid 0)
+ * could do this (and bypass many other checks), and "unprivileged"
+ * processes could not.
+ *
+ * In Linux, the special powers of euid 0 are divided into many
+ * capabilities: see `capabilities(7)`. The one we are interested in
+ * here is `CAP_DAC_OVERRIDE`.
+ *
+ * We do this generically instead of actually looking at the capability
+ * bits, so that the right thing will happen on non-Linux Unix
+ * implementations, in particular if they have something equivalent to
+ * but not identical to Linux permissions.
+ *
+ * Returns: %TRUE if we have Linux `CAP_DAC_OVERRIDE` or equivalent
+ *  privileges
+ */
+static gboolean
+check_cap_dac_override (const char *tmpdir)
+{
+  gchar *dac_denies_write;
+  gchar *inside;
+  gboolean have_cap;
+
+  dac_denies_write = g_build_filename (tmpdir, "dac-denies-write", NULL);
+  inside = g_build_filename (dac_denies_write, "inside", NULL);
+
+  g_assert_cmpint (mkdir (dac_denies_write, S_IRWXU) == 0 ? 0 : errno, ==, 0);
+  g_assert_cmpint (chmod (dac_denies_write, 0) == 0 ? 0 : errno, ==, 0);
+
+  if (mkdir (inside, S_IRWXU) == 0)
+    {
+      g_test_message ("Looks like we have CAP_DAC_OVERRIDE or equivalent");
+      g_assert_cmpint (rmdir (inside) == 0 ? 0 : errno, ==, 0);
+      have_cap = TRUE;
+    }
+  else
+    {
+      int saved_errno = errno;
+
+      g_test_message ("We do not have CAP_DAC_OVERRIDE or equivalent");
+      g_assert_cmpint (saved_errno, ==, EACCES);
+      have_cap = FALSE;
+    }
+
+  g_assert_cmpint (chmod (dac_denies_write, S_IRWXU) == 0 ? 0 : errno, ==, 0);
+  g_assert_cmpint (rmdir (dac_denies_write) == 0 ? 0 : errno, ==, 0);
+  return have_cap;
+}
+#endif
 
 #ifdef G_HAVE_ISO_VARARGS
 #define log(...) if (verbose)  g_printerr (__VA_ARGS__)
@@ -708,6 +766,9 @@ do_copy_move (GFile * root, struct StructureItem item, const char *target_dir,
   GFile *dst_dir, *src_file, *dst_file;
   gboolean res;
   GError *error;
+#ifdef G_OS_UNIX
+  gboolean have_cap_dac_override = check_cap_dac_override (g_file_peek_path (root));
+#endif
 
   log ("    do_copy_move: '%s' --> '%s'\n", item.filename, target_dir);
 
@@ -768,12 +829,17 @@ do_copy_move (GFile * root, struct StructureItem item, const char *target_dir,
 	   (extra_flags == TEST_NO_ACCESS))
     {
       /* This works for root, see bug #552912 */
-      if (test_suite && getuid () == 0)
+#ifdef G_OS_UNIX
+      if (have_cap_dac_override)
 	{
+	  g_test_message ("Unable to exercise g_file_copy() or g_file_move() "
+	                  "failing with EACCES: we probably have "
+	                  "CAP_DAC_OVERRIDE");
 	  g_assert_true (res);
 	  g_assert_no_error (error);
 	}
       else
+#endif
 	{
 	  g_assert_false (res);
 	  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED);
@@ -1121,6 +1187,9 @@ test_make_directory_with_parents (gconstpointer test_data)
   GFile *root, *child, *grandchild, *greatgrandchild;
   gboolean res;
   GError *error = NULL;
+#ifdef G_OS_UNIX
+  gboolean have_cap_dac_override = check_cap_dac_override (test_data);
+#endif
 
   g_assert_nonnull (test_data);
 
@@ -1171,9 +1240,16 @@ test_make_directory_with_parents (gconstpointer test_data)
   if (!posix_compat)
     goto out;
 
-#ifndef G_PLATFORM_WIN32
-  if (getuid() == 0) /* permissions are ignored for root */
-    goto out;
+#ifdef G_OS_UNIX
+  /* Permissions are ignored if we have CAP_DAC_OVERRIDE or equivalent,
+   * and in particular if we're root */
+  if (have_cap_dac_override)
+    {
+      g_test_skip ("Unable to exercise g_file_make_directory_with_parents "
+                   "failing with EACCES: we probably have "
+                   "CAP_DAC_OVERRIDE");
+      goto out;
+    }
 #endif
 
   g_file_make_directory (child, NULL, NULL);
@@ -1343,7 +1419,7 @@ main (int argc, char *argv[])
     }
 
   g_option_context_free (context);
-  
+
   /*  Write test - clean target directory first  */
   /*    this can be also considered as a test - enumerate + delete  */ 
   if (write_test || only_create_struct)
