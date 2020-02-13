@@ -234,14 +234,17 @@ GLIB_AVAILABLE_IN_ALL
 void            g_once_init_leave               (volatile void  *location,
                                                  gsize           result);
 
-#ifdef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
-# define g_once(once, func, arg) g_once_impl ((once), (func), (arg))
-#else /* !G_ATOMIC_OP_MEMORY_BARRIER_NEEDED*/
+/* Use C11-style atomic extensions to check the fast path for status=ready. If
+ * they are not available, fall back to using a mutex and condition variable in
+ * g_once_impl(). */
+#if defined(G_ATOMIC_LOCK_FREE) && defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) && defined(__ATOMIC_SEQ_CST)
 # define g_once(once, func, arg) \
-  (((once)->status == G_ONCE_STATUS_READY) ? \
-   (once)->retval : \
+  ((__atomic_load_n (&(once)->status, __ATOMIC_ACQUIRE) == G_ONCE_STATUS_READY) ? \
+   __atomic_load_n (&(once)->retval, __ATOMIC_ACQUIRE) : \
    g_once_impl ((once), (func), (arg)))
-#endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
+#else
+# define g_once(once, func, arg) g_once_impl ((once), (func), (arg))
+#endif
 
 #ifdef __GNUC__
 # define g_once_init_enter(location) \
