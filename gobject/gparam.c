@@ -389,8 +389,11 @@ is_canonical (const gchar *key)
  * dynamically-generated properties which need to be validated at run-time
  * before actually trying to create them.
  *
+ * See [canonical parameter names][canonical-parameter-names] for details of
+ * the rules for valid names.
+ *
  * Returns: %TRUE if @name is a valid property name, %FALSE otherwise.
- * Since: 2.64
+ * Since: 2.66
  */
 gboolean
 g_param_is_valid_property_name (const gchar *name)
