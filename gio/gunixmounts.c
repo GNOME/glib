@@ -1861,6 +1861,12 @@ mount_monitor_stop (void)
       g_object_unref (mtab_monitor);
     }
 
+  if (mtab_file_changed_id)
+    {
+      g_source_remove (mtab_file_changed_id);
+      mtab_file_changed_id = 0;
+    }
+
   g_list_free_full (mount_poller_mounts, (GDestroyNotify) g_unix_mount_free);
 }
 
