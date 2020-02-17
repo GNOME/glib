@@ -310,7 +310,7 @@ request_name_cb (GObject      *source_object,
   Client *client = user_data;
   GVariant *result;
   guint32 request_name_reply;
-  gboolean subscribe;
+  gboolean unsubscribe;
 
   request_name_reply = 0;
   result = NULL;
@@ -325,22 +325,18 @@ request_name_cb (GObject      *source_object,
       g_variant_unref (result);
     }
 
-  subscribe = FALSE;
+  unsubscribe = FALSE;
 
   switch (request_name_reply)
     {
     case 1: /* DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER */
       /* We got the name - now listen for NameLost and NameAcquired */
       call_acquired_handler (client);
-      subscribe = TRUE;
-      client->needs_release = TRUE;
       break;
 
     case 2: /* DBUS_REQUEST_NAME_REPLY_IN_QUEUE */
       /* Waiting in line - listen for NameLost and NameAcquired */
       call_lost_handler (client);
-      subscribe = TRUE;
-      client->needs_release = TRUE;
       break;
 
     default:
@@ -349,53 +345,34 @@ request_name_cb (GObject      *source_object,
     case 4: /* DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER */
       /* Some other part of the process is already owning the name */
       call_lost_handler (client);
+      unsubscribe = TRUE;
+      client->needs_release = FALSE;
       break;
     }
 
-
-  if (subscribe)
+  /* If we’re not the owner and not in the queue, there’s no point in continuing
+   * to listen to NameAcquired or NameLost. */
+  if (unsubscribe)
     {
       GDBusConnection *connection = NULL;
 
-      /* if cancelled, there is no point in subscribing to signals - if not, make sure
-       * we use a known good Connection object since it may be set to NULL at any point
-       * after being cancelled
+      /* make sure we use a known good Connection object since it may be set to
+       * NULL at any point after being cancelled
        */
       G_LOCK (lock);
       if (!client->cancelled)
         connection = g_object_ref (client->connection);
       G_UNLOCK (lock);
 
-      /* Start listening to NameLost and NameAcquired messages. We hold
-       * references to the Client in the signal closures, since it’s possible
-       * for a signal to be in-flight after unsubscribing the signal handler.
-       * This creates a reference count cycle, but that’s explicitly broken by
-       * disconnecting the signal handlers before calling client_unref() in
-       * g_bus_unown_name(). */
       if (connection != NULL)
         {
-          client->name_lost_subscription_id =
-            g_dbus_connection_signal_subscribe (connection,
-                                                "org.freedesktop.DBus",
-                                                "org.freedesktop.DBus",
-                                                "NameLost",
-                                                "/org/freedesktop/DBus",
-                                                client->name,
-                                                G_DBUS_SIGNAL_FLAGS_NONE,
-                                                on_name_lost_or_acquired,
-                                                client_ref (client),
-                                                (GDestroyNotify) client_unref);
-          client->name_acquired_subscription_id =
-            g_dbus_connection_signal_subscribe (connection,
-                                                "org.freedesktop.DBus",
-                                                "org.freedesktop.DBus",
-                                                "NameAcquired",
-                                                "/org/freedesktop/DBus",
-                                                client->name,
-                                                G_DBUS_SIGNAL_FLAGS_NONE,
-                                                on_name_lost_or_acquired,
-                                                client_ref (client),
-                                                (GDestroyNotify) client_unref);
+          if (client->name_acquired_subscription_id > 0)
+            g_dbus_connection_signal_unsubscribe (client->connection, client->name_acquired_subscription_id);
+          if (client->name_lost_subscription_id > 0)
+            g_dbus_connection_signal_unsubscribe (client->connection, client->name_lost_subscription_id);
+          client->name_acquired_subscription_id = 0;
+          client->name_lost_subscription_id = 0;
+
           g_object_unref (connection);
         }
     }
@@ -439,7 +416,42 @@ has_connection (Client *client)
                                                              G_CALLBACK (on_connection_disconnected),
                                                              client);
 
+  /* Start listening to NameLost and NameAcquired messages. We hold
+   * references to the Client in the signal closures, since it’s possible
+   * for a signal to be in-flight after unsubscribing the signal handler.
+   * This creates a reference count cycle, but that’s explicitly broken by
+   * disconnecting the signal handlers before calling client_unref() in
+   * g_bus_unown_name().
+   *
+   * Subscribe to NameLost and NameAcquired before calling RequestName() to
+   * avoid the potential race of losing the name between receiving a reply to
+   * RequestName() and subscribing to NameLost. The #PreviousCall state will
+   * ensure that the user callbacks get called an appropriate number of times. */
+  client->name_lost_subscription_id =
+    g_dbus_connection_signal_subscribe (client->connection,
+                                        "org.freedesktop.DBus",
+                                        "org.freedesktop.DBus",
+                                        "NameLost",
+                                        "/org/freedesktop/DBus",
+                                        client->name,
+                                        G_DBUS_SIGNAL_FLAGS_NONE,
+                                        on_name_lost_or_acquired,
+                                        client_ref (client),
+                                        (GDestroyNotify) client_unref);
+  client->name_acquired_subscription_id =
+    g_dbus_connection_signal_subscribe (client->connection,
+                                        "org.freedesktop.DBus",
+                                        "org.freedesktop.DBus",
+                                        "NameAcquired",
+                                        "/org/freedesktop/DBus",
+                                        client->name,
+                                        G_DBUS_SIGNAL_FLAGS_NONE,
+                                        on_name_lost_or_acquired,
+                                        client_ref (client),
+                                        (GDestroyNotify) client_unref);
+
   /* attempt to acquire the name */
+  client->needs_release = TRUE;
   g_dbus_connection_call (client->connection,
                           "org.freedesktop.DBus",  /* bus name */
                           "/org/freedesktop/DBus", /* object path */
@@ -943,6 +955,10 @@ g_bus_unown_name (guint owner_id)
               if (release_name_reply != 1 /* DBUS_RELEASE_NAME_REPLY_RELEASED */)
                 {
                   g_warning ("Unexpected reply %d when releasing name %s", release_name_reply, client->name);
+                }
+              else
+                {
+                  client->needs_release = FALSE;
                 }
               g_variant_unref (result);
             }
