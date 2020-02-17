@@ -1200,14 +1200,21 @@ parse_mwd_boundary (gchar **pos, TimeZoneDate *boundary)
   return TRUE;
 }
 
-/* Different implementations of tzset interpret the Julian day field
-   differently. For example, Linux specifies that it should be 1-based
-   (1 Jan is JD 1) for both Jn and n formats, while zOS and BSD
-   specify that a Jn JD is 1-based while an n JD is 0-based. Rather
-   than trying to follow different specs, we will follow GDate's
-   practice thatIn order to keep it simple, we will follow Linux's
-   practice. */
-
+/*
+ * This parses two slightly different ways of specifying
+ * the Julian day:
+ *
+ * - ignore_leap == TRUE
+ *
+ *   Jn   This specifies the Julian day with n between 1 and 365. Leap days
+ *        are not counted. In this format, February 29 can't be represented;
+ *        February 28 is day 59, and March 1 is always day 60.
+ *
+ * - ignore_leap == FALSE
+ *
+ *   n   This specifies the zero-based Julian day with n between 0 and 365.
+ *       February 29 is counted in leap years.
+ */
 static gboolean
 parse_julian_boundary (gchar** pos, TimeZoneDate *boundary,
                        gboolean ignore_leap)
@@ -1221,8 +1228,20 @@ parse_julian_boundary (gchar** pos, TimeZoneDate *boundary,
       day += *(*pos)++ - '0';
     }
 
-  if (day < 1 || 365 < day)
-    return FALSE;
+  if (ignore_leap)
+    {
+      if (day < 1 || 365 < day)
+        return FALSE;
+      if (day >= 59)
+        day++;
+    }
+  else
+    {
+      if (day < 0 || 365 < day)
+        return FALSE;
+      /* GDate wants day in range 1->366 */
+      day++;
+    }
 
   g_date_clear (&date, 1);
   g_date_set_julian (&date, day);
@@ -1230,9 +1249,6 @@ parse_julian_boundary (gchar** pos, TimeZoneDate *boundary,
   boundary->mon = (int) g_date_get_month (&date);
   boundary->mday = (int) g_date_get_day (&date);
   boundary->wday = 0;
-
-  if (!ignore_leap && day >= 59)
-    boundary->mday++;
 
   return TRUE;
 }
@@ -1255,13 +1271,13 @@ parse_tz_boundary (const gchar  *identifier,
   else if (*pos == 'J')
     {
       ++pos;
-      if (!parse_julian_boundary (&pos, boundary, FALSE))
+      if (!parse_julian_boundary (&pos, boundary, TRUE))
         return FALSE ;
     }
   /* Julian date which counts Feb 29 in leap years */
   else if (*pos >= '0' && '9' >= *pos)
     {
-      if (!parse_julian_boundary (&pos, boundary, TRUE))
+      if (!parse_julian_boundary (&pos, boundary, FALSE))
         return FALSE;
     }
   else
