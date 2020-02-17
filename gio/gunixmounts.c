@@ -1756,6 +1756,9 @@ mtab_file_changed (GFileMonitor      *monitor,
                    GFileMonitorEvent  event_type,
                    gpointer           user_data)
 {
+  GMainContext *context;
+  GSource *source;
+
   if (event_type != G_FILE_MONITOR_EVENT_CHANGED &&
       event_type != G_FILE_MONITOR_EVENT_CREATED &&
       event_type != G_FILE_MONITOR_EVENT_DELETED)
@@ -1768,7 +1771,16 @@ mtab_file_changed (GFileMonitor      *monitor,
   if (mtab_file_changed_id > 0)
     return;
 
-  mtab_file_changed_id = g_idle_add (mtab_file_changed_cb, NULL);
+  context = g_main_context_get_thread_default ();
+  if (!context)
+    context = g_main_context_default ();
+
+  source = g_idle_source_new ();
+  g_source_set_priority (source, G_PRIORITY_DEFAULT);
+  g_source_set_callback (source, mtab_file_changed_cb, NULL, NULL);
+  g_source_set_name (source, "[gio] mtab_file_changed_cb");
+  g_source_attach (source, context);
+  g_source_unref (source);
 }
 
 static gboolean
