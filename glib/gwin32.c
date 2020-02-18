@@ -1117,7 +1117,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
        */
       if (er->ExceptionCode != EXCEPTION_BREAKPOINT)
         DebugBreak ();
-      return EXCEPTION_CONTINUE_EXECUTION;
+      return EXCEPTION_CONTINUE_SEARCH;
     }
 
   fprintf_s (stderr,
