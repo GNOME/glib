@@ -218,6 +218,35 @@ test_set_function (void)
 }
 
 static void
+test_set_derived_type (void)
+{
+  GBinding *obj = NULL;
+  GObject *o = NULL;
+  GBinding *b = NULL;
+
+  g_test_summary ("Check that g_set_object() doesn’t give strict aliasing "
+                  "warnings when used on types derived from GObject");
+
+  g_assert_false (g_set_object (&o, NULL));
+  g_assert_null (o);
+
+  g_assert_false (g_set_object (&b, NULL));
+  g_assert_null (b);
+
+  obj = g_object_new (my_object_get_type (), NULL);
+
+  g_assert_true (g_set_object (&o, G_OBJECT (obj)));
+  g_assert_true (o == G_OBJECT (obj));
+
+  g_assert_true (g_set_object (&b, obj));
+  g_assert_true (b == obj);
+
+  g_object_unref (obj);
+  g_clear_object (&b);
+  g_clear_object (&o);
+}
+
+static void
 toggle_cb (gpointer data, GObject *obj, gboolean is_last)
 {
   gboolean *b = data;
@@ -774,6 +803,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/clear-function", test_clear_function);
   g_test_add_func ("/object/set", test_set);
   g_test_add_func ("/object/set-function", test_set_function);
+  g_test_add_func ("/object/set/derived-type", test_set_derived_type);
   g_test_add_func ("/object/value", test_object_value);
   g_test_add_func ("/object/initially-unowned", test_initially_unowned);
   g_test_add_func ("/object/weak-pointer", test_weak_pointer);
