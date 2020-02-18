@@ -1,3 +1,44 @@
+Overview of changes in GLib 2.62.5
+==================================
+
+* Fix potential relative read when calling g_printerr(), which could lead to a
+  denial of service from a setuid-root process being used to block access to the
+  TTY for another user (#1919)
+
+* Fix SOCKS proxy resolver sometimes not being used when resolving addresses
+  via Happy Eyeballs (CVE-2020-6750) (#1989)
+
+* Several other Happy Eyeballs fixes for address resolution (#1871, #1872, #1902)
+
+* Fix parsing of full Julian day range from `$TZ` environment variable (#1999)
+
+* Several race condition/crash fixes (!1353, !1357)
+
+* Bugs fixed:
+ - #1919 read from relative path in g_printerr() in 2.58.3
+ - #1995 Tracker issue for Happy Eyeballs regressions
+ - #1999 GTimeZone fails to accept full Julian day range when parsing the direct $TZ string format
+ - !1323 Backport !1314 “gtimezone: fix parsing of Julian day in POSIX TZ format” to glib-2-62
+ - !1331 Backport !1330 “W32: Correctly set st_ino when doing private stat()” to glib-2-62
+ - !1352 Backport !1351 “glib.supp: update g-threaded-resolver-getaddrinfo-config” to glib-2-62
+ - !1361 Backport !1353 GMainContext source reference fixes to glib-2-62
+ - !1365 Refactor g_socket_client_connect_async()
+ - !1370 Backport !1369 “build: Rework path construction to reliably add prefix” to glib-2-62
+ - !1371 Backport !1357 “gunixmounts: Make GUnixMountMonitor thread-safe” to glib-2-62
+
+* Translation updates:
+ - German
+ - Hungarian
+ - Indonesian
+ - Italian
+ - Lithuanian
+ - Malay
+ - Polish
+ - Portuguese (Brazil)
+ - Spanish
+ - Swedish
+
+
 Overview of changes in GLib 2.62.4
 ==================================
 
