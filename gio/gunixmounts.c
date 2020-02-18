@@ -1890,6 +1890,7 @@ mount_monitor_start (void)
               G_LOCK (proc_mounts_source);
 
               proc_mounts_watch_source = g_io_create_watch (proc_mounts_channel, G_IO_ERR);
+              mount_poller_time = (guint64) g_get_monotonic_time ();
               g_source_set_callback (proc_mounts_watch_source,
                                      (GSourceFunc) proc_mounts_changed,
                                      NULL, NULL);
