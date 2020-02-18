@@ -738,11 +738,30 @@ static inline gboolean
   return TRUE;
 }
 
+/* We need GCC for __extension__, which we need to sort out strict aliasing of @object_ptr */
+#if defined(__GNUC__)
+
+#define g_set_object(object_ptr, new_object) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(object_ptr) == sizeof (new_object)); \
+    /* Only one access, please; work around type aliasing */ \
+    union { char *in; GObject **out; } _object_ptr; \
+    _object_ptr.in = (char *) (object_ptr); \
+    /* Check types match */ \
+    (void) (0 ? *(object_ptr) = (new_object), FALSE : FALSE); \
+    (g_set_object) (_object_ptr.out, (GObject *) new_object); \
+  })) \
+  GLIB_AVAILABLE_MACRO_IN_2_44
+
+#else  /* if !defined(__GNUC__) */
+
 #define g_set_object(object_ptr, new_object) \
  (/* Check types match. */ \
   0 ? *(object_ptr) = (new_object), FALSE : \
   (g_set_object) ((GObject **) (object_ptr), (GObject *) (new_object)) \
  )
+
+#endif  /* !defined(__GNUC__) */
 
 /**
  * g_assert_finalize_object: (skip)
