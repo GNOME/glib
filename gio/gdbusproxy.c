@@ -889,8 +889,7 @@ on_signal_received (GDBusConnection *connection,
                  parameters);
 
  out:
-  if (proxy != NULL)
-    g_object_unref (proxy);
+  g_clear_object (&proxy);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1101,11 +1100,9 @@ on_properties_changed (GDBusConnection *connection,
     }
 
  out:
-  if (changed_properties != NULL)
-    g_variant_unref (changed_properties);
+  g_clear_pointer (&changed_properties, g_variant_unref);
   g_free (invalidated_properties);
-  if (proxy != NULL)
-    g_object_unref (proxy);
+  g_clear_object (&proxy);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1357,8 +1354,7 @@ on_name_owner_changed (GDBusConnection *connection,
     }
 
  out:
-  if (proxy != NULL)
-    g_object_unref (proxy);
+  g_clear_object (&proxy);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
