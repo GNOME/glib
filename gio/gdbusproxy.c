@@ -1206,8 +1206,7 @@ on_name_owner_changed_get_all_cb (GDBusConnection *connection,
     {
       G_LOCK (properties_lock);
       g_free (data->proxy->priv->name_owner);
-      data->proxy->priv->name_owner = data->name_owner;
-      data->name_owner = NULL; /* to avoid an extra copy, we steal the string */
+      data->proxy->priv->name_owner = g_steal_pointer (&data->name_owner);
       g_hash_table_remove_all (data->proxy->priv->properties);
       G_UNLOCK (properties_lock);
       if (result != NULL)
