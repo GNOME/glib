@@ -255,7 +255,7 @@ call_destroy_notify (GMainContext  *context,
   CallDestroyNotifyData *data;
 
   if (callback == NULL)
-    goto out;
+    return;
 
   data = g_new0 (CallDestroyNotifyData, 1);
   data->callback = callback;
@@ -270,9 +270,6 @@ call_destroy_notify (GMainContext  *context,
   g_source_set_name (idle_source, "[gio] call_destroy_notify_data_in_idle");
   g_source_attach (idle_source, context);
   g_source_unref (idle_source);
-
- out:
-  ;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
