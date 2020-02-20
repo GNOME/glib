@@ -603,13 +603,13 @@ main (int   argc,
   g_assert_true (g_spawn_command_line_async (path, NULL));
   g_free (path);
 
-  ensure_gdbus_testserver_up ();
-
   /* Create the connection in the main thread */
   error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
   g_assert_nonnull (c);
+
+  ensure_gdbus_testserver_up (c, NULL);
 
   g_test_add_func ("/gdbus/delivery-in-thread", test_delivery_in_thread);
   g_test_add_func ("/gdbus/method-calls-in-thread", test_method_calls_in_thread);
