@@ -87,20 +87,15 @@ _give_up (gpointer data)
 }
 
 void
-ensure_gdbus_testserver_up (void)
+ensure_gdbus_testserver_up (GDBusConnection *connection,
+                            GMainContext    *context)
 {
-  guint id;
   gchar *name_owner;
-  GDBusConnection *connection;
+  GSource *timeout_source = NULL;
   GDBusProxy *proxy;
   GError *error = NULL;
 
-  connection = g_bus_get_sync (G_BUS_TYPE_SESSION,
-                               NULL,
-                               &error);
-
-  g_assert_no_error (error);
-  error = NULL;
+  g_main_context_push_thread_default (context);
 
   proxy = g_dbus_proxy_new_sync (connection,
                                  G_DBUS_PROXY_FLAGS_NONE,
@@ -112,8 +107,11 @@ ensure_gdbus_testserver_up (void)
                                  &error);
   g_assert_no_error (error);
 
-  id = g_timeout_add_seconds (60, _give_up,
-      "waited more than ~ 60s for gdbus-testserver to take its bus name");
+  timeout_source = g_timeout_source_new_seconds (60);
+  g_source_set_callback (timeout_source, _give_up,
+                         "waited more than ~ 60s for gdbus-testserver to take its bus name",
+                         NULL);
+  g_source_attach (timeout_source, context);
 
   while (TRUE)
     {
@@ -122,13 +120,15 @@ ensure_gdbus_testserver_up (void)
       if (name_owner != NULL)
         break;
 
-      g_main_context_iteration (NULL, TRUE);
+      g_main_context_iteration (context, TRUE);
     }
 
-  g_source_remove (id);
+  g_source_destroy (timeout_source);
+  g_source_unref (timeout_source);
   g_free (name_owner);
   g_object_unref (proxy);
-  g_object_unref (connection);
+
+  g_main_context_pop_thread_default (context);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
