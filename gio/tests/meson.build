@@ -302,7 +302,7 @@ if host_machine.system() != 'windows'
       },
       'gdbus-threading' : {
         'extra_sources' : extra_sources,
-        'suite' : ['slow', 'flaky'],
+        'suite' : ['slow'],
       },
       'gmenumodel' : {
         'extra_sources' : extra_sources,
