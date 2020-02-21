@@ -143,6 +143,7 @@ installed-tests:
     # https://github.com/flatpak/xdg-desktop-portal/pull/365
     - git clone --single-branch https://github.com/flatpak/xdg-desktop-portal.git
     - cd xdg-desktop-portal
+    - git reset --hard 1.6.0
     - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-libportal --disable-dependency-tracking
     - make
     - sudo make install
