@@ -143,7 +143,9 @@ installed-tests:
     # https://github.com/flatpak/xdg-desktop-portal/pull/365
     - git clone --single-branch https://github.com/flatpak/xdg-desktop-portal.git
     - cd xdg-desktop-portal
-    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-libportal --disable-dependency-tracking && make && sudo make install
+    - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-libportal --disable-dependency-tracking
+    - make
+    - sudo make install
     - cd ..
     # FIXME install newer gobject-introspection
     # with GMemoryMonitor support, see:
