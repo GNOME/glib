@@ -82,6 +82,7 @@ typedef struct {
   GThread *thread;
   GMainLoop *thread_loop;
   guint signal_count;
+  gboolean unsubscribe_complete;
 } DeliveryData;
 
 static void
@@ -147,6 +148,18 @@ signal_handler (GDBusConnection *connection,
   g_main_loop_quit (data->thread_loop);
 }
 
+static void
+signal_data_free_cb (gpointer user_data)
+{
+  DeliveryData *data = user_data;
+
+  g_assert_true (g_thread_self () == data->thread);
+
+  data->unsubscribe_complete = TRUE;
+
+  g_main_loop_quit (data->thread_loop);
+}
+
 static gpointer
 test_delivery_in_thread_func (gpointer _data)
 {
@@ -167,6 +180,7 @@ test_delivery_in_thread_func (gpointer _data)
   data.thread = g_thread_self ();
   data.thread_loop = thread_loop;
   data.signal_count = 0;
+  data.unsubscribe_complete = FALSE;
 
   /* ---------------------------------------------------------------------------------------------------- */
 
@@ -242,7 +256,7 @@ test_delivery_in_thread_func (gpointer _data)
                                                         G_DBUS_SIGNAL_FLAGS_NONE,
                                                         signal_handler,
                                                         &data,
-                                                        NULL);
+                                                        signal_data_free_cb);
   g_assert_cmpuint (subscription_id, !=, 0);
   g_assert_cmpuint (data.signal_count, ==, 0);
 
@@ -256,6 +270,10 @@ test_delivery_in_thread_func (gpointer _data)
   g_object_unref (priv_c);
 
   g_dbus_connection_signal_unsubscribe (c, subscription_id);
+  subscription_id = 0;
+
+  g_main_loop_run (thread_loop);
+  g_assert_true (data.unsubscribe_complete);
 
   /* ---------------------------------------------------------------------------------------------------- */
 
