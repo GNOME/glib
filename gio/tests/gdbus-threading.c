@@ -27,26 +27,50 @@
 /* all tests rely on a global connection */
 static GDBusConnection *c = NULL;
 
+typedef struct
+{
+  GMainContext *context;
+  gboolean timed_out;
+} TimeoutData;
+
+static gboolean
+timeout_cb (gpointer user_data)
+{
+  TimeoutData *data = user_data;
+
+  data->timed_out = TRUE;
+  g_main_context_wakeup (data->context);
+
+  return G_SOURCE_REMOVE;
+}
+
 /* Check that the given @connection has only one ref, waiting to let any pending
  * unrefs complete first. This is typically used on the shared connection, to
  * ensure it’s in a correct state before beginning the next test. */
 static void
-assert_connection_has_one_ref (GDBusConnection *connection)
+assert_connection_has_one_ref (GDBusConnection *connection,
+                               GMainContext    *context)
 {
-  guint j;
+  GSource *timeout_source = NULL;
+  TimeoutData data = { context, FALSE };
 
-  for (j = 0; j < 1000; j++)
+  if (g_atomic_int_get (&G_OBJECT (connection)->ref_count) == 1)
+    return;
+
+  timeout_source = g_timeout_source_new_seconds (1);
+  g_source_set_callback (timeout_source, timeout_cb, &data, NULL);
+  g_source_attach (timeout_source, context);
+
+  while (g_atomic_int_get (&G_OBJECT (connection)->ref_count) != 1 && !data.timed_out)
     {
-      guint r = g_atomic_int_get (&G_OBJECT (connection)->ref_count);
-
-      if (r == 1)
-        break;
-
-      g_debug ("refcount of %p is %u, sleeping", connection, r);
-      g_usleep (1000);
+      g_debug ("refcount of %p is not right, sleeping", connection);
+      g_main_context_iteration (NULL, TRUE);
     }
 
-  if (j == 1000)
+  g_source_destroy (timeout_source);
+  g_source_unref (timeout_source);
+
+  if (g_atomic_int_get (&G_OBJECT (connection)->ref_count) != 1)
     g_error ("connection %p had too many refs", connection);
 }
 
@@ -253,7 +277,7 @@ test_delivery_in_thread (void)
 
   g_thread_join (thread);
 
-  assert_connection_has_one_ref (c);
+  assert_connection_has_one_ref (c, NULL);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -467,7 +491,7 @@ test_method_calls_in_thread (void)
   if (g_test_verbose ())
     g_printerr ("\n");
 
-  assert_connection_has_one_ref (c);
+  assert_connection_has_one_ref (c, NULL);
 }
 
 #define SLEEP_MIN_USEC 1
@@ -536,7 +560,7 @@ test_threaded_singleton (void)
       GDBusConnection *new_conn;
 
       /* We want to be the last ref, so let it finish setting up */
-      assert_connection_has_one_ref (c);
+      assert_connection_has_one_ref (c, NULL);
 
       if (g_test_verbose () && (i % (n/50)) == 0)
         g_printerr ("%u%%\n", ((i * 100) / n));
