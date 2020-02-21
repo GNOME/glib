@@ -86,26 +86,52 @@ _give_up (gpointer data)
   g_return_val_if_reached (TRUE);
 }
 
+typedef struct
+{
+  GMainContext *context;
+  gboolean name_appeared;
+  gboolean unwatch_complete;
+} WatchData;
+
+static void
+name_appeared_cb (GDBusConnection *connection,
+                  const gchar     *name,
+                  const gchar     *name_owner,
+                  gpointer         user_data)
+{
+  WatchData *data = user_data;
+
+  g_assert (name_owner != NULL);
+  data->name_appeared = TRUE;
+  g_main_context_wakeup (data->context);
+}
+
+static void
+watch_free_cb (gpointer user_data)
+{
+  WatchData *data = user_data;
+
+  data->unwatch_complete = TRUE;
+  g_main_context_wakeup (data->context);
+}
+
 void
 ensure_gdbus_testserver_up (GDBusConnection *connection,
                             GMainContext    *context)
 {
-  gchar *name_owner;
   GSource *timeout_source = NULL;
-  GDBusProxy *proxy;
-  GError *error = NULL;
+  guint watch_id;
+  WatchData data = { context, FALSE, FALSE };
 
   g_main_context_push_thread_default (context);
 
-  proxy = g_dbus_proxy_new_sync (connection,
-                                 G_DBUS_PROXY_FLAGS_NONE,
-                                 NULL,                      /* GDBusInterfaceInfo */
-                                 "com.example.TestService", /* name */
-                                 "/com/example/TestObject", /* object path */
-                                 "com.example.Frob",        /* interface */
-                                 NULL, /* GCancellable */
-                                 &error);
-  g_assert_no_error (error);
+  watch_id = g_bus_watch_name_on_connection (connection,
+                                             "com.example.TestService",
+                                             G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                             name_appeared_cb,
+                                             NULL,
+                                             &data,
+                                             watch_free_cb);
 
   timeout_source = g_timeout_source_new_seconds (60);
   g_source_set_callback (timeout_source, _give_up,
@@ -113,20 +139,17 @@ ensure_gdbus_testserver_up (GDBusConnection *connection,
                          NULL);
   g_source_attach (timeout_source, context);
 
-  while (TRUE)
-    {
-      name_owner = g_dbus_proxy_get_name_owner (proxy);
+  while (!data.name_appeared)
+    g_main_context_iteration (context, TRUE);
 
-      if (name_owner != NULL)
-        break;
+  g_bus_unwatch_name (watch_id);
+  watch_id = 0;
 
-      g_main_context_iteration (context, TRUE);
-    }
+  while (!data.unwatch_complete)
+    g_main_context_iteration (context, TRUE);
 
   g_source_destroy (timeout_source);
   g_source_unref (timeout_source);
-  g_free (name_owner);
-  g_object_unref (proxy);
 
   g_main_context_pop_thread_default (context);
 }
