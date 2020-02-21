@@ -142,6 +142,7 @@ installed-tests:
     # GMemoryMonitor support, see:
     # https://github.com/flatpak/xdg-desktop-portal/pull/365
     - git clone --single-branch https://github.com/flatpak/xdg-desktop-portal.git
+    - git checkout -q 1.6.0
     - cd xdg-desktop-portal
     - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-libportal --disable-dependency-tracking
     - make
