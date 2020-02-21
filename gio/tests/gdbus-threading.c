@@ -137,7 +137,6 @@ test_delivery_in_thread_func (gpointer _data)
   DeliveryData data;
   GCancellable *ca;
   guint subscription_id;
-  GDBusConnection *priv_c;
   GError *error = NULL;
   GVariant *result_variant = NULL;
 
@@ -237,15 +236,14 @@ test_delivery_in_thread_func (gpointer _data)
   /*
    * Check that signals are delivered to the correct thread.
    *
-   * First we subscribe to the signal, then we create a a private
-   * connection. This should cause a NameOwnerChanged message from
-   * the message bus.
+   * First we subscribe to the signal, then we call EmitSignal(). This should
+   * cause a TestSignal emission from the testserver.
    */
   subscription_id = g_dbus_connection_signal_subscribe (c,
-                                                        "org.freedesktop.DBus",  /* sender */
-                                                        "org.freedesktop.DBus",  /* interface */
-                                                        "NameOwnerChanged",      /* member */
-                                                        "/org/freedesktop/DBus", /* path */
+                                                        "com.example.TestService", /* sender */
+                                                        "com.example.Frob",        /* interface */
+                                                        "TestSignal",              /* member */
+                                                        "/com/example/TestObject", /* path */
                                                         NULL,
                                                         G_DBUS_SIGNAL_FLAGS_NONE,
                                                         signal_handler,
@@ -254,15 +252,28 @@ test_delivery_in_thread_func (gpointer _data)
   g_assert_cmpuint (subscription_id, !=, 0);
   g_assert_cmpuint (data.signal_count, ==, 0);
 
-  priv_c = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, &error);
-  g_assert_no_error (error);
-  g_assert_nonnull (priv_c);
-
-  while (data.signal_count < 1)
+  g_dbus_connection_call (c,
+                          "com.example.TestService", /* bus_name */
+                          "/com/example/TestObject", /* object path */
+                          "com.example.Frob",        /* interface name */
+                          "EmitSignal",              /* method name */
+                          g_variant_new_parsed ("('hello', @o '/com/example/TestObject')"),
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          NULL,
+                          (GAsyncReadyCallback) async_result_cb,
+                          &data);
+  while (data.async_result == NULL || data.signal_count < 1)
     g_main_context_iteration (thread_context, TRUE);
-  g_assert_cmpuint (data.signal_count, ==, 1);
 
-  g_object_unref (priv_c);
+  result_variant = g_dbus_connection_call_finish (c, data.async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (result_variant);
+  g_clear_pointer (&result_variant, g_variant_unref);
+  g_clear_object (&data.async_result);
+
+  g_assert_cmpuint (data.signal_count, ==, 1);
 
   g_dbus_connection_signal_unsubscribe (c, subscription_id);
   subscription_id = 0;
