@@ -82,8 +82,8 @@ chmod +x $PKG_CONFIG
 cat > cross_file_android_${arch}_${api}.txt <<- EOM
 [host_machine]
 system = 'android'
-cpu_family = 'arm64'
-cpu = 'arm64'
+cpu_family = 'aarch64'
+cpu = 'aarch64'
 endian = 'little'
 
 [properties]
