@@ -3694,6 +3694,14 @@ unsubscribe_id_internal (GDBusConnection *connection,
  *
  * Unsubscribes from signals.
  *
+ * Note that there may still be D-Bus traffic to process (relating to this
+ * signal subscription) in the current thread-default #GMainContext after this
+ * function has returned. You should continue to iterate the #GMainContext
+ * until the #GDestroyNotify function passed to
+ * g_dbus_connection_signal_subscribe() is called, in order to avoid memory
+ * leaks through callbacks queued on the #GMainContext after it’s stopped being
+ * iterated.
+ *
  * Since: 2.26
  */
 void
