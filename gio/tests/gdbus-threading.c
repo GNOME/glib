@@ -75,54 +75,24 @@ assert_connection_has_one_ref (GDBusConnection *connection,
 
 typedef struct {
   GThread *thread;
-  GMainLoop *thread_loop;
+  GMainContext *context;
   guint signal_count;
   gboolean unsubscribe_complete;
+  GAsyncResult *async_result;
 } DeliveryData;
 
 static void
-msg_cb_expect_success (GDBusConnection *connection,
-                       GAsyncResult    *res,
-                       gpointer         user_data)
+async_result_cb (GDBusConnection *connection,
+                 GAsyncResult    *res,
+                 gpointer         user_data)
 {
   DeliveryData *data = user_data;
-  GError *error;
-  GVariant *result;
 
-  error = NULL;
-  result = g_dbus_connection_call_finish (connection,
-                                          res,
-                                          &error);
-  g_assert_no_error (error);
-  g_assert_nonnull (result);
-  g_variant_unref (result);
+  data->async_result = g_object_ref (res);
 
   g_assert_true (g_thread_self () == data->thread);
 
-  g_main_loop_quit (data->thread_loop);
-}
-
-static void
-msg_cb_expect_error_cancelled (GDBusConnection *connection,
-                               GAsyncResult    *res,
-                               gpointer         user_data)
-{
-  DeliveryData *data = user_data;
-  GError *error;
-  GVariant *result;
-
-  error = NULL;
-  result = g_dbus_connection_call_finish (connection,
-                                          res,
-                                          &error);
-  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
-  g_assert_false (g_dbus_error_is_remote_error (error));
-  g_error_free (error);
-  g_assert_null (result);
-
-  g_assert_true (g_thread_self () == data->thread);
-
-  g_main_loop_quit (data->thread_loop);
+  g_main_context_wakeup (data->context);
 }
 
 static void
@@ -140,7 +110,7 @@ signal_handler (GDBusConnection *connection,
 
   data->signal_count++;
 
-  g_main_loop_quit (data->thread_loop);
+  g_main_context_wakeup (data->context);
 }
 
 static void
@@ -152,30 +122,28 @@ signal_data_free_cb (gpointer user_data)
 
   data->unsubscribe_complete = TRUE;
 
-  g_main_loop_quit (data->thread_loop);
+  g_main_context_wakeup (data->context);
 }
 
 static gpointer
 test_delivery_in_thread_func (gpointer _data)
 {
-  GMainLoop *thread_loop;
   GMainContext *thread_context;
   DeliveryData data;
   GCancellable *ca;
   guint subscription_id;
   GDBusConnection *priv_c;
-  GError *error;
-
-  error = NULL;
+  GError *error = NULL;
+  GVariant *result_variant = NULL;
 
   thread_context = g_main_context_new ();
-  thread_loop = g_main_loop_new (thread_context, FALSE);
   g_main_context_push_thread_default (thread_context);
 
   data.thread = g_thread_self ();
-  data.thread_loop = thread_loop;
+  data.context = thread_context;
   data.signal_count = 0;
   data.unsubscribe_complete = FALSE;
+  data.async_result = NULL;
 
   /* ---------------------------------------------------------------------------------------------------- */
 
@@ -191,9 +159,16 @@ test_delivery_in_thread_func (gpointer _data)
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           NULL,
-                          (GAsyncReadyCallback) msg_cb_expect_success,
+                          (GAsyncReadyCallback) async_result_cb,
                           &data);
-  g_main_loop_run (thread_loop);
+  while (data.async_result == NULL)
+    g_main_context_iteration (thread_context, TRUE);
+
+  result_variant = g_dbus_connection_call_finish (c, data.async_result, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (result_variant);
+  g_clear_pointer (&result_variant, g_variant_unref);
+  g_clear_object (&data.async_result);
 
   /*
    * Check that we never actually send a message if the GCancellable
@@ -211,9 +186,18 @@ test_delivery_in_thread_func (gpointer _data)
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           ca,
-                          (GAsyncReadyCallback) msg_cb_expect_error_cancelled,
+                          (GAsyncReadyCallback) async_result_cb,
                           &data);
-  g_main_loop_run (thread_loop);
+  while (data.async_result == NULL)
+    g_main_context_iteration (thread_context, TRUE);
+
+  result_variant = g_dbus_connection_call_finish (c, data.async_result, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_assert_false (g_dbus_error_is_remote_error (error));
+  g_clear_error (&error);
+  g_assert_null (result_variant);
+  g_clear_object (&data.async_result);
+
   g_object_unref (ca);
 
   /*
@@ -229,10 +213,20 @@ test_delivery_in_thread_func (gpointer _data)
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           ca,
-                          (GAsyncReadyCallback) msg_cb_expect_error_cancelled,
+                          (GAsyncReadyCallback) async_result_cb,
                           &data);
   g_cancellable_cancel (ca);
-  g_main_loop_run (thread_loop);
+
+  while (data.async_result == NULL)
+    g_main_context_iteration (thread_context, TRUE);
+
+  result_variant = g_dbus_connection_call_finish (c, data.async_result, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_assert_false (g_dbus_error_is_remote_error (error));
+  g_clear_error (&error);
+  g_assert_null (result_variant);
+  g_clear_object (&data.async_result);
+
   g_object_unref (ca);
 
   /*
@@ -259,7 +253,8 @@ test_delivery_in_thread_func (gpointer _data)
   g_assert_no_error (error);
   g_assert_nonnull (priv_c);
 
-  g_main_loop_run (thread_loop);
+  while (data.signal_count < 1)
+    g_main_context_iteration (thread_context, TRUE);
   g_assert_cmpuint (data.signal_count, ==, 1);
 
   g_object_unref (priv_c);
@@ -267,13 +262,13 @@ test_delivery_in_thread_func (gpointer _data)
   g_dbus_connection_signal_unsubscribe (c, subscription_id);
   subscription_id = 0;
 
-  g_main_loop_run (thread_loop);
+  while (!data.unsubscribe_complete)
+    g_main_context_iteration (thread_context, TRUE);
   g_assert_true (data.unsubscribe_complete);
 
   /* ---------------------------------------------------------------------------------------------------- */
 
   g_main_context_pop_thread_default (thread_context);
-  g_main_loop_unref (thread_loop);
   g_main_context_unref (thread_context);
 
   return NULL;
