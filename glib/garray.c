@@ -102,7 +102,7 @@ struct _GRealArray
 {
   guint8 *data;
   guint   len;
-  guint   alloc;
+  guint   capacity;
   guint   elt_size;
   guint   zero_terminated : 1;
   guint   clear : 1;
@@ -130,7 +130,7 @@ struct _GRealArray
  * Returns: the element of the #GArray at the index given by @i
  */
 
-#define g_array_elt_len(array,i) ((array)->elt_size * (i))
+#define g_array_elt_len(array, i) ((array)->elt_size * (i))
 #define g_array_elt_pos(array,i) ((array)->data + g_array_elt_len((array),(i)))
 #define g_array_elt_zero(array, pos, len)                               \
   (memset (g_array_elt_pos ((array), pos), 0,  g_array_elt_len ((array), len)))
@@ -161,6 +161,7 @@ g_array_new (gboolean zero_terminated,
              guint    elt_size)
 {
   g_return_val_if_fail (elt_size > 0, NULL);
+  g_return_val_if_fail (elt_size <= G_MAXSIZE, NULL);
 
   return g_array_sized_new (zero_terminated, clear, elt_size, 0);
 }
@@ -241,12 +242,13 @@ g_array_sized_new (gboolean zero_terminated,
   GRealArray *array;
   
   g_return_val_if_fail (elt_size > 0, NULL);
+  g_return_val_if_fail (elt_size <= G_MAXSIZE, NULL);
 
   array = g_slice_new (GRealArray);
 
   array->data            = NULL;
   array->len             = 0;
-  array->alloc           = 0;
+  array->capacity        = 0;
   array->zero_terminated = (zero_terminated ? 1 : 0);
   array->clear           = (clear ? 1 : 0);
   array->elt_size        = elt_size;
@@ -430,7 +432,7 @@ array_free (GRealArray     *array,
     {
       array->data            = NULL;
       array->len             = 0;
-      array->alloc           = 0;
+      array->capacity        = 0;
     }
   else
     {
@@ -941,30 +943,46 @@ g_nearest_pow (guint num)
   return n + 1;
 }
 
+/* The maximum array length is derived from following constraints:
+ * - The number of bytes must fit into gsize.
+ * - The number of elements must fit into guint.
+ */
+#define MAX_ARRAY_LEN(array) (MIN (G_MAXSIZE / (array)->elt_size, G_MAXUINT))
+
 static void
 g_array_maybe_expand (GRealArray *array,
                       guint       len)
 {
-  guint want_alloc;
+  guint want_len;
+  gsize max_len = MAX_ARRAY_LEN (array);
 
-  /* Detect potential overflow */
-  if G_UNLIKELY ((G_MAXUINT - array->len) < len)
-    g_error ("adding %u to array would overflow", len);
+  /* Always require extra space for trailing zeroed element by aborting even
+   * if everything would fix exactly otherwise. This simplifies the condition
+   * somewhat, because newly created arrays don't have zeroed element yet,
+   * while others do. Not to mention those that don't need it at all. */
+  if (G_UNLIKELY (max_len - array->len <= len))
+    g_error ("%s: overflow while expanding array by %u additional elements",
+             G_STRLOC, len);
 
-  want_alloc = g_array_elt_len (array, array->len + len +
-                                array->zero_terminated);
-
-  if (want_alloc > array->alloc)
+  want_len = array->len + len + array->zero_terminated;
+  if (want_len > array->capacity)
     {
-      want_alloc = g_nearest_pow (want_alloc);
-      want_alloc = MAX (want_alloc, MIN_ARRAY_SIZE);
+      gsize want_alloc = g_array_elt_len (array, want_len);
+      gsize max_alloc = g_array_elt_len (array, max_len);
+
+      /* Round up to the nearest power of two. */
+      gsize n = g_nearest_pow (want_alloc);
+
+      if (n != 0 && n <= max_alloc)
+        want_alloc = n;
 
       array->data = g_realloc (array->data, want_alloc);
 
       if (G_UNLIKELY (g_mem_gc_friendly))
-        memset (array->data + array->alloc, 0, want_alloc - array->alloc);
+        memset (g_array_elt_pos (array, array->capacity), 0,
+                g_array_elt_len (array, want_len - array->capacity));
 
-      array->alloc = want_alloc;
+      array->capacity = want_alloc / (array)->elt_size;
     }
 }
 
@@ -1244,7 +1262,7 @@ g_array_copy (GArray *array)
     (GRealArray *) g_array_sized_new (rarray->zero_terminated, rarray->clear,
                                       rarray->elt_size, rarray->len);
   new_rarray->len = rarray->len;
-  memcpy (new_rarray->data, rarray->data, rarray->alloc);
+  memcpy (new_rarray->data, rarray->data, rarray->capacity);
 
   return (GArray *) new_rarray;
 }
@@ -1473,9 +1491,10 @@ g_ptr_array_maybe_expand (GRealPtrArray *array,
       guint old_alloc = array->alloc;
       array->alloc = g_nearest_pow (array->len + len);
       array->alloc = MAX (array->alloc, MIN_ARRAY_SIZE);
-      array->pdata = g_realloc (array->pdata, sizeof (gpointer) * array->alloc);
+      array->pdata = g_realloc (array->pdata,
+                                sizeof (gpointer) * array->alloc);
       if (G_UNLIKELY (g_mem_gc_friendly))
-        for ( ; old_alloc < array->alloc; old_alloc++)
+        for (; old_alloc < array->alloc; old_alloc++)
           array->pdata [old_alloc] = NULL;
     }
 }
@@ -2246,9 +2265,15 @@ g_byte_array_new_take (guint8 *data,
   g_assert (real->data == NULL);
   g_assert (real->len == 0);
 
+  if (G_UNLIKELY (MAX_ARRAY_LEN (real) <= len))
+    {
+      g_error ("%s: overflow while creating a new byte array with %" G_GSIZE_FORMAT " bytes",
+               G_STRLOC, len);
+    }
+
   real->data = data;
   real->len = len;
-  real->alloc = len;
+  real->capacity = len;
 
   return array;
 }
