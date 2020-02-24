@@ -1248,7 +1248,7 @@ linux_pthread_proxy (void *data)
       res = syscall (SYS_sched_setattr, tid, thread->scheduler_settings->attr, flags);
       errsv = errno;
       if (res == -1)
-        g_error ("Failed to set scheduler settings: %s", g_strerror (errsv));
+        g_critical ("Failed to set scheduler settings: %s", g_strerror (errsv));
     }
 
   return thread->proxy (data);
