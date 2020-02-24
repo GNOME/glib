@@ -124,13 +124,13 @@ main (int   argc,
   g_assert (g_spawn_command_line_async (path, NULL));
   g_free (path);
 
-  ensure_gdbus_testserver_up ();
-
   /* Create the connection in the main thread */
   error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
   g_assert (c != NULL);
+
+  ensure_gdbus_testserver_up (c, NULL);
 
   g_test_add_func ("/gdbus/connection-loss", test_connection_loss);
 

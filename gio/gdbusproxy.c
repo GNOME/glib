@@ -95,28 +95,19 @@ G_LOCK_DEFINE_STATIC (properties_lock);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-G_LOCK_DEFINE_STATIC (signal_subscription_lock);
-
-typedef struct
+static GWeakRef *
+weak_ref_new (GObject *object)
 {
-  volatile gint ref_count;
-  GDBusProxy *proxy;
-} SignalSubscriptionData;
-
-static SignalSubscriptionData *
-signal_subscription_ref (SignalSubscriptionData *data)
-{
-  g_atomic_int_inc (&data->ref_count);
-  return data;
+  GWeakRef *weak_ref = g_new0 (GWeakRef, 1);
+  g_weak_ref_init (weak_ref, object);
+  return g_steal_pointer (&weak_ref);
 }
 
 static void
-signal_subscription_unref (SignalSubscriptionData *data)
+weak_ref_free (GWeakRef *weak_ref)
 {
-  if (g_atomic_int_dec_and_test (&data->ref_count))
-    {
-      g_slice_free (SignalSubscriptionData, data);
-    }
+  g_weak_ref_clear (weak_ref);
+  g_free (weak_ref);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -152,8 +143,6 @@ struct _GDBusProxyPrivate
 
   /* mutable, protected by properties_lock */
   GDBusObject *object;
-
-  SignalSubscriptionData *signal_subscription_data;
 };
 
 enum
@@ -188,22 +177,6 @@ G_DEFINE_TYPE_WITH_CODE (GDBusProxy, g_dbus_proxy, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_INTERFACE, dbus_interface_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_INITABLE, async_initable_iface_init))
-
-static void
-g_dbus_proxy_dispose (GObject *object)
-{
-  GDBusProxy *proxy = G_DBUS_PROXY (object);
-  G_LOCK (signal_subscription_lock);
-  if (proxy->priv->signal_subscription_data != NULL)
-    {
-      proxy->priv->signal_subscription_data->proxy = NULL;
-      signal_subscription_unref (proxy->priv->signal_subscription_data);
-      proxy->priv->signal_subscription_data = NULL;
-    }
-  G_UNLOCK (signal_subscription_lock);
-
-  G_OBJECT_CLASS (g_dbus_proxy_parent_class)->dispose (object);
-}
 
 static void
 g_dbus_proxy_finalize (GObject *object)
@@ -346,7 +319,6 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->dispose      = g_dbus_proxy_dispose;
   gobject_class->finalize     = g_dbus_proxy_finalize;
   gobject_class->set_property = g_dbus_proxy_set_property;
   gobject_class->get_property = g_dbus_proxy_get_property;
@@ -638,9 +610,6 @@ static void
 g_dbus_proxy_init (GDBusProxy *proxy)
 {
   proxy->priv = g_dbus_proxy_get_instance_private (proxy);
-  proxy->priv->signal_subscription_data = g_slice_new0 (SignalSubscriptionData);
-  proxy->priv->signal_subscription_data->ref_count = 1;
-  proxy->priv->signal_subscription_data->proxy = proxy;
   proxy->priv->properties = g_hash_table_new_full (g_str_hash,
                                                    g_str_equal,
                                                    g_free,
@@ -868,21 +837,12 @@ on_signal_received (GDBusConnection *connection,
                     GVariant        *parameters,
                     gpointer         user_data)
 {
-  SignalSubscriptionData *data = user_data;
+  GWeakRef *proxy_weak = user_data;
   GDBusProxy *proxy;
 
-  G_LOCK (signal_subscription_lock);
-  proxy = data->proxy;
+  proxy = G_DBUS_PROXY (g_weak_ref_get (proxy_weak));
   if (proxy == NULL)
-    {
-      G_UNLOCK (signal_subscription_lock);
-      return;
-    }
-  else
-    {
-      g_object_ref (proxy);
-      G_UNLOCK (signal_subscription_lock);
-    }
+    return;
 
   if (!proxy->priv->initialized)
     goto out;
@@ -929,8 +889,7 @@ on_signal_received (GDBusConnection *connection,
                  parameters);
 
  out:
-  if (proxy != NULL)
-    g_object_unref (proxy);
+  g_clear_object (&proxy);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1038,7 +997,7 @@ on_properties_changed (GDBusConnection *connection,
                        GVariant        *parameters,
                        gpointer         user_data)
 {
-  SignalSubscriptionData *data = user_data;
+  GWeakRef *proxy_weak = user_data;
   gboolean emit_g_signal = FALSE;
   GDBusProxy *proxy;
   const gchar *interface_name_for_signal;
@@ -1052,18 +1011,9 @@ on_properties_changed (GDBusConnection *connection,
   changed_properties = NULL;
   invalidated_properties = NULL;
 
-  G_LOCK (signal_subscription_lock);
-  proxy = data->proxy;
+  proxy = G_DBUS_PROXY (g_weak_ref_get (proxy_weak));
   if (proxy == NULL)
-    {
-      G_UNLOCK (signal_subscription_lock);
-      goto out;
-    }
-  else
-    {
-      g_object_ref (proxy);
-      G_UNLOCK (signal_subscription_lock);
-    }
+    return;
 
   if (!proxy->priv->initialized)
     goto out;
@@ -1150,11 +1100,9 @@ on_properties_changed (GDBusConnection *connection,
     }
 
  out:
-  if (changed_properties != NULL)
-    g_variant_unref (changed_properties);
+  g_clear_pointer (&changed_properties, g_variant_unref);
   g_free (invalidated_properties);
-  if (proxy != NULL)
-    g_object_unref (proxy);
+  g_clear_object (&proxy);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1258,8 +1206,7 @@ on_name_owner_changed_get_all_cb (GDBusConnection *connection,
     {
       G_LOCK (properties_lock);
       g_free (data->proxy->priv->name_owner);
-      data->proxy->priv->name_owner = data->name_owner;
-      data->name_owner = NULL; /* to avoid an extra copy, we steal the string */
+      data->proxy->priv->name_owner = g_steal_pointer (&data->name_owner);
       g_hash_table_remove_all (data->proxy->priv->properties);
       G_UNLOCK (properties_lock);
       if (result != NULL)
@@ -1289,23 +1236,14 @@ on_name_owner_changed (GDBusConnection *connection,
                        GVariant         *parameters,
                        gpointer          user_data)
 {
-  SignalSubscriptionData *data = user_data;
+  GWeakRef *proxy_weak = user_data;
   GDBusProxy *proxy;
   const gchar *old_owner;
   const gchar *new_owner;
 
-  G_LOCK (signal_subscription_lock);
-  proxy = data->proxy;
+  proxy = G_DBUS_PROXY (g_weak_ref_get (proxy_weak));
   if (proxy == NULL)
-    {
-      G_UNLOCK (signal_subscription_lock);
-      goto out;
-    }
-  else
-    {
-      g_object_ref (proxy);
-      G_UNLOCK (signal_subscription_lock);
-    }
+    return;
 
   /* if we are already trying to load properties, cancel that */
   if (proxy->priv->get_all_cancellable != NULL)
@@ -1415,8 +1353,7 @@ on_name_owner_changed (GDBusConnection *connection,
     }
 
  out:
-  if (proxy != NULL)
-    g_object_unref (proxy);
+  g_clear_object (&proxy);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1762,8 +1699,8 @@ async_initable_init_first (GAsyncInitable *initable)
                                             proxy->priv->interface_name,
                                             G_DBUS_SIGNAL_FLAGS_NONE,
                                             on_properties_changed,
-                                            signal_subscription_ref (proxy->priv->signal_subscription_data),
-                                            (GDestroyNotify) signal_subscription_unref);
+                                            weak_ref_new (G_OBJECT (proxy)),
+                                            (GDestroyNotify) weak_ref_free);
     }
 
   if (!(proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS))
@@ -1778,8 +1715,8 @@ async_initable_init_first (GAsyncInitable *initable)
                                             NULL,                        /* arg0 */
                                             G_DBUS_SIGNAL_FLAGS_NONE,
                                             on_signal_received,
-                                            signal_subscription_ref (proxy->priv->signal_subscription_data),
-                                            (GDestroyNotify) signal_subscription_unref);
+                                            weak_ref_new (G_OBJECT (proxy)),
+                                            (GDestroyNotify) weak_ref_free);
     }
 
   if (proxy->priv->name != NULL &&
@@ -1794,8 +1731,8 @@ async_initable_init_first (GAsyncInitable *initable)
                                             proxy->priv->name,       /* arg0 */
                                             G_DBUS_SIGNAL_FLAGS_NONE,
                                             on_name_owner_changed,
-                                            signal_subscription_ref (proxy->priv->signal_subscription_data),
-                                            (GDestroyNotify) signal_subscription_unref);
+                                            weak_ref_new (G_OBJECT (proxy)),
+                                            (GDestroyNotify) weak_ref_free);
     }
 }
 
