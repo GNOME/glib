@@ -22,6 +22,7 @@
 #include <gio/gio.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
+#include <glib.h>
 #include <glib/glib-unix.h>
 #include <signal.h>
 #include <stdlib.h>
@@ -29,7 +30,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#define DATA "abcdefghijklmnopqrstuvwxyz"
+/* sizeof(DATA) will give the number of bytes in the array, plus the terminating nul */
+static const gchar DATA[] = "abcdefghijklmnopqrstuvwxyz";
 
 int writer_pipe[2], reader_pipe[2];
 GCancellable *writer_cancel, *reader_cancel, *main_cancel;
@@ -118,8 +120,8 @@ reader_thread (gpointer user_data)
   g_assert_not_reached ();
 }
 
-char main_buf[sizeof (DATA)];
-gssize main_len, main_offset;
+static char main_buf[sizeof (DATA)];
+static gssize main_len, main_offset;
 
 static void main_thread_read (GObject *source, GAsyncResult *res, gpointer user_data);
 static void main_thread_skipped (GObject *source, GAsyncResult *res, gpointer user_data);

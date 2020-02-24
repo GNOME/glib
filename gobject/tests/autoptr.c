@@ -77,6 +77,7 @@ test_autoptr (void)
 
   {
     g_autoptr (TestAutoCleanup) tac = tac_ptr;
+    g_assert_nonnull (tac);
   }
 #ifdef __GNUC__
   g_assert_null (tac_ptr);
