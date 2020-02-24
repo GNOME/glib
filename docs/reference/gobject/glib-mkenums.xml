@@ -546,6 +546,10 @@ enum_files = gnome.mkenums('enum-types',
   install_header: true,
 )
 </programlisting></informalexample>
+<para>
+For more information, see the <ulink url="https://mesonbuild.com/Gnome-module.html#gnomegenmarshal">Meson
+documentation for <literal>gnome.mkenums()</literal></ulink>.
+</para>
 </refsect1>
 
 <refsect1><title>Using glib-mkenums with Autotools</title>
