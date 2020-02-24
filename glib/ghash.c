@@ -99,7 +99,9 @@
  *
  * To call a function for each key and value pair use
  * g_hash_table_foreach() or use an iterator to iterate over the
- * key/value pairs in the hash table, see #GHashTableIter.
+ * key/value pairs in the hash table, see #GHashTableIter. The iteration order
+ * of a hash table is not defined, and you must not rely on iterating over
+ * keys/values in the same order as they were inserted.
  *
  * To destroy a #GHashTable use g_hash_table_destroy().
  *
@@ -209,6 +211,9 @@
  * to iterate over the elements of a #GHashTable. GHashTableIter
  * structures are typically allocated on the stack and then initialized
  * with g_hash_table_iter_init().
+ *
+ * The iteration order of a #GHashTableIter over the keys/values in a hash
+ * table is not defined.
  */
 
 /**
@@ -1088,6 +1093,10 @@ g_hash_table_new_full (GHashFunc      hash_func,
  * Initializes a key/value pair iterator and associates it with
  * @hash_table. Modifying the hash table after calling this function
  * invalidates the returned iterator.
+ *
+ * The iteration order of a #GHashTableIter over the keys/values in a hash
+ * table is not defined.
+ *
  * |[<!-- language="C" -->
  * GHashTableIter iter;
  * gpointer key, value;
@@ -2022,6 +2031,9 @@ g_hash_table_foreach_steal (GHashTable *hash_table,
  * be modified while iterating over it (you can't add/remove
  * items). To remove all items matching a predicate, use
  * g_hash_table_foreach_remove().
+ *
+ * The order in which g_hash_table_foreach() iterates over the keys/values in
+ * the hash table is not defined.
  *
  * See g_hash_table_find() for performance caveats for linear
  * order searches in contrast to g_hash_table_lookup().
