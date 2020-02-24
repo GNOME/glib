@@ -530,7 +530,9 @@ mainlib_dep = declare_dependency(sources: enum_files[1], link_with: mainlib)
 <para>
 You should not include the generated source file as well, otherwise it will
 be built separately for every target that depends on it, causing build
-failures.
+failures. To know more about why all this is required, please refer to the
+<ulink url="https://mesonbuild.com/FAQ.html#how-do-i-tell-meson-that-my-sources-use-generated-headers">
+corresponding Meson FAQ entry</ulink>.
 </para>
 
 <para>
