@@ -706,9 +706,9 @@ add_packed_option (GApplication *application,
  * - for %G_OPTION_ARG_INT, use i
  * - for %G_OPTION_ARG_INT64, use x
  * - for %G_OPTION_ARG_DOUBLE, use d
- * - for %G_OPTION_ARG_FILENAME, use ^ay
- * - for %G_OPTION_ARG_STRING_ARRAY, use &as
- * - for %G_OPTION_ARG_FILENAME_ARRAY, use ^aay
+ * - for %G_OPTION_ARG_FILENAME, use ^&ay
+ * - for %G_OPTION_ARG_STRING_ARRAY, use ^a&s
+ * - for %G_OPTION_ARG_FILENAME_ARRAY, use ^a&ay
  *
  * Since: 2.40
  */
