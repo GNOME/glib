@@ -153,15 +153,16 @@ The same as <literal>@type@</literal> with all letters uppercased (e.g. <literal
 <varlistentry>
 <term><literal>@filename@</literal></term>
 <listitem><para>
-The name of the input file currently being processed (e.g. <literal>foo.h</literal>).
+The full path of the input file currently being processed (e.g. <literal>/build/environment/project/src/foo.h</literal>).
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><literal>@basename@</literal></term>
 <listitem><para>
-The base name of the input file currently being processed (e.g. <literal>foo.h</literal>). Typically
-you want to use <literal>@basename@</literal> in place of <literal>@filename@</literal> in your templates, to improve the reproducibility of the build. (Since: 2.22)
+The base name of the input file currently being processed (e.g. <literal>foo.h</literal>).
+Typically you want to use <literal>@basename@</literal> in place of <literal>@filename@</literal>
+in your templates, to improve the reproducibility of the build. (Since: 2.22)
 </para></listitem>
 </varlistentry>
 </variablelist>
@@ -389,6 +390,168 @@ limit. For example, Windows has a limit of 8191 characters.
 </variablelist>
 </refsect1>
 
+<refsect1><title>Using templates</title>
+<para>
+Instead of passing the various sections of the generated file to the command
+line of <command>glib-mkenums</command>, it's strongly recommended to use a
+template file, especially for generating C sources.
+</para>
+
+<para>
+A C header template file will typically look like this:
+</para>
+<informalexample><programlisting>
+/*** BEGIN file-header ***/
+#pragma once
+
+/* Include the main project header */
+#include "project.h"
+
+G_BEGIN_DECLS
+/*** END file-header ***/
+
+/*** BEGIN file-production ***/
+
+/* enumerations from "@basename@" */
+/*** END file-production ***/
+
+/*** BEGIN value-header ***/
+GType @enum_name@_get_type (void) G_GNUC_CONST;
+#define @ENUMPREFIX@_TYPE_@ENUMSHORT@ (@enum_name@_get_type ())
+/*** END value-header ***/
+
+/*** BEGIN file-tail ***/
+G_END_DECLS
+/*** END file-tail ***/
+</programlisting></informalexample>
+
+<para>
+A C source template file will typically look like this:
+</para>
+<informalexample><programlisting>
+/*** BEGIN file-header ***/
+#include "config.h"
+#include "enum-types.h"
+
+/*** END file-header ***/
+
+/*** BEGIN file-production ***/
+/* enumerations from "@basename@" */
+/*** END file-production ***/
+
+/*** BEGIN value-header ***/
+GType
+@enum_name@_get_type (void)
+{
+  static volatile gsize g_@type@_type_id__volatile;
+
+  if (g_once_init_enter (&amp;g_define_type_id__volatile))
+    {
+      static const G@Type@Value values[] = {
+/*** END value-header ***/
+
+/*** BEGIN value-production ***/
+            { @VALUENAME@, "@VALUENAME@", "@valuenick@" },
+/*** END value-production ***/
+
+/*** BEGIN value-tail ***/
+            { 0, NULL, NULL }
+      };
+
+      GType g_@type@_type_id =
+        g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
+
+      g_once_init_leave (&amp;g_@type@_type_id__volatile, g_@type@_type_id);
+    }
+  return g_@type@_type_id__volatile;
+}
+
+/*** END value-tail ***/
+</programlisting></informalexample>
+
+<para>
+Template files are easier to modify and update, and can be used
+to generate various types of outputs using the same command line
+or tools during the build.
+</para>
+</refsect1>
+
+<refsect1><title>Using glib-mkenums with Meson</title>
+<para>
+Meson supports generating enumeration types using <command>glib-mkenums</command>
+out of the box in its "gnome" module.
+</para>
+
+<para>
+In your <filename>meson.build</filename> file you will typically call the
+<literal>gnome.mkenums_simple()</literal> method to generate idiomatic enumeration
+types from a list of headers to inspect:
+</para>
+<informalexample><programlisting>
+project_headers = [
+  'project-foo.h',
+  'project-bar.h',
+  'project-baz.h',
+]
+
+gnome = import('gnome')
+enum_files = gnome.mkenums_simple('enum-types',
+  sources: project_headers,
+)
+</programlisting></informalexample>
+
+<para>
+The <literal>enum_files</literal> variable will contain an array of two elements
+in the following order:
+</para>
+<itemizedlist>
+  <listitem><para>a build target for the source file</para></listitem>
+  <listitem><para>a build target for the header file</para></listitem>
+</itemizedlist>
+<para>
+You should use the returned objects to provide a dependency on every other
+build target that references the source or header file; for instance, if you
+are using the source to build a library:
+</para>
+<informalexample><programlisting>
+mainlib = library('project',
+  sources: project_sources + enum_files,
+  ...
+)
+</programlisting></informalexample>
+<para>
+Additionally, if you are including the generated header file inside a build
+target that depends on the library you just built, you must ensure that the
+internal dependency includes the generated header as a required source file:
+</para>
+<informalexample><programlisting>
+mainlib_dep = declare_dependency(sources: enum_files[1], link_with: mainlib)
+</programlisting></informalexample>
+<para>
+You should not include the generated source file as well, otherwise it will
+be built separately for every target that depends on it, causing build
+failures.
+</para>
+
+<para>
+If you are generating C header and source files that require special
+templates, you can use <literal>gnome.mkenums()</literal> to provide those
+headers, for instance:
+</para>
+<informalexample><programlisting>
+enum_files = gnome.mkenums('enum-types',
+  sources: project_headers,
+  h_template: 'enum-types.h.in',
+  c_template: 'enum-types.c.in',
+  install_header: true,
+)
+</programlisting></informalexample>
+<para>
+For more information, see the <ulink url="https://mesonbuild.com/Gnome-module.html#gnomegenmarshal">Meson
+documentation for <literal>gnome.mkenums()</literal></ulink>.
+</para>
+</refsect1>
+
 <refsect1><title>Using glib-mkenums with Autotools</title>
 <para>
 In order to use <command>glib-mkenums</command> in your project when using
@@ -425,6 +588,7 @@ enum-types.c: $(project_headers) enum-types.c.in enum-types.h
                 --output=$@ \
                 $(project_headers)
 
+# Build the enum types files before every other target
 BUILT_SOURCES += enum-types.h enum-types.c
 CLEANFILES += enum-types.h enum-types.c
 EXTRA_DIST += enum-types.h.in enum-types.c.in
@@ -434,77 +598,9 @@ In the example above, we have a variable called <literal>project_headers</litera
 where we reference all header files we want to inspect for generating enumeration
 GTypes. In the <filename>enum-types.h</filename> rule we use <command>glib-mkenums</command>
 with a template called <filename>enum-types.h.in</filename> in order to generate the
-header file; a header template file will typically look like this:
+header file; similarly, in the <filename>enum-types.c</filename> rule we use a
+template called <filename>enum-types.c.in</filename>.
 </para>
-<informalexample><programlisting>
-/*** BEGIN file-header ***/
-#pragma once
-
-/* Include the main project header */
-#include "project.h"
-
-G_BEGIN_DECLS
-/*** END file-header ***/
-
-/*** BEGIN file-production ***/
-
-/* enumerations from "@filename@" */
-/*** END file-production ***/
-
-/*** BEGIN value-header ***/
-GType @enum_name@_get_type (void) G_GNUC_CONST;
-#define @ENUMPREFIX@_TYPE_@ENUMSHORT@ (@enum_name@_get_type ())
-/*** END value-header ***/
-
-/*** BEGIN file-tail ***/
-G_END_DECLS
-/*** END file-tail ***/
-</programlisting></informalexample>
-<para>
-The <filename>enum-types.c</filename> rule is similar to the rule for the
-header file, but will use a different <filename>enum-types.c.in</filename> template
-file, similar to this:
-</para>
-<informalexample><programlisting>
-/*** BEGIN file-header ***/
-#include "config.h"
-#include "enum-types.h"
-
-/*** END file-header ***/
-
-/*** BEGIN file-production ***/
-/* enumerations from "@filename@" */
-/*** END file-production ***/
-
-/*** BEGIN value-header ***/
-GType
-@enum_name@_get_type (void)
-{
-  static volatile gsize g_@type@_type_id__volatile;
-
-  if (g_once_init_enter (&amp;g_define_type_id__volatile))
-    {
-      static const G@Type@Value values[] = {
-/*** END value-header ***/
-
-/*** BEGIN value-production ***/
-            { @VALUENAME@, "@VALUENAME@", "@valuenick@" },
-/*** END value-production ***/
-
-/*** BEGIN value-tail ***/
-            { 0, NULL, NULL }
-      };
-
-      GType g_@type@_type_id =
-        g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
-
-      g_once_init_leave (&amp;g_@type@_type_id__volatile, g_@type@_type_id);
-    }
-  return g_@type@_type_id__volatile;
-}
-
-/*** END value-tail ***/
-</programlisting></informalexample>
 </refsect1>
 
 <refsect1><title>See also</title>
