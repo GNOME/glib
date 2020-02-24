@@ -1,3 +1,83 @@
+Overview of changes in GLib 2.63.6
+==================================
+
+* Fix potential relative read when calling g_printerr(), which could lead to a
+  denial of service from a setuid-root process being used to block access to the
+  TTY for another user (#1919)
+
+* Fix SOCKS proxy resolver sometimes not being used when resolving addresses
+  via Happy Eyeballs (CVE-2020-6750) (#1989)
+
+* Several other Happy Eyeballs fixes for address resolution (#1871, #1872, #1902)
+
+* Various race fixes in `GDBusConnection` and its unit tests (#1515)
+
+* Fix a race condition with D-Bus name ownership (#1517)
+
+* Drop `gio-launch-desktop` helper application in favour of calling `sh` directly (#1633)
+
+* Fix win32 exception handling with C# exceptions (#2025)
+
+* Fix thread safety of `GUnixMountMonitor` (#2030)
+
+* Additional fixes to new thread pool attribute behaviour from GLib 2.63.4 to
+  check if sched_setattr() is allowed by system policies before depending on it (#2039, !1356)
+
+* Fix memory leaks and corruption when freeing `GSource`s while freeing a `GMainContext` (!1353)
+
+* Drop inappropriate installation of object manager example documentation (!1359)
+
+* Bugs fixed:
+ - #938 gdbus call -a doesn't support message bus connections
+ - #1515 gio/gdbus-threading test sometimes fails in CI
+ - #1517 g_bus_own_name does not always call name_lost_handler when _REPLACE and _ALLOW_REPLACEMENT are set
+ - #1633 should not install gio-launch-desktop into PATH
+ - #1919 read from relative path in g_printerr() in 2.58.3
+ - #1995 Tracker issue for Happy Eyeballs regressions
+ - #2002 g_io_channel_read_line does not honour the line_term symbols set
+ - #2025 W32 exception handling misbehaves when C# exceptions are thrown when running inside the Visual Studio debugger
+ - #2030 Random nautilus test suite failures involving GUnixMountMonitor
+ - #2039 sched_setattr() still can cause EPERM through natural causes
+ - #2043 Low memory monitor test failed in CI
+ - #2044 GApplication docs suggest invalid GVariant type
+ - !1185 gtimezone: Tidy up UTC timezone creation
+ - !1281 ci: Update Docker packages
+ - !1283 gmodule: change _g_module_close to only take a handle.
+ - !1298 tests: Speed up the GIO actions test
+ - !1299 gapplication: Fix a minor typo in the documentation
+ - !1339 gsocketclient: Refactor g_socket_client_connect_async()
+ - !1353 GMainContext - Fix memory leaks and memory corruption when freeing sources while freeing a context
+ - !1354 GThreadPool - Add test for !1340
+ - !1355 glist: Add docs examples of how to combine with g_steal_pointer()
+ - !1356 GThread - Check if sched_setattr is allowed by the system policies before depending on it
+ - !1359 docs: Don’t install object manager example separately
+ - !1363 Make tests pass if we are euid != 0 with capabilities
+ - !1366 Fix oss-fuzz coverage link
+ - !1372 gobject: Fix strict aliasing warnings with g_set_object()
+ - !1376 gitlab-ci: 64-bit ARM is aarch64, not arm64
+ - !1381 ghash: Document the iteration order over a hash table is not defined
+ - !1382 tests: Bump the refcount timeout in gdbus-threading
+ - !1383 ci: Enable parallelisation when running installed tests
+
+* Translation updates:
+ - Basque
+ - English (United Kingdom)
+ - French
+ - Galician
+ - German
+ - Greek, Modern (1453-)
+ - Hungarian
+ - Indonesian
+ - Japanese
+ - Korean
+ - Lithuanian
+ - Polish
+ - Portuguese (Brazil)
+ - Spanish
+ - Swedish
+ - Turkish
+
+
 Overview of changes in GLib 2.63.5
 ==================================
 
