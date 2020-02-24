@@ -889,6 +889,13 @@ g_bus_own_name_on_connection_with_closures (GDBusConnection    *connection,
  *
  * Stops owning a name.
  *
+ * Note that there may still be D-Bus traffic to process (relating to owning
+ * and unowning the name) in the current thread-default #GMainContext after
+ * this function has returned. You should continue to iterate the #GMainContext
+ * until the #GDestroyNotify function passed to g_bus_own_name() is called, in
+ * order to avoid memory leaks through callbacks queued on the #GMainContext
+ * after it’s stopped being iterated.
+ *
  * Since: 2.26
  */
 void

@@ -222,7 +222,6 @@ typedef struct
 {
   GDestroyNotify              callback;
   gpointer                    user_data;
-  GMainContext               *context;
 } CallDestroyNotifyData;
 
 static gboolean
@@ -236,8 +235,6 @@ call_destroy_notify_data_in_idle (gpointer user_data)
 static void
 call_destroy_notify_data_free (CallDestroyNotifyData *data)
 {
-  if (data->context != NULL)
-    g_main_context_unref (data->context);
   g_free (data);
 }
 
@@ -258,14 +255,11 @@ call_destroy_notify (GMainContext  *context,
   CallDestroyNotifyData *data;
 
   if (callback == NULL)
-    goto out;
+    return;
 
   data = g_new0 (CallDestroyNotifyData, 1);
   data->callback = callback;
   data->user_data = user_data;
-  data->context = context;
-  if (data->context != NULL)
-    g_main_context_ref (data->context);
 
   idle_source = g_idle_source_new ();
   g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
@@ -274,11 +268,8 @@ call_destroy_notify (GMainContext  *context,
                          data,
                          (GDestroyNotify) call_destroy_notify_data_free);
   g_source_set_name (idle_source, "[gio] call_destroy_notify_data_in_idle");
-  g_source_attach (idle_source, data->context);
+  g_source_attach (idle_source, context);
   g_source_unref (idle_source);
-
- out:
-  ;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -3702,6 +3693,14 @@ unsubscribe_id_internal (GDBusConnection *connection,
  *     g_dbus_connection_signal_subscribe()
  *
  * Unsubscribes from signals.
+ *
+ * Note that there may still be D-Bus traffic to process (relating to this
+ * signal subscription) in the current thread-default #GMainContext after this
+ * function has returned. You should continue to iterate the #GMainContext
+ * until the #GDestroyNotify function passed to
+ * g_dbus_connection_signal_subscribe() is called, in order to avoid memory
+ * leaks through callbacks queued on the #GMainContext after it’s stopped being
+ * iterated.
  *
  * Since: 2.26
  */
