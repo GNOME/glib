@@ -180,6 +180,7 @@ test_g_main_context_pusher (void)
   if (TRUE)
     {
       g_autoptr(GMainContextPusher) val = g_main_context_pusher_new (context);
+      g_assert_nonnull (val);
 
       /* Check it’s now the thread-default main context */
       g_assert_true (g_main_context_get_thread_default () == context);
