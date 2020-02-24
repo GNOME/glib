@@ -448,6 +448,10 @@ mainlib = library('project',
   ...
 )
 </programlisting></informalexample>
+<para>
+For more information, see the <ulink url="https://mesonbuild.com/Gnome-module.html#gnomegenmarshal">Meson
+documentation for <literal>gnome.genmarshal()</literal></ulink>.
+</para>
 </refsect1>
 
 <refsect1><title>Using <command>glib-genmarshal</command> with Autotools</title>
