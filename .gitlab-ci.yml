@@ -162,6 +162,7 @@ installed-tests:
     - GLIB_TEST_COMPILATION=1 gnome-desktop-testing-runner
             --report-directory=_build/installed-tests-report/failed/
             --log-directory=_build/installed-tests-report/logs/
+            --parallel=0
             glib
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
