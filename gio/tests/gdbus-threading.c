@@ -57,7 +57,7 @@ assert_connection_has_one_ref (GDBusConnection *connection,
   if (g_atomic_int_get (&G_OBJECT (connection)->ref_count) == 1)
     return;
 
-  timeout_source = g_timeout_source_new_seconds (1);
+  timeout_source = g_timeout_source_new_seconds (3);
   g_source_set_callback (timeout_source, timeout_cb, &data, NULL);
   g_source_attach (timeout_source, context);
 
