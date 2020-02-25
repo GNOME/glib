@@ -27,7 +27,7 @@ toolchain_path=$(pwd)/android-toolchain-$arch-$api
 prefix_path=$(pwd)/android-$arch-$api
 
 # Create standalone toolchains
-$ANDROID_NDK_PATH/build/tools/make_standalone_toolchain.py --arch $arch --api $api --install-dir $toolchain_path
+"${ANDROID_NDK_PATH}/build/tools/make_standalone_toolchain.py" --arch "${arch}" --api "${api}" --install-dir "${toolchain_path}"
 
 target_host=aarch64-linux-android
 export AR=$target_host-ar
@@ -45,7 +45,7 @@ if [ "$api" -lt "28" ]; then
   echo "1233fe3ca09341b53354fd4bfe342a7589181145a1232c9919583a8c9979636855839049f3406f253a9d9829908816bb71fd6d34dd544ba290d6f04251376b1a  libiconv-1.15.tar.gz" | sha512sum -c
   tar xzf libiconv-1.15.tar.gz
   pushd libiconv-1.15
-  ./configure --host=$target_host --prefix=$prefix_path  --libdir=$prefix_path/lib64
+  ./configure --host="${target_host}" --prefix="${prefix_path}"  --libdir="${prefix_path}/lib64"
   make
   make install
   popd
@@ -58,7 +58,7 @@ wget --quiet https://github.com/libffi/libffi/releases/download/v3.3-rc0/libffi-
 echo "e6e695d32cd6eb7d65983f32986fccdfc786a593d2ea18af30ce741f58cfa1eb264b1a8d09df5084cb916001aea15187b005c2149a0620a44397a4453b6137d4  libffi-3.3-rc0.tar.gz" | sha512sum -c
 tar xzf libffi-3.3-rc0.tar.gz
 pushd libffi-3.3-rc0
-./configure --host=$target_host --prefix=$prefix_path --libdir=$prefix_path/lib64
+./configure --host="${target_host}" --prefix="${prefix_path}" --libdir="${prefix_path}/lib64"
 make
 make install
 popd
@@ -66,9 +66,9 @@ rm libffi-3.3-rc0.tar.gz
 rm -r libffi-3.3-rc0
 
 # Create a pkg-config wrapper that won't pick fedora libraries
-mkdir -p $prefix_path/bin
+mkdir -p "${prefix_path}/bin"
 export PKG_CONFIG=$prefix_path/bin/pkg-config
-cat > $PKG_CONFIG <<- EOM
+cat > "${PKG_CONFIG}" <<- EOM
 #!/bin/sh
 SYSROOT=${prefix_path}
 export PKG_CONFIG_DIR=
@@ -76,10 +76,10 @@ export PKG_CONFIG_LIBDIR=\${SYSROOT}/lib64/pkgconfig
 export PKG_CONFIG_SYSROOT_DIR=\${SYSROOT}
 exec pkg-config "\$@"
 EOM
-chmod +x $PKG_CONFIG
+chmod +x "${PKG_CONFIG}"
 
 # Create a cross file that can be passed to meson
-cat > cross_file_android_${arch}_${api}.txt <<- EOM
+cat > "cross_file_android_${arch}_${api}.txt" <<- EOM
 [host_machine]
 system = 'android'
 cpu_family = 'aarch64'

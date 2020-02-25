@@ -6,9 +6,9 @@ read_arg() {
     # $3 = arg parameter
     local rematch='^[^=]*=(.*)$'
     if [[ $2 =~ $rematch ]]; then
-        read "$1" <<< "${BASH_REMATCH[1]}"
+        read -r "$1" <<< "${BASH_REMATCH[1]}"
     else
-        read "$1" <<< "$3"
+        read -r "$1" <<< "$3"
         # There is no way to shift our callers args, so
         # return 1 to indicate they should do it instead.
         return 1
@@ -16,7 +16,7 @@ read_arg() {
 }
 
 SUDO_CMD="sudo"
-if `docker -v | grep -q podman` ; then
+if docker -v |& grep -q podman; then
         # Using podman
         SUDO_CMD=""
         # Docker is actually implemented by podman, and its OCI output
@@ -27,6 +27,8 @@ fi
 
 set -e
 
+base=""
+base_version=""
 build=0
 run=0
 push=0
@@ -79,7 +81,7 @@ if [ $list == 1 ]; then
 fi
 
 # All commands after this require --base to be set
-if [ -z $base ]; then
+if [ -z "${base}" ]; then
         echo "Usage: $0 <command>"
         exit 1
 fi
@@ -89,7 +91,7 @@ if [ ! -f "$base.Dockerfile" ]; then
         exit 1
 fi
 
-if [ -z $base_version ]; then
+if [ -z "${base_version}" ]; then
         base_version="latest"
 else
         base_version="v$base_version"
