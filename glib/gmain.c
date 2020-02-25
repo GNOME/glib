@@ -626,7 +626,7 @@ g_main_context_unref (GMainContext *context)
 GMainContext *
 g_main_context_new_with_next_id (guint next_id)
 {
-  GMainContext *ret = g_main_context_new ();
+    GMainContext *ret = g_main_context_new ();
   
   ret->next_id = next_id;
   
