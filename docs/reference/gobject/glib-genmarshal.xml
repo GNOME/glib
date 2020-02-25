@@ -449,7 +449,23 @@ mainlib = library('project',
 )
 </programlisting></informalexample>
 <para>
-For more information, see the <ulink url="https://mesonbuild.com/Gnome-module.html#gnomegenmarshal">Meson
+Additionally, if you are including the generated header file inside a build
+target that depends on the library you just built, you must ensure that the
+internal dependency includes the generated header as a required source file:
+</para>
+<informalexample><programlisting>
+mainlib_dep = declare_dependency(sources: marshal_files[1], link_with: mainlib)
+</programlisting></informalexample>
+<para>
+You should not include the generated source file as well, otherwise it will
+be built separately for every target that depends on it, causing build
+failures. To know more about why all this is required, please refer to the
+<ulink url="https://mesonbuild.com/FAQ.html#how-do-i-tell-meson-that-my-sources-use-generated-headers">
+corresponding Meson FAQ entry</ulink>.
+</para>
+<para>
+For more information on how to use the method, see the
+<ulink url="https://mesonbuild.com/Gnome-module.html#gnomegenmarshal">Meson
 documentation for <literal>gnome.genmarshal()</literal></ulink>.
 </para>
 </refsect1>
