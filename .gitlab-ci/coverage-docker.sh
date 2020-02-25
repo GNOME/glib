@@ -19,7 +19,7 @@ genhtml \
     -o _coverage/coverage
 
 cd _coverage
-rm -f *.lcov
+rm -f ./*.lcov
 
 cat >index.html <<EOL
 <html>
