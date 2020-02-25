@@ -1,6 +1,9 @@
 #!/bin/bash
 
-set +e
+set -e
+
+# Wrap everything in a subshell so we can propagate the exit status.
+(
 
 # We need to add a new remote for the upstream master, since this script could
 # be running in a personal fork of the repository which has out of date branches.
@@ -14,6 +17,9 @@ git fetch upstream
 # a merge request pipeline; fall back to `${CI_DEFAULT_BRANCH}` otherwise.
 newest_common_ancestor_sha=$(diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent upstream/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}) <(git rev-list --first-parent HEAD) | head -1)
 git diff -U0 --no-color "${newest_common_ancestor_sha}" | ./clang-format-diff.py -binary "clang-format-7" -p1
+
+)
+exit_status=$?
 
 # The style check is not infallible. The clang-format configuration cannot
 # perfectly describe GLib’s coding style: in particular, it cannot align
@@ -29,3 +35,5 @@ echo "Note that clang-format output is advisory and cannot always match the GLib
 echo "   https://gitlab.gnome.org/GNOME/gtk/blob/master/docs/CODING-STYLE"
 echo "Warnings from this tool can be ignored in favour of the documented coding style,"
 echo "or in favour of matching the style of existing surrounding code."
+
+exit ${exit_status}
