@@ -1,9 +1,11 @@
 #! /bin/sh
 
+set -e
+
 IN="../update-pcre"
 PCRE=$1
 
-if [ "x$PCRE" = x -o "x$PCRE" = x--help -o "x$PCRE" = x-h ]; then
+if [ "x$PCRE" = x ] || [ "x$PCRE" = x--help ] || [ "x$PCRE" = x-h ]; then
     cat >&2 << EOF
 
 $0 PCRE-DIR
@@ -23,8 +25,8 @@ if [ ! -f gregex.h ]; then
     exit 1
 fi
 
-if [ ! -f $PCRE/Makefile.in -o ! -f $PCRE/pcre_compile.c ]; then
-    echo "'$PCRE' does not contain a valid PCRE version." 2> /dev/null
+if [ ! -f "${PCRE}/Makefile.in" ] || [ ! -f "${PCRE}/pcre_compile.c" ]; then
+    echo "'${PCRE}' does not contain a valid PCRE version." 2> /dev/null
     exit 1
 fi
 
@@ -40,7 +42,7 @@ cd pcre
 # this could be a problem (e.g. when cross-compiling), so now generate
 # the file and then distribuite it with GRegex.
 echo "Generating pcre_chartables.c"
-cp -R $PCRE tmp-build
+cp -R "${PCRE}" tmp-build
 cd tmp-build
 ./configure --enable-utf8 --enable-unicode-properties --disable-cpp > /dev/null
 make pcre_chartables.c > /dev/null
@@ -55,14 +57,14 @@ rm -R tmp-build
 
 # Compiled C files.
 echo "Generating makefiles"
-all_files=`awk '/^OBJ = /, /^\\s*$/ \
-            { \
-                sub("^OBJ = ", ""); \
-                sub(".@OBJEXT@[[:blank:]]*\\\\\\\\", ""); \
-                sub("\\\\$\\\\(POSIX_OBJ\\\\)", ""); \
-                print; \
-            }' \
-            $PCRE/Makefile.in`
+all_files=$(awk '/^OBJ = /, /^\\s*$/ ' \
+                '{' \
+                    'sub("^OBJ = ", "");' \
+                    'sub(".@OBJEXT@[[:blank:]]*\\\\\\\\", "");' \
+                    'sub("\\\\$\\\\(POSIX_OBJ\\\\)", "");' \
+                    'print;' \
+                '}' \
+            "${PCRE}/Makefile.in")
 
 # Headers.
 included_files="pcre.h pcre_internal.h ucp.h ucpinternal.h"
@@ -71,21 +73,21 @@ included_files="pcre.h pcre_internal.h ucp.h ucpinternal.h"
 cat $IN/Makefile.am-1 > Makefile.am
 for name in $all_files; do
     echo "	$name.c \\" >> Makefile.am
-    if [ $name != pcre_chartables ]; then
+    if [ "${name}" != pcre_chartables ]; then
         # pcre_chartables.c is a generated file.
-        cp $PCRE/$name.c .
+        cp "${PCRE}/${name}.c" .
     fi
 done
 for f in $included_files; do
     echo "	$f \\" >> Makefile.am
-    cp $PCRE/$f .
+    cp "${PCRE}/${f}" .
 done
 cat $IN/Makefile.am-2 >> Makefile.am
 
 echo "Patching PCRE"
 
 # Copy the license.
-cp $PCRE/COPYING .
+cp "${PCRE}/COPYING" .
 
 # Use glib for memory allocation.
 patch > /dev/null < $IN/memory.patch
