@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set +e
+set -e
 
 # We need to add a new remote for the upstream master, since this script could
 # be running in a personal fork of the repository which has out of date branches.
