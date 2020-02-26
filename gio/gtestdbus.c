@@ -604,11 +604,12 @@ start_daemon (GTestDBus *self)
   g_spawn_async_with_pipes (NULL,
                             (gchar **) argv,
                             NULL,
-#ifdef G_OS_WIN32
                             /* We Need this to get the pid returned on win32 */
                             G_SPAWN_DO_NOT_REAP_CHILD |
-#endif
-                            G_SPAWN_SEARCH_PATH,
+                            G_SPAWN_SEARCH_PATH |
+                            /* dbus-daemon will not abuse our descriptors, and
+                             * passing this means we can use posix_spawn() for speed */
+                            G_SPAWN_LEAVE_DESCRIPTORS_OPEN,
                             NULL,
                             NULL,
                             &self->priv->bus_pid,
