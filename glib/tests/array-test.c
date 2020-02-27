@@ -811,6 +811,32 @@ test_array_binary_search (void)
   g_array_free (garray, TRUE);
 }
 
+static void
+test_array_copy_sized (void)
+{
+  GArray *array1 = NULL, *array2 = NULL, *array3 = NULL;
+  int val = 5;
+
+  g_test_summary ("Test that copying a newly-allocated sized array works.");
+
+  array1 = g_array_sized_new (FALSE, FALSE, sizeof (int), 1);
+  array2 = g_array_copy (array1);
+
+  g_assert_cmpuint (array2->len, ==, array1->len);
+
+  g_array_append_val (array1, val);
+  array3 = g_array_copy (array1);
+
+  g_assert_cmpuint (array3->len, ==, array1->len);
+  g_assert_cmpuint (g_array_index (array3, int, 0), ==, g_array_index (array1, int, 0));
+  g_assert_cmpuint (array3->len, ==, 1);
+  g_assert_cmpuint (g_array_index (array3, int, 0), ==, val);
+
+  g_array_unref (array3);
+  g_array_unref (array2);
+  g_array_unref (array1);
+}
+
 /* Check g_ptr_array_steal() function */
 static void
 pointer_array_steal (void)
@@ -1955,6 +1981,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/steal", array_steal);
   g_test_add_func ("/array/clear-func", array_clear_func);
   g_test_add_func ("/array/binary-search", test_array_binary_search);
+  g_test_add_func ("/array/copy-sized", test_array_copy_sized);
 
   for (i = 0; i < G_N_ELEMENTS (array_configurations); i++)
     {
