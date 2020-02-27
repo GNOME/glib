@@ -24,8 +24,8 @@ set -e
 # Download Android NDK
 ANDROID_NDK_VERSION="r17b"
 ANDROID_NDK_SHA512="062fac12f747730f5563995089a8b4abab683fbbc621aa8582fdf35fe327daee5d69ed2437af257c10ec4ef54ecd3805a8f134a1400eb8f34ee76f55c8dc9ae9"
-wget --quiet https://dl.google.com/android/repository/android-ndk-$ANDROID_NDK_VERSION-linux-x86_64.zip
-echo "$ANDROID_NDK_SHA512  android-ndk-$ANDROID_NDK_VERSION-linux-x86_64.zip" | sha512sum -c
-unzip android-ndk-$ANDROID_NDK_VERSION-linux-x86_64.zip
-rm android-ndk-$ANDROID_NDK_VERSION-linux-x86_64.zip
-mv android-ndk-$ANDROID_NDK_VERSION $ANDROID_NDK_PATH
+wget --quiet "https://dl.google.com/android/repository/android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip"
+echo "${ANDROID_NDK_SHA512}  android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip" | sha512sum -c
+unzip "android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip"
+rm "android-ndk-${ANDROID_NDK_VERSION}-linux-x86_64.zip"
+mv "android-ndk-${ANDROID_NDK_VERSION}" "${ANDROID_NDK_PATH}"
