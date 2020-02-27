@@ -113,21 +113,14 @@ g_socks5_proxy_init (GSocks5Proxy *proxy)
  */
 #define SOCKS5_NEGO_MSG_LEN	  4
 static gint
-set_nego_msg (guint8 *msg, gboolean has_auth)
+set_nego_msg (guint8 *msg)
 {
-  gint len = 3;
+  gint len = 4;
 
   msg[0] = SOCKS5_VERSION;
-  msg[1] = 0x01; /* number of methods supported */
+  msg[1] = 0x02; /* number of methods supported */
   msg[2] = SOCKS5_AUTH_NONE;
-
-  /* add support for authentication method */
-  if (has_auth)
-    {
-      msg[1] = 0x02; /* number of methods supported */
-      msg[3] = SOCKS5_AUTH_USR_PASS;
-      len++;
-    }
+  msg[3] = SOCKS5_AUTH_USR_PASS;
 
   return len;
 }
@@ -433,7 +426,7 @@ g_socks5_proxy_connect (GProxy            *proxy,
       guint8 msg[SOCKS5_NEGO_MSG_LEN];
       gint len;
 
-      len = set_nego_msg (msg, has_auth);
+      len = set_nego_msg (msg);
 
       if (!g_output_stream_write_all (out, msg, len, NULL,
 				      cancellable, error))
@@ -637,8 +630,7 @@ g_socks5_proxy_connect_async (GProxy               *proxy,
 		NULL);
 
   data->buffer = g_malloc0 (SOCKS5_NEGO_MSG_LEN);
-  data->length = set_nego_msg (data->buffer,
-			       data->username || data->password);
+  data->length = set_nego_msg (data->buffer);
   data->offset = 0;
 
   do_write (nego_msg_write_cb, task, data);
