@@ -521,7 +521,6 @@ if installed_tests_enabled
   )
   install_subdir('static-link', install_dir : installed_tests_execdir)
   install_data('static-link.py', install_dir : installed_tests_execdir)
-endif
 
 memory_monitor_tests = [
   'memory-monitor-dbus',
@@ -547,6 +546,7 @@ foreach memory_monitor_test : memory_monitor_tests
     configuration: cdata,
   )
 endforeach
+endif
 
 if not meson.is_cross_build() or meson.has_exe_wrapper()
 
