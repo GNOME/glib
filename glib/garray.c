@@ -1242,8 +1242,9 @@ g_array_copy (GArray *array)
 
   new_rarray =
     (GRealArray *) g_array_sized_new (rarray->zero_terminated, rarray->clear,
-                                      rarray->elt_size, rarray->len);
+                                      rarray->elt_size, rarray->alloc / rarray->elt_size);
   new_rarray->len = rarray->len;
+  g_assert (new_rarray->alloc >= rarray->alloc);
   memcpy (new_rarray->data, rarray->data, rarray->alloc);
 
   return (GArray *) new_rarray;
