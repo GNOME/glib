@@ -1,3 +1,22 @@
+Overview of changes in GLib 2.64.0
+==================================
+
+* Use `posix_spawn()` to speed up launching test D-Bus instances (!1388)
+
+* Bugs fixed:
+ - #1783 Document using glib-mkenums with meson
+ - #2049 Crash in g_array_copy
+ - !1384 Some minor clang warning fixes
+ - !1386 docs: Document generated headers caveats for genmarshal
+ - !1387 ci: Correctly propagate exit status in run-style-check-diff.sh
+ - !1388 gtestdbus: Use posix_spawn() to spawn dbus-daemon
+ - !1389 Update GError docs to use G_DEFINE_QUARK
+
+* Translation updates:
+ - Czech
+ - Danish
+
+
 Overview of changes in GLib 2.63.6
 ==================================
 
