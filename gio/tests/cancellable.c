@@ -138,7 +138,7 @@ mock_operation_finish (GAsyncResult  *result,
   MockOperationData *data;
   GTask *task;
 
-  g_assert (g_task_is_valid (result, NULL));
+  g_assert_true (g_task_is_valid (result, NULL));
 
   /* This test expects the return value to be iterations_done even
    * when an error is set.
@@ -212,7 +212,7 @@ test_cancel_multiple_concurrent (void)
   if (g_test_verbose ())
     g_printerr ("CANCEL: %d operations\n", num_async_operations);
   g_cancellable_cancel (cancellable);
-  g_assert (g_cancellable_is_cancelled (cancellable));
+  g_assert_true (g_cancellable_is_cancelled (cancellable));
 
   /* Wait for all operations to be cancelled */
   g_main_loop_run (loop);
