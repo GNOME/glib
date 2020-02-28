@@ -614,6 +614,8 @@ g_content_type_get_generic_icon_name (const gchar *type)
   const gchar *xdg_icon_name;
   gchar *icon_name;
 
+  g_return_val_if_fail (type != NULL, NULL);
+
   G_LOCK (gio_xdgmime);
   xdg_icon_name = xdg_mime_get_generic_icon (type);
   G_UNLOCK (gio_xdgmime);
