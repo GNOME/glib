@@ -559,6 +559,8 @@
  */
 #if    __GNUC__ > 6
 #define G_GNUC_FALLTHROUGH __attribute__((fallthrough))
+#elif g_macro__has_attribute (fallthrough)
+#define G_GNUC_FALLTHROUGH __attribute__((fallthrough))
 #else
 #define G_GNUC_FALLTHROUGH
 #endif /* __GNUC__ */
