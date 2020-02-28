@@ -1144,18 +1144,9 @@ get_gio_module_dir (void)
       gchar *install_dir;
 
       install_dir = g_win32_get_package_installation_directory_of_module (gio_dll);
-#ifdef _MSC_VER
-      /* On Visual Studio builds we have all the libraries and binaries in bin
-       * so better load the gio modules from bin instead of lib
-       */
-      module_dir = g_build_filename (install_dir,
-                                     "bin", "gio", "modules",
-                                     NULL);
-#else
       module_dir = g_build_filename (install_dir,
                                      "lib", "gio", "modules",
                                      NULL);
-#endif
       g_free (install_dir);
 #else
       module_dir = g_strdup (GIO_MODULE_DIR);
