@@ -1071,7 +1071,8 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
   SECURITY_ATTRIBUTES  sa;
 
   if (ExceptionInfo == NULL ||
-      ExceptionInfo->ExceptionRecord == NULL)
+      ExceptionInfo->ExceptionRecord == NULL ||
+      IsDebuggerPresent ())
     return EXCEPTION_CONTINUE_SEARCH;
 
   er = ExceptionInfo->ExceptionRecord;
@@ -1081,7 +1082,6 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
     case EXCEPTION_ACCESS_VIOLATION:
     case EXCEPTION_STACK_OVERFLOW:
     case EXCEPTION_ILLEGAL_INSTRUCTION:
-    case EXCEPTION_BREAKPOINT: /* DebugBreak() raises this */
       break;
     default:
       catch_list = getenv ("G_VEH_CATCH");
@@ -1107,17 +1107,6 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
         break;
 
       return EXCEPTION_CONTINUE_SEARCH;
-    }
-
-  if (IsDebuggerPresent ())
-    {
-      /* This shouldn't happen, but still try to
-       * avoid recursion with EXCEPTION_BREAKPOINT and
-       * DebugBreak().
-       */
-      if (er->ExceptionCode != EXCEPTION_BREAKPOINT)
-        DebugBreak ();
-      return EXCEPTION_CONTINUE_EXECUTION;
     }
 
   fprintf_s (stderr,
@@ -1217,6 +1206,14 @@ void
 g_crash_handler_win32_init (void)
 {
   if (WinVEH_handle != NULL)
+    return;
+
+  /* Do not register an exception handler if we're not supposed to catch any
+   * exceptions. Exception handlers are considered dangerous to use, and can
+   * break advanced exception handling such as in CLRs like C# or other managed
+   * code. See: https://blogs.msdn.microsoft.com/jmstall/2006/05/24/beware-of-the-vectored-exception-handler-and-managed-code/
+   */
+  if (getenv ("G_DEBUGGER") == NULL && getenv("G_VEH_CATCH") == NULL)
     return;
 
   WinVEH_handle = AddVectoredExceptionHandler (0, &g_win32_veh_handler);
