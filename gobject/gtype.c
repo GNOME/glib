@@ -4456,7 +4456,7 @@ gobject_init (void)
   _g_signal_init ();
 }
 
-#if defined (G_OS_WIN32)
+#if defined (G_OS_WIN32) && !defined(GOBJECT_STATIC_COMPILATION)
 
 BOOL WINAPI DllMain (HINSTANCE hinstDLL,
                      DWORD     fdwReason,

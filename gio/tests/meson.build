@@ -827,4 +827,6 @@ if installed_tests_enabled
 endif
 
 subdir('services')
-subdir('modules')
+if get_option('default_library') != 'static'
+	subdir('modules')
+endif
