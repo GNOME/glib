@@ -12,7 +12,7 @@ cache:
 variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v8"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v6"
-  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v2"
+  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v3"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v2"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
