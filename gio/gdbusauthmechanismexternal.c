@@ -34,6 +34,7 @@ struct _GDBusAuthMechanismExternalPrivate
   gboolean is_client;
   gboolean is_server;
   GDBusAuthMechanismState state;
+  gboolean empty_data_sent;
 };
 
 static gint                     mechanism_get_priority              (void);
@@ -189,7 +190,10 @@ data_matches_credentials (const gchar  *data,
     goto out;
 
   if (data == NULL || data_len == 0)
-    goto out;
+    {
+      match = TRUE;
+      goto out;
+    }
 
 #if defined(G_OS_UNIX)
   {
@@ -241,7 +245,7 @@ mechanism_server_initiate (GDBusAuthMechanism   *mechanism,
     }
   else
     {
-      m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_WAITING_FOR_DATA;
+      m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_HAVE_DATA_TO_SEND;
     }
 }
 
@@ -276,12 +280,20 @@ mechanism_server_data_send (GDBusAuthMechanism   *mechanism,
 
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM_EXTERNAL (mechanism), NULL);
   g_return_val_if_fail (m->priv->is_server && !m->priv->is_client, NULL);
-  g_return_val_if_fail (m->priv->state == G_DBUS_AUTH_MECHANISM_STATE_HAVE_DATA_TO_SEND, NULL);
 
-  /* can never end up here because we are never in the HAVE_DATA_TO_SEND state */
-  g_assert_not_reached ();
+  if (out_data_len)
+    *out_data_len = 0;
 
-  return NULL;
+  if (m->priv->empty_data_sent)
+    {
+      m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED;
+      return NULL;
+    }
+
+  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_WAITING_FOR_DATA;
+  m->priv->empty_data_sent = TRUE;
+
+  return g_strdup ("");
 }
 
 static gchar *
@@ -328,34 +340,16 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
                            gsize                *out_initial_response_len)
 {
   GDBusAuthMechanismExternal *m = G_DBUS_AUTH_MECHANISM_EXTERNAL (mechanism);
-  gchar *initial_response = NULL;
-  GCredentials *credentials;
 
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM_EXTERNAL (mechanism), NULL);
   g_return_val_if_fail (!m->priv->is_server && !m->priv->is_client, NULL);
 
   m->priv->is_client = TRUE;
-  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED;
+  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_WAITING_FOR_DATA;
 
   *out_initial_response_len = 0;
 
-  credentials = _g_dbus_auth_mechanism_get_credentials (mechanism);
-  g_assert (credentials != NULL);
-
-  /* return the uid */
-#if defined(G_OS_UNIX)
-  initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, (gint64) g_credentials_get_unix_user (credentials, NULL));
- *out_initial_response_len = strlen (initial_response);
-#elif defined(G_OS_WIN32)
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic warning "-Wcpp"
-#warning Dont know how to send credentials on this OS. The EXTERNAL D-Bus authentication mechanism will not work.
-#pragma GCC diagnostic pop
-#endif
-  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
-#endif
-  return initial_response;
+  return NULL;
 }
 
 static void
@@ -369,8 +363,7 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
   g_return_if_fail (m->priv->is_client && !m->priv->is_server);
   g_return_if_fail (m->priv->state == G_DBUS_AUTH_MECHANISM_STATE_WAITING_FOR_DATA);
 
-  /* can never end up here because we are never in the WAITING_FOR_DATA state */
-  g_assert_not_reached ();
+  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_HAVE_DATA_TO_SEND;
 }
 
 static gchar *
@@ -383,10 +376,8 @@ mechanism_client_data_send (GDBusAuthMechanism   *mechanism,
   g_return_val_if_fail (m->priv->is_client && !m->priv->is_server, NULL);
   g_return_val_if_fail (m->priv->state == G_DBUS_AUTH_MECHANISM_STATE_HAVE_DATA_TO_SEND, NULL);
 
-  /* can never end up here because we are never in the HAVE_DATA_TO_SEND state */
-  g_assert_not_reached ();
-
-  return NULL;
+  *out_data_len = 0;
+  return g_strdup ("");
 }
 
 static void
