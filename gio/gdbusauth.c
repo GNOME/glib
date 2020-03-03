@@ -784,7 +784,15 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
           if (line == NULL)
             goto out;
           debug_print ("CLIENT: WaitingForData, read='%s'", line);
-          if (g_str_has_prefix (line, "DATA "))
+          if (g_str_equal (line, "DATA"))
+            {
+              g_free (line);
+              if (!g_data_output_stream_put_string (dos, "DATA\r\n", cancellable, error))
+                goto out;
+
+              state = CLIENT_STATE_WAITING_FOR_OK;
+            }
+          else if (g_str_has_prefix (line, "DATA "))
             {
               gchar *encoded;
               gchar *decoded_data;
@@ -1197,6 +1205,13 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                       state = SERVER_STATE_WAITING_FOR_DATA;
                       break;
 
+                    case G_DBUS_AUTH_MECHANISM_STATE_EMPTY_DATA:
+                      _g_dbus_auth_mechanism_server_data_send (mech, NULL);
+
+                      if (!g_data_output_stream_put_string (dos, "DATA\r\n", cancellable, error))
+                        goto out;
+                      goto change_state;
+                      break;
                     case G_DBUS_AUTH_MECHANISM_STATE_HAVE_DATA_TO_SEND:
                       {
                         gchar *data;
@@ -1249,7 +1264,12 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
           debug_print ("SERVER: WaitingForData, read '%s'", line);
           if (line == NULL)
             goto out;
-          if (g_str_has_prefix (line, "DATA "))
+          if (g_str_equal (line, "DATA"))
+            {
+              g_free (line);
+              goto change_state;
+            }
+          else if (g_str_has_prefix (line, "DATA "))
             {
               gchar *encoded;
               gchar *decoded_data;
@@ -1298,6 +1318,11 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
           if (line == NULL)
             goto out;
           debug_print ("SERVER: WaitingForBegin, read '%s'", line);
+          if (g_strcmp0 (line, "DATA") == 0)
+            {
+              g_free (line);
+              continue;
+            }
           if (g_strcmp0 (line, "BEGIN") == 0)
             {
               /* YAY, done! */
