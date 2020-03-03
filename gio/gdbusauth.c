@@ -784,7 +784,14 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
           if (line == NULL)
             goto out;
           debug_print ("CLIENT: WaitingForData, read='%s'", line);
-          if (g_str_has_prefix (line, "DATA "))
+          if (g_str_equal (line, "DATA"))
+            {
+              if (!g_data_output_stream_put_string (dos, "DATA\r\n", cancellable, error))
+                goto out;
+
+              state = CLIENT_STATE_WAITING_FOR_OK;
+            }
+          else if (g_str_has_prefix (line, "DATA "))
             {
               gchar *encoded;
               gchar *decoded_data;
