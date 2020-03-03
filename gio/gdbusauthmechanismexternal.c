@@ -328,34 +328,16 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
                            gsize                *out_initial_response_len)
 {
   GDBusAuthMechanismExternal *m = G_DBUS_AUTH_MECHANISM_EXTERNAL (mechanism);
-  gchar *initial_response = NULL;
-  GCredentials *credentials;
 
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM_EXTERNAL (mechanism), NULL);
   g_return_val_if_fail (!m->priv->is_server && !m->priv->is_client, NULL);
 
   m->priv->is_client = TRUE;
-  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED;
+  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_WAITING_FOR_DATA;
 
   *out_initial_response_len = 0;
 
-  credentials = _g_dbus_auth_mechanism_get_credentials (mechanism);
-  g_assert (credentials != NULL);
-
-  /* return the uid */
-#if defined(G_OS_UNIX)
-  initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, (gint64) g_credentials_get_unix_user (credentials, NULL));
- *out_initial_response_len = strlen (initial_response);
-#elif defined(G_OS_WIN32)
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic warning "-Wcpp"
-#warning Dont know how to send credentials on this OS. The EXTERNAL D-Bus authentication mechanism will not work.
-#pragma GCC diagnostic pop
-#endif
-  m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
-#endif
-  return initial_response;
+  return NULL;
 }
 
 static void
