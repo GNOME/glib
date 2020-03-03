@@ -784,13 +784,13 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
           if (line == NULL)
             goto out;
           debug_print ("CLIENT: WaitingForData, read='%s'", line);
-          if (g_str_has_prefix (line, "DATA "))
+          if (g_str_equal (line, "DATA") || g_str_has_prefix (line, "DATA "))
             {
               gchar *encoded;
               gchar *decoded_data;
               gsize decoded_data_len = 0;
 
-              encoded = g_strdup (line + 5);
+              encoded = g_strdup (line + 4);
               g_free (line);
               g_strstrip (encoded);
               decoded_data = hexdecode (encoded, &decoded_data_len, error);
@@ -1249,13 +1249,13 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
           debug_print ("SERVER: WaitingForData, read '%s'", line);
           if (line == NULL)
             goto out;
-          if (g_str_has_prefix (line, "DATA "))
+          if (g_str_equal (line, "DATA") || g_str_has_prefix (line, "DATA "))
             {
               gchar *encoded;
               gchar *decoded_data;
               gsize decoded_data_len = 0;
 
-              encoded = g_strdup (line + 5);
+              encoded = g_strdup (line + 4);
               g_free (line);
               g_strstrip (encoded);
               decoded_data = hexdecode (encoded, &decoded_data_len, error);
