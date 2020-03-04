@@ -2543,7 +2543,7 @@ msgstr "<choices> no està permés per a claus del tipus «%s»"
 #: ../gio/glib-compile-schemas.c:529
 #, c-format
 msgid "<choice value='%s'/> already given"
-msgstr "ja està especificat <choice value='%s'>"
+msgstr "ja està especificat <choice value='%s'/>"
 
 #: ../gio/glib-compile-schemas.c:544
 #, c-format
