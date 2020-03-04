@@ -2504,7 +2504,7 @@ msgstr "Valeur numérique non valide"
 #: gio/glib-compile-schemas.c:111
 #, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<value nick='%s'> est déjà défini"
+msgstr "<value nick='%s'/> est déjà défini"
 
 #: gio/glib-compile-schemas.c:119
 #, c-format
@@ -2592,7 +2592,7 @@ msgstr "<choices> non autorisés pour des clés du type « %s »"
 #: gio/glib-compile-schemas.c:528
 #, c-format
 msgid "<choice value='%s'/> already given"
-msgstr "<choice value='%s'> a déjà été défini"
+msgstr "<choice value='%s'/> a déjà été défini"
 
 #: gio/glib-compile-schemas.c:543
 #, c-format
