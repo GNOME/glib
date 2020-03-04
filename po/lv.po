@@ -2375,7 +2375,7 @@ msgstr "Nederīga skaitļa vērtība"
 #: ../gio/glib-compile-schemas.c:114
 #, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<value nick='%s'> jau norādīts"
+msgstr "<value nick='%s'/> jau norādīts"
 
 #: ../gio/glib-compile-schemas.c:122
 #, c-format
@@ -2452,7 +2452,7 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:501
 msgid "<choices> already specified for this key"
-msgstr "<child name='%s'> jau ir norādīts šai atslēgai"
+msgstr "<choices> jau ir norādīts šai atslēgai"
 
 #: ../gio/glib-compile-schemas.c:513
 #, c-format
@@ -2462,7 +2462,7 @@ msgstr "<choices> nav atļautas atslēgām ar tipu “%s”"
 #: ../gio/glib-compile-schemas.c:529
 #, c-format
 msgid "<choice value='%s'/> already given"
-msgstr "<child name='%s'> jau dots"
+msgstr "<choice value='%s'/> jau dots"
 
 #: ../gio/glib-compile-schemas.c:544
 #, c-format
