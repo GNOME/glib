@@ -1142,7 +1142,8 @@ g_date_prepare_to_parse (const gchar      *str,
               dmy_order[i] = G_DATE_DAY;
               break;
             case 76:
-              using_twodigit_years = TRUE; /* FALL THRU */
+              using_twodigit_years = TRUE;
+              G_GNUC_FALLTHROUGH;
             case 1976:
               dmy_order[i] = G_DATE_YEAR;
               break;

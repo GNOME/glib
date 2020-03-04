@@ -2255,8 +2255,7 @@ g_execute (const gchar *file,
                */
 	      got_eacces = TRUE;
 
-              /* FALL THRU */
-              
+              G_GNUC_FALLTHROUGH;
 	    case ENOENT:
 #ifdef ESTALE
 	    case ESTALE:

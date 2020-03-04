@@ -310,6 +310,7 @@ g_slice_set_config (GSliceConfig ckey,
       break;
     case G_SLICE_CONFIG_COLOR_INCREMENT:
       slice_config.color_increment = value;
+      break;
     default: ;
     }
 }

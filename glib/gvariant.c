@@ -4466,7 +4466,7 @@ g_variant_check_format_string (GVariant    *value,
               return FALSE;
             }
 
-          /* fall through */
+          G_GNUC_FALLTHROUGH;
         case '^':
         case '@':
           /* ignore these 2 (or 3) */
@@ -4487,7 +4487,7 @@ g_variant_check_format_string (GVariant    *value,
           if (*type_string != '(')
             return FALSE;
 
-          /* fall through */
+          G_GNUC_FALLTHROUGH;
         case '*':
           /* consume a full type string for the '*' or 'r' */
           if (!g_variant_type_string_scan (type_string, NULL, &type_string))
