@@ -2408,7 +2408,7 @@ msgstr "Nilai angka tidak sah"
 #: gio/glib-compile-schemas.c:111
 #, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<value nick='%s'> sudah dinyatakan"
+msgstr "<value nick='%s'/> sudah dinyatakan"
 
 #: gio/glib-compile-schemas.c:119
 #, c-format
@@ -2535,7 +2535,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:594
 #, c-format
 msgid "<alias value='%s'/> already specified"
-msgstr "<alias value='%s'> sudah dinyatakan"
+msgstr "<alias value='%s'/> sudah dinyatakan"
 
 #: gio/glib-compile-schemas.c:604
 #, c-format
