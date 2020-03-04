@@ -471,23 +471,26 @@ test_delete_link (void)
 static void
 test_prepend (void)
 {
+  gpointer a = "a";
+  gpointer b = "b";
+  gpointer c = "c";
   GList *l, *l2;
 
   l = NULL;
-  l = g_list_prepend (l, "c");
-  l = g_list_prepend (l, "a");
+  l = g_list_prepend (l, c);
+  l = g_list_prepend (l, a);
 
-  g_assert (l->data == (gpointer)"a");
-  g_assert (l->next->data == (gpointer)"c");
+  g_assert (l->data == a);
+  g_assert (l->next->data == c);
   g_assert (l->next->next == NULL);
 
   l2 = l->next;
-  l2 = g_list_prepend (l2, "b");
+  l2 = g_list_prepend (l2, b);
   g_assert (l2->prev == l);
 
-  g_assert (l->data == (gpointer)"a");
-  g_assert (l->next->data == (gpointer)"b");
-  g_assert (l->next->next->data == (gpointer)"c");
+  g_assert (l->data == a);
+  g_assert (l->next->data == b);
+  g_assert (l->next->next->data == c);
   g_assert (l->next->next->next == NULL);
 
   g_list_free (l);
