@@ -102,14 +102,6 @@ static gboolean g_unix_output_stream_writev       (GOutputStream        *stream,
 static gboolean g_unix_output_stream_close        (GOutputStream        *stream,
 						   GCancellable         *cancellable,
 						   GError              **error);
-static void     g_unix_output_stream_close_async  (GOutputStream        *stream,
-						   int                   io_priority,
-						   GCancellable         *cancellable,
-						   GAsyncReadyCallback   callback,
-						   gpointer              data);
-static gboolean g_unix_output_stream_close_finish (GOutputStream        *stream,
-						   GAsyncResult         *result,
-						   GError              **error);
 
 static gboolean g_unix_output_stream_pollable_can_poll      (GPollableOutputStream *stream);
 static gboolean g_unix_output_stream_pollable_is_writable   (GPollableOutputStream *stream);
@@ -133,8 +125,6 @@ g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
   stream_class->write_fn = g_unix_output_stream_write;
   stream_class->writev_fn = g_unix_output_stream_writev;
   stream_class->close_fn = g_unix_output_stream_close;
-  stream_class->close_async = g_unix_output_stream_close_async;
-  stream_class->close_finish = g_unix_output_stream_close_finish;
 
    /**
    * GUnixOutputStream:fd:
@@ -537,37 +527,6 @@ g_unix_output_stream_close (GOutputStream  *stream,
     }
 
   return res != -1;
-}
-
-static void
-g_unix_output_stream_close_async (GOutputStream       *stream,
-				  int                  io_priority,
-				  GCancellable        *cancellable,
-				  GAsyncReadyCallback  callback,
-				  gpointer             user_data)
-{
-  GTask *task;
-  GError *error = NULL;
-
-  task = g_task_new (stream, cancellable, callback, user_data);
-  g_task_set_source_tag (task, g_unix_output_stream_close_async);
-  g_task_set_priority (task, io_priority);
-
-  if (g_unix_output_stream_close (stream, cancellable, &error))
-    g_task_return_boolean (task, TRUE);
-  else
-    g_task_return_error (task, error);
-  g_object_unref (task);
-}
-
-static gboolean
-g_unix_output_stream_close_finish (GOutputStream  *stream,
-				   GAsyncResult   *result,
-				   GError        **error)
-{
-  g_return_val_if_fail (g_task_is_valid (result, stream), FALSE);
-
-  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 static gboolean
