@@ -2323,7 +2323,7 @@ msgstr "Ugyldig numerisk verdi"
 #: ../gio/glib-compile-schemas.c:114
 #, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<value nick=«%s»/> er allerede spesifisert"
+msgstr "<value nick='%s'/> er allerede spesifisert"
 
 #: ../gio/glib-compile-schemas.c:122
 #, c-format
@@ -2409,7 +2409,7 @@ msgstr "<choices> ikke tillatt for nøkler av type «%s»"
 #: ../gio/glib-compile-schemas.c:529
 #, c-format
 msgid "<choice value='%s'/> already given"
-msgstr "<choice value='%s'> allerede oppgitt"
+msgstr "<choice value='%s'/> allerede oppgitt"
 
 #: ../gio/glib-compile-schemas.c:544
 #, c-format
@@ -2610,7 +2610,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1257
 #, c-format
 msgid "<%s id='%s'> already specified"
-msgstr "<%s id=«%s»> er allerede spesifisert"
+msgstr "<%s id='%s'> er allerede spesifisert"
 
 #: ../gio/glib-compile-schemas.c:1407 ../gio/glib-compile-schemas.c:1423
 #, c-format
