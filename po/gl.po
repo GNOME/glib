@@ -2543,7 +2543,7 @@ msgstr "<choices> non permitidas para as chaves do tipo “%s”"
 #: gio/glib-compile-schemas.c:528
 #, c-format
 msgid "<choice value='%s'/> already given"
-msgstr "<choice value='%s'> xa fornecido"
+msgstr "<choice value='%s'/> xa fornecido"
 
 #: gio/glib-compile-schemas.c:543
 #, c-format
