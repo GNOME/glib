@@ -214,11 +214,15 @@ glibconfig_conf.set('glib_os', glib_os)
 # for dependencies that don't normally come with pkg-config files for Visual Studio builds
 buildtype = get_option('buildtype')
 
+# Use debug/optimization flags to determine whether to enable debug or disable
+# cast checks
 glib_debug_cflags = []
-if buildtype.startswith('debug')
+if get_option('debug')
   glib_debug_cflags += ['-DG_ENABLE_DEBUG']
-elif buildtype == 'release'
+  message('Enabling various debug infrastructure')
+elif get_option('optimization') in ['2', '3', 's']
   glib_debug_cflags += ['-DG_DISABLE_CAST_CHECKS']
+  message('Disabling cast checks')
 endif
 
 add_project_arguments(glib_debug_cflags, language: 'c')
