@@ -2529,7 +2529,7 @@ msgstr "<choices> nie je povolený pre kľúče typu „%s“"
 #: gio/glib-compile-schemas.c:531
 #, c-format
 msgid "<choice value='%s'/> already given"
-msgstr "<choice value='%s'> je už zadaný"
+msgstr "<choice value='%s'/> je už zadaný"
 
 #: gio/glib-compile-schemas.c:546
 #, c-format
