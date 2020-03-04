@@ -2418,7 +2418,7 @@ msgstr "Neteisinga skaitinė vertė"
 #: gio/glib-compile-schemas.c:111
 #, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<value nick='%s'> jau nurodytas"
+msgstr "<value nick='%s'/> jau nurodytas"
 
 #: gio/glib-compile-schemas.c:119
 #, c-format
@@ -2506,7 +2506,7 @@ msgstr "<choices> neleidžiamas „%s“ tipo raktams"
 #: gio/glib-compile-schemas.c:528
 #, c-format
 msgid "<choice value='%s'/> already given"
-msgstr "<choice value='%s'> jau nurodytas"
+msgstr "<choice value='%s'/> jau nurodytas"
 
 #: gio/glib-compile-schemas.c:543
 #, c-format
@@ -2541,7 +2541,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:594
 #, c-format
 msgid "<alias value='%s'/> already specified"
-msgstr "<alias value='%s'> jau nurodytas"
+msgstr "<alias value='%s'/> jau nurodytas"
 
 #: gio/glib-compile-schemas.c:604
 #, c-format
