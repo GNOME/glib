@@ -367,33 +367,29 @@ is_canonical (const gchar *key)
   return (strchr (key, '_') == NULL);
 }
 
-static gboolean
-is_valid_signal_name (const gchar *key)
+/**
+ * g_signal_is_valid_name:
+ * @name: the canonical name of the signal
+ *
+ * Validate a signal name. This can be useful for dynamically-generated signals
+ * which need to be validated at run-time before actually trying to create them.
+ *
+ * See [canonical parameter names][canonical-parameter-names] for details of
+ * the rules for valid names. The rules for signal names are the same as those
+ * for property names.
+ *
+ * Returns: %TRUE if @name is a valid signal name, %FALSE otherwise.
+ * Since: 2.66
+ */
+gboolean
+g_signal_is_valid_name (const gchar *name)
 {
-  const gchar *p;
-
   /* FIXME: We allow this, against our own documentation (the leading `-` is
    * invalid), because GTK has historically used this. */
-  if (g_str_equal (key, "-gtk-private-changed"))
+  if (g_str_equal (name, "-gtk-private-changed"))
     return TRUE;
 
-  /* First character must be a letter. */
-  if ((key[0] < 'A' || key[0] > 'Z') &&
-      (key[0] < 'a' || key[0] > 'z'))
-    return FALSE;
-
-  for (p = key; *p != 0; p++)
-    {
-      const gchar c = *p;
-
-      if (c != '-' && c != '_' &&
-          (c < '0' || c > '9') &&
-          (c < 'A' || c > 'Z') &&
-          (c < 'a' || c > 'z'))
-        return FALSE;
-    }
-
-  return TRUE;
+  return g_param_spec_is_valid_name (name);
 }
 
 static inline guint
@@ -1325,7 +1321,7 @@ g_signal_lookup (const gchar *name,
       if (!g_type_name (itype))
 	g_warning (G_STRLOC ": unable to look up signal \"%s\" for invalid type id '%"G_GSIZE_FORMAT"'",
 		   name, itype);
-      else if (!is_valid_signal_name (name))
+      else if (!g_signal_is_valid_name (name))
         g_warning (G_STRLOC ": unable to look up invalid signal name \"%s\" on type '%s'",
                    name, g_type_name (itype));
     }
@@ -1712,7 +1708,7 @@ g_signal_newv (const gchar       *signal_name,
   GSignalCVaMarshaller va_marshaller;
   
   g_return_val_if_fail (signal_name != NULL, 0);
-  g_return_val_if_fail (is_valid_signal_name (signal_name), 0);
+  g_return_val_if_fail (g_signal_is_valid_name (signal_name), 0);
   g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), 0);
   if (n_params)
     g_return_val_if_fail (param_types != NULL, 0);
