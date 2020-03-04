@@ -41,8 +41,8 @@
  *
  * ## Parameter names # {#canonical-parameter-names}
  *
- * A property name consists of segments consisting of ASCII letters and
- * digits, separated by either the `-` or `_` character. The first
+ * A property name consists of one or more segments consisting of ASCII letters
+ * and digits, separated by either the `-` or `_` character. The first
  * character of a property name must be a letter. These are the same rules as
  * for signal naming (see g_signal_new()).
  *
@@ -381,20 +381,34 @@ is_canonical (const gchar *key)
   return (strchr (key, '_') == NULL);
 }
 
-static gboolean
-is_valid_property_name (const gchar *key)
+/**
+ * g_param_spec_is_valid_name:
+ * @name: the canonical name of the property
+ *
+ * Validate a property name for a #GParamSpec. This can be useful for
+ * dynamically-generated properties which need to be validated at run-time
+ * before actually trying to create them.
+ *
+ * See [canonical parameter names][canonical-parameter-names] for details of
+ * the rules for valid names.
+ *
+ * Returns: %TRUE if @name is a valid property name, %FALSE otherwise.
+ * Since: 2.66
+ */
+gboolean
+g_param_spec_is_valid_name (const gchar *name)
 {
   const gchar *p;
 
   /* First character must be a letter. */
-  if ((key[0] < 'A' || key[0] > 'Z') &&
-      (key[0] < 'a' || key[0] > 'z'))
+  if ((name[0] < 'A' || name[0] > 'Z') &&
+      (name[0] < 'a' || name[0] > 'z'))
     return FALSE;
 
-  for (p = key; *p != 0; p++)
+  for (p = name; *p != 0; p++)
     {
       const gchar c = *p;
-      
+
       if (c != '-' && c != '_' &&
           (c < '0' || c > '9') &&
           (c < 'A' || c > 'Z') &&
@@ -439,7 +453,7 @@ g_param_spec_internal (GType        param_type,
   
   g_return_val_if_fail (G_TYPE_IS_PARAM (param_type) && param_type != G_TYPE_PARAM, NULL);
   g_return_val_if_fail (name != NULL, NULL);
-  g_return_val_if_fail (is_valid_property_name (name), NULL);
+  g_return_val_if_fail (g_param_spec_is_valid_name (name), NULL);
   g_return_val_if_fail (!(flags & G_PARAM_STATIC_NAME) || is_canonical (name), NULL);
   
   pspec = (gpointer) g_type_create_instance (param_type);
