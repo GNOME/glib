@@ -109,7 +109,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
                                                             G_PARAM_CONSTRUCT_ONLY |
                                                             G_PARAM_STATIC_STRINGS));
   /**
-   * GDtlsConnection:database:
+   * GDtlsConnection:database: (nullable)
    *
    * The certificate database to use when verifying this TLS connection.
    * If no certificate database is set, then the default database will be
@@ -125,7 +125,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
                                                             G_PARAM_READWRITE |
                                                             G_PARAM_STATIC_STRINGS));
   /**
-   * GDtlsConnection:interaction:
+   * GDtlsConnection:interaction: (nullable)
    *
    * A #GTlsInteraction object to be used when the connection or certificate
    * database need to interact with the user. This will be used to prompt the
@@ -192,7 +192,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
                                                             G_PARAM_READWRITE |
                                                             G_PARAM_STATIC_STRINGS));
   /**
-   * GDtlsConnection:peer-certificate:
+   * GDtlsConnection:peer-certificate: (nullable)
    *
    * The connection's peer's certificate, after the TLS handshake has
    * completed and the certificate has been accepted. Note in
@@ -232,7 +232,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
                                                            G_PARAM_READABLE |
                                                            G_PARAM_STATIC_STRINGS));
   /**
-   * GDtlsConnection:advertised-protocols:
+   * GDtlsConnection:advertised-protocols: (nullable)
    *
    * The list of application-layer protocols that the connection
    * advertises that it is willing to speak. See
@@ -328,7 +328,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
 /**
  * g_dtls_connection_set_database:
  * @conn: a #GDtlsConnection
- * @database: a #GTlsDatabase
+ * @database: (nullable): a #GTlsDatabase
  *
  * Sets the certificate database that is used to verify peer certificates.
  * This is set to the default database by default. See
@@ -360,7 +360,7 @@ g_dtls_connection_set_database (GDtlsConnection *conn,
  * Gets the certificate database that @conn uses to verify
  * peer certificates. See g_dtls_connection_set_database().
  *
- * Returns: (transfer none): the certificate database that @conn uses or %NULL
+ * Returns: (transfer none) (nullable): the certificate database that @conn uses or %NULL
  *
  * Since: 2.48
  */
@@ -422,7 +422,7 @@ g_dtls_connection_set_certificate (GDtlsConnection *conn,
  * Gets @conn's certificate, as set by
  * g_dtls_connection_set_certificate().
  *
- * Returns: (transfer none): @conn's certificate, or %NULL
+ * Returns: (transfer none) (nullable): @conn's certificate, or %NULL
  *
  * Since: 2.48
  */
@@ -472,7 +472,7 @@ g_dtls_connection_set_interaction (GDtlsConnection *conn,
  * for things like prompting the user for passwords. If %NULL is returned, then
  * no user interaction will occur for this connection.
  *
- * Returns: (transfer none): The interaction object.
+ * Returns: (transfer none) (nullable): The interaction object.
  *
  * Since: 2.48
  */
@@ -498,7 +498,7 @@ g_dtls_connection_get_interaction (GDtlsConnection       *conn)
  * (It is not set during the emission of
  * #GDtlsConnection::accept-certificate.)
  *
- * Returns: (transfer none): @conn's peer's certificate, or %NULL
+ * Returns: (transfer none) (nullable): @conn's peer's certificate, or %NULL
  *
  * Since: 2.48
  */
