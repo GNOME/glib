@@ -249,6 +249,9 @@ test_slist_remove_all (void)
 static void
 test_slist_insert (void)
 {
+  gpointer a = "a";
+  gpointer b = "b";
+  gpointer c = "c";
   GSList *slist = NULL;
   GSList *st;
   gint   nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -274,23 +277,23 @@ test_slist_insert (void)
 
   g_slist_free (slist);
 
-  slist = g_slist_insert (NULL, "a", 1);
-  g_assert (slist->data == (gpointer)"a");
+  slist = g_slist_insert (NULL, a, 1);
+  g_assert (slist->data == a);
   g_assert (slist->next == NULL);
   g_slist_free (slist);
 
-  slist = g_slist_append (NULL, "a");
-  slist = g_slist_append (slist, "b");
-  slist = g_slist_insert (slist, "c", 5);
+  slist = g_slist_append (NULL, a);
+  slist = g_slist_append (slist, b);
+  slist = g_slist_insert (slist, c, 5);
 
-  g_assert (slist->next->next->data == (gpointer)"c");
+  g_assert (slist->next->next->data == c);
   g_assert (slist->next->next->next == NULL);
   g_slist_free (slist);
 
-  slist = g_slist_append (NULL, "a");
-  slist = g_slist_insert_before (slist, slist, "b");
-  g_assert (slist->data == (gpointer)"b");
-  g_assert (slist->next->data == (gpointer)"a");
+  slist = g_slist_append (NULL, a);
+  slist = g_slist_insert_before (slist, slist, b);
+  g_assert (slist->data == b);
+  g_assert (slist->next->data == a);
   g_assert (slist->next->next == NULL);
   g_slist_free (slist);
 }
@@ -334,17 +337,19 @@ test_slist_position (void)
 static void
 test_slist_concat (void)
 {
+  gpointer a = "a";
+  gpointer b = "b";
   GSList *s1, *s2, *s;
 
-  s1 = g_slist_append (NULL, "a");
-  s2 = g_slist_append (NULL, "b");
+  s1 = g_slist_append (NULL, a);
+  s2 = g_slist_append (NULL, b);
   s = g_slist_concat (s1, s2);
-  g_assert (s->data == (gpointer)"a");
-  g_assert (s->next->data == (gpointer)"b");
+  g_assert (s->data == a);
+  g_assert (s->next->data == b);
   g_assert (s->next->next == NULL);
   g_slist_free (s);
 
-  s1 = g_slist_append (NULL, "a");
+  s1 = g_slist_append (NULL, a);
 
   s = g_slist_concat (NULL, s1);
   g_assert_cmpint (g_slist_length (s), ==, 1);
