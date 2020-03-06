@@ -166,9 +166,13 @@ _g_win32_fix_mode (wchar_t *mode)
  * UT = (FT - 116444736000000000) / 10000000.
  * Converts FILETIME to unix epoch time in form
  * of a signed 64-bit integer (can be negative).
+ *
+ * The function that does the reverse can be found in
+ * gio/glocalfileinfo.c.
  */
 static gint64
-_g_win32_filetime_to_unix_time (FILETIME *ft)
+_g_win32_filetime_to_unix_time (const FILETIME *ft,
+                                gint32         *nsec)
 {
   gint64 result;
   /* 1 unit of FILETIME is 100ns */
@@ -179,7 +183,12 @@ _g_win32_filetime_to_unix_time (FILETIME *ft)
   const gint64 filetime_unix_epoch_offset = 116444736000000000;
 
   result = ((gint64) ft->dwLowDateTime) | (((gint64) ft->dwHighDateTime) << 32);
-  return (result - filetime_unix_epoch_offset) / hundreds_of_usec_per_sec;
+  result -= filetime_unix_epoch_offset;
+
+  if (nsec)
+    *nsec = (result % hundreds_of_usec_per_sec) * 100;
+
+  return result / hundreds_of_usec_per_sec;
 }
 
 #  ifdef _MSC_VER
@@ -206,10 +215,10 @@ _g_win32_filetime_to_unix_time (FILETIME *ft)
  * Tries to reproduce the behaviour and quirks of MS C runtime stat().
  */
 static int
-_g_win32_fill_statbuf_from_handle_info (const wchar_t              *filename,
-                                        const wchar_t              *filename_target,
-                                        BY_HANDLE_FILE_INFORMATION *handle_info,
-                                        struct __stat64            *statbuf)
+_g_win32_fill_statbuf_from_handle_info (const wchar_t                    *filename,
+                                        const wchar_t                    *filename_target,
+                                        const BY_HANDLE_FILE_INFORMATION *handle_info,
+                                        struct __stat64                  *statbuf)
 {
   wchar_t drive_letter_w = 0;
   size_t drive_letter_size = MB_CUR_MAX;
@@ -291,9 +300,9 @@ _g_win32_fill_statbuf_from_handle_info (const wchar_t              *filename,
   statbuf->st_nlink = handle_info->nNumberOfLinks;
   statbuf->st_uid = statbuf->st_gid = 0;
   statbuf->st_size = (((guint64) handle_info->nFileSizeHigh) << 32) | handle_info->nFileSizeLow;
-  statbuf->st_ctime = _g_win32_filetime_to_unix_time (&handle_info->ftCreationTime);
-  statbuf->st_mtime = _g_win32_filetime_to_unix_time (&handle_info->ftLastWriteTime);
-  statbuf->st_atime = _g_win32_filetime_to_unix_time (&handle_info->ftLastAccessTime);
+  statbuf->st_ctime = _g_win32_filetime_to_unix_time (&handle_info->ftCreationTime, NULL);
+  statbuf->st_mtime = _g_win32_filetime_to_unix_time (&handle_info->ftLastWriteTime, NULL);
+  statbuf->st_atime = _g_win32_filetime_to_unix_time (&handle_info->ftLastAccessTime, NULL);
 
   return 0;
 }
@@ -320,9 +329,9 @@ _g_win32_fill_privatestat (const struct __stat64            *statbuf,
 
   buf->reparse_tag = reparse_tag;
 
-  buf->st_ctime = statbuf->st_ctime;
-  buf->st_atime = statbuf->st_atime;
-  buf->st_mtime = statbuf->st_mtime;
+  buf->st_ctim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftCreationTime, &buf->st_ctim.tv_nsec);
+  buf->st_mtim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftLastWriteTime, &buf->st_mtim.tv_nsec);
+  buf->st_atim.tv_sec = _g_win32_filetime_to_unix_time (&handle_info->ftLastAccessTime, &buf->st_atim.tv_nsec);
 }
 
 /* Read the link data from a symlink/mountpoint represented
@@ -1322,9 +1331,9 @@ g_stat (const gchar *filename,
   buf->st_gid = w32_buf.st_gid;
   buf->st_rdev = w32_buf.st_dev;
   buf->st_size = w32_buf.st_size;
-  buf->st_atime = w32_buf.st_atime;
-  buf->st_mtime = w32_buf.st_mtime;
-  buf->st_ctime = w32_buf.st_ctime;
+  buf->st_atime = w32_buf.st_atim.tv_sec;
+  buf->st_mtime = w32_buf.st_mtim.tv_sec;
+  buf->st_ctime = w32_buf.st_ctim.tv_sec;
 
   return retval;
 #else
@@ -1371,9 +1380,9 @@ g_lstat (const gchar *filename,
   buf->st_gid = w32_buf.st_gid;
   buf->st_rdev = w32_buf.st_dev;
   buf->st_size = w32_buf.st_size;
-  buf->st_atime = w32_buf.st_atime;
-  buf->st_mtime = w32_buf.st_mtime;
-  buf->st_ctime = w32_buf.st_ctime;
+  buf->st_atime = w32_buf.st_atim.tv_sec;
+  buf->st_mtime = w32_buf.st_mtim.tv_sec;
+  buf->st_ctime = w32_buf.st_ctim.tv_sec;
 
   return retval;
 #else

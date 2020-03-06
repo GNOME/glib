@@ -229,6 +229,13 @@ test_internal_enhanced_stdio (void)
     { 0x62AB5D82, 0xFDC1, 0x4DC3, { 0xA9, 0xDD, 0x07, 0x0D, 0x1D, 0x49, 0x5D, 0x97 } };
   static const GUID folder_id_users = 
     { 0x0762D272, 0xC50A, 0x4BB0, { 0xA3, 0x82, 0x69, 0x7D, 0xCD, 0x72, 0x9B, 0x80 } };
+  GDateTime *dt = NULL, *dt2 = NULL;
+  GTimeSpan ts;
+  /* Just before SYSTEMTIME limit (Jan 1 30827) */
+  const gint64 one_sec_before_systemtime_limit = 910670515199;
+  gboolean retval;
+  GError *local_error = NULL;
+
 
   programdata_dir_w = NULL;
   SHGetKnownFolderPath (&folder_id_programdata, 0, NULL, &programdata_dir_w);
@@ -552,7 +559,8 @@ test_internal_enhanced_stdio (void)
                              G_FILE_ATTRIBUTE_STANDARD_SIZE ","
                              G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE ","
                              G_FILE_ATTRIBUTE_ID_FILE ","
-                             G_FILE_ATTRIBUTE_TIME_MODIFIED,
+                             G_FILE_ATTRIBUTE_TIME_MODIFIED ","
+                             G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC,
                              G_FILE_QUERY_INFO_NONE,
                              NULL, NULL);
 
@@ -560,7 +568,8 @@ test_internal_enhanced_stdio (void)
                              G_FILE_ATTRIBUTE_STANDARD_SIZE ","
                              G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE ","
                              G_FILE_ATTRIBUTE_ID_FILE ","
-                             G_FILE_ATTRIBUTE_TIME_MODIFIED,
+                             G_FILE_ATTRIBUTE_TIME_MODIFIED ","
+                             G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC,
                              G_FILE_QUERY_INFO_NONE,
                              NULL, NULL);
 
@@ -568,11 +577,13 @@ test_internal_enhanced_stdio (void)
   g_assert_true (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE));
   g_assert_true (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_ID_FILE));
   g_assert_true (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_TIME_MODIFIED));
+  g_assert_true (g_file_info_has_attribute (fi_p0, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC));
 
   g_assert_true (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_STANDARD_SIZE));
   g_assert_true (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE));
   g_assert_true (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_ID_FILE));
   g_assert_true (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_TIME_MODIFIED));
+  g_assert_true (g_file_info_has_attribute (fi_p1, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC));
 
   size_p0 = g_file_info_get_attribute_uint64 (fi_p0, G_FILE_ATTRIBUTE_STANDARD_SIZE);
   alsize_p0 = g_file_info_get_attribute_uint64 (fi_p0, G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE);
@@ -603,6 +614,56 @@ test_internal_enhanced_stdio (void)
    * so it *can* pass this test in some cases.
    */
   g_assert_cmpuint (time_p0, >, G_GUINT64_CONSTANT (0xFFFFFFFF));
+
+  dt = g_file_info_get_modification_date_time (fi_p0);
+  g_assert_nonnull (dt);
+  dt2 = g_date_time_add (dt, G_USEC_PER_SEC / 100 * 200);
+  g_object_unref (fi_p0);
+  fi_p0 = g_file_info_new ();
+  g_file_info_set_modification_date_time (fi_p0, dt2);
+
+  g_assert_true (g_file_set_attributes_from_info (gf_p0,
+                                                  fi_p0,
+                                                  G_FILE_QUERY_INFO_NONE,
+                                                  NULL,
+                                                  NULL));
+  g_date_time_unref (dt2);
+  g_object_unref (fi_p0);
+  fi_p0 = g_file_query_info (gf_p0,
+                             G_FILE_ATTRIBUTE_TIME_MODIFIED ","
+                             G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC,
+                             G_FILE_QUERY_INFO_NONE,
+                             NULL, NULL);
+  dt2 = g_file_info_get_modification_date_time (fi_p0);
+  ts = g_date_time_difference (dt2, dt);
+  g_assert_cmpint (ts, >, 0);
+  g_assert_cmpint (ts, <, G_USEC_PER_SEC / 100 * 300);
+
+  g_date_time_unref (dt);
+  g_date_time_unref (dt2);
+
+  g_file_info_set_attribute_uint64 (fi_p0,
+                                    G_FILE_ATTRIBUTE_TIME_MODIFIED,
+                                    one_sec_before_systemtime_limit);
+  g_file_info_set_attribute_uint32 (fi_p0, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC, 0);
+  g_assert_true (g_file_set_attributes_from_info (gf_p0,
+                                                  fi_p0,
+                                                  G_FILE_QUERY_INFO_NONE,
+                                                  NULL,
+                                                  NULL));
+
+  g_file_info_set_attribute_uint64 (fi_p0,
+                                   G_FILE_ATTRIBUTE_TIME_MODIFIED,
+                                   one_sec_before_systemtime_limit + G_USEC_PER_SEC * 2);
+  g_file_info_set_attribute_uint32 (fi_p0, G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC, 0);
+  retval = g_file_set_attributes_from_info (gf_p0,
+                                            fi_p0,
+                                            G_FILE_QUERY_INFO_NONE,
+                                            NULL,
+                                            &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA);
+  g_assert_false (retval);
+  g_clear_error (&local_error);
 
   g_object_unref (fi_p0);
   g_object_unref (fi_p1);
