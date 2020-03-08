@@ -2013,8 +2013,6 @@ cmdline_test_code = '''
 #include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
-#undef NDEBUG
-#include <assert.h>
 
 static int
 __getcmdline (void)
@@ -2028,16 +2026,24 @@ __getcmdline (void)
   struct stat stat_buf;
 
   int fd = open ("/proc/self/cmdline", O_RDONLY|O_BINARY);
-  assert (fd >= 0);
-  assert (fstat (fd, &stat_buf) == 0);
+  if (fd < 0)
+    exit (1);
+  if (fstat (fd, &stat_buf))
+    exit (1);
 
   if (stat_buf.st_size > 0 && S_ISREG (stat_buf.st_mode))
-    assert (read (fd, result, BUFSIZE) > 0);
+    {
+      if (read (fd, result, BUFSIZE) <= 0)
+        exit (1);
+    }
   else
     {
       FILE *f = fdopen (fd, "r");
-      assert (f != NULL);
-      assert (fread (result, 1, BUFSIZE, f) > 0);
+      if (f == NULL)
+        exit (1);
+
+      if (fread (result, 1, BUFSIZE, f) <= 0)
+        exit (1);
     }
 
   return 0;
