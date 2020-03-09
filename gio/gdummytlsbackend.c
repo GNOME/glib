@@ -235,7 +235,9 @@ enum
   PROP_CONN_SERVER_IDENTITY,
   PROP_CONN_USE_SSL3,
   PROP_CONN_ACCEPTED_CAS,
-  PROP_CONN_AUTHENTICATION_MODE
+  PROP_CONN_AUTHENTICATION_MODE,
+  PROP_CONN_ADVERTISED_PROTOCOLS,
+  PROP_CONN_NEGOTIATED_PROTOCOL,
 };
 
 static void g_dummy_tls_connection_initable_iface_init (GInitableIface *iface);
@@ -301,6 +303,8 @@ g_dummy_tls_connection_class_init (GDummyTlsConnectionClass *connection_class)
   g_object_class_override_property (gobject_class, PROP_CONN_USE_SSL3, "use-ssl3");
   g_object_class_override_property (gobject_class, PROP_CONN_ACCEPTED_CAS, "accepted-cas");
   g_object_class_override_property (gobject_class, PROP_CONN_AUTHENTICATION_MODE, "authentication-mode");
+  g_object_class_override_property (gobject_class, PROP_CONN_ADVERTISED_PROTOCOLS, "advertised-protocols");
+  g_object_class_override_property (gobject_class, PROP_CONN_NEGOTIATED_PROTOCOL, "negotiated-protocol");
 }
 
 static void
