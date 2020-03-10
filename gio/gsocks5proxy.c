@@ -243,7 +243,7 @@ set_auth_msg (guint8	  *msg,
 static gboolean
 check_auth_status (const guint8 *data, GError **error)
 {
-  if (data[0] != SOCKS5_VERSION
+  if (data[0] != SOCKS5_AUTH_VERSION
       || data[1] != SOCKS5_REP_SUCCEEDED)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_AUTH_FAILED,
