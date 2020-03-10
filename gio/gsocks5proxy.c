@@ -170,8 +170,22 @@ parse_nego_reply (const guint8 *data,
 	*must_auth = TRUE;
 	break;
 
-      case SOCKS5_AUTH_GSSAPI:
       case SOCKS5_AUTH_NO_ACCEPT:
+        if (!has_auth)
+          {
+            /* The server has said it accepts none of our authentication methods,
+             * but given the slightly odd implementation of set_nego_msg(), we
+             * actually only gave it the choice of %SOCKS5_AUTH_NONE, since the
+             * caller specified no username or password.
+             * Return %G_IO_ERROR_PROXY_NEED_AUTH so the caller knows that if
+             * they specify a username and password and try again, authentication
+             * might succeed (since we’ll send %SOCKS5_AUTH_USR_PASS next time). */
+            g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_NEED_AUTH,
+                                 _("The SOCKSv5 proxy requires authentication."));
+            return FALSE;
+          }
+        G_GNUC_FALLTHROUGH;
+      case SOCKS5_AUTH_GSSAPI:
       default:
 	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_AUTH_FAILED,
 			     _("The SOCKSv5 proxy requires an authentication "
