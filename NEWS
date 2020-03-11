@@ -1,3 +1,21 @@
+Overview of changes in GLib 2.64.1
+==================================
+
+* Fix memory monitor tests to only be installed if installed-tests are enabled,
+  and to be skipped if GObject-Introspection is too old (!1407)
+
+* Bugs fixed:
+ - #1986 Socks5 Proxy: Authentication seems broken
+ - #1988 Socks5 Proxy: Wrong error returned when using no authentication
+ - !1407 Backport various patches from master to glib-2-64
+ - !1412 Backport SOCKS5 fixes to glib-2-64
+
+* Translation updates:
+ - Dutch
+ - Italian
+ - Serbian
+
+
 Overview of changes in GLib 2.64.0
 ==================================
 
