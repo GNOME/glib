@@ -12,52 +12,46 @@ typedef struct
 } SearchTest;
 
 static void
-try_setlocale (const gchar *locale)
-{
-  if (!setlocale (LC_ALL, locale))
-    {
-      setlocale (LC_ALL, "C");
-      g_info ("Cannot set locale %s, reverting to C", locale);
-    }
-}
-
-static void
 test_search (void)
 {
-  SearchTest tests[] =
-    {
-      /* Test word separators and case */
-      { "Hello World", "he", "C", TRUE },
-      { "Hello World", "wo", "C", TRUE },
-      { "Hello World", "lo", "C", FALSE },
-      { "Hello World", "ld", "C", FALSE },
-      { "Hello-World", "wo", "C", TRUE },
-      { "HelloWorld", "wo", "C", FALSE },
+  SearchTest tests[] = {
+    /* Test word separators and case */
+    { "Hello World", "he", "C", TRUE },
+    { "Hello World", "wo", "C", TRUE },
+    { "Hello World", "lo", "C", FALSE },
+    { "Hello World", "ld", "C", FALSE },
+    { "Hello-World", "wo", "C", TRUE },
+    { "HelloWorld", "wo", "C", FALSE },
 
-      /* Test composed chars (accentued letters) */
-      { "Jörgen", "jor", "sv_SE.UTF-8", TRUE },
-      { "Gaëtan", "gaetan", "fr_FR.UTF-8", TRUE },
-      { "élève", "ele", "fr_FR.UTF-8", TRUE },
-      { "Azais", "AzaÏs", "fr_FR.UTF-8", FALSE },
-      { "AzaÏs", "Azais", "fr_FR.UTF-8", TRUE },
+    /* Test composed chars (accentued letters) */
+    { "Jörgen", "jor", "sv_SE.UTF-8", TRUE },
+    { "Gaëtan", "gaetan", "fr_FR.UTF-8", TRUE },
+    { "élève", "ele", "fr_FR.UTF-8", TRUE },
+    { "Azais", "AzaÏs", "fr_FR.UTF-8", FALSE },
+    { "AzaÏs", "Azais", "fr_FR.UTF-8", TRUE },
 
-      /* Test decomposed chars, they looks the same, but are actually
-       * composed of multiple unicodes */
-      { "Jorgen", "Jör", "sv_SE.UTF-8", FALSE },
-      { "Jörgen", "jor", "sv_SE.UTF-8", TRUE },
+    /* Test decomposed chars, they looks the same, but are actually
+     * composed of multiple unicodes */
+    { "Jorgen", "Jör", "sv_SE.UTF-8", FALSE },
+    { "Jörgen", "jor", "sv_SE.UTF-8", TRUE },
 
-      /* Turkish special case */
-      { "İstanbul", "ist", "tr_TR.UTF-8", TRUE },
-      { "Diyarbakır", "diyarbakir", "tr_TR.UTF-8", TRUE },
+    /* Turkish special case */
+    { "İstanbul", "ist", "tr_TR.UTF-8", TRUE },
+    { "Diyarbakır", "diyarbakir", "tr_TR.UTF-8", TRUE },
 
-      /* Multi words */
-      { "Xavier Claessens", "Xav Cla", "C", TRUE },
-      { "Xavier Claessens", "Cla Xav", "C", TRUE },
-      { "Foo Bar Baz", "   b  ", "C", TRUE },
-      { "Foo Bar Baz", "bar bazz", "C", FALSE },
+    /* Test unicode chars when no locale is available */
+    { "Jörgen", "jor", "C", TRUE },
+    { "Jorgen", "Jör", "C", FALSE },
+    { "Jörgen", "jor", "C", TRUE },
 
-      { NULL, NULL, NULL, FALSE }
-    };
+    /* Multi words */
+    { "Xavier Claessens", "Xav Cla", "C", TRUE },
+    { "Xavier Claessens", "Cla Xav", "C", TRUE },
+    { "Foo Bar Baz", "   b  ", "C", TRUE },
+    { "Foo Bar Baz", "bar bazz", "C", FALSE },
+
+    { NULL, NULL, NULL, FALSE }
+  };
   guint i;
   gchar *user_locale;
 
@@ -71,17 +65,25 @@ test_search (void)
     {
       gboolean match;
       gboolean ok;
+      gboolean skipped;
 
-      try_setlocale (tests[i].locale);
-
-      match = g_str_match_string (tests[i].prefix, tests[i].string, TRUE);
-      ok = (match == tests[i].should_match);
+      if (setlocale (LC_ALL, tests[i].locale))
+        {
+          skipped = FALSE;
+          match = g_str_match_string (tests[i].prefix, tests[i].string, TRUE);
+          ok = (match == tests[i].should_match);
+        }
+      else
+        {
+          skipped = TRUE;
+          g_info ("Locale '%s' is unavailable", tests[i].locale);
+        }
 
       g_debug ("'%s' - '%s' %s: %s", tests[i].prefix, tests[i].string,
           tests[i].should_match ? "should match" : "should NOT match",
-          ok ? "OK" : "FAILED");
+          skipped ? "SKIPPED" : ok ? "OK" : "FAILED");
 
-      g_assert (ok);
+      g_assert (skipped || ok);
     }
 }
 
