@@ -344,7 +344,7 @@ on_new_connection (GDBusServer *server,
                    gpointer user_data)
 {
   PeerData *data = user_data;
-  GError *error;
+  GError *error = NULL;
   guint reg_id;
 
   //g_printerr ("Client connected.\n"
@@ -362,13 +362,19 @@ on_new_connection (GDBusServer *server,
       g_assert (credentials != NULL);
       g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
                         getuid ());
-      g_assert_cmpuint (g_credentials_get_unix_pid (credentials, NULL), ==,
-                        getpid ());
+#if G_CREDENTIALS_HAS_PID
+      g_assert_cmpint (g_credentials_get_unix_pid (credentials, &error), ==,
+                       getpid ());
+      g_assert_no_error (error);
+#else
+      g_assert_cmpint (g_credentials_get_unix_pid (credentials, &error), ==, -1);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+      g_clear_error (&error);
+#endif
     }
 #endif
 
   /* export object on the newly established connection */
-  error = NULL;
   reg_id = g_dbus_connection_register_object (connection,
                                               "/org/gtk/GDBus/PeerTestObject",
                                               test_interface_introspection_data,
@@ -922,8 +928,15 @@ do_test_peer (void)
 
     g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
                       getuid ());
-    g_assert_cmpuint (g_credentials_get_unix_pid (credentials, NULL), ==,
-                      getpid ());
+#if G_CREDENTIALS_HAS_PID
+    g_assert_cmpint (g_credentials_get_unix_pid (credentials, &error), ==,
+                     getpid ());
+    g_assert_no_error (error);
+#else
+    g_assert_cmpint (g_credentials_get_unix_pid (credentials, &error), ==, -1);
+    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+    g_clear_error (&error);
+#endif
     g_object_unref (credentials);
 #else
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
