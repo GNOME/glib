@@ -54,9 +54,12 @@ test_basic (void)
   g_assert_cmpuint (g_credentials_get_unix_user (creds, &error), ==,
       geteuid ());
   g_assert_no_error (error);
+
+#if G_CREDENTIALS_HAS_PID
   g_assert_cmpuint (g_credentials_get_unix_pid (creds, &error), ==,
       getpid ());
   g_assert_no_error (error);
+#endif
 
   set = g_credentials_set_unix_user (other, not_me, &error);
 #if G_CREDENTIALS_SPOOFING_SUPPORTED

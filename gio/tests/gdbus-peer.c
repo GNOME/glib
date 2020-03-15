@@ -362,8 +362,10 @@ on_new_connection (GDBusServer *server,
       g_assert (credentials != NULL);
       g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
                         getuid ());
+#if G_CREDENTIALS_HAS_PID
       g_assert_cmpuint (g_credentials_get_unix_pid (credentials, NULL), ==,
                         getpid ());
+#endif
     }
 #endif
 
@@ -922,8 +924,10 @@ do_test_peer (void)
 
     g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
                       getuid ());
+#if G_CREDENTIALS_HAS_PID
     g_assert_cmpuint (g_credentials_get_unix_pid (credentials, NULL), ==,
                       getpid ());
+#endif
     g_object_unref (credentials);
 #else
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
