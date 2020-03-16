@@ -1782,9 +1782,17 @@ g_strjoinv
 
 <SUBSECTION>
 GStrv
+GStrvBuilder
 g_strv_length
 g_strv_contains
 g_strv_equal
+g_strv_builder_new
+g_strv_builder_ref
+g_strv_builder_unref
+g_strv_builder_append
+g_strv_builder_prepend
+g_strv_builder_insert
+g_strv_builder_end
 
 <SUBSECTION>
 g_strerror
