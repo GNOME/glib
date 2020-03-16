@@ -92,6 +92,7 @@ glib_tests = {
   'spawn-singlethread' : {},
   'strfuncs' : {},
   'string' : {},
+  'strvbuilder' : {},
   'testing' : {},
   'test-printf' : {},
   'thread' : {},
