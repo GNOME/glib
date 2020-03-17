@@ -382,8 +382,8 @@ g_inet_address_init (GInetAddress *address)
  *
  * Parses @string as an IP address and creates a new #GInetAddress.
  *
- * Returns: a new #GInetAddress corresponding to @string, or %NULL if
- * @string could not be parsed.
+ * Returns: (nullable) (transfer full): a new #GInetAddress corresponding
+ * to @string, or %NULL if @string could not be parsed.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
