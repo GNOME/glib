@@ -398,8 +398,8 @@ g_inet_socket_address_new (GInetAddress *address,
  * If @address is an IPv6 address, it can also contain a scope ID
  * (separated from the address by a `%`).
  *
- * Returns: a new #GInetSocketAddress, or %NULL if @address cannot be
- * parsed.
+ * Returns: (nullable) (transfer full): a new #GInetSocketAddress,
+ * or %NULL if @address cannot be parsed.
  *
  * Since: 2.40
  */
