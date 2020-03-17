@@ -59,14 +59,15 @@
  * To create a new array use g_array_new().
  *
  * To add elements to an array, use g_array_append_val(),
- * g_array_append_vals(), g_array_prepend_val(), and
- * g_array_prepend_vals().
+ * g_array_append_vals(), g_array_prepend_val(), g_array_prepend_vals(),
+ * g_array_insert_val() and g_array_insert_vals().
  *
- * To access an element of an array, use g_array_index().
+ * To access an element of an array (to read it or write it),
+ * use g_array_index().
  *
  * To set the size of an array, use g_array_set_size().
  *
- * To free an array, use g_array_free().
+ * To free an array, use g_array_unref() or g_array_free().
  *
  * Here is an example that stores integers in a #GArray:
  * |[<!-- language="C" -->
@@ -117,14 +118,29 @@ struct _GRealArray
  * @i: the index of the element to return
  *
  * Returns the element of a #GArray at the given index. The return
- * value is cast to the given type.
+ * value is cast to the given type. This is the main way to read or write an
+ * element in a #GArray.
  *
- * This example gets a pointer to an element in a #GArray:
+ * Writing an element is typically done by reference, as in the following
+ * example. This example gets a pointer to an element in a #GArray, and then
+ * writes to a field in it:
  * |[<!-- language="C" -->
  *   EDayViewEvent *event;
  *   // This gets a pointer to the 4th element in the array of
  *   // EDayViewEvent structs.
  *   event = &g_array_index (events, EDayViewEvent, 3);
+ *   event->start_time = g_get_current_time ();
+ * ]|
+ *
+ * This example reads from and writes to an array of integers:
+ * |[<!-- language="C" -->
+ *   g_autoptr(GArray) int_array = g_array_new (FALSE, FALSE, sizeof (guint));
+ *   for (guint i = 0; i < 10; i++)
+ *     g_array_append_val (int_array, i);
+ *
+ *   guint *my_int = &g_array_index (int_array, guint, 1);
+ *   g_print ("Int at index 1 is %u; decrementing it\n", *my_int);
+ *   *my_int = *my_int - 1;
  * ]|
  *
  * Returns: the element of the #GArray at the index given by @i
@@ -562,6 +578,10 @@ g_array_prepend_vals (GArray        *farray,
  * The elements between the old end of the array and the newly inserted elements
  * will be initialised to zero if the array was configured to clear elements;
  * otherwise their values will be undefined.
+ *
+ * If @index_ is less than the array’s current length, new entries will be
+ * inserted into the array, and the existing entries above @index_ will be moved
+ * upwards.
  *
  * @data may be %NULL if (and only if) @len is zero. If @len is zero, this
  * function is a no-op.
