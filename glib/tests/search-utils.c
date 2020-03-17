@@ -76,7 +76,7 @@ test_search (void)
       else
         {
           skipped = TRUE;
-          g_info ("Locale '%s' is unavailable", tests[i].locale);
+          g_test_message ("Locale '%s' is unavailable", tests[i].locale);
         }
 
       g_debug ("'%s' - '%s' %s: %s", tests[i].prefix, tests[i].string,
