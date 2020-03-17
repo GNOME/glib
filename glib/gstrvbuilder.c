@@ -34,7 +34,7 @@
  * The following example shows how to build a two element array:
  *
  * |[<!-- language="C" -->
- *   g_autoptr(GStvBuilder) builder = g_strv_builder_new ();
+ *   g_autoptr(GStrvBuilder) builder = g_strv_builder_new ();
  *   g_strv_builder_append (builder, "hello");
  *   g_strv_builder_append (builder, "world");
  *   g_auto(GStrv) array = g_strv_builder_end (builder);
