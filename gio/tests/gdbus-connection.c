@@ -89,6 +89,7 @@ static const GDBusInterfaceVTable boo_vtable =
   NULL  /* _set_property */
 };
 
+/* Runs in a worker thread. */
 static GDBusMessage *
 some_filter_func (GDBusConnection *connection,
                   GDBusMessage    *message,
@@ -812,13 +813,16 @@ test_connection_signal_match_rules (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Accessed both from the test code and the filter function (in a worker thread)
+ * so all accesses must be atomic. */
 typedef struct
 {
-  guint num_handled;
-  guint num_outgoing;
-  guint32 serial;
+  guint num_handled;  /* (atomic) */
+  guint num_outgoing;  /* (atomic) */
+  guint32 serial;  /* (atomic) */
 } FilterData;
 
+/* Runs in a worker thread. */
 static GDBusMessage *
 filter_func (GDBusConnection *connection,
              GDBusMessage    *message,
@@ -831,12 +835,12 @@ filter_func (GDBusConnection *connection,
   if (incoming)
     {
       reply_serial = g_dbus_message_get_reply_serial (message);
-      if (reply_serial == data->serial)
-        data->num_handled += 1;
+      if (reply_serial == g_atomic_int_get (&data->serial))
+        g_atomic_int_inc (&data->num_handled);
     }
   else
     {
-      data->num_outgoing += 1;
+      g_atomic_int_inc (&data->num_outgoing);
     }
 
   return message;
@@ -849,13 +853,14 @@ typedef struct
   gboolean alter_outgoing;
 } FilterEffects;
 
+/* Runs in a worker thread. */
 static GDBusMessage *
 other_filter_func (GDBusConnection *connection,
                    GDBusMessage    *message,
                    gboolean         incoming,
                    gpointer         user_data)
 {
-  FilterEffects *effects = user_data;
+  const FilterEffects *effects = user_data;
   GDBusMessage *ret;
   gboolean alter;
 
@@ -928,7 +933,7 @@ static void
 test_connection_filter (void)
 {
   GDBusConnection *c;
-  FilterData data;
+  FilterData data = { 0, 0, 0 };
   GDBusMessage *m;
   GDBusMessage *m2;
   GDBusMessage *r;
@@ -939,8 +944,7 @@ test_connection_filter (void)
   FilterEffects effects;
   GVariant *result;
   const gchar *s;
-
-  memset (&data, '\0', sizeof (FilterData));
+  guint32 serial_temp;
 
   session_bus_up ();
 
@@ -960,31 +964,34 @@ test_connection_filter (void)
                                       "GetNameOwner");
   g_dbus_message_set_body (m, g_variant_new ("(s)", "org.freedesktop.DBus"));
   error = NULL;
-  g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &data.serial, &error);
+  g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &serial_temp, &error);
+  g_atomic_int_set (&data.serial, serial_temp);
   g_assert_no_error (error);
 
-  while (data.num_handled == 0)
+  while (g_atomic_int_get (&data.num_handled) == 0)
     g_thread_yield ();
 
   m2 = g_dbus_message_copy (m, &error);
   g_assert_no_error (error);
-  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &data.serial, &error);
+  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &serial_temp, &error);
+  g_atomic_int_set (&data.serial, serial_temp);
   g_object_unref (m2);
   g_assert_no_error (error);
 
-  while (data.num_handled == 1)
+  while (g_atomic_int_get (&data.num_handled) == 1)
     g_thread_yield ();
 
   m2 = g_dbus_message_copy (m, &error);
   g_assert_no_error (error);
-  g_dbus_message_set_serial (m2, data.serial);
+  g_dbus_message_set_serial (m2, serial_temp);
   /* lock the message to test PRESERVE_SERIAL flag. */
   g_dbus_message_lock (m2);
-  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL, &data.serial, &error);
+  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL, &serial_temp, &error);
+  g_atomic_int_set (&data.serial, serial_temp);
   g_object_unref (m2);
   g_assert_no_error (error);
 
-  while (data.num_handled == 2)
+  while (g_atomic_int_get (&data.num_handled) == 2)
     g_thread_yield ();
 
   m2 = g_dbus_message_copy (m, &error);
@@ -993,6 +1000,9 @@ test_connection_filter (void)
                                                       m2,
                                                       G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                       -1,
+                                                      /* can't do this write atomically
+                                                       * as filter_func() needs it before
+                                                       * send_message_with_reply_sync() returns */
                                                       &data.serial,
                                                       NULL, /* GCancellable */
                                                       &error);
@@ -1000,7 +1010,7 @@ test_connection_filter (void)
   g_assert_no_error (error);
   g_assert_nonnull (r);
   g_object_unref (r);
-  g_assert_cmpint (data.num_handled, ==, 4);
+  g_assert_cmpint (g_atomic_int_get (&data.num_handled), ==, 4);
 
   g_dbus_connection_remove_filter (c, filter_id);
 
@@ -1010,15 +1020,16 @@ test_connection_filter (void)
                                                       m2,
                                                       G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                       -1,
-                                                      &data.serial,
+                                                      &serial_temp,
                                                       NULL, /* GCancellable */
                                                       &error);
+  g_atomic_int_set (&data.serial, serial_temp);
   g_object_unref (m2);
   g_assert_no_error (error);
   g_assert_nonnull (r);
   g_object_unref (r);
-  g_assert_cmpint (data.num_handled, ==, 4);
-  g_assert_cmpint (data.num_outgoing, ==, 4);
+  g_assert_cmpint (g_atomic_int_get (&data.num_handled), ==, 4);
+  g_assert_cmpint (g_atomic_int_get (&data.num_outgoing), ==, 4);
 
   /* wait for service to be available */
   signal_handler_id = g_dbus_connection_signal_subscribe (c,
