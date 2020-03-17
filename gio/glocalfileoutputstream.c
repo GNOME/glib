@@ -426,11 +426,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
       
 #ifndef G_OS_WIN32		/* Already did the fstat() and close() above on Win32 */
 
-#ifdef HAVE_STATX
-  if (statx (file->priv->fd, "", AT_EMPTY_PATH, STATX_MTIME, &final_stat) == 0)
-#else
-  if (fstat (file->priv->fd, &final_stat) == 0)
-#endif
+  if (FSTAT (file->priv->fd, &final_stat) == 0)
     file->priv->etag = _g_local_file_info_create_etag (&final_stat);
 
   if (!g_close (file->priv->fd, NULL))
@@ -898,13 +894,7 @@ handle_overwrite_open (const char    *filename,
       return -1;
     }
 
-#ifdef HAVE_STATX
-  res = statx (fd, "", AT_EMPTY_PATH, STATX_BASIC_STATS, &original_stat);
-#elif defined (G_OS_WIN32)
-  res = GLIB_PRIVATE_CALL (g_win32_fstat) (fd, &original_stat);
-#else
-  res = fstat (fd, &original_stat);
-#endif
+  res = FSTAT (fd, &original_stat);
   errsv = errno;
 
   if (res != 0)
@@ -994,13 +984,8 @@ handle_overwrite_open (const char    *filename,
           GLocalFileStat tmp_statbuf;
           int tres;
 
-#ifdef HAVE_STATX
-          tres = statx (tmpfd, "", AT_EMPTY_PATH, STATX_BASIC_STATS, &tmp_statbuf);
-#elif defined (G_OS_WIN32)
-          tres = GLIB_PRIVATE_CALL (g_win32_fstat) (tmpfd, &tmp_statbuf);
-#else
-          tres = fstat (tmpfd, &tmp_statbuf);
-#endif
+          tres = FSTAT (tmpfd, &tmp_statbuf);
+
 	  /* Check that we really needed to change something */
 	  if (tres != 0 ||
 	      _g_stat_uid (&original_stat) != _g_stat_uid (&tmp_statbuf) ||
@@ -1060,11 +1045,7 @@ handle_overwrite_open (const char    *filename,
        * bits for the group same as the protection bits for
        * others. */
 #if defined(HAVE_FCHOWN) && defined(HAVE_FCHMOD)
-#ifdef HAVE_STATX
-      if (statx (bfd, "", AT_EMPTY_PATH, STATX_BASIC_STATS, &tmp_statbuf) != 0)
-#else
-      if (fstat (bfd, &tmp_statbuf) != 0)
-#endif
+      if (FSTAT (bfd, &tmp_statbuf) != 0)
 	{
 	  g_set_error_literal (error,
                                G_IO_ERROR,

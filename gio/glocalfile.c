@@ -1383,13 +1383,7 @@ g_local_file_read (GFile         *file,
       return NULL;
     }
 
-#ifdef HAVE_STATX
-  ret = statx (fd, "", AT_EMPTY_PATH, STATX_BASIC_STATS, &buf);
-#elif defined (G_OS_WIN32)
-  ret = GLIB_PRIVATE_CALL (g_win32_fstat) (fd, &buf);
-#else
-  ret = fstat (fd, &buf);
-#endif
+  ret = FSTAT (fd, &buf);
 
   if (ret == 0 && S_ISDIR (_g_stat_mode (&buf)))
     {

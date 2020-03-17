@@ -1793,15 +1793,7 @@ _g_local_file_info_get (const char             *basename,
       return info;
     }
 
-#ifdef HAVE_STATX
-  res = statx (AT_FDCWD, path,
-               AT_NO_AUTOMOUNT | AT_SYMLINK_NOFOLLOW | AT_STATX_SYNC_AS_STAT,
-               STATX_BASIC_STATS | STATX_BTIME, &statbuf);
-#elif defined (G_OS_WIN32)
-  res = GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (path, &statbuf);
-#else
-  res = g_lstat (path, &statbuf);
-#endif
+  res = LSTAT (path, &statbuf);
 
   if (res == -1)
     {
@@ -1848,13 +1840,7 @@ _g_local_file_info_get (const char             *basename,
       /* Unless NOFOLLOW was set we default to following symlinks */
       if (!(flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS))
 	{
-#ifdef HAVE_STATX
-	  res = statx (AT_FDCWD, path, AT_NO_AUTOMOUNT | AT_STATX_SYNC_AS_STAT, STATX_BASIC_STATS | STATX_BTIME, &statbuf2);
-#elif defined (G_OS_WIN32)
-	  res = GLIB_PRIVATE_CALL (g_win32_stat_utf8) (path, &statbuf2);
-#else
-	  res = stat (path, &statbuf2);
-#endif
+	  res = STAT (path, &statbuf2);
 
 	  /* Report broken links as symlinks */
 	  if (res != -1)
@@ -2073,14 +2059,8 @@ _g_local_file_info_get_from_fd (int         fd,
   GLocalFileStat stat_buf;
   GFileAttributeMatcher *matcher;
   GFileInfo *info;
-  
-#ifdef HAVE_STATX
-  if (statx (fd, "", AT_EMPTY_PATH, STATX_BASIC_STATS, &stat_buf) == -1)
-#elif defined (G_OS_WIN32)
-  if (GLIB_PRIVATE_CALL (g_win32_fstat) (fd, &stat_buf) == -1)
-#else
-  if (fstat (fd, &stat_buf) == -1)
-#endif
+
+  if (FSTAT (fd, &stat_buf) == -1)
     {
       int errsv = errno;
 

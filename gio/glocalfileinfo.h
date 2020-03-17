@@ -44,6 +44,14 @@ typedef struct
 #ifdef HAVE_STATX
 #define GLocalFileStat struct statx
 
+#define FSTAT(fd, stat)   statx (fd, "", AT_EMPTY_PATH, STATX_BASIC_STATS, stat)
+#define LSTAT(path, stat) statx (AT_FDCWD, path, \
+                                 AT_NO_AUTOMOUNT | AT_SYMLINK_NOFOLLOW | AT_STATX_SYNC_AS_STAT, \
+                                 STATX_BASIC_STATS | STATX_BTIME, stat)
+#define STAT(path, stat)  statx (AT_FDCWD, path, \
+                                 AT_NO_AUTOMOUNT | AT_STATX_SYNC_AS_STAT, \
+                                 STATX_BASIC_STATS | STATX_BTIME, stat)
+
 inline static guint16 _g_stat_mode        (const GLocalFileStat *buf) { return buf->stx_mode; }
 inline static guint32 _g_stat_nlink       (const GLocalFileStat *buf) { return buf->stx_nlink; }
 inline static guint32 _g_stat_dev         (const GLocalFileStat *buf) { return buf->stx_dev_major; }
@@ -68,8 +76,14 @@ inline static guint32 _g_stat_mtim_nsec   (const GLocalFileStat *buf) { return b
 #if defined (G_OS_WIN32)
 /* We want 64-bit file size, file ID and symlink support */
 #define GLocalFileStat GWin32PrivateStat
+#define FSTAT(fd, stat)   GLIB_PRIVATE_CALL (g_win32_fstat)      (fd, stat)
+#define LSTAT(path, stat) GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (path, stat)
+#define STAT(path, stat)  GLIB_PRIVATE_CALL (g_win32_stat_utf8)  (path, stat)
 #else
 #define GLocalFileStat struct stat
+#define FSTAT(fd, stat)   fstat   (fd, stat)
+#define LSTAT(path, stat) g_lstat (path, stat)
+#define STAT(path, stat)  stat    (path, stat)
 #endif
 
 inline static mode_t    _g_stat_mode      (const GLocalFileStat *buf) { return buf->st_mode; }
