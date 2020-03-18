@@ -1,3 +1,28 @@
+Overview of changes in GLib 2.62.6
+==================================
+
+* This is expected to be the final release in the 2.62.x stable series;
+  maintenance effort will shift to the newer 2.64.x stable series now
+
+* Fix SOCKS5 username/password authentication (#1986)
+
+* Exception handling fixes on Windows (!1373)
+
+* Bugs fixed:
+ - #1986 Socks5 Proxy: Authentication seems broken
+ - #1988 Socks5 Proxy: Wrong error returned when using no authentication
+ - #2049 Crash in g_array_copy
+ - !1378 Backport !1373 win32 exception fixes to glib-2-62
+ - !1380 Backport !1254 “giomodule: gio modules are no longer installed in bindir on MSVC” to glib-2-62
+ - !1393 Backport !1390 “garray: Fix copying an array with reserved elements” to glib-2-62
+ - !1394 Backport part of !1375 “tests: Skip g-file-info-filesystem-readonly test if bindfs fails” to glib-2-62
+ - !1411 Backport SOCKS5 fixes to glib-2-62
+
+* Translation updates:
+ - Czech
+ - Romanian
+
+
 Overview of changes in GLib 2.62.5
 ==================================
 
