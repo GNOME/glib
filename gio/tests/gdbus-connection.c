@@ -89,6 +89,7 @@ static const GDBusInterfaceVTable boo_vtable =
   NULL  /* _set_property */
 };
 
+/* Runs in a worker thread. */
 static GDBusMessage *
 some_filter_func (GDBusConnection *connection,
                   GDBusMessage    *message,
@@ -129,9 +130,9 @@ test_connection_bus_failure (void)
    *
    */
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-  g_assert (error != NULL);
-  g_assert (!g_dbus_error_is_remote_error (error));
-  g_assert (c == NULL);
+  g_assert_nonnull (error);
+  g_assert_false (g_dbus_error_is_remote_error (error));
+  g_assert_null (c);
   g_error_free (error);
 }
 
@@ -159,8 +160,8 @@ test_connection_life_cycle (void)
   error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (c != NULL);
-  g_assert (!g_dbus_connection_is_closed (c));
+  g_assert_nonnull (c);
+  g_assert_false (g_dbus_connection_is_closed (c));
 
   /*
    * Check that singleton handling work
@@ -168,8 +169,8 @@ test_connection_life_cycle (void)
   error = NULL;
   c2 = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (c2 != NULL);
-  g_assert (c == c2);
+  g_assert_nonnull (c2);
+  g_assert_true (c == c2);
   g_object_unref (c2);
 
   /*
@@ -177,23 +178,23 @@ test_connection_life_cycle (void)
    */
   c2 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (c2 != NULL);
-  g_assert (c != c2);
+  g_assert_nonnull (c2);
+  g_assert_true (c != c2);
   g_object_unref (c2);
 
   c2 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (c2 != NULL);
-  g_assert (!g_dbus_connection_is_closed (c2));
+  g_assert_nonnull (c2);
+  g_assert_false (g_dbus_connection_is_closed (c2));
   ret = g_dbus_connection_close_sync (c2, NULL, &error);
   g_assert_no_error (error);
-  g_assert (ret);
+  g_assert_true (ret);
   _g_assert_signal_received (c2, "closed");
-  g_assert (g_dbus_connection_is_closed (c2));
+  g_assert_true (g_dbus_connection_is_closed (c2));
   ret = g_dbus_connection_close_sync (c2, NULL, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
   g_error_free (error);
-  g_assert (!ret);
+  g_assert_false (ret);
   g_object_unref (c2);
 
   /*
@@ -205,7 +206,7 @@ test_connection_life_cycle (void)
   error = NULL;
   c2 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (c2 != NULL);
+  g_assert_nonnull (c2);
   /* signal registration */
   on_signal_registration_freed_called = FALSE;
   g_dbus_connection_signal_subscribe (c2,
@@ -235,7 +236,7 @@ test_connection_life_cycle (void)
                                                        a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop,
                                                        &error);
   g_assert_no_error (error);
-  g_assert (registration_id > 0);
+  g_assert_cmpuint (registration_id, >, 0);
   /* ok, finalize the connection and check that all the GDestroyNotify functions are invoked as expected */
   g_object_unref (c2);
   quit_mainloop_fired = FALSE;
@@ -260,20 +261,20 @@ test_connection_life_cycle (void)
       _log ("exiting loop");
     }
   g_source_remove (quit_mainloop_id);
-  g_assert (on_signal_registration_freed_called);
-  g_assert (on_filter_freed_called);
-  g_assert (on_register_object_freed_called);
-  g_assert (!quit_mainloop_fired);
+  g_assert_true (on_signal_registration_freed_called);
+  g_assert_true (on_filter_freed_called);
+  g_assert_true (on_register_object_freed_called);
+  g_assert_false (quit_mainloop_fired);
 
   /*
    *  Check for correct behavior when the bus goes away
    *
    */
-  g_assert (!g_dbus_connection_is_closed (c));
+  g_assert_false (g_dbus_connection_is_closed (c));
   g_dbus_connection_set_exit_on_close (c, FALSE);
   session_bus_stop ();
   _g_assert_signal_received (c, "closed");
-  g_assert (g_dbus_connection_is_closed (c));
+  g_assert_true (g_dbus_connection_is_closed (c));
   g_object_unref (c);
 
   session_bus_down ();
@@ -299,9 +300,9 @@ msg_cb_expect_error_disconnected (GDBusConnection *connection,
                                           res,
                                           &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
-  g_assert (!g_dbus_error_is_remote_error (error));
+  g_assert_false (g_dbus_error_is_remote_error (error));
   g_error_free (error);
-  g_assert (result == NULL);
+  g_assert_null (result);
 
   g_main_loop_quit (loop);
 }
@@ -322,9 +323,9 @@ msg_cb_expect_error_unknown_method (GDBusConnection *connection,
                                           res,
                                           &error);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD);
-  g_assert (g_dbus_error_is_remote_error (error));
+  g_assert_true (g_dbus_error_is_remote_error (error));
   g_error_free (error);
-  g_assert (result == NULL);
+  g_assert_null (result);
 
   g_main_loop_quit (loop);
 }
@@ -345,7 +346,7 @@ msg_cb_expect_success (GDBusConnection *connection,
                                           res,
                                           &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_variant_unref (result);
 
   g_main_loop_quit (loop);
@@ -367,9 +368,9 @@ msg_cb_expect_error_cancelled (GDBusConnection *connection,
                                           res,
                                           &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
-  g_assert (!g_dbus_error_is_remote_error (error));
+  g_assert_false (g_dbus_error_is_remote_error (error));
   g_error_free (error);
-  g_assert (result == NULL);
+  g_assert_null (result);
 
   g_main_loop_quit (loop);
 }
@@ -390,9 +391,9 @@ msg_cb_expect_error_cancelled_2 (GDBusConnection *connection,
                                           res,
                                           &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
-  g_assert (!g_dbus_error_is_remote_error (error));
+  g_assert_false (g_dbus_error_is_remote_error (error));
   g_error_free (error);
-  g_assert (result == NULL);
+  g_assert_null (result);
 
   g_main_loop_quit (loop);
 }
@@ -409,8 +410,8 @@ test_connection_send (void)
 
   /* First, get an unopened connection */
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_assert (c != NULL);
-  g_assert (!g_dbus_connection_is_closed (c));
+  g_assert_nonnull (c);
+  g_assert_false (g_dbus_connection_is_closed (c));
 
   /*
    * Check that we never actually send a message if the GCancellable
@@ -490,7 +491,7 @@ test_connection_send (void)
   g_dbus_connection_set_exit_on_close (c, FALSE);
   session_bus_stop ();
   _g_assert_signal_received (c, "closed");
-  g_assert (g_dbus_connection_is_closed (c));
+  g_assert_true (g_dbus_connection_is_closed (c));
 
   g_dbus_connection_call (c,
                           "org.freedesktop.DBus",  /* bus_name */
@@ -567,13 +568,13 @@ test_connection_signals (void)
   if (g_getenv ("G_DBUS_MONITOR") == NULL)
     {
       c1 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, NULL);
-      g_assert (c1 != NULL);
-      g_assert (!g_dbus_connection_is_closed (c1));
+      g_assert_nonnull (c1);
+      g_assert_false (g_dbus_connection_is_closed (c1));
       g_object_unref (c1);
     }
   c1 = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_assert (c1 != NULL);
-  g_assert (!g_dbus_connection_is_closed (c1));
+  g_assert_nonnull (c1);
+  g_assert_false (g_dbus_connection_is_closed (c1));
   g_assert_cmpstr (g_dbus_connection_get_unique_name (c1), ==, ":1.1");
 
   /*
@@ -628,10 +629,10 @@ test_connection_signals (void)
                                             test_connection_signal_handler,
                                             &count_s1b,
                                             NULL);
-  g_assert (s1 != 0);
-  g_assert (s1b != 0);
-  g_assert (s2 != 0);
-  g_assert (s3 != 0);
+  g_assert_cmpuint (s1, !=, 0);
+  g_assert_cmpuint (s1b, !=, 0);
+  g_assert_cmpuint (s2, !=, 0);
+  g_assert_cmpuint (s3, !=, 0);
 
   count_s1 = 0;
   count_s1b = 0;
@@ -661,19 +662,19 @@ test_connection_signals (void)
                                         NULL,
                                         &error);
   g_assert_no_error (error);
-  g_assert (result != NULL);
+  g_assert_nonnull (result);
   g_variant_unref (result);
 
   /*
    * Bring up two other connections
    */
   c2 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_assert (c2 != NULL);
-  g_assert (!g_dbus_connection_is_closed (c2));
+  g_assert_nonnull (c2);
+  g_assert_false (g_dbus_connection_is_closed (c2));
   g_assert_cmpstr (g_dbus_connection_get_unique_name (c2), ==, ":1.2");
   c3 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_assert (c3 != NULL);
-  g_assert (!g_dbus_connection_is_closed (c3));
+  g_assert_nonnull (c3);
+  g_assert_false (g_dbus_connection_is_closed (c3));
   g_assert_cmpstr (g_dbus_connection_get_unique_name (c3), ==, ":1.3");
 
   /* now, emit the signal on c2 */
@@ -685,7 +686,7 @@ test_connection_signals (void)
                                        NULL,
                                        &error);
   g_assert_no_error (error);
-  g_assert (ret);
+  g_assert_true (ret);
   while (!(count_s1 >= 1 && count_s2 >= 1))
     g_main_loop_run (loop);
   g_assert_cmpint (count_s1, ==, 1);
@@ -702,7 +703,7 @@ test_connection_signals (void)
                                        NULL,
                                        &error);
   g_assert_no_error (error);
-  g_assert (ret);
+  g_assert_true (ret);
   while (!(count_s1 == 1 && count_s2 == 2))
     g_main_loop_run (loop);
   g_assert_cmpint (count_s1, ==, 1);
@@ -812,13 +813,16 @@ test_connection_signal_match_rules (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Accessed both from the test code and the filter function (in a worker thread)
+ * so all accesses must be atomic. */
 typedef struct
 {
-  guint num_handled;
-  guint num_outgoing;
-  guint32 serial;
+  guint num_handled;  /* (atomic) */
+  guint num_outgoing;  /* (atomic) */
+  guint32 serial;  /* (atomic) */
 } FilterData;
 
+/* Runs in a worker thread. */
 static GDBusMessage *
 filter_func (GDBusConnection *connection,
              GDBusMessage    *message,
@@ -831,12 +835,12 @@ filter_func (GDBusConnection *connection,
   if (incoming)
     {
       reply_serial = g_dbus_message_get_reply_serial (message);
-      if (reply_serial == data->serial)
-        data->num_handled += 1;
+      if (reply_serial == g_atomic_int_get (&data->serial))
+        g_atomic_int_inc (&data->num_handled);
     }
   else
     {
-      data->num_outgoing += 1;
+      g_atomic_int_inc (&data->num_outgoing);
     }
 
   return message;
@@ -849,13 +853,14 @@ typedef struct
   gboolean alter_outgoing;
 } FilterEffects;
 
+/* Runs in a worker thread. */
 static GDBusMessage *
 other_filter_func (GDBusConnection *connection,
                    GDBusMessage    *message,
                    gboolean         incoming,
                    gpointer         user_data)
 {
-  FilterEffects *effects = user_data;
+  const FilterEffects *effects = user_data;
   GDBusMessage *ret;
   gboolean alter;
 
@@ -928,7 +933,7 @@ static void
 test_connection_filter (void)
 {
   GDBusConnection *c;
-  FilterData data;
+  FilterData data = { 0, 0, 0 };
   GDBusMessage *m;
   GDBusMessage *m2;
   GDBusMessage *r;
@@ -939,15 +944,14 @@ test_connection_filter (void)
   FilterEffects effects;
   GVariant *result;
   const gchar *s;
-
-  memset (&data, '\0', sizeof (FilterData));
+  guint32 serial_temp;
 
   session_bus_up ();
 
   error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (c != NULL);
+  g_assert_nonnull (c);
 
   filter_id = g_dbus_connection_add_filter (c,
                                             filter_func,
@@ -960,31 +964,34 @@ test_connection_filter (void)
                                       "GetNameOwner");
   g_dbus_message_set_body (m, g_variant_new ("(s)", "org.freedesktop.DBus"));
   error = NULL;
-  g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &data.serial, &error);
+  g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &serial_temp, &error);
+  g_atomic_int_set (&data.serial, serial_temp);
   g_assert_no_error (error);
 
-  while (data.num_handled == 0)
+  while (g_atomic_int_get (&data.num_handled) == 0)
     g_thread_yield ();
 
   m2 = g_dbus_message_copy (m, &error);
   g_assert_no_error (error);
-  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &data.serial, &error);
+  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &serial_temp, &error);
+  g_atomic_int_set (&data.serial, serial_temp);
   g_object_unref (m2);
   g_assert_no_error (error);
 
-  while (data.num_handled == 1)
+  while (g_atomic_int_get (&data.num_handled) == 1)
     g_thread_yield ();
 
   m2 = g_dbus_message_copy (m, &error);
   g_assert_no_error (error);
-  g_dbus_message_set_serial (m2, data.serial);
+  g_dbus_message_set_serial (m2, serial_temp);
   /* lock the message to test PRESERVE_SERIAL flag. */
   g_dbus_message_lock (m2);
-  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL, &data.serial, &error);
+  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL, &serial_temp, &error);
+  g_atomic_int_set (&data.serial, serial_temp);
   g_object_unref (m2);
   g_assert_no_error (error);
 
-  while (data.num_handled == 2)
+  while (g_atomic_int_get (&data.num_handled) == 2)
     g_thread_yield ();
 
   m2 = g_dbus_message_copy (m, &error);
@@ -993,14 +1000,17 @@ test_connection_filter (void)
                                                       m2,
                                                       G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                       -1,
+                                                      /* can't do this write atomically
+                                                       * as filter_func() needs it before
+                                                       * send_message_with_reply_sync() returns */
                                                       &data.serial,
                                                       NULL, /* GCancellable */
                                                       &error);
   g_object_unref (m2);
   g_assert_no_error (error);
-  g_assert (r != NULL);
+  g_assert_nonnull (r);
   g_object_unref (r);
-  g_assert_cmpint (data.num_handled, ==, 4);
+  g_assert_cmpint (g_atomic_int_get (&data.num_handled), ==, 4);
 
   g_dbus_connection_remove_filter (c, filter_id);
 
@@ -1010,15 +1020,16 @@ test_connection_filter (void)
                                                       m2,
                                                       G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                       -1,
-                                                      &data.serial,
+                                                      &serial_temp,
                                                       NULL, /* GCancellable */
                                                       &error);
+  g_atomic_int_set (&data.serial, serial_temp);
   g_object_unref (m2);
   g_assert_no_error (error);
-  g_assert (r != NULL);
+  g_assert_nonnull (r);
   g_object_unref (r);
-  g_assert_cmpint (data.num_handled, ==, 4);
-  g_assert_cmpint (data.num_outgoing, ==, 4);
+  g_assert_cmpint (g_atomic_int_get (&data.num_handled), ==, 4);
+  g_assert_cmpint (g_atomic_int_get (&data.num_outgoing), ==, 4);
 
   /* wait for service to be available */
   signal_handler_id = g_dbus_connection_signal_subscribe (c,
@@ -1034,7 +1045,7 @@ test_connection_filter (void)
   g_assert_cmpint (signal_handler_id, !=, 0);
 
   /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
+  g_assert_true (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
   timeout_mainloop_id = g_timeout_add (30000, test_connection_filter_on_timeout, NULL);
   g_main_loop_run (loop);
@@ -1159,7 +1170,7 @@ test_connection_serials (void)
   error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (c != NULL);
+  g_assert_nonnull (c);
 
   /* Status after initialization */
   g_assert_cmpint (g_dbus_connection_get_last_serial (c), ==, 1);
@@ -1210,11 +1221,11 @@ test_connection_basic (void)
   error = NULL;
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
-  g_assert (connection != NULL);
+  g_assert_nonnull (connection);
 
   flags = g_dbus_connection_get_capabilities (connection);
-  g_assert (flags == G_DBUS_CAPABILITY_FLAGS_NONE ||
-            flags == G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
+  g_assert_true (flags == G_DBUS_CAPABILITY_FLAGS_NONE ||
+                 flags == G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
   connection_flags = g_dbus_connection_get_flags (connection);
   g_assert_cmpint (connection_flags, ==,
@@ -1222,7 +1233,7 @@ test_connection_basic (void)
                    G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION);
 
   credentials = g_dbus_connection_get_peer_credentials (connection);
-  g_assert (credentials == NULL);
+  g_assert_null (credentials);
 
   g_object_get (connection,
                 "stream", &stream,
@@ -1233,13 +1244,13 @@ test_connection_basic (void)
                 "capabilities", &flags,
                 NULL);
 
-  g_assert (G_IS_IO_STREAM (stream));
-  g_assert (g_dbus_is_guid (guid));
-  g_assert (g_dbus_is_unique_name (name));
-  g_assert (!closed);
-  g_assert (exit_on_close);
-  g_assert (flags == G_DBUS_CAPABILITY_FLAGS_NONE ||
-            flags == G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
+  g_assert_true (G_IS_IO_STREAM (stream));
+  g_assert_true (g_dbus_is_guid (guid));
+  g_assert_true (g_dbus_is_unique_name (name));
+  g_assert_false (closed);
+  g_assert_true (exit_on_close);
+  g_assert_true (flags == G_DBUS_CAPABILITY_FLAGS_NONE ||
+                 flags == G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
   g_object_unref (stream);
   g_free (name);
   g_free (guid);
