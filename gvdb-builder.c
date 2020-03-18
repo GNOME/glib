@@ -339,6 +339,8 @@ file_builder_allocate_for_hash (FileBuilder            *fb,
 #undef chunk
 
   memset (*bloom_filter, 0, n_bloom_words * sizeof (guint32_le));
+  memset (*hash_buckets, 0, n_buckets * sizeof (guint32_le));
+  memset (*hash_items, 0, n_items * sizeof (struct gvdb_hash_item));
 
   /* NOTE - the code to actually fill in the bloom filter here is missing.
    * Patches welcome!
