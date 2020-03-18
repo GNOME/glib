@@ -331,6 +331,10 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_NANDINAGARI,            0x119A0 },
     { G_UNICODE_SCRIPT_NYIAKENG_PUACHUE_HMONG, 0x1E100 },
     { G_UNICODE_SCRIPT_WANCHO,                 0x1E2C0 },
+    { G_UNICODE_SCRIPT_CHORASMIAN,             0x10FB0 },
+    { G_UNICODE_SCRIPT_DIVES_AKURU,            0x11900 },
+    { G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT,    0x18B00 },
+    { G_UNICODE_SCRIPT_YEZIDI,                 0x10E80 },
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     g_assert_cmpint (g_unichar_get_script (examples[i].c), ==, examples[i].script);
@@ -1567,6 +1571,12 @@ test_iso15924 (void)
     { G_UNICODE_SCRIPT_NANDINAGARI,            "Nand" },
     { G_UNICODE_SCRIPT_NYIAKENG_PUACHUE_HMONG, "Hmnp" },
     { G_UNICODE_SCRIPT_WANCHO,                 "Wcho" },
+
+    /* Unicode 13.0 additions */
+    { G_UNICODE_SCRIPT_CHORASMIAN,             "Chrs" },
+    { G_UNICODE_SCRIPT_DIVES_AKURU,            "Diak" },
+    { G_UNICODE_SCRIPT_KHITAN_SMALL_SCRIPT,    "Kits" },
+    { G_UNICODE_SCRIPT_YEZIDI,                 "Yezi" },
   };
   guint i;
 
