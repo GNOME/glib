@@ -1,4 +1,4 @@
-# Test cases generated from Unicode 12.1.0 data
+# Test cases generated from Unicode 13.0.0 data
 # by gen-casemap-txt.py. Do not edit.
 #
 # Some special hand crafted tests
@@ -2432,6 +2432,12 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	Ꞔ	ꞔ		Ꞔ	# A7C4
 	Ʂ	ʂ		Ʂ	# A7C5
 	Ᶎ	ᶎ		Ᶎ	# A7C6
+	Ꟈ	ꟈ		Ꟈ	# A7C7
+	ꟈ	ꟈ	Ꟈ	Ꟈ	# A7C8
+	Ꟊ	ꟊ		Ꟊ	# A7C9
+	ꟊ	ꟊ	Ꟊ	Ꟊ	# A7CA
+	Ꟶ	ꟶ		Ꟶ	# A7F5
+	ꟶ	ꟶ	Ꟶ	Ꟶ	# A7F6
 	ꟺ	ꟺ			# A7FA
 	ꬰ	ꬰ			# AB30
 	ꬱ	ꬱ			# AB31
@@ -2484,6 +2490,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꭥ	ꭥ			# AB65
 	ꭦ	ꭦ			# AB66
 	ꭧ	ꭧ			# AB67
+	ꭨ	ꭨ			# AB68
 	ꭰ	ꭰ	Ꭰ	Ꭰ	# AB70
 	ꭱ	ꭱ	Ꭱ	Ꭱ	# AB71
 	ꭲ	ꭲ	Ꭲ	Ꭲ	# AB72
