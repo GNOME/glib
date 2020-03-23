@@ -3361,11 +3361,13 @@ gpointer
 {
   GObject *object = _object;
   gint old_val;
+  gboolean object_already_finalized;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   
   old_val = g_atomic_int_add (&object->ref_count, 1);
-  g_return_val_if_fail (old_val > 0, NULL);
+  object_already_finalized = (old_val <= 0);
+  g_return_val_if_fail (!object_already_finalized, NULL);
 
   if (old_val == 1 && OBJECT_HAS_TOGGLE_REF (object))
     toggle_refs_notify (object, FALSE);
