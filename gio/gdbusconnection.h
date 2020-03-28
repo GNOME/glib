@@ -550,7 +550,7 @@ gboolean         g_dbus_connection_unregister_subtree         (GDBusConnection  
 /**
  * GDBusSignalCallback:
  * @connection: A #GDBusConnection.
- * @sender_name: The unique bus name of the sender of the signal.
+ * @sender_name: (nullable): The unique bus name of the sender of the signal.
  * @object_path: The object path that the signal was emitted on.
  * @interface_name: The name of the interface.
  * @signal_name: The name of the signal.
