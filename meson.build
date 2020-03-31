@@ -554,8 +554,12 @@ foreach f : functions
   endif
 endforeach
 
-# Check that stpcpy() is usable; must use header
-if cc.has_function('stpcpy', prefix : '#include <string.h>')
+# Check that stpcpy() is usable; must use header.
+# FIXME: This is missing on windows, but meson misdetects it when using
+# clang and GCC 10, see
+# https://github.com/mesonbuild/meson/issues/3672 and
+# https://github.com/mesonbuild/meson/issues/5628.
+if host_system != 'windows' and cc.has_function('stpcpy', prefix : '#include <string.h>')
   glib_conf.set('HAVE_STPCPY', 1)
 endif
 
