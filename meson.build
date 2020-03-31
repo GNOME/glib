@@ -2134,6 +2134,16 @@ if host_system == 'windows' and cc.get_id() != 'msvc' and cc.get_id() != 'clang-
   # compiling for Win32 with gcc. It is used for the whole project and exposed
   # in glib-2.0.pc.
   win32_cflags = ['-mms-bitfields']
+  # Clang gives fatal errors when compiling C++ code with base classes or
+  # virtual functions, as -mms-bitfields doesn't make the C++ ABI compatible
+  # with microsoft's. As -mms-bitfields propagates to the pkg-config file
+  # (to callers unaware of it even being there), we need to add
+  # -Wno-incompatible-ms-struct in tandem with -mms-bitfields here.
+  # Unfortunately, this makes the pkg-config file impossible to use for other
+  # compilers that don't support this particular flag.
+  if cc.has_argument('-Wincompatible-ms-struct')
+    win32_cflags += '-Wno-incompatible-ms-struct'
+  endif
   add_project_arguments(win32_cflags, language : 'c')
 
   # Win32 API libs, used only by libglib and exposed in glib-2.0.pc
