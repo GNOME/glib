@@ -1150,7 +1150,7 @@ GParamSpec*	g_param_spec_variant	 (const gchar        *name,
 #    else /* !GOBJECT_STATIC_COMPILATION */
 #      ifdef GOBJECT_COMPILATION
 #        ifdef DLL_EXPORT
-#          define GOBJECT_VAR __declspec(dllexport)
+#          define GOBJECT_VAR extern __declspec(dllexport)
 #        else /* !DLL_EXPORT */
 #          define GOBJECT_VAR extern
 #        endif /* !DLL_EXPORT */
