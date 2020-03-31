@@ -558,7 +558,7 @@ g_icon_deserialize_emblemed (GVariant *value)
 
 /**
  * g_icon_deserialize:
- * @value: a #GVariant created with g_icon_serialize()
+ * @value: (transfer none): a #GVariant created with g_icon_serialize()
  *
  * Deserializes a #GIcon previously serialized using g_icon_serialize().
  *
@@ -653,7 +653,7 @@ g_icon_deserialize (GVariant *value)
  * makes sense to transfer the #GVariant between processes on the same machine,
  * (as opposed to over the network), and within the same file system namespace.
  *
- * Returns: (transfer full): a #GVariant, or %NULL when serialization fails.
+ * Returns: (transfer full): a #GVariant, or %NULL when serialization fails. The #GVariant will not be floating.
  *
  * Since: 2.38
  */
