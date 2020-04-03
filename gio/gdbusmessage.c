@@ -2786,7 +2786,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        _("Message body has signature “%s” but there is no signature header"),
-                       signature_str);
+                       g_variant_get_type_string (message->body));
           goto out;
         }
       tupled_signature_str = g_strdup_printf ("(%s)", signature_str);
@@ -2796,7 +2796,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        _("Message body has type signature “%s” but signature in the header field is “%s”"),
-                       tupled_signature_str, g_variant_get_type_string (message->body));
+                       g_variant_get_type_string (message->body), tupled_signature_str);
           g_free (tupled_signature_str);
           goto out;
         }

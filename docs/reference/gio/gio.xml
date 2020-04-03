@@ -308,6 +308,10 @@
                 <listitem><para>Don’t follow symbolic links.</para></listitem>
               </varlistentry>
               <varlistentry>
+                <term><option>-d</option>, <option>--print-display-names</option></term>
+                <listitem><para>Print display names.</para></listitem>
+              </varlistentry>
+              <varlistentry>
                 <term><option>-u</option>, <option>--print-uris</option></term>
                 <listitem><para>Print full URIs.</para></listitem>
               </varlistentry>
@@ -425,8 +429,8 @@
                 <listitem><para>Mount as mountable.</para></listitem>
               </varlistentry>
               <varlistentry>
-                <term><option>-d</option>, <option>--device=<replaceable>DEVICE</replaceable></option></term>
-                <listitem><para>Mount volume with device file.</para></listitem>
+                <term><option>-d</option>, <option>--device=<replaceable>ID</replaceable></option></term>
+                <listitem><para>Mount volume with device file, or other identifier.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-u</option>, <option>--unmount</option></term>
@@ -435,6 +439,10 @@
               <varlistentry>
                 <term><option>-e</option>, <option>--eject</option></term>
                 <listitem><para>Eject the location.</para></listitem>
+              </varlistentry>
+              <varlistentry>
+                <term><option>-t</option>, <option>--stop=<replaceable>DEVICE</replaceable></option></term>
+                <listitem><para>Stop drive with device file.</para></listitem>
               </varlistentry>
               <varlistentry>
                 <term><option>-s</option>, <option>--unmount-scheme=<replaceable>SCHEME</replaceable></option></term>
