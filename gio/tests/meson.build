@@ -105,7 +105,7 @@ if not dbus1_dep.found()
     # MSVC: Search for the DBus library by the configuration, which corresponds
     # to the output of CMake builds of DBus.  Note that debugoptimized
     # is really a Release build with .PDB files.
-    if buildtype == 'debug'
+    if vs_crt == 'debug'
       dbus1_dep = cc.find_library('dbus-1d', required : false)
     else
       dbus1_dep = cc.find_library('dbus-1', required : false)
