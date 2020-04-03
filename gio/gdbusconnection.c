@@ -3728,7 +3728,7 @@ typedef struct
   SignalSubscriber    *subscriber;  /* (owned) */
   GDBusMessage        *message;
   GDBusConnection     *connection;
-  const gchar         *sender;
+  const gchar         *sender;  /* (nullable) for peer-to-peer connections */
   const gchar         *path;
   const gchar         *interface;
   const gchar         *member;
@@ -3833,7 +3833,9 @@ path_rule_matches (const gchar *path_a,
   return memcmp (path_a, path_b, MIN (len_a, len_b)) == 0;
 }
 
-/* called in GDBusWorker thread WITH lock held */
+/* called in GDBusWorker thread WITH lock held
+ *
+ * @sender is (nullable) for peer-to-peer connections */
 static void
 schedule_callbacks (GDBusConnection *connection,
                     GPtrArray       *signal_data_array,
