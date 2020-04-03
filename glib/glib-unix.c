@@ -485,7 +485,7 @@ g_unix_get_passwd_entry (const gchar  *user_name,
        * loop until it’s big enough). Add 6 extra bytes to work around a bug in
        * macOS < 10.3. See #156446.
        */
-      buffer = g_malloc0 (sizeof (buffer) + string_buffer_size + 6);
+      buffer = g_malloc0 (sizeof (*buffer) + string_buffer_size + 6);
 
       errno = 0;
       retval = getpwnam_r (user_name, &buffer->pwd, buffer->string_buffer,
