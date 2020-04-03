@@ -37,6 +37,9 @@ static EscapeTest escape_tests[] =
   { "N\xc2\x80N", "N&#x80;N" },
   { "N\xc2\x79N", "N\xc2\x79N" },
   { "N\xc2\x9fN", "N&#x9f;N" },
+
+  /* As per g_markup_escape_text()'s documentation, whitespace is not escaped: */
+  { "\t", "\t" },
 };
 
 static void
