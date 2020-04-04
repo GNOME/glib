@@ -312,7 +312,7 @@ handle_read_error (LONG         result,
 {
   /* file not found means key value not set, this isn't an error for us. */
   if (result != ERROR_FILE_NOT_FOUND)
-    g_message_win32_error (result, "Unable to query value %s/%s: %s.\n",
+    g_message_win32_error (result, "Unable to query value %s/%s",
                            path_name, value_name);
 }
 
