@@ -201,7 +201,7 @@ trace (const char *format,
  * equivalent function for g_warning because none of the registry errors can
  * result from programmer error (Microsoft programmers don't count), instead
  * they will mostly occur from people messing with the registry by hand. */
-static void
+static void G_GNUC_PRINTF (2, 3)
 g_message_win32_error (DWORD        result_code,
                        const gchar *format,
                       ...)
