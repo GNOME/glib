@@ -532,7 +532,7 @@ if installed_tests_enabled
     cdata.set('installed_tests_dir', installed_tests_execdir)
     cdata.set('program', memory_monitor_test + '.py')
     configure_file(
-      input: installed_tests_template,
+      input: installed_tests_template_tap,
       output: memory_monitor_test + '.test',
       install_dir: installed_tests_metadir,
       configuration: cdata
