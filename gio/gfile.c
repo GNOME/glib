@@ -6839,7 +6839,8 @@ g_file_query_default_handler (GFile         *file,
     g_free (uri_scheme);
 
   info = g_file_query_info (file,
-                            G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                            G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
+                            G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE,
                             0,
                             cancellable,
                             error);
@@ -6849,6 +6850,8 @@ g_file_query_default_handler (GFile         *file,
   appinfo = NULL;
 
   content_type = g_file_info_get_content_type (info);
+  if (content_type == NULL)
+    content_type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
   if (content_type)
     {
       /* Don't use is_native(), as we want to support fuse paths if available */
@@ -6890,6 +6893,8 @@ query_default_handler_query_info_cb (GObject      *object,
     }
 
   content_type = g_file_info_get_content_type (info);
+  if (content_type == NULL)
+    content_type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
   if (content_type)
     {
       char *path;
@@ -6960,7 +6965,8 @@ g_file_query_default_handler_async (GFile              *file,
     g_free (uri_scheme);
 
   g_file_query_info_async (file,
-                           G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                           G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE ","
+                           G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE,
                            0,
                            io_priority,
                            cancellable,
