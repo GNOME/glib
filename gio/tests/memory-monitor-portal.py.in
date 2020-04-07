@@ -21,6 +21,8 @@ import fcntl
 import os
 import time
 
+import taptestrunner
+
 from gi.repository import GLib
 from gi.repository import Gio
 
@@ -114,5 +116,4 @@ class TestLowMemoryMonitorPortal(dbusmock.DBusTestCase):
 
 
 if __name__ == '__main__':
-    # avoid writing to stderr
-    unittest.main(testRunner=unittest.TextTestRunner(stream=sys.stdout, verbosity=2))
+    unittest.main(testRunner=taptestrunner.TAPTestRunner())
