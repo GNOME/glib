@@ -94,3 +94,15 @@ option('oss_fuzz',
        type : 'feature',
        value : 'disabled',
        description : 'Indicate oss-fuzz build environment')
+
+option('glib-assert',
+       type : 'boolean',
+       value : true,
+       yield : true,
+       description : 'Enable GLib assertion')
+
+option('glib-checks',
+       type : 'boolean',
+       value : true,
+       yield : true,
+       description : 'Enable GLib checks such as API guards')

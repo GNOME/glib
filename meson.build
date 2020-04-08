@@ -233,6 +233,16 @@ elif get_option('optimization') in ['2', '3', 's']
   message('Disabling cast checks')
 endif
 
+if not get_option('glib-assert')
+  glib_debug_cflags += ['-DG_DISABLE_ASSERT']
+  message('Disabling GLib asserts')
+endif
+
+if not get_option('glib-checks')
+  glib_debug_cflags += ['-DG_DISABLE_CHECKS']
+  message('Disabling GLib checks')
+endif
+
 add_project_arguments(glib_debug_cflags, language: 'c')
 
 # check for header files
