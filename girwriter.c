@@ -532,6 +532,9 @@ write_callable_info (const gchar    *namespace,
         case GI_SCOPE_TYPE_NOTIFIED:
           xml_printf (file, " scope=\"notified\"");
           break;
+        case GI_SCOPE_TYPE_FOREVER:
+          xml_printf (file, " scope=\"forever\"");
+          break;
         default:
           g_assert_not_reached ();
         }
