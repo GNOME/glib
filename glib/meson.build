@@ -385,6 +385,10 @@ pkg.generate(libglib,
   description : 'C Utility Library',
 )
 
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('glib-2.0', libglib_dep)
+endif
+
 # On Windows, glib needs a spawn helper for g_spawn* API
 if host_system == 'windows'
   if host_machine.cpu_family() == 'x86'

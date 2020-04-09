@@ -120,3 +120,9 @@ pkg.generate(libraries : [libgmodule, export_dynamic_ldflags],
 libgmodule_dep = declare_dependency(link_with : libgmodule,
   include_directories : [gmoduleinc],
   dependencies : [libglib_dep])
+
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('gmodule-no-export-2.0', libgmodule_dep)
+  meson.override_dependency('gmodule-export-2.0', libgmodule_dep)
+  meson.override_dependency('gmodule-2.0', libgmodule_dep)
+endif

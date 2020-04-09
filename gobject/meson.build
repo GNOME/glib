@@ -143,6 +143,10 @@ libgobject_dep = declare_dependency(link_with : libgobject,
   include_directories : [gobjectinc],
   dependencies : [libglib_dep, glib_enumtypes_dep])
 
+if meson.version().version_compare('>=0.54.0')
+  meson.override_dependency('gobject-2.0', libgobject_dep)
+endif
+
 executable('gobject-query', 'gobject-query.c',
   install : true,
   dependencies : [libglib_dep, libgobject_dep])
