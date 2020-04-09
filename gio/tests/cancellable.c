@@ -138,7 +138,7 @@ mock_operation_finish (GAsyncResult  *result,
   MockOperationData *data;
   GTask *task;
 
-  g_assert (g_task_is_valid (result, NULL));
+  g_assert_true (g_task_is_valid (result, NULL));
 
   /* This test expects the return value to be iterations_done even
    * when an error is set.
@@ -212,7 +212,7 @@ test_cancel_multiple_concurrent (void)
   if (g_test_verbose ())
     g_printerr ("CANCEL: %d operations\n", num_async_operations);
   g_cancellable_cancel (cancellable);
-  g_assert (g_cancellable_is_cancelled (cancellable));
+  g_assert_true (g_cancellable_is_cancelled (cancellable));
 
   /* Wait for all operations to be cancelled */
   g_main_loop_run (loop);
@@ -228,6 +228,82 @@ test_cancel_null (void)
   g_cancellable_cancel (NULL);
 }
 
+typedef struct
+{
+  GCond cond;
+  GMutex mutex;
+  GSource *cancellable_source;  /* (owned) */
+} ThreadedDisposeData;
+
+static gboolean
+cancelled_cb (GCancellable *cancellable,
+              gpointer      user_data)
+{
+  /* Nothing needs to be done here. */
+  return G_SOURCE_CONTINUE;
+}
+
+static gpointer
+threaded_dispose_thread_cb (gpointer user_data)
+{
+  ThreadedDisposeData *data = user_data;
+
+  /* Synchronise with the main thread before trying to reproduce the race. */
+  g_mutex_lock (&data->mutex);
+  g_cond_broadcast (&data->cond);
+  g_mutex_unlock (&data->mutex);
+
+  /* Race with cancellation of the cancellable. */
+  g_source_unref (data->cancellable_source);
+
+  return NULL;
+}
+
+static void
+test_cancellable_source_threaded_dispose (void)
+{
+  guint i;
+
+  g_test_summary ("Test a thread race between disposing of a GCancellableSource "
+                  "(in one thread) and cancelling the GCancellable it refers "
+                  "to (in another thread)");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1841");
+
+  for (i = 0; i < 100000; i++)
+    {
+      GCancellable *cancellable = NULL;
+      GSource *cancellable_source = NULL;
+      ThreadedDisposeData data;
+      GThread *thread = NULL;
+
+      /* Create a cancellable and a cancellable source for it. For this test,
+       * there’s no need to attach the source to a #GMainContext. */
+      cancellable = g_cancellable_new ();
+      cancellable_source = g_cancellable_source_new (cancellable);
+      g_source_set_callback (cancellable_source, G_SOURCE_FUNC (cancelled_cb), NULL, NULL);
+
+      /* Create a new thread and wait until it’s ready to execute before
+       * cancelling our cancellable. */
+      g_cond_init (&data.cond);
+      g_mutex_init (&data.mutex);
+      data.cancellable_source = g_steal_pointer (&cancellable_source);
+
+      g_mutex_lock (&data.mutex);
+      thread = g_thread_new ("/cancellable-source/threaded-dispose",
+                             threaded_dispose_thread_cb, &data);
+      g_cond_wait (&data.cond, &data.mutex);
+      g_mutex_unlock (&data.mutex);
+
+      /* Race with disposal of the cancellable source. */
+      g_cancellable_cancel (cancellable);
+
+      g_thread_join (g_steal_pointer (&thread));
+      g_mutex_clear (&data.mutex);
+      g_cond_clear (&data.cond);
+      g_object_unref (cancellable);
+    }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -235,6 +311,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/cancellable/multiple-concurrent", test_cancel_multiple_concurrent);
   g_test_add_func ("/cancellable/null", test_cancel_null);
+  g_test_add_func ("/cancellable-source/threaded-dispose", test_cancellable_source_threaded_dispose);
 
   return g_test_run ();
 }
