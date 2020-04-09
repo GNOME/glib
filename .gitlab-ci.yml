@@ -178,8 +178,6 @@ G_DISABLE_ASSERT:
   extends: .build
   image: $FEDORA_IMAGE
   stage: build
-  variables:
-    CPPFLAGS: "-DG_DISABLE_ASSERT"
   script:
     - meson ${MESON_COMMON_OPTIONS}
             --werror
@@ -187,6 +185,7 @@ G_DISABLE_ASSERT:
             -Ddtrace=true
             -Dfam=true
             -Dinstalled_tests=true
+            -Dglib_assert=false
             _build
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
