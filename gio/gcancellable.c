@@ -643,6 +643,8 @@ typedef struct {
 
   GCancellable *cancellable;
   gulong        cancelled_handler;
+  /* Protected by cancellable_mutex: */
+  gboolean      resurrected_during_cancellation;
 } GCancellableSource;
 
 /*
@@ -661,8 +663,24 @@ cancellable_source_cancelled (GCancellable *cancellable,
 			      gpointer      user_data)
 {
   GSource *source = user_data;
+  GCancellableSource *cancellable_source = (GCancellableSource *) source;
+
+  g_mutex_lock (&cancellable_mutex);
+
+  /* Drop the reference added in cancellable_source_dispose(); see the comment there.
+   * The reference must be dropped after unlocking @cancellable_mutex since
+   * it could be the final reference, and the dispose function takes
+   * @cancellable_mutex. */
+  if (cancellable_source->resurrected_during_cancellation)
+    {
+      cancellable_source->resurrected_during_cancellation = FALSE;
+      g_mutex_unlock (&cancellable_mutex);
+      g_source_unref (source);
+      return;
+    }
 
   g_source_ref (source);
+  g_mutex_unlock (&cancellable_mutex);
   g_source_set_ready_time (source, 0);
   g_source_unref (source);
 }
@@ -684,12 +702,37 @@ cancellable_source_dispose (GSource *source)
 {
   GCancellableSource *cancellable_source = (GCancellableSource *)source;
 
+  g_mutex_lock (&cancellable_mutex);
+
   if (cancellable_source->cancellable)
     {
+      if (cancellable_source->cancellable->priv->cancelled_running)
+        {
+          /* There can be a race here: if thread A has called
+           * g_cancellable_cancel() and has got as far as committing to call
+           * cancellable_source_cancelled(), then thread B drops the final
+           * ref on the GCancellableSource before g_source_ref() is called in
+           * cancellable_source_cancelled(), then cancellable_source_dispose()
+           * will run through and the GCancellableSource will be finalised
+           * before cancellable_source_cancelled() gets to g_source_ref(). It
+           * will then be left in a state where it’s committed to using a
+           * dangling GCancellableSource pointer.
+           *
+           * Eliminate that race by resurrecting the #GSource temporarily, and
+           * then dropping that reference in cancellable_source_cancelled(),
+           * which should be guaranteed to fire because we’re inside a
+           * @cancelled_running block.
+           */
+          g_source_ref (source);
+          cancellable_source->resurrected_during_cancellation = TRUE;
+        }
+
       g_clear_signal_handler (&cancellable_source->cancelled_handler,
                               cancellable_source->cancellable);
       g_clear_object (&cancellable_source->cancellable);
     }
+
+  g_mutex_unlock (&cancellable_mutex);
 }
 
 static gboolean
