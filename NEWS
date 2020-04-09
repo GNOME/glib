@@ -1,3 +1,25 @@
+Overview of changes in GLib 2.64.2
+==================================
+
+* Bugs fixed:
+ - #2067 Glib uses _Static_assert in C++17 mode
+ - #2081 gdbus error messages contains mixed up body and head signatures
+ - !1421 Backport !1420 “gmacros.h: avoid using _Static_assert in C++17 mode” to glib-2-64
+ - !1438 Backport various patches to glib-2-64
+  - !1424 docs: Fix configuration with gtk_doc=true and installed_tests=false
+  - !1428 Add missing 'extern' to the dllexport version of GLIB_VAR/GOBJECT_VAR
+  - !1429 Fix arch detection ifdefs in glib/valgrind.h
+  - !1431 glib-unix.c: fix heap corruption in g_unix_get_passwd_entry
+  - !1432 docs: Mention new gio tool options
+  - !1435 gdbusmessage: Fix swapped signatures in error messages
+ - !1447 Backport !1442 “gfile: Fallback to fast-content-type if content-type is not set” to glib-2-64
+
+* Translation updates:
+ - Hebrew
+ - Romanian
+ - Ukrainian
+
+
 Overview of changes in GLib 2.64.1
 ==================================
 
