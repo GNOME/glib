@@ -5,9 +5,10 @@ GLib's configure options and corresponding macros
 	none
 --buildtype={debug,debugoptimized}	[debugoptimized is the default]
 	-DG_ENABLE_DEBUG -g
-
-Available to define yourself:
-	-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS
+-Dglib_asserts=false
+	-DG_DISABLE_ASSERT
+-Dglib_checks=false
+	-DG_DISABLE_CHECKS
 
 Besides these, there are some local feature specific options, but my main
 focus here is to concentrate on macros that affect overall GLib behaviour
