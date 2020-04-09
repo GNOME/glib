@@ -3347,10 +3347,14 @@ g_date_time_format_utf8 (GDateTime   *datetime,
  * - \%M: the minute as a decimal number (range 00 to 59)
  * - \%p: either "AM" or "PM" according to the given time value, or the
  *   corresponding  strings for the current locale.  Noon is treated as
- *   "PM" and midnight as "AM".
+ *   "PM" and midnight as "AM". Use of this format specifier is discouraged, as
+ *   many locales have no concept of AM/PM formatting. Use \%c or \%X instead.
  * - \%P: like \%p but lowercase: "am" or "pm" or a corresponding string for
- *   the current locale
- * - \%r: the time in a.m. or p.m. notation
+ *   the current locale. Use of this format specifier is discouraged, as
+ *   many locales have no concept of AM/PM formatting. Use \%c or \%X instead.
+ * - \%r: the time in a.m. or p.m. notation. Use of this format specifier is
+ *   discouraged, as many locales have no concept of AM/PM formatting. Use \%c
+ *   or \%X instead.
  * - \%R: the time in 24-hour notation (\%H:\%M)
  * - \%s: the number of seconds since the Epoch, that is, since 1970-01-01
  *   00:00:00 UTC
