@@ -159,4 +159,10 @@
 # define GI_AVAILABLE_IN_1_60                 _GI_EXTERN
 #endif
 
+#if defined(GLIB_VERSION_2_66) && GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_66
+# define GI_AVAILABLE_IN_1_66                 GLIB_UNAVAILABLE(2, 66)
+#else
+# define GI_AVAILABLE_IN_1_66                 _GI_EXTERN
+#endif
+
 #endif /* __GIVERSIONMACROS_H__ */
