@@ -80,6 +80,18 @@ gboolean               g_type_info_is_zero_terminated  (GITypeInfo *info);
 GI_AVAILABLE_IN_ALL
 GIArrayType            g_type_info_get_array_type      (GITypeInfo *info);
 
+GI_AVAILABLE_IN_1_66
+GITypeTag              g_type_info_get_storage_type    (GITypeInfo *info);
+
+GI_AVAILABLE_IN_1_66
+void                   g_type_info_argument_from_hash_pointer (GITypeInfo *info,
+                                                               gpointer    hash_pointer,
+                                                               GIArgument *arg);
+
+GI_AVAILABLE_IN_1_66
+gpointer               g_type_info_hash_pointer_from_argument (GITypeInfo *info,
+                                                               GIArgument *arg);
+
 G_END_DECLS
 
 

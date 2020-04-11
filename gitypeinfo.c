@@ -347,3 +347,173 @@ g_type_info_get_array_type (GITypeInfo *info)
 
   return -1;
 }
+
+/**
+ * g_type_info_get_storage_type:
+ * @info: a #GITypeInfo
+ *
+ * Obtain the type tag corresponding to the underlying storage type in C for
+ * the type.
+ * See #GITypeTag for a list of type tags.
+ *
+ * Returns: the type tag
+ *
+ * Since: 1.66
+ */
+GITypeTag
+g_type_info_get_storage_type (GITypeInfo *info)
+{
+  GITypeTag type_tag = g_type_info_get_tag (info);
+
+  if (type_tag == GI_TYPE_TAG_INTERFACE)
+    {
+      GIBaseInfo *interface = g_type_info_get_interface (info);
+      GIInfoType info_type = g_base_info_get_type (interface);
+      if (info_type == GI_INFO_TYPE_ENUM || info_type == GI_INFO_TYPE_FLAGS)
+        type_tag = g_enum_info_get_storage_type (interface);
+      g_base_info_unref (interface);
+    }
+
+  return type_tag;
+}
+
+/**
+ * g_type_info_argument_from_hash_pointer:
+ * @info: a #GITypeInfo
+ * @hash_pointer: A pointer, such as a #GHashTable data pointer
+ * @arg: A #GIArgument to fill in
+ *
+ * GLib data structures, such as #GList, #GSList, and #GHashTable, all store
+ * data pointers.
+ * In the case where the list or hash table is storing single types rather than
+ * structs, these data pointers may have values stuffed into them via macros
+ * such as %GPOINTER_TO_INT.
+ *
+ * Use this function to ensure that all values are correctly extracted from
+ * stuffed pointers, regardless of the machine's architecture or endianness.
+ *
+ * This function fills in the appropriate field of @arg with the value extracted
+ * from @hash_pointer, depending on the storage type of @info.
+ *
+ * Since: 1.66
+ */
+void
+g_type_info_argument_from_hash_pointer (GITypeInfo *info,
+                                        gpointer hash_pointer,
+                                        GIArgument *arg)
+{
+  GITypeTag type_tag = g_type_info_get_storage_type (info);
+
+  switch (type_tag)
+    {
+      case GI_TYPE_TAG_BOOLEAN:
+        arg->v_boolean = !!GPOINTER_TO_INT (hash_pointer);
+        break;
+      case GI_TYPE_TAG_INT8:
+        arg->v_int8 = (gint8)GPOINTER_TO_INT (hash_pointer);
+        break;
+      case GI_TYPE_TAG_UINT8:
+        arg->v_uint8 = (guint8)GPOINTER_TO_UINT (hash_pointer);
+        break;
+      case GI_TYPE_TAG_INT16:
+        arg->v_int16 = (gint16)GPOINTER_TO_INT (hash_pointer);
+        break;
+      case GI_TYPE_TAG_UINT16:
+        arg->v_uint16 = (guint16)GPOINTER_TO_UINT (hash_pointer);
+        break;
+      case GI_TYPE_TAG_INT32:
+        arg->v_int32 = (gint32)GPOINTER_TO_INT (hash_pointer);
+        break;
+      case GI_TYPE_TAG_UINT32:
+      case GI_TYPE_TAG_UNICHAR:
+        arg->v_uint32 = (guint32)GPOINTER_TO_UINT (hash_pointer);
+        break;
+      case GI_TYPE_TAG_GTYPE:
+        arg->v_size = GPOINTER_TO_SIZE (hash_pointer);
+        break;
+      case GI_TYPE_TAG_UTF8:
+      case GI_TYPE_TAG_FILENAME:
+      case GI_TYPE_TAG_INTERFACE:
+      case GI_TYPE_TAG_ARRAY:
+      case GI_TYPE_TAG_GLIST:
+      case GI_TYPE_TAG_GSLIST:
+      case GI_TYPE_TAG_GHASH:
+      case GI_TYPE_TAG_ERROR:
+        arg->v_pointer = hash_pointer;
+        break;
+      case GI_TYPE_TAG_INT64:
+      case GI_TYPE_TAG_UINT64:
+      case GI_TYPE_TAG_FLOAT:
+      case GI_TYPE_TAG_DOUBLE:
+      default:
+        g_critical ("Unsupported type for pointer-stuffing: %s",
+                    g_type_tag_to_string (type_tag));
+        arg->v_pointer = hash_pointer;
+    }
+}
+
+/**
+ * g_type_info_hash_pointer_from_argument:
+ * @info: a #GITypeInfo
+ * @arg: A #GIArgument with the value to stuff into a pointer
+ *
+ * GLib data structures, such as #GList, #GSList, and #GHashTable, all store
+ * data pointers.
+ * In the case where the list or hash table is storing single types rather than
+ * structs, these data pointers may have values stuffed into them via macros
+ * such as %GPOINTER_TO_INT.
+ *
+ * Use this function to ensure that all values are correctly stuffed into
+ * pointers, regardless of the machine's architecture or endianness.
+ *
+ * This function returns a pointer stuffed with the appropriate field of @arg,
+ * depending on the storage type of @info.
+ *
+ * Returns: A stuffed pointer, that can be stored in a #GHashTable, for example
+ *
+ * Since: 1.66
+ */
+gpointer
+g_type_info_hash_pointer_from_argument (GITypeInfo *info,
+                                        GIArgument *arg)
+{
+  GITypeTag type_tag = g_type_info_get_storage_type (info);
+
+  switch (type_tag)
+    {
+      case GI_TYPE_TAG_BOOLEAN:
+        return GINT_TO_POINTER (arg->v_boolean);
+      case GI_TYPE_TAG_INT8:
+        return GINT_TO_POINTER (arg->v_int8);
+      case GI_TYPE_TAG_UINT8:
+        return GUINT_TO_POINTER (arg->v_uint8);
+      case GI_TYPE_TAG_INT16:
+        return GINT_TO_POINTER (arg->v_int16);
+      case GI_TYPE_TAG_UINT16:
+        return GUINT_TO_POINTER (arg->v_uint16);
+      case GI_TYPE_TAG_INT32:
+        return GINT_TO_POINTER (arg->v_int32);
+      case GI_TYPE_TAG_UINT32:
+      case GI_TYPE_TAG_UNICHAR:
+        return GUINT_TO_POINTER (arg->v_uint32);
+      case GI_TYPE_TAG_GTYPE:
+        return GSIZE_TO_POINTER (arg->v_size);
+      case GI_TYPE_TAG_UTF8:
+      case GI_TYPE_TAG_FILENAME:
+      case GI_TYPE_TAG_INTERFACE:
+      case GI_TYPE_TAG_ARRAY:
+      case GI_TYPE_TAG_GLIST:
+      case GI_TYPE_TAG_GSLIST:
+      case GI_TYPE_TAG_GHASH:
+      case GI_TYPE_TAG_ERROR:
+        return arg->v_pointer;
+      case GI_TYPE_TAG_INT64:
+      case GI_TYPE_TAG_UINT64:
+      case GI_TYPE_TAG_FLOAT:
+      case GI_TYPE_TAG_DOUBLE:
+      default:
+        g_critical ("Unsupported type for pointer-stuffing: %s",
+                    g_type_tag_to_string (type_tag));
+        return arg->v_pointer;
+    }
+}
