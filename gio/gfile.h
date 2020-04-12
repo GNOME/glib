@@ -1093,7 +1093,13 @@ GLIB_AVAILABLE_IN_ALL
 gboolean                g_file_eject_mountable_with_operation_finish (GFile           *file,
 							   GAsyncResult               *result,
 							   GError                    **error);
-
+GLIB_AVAILABLE_IN_ALL
+gboolean                g_file_query_info_for_copy        (GFile                      *source,
+							   GFile                      *destination,
+							   GFileCopyFlags              flags,
+							   GFileInfo                 **info,
+							   GCancellable               *cancellable,
+							   GError                    **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean                g_file_copy_attributes            (GFile                      *source,
 							   GFile                      *destination,

@@ -199,6 +199,7 @@ g_file_replace_contents
 g_file_replace_contents_async
 g_file_replace_contents_bytes_async
 g_file_replace_contents_finish
+g_file_query_info_for_copy
 g_file_copy_attributes
 g_file_create_readwrite
 g_file_create_readwrite_async

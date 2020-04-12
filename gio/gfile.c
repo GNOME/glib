@@ -2778,6 +2778,58 @@ build_attribute_list_for_copy (GFile                  *file,
 }
 
 /**
+ * g_file_query_info_for_copy:
+ * @source: a #GFile with attributes
+ * @destination: a #GFile where @source will be copied to
+ * @flags: a set of #GFileCopyFlags
+ * @info: a pointer to #GFileInfo to output attributes to
+ * @cancellable: (nullable): optional #GCancellable object,
+ *     %NULL to ignore
+ * @error: a #GError, %NULL to ignore
+ *
+ * Queries the file attributes of @source before copying to @destination.
+ *
+ * This function prepares a list of file attributes that are
+ * normally copied with the file (see g_file_copy_attributes()
+ * for the detailed description). This function is used by the
+ * implementation of g_file_copy_attributes() and is useful
+ * when one needs to query and set the attributes in two
+ * stages (e.g., for remote push/pull via gvfs).
+ *
+ * Returns: %TRUE if the attributes were copied successfully,
+ *     %FALSE otherwise.
+ */
+gboolean
+g_file_query_info_for_copy (GFile           *source,
+                            GFile           *destination,
+                            GFileCopyFlags   flags,
+                            GFileInfo      **info,
+                            GCancellable    *cancellable,
+                            GError         **error)
+{
+  char *attrs_to_read;
+  gboolean source_nofollow_symlinks;
+
+  if (!build_attribute_list_for_copy (destination, flags, &attrs_to_read,
+                                      cancellable, error))
+    return FALSE;
+
+  source_nofollow_symlinks = flags & G_FILE_COPY_NOFOLLOW_SYMLINKS;
+
+  /* Ignore errors here, if we can't read some info (e.g. if it doesn't exist)
+   * we just don't copy it.
+   */
+  *info = g_file_query_info (source, attrs_to_read,
+                             source_nofollow_symlinks ? G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS : 0,
+                             cancellable,
+                             NULL);
+
+  g_free (attrs_to_read);
+
+  return TRUE;
+}
+
+/**
  * g_file_copy_attributes:
  * @source: a #GFile with attributes
  * @destination: a #GFile to copy attributes to
@@ -2805,26 +2857,12 @@ g_file_copy_attributes (GFile           *source,
                         GCancellable    *cancellable,
                         GError         **error)
 {
-  char *attrs_to_read;
   gboolean res;
   GFileInfo *info;
-  gboolean source_nofollow_symlinks;
 
-  if (!build_attribute_list_for_copy (destination, flags, &attrs_to_read,
-                                      cancellable, error))
+  if (!g_file_query_info_for_copy (source, destination, flags, &info,
+                                   cancellable, error))
     return FALSE;
-
-  source_nofollow_symlinks = flags & G_FILE_COPY_NOFOLLOW_SYMLINKS;
-
-  /* Ignore errors here, if we can't read some info (e.g. if it doesn't exist)
-   * we just don't copy it.
-   */
-  info = g_file_query_info (source, attrs_to_read,
-                            source_nofollow_symlinks ? G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS:0,
-                            cancellable,
-                            NULL);
-
-  g_free (attrs_to_read);
 
   res = TRUE;
   if  (info)
