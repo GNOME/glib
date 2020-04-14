@@ -291,18 +291,22 @@ test_g_rand (void)
 static void
 test_g_regex (void)
 {
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_autoptr(GRegex) val = g_regex_new (".*", 0, 0, NULL);
   g_assert_nonnull (val);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
 test_g_match_info (void)
 {
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_autoptr(GRegex) regex = g_regex_new (".*", 0, 0, NULL);
   g_autoptr(GMatchInfo) match = NULL;
 
   if (!g_regex_match (regex, "hello", 0, &match))
     g_assert_not_reached ();
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void

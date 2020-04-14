@@ -18,6 +18,9 @@
  * along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+/* Yes, we're using deprecated API */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "config.h"
 
 #include <string.h>
@@ -102,9 +105,10 @@
  * is not threadsafe.
  *
  * The regular expressions low-level functionalities are obtained through
- * the excellent
- * [PCRE](http://www.pcre.org/)
- * library written by Philip Hazel.
+ * the excellent [PCRE](http://www.pcre.org/) library written by Philip Hazel.
+ *
+ * Deprecated: 2.68: The #GRegex API is deprecated, as it wraps the old PCRE 1
+ * API; newly written code should use the [PCRE 2 API](https://www.pcre.org/current/doc/html/) directly.
  */
 
 /* Mask of all the possible values for GRegexCompileFlags. */
@@ -607,6 +611,8 @@ match_info_new (const GRegex *regex,
  * Returns: #GRegex object used in @match_info
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 GRegex *
 g_match_info_get_regex (const GMatchInfo *match_info)
@@ -626,6 +632,8 @@ g_match_info_get_regex (const GMatchInfo *match_info)
  * Returns: the string searched with @match_info
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 const gchar *
 g_match_info_get_string (const GMatchInfo *match_info)
@@ -643,6 +651,8 @@ g_match_info_get_string (const GMatchInfo *match_info)
  * Returns: @match_info
  *
  * Since: 2.30
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 GMatchInfo       *
 g_match_info_ref (GMatchInfo *match_info)
@@ -660,6 +670,8 @@ g_match_info_ref (GMatchInfo *match_info)
  * to zero, it frees all the memory associated with the match_info structure.
  *
  * Since: 2.30
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 void
 g_match_info_unref (GMatchInfo *match_info)
@@ -681,6 +693,8 @@ g_match_info_unref (GMatchInfo *match_info)
  * nothing.
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 void
 g_match_info_free (GMatchInfo *match_info)
@@ -706,6 +720,8 @@ g_match_info_free (GMatchInfo *match_info)
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_match_info_next (GMatchInfo  *match_info,
@@ -800,6 +816,8 @@ g_match_info_next (GMatchInfo  *match_info,
  *   %FALSE otherwise
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_match_info_matches (const GMatchInfo *match_info)
@@ -825,6 +843,8 @@ g_match_info_matches (const GMatchInfo *match_info)
  * Returns: Number of matched substrings, or -1 if an error occurred
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gint
 g_match_info_get_match_count (const GMatchInfo *match_info)
@@ -883,6 +903,8 @@ g_match_info_get_match_count (const GMatchInfo *match_info)
  * Returns: %TRUE if the match was partial, %FALSE otherwise
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_match_info_is_partial_match (const GMatchInfo *match_info)
@@ -919,6 +941,8 @@ g_match_info_is_partial_match (const GMatchInfo *match_info)
  * Returns: (nullable): the expanded string, or %NULL if an error occurred
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gchar *
 g_match_info_expand_references (const GMatchInfo  *match_info,
@@ -981,6 +1005,8 @@ g_match_info_expand_references (const GMatchInfo  *match_info,
  *     occurred. You have to free the string yourself
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gchar *
 g_match_info_fetch (const GMatchInfo *match_info,
@@ -1034,6 +1060,8 @@ g_match_info_fetch (const GMatchInfo *match_info,
  *   unchanged
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_match_info_fetch_pos (const GMatchInfo *match_info,
@@ -1117,6 +1145,8 @@ get_matched_substring_number (const GMatchInfo *match_info,
  *     occurred. You have to free the string yourself
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gchar *
 g_match_info_fetch_named (const GMatchInfo *match_info,
@@ -1156,6 +1186,8 @@ g_match_info_fetch_named (const GMatchInfo *match_info,
  *     are left unchanged.
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_match_info_fetch_named_pos (const GMatchInfo *match_info,
@@ -1201,6 +1233,8 @@ g_match_info_fetch_named_pos (const GMatchInfo *match_info,
  *     match failed %NULL is returned
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gchar **
 g_match_info_fetch_all (const GMatchInfo *match_info)
@@ -1237,6 +1271,8 @@ G_DEFINE_QUARK (g-regex-error-quark, g_regex_error)
  * Returns: @regex
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 GRegex *
 g_regex_ref (GRegex *regex)
@@ -1254,6 +1290,8 @@ g_regex_ref (GRegex *regex)
  * to zero, it frees all the memory associated with the regex structure.
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 void
 g_regex_unref (GRegex *regex)
@@ -1294,6 +1332,8 @@ static pcre *regex_compile (const gchar         *pattern,
  *   g_regex_unref() when you are done with it
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 GRegex *
 g_regex_new (const gchar         *pattern,
@@ -1483,6 +1523,8 @@ regex_compile (const gchar         *pattern,
  * Returns: the pattern of @regex
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 const gchar *
 g_regex_get_pattern (const GRegex *regex)
@@ -1503,6 +1545,8 @@ g_regex_get_pattern (const GRegex *regex)
  * Returns: the number of the highest back reference
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gint
 g_regex_get_max_backref (const GRegex *regex)
@@ -1524,6 +1568,8 @@ g_regex_get_max_backref (const GRegex *regex)
  * Returns: the number of capturing subpatterns
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gint
 g_regex_get_capture_count (const GRegex *regex)
@@ -1545,6 +1591,8 @@ g_regex_get_capture_count (const GRegex *regex)
  * Returns: %TRUE if the pattern contains explicit CR or LF references
  *
  * Since: 2.34
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_regex_get_has_cr_or_lf (const GRegex *regex)
@@ -1568,6 +1616,8 @@ g_regex_get_has_cr_or_lf (const GRegex *regex)
  * Returns: the number of characters in the longest lookbehind assertion.
  *
  * Since: 2.38
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gint
 g_regex_get_max_lookbehind (const GRegex *regex)
@@ -1593,6 +1643,8 @@ g_regex_get_max_lookbehind (const GRegex *regex)
  * Returns: flags from #GRegexCompileFlags
  *
  * Since: 2.26
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 GRegexCompileFlags
 g_regex_get_compile_flags (const GRegex *regex)
@@ -1611,6 +1663,8 @@ g_regex_get_compile_flags (const GRegex *regex)
  * Returns: flags from #GRegexMatchFlags
  *
  * Since: 2.26
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 GRegexMatchFlags
 g_regex_get_match_flags (const GRegex *regex)
@@ -1641,6 +1695,8 @@ g_regex_get_match_flags (const GRegex *regex)
  * Returns: %TRUE if the string matched, %FALSE otherwise
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_regex_match_simple (const gchar        *pattern,
@@ -1711,6 +1767,8 @@ g_regex_match_simple (const gchar        *pattern,
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_regex_match (const GRegex      *regex,
@@ -1788,6 +1846,8 @@ g_regex_match (const GRegex      *regex,
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_regex_match_full (const GRegex      *regex,
@@ -1844,6 +1904,8 @@ g_regex_match_full (const GRegex      *regex,
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_regex_match_all (const GRegex      *regex,
@@ -1908,6 +1970,8 @@ g_regex_match_all (const GRegex      *regex,
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_regex_match_all_full (const GRegex      *regex,
@@ -2020,6 +2084,8 @@ g_regex_match_all_full (const GRegex      *regex,
  *   does not exists
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gint
 g_regex_get_string_number (const GRegex *regex,
@@ -2076,6 +2142,8 @@ g_regex_get_string_number (const GRegex *regex,
  * it using g_strfreev()
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  **/
 gchar **
 g_regex_split_simple (const gchar        *pattern,
@@ -2123,6 +2191,8 @@ g_regex_split_simple (const gchar        *pattern,
  * it using g_strfreev()
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  **/
 gchar **
 g_regex_split (const GRegex     *regex,
@@ -2170,6 +2240,8 @@ g_regex_split (const GRegex     *regex,
  * it using g_strfreev()
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  **/
 gchar **
 g_regex_split_full (const GRegex      *regex,
@@ -2803,6 +2875,8 @@ interpolation_list_needs_match (GList *list)
  * Returns: a newly allocated string containing the replacements
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gchar *
 g_regex_replace (const GRegex      *regex,
@@ -2876,6 +2950,8 @@ literal_replacement (const GMatchInfo *match_info,
  * Returns: a newly allocated string containing the replacements
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gchar *
 g_regex_replace_literal (const GRegex      *regex,
@@ -2957,6 +3033,8 @@ g_regex_replace_literal (const GRegex      *regex,
  * Returns: a newly allocated string containing the replacements
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gchar *
 g_regex_replace_eval (const GRegex        *regex,
@@ -3029,6 +3107,8 @@ g_regex_replace_eval (const GRegex        *regex,
  * Returns: whether @replacement is a valid replacement string
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gboolean
 g_regex_check_replacement (const gchar  *replacement,
@@ -3068,6 +3148,8 @@ g_regex_check_replacement (const gchar  *replacement,
  * Returns: a newly-allocated escaped string
  *
  * Since: 2.30
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gchar *
 g_regex_escape_nul (const gchar *string,
@@ -3138,6 +3220,8 @@ g_regex_escape_nul (const gchar *string,
  * Returns: a newly-allocated escaped string
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use PCRE 2 instead
  */
 gchar *
 g_regex_escape_string (const gchar *string,

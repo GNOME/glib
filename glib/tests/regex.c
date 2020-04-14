@@ -19,6 +19,9 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
+/* The entire GRegex API has been deprecated */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "config.h"
 
 #include <string.h>
