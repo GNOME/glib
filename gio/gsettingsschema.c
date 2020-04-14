@@ -547,6 +547,8 @@ start_element (GMarkupParseContext  *context,
 static gchar *
 normalise_whitespace (const gchar *orig)
 {
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
   /* We normalise by the same rules as in intltool:
    *
    *   sub cleanup {
@@ -594,6 +596,8 @@ normalise_whitespace (const gchar *orig)
       g_free (b);
       lines[i] = c;
     }
+
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   result = g_strjoinv ("\n\n", lines);
   g_strfreev (lines);
