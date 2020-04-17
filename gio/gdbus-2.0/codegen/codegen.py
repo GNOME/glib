@@ -100,6 +100,10 @@ class HeaderCodeGenerator:
             self.outfile.write('/* ------------------------------------------------------------------------ */\n')
             self.outfile.write('/* Declarations for %s */\n'%i.name)
             self.outfile.write('\n')
+            self.outfile.write('#ifndef %s_EXP\n'%i.ns_upper)
+            self.outfile.write('#define %s_EXP\n'%i.ns_upper)
+            self.outfile.write('#endif %s_EXP\n'%i.ns_upper)
+            self.outfile.write('\n')
 
             # First the GInterface
             self.outfile.write('#define %sTYPE_%s (%s_get_type ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
@@ -171,9 +175,12 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%s, g_object_unref)\n' % (i.camel_name))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GType %s_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GDBusInterfaceInfo *%s_interface_info (void);\n'%(i.name_lower))
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('guint %s_override_properties (GObjectClass *klass, guint property_id_begin);\n'%(i.name_lower))
             self.outfile.write('\n')
 
@@ -182,6 +189,7 @@ class HeaderCodeGenerator:
                 self.outfile.write('\n')
                 self.outfile.write('/* D-Bus method call completion functions: */\n')
                 for m in i.methods:
+                    self.outfile.write('%s_EXP\n'%i.ns_upper)
                     if m.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('void %s_complete_%s (\n'
@@ -200,6 +208,7 @@ class HeaderCodeGenerator:
                 self.outfile.write('\n')
                 self.outfile.write('/* D-Bus signal emissions functions: */\n')
                 for s in i.signals:
+                    self.outfile.write('%s_EXP\n'%i.ns_upper)
                     if s.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('void %s_emit_%s (\n'
@@ -216,6 +225,7 @@ class HeaderCodeGenerator:
                 self.outfile.write('/* D-Bus method calls: */\n')
                 for m in i.methods:
                     # async begin
+                    self.outfile.write('%s_EXP\n'%i.ns_upper)
                     if m.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('void %s_call_%s (\n'
@@ -233,6 +243,7 @@ class HeaderCodeGenerator:
                                        '    gpointer user_data);\n')
                     self.outfile.write('\n')
                     # async finish
+                    self.outfile.write('%s_EXP\n'%i.ns_upper)
                     if m.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('gboolean %s_call_%s_finish (\n'
@@ -246,6 +257,7 @@ class HeaderCodeGenerator:
                                        '    GError **error);\n')
                     self.outfile.write('\n')
                     # sync
+                    self.outfile.write('%s_EXP\n'%i.ns_upper)
                     if m.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('gboolean %s_call_%s_sync (\n'
@@ -273,14 +285,17 @@ class HeaderCodeGenerator:
                 self.outfile.write('/* D-Bus property accessors: */\n')
                 for p in i.properties:
                     # getter
+                    self.outfile.write('%s_EXP\n'%i.ns_upper)
                     if p.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('%s%s_get_%s (%s *object);\n'%(p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name))
                     if p.arg.free_func != None:
+                        self.outfile.write('%s_EXP\n'%i.ns_upper)
                         if p.deprecated:
                             self.outfile.write('G_GNUC_DEPRECATED ')
                         self.outfile.write('%s%s_dup_%s (%s *object);\n'%(p.arg.ctype_in_dup, i.name_lower, p.name_lower, i.camel_name))
                     # setter
+                    self.outfile.write('%s_EXP\n'%i.ns_upper)
                     if p.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('void %s_set_%s (%s *object, %svalue);\n'%(i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in, ))
@@ -313,6 +328,7 @@ class HeaderCodeGenerator:
             self.outfile.write('  GDBusProxyClass parent_class;\n')
             self.outfile.write('};\n')
             self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GType %s_proxy_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.outfile.write('\n')
             if self.generate_autocleanup in ('objects', 'all'):
@@ -320,6 +336,7 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sProxy, g_object_unref)\n' % (i.camel_name))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('void %s_proxy_new (\n'
@@ -331,12 +348,14 @@ class HeaderCodeGenerator:
                                '    GAsyncReadyCallback  callback,\n'
                                '    gpointer             user_data);\n'
                                %(i.name_lower))
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_proxy_new_finish (\n'
                                '    GAsyncResult        *res,\n'
                                '    GError             **error);\n'
                                %(i.camel_name, i.name_lower))
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_proxy_new_sync (\n'
@@ -348,6 +367,7 @@ class HeaderCodeGenerator:
                                '    GError             **error);\n'
                                %(i.camel_name, i.name_lower))
             self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('void %s_proxy_new_for_bus (\n'
@@ -359,12 +379,14 @@ class HeaderCodeGenerator:
                                '    GAsyncReadyCallback  callback,\n'
                                '    gpointer             user_data);\n'
                                %(i.name_lower))
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_proxy_new_for_bus_finish (\n'
                                '    GAsyncResult        *res,\n'
                                '    GError             **error);\n'
                                %(i.camel_name, i.name_lower))
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_proxy_new_for_bus_sync (\n'
@@ -404,6 +426,7 @@ class HeaderCodeGenerator:
             self.outfile.write('  GDBusInterfaceSkeletonClass parent_class;\n')
             self.outfile.write('};\n')
             self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GType %s_skeleton_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.outfile.write('\n')
             if self.generate_autocleanup in ('objects', 'all'):
@@ -411,6 +434,7 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sSkeleton, g_object_unref)\n' % (i.camel_name))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_skeleton_new (void);\n'%(i.camel_name, i.name_lower))
@@ -436,6 +460,7 @@ class HeaderCodeGenerator:
                                '  GTypeInterface parent_iface;\n'
                                '};\n'
                                '\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GType %sobject_get_type (void) G_GNUC_CONST;\n'
                                '\n'
                                %(self.ns_lower))
@@ -445,11 +470,13 @@ class HeaderCodeGenerator:
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
             for i in self.ifaces:
+                self.outfile.write('%s_EXP\n'%i.ns_upper)
                 if i.deprecated:
                     self.outfile.write('G_GNUC_DEPRECATED ')
                 self.outfile.write('%s *%sobject_get_%s (%sObject *object);\n'
                                    %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
             for i in self.ifaces:
+                self.outfile.write('%s_EXP\n'%i.ns_upper)
                 if i.deprecated:
                     self.outfile.write('G_GNUC_DEPRECATED ')
                 self.outfile.write('%s *%sobject_peek_%s (%sObject *object);\n'
@@ -478,6 +505,7 @@ class HeaderCodeGenerator:
             self.outfile.write('  GDBusObjectProxyClass parent_class;\n')
             self.outfile.write('};\n')
             self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GType %sobject_proxy_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.outfile.write('\n')
             if self.generate_autocleanup in ('objects', 'all'):
@@ -485,6 +513,7 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectProxy, g_object_unref)\n' % (self.namespace))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('%sObjectProxy *%sobject_proxy_new (GDBusConnection *connection, const gchar *object_path);\n'%(self.namespace, self.ns_lower))
             self.outfile.write('\n')
             self.outfile.write('#define %sTYPE_OBJECT_SKELETON (%sobject_skeleton_get_type ())\n'%(self.ns_upper, self.ns_lower))
@@ -510,6 +539,7 @@ class HeaderCodeGenerator:
             self.outfile.write('  GDBusObjectSkeletonClass parent_class;\n')
             self.outfile.write('};\n')
             self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GType %sobject_skeleton_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.outfile.write('\n')
             if self.generate_autocleanup in ('objects', 'all'):
@@ -517,9 +547,11 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectSkeleton, g_object_unref)\n' % (self.namespace))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n' % i.ns_upper)
             self.outfile.write('%sObjectSkeleton *%sobject_skeleton_new (const gchar *object_path);\n'
                                %(self.namespace, self.ns_lower))
             for i in self.ifaces:
+                self.outfile.write('%s_EXP\n'%i.ns_upper)
                 if i.deprecated:
                     self.outfile.write('G_GNUC_DEPRECATED ')
                 self.outfile.write('void %sobject_skeleton_set_%s (%sObjectSkeleton *object, %s *interface_);\n'
@@ -556,10 +588,13 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectManagerClient, g_object_unref)\n' % (self.namespace))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GType %sobject_manager_client_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GType %sobject_manager_client_get_proxy_type (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data);\n'%(self.ns_lower))
             self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('void %sobject_manager_client_new (\n'
                                '    GDBusConnection        *connection,\n'
                                '    GDBusObjectManagerClientFlags  flags,\n'
@@ -569,10 +604,12 @@ class HeaderCodeGenerator:
                                '    GAsyncReadyCallback     callback,\n'
                                '    gpointer                user_data);\n'
                                %(self.ns_lower))
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GDBusObjectManager *%sobject_manager_client_new_finish (\n'
                                '    GAsyncResult        *res,\n'
                                '    GError             **error);\n'
                                %(self.ns_lower))
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GDBusObjectManager *%sobject_manager_client_new_sync (\n'
                                '    GDBusConnection        *connection,\n'
                                '    GDBusObjectManagerClientFlags  flags,\n'
@@ -582,6 +619,7 @@ class HeaderCodeGenerator:
                                '    GError                **error);\n'
                                %(self.ns_lower))
             self.outfile.write('\n')
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('void %sobject_manager_client_new_for_bus (\n'
                                '    GBusType                bus_type,\n'
                                '    GDBusObjectManagerClientFlags  flags,\n'
@@ -591,10 +629,12 @@ class HeaderCodeGenerator:
                                '    GAsyncReadyCallback     callback,\n'
                                '    gpointer                user_data);\n'
                                %(self.ns_lower))
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GDBusObjectManager *%sobject_manager_client_new_for_bus_finish (\n'
                                '    GAsyncResult        *res,\n'
                                '    GError             **error);\n'
                                %(self.ns_lower))
+            self.outfile.write('%s_EXP\n'%i.ns_upper)
             self.outfile.write('GDBusObjectManager *%sobject_manager_client_new_for_bus_sync (\n'
                                '    GBusType                bus_type,\n'
                                '    GDBusObjectManagerClientFlags  flags,\n'
