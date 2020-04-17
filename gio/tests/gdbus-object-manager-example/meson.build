@@ -15,9 +15,14 @@ gdbus_example_objectmanager_generated = custom_target('objectmanager-gen',
              '--generate-docbook', 'objectmanager-gen',
              '@INPUT@'])
 
+gdbus_example_objectmanager_cflags = test_c_args
+if cc.get_argument_syntax() == 'msvc'
+  gdbus_example_objectmanager_cflags += '-DEXAMPLE__EXP=__declspec(dllexport)'
+endif
+
 libgdbus_example_objectmanager = library('gdbus-example-objectmanager',
     gdbus_example_objectmanager_generated,
-    c_args : test_c_args,
+    c_args : gdbus_example_objectmanager_cflags,
     dependencies : [libglib_dep, libgmodule_dep, libgobject_dep, libgio_dep],
     install : installed_tests_enabled,
     install_dir : installed_tests_execdir)
