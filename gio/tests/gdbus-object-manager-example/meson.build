@@ -13,6 +13,8 @@ gdbus_example_objectmanager_generated = custom_target('objectmanager-gen',
              '--output-directory', '@OUTDIR@',
              '--generate-c-code', 'objectmanager-gen',
              '--generate-docbook', 'objectmanager-gen',
+             '--symbol-decorator', '_GLIB_EXTERN',
+             '--symbol-decorator-define', 'HAVE_CONFIG_H',
              '@INPUT@'])
 
 libgdbus_example_objectmanager = library('gdbus-example-objectmanager',
