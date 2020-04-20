@@ -275,7 +275,8 @@ win32_tls_deinit_dtor (HANDLE, DWORD fdwReason, LPVOID)
 {
   switch (fdwReason)
     {
-    case DLL_THREAD_ATTACH:
+    case DLL_PROCESS_DETACH:
+    case DLL_THREAD_DETACH:
 #ifdef THREADS_WIN32
       g_thread_win32_thread_detach ();
 #endif
@@ -289,7 +290,7 @@ void (__stdcall *win32_xld_dtor)(void*, unsigned long, void*) = win32_tls_dinit_
 /* DLLMain should only be defined for DLLs on Windows */
 HMODULE glib_dll = NULL;
 
-#if defined (DLL_EXPORT)
+#if !defined (GLIB_STATIC_COMPILATION)
 
 BOOL WINAPI DllMain (HINSTANCE hinstDLL,
                      DWORD     fdwReason,
@@ -306,7 +307,7 @@ DllMain (HINSTANCE hinstDLL,
   return TRUE;
 }
 
-#endif /* defined (DLL_EXPORT) */
+#endif /* !defined (GLIB_STATIC_COMPILATION) */
 #endif /* defined (G_OS_WIN32) */
 
 #if defined (G_HAS_CONSTRUCTORS)
@@ -342,7 +343,7 @@ static void
 glib_deinit_ctor (void)
 {
 #if defined (G_OS_WIN32) && defined (THREADS_WIN32)
-  g_thread_win32_thread_detach ();
+  g_thread_win32_process_detach ();
 #endif /* G_OS_WIN32 && THREADS_WIN32 */
 }
 
