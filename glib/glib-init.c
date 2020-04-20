@@ -269,11 +269,13 @@ glib_init (void)
   g_quark_init ();
 }
 
-#ifdef G_OS_WIN32
-HMODULE glib_dll;
-#endif
+#if defined (G_OS_WIN32)
 
-#if defined (G_OS_WIN32) && !defined (GLIB_STATIC_COMPILATION)
+BOOL WINAPI DllMain (HINSTANCE hinstDLL,
+                     DWORD     fdwReason,
+                     LPVOID    lpvReserved);
+
+HMODULE glib_dll;
 
 BOOL WINAPI
 DllMain (HINSTANCE hinstDLL,
@@ -326,13 +328,6 @@ G_DEFINE_CONSTRUCTOR(glib_init_ctor)
 static void
 glib_init_ctor (void)
 {
-#if defined(G_OS_WIN32) && defined(GLIB_STATIC_COMPILATION)
-  g_crash_handler_win32_init();
-  g_clock_win32_init();
-#ifdef THREADS_WIN32
-  g_thread_win32_init();
-#endif
-#endif
   glib_init ();
 }
 
