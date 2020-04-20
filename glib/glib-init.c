@@ -269,7 +269,22 @@ glib_init (void)
   g_quark_init ();
 }
 
-#if defined (G_OS_WIN32)
+#if defined(G_OS_WIN32)
+static void WINAPI
+win32_tls_deinit_dtor (HANDLE, DWORD fdwReason, LPVOID)
+{
+  switch (fdwReason)
+    {
+    case DLL_THREAD_ATTACH:
+#ifdef THREADS_WIN32
+      g_thread_win32_thread_detach ();
+#endif
+      break;
+    }
+}
+__pragma(section(".CRT$XLD", read))
+static __declspec(allocate(".CRT$XLD")) 
+void (__stdcall *win32_xld_dtor)(void*, unsigned long, void*) = win32_tls_dinit_dtor;
 
 BOOL WINAPI DllMain (HINSTANCE hinstDLL,
                      DWORD     fdwReason,
