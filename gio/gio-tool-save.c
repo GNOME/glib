@@ -200,4 +200,3 @@ handle_save (int argc, char *argv[], gboolean do_help)
 
   return res ? 0 : 2;
 }
-

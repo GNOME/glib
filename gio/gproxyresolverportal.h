@@ -44,4 +44,3 @@ GType g_proxy_resolver_portal_get_type (void);
 G_END_DECLS
 
 #endif /* __G_PROXY_RESOLVER_PORTAL_H__ */
-

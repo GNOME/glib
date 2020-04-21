@@ -635,4 +635,3 @@ g_dngettext (const gchar *domain,
  *
  * Since: 2.18
  */
-

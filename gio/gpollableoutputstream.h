@@ -123,4 +123,3 @@ G_END_DECLS
 
 
 #endif /* __G_POLLABLE_OUTPUT_STREAM_H__ */
-

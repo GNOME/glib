@@ -509,5 +509,3 @@ g_print ("testing %d years\n", n_check_years);
 
   return (notpassed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
-
-

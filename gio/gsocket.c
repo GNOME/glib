@@ -6173,4 +6173,3 @@ g_socket_set_option (GSocket  *socket,
 #endif
   return FALSE;
 }
-

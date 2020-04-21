@@ -26,4 +26,3 @@ g_io_module_query (void)
 {
   return NULL;
 }
-
