@@ -33,6 +33,8 @@
 
 G_BEGIN_DECLS
 
+#undef G_TREE_DEBUG
+
 typedef struct _GTree  GTree;
 
 typedef gboolean (*GTraverseFunc) (gpointer  key,
@@ -98,6 +100,10 @@ GLIB_AVAILABLE_IN_ALL
 gint     g_tree_height          (GTree            *tree);
 GLIB_AVAILABLE_IN_ALL
 gint     g_tree_nnodes          (GTree            *tree);
+
+#ifdef G_TREE_DEBUG
+void g_tree_dump (GTree *tree);
+#endif
 
 G_END_DECLS
 
