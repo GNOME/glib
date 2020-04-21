@@ -64,4 +64,3 @@ test_module_new (TestModuleRegisterFunc register_func)
 
   return G_TYPE_MODULE (module);
 }
-

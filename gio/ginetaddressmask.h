@@ -82,4 +82,3 @@ gboolean          g_inet_address_mask_equal           (GInetAddressMask  *mask,
 G_END_DECLS
 
 #endif /* __G_INET_ADDRESS_MASK_H__ */
-

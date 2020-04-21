@@ -534,4 +534,3 @@ dl_calculate (dep_list           *before,
     dl_shallow_free (pre);
     dl_shallow_free (was);
 }
-

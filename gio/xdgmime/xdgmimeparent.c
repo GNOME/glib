@@ -215,4 +215,3 @@ _xdg_mime_parent_list_dump (XdgParentList *list)
 }
 
 #endif
-
