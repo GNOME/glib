@@ -1427,7 +1427,7 @@ typedef enum
  * @G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED: The native credentials type is a `struct cmsgcred`.
  * @G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED: The native credentials type is a `struct sockpeercred`. Added in 2.30.
  * @G_CREDENTIALS_TYPE_SOLARIS_UCRED: The native credentials type is a `ucred_t`. Added in 2.40.
- * @G_CREDENTIALS_TYPE_NETBSD_UNPCBID: The native credentials type is a `struct unpcbid`.
+ * @G_CREDENTIALS_TYPE_NETBSD_UNPCBID: The native credentials type is a `struct unpcbid`. Added in 2.42.
  *
  * Enumeration describing different kinds of native credential types.
  *
