@@ -51,22 +51,22 @@
  * #GUnixCredentialsMessage, g_unix_connection_send_credentials() and
  * g_unix_connection_receive_credentials() for details.
  *
- * On Linux, the native credential type is a struct ucred - see the
+ * On Linux, the native credential type is a `struct ucred` - see the
  * unix(7) man page for details. This corresponds to
  * %G_CREDENTIALS_TYPE_LINUX_UCRED.
  *
  * On FreeBSD, Debian GNU/kFreeBSD, and GNU/Hurd, the native
- * credential type is a struct cmsgcred. This corresponds
+ * credential type is a `struct cmsgcred`. This corresponds
  * to %G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED.
  *
- * On NetBSD, the native credential type is a struct unpcbid.
+ * On NetBSD, the native credential type is a `struct unpcbid`.
  * This corresponds to %G_CREDENTIALS_TYPE_NETBSD_UNPCBID.
  *
- * On OpenBSD, the native credential type is a struct sockpeercred.
+ * On OpenBSD, the native credential type is a `struct sockpeercred`.
  * This corresponds to %G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED.
  *
  * On Solaris (including OpenSolaris and its derivatives), the native
- * credential type is a ucred_t. This corresponds to
+ * credential type is a `ucred_t`. This corresponds to
  * %G_CREDENTIALS_TYPE_SOLARIS_UCRED.
  */
 
