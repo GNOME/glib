@@ -4907,4 +4907,3 @@ g_type_ensure (GType type)
   if (G_UNLIKELY (type == (GType)-1))
     g_error ("can't happen");
 }
-

@@ -1957,4 +1957,3 @@ main (int   argc,
 
   return g_test_run();
 }
-

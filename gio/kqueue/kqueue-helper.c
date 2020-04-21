@@ -194,5 +194,3 @@ _kh_dir_diff (kqueue_sub *sub, gboolean handle_deleted)
 
   dl_free (was);
 }
-
-

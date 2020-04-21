@@ -866,4 +866,3 @@ g_file_enumerator_real_close_finish (GFileEnumerator  *enumerator,
 
   return g_task_propagate_boolean (G_TASK (result), error);
 }
-

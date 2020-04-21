@@ -209,4 +209,3 @@ g_uuid_string_random (void)
 
   return g_uuid_to_string (&uuid);
 }
-
