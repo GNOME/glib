@@ -271,7 +271,7 @@ glib_init (void)
 
 #if defined(G_OS_WIN32)
 static void WINAPI
-win32_tls_deinit_dtor (HANDLE, DWORD fdwReason, LPVOID)
+win32_tls_deinit_dtor (HANDLE module, DWORD fdwReason, LPVOID lpreserved)
 {
   switch (fdwReason)
     {
@@ -285,7 +285,7 @@ win32_tls_deinit_dtor (HANDLE, DWORD fdwReason, LPVOID)
 }
 __pragma(section(".CRT$XLD", read))
 static __declspec(allocate(".CRT$XLD")) 
-void (__stdcall *win32_xld_dtor)(void*, unsigned long, void*) = win32_tls_dinit_dtor;
+void (__stdcall *win32_xld_dtor)(void*, unsigned long, void*) = win32_tls_deinit_dtor;
 
 /* DLLMain should only be defined for DLLs on Windows */
 HMODULE glib_dll = NULL;

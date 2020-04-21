@@ -296,7 +296,7 @@ vs2017-x64:
   tags:
     - win32
   variables:
-    MESON_OPTIONS: $kMESON_COMMON_OPTIONS
+    MESON_OPTIONS: $MESON_COMMON_OPTIONS
   script:
     - .gitlab-ci/test-msvc.bat
   artifacts:
