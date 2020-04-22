@@ -17,7 +17,7 @@ variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS_NO_WARNING: "--buildtype debug --wrap-mode=nodownload"
-  MESON_COMMON_OPTIONS: "${MESON_COMMON_OPTIONS_NO_WARNING} --fatal-meson-warnings"
+  MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
 
 .only-default:
   only:
