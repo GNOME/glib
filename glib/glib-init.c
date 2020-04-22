@@ -289,30 +289,28 @@ g_win32_tls_deinit_dtor (HANDLE module, DWORD fdwReason, LPVOID lpreserved)
 // on a thread_local variable, we reference it explicitly here to cause the linker to
 // actually go and generate the PE header pointing to the TLS data directory.
 #ifdef _WIN64
-__pragma(comment(linker,"/include:_tls_used"))
+__pragma (comment (linker, "/include:_tls_used"))
 #else
-__pragma(comment(linker,"/include:__tls_used"))
+__pragma (comment (linker, "/include:__tls_used"))
 #endif
-__pragma(section(".CRT$XLG", read))
-static __declspec(allocate(".CRT$XLG")) 
-void (__stdcall *win32_xld_dtor)(void*, unsigned long, void*) = g_win32_tls_deinit_dtor;
+    __pragma (section (".CRT$XLG", read)) static __declspec(allocate (".CRT$XLG")) void (__stdcall *win32_xld_dtor) (void *, unsigned long, void *) = g_win32_tls_deinit_dtor;
 
 /* DLLMain should only be defined for DLLs on Windows */
 HMODULE glib_dll = NULL;
 
-#if !defined (GLIB_STATIC_COMPILATION)
+#if !defined(GLIB_STATIC_COMPILATION)
 
 BOOL WINAPI DllMain (HINSTANCE hinstDLL,
-                     DWORD     fdwReason,
-                     LPVOID    lpvReserved);
+                     DWORD fdwReason,
+                     LPVOID lpvReserved);
 
 BOOL WINAPI
 DllMain (HINSTANCE hinstDLL,
-         DWORD     fdwReason,
-         LPVOID    lpvReserved)
+         DWORD fdwReason,
+         LPVOID lpvReserved)
 {
-    if (fdwReason == DLL_PROCESS_ATTACH)
-      glib_dll = hinstDLL;
+  if (fdwReason == DLL_PROCESS_ATTACH)
+    glib_dll = hinstDLL;
 
   return TRUE;
 }
@@ -320,17 +318,17 @@ DllMain (HINSTANCE hinstDLL,
 #endif /* !defined (GLIB_STATIC_COMPILATION) */
 #endif /* defined (G_OS_WIN32) */
 
-#if defined (G_HAS_CONSTRUCTORS)
+#if defined(G_HAS_CONSTRUCTORS)
 
 #ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
 #pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(glib_init_ctor)
 #endif
-G_DEFINE_CONSTRUCTOR(glib_init_ctor)
+G_DEFINE_CONSTRUCTOR (glib_init_ctor)
 
 static void
 glib_init_ctor (void)
 {
-#if defined (G_OS_WIN32)
+#if defined(G_OS_WIN32)
   g_crash_handler_win32_init ();
   g_clock_win32_init ();
 #ifdef THREADS_WIN32
@@ -338,7 +336,7 @@ glib_init_ctor (void)
 #endif /* defined (THREADS_WIN32) */
 #endif /* defined (G_OS_WIN32) */
   glib_init ();
-#if defined (G_OS_WIN32)
+#if defined(G_OS_WIN32)
   /* must go after glib_init */
   g_console_win32_init ();
 #endif /* defined (G_OS_WIN32) */
@@ -347,17 +345,15 @@ glib_init_ctor (void)
 #ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA
 #pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(glib_deinit_ctor)
 #endif
-G_DEFINE_DESTRUCTOR(glib_deinit_ctor)
+G_DEFINE_DESTRUCTOR (glib_deinit_ctor)
 
 static void
 glib_deinit_ctor (void)
 {
-#if defined (G_OS_WIN32) && defined (THREADS_WIN32)
+#if defined(G_OS_WIN32) && defined(THREADS_WIN32)
   g_thread_win32_process_detach ();
 #endif /* G_OS_WIN32 && THREADS_WIN32 */
 }
-
-
 
 #else
 # error Your platform/compiler is missing constructor support
