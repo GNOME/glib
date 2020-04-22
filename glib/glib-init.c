@@ -284,7 +284,7 @@ g_win32_tls_deinit_dtor (HANDLE module, DWORD fdwReason, LPVOID lpreserved)
     }
 }
 #ifdef _MSC_VER
-// this symbol (or __tls_used on x64) is defined by the MS CRT startup code
+// this symbol (or __tls_used on x86_32) is defined by the MS CRT startup code
 // that's static linked into all executables using the MS CRT (it's in the import library of
 // the dll flavors as well), and it ends up referenced when you use c++ dynamic initialization
 // on a thread_local variable, we reference it explicitly here to cause the linker to
