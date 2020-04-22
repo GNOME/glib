@@ -271,7 +271,7 @@ glib_init (void)
 
 #if defined(G_OS_WIN32)
 static void WINAPI
-win32_tls_deinit_dtor (HANDLE module, DWORD fdwReason, LPVOID lpreserved)
+g_win32_tls_deinit_dtor (HANDLE module, DWORD fdwReason, LPVOID lpreserved)
 {
   switch (fdwReason)
     {
@@ -283,9 +283,19 @@ win32_tls_deinit_dtor (HANDLE module, DWORD fdwReason, LPVOID lpreserved)
       break;
     }
 }
-__pragma(section(".CRT$XLD", read))
-static __declspec(allocate(".CRT$XLD")) 
-void (__stdcall *win32_xld_dtor)(void*, unsigned long, void*) = win32_tls_deinit_dtor;
+// this symbol (or __tls_used on x64) is defined by the MS CRT startup code
+// that's static linked into all executables using the MS CRT (it's in the import library of
+// the dll flavors as well), and it ends up referenced when you use c++ dynamic initialization
+// on a thread_local variable, we reference it explicitly here to cause the linker to
+// actually go and generate the PE header pointing to the TLS data directory.
+#ifdef _WIN64
+__pragma(comment(linker,"/include:_tls_used"))
+#else
+__pragma(comment(linker,"/include:__tls_used"))
+#endif
+__pragma(section(".CRT$XLG", read))
+static __declspec(allocate(".CRT$XLG")) 
+void (__stdcall *win32_xld_dtor)(void*, unsigned long, void*) = g_win32_tls_deinit_dtor;
 
 /* DLLMain should only be defined for DLLs on Windows */
 HMODULE glib_dll = NULL;
