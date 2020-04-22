@@ -283,6 +283,7 @@ g_win32_tls_deinit_dtor (HANDLE module, DWORD fdwReason, LPVOID lpreserved)
       break;
     }
 }
+#ifdef _MSC_VER
 // this symbol (or __tls_used on x64) is defined by the MS CRT startup code
 // that's static linked into all executables using the MS CRT (it's in the import library of
 // the dll flavors as well), and it ends up referenced when you use c++ dynamic initialization
@@ -293,7 +294,12 @@ __pragma (comment (linker, "/include:_tls_used"))
 #else
 __pragma (comment (linker, "/include:__tls_used"))
 #endif
-    __pragma (section (".CRT$XLG", read)) static __declspec(allocate (".CRT$XLG")) void (__stdcall *win32_xld_dtor) (void *, unsigned long, void *) = g_win32_tls_deinit_dtor;
+    __pragma (section (".CRT$XLG", read));
+    static __declspec(allocate (".CRT$XLG")) void (__stdcall *win32_xlg_dtor) (void *, unsigned long, void *) = g_win32_tls_deinit_dtor;
+#else
+// GCC doesn't seem to require us to coax it into emitting the TLS directory, I have no idea why
+static __attribute__ ((section (".CRT$XLG"), used)) void (__stdcall *win32_xlg_dtor) (void*, unsigned long, void*) = g_win32_tls_deinit_dtor;
+#endif
 
 /* DLLMain should only be defined for DLLs on Windows */
 HMODULE glib_dll = NULL;
