@@ -289,10 +289,10 @@ g_win32_tls_deinit_dtor (HANDLE module, DWORD fdwReason, LPVOID lpreserved)
 // the dll flavors as well), and it ends up referenced when you use c++ dynamic initialization
 // on a thread_local variable, we reference it explicitly here to cause the linker to
 // actually go and generate the PE header pointing to the TLS data directory.
-#ifdef _WIN64
-__pragma (comment (linker, "/include:_tls_used"))
-#else
+#ifdef _M_IX86
 __pragma (comment (linker, "/include:__tls_used"))
+#else
+__pragma (comment (linker, "/include:_tls_used"))
 #endif
     __pragma (section (".CRT$XLG", read));
     static __declspec(allocate (".CRT$XLG")) void (__stdcall *win32_xlg_dtor) (void *, unsigned long, void *) = g_win32_tls_deinit_dtor;
