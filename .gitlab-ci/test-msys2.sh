@@ -36,8 +36,6 @@ CCACHE_BASEDIR="$(pwd)"
 CCACHE_DIR="${CCACHE_BASEDIR}/_ccache"
 export CCACHE_BASEDIR CCACHE_DIR
 
-pip3 install --upgrade --user meson==0.49.2
-
 PATH="$HOME/.local/bin:$PATH"
 CFLAGS="-coverage -ftest-coverage -fprofile-arcs"
 DIR="$(pwd)"
