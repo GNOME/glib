@@ -26,7 +26,6 @@ cmph_sources = [
 
 cmph_deps = [
   glib_dep,
-  gobject_dep,
   cc.find_library('m', required: false),
 ]
 
@@ -68,7 +67,6 @@ cmph_test = executable('cmph-bdz-test', '../cmph-bdz-test.c',
   dependencies: [
     cmph_dep,
     glib_dep,
-    gobject_dep,
   ],
   c_args: custom_c_args,
 )
