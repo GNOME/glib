@@ -81,9 +81,16 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(GStringChunk, g_string_chunk_free)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GThread, g_thread_unref)
 G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(GMutex, g_mutex_clear)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GMutexLocker, g_mutex_locker_free)
+
+#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_60
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GRecMutexLocker, g_rec_mutex_locker_free)
+#endif
+
+#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_62
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GRWLockWriterLocker, g_rw_lock_writer_locker_free)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GRWLockReaderLocker, g_rw_lock_reader_locker_free)
+#endif
+
 G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(GCond, g_cond_clear)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GTimer, g_timer_destroy)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GTimeZone, g_time_zone_unref)
