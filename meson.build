@@ -17,12 +17,13 @@ girepo_gthash_lib = static_library('girepository-gthash',
     cmph_dep,
     glib_dep,
     gmodule_dep,
+    gobject_dep,
   ],
 )
 
 girepo_gthash_dep = declare_dependency(
   link_with: girepo_gthash_lib,
-  dependencies: [glib_dep, gmodule_dep],
+  dependencies: [glib_dep, gmodule_dep, gobject_dep],
   include_directories: include_directories('.'),
 )
 
