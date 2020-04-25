@@ -87,14 +87,12 @@ typedef struct
   GType gtype;
 } Mechanism;
 
-static void mechanism_free (Mechanism *m);
-
 struct _GDBusAuthPrivate
 {
   GIOStream *stream;
 
   /* A list of available Mechanism, sorted according to priority  */
-  GList *available_mechanisms;
+  GArray *available_mechanisms;
 };
 
 enum
@@ -114,7 +112,8 @@ _g_dbus_auth_finalize (GObject *object)
 
   if (auth->priv->stream != NULL)
     g_object_unref (auth->priv->stream);
-  g_list_free_full (auth->priv->available_mechanisms, (GDestroyNotify) mechanism_free);
+  /*g_list_free_full (auth->priv->available_mechanisms, (GDestroyNotify) mechanism_free);*/
+  g_array_free (auth->priv->available_mechanisms, TRUE);
 
   if (G_OBJECT_CLASS (_g_dbus_auth_parent_class)->finalize != NULL)
     G_OBJECT_CLASS (_g_dbus_auth_parent_class)->finalize (object);
@@ -185,12 +184,6 @@ _g_dbus_auth_class_init (GDBusAuthClass *klass)
 }
 
 static void
-mechanism_free (Mechanism *m)
-{
-  g_free (m);
-}
-
-static void
 add_mechanism (GDBusAuth         *auth,
                GDBusAuthObserver *observer,
                GType              mechanism_type)
@@ -200,12 +193,11 @@ add_mechanism (GDBusAuth         *auth,
   name = _g_dbus_auth_mechanism_get_name (mechanism_type);
   if (observer == NULL || g_dbus_auth_observer_allow_mechanism (observer, name))
     {
-      Mechanism *m;
-      m = g_new0 (Mechanism, 1);
-      m->name = name;
-      m->priority = _g_dbus_auth_mechanism_get_priority (mechanism_type);
-      m->gtype = mechanism_type;
-      auth->priv->available_mechanisms = g_list_prepend (auth->priv->available_mechanisms, m);
+      Mechanism m;
+      m.name = name;
+      m.priority = _g_dbus_auth_mechanism_get_priority (mechanism_type);
+      m.gtype = mechanism_type;
+      g_array_append_val (auth->priv->available_mechanisms, m);
     }
 }
 
@@ -224,6 +216,7 @@ static void
 _g_dbus_auth_init (GDBusAuth *auth)
 {
   auth->priv = _g_dbus_auth_get_instance_private (auth);
+  auth->priv->available_mechanisms = g_array_new (FALSE, TRUE, sizeof (Mechanism));
 }
 
 static void
@@ -235,8 +228,7 @@ _g_dbus_auth_add_mechs (GDBusAuth         *auth,
   add_mechanism (auth, observer, G_TYPE_DBUS_AUTH_MECHANISM_SHA1);
   add_mechanism (auth, observer, G_TYPE_DBUS_AUTH_MECHANISM_EXTERNAL);
 
-  auth->priv->available_mechanisms = g_list_sort (auth->priv->available_mechanisms,
-                                                  (GCompareFunc) mech_compare_func);
+  g_array_sort (auth->priv->available_mechanisms, (GCompareFunc) mech_compare_func);
 }
 
 static GType
@@ -244,13 +236,14 @@ find_mech_by_name (GDBusAuth *auth,
                    const gchar *name)
 {
   GType ret;
-  GList *l;
+  guint i;
 
   ret = (GType) 0;
 
-  for (l = auth->priv->available_mechanisms; l != NULL; l = l->next)
+  for (i = 0; i < auth->priv->available_mechanisms->len; i++)
     {
-      Mechanism *m = l->data;
+      const Mechanism *m = &g_array_index (auth->priv->available_mechanisms,
+                                           Mechanism, i);
       if (g_strcmp0 (name, m->name) == 0)
         {
           ret = m->gtype;
@@ -888,15 +881,16 @@ get_auth_mechanisms (GDBusAuth     *auth,
                      const gchar   *suffix,
                      const gchar   *separator)
 {
-  GList *l;
+  guint i;
   GString *str;
   gboolean need_sep;
 
   str = g_string_new (prefix);
   need_sep = FALSE;
-  for (l = auth->priv->available_mechanisms; l != NULL; l = l->next)
+  for (i = 0; i < auth->priv->available_mechanisms->len; i++)
     {
-      Mechanism *m = l->data;
+      const Mechanism *m = &g_array_index (auth->priv->available_mechanisms,
+                                           Mechanism, i);
 
       if (!allow_anonymous && g_strcmp0 (m->name, "ANONYMOUS") == 0)
         continue;
