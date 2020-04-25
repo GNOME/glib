@@ -84,7 +84,6 @@
 #include "giochannel.h"
 #include "ghash.h"
 #include "ghook.h"
-#include "gqueue.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gthreadprivate.h"
@@ -748,7 +747,7 @@ free_context (gpointer data)
 static void
 free_context_stack (gpointer data)
 {
-  g_queue_free_full((GQueue *) data, (GDestroyNotify) free_context);
+  g_ptr_array_free ((GPtrArray *) data, TRUE);
 }
 
 static GPrivate thread_context_stack = G_PRIVATE_INIT (free_context_stack);
@@ -801,7 +800,7 @@ static GPrivate thread_context_stack = G_PRIVATE_INIT (free_context_stack);
 void
 g_main_context_push_thread_default (GMainContext *context)
 {
-  GQueue *stack;
+  GPtrArray *stack;
   gboolean acquired_context;
 
   acquired_context = g_main_context_acquire (context);
@@ -815,11 +814,12 @@ g_main_context_push_thread_default (GMainContext *context)
   stack = g_private_get (&thread_context_stack);
   if (!stack)
     {
-      stack = g_queue_new ();
+      stack = g_ptr_array_new_with_free_func ((GDestroyNotify)free_context);
+
       g_private_set (&thread_context_stack, stack);
     }
 
-  g_queue_push_head (stack, context);
+  g_ptr_array_add (stack, context);
 
   TRACE (GLIB_MAIN_CONTEXT_PUSH_THREAD_DEFAULT (context));
 }
@@ -836,7 +836,7 @@ g_main_context_push_thread_default (GMainContext *context)
 void
 g_main_context_pop_thread_default (GMainContext *context)
 {
-  GQueue *stack;
+  GPtrArray *stack;
 
   if (context == g_main_context_default ())
     context = NULL;
@@ -844,11 +844,11 @@ g_main_context_pop_thread_default (GMainContext *context)
   stack = g_private_get (&thread_context_stack);
 
   g_return_if_fail (stack != NULL);
-  g_return_if_fail (g_queue_peek_head (stack) == context);
+  g_return_if_fail (stack->pdata[stack->len - 1] == context);
 
   TRACE (GLIB_MAIN_CONTEXT_POP_THREAD_DEFAULT (context));
 
-  g_queue_pop_head (stack);
+  stack->len--;
 
   g_main_context_release (context);
   if (context)
@@ -878,11 +878,11 @@ g_main_context_pop_thread_default (GMainContext *context)
 GMainContext *
 g_main_context_get_thread_default (void)
 {
-  GQueue *stack;
+  GPtrArray *stack;
 
   stack = g_private_get (&thread_context_stack);
-  if (stack)
-    return g_queue_peek_head (stack);
+  if (stack && stack->len > 0)
+    return g_ptr_array_index (stack, stack->len - 1);
   else
     return NULL;
 }
