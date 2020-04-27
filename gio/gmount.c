@@ -176,7 +176,15 @@ g_mount_get_default_location (GMount *mount)
  * @mount: a #GMount.
  * 
  * Gets the name of @mount.
- * 
+ *
+ * Note that on some system (Windows at least), the returned value may not be
+ * the nicest display name, but calling g_mount_get_name() will trigger the
+ * name request in a thread (as it can be very slow in some cases, such as
+ * unresponsive or network mounts). If the name is a GUI-facing text and you
+ * care for the best display name, you may want to initially use the returned
+ * string, and connect to the "changed" signal to update the widget later with
+ * the better name.
+ *
  * Returns: the name for the given @mount. 
  *     The returned string should be freed with g_free()
  *     when no longer needed.
