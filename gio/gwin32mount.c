@@ -79,10 +79,8 @@ g_win32_mount_finalize (GObject *object)
 #endif
   /* TODO: g_warn_if_fail (volume->volume == NULL); */
 
-  if (mount->icon != NULL)
-    g_object_unref (mount->icon);
-  if (mount->symbolic_icon != NULL)
-    g_object_unref (mount->symbolic_icon);
+  g_clear_object (&mount->icon);
+  g_clear_object (&mount->symbolic_icon);
 
   g_clear_pointer (&mount->name, g_free);
   g_free (mount->mount_path);
@@ -227,31 +225,74 @@ _win32_drive_type_to_icon (int type, gboolean use_symbolic)
   }
 }
 
+static void
+_win32_get_icon (GTask        *task,
+                 gpointer      source_object,
+                 gpointer      task_data,
+                 GCancellable *cancellable)
+{
+  const char  *drive = task_data;
+  gunichar2   *wdrive = g_utf8_to_utf16 (drive, -1, NULL, NULL, NULL);
+  GIcon       *icon = NULL;
+  SHFILEINFOW  sfi;
+
+  if (SHGetFileInfoW (wdrive, 0, &sfi, sizeof (sfi), SHGFI_ICONLOCATION))
+    {
+      gchar *name = g_utf16_to_utf8 (sfi.szDisplayName, -1, NULL, NULL, NULL);
+      gchar *id   = g_strdup_printf ("%s,%i", name, sfi.iIcon);
+
+      printf("%s: got icon\n", G_STRFUNC);
+      icon = g_themed_icon_new (id);
+      g_free (name);
+      g_free (id);
+    }
+  g_free (wdrive);
+
+  g_task_return_pointer (task, icon, g_object_unref);
+}
+
+static void
+_win32_get_icon_finish (GObject      *source_object,
+                        GAsyncResult *res,
+                        gpointer      user_data)
+{
+  GWin32Mount *mount = G_WIN32_MOUNT (source_object);
+  GIcon       *icon  = g_task_propagate_pointer (G_TASK (res), NULL);
+
+  if (icon)
+    {
+      g_clear_object (&mount->icon);
+      mount->icon = icon;
+      g_signal_emit_by_name (mount, "changed");
+    }
+}
+
 static GIcon *
 g_win32_mount_get_icon (GMount *mount)
 {
   GWin32Mount *win32_mount = G_WIN32_MOUNT (mount);
+  GIcon       *icon        = win32_mount->icon;
 
   g_return_val_if_fail (win32_mount->mount_path != NULL, NULL);
 
   /* lazy creation */
-  if (!win32_mount->icon)
+  if (! icon)
     {
-      SHFILEINFOW shfi;
-      wchar_t *wfn = g_utf8_to_utf16 (win32_mount->mount_path, -1, NULL, NULL, NULL);
+      GTask *task;
 
-      if (SHGetFileInfoW (wfn, 0, &shfi, sizeof (shfi), SHGFI_ICONLOCATION))
-        {
-	  gchar *name = g_utf16_to_utf8 (shfi.szDisplayName, -1, NULL, NULL, NULL);
-	  gchar *id = g_strdup_printf ("%s,%i", name, shfi.iIcon);
-	  win32_mount->icon = g_themed_icon_new (id);
-	  g_free (name);
-	  g_free (id);
-	}
-      else
-        {
-          win32_mount->icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, FALSE));
-	}
+      /* On Windows, this request can be expensive, especially with remote
+       * mounts, or worse unresponsive mounts.
+       * So only request the icon when the info is needed and run it in
+       * a thread. Caller is advised to monitor "changed" signal.
+       */
+      task = g_task_new (mount, NULL, _win32_get_icon_finish, NULL);
+      g_task_set_priority (task, G_PRIORITY_LOW);
+      g_task_set_source_tag (task, g_win32_mount_get_icon);
+      g_task_set_task_data (task, g_strdup (win32_mount->mount_path), g_free);
+      g_task_run_in_thread (task, _win32_get_icon);
+      g_object_unref (task);
+
+      icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, FALSE));
     }
 
   return g_object_ref (win32_mount->icon);
