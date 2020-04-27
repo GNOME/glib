@@ -1026,6 +1026,12 @@ g_variant_n_children (GVariant *value)
  * The returned value is never floating.  You should free it with
  * g_variant_unref() when you're done with it.
  *
+ * Note that values borrowed from the returned child are not guaranteed to
+ * still be valid after the child is freed even if you still hold a reference
+ * to @value, if @value has not been serialised at the time this function is
+ * called. To avoid this, you can serialize @value by calling
+ * g_variant_get_data() and optionally ignoring the return value.
+ *
  * There may be implementation specific restrictions on deeply nested values,
  * which would result in the unit tuple being returned as the child value,
  * instead of further nested children. #GVariant is guaranteed to handle
