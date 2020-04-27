@@ -206,7 +206,15 @@ g_mount_get_name (GMount *mount)
  * @mount: a #GMount.
  * 
  * Gets the icon for @mount.
- * 
+ *
+ * Note that on some system (Windows at least), the returned value may not be
+ * the most specific icon, but calling g_mount_get_icon() will still return an
+ * acceptable generic icon and trigger specific icon request in a thread (it
+ * can be very slow in some cases, such as unresponsive or network mounts). If
+ * you care about displaying the most adapted icon, you may want to initially
+ * use the returned icon, then connect to the "changed" signal to later update
+ * code where it is used.
+ *
  * Returns: (transfer full): a #GIcon.
  *      The returned object should be unreffed with 
  *      g_object_unref() when no longer needed.
