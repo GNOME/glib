@@ -33,6 +33,7 @@
 #include "gmount.h"
 #include "gfile.h"
 #include "gmountprivate.h"
+#include "gtask.h"
 #include "gvolumemonitor.h"
 #include "gthemedicon.h"
 #include "glibintl.h"
@@ -103,17 +104,39 @@ g_win32_mount_init (GWin32Mount *win32_mount)
 {
 }
 
-static gchar *
-_win32_get_displayname (const char *drive)
+static void
+_win32_get_displayname (GTask        *task,
+                        gpointer      source_object,
+                        gpointer      task_data,
+                        GCancellable *cancellable)
 {
-  gunichar2 *wdrive = g_utf8_to_utf16 (drive, -1, NULL, NULL, NULL);
-  gchar *name = NULL;
-  SHFILEINFOW sfi;
-  if (SHGetFileInfoW(wdrive, 0, &sfi, sizeof(sfi), SHGFI_DISPLAYNAME))
+  const char  *drive = task_data;
+  gunichar2   *wdrive = g_utf8_to_utf16 (drive, -1, NULL, NULL, NULL);
+  gchar       *name = NULL;
+  SHFILEINFOW  sfi;
+
+  if (SHGetFileInfoW (wdrive, 0, &sfi, sizeof (sfi), SHGFI_DISPLAYNAME))
     name = g_utf16_to_utf8 (sfi.szDisplayName, -1, NULL, NULL, NULL);
 
   g_free (wdrive);
-  return name ? name : g_strdup (drive);
+
+  g_task_return_pointer (task, name, g_free);
+}
+
+static void
+_win32_get_displayname_finish (GObject      *source_object,
+                               GAsyncResult *res,
+                               gpointer      user_data)
+{
+  GWin32Mount *mount = G_WIN32_MOUNT (source_object);
+  gchar       *name  = g_task_propagate_pointer (G_TASK (res), NULL);
+
+  if (name && g_strcmp0 (name, mount->name) != 0)
+    {
+      g_clear_pointer (&mount->name, g_free);
+      mount->name = name;
+      g_signal_emit_by_name (mount, "changed");
+    }
 }
 
 /*
@@ -143,7 +166,7 @@ _g_win32_mount_new (GVolumeMonitor  *volume_monitor,
   mount->mount_path = g_strdup (path);
   mount->drive_type = GetDriveType (drive);
   mount->can_eject = FALSE; /* TODO */
-  mount->name = _win32_get_displayname (drive);
+  mount->name = NULL;
 
   /* need to do this last */
   mount->volume = volume;
@@ -260,8 +283,29 @@ static char *
 g_win32_mount_get_name (GMount *mount)
 {
   GWin32Mount *win32_mount = G_WIN32_MOUNT (mount);
-  
-  return g_strdup (win32_mount->name);
+  gchar       *name        = win32_mount->name;
+
+  if (! name)
+    {
+      GTask *task;
+
+      /* On Windows, this request can be expensive, especially with remote
+       * mounts, or worse unresponsive mounts.
+       * So only request the display name when the info is needed and run it in
+       * a thread.
+       */
+      task = g_task_new (mount, NULL, _win32_get_displayname_finish, NULL);
+      g_task_set_priority (task, G_PRIORITY_LOW);
+      g_task_set_source_tag (task, g_win32_mount_get_name);
+      g_task_set_task_data (task, g_strdup (win32_mount->mount_path), g_free);
+      g_task_run_in_thread (task, _win32_get_displayname);
+      g_object_unref (task);
+
+      /* Still return something usable for now. */
+      name = g_strdup (win32_mount->mount_path);
+    }
+
+  return name;
 }
 
 static GDrive *
