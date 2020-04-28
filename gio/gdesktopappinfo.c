@@ -4320,7 +4320,7 @@ g_app_info_reset_type_associations (const char *content_type)
  *
  * Gets the default #GAppInfo for a given content type.
  *
- * Returns: (transfer full): #GAppInfo for given @content_type or
+ * Returns: (transfer full) (nullable): #GAppInfo for given @content_type or
  *     %NULL on error.
  */
 GAppInfo *
@@ -4397,7 +4397,8 @@ out:
  * of the URI, up to but not including the ':', e.g. "http",
  * "ftp" or "sip".
  *
- * Returns: (transfer full): #GAppInfo for given @uri_scheme or %NULL on error.
+ * Returns: (transfer full) (nullable): #GAppInfo for given @uri_scheme or
+ *     %NULL on error.
  */
 GAppInfo *
 g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
@@ -4633,7 +4634,8 @@ g_desktop_app_info_lookup_default_init (GDesktopAppInfoLookupInterface *iface)
  * in a GIO module. There is no reason for applications to use it
  * directly. Applications should use g_app_info_get_default_for_uri_scheme().
  *
- * Returns: (transfer full): #GAppInfo for given @uri_scheme or %NULL on error.
+ * Returns: (transfer full) (nullable): #GAppInfo for given @uri_scheme or
+ *    %NULL on error.
  *
  * Deprecated: 2.28: The #GDesktopAppInfoLookup interface is deprecated and
  *    unused by GIO.
