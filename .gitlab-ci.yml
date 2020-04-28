@@ -470,9 +470,9 @@ dist-job:
     - cd _build
     - ninja dist
     - ninja glib-doc gobject-doc gio-doc
-    - tar -c -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib html
-    - tar -c -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gobject html
-    - tar -c -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gio html
+    - tar -c -J -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib html
+    - tar -c -J -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gobject html
+    - tar -c -J -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gio html
   artifacts:
     paths:
       - "${CI_PROJECT_DIR}/_build/glib-docs-$CI_COMMIT_TAG.tar.xz"
