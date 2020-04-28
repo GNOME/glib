@@ -475,7 +475,7 @@ dist-job:
     - tar -c -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gio html
   artifacts:
     paths:
-      - "${CI_PROJECT_DIR}/_build/glib-docs.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gobject-docs.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gio-docs.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/glib-docs-$CI_COMMIT_TAG.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/gobject-docs-$CI_COMMIT_TAG.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/gio-docs-$CI_COMMIT_TAG.tar.xz"
       - "${CI_PROJECT_DIR}/_build/meson-dist/glib-*.tar.xz"
