@@ -32,6 +32,7 @@
 #include "gobject_trace.h"
 
 #include "glib-private.h"
+#include "glib-init.h"
 #include "gconstructor.h"
 
 #ifdef G_OS_WIN32
@@ -4369,6 +4370,15 @@ gobject_init (void)
   TypeNode *node;
   GType type G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
+  /* In addition to glib-init.c, also init win32-specific threading/locking
+   * primitives right before we first make use of them. gconstructor.h does not
+   * guarantee the order in which constructors are called, but it's fine to call
+   * this multiple times since it'll be a no-op. Since gobject-2.0 needs
+   * glib-2.0, this will always be de-inited correctly. */
+#if defined (G_OS_WIN32) && defined (THREADS_WIN32) && !defined(DLL_EXPORT)
+  g_thread_win32_init ();
+#endif /* G_OS_WIN32 && THREADS_WIN32 && !DLL_EXPORT */
+
   /* Ensure GLib is initialized first, see
    * https://bugzilla.gnome.org/show_bug.cgi?id=756139
    */
@@ -4456,32 +4466,7 @@ gobject_init (void)
   _g_signal_init ();
 }
 
-#if defined (G_OS_WIN32)
-
-BOOL WINAPI DllMain (HINSTANCE hinstDLL,
-                     DWORD     fdwReason,
-                     LPVOID    lpvReserved);
-
-BOOL WINAPI
-DllMain (HINSTANCE hinstDLL,
-         DWORD     fdwReason,
-         LPVOID    lpvReserved)
-{
-  switch (fdwReason)
-    {
-    case DLL_PROCESS_ATTACH:
-      gobject_init ();
-      break;
-
-    default:
-      /* do nothing */
-      ;
-    }
-
-  return TRUE;
-}
-
-#elif defined (G_HAS_CONSTRUCTORS)
+#if defined (G_HAS_CONSTRUCTORS)
 #ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
 #pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(gobject_init_ctor)
 #endif

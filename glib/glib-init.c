@@ -269,66 +269,96 @@ glib_init (void)
   g_quark_init ();
 }
 
-#if defined (G_OS_WIN32)
-
-BOOL WINAPI DllMain (HINSTANCE hinstDLL,
-                     DWORD     fdwReason,
-                     LPVOID    lpvReserved);
-
-HMODULE glib_dll;
-
-BOOL WINAPI
-DllMain (HINSTANCE hinstDLL,
-         DWORD     fdwReason,
-         LPVOID    lpvReserved)
+#if defined(G_OS_WIN32)
+static void WINAPI
+g_win32_tls_deinit_dtor (HANDLE module, DWORD fdwReason, LPVOID lpreserved)
 {
   switch (fdwReason)
     {
-    case DLL_PROCESS_ATTACH:
-      glib_dll = hinstDLL;
-      g_crash_handler_win32_init ();
-      g_clock_win32_init ();
-#ifdef THREADS_WIN32
-      g_thread_win32_init ();
-#endif
-      glib_init ();
-      /* must go after glib_init */
-      g_console_win32_init ();
-      break;
-
+    case DLL_PROCESS_DETACH:
     case DLL_THREAD_DETACH:
 #ifdef THREADS_WIN32
       g_thread_win32_thread_detach ();
 #endif
       break;
-
-    case DLL_PROCESS_DETACH:
-#ifdef THREADS_WIN32
-      if (lpvReserved == NULL)
-        g_thread_win32_process_detach ();
-#endif
-      g_crash_handler_win32_deinit ();
-      break;
-
-    default:
-      /* do nothing */
-      ;
     }
+}
+#ifdef _MSC_VER
+// this symbol (or __tls_used on x86_32) is defined by the MS CRT startup code
+// that's static linked into all executables using the MS CRT (it's in the import library of
+// the dll flavors as well), and it ends up referenced when you use c++ dynamic initialization
+// on a thread_local variable, we reference it explicitly here to cause the linker to
+// actually go and generate the PE header pointing to the TLS data directory.
+#ifdef _M_IX86
+__pragma (comment (linker, "/include:__tls_used"))
+#else
+__pragma (comment (linker, "/include:_tls_used"))
+#endif
+    __pragma (section (".CRT$XLG", read));
+    static __declspec(allocate (".CRT$XLG")) void (__stdcall *win32_xlg_dtor) (void *, unsigned long, void *) = g_win32_tls_deinit_dtor;
+#else
+// GCC doesn't seem to require us to coax it into emitting the TLS directory, I have no idea why
+static __attribute__ ((section (".CRT$XLG"), used)) void (__stdcall *win32_xlg_dtor) (void*, unsigned long, void*) = g_win32_tls_deinit_dtor;
+#endif
+
+/* DLLMain should only be defined for DLLs on Windows */
+HMODULE glib_dll = NULL;
+
+#if !defined(GLIB_STATIC_COMPILATION)
+
+BOOL WINAPI DllMain (HINSTANCE hinstDLL,
+                     DWORD fdwReason,
+                     LPVOID lpvReserved);
+
+BOOL WINAPI
+DllMain (HINSTANCE hinstDLL,
+         DWORD fdwReason,
+         LPVOID lpvReserved)
+{
+  if (fdwReason == DLL_PROCESS_ATTACH)
+    glib_dll = hinstDLL;
 
   return TRUE;
 }
 
-#elif defined (G_HAS_CONSTRUCTORS)
+#endif /* !defined (GLIB_STATIC_COMPILATION) */
+#endif /* defined (G_OS_WIN32) */
+
+#if defined(G_HAS_CONSTRUCTORS)
 
 #ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
 #pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(glib_init_ctor)
 #endif
-G_DEFINE_CONSTRUCTOR(glib_init_ctor)
+G_DEFINE_CONSTRUCTOR (glib_init_ctor)
 
 static void
 glib_init_ctor (void)
 {
+#if defined(G_OS_WIN32)
+  g_crash_handler_win32_init ();
+  g_clock_win32_init ();
+#ifdef THREADS_WIN32
+  g_thread_win32_init ();
+#endif /* defined (THREADS_WIN32) */
+#endif /* defined (G_OS_WIN32) */
   glib_init ();
+#if defined(G_OS_WIN32)
+  /* must go after glib_init */
+  g_console_win32_init ();
+#endif /* defined (G_OS_WIN32) */
+}
+
+#ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(glib_deinit_ctor)
+#endif
+G_DEFINE_DESTRUCTOR (glib_deinit_ctor)
+
+static void
+glib_deinit_ctor (void)
+{
+#if defined(G_OS_WIN32) && defined(THREADS_WIN32)
+  g_thread_win32_process_detach ();
+#endif /* G_OS_WIN32 && THREADS_WIN32 */
 }
 
 #else
