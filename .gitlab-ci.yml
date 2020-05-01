@@ -272,7 +272,7 @@ msys2-mingw32:
   extends: .only-default
   stage: build
   tags:
-    - win32
+    - win32-ps
   variables:
     MSYSTEM: "MINGW32"
     CHERE_INVOKING: "yes"
@@ -282,29 +282,29 @@ msys2-mingw32:
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
   artifacts:
     reports:
-      junit: "_build/%CI_JOB_NAME%-report.xml"
-    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
+      junit: "_build/${env:CI_JOB_NAME}-report.xml"
+    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
     when: always
     paths:
       - _build/meson-logs
-      - "_build/%CI_JOB_NAME%-report.xml"
+      - "_build/${env:CI_JOB_NAME}-report.xml"
       - _coverage/
 
 vs2017-x64:
   extends: .only-default
   stage: build
   tags:
-    - win32
+    - win32-ps
   script:
     - .gitlab-ci/test-msvc.bat
   artifacts:
     reports:
-      junit: "_build/%CI_JOB_NAME%-report.xml"
-    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
+      junit: "_build/${env:CI_JOB_NAME}-report.xml"
+    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
     when: always
     paths:
       - _build/meson-logs
-      - "_build/%CI_JOB_NAME%-report.xml"
+      - "_build/${env:CI_JOB_NAME}-report.xml"
 
 freebsd-11-x86_64:
   stage: build
