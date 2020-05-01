@@ -182,7 +182,7 @@ endforeach
 nan_tmpl = '''#include <math.h>
               #if __GNUC__ >= 4
               # undef @0@
-              # define @0@(x) __builtin_isnan ((@1@)(x))
+              # define @0@(x) @2@ ((@1@)(x))
               #else
               # undef @0@
               # define @0@(x) isnan ((@1@)(x))
@@ -191,17 +191,28 @@ nan_tmpl = '''#include <math.h>
               int main () {return @0@ (x);}
            '''
 
-links = cc.links (nan_tmpl.format ('isnand', 'double'),
+links = cc.links (nan_tmpl.format ('isnan', 'double', '__builtin_isnan'),
                   dependencies : [libm])
+math_h_config.set ('HAVE_ISNAN', links ? 1 : 0)
+math_h_config.set ('HAVE_ISNAN_IN_LIBC', links ? 1 : 0)
+set_variable ('have_isnan', links)
 math_h_config.set ('HAVE_ISNAND', links ? 1 : 0)
 math_h_config.set ('HAVE_ISNAND_IN_LIBC', links ? 1 : 0)
 set_variable ('have_isnand', links)
 
-links = cc.links (nan_tmpl.format ('isnanl', 'long double'),
+links = cc.links (nan_tmpl.format ('isnanf', 'float', '__builtin_isnanf'),
+                  dependencies : [libm])
+math_h_config.set ('HAVE_ISNANF', links ? 1 : 0)
+math_h_config.set ('HAVE_ISNANF_IN_LIBC', links ? 1 : 0)
+set_variable ('have_isnanf', links)
+
+links = cc.links (nan_tmpl.format ('isnanl', 'long double', '__builtin_isnanl'),
                   dependencies : [libm])
 math_h_config.set ('HAVE_ISNANL', links ? 1 : 0)
 math_h_config.set ('HAVE_ISNANL_IN_LIBC', links ? 1 : 0)
 set_variable ('have_isnanl', links)
+
+math_h_config.set ('REPLACE_ISNAN', (have_isnand and have_isnanf and have_isnanl) ? 0 : 1)
 
 links = cc.links ('''#include <math.h>
                      double x;
@@ -303,7 +314,7 @@ inf_tmpl = '''#include <math.h>
 
 other_needed_math_sources = []
 # Some compilers may not have isfinite, isinf available
-foreach f: ['isfinite', 'isinf', 'isnan', 'isnanf', 'signbit']
+foreach f: ['isfinite', 'isinf', 'signbit']
   links = cc.links (inf_tmpl.format('@0@'.format(f)),
                     dependencies : [libm])
   math_h_config.set ('HAVE_@0@'.format(f.to_upper()), links ? 1 : 0)
