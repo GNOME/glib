@@ -499,6 +499,7 @@ typedef void GMainContextPusher GLIB_AVAILABLE_TYPE_IN_2_64;
  * Since: 2.64
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_64
 static inline GMainContextPusher *
 g_main_context_pusher_new (GMainContext *main_context)
 {
@@ -520,6 +521,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Since: 2.64
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_64
 static inline void
 g_main_context_pusher_free (GMainContextPusher *pusher)
 {
