@@ -295,6 +295,26 @@ vs2017-x64:
   stage: build
   tags:
     - win32
+  variables:
+    MESON_OPTIONS: $kMESON_COMMON_OPTIONS
+  script:
+    - .gitlab-ci/test-msvc.bat
+  artifacts:
+    reports:
+      junit: "_build/%CI_JOB_NAME%-report.xml"
+    name: "glib-%CI_JOB_NAME%-%CI_COMMIT_REF_NAME%"
+    when: always
+    paths:
+      - _build/meson-logs
+      - "_build/%CI_JOB_NAME%-report.xml"
+
+vs2017-x64-static:
+  extends: .only-default
+  stage: build
+  tags:
+    - win32
+  variables:
+    MESON_OPTIONS: $MESON_COMMON_OPTIONS -Ddefault_library=static
   script:
     - .gitlab-ci/test-msvc.bat
   artifacts:

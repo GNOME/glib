@@ -606,6 +606,12 @@ g_system_thread_set_name (const gchar *name)
 void
 g_thread_win32_init (void)
 {
+  static gboolean threads_inited;
+
+  if (threads_inited)
+    /* Already inited */
+    return;
+
   InitializeCriticalSection (&g_private_lock);
 
 #ifndef _MSC_VER
@@ -615,6 +621,7 @@ g_thread_win32_init (void)
       /* This is bad, but what can we do? */
     }
 #endif
+  threads_inited = TRUE;
 }
 
 void
