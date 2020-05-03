@@ -127,7 +127,7 @@
 {
 	g-type-register-static
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:possible,reachable
 	fun:malloc
 	...
 	fun:g_type_register_static
@@ -145,7 +145,7 @@
 {
 	g-type-register-static-calloc
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:possible,reachable
 	fun:calloc
 	...
 	fun:g_type_register_static
