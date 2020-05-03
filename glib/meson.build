@@ -316,7 +316,7 @@ else
   platform_deps = []
 endif
 
-if host_system == 'darwin'
+if glib_have_cocoa
   glib_sources += files('gosxutils.m')
 endif
 
