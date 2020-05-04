@@ -124,7 +124,7 @@
  * `tv_sec` is that on 32-bit systems `GTimeVal` is subject to the year 2038
  * problem.
  *
- * Deprecated: 2.62: Use #GDateTime or #guint64 instead.
+ * Deprecated: 2.62: Use #GDateTime or #gint64 instead.
  */
 
 /**
@@ -174,7 +174,7 @@
  * ]|
  *
  * Deprecated: 2.62: This is not [Y2038-safe](https://en.wikipedia.org/wiki/Year_2038_problem).
- *    Use #GDateTime or #time_t instead.
+ *    Use #GDateTime or #gint64 instead.
  */
 
 /**
