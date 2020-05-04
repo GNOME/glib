@@ -473,9 +473,13 @@ g_tls_database_class_init (GTlsDatabaseClass *klass)
  * which means that the certificate is being used to authenticate a server
  * (and we are acting as the client).
  *
- * The @identity is used to check for pinned certificates (trust exceptions)
- * in the database. These will override the normal verification process on a
- * host by host basis.
+ * The @identity is used to ensure the server certificate is valid for
+ * the expected peer identity. If the identity does not match the
+ * certificate, %G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the
+ * return value. If @identity is %NULL, that bit will never be set in
+ * the return value. The peer identity may also be used to check for
+ * pinned certificates (trust exceptions) in the database. These may
+ * override the normal verification process on a host-by-host basis.
  *
  * Currently there are no @flags, and %G_TLS_DATABASE_VERIFY_NONE should be
  * used.
