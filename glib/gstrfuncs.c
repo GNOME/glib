@@ -328,13 +328,26 @@ const guint16 * const g_ascii_table = ascii_table_data;
 static locale_t
 get_C_locale (void)
 {
-  static gsize initialized = FALSE;
-  static locale_t C_locale = NULL;
+  static gsize initialized = 0;
+  static locale_t C_locale;
 
   if (g_once_init_enter (&initialized))
     {
-      C_locale = newlocale (LC_ALL_MASK, "C", NULL);
+      int errsv = errno;
+      int try_count = 0;
+      locale_t l;
+
+again:
+      l = newlocale (LC_ALL_MASK, "C", NULL);
+      if (   l == (locale_t) 0
+          && ++try_count < 3)
+        {
+          /* creating the C locale failed. This is unexpected. Try again... */
+          goto again;
+        }
+
       g_once_init_leave (&initialized, TRUE);
+      errno = errsv;
     }
 
   return C_locale;
