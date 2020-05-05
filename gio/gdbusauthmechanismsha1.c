@@ -234,6 +234,9 @@ ensure_keyring_directory (GError **error)
 {
   gchar *path;
   const gchar *e;
+#ifdef G_OS_UNIX
+  struct stat statbuf;
+#endif
 
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
@@ -249,48 +252,54 @@ ensure_keyring_directory (GError **error)
                                NULL);
     }
 
+#ifdef G_OS_UNIX
+  if (stat (path, &statbuf) != 0)
+    {
+      int errsv = errno;
+
+      if (errsv != ENOENT)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error when getting information for directory “%s”: %s"),
+                       path,
+                       g_strerror (errsv));
+          g_clear_pointer (&path, g_free);
+          return NULL;
+        }
+    }
+  else if (S_ISDIR (statbuf.st_mode))
+    {
+      if (g_getenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION") == NULL &&
+          (statbuf.st_mode & 0777) != 0700)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_FAILED,
+                       _("Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"),
+                       path,
+                       (guint) (statbuf.st_mode & 0777));
+          g_clear_pointer (&path, g_free);
+          return NULL;
+        }
+
+      return g_steal_pointer (&path);
+    }
+#else  /* if !G_OS_UNIX */
+  /* On non-Unix platforms, check that it exists as a directory, but don’t do
+   * permissions checks at the moment. */
   if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR))
     {
-      if (g_getenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION") == NULL)
-        {
-#ifdef G_OS_UNIX
-          struct stat statbuf;
-          if (stat (path, &statbuf) != 0)
-            {
-              int errsv = errno;
-              g_set_error (error,
-                           G_IO_ERROR,
-                           g_io_error_from_errno (errsv),
-                           _("Error when getting information for directory “%s”: %s"),
-                           path,
-                           g_strerror (errsv));
-              g_free (path);
-              path = NULL;
-              goto out;
-            }
-          if ((statbuf.st_mode  & 0777) != 0700)
-            {
-              g_set_error (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_FAILED,
-                           _("Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"),
-                           path,
-                           (guint) (statbuf.st_mode & 0777));
-              g_free (path);
-              path = NULL;
-              goto out;
-            }
-#else
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic warning "-Wcpp"
 #warning Please implement permission checking on this non-UNIX platform
 #pragma GCC diagnostic pop
-#endif
-#endif
-        }
-      goto out;
+#endif  /* __GNUC__ */
+      return g_steal_pointer (&path);
     }
+#endif  /* if !G_OS_UNIX */
 
   if (g_mkdir_with_parents (path, 0700) != 0)
     {
@@ -301,13 +310,11 @@ ensure_keyring_directory (GError **error)
                    _("Error creating directory “%s”: %s"),
                    path,
                    g_strerror (errsv));
-      g_free (path);
-      path = NULL;
-      goto out;
+      g_clear_pointer (&path, g_free);
+      return NULL;
     }
 
-out:
-  return path;
+  return g_steal_pointer (&path);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -450,25 +457,52 @@ _log (const gchar *message,
   g_free (s);
 }
 
+/* Returns FD for lock file, if it was created exclusively (didn't exist already,
+ * and was created successfully) */
+static gint
+create_lock_exclusive (const gchar  *lock_path,
+                       GError      **error)
+{
+  int errsv;
+  gint ret;
+
+  ret = g_open (lock_path, O_CREAT | O_EXCL, 0600);
+  errsv = errno;
+  if (ret < 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   g_io_error_from_errno (errsv),
+                   _("Error creating lock file “%s”: %s"),
+                   lock_path,
+                   g_strerror (errsv));
+      return -1;
+    }
+
+  return ret;
+}
+
 static gint
 keyring_acquire_lock (const gchar  *path,
                       GError      **error)
 {
-  gchar *lock;
+  gchar *lock = NULL;
   gint ret;
   guint num_tries;
-#ifdef EEXISTS
-  guint num_create_tries;
-#endif
   int errsv;
 
-  g_return_val_if_fail (path != NULL, FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  /* Total possible sleep period = max_tries * timeout_usec = 0.5s */
+  const guint max_tries = 50;
+  const guint timeout_usec = 1000 * 10;
+
+  g_return_val_if_fail (path != NULL, -1);
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   ret = -1;
-  lock = g_strdup_printf ("%s.lock", path);
+  lock = g_strconcat (path, ".lock", NULL);
 
   /* This is what the D-Bus spec says
+   * (https://dbus.freedesktop.org/doc/dbus-specification.html#auth-mechanisms-sha)
    *
    *  Create a lockfile name by appending ".lock" to the name of the
    *  cookie file. The server should attempt to create this file using
@@ -481,66 +515,43 @@ keyring_acquire_lock (const gchar  *path,
    *         real locking implementations are still flaky on network filesystems
    */
 
-#ifdef EEXISTS
-  num_create_tries = 0;
- again:
-#endif
-  num_tries = 0;
-  while (g_file_test (lock, G_FILE_TEST_EXISTS))
+  for (num_tries = 0; num_tries < max_tries; num_tries++)
     {
+      /* Ignore the error until the final call. */
+      ret = create_lock_exclusive (lock, NULL);
+      if (ret >= 0)
+        break;
+
       /* sleep 10ms, then try again */
-      g_usleep (1000*10);
-      num_tries++;
-      if (num_tries == 50)
-        {
-          /* ok, we slept 50*10ms = 0.5 seconds. Conclude that the lock file must be
-           * stale (nuke the it from orbit)
-           */
-          if (g_unlink (lock) != 0)
-            {
-              errsv = errno;
-              g_set_error (error,
-                           G_IO_ERROR,
-                           g_io_error_from_errno (errsv),
-                           _("Error deleting stale lock file “%s”: %s"),
-                           lock,
-                           g_strerror (errsv));
-              goto out;
-            }
-          _log ("Deleted stale lock file '%s'", lock);
-          break;
-        }
+      g_usleep (timeout_usec);
     }
 
-  ret = g_open (lock, O_CREAT |
-#ifdef O_EXCL
-                O_EXCL,
-#else
-                0,
-#endif
-                0700);
-  errsv = errno;
-  if (ret == -1)
+  if (num_tries == max_tries)
     {
-#ifdef EEXISTS
-      /* EEXIST: pathname already exists and O_CREAT and O_EXCL were used. */
-      if (errsv == EEXISTS)
+      /* ok, we slept 50*10ms = 0.5 seconds. Conclude that the lock file must be
+       * stale (nuke it from orbit)
+       */
+      if (g_unlink (lock) != 0)
         {
-          num_create_tries++;
-          if (num_create_tries < 5)
-            goto again;
+          errsv = errno;
+          g_set_error (error,
+                       G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error deleting stale lock file “%s”: %s"),
+                       lock,
+                       g_strerror (errsv));
+          goto out;
         }
-#endif
-      g_set_error (error,
-                   G_IO_ERROR,
-                   g_io_error_from_errno (errsv),
-                   _("Error creating lock file “%s”: %s"),
-                   lock,
-                   g_strerror (errsv));
-      goto out;
+
+      _log ("Deleted stale lock file '%s'", lock);
+
+      /* Try one last time to create it, now that we've deleted the stale one */
+      ret = create_lock_exclusive (lock, error);
+      if (ret < 0)
+        goto out;
     }
 
- out:
+out:
   g_free (lock);
   return ret;
 }
