@@ -993,7 +993,7 @@ test_connection_filter (void)
 
   while (g_atomic_int_get (&data.num_handled) == 2)
     g_thread_yield ();
-
+#if 0
   m2 = g_dbus_message_copy (m, &error);
   g_assert_no_error (error);
   r = g_dbus_connection_send_message_with_reply_sync (c,
@@ -1030,7 +1030,7 @@ test_connection_filter (void)
   g_object_unref (r);
   g_assert_cmpint (g_atomic_int_get (&data.num_handled), ==, 4);
   g_assert_cmpint (g_atomic_int_get (&data.num_outgoing), ==, 4);
-
+#endif
   /* wait for service to be available */
   signal_handler_id = g_dbus_connection_signal_subscribe (c,
                                                           "org.freedesktop.DBus", /* sender */
