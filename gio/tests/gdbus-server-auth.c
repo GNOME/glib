@@ -398,6 +398,14 @@ do_test_server_auth (InteropFlags flags)
       LibdbusCall libdbus_call = { DBUS_ERROR_INIT, NULL, NULL, NULL };
       GTask *task;
 
+      /* The test suite uses %G_TEST_OPTION_ISOLATE_DIRS, which sets
+       * `HOME=/dev/null` and leaves g_get_home_dir() pointing to the per-test
+       * temp home directory. Unfortunately, libdbus doesn’t allow the home dir
+       * to be overridden except using the environment, so copy the per-test
+       * temp home directory back there so that libdbus uses the same
+       * `$HOME/.dbus-keyrings` path as GLib. This is not thread-safe. */
+      g_setenv ("HOME", g_get_home_dir (), TRUE);
+
       libdbus_call.conn = dbus_connection_open_private (connectable_address,
                                                         &libdbus_call.error);
       g_assert_cmpstr (libdbus_call.error.name, ==, NULL);
@@ -516,10 +524,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  /* FIXME: Add debug for https://gitlab.gnome.org/GNOME/glib/issues/1954 */
-  g_setenv ("G_DBUS_DEBUG", "all", TRUE);
-
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/gdbus/server-auth", test_server_auth);
   g_test_add_func ("/gdbus/server-auth/abstract", test_server_auth_abstract);
