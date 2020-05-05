@@ -152,6 +152,7 @@ whoami_filter_cb (GDBusConnection *connection,
       g_dbus_connection_send_message (connection, reply,
                                       G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                       NULL, NULL);
+      g_object_unref (reply);
 
       /* handled */
       g_object_unref (message);
