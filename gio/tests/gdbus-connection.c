@@ -832,6 +832,12 @@ filter_func (GDBusConnection *connection,
   FilterData *data = user_data;
   guint32 reply_serial;
 
+  g_message ("%s: incoming: %u, reply_serial: %u, data->serial: %u, data->num_handled: %u, data->num_outgoing: %u",
+             G_STRFUNC, incoming, g_dbus_message_get_reply_serial (message),
+             g_atomic_int_get (&data->serial),
+             g_atomic_int_get (&data->num_handled),
+             g_atomic_int_get (&data->num_outgoing));
+
   if (incoming)
     {
       reply_serial = g_dbus_message_get_reply_serial (message);
@@ -968,6 +974,7 @@ test_connection_filter (void)
   g_atomic_int_set (&data.serial, serial_temp);
   g_assert_no_error (error);
 
+  g_message ("Waiting for data.num_handled == 1");
   while (g_atomic_int_get (&data.num_handled) == 0)
     g_thread_yield ();
 
@@ -978,6 +985,7 @@ test_connection_filter (void)
   g_object_unref (m2);
   g_assert_no_error (error);
 
+  g_message ("Waiting for data.num_handled == 2");
   while (g_atomic_int_get (&data.num_handled) == 1)
     g_thread_yield ();
 
@@ -991,6 +999,7 @@ test_connection_filter (void)
   g_object_unref (m2);
   g_assert_no_error (error);
 
+  g_message ("Waiting for data.num_handled == 3");
   while (g_atomic_int_get (&data.num_handled) == 2)
     g_thread_yield ();
 #if 0
@@ -1032,6 +1041,7 @@ test_connection_filter (void)
   g_assert_cmpint (g_atomic_int_get (&data.num_outgoing), ==, 4);
 #endif
   /* wait for service to be available */
+  g_message ("Waiting for service to be available");
   signal_handler_id = g_dbus_connection_signal_subscribe (c,
                                                           "org.freedesktop.DBus", /* sender */
                                                           "org.freedesktop.DBus",
