@@ -234,6 +234,9 @@ ensure_keyring_directory (GError **error)
 {
   gchar *path;
   const gchar *e;
+#ifdef G_OS_UNIX
+  struct stat statbuf;
+#endif
 
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
@@ -249,48 +252,54 @@ ensure_keyring_directory (GError **error)
                                NULL);
     }
 
+#ifdef G_OS_UNIX
+  if (stat (path, &statbuf) != 0)
+    {
+      int errsv = errno;
+
+      if (errsv != ENOENT)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error when getting information for directory “%s”: %s"),
+                       path,
+                       g_strerror (errsv));
+          g_clear_pointer (&path, g_free);
+          return NULL;
+        }
+    }
+  else if (S_ISDIR (statbuf.st_mode))
+    {
+      if (g_getenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION") == NULL &&
+          (statbuf.st_mode & 0777) != 0700)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_FAILED,
+                       _("Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"),
+                       path,
+                       (guint) (statbuf.st_mode & 0777));
+          g_clear_pointer (&path, g_free);
+          return NULL;
+        }
+
+      return g_steal_pointer (&path);
+    }
+#else  /* if !G_OS_UNIX */
+  /* On non-Unix platforms, check that it exists as a directory, but don’t do
+   * permissions checks at the moment. */
   if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR))
     {
-      if (g_getenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION") == NULL)
-        {
-#ifdef G_OS_UNIX
-          struct stat statbuf;
-          if (stat (path, &statbuf) != 0)
-            {
-              int errsv = errno;
-              g_set_error (error,
-                           G_IO_ERROR,
-                           g_io_error_from_errno (errsv),
-                           _("Error when getting information for directory “%s”: %s"),
-                           path,
-                           g_strerror (errsv));
-              g_free (path);
-              path = NULL;
-              goto out;
-            }
-          if ((statbuf.st_mode  & 0777) != 0700)
-            {
-              g_set_error (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_FAILED,
-                           _("Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"),
-                           path,
-                           (guint) (statbuf.st_mode & 0777));
-              g_free (path);
-              path = NULL;
-              goto out;
-            }
-#else
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic warning "-Wcpp"
 #warning Please implement permission checking on this non-UNIX platform
 #pragma GCC diagnostic pop
-#endif
-#endif
-        }
-      goto out;
+#endif  /* __GNUC__ */
+      return g_steal_pointer (&path);
     }
+#endif  /* if !G_OS_UNIX */
 
   if (g_mkdir_with_parents (path, 0700) != 0)
     {
@@ -301,13 +310,11 @@ ensure_keyring_directory (GError **error)
                    _("Error creating directory “%s”: %s"),
                    path,
                    g_strerror (errsv));
-      g_free (path);
-      path = NULL;
-      goto out;
+      g_clear_pointer (&path, g_free);
+      return NULL;
     }
 
-out:
-  return path;
+  return g_steal_pointer (&path);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
