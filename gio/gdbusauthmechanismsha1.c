@@ -518,7 +518,7 @@ keyring_acquire_lock (const gchar  *path,
 #else
                 0,
 #endif
-                0700);
+                0600);
   errsv = errno;
   if (ret == -1)
     {
