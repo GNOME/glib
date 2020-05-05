@@ -450,25 +450,52 @@ _log (const gchar *message,
   g_free (s);
 }
 
+/* Returns FD for lock file, if it was created exclusively (didn't exist already,
+ * and was created successfully) */
+static gint
+create_lock_exclusive (const gchar  *lock_path,
+                       GError      **error)
+{
+  int errsv;
+  gint ret;
+
+  ret = g_open (lock_path, O_CREAT | O_EXCL, 0600);
+  errsv = errno;
+  if (ret < 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   g_io_error_from_errno (errsv),
+                   _("Error creating lock file “%s”: %s"),
+                   lock_path,
+                   g_strerror (errsv));
+      return -1;
+    }
+
+  return ret;
+}
+
 static gint
 keyring_acquire_lock (const gchar  *path,
                       GError      **error)
 {
-  gchar *lock;
+  gchar *lock = NULL;
   gint ret;
   guint num_tries;
-#ifdef EEXISTS
-  guint num_create_tries;
-#endif
   int errsv;
+
+  /* Total possible sleep period = max_tries * timeout_usec = 0.5s */
+  const guint max_tries = 50;
+  const guint timeout_usec = 1000 * 10;
 
   g_return_val_if_fail (path != NULL, -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   ret = -1;
-  lock = g_strdup_printf ("%s.lock", path);
+  lock = g_strconcat (path, ".lock", NULL);
 
   /* This is what the D-Bus spec says
+   * (https://dbus.freedesktop.org/doc/dbus-specification.html#auth-mechanisms-sha)
    *
    *  Create a lockfile name by appending ".lock" to the name of the
    *  cookie file. The server should attempt to create this file using
@@ -481,66 +508,43 @@ keyring_acquire_lock (const gchar  *path,
    *         real locking implementations are still flaky on network filesystems
    */
 
-#ifdef EEXISTS
-  num_create_tries = 0;
- again:
-#endif
-  num_tries = 0;
-  while (g_file_test (lock, G_FILE_TEST_EXISTS))
+  for (num_tries = 0; num_tries < max_tries; num_tries++)
     {
+      /* Ignore the error until the final call. */
+      ret = create_lock_exclusive (lock, NULL);
+      if (ret >= 0)
+        break;
+
       /* sleep 10ms, then try again */
-      g_usleep (1000*10);
-      num_tries++;
-      if (num_tries == 50)
-        {
-          /* ok, we slept 50*10ms = 0.5 seconds. Conclude that the lock file must be
-           * stale (nuke the it from orbit)
-           */
-          if (g_unlink (lock) != 0)
-            {
-              errsv = errno;
-              g_set_error (error,
-                           G_IO_ERROR,
-                           g_io_error_from_errno (errsv),
-                           _("Error deleting stale lock file “%s”: %s"),
-                           lock,
-                           g_strerror (errsv));
-              goto out;
-            }
-          _log ("Deleted stale lock file '%s'", lock);
-          break;
-        }
+      g_usleep (timeout_usec);
     }
 
-  ret = g_open (lock, O_CREAT |
-#ifdef O_EXCL
-                O_EXCL,
-#else
-                0,
-#endif
-                0600);
-  errsv = errno;
-  if (ret == -1)
+  if (num_tries == max_tries)
     {
-#ifdef EEXISTS
-      /* EEXIST: pathname already exists and O_CREAT and O_EXCL were used. */
-      if (errsv == EEXISTS)
+      /* ok, we slept 50*10ms = 0.5 seconds. Conclude that the lock file must be
+       * stale (nuke it from orbit)
+       */
+      if (g_unlink (lock) != 0)
         {
-          num_create_tries++;
-          if (num_create_tries < 5)
-            goto again;
+          errsv = errno;
+          g_set_error (error,
+                       G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error deleting stale lock file “%s”: %s"),
+                       lock,
+                       g_strerror (errsv));
+          goto out;
         }
-#endif
-      g_set_error (error,
-                   G_IO_ERROR,
-                   g_io_error_from_errno (errsv),
-                   _("Error creating lock file “%s”: %s"),
-                   lock,
-                   g_strerror (errsv));
-      goto out;
+
+      _log ("Deleted stale lock file '%s'", lock);
+
+      /* Try one last time to create it, now that we've deleted the stale one */
+      ret = create_lock_exclusive (lock, error);
+      if (ret < 0)
+        goto out;
     }
 
- out:
+out:
   g_free (lock);
   return ret;
 }
