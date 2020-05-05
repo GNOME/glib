@@ -817,9 +817,8 @@ test_connection_signal_match_rules (void)
  * so all accesses must be atomic. */
 typedef struct
 {
-  guint num_handled;  /* (atomic) */
+  GAsyncQueue *incoming_queue;  /* (element-type GDBusMessage) */
   guint num_outgoing;  /* (atomic) */
-  guint32 serial;  /* (atomic) */
 } FilterData;
 
 /* Runs in a worker thread. */
@@ -830,28 +829,36 @@ filter_func (GDBusConnection *connection,
              gpointer         user_data)
 {
   FilterData *data = user_data;
-  guint32 reply_serial;
 
-  g_message ("%s: incoming: %u, reply_serial: %u, data->serial: %u, data->num_handled: %u, data->num_outgoing: %u",
+  /*g_message ("%s: incoming: %u, reply_serial: %u, data->num_outgoing: %u",
              G_STRFUNC, incoming, g_dbus_message_get_reply_serial (message),
-             g_atomic_int_get (&data->serial),
-             g_atomic_int_get (&data->num_handled),
-             g_atomic_int_get (&data->num_outgoing));
+             g_atomic_int_get (&data->num_outgoing));*/
 
   if (incoming)
-    {
-      reply_serial = g_dbus_message_get_reply_serial (message);
-      if (reply_serial == g_atomic_int_get (&data->serial))
-        g_atomic_int_inc (&data->num_handled);
-    }
+    g_async_queue_push (data->incoming_queue, g_object_ref (message));
   else
-    {
-      g_atomic_int_inc (&data->num_outgoing);
-    }
+    g_atomic_int_inc (&data->num_outgoing);
 
   return message;
 }
 
+static void
+wait_for_filtered_reply (GAsyncQueue *incoming_queue,
+                         guint32      expected_serial)
+{
+  GDBusMessage *popped_message = NULL;
+
+  //g_message ("TODO: Waiting for expected_serial: %u", expected_serial);
+  while ((popped_message = g_async_queue_pop (incoming_queue)) != NULL)
+    {
+      guint32 reply_serial = g_dbus_message_get_reply_serial (popped_message);
+      g_object_unref (popped_message);
+      if (reply_serial == expected_serial)
+        return;
+    }
+
+  g_assert_not_reached ();
+}
 
 typedef struct
 {
@@ -939,7 +946,7 @@ static void
 test_connection_filter (void)
 {
   GDBusConnection *c;
-  FilterData data = { 0, 0, 0 };
+  FilterData data = { NULL, 0 };
   GDBusMessage *m;
   GDBusMessage *m2;
   GDBusMessage *r;
@@ -959,6 +966,8 @@ test_connection_filter (void)
   g_assert_no_error (error);
   g_assert_nonnull (c);
 
+  data.incoming_queue = g_async_queue_new_full (g_object_unref);
+  data.num_outgoing = 0;
   filter_id = g_dbus_connection_add_filter (c,
                                             filter_func,
                                             &data,
@@ -971,23 +980,17 @@ test_connection_filter (void)
   g_dbus_message_set_body (m, g_variant_new ("(s)", "org.freedesktop.DBus"));
   error = NULL;
   g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &serial_temp, &error);
-  g_atomic_int_set (&data.serial, serial_temp);
   g_assert_no_error (error);
 
-  g_message ("Waiting for data.num_handled == 1");
-  while (g_atomic_int_get (&data.num_handled) == 0)
-    g_thread_yield ();
+  wait_for_filtered_reply (data.incoming_queue, serial_temp);
 
   m2 = g_dbus_message_copy (m, &error);
   g_assert_no_error (error);
   g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &serial_temp, &error);
-  g_atomic_int_set (&data.serial, serial_temp);
   g_object_unref (m2);
   g_assert_no_error (error);
 
-  g_message ("Waiting for data.num_handled == 2");
-  while (g_atomic_int_get (&data.num_handled) == 1)
-    g_thread_yield ();
+  wait_for_filtered_reply (data.incoming_queue, serial_temp);
 
   m2 = g_dbus_message_copy (m, &error);
   g_assert_no_error (error);
@@ -995,31 +998,28 @@ test_connection_filter (void)
   /* lock the message to test PRESERVE_SERIAL flag. */
   g_dbus_message_lock (m2);
   g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL, &serial_temp, &error);
-  g_atomic_int_set (&data.serial, serial_temp);
   g_object_unref (m2);
   g_assert_no_error (error);
 
-  g_message ("Waiting for data.num_handled == 3");
-  while (g_atomic_int_get (&data.num_handled) == 2)
-    g_thread_yield ();
-#if 0
+  wait_for_filtered_reply (data.incoming_queue, serial_temp);
+
   m2 = g_dbus_message_copy (m, &error);
   g_assert_no_error (error);
   r = g_dbus_connection_send_message_with_reply_sync (c,
                                                       m2,
                                                       G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                       -1,
-                                                      /* can't do this write atomically
-                                                       * as filter_func() needs it before
-                                                       * send_message_with_reply_sync() returns */
-                                                      &data.serial,
+                                                      &serial_temp,
                                                       NULL, /* GCancellable */
                                                       &error);
   g_object_unref (m2);
   g_assert_no_error (error);
   g_assert_nonnull (r);
   g_object_unref (r);
-  g_assert_cmpint (g_atomic_int_get (&data.num_handled), ==, 4);
+
+  wait_for_filtered_reply (data.incoming_queue, serial_temp);
+  //g_assert_cmpint (g_atomic_int_get (&data.num_handled), ==, 4);
+  g_assert_cmpint (g_async_queue_length (data.incoming_queue), ==, 0);
 
   g_dbus_connection_remove_filter (c, filter_id);
 
@@ -1032,16 +1032,15 @@ test_connection_filter (void)
                                                       &serial_temp,
                                                       NULL, /* GCancellable */
                                                       &error);
-  g_atomic_int_set (&data.serial, serial_temp);
   g_object_unref (m2);
   g_assert_no_error (error);
   g_assert_nonnull (r);
   g_object_unref (r);
-  g_assert_cmpint (g_atomic_int_get (&data.num_handled), ==, 4);
+  g_assert_cmpint (g_async_queue_length (data.incoming_queue), ==, 0);
   g_assert_cmpint (g_atomic_int_get (&data.num_outgoing), ==, 4);
-#endif
+
   /* wait for service to be available */
-  g_message ("Waiting for service to be available");
+  //g_message ("Waiting for service to be available");
   signal_handler_id = g_dbus_connection_signal_subscribe (c,
                                                           "org.freedesktop.DBus", /* sender */
                                                           "org.freedesktop.DBus",
@@ -1111,6 +1110,7 @@ test_connection_filter (void)
 
   g_object_unref (c);
   g_object_unref (m);
+  g_async_queue_unref (data.incoming_queue);
 
   session_bus_down ();
 }
