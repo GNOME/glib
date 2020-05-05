@@ -462,8 +462,8 @@ keyring_acquire_lock (const gchar  *path,
 #endif
   int errsv;
 
-  g_return_val_if_fail (path != NULL, FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail (path != NULL, -1);
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   ret = -1;
   lock = g_strdup_printf ("%s.lock", path);
