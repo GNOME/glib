@@ -1052,6 +1052,7 @@ struct _GRealPtrArray
   guint           len;
   guint           alloc;
   gatomicrefcount ref_count;
+  guint8          null_terminated;
   GDestroyNotify  element_free_func;
 };
 
@@ -1070,6 +1071,13 @@ struct _GRealPtrArray
 
 static void g_ptr_array_maybe_expand (GRealPtrArray *array,
                                       guint          len);
+
+static void
+ptr_array_null_terminate (GRealPtrArray *rarray)
+{
+  if (G_UNLIKELY (rarray->null_terminated))
+    rarray->pdata[rarray->len] = NULL;
+}
 
 /**
  * g_ptr_array_new:
@@ -1175,7 +1183,8 @@ g_ptr_array_steal (GPtrArray *array,
  * pointing to) are copied to the new #GPtrArray.
  *
  * The copy of @array will have the same #GDestroyNotify for its elements as
- * @array.
+ * @array. The copy will also be %NULL terminated if (and only if) the source
+ * array is.
  *
  * Returns: (transfer full): a deep copy of the initial #GPtrArray.
  *
@@ -1186,27 +1195,41 @@ g_ptr_array_copy (GPtrArray *array,
                   GCopyFunc  func,
                   gpointer   user_data)
 {
+  GRealPtrArray *rarray = (GRealPtrArray *) array;
   GPtrArray *new_array;
 
   g_return_val_if_fail (array != NULL, NULL);
 
-  new_array = g_ptr_array_sized_new (array->len);
-  g_ptr_array_set_free_func (new_array, ((GRealPtrArray *) array)->element_free_func);
+  new_array = g_ptr_array_sized_new (0);
+  g_ptr_array_set_free_func (new_array, rarray->element_free_func);
 
-  if (func != NULL)
+  if (rarray->null_terminated)
     {
-      guint i;
-
-      for (i = 0; i < array->len; i++)
-        new_array->pdata[i] = func (array->pdata[i], user_data);
-    }
-  else if (array->len > 0)
-    {
-      memcpy (new_array->pdata, array->pdata,
-              array->len * sizeof (*array->pdata));
+      /* propagate the null terminated flag. */
+      g_ptr_array_null_terminated (new_array, TRUE);
     }
 
-  new_array->len = array->len;
+  if (((GRealPtrArray *) array)->alloc > 0)
+    {
+      g_ptr_array_maybe_expand ((GRealPtrArray *) new_array, array->len + rarray->null_terminated);
+
+      if (func != NULL)
+        {
+          guint i;
+
+          for (i = 0; i < array->len; i++)
+            new_array->pdata[i] = func (array->pdata[i], user_data);
+        }
+      else
+        {
+          memcpy (new_array->pdata, array->pdata,
+                  array->len * sizeof (*array->pdata));
+        }
+
+      new_array->len = array->len;
+
+      ptr_array_null_terminate (rarray);
+    }
 
   return new_array;
 }
@@ -1232,6 +1255,7 @@ g_ptr_array_sized_new (guint reserved_size)
   array->pdata = NULL;
   array->len = 0;
   array->alloc = 0;
+  array->null_terminated = FALSE;
   array->element_free_func = NULL;
 
   g_atomic_ref_count_init (&array->ref_count);
@@ -1349,6 +1373,57 @@ g_ptr_array_set_free_func (GPtrArray      *array,
   g_return_if_fail (array);
 
   rarray->element_free_func = element_free_func;
+}
+
+/**
+ * g_ptr_array_null_terminated:
+ * @array: A #GPtrArray
+ * @make_null_terminated: if %FALSE, the function only returns
+ *   whether @array is already %NULL terminated. If %TRUE,
+ *   this marks @array as %NULL terminated.
+ *
+ * #GPtrArray is not %NULL terminated by default. By calling
+ * this function with @make_null_terminated, the instance gets
+ * marked to be %NULL terminated. Once the instance is marked
+ * to be %NULL terminated, it cannot be reverted.
+ *
+ * Note that if the @array's length is zero and currently no
+ * data array is allocated, then pdata will still be %NULL.
+ * %GPtrArray will only %NULL terminate pdata, if an actual
+ * array is allocated. It does not guarantee that an array
+ * is always allocated.
+ *
+ * When calling this function on a non empty array, the initial
+ * null termination may cause a reallocation to grow the buffer.
+ *
+ * Calling this function with %make_null_terminated %FALSE, then
+ * @array is not modified.
+ *
+ * Returns: %TRUE if @array is marked to be %NULL terminated.
+ *
+ * Since: 2.66
+ */
+gboolean
+g_ptr_array_null_terminated (GPtrArray *array, gboolean make_null_terminated)
+{
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
+
+  g_return_val_if_fail (array, FALSE);
+
+  if (!make_null_terminated)
+    return rarray->null_terminated;
+
+  if (!rarray->null_terminated)
+    {
+      rarray->null_terminated = TRUE;
+      if (rarray->alloc > 0)
+        {
+          g_ptr_array_maybe_expand (rarray, 1);
+          rarray->pdata[rarray->len] = NULL;
+        }
+    }
+
+  return TRUE;
 }
 
 /**
@@ -1496,6 +1571,7 @@ g_ptr_array_maybe_expand (GRealPtrArray *array,
   if ((array->len + len) > array->alloc)
     {
       guint old_alloc = array->alloc;
+
       array->alloc = g_nearest_pow (array->len + len);
       array->alloc = MAX (array->alloc, MIN_ARRAY_SIZE);
       array->pdata = g_realloc (array->pdata, sizeof (gpointer) * array->alloc);
@@ -1531,7 +1607,13 @@ g_ptr_array_set_size  (GPtrArray *array,
   if (length_unsigned > rarray->len)
     {
       guint i;
-      g_ptr_array_maybe_expand (rarray, (length_unsigned - rarray->len));
+
+      if (   G_UNLIKELY (rarray->null_terminated)
+          && length_unsigned - rarray->len > G_MAXUINT - 1)
+         g_error ("array would overflow");
+
+      g_ptr_array_maybe_expand (rarray, (length_unsigned - rarray->len) + rarray->null_terminated);
+
       /* This is not 
        *     memset (array->pdata + array->len, 0,
        *            sizeof (gpointer) * (length_unsigned - array->len));
@@ -1540,11 +1622,13 @@ g_ptr_array_set_size  (GPtrArray *array,
        */
       for (i = rarray->len; i < length_unsigned; i++)
         rarray->pdata[i] = NULL;
+
+      rarray->len = length_unsigned;
+
+      ptr_array_null_terminate (rarray);
     }
   else if (length_unsigned < rarray->len)
     g_ptr_array_remove_range (array, length_unsigned, rarray->len - length_unsigned);
-
-  rarray->len = length_unsigned;
 }
 
 static gpointer
@@ -1574,7 +1658,8 @@ ptr_array_remove_index (GPtrArray *array,
 
   rarray->len -= 1;
 
-  if (G_UNLIKELY (g_mem_gc_friendly))
+  if (   G_UNLIKELY (g_mem_gc_friendly)
+      || rarray->null_terminated)
     rarray->pdata[rarray->len] = NULL;
 
   return result;
@@ -1690,6 +1775,10 @@ g_ptr_array_remove_range (GPtrArray *array,
   g_return_val_if_fail (rarray != NULL, NULL);
   g_return_val_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL), NULL);
   g_return_val_if_fail (index_ <= rarray->len, NULL);
+
+  if (length == 0)
+    return array;
+
   g_return_val_if_fail (index_ + length <= rarray->len, NULL);
 
   if (rarray->element_free_func != NULL)
@@ -1711,6 +1800,8 @@ g_ptr_array_remove_range (GPtrArray *array,
       for (i = 0; i < length; i++)
         rarray->pdata[rarray->len + i] = NULL;
     }
+  else
+    ptr_array_null_terminate (rarray);
 
   return array;
 }
@@ -1807,9 +1898,11 @@ g_ptr_array_add (GPtrArray *array,
   g_return_if_fail (rarray);
   g_return_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL));
 
-  g_ptr_array_maybe_expand (rarray, 1);
+  g_ptr_array_maybe_expand (rarray, 1u + rarray->null_terminated);
 
   rarray->pdata[rarray->len++] = data;
+
+  ptr_array_null_terminate (rarray);
 }
 
 /**
@@ -1845,7 +1938,14 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
   g_return_if_fail (array_to_extend != NULL);
   g_return_if_fail (array != NULL);
 
-  g_ptr_array_maybe_expand (rarray_to_extend, array->len);
+  if (array->len == 0u)
+    return;
+
+  if (   G_UNLIKELY (array->len == G_MAXUINT)
+      && rarray_to_extend->null_terminated)
+    g_error ("adding %u to array would overflow", array->len);
+
+  g_ptr_array_maybe_expand (rarray_to_extend, array->len + rarray_to_extend->null_terminated);
 
   if (func != NULL)
     {
@@ -1855,13 +1955,15 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
         rarray_to_extend->pdata[i + rarray_to_extend->len] =
           func (array->pdata[i], user_data);
     }
-  else if (array->len > 0)
+  else
     {
       memcpy (rarray_to_extend->pdata + rarray_to_extend->len, array->pdata,
               array->len * sizeof (*array->pdata));
     }
 
   rarray_to_extend->len += array->len;
+
+  ptr_array_null_terminate (rarray_to_extend);
 }
 
 /**
@@ -1919,7 +2021,7 @@ g_ptr_array_insert (GPtrArray *array,
   g_return_if_fail (index_ >= -1);
   g_return_if_fail (index_ <= (gint)rarray->len);
 
-  g_ptr_array_maybe_expand (rarray, 1);
+  g_ptr_array_maybe_expand (rarray, 1u + rarray->null_terminated);
 
   if (index_ < 0)
     index_ = rarray->len;
@@ -1931,6 +2033,8 @@ g_ptr_array_insert (GPtrArray *array,
 
   rarray->len++;
   rarray->pdata[index_] = data;
+
+  ptr_array_null_terminate (rarray);
 }
 
 /* Please keep this doc-comment in sync with pointer_array_sort_example()
