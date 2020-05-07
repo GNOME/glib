@@ -55,6 +55,10 @@
  * unix(7) man page for details. This corresponds to
  * %G_CREDENTIALS_TYPE_LINUX_UCRED.
  *
+ * On Apple operating systems (including iOS, tvOS, and macOS),
+ * the native credential type is a `struct xucred`.
+ * This corresponds to %G_CREDENTIALS_TYPE_APPLE_XUCRED.
+ *
  * On FreeBSD, Debian GNU/kFreeBSD, and GNU/Hurd, the native
  * credential type is a `struct cmsgcred`. This corresponds
  * to %G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED.
@@ -85,6 +89,8 @@ struct _GCredentials
 
 #if G_CREDENTIALS_USE_LINUX_UCRED
   struct ucred native;
+#elif G_CREDENTIALS_USE_APPLE_XUCRED
+  struct xucred native;
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   struct cmsgcred native;
 #elif G_CREDENTIALS_USE_NETBSD_UNPCBID
@@ -148,6 +154,22 @@ g_credentials_init (GCredentials *credentials)
   credentials->native.pid = getpid ();
   credentials->native.uid = geteuid ();
   credentials->native.gid = getegid ();
+#elif G_CREDENTIALS_USE_APPLE_XUCRED
+  gsize i;
+
+  credentials->native.cr_version = XUCRED_VERSION;
+  credentials->native.cr_uid = geteuid ();
+  credentials->native.cr_ngroups = 1;
+  credentials->native.cr_groups[0] = getegid ();
+
+  /* FIXME: In principle this could use getgroups() to fill in the rest
+   * of cr_groups, but then we'd have to handle the case where a process
+   * can have more than NGROUPS groups, if that's even possible. A macOS
+   * user would have to develop and test this.
+   *
+   * For now we fill it with -1 (meaning "no data"). */
+  for (i = 1; i < NGROUPS; i++)
+    credentials->native.cr_groups[i] = -1;
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   memset (&credentials->native, 0, sizeof (struct cmsgcred));
   credentials->native.cmcred_pid  = getpid ();
@@ -202,6 +224,9 @@ gchar *
 g_credentials_to_string (GCredentials *credentials)
 {
   GString *ret;
+#if G_CREDENTIALS_USE_APPLE_XUCRED
+  __typeof__(credentials->native.cr_ngroups) i;
+#endif
 
   g_return_val_if_fail (G_IS_CREDENTIALS (credentials), NULL);
 
@@ -214,6 +239,15 @@ g_credentials_to_string (GCredentials *credentials)
     g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.uid);
   if (credentials->native.gid != -1)
     g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.gid);
+  if (ret->str[ret->len - 1] == ',')
+    ret->str[ret->len - 1] = '\0';
+#elif G_CREDENTIALS_USE_APPLE_XUCRED
+  g_string_append (ret, "apple-xucred:");
+  g_string_append_printf (ret, "version=%u,", credentials->native.cr_version);
+  if (credentials->native.cr_uid != -1)
+    g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.cr_uid);
+  for (i = 0; i < credentials->native.cr_ngroups; i++)
+    g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.cr_groups[i]);
   if (ret->str[ret->len - 1] == ',')
     ret->str[ret->len - 1] = '\0';
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
@@ -325,6 +359,10 @@ g_credentials_is_same_user (GCredentials  *credentials,
 #if G_CREDENTIALS_USE_LINUX_UCRED
   if (linux_ucred_check_valid (&credentials->native, NULL)
       && credentials->native.uid == other_credentials->native.uid)
+    ret = TRUE;
+#elif G_CREDENTIALS_USE_APPLE_XUCRED
+  if (credentials->native.cr_version == other_credentials->native.cr_version &&
+      credentials->native.cr_uid == other_credentials->native.cr_uid)
     ret = TRUE;
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   if (credentials->native.cmcred_euid == other_credentials->native.cmcred_euid)
@@ -487,6 +525,21 @@ g_credentials_get_unix_user (GCredentials    *credentials,
     ret = credentials->native.uid;
   else
     ret = -1;
+#elif G_CREDENTIALS_USE_APPLE_XUCRED
+  if (credentials->native.cr_version == XUCRED_VERSION)
+    {
+      ret = credentials->native.cr_uid;
+    }
+  else
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                   /* No point in translating the part in parentheses... */
+                   "%s (struct xucred cr_version %u != %u)",
+                   _("There is no GCredentials support for your platform"),
+                   credentials->native.cr_version,
+                   XUCRED_VERSION);
+      ret = -1;
+    }
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   ret = credentials->native.cmcred_euid;
 #elif G_CREDENTIALS_USE_NETBSD_UNPCBID
@@ -516,7 +569,8 @@ g_credentials_get_unix_user (GCredentials    *credentials,
  *
  * This operation can fail if #GCredentials is not supported on the
  * OS or if the native credentials type does not contain information
- * about the UNIX process ID.
+ * about the UNIX process ID (for example this is the case for
+ * %G_CREDENTIALS_TYPE_APPLE_XUCRED).
  *
  * Returns: The UNIX process ID, or -1 if @error is set.
  *
@@ -545,6 +599,7 @@ g_credentials_get_unix_pid (GCredentials    *credentials,
 #elif G_CREDENTIALS_USE_SOLARIS_UCRED
   ret = ucred_getpid (credentials->native);
 #else
+  /* this case includes G_CREDENTIALS_USE_APPLE_XUCRED */
   ret = -1;
   g_set_error_literal (error,
                        G_IO_ERROR,
@@ -586,6 +641,9 @@ g_credentials_set_unix_user (GCredentials    *credentials,
 
 #if G_CREDENTIALS_USE_LINUX_UCRED
   credentials->native.uid = uid;
+  ret = TRUE;
+#elif G_CREDENTIALS_USE_APPLE_XUCRED
+  credentials->native.cr_uid = uid;
   ret = TRUE;
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   credentials->native.cmcred_euid = uid;
