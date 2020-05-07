@@ -45,6 +45,7 @@ RUN dnf -y update \
     ninja-build \
     pcre-devel \
     "python3-dbusmock >= 0.18.3-2" \
+    python3-pip \
     python3-pygments \
     python3-wheel \
     shared-mime-info \
