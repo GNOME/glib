@@ -1685,7 +1685,7 @@ g_ptr_array_remove_range (GPtrArray *array,
                           guint      length)
 {
   GRealPtrArray *rarray = (GRealPtrArray *)array;
-  guint n;
+  guint i;
 
   g_return_val_if_fail (rarray != NULL, NULL);
   g_return_val_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL), NULL);
@@ -1694,8 +1694,8 @@ g_ptr_array_remove_range (GPtrArray *array,
 
   if (rarray->element_free_func != NULL)
     {
-      for (n = index_; n < index_ + length; n++)
-        rarray->element_free_func (rarray->pdata[n]);
+      for (i = index_; i < index_ + length; i++)
+        rarray->element_free_func (rarray->pdata[i]);
     }
 
   if (index_ + length != rarray->len)
@@ -1708,7 +1708,6 @@ g_ptr_array_remove_range (GPtrArray *array,
   rarray->len -= length;
   if (G_UNLIKELY (g_mem_gc_friendly))
     {
-      guint i;
       for (i = 0; i < length; i++)
         rarray->pdata[rarray->len + i] = NULL;
     }
