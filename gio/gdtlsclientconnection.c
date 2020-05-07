@@ -59,7 +59,7 @@ g_dtls_client_connection_default_init (GDtlsClientConnectionInterface *iface)
    * GDtlsClientConnection:validation-flags:
    *
    * What steps to perform when validating a certificate received from
-   * a server. Server certificates that fail to validate in all of the
+   * a server. Server certificates that fail to validate in any of the
    * ways indicated here will be rejected unless the application
    * overrides the default via #GDtlsConnection::accept-certificate.
    *
