@@ -47,7 +47,11 @@ suites = {}
 for line in args.infile:
     data = json.loads(line)
     (full_suite, unit_name) = data['name'].split(' / ')
-    (project_name, suite_name) = full_suite.split(':')
+    try:
+        (project_name, suite_name) = full_suite.split(':')
+    except ValueError:
+        project_name = full_suite
+        suite_name = full_suite
 
     duration = data['duration']
     return_code = data['returncode']
