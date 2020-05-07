@@ -1298,6 +1298,8 @@ pointer_array_extend_and_steal (void)
   g_assert_cmpuint (ptr_array3->len, ==, 0);
   g_assert_null (ptr_array3->pdata);
 
+  g_ptr_array_add (ptr_array2, NULL);
+
   g_ptr_array_free (ptr_array, TRUE);
   g_ptr_array_free (ptr_array3, TRUE);
 
