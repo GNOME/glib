@@ -1186,7 +1186,6 @@ g_ptr_array_copy (GPtrArray *array,
                   GCopyFunc  func,
                   gpointer   user_data)
 {
-  gsize i;
   GPtrArray *new_array;
 
   g_return_val_if_fail (array != NULL, NULL);
@@ -1196,6 +1195,8 @@ g_ptr_array_copy (GPtrArray *array,
 
   if (func != NULL)
     {
+      guint i;
+
       for (i = 0; i < array->len; i++)
         new_array->pdata[i] = func (array->pdata[i], user_data);
     }
@@ -1458,7 +1459,8 @@ ptr_array_free (GPtrArray      *array,
       gpointer *stolen_pdata = g_steal_pointer (&rarray->pdata);
       if (rarray->element_free_func != NULL)
         {
-          gsize i;
+          guint i;
+
           for (i = 0; i < rarray->len; ++i)
             rarray->element_free_func (stolen_pdata[i]);
         }
@@ -1840,7 +1842,6 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
                     gpointer    user_data)
 {
   GRealPtrArray *rarray_to_extend = (GRealPtrArray *) array_to_extend;
-  gsize i;
 
   g_return_if_fail (array_to_extend != NULL);
   g_return_if_fail (array != NULL);
@@ -1849,6 +1850,8 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
 
   if (func != NULL)
     {
+      guint i;
+
       for (i = 0; i < array->len; i++)
         rarray_to_extend->pdata[i + rarray_to_extend->len] =
           func (array->pdata[i], user_data);
