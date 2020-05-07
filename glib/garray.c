@@ -1890,6 +1890,7 @@ g_ptr_array_extend_and_steal (GPtrArray  *array_to_extend,
    * to the elements moved from @array to @array_to_extend. */
   pdata = g_steal_pointer (&array->pdata);
   array->len = 0;
+  ((GRealPtrArray *) array)->alloc = 0;
   g_ptr_array_unref (array);
   g_free (pdata);
 }
