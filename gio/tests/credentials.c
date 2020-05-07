@@ -54,9 +54,16 @@ test_basic (void)
   g_assert_cmpuint (g_credentials_get_unix_user (creds, &error), ==,
       geteuid ());
   g_assert_no_error (error);
-  g_assert_cmpuint (g_credentials_get_unix_pid (creds, &error), ==,
+
+#if G_CREDENTIALS_HAS_PID
+  g_assert_cmpint (g_credentials_get_unix_pid (creds, &error), ==,
       getpid ());
   g_assert_no_error (error);
+#else
+  g_assert_cmpint (g_credentials_get_unix_pid (creds, &error), ==, -1);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_clear_error (&error);
+#endif
 
   set = g_credentials_set_unix_user (other, not_me, &error);
 #if G_CREDENTIALS_SPOOFING_SUPPORTED
@@ -91,6 +98,14 @@ test_basic (void)
 
           g_assert_cmpuint (native->uid, ==, geteuid ());
           g_assert_cmpuint (native->pid, ==, getpid ());
+        }
+#elif G_CREDENTIALS_USE_APPLE_XUCRED
+        {
+          struct xucred *native = g_credentials_get_native (creds,
+              G_CREDENTIALS_TYPE_APPLE_XUCRED);
+
+          g_assert_cmpuint (native->cr_version, ==, XUCRED_VERSION);
+          g_assert_cmpuint (native->cr_uid, ==, geteuid ());
         }
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
         {

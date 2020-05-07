@@ -39,6 +39,7 @@
 #undef G_CREDENTIALS_USE_NETBSD_UNPCBID
 #undef G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
 #undef G_CREDENTIALS_USE_SOLARIS_UCRED
+#undef G_CREDENTIALS_USE_APPLE_XUCRED
 
 /*
  * G_CREDENTIALS_NATIVE_TYPE:
@@ -93,6 +94,13 @@
  */
 #undef G_CREDENTIALS_PREFER_MESSAGE_PASSING
 
+/*
+ * G_CREDENTIALS_HAS_PID:
+ *
+ * Defined to 1 if the %G_CREDENTIALS_NATIVE_TYPE contains the process ID.
+ */
+#undef G_CREDENTIALS_HAS_PID
+
 #ifdef __linux__
 #define G_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_USE_LINUX_UCRED 1
@@ -101,6 +109,7 @@
 #define G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED 1
 #define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_SPOOFING_SUPPORTED 1
+#define G_CREDENTIALS_HAS_PID 1
 
 #elif defined(__FreeBSD__)                                  || \
       defined(__FreeBSD_kernel__) /* Debian GNU/kFreeBSD */ || \
@@ -118,6 +127,7 @@
  * SCM_CREDS, and if we implement getpeereid() in future, we should
  * do the same. */
 #define G_CREDENTIALS_PREFER_MESSAGE_PASSING 1
+#define G_CREDENTIALS_HAS_PID 1
 
 #elif defined(__NetBSD__)
 #define G_CREDENTIALS_SUPPORTED 1
@@ -126,6 +136,7 @@
 #define G_CREDENTIALS_NATIVE_SIZE (sizeof (struct unpcbid))
 /* #undef G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED */
 #define G_CREDENTIALS_SPOOFING_SUPPORTED 1
+#define G_CREDENTIALS_HAS_PID 1
 
 #elif defined(__OpenBSD__)
 #define G_CREDENTIALS_SUPPORTED 1
@@ -134,6 +145,7 @@
 #define G_CREDENTIALS_NATIVE_SIZE (sizeof (struct sockpeercred))
 #define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_SPOOFING_SUPPORTED 1
+#define G_CREDENTIALS_HAS_PID 1
 
 #elif defined(__sun__) || defined(__illumos__) || defined (__OpenSolaris_kernel__)
 #include <ucred.h>
@@ -143,6 +155,18 @@
 #define G_CREDENTIALS_NATIVE_SIZE (ucred_size ())
 #define G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED 1
 #define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
+#define G_CREDENTIALS_HAS_PID 1
+
+#elif defined(__APPLE__)
+#include <sys/ucred.h>
+#define G_CREDENTIALS_SUPPORTED 1
+#define G_CREDENTIALS_USE_APPLE_XUCRED 1
+#define G_CREDENTIALS_NATIVE_TYPE G_CREDENTIALS_TYPE_APPLE_XUCRED
+#define G_CREDENTIALS_NATIVE_SIZE (sizeof (struct xucred))
+#undef G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+#define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
+#define G_CREDENTIALS_SPOOFING_SUPPORTED 1
+#define G_CREDENTIALS_HAS_PID 0
 
 #endif
 
