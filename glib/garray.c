@@ -1206,7 +1206,7 @@ g_ptr_array_copy (GPtrArray *array,
   if (rarray->null_terminated)
     {
       /* propagate the null terminated flag. */
-      g_ptr_array_null_terminated (new_array, TRUE);
+      g_ptr_array_set_null_terminated (new_array);
     }
 
   if (((GRealPtrArray *) array)->alloc > 0)
@@ -1376,54 +1376,59 @@ g_ptr_array_set_free_func (GPtrArray      *array,
 }
 
 /**
- * g_ptr_array_null_terminated:
+ * g_ptr_array_get_null_terminated:
+ * @array: the #GPtrArray
+ *
+ * Returns: %TRUE if the array is made to be %NULL terminated.
+ *
+ * Since: 2.66
+ */
+gboolean
+g_ptr_array_get_null_terminated (const GPtrArray *array)
+{
+  g_return_val_if_fail (array, FALSE);
+
+  return ((GRealPtrArray *) array)->null_terminated;
+}
+
+/**
+ * g_ptr_array_set_null_terminated:
  * @array: A #GPtrArray
- * @make_null_terminated: if %FALSE, the function only returns
- *   whether @array is already %NULL terminated. If %TRUE,
- *   this marks @array as %NULL terminated.
  *
  * #GPtrArray is not %NULL terminated by default. By calling
- * this function with @make_null_terminated, the instance gets
- * marked to be %NULL terminated. Once the instance is marked
- * to be %NULL terminated, it cannot be reverted.
+ * this function, the instance gets marked to be %NULL terminated.
+ * Once the instance is marked to be %NULL terminated, it cannot be
+ * reverted.
  *
  * Note that if the @array's length is zero and currently no
  * data array is allocated, then pdata will still be %NULL.
  * %GPtrArray will only %NULL terminate pdata, if an actual
  * array is allocated. It does not guarantee that an array
- * is always allocated.
+ * is always allocated. In other words, if the length is zero,
+ * then pdata may either point to a %NULL terminated pointer array of length
+ * zero or be %NULL.
  *
- * When calling this function on a non empty array, the initial
- * null termination may cause a reallocation to grow the buffer.
- *
- * Calling this function with %make_null_terminated %FALSE, then
- * @array is not modified.
- *
- * Returns: %TRUE if @array is marked to be %NULL terminated.
+ * When making an array %NULL terminated, the buffer may need to grow
+ * and get reallocated in the process.
  *
  * Since: 2.66
  */
-gboolean
-g_ptr_array_null_terminated (GPtrArray *array, gboolean make_null_terminated)
+void
+g_ptr_array_set_null_terminated (const GPtrArray *array)
 {
-  GRealPtrArray *rarray = (GRealPtrArray *)array;
+  GRealPtrArray *rarray = (GRealPtrArray *) array;
 
-  g_return_val_if_fail (array, FALSE);
+  g_return_if_fail (array);
 
-  if (!make_null_terminated)
-    return rarray->null_terminated;
+  if (rarray->null_terminated)
+    return;
 
-  if (!rarray->null_terminated)
+  rarray->null_terminated = TRUE;
+  if (rarray->alloc > 0)
     {
-      rarray->null_terminated = TRUE;
-      if (rarray->alloc > 0)
-        {
-          g_ptr_array_maybe_expand (rarray, 1);
-          rarray->pdata[rarray->len] = NULL;
-        }
+      g_ptr_array_maybe_expand (rarray, 1);
+      rarray->pdata[rarray->len] = NULL;
     }
-
-  return TRUE;
 }
 
 /**

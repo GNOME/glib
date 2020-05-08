@@ -840,15 +840,14 @@ test_array_copy_sized (void)
 static GPtrArray *
 ptr_array_init (GPtrArray *array)
 {
-  gboolean rnd = ((g_random_int () % 3u) == 0u);
-
   g_assert (array);
 
   /* Randomly make the GPtrArray %NULL terminated.
    * A %NULL terminated array gives stronger guarantees, so wherever
    * the test checks something, it must also hold for a %NULL terminated
    * array. To increase the test coverage, randomly set the flag. */
-  g_ptr_array_null_terminated (array, rnd);
+  if ((g_random_int () % 3u) == 0u)
+    g_ptr_array_set_null_terminated (array);
   return array;
 }
 
@@ -864,7 +863,7 @@ ptr_array_init (GPtrArray *array)
           } \
         else \
           { \
-            if (g_ptr_array_null_terminated (_array, FALSE)) \
+            if (g_ptr_array_get_null_terminated (_array)) \
               g_assert (_array->pdata[_array->len] == NULL); \
         } \
     } \
