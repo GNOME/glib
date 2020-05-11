@@ -1182,6 +1182,7 @@ value_to_ffi_type (const GValue *gvalue,
     {
     case G_TYPE_BOOLEAN:
     case G_TYPE_CHAR:
+    case G_TYPE_SHORT:
     case G_TYPE_INT:
       rettype = &ffi_type_sint;
       *value = (gpointer)&(gvalue->data[0].v_int);
@@ -1207,6 +1208,7 @@ value_to_ffi_type (const GValue *gvalue,
       *tmpval_used = TRUE;
       break;
     case G_TYPE_UCHAR:
+    case G_TYPE_USHORT:
     case G_TYPE_UINT:
       rettype = &ffi_type_uint;
       *value = (gpointer)&(gvalue->data[0].v_uint);
@@ -1282,6 +1284,12 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
     case G_TYPE_UCHAR:
       g_value_set_uchar (gvalue, (guchar) *int_val);
       break;
+    case G_TYPE_SHORT:
+      g_value_set_short (gvalue, (gshort) *int_val);
+      break;
+    case G_TYPE_USHORT:
+      g_value_set_ushort (gvalue, (gushort) *int_val);
+      break;
     case G_TYPE_UINT:
       g_value_set_uint (gvalue, (guint) *int_val);
       break;
@@ -1349,12 +1357,14 @@ va_to_ffi_type (GType gtype,
     {
     case G_TYPE_BOOLEAN:
     case G_TYPE_CHAR:
+    case G_TYPE_SHORT:
     case G_TYPE_INT:
     case G_TYPE_ENUM:
       rettype = &ffi_type_sint;
       storage->_gint = va_arg (*va, gint);
       break;
     case G_TYPE_UCHAR:
+    case G_TYPE_USHORT:
     case G_TYPE_UINT:
     case G_TYPE_FLAGS:
       rettype = &ffi_type_uint;
@@ -1692,6 +1702,34 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  *
  * A marshaller for a #GCClosure with a callback of type
  * `void (*callback) (gpointer instance, guchar arg1, gpointer user_data)`.
+ */
+
+/**
+ * g_cclosure_marshal_VOID__SHORT:
+ * @closure: the #GClosure to which the marshaller belongs
+ * @return_value: ignored
+ * @n_param_values: 2
+ * @param_values: a #GValue array holding the instance and the #gshort parameter
+ * @invocation_hint: the invocation hint given as the last argument
+ *  to g_closure_invoke()
+ * @marshal_data: additional data specified when registering the marshaller
+ *
+ * A marshaller for a #GCClosure with a callback of type
+ * `void (*callback) (gpointer instance, gshort arg1, gpointer user_data)`.
+ */
+
+/**
+ * g_cclosure_marshal_VOID__USHORT:
+ * @closure: the #GClosure to which the marshaller belongs
+ * @return_value: ignored
+ * @n_param_values: 2
+ * @param_values: a #GValue array holding the instance and the #gushort parameter
+ * @invocation_hint: the invocation hint given as the last argument
+ *  to g_closure_invoke()
+ * @marshal_data: additional data specified when registering the marshaller
+ *
+ * A marshaller for a #GCClosure with a callback of type
+ * `void (*callback) (gpointer instance, gushort arg1, gpointer user_data)`.
  */
 
 /**
