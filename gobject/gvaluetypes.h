@@ -56,6 +56,28 @@ G_BEGIN_DECLS
  */
 #define G_VALUE_HOLDS_BOOLEAN(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_BOOLEAN))
 /**
+ * G_VALUE_HOLDS_SHORT:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_SHORT.
+ * 
+ * Returns: %TRUE on success.
+ * 
+ * Since: 2.66
+ */
+#define G_VALUE_HOLDS_SHORT(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_SHORT))
+/**
+ * G_VALUE_HOLDS_USHORT:
+ * @value: a valid #GValue structure
+ * 
+ * Checks whether the given #GValue can hold values of type %G_TYPE_USHORT.
+ * 
+ * Returns: %TRUE on success.
+ * 
+ * Since: 2.66
+ */
+#define G_VALUE_HOLDS_USHORT(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_USHORT))
+/**
  * G_VALUE_HOLDS_INT:
  * @value: a valid #GValue structure
  * 
@@ -195,6 +217,16 @@ void		      g_value_set_boolean	(GValue	      *value,
 						 gboolean      v_boolean);
 GLIB_AVAILABLE_IN_ALL
 gboolean	      g_value_get_boolean	(const GValue *value);
+GLIB_AVAILABLE_IN_ALL
+void		      g_value_set_short		(GValue	      *value,
+						 gshort	       v_short);
+GLIB_AVAILABLE_IN_ALL
+gshort		      g_value_get_short		(const GValue *value);
+GLIB_AVAILABLE_IN_ALL
+void		      g_value_set_ushort		(GValue	      *value,
+						 gushort	       v_ushort);
+GLIB_AVAILABLE_IN_ALL
+gushort		      g_value_get_ushort		(const GValue *value);
 GLIB_AVAILABLE_IN_ALL
 void		      g_value_set_int		(GValue	      *value,
 						 gint	       v_int);

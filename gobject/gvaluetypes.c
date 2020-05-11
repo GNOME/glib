@@ -108,6 +108,22 @@ value_lcopy_int (const GValue *value,
 }
 
 static gchar*
+value_lcopy_short (const GValue *value,
+		 guint         n_collect_values,
+		 GTypeCValue  *collect_values,
+		 guint         collect_flags)
+{
+  gshort *short_p = collect_values[0].v_pointer;
+  
+  if (!short_p)
+    return g_strdup_printf ("value location for '%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+  
+  *short_p = value->data[0].v_int;
+  
+  return NULL;
+}
+
+static gchar*
 value_collect_long (GValue      *value,
 		    guint        n_collect_values,
 		    GTypeCValue *collect_values,
@@ -624,6 +640,26 @@ _g_value_types_init (void)
     type = g_type_register_fundamental (G_TYPE_VARIANT, g_intern_static_string ("GVariant"), &info, &finfo, 0);
     g_assert (type == G_TYPE_VARIANT);
   }
+
+  /* G_TYPE_SHORT / G_TYPE_USHORT
+   */
+  {
+    static const GTypeValueTable value_table = {
+      value_init_long0,		/* value_init */
+      NULL,			/* value_free */
+      value_copy_long0,		/* value_copy */
+      NULL,			/* value_peek_pointer */
+      "i",			/* collect_format */
+      value_collect_int,	/* collect_value */
+      "p",			/* lcopy_format */
+      value_lcopy_short,		/* lcopy_value */
+    };
+    info.value_table = &value_table;
+    type = g_type_register_fundamental (G_TYPE_SHORT, g_intern_static_string ("gshort"), &info, &finfo, 0);
+    g_assert (type == G_TYPE_SHORT);
+    type = g_type_register_fundamental (G_TYPE_USHORT, g_intern_static_string ("gushort"), &info, &finfo, 0);
+    g_assert (type == G_TYPE_USHORT);
+  }
 }
 
 
@@ -765,11 +801,85 @@ g_value_get_boolean (const GValue *value)
 }
 
 /**
+ * g_value_set_short:
+ * @value: a valid #GValue of type %G_TYPE_SHORT
+ * @v_short: signed 16 bit integer to be set
+ *
+ * Set the contents of a %G_TYPE_SHORT #GValue to @v_short.
+ *
+ * Since: 2.66
+ */
+void
+g_value_set_short (GValue *value,
+		   gshort   v_short)
+{
+  g_return_if_fail (G_VALUE_HOLDS_SHORT (value));
+
+  value->data[0].v_int = v_short;
+}
+
+/**
+ * g_value_get_short:
+ * @value: a valid #GValue of type %G_TYPE_SHORT
+ *
+ * Get the contents of a %G_TYPE_SHORT #GValue.
+ *
+ * Returns: signed 16 bit integer contents of @value
+ *
+ * Since: 2.66
+ */
+gshort
+g_value_get_short (const GValue *value)
+{
+  g_return_val_if_fail (G_VALUE_HOLDS_SHORT (value), 0);
+
+  return value->data[0].v_int;
+}
+
+/**
+ * g_value_set_ushort:
+ * @value: a valid #GValue of type %G_TYPE_USHORT
+ * @v_ushort: unsigned short value to be set
+ *
+ * Set the contents of a %G_TYPE_USHORT #GValue to @v_ushort.
+ *
+ * Since: 2.66
+ */
+void
+g_value_set_ushort (GValue *value,
+		   gushort  v_ushort)
+{
+  g_return_if_fail (G_VALUE_HOLDS_USHORT (value));
+
+  value->data[0].v_uint = v_ushort;
+}
+
+/**
+ * g_value_get_ushort:
+ * @value: a valid #GValue of type %G_TYPE_USHORT
+ *
+ * Get the contents of a %G_TYPE_USHORT #GValue.
+ *
+ * Returns: unsigned short contents of @value
+ *
+ * Since: 2.66
+ */
+gushort
+g_value_get_ushort (const GValue *value)
+{
+  g_return_val_if_fail (G_VALUE_HOLDS_USHORT (value), 0);
+  
+  return value->data[0].v_uint;
+}
+
+/**
  * g_value_set_int:
  * @value: a valid #GValue of type %G_TYPE_INT
  * @v_int: integer value to be set
  *
  * Set the contents of a %G_TYPE_INT #GValue to @v_int.
+ *
+ * Since: 2.66
  */
 void
 g_value_set_int (GValue *value,
