@@ -394,13 +394,13 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
       break;
 
     case G_VARIANT_CLASS_INT16:
-      g_value_init (out_gvalue, G_TYPE_INT);
-      g_value_set_int (out_gvalue, g_variant_get_int16 (value));
+      g_value_init (out_gvalue, G_TYPE_SHORT);
+      g_value_set_short (out_gvalue, g_variant_get_int16 (value));
       break;
 
     case G_VARIANT_CLASS_UINT16:
-      g_value_init (out_gvalue, G_TYPE_UINT);
-      g_value_set_uint (out_gvalue, g_variant_get_uint16 (value));
+      g_value_init (out_gvalue, G_TYPE_USHORT);
+      g_value_set_ushort (out_gvalue, g_variant_get_uint16 (value));
       break;
 
     case G_VARIANT_CLASS_INT32:
@@ -513,8 +513,10 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  * - #G_TYPE_STRV: 'as', 'ao' or 'aay'
  * - #G_TYPE_BOOLEAN: 'b'
  * - #G_TYPE_UCHAR: 'y'
- * - #G_TYPE_INT: 'i', 'n'
- * - #G_TYPE_UINT: 'u', 'q'
+ * - #G_TYPE_SHORT: 'n'
+ * - #G_TYPE_SHORT: 'q'
+ * - #G_TYPE_INT: 'i'
+ * - #G_TYPE_UINT: 'u'
  * - #G_TYPE_INT64 'x'
  * - #G_TYPE_UINT64: 't'
  * - #G_TYPE_DOUBLE: 'd'
@@ -574,11 +576,11 @@ g_dbus_gvalue_to_gvariant (const GValue       *gvalue,
           break;
 
         case G_VARIANT_CLASS_INT16:
-          ret = g_variant_ref_sink (g_variant_new_int16 (g_value_get_int (gvalue)));
+          ret = g_variant_ref_sink (g_variant_new_int16 (g_value_get_short (gvalue)));
           break;
 
         case G_VARIANT_CLASS_UINT16:
-          ret = g_variant_ref_sink (g_variant_new_uint16 (g_value_get_uint (gvalue)));
+          ret = g_variant_ref_sink (g_variant_new_uint16 (g_value_get_ushort (gvalue)));
           break;
 
         case G_VARIANT_CLASS_INT32:

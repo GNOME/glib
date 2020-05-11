@@ -1049,6 +1049,12 @@ class CodeGenerator:
                            '      case G_TYPE_UCHAR:\n'
                            '        ret = (g_value_get_uchar (a) == g_value_get_uchar (b));\n'
                            '        break;\n'
+                           '      case G_TYPE_SHORT:\n'
+                           '        ret = (g_value_get_short (a) == g_value_get_short (b));\n'
+                           '        break;\n'
+                           '      case G_TYPE_USHORT:\n'
+                           '        ret = (g_value_get_ushort (a) == g_value_get_ushort (b));\n'
+                           '        break;\n'
                            '      case G_TYPE_INT:\n'
                            '        ret = (g_value_get_int (a) == g_value_get_int (b));\n'
                            '        break;\n'
@@ -1506,9 +1512,9 @@ class CodeGenerator:
                 elif p.arg.signature == 'y':
                     s = 'g_param_spec_uchar ("%s", "%s", "%s", 0, 255, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'n':
-                    s = 'g_param_spec_int ("%s", "%s", "%s", G_MININT16, G_MAXINT16, 0'%(p.name_hyphen, p.name, p.name)
+                    s = 'g_param_spec_short ("%s", "%s", "%s", G_MININT16, G_MAXINT16, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'q':
-                    s = 'g_param_spec_uint ("%s", "%s", "%s", 0, G_MAXUINT16, 0'%(p.name_hyphen, p.name, p.name)
+                    s = 'g_param_spec_ushort ("%s", "%s", "%s", 0, G_MAXUINT16, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'i':
                     s = 'g_param_spec_int ("%s", "%s", "%s", G_MININT32, G_MAXINT32, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'u':

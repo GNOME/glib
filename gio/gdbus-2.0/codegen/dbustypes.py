@@ -98,25 +98,25 @@ class Arg:
                 self.gvariant_get = 'g_variant_get_byte'
                 self.gvalue_get = 'g_value_get_uchar'
             elif self.signature == 'n':
-                self.ctype_in_g  = 'gint '
+                self.ctype_in_g  = 'gshort '
                 self.ctype_in  = 'gint16 '
                 self.ctype_out = 'gint16 *'
-                self.gtype = 'G_TYPE_INT'
+                self.gtype = 'G_TYPE_SHORT'
                 self.free_func = None
                 self.format_in = 'n'
                 self.format_out = 'n'
                 self.gvariant_get = 'g_variant_get_int16'
-                self.gvalue_get = 'g_value_get_int'
+                self.gvalue_get = 'g_value_get_short'
             elif self.signature == 'q':
-                self.ctype_in_g  = 'guint '
+                self.ctype_in_g  = 'gushort '
                 self.ctype_in  = 'guint16 '
                 self.ctype_out = 'guint16 *'
-                self.gtype = 'G_TYPE_UINT'
+                self.gtype = 'G_TYPE_USHORT'
                 self.free_func = None
                 self.format_in = 'q'
                 self.format_out = 'q'
                 self.gvariant_get = 'g_variant_get_uint16'
-                self.gvalue_get = 'g_value_get_uint'
+                self.gvalue_get = 'g_value_get_ushort'
             elif self.signature == 'i':
                 self.ctype_in_g  = 'gint '
                 self.ctype_in  = 'gint '
