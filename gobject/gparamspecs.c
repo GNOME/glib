@@ -134,6 +134,87 @@ param_boolean_validate (GParamSpec *pspec,
   return value->data[0].v_int != oval;
 }
 
+
+static void
+param_short_init (GParamSpec *pspec)
+{
+  GParamSpecShort *ispec = G_PARAM_SPEC_SHORT (pspec);
+  
+  ispec->minimum = 0x7fff;
+  ispec->maximum = 0x8000;
+  ispec->default_value = 0;
+}
+
+static void
+param_short_set_default (GParamSpec *pspec,
+		       GValue     *value)
+{
+  value->data[0].v_int = G_PARAM_SPEC_SHORT (pspec)->default_value;
+}
+
+static gboolean
+param_short_validate (GParamSpec *pspec,
+		    GValue     *value)
+{
+  GParamSpecShort *ispec = G_PARAM_SPEC_SHORT (pspec);
+  gshort oval = value->data[0].v_int;
+  
+  value->data[0].v_int = CLAMP (value->data[0].v_int, ispec->minimum, ispec->maximum);
+  
+  return value->data[0].v_int != oval;
+}
+
+static gint
+param_short_values_cmp (GParamSpec   *pspec,
+		      const GValue *value1,
+		      const GValue *value2)
+{
+  if (value1->data[0].v_int < value2->data[0].v_int)
+    return -1;
+  else
+    return value1->data[0].v_int > value2->data[0].v_int;
+}
+
+static void
+param_ushort_init (GParamSpec *pspec)
+{
+  GParamSpecUShort *uspec = G_PARAM_SPEC_USHORT (pspec);
+  
+  uspec->minimum = 0;
+  uspec->maximum = 0xffff;
+  uspec->default_value = 0;
+}
+
+static void
+param_ushort_set_default (GParamSpec *pspec,
+			GValue     *value)
+{
+  value->data[0].v_uint = G_PARAM_SPEC_USHORT (pspec)->default_value;
+}
+
+static gboolean
+param_ushort_validate (GParamSpec *pspec,
+		     GValue     *value)
+{
+  GParamSpecUShort *uspec = G_PARAM_SPEC_USHORT (pspec);
+  gushort oval = value->data[0].v_uint;
+  
+  value->data[0].v_uint = CLAMP (value->data[0].v_uint, uspec->minimum, uspec->maximum);
+  
+  return value->data[0].v_uint != oval;
+}
+
+static gint
+param_ushort_values_cmp (GParamSpec   *pspec,
+		       const GValue *value1,
+		       const GValue *value2)
+{
+  if (value1->data[0].v_uint < value2->data[0].v_uint)
+    return -1;
+  else
+    return value1->data[0].v_uint > value2->data[0].v_uint;
+}
+
 static void
 param_int_init (GParamSpec *pspec)
 {
@@ -1193,7 +1274,7 @@ GType *g_param_spec_types = NULL;
 void
 _g_param_spec_types_init (void)	
 {
-  const guint n_types = 23;
+  const guint n_types = 25;
   GType type, *spec_types;
 #ifndef G_DISABLE_ASSERT
   GType *spec_types_bound;
@@ -1620,6 +1701,42 @@ _g_param_spec_types_init (void)
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_VARIANT);
   }
+  
+  /* G_TYPE_PARAM_SHORT
+   */
+  {
+    const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecShort),   /* instance_size */
+      16,                       /* n_preallocs */
+      param_short_init,           /* instance_init */
+      G_TYPE_SHORT,		/* value_type */
+      NULL,			/* finalize */
+      param_short_set_default,	/* value_set_default */
+      param_short_validate,	/* value_validate */
+      param_short_values_cmp,	/* values_cmp */
+    };
+    type = g_param_type_register_static (g_intern_static_string ("GParamShort"), &pspec_info);
+    *spec_types++ = type;
+    g_assert (type == G_TYPE_PARAM_SHORT);
+  }
+  
+  /* G_TYPE_PARAM_USHORT
+   */
+  {
+    const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecUShort),  /* instance_size */
+      16,                       /* n_preallocs */
+      param_ushort_init,          /* instance_init */
+      G_TYPE_USHORT,		/* value_type */
+      NULL,			/* finalize */
+      param_ushort_set_default,	/* value_set_default */
+      param_ushort_validate,	/* value_validate */
+      param_ushort_values_cmp,	/* values_cmp */
+    };
+    type = g_param_type_register_static (g_intern_static_string ("GParamUShort"), &pspec_info);
+    *spec_types++ = type;
+    g_assert (type == G_TYPE_PARAM_USHORT);
+  }
 
   g_assert (spec_types == spec_types_bound);
 }
@@ -1750,6 +1867,98 @@ g_param_spec_boolean (const gchar *name,
   bspec->default_value = default_value;
   
   return G_PARAM_SPEC (bspec);
+}
+
+/**
+ * g_param_spec_short:
+ * @name: canonical name of the property specified
+ * @nick: nick name for the property specified
+ * @blurb: description of the property specified
+ * @minimum: minimum value for the property specified
+ * @maximum: maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags: flags for the property specified
+ *
+ * Creates a new #GParamSpecShort instance specifying a %G_TYPE_SHORT property.
+ *
+ * See g_param_spec_internal() for details on property names.
+ *
+ * Returns: (transfer full): a newly created parameter specification
+ *
+ * Since: 2.66
+ */
+GParamSpec*
+g_param_spec_short (const gchar *name,
+		  const gchar *nick,
+		  const gchar *blurb,
+		  gshort	       minimum,
+		  gshort	       maximum,
+		  gshort	       default_value,
+		  GParamFlags  flags)
+{
+  GParamSpecShort *ispec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  ispec = g_param_spec_internal (G_TYPE_PARAM_SHORT,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  if (ispec == NULL)
+    return NULL;
+
+  ispec->minimum = minimum;
+  ispec->maximum = maximum;
+  ispec->default_value = default_value;
+
+  return G_PARAM_SPEC (ispec);
+}
+
+/**
+ * g_param_spec_ushort:
+ * @name: canonical name of the property specified
+ * @nick: nick name for the property specified
+ * @blurb: description of the property specified
+ * @minimum: minimum value for the property specified
+ * @maximum: maximum value for the property specified
+ * @default_value: default value for the property specified
+ * @flags: flags for the property specified
+ *
+ * Creates a new #GParamSpecUShort instance specifying a %G_TYPE_USHORT property.
+ *
+ * See g_param_spec_internal() for details on property names.
+ *
+ * Returns: (transfer full): a newly created parameter specification
+ *
+ * Since: 2.66
+ */
+GParamSpec*
+g_param_spec_ushort (const gchar *name,
+		   const gchar *nick,
+		   const gchar *blurb,
+		   gushort	minimum,
+		   gushort	maximum,
+		   gushort	default_value,
+		   GParamFlags	flags)
+{
+  GParamSpecUShort *uspec;
+
+  g_return_val_if_fail (default_value >= minimum && default_value <= maximum, NULL);
+
+  uspec = g_param_spec_internal (G_TYPE_PARAM_USHORT,
+				 name,
+				 nick,
+				 blurb,
+				 flags);
+  if (uspec == NULL)
+    return NULL;
+
+  uspec->minimum = minimum;
+  uspec->maximum = maximum;
+  uspec->default_value = default_value;
+
+  return G_PARAM_SPEC (uspec);
 }
 
 /**

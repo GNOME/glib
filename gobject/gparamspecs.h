@@ -582,6 +582,64 @@ G_BEGIN_DECLS
  */
 #define G_PARAM_SPEC_VARIANT(pspec)         (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_VARIANT, GParamSpecVariant))
 
+/**
+ * G_TYPE_PARAM_SHORT:
+ *
+ * The #GType of #GParamSpecShort.
+ *
+ * Since: 2.66
+ */
+#define	G_TYPE_PARAM_SHORT		   (g_param_spec_types[23])
+/**
+ * G_IS_PARAM_SPEC_SHORT:
+ * @pspec: a valid #GParamSpec instance
+ *
+ * Checks whether the given #GParamSpec is of type %G_TYPE_PARAM_SHORT.
+ *
+ * Returns: %TRUE on success.
+ *
+ * Since: 2.66
+ */
+#define G_IS_PARAM_SPEC_SHORT(pspec)         (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_SHORT))
+/**
+ * G_PARAM_SPEC_SHORT:
+ * @pspec: a valid #GParamSpec instance
+ *
+ * Cast a #GParamSpec instance shorto a #GParamSpecShort.
+ *
+ * Since: 2.66
+ */
+#define G_PARAM_SPEC_SHORT(pspec)            (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_SHORT, GParamSpecShort))
+
+/**
+ * G_TYPE_PARAM_USHORT:
+ *
+ * The #GType of #GParamSpecUShort.
+ *
+ * Since: 2.66
+ */
+#define	G_TYPE_PARAM_USHORT		   (g_param_spec_types[24])
+/**
+ * G_IS_PARAM_SPEC_USHORT:
+ * @pspec: a valid #GParamSpec instance
+ *
+ * Checks whether the given #GParamSpec is of type %G_TYPE_PARAM_USHORT.
+ *
+ * Returns: %TRUE on success.
+ *
+ * Since: 2.66
+ */
+#define G_IS_PARAM_SPEC_USHORT(pspec)        (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_USHORT))
+/**
+ * G_PARAM_SPEC_USHORT:
+ * @pspec: a valid #GParamSpec instance
+ *
+ * Cast a #GParamSpec instance shorto a #GParamSpecUShort.
+ *
+ * Since: 2.66
+ */
+#define G_PARAM_SPEC_USHORT(pspec)           (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_USHORT, GParamSpecUShort))
+
 /* --- typedefs & structures --- */
 typedef struct _GParamSpecChar       GParamSpecChar;
 typedef struct _GParamSpecUChar      GParamSpecUChar;
@@ -606,6 +664,8 @@ typedef struct _GParamSpecObject     GParamSpecObject;
 typedef struct _GParamSpecOverride   GParamSpecOverride;
 typedef struct _GParamSpecGType      GParamSpecGType;
 typedef struct _GParamSpecVariant    GParamSpecVariant;
+typedef struct _GParamSpecShort      GParamSpecShort;
+typedef struct _GParamSpecUShort     GParamSpecUShort;
 
 /**
  * GParamSpecChar:
@@ -979,6 +1039,44 @@ struct _GParamSpecVariant
   /*< private >*/
   gpointer      padding[4];
 };
+/**
+ * GParamSpecShort:
+ * @parent_instance: private #GParamSpec portion
+ * @minimum: minimum value for the property specified
+ * @maximum: maximum value for the property specified
+ * @default_value: default value for the property specified
+ *
+ * A #GParamSpec derived structure that contains the meta data for short properties.
+ *
+ * Since: 2.66
+ */
+struct _GParamSpecShort
+{
+  GParamSpec    parent_instance;
+
+  gshort          minimum;
+  gshort          maximum;
+  gshort          default_value;
+};
+/**
+ * GParamSpecUShort:
+ * @parent_instance: private #GParamSpec portion
+ * @minimum: minimum value for the property specified
+ * @maximum: maximum value for the property specified
+ * @default_value: default value for the property specified
+ *
+ * A #GParamSpec derived structure that contains the meta data for unsigned short properties.
+ *
+ * Since: 2.66
+ */
+struct _GParamSpecUShort
+{
+  GParamSpec    parent_instance;
+
+  gushort         minimum;
+  gushort         maximum;
+  gushort         default_value;
+};
 
 /* --- GParamSpec prototypes --- */
 GLIB_AVAILABLE_IN_ALL
@@ -1138,6 +1236,22 @@ GParamSpec*	g_param_spec_variant	 (const gchar        *name,
 					  const GVariantType *type,
 					  GVariant           *default_value,
 					  GParamFlags         flags);
+GLIB_AVAILABLE_IN_ALL
+GParamSpec*	g_param_spec_short	 (const gchar	 *name,
+					  const gchar	 *nick,
+					  const gchar	 *blurb,
+					  gshort		  minimum,
+					  gshort		  maximum,
+					  gshort		  default_value,
+					  GParamFlags	  flags);
+GLIB_AVAILABLE_IN_ALL
+GParamSpec*	g_param_spec_ushort	 (const gchar	 *name,
+					  const gchar	 *nick,
+					  const gchar	 *blurb,
+					  gushort		  minimum,
+					  gushort		  maximum,
+					  gushort		  default_value,
+					  GParamFlags	  flags);
 
 /* --- internal --- */
 /* We prefix variable declarations so they can

@@ -733,8 +733,8 @@ check_bar_proxy (FooiGenBar *proxy,
   ClientData *data;
   guchar val_y;
   gboolean val_b;
-  gint val_n;
-  guint val_q;
+  gshort val_n;
+  gushort val_q;
   gint val_i;
   guint val_u;
   gint64 val_x;

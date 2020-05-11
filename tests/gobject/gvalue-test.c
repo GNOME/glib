@@ -56,6 +56,16 @@ test_enum_transformation (void)
  g_assert (g_value_get_uchar (&xform) == 1);
 
  memset (&xform, 0, sizeof (GValue));
+ g_value_init (&xform, G_TYPE_SHORT); 
+ g_value_transform (&orig, &xform); 
+ g_assert (g_value_get_short (&xform) == 1);
+
+ memset (&xform, 0, sizeof (GValue));
+ g_value_init (&xform, G_TYPE_USHORT); 
+ g_value_transform (&orig, &xform); 
+ g_assert (g_value_get_ushort (&xform) == 1);
+
+ memset (&xform, 0, sizeof (GValue));
  g_value_init (&xform, G_TYPE_INT); 
  g_value_transform (&orig, &xform); 
  g_assert (g_value_get_int (&xform) == 1);
@@ -227,6 +237,18 @@ test_collection (void)
   g_assert_cmpuint (g_variant_get_uint32 (g_value_get_variant (&value)), ==, 42);
 
   g_value_unset (&value);
+  g_value_init (&value, G_TYPE_SHORT);
+  error = collect (&value, G_MAXSHORT);
+  g_assert (error == NULL);
+  g_assert (g_value_get_short (&value) == G_MAXSHORT);
+
+  g_value_unset (&value);
+  g_value_init (&value, G_TYPE_USHORT);
+  error = collect (&value, G_MAXUSHORT);
+  g_assert (error == NULL);
+  g_assert (g_value_get_ushort (&value) == G_MAXUSHORT);
+
+  g_value_unset (&value);
 }
 
 static void
@@ -380,6 +402,27 @@ test_copying (void)
     g_assert_cmpuint (g_variant_get_uint32 (c), ==, 42);
     g_variant_unref (c);
     g_value_unset (&value);
+  }
+
+  {
+    gshort c = 0;
+
+    g_value_init (&value, G_TYPE_SHORT);
+    g_value_set_short (&value, G_MAXSHORT);
+    error = lcopy (&value, &c);
+    g_assert (error == NULL);
+    g_assert (c == G_MAXSHORT);
+  }
+
+  {
+    gushort c = 0;
+
+    g_value_unset (&value);
+    g_value_init (&value, G_TYPE_USHORT);
+    g_value_set_ushort (&value, G_MAXUSHORT);
+    error = lcopy (&value, &c);
+    g_assert (error == NULL);
+    g_assert (c == G_MAXUSHORT);
   }
 }
 

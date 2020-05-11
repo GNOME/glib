@@ -135,6 +135,8 @@ class TestGenmarshal(unittest.TestCase):
                 #define g_marshal_value_peek_pointer(v)  g_value_get_pointer (v)
                 #define g_marshal_value_peek_object(v)   g_value_get_object (v)
                 #define g_marshal_value_peek_variant(v)  g_value_get_variant (v)
+                #define g_marshal_value_peek_short(v)    g_value_get_short (v)
+                #define g_marshal_value_peek_ushort(v)   g_value_get_ushort (v)
                 #else /* !G_ENABLE_DEBUG */
                 /* WARNING: This code accesses GValues directly, which is UNSUPPORTED API.
                  *          Do not access GValues directly in your code. Instead, use the
@@ -159,6 +161,8 @@ class TestGenmarshal(unittest.TestCase):
                 #define g_marshal_value_peek_pointer(v)  (v)->data[0].v_pointer
                 #define g_marshal_value_peek_object(v)   (v)->data[0].v_pointer
                 #define g_marshal_value_peek_variant(v)  (v)->data[0].v_pointer
+                #define g_marshal_value_peek_short(v)    (v)->data[0].v_int
+                #define g_marshal_value_peek_ushort(v)   (v)->data[0].v_uint
                 #endif /* !G_ENABLE_DEBUG */
                 ''').strip(),
         }

@@ -194,6 +194,22 @@ G_BEGIN_DECLS
  * Since: 2.26
  */
 #define	G_TYPE_VARIANT                  G_TYPE_MAKE_FUNDAMENTAL (21)
+/**
+ * G_TYPE_SHORT:
+ * 
+ * The fundamental type corresponding to #gshort.
+ *
+ * Since: 2.66
+ */
+#define G_TYPE_SHORT			G_TYPE_MAKE_FUNDAMENTAL (22)
+/**
+ * G_TYPE_USHORT:
+ * 
+ * The fundamental type corresponding to #gushort.
+ *
+ * Since: 2.66
+ */
+#define G_TYPE_USHORT			G_TYPE_MAKE_FUNDAMENTAL (23)
 
 
 /* Reserved fundamental type numbers to create new fundamental
@@ -225,7 +241,7 @@ G_BEGIN_DECLS
  * First fundamental type number to create a new fundamental type id with
  * G_TYPE_MAKE_FUNDAMENTAL() reserved for GLib.
  */
-#define G_TYPE_RESERVED_GLIB_FIRST	(22)
+#define G_TYPE_RESERVED_GLIB_FIRST	(24)
 /**
  * G_TYPE_RESERVED_GLIB_LAST:
  * 

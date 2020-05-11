@@ -87,6 +87,40 @@ void g_cclosure_marshal_VOID__UCHARv (GClosure *closure,
                                       int       n_params,
                                       GType    *param_types);
 
+/* VOID:SHORT */
+GLIB_AVAILABLE_IN_ALL
+void g_cclosure_marshal_VOID__SHORT (GClosure     *closure,
+                                     GValue       *return_value,
+                                     guint         n_param_values,
+                                     const GValue *param_values,
+                                     gpointer      invocation_hint,
+                                     gpointer      marshal_data);
+GLIB_AVAILABLE_IN_ALL
+void g_cclosure_marshal_VOID__SHORTv (GClosure *closure,
+                                      GValue   *return_value,
+                                      gpointer  instance,
+                                      va_list   args,
+                                      gpointer  marshal_data,
+                                      int       n_params,
+                                      GType    *param_types);
+
+/* VOID:USHORT */
+GLIB_AVAILABLE_IN_ALL
+void g_cclosure_marshal_VOID__USHORT (GClosure     *closure,
+                                      GValue       *return_value,
+                                      guint         n_param_values,
+                                      const GValue *param_values,
+                                      gpointer      invocation_hint,
+                                      gpointer      marshal_data);
+GLIB_AVAILABLE_IN_ALL
+void g_cclosure_marshal_VOID__USHORTv (GClosure *closure,
+                                       GValue   *return_value,
+                                       gpointer  instance,
+                                       va_list   args,
+                                       gpointer  marshal_data,
+                                       int       n_params,
+                                       GType    *param_types);
+
 /* VOID:INT */
 GLIB_AVAILABLE_IN_ALL
 void g_cclosure_marshal_VOID__INT (GClosure     *closure,

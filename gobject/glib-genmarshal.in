@@ -49,6 +49,8 @@ GETTERS_STR = '''#ifdef G_ENABLE_DEBUG
 #define g_marshal_value_peek_pointer(v)  g_value_get_pointer (v)
 #define g_marshal_value_peek_object(v)   g_value_get_object (v)
 #define g_marshal_value_peek_variant(v)  g_value_get_variant (v)
+#define g_marshal_value_peek_short(v)    g_value_get_short (v)
+#define g_marshal_value_peek_ushort(v)   g_value_get_ushort (v)
 #else /* !G_ENABLE_DEBUG */
 /* WARNING: This code accesses GValues directly, which is UNSUPPORTED API.
  *          Do not access GValues directly in your code. Instead, use the
@@ -73,6 +75,8 @@ GETTERS_STR = '''#ifdef G_ENABLE_DEBUG
 #define g_marshal_value_peek_pointer(v)  (v)->data[0].v_pointer
 #define g_marshal_value_peek_object(v)   (v)->data[0].v_pointer
 #define g_marshal_value_peek_variant(v)  (v)->data[0].v_pointer
+#define g_marshal_value_peek_short(v)    (v)->data[0].v_int
+#define g_marshal_value_peek_ushort(v)   (v)->data[0].v_uint
 #endif /* !G_ENABLE_DEBUG */'''
 
 DEPRECATED_MSG_STR = 'The token "{}" is deprecated; use "{}" instead'
@@ -98,6 +102,8 @@ GOBJECT_MARSHALLERS = {
     'g_cclosure_marshal_VOID__BOOLEAN',
     'g_cclosure_marshal_VOID__CHAR',
     'g_cclosure_marshal_VOID__UCHAR',
+    'g_cclosure_marshal_VOID__SHORT',
+    'g_cclosure_marshal_VOID__USHORT',
     'g_cclosure_marshal_VOID__INT',
     'g_cclosure_marshal_VOID__UINT',
     'g_cclosure_marshal_VOID__LONG',
@@ -274,6 +280,18 @@ IN_ARGS = {
         'promoted': 'guint',
         'getter': 'g_marshal_value_peek_uchar',
     },
+    'SHORT': {
+        'signal': 'SHORT',
+        'ctype': 'gshort',
+        'promoted': 'gint',
+        'getter': 'g_marshal_value_peek_short',
+    },
+    'USHORT': {
+        'signal': 'USHORT',
+        'ctype': 'gushort',
+        'promoted': 'guint',
+        'getter': 'g_marshal_value_peek_ushort',
+    },
     'INT': {
         'signal': 'INT',
         'ctype': 'gint',
@@ -414,6 +432,16 @@ OUT_ARGS = {
         'signal': 'UCHAR',
         'ctype': 'guchar',
         'setter': 'g_value_set_uchar',
+    },
+    'SHORT': {
+        'signal': 'SHORT',
+        'ctype': 'gshort',
+        'setter': 'g_value_set_short',
+    },
+    'USHORT': {
+        'signal': 'USHORT',
+        'ctype': 'gushort',
+        'setter': 'g_value_set_ushort',
     },
     'INT': {
         'signal': 'INT',

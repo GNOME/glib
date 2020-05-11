@@ -28,7 +28,9 @@ g_settings_set_mapping_int (const GValue       *value,
   GVariant *variant = NULL;
   gint64 l;
 
-  if (G_VALUE_HOLDS_INT (value))
+  if (G_VALUE_HOLDS_SHORT (value))
+    l = g_value_get_short (value);
+  else if (G_VALUE_HOLDS_INT (value))
     l = g_value_get_int (value);
   else if (G_VALUE_HOLDS_INT64 (value))
     l = g_value_get_int64 (value);
@@ -137,7 +139,9 @@ g_settings_set_mapping_unsigned_int (const GValue       *value,
   GVariant *variant = NULL;
   guint64 u;
 
-  if (G_VALUE_HOLDS_UINT (value))
+  if (G_VALUE_HOLDS_USHORT (value))
+    u = g_value_get_ushort (value);
+  else if (G_VALUE_HOLDS_UINT (value))
     u = g_value_get_uint (value);
   else if (G_VALUE_HOLDS_UINT64 (value))
     u = g_value_get_uint64 (value);
@@ -203,7 +207,17 @@ g_settings_get_mapping_int (GValue   *value,
   else
     return FALSE;
 
-  if (G_VALUE_HOLDS_INT (value))
+  if (G_VALUE_HOLDS_SHORT (value))
+    {
+      g_value_set_short (value, l);
+      return (G_MINSHORT <= l && l <= G_MAXSHORT);
+    }
+  else if (G_VALUE_HOLDS_USHORT (value))
+    {
+      g_value_set_ushort (value, l);
+      return (0 <= l && l <= G_MAXUSHORT);
+    }
+  else if (G_VALUE_HOLDS_INT (value))
     {
       g_value_set_int (value, l);
       return (G_MININT32 <= l && l <= G_MAXINT32);
@@ -248,7 +262,17 @@ g_settings_get_mapping_float (GValue   *value,
     return FALSE;
 
   l = (gint64)d;
-  if (G_VALUE_HOLDS_INT (value))
+  if (G_VALUE_HOLDS_SHORT (value))
+    {
+      g_value_set_short (value, l);
+      return (G_MINSHORT <= l && l <= G_MAXSHORT);
+    }
+  else if (G_VALUE_HOLDS_USHORT (value))
+    {
+      g_value_set_ushort (value, l);
+      return (0 <= l && l <= G_MAXUSHORT);
+    }
+  else if (G_VALUE_HOLDS_INT (value))
     {
       g_value_set_int (value, l);
       return (G_MININT32 <= l && l <= G_MAXINT32);
@@ -296,7 +320,17 @@ g_settings_get_mapping_unsigned_int (GValue   *value,
   else
     return FALSE;
 
-  if (G_VALUE_HOLDS_INT (value))
+  if (G_VALUE_HOLDS_SHORT (value))
+    {
+      g_value_set_short (value, u);
+      return (G_MINSHORT <= u && u <= G_MAXSHORT);
+    }
+  else if (G_VALUE_HOLDS_USHORT (value))
+    {
+      g_value_set_ushort (value, u);
+      return (0 <= u && u <= G_MAXUSHORT);
+    }
+  else if (G_VALUE_HOLDS_INT (value))
     {
       g_value_set_int (value, u);
       return (u <= G_MAXINT32);
@@ -350,14 +384,16 @@ g_settings_set_mapping (const GValue       *value,
         }
     }
 
-  else if (G_VALUE_HOLDS_INT (value)   ||
+  else if (G_VALUE_HOLDS_SHORT (value) ||
+           G_VALUE_HOLDS_INT (value)   ||
            G_VALUE_HOLDS_INT64 (value))
     return g_settings_set_mapping_int (value, expected_type);
 
   else if (G_VALUE_HOLDS_DOUBLE (value))
     return g_settings_set_mapping_float (value, expected_type);
 
-  else if (G_VALUE_HOLDS_UINT (value)  ||
+  else if (G_VALUE_HOLDS_USHORT (value) ||
+           G_VALUE_HOLDS_UINT (value)   ||
            G_VALUE_HOLDS_UINT64 (value))
     return g_settings_set_mapping_unsigned_int (value, expected_type);
 
@@ -563,7 +599,9 @@ g_settings_mapping_is_compatible (GType               gvalue_type,
   else if (gvalue_type == G_TYPE_CHAR  ||
            gvalue_type == G_TYPE_UCHAR)
     ok = g_variant_type_equal (variant_type, G_VARIANT_TYPE_BYTE);
-  else if (gvalue_type == G_TYPE_INT    ||
+  else if (gvalue_type == G_TYPE_SHORT  ||
+           gvalue_type == G_TYPE_USHORT ||
+           gvalue_type == G_TYPE_INT    ||
            gvalue_type == G_TYPE_UINT   ||
            gvalue_type == G_TYPE_INT64  ||
            gvalue_type == G_TYPE_UINT64 ||
