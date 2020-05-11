@@ -1854,6 +1854,8 @@ g_signal_newv (const gchar       *signal_name,
       ADD_CHECK (POINTER)
       ADD_CHECK (OBJECT)
       ADD_CHECK (VARIANT)
+      ADD_CHECK (SHORT)
+      ADD_CHECK (USHORT)
     }
 
   if (c_marshaller == NULL)

@@ -143,15 +143,15 @@ struct _Test
   GObject parent_instance;
 };
 
-static void all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
+static void all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, gshort s, gushort us, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
 
 struct _TestClass
 {
   GObjectClass parent_class;
 
   void (* variant_changed) (Test *, GVariant *);
-  void (* all_types) (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
-  void (* all_types_null) (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
+  void (* all_types) (Test *test, int i, gboolean b, char c, guchar uc, gshort s, gushort us, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
+  void (* all_types_null) (Test *test, int i, gboolean b, char c, guchar uc, gshort s, gushort us, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
 };
 
 static GType test_get_type (void);
@@ -299,13 +299,15 @@ test_class_init (TestClass *klass)
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (TestClass, all_types),
                 NULL, NULL,
-                test_VOID__INT_BOOLEAN_CHAR_UCHAR_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64,
+                test_VOID__INT_BOOLEAN_CHAR_UCHAR_SHORT_USHORT_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64,
                 G_TYPE_NONE,
-                19,
+                21,
 		G_TYPE_INT,
 		G_TYPE_BOOLEAN,
 		G_TYPE_CHAR,
 		G_TYPE_UCHAR,
+		G_TYPE_SHORT,
+		G_TYPE_USHORT,
 		G_TYPE_UINT,
 		G_TYPE_LONG,
 		G_TYPE_ULONG,
@@ -326,13 +328,15 @@ test_class_init (TestClass *klass)
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (TestClass, all_types),
                 NULL, NULL,
-                test_VOID__INT_BOOLEAN_CHAR_UCHAR_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64,
+                test_VOID__INT_BOOLEAN_CHAR_UCHAR_SHORT_USHORT_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64,
                 G_TYPE_NONE,
                 19,
 		G_TYPE_INT,
 		G_TYPE_BOOLEAN,
 		G_TYPE_CHAR,
 		G_TYPE_UCHAR,
+		G_TYPE_SHORT,
+		G_TYPE_USHORT,
 		G_TYPE_UINT,
 		G_TYPE_LONG,
 		G_TYPE_ULONG,
@@ -349,7 +353,7 @@ test_class_init (TestClass *klass)
 		G_TYPE_INT64,
 		G_TYPE_UINT64);
   g_signal_set_va_marshaller (s, G_TYPE_FROM_CLASS (klass),
-			      test_VOID__INT_BOOLEAN_CHAR_UCHAR_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64v);
+			      test_VOID__INT_BOOLEAN_CHAR_UCHAR_SHORT_USHORT_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64v);
 
   g_signal_new ("all-types-generic",
                 G_TYPE_FROM_CLASS (klass),
@@ -363,6 +367,8 @@ test_class_init (TestClass *klass)
 		G_TYPE_BOOLEAN,
 		G_TYPE_CHAR,
 		G_TYPE_UCHAR,
+		G_TYPE_SHORT,
+		G_TYPE_USHORT,
 		G_TYPE_UINT,
 		G_TYPE_LONG,
 		G_TYPE_ULONG,
@@ -383,13 +389,15 @@ test_class_init (TestClass *klass)
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (TestClass, all_types_null),
                 NULL, NULL,
-                test_VOID__INT_BOOLEAN_CHAR_UCHAR_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64,
+                test_VOID__INT_BOOLEAN_CHAR_UCHAR_SHORT_USHORT_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64,
                 G_TYPE_NONE,
                 19,
 		G_TYPE_INT,
 		G_TYPE_BOOLEAN,
 		G_TYPE_CHAR,
 		G_TYPE_UCHAR,
+		G_TYPE_SHORT,
+		G_TYPE_USHORT,
 		G_TYPE_UINT,
 		G_TYPE_LONG,
 		G_TYPE_ULONG,
@@ -410,13 +418,15 @@ test_class_init (TestClass *klass)
                 G_SIGNAL_RUN_LAST,
                 0,
                 NULL, NULL,
-                test_VOID__INT_BOOLEAN_CHAR_UCHAR_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64,
+                test_VOID__INT_BOOLEAN_CHAR_UCHAR_SHORT_USHORT_UINT_LONG_ULONG_ENUM_FLAGS_FLOAT_DOUBLE_STRING_PARAM_BOXED_POINTER_OBJECT_VARIANT_INT64_UINT64,
                 G_TYPE_NONE,
                 19,
 		G_TYPE_INT,
 		G_TYPE_BOOLEAN,
 		G_TYPE_CHAR,
 		G_TYPE_UCHAR,
+		G_TYPE_SHORT,
+		G_TYPE_USHORT,
 		G_TYPE_UINT,
 		G_TYPE_LONG,
 		G_TYPE_ULONG,
@@ -792,7 +802,7 @@ test_custom_marshaller (void)
 static int all_type_handlers_count = 0;
 
 static void
-all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64)
+all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, gshort s, gushort us, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64)
 {
   all_type_handlers_count++;
 
@@ -800,6 +810,8 @@ all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, g
   g_assert_cmpint (b, ==, TRUE);
   g_assert_cmpint (c, ==, 17);
   g_assert_cmpuint (uc, ==, 140);
+  g_assert_cmpint (s, ==, -1117);
+  g_assert_cmpuint (us, ==, G_MAXUSHORT - 999);
   g_assert_cmpuint (ui, ==, G_MAXUINT - 42);
   g_assert_cmpint (l, ==, -1117);
   g_assert_cmpuint (ul, ==, G_MAXULONG - 999);
@@ -817,10 +829,10 @@ all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, g
 }
 
 static void
-all_types_handler_cb (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, guint f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64, gpointer user_data)
+all_types_handler_cb (Test *test, int i, gboolean b, char c, guchar uc, gshort s, gushort us, guint ui, glong l, gulong ul, MyEnum e, guint f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64, gpointer user_data)
 {
   g_assert_true (user_data == &flags_type);
-  all_types_handler (test, i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, obj, var, i64, ui64);
+  all_types_handler (test, i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, obj, var, i64, ui64);
 }
 
 static void
@@ -833,6 +845,8 @@ test_all_types (void)
   char c = 17;
   guchar uc = 140;
   guint ui = G_MAXUINT - 42;
+  gshort s =  -1117;
+  gushort us = G_MAXUSHORT - 999;
   glong l =  -1117;
   gulong ul = G_MAXULONG - 999;
   MyEnum e = MY_ENUM_VALUE;
@@ -855,15 +869,15 @@ test_all_types (void)
   all_type_handlers_count = 0;
 
   g_signal_emit_by_name (test, "all-types",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-va",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-generic",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-empty",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-null",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
 
   g_assert_cmpint (all_type_handlers_count, ==, 3);
 
@@ -876,15 +890,15 @@ test_all_types (void)
   g_signal_connect (test, "all-types-null", G_CALLBACK (all_types_handler_cb), &flags_type);
 
   g_signal_emit_by_name (test, "all-types",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-va",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-generic",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-empty",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-null",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
 
   g_assert_cmpint (all_type_handlers_count, ==, 3 + 5);
 
@@ -897,15 +911,15 @@ test_all_types (void)
   g_signal_connect (test, "all-types-null", G_CALLBACK (all_types_handler_cb), &flags_type);
 
   g_signal_emit_by_name (test, "all-types",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-va",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-generic",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-empty",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
   g_signal_emit_by_name (test, "all-types-null",
-			 i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
+			 i, b, c, uc, s, us, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, test, var, i64, ui64);
 
   g_assert_cmpint (all_type_handlers_count, ==, 3 + 5 + 5);
 

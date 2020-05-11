@@ -42,6 +42,8 @@
 #define g_marshal_value_peek_pointer(v)  g_value_get_pointer (v)
 #define g_marshal_value_peek_object(v)   g_value_get_object (v)
 #define g_marshal_value_peek_variant(v)  g_value_get_variant (v)
+#define g_marshal_value_peek_short(v)    g_value_get_short (v)
+#define g_marshal_value_peek_ushort(v)   g_value_get_ushort (v)
 #else /* !G_ENABLE_DEBUG */
 /* WARNING: This code accesses GValues directly, which is UNSUPPORTED API.
  *          Do not access GValues directly in your code. Instead, use the
@@ -66,6 +68,8 @@
 #define g_marshal_value_peek_pointer(v)  (v)->data[0].v_pointer
 #define g_marshal_value_peek_object(v)   (v)->data[0].v_pointer
 #define g_marshal_value_peek_variant(v)  (v)->data[0].v_pointer
+#define g_marshal_value_peek_short(v)    (v)->data[0].v_int
+#define g_marshal_value_peek_ushort(v)   (v)->data[0].v_uint
 #endif /* !G_ENABLE_DEBUG */
 
 
@@ -484,6 +488,222 @@ g_cclosure_marshal_VOID__UCHARv (GClosure     *closure,
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UCHAR) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            arg0,
+            data2);
+}
+
+/**
+ * g_cclosure_marshal_VOID__SHORT:
+ * @closure: A #GClosure.
+ * @return_value: A #GValue to store the return value. May be %NULL
+ *   if the callback of closure doesn't return a value.
+ * @n_param_values: The length of the @param_values array.
+ * @param_values: An array of #GValues holding the arguments
+ *   on which to invoke the callback of closure.
+ * @invocation_hint: The invocation hint given as the last argument to
+ *   g_closure_invoke().
+ * @marshal_data: Additional data specified when registering the
+ *   marshaller, see g_closure_set_marshal() and
+ *   g_closure_set_meta_marshal()
+ *
+ * A #GClosureMarshal function for use with signals with a single
+ * short argument.
+ */
+/* VOID:SHORT */
+void
+g_cclosure_marshal_VOID__SHORT (GClosure     *closure,
+                                GValue       *return_value G_GNUC_UNUSED,
+                                guint         n_param_values,
+                                const GValue *param_values,
+                                gpointer      invocation_hint G_GNUC_UNUSED,
+                                gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__SHORT) (gpointer     data1,
+                                            gshort       arg_1,
+                                            gpointer     data2);
+  GMarshalFunc_VOID__SHORT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 2);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__SHORT) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_short (param_values + 1),
+            data2);
+}
+
+/**
+ * g_cclosure_marshal_VOID__SHORTv:
+ * @closure: the #GClosure to which the marshaller belongs
+ * @return_value: (nullable): a #GValue to store the return
+ *  value. May be %NULL if the callback of @closure doesn't return a
+ *  value.
+ * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
+ * @args: va_list of arguments to be passed to the closure.
+ * @marshal_data: (nullable): additional data specified when
+ *  registering the marshaller, see g_closure_set_marshal() and
+ *  g_closure_set_meta_marshal()
+ * @n_params: the length of the @param_types array
+ * @param_types: (array length=n_params): the #GType of each argument from
+ *  @args.
+ *
+ * The #GVaClosureMarshal equivalent to g_cclosure_marshal_VOID__SHORT().
+ */
+void
+g_cclosure_marshal_VOID__SHORTv (GClosure     *closure,
+                                 GValue       *return_value,
+                                 gpointer      instance,
+                                 va_list       args,
+                                 gpointer      marshal_data,
+                                 int           n_params,
+                                 GType        *param_types)
+{
+  typedef void (*GMarshalFunc_VOID__SHORT) (gpointer     instance,
+                                            gshort        arg_0,
+                                            gpointer     data);
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
+  GMarshalFunc_VOID__SHORT callback;
+  gshort arg0;
+  va_list args_copy;
+
+  G_VA_COPY (args_copy, args);
+  arg0 = (gshort) va_arg (args_copy, gint);
+  va_end (args_copy);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = instance;
+    }
+  else
+    {
+      data1 = instance;
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__SHORT) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            arg0,
+            data2);
+}
+
+/**
+ * g_cclosure_marshal_VOID__USHORT:
+ * @closure: A #GClosure.
+ * @return_value: A #GValue to store the return value. May be %NULL
+ *   if the callback of closure doesn't return a value.
+ * @n_param_values: The length of the @param_values array.
+ * @param_values: An array of #GValues holding the arguments
+ *   on which to invoke the callback of closure.
+ * @invocation_hint: The invocation hint given as the last argument to
+ *   g_closure_invoke().
+ * @marshal_data: Additional data specified when registering the
+ *   marshaller, see g_closure_set_marshal() and
+ *   g_closure_set_meta_marshal()
+ *
+ * A #GClosureMarshal function for use with signals with a single
+ * unsigned short argument.
+ */
+/* VOID:USHORT */
+void
+g_cclosure_marshal_VOID__USHORT (GClosure     *closure,
+                                 GValue       *return_value G_GNUC_UNUSED,
+                                 guint         n_param_values,
+                                 const GValue *param_values,
+                                 gpointer      invocation_hint G_GNUC_UNUSED,
+                                 gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__USHORT) (gpointer     data1,
+                                             gushort       arg_1,
+                                             gpointer     data2);
+  GMarshalFunc_VOID__USHORT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 2);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__USHORT) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_ushort (param_values + 1),
+            data2);
+}
+
+/**
+ * g_cclosure_marshal_VOID__USHORTv:
+ * @closure: the #GClosure to which the marshaller belongs
+ * @return_value: (nullable): a #GValue to store the return
+ *  value. May be %NULL if the callback of @closure doesn't return a
+ *  value.
+ * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
+ * @args: va_list of arguments to be passed to the closure.
+ * @marshal_data: (nullable): additional data specified when
+ *  registering the marshaller, see g_closure_set_marshal() and
+ *  g_closure_set_meta_marshal()
+ * @n_params: the length of the @param_types array
+ * @param_types: (array length=n_params): the #GType of each argument from
+ *  @args.
+ *
+ * The #GVaClosureMarshal equivalent to g_cclosure_marshal_VOID__USHORT().
+ */
+void
+g_cclosure_marshal_VOID__USHORTv (GClosure     *closure,
+                                  GValue       *return_value,
+                                  gpointer      instance,
+                                  va_list       args,
+                                  gpointer      marshal_data,
+                                  int           n_params,
+                                  GType        *param_types)
+{
+  typedef void (*GMarshalFunc_VOID__USHORT) (gpointer     instance,
+                                             gushort       arg_0,
+                                             gpointer     data);
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
+  GMarshalFunc_VOID__USHORT callback;
+  gushort arg0;
+  va_list args_copy;
+
+  G_VA_COPY (args_copy, args);
+  arg0 = (gushort) va_arg (args_copy, guint);
+  va_end (args_copy);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = instance;
+    }
+  else
+    {
+      data1 = instance;
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__USHORT) (marshal_data ? marshal_data : cc->callback);
 
   callback (data1,
             arg0,

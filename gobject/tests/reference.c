@@ -8,6 +8,8 @@ test_fundamentals (void)
   g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_CHAR));
   g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_UCHAR));
   g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_BOOLEAN));
+  g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_SHORT));
+  g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_USHORT));
   g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_INT));
   g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_UINT));
   g_assert (G_TYPE_IS_FUNDAMENTAL (G_TYPE_LONG));
