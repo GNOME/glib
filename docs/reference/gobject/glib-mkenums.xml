@@ -195,6 +195,14 @@ Specifies the word separation used in the <function>*_get_type()</function>
 function. For instance, <literal>/*&lt; underscore_name=gnome_vfs_uri_hide_options &gt;*/</literal>.
 </para></listitem>
 </varlistentry>
+<varlistentry>
+<term><literal>since</literal></term>
+<listitem><para>
+Specifies the version tag that will be used to substitute the <literal>@enumsince@</literal>
+keyword in the template, useful when documenting methods generated from the enums
+(e.g. <literal>Since: @enumsince@</literal>). (Since: 2.66)
+</para></listitem>
+</varlistentry>
 </variablelist>
 
 <para>The following options can be specified per value definition:</para>
@@ -219,7 +227,7 @@ typedef enum /*&lt; skip &gt;*/
 {
   PREFIX_FOO
 } PrefixThisEnumWillBeSkipped;
-typedef enum /*&lt; flags,prefix=PREFIX &gt;*/
+typedef enum /*&lt; flags,prefix=PREFIX,since=1.0 &gt;*/
 {
   PREFIX_THE_ZEROTH_VALUE,	/*&lt; skip &gt;*/
   PREFIX_THE_FIRST_VALUE,
