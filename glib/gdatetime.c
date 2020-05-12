@@ -1714,6 +1714,8 @@ GDateTime*
 g_date_time_add (GDateTime *datetime,
                  GTimeSpan  timespan)
 {
+  g_return_val_if_fail (datetime != NULL, NULL);
+
   return g_date_time_from_instant (datetime->tz, timespan +
                                    g_date_time_to_instant (datetime));
 }
@@ -2082,6 +2084,8 @@ g_date_time_difference (GDateTime *end,
 guint
 g_date_time_hash (gconstpointer datetime)
 {
+  g_return_val_if_fail (datetime != NULL, 0);
+
   return g_date_time_to_instant ((GDateTime *) datetime);
 }
 
@@ -2549,6 +2553,8 @@ g_date_time_get_seconds (GDateTime *datetime)
 gint64
 g_date_time_to_unix (GDateTime *datetime)
 {
+  g_return_val_if_fail (datetime != NULL, 0);
+
   return INSTANT_TO_UNIX (g_date_time_to_instant (datetime));
 }
 
@@ -2582,6 +2588,8 @@ gboolean
 g_date_time_to_timeval (GDateTime *datetime,
                         GTimeVal  *tv)
 {
+  g_return_val_if_fail (datetime != NULL, FALSE);
+
   tv->tv_sec = INSTANT_TO_UNIX (g_date_time_to_instant (datetime));
   tv->tv_usec = datetime->usec % USEC_PER_SECOND;
 
@@ -2704,6 +2712,9 @@ GDateTime *
 g_date_time_to_timezone (GDateTime *datetime,
                          GTimeZone *tz)
 {
+  g_return_val_if_fail (datetime != NULL, NULL);
+  g_return_val_if_fail (tz != NULL, NULL);
+
   return g_date_time_from_instant (tz, g_date_time_to_instant (datetime));
 }
 
