@@ -130,6 +130,7 @@ option_lowercase_name = ''  # DEPRECATED.  A lower case name to use as part
                             # one that we guess. For instance, when an enum
                             # uses abnormal capitalization and we can not
                             # guess where to put the underscores.
+option_since = ''           # User provided version info for the enum.
 seenbitshift = 0        # Have we seen bitshift operators?
 enum_prefix = None        # Prefix for this enumeration
 enumname = ''            # Name for this enumeration
@@ -256,6 +257,7 @@ help_epilog = '''Production text substitutions:
   \u0040ENUMNAME\u0040            PREFIX_THE_XENUM
   \u0040ENUMSHORT\u0040           THE_XENUM
   \u0040ENUMPREFIX\u0040          PREFIX
+  \u0040enumsince\u0040           the user-provided since value given
   \u0040VALUENAME\u0040           PREFIX_THE_XVALUE
   \u0040valuenick\u0040           the-xvalue
   \u0040valuenum\u0040            the integer value (limited support, Since: 2.26)
@@ -515,11 +517,13 @@ def process_file(curfilename):
                         flags = int(flags)
                 option_lowercase_name = options.get('lowercase_name', None)
                 option_underscore_name = options.get('underscore_name', None)
+                option_since = options.get('since', None)
             else:
                 enum_prefix = None
                 flags = None
                 option_lowercase_name = None
                 option_underscore_name = None
+                option_since = None
 
             if option_lowercase_name is not None:
                 if option_underscore_name is not None:
@@ -620,6 +624,11 @@ def process_file(curfilename):
                 enumlong = enumname_prefix + "_" + enumshort
                 enumsym = enumlong.lower()
 
+            if option_since is not None:
+                enumsince = option_since
+            else:
+                enumsince = ""
+
             if firstenum:
                 firstenum = False
 
@@ -641,6 +650,7 @@ def process_file(curfilename):
                 prod = prod.replace('\u0040ENUMSHORT\u0040', enumshort)
                 prod = prod.replace('\u0040ENUMNAME\u0040', enumlong)
                 prod = prod.replace('\u0040ENUMPREFIX\u0040', enumname_prefix)
+                prod = prod.replace('\u0040enumsince\u0040', enumsince)
                 if flags:
                     prod = prod.replace('\u0040type\u0040', 'flags')
                 else:
@@ -663,6 +673,7 @@ def process_file(curfilename):
                 prod = prod.replace('\u0040ENUMSHORT\u0040', enumshort)
                 prod = prod.replace('\u0040ENUMNAME\u0040', enumlong)
                 prod = prod.replace('\u0040ENUMPREFIX\u0040', enumname_prefix)
+                prod = prod.replace('\u0040enumsince\u0040', enumsince)
                 if flags:
                     prod = prod.replace('\u0040type\u0040', 'flags')
                 else:
@@ -729,6 +740,7 @@ def process_file(curfilename):
                 prod = prod.replace('\u0040ENUMSHORT\u0040', enumshort)
                 prod = prod.replace('\u0040ENUMNAME\u0040', enumlong)
                 prod = prod.replace('\u0040ENUMPREFIX\u0040', enumname_prefix)
+                prod = prod.replace('\u0040enumsince\u0040', enumsince)
                 if flags:
                     prod = prod.replace('\u0040type\u0040', 'flags')
                 else:
