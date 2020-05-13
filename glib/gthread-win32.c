@@ -319,6 +319,12 @@ g_private_get_impl (GPrivate *key)
 
           impl = TlsAlloc ();
 
+          if G_UNLIKELY (impl == 0)
+            {
+              /* Leak TLS index 0 intentionally and alloc again */
+              impl = TlsAlloc ();
+            }
+
           if (impl == TLS_OUT_OF_INDEXES)
             g_thread_abort (0, "TlsAlloc");
 
