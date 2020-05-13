@@ -319,7 +319,17 @@ g_private_get_impl (GPrivate *key)
 
           impl = TlsAlloc ();
 
-          if (impl == TLS_OUT_OF_INDEXES)
+          if G_UNLIKELY (impl == 0)
+            {
+              /* Ignore TLS index 0 temporarily (as 0 is the indicator that we
+               * haven't allocated TLS yet) and alloc again;
+               * See https://gitlab.gnome.org/GNOME/glib/-/issues/2058 */
+              DWORD impl2 = TlsAlloc ();
+              TlsFree (impl);
+              impl = impl2;
+            }
+
+          if (impl == TLS_OUT_OF_INDEXES || impl == 0)
             g_thread_abort (0, "TlsAlloc");
 
           if (key->notify != NULL)
