@@ -17,7 +17,7 @@ main (int    argc,
 #if defined(G_OS_WIN32)
   Stdout = g_win32_output_stream_new (1, FALSE);
 #else
-  Stdout = g_output_stream (1, FALSE);
+  Stdout = g_unix_output_stream_new (1, FALSE);
 #endif
 
   self = g_module_open (NULL, 0);
