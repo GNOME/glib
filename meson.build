@@ -374,6 +374,8 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     # Due to function casts through (void*) we cannot support -Wpedantic:
     # https://wiki.gnome.org/Projects/GLib/CompilerRequirements#Function_pointer_conversions.
     '-Wno-pedantic',
+    # A zero-length format string shouldn't be considered an issue.
+    '-Wno-format-zero-length',
     '-Werror=declaration-after-statement',
     '-Werror=format=2',
     '-Werror=implicit-function-declaration',

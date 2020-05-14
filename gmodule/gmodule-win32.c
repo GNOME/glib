@@ -39,7 +39,7 @@
 #include <sys/cygwin.h>
 #endif
 
-static void
+static void G_GNUC_PRINTF (1, 2)
 set_error (const gchar *format,
 	   ...)
 {
