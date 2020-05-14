@@ -3459,6 +3459,7 @@ g_assert_true
 g_assert_false
 g_assert_null
 g_assert_nonnull
+g_assert_no_errno
 g_test_set_nonfatal_assertions
 
 GTestCase
