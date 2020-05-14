@@ -1144,7 +1144,7 @@ g_irepository_get_version (GIRepository *repository,
  * Note: The namespace must have already been loaded using a function
  * such as g_irepository_require() before calling this function.
  *
- * Returns: Comma-separated list of paths to shared libraries,
+ * Returns: (nullable): Comma-separated list of paths to shared libraries,
  *   or %NULL if none are associated
  */
 const gchar *
