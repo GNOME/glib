@@ -89,7 +89,7 @@ g_object_info_get_field_offset (GIObjectInfo *info,
  *
  * Obtain the parent of the object type.
  *
- * Returns: (transfer full): the #GIObjectInfo. Free the struct by calling
+ * Returns: (transfer full) (nullable): the #GIObjectInfo. Free the struct by calling
  * g_base_info_unref() when done.
  */
 GIObjectInfo *
