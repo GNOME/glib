@@ -172,19 +172,48 @@ in your templates, to improve the reproducibility of the build. (Since: 2.22)
 Some C comments are treated specially in the parsed enum definitions,
 such comments start out with the trigraph sequence <literal>/*&lt;</literal>
 and end with the trigraph sequence <literal>&gt;*/</literal>.
-Per enum definition, the options <literal>skip</literal> and <literal>flags</literal> can be specified, to
-indicate this enum definition to be skipped, or for it to be treated as
-a flags definition, or to specify the common prefix to be stripped from
-all values to generate value nicknames, respectively. The <literal>underscore_name</literal>
-option can be used to specify the word separation used in the <function>*_get_type()</function>
+</para>
+
+<para>The following options can be specified per enum definition:</para>
+<variablelist>
+<varlistentry>
+<term><literal>skip</literal></term>
+<listitem><para>
+Indicates this enum definition should  be skipped.
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>flags</literal></term>
+<listitem><para>
+Indicates this enum should be treated as a flags definition.
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>underscore_name</literal></term>
+<listitem><para>
+Specifies the word separation used in the <function>*_get_type()</function>
 function. For instance, <literal>/*&lt; underscore_name=gnome_vfs_uri_hide_options &gt;*/</literal>.
-</para>
-<para>
-Per value definition, the options <literal>skip</literal> and <literal>nick</literal> are supported.
-The former causes the value to be skipped, and the latter can be used to
-specify the otherwise auto-generated nickname.
-Examples:
-</para>
+</para></listitem>
+</varlistentry>
+</variablelist>
+
+<para>The following options can be specified per value definition:</para>
+<variablelist>
+<varlistentry>
+<term><literal>skip</literal></term>
+<listitem><para>
+Indicates the value should be skipped.
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>nick</literal></term>
+<listitem><para>
+Specifies the otherwise auto-generated nickname.
+</para></listitem>
+</varlistentry>
+</variablelist>
+
+<para>Examples:</para>
 <informalexample><programlisting>
 typedef enum /*&lt; skip &gt;*/
 {
