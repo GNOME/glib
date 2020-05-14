@@ -15,7 +15,8 @@ GitLab CI jobs run in a Docker image, defined here. To update that image
       registry
     * If you use 2-factor authentication on your GNOME GitLab account, you'll
       need to [create a personal access token][pat] and use that rather than
-      your normal password
+      your normal password — the token should have `read_registry` and
+      `write_registry` permissions
 1. Edit `.gitlab-ci.yml` (in the root of this repository) to use your new
    image
 
