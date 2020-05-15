@@ -1062,6 +1062,9 @@ g_value_set_string (GValue	*value,
  * Set the contents of a %G_TYPE_STRING #GValue to @v_string.
  * The string is assumed to be static, and is thus not duplicated
  * when setting the #GValue.
+ *
+ * If the the string is a canonical string, using g_value_set_interned_string()
+ * is more appropriate.
  */
 void
 g_value_set_static_string (GValue      *value,
@@ -1073,6 +1076,29 @@ g_value_set_static_string (GValue      *value,
     g_free (value->data[0].v_pointer);
   value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
   value->data[0].v_pointer = (gchar*) v_string;
+}
+
+/**
+ * g_value_set_interned_string:
+ * @value: a valid #GValue of type %G_TYPE_STRING
+ * @v_string: (nullable): static string to be set
+ *
+ * Set the contents of a %G_TYPE_STRING #GValue to @v_string.  The string is
+ * assumed to be static and interned (canonical, for example from
+ * g_intern_string()), and is thus not duplicated when setting the #GValue.
+ *
+ * Since: 2.66
+ */
+void
+g_value_set_interned_string (GValue *value,
+                             const gchar *v_string)
+{
+  g_return_if_fail (G_VALUE_HOLDS_STRING (value));
+
+  if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
+    g_free (value->data[0].v_pointer);
+  value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS | G_VALUE_INTERNED_STRING;
+  value->data[0].v_pointer = (gchar *) v_string;
 }
 
 /**
