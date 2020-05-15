@@ -144,6 +144,42 @@ test_value_string (void)
   g_assert_cmpstr (storedstr, ==, static2);
 
   g_value_unset (&value);
+
+  /*
+   * Interned/Canonical strings
+   */
+  static1 = g_intern_static_string (static1);
+  g_value_init (&value, G_TYPE_STRING);
+  g_assert_true (G_VALUE_HOLDS_STRING (&value));
+  g_value_set_interned_string (&value, static1);
+  g_assert_true (G_VALUE_IS_INTERNED_STRING (&value));
+  /* The contents should be the string we provided */
+  storedstr = g_value_get_string (&value);
+  g_assert_true (storedstr == static1);
+  /* But g_value_dup_string() should provide a copy */
+  str2 = g_value_dup_string (&value);
+  g_assert_true (storedstr != str2);
+  g_assert_cmpstr (str2, ==, static1);
+  g_free (str2);
+
+  /* Copying an interned string gvalue should *not* copy the contents
+   * and should still be an interned string */
+  g_value_init (&copy, G_TYPE_STRING);
+  g_value_copy (&value, &copy);
+  g_assert_true (G_VALUE_IS_INTERNED_STRING (&copy));
+  copystr = g_value_get_string (&copy);
+  g_assert_true (copystr == static1);
+  g_value_unset (&copy);
+
+  /* Setting a new string should change the contents */
+  g_value_set_string (&value, static2);
+  g_assert_false (G_VALUE_IS_INTERNED_STRING (&copy));
+  /* The contents should be a copy of that *new* string */
+  storedstr = g_value_get_string (&value);
+  g_assert_true (storedstr != static2);
+  g_assert_cmpstr (storedstr, ==, static2);
+
+  g_value_unset (&value);
 }
 
 static gint
