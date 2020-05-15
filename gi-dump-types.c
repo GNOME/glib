@@ -1,6 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 #include "gdump.c"
 #ifdef G_OS_WIN32
+  #include <io.h>  /* For _get_osfhandle() */
   #include <gio/gwin32outputstream.h>
 #else
   #include <gio/gunixoutputstream.h>
@@ -15,7 +16,10 @@ main (int    argc,
   GModule *self;
 
 #if defined(G_OS_WIN32)
-  Stdout = g_win32_output_stream_new (1, FALSE);
+  HANDLE *hnd = (HANDLE) _get_osfhandle (1);
+
+  g_return_val_if_fail (hnd && hnd != INVALID_HANDLE_VALUE, 1);
+  Stdout = g_win32_output_stream_new (hnd, FALSE);
 #else
   Stdout = g_unix_output_stream_new (1, FALSE);
 #endif
