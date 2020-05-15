@@ -48,7 +48,7 @@ Report bugs at https://gitlab.gnome.org/GNOME/gobject-introspection/issues
 HOMEPAGE and CONTACT
 ====================
 
-http://live.gnome.org/GObjectIntrospection
+https://gi.readthedocs.io/
 
 
 AUTHORS
