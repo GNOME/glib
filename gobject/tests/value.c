@@ -31,6 +31,124 @@ test_value_basic (void)
   g_assert_false (G_VALUE_HOLDS_INT (&value));
 }
 
+static void
+test_value_string (void)
+{
+  const gchar *static1 = "static1";
+  const gchar *static2 = "static2";
+  const gchar *storedstr;
+  const gchar *copystr;
+  gchar *str1, *str2;
+  GValue value = G_VALUE_INIT;
+  GValue copy = G_VALUE_INIT;
+
+  g_test_summary ("Test that G_TYPE_STRING GValue copy properly");
+
+  /*
+   * Regular strings (ownership not passed)
+   */
+
+  /* Create a regular string gvalue and make sure it copies the provided string */
+  g_value_init(&value, G_TYPE_STRING);
+  g_assert_true (G_VALUE_HOLDS_STRING (&value));
+  g_value_set_string(&value, static1);
+  /* The contents should be a copy of the same string */
+  storedstr = g_value_get_string(&value);
+  g_assert (storedstr != static1);
+  g_assert_cmpstr (storedstr, ==, static1);
+  /* Check g_value_dup_string() provides a copy */
+  str1 = g_value_dup_string (&value);
+  g_assert (storedstr != str1);
+  g_assert_cmpstr (str1, ==, static1);
+  g_free (str1);
+
+  /* Copying a regular string gvalue should copy the contents */
+  g_value_init (&copy, G_TYPE_STRING);
+  g_value_copy (&value, &copy);
+  copystr = g_value_get_string (&copy);
+  g_assert (copystr != storedstr);
+  g_assert_cmpstr (copystr, ==, static1);
+  g_value_unset (&copy);
+
+  /* Setting a new string should change the contents */
+  g_value_set_string (&value, static2);
+  /* The contents should be a copy of that *new* string */
+  storedstr = g_value_get_string(&value);
+  g_assert (storedstr != static2);
+  g_assert_cmpstr (storedstr, ==, static2);
+
+  g_value_unset (&value);
+
+
+  /*
+   * Regular strings (ownership passed)
+   */
+
+  g_value_init(&value, G_TYPE_STRING);
+  g_assert_true (G_VALUE_HOLDS_STRING (&value));
+  str1 = g_strdup (static1);
+  g_value_take_string(&value, str1);
+  /* The contents should be the string we provided */
+  storedstr = g_value_get_string(&value);
+  g_assert (storedstr == str1);
+  /* But g_value_dup_string() should provide a copy */
+  str2 = g_value_dup_string (&value);
+  g_assert (storedstr != str2);
+  g_assert_cmpstr (str2, ==, static1);
+  g_free (str2);
+
+  /* Copying a regular string gvalue (even with ownership passed) should copy
+   * the contents */
+  g_value_init (&copy, G_TYPE_STRING);
+  g_value_copy (&value, &copy);
+  copystr = g_value_get_string (&copy);
+  g_assert (copystr != storedstr);
+  g_assert_cmpstr (copystr, ==, static1);
+  g_value_unset (&copy);
+
+  /* Setting a new string should change the contents */
+  g_value_set_string (&value, static2);
+  /* The contents should be a copy of that *new* string */
+  storedstr = g_value_get_string(&value);
+  g_assert (storedstr != static2);
+  g_assert_cmpstr (storedstr, ==, static2);
+
+  g_value_unset (&value);
+
+
+  /*
+   * Static strings
+   */
+  g_value_init(&value, G_TYPE_STRING);
+  g_assert_true (G_VALUE_HOLDS_STRING (&value));
+  g_value_set_static_string(&value, static1);
+  /* The contents should be the string we provided */
+  storedstr = g_value_get_string(&value);
+  g_assert (storedstr == static1);
+  /* But g_value_dup_string() should provide a copy */
+  str2 = g_value_dup_string (&value);
+  g_assert (storedstr != str2);
+  g_assert_cmpstr (str2, ==, static1);
+  g_free (str2);
+
+  /* Copying a static string gvalue should *not* copy the contents */
+  g_value_init (&copy, G_TYPE_STRING);
+  g_value_copy (&value, &copy);
+  copystr = g_value_get_string (&copy);
+  g_assert (copystr == static1);
+  g_value_unset (&copy);
+
+  /* Setting a new string should change the contents */
+  g_value_set_string (&value, static2);
+  /* The contents should be a copy of that *new* string */
+  storedstr = g_value_get_string(&value);
+  g_assert (storedstr != static2);
+  g_assert_cmpstr (storedstr, ==, static2);
+
+  g_value_unset (&value);
+
+}
+
 static gint
 cmpint (gconstpointer a, gconstpointer b)
 {
@@ -89,6 +207,7 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/value/basic", test_value_basic);
+  g_test_add_func ("/value/string", test_value_string);
   g_test_add_func ("/value/array/basic", test_valuearray_basic);
 
   return g_test_run ();
