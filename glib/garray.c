@@ -1549,7 +1549,12 @@ ptr_array_free (GPtrArray      *array,
       segment = NULL;
     }
   else
-    segment = rarray->pdata;
+    {
+      segment = rarray->pdata;
+      if (   !segment
+          && rarray->null_terminated)
+        segment = g_new0 (gpointer, 1);
+    }
 
   if (flags & PRESERVE_WRAPPER)
     {
