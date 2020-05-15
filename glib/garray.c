@@ -1071,6 +1071,27 @@ struct _GRealPtrArray
 static void g_ptr_array_maybe_expand (GRealPtrArray *array,
                                       guint          len);
 
+static GPtrArray *
+ptr_array_new (guint reserved_size,
+               GDestroyNotify element_free_func)
+{
+  GRealPtrArray *array;
+
+  array = g_slice_new (GRealPtrArray);
+
+  array->pdata = NULL;
+  array->len = 0;
+  array->alloc = 0;
+  array->element_free_func = element_free_func;
+
+  g_atomic_ref_count_init (&array->ref_count);
+
+  if (reserved_size != 0)
+    g_ptr_array_maybe_expand (array, reserved_size);
+
+  return (GPtrArray *) array;
+}
+
 /**
  * g_ptr_array_new:
  *
@@ -1081,7 +1102,7 @@ static void g_ptr_array_maybe_expand (GRealPtrArray *array,
 GPtrArray*
 g_ptr_array_new (void)
 {
-  return g_ptr_array_sized_new (0);
+  return ptr_array_new (0, NULL);
 }
 
 /**
@@ -1190,8 +1211,8 @@ g_ptr_array_copy (GPtrArray *array,
 
   g_return_val_if_fail (array != NULL, NULL);
 
-  new_array = g_ptr_array_sized_new (array->len);
-  g_ptr_array_set_free_func (new_array, ((GRealPtrArray *) array)->element_free_func);
+  new_array = ptr_array_new (array->len,
+                             ((GRealPtrArray *) array)->element_free_func);
 
   if (func != NULL)
     {
@@ -1222,24 +1243,10 @@ g_ptr_array_copy (GPtrArray *array,
  *
  * Returns: the new #GPtrArray
  */
-GPtrArray*  
+GPtrArray*
 g_ptr_array_sized_new (guint reserved_size)
 {
-  GRealPtrArray *array;
-
-  array = g_slice_new (GRealPtrArray);
-
-  array->pdata = NULL;
-  array->len = 0;
-  array->alloc = 0;
-  array->element_free_func = NULL;
-
-  g_atomic_ref_count_init (&array->ref_count);
-
-  if (reserved_size != 0)
-    g_ptr_array_maybe_expand (array, reserved_size);
-
-  return (GPtrArray*) array;  
+  return ptr_array_new (reserved_size, NULL);
 }
 
 /**
@@ -1290,12 +1297,7 @@ g_array_copy (GArray *array)
 GPtrArray*
 g_ptr_array_new_with_free_func (GDestroyNotify element_free_func)
 {
-  GPtrArray *array;
-
-  array = g_ptr_array_new ();
-  g_ptr_array_set_free_func (array, element_free_func);
-
-  return array;
+  return ptr_array_new (0, element_free_func);
 }
 
 /**
@@ -1320,12 +1322,7 @@ GPtrArray*
 g_ptr_array_new_full (guint          reserved_size,
                       GDestroyNotify element_free_func)
 {
-  GPtrArray *array;
-
-  array = g_ptr_array_sized_new (reserved_size);
-  g_ptr_array_set_free_func (array, element_free_func);
-
-  return array;
+  return ptr_array_new (reserved_size, element_free_func);
 }
 
 /**
