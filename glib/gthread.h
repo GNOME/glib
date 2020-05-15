@@ -317,6 +317,7 @@ typedef void GMutexLocker;
  * Returns: a #GMutexLocker
  * Since: 2.44
  */
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_44
 static inline GMutexLocker *
 g_mutex_locker_new (GMutex *mutex)
 {
@@ -334,6 +335,7 @@ g_mutex_locker_new (GMutex *mutex)
  *
  * Since: 2.44
  */
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_44
 static inline void
 g_mutex_locker_free (GMutexLocker *locker)
 {
@@ -391,6 +393,7 @@ typedef void GRecMutexLocker;
  * Since: 2.60
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_60
 static inline GRecMutexLocker *
 g_rec_mutex_locker_new (GRecMutex *rec_mutex)
 {
@@ -410,6 +413,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Since: 2.60
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_60
 static inline void
 g_rec_mutex_locker_free (GRecMutexLocker *locker)
 {
@@ -499,6 +503,7 @@ typedef void GRWLockWriterLocker;
  * Since: 2.62
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_62
 static inline GRWLockWriterLocker *
 g_rw_lock_writer_locker_new (GRWLock *rw_lock)
 {
@@ -519,6 +524,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Since: 2.62
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_62
 static inline void
 g_rw_lock_writer_locker_free (GRWLockWriterLocker *locker)
 {
@@ -552,6 +558,7 @@ typedef void GRWLockReaderLocker;
  * Since: 2.62
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_62
 static inline GRWLockReaderLocker *
 g_rw_lock_reader_locker_new (GRWLock *rw_lock)
 {
@@ -572,6 +579,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Since: 2.62
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_62
 static inline void
 g_rw_lock_reader_locker_free (GRWLockReaderLocker *locker)
 {
