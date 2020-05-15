@@ -271,7 +271,15 @@ static void
 value_copy_string (const GValue *src_value,
 		   GValue	*dest_value)
 {
-  dest_value->data[0].v_pointer = g_strdup (src_value->data[0].v_pointer);
+  if (src_value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS)
+    {
+      dest_value->data[0].v_pointer = src_value->data[0].v_pointer;
+      dest_value->data[1].v_uint = src_value->data[1].v_uint;
+    }
+  else
+    {
+      dest_value->data[0].v_pointer = g_strdup (src_value->data[0].v_pointer);
+    }
 }
 
 static gchar*
