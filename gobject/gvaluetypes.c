@@ -1093,7 +1093,7 @@ g_value_set_interned_string (GValue *value,
 
   if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
     g_free (value->data[0].v_pointer);
-  value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS & G_VALUE_INTERNED_STRING;
+  value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS | G_VALUE_INTERNED_STRING;
   value->data[0].v_pointer = (gchar *) v_string;
 }
 
