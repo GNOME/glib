@@ -26,6 +26,8 @@ foreach version : stable_2_series_versions
     'GLIB_DEPRECATED_IN_2_' + version + '_FOR()',
     'GLIB_DEPRECATED_IN_2_' + version,
 
+    'GLIB_AVAILABLE_STATIC_INLINE_IN_2_' + version,
+
     'GLIB_AVAILABLE_ENUMERATOR_IN_2_' + version,
     'GLIB_DEPRECATED_ENUMERATOR_IN_2_' + version + '_FOR()',
     'GLIB_DEPRECATED_ENUMERATOR_IN_2_' + version,
