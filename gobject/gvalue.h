@@ -176,6 +176,16 @@ void	g_value_register_transform_func	(GType		 src_type,
 #define G_VALUE_NOCOPY_CONTENTS (1 << 27)
 
 /**
+ * G_VALUE_INTERNED_STRING:
+ *
+ * For string values, indicates that the string contained is canonical and will
+ * exist for the duration of the process.
+ *
+ * Since: 2.66
+ */
+#define G_VALUE_INTERNED_STRING (1 << 12)
+
+/**
  * G_VALUE_INIT:
  *
  * A #GValue must be initialized before it can be used. This macro can
