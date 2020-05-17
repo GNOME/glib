@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.64\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-05-14 14:08+0000\n"
-"PO-Revision-Date: 2020-05-18 00:59+0800\n"
+"POT-Creation-Date: 2020-05-14 14:05+0000\n"
+"PO-Revision-Date: 2020-05-18 01:10+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -3000,12 +3000,12 @@ msgstr "設定修改或存取時刻時發生錯誤：%s"
 
 #: gio/glocalfileinfo.c:2477
 msgid "SELinux context must be non-NULL"
-msgstr "SELinux 關聯必須為非-NULL"
+msgstr "SELinux 情境必須為非-NULL"
 
 #: gio/glocalfileinfo.c:2492
 #, c-format
 msgid "Error setting SELinux context: %s"
-msgstr "設定 SELinux 關聯時發生錯誤：%s"
+msgstr "設定 SELinux 情境時發生錯誤：%s"
 
 #: gio/glocalfileinfo.c:2499
 msgid "SELinux is not enabled on this system"
@@ -4120,13 +4120,13 @@ msgstr "找不到「%2$s」元素中的「%1$s」特性"
 #: glib/gbookmarkfile.c:1307 glib/gbookmarkfile.c:1317
 #, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
-msgstr "未預期的標籤「%s」，應為標籤「%s」"
+msgstr "未預期「%s」標籤，應為「%s」標籤"
 
 #: glib/gbookmarkfile.c:1203 glib/gbookmarkfile.c:1217
 #: glib/gbookmarkfile.c:1285 glib/gbookmarkfile.c:1331
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
-msgstr "「%2$s」中有未預期的標籤「%1$s」"
+msgstr "「%2$s」中有未預期的「%1$s」標籤"
 
 #: glib/gbookmarkfile.c:1625
 #, c-format
@@ -5976,3 +5976,31 @@ msgstr "%.1f EB"
 
 #~ msgid "Key file does not have key '%s'"
 #~ msgstr "設定鍵檔案沒有設定鍵‘%s’"
+
+#, c-format
+#~ msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
+#~ msgstr "UNIX 時間戳 %2$lld 的延伸奈秒 %1$d 是負數"
+
+#, c-format
+#~ msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
+#~ msgstr "UNIX 時間戳 %2$lld 的延伸奈秒 %1$d 達 1 秒"
+
+#, c-format
+#~ msgid "UNIX timestamp %lld does not fit into 64 bits"
+#~ msgstr "UNIX 時間戳 %lld 不能完整放入 64 位元"
+
+#, c-format
+#~ msgid "UNIX timestamp %lld is outside of the range supported by Windows"
+#~ msgstr "UNIX 時間戳 %lld 超出 Windows 所支援的範圍"
+
+#, c-format
+#~ msgid "File name “%s” cannot be converted to UTF-16"
+#~ msgstr "「%s」檔名無法轉換為 UTF-16"
+
+#, c-format
+#~ msgid "File “%s” cannot be opened: Windows Error %lu"
+#~ msgstr "無法開啟「%s」檔案：Windows 錯誤 %lu"
+
+#, c-format
+#~ msgid "Error setting modification or access time for file “%s”: %lu"
+#~ msgstr "設定「%s」檔案的修改或存取時間時發生錯誤：%lu"
