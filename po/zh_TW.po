@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: glib 2.64\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-05-14 14:08+0000\n"
-"PO-Revision-Date: 2020-05-18 00:52+0800\n"
+"PO-Revision-Date: 2020-05-18 00:59+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -364,7 +364,7 @@ msgstr "未預期的串流過早結束"
 #: gio/gdbusaddress.c:158 gio/gdbusaddress.c:232 gio/gdbusaddress.c:321
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
-msgstr "「%2$s」位址項目有不支援的「%1$s」鍵"
+msgstr "「%2$s」位址條目有不支援的「%1$s」鍵"
 
 #: gio/gdbusaddress.c:171
 #, c-format
@@ -2410,7 +2410,7 @@ msgstr "無法解析「%s」類型的 <default> 值： "
 #: gio/glib-compile-schemas.c:491
 msgid ""
 "<choices> cannot be specified for keys tagged as having an enumerated type"
-msgstr ""
+msgstr "<choices> 無法指定給標記為有列舉的類型的鍵"
 
 #: gio/glib-compile-schemas.c:500
 msgid "<choices> already specified for this key"
@@ -2566,12 +2566,12 @@ msgstr "<schema id='%s'> 已經指定了"
 #: gio/glib-compile-schemas.c:1153
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
-msgstr "<schema id='%s'> 延伸了尚不存在的 schema「%s」"
+msgstr "<schema id='%s'> 延伸了尚不存在的「%s」schema"
 
 #: gio/glib-compile-schemas.c:1169
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
-msgstr "<schema id='%s'> 是尚不存在的 schema「%s」的清單"
+msgstr "<schema id='%s'> 是尚不存在的「%s」schema 的清單"
 
 #: gio/glib-compile-schemas.c:1177
 #, c-format
@@ -2614,7 +2614,7 @@ msgid ""
 "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
 "desktop/” or “/system/” are deprecated."
 msgstr ""
-"警告：「%s」Schema 有「%s」路徑。“/apps/”、“/desktop/” 或 “/system/” 開頭的路"
+"警告：「%s」schema 有「%s」路徑。“/apps/”、“/desktop/” 或 “/system/” 開頭的路"
 "徑已經棄用。"
 
 #: gio/glib-compile-schemas.c:1270
@@ -2673,8 +2673,8 @@ msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
 "strict was specified; exiting."
 msgstr ""
-"在覆蓋「%3$s」檔案的「%2$s」schema中沒有指定這個「%1$s」鍵且指定了 --strict；"
-"結束。"
+"在覆蓋「%3$s」檔案的「%2$s」schema 中沒有指定這個「%1$s」鍵且指定了 --"
+"strict；結束。"
 
 #: gio/glib-compile-schemas.c:1993
 #, c-format
@@ -2682,7 +2682,7 @@ msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”); ignoring override for this key."
 msgstr ""
-"無法在「%2$s」Schema（覆蓋「%3$s」檔案）提供每個桌面的「%1$s」在地化鍵覆蓋；"
+"無法在「%2$s」schema（覆蓋「%3$s」檔案）提供每個桌面的「%1$s」在地化鍵覆蓋；"
 "忽略此鍵的覆蓋。"
 
 #: gio/glib-compile-schemas.c:2002
@@ -2691,7 +2691,7 @@ msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”) and --strict was specified; exiting."
 msgstr ""
-"無法在「%2$s」Schema（覆蓋「%3$s」檔案）提供每個桌面的「%1$s」在地化鍵覆蓋，"
+"無法在「%2$s」schema（覆蓋「%3$s」檔案）提供每個桌面的「%1$s」在地化鍵覆蓋，"
 "而且指定了 --strict；結束。"
 
 #: gio/glib-compile-schemas.c:2026
@@ -3533,14 +3533,14 @@ msgstr ""
 "  help                      顯示這個資訊\n"
 "  list-schemas              列出已安裝的 schema\n"
 "  list-relocatable-schemas  列出可重新配置的 schema\n"
-"  list-keys                 列出 schema中的鍵\n"
-"  list-children             列出 schema的子項\n"
+"  list-keys                 列出 schema 中的鍵\n"
+"  list-children             列出 schema 的子項\n"
 "  list-recursively          遞迴列出鍵和值\n"
 "  range                     查詢鍵的範圍\n"
 "  get                       取得鍵的值\n"
 "  set                       設定鍵的值\n"
 "  reset                     重設鍵的值\n"
-"  reset-recursively         重設指定 schema的所有值\n"
+"  reset-recursively         重設指定 schema 的所有值\n"
 "  writable                  檢查鍵是否可寫入\n"
 "  monitor                   監看變更\n"
 "\n"
