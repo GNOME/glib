@@ -1081,7 +1081,7 @@ g_value_set_static_string (GValue      *value,
  *
  * Set the contents of a %G_TYPE_STRING #GValue to @v_string.  The string is
  * assumed to be static and interned (canonical, for example from
- * `g_intern_string`), and is thus not duplicated when setting the #GValue.
+ * g_intern_string()), and is thus not duplicated when setting the #GValue.
  *
  * Since: 2.66
  */
