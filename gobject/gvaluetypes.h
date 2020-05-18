@@ -255,7 +255,7 @@ void		      g_value_set_static_string (GValue	      *value,
 GLIB_AVAILABLE_IN_ALL
 void		      g_value_set_interned_string (GValue      *value,
 						   const gchar  *v_string);
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_66
 const gchar *         g_value_get_string	(const GValue *value);
 GLIB_AVAILABLE_IN_ALL
 gchar*		      g_value_dup_string	(const GValue *value);
