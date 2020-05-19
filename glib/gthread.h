@@ -234,14 +234,23 @@ GLIB_AVAILABLE_IN_ALL
 void            g_once_init_leave               (volatile void  *location,
                                                  gsize           result);
 
-#ifdef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
-# define g_once(once, func, arg) g_once_impl ((once), (func), (arg))
-#else /* !G_ATOMIC_OP_MEMORY_BARRIER_NEEDED*/
+/* Use C11-style atomic extensions to check the fast path for status=ready. If
+ * they are not available, fall back to using a mutex and condition variable in
+ * g_once_impl().
+ *
+ * On the C11-style codepath, only the load of once->status needs to be atomic,
+ * as the writes to it and once->retval in g_once_impl() are related by a
+ * happens-before relation. Release-acquire semantics are defined such that any
+ * atomic/non-atomic write which happens-before a store/release is guaranteed to
+ * be seen by the load/acquire of the same atomic variable. */
+#if defined(G_ATOMIC_LOCK_FREE) && defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4) && defined(__ATOMIC_SEQ_CST)
 # define g_once(once, func, arg) \
-  (((once)->status == G_ONCE_STATUS_READY) ? \
+  ((__atomic_load_n (&(once)->status, __ATOMIC_ACQUIRE) == G_ONCE_STATUS_READY) ? \
    (once)->retval : \
    g_once_impl ((once), (func), (arg)))
-#endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
+#else
+# define g_once(once, func, arg) g_once_impl ((once), (func), (arg))
+#endif
 
 #ifdef __GNUC__
 # define g_once_init_enter(location) \
