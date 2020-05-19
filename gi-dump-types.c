@@ -1,6 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 #include "gdump.c"
 #ifdef G_OS_WIN32
+  #include <windows.h>
   #include <io.h>  /* For _get_osfhandle() */
   #include <gio/gwin32outputstream.h>
 #else

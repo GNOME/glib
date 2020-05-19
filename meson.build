@@ -204,7 +204,7 @@ gthash_test = executable('gthash-test', 'gthash-test.c',
 
 test('gthash-test', gthash_test)
 
-if giounix_dep.found()
+if giounix_dep.found() or giowin_dep.found()
   executable('gi-dump-types', 'gi-dump-types.c',
-    dependencies: [girepo_dep, giounix_dep])
+    dependencies: [girepo_dep, giounix_dep, giowin_dep])
 endif
