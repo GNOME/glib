@@ -143,7 +143,7 @@ G_BEGIN_DECLS
  * Checks whether @value contains a string which is canonical.
  *
  * Returns: %TRUE if the value contains a string in its canonical
- * representation, as areturned by g_intern_string().
+ * representation, as returned by g_intern_string().
  *
  * Since: 2.66
  */
