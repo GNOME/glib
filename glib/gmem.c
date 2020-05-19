@@ -66,10 +66,14 @@ static GMemVTable glib_mem_vtable = {
  * If any call to allocate memory using functions g_new(), g_new0(), g_renew(),
  * g_malloc(), g_malloc0(), g_malloc0_n(), g_realloc(), and g_realloc_n()
  * fails, the application is terminated. This also means that there is no
- * need to check if the call succeeded. On the other hand, g_try_...() family
+ * need to check if the call succeeded. On the other hand, the `g_try_...()` family
  * of functions returns %NULL on failure that can be used as a check
  * for unsuccessful memory allocation. The application is not terminated
  * in this case.
+ *
+ * As all GLib functions and data structures use `g_malloc()` internally, unless
+ * otherwise specified, any allocation failure will result in the application
+ * being terminated.
  *
  * It's important to match g_malloc() (and wrappers such as g_new()) with
  * g_free(), g_slice_alloc() (and wrappers such as g_slice_new()) with
