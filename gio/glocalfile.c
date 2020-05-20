@@ -2283,6 +2283,7 @@ g_local_file_trash (GFile         *file,
   op.pFrom = wfilename;
   op.fFlags = FOF_ALLOWUNDO;
 
+#ifndef G_WINAPI_ONLY_APP
   success = SHFileOperationW (&op) == 0;
 
   if (success && op.fAnyOperationsAborted)
@@ -2298,6 +2299,14 @@ g_local_file_trash (GFile         *file,
     g_set_io_error (error,
                     _("Unable to trash file %s"),
                     file, 0);
+#else
+  /* File trash as a concept is not available on UWP */
+  success = FALSE;
+  g_set_io_error (error,
+                  _("Unable to trash file %s: "
+                    "GLib was built for Universal Windows Platform apps"),
+                  file, ENOSYS);
+#endif
 
   g_free (wfilename);
   return success;

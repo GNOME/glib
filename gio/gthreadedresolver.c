@@ -939,7 +939,7 @@ do_lookup_records (GTask         *task,
                    GCancellable  *cancellable)
 {
   LookupRecordsData *lrd = task_data;
-  GList *records;
+  GList *records = NULL;
   GError *error = NULL;
 
 #if defined(G_OS_UNIX)
@@ -1007,7 +1007,7 @@ do_lookup_records (GTask         *task,
 
 #endif  /* HAVE_RES_NQUERY */
 
-#else
+#elif !defined(G_WINAPI_ONLY_APP)
 
   DNS_STATUS status;
   DNS_RECORD *results = NULL;
@@ -1019,6 +1019,10 @@ do_lookup_records (GTask         *task,
   if (results != NULL)
     DnsRecordListFree (results, DnsFreeRecordList);
 
+#else
+  g_set_error_literal (&error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_UNSUPPORTED,
+                       _("Looking up records is unavailable since "
+                         "GLib was built for Universal Windows Platform apps"));
 #endif
 
   if (records)

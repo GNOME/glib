@@ -729,7 +729,12 @@ load_mlang(void)
     HMODULE h;
     if (ConvertINetString != NULL)
         return TRUE;
+    /* When building for UWP, load app asset DLLs instead of filesystem DLLs */
+#if defined(G_WINAPI_ONLY_APP)
+    h = LoadPackagedLibrary(TEXT("mlang.dll"), 0);
+#else
     h = LoadLibrary(TEXT("mlang.dll"));
+#endif
     if (!h)
         return FALSE;
     ConvertINetString = (CONVERTINETSTRING)GetProcAddressA(h, "ConvertINetString");

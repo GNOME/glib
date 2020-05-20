@@ -701,6 +701,8 @@ typedef enum  {
  * @G_RESOLVER_ERROR_TEMPORARY_FAILURE: the requested information could not
  *     be looked up due to a network error or similar problem
  * @G_RESOLVER_ERROR_INTERNAL: unknown error
+ * @G_RESOLVER_ERROR_UNSUPPORTED: the specific resolver query is unsupported
+ *     on the current platform (Since 2.64)
  *
  * An error code used with %G_RESOLVER_ERROR in a #GError returned
  * from a #GResolver routine.
@@ -710,7 +712,8 @@ typedef enum  {
 typedef enum {
   G_RESOLVER_ERROR_NOT_FOUND,
   G_RESOLVER_ERROR_TEMPORARY_FAILURE,
-  G_RESOLVER_ERROR_INTERNAL
+  G_RESOLVER_ERROR_INTERNAL,
+  G_RESOLVER_ERROR_UNSUPPORTED
 } GResolverError;
 
 /**
