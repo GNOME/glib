@@ -1178,17 +1178,13 @@ struct _GInterfaceInfo
  *  array.  To deviate from our string example for a moment, and taking
  *  a look at an exemplary implementation for collect_value() of
  *  #GObject:
- *  |[<!-- language="C" -->
- *  if (collect_values[0].v_pointer)
- *  {
+ *  |[<!-- language="C" --> 
  *    GObject *object = G_OBJECT (collect_values[0].v_pointer);
+ *    g_return_val_if_fail (object != NULL,
+ *       g_strdup_printf ("Object passed as invalid NULL pointer"));
  *    // never honour G_VALUE_NOCOPY_CONTENTS for ref-counted types
  *    value->data[0].v_pointer = g_object_ref (object);
  *    return NULL;
- *  }
- *  else
- *    return g_strdup_printf ("Object passed as invalid NULL pointer");
- *  }
  *  ]|
  *  The reference count for valid objects is always incremented,
  *  regardless of @collect_flags. For invalid objects, the example
@@ -1220,8 +1216,8 @@ struct _GInterfaceInfo
  *  To complete the string example:
  *  |[<!-- language="C" -->
  *  gchar **string_p = collect_values[0].v_pointer;
- *  if (!string_p)
- *    return g_strdup_printf ("string location passed as NULL");
+ *  g_return_val_if_fail (string_p != NULL,
+ *      g_strdup_printf ("string location passed as NULL"));
  *  if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
  *    *string_p = value->data[0].v_pointer;
  *  else
@@ -1231,8 +1227,8 @@ struct _GInterfaceInfo
  *  reference-counted types:
  *  |[<!-- language="C" -->
  *  GObject **object_p = collect_values[0].v_pointer;
- *  if (!object_p)
- *    return g_strdup_printf ("object location passed as NULL");
+ *  g_return_val_if_fail (object_p != NULL,
+ *    g_strdup_printf ("object location passed as NULL"));
  *  if (!value->data[0].v_pointer)
  *    *object_p = NULL;
  *  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) // always honour

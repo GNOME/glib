@@ -4021,9 +4021,8 @@ g_value_object_lcopy_value (const GValue *value,
 			    guint        collect_flags)
 {
   GObject **object_p = collect_values[0].v_pointer;
-  
-  if (!object_p)
-    return g_strdup_printf ("value location for '%s' passed as NULL", G_VALUE_TYPE_NAME (value));
+
+  g_return_val_if_fail (object_p != NULL, g_strdup_printf ("value location for '%s' passed as NULL", G_VALUE_TYPE_NAME (value)));
 
   if (!value->data[0].v_pointer)
     *object_p = NULL;
