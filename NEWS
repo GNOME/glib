@@ -1,3 +1,26 @@
+Overview of changes in GLib 2.64.3
+==================================
+
+* Stability improvements for various unit tests
+
+* Bugs fixed:
+ - #1954 gdbus-server-auth intermittent failure
+ - #2094 Deprecation warnings when compiling with -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_28 -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_28
+ - !1470 Backport !1440 -Wformat-nonliteral fixes to glib-2-64
+ - !1471 Backport !1448 memory monitor test dependency fixes to glib-2-64
+ - !1473 CI: Switch to new Windows runners (2.64)
+ - !1478 Backport !1477 D-Bus keyring handling fixes to glib-2-64
+ - !1483 Backport !1481 “array: fix corrupt state of GPtrArray after g_ptr_array_extend_and_steal()” to glib-2-64
+ - !1484 Backport !1480 “CI: Make sure we use meson 0.49.2 in MSYS2” to glib-2-64
+ - !1486 Backport !1472 “gthread: ignore deprecated declarations in static inline functions” to glib-2-64
+ - !1495 Backport !1493 “meson: Remove stray ], in O_DIRECTORY check” to glib-2-64
+ - !1501 Backport !1439 “Fix stpcpy() detection“ to glib-2-64
+
+* Translation updates:
+ - Chinese (Taiwan)
+ - German
+
+
 Overview of changes in GLib 2.64.2
 ==================================
 
