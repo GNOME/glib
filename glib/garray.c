@@ -1052,7 +1052,7 @@ struct _GRealPtrArray
   guint           len;
   guint           alloc;
   gatomicrefcount ref_count;
-  guint8          null_terminated;
+  guint8          null_terminated; /* always either 0 or 1, so it can be added to array lengths */
   GDestroyNotify  element_free_func;
 };
 
@@ -1098,10 +1098,17 @@ ptr_array_new (guint reserved_size,
 
   if (reserved_size != 0)
     {
-      if (G_LIKELY (reserved_size < G_MAXUINT))
-        reserved_size += array->null_terminated;
+      if (G_LIKELY (reserved_size < G_MAXUINT) &&
+          null_terminated)
+        reserved_size++;
       g_ptr_array_maybe_expand (array, reserved_size);
-      ptr_array_null_terminate (array);
+      if (null_terminated)
+        {
+          /* don't use ptr_array_null_terminate(). It helps the compiler
+           * to see when @null_terminated is false and thereby inline
+           * ptr_array_new() and possibly remove the code entirely. */
+            array->pdata[0] = NULL;
+        }
     }
 
   return (GPtrArray *) array;
@@ -1420,7 +1427,7 @@ g_ptr_array_set_free_func (GPtrArray      *array,
  * Since: 2.66
  */
 gboolean
-g_ptr_array_is_null_terminated (const GPtrArray *array)
+g_ptr_array_is_null_terminated (GPtrArray *array)
 {
   g_return_val_if_fail (array, FALSE);
 
@@ -1490,8 +1497,9 @@ g_ptr_array_unref (GPtrArray *array)
  * be freed separately if @free_seg is %TRUE and no #GDestroyNotify
  * function has been set for @array.
  *
- * If the array is %NULL terminated, this will not return %NULL if %free_seg
- * is unset.
+ * If the array is %NULL terminated and @free_seg is %FALSE, then this will never
+ * return %NULL. This means, if pdata of a %NULL terminated array is %NULL, a new
+ * (empty) array will be allocated and returned.
  *
  * This function is not thread-safe. If using a #GPtrArray from multiple
  * threads, use only the atomic g_ptr_array_ref() and g_ptr_array_unref()
@@ -1617,8 +1625,8 @@ g_ptr_array_set_size  (GPtrArray *array,
     {
       guint i;
 
-      if (   G_UNLIKELY (rarray->null_terminated)
-          && length_unsigned - rarray->len > G_MAXUINT - 1)
+      if (G_UNLIKELY (rarray->null_terminated) &&
+          length_unsigned - rarray->len > G_MAXUINT - 1)
          g_error ("array would overflow");
 
       g_ptr_array_maybe_expand (rarray, (length_unsigned - rarray->len) + rarray->null_terminated);
@@ -1667,8 +1675,8 @@ ptr_array_remove_index (GPtrArray *array,
 
   rarray->len -= 1;
 
-  if (   G_UNLIKELY (g_mem_gc_friendly)
-      || rarray->null_terminated)
+  if (G_UNLIKELY (g_mem_gc_friendly) ||
+      rarray->null_terminated)
     rarray->pdata[rarray->len] = NULL;
 
   return result;
@@ -1950,8 +1958,8 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
   if (array->len == 0u)
     return;
 
-  if (   G_UNLIKELY (array->len == G_MAXUINT)
-      && rarray_to_extend->null_terminated)
+  if (G_UNLIKELY (array->len == G_MAXUINT) &&
+      rarray_to_extend->null_terminated)
     g_error ("adding %u to array would overflow", array->len);
 
   g_ptr_array_maybe_expand (rarray_to_extend, array->len + rarray_to_extend->null_terminated);

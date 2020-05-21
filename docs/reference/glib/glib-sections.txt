@@ -2886,7 +2886,9 @@ g_ptr_array_sized_new
 g_ptr_array_new_with_free_func
 g_ptr_array_copy
 g_ptr_array_new_full
+g_ptr_array_new_null_terminated
 g_ptr_array_set_free_func
+g_ptr_array_is_null_terminated
 g_ptr_array_ref
 g_ptr_array_unref
 g_ptr_array_add

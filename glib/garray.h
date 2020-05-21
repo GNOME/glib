@@ -228,7 +228,7 @@ gboolean   g_ptr_array_find_with_equal_func (GPtrArray     *haystack,
                                              guint         *index_);
 
 GLIB_AVAILABLE_IN_2_66
-gboolean g_ptr_array_is_null_terminated (const GPtrArray *array);
+gboolean g_ptr_array_is_null_terminated (GPtrArray *array);
 
 
 /* Byte arrays, an array of guint8.  Implemented as a GArray,
