@@ -232,7 +232,8 @@ typedef struct
 {
   GCond cond;
   GMutex mutex;
-  GSource *cancellable_source;  /* (owned) */
+  gboolean thread_ready;
+  GAsyncQueue *cancellable_source_queue;  /* (owned) (element-type GCancellableSource) */
 } ThreadedDisposeData;
 
 static gboolean
@@ -247,14 +248,18 @@ static gpointer
 threaded_dispose_thread_cb (gpointer user_data)
 {
   ThreadedDisposeData *data = user_data;
+  GSource *cancellable_source;
 
-  /* Synchronise with the main thread before trying to reproduce the race. */
   g_mutex_lock (&data->mutex);
+  data->thread_ready = TRUE;
   g_cond_broadcast (&data->cond);
   g_mutex_unlock (&data->mutex);
 
-  /* Race with cancellation of the cancellable. */
-  g_source_unref (data->cancellable_source);
+  while ((cancellable_source = g_async_queue_pop (data->cancellable_source_queue)) != (gpointer) 1)
+    {
+      /* Race with cancellation of the cancellable. */
+      g_source_unref (cancellable_source);
+    }
 
   return NULL;
 }
@@ -262,6 +267,8 @@ threaded_dispose_thread_cb (gpointer user_data)
 static void
 test_cancellable_source_threaded_dispose (void)
 {
+  ThreadedDisposeData data;
+  GThread *thread = NULL;
   guint i;
 
   g_test_summary ("Test a thread race between disposing of a GCancellableSource "
@@ -269,12 +276,25 @@ test_cancellable_source_threaded_dispose (void)
                   "to (in another thread)");
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1841");
 
+  /* Create a new thread and wait until it’s ready to execute. Each iteration of
+   * the test will pass it a new #GCancellableSource. */
+  g_cond_init (&data.cond);
+  g_mutex_init (&data.mutex);
+  data.cancellable_source_queue = g_async_queue_new_full ((GDestroyNotify) g_source_unref);
+  data.thread_ready = FALSE;
+
+  g_mutex_lock (&data.mutex);
+  thread = g_thread_new ("/cancellable-source/threaded-dispose",
+                         threaded_dispose_thread_cb, &data);
+
+  while (!data.thread_ready)
+    g_cond_wait (&data.cond, &data.mutex);
+  g_mutex_unlock (&data.mutex);
+
   for (i = 0; i < 100000; i++)
     {
       GCancellable *cancellable = NULL;
       GSource *cancellable_source = NULL;
-      ThreadedDisposeData data;
-      GThread *thread = NULL;
 
       /* Create a cancellable and a cancellable source for it. For this test,
        * there’s no need to attach the source to a #GMainContext. */
@@ -282,26 +302,26 @@ test_cancellable_source_threaded_dispose (void)
       cancellable_source = g_cancellable_source_new (cancellable);
       g_source_set_callback (cancellable_source, G_SOURCE_FUNC (cancelled_cb), NULL, NULL);
 
-      /* Create a new thread and wait until it’s ready to execute before
+      /* Send it to the thread and wait until it’s ready to execute before
        * cancelling our cancellable. */
-      g_cond_init (&data.cond);
-      g_mutex_init (&data.mutex);
-      data.cancellable_source = g_steal_pointer (&cancellable_source);
-
-      g_mutex_lock (&data.mutex);
-      thread = g_thread_new ("/cancellable-source/threaded-dispose",
-                             threaded_dispose_thread_cb, &data);
-      g_cond_wait (&data.cond, &data.mutex);
-      g_mutex_unlock (&data.mutex);
+      g_async_queue_push (data.cancellable_source_queue, g_steal_pointer (&cancellable_source));
 
       /* Race with disposal of the cancellable source. */
       g_cancellable_cancel (cancellable);
 
-      g_thread_join (g_steal_pointer (&thread));
-      g_mutex_clear (&data.mutex);
-      g_cond_clear (&data.cond);
       g_object_unref (cancellable);
     }
+
+  /* Indicate that the test has finished. Can’t use %NULL as #GAsyncQueue
+   * doesn’t allow that.*/
+  g_async_queue_push (data.cancellable_source_queue, (gpointer) 1);
+
+  g_thread_join (g_steal_pointer (&thread));
+
+  g_assert (g_async_queue_length (data.cancellable_source_queue) == 0);
+  g_async_queue_unref (data.cancellable_source_queue);
+  g_mutex_clear (&data.mutex);
+  g_cond_clear (&data.cond);
 }
 
 int
