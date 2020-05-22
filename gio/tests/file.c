@@ -144,11 +144,11 @@ test_parse_name (void)
 
 typedef struct
 {
+  GMainContext *context;
   GFile *file;
   GFileMonitor *monitor;
   GOutputStream *ostream;
   GInputStream *istream;
-  GMainLoop *loop;
   gint buffersize;
   gint monitor_created;
   gint monitor_deleted;
@@ -158,6 +158,8 @@ typedef struct
   const gchar *data;
   gchar *buffer;
   guint timeout;
+  gboolean file_deleted;
+  gboolean timed_out;
 } CreateDeleteData;
 
 static void
@@ -183,18 +185,8 @@ monitor_changed (GFileMonitor      *monitor,
     data->monitor_deleted++;
   if (event_type == G_FILE_MONITOR_EVENT_CHANGED)
     data->monitor_changed++;
-}
 
-
-static gboolean
-quit_idle (gpointer user_data)
-{
-  CreateDeleteData *data = user_data;
-
-  g_source_remove (data->timeout); 
-  g_main_loop_quit (data->loop);
-
-  return FALSE;
+  g_main_context_wakeup (data->context);
 }
 
 static void
@@ -217,11 +209,8 @@ iclosed_cb (GObject      *source,
   g_assert_true (ret);
   g_assert_no_error (error);
 
-  /* work around file monitor bug:
-   * inotify events are only processed every 1000 ms, regardless
-   * of the rate limit set on the file monitor
-   */
-  g_timeout_add (2000, quit_idle, data);
+  data->file_deleted = TRUE;
+  g_main_context_wakeup (data->context);
 }
 
 static void
@@ -435,11 +424,14 @@ created_cb (GObject      *source,
 }
 
 static gboolean
-stop_timeout (gpointer data)
+stop_timeout (gpointer user_data)
 {
-  g_assert_not_reached ();
+  CreateDeleteData *data = user_data;
 
-  return FALSE;
+  data->timed_out = TRUE;
+  g_main_context_wakeup (data->context);
+
+  return G_SOURCE_REMOVE;
 }
 
 /*
@@ -495,14 +487,23 @@ test_create_delete (gconstpointer d)
 
   g_signal_connect (data->monitor, "changed", G_CALLBACK (monitor_changed), data);
 
-  data->loop = g_main_loop_new (NULL, FALSE);
-
-  data->timeout = g_timeout_add (10000, stop_timeout, NULL);
+  /* Use the global default main context */
+  data->context = NULL;
+  data->timeout = g_timeout_add_seconds (10, stop_timeout, data);
 
   g_file_create_async (data->file, 0, 0, NULL, created_cb, data);
 
-  g_main_loop_run (data->loop);
+  while (!data->timed_out &&
+         (data->monitor_created == 0 ||
+          data->monitor_deleted == 0 ||
+          data->monitor_changed == 0 ||
+          !data->file_deleted))
+    g_main_context_iteration (data->context, TRUE);
 
+  g_source_remove (data->timeout);
+
+  g_assert_false (data->timed_out);
+  g_assert_true (data->file_deleted);
   g_assert_cmpint (data->monitor_created, ==, 1);
   g_assert_cmpint (data->monitor_deleted, ==, 1);
   g_assert_cmpint (data->monitor_changed, >, 0);
@@ -511,7 +512,7 @@ test_create_delete (gconstpointer d)
   g_file_monitor_cancel (data->monitor);
   g_assert_true (g_file_monitor_is_cancelled (data->monitor));
 
-  g_main_loop_unref (data->loop);
+  g_clear_pointer (&data->context, g_main_context_unref);
   g_object_unref (data->ostream);
   g_object_unref (data->istream);
 
