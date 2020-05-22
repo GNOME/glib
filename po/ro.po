@@ -10,9 +10,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-03-10 16:11+0000\n"
-"PO-Revision-Date: 2020-03-19 11:52+0100\n"
-"Last-Translator: Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>\n"
+"POT-Creation-Date: 2020-03-31 14:16+0000\n"
+"PO-Revision-Date: 2020-05-03 14:47+0300\n"
+"Last-Translator: Florentina Mușat <florentina.musat.28 [at] gmail [dot] "
+"com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
 "sourceforge.net>\n"
 "Language: ro\n"
@@ -3081,99 +3082,136 @@ msgstr ""
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Nu s-a putut determina utilizarea discului a %s: %s"
 
-#: gio/glocalfileinfo.c:755
+#: gio/glocalfileinfo.c:760
 msgid "Attribute value must be non-NULL"
 msgstr "Valoarea atributului trebuie să fie diferită de NULL"
 
-#: gio/glocalfileinfo.c:762
+#: gio/glocalfileinfo.c:767
 msgid "Invalid attribute type (string expected)"
 msgstr "Tip incorect de atribut (se aștepta un șir)"
 
-#: gio/glocalfileinfo.c:769
+#: gio/glocalfileinfo.c:774
 msgid "Invalid extended attribute name"
 msgstr "Nume incorect de atribut extins"
 
-#: gio/glocalfileinfo.c:809
+#: gio/glocalfileinfo.c:814
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Eroare la stabilirea atributului extins „%s”: %s"
 
-#: gio/glocalfileinfo.c:1637
+#: gio/glocalfileinfo.c:1650
 msgid " (invalid encoding)"
 msgstr " (codare incorectă)"
 
-#: gio/glocalfileinfo.c:1801 gio/glocalfileoutputstream.c:909
+#: gio/glocalfileinfo.c:1814 gio/glocalfileoutputstream.c:909
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Eroare în timpul obținerii de informații pentru fișierul „%s”: %s"
 
-#: gio/glocalfileinfo.c:2071
+#: gio/glocalfileinfo.c:2084
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr ""
 "Eroare în timpul obținerii de informații pentru descriptorul de fișier: %s"
 
-#: gio/glocalfileinfo.c:2116
+#: gio/glocalfileinfo.c:2129
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tip incorect de atribut (se aștepta o valoare uint32)"
 
-#: gio/glocalfileinfo.c:2134
+#: gio/glocalfileinfo.c:2147
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tip incorect de atribut (se aștepta o valoare uint64)"
 
-#: gio/glocalfileinfo.c:2153 gio/glocalfileinfo.c:2172
+#: gio/glocalfileinfo.c:2166 gio/glocalfileinfo.c:2185
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tip incorect de atribut (se aștepta un șir de octeți)"
 
-#: gio/glocalfileinfo.c:2219
+#: gio/glocalfileinfo.c:2232
 msgid "Cannot set permissions on symlinks"
 msgstr "Nu se pot defini drepturi pentru legături simbolice"
 
-#: gio/glocalfileinfo.c:2235
+#: gio/glocalfileinfo.c:2248
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Eroare la definirea drepturilor: %s"
 
-#: gio/glocalfileinfo.c:2286
+#: gio/glocalfileinfo.c:2299
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Eroare la definirea deținătorului: %s"
 
-#: gio/glocalfileinfo.c:2309
+#: gio/glocalfileinfo.c:2322
 msgid "symlink must be non-NULL"
 msgstr "legătura simbolică trebuie să fie diferită de NULL"
 
-#: gio/glocalfileinfo.c:2319 gio/glocalfileinfo.c:2338
-#: gio/glocalfileinfo.c:2349
+#: gio/glocalfileinfo.c:2332 gio/glocalfileinfo.c:2351
+#: gio/glocalfileinfo.c:2362
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Eroare la definirea legăturii simbolice: %s"
 
-#: gio/glocalfileinfo.c:2328
+#: gio/glocalfileinfo.c:2341
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Eroare la definirea legăturii simbolice: fișierul nu este o legătură "
 "simbolică"
 
-#: gio/glocalfileinfo.c:2454
+#: gio/glocalfileinfo.c:2413
+#, c-format
+msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
+msgstr "Nanosecundele extra %d pentru datarea UNIX %lld sunt negative"
+
+#: gio/glocalfileinfo.c:2422
+#, c-format
+msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
+msgstr "Nanosecundele extra %d pentru datarea UNIX %lld au ajuns la 1 secundă"
+
+#: gio/glocalfileinfo.c:2432
+#, c-format
+msgid "UNIX timestamp %lld does not fit into 64 bits"
+msgstr "Datarea UNIVX %lld nu se potrivește pe 64 de biți"
+
+#: gio/glocalfileinfo.c:2443
+#, c-format
+msgid "UNIX timestamp %lld is outside of the range supported by Windows"
+msgstr "Datarea UNIX %lld este în afara intervalului suportate de Windows"
+
+#: gio/glocalfileinfo.c:2507
+#, c-format
+msgid "File name “%s” cannot be converted to UTF-16"
+msgstr "Numele de fișier „%s” nu poate fi convertit la UTF-16"
+
+#: gio/glocalfileinfo.c:2526
+#, c-format
+msgid "File “%s” cannot be opened: Windows Error %lu"
+msgstr "Fișierul „%s” nu poate fi deschis: eroare de Windows %lu"
+
+#: gio/glocalfileinfo.c:2539
+#, c-format
+msgid "Error setting modification or access time for file “%s”: %lu"
+msgstr ""
+"Eroare la stabilirea modificării sau timpului de acces pentru fișierul „%s”: "
+"%lu"
+
+#: gio/glocalfileinfo.c:2640
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Eroare la schimbarea datei de acces ori modificare: %s"
 
-#: gio/glocalfileinfo.c:2477
+#: gio/glocalfileinfo.c:2663
 msgid "SELinux context must be non-NULL"
 msgstr "Contextul SELinux trebuie să fie diferit de NULL"
 
-#: gio/glocalfileinfo.c:2492
+#: gio/glocalfileinfo.c:2678
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Eroare la definirea contextului SELinux: %s"
 
-#: gio/glocalfileinfo.c:2499
+#: gio/glocalfileinfo.c:2685
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nu este activat pentru acest sistem"
 
-#: gio/glocalfileinfo.c:2591
+#: gio/glocalfileinfo.c:2777
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Definirea atributului %s nu este implementată"
@@ -4196,12 +4234,12 @@ msgstr "Nu s-a așteptat un mesaj de control, dar s-a primit %d"
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Eroare la dezactivarea SO_PASSCRED: %s"
 
-#: gio/gunixinputstream.c:372 gio/gunixinputstream.c:393
+#: gio/gunixinputstream.c:362 gio/gunixinputstream.c:383
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "Eroare la citirea din descriptorul de fișier: %s"
 
-#: gio/gunixinputstream.c:426 gio/gunixoutputstream.c:535
+#: gio/gunixinputstream.c:416 gio/gunixoutputstream.c:525
 #: gio/gwin32inputstream.c:217 gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
@@ -4211,9 +4249,9 @@ msgstr "Eroare la închiderea descriptorului de fișier: %s"
 msgid "Filesystem root"
 msgstr "Rădăcina sistemului de fișiere"
 
-#: gio/gunixoutputstream.c:372 gio/gunixoutputstream.c:392
-#: gio/gunixoutputstream.c:479 gio/gunixoutputstream.c:499
-#: gio/gunixoutputstream.c:676
+#: gio/gunixoutputstream.c:362 gio/gunixoutputstream.c:382
+#: gio/gunixoutputstream.c:469 gio/gunixoutputstream.c:489
+#: gio/gunixoutputstream.c:635
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "Eroare la scrierea în descriptorul de fișier: %s"
