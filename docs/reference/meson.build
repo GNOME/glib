@@ -52,7 +52,7 @@ if get_option('gtk_doc')
   endif
   # Check we have the minimum gtk-doc version required. Older versions won't
   # generate correct documentation.
-  dependency('gtk-doc', version : '>=1.32',
+  dependency('gtk-doc', version : '>=1.33',
     fallback : ['gtk-doc', 'dummy_dep'],
     default_options : ['tests=false'])
 endif
