@@ -2204,7 +2204,9 @@ g_local_file_trash (GFile         *file,
 			  original_name_escaped, delete_time);
   g_free (delete_time);
 
-  g_file_set_contents (infofile, data, -1, NULL);
+  g_file_set_contents_full (infofile, data, -1,
+                            G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING,
+                            0600, NULL);
 
   /* TODO: Maybe we should verify that you can delete the file from the trash
    * before moving it? OTOH, that is hard, as it needs a recursive scan
