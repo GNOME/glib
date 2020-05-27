@@ -1219,8 +1219,7 @@ steal_fd (int *fd_ptr)
  *
  * Writes all of @contents to a file named @filename. This is a convenience
  * wrapper around calling g_file_set_contents() with `flags` set to
- * `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING` and
- * `mode` set to `0666`.
+ * %G_FILE_SET_CONTENTS_CONSISTENT and `mode` set to `0666`.
  *
  * Returns: %TRUE on success, %FALSE if an error occurred
  *
@@ -1233,8 +1232,7 @@ g_file_set_contents (const gchar  *filename,
                      GError      **error)
 {
   return g_file_set_contents_full (filename, contents, length,
-                                   G_FILE_SET_CONTENTS_CONSISTENT |
-                                   G_FILE_SET_CONTENTS_ONLY_EXISTING,
+                                   G_FILE_SET_CONTENTS_CONSISTENT,
                                    0666, error);
 }
 
