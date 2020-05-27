@@ -1613,7 +1613,9 @@ G_FILE_ERROR
 GFileTest
 g_file_error_from_errno
 g_file_get_contents
+GFileSetContentsFlags
 g_file_set_contents
+g_file_set_contents_full
 g_file_test
 g_mkstemp
 g_mkstemp_full
