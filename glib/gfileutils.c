@@ -1050,13 +1050,48 @@ rename_file (const char  *old_name,
   return TRUE;
 }
 
+static gboolean
+fd_should_be_fsynced (int                    fd,
+                      const gchar           *test_file,
+                      GFileSetContentsFlags  flags)
+{
+#ifdef HAVE_FSYNC
+  struct stat statbuf;
+
+#ifdef BTRFS_SUPER_MAGIC
+  {
+    struct statfs buf;
+
+    /* On Linux, on btrfs, skip the fsync since rename-over-existing is
+     * guaranteed to be atomic and this is the only case in which we
+     * would fsync() anyway.
+     */
+
+    if (fstatfs (fd, &buf) == 0 && buf.f_type == BTRFS_SUPER_MAGIC)
+      return FALSE;
+  }
+#endif  /* BTRFS_SUPER_MAGIC */
+
+  errno = 0;
+  /* If the final destination exists and is > 0 bytes, we want to sync the
+   * newly written file to ensure the data is on disk when we rename over
+   * the destination. Otherwise if we get a system crash we can lose both
+   * the new and the old file on some filesystems. (I.E. those that don't
+   * guarantee the data is written to the disk before the metadata.)
+   */
+  return (g_lstat (test_file, &statbuf) == 0 && statbuf.st_size > 0);
+#else  /* if !HAVE_FSYNC */
+  return FALSE;
+#endif  /* !HAVE_FSYNC */
+}
+
 /* closes @fd once it’s finished (on success or error) */
 static gboolean
 write_to_file (const gchar  *contents,
                gssize        length,
                int           fd,
                const gchar  *dest_file,
-               const gchar  *test_file,
+               gboolean      do_fsync,
                GError      **err)
 {
 #ifdef HAVE_FALLOCATE
@@ -1094,46 +1129,19 @@ write_to_file (const gchar  *contents,
       length -= s;
     }
 
-#ifdef BTRFS_SUPER_MAGIC
-  {
-    struct statfs buf;
-
-    /* On Linux, on btrfs, skip the fsync since rename-over-existing is
-     * guaranteed to be atomic and this is the only case in which we
-     * would fsync() anyway.
-     */
-
-    if (fstatfs (fd, &buf) == 0 && buf.f_type == BTRFS_SUPER_MAGIC)
-      goto no_fsync;
-  }
-#endif
 
 #ifdef HAVE_FSYNC
-  {
-    struct stat statbuf;
+  errno = 0;
+  if (do_fsync && fsync (fd) != 0)
+    {
+      int saved_errno = errno;
+      set_file_error (err,
+                      dest_file, _("Failed to write file “%s”: fsync() failed: %s"),
+                      saved_errno);
+      close (fd);
 
-    errno = 0;
-    /* If the final destination exists and is > 0 bytes, we want to sync the
-     * newly written file to ensure the data is on disk when we rename over
-     * the destination. Otherwise if we get a system crash we can lose both
-     * the new and the old file on some filesystems. (I.E. those that don't
-     * guarantee the data is written to the disk before the metadata.)
-     */
-    if (g_lstat (dest_file, &statbuf) == 0 && statbuf.st_size > 0 && fsync (fd) != 0)
-      {
-        int saved_errno = errno;
-        set_file_error (err,
-                        dest_file, _("Failed to write file “%s”: fsync() failed: %s"),
-                        saved_errno);
-        close (fd);
-
-        return FALSE;
-      }
-  }
-#endif
-
-#ifdef BTRFS_SUPER_MAGIC
- no_fsync:
+      return FALSE;
+    }
 #endif
 
   errno = 0;
@@ -1159,6 +1167,7 @@ write_to_temp_file (const gchar  *contents,
 {
   gchar *tmp_name = NULL;
   int fd;
+  gboolean do_fsync;
 
   tmp_name = g_strdup_printf ("%s.XXXXXX", dest_file);
 
@@ -1175,7 +1184,8 @@ write_to_temp_file (const gchar  *contents,
       return NULL;
     }
 
-  if (!write_to_file (contents, length, steal_fd (&fd), tmp_name, dest_file, err))
+  do_fsync = fd_should_be_fsynced (fd, dest_file, flags);
+  if (!write_to_file (contents, length, steal_fd (&fd), tmp_name, do_fsync, err))
     {
       g_unlink (tmp_name);
       g_free (tmp_name);
