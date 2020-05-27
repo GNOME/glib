@@ -1088,7 +1088,7 @@ fd_should_be_fsynced (int                    fd,
 /* closes @fd once it’s finished (on success or error) */
 static gboolean
 write_to_file (const gchar  *contents,
-               gssize        length,
+               gsize         length,
                int           fd,
                const gchar  *dest_file,
                gboolean      do_fsync,
@@ -1161,7 +1161,7 @@ steal_fd (int *fd_ptr)
 
 static gchar *
 write_to_temp_file (const gchar  *contents,
-                    gssize        length,
+                    gsize         length,
                     const gchar  *dest_file,
                     GError      **err)
 {
@@ -1288,11 +1288,11 @@ g_file_set_contents_full (const gchar            *filename,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail (contents != NULL || length == 0, FALSE);
   g_return_val_if_fail (length >= -1, FALSE);
-  
-  if (length == -1)
+
+  if (length < 0)
     length = strlen (contents);
 
-  tmp_filename = write_to_temp_file (contents, length, filename, error);
+  tmp_filename = write_to_temp_file (contents, (gsize) length, filename, error);
   
   if (!tmp_filename)
     {
