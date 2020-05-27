@@ -1661,7 +1661,7 @@ g_freopen (const gchar *filename,
  * @fd: a file descriptor
  *
  * A wrapper for the POSIX `fsync()` function. On Windows, `_commit()` will be
- * used.
+ * used. On macOS, `fcntl(F_FULLFSYNC)` will be used.
  * The `fsync()` function is used to synchronize a file's in-core
  * state with that of the disk.
  *
@@ -1679,10 +1679,14 @@ g_fsync (gint fd)
 {
 #ifdef G_OS_WIN32
   return _commit (fd);
-#elif defined(HAVE_FSYNC)
+#elif defined(HAVE_FSYNC) || defined(HAVE_FCNTL_F_FULLFSYNC)
   int retval;
   do
+#ifdef HAVE_FCNTL_F_FULLFSYNC
+    retval = fcntl (fd, F_FULLFSYNC, 0);
+#else
     retval = fsync (fd);
+#endif
   while (G_UNLIKELY (retval < 0 && errno == EINTR));
   return retval;
 #else
