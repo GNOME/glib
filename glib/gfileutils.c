@@ -1179,6 +1179,34 @@ write_to_temp_file (const gchar  *contents,
  * @length: length of @contents, or -1 if @contents is a nul-terminated string
  * @error: return location for a #GError, or %NULL
  *
+ * Writes all of @contents to a file named @filename. This is a convenience
+ * wrapper around calling g_file_set_contents() with `flags` set to
+ * `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING`.
+ *
+ * Returns: %TRUE on success, %FALSE if an error occurred
+ *
+ * Since: 2.8
+ */
+gboolean
+g_file_set_contents (const gchar  *filename,
+                     const gchar  *contents,
+                     gssize        length,
+                     GError      **error)
+{
+  return g_file_set_contents_full (filename, contents, length,
+                                   G_FILE_SET_CONTENTS_CONSISTENT |
+                                   G_FILE_SET_CONTENTS_ONLY_EXISTING, error);
+}
+
+/**
+ * g_file_set_contents_full:
+ * @filename: (type filename): name of a file to write @contents to, in the GLib file name
+ *   encoding
+ * @contents: (array length=length) (element-type guint8): string to write to the file
+ * @length: length of @contents, or -1 if @contents is a nul-terminated string
+ * @flags: flags controlling the safety vs speed of the operation
+ * @error: return location for a #GError, or %NULL
+ *
  * Writes all of @contents to a file named @filename, with good error checking.
  * If a file called @filename already exists it will be overwritten.
  *
@@ -1218,13 +1246,14 @@ write_to_temp_file (const gchar  *contents,
  *
  * Returns: %TRUE on success, %FALSE if an error occurred
  *
- * Since: 2.8
+ * Since: 2.66
  */
 gboolean
-g_file_set_contents (const gchar  *filename,
-		     const gchar  *contents,
-		     gssize	   length,
-		     GError	 **error)
+g_file_set_contents_full (const gchar            *filename,
+                          const gchar            *contents,
+                          gssize                  length,
+                          GFileSetContentsFlags   flags,
+                          GError                **error)
 {
   gchar *tmp_filename;
   gboolean retval;
