@@ -4611,7 +4611,9 @@ g_key_file_parse_comment_as_value (GKeyFile      *key_file,
  * @error: a pointer to a %NULL #GError, or %NULL
  *
  * Writes the contents of @key_file to @filename using
- * g_file_set_contents().
+ * g_file_set_contents(). If you need stricter guarantees about durability of
+ * the written file than are provided by g_file_set_contents(), use
+ * g_file_set_contents_full() with the return value of g_key_file_to_data().
  *
  * This function can fail for any of the reasons that
  * g_file_set_contents() may fail.
