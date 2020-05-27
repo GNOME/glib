@@ -130,6 +130,7 @@ gboolean g_file_set_contents_full (const gchar            *filename,
                                    const gchar            *contents,
                                    gssize                  length,
                                    GFileSetContentsFlags   flags,
+                                   int                     mode,
                                    GError                **error);
 G_GNUC_END_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_IN_ALL
