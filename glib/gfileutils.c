@@ -1066,7 +1066,7 @@ rename_file (const char  *old_name,
 
       if (dir_fd >= 0)
         {
-          fsync (dir_fd);
+          g_fsync (dir_fd);
           g_close (dir_fd, NULL);
         }
 
@@ -1182,7 +1182,7 @@ write_to_file (const gchar  *contents,
 
 #ifdef HAVE_FSYNC
   errno = 0;
-  if (do_fsync && fsync (fd) != 0)
+  if (do_fsync && g_fsync (fd) != 0)
     {
       int saved_errno = errno;
       set_file_error (err,
