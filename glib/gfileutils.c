@@ -1050,32 +1050,15 @@ rename_file (const char  *old_name,
   return TRUE;
 }
 
-static gchar *
-write_to_temp_file (const gchar  *contents,
-		    gssize        length,
-		    const gchar  *dest_file,
-		    GError      **err)
+/* closes @fd once it’s finished (on success or error) */
+static gboolean
+write_to_file (const gchar  *contents,
+               gssize        length,
+               int           fd,
+               const gchar  *dest_file,
+               const gchar  *test_file,
+               GError      **err)
 {
-  gchar *tmp_name;
-  gchar *retval;
-  gint fd;
-
-  retval = NULL;
-
-  tmp_name = g_strdup_printf ("%s.XXXXXX", dest_file);
-
-  errno = 0;
-  fd = g_mkstemp_full (tmp_name, O_RDWR | O_BINARY, 0666);
-
-  if (fd == -1)
-    {
-      int saved_errno = errno;
-      set_file_error (err,
-                      tmp_name, _("Failed to create file “%s”: %s"),
-                      saved_errno);
-      goto out;
-    }
-
 #ifdef HAVE_FALLOCATE
   if (length > 0)
     {
@@ -1098,12 +1081,11 @@ write_to_temp_file (const gchar  *contents,
             continue;
 
           set_file_error (err,
-                          tmp_name, _("Failed to write file “%s”: write() failed: %s"),
+                          dest_file, _("Failed to write file “%s”: write() failed: %s"),
                           saved_errno);
           close (fd);
-          g_unlink (tmp_name);
 
-          goto out;
+          return FALSE;
         }
 
       g_assert (s <= length);
@@ -1141,12 +1123,11 @@ write_to_temp_file (const gchar  *contents,
       {
         int saved_errno = errno;
         set_file_error (err,
-                        tmp_name, _("Failed to write file “%s”: fsync() failed: %s"),
+                        dest_file, _("Failed to write file “%s”: fsync() failed: %s"),
                         saved_errno);
         close (fd);
-        g_unlink (tmp_name);
 
-        goto out;
+        return FALSE;
       }
   }
 #endif
@@ -1157,18 +1138,52 @@ write_to_temp_file (const gchar  *contents,
 
   errno = 0;
   if (!g_close (fd, err))
-    {
-      g_unlink (tmp_name);
+    return FALSE;
 
-      goto out;
+  return TRUE;
+}
+
+static inline int
+steal_fd (int *fd_ptr)
+{
+  int fd = *fd_ptr;
+  *fd_ptr = -1;
+  return fd;
+}
+
+static gchar *
+write_to_temp_file (const gchar  *contents,
+                    gssize        length,
+                    const gchar  *dest_file,
+                    GError      **err)
+{
+  gchar *tmp_name = NULL;
+  int fd;
+
+  tmp_name = g_strdup_printf ("%s.XXXXXX", dest_file);
+
+  errno = 0;
+  fd = g_mkstemp_full (tmp_name, O_RDWR | O_BINARY, 0666);
+
+  if (fd == -1)
+    {
+      int saved_errno = errno;
+      set_file_error (err,
+                      tmp_name, _("Failed to create file “%s”: %s"),
+                      saved_errno);
+      g_free (tmp_name);
+      return NULL;
     }
 
-  retval = g_strdup (tmp_name);
+  if (!write_to_file (contents, length, steal_fd (&fd), tmp_name, dest_file, err))
+    {
+      g_unlink (tmp_name);
+      g_free (tmp_name);
 
- out:
-  g_free (tmp_name);
+      return NULL;
+    }
 
-  return retval;
+  return g_steal_pointer (&tmp_name);
 }
 
 /**
