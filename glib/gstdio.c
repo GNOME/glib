@@ -1660,9 +1660,12 @@ g_freopen (const gchar *filename,
  * g_fsync:
  * @fd: a file descriptor
  *
- * A wrapper for the POSIX fsync() function (_commit() on Windows).
- * The fsync() function is used to synchronize a file's in-core
+ * A wrapper for the POSIX `fsync()` function. On Windows, `_commit()` will be
+ * used.
+ * The `fsync()` function is used to synchronize a file's in-core
  * state with that of the disk.
+ *
+ * This wrapper will handle retrying on `EINTR`.
  *
  * See the C library manual for more details about fsync().
  *
@@ -1676,8 +1679,14 @@ g_fsync (gint fd)
 {
 #ifdef G_OS_WIN32
   return _commit (fd);
+#elif defined(HAVE_FSYNC)
+  int retval;
+  do
+    retval = fsync (fd);
+  while (G_UNLIKELY (retval < 0 && errno == EINTR));
+  return retval;
 #else
-  return fsync (fd);
+  return 0;
 #endif
 }
 
