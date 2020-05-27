@@ -1219,7 +1219,8 @@ steal_fd (int *fd_ptr)
  *
  * Writes all of @contents to a file named @filename. This is a convenience
  * wrapper around calling g_file_set_contents() with `flags` set to
- * `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING`.
+ * `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING` and
+ * `mode` set to `0666`.
  *
  * Returns: %TRUE on success, %FALSE if an error occurred
  *
@@ -1233,7 +1234,8 @@ g_file_set_contents (const gchar  *filename,
 {
   return g_file_set_contents_full (filename, contents, length,
                                    G_FILE_SET_CONTENTS_CONSISTENT |
-                                   G_FILE_SET_CONTENTS_ONLY_EXISTING, error);
+                                   G_FILE_SET_CONTENTS_ONLY_EXISTING,
+                                   0666, error);
 }
 
 /**
@@ -1243,6 +1245,7 @@ g_file_set_contents (const gchar  *filename,
  * @contents: (array length=length) (element-type guint8): string to write to the file
  * @length: length of @contents, or -1 if @contents is a nul-terminated string
  * @flags: flags controlling the safety vs speed of the operation
+ * @mode: file mode, as passed to `open()`; typically this will be `0666`
  * @error: return location for a #GError, or %NULL
  *
  * Writes all of @contents to a file named @filename, with good error checking.
@@ -1296,6 +1299,10 @@ g_file_set_contents (const gchar  *filename,
  * Note that the name for the temporary file is constructed by appending up
  * to 7 characters to @filename.
  *
+ * If the file didn’t exist before and is created, it will be given the
+ * permissions from @mode. Otherwise, the permissions of the existing file may
+ * be changed to @mode depending on @flags, or they may remain unchanged.
+ *
  * Returns: %TRUE on success, %FALSE if an error occurred
  *
  * Since: 2.66
@@ -1305,6 +1312,7 @@ g_file_set_contents_full (const gchar            *filename,
                           const gchar            *contents,
                           gssize                  length,
                           GFileSetContentsFlags   flags,
+                          int                     mode,
                           GError                **error)
 {
   g_return_val_if_fail (filename != NULL, FALSE);
@@ -1340,7 +1348,7 @@ g_file_set_contents_full (const gchar            *filename,
       tmp_filename = g_strdup_printf ("%s.XXXXXX", filename);
 
       errno = 0;
-      fd = g_mkstemp_full (tmp_filename, O_RDWR | O_BINARY, 0666);
+      fd = g_mkstemp_full (tmp_filename, O_RDWR | O_BINARY, mode);
 
       if (fd == -1)
         {
@@ -1426,7 +1434,7 @@ consistent_out:
 #endif
 
       errno = 0;
-      direct_fd = g_open (filename, open_flags, 0666);
+      direct_fd = g_open (filename, open_flags, mode);
 
       if (direct_fd < 0)
         {
@@ -1440,7 +1448,7 @@ consistent_out:
           if (saved_errno == ELOOP)
             return g_file_set_contents_full (filename, contents, length,
                                              flags | G_FILE_SET_CONTENTS_CONSISTENT,
-                                             error);
+                                             mode, error);
 #endif
 
           set_file_error (error,
