@@ -13,6 +13,7 @@ c_link_args = ['-arch', 'arm64', '-isysroot', '/Applications/Xcode.app/Contents/
 cpp_link_args = ['-arch', 'arm64', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS13.2.sdk', '-Wl,-iphoneos_version_min,11.0']
 objc_link_args = ['-arch', 'arm64', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS13.2.sdk', '-Wl,-iphoneos_version_min,11.0']
 objcpp_link_args = ['-arch', 'arm64', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS13.2.sdk', '-Wl,-iphoneos_version_min,11.0']
+growing_stack = true
 
 
 [binaries]
