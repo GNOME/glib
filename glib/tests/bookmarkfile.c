@@ -307,6 +307,100 @@ test_misc (void)
   g_bookmark_file_free (bookmark);
 }
 
+static void
+test_deprecated (void)
+{
+  GBookmarkFile *file = NULL;
+  GError *local_error = NULL;
+  time_t t, now;
+  gboolean retval;
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+  now = time (NULL);
+  file = g_bookmark_file_new ();
+
+  /* added */
+  g_bookmark_file_set_added (file, "file://test", -1);
+  t = g_bookmark_file_get_added (file, "file://test", &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (t, >=, now);
+
+  g_bookmark_file_set_added (file, "file://test", 1234);
+  t = g_bookmark_file_get_added (file, "file://test", &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (t, ==, 1234);
+
+  t = g_bookmark_file_get_added (file, "file://not-exist", &local_error);
+  g_assert_error (local_error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_assert_cmpint (t, ==, (time_t) -1);
+  g_clear_error (&local_error);
+
+  /* modified */
+  g_bookmark_file_set_modified (file, "file://test", -1);
+  t = g_bookmark_file_get_modified (file, "file://test", &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (t, >=, now);
+
+  g_bookmark_file_set_modified (file, "file://test", 1234);
+  t = g_bookmark_file_get_modified (file, "file://test", &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (t, ==, 1234);
+
+  t = g_bookmark_file_get_modified (file, "file://not-exist", &local_error);
+  g_assert_error (local_error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_assert_cmpint (t, ==, (time_t) -1);
+  g_clear_error (&local_error);
+
+  /* visited */
+  g_bookmark_file_set_visited (file, "file://test", -1);
+  t = g_bookmark_file_get_visited (file, "file://test", &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (t, >=, now);
+
+  g_bookmark_file_set_visited (file, "file://test", 1234);
+  t = g_bookmark_file_get_visited (file, "file://test", &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (t, ==, 1234);
+
+  t = g_bookmark_file_get_visited (file, "file://not-exist", &local_error);
+  g_assert_error (local_error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_assert_cmpint (t, ==, (time_t) -1);
+  g_clear_error (&local_error);
+
+  /* set app info */
+  retval = g_bookmark_file_set_app_info (file, "file://test", "app", "/path/to/app", 1, -1, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_true (retval);
+
+  retval = g_bookmark_file_get_app_info (file, "file://test", "app", NULL, NULL, &t, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_true (retval);
+  g_assert_cmpint (t, >=, now);
+
+  retval = g_bookmark_file_set_app_info (file, "file://test", "app", "/path/to/app", 1, 1234, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_true (retval);
+
+  retval = g_bookmark_file_get_app_info (file, "file://test", "app", NULL, NULL, &t, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_true (retval);
+  g_assert_cmpint (t, ==, 1234);
+
+  retval = g_bookmark_file_get_app_info (file, "file://test", "app", NULL, NULL, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_true (retval);
+
+  retval = g_bookmark_file_get_app_info (file, "file://not-exist", "app", NULL, NULL, &t, &local_error);
+  g_assert_error (local_error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_assert_false (retval);
+  g_clear_error (&local_error);
+
+  g_bookmark_file_free (file);
+
+G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
 static gboolean
 test_load (GBookmarkFile *bookmark,
            const gchar   *filename)
@@ -577,6 +671,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/bookmarks/to-file", test_to_file);
   g_test_add_func ("/bookmarks/move-item", test_move_item);
   g_test_add_func ("/bookmarks/misc", test_misc);
+  g_test_add_func ("/bookmarks/deprecated", test_deprecated);
 
   error = NULL;
   path = g_test_build_filename (G_TEST_DIST, "bookmarks", NULL);
