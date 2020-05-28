@@ -512,8 +512,13 @@ functions = [
   'wcslen',
   'wcsnlen',
   'sysctlbyname',
-  '_NSGetEnviron',
 ]
+
+# _NSGetEnviron is available on iOS too, but its usage gets apps rejected from
+# the app store since it's considered 'private API'
+if host_system == 'darwin'
+  functions += ['_NSGetEnviron']
+endif
 
 if glib_conf.has('HAVE_SYS_STATVFS_H')
   functions += ['statvfs']
