@@ -356,21 +356,19 @@ libglib = library('glib-2.0',
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
-  dependencies : pcre_deps + [thread_dep, libintl, librt] + libiconv + platform_deps + gnulib_libm_dependency,
+  dependencies : pcre_deps + [thread_dep, librt] + libintl_deps + libiconv + platform_deps + gnulib_libm_dependency,
   c_args : glib_c_args,
   objc_args : glib_c_args,
 )
 
 libglib_dep = declare_dependency(
   link_with : libglib,
-  # thread_dep doesn't get pulled in from libglib atm,
-  # see https://github.com/mesonbuild/meson/issues/1426
-  dependencies : [thread_dep, libintl],
+  dependencies : libintl_deps,
   # We sadly need to export configinc here because everyone includes <glib/*.h>
   include_directories : [configinc, glibinc])
 
 pkg.generate(libglib,
-  libraries : [libintl],
+  libraries : [libintl_deps],
   libraries_private : [osx_ldflags, win32_ldflags],
   subdirs : ['glib-2.0'],
   extra_cflags : ['-I${libdir}/glib-2.0/include'] + win32_cflags,
