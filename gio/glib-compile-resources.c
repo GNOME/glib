@@ -1061,6 +1061,7 @@ main (int argc, char **argv)
       guint8 *data;
       gsize data_size;
       gsize i;
+      const char *export = "G_MODULE_EXPORT";
 
       if (!g_file_get_contents (binary_target, (char **)&data,
 				&data_size, NULL))
@@ -1080,6 +1081,9 @@ main (int argc, char **argv)
           g_hash_table_unref (files);
 	  return 1;
 	}
+
+      if (internal)
+        export = "G_GNUC_INTERNAL";
 
       g_fprintf (file,
 	       "#include <gio/gio.h>\n"
@@ -1140,30 +1144,36 @@ main (int argc, char **argv)
       g_fprintf (file,
 	       "\n"
 	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data)%s, NULL, NULL, NULL };\n"
-	       "%s GResource *%s_get_resource (void);\n"
+	       "\n"
+	       "%s\n"
+	       "GResource *%s_get_resource (void);\n"
 	       "GResource *%s_get_resource (void)\n"
 	       "{\n"
 	       "  return g_static_resource_get_resource (&static_resource);\n"
 	       "}\n",
-	       c_name, c_name, (external_data ? "" : " - 1 /* nul terminator */"), linkage, c_name, c_name);
+	       c_name, c_name, (external_data ? "" : " - 1 /* nul terminator */"),
+	       export, c_name, c_name);
 
 
       if (manual_register)
 	{
 	  g_fprintf (file,
 		   "\n"
-		   "%s void %s_unregister_resource (void);\n"
+		   "%s\n"
+		   "void %s_unregister_resource (void);\n"
 		   "void %s_unregister_resource (void)\n"
 		   "{\n"
 		   "  g_static_resource_fini (&static_resource);\n"
 		   "}\n"
 		   "\n"
-		   "%s void %s_register_resource (void);\n"
+		   "%s\n"
+		   "void %s_register_resource (void);\n"
 		   "void %s_register_resource (void)\n"
 		   "{\n"
 		   "  g_static_resource_init (&static_resource);\n"
 		   "}\n",
-		   linkage, c_name, c_name, linkage, c_name, c_name);
+		   export, c_name, c_name,
+		   export, c_name, c_name);
 	}
       else
 	{
