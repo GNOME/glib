@@ -33,6 +33,16 @@ endif
 
 host_system = host_machine.system()
 
+if host_system == 'darwin'
+  ios_test_code = '''#include <TargetConditionals.h>
+  #if ! TARGET_OS_IPHONE
+  #error "Not iOS/tvOS/watchOS/iPhoneSimulator"
+  #endif'''
+  if cc.compiles(ios_test_code, name : 'building for iOS')
+    host_system = 'ios'
+  endif
+endif
+
 glib_version = meson.project_version()
 glib_api_version = '2.0'
 version_arr = glib_version.split('.')
