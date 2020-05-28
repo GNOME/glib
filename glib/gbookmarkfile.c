@@ -2507,6 +2507,8 @@ g_bookmark_file_get_is_private (GBookmarkFile  *bookmark,
  * If no bookmark for @uri is found then it is created.
  *
  * Since: 2.12
+ * Deprecated: 2.66: Use g_bookmark_file_set_added_date_time() instead, as
+ *    `time_t` is deprecated due to the year 2038 problem.
  */
 void
 g_bookmark_file_set_added (GBookmarkFile *bookmark,
@@ -2568,6 +2570,8 @@ g_bookmark_file_set_added_date_time (GBookmarkFile *bookmark,
  * Returns: a timestamp
  *
  * Since: 2.12
+ * Deprecated: 2.66: Use g_bookmark_file_get_added_date_time() instead, as
+ *    `time_t` is deprecated due to the year 2038 problem.
  */
 time_t
 g_bookmark_file_get_added (GBookmarkFile  *bookmark,
@@ -2633,6 +2637,8 @@ g_bookmark_file_get_added_date_time (GBookmarkFile  *bookmark,
  * g_bookmark_file_set_visited_date_time().
  *
  * Since: 2.12
+ * Deprecated: 2.66: Use g_bookmark_file_set_modified_date_time() instead, as
+ *    `time_t` is deprecated due to the year 2038 problem.
  */
 void
 g_bookmark_file_set_modified (GBookmarkFile *bookmark,
@@ -2697,6 +2703,8 @@ g_bookmark_file_set_modified_date_time (GBookmarkFile *bookmark,
  * Returns: a timestamp
  *
  * Since: 2.12
+ * Deprecated: 2.66: Use g_bookmark_file_get_modified_date_time() instead, as
+ *    `time_t` is deprecated due to the year 2038 problem.
  */
 time_t
 g_bookmark_file_get_modified (GBookmarkFile  *bookmark,
@@ -2763,6 +2771,8 @@ g_bookmark_file_get_modified_date_time (GBookmarkFile  *bookmark,
  * does not affect the "modified" time.
  *
  * Since: 2.12
+ * Deprecated: 2.66: Use g_bookmark_file_set_visited_date_time() instead, as
+ *    `time_t` is deprecated due to the year 2038 problem.
  */
 void
 g_bookmark_file_set_visited (GBookmarkFile *bookmark,
@@ -2828,6 +2838,8 @@ g_bookmark_file_set_visited_date_time (GBookmarkFile *bookmark,
  * Returns: a timestamp.
  *
  * Since: 2.12
+ * Deprecated: 2.66: Use g_bookmark_file_get_visited_date_time() instead, as
+ *    `time_t` is deprecated due to the year 2038 problem.
  */
 time_t
 g_bookmark_file_get_visited (GBookmarkFile  *bookmark,
@@ -3374,6 +3386,8 @@ g_bookmark_file_has_application (GBookmarkFile  *bookmark,
  *   changed.
  *
  * Since: 2.12
+ * Deprecated: 2.66: Use g_bookmark_file_set_application_info() instead, as
+ *    `time_t` is deprecated due to the year 2038 problem.
  */
 gboolean
 g_bookmark_file_set_app_info (GBookmarkFile  *bookmark,
@@ -3606,6 +3620,8 @@ expand_exec_line (const gchar *exec_fmt,
  * Returns: %TRUE on success.
  *
  * Since: 2.12
+ * Deprecated: 2.66: Use g_bookmark_file_get_application_info() instead, as
+ *    `time_t` is deprecated due to the year 2038 problem.
  */
 gboolean
 g_bookmark_file_get_app_info (GBookmarkFile  *bookmark,
