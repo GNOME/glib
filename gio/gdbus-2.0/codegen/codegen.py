@@ -62,7 +62,8 @@ def generate_header_guard(header_name):
 class HeaderCodeGenerator:
     def __init__(self, ifaces, namespace, generate_objmanager,
                  generate_autocleanup, header_name, input_files_basenames,
-                 use_pragma, glib_min_required, outfile):
+                 use_pragma, glib_min_required,
+                 symbol_decorator, symbol_decorator_header, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.generate_objmanager = generate_objmanager
@@ -71,6 +72,8 @@ class HeaderCodeGenerator:
         self.input_files_basenames = input_files_basenames
         self.use_pragma = use_pragma
         self.glib_min_required = glib_min_required
+        self.symbol_decorator = symbol_decorator
+        self.symbol_decorator_header = symbol_decorator_header
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
@@ -85,6 +88,10 @@ class HeaderCodeGenerator:
         else:
             self.outfile.write('#ifndef __{!s}__\n'.format(self.header_guard))
             self.outfile.write('#define __{!s}__\n'.format(self.header_guard))
+
+        if self.symbol_decorator_header is not None:
+            self.outfile.write('\n')
+            self.outfile.write('#include "%s"\n' % self.symbol_decorator_header)
 
         self.outfile.write('\n')
         self.outfile.write('#include <gio/gio.h>\n')
@@ -171,9 +178,15 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%s, g_object_unref)\n' % (i.camel_name))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GType %s_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GDBusInterfaceInfo *%s_interface_info (void);\n'%(i.name_lower))
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('guint %s_override_properties (GObjectClass *klass, guint property_id_begin);\n'%(i.name_lower))
             self.outfile.write('\n')
 
@@ -182,6 +195,8 @@ class HeaderCodeGenerator:
                 self.outfile.write('\n')
                 self.outfile.write('/* D-Bus method call completion functions: */\n')
                 for m in i.methods:
+                    if self.symbol_decorator is not None:
+                        self.outfile.write('%s\n' % self.symbol_decorator)
                     if m.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('void %s_complete_%s (\n'
@@ -200,6 +215,8 @@ class HeaderCodeGenerator:
                 self.outfile.write('\n')
                 self.outfile.write('/* D-Bus signal emissions functions: */\n')
                 for s in i.signals:
+                    if self.symbol_decorator is not None:
+                        self.outfile.write('%s\n' % self.symbol_decorator)
                     if s.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('void %s_emit_%s (\n'
@@ -216,6 +233,8 @@ class HeaderCodeGenerator:
                 self.outfile.write('/* D-Bus method calls: */\n')
                 for m in i.methods:
                     # async begin
+                    if self.symbol_decorator is not None:
+                        self.outfile.write('%s\n' % self.symbol_decorator)
                     if m.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('void %s_call_%s (\n'
@@ -233,6 +252,8 @@ class HeaderCodeGenerator:
                                        '    gpointer user_data);\n')
                     self.outfile.write('\n')
                     # async finish
+                    if self.symbol_decorator is not None:
+                        self.outfile.write('%s\n' % self.symbol_decorator)
                     if m.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('gboolean %s_call_%s_finish (\n'
@@ -246,6 +267,8 @@ class HeaderCodeGenerator:
                                        '    GError **error);\n')
                     self.outfile.write('\n')
                     # sync
+                    if self.symbol_decorator is not None:
+                        self.outfile.write('%s\n' % self.symbol_decorator)
                     if m.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('gboolean %s_call_%s_sync (\n'
@@ -273,14 +296,20 @@ class HeaderCodeGenerator:
                 self.outfile.write('/* D-Bus property accessors: */\n')
                 for p in i.properties:
                     # getter
+                    if self.symbol_decorator is not None:
+                        self.outfile.write('%s\n' % self.symbol_decorator)
                     if p.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('%s%s_get_%s (%s *object);\n'%(p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name))
                     if p.arg.free_func != None:
+                        if self.symbol_decorator is not None:
+                            self.outfile.write('%s\n' % self.symbol_decorator)
                         if p.deprecated:
                             self.outfile.write('G_GNUC_DEPRECATED ')
                         self.outfile.write('%s%s_dup_%s (%s *object);\n'%(p.arg.ctype_in_dup, i.name_lower, p.name_lower, i.camel_name))
                     # setter
+                    if self.symbol_decorator is not None:
+                        self.outfile.write('%s\n' % self.symbol_decorator)
                     if p.deprecated:
                         self.outfile.write('G_GNUC_DEPRECATED ')
                     self.outfile.write('void %s_set_%s (%s *object, %svalue);\n'%(i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in, ))
@@ -313,6 +342,8 @@ class HeaderCodeGenerator:
             self.outfile.write('  GDBusProxyClass parent_class;\n')
             self.outfile.write('};\n')
             self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GType %s_proxy_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.outfile.write('\n')
             if self.generate_autocleanup in ('objects', 'all'):
@@ -320,6 +351,8 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sProxy, g_object_unref)\n' % (i.camel_name))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('void %s_proxy_new (\n'
@@ -331,12 +364,16 @@ class HeaderCodeGenerator:
                                '    GAsyncReadyCallback  callback,\n'
                                '    gpointer             user_data);\n'
                                %(i.name_lower))
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_proxy_new_finish (\n'
                                '    GAsyncResult        *res,\n'
                                '    GError             **error);\n'
                                %(i.camel_name, i.name_lower))
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_proxy_new_sync (\n'
@@ -348,6 +385,8 @@ class HeaderCodeGenerator:
                                '    GError             **error);\n'
                                %(i.camel_name, i.name_lower))
             self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('void %s_proxy_new_for_bus (\n'
@@ -359,12 +398,16 @@ class HeaderCodeGenerator:
                                '    GAsyncReadyCallback  callback,\n'
                                '    gpointer             user_data);\n'
                                %(i.name_lower))
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_proxy_new_for_bus_finish (\n'
                                '    GAsyncResult        *res,\n'
                                '    GError             **error);\n'
                                %(i.camel_name, i.name_lower))
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_proxy_new_for_bus_sync (\n'
@@ -404,6 +447,8 @@ class HeaderCodeGenerator:
             self.outfile.write('  GDBusInterfaceSkeletonClass parent_class;\n')
             self.outfile.write('};\n')
             self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GType %s_skeleton_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.outfile.write('\n')
             if self.generate_autocleanup in ('objects', 'all'):
@@ -411,6 +456,8 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sSkeleton, g_object_unref)\n' % (i.camel_name))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             if i.deprecated:
                 self.outfile.write('G_GNUC_DEPRECATED ')
             self.outfile.write('%s *%s_skeleton_new (void);\n'%(i.camel_name, i.name_lower))
@@ -436,6 +483,8 @@ class HeaderCodeGenerator:
                                '  GTypeInterface parent_iface;\n'
                                '};\n'
                                '\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GType %sobject_get_type (void) G_GNUC_CONST;\n'
                                '\n'
                                %(self.ns_lower))
@@ -445,11 +494,15 @@ class HeaderCodeGenerator:
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
             for i in self.ifaces:
+                if self.symbol_decorator is not None:
+                    self.outfile.write('%s\n' % self.symbol_decorator)
                 if i.deprecated:
                     self.outfile.write('G_GNUC_DEPRECATED ')
                 self.outfile.write('%s *%sobject_get_%s (%sObject *object);\n'
                                    %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
             for i in self.ifaces:
+                if self.symbol_decorator is not None:
+                    self.outfile.write('%s\n' % self.symbol_decorator)
                 if i.deprecated:
                     self.outfile.write('G_GNUC_DEPRECATED ')
                 self.outfile.write('%s *%sobject_peek_%s (%sObject *object);\n'
@@ -478,6 +531,8 @@ class HeaderCodeGenerator:
             self.outfile.write('  GDBusObjectProxyClass parent_class;\n')
             self.outfile.write('};\n')
             self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GType %sobject_proxy_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.outfile.write('\n')
             if self.generate_autocleanup in ('objects', 'all'):
@@ -485,6 +540,8 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectProxy, g_object_unref)\n' % (self.namespace))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('%sObjectProxy *%sobject_proxy_new (GDBusConnection *connection, const gchar *object_path);\n'%(self.namespace, self.ns_lower))
             self.outfile.write('\n')
             self.outfile.write('#define %sTYPE_OBJECT_SKELETON (%sobject_skeleton_get_type ())\n'%(self.ns_upper, self.ns_lower))
@@ -510,6 +567,8 @@ class HeaderCodeGenerator:
             self.outfile.write('  GDBusObjectSkeletonClass parent_class;\n')
             self.outfile.write('};\n')
             self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GType %sobject_skeleton_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.outfile.write('\n')
             if self.generate_autocleanup in ('objects', 'all'):
@@ -517,9 +576,13 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectSkeleton, g_object_unref)\n' % (self.namespace))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('%sObjectSkeleton *%sobject_skeleton_new (const gchar *object_path);\n'
                                %(self.namespace, self.ns_lower))
             for i in self.ifaces:
+                if self.symbol_decorator is not None:
+                    self.outfile.write('%s\n' % self.symbol_decorator)
                 if i.deprecated:
                     self.outfile.write('G_GNUC_DEPRECATED ')
                 self.outfile.write('void %sobject_skeleton_set_%s (%sObjectSkeleton *object, %s *interface_);\n'
@@ -556,10 +619,16 @@ class HeaderCodeGenerator:
                 self.outfile.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectManagerClient, g_object_unref)\n' % (self.namespace))
                 self.outfile.write('#endif\n')
                 self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GType %sobject_manager_client_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GType %sobject_manager_client_get_proxy_type (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data);\n'%(self.ns_lower))
             self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('void %sobject_manager_client_new (\n'
                                '    GDBusConnection        *connection,\n'
                                '    GDBusObjectManagerClientFlags  flags,\n'
@@ -569,10 +638,14 @@ class HeaderCodeGenerator:
                                '    GAsyncReadyCallback     callback,\n'
                                '    gpointer                user_data);\n'
                                %(self.ns_lower))
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GDBusObjectManager *%sobject_manager_client_new_finish (\n'
                                '    GAsyncResult        *res,\n'
                                '    GError             **error);\n'
                                %(self.ns_lower))
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GDBusObjectManager *%sobject_manager_client_new_sync (\n'
                                '    GDBusConnection        *connection,\n'
                                '    GDBusObjectManagerClientFlags  flags,\n'
@@ -582,6 +655,8 @@ class HeaderCodeGenerator:
                                '    GError                **error);\n'
                                %(self.ns_lower))
             self.outfile.write('\n')
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('void %sobject_manager_client_new_for_bus (\n'
                                '    GBusType                bus_type,\n'
                                '    GDBusObjectManagerClientFlags  flags,\n'
@@ -591,10 +666,14 @@ class HeaderCodeGenerator:
                                '    GAsyncReadyCallback     callback,\n'
                                '    gpointer                user_data);\n'
                                %(self.ns_lower))
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GDBusObjectManager *%sobject_manager_client_new_for_bus_finish (\n'
                                '    GAsyncResult        *res,\n'
                                '    GError             **error);\n'
                                %(self.ns_lower))
+            if self.symbol_decorator is not None:
+                self.outfile.write('%s\n' % self.symbol_decorator)
             self.outfile.write('GDBusObjectManager *%sobject_manager_client_new_for_bus_sync (\n'
                                '    GBusType                bus_type,\n'
                                '    GDBusObjectManagerClientFlags  flags,\n'
@@ -625,13 +704,18 @@ class HeaderCodeGenerator:
 # ----------------------------------------------------------------------------------------------------
 
 class InterfaceInfoHeaderCodeGenerator:
-    def __init__(self, ifaces, namespace, header_name, input_files_basenames, use_pragma, glib_min_required, outfile):
+    def __init__(self, ifaces, namespace, header_name, input_files_basenames, use_pragma,
+                 glib_min_required, symbol_decorator, symbol_decorator_header, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.header_guard = generate_header_guard(header_name)
         self.input_files_basenames = input_files_basenames
         self.use_pragma = use_pragma
         self.glib_min_required = glib_min_required
+        self.symbol_decorator = symbol_decorator
+        if self.symbol_decorator is None:
+            self.symbol_decorator = ''
+        self.symbol_decorator_header = symbol_decorator_header
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
@@ -647,6 +731,10 @@ class InterfaceInfoHeaderCodeGenerator:
             self.outfile.write('#ifndef __{!s}__\n'.format(self.header_guard))
             self.outfile.write('#define __{!s}__\n'.format(self.header_guard))
 
+        if self.symbol_decorator_header is not None:
+            self.outfile.write('\n')
+            self.outfile.write('#include "%s"\n' % self.symbol_decorator_header)
+
         self.outfile.write('\n')
         self.outfile.write('#include <gio/gio.h>\n')
         self.outfile.write('\n')
@@ -657,7 +745,8 @@ class InterfaceInfoHeaderCodeGenerator:
 
     def declare_infos(self):
         for i in self.ifaces:
-            self.outfile.write('extern const GDBusInterfaceInfo %s_interface;\n' % i.name_lower)
+            self.outfile.write('extern %s const GDBusInterfaceInfo %s_interface;\n' %
+                               (self.symbol_decorator, i.name_lower))
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -679,12 +768,14 @@ class InterfaceInfoHeaderCodeGenerator:
 # ----------------------------------------------------------------------------------------------------
 
 class InterfaceInfoBodyCodeGenerator:
-    def __init__(self, ifaces, namespace, header_name, input_files_basenames, glib_min_required, outfile):
+    def __init__(self, ifaces, namespace, header_name, input_files_basenames,
+                 glib_min_required, symbol_decoration_define, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.header_name = header_name
         self.input_files_basenames = input_files_basenames
         self.glib_min_required = glib_min_required
+        self.symbol_decoration_define = symbol_decoration_define
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
@@ -692,6 +783,11 @@ class InterfaceInfoBodyCodeGenerator:
     def generate_body_preamble(self):
         basenames = ', '.join(self.input_files_basenames)
         self.outfile.write(LICENSE_STR.format(config.VERSION, basenames))
+
+        if self.symbol_decoration_define is not None:
+            self.outfile.write('\n')
+            self.outfile.write('#define %s\n' % self.symbol_decoration_define)
+
         self.outfile.write('\n')
         self.outfile.write('#ifdef HAVE_CONFIG_H\n'
                            '#  include "config.h"\n'
@@ -912,7 +1008,8 @@ class InterfaceInfoBodyCodeGenerator:
 
 class CodeGenerator:
     def __init__(self, ifaces, namespace, generate_objmanager, header_name,
-                 input_files_basenames, docbook_gen, glib_min_required, outfile):
+                 input_files_basenames, docbook_gen, glib_min_required,
+                 symbol_decoration_define, outfile):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
         self.generate_objmanager = generate_objmanager
@@ -920,6 +1017,7 @@ class CodeGenerator:
         self.input_files_basenames = input_files_basenames
         self.docbook_gen = docbook_gen
         self.glib_min_required = glib_min_required
+        self.symbol_decoration_define = symbol_decoration_define
         self.outfile = outfile
 
     # ----------------------------------------------------------------------------------------------------
@@ -927,6 +1025,9 @@ class CodeGenerator:
     def generate_body_preamble(self):
         basenames = ', '.join(self.input_files_basenames)
         self.outfile.write(LICENSE_STR.format(config.VERSION, basenames))
+        if self.symbol_decoration_define is not None:
+            self.outfile.write('\n')
+            self.outfile.write('#define %s\n' % self.symbol_decoration_define)
         self.outfile.write('\n')
         self.outfile.write('#ifdef HAVE_CONFIG_H\n'
                            '#  include "config.h"\n'
