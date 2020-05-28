@@ -41,6 +41,9 @@
     <arg><option>--body</option></arg>
     <arg><option>--interface-info-header</option></arg>
     <arg><option>--interface-info-body</option></arg>
+    <arg><option>--symbol-decorator</option> <replaceable>DECORATOR</replaceable></arg>
+    <arg><option>--symbol-decorator-header</option> <replaceable>HEADER</replaceable></arg>
+    <arg><option>--symbol-decorator-define</option> <replaceable>DEFINE</replaceable></arg>
     <arg><option>--output</option> <replaceable>OUTFILE</replaceable></arg>
     <group choice="plain" rep="repeat">
       <arg>
@@ -368,6 +371,52 @@
           the <option>--interface-info-header</option> and
           <option>--interface-info-body</option> options, because these options
           are used to generate only one file.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--symbol-decorator</option> <replaceable>DECORATOR</replaceable></term>
+      <listitem>
+        <para>
+          If a <literal>DECORATOR</literal> is passed in with this option, all the
+          generated function prototypes in the generated header will be marked with
+          <literal>DECORATOR</literal>. This can be used, for instance, to export
+          symbols from code generated with <command>gdbus-codegen</command>.
+          This option is added in GLib-2.66
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--symbol-decorator-header</option> <replaceable>HEADER</replaceable></term>
+      <listitem>
+        <para>
+          If a <literal>HEADER</literal> is passed in with this option, the
+          generated header will put a <literal>#include HEADER</literal> before the rest of the
+          items, except for the inclusion guards or <literal>#pragma once</literal>
+          (if <option>--pragma-once</option> is used).  This is used if using another header file is
+          needed for the decorator passed in via <option>--symbol-decorator</option> to be defined.
+          This option is added in GLib-2.66.
+        </para>
+        <para>
+          This option can only be used if <option>--symbol-decorator</option> is used.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--symbol-decorator-define</option> <replaceable>DEFINE</replaceable></term>
+      <listitem>
+        <para>
+          If a <literal>DEFINE</literal> is passed in with this option, the
+          generated source will add a <literal>#define DEFINE</literal> before the rest of the
+          items.  This is used if a particular macro is needed to ensure the decorator
+          passed in via <option>--symbol-decorator</option> uses the correct definition when the
+          generated source is being compiled. This option is added in GLib-2.66.
+        </para>
+        <para>
+          This option can only be used if <option>--symbol-decorator</option> is used.
         </para>
       </listitem>
     </varlistentry>
