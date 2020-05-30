@@ -2041,6 +2041,9 @@ g_bookmark_file_add_item (GBookmarkFile  *bookmark,
 
   if (item->modified == NULL)
     item->modified = g_date_time_new_now_utc ();
+
+  if (item->visited == NULL)
+    item->visited = g_date_time_new_now_utc ();
 }
 
 /**

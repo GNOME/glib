@@ -43,10 +43,36 @@ test_to_file (void)
   const gchar *filename;
   gboolean res;
   GError *error = NULL;
-  gchar *in, *out;
+  char *in, *out;
 
   bookmark = g_bookmark_file_new ();
 
+  g_test_message ("Roundtrip from newly created bookmark file");
+  g_bookmark_file_set_title (bookmark, "file:///tmp/schedule.ps", "schedule.ps");
+  g_bookmark_file_set_mime_type (bookmark, "file:///tmp/schedule.ps", "application/postscript");
+  g_bookmark_file_add_application (bookmark, "file:///tmp/schedule.ps", "ghostscript", "ghostscript %F");
+
+  res = g_bookmark_file_to_file (bookmark, "out.xbel", &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+
+  res = g_bookmark_file_load_from_file (bookmark, "out.xbel", &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+
+  out = g_bookmark_file_get_title (bookmark, "file:///tmp/schedule.ps", &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (out, ==, "schedule.ps");
+  g_free (out);
+
+  out = g_bookmark_file_get_mime_type (bookmark, "file:///tmp/schedule.ps", &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (out, ==, "application/postscript");
+  g_free (out);
+
+  remove ("out.xbel");
+
+  g_test_message ("Roundtrip from a valid bookmark file");
   filename = g_test_get_filename (G_TEST_DIST, "bookmarks", "valid-01.xbel", NULL);
   res = g_bookmark_file_load_from_file (bookmark, filename, &error);
   g_assert_no_error (error);
