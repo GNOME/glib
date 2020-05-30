@@ -552,9 +552,7 @@ static gchar *
 bookmark_item_dump (BookmarkItem *item)
 {
   GString *retval;
-  gchar *added, *visited, *modified;
   gchar *escaped_uri;
-  gchar *buffer;
 
   /* at this point, we must have at least a registered application; if we don't
    * we don't screw up the bookmark file, and just skip this item
@@ -567,43 +565,63 @@ bookmark_item_dump (BookmarkItem *item)
 
   retval = g_string_sized_new (4096);
 
-  added = g_date_time_format_iso8601 (item->added);
-  modified = g_date_time_format_iso8601 (item->modified);
-  visited = g_date_time_format_iso8601 (item->visited);
+  g_string_append (retval, "  <" XBEL_BOOKMARK_ELEMENT " ");
 
   escaped_uri = g_markup_escape_text (item->uri, -1);
 
-  buffer = g_strconcat ("  <"
-                        XBEL_BOOKMARK_ELEMENT
-                        " "
-                        XBEL_HREF_ATTRIBUTE "=\"", escaped_uri, "\" "
-                        XBEL_ADDED_ATTRIBUTE "=\"", added, "\" "
-                        XBEL_MODIFIED_ATTRIBUTE "=\"", modified, "\" "
-                        XBEL_VISITED_ATTRIBUTE "=\"", visited, "\">\n",
-                        NULL);
-
-  g_string_append (retval, buffer);
+  g_string_append (retval, XBEL_HREF_ATTRIBUTE "=\"");
+  g_string_append (retval, escaped_uri);
+  g_string_append (retval , "\" ");
 
   g_free (escaped_uri);
-  g_free (visited);
-  g_free (modified);
-  g_free (added);
-  g_free (buffer);
+
+  if (item->added)
+    {
+      char *added;
+
+      added = g_date_time_format_iso8601 (item->added);
+      g_string_append (retval, XBEL_ADDED_ATTRIBUTE "=\"");
+      g_string_append (retval, added);
+      g_string_append (retval, "\" ");
+      g_free (added);
+    }
+
+  if (item->modified)
+    {
+      char *modified;
+
+      modified = g_date_time_format_iso8601 (item->modified);
+      g_string_append (retval, XBEL_MODIFIED_ATTRIBUTE "=\"");
+      g_string_append (retval, modified);
+      g_string_append (retval, "\" ");
+      g_free (modified);
+    }
+
+  if (item->visited)
+    {
+      char *visited;
+
+      visited = g_date_time_format_iso8601 (item->visited);
+      g_string_append (retval, XBEL_VISITED_ATTRIBUTE "=\"");
+      g_string_append (retval, visited);
+      g_string_append (retval, "\" ");
+      g_free (visited);
+    }
+
+  if (retval->str[retval->len - 1] == ' ')
+    g_string_truncate (retval, retval->len - 1);
+  g_string_append (retval, ">\n");
 
   if (item->title)
     {
       gchar *escaped_title;
 
       escaped_title = g_markup_escape_text (item->title, -1);
-      buffer = g_strconcat ("    "
-                            "<" XBEL_TITLE_ELEMENT ">",
-                            escaped_title,
-                            "</" XBEL_TITLE_ELEMENT ">\n",
-                            NULL);
-      g_string_append (retval, buffer);
+      g_string_append (retval, "    " "<" XBEL_TITLE_ELEMENT ">");
+      g_string_append (retval, escaped_title);
+      g_string_append (retval, "</" XBEL_TITLE_ELEMENT ">\n");
 
       g_free (escaped_title);
-      g_free (buffer);
     }
 
   if (item->description)
@@ -611,15 +629,11 @@ bookmark_item_dump (BookmarkItem *item)
       gchar *escaped_desc;
 
       escaped_desc = g_markup_escape_text (item->description, -1);
-      buffer = g_strconcat ("    "
-                            "<" XBEL_DESC_ELEMENT ">",
-                            escaped_desc,
-                            "</" XBEL_DESC_ELEMENT ">\n",
-                            NULL);
-      g_string_append (retval, buffer);
+      g_string_append (retval, "    " "<" XBEL_DESC_ELEMENT ">");
+      g_string_append (retval, escaped_desc);
+      g_string_append (retval, "</" XBEL_DESC_ELEMENT ">\n");
 
       g_free (escaped_desc);
-      g_free (buffer);
     }
 
   if (item->metadata)
@@ -629,17 +643,12 @@ bookmark_item_dump (BookmarkItem *item)
       metadata = bookmark_metadata_dump (item->metadata);
       if (metadata)
         {
-          buffer = g_strconcat ("    "
-                                "<" XBEL_INFO_ELEMENT ">\n",
-                                metadata,
-                                "    "
-				"</" XBEL_INFO_ELEMENT ">\n",
-                                NULL);
-          retval = g_string_append (retval, buffer);
+          g_string_append (retval, "    " "<" XBEL_INFO_ELEMENT ">\n");
+          g_string_append (retval, metadata);
+          g_string_append (retval, "    " "</" XBEL_INFO_ELEMENT ">\n");
 
-          g_free (buffer);
-	  g_free (metadata);
-	}
+          g_free (metadata);
+        }
     }
 
   g_string_append (retval, "  </" XBEL_BOOKMARK_ELEMENT ">\n");
