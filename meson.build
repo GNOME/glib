@@ -565,15 +565,7 @@ endforeach
 # https://github.com/mesonbuild/meson/issues/5628.
 # FIXME: Once meson no longer returns success for stpcpy() and
 # posix_memalign() on Windows using GCC and clang we can remove this.
-#
-# Android headers provides stpcpy, but symbol is only available on Android-21 and later
-# Android-20 and earlier provide false positive through cc.has_function('stpcpy', ...),
-# but fail at link time.
-if host_system != 'windows' and cc.links('''#include <string.h>
-                                          void func() {
-                                            char buff[1];
-                                            stpcpy(buff, "");
-                                        }''')
+if host_system != 'windows' and cc.has_function('stpcpy', prefix : '#include <string.h>')
   glib_conf.set('HAVE_STPCPY', 1)
 endif
 
