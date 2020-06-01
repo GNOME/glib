@@ -569,6 +569,19 @@ if host_system != 'windows' and cc.has_function('stpcpy', prefix : '#include <st
   glib_conf.set('HAVE_STPCPY', 1)
 endif
 
+# When building for Android-20 and earlier, require Meson 0.54.2 or newer.
+# This is needed, because Meson build versions prior to 0.54.2 return false
+# positive for stpcpy has_function check when building for legacy Android.
+if host_system.startswith('android-')
+    android_is_older = cc.compiles('''#if __ANDROID_API__ >= 21
+                                        #error Android is older than 21
+                                    #endif''')
+    if android_is_older and meson.version().version_compare('< 0.54.2')
+      error('Compiling for <Android-21 requires Meson 0.54.2 or newer')
+    endif
+endif
+
+
 # Check that posix_memalign() is usable; must use header
 if host_system != 'windows' and cc.has_function('posix_memalign', prefix : '#include <stdlib.h>')
   glib_conf.set('HAVE_POSIX_MEMALIGN', 1)
