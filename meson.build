@@ -574,7 +574,7 @@ endif
 # positive for stpcpy has_function check when building for legacy Android.
 if host_system.startswith('android-')
     android_is_older = cc.compiles('''#if __ANDROID_API__ >= 21
-                                        #error Android is older than 21
+                                        #error Android is 21 or newer
                                     #endif''')
     if android_is_older and meson.version().version_compare('< 0.54.2')
       error('Compiling for <Android-21 requires Meson 0.54.2 or newer')
