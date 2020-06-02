@@ -3651,6 +3651,8 @@ g_pollable_return_get_type
 <FILE>gtls</FILE>
 G_TLS_ERROR
 GTlsError
+G_TLS_CHANNEL_BINDING_ERROR
+GTlsChannelBindingError
 <SUBSECTION>
 GTlsAuthenticationMode
 GTlsCertificateFlags
@@ -3718,10 +3720,12 @@ g_tls_certificate_get_type
 <FILE>gtlsconnection</FILE>
 <TITLE>GTlsConnection</TITLE>
 GTlsConnection
+GTlsChannelBindingType
 g_tls_connection_set_certificate
 g_tls_connection_get_certificate
 g_tls_connection_get_peer_certificate
 g_tls_connection_get_peer_certificate_errors
+g_tls_connection_get_channel_binding_data
 g_tls_connection_set_require_close_notify
 g_tls_connection_get_require_close_notify
 GTlsRehandshakeMode
@@ -3916,6 +3920,7 @@ g_dtls_connection_set_certificate
 g_dtls_connection_get_certificate
 g_dtls_connection_get_peer_certificate
 g_dtls_connection_get_peer_certificate_errors
+g_dtls_connection_get_channel_binding_data
 g_dtls_connection_set_require_close_notify
 g_dtls_connection_get_require_close_notify
 g_dtls_connection_set_rehandshake_mode
