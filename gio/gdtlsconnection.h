@@ -95,6 +95,11 @@ struct _GDtlsConnectionInterface
   void (*set_advertised_protocols)        (GDtlsConnection     *conn,
                                            const gchar * const *protocols);
   const gchar *(*get_negotiated_protocol) (GDtlsConnection     *conn);
+
+  gboolean  (*get_binding_data)  (GDtlsConnection         *conn,
+                                  GTlsChannelBindingType   type,
+                                  GByteArray              *data,
+                                  GError                 **error);
 };
 
 GLIB_AVAILABLE_IN_2_48
@@ -200,6 +205,12 @@ void                  g_dtls_connection_set_advertised_protocols    (GDtlsConnec
 
 GLIB_AVAILABLE_IN_2_60
 const gchar *          g_dtls_connection_get_negotiated_protocol     (GDtlsConnection    *conn);
+
+GLIB_AVAILABLE_IN_2_66
+gboolean              g_dtls_connection_get_channel_binding_data    (GDtlsConnection         *conn,
+                                                                     GTlsChannelBindingType   type,
+                                                                     GByteArray              *data,
+                                                                     GError                 **error);
 
 G_END_DECLS
 
