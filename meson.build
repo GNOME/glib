@@ -33,6 +33,16 @@ endif
 
 host_system = host_machine.system()
 
+if host_system == 'darwin'
+  ios_test_code = '''#include <TargetConditionals.h>
+  #if ! TARGET_OS_IPHONE
+  #error "Not iOS/tvOS/watchOS/iPhoneSimulator"
+  #endif'''
+  if cc.compiles(ios_test_code, name : 'building for iOS')
+    host_system = 'ios'
+  endif
+endif
+
 glib_version = meson.project_version()
 glib_api_version = '2.0'
 version_arr = glib_version.split('.')
@@ -480,8 +490,13 @@ functions = [
   'wcslen',
   'wcsnlen',
   'sysctlbyname',
-  '_NSGetEnviron',
 ]
+
+# _NSGetEnviron is available on iOS too, but its usage gets apps rejected from
+# the app store since it's considered 'private API'
+if host_system == 'darwin'
+  functions += ['_NSGetEnviron']
+endif
 
 if glib_conf.has('HAVE_SYS_STATVFS_H')
   functions += ['statvfs']
@@ -2103,7 +2118,7 @@ if host_system == 'windows'
   export_dynamic_ldflags = []
 elif host_system == 'cygwin'
   export_dynamic_ldflags = ['-Wl,--export-all-symbols']
-elif host_system == 'darwin'
+elif host_system in ['darwin', 'ios']
   export_dynamic_ldflags = []
 elif host_system == 'sunos'
   export_dynamic_ldflags = []
