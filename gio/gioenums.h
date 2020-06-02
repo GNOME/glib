@@ -1612,6 +1612,43 @@ typedef enum {
 } GTlsAuthenticationMode;
 
 /**
+ * GTlsChannelBindingType:
+ * @G_TLS_CHANNEL_BINDING_TLS_UNIQUE: tls-unique binding type
+ * @G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT: tls-server-end-point type
+ * @G_TLS_CHANNEL_BINDING_TLS_SCRAM_EXPORTER: tls-scram-exporter draft-whited-tls-channel-bindings-for-tls13
+ *
+ * The type of TLS Channel Binding Data to retrieve from #GTlsConnection
+ *
+ * Since 2.66
+ */
+typedef enum {
+  G_TLS_CHANNEL_BINDING_TLS_UNIQUE,
+  G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT,
+  G_TLS_CHANNEL_BINDING_TLS_SCRAM_EXPORTER
+} GTlsChannelBindingType;
+
+/**
+ * GTlsChannelBindingError:
+ * @G_TLS_CB_ERROR_NOT_IMPLEMENTED: The binding type is not implemented for the backend
+ * @G_TLS_CB_ERROR_INVALID_STATE: The handshake is not yet complete on the connection
+ * @G_TLS_CB_ERROR_NOT_AVAILABLE: handshake is complete but binding data is not available
+ * @G_TLS_CB_ERROR_NOT_SUPPORTED: Binding type is not supported on the current connection
+ * @G_TLS_CB_ERROR_GENERAL_ERROR: Any other backend error preventing CB data fetch
+ *
+ * An error code used with %G_TLS_CB_ERROR in a #GError returned from a
+ * g_tls_connection_get_channel_binding_data() call.
+  *
+ * Since 2.66
+ */
+typedef enum {
+  G_TLS_CB_ERROR_NOT_IMPLEMENTED,
+  G_TLS_CB_ERROR_INVALID_STATE,
+  G_TLS_CB_ERROR_NOT_AVAILABLE,
+  G_TLS_CB_ERROR_NOT_SUPPORTED,
+  G_TLS_CB_ERROR_GENERAL_ERROR
+} GTlsChannelBindingError;
+
+/**
  * GTlsRehandshakeMode:
  * @G_TLS_REHANDSHAKE_NEVER: Never allow rehandshaking
  * @G_TLS_REHANDSHAKE_SAFELY: Allow safe rehandshaking only

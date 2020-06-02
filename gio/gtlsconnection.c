@@ -867,6 +867,56 @@ g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
 }
 
 /**
+ * g_tls_cb_error_quark:
+ *
+ * Gets the TLS Channel Binding error quark.
+ *
+ * Returns: a #GQuark.
+ *
+ * Since: 2.66
+ */
+G_DEFINE_QUARK (g-tls-cb-error-quark, g_tls_cb_error)
+
+
+/**
+ * g_tls_connection_get_channel_binding_data:
+ * @conn: a #GTlsConnection
+ * @type: #GTlsChannelBindingType type of data to fetch
+ * @in_out: (nullable): #GByteArray to pass data in and fill out, or %NULL
+ * @error: a #GError pointer, or %NULL
+ *
+ * Query backend for TLS Channel Binding Data of the type @type for @conn.
+ *
+ * This call implements interface to retrieve the TLS Channel Binding Data
+ * as specified in RFC 5056, RFC 5929 and related.
+ * The binding data is filled in provided #GByteArray @in_out. Same variable
+ * can be used to pass data in of the binding type requires it.
+ * If @in_out is %NULL - it will only check whether backend is able to fetch
+ * the data (eg. is implemented and supported). It does guarantee that the
+ * data will be available though if f.i. TLS connection type does not
+ * support it or the binding data is not available yet (for wahtever reason).
+ *
+ * Returns: %TRUE on success, %FALSE on failure, in which case @error will be
+ * set.
+ *
+ * Since: 2.66
+ */
+gboolean
+g_tls_connection_get_channel_binding_data (GTlsConnection          *conn,
+                                           GTlsChannelBindingType   type,
+                                           GByteArray              *in_out,
+                                           GError                 **error)
+{
+  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), FALSE);
+
+  return G_TLS_CONNECTION_GET_CLASS (conn)->get_binding_data (conn,
+                                                              type,
+                                                              in_out,
+                                                              error);
+}
+
+
+/**
  * g_tls_connection_handshake:
  * @conn: a #GTlsConnection
  * @cancellable: (nullable): a #GCancellable, or %NULL

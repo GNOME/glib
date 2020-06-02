@@ -53,6 +53,11 @@ struct _GTlsConnectionClass
 					    GTlsCertificateFlags  errors);
 
   /* methods */
+  gboolean ( *get_binding_data)  (GTlsConnection          *conn,
+                                  GTlsChannelBindingType   type,
+                                  GByteArray              *in_out,
+                                  GError                 **error);
+
   gboolean ( *handshake )        (GTlsConnection       *conn,
 				  GCancellable         *cancellable,
 				  GError              **error);
@@ -124,6 +129,12 @@ void                  g_tls_connection_set_advertised_protocols    (GTlsConnecti
 GLIB_AVAILABLE_IN_2_60
 const gchar *         g_tls_connection_get_negotiated_protocol     (GTlsConnection       *conn);
 
+GLIB_AVAILABLE_IN_2_66
+gboolean              g_tls_connection_get_channel_binding_data    (GTlsConnection          *conn,
+                                                                    GTlsChannelBindingType   type,
+                                                                    GByteArray              *in_out,
+                                                                    GError                 **error);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_handshake                   (GTlsConnection       *conn,
 								    GCancellable         *cancellable,
@@ -151,6 +162,16 @@ gboolean              g_tls_connection_handshake_finish            (GTlsConnecti
 GLIB_AVAILABLE_IN_ALL
 GQuark g_tls_error_quark (void);
 
+/**
+ * G_TLS_CB_ERROR:
+ *
+ * Error domain for TLS Channel Binding. Errors in this domain will be from the
+ * #GTlsChannelBindingError enumeration. See #GError for more information on error
+ * domains.
+ */
+#define G_TLS_CB_ERROR (g_tls_cb_error_quark ())
+GLIB_AVAILABLE_IN_2_66
+GQuark g_tls_cb_error_quark (void);
 
 /*< protected >*/
 GLIB_AVAILABLE_IN_ALL
