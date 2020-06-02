@@ -226,7 +226,7 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
    * GThreadedSocketService::run:
    * @service: the #GThreadedSocketService.
    * @connection: a new #GSocketConnection object.
-   * @source_object: the source_object passed to g_socket_listener_add_address().
+   * @source_object: (nullable): the source_object passed to g_socket_listener_add_address().
    *
    * The ::run signal is emitted in a worker thread in response to an
    * incoming connection. This thread is dedicated to handling
