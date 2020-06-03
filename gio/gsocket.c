@@ -76,11 +76,6 @@
 #include "glibintl.h"
 #include "gioprivate.h"
 
-#ifdef G_OS_WIN32
-/* For Windows XP runtime compatibility, but use the system's if_nametoindex() if available */
-#include "gwin32networking.h"
-#endif
-
 /**
  * SECTION:gsocket
  * @short_description: Low-level socket object

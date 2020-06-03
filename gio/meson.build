@@ -10,15 +10,9 @@ gio_c_args += glib_hidden_visibility_args
 
 gnetworking_h_conf = configuration_data()
 
-gnetworking_h_wspiapi_include = ''
 gnetworking_h_nameser_compat_include = ''
 
-if host_system == 'windows'
-  # <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
-  # inline workarounds for getaddrinfo, getnameinfo and freeaddrinfo if
-  # they aren't present at run-time (on Windows 2000).
-  gnetworking_h_wspiapi_include = '#include <wspiapi.h>'
-elif not host_system.contains('android')
+if host_system != 'windows' and not host_system.contains('android')
   # Don't check for C_IN on Android since it does not define it in public
   # headers, we define it ourselves wherever necessary
   if not cc.compiles('''#include <sys/types.h>
@@ -168,7 +162,6 @@ if host_system.contains('android')
   endif
 endif
 
-gnetworking_h_conf.set('WSPIAPI_INCLUDE', gnetworking_h_wspiapi_include)
 gnetworking_h_conf.set('NAMESER_COMPAT_INCLUDE', gnetworking_h_nameser_compat_include)
 
 gnetworking_h = configure_file(input : 'gnetworking.h.in',
