@@ -436,6 +436,7 @@ else
     'gwin32volumemonitor.c',
     'gwin32inputstream.c',
     'gwin32outputstream.c',
+    'gwin32file-sync-stream.c',
     'gwin32networkmonitor.c',
     'gwin32networkmonitor.h',
     'gwin32notificationbackend.c',
