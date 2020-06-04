@@ -22,6 +22,8 @@
 
 #include "config.h"
 
+#define COBJMACROS
+
 #include <string.h>
 
 #include "gcontenttype.h"
@@ -32,6 +34,12 @@
 #include <glib/gstdio.h>
 #include "glibintl.h"
 #include <gio/gwin32registrykey.h>
+#include <shlobj.h>
+/* Contains the definitions from shlobj.h that are
+ * guarded as Windows8-or-newer and are unavailable
+ * to GLib, being only Windows7-or-newer.
+ */
+#include "gwin32api-application-activation-manager.h"
 
 #include <windows.h>
 
@@ -4455,8 +4463,51 @@ get_appath_for_exe (const gchar *exe_basename)
 
 
 static gboolean
+g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
+                                      gboolean                 for_files,
+                                      IShellItemArray         *items,
+                                      GWin32AppInfoShellVerb  *shverb,
+                                      GError                 **error)
+{
+  DWORD pid;
+  IApplicationActivationManager* paam = NULL;
+  gboolean result = TRUE;
+  HRESULT hr;
+
+  hr = CoCreateInstance (&CLSID_ApplicationActivationManager, NULL, CLSCTX_INPROC_SERVER, &IID_IApplicationActivationManager, (void **) &paam);
+  if (FAILED (hr))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to create ApplicationActivationManager: 0x%lx", hr);
+      return FALSE;
+    }
+
+  if (items == NULL)
+    hr = IApplicationActivationManager_ActivateApplication (paam, (const wchar_t *) info->app->canonical_name, NULL, AO_NONE, &pid);
+  else if (for_files)
+    hr = IApplicationActivationManager_ActivateForFile (paam, (const wchar_t *) info->app->canonical_name, items, shverb->verb_name, &pid);
+  else
+    hr = IApplicationActivationManager_ActivateForProtocol (paam, (const wchar_t *) info->app->canonical_name, items, &pid);
+
+  if (FAILED (hr))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "The app %s failed to launch: 0x%lx",
+                   g_win32_appinfo_application_get_some_name (info->app), hr);
+      result = FALSE;
+    }
+
+  IApplicationActivationManager_Release (paam);
+
+  return result;
+}
+
+
+static gboolean
 g_win32_app_info_launch_internal (GWin32AppInfo      *info,
-                                  GList              *objs,
+                                  GList              *objs, /* non-UWP only */
+                                  gboolean            for_files, /* UWP only */
+                                  IShellItemArray    *items, /* UWP only */
                                   GAppLaunchContext  *launch_context,
                                   GSpawnFlags         spawn_flags,
                                   GError            **error)
@@ -4472,15 +4523,10 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
   g_return_val_if_fail (info->app != NULL, FALSE);
 
   argv = NULL;
-
-  if (launch_context)
-    envp = g_app_launch_context_get_environment (launch_context);
-  else
-    envp = g_get_environ ();
-
   shverb = NULL;
 
-  if (info->handler != NULL &&
+  if (!info->app->is_uwp &&
+      info->handler != NULL &&
       info->handler->verbs->len > 0)
     shverb = _verb_idx (info->handler->verbs, 0);
   else if (info->app->verbs->len > 0)
@@ -4488,7 +4534,7 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
 
   if (shverb == NULL)
     {
-      if (info->handler == NULL)
+      if (info->app->is_uwp || info->handler == NULL)
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                      P_("The app ‘%s’ in the application object has no verbs"),
                      g_win32_appinfo_application_get_some_name (info->app));
@@ -4500,6 +4546,18 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
 
       return FALSE;
     }
+
+  if (info->app->is_uwp)
+    return g_win32_app_info_launch_uwp_internal (info,
+                                                 for_files,
+                                                 items,
+                                                 shverb,
+                                                 error);
+
+  if (launch_context)
+    envp = g_app_launch_context_get_environment (launch_context);
+  else
+    envp = g_get_environ ();
 
   g_assert (shverb->command_utf8 != NULL);
   command = shverb->command_utf8;
@@ -4648,6 +4706,95 @@ g_win32_app_info_supports_files (GAppInfo *appinfo)
 }
 
 
+static IShellItemArray *
+make_item_array (gboolean   for_files,
+                 GList     *files_or_uris,
+                 GError   **error)
+{
+  ITEMIDLIST **item_ids;
+  IShellItemArray *items;
+  GList *p;
+  gsize count;
+  gsize i;
+  HRESULT hr;
+
+  count = g_list_length (files_or_uris);
+
+  items = NULL;
+  item_ids = g_new (ITEMIDLIST*, count);
+
+  for (i = 0, p = files_or_uris; p != NULL; p = p->next, i++)
+    {
+      wchar_t *file_or_uri_utf16;
+
+      if (!for_files)
+        file_or_uri_utf16 = g_utf8_to_utf16 ((gchar *) p->data, -1, NULL, NULL, error);
+      else
+        file_or_uri_utf16 = g_utf8_to_utf16 (g_file_peek_path (G_FILE (p->data)), -1, NULL, NULL, error);
+
+      if (file_or_uri_utf16 == NULL)
+        break;
+
+      if (for_files)
+        {
+          wchar_t *c;
+          gsize len;
+          gsize len_tail;
+
+          len = wcslen (file_or_uri_utf16);
+          /* Filenames *MUST* use single backslashes, else the call
+           * will fail. First convert all slashes to backslashes,
+           * then remove duplicates.
+           */
+          for (c = file_or_uri_utf16; for_files && *c != 0; c++)
+            {
+              if (*c == L'/')
+                *c = L'\\';
+            }
+          for (len_tail = 0, c = &file_or_uri_utf16[len - 1];
+               for_files && c > file_or_uri_utf16;
+               c--, len_tail++)
+            {
+              if (c[0] != L'\\' || c[-1] != L'\\')
+                continue;
+
+              memmove (&c[-1], &c[0], len_tail * sizeof (wchar_t));
+            }
+        }
+
+      hr = SHParseDisplayName (file_or_uri_utf16, NULL, &item_ids[i], 0, NULL);
+      g_free (file_or_uri_utf16);
+
+      if (FAILED (hr))
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "File or URI `%S' cannot be parsed by SHParseDisplayName: 0x%lx", file_or_uri_utf16, hr);
+          break;
+        }
+    }
+
+  if (i == count)
+    {
+      hr = SHCreateShellItemArrayFromIDLists (count, (const ITEMIDLIST **) item_ids, &items);
+      if (FAILED (hr))
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "SHCreateShellItemArrayFromIDLists() failed: 0x%lx", hr);
+          items = NULL;
+        }
+    }
+
+  count = i;
+
+  for (i = 0; i < count; i++)
+    CoTaskMemFree (item_ids[i]);
+
+  g_free (item_ids);
+
+  return items;
+}
+
+
 static gboolean
 g_win32_app_info_launch_uris (GAppInfo           *appinfo,
                               GList              *uris,
@@ -4657,6 +4804,26 @@ g_win32_app_info_launch_uris (GAppInfo           *appinfo,
   gboolean res = FALSE;
   gboolean do_files;
   GList *objs;
+  GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
+
+  if (info->app != NULL && info->app->is_uwp)
+    {
+      IShellItemArray *items = NULL;
+
+      if (uris)
+        {
+          items = make_item_array (FALSE, uris, error);
+          if (items == NULL)
+            return res;
+        }
+
+      res = g_win32_app_info_launch_internal (info, NULL, FALSE, items, launch_context, 0, error);
+
+      if (items != NULL)
+        IShellItemArray_Release (items);
+
+      return res;
+    }
 
   do_files = g_win32_app_info_supports_files (appinfo);
 
@@ -4685,8 +4852,10 @@ g_win32_app_info_launch_uris (GAppInfo           *appinfo,
 
   objs = g_list_reverse (objs);
 
-  res = g_win32_app_info_launch_internal (G_WIN32_APP_INFO (appinfo),
+  res = g_win32_app_info_launch_internal (info,
                                           objs,
+                                          FALSE,
+                                          NULL,
                                           launch_context,
                                           G_SPAWN_SEARCH_PATH,
                                           error);
@@ -4705,6 +4874,26 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
   gboolean res = FALSE;
   gboolean do_uris;
   GList *objs;
+  GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
+
+  if (info->app != NULL && info->app->is_uwp)
+    {
+      IShellItemArray *items = NULL;
+
+      if (files)
+        {
+          items = make_item_array (TRUE, files, error);
+          if (items == NULL)
+            return res;
+        }
+
+      res = g_win32_app_info_launch_internal (info, NULL, TRUE, items, launch_context, 0, error);
+
+      if (items != NULL)
+        IShellItemArray_Release (items);
+
+      return res;
+    }
 
   do_uris = g_win32_app_info_supports_uris (appinfo);
 
@@ -4724,8 +4913,10 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
 
   objs = g_list_reverse (objs);
 
-  res = g_win32_app_info_launch_internal (G_WIN32_APP_INFO (appinfo),
+  res = g_win32_app_info_launch_internal (info,
                                           objs,
+                                          TRUE,
+                                          NULL,
                                           launch_context,
                                           G_SPAWN_SEARCH_PATH,
                                           error);
