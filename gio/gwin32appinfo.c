@@ -4045,7 +4045,7 @@ g_win32_app_info_get_executable (GAppInfo *appinfo)
   if (info->app == NULL)
     return NULL;
 
-  if (info->app->verbs->len > 0)
+  if (info->app->verbs->len > 0 && !info->app->is_uwp)
     return _verb_idx (info->app->verbs, 0)->executable;
 
   return NULL;
@@ -4059,7 +4059,7 @@ g_win32_app_info_get_commandline (GAppInfo *appinfo)
   if (info->app == NULL)
     return NULL;
 
-  if (info->app->verbs->len > 0)
+  if (info->app->verbs->len > 0 && !info->app->is_uwp)
     return _verb_idx (info->app->verbs, 0)->command_utf8;
 
   return NULL;
