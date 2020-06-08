@@ -170,41 +170,39 @@ if gl_cv_func_printf_long_double
   if not meson.is_cross_build() or meson.has_exe_wrapper()
     run_result = cc.run(printf_infinite_long_double_test,
         name : 'printf supports infinite \'long double\' arguments')
-    gl_cv_func_printf_infinite_long_double = (run_result.compiled() and run_result.returncode() == 0) ? 'true' : 'false'
+    gl_cv_func_printf_infinite_long_double = (run_result.compiled() and run_result.returncode() == 0)
   else
     if host_machine.cpu_family() == 'x86_64'
-      gl_cv_func_printf_infinite_long_double = 'false'
+      gl_cv_func_printf_infinite_long_double = false
     else
       if host_system == 'linux'
-        gl_cv_func_printf_infinite_long_double = 'true'
+        gl_cv_func_printf_infinite_long_double = true
       elif (host_system.startswith ('freebsd1') or
             host_system.startswith ('freebsd2') or
             host_system.startswith ('freebsd3') or
             host_system.startswith ('freebsd4') or
             host_system.startswith ('freebsd5'))
-        gl_cv_func_printf_infinite_long_double = 'false'
+        gl_cv_func_printf_infinite_long_double = false
       elif (host_system.startswith ('freebsd') or
             host_system.startswith ('kfreebsd'))
-        gl_cv_func_printf_infinite_long_double = 'true'
+        gl_cv_func_printf_infinite_long_double = true
       elif (host_system.startswith ('hpux7') or
             host_system.startswith ('hpux8') or
             host_system.startswith ('hpux9') or
             host_system.startswith ('hpux10'))
         gl_cv_func_printf_infinite = false
       elif host_system.startswith ('hpux')
-        gl_cv_func_printf_infinite_long_double = 'true'
+        gl_cv_func_printf_infinite_long_double = true
       elif host_system == 'windows'
         # Guess yes on MSVC, no on mingw.
         if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
-          gl_cv_func_printf_infinite = 'true'
+          gl_cv_func_printf_infinite_long_double = true
         else
-          gl_cv_func_printf_infinite = 'false'
+          gl_cv_func_printf_infinite_long_double = false
         endif
       else
-        gl_cv_func_printf_infinite_long_double = 'false'
+        gl_cv_func_printf_infinite_long_double = false
       endif
     endif
   endif
-else
-  gl_cv_func_printf_infinite_long_double = 'irrelevant'
 endif
