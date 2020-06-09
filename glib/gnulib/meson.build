@@ -191,28 +191,46 @@ nan_tmpl = '''#include <math.h>
               int main () {return @0@ (x);}
            '''
 
-links = cc.links (nan_tmpl.format ('isnan', 'double', '__builtin_isnan'),
+links = cc.links (nan_tmpl.format ('isnand', 'double', '__builtin_isnan'),
                   dependencies : [libm])
+
 math_h_config.set ('HAVE_ISNAN', links ? 1 : 0)
-math_h_config.set ('HAVE_ISNAN_IN_LIBC', links ? 1 : 0)
 set_variable ('have_isnan', links)
 math_h_config.set ('HAVE_ISNAND', links ? 1 : 0)
-math_h_config.set ('HAVE_ISNAND_IN_LIBC', links ? 1 : 0)
 set_variable ('have_isnand', links)
+
+if links
+  extra_gnulib_args += '-DHAVE_ISNAN_IN_LIBC'
+  extra_gnulib_args += '-DHAVE_ISNAND_IN_LIBC'
+endif
 
 links = cc.links (nan_tmpl.format ('isnanf', 'float', '__builtin_isnanf'),
                   dependencies : [libm])
+
 math_h_config.set ('HAVE_ISNANF', links ? 1 : 0)
-math_h_config.set ('HAVE_ISNANF_IN_LIBC', links ? 1 : 0)
 set_variable ('have_isnanf', links)
+
+if links
+  extra_gnulib_args += '-DHAVE_ISNANF_IN_LIBC'
+endif
 
 links = cc.links (nan_tmpl.format ('isnanl', 'long double', '__builtin_isnanl'),
                   dependencies : [libm])
+
 math_h_config.set ('HAVE_ISNANL', links ? 1 : 0)
-math_h_config.set ('HAVE_ISNANL_IN_LIBC', links ? 1 : 0)
 set_variable ('have_isnanl', links)
 
+if links
+  extra_gnulib_args += '-DHAVE_ISNANL_IN_LIBC'
+endif
+
 math_h_config.set ('REPLACE_ISNAN', (have_isnand and have_isnanf and have_isnanl) ? 0 : 1)
+
+other_needed_math_sources = []
+
+if not (have_isnand and have_isnanf and have_isnanl)
+  other_needed_math_sources += [ 'isnand.c', 'isnanf.c', 'isnanl.c' ]
+endif
 
 links = cc.links ('''#include <math.h>
                      double x;
@@ -312,7 +330,6 @@ inf_tmpl = '''#include <math.h>
               int main () {return @0@ (x);}
            '''
 
-other_needed_math_sources = []
 # Some compilers may not have isfinite, isinf available
 foreach f: ['isfinite', 'isinf', 'signbit']
   links = cc.links (inf_tmpl.format('@0@'.format(f)),
@@ -334,7 +351,7 @@ math_h = configure_file (input: 'gnulib_math.h.in',
                          output: 'gnulib_math.h',
                          configuration: math_h_config)
 
-gnulib_sources = ['asnprintf.c', 'printf.c', 'printf-args.c', 'printf-parse.c', 'printf-frexp.c', 'printf-frexpl.c', 'isnand.c', 'isnanl.c', 'vasnprintf.c', 'xsize.c']
+gnulib_sources = ['asnprintf.c', 'printf.c', 'printf-args.c', 'printf-parse.c', 'printf-frexp.c', 'printf-frexpl.c', 'vasnprintf.c', 'xsize.c']
 
 if not gl_cv_func_frexp_works
   gnulib_sources += ['frexp.c']
