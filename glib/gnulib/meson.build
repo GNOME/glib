@@ -334,7 +334,7 @@ math_h = configure_file (input: 'gnulib_math.h.in',
                          output: 'gnulib_math.h',
                          configuration: math_h_config)
 
-gnulib_sources = ['asnprintf.c', 'printf.c', 'printf-args.c', 'printf-parse.c', 'printf-frexp.c', 'printf-frexpl.c', 'isnand.c', 'isnanl.c', 'vasnprintf.c', 'xsize.c']
+gnulib_sources = ['asnprintf.c', 'printf.c', 'printf-args.c', 'printf-parse.c', 'printf-frexp.c', 'printf-frexpl.c', 'isnand.c', 'isnanf.c', 'isnanl.c', 'vasnprintf.c', 'xsize.c']
 
 if not gl_cv_func_frexp_works
   gnulib_sources += ['frexp.c']
