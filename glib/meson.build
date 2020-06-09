@@ -99,7 +99,7 @@ else
     glib_conf.set('NEED_PRINTF_INFINITE_DOUBLE', 1)
   endif
 
-  if gl_cv_func_printf_long_double and gl_cv_func_printf_infinite_long_double != 'false'
+  if gl_cv_func_printf_long_double and gl_cv_func_printf_infinite_long_double
     glib_conf.set('NEED_PRINTF_INFINITE_LONG_DOUBLE', 1)
   endif
 
