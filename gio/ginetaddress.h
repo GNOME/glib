@@ -121,4 +121,3 @@ gboolean              g_inet_address_get_is_mc_site_local (GInetAddress         
 G_END_DECLS
 
 #endif /* __G_INET_ADDRESS_H__ */
-

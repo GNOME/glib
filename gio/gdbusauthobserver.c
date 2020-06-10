@@ -311,4 +311,3 @@ g_dbus_auth_observer_allow_mechanism (GDBusAuthObserver  *observer,
                  &ret);
   return ret;
 }
-

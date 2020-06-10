@@ -2629,4 +2629,3 @@ _g_cclosure_marshal_VOID__VARIANT_BOXEDv (GClosure *closure,
   if ((param_types[1] & G_SIGNAL_TYPE_STATIC_SCOPE) == 0 && arg1 != NULL)
     g_boxed_free (param_types[1] & ~G_SIGNAL_TYPE_STATIC_SCOPE, arg1);
 }
-

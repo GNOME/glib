@@ -94,5 +94,3 @@ gboolean   _g_local_file_info_set_attributes  (char                   *filename,
 G_END_DECLS
 
 #endif /* __G_FILE_LOCAL_FILE_INFO_H__ */
-
-
