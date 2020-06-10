@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-06-05 07:15+0000\n"
-"PO-Revision-Date: 2020-02-08 20:00+0900\n"
+"PO-Revision-Date: 2020-06-10 18:45+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -3079,22 +3079,20 @@ msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 
 #: gio/glocalfileinfo.c:2507
-#, fuzzy, c-format
-#| msgid "Value “%s” cannot be interpreted as a number."
+#, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
-msgstr "値“%s”を数値として解釈できません。"
+msgstr "ファイル名“%s”を UTF-16 に変換できません"
 
 #: gio/glocalfileinfo.c:2526
-#, fuzzy, c-format
-#| msgid "Value “%s” cannot be interpreted as a number."
+#, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
-msgstr "値“%s”を数値として解釈できません。"
+msgstr "“%s”を開けません: Windows エラー %lu"
 
 #: gio/glocalfileinfo.c:2539
-#, fuzzy, c-format
-#| msgid "Error setting modification or access time: %s"
+#, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
-msgstr "最終更新日時または最終アクセス日時の設定中にエラーが発生しました: %s"
+msgstr ""
+"“%s”の最終更新日時または最終アクセス日時の設定中にエラーが発生しました: %lu"
 
 #: gio/glocalfileinfo.c:2640
 #, c-format
