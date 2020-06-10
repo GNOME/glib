@@ -2397,7 +2397,7 @@ g_path_get_basename (const gchar *file_name)
 
   len = last_nonslash - base;
   retval = g_malloc (len + 1);
-  memcpy (retval, file_name + base + 1, len);
+  memcpy (retval, file_name + (base + 1), len);
   retval [len] = '\0';
 
   return retval;
