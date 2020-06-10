@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-03-30 19:36+0000\n"
-"PO-Revision-Date: 2020-06-03 22:35+0200\n"
+"PO-Revision-Date: 2020-06-09 21:47+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -403,7 +403,7 @@ msgstr "Predmet naslova »%s« ne vsebuje dvopičja ( : )"
 #: gio/gdbusaddress.c:462
 #, c-format
 msgid "Transport name in address element “%s” must not be empty"
-msgstr ""
+msgstr "Transportno ime v naslovu predmeta »%s« ne sme biti prazno polje"
 
 #: gio/gdbusaddress.c:483
 #, c-format
@@ -2735,46 +2735,41 @@ msgid "Ignoring this file."
 msgstr "Datoteka je prezrta."
 
 #: gio/glib-compile-schemas.c:1963
-#, fuzzy, c-format
-#| msgid "No such key “%s” in schema “%s” as specified in override file “%s”"
+#, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
 "override for this key."
 msgstr ""
-"Ključ »%s« v shemi »%s« kot je določen v datoteki prepisa »%s« ne obstaja"
+"Ključ »%s« v shemi »%s« kot je določen v datoteki prepisa »%s« ne obstaja. "
+"Prepis za ta ključ bo prezrt."
 
 #: gio/glib-compile-schemas.c:1971
-#, fuzzy, c-format
-#| msgid "No such key “%s” in schema “%s” as specified in override file “%s”"
+#, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
 "strict was specified; exiting."
 msgstr ""
-"Ključ »%s« v shemi »%s« kot je določen v datoteki prepisa »%s« ne obstaja"
+"Ključ »%s« v shemi »%s« kot je določen v datoteki prepisa »%s« ne obstaja, "
+"določena je tudi zastavica --strict. Opravilo je prekinjeno."
 
 #: gio/glib-compile-schemas.c:1993
-#, fuzzy, c-format
-#| msgid ""
-#| "cannot provide per-desktop overrides for localised key “%s” in schema "
-#| "“%s” (override file “%s”)"
+#, c-format
 msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”); ignoring override for this key."
 msgstr ""
-"ni mogoče uporabiti prepisa jezikovno prilagojenega ključa »%s« za namizje v "
-"shemi »%s« (prepisna datoteka »%s«)"
+"Ni mogoče uporabiti prepisa jezikovno prilagojenega ključa »%s« za namizje v "
+"shemi »%s« (prepisna datoteka »%s«). Prepis za ta ključ bo prezrt."
 
 #: gio/glib-compile-schemas.c:2002
-#, fuzzy, c-format
-#| msgid ""
-#| "cannot provide per-desktop overrides for localised key “%s” in schema "
-#| "“%s” (override file “%s”)"
+#, c-format
 msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”) and --strict was specified; exiting."
 msgstr ""
-"ni mogoče uporabiti prepisa jezikovno prilagojenega ključa »%s« za namizje v "
-"shemi »%s« (prepisna datoteka »%s«)"
+"Ni mogoče uporabiti prepisa jezikovno prilagojenega ključa »%s« za namizje v "
+"shemi »%s« (prepisna datoteka »%s«), določena je tudi zastavica --strict. "
+"Opravilo je prekinjeno."
 
 #: gio/glib-compile-schemas.c:2026
 #, c-format
@@ -2796,52 +2791,41 @@ msgstr ""
 "preklicano."
 
 #: gio/glib-compile-schemas.c:2065
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key “%s” in schema “%s” in override file “%s” is outside the "
-#| "range given in the schema"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema; ignoring override for this key."
 msgstr ""
-"prepis za ključ »%s« v shemi »%s« v datoteki prepisa »%s« ni v obsegu, "
-"podanem v shemi"
+"Prepis za ključ »%s« v shemi »%s« v datoteki prepisa »%s« ni v obsegu, "
+"podanem v shemi. Prepis za ta ključ bo prezrt."
 
 #: gio/glib-compile-schemas.c:2075
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key “%s” in schema “%s” in override file “%s” is outside the "
-#| "range given in the schema"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema and --strict was specified; exiting."
 msgstr ""
-"prepis za ključ »%s« v shemi »%s« v datoteki prepisa »%s« ni v obsegu, "
-"podanem v shemi"
+"Prepis za ključ »%s« v shemi »%s« v datoteki prepisa »%s« ni v obsegu, "
+"podanem v shemi, določena je tudi zastavica --strict. Opravilo je prekinjeno."
 
 #: gio/glib-compile-schemas.c:2101
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key “%s” in schema “%s” in override file “%s” is not in the "
-#| "list of valid choices"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices; ignoring override for this key."
 msgstr ""
-"prepis za ključ »%s« v shemi »%s« v datoteki prepisa »%s« ni v seznamu "
-"veljavnih možnosti"
+"Prepis za ključ »%s« v shemi »%s« v datoteki prepisa »%s« ni v seznamu "
+"veljavnih možnosti. Prepis za ta ključ bo prezrt."
 
 #: gio/glib-compile-schemas.c:2111
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key “%s” in schema “%s” in override file “%s” is not in the "
-#| "list of valid choices"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices and --strict was specified; exiting."
 msgstr ""
-"prepis za ključ »%s« v shemi »%s« v datoteki prepisa »%s« ni v seznamu "
-"veljavnih možnosti"
+"Prepis za ključ »%s« v shemi »%s« v datoteki prepisa »%s« ni v seznamu "
+"veljavnih možnosti, določena je tudi zastavica --strict. Opravilo je "
+"prekinjeno."
 
 #: gio/glib-compile-schemas.c:2173
 msgid "Where to store the gschemas.compiled file"
@@ -5368,7 +5352,7 @@ msgstr "neprepoznan znak za (? ali (?-"
 
 #: glib/gregex.c:363
 msgid "POSIX named classes are supported only within a class"
-msgstr "razredi POSIX so podprti le znotraj razreda"
+msgstr "Imenski razredi POSIX so podprti le znotraj razreda"
 
 #: glib/gregex.c:366
 msgid "missing terminating )"
@@ -5431,7 +5415,7 @@ msgstr "neznano ime razreda POSIX"
 
 #: glib/gregex.c:415
 msgid "POSIX collating elements are not supported"
-msgstr "zbirni predmeti POSIX niso podprti"
+msgstr "Zbirni predmeti POSIX niso podprti"
 
 #: glib/gregex.c:418
 msgid "character value in \\x{...} sequence is too large"
@@ -5531,7 +5515,7 @@ msgstr "manjkajoče ime podrejenega vzorca po (?&"
 
 #: glib/gregex.c:495
 msgid "digit expected after (?+"
-msgstr "pričakovana števka po "
+msgstr "pričakovana števka po (?+"
 
 #: glib/gregex.c:498
 msgid "] is an invalid data character in JavaScript compatibility mode"
