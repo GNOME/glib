@@ -195,9 +195,8 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
    * GDtlsConnection:peer-certificate: (nullable)
    *
    * The connection's peer's certificate, after the TLS handshake has
-   * completed and the certificate has been accepted. Note in
-   * particular that this is not yet set during the emission of
-   * #GDtlsConnection::accept-certificate.
+   * completed or failed. Note in particular that this is not yet set
+   * during the emission of #GDtlsConnection::accept-certificate.
    *
    * (You can watch for a #GObject::notify signal on this property to
    * detect when a handshake has occurred.)
@@ -214,7 +213,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
   /**
    * GDtlsConnection:peer-certificate-errors:
    *
-   * The errors noticed-and-ignored while verifying
+   * The errors noticed while verifying
    * #GDtlsConnection:peer-certificate. Normally this should be 0, but
    * it may not be if #GDtlsClientConnection:validation-flags is not
    * %G_TLS_CERTIFICATE_VALIDATE_ALL, or if
@@ -494,8 +493,8 @@ g_dtls_connection_get_interaction (GDtlsConnection       *conn)
  * g_dtls_connection_get_peer_certificate:
  * @conn: a #GDtlsConnection
  *
- * Gets @conn's peer's certificate after the handshake has completed.
- * (It is not set during the emission of
+ * Gets @conn's peer's certificate after the handshake has completed
+ * or failed. (It is not set during the emission of
  * #GDtlsConnection::accept-certificate.)
  *
  * Returns: (transfer none) (nullable): @conn's peer's certificate, or %NULL
@@ -521,8 +520,8 @@ g_dtls_connection_get_peer_certificate (GDtlsConnection *conn)
  * @conn: a #GDtlsConnection
  *
  * Gets the errors associated with validating @conn's peer's
- * certificate, after the handshake has completed. (It is not set
- * during the emission of #GDtlsConnection::accept-certificate.)
+ * certificate, after the handshake has completed or failed. (It is
+ * not set during the emission of #GDtlsConnection::accept-certificate.)
  *
  * Returns: @conn's peer's certificate errors
  *
