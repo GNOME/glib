@@ -1769,4 +1769,3 @@ g_close (gint       fd,
     }
   return TRUE;
 }
-
