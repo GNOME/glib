@@ -64,7 +64,7 @@
 #endif
 
 #include "gunixmounts.h"
-#include "glocalfileprivate.h"
+#include "glocalfile.h"
 #include "gfile.h"
 #include "gfilemonitor.h"
 #include "glibintl.h"

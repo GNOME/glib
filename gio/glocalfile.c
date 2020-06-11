@@ -51,7 +51,6 @@
 
 #include "gfileattribute.h"
 #include "glocalfile.h"
-#include "glocalfileprivate.h"
 #include "glocalfileinfo.h"
 #include "glocalfileenumerator.h"
 #include "glocalfileinputstream.h"
