@@ -51,6 +51,8 @@ gboolean g_local_file_is_remote (const gchar *filename);
 GFile * g_local_file_new_from_dirname_and_basename (const char *dirname,
                                                     const char *basename);
 
+gchar *_g_local_file_find_topdir_for (const char *file_path);
+
 G_END_DECLS
 
 #endif /* __G_LOCAL_FILE_H__ */
