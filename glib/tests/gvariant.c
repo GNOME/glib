@@ -5013,6 +5013,38 @@ test_recursion_limits_array_in_variant (void)
   g_variant_unref (wrapper_variant);
 }
 
+/* Test that a nested array with invalid values in its offset table (which point
+ * from the inner to the outer array) is normalised successfully without
+ * looping infinitely. */
+static void
+test_normal_checking_array_offsets_overlapped (void)
+{
+  const guint8 data[] = {
+    0x01, 0x00,
+  };
+  gsize size = sizeof (data);
+  GVariant *variant = NULL;
+  GVariant *normal_variant = NULL;
+  GVariant *expected_variant = NULL;
+
+  variant = g_variant_new_from_data (G_VARIANT_TYPE ("aay"), data, size,
+                                     FALSE, NULL, NULL);
+  g_assert_nonnull (variant);
+
+  normal_variant = g_variant_get_normal_form (variant);
+  g_assert_nonnull (normal_variant);
+
+  expected_variant = g_variant_new_parsed ("[@ay [], []]");
+  g_assert_cmpvariant (normal_variant, expected_variant);
+
+  g_assert_cmpmem (g_variant_get_data (normal_variant), g_variant_get_size (normal_variant),
+                   g_variant_get_data (expected_variant), g_variant_get_size (expected_variant));
+
+  g_variant_unref (expected_variant);
+  g_variant_unref (normal_variant);
+  g_variant_unref (variant);
+}
+
 /* Test that an array with invalidly large values in its offset table is
  * normalised successfully without looping infinitely. */
 static void
@@ -5413,6 +5445,8 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gvariant/normal-checking/tuples",
                    test_normal_checking_tuples);
+  g_test_add_func ("/gvariant/normal-checking/array-offsets/overlapped",
+                   test_normal_checking_array_offsets_overlapped);
   g_test_add_func ("/gvariant/normal-checking/array-offsets",
                    test_normal_checking_array_offsets);
   g_test_add_func ("/gvariant/normal-checking/array-offsets2",
