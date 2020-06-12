@@ -186,7 +186,7 @@
 
 /* We maintain a list of modules, so we can reference count them.
  * That's needed because some platforms don't support references counts on
- * modules. Also, the module for the program itself is kept seperately for
+ * modules. Also, the module for the program itself is kept separately for
  * faster access and because it has special semantics.
  */
 
@@ -276,7 +276,7 @@ g_module_set_error (const gchar *error)
 }
 
 
-/* --- include platform specifc code --- */
+/* --- include platform specific code --- */
 #define	SUPPORT_OR_RETURN(rv)	{ g_module_set_error (NULL); }
 #if	(G_MODULE_IMPL == G_MODULE_IMPL_DL)
 #include "gmodule-dl.c"

@@ -2234,7 +2234,7 @@ MuiRegQueryValueExW (HKEY                     hKey,
  * When calling with value_data == NULL (to get data size without getting
  * the data itself) remember that returned size corresponds to possibly
  * unterminated string data (if value is some kind of string), because
- * termination cannot be checked and fixed unless the data is retreived
+ * termination cannot be checked and fixed unless the data is retrieved
  * too.
  *
  * When not %NULL, @mui_dll_dirs indicates that `RegLoadMUIStringW()` API

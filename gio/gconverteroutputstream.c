@@ -595,7 +595,7 @@ g_converter_output_stream_flush (GOutputStream  *stream,
 	  if (!is_closing &&
 	      res == G_CONVERTER_FLUSHED)
 	    {
-	      /* Should not have retured FLUSHED with input left */
+	      /* Should not have returned FLUSHED with input left */
 	      g_assert (buffer_data_size (&priv->output_buffer) == 0);
 	      flushed = TRUE;
 	    }

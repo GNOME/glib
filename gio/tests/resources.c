@@ -605,7 +605,7 @@ test_resource_binary_linked (void)
 
 /* Test resource whose xml file starts with more than one digit
  * and where no explicit c-name is given
- * Checks if resources are sucessfully registered and
+ * Checks if resources are successfully registered and
  * data can be found and read. */
 static void
 test_resource_digits (void)

@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-# Contributer(s):
+# Contributor(s):
 #   Andrew Taylor <andrew.taylor@montage.ca>
 
 # gen-unicode-tables.pl - Generate tables for libunicode from Unicode data.
@@ -225,7 +225,7 @@ defined $derivedeastasianwidthtxt or die "Did not find DerivedEastAsianWidth fil
 print "Creating decomp table\n" if ($do_decomp);
 print "Creating property table\n" if ($do_props);
 
-print "Composition exlusions from $compositionexclusionstxt\n";
+print "Composition exclusions from $compositionexclusionstxt\n";
 
 open (INPUT, "< $compositionexclusionstxt") || exit 1;
 

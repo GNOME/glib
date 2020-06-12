@@ -233,7 +233,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
   g_object_class_install_property (gobject_class,
 				   PROP_DESTINATION_PROTOCOL,
 				   g_param_spec_string ("destination-protocol",
-						       P_("Destionation Protocol"),
+						       P_("Destination Protocol"),
 						       P_("The proxy destination protocol"),
 						       NULL,
 						       G_PARAM_READWRITE |

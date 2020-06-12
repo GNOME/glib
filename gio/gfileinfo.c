@@ -830,7 +830,7 @@ _g_file_info_get_attribute_value (GFileInfo  *info,
  * @info: a #GFileInfo.
  * @attribute: a file attribute key.
  *
- * Gets the value of a attribute, formated as a string.
+ * Gets the value of a attribute, formatted as a string.
  * This escapes things as needed to make the string valid
  * UTF-8.
  *
@@ -2295,7 +2295,7 @@ struct _GFileAttributeMatcher {
 
   GArray *sub_matchers;
 
-  /* Interator */
+  /* Iterator */
   guint32 iterator_ns;
   gint iterator_pos;
 };

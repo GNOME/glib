@@ -416,7 +416,7 @@ const gchar desktop_key_match_category[N_DESKTOP_KEYS] = {
 };
 
 /* Common prefix commands to ignore from Exec= lines */
-const char * const exec_key_match_blacklist[] = {
+const char * const exec_key_match_blocklist[] = {
   "bash",
   "env",
   "flatpak",
@@ -771,7 +771,7 @@ desktop_file_dir_unindexed_get_tweaks (DesktopFileDir *dir,
 static void
 expand_strv (gchar         ***strv_ptr,
              gchar          **to_add,
-             gchar * const   *blacklist)
+             gchar * const   *blocklist)
 {
   guint strv_len, add_len;
   gchar **strv;
@@ -790,10 +790,10 @@ expand_strv (gchar         ***strv_ptr,
 
   for (i = 0; to_add[i]; i++)
     {
-      /* Don't add blacklisted strings */
-      if (blacklist)
-        for (j = 0; blacklist[j]; j++)
-          if (g_str_equal (to_add[i], blacklist[j]))
+      /* Don't add blocklisted strings */
+      if (blocklist)
+        for (j = 0; blocklist[j]; j++)
+          if (g_str_equal (to_add[i], blocklist[j]))
             goto no_add;
 
       /* Don't add duplicates already in the list */
@@ -915,7 +915,7 @@ desktop_file_dir_unindexed_read_mimeapps_lists (DesktopFileDir *dir)
 
   dir->mime_tweaks = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, free_mime_tweaks);
 
-  /* We process in order of precedence, using a blacklisting approach to
+  /* We process in order of precedence, using a blocklisting approach to
    * avoid recording later instructions that conflict with ones we found
    * earlier.
    *
@@ -1134,8 +1134,8 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
                   if ((slash = strrchr (raw, '/')))
                     value = slash + 1;
 
-                  /* Don't match on blacklisted binaries like interpreters */
-                  if (g_strv_contains (exec_key_match_blacklist, value))
+                  /* Don't match on blocklisted binaries like interpreters */
+                  if (g_strv_contains (exec_key_match_blocklist, value))
 		    value = NULL;
                 }
 
@@ -1199,7 +1199,7 @@ static void
 desktop_file_dir_unindexed_mime_lookup (DesktopFileDir *dir,
                                         const gchar    *mime_type,
                                         GPtrArray      *hits,
-                                        GPtrArray      *blacklist)
+                                        GPtrArray      *blocklist)
 {
   UnindexedMimeTweaks *tweaks;
   gint i;
@@ -1216,7 +1216,7 @@ desktop_file_dir_unindexed_mime_lookup (DesktopFileDir *dir,
           gchar *app_name = tweaks->additions[i];
 
           if (!desktop_file_dir_app_name_is_masked (dir, app_name) &&
-              !array_contains (blacklist, app_name) && !array_contains (hits, app_name))
+              !array_contains (blocklist, app_name) && !array_contains (hits, app_name))
             g_ptr_array_add (hits, app_name);
         }
     }
@@ -1228,8 +1228,8 @@ desktop_file_dir_unindexed_mime_lookup (DesktopFileDir *dir,
           gchar *app_name = tweaks->removals[i];
 
           if (!desktop_file_dir_app_name_is_masked (dir, app_name) &&
-              !array_contains (blacklist, app_name) && !array_contains (hits, app_name))
-            g_ptr_array_add (blacklist, app_name);
+              !array_contains (blocklist, app_name) && !array_contains (hits, app_name))
+            g_ptr_array_add (blocklist, app_name);
         }
     }
 }
@@ -1447,14 +1447,14 @@ desktop_file_dir_get_all (DesktopFileDir *dir,
  * @dir: a #DesktopFileDir
  * @mime_type: the mime type to look up
  * @hits: the array to store the hits
- * @blacklist: the array to store the blacklist
+ * @blocklist: the array to store the blocklist
  *
  * Does a lookup of a mimetype against one desktop file directory,
- * recording any hits and blacklisting and "Removed" associations (so
+ * recording any hits and blocklisting and "Removed" associations (so
  * later directories don't record them as hits).
  *
- * The items added to @hits are duplicated, but the ones in @blacklist
- * are weak pointers.  This facilitates simply freeing the blacklist
+ * The items added to @hits are duplicated, but the ones in @blocklist
+ * are weak pointers.  This facilitates simply freeing the blocklist
  * (which is only used for internal bookkeeping) but using the pdata of
  * @hits as the result of the operation.
  */
@@ -1462,9 +1462,9 @@ static void
 desktop_file_dir_mime_lookup (DesktopFileDir *dir,
                               const gchar    *mime_type,
                               GPtrArray      *hits,
-                              GPtrArray      *blacklist)
+                              GPtrArray      *blocklist)
 {
-  desktop_file_dir_unindexed_mime_lookup (dir, mime_type, hits, blacklist);
+  desktop_file_dir_unindexed_mime_lookup (dir, mime_type, hits, blocklist);
 }
 
 /*< internal >
@@ -4131,12 +4131,12 @@ static gchar **
 g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
                                                      gboolean     include_fallback)
 {
-  GPtrArray *hits, *blacklist;
+  GPtrArray *hits, *blocklist;
   gchar **types;
   gint i, j;
 
   hits = g_ptr_array_new ();
-  blacklist = g_ptr_array_new ();
+  blocklist = g_ptr_array_new ();
 
   types = get_list_of_mimetypes (content_type, include_fallback);
 
@@ -4144,7 +4144,7 @@ g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
 
   for (i = 0; types[i]; i++)
     for (j = 0; j < desktop_file_dirs->len; j++)
-      desktop_file_dir_mime_lookup (g_ptr_array_index (desktop_file_dirs, j), types[i], hits, blacklist);
+      desktop_file_dir_mime_lookup (g_ptr_array_index (desktop_file_dirs, j), types[i], hits, blocklist);
 
   /* We will keep the hits past unlocking, so we must dup them */
   for (i = 0; i < hits->len; i++)
@@ -4154,7 +4154,7 @@ g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
 
   g_ptr_array_add (hits, NULL);
 
-  g_ptr_array_free (blacklist, TRUE);
+  g_ptr_array_free (blocklist, TRUE);
   g_strfreev (types);
 
   return (gchar **) g_ptr_array_free (hits, FALSE);
@@ -4327,7 +4327,7 @@ GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
                                  gboolean    must_support_uris)
 {
-  GPtrArray *blacklist;
+  GPtrArray *blocklist;
   GPtrArray *results;
   GAppInfo *info;
   gchar **types;
@@ -4337,7 +4337,7 @@ g_app_info_get_default_for_type (const char *content_type,
 
   types = get_list_of_mimetypes (content_type, TRUE);
 
-  blacklist = g_ptr_array_new ();
+  blocklist = g_ptr_array_new ();
   results = g_ptr_array_new ();
   info = NULL;
 
@@ -4351,7 +4351,7 @@ g_app_info_get_default_for_type (const char *content_type,
 
       /* Consider the associations as well... */
       for (j = 0; j < desktop_file_dirs->len; j++)
-        desktop_file_dir_mime_lookup (g_ptr_array_index (desktop_file_dirs, j), types[i], results, blacklist);
+        desktop_file_dir_mime_lookup (g_ptr_array_index (desktop_file_dirs, j), types[i], results, blocklist);
 
       /* (If any), see if one of those apps is installed... */
       for (j = 0; j < results->len; j++)
@@ -4373,7 +4373,7 @@ g_app_info_get_default_for_type (const char *content_type,
         }
 
       /* Reset the list, ready to try again with the next (parent)
-       * mimetype, but keep the blacklist in place.
+       * mimetype, but keep the blocklist in place.
        */
       g_ptr_array_set_size (results, 0);
     }
@@ -4381,7 +4381,7 @@ g_app_info_get_default_for_type (const char *content_type,
 out:
   desktop_file_dirs_unlock ();
 
-  g_ptr_array_unref (blacklist);
+  g_ptr_array_unref (blocklist);
   g_ptr_array_unref (results);
   g_strfreev (types);
 

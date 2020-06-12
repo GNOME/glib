@@ -311,7 +311,7 @@ How to run and debug your GLib application
     <ulink url="https://docs.microsoft.com/en-us/windows/desktop/debug/vectored-exception-handling">Vectored Exception Handling</ulink>
     on Windows (see <link linkend="G_DEBUGGER"><envar>G_DEBUGGER</envar></link>), allowing GLib to catch more
     exceptions. Set this variable to a comma-separated list of
-    hexademical exception codes that should additionally be caught.
+    hexadecimal exception codes that should additionally be caught.
   </para>
   <para>
     By default GLib will only catch Access Violation, Stack Overflow and

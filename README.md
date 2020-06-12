@@ -34,7 +34,7 @@ In the bug report please include:
   As a last resort, you can also provide a pointer to a larger piece
   of software that can be downloaded.
 * If the bug was a crash, the exact text that was printed out
-  when the crash occured.
+  when the crash occurred.
 * Further information such as stack traces may be useful, but
   is not necessary.
 

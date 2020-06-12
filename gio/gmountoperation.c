@@ -431,7 +431,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
   /**
    * GMountOperation::show-unmount-progress:
    * @op: a #GMountOperation:
-   * @message: string containing a mesage to display to the user
+   * @message: string containing a message to display to the user
    * @time_left: the estimated time left before the operation completes,
    *     in microseconds, or -1
    * @bytes_left: the amount of bytes to be written before the operation

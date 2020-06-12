@@ -404,10 +404,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytes/hash", test_hash);
   g_test_add_func ("/bytes/equal", test_equal);
   g_test_add_func ("/bytes/compare", test_compare);
-  g_test_add_func ("/bytes/to-data/transfered", test_to_data_transferred);
+  g_test_add_func ("/bytes/to-data/transferred", test_to_data_transferred);
   g_test_add_func ("/bytes/to-data/two-refs", test_to_data_two_refs);
   g_test_add_func ("/bytes/to-data/non-malloc", test_to_data_non_malloc);
-  g_test_add_func ("/bytes/to-array/transfered", test_to_array_transferred);
+  g_test_add_func ("/bytes/to-array/transferred", test_to_array_transferred);
   g_test_add_func ("/bytes/to-array/two-refs", test_to_array_two_refs);
   g_test_add_func ("/bytes/to-array/non-malloc", test_to_array_non_malloc);
   g_test_add_func ("/bytes/null", test_null);

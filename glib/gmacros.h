@@ -89,7 +89,7 @@
  * in a compatible way before this feature was supported in all
  * compilers.  These days, GLib requires inlining support from the
  * compiler, so your GLib-using programs can safely assume that the
- * "inline" keywork works properly.
+ * "inline" keyword works properly.
  *
  * Never use this macro anymore.  Just say "static inline".
  *

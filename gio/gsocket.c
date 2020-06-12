@@ -2249,7 +2249,7 @@ g_socket_w32_get_adapter_ipv4_addr (const gchar *name_or_ip)
    */
   if_index = if_nametoindex (name_or_ip);
 
-  /* Step 3: Prepare wchar string for friendly name comparision */
+  /* Step 3: Prepare wchar string for friendly name comparison */
   if (if_index == 0)
     {
       size_t if_name_len = strlen (name_or_ip);
@@ -2259,7 +2259,7 @@ g_socket_w32_get_adapter_ipv4_addr (const gchar *name_or_ip)
       wchar_name_or_ip = (wchar_t *) g_try_malloc ((if_name_len + 1) * sizeof(wchar_t));
       if (wchar_name_or_ip)
         mbstowcs (wchar_name_or_ip, name_or_ip, if_name_len + 1);
-      /* NOTE: Even if malloc fails here, some comparisions can still be done later... so no exit here! */
+      /* NOTE: Even if malloc fails here, some comparisons can still be done later... so no exit here! */
     }
 
   /*

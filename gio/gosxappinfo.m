@@ -326,7 +326,7 @@ get_bundle_for_id (CFStringRef bundle_id)
   CFArrayRef urls = LSCopyApplicationURLsForBundleIdentifier (bundle_id, NULL);
   if (urls)
     {
-      /* TODO: if there's multiple, we should perhaps prefer one thats in $HOME,
+      /* TODO: if there's multiple, we should perhaps prefer one that's in $HOME,
        * instead of just always picking the first.
        */
       app_url = CFArrayGetValueAtIndex (urls, 0);

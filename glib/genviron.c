@@ -227,7 +227,7 @@ g_environ_unsetenv (gchar       **envp,
   return g_environ_unsetenv_internal (envp, variable, TRUE);
 }
 
-/* UNIX implemention {{{1 */
+/* UNIX implementation {{{1 */
 #ifndef G_OS_WIN32
 
 /**

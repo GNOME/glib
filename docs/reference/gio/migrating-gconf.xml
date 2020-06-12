@@ -161,7 +161,7 @@
         have a GConf schema. GConf comes with a commandline tool
         gsettings-schema-convert that can help with the task of converting
         a GConf schema into an equivalent GSettings schema. The tool is not
-        perfect and may need assistence in some cases.
+        perfect and may need assistance in some cases.
       </para>
       <example><title>An example for using gsettings-schema-convert</title>
         <para>Running <userinput>gsettings-schema-convert --gconf --xml --schema-id "org.gnome.font-rendering" --output org.gnome.font-rendering.gschema.xml destop_gnome_font_rendering.schemas</userinput> on the following <filename>desktop_gnome_font_rendering.schemas</filename> file:

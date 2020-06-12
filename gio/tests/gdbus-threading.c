@@ -409,7 +409,7 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
   guint n, divisor;
 
   /*
-   * Check that multiple threads can do calls without interferring with
+   * Check that multiple threads can do calls without interfering with
    * each other. We do this by creating three threads that call the
    * Sleep() method on the server (which handles it asynchronously, e.g.
    * it won't block other requests) with different sleep durations and

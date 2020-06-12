@@ -424,7 +424,7 @@ g_once_init_enter_impl (volatile gsize *location)
  * want to require prior calling to g_thread_init(), because your code
  * should also be usable in non-threaded programs, you are not able to
  * use g_mutex_new() and thus #GMutex, as that requires a prior call to
- * g_thread_init(). In theses cases you can also use a #GStaticMutex.
+ * g_thread_init(). In these cases you can also use a #GStaticMutex.
  * It must be initialized with g_static_mutex_init() before using it
  * and freed with with g_static_mutex_free() when not needed anymore to
  * free up any allocated resources.
@@ -1025,7 +1025,7 @@ g_static_rw_lock_reader_lock (GStaticRWLock* lock)
  *
  * Returns: %TRUE, if @lock could be locked for reading
  *
- * Deprectated: 2.32: Use g_rw_lock_reader_trylock() instead
+ * Deprecated: 2.32: Use g_rw_lock_reader_trylock() instead
  */
 gboolean
 g_static_rw_lock_reader_trylock (GStaticRWLock* lock)
@@ -1055,7 +1055,7 @@ g_static_rw_lock_reader_trylock (GStaticRWLock* lock)
  * locks for reading have been unlocked, the waiting thread is woken up
  * and can lock @lock for writing.
  *
- * Deprectated: 2.32: Use g_rw_lock_reader_unlock() instead
+ * Deprecated: 2.32: Use g_rw_lock_reader_unlock() instead
  */
 void
 g_static_rw_lock_reader_unlock  (GStaticRWLock* lock)
@@ -1084,7 +1084,7 @@ g_static_rw_lock_reader_unlock  (GStaticRWLock* lock)
  * @lock (neither for reading nor writing). This lock has to be
  * unlocked by g_static_rw_lock_writer_unlock().
  *
- * Deprectated: 2.32: Use g_rw_lock_writer_lock() instead
+ * Deprecated: 2.32: Use g_rw_lock_writer_lock() instead
  */
 void
 g_static_rw_lock_writer_lock (GStaticRWLock* lock)
@@ -1114,7 +1114,7 @@ g_static_rw_lock_writer_lock (GStaticRWLock* lock)
  *
  * Returns: %TRUE, if @lock could be locked for writing
  *
- * Deprectated: 2.32: Use g_rw_lock_writer_trylock() instead
+ * Deprecated: 2.32: Use g_rw_lock_writer_trylock() instead
  */
 gboolean
 g_static_rw_lock_writer_trylock (GStaticRWLock* lock)
@@ -1147,7 +1147,7 @@ g_static_rw_lock_writer_trylock (GStaticRWLock* lock)
  * lock @lock for reading, the waiting threads are woken up and can
  * lock @lock for reading.
  *
- * Deprectated: 2.32: Use g_rw_lock_writer_unlock() instead
+ * Deprecated: 2.32: Use g_rw_lock_writer_unlock() instead
  */
 void
 g_static_rw_lock_writer_unlock (GStaticRWLock* lock)

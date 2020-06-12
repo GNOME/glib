@@ -90,7 +90,7 @@ __gio_location() {
     if ! __has_common_prefix; then
         COMPREPLY=("${mounts[@]} ${names[@]}")
 
-        # Workaround to prevent overwritting suggestions, it adds empty
+        # Workaround to prevent overwriting suggestions, it adds empty
         # suggestion, otherwise names with colons will be corrupted
         COMPREPLY+=(" ")
 

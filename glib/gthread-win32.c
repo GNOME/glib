@@ -62,8 +62,8 @@ g_thread_abort (gint         status,
 }
 
 /* Starting with Vista and Windows 2008, we have access to the
- * CONDITION_VARIABLE and SRWLock primatives on Windows, which are
- * pretty reasonable approximations of the primatives specified in
+ * CONDITION_VARIABLE and SRWLock primitives on Windows, which are
+ * pretty reasonable approximations of the primitives specified in
  * POSIX 2001 (pthread_cond_t and pthread_mutex_t respectively).
  *
  * Both of these types are structs containing a single pointer.  That

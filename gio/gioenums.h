@@ -117,7 +117,7 @@ typedef enum {
 
 /**
  * GFileAttributeType:
- * @G_FILE_ATTRIBUTE_TYPE_INVALID: indicates an invalid or uninitalized type.
+ * @G_FILE_ATTRIBUTE_TYPE_INVALID: indicates an invalid or uninitialized type.
  * @G_FILE_ATTRIBUTE_TYPE_STRING: a null terminated UTF8 string.
  * @G_FILE_ATTRIBUTE_TYPE_BYTE_STRING: a zero terminated string of non-zero bytes.
  * @G_FILE_ATTRIBUTE_TYPE_BOOLEAN: a boolean value.

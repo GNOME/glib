@@ -135,7 +135,7 @@
  * @G_IO_STATUS_EOF: End of file.
  * @G_IO_STATUS_AGAIN: Resource temporarily unavailable.
  *
- * Stati returned by most of the #GIOFuncs functions.
+ * Statuses returned by most of the #GIOFuncs functions.
  **/
 
 /**
@@ -1854,7 +1854,7 @@ read_again:
                         goto done;
                       }
                     break;
-                  case '\0': /* Embeded null in input */
+                  case '\0': /* Embedded null in input */
                     line_length = nextchar - use_buf->str;
                     got_term_len = 1;
                     goto done;
@@ -1986,7 +1986,7 @@ g_io_channel_read_to_end (GIOChannel  *channel,
  * @buf: (out caller-allocates) (array length=count) (element-type guint8):
  *     a buffer to read data into
  * @count: (in): the size of the buffer. Note that the buffer may not be
- *     complelely filled even if there is data in the buffer if the
+ *     completely filled even if there is data in the buffer if the
  *     remaining data is not a complete character.
  * @bytes_read: (out) (optional): The number of bytes read. This may be
  *     zero even on success if count < 6 and the channel's encoding
@@ -2374,7 +2374,7 @@ reconvert:
                       default:
                         g_assert_not_reached ();
                         err = (gsize) -1;
-                        errnum = 0; /* Don't confunse the compiler */
+                        errnum = 0; /* Don't confuse the compiler */
                     }
                 }
               else

@@ -194,7 +194,7 @@ typedef struct _GSocketListener                             GSocketListener;
 /**
  * GSocketService:
  *
- * A helper class for handling accepting incomming connections in the
+ * A helper class for handling accepting incoming connections in the
  * glib mainloop.
  *
  * Since: 2.22

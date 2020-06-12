@@ -105,7 +105,7 @@ get_viewable_logical_drives (void)
   return viewable_drives; 
 }
 
-/* deliver accesible (aka 'mounted') volumes */
+/* deliver accessible (aka 'mounted') volumes */
 static GList *
 get_mounts (GVolumeMonitor *volume_monitor)
 {
@@ -237,7 +237,7 @@ g_win32_volume_monitor_class_init (GWin32VolumeMonitorClass *klass)
 static void
 g_win32_volume_monitor_init (GWin32VolumeMonitor *win32_monitor)
 {
-  /* maybe we shoud setup a callback window to listern for WM_DEVICECHANGE ? */
+  /* maybe we should setup a callback window to listen for WM_DEVICECHANGE ? */
 #if 0
   unix_monitor->mount_monitor = g_win32_mount_monitor_new ();
 

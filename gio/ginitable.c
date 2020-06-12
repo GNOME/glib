@@ -50,7 +50,7 @@
  * unreferenced).
  *
  * For bindings in languages where the native constructor supports
- * exceptions the binding could check for objects implemention %GInitable
+ * exceptions the binding could check for objects implementing %GInitable
  * during normal construction and automatically initialize them, throwing
  * an exception on failure.
  */

@@ -1110,7 +1110,7 @@ test_stdio_wrappers (void)
 
 /* Win32 does not support "wb+", but g_fopen() should automatically
  * translate this mode to its alias "w+b".
- * Also check various other file open modes for correct support accross
+ * Also check various other file open modes for correct support across
  * platforms.
  * See: https://gitlab.gnome.org/GNOME/glib/merge_requests/119
  */
