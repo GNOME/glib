@@ -1279,7 +1279,7 @@ test_object_registration (void)
   g_strfreev (nodes);
   g_assert_cmpint (count_interfaces (c, "/foo/dyna/dynamicallycreated"), ==, 4);
 
-  /* now check that the object hierarachy is properly generated... yes, it's a bit
+  /* now check that the object hierarchy is properly generated... yes, it's a bit
    * perverse that we round-trip to the bus to introspect ourselves ;-)
    */
   nodes = get_nodes_at (c, "/");

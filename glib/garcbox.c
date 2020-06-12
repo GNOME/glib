@@ -144,7 +144,7 @@
  * If you need to clear the contents of the data, you will need to use an
  * ancillary function that calls g_rc_box_release_full():
  *
- * |[<!-- laguage="C" -->
+ * |[<!-- language="C" -->
  * static void
  * my_data_struct_release (MyDataStruct *data)
  * {
@@ -188,7 +188,7 @@ g_atomic_rc_box_alloc (gsize block_size)
  * @block_size: the size of the allocation, must be greater than 0
  *
  * Allocates @block_size bytes of memory, and adds atomic
- * referenc counting semantics to it.
+ * reference counting semantics to it.
  *
  * The contents of the returned data is set to zero.
  *

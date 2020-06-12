@@ -38,7 +38,7 @@
  *
  * Keys are strings that contain a key namespace and a key name, separated
  * by a colon, e.g. "namespace::keyname". Namespaces are included to sort
- * key-value pairs by namespaces for relevance. Keys can be retrived
+ * key-value pairs by namespaces for relevance. Keys can be retrieved
  * using wildcards, e.g. "standard::*" will return all of the keys in the
  * "standard" namespace.
  *

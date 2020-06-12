@@ -582,7 +582,7 @@ gdouble
 g_rand_double (GRand *rand)
 {    
   /* We set all 52 bits after the point for this, not only the first
-     32. Thats why we need two calls to g_rand_int */
+     32. That's why we need two calls to g_rand_int */
   gdouble retval = g_rand_int (rand) * G_RAND_DOUBLE_TRANSFORM;
   retval = (retval + g_rand_int (rand)) * G_RAND_DOUBLE_TRANSFORM;
 

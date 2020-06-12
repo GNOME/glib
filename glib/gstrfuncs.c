@@ -1769,7 +1769,7 @@ g_ascii_digit_value (gchar c)
  * g_ascii_xdigit_value:
  * @c: an ASCII character.
  *
- * Determines the numeric value of a character as a hexidecimal
+ * Determines the numeric value of a character as a hexadecimal
  * digit. Differs from g_unichar_xdigit_value() because it takes
  * a char, so there's no worry about sign extension if characters
  * are signed.

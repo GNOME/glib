@@ -398,7 +398,7 @@ typedef struct {
 			/* fields in third byte */
 	unsigned	qr: 1;		/* response flag */
 	unsigned	opcode: 4;	/* purpose of message */
-	unsigned	aa: 1;		/* authoritive answer */
+	unsigned	aa: 1;		/* authoritative answer */
 	unsigned	tc: 1;		/* truncated message */
 	unsigned	rd: 1;		/* recursion desired */
 			/* fields in fourth byte */
@@ -412,7 +412,7 @@ typedef struct {
 			/* fields in third byte */
 	unsigned	rd :1;		/* recursion desired */
 	unsigned	tc :1;		/* truncated message */
-	unsigned	aa :1;		/* authoritive answer */
+	unsigned	aa :1;		/* authoritative answer */
 	unsigned	opcode :4;	/* purpose of message */
 	unsigned	qr :1;		/* response flag */
 			/* fields in fourth byte */
@@ -508,7 +508,7 @@ typedef enum __ns_type {
 	ns_t_cert = 37,		/* Certification record */
 	ns_t_a6 = 38,		/* IPv6 address (deprecates AAAA) */
 	ns_t_dname = 39,	/* Non-terminal DNAME (for IPv6) */
-	ns_t_sink = 40,		/* Kitchen sink (experimentatl) */
+	ns_t_sink = 40,		/* Kitchen sink (experimental) */
 	ns_t_opt = 41,		/* EDNS0 option (meta-RR) */
 	ns_t_apl = 42,		/* Address prefix list (RFC 3123) */
 	ns_t_tkey = 249,	/* Transaction key */

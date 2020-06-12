@@ -138,7 +138,7 @@ protect_argv_string (const gchar *string)
     {
       if (*p == ' ' || *p == '\t')
 	need_dblquotes = TRUE;
-      /* estimate max len, assuming that all escapable chracters will be escaped */
+      /* estimate max len, assuming that all escapable characters will be escaped */
       if (*p == '"' || *p == '\\')
 	len += 2;
       else
@@ -151,7 +151,7 @@ protect_argv_string (const gchar *string)
 
   if (need_dblquotes)
     *q++ = '"';
-  /* Only quotes and backslashes preceeding quotes are escaped:
+  /* Only quotes and backslashes preceding quotes are escaped:
    * see "Parsing C Command-Line Arguments" at
    * https://docs.microsoft.com/en-us/cpp/c-language/parsing-c-command-line-arguments
    */
@@ -161,12 +161,12 @@ protect_argv_string (const gchar *string)
 	{
 	  /* Add backslash for escaping quote itself */
 	  *q++ = '\\';
-	  /* Add backslash for every preceeding backslash for escaping it */
+	  /* Add backslash for every preceding backslash for escaping it */
 	  for (;pre_bslash > 0; --pre_bslash)
 	    *q++ = '\\';
 	}
 
-      /* Count length of continuous sequence of preceeding backslashes. */
+      /* Count length of continuous sequence of preceding backslashes. */
       if (*p == '\\')
 	++pre_bslash;
       else
@@ -178,7 +178,7 @@ protect_argv_string (const gchar *string)
   
   if (need_dblquotes)
     {
-      /* Add backslash for every preceeding backslash for escaping it,
+      /* Add backslash for every preceding backslash for escaping it,
        * do NOT escape quote itself.
        */
       for (;pre_bslash > 0; --pre_bslash)

@@ -141,10 +141,10 @@
  * - the thread magazines. for each (aligned) chunk size, a magazine (a list)
  *   of recently freed and soon to be allocated chunks is maintained per thread.
  *   this way, most alloc/free requests can be quickly satisfied from per-thread
- *   free lists which only require one g_private_get() call to retrive the
+ *   free lists which only require one g_private_get() call to retrieve the
  *   thread handle.
  * - the magazine cache. allocating and freeing chunks to/from threads only
- *   occours at magazine sizes from a global depot of magazines. the depot
+ *   occurs at magazine sizes from a global depot of magazines. the depot
  *   maintaines a 15 second working set of allocated magazines, so full
  *   magazines are not allocated and released too often.
  *   the chunk size dependent magazine sizes automatically adapt (within limits,
@@ -291,7 +291,7 @@ static SliceConfig slice_config = {
 };
 static GMutex      smc_tree_mutex; /* mutex for G_SLICE=debug-blocks */
 
-/* --- auxiliary funcitons --- */
+/* --- auxiliary functions --- */
 void
 g_slice_set_config (GSliceConfig ckey,
                     gint64       value)

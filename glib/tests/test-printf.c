@@ -413,7 +413,7 @@ test_f (void)
   gchar buf[128];
   gint res;
 
-  /* %f, basic formattting */
+  /* %f, basic formatting */
 
   res = g_snprintf (buf, 128, "%f", G_PI);
   g_assert_cmpint (res, ==, 8);

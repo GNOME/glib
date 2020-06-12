@@ -61,7 +61,7 @@
  * g_time_zone_get_identifier().
  *
  * A time zone contains a number of intervals.  Each interval has
- * an abbreviation to describe it (for example, ‘PDT’), an offet to UTC and a
+ * an abbreviation to describe it (for example, ‘PDT’), an offset to UTC and a
  * flag indicating if the daylight savings time is in effect during that
  * interval.  A time zone always has at least one interval — interval 0. Note
  * that interval abbreviations are not the same as time zone identifiers

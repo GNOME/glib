@@ -388,7 +388,7 @@ test_proxy_signals_on_emit_signal_cb (GDBusProxy   *proxy,
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
 
-  /* check that the signal was recieved before we got the method result */
+  /* check that the signal was received before we got the method result */
   g_assert_cmpuint (strlen (data->s->str), >, 0);
 
   /* break out of the loop */

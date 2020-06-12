@@ -379,7 +379,7 @@ derived_object_class_init (DerivedObjectClass *class)
   object_class->set_property = derived_object_set_property;
   object_class->get_property = derived_object_get_property;
 
-  /* Overriding a property that is itself overridding an interface property */
+  /* Overriding a property that is itself overriding an interface property */
   g_object_class_override_property (object_class, DERIVED_PROP3, "prop3");
 
   /* Overriding a property not from an interface */

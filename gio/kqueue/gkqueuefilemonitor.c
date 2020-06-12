@@ -354,7 +354,7 @@ g_kqueue_file_monitor_callback (gint fd, GIOCondition condition, gpointer user_d
              * rescan of missing files immediately so we don't have to wait for
              * 4 seconds for discovering missing files. We pass the sub_file
              * corresponding to the GKqueueFileMonitor to 'check_this_sub_only'
-             * argument to prevent _km_scan_missing from emiting 'CREATED'
+             * argument to prevent _km_scan_missing from emitting 'CREATED'
              * events because _kh_dir_diff will do it for us. */
             if (sub->mon->sub_file != NULL && sub->mon->sub_file->fd == -1)
               _km_scan_missing (sub->mon->sub_file);

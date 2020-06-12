@@ -911,7 +911,7 @@ static void g_task_thread_complete (GTask *task);
  * g_task_return_error_if_cancelled() and then returned.
  *
  * This allows you to create a cancellable wrapper around an
- * uninterruptable function. The #GTaskThreadFunc just needs to be
+ * uninterruptible function. The #GTaskThreadFunc just needs to be
  * careful that it does not modify any externally-visible state after
  * it has been cancelled. To do that, the thread should call
  * g_task_set_return_on_cancel() again to (atomically) set

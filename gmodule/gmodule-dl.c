@@ -29,7 +29,7 @@
 
 #include <dlfcn.h>
 
-/* Perl includes <nlist.h> and <link.h> instead of <dlfcn.h> on some systmes? */
+/* Perl includes <nlist.h> and <link.h> instead of <dlfcn.h> on some systems? */
 
 
 /* dlerror() is not implemented on all systems

@@ -264,7 +264,7 @@ g_memory_buffer_write (GMemoryBuffer  *mbuf,
 
   if (mbuf->pos + count > mbuf->len)
     {
-      /* At least enought to fit the write, rounded up
+      /* At least enough to fit the write, rounded up
 	     for greater than linear growth.
          TODO: This wastes a lot of memory at large buffer sizes.
                Figure out a more rational allocation strategy. */
@@ -3378,7 +3378,7 @@ g_dbus_message_to_gerror (GDBusMessage   *message,
     }
   else
     {
-      /* TOOD: this shouldn't happen - should check this at message serialization
+      /* TODO: this shouldn't happen - should check this at message serialization
        * time and disconnect the peer.
        */
       g_set_error (error,

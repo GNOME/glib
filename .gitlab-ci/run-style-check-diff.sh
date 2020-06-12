@@ -5,8 +5,9 @@ set -e
 # Wrap everything in a subshell so we can propagate the exit status.
 (
 
-# We need to add a new remote for the upstream master, since this script could
-# be running in a personal fork of the repository which has out of date branches.
+# We need to add a new remote for the upstream target branch, since this script
+# could be running in a personal fork of the repository which has out of date
+# branches.
 git remote add upstream https://gitlab.gnome.org/GNOME/glib.git
 git fetch upstream
 

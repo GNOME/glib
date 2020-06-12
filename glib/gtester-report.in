@@ -402,7 +402,7 @@ class GTestCase(object):
             txt = self._error_text(self._case)
             details['error'] = Content(mime_utf8, lambda:[txt])
         if self._get_outcome() == 'addSuccess':
-            # Sucessful tests may have performance metrics.
+            # Successful tests may have performance metrics.
             perflist = list_children(self._case, 'performance')
             if perflist:
                 presults = []

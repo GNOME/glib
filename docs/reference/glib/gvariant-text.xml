@@ -288,7 +288,7 @@
    </para>
    <para>
     Unicode escapes of the form <literal>\uxxxx</literal> and <literal>\Uxxxxxxxx</literal> are supported, in
-    hexidecimal.  The usual control sequence escapes <literal>\a</literal>, <literal>\b</literal>,
+    hexadecimal.  The usual control sequence escapes <literal>\a</literal>, <literal>\b</literal>,
     <literal>\f</literal>, <literal>\n</literal>, <literal>\r</literal>, <literal>\t</literal> and
     <literal>\v</literal> are supported.  Additionally, a <literal>\</literal> before a newline character causes
     the newline to be ignored.  Finally, any other character following <literal>\</literal> is copied literally
@@ -296,7 +296,7 @@
     additions you should only use this feature when necessary for escaping backslashes or quotes.
    </para>
    <para>
-    The usual octal and hexidecimal escapes <literal>\0nnn</literal> and <literal>\xnn</literal> are not
+    The usual octal and hexadecimal escapes <literal>\0nnn</literal> and <literal>\xnn</literal> are not
     supported here.  Those escapes are used to encode byte values and GVariant strings are Unicode.
    </para>
    <para>
@@ -309,10 +309,10 @@
    <para>
     Numbers are given by default as decimal values.  Octal and hex values can be given in the usual way (by
     prefixing with <literal>0</literal> or <literal>0x</literal>).  Note that GVariant considers bytes to be
-    unsigned integers and will print them as a two digit hexidecimal number by default.
+    unsigned integers and will print them as a two digit hexadecimal number by default.
    </para>
    <para>
-    Floating point numbers can also be given in the usual ways, including scientific and hexidecimal notations.
+    Floating point numbers can also be given in the usual ways, including scientific and hexadecimal notations.
    </para>
    <para>
     For lack of additional information, integers will be parsed as int32 values by default.  If the number has a
@@ -575,7 +575,7 @@
    <para>
     Bytestrings support the full range of escapes that you would expect (ie: those supported by
     <link linkend='g-strcompress'><function>g_strcompress()</function></link>.  This includes the normal control
-    sequence escapes (as mentioned in the section on strings) as well as octal and hexidecimal escapes of the
+    sequence escapes (as mentioned in the section on strings) as well as octal and hexadecimal escapes of the
     forms <literal>\0nnn</literal> and <literal>\xnn</literal>.
    </para>
    <para>

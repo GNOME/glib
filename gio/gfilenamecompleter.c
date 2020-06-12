@@ -278,7 +278,7 @@ got_enum (GObject *source_object,
 	g_object_unref (data->completer->basenames_dir);
       g_list_free_full (data->completer->basenames, g_free);
 
-      /* Mark uptodate with no basenames */
+      /* Mark up-to-date with no basenames */
       data->completer->basenames_dir = g_object_ref (data->dir);
       data->completer->basenames = NULL;
       data->completer->basenames_are_escaped = data->should_escape;

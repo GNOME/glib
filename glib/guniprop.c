@@ -362,7 +362,7 @@ g_unichar_istitle (gunichar c)
  * g_unichar_isxdigit:
  * @c: a Unicode character.
  * 
- * Determines if a character is a hexidecimal digit.
+ * Determines if a character is a hexadecimal digit.
  * 
  * Returns: %TRUE if the character is a hexadecimal digit
  **/
@@ -624,7 +624,7 @@ g_unichar_totitle (gunichar c)
 {
   unsigned int i;
 
-  /* We handle U+0000 explicitely because some elements in
+  /* We handle U+0000 explicitly because some elements in
    * title_table[i][1] may be null. */
   if (c == 0)
     return c;
@@ -664,7 +664,7 @@ g_unichar_digit_value (gunichar c)
  * g_unichar_xdigit_value:
  * @c: a Unicode character
  *
- * Determines the numeric value of a character as a hexidecimal
+ * Determines the numeric value of a character as a hexadecimal
  * digit.
  *
  * Returns: If @c is a hex digit (according to

@@ -57,7 +57,7 @@ test_platform_argv0 (void)
    * how it does (the test code itself doesn't use any platform-specific
    * functionality, the difference is internal to glib, so it's quite
    * possible to run this test everywhere - it just won't pass on some
-   * platforms). Make errors non-fatal on these other plaforms,
+   * platforms). Make errors non-fatal on these other platforms,
    * to prevent them from crashing hard on failed assertions,
    * and make them call g_test_skip() instead.
    */

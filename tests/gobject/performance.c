@@ -25,7 +25,7 @@
 #define DEFAULT_TEST_TIME 15 /* seconds */
  /* The time we want each round to take, in seconds, this should
   * be large enough compared to the timer resolution, but small
-  * enought that the risk of any random slowness will miss the
+  * enough that the risk of any random slowness will miss the
   * running window */
 #define TARGET_ROUND_TIME 0.008
 

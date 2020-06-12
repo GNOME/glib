@@ -620,7 +620,7 @@ validate_and_install_class_property (GObjectClass *class,
         class->construct_properties = g_slist_append (class->construct_properties, pspec);
 
       /* for property overrides of construct properties, we have to get rid
-       * of the overidden inherited construct property
+       * of the overridden inherited construct property
        */
       pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, parent_type, TRUE);
       if (pspec && pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
@@ -3570,7 +3570,7 @@ g_object_get_qdata (GObject *object,
  * @data: (nullable): An opaque user data pointer
  *
  * This sets an opaque, named pointer on an object.
- * The name is specified through a #GQuark (retrived e.g. via
+ * The name is specified through a #GQuark (retrieved e.g. via
  * g_quark_from_static_string()), and the pointer
  * can be gotten back from the @object with g_object_get_qdata()
  * until the @object is finalized.
@@ -3719,7 +3719,7 @@ g_object_set_qdata_full (GObject       *object,
  * {
  *   // the quark, naming the object data
  *   GQuark quark_string_list = g_quark_from_static_string ("my-string-list");
- *   // retrive the old string list
+ *   // retrieve the old string list
  *   GList *list = g_object_steal_qdata (object, quark_string_list);
  *
  *   // prepend new string

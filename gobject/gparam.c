@@ -707,7 +707,7 @@ g_param_value_validate (GParamSpec *pspec,
 /**
  * g_param_value_convert:
  * @pspec: a valid #GParamSpec
- * @src_value: souce #GValue
+ * @src_value: source #GValue
  * @dest_value: destination #GValue of correct type for @pspec
  * @strict_validation: %TRUE requires @dest_value to conform to @pspec
  * without modifications
