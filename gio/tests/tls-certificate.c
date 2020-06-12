@@ -285,7 +285,7 @@ from_files (const Reference *ref)
   g_assert_null (cert);
 
   /* Using this method twice with a file containing both private key and
-   * certificate as a way to inforce private key presence is a fair use
+   * certificate as a way to enforce private key presence is a fair use
    */
   cert = g_tls_certificate_new_from_files (g_test_get_filename (G_TEST_DIST, "cert-tests", "key-cert.pem", NULL),
                                            g_test_get_filename (G_TEST_DIST, "cert-tests", "key-cert.pem", NULL),

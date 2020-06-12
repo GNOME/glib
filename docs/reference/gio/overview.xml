@@ -281,7 +281,7 @@ be careful. GIO has extension points whose implementations get loaded
 from modules (executable code in shared objects), which could allow
 an attacker to sneak his own code into your application by tricking it
 into loading the code as a module. However, GIO will never load modules
-from your home directory except when explictly asked to do so via an
+from your home directory except when explicitly asked to do so via an
 environment variable.
 </para>
 

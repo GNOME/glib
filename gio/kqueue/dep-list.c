@@ -231,7 +231,7 @@ error:
  * 
  * @param[in,out] before A pointer to a pointer to a list. Will contain items
  *     which were not found in the 'after' list.
- * @param[in,out] after  A pointer to a pointer to a list. Will containt items
+ * @param[in,out] after  A pointer to a pointer to a list. Will contain items
  *     which were not found in the 'before' list.
  **/
 void
@@ -356,7 +356,7 @@ G_STMT_START {                                                          \
  * Detect and notify about moves in the watched directory.
  *
  * A move is what happens when you rename a file in a directory, and
- * a new name is unique, i.e. you didnt overwrite any existing files
+ * a new name is unique, i.e. you didn't overwrite any existing files
  * with this one.
  *
  * @param[in,out] removed  A list of the removed files in the directory.
@@ -387,7 +387,7 @@ dl_detect_moves (dep_list           **removed,
 /**
  * Detect and notify about replacements in the watched directory.
  *
- * Consider you are watching a directory foo with the folloing files
+ * Consider you are watching a directory foo with the following files
  * insinde:
  *
  *    foo/bar

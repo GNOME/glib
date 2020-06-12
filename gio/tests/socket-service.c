@@ -63,7 +63,7 @@ test_start_stop (void)
   saddr = g_inet_socket_address_new (iaddr, 0);
   g_object_unref (iaddr);
 
-  /* instanciate with g_object_new so we can pass active = false */
+  /* instantiate with g_object_new so we can pass active = false */
   service = g_object_new (G_TYPE_SOCKET_SERVICE, "active", FALSE, NULL);
   g_assert_false (g_socket_service_is_active (service));
 

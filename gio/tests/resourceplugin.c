@@ -4,7 +4,7 @@
  * This must be done before including any GLib headers,
  * since GLIB_AVAILABLE_IN_ALL, which is used to mark the
  * g_io_module*() symbols, is defined to be _GLIB_EXTERN,
- * which must be overriden to export the symbols.
+ * which must be overridden to export the symbols.
  */
 #include "modules/symbol-visibility.h"
 #define _GLIB_EXTERN GLIB_TEST_EXPORT_SYMBOL

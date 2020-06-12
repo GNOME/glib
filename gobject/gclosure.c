@@ -659,7 +659,7 @@ g_closure_unref (GClosure *closure)
  * g_source_set_closure (source, g_cclosure_new (cb_func, cb_data));
  * ]|
  *
- * Generally, this function is used together with g_closure_ref(). Ane example
+ * Generally, this function is used together with g_closure_ref(). An example
  * of storing a closure for later notification looks like:
  * |[<!-- language="C" --> 
  * static GClosure *notify_closure = NULL;
@@ -690,7 +690,7 @@ g_closure_sink (GClosure *closure)
   /* floating is basically a kludge to avoid creating closures
    * with a ref_count of 0. so the initial ref_count a closure has
    * is unowned. with invoking g_closure_sink() code may
-   * indicate that it takes over that intiial ref_count.
+   * indicate that it takes over that initial ref_count.
    */
   if (closure->floating)
     {

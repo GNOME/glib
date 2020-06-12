@@ -318,7 +318,7 @@ g_network_service_get_domain (GNetworkService *srv)
  * g_network_service_get_scheme:
  * @srv: a #GNetworkService
  *
- * Get's the URI scheme used to resolve proxies. By default, the service name
+ * Gets the URI scheme used to resolve proxies. By default, the service name
  * is used as scheme.
  *
  * Returns: @srv's scheme name

@@ -1046,7 +1046,7 @@ test_communicate_utf8_async (gconstpointer test_data)
   g_object_unref (proc);
 }
 
-/* Test g_subprocess_communicate_utf8_async() can be cancelled correclty. */
+/* Test g_subprocess_communicate_utf8_async() can be cancelled correctly. */
 static void
 test_communicate_utf8_cancelled_async (gconstpointer test_data)
 {
@@ -1721,7 +1721,7 @@ test_launcher_environment (void)
   /* unset a variable */
   g_subprocess_launcher_unsetenv (launcher, "A");
 
-  /* and set a diffferent one */
+  /* and set a different one */
   g_subprocess_launcher_setenv (launcher, "E", "F", TRUE);
 
   args = get_test_subprocess_args ("printenv", "A", "C", "E", NULL);

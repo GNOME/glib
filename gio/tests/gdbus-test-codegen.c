@@ -2434,7 +2434,7 @@ test_interface_stability (void)
  *
  * - check that a property with name "Type" is mapped into g-name "type"
  *   with C accessors get_type_ (to avoid clashing with the GType accessor)
- *   and set_type_ (for symmetri)
+ *   and set_type_ (for symmetry)
  *   (see https://bugzilla.gnome.org/show_bug.cgi?id=679473 for details)
  *
  * - (could add more tests here)

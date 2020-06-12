@@ -3,7 +3,7 @@ Before you start testing it would be good to explain how it works.
 The script works in three modes:
  1. read-only (no special arguments) - suitable for read-only backends. Just 
         create the sample structure using the second mode, pack it (tar -p is 
-        preffered to preserve unix modes) and put it on a reachable place.
+        preferred to preserve unix modes) and put it on a reachable place.
  2. create-structure - only creates reference structure for later testing 
         in read-only mode
  3. write mode - full test suite, creates testing structure and performs all 

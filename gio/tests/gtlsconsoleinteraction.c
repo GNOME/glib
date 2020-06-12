@@ -32,7 +32,7 @@
 
 /*
  * WARNING: This is not the example you're looking for [slow hand wave]. This
- * is not industrial strength, it's just for testing. It uses embarassing
+ * is not industrial strength, it's just for testing. It uses embarrassing
  * functions like getpass() and does lazy things with threads.
  */
 

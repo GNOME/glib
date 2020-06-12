@@ -421,7 +421,7 @@ guess_system_internal (const char *mountpoint,
    * to not mengle those mounts with the "regular" mounts (i.e. which points to
    * the root). But because those mounts usually just duplicate other mounts and
    * are completely ignored with mntend-based implementation, let's mark them as
-   * system internal. Given the different approches it doesn't mean that all
+   * system internal. Given the different approaches it doesn't mean that all
    * mounts which were ignored will be system internal now, but this should work
    * in most cases. For more info, see g_unix_mount_get_root_path() annotation,
    * comment in mntent-based _g_get_unix_mounts() implementation and the

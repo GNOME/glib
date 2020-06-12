@@ -795,7 +795,7 @@ g_variant_ref_sink (GVariant *value)
  *
  * Using this function on the return value of the user's callback allows
  * the user to do whichever is more convenient for them.  The caller
- * will alway receives exactly one full reference to the value: either
+ * will always receives exactly one full reference to the value: either
  * the one that was returned in the first place, or a floating reference
  * that has been converted to a full reference.
  *

@@ -2870,7 +2870,7 @@ g_application_unmark_busy (GApplication *application)
  * Gets the application's current busy state, as set through
  * g_application_mark_busy() or g_application_bind_busy_property().
  *
- * Returns: %TRUE if @application is currenty marked as busy
+ * Returns: %TRUE if @application is currently marked as busy
  *
  * Since: 2.44
  */

@@ -1113,7 +1113,7 @@ g_key_file_load_from_dirs (GKeyFile       *key_file,
  * @full_path.  If the file could not be loaded then an %error is
  * set to either a #GFileError or #GKeyFileError.
  *
- * Returns: %TRUE if a key file could be loaded, %FALSE othewise
+ * Returns: %TRUE if a key file could be loaded, %FALSE otherwise
  * Since: 2.6
  **/
 gboolean
@@ -3487,7 +3487,7 @@ g_key_file_get_key_comment (GKeyFile     *key_file,
   string = NULL;
 
   /* Then find all the comments already associated with the
-   * key and concatentate them.
+   * key and concatenate them.
    */
   tmp = key_node->next;
   if (!key_node->next)

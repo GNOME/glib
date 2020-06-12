@@ -1504,7 +1504,7 @@ continue_writing (GDBusWorker *worker)
         }
       else
         {
-          /* filters altered the message -> reencode */
+          /* filters altered the message -> re-encode */
           error = NULL;
           new_blob = g_dbus_message_to_blob (data->message,
                                              &new_blob_size,

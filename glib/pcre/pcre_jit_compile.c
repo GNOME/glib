@@ -88,7 +88,7 @@ vertical (sub-expression) (See struct backtrack_common for more details).
 The condition checkers are boolean (true/false) checkers. Machine code is generated
 for the checker itself and for the actions depending on the result of the checker.
 The 'true' case is called as the try path (expected path), and the other is called as
-the 'backtrack' path. Branch instructions are expesive for all CPUs, so we avoid taken
+the 'backtrack' path. Branch instructions are expensive for all CPUs, so we avoid taken
 branches on the try path.
 
  Greedy star operator (*) :
@@ -99,7 +99,7 @@ branches on the try path.
    Backtrack path: match is required.
 
 The following example shows how the code generated for a capturing bracket
-with two alternatives. Let A, B, C, D are arbirary regular expressions, and
+with two alternatives. Let A, B, C, D are arbitrary regular expressions, and
 we have the following regular expression:
 
    A(B|C)D
@@ -187,7 +187,7 @@ typedef int (SLJIT_CALL *jit_function)(jit_arguments *args);
 
 /* The following structure is the key data type for the recursive
 code generator. It is allocated by compile_trypath, and contains
-the aguments for compile_backtrackpath. Must be the first member
+the arguments for compile_backtrackpath. Must be the first member
 of its descendants. */
 typedef struct backtrack_common {
   /* Concatenation stack. */
@@ -213,7 +213,7 @@ typedef struct assert_backtrack {
 
 typedef struct bracket_backtrack {
   backtrack_common common;
-  /* Where to coninue if an alternative is successfully matched. */
+  /* Where to continue if an alternative is successfully matched. */
   struct sljit_label *alttrypath;
   /* For rmin and rmax iterators. */
   struct sljit_label *recursivetrypath;
@@ -1563,7 +1563,7 @@ return (bit < 256) ? ((0 << 8) | bit) : ((1 << 8) | (bit >> 8));
 
 static void check_partial(compiler_common *common, BOOL force)
 {
-/* Checks whether a partial matching is occured. Does not modify registers. */
+/* Checks whether a partial matching has occurred. Does not modify registers. */
 DEFINE_COMPILER;
 struct sljit_jump *jump = NULL;
 
@@ -6339,7 +6339,7 @@ if (has_alternatives)
         return;
       }
 
-    /* Instructions after the current alternative is succesfully matched. */
+    /* Instructions after the current alternative is successfully matched. */
     /* There is a similar code in compile_bracket_trypath. */
     if (opcode == OP_ONCE)
       {

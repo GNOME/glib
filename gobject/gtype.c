@@ -1027,7 +1027,7 @@ check_add_interface_L (GType instance_type,
   if (entry && entry->vtable == NULL && !type_iface_peek_holder_L (iface, NODE_TYPE (node)))
     {
       /* ok, we do conform to this interface already, but the interface vtable was not
-       * yet intialized, and we just conform to the interface because it got added to
+       * yet initialized, and we just conform to the interface because it got added to
        * one of our parents. so we allow overriding of holder info here.
        */
       return TRUE;
@@ -1477,7 +1477,7 @@ type_add_interface_Wm (TypeNode             *node,
   type_node_add_iface_entry_W (node, NODE_TYPE (iface), NULL);
   
   /* if the class is already (partly) initialized, we may need to base
-   * initalize and/or initialize the new interface.
+   * initialize and/or initialize the new interface.
    */
   if (node->data)
     {
@@ -1769,7 +1769,7 @@ type_iface_blow_holder_info_Wm (TypeNode *iface,
  * and structure setups for instances: actual instance creation should
  * happen through functions supplied by the type's fundamental type
  * implementation.  So use of g_type_create_instance() is reserved for
- * implementators of fundamental types only. E.g. instances of the
+ * implementers of fundamental types only. E.g. instances of the
  * #GObject hierarchy should be created via g_object_new() and never
  * directly through g_type_create_instance() which doesn't handle things
  * like singleton objects or object construction.
@@ -3189,7 +3189,7 @@ g_type_interface_peek_parent (gpointer g_iface)
  * and returns the default interface vtable for the type.
  *
  * If the type is not currently in use, then the default vtable
- * for the type will be created and initalized by calling
+ * for the type will be created and initialized by calling
  * the base interface init and default vtable init functions for
  * the type (the @base_init and @class_init members of #GTypeInfo).
  * Calling g_type_default_interface_ref() is useful when you
