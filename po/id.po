@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-02-03 13:14+0000\n"
-"PO-Revision-Date: 2020-02-04 14:00+0700\n"
+"POT-Creation-Date: 2020-05-30 18:04+0000\n"
+"PO-Revision-Date: 2020-06-01 20:27+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural= n!=1;\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.3.1\n"
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
@@ -280,7 +280,7 @@ msgstr "Stream telah ditutup"
 msgid "Truncate not supported on base stream"
 msgstr "Pemenggalan tak didukung pada stream basis"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1871 gio/gdbusprivate.c:1411
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1411
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -300,13 +300,13 @@ msgstr "Tak cukup ruang di tujuan"
 
 #: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
 #: gio/gdatainputstream.c:1261 glib/gconvert.c:447 glib/gconvert.c:877
-#: glib/giochannel.c:1564 glib/giochannel.c:1606 glib/giochannel.c:2453
+#: glib/giochannel.c:1564 glib/giochannel.c:1606 glib/giochannel.c:2461
 #: glib/gutf8.c:875 glib/gutf8.c:1328
 msgid "Invalid byte sequence in conversion input"
 msgstr "Rangkaian bita dalam input konversi tidak benar"
 
 #: gio/gcharsetconverter.c:347 glib/gconvert.c:455 glib/gconvert.c:791
-#: glib/giochannel.c:1571 glib/giochannel.c:2465
+#: glib/giochannel.c:1571 glib/giochannel.c:2473
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Galat ketika konversi: %s"
@@ -339,23 +339,23 @@ msgstr "Tipe tak dikenal"
 msgid "%s filetype"
 msgstr "tipe berkas %s"
 
-#: gio/gcredentials.c:289
+#: gio/gcredentials.c:323
 msgid "GCredentials contains invalid data"
 msgstr "GCredentials berisi data yang tidak valid"
 
-#: gio/gcredentials.c:345 gio/gcredentials.c:609
+#: gio/gcredentials.c:383 gio/gcredentials.c:667
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials tak diimplementasikan di OS ini"
 
-#: gio/gcredentials.c:503
+#: gio/gcredentials.c:538 gio/gcredentials.c:556
 msgid "There is no GCredentials support for your platform"
 msgstr "Tidak ada dukungan GCredentials bagi platform Anda"
 
-#: gio/gcredentials.c:552
+#: gio/gcredentials.c:607
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials tak memuat suatu ID proses di OS ini"
 
-#: gio/gcredentials.c:603
+#: gio/gcredentials.c:661
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "Pemalsuan kredensial tak diimplementasikan di OS ini"
 
@@ -506,7 +506,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Tidak bisa menentukan alamat bus sesi (tidak diimplementasi bagi OS ini)"
 
-#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7191
+#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7192
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -515,7 +515,7 @@ msgstr ""
 "Tak bisa menentukan alamat bus dari variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE — nilai tak dikenal \"%s\""
 
-#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7200
+#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7201
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -549,34 +549,34 @@ msgstr ""
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Dibatalkan melalui GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:264
+#: gio/gdbusauthmechanismsha1.c:265
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Galat ketika mengambil informasi untuk direktori \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:276
+#: gio/gdbusauthmechanismsha1.c:280
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Izin pada direktori \"%s\" salah bentuk. Diharapkan mode 0700, diperoleh 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:301
+#: gio/gdbusauthmechanismsha1.c:310
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Galat saat membuat direktori \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:348
+#: gio/gdbusauthmechanismsha1.c:355
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Galat saat membuka ring kunci \"%s\" untuk dibaca: "
 
-#: gio/gdbusauthmechanismsha1.c:371 gio/gdbusauthmechanismsha1.c:689
+#: gio/gdbusauthmechanismsha1.c:378 gio/gdbusauthmechanismsha1.c:700
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Baris %d dari ring kunci pada \"%s\" dengan isi \"%s\" salah bentuk"
 
-#: gio/gdbusauthmechanismsha1.c:385 gio/gdbusauthmechanismsha1.c:703
+#: gio/gdbusauthmechanismsha1.c:392 gio/gdbusauthmechanismsha1.c:714
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -584,7 +584,7 @@ msgstr ""
 "Token pertama dari baris %d dari ring kunci pada \"%s\" dengan isi \"%s\" "
 "salah bentuk"
 
-#: gio/gdbusauthmechanismsha1.c:399 gio/gdbusauthmechanismsha1.c:717
+#: gio/gdbusauthmechanismsha1.c:406 gio/gdbusauthmechanismsha1.c:728
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -592,56 +592,56 @@ msgstr ""
 "Token kedua dari baris %d dari ring kunci pada \"%s\" dengan isi \"%s\" "
 "salah bentuk"
 
-#: gio/gdbusauthmechanismsha1.c:423
+#: gio/gdbusauthmechanismsha1.c:430
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Tak menemukan cookie dengan id %d dalam gantungan kunci pada \"%s\""
 
-#: gio/gdbusauthmechanismsha1.c:505
-#, c-format
-msgid "Error deleting stale lock file “%s”: %s"
-msgstr "Galat saat menghapus berkas kunci yang basi \"%s\": %s"
-
-#: gio/gdbusauthmechanismsha1.c:537
+#: gio/gdbusauthmechanismsha1.c:476
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Galat saat membuat berkas kunci \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:568
+#: gio/gdbusauthmechanismsha1.c:540
+#, c-format
+msgid "Error deleting stale lock file “%s”: %s"
+msgstr "Galat saat menghapus berkas kunci yang basi \"%s\": %s"
+
+#: gio/gdbusauthmechanismsha1.c:579
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Galat saat menutup berkas kunci (tak terkait) \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:579
+#: gio/gdbusauthmechanismsha1.c:590
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Galat saat membuka kait berkas kunci \"%s\": %s"
 
-#: gio/gdbusauthmechanismsha1.c:656
+#: gio/gdbusauthmechanismsha1.c:667
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Galat saat membuka gantungan kunci \"%s\" untuk ditulisi: "
 
-#: gio/gdbusauthmechanismsha1.c:852
+#: gio/gdbusauthmechanismsha1.c:863
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Selain itu, melepas kunci bagi \"%s\" juga gagal: %s) "
 
-#: gio/gdbusconnection.c:604 gio/gdbusconnection.c:2400
+#: gio/gdbusconnection.c:595 gio/gdbusconnection.c:2391
 msgid "The connection is closed"
 msgstr "Sambungan tertutup"
 
-#: gio/gdbusconnection.c:1901
+#: gio/gdbusconnection.c:1892
 msgid "Timeout was reached"
 msgstr "Kehabisan waktu"
 
-#: gio/gdbusconnection.c:2522
+#: gio/gdbusconnection.c:2513
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
-"Ditemui flag yang tak didukung ketika membangun sambungan di sisi klien"
+"Ditemui tanda yang tak didukung ketika membangun sambungan di sisi klien"
 
-#: gio/gdbusconnection.c:4162 gio/gdbusconnection.c:4509
+#: gio/gdbusconnection.c:4163 gio/gdbusconnection.c:4510
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
@@ -649,76 +649,76 @@ msgstr ""
 "Tidak ada antarmuka \"org.freedesktop.DBus.Properties\" pada objek pada path "
 "%s"
 
-#: gio/gdbusconnection.c:4304
+#: gio/gdbusconnection.c:4305
 #, c-format
 msgid "No such property “%s”"
 msgstr "Tak ada properti \"%s\""
 
-#: gio/gdbusconnection.c:4316
+#: gio/gdbusconnection.c:4317
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Properti \"%s\" tidak dapat dibaca"
 
-#: gio/gdbusconnection.c:4327
+#: gio/gdbusconnection.c:4328
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Properti \"%s\" tidak dapat ditulisi"
 
-#: gio/gdbusconnection.c:4347
+#: gio/gdbusconnection.c:4348
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Galat menata properti \"%s\": Tipe yang diharapkan \"%s\" tapi diperoleh \"%s"
 "\""
 
-#: gio/gdbusconnection.c:4452 gio/gdbusconnection.c:4660
-#: gio/gdbusconnection.c:6631
+#: gio/gdbusconnection.c:4453 gio/gdbusconnection.c:4661
+#: gio/gdbusconnection.c:6632
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Tak ada antarmuka \"%s\""
 
-#: gio/gdbusconnection.c:4878 gio/gdbusconnection.c:7140
+#: gio/gdbusconnection.c:4879 gio/gdbusconnection.c:7141
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Tak ada antarmuka \"%s\" pada objek di lokasi %s"
 
-#: gio/gdbusconnection.c:4976
+#: gio/gdbusconnection.c:4977
 #, c-format
 msgid "No such method “%s”"
 msgstr "Tidak ada metode seperti \"%s\""
 
-#: gio/gdbusconnection.c:5007
+#: gio/gdbusconnection.c:5008
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Tipe pesan \"%s\" tak cocok dengan tipe yang diharapkan \"%s\""
 
-#: gio/gdbusconnection.c:5205
+#: gio/gdbusconnection.c:5206
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Suatu objek telah diekspor bagi antar muka %s pada %s"
 
-#: gio/gdbusconnection.c:5431
+#: gio/gdbusconnection.c:5432
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Tak bisa mengambil properti %s.%s"
 
-#: gio/gdbusconnection.c:5487
+#: gio/gdbusconnection.c:5488
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Tak bisa menata properti %s.%s"
 
-#: gio/gdbusconnection.c:5665
+#: gio/gdbusconnection.c:5666
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Metode \"%s\" mengembalikan tipe \"%s\", tapi yang diharapkan \"%s\""
 
-#: gio/gdbusconnection.c:6742
+#: gio/gdbusconnection.c:6743
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr ""
 "Metode \"%s\" pada antar muka \"%s\" dengan tanda tangan \"%s\"' tak ada"
 
-#: gio/gdbusconnection.c:6863
+#: gio/gdbusconnection.c:6864
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Subtree telah diekspor bagi %s"
@@ -941,24 +941,24 @@ msgstr "Tak bisa mendapat profil perangkat keras: %s"
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Tak bisa memuat /var/lib/dbus/machine-id ata /etc/machine-id: "
 
-#: gio/gdbusproxy.c:1625
+#: gio/gdbusproxy.c:1562
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Galat sewaktu memanggil StartServiceByName untuk %s: "
 
-#: gio/gdbusproxy.c:1648
+#: gio/gdbusproxy.c:1585
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Balasan tak diharapkan %d dari metode StartServiceByName(\"%s\")"
 
-#: gio/gdbusproxy.c:2748 gio/gdbusproxy.c:2883
+#: gio/gdbusproxy.c:2685 gio/gdbusproxy.c:2820
 #, c-format
 msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
 "and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
 "Tidak bisa menjalankan metode; proksi adalah nama terkenal %s tanpa pemilik "
-"dan proksi dibangun dengan flag G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
+"dan proksi dibangun dengan tanda G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
 #: gio/gdbusserver.c:755
 msgid "Abstract namespace not supported"
@@ -1008,13 +1008,13 @@ msgstr ""
 "perintah.\n"
 
 #: gio/gdbus-tool.c:197 gio/gdbus-tool.c:264 gio/gdbus-tool.c:336
-#: gio/gdbus-tool.c:360 gio/gdbus-tool.c:846 gio/gdbus-tool.c:1183
-#: gio/gdbus-tool.c:1668
+#: gio/gdbus-tool.c:360 gio/gdbus-tool.c:850 gio/gdbus-tool.c:1187
+#: gio/gdbus-tool.c:1672
 #, c-format
 msgid "Error: %s\n"
 msgstr "Galat: %s\n"
 
-#: gio/gdbus-tool.c:208 gio/gdbus-tool.c:277 gio/gdbus-tool.c:1684
+#: gio/gdbus-tool.c:208 gio/gdbus-tool.c:277 gio/gdbus-tool.c:1688
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Galat saat mengurai XML introspeksi: %s\n"
@@ -1044,23 +1044,23 @@ msgstr "Opsi Titik Ujung Sambungan:"
 msgid "Options specifying the connection endpoint"
 msgstr "Opsi yang menyatakan titik ujung sambungan"
 
-#: gio/gdbus-tool.c:429
+#: gio/gdbus-tool.c:430
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Titik ujung sambungan tak dinyatakan"
 
-#: gio/gdbus-tool.c:439
+#: gio/gdbus-tool.c:440
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Telah dinyatakan titik ujung sambungan berganda"
 
-#: gio/gdbus-tool.c:509
+#: gio/gdbus-tool.c:513
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr "Peringatan: Menurut data introspeksi, antar muka \"%s\" tak ada\n"
 
-#: gio/gdbus-tool.c:518
+#: gio/gdbus-tool.c:522
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
@@ -1069,163 +1069,163 @@ msgstr ""
 "Peringatan: Menurut data introspeksi, metode \"%s\" tak ada pada antar muka "
 "\"%s\"\n"
 
-#: gio/gdbus-tool.c:580
+#: gio/gdbus-tool.c:584
 msgid "Optional destination for signal (unique name)"
 msgstr "Tujuan opsional bagi sinyal (nama unik)"
 
-#: gio/gdbus-tool.c:581
+#: gio/gdbus-tool.c:585
 msgid "Object path to emit signal on"
 msgstr "Path objek untuk dipancari sinyal"
 
-#: gio/gdbus-tool.c:582
+#: gio/gdbus-tool.c:586
 msgid "Signal and interface name"
 msgstr "Nama antar muka dan sinyal"
 
-#: gio/gdbus-tool.c:615
+#: gio/gdbus-tool.c:619
 msgid "Emit a signal."
 msgstr "Pancarkan sinyal."
 
-#: gio/gdbus-tool.c:670 gio/gdbus-tool.c:977 gio/gdbus-tool.c:1771
-#: gio/gdbus-tool.c:2003 gio/gdbus-tool.c:2223
+#: gio/gdbus-tool.c:674 gio/gdbus-tool.c:981 gio/gdbus-tool.c:1775
+#: gio/gdbus-tool.c:2007 gio/gdbus-tool.c:2227
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Galat saat menyambung: %s\n"
 
-#: gio/gdbus-tool.c:690
+#: gio/gdbus-tool.c:694
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Galat: '%s' bukan nama bus unik yang valid\n"
 
-#: gio/gdbus-tool.c:709 gio/gdbus-tool.c:1020 gio/gdbus-tool.c:1814
+#: gio/gdbus-tool.c:713 gio/gdbus-tool.c:1024 gio/gdbus-tool.c:1818
 msgid "Error: Object path is not specified\n"
 msgstr "Galat: Lokasi objek tak dinyatakan\n"
 
-#: gio/gdbus-tool.c:732 gio/gdbus-tool.c:1040 gio/gdbus-tool.c:1834
-#: gio/gdbus-tool.c:2074
+#: gio/gdbus-tool.c:736 gio/gdbus-tool.c:1044 gio/gdbus-tool.c:1838
+#: gio/gdbus-tool.c:2078
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Galat: '%s' bukan suatu lokasi objek yang valid\n"
 
-#: gio/gdbus-tool.c:752
+#: gio/gdbus-tool.c:756
 msgid "Error: Signal name is not specified\n"
 msgstr "Galat: Nama sinyal tak dinyatakan\n"
 
-#: gio/gdbus-tool.c:766
+#: gio/gdbus-tool.c:770
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "Galat: Nama sinyal \"%s\" tak valid\n"
 
-#: gio/gdbus-tool.c:778
+#: gio/gdbus-tool.c:782
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Galat: '%s' bukan nama antar muka yang valid\n"
 
-#: gio/gdbus-tool.c:784
+#: gio/gdbus-tool.c:788
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Galat: '%s' bukan nama anggota yang valid\n"
 
 #. Use the original non-"parse-me-harder" error
-#: gio/gdbus-tool.c:821 gio/gdbus-tool.c:1152
+#: gio/gdbus-tool.c:825 gio/gdbus-tool.c:1156
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Galat saat mengurai parameter %d: %s\n"
 
-#: gio/gdbus-tool.c:853
+#: gio/gdbus-tool.c:857
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Galat saat menggelontor sambungan: %s\n"
 
-#: gio/gdbus-tool.c:880
+#: gio/gdbus-tool.c:884
 msgid "Destination name to invoke method on"
 msgstr "Nama tujuan tempat menjalankan metode"
 
-#: gio/gdbus-tool.c:881
+#: gio/gdbus-tool.c:885
 msgid "Object path to invoke method on"
 msgstr "Lokasi objek tempat menjalankan metode"
 
-#: gio/gdbus-tool.c:882
+#: gio/gdbus-tool.c:886
 msgid "Method and interface name"
 msgstr "Nama metode dan antar muka"
 
-#: gio/gdbus-tool.c:883
+#: gio/gdbus-tool.c:887
 msgid "Timeout in seconds"
 msgstr "Tenggat waktu dalam detik"
 
-#: gio/gdbus-tool.c:922
+#: gio/gdbus-tool.c:926
 msgid "Invoke a method on a remote object."
 msgstr "Jalankan suatu metode pada suatu objek jauh."
 
-#: gio/gdbus-tool.c:994 gio/gdbus-tool.c:1788 gio/gdbus-tool.c:2028
+#: gio/gdbus-tool.c:998 gio/gdbus-tool.c:1792 gio/gdbus-tool.c:2032
 msgid "Error: Destination is not specified\n"
 msgstr "Galat: Tujuan tak dinyatakan\n"
 
-#: gio/gdbus-tool.c:1005 gio/gdbus-tool.c:1805 gio/gdbus-tool.c:2039
+#: gio/gdbus-tool.c:1009 gio/gdbus-tool.c:1809 gio/gdbus-tool.c:2043
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Galat: %s bukan nama bus yang valid\n"
 
-#: gio/gdbus-tool.c:1055
+#: gio/gdbus-tool.c:1059
 msgid "Error: Method name is not specified\n"
 msgstr "Galat: Nama metode tak dinyatakan\n"
 
-#: gio/gdbus-tool.c:1066
+#: gio/gdbus-tool.c:1070
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Galat: Nama metode \"%s\" tak valid\n"
 
-#: gio/gdbus-tool.c:1144
+#: gio/gdbus-tool.c:1148
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Galat ketika mengurai parameter ke-%d bertipe \"%s\": %s\n"
 
-#: gio/gdbus-tool.c:1630
+#: gio/gdbus-tool.c:1634
 msgid "Destination name to introspect"
 msgstr "Nama tujuan untuk introspeksi"
 
-#: gio/gdbus-tool.c:1631
+#: gio/gdbus-tool.c:1635
 msgid "Object path to introspect"
 msgstr "Lokasi objek untuk introspeksi"
 
-#: gio/gdbus-tool.c:1632
+#: gio/gdbus-tool.c:1636
 msgid "Print XML"
 msgstr "Cetak XML"
 
-#: gio/gdbus-tool.c:1633
+#: gio/gdbus-tool.c:1637
 msgid "Introspect children"
 msgstr "Introspeksi anak"
 
-#: gio/gdbus-tool.c:1634
+#: gio/gdbus-tool.c:1638
 msgid "Only print properties"
 msgstr "Hanya cetak properti"
 
-#: gio/gdbus-tool.c:1723
+#: gio/gdbus-tool.c:1727
 msgid "Introspect a remote object."
 msgstr "Introspeksi suatu objek jauh."
 
-#: gio/gdbus-tool.c:1929
+#: gio/gdbus-tool.c:1933
 msgid "Destination name to monitor"
 msgstr "Nama tujuan untuk dipantau"
 
-#: gio/gdbus-tool.c:1930
+#: gio/gdbus-tool.c:1934
 msgid "Object path to monitor"
 msgstr "Lokasi objek untuk dipantau"
 
-#: gio/gdbus-tool.c:1955
+#: gio/gdbus-tool.c:1959
 msgid "Monitor a remote object."
 msgstr "Memantau suatu objek jauh."
 
-#: gio/gdbus-tool.c:2013
+#: gio/gdbus-tool.c:2017
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr "Galat: tidak dapat memonitor koneksi non bus pesan\n"
 
-#: gio/gdbus-tool.c:2137
+#: gio/gdbus-tool.c:2141
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr ""
 "Layanan yang akan diaktifkan sebelum menunggu yang lain (nama yang dikenal "
 "baik)"
 
-#: gio/gdbus-tool.c:2140
+#: gio/gdbus-tool.c:2144
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1233,64 +1233,64 @@ msgstr ""
 "Tenggat waktu menunggu sebelum keluar dengan suatu kesalahan (detik); 0 "
 "untuk tanpa tenggat (baku)"
 
-#: gio/gdbus-tool.c:2188
+#: gio/gdbus-tool.c:2192
 msgid "[OPTION…] BUS-NAME"
 msgstr "[OPSI…] NAMA-BUS"
 
-#: gio/gdbus-tool.c:2189
+#: gio/gdbus-tool.c:2193
 msgid "Wait for a bus name to appear."
 msgstr "Tunggu suatu nama bus muncul."
 
-#: gio/gdbus-tool.c:2265
+#: gio/gdbus-tool.c:2269
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Galat: Suatu layanan yang akan diaktifkan mesti dinyatakan\n"
 
-#: gio/gdbus-tool.c:2270
+#: gio/gdbus-tool.c:2274
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Galat: Suatu layanan yang mesti ditunggu harus dinyatakan\n"
 
-#: gio/gdbus-tool.c:2275
+#: gio/gdbus-tool.c:2279
 msgid "Error: Too many arguments.\n"
 msgstr "Galat: Terlalu banyak argumen.\n"
 
-#: gio/gdbus-tool.c:2283 gio/gdbus-tool.c:2290
+#: gio/gdbus-tool.c:2287 gio/gdbus-tool.c:2294
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Galat: %s bukan nama bus yang dikenal baik dan valid\n"
 
-#: gio/gdesktopappinfo.c:2072 gio/gdesktopappinfo.c:4870
+#: gio/gdesktopappinfo.c:2071 gio/gdesktopappinfo.c:4886
 msgid "Unnamed"
 msgstr "Tanpa nama"
 
-#: gio/gdesktopappinfo.c:2482
+#: gio/gdesktopappinfo.c:2481
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Berkas desktop tak menyatakan ruas Exec"
 
-#: gio/gdesktopappinfo.c:2754
+#: gio/gdesktopappinfo.c:2761
 msgid "Unable to find terminal required for application"
 msgstr "Tak bisa temukan terminal yang diperlukan bagi aplikasi"
 
-#: gio/gdesktopappinfo.c:3406
+#: gio/gdesktopappinfo.c:3413
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Tak bisa membuat folder %s untuk konfigurasi aplikasi bagi pengguna: %s"
 
-#: gio/gdesktopappinfo.c:3410
+#: gio/gdesktopappinfo.c:3417
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Tak bisa membuat folder %s untuk konfigurasi MIME bagi pengguna: %s"
 
-#: gio/gdesktopappinfo.c:3650 gio/gdesktopappinfo.c:3674
+#: gio/gdesktopappinfo.c:3657 gio/gdesktopappinfo.c:3681
 msgid "Application information lacks an identifier"
 msgstr "Informasi aplikasi tak punya identifier"
 
-#: gio/gdesktopappinfo.c:3908
+#: gio/gdesktopappinfo.c:3915
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Tak bisa membuat berkas desktop pengguna %s"
 
-#: gio/gdesktopappinfo.c:4042
+#: gio/gdesktopappinfo.c:4049
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definisi gubahan bagi %s"
@@ -1318,12 +1318,12 @@ msgstr "kandar tidak mengimplementasi start"
 msgid "drive doesn’t implement stop"
 msgstr "kandar tidak mengimplementasi stop"
 
-#: gio/gdummytlsbackend.c:195 gio/gdummytlsbackend.c:317
-#: gio/gdummytlsbackend.c:509
+#: gio/gdummytlsbackend.c:195 gio/gdummytlsbackend.c:321
+#: gio/gdummytlsbackend.c:513
 msgid "TLS support is not available"
 msgstr "Dukungan TLS tak tersedia"
 
-#: gio/gdummytlsbackend.c:419
+#: gio/gdummytlsbackend.c:423
 msgid "DTLS support is not available"
 msgstr "Dukungan DTLS tak tersedia"
 
@@ -1356,7 +1356,7 @@ msgstr "Berharap suatu GEmblem bagi GEmblemedIcon"
 #: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3722 gio/gfile.c:3777
 #: gio/gfile.c:4055 gio/gfile.c:4523 gio/gfile.c:4934 gio/gfile.c:5019
 #: gio/gfile.c:5109 gio/gfile.c:5206 gio/gfile.c:5293 gio/gfile.c:5394
-#: gio/gfile.c:8098 gio/gfile.c:8188 gio/gfile.c:8272
+#: gio/gfile.c:8104 gio/gfile.c:8194 gio/gfile.c:8278
 #: gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Operasi tak didukung"
@@ -1431,7 +1431,7 @@ msgstr "Nama berkas tak boleh mengandung \"%c\""
 msgid "volume doesn’t implement mount"
 msgstr "volume tak mengimplementasi pengaitan"
 
-#: gio/gfile.c:6868 gio/gfile.c:6914
+#: gio/gfile.c:6871 gio/gfile.c:6919
 msgid "No application is registered as handling this file"
 msgstr "Tak ada aplikasi terdaftar yang menangani berkas ini"
 
@@ -1593,7 +1593,7 @@ msgstr "Pertahankan dengan berkas ketika dipindah"
 msgid "“version” takes no arguments"
 msgstr "\"version\" tak menerima argumen"
 
-#: gio/gio-tool.c:207 gio/gio-tool.c:223 glib/goption.c:864
+#: gio/gio-tool.c:207 gio/gio-tool.c:223 glib/goption.c:869
 msgid "Usage:"
 msgstr "Penggunaan:"
 
@@ -3024,96 +3024,132 @@ msgstr "Perpindahan antar kait tak didukung"
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Tak bisa menentukan penggunaan diska dari %s: %s"
 
-#: gio/glocalfileinfo.c:755
+#: gio/glocalfileinfo.c:760
 msgid "Attribute value must be non-NULL"
 msgstr "Nilai atribut tak boleh NULL"
 
-#: gio/glocalfileinfo.c:762
+#: gio/glocalfileinfo.c:767
 msgid "Invalid attribute type (string expected)"
 msgstr "Tipe atribut tak valid (diharapkan string)"
 
-#: gio/glocalfileinfo.c:769
+#: gio/glocalfileinfo.c:774
 msgid "Invalid extended attribute name"
 msgstr "Nama atribut tambahan yang tak valid"
 
-#: gio/glocalfileinfo.c:809
+#: gio/glocalfileinfo.c:814
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Galat saat menata atribut yang diperluas \"%s\": %s"
 
-#: gio/glocalfileinfo.c:1637
+#: gio/glocalfileinfo.c:1650
 msgid " (invalid encoding)"
 msgstr " (pengkodean tak valid)"
 
-#: gio/glocalfileinfo.c:1801 gio/glocalfileoutputstream.c:909
+#: gio/glocalfileinfo.c:1814 gio/glocalfileoutputstream.c:909
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Galat saat mengambil informasi bagi berkas \"%s\": %s"
 
-#: gio/glocalfileinfo.c:2071
+#: gio/glocalfileinfo.c:2084
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Galat saat mengambil informasi bagi descriptor berkas: %s"
 
-#: gio/glocalfileinfo.c:2116
+#: gio/glocalfileinfo.c:2129
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tipe atribut tak valid (diharapkan uint32)"
 
-#: gio/glocalfileinfo.c:2134
+#: gio/glocalfileinfo.c:2147
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tipe atribut tak valid (diharapkan uint64)"
 
-#: gio/glocalfileinfo.c:2153 gio/glocalfileinfo.c:2172
+#: gio/glocalfileinfo.c:2166 gio/glocalfileinfo.c:2185
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Jenis atribut tidak sah (diharapkan bita berjenis string)"
 
-#: gio/glocalfileinfo.c:2219
+#: gio/glocalfileinfo.c:2232
 msgid "Cannot set permissions on symlinks"
 msgstr "Tak bisa menata ijin pada taut simbolik"
 
-#: gio/glocalfileinfo.c:2235
+#: gio/glocalfileinfo.c:2248
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Galat saat menata ijin: %s"
 
-#: gio/glocalfileinfo.c:2286
+#: gio/glocalfileinfo.c:2299
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Galat saat menata pemilik: %s"
 
-#: gio/glocalfileinfo.c:2309
+#: gio/glocalfileinfo.c:2322
 msgid "symlink must be non-NULL"
 msgstr "symlink tak boleh NULL"
 
-#: gio/glocalfileinfo.c:2319 gio/glocalfileinfo.c:2338
-#: gio/glocalfileinfo.c:2349
+#: gio/glocalfileinfo.c:2332 gio/glocalfileinfo.c:2351
+#: gio/glocalfileinfo.c:2362
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Galat saat menata taut simbolis: %s"
 
-#: gio/glocalfileinfo.c:2328
+#: gio/glocalfileinfo.c:2341
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Galat saat menata symlink: berkas bukan suatu link simbolik"
 
-#: gio/glocalfileinfo.c:2454
+#: gio/glocalfileinfo.c:2413
+#, c-format
+msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
+msgstr "Nanodetik ekstra %d untuk stempel waktu UNIX %lld negatif"
+
+#: gio/glocalfileinfo.c:2422
+#, c-format
+msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
+msgstr "Nanodetik ekstra %d untuk stempel waktu UNIX %lld mencapai 1 detik"
+
+#: gio/glocalfileinfo.c:2432
+#, c-format
+msgid "UNIX timestamp %lld does not fit into 64 bits"
+msgstr "Stempel waktu UNIX %lld tidak muat ke dalam 64 bit"
+
+#: gio/glocalfileinfo.c:2443
+#, c-format
+msgid "UNIX timestamp %lld is outside of the range supported by Windows"
+msgstr ""
+"Stempel waktu UNIX %lld berada di luar rentang yang didukung oleh Windows"
+
+#: gio/glocalfileinfo.c:2507
+#, c-format
+msgid "File name “%s” cannot be converted to UTF-16"
+msgstr "Nama berkas \"%s\" tidak dapat dikonversi ke UTF-16"
+
+#: gio/glocalfileinfo.c:2526
+#, c-format
+msgid "File “%s” cannot be opened: Windows Error %lu"
+msgstr "Berkas “%s” tidak dapat dibuka: Galat Windows %lu"
+
+#: gio/glocalfileinfo.c:2539
+#, c-format
+msgid "Error setting modification or access time for file “%s”: %lu"
+msgstr "Galat saat menata waktu modifikasi atau akses untuk berkas “%s”: %lu"
+
+#: gio/glocalfileinfo.c:2640
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Galat saat menata waktu modifikasi atau akses: %s"
 
-#: gio/glocalfileinfo.c:2477
+#: gio/glocalfileinfo.c:2663
 msgid "SELinux context must be non-NULL"
 msgstr "Konteks SELinux tak boleh NULL"
 
-#: gio/glocalfileinfo.c:2492
+#: gio/glocalfileinfo.c:2678
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Galat saat menata konteks SELinux: %s"
 
-#: gio/glocalfileinfo.c:2499
+#: gio/glocalfileinfo.c:2685
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux tak diaktifkan di sistem ini"
 
-#: gio/glocalfileinfo.c:2591
+#: gio/glocalfileinfo.c:2777
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Penataan atribut %s tak didukung"
@@ -3871,12 +3907,12 @@ msgstr "GSocketControlMessage tak didukung pada Windows"
 msgid "Error receiving message: %s"
 msgstr "Galat saat menerima pesan: %s"
 
-#: gio/gsocket.c:5995
+#: gio/gsocket.c:5983 gio/gsocket.c:6031
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Tak bisa membaca kredensial soket: %s"
 
-#: gio/gsocket.c:6004
+#: gio/gsocket.c:6040
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials tidak diimplementasikan untuk OS ini"
 
@@ -3894,11 +3930,11 @@ msgstr "Tak bisa menyambung ke %s: "
 msgid "Could not connect: "
 msgstr "Tak bisa menyambung: "
 
-#: gio/gsocketclient.c:1037 gio/gsocketclient.c:1764
+#: gio/gsocketclient.c:1037 gio/gsocketclient.c:1866
 msgid "Unknown error on connect"
 msgstr "Galat tak dikenal saat hubungan"
 
-#: gio/gsocketclient.c:1091 gio/gsocketclient.c:1672
+#: gio/gsocketclient.c:1091 gio/gsocketclient.c:1668
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Proksi melalui koneksi bukan TCP tidak didukung."
 
@@ -3937,66 +3973,66 @@ msgstr "Server bukan server proksi SOCKSv4."
 msgid "Connection through SOCKSv4 server was rejected"
 msgstr "Koneksi melalui server SOCKSv4 ditolak"
 
-#: gio/gsocks5proxy.c:153 gio/gsocks5proxy.c:324 gio/gsocks5proxy.c:334
+#: gio/gsocks5proxy.c:153 gio/gsocks5proxy.c:338 gio/gsocks5proxy.c:348
 msgid "The server is not a SOCKSv5 proxy server."
 msgstr "Server bukan server proksi SOCKSv5."
 
-#: gio/gsocks5proxy.c:167
+#: gio/gsocks5proxy.c:167 gio/gsocks5proxy.c:184
 msgid "The SOCKSv5 proxy requires authentication."
 msgstr "Proksi SOCKv5 memerlukan autentikasi."
 
-#: gio/gsocks5proxy.c:177
+#: gio/gsocks5proxy.c:191
 msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
 msgstr "SOCKSv5 memerlukan metode autentikasi yang tidak didukung oleh GLib."
 
-#: gio/gsocks5proxy.c:206
+#: gio/gsocks5proxy.c:220
 msgid "Username or password is too long for SOCKSv5 protocol."
 msgstr "Nama pengguna atau kata sandi terlalu panjang bagi protokol SOCKSv5."
 
-#: gio/gsocks5proxy.c:236
+#: gio/gsocks5proxy.c:250
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr "autentikasi SOCKSv5 gagal karena nama pengguna atau kata sandi salah."
 
-#: gio/gsocks5proxy.c:286
+#: gio/gsocks5proxy.c:300
 #, c-format
 msgid "Hostname “%s” is too long for SOCKSv5 protocol"
 msgstr "Nama host \"%s\" terlalu panjang bagi protokol SOCKSv5"
 
-#: gio/gsocks5proxy.c:348
+#: gio/gsocks5proxy.c:362
 msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "Server proksi SOCKSv5 memakai jenis alamat yang tidak dikenal."
 
-#: gio/gsocks5proxy.c:355
+#: gio/gsocks5proxy.c:369
 msgid "Internal SOCKSv5 proxy server error."
 msgstr "Galat internal server proksi SOCKSv5."
 
-#: gio/gsocks5proxy.c:361
+#: gio/gsocks5proxy.c:375
 msgid "SOCKSv5 connection not allowed by ruleset."
 msgstr "Koneksi SOCKSv5 tidak diijinkan oleh ruleset."
 
-#: gio/gsocks5proxy.c:368
+#: gio/gsocks5proxy.c:382
 msgid "Host unreachable through SOCKSv5 server."
 msgstr "Host tidak dapat dijangkau melalui server SOCKSv5."
 
-#: gio/gsocks5proxy.c:374
+#: gio/gsocks5proxy.c:388
 msgid "Network unreachable through SOCKSv5 proxy."
 msgstr "Jaringan tidak dapat dijangkau melalui proksi SOCKSv5."
 
-#: gio/gsocks5proxy.c:380
+#: gio/gsocks5proxy.c:394
 msgid "Connection refused through SOCKSv5 proxy."
 msgstr "Koneksi melalui proksi SOCKSv5 ditolak."
 
-#: gio/gsocks5proxy.c:386
+#: gio/gsocks5proxy.c:400
 msgid "SOCKSv5 proxy does not support “connect” command."
 msgstr "Proksi SOCSKv5 tidak mendukung perintah \"connect\"."
 
-#: gio/gsocks5proxy.c:392
+#: gio/gsocks5proxy.c:406
 msgid "SOCKSv5 proxy does not support provided address type."
 msgstr "Proksi SOCSKv5 tidak mendukung jenis alamat yang diberikan."
 
-#: gio/gsocks5proxy.c:398
+#: gio/gsocks5proxy.c:412
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Galat tak dikenal pada proksi SOCKSv5."
 
@@ -4126,24 +4162,24 @@ msgstr "Tak mengharapkan pesan kendali, tapi memperoleh %d"
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Galat ketika mematikan SO_PASSCRED: %s"
 
-#: gio/gunixinputstream.c:372 gio/gunixinputstream.c:393
+#: gio/gunixinputstream.c:362 gio/gunixinputstream.c:383
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "Galat saat membaca dari descriptor berkas: %s"
 
-#: gio/gunixinputstream.c:426 gio/gunixoutputstream.c:535
+#: gio/gunixinputstream.c:416 gio/gunixoutputstream.c:525
 #: gio/gwin32inputstream.c:217 gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Galat saat menutup descriptor berkas: %s"
 
-#: gio/gunixmounts.c:2664 gio/gunixmounts.c:2717
+#: gio/gunixmounts.c:2709 gio/gunixmounts.c:2762
 msgid "Filesystem root"
 msgstr "Akar sistem berkas"
 
-#: gio/gunixoutputstream.c:372 gio/gunixoutputstream.c:392
-#: gio/gunixoutputstream.c:479 gio/gunixoutputstream.c:499
-#: gio/gunixoutputstream.c:676
+#: gio/gunixoutputstream.c:362 gio/gunixoutputstream.c:382
+#: gio/gunixoutputstream.c:469 gio/gunixoutputstream.c:489
+#: gio/gunixoutputstream.c:635
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "Galat saat menulis ke descriptor berkas: %s"
@@ -4219,80 +4255,77 @@ msgstr "Jalankan layanan dbus"
 msgid "Wrong args\n"
 msgstr "Arg salah\n"
 
-#: glib/gbookmarkfile.c:756
+#: glib/gbookmarkfile.c:768
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
 msgstr "Atribut \"%s\" yang tidak diharapkan untuk elemen \"%s\""
 
-#: glib/gbookmarkfile.c:767 glib/gbookmarkfile.c:847 glib/gbookmarkfile.c:857
-#: glib/gbookmarkfile.c:969
+#: glib/gbookmarkfile.c:779 glib/gbookmarkfile.c:859 glib/gbookmarkfile.c:869
+#: glib/gbookmarkfile.c:982
 #, c-format
 msgid "Attribute “%s” of element “%s” not found"
 msgstr "Atribut \"%s\" dari elemen \"%s\" tak ditemukan"
 
-#: glib/gbookmarkfile.c:1178 glib/gbookmarkfile.c:1243
-#: glib/gbookmarkfile.c:1307 glib/gbookmarkfile.c:1317
+#: glib/gbookmarkfile.c:1191 glib/gbookmarkfile.c:1256
+#: glib/gbookmarkfile.c:1320 glib/gbookmarkfile.c:1330
 #, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "Tag \"%s\" yang tak diharapkan, diharapkan tag \"%s\""
 
-#: glib/gbookmarkfile.c:1203 glib/gbookmarkfile.c:1217
-#: glib/gbookmarkfile.c:1285 glib/gbookmarkfile.c:1331
+#: glib/gbookmarkfile.c:1216 glib/gbookmarkfile.c:1230
+#: glib/gbookmarkfile.c:1298 glib/gbookmarkfile.c:1344
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
 msgstr "Tag \"%s\" yang tak diharapkan di dalam \"%s\""
 
-#: glib/gbookmarkfile.c:1625
+#: glib/gbookmarkfile.c:1624
 #, c-format
 msgid "Invalid date/time ‘%s’ in bookmark file"
-msgstr "Tanggal/waktu ‘%s’ tidak valid dalam berkas penanda taut"
+msgstr "Tanggal/waktu ‘%s’ tidak valid dalam berkas markah"
 
-#: glib/gbookmarkfile.c:1831
+#: glib/gbookmarkfile.c:1827
 msgid "No valid bookmark file found in data dirs"
-msgstr "Tak ditemukan penanda buku yang valid di direktori data"
+msgstr "Tak ditemukan markah yang valid di direktori data"
 
-#: glib/gbookmarkfile.c:2032
+#: glib/gbookmarkfile.c:2028
 #, c-format
 msgid "A bookmark for URI “%s” already exists"
-msgstr "Penanda taut untuk URI \"%s\" telah ada"
+msgstr "Markah untuk URI \"%s\" telah ada"
 
-#: glib/gbookmarkfile.c:2078 glib/gbookmarkfile.c:2236
-#: glib/gbookmarkfile.c:2321 glib/gbookmarkfile.c:2401
-#: glib/gbookmarkfile.c:2486 glib/gbookmarkfile.c:2569
-#: glib/gbookmarkfile.c:2647 glib/gbookmarkfile.c:2726
-#: glib/gbookmarkfile.c:2768 glib/gbookmarkfile.c:2865
-#: glib/gbookmarkfile.c:2986 glib/gbookmarkfile.c:3176
-#: glib/gbookmarkfile.c:3252 glib/gbookmarkfile.c:3420
-#: glib/gbookmarkfile.c:3509 glib/gbookmarkfile.c:3598
-#: glib/gbookmarkfile.c:3717
+#: glib/gbookmarkfile.c:2077 glib/gbookmarkfile.c:2235
+#: glib/gbookmarkfile.c:2320 glib/gbookmarkfile.c:2400
+#: glib/gbookmarkfile.c:2485 glib/gbookmarkfile.c:2619
+#: glib/gbookmarkfile.c:2752 glib/gbookmarkfile.c:2887
+#: glib/gbookmarkfile.c:2929 glib/gbookmarkfile.c:3026
+#: glib/gbookmarkfile.c:3147 glib/gbookmarkfile.c:3341
+#: glib/gbookmarkfile.c:3482 glib/gbookmarkfile.c:3701
+#: glib/gbookmarkfile.c:3790 glib/gbookmarkfile.c:3879
+#: glib/gbookmarkfile.c:3998
 #, c-format
 msgid "No bookmark found for URI “%s”"
-msgstr "Tak ditemukan penanda taut untuk URI \"%s\""
+msgstr "Tak ditemukan markah untuk URI \"%s\""
 
-#: glib/gbookmarkfile.c:2410
+#: glib/gbookmarkfile.c:2409
 #, c-format
 msgid "No MIME type defined in the bookmark for URI “%s”"
-msgstr ""
-"Tidak ada jenis MIME yang didefinisikan pada penanda taut untuk URI \"%s\""
+msgstr "Tidak ada jenis MIME yang didefinisikan pada markah untuk URI \"%s\""
 
-#: glib/gbookmarkfile.c:2495
+#: glib/gbookmarkfile.c:2494
 #, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
-msgstr ""
-"Tidak ada flag privat yang ditetapkan dalam penanda taut untuk URI \"%s\""
+msgstr "Tidak ada tanda privat yang ditetapkan dalam markah untuk URI \"%s\""
 
-#: glib/gbookmarkfile.c:2874
+#: glib/gbookmarkfile.c:3035
 #, c-format
 msgid "No groups set in bookmark for URI “%s”"
-msgstr "Tidak ada grup yang ditetapkan dalam penanda taut untuk URI \"%s\""
+msgstr "Tidak ada grup yang ditetapkan dalam markah untuk URI \"%s\""
 
-#: glib/gbookmarkfile.c:3273 glib/gbookmarkfile.c:3430
+#: glib/gbookmarkfile.c:3503 glib/gbookmarkfile.c:3711
 #, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
-msgstr ""
-"Tak ditemukan aplikasi terdaftar dengan nama \"%s\" bagi penanda taut \"%s\""
+msgstr "Tak ditemukan aplikasi terdaftar dengan nama \"%s\" bagi markah \"%s\""
 
-#: glib/gbookmarkfile.c:3453
+#: glib/gbookmarkfile.c:3734
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Gagal mengembangkan baris eksekusi \"%s\" dengan URI \"%s\""
@@ -4849,20 +4882,20 @@ msgstr "Gagal membaca taut simbolik \"%s\": %s"
 msgid "Could not open converter from “%s” to “%s”: %s"
 msgstr "Tidak dapat membuka pengubah dari \"%s\" menjadi \"%s\": %s"
 
-#: glib/giochannel.c:1741
+#: glib/giochannel.c:1749
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Tidak dapat melakukan pembacaan mentah dalam g_io_channel_read_line_string"
 
-#: glib/giochannel.c:1788 glib/giochannel.c:2046 glib/giochannel.c:2133
+#: glib/giochannel.c:1796 glib/giochannel.c:2054 glib/giochannel.c:2141
 msgid "Leftover unconverted data in read buffer"
 msgstr "Ada data tersisa yang belum dikonversi pada penyangga read"
 
-#: glib/giochannel.c:1869 glib/giochannel.c:1946
+#: glib/giochannel.c:1877 glib/giochannel.c:1954
 msgid "Channel terminates in a partial character"
 msgstr "Kanal terputus pada karakter sebagian"
 
-#: glib/giochannel.c:1932
+#: glib/giochannel.c:1940
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "Tidak dapat melakukan pembacaan mentah dalam g_io_channel_read_to_end"
 
@@ -5207,61 +5240,61 @@ msgstr ""
 "Dokumen terpotong tidak sempurna di dalam keterangan atau instruksi "
 "pemrosesan"
 
-#: glib/goption.c:868
+#: glib/goption.c:873
 msgid "[OPTION…]"
 msgstr "[OPSI…]"
 
-#: glib/goption.c:984
+#: glib/goption.c:989
 msgid "Help Options:"
 msgstr "Opsi Bantuan:"
 
-#: glib/goption.c:985
+#: glib/goption.c:990
 msgid "Show help options"
 msgstr "Menampilkan opsi bantuan"
 
-#: glib/goption.c:991
+#: glib/goption.c:996
 msgid "Show all help options"
 msgstr "Menampilkan semua opsi bantuan"
 
-#: glib/goption.c:1054
+#: glib/goption.c:1059
 msgid "Application Options:"
 msgstr "Opsi Aplikasi:"
 
-#: glib/goption.c:1056
+#: glib/goption.c:1061
 msgid "Options:"
 msgstr "Opsi:"
 
-#: glib/goption.c:1120 glib/goption.c:1190
+#: glib/goption.c:1125 glib/goption.c:1195
 #, c-format
 msgid "Cannot parse integer value “%s” for %s"
 msgstr "Tidak bisa mengurai nilai bilangan bulat \"%s\" untuk \"%s\""
 
-#: glib/goption.c:1130 glib/goption.c:1198
+#: glib/goption.c:1135 glib/goption.c:1203
 #, c-format
 msgid "Integer value “%s” for %s out of range"
 msgstr "Nilai bilangan bulat \"%s\" untuk %s di luar jangkauan"
 
-#: glib/goption.c:1155
+#: glib/goption.c:1160
 #, c-format
 msgid "Cannot parse double value “%s” for %s"
 msgstr "Tidak bisa mengurai nilai double \"%s\" bagi %s"
 
-#: glib/goption.c:1163
+#: glib/goption.c:1168
 #, c-format
 msgid "Double value “%s” for %s out of range"
 msgstr "Nilai double \"%s\" untuk %s di luar jangkauan"
 
-#: glib/goption.c:1455 glib/goption.c:1534
+#: glib/goption.c:1460 glib/goption.c:1539
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Galat saat mengurai opsi %s"
 
-#: glib/goption.c:1565 glib/goption.c:1678
+#: glib/goption.c:1570 glib/goption.c:1683
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argumen untuk %s tidak lengkap"
 
-#: glib/goption.c:2189
+#: glib/goption.c:2194
 #, c-format
 msgid "Unknown option %s"
 msgstr "Pilihan tidak diketahui %s"
@@ -5300,7 +5333,7 @@ msgstr "batas rekursi dicapai"
 
 #: glib/gregex.c:299
 msgid "invalid combination of newline flags"
-msgstr "kombinasi bendera baris baru yang tak valid"
+msgstr "kombinasi tanda baris baru yang tak valid"
 
 #: glib/gregex.c:301
 msgid "bad offset"
