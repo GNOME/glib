@@ -157,7 +157,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  *
  * A key in the "standard" namespace for getting the description of the file.
  * The description is a utf8 string that describes the file, generally containing
- * the filename, but can also contain furter information. Example descriptions
+ * the filename, but can also contain further information. Example descriptions
  * could be "filename (on hostname)" for a remote file or "filename (in trash)"
  * for a file in the trash. This is useful for instance as the window title
  * when displaying a directory or for a bookmarks menu.

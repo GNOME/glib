@@ -1,6 +1,6 @@
 
-Traps (G_BREAKPOINT) and traces for the debuging
-================================================
+Traps (G_BREAKPOINT) and traces for the debugging
+=================================================
 
 Some code portions contain trap variables that can be set during
 debugging time if G_ENABLE_DEBUG has been defined upon compilation

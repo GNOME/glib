@@ -386,7 +386,7 @@ get_package_directory_from_module (const gchar *module_name)
  * installations of different versions of some GLib-using library, or
  * GLib itself, is desirable for various reasons.
  *
- * For this reason it is recommeded to always pass %NULL as
+ * For this reason it is recommended to always pass %NULL as
  * @package to this function, to avoid the temptation to use the
  * Registry. In version 2.20 of GLib the @package parameter
  * will be ignored and this function won't look in the Registry at all.
@@ -1049,7 +1049,7 @@ static void *WinVEH_handle = NULL;
  * * EXCEPTION_STACK_OVERFLOW
  * * EXCEPTION_ILLEGAL_INSTRUCTION
  * To make it stop at other exceptions one should set the G_VEH_CATCH
- * environment variable to a list of comma-separated hexademical numbers,
+ * environment variable to a list of comma-separated hexadecimal numbers,
  * where each number is the code of an exception that should be caught.
  * This is done to prevent GLib from breaking when Windows uses
  * exceptions to shuttle information (SetThreadName(), OutputDebugString())

@@ -67,7 +67,7 @@ loop:
        * current thread and since we're doing only sync operations,
        * this is safe.... */
       /* CancelIoEx is only Vista+. Since we have only one overlap
-       * operaton on this thread, we can just use: */
+       * operation on this thread, we can just use: */
       result = CancelIo (hfile);
       g_warn_if_fail (result);
     }

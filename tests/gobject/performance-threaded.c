@@ -205,7 +205,7 @@ static GOptionEntry cmd_entries[] = {
   {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
    "Print extra information", NULL},
   {"threads", 't', 0, G_OPTION_ARG_INT, &n_threads,
-   "number of threads to run in parrallel", NULL},
+   "number of threads to run in parallel", NULL},
   {"seconds", 's', 0, G_OPTION_ARG_INT, &test_length,
    "Time to run each test in seconds", NULL},
   {"list", 'l', 0, G_OPTION_ARG_NONE, &list, 

@@ -88,7 +88,7 @@ g_futex_wait (const volatile gint *address,
  * Nominally, wakes one thread that is blocked in g_futex_wait() on
  * @address (if any thread is currently waiting).
  *
- * As mentioned in the documention for g_futex_wait(), spurious
+ * As mentioned in the documentation for g_futex_wait(), spurious
  * wakeups may occur.  As such, this call may result in more than one
  * thread being woken up.
  */

@@ -952,7 +952,7 @@ my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
       the <function>net.Corp.MyApp.Frobber.HelloWorld()</function>
       D-Bus method, connect to the
       <function>::notification</function> GObject signal to receive
-      the <function>net.Corp.MyApp.Frobber::Notication</function>
+      the <function>net.Corp.MyApp.Frobber::Notification</function>
       D-Bus signal and get/set the
       <parameter>net.Corp.MyApp.Frobber:Verbose</parameter> D-Bus
       Property using either the GObject property

@@ -1000,7 +1000,7 @@ g_ucs4_to_utf8 (const gunichar *str,
  * Note that the input is expected to be already in native endianness,
  * an initial byte-order-mark character is not handled specially.
  * g_convert() can be used to convert a byte buffer of UTF-16 data of
- * ambiguous endianess.
+ * ambiguous endianness.
  *
  * Further note that this function does not validate the result
  * string; it may e.g. include embedded NUL characters. The only

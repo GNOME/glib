@@ -94,7 +94,7 @@ tester_init_thread (gpointer data)
 {
   const GInterfaceInfo face2_interface_info = { (GInterfaceInitFunc) interface_per_class_init, NULL, NULL };
   gpointer klass;
-  /* first, syncronize with other threads,
+  /* first, synchronize with other threads,
    * then run interface and class initializers,
    * using unsafe_call_counter concurrently
    */

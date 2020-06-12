@@ -133,7 +133,7 @@
       <xi:include href="xml/gnetworking.xml"/>
     </chapter>
     <chapter id="highlevel-socket">
-      <title>High-level network functionallity</title>
+      <title>High-level network functionality</title>
       <xi:include href="xml/gsocketclient.xml"/>
       <xi:include href="xml/gsocketconnection.xml"/>
       <xi:include href="xml/gunixconnection.xml"/>

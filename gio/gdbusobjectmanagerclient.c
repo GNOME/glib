@@ -1164,7 +1164,7 @@ subscribe_signals (GDBusObjectManagerClient *manager,
                                             name_owner,
                                             NULL, /* interface */
                                             NULL, /* member */
-                                            NULL, /* path - TODO: really want wilcard support here */
+                                            NULL, /* path - TODO: really want wildcard support here */
                                             NULL, /* arg0 */
                                             G_DBUS_SIGNAL_FLAGS_NONE |
                                             G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE,
@@ -1197,7 +1197,7 @@ subscribe_signals (GDBusObjectManagerClient *manager,
                                             name_owner,
                                             NULL, /* interface */
                                             NULL, /* member */
-                                            NULL, /* path - TODO: really want wilcard support here */
+                                            NULL, /* path - TODO: really want wildcard support here */
                                             NULL, /* arg0 */
                                             G_DBUS_SIGNAL_FLAGS_NONE,
                                             signal_cb,

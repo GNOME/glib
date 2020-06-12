@@ -112,13 +112,13 @@ static void
 test_veh_debug (void)
 {
   /* Run a test that crashes and runs a debugger */
-  g_test_trap_subprocess ("/win32/subprocess/debugee", 0, 0);
+  g_test_trap_subprocess ("/win32/subprocess/debuggee", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("Exception code=0xc0000005*Debugger invoked, attaching to*");
 }
 
 static void
-test_veh_debugee (void)
+test_veh_debuggee (void)
 {
   /* Set up a debugger to be run on crash */
   gchar *command = g_strdup_printf ("%s %s", argv0, "%p %e");
@@ -139,7 +139,7 @@ veh_debugger (int argc, char *argv[])
   char *end;
   DWORD pid = strtoul (argv[1], &end, 10);
   guintptr event = (guintptr) _strtoui64 (argv[2], &end, 10);
-  /* Unfreeze the debugee and announce ourselves */
+  /* Unfreeze the debuggee and announce ourselves */
   SetEvent ((HANDLE) event);
   CloseHandle ((HANDLE) event);
   g_fprintf (stderr, "Debugger invoked, attaching to %lu and signalling %" G_GUINTPTR_FORMAT, pid, event);
@@ -165,7 +165,7 @@ main (int   argc,
   g_test_add_func ("/win32/veh/illegal_instruction", test_veh_crash_illegal_instruction);
   g_test_add_func ("/win32/veh/debug", test_veh_debug);
 
-  g_test_add_func ("/win32/subprocess/debugee", test_veh_debugee);
+  g_test_add_func ("/win32/subprocess/debuggee", test_veh_debuggee);
   g_test_add_func ("/win32/subprocess/access_violation", test_access_violation);
   g_test_add_func ("/win32/subprocess/illegal_instruction", test_illegal_instruction);
 

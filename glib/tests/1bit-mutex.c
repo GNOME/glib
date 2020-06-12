@@ -129,7 +129,7 @@ testcase (gconstpointer data)
   #define SUFFIX "-emufutex"
 
   /* ensure that we are using the emulated futex by checking
-   * (at compile-time) for the existance of 'g_futex_address_list'
+   * (at compile-time) for the existence of 'g_futex_address_list'
    */
   g_assert (g_futex_address_list == NULL);
 #else

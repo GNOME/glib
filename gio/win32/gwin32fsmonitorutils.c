@@ -416,7 +416,7 @@ g_win32_fs_monitor_close_handle (GWin32FSMonitorPrivate *monitor)
   /* This triggers a last callback() with nBytes==0. */
 
   /* Actually I am not so sure about that, it seems to trigger a last
-   * callback allright, but the way to recognize that it is the final
+   * callback correctly, but the way to recognize that it is the final
    * one is not to check for nBytes==0, I think that was a
    * misunderstanding.
    */

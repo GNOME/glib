@@ -39,7 +39,7 @@ test_empty_address (void)
   g_error_free (error);
 }
 
-/* Test that g_dbus_is_supported_address() returns FALSE for an unparseable
+/* Test that g_dbus_is_supported_address() returns FALSE for an unparsable
  * address. */
 static void
 test_unsupported_address (void)

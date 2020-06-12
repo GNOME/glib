@@ -115,7 +115,7 @@ G_BEGIN_DECLS
  *
  * Returns: %TRUE if any events are pending.
  *
- * Deprected: 2.2: Use g_main_context_pending() instead.
+ * Deprecated: 2.2: Use g_main_context_pending() instead.
  */
 #define g_main_pending()            g_main_context_pending (NULL) GLIB_DEPRECATED_MACRO_IN_2_26_FOR(g_main_context_pending)
 

@@ -2953,7 +2953,7 @@ close_async_thread (GTask        *task,
       result = class->flush (stream, cancellable, &error);
     }
 
-  /* Auto handling of cancelation disabled, and ignore
+  /* Auto handling of cancellation disabled, and ignore
      cancellation, since we want to close things anyway, although
      possibly in a quick-n-dirty way. At least we never want to leak
      open handles */

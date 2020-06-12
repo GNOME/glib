@@ -690,7 +690,7 @@ g_variant_unref (value);]]></programlisting></informalexample>
     <link linkend='g-variant-get'><function>g_variant_get()</function></link> returns (by reference) a
     non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> pointer.  When any of these format strings are
     prefixed with an '<literal>m</literal>', the type of arguments that are collected does not change in any way, but
-    <link linkend='NULL:CAPS'><literal>NULL</literal></link> becomes a permissable value, to indicate the Nothing case.
+    <link linkend='NULL:CAPS'><literal>NULL</literal></link> becomes a permissible value, to indicate the Nothing case.
    </para>
    <para>
     Note that the "special exception" introduced in the array section for constructing empty arrays is ignored

@@ -230,7 +230,7 @@ test_proxy (void)
   g_main_loop_unref (loop);
 
   /* TODO: should call session_bus_down() but that requires waiting
-   * for all the oustanding method calls to complete...
+   * for all the outstanding method calls to complete...
    */
   if (g_test_verbose ())
     g_printerr ("\n");

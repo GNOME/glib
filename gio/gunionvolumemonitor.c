@@ -546,7 +546,7 @@ _g_mount_get_for_mount_path (const gchar  *mount_path,
 
   /* TODO: How do we know this succeeded? Keep in mind that the native
    *       volume monitor may fail (e.g. not being able to connect to
-   *       hald). Is the get_mount_for_mount_path() method allowed to
+   *       udisks). Is the get_mount_for_mount_path() method allowed to
    *       return NULL? Seems like it is ... probably the method needs
    *       to take a boolean and write if it succeeds or not.. Messy.
    *       Very messy.

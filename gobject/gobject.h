@@ -320,7 +320,7 @@ struct  _GObjectClass
   GSList      *construct_properties;
 
   /*< public >*/
-  /* seldom overidden */
+  /* seldom overridden */
   GObject*   (*constructor)     (GType                  type,
                                  guint                  n_construct_properties,
                                  GObjectConstructParam *construct_properties);
@@ -335,7 +335,7 @@ struct  _GObjectClass
                                          GParamSpec     *pspec);
   void       (*dispose)			(GObject        *object);
   void       (*finalize)		(GObject        *object);
-  /* seldom overidden */
+  /* seldom overridden */
   void       (*dispatch_properties_changed) (GObject      *object,
 					     guint	   n_pspecs,
 					     GParamSpec  **pspecs);
@@ -838,7 +838,7 @@ static inline void
  *
  * Updates a pointer to weakly refer to @new_object. It assigns @new_object
  * to @weak_pointer_location and ensures that @weak_pointer_location will
- * automaticaly be set to %NULL if @new_object gets destroyed. The assignment
+ * automatically be set to %NULL if @new_object gets destroyed. The assignment
  * is not atomic. The weak reference is not thread-safe, see
  * g_object_add_weak_pointer() for details.
  *

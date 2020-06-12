@@ -1862,7 +1862,7 @@ codegen_test_peer (void)
   g_assert (value != NULL);
   g_variant_unref (value);
 
-  /* Give the proxies a chance to refresh in the defaul main loop */
+  /* Give the proxies a chance to refresh in the default main loop */
   g_timeout_add (100, codegen_quit_mainloop_timeout, NULL);
   g_main_loop_run (loop);
 
@@ -1897,7 +1897,7 @@ codegen_test_peer (void)
   g_assert (value != NULL);
   g_variant_unref (value);
 
-  /* Give the proxies a chance to refresh in the defaul main loop */
+  /* Give the proxies a chance to refresh in the default main loop */
   g_timeout_add (1000, codegen_quit_mainloop_timeout, NULL);
   g_main_loop_run (loop);
 

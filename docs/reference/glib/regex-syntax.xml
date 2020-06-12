@@ -2313,7 +2313,7 @@ refer to them instead of the whole pattern. In a larger pattern, keeping
 track of parenthesis numbers can be tricky. It may be more convenient to
 use named parentheses instead.
 The Perl syntax for this is (?&amp;name); GRegex also supports the(?P>name)
-syntac. We could rewrite the above example as follows:
+syntax. We could rewrite the above example as follows:
 </para>
 
 <programlisting>

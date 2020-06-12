@@ -1545,7 +1545,7 @@ g_signal_new (const gchar	 *signal_name,
  * of a class offset for the signal's class handler. This function
  * doesn't need a function pointer exposed in the class structure of
  * an object definition, instead the function pointer is passed
- * directly and can be overriden by derived classes with
+ * directly and can be overridden by derived classes with
  * g_signal_override_class_closure() or
  * g_signal_override_class_handler()and chained to with
  * g_signal_chain_from_overridden() or
@@ -2623,7 +2623,7 @@ g_signal_connect_data (gpointer       instance,
  *
  * Blocks a handler of an instance so it will not be called during any
  * signal emissions unless it is unblocked again. Thus "blocking" a
- * signal handler means to temporarily deactive it, a signal handler
+ * signal handler means to temporarily deactivate it, a signal handler
  * has to be unblocked exactly the same amount of times it has been
  * blocked before to become active again.
  *

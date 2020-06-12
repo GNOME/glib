@@ -745,7 +745,7 @@ registry_cache_update_node (GNode        *cache_node,
 }
 
 /* Blocking notifications is a useful optimisation. When a change is made
- * through GSettings we update the cache manually, but a notifcation is
+ * through GSettings we update the cache manually, but a notification is
  * triggered as well. This function is also used for nested notifications,
  * eg. if /test and /test/foo are watched, and /test/foo/value is changed then
  * we will get notified both for /test/foo and /test and it is helpful to block

@@ -830,7 +830,7 @@ splice_cancelled_cb (GCancellable *cancellable,
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @user_data: (closure): user data passed to @callback.
  *
- * Asyncronously splice the output stream of @stream1 to the input stream of
+ * Asynchronously splice the output stream of @stream1 to the input stream of
  * @stream2, and splice the output stream of @stream2 to the input stream of
  * @stream1.
  *
