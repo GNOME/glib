@@ -2154,7 +2154,7 @@ g_date_order (GDate *date1,
 }
 
 #ifdef G_OS_WIN32
-static void
+static gboolean
 append_month_name (GArray     *result,
 		   LCID        lcid,
 		   SYSTEMTIME *systemtime,
@@ -2169,9 +2169,14 @@ append_month_name (GArray     *result,
     {
       base = abbreviated ? LOCALE_SABBREVMONTHNAME1 : LOCALE_SMONTHNAME1;
       n = GetLocaleInfoW (lcid, base + systemtime->wMonth - 1, NULL, 0);
+      if (n == 0)
+        return FALSE;
+
       g_array_set_size (result, result->len + n);
-      GetLocaleInfoW (lcid, base + systemtime->wMonth - 1,
-		      ((wchar_t *) result->data) + result->len - n, n);
+      if (GetLocaleInfoW (lcid, base + systemtime->wMonth - 1,
+                          ((wchar_t *) result->data) + result->len - n, n) != n)
+        return FALSE;
+
       g_array_set_size (result, result->len - 1);
     }
   else
@@ -2179,12 +2184,20 @@ append_month_name (GArray     *result,
       /* According to MSDN, this is the correct method to obtain
        * the form of the month name used when formatting a full
        * date; it must be a genitive case in some languages.
+       *
+       * (n == 0) indicates an error, whereas (n < 2) is something we’d never
+       * expect from the given format string, and would break the subsequent code.
        */
       lpFormat = abbreviated ? L"ddMMM" : L"ddMMMM";
       n = GetDateFormatW (lcid, 0, systemtime, lpFormat, NULL, 0);
+      if (n < 2)
+        return FALSE;
+
       g_array_set_size (result, result->len + n);
-      GetDateFormatW (lcid, 0, systemtime, lpFormat,
-		      ((wchar_t *) result->data) + result->len - n, n);
+      if (GetDateFormatW (lcid, 0, systemtime, lpFormat,
+                          ((wchar_t *) result->data) + result->len - n, n) != 0)
+        return FALSE;
+
       /* We have obtained a day number as two digits and the month name.
        * Now let's get rid of those two digits: overwrite them with the
        * month name.
@@ -2194,6 +2207,8 @@ append_month_name (GArray     *result,
 	       (n - 2) * sizeof (wchar_t));
       g_array_set_size (result, result->len - 3);
     }
+
+  return TRUE;
 }
 
 static gsize
@@ -2286,12 +2301,16 @@ win32_strftime_helper (const GDate     *d,
 	      break;
 	    case 'b':
 	    case 'h':
-	      append_month_name (result, lcid, &systemtime, TRUE,
-				 modifier == 'O');
+              if (!append_month_name (result, lcid, &systemtime, TRUE, modifier == 'O'))
+                {
+                  /* Ignore the error; this placeholder will be replaced with nothing */
+                }
 	      break;
 	    case 'B':
-	      append_month_name (result, lcid, &systemtime, FALSE,
-				 modifier == 'O');
+              if (!append_month_name (result, lcid, &systemtime, FALSE, modifier == 'O'))
+                {
+                  /* Ignore the error; this placeholder will be replaced with nothing */
+                }
 	      break;
 	    case 'c':
 	      n = GetDateFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
