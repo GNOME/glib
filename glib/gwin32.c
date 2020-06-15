@@ -624,7 +624,7 @@ g_win32_get_windows_version (void)
  * gettext initialization.
  */
 static gchar *
-special_wchar_to_locale_enoding (wchar_t *wstring)
+special_wchar_to_locale_encoding (wchar_t *wstring)
 {
   int sizeof_output;
   int wctmb_result;
@@ -701,7 +701,7 @@ g_win32_locale_filename_from_utf8 (const gchar *utf8filename)
   if (wname == NULL)
     return NULL;
 
-  retval = special_wchar_to_locale_enoding (wname);
+  retval = special_wchar_to_locale_encoding (wname);
 
   if (retval == NULL)
     {
@@ -709,7 +709,7 @@ g_win32_locale_filename_from_utf8 (const gchar *utf8filename)
       wchar_t wshortname[MAX_PATH + 1];
 
       if (GetShortPathNameW (wname, wshortname, G_N_ELEMENTS (wshortname)))
-        retval = special_wchar_to_locale_enoding (wshortname);
+        retval = special_wchar_to_locale_encoding (wshortname);
     }
 
   g_free (wname);
