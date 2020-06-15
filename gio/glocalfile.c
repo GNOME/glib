@@ -112,6 +112,10 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
 
 static char *find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink);
 
+#ifndef G_OS_WIN32
+static gboolean is_remote_fs (const gchar *filename);
+#endif
+
 static void
 g_local_file_finalize (GObject *object)
 {
@@ -1111,11 +1115,13 @@ g_local_file_query_filesystem_info (GFile         *file,
       get_mount_info (info, local->filename, attribute_matcher);
 #endif /* G_OS_WIN32 */
     }
-  
+
+#ifndef G_OS_WIN32
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE))
-      g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE,
-					 g_local_file_is_remote (local->filename));
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE))
+    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE,
+                                       is_remote_fs (local->filename));
+#endif
 
   g_file_attribute_matcher_unref (attribute_matcher);
   
