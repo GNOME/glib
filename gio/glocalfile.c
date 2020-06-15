@@ -2516,7 +2516,7 @@ g_local_file_move (GFile                  *source,
 #ifdef G_OS_WIN32
 
 gboolean
-g_local_file_is_remote (const gchar *filename)
+g_local_file_is_nfs_home (const gchar *filename)
 {
   return FALSE;
 }
@@ -2538,7 +2538,7 @@ is_remote_fs_type (const gchar *fsname)
 }
 
 gboolean
-g_local_file_is_remote (const gchar *filename)
+g_local_file_is_nfs_home (const gchar *filename)
 {
   static gboolean remote_home;
   static gsize initialized;
