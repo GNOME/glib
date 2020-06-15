@@ -111,6 +111,7 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
 						g_local_file_file_iface_init))
 
 static char *find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink);
+static gboolean is_remote_fs (const gchar *filename);
 
 static void
 g_local_file_finalize (GObject *object)
@@ -1115,7 +1116,7 @@ g_local_file_query_filesystem_info (GFile         *file,
   if (g_file_attribute_matcher_matches (attribute_matcher,
 					G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE))
       g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE,
-					 g_local_file_is_remote (local->filename));
+                                         is_remote_fs (local->filename));
 
   g_file_attribute_matcher_unref (attribute_matcher);
   
