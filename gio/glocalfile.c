@@ -2527,6 +2527,12 @@ is_remote_fs_type (const gchar *fsname)
         return TRUE;
       if (strcmp (fsname, "nfs4") == 0)
         return TRUE;
+      if (strcmp (fsname, "cifs") == 0)
+        return TRUE;
+      if (strcmp (fsname, "smb") == 0)
+        return TRUE;
+      if (strcmp (fsname, "smb2") == 0)
+        return TRUE;
     }
 
   return FALSE;
@@ -2535,7 +2541,7 @@ is_remote_fs_type (const gchar *fsname)
 gboolean
 g_local_file_is_remote (const gchar *filename)
 {
-  static gboolean remote_home;
+  static gboolean remote_home = FALSE;
   static gsize initialized;
   const gchar *home;
 
@@ -2552,15 +2558,15 @@ g_local_file_is_remote (const gchar *filename)
           info = g_local_file_query_filesystem_info (file, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE, NULL, NULL);
           if (info != NULL)
             fs_type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE);
-          remote_home = is_remote_fs_type (fs_type);
+          if (g_strcmp0 (fs_type, "nfs") == 0 || g_strcmp0 (fs_type, "nfs4") == 0)
+            remote_home = TRUE;
           g_object_unref (info);
 
           g_once_init_leave (&initialized, TRUE);
         }
-      return remote_home;
     }
 
-  return FALSE;
+  return remote_home;
 }
 #endif /* !G_OS_WIN32 */
 
