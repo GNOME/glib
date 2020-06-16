@@ -203,7 +203,9 @@ static GTimeZone *tz_local = NULL;
                            there's no point in getting carried
                            away. */
 
+#ifdef G_OS_UNIX
 static GTimeZone *parse_footertz (const gchar *);
+#endif
 
 /**
  * g_time_zone_unref:
@@ -1555,6 +1557,7 @@ rules_from_identifier (const gchar   *identifier,
   return create_ruleset_from_rule (rules, &tzr);
 }
 
+#ifdef G_OS_UNIX
 static GTimeZone *
 parse_footertz (const gchar *footer)
 {
@@ -1579,6 +1582,7 @@ parse_footertz (const gchar *footer)
   g_free (rules);
   return footertz;
 }
+#endif
 
 /* Construction {{{1 */
 /**
