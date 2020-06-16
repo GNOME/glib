@@ -534,7 +534,7 @@ init_zone_from_iana_info (GTimeZone *gtz,
   g_return_if_fail (size >= sizeof (struct tzhead) &&
                     memcmp (header, "TZif", 4) == 0);
 
-  if (header->tzh_version == '2')
+  if (header->tzh_version >= '2')
       {
         /* Skip ahead to the newer 64-bit data if it's available. */
         header = (const struct tzhead *)
@@ -574,7 +574,7 @@ init_zone_from_iana_info (GTimeZone *gtz,
   for (index = 0; index < time_count; index++)
     {
       Transition trans;
-      if (header->tzh_version == '2')
+      if (header->tzh_version >= '2')
         trans.time = gint64_from_be (((gint64_be*)tz_transitions)[index]);
       else
         trans.time = gint32_from_be (((gint32_be*)tz_transitions)[index]);
