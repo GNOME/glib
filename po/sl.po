@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-03-30 19:36+0000\n"
-"PO-Revision-Date: 2020-06-09 21:47+0200\n"
+"POT-Creation-Date: 2020-06-05 07:13+0000\n"
+"PO-Revision-Date: 2020-06-11 16:26+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
-msgstr "Možnosti programa"
+msgstr "Možnosti GApplication"
 
 #: gio/gapplication.c:500
 msgid "Show GApplication options"
