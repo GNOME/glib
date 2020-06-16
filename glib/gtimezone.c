@@ -142,9 +142,7 @@ typedef struct
   gint     mday;
   gint     wday;
   gint     week;
-  gint     hour;
-  gint     min;
-  gint     sec;
+  gint32   offset;  /* hour*3600 + min*60 + sec; can be negative.  */
 } TimeZoneDate;
 
 /* POSIX Timezone abbreviations are typically 3 or 4 characters, but
@@ -289,10 +287,14 @@ g_time_zone_ref (GTimeZone *tz)
  *  - h[h] is 0 to 24
  *  - mm is 00 to 59
  *  - ss is 00 to 59
+ * If RFC8536, the colons are required and hh can be up to 167.
+ * See Internet RFC 8536 section 3.3.1.
+ * https://tools.ietf.org/html/rfc8536#section-3.3.1
  */
 static gboolean
 parse_time (const gchar *time_,
-            gint32      *offset)
+            gint32      *offset,
+            gboolean    rfc8536)
 {
   if (*time_ < '0' || '9' < *time_)
     return FALSE;
@@ -310,7 +312,17 @@ parse_time (const gchar *time_,
       *offset *= 10;
       *offset += 60 * 60 * (*time_++ - '0');
 
-      if (*offset > 24 * 60 * 60)
+      if (rfc8536)
+        {
+          if ('0' <= *time_ && *time_ <= '9')
+            {
+              *offset *= 10;
+              *offset += 60 * 60 * (*time_++ - '0');
+            }
+          if (*offset > 167 * 60 * 60)
+            return FALSE;
+        }
+      else if (*offset > 24 * 60 * 60)
         return FALSE;
 
       if (*time_ == '\0')
@@ -319,6 +331,8 @@ parse_time (const gchar *time_,
 
   if (*time_ == ':')
     time_++;
+  else if (rfc8536)
+    return FALSE;
 
   if (*time_ < '0' || '5' < *time_)
     return FALSE;
@@ -335,6 +349,8 @@ parse_time (const gchar *time_,
 
   if (*time_ == ':')
     time_++;
+  else if (rfc8536)
+    return FALSE;
 
   if (*time_ < '0' || '5' < *time_)
     return FALSE;
@@ -351,28 +367,31 @@ parse_time (const gchar *time_,
 
 static gboolean
 parse_constant_offset (const gchar *name,
-                       gint32      *offset)
+                       gint32      *offset,
+                       gboolean    rfc8536)
 {
-  if (g_strcmp0 (name, "UTC") == 0)
+  /* Internet RFC 8536 section 3.3.1 requires a numeric zone.  */
+  if (!rfc8536 && g_strcmp0 (name, "UTC") == 0)
     {
       *offset = 0;
       return TRUE;
     }
 
   if (*name >= '0' && '9' >= *name)
-    return parse_time (name, offset);
+    return parse_time (name, offset, rfc8536);
 
   switch (*name++)
     {
     case 'Z':
       *offset = 0;
-      return !*name;
+      /* Internet RFC 8536 section 3.3.1 requires a numeric zone.  */
+      return !rfc8536 && !*name;
 
     case '+':
-      return parse_time (name, offset);
+      return parse_time (name, offset, rfc8536);
 
     case '-':
-      if (parse_time (name, offset))
+      if (parse_time (name, offset, rfc8536))
         {
           *offset = -*offset;
           return TRUE;
@@ -391,7 +410,7 @@ zone_for_constant_offset (GTimeZone *gtz, const gchar *name)
   gint32 offset;
   TransitionInfo info;
 
-  if (name == NULL || !parse_constant_offset (name, &offset))
+  if (name == NULL || !parse_constant_offset (name, &offset, FALSE))
     return;
 
   info.gmt_offset = offset;
@@ -590,9 +609,8 @@ init_zone_from_iana_info (GTimeZone *gtz,
 static void
 copy_windows_systemtime (SYSTEMTIME *s_time, TimeZoneDate *tzdate)
 {
-  tzdate->sec = s_time->wSecond;
-  tzdate->min = s_time->wMinute;
-  tzdate->hour = s_time->wHour;
+  tzdate->offset
+    = s_time->wHour * 3600 + s_time->wMinute * 60 + s_time->wSecond;
   tzdate->mon = s_time->wMonth;
   tzdate->year = s_time->wYear;
   tzdate->wday = s_time->wDayOfWeek ? s_time->wDayOfWeek : 7;
@@ -979,7 +997,7 @@ boundary_for_year (TimeZoneDate *boundary,
   g_date_clear (&date, 1);
   g_date_set_dmy (&date, buffer.mday, buffer.mon, buffer.year);
   return ((g_date_get_julian (&date) - unix_epoch_start) * seconds_per_day +
-          buffer.hour * 3600 + buffer.min * 60 + buffer.sec - offset);
+          buffer.offset - offset);
 }
 
 static void
@@ -1289,25 +1307,10 @@ parse_tz_boundary (const gchar  *identifier,
   /* Time */
 
   if (*pos == '/')
-    {
-      gint32 offset;
-
-      if (!parse_time (++pos, &offset))
-        return FALSE;
-
-      boundary->hour = offset / 3600;
-      boundary->min = (offset / 60) % 60;
-      boundary->sec = offset % 3600;
-
-      return TRUE;
-    }
-
+    return parse_constant_offset (pos + 1, &boundary->offset, TRUE);
   else
     {
-      boundary->hour = 2;
-      boundary->min = 0;
-      boundary->sec = 0;
-
+      boundary->offset = 2 * 60 * 60;
       return *pos == '\0';
     }
 }
@@ -1341,7 +1344,7 @@ parse_offset (gchar **pos, gint32 *target)
     ++(*pos);
 
   buffer = g_strndup (target_pos, *pos - target_pos);
-  ret = parse_constant_offset (buffer, target);
+  ret = parse_constant_offset (buffer, target, FALSE);
   g_free (buffer);
 
   return ret;
