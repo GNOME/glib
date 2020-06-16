@@ -203,6 +203,8 @@ static GTimeZone *tz_local = NULL;
                            there's no point in getting carried
                            away. */
 
+static GTimeZone *parse_footertz (const gchar *);
+
 /**
  * g_time_zone_unref:
  * @tz: a #GTimeZone
@@ -545,6 +547,9 @@ init_zone_from_iana_info (GTimeZone *gtz,
   guint8 *tz_abbrs;
   gsize timesize = sizeof (gint32);
   const struct tzhead *header = g_bytes_get_data (zoneinfo, &size);
+  GTimeZone *footertz = NULL;
+  guint extra_time_count = 0, extra_type_count = 0;
+  gint64 last_explicit_transition_time;
 
   g_return_if_fail (size >= sizeof (struct tzhead) &&
                     memcmp (header, "TZif", 4) == 0);
@@ -565,6 +570,25 @@ init_zone_from_iana_info (GTimeZone *gtz,
   time_count = guint32_from_be(header->tzh_timecnt);
   type_count = guint32_from_be(header->tzh_typecnt);
 
+  if (header->tzh_version >= '2')
+    {
+      const gchar *footer = (((const gchar *) (header + 1))
+                             + guint32_from_be(header->tzh_ttisgmtcnt)
+                             + guint32_from_be(header->tzh_ttisstdcnt)
+                             + 12 * guint32_from_be(header->tzh_leapcnt)
+                             + 9 * time_count
+                             + 6 * type_count
+                             + guint32_from_be(header->tzh_charcnt));
+      g_return_if_fail (footer[0] == '\n');
+      if (footer[1] != '\n')
+        {
+          footertz = parse_footertz (footer);
+          g_return_if_fail (footertz);
+          extra_type_count = footertz->t_info->len;
+          extra_time_count = footertz->transitions->len;
+        }
+    }
+
   tz_transitions = ((guint8 *) (header) + sizeof (*header));
   tz_type_index = tz_transitions + timesize * time_count;
   tz_ttinfo = tz_type_index + time_count;
@@ -572,9 +596,9 @@ init_zone_from_iana_info (GTimeZone *gtz,
 
   gtz->name = g_steal_pointer (&identifier);
   gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo),
-                                   type_count);
+                                   type_count + extra_type_count);
   gtz->transitions = g_array_sized_new (FALSE, TRUE, sizeof (Transition),
-                                        time_count);
+                                        time_count + extra_time_count);
 
   for (index = 0; index < type_count; index++)
     {
@@ -593,10 +617,47 @@ init_zone_from_iana_info (GTimeZone *gtz,
         trans.time = gint64_from_be (((gint64_be*)tz_transitions)[index]);
       else
         trans.time = gint32_from_be (((gint32_be*)tz_transitions)[index]);
+      last_explicit_transition_time = trans.time;
       trans.info_index = tz_type_index[index];
       g_assert (trans.info_index >= 0);
       g_assert ((guint) trans.info_index < gtz->t_info->len);
       g_array_append_val (gtz->transitions, trans);
+    }
+
+  if (footertz)
+    {
+      /* Append footer time types.  Don't bother to coalesce
+         duplicates with existing time types.  */
+      for (index = 0; index < extra_type_count; index++)
+        {
+          TransitionInfo t_info;
+          TransitionInfo *footer_t_info
+            = &g_array_index (footertz->t_info, TransitionInfo, index);
+          t_info.gmt_offset = footer_t_info->gmt_offset;
+          t_info.is_dst = footer_t_info->is_dst;
+          t_info.abbrev = g_steal_pointer (&footer_t_info->abbrev);
+          g_array_append_val (gtz->t_info, t_info);
+        }
+
+      /* Append footer transitions that follow the last explicit
+         transition.  */
+      index = 0;
+      if (time_count > 0)
+        for (; index < extra_time_count; index++)
+          if (last_explicit_transition_time
+              < g_array_index (footertz->transitions, Transition, index).time)
+            break;
+      for (; index < extra_time_count; index++)
+        {
+          Transition *footer_transition
+            = &g_array_index (footertz->transitions, Transition, index);
+          Transition trans;
+          trans.time = footer_transition->time;
+          trans.info_index = type_count + footer_transition->info_index;
+          g_array_append_val (gtz->transitions, trans);
+        }
+
+      g_time_zone_unref (footertz);
     }
 }
 
@@ -1020,7 +1081,8 @@ static void
 init_zone_from_rules (GTimeZone    *gtz,
                       TimeZoneRule *rules,
                       guint         rules_num,
-                      gchar        *identifier  /* (transfer full) */)
+                      gchar        *identifier,  /* (transfer full) */
+                      gboolean      append)
 {
   guint type_count = 0, trans_count = 0, info_index = 0;
   guint ri; /* rule index */
@@ -1493,6 +1555,31 @@ rules_from_identifier (const gchar   *identifier,
   return create_ruleset_from_rule (rules, &tzr);
 }
 
+static GTimeZone *
+parse_footertz (const gchar *footer)
+{
+  const gchar *footer_end;
+  gchar *tzstring, *ident;
+  TimeZoneRule *rules;
+  guint rules_num;
+  GTimeZone *footertz = NULL;
+
+  for (footer_end = footer + 1; *++footer_end != '\n'; )
+    continue;
+  tzstring = g_strndup (footer + 1, footer_end - (footer + 1));
+  rules_num = rules_from_identifier (tzstring, &ident, &rules);
+  g_free (ident);
+  g_free (tzstring);
+  if (1 < rules_num)
+    {
+      footertz = g_slice_new0 (GTimeZone);
+      init_zone_from_rules (footertz, rules, rules_num, NULL, TRUE);
+      footertz->ref_count++;
+    }
+  g_free (rules);
+  return footertz;
+}
+
 /* Construction {{{1 */
 /**
  * g_time_zone_new:
@@ -1598,7 +1685,8 @@ g_time_zone_new (const gchar *identifier)
   if (tz->t_info == NULL &&
       (rules_num = rules_from_identifier (identifier, &resolved_identifier, &rules)))
     {
-      init_zone_from_rules (tz, rules, rules_num, g_steal_pointer (&resolved_identifier));
+      init_zone_from_rules (tz, rules, rules_num,
+                            g_steal_pointer (&resolved_identifier), FALSE);
       g_free (rules);
     }
 
@@ -1617,7 +1705,8 @@ g_time_zone_new (const gchar *identifier)
                                                      &rules,
                                                      TRUE)))
         {
-          init_zone_from_rules (tz, rules, rules_num, g_steal_pointer (&resolved_identifier));
+          init_zone_from_rules (tz, rules, rules_num,
+                                g_steal_pointer (&resolved_identifier), FALSE);
           g_free (rules);
         }
 #endif
@@ -1642,7 +1731,8 @@ g_time_zone_new (const gchar *identifier)
                   rules[0].start_year = MIN_TZYEAR;
                   rules[1].start_year = MAX_TZYEAR;
 
-                  init_zone_from_rules (tz, rules, 2, windows_default_tzname ());
+                  init_zone_from_rules (tz, rules, 2,
+                                        windows_default_tzname (), FALSE);
                 }
 
               g_free (rules);
