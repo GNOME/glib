@@ -54,12 +54,12 @@ mock_operation_thread (GTask        *task,
       if (g_cancellable_is_cancelled (cancellable))
         break;
       if (g_test_verbose ())
-        g_printerr ("THRD: %u iteration %u\n", data->iterations_requested, i);
+        g_test_message ("THRD: %u iteration %u", data->iterations_requested, i);
       g_usleep (WAIT_ITERATION * 1000);
     }
 
   if (g_test_verbose ())
-    g_printerr ("THRD: %u stopped at %u\n", data->iterations_requested, i);
+    g_test_message ("THRD: %u stopped at %u", data->iterations_requested, i);
   data->iterations_done = i;
 
   g_task_return_boolean (task, TRUE);
@@ -84,8 +84,8 @@ mock_operation_timeout (gpointer user_data)
   if (done)
     {
       if (g_test_verbose ())
-        g_printerr ("LOOP: %u stopped at %u\n", data->iterations_requested,\
-                    data->iterations_done);
+        g_test_message ("LOOP: %u stopped at %u",
+                        data->iterations_requested, data->iterations_done);
       g_task_return_boolean (task, TRUE);
       return FALSE; /* don't call timeout again */
     }
@@ -93,8 +93,8 @@ mock_operation_timeout (gpointer user_data)
     {
       data->iterations_done++;
       if (g_test_verbose ())
-        g_printerr ("LOOP: %u iteration %u\n", data->iterations_requested,
-                    data->iterations_done);
+        g_test_message ("LOOP: %u iteration %u",
+                        data->iterations_requested, data->iterations_done);
       return TRUE; /* call timeout */
     }
 }
@@ -118,14 +118,14 @@ mock_operation_async (guint                wait_iterations,
     {
       g_task_run_in_thread (task, mock_operation_thread);
       if (g_test_verbose ())
-        g_printerr ("THRD: %d started\n", wait_iterations);
+        g_test_message ("THRD: %d started", wait_iterations);
     }
   else
     {
       g_timeout_add_full (G_PRIORITY_DEFAULT, WAIT_ITERATION, mock_operation_timeout,
                           g_object_ref (task), g_object_unref);
       if (g_test_verbose ())
-        g_printerr ("LOOP: %d started\n", wait_iterations);
+        g_test_message ("LOOP: %d started", wait_iterations);
     }
 
   g_object_unref (task);
@@ -210,7 +210,7 @@ test_cancel_multiple_concurrent (void)
   g_main_loop_run (loop);
   g_assert_cmpint (num_async_operations, ==, 45);
   if (g_test_verbose ())
-    g_printerr ("CANCEL: %d operations\n", num_async_operations);
+    g_test_message ("CANCEL: %d operations", num_async_operations);
   g_cancellable_cancel (cancellable);
   g_assert_true (g_cancellable_is_cancelled (cancellable));
 
