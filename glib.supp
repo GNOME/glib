@@ -1023,3 +1023,13 @@
 	...
 	fun:g_thread_pool_new
 }
+
+# One-time program name storage
+{
+	g_set_prgname
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_set_prgname
+}
