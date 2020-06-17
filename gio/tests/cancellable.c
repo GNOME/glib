@@ -152,8 +152,6 @@ mock_operation_finish (GAsyncResult  *result,
   return g_atomic_int_get (&data->iterations_done);
 }
 
-GMainLoop *loop;
-
 static void
 on_mock_operation_ready (GObject      *source,
                          GAsyncResult *result,
@@ -171,17 +169,7 @@ on_mock_operation_ready (GObject      *source,
 
   g_assert_cmpint (iterations_requested, >, iterations_done);
   num_async_operations--;
-
-  if (!num_async_operations)
-    g_main_loop_quit (loop);
-}
-
-static gboolean
-on_main_loop_timeout_quit (gpointer user_data)
-{
-  GMainLoop *loop = user_data;
-  g_main_loop_quit (loop);
-  return FALSE;
+  g_main_context_wakeup (NULL);
 }
 
 static void
@@ -197,7 +185,6 @@ test_cancel_multiple_concurrent (void)
     }
 
   cancellable = g_cancellable_new ();
-  loop = g_main_loop_new (NULL, FALSE);
 
   for (i = 0; i < 45; i++)
     {
@@ -207,21 +194,22 @@ test_cancel_multiple_concurrent (void)
       num_async_operations++;
     }
 
-  /* Wait for two iterations, to give threads a chance to start up */
-  g_timeout_add (WAIT_ITERATION * 2, on_main_loop_timeout_quit, loop);
-  g_main_loop_run (loop);
-  g_assert_cmpint (num_async_operations, ==, 45);
+  /* Wait for the threads to start up */
+  while (num_async_operations != 45)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (num_async_operations, ==, 45);\
+
   if (g_test_verbose ())
     g_test_message ("CANCEL: %d operations", num_async_operations);
   g_cancellable_cancel (cancellable);
   g_assert_true (g_cancellable_is_cancelled (cancellable));
 
   /* Wait for all operations to be cancelled */
-  g_main_loop_run (loop);
+  while (num_async_operations != 0)
+    g_main_context_iteration (NULL, TRUE);
   g_assert_cmpint (num_async_operations, ==, 0);
 
   g_object_unref (cancellable);
-  g_main_loop_unref (loop);
 }
 
 static void
