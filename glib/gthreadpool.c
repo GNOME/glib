@@ -861,10 +861,10 @@ g_thread_pool_unprocessed (GThreadPool *pool)
  * processing a task. Instead at least all still running threads
  * can finish their tasks before the @pool is freed.
  *
- * If @wait_ is %TRUE, the functions does not return before all
+ * If @wait_ is %TRUE, this function does not return before all
  * tasks to be processed (dependent on @immediate, whether all
  * or only the currently running) are ready.
- * Otherwise the function returns immediately.
+ * Otherwise this function returns immediately.
  *
  * After calling this function @pool must not be used anymore.
  */

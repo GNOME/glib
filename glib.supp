@@ -218,7 +218,7 @@
 }
 
 {
-	g-test-rand-init2
+	g-rand-init2
 	Memcheck:Leak
 	match-leak-kinds:reachable
 	fun:calloc
@@ -226,8 +226,6 @@
 	fun:g_rand_new_with_seed_array
 	...
 	fun:get_global_random
-	...
-	fun:g_test_init
 }
 
 {
@@ -915,6 +913,15 @@
 	fun:g_private_set_alloc0
 }
 
+# Keys for thread-private data
+{
+	g_private_key
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	fun:g_private_impl_new
+}
+
 # Thread-private GMainContext stack
 {
 	g_main_context_push_thread_default
@@ -966,4 +973,26 @@
 	fun:lookup_namespace
 	...
 	fun:g_file_*
+}
+
+# Cached charset
+{
+	g_get_charset
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_get_charset
+}
+
+# Global unused thread queue
+{
+	g_thread_pool_unused_thread_queue
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_async_queue_new_full
+	...
+	fun:g_thread_pool_new
 }
