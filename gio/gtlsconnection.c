@@ -867,54 +867,59 @@ g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
 }
 
 /**
- * g_tls_cb_error_quark:
+ * g_tls_channel_binding_error_quark:
  *
- * Gets the TLS Channel Binding error quark.
+ * Gets the TLS channel binding error quark.
  *
  * Returns: a #GQuark.
  *
  * Since: 2.66
  */
-G_DEFINE_QUARK (g-tls-cb-error-quark, g_tls_cb_error)
-
+G_DEFINE_QUARK (g-tls-channel-binding-error-quark, g_tls_channel_binding_error)
 
 /**
  * g_tls_connection_get_channel_binding_data:
  * @conn: a #GTlsConnection
  * @type: #GTlsChannelBindingType type of data to fetch
- * @in_out: (nullable): #GByteArray to pass data in and fill out, or %NULL
+ * @data: (nullable): #GByteArray is filled with binding data, or %NULL
  * @error: a #GError pointer, or %NULL
  *
- * Query backend for TLS Channel Binding Data of the type @type for @conn.
+ * Query the TLS backend for TLS channel binding data of @type for @conn.
  *
- * This call implements interface to retrieve the TLS Channel Binding Data
- * as specified in RFC 5056, RFC 5929 and related.
- * The binding data is filled in provided #GByteArray @in_out. Same variable
- * can be used to pass data in of the binding type requires it.
- * If @in_out is %NULL - it will only check whether backend is able to fetch
- * the data (eg. is implemented and supported). It does guarantee that the
- * data will be available though if f.i. TLS connection type does not
- * support it or the binding data is not available yet (for wahtever reason).
+ * This call retrieves TLS channel binding data as specified in RFC 5056,
+ * RFC 5929, and related RFCs.
+ * The binding data is returned in @data.  If @data is %NULL, it will only
+ * check whether TLS backend is able to fetch the data (e.g. whether @type
+ * is supported by the TLS backend). It does not guarantee that the data will
+ * be available though. That could happen if TLS connection does not
+ * support @type or the binding data is not available yet due to additional
+ * negotiation or input required.
  *
- * Returns: %TRUE on success, %FALSE on failure, in which case @error will be
- * set.
+ * Returns: success or failure
  *
  * Since: 2.66
  */
 gboolean
 g_tls_connection_get_channel_binding_data (GTlsConnection          *conn,
                                            GTlsChannelBindingType   type,
-                                           GByteArray              *in_out,
+                                           GByteArray              *data,
                                            GError                 **error)
 {
+  GTlsConnectionClass *class;
+
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), FALSE);
 
-  return G_TLS_CONNECTION_GET_CLASS (conn)->get_binding_data (conn,
-                                                              type,
-                                                              in_out,
-                                                              error);
-}
+  class = G_TLS_CONNECTION_GET_CLASS (conn);
+  if (class->get_binding_data == NULL)
+    {
+      g_set_error_literal (error, G_TLS_CHANNEL_BINDING_ERROR,
+          G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED,
+          _("Glib-networking backend does not implement TLS binding retrieval"));
+      return FALSE;
+    }
 
+  return class->get_binding_data (conn, type, data, error);
+}
 
 /**
  * g_tls_connection_handshake:

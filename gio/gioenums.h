@@ -1615,37 +1615,46 @@ typedef enum {
  * GTlsChannelBindingType:
  * @G_TLS_CHANNEL_BINDING_TLS_UNIQUE: tls-unique binding type
  * @G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT: tls-server-end-point type
- * @G_TLS_CHANNEL_BINDING_TLS_SCRAM_EXPORTER: tls-scram-exporter draft-whited-tls-channel-bindings-for-tls13
  *
- * The type of TLS Channel Binding Data to retrieve from #GTlsConnection
+ * The type of TLS channel binding data to retrieve from #GTlsConnection
+ * as documented by RFC 5929
  *
  * Since 2.66
  */
 typedef enum {
   G_TLS_CHANNEL_BINDING_TLS_UNIQUE,
-  G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT,
-  G_TLS_CHANNEL_BINDING_TLS_SCRAM_EXPORTER
+  G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT
 } GTlsChannelBindingType;
 
 /**
  * GTlsChannelBindingError:
- * @G_TLS_CB_ERROR_NOT_IMPLEMENTED: The binding type is not implemented for the backend
- * @G_TLS_CB_ERROR_INVALID_STATE: The handshake is not yet complete on the connection
- * @G_TLS_CB_ERROR_NOT_AVAILABLE: handshake is complete but binding data is not available
- * @G_TLS_CB_ERROR_NOT_SUPPORTED: Binding type is not supported on the current connection
- * @G_TLS_CB_ERROR_GENERAL_ERROR: Any other backend error preventing CB data fetch
+ * @G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED: Either entire binding
+ *    retrieval facility or specific binding type is not implemented in the
+ *    TLS backend.
+ * @G_TLS_CHANNEL_BINDING_ERROR_INVALID_STATE: The handshake is not yet
+ *    complete on the connection which is strong requirement for any existing
+ *    binding type.
+ * @G_TLS_CHANNEL_BINDING_ERROR_NOT_AVAILABLE: Handshake is complete but
+ *    binding data is not available. That normally indicates the TLS
+ *    implementation failed to provide the binding data. E.g. some
+ *    implementations do not provide peer certificate for resumed connections.
+ * @G_TLS_CHANNEL_BINDING_ERROR_NOT_SUPPORTED: Binding type is not supported
+ *    on the current connection. This error could be triggered when requesting
+ *    tls-server-end-point binding data for PSK or PGP based TLS session.
+ * @G_TLS_CHANNEL_BINDING_ERROR_GENERAL_ERROR: Any other backend error
+ *    preventing binding data retrieval.
  *
- * An error code used with %G_TLS_CB_ERROR in a #GError returned from a
- * g_tls_connection_get_channel_binding_data() call.
-  *
+ * An error code used with %G_TLS_CHANNEL_BINDING_ERROR in a #GError to
+ * indicate TLS channel binding retrieval error.
+ *
  * Since 2.66
  */
 typedef enum {
-  G_TLS_CB_ERROR_NOT_IMPLEMENTED,
-  G_TLS_CB_ERROR_INVALID_STATE,
-  G_TLS_CB_ERROR_NOT_AVAILABLE,
-  G_TLS_CB_ERROR_NOT_SUPPORTED,
-  G_TLS_CB_ERROR_GENERAL_ERROR
+  G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED,
+  G_TLS_CHANNEL_BINDING_ERROR_INVALID_STATE,
+  G_TLS_CHANNEL_BINDING_ERROR_NOT_AVAILABLE,
+  G_TLS_CHANNEL_BINDING_ERROR_NOT_SUPPORTED,
+  G_TLS_CHANNEL_BINDING_ERROR_GENERAL_ERROR
 } GTlsChannelBindingError;
 
 /**

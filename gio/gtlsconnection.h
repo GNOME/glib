@@ -53,11 +53,6 @@ struct _GTlsConnectionClass
 					    GTlsCertificateFlags  errors);
 
   /* methods */
-  gboolean ( *get_binding_data)  (GTlsConnection          *conn,
-                                  GTlsChannelBindingType   type,
-                                  GByteArray              *in_out,
-                                  GError                 **error);
-
   gboolean ( *handshake )        (GTlsConnection       *conn,
 				  GCancellable         *cancellable,
 				  GError              **error);
@@ -71,9 +66,14 @@ struct _GTlsConnectionClass
 				  GAsyncResult         *result,
 				  GError              **error);
 
+  gboolean ( *get_binding_data)  (GTlsConnection          *conn,
+                                  GTlsChannelBindingType   type,
+                                  GByteArray              *data,
+                                  GError                 **error);
+
   /*< private >*/
   /* Padding for future expansion */
-  gpointer padding[8];
+  gpointer padding[7];
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -132,7 +132,7 @@ const gchar *         g_tls_connection_get_negotiated_protocol     (GTlsConnecti
 GLIB_AVAILABLE_IN_2_66
 gboolean              g_tls_connection_get_channel_binding_data    (GTlsConnection          *conn,
                                                                     GTlsChannelBindingType   type,
-                                                                    GByteArray              *in_out,
+                                                                    GByteArray              *data,
                                                                     GError                 **error);
 
 GLIB_AVAILABLE_IN_ALL
@@ -163,15 +163,15 @@ GLIB_AVAILABLE_IN_ALL
 GQuark g_tls_error_quark (void);
 
 /**
- * G_TLS_CB_ERROR:
+ * G_TLS_CHANNEL_BINDING_ERROR:
  *
- * Error domain for TLS Channel Binding. Errors in this domain will be from the
+ * Error domain for TLS channel binding. Errors in this domain will be from the
  * #GTlsChannelBindingError enumeration. See #GError for more information on error
  * domains.
  */
-#define G_TLS_CB_ERROR (g_tls_cb_error_quark ())
+#define G_TLS_CHANNEL_BINDING_ERROR (g_tls_channel_binding_error_quark ())
 GLIB_AVAILABLE_IN_2_66
-GQuark g_tls_cb_error_quark (void);
+GQuark g_tls_channel_binding_error_quark (void);
 
 /*< protected >*/
 GLIB_AVAILABLE_IN_ALL
