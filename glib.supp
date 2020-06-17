@@ -913,6 +913,15 @@
 	fun:g_private_set_alloc0
 }
 
+# Keys for thread-private data
+{
+	g_private_key
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	fun:g_private_impl_new
+}
+
 # Thread-private GMainContext stack
 {
 	g_main_context_push_thread_default
@@ -974,4 +983,16 @@
 	fun:malloc
 	...
 	fun:g_get_charset
+}
+
+# Global unused thread queue
+{
+	g_thread_pool_unused_thread_queue
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_async_queue_new_full
+	...
+	fun:g_thread_pool_new
 }
