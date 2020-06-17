@@ -111,7 +111,6 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
 						g_local_file_file_iface_init))
 
 static char *find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink);
-static gboolean is_remote_fs_type (const gchar *fsname);
 
 static void
 g_local_file_finalize (GObject *object)
@@ -951,6 +950,26 @@ g_set_io_error (GError      **error,
   g_free (display_name);
 }
 #pragma GCC diagnostic pop
+
+static gboolean
+is_remote_fs_type (const gchar *fsname)
+{
+  if (fsname != NULL)
+    {
+      if (strcmp (fsname, "nfs") == 0)
+        return TRUE;
+      if (strcmp (fsname, "nfs4") == 0)
+        return TRUE;
+      if (strcmp (fsname, "cifs") == 0)
+        return TRUE;
+      if (strcmp (fsname, "smb") == 0)
+        return TRUE;
+      if (strcmp (fsname, "smb2") == 0)
+        return TRUE;
+    }
+
+  return FALSE;
+}
 
 static GFileInfo *
 g_local_file_query_filesystem_info (GFile         *file,
@@ -2517,26 +2536,6 @@ g_local_file_is_nfs_home (const gchar *filename)
 }
 
 #else
-
-static gboolean
-is_remote_fs_type (const gchar *fsname)
-{
-  if (fsname != NULL)
-    {
-      if (strcmp (fsname, "nfs") == 0)
-        return TRUE;
-      if (strcmp (fsname, "nfs4") == 0)
-        return TRUE;
-      if (strcmp (fsname, "cifs") == 0)
-        return TRUE;
-      if (strcmp (fsname, "smb") == 0)
-        return TRUE;
-      if (strcmp (fsname, "smb2") == 0)
-        return TRUE;
-    }
-
-  return FALSE;
-}
 
 gboolean
 g_local_file_is_nfs_home (const gchar *filename)
