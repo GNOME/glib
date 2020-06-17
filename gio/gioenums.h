@@ -1617,7 +1617,7 @@ typedef enum {
  * @G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT: tls-server-end-point type
  *
  * The type of TLS channel binding data to retrieve from #GTlsConnection
- * as documented by RFC 5929
+ * or #GDtlsConnection as documented by RFC 5929
  *
  * Since 2.66
  */

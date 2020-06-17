@@ -26,6 +26,7 @@
 #include "gsocket.h"
 #include "gtlsbackend.h"
 #include "gtlscertificate.h"
+#include "gtlsconnection.h"
 #include "gdtlsclientconnection.h"
 #include "gtlsdatabase.h"
 #include "gtlsinteraction.h"
@@ -1073,4 +1074,48 @@ g_dtls_connection_get_negotiated_protocol (GDtlsConnection *conn)
     return NULL;
 
   return iface->get_negotiated_protocol (conn);
+}
+
+/**
+ * g_dtls_connection_get_channel_binding_data:
+ * @conn: a #GDtlsConnection
+ * @type: #GTlsChannelBindingType type of data to fetch
+ * @data: (nullable): #GByteArray is filled with binding data, or %NULL
+ * @error: a #GError pointer, or %NULL
+ *
+ * Query the TLS backend for TLS channel binding data of @type for @conn.
+ *
+ * This call retrieves TLS channel binding data as specified in RFC 5056,
+ * RFC 5929, and related RFCs.
+ * The binding data is returned in @data.  If @data is %NULL, it will only
+ * check whether TLS backend is able to fetch the data (e.g. whether @type
+ * is supported by the TLS backend). It does not guarantee that the data will
+ * be available though. That could happen if TLS connection does not
+ * support @type or the binding data is not available yet due to additional
+ * negotiation or input required.
+ *
+ * Returns: success or failure
+ *
+ * Since: 2.66
+ */
+gboolean
+g_dtls_connection_get_channel_binding_data (GDtlsConnection         *conn,
+                                            GTlsChannelBindingType   type,
+                                            GByteArray              *data,
+                                            GError                 **error)
+{
+  GDtlsConnectionInterface *iface;
+
+  g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), FALSE);
+
+  iface = G_DTLS_CONNECTION_GET_INTERFACE (conn);
+  if (iface->get_binding_data == NULL)
+    {
+      g_set_error_literal (error, G_TLS_CHANNEL_BINDING_ERROR,
+          G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED,
+          _("Glib-networking backend does not implement TLS binding retrieval"));
+      return FALSE;
+    }
+
+  return iface->get_binding_data (conn, type, data, error);
 }
