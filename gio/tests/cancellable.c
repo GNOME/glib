@@ -29,8 +29,8 @@ static gint num_async_operations = 0;
 
 typedef struct
 {
-  guint iterations_requested;
-  guint iterations_done;
+  guint iterations_requested;  /* construct-only */
+  volatile guint iterations_done;  /* (atomic) */
 } MockOperationData;
 
 static void
@@ -60,7 +60,7 @@ mock_operation_thread (GTask        *task,
 
   if (g_test_verbose ())
     g_test_message ("THRD: %u stopped at %u", data->iterations_requested, i);
-  data->iterations_done = i;
+  g_atomic_int_add (&data->iterations_done, i);
 
   g_task_return_boolean (task, TRUE);
 }
@@ -71,11 +71,13 @@ mock_operation_timeout (gpointer user_data)
   GTask *task;
   MockOperationData *data;
   gboolean done = FALSE;
+  guint iterations_done;
 
   task = G_TASK (user_data);
   data = g_task_get_task_data (task);
+  iterations_done = g_atomic_int_get (&data->iterations_done);
 
-  if (data->iterations_done >= data->iterations_requested)
+  if (iterations_done >= data->iterations_requested)
       done = TRUE;
 
   if (g_cancellable_is_cancelled (g_task_get_cancellable (task)))
@@ -85,16 +87,16 @@ mock_operation_timeout (gpointer user_data)
     {
       if (g_test_verbose ())
         g_test_message ("LOOP: %u stopped at %u",
-                        data->iterations_requested, data->iterations_done);
+                        data->iterations_requested, iterations_done);
       g_task_return_boolean (task, TRUE);
       return FALSE; /* don't call timeout again */
     }
   else
     {
-      data->iterations_done++;
+      g_atomic_int_inc (&data->iterations_done);
       if (g_test_verbose ())
         g_test_message ("LOOP: %u iteration %u",
-                        data->iterations_requested, data->iterations_done);
+                        data->iterations_requested, iterations_done + 1);
       return TRUE; /* call timeout */
     }
 }
@@ -147,7 +149,7 @@ mock_operation_finish (GAsyncResult  *result,
   data = g_task_get_task_data (task);
 
   g_task_propagate_boolean (task, error);
-  return data->iterations_done;
+  return g_atomic_int_get (&data->iterations_done);
 }
 
 GMainLoop *loop;
