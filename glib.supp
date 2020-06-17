@@ -444,6 +444,33 @@
 }
 
 {
+        g-get-language_names-with-category-malloc
+        Memcheck:Leak
+        match-leak-kinds:reachable
+        fun:malloc
+        ...
+        fun:g_get_language_names_with_category
+}
+
+{
+        g-get-language_names-with-category-calloc
+        Memcheck:Leak
+        match-leak-kinds:reachable
+        fun:calloc
+        ...
+        fun:g_get_language_names_with_category
+}
+
+{
+        g-get-language_names-with-category-realloc
+        Memcheck:Leak
+        match-leak-kinds:reachable
+        fun:realloc
+        ...
+        fun:g_get_language_names_with_category
+}
+
+{
 	g-static-mutex
 	Memcheck:Leak
 	match-leak-kinds:reachable
