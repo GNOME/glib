@@ -270,6 +270,7 @@ test_cancellable_source_threaded_dispose (void)
   ThreadedDisposeData data;
   GThread *thread = NULL;
   guint i;
+  GPtrArray *cancellables_pending_unref = g_ptr_array_new_with_free_func (g_object_unref);
 
   g_test_summary ("Test a thread race between disposing of a GCancellableSource "
                   "(in one thread) and cancelling the GCancellable it refers "
@@ -309,7 +310,13 @@ test_cancellable_source_threaded_dispose (void)
       /* Race with disposal of the cancellable source. */
       g_cancellable_cancel (cancellable);
 
-      g_object_unref (cancellable);
+      /* This thread can’t drop its reference to the #GCancellable here, as it
+       * might not be the final reference (depending on how the race is
+       * resolved: #GCancellableSource holds a strong ref on the #GCancellable),
+       * and at this point we can’t guarantee to support disposing of a
+       * #GCancellable in a different thread from where it’s created, especially
+       * when signal handlers are connected to it. */
+      g_ptr_array_add (cancellables_pending_unref, g_steal_pointer (&cancellable));
     }
 
   /* Indicate that the test has finished. Can’t use %NULL as #GAsyncQueue
@@ -322,6 +329,8 @@ test_cancellable_source_threaded_dispose (void)
   g_async_queue_unref (data.cancellable_source_queue);
   g_mutex_clear (&data.mutex);
   g_cond_clear (&data.cond);
+
+  g_ptr_array_unref (cancellables_pending_unref);
 }
 
 int
