@@ -1440,11 +1440,15 @@ g_variant_is_signature (const gchar *string)
  * type.  This includes the types %G_VARIANT_TYPE_STRING,
  * %G_VARIANT_TYPE_OBJECT_PATH and %G_VARIANT_TYPE_SIGNATURE.
  *
- * The string will always be UTF-8 encoded, and will never be %NULL.
+ * The string will always be UTF-8 encoded, will never be %NULL, and will never
+ * contain nul bytes.
  *
  * If @length is non-%NULL then the length of the string (in bytes) is
  * returned there.  For trusted values, this information is already
- * known.  For untrusted values, a strlen() will be performed.
+ * known.  Untrusted values will be validated and, if valid, a strlen() will be
+ * performed. If invalid, a default value will be returned — for
+ * %G_VARIANT_TYPE_OBJECT_PATH, this is `"/"`, and for other types it is the
+ * empty string.
  *
  * It is an error to call this function with a @value of any type
  * other than those three.
