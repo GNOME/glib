@@ -89,7 +89,7 @@ mock_operation_timeout (gpointer user_data)
         g_test_message ("LOOP: %u stopped at %u",
                         data->iterations_requested, iterations_done);
       g_task_return_boolean (task, TRUE);
-      return FALSE; /* don't call timeout again */
+      return G_SOURCE_REMOVE;
     }
   else
     {
@@ -97,7 +97,7 @@ mock_operation_timeout (gpointer user_data)
       if (g_test_verbose ())
         g_test_message ("LOOP: %u iteration %u",
                         data->iterations_requested, iterations_done + 1);
-      return TRUE; /* call timeout */
+      return G_SOURCE_CONTINUE;
     }
 }
 
