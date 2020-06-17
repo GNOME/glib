@@ -972,20 +972,11 @@ gchar *
 g_get_hostname (void)
 {
   gchar *hostname = NULL;
-#ifndef G_OS_WIN32
-  gboolean failed;
-  glong max;
-  gsize size;
-  /* The number 256 * 256 is taken from the value of _POSIX_HOST_NAME_MAX,
-   * which is 255. Since we use _POSIX_HOST_NAME_MAX + 1 (= 256) in the
-   * fallback case, we pick 256 * 256 as the size of the larger buffer here.
-   * It should be large enough. It doesn't looks reasonable to name a host
-   * with a string that is longer than 64 KiB.
-   */
-  const gsize size_large = 256 * 256;
 
+#ifndef G_OS_WIN32
+  gsize size = 256; /* a reasonable default value */
 #ifdef _SC_HOST_NAME_MAX
-  max = sysconf (_SC_HOST_NAME_MAX);
+  glong max = sysconf (_SC_HOST_NAME_MAX);
   if (max > 0 && max <= G_MAXSIZE - 1)
     size = (gsize) max + 1;
   else
@@ -994,20 +985,10 @@ g_get_hostname (void)
 #else
   size = _POSIX_HOST_NAME_MAX + 1;
 #endif /* HOST_NAME_MAX */
-#else
-  /* Fallback to some reasonable value */
-  size = 256;
 #endif /* _SC_HOST_NAME_MAX */
-  hostname = g_malloc (size);
-  failed = (gethostname (hostname, size) == -1);
-  if (failed && size < size_large)
-    {
-      /* Try again with a larger buffer if 'size' may be too small. */
-      hostname = g_realloc (hostname, size_large);
-      failed = (gethostname (hostname, size_large) == -1);
-    }
 
-  if (failed)
+  hostname = g_malloc (size);
+  if (gethostname (hostname, size) == -1);
     g_clear_pointer (&hostname, g_free);
 #else
   wchar_t tmp[MAX_COMPUTERNAME_LENGTH + 1];
