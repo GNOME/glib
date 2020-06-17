@@ -218,7 +218,7 @@
 }
 
 {
-	g-test-rand-init2
+	g-rand-init2
 	Memcheck:Leak
 	match-leak-kinds:reachable
 	fun:calloc
@@ -226,8 +226,6 @@
 	fun:g_rand_new_with_seed_array
 	...
 	fun:get_global_random
-	...
-	fun:g_test_init
 }
 
 {
@@ -966,4 +964,14 @@
 	fun:lookup_namespace
 	...
 	fun:g_file_*
+}
+
+# Cached charset
+{
+	g_get_charset
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_get_charset
 }
