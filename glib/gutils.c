@@ -971,9 +971,9 @@ g_get_tmp_dir (void)
 gchar *
 g_get_hostname (void)
 {
-  gboolean failed;
-  gchar *utmp;
+  gchar *hostname = NULL;
 #ifndef G_OS_WIN32
+  gboolean failed;
   glong max;
   gsize size;
   /* The number 256 * 256 is taken from the value of _POSIX_HOST_NAME_MAX,
@@ -982,8 +982,7 @@ g_get_hostname (void)
    * It should be large enough. It doesn't looks reasonable to name a host
    * with a string that is longer than 64 KiB.
    */
-  const gsize size_large = (gsize) 256 * 256;
-  gchar *tmp;
+  const gsize size_large = 256 * 256;
 
 #ifdef _SC_HOST_NAME_MAX
   max = sysconf (_SC_HOST_NAME_MAX);
@@ -999,30 +998,26 @@ g_get_hostname (void)
   /* Fallback to some reasonable value */
   size = 256;
 #endif /* _SC_HOST_NAME_MAX */
-  tmp = g_malloc (size);
-  failed = (gethostname (tmp, size) == -1);
+  hostname = g_malloc (size);
+  failed = (gethostname (hostname, size) == -1);
   if (failed && size < size_large)
     {
       /* Try again with a larger buffer if 'size' may be too small. */
-      g_free (tmp);
-      tmp = g_malloc (size_large);
-      failed = (gethostname (tmp, size_large) == -1);
+      hostname = g_realloc (hostname, size_large);
+      failed = (gethostname (hostname, size_large) == -1);
     }
 
   if (failed)
-    g_clear_pointer (&tmp, g_free);
-  utmp = tmp;
+    g_clear_pointer (&hostname, g_free);
 #else
   wchar_t tmp[MAX_COMPUTERNAME_LENGTH + 1];
-  DWORD size = sizeof (tmp) / sizeof (tmp[0]);
-  failed = (!GetComputerNameW (tmp, &size));
-  if (!failed)
-    utmp = g_utf16_to_utf8 (tmp, size, NULL, NULL, NULL);
-  if (utmp == NULL)
-    failed = TRUE;
+  DWORD size = G_N_ELEMENTS (tmp);
+
+  if (GetComputerNameW (tmp, &size) != 0)
+    hostname = g_utf16_to_utf8 (tmp, size, NULL, NULL, NULL);
 #endif
 
-  return failed ? g_strdup("localhost") : utmp;
+  return hostname ? hostname : g_strdup ("localhost");
 }
 
 /**
