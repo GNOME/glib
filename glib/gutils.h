@@ -55,8 +55,10 @@ GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_home_dir         (void);
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_tmp_dir          (void);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_66_FOR(g_get_hostname)
 const gchar *         g_get_host_name	     (void);
+GLIB_AVAILABLE_IN_2_26
+gchar *               g_get_hostname         (void);
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_prgname          (void);
 GLIB_AVAILABLE_IN_ALL

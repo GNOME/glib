@@ -703,10 +703,10 @@ type_sizes (void)
 static void
 test_info (void)
 {
-  const gchar *un, *rn, *hn;
+  const gchar *un, *rn;
   const gchar *tmpdir, *homedir, *userdatadir, *uconfdir, *ucachedir;
   const gchar *uddesktop, *udddocs, *uddpubshare, *uruntimedir;
-  gchar **sv, *cwd, *sdatadirs, *sconfdirs, *langnames;
+  gchar **sv, *cwd, *sdatadirs, *sconfdirs, *langnames, *hn;
   const gchar *charset;
   gboolean charset_is_utf8;
   if (g_test_verbose())
@@ -720,7 +720,7 @@ test_info (void)
   cwd = g_get_current_dir ();
   un = g_get_user_name();
   rn = g_get_real_name();
-  hn = g_get_host_name();
+  hn = g_get_hostname();
   if (g_test_verbose())
     {
       g_printerr ("cwd: %s\n", cwd);
@@ -728,6 +728,7 @@ test_info (void)
       g_printerr ("real: %s\n", rn);
       g_printerr ("host: %s\n", hn);
     }
+  g_free (hn);
   g_free (cwd);
 
   /* reload, just for fun */

@@ -2130,6 +2130,7 @@ G_OS_INFO_KEY_BUG_REPORT_URL
 G_OS_INFO_KEY_PRIVACY_POLICY_URL
 
 <SUBSECTION>
+g_get_hostname
 g_get_host_name
 g_get_home_dir
 g_get_tmp_dir
