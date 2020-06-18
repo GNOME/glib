@@ -3117,6 +3117,9 @@ g_socket_get_available_bytes (GSocket *socket)
 
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
 
+  if (!check_socket (socket, NULL))
+    return -1;
+
 #ifdef SO_NREAD
   if (!g_socket_get_option (socket, SOL_SOCKET, SO_NREAD, &avail, NULL))
       return -1;
@@ -3745,7 +3748,6 @@ g_socket_is_closed (GSocket *socket)
   return socket->priv->closed;
 }
 
-#ifdef G_OS_WIN32
 /* Broken source, used on errors */
 static gboolean
 broken_dispatch (GSource     *source,
@@ -3763,6 +3765,7 @@ static GSourceFuncs broken_funcs =
   NULL
 };
 
+#ifdef G_OS_WIN32
 static gint
 network_events_for_condition (GIOCondition condition)
 {
@@ -4089,6 +4092,12 @@ socket_source_new (GSocket      *socket,
       return g_source_new (&broken_funcs, sizeof (GSource));
     }
 #endif
+
+  if (!check_socket (socket, NULL))
+    {
+      g_warning ("Socket check failed");
+      return g_source_new (&broken_funcs, sizeof (GSource));
+    }
 
   condition |= G_IO_HUP | G_IO_ERR | G_IO_NVAL;
 
@@ -5931,6 +5940,9 @@ g_socket_get_credentials (GSocket   *socket,
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
+  if (!check_socket (socket, error))
+    return NULL;
+
   ret = NULL;
 
 #if G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED
@@ -6082,6 +6094,11 @@ g_socket_get_option (GSocket  *socket,
 
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
+  /* g_socket_get_option() is called during socket init, so skip the init checks
+   * in check_socket() */
+  if (socket->priv->inited && !check_socket (socket, error))
+    return FALSE;
+
   *value = 0;
   size = sizeof (gint);
   if (getsockopt (socket->priv->fd, level, optname, value, &size) != 0)
@@ -6144,6 +6161,9 @@ g_socket_set_option (GSocket  *socket,
   gint errsv;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+
+  if (!check_socket (socket, error))
+    return FALSE;
 
   if (setsockopt (socket->priv->fd, level, optname, &value, sizeof (gint)) == 0)
     return TRUE;
