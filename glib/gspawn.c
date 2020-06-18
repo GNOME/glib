@@ -1104,7 +1104,7 @@ write_all (gint fd, gconstpointer vbuf, gsize to_write)
   return TRUE;
 }
 
-G_GNUC_NORETURN
+G_NORETURN
 static void
 write_err_and_exit (gint fd, gint msg)
 {

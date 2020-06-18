@@ -507,7 +507,7 @@
 #define G_GNUC_FORMAT( arg_idx )                \
   __attribute__((__format_arg__ (arg_idx)))
 #define G_GNUC_NORETURN                         \
-  __attribute__((__noreturn__))
+  __attribute__((__noreturn__)) GLIB_DEPRECATED_MACRO_IN_2_64_FOR(G_NORETURN)
 #define G_GNUC_CONST                            \
   __attribute__((__const__))
 #define G_GNUC_UNUSED                           \
@@ -913,6 +913,73 @@
 #define G_CONST_RETURN GLIB_DEPRECATED_MACRO_IN_2_30_FOR(const)
 #else
 #define G_CONST_RETURN const GLIB_DEPRECATED_MACRO_IN_2_30_FOR(const)
+#endif
+
+/**
+ * G_NORETURN:
+ *
+ * Expands to the GNU C or MSVC `noreturn` function attribute depending on
+ * the compiler. It is used for declaring functions which never return.
+ * Enables optimization of the function, and avoids possible compiler warnings.
+ *
+ * Place the attribute before the function declaration as follow:
+ *
+ * |[<!-- language="C" -->
+ * G_NORETURN void g_abort (void);
+ * ]|
+ *
+ * Since: 2.64
+ */
+#if (3 <= __GNUC__ || (__GNUC__ == 2 && 8 <= __GNUC_MINOR__)) || (0x5110 <= __SUNPRO_C)
+  /* For compatibility with G_NORETURN_FUNCPTR on clang, use
+     __attribute__((__noreturn__)), not _Noreturn.  */
+# define G_NORETURN __attribute__ ((__noreturn__))      \
+  GLIB_AVAILABLE_MACRO_IN_2_64
+#elif 1200 <= _MSC_VER
+  /* Use MSVC specific syntax.  */
+# define G_NORETURN __declspec (noreturn)       \
+  GLIB_AVAILABLE_MACRO_IN_2_64
+#elif defined __cplusplus
+  /* Use ISO C++11 syntax when the compiler supports it.  */
+# if (__cplusplus >= 201103 && !(__GNUC__ == 4 && __GNUC_MINOR__ == 7)) || (_MSC_VER >= 1900)
+#  define G_NORETURN [[noreturn]]               \
+  GLIB_AVAILABLE_MACRO_IN_2_64
+# else
+#  define G_NORETURN /* empty */                \
+  GLIB_AVAILABLE_MACRO_IN_2_64
+# endif
+#else
+  /* Use ISO C11 syntax when the compiler supports it.  */
+# if __STDC_VERSION__ >= 201112 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7)
+#  define G_NORETURN _Noreturn                  \
+  GLIB_AVAILABLE_MACRO_IN_2_64
+# else
+#  define G_NORETURN /* empty */                \
+  GLIB_AVAILABLE_MACRO_IN_2_64
+# endif
+#endif
+
+/**
+ * G_NORETURN_FUNCPTR:
+ *
+ * Expands to the GNU C or MSVC `noreturn` function attribute depending on
+ * the compiler. It is used for declaring function pointers which never return.
+ * Enables optimization of the function, and avoids possible compiler warnings.
+ *
+ * Place the attribute before the function declaration as follow:
+ *
+ * |[<!-- language="C" -->
+ * G_NORETURN_FUNCPTR void (*funcptr) (void);
+ * ]|
+ *
+ * Since: 2.64
+ */
+#if (3 <= __GNUC__ || (__GNUC__ == 2 && 8 <= __GNUC_MINOR__)) || (0x5110 <= __SUNPRO_C)
+# define G_NORETURN_FUNCPTR __attribute__ ((__noreturn__))      \
+  GLIB_AVAILABLE_MACRO_IN_2_64
+#else
+# define G_NORETURN_FUNCPTR /* empty */         \
+  GLIB_AVAILABLE_MACRO_IN_2_64
 #endif
 
 /*

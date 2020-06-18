@@ -1091,7 +1091,7 @@ g_option_context_get_help (GOptionContext *context,
   return g_string_free (string, FALSE);
 }
 
-G_GNUC_NORETURN
+G_NORETURN
 static void
 print_help (GOptionContext *context,
             gboolean        main_help,
