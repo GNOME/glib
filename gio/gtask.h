@@ -110,6 +110,8 @@ void          g_task_run_in_thread        (GTask           *task,
 GLIB_AVAILABLE_IN_2_36
 void          g_task_run_in_thread_sync   (GTask           *task,
                                            GTaskThreadFunc  task_func);
+GLIB_AVAILABLE_IN_2_64
+void          g_task_await                (GTask           *task);
 GLIB_AVAILABLE_IN_2_36
 gboolean      g_task_set_return_on_cancel (GTask           *task,
                                            gboolean         return_on_cancel);
