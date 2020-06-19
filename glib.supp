@@ -73,8 +73,6 @@
 	fun:malloc
 	...
 	fun:g_quark_init
-	...
-	fun:glib_init_ctor
 }
 
 {
@@ -84,8 +82,6 @@
 	fun:calloc
 	...
 	fun:g_quark_init
-	...
-	fun:glib_init_ctor
 }
 
 {
