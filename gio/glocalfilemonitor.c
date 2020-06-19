@@ -878,7 +878,7 @@ g_local_file_monitor_new_for_path (const gchar        *pathname,
   GLocalFileMonitor *monitor;
   gboolean is_remote_fs;
 
-  is_remote_fs = g_local_file_is_remote (pathname);
+  is_remote_fs = g_local_file_is_nfs_home (pathname);
 
   monitor = g_local_file_monitor_new (is_remote_fs, is_directory, error);
 
@@ -900,7 +900,7 @@ g_local_file_monitor_new_in_worker (const gchar           *pathname,
   GLocalFileMonitor *monitor;
   gboolean is_remote_fs;
 
-  is_remote_fs = g_local_file_is_remote (pathname);
+  is_remote_fs = g_local_file_is_nfs_home (pathname);
 
   monitor = g_local_file_monitor_new (is_remote_fs, is_directory, error);
 

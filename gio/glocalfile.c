@@ -51,7 +51,6 @@
 
 #include "gfileattribute.h"
 #include "glocalfile.h"
-#include "glocalfileprivate.h"
 #include "glocalfileinfo.h"
 #include "glocalfileenumerator.h"
 #include "glocalfileinputstream.h"
@@ -112,6 +111,10 @@ G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
 						g_local_file_file_iface_init))
 
 static char *find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink);
+
+#ifndef G_OS_WIN32
+static gboolean is_remote_fs_type (const gchar *fsname);
+#endif
 
 static void
 g_local_file_finalize (GObject *object)
@@ -690,6 +693,8 @@ get_fs_type (long f_type)
       return "smackfs";
     case 0x517B:
       return "smb";
+    case 0xfe534d42:
+      return "smb2";
     case 0x534F434B:
       return "sockfs";
     case 0x73717368:
@@ -1110,11 +1115,13 @@ g_local_file_query_filesystem_info (GFile         *file,
       get_mount_info (info, local->filename, attribute_matcher);
 #endif /* G_OS_WIN32 */
     }
-  
+
+#ifndef G_OS_WIN32
   if (g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE))
-      g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE,
-					 g_local_file_is_remote (local->filename));
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE))
+    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE,
+                                       is_remote_fs_type (fstype));
+#endif
 
   g_file_attribute_matcher_unref (attribute_matcher);
   
@@ -2509,7 +2516,7 @@ g_local_file_move (GFile                  *source,
 #ifdef G_OS_WIN32
 
 gboolean
-g_local_file_is_remote (const gchar *filename)
+g_local_file_is_nfs_home (const gchar *filename)
 {
   return FALSE;
 }
@@ -2517,48 +2524,19 @@ g_local_file_is_remote (const gchar *filename)
 #else
 
 static gboolean
-is_remote_fs (const gchar *filename)
+is_remote_fs_type (const gchar *fsname)
 {
-  const char *fsname = NULL;
-
-#ifdef USE_STATFS
-  struct statfs statfs_buffer;
-  int statfs_result = 0;
-
-#if STATFS_ARGS == 2
-  statfs_result = statfs (filename, &statfs_buffer);
-#elif STATFS_ARGS == 4
-  statfs_result = statfs (filename, &statfs_buffer, sizeof (statfs_buffer), 0);
-#endif
-
-#elif defined(USE_STATVFS)
-  struct statvfs statfs_buffer;
-  int statfs_result = 0;
-
-  statfs_result = statvfs (filename, &statfs_buffer);
-#else
-  return FALSE;
-#endif
-
-  if (statfs_result == -1)
-    return FALSE;
-
-#ifdef USE_STATFS
-#if defined(HAVE_STRUCT_STATFS_F_FSTYPENAME)
-  fsname = statfs_buffer.f_fstypename;
-#else
-  fsname = get_fs_type (statfs_buffer.f_type);
-#endif
-
-#elif defined(USE_STATVFS) && defined(HAVE_STRUCT_STATVFS_F_BASETYPE)
-  fsname = statfs_buffer.f_basetype;
-#endif
-
   if (fsname != NULL)
     {
       if (strcmp (fsname, "nfs") == 0)
         return TRUE;
       if (strcmp (fsname, "nfs4") == 0)
+        return TRUE;
+      if (strcmp (fsname, "cifs") == 0)
+        return TRUE;
+      if (strcmp (fsname, "smb") == 0)
+        return TRUE;
+      if (strcmp (fsname, "smb2") == 0)
         return TRUE;
     }
 
@@ -2566,9 +2544,9 @@ is_remote_fs (const gchar *filename)
 }
 
 gboolean
-g_local_file_is_remote (const gchar *filename)
+g_local_file_is_nfs_home (const gchar *filename)
 {
-  static gboolean remote_home;
+  static gboolean remote_home = FALSE;
   static gsize initialized;
   const gchar *home;
 
@@ -2577,7 +2555,19 @@ g_local_file_is_remote (const gchar *filename)
     {
       if (g_once_init_enter (&initialized))
         {
-          remote_home = is_remote_fs (home);
+          GFile *file;
+          GFileInfo *info;
+          const gchar *fs_type = NULL;
+
+          file = _g_local_file_new (home);
+          info = g_local_file_query_filesystem_info (file, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE, NULL, NULL);
+          if (info != NULL)
+            fs_type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE);
+          if (g_strcmp0 (fs_type, "nfs") == 0 || g_strcmp0 (fs_type, "nfs4") == 0)
+            remote_home = TRUE;
+          g_clear_object (&info);
+          g_object_unref (file);
+
           g_once_init_leave (&initialized, TRUE);
         }
       return remote_home;

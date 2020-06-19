@@ -46,10 +46,12 @@ GFile * _g_local_file_new      (const char *filename);
 
 const char * _g_local_file_get_filename (GLocalFile *file);
 
-gboolean g_local_file_is_remote (const gchar *filename);
+gboolean g_local_file_is_nfs_home (const gchar *filename);
 
 GFile * g_local_file_new_from_dirname_and_basename (const char *dirname,
                                                     const char *basename);
+
+gchar *_g_local_file_find_topdir_for (const char *file_path);
 
 G_END_DECLS
 
