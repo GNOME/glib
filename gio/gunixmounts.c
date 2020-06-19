@@ -64,10 +64,10 @@
 #endif
 
 #include "gunixmounts.h"
-#include "glocalfileprivate.h"
 #include "gfile.h"
 #include "gfilemonitor.h"
 #include "glibintl.h"
+#include "glocalfile.h"
 #include "gthemedicon.h"
 #include "gcontextspecificgroup.h"
 
