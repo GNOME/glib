@@ -1185,8 +1185,7 @@ filename_to_fd (const char *p)
 
   while ((c = *p++) != '\0')
     {
-      /* FIXME: g_ascii_isdigit() is not necessarily async-signal-safe. */
-      if (!g_ascii_isdigit (c))
+      if (c < '0' || c > '9')
         return -1;
       c -= '0';
 
