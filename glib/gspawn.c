@@ -158,10 +158,9 @@ extern char **environ;
 static gint safe_close (gint fd);
 
 static gint g_execute (const gchar  *file,
-                       gchar **argv,
-                       gchar **envp,
-                       gboolean search_path,
-                       gboolean search_path_from_envp);
+                       gchar       **argv,
+                       gchar       **envp,
+                       const gchar  *search_path);
 
 static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
                                       const gchar          *working_directory,
@@ -1375,8 +1374,7 @@ do_exec (gint                  child_err_report_fd,
          gchar               **argv,
          gchar               **envp,
          gboolean              close_descriptors,
-         gboolean              search_path,
-         gboolean              search_path_from_envp,
+         const gchar          *search_path,
          gboolean              stdout_to_null,
          gboolean              stderr_to_null,
          gboolean              child_inherits_stdin,
@@ -1481,7 +1479,7 @@ do_exec (gint                  child_err_report_fd,
 
   g_execute (argv[0],
              file_and_argv_zero ? argv + 1 : argv,
-             envp, search_path, search_path_from_envp);
+             envp, search_path);
 
   /* Exec failed */
   write_err_and_exit (child_err_report_fd,
@@ -1743,6 +1741,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
   gint child_pid_report_pipe[2] = { -1, -1 };
   guint pipe_flags = cloexec_pipes ? FD_CLOEXEC : 0;
   gint status;
+  const gchar *chosen_search_path;
 
 #ifdef POSIX_SPAWN_AVAILABLE
   if (!intermediate_child && working_directory == NULL && !close_descriptors &&
@@ -1792,6 +1791,29 @@ fork_exec_with_fds (gboolean              intermediate_child,
                child_setup == NULL ? "" : "(child_setup specified) ");
     }
 #endif /* POSIX_SPAWN_AVAILABLE */
+
+  /* Choose a search path. This has to be done before calling fork()
+   * as getenv() isn’t async-signal-safe (see `man 7 signal-safety`). */
+  chosen_search_path = NULL;
+  if (search_path_from_envp)
+    chosen_search_path = g_environ_getenv (envp, "PATH");
+  if (search_path && chosen_search_path == NULL)
+    chosen_search_path = g_getenv ("PATH");
+
+  if (chosen_search_path == NULL)
+    {
+      /* There is no 'PATH' in the environment.  The default
+       * * search path in libc is the current directory followed by
+       * * the path 'confstr' returns for '_CS_PATH'.
+       * */
+
+      /* In GLib we put . last, for security, and don't use the
+       * * unportable confstr(); UNIX98 does not actually specify
+       * * what to search if PATH is unset. POSIX may, dunno.
+       * */
+
+      chosen_search_path = "/bin:/usr/bin:.";
+    }
 
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
     return FALSE;
@@ -1874,8 +1896,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
                        argv,
                        envp,
                        close_descriptors,
-                       search_path,
-                       search_path_from_envp,
+                       chosen_search_path,
                        stdout_to_null,
                        stderr_to_null,
                        child_inherits_stdin,
@@ -1904,8 +1925,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
                    argv,
                    envp,
                    close_descriptors,
-                   search_path,
-                   search_path_from_envp,
+                   chosen_search_path,
                    stdout_to_null,
                    stderr_to_null,
                    child_inherits_stdin,
@@ -2214,11 +2234,10 @@ my_strchrnul (const gchar *str, gchar c)
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)) until it calls exec(). */
 static gint
-g_execute (const gchar *file,
-           gchar      **argv,
-           gchar      **envp,
-           gboolean     search_path,
-           gboolean     search_path_from_envp)
+g_execute (const gchar  *file,
+           gchar       **argv,
+           gchar       **envp,
+           const gchar  *search_path)
 {
   if (*file == '\0')
     {
@@ -2227,7 +2246,7 @@ g_execute (const gchar *file,
       return -1;
     }
 
-  if (!(search_path || search_path_from_envp) || strchr (file, '/') != NULL)
+  if (search_path == NULL || strchr (file, '/') != NULL)
     {
       /* Don't search when it contains a slash. */
       if (envp)
@@ -2246,28 +2265,7 @@ g_execute (const gchar *file,
       gsize len;
       gsize pathlen;
 
-      /* FIXME: getenv() is not async-signal-safe */
-      path = NULL;
-      if (search_path_from_envp)
-        path = g_environ_getenv (envp, "PATH");
-      if (search_path && path == NULL)
-        path = g_getenv ("PATH");
-
-      if (path == NULL)
-	{
-	  /* There is no 'PATH' in the environment.  The default
-	   * search path in libc is the current directory followed by
-	   * the path 'confstr' returns for '_CS_PATH'.
-           */
-
-          /* In GLib we put . last, for security, and don't use the
-           * unportable confstr(); UNIX98 does not actually specify
-           * what to search if PATH is unset. POSIX may, dunno.
-           */
-          
-          path = "/bin:/usr/bin:.";
-	}
-
+      path = search_path;
       len = strlen (file) + 1;
       pathlen = strlen (path);
       /* FIXME: malloc() is not async-signal-safe */
