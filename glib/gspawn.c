@@ -1218,11 +1218,11 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
    * may be slow on non-Linux operating systems, especially on systems allowing
    * very high number of open file descriptors.
    */
-  gint open_max;
+  gint open_max = -1;
   gint fd;
   gint res = 0;
   
-#ifdef HAVE_SYS_RESOURCE_H
+#if 0 && defined(HAVE_SYS_RESOURCE_H)
   struct rlimit rl;
 #endif
 
@@ -1255,19 +1255,36 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
     }
 
   /* If /proc is not mounted or not accessible we fall back to the old
-   * rlimit trick.
+   * rlimit trick. */
+
+#endif
+
+#if 0 && defined(HAVE_SYS_RESOURCE_H)
+  /* Use getrlimit() function provided by the system if it is known to be
+   * async-signal safe.
    *
-   * FIXME: getrlimit() and sysconf() are not async-signal-safe. */
-
+   * Currently there are no operating systems known to provide a safe
+   * implementation, so this section is not used for now.
+   */
+  if (getrlimit (RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
+    open_max = rl.rlim_max;
 #endif
-
-#ifdef HAVE_SYS_RESOURCE_H
-      
-  if (getrlimit(RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
-      open_max = rl.rlim_max;
-  else
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
+  /* Use sysconf() function provided by the system if it is known to be
+   * async-signal safe.
+   *
+   * FreeBSD: sysconf() is included in the list of async-signal safe functions
+   * found in https://man.freebsd.org/sigaction(2).
+   *
+   * OpenBSD: sysconf() is included in the list of async-signal safe functions
+   * found in https://man.openbsd.org/sigaction.2.
+   */
+  if (open_max < 0)
+    open_max = sysconf (_SC_OPEN_MAX);
 #endif
-      open_max = sysconf (_SC_OPEN_MAX);
+  /* Hardcoded fallback: the default process hard limit in Linux as of 2020 */
+  if (open_max < 0)
+    open_max = 4096;
 
   for (fd = 0; fd < open_max; fd++)
       if ((res = cb (data, fd)) != 0)
