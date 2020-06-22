@@ -1386,9 +1386,10 @@ do_exec (gint                  child_err_report_fd,
   else if (!child_inherits_stdin)
     {
       /* Keep process from blocking on a read of stdin */
-      /* FIXME: g_assert() is not async-signal-safe on failure. */
       gint read_null = safe_open ("/dev/null", O_RDONLY);
-      g_assert (read_null != -1);
+      if (read_null < 0)
+        write_err_and_exit (child_err_report_fd,
+                            CHILD_DUP2_FAILED);
       safe_dup2 (read_null, 0);
       close_and_invalidate (&read_null);
     }
@@ -1405,9 +1406,10 @@ do_exec (gint                  child_err_report_fd,
     }
   else if (stdout_to_null)
     {
-      /* FIXME: g_assert() is not async-signal-safe on failure. */
       gint write_null = safe_open ("/dev/null", O_WRONLY);
-      g_assert (write_null != -1);
+      if (write_null < 0)
+        write_err_and_exit (child_err_report_fd,
+                            CHILD_DUP2_FAILED);
       safe_dup2 (write_null, 1);
       close_and_invalidate (&write_null);
     }
