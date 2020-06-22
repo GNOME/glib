@@ -262,6 +262,9 @@ g_spawn_async (const gchar          *working_directory,
 /* Avoids a danger in threaded situations (calling close()
  * on a file descriptor twice, and another thread has
  * re-opened it since the first close)
+ *
+ * This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)).
  */
 static void
 close_and_invalidate (gint *fd)
@@ -270,6 +273,7 @@ close_and_invalidate (gint *fd)
     return;
   else
     {
+      /* FIXME: g_close() is not async-signal-safe on failure. */
       (void) g_close (*fd, NULL);
       *fd = -1;
     }
@@ -1081,6 +1085,8 @@ g_spawn_check_exit_status (gint      exit_status,
   return ret;
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static gssize
 write_all (gint fd, gconstpointer vbuf, gsize to_write)
 {
@@ -1104,6 +1110,8 @@ write_all (gint fd, gconstpointer vbuf, gsize to_write)
   return TRUE;
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 G_GNUC_NORETURN
 static void
 write_err_and_exit (gint fd, gint msg)
@@ -1116,6 +1124,8 @@ write_err_and_exit (gint fd, gint msg)
   _exit (1);
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static int
 set_cloexec (void *data, gint fd)
 {
@@ -1125,6 +1135,8 @@ set_cloexec (void *data, gint fd)
   return 0;
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static gint
 safe_close (gint fd)
 {
@@ -1137,6 +1149,8 @@ safe_close (gint fd)
   return ret;
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 G_GNUC_UNUSED static int
 close_func (void *data, int fd)
 {
@@ -1156,6 +1170,8 @@ struct linux_dirent64
   char           d_name[]; /* Filename (null-terminated) */
 };
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static gint
 filename_to_fd (const char *p)
 {
@@ -1169,6 +1185,7 @@ filename_to_fd (const char *p)
 
   while ((c = *p++) != '\0')
     {
+      /* FIXME: g_ascii_isdigit() is not necessarily async-signal-safe. */
       if (!g_ascii_isdigit (c))
         return -1;
       c -= '0';
@@ -1184,6 +1201,8 @@ filename_to_fd (const char *p)
 }
 #endif
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static int
 safe_fdwalk (int (*cb)(void *data, int fd), void *data)
 {
@@ -1237,7 +1256,9 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
     }
 
   /* If /proc is not mounted or not accessible we fall back to the old
-   * rlimit trick */
+   * rlimit trick.
+   *
+   * FIXME: getrlimit() and sysconf() are not async-signal-safe. */
 
 #endif
 
@@ -1257,6 +1278,8 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
 #endif
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static void
 safe_closefrom (int lowfd)
 {
@@ -1289,6 +1312,8 @@ safe_closefrom (int lowfd)
 #endif
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static gint
 safe_dup2 (gint fd1, gint fd2)
 {
@@ -1301,6 +1326,8 @@ safe_dup2 (gint fd1, gint fd2)
   return ret;
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static gint
 safe_open (const char *path, gint mode)
 {
@@ -1321,6 +1348,8 @@ enum
   CHILD_FORK_FAILED
 };
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)) until it calls exec(). */
 static void
 do_exec (gint                  child_err_report_fd,
          gint                  stdin_fd,
@@ -1358,6 +1387,7 @@ do_exec (gint                  child_err_report_fd,
   else if (!child_inherits_stdin)
     {
       /* Keep process from blocking on a read of stdin */
+      /* FIXME: g_assert() is not async-signal-safe on failure. */
       gint read_null = safe_open ("/dev/null", O_RDONLY);
       g_assert (read_null != -1);
       safe_dup2 (read_null, 0);
@@ -1376,6 +1406,7 @@ do_exec (gint                  child_err_report_fd,
     }
   else if (stdout_to_null)
     {
+      /* FIXME: g_assert() is not async-signal-safe on failure. */
       gint write_null = safe_open ("/dev/null", O_WRONLY);
       g_assert (write_null != -1);
       safe_dup2 (write_null, 1);
@@ -2113,6 +2144,8 @@ cleanup_and_fail:
 
 /* Based on execvp from GNU C Library */
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)) until it calls exec(). */
 static void
 script_execute (const gchar *file,
                 gchar      **argv,
@@ -2127,6 +2160,7 @@ script_execute (const gchar *file,
   {
     gchar **new_argv;
 
+    /* FIXME: This is not async-signal-safe */
     new_argv = g_new0 (gchar*, argc + 2); /* /bin/sh and NULL */
     
     new_argv[0] = (char *) "/bin/sh";
@@ -2147,6 +2181,8 @@ script_execute (const gchar *file,
   }
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static gchar*
 my_strchrnul (const gchar *str, gchar c)
 {
@@ -2157,6 +2193,8 @@ my_strchrnul (const gchar *str, gchar c)
   return p;
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)) until it calls exec(). */
 static gint
 g_execute (const gchar *file,
            gchar      **argv,
@@ -2190,6 +2228,7 @@ g_execute (const gchar *file,
       gsize len;
       gsize pathlen;
 
+      /* FIXME: getenv() is not async-signal-safe */
       path = NULL;
       if (search_path_from_envp)
         path = g_environ_getenv (envp, "PATH");
@@ -2213,6 +2252,7 @@ g_execute (const gchar *file,
 
       len = strlen (file) + 1;
       pathlen = strlen (path);
+      /* FIXME: malloc() is not async-signal-safe */
       freeme = name = g_malloc (pathlen + len + 1);
       
       /* Copy the file name at the top, including '\0'  */
