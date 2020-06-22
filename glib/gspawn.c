@@ -160,7 +160,9 @@ static gint safe_close (gint fd);
 static gint g_execute (const gchar  *file,
                        gchar       **argv,
                        gchar       **envp,
-                       const gchar  *search_path);
+                       const gchar  *search_path,
+                       gchar        *search_path_buffer,
+                       gsize         search_path_buffer_len);
 
 static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
                                       const gchar          *working_directory,
@@ -1375,6 +1377,8 @@ do_exec (gint                  child_err_report_fd,
          gchar               **envp,
          gboolean              close_descriptors,
          const gchar          *search_path,
+         gchar                *search_path_buffer,
+         gsize                 search_path_buffer_len,
          gboolean              stdout_to_null,
          gboolean              stderr_to_null,
          gboolean              child_inherits_stdin,
@@ -1479,7 +1483,7 @@ do_exec (gint                  child_err_report_fd,
 
   g_execute (argv[0],
              file_and_argv_zero ? argv + 1 : argv,
-             envp, search_path);
+             envp, search_path, search_path_buffer, search_path_buffer_len);
 
   /* Exec failed */
   write_err_and_exit (child_err_report_fd,
@@ -1742,6 +1746,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
   guint pipe_flags = cloexec_pipes ? FD_CLOEXEC : 0;
   gint status;
   const gchar *chosen_search_path;
+  gchar *search_path_buffer = NULL;
+  gsize search_path_buffer_len = 0;
 
 #ifdef POSIX_SPAWN_AVAILABLE
   if (!intermediate_child && working_directory == NULL && !close_descriptors &&
@@ -1815,8 +1821,20 @@ fork_exec_with_fds (gboolean              intermediate_child,
       chosen_search_path = "/bin:/usr/bin:.";
     }
 
+  /* Allocate a buffer which the fork()ed child can use to assemble potential
+   * paths for the binary to exec(), combining the argv[0] and elements from
+   * the chosen_search_path. This can’t be done in the child because malloc()
+   * (or alloca()) are not async-signal-safe (see `man 7 signal-safety`).
+   *
+   * Add 2 for the nul terminator and a leading `/`. */
+  search_path_buffer_len = strlen (chosen_search_path) + strlen (argv[0]) + 2;
+  search_path_buffer = g_malloc (search_path_buffer_len);
+
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
-    return FALSE;
+    {
+      g_free (search_path_buffer);
+      return FALSE;
+    }
 
   if (intermediate_child && !g_unix_open_pipe (child_pid_report_pipe, pipe_flags, error))
     goto cleanup_and_fail;
@@ -1897,6 +1915,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
                        envp,
                        close_descriptors,
                        chosen_search_path,
+                       search_path_buffer,
+                       search_path_buffer_len,
                        stdout_to_null,
                        stderr_to_null,
                        child_inherits_stdin,
@@ -1926,6 +1946,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
                    envp,
                    close_descriptors,
                    chosen_search_path,
+                   search_path_buffer,
+                   search_path_buffer_len,
                    stdout_to_null,
                    stderr_to_null,
                    child_inherits_stdin,
@@ -2052,7 +2074,9 @@ fork_exec_with_fds (gboolean              intermediate_child,
       /* Success against all odds! return the information */
       close_and_invalidate (&child_err_report_pipe[0]);
       close_and_invalidate (&child_pid_report_pipe[0]);
- 
+
+      g_free (search_path_buffer);
+
       if (child_pid)
         *child_pid = pid;
 
@@ -2084,6 +2108,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
   close_and_invalidate (&child_err_report_pipe[1]);
   close_and_invalidate (&child_pid_report_pipe[0]);
   close_and_invalidate (&child_pid_report_pipe[1]);
+
+  g_free (search_path_buffer);
 
   return FALSE;
 }
@@ -2237,7 +2263,9 @@ static gint
 g_execute (const gchar  *file,
            gchar       **argv,
            gchar       **envp,
-           const gchar  *search_path)
+           const gchar  *search_path,
+           gchar        *search_path_buffer,
+           gsize         search_path_buffer_len)
 {
   if (*file == '\0')
     {
@@ -2261,16 +2289,21 @@ g_execute (const gchar  *file,
     {
       gboolean got_eacces = 0;
       const gchar *path, *p;
-      gchar *name, *freeme;
+      gchar *name;
       gsize len;
       gsize pathlen;
 
       path = search_path;
       len = strlen (file) + 1;
       pathlen = strlen (path);
-      /* FIXME: malloc() is not async-signal-safe */
-      freeme = name = g_malloc (pathlen + len + 1);
-      
+      name = search_path_buffer;
+
+      if (search_path_buffer_len < pathlen + len + 1)
+        {
+          errno = ENOMEM;
+          return -1;
+        }
+
       /* Copy the file name at the top, including '\0'  */
       memcpy (name + pathlen + 1, file, len);
       name = name + pathlen;
@@ -2339,7 +2372,6 @@ g_execute (const gchar  *file,
                * something went wrong executing it; return the error to our
                * caller.
                */
-              g_free (freeme);
 	      return -1;
 	    }
 	}
@@ -2351,8 +2383,6 @@ g_execute (const gchar  *file,
          * error.
          */
         errno = EACCES;
-
-      g_free (freeme);
     }
 
   /* Return the error from the last attempt (probably ENOENT).  */
