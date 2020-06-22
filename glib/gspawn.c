@@ -159,6 +159,8 @@ static gint sane_close (gint fd);
 
 static gint g_execute (const gchar  *file,
                        gchar       **argv,
+                       gchar       **argv_buffer,
+                       gsize         argv_buffer_len,
                        gchar       **envp,
                        const gchar  *search_path,
                        gchar        *search_path_buffer,
@@ -1374,6 +1376,8 @@ do_exec (gint                  child_err_report_fd,
          gint                  stderr_fd,
          const gchar          *working_directory,
          gchar               **argv,
+         gchar               **argv_buffer,
+         gsize                 argv_buffer_len,
          gchar               **envp,
          gboolean              close_descriptors,
          const gchar          *search_path,
@@ -1483,6 +1487,7 @@ do_exec (gint                  child_err_report_fd,
 
   g_execute (argv[0],
              file_and_argv_zero ? argv + 1 : argv,
+             argv_buffer, argv_buffer_len,
              envp, search_path, search_path_buffer, search_path_buffer_len);
 
   /* Exec failed */
@@ -1748,6 +1753,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
   const gchar *chosen_search_path;
   gchar *search_path_buffer = NULL;
   gsize search_path_buffer_len = 0;
+  gchar **argv_buffer = NULL;
+  gsize argv_buffer_len = 0;
 
 #ifdef POSIX_SPAWN_AVAILABLE
   if (!intermediate_child && working_directory == NULL && !close_descriptors &&
@@ -1830,9 +1837,16 @@ fork_exec_with_fds (gboolean              intermediate_child,
   search_path_buffer_len = strlen (chosen_search_path) + strlen (argv[0]) + 2;
   search_path_buffer = g_malloc (search_path_buffer_len);
 
+  /* And allocate a buffer which is 2 elements longer than @argv, so that if
+   * script_execute() has to be called later on, it can build a wrapper argv
+   * array in this buffer. */
+  argv_buffer_len = g_strv_length (argv) + 2;
+  argv_buffer = g_new (gchar *, argv_buffer_len);
+
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
     {
       g_free (search_path_buffer);
+      g_free (argv_buffer);
       return FALSE;
     }
 
@@ -1912,6 +1926,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
                        stderr_fd,
                        working_directory,
                        argv,
+                       argv_buffer,
+                       argv_buffer_len,
                        envp,
                        close_descriptors,
                        chosen_search_path,
@@ -1943,6 +1959,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
                    stderr_fd,
                    working_directory,
                    argv,
+                   argv_buffer,
+                   argv_buffer_len,
                    envp,
                    close_descriptors,
                    chosen_search_path,
@@ -2076,6 +2094,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
       close_and_invalidate (&child_pid_report_pipe[0]);
 
       g_free (search_path_buffer);
+      g_free (argv_buffer);
 
       if (child_pid)
         *child_pid = pid;
@@ -2110,6 +2129,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
   close_and_invalidate (&child_pid_report_pipe[1]);
 
   g_free (search_path_buffer);
+  g_free (argv_buffer);
 
   return FALSE;
 }
@@ -2210,39 +2230,37 @@ cleanup_and_fail:
 
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)) until it calls exec(). */
-static void
+static gboolean
 script_execute (const gchar *file,
                 gchar      **argv,
+                gchar      **argv_buffer,
+                gsize        argv_buffer_len,
                 gchar      **envp)
 {
   /* Count the arguments.  */
   int argc = 0;
   while (argv[argc])
     ++argc;
-  
-  /* Construct an argument list for the shell.  */
-  {
-    gchar **new_argv;
 
-    /* FIXME: This is not async-signal-safe */
-    new_argv = g_new0 (gchar*, argc + 2); /* /bin/sh and NULL */
-    
-    new_argv[0] = (char *) "/bin/sh";
-    new_argv[1] = (char *) file;
-    while (argc > 0)
-      {
-	new_argv[argc + 1] = argv[argc];
-	--argc;
-      }
+  /* Construct an argument list for the shell. */
+  if (argc + 2 > argv_buffer_len)
+    return FALSE;
 
-    /* Execute the shell. */
-    if (envp)
-      execve (new_argv[0], new_argv, envp);
-    else
-      execv (new_argv[0], new_argv);
-    
-    g_free (new_argv);
-  }
+  argv_buffer[0] = (char *) "/bin/sh";
+  argv_buffer[1] = (char *) file;
+  while (argc > 0)
+    {
+      argv_buffer[argc + 1] = argv[argc];
+      --argc;
+    }
+
+  /* Execute the shell. */
+  if (envp)
+    execve (argv_buffer[0], argv_buffer, envp);
+  else
+    execv (argv_buffer[0], argv_buffer);
+
+  return TRUE;
 }
 
 /* This function is called between fork() and exec() and hence must be
@@ -2262,6 +2280,8 @@ my_strchrnul (const gchar *str, gchar c)
 static gint
 g_execute (const gchar  *file,
            gchar       **argv,
+           gchar       **argv_buffer,
+           gsize         argv_buffer_len,
            gchar       **envp,
            const gchar  *search_path,
            gchar        *search_path_buffer,
@@ -2282,8 +2302,12 @@ g_execute (const gchar  *file,
       else
         execv (file, argv);
       
-      if (errno == ENOEXEC)
-	script_execute (file, argv, envp);
+      if (errno == ENOEXEC &&
+          !script_execute (file, argv, argv_buffer, argv_buffer_len, envp))
+        {
+          errno = ENOMEM;
+          return -1;
+        }
     }
   else
     {
@@ -2332,8 +2356,12 @@ g_execute (const gchar  *file,
           else
             execv (startp, argv);
           
-	  if (errno == ENOEXEC)
-	    script_execute (startp, argv, envp);
+          if (errno == ENOEXEC &&
+              !script_execute (startp, argv, argv_buffer, argv_buffer_len, envp))
+            {
+              errno = ENOMEM;
+              return -1;
+            }
 
 	  switch (errno)
 	    {
