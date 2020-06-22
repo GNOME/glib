@@ -155,6 +155,7 @@ extern char **environ;
  */
 
 
+static gint sane_close (gint fd);
 
 static gint g_execute (const gchar  *file,
                        gchar **argv,
@@ -273,8 +274,7 @@ close_and_invalidate (gint *fd)
     return;
   else
     {
-      /* FIXME: g_close() is not async-signal-safe on failure. */
-      (void) g_close (*fd, NULL);
+      sane_close (*fd);
       *fd = -1;
     }
 }
