@@ -1777,6 +1777,52 @@ try_make_relative (const char *path,
   return g_strdup (path);
 }
 
+static gboolean
+ignore_trash_mount (GUnixMountEntry *mount)
+{
+  GUnixMountPoint *mount_point = NULL;
+  const gchar *mount_options;
+  gboolean retval = TRUE;
+
+  if (g_unix_mount_is_system_internal (mount))
+    return TRUE;
+
+  mount_options = g_unix_mount_get_options (mount);
+  if (mount_options == NULL)
+    {
+      mount_point = g_unix_mount_point_at (g_unix_mount_get_mount_path (mount),
+                                           NULL);
+      if (mount_point != NULL)
+        mount_options = g_unix_mount_point_get_options (mount_point);
+    }
+
+  if (mount_options == NULL ||
+      strstr (mount_options, "x-gvfs-notrash") == NULL)
+    retval = FALSE;
+
+  g_clear_pointer (&mount_point, g_unix_mount_point_free);
+
+  return retval;
+}
+
+static gboolean
+ignore_trash_path (const gchar *topdir)
+{
+  GUnixMountEntry *mount;
+  gboolean retval = TRUE;
+
+  mount = g_unix_mount_at (topdir, NULL);
+  if (mount == NULL)
+    goto out;
+
+  retval = ignore_trash_mount (mount);
+
+ out:
+  g_clear_pointer (&mount, g_unix_mount_free);
+
+  return retval;
+}
+
 gboolean
 _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
 {
@@ -1787,7 +1833,6 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   char uid_str[32];
   GStatBuf global_stat, trash_stat;
   gboolean res;
-  GUnixMountEntry *mount;
 
   if (g_once_init_enter (&home_dev_set))
     {
@@ -1806,16 +1851,12 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
   if (topdir == NULL)
     return FALSE;
 
-  mount = g_unix_mount_at (topdir, NULL);
-  if (mount == NULL || g_unix_mount_is_system_internal (mount))
+  if (ignore_trash_path (topdir))
     {
-      g_clear_pointer (&mount, g_unix_mount_free);
       g_free (topdir);
 
       return FALSE;
     }
-
-  g_clear_pointer (&mount, g_unix_mount_free);
 
   globaldir = g_build_filename (topdir, ".Trash", NULL);
   if (g_lstat (globaldir, &global_stat) == 0 &&
@@ -1982,7 +2023,6 @@ g_local_file_trash (GFile         *file,
     {
       uid_t uid;
       char uid_str[32];
-      GUnixMountEntry *mount;
 
       uid = geteuid ();
       g_snprintf (uid_str, sizeof (uid_str), "%lu", (unsigned long)uid);
@@ -1996,19 +2036,14 @@ g_local_file_trash (GFile         *file,
 	  return FALSE;
 	}
 
-      mount = g_unix_mount_at (topdir, NULL);
-      if (mount == NULL || g_unix_mount_is_system_internal (mount))
+      if (ignore_trash_path (topdir))
         {
           g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                        _("Trashing on system internal mounts is not supported"));
-
-          g_clear_pointer (&mount, g_unix_mount_free);
           g_free (topdir);
 
           return FALSE;
         }
-
-      g_clear_pointer (&mount, g_unix_mount_free);
 
       /* Try looking for global trash dir $topdir/.Trash/$uid */
       globaldir = g_build_filename (topdir, ".Trash", NULL);
