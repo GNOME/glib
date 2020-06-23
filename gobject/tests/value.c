@@ -148,11 +148,11 @@ test_value_string (void)
   g_assert_cmpstr (str2, ==, static1);
   g_free (str2);
 
-  /* Copying a static string gvalue should *not* copy the contents */
+  /* Copying a static string gvalue should *actually* copy the contents */
   g_value_init (&copy, G_TYPE_STRING);
   g_value_copy (&value, &copy);
   copystr = g_value_get_string (&copy);
-  g_assert_true (copystr == static1);
+  g_assert_true (copystr != static1);
   g_value_unset (&copy);
 
   /* Setting a new string should change the contents */
