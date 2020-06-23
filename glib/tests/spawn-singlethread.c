@@ -166,7 +166,7 @@ test_spawn_async (void)
  * Routine if the file descriptor does not exist.
  */
 static void
-sane_close (int fd)
+safe_close (int fd)
 {
   if (fd >= 0)
     close (fd);
@@ -252,10 +252,10 @@ test_spawn_async_with_fds (void)
 			      test_pipe[0][0], test_pipe[1][1], test_pipe[2][1],
 			      &error);
       g_assert_no_error (error);
-      sane_close (test_pipe[0][0]);
-      sane_close (test_pipe[1][1]);
+      safe_close (test_pipe[0][0]);
+      safe_close (test_pipe[1][1]);
       if (fd_info[2] != STDOUT_PIPE)
-        sane_close (test_pipe[2][1]);
+        safe_close (test_pipe[2][1]);
 
       data.loop = loop;
       data.stdout_done = FALSE;
@@ -297,10 +297,10 @@ test_spawn_async_with_fds (void)
 
       g_main_context_unref (context);
       g_main_loop_unref (loop);
-      sane_close (test_pipe[0][1]);
-      sane_close (test_pipe[1][0]);
+      safe_close (test_pipe[0][1]);
+      safe_close (test_pipe[1][0]);
       if (fd_info[2] != STDOUT_PIPE)
-        sane_close (test_pipe[2][0]);
+        safe_close (test_pipe[2][0]);
     }
 
   g_ptr_array_free (argv, TRUE);

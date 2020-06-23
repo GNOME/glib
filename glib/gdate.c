@@ -83,8 +83,8 @@
  *
  * #GDate is simple to use. First you need a "blank" date; you can get a
  * dynamically allocated date from g_date_new(), or you can declare an
- * automatic variable or array and initialize it to a sane state by
- * calling g_date_clear(). A cleared date is sane; it's safe to call
+ * automatic variable or array and initialize it by
+ * calling g_date_clear(). A cleared date is safe; it's safe to call
  * g_date_set_dmy() and the other mutator functions to initialize the
  * value of a cleared date. However, a cleared date is initially
  * invalid, meaning that it doesn't represent a day that exists.
@@ -146,7 +146,7 @@
  *
  * If it's declared on the stack, it will contain garbage so must be
  * initialized with g_date_clear(). g_date_clear() makes the date invalid
- * but sane. An invalid date doesn't represent a day, it's "empty." A date
+ * but safe. An invalid date doesn't represent a day, it's "empty." A date
  * becomes valid after you set it to a Julian day or you set a day, month,
  * and year.
  */
@@ -259,7 +259,7 @@
  * g_date_new:
  *
  * Allocates a #GDate and initializes
- * it to a sane state. The new date will
+ * it to a safe state. The new date will
  * be cleared (as if you'd called g_date_clear()) but invalid (it won't
  * represent an existing day). Free the return value with g_date_free().
  *
@@ -862,7 +862,7 @@ g_date_days_between (const GDate *d1,
  * @date: pointer to one or more dates to clear
  * @n_dates: number of dates to clear
  *
- * Initializes one or more #GDate structs to a sane but invalid
+ * Initializes one or more #GDate structs to a safe but invalid
  * state. The cleared dates will not represent an existing date, but will
  * not contain garbage. Useful to init a date declared on the stack.
  * Validity can be tested with g_date_valid().
@@ -2056,7 +2056,7 @@ g_date_compare (const GDate *lhs,
  * @tm: (not nullable): struct tm to fill
  *
  * Fills in the date-related bits of a struct tm using the @date value.
- * Initializes the non-date parts with something sane but meaningless.
+ * Initializes the non-date parts with something safe but meaningless.
  */
 void        
 g_date_to_struct_tm (const GDate *d, 
