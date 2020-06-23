@@ -1661,6 +1661,52 @@ g_unix_mount_points_get (guint64 *time_read)
 }
 
 /**
+ * g_unix_mount_point_at:
+ * @mount_path: (type filename): path for a possible unix mount point.
+ * @time_read: (out) (optional): guint64 to contain a timestamp.
+ *
+ * Gets a #GUnixMountPoint for a given mount path. If @time_read is set, it
+ * will be filled with a unix timestamp for checking if the mount points have
+ * changed since with g_unix_mount_points_changed_since().
+ *
+ * If more mount points have the same mount path, the last matching mount point
+ * is returned.
+ *
+ * Returns: (transfer full) (nullable): a #GUnixMountPoint, or %NULL if no match
+ * is found.
+ *
+ * Since: 2.66
+ **/
+GUnixMountPoint *
+g_unix_mount_point_at (const char *mount_path,
+                       guint64    *time_read)
+{
+  GList *mount_points, *l;
+  GUnixMountPoint *mount_point, *found;
+
+  mount_points = g_unix_mount_points_get (time_read);
+
+  found = NULL;
+  for (l = mount_points; l != NULL; l = l->next)
+    {
+      mount_point = l->data;
+
+      if (strcmp (mount_path, mount_point->mount_path) == 0)
+        {
+          if (found != NULL)
+            g_unix_mount_point_free (found);
+
+          found = mount_point;
+        }
+      else
+        g_unix_mount_point_free (mount_point);
+    }
+  g_list_free (mount_points);
+
+  return found;
+}
+
+/**
  * g_unix_mounts_changed_since:
  * @time: guint64 to contain a timestamp.
  * 
