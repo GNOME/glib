@@ -350,6 +350,27 @@ g_variant_ensure_size (GVariant *value)
 }
 
 /* < private >
+ * g_variant_to_serialised:
+ * @value: a #GVariant
+ *
+ * Gets a GVariantSerialised for a GVariant in state STATE_SERIALISED.
+ */
+inline static GVariantSerialised
+g_variant_to_serialised (GVariant *value)
+{
+  g_assert (value->state & STATE_SERIALISED);
+  {
+    GVariantSerialised serialised = {
+      value->type_info,
+      (gpointer) value->contents.serialised.data,
+      value->size,
+      value->depth,
+    };
+    return serialised;
+  }
+}
+
+/* < private >
  * g_variant_serialise:
  * @value: a #GVariant
  * @data: an appropriately-sized buffer
@@ -1007,16 +1028,8 @@ g_variant_n_children (GVariant *value)
   g_variant_lock (value);
 
   if (value->state & STATE_SERIALISED)
-    {
-      GVariantSerialised serialised = {
-        value->type_info,
-        (gpointer) value->contents.serialised.data,
-        value->size,
-        value->depth,
-      };
-
-      n_children = g_variant_serialised_n_children (serialised);
-    }
+    n_children = g_variant_serialised_n_children (
+        g_variant_to_serialised (value));
   else
     n_children = value->contents.tree.n_children;
 
@@ -1083,12 +1096,7 @@ g_variant_get_child_value (GVariant *value,
     }
 
   {
-    GVariantSerialised serialised = {
-      value->type_info,
-      (gpointer) value->contents.serialised.data,
-      value->size,
-      value->depth,
-    };
+    GVariantSerialised serialised = g_variant_to_serialised (value);
     GVariantSerialised s_child;
     GVariant *child;
 
@@ -1201,14 +1209,7 @@ g_variant_is_normal_form (GVariant *value)
 
   if (value->state & STATE_SERIALISED)
     {
-      GVariantSerialised serialised = {
-        value->type_info,
-        (gpointer) value->contents.serialised.data,
-        value->size,
-        value->depth
-      };
-
-      if (g_variant_serialised_is_normal (serialised))
+      if (g_variant_serialised_is_normal (g_variant_to_serialised (value)))
         value->state |= STATE_TRUSTED;
     }
   else
