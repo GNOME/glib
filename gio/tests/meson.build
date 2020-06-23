@@ -78,6 +78,7 @@ gio_tests = {
   'tls-certificate' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-interaction' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-database' : {'extra_sources' : ['gtesttlsbackend.c']},
+  'tls-bindings' : {'extra_sources' : ['gtesttlsbackend.c']},
   'gdbus-address-get-session' : {},
   'win32-appinfo' : {},
 }
