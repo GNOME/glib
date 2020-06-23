@@ -3083,7 +3083,7 @@ test_trap_clear (void)
 #ifdef G_OS_UNIX
 
 static int
-sane_dup2 (int fd1,
+safe_dup2 (int fd1,
            int fd2)
 {
   int ret;
@@ -3335,7 +3335,7 @@ g_test_trap_fork (guint64        usec_timeout,
           if (fd0 < 0)
             g_error ("failed to open /dev/null for stdin redirection");
         }
-      if (sane_dup2 (stdout_pipe[1], 1) < 0 || sane_dup2 (stderr_pipe[1], 2) < 0 || (fd0 >= 0 && sane_dup2 (fd0, 0) < 0))
+      if (safe_dup2 (stdout_pipe[1], 1) < 0 || safe_dup2 (stderr_pipe[1], 2) < 0 || (fd0 >= 0 && safe_dup2 (fd0, 0) < 0))
         {
           errsv = errno;
           g_error ("failed to dup2() in forked test program: %s", g_strerror (errsv));

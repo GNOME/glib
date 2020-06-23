@@ -935,9 +935,8 @@ g_date_time_new_from_unix (GTimeZone *tz,
  * time zone @tz.  The time is as accurate as the system allows, to a
  * maximum accuracy of 1 microsecond.
  *
- * This function will always succeed unless the system clock is set to
- * truly insane values (or unless GLib is still being used after the
- * year 9999).
+ * This function will always succeed unless GLib is still being used after the
+ * year 9999.
  *
  * You should release the return value by calling g_date_time_unref()
  * when you are done with it.

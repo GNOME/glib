@@ -1120,7 +1120,7 @@ g_variant_type_new_tuple_slow (const GVariantType * const *items,
 {
   /* the "slow" version is needed in case the static buffer of 1024
    * bytes is exceeded when running the normal version.  this will
-   * happen only in truly insane code, so it can be slow.
+   * happen only with very unusually large types, so it can be slow.
    */
   GString *string;
   gint i;
