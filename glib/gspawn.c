@@ -1126,7 +1126,7 @@ set_cloexec (void *data, gint fd)
 }
 
 static gint
-sane_close (gint fd)
+safe_close (gint fd)
 {
   gint ret;
 
@@ -1141,7 +1141,7 @@ G_GNUC_UNUSED static int
 close_func (void *data, int fd)
 {
   if (fd >= GPOINTER_TO_INT (data))
-    (void) sane_close (fd);
+    (void) safe_close (fd);
 
   return 0;
 }
@@ -1232,7 +1232,7 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
             }
         }
 
-      sane_close (dir_fd);
+      safe_close (dir_fd);
       return res;
     }
 
@@ -1290,7 +1290,7 @@ safe_closefrom (int lowfd)
 }
 
 static gint
-sane_dup2 (gint fd1, gint fd2)
+safe_dup2 (gint fd1, gint fd2)
 {
   gint ret;
 
@@ -1302,7 +1302,7 @@ sane_dup2 (gint fd1, gint fd2)
 }
 
 static gint
-sane_open (const char *path, gint mode)
+safe_open (const char *path, gint mode)
 {
   gint ret;
 
@@ -1349,7 +1349,7 @@ do_exec (gint                  child_err_report_fd,
     {
       /* dup2 can't actually fail here I don't think */
           
-      if (sane_dup2 (stdin_fd, 0) < 0)
+      if (safe_dup2 (stdin_fd, 0) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
 
@@ -1358,9 +1358,9 @@ do_exec (gint                  child_err_report_fd,
   else if (!child_inherits_stdin)
     {
       /* Keep process from blocking on a read of stdin */
-      gint read_null = sane_open ("/dev/null", O_RDONLY);
+      gint read_null = safe_open ("/dev/null", O_RDONLY);
       g_assert (read_null != -1);
-      sane_dup2 (read_null, 0);
+      safe_dup2 (read_null, 0);
       close_and_invalidate (&read_null);
     }
 
@@ -1368,7 +1368,7 @@ do_exec (gint                  child_err_report_fd,
     {
       /* dup2 can't actually fail here I don't think */
           
-      if (sane_dup2 (stdout_fd, 1) < 0)
+      if (safe_dup2 (stdout_fd, 1) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
 
@@ -1376,9 +1376,9 @@ do_exec (gint                  child_err_report_fd,
     }
   else if (stdout_to_null)
     {
-      gint write_null = sane_open ("/dev/null", O_WRONLY);
+      gint write_null = safe_open ("/dev/null", O_WRONLY);
       g_assert (write_null != -1);
-      sane_dup2 (write_null, 1);
+      safe_dup2 (write_null, 1);
       close_and_invalidate (&write_null);
     }
 
@@ -1386,7 +1386,7 @@ do_exec (gint                  child_err_report_fd,
     {
       /* dup2 can't actually fail here I don't think */
           
-      if (sane_dup2 (stderr_fd, 2) < 0)
+      if (safe_dup2 (stderr_fd, 2) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
 
@@ -1394,8 +1394,8 @@ do_exec (gint                  child_err_report_fd,
     }
   else if (stderr_to_null)
     {
-      gint write_null = sane_open ("/dev/null", O_WRONLY);
-      sane_dup2 (write_null, 2);
+      gint write_null = safe_open ("/dev/null", O_WRONLY);
+      safe_dup2 (write_null, 2);
       close_and_invalidate (&write_null);
     }
 
@@ -1408,7 +1408,7 @@ do_exec (gint                  child_err_report_fd,
     {
       if (child_setup == NULL)
         {
-          sane_dup2 (child_err_report_fd, 3);
+          safe_dup2 (child_err_report_fd, 3);
           set_cloexec (GINT_TO_POINTER (0), 3);
           safe_closefrom (4);
           child_err_report_fd = 3;
@@ -1565,7 +1565,7 @@ do_posix_spawn (gchar     **argv,
   else if (!child_inherits_stdin)
     {
       /* Keep process from blocking on a read of stdin */
-      gint read_null = sane_open ("/dev/null", O_RDONLY | O_CLOEXEC);
+      gint read_null = safe_open ("/dev/null", O_RDONLY | O_CLOEXEC);
       g_assert (read_null != -1);
       parent_close_fds[num_parent_close_fds++] = read_null;
 
@@ -1589,7 +1589,7 @@ do_posix_spawn (gchar     **argv,
     }
   else if (stdout_to_null)
     {
-      gint write_null = sane_open ("/dev/null", O_WRONLY | O_CLOEXEC);
+      gint write_null = safe_open ("/dev/null", O_WRONLY | O_CLOEXEC);
       g_assert (write_null != -1);
       parent_close_fds[num_parent_close_fds++] = write_null;
 
@@ -1613,7 +1613,7 @@ do_posix_spawn (gchar     **argv,
     }
   else if (stderr_to_null)
     {
-      gint write_null = sane_open ("/dev/null", O_WRONLY | O_CLOEXEC);
+      gint write_null = safe_open ("/dev/null", O_WRONLY | O_CLOEXEC);
       g_assert (write_null != -1);
       parent_close_fds[num_parent_close_fds++] = write_null;
 

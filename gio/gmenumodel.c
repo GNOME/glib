@@ -309,7 +309,7 @@ g_menu_model_real_iterate_item_attributes (GMenuModel *model,
   else
     {
       g_critical ("GMenuModel implementation '%s' doesn't override iterate_item_attributes() "
-                  "and fails to return sane values from get_item_attributes()",
+                  "and fails to return valid values from get_item_attributes()",
                   G_OBJECT_TYPE_NAME (model));
       result = NULL;
     }
@@ -373,7 +373,7 @@ g_menu_model_real_iterate_item_links (GMenuModel *model,
   else
     {
       g_critical ("GMenuModel implementation '%s' doesn't override iterate_item_links() "
-                  "and fails to return sane values from get_item_links()",
+                  "and fails to return valid values from get_item_links()",
                   G_OBJECT_TYPE_NAME (model));
       result = NULL;
     }

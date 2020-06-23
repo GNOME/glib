@@ -2291,7 +2291,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
               g_free (error);
 
               /* we purposely leak the value here, it might not be
-               * in a sane state if an error condition occurred
+               * in a correct state if an error condition occurred
                */
               while (i--)
                 g_value_unset (param_values + i);
@@ -2347,7 +2347,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
               g_free (error);
 
               /* we purposely leak the value here, it might not be
-               * in a sane state if an error condition occurred
+               * in a correct state if an error condition occurred
                */
             }
         }
@@ -3446,7 +3446,7 @@ g_signal_emit_valist (gpointer instance,
 		  g_warning ("%s: %s", G_STRLOC, error);
 		  g_free (error);
 		  /* we purposely leak the value here, it might not be
-		   * in a sane state if an error condition occurred
+		   * in a correct state if an error condition occurred
 		   */
 		}
 	    }
@@ -3483,7 +3483,7 @@ g_signal_emit_valist (gpointer instance,
 	  g_free (error);
 
 	  /* we purposely leak the value here, it might not be
-	   * in a sane state if an error condition occurred
+	   * in a correct state if an error condition occurred
 	   */
 	  while (i--)
 	    g_value_unset (param_values + i);
@@ -3519,7 +3519,7 @@ g_signal_emit_valist (gpointer instance,
 	  g_free (error);
 	  
 	  /* we purposely leak the value here, it might not be
-	   * in a sane state if an error condition occurred
+	   * in a correct state if an error condition occurred
 	   */
 	}
     }

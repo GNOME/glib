@@ -3102,7 +3102,7 @@ g_abort (void)
 {
   /* One call to break the debugger */
   DebugBreak ();
-  /* One call in case CRT does get saner about abort() behaviour */
+  /* One call in case CRT changes its abort() behaviour */
   abort ();
   /* And one call to bind them all and terminate the program for sure */
   ExitProcess (127);
