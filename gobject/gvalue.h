@@ -171,7 +171,8 @@ void	g_value_register_transform_func	(GType		 src_type,
  *
  * If passed to G_VALUE_COLLECT(), allocated data won't be copied
  * but used verbatim. This does not affect ref-counted types like
- * objects.
+ * objects. This does not affect usage of g_value_copy(), the data will
+ * be copied if it is not ref-counted.
  */
 #define G_VALUE_NOCOPY_CONTENTS (1 << 27)
 
