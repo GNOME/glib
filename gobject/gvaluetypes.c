@@ -264,7 +264,7 @@ static void
 value_copy_string (const GValue *src_value,
 		   GValue	*dest_value)
 {
-  if (src_value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS)
+  if (src_value->data[1].v_uint & G_VALUE_INTERNED_STRING)
     {
       dest_value->data[0].v_pointer = src_value->data[0].v_pointer;
       dest_value->data[1].v_uint = src_value->data[1].v_uint;
@@ -272,7 +272,7 @@ value_copy_string (const GValue *src_value,
   else
     {
       dest_value->data[0].v_pointer = g_strdup (src_value->data[0].v_pointer);
-      dest_value->data[1].v_uint = src_value->data[1].v_uint;
+      /* Don't copy over *any* flags, we're restarting from scratch */
     }
 }
 
