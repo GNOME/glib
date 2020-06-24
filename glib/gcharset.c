@@ -315,7 +315,7 @@ g_get_console_charset (const char **charset)
           g_free (emsg);
         }
     }
-  /* fall-back to UTF-8 if the rest failed (it's a sane and universal default) */
+  /* fall-back to UTF-8 if the rest failed (it's a universal default) */
   if (raw == NULL)
     raw = "UTF-8";
 
