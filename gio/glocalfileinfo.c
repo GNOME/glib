@@ -1518,6 +1518,7 @@ done:
   g_free (shared_basename);
   g_free (uri_basename);
   g_free (uri);
+  g_free (path_dirname);
 }
 
 #ifdef G_OS_WIN32
