@@ -964,12 +964,30 @@ glib_compile_resources = executable('glib-compile-resources',
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
+script = '''
+import sys
+with open(sys.argv[1]) as f:
+    py_code = f.read()
+with open(sys.argv[2]) as f:
+    constructor_h = f.read()
+constructor_h = constructor_h.replace('\\', '\\\\')
+with open(sys.argv[3], 'w') as f:
+    f.write(py_code.replace('@GCONSTRUCTOR_CODE@', constructor_h))
+'''
+glib_compile_resources_py = configure_file(
+  input : files('glib-compile-resources.py', '../glib/gconstructor.h'),
+  output : 'glib-compile-resources.py',
+  command : [python, '-c', script, '@INPUT@', '@OUTPUT@'])
+
+if not find_program('glib-compile-resource', native : true, required : false).found()
+  meson.override_find_program('glib-compile-resources', glib_compile_resources_py)
+endif
+
 # Cannot override those programs in cross compilation case because they are
 # native executables that cannot be run on the build machine.
 # See https://gitlab.gnome.org/GNOME/glib/issues/1859.
 if not meson.is_cross_build()
   meson.override_find_program('glib-compile-schemas', glib_compile_schemas)
-  meson.override_find_program('glib-compile-resources', glib_compile_resources)
 endif
 
 executable('gsettings', 'gsettings-tool.c',
