@@ -448,6 +448,10 @@ static GMainContext *glib_worker_context;
 
 /* UNIX signals work by marking one of these variables then waking the
  * worker context to check on them and dispatch accordingly.
+ *
+ * Both variables must be accessed using atomic primitives, unless those atomic
+ * primitives are implemented using fallback mutexes (as those aren’t safe in
+ * an interrupt context).
  */
 #ifdef HAVE_SIG_ATOMIC_T
 static volatile sig_atomic_t unix_signal_pending[NSIG];
@@ -5199,7 +5203,7 @@ dispatch_unix_signals_unlocked (void)
   gint i;
 
   /* clear this first in case another one arrives while we're processing */
-  any_unix_signal_pending = FALSE;
+  g_atomic_int_set (&any_unix_signal_pending, 0);
 
   /* We atomically test/clear the bit from the global array in case
    * other signals arrive while we are dispatching.
@@ -5218,9 +5222,7 @@ dispatch_unix_signals_unlocked (void)
        *
        * Note specifically: we must check _our_ array.
        */
-      pending[i] = unix_signal_pending[i];
-      if (pending[i])
-        unix_signal_pending[i] = FALSE;
+      pending[i] = g_atomic_int_compare_and_exchange (&unix_signal_pending[i], 1, 0);
     }
 
   /* handle GChildWatchSource instances */
@@ -5526,8 +5528,14 @@ g_unix_signal_handler (int signum)
 {
   gint saved_errno = errno;
 
-  unix_signal_pending[signum] = TRUE;
-  any_unix_signal_pending = TRUE;
+#if defined(G_ATOMIC_LOCK_FREE) && defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4)
+  g_atomic_int_set (&unix_signal_pending[signum], 1);
+  g_atomic_int_set (&any_unix_signal_pending, 1);
+#else
+#warning "Can't use atomics in g_unix_signal_handler(): Unix signal handling will be racy"
+  unix_signal_pending[signum] = 1;
+  any_unix_signal_pending = 1;
+#endif
 
   g_wakeup_signal (glib_worker_context->wakeup);
 
@@ -5996,7 +6004,7 @@ glib_worker_main (gpointer data)
       g_main_context_iteration (glib_worker_context, TRUE);
 
 #ifdef G_OS_UNIX
-      if (any_unix_signal_pending)
+      if (g_atomic_int_get (&any_unix_signal_pending))
         dispatch_unix_signals ();
 #endif
     }
