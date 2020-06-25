@@ -413,7 +413,11 @@ g_socket_listener_add_address (GSocketListener  *listener,
  *
  * Helper function for g_socket_listener_add_address() that
  * creates a TCP/IP socket listening on IPv4 and IPv6 (if
- * supported) on the specified port on all interfaces.
+ * supported) on the specified port on all interfaces. If possible, the
+ * #GSocketListener will listen on both IPv4 and IPv6 (listening on the same
+ * port on both). If a socket family is supported, but listening on it fails,
+ * an error will be returned; success will only be returned if listening on all
+ * supported socket families succeeded.
  *
  * @source_object will be passed out in the various calls
  * to accept to identify this particular source, which is
@@ -1032,7 +1036,10 @@ g_socket_listener_close (GSocketListener *listener)
  * ignore.
  *
  * Listens for TCP connections on any available port number for both
- * IPv6 and IPv4 (if each is available).
+ * IPv6 and IPv4 (if each is available). If possible, the #GSocketListener will
+ * listen on both IPv4 and IPv6 (listening on the same port on both). If
+ * listening on one of the socket families fails, the #GSocketListener will only
+ * listen on the other. If listening on both fails, an error will be returned.
  *
  * This is useful if you need to have a socket for incoming connections
  * but don't care about the specific port number.
@@ -1056,6 +1063,7 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
   GSocket *socket6 = NULL;
   GSocket *socket4 = NULL;
   gint attempts = 37;
+  GError *socket4_listen_error = NULL, *socket6_listen_error = NULL;
 
   /*
    * multi-step process:
@@ -1218,7 +1226,9 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
                                               sockets_to_close);
     }
 
-  /* now we actually listen() the sockets and add them to the listener */
+  /* now we actually listen() the sockets and add them to the listener. If
+   * either of the listen()s fails, only return the other socket. Fail if both
+   * failed. */
   if (socket6 != NULL)
     {
       g_socket_set_listen_backlog (socket6, listener->priv->listen_backlog);
@@ -1226,24 +1236,18 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
       g_signal_emit (listener, signals[EVENT], 0,
                      G_SOCKET_LISTENER_LISTENING, socket6);
 
-      if (!g_socket_listen (socket6, error))
+      if (g_socket_listen (socket6, &socket6_listen_error))
         {
-          g_object_unref (socket6);
-          if (socket4)
-            g_object_unref (socket4);
+          g_signal_emit (listener, signals[EVENT], 0,
+                         G_SOCKET_LISTENER_LISTENED, socket6);
 
-          return 0;
+          if (source_object)
+            g_object_set_qdata_full (G_OBJECT (socket6), source_quark,
+                                     g_object_ref (source_object),
+                                     g_object_unref);
+
+          g_ptr_array_add (listener->priv->sockets, socket6);
         }
-
-      g_signal_emit (listener, signals[EVENT], 0,
-                     G_SOCKET_LISTENER_LISTENED, socket6);
-
-      if (source_object)
-        g_object_set_qdata_full (G_OBJECT (socket6), source_quark,
-                                 g_object_ref (source_object),
-                                 g_object_unref);
-
-      g_ptr_array_add (listener->priv->sockets, socket6);
     }
 
    if (socket4 != NULL)
@@ -1253,24 +1257,36 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
       g_signal_emit (listener, signals[EVENT], 0,
                      G_SOCKET_LISTENER_LISTENING, socket4);
 
-      if (!g_socket_listen (socket4, error))
+      if (g_socket_listen (socket4, &socket4_listen_error))
         {
-          g_object_unref (socket4);
-          if (socket6)
-            g_object_unref (socket6);
+          g_signal_emit (listener, signals[EVENT], 0,
+                         G_SOCKET_LISTENER_LISTENED, socket4);
 
-          return 0;
+          if (source_object)
+            g_object_set_qdata_full (G_OBJECT (socket4), source_quark,
+                                     g_object_ref (source_object),
+                                     g_object_unref);
+
+          g_ptr_array_add (listener->priv->sockets, socket4);
         }
+    }
 
-      g_signal_emit (listener, signals[EVENT], 0,
-                     G_SOCKET_LISTENER_LISTENED, socket4);
+  /* Only error out if both listen() calls failed. */
+  if ((socket6 == NULL || socket6_listen_error != NULL) &&
+      (socket4 == NULL || socket4_listen_error != NULL))
+    {
+      GError **set_error = ((socket6_listen_error != NULL) ?
+                            &socket6_listen_error :
+                            &socket4_listen_error);
+      g_propagate_error (error, g_steal_pointer (set_error));
 
-      if (source_object)
-        g_object_set_qdata_full (G_OBJECT (socket4), source_quark,
-                                 g_object_ref (source_object),
-                                 g_object_unref);
+      g_clear_error (&socket6_listen_error);
+      g_clear_error (&socket4_listen_error);
 
-      g_ptr_array_add (listener->priv->sockets, socket4);
+      g_clear_object (&socket6);
+      g_clear_object (&socket4);
+
+      return 0;
     }
 
   if ((socket4 != NULL || socket6 != NULL) &&
