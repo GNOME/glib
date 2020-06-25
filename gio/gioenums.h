@@ -1612,6 +1612,61 @@ typedef enum {
 } GTlsAuthenticationMode;
 
 /**
+ * GTlsChannelBindingType:
+ * @G_TLS_CHANNEL_BINDING_TLS_UNIQUE:
+ *    [`tls-unique`](https://tools.ietf.org/html/rfc5929#section-3) binding
+ *    type
+ * @G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT:
+ *    [`tls-server-end-point`](https://tools.ietf.org/html/rfc5929#section-4)
+ *    binding type
+ *
+ * The type of TLS channel binding data to retrieve from #GTlsConnection
+ * or #GDtlsConnection, as documented by RFC 5929. The
+ * [`tls-unique-for-telnet`](https://tools.ietf.org/html/rfc5929#section-5)
+ * binding type is not currently implemented.
+ *
+ * Since: 2.66
+ */
+GLIB_AVAILABLE_TYPE_IN_2_66
+typedef enum {
+  G_TLS_CHANNEL_BINDING_TLS_UNIQUE,
+  G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT
+} GTlsChannelBindingType;
+
+/**
+ * GTlsChannelBindingError:
+ * @G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED: Either entire binding
+ *    retrieval facility or specific binding type is not implemented in the
+ *    TLS backend.
+ * @G_TLS_CHANNEL_BINDING_ERROR_INVALID_STATE: The handshake is not yet
+ *    complete on the connection which is a strong requirement for any existing
+ *    binding type.
+ * @G_TLS_CHANNEL_BINDING_ERROR_NOT_AVAILABLE: Handshake is complete but
+ *    binding data is not available. That normally indicates the TLS
+ *    implementation failed to provide the binding data. For example, some
+ *    implementations do not provide a peer certificate for resumed connections.
+ * @G_TLS_CHANNEL_BINDING_ERROR_NOT_SUPPORTED: Binding type is not supported
+ *    on the current connection. This error could be triggered when requesting
+ *    `tls-server-end-point` binding data for a certificate which has no hash
+ *    function or uses multiple hash functions.
+ * @G_TLS_CHANNEL_BINDING_ERROR_GENERAL_ERROR: Any other backend error
+ *    preventing binding data retrieval.
+ *
+ * An error code used with %G_TLS_CHANNEL_BINDING_ERROR in a #GError to
+ * indicate a TLS channel binding retrieval error.
+ *
+ * Since: 2.66
+ */
+GLIB_AVAILABLE_TYPE_IN_2_66
+typedef enum {
+  G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED,
+  G_TLS_CHANNEL_BINDING_ERROR_INVALID_STATE,
+  G_TLS_CHANNEL_BINDING_ERROR_NOT_AVAILABLE,
+  G_TLS_CHANNEL_BINDING_ERROR_NOT_SUPPORTED,
+  G_TLS_CHANNEL_BINDING_ERROR_GENERAL_ERROR
+} GTlsChannelBindingError;
+
+/**
  * GTlsRehandshakeMode:
  * @G_TLS_REHANDSHAKE_NEVER: Never allow rehandshaking
  * @G_TLS_REHANDSHAKE_SAFELY: Allow safe rehandshaking only
