@@ -1241,6 +1241,7 @@ g_task_return (GTask           *task,
                GTaskReturnType  type)
 {
   GSource *source;
+  gchar *source_name = NULL;
 
   if (type != G_TASK_RETURN_FROM_THREAD)
     task->ever_returned = TRUE;
@@ -1289,7 +1290,10 @@ g_task_return (GTask           *task,
 
   /* Otherwise, complete in the next iteration */
   source = g_idle_source_new ();
-  g_source_set_name (source, "[gio] complete_in_idle_cb");
+  source_name = g_strdup_printf ("[gio] %s complete_in_idle_cb",
+                                 (task->name != NULL) ? task->name : "(unnamed)");
+  g_source_set_name (source, source_name);
+  g_free (source_name);
   g_task_attach_source (task, source, complete_in_idle_cb);
   g_source_unref (source);
 }
