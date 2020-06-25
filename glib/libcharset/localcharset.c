@@ -46,10 +46,6 @@
 #   include <locale.h>
 #  endif
 # endif
-# ifdef __CYGWIN__
-#  define WIN32_LEAN_AND_MEAN
-#  include <windows.h>
-# endif
 #elif defined WIN32_NATIVE
 # define WIN32_LEAN_AND_MEAN
 # include <windows.h>
@@ -111,7 +107,7 @@ _g_locale_get_charset_aliases (void)
   cp = charset_aliases;
   if (cp == NULL)
     {
-#if !(defined VMS || defined WIN32_NATIVE || defined __CYGWIN__)
+#if !(defined VMS || defined WIN32_NATIVE)
       FILE *fp;
       const char *dir;
       const char *base = "charset.alias";
@@ -287,53 +283,6 @@ _g_locale_charset_raw (void)
 
   /* Most systems support nl_langinfo (CODESET) nowadays.  */
   codeset = nl_langinfo (CODESET);
-
-#  ifdef __CYGWIN__
-  /* Cygwin 2006 does not have locales.  nl_langinfo (CODESET) always
-     returns "US-ASCII".  As long as this is not fixed, return the suffix
-     of the locale name from the environment variables (if present) or
-     the codepage as a number.  */
-  if (codeset != NULL && strcmp (codeset, "US-ASCII") == 0)
-    {
-      const char *locale;
-      static char buf[2 + 10 + 1];
-
-      locale = getenv ("LC_ALL");
-      if (locale == NULL || locale[0] == '\0')
-	{
-	  locale = getenv ("LC_CTYPE");
-	  if (locale == NULL || locale[0] == '\0')
-	    locale = getenv ("LANG");
-	}
-      if (locale != NULL && locale[0] != '\0')
-	{
-	  /* If the locale name contains an encoding after the dot, return
-	     it.  */
-	  const char *dot = strchr (locale, '.');
-
-	  if (dot != NULL)
-	    {
-	      const char *modifier;
-
-	      dot++;
-	      /* Look for the possible @... trailer and remove it, if any.  */
-	      modifier = strchr (dot, '@');
-	      if (modifier == NULL)
-		return dot;
-	      if (modifier - dot < sizeof (buf))
-		{
-		  memcpy (buf, dot, modifier - dot);
-		  buf [modifier - dot] = '\0';
-		  return buf;
-		}
-	    }
-	}
-
-      /* Woe32 has a function returning the locale's codepage as a number.  */
-      sprintf (buf, "CP%u", GetACP ());
-      codeset = buf;
-    }
-#  endif
 
 # else
 
