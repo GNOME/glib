@@ -1,0 +1,64 @@
+/*
+ * Copyright © 2020 Endless Mobile, Inc.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Philip Withnall <withnall@endlessm.com>
+ */
+
+#pragma once
+
+#ifdef HAVE_SYSPROF
+#include <sysprof-capture.h>
+#endif
+
+#include "gmem.h"
+#include "gmacros.h"
+
+G_BEGIN_DECLS
+
+/*
+ * G_TRACE_CURRENT_TIME:
+ *
+ * Get the current time, in nanoseconds since the tracing epoch. This (and only
+ * this) is suitable for passing to tracing functions like g_trace_mark(). It is
+ * not suitable for other timekeeping.
+ *
+ * The tracing epoch is implementation defined, but is guaranteed to be
+ * unchanged within the lifetime of each thread. It is not comparable across
+ * threads or process instances.
+ *
+ * If tracing support is disabled, this evaluates to `0`.
+ *
+ * Since: 2.66
+ */
+#ifdef HAVE_SYSPROF
+#define G_TRACE_CURRENT_TIME SYSPROF_CAPTURE_CURRENT_TIME
+#else
+#define G_TRACE_CURRENT_TIME 0
+#endif
+
+void (g_trace_mark) (gint64       begin_time_nsec,
+                     gint64       duration_nsec,
+                     const gchar *group,
+                     const gchar *name,
+                     const gchar *message_format,
+                     ...);
+
+#ifndef HAVE_SYSPROF
+/* Optimise the whole call out */
+#define g_trace_mark(...)
+#endif
+
+G_END_DECLS

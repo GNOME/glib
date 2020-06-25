@@ -59,6 +59,11 @@ option('tapset_install_dir',
        value : '',
        description : 'path where systemtap tapsets are installed')
 
+option('sysprof',
+       type : 'feature',
+       value : 'disabled',
+       description : 'include tracing support for sysprof')
+
 option('gtk_doc',
        type : 'boolean',
        value : false,
