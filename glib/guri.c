@@ -126,6 +126,30 @@
  * the URI may contain binary data or non-UTF-8 text, or if decoding
  * the components might change the interpretation of the URI.
  *
+ * For example, with the encoded flag:
+ *
+ * |[<!-- language="C" -->
+ *   GUri *uri = g_uri_parse ("http://host/path?query=http%3A%2F%2Fhost%2Fpath%3Fparam%3Dvalue", G_URI_FLAGS_ENCODED, &err);
+ *   g_assert_cmpstr (g_uri_get_query (uri), ==, "query=http%3A%2F%2Fhost%2Fpath%3Fparam%3Dvalue");
+ * ]|
+ *
+ * While the default `%`-decoding behaviour would give:
+ *
+ * |[<!-- language="C" -->
+ *   GUri *uri = g_uri_parse ("http://host/path?query=http%3A%2F%2Fhost%2Fpath%3Fparam%3Dvalue", G_URI_FLAGS_NONE, &err);
+ *   g_assert_cmpstr (g_uri_get_query (uri), ==, "query=http://host/path?param=value");
+ * ]|
+ *
+ * During decoding, if an invalid UTF-8 string is encountered, parsing will fail
+ * with an error indicating the bad string location:
+ *
+ * |[<!-- language="C" -->
+ *   GUri *uri = g_uri_parse ("http://host/path?query=http%3A%2F%2Fhost%2Fpath%3Fbad%3D%00alue", G_URI_FLAGS_NONE, &err);
+ *   g_assert_error(err, G_URI_ERROR, G_URI_ERROR_BAD_QUERY);
+ * ]|
+ *
+ * (you should pass %G_URI_FLAGS_ENCODED if you need to handle that case manually).
+ *
  * #GUri is immutable once constructed, and can safely be accessed from
  * multiple threads. Its reference counting is atomic.
  *
