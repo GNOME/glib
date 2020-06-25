@@ -88,6 +88,7 @@
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gthreadprivate.h"
+#include "gtrace-private.h"
 
 #ifdef G_OS_WIN32
 #include "gwin32.h"
@@ -1247,6 +1248,12 @@ g_source_attach_unlocked (GSource      *source,
    */
   if (do_wakeup && context->owner && context->owner != G_THREAD_SELF)
     g_wakeup_signal (context->wakeup);
+
+  g_trace_mark (G_TRACE_CURRENT_TIME, 0,
+                "GLib", "g_source_attach",
+                "%s to context %p",
+                (g_source_get_name (source) != NULL) ? g_source_get_name (source) : "(unnamed)",
+                context);
 
   return source->source_id;
 }
@@ -3291,6 +3298,7 @@ g_main_dispatch (GMainContext *context)
 				GSourceFunc,
 				gpointer);
           GSource *prev_source;
+          gint64 begin_time_nsec G_GNUC_UNUSED;
 
 	  dispatch = source->source_funcs->dispatch;
 	  cb_funcs = source->callback_funcs;
@@ -3317,11 +3325,19 @@ g_main_dispatch (GMainContext *context)
           current->source = source;
           current->depth++;
 
+          begin_time_nsec = G_TRACE_CURRENT_TIME;
+
           TRACE (GLIB_MAIN_BEFORE_DISPATCH (g_source_get_name (source), source,
                                             dispatch, callback, user_data));
           need_destroy = !(* dispatch) (source, callback, user_data);
           TRACE (GLIB_MAIN_AFTER_DISPATCH (g_source_get_name (source), source,
                                            dispatch, need_destroy));
+
+          g_trace_mark (begin_time_nsec, G_TRACE_CURRENT_TIME - begin_time_nsec,
+                        "GLib", "GSource.dispatch",
+                        "%s ⇒ %s",
+                        (g_source_get_name (source) != NULL) ? g_source_get_name (source) : "(unnamed)",
+                        need_destroy ? "destroy" : "keep");
 
           current->source = prev_source;
           current->depth--;
@@ -3626,11 +3642,21 @@ g_main_context_prepare (GMainContext *context,
 
           if (prepare)
             {
+              gint64 begin_time_nsec G_GNUC_UNUSED;
+
               context->in_check_or_prepare++;
               UNLOCK_CONTEXT (context);
 
+              begin_time_nsec = G_TRACE_CURRENT_TIME;
+
               result = (* prepare) (source, &source_timeout);
               TRACE (GLIB_MAIN_AFTER_PREPARE (source, prepare, source_timeout));
+
+              g_trace_mark (begin_time_nsec, G_TRACE_CURRENT_TIME - begin_time_nsec,
+                            "GLib", "GSource.prepare",
+                            "%s ⇒ %s",
+                            (g_source_get_name (source) != NULL) ? g_source_get_name (source) : "(unnamed)",
+                            result ? "ready" : "unready");
 
               LOCK_CONTEXT (context);
               context->in_check_or_prepare--;
@@ -3886,13 +3912,23 @@ g_main_context_check (GMainContext *context,
 
           if (check)
             {
+              gint64 begin_time_nsec G_GNUC_UNUSED;
+
               /* If the check function is set, call it. */
               context->in_check_or_prepare++;
               UNLOCK_CONTEXT (context);
 
+              begin_time_nsec = G_TRACE_CURRENT_TIME;
+
               result = (* check) (source);
 
               TRACE (GLIB_MAIN_AFTER_CHECK (source, check, result));
+
+              g_trace_mark (begin_time_nsec, G_TRACE_CURRENT_TIME - begin_time_nsec,
+                            "GLib", "GSource.check",
+                            "%s ⇒ %s",
+                            (g_source_get_name (source) != NULL) ? g_source_get_name (source) : "(unnamed)",
+                            result ? "dispatch" : "ignore");
 
               LOCK_CONTEXT (context);
               context->in_check_or_prepare--;
@@ -4004,8 +4040,11 @@ g_main_context_iterate (GMainContext *context,
   gboolean some_ready;
   gint nfds, allocated_nfds;
   GPollFD *fds = NULL;
+  gint64 begin_time_nsec G_GNUC_UNUSED;
 
   UNLOCK_CONTEXT (context);
+
+  begin_time_nsec = G_TRACE_CURRENT_TIME;
 
   if (!g_main_context_acquire (context))
     {
@@ -4060,6 +4099,10 @@ g_main_context_iterate (GMainContext *context,
     g_main_context_dispatch (context);
   
   g_main_context_release (context);
+
+  g_trace_mark (begin_time_nsec, G_TRACE_CURRENT_TIME - begin_time_nsec,
+                "GLib", "g_main_context_iterate",
+                "Context %p, %s ⇒ %s", context, block ? "blocking" : "non-blocking", some_ready ? "dispatched" : "nothing");
 
   LOCK_CONTEXT (context);
 
