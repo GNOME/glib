@@ -1012,6 +1012,15 @@
 	fun:g_get_charset
 }
 
+{
+	g_get_charset_calloc
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:calloc
+	...
+	fun:g_get_charset
+}
+
 # Global unused thread queue
 {
 	g_thread_pool_unused_thread_queue
