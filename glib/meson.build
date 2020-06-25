@@ -7,6 +7,12 @@ if not use_system_pcre
   subdir('pcre')
 endif
 
+# libsysprof-capture support
+libsysprof_capture_dep = dependency('sysprof-capture-3',
+  required: get_option('sysprof'),
+)
+glib_conf.set('HAVE_SYSPROF', libsysprof_capture_dep.found())
+
 # TODO: gnulib_objects, pcre_objects and pcre_deps are a workaround for
 # <https://github.com/mesonbuild/meson/issues/3934> and
 # <https://github.com/mesonbuild/meson/issues/3937>. When we can depend
@@ -275,6 +281,8 @@ glib_sources = files(
   'gthreadpool.c',
   'gtimer.c',
   'gtimezone.c',
+  'gtrace.c',
+  'gtrace-private.h',
   'gtranslit.c',
   'gtrashstack.c',
   'gtree.c',
@@ -357,7 +365,7 @@ libglib = library('glib-2.0',
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
-  dependencies : pcre_deps + [thread_dep, librt] + libintl_deps + libiconv + platform_deps + gnulib_libm_dependency,
+  dependencies : pcre_deps + [thread_dep, librt] + libintl_deps + libiconv + platform_deps + gnulib_libm_dependency + [libsysprof_capture_dep],
   c_args : glib_c_args,
   objc_args : glib_c_args,
 )
