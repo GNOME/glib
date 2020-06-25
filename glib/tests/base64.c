@@ -9,7 +9,7 @@ static guchar data[DATA_SIZE];
 
 static void
 test_incremental (gboolean line_break,
-                  gint     length)
+                  guint    length)
 {
   char *p;
   gsize len, decoded_len, max, input_len, block_size;

@@ -136,8 +136,8 @@ check_integrity (SequenceInfo *info)
     g_printerr ("%d %d\n",
              g_sequence_get_length (info->sequence), info->n_items);
 #endif
-  g_assert (info->n_items == g_queue_get_length (info->queue));
-  g_assert (g_sequence_get_length (info->sequence) == info->n_items);
+  g_assert_cmpint (info->n_items, ==, g_queue_get_length (info->queue));
+  g_assert_cmpint (g_sequence_get_length (info->sequence), ==, info->n_items);
 
   iter = g_sequence_get_begin_iter (info->sequence);
   list = info->queue->head;
@@ -145,17 +145,17 @@ check_integrity (SequenceInfo *info)
   while (iter != g_sequence_get_end_iter (info->sequence))
     {
       Item *item;
-      g_assert (list->data == iter);
+      g_assert_true (list->data == iter);
       item = get_item (list->data);
-      g_assert (item->seq == info);
+      g_assert_true (item->seq == info);
 
       iter = g_sequence_iter_next (iter);
       list = list->next;
       i++;
     }
 
-  g_assert (info->n_items == g_queue_get_length (info->queue));
-  g_assert (g_sequence_get_length (info->sequence) == info->n_items);
+  g_assert_cmpint (info->n_items, ==, g_queue_get_length (info->queue));
+  g_assert_cmpint (g_sequence_get_length (info->sequence), ==, info->n_items);
 }
 
 static gpointer
@@ -551,7 +551,8 @@ run_random_tests (gconstpointer d)
           {
             int i;
 
-            g_assert (g_queue_get_length (seq->queue) == g_sequence_get_length (seq->sequence));
+            g_assert_cmpint (g_queue_get_length (seq->queue), ==,
+                             g_sequence_get_length (seq->sequence));
 
             for (i = 0; i < 10; ++i)
               {
@@ -1387,7 +1388,7 @@ int
 main (int argc,
       char **argv)
 {
-  gint i;
+  guint i;
   guint32 seed;
   gchar *path;
 

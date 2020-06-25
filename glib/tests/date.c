@@ -735,7 +735,7 @@ int
 main (int argc, char** argv)
 {
   gchar *path;
-  gint i;
+  guint i;
 
   /* Try to get all the leap year cases. */
   int check_years[] = {
