@@ -759,6 +759,7 @@ g_task_report_error (gpointer             source_object,
 
   task = g_task_new (source_object, NULL, callback, callback_data);
   g_task_set_source_tag (task, source_tag);
+  g_task_set_name (task, G_STRFUNC);
   g_task_return_error (task, error);
   g_object_unref (task);
 }
@@ -982,8 +983,8 @@ g_task_set_return_on_cancel (GTask    *task,
  * Since: 2.36
  */
 void
-g_task_set_source_tag (GTask    *task,
-                       gpointer  source_tag)
+(g_task_set_source_tag) (GTask    *task,
+                         gpointer  source_tag)
 {
   g_return_if_fail (G_IS_TASK (task));
 

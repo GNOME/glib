@@ -576,6 +576,7 @@ lookup_by_name_async_real (GResolver                *resolver,
 
       task = g_task_new (resolver, cancellable, callback, user_data);
       g_task_set_source_tag (task, lookup_by_name_async_real);
+      g_task_set_name (task, "[gio] resolver lookup");
       if (addrs)
         g_task_return_pointer (task, addrs, (GDestroyNotify) g_resolver_free_addresses);
       else
@@ -595,6 +596,7 @@ lookup_by_name_async_real (GResolver                *resolver,
                            _("Invalid hostname"));
       task = g_task_new (resolver, cancellable, callback, user_data);
       g_task_set_source_tag (task, lookup_by_name_async_real);
+      g_task_set_name (task, "[gio] resolver lookup");
       g_task_return_error (task, error);
       g_object_unref (task);
       return;
@@ -613,6 +615,7 @@ lookup_by_name_async_real (GResolver                *resolver,
                        _("%s not implemented"), "lookup_by_name_with_flags_async");
           task = g_task_new (resolver, cancellable, callback, user_data);
           g_task_set_source_tag (task, lookup_by_name_async_real);
+          g_task_set_name (task, "[gio] resolver lookup");
           g_task_return_error (task, error);
           g_object_unref (task);
         }
