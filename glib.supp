@@ -793,6 +793,26 @@
 	fun:g_object_new_valist
 }
 
+# False positive
+{
+	g_object_new
+	Memcheck:Leak
+	match-leak-kinds:reachable,possible
+	...
+	fun:g_type_class_ref
+	fun:g_object_new_with_properties
+	fun:g_object_new
+}
+
+{
+	_dl_init
+	Memcheck:Leak
+	match-leak-kinds:reachable,possible
+	...
+	fun:call_init
+	fun:_dl_init
+}
+
 # g_set_user_dirs() deliberately leaks the previous cached g_get_user_*() values.
 # These will not all be reachable on exit.
 {
