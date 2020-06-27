@@ -1195,7 +1195,7 @@ g_datalist_set_flags (GData **datalist,
   g_return_if_fail (datalist != NULL);
   g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
 
-  g_atomic_pointer_or (datalist, (gsize)flags);
+  g_atomic_pointer_or ((guintptr *) datalist, (guintptr) flags);
 }
 
 /**
@@ -1218,7 +1218,7 @@ g_datalist_unset_flags (GData **datalist,
   g_return_if_fail (datalist != NULL);
   g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
 
-  g_atomic_pointer_and (datalist, ~(gsize)flags);
+  g_atomic_pointer_and ((guintptr *) datalist, ~(guintptr) flags);
 }
 
 /**
