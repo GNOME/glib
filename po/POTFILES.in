@@ -196,6 +196,7 @@ glib/gshell.c
 glib/gspawn.c
 glib/gspawn-win32.c
 glib/gstrfuncs.c
+glib/guri.c
 glib/gutf8.c
 glib/gutils.c
 glib/guuid.c
