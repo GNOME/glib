@@ -452,13 +452,22 @@ static GMainContext *glib_worker_context;
  * Both variables must be accessed using atomic primitives, unless those atomic
  * primitives are implemented using fallback mutexes (as those aren’t safe in
  * an interrupt context).
+ *
+ * If using atomic primitives, the variables must be of type `int` (so they’re
+ * the right size for the atomic primitives). Otherwise, use `sig_atomic_t` if
+ * it’s available, which is guaranteed to be async-signal-safe (but it’s *not*
+ * guaranteed to be thread-safe, which is why we use atomic primitives if
+ * possible).
+ *
+ * Typically, `sig_atomic_t` is a typedef to `int`, but that’s not the case on
+ * FreeBSD, so we can’t use it unconditionally if it’s defined.
  */
-#ifdef HAVE_SIG_ATOMIC_T
-static volatile sig_atomic_t unix_signal_pending[NSIG];
-static volatile sig_atomic_t any_unix_signal_pending;
-#else
+#if (defined(G_ATOMIC_LOCK_FREE) && defined(__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4)) || !defined(HAVE_SIG_ATOMIC_T)
 static volatile int unix_signal_pending[NSIG];
 static volatile int any_unix_signal_pending;
+#else
+static volatile sig_atomic_t unix_signal_pending[NSIG];
+static volatile sig_atomic_t any_unix_signal_pending;
 #endif
 
 /* Guards all the data below */
