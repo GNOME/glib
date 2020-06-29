@@ -31,6 +31,15 @@ typedef struct
   guchar           *data;
   gsize             size;
   gsize             depth;  /* same semantics as GVariant.depth */
+
+  /* If ordered_offsets_up_to == n this means that all the frame offsets up to and
+   * including the frame offset determining the end of element n are in order.
+   * This guarantees that the bytes of element n don't overlap with any previous
+   * element.
+   *
+   * This is both read and set by g_variant_serialised_get_child for arrays of
+   * non-fixed-width types */
+  gsize             ordered_offsets_up_to;
 } GVariantSerialised;
 
 /* deserialization */

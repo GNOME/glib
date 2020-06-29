@@ -1,6 +1,7 @@
 /*
  * Copyright © 2007, 2008 Ryan Lortie
  * Copyright © 2010 Codethink Limited
+ * Copyright © 2020 William Manley
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -266,6 +267,7 @@ gvs_fixed_sized_maybe_get_child (GVariantSerialised value,
   value.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_ref (value.type_info);
   value.depth++;
+  value.ordered_offsets_up_to = 0;
 
   return value;
 }
@@ -297,7 +299,7 @@ gvs_fixed_sized_maybe_serialise (GVariantSerialised        value,
 {
   if (n_children)
     {
-      GVariantSerialised child = { NULL, value.data, value.size, value.depth + 1 };
+      GVariantSerialised child = { NULL, value.data, value.size, value.depth + 1, 0 };
 
       gvs_filler (&child, children[0]);
     }
@@ -319,6 +321,7 @@ gvs_fixed_sized_maybe_is_normal (GVariantSerialised value)
       /* proper element size: "Just".  recurse to the child. */
       value.type_info = g_variant_type_info_element (value.type_info);
       value.depth++;
+      value.ordered_offsets_up_to = 0;
 
       return g_variant_serialised_is_normal (value);
     }
@@ -360,6 +363,7 @@ gvs_variable_sized_maybe_get_child (GVariantSerialised value,
     value.data = NULL;
 
   value.depth++;
+  value.ordered_offsets_up_to = 0;
 
   return value;
 }
@@ -390,7 +394,7 @@ gvs_variable_sized_maybe_serialise (GVariantSerialised        value,
 {
   if (n_children)
     {
-      GVariantSerialised child = { NULL, value.data, value.size - 1, value.depth + 1 };
+      GVariantSerialised child = { NULL, value.data, value.size - 1, value.depth + 1, 0 };
 
       /* write the data for the child.  */
       gvs_filler (&child, children[0]);
@@ -410,6 +414,7 @@ gvs_variable_sized_maybe_is_normal (GVariantSerialised value)
   value.type_info = g_variant_type_info_element (value.type_info);
   value.size--;
   value.depth++;
+  value.ordered_offsets_up_to = 0;
 
   return g_variant_serialised_is_normal (value);
 }
@@ -693,6 +698,32 @@ gvs_variable_sized_array_n_children (GVariantSerialised value)
   return gvs_variable_sized_array_get_frame_offsets (value).length;
 }
 
+/* Find the index of the first out-of-order element in @data, assuming that
+ * @data is an array of elements of given @type, starting at index @start and
+ * containing a further @len-@start elements. */
+#define DEFINE_FIND_UNORDERED(type) \
+  static gsize \
+  find_unordered_##type (const guint8 *data, gsize start, gsize len) \
+  { \
+    gsize off; \
+    type current, previous; \
+    \
+    memcpy (&previous, data + start * sizeof (current), sizeof (current)); \
+    for (off = (start + 1) * sizeof (current); off < len * sizeof (current); off += sizeof (current)) \
+      { \
+        memcpy (&current, data + off, sizeof (current)); \
+        if (current < previous) \
+          break; \
+        previous = current; \
+      } \
+    return off / sizeof (current) - 1; \
+  }
+
+DEFINE_FIND_UNORDERED (guint8);
+DEFINE_FIND_UNORDERED (guint16);
+DEFINE_FIND_UNORDERED (guint32);
+DEFINE_FIND_UNORDERED (guint64);
+
 static GVariantSerialised
 gvs_variable_sized_array_get_child (GVariantSerialised value,
                                     gsize              index_)
@@ -707,6 +738,49 @@ gvs_variable_sized_array_get_child (GVariantSerialised value,
   child.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_ref (child.type_info);
   child.depth = value.depth + 1;
+
+  /* If the requested @index_ is beyond the set of indices whose framing offsets
+   * have been checked, check the remaining offsets to see whether they’re
+   * normal (in order, no overlapping array elements). */
+  if (index_ > value.ordered_offsets_up_to)
+    {
+      switch (offsets.offset_size)
+        {
+        case 1:
+          {
+            value.ordered_offsets_up_to = find_unordered_guint8 (
+                offsets.array, value.ordered_offsets_up_to, index_ + 1);
+            break;
+          }
+        case 2:
+          {
+            value.ordered_offsets_up_to = find_unordered_guint16 (
+                offsets.array, value.ordered_offsets_up_to, index_ + 1);
+            break;
+          }
+        case 4:
+          {
+            value.ordered_offsets_up_to = find_unordered_guint32 (
+                offsets.array, value.ordered_offsets_up_to, index_ + 1);
+            break;
+          }
+        case 8:
+          {
+            value.ordered_offsets_up_to = find_unordered_guint64 (
+                offsets.array, value.ordered_offsets_up_to, index_ + 1);
+            break;
+          }
+        default:
+          /* gvs_get_offset_size() only returns maximum 8 */
+          g_assert_not_reached ();
+        }
+    }
+
+  if (index_ > value.ordered_offsets_up_to)
+    {
+      /* Offsets are invalid somewhere, so return an empty child. */
+      return child;
+    }
 
   if (index_ > 0)
     {
@@ -841,6 +915,9 @@ gvs_variable_sized_array_is_normal (GVariantSerialised value)
     }
 
   g_assert (offset == offsets.data_size);
+
+  /* All offsets have now been checked. */
+  value.ordered_offsets_up_to = G_MAXSIZE;
 
   return TRUE;
 }
@@ -1074,7 +1151,7 @@ gvs_tuple_is_normal (GVariantSerialised value)
   for (i = 0; i < length; i++)
     {
       const GVariantMemberInfo *member_info;
-      GVariantSerialised child;
+      GVariantSerialised child = { 0, };
       gsize fixed_size;
       guint alignment;
       gsize end;
@@ -1133,6 +1210,9 @@ gvs_tuple_is_normal (GVariantSerialised value)
 
       offset = end;
     }
+
+  /* All element bounds have been checked above. */
+  value.ordered_offsets_up_to = G_MAXSIZE;
 
   {
     gsize fixed_size;
