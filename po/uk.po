@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-06-25 12:41+0000\n"
-"PO-Revision-Date: 2020-06-25 22:18+0300\n"
+"POT-Creation-Date: 2020-06-29 11:24+0000\n"
+"PO-Revision-Date: 2020-06-29 16:05+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -5892,6 +5892,51 @@ msgstr "Число «%s» не належить до діапазону [%s, %s]
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "«%s» не є числом без знаку"
+
+#: glib/guri.c:263
+#, c-format
+#| msgid " (invalid encoding)"
+msgid "Invalid %-encoding in URI"
+msgstr "Некоректне %-eкодування в адресі"
+
+#: glib/guri.c:299
+msgid "Non-UTF-8 characters in URI"
+msgstr "Символи поза UTF-8 в адресі"
+
+#: glib/guri.c:400
+#, c-format
+msgid "Invalid IPv6 address '%.*s' in URI"
+msgstr "Некоректна IPv6-адреса «%.*s» в адресі"
+
+#: glib/guri.c:462
+#, c-format
+msgid "Illegal encoded IP address '%.*s' in URI"
+msgstr "Помилкове кодування IP-адреси «%.*s» в адресі"
+
+#: glib/guri.c:496 glib/guri.c:508
+#, c-format
+msgid "Could not parse port '%.*s' in URI"
+msgstr "Не вдалося обробити запис порту «%.*s» в адресі"
+
+#: glib/guri.c:515
+#, c-format
+msgid "Port '%.*s' in URI is out of range"
+msgstr "Порт «%.*s» в адресі не належить до припустимого діапазону"
+
+#: glib/guri.c:990
+#, c-format
+#| msgid "The pathname “%s” is not an absolute path"
+msgid "URI '%s' is not an absolute URI"
+msgstr "Адреса «%s» не є абсолютною адресою"
+
+#: glib/guri.c:996
+#, c-format
+msgid "URI '%s' has no host component"
+msgstr "В адресі «%s» немає компонента вузла"
+
+#: glib/guri.c:1174
+msgid "URI is not absolute, and no base URI was provided"
+msgstr "Адреса не є абсолютною, і не вказано базової адреси"
 
 #: glib/gutf8.c:817
 msgid "Failed to allocate memory"
