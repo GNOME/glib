@@ -1,5 +1,6 @@
 /*
  * Copyright © 2010 Codethink Limited
+ * Copyright © 2020 William Manley
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1279,6 +1280,7 @@ random_instance_filler (GVariantSerialised *serialised,
     serialised->size = instance->size;
 
   serialised->depth = 0;
+  serialised->ordered_offsets_up_to = 0;
 
   g_assert_true (serialised->type_info == instance->type_info);
   g_assert_cmpuint (serialised->size, ==, instance->size);
@@ -5023,6 +5025,47 @@ test_normal_checking_array_offsets (void)
   g_variant_unref (variant);
 }
 
+/* This is a regression test that we can't have non-normal values that take up
+ * significantly more space than the normal equivalent, by specifying the
+ * offset table entries so that array elements overlap.
+ *
+ * See https://gitlab.gnome.org/GNOME/glib/-/issues/2121#note_832242 */
+static void
+test_normal_checking_array_offsets2 (void)
+{
+  const guint8 data[] = {
+    'h', 'i', '\0',
+    0x03, 0x00, 0x03,
+    0x06, 0x00, 0x06,
+    0x09, 0x00, 0x09,
+    0x0c, 0x00, 0x0c,
+    0x0f, 0x00, 0x0f,
+    0x12, 0x00, 0x12,
+    0x15, 0x00, 0x15,
+  };
+  gsize size = sizeof (data);
+  const GVariantType *aaaaaaas = G_VARIANT_TYPE ("aaaaaaas");
+  GVariant *variant = NULL;
+  GVariant *normal_variant = NULL;
+  GVariant *expected = NULL;
+
+  variant = g_variant_new_from_data (aaaaaaas, data, size, FALSE, NULL, NULL);
+  g_assert_nonnull (variant);
+
+  normal_variant = g_variant_get_normal_form (variant);
+  g_assert_nonnull (normal_variant);
+  g_assert_cmpuint (g_variant_get_size (normal_variant), <=, size * 2);
+
+  expected = g_variant_new_parsed (
+      "[[[[[[['hi', '', ''], [], []], [], []], [], []], [], []], [], []], [], []]");
+  g_assert_cmpvariant (expected, variant);
+  g_assert_cmpvariant (expected, normal_variant);
+
+  g_variant_unref (expected);
+  g_variant_unref (normal_variant);
+  g_variant_unref (variant);
+}
+
 /* Test that a tuple with invalidly large values in its offset table is
  * normalised successfully without looping infinitely. */
 static void
@@ -5190,6 +5233,8 @@ main (int argc, char **argv)
                    test_normal_checking_tuples);
   g_test_add_func ("/gvariant/normal-checking/array-offsets",
                    test_normal_checking_array_offsets);
+  g_test_add_func ("/gvariant/normal-checking/array-offsets2",
+                   test_normal_checking_array_offsets2);
   g_test_add_func ("/gvariant/normal-checking/tuple-offsets",
                    test_normal_checking_tuple_offsets);
   g_test_add_func ("/gvariant/normal-checking/empty-object-path",

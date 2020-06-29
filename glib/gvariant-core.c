@@ -65,6 +65,7 @@ struct _GVariant
     {
       GBytes *bytes;
       gconstpointer data;
+      gsize ordered_offsets_up_to;
     } serialised;
 
     struct
@@ -161,6 +162,24 @@ struct _GVariant
  *                %NULL.  For all other calls, the effect should be as
  *                if .data pointed to the appropriate number of nul
  *                bytes.
+ *
+ *     .ordered_offsets_up_to: If ordered_offsets_up_to == n this means that all
+ *                             the frame offsets up to and including the frame
+ *                             offset determining the end of element n are in
+ *                             order. This guarantees that the bytes of element
+ *                             n don't overlap with any previous element.
+ *
+ *                             For trusted data this is set to G_MAXSIZE and we
+ *                             don't check that the frame offsets are in order.
+ *
+ *                             Note: This doesn't imply the offsets are good in
+ *                             any way apart from their ordering.  In particular
+ *                             offsets may be out of bounds for this value or
+ *                             may imply that the data overlaps the frame
+ *                             offsets themselves.
+ *
+ *                             This field is only relevant for arrays of non
+ *                             fixed width types.
  *
  *   .tree: Only valid when the instance is in tree form.
  *
@@ -365,6 +384,7 @@ g_variant_to_serialised (GVariant *value)
       (gpointer) value->contents.serialised.data,
       value->size,
       value->depth,
+      value->contents.serialised.ordered_offsets_up_to,
     };
     return serialised;
   }
@@ -396,6 +416,7 @@ g_variant_serialise (GVariant *value,
   serialised.size = value->size;
   serialised.data = data;
   serialised.depth = value->depth;
+  serialised.ordered_offsets_up_to = 0;
 
   children = (gpointer *) value->contents.tree.children;
   n_children = value->contents.tree.n_children;
@@ -439,6 +460,15 @@ g_variant_fill_gvs (GVariantSerialised *serialised,
   g_assert (serialised->size == value->size);
   serialised->depth = value->depth;
 
+  if (value->state & STATE_SERIALISED)
+    {
+      serialised->ordered_offsets_up_to = value->contents.serialised.ordered_offsets_up_to;
+    }
+  else
+    {
+      serialised->ordered_offsets_up_to = 0;
+    }
+
   if (serialised->data)
     /* g_variant_store() is a public API, so it
      * it will reacquire the lock if it needs to.
@@ -481,6 +511,7 @@ g_variant_ensure_serialised (GVariant *value)
       bytes = g_bytes_new_take (data, value->size);
       value->contents.serialised.data = g_bytes_get_data (bytes, NULL);
       value->contents.serialised.bytes = bytes;
+      value->contents.serialised.ordered_offsets_up_to = G_MAXSIZE;
       value->state |= STATE_SERIALISED;
     }
 }
@@ -561,6 +592,7 @@ g_variant_new_from_bytes (const GVariantType *type,
   serialised.type_info = value->type_info;
   serialised.data = (guchar *) g_bytes_get_data (bytes, &serialised.size);
   serialised.depth = 0;
+  serialised.ordered_offsets_up_to = trusted ? G_MAXSIZE : 0;
 
   if (!g_variant_serialised_check (serialised))
     {
@@ -610,6 +642,8 @@ g_variant_new_from_bytes (const GVariantType *type,
     {
       value->contents.serialised.data = g_bytes_get_data (bytes, &value->size);
     }
+
+  value->contents.serialised.ordered_offsets_up_to = trusted ? G_MAXSIZE : 0;
 
   g_clear_pointer (&owned_bytes, g_bytes_unref);
 
@@ -1130,6 +1164,7 @@ g_variant_get_child_value (GVariant *value,
     child->contents.serialised.bytes =
       g_bytes_ref (value->contents.serialised.bytes);
     child->contents.serialised.data = s_child.data;
+    child->contents.serialised.ordered_offsets_up_to = s_child.ordered_offsets_up_to;
 
     return child;
   }
