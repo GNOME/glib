@@ -463,11 +463,11 @@ void    g_test_trap_assertions          (const char     *domain,
                                          guint64         assertion_flags, /* 0-pass, 1-fail, 2-outpattern, 4-errpattern */
                                          const char     *pattern);
 GLIB_AVAILABLE_IN_ALL
-void    g_assertion_message             (const char     *domain,
-                                         const char     *file,
-                                         int             line,
-                                         const char     *func,
-                                         const char     *message);
+void g_assertion_message (const char *domain,
+                          const char *file,
+                          int line,
+                          const char *func,
+                          const char *message) G_ANALYZER_NORETURN;
 GLIB_AVAILABLE_IN_ALL
 void    g_assertion_message_expr        (const char     *domain,
                                          const char     *file,
@@ -475,33 +475,33 @@ void    g_assertion_message_expr        (const char     *domain,
                                          const char     *func,
                                          const char     *expr) G_GNUC_NORETURN;
 GLIB_AVAILABLE_IN_ALL
-void    g_assertion_message_cmpstr      (const char     *domain,
-                                         const char     *file,
-                                         int             line,
-                                         const char     *func,
-                                         const char     *expr,
-                                         const char     *arg1,
-                                         const char     *cmp,
-                                         const char     *arg2);
+void g_assertion_message_cmpstr (const char *domain,
+                                 const char *file,
+                                 int line,
+                                 const char *func,
+                                 const char *expr,
+                                 const char *arg1,
+                                 const char *cmp,
+                                 const char *arg2) G_ANALYZER_NORETURN;
 GLIB_AVAILABLE_IN_ALL
-void    g_assertion_message_cmpnum      (const char     *domain,
-                                         const char     *file,
-                                         int             line,
-                                         const char     *func,
-                                         const char     *expr,
-                                         long double     arg1,
-                                         const char     *cmp,
-                                         long double     arg2,
-                                         char            numtype);
+void g_assertion_message_cmpnum (const char *domain,
+                                 const char *file,
+                                 int line,
+                                 const char *func,
+                                 const char *expr,
+                                 long double arg1,
+                                 const char *cmp,
+                                 long double arg2,
+                                 char numtype) G_ANALYZER_NORETURN;
 GLIB_AVAILABLE_IN_ALL
-void    g_assertion_message_error       (const char     *domain,
-                                         const char     *file,
-                                         int             line,
-                                         const char     *func,
-                                         const char     *expr,
-                                         const GError   *error,
-                                         GQuark          error_domain,
-                                         int             error_code);
+void g_assertion_message_error (const char *domain,
+                                const char *file,
+                                int line,
+                                const char *func,
+                                const char *expr,
+                                const GError *error,
+                                GQuark error_domain,
+                                int error_code) G_ANALYZER_NORETURN;
 GLIB_AVAILABLE_IN_ALL
 void    g_test_add_vtable               (const char     *testpath,
                                          gsize           data_size,
