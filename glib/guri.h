@@ -227,6 +227,8 @@ GUriFlags    g_uri_get_flags         (GUri          *uri);
  * @G_URI_PARAMS_NONE: No flags set.
  * @G_URI_PARAMS_CASE_INSENSITIVE: whether parameter names are case insensitive.
  * @G_URI_PARAMS_DECODE: decode `%`-encoded attributes and values.
+ * @G_URI_PARAMS_DECODE_WWW_FORM: decode `%`-encoded attributes and values, and
+ * replace `+` with space character.
  *
  * Since: 2.66
  */
@@ -235,6 +237,7 @@ typedef enum {
   G_URI_PARAMS_NONE             = 0,
   G_URI_PARAMS_CASE_INSENSITIVE = 1 << 0,
   G_URI_PARAMS_DECODE           = 1 << 1,
+  G_URI_PARAMS_DECODE_WWW_FORM  = G_URI_PARAMS_DECODE + (1 << 2),
 } GUriParamsFlags;
 
 GLIB_AVAILABLE_IN_2_66
