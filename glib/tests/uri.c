@@ -1271,7 +1271,7 @@ test_uri_parse_params (gconstpointer test_data)
       /* Inputs */
       const gchar *uri;
       gchar *separators;
-      gboolean case_insensitive;
+      GUriParamsFlags flags;
       /* Outputs */
       gssize expected_n_params;  /* -1 => error expected */
       /* key, value, key, value, …, limited to length 2*expected_n_params */
@@ -1279,14 +1279,14 @@ test_uri_parse_params (gconstpointer test_data)
     }
   tests[] =
     {
-      { "", "&", FALSE, 0, { NULL, }},
-      { "p1=foo&p2=bar", "&", FALSE, 2, { "p1", "foo", "p2", "bar" }},
-      { "p1=foo&p2=bar;p3=baz", "&;", FALSE, 3, { "p1", "foo", "p2", "bar", "p3", "baz" }},
-      { "p1=foo&&P1=bar", "&", FALSE, -1, { NULL, }},
-      { "%00=foo", "&", FALSE, -1, { NULL, }},
-      { "p1=%00", "&", FALSE, -1, { NULL, }},
-      { "p1=foo&P1=bar", "&", TRUE, 1, { "p1", "bar", NULL, }},
-      { "=%", "&", FALSE, 1, { "", "%", NULL, }},
+      { "", "&", G_URI_PARAMS_NONE, 0, { NULL, }},
+      { "p1=foo&p2=bar", "&", G_URI_PARAMS_NONE, 2, { "p1", "foo", "p2", "bar" }},
+      { "p1=foo&p2=bar;p3=baz", "&;", G_URI_PARAMS_NONE, 3, { "p1", "foo", "p2", "bar", "p3", "baz" }},
+      { "p1=foo&&P1=bar", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
+      { "%00=foo", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
+      { "p1=%00", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
+      { "p1=foo&P1=bar", "&", G_URI_PARAMS_CASE_INSENSITIVE, 1, { "p1", "bar", NULL, }},
+      { "=%", "&", G_URI_PARAMS_NONE, 1, { "", "%", NULL, }},
     };
   gsize i;
 
@@ -1316,7 +1316,7 @@ test_uri_parse_params (gconstpointer test_data)
           uri = g_memdup (tests[i].uri, uri_len);
         }
 
-      params = g_uri_parse_params (uri, uri_len, tests[i].separators, tests[i].case_insensitive);
+      params = g_uri_parse_params (uri, uri_len, tests[i].separators, tests[i].flags);
 
       if (tests[i].expected_n_params < 0)
         {
