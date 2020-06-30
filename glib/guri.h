@@ -222,11 +222,24 @@ const gchar *g_uri_get_fragment      (GUri          *uri);
 GLIB_AVAILABLE_IN_2_66
 GUriFlags    g_uri_get_flags         (GUri          *uri);
 
+/**
+ * GUriParamsFlags:
+ * @G_URI_PARAMS_NONE: No flags set.
+ * @G_URI_PARAMS_CASE_INSENSITIVE: whether parameter names are case insensitive.
+ *
+ * Since: 2.66
+ */
+GLIB_AVAILABLE_TYPE_IN_2_66
+typedef enum {
+  G_URI_PARAMS_NONE             = 0,
+  G_URI_PARAMS_CASE_INSENSITIVE = 1 << 0,
+} GUriParamsFlags;
+
 GLIB_AVAILABLE_IN_2_66
-GHashTable * g_uri_parse_params      (const gchar   *params,
-                                      gssize         length,
-                                      const gchar   *separators,
-                                      gboolean       case_insensitive);
+GHashTable *g_uri_parse_params       (const gchar    *params,
+                                      gssize          length,
+                                      const gchar    *separators,
+                                      GUriParamsFlags flags);
 
 /**
  * G_URI_ERROR:
