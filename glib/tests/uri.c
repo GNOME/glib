@@ -1191,24 +1191,31 @@ test_uri_parse_params (void)
 {
   GHashTable *params;
 
-  params = g_uri_parse_params ("", 0, '&', FALSE);
+  params = g_uri_parse_params ("", 0, "&", FALSE);
   g_assert_cmpint (g_hash_table_size (params), ==, 0);
   g_hash_table_unref (params);
 
-  params = g_uri_parse_params ("p1=foo&p2=bar", -1, '&', FALSE);
+  params = g_uri_parse_params ("p1=foo&p2=bar", -1, "&", FALSE);
   g_assert_cmpint (g_hash_table_size (params), ==, 2);
   g_assert_cmpstr (g_hash_table_lookup (params, "p1"), ==, "foo");
   g_assert_cmpstr (g_hash_table_lookup (params, "p2"), ==, "bar");
   g_hash_table_unref (params);
 
-  params = g_uri_parse_params ("p1=foo&&P1=bar", -1, '&', FALSE);
+  params = g_uri_parse_params ("p1=foo;p2=bar&p3=baz", -1, "&;", FALSE);
+  g_assert_cmpint (g_hash_table_size (params), ==, 3);
+  g_assert_cmpstr (g_hash_table_lookup (params, "p1"), ==, "foo");
+  g_assert_cmpstr (g_hash_table_lookup (params, "p2"), ==, "bar");
+  g_assert_cmpstr (g_hash_table_lookup (params, "p3"), ==, "baz");
+  g_hash_table_unref (params);
+
+  params = g_uri_parse_params ("p1=foo&&P1=bar", -1, "&", FALSE);
   g_assert_null (params);
-  params = g_uri_parse_params ("%00=foo", -1, '&', FALSE);
+  params = g_uri_parse_params ("%00=foo", -1, "&", FALSE);
   g_assert_null (params);
-  params = g_uri_parse_params ("p1=%00", -1, '&', FALSE);
+  params = g_uri_parse_params ("p1=%00", -1, "&", FALSE);
   g_assert_null (params);
 
-  params = g_uri_parse_params ("p1=foo&P1=bar", -1, '&', TRUE);
+  params = g_uri_parse_params ("p1=foo&P1=bar", -1, "&", TRUE);
   g_assert_cmpint (g_hash_table_size (params), ==, 1);
   g_assert_cmpstr (g_hash_table_lookup (params, "p1"), ==, "bar");
   g_hash_table_unref (params);
