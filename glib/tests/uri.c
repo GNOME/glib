@@ -1208,9 +1208,9 @@ test_uri_parse_params (void)
   g_assert_cmpstr (g_hash_table_lookup (params, "p3"), ==, "baz");
   g_hash_table_unref (params);
 
-  params = g_uri_parse_params ("foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", -1, "&", G_URI_PARAMS_DECODE);
+  params = g_uri_parse_params ("foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", -1, "&", G_URI_PARAMS_DECODE_WWW_FORM);
   g_assert_cmpint (g_hash_table_size (params), ==, 2);
-  g_assert_cmpstr (g_hash_table_lookup (params, "foo"), ==, "bar+&+baz");
+  g_assert_cmpstr (g_hash_table_lookup (params, "foo"), ==, "bar & baz");
   g_assert_cmpstr (g_hash_table_lookup (params, "saisons"), ==, "Été+hiver");
   g_hash_table_unref (params);
 
