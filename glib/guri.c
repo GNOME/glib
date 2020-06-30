@@ -1764,7 +1764,7 @@ g_strnpbrk (const gchar *s, const gchar *separators, gsize n)
  * @length: the length of @params, or -1 if it is NUL-terminated
  * @separators: the separator character set between parameters.
  *   (usually ";", but sometimes "&;")
- * @case_insensitive: whether parameter names are case insensitive
+ * @flags: flags to modify the way the parameters are handled.
  *
  * Many URI schemes include one or more attribute/value pairs as part of the URI
  * value. This method can be used to parse them into a hash table.
@@ -1789,7 +1789,7 @@ GHashTable *
 g_uri_parse_params (const gchar     *params,
                     gssize           length,
                     const gchar     *separators,
-                    gboolean         case_insensitive)
+                    GUriParamsFlags  flags)
 {
   GHashTable *hash;
   const gchar *end, *attr, *attr_end, *value, *value_end;
@@ -1799,7 +1799,7 @@ g_uri_parse_params (const gchar     *params,
   g_return_val_if_fail (length >= -1, NULL);
   g_return_val_if_fail (separators, NULL);
 
-  if (case_insensitive)
+  if (flags & G_URI_PARAMS_CASE_INSENSITIVE)
     {
       hash = g_hash_table_new_full (str_ascii_case_hash,
                                     str_ascii_case_equal,
