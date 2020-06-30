@@ -1191,7 +1191,7 @@ test_uri_parse_params (void)
 {
   GHashTable *params;
 
-  params = g_uri_parse_params ("", G_URI_FLAGS_NONE, '&', FALSE);
+  params = g_uri_parse_params ("", 0, '&', FALSE);
   g_assert_cmpint (g_hash_table_size (params), ==, 0);
   g_hash_table_unref (params);
 
