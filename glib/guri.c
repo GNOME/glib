@@ -1750,8 +1750,11 @@ str_ascii_case_equal (gconstpointer v1,
  * @params: a `%`-encoded string containing "attribute=value"
  *   parameters
  * @length: the length of @params, or -1 if it is NUL-terminated
- * @separator: the separator character between parameters.
- *   (usually ';', but sometimes '&')
+ * @separators: the separator byte character set between parameters. (usually
+ *   "&", but sometimes ";" or both "&;"). Note that this function works on
+ *   bytes not characters, so it can't be used to delimit UTF-8 strings for
+ *   anything but ASCII characters. You may pass an empty set, in which case
+ *   no splitting will occur.
  * @case_insensitive: whether parameter names are case insensitive
  *
  * Many URI schemes include one or more attribute/value pairs as part of the URI
@@ -1759,7 +1762,7 @@ str_ascii_case_equal (gconstpointer v1,
  *
  * The @params string is assumed to still be `%`-encoded, but the returned
  * values will be fully decoded. (Thus it is possible that the returned values
- * may contain '=' or @separator, if the value was encoded in the input.)
+ * may contain '=' or @separators, if the value was encoded in the input.)
  * Invalid `%`-encoding is treated as with the non-%G_URI_FLAGS_PARSE_STRICT
  * rules for g_uri_parse(). (However, if @params is the path or query string
  * from a #GUri that was parsed with %G_URI_FLAGS_PARSE_STRICT and
@@ -1768,7 +1771,7 @@ str_ascii_case_equal (gconstpointer v1,
  *
  * Return value: (transfer full) (element-type utf8 utf8): a hash table of
  * attribute/value pairs. Both names and values will be fully-decoded. If
- * @params cannot be parsed (eg, it contains two @separator characters in a
+ * @params cannot be parsed (eg, it contains two @separators characters in a
  * row), then %NULL is returned.
  *
  * Since: 2.66
@@ -1776,15 +1779,17 @@ str_ascii_case_equal (gconstpointer v1,
 GHashTable *
 g_uri_parse_params (const gchar     *params,
                     gssize           length,
-                    gchar            separator,
+                    const gchar     *separators,
                     gboolean         case_insensitive)
 {
   GHashTable *hash;
-  const gchar *end, *attr, *attr_end, *value, *value_end;
+  const gchar *end, *attr, *attr_end, *value, *value_end, *s;
   gchar *decoded_attr, *decoded_value;
+  guint8 sep_table[256]; /* 1 = index is a separator; 0 otherwise */
 
   g_return_val_if_fail (length == 0 || params != NULL, NULL);
   g_return_val_if_fail (length >= -1, NULL);
+  g_return_val_if_fail (separators != NULL, NULL);
 
   if (case_insensitive)
     {
@@ -1803,12 +1808,19 @@ g_uri_parse_params (const gchar     *params,
   else
     end = params + length;
 
+  memset (sep_table, FALSE, sizeof (sep_table));
+  for (s = separators; *s != '\0'; ++s)
+    sep_table[*(guchar *)s] = TRUE;
+
   attr = params;
   while (attr < end)
     {
-      value_end = memchr (attr, separator, end - attr);
-      if (!value_end)
-        value_end = end;
+      /* Check if each character in @attr is a separator, by indexing by the
+       * character value into the @sep_table, which has value 1 stored at an
+       * index if that index is a separator. */
+      for (value_end = attr; value_end < end; value_end++)
+        if (sep_table[*(guchar *)value_end])
+          break;
 
       attr_end = memchr (attr, '=', value_end - attr);
       if (!attr_end)
