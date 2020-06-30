@@ -1286,6 +1286,8 @@ test_uri_parse_params (gconstpointer test_data)
       { "p1=%00", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
       { "p1=foo&P1=bar", "&", G_URI_PARAMS_CASE_INSENSITIVE, 1, { "p1", "bar", NULL, }},
       { "=%", "&", G_URI_PARAMS_NONE, 1, { "", "%", NULL, }},
+      { "=", "&", G_URI_PARAMS_NONE, 1, { "", "", NULL, }},
+      { "foo", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
     };
   gsize i;
 
