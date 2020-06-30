@@ -1745,13 +1745,27 @@ str_ascii_case_equal (gconstpointer v1,
   return g_ascii_strcasecmp (string1, string2) == 0;
 }
 
+static const gchar *
+g_strnpbrk (const gchar *s, const gchar *separators, gsize n)
+{
+  gsize i;
+
+  for (i = 0; i < n; i++)
+    {
+      if (strchr (separators, s[i]))
+        return s + i;
+    }
+
+  return NULL;
+}
+
 /**
  * g_uri_parse_params:
  * @params: a `%`-encoded string containing "attribute=value"
  *   parameters
  * @length: the length of @params, or -1 if it is NUL-terminated
- * @separator: the separator character between parameters.
- *   (usually ';', but sometimes '&')
+ * @separators: the separator character set between parameters.
+ *   (usually "&", but sometimes ";" or both "&;")
  * @case_insensitive: whether parameter names are case insensitive
  *
  * Many URI schemes include one or more attribute/value pairs as part of the URI
@@ -1759,7 +1773,7 @@ str_ascii_case_equal (gconstpointer v1,
  *
  * The @params string is assumed to still be `%`-encoded, but the returned
  * values will be fully decoded. (Thus it is possible that the returned values
- * may contain '=' or @separator, if the value was encoded in the input.)
+ * may contain '=' or @separators, if the value was encoded in the input.)
  * Invalid `%`-encoding is treated as with the non-%G_URI_FLAGS_PARSE_STRICT
  * rules for g_uri_parse(). (However, if @params is the path or query string
  * from a #GUri that was parsed with %G_URI_FLAGS_PARSE_STRICT and
@@ -1768,7 +1782,7 @@ str_ascii_case_equal (gconstpointer v1,
  *
  * Return value: (transfer full) (element-type utf8 utf8): a hash table of
  * attribute/value pairs. Both names and values will be fully-decoded. If
- * @params cannot be parsed (eg, it contains two @separator characters in a
+ * @params cannot be parsed (eg, it contains two @separators characters in a
  * row), then %NULL is returned.
  *
  * Since: 2.66
@@ -1776,7 +1790,7 @@ str_ascii_case_equal (gconstpointer v1,
 GHashTable *
 g_uri_parse_params (const gchar     *params,
                     gssize           length,
-                    gchar            separator,
+                    const gchar     *separators,
                     gboolean         case_insensitive)
 {
   GHashTable *hash;
@@ -1785,6 +1799,7 @@ g_uri_parse_params (const gchar     *params,
 
   g_return_val_if_fail (length == 0 || params != NULL, NULL);
   g_return_val_if_fail (length >= -1, NULL);
+  g_return_val_if_fail (separators, NULL);
 
   if (case_insensitive)
     {
@@ -1806,7 +1821,7 @@ g_uri_parse_params (const gchar     *params,
   attr = params;
   while (attr < end)
     {
-      value_end = memchr (attr, separator, end - attr);
+      value_end = g_strnpbrk (attr, separators, end - attr);
       if (!value_end)
         value_end = end;
 
