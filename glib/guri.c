@@ -1759,8 +1759,7 @@ g_strnpbrk (const gchar *s, const gchar *separators, gsize n)
 
 /**
  * g_uri_parse_params:
- * @params: a `%`-encoded string containing "attribute=value"
- *   parameters
+ * @params: a string containing "attribute=value" parameters
  * @length: the length of @params, or -1 if it is NUL-terminated
  * @separators: the separator character set between parameters.
  *   (usually ";", but sometimes "&;")
@@ -1769,19 +1768,19 @@ g_strnpbrk (const gchar *s, const gchar *separators, gsize n)
  * Many URI schemes include one or more attribute/value pairs as part of the URI
  * value. This method can be used to parse them into a hash table.
  *
- * The @params string is assumed to still be `%`-encoded, but the returned
- * values will be fully decoded. (Thus it is possible that the returned values
- * may contain '=' or @separators, if the value was encoded in the input.)
- * Invalid `%`-encoding is treated as with the non-%G_URI_FLAGS_PARSE_STRICT
- * rules for g_uri_parse(). (However, if @params is the path or query string
- * from a #GUri that was parsed with %G_URI_FLAGS_PARSE_STRICT and
- * %G_URI_FLAGS_ENCODED, then you already know that it does not contain any
- * invalid encoding.)
+ * If @flags has %G_URI_PARAMS_DECODE, the @params string is assumed to be
+ * `%`-encoded, but the returned values will be fully decoded. (Thus it is
+ * possible that the returned values may contain '=' or @separators, if the
+ * value was encoded in the input.) Invalid `%`-encoding is treated as with the
+ * non-%G_URI_FLAGS_PARSE_STRICT rules for g_uri_parse(). (However, if @params
+ * is the path or query string from a #GUri that was parsed with
+ * %G_URI_FLAGS_PARSE_STRICT and %G_URI_FLAGS_ENCODED, then you already know
+ * that it does not contain any invalid encoding.)
  *
  * Return value: (transfer full) (element-type utf8 utf8): a hash table of
- * attribute/value pairs. Both names and values will be fully-decoded. If
- * @params cannot be parsed (eg, it contains two @separators characters in a
- * row), then %NULL is returned.
+ * attribute/value pairs. If @params cannot be parsed (eg, it contains two
+ * @separators characters in a row, or `%`-decoding failed), then %NULL is
+ * returned.
  *
  * Since: 2.66
  */
@@ -1793,7 +1792,7 @@ g_uri_parse_params (const gchar     *params,
 {
   GHashTable *hash;
   const gchar *end, *attr, *attr_end, *value, *value_end;
-  gchar *decoded_attr, *decoded_value;
+  gchar *dup_attr, *dup_value;
 
   g_return_val_if_fail (params != NULL, NULL);
   g_return_val_if_fail (length >= -1, NULL);
@@ -1829,23 +1828,29 @@ g_uri_parse_params (const gchar     *params,
           g_hash_table_destroy (hash);
           return NULL;
         }
-      if (!uri_decode (&decoded_attr, attr, attr_end - attr,
-                       0, G_URI_ERROR_MISC, NULL))
-        {
-          g_hash_table_destroy (hash);
-          return NULL;
-        }
+      if (flags & G_URI_PARAMS_DECODE) {
+        if (!uri_decode (&dup_attr, attr, attr_end - attr,
+                         0, G_URI_ERROR_MISC, NULL))
+          {
+            g_hash_table_destroy (hash);
+            return NULL;
+          }
+      } else
+        dup_attr = g_strndup (attr, attr_end - attr);
 
       value = attr_end + 1;
-      if (!uri_decode (&decoded_value, value, value_end - value,
-                       0, G_URI_ERROR_MISC, NULL))
-        {
-          g_free (decoded_attr);
-          g_hash_table_destroy (hash);
-          return NULL;
-        }
+      if (flags & G_URI_PARAMS_DECODE) {
+        if (!uri_decode (&dup_value, value, value_end - value,
+                         0, G_URI_ERROR_MISC, NULL))
+          {
+            g_free (dup_attr);
+            g_hash_table_destroy (hash);
+            return NULL;
+          }
+      } else
+        dup_value = g_strndup (value, value_end - value);
 
-      g_hash_table_insert (hash, decoded_attr, decoded_value);
+      g_hash_table_insert (hash, dup_attr, dup_value);
       attr = value_end + 1;
     }
 
