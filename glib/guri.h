@@ -226,6 +226,7 @@ GUriFlags    g_uri_get_flags         (GUri          *uri);
  * GUriParamsFlags:
  * @G_URI_PARAMS_NONE: No flags set.
  * @G_URI_PARAMS_CASE_INSENSITIVE: whether parameter names are case insensitive.
+ * @G_URI_PARAMS_WWW_FORM: replace `+` with space character.
  *
  * Flags modifying the way parameters are handled.
  *
@@ -235,6 +236,7 @@ GLIB_AVAILABLE_TYPE_IN_2_66
 typedef enum {
   G_URI_PARAMS_NONE             = 0,
   G_URI_PARAMS_CASE_INSENSITIVE = 1 << 0,
+  G_URI_PARAMS_WWW_FORM         = 1 << 1,
 } GUriParamsFlags;
 
 GLIB_AVAILABLE_IN_2_66
