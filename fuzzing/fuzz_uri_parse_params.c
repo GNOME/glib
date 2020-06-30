@@ -10,7 +10,7 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
   if (size > G_MAXSSIZE)
     return 0;
 
-  parsed_params = g_uri_parse_params ((const gchar *) data, (gssize) size, '&', FALSE);
+  parsed_params = g_uri_parse_params ((const gchar *) data, (gssize) size, "&", FALSE);
   if (parsed_params == NULL)
     return 0;
 
