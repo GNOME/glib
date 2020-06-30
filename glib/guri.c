@@ -1754,7 +1754,7 @@ str_ascii_case_equal (gconstpointer v1,
  *   "&", but sometimes ";" or both "&;"). Note that this function works on
  *   bytes not characters, so it can't be used to delimit UTF-8 strings for
  *   anything but ASCII characters.
- * @case_insensitive: whether parameter names are case insensitive
+ * @flags: flags to modify the way the parameters are handled.
  *
  * Many URI schemes include one or more attribute/value pairs as part of the URI
  * value. This method can be used to parse them into a hash table.
@@ -1779,7 +1779,7 @@ GHashTable *
 g_uri_parse_params (const gchar     *params,
                     gssize           length,
                     const gchar     *separators,
-                    gboolean         case_insensitive)
+                    GUriParamsFlags  flags)
 {
   GHashTable *hash;
   const gchar *end, *attr, *attr_end, *value, *value_end, *s;
@@ -1790,7 +1790,7 @@ g_uri_parse_params (const gchar     *params,
   g_return_val_if_fail (length >= -1, NULL);
   g_return_val_if_fail (separators != NULL, NULL);
 
-  if (case_insensitive)
+  if (flags & G_URI_PARAMS_CASE_INSENSITIVE)
     {
       hash = g_hash_table_new_full (str_ascii_case_hash,
                                     str_ascii_case_equal,
