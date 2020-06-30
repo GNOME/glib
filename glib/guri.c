@@ -237,6 +237,7 @@ uri_decoder (gchar       **out,
              const gchar  *start,
              gsize         length,
              gboolean      just_normalize,
+             gboolean      www_form,
              GUriFlags     flags,
              GUriError     parse_error,
              GError      **error)
@@ -287,6 +288,8 @@ uri_decoder (gchar       **out,
               s += 2;
             }
         }
+      else if (www_form && *s == '+')
+        *d++ = ' ';
       else
         *d++ = *s;
     }
@@ -311,6 +314,19 @@ uri_decoder (gchar       **out,
 }
 
 static gboolean
+uri_decode_www_form (gchar       **out,
+                     const gchar  *start,
+                     gsize         length,
+                     gboolean      www_form,
+                     GUriFlags     flags,
+                     GUriError     parse_error,
+                     GError      **error)
+{
+  return uri_decoder (out, start, length, FALSE, www_form, flags,
+                      parse_error, error) != -1;
+}
+
+static gboolean
 uri_decode (gchar       **out,
             const gchar  *start,
             gsize         length,
@@ -318,7 +334,7 @@ uri_decode (gchar       **out,
             GUriError     parse_error,
             GError      **error)
 {
-  return uri_decoder (out, start, length, FALSE, flags,
+  return uri_decoder (out, start, length, FALSE, FALSE, flags,
                       parse_error, error) != -1;
 }
 
@@ -330,7 +346,7 @@ uri_normalize (gchar       **out,
                GUriError     parse_error,
                GError      **error)
 {
-  return uri_decoder (out, start, length, TRUE, flags,
+  return uri_decoder (out, start, length, TRUE, FALSE, flags,
                       parse_error, error) != -1;
 }
 
@@ -1796,6 +1812,7 @@ g_uri_parse_params (const gchar     *params,
   GHashTable *hash;
   const gchar *end, *attr, *attr_end, *value, *value_end;
   gchar *decoded_attr, *decoded_value;
+  gboolean www_form = flags & G_URI_PARAMS_WWW_FORM;
 
   g_return_val_if_fail (length == 0 || params != NULL, NULL);
   g_return_val_if_fail (length >= -1, NULL);
@@ -1831,16 +1848,16 @@ g_uri_parse_params (const gchar     *params,
           g_hash_table_destroy (hash);
           return NULL;
         }
-      if (!uri_decode (&decoded_attr, attr, attr_end - attr,
-                       0, G_URI_ERROR_MISC, NULL))
+      if (!uri_decode_www_form (&decoded_attr, attr, attr_end - attr,
+                                www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, NULL))
         {
           g_hash_table_destroy (hash);
           return NULL;
         }
 
       value = attr_end + 1;
-      if (!uri_decode (&decoded_value, value, value_end - value,
-                       0, G_URI_ERROR_MISC, NULL))
+      if (!uri_decode_www_form (&decoded_value, value, value_end - value,
+                                www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, NULL))
         {
           g_free (decoded_attr);
           g_hash_table_destroy (hash);
@@ -2234,6 +2251,7 @@ g_uri_unescape_bytes (const gchar *escaped_string,
 
   unescaped_length = uri_decoder (&buf,
                                   escaped_string, length,
+                                  FALSE,
                                   FALSE,
                                   G_URI_FLAGS_PARSE_STRICT|G_URI_FLAGS_ENCODED,
                                   0, NULL);

@@ -1289,6 +1289,8 @@ test_uri_parse_params (gconstpointer test_data)
       { "=%", "&", G_URI_PARAMS_NONE, 1, { "", "%", NULL, }},
       { "=", "&", G_URI_PARAMS_NONE, 1, { "", "", NULL, }},
       { "foo", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
+      { "foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", "&", G_URI_PARAMS_WWW_FORM,
+        2, { "foo", "bar & baz", "saisons", "Été+hiver", NULL, }},
     };
   gsize i;
 
