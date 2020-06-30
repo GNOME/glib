@@ -225,7 +225,7 @@ GUriFlags    g_uri_get_flags         (GUri          *uri);
 GLIB_AVAILABLE_IN_2_66
 GHashTable * g_uri_parse_params      (const gchar   *params,
                                       gssize         length,
-                                      gchar          separator,
+                                      const gchar   *separators,
                                       gboolean       case_insensitive);
 
 /**
