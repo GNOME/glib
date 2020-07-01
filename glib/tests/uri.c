@@ -1189,29 +1189,56 @@ test_uri_is_valid (void)
 static void
 test_uri_parse_params (void)
 {
-  GHashTable *params;
+  const struct
+    {
+      /* Inputs */
+      const gchar *uri;
+      gchar separator;
+      gboolean case_insensitive;
+      /* Outputs */
+      gssize expected_n_params;  /* -1 => error expected */
+      /* key, value, key, value, …, limited to length 2*expected_n_params */
+      const gchar *expected_param_key_values[4];
+    }
+  tests[] =
+    {
+      { "", '&', FALSE, 0, { NULL, }},
+      { "p1=foo&p2=bar", '&', FALSE, 2, { "p1", "foo", "p2", "bar" }},
+      { "p1=foo&&P1=bar", '&', FALSE, -1, { NULL, }},
+      { "%00=foo", '&', FALSE, -1, { NULL, }},
+      { "p1=%00", '&', FALSE, -1, { NULL, }},
+      { "p1=foo&P1=bar", '&', TRUE, 1, { "p1", "bar", NULL, }},
+    };
+  gsize i;
 
-  params = g_uri_parse_params ("", G_URI_FLAGS_NONE, '&', FALSE);
-  g_assert_cmpint (g_hash_table_size (params), ==, 0);
-  g_hash_table_unref (params);
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      GHashTable *params;
 
-  params = g_uri_parse_params ("p1=foo&p2=bar", -1, '&', FALSE);
-  g_assert_cmpint (g_hash_table_size (params), ==, 2);
-  g_assert_cmpstr (g_hash_table_lookup (params, "p1"), ==, "foo");
-  g_assert_cmpstr (g_hash_table_lookup (params, "p2"), ==, "bar");
-  g_hash_table_unref (params);
+      g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, tests[i].uri);
 
-  params = g_uri_parse_params ("p1=foo&&P1=bar", -1, '&', FALSE);
-  g_assert_null (params);
-  params = g_uri_parse_params ("%00=foo", -1, '&', FALSE);
-  g_assert_null (params);
-  params = g_uri_parse_params ("p1=%00", -1, '&', FALSE);
-  g_assert_null (params);
+      g_assert (tests[i].expected_n_params < 0 ||
+                tests[i].expected_n_params <= G_N_ELEMENTS (tests[i].expected_param_key_values) / 2);
 
-  params = g_uri_parse_params ("p1=foo&P1=bar", -1, '&', TRUE);
-  g_assert_cmpint (g_hash_table_size (params), ==, 1);
-  g_assert_cmpstr (g_hash_table_lookup (params, "p1"), ==, "bar");
-  g_hash_table_unref (params);
+      params = g_uri_parse_params (tests[i].uri, -1, tests[i].separator, tests[i].case_insensitive);
+
+      if (tests[i].expected_n_params < 0)
+        {
+          g_assert_null (params);
+        }
+      else
+        {
+          gsize j;
+
+          g_assert_cmpint (g_hash_table_size (params), ==, tests[i].expected_n_params);
+
+          for (j = 0; j < tests[i].expected_n_params; j += 2)
+            g_assert_cmpstr (g_hash_table_lookup (params, tests[i].expected_param_key_values[j]), ==,
+                             tests[i].expected_param_key_values[j + 1]);
+        }
+
+      g_clear_pointer (&params, g_hash_table_unref);
+    }
 }
 
 static void
