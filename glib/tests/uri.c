@@ -363,8 +363,9 @@ test_uri_unescape_string (void)
 }
 
 static void
-test_uri_unescape_bytes (void)
+test_uri_unescape_bytes (gconstpointer test_data)
 {
+  gboolean use_nul_terminated = GPOINTER_TO_INT (test_data);
   const struct
     {
       /* Inputs */
@@ -382,11 +383,28 @@ test_uri_unescape_bytes (void)
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
+      gssize escaped_len = 0;
+      gchar *escaped = NULL;
       GBytes *bytes = NULL;
 
       g_test_message ("Test %" G_GSIZE_FORMAT ": %s", i, tests[i].escaped);
 
-      bytes = g_uri_unescape_bytes (tests[i].escaped, -1);
+      /* The tests get run twice: once with the length unspecified, using a
+       * nul-terminated string; and once with the length specified and a copy of
+       * the string with the trailing nul explicitly removed (to help catch
+       * buffer overflows). */
+      if (use_nul_terminated)
+        {
+          escaped_len = -1;
+          escaped = g_strdup (tests[i].escaped);
+        }
+      else
+        {
+          escaped_len = strlen (tests[i].escaped);  /* no trailing nul */
+          escaped = g_memdup (tests[i].escaped, escaped_len);
+        }
+
+      bytes = g_uri_unescape_bytes (escaped, escaped_len);
 
       if (tests[i].expected_unescaped_len < 0)
         {
@@ -401,6 +419,7 @@ test_uri_unescape_bytes (void)
         }
 
       g_clear_pointer (&bytes, g_bytes_unref);
+      g_free (escaped);
     }
 }
 
@@ -1350,7 +1369,8 @@ main (int   argc,
   g_test_add_func ("/uri/file-roundtrip", run_file_roundtrip_tests);
   g_test_add_func ("/uri/list", run_uri_list_tests);
   g_test_add_func ("/uri/unescape-string", test_uri_unescape_string);
-  g_test_add_func ("/uri/unescape-bytes", test_uri_unescape_bytes);
+  g_test_add_data_func ("/uri/unescape-bytes/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_unescape_bytes);
+  g_test_add_data_func ("/uri/unescape-bytes/length", GINT_TO_POINTER (FALSE), test_uri_unescape_bytes);
   g_test_add_func ("/uri/unescape-segment", test_uri_unescape_segment);
   g_test_add_func ("/uri/escape", test_uri_escape);
   g_test_add_func ("/uri/scheme", test_uri_scheme);
