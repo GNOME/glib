@@ -1781,7 +1781,7 @@ g_uri_parse_params (const gchar     *params,
   const gchar *end, *attr, *attr_end, *value, *value_end;
   gchar *decoded_attr, *decoded_value;
 
-  g_return_val_if_fail (params != NULL, NULL);
+  g_return_val_if_fail (length == 0 || params != NULL, NULL);
   g_return_val_if_fail (length >= -1, NULL);
 
   if (case_insensitive)
