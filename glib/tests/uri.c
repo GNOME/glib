@@ -378,6 +378,7 @@ test_uri_unescape_bytes (gconstpointer test_data)
     {
       { "%00%00", 2, (const guint8 *) "\x00\x00" },
       { "%%", -1, NULL },
+      { "%", -1, NULL },
     };
   gsize i;
 
@@ -1284,6 +1285,7 @@ test_uri_parse_params (gconstpointer test_data)
       { "%00=foo", '&', FALSE, -1, { NULL, }},
       { "p1=%00", '&', FALSE, -1, { NULL, }},
       { "p1=foo&P1=bar", '&', TRUE, 1, { "p1", "bar", NULL, }},
+      { "=%", '&', FALSE, 1, { "", "%", NULL, }},
     };
   gsize i;
 
