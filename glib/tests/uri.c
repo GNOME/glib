@@ -328,35 +328,111 @@ run_uri_list_tests (void)
 }
 
 static void
-test_uri_unescape (void)
+test_uri_unescape_string (void)
 {
-  GBytes *bytes;
-  gchar *s;
-  const gchar *data;
-  const gchar *escaped_segment = "%2Babc %4F---";
+  const struct
+    {
+      /* Inputs */
+      const gchar *escaped;  /* (nullable) */
+      const gchar *illegal_characters;  /* (nullable) */
+      /* Outputs */
+      const gchar *expected_unescaped;  /* (nullable) */
+    }
+  tests[] =
+    {
+      { "%2Babc %4F", NULL, "+abc O" },
+      { "%2Babc %4F", "+", NULL },
+      { "%00abc %4F", "+/", NULL },
+      { "%0", NULL, NULL },
+      { "%ra", NULL, NULL },
+      { "%2r", NULL, NULL },
+      { NULL, NULL, NULL },  /* actually a valid test, not a delimiter */
+    };
+  gsize i;
 
-  s = g_uri_unescape_string ("%2Babc %4F", NULL);
-  g_assert_cmpstr (s, ==, "+abc O");
-  g_free (s);
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      gchar *s = NULL;
+
+      g_test_message ("Test %" G_GSIZE_FORMAT ": %s", i, tests[i].escaped);
+
+      s = g_uri_unescape_string (tests[i].escaped, tests[i].illegal_characters);
+      g_assert_cmpstr (s, ==, tests[i].expected_unescaped);
+      g_free (s);
+    }
+}
+
+static void
+test_uri_unescape_bytes (gconstpointer test_data)
+{
+  gboolean use_nul_terminated = GPOINTER_TO_INT (test_data);
+  const struct
+    {
+      /* Inputs */
+      const gchar *escaped;  /* (nullable) */
+      /* Outputs */
+      gssize expected_unescaped_len;  /* -1 => error expected */
+      const guint8 *expected_unescaped;  /* (nullable) */
+    }
+  tests[] =
+    {
+      { "%00%00", 2, (const guint8 *) "\x00\x00" },
+      { "%%", -1, NULL },
+      { "%", -1, NULL },
+    };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      gssize escaped_len = 0;
+      gchar *escaped = NULL;
+      GBytes *bytes = NULL;
+
+      g_test_message ("Test %" G_GSIZE_FORMAT ": %s", i, tests[i].escaped);
+
+      /* The tests get run twice: once with the length unspecified, using a
+       * nul-terminated string; and once with the length specified and a copy of
+       * the string with the trailing nul explicitly removed (to help catch
+       * buffer overflows). */
+      if (use_nul_terminated)
+        {
+          escaped_len = -1;
+          escaped = g_strdup (tests[i].escaped);
+        }
+      else
+        {
+          escaped_len = strlen (tests[i].escaped);  /* no trailing nul */
+          escaped = g_memdup (tests[i].escaped, escaped_len);
+        }
+
+      bytes = g_uri_unescape_bytes (escaped, escaped_len);
+
+      if (tests[i].expected_unescaped_len < 0)
+        {
+          g_assert_null (bytes);
+        }
+      else
+        {
+          g_assert_cmpmem (g_bytes_get_data (bytes, NULL),
+                           g_bytes_get_size (bytes),
+                           tests[i].expected_unescaped,
+                           tests[i].expected_unescaped_len);
+        }
+
+      g_clear_pointer (&bytes, g_bytes_unref);
+      g_free (escaped);
+    }
+}
+
+static void
+test_uri_unescape_segment (void)
+{
+  const gchar *escaped_segment = "%2Babc %4F---";
+  gchar *s = NULL;
+
   s = g_uri_unescape_segment (escaped_segment, escaped_segment + 10, NULL);
   g_assert_cmpstr (s, ==, "+abc O");
   g_free (s);
-  g_assert_cmpstr (g_uri_unescape_string ("%2Babc %4F", "+"), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string ("%00abc %4F", "+/"), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string ("%0", NULL), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string ("%ra", NULL), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string ("%2r", NULL), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string (NULL, NULL), ==, NULL);
-
-  bytes = g_uri_unescape_bytes ("%00%00", -1);
-  g_assert_cmpint (g_bytes_get_size (bytes), ==, 2);
-  data = g_bytes_get_data (bytes, NULL);
-  g_assert_cmpint (data[0], ==, 0);
-  g_assert_cmpint (data[1], ==, 0);
-  g_bytes_unref (bytes);
-
-  bytes = g_uri_unescape_bytes ("%%", -1);
-  g_assert_null (bytes);
 }
 
 static void
@@ -1187,31 +1263,78 @@ test_uri_is_valid (void)
 }
 
 static void
-test_uri_parse_params (void)
+test_uri_parse_params (gconstpointer test_data)
 {
-  GHashTable *params;
+  gboolean use_nul_terminated = GPOINTER_TO_INT (test_data);
+  const struct
+    {
+      /* Inputs */
+      const gchar *uri;
+      gchar separator;
+      gboolean case_insensitive;
+      /* Outputs */
+      gssize expected_n_params;  /* -1 => error expected */
+      /* key, value, key, value, …, limited to length 2*expected_n_params */
+      const gchar *expected_param_key_values[4];
+    }
+  tests[] =
+    {
+      { "", '&', FALSE, 0, { NULL, }},
+      { "p1=foo&p2=bar", '&', FALSE, 2, { "p1", "foo", "p2", "bar" }},
+      { "p1=foo&&P1=bar", '&', FALSE, -1, { NULL, }},
+      { "%00=foo", '&', FALSE, -1, { NULL, }},
+      { "p1=%00", '&', FALSE, -1, { NULL, }},
+      { "p1=foo&P1=bar", '&', TRUE, 1, { "p1", "bar", NULL, }},
+      { "=%", '&', FALSE, 1, { "", "%", NULL, }},
+    };
+  gsize i;
 
-  params = g_uri_parse_params ("", G_URI_FLAGS_NONE, '&', FALSE);
-  g_assert_cmpint (g_hash_table_size (params), ==, 0);
-  g_hash_table_unref (params);
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      GHashTable *params;
+      gchar *uri = NULL;
+      gssize uri_len;
 
-  params = g_uri_parse_params ("p1=foo&p2=bar", -1, '&', FALSE);
-  g_assert_cmpint (g_hash_table_size (params), ==, 2);
-  g_assert_cmpstr (g_hash_table_lookup (params, "p1"), ==, "foo");
-  g_assert_cmpstr (g_hash_table_lookup (params, "p2"), ==, "bar");
-  g_hash_table_unref (params);
+      g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, tests[i].uri);
 
-  params = g_uri_parse_params ("p1=foo&&P1=bar", -1, '&', FALSE);
-  g_assert_null (params);
-  params = g_uri_parse_params ("%00=foo", -1, '&', FALSE);
-  g_assert_null (params);
-  params = g_uri_parse_params ("p1=%00", -1, '&', FALSE);
-  g_assert_null (params);
+      g_assert (tests[i].expected_n_params < 0 ||
+                tests[i].expected_n_params <= G_N_ELEMENTS (tests[i].expected_param_key_values) / 2);
 
-  params = g_uri_parse_params ("p1=foo&P1=bar", -1, '&', TRUE);
-  g_assert_cmpint (g_hash_table_size (params), ==, 1);
-  g_assert_cmpstr (g_hash_table_lookup (params, "p1"), ==, "bar");
-  g_hash_table_unref (params);
+      /* The tests get run twice: once with the length unspecified, using a
+       * nul-terminated string; and once with the length specified and a copy of
+       * the string with the trailing nul explicitly removed (to help catch
+       * buffer overflows). */
+      if (use_nul_terminated)
+        {
+          uri_len = -1;
+          uri = g_strdup (tests[i].uri);
+        }
+      else
+        {
+          uri_len = strlen (tests[i].uri);  /* no trailing nul */
+          uri = g_memdup (tests[i].uri, uri_len);
+        }
+
+      params = g_uri_parse_params (uri, uri_len, tests[i].separator, tests[i].case_insensitive);
+
+      if (tests[i].expected_n_params < 0)
+        {
+          g_assert_null (params);
+        }
+      else
+        {
+          gsize j;
+
+          g_assert_cmpint (g_hash_table_size (params), ==, tests[i].expected_n_params);
+
+          for (j = 0; j < tests[i].expected_n_params; j += 2)
+            g_assert_cmpstr (g_hash_table_lookup (params, tests[i].expected_param_key_values[j]), ==,
+                             tests[i].expected_param_key_values[j + 1]);
+        }
+
+      g_clear_pointer (&params, g_hash_table_unref);
+      g_free (uri);
+    }
 }
 
 static void
@@ -1247,7 +1370,10 @@ main (int   argc,
   g_test_add_func ("/uri/file-from-uri", run_file_from_uri_tests);
   g_test_add_func ("/uri/file-roundtrip", run_file_roundtrip_tests);
   g_test_add_func ("/uri/list", run_uri_list_tests);
-  g_test_add_func ("/uri/unescape", test_uri_unescape);
+  g_test_add_func ("/uri/unescape-string", test_uri_unescape_string);
+  g_test_add_data_func ("/uri/unescape-bytes/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_unescape_bytes);
+  g_test_add_data_func ("/uri/unescape-bytes/length", GINT_TO_POINTER (FALSE), test_uri_unescape_bytes);
+  g_test_add_func ("/uri/unescape-segment", test_uri_unescape_segment);
   g_test_add_func ("/uri/escape", test_uri_escape);
   g_test_add_func ("/uri/scheme", test_uri_scheme);
   g_test_add_func ("/uri/parsing/absolute", test_uri_parsing_absolute);
@@ -1257,7 +1383,8 @@ main (int   argc,
   g_test_add_func ("/uri/is_valid", test_uri_is_valid);
   g_test_add_func ("/uri/to-string", test_uri_to_string);
   g_test_add_func ("/uri/join", test_uri_join);
-  g_test_add_func ("/uri/parse-params", test_uri_parse_params);
+  g_test_add_data_func ("/uri/parse-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_parse_params);
+  g_test_add_data_func ("/uri/parse-params/length", GINT_TO_POINTER (FALSE), test_uri_parse_params);
 
   return g_test_run ();
 }
