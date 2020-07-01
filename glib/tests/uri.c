@@ -1187,8 +1187,9 @@ test_uri_is_valid (void)
 }
 
 static void
-test_uri_parse_params (void)
+test_uri_parse_params (gconstpointer test_data)
 {
+  gboolean use_nul_terminated = GPOINTER_TO_INT (test_data);
   const struct
     {
       /* Inputs */
@@ -1214,13 +1215,30 @@ test_uri_parse_params (void)
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       GHashTable *params;
+      gchar *uri = NULL;
+      gssize uri_len;
 
       g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, tests[i].uri);
 
       g_assert (tests[i].expected_n_params < 0 ||
                 tests[i].expected_n_params <= G_N_ELEMENTS (tests[i].expected_param_key_values) / 2);
 
-      params = g_uri_parse_params (tests[i].uri, -1, tests[i].separator, tests[i].case_insensitive);
+      /* The tests get run twice: once with the length unspecified, using a
+       * nul-terminated string; and once with the length specified and a copy of
+       * the string with the trailing nul explicitly removed (to help catch
+       * buffer overflows). */
+      if (use_nul_terminated)
+        {
+          uri_len = -1;
+          uri = g_strdup (tests[i].uri);
+        }
+      else
+        {
+          uri_len = strlen (tests[i].uri);  /* no trailing nul */
+          uri = g_memdup (tests[i].uri, uri_len);
+        }
+
+      params = g_uri_parse_params (uri, uri_len, tests[i].separator, tests[i].case_insensitive);
 
       if (tests[i].expected_n_params < 0)
         {
@@ -1238,6 +1256,7 @@ test_uri_parse_params (void)
         }
 
       g_clear_pointer (&params, g_hash_table_unref);
+      g_free (uri);
     }
 }
 
@@ -1284,7 +1303,8 @@ main (int   argc,
   g_test_add_func ("/uri/is_valid", test_uri_is_valid);
   g_test_add_func ("/uri/to-string", test_uri_to_string);
   g_test_add_func ("/uri/join", test_uri_join);
-  g_test_add_func ("/uri/parse-params", test_uri_parse_params);
+  g_test_add_data_func ("/uri/parse-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_parse_params);
+  g_test_add_data_func ("/uri/parse-params/length", GINT_TO_POINTER (FALSE), test_uri_parse_params);
 
   return g_test_run ();
 }
