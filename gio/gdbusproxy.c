@@ -71,6 +71,13 @@
  * the message bus launching an owner (unless
  * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is set).
  *
+ * If the proxy is for a stateless D-Bus service, where the name owner may
+ * be started and stopped between calls, the #GDBusProxy:g-name-owner tracking
+ * of #GDBusProxy will cause the proxy to drop signal and property changes from
+ * the service after it has restarted for the first time. When interacting
+ * with a stateless D-Bus service, do not use #GDBusProxy — use direct D-Bus
+ * method calls and signal connections.
+ *
  * The generic #GDBusProxy::g-properties-changed and
  * #GDBusProxy::g-signal signals are not very convenient to work with.
  * Therefore, the recommended way of working with proxies is to subclass
