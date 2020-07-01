@@ -253,10 +253,11 @@ uri_decoder (gchar       **out,
     {
       if (*s == '%')
         {
-          if (!g_ascii_isxdigit (s[1]) ||
+          if (s + 2 >= end ||
+              !g_ascii_isxdigit (s[1]) ||
               !g_ascii_isxdigit (s[2]))
             {
-              /* % followed by non-hex; this is an error */
+              /* % followed by non-hex or the end of the string; this is an error */
               if (flags & G_URI_FLAGS_PARSE_STRICT)
                 {
                   g_set_error_literal (error, G_URI_ERROR, parse_error,
