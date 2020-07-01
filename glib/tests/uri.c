@@ -328,35 +328,91 @@ run_uri_list_tests (void)
 }
 
 static void
-test_uri_unescape (void)
+test_uri_unescape_string (void)
 {
-  GBytes *bytes;
-  gchar *s;
-  const gchar *data;
-  const gchar *escaped_segment = "%2Babc %4F---";
+  const struct
+    {
+      /* Inputs */
+      const gchar *escaped;  /* (nullable) */
+      const gchar *illegal_characters;  /* (nullable) */
+      /* Outputs */
+      const gchar *expected_unescaped;  /* (nullable) */
+    }
+  tests[] =
+    {
+      { "%2Babc %4F", NULL, "+abc O" },
+      { "%2Babc %4F", "+", NULL },
+      { "%00abc %4F", "+/", NULL },
+      { "%0", NULL, NULL },
+      { "%ra", NULL, NULL },
+      { "%2r", NULL, NULL },
+      { NULL, NULL, NULL },  /* actually a valid test, not a delimiter */
+    };
+  gsize i;
 
-  s = g_uri_unescape_string ("%2Babc %4F", NULL);
-  g_assert_cmpstr (s, ==, "+abc O");
-  g_free (s);
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      gchar *s = NULL;
+
+      g_test_message ("Test %" G_GSIZE_FORMAT ": %s", i, tests[i].escaped);
+
+      s = g_uri_unescape_string (tests[i].escaped, tests[i].illegal_characters);
+      g_assert_cmpstr (s, ==, tests[i].expected_unescaped);
+      g_free (s);
+    }
+}
+
+static void
+test_uri_unescape_bytes (void)
+{
+  const struct
+    {
+      /* Inputs */
+      const gchar *escaped;  /* (nullable) */
+      /* Outputs */
+      gssize expected_unescaped_len;  /* -1 => error expected */
+      const guint8 *expected_unescaped;  /* (nullable) */
+    }
+  tests[] =
+    {
+      { "%00%00", 2, (const guint8 *) "\x00\x00" },
+      { "%%", -1, NULL },
+    };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      GBytes *bytes = NULL;
+
+      g_test_message ("Test %" G_GSIZE_FORMAT ": %s", i, tests[i].escaped);
+
+      bytes = g_uri_unescape_bytes (tests[i].escaped, -1);
+
+      if (tests[i].expected_unescaped_len < 0)
+        {
+          g_assert_null (bytes);
+        }
+      else
+        {
+          g_assert_cmpmem (g_bytes_get_data (bytes, NULL),
+                           g_bytes_get_size (bytes),
+                           tests[i].expected_unescaped,
+                           tests[i].expected_unescaped_len);
+        }
+
+      g_clear_pointer (&bytes, g_bytes_unref);
+    }
+}
+
+static void
+test_uri_unescape_segment (void)
+{
+  const gchar *escaped_segment = "%2Babc %4F---";
+  gchar *s = NULL;
+
   s = g_uri_unescape_segment (escaped_segment, escaped_segment + 10, NULL);
   g_assert_cmpstr (s, ==, "+abc O");
   g_free (s);
-  g_assert_cmpstr (g_uri_unescape_string ("%2Babc %4F", "+"), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string ("%00abc %4F", "+/"), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string ("%0", NULL), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string ("%ra", NULL), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string ("%2r", NULL), ==, NULL);
-  g_assert_cmpstr (g_uri_unescape_string (NULL, NULL), ==, NULL);
-
-  bytes = g_uri_unescape_bytes ("%00%00", -1);
-  g_assert_cmpint (g_bytes_get_size (bytes), ==, 2);
-  data = g_bytes_get_data (bytes, NULL);
-  g_assert_cmpint (data[0], ==, 0);
-  g_assert_cmpint (data[1], ==, 0);
-  g_bytes_unref (bytes);
-
-  bytes = g_uri_unescape_bytes ("%%", -1);
-  g_assert_null (bytes);
 }
 
 static void
@@ -1293,7 +1349,9 @@ main (int   argc,
   g_test_add_func ("/uri/file-from-uri", run_file_from_uri_tests);
   g_test_add_func ("/uri/file-roundtrip", run_file_roundtrip_tests);
   g_test_add_func ("/uri/list", run_uri_list_tests);
-  g_test_add_func ("/uri/unescape", test_uri_unescape);
+  g_test_add_func ("/uri/unescape-string", test_uri_unescape_string);
+  g_test_add_func ("/uri/unescape-bytes", test_uri_unescape_bytes);
+  g_test_add_func ("/uri/unescape-segment", test_uri_unescape_segment);
   g_test_add_func ("/uri/escape", test_uri_escape);
   g_test_add_func ("/uri/scheme", test_uri_scheme);
   g_test_add_func ("/uri/parsing/absolute", test_uri_parsing_absolute);
