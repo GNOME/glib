@@ -2334,8 +2334,6 @@ g_win32_registry_key_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_PATH:
-      g_assert (priv->absolute_path_w == NULL);
-      g_assert (priv->absolute_path == NULL);
       path = g_value_get_string (value);
 
       if (path == NULL)
@@ -2346,20 +2344,21 @@ g_win32_registry_key_set_property (GObject      *object,
       if (path_w == NULL)
         break;
 
-      g_free (priv->absolute_path_w);
-      g_free (priv->absolute_path);
+      /* Construct only */
+      g_assert (priv->absolute_path_w == NULL);
+      g_assert (priv->absolute_path == NULL);
       priv->absolute_path_w = path_w;
       priv->absolute_path = g_value_dup_string (value);
       break;
 
     case PROP_PATH_UTF16:
-      g_assert (priv->absolute_path_w == NULL);
-      g_assert (priv->absolute_path == NULL);
       path_w = (gunichar2 *) g_value_get_pointer (value);
 
       if (path_w == NULL)
         break;
 
+      /* Construct only */
+      g_assert (priv->absolute_path_w == NULL);
       priv->absolute_path_w = g_wcsdup (path_w, -1);
       break;
 
