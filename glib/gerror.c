@@ -572,13 +572,17 @@ g_error_matches (const GError *error,
  * must be %NULL. A new #GError is created and assigned to *@err.
  */
 void
-g_set_error (GError      **err,
-             GQuark        domain,
-             gint          code,
-             const gchar  *format,
-             ...)
+g_set_error_orig (GError **err,
+                  GQuark domain,
+                  gint code,
+                  const gchar *file,
+                  const gchar *function,
+                  guint line,
+                  const gchar *format,
+                  ...)
 {
   GError *new;
+  GString *tstring;
 
   va_list args;
 
@@ -586,7 +590,12 @@ g_set_error (GError      **err,
     return;
 
   va_start (args, format);
-  new = g_error_new_valist (domain, code, format, args);
+  tstring = g_string_new (NULL);
+  g_string_append_printf (tstring, "%s:%s:%d | %s", file, function, line, format);
+
+  new = g_error_new_valist (domain, code, tstring->str, args);
+
+  g_string_free (tstring, TRUE);
   va_end (args);
 
   if (*err == NULL)
