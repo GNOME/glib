@@ -1070,6 +1070,38 @@ test_uri_split (void)
   g_assert_cmpstr (path, ==, ";oo/");
   g_free (path);
 
+  g_uri_split ("http://h%01st/path?saisons=%C3%89t%C3%A9%2Bhiver",
+               G_URI_FLAGS_NONE,
+               NULL,
+               NULL,
+               &host,
+               NULL,
+               NULL,
+               &query,
+               NULL,
+               &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (host, ==, "h\001st");
+  g_assert_cmpstr (query, ==, "saisons=Été+hiver");
+  g_free (host);
+  g_free (query);
+
+  g_uri_split ("http://h%01st/path?saisons=%C3%89t%C3%A9%2Bhiver",
+               G_URI_FLAGS_ENCODED_QUERY,
+               NULL,
+               NULL,
+               &host,
+               NULL,
+               NULL,
+               &query,
+               NULL,
+               &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (host, ==, "h\001st");
+  g_assert_cmpstr (query, ==, "saisons=%C3%89t%C3%A9%2Bhiver");
+  g_free (host);
+  g_free (query);
+
   g_uri_split_with_user ("scheme://user:pass;auth@host:1234/path?query#fragment",
                          G_URI_FLAGS_HAS_AUTH_PARAMS|G_URI_FLAGS_HAS_PASSWORD,
                          NULL,
