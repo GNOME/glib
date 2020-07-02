@@ -53,6 +53,8 @@ void         g_uri_unref            (GUri *uri);
  *     %G_URI_FLAGS_NON_DNS is also set.) When building a URI, it indicates
  *     that you have already `%`-encoded the components, and so #GUri
  *     should not do any encoding itself.
+ * @G_URI_FLAGS_ENCODED_QUERY: Same as %G_URI_FLAGS_ENCODED, for the query
+ *     field only.
  * @G_URI_FLAGS_NONE: No flags set.
  *
  * Flags that describe a URI.
@@ -72,6 +74,7 @@ typedef enum {
   G_URI_FLAGS_HAS_AUTH_PARAMS = 1 << 2,
   G_URI_FLAGS_ENCODED         = 1 << 3,
   G_URI_FLAGS_NON_DNS         = 1 << 4,
+  G_URI_FLAGS_ENCODED_QUERY   = 1 << 5,
 } GUriFlags;
 
 GLIB_AVAILABLE_IN_2_66
