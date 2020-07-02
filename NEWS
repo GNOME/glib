@@ -1,3 +1,17 @@
+Overview of changes in GLib 2.64.4
+==================================
+
+* Bugs fixed:
+ - #2140 calling malloc in fork child is undefined-behaviour
+ - !1507 Backport !1504 “win32 gpoll: Fix wait for at least one thread to return” to glib-2-64
+ - !1523 Backport !1522 “meson: Fix gnulib printf checks” to glib-2-64
+ - !1547 Backport !1544 “Resolve "calling malloc in fork child is undefined-behaviour"” to glib-2-64
+
+* Translation updates:
+ - Kazakh
+ - Slovenian
+
+
 Overview of changes in GLib 2.64.3
 ==================================
 
