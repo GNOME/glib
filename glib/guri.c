@@ -148,7 +148,10 @@
  *   g_assert_error(err, G_URI_ERROR, G_URI_ERROR_BAD_QUERY);
  * ]|
  *
- * (you should pass %G_URI_FLAGS_ENCODED if you need to handle that case manually).
+ * You should pass %G_URI_FLAGS_ENCODED or %G_URI_FLAGS_ENCODED_QUERY if you
+ * need to handle that case manually. In particular, if the query string
+ * contains '=' characters that are '%'-encoded, you should let
+ * g_uri_parse_params() do the decoding once of the query.
  *
  * #GUri is immutable once constructed, and can safely be accessed from
  * multiple threads. Its reference counting is atomic.
@@ -784,7 +787,8 @@ g_uri_split_internal (const gchar  *uri_string,
   question = memchr (p, '?', end - p);
   if (question)
     {
-      if (!uri_normalize (query, question + 1, end - (question + 1), flags,
+      if (!uri_normalize (query, question + 1, end - (question + 1),
+                          flags | (flags & G_URI_FLAGS_ENCODED_QUERY ? G_URI_FLAGS_ENCODED : 0),
                           G_URI_ERROR_BAD_QUERY, error))
         goto fail;
       end = question;
@@ -1399,7 +1403,7 @@ g_uri_join_internal (GUriFlags    flags,
   if (query)
     {
       g_string_append_c (str, '?');
-      if (encoded)
+      if (encoded || flags & G_URI_FLAGS_ENCODED_QUERY)
         g_string_append (str, query);
       else
         g_string_append_uri_escaped (str, query, QUERY_ALLOWED_CHARS, TRUE);
