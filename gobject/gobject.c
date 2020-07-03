@@ -2003,9 +2003,10 @@ g_object_new_is_valid_property (GType                  object_type,
                                 GParamSpec            *pspec,
                                 const char            *name,
                                 GObjectConstructParam *params,
-                                int                    n_params)
+                                guint                  n_params)
 {
-  gint i;
+  guint i;
+
   if (G_UNLIKELY (pspec == NULL))
     {
       g_critical ("%s: object class '%s' has no property named '%s'",
@@ -2216,12 +2217,13 @@ g_object_new_valist (GType        object_type,
   if (first_property_name)
     {
       GObjectConstructParam stack_params[16];
-      GObjectConstructParam *params;
+      GObjectConstructParam *params_old;
+      GObjectConstructParam *params = stack_params;
       const gchar *name;
-      gint n_params = 0;
+      guint n_params = 0;
+      guint n_params_alloc = G_N_ELEMENTS (stack_params);
 
       name = first_property_name;
-      params = stack_params;
 
       do
         {
@@ -2233,13 +2235,27 @@ g_object_new_valist (GType        object_type,
           if (!g_object_new_is_valid_property (object_type, pspec, name, params, n_params))
             break;
 
-          if (n_params == 16)
+          if (G_UNLIKELY (n_params == n_params_alloc))
             {
-              params = g_new (GObjectConstructParam, n_params + 1);
-              memcpy (params, stack_params, sizeof stack_params);
+              /* Note that we allocate the new list of params on the stack but cannot free
+               * the old lists, as they were allocated with alloca.
+               * But since we double the size of the allocated list, the combined size of
+               * all the unused, old lists is itself smaller than the new allocation.
+               *
+               * In other words, for n arguments we allocate less than (n * 2 * sizeof (GObjectConstructParam))
+               * for the params list, and additional (n * sizeof (GValue)) for the values. On 64 bit,
+               * GObjectConstructParam is 16 bytes and GValue is 24 bytes. So the total memory allocated
+               * with alloca() is less than (n * 56) bytes.
+               *
+               * Also note that for g_object_new_valist() the number of arguments is on
+               * the stack to begin with. That number is itself limited by the available
+               * stack, and we merely use additional stack space that scales linearely
+               * with the number of arguments. */
+              params_old = params;
+              params = g_newa (GObjectConstructParam, n_params_alloc * 2u);
+              memcpy (params, params_old, sizeof (params[0]) * n_params_alloc);
+              n_params_alloc *= 2u;
             }
-          else if (n_params > 16)
-            params = g_renew (GObjectConstructParam, params, n_params + 1);
 
           params[n_params].pspec = pspec;
           params[n_params].value = g_newa (GValue, 1);
@@ -2263,9 +2279,6 @@ g_object_new_valist (GType        object_type,
 
       while (n_params--)
         g_value_unset (params[n_params].value);
-
-      if (params != stack_params)
-        g_free (params);
     }
   else
     /* Fast case: no properties passed in. */
