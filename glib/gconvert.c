@@ -1806,12 +1806,10 @@ g_filename_to_uri (const gchar *filename,
 gchar **
 g_uri_list_extract_uris (const gchar *uri_list)
 {
-  GSList *uris, *u;
+  GPtrArray *uris;
   const gchar *p, *q;
-  gchar **result;
-  gint n_uris = 0;
 
-  uris = NULL;
+  uris = g_ptr_array_new ();
 
   p = uri_list;
 
@@ -1840,26 +1838,17 @@ g_uri_list_extract_uris (const gchar *uri_list)
 		q--;
 
 	      if (q > p)
-		{
-		  uris = g_slist_prepend (uris, g_strndup (p, q - p + 1));
-		  n_uris++;
-		}
-	    }
-	}
+                g_ptr_array_add (uris, g_strndup (p, q - p + 1));
+            }
+        }
       p = strchr (p, '\n');
       if (p)
 	p++;
     }
 
-  result = g_new (gchar *, n_uris + 1);
+  g_ptr_array_add (uris, NULL);
 
-  result[n_uris--] = NULL;
-  for (u = uris; u; u = u->next)
-    result[n_uris--] = u->data;
-
-  g_slist_free (uris);
-
-  return result;
+  return (gchar **) g_ptr_array_free (uris, FALSE);
 }
 
 /**
