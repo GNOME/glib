@@ -2727,7 +2727,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
    * internally by expand_macro(), so we need to pass a copy of it instead,
    * and also use that copy to control the exit condition of the loop below.
    */
-  dup_uris = g_list_copy (uris);
+  dup_uris = uris;
   do
     {
       GPid pid;
@@ -2864,7 +2864,6 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
   completed = TRUE;
 
  out:
-  g_list_free (dup_uris);
   g_strfreev (argv);
   g_strfreev (envp);
 
