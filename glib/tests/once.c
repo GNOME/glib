@@ -23,6 +23,8 @@
 
 #include <glib.h>
 
+#define THREADS 100
+
 static gpointer
 do_once (gpointer data)
 {
@@ -101,11 +103,11 @@ static void
 test_once_multi_threaded (void)
 {
   guint i;
-  GThread *threads[1000];
+  GThread *threads[THREADS];
 
   g_test_summary ("Test g_once() usage from multiple threads");
 
-  for (i = 0; i < G_N_ELEMENTS (threads); i++)
+  for (i = 0; i < THREADS; i++)
     threads[i] = g_thread_new ("once-multi-threaded",
                                once_thread_func,
                                GUINT_TO_POINTER (G_N_ELEMENTS (threads)));
@@ -113,7 +115,7 @@ test_once_multi_threaded (void)
   /* All threads have started up, so start the test. */
   g_cond_broadcast (&once_multi_threaded_cond);
 
-  for (i = 0; i < G_N_ELEMENTS (threads); i++)
+  for (i = 0; i < THREADS; i++)
     g_thread_join (threads[i]);
 
   g_assert_cmpint (g_atomic_int_get (&once_multi_threaded_counter), ==, 1);
@@ -140,8 +142,6 @@ test_once_init_single_threaded (void)
     }
   g_assert_cmpint (init, ==, 1);
 }
-
-#define THREADS 100
 
 static gint64 shared;
 
