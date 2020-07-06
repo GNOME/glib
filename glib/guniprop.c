@@ -25,16 +25,23 @@
 #include <locale.h>
 
 #include "gmem.h"
+#include "gstrfuncs.h"
 #include "gstring.h"
 #include "gtestutils.h"
 #include "gtypes.h"
 #include "gunicode.h"
-#include "gunichartables.h"
 #include "gmirroringtable.h"
 #include "gscripttable.h"
 #include "gunicodeprivate.h"
 #ifdef G_OS_WIN32
 #include "gwin32.h"
+#endif
+
+#ifdef HAVE_LIBICU
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#else
+#include "gunichartables.h"
 #endif
 
 #define G_UNICHAR_FULLWIDTH_A 0xff21
@@ -43,6 +50,8 @@
 #define G_UNICHAR_FULLWIDTH_F 0xff26
 #define G_UNICHAR_FULLWIDTH_a 0xff41
 #define G_UNICHAR_FULLWIDTH_f 0xff46
+
+#ifndef HAVE_LIBICU
 
 #define ATTR_TABLE(Page) (((Page) <= G_UNICODE_LAST_PAGE_PART1) \
                           ? attr_table_part1[Page] \
@@ -68,6 +77,81 @@
       ? TTYPE_PART2 (((Char) - 0xe0000) >> 8, (Char) & 0xff) \
       : G_UNICODE_UNASSIGNED))
 
+#else /* HAVE_LIBICU */
+
+static GUnicodeType
+u_char_category_to_g_unicode_type (UCharCategory c)
+{
+  switch (c)
+    {
+    case U_GENERAL_OTHER_TYPES:
+    case U_CHAR_CATEGORY_COUNT:
+      return G_UNICODE_UNASSIGNED;
+    case U_UPPERCASE_LETTER:
+      return G_UNICODE_UPPERCASE_LETTER;
+    case U_LOWERCASE_LETTER:
+      return G_UNICODE_LOWERCASE_LETTER;
+    case U_TITLECASE_LETTER:
+      return G_UNICODE_TITLECASE_LETTER;
+    case U_MODIFIER_LETTER:
+      return G_UNICODE_MODIFIER_LETTER;
+    case U_OTHER_LETTER:
+      return G_UNICODE_OTHER_LETTER;
+    case U_NON_SPACING_MARK:
+      return G_UNICODE_NON_SPACING_MARK;
+    case U_ENCLOSING_MARK:
+      return G_UNICODE_ENCLOSING_MARK;
+    case U_COMBINING_SPACING_MARK:
+      return G_UNICODE_SPACING_MARK;
+    case U_DECIMAL_DIGIT_NUMBER:
+      return G_UNICODE_DECIMAL_NUMBER;
+    case U_LETTER_NUMBER:
+      return G_UNICODE_LETTER_NUMBER;
+    case U_OTHER_NUMBER:
+      return G_UNICODE_OTHER_NUMBER;
+    case U_SPACE_SEPARATOR:
+      return G_UNICODE_SPACE_SEPARATOR;
+    case U_LINE_SEPARATOR:
+      return G_UNICODE_LINE_SEPARATOR;
+    case U_PARAGRAPH_SEPARATOR:
+      return G_UNICODE_PARAGRAPH_SEPARATOR;
+    case U_CONTROL_CHAR:
+      return G_UNICODE_CONTROL;
+    case U_FORMAT_CHAR:
+      return G_UNICODE_FORMAT;
+    case U_PRIVATE_USE_CHAR:
+      return G_UNICODE_PRIVATE_USE;
+    case U_SURROGATE:
+      return G_UNICODE_SURROGATE;
+    case U_DASH_PUNCTUATION:
+      return G_UNICODE_DASH_PUNCTUATION;
+    case U_START_PUNCTUATION:
+      return G_UNICODE_OPEN_PUNCTUATION;
+    case U_END_PUNCTUATION:
+      return G_UNICODE_CLOSE_PUNCTUATION;
+    case U_CONNECTOR_PUNCTUATION:
+      return G_UNICODE_CONNECT_PUNCTUATION;
+    case U_OTHER_PUNCTUATION:
+      return G_UNICODE_OTHER_PUNCTUATION;
+    case U_MATH_SYMBOL:
+      return G_UNICODE_MATH_SYMBOL;
+    case U_CURRENCY_SYMBOL:
+      return G_UNICODE_CURRENCY_SYMBOL;
+    case U_MODIFIER_SYMBOL:
+      return G_UNICODE_MODIFIER_SYMBOL;
+    case U_OTHER_SYMBOL:
+      return G_UNICODE_OTHER_SYMBOL;
+    case U_INITIAL_PUNCTUATION:
+      return G_UNICODE_INITIAL_PUNCTUATION;
+    case U_FINAL_PUNCTUATION:
+      return G_UNICODE_FINAL_PUNCTUATION;
+    }
+  return G_UNICODE_UNASSIGNED;
+}
+
+#define TYPE(Char) u_char_category_to_g_unicode_type (u_charType (Char))
+
+#endif /* HAVE_LIBICU */
 
 #define IS(Type, Class)	(((guint)1 << (Type)) & (Class))
 #define OR(Type, Rest)	(((guint)1 << (Type)) | (Rest))
@@ -351,11 +435,15 @@ g_unichar_isupper (gunichar c)
 gboolean
 g_unichar_istitle (gunichar c)
 {
+#ifdef HAVE_LIBICU
+  return u_istitle (c);
+#else
   unsigned int i;
   for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
     if (title_table[i][0] == c)
       return TRUE;
   return FALSE;
+#endif
 }
 
 /**
@@ -428,6 +516,7 @@ g_unichar_iszerowidth (gunichar c)
   return FALSE;
 }
 
+#ifndef HAVE_LIBICU
 static int
 interval_compare (const void *key, const void *elt)
 {
@@ -467,6 +556,7 @@ g_unichar_iswide_bsearch (gunichar ch)
 
   return FALSE;
 }
+#endif /* !HAVE_LIBICU */
 
 /**
  * g_unichar_iswide:
@@ -480,10 +570,16 @@ g_unichar_iswide_bsearch (gunichar ch)
 gboolean
 g_unichar_iswide (gunichar c)
 {
+#ifdef HAVE_LIBICU
+  UEastAsianWidth ea = (UEastAsianWidth) u_getIntPropertyValue (c, UCHAR_EAST_ASIAN_WIDTH);
+
+  return ea == U_EA_FULLWIDTH || ea == U_EA_WIDE;
+#else
   if (c < g_unicode_width_table_wide[0].start)
     return FALSE;
   else
     return g_unichar_iswide_bsearch (c);
+#endif
 }
 
 
@@ -512,6 +608,13 @@ g_unichar_iswide_cjk (gunichar c)
   if (g_unichar_iswide (c))
     return TRUE;
 
+#ifdef HAVE_LIBICU
+  {
+    UEastAsianWidth ea = (UEastAsianWidth) u_getIntPropertyValue (c, UCHAR_EAST_ASIAN_WIDTH);
+
+    return ea == U_EA_AMBIGUOUS;
+  }
+#else
   /* bsearch() is declared attribute(nonnull(1)) so we can't validly search
    * for a NULL key */
   if (c == 0)
@@ -525,6 +628,7 @@ g_unichar_iswide_cjk (gunichar c)
     return TRUE;
 
   return FALSE;
+#endif
 }
 
 
@@ -541,6 +645,9 @@ g_unichar_iswide_cjk (gunichar c)
 gunichar
 g_unichar_toupper (gunichar c)
 {
+#ifdef HAVE_LIBICU
+  return u_toupper (c);
+#else
   int t = TYPE (c);
   if (t == G_UNICODE_LOWERCASE_LETTER)
     {
@@ -566,6 +673,7 @@ g_unichar_toupper (gunichar c)
 	}
     }
   return c;
+#endif
 }
 
 /**
@@ -581,6 +689,9 @@ g_unichar_toupper (gunichar c)
 gunichar
 g_unichar_tolower (gunichar c)
 {
+#ifdef HAVE_LIBICU
+  return u_tolower (c);
+#else
   int t = TYPE (c);
   if (t == G_UNICODE_UPPERCASE_LETTER)
     {
@@ -607,6 +718,7 @@ g_unichar_tolower (gunichar c)
 	}
     }
   return c;
+#endif
 }
 
 /**
@@ -622,6 +734,9 @@ g_unichar_tolower (gunichar c)
 gunichar
 g_unichar_totitle (gunichar c)
 {
+#ifdef HAVE_LIBICU
+  return u_totitle (c);
+#else
   unsigned int i;
 
   /* We handle U+0000 explicitly because some elements in
@@ -640,6 +755,7 @@ g_unichar_totitle (gunichar c)
     return g_unichar_toupper (c);
 
   return c;
+#endif
 }
 
 /**
@@ -655,9 +771,13 @@ g_unichar_totitle (gunichar c)
 int
 g_unichar_digit_value (gunichar c)
 {
+#ifdef HAVE_LIBICU
+  return u_digit (c, 10);
+#else
   if (TYPE (c) == G_UNICODE_DECIMAL_NUMBER)
     return ATTTABLE (c >> 8, c & 0xff);
   return -1;
+#endif
 }
 
 /**
@@ -673,6 +793,9 @@ g_unichar_digit_value (gunichar c)
 int
 g_unichar_xdigit_value (gunichar c)
 {
+#ifdef HAVE_LIBICU
+  return u_digit (c, 16);
+#else
   if (c >= 'A' && c <= 'F')
     return c - 'A' + 10;
   if (c >= 'a' && c <= 'f')
@@ -684,6 +807,7 @@ g_unichar_xdigit_value (gunichar c)
   if (TYPE (c) == G_UNICODE_DECIMAL_NUMBER)
     return ATTTABLE (c >> 8, c & 0xff);
   return -1;
+#endif
 }
 
 /**
@@ -704,6 +828,7 @@ g_unichar_type (gunichar c)
  * Case mapping functions
  */
 
+#ifndef HAVE_LIBICU
 typedef enum {
   LOCALE_NORMAL,
   LOCALE_TURKIC,
@@ -874,6 +999,17 @@ real_toupper (const gchar *str,
 
   return len;
 }
+#else /* HAVE_LIBICU */
+static gchar *
+get_locale (void)
+{
+#ifdef G_OS_WIN32
+  return g_win32_getlocale ();
+#else
+  return g_strdup (setlocale (LC_CTYPE, NULL));
+#endif
+}
+#endif /* HAVE_LIBICU */
 
 /**
  * g_utf8_strup:
@@ -894,24 +1030,64 @@ g_utf8_strup (const gchar *str,
 	      gssize       len)
 {
   gsize result_len;
-  LocaleType locale_type;
-  gchar *result;
+  gchar *result = NULL;
 
   g_return_val_if_fail (str != NULL, NULL);
 
-  locale_type = get_locale_type ();
-  
   /*
    * We use a two pass approach to keep memory management simple
    */
-  result_len = real_toupper (str, len, NULL, locale_type);
-  result = g_malloc (result_len + 1);
-  real_toupper (str, len, result, locale_type);
-  result[result_len] = '\0';
+#ifdef HAVE_LIBICU
+  {
+    UErrorCode error = U_ZERO_ERROR;
+    gunichar2 *orig_utf16 = NULL, *result_utf16 = NULL;
+    glong utf16_len;
+    gchar *locale;
+
+    locale = get_locale ();
+    orig_utf16 = g_utf8_to_utf16 (str, len, NULL, &utf16_len, NULL);
+
+    result_len = u_strToUpper (NULL, 0, orig_utf16, utf16_len, locale, &error);
+    /* Buffer Overflow is expected from the preflight operation */
+    if (error != U_BUFFER_OVERFLOW_ERROR && result_len > 0)
+      goto out;
+
+    if (result_len == 0)
+      {
+        result = g_strdup ("");
+        goto out;
+      }
+
+    result_utf16 = g_malloc ((result_len + 1) * 2);
+    error = U_ZERO_ERROR;
+    u_strToUpper (result_utf16, result_len + 1, orig_utf16, utf16_len, locale, &error);
+    if (U_FAILURE (error))
+      goto out;
+
+    result = g_utf16_to_utf8 (result_utf16, result_len, NULL, NULL, NULL);
+
+  out:
+    g_free (locale);
+    g_free (result_utf16);
+    g_free (orig_utf16);
+  }
+#else
+  {
+    LocaleType locale_type;
+
+    locale_type = get_locale_type ();
+
+    result_len = real_toupper (str, len, NULL, locale_type);
+    result = g_malloc (result_len + 1);
+    real_toupper (str, len, result, locale_type);
+    result[result_len] = '\0';
+  }
+#endif
 
   return result;
 }
 
+#ifndef HAVE_LIBICU
 /* traverses the string checking for characters with combining class == 230
  * until a base character is found */
 static gboolean
@@ -1065,6 +1241,7 @@ real_tolower (const gchar *str,
 
   return len;
 }
+#endif
 
 /**
  * g_utf8_strdown:
@@ -1084,20 +1261,59 @@ g_utf8_strdown (const gchar *str,
 		gssize       len)
 {
   gsize result_len;
-  LocaleType locale_type;
-  gchar *result;
+  gchar *result = NULL;
 
   g_return_val_if_fail (str != NULL, NULL);
 
-  locale_type = get_locale_type ();
-  
   /*
    * We use a two pass approach to keep memory management simple
    */
-  result_len = real_tolower (str, len, NULL, locale_type);
-  result = g_malloc (result_len + 1);
-  real_tolower (str, len, result, locale_type);
-  result[result_len] = '\0';
+#ifdef HAVE_LIBICU
+  {
+    UErrorCode error = U_ZERO_ERROR;
+    gunichar2 *orig_utf16 = NULL, *result_utf16 = NULL;
+    glong utf16_len;
+    gchar *locale;
+
+    locale = get_locale ();
+    orig_utf16 = g_utf8_to_utf16 (str, len, NULL, &utf16_len, NULL);
+
+    result_len = u_strToLower (NULL, 0, orig_utf16, utf16_len, locale, &error);
+    /* Buffer Overflow is expected from the preflight operation */
+    if (error != U_BUFFER_OVERFLOW_ERROR && result_len > 0)
+      goto out;
+
+    if (result_len == 0)
+      {
+        result = g_strdup ("");
+        goto out;
+      }
+
+    result_utf16 = g_malloc ((result_len + 1) * 2);
+    error = U_ZERO_ERROR;
+    u_strToLower (result_utf16, result_len + 1, orig_utf16, utf16_len, locale, &error);
+    if (U_FAILURE (error))
+      goto out;
+
+    result = g_utf16_to_utf8 (result_utf16, result_len, NULL, NULL, NULL);
+
+  out:
+    g_free (locale);
+    g_free (result_utf16);
+    g_free (orig_utf16);
+  }
+#else
+  {
+    LocaleType locale_type;
+
+    locale_type = get_locale_type ();
+
+    result_len = real_tolower (str, len, NULL, locale_type);
+    result = g_malloc (result_len + 1);
+    real_tolower (str, len, result, locale_type);
+    result[result_len] = '\0';
+  }
+#endif
 
   return result;
 }
@@ -1126,6 +1342,7 @@ gchar *
 g_utf8_casefold (const gchar *str,
 		 gssize       len)
 {
+#ifndef HAVE_LIBICU
   GString *result;
   const char *p;
 
@@ -1166,7 +1383,39 @@ g_utf8_casefold (const gchar *str,
       p = g_utf8_next_char (p);
     }
 
-  return g_string_free (result, FALSE); 
+  return g_string_free (result, FALSE);
+#else /* HAVE_LIBICU */
+  UErrorCode error = U_ZERO_ERROR;
+  gchar *result = NULL;
+  gunichar2 *orig_utf16 = NULL, *result_utf16 = NULL;
+  glong utf16_len;
+  gint32 result_len;
+
+  g_return_val_if_fail (str != NULL, NULL);
+
+  orig_utf16 = g_utf8_to_utf16 (str, len, NULL, &utf16_len, NULL);
+
+  result_len = u_strFoldCase (NULL, 0, orig_utf16, utf16_len, U_FOLD_CASE_DEFAULT, &error);
+  /* Buffer Overflow is expected from the preflight operation */
+  if (error != U_BUFFER_OVERFLOW_ERROR && result_len != 0)
+    goto out;
+
+  if (result_len == 0)
+    return g_strdup ("");
+
+  result_utf16 = g_malloc ((result_len + 1) * 2);
+  error = U_ZERO_ERROR;
+  u_strFoldCase (result_utf16, result_len + 1, orig_utf16, utf16_len, U_FOLD_CASE_DEFAULT, &error);
+  if (U_FAILURE (error))
+    goto out;
+
+  result = g_utf16_to_utf8 (result_utf16, result_len, NULL, NULL, NULL);
+
+out:
+  g_free (result_utf16);
+  g_free (orig_utf16);
+  return result;
+#endif
 }
 
 /**
