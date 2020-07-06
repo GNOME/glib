@@ -1297,6 +1297,7 @@ test_uri_is_valid (void)
 static void
 test_uri_parse_params (gconstpointer test_data)
 {
+  GError *err = NULL;
   gboolean use_nul_terminated = GPOINTER_TO_INT (test_data);
   const struct
     {
@@ -1353,16 +1354,19 @@ test_uri_parse_params (gconstpointer test_data)
           uri = g_memdup (tests[i].uri, uri_len);
         }
 
-      params = g_uri_parse_params (uri, uri_len, tests[i].separators, tests[i].flags);
+      params = g_uri_parse_params (uri, uri_len, tests[i].separators, tests[i].flags, &err);
 
       if (tests[i].expected_n_params < 0)
         {
           g_assert_null (params);
+          g_assert_error (err, G_URI_ERROR, G_URI_ERROR_MISC);
+          g_clear_error (&err);
         }
       else
         {
           gsize j;
 
+          g_assert_no_error (err);
           g_assert_cmpint (g_hash_table_size (params), ==, tests[i].expected_n_params);
 
           for (j = 0; j < tests[i].expected_n_params; j += 2)
