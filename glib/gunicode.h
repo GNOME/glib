@@ -207,7 +207,7 @@ typedef enum
  * Since new unicode versions may add new types here, applications should be ready 
  * to handle unknown values. They may be regarded as %G_UNICODE_BREAK_UNKNOWN.
  *
- * See [Unicode Line Breaking Algorithm](http://www.unicode.org/unicode/reports/tr14/).
+ * See [Unicode Line Breaking Algorithm](https://www.unicode.org/reports/tr14/).
  */
 typedef enum
 {
