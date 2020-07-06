@@ -29,6 +29,7 @@
 #include "gcancellable.h"
 #include "gtask.h"
 #include "giomodule.h"
+#include "gioerror.h"
 #include "giomodule-priv.h"
 #include "gnetworkingprivate.h"
 
@@ -147,8 +148,12 @@ g_proxy_resolver_lookup (GProxyResolver  *resolver,
   g_return_val_if_fail (G_IS_PROXY_RESOLVER (resolver), NULL);
   g_return_val_if_fail (uri != NULL, NULL);
 
-  if (!_g_uri_parse_authority (uri, NULL, NULL, NULL, error))
-    return NULL;
+  if (!g_uri_is_valid (uri, G_URI_FLAGS_PARSE_STRICT | G_URI_FLAGS_HAS_SCHEME, NULL))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                   "Invalid URI ‘%s’", uri);
+      return NULL;
+    }
 
   iface = G_PROXY_RESOLVER_GET_IFACE (resolver);
 
@@ -181,8 +186,10 @@ g_proxy_resolver_lookup_async (GProxyResolver      *resolver,
   g_return_if_fail (G_IS_PROXY_RESOLVER (resolver));
   g_return_if_fail (uri != NULL);
 
-  if (!_g_uri_parse_authority (uri, NULL, NULL, NULL, &error))
+  if (!g_uri_is_valid (uri, G_URI_FLAGS_PARSE_STRICT | G_URI_FLAGS_HAS_SCHEME, NULL))
     {
+      g_set_error (&error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                   "Invalid URI ‘%s’", uri);
       g_task_report_error (resolver, callback, user_data,
                            g_proxy_resolver_lookup_async,
                            g_steal_pointer (&error));
