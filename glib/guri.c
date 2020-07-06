@@ -1763,6 +1763,7 @@ str_ascii_case_equal (gconstpointer v1,
  *   bytes not characters, so it can't be used to delimit UTF-8 strings for
  *   anything but ASCII characters.
  * @flags: flags to modify the way the parameters are handled.
+ * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Many URI schemes include one or more attribute/value pairs as part of the URI
  * value. This method can be used to parse them into a hash table.
@@ -1787,7 +1788,8 @@ GHashTable *
 g_uri_parse_params (const gchar     *params,
                     gssize           length,
                     const gchar     *separators,
-                    GUriParamsFlags  flags)
+                    GUriParamsFlags  flags,
+                    GError         **error)
 {
   GHashTable *hash;
   const gchar *end, *attr, *attr_end, *value, *value_end, *s;
@@ -1798,6 +1800,7 @@ g_uri_parse_params (const gchar     *params,
   g_return_val_if_fail (length == 0 || params != NULL, NULL);
   g_return_val_if_fail (length >= -1, NULL);
   g_return_val_if_fail (separators != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   if (flags & G_URI_PARAMS_CASE_INSENSITIVE)
     {
@@ -1832,10 +1835,12 @@ g_uri_parse_params (const gchar     *params,
       if (!attr_end)
         {
           g_hash_table_destroy (hash);
+          g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_MISC,
+                               _("Missing '=' and parameter value"));
           return NULL;
         }
       if (!uri_decode (&decoded_attr, attr, attr_end - attr,
-                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, NULL))
+                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
       {
         g_hash_table_destroy (hash);
         return NULL;
@@ -1843,7 +1848,7 @@ g_uri_parse_params (const gchar     *params,
 
       value = attr_end + 1;
       if (!uri_decode (&decoded_value, value, value_end - value,
-                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, NULL))
+                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
         {
           g_free (decoded_attr);
           g_hash_table_destroy (hash);

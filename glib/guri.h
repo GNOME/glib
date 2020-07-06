@@ -246,7 +246,8 @@ GLIB_AVAILABLE_IN_2_66
 GHashTable *g_uri_parse_params       (const gchar    *params,
                                       gssize          length,
                                       const gchar    *separators,
-                                      GUriParamsFlags flags);
+                                      GUriParamsFlags flags,
+                                      GError        **error);
 
 /**
  * G_URI_ERROR:
