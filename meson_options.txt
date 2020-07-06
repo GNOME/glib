@@ -111,3 +111,9 @@ option('glib_checks',
        value : true,
        yield : true,
        description : 'Enable GLib checks such as API guards (see docs/macros.txt)')
+
+option('libicu',
+       type : 'feature',
+       value : 'disabled',
+       yield : true,
+       description : 'Build with libicu')
