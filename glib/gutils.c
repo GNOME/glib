@@ -950,26 +950,88 @@ g_get_tmp_dir (void)
 }
 
 /**
- * g_get_host_name:
+ * g_get_hostname:
  *
  * Return a name for the machine. 
  *
- * The returned name is not necessarily a fully-qualified domain name,
- * or even present in DNS or some other name service at all. It need
- * not even be unique on your local network or site, but usually it
- * is. Callers should not rely on the return value having any specific
- * properties like uniqueness for security purposes. Even if the name
- * of the machine is changed while an application is running, the
- * return value from this function does not change. The returned
- * string is owned by GLib and should not be modified or freed. If no
- * name can be determined, a default fixed string "localhost" is
+ * The returned name is not necessarily a fully-qualified domain name, or even
+ * present in DNS or some other name service at all. It need not even be unique
+ * on your local network or site, but usually it is. Callers should not rely on
+ * the return value having any specific properties like uniqueness for security
+ * purposes. If no name can be determined, a default fixed string "localhost" is
  * returned.
  *
  * The encoding of the returned string is UTF-8.
  *
- * Returns: (transfer none): the host name of the machine.
+ * Returns: a newly allocated string containing the host name of the machine.
+ * This string must be freed with g_free().
+ *
+ * Since: 2.66
+ */
+gchar *
+g_get_hostname (void)
+{
+  gchar *hostname = NULL;
+#ifndef G_OS_WIN32
+  gboolean failed;
+  glong max;
+  gsize size;
+  /* The number 256 * 256 is taken from the value of _POSIX_HOST_NAME_MAX,
+   * which is 255. Since we use _POSIX_HOST_NAME_MAX + 1 (= 256) in the
+   * fallback case, we pick 256 * 256 as the size of the larger buffer here.
+   * It should be large enough. It doesn't looks reasonable to name a host
+   * with a string that is longer than 64 KiB.
+   */
+  const gsize size_large = 256 * 256;
+
+#ifdef _SC_HOST_NAME_MAX
+  max = sysconf (_SC_HOST_NAME_MAX);
+  if (max > 0 && max <= G_MAXSIZE - 1)
+    size = (gsize) max + 1;
+  else
+#ifdef HOST_NAME_MAX
+    size = HOST_NAME_MAX + 1;
+#else
+  size = _POSIX_HOST_NAME_MAX + 1;
+#endif /* HOST_NAME_MAX */
+#else
+  /* Fallback to some reasonable value */
+  size = 256;
+#endif /* _SC_HOST_NAME_MAX */
+  hostname = g_malloc (size);
+  failed = (gethostname (hostname, size) == -1);
+  if (failed && size < size_large)
+    {
+      /* Try again with a larger buffer if 'size' may be too small. */
+      hostname = g_realloc (hostname, size_large);
+      failed = (gethostname (hostname, size_large) == -1);
+    }
+
+  if (failed)
+    g_clear_pointer (&hostname, g_free);
+#else
+  wchar_t tmp[MAX_COMPUTERNAME_LENGTH + 1];
+  DWORD size = G_N_ELEMENTS (tmp);
+
+  if (GetComputerNameW (tmp, &size) != 0)
+    hostname = g_utf16_to_utf8 (tmp, size, NULL, NULL, NULL);
+#endif
+
+  return hostname ? hostname : g_strdup ("localhost");
+}
+
+/**
+ * g_get_host_name:
+ *
+ * Return a name for the machine.
+ *
+ * Even if the name of the machine is changed while an application is running,
+ * the return value from this function does not change. The returned string is
+ * owned by GLib and should not be modified or freed. If no name can be
+ * determined, a default fixed string "localhost" is returned.
  *
  * Since: 2.8
+ * Deprecated: 2.66: Use g_get_hostname() instead.
  */
 const gchar *
 g_get_host_name (void)
@@ -977,61 +1039,7 @@ g_get_host_name (void)
   static gchar *hostname;
 
   if (g_once_init_enter (&hostname))
-    {
-      gboolean failed;
-      gchar *utmp;
-
-#ifndef G_OS_WIN32
-      glong max;
-      gsize size;
-      /* The number 256 * 256 is taken from the value of _POSIX_HOST_NAME_MAX,
-       * which is 255. Since we use _POSIX_HOST_NAME_MAX + 1 (= 256) in the
-       * fallback case, we pick 256 * 256 as the size of the larger buffer here.
-       * It should be large enough. It doesn't looks reasonable to name a host
-       * with a string that is longer than 64 KiB.
-       */
-      const gsize size_large = (gsize) 256 * 256;
-      gchar *tmp;
-
-#ifdef _SC_HOST_NAME_MAX
-      max = sysconf (_SC_HOST_NAME_MAX);
-      if (max > 0 && max <= G_MAXSIZE - 1)
-        size = (gsize) max + 1;
-      else
-#ifdef HOST_NAME_MAX
-        size = HOST_NAME_MAX + 1;
-#else
-        size = _POSIX_HOST_NAME_MAX + 1;
-#endif /* HOST_NAME_MAX */
-#else
-      /* Fallback to some reasonable value */
-      size = 256;
-#endif /* _SC_HOST_NAME_MAX */
-      tmp = g_malloc (size);
-      failed = (gethostname (tmp, size) == -1);
-      if (failed && size < size_large)
-        {
-          /* Try again with a larger buffer if 'size' may be too small. */
-          g_free (tmp);
-          tmp = g_malloc (size_large);
-          failed = (gethostname (tmp, size_large) == -1);
-        }
-
-      if (failed)
-        g_clear_pointer (&tmp, g_free);
-      utmp = tmp;
-#else
-      wchar_t tmp[MAX_COMPUTERNAME_LENGTH + 1];
-      DWORD size = sizeof (tmp) / sizeof (tmp[0]);
-      failed = (!GetComputerNameW (tmp, &size));
-      if (!failed)
-        utmp = g_utf16_to_utf8 (tmp, size, NULL, NULL, NULL);
-      if (utmp == NULL)
-        failed = TRUE;
-#endif
-
-      g_once_init_leave (&hostname, failed ? g_strdup ("localhost") : utmp);
-    }
+    g_once_init_leave (&hostname, g_get_hostname());
 
   return hostname;
 }

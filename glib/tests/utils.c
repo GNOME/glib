@@ -428,12 +428,19 @@ test_realname (void)
 static void
 test_hostname (void)
 {
-  const gchar *name;
+  const gchar *host_name;
+  gchar *hostname;
 
-  name = g_get_host_name ();
+  host_name = g_get_host_name ();
 
-  g_assert (name != NULL);
-  g_assert_true (g_utf8_validate (name, -1, NULL));
+  g_assert (host_name != NULL);
+  g_assert_true (g_utf8_validate (host_name, -1, NULL));
+
+  hostname = g_get_hostname ();
+
+  g_assert (hostname != NULL);
+  g_assert_true (g_utf8_validate (hostname, -1, NULL));
+  g_free (hostname);
 }
 
 #ifdef G_OS_UNIX
