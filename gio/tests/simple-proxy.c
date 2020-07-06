@@ -58,7 +58,7 @@ test_uris (void)
   g_object_unref (resolver);
 
   /* Invalid URI. */
-  uri = "%E0%B4%A8%E0%B4%B2";
+  uri = "%E0%B4%00%E0%B4%B2";
   str = g_strdup_printf ("Invalid URI ‘%s’", uri);
   resolver = g_simple_proxy_resolver_new (NULL, (char **) ignore_hosts);
 
