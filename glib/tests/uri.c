@@ -945,7 +945,7 @@ test_uri_build (void)
   g_uri_ref (uri);
   g_uri_unref (uri);
 
-  g_assert_cmpint (g_uri_get_flags (uri), ==, G_URI_FLAGS_NON_DNS);
+  g_assert_cmpint (g_uri_get_flags (uri), ==, G_URI_FLAGS_NON_DNS | G_URI_FLAGS_HAS_SCHEME);
   g_assert_cmpstr (g_uri_get_scheme (uri), ==, "scheme");
   g_assert_cmpstr (g_uri_get_userinfo (uri), ==, "userinfo");
   g_assert_cmpstr (g_uri_get_host (uri), ==, "host");
@@ -961,7 +961,7 @@ test_uri_build (void)
                                "authparams", "host", 1234,
                                "/path", "query", "fragment");
 
-  g_assert_cmpint (g_uri_get_flags (uri), ==, G_URI_FLAGS_NON_DNS);
+  g_assert_cmpint (g_uri_get_flags (uri), ==, G_URI_FLAGS_NON_DNS | G_URI_FLAGS_HAS_SCHEME);
   g_assert_cmpstr (g_uri_get_scheme (uri), ==, "scheme");
   g_assert_cmpstr (g_uri_get_userinfo (uri), ==, "user:password;authparams");
   g_assert_cmpstr (g_uri_get_host (uri), ==, "host");
@@ -1259,6 +1259,10 @@ test_uri_is_valid (void)
 
   g_assert_false (g_uri_is_valid ("http://host:6553l", G_URI_FLAGS_NONE, &error));
   g_assert_error (error, G_URI_ERROR, G_URI_ERROR_BAD_PORT);
+  g_clear_error (&error);
+
+  g_assert_false (g_uri_is_valid ("foo", G_URI_FLAGS_HAS_SCHEME, &error));
+  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_BAD_SCHEME);
   g_clear_error (&error);
 }
 
