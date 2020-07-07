@@ -78,6 +78,14 @@ GLIB_AVAILABLE_IN_2_60
 void          g_task_set_name              (GTask               *task,
                                             const gchar         *name);
 
+/* Macro wrapper to set the task name when setting the source tag. */
+#define g_task_set_source_tag(task, tag) G_STMT_START { \
+  GTask *_task = (task); \
+  (g_task_set_source_tag) (_task, tag); \
+  if (g_task_get_name (_task) == NULL) \
+    g_task_set_name (_task, G_STRINGIFY (tag)); \
+} G_STMT_END
+
 GLIB_AVAILABLE_IN_2_36
 gpointer      g_task_get_source_object     (GTask               *task);
 GLIB_AVAILABLE_IN_2_36

@@ -759,6 +759,7 @@ g_task_report_error (gpointer             source_object,
 
   task = g_task_new (source_object, NULL, callback, callback_data);
   g_task_set_source_tag (task, source_tag);
+  g_task_set_name (task, G_STRFUNC);
   g_task_return_error (task, error);
   g_object_unref (task);
 }
@@ -982,8 +983,8 @@ g_task_set_return_on_cancel (GTask    *task,
  * Since: 2.36
  */
 void
-g_task_set_source_tag (GTask    *task,
-                       gpointer  source_tag)
+(g_task_set_source_tag) (GTask    *task,
+                         gpointer  source_tag)
 {
   g_return_if_fail (G_IS_TASK (task));
 
@@ -1241,6 +1242,7 @@ g_task_return (GTask           *task,
                GTaskReturnType  type)
 {
   GSource *source;
+  gchar *source_name = NULL;
 
   if (type != G_TASK_RETURN_FROM_THREAD)
     task->ever_returned = TRUE;
@@ -1289,7 +1291,10 @@ g_task_return (GTask           *task,
 
   /* Otherwise, complete in the next iteration */
   source = g_idle_source_new ();
-  g_source_set_name (source, "[gio] complete_in_idle_cb");
+  source_name = g_strdup_printf ("[gio] %s complete_in_idle_cb",
+                                 (task->name != NULL) ? task->name : "(unnamed)");
+  g_source_set_name (source, source_name);
+  g_free (source_name);
   g_task_attach_source (task, source, complete_in_idle_cb);
   g_source_unref (source);
 }

@@ -302,7 +302,8 @@ eject_unmount_do (GMount              *mount,
                   GCancellable        *cancellable,
                   GAsyncReadyCallback  callback,
                   gpointer             user_data,
-                  char               **argv)
+                  char               **argv,
+                  const gchar         *task_name)
 {
   GUnixMount *unix_mount = G_UNIX_MOUNT (mount);
   GTask *task;
@@ -310,6 +311,7 @@ eject_unmount_do (GMount              *mount,
 
   task = g_task_new (mount, cancellable, callback, user_data);
   g_task_set_source_tag (task, eject_unmount_do);
+  g_task_set_name (task, task_name);
   g_task_set_task_data (task, g_strdupv (argv), (GDestroyNotify) g_strfreev);
 
   if (unix_mount->volume_monitor != NULL)
@@ -337,7 +339,7 @@ g_unix_mount_unmount (GMount             *mount,
   else
     argv[1] = unix_mount->device_path;
 
-  eject_unmount_do (mount, cancellable, callback, user_data, argv);
+  eject_unmount_do (mount, cancellable, callback, user_data, argv, "[gio] unmount mount");
 }
 
 static gboolean
@@ -363,7 +365,7 @@ g_unix_mount_eject (GMount             *mount,
   else
     argv[1] = unix_mount->device_path;
 
-  eject_unmount_do (mount, cancellable, callback, user_data, argv);
+  eject_unmount_do (mount, cancellable, callback, user_data, argv, "[gio] eject mount");
 }
 
 static gboolean

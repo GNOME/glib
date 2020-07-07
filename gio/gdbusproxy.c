@@ -1631,6 +1631,7 @@ async_initable_init_second_async (GAsyncInitable      *initable,
 
   task = g_task_new (proxy, cancellable, callback, user_data);
   g_task_set_source_tag (task, async_initable_init_second_async);
+  g_task_set_name (task, "[gio] D-Bus proxy init");
   g_task_set_priority (task, io_priority);
 
   /* Check name ownership asynchronously - possibly also start the service */
@@ -1802,6 +1803,7 @@ async_initable_init_async (GAsyncInitable      *initable,
 
   task = g_task_new (proxy, cancellable, callback, user_data);
   g_task_set_source_tag (task, async_initable_init_async);
+  g_task_set_name (task, "[gio] D-Bus proxy init");
   g_task_set_priority (task, io_priority);
 
   if (proxy->priv->bus_type != G_BUS_TYPE_NONE)
@@ -2649,6 +2651,7 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
       my_callback = (GAsyncReadyCallback) reply_cb;
       task = g_task_new (proxy, cancellable, callback, user_data);
       g_task_set_source_tag (task, g_dbus_proxy_call_internal);
+      g_task_set_name (task, "[gio] D-Bus proxy call");
     }
   else
     {
