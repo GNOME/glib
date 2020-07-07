@@ -23,6 +23,12 @@
 
 #include <glib.h>
 
+#if GLIB_SIZEOF_VOID_P > 4
+#define THREADS 1000
+#else
+#define THREADS 100
+#endif
+
 static gpointer
 do_once (gpointer data)
 {
@@ -101,7 +107,7 @@ static void
 test_once_multi_threaded (void)
 {
   guint i;
-  GThread *threads[1000];
+  GThread *threads[THREADS];
 
   g_test_summary ("Test g_once() usage from multiple threads");
 
@@ -141,8 +147,6 @@ test_once_init_single_threaded (void)
   g_assert_cmpint (init, ==, 1);
 }
 
-#define THREADS 100
-
 static gint64 shared;
 
 static void
@@ -176,10 +180,10 @@ test_once_init_multi_threaded (void)
 
   shared = 0;
 
-  for (i = 0; i < THREADS; i++)
+  for (i = 0; i < G_N_ELEMENTS (threads); i++)
     threads[i] = g_thread_new ("once-init-multi-threaded", thread_func, NULL);
 
-  for (i = 0; i < THREADS; i++)
+  for (i = 0; i < G_N_ELEMENTS (threads); i++)
     g_thread_join (threads[i]);
 
   g_assert_cmpint (shared, ==, 42);
