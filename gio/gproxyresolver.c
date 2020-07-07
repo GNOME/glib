@@ -66,6 +66,8 @@ g_proxy_resolver_default_init (GProxyResolverInterface *iface)
 {
 }
 
+static GProxyResolver *proxy_resolver_default_singleton = NULL;  /* (owned) */
+
 /**
  * g_proxy_resolver_get_default:
  *
@@ -78,9 +80,11 @@ g_proxy_resolver_default_init (GProxyResolverInterface *iface)
 GProxyResolver *
 g_proxy_resolver_get_default (void)
 {
-  return _g_io_module_get_default (G_PROXY_RESOLVER_EXTENSION_POINT_NAME,
-				   "GIO_USE_PROXY_RESOLVER",
-				   (GIOModuleVerifyFunc)g_proxy_resolver_is_supported);
+  if (proxy_resolver_default_singleton == NULL)
+    proxy_resolver_default_singleton = _g_io_module_get_default (G_PROXY_RESOLVER_EXTENSION_POINT_NAME,
+                                                                 "GIO_USE_PROXY_RESOLVER",
+                                                                 (GIOModuleVerifyFunc) g_proxy_resolver_is_supported);
+  return proxy_resolver_default_singleton;
 }
 
 /**
