@@ -2429,7 +2429,7 @@ g_strsplit_set (const gchar *string,
                 const gchar *delimiters,
                 gint         max_tokens)
 {
-  gboolean delim_table[256];
+  guint8 delim_table[256]; /* 1 = index is a separator; 0 otherwise */
   GSList *tokens, *list;
   gint n_tokens;
   const gchar *s;
@@ -2450,6 +2450,9 @@ g_strsplit_set (const gchar *string,
       return result;
     }
 
+  /* Check if each character in @string is a separator, by indexing by the
+   * character value into the @delim_table, which has value 1 stored at an index
+   * if that index is a separator. */
   memset (delim_table, FALSE, sizeof (delim_table));
   for (s = delimiters; *s != '\0'; ++s)
     delim_table[*(guchar *)s] = TRUE;
