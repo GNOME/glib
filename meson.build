@@ -772,6 +772,17 @@ if cc.links('''#include <sys/eventfd.h>
   glib_conf.set('HAVE_EVENTFD', 1)
 endif
 
+# Check for __uint128_t (gcc) by checking for 128-bit division
+uint128_t_src = '''int main() {
+static __uint128_t v1 = 100;
+static __uint128_t v2 = 10;
+static __uint128_t u;
+u = v1 / v2;
+}'''
+if cc.compiles(uint128_t_src, name : '__uint128_t available')
+  glib_conf.set('HAVE_UINT128_T', 1)
+endif
+
 clock_gettime_test_code = '''
   #include <time.h>
   struct timespec t;
