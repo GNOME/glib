@@ -1608,6 +1608,45 @@ test_iso15924 (void)
 #undef PACK
 }
 
+static void
+test_normalize (void)
+{
+  guint i;
+  typedef struct
+  {
+    const gchar *str;
+    const gchar *nfd;
+    const gchar *nfc;
+    const gchar *nfkd;
+    const gchar *nfkc;
+  } Test;
+  Test tests[] = {
+    { "Äffin", "A\u0308ffin", "Äffin", "A\u0308ffin", "Äffin" },
+    { "Ä\uFB03n", "A\u0308\uFB03n", "Ä\uFB03n", "A\u0308ffin", "Äffin" },
+    { "Henry IV", "Henry IV", "Henry IV", "Henry IV", "Henry IV" },
+    { "Henry \u2163", "Henry \u2163", "Henry \u2163", "Henry IV", "Henry IV" },
+    { "non-utf\x88", NULL, NULL, NULL, NULL },
+    { "", "", "", "", "" },
+  };
+
+#define TEST(str, mode, expected)                         \
+  {                                                       \
+    gchar *normalized = g_utf8_normalize (str, -1, mode); \
+    g_assert_cmpstr (normalized, ==, expected);           \
+    g_free (normalized);                                  \
+  }
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      TEST (tests[i].str, G_NORMALIZE_NFD, tests[i].nfd);
+      TEST (tests[i].str, G_NORMALIZE_NFC, tests[i].nfc);
+      TEST (tests[i].str, G_NORMALIZE_NFKD, tests[i].nfkd);
+      TEST (tests[i].str, G_NORMALIZE_NFKC, tests[i].nfkc);
+    }
+
+#undef TEST
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1649,6 +1688,7 @@ main (int   argc,
   g_test_add_func ("/unicode/xdigit", test_xdigit);
   g_test_add_func ("/unicode/xdigit-value", test_xdigit_value);
   g_test_add_func ("/unicode/zero-width", test_zerowidth);
+  g_test_add_func ("/unicode/normalize", test_normalize);
 
   return g_test_run();
 }
