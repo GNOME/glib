@@ -54,6 +54,7 @@
 #include "gspawn.h"
 #include "gspawn-private.h"
 #include "gthread.h"
+#include "gtrace-private.h"
 #include "glib/gstdio.h"
 
 #include "genviron.h"
@@ -1760,7 +1761,10 @@ fork_exec_with_fds (gboolean              intermediate_child,
   if (!intermediate_child && working_directory == NULL && !close_descriptors &&
       !search_path_from_envp && child_setup == NULL)
     {
-      g_debug ("Launching with posix_spawn");
+      g_trace_mark (G_TRACE_CURRENT_TIME, 0,
+                    "GLib", "posix_spawn",
+                    "%s", argv[0]);
+
       status = do_posix_spawn (argv,
                                envp,
                                search_path,
@@ -1796,12 +1800,14 @@ fork_exec_with_fds (gboolean              intermediate_child,
     }
   else
     {
-      g_debug ("posix_spawn avoided %s%s%s%s%s",
-               !intermediate_child ? "" : "(automatic reaping requested) ",
-               working_directory == NULL ? "" : "(workdir specified) ",
-               !close_descriptors ? "" : "(fd close requested) ",
-               !search_path_from_envp ? "" : "(using envp for search path) ",
-               child_setup == NULL ? "" : "(child_setup specified) ");
+      g_trace_mark (G_TRACE_CURRENT_TIME, 0,
+                    "GLib", "fork",
+                    "posix_spawn avoided %s%s%s%s%s",
+                    !intermediate_child ? "" : "(automatic reaping requested) ",
+                    working_directory == NULL ? "" : "(workdir specified) ",
+                    !close_descriptors ? "" : "(fd close requested) ",
+                    !search_path_from_envp ? "" : "(using envp for search path) ",
+                    child_setup == NULL ? "" : "(child_setup specified) ");
     }
 #endif /* POSIX_SPAWN_AVAILABLE */
 
