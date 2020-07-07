@@ -787,25 +787,27 @@ g_network_address_parse_uri (const gchar  *uri,
     			     guint16       default_port,
 			     GError      **error)
 {
-  GSocketConnectable *conn;
-  gchar *scheme;
-  gchar *hostname;
-  guint16 port;
+  GSocketConnectable *conn = NULL;
+  gchar *scheme = NULL;
+  gchar *hostname = NULL;
+  gint port;
 
-  if (!_g_uri_parse_authority (uri, &hostname, &port, NULL, error))
-    return NULL;
+  if (!g_uri_split_network (uri, G_URI_FLAGS_PARSE_STRICT,
+                            &scheme, &hostname, &port, NULL))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                   "Invalid URI ‘%s’", uri);
+      return NULL;
+    }
 
-  if (port == 0)
+  if (port <= 0)
     port = default_port;
-
-  scheme = g_uri_parse_scheme (uri);
 
   conn = g_object_new (G_TYPE_NETWORK_ADDRESS,
                        "hostname", hostname,
-                       "port", port,
+                       "port", (guint) port,
                        "scheme", scheme,
                        NULL);
-
   g_free (scheme);
   g_free (hostname);
 
