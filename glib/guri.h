@@ -53,6 +53,8 @@ void         g_uri_unref            (GUri *uri);
  *     %G_URI_FLAGS_NON_DNS is also set.) When building a URI, it indicates
  *     that you have already `%`-encoded the components, and so #GUri
  *     should not do any encoding itself.
+ * @G_URI_FLAGS_ENCODED_QUERY: Same as %G_URI_FLAGS_ENCODED, for the query
+ *     field only.
  * @G_URI_FLAGS_NONE: No flags set.
  *
  * Flags that describe a URI.
@@ -72,6 +74,7 @@ typedef enum {
   G_URI_FLAGS_HAS_AUTH_PARAMS = 1 << 2,
   G_URI_FLAGS_ENCODED         = 1 << 3,
   G_URI_FLAGS_NON_DNS         = 1 << 4,
+  G_URI_FLAGS_ENCODED_QUERY   = 1 << 5,
 } GUriFlags;
 
 GLIB_AVAILABLE_IN_2_66
@@ -222,11 +225,29 @@ const gchar *g_uri_get_fragment      (GUri          *uri);
 GLIB_AVAILABLE_IN_2_66
 GUriFlags    g_uri_get_flags         (GUri          *uri);
 
+/**
+ * GUriParamsFlags:
+ * @G_URI_PARAMS_NONE: No flags set.
+ * @G_URI_PARAMS_CASE_INSENSITIVE: whether parameter names are case insensitive.
+ * @G_URI_PARAMS_WWW_FORM: replace `+` with space character.
+ *
+ * Flags modifying the way parameters are handled.
+ *
+ * Since: 2.66
+ */
+GLIB_AVAILABLE_TYPE_IN_2_66
+typedef enum {
+  G_URI_PARAMS_NONE             = 0,
+  G_URI_PARAMS_CASE_INSENSITIVE = 1 << 0,
+  G_URI_PARAMS_WWW_FORM         = 1 << 1,
+} GUriParamsFlags;
+
 GLIB_AVAILABLE_IN_2_66
-GHashTable * g_uri_parse_params      (const gchar   *params,
-                                      gssize         length,
-                                      gchar          separator,
-                                      gboolean       case_insensitive);
+GHashTable *g_uri_parse_params       (const gchar    *params,
+                                      gssize          length,
+                                      const gchar    *separators,
+                                      GUriParamsFlags flags,
+                                      GError        **error);
 
 /**
  * G_URI_ERROR:

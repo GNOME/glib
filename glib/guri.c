@@ -148,7 +148,10 @@
  *   g_assert_error(err, G_URI_ERROR, G_URI_ERROR_BAD_QUERY);
  * ]|
  *
- * (you should pass %G_URI_FLAGS_ENCODED if you need to handle that case manually).
+ * You should pass %G_URI_FLAGS_ENCODED or %G_URI_FLAGS_ENCODED_QUERY if you
+ * need to handle that case manually. In particular, if the query string
+ * contains '=' characters that are '%'-encoded, you should let
+ * g_uri_parse_params() do the decoding once of the query.
  *
  * #GUri is immutable once constructed, and can safely be accessed from
  * multiple threads. Its reference counting is atomic.
@@ -237,6 +240,7 @@ uri_decoder (gchar       **out,
              const gchar  *start,
              gsize         length,
              gboolean      just_normalize,
+             gboolean      www_form,
              GUriFlags     flags,
              GUriError     parse_error,
              GError      **error)
@@ -287,6 +291,8 @@ uri_decoder (gchar       **out,
               s += 2;
             }
         }
+      else if (www_form && *s == '+')
+        *d++ = ' ';
       else
         *d++ = *s;
     }
@@ -314,11 +320,12 @@ static gboolean
 uri_decode (gchar       **out,
             const gchar  *start,
             gsize         length,
+            gboolean      www_form,
             GUriFlags     flags,
             GUriError     parse_error,
             GError      **error)
 {
-  return uri_decoder (out, start, length, FALSE, flags,
+  return uri_decoder (out, start, length, FALSE, www_form, flags,
                       parse_error, error) != -1;
 }
 
@@ -330,7 +337,7 @@ uri_normalize (gchar       **out,
                GUriError     parse_error,
                GError      **error)
 {
-  return uri_decoder (out, start, length, TRUE, flags,
+  return uri_decoder (out, start, length, TRUE, FALSE, flags,
                       parse_error, error) != -1;
 }
 
@@ -450,7 +457,7 @@ parse_host (const gchar  *start,
     }
 
   flags &= ~G_URI_FLAGS_ENCODED;
-  if (!uri_decode (&decoded, start, length, flags,
+  if (!uri_decode (&decoded, start, length, FALSE, flags,
                    G_URI_ERROR_BAD_HOST, error))
     return FALSE;
 
@@ -771,7 +778,7 @@ g_uri_split_internal (const gchar  *uri_string,
   end = p + strcspn (p, "#");
   if (*end == '#')
     {
-      if (!uri_decode (fragment, end + 1, strlen (end + 1), flags,
+      if (!uri_decode (fragment, end + 1, strlen (end + 1), FALSE, flags,
                        G_URI_ERROR_BAD_FRAGMENT, error))
         goto fail;
     }
@@ -780,7 +787,8 @@ g_uri_split_internal (const gchar  *uri_string,
   question = memchr (p, '?', end - p);
   if (question)
     {
-      if (!uri_normalize (query, question + 1, end - (question + 1), flags,
+      if (!uri_normalize (query, question + 1, end - (question + 1),
+                          flags | (flags & G_URI_FLAGS_ENCODED_QUERY ? G_URI_FLAGS_ENCODED : 0),
                           G_URI_ERROR_BAD_QUERY, error))
         goto fail;
       end = question;
@@ -1395,7 +1403,7 @@ g_uri_join_internal (GUriFlags    flags,
   if (query)
     {
       g_string_append_c (str, '?');
-      if (encoded)
+      if (encoded || flags & G_URI_FLAGS_ENCODED_QUERY)
         g_string_append (str, query);
       else
         g_string_append_uri_escaped (str, query, QUERY_ALLOWED_CHARS, TRUE);
@@ -1750,16 +1758,20 @@ str_ascii_case_equal (gconstpointer v1,
  * @params: a `%`-encoded string containing "attribute=value"
  *   parameters
  * @length: the length of @params, or -1 if it is NUL-terminated
- * @separator: the separator character between parameters.
- *   (usually ';', but sometimes '&')
- * @case_insensitive: whether parameter names are case insensitive
+ * @separators: the separator byte character set between parameters. (usually
+ *   "&", but sometimes ";" or both "&;"). Note that this function works on
+ *   bytes not characters, so it can't be used to delimit UTF-8 strings for
+ *   anything but ASCII characters. You may pass an empty set, in which case
+ *   no splitting will occur.
+ * @flags: flags to modify the way the parameters are handled.
+ * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Many URI schemes include one or more attribute/value pairs as part of the URI
  * value. This method can be used to parse them into a hash table.
  *
  * The @params string is assumed to still be `%`-encoded, but the returned
  * values will be fully decoded. (Thus it is possible that the returned values
- * may contain '=' or @separator, if the value was encoded in the input.)
+ * may contain '=' or @separators, if the value was encoded in the input.)
  * Invalid `%`-encoding is treated as with the non-%G_URI_FLAGS_PARSE_STRICT
  * rules for g_uri_parse(). (However, if @params is the path or query string
  * from a #GUri that was parsed with %G_URI_FLAGS_PARSE_STRICT and
@@ -1768,7 +1780,7 @@ str_ascii_case_equal (gconstpointer v1,
  *
  * Return value: (transfer full) (element-type utf8 utf8): a hash table of
  * attribute/value pairs. Both names and values will be fully-decoded. If
- * @params cannot be parsed (eg, it contains two @separator characters in a
+ * @params cannot be parsed (eg, it contains two @separators characters in a
  * row), then %NULL is returned.
  *
  * Since: 2.66
@@ -1776,17 +1788,22 @@ str_ascii_case_equal (gconstpointer v1,
 GHashTable *
 g_uri_parse_params (const gchar     *params,
                     gssize           length,
-                    gchar            separator,
-                    gboolean         case_insensitive)
+                    const gchar     *separators,
+                    GUriParamsFlags  flags,
+                    GError         **error)
 {
   GHashTable *hash;
-  const gchar *end, *attr, *attr_end, *value, *value_end;
+  const gchar *end, *attr, *attr_end, *value, *value_end, *s;
   gchar *decoded_attr, *decoded_value;
+  guint8 sep_table[256]; /* 1 = index is a separator; 0 otherwise */
+  gboolean www_form = flags & G_URI_PARAMS_WWW_FORM;
 
   g_return_val_if_fail (length == 0 || params != NULL, NULL);
   g_return_val_if_fail (length >= -1, NULL);
+  g_return_val_if_fail (separators != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (case_insensitive)
+  if (flags & G_URI_PARAMS_CASE_INSENSITIVE)
     {
       hash = g_hash_table_new_full (str_ascii_case_hash,
                                     str_ascii_case_equal,
@@ -1803,21 +1820,30 @@ g_uri_parse_params (const gchar     *params,
   else
     end = params + length;
 
+  memset (sep_table, FALSE, sizeof (sep_table));
+  for (s = separators; *s != '\0'; ++s)
+    sep_table[*(guchar *)s] = TRUE;
+
   attr = params;
   while (attr < end)
     {
-      value_end = memchr (attr, separator, end - attr);
-      if (!value_end)
-        value_end = end;
+      /* Check if each character in @attr is a separator, by indexing by the
+       * character value into the @sep_table, which has value 1 stored at an
+       * index if that index is a separator. */
+      for (value_end = attr; value_end < end; value_end++)
+        if (sep_table[*(guchar *)value_end])
+          break;
 
       attr_end = memchr (attr, '=', value_end - attr);
       if (!attr_end)
         {
           g_hash_table_destroy (hash);
+          g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_MISC,
+                               _("Missing '=' and parameter value"));
           return NULL;
         }
       if (!uri_decode (&decoded_attr, attr, attr_end - attr,
-                       0, G_URI_ERROR_MISC, NULL))
+                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
         {
           g_hash_table_destroy (hash);
           return NULL;
@@ -1825,7 +1851,7 @@ g_uri_parse_params (const gchar     *params,
 
       value = attr_end + 1;
       if (!uri_decode (&decoded_value, value, value_end - value,
-                       0, G_URI_ERROR_MISC, NULL))
+                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
         {
           g_free (decoded_attr);
           g_hash_table_destroy (hash);
@@ -2106,6 +2132,7 @@ g_uri_unescape_segment (const gchar *escaped_string,
 
   if (!uri_decode (&unescaped,
                    escaped_string, length,
+                   FALSE,
                    G_URI_FLAGS_PARSE_STRICT,
                    0, NULL))
     return NULL;
@@ -2219,6 +2246,7 @@ g_uri_unescape_bytes (const gchar *escaped_string,
 
   unescaped_length = uri_decoder (&buf,
                                   escaped_string, length,
+                                  FALSE,
                                   FALSE,
                                   G_URI_FLAGS_PARSE_STRICT|G_URI_FLAGS_ENCODED,
                                   0, NULL);
