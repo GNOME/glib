@@ -1019,6 +1019,9 @@ typedef enum
  * do not ask the bus to launch an owner during proxy initialization, but allow it to be
  * autostarted by a method call. This flag is only meaningful in proxies for well-known names,
  * and only if %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is not also specified.
+ * @G_DBUS_PROXY_FLAGS_NO_MATCH_RULE: Don't actually send the AddMatch D-Bus
+ *    call for this signal subscription.  This gives you more control
+ *    over which match rules you add (but you must add them manually). (Since: 2.60)
  *
  * Flags used when constructing an instance of a #GDBusProxy derived class.
  *
@@ -1031,7 +1034,8 @@ typedef enum
   G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS = (1<<1),
   G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START = (1<<2),
   G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES = (1<<3),
-  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION = (1<<4)
+  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION = (1<<4),
+  G_DBUS_PROXY_FLAGS_NO_MATCH_RULE = (1<<5)
 } GDBusProxyFlags;
 
 /**
