@@ -423,6 +423,8 @@ parse_host (const gchar  *start,
           /* If the '%' is encoded as '%25' (which it should be), decode it */
           if (pct[1] == '2' && pct[2] == '5' && pct[3])
             memmove (pct + 1, pct + 3, strlen (pct + 3) + 1);
+          else if (flags & G_URI_FLAGS_PARSE_STRICT)
+            goto bad_ipv6_literal;
         }
 
       host = addr;
