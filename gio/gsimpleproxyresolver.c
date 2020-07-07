@@ -327,10 +327,11 @@ g_simple_proxy_resolver_lookup (GProxyResolver  *proxy_resolver,
   if (priv->ignore_ips || priv->ignore_domains)
     {
       gchar *host = NULL;
-      gushort port;
+      gint port;
 
-      if (_g_uri_parse_authority (uri, &host, &port, NULL, NULL) &&
-          ignore_host (resolver, host, port))
+      if (g_uri_split (uri, G_URI_FLAGS_PARSE_STRICT, NULL, NULL,
+                       &host, &port, NULL, NULL, NULL, NULL) &&
+          ignore_host (resolver, host, port > 0 ? port : 0))
         proxy = "direct://";
 
       g_free (host);
