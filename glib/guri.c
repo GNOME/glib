@@ -674,6 +674,11 @@ g_uri_split_internal (const gchar  *uri_string,
     {
       if (scheme)
         *scheme = NULL;
+      if (flags & G_URI_FLAGS_HAS_SCHEME) {
+        g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_SCHEME,
+                     _("URI '%s' has no scheme"), uri_string);
+        goto fail;
+      }
       p = uri_string;
     }
 
@@ -1547,7 +1552,7 @@ g_uri_build (GUriFlags    flags,
   g_return_val_if_fail (path != NULL, NULL);
 
   uri = g_atomic_rc_box_new0 (GUri);
-  uri->flags = flags;
+  uri->flags = flags | G_URI_FLAGS_HAS_SCHEME;
   uri->scheme = g_ascii_strdown (scheme, -1);
   uri->userinfo = g_strdup (userinfo);
   uri->host = g_strdup (host);
@@ -1604,7 +1609,7 @@ g_uri_build_with_user (GUriFlags    flags,
   g_return_val_if_fail (path != NULL, NULL);
 
   uri = g_atomic_rc_box_new0 (GUri);
-  uri->flags = flags;
+  uri->flags = flags | G_URI_FLAGS_HAS_SCHEME;
   uri->scheme = g_ascii_strdown (scheme, -1);
   uri->user = g_strdup (user);
   uri->password = g_strdup (password);
