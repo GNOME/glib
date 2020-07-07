@@ -648,6 +648,17 @@ g_task_finalize (GObject *object)
 {
   GTask *task = G_TASK (object);
 
+  if (!task->ever_returned && task->callback != NULL)
+    g_warning ("GTask %p (source object: %p, source tag: %p) finalized without "
+               "ever returning (using g_task_return_*()). This potentially "
+               "indicates a bug in the program.",
+               task, task->source_object, task->source_tag);
+  else if (!task->ever_returned)
+    g_debug ("GTask %p (source object: %p, source tag: %p) finalized without "
+             "ever returning (using g_task_return_*()). This potentially "
+             "indicates a bug in the program.",
+             task, task->source_object, task->source_tag);
+
   g_clear_object (&task->source_object);
   g_clear_object (&task->cancellable);
   g_free (task->name);
