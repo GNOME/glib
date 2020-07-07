@@ -55,6 +55,7 @@ void         g_uri_unref            (GUri *uri);
  *     should not do any encoding itself.
  * @G_URI_FLAGS_ENCODED_QUERY: Same as %G_URI_FLAGS_ENCODED, for the query
  *     field only.
+ * @G_URI_FLAGS_HAS_SCHEME: The URI must have a scheme.
  * @G_URI_FLAGS_NONE: No flags set.
  *
  * Flags that describe a URI.
@@ -75,6 +76,7 @@ typedef enum {
   G_URI_FLAGS_ENCODED         = 1 << 3,
   G_URI_FLAGS_NON_DNS         = 1 << 4,
   G_URI_FLAGS_ENCODED_QUERY   = 1 << 5,
+  G_URI_FLAGS_HAS_SCHEME      = 1 << 5,
 } GUriFlags;
 
 GLIB_AVAILABLE_IN_2_66
