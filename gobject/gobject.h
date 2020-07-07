@@ -679,14 +679,14 @@ void    g_clear_object (GObject **object_ptr);
 
 /**
  * g_set_object: (skip)
- * @object_ptr: a pointer to a #GObject reference
- * @new_object: (nullable) (transfer none): a pointer to the new #GObject to
- *   assign to it, or %NULL to clear the pointer
+ * @object_ptr: (inout) (nullable): a pointer to a #GObject reference
+ * @new_object: (in) (nullable) (transfer none): a pointer to the new #GObject
+ *   to assign from it, or %NULL to clear the pointer
  *
  * Updates a #GObject pointer to refer to @new_object. It increments the
  * reference count of @new_object (if non-%NULL), decrements the reference
- * count of the current value of @object_ptr (if non-%NULL), and assigns
- * @new_object to @object_ptr. The assignment is not atomic.
+ * count of the current value of @object_ptr (if it does not point to %NULL),
+ * and assigns @new_object to @object_ptr. The assignment is not atomic.
  *
  * @object_ptr must not be %NULL.
  *
