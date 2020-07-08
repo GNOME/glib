@@ -3371,6 +3371,7 @@ g_uri_get_query
 g_uri_get_fragment
 g_uri_get_flags
 <SUBSECTION>
+GUriParamsFlags
 g_uri_parse_params
 <SUBSECTION>
 G_URI_RESERVED_CHARS_ALLOWED_IN_PATH

@@ -1070,6 +1070,38 @@ test_uri_split (void)
   g_assert_cmpstr (path, ==, ";oo/");
   g_free (path);
 
+  g_uri_split ("http://h%01st/path?saisons=%C3%89t%C3%A9%2Bhiver",
+               G_URI_FLAGS_NONE,
+               NULL,
+               NULL,
+               &host,
+               NULL,
+               NULL,
+               &query,
+               NULL,
+               &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (host, ==, "h\001st");
+  g_assert_cmpstr (query, ==, "saisons=Été+hiver");
+  g_free (host);
+  g_free (query);
+
+  g_uri_split ("http://h%01st/path?saisons=%C3%89t%C3%A9%2Bhiver",
+               G_URI_FLAGS_ENCODED_QUERY,
+               NULL,
+               NULL,
+               &host,
+               NULL,
+               NULL,
+               &query,
+               NULL,
+               &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (host, ==, "h\001st");
+  g_assert_cmpstr (query, ==, "saisons=%C3%89t%C3%A9%2Bhiver");
+  g_free (host);
+  g_free (query);
+
   g_uri_split_with_user ("scheme://user:pass;auth@host:1234/path?query#fragment",
                          G_URI_FLAGS_HAS_AUTH_PARAMS|G_URI_FLAGS_HAS_PASSWORD,
                          NULL,
@@ -1265,27 +1297,34 @@ test_uri_is_valid (void)
 static void
 test_uri_parse_params (gconstpointer test_data)
 {
+  GError *err = NULL;
   gboolean use_nul_terminated = GPOINTER_TO_INT (test_data);
   const struct
     {
       /* Inputs */
       const gchar *uri;
-      gchar separator;
-      gboolean case_insensitive;
+      gchar *separators;
+      GUriParamsFlags flags;
       /* Outputs */
       gssize expected_n_params;  /* -1 => error expected */
       /* key, value, key, value, …, limited to length 2*expected_n_params */
-      const gchar *expected_param_key_values[4];
+      const gchar *expected_param_key_values[6];
     }
   tests[] =
     {
-      { "", '&', FALSE, 0, { NULL, }},
-      { "p1=foo&p2=bar", '&', FALSE, 2, { "p1", "foo", "p2", "bar" }},
-      { "p1=foo&&P1=bar", '&', FALSE, -1, { NULL, }},
-      { "%00=foo", '&', FALSE, -1, { NULL, }},
-      { "p1=%00", '&', FALSE, -1, { NULL, }},
-      { "p1=foo&P1=bar", '&', TRUE, 1, { "p1", "bar", NULL, }},
-      { "=%", '&', FALSE, 1, { "", "%", NULL, }},
+      { "p1=foo&p2=bar;p3=baz", "&;", G_URI_PARAMS_NONE, 3, { "p1", "foo", "p2", "bar", "p3", "baz" }},
+      { "p1=foo&p2=bar", "", G_URI_PARAMS_NONE, 1, { "p1", "foo&p2=bar" }},
+      { "p1=foo&&P1=bar", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
+      { "%00=foo", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
+      { "p1=%00", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
+      { "p1=foo&P1=bar", "&", G_URI_PARAMS_CASE_INSENSITIVE, 1, { "p1", "bar", NULL, }},
+      { "=%", "&", G_URI_PARAMS_NONE, 1, { "", "%", NULL, }},
+      { "=", "&", G_URI_PARAMS_NONE, 1, { "", "", NULL, }},
+      { "foo", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
+      { "foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", "&", G_URI_PARAMS_WWW_FORM,
+        2, { "foo", "bar & baz", "saisons", "Été+hiver", NULL, }},
+      { "foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", "&", G_URI_PARAMS_NONE,
+        2, { "foo", "bar+&+baz", "saisons", "Été+hiver", NULL, }},
     };
   gsize i;
 
@@ -1315,16 +1354,19 @@ test_uri_parse_params (gconstpointer test_data)
           uri = g_memdup (tests[i].uri, uri_len);
         }
 
-      params = g_uri_parse_params (uri, uri_len, tests[i].separator, tests[i].case_insensitive);
+      params = g_uri_parse_params (uri, uri_len, tests[i].separators, tests[i].flags, &err);
 
       if (tests[i].expected_n_params < 0)
         {
           g_assert_null (params);
+          g_assert_error (err, G_URI_ERROR, G_URI_ERROR_MISC);
+          g_clear_error (&err);
         }
       else
         {
           gsize j;
 
+          g_assert_no_error (err);
           g_assert_cmpint (g_hash_table_size (params), ==, tests[i].expected_n_params);
 
           for (j = 0; j < tests[i].expected_n_params; j += 2)
