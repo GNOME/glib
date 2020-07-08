@@ -435,6 +435,10 @@ test_strup (void)
   /* Tricky, comparing two unicode strings with an ASCII function */
   g_assert_cmpstr (str_up, ==, "AAZZ09X;\003E\357\274\241\357\274\241");
   g_free (str_up);
+
+  str_up = g_utf8_strup ("", 0);
+  g_assert_cmpstr (str_up, ==, "");
+  g_free (str_up);
 }
 
 /* Test that g_utf8_strdown() returns the correct value for various
@@ -460,6 +464,10 @@ test_strdown (void)
   /* Tricky, comparing two unicode strings with an ASCII function */
   g_assert_cmpstr (str_down, ==, "aazz09x;\003\007\357\275\201\357\275\201");
   g_free (str_down);
+
+  str_down = g_utf8_strdown ("", 0);
+  g_assert_cmpstr (str_down, ==, "");
+  g_free (str_down);
 }
 
 /* Test that g_utf8_casefold() returns the correct value for various
@@ -484,6 +492,10 @@ test_casefold (void)
   str_casefold = g_utf8_casefold (str, strlen (str));
   /* Tricky, comparing two unicode strings with an ASCII function */
   g_assert_cmpstr (str_casefold, ==, "aazz09x;\357\275\201\357\275\201");
+  g_free (str_casefold);
+
+  str_casefold = g_utf8_casefold ("", 0);
+  g_assert_cmpstr (str_casefold, ==, "");
   g_free (str_casefold);
 }
 
