@@ -346,6 +346,7 @@ test_uri_unescape_string (void)
       { "%0", NULL, NULL },
       { "%ra", NULL, NULL },
       { "%2r", NULL, NULL },
+      { "Timm B\344der", NULL, "Timm B\344der" },
       { NULL, NULL, NULL },  /* actually a valid test, not a delimiter */
     };
   gsize i;
