@@ -394,10 +394,10 @@ hex_unescape_string (const char *str,
       else
 	*p++ = str[i];
     }
-  *p++ = 0;
-
   if (out_len)
     *out_len = p - unescaped_str;
+  *p++ = 0;
+
   *free_return = TRUE;
   return unescaped_str;
 }
