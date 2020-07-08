@@ -560,6 +560,8 @@ init_zone_from_iana_info (GTimeZone *gtz,
   g_return_if_fail (size >= sizeof (struct tzhead) &&
                     memcmp (header, "TZif", 4) == 0);
 
+  /* FIXME: Handle invalid TZif files better (Issue#1088).  */
+
   if (header->tzh_version >= '2')
       {
         /* Skip ahead to the newer 64-bit data if it's available. */
@@ -1568,8 +1570,16 @@ parse_footertz (const gchar *footer)
   guint rules_num;
   GTimeZone *footertz = NULL;
 
+  /* FIXME: Handle invalid TZif files better (Issue#1088).  */
   for (footer_end = footer + 1; *++footer_end != '\n'; )
     continue;
+
+  /* FIXME: it might make sense to modify rules_from_identifier to
+     allow NULL to be passed instead of &ident, saving the strdup/free
+     pair.  The allocation for tzstring could also be avoided by
+     passing a gsize identifier_len argument to rules_from_identifier
+     and changing the code in that function to stop assuming that
+     identifier is nul-terminated.  */
   tzstring = g_strndup (footer + 1, footer_end - (footer + 1));
   rules_num = rules_from_identifier (tzstring, &ident, &rules);
   g_free (ident);
