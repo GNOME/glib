@@ -4,15 +4,20 @@ static void
 test_bytes (const guint8 *data,
             gsize         size)
 {
+  GError *error = NULL;
   GBytes *unescaped_bytes = NULL;
   gchar *escaped_string = NULL;
 
   if (size > G_MAXSSIZE)
     return;
 
-  unescaped_bytes = g_uri_unescape_bytes ((const gchar *) data, (gssize) size);
+  unescaped_bytes = g_uri_unescape_bytes ((const gchar *) data, (gssize) size, &error);
   if (unescaped_bytes == NULL)
-    return;
+    {
+      g_assert_nonnull (error);
+      g_clear_error (&error);
+      return;
+    }
 
   escaped_string = g_uri_escape_bytes (g_bytes_get_data (unescaped_bytes, NULL),
                                        g_bytes_get_size (unescaped_bytes),

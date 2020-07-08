@@ -2220,26 +2220,29 @@ g_uri_escape_string (const gchar *unescaped,
  * @escaped_string: A URI-escaped string
  * @length: the length of @escaped_string to escape, or -1 if it
  *   is NUL-terminated.
+ * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Unescapes a segment of an escaped string as binary data.
  *
  * Note that in contrast to g_uri_unescape_string(), this does allow
  * `NUL` bytes to appear in the output.
  *
- * Returns: (transfer full): an unescaped version of @escaped_string
- * or %NULL on error. The returned #GBytes should be unreffed when no
- * longer needed.
+ * Returns: (transfer full): an unescaped version of @escaped_string or %NULL on
+ * error (if decoding failed, using %G_URI_ERROR_MISC error code). The returned
+ * #GBytes should be unreffed when no longer needed.
  *
  * Since: 2.66
  **/
 GBytes *
 g_uri_unescape_bytes (const gchar *escaped_string,
-                      gssize       length)
+                      gssize       length,
+                      GError     **error)
 {
   gchar *buf;
   gssize unescaped_length;
 
   g_return_val_if_fail (escaped_string != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   if (length == -1)
     length = strlen (escaped_string);
@@ -2249,7 +2252,7 @@ g_uri_unescape_bytes (const gchar *escaped_string,
                                   FALSE,
                                   FALSE,
                                   G_URI_FLAGS_PARSE_STRICT|G_URI_FLAGS_ENCODED,
-                                  0, NULL);
+                                  G_URI_ERROR_MISC, error);
   if (unescaped_length == -1)
     return NULL;
 
