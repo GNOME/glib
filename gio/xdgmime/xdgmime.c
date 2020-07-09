@@ -118,7 +118,22 @@ xdg_dir_time_list_add (char   *file_name,
   list->next = dir_time_list;
   dir_time_list = list;
 }
- 
+
+static void
+xdg_dirs_free (void)
+{
+  if (xdg_dirs)
+    {
+      size_t i;
+
+      for (i = 0; xdg_dirs[i] != NULL; i ++)
+        free (xdg_dirs[i]);
+
+      free (xdg_dirs);
+      xdg_dirs = NULL;
+    }
+}
+
 static void
 xdg_dir_time_list_free (XdgDirTimeList *list)
 {
@@ -339,11 +354,7 @@ xdg_mime_set_dirs (const char * const *dirs)
 {
   size_t i;
 
-  for (i = 0; xdg_dirs != NULL && xdg_dirs[i] != NULL; i++)
-    free (xdg_dirs[i]);
-  if (xdg_dirs != NULL)
-    free (xdg_dirs[i]);
-  xdg_dirs = NULL;
+  xdg_dirs_free ();
 
   if (dirs != NULL)
     {
@@ -496,6 +507,45 @@ xdg_check_time_and_dirs (void)
   return retval;
 }
 
+static void
+free_globals (void)
+{
+  if (global_hash)
+    {
+      _xdg_glob_hash_free (global_hash);
+      global_hash = NULL;
+    }
+  if (global_magic)
+    {
+      _xdg_mime_magic_free (global_magic);
+      global_magic = NULL;
+    }
+
+  if (alias_list)
+    {
+      _xdg_mime_alias_list_free (alias_list);
+      alias_list = NULL;
+    }
+
+  if (parent_list)
+    {
+      _xdg_mime_parent_list_free (parent_list);
+      parent_list = NULL;
+    }
+
+  if (icon_list)
+    {
+      _xdg_mime_icon_list_free (icon_list);
+      icon_list = NULL;
+    }
+
+  if (generic_icon_list)
+    {
+      _xdg_mime_icon_list_free (generic_icon_list);
+      generic_icon_list = NULL;
+    }
+}
+
 /* Called in every public function.  It reloads the hash function if need be.
  */
 static void
@@ -508,6 +558,8 @@ xdg_mime_init (void)
 
   if (need_reread)
     {
+      free_globals ();
+
       global_hash = _xdg_glob_hash_new ();
       global_magic = _xdg_mime_magic_new ();
       alias_list = _xdg_mime_alias_list_new ();
@@ -684,42 +736,9 @@ xdg_mime_shutdown (void)
       xdg_dir_time_list_free (dir_time_list);
       dir_time_list = NULL;
     }
-	
-  if (global_hash)
-    {
-      _xdg_glob_hash_free (global_hash);
-      global_hash = NULL;
-    }
-  if (global_magic)
-    {
-      _xdg_mime_magic_free (global_magic);
-      global_magic = NULL;
-    }
 
-  if (alias_list)
-    {
-      _xdg_mime_alias_list_free (alias_list);
-      alias_list = NULL;
-    }
+  free_globals ();
 
-  if (parent_list)
-    {
-      _xdg_mime_parent_list_free (parent_list);
-      parent_list = NULL;
-    }
-
-  if (icon_list)
-    {
-      _xdg_mime_icon_list_free (icon_list);
-      icon_list = NULL;
-    }
-
-  if (generic_icon_list)
-    {
-      _xdg_mime_icon_list_free (generic_icon_list);
-      generic_icon_list = NULL;
-    }
-  
   if (_caches)
     {
       int i;
@@ -733,6 +752,8 @@ xdg_mime_shutdown (void)
 
   for (list = callback_list; list; list = list->next)
     (list->callback) (list->data);
+
+  xdg_dirs_free ();
 
   need_reread = TRUE;
 }
