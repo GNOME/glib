@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-06-29 11:24+0000\n"
-"PO-Revision-Date: 2020-07-02 12:39+0300\n"
+"POT-Creation-Date: 2020-07-09 07:53+0000\n"
+"PO-Revision-Date: 2020-07-09 12:32+0300\n"
 "Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
 "sourceforge.net>\n"
@@ -285,7 +285,7 @@ msgstr "Flux deja închis"
 msgid "Truncate not supported on base stream"
 msgstr "Trunchierea fluxului de bază nu este suportată"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1411
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1413
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -946,22 +946,22 @@ msgstr "Eroare la întoarcere cu corpul de tipul „%s”"
 msgid "Error return with empty body"
 msgstr "Rezultat de eroare cu corp vid"
 
-#: gio/gdbusprivate.c:2242
+#: gio/gdbusprivate.c:2244
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Tastați orice caracter pentru a închide această fereastră)\n"
 
-#: gio/gdbusprivate.c:2416
+#: gio/gdbusprivate.c:2418
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Sesiunea dbus nu rulează, și lansarea automată a eșuat"
 
-#: gio/gdbusprivate.c:2439
+#: gio/gdbusprivate.c:2441
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Nu se poate obține profilul hardware: %s"
 
-#: gio/gdbusprivate.c:2484
+#: gio/gdbusprivate.c:2486
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Nu se poate încărca /var/lib/dbus/machine-id sau /etc/machine-id: "
 
@@ -975,7 +975,7 @@ msgstr "Eroare la apelul StartServiceByName pentru %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Răspuns neașteptat %d de la metoda StartServiceByName(\"%s\")"
 
-#: gio/gdbusproxy.c:2685 gio/gdbusproxy.c:2820
+#: gio/gdbusproxy.c:2688 gio/gdbusproxy.c:2823
 #, c-format
 msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
@@ -1291,7 +1291,7 @@ msgstr "Eroare: prea multe argumente.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Eroare: %s nu este un nume de magistrală popular valid.\n"
 
-#: gio/gdesktopappinfo.c:2071 gio/gdesktopappinfo.c:4886
+#: gio/gdesktopappinfo.c:2071 gio/gdesktopappinfo.c:4885
 msgid "Unnamed"
 msgstr "Nedenumit"
 
@@ -1303,28 +1303,28 @@ msgstr "Fișierul desktop nu a specificat un câmp Exec"
 msgid "Unable to find terminal required for application"
 msgstr "Nu s-a găsit un terminal pentru pornirea aplicației"
 
-#: gio/gdesktopappinfo.c:3413
+#: gio/gdesktopappinfo.c:3412
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Nu se poate crea dosarul de configurare pentru aplicațiile utilizatorului "
 "%s: %s"
 
-#: gio/gdesktopappinfo.c:3417
+#: gio/gdesktopappinfo.c:3416
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Nu se poate crea dosarul de configurare MIME al utilizatorului %s: %s"
 
-#: gio/gdesktopappinfo.c:3657 gio/gdesktopappinfo.c:3681
+#: gio/gdesktopappinfo.c:3656 gio/gdesktopappinfo.c:3680
 msgid "Application information lacks an identifier"
 msgstr "Informațiile despre aplicație nu au un indentificator"
 
-#: gio/gdesktopappinfo.c:3915
+#: gio/gdesktopappinfo.c:3914
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Nu se poate crea fișierul desktop al utilizatorului %s"
 
-#: gio/gdesktopappinfo.c:4049
+#: gio/gdesktopappinfo.c:4048
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definiție personalizată pentru %s"
@@ -1519,7 +1519,7 @@ msgstr "Nu se permite trunchierea fluxului de intrare"
 msgid "Truncate not supported on stream"
 msgstr "Trunchierea fluxului nu este implementată"
 
-#: gio/ghttpproxy.c:91 gio/gresolver.c:443 gio/gresolver.c:595
+#: gio/ghttpproxy.c:91 gio/gresolver.c:443 gio/gresolver.c:596
 #: glib/gconvert.c:1777
 msgid "Invalid hostname"
 msgstr "Nume nevalid"
@@ -3431,12 +3431,12 @@ msgid "Error resolving “%s”: %s"
 msgstr "Eroare la rezolvarea „%s”: %s"
 
 #. Translators: The placeholder is for a function name.
-#: gio/gresolver.c:455 gio/gresolver.c:613
+#: gio/gresolver.c:455 gio/gresolver.c:615
 #, c-format
 msgid "%s not implemented"
 msgstr "%s nu este implementat"
 
-#: gio/gresolver.c:981 gio/gresolver.c:1033
+#: gio/gresolver.c:984 gio/gresolver.c:1036
 msgid "Invalid domain"
 msgstr "Domeniu nevalid"
 
@@ -4118,24 +4118,24 @@ msgstr "Nu se poate lucra cu versiunea %d a codării GThemedIcon"
 msgid "No valid addresses were found"
 msgstr "Nu s-au găsit adrese valide"
 
-#: gio/gthreadedresolver.c:334
+#: gio/gthreadedresolver.c:337
 #, c-format
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "Eroare la rezolvarea inversă a „%s”: %s"
 
-#: gio/gthreadedresolver.c:671 gio/gthreadedresolver.c:750
-#: gio/gthreadedresolver.c:848 gio/gthreadedresolver.c:898
+#: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:755
+#: gio/gthreadedresolver.c:853 gio/gthreadedresolver.c:903
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "Nu există nicio înregistrare DNS a tipului solicitat pentru „%s”"
 
-#: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:853
+#: gio/gthreadedresolver.c:681 gio/gthreadedresolver.c:858
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "Nu se poate rezolva temporar „%s”"
 
-#: gio/gthreadedresolver.c:681 gio/gthreadedresolver.c:858
-#: gio/gthreadedresolver.c:968
+#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:863
+#: gio/gthreadedresolver.c:973
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Eroare la rezolvarea „%s”"
@@ -5785,82 +5785,82 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Textul era gol (sau conținea doar spațiu gol)"
 
-#: glib/gspawn.c:322
+#: glib/gspawn.c:323
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nu s-au putut citi datele din procesul copil (%s)"
 
-#: glib/gspawn.c:467
+#: glib/gspawn.c:468
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Eroare neașteptată la citirea datelor din procesul copil (%s)"
 
-#: glib/gspawn.c:552
+#: glib/gspawn.c:553
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Eroare neașteptată în waitpid() (%s)"
 
-#: glib/gspawn.c:1060 glib/gspawn-win32.c:1329
+#: glib/gspawn.c:1061 glib/gspawn-win32.c:1329
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Procesul inferior a ieșit cu codul %ld"
 
-#: glib/gspawn.c:1068
+#: glib/gspawn.c:1069
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Procesul inferior a fost terminat de semnalul %ld"
 
-#: glib/gspawn.c:1075
+#: glib/gspawn.c:1076
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Procesul inferior a fost oprit de semnalul %ld"
 
-#: glib/gspawn.c:1082
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Procesul inferior a ieșit în mod neobișnuit"
 
-#: glib/gspawn.c:1531 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1532 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nu s-au putut citi datele din conectorul „pipe” copil (%s)"
 
-#: glib/gspawn.c:1784
+#: glib/gspawn.c:1788
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Nu s-a putut crea procesul inferior „%s” (%s)"
 
-#: glib/gspawn.c:1865
+#: glib/gspawn.c:1871
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nu s-a putut clona procesul (%s)"
 
-#: glib/gspawn.c:2020 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2026 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Nu s-a putut schimba la directorul „%s” (%s)"
 
-#: glib/gspawn.c:2030
+#: glib/gspawn.c:2036
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Nu s-a putut executa procesul inferior „%s” (%s)"
 
-#: glib/gspawn.c:2040
+#: glib/gspawn.c:2046
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nu s-a putut redirecta ieșirea sau inputul procesului copil (%s)"
 
-#: glib/gspawn.c:2049
+#: glib/gspawn.c:2055
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nu s-a putut clona procesul copil (%s)"
 
-#: glib/gspawn.c:2057
+#: glib/gspawn.c:2063
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Eroare necunoscută la executarea procesului inferior „%s”"
 
-#: glib/gspawn.c:2081
+#: glib/gspawn.c:2087
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nu s-au putut citi date suficiente de la procesul copil (%s)"
@@ -5913,67 +5913,71 @@ msgstr ""
 "Eroare neașteptată în g_io_channel_win32_poll() la citirea datelor de la "
 "procesul copil"
 
-#: glib/gstrfuncs.c:3299 glib/gstrfuncs.c:3401
+#: glib/gstrfuncs.c:3303 glib/gstrfuncs.c:3405
 msgid "Empty string is not a number"
 msgstr "Șirul gol nu este un număr"
 
-#: glib/gstrfuncs.c:3323
+#: glib/gstrfuncs.c:3327
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "„%s” nu este un număr negativ"
 
-#: glib/gstrfuncs.c:3333 glib/gstrfuncs.c:3437
+#: glib/gstrfuncs.c:3337 glib/gstrfuncs.c:3441
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Numărul „%s” se află în afara intervalului [%s, %s]"
 
-#: glib/gstrfuncs.c:3427
+#: glib/gstrfuncs.c:3431
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "„%s” nu este un număr pozitiv"
 
-#: glib/guri.c:263
-#, c-format
+#: glib/guri.c:269
+#, no-c-format
 msgid "Invalid %-encoding in URI"
 msgstr "%-e codare nevalidă în URI"
 
-#: glib/guri.c:299
+#: glib/guri.c:307
 msgid "Non-UTF-8 characters in URI"
 msgstr "Caractere non-UTF-8 în URI"
 
-#: glib/guri.c:400
+#: glib/guri.c:409
 #, c-format
 msgid "Invalid IPv6 address '%.*s' in URI"
 msgstr "Adresă IPv6 nevalidă „%.*s” în URI"
 
-#: glib/guri.c:462
+#: glib/guri.c:471
 #, c-format
 msgid "Illegal encoded IP address '%.*s' in URI"
 msgstr "Adresă IP codată ilegal „%.*s” în URI"
 
-#: glib/guri.c:496 glib/guri.c:508
+#: glib/guri.c:505 glib/guri.c:517
 #, c-format
 msgid "Could not parse port '%.*s' in URI"
 msgstr "Nu s-a putut parsa portul „%.*s” în URI"
 
-#: glib/guri.c:515
+#: glib/guri.c:524
 #, c-format
 msgid "Port '%.*s' in URI is out of range"
 msgstr "Portul „%.*s” în URI este în afara intervalului"
 
-#: glib/guri.c:990
+#: glib/guri.c:1000
 #, c-format
 msgid "URI '%s' is not an absolute URI"
 msgstr "URI-ul „%s” nu este un URI absolut"
 
-#: glib/guri.c:996
+#: glib/guri.c:1006
 #, c-format
 msgid "URI '%s' has no host component"
 msgstr "URI-ul „%s” nu are nicio componentă gazdă"
 
-#: glib/guri.c:1174
+#: glib/guri.c:1184
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "URI-ul nu este absolut, și nu s-a furnizat nicio bază URI"
+
+#: glib/guri.c:1842
+msgid "Missing '=' and parameter value"
+msgstr "Lipsește „=” și valoarea parametrului"
 
 #: glib/gutf8.c:817
 msgid "Failed to allocate memory"
