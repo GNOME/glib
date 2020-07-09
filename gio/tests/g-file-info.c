@@ -677,6 +677,65 @@ test_internal_enhanced_stdio (void)
 }
 #endif
 
+static void
+test_xattrs (void)
+{
+  GFile *file = NULL;
+  GFileIOStream *stream = NULL;
+  GFileInfo *file_info0 = NULL, *file_info1 = NULL;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test setting and getting escaped xattrs");
+
+  /* Create a temporary file; no need to write anything to it. */
+  file = g_file_new_tmp ("g-file-info-test-xattrs-XXXXXX", &stream, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (file);
+
+  g_io_stream_close (G_IO_STREAM (stream), NULL, NULL);
+  g_object_unref (stream);
+
+  /* Check the existing xattrs. */
+  file_info0 = g_file_query_info (file, "xattr::*", G_FILE_QUERY_INFO_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (file_info0);
+
+  /* Set some new xattrs, with escaping and some embedded nuls. */
+  g_file_info_set_attribute_string (file_info0, "xattr::escaped", "hello\\x82\\x80\\xbd");
+  g_file_info_set_attribute_string (file_info0, "xattr::string", "hi there");
+  g_file_info_set_attribute_string (file_info0, "xattr::embedded-nul", "hi\\x00there");
+
+  g_file_set_attributes_from_info (file, file_info0, G_FILE_QUERY_INFO_NONE, NULL, &local_error);
+
+  g_object_unref (file_info0);
+
+  if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
+    {
+      g_test_skip ("xattrs not supported on this file system");
+    }
+  else
+    {
+      g_assert_no_error (local_error);
+
+      /* Check they were set properly. */
+      file_info1 = g_file_query_info (file, "xattr::*", G_FILE_QUERY_INFO_NONE, NULL, &local_error);
+      g_assert_no_error (local_error);
+      g_assert_nonnull (file_info1);
+
+      g_assert_true (g_file_info_has_namespace (file_info1, "xattr"));
+
+      g_assert_cmpstr (g_file_info_get_attribute_string (file_info1, "xattr::escaped"), ==, "hello\\x82\\x80\\xbd");
+      g_assert_cmpstr (g_file_info_get_attribute_string (file_info1, "xattr::string"), ==, "hi there");
+      g_assert_cmpstr (g_file_info_get_attribute_string (file_info1, "xattr::embedded-nul"), ==, "hi\\x00there");
+
+      g_object_unref (file_info1);
+    }
+
+  /* Tidy up. */
+  g_file_delete (file, NULL, NULL);
+
+  g_object_unref (file);
+}
 
 int
 main (int   argc,
@@ -689,6 +748,7 @@ main (int   argc,
 #ifdef G_OS_WIN32
   g_test_add_func ("/g-file-info/internal-enhanced-stdio", test_internal_enhanced_stdio);
 #endif
+  g_test_add_func ("/g-file-info/xattrs", test_xattrs);
   
   return g_test_run();
 }
