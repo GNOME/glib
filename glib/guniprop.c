@@ -803,7 +803,6 @@ real_toupper (const gchar *str,
   const gchar *p = str;
   const char *last = NULL;
   gsize len = 0;
-  gboolean last_was_i = FALSE;
 
   while ((max_len < 0 || p < str + max_len) && *p)
     {
@@ -813,38 +812,6 @@ real_toupper (const gchar *str,
 
       last = p;
       p = g_utf8_next_char (p);
-
-      if (locale_type == LOCALE_LITHUANIAN)
-	{
-	  if (c == 'i')
-	    last_was_i = TRUE;
-	  else 
-	    {
-	      if (last_was_i)
-		{
-		  /* Nasty, need to remove any dot above. Though
-		   * I think only E WITH DOT ABOVE occurs in practice
-		   * which could simplify this considerably.
-		   */
-		  gsize decomp_len, i;
-		  gunichar decomp[G_UNICHAR_MAX_DECOMPOSITION_LENGTH];
-
-		  decomp_len = g_unichar_fully_decompose (c, FALSE, decomp, G_N_ELEMENTS (decomp));
-		  for (i=0; i < decomp_len; i++)
-		    {
-		      if (decomp[i] != 0x307 /* COMBINING DOT ABOVE */)
-			len += g_unichar_to_utf8 (g_unichar_toupper (decomp[i]), out_buffer ? out_buffer + len : NULL);
-		    }
-		  
-		  len += output_marks (&p, out_buffer ? out_buffer + len : NULL, TRUE);
-
-		  continue;
-		}
-
-	      if (!ISMARK (t))
-		last_was_i = FALSE;
-	    }
-	}
 
       if (locale_type == LOCALE_TURKIC && c == 'i')
 	{
@@ -856,11 +823,10 @@ real_toupper (const gchar *str,
 	  /* Nasty, need to move it after other combining marks .. this would go away if
 	   * we normalized first.
 	   */
-	  len += output_marks (&p, out_buffer ? out_buffer + len : NULL, FALSE);
-
 	  /* And output as GREEK CAPITAL LETTER IOTA */
-	  len += g_unichar_to_utf8 (0x399, out_buffer ? out_buffer + len : NULL); 	  
-	}
+          len += g_unichar_to_utf8 (0x399, out_buffer ? out_buffer + len : NULL);
+          len += output_marks (&p, out_buffer ? out_buffer + len : NULL, FALSE);
+        }
       else if (IS (t,
 		   OR (G_UNICODE_LOWERCASE_LETTER,
 		   OR (G_UNICODE_TITLECASE_LETTER,
