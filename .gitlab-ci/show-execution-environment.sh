@@ -9,3 +9,11 @@ setpriv --dump || :
 ulimit -a || :
 cat /proc/self/status || :
 cat /proc/self/mountinfo || :
+
+
+wget http://localhost/metrics
+wget https://localhost/metrics
+
+cat /proc/loadavg
+nproc
+ip -s link ls
