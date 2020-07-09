@@ -147,16 +147,15 @@ tr_TR.UTF-8\ti\ti\t\u0130\t\u0130\t# i => LATIN CAPITAL LETTER I WITH DOT ABOVE
 tr_TR.UTF-8\tI\t\u0131\tI\tI\t# I => LATIN SMALL LETTER DOTLESS I
 tr_TR.UTF-8\tI\u0307\ti\tI\u0307\tI\u0307\t# I => LATIN SMALL LETTER DOTLESS I
 # Test reordering of YPOGEGRAMMENI across other accents
-\t\u03b1\u0345\u0314\t\u03b1\u0345\u0314\t\u0391\u0345\u0314\t\u0391\u0314\u0399\t
+\t\u03b1\u0345\u0314\t\u03b1\u0345\u0314\t\u0391\u0345\u0314\t\u0391\u0399\u0314\t
 \t\u03b1\u0314\u0345\t\u03b1\u0314\u0345\t\u0391\u0314\u0345\t\u0391\u0314\u0399\t
 # Handling of final and nonfinal sigma
 \tΜΆΙΟΣ 	μάιος 	Μάιος 	ΜΆΙΟΣ 	
 \tΜΆΙΟΣ	μάιος	Μάιος	ΜΆΙΟΣ	
 \tΣΙΓΜΑ	σιγμα	Σιγμα	ΣΙΓΜΑ	
-# Lithuanian rule of i followed by letter with dot. Not at all sure
-# about the titlecase part here
-lt_LT\ti\u0117\ti\u0117\tIe\tIE\t
-lt_LT\tie\u0307\tie\u0307\tIe\tIE\t
+# Lithuanian rule of i followed by letter with dot.
+lt_LT\ti\u0117\ti\u0117\tIe\tIĖ\t
+lt_LT\tie\u0307\tie\u0307\tIe\tIĖ\t
 lt_LT\t\u00cc\ti\u0307\u0300\t\u00cc\t\u00cc\t # LATIN CAPITAL LETTER I WITH GRAVE
 lt_LT\t\u00CD\ti\u0307\u0301\t\u00CD\t\u00CD\t # LATIN CAPITAL LETTER I WITH ACUTE
 lt_LT\t\u0128\ti\u0307\u0303\t\u0128\t\u0128\t # LATIN CAPITAL LETTER I WITH TILDE
@@ -166,8 +165,8 @@ lt_LT\tI\u0303\ti\u0307\u0303\tI\u0303\tI\u0303\t # LATIN CAPITAL LETTER I (with
 lt_LT\tI\u0328\u0301\ti\u0307\u0328\u0301\tI\u0328\u0301\tI\u0328\u0301\t # LATIN CAPITAL LETTER I (with ogonek and acute accent)
 lt_LT\tJ\u0301\tj\u0307\u0301\tJ\u0301\tJ\u0301\t # LATIN CAPITAL LETTER J (with acute accent)
 lt_LT\t\u012e\u0301\t\u012f\u0307\u0301\t\u012e\u0301\t\u012e\u0301\t # LATIN CAPITAL LETTER I WITH OGONEK (with acute accent)
-lt_LT.UTF-8\ti\u0117\ti\u0117\tIe\tIE\t
-lt_LT.UTF-8\tie\u0307\tie\u0307\tIe\tIE\t
+lt_LT.UTF-8\ti\u0117\ti\u0117\tIe\tIĖ\t
+lt_LT.UTF-8\tie\u0307\tie\u0307\tIe\tIĖ\t
 lt_LT.UTF-8\t\u00cc\ti\u0307\u0300\t\u00cc\t\u00cc\t # LATIN CAPITAL LETTER I WITH GRAVE
 lt_LT.UTF-8\t\u00CD\ti\u0307\u0301\t\u00CD\t\u00CD\t # LATIN CAPITAL LETTER I WITH ACUTE
 lt_LT.UTF-8\t\u0128\ti\u0307\u0303\t\u0128\t\u0128\t # LATIN CAPITAL LETTER I WITH TILDE
