@@ -144,9 +144,8 @@ installed-tests:
     # FIXME Install newer xdg-desktop-portal with
     # GMemoryMonitor support, see:
     # https://github.com/flatpak/xdg-desktop-portal/pull/365
-    - git clone --single-branch https://github.com/flatpak/xdg-desktop-portal.git
+    - git clone --branch 1.6.0 --depth 1 --no-tags https://github.com/flatpak/xdg-desktop-portal.git
     - cd xdg-desktop-portal
-    - git reset --hard 1.6.0
     - ./autogen.sh --prefix=/usr --libdir=/usr/lib64 --disable-libportal --disable-dependency-tracking
     - make
     - sudo make install
@@ -154,7 +153,7 @@ installed-tests:
     # FIXME install newer gobject-introspection
     # with GMemoryMonitor support, see:
     # https://gitlab.gnome.org/GNOME/gobject-introspection/merge_requests/193
-    - git clone --single-branch https://gitlab.gnome.org/GNOME/gobject-introspection.git
+    - git clone --branch master --depth 1 --no-tags https://gitlab.gnome.org/GNOME/gobject-introspection.git
     - cd gobject-introspection
     - /usr/bin/meson _build --prefix=/usr --libdir=/usr/lib64
     - ninja -C _build
