@@ -24,6 +24,15 @@ variables:
     - branches
   except:
     - tags
+  before_script:
+    - cat /proc/loadavg
+    - nproc
+    - ip -s link ls
+    - cat /proc/net/dev
+  after_script:
+    - cat /proc/loadavg
+    - ip -s link ls
+    - cat /proc/net/dev
 
 .build:
   extends: .only-default

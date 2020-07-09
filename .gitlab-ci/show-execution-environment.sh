@@ -9,3 +9,9 @@ setpriv --dump || :
 ulimit -a || :
 cat /proc/self/status || :
 cat /proc/self/mountinfo || :
+
+
+cat /proc/loadavg
+nproc
+ip -s link ls
+cat /proc/net/dev
