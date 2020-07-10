@@ -321,7 +321,7 @@ struct _ClassData
 {
   CommonData         common;
   guint16            class_size;
-  guint16            class_private_size;
+  guint              class_private_size;
   int volatile       init_state; /* atomic - g_type_class_ref reads it unlocked */
   GBaseInitFunc      class_init_base;
   GBaseFinalizeFunc  class_finalize_base;
@@ -335,7 +335,7 @@ struct _InstanceData
 {
   CommonData         common;
   guint16            class_size;
-  guint16            class_private_size;
+  guint              class_private_size;
   int volatile       init_state; /* atomic - g_type_class_ref reads it unlocked */
   GBaseInitFunc      class_init_base;
   GBaseFinalizeFunc  class_finalize_base;
@@ -344,7 +344,7 @@ struct _InstanceData
   gconstpointer      class_data;
   gpointer           class;
   guint16            instance_size;
-  guint16            private_size;
+  guint              private_size;
   guint16            n_preallocs;
   GInstanceInitFunc  instance_init;
 };
@@ -1791,7 +1791,7 @@ g_type_create_instance (GType type)
   GTypeInstance *instance;
   GTypeClass *class;
   gchar *allocated;
-  gint private_size;
+  guint private_size;
   gint ivar_size;
   guint i;
 
@@ -1894,7 +1894,7 @@ g_type_free_instance (GTypeInstance *instance)
   TypeNode *node;
   GTypeClass *class;
   gchar *allocated;
-  gint private_size;
+  guint private_size;
   gint ivar_size;
 
   g_return_if_fail (instance != NULL && instance->g_class != NULL);
@@ -4577,8 +4577,7 @@ g_type_class_add_private (gpointer g_class,
   GType instance_type = ((GTypeClass *)g_class)->g_type;
   TypeNode *node = lookup_type_node_I (instance_type);
 
-  g_return_if_fail (private_size > 0);
-  g_return_if_fail (private_size <= 0xffff);
+  g_return_if_fail (private_size <= G_MAXINT);
 
   if (!node || !node->is_instantiatable || !node->data || node->data->class.class != g_class)
     {
@@ -4600,7 +4599,7 @@ g_type_class_add_private (gpointer g_class,
   G_WRITE_LOCK (&type_rw_lock);
 
   private_size = ALIGN_STRUCT (node->data->instance.private_size + private_size);
-  g_assert (private_size <= 0xffff);
+  g_assert (private_size <= G_MAXINT);
   node->data->instance.private_size = private_size;
   
   G_WRITE_UNLOCK (&type_rw_lock);
@@ -4613,8 +4612,7 @@ g_type_add_instance_private (GType class_gtype,
 {
   TypeNode *node = lookup_type_node_I (class_gtype);
 
-  g_return_val_if_fail (private_size > 0, 0);
-  g_return_val_if_fail (private_size <= 0xffff, 0);
+  g_return_val_if_fail (private_size <= G_MAXINT, 0);
 
   if (!node || !node->is_classed || !node->is_instantiatable || !node->data)
     {
@@ -4679,7 +4677,7 @@ g_type_class_adjust_private_offset (gpointer  g_class,
    * comment in g_type_add_instance_private() for the full explanation.
    */
   if (*private_size_or_offset > 0)
-    g_return_if_fail (*private_size_or_offset <= 0xffff);
+    g_return_if_fail (*private_size_or_offset <= G_MAXINT);
   else
     return;
 
@@ -4705,7 +4703,7 @@ g_type_class_adjust_private_offset (gpointer  g_class,
   G_WRITE_LOCK (&type_rw_lock);
 
   private_size = ALIGN_STRUCT (node->data->instance.private_size + *private_size_or_offset);
-  g_assert (private_size <= 0xffff);
+  g_assert (private_size <= G_MAXINT);
   node->data->instance.private_size = private_size;
 
   *private_size_or_offset = -(gint) node->data->instance.private_size;
@@ -4753,7 +4751,7 @@ gint
 g_type_class_get_instance_private_offset (gpointer g_class)
 {
   GType instance_type;
-  guint16 parent_size;
+  guint parent_size;
   TypeNode *node;
 
   g_assert (g_class != NULL);
@@ -4805,7 +4803,7 @@ g_type_add_class_private (GType    class_type,
   TypeNode *node = lookup_type_node_I (class_type);
   gsize offset;
 
-  g_return_if_fail (private_size > 0);
+  g_return_if_fail (private_size <= G_MAXUINT);
 
   if (!node || !node->is_classed || !node->data)
     {
