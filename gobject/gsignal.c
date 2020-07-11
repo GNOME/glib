@@ -3240,6 +3240,8 @@ accumulate (GSignalInvocationHint *ihint,
   continue_emission = accumulator->func (ihint, return_accu, handler_return, accumulator->data);
   g_value_reset (handler_return);
 
+  ihint->run_type &= ~G_SIGNAL_ACCUMULATOR_FIRST_RUN;
+
   return continue_emission;
 }
 
@@ -3379,7 +3381,7 @@ g_signal_emit_valist (gpointer instance,
 	  emission.instance = instance;
 	  emission.ihint.signal_id = signal_id;
 	  emission.ihint.detail = detail;
-	  emission.ihint.run_type = run_type;
+	  emission.ihint.run_type = run_type | G_SIGNAL_ACCUMULATOR_FIRST_RUN;
 	  emission.state = EMISSION_RUN;
 	  emission.chain_type = instance_type;
 	  emission_push (&emission);
@@ -3657,7 +3659,7 @@ signal_emit_unlocked_R (SignalNode   *node,
   if (handler_list)
     handler_ref (handler_list);
   
-  emission.ihint.run_type = G_SIGNAL_RUN_FIRST;
+  emission.ihint.run_type = G_SIGNAL_RUN_FIRST | G_SIGNAL_ACCUMULATOR_FIRST_RUN;
   
   if ((node->flags & G_SIGNAL_RUN_FIRST) && class_closure)
     {
@@ -3765,7 +3767,8 @@ signal_emit_unlocked_R (SignalNode   *node,
 	goto EMIT_RESTART;
     }
   
-  emission.ihint.run_type = G_SIGNAL_RUN_LAST;
+  emission.ihint.run_type &= ~G_SIGNAL_RUN_FIRST;
+  emission.ihint.run_type |= G_SIGNAL_RUN_LAST;
   
   if ((node->flags & G_SIGNAL_RUN_LAST) && class_closure)
     {
@@ -3836,7 +3839,8 @@ signal_emit_unlocked_R (SignalNode   *node,
   
  EMIT_CLEANUP:
   
-  emission.ihint.run_type = G_SIGNAL_RUN_CLEANUP;
+  emission.ihint.run_type &= ~G_SIGNAL_RUN_LAST;
+  emission.ihint.run_type |= G_SIGNAL_RUN_CLEANUP;
   
   if ((node->flags & G_SIGNAL_RUN_CLEANUP) && class_closure)
     {
