@@ -33,11 +33,17 @@
 
 G_BEGIN_DECLS
 
+#undef G_TREE_DEBUG
+
 typedef struct _GTree  GTree;
+typedef struct _GTreeNode GTreeNode;
 
 typedef gboolean (*GTraverseFunc) (gpointer  key,
                                    gpointer  value,
                                    gpointer  data);
+
+typedef gboolean (*GTraverseNodeFunc) (GTreeNode *node,
+                                       gpointer data);
 
 /* Balanced binary trees
  */
@@ -51,6 +57,14 @@ GTree*   g_tree_new_full        (GCompareDataFunc  key_compare_func,
                                  gpointer          key_compare_data,
                                  GDestroyNotify    key_destroy_func,
                                  GDestroyNotify    value_destroy_func);
+GLIB_AVAILABLE_IN_2_66
+GTreeNode *g_tree_node_first (GTree *tree);
+GLIB_AVAILABLE_IN_2_66
+GTreeNode *g_tree_node_last (GTree *tree);
+GLIB_AVAILABLE_IN_2_66
+GTreeNode *g_tree_node_previous (GTreeNode *node);
+GLIB_AVAILABLE_IN_2_66
+GTreeNode *g_tree_node_next (GTreeNode *node);
 GLIB_AVAILABLE_IN_ALL
 GTree*   g_tree_ref             (GTree            *tree);
 GLIB_AVAILABLE_IN_ALL
@@ -71,6 +85,13 @@ gboolean g_tree_remove          (GTree            *tree,
 GLIB_AVAILABLE_IN_ALL
 gboolean g_tree_steal           (GTree            *tree,
                                  gconstpointer     key);
+GLIB_AVAILABLE_IN_2_66
+gpointer g_tree_node_key (GTreeNode *node);
+GLIB_AVAILABLE_IN_2_66
+gpointer g_tree_node_value (GTreeNode *node);
+GLIB_AVAILABLE_IN_2_66
+GTreeNode *g_tree_lookup_node (GTree *tree,
+                               gconstpointer key);
 GLIB_AVAILABLE_IN_ALL
 gpointer g_tree_lookup          (GTree            *tree,
                                  gconstpointer     key);
@@ -83,6 +104,10 @@ GLIB_AVAILABLE_IN_ALL
 void     g_tree_foreach         (GTree            *tree,
                                  GTraverseFunc	   func,
                                  gpointer	   user_data);
+GLIB_AVAILABLE_IN_2_66
+void g_tree_foreach_node (GTree *tree,
+                          GTraverseNodeFunc func,
+                          gpointer user_data);
 
 GLIB_DEPRECATED
 void     g_tree_traverse        (GTree            *tree,
@@ -90,14 +115,28 @@ void     g_tree_traverse        (GTree            *tree,
                                  GTraverseType     traverse_type,
                                  gpointer          user_data);
 
+GLIB_AVAILABLE_IN_2_66
+GTreeNode *g_tree_search_node (GTree *tree,
+                               GCompareFunc search_func,
+                               gconstpointer user_data);
 GLIB_AVAILABLE_IN_ALL
 gpointer g_tree_search          (GTree            *tree,
                                  GCompareFunc      search_func,
                                  gconstpointer     user_data);
+GLIB_AVAILABLE_IN_2_66
+GTreeNode *g_tree_lower_bound (GTree *tree,
+                               gconstpointer key);
+GLIB_AVAILABLE_IN_2_66
+GTreeNode *g_tree_upper_bound (GTree *tree,
+                               gconstpointer key);
 GLIB_AVAILABLE_IN_ALL
 gint     g_tree_height          (GTree            *tree);
 GLIB_AVAILABLE_IN_ALL
 gint     g_tree_nnodes          (GTree            *tree);
+
+#ifdef G_TREE_DEBUG
+void g_tree_dump (GTree *tree);
+#endif
 
 G_END_DECLS
 
