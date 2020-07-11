@@ -1118,12 +1118,13 @@ test_tap (void)
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
-  g_assert_nonnull (strstr (output, "1..5\n"));
+  g_assert_nonnull (strstr (output, "1..6\n"));
   g_assert_nonnull (strstr (output, "\nok 1 /a # SKIP\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /b/a # SKIP\n"));
   g_assert_nonnull (strstr (output, "\nok 3 /b/b\n"));
   g_assert_nonnull (strstr (output, "\nok 4 /c/a\n"));
-  g_assert_nonnull (strstr (output, "\nok 5 /d/a\n"));
+  g_assert_nonnull (strstr (output, "\nok 5 /c/b\n"));
+  g_assert_nonnull (strstr (output, "\nok 6 /d/a\n"));
 
   g_spawn_check_exit_status (status, &error);
   g_assert_no_error (error);
@@ -1145,12 +1146,13 @@ test_tap (void)
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
-  g_assert_nonnull (strstr (output, "1..5\n"));
+  g_assert_nonnull (strstr (output, "1..6\n"));
   g_assert_nonnull (strstr (output, "\nok 1 /a\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /b/a\n"));
   g_assert_nonnull (strstr (output, "\nok 3 /b/b\n"));
   g_assert_nonnull (strstr (output, "\nok 4 /c/a\n"));
-  g_assert_nonnull (strstr (output, "\nok 5 /d/a\n"));
+  g_assert_nonnull (strstr (output, "\nok 5 /c/b\n"));
+  g_assert_nonnull (strstr (output, "\nok 6 /d/a\n"));
 
   g_spawn_check_exit_status (status, &error);
   g_assert_no_error (error);
@@ -1172,12 +1174,13 @@ test_tap (void)
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
-  g_assert_nonnull (strstr (output, "1..5\n"));
+  g_assert_nonnull (strstr (output, "1..6\n"));
   g_assert_nonnull (strstr (output, "\nok 1 /a # SKIP\n"));
   g_assert_nonnull (strstr (output, "\nok 2 /b/a # SKIP\n"));
   g_assert_nonnull (strstr (output, "\nok 3 /b/b # SKIP\n"));
   g_assert_nonnull (strstr (output, "\nok 4 /c/a # SKIP\n"));
-  g_assert_nonnull (strstr (output, "\nok 5 /d/a # SKIP\n"));
+  g_assert_nonnull (strstr (output, "\nok 5 /c/b # SKIP\n"));
+  g_assert_nonnull (strstr (output, "\nok 6 /d/a # SKIP\n"));
 
   g_spawn_check_exit_status (status, &error);
   g_assert_no_error (error);
@@ -1233,14 +1236,11 @@ test_tap (void)
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
-  g_assert_nonnull (strstr (output, "1..5\n"));
+  g_assert_nonnull (strstr (output, "1..4\n"));
   g_assert_nonnull (strstr (output, "\nok 1 /a # SKIP by request"));
-  /* "-s /b" would skip a test named exactly /b, but not a test named
-   * /b/anything */
-  g_assert_nonnull (strstr (output, "\nok 2 /b/a\n"));
-  g_assert_nonnull (strstr (output, "\nok 3 /b/b\n"));
-  g_assert_nonnull (strstr (output, "\nok 4 /c/a # SKIP by request"));
-  g_assert_nonnull (strstr (output, "\nok 5 /d/a\n"));
+  g_assert_nonnull (strstr (output, "\nok 2 /c/a # SKIP by request"));
+  g_assert_nonnull (strstr (output, "\nok 3 /c/b\n"));
+  g_assert_nonnull (strstr (output, "\nok 4 /d/a\n"));
 
   g_spawn_check_exit_status (status, &error);
   g_assert_no_error (error);
