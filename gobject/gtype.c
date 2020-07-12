@@ -1695,11 +1695,12 @@ g_type_interface_prerequisites (GType  interface_type,
  *
  * Returns the instantiable prerequisite of an interface type.
  *
- * If the interface type has no instantiable prerequisite, 0 is returned.
+ * If the interface type has no instantiable prerequisite,
+ * G_TYPE_INVALID is returned.
  *
  * Since: 2.64
  *
- * Returns: the instantiable prerequisite type or 0 if none
+ * Returns: the instantiable prerequisite type or G_TYPE_INVALID if none
  **/
 GType
 g_type_interface_instantiable_prerequisite (GType interface_type)
@@ -1712,7 +1713,7 @@ g_type_interface_instantiable_prerequisite (GType interface_type)
 
   iface = lookup_type_node_I (interface_type);
   if (iface == NULL)
-    return 0;
+    return G_TYPE_INVALID;
 
   G_READ_LOCK (&type_rw_lock);
 
@@ -1732,7 +1733,7 @@ g_type_interface_instantiable_prerequisite (GType interface_type)
   if (inode)
     return NODE_TYPE (inode);
   else
-    return 0;
+    return G_TYPE_INVALID;
 }
 
 static IFaceHolder*
