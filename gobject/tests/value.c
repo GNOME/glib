@@ -295,14 +295,14 @@ static void test_object_b_init (TestObjectB *b) { }
 
 static GType test_object_a1_get_type (void);
 typedef GObject TestObjectA1; typedef GObjectClass TestObjectA1Class;
-G_DEFINE_TYPE (TestObjectA1, test_object_a1, G_TYPE_OBJECT)
+G_DEFINE_TYPE (TestObjectA1, test_object_a1, test_object_a_get_type ())
 static void test_object_a1_class_init (TestObjectA1Class *class) { }
 static void test_object_a1_init (TestObjectA1 *c) { }
 
 static GType test_object_a2_get_type (void);
 typedef GObject TestObjectA2; typedef GObjectClass TestObjectA2Class;
 static void test_object_a2_iface_init (TestInterfaceInterface *iface) { }
-G_DEFINE_TYPE_WITH_CODE (TestObjectA2, test_object_a2, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (TestObjectA2, test_object_a2, test_object_a_get_type (),
                          G_IMPLEMENT_INTERFACE (test_interface_get_type (), test_object_a2_iface_init))
 static void test_object_a2_class_init (TestObjectA2Class *class) { }
 static void test_object_a2_init (TestObjectA2 *b) { }
