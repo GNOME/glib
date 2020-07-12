@@ -1113,6 +1113,11 @@ void              g_file_info_set_symlink_target     (GFileInfo         *info,
 GLIB_AVAILABLE_IN_ALL
 void              g_file_info_set_sort_order         (GFileInfo         *info,
 						      gint32             sort_order);
+GLIB_AVAILABLE_IN_2_66
+void              g_file_info_set_file               (GFileInfo         *info,
+                                                      GFile             *file);
+GLIB_AVAILABLE_IN_2_66
+GFile *           g_file_info_get_file               (GFileInfo         *info);
 
 #define G_TYPE_FILE_ATTRIBUTE_MATCHER (g_file_attribute_matcher_get_type ())
 GLIB_AVAILABLE_IN_ALL

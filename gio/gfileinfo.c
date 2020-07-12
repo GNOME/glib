@@ -73,6 +73,8 @@ struct _GFileInfo
 {
   GObject parent_instance;
 
+  GFile *file;
+
   GArray *attributes;
   GFileAttributeMatcher *mask;
 };
@@ -323,6 +325,8 @@ g_file_info_finalize (GObject *object)
 
   info = G_FILE_INFO (object);
 
+  g_clear_object (&info->file);
+
   attrs = (GFileAttribute *)info->attributes->data;
   for (i = 0; i < info->attributes->len; i++)
     _g_file_attribute_value_clear (&attrs[i].value);
@@ -380,6 +384,8 @@ g_file_info_copy_into (GFileInfo *src_info,
 
   g_return_if_fail (G_IS_FILE_INFO (src_info));
   g_return_if_fail (G_IS_FILE_INFO (dest_info));
+
+  g_set_object (&dest_info->file, src_info->file);
 
   dest = (GFileAttribute *)dest_info->attributes->data;
   for (i = 0; i < dest_info->attributes->len; i++)
@@ -2283,6 +2289,41 @@ g_file_info_set_sort_order (GFileInfo *info,
     _g_file_attribute_value_set_int32 (value, sort_order);
 }
 
+/**
+ * g_file_info_set_file:
+ * @info: a #GFileInfo
+ * @file: the #GFile that @info is for
+ *
+ * Sets the file that @info belongs to.
+ *
+ * Since: 2.66
+ */
+void
+g_file_info_set_file (GFileInfo *info,
+                      GFile     *file)
+{
+  g_return_if_fail (G_IS_FILE_INFO (info));
+
+  g_set_object (&info->file, file);
+}
+
+/**
+ * g_file_info_get_file:
+ * @info: a #GFileInfo
+ *
+ * Gets the file that @info belongs to.
+ *
+ * Returns: (transfer none): the #GFile
+ *
+ * Since: 2.66
+ */
+GFile *
+g_file_info_get_file (GFileInfo *info)
+{
+  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
+
+  return info->file;
+}
 
 typedef struct {
   guint32 id;
