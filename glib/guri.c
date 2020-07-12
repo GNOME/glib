@@ -1753,6 +1753,103 @@ str_ascii_case_equal (gconstpointer v1,
   return g_ascii_strcasecmp (string1, string2) == 0;
 }
 
+typedef struct
+{
+  GUriParamsFlags flags;
+  const gchar    *attr;
+  const gchar    *end;
+  guint8          sep_table[256]; /* 1 = index is a separator; 0 otherwise */
+} RealIter;
+
+G_STATIC_ASSERT (sizeof (GUriParamsIter) == sizeof (RealIter));
+G_STATIC_ASSERT (G_ALIGNOF (GUriParamsIter) >= G_ALIGNOF (RealIter));
+
+void
+g_uri_params_iter_init (GUriParamsIter *iter,
+                        const gchar    *params,
+                        gssize          length,
+                        const gchar    *separators,
+                        GUriParamsFlags flags)
+{
+  RealIter *ri = (RealIter *)iter;
+  const gchar *s;
+
+  g_return_if_fail (iter != NULL);
+  g_return_if_fail (length == 0 || params != NULL);
+  g_return_if_fail (length >= -1);
+  g_return_if_fail (separators != NULL);
+
+  ri->flags = flags;
+
+  if (length == -1)
+    ri->end = params + strlen (params);
+  else
+    ri->end = params + length;
+
+  memset (ri->sep_table, FALSE, sizeof (ri->sep_table));
+  for (s = separators; *s != '\0'; ++s)
+    ri->sep_table[*(guchar *)s] = TRUE;
+
+  ri->attr = params;
+}
+
+gboolean
+g_uri_params_iter_next (GUriParamsIter *iter,
+                        gchar         **attribute,
+                        gchar         **value,
+                        GError        **error)
+{
+  RealIter *ri = (RealIter *)iter;
+  const gchar *attr_end, *val, *val_end;
+  gchar *decoded_attr, *decoded_value;
+  gboolean www_form = ri->flags & G_URI_PARAMS_WWW_FORM;
+
+  g_return_val_if_fail (iter != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (ri->attr >= ri->end)
+    return FALSE;
+
+  /* Check if each character in @attr is a separator, by indexing by the
+   * character value into the @sep_table, which has value 1 stored at an
+   * index if that index is a separator. */
+  for (val_end = ri->attr; val_end < ri->end; val_end++)
+    if (ri->sep_table[*(guchar *)val_end])
+      break;
+
+  attr_end = memchr (ri->attr, '=', val_end - ri->attr);
+  if (!attr_end)
+    {
+      g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_MISC,
+                           _("Missing '=' and parameter value"));
+      return FALSE;
+    }
+  if (!uri_decode (&decoded_attr, ri->attr, attr_end - ri->attr,
+                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
+    {
+      return FALSE;
+    }
+
+  val = attr_end + 1;
+  if (!uri_decode (&decoded_value, val, val_end - val,
+                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
+    {
+      g_free (decoded_attr);
+      return FALSE;
+    }
+
+  if (attribute)
+    *attribute = g_steal_pointer (&decoded_attr);
+  if (value)
+    *value = g_steal_pointer (&decoded_value);
+
+  g_free (decoded_attr);
+  g_free (decoded_value);
+
+  ri->attr = val_end + 1;
+  return TRUE;
+}
+
 /**
  * g_uri_parse_params:
  * @params: a `%`-encoded string containing "attribute=value"
@@ -1793,10 +1890,9 @@ g_uri_parse_params (const gchar     *params,
                     GError         **error)
 {
   GHashTable *hash;
-  const gchar *end, *attr, *attr_end, *value, *value_end, *s;
-  gchar *decoded_attr, *decoded_value;
-  guint8 sep_table[256]; /* 1 = index is a separator; 0 otherwise */
-  gboolean www_form = flags & G_URI_PARAMS_WWW_FORM;
+  GUriParamsIter iter;
+  gchar *attribute, *value;
+  GError *err = NULL;
 
   g_return_val_if_fail (length == 0 || params != NULL, NULL);
   g_return_val_if_fail (length >= -1, NULL);
@@ -1815,51 +1911,16 @@ g_uri_parse_params (const gchar     *params,
                                     g_free, g_free);
     }
 
-  if (length == -1)
-    end = params + strlen (params);
-  else
-    end = params + length;
+  g_uri_params_iter_init (&iter, params, length, separators, flags);
 
-  memset (sep_table, FALSE, sizeof (sep_table));
-  for (s = separators; *s != '\0'; ++s)
-    sep_table[*(guchar *)s] = TRUE;
+  while (g_uri_params_iter_next (&iter, &attribute, &value, &err))
+    g_hash_table_insert (hash, attribute, value);
 
-  attr = params;
-  while (attr < end)
+  if (err)
     {
-      /* Check if each character in @attr is a separator, by indexing by the
-       * character value into the @sep_table, which has value 1 stored at an
-       * index if that index is a separator. */
-      for (value_end = attr; value_end < end; value_end++)
-        if (sep_table[*(guchar *)value_end])
-          break;
-
-      attr_end = memchr (attr, '=', value_end - attr);
-      if (!attr_end)
-        {
-          g_hash_table_destroy (hash);
-          g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_MISC,
-                               _("Missing '=' and parameter value"));
-          return NULL;
-        }
-      if (!uri_decode (&decoded_attr, attr, attr_end - attr,
-                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
-        {
-          g_hash_table_destroy (hash);
-          return NULL;
-        }
-
-      value = attr_end + 1;
-      if (!uri_decode (&decoded_value, value, value_end - value,
-                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
-        {
-          g_free (decoded_attr);
-          g_hash_table_destroy (hash);
-          return NULL;
-        }
-
-      g_hash_table_insert (hash, decoded_attr, decoded_value);
-      attr = value_end + 1;
+      g_propagate_error (error, err);
+      g_hash_table_destroy (hash);
+      return NULL;
     }
 
   return hash;

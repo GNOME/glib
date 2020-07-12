@@ -249,6 +249,29 @@ GHashTable *g_uri_parse_params       (const gchar    *params,
                                       GUriParamsFlags flags,
                                       GError        **error);
 
+typedef struct _GUriParamsIter GUriParamsIter;
+
+struct _GUriParamsIter
+{
+  /*< private >*/
+  gint     dummy0;
+  gpointer dummy1;
+  gpointer dummy2;
+  guint8   dummy3[256];
+};
+
+GLIB_AVAILABLE_IN_2_66
+void        g_uri_params_iter_init   (GUriParamsIter *iter,
+                                      const gchar    *params,
+                                      gssize          length,
+                                      const gchar    *separators,
+                                      GUriParamsFlags flags);
+
+GLIB_AVAILABLE_IN_2_66
+gboolean    g_uri_params_iter_next   (GUriParamsIter *iter,
+                                      gchar         **attribute,
+                                      gchar         **value,
+                                      GError        **error);
 /**
  * G_URI_ERROR:
  *
