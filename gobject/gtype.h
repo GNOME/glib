@@ -1509,6 +1509,94 @@ guint     g_type_get_type_registration_serial (void);
   G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
+ * G_DECLARE_PROTECTED_TYPE:
+ * @ModuleObjName: The name of the new type, in camel case (like GtkWidget)
+ * @module_obj_name: The name of the new type in lowercase, with words
+ *  separated by '_' (like 'gtk_widget')
+ * @MODULE: The name of the module, in all caps (like 'GTK')
+ * @OBJ_NAME: The bare name of the type, in all caps (like 'WIDGET')
+ * @ParentName: the name of the parent type, in camel case (like GtkWidget)
+ *
+ * A convenience macro for emitting the usual declarations in the header file for a type which is not (at the
+ * present time) intended to be subclassed from outside a project.
+ *
+ * You might use it in a header as follows:
+ *
+ * |[
+ * #ifndef _myapp_window_h_
+ * #define _myapp_window_h_
+ *
+ * #include <gtk/gtk.h>
+ *
+ * #define MY_APP_TYPE_WINDOW my_app_window_get_type ()
+ * G_DECLARE_PROTECTED_TYPE (MyAppWindow, my_app_window, MY_APP, WINDOW, GtkWindow)
+ *
+ * MyAppWindow *    my_app_window_new    (void);
+ *
+ * ...
+ *
+ * #endif
+ * ]|
+ *
+ * This results in the following things happening:
+ *
+ * - the usual my_app_window_get_type() function is declared with a return type of #GType
+ *
+ * - the MyAppWindow types is defined as a typedef of struct _MyAppWindow.  The struct itself is not
+ *   defined and should be defined from the private .h file included in the source file before
+ *   G_DEFINE_TYPE() is used.
+ *
+ * - the MY_APP_WINDOW() cast is emitted as static inline function along with the MY_APP_IS_WINDOW() type
+ *   checking function.
+ *
+ * - the MY_APP_WINDOW_CLASS() cast is emitted as static inline functions along with the
+ *   MY_APP_WINDOW_CLASS() type checking function; there is no MY_APP_WINDOW_GET_CLASS()
+ *   accessor function for the class structure from an instance, as the class structure
+ *   an opaque type.
+ *
+ * - the MyAppWindowClass type is defined as a typedef of struct _MyAppWindowClass. The struct itself
+ *   is not define and should be defined from the private .h file included in the source file before
+ *   G_DEFINE_TYPE() is used.
+ *
+ * - g_autoptr() support being added for your type, based on the type of your parent class.
+ *
+ * You can only use this function if your parent type also supports g_autoptr().
+ *
+ * Because the type macro (MY_APP_TYPE_WINDOW in the above example) is not a callable, you must continue to
+ * manually define this as a macro for yourself.
+ *
+ * The declaration of the _get_type() function is the first thing emitted by the macro.  This allows this macro
+ * to be used in the usual way with export control and API versioning macros.
+ *
+ * If you want to declare a type derivable by users of your code, use G_DECLARE_DERIVABLE_TYPE().
+ *
+ * If you are writing a library, it is important to note that it is possible to convert a type from using
+ * G_DECLARE_FINAL_TYPE() to G_DECLARE_DERIVABLE_TYPE() without breaking API or ABI.  As a precaution, you
+ * should therefore use G_DECLARE_FINAL_TYPE() until you are sure that it makes sense for your class to be
+ * subclassed.  Once a class structure has been exposed it is not possible to change its size or remove or
+ * reorder items without breaking the API and/or ABI.
+ *
+ * Since: 2.64
+ **/
+#define G_DECLARE_PROTECTED_TYPE(ModuleObjName, module_obj_name, MODULE, OBJ_NAME, ParentName) \
+  GType module_obj_name##_get_type (void);                                                               \
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                       \
+  typedef struct _##ModuleObjName ModuleObjName;                                                         \
+  typedef struct _##ModuleObjName##Class ModuleObjName##Class;                                           \
+                                                                                                         \
+  _GLIB_DEFINE_AUTOPTR_CHAINUP (ModuleObjName, ParentName)                                               \
+                                                                                                         \
+  G_GNUC_UNUSED static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                       \
+    return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
+  G_GNUC_UNUSED static inline ModuleObjName##Class * MODULE##_##OBJ_NAME##_CLASS (gpointer ptr) {        \
+    return G_TYPE_CHECK_CLASS_CAST (ptr, module_obj_name##_get_type (), ModuleObjName##Class); }         \
+  G_GNUC_UNUSED static inline gboolean MODULE##_IS_##OBJ_NAME (gpointer ptr) {                           \
+    return G_TYPE_CHECK_INSTANCE_TYPE (ptr, module_obj_name##_get_type ()); }                            \
+  G_GNUC_UNUSED static inline gboolean MODULE##_IS_##OBJ_NAME##_CLASS (gpointer ptr) {                   \
+    return G_TYPE_CHECK_CLASS_TYPE (ptr, module_obj_name##_get_type ()); }                               \
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
+/**
  * G_DECLARE_INTERFACE:
  * @ModuleObjName: The name of the new type, in camel case (like GtkWidget)
  * @module_obj_name: The name of the new type in lowercase, with words
