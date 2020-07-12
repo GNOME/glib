@@ -1258,7 +1258,8 @@ g_local_file_query_info (GFile                *file,
   info = _g_local_file_info_get (basename, local->filename,
 				 matcher, flags, &parent_info,
 				 error);
-  
+
+  g_file_info_set_file (info, file);
 
   _g_local_file_info_free_parent_info (&parent_info);
   g_free (basename);
