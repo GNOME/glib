@@ -1341,50 +1341,75 @@ test_uri_is_valid (void)
   g_clear_error (&error);
 }
 
+static const struct
+{
+  /* Inputs */
+  const gchar *uri;
+  gchar *separators;
+  GUriParamsFlags flags;
+  /* Outputs */
+  /* key, value, key, value, …, limited to length 2*expected_n_params */
+  gssize expected_n_iter;  /* -1 => error expected */
+  const gchar *expected_iter_key_values[6];
+  gssize expected_n_params;  /* -1 => error expected */
+  const gchar *expected_param_key_values[6];
+} params_tests[] =
+  {
+    { "p1=foo&p2=bar;p3=baz", "&;", G_URI_PARAMS_NONE,
+      3, { "p1", "foo", "p2", "bar", "p3", "baz" },
+      3, { "p1", "foo", "p2", "bar", "p3", "baz" }},
+    { "p1=foo&p2=bar", "", G_URI_PARAMS_NONE,
+      1, { "p1", "foo&p2=bar" },
+      1, { "p1", "foo&p2=bar" }},
+    { "p1=foo&&P1=bar", "&", G_URI_PARAMS_NONE,
+      1, { "p1", "foo" },
+      -1, { NULL, }},
+    { "%00=foo", "&", G_URI_PARAMS_NONE,
+      0, { NULL, },
+      -1, { NULL, }},
+    { "p1=%00", "&", G_URI_PARAMS_NONE,
+      0, { NULL, },
+      -1, { NULL, }},
+    { "p1=foo&p1=bar", "&", G_URI_PARAMS_NONE,
+      2, { "p1", "foo", "p1", "bar" },
+      1, { "p1", "bar", NULL, }},
+    { "p1=foo&P1=bar", "&", G_URI_PARAMS_CASE_INSENSITIVE,
+      2, { "p1", "foo", "P1", "bar" },
+      1, { "p1", "bar", NULL, }},
+    { "=%", "&", G_URI_PARAMS_NONE,
+      1, { "", "%", NULL, },
+      1, { "", "%", NULL, }},
+    { "=", "&", G_URI_PARAMS_NONE,
+      1, { "", "", NULL, },
+      1, { "", "", NULL, }},
+    { "foo", "&", G_URI_PARAMS_NONE,
+      0, { NULL, },
+      -1, { NULL, }},
+    { "foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", "&", G_URI_PARAMS_WWW_FORM,
+      2, { "foo", "bar & baz", "saisons", "Été+hiver", NULL, },
+      2, { "foo", "bar & baz", "saisons", "Été+hiver", NULL, }},
+    { "foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", "&", G_URI_PARAMS_NONE,
+      2, { "foo", "bar+&+baz", "saisons", "Été+hiver", NULL, },
+      2, { "foo", "bar+&+baz", "saisons", "Été+hiver", NULL, }},
+  };
+
 static void
-test_uri_parse_params (gconstpointer test_data)
+test_uri_iter_params (gconstpointer test_data)
 {
   GError *err = NULL;
   gboolean use_nul_terminated = GPOINTER_TO_INT (test_data);
-  const struct
-    {
-      /* Inputs */
-      const gchar *uri;
-      gchar *separators;
-      GUriParamsFlags flags;
-      /* Outputs */
-      gssize expected_n_params;  /* -1 => error expected */
-      /* key, value, key, value, …, limited to length 2*expected_n_params */
-      const gchar *expected_param_key_values[6];
-    }
-  tests[] =
-    {
-      { "p1=foo&p2=bar;p3=baz", "&;", G_URI_PARAMS_NONE, 3, { "p1", "foo", "p2", "bar", "p3", "baz" }},
-      { "p1=foo&p2=bar", "", G_URI_PARAMS_NONE, 1, { "p1", "foo&p2=bar" }},
-      { "p1=foo&&P1=bar", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
-      { "%00=foo", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
-      { "p1=%00", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
-      { "p1=foo&P1=bar", "&", G_URI_PARAMS_CASE_INSENSITIVE, 1, { "p1", "bar", NULL, }},
-      { "=%", "&", G_URI_PARAMS_NONE, 1, { "", "%", NULL, }},
-      { "=", "&", G_URI_PARAMS_NONE, 1, { "", "", NULL, }},
-      { "foo", "&", G_URI_PARAMS_NONE, -1, { NULL, }},
-      { "foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", "&", G_URI_PARAMS_WWW_FORM,
-        2, { "foo", "bar & baz", "saisons", "Été+hiver", NULL, }},
-      { "foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", "&", G_URI_PARAMS_NONE,
-        2, { "foo", "bar+&+baz", "saisons", "Été+hiver", NULL, }},
-    };
-  gsize i;
+  gsize i, n;
 
-  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+  for (i = 0; i < G_N_ELEMENTS (params_tests); i++)
     {
-      GHashTable *params;
-      gchar *uri = NULL;
+      GUriParamsIter iter;
+      gchar *uri, *attr, *value;
       gssize uri_len;
 
-      g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, tests[i].uri);
+      g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, params_tests[i].uri);
 
-      g_assert (tests[i].expected_n_params < 0 ||
-                tests[i].expected_n_params <= G_N_ELEMENTS (tests[i].expected_param_key_values) / 2);
+      g_assert (params_tests[i].expected_n_params < 0 ||
+                params_tests[i].expected_n_params <= G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
 
       /* The tests get run twice: once with the length unspecified, using a
        * nul-terminated string; and once with the length specified and a copy of
@@ -1393,17 +1418,70 @@ test_uri_parse_params (gconstpointer test_data)
       if (use_nul_terminated)
         {
           uri_len = -1;
-          uri = g_strdup (tests[i].uri);
+          uri = g_strdup (params_tests[i].uri);
         }
       else
         {
-          uri_len = strlen (tests[i].uri);  /* no trailing nul */
-          uri = g_memdup (tests[i].uri, uri_len);
+          uri_len = strlen (params_tests[i].uri);  /* no trailing nul */
+          uri = g_memdup (params_tests[i].uri, uri_len);
         }
 
-      params = g_uri_parse_params (uri, uri_len, tests[i].separators, tests[i].flags, &err);
+      n = 0;
+      g_uri_params_iter_init (&iter, params_tests[i].uri, -1, params_tests[i].separators, params_tests[i].flags);
+      while (g_uri_params_iter_next (&iter, &attr, &value, &err))
+        {
+          g_assert_cmpstr (attr, ==, params_tests[i].expected_iter_key_values[n * 2]);
+          g_assert_cmpstr (value, ==, params_tests[i].expected_iter_key_values[n * 2 + 1]);
+          n++;
+          g_free (attr);
+          g_free (value);
+        }
+      g_assert_cmpint (n, ==, params_tests[i].expected_n_iter);
+      if (err)
+        {
+          g_assert_error (err, G_URI_ERROR, G_URI_ERROR_MISC);
+          g_clear_error (&err);
+        }
+      g_free (uri);
+    }
+}
 
-      if (tests[i].expected_n_params < 0)
+static void
+test_uri_parse_params (gconstpointer test_data)
+{
+  GError *err = NULL;
+  gboolean use_nul_terminated = GPOINTER_TO_INT (test_data);
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (params_tests); i++)
+    {
+      GHashTable *params;
+      gchar *uri = NULL;
+      gssize uri_len;
+
+      g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, params_tests[i].uri);
+
+      g_assert (params_tests[i].expected_n_params < 0 ||
+                params_tests[i].expected_n_params <= G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
+
+      /* The tests get run twice: once with the length unspecified, using a
+       * nul-terminated string; and once with the length specified and a copy of
+       * the string with the trailing nul explicitly removed (to help catch
+       * buffer overflows). */
+      if (use_nul_terminated)
+        {
+          uri_len = -1;
+          uri = g_strdup (params_tests[i].uri);
+        }
+      else
+        {
+          uri_len = strlen (params_tests[i].uri);  /* no trailing nul */
+          uri = g_memdup (params_tests[i].uri, uri_len);
+        }
+
+      params = g_uri_parse_params (uri, uri_len, params_tests[i].separators, params_tests[i].flags, &err);
+
+      if (params_tests[i].expected_n_params < 0)
         {
           g_assert_null (params);
           g_assert_error (err, G_URI_ERROR, G_URI_ERROR_MISC);
@@ -1414,11 +1492,11 @@ test_uri_parse_params (gconstpointer test_data)
           gsize j;
 
           g_assert_no_error (err);
-          g_assert_cmpint (g_hash_table_size (params), ==, tests[i].expected_n_params);
+          g_assert_cmpint (g_hash_table_size (params), ==, params_tests[i].expected_n_params);
 
-          for (j = 0; j < tests[i].expected_n_params; j += 2)
-            g_assert_cmpstr (g_hash_table_lookup (params, tests[i].expected_param_key_values[j]), ==,
-                             tests[i].expected_param_key_values[j + 1]);
+          for (j = 0; j < params_tests[i].expected_n_params; j += 2)
+            g_assert_cmpstr (g_hash_table_lookup (params, params_tests[i].expected_param_key_values[j]), ==,
+                             params_tests[i].expected_param_key_values[j + 1]);
         }
 
       g_clear_pointer (&params, g_hash_table_unref);
@@ -1480,6 +1558,8 @@ main (int   argc,
   g_test_add_func ("/uri/is_valid", test_uri_is_valid);
   g_test_add_func ("/uri/to-string", test_uri_to_string);
   g_test_add_func ("/uri/join", test_uri_join);
+  g_test_add_data_func ("/uri/iter-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_iter_params);
+  g_test_add_data_func ("/uri/iter-params/length", GINT_TO_POINTER (FALSE), test_uri_iter_params);
   g_test_add_data_func ("/uri/parse-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_parse_params);
   g_test_add_data_func ("/uri/parse-params/length", GINT_TO_POINTER (FALSE), test_uri_parse_params);
 
