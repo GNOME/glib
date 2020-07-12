@@ -1763,6 +1763,173 @@ str_ascii_case_equal (gconstpointer v1,
 }
 
 /**
+ * GUriParamsIter:
+ *
+ * Many URI schemes include one or more attribute/value pairs as part of the URI
+ * value (for example "scheme://server/path?query=string&is=there" has two
+ * attributes "query=string" and "is=there" in its query part).
+ *
+ * A #GUriParamsIter structure represents an iterator that can be used to
+ * iterate over the attribute/value pairs of a URI query string. #GUriParamsIter
+ * structures are typically allocated on the stack and then initialized with
+ * g_uri_params_iter_init(). See the documentation for g_uri_params_iter_init()
+ * for a usage example.
+ *
+ * Since: 2.66
+ */
+
+typedef struct
+{
+  GUriParamsFlags flags;
+  const gchar    *attr;
+  const gchar    *end;
+  guint8          sep_table[256]; /* 1 = index is a separator; 0 otherwise */
+} RealIter;
+
+G_STATIC_ASSERT (sizeof (GUriParamsIter) == sizeof (RealIter));
+G_STATIC_ASSERT (G_ALIGNOF (GUriParamsIter) >= G_ALIGNOF (RealIter));
+
+/**
+ * g_uri_params_iter_init:
+ * @iter: an uninitalized #GUriParamsIter
+ * @params: a `%`-encoded string containing "attribute=value"
+ *   parameters
+ * @length: the length of @params, or -1 if it is NUL-terminated
+ * @separators: the separator byte character set between parameters. (usually
+ *   "&", but sometimes ";" or both "&;"). Note that this function works on
+ *   bytes not characters, so it can't be used to delimit UTF-8 strings for
+ *   anything but ASCII characters. You may pass an empty set, in which case
+ *   no splitting will occur.
+ * @flags: flags to modify the way the parameters are handled.
+ *
+ * Initializes an attribute/value pair iterator. The iterator keeps references
+ * over the @params and @separators arguments, those variables must thus outlive
+ * the iterator and not be modified during the iteration.
+ *
+ * |[<!-- language="C" -->
+ * GUriParamsIter iter;
+ * GError *error = NULL;
+ * gchar *attr, *value;
+ *
+ * g_uri_params_iter_init (&iter, "foo=bar&baz=bar", -1, "&", G_URI_PARAMS_NONE);
+ * while (g_uri_params_iter_next (&iter, &attr, &value, &error))
+ *   {
+ *     // do something with attr and value
+ *     g_free (attr);
+ *     g_free (value)
+ *   }
+ * if (error)
+ *   // handle parsing error
+ * ]|
+ *
+ * Since: 2.66
+ */
+void
+g_uri_params_iter_init (GUriParamsIter *iter,
+                        const gchar    *params,
+                        gssize          length,
+                        const gchar    *separators,
+                        GUriParamsFlags flags)
+{
+  RealIter *ri = (RealIter *)iter;
+  const gchar *s;
+
+  g_return_if_fail (iter != NULL);
+  g_return_if_fail (length == 0 || params != NULL);
+  g_return_if_fail (length >= -1);
+  g_return_if_fail (separators != NULL);
+
+  ri->flags = flags;
+
+  if (length == -1)
+    ri->end = params + strlen (params);
+  else
+    ri->end = params + length;
+
+  memset (ri->sep_table, FALSE, sizeof (ri->sep_table));
+  for (s = separators; *s != '\0'; ++s)
+    ri->sep_table[*(guchar *)s] = TRUE;
+
+  ri->attr = params;
+}
+
+/**
+ * g_uri_params_iter_next:
+ * @iter: an initialized #GUriParamsIter
+ * @attribute: (out) (nullable) (optional) (transfer full): on return, contains
+ *     the attribute, or %NULL.
+ * @value: (out) (nullable) (optional) (transfer full): on return, contains
+ *     the value, or %NULL.
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Advances @iter and retrieves the next attribute/value. If %FALSE is returned,
+ * @attribute and @value are not set, and the iterator becomes invalid. Note
+ * that the same attribute value may be returned multiple times, since URIs
+ * allow repeated attributes.
+ *
+ * Returns: %FALSE if the end of the parameters has been reached or an error was
+ * encountered.
+ *
+ * Since: 2.66
+ */
+gboolean
+g_uri_params_iter_next (GUriParamsIter *iter,
+                        gchar         **attribute,
+                        gchar         **value,
+                        GError        **error)
+{
+  RealIter *ri = (RealIter *)iter;
+  const gchar *attr_end, *val, *val_end;
+  gchar *decoded_attr, *decoded_value;
+  gboolean www_form = ri->flags & G_URI_PARAMS_WWW_FORM;
+
+  g_return_val_if_fail (iter != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (ri->attr >= ri->end)
+    return FALSE;
+
+  /* Check if each character in @attr is a separator, by indexing by the
+   * character value into the @sep_table, which has value 1 stored at an
+   * index if that index is a separator. */
+  for (val_end = ri->attr; val_end < ri->end; val_end++)
+    if (ri->sep_table[*(guchar *)val_end])
+      break;
+
+  attr_end = memchr (ri->attr, '=', val_end - ri->attr);
+  if (!attr_end)
+    {
+      g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_MISC,
+                           _("Missing '=' and parameter value"));
+      return FALSE;
+    }
+  if (!uri_decode (&decoded_attr, NULL, ri->attr, attr_end - ri->attr,
+                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
+    {
+      return FALSE;
+    }
+
+  val = attr_end + 1;
+  if (!uri_decode (&decoded_value, NULL, val, val_end - val,
+                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
+    {
+      g_free (decoded_attr);
+      return FALSE;
+    }
+
+  if (attribute)
+    *attribute = g_steal_pointer (&decoded_attr);
+  if (value)
+    *value = g_steal_pointer (&decoded_value);
+
+  g_free (decoded_attr);
+  g_free (decoded_value);
+
+  ri->attr = val_end + 1;
+  return TRUE;
+}
+
+/**
  * g_uri_parse_params:
  * @params: a `%`-encoded string containing "attribute=value"
  *   parameters
@@ -1776,7 +1943,10 @@ str_ascii_case_equal (gconstpointer v1,
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Many URI schemes include one or more attribute/value pairs as part of the URI
- * value. This method can be used to parse them into a hash table.
+ * value. This method can be used to parse them into a hash table. When an
+ * attribute has multiple occurences, the last value is the final returned
+ * value. If you need to handle repeated attributes differently, use
+ * %GUriParamsIter.
  *
  * The @params string is assumed to still be `%`-encoded, but the returned
  * values will be fully decoded. (Thus it is possible that the returned values
@@ -1802,10 +1972,9 @@ g_uri_parse_params (const gchar     *params,
                     GError         **error)
 {
   GHashTable *hash;
-  const gchar *end, *attr, *attr_end, *value, *value_end, *s;
-  gchar *decoded_attr, *decoded_value;
-  guint8 sep_table[256]; /* 1 = index is a separator; 0 otherwise */
-  gboolean www_form = flags & G_URI_PARAMS_WWW_FORM;
+  GUriParamsIter iter;
+  gchar *attribute, *value;
+  GError *err = NULL;
 
   g_return_val_if_fail (length == 0 || params != NULL, NULL);
   g_return_val_if_fail (length >= -1, NULL);
@@ -1824,51 +1993,16 @@ g_uri_parse_params (const gchar     *params,
                                     g_free, g_free);
     }
 
-  if (length == -1)
-    end = params + strlen (params);
-  else
-    end = params + length;
+  g_uri_params_iter_init (&iter, params, length, separators, flags);
 
-  memset (sep_table, FALSE, sizeof (sep_table));
-  for (s = separators; *s != '\0'; ++s)
-    sep_table[*(guchar *)s] = TRUE;
+  while (g_uri_params_iter_next (&iter, &attribute, &value, &err))
+    g_hash_table_insert (hash, attribute, value);
 
-  attr = params;
-  while (attr < end)
+  if (err)
     {
-      /* Check if each character in @attr is a separator, by indexing by the
-       * character value into the @sep_table, which has value 1 stored at an
-       * index if that index is a separator. */
-      for (value_end = attr; value_end < end; value_end++)
-        if (sep_table[*(guchar *)value_end])
-          break;
-
-      attr_end = memchr (attr, '=', value_end - attr);
-      if (!attr_end)
-        {
-          g_hash_table_destroy (hash);
-          g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_MISC,
-                               _("Missing '=' and parameter value"));
-          return NULL;
-        }
-      if (!uri_decode (&decoded_attr, NULL, attr, attr_end - attr,
-                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
-        {
-          g_hash_table_destroy (hash);
-          return NULL;
-        }
-
-      value = attr_end + 1;
-      if (!uri_decode (&decoded_value, NULL, value, value_end - value,
-                       www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
-        {
-          g_free (decoded_attr);
-          g_hash_table_destroy (hash);
-          return NULL;
-        }
-
-      g_hash_table_insert (hash, decoded_attr, decoded_value);
-      attr = value_end + 1;
+      g_propagate_error (error, err);
+      g_hash_table_destroy (hash);
+      return NULL;
     }
 
   return hash;
