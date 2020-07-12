@@ -372,15 +372,305 @@
  *   to add a check at the top of your function that the error return
  *   location is either %NULL or contains a %NULL error (e.g.
  *   `g_return_if_fail (error == NULL || *error == NULL);`).
+ *
+ * Since GLib 2.64 it is possible to extend the #GError type. This is
+ * done with the G_DEFINE_ERROR_TYPE() macro. To created an extended
+ * #GError type do something like this:
+ * |[<!-- language="C" -->
+ * typedef struct
+ * {
+ *   GError error;
+ *
+ *   int foo;
+ * } MyActionErrorInstance;
+ *
+ * void
+ * test_error_copy (const GError *src_error, GError *dest_error)
+ * {
+ *   const MyActionErrorInstance *my_src_error = (const MyActionErrorInstance *)src_error;
+ *   MyActionErrorInstance *my_dest_error = (MyActionErrorInstance *)dest_error;
+ *
+ *   my_dest_error->foo = my_src_error->foo;
+ * }
+ *
+ * void
+ * test_error_cleanup (GError *error)
+ * {
+ *   // nothing to do here
+ * }
+ *
+ * GQuark my_action_error_quark (void);
+ * #define MY_ACTION_ERROR (my_action_error_quark ())
+ * G_DEFINE_ERROR_TYPE (MyActionError, my_action_error)
+ *
+ * typedef enum
+ * {
+ *   MY_ACTION_ERROR_FAILED,
+ *   MY_ACTION_ERROR_INVALID,
+ * } MyActionError;
+ *
+ * gboolean
+ * my_action_function_that_can_fail (GError **err)
+ * {
+ *   if (!do_something ())
+ *     {
+ *       GError *my_error;
+ *
+ *       if (err == NULL)
+ *         return FALSE;
+ *       my_error = g_error_new_literal (MY_ACTION_ERROR, MY_ACTION_ERROR_FAILED, "Something failed");
+ *       MyActionErrorInstance *my_action_error = (MyActionErrorInstance *)my_error;
+ *
+ *       my_action_error->foo = 42;
+ *       *err = my_error;
+ *       return FALSE;
+ *     }
+ *
+ *   return TRUE;
+ * }
+ * ]|
  */
 
 #include "config.h"
 
 #include "gerror.h"
 
+#include "ghash.h"
+#include "glib-init.h"
+#include "gquarkprivate.h"
 #include "gslice.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
+#include "gthread.h"
+
+/**
+ * G_DEFINE_ERROR_TYPE:
+ * @ErrorType: the name to return a #GQuark for
+ * @error_type: prefix for the function name
+ *
+ * A convenience macro which defines a function returning the #GQuark
+ * for the extended error type @ErrorType. The function will be named
+ * @error_type_quark().
+ *
+ * The generated function calls g_error_domain_register_static with
+ * stringified @ErrorType, sizeof of a struct with a name made by
+ * concatenating @ErrorType and the Instance word. The passed copy and
+ * free functions are made from @error_type and appending _copy and
+ * _free, respectively.
+ *
+ * Since: 2.64
+ */
+
+/**
+ * GErrorCopyFunc:
+ * @src_error: source extended error
+ * @dest_error: destination extended error
+ *
+ * Specifies the type of function which is called when an extended
+ * error instance is copied. It is passed the pointer to the
+ * destination error and source error, and should copy the extra
+ * fields from @src_error to @dest_error.
+ *
+ * Since: 2.64
+ */
+
+/**
+ * GErrorCleanupFunc:
+ * @error: extended error to clean up
+ *
+ * Specifies the type of function which is called when an extended
+ * error instance is freed. It is passed the error pointer about to be
+ * freed, and should free the extra fields in @error.
+ *
+ * Since: 2.64
+ */
+
+G_LOCK_DEFINE_STATIC (error_domain_global);
+static GHashTable *error_domain_ht = NULL;
+
+void
+g_error_init (void)
+{
+  error_domain_ht = g_hash_table_new (NULL, NULL);
+}
+
+#define QUARK_TAG_EXTENDED_ERROR_DOMAIN 1
+
+typedef struct
+{
+  gsize size;
+  GErrorCopyFunc copy;
+  GErrorCleanupFunc cleanup;
+} ErrorDomainInfo;
+
+static inline ErrorDomainInfo *
+error_domain_lookup (GQuark domain)
+{
+  return g_hash_table_lookup (error_domain_ht,
+                              GUINT_TO_POINTER (domain));
+}
+
+static inline gboolean
+error_domain_is_extended (GQuark domain)
+{
+  return g_quark_get_tag (domain) & QUARK_TAG_EXTENDED_ERROR_DOMAIN;
+}
+
+static gboolean
+error_domain_check (const char *error_type_name,
+                    gsize       error_type_size)
+{
+  if (error_type_size < sizeof (GError))
+    {
+      g_critical ("Size of an extended error %s is lower than size of GError", error_type_name);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+error_domain_register (GQuark            error_quark,
+                       gsize             error_type_size,
+                       GErrorCopyFunc    error_type_copy,
+                       GErrorCleanupFunc error_type_cleanup)
+{
+  G_LOCK (error_domain_global);
+  if (error_domain_lookup (error_quark) == NULL)
+    {
+      ErrorDomainInfo *info = g_new (ErrorDomainInfo, 1);
+      info->size = error_type_size;
+      info->copy = error_type_copy;
+      info->cleanup = error_type_cleanup;
+
+      g_hash_table_insert (error_domain_ht,
+                           GUINT_TO_POINTER (error_quark),
+                           info);
+    }
+  G_UNLOCK (error_domain_global);
+}
+
+/**
+ * g_error_domain_register_static:
+ * @error_type_name: a static string to create a #GQuark from
+ * @error_type_size: a size of the extended #GError type
+ * @error_type_copy: a function copying fields of the extended type
+ * @error_type_cleanup: a function freeing fields of the extended type
+ *
+ * This function registers an extended #GError type. @error_type_name
+ * should not be freed. @error_type_size cannot be smaller than the
+ * size of #GError. @error_type_copy is a function that receives both
+ * original and a copy #GError and should copy the extra fields of the
+ * extended type. The standard #GError fields are already
+ * handled. @error_type_cleanup receives the pointer to the extended
+ * error, so it should free the extra fields of the extended type. It
+ * should not free the struct itself, though.
+ *
+ * Since: 2.64
+ */
+GQuark
+g_error_domain_register_static (const char        *error_type_name,
+                                gsize              error_type_size,
+                                GErrorCopyFunc     error_type_copy,
+                                GErrorCleanupFunc  error_type_cleanup)
+{
+  GQuark error_quark;
+
+  g_return_val_if_fail (error_type_name != NULL, 0);
+  g_return_val_if_fail (error_type_copy != NULL, 0);
+  g_return_val_if_fail (error_type_cleanup != NULL, 0);
+  if (!error_domain_check (error_type_name, error_type_size))
+    return 0;
+
+  error_quark = g_quark_from_static_string_tagged (error_type_name, QUARK_TAG_EXTENDED_ERROR_DOMAIN);
+  error_domain_register (error_quark, error_type_size, error_type_copy, error_type_cleanup);
+  return error_quark;
+}
+
+/**
+ * g_error_domain_register:
+ * @error_type_name: a string to create a #GQuark from
+ * @error_type_size: a size of the extended #GError type
+ * @error_type_copy: a function copying fields of the extended type
+ * @error_type_cleanup: a function freeing fields of the extended type
+ *
+ * This function registers an extended #GError type. @error_type_name
+ * will be duplicated. Otherwise does the same as
+ * g_error_domain_register_static().
+ *
+ * Since: 2.64
+ */
+GQuark
+g_error_domain_register (const char        *error_type_name,
+                         gsize              error_type_size,
+                         GErrorCopyFunc     error_type_copy,
+                         GErrorCleanupFunc  error_type_cleanup)
+{
+  GQuark error_quark;
+
+  g_return_val_if_fail (error_type_name != NULL, 0);
+  g_return_val_if_fail (error_type_copy != NULL, 0);
+  g_return_val_if_fail (error_type_cleanup != NULL, 0);
+  if (!error_domain_check (error_type_name, error_type_size))
+    return 0;
+
+  error_quark = g_quark_from_string_tagged (error_type_name, QUARK_TAG_EXTENDED_ERROR_DOMAIN);
+  error_domain_register (error_quark, error_type_size, error_type_copy, error_type_cleanup);
+  return error_quark;
+}
+
+static GError *
+g_error_allocate (GQuark domain, ErrorDomainInfo *out_info)
+{
+  GError *error;
+
+  if (error_domain_is_extended (domain))
+    {
+      ErrorDomainInfo *info;
+      gsize size;
+
+      G_LOCK (error_domain_global);
+      info = error_domain_lookup (domain);
+      if (info == NULL)
+        {
+          G_UNLOCK (error_domain_global);
+          g_critical ("Unregistered extended error domain");
+          return NULL;
+        }
+      if (out_info != NULL)
+        *out_info = *info;
+      size = info->size;
+      G_UNLOCK (error_domain_global);
+      error = g_slice_alloc0 (size);
+    }
+  else
+    {
+      error = g_slice_new (GError);
+      if (out_info != NULL)
+        {
+          out_info->size = 0;
+          out_info->copy = NULL;
+          out_info->cleanup = NULL;
+        }
+    }
+
+  return error;
+}
+
+static GError *
+g_error_new_steal (GQuark           domain,
+                   gint             code,
+                   gchar           *message,
+                   ErrorDomainInfo *out_info)
+{
+  GError *error = g_error_allocate (domain, out_info);
+
+  error->domain = domain;
+  error->code = code;
+  error->message = message;
+
+  return error;
+}
 
 /**
  * g_error_new_valist:
@@ -402,8 +692,6 @@ g_error_new_valist (GQuark       domain,
                     const gchar *format,
                     va_list      args)
 {
-  GError *error;
-
   /* Historically, GError allowed this (although it was never meant to work),
    * and it has significant use in the wild, which g_return_val_if_fail
    * would break. It should maybe g_return_val_if_fail in GLib 4.
@@ -412,13 +700,7 @@ g_error_new_valist (GQuark       domain,
   g_warn_if_fail (domain != 0);
   g_warn_if_fail (format != NULL);
 
-  error = g_slice_new (GError);
-
-  error->domain = domain;
-  error->code = code;
-  error->message = g_strdup_vprintf (format, args);
-
-  return error;
+  return g_error_new_steal (domain, code, g_strdup_vprintf (format, args), NULL);
 }
 
 /**
@@ -470,18 +752,10 @@ g_error_new_literal (GQuark         domain,
                      gint           code,
                      const gchar   *message)
 {
-  GError* err;
-
   g_return_val_if_fail (message != NULL, NULL);
   g_return_val_if_fail (domain != 0, NULL);
 
-  err = g_slice_new (GError);
-
-  err->domain = domain;
-  err->code = code;
-  err->message = g_strdup (message);
-
-  return err;
+  return g_error_new_steal (domain, code, g_strdup (message), NULL);
 }
 
 /**
@@ -493,11 +767,32 @@ g_error_new_literal (GQuark         domain,
 void
 g_error_free (GError *error)
 {
+  gsize error_size = sizeof (GError);
+
   g_return_if_fail (error != NULL);
+
+  if (error_domain_is_extended (error->domain))
+    {
+      ErrorDomainInfo *info;
+      GErrorCleanupFunc cleanup;
+
+      G_LOCK (error_domain_global);
+      info = error_domain_lookup (error->domain);
+      if (info == NULL)
+        {
+          G_UNLOCK (error_domain_global);
+          g_critical ("Unregistered extended error domain");
+          return;
+        }
+      cleanup = info->cleanup;
+      error_size = info->size;
+      G_UNLOCK (error_domain_global);
+      cleanup (error);
+    }
 
   g_free (error->message);
 
-  g_slice_free (GError, error);
+  g_slice_free1 (error_size, error);
 }
 
 /**
@@ -512,17 +807,21 @@ GError*
 g_error_copy (const GError *error)
 {
   GError *copy;
- 
+  ErrorDomainInfo info;
+
   g_return_val_if_fail (error != NULL, NULL);
   /* See g_error_new_valist for why these don't return */
   g_warn_if_fail (error->domain != 0);
   g_warn_if_fail (error->message != NULL);
 
-  copy = g_slice_new (GError);
-
-  *copy = *error;
-
-  copy->message = g_strdup (error->message);
+  copy = g_error_new_steal (error->domain,
+                            error->code,
+                            g_strdup (error->message),
+                            &info);
+  if (info.size > 0)
+    {
+      info.copy (error, copy);
+    }
 
   return copy;
 }

@@ -36,16 +36,19 @@
 #include "gslice.h"
 #include "ghash.h"
 #include "gquark.h"
+#include "gquarkprivate.h"
 #include "gstrfuncs.h"
 #include "gthread.h"
 #include "gtestutils.h"
 #include "glib_trace.h"
 #include "glib-init.h"
 
-#define QUARK_BLOCK_SIZE         2048
-#define QUARK_STRING_BLOCK_SIZE (4096 - sizeof (gsize))
+#define QUARK_BLOCK_SIZE          2048
+#define QUARK_STRING_BLOCK_SIZE  (4096 - sizeof (gsize))
+#define QUARK_INDEX_BIT_SIZE      24
+#define QUARK_INDEX_MASK        ((1u << QUARK_INDEX_BIT_SIZE) - 1)
 
-static inline GQuark  quark_new (gchar *string);
+static inline GQuark  quark_new (gchar *string, guchar tag);
 
 G_LOCK_DEFINE_STATIC (quark_global);
 static GHashTable    *quark_ht = NULL;
@@ -178,7 +181,8 @@ quark_strdup (const gchar *string)
 /* HOLDS: quark_global_lock */
 static inline GQuark
 quark_from_string (const gchar *string,
-                   gboolean     duplicate)
+                   gboolean     duplicate,
+                   guchar       tag)
 {
   GQuark quark = 0;
 
@@ -186,7 +190,7 @@ quark_from_string (const gchar *string,
 
   if (!quark)
     {
-      quark = quark_new (duplicate ? quark_strdup (string) : (gchar *)string);
+      quark = quark_new (duplicate ? quark_strdup (string) : (gchar *) string, tag);
       TRACE(GLIB_QUARK_NEW(string, quark));
     }
 
@@ -194,8 +198,9 @@ quark_from_string (const gchar *string,
 }
 
 static inline GQuark
-quark_from_string_locked (const gchar   *string,
-                          gboolean       duplicate)
+quark_from_string_locked_tagged (const gchar   *string,
+                                 gboolean       duplicate,
+                                 guchar         tag)
 {
   GQuark quark = 0;
 
@@ -203,10 +208,18 @@ quark_from_string_locked (const gchar   *string,
     return 0;
 
   G_LOCK (quark_global);
-  quark = quark_from_string (string, duplicate);
+  quark = quark_from_string (string, duplicate, tag);
   G_UNLOCK (quark_global);
 
   return quark;
+}
+
+
+static inline GQuark
+quark_from_string_locked (const gchar   *string,
+                          gboolean       duplicate)
+{
+  return quark_from_string_locked_tagged (string, duplicate, 0);
 }
 
 /**
@@ -227,6 +240,43 @@ GQuark
 g_quark_from_string (const gchar *string)
 {
   return quark_from_string_locked (string, TRUE);
+}
+
+static inline GQuark
+quark_index_to_tagged (GQuark index_quark,
+                       guchar tag)
+{
+  return index_quark | (((GQuark) tag) << QUARK_INDEX_BIT_SIZE);
+}
+
+static inline GQuark
+quark_tagged_to_index (GQuark tagged_quark)
+{
+  return tagged_quark & QUARK_INDEX_MASK;
+}
+
+static inline guchar
+quark_tagged_to_tag (GQuark tagged_quark)
+{
+  return tagged_quark >> QUARK_INDEX_BIT_SIZE;
+}
+
+GQuark
+g_quark_from_string_tagged (const gchar *string, guchar tag)
+{
+  return quark_from_string_locked_tagged (string, TRUE, tag);
+}
+
+GQuark
+g_quark_from_static_string_tagged (const gchar *string, guchar tag)
+{
+  return quark_from_string_locked_tagged (string, FALSE, tag);
+}
+
+guchar
+g_quark_get_tag (GQuark quark)
+{
+  return quark_tagged_to_tag (quark);
 }
 
 /**
@@ -272,21 +322,25 @@ g_quark_to_string (GQuark quark)
   gchar* result = NULL;
   gchar **strings;
   guint seq_id;
+  GQuark index_quark;
 
   seq_id = (guint) g_atomic_int_get (&quark_seq_id);
   strings = g_atomic_pointer_get (&quarks);
 
-  if (quark < seq_id)
-    result = strings[quark];
+  index_quark = quark_tagged_to_index (quark);
+  if (index_quark < seq_id)
+    result = strings[index_quark];
 
   return result;
 }
 
 /* HOLDS: g_quark_global_lock */
 static inline GQuark
-quark_new (gchar *string)
+quark_new (gchar *string,
+           guchar tag)
 {
-  GQuark quark;
+  GQuark tagged_quark;
+  GQuark index_quark;
   gchar **quarks_new;
 
   if (quark_seq_id % QUARK_BLOCK_SIZE == 0)
@@ -302,12 +356,13 @@ quark_new (gchar *string)
       g_atomic_pointer_set (&quarks, quarks_new);
     }
 
-  quark = quark_seq_id;
-  g_atomic_pointer_set (&quarks[quark], string);
-  g_hash_table_insert (quark_ht, string, GUINT_TO_POINTER (quark));
+  index_quark = quark_seq_id;
+  tagged_quark = quark_index_to_tagged (index_quark, tag);
+  g_atomic_pointer_set (&quarks[index_quark], string);
+  g_hash_table_insert (quark_ht, string, GUINT_TO_POINTER (tagged_quark));
   g_atomic_int_inc (&quark_seq_id);
 
-  return quark;
+  return tagged_quark;
 }
 
 static inline const gchar *
@@ -321,7 +376,7 @@ quark_intern_string_locked (const gchar   *string,
     return NULL;
 
   G_LOCK (quark_global);
-  quark = quark_from_string (string, duplicate);
+  quark = quark_from_string (string, duplicate, 0);
   result = quarks[quark];
   G_UNLOCK (quark_global);
 

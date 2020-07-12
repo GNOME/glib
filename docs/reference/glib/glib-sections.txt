@@ -738,6 +738,12 @@ g_propagate_error
 g_clear_error
 g_prefix_error
 g_propagate_prefixed_error
+<SUBSECTION>
+GErrorCopyFunc
+GErrorCleanupFunc
+G_DEFINE_ERROR_TYPE
+g_error_domain_register_static
+g_error_domain_register
 </SECTION>
 
 <SECTION>
