@@ -1323,7 +1323,7 @@ restart:
       g_value_take_variant (gvalue, *(gpointer*)value);
       break;
     case G_TYPE_INTERFACE:
-      type = g_type_interface_instantiable_prerequisite (G_VALUE_TYPE (gvalue));
+      type = g_type_interface_instantiable_prerequisite (type);
       if (type)
         goto restart;
       G_GNUC_FALLTHROUGH;
