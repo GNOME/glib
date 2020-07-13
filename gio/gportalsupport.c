@@ -20,7 +20,6 @@
 
 #include "gportalsupport.h"
 
-static gboolean flatpak_info_read;
 static gboolean use_portal;
 static gboolean network_available;
 static gboolean dconf_access;
@@ -28,12 +27,11 @@ static gboolean dconf_access;
 static void
 read_flatpak_info (void)
 {
+  static gsize flatpak_info_read = 0;
   const gchar *path = "/.flatpak-info";
 
-  if (flatpak_info_read)
+  if (!g_once_init_enter (&flatpak_info_read))
     return;
-
-  flatpak_info_read = TRUE;
 
   if (g_file_test (path, G_FILE_TEST_EXISTS))
     {
@@ -77,6 +75,8 @@ read_flatpak_info (void)
       network_available = TRUE;
       dconf_access = TRUE;
     }
+
+  g_once_init_leave (&flatpak_info_read, 1);
 }
 
 gboolean
