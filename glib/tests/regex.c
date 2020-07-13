@@ -19,6 +19,8 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "config.h"
 
 #include <string.h>

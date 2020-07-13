@@ -18,6 +18,9 @@
  * along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+/* Yes, we're using deprecated API */
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+
 #include "config.h"
 
 #include <string.h>
@@ -105,9 +108,10 @@
  * is not threadsafe.
  *
  * The regular expressions low-level functionalities are obtained through
- * the excellent
- * [PCRE](http://www.pcre.org/)
- * library written by Philip Hazel.
+ * the excellent [PCRE](http://www.pcre.org/) library written by Philip Hazel.
+ *
+ * The GRegex API is deprecated since GLib 2.66, as it wraps the old PCRE 1
+ * API; newly written code should use the PCRE 2 API.
  */
 
 /* Mask of all the possible values for GRegexCompileFlags. */
