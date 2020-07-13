@@ -127,11 +127,11 @@ _g_local_file_info_create_etag (GLocalFileStat *statbuf)
   sec = statbuf->st_mtim.tv_sec;
   usec = statbuf->st_mtim.tv_nsec / 1000;
 #else
-  sec = statbuf->st_mtime;
+  sec = _g_stat_mtime (statbuf);
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
   usec = statbuf->st_mtimensec / 1000;
 #elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
-  usec = statbuf->st_mtim.tv_nsec / 1000;
+  usec = _g_stat_mtim_nsec (statbuf) / 1000;
 #else
   usec = 0;
 #endif
@@ -147,10 +147,10 @@ _g_local_file_info_create_file_id (GLocalFileStat *statbuf)
 #ifdef G_OS_WIN32
   ino = statbuf->file_index;
 #else
-  ino = statbuf->st_ino;
+  ino = _g_stat_ino (statbuf);
 #endif
   return g_strdup_printf ("l%" G_GUINT64_FORMAT ":%" G_GUINT64_FORMAT,
-			  (guint64) statbuf->st_dev, 
+			  (guint64) _g_stat_dev (statbuf), 
 			  ino);
 }
 
@@ -158,7 +158,7 @@ static char *
 _g_local_file_info_create_fs_id (GLocalFileStat *statbuf)
 {
   return g_strdup_printf ("l%" G_GUINT64_FORMAT,
-			  (guint64) statbuf->st_dev);
+			  (guint64) _g_stat_dev (statbuf));
 }
 
 #if defined (S_ISLNK) || defined (G_OS_WIN32)
@@ -921,7 +921,7 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 	    {
 	      uid_t uid = geteuid ();
 
-	      if (uid == statbuf->st_uid ||
+	      if (uid == _g_stat_uid (statbuf) ||
 		  uid == parent_info->owner ||
 		  uid == 0)
 		writable = TRUE;
@@ -954,22 +954,22 @@ set_info_from_stat (GFileInfo             *info,
 
   file_type = G_FILE_TYPE_UNKNOWN;
 
-  if (S_ISREG (statbuf->st_mode))
+  if (S_ISREG (_g_stat_mode (statbuf)))
     file_type = G_FILE_TYPE_REGULAR;
-  else if (S_ISDIR (statbuf->st_mode))
+  else if (S_ISDIR (_g_stat_mode (statbuf)))
     file_type = G_FILE_TYPE_DIRECTORY;
 #ifndef G_OS_WIN32
-  else if (S_ISCHR (statbuf->st_mode) ||
-	   S_ISBLK (statbuf->st_mode) ||
-	   S_ISFIFO (statbuf->st_mode)
+  else if (S_ISCHR (_g_stat_mode (statbuf)) ||
+	   S_ISBLK (_g_stat_mode (statbuf)) ||
+	   S_ISFIFO (_g_stat_mode (statbuf))
 #ifdef S_ISSOCK
-	   || S_ISSOCK (statbuf->st_mode)
+	   || S_ISSOCK (_g_stat_mode (statbuf))
 #endif
 	   )
     file_type = G_FILE_TYPE_SPECIAL;
 #endif
 #ifdef S_ISLNK
-  else if (S_ISLNK (statbuf->st_mode))
+  else if (S_ISLNK (_g_stat_mode (statbuf)))
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #elif defined (G_OS_WIN32)
   else if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK ||
@@ -978,28 +978,28 @@ set_info_from_stat (GFileInfo             *info,
 #endif
 
   g_file_info_set_file_type (info, file_type);
-  g_file_info_set_size (info, statbuf->st_size);
+  g_file_info_set_size (info, _g_stat_size (statbuf));
 
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_DEVICE, statbuf->st_dev);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_NLINK, statbuf->st_nlink);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_DEVICE, _g_stat_dev (statbuf));
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_NLINK, _g_stat_nlink (statbuf));
 #ifndef G_OS_WIN32
   /* Pointless setting these on Windows even if they exist in the struct */
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_INODE, statbuf->st_ino);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_UID, statbuf->st_uid);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_GID, statbuf->st_gid);
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_RDEV, statbuf->st_rdev);
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_INODE, _g_stat_ino (statbuf));
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_UID, _g_stat_uid (statbuf));
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_GID, _g_stat_gid (statbuf));
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_RDEV, _g_stat_rdev (statbuf));
 #endif
   /* Mostly pointless on Windows.
    * Still, it allows for S_ISREG/S_ISDIR and IWRITE (read-only) checks.
    */
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_MODE, statbuf->st_mode);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_MODE, _g_stat_mode (statbuf));
 #if defined (HAVE_STRUCT_STAT_ST_BLKSIZE)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCK_SIZE, statbuf->st_blksize);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCK_SIZE, _g_stat_blksize (statbuf));
 #endif
 #if defined (HAVE_STRUCT_STAT_ST_BLOCKS)
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCKS, statbuf->st_blocks);
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCKS, _g_stat_blocks (statbuf));
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_ALLOCATED_SIZE,
-                                           statbuf->st_blocks * G_GUINT64_CONSTANT (512));
+                                           _g_stat_blocks (statbuf) * G_GUINT64_CONSTANT (512));
 #elif defined (G_OS_WIN32)
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_ALLOCATED_SIZE,
                                            statbuf->allocated_size);
@@ -1012,18 +1012,18 @@ set_info_from_stat (GFileInfo             *info,
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, statbuf->st_atim.tv_sec);
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atim.tv_nsec / 1000);
 #else
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, statbuf->st_mtime);
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, _g_stat_mtime (statbuf));
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtim.tv_nsec / 1000);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, _g_stat_mtim_nsec (statbuf) / 1000);
 #endif
   
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, statbuf->st_atime);
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, _g_stat_atime (statbuf));
 #if defined (HAVE_STRUCT_STAT_ST_ATIMENSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atim.tv_nsec / 1000);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, _g_stat_atim_nsec (statbuf) / 1000);
 #endif
 #endif
 
@@ -1033,15 +1033,18 @@ set_info_from_stat (GFileInfo             *info,
    * https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/stat-functions#generic-text-routine-mappings
    * Thank you, Microsoft!
    */
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED, statbuf->st_ctime);
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED, _g_stat_ctime (statbuf));
 #if defined (HAVE_STRUCT_STAT_ST_CTIMENSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, statbuf->st_ctimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, statbuf->st_ctim.tv_nsec / 1000);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, _g_stat_ctim_nsec (statbuf) / 1000);
 #endif
 #endif
 
-#if defined (HAVE_STRUCT_STAT_ST_BIRTHTIME) && defined (HAVE_STRUCT_STAT_ST_BIRTHTIMENSEC)
+#if defined (HAVE_STATX)
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->stx_btime.tv_sec);
+  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED_USEC, statbuf->stx_btime.tv_nsec / 1000);
+#elif defined (HAVE_STRUCT_STAT_ST_BIRTHTIME) && defined (HAVE_STRUCT_STAT_ST_BIRTHTIMENSEC)
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_birthtime);
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED_USEC, statbuf->st_birthtimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_BIRTHTIM) && defined (HAVE_STRUCT_STAT_ST_BIRTHTIM_TV_NSEC)
@@ -1301,16 +1304,16 @@ get_content_type (const char          *basename,
   if (is_symlink &&
       (symlink_broken || (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS)))
     return g_content_type_from_mime_type ("inode/symlink");
-  else if (statbuf != NULL && S_ISDIR(statbuf->st_mode))
+  else if (statbuf != NULL && S_ISDIR(_g_stat_mode (statbuf)))
     return g_content_type_from_mime_type ("inode/directory");
 #ifndef G_OS_WIN32
-  else if (statbuf != NULL && S_ISCHR(statbuf->st_mode))
+  else if (statbuf != NULL && S_ISCHR(_g_stat_mode (statbuf)))
     return g_content_type_from_mime_type ("inode/chardevice");
-  else if (statbuf != NULL && S_ISBLK(statbuf->st_mode))
+  else if (statbuf != NULL && S_ISBLK(_g_stat_mode (statbuf)))
     return g_content_type_from_mime_type ("inode/blockdevice");
-  else if (statbuf != NULL && S_ISFIFO(statbuf->st_mode))
+  else if (statbuf != NULL && S_ISFIFO(_g_stat_mode (statbuf)))
     return g_content_type_from_mime_type ("inode/fifo");
-  else if (statbuf != NULL && S_ISREG(statbuf->st_mode) && statbuf->st_size == 0)
+  else if (statbuf != NULL && S_ISREG(_g_stat_mode (statbuf)) && _g_stat_size (statbuf) == 0)
     {
       /* Don't sniff zero-length files in order to avoid reading files
        * that appear normal but are not (eg: files in /proc and /sys)
@@ -1323,7 +1326,7 @@ get_content_type (const char          *basename,
     }
 #endif
 #ifdef S_ISSOCK
-  else if (statbuf != NULL && S_ISSOCK(statbuf->st_mode))
+  else if (statbuf != NULL && S_ISSOCK(_g_stat_mode (statbuf)))
     return g_content_type_from_mime_type ("inode/socket");
 #endif
   else
@@ -1768,11 +1771,7 @@ _g_local_file_info_get (const char             *basename,
 {
   GFileInfo *info;
   GLocalFileStat statbuf;
-#ifdef S_ISLNK
-  struct stat statbuf2;
-#elif defined (G_OS_WIN32)
-  GWin32PrivateStat statbuf2;
-#endif
+  GLocalFileStat statbuf2;
   int res;
   gboolean stat_ok;
   gboolean is_symlink, symlink_broken;
@@ -1794,11 +1793,7 @@ _g_local_file_info_get (const char             *basename,
       return info;
     }
 
-#ifndef G_OS_WIN32
-  res = g_lstat (path, &statbuf);
-#else
-  res = GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (path, &statbuf);
-#endif
+  res = LSTAT (path, &statbuf);
 
   if (res == -1)
     {
@@ -1822,12 +1817,12 @@ _g_local_file_info_get (const char             *basename,
   stat_ok = res != -1;
 
   if (stat_ok)
-    device = statbuf.st_dev;
+    device = _g_stat_dev (&statbuf);
   else
     device = 0;
 
 #ifdef S_ISLNK
-  is_symlink = stat_ok && S_ISLNK (statbuf.st_mode);
+  is_symlink = stat_ok && S_ISLNK (_g_stat_mode (&statbuf));
 #elif defined (G_OS_WIN32)
   /* glib already checked the FILE_ATTRIBUTE_REPARSE_POINT for us */
   is_symlink = stat_ok &&
@@ -1845,11 +1840,7 @@ _g_local_file_info_get (const char             *basename,
       /* Unless NOFOLLOW was set we default to following symlinks */
       if (!(flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS))
 	{
-#ifndef G_OS_WIN32
-	  res = stat (path, &statbuf2);
-#else
-	  res = GLIB_PRIVATE_CALL (g_win32_stat_utf8) (path, &statbuf2);
-#endif
+	  res = STAT (path, &statbuf2);
 
 	  /* Report broken links as symlinks */
 	  if (res != -1)
@@ -1866,7 +1857,7 @@ _g_local_file_info_get (const char             *basename,
     set_info_from_stat (info, &statbuf, attribute_matcher);
 
 #ifdef G_OS_UNIX
-  if (stat_ok && _g_local_file_is_lost_found_dir (path, statbuf.st_dev))
+  if (stat_ok && _g_local_file_is_lost_found_dir (path, _g_stat_dev (&statbuf)))
     g_file_info_set_is_hidden (info, TRUE);
 #endif
 
@@ -1881,7 +1872,7 @@ _g_local_file_info_get (const char             *basename,
     }
 
   if (basename != NULL && basename[strlen (basename) -1] == '~' &&
-      (stat_ok && S_ISREG (statbuf.st_mode)))
+      (stat_ok && S_ISREG (_g_stat_mode (&statbuf))))
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_IS_BACKUP, TRUE);
 #else
   if (statbuf.attributes & FILE_ATTRIBUTE_HIDDEN)
@@ -1975,7 +1966,7 @@ _g_local_file_info_get (const char             *basename,
       win32_get_file_user_info (path, NULL, &name, NULL);
 #else
       if (stat_ok)
-        name = get_username_from_uid (statbuf.st_uid);
+        name = get_username_from_uid (_g_stat_uid (&statbuf));
 #endif
       if (name)
 	_g_file_info_set_attribute_string_by_id (info, G_FILE_ATTRIBUTE_ID_OWNER_USER, name);
@@ -1990,7 +1981,7 @@ _g_local_file_info_get (const char             *basename,
       win32_get_file_user_info (path, NULL, NULL, &name);
 #else
       if (stat_ok)
-        name = get_realname_from_uid (statbuf.st_uid);
+        name = get_realname_from_uid (_g_stat_uid (&statbuf));
 #endif
       if (name)
 	_g_file_info_set_attribute_string_by_id (info, G_FILE_ATTRIBUTE_ID_OWNER_USER_REAL, name);
@@ -2005,7 +1996,7 @@ _g_local_file_info_get (const char             *basename,
       win32_get_file_user_info (path, &name, NULL, NULL);
 #else
       if (stat_ok)
-        name = get_groupname_from_gid (statbuf.st_gid);
+        name = get_groupname_from_gid (_g_stat_gid (&statbuf));
 #endif
       if (name)
 	_g_file_info_set_attribute_string_by_id (info, G_FILE_ATTRIBUTE_ID_OWNER_GROUP, name);
@@ -2014,7 +2005,7 @@ _g_local_file_info_get (const char             *basename,
 
   if (stat_ok && parent_info && parent_info->device != 0 &&
       _g_file_attribute_matcher_matches_id (attribute_matcher, G_FILE_ATTRIBUTE_ID_UNIX_IS_MOUNTPOINT) &&
-      (statbuf.st_dev != parent_info->device || statbuf.st_ino == parent_info->inode))
+      (_g_stat_dev (&statbuf) != parent_info->device || _g_stat_ino (&statbuf) == parent_info->inode))
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_IS_MOUNTPOINT, TRUE);
   
   if (stat_ok)
@@ -2068,12 +2059,6 @@ _g_local_file_info_get_from_fd (int         fd,
   GLocalFileStat stat_buf;
   GFileAttributeMatcher *matcher;
   GFileInfo *info;
-  
-#ifdef G_OS_WIN32
-#define FSTAT GLIB_PRIVATE_CALL (g_win32_fstat)
-#else
-#define FSTAT fstat
-#endif
 
   if (FSTAT (fd, &stat_buf) == -1)
     {

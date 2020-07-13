@@ -328,6 +328,12 @@ if cc.has_header('linux/netlink.h')
   glib_conf.set('HAVE_NETLINK', 1)
 endif
 
+if cc.has_header('linux/stat.h')
+  if cc.has_type('struct statx', prefix : '#include <linux/stat.h>')
+    glib_conf.set('HAVE_STATX', 1)
+  endif
+endif
+
 if glib_conf.has('HAVE_LOCALE_H')
   if cc.has_header_symbol('locale.h', 'LC_MESSAGES')
     glib_conf.set('HAVE_LC_MESSAGES', 1)
