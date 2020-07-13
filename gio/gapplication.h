@@ -229,6 +229,10 @@ void                    g_application_unmark_busy                       (GApplic
 GLIB_AVAILABLE_IN_2_44
 gboolean                g_application_get_is_busy                       (GApplication             *application);
 
+GLIB_AVAILABLE_IN_2_60
+void                    g_application_set_restart_data                  (GApplication             *application,
+                                                                         GVariant                 *data);
+
 GLIB_AVAILABLE_IN_2_40
 void                    g_application_send_notification                 (GApplication             *application,
                                                                          const gchar              *id,

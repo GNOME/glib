@@ -3112,5 +3112,23 @@ g_application_unbind_busy_property (GApplication *application,
   g_signal_handler_disconnect (object, handler_id);
 }
 
+/* Session handling {{{1 */
+
+/**
+ * g_application_set_restart_data:
+ * @application:
+ * @data:
+ *
+ */
+void
+g_application_set_restart_data (GApplication *application,
+                                GVariant     *data)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (!(application->priv->flags & G_APPLICATION_NON_UNIQUE));
+
+  g_application_impl_set_restart_data (application->priv->impl, data);
+}
+
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */

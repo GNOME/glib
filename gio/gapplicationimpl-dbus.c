@@ -66,6 +66,7 @@ static const gchar org_gtk_Application_xml[] =
         "<arg type='i' name='exit-status' direction='out'/>"
       "</method>"
     "<property name='Busy' type='b' access='read'/>"
+    "<property name='RestartData' type='v' access='read'/>"
     "</interface>"
   "</node>";
 
@@ -121,6 +122,7 @@ struct _GApplicationImpl
   gboolean         properties_live;
   gboolean         primary;
   gboolean         busy;
+  GVariant        *restart_data;
   gboolean         registered;
   GApplication    *app;
 };
@@ -149,14 +151,16 @@ g_application_impl_get_property (GDBusConnection *connection,
 }
 
 static void
-send_property_change (GApplicationImpl *impl)
+send_property_change (GApplicationImpl *impl,
+                      const char       *property_name,
+                      GVariant         *value)
 {
   GVariantBuilder builder;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
   g_variant_builder_add (&builder,
                          "{sv}",
-                         "Busy", g_variant_new_boolean (impl->busy));
+                         property_name, value);
 
   g_dbus_connection_emit_signal (impl->session_bus,
                                  NULL,
@@ -558,8 +562,18 @@ g_application_impl_set_busy_state (GApplicationImpl *impl,
   if (impl->busy != busy)
     {
       impl->busy = busy;
-      send_property_change (impl);
+      send_property_change (impl, "Busy", g_variant_new_boolean (impl->busy));
     }
+}
+
+void
+g_application_impl_set_restart_data (GApplicationImpl *impl,
+                                     GVariant         *variant)
+{
+  g_clear_pointer (&impl->restart_data, g_variant_unref);
+  if (variant)
+    impl->restart_data = g_variant_ref (variant);
+  send_property_change (impl, "RestartData", impl->restart_data);
 }
 
 void
