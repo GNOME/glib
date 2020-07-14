@@ -82,6 +82,7 @@
 #include <glib/gstrfuncs.h>
 #include <glib/gstringchunk.h>
 #include <glib/gstring.h>
+#include <glib/gstrvbuilder.h>
 #include <glib/gtestutils.h>
 #include <glib/gthread.h>
 #include <glib/gthreadpool.h>
