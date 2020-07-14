@@ -237,6 +237,7 @@ g_uri_char_is_unreserved (gchar ch)
 
 static gssize
 uri_decoder (gchar       **out,
+             const gchar  *illegal_chars,
              const gchar  *start,
              gsize         length,
              gboolean      just_normalize,
@@ -280,6 +281,14 @@ uri_decoder (gchar       **out,
             }
 
           c = HEXCHAR (s);
+          if (illegal_chars && strchr (illegal_chars, c))
+            {
+              g_set_error_literal (error, G_URI_ERROR, parse_error,
+                                   _("Illegal character in URI"));
+              g_free (decoded);
+              return -1;
+
+            }
           if (just_normalize && !g_uri_char_is_unreserved (c))
             {
               /* Leave the % sequence there. */
@@ -318,6 +327,7 @@ uri_decoder (gchar       **out,
 
 static gboolean
 uri_decode (gchar       **out,
+            const gchar  *illegal_chars,
             const gchar  *start,
             gsize         length,
             gboolean      www_form,
@@ -325,7 +335,7 @@ uri_decode (gchar       **out,
             GUriError     parse_error,
             GError      **error)
 {
-  return uri_decoder (out, start, length, FALSE, www_form, flags,
+  return uri_decoder (out, illegal_chars, start, length, FALSE, www_form, flags,
                       parse_error, error) != -1;
 }
 
@@ -337,7 +347,7 @@ uri_normalize (gchar       **out,
                GUriError     parse_error,
                GError      **error)
 {
-  return uri_decoder (out, start, length, TRUE, FALSE, flags,
+  return uri_decoder (out, NULL, start, length, TRUE, FALSE, flags,
                       parse_error, error) != -1;
 }
 
@@ -457,7 +467,7 @@ parse_host (const gchar  *start,
     }
 
   flags &= ~G_URI_FLAGS_ENCODED;
-  if (!uri_decode (&decoded, start, length, FALSE, flags,
+  if (!uri_decode (&decoded, NULL, start, length, FALSE, flags,
                    G_URI_ERROR_BAD_HOST, error))
     return FALSE;
 
@@ -778,7 +788,7 @@ g_uri_split_internal (const gchar  *uri_string,
   end = p + strcspn (p, "#");
   if (*end == '#')
     {
-      if (!uri_decode (fragment, end + 1, strlen (end + 1), FALSE, flags,
+      if (!uri_decode (fragment, NULL, end + 1, strlen (end + 1), FALSE, flags,
                        G_URI_ERROR_BAD_FRAGMENT, error))
         goto fail;
     }
@@ -1842,7 +1852,7 @@ g_uri_parse_params (const gchar     *params,
                                _("Missing '=' and parameter value"));
           return NULL;
         }
-      if (!uri_decode (&decoded_attr, attr, attr_end - attr,
+      if (!uri_decode (&decoded_attr, NULL, attr, attr_end - attr,
                        www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
         {
           g_hash_table_destroy (hash);
@@ -1850,7 +1860,7 @@ g_uri_parse_params (const gchar     *params,
         }
 
       value = attr_end + 1;
-      if (!uri_decode (&decoded_value, value, value_end - value,
+      if (!uri_decode (&decoded_value, NULL, value, value_end - value,
                        www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
         {
           g_free (decoded_attr);
@@ -2119,7 +2129,7 @@ g_uri_unescape_segment (const gchar *escaped_string,
                         const gchar *escaped_string_end,
                         const gchar *illegal_characters)
 {
-  gchar *unescaped, *p;
+  gchar *unescaped;
   gsize length;
 
   if (!escaped_string)
@@ -2131,23 +2141,12 @@ g_uri_unescape_segment (const gchar *escaped_string,
     length = strlen (escaped_string);
 
   if (!uri_decode (&unescaped,
+                   illegal_characters,
                    escaped_string, length,
                    FALSE,
                    G_URI_FLAGS_PARSE_STRICT,
                    0, NULL))
     return NULL;
-
-  if (illegal_characters)
-    {
-      for (p = unescaped; *p; p++)
-        {
-          if (strchr (illegal_characters, *p))
-            {
-              g_free (unescaped);
-              return NULL;
-            }
-        }
-    }
 
   return unescaped;
 }
@@ -2245,6 +2244,7 @@ g_uri_unescape_bytes (const gchar *escaped_string,
     length = strlen (escaped_string);
 
   unescaped_length = uri_decoder (&buf,
+                                  NULL,
                                   escaped_string, length,
                                   FALSE,
                                   FALSE,

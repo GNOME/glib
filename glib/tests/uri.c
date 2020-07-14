@@ -343,6 +343,7 @@ test_uri_unescape_string (void)
       { "%2Babc %4F", NULL, "+abc O" },
       { "%2Babc %4F", "+", NULL },
       { "%00abc %4F", "+/", NULL },
+      { "/cursors/none.png", "/", "/cursors/none.png" },
       { "%0", NULL, NULL },
       { "%ra", NULL, NULL },
       { "%2r", NULL, NULL },
