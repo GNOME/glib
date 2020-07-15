@@ -2218,11 +2218,19 @@ g_uri_escape_string (const gchar *unescaped,
  * @escaped_string: A URI-escaped string
  * @length: the length of @escaped_string to escape, or -1 if it
  *   is NUL-terminated.
+ * @illegal_characters: (nullable): a string of illegal characters
+ *   not to be allowed, or %NULL.
  *
  * Unescapes a segment of an escaped string as binary data.
  *
  * Note that in contrast to g_uri_unescape_string(), this does allow
  * `NUL` bytes to appear in the output.
+ *
+ * If any of the characters in @illegal_characters or the NUL
+ * character appears as an escaped character in @escaped_string, then
+ * that is an error and %NULL will be returned. This is useful if you
+ * want to avoid for instance having a slash being expanded in an
+ * escaped path element, which might confuse pathname handling.
  *
  * Returns: (transfer full): an unescaped version of @escaped_string
  * or %NULL on error. The returned #GBytes should be unreffed when no
@@ -2232,7 +2240,8 @@ g_uri_escape_string (const gchar *unescaped,
  **/
 GBytes *
 g_uri_unescape_bytes (const gchar *escaped_string,
-                      gssize       length)
+                      gssize       length,
+                      const char *illegal_characters)
 {
   gchar *buf;
   gssize unescaped_length;
@@ -2243,7 +2252,7 @@ g_uri_unescape_bytes (const gchar *escaped_string,
     length = strlen (escaped_string);
 
   unescaped_length = uri_decoder (&buf,
-                                  NULL,
+                                  illegal_characters,
                                   escaped_string, length,
                                   FALSE,
                                   FALSE,
