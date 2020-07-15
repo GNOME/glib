@@ -234,6 +234,10 @@
 #undef glib_typeof
 #if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && !defined(__cplusplus)
 #define glib_typeof(t) __typeof__ (t)
+#elif defined(__cplusplus) && __cplusplus >= 201103L
+/* C++11 decltype() is close enough for our usage */
+#include <type_traits>
+#define glib_typeof(t) std::remove_reference<decltype (t)>::type
 #endif
 
 /*
