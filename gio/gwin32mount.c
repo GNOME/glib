@@ -33,6 +33,7 @@
 #include "gmount.h"
 #include "gfile.h"
 #include "gmountprivate.h"
+#include "gtask.h"
 #include "gvolumemonitor.h"
 #include "gthemedicon.h"
 #include "glibintl.h"
@@ -78,10 +79,8 @@ g_win32_mount_finalize (GObject *object)
 #endif
   /* TODO: g_warn_if_fail (volume->volume == NULL); */
 
-  if (mount->icon != NULL)
-    g_object_unref (mount->icon);
-  if (mount->symbolic_icon != NULL)
-    g_object_unref (mount->symbolic_icon);
+  g_clear_object (&mount->icon);
+  g_clear_object (&mount->symbolic_icon);
 
   g_free (mount->name);
   g_free (mount->mount_path);
@@ -103,17 +102,39 @@ g_win32_mount_init (GWin32Mount *win32_mount)
 {
 }
 
-static gchar *
-_win32_get_displayname (const char *drive)
+static void
+_win32_get_displayname (GTask        *task,
+                        gpointer      source_object,
+                        gpointer      task_data,
+                        GCancellable *cancellable)
 {
-  gunichar2 *wdrive = g_utf8_to_utf16 (drive, -1, NULL, NULL, NULL);
-  gchar *name = NULL;
-  SHFILEINFOW sfi;
-  if (SHGetFileInfoW(wdrive, 0, &sfi, sizeof(sfi), SHGFI_DISPLAYNAME))
+  const char  *drive = task_data;
+  gunichar2   *wdrive = g_utf8_to_utf16 (drive, -1, NULL, NULL, NULL);
+  gchar       *name = NULL;
+  SHFILEINFOW  sfi;
+
+  if (SHGetFileInfoW (wdrive, 0, &sfi, sizeof (sfi), SHGFI_DISPLAYNAME))
     name = g_utf16_to_utf8 (sfi.szDisplayName, -1, NULL, NULL, NULL);
 
   g_free (wdrive);
-  return name ? name : g_strdup (drive);
+
+  g_task_return_pointer (task, name, g_free);
+}
+
+static void
+_win32_get_displayname_finish (GObject      *source_object,
+                               GAsyncResult *res,
+                               gpointer      user_data)
+{
+  GWin32Mount *mount = G_WIN32_MOUNT (source_object);
+  gchar       *name  = g_task_propagate_pointer (G_TASK (res), NULL);
+
+  if (name && g_strcmp0 (name, mount->name) != 0)
+    {
+      g_clear_pointer (&mount->name, g_free);
+      mount->name = name;
+      g_signal_emit_by_name (mount, "changed");
+    }
 }
 
 /*
@@ -143,7 +164,7 @@ _g_win32_mount_new (GVolumeMonitor  *volume_monitor,
   mount->mount_path = g_strdup (path);
   mount->drive_type = GetDriveType (drive);
   mount->can_eject = FALSE; /* TODO */
-  mount->name = _win32_get_displayname (drive);
+  mount->name = NULL;
 
   /* need to do this last */
   mount->volume = volume;
@@ -204,31 +225,73 @@ _win32_drive_type_to_icon (int type, gboolean use_symbolic)
   }
 }
 
+static void
+_win32_get_icon (GTask        *task,
+                 gpointer      source_object,
+                 gpointer      task_data,
+                 GCancellable *cancellable)
+{
+  const char  *drive = task_data;
+  gunichar2   *wdrive = g_utf8_to_utf16 (drive, -1, NULL, NULL, NULL);
+  GIcon       *icon = NULL;
+  SHFILEINFOW  sfi;
+
+  if (SHGetFileInfoW (wdrive, 0, &sfi, sizeof (sfi), SHGFI_ICONLOCATION))
+    {
+      gchar *name = g_utf16_to_utf8 (sfi.szDisplayName, -1, NULL, NULL, NULL);
+      gchar *id   = g_strdup_printf ("%s,%i", name, sfi.iIcon);
+
+      icon = g_themed_icon_new (id);
+      g_free (name);
+      g_free (id);
+    }
+  g_free (wdrive);
+
+  g_task_return_pointer (task, icon, g_object_unref);
+}
+
+static void
+_win32_get_icon_finish (GObject      *source_object,
+                        GAsyncResult *res,
+                        gpointer      user_data)
+{
+  GWin32Mount *mount = G_WIN32_MOUNT (source_object);
+  GIcon       *icon  = g_task_propagate_pointer (G_TASK (res), NULL);
+
+  if (icon)
+    {
+      g_clear_object (&mount->icon);
+      mount->icon = icon;
+      g_signal_emit_by_name (mount, "changed");
+    }
+}
+
 static GIcon *
 g_win32_mount_get_icon (GMount *mount)
 {
   GWin32Mount *win32_mount = G_WIN32_MOUNT (mount);
+  GIcon       *icon        = win32_mount->icon;
 
   g_return_val_if_fail (win32_mount->mount_path != NULL, NULL);
 
   /* lazy creation */
-  if (!win32_mount->icon)
+  if (! icon)
     {
-      SHFILEINFOW shfi;
-      wchar_t *wfn = g_utf8_to_utf16 (win32_mount->mount_path, -1, NULL, NULL, NULL);
+      GTask *task;
 
-      if (SHGetFileInfoW (wfn, 0, &shfi, sizeof (shfi), SHGFI_ICONLOCATION))
-        {
-	  gchar *name = g_utf16_to_utf8 (shfi.szDisplayName, -1, NULL, NULL, NULL);
-	  gchar *id = g_strdup_printf ("%s,%i", name, shfi.iIcon);
-	  win32_mount->icon = g_themed_icon_new (id);
-	  g_free (name);
-	  g_free (id);
-	}
-      else
-        {
-          win32_mount->icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, FALSE));
-	}
+      /* On Windows, this request can be expensive, especially with remote
+       * mounts, or worse unresponsive mounts.
+       * So only request the icon when the info is needed and run it in
+       * a thread. Caller is advised to monitor "changed" signal.
+       */
+      task = g_task_new (mount, NULL, _win32_get_icon_finish, NULL);
+      g_task_set_priority (task, G_PRIORITY_LOW);
+      g_task_set_source_tag (task, g_win32_mount_get_icon);
+      g_task_set_task_data (task, g_strdup (win32_mount->mount_path), g_free);
+      g_task_run_in_thread (task, _win32_get_icon);
+      g_object_unref (task);
+
+      icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, FALSE));
     }
 
   return g_object_ref (win32_mount->icon);
@@ -260,8 +323,29 @@ static char *
 g_win32_mount_get_name (GMount *mount)
 {
   GWin32Mount *win32_mount = G_WIN32_MOUNT (mount);
-  
-  return g_strdup (win32_mount->name);
+  gchar       *name        = win32_mount->name;
+
+  if (! name)
+    {
+      GTask *task;
+
+      /* On Windows, this request can be expensive, especially with remote
+       * mounts, or worse unresponsive mounts.
+       * So only request the display name when the info is needed and run it in
+       * a thread.
+       */
+      task = g_task_new (mount, NULL, _win32_get_displayname_finish, NULL);
+      g_task_set_priority (task, G_PRIORITY_LOW);
+      g_task_set_source_tag (task, g_win32_mount_get_name);
+      g_task_set_task_data (task, g_strdup (win32_mount->mount_path), g_free);
+      g_task_run_in_thread (task, _win32_get_displayname);
+      g_object_unref (task);
+
+      /* Still return something usable for now. */
+      name = g_strdup (win32_mount->mount_path);
+    }
+
+  return name;
 }
 
 static GDrive *
