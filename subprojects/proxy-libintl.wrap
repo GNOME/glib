@@ -2,3 +2,4 @@
 directory=proxy-libintl
 url=https://github.com/frida/proxy-libintl.git
 revision=0.1
+depth=1
