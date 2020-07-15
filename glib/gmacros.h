@@ -234,6 +234,11 @@
 #undef g_has_typeof
 #if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && !defined(__cplusplus)
 #define g_has_typeof
+#define glib_typeof __typeof__
+#elif defined(__cplusplus) && __cplusplus >= 201103L
+/* C++11 decltype() is close enough for our usage */
+#define g_has_typeof
+#define glib_typeof decltype
 #endif
 
 /*

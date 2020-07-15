@@ -107,16 +107,16 @@ G_END_DECLS
 #define g_atomic_pointer_get(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
-    __typeof__(*(atomic)) gapg_temp_newval;                                  \
-    __typeof__((atomic)) gapg_temp_atomic = (atomic);                        \
+    glib_typeof(*(atomic)) gapg_temp_newval;                                  \
+    glib_typeof((atomic)) gapg_temp_atomic = (atomic);                        \
     __atomic_load (gapg_temp_atomic, &gapg_temp_newval, __ATOMIC_SEQ_CST);   \
     gapg_temp_newval;                                                        \
   }))
 #define g_atomic_pointer_set(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
-    __typeof__((atomic)) gaps_temp_atomic = (atomic);                        \
-    __typeof__(*(atomic)) gaps_temp_newval = (newval);                       \
+    glib_typeof((atomic)) gaps_temp_atomic = (atomic);                        \
+    glib_typeof(*(atomic)) gaps_temp_newval = (newval);                       \
     (void) (0 ? (gpointer) *(atomic) : NULL);                                \
     __atomic_store (gaps_temp_atomic, &gaps_temp_newval, __ATOMIC_SEQ_CST);  \
   }))
