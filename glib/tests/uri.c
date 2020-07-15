@@ -372,15 +372,18 @@ test_uri_unescape_bytes (gconstpointer test_data)
     {
       /* Inputs */
       const gchar *escaped;  /* (nullable) */
+      const gchar *illegal;
       /* Outputs */
       gssize expected_unescaped_len;  /* -1 => error expected */
       const guint8 *expected_unescaped;  /* (nullable) */
     }
   tests[] =
     {
-      { "%00%00", 2, (const guint8 *) "\x00\x00" },
-      { "%%", -1, NULL },
-      { "%", -1, NULL },
+      { "%00%00", NULL, 2, (const guint8 *) "\x00\x00" },
+      { "/cursors/none.png", "/", 17, "/cursors/none.png" },
+      { "/cursors%2fbad-subdir/none.png", "/", -1, NULL },
+      { "%%", NULL, -1, NULL },
+      { "%", NULL, -1, NULL },
     };
   gsize i;
 
@@ -407,7 +410,7 @@ test_uri_unescape_bytes (gconstpointer test_data)
           escaped = g_memdup (tests[i].escaped, escaped_len);
         }
 
-      bytes = g_uri_unescape_bytes (escaped, escaped_len);
+      bytes = g_uri_unescape_bytes (escaped, escaped_len, tests[i].illegal);
 
       if (tests[i].expected_unescaped_len < 0)
         {
