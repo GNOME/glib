@@ -29,6 +29,7 @@
 /* Visual studio 2008 and later has _Pragma */
 
 #include <stdlib.h>
+#include "gslist.h"
 
 #define G_HAS_CONSTRUCTORS 1
 
