@@ -1242,6 +1242,7 @@ if long_long_size == long_size
                       return 1;
                     }''', name : 'int64_t is long')
     int64_t_typedef = 'long'
+    int64_m = 'l'
   elif cc.compiles('''#if defined(_AIX) && !defined(__GNUC__)
                       #pragma options langlvl=stdc99
                       #endif
@@ -1254,10 +1255,10 @@ if long_long_size == long_size
                         return 1;
                       }''', name : 'int64_t is long long')
     int64_t_typedef = 'long long'
+    int64_m = 'll'
   endif
 endif
 
-int64_m = 'll'
 char_align = cc.alignment('char')
 short_align = cc.alignment('short')
 int_align = cc.alignment('int')
@@ -1280,89 +1281,45 @@ glib_conf.set('SIZEOF_SSIZE_T', ssizet_size)
 glib_conf.set('SIZEOF_VOID_P', voidp_size)
 glib_conf.set('SIZEOF_WCHAR_T', cc.sizeof('wchar_t', prefix: '#include <stddef.h>'))
 
-if short_size == 2
-  gint16 = 'short'
-  gint16_modifier='h'
-  gint16_format='hi'
-  guint16_format='hu'
-elif int_size == 2
-  gint16 = 'int'
-  gint16_modifier=''
-  gint16_format='i'
-  guint16_format='u'
-else
-  error('Compiler provides no native 16-bit integer type')
+if not cc.has_header('stdint.h')
+  error('Missing stdint.h; GLib requires a C99 toolchain')
 endif
-glibconfig_conf.set('gint16', gint16)
+
+native_int_types = [
+  [ 'int16_t', '16 bit' ],
+  [ 'int32_t', '32 bit' ],
+  [ 'int64_t', '64 bit' ],
+]
+
+foreach type: native_int_types
+  if not cc.has_header_symbol('stdint.h', type[0])
+    error('Missing native @0@ type'.format(type[1]))
+  endif
+endforeach
+
+# Legacy symbols for sized integers
+gint16_modifier = ''
+gint16_format = 'PRId16'
+guint16_format = 'PRIu16'
 glibconfig_conf.set_quoted('gint16_modifier', gint16_modifier)
-glibconfig_conf.set_quoted('gint16_format', gint16_format)
-glibconfig_conf.set_quoted('guint16_format', guint16_format)
+glibconfig_conf.set('gint16_format', gint16_format)
+glibconfig_conf.set('guint16_format', guint16_format)
 
-if short_size == 4
-  gint32 = 'short'
-  gint32_modifier='h'
-  gint32_format='hi'
-  guint32_format='hu'
-  guint32_align = short_align
-elif int_size == 4
-  gint32 = 'int'
-  gint32_modifier=''
-  gint32_format='i'
-  guint32_format='u'
-  guint32_align = int_align
-elif long_size == 4
-  gint32 = 'long'
-  gint32_modifier='l'
-  gint32_format='li'
-  guint32_format='lu'
-  guint32_align = long_align
-else
-  error('Compiler provides no native 32-bit integer type')
-endif
-glibconfig_conf.set('gint32', gint32)
+gint32_modifier = ''
+gint32_format = 'PRId32'
+guint32_format = 'PRIu32'
 glibconfig_conf.set_quoted('gint32_modifier', gint32_modifier)
-glibconfig_conf.set_quoted('gint32_format', gint32_format)
-glibconfig_conf.set_quoted('guint32_format', guint32_format)
-glib_conf.set('ALIGNOF_GUINT32', guint32_align)
+glibconfig_conf.set('gint32_format', gint32_format)
+glibconfig_conf.set('guint32_format', guint32_format)
+glib_conf.set('ALIGNOF_GUINT32', cc.alignment('uint32_t', prefix: '#include <stdint.h>'))
 
-if int_size == 8
-  gint64 = 'int'
-  gint64_modifier=''
-  gint64_format='i'
-  guint64_format='u'
-  glib_extension=''
-  gint64_constant='(val)'
-  guint64_constant='(val)'
-  guint64_align = int_align
-elif long_size == 8 and (long_long_size != long_size or int64_t_typedef == 'long')
-  gint64 = 'long'
-  glib_extension=''
-  gint64_modifier='l'
-  gint64_format='li'
-  guint64_format='lu'
-  gint64_constant='(val##L)'
-  guint64_constant='(val##UL)'
-  guint64_align = long_align
-elif long_long_size == 8 and (long_long_size != long_size or int64_t_typedef == 'long long')
-  gint64 = 'long long'
-  glib_extension='G_GNUC_EXTENSION '
-  gint64_modifier=int64_m
-  gint64_format=int64_m + 'i'
-  guint64_format=int64_m + 'u'
-  gint64_constant='(G_GNUC_EXTENSION (val##LL))'
-  guint64_constant='(G_GNUC_EXTENSION (val##ULL))'
-  guint64_align = long_long_align
-else
-  error('Compiler provides no native 64-bit integer type')
-endif
-glibconfig_conf.set('glib_extension', glib_extension)
-glibconfig_conf.set('gint64', gint64)
+gint64_modifier = int64_m
+gint64_format = 'PRId64'
+guint64_format = 'PRIu64'
 glibconfig_conf.set_quoted('gint64_modifier', gint64_modifier)
-glibconfig_conf.set_quoted('gint64_format', gint64_format)
-glibconfig_conf.set_quoted('guint64_format', guint64_format)
-glibconfig_conf.set('gint64_constant', gint64_constant)
-glibconfig_conf.set('guint64_constant', guint64_constant)
-glib_conf.set('ALIGNOF_GUINT64', guint64_align)
+glibconfig_conf.set('gint64_format', gint64_format)
+glibconfig_conf.set('guint64_format', guint64_format)
+glib_conf.set('ALIGNOF_GUINT64', cc.alignment('uint64_t', prefix: '#include <stdint.h>'))
 
 if host_system == 'windows'
   glibconfig_conf.set('g_pid_type', 'void*')
@@ -1473,21 +1430,18 @@ else
 endif
 
 if voidp_size == int_size
-  glibconfig_conf.set('glib_intptr_type_define', 'int')
   glibconfig_conf.set_quoted('gintptr_modifier', '')
   glibconfig_conf.set_quoted('gintptr_format', 'i')
   glibconfig_conf.set_quoted('guintptr_format', 'u')
   glibconfig_conf.set('glib_gpi_cast', '(gint)')
   glibconfig_conf.set('glib_gpui_cast', '(guint)')
 elif voidp_size == long_size
-  glibconfig_conf.set('glib_intptr_type_define', 'long')
   glibconfig_conf.set_quoted('gintptr_modifier', 'l')
   glibconfig_conf.set_quoted('gintptr_format', 'li')
   glibconfig_conf.set_quoted('guintptr_format', 'lu')
   glibconfig_conf.set('glib_gpi_cast', '(glong)')
   glibconfig_conf.set('glib_gpui_cast', '(gulong)')
 elif voidp_size == long_long_size
-  glibconfig_conf.set('glib_intptr_type_define', 'long long')
   glibconfig_conf.set_quoted('gintptr_modifier', int64_m)
   glibconfig_conf.set_quoted('gintptr_format', int64_m + 'i')
   glibconfig_conf.set_quoted('guintptr_format', int64_m + 'u')
