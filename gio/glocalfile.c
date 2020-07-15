@@ -1263,6 +1263,9 @@ g_local_file_query_info (GFile                *file,
   _g_local_file_info_free_parent_info (&parent_info);
   g_free (basename);
 
+  if (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_STANDARD_FILE))
+    g_file_info_set_attribute_object (info, G_FILE_ATTRIBUTE_STANDARD_FILE, G_OBJECT (file));
+
   g_file_attribute_matcher_unref (matcher);
 
   return info;

@@ -55,6 +55,18 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 #define G_FILE_ATTRIBUTE_STANDARD_TYPE "standard::type"                     /* uint32 (GFileType) */
 
 /**
+ * G_FILE_ATTRIBUTE_STANDARD_FILE:
+ *
+ * A key in the "standard" namespace for storing the object that
+ * the GFileInfo corresponds to.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_OBJECT.
+ * The value for this key should contain a #GFile.
+ *
+ * Since: 2.66
+ **/
+#define G_FILE_ATTRIBUTE_STANDARD_FILE "standard::file"                     /* object */
+
+/**
  * G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN:
  *
  * A key in the "standard" namespace for checking if a file is hidden.
