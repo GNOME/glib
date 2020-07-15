@@ -717,6 +717,7 @@ G_ANALYZER_ANALYZING
 G_ANALYZER_NORETURN
 g_autoptr_cleanup_generic_gfree
 g_has_typeof
+glib_typeof
 g_macro__has_attribute
 g_macro__has_builtin
 g_macro__has_feature
