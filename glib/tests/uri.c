@@ -346,6 +346,7 @@ test_uri_unescape_string (void)
       { "%0", NULL, NULL },
       { "%ra", NULL, NULL },
       { "%2r", NULL, NULL },
+      { "Timm B\344der", NULL, "Timm B\344der" },
       { NULL, NULL, NULL },  /* actually a valid test, not a delimiter */
     };
   gsize i;
@@ -365,6 +366,7 @@ test_uri_unescape_string (void)
 static void
 test_uri_unescape_bytes (gconstpointer test_data)
 {
+  GError *error = NULL;
   gboolean use_nul_terminated = GPOINTER_TO_INT (test_data);
   const struct
     {
@@ -405,14 +407,17 @@ test_uri_unescape_bytes (gconstpointer test_data)
           escaped = g_memdup (tests[i].escaped, escaped_len);
         }
 
-      bytes = g_uri_unescape_bytes (escaped, escaped_len);
+      bytes = g_uri_unescape_bytes (escaped, escaped_len, &error);
 
       if (tests[i].expected_unescaped_len < 0)
         {
           g_assert_null (bytes);
+          g_assert_error (error, G_URI_ERROR, G_URI_ERROR_MISC);
+          g_clear_error (&error);
         }
       else
         {
+          g_assert_no_error (error);
           g_assert_cmpmem (g_bytes_get_data (bytes, NULL),
                            g_bytes_get_size (bytes),
                            tests[i].expected_unescaped,
