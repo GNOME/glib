@@ -40,6 +40,34 @@ foo_default_init (FooInterface *iface)
 {
 }
 
+typedef struct {
+  GTypeInterface g_iface;
+} BaaInterface;
+
+GType baa_get_type (void);
+
+G_DEFINE_INTERFACE (Baa, baa, G_TYPE_INVALID)
+
+static void
+baa_default_init (BaaInterface *iface)
+{
+}
+
+typedef struct {
+  GTypeInterface g_iface;
+} BooInterface;
+
+GType boo_get_type (void);
+
+G_DEFINE_INTERFACE_WITH_CODE (Boo, boo, G_TYPE_INVALID,
+                              g_type_interface_add_prerequisite (g_define_type_id, baa_get_type ()))
+
+static void
+boo_default_init (BooInterface *iface)
+{
+}
+
+
 static void
 test_interface_prerequisite (void)
 {
@@ -52,6 +80,7 @@ test_interface_prerequisite (void)
   g_assert_cmpint (n_prereqs, ==, 2);
   g_assert (prereqs[0] == bar_get_type ());
   g_assert (prereqs[1] == G_TYPE_OBJECT);
+  g_assert (g_type_interface_instantiable_prerequisite (foo_get_type ()) == G_TYPE_OBJECT);
 
   iface = g_type_default_interface_ref (foo_get_type ());
   parent = g_type_interface_peek_parent (iface);
@@ -59,6 +88,9 @@ test_interface_prerequisite (void)
   g_type_default_interface_unref (iface);
 
   g_free (prereqs);
+
+  g_assert (g_type_interface_instantiable_prerequisite (baa_get_type ()) == G_TYPE_INVALID);
+  g_assert (g_type_interface_instantiable_prerequisite (boo_get_type ()) == G_TYPE_INVALID);
 }
 
 typedef struct {

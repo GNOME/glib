@@ -1300,6 +1300,9 @@ void  g_type_interface_add_prerequisite (GType			     interface_type,
 GLIB_AVAILABLE_IN_ALL
 GType*g_type_interface_prerequisites    (GType                       interface_type,
 					 guint                      *n_prerequisites);
+GLIB_AVAILABLE_IN_2_66
+GType g_type_interface_instantiable_prerequisite
+                                        (GType                       interface_type);
 GLIB_DEPRECATED_IN_2_58
 void     g_type_class_add_private       (gpointer                    g_class,
                                          gsize                       private_size);
