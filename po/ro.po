@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-07-09 07:53+0000\n"
-"PO-Revision-Date: 2020-07-09 12:32+0300\n"
+"POT-Creation-Date: 2020-07-15 15:47+0000\n"
+"PO-Revision-Date: 2020-07-16 14:17+0300\n"
 "Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
 "sourceforge.net>\n"
@@ -5932,50 +5932,54 @@ msgstr "Numărul „%s” se află în afara intervalului [%s, %s]"
 msgid "“%s” is not an unsigned number"
 msgstr "„%s” nu este un număr pozitiv"
 
-#: glib/guri.c:269
+#: glib/guri.c:270
 #, no-c-format
 msgid "Invalid %-encoding in URI"
 msgstr "%-e codare nevalidă în URI"
 
-#: glib/guri.c:307
+#: glib/guri.c:287
+msgid "Illegal character in URI"
+msgstr "Caracter ilegal în URI"
+
+#: glib/guri.c:315
 msgid "Non-UTF-8 characters in URI"
 msgstr "Caractere non-UTF-8 în URI"
 
-#: glib/guri.c:409
+#: glib/guri.c:418
 #, c-format
 msgid "Invalid IPv6 address '%.*s' in URI"
 msgstr "Adresă IPv6 nevalidă „%.*s” în URI"
 
-#: glib/guri.c:471
+#: glib/guri.c:480
 #, c-format
 msgid "Illegal encoded IP address '%.*s' in URI"
 msgstr "Adresă IP codată ilegal „%.*s” în URI"
 
-#: glib/guri.c:505 glib/guri.c:517
+#: glib/guri.c:514 glib/guri.c:526
 #, c-format
 msgid "Could not parse port '%.*s' in URI"
 msgstr "Nu s-a putut parsa portul „%.*s” în URI"
 
-#: glib/guri.c:524
+#: glib/guri.c:533
 #, c-format
 msgid "Port '%.*s' in URI is out of range"
 msgstr "Portul „%.*s” în URI este în afara intervalului"
 
-#: glib/guri.c:1000
+#: glib/guri.c:1009
 #, c-format
 msgid "URI '%s' is not an absolute URI"
 msgstr "URI-ul „%s” nu este un URI absolut"
 
-#: glib/guri.c:1006
+#: glib/guri.c:1015
 #, c-format
 msgid "URI '%s' has no host component"
 msgstr "URI-ul „%s” nu are nicio componentă gazdă"
 
-#: glib/guri.c:1184
+#: glib/guri.c:1193
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "URI-ul nu este absolut, și nu s-a furnizat nicio bază URI"
 
-#: glib/guri.c:1842
+#: glib/guri.c:1851
 msgid "Missing '=' and parameter value"
 msgstr "Lipsește „=” și valoarea parametrului"
 
