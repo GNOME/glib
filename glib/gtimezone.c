@@ -286,7 +286,7 @@ g_time_zone_ref (GTimeZone *tz)
 /* fake zoneinfo creation (for RFC3339/ISO 8601 timezones) {{{1 */
 /*
  * parses strings of the form h or hh[[:]mm[[[:]ss]]] where:
- *  - h[h] is 0 to 23
+ *  - h[h] is 0 to 24
  *  - mm is 00 to 59
  *  - ss is 00 to 59
  */
@@ -310,7 +310,7 @@ parse_time (const gchar *time_,
       *offset *= 10;
       *offset += 60 * 60 * (*time_++ - '0');
 
-      if (*offset > 23 * 60 * 60)
+      if (*offset > 24 * 60 * 60)
         return FALSE;
 
       if (*time_ == '\0')
@@ -1156,7 +1156,7 @@ init_zone_from_rules (GTimeZone    *gtz,
  * - N is 0 to 365
  *
  * time is either h or hh[[:]mm[[[:]ss]]]
- *  - h[h] is 0 to 23
+ *  - h[h] is 0 to 24
  *  - mm is 00 to 59
  *  - ss is 00 to 59
  */
