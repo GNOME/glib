@@ -142,9 +142,7 @@ typedef struct
   gint     mday;
   gint     wday;
   gint     week;
-  gint     hour;
-  gint     min;
-  gint     sec;
+  gint32   offset;  /* hour*3600 + min*60 + sec; can be negative.  */
 } TimeZoneDate;
 
 /* POSIX Timezone abbreviations are typically 3 or 4 characters, but
@@ -204,6 +202,10 @@ static GTimeZone *tz_local = NULL;
 #define MAX_TZYEAR 2999 /* And it's not likely ever to go away, but
                            there's no point in getting carried
                            away. */
+
+#ifdef G_OS_UNIX
+static GTimeZone *parse_footertz (const gchar *);
+#endif
 
 /**
  * g_time_zone_unref:
@@ -286,13 +288,17 @@ g_time_zone_ref (GTimeZone *tz)
 /* fake zoneinfo creation (for RFC3339/ISO 8601 timezones) {{{1 */
 /*
  * parses strings of the form h or hh[[:]mm[[[:]ss]]] where:
- *  - h[h] is 0 to 23
+ *  - h[h] is 0 to 24
  *  - mm is 00 to 59
  *  - ss is 00 to 59
+ * If RFC8536, the colons are required and hh can be up to 167.
+ * See Internet RFC 8536 section 3.3.1.
+ * https://tools.ietf.org/html/rfc8536#section-3.3.1
  */
 static gboolean
 parse_time (const gchar *time_,
-            gint32      *offset)
+            gint32      *offset,
+            gboolean    rfc8536)
 {
   if (*time_ < '0' || '9' < *time_)
     return FALSE;
@@ -310,7 +316,17 @@ parse_time (const gchar *time_,
       *offset *= 10;
       *offset += 60 * 60 * (*time_++ - '0');
 
-      if (*offset > 23 * 60 * 60)
+      if (rfc8536)
+        {
+          if ('0' <= *time_ && *time_ <= '9')
+            {
+              *offset *= 10;
+              *offset += 60 * 60 * (*time_++ - '0');
+            }
+          if (*offset > 167 * 60 * 60)
+            return FALSE;
+        }
+      else if (*offset > 24 * 60 * 60)
         return FALSE;
 
       if (*time_ == '\0')
@@ -319,6 +335,8 @@ parse_time (const gchar *time_,
 
   if (*time_ == ':')
     time_++;
+  else if (rfc8536)
+    return FALSE;
 
   if (*time_ < '0' || '5' < *time_)
     return FALSE;
@@ -335,6 +353,8 @@ parse_time (const gchar *time_,
 
   if (*time_ == ':')
     time_++;
+  else if (rfc8536)
+    return FALSE;
 
   if (*time_ < '0' || '5' < *time_)
     return FALSE;
@@ -351,28 +371,31 @@ parse_time (const gchar *time_,
 
 static gboolean
 parse_constant_offset (const gchar *name,
-                       gint32      *offset)
+                       gint32      *offset,
+                       gboolean    rfc8536)
 {
-  if (g_strcmp0 (name, "UTC") == 0)
+  /* Internet RFC 8536 section 3.3.1 requires a numeric zone.  */
+  if (!rfc8536 && g_strcmp0 (name, "UTC") == 0)
     {
       *offset = 0;
       return TRUE;
     }
 
   if (*name >= '0' && '9' >= *name)
-    return parse_time (name, offset);
+    return parse_time (name, offset, rfc8536);
 
   switch (*name++)
     {
     case 'Z':
       *offset = 0;
-      return !*name;
+      /* Internet RFC 8536 section 3.3.1 requires a numeric zone.  */
+      return !rfc8536 && !*name;
 
     case '+':
-      return parse_time (name, offset);
+      return parse_time (name, offset, rfc8536);
 
     case '-':
-      if (parse_time (name, offset))
+      if (parse_time (name, offset, rfc8536))
         {
           *offset = -*offset;
           return TRUE;
@@ -391,7 +414,7 @@ zone_for_constant_offset (GTimeZone *gtz, const gchar *name)
   gint32 offset;
   TransitionInfo info;
 
-  if (name == NULL || !parse_constant_offset (name, &offset))
+  if (name == NULL || !parse_constant_offset (name, &offset, FALSE))
     return;
 
   info.gmt_offset = offset;
@@ -530,11 +553,16 @@ init_zone_from_iana_info (GTimeZone *gtz,
   guint8 *tz_abbrs;
   gsize timesize = sizeof (gint32);
   const struct tzhead *header = g_bytes_get_data (zoneinfo, &size);
+  GTimeZone *footertz = NULL;
+  guint extra_time_count = 0, extra_type_count = 0;
+  gint64 last_explicit_transition_time;
 
   g_return_if_fail (size >= sizeof (struct tzhead) &&
                     memcmp (header, "TZif", 4) == 0);
 
-  if (header->tzh_version == '2')
+  /* FIXME: Handle invalid TZif files better (Issue#1088).  */
+
+  if (header->tzh_version >= '2')
       {
         /* Skip ahead to the newer 64-bit data if it's available. */
         header = (const struct tzhead *)
@@ -550,6 +578,25 @@ init_zone_from_iana_info (GTimeZone *gtz,
   time_count = guint32_from_be(header->tzh_timecnt);
   type_count = guint32_from_be(header->tzh_typecnt);
 
+  if (header->tzh_version >= '2')
+    {
+      const gchar *footer = (((const gchar *) (header + 1))
+                             + guint32_from_be(header->tzh_ttisgmtcnt)
+                             + guint32_from_be(header->tzh_ttisstdcnt)
+                             + 12 * guint32_from_be(header->tzh_leapcnt)
+                             + 9 * time_count
+                             + 6 * type_count
+                             + guint32_from_be(header->tzh_charcnt));
+      g_return_if_fail (footer[0] == '\n');
+      if (footer[1] != '\n')
+        {
+          footertz = parse_footertz (footer);
+          g_return_if_fail (footertz);
+          extra_type_count = footertz->t_info->len;
+          extra_time_count = footertz->transitions->len;
+        }
+    }
+
   tz_transitions = ((guint8 *) (header) + sizeof (*header));
   tz_type_index = tz_transitions + timesize * time_count;
   tz_ttinfo = tz_type_index + time_count;
@@ -557,9 +604,9 @@ init_zone_from_iana_info (GTimeZone *gtz,
 
   gtz->name = g_steal_pointer (&identifier);
   gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo),
-                                   type_count);
+                                   type_count + extra_type_count);
   gtz->transitions = g_array_sized_new (FALSE, TRUE, sizeof (Transition),
-                                        time_count);
+                                        time_count + extra_time_count);
 
   for (index = 0; index < type_count; index++)
     {
@@ -574,14 +621,49 @@ init_zone_from_iana_info (GTimeZone *gtz,
   for (index = 0; index < time_count; index++)
     {
       Transition trans;
-      if (header->tzh_version == '2')
+      if (header->tzh_version >= '2')
         trans.time = gint64_from_be (((gint64_be*)tz_transitions)[index]);
       else
         trans.time = gint32_from_be (((gint32_be*)tz_transitions)[index]);
+      last_explicit_transition_time = trans.time;
       trans.info_index = tz_type_index[index];
       g_assert (trans.info_index >= 0);
       g_assert ((guint) trans.info_index < gtz->t_info->len);
       g_array_append_val (gtz->transitions, trans);
+    }
+
+  if (footertz)
+    {
+      /* Append footer time types.  Don't bother to coalesce
+         duplicates with existing time types.  */
+      for (index = 0; index < extra_type_count; index++)
+        {
+          TransitionInfo t_info;
+          TransitionInfo *footer_t_info
+            = &g_array_index (footertz->t_info, TransitionInfo, index);
+          t_info.gmt_offset = footer_t_info->gmt_offset;
+          t_info.is_dst = footer_t_info->is_dst;
+          t_info.abbrev = g_steal_pointer (&footer_t_info->abbrev);
+          g_array_append_val (gtz->t_info, t_info);
+        }
+
+      /* Append footer transitions that follow the last explicit
+         transition.  */
+      for (index = 0; index < extra_time_count; index++)
+        {
+          Transition *footer_transition
+            = &g_array_index (footertz->transitions, Transition, index);
+          if (time_count <= 0
+              || last_explicit_transition_time < footer_transition->time)
+            {
+              Transition trans;
+              trans.time = footer_transition->time;
+              trans.info_index = type_count + footer_transition->info_index;
+              g_array_append_val (gtz->transitions, trans);
+            }
+        }
+
+      g_time_zone_unref (footertz);
     }
 }
 
@@ -590,9 +672,8 @@ init_zone_from_iana_info (GTimeZone *gtz,
 static void
 copy_windows_systemtime (SYSTEMTIME *s_time, TimeZoneDate *tzdate)
 {
-  tzdate->sec = s_time->wSecond;
-  tzdate->min = s_time->wMinute;
-  tzdate->hour = s_time->wHour;
+  tzdate->offset
+    = s_time->wHour * 3600 + s_time->wMinute * 60 + s_time->wSecond;
   tzdate->mon = s_time->wMonth;
   tzdate->year = s_time->wYear;
   tzdate->wday = s_time->wDayOfWeek ? s_time->wDayOfWeek : 7;
@@ -979,7 +1060,7 @@ boundary_for_year (TimeZoneDate *boundary,
   g_date_clear (&date, 1);
   g_date_set_dmy (&date, buffer.mday, buffer.mon, buffer.year);
   return ((g_date_get_julian (&date) - unix_epoch_start) * seconds_per_day +
-          buffer.hour * 3600 + buffer.min * 60 + buffer.sec - offset);
+          buffer.offset - offset);
 }
 
 static void
@@ -1156,7 +1237,7 @@ init_zone_from_rules (GTimeZone    *gtz,
  * - N is 0 to 365
  *
  * time is either h or hh[[:]mm[[[:]ss]]]
- *  - h[h] is 0 to 23
+ *  - h[h] is 0 to 24
  *  - mm is 00 to 59
  *  - ss is 00 to 59
  */
@@ -1289,25 +1370,10 @@ parse_tz_boundary (const gchar  *identifier,
   /* Time */
 
   if (*pos == '/')
-    {
-      gint32 offset;
-
-      if (!parse_time (++pos, &offset))
-        return FALSE;
-
-      boundary->hour = offset / 3600;
-      boundary->min = (offset / 60) % 60;
-      boundary->sec = offset % 3600;
-
-      return TRUE;
-    }
-
+    return parse_constant_offset (pos + 1, &boundary->offset, TRUE);
   else
     {
-      boundary->hour = 2;
-      boundary->min = 0;
-      boundary->sec = 0;
-
+      boundary->offset = 2 * 60 * 60;
       return *pos == '\0';
     }
 }
@@ -1341,7 +1407,7 @@ parse_offset (gchar **pos, gint32 *target)
     ++(*pos);
 
   buffer = g_strndup (target_pos, *pos - target_pos);
-  ret = parse_constant_offset (buffer, target);
+  ret = parse_constant_offset (buffer, target, FALSE);
   g_free (buffer);
 
   return ret;
@@ -1366,14 +1432,24 @@ parse_identifier_boundary (gchar **pos, TimeZoneDate *target)
 static gboolean
 set_tz_name (gchar **pos, gchar *buffer, guint size)
 {
+  gboolean quoted = **pos == '<';
   gchar *name_pos = *pos;
   guint len;
 
-  /* Name is ASCII alpha (Is this necessarily true?) */
-  while (g_ascii_isalpha (**pos))
-    ++(*pos);
+  if (quoted)
+    {
+      name_pos++;
+      do
+        ++(*pos);
+      while (g_ascii_isalnum (**pos) || **pos == '-' || **pos == '+');
+      if (**pos != '>')
+        return FALSE;
+    }
+  else
+    while (g_ascii_isalpha (**pos))
+      ++(*pos);
 
-  /* Name should be three or more alphabetic characters */
+  /* Name should be three or more characters */
   if (*pos - name_pos < 3)
     return FALSE;
 
@@ -1381,6 +1457,7 @@ set_tz_name (gchar **pos, gchar *buffer, guint size)
   /* name_pos isn't 0-terminated, so we have to limit the length expressly */
   len = *pos - name_pos > size - 1 ? size - 1 : *pos - name_pos;
   strncpy (buffer, name_pos, len);
+  *pos += quoted;
   return TRUE;
 }
 
@@ -1482,6 +1559,41 @@ rules_from_identifier (const gchar   *identifier,
   *out_identifier = g_strdup (identifier);
   return create_ruleset_from_rule (rules, &tzr);
 }
+
+#ifdef G_OS_UNIX
+static GTimeZone *
+parse_footertz (const gchar *footer)
+{
+  const gchar *footer_end;
+  gchar *tzstring, *ident;
+  TimeZoneRule *rules;
+  guint rules_num;
+  GTimeZone *footertz = NULL;
+
+  /* FIXME: Handle invalid TZif files better (Issue#1088).  */
+  for (footer_end = footer + 1; *++footer_end != '\n'; )
+    continue;
+
+  /* FIXME: it might make sense to modify rules_from_identifier to
+     allow NULL to be passed instead of &ident, saving the strdup/free
+     pair.  The allocation for tzstring could also be avoided by
+     passing a gsize identifier_len argument to rules_from_identifier
+     and changing the code in that function to stop assuming that
+     identifier is nul-terminated.  */
+  tzstring = g_strndup (footer + 1, footer_end - (footer + 1));
+  rules_num = rules_from_identifier (tzstring, &ident, &rules);
+  g_free (ident);
+  g_free (tzstring);
+  if (rules_num > 1)
+    {
+      footertz = g_slice_new0 (GTimeZone);
+      init_zone_from_rules (footertz, rules, rules_num, NULL);
+      footertz->ref_count++;
+    }
+  g_free (rules);
+  return footertz;
+}
+#endif
 
 /* Construction {{{1 */
 /**
