@@ -1523,7 +1523,7 @@ main (int   argc,
       char *argv[])
 {
   g_setenv ("LC_ALL", "C", TRUE);
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/merge_requests/");
 
