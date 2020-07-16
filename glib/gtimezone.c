@@ -569,6 +569,8 @@ init_zone_from_iana_info (GTimeZone *gtz,
   g_return_if_fail (size >= sizeof (struct tzhead) &&
                     memcmp (header, "TZif", 4) == 0);
 
+  /* FIXME: Handle invalid TZif files better (Issue#1088).  */
+
   if (header->tzh_version >= '2')
       {
         /* Skip ahead to the newer 64-bit data if it's available. */
@@ -1462,6 +1464,8 @@ set_tz_name (gchar **pos, gchar *buffer, guint size)
       ++(*pos);
 
   /* Name should be three or more characters */
+  /* FIXME: Should return FALSE if the name is too long.
+     This should simplify code later in this function.  */
   if (*pos - name_pos < 3)
     return FALSE;
 
@@ -1578,9 +1582,17 @@ parse_footertz (const gchar *footer, size_t footerlen)
 {
   gchar *tzstring = g_strndup (footer + 1, footerlen - 2);
   GTimeZone *footertz = NULL;
+
+  /* FIXME: it might make sense to modify rules_from_identifier to
+     allow NULL to be passed instead of &ident, saving the strdup/free
+     pair.  The allocation for tzstring could also be avoided by
+     passing a gsize identifier_len argument to rules_from_identifier
+     and changing the code in that function to stop assuming that
+     identifier is nul-terminated.  */
   gchar *ident;
   TimeZoneRule *rules;
   guint rules_num = rules_from_identifier (tzstring, &ident, &rules);
+
   g_free (ident);
   g_free (tzstring);
   if (rules_num > 1)
