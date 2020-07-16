@@ -1465,7 +1465,7 @@ set_tz_name (gchar **pos, gchar *buffer, guint size)
   if (*pos - name_pos < 3)
     return FALSE;
 
-  memset (buffer, 0, NAME_SIZE);
+  memset (buffer, 0, size);
   /* name_pos isn't 0-terminated, so we have to limit the length expressly */
   len = *pos - name_pos > size - 1 ? size - 1 : *pos - name_pos;
   strncpy (buffer, name_pos, len);
