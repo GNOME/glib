@@ -1366,14 +1366,24 @@ parse_identifier_boundary (gchar **pos, TimeZoneDate *target)
 static gboolean
 set_tz_name (gchar **pos, gchar *buffer, guint size)
 {
+  gboolean quoted = **pos == '<';
   gchar *name_pos = *pos;
   guint len;
 
-  /* Name is ASCII alpha (Is this necessarily true?) */
-  while (g_ascii_isalpha (**pos))
-    ++(*pos);
+  if (quoted)
+    {
+      name_pos++;
+      do
+        ++(*pos);
+      while (g_ascii_isalnum (**pos) || **pos == '-' || **pos == '+');
+      if (**pos != '>')
+        return FALSE;
+    }
+  else
+    while (g_ascii_isalpha (**pos))
+      ++(*pos);
 
-  /* Name should be three or more alphabetic characters */
+  /* Name should be three or more characters */
   if (*pos - name_pos < 3)
     return FALSE;
 
@@ -1381,6 +1391,7 @@ set_tz_name (gchar **pos, gchar *buffer, guint size)
   /* name_pos isn't 0-terminated, so we have to limit the length expressly */
   len = *pos - name_pos > size - 1 ? size - 1 : *pos - name_pos;
   strncpy (buffer, name_pos, len);
+  *pos += quoted;
   return TRUE;
 }
 
