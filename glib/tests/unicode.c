@@ -435,6 +435,10 @@ test_strup (void)
   /* Tricky, comparing two unicode strings with an ASCII function */
   g_assert_cmpstr (str_up, ==, "AAZZ09X;\003E\357\274\241\357\274\241");
   g_free (str_up);
+
+  str_up = g_utf8_strup ("", 0);
+  g_assert_cmpstr (str_up, ==, "");
+  g_free (str_up);
 }
 
 /* Test that g_utf8_strdown() returns the correct value for various
@@ -460,6 +464,10 @@ test_strdown (void)
   /* Tricky, comparing two unicode strings with an ASCII function */
   g_assert_cmpstr (str_down, ==, "aazz09x;\003\007\357\275\201\357\275\201");
   g_free (str_down);
+
+  str_down = g_utf8_strdown ("", 0);
+  g_assert_cmpstr (str_down, ==, "");
+  g_free (str_down);
 }
 
 /* Test that g_utf8_casefold() returns the correct value for various
@@ -484,6 +492,10 @@ test_casefold (void)
   str_casefold = g_utf8_casefold (str, strlen (str));
   /* Tricky, comparing two unicode strings with an ASCII function */
   g_assert_cmpstr (str_casefold, ==, "aazz09x;\357\275\201\357\275\201");
+  g_free (str_casefold);
+
+  str_casefold = g_utf8_casefold ("", 0);
+  g_assert_cmpstr (str_casefold, ==, "");
   g_free (str_casefold);
 }
 
@@ -1608,6 +1620,45 @@ test_iso15924 (void)
 #undef PACK
 }
 
+static void
+test_normalize (void)
+{
+  guint i;
+  typedef struct
+  {
+    const gchar *str;
+    const gchar *nfd;
+    const gchar *nfc;
+    const gchar *nfkd;
+    const gchar *nfkc;
+  } Test;
+  Test tests[] = {
+    { "Äffin", "A\u0308ffin", "Äffin", "A\u0308ffin", "Äffin" },
+    { "Ä\uFB03n", "A\u0308\uFB03n", "Ä\uFB03n", "A\u0308ffin", "Äffin" },
+    { "Henry IV", "Henry IV", "Henry IV", "Henry IV", "Henry IV" },
+    { "Henry \u2163", "Henry \u2163", "Henry \u2163", "Henry IV", "Henry IV" },
+    { "non-utf\x88", NULL, NULL, NULL, NULL },
+    { "", "", "", "", "" },
+  };
+
+#define TEST(str, mode, expected)                         \
+  {                                                       \
+    gchar *normalized = g_utf8_normalize (str, -1, mode); \
+    g_assert_cmpstr (normalized, ==, expected);           \
+    g_free (normalized);                                  \
+  }
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      TEST (tests[i].str, G_NORMALIZE_NFD, tests[i].nfd);
+      TEST (tests[i].str, G_NORMALIZE_NFC, tests[i].nfc);
+      TEST (tests[i].str, G_NORMALIZE_NFKD, tests[i].nfkd);
+      TEST (tests[i].str, G_NORMALIZE_NFKC, tests[i].nfkc);
+    }
+
+#undef TEST
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1649,6 +1700,7 @@ main (int   argc,
   g_test_add_func ("/unicode/xdigit", test_xdigit);
   g_test_add_func ("/unicode/xdigit-value", test_xdigit_value);
   g_test_add_func ("/unicode/zero-width", test_zerowidth);
+  g_test_add_func ("/unicode/normalize", test_normalize);
 
   return g_test_run();
 }

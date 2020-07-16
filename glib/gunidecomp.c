@@ -59,11 +59,19 @@
 #include <stdlib.h>
 
 #include "gunicode.h"
-#include "gunidecomp.h"
 #include "gmem.h"
-#include "gunicomp.h"
 #include "gunicodeprivate.h"
 
+#ifdef HAVE_LIBICU
+#include <string.h>
+#include <unicode/unorm2.h>
+
+#define COMBINING_CLASS(Char) u_getCombiningClass (Char)
+
+#else /* !HAVE_LIBICU */
+
+#include "gunidecomp.h"
+#include "gunicomp.h"
 
 #define CC_PART1(Page, Char) \
   ((combining_class_table_part1[Page] >= G_UNICODE_MAX_TABLE_INDEX) \
@@ -81,6 +89,8 @@
    : (((Char) >= 0xe0000 && (Char) <= G_UNICODE_LAST_CHAR) \
       ? CC_PART2 (((Char) - 0xe0000) >> 8, (Char) & 0xff) \
       : 0))
+
+#endif /* !HAVE_LIBICU */
 
 /**
  * g_unichar_combining_class:
@@ -157,6 +167,7 @@ g_unicode_canonical_ordering (gunichar *string,
     }
 }
 
+#ifndef HAVE_LIBICU
 /* http://www.unicode.org/unicode/reports/tr15/#Hangul
  * r should be null or have sufficient space. Calling with r == NULL will
  * only calculate the result_len; however, a buffer with space for three
@@ -229,6 +240,7 @@ find_decomposition (gunichar ch,
 
   return NULL;
 }
+#endif /* !HAVE_LIBICU */
 
 /**
  * g_unicode_canonical_decomposition:
@@ -247,6 +259,18 @@ gunichar *
 g_unicode_canonical_decomposition (gunichar ch,
 				   gsize   *result_len)
 {
+#ifdef HAVE_LIBICU
+  gunichar buffer[G_UNICHAR_MAX_DECOMPOSITION_LENGTH];
+  gunichar *res;
+
+  *result_len = g_unichar_fully_decompose (ch, FALSE, buffer, G_UNICHAR_MAX_DECOMPOSITION_LENGTH);
+  res = g_malloc ((*result_len + 1) * sizeof (gunichar));
+
+  memcpy (res, buffer, *result_len * sizeof (gunichar));
+  res[*result_len] = '\0';
+
+  return res;
+#else
   const gchar *decomp;
   const gchar *p;
   gunichar *r;
@@ -278,8 +302,10 @@ g_unicode_canonical_decomposition (gunichar ch,
     }
 
   return r;
+#endif
 }
 
+#ifndef HAVE_LIBICU
 /* L,V => LV and LV,T => LVT  */
 static gboolean
 combine_hangul (gunichar a,
@@ -366,12 +392,74 @@ combine (gunichar  a,
 
   return FALSE;
 }
+#endif /* !HAVE_LIBICU */
 
 gunichar *
 _g_utf8_normalize_wc (const gchar    *str,
 		      gssize          max_len,
 		      GNormalizeMode  mode)
 {
+#ifdef HAVE_LIBICU
+  const UNormalizer2 *norm;
+  UErrorCode error = U_ZERO_ERROR;
+  gunichar2 *orig_utf16, *res_utf16;
+  glong utf16_len;
+  gint32 result_len;
+  gunichar *res;
+
+  switch (mode)
+    {
+    case G_NORMALIZE_NFC:
+      norm = unorm2_getNFCInstance (&error);
+      break;
+    case G_NORMALIZE_NFKC:
+      norm = unorm2_getNFKCInstance (&error);
+      break;
+    case G_NORMALIZE_NFKD:
+      norm = unorm2_getNFKDInstance (&error);
+      break;
+    default:
+    case G_NORMALIZE_NFD:
+      norm = unorm2_getNFDInstance (&error);
+      break;
+    }
+
+  if (U_FAILURE (error))
+    return NULL;
+
+  orig_utf16 = g_utf8_to_utf16 (str, max_len, NULL, &utf16_len, NULL);
+  if (!orig_utf16)
+    return NULL;
+
+  result_len = unorm2_normalize (norm, orig_utf16, utf16_len, NULL, 0, &error);
+  /* Buffer Overflow is expected from the preflight operation */
+  if (error != U_BUFFER_OVERFLOW_ERROR && result_len > 0)
+    {
+      g_free (orig_utf16);
+      return NULL;
+    }
+
+  if (result_len == 0)
+    {
+      g_free (orig_utf16);
+      return g_utf8_to_ucs4 ("", 0, NULL, NULL, NULL);
+    }
+
+  res_utf16 = g_malloc (sizeof (gunichar2) * result_len);
+  error = U_ZERO_ERROR;
+  result_len = unorm2_normalize (norm, orig_utf16, utf16_len, res_utf16, result_len, &error);
+  g_free (orig_utf16);
+
+  if (U_FAILURE (error))
+    {
+      g_free (res_utf16);
+      return NULL;
+    }
+
+  res = g_utf16_to_ucs4 (res_utf16, result_len, NULL, NULL, NULL);
+  g_free (res_utf16);
+  return res;
+#else
   gsize n_wc;
   gunichar *wc_buffer;
   const char *p;
@@ -502,6 +590,7 @@ _g_utf8_normalize_wc (const gchar    *str,
   wc_buffer[n_wc] = 0;
 
   return wc_buffer;
+#endif
 }
 
 /**
@@ -548,12 +637,16 @@ g_utf8_normalize (const gchar    *str,
   gunichar *result_wc = _g_utf8_normalize_wc (str, len, mode);
   gchar *result;
 
+  if (!result_wc)
+    return NULL;
+
   result = g_ucs4_to_utf8 (result_wc, -1, NULL, NULL, NULL);
   g_free (result_wc);
 
   return result;
 }
 
+#ifndef HAVE_LIBICU
 static gboolean
 decompose_hangul_step (gunichar  ch,
                        gunichar *a,
@@ -582,6 +675,7 @@ decompose_hangul_step (gunichar  ch,
 
   return TRUE;
 }
+#endif /* !HAVE_LIBICU */
 
 /**
  * g_unichar_decompose:
@@ -622,6 +716,33 @@ g_unichar_decompose (gunichar  ch,
                      gunichar *a,
                      gunichar *b)
 {
+#ifdef HAVE_LIBICU
+  const UNormalizer2 *norm;
+  UErrorCode error = U_ZERO_ERROR;
+  gint32 len;
+  gunichar2 out16[2];
+
+  norm = unorm2_getNFDInstance (&error);
+  if (U_FAILURE (error))
+    goto no_decompose;
+
+  len = unorm2_getRawDecomposition (norm, ch, out16, 2, &error);
+  if (U_FAILURE (error) || len < 0)
+    goto no_decompose;
+
+  *a = out16[0];
+  if (len > 1)
+    *b = out16[1];
+  else
+    *b = 0;
+
+  return TRUE;
+
+no_decompose:
+  *a = ch;
+  *b = 0;
+  return FALSE;
+#else
   gint start = 0;
   gint end = G_N_ELEMENTS (decomp_step_table);
 
@@ -655,6 +776,7 @@ g_unichar_decompose (gunichar  ch,
   *b = 0;
 
   return FALSE;
+#endif
 }
 
 /**
@@ -689,11 +811,28 @@ g_unichar_compose (gunichar  a,
                    gunichar  b,
                    gunichar *ch)
 {
+#ifdef HAVE_LIBICU
+  const UNormalizer2 *norm;
+  UErrorCode error = U_ZERO_ERROR;
+  gunichar res;
+
+  norm = unorm2_getNFCInstance (&error);
+  if (U_FAILURE (error))
+    return FALSE;
+  res = unorm2_composePair (norm, a, b);
+
+  if (res < 0)
+    return FALSE;
+
+  *ch = res;
+  return TRUE;
+#else
   if (combine (a, b, ch))
     return TRUE;
 
   *ch = 0;
   return FALSE;
+#endif
 }
 
 /**
@@ -733,6 +872,44 @@ g_unichar_fully_decompose (gunichar  ch,
 			   gunichar *result,
 			   gsize     result_len)
 {
+#ifdef HAVE_LIBICU
+  const UNormalizer2 *norm;
+  UErrorCode error = U_ZERO_ERROR;
+  gint32 len;
+  gunichar2 *out16;
+  guint i;
+
+  if (compat)
+    norm = unorm2_getNFKDInstance (&error);
+  else
+    norm = unorm2_getNFDInstance (&error);
+
+  if (U_FAILURE (error))
+    goto no_decompose;
+
+  /* Output of getDecomposition() is on 16 bits while ours in on 32 bits */
+  out16 = g_malloc (sizeof (gunichar2) * result_len);
+
+  len = unorm2_getDecomposition (norm, ch, out16, result_len, &error);
+  if (U_FAILURE (error) || len < 0)
+    {
+      g_free (out16);
+      goto no_decompose;
+    }
+
+  for (i = 0; i < len; i++)
+    {
+      result[i] = out16[i];
+    }
+
+  g_free (out16);
+  return len;
+
+no_decompose:
+  if (result)
+    *result = ch;
+  return 1;
+#else /* !HAVE_LIBICU */
   const gchar *decomp;
   const gchar *p;
 
@@ -764,4 +941,5 @@ g_unichar_fully_decompose (gunichar  ch,
   if (result && result_len >= 1)
     *result = ch;
   return 1;
+#endif
 }

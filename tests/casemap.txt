@@ -10,16 +10,15 @@ tr_TR.UTF-8	i	i	İ	İ	# i => LATIN CAPITAL LETTER I WITH DOT ABOVE
 tr_TR.UTF-8	I	ı	I	I	# I => LATIN SMALL LETTER DOTLESS I
 tr_TR.UTF-8	İ	i	İ	İ	# I => LATIN SMALL LETTER DOTLESS I
 # Test reordering of YPOGEGRAMMENI across other accents
-	ᾁ	ᾁ	ᾉ	ἉΙ	
+	ᾁ	ᾁ	ᾉ	ΑἹ	
 	ᾁ	ᾁ	ᾉ	ἉΙ	
 # Handling of final and nonfinal sigma
 	ΜΆΙΟΣ 	μάιος 	Μάιος 	ΜΆΙΟΣ 	
 	ΜΆΙΟΣ	μάιος	Μάιος	ΜΆΙΟΣ	
 	ΣΙΓΜΑ	σιγμα	Σιγμα	ΣΙΓΜΑ	
-# Lithuanian rule of i followed by letter with dot. Not at all sure
-# about the titlecase part here
-lt_LT	iė	iė	Ie	IE	
-lt_LT	iė	iė	Ie	IE	
+# Lithuanian rule of i followed by letter with dot.
+lt_LT	iė	iė	Ie	IĖ	
+lt_LT	iė	iė	Ie	IĖ	
 lt_LT	Ì	i̇̀	Ì	Ì	 # LATIN CAPITAL LETTER I WITH GRAVE
 lt_LT	Í	i̇́	Í	Í	 # LATIN CAPITAL LETTER I WITH ACUTE
 lt_LT	Ĩ	i̇̃	Ĩ	Ĩ	 # LATIN CAPITAL LETTER I WITH TILDE
@@ -29,8 +28,8 @@ lt_LT	Ĩ	i̇̃	Ĩ	Ĩ	 # LATIN CAPITAL LETTER I (with tilde above)
 lt_LT	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I (with ogonek and acute accent)
 lt_LT	J́	j̇́	J́	J́	 # LATIN CAPITAL LETTER J (with acute accent)
 lt_LT	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with acute accent)
-lt_LT.UTF-8	iė	iė	Ie	IE	
-lt_LT.UTF-8	iė	iė	Ie	IE	
+lt_LT.UTF-8	iė	iė	Ie	IĖ	
+lt_LT.UTF-8	iė	iė	Ie	IĖ	
 lt_LT.UTF-8	Ì	i̇̀	Ì	Ì	 # LATIN CAPITAL LETTER I WITH GRAVE
 lt_LT.UTF-8	Í	i̇́	Í	Í	 # LATIN CAPITAL LETTER I WITH ACUTE
 lt_LT.UTF-8	Ĩ	i̇̃	Ĩ	Ĩ	 # LATIN CAPITAL LETTER I WITH TILDE

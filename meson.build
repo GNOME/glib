@@ -2236,6 +2236,9 @@ if want_systemtap and enable_dtrace
   enable_systemtap = true
 endif
 
+libicu_dep = dependency('icu-uc', version: '>= 66', required: get_option('libicu'))
+glib_conf.set('HAVE_LIBICU', libicu_dep.found())
+
 test_timeout = 60
 test_timeout_slow = 180
 
