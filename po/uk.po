@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-07-09 07:53+0000\n"
-"PO-Revision-Date: 2020-07-09 12:23+0300\n"
+"POT-Creation-Date: 2020-07-15 15:47+0000\n"
+"PO-Revision-Date: 2020-07-16 08:49+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -5893,50 +5893,55 @@ msgstr "Число «%s» не належить до діапазону [%s, %s]
 msgid "“%s” is not an unsigned number"
 msgstr "«%s» не є числом без знаку"
 
-#: glib/guri.c:269
+#: glib/guri.c:270
 #, no-c-format
 msgid "Invalid %-encoding in URI"
 msgstr "Некоректне %-eкодування в адресі"
 
-#: glib/guri.c:307
+#: glib/guri.c:287
+#| msgid "Non-UTF-8 characters in URI"
+msgid "Illegal character in URI"
+msgstr "Некоректний символ в адресі"
+
+#: glib/guri.c:315
 msgid "Non-UTF-8 characters in URI"
 msgstr "Символи поза UTF-8 в адресі"
 
-#: glib/guri.c:409
+#: glib/guri.c:418
 #, c-format
 msgid "Invalid IPv6 address '%.*s' in URI"
 msgstr "Некоректна IPv6-адреса «%.*s» в адресі"
 
-#: glib/guri.c:471
+#: glib/guri.c:480
 #, c-format
 msgid "Illegal encoded IP address '%.*s' in URI"
 msgstr "Помилкове кодування IP-адреси «%.*s» в адресі"
 
-#: glib/guri.c:505 glib/guri.c:517
+#: glib/guri.c:514 glib/guri.c:526
 #, c-format
 msgid "Could not parse port '%.*s' in URI"
 msgstr "Не вдалося обробити запис порту «%.*s» в адресі"
 
-#: glib/guri.c:524
+#: glib/guri.c:533
 #, c-format
 msgid "Port '%.*s' in URI is out of range"
 msgstr "Порт «%.*s» в адресі не належить до припустимого діапазону"
 
-#: glib/guri.c:1000
+#: glib/guri.c:1009
 #, c-format
 msgid "URI '%s' is not an absolute URI"
 msgstr "Адреса «%s» не є абсолютною адресою"
 
-#: glib/guri.c:1006
+#: glib/guri.c:1015
 #, c-format
 msgid "URI '%s' has no host component"
 msgstr "В адресі «%s» немає компонента вузла"
 
-#: glib/guri.c:1184
+#: glib/guri.c:1193
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "Адреса не є абсолютною, і не вказано базової адреси"
 
-#: glib/guri.c:1842
+#: glib/guri.c:1851
 msgid "Missing '=' and parameter value"
 msgstr "Пропущено «=» і значення параметра"
 
