@@ -313,9 +313,8 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 {
   GLocalFileStat final_stat;
 
-#ifdef HAVE_FSYNC
   if (file->priv->sync_on_close &&
-      fsync (file->priv->fd) != 0)
+      g_fsync (file->priv->fd) != 0)
     {
       int errsv = errno;
       
@@ -325,8 +324,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 		   g_strerror (errsv));
       goto err_out;
     }
-#endif
- 
+
 #ifdef G_OS_WIN32
 
   /* Must close before renaming on Windows, so just do the close first
