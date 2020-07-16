@@ -481,3 +481,37 @@ dist-job:
       - "${CI_PROJECT_DIR}/_build/gobject-docs-$CI_COMMIT_TAG.tar.xz"
       - "${CI_PROJECT_DIR}/_build/gio-docs-$CI_COMMIT_TAG.tar.xz"
       - "${CI_PROJECT_DIR}/_build/meson-dist/glib-*.tar.xz"
+
+fedora-x86_64-libicu:
+  extends: .build
+  image: $FEDORA_IMAGE
+  stage: build
+  script:
+    - wget https://github.com/unicode-org/icu/releases/download/release-67-1/icu4c-67_1-Fedora31-x64.tgz
+    - sudo tar xf icu4c-67_1-Fedora31-x64.tgz -C /usr/local/ --strip-components=4
+    - echo /usr/local/lib | sudo tee -a /etc/ld.so.conf.d/local-lib.conf
+    - sudo ldconfig
+    - meson ${MESON_COMMON_OPTIONS}
+            --werror
+            --default-library=both
+            --prefix=$HOME/glib-installed
+            --libdir=lib
+            -Dsystemtap=true
+            -Ddtrace=true
+            -Dfam=true
+            -Dinstalled_tests=true
+            -Dlibicu=enabled
+            -Dpkg_config_path=/usr/local/lib/pkgconfig/
+            _build
+    - ninja -C _build
+    - .gitlab-ci/run-tests.sh
+  artifacts:
+    reports:
+      junit: "_build/${CI_JOB_NAME}-report.xml"
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+      - "_build/${CI_JOB_NAME}-report.xml"
