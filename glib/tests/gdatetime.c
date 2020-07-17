@@ -2692,6 +2692,38 @@ test_new_offset (void)
     }
 }
 
+static void
+test_time_zone_parse_rfc8536 (void)
+{
+  const gchar *test_files[] =
+    {
+      /* Generated with `zic -b slim`; see
+       * https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1533#note_842235 */
+      "Amsterdam-slim",
+      /* Generated with `zic -b fat` */
+      "Amsterdam-fat",
+    };
+  gsize i;
+
+  g_test_summary ("Test parsing time zone files in RFC 8536 version 3 format");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2129");
+
+  for (i = 0; i < G_N_ELEMENTS (test_files); i++)
+    {
+      gchar *path = NULL;
+      GTimeZone *tz = NULL;
+
+      path = g_test_build_filename (G_TEST_DIST, "time-zones", test_files[i], NULL);
+      g_assert_true (g_path_is_absolute (path));
+      tz = g_time_zone_new (path);
+      g_assert_nonnull (tz);
+      /* UTC will be loaded as a fallback if parsing fails */
+      g_assert_cmpstr (g_time_zone_get_identifier (tz), !=, "UTC");
+      g_time_zone_unref (tz);
+      g_free (path);
+    }
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -2761,6 +2793,7 @@ main (gint   argc,
   g_test_add_func ("/GTimeZone/floating-point", test_GDateTime_floating_point);
   g_test_add_func ("/GTimeZone/identifier", test_identifier);
   g_test_add_func ("/GTimeZone/new-offset", test_new_offset);
+  g_test_add_func ("/GTimeZone/parse-rfc8536", test_time_zone_parse_rfc8536);
 
   return g_test_run ();
 }

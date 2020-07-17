@@ -189,6 +189,7 @@ if installed_tests_enabled
   )
   install_subdir('bookmarks', install_dir : installed_tests_execdir)
   install_subdir('markups', install_dir : installed_tests_execdir)
+  install_subdir('time-zones', install_dir : installed_tests_execdir)
 endif
 
 # Not entirely random of course, but at least it changes over time
