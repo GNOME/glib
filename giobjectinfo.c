@@ -419,7 +419,7 @@ g_object_info_get_method (GIObjectInfo *info,
  * Obtain a method of the object type given a @name. %NULL will be
  * returned if there's no method available with that name.
  *
- * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
+ * Returns: (transfer full) (nullable): the #GIFunctionInfo. Free the struct by calling
  * g_base_info_unref() when done.
  */
 GIFunctionInfo *
@@ -459,7 +459,7 @@ g_object_info_find_method (GIObjectInfo *info,
  * Note that this function does *not* search parent classes; you will have
  * to chain up if that's desired.
  *
- * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
+ * Returns: (transfer full) (nullable): the #GIFunctionInfo. Free the struct by calling
  * g_base_info_unref() when done.
  */
 GIFunctionInfo *
@@ -569,7 +569,7 @@ g_object_info_get_signal (GIObjectInfo *info,
  *
  * TODO
  *
- * Returns: (transfer full): Info for the signal with name @name in @info, or %NULL on failure.
+ * Returns: (transfer full) (nullable): Info for the signal with name @name in @info, or %NULL on failure.
  */
 GISignalInfo *
 g_object_info_find_signal (GIObjectInfo *info,
@@ -668,7 +668,7 @@ g_object_info_get_vfunc (GIObjectInfo *info,
  * See the documentation for g_vfunc_info_get_invoker() for more
  * information on invoking virtuals.
  *
- * Returns: (transfer full): the #GIVFuncInfo, or %NULL. Free it with
+ * Returns: (transfer full) (nullable): the #GIVFuncInfo, or %NULL. Free it with
  * g_base_info_unref() when done.
  */
 GIVFuncInfo *
@@ -713,7 +713,7 @@ g_object_info_find_vfunc (GIObjectInfo *info,
  * Note that this function does *not* search parent classes; you will have
  * to chain up if that's desired.
  *
- * Returns: (transfer full): the #GIVFuncInfo. Free the struct by calling
+ * Returns: (transfer full) (nullable): the #GIVFuncInfo. Free the struct by calling
  * g_base_info_unref() when done.
  */
 GIVFuncInfo *
@@ -825,7 +825,7 @@ g_object_info_get_constant (GIObjectInfo *info,
  * Every #GObject has two structures; an instance structure and a class
  * structure.  This function returns the metadata for the class structure.
  *
- * Returns: (transfer full): the #GIStructInfo or %NULL. Free with
+ * Returns: (transfer full) (nullable): the #GIStructInfo or %NULL. Free with
  * g_base_info_unref() when done.
  */
 GIStructInfo *
@@ -889,7 +889,7 @@ _get_func(GIObjectInfo *info,
  * the symbol is %GIObjectInfoRefFunction, to fetch the function pointer
  * see g_object_info_get_ref_function().
  *
- * Returns: the symbol or %NULL
+ * Returns: (nullable): the symbol or %NULL
  */
 const char *
 g_object_info_get_ref_function (GIObjectInfo *info)
@@ -917,7 +917,7 @@ g_object_info_get_ref_function (GIObjectInfo *info)
  * This takes derivation into account and will reversely traverse
  * the base classes of this type, starting at the top type.
  *
- * Returns: the function pointer or %NULL
+ * Returns: (nullable): the function pointer or %NULL
  */
 GIObjectInfoRefFunction
 g_object_info_get_ref_function_pointer (GIObjectInfo *info)
@@ -937,7 +937,7 @@ g_object_info_get_ref_function_pointer (GIObjectInfo *info)
  * the symbol is %GIObjectInfoUnrefFunction, to fetch the function pointer
  * see g_object_info_get_unref_function().
  *
- * Returns: the symbol or %NULL
+ * Returns: (nullable): the symbol or %NULL
  */
 const char *
 g_object_info_get_unref_function (GIObjectInfo *info)
@@ -965,7 +965,7 @@ g_object_info_get_unref_function (GIObjectInfo *info)
  * This takes derivation into account and will reversely traverse
  * the base classes of this type, starting at the top type.
  *
- * Returns: the function pointer or %NULL
+ * Returns: (nullable): the function pointer or %NULL
  */
 GIObjectInfoUnrefFunction
 g_object_info_get_unref_function_pointer (GIObjectInfo *info)
@@ -986,7 +986,7 @@ g_object_info_get_unref_function_pointer (GIObjectInfo *info)
  * is %GIObjectInfoSetValueFunction, to fetch the function pointer
  * see g_object_info_get_set_value_function().
  *
- * Returns: the symbol or %NULL
+ * Returns: (nullable): the symbol or %NULL
  */
 const char *
 g_object_info_get_set_value_function (GIObjectInfo *info)
@@ -1014,7 +1014,7 @@ g_object_info_get_set_value_function (GIObjectInfo *info)
  * This takes derivation into account and will reversely traverse
  * the base classes of this type, starting at the top type.
  *
- * Returns: the function pointer or %NULL
+ * Returns: (nullable): the function pointer or %NULL
  */
 GIObjectInfoSetValueFunction
 g_object_info_get_set_value_function_pointer (GIObjectInfo *info)
@@ -1035,7 +1035,7 @@ g_object_info_get_set_value_function_pointer (GIObjectInfo *info)
  * is %GIObjectInfoGetValueFunction, to fetch the function pointer
  * see g_object_info_get_get_value_function().
  *
- * Returns: the symbol or %NULL
+ * Returns: (nullable): the symbol or %NULL
  */
 const char *
 g_object_info_get_get_value_function (GIObjectInfo *info)
@@ -1063,7 +1063,7 @@ g_object_info_get_get_value_function (GIObjectInfo *info)
  * This takes derivation into account and will reversely traverse
  * the base classes of this type, starting at the top type.
  *
- * Returns: the function pointer or %NULL
+ * Returns: (nullable): the function pointer or %NULL
  */
 GIObjectInfoGetValueFunction
 g_object_info_get_get_value_function_pointer (GIObjectInfo *info)
