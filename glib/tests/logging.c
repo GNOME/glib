@@ -139,6 +139,53 @@ test_default_handler_debug_stderr (void)
   g_log ("foo", G_LOG_LEVEL_DEBUG, "6");
   g_log ("bar", G_LOG_LEVEL_DEBUG, "6");
   g_log ("baz", G_LOG_LEVEL_DEBUG, "6");
+
+  exit (0);
+}
+
+static void
+test_default_handler_would_drop (void)
+{
+  g_unsetenv ("G_MESSAGES_DEBUG");
+
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_ERROR, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_CRITICAL, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_WARNING, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_MESSAGE, "foo"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_INFO, "foo"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (1<<G_LOG_LEVEL_USER_SHIFT, "foo"));
+
+  g_setenv ("G_MESSAGES_DEBUG", "bar baz", TRUE);
+
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_ERROR, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_CRITICAL, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_WARNING, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_MESSAGE, "foo"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_INFO, "foo"));
+  g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (1<<G_LOG_LEVEL_USER_SHIFT, "foo"));
+
+  g_setenv ("G_MESSAGES_DEBUG", "foo bar", TRUE);
+
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_ERROR, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_CRITICAL, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_WARNING, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_MESSAGE, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_INFO, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (1<<G_LOG_LEVEL_USER_SHIFT, "foo"));
+
+  g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_ERROR, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_CRITICAL, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_WARNING, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_MESSAGE, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_INFO, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (1<<G_LOG_LEVEL_USER_SHIFT, "foo"));
+
   exit (0);
 }
 
@@ -193,6 +240,9 @@ test_default_handler (void)
   g_test_trap_subprocess ("/logging/default-handler/subprocess/0x400", 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*LOG-0x400*message7*");
+
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop", 0, 0);
+  g_test_trap_assert_passed ();
 }
 
 static void
@@ -600,6 +650,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/default-handler/subprocess/debug", test_default_handler_debug);
   g_test_add_func ("/logging/default-handler/subprocess/debug-stderr", test_default_handler_debug_stderr);
   g_test_add_func ("/logging/default-handler/subprocess/0x400", test_default_handler_0x400);
+  g_test_add_func ("/logging/default-handler/subprocess/would-drop", test_default_handler_would_drop);
   g_test_add_func ("/logging/warnings", test_warnings);
   g_test_add_func ("/logging/fatal-log-mask", test_fatal_log_mask);
   g_test_add_func ("/logging/set-handler", test_set_handler);
