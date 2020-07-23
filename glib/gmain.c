@@ -663,7 +663,7 @@ g_main_context_new (void)
   if (g_once_init_enter (&initialised))
     {
 #ifdef G_MAIN_POLL_DEBUG
-      if (getenv ("G_MAIN_POLL_DEBUG") != NULL)
+      if (g_getenv ("G_MAIN_POLL_DEBUG") != NULL)
         _g_main_poll_debug = TRUE;
 #endif
 

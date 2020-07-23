@@ -447,7 +447,7 @@ zone_info_unix (const gchar  *identifier,
   gchar *resolved_identifier = NULL;
   const gchar *tzdir;
 
-  tzdir = getenv ("TZDIR");
+  tzdir = g_getenv ("TZDIR");
   if (tzdir == NULL)
     tzdir = "/usr/share/zoneinfo";
 

@@ -364,7 +364,7 @@ slice_config_init (SliceConfig *config)
 
   *config = slice_config;
 
-  val = getenv ("G_SLICE");
+  val = g_getenv ("G_SLICE");
   if (val != NULL)
     {
       gint flags;
