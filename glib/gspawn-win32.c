@@ -72,7 +72,7 @@
       {							\
 	if (debug == -1)				\
 	  {						\
-	    if (getenv ("G_SPAWN_WIN32_DEBUG") != NULL)	\
+	    if (g_getenv ("G_SPAWN_WIN32_DEBUG") != NULL)	\
 	      debug = 1;				\
 	    else					\
 	      debug = 0;				\

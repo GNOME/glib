@@ -109,7 +109,7 @@ g_win32_getlocale (void)
 {
   LCID lcid;
   LANGID langid;
-  gchar *ev;
+  const gchar *ev;
   gint primary, sub;
   char iso639[10];
   char iso3166[10];
@@ -120,9 +120,9 @@ g_win32_getlocale (void)
    * since GTK+ 2.10.7 setting either LC_ALL or LANG also sets the
    * Win32 locale and C library locale through code in gtkmain.c.
    */
-  if (((ev = getenv ("LC_ALL")) != NULL && ev[0] != '\0')
-      || ((ev = getenv ("LC_MESSAGES")) != NULL && ev[0] != '\0')
-      || ((ev = getenv ("LANG")) != NULL && ev[0] != '\0'))
+  if (((ev = g_getenv ("LC_ALL")) != NULL && ev[0] != '\0')
+      || ((ev = g_getenv ("LC_MESSAGES")) != NULL && ev[0] != '\0')
+      || ((ev = g_getenv ("LANG")) != NULL && ev[0] != '\0'))
     return g_strdup (ev);
 
   lcid = GetThreadLocale ();
@@ -1084,7 +1084,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
     case EXCEPTION_ILLEGAL_INSTRUCTION:
       break;
     default:
-      catch_list = getenv ("G_VEH_CATCH");
+      catch_list = g_getenv ("G_VEH_CATCH");
 
       while (!catch &&
              catch_list != NULL &&
@@ -1143,7 +1143,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 
   fflush (stderr);
 
-  debugger_env = getenv ("G_DEBUGGER");
+  debugger_env = g_getenv ("G_DEBUGGER");
 
   if (debugger_env == NULL)
     return EXCEPTION_CONTINUE_SEARCH;
@@ -1173,7 +1173,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
                            NULL,
                            NULL,
                            TRUE,
-                           getenv ("G_DEBUGGER_OLD_CONSOLE") != NULL ? 0 : CREATE_NEW_CONSOLE,
+                           g_getenv ("G_DEBUGGER_OLD_CONSOLE") != NULL ? 0 : CREATE_NEW_CONSOLE,
                            NULL,
                            NULL,
                            &si,
@@ -1213,7 +1213,7 @@ g_crash_handler_win32_init (void)
    * break advanced exception handling such as in CLRs like C# or other managed
    * code. See: https://blogs.msdn.microsoft.com/jmstall/2006/05/24/beware-of-the-vectored-exception-handler-and-managed-code/
    */
-  if (getenv ("G_DEBUGGER") == NULL && getenv("G_VEH_CATCH") == NULL)
+  if (g_getenv ("G_DEBUGGER") == NULL && g_getenv("G_VEH_CATCH") == NULL)
     return;
 
   WinVEH_handle = AddVectoredExceptionHandler (0, &g_win32_veh_handler);

@@ -49,6 +49,7 @@
 #include "gthreadprivate.h"
 #include "gunicode.h"
 #include "gfileutils.h"
+#include "genviron.h"
 
 #include "glibintl.h"
 
@@ -1131,14 +1132,14 @@ g_get_filename_charsets (const gchar ***filename_charsets)
   if (!(cache->charset && strcmp (cache->charset, charset) == 0))
     {
       const gchar *new_charset;
-      gchar *p;
+      const gchar *p;
       gint i;
 
       g_free (cache->charset);
       g_strfreev (cache->filename_charsets);
       cache->charset = g_strdup (charset);
       
-      p = getenv ("G_FILENAME_ENCODING");
+      p = g_getenv ("G_FILENAME_ENCODING");
       if (p != NULL && p[0] != '\0') 
 	{
 	  cache->filename_charsets = g_strsplit (p, ",", 0);
@@ -1154,7 +1155,7 @@ g_get_filename_charsets (const gchar ***filename_charsets)
 		}
 	    }
 	}
-      else if (getenv ("G_BROKEN_FILENAMES") != NULL)
+      else if (g_getenv ("G_BROKEN_FILENAMES") != NULL)
 	{
 	  cache->filename_charsets = g_new0 (gchar *, 2);
 	  cache->is_utf8 = g_get_charset (&new_charset);
