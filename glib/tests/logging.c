@@ -124,6 +124,21 @@ test_default_handler_debug (void)
   g_log ("foo", G_LOG_LEVEL_DEBUG, "6");
   g_log ("bar", G_LOG_LEVEL_DEBUG, "6");
   g_log ("baz", G_LOG_LEVEL_DEBUG, "6");
+
+  exit (0);
+}
+
+static void
+test_default_handler_debug_stderr (void)
+{
+  g_log_writer_default_set_use_stderr (TRUE);
+  g_log_set_default_handler (g_log_default_handler, NULL);
+
+  g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+
+  g_log ("foo", G_LOG_LEVEL_DEBUG, "6");
+  g_log ("bar", G_LOG_LEVEL_DEBUG, "6");
+  g_log ("baz", G_LOG_LEVEL_DEBUG, "6");
   exit (0);
 }
 
@@ -169,6 +184,11 @@ test_default_handler (void)
   g_test_trap_subprocess ("/logging/default-handler/subprocess/debug", 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*DEBUG*6*6*6*");
+
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/debug-stderr", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout_unmatched ("DEBUG");
+  g_test_trap_assert_stderr ("*DEBUG*6*6*6*");
 
   g_test_trap_subprocess ("/logging/default-handler/subprocess/0x400", 0, 0);
   g_test_trap_assert_passed ();
@@ -578,6 +598,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/default-handler/subprocess/bar-info", test_default_handler_bar_info);
   g_test_add_func ("/logging/default-handler/subprocess/baz-debug", test_default_handler_baz_debug);
   g_test_add_func ("/logging/default-handler/subprocess/debug", test_default_handler_debug);
+  g_test_add_func ("/logging/default-handler/subprocess/debug-stderr", test_default_handler_debug_stderr);
   g_test_add_func ("/logging/default-handler/subprocess/0x400", test_default_handler_0x400);
   g_test_add_func ("/logging/warnings", test_warnings);
   g_test_add_func ("/logging/fatal-log-mask", test_fatal_log_mask);

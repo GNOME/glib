@@ -197,6 +197,7 @@
 #include "gstrfuncs.h"
 #include "gstring.h"
 #include "gpattern.h"
+#include "gthreadprivate.h"
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
@@ -1160,12 +1161,42 @@ static const gchar *log_level_to_color (GLogLevelFlags log_level,
                                         gboolean       use_color);
 static const gchar *color_reset        (gboolean       use_color);
 
+static gboolean gmessages_use_stderr = FALSE;
+
+/**
+ * g_log_writer_default_set_use_stderr:
+ * @use_stderr: If %TRUE, use `stderr` for log messages that would
+ *  normally have appeared on `stdout`
+ *
+ * Configure whether the built-in log functions
+ * (g_log_default_handler() for the old-style API, and both
+ * g_log_writer_default() and g_log_writer_standard_streams() for the
+ * structured API) will output all log messages to `stderr`.
+ *
+ * By default, log messages of levels %G_LOG_LEVEL_INFO and
+ * %G_LOG_LEVEL_DEBUG are sent to `stdout`, and other log messages are
+ * sent to `stderr`. This is problematic for applications that intend
+ * to reserve `stdout` for structured output such as JSON or XML.
+ *
+ * This function sets global state. It is not thread-aware, and should be
+ * called at the very start of a program, before creating any other threads
+ * or creating objects that could create worker threads of their own.
+ *
+ * Since: 2.68
+ */
+void
+g_log_writer_default_set_use_stderr (gboolean use_stderr)
+{
+  g_return_if_fail (g_thread_n_created () == 0);
+  gmessages_use_stderr = use_stderr;
+}
+
 static FILE *
 mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
                 GLogLevelFlags log_level,
                 gboolean       use_color)
 {
-  gboolean to_stdout = TRUE;
+  gboolean to_stdout = !gmessages_use_stderr;
 
   /* we may not call _any_ GLib functions here */
 
@@ -1442,6 +1473,9 @@ log_level_to_priority (GLogLevelFlags log_level)
 static FILE *
 log_level_to_file (GLogLevelFlags log_level)
 {
+  if (gmessages_use_stderr)
+    return stderr;
+
   if (log_level & (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL |
                    G_LOG_LEVEL_WARNING | G_LOG_LEVEL_MESSAGE))
     return stderr;
@@ -2524,7 +2558,9 @@ g_log_writer_journald (GLogLevelFlags   log_level,
  *
  * Format a structured log message and print it to either `stdout` or `stderr`,
  * depending on its log level. %G_LOG_LEVEL_INFO and %G_LOG_LEVEL_DEBUG messages
- * are sent to `stdout`; all other log levels are sent to `stderr`. Only fields
+ * are sent to `stdout`, or to `stderr` if requested by
+ * g_log_writer_default_set_use_stderr();
+ * all other log levels are sent to `stderr`. Only fields
  * which are understood by this function are included in the formatted string
  * which is printed.
  *
@@ -3075,7 +3111,8 @@ escape_string (GString *string)
  *
  * stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
  * %G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for
- * the rest.
+ * the rest, unless stderr was requested by
+ * g_log_writer_default_set_use_stderr().
  *
  * This has no effect if structured logging is enabled; see
  * [Using Structured Logging][using-structured-logging].
