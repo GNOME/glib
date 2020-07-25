@@ -239,7 +239,7 @@ g_app_info_default_init (GAppInfoInterface *iface)
    * GAppInfo:can-delete:
    *
    * %TRUE if it makes sense to call g_app_info_delete() for this
-   * GAppInfo.
+   * #GAppInfo.
    */
   g_object_interface_install_property (iface,
       g_param_spec_boolean ("can-delete", "Can delete", "Can delete",
