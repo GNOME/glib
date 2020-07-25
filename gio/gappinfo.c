@@ -108,8 +108,144 @@ G_DEFINE_INTERFACE (GAppInfo, g_app_info, G_TYPE_OBJECT)
 static void
 g_app_info_default_init (GAppInfoInterface *iface)
 {
-}
+  /**
+   * GAppInfo:id:
+   *
+   * The ID of an application -- a string that identifies the application.
+   *
+   * The exact format of the ID is platform dependent. For instance,
+   * on Unix this is the desktop file id from the xdg menu specification.
+   *
+   * May be %NULL, depending on how the GAppInfo has been constructed.
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_string ("id", "ID", "ID",
+                           NULL,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GAppInfo:name:
+   *
+   * The name of the application.
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_string ("name", "Name", "Name",
+                           NULL,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:display-name:
+   *
+   * The display name of the application.
+   *
+   * This string is meant to be displayed to the user; it is often more
+   * descriptive than #GAppInfo:name.
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_string ("display-name", "Display Name", "Display Name",
+                           NULL,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:description:
+   *
+   * A human-readable description of the application.
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_string ("description", "Description", "Description",
+                           NULL,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:executable:
+   *
+   * The executable's name for the application.
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_string ("executable", "Executable", "Executable",
+                           NULL,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:commandline:
+   *
+   * The commandline with which the application will be launched.
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_string ("commandline", "Commandline", "Commandline",
+                           NULL,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:icon:
+   *
+   * The icon for the application.
+   *
+   * May be %NULL
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_object ("icon", "Icon", "Icon",
+                           G_TYPE_ICON,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:supports-uris:
+   *
+   * %TRUE if the application supports reading files and directories
+   * from URIs when launched. See g_app_info_launch_uris().
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_boolean ("supports-uris", "Supports URIs", "Supports URIs",
+                            FALSE,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:supports-files:
+   *
+   * %TRUE if the application supports files as arguments when launched.
+   * See g_app_info_launch_uris().
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_boolean ("supports-files", "Supports files", "Supports files",
+                            FALSE,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:should-show:
+   *
+   * %TRUE if the application should be shown in menus that list
+   * available applications.
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_boolean ("should-show", "Should show", "Should show",
+                            FALSE,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:supported-types:
+   *
+   * The list of content types that the application claims to support.
+   * Note that this property does not take into account associations
+   * added with g_app_info_add_supports_type().
+   *
+   * May be %NULL.
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_boxed ("supported-types", "Supported types", "Supported types",
+                          G_TYPE_STRV,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GAppInfo:can-delete:
+   *
+   * %TRUE if it makes sense to call g_app_info_delete() for this
+   * GAppInfo.
+   */
+  g_object_interface_install_property (iface,
+      g_param_spec_boolean ("can-delete", "Can delete", "Can delete",
+                            FALSE,
+                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+}
 
 /**
  * g_app_info_dup:
