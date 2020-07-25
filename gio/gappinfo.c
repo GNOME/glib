@@ -114,7 +114,7 @@ g_app_info_default_init (GAppInfoInterface *iface)
    * The ID of an application -- a string that identifies the application.
    *
    * The exact format of the ID is platform dependent. For instance,
-   * on Unix this is the desktop file id from the xdg menu specification.
+   * on Unix this is the desktop file ID from the xdg menu specification.
    *
    * May be %NULL, depending on how the GAppInfo has been constructed.
    */
