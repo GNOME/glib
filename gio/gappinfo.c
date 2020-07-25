@@ -177,7 +177,7 @@ g_app_info_default_init (GAppInfoInterface *iface)
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GAppInfo:icon:
+   * GAppInfo:icon: (nullable)
    *
    * The icon for the application.
    *
