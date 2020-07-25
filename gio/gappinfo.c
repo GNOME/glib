@@ -109,7 +109,7 @@ static void
 g_app_info_default_init (GAppInfoInterface *iface)
 {
   /**
-   * GAppInfo:id:
+   * GAppInfo:id: (nullable)
    *
    * The ID of an application -- a string that identifies the application.
    *
