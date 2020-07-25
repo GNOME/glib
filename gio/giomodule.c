@@ -462,7 +462,7 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
   GDir *dir;
   GStatBuf statbuf;
   char *data;
-  time_t cache_mtime;
+  time_t cache_time;
   GHashTable *cache;
 
   if (!g_module_supported ())
@@ -477,21 +477,24 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
   cache = g_hash_table_new_full (g_str_hash, g_str_equal,
 				 g_free, (GDestroyNotify)g_strfreev);
 
-  cache_mtime = 0;
+  cache_time = 0;
   if (g_stat (filename, &statbuf) == 0 &&
       g_file_get_contents (filename, &data, NULL, NULL))
     {
       char **lines;
       int i;
 
-      /* Cache mtime is the time the cache file was created, any file
-       * that has a ctime before this was created then and not modified
-       * since then (userspace can't change ctime). Its possible to change
-       * the ctime forward without changing the file content, by e.g.
-       * chmoding the file, but this is uncommon and will only cause us
-       * to not use the cache so will not cause bugs.
+      /* cache_time is the time the cache file was created; we also take
+       * into account the change time because in ostree based systems, all
+       * system file have mtime equal to epoch 0.
+       *
+       * Any file that has a ctime before this was created then and not modified
+       * since then (userspace can't change ctime). Its possible to change the
+       * ctime forward without changing the file content, by e.g.  chmoding the
+       * file, but this is uncommon and will only cause us to not use the cache
+       * so will not cause bugs.
        */
-      cache_mtime = statbuf.st_mtime;
+      cache_time = MAX(statbuf.st_mtime, statbuf.st_ctime);
 
       lines = g_strsplit (data, "\n", -1);
       g_free (data);
@@ -539,7 +542,7 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
 	  extension_points = g_hash_table_lookup (cache, name);
 	  if (extension_points != NULL &&
 	      g_stat (path, &statbuf) == 0 &&
-	      statbuf.st_ctime <= cache_mtime)
+	      statbuf.st_ctime <= cache_time)
 	    {
 	      /* Lazy load/init the library when first required */
 	      for (i = 0; extension_points[i] != NULL; i++)
