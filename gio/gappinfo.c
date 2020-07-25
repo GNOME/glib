@@ -117,6 +117,8 @@ g_app_info_default_init (GAppInfoInterface *iface)
    * on Unix this is the desktop file ID from the xdg menu specification.
    *
    * May be %NULL, depending on how the GAppInfo has been constructed.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_string ("id", "ID", "ID",
@@ -127,6 +129,11 @@ g_app_info_default_init (GAppInfoInterface *iface)
    * GAppInfo:name:
    *
    * The name of the application.
+   *
+   * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
+   * this is the value of the Name key.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_string ("name", "Name", "Name",
@@ -134,12 +141,19 @@ g_app_info_default_init (GAppInfoInterface *iface)
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GAppInfo:display-name:
+   * GAppInfo:display-name: (nullable)
    *
    * The display name of the application.
    *
    * This string is meant to be displayed to the user; it is often more
    * descriptive than #GAppInfo:name.
+   *
+   * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
+   * this is the value of the X-GNOME-FullName key, falling back to the Name key.
+   *
+   * May be %NULL, depending on how the GAppInfo has been constructed.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_string ("display-name", "Display Name", "Display Name",
@@ -147,9 +161,16 @@ g_app_info_default_init (GAppInfoInterface *iface)
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GAppInfo:description:
+   * GAppInfo:description: (nullable)
    *
    * A human-readable description of the application.
+   *
+   * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
+   * this is the value of the Comment key.
+   *
+   * May be %NULL, depending on how the GAppInfo has been constructed.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_string ("description", "Description", "Description",
@@ -157,9 +178,16 @@ g_app_info_default_init (GAppInfoInterface *iface)
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GAppInfo:executable:
+   * GAppInfo:executable: (nullable)
    *
    * The executable's name for the application.
+   *
+   * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
+   * this is the first word of the Exec key.
+   *
+   * May be %NULL, depending on how the GAppInfo has been constructed.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_string ("executable", "Executable", "Executable",
@@ -167,9 +195,16 @@ g_app_info_default_init (GAppInfoInterface *iface)
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
-   * GAppInfo:commandline:
+   * GAppInfo:commandline: (nullable)
    *
    * The commandline with which the application will be launched.
+   *
+   * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
+   * this is the value of the Exec key.
+   *
+   * May be %NULL, depending on how the GAppInfo has been constructed.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_string ("commandline", "Commandline", "Commandline",
@@ -181,7 +216,9 @@ g_app_info_default_init (GAppInfoInterface *iface)
    *
    * The icon for the application.
    *
-   * May be %NULL
+   * May be %NULL, depending on how the GAppInfo has been constructed.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_object ("icon", "Icon", "Icon",
@@ -193,6 +230,8 @@ g_app_info_default_init (GAppInfoInterface *iface)
    *
    * %TRUE if the application supports reading files and directories
    * from URIs when launched. See g_app_info_launch_uris().
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_boolean ("supports-uris", "Supports URIs", "Supports URIs",
@@ -204,6 +243,8 @@ g_app_info_default_init (GAppInfoInterface *iface)
    *
    * %TRUE if the application supports files as arguments when launched.
    * See g_app_info_launch_uris().
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_boolean ("supports-files", "Supports files", "Supports files",
@@ -215,6 +256,11 @@ g_app_info_default_init (GAppInfoInterface *iface)
    *
    * %TRUE if the application should be shown in menus that list
    * available applications.
+   *
+   * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
+   * this is the (inverted) value of the NoDisplay key.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_boolean ("should-show", "Should show", "Should show",
@@ -226,9 +272,15 @@ g_app_info_default_init (GAppInfoInterface *iface)
    *
    * The list of content types that the application claims to support.
    * Note that this property does not take into account associations
-   * added with g_app_info_add_supports_type().
+   * added with g_app_info_add_supports_type(), but only those exported
+   * directly by the application.
    *
-   * May be %NULL.
+   * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
+   * this is the (inverted) value of the MimeType key.
+   *
+   * May be %NULL, depending on how the GAppInfo has been constructed.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_boxed ("supported-types", "Supported types", "Supported types",
@@ -240,6 +292,8 @@ g_app_info_default_init (GAppInfoInterface *iface)
    *
    * %TRUE if it makes sense to call g_app_info_delete() for this
    * #GAppInfo.
+   *
+   * Since: 2.66
    */
   g_object_interface_install_property (iface,
       g_param_spec_boolean ("can-delete", "Can delete", "Can delete",
