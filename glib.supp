@@ -1061,3 +1061,13 @@
 	fun:error_domain_register
 	fun:g_error_domain_register_static
 }
+
+{
+	new_quark
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:g_hash_table_insert
+	fun:quark_new
+}
