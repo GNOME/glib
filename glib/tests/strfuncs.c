@@ -731,6 +731,16 @@ test_strcompress_strescape (void)
   g_assert_cmpstr (str, ==, "abc\\\"\b\f\n\r\t\v\003\177\234\313");
   g_free (str);
   g_free (tmp);
+
+  /* Unicode round trip */
+  str = g_strescape ("héllø there⸘", NULL);
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "h\\303\\251ll\\303\\270 there\\342\\270\\230");
+  tmp = g_strcompress (str);
+  g_assert_nonnull (tmp);
+  g_assert_cmpstr (tmp, ==, "héllø there⸘");
+  g_free (tmp);
+  g_free (str);
 }
 
 /* Testing g_ascii_strcasecmp() and g_ascii_strncasecmp() */
