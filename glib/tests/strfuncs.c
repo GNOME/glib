@@ -741,6 +741,12 @@ test_strcompress_strescape (void)
   g_assert_cmpstr (tmp, ==, "héllø there⸘");
   g_free (tmp);
   g_free (str);
+
+  /* Test expanding invalid escapes */
+  str = g_strcompress ("\\11/ \\118 \\8aa \\19");
+  g_assert_nonnull (str);
+  g_assert_cmpstr (str, ==, "\t/ \t8 8aa \0019");
+  g_free (str);
 }
 
 /* Testing g_ascii_strcasecmp() and g_ascii_strncasecmp() */
