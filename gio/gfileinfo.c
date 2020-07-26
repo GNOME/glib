@@ -1581,9 +1581,9 @@ g_file_info_get_is_symlink (GFileInfo *info)
  * g_file_info_get_name:
  * @info: a #GFileInfo.
  *
- * Gets the name for a file.
+ * Gets the name for a file. This is guaranteed to always be set.
  *
- * Returns: (type filename): a string containing the file name.
+ * Returns: (type filename) (not nullable): a string containing the file name.
  **/
 const char *
 g_file_info_get_name (GFileInfo *info)
@@ -1604,9 +1604,9 @@ g_file_info_get_name (GFileInfo *info)
  * g_file_info_get_display_name:
  * @info: a #GFileInfo.
  *
- * Gets a display name for a file.
+ * Gets a display name for a file. This is guaranteed to always be set.
  *
- * Returns: a string containing the display name.
+ * Returns: (not nullable): a string containing the display name.
  **/
 const char *
 g_file_info_get_display_name (GFileInfo *info)
