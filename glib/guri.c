@@ -2116,6 +2116,9 @@ g_uri_get_flags (GUri *uri)
  * want to avoid for instance having a slash being expanded in an
  * escaped path element, which might confuse pathname handling.
  *
+ * Note: `NUL` byte is not accepted in the output, in contrast to
+ * g_uri_unescape_bytes().
+ *
  * Returns: an unescaped version of @escaped_string or %NULL on error.
  * The returned string should be freed when no longer needed.  As a
  * special case if %NULL is given for @escaped_string, this function
@@ -2130,6 +2133,7 @@ g_uri_unescape_segment (const gchar *escaped_string,
 {
   gchar *unescaped;
   gsize length;
+  gssize decoded_len;
 
   if (!escaped_string)
     return NULL;
@@ -2139,13 +2143,20 @@ g_uri_unescape_segment (const gchar *escaped_string,
   else
     length = strlen (escaped_string);
 
-  if (!uri_decode (&unescaped,
-                   illegal_characters,
-                   escaped_string, length,
-                   FALSE,
-                   G_URI_FLAGS_PARSE_STRICT,
-                   0, NULL))
+  decoded_len = uri_decoder (&unescaped,
+                             illegal_characters,
+                             escaped_string, length,
+                             FALSE, FALSE,
+                             G_URI_FLAGS_PARSE_STRICT|G_URI_FLAGS_ENCODED,
+                             0, NULL);
+  if (decoded_len < 0)
     return NULL;
+
+  if (memchr (unescaped, '\0', decoded_len))
+    {
+      g_free (unescaped);
+      return NULL;
+    }
 
   return unescaped;
 }
@@ -2220,6 +2231,7 @@ g_uri_escape_string (const gchar *unescaped,
  *   is NUL-terminated.
  * @illegal_characters: (nullable): a string of illegal characters
  *   not to be allowed, or %NULL.
+ * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Unescapes a segment of an escaped string as binary data.
  *
@@ -2232,21 +2244,23 @@ g_uri_escape_string (const gchar *unescaped,
  * want to avoid for instance having a slash being expanded in an
  * escaped path element, which might confuse pathname handling.
  *
- * Returns: (transfer full): an unescaped version of @escaped_string
- * or %NULL on error. The returned #GBytes should be unreffed when no
- * longer needed.
+ * Returns: (transfer full): an unescaped version of @escaped_string or %NULL on
+ * error (if decoding failed, using %G_URI_ERROR_MISC error code). The returned
+ * #GBytes should be unreffed when no longer needed.
  *
  * Since: 2.66
  **/
 GBytes *
 g_uri_unescape_bytes (const gchar *escaped_string,
                       gssize       length,
-                      const char *illegal_characters)
+                      const char *illegal_characters,
+                      GError     **error)
 {
   gchar *buf;
   gssize unescaped_length;
 
   g_return_val_if_fail (escaped_string != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   if (length == -1)
     length = strlen (escaped_string);
@@ -2257,7 +2271,7 @@ g_uri_unescape_bytes (const gchar *escaped_string,
                                   FALSE,
                                   FALSE,
                                   G_URI_FLAGS_PARSE_STRICT|G_URI_FLAGS_ENCODED,
-                                  0, NULL);
+                                  G_URI_ERROR_MISC, error);
   if (unescaped_length == -1)
     return NULL;
 
