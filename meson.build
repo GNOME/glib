@@ -875,6 +875,17 @@ if cc.compiles('''#include <fcntl.h>
   glib_conf.set('HAVE_OPEN_O_DIRECTORY', 1)
 endif
 
+# fcntl takes F_FULLFSYNC as an option
+# See https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/fsync.2.html
+if cc.compiles('''#include <fcntl.h>
+                  #include <sys/types.h>
+                  #include <sys/stat.h>
+                  void some_func (void) {
+                    fcntl(0, F_FULLFSYNC, 0);
+                  }''', name : 'fcntl() option F_FULLFSYNC')
+  glib_conf.set('HAVE_FCNTL_F_FULLFSYNC', 1)
+endif
+
 # Check whether there is a vsnprintf() function with C99 semantics installed.
 # (similar tests to AC_FUNC_VSNPRINTF_C99)
 # Check whether there is a snprintf() function with C99 semantics installed.

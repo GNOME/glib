@@ -830,10 +830,12 @@ keyring_generate_entry (const gchar  *cookie_context,
   /* and now actually write the cookie file if there are changes (this is atomic) */
   if (changed_file)
     {
-      if (!g_file_set_contents (path,
-                                new_contents->str,
-                                -1,
-                                error))
+      if (!g_file_set_contents_full (path,
+                                     new_contents->str,
+                                     -1,
+                                     G_FILE_SET_CONTENTS_CONSISTENT,
+                                     0600,
+                                     error))
         {
           *out_id = 0;
           *out_cookie = 0;

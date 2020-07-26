@@ -573,7 +573,9 @@ write_config_file (GTestDBus *self)
       "</busconfig>\n");
 
   close (fd);
-  g_file_set_contents (path, contents->str, contents->len, &error);
+  g_file_set_contents_full (path, contents->str, contents->len,
+                            G_FILE_SET_CONTENTS_NONE,
+                            0600, &error);
   g_assert_no_error (error);
 
   g_string_free (contents, TRUE);

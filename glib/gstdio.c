@@ -1552,7 +1552,7 @@ g_rmdir (const gchar *filename)
  *
  * As `close()` and `fclose()` are part of the C library, this implies that it is
  * currently impossible to close a file if the application C library and the C library
- * used by GLib are different. Convenience functions like g_file_set_contents()
+ * used by GLib are different. Convenience functions like g_file_set_contents_full()
  * avoid this problem.
  *
  * Returns: A `FILE*` if the file was successfully opened, or %NULL if
@@ -1660,9 +1660,12 @@ g_freopen (const gchar *filename,
  * g_fsync:
  * @fd: a file descriptor
  *
- * A wrapper for the POSIX fsync() function (_commit() on Windows).
- * The fsync() function is used to synchronize a file's in-core
+ * A wrapper for the POSIX `fsync()` function. On Windows, `_commit()` will be
+ * used. On macOS, `fcntl(F_FULLFSYNC)` will be used.
+ * The `fsync()` function is used to synchronize a file's in-core
  * state with that of the disk.
+ *
+ * This wrapper will handle retrying on `EINTR`.
  *
  * See the C library manual for more details about fsync().
  *
@@ -1676,8 +1679,18 @@ g_fsync (gint fd)
 {
 #ifdef G_OS_WIN32
   return _commit (fd);
+#elif defined(HAVE_FSYNC) || defined(HAVE_FCNTL_F_FULLFSYNC)
+  int retval;
+  do
+#ifdef HAVE_FCNTL_F_FULLFSYNC
+    retval = fcntl (fd, F_FULLFSYNC, 0);
 #else
-  return fsync (fd);
+    retval = fsync (fd);
+#endif
+  while (G_UNLIKELY (retval < 0 && errno == EINTR));
+  return retval;
+#else
+  return 0;
 #endif
 }
 
