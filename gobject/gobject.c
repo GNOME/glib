@@ -1745,7 +1745,9 @@ g_object_get_type (void)
  * Creates a new instance of a #GObject subtype and sets its properties.
  *
  * Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY)
- * which are not explicitly specified are set to their default values.
+ * which are not explicitly specified are set to their default values. Any
+ * private data for the object is guaranteed to be initialized with zeros, as
+ * per g_type_create_instance().
  *
  * Note that in C, small integer types in variable argument lists are promoted
  * up to #gint or #guint as appropriate, and read back accordingly. #gint is 32
