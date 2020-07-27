@@ -41,6 +41,11 @@
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
 #endif
+/* Needed for systemd detection. */
+#if defined(__linux__) && !defined(__BIONIC__)
+#include "gunixconnection.h"
+#include "gunixsocketaddress.h"
+#endif
 #include "gfile.h"
 #include "gioerror.h"
 #include "gthemedicon.h"
@@ -2985,6 +2990,342 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
   return TRUE;
 }
 
+typedef struct
+{
+  GAppInfo *appinfo;
+  GList *uris;
+  GAppLaunchContext *context;
+  gint systemd_pending;
+} LaunchUrisData;
+
+static void
+launch_uris_data_free (LaunchUrisData *data)
+{
+  g_clear_object (&data->context);
+  g_list_free_full (data->uris, g_free);
+  g_free (data);
+}
+
+#if defined(__linux__) && !defined(__BIONIC__)
+static gchar *
+systemd_unit_name_escape (const gchar *in)
+{
+  /* Adapted from systemd source */
+  GString *const str = g_string_sized_new (strlen (in));
+
+  for (; *in; in++)
+    {
+      if (g_ascii_isalnum (*in) || *in == ':' || *in == '_' || *in == '.')
+        g_string_append_c (str, *in);
+      else
+        g_string_append_printf (str, "\\x%02x", *in);
+    }
+  return g_string_free (str, FALSE);
+}
+
+static void
+launch_command_with_systemd (GDesktopAppInfo *info,
+                             GDBusConnection *session_bus,
+                             const char *executable,
+                             const char *const *argv,
+                             int argc,
+                             const char *sn_id,
+                             GAppLaunchContext *launch_context,
+                             GCancellable *cancellable,
+                             GAsyncReadyCallback callback,
+                             gpointer user_data)
+{
+  GVariantBuilder builder;
+  const char *app_name = g_get_application_name ();
+  g_autofree char *appid_escaped = NULL;
+  g_autofree char *appid = NULL;
+  g_autofree char *unit_name = NULL;
+
+  /* In this order:
+   *  1. Actual application ID from file
+   *  2. Stripping the .desktop from the desktop ID
+   *  3. Fall back to using the binary name
+   */
+  if (info->app_id)
+    appid = g_strdup (info->app_id);
+  else if (info->desktop_id && g_str_has_suffix (info->desktop_id, ".desktop"))
+    appid = g_strndup (info->desktop_id, strlen (info->desktop_id) - 8);
+  else
+    appid = g_path_get_basename (executable);
+
+  appid_escaped = systemd_unit_name_escape (appid);
+
+  /* Generate a name conforming to
+   *   https://systemd.io/DESKTOP_ENVIRONMENTS/
+   */
+  if (sn_id)
+    unit_name = g_strdup_printf ("app-glib-%s@%s.service", appid_escaped, sn_id);
+  else
+    unit_name = g_strdup_printf ("app-glib-%s@%d.service", appid_escaped, g_random_int ());
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(ssa(sv)a(sa(sv)))"));
+  g_variant_builder_add (&builder, "s", unit_name);
+  g_variant_builder_add (&builder, "s", "fail");
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(sv)"));
+
+  /* Add a generic human readable description, can be changed at will. */
+  if (app_name)
+    g_variant_builder_add (&builder,
+                           "(sv)",
+                           "Description",
+                           g_variant_new_take_string (g_strdup_printf ("Application launched by %s",
+                                                                       app_name)));
+
+  {
+    GVariantBuilder exec_start_builder;
+
+    g_variant_builder_init (&exec_start_builder, G_VARIANT_TYPE ("a(sasb)"));
+    g_variant_builder_add (&exec_start_builder,
+                           "(s@asb)",
+                           executable,
+                           g_variant_new_strv (argv, argc),
+                           TRUE);
+
+    g_variant_builder_add (&builder,
+                           "(sv)",
+                           "ExecStart",
+                           g_variant_builder_end (&exec_start_builder));
+  }
+
+  {
+    g_autoptr (GPtrArray) env = NULL;
+
+    env = g_ptr_array_new_full (2, g_free);
+
+    if (info->filename)
+      g_ptr_array_add (env,
+                       g_strdup_printf ("GIO_LAUNCHED_DESKTOP_FILE=%s",
+                                        info->filename));
+
+    if (sn_id)
+      g_ptr_array_add (env,
+                       g_strdup_printf ("DESKTOP_STARTUP_ID=%s",
+                                        sn_id));
+
+    g_variant_builder_add (&builder,
+                           "(sv)",
+                           "Environment",
+                           g_variant_new_strv ((const char *const *) env->pdata, env->len));
+  }
+  g_variant_builder_close (&builder);
+
+  /* NOTE:
+   * We do not currently set GIO_LAUNCHED_DESKTOP_FILE_PID in this codepath.
+   * We could do so though if we use a wrapper similar/identical to the
+   * normal spawn path.
+   */
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(sa(sv))"));
+  g_variant_builder_close (&builder);
+
+  g_dbus_connection_call (session_bus,
+                          "org.freedesktop.systemd1",
+                          "/org/freedesktop/systemd1",
+                          "org.freedesktop.systemd1.Manager",
+                          "StartTransientUnit",
+                          g_variant_builder_end (&builder),
+                          G_VARIANT_TYPE ("(o)"),
+                          G_DBUS_CALL_FLAGS_NO_AUTO_START,
+                          1000,
+                          cancellable,
+                          callback,
+                          user_data);
+}
+
+static void
+task_return_first_error (GTask *task,
+                         GError *error)
+{
+  if (g_task_get_completed (task))
+    {
+      g_error_free (error);
+      return;
+    }
+
+  g_task_return_error (task, error);
+}
+
+static void
+launch_command_with_systemd_cb (GObject *object,
+                                GAsyncResult *result,
+                                gpointer user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GError *error = NULL;
+  LaunchUrisData *data = g_task_get_task_data (task);
+
+  data->systemd_pending -= 1;
+
+  g_dbus_connection_call_finish (G_DBUS_CONNECTION (object), result, &error);
+  if (error != NULL)
+    {
+      g_dbus_error_strip_remote_error (error);
+      task_return_first_error (task, g_steal_pointer (&error));
+    }
+  else
+    {
+      if (data->systemd_pending == 0 && !g_task_get_completed (task))
+        g_task_return_boolean (task, TRUE);
+    }
+
+  g_object_unref (task);
+}
+
+static void
+g_desktop_app_info_launch_uris_with_systemd (GDesktopAppInfo *info,
+                                             GDBusConnection *session_bus,
+                                             const char *exec_line,
+                                             GList *uris,
+                                             GAppLaunchContext *launch_context,
+                                             GCancellable *cancellable,
+                                             GTask *task_in)
+{
+  g_autoptr (GTask) task = task_in;
+  LaunchUrisData *data = NULL;
+  GError *error = NULL;
+  GList *dup_uris;
+  g_auto (GStrv) argv = NULL;
+  int argc;
+
+  g_assert (info != NULL);
+
+  if (task)
+    data = g_task_get_task_data (task);
+
+  /* The GList* passed to expand_application_parameters() will be modified
+   * internally by expand_macro(), so we need to pass a copy of it instead,
+   * and also use that copy to control the exit condition of the loop below.
+   */
+  dup_uris = uris;
+  do
+    {
+      g_autoptr (GList) launched_uris = NULL;
+      GList *old_uris;
+      GList *iter;
+      g_autofree char *executable = NULL;
+      g_autofree char *sn_id = NULL;
+
+      old_uris = dup_uris;
+      if (!expand_application_parameters (info, exec_line, &dup_uris, &argc, &argv, &error))
+        {
+          task_return_first_error (task, error);
+          return;
+        }
+
+      /* Get the subset of URIs we're launching with this process */
+      for (iter = old_uris; iter != NULL && iter != dup_uris; iter = iter->next)
+        launched_uris = g_list_prepend (launched_uris, iter->data);
+      launched_uris = g_list_reverse (launched_uris);
+
+      if (info->terminal && !prepend_terminal_to_vector (&argc, &argv))
+        {
+          error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_FAILED,
+                                       _("Unable to find terminal required for application"));
+          task_return_first_error (task, error);
+          return;
+        }
+
+      sn_id = NULL;
+      if (launch_context)
+        {
+          GList *launched_files = create_files_for_uris (launched_uris);
+
+          if (info->startup_notify)
+            sn_id = g_app_launch_context_get_startup_notify_id (launch_context,
+                                                                G_APP_INFO (info),
+                                                                launched_files);
+
+          g_list_free_full (launched_files, g_object_unref);
+        }
+
+      if (data)
+        data->systemd_pending += 1;
+
+      executable = g_find_program_in_path (argv[0]);
+      if (!executable)
+        {
+          error = g_error_new_literal (G_IO_ERROR, G_IO_ERROR_FAILED,
+                                       _("Unable to find requrested executable"));
+          task_return_first_error (task, error);
+          return;
+        }
+
+      if (task)
+        launch_command_with_systemd (info,
+                                     session_bus,
+                                     executable,
+                                     (const char *const *) argv, argc,
+                                     sn_id,
+                                     launch_context,
+                                     cancellable,
+                                     launch_command_with_systemd_cb,
+                                     g_object_ref (task));
+      else
+        launch_command_with_systemd (info,
+                                     session_bus,
+                                     executable,
+                                     (const char *const *) argv, argc,
+                                     sn_id,
+                                     launch_context,
+                                     cancellable,
+                                     NULL,
+                                     NULL);
+    }
+  while (dup_uris != NULL);
+}
+
+static gboolean
+systemd_user_instance_usable (GDBusConnection *session_bus)
+{
+  g_autofree char *systemd = NULL;
+  g_autofree char *bus = NULL;
+  GIOStream *stream;
+  g_autoptr (GSocketAddress) socket_addr = NULL;
+  const char *socket_path;
+
+  g_return_val_if_fail (session_bus, FALSE);
+
+  /* Note: A simpler test we could do is to inspect the cgroup name and figure
+   * out whether we are running in a unit started by the systemd user instance
+   * (basically what sd_pid_get_user_unit () does).
+   * However, that does not tell us whether we are actually able to talk to
+   * the systemd instance, as it could e.g. return an enclosing terminal unit
+   * in which dbus-run-session was invoked. */
+
+  /* First of all check that XDG_RUNTIME_DIR/systemd exists, if it does not
+   * exist, then we don't have a user systemd instance running.
+   */
+  systemd = g_build_filename (g_get_user_runtime_dir (), "systemd", NULL);
+  if (!g_file_test (systemd, G_FILE_TEST_IS_DIR))
+    return FALSE;
+
+  /* Let's be extra safe here, and check that we are actually talking to the
+   * correct session bus (i.e. on XDG_RUNTIME_DIR/bus).
+   *
+   * An example where this is not the case is when dbus-run-session is used.
+   */
+  bus = g_build_filename (g_get_user_runtime_dir (), "bus", NULL);
+
+  stream = g_dbus_connection_get_stream (session_bus);
+  if (!G_IS_UNIX_CONNECTION (stream))
+    return FALSE;
+
+  socket_addr = g_socket_connection_get_remote_address ((GSocketConnection *) stream, NULL);
+  if (!socket_addr)
+    return FALSE;
+
+  socket_path = g_unix_socket_address_get_path ((GUnixSocketAddress *) socket_addr);
+
+  return g_strcmp0 (socket_path, bus) == 0;
+}
+#endif
+
 static gboolean
 g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
                                          GList                      *uris,
@@ -3012,6 +3353,11 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
      */
     g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context,
                                               NULL, NULL, NULL);
+#if defined(__linux__) && !defined(__BIONIC__)
+  else if (session_bus && systemd_user_instance_usable (session_bus))
+    g_desktop_app_info_launch_uris_with_systemd (info, session_bus, info->exec, uris, launch_context,
+                                                 NULL, NULL);
+#endif
   else
     success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec, uris, launch_context,
                                                          spawn_flags, user_setup, user_setup_data,
@@ -3043,21 +3389,6 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
                                                   NULL, NULL, NULL, NULL,
                                                   -1, -1, -1,
                                                   error);
-}
-
-typedef struct
-{
-  GAppInfo *appinfo;
-  GList *uris;
-  GAppLaunchContext *context;
-} LaunchUrisData;
-
-static void
-launch_uris_data_free (LaunchUrisData *data)
-{
-  g_clear_object (&data->context);
-  g_list_free_full (data->uris, g_free);
-  g_free (data);
 }
 
 static void
@@ -3118,6 +3449,15 @@ launch_uris_bus_get_cb (GObject      *object,
                                                 launch_uris_with_dbus_cb,
                                                 g_steal_pointer (&task));
     }
+#if defined(__linux__) && !defined(__BIONIC__)
+  else if (session_bus && systemd_user_instance_usable (session_bus))
+    {
+      g_desktop_app_info_launch_uris_with_systemd (info, session_bus,
+                                                   info->exec, data->uris, data->context,
+                                                   cancellable,
+                                                   g_steal_pointer (&task));
+    }
+#endif
   else
     {
       /* FIXME: The D-Bus message from the notify_desktop_launch() function
@@ -4953,9 +5293,17 @@ g_desktop_app_info_launch_action (GDesktopAppInfo   *info,
       g_free (group_name);
 
       if (exec_line)
-        g_desktop_app_info_launch_uris_with_spawn (info, session_bus, exec_line, NULL, launch_context,
-                                                   _SPAWN_FLAGS_DEFAULT, NULL, NULL, NULL, NULL,
-                                                   -1, -1, -1, NULL);
+        {
+#if defined(__linux__) && !defined(__BIONIC__)
+          if (session_bus && systemd_user_instance_usable (session_bus))
+            g_desktop_app_info_launch_uris_with_systemd (info, session_bus, exec_line, NULL, launch_context,
+                                                         NULL, NULL);
+          else
+#endif
+            g_desktop_app_info_launch_uris_with_spawn (info, session_bus, exec_line, NULL, launch_context,
+                                                       _SPAWN_FLAGS_DEFAULT, NULL, NULL, NULL, NULL,
+                                                       -1, -1, -1, NULL);
+        }
 
       g_free (exec_line);
     }
