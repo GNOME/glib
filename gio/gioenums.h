@@ -199,7 +199,9 @@ typedef enum {
  *    rather than a "save new version of" replace operation.
  *    You can think of it as "unlink destination" before
  *    writing to it, although the implementation may not
- *    be exactly like that. Since 2.20
+ *    be exactly like that. This flag can only be used with
+ *    g_file_replace() and its variants, including g_file_replace_contents().
+ *    Since 2.20
  *
  * Flags used when an operation may create a file.
  */
