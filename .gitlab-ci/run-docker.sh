@@ -103,6 +103,8 @@ if [ $build == 1 ]; then
         echo -e "\e[1;32mBUILDING\e[0m: ${base} as ${TAG}"
         $SUDO_CMD docker build \
                 --build-arg HOST_USER_ID="$UID" \
+                --build-arg COVERITY_SCAN_PROJECT_NAME="${COVERITY_SCAN_PROJECT_NAME}" \
+                --build-arg COVERITY_SCAN_TOKEN="${COVERITY_SCAN_TOKEN}" \
                 --tag "${TAG}" \
                 --file "${base}.Dockerfile" .
         exit $?
