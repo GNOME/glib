@@ -131,7 +131,7 @@ g_app_info_default_init (GAppInfoInterface *iface)
    * The name of the application.
    *
    * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
-   * this is the value of the Name key.
+   * this is the value of the `Name` key.
    *
    * Since: 2.66
    */
