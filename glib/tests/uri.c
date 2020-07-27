@@ -382,7 +382,7 @@ test_uri_unescape_bytes (gconstpointer test_data)
   tests[] =
     {
       { "%00%00", NULL, 2, (const guint8 *) "\x00\x00" },
-      { "/cursors/none.png", "/", 17, "/cursors/none.png" },
+      { "/cursors/none.png", "/", 17, (const guint8 *) "/cursors/none.png" },
       { "/cursors%2fbad-subdir/none.png", "/", -1, NULL },
       { "%%", NULL, -1, NULL },
       { "%", NULL, -1, NULL },
