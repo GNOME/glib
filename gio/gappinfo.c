@@ -258,7 +258,7 @@ g_app_info_default_init (GAppInfoInterface *iface)
    * available applications.
    *
    * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
-   * this is the (inverted) value of the NoDisplay key.
+   * this is the (inverted) value of the `NoDisplay` key.
    *
    * Since: 2.66
    */
