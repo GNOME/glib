@@ -471,6 +471,37 @@ scan-build:
     paths:
       - "_scan_build/meson-logs/scanbuild"
 
+coverity:
+  extends: .build-only-schedules
+  image: $COVERITY_IMAGE
+  stage: analysis
+  needs: []
+  variables:
+    # cov-build doesn’t like GLIB_DEPRECATED_ENUMERATOR
+    CFLAGS: '-DGLIB_DISABLE_DEPRECATION_WARNINGS'
+  script:
+    - meson ${MESON_COMMON_OPTIONS}
+            --werror
+            --default-library=both
+            --prefix=$HOME/glib-installed
+            --libdir=lib
+            -Dsystemtap=true
+            -Ddtrace=true
+            -Dfam=true
+            -Dinstalled_tests=true
+            _coverity_build
+    - $HOME/cov-analysis-linux64-*/bin/cov-build --dir cov-int ninja -C _coverity_build
+    - tar cfz cov-int.tar.gz cov-int
+    - curl https://scan.coverity.com/builds?project=$COVERITY_SCAN_PROJECT_NAME
+           --form token=$COVERITY_SCAN_TOKEN --form email=$GITLAB_USER_EMAIL
+           --form file=@cov-int.tar.gz --form version="$CI_COMMIT_SHA"
+           --form description="$CI_COMMIT_SHA / $CI_COMMIT_TITLE / $CI_COMMIT_REF_NAME:$CI_PIPELINE_ID"
+  artifacts:
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    paths:
+      - "cov-int/build-log.txt"
+
 pages:
   stage: deploy
   only:
