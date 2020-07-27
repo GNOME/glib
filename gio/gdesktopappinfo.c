@@ -2825,32 +2825,367 @@ emit_launch_started (GAppLaunchContext *context,
 
 #define _SPAWN_FLAGS_DEFAULT (G_SPAWN_SEARCH_PATH)
 
-static gboolean
-g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
-                                           GDBusConnection            *session_bus,
-                                           const gchar                *exec_line,
-                                           GList                      *uris,
-                                           GAppLaunchContext          *launch_context,
-                                           GSpawnFlags                 spawn_flags,
-                                           GSpawnChildSetupFunc        user_setup,
-                                           gpointer                    user_setup_data,
-                                           GDesktopAppLaunchCallback   pid_callback,
-                                           gpointer                    pid_callback_data,
-                                           gint                        stdin_fd,
-                                           gint                        stdout_fd,
-                                           gint                        stderr_fd,
-                                           GError                    **error)
+#if defined(__linux__) && !defined(__BIONIC__)
+typedef struct
 {
-  gboolean completed = FALSE;
-  GList *old_uris;
-  GList *dup_uris;
+  int pipe[2];
+  GSpawnChildSetupFunc user_setup;
+  gpointer user_setup_data;
+} SpawnWrapperData;
 
-  char **argv, **envp;
+static void
+launch_uris_with_spawn_pass_delayfd (gpointer user_data)
+{
+  SpawnWrapperData *data = user_data;
+
+  /* Ensure our synchronization FD is passed to the shell */
+  fcntl (data->pipe[0], F_SETFD, 0);
+
+  if (data->user_setup)
+    data->user_setup (data->user_setup_data);
+}
+
+static gchar *
+systemd_unit_name_escape (const gchar *in)
+{
+  /* Adapted from systemd's unit_name_escape found in src/basic/unit-name.c */
+  GString *str = g_string_sized_new (strlen (in));
+
+  for (; *in; in++)
+    {
+      if (g_ascii_isalnum (*in) || *in == ':' || *in == '_' || *in == '.')
+        g_string_append_c (str, *in);
+      else
+        g_string_append_printf (str, "\\x%02x", *in);
+    }
+  return g_string_free (str, FALSE);
+}
+
+typedef struct _ScopeCreateData ScopeCreateData;
+typedef struct _SpawnTaskData SpawnTaskData;
+
+struct _ScopeCreateData
+{
+  SpawnTaskData *task_data; /* (unowned) */
+  ScopeCreateData *next; /* (owned) */
+
+  char *unit_name; /* (owned) */
+  char *job_object; /* (owned) */
+  int fd; /* (owned) */
+};
+
+struct _SpawnTaskData
+{
+  GTask *task; /* (owned), may be NULL */
+  GDBusConnection *connection; /* (owned) */
+  gboolean flushed;
+  guint job_watch;
+
+  ScopeCreateData *scope_tasks; /* (owned) */
+};
+
+static void
+scope_create_data_free (ScopeCreateData *data)
+{
+  if (data->fd >= 0)
+    close (data->fd);
+  data->fd = -1;
+
+  g_clear_pointer (&data->next, scope_create_data_free);
+  g_clear_pointer (&data->job_object, g_free);
+}
+
+static void
+spawn_task_data_free (SpawnTaskData *data)
+{
+  if (data->job_watch)
+    g_dbus_connection_signal_unsubscribe (data->connection, data->job_watch);
+  g_clear_pointer (&data->scope_tasks, scope_create_data_free);
+  g_clear_object (&data->connection);
+  g_clear_object (&data->task);
+
+  g_free (data);
+}
+
+static void
+launch_uris_with_spawn_check_done (SpawnTaskData *task_data)
+{
+  ScopeCreateData *scope_task;
+
+  if (!task_data->flushed)
+    return;
+
+  for (scope_task = task_data->scope_tasks; scope_task; scope_task = scope_task->next)
+    {
+      if (scope_task->fd >= 0)
+        return;
+    }
+
+  /* We are done, return the task (if we have one).
+   * Note that g_desktop_app_info_launch_uris_with_spawn may have returned
+   * an error already, so we need to check for that case.
+   */
+  if (task_data->task && !g_task_get_completed (task_data->task))
+    g_task_return_boolean (task_data->task, TRUE);
+
+  spawn_task_data_free (task_data);
+}
+
+static void
+on_systemd_job_removed_cb (GDBusConnection *connection,
+                           const char *sender_name,
+                           const char *object_path,
+                           const char *interface_name,
+                           const char *signal_name,
+                           GVariant *parameters,
+                           gpointer user_data)
+{
+  SpawnTaskData *task_data = user_data;
+  ScopeCreateData *scope_task;
+  guint32 id;
+  const char *path, *unit, *result;
+
+  g_assert (g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(uoss)")));
+
+  g_variant_get (parameters, "(u&o&s&s)", &id, &path, &unit, &result);
+  for (scope_task = task_data->scope_tasks; scope_task; scope_task = scope_task->next)
+    {
+      if (g_strcmp0 (scope_task->job_object, path) != 0)
+        continue;
+
+      if (g_strcmp0 (result, "done") != 0)
+        g_warning ("Job to create transient unit for child failed with status: %s", result);
+
+      g_assert (scope_task->fd >= 0);
+      close (scope_task->fd);
+      scope_task->fd = -1;
+
+      launch_uris_with_spawn_check_done (task_data);
+
+      break;
+    }
+}
+
+static void
+systemd_scope_created_cb (GObject *object,
+                          GAsyncResult *result,
+                          gpointer user_data)
+{
+  ScopeCreateData *data = user_data;
+  GVariant *res = NULL;
+  GError *error = NULL;
+
+  res = g_dbus_connection_call_finish (G_DBUS_CONNECTION (object), result, &error);
+  if (error != NULL)
+    {
+      g_debug ("Failed to create transient unit for child: %s", error->message);
+      g_error_free (error);
+
+      /* No job was created, give up. */
+      g_assert (data->fd >= 0);
+      close (data->fd);
+      data->fd = -1;
+
+      launch_uris_with_spawn_check_done (data->task_data);
+
+      return;
+    }
+
+  g_assert (data->job_object == NULL);
+  g_variant_get (res, "(o)", &data->job_object);
+
+  if (res)
+    g_variant_unref (res);
+
+  /* The next step is that we get a JobRemoved notification. */
+}
+
+static void
+create_systemd_scope (GDesktopAppInfo *info,
+                      gint pid,
+                      ScopeCreateData *scope_data)
+{
+  GVariantBuilder builder;
+  const char *source_path = NULL;
+  char *source_path_utf8 = NULL;
+  char *appid = NULL;
+  char *appid_escaped = NULL;
+  char *snid_escaped = NULL;
+  char *unit_name = NULL;
+
+  /* In this order:
+   *  1. Actual application ID from file
+   *  2. Stripping the .desktop from the desktop ID
+   *  3. Fall back to using the binary name
+   *  4. Use "unknown", just to be sure, we cannot exec() in that case anyway
+   */
+  if (info->app_id)
+    {
+      appid = g_strdup (info->app_id);
+    }
+  else if (info->desktop_id && g_str_has_suffix (info->desktop_id, ".desktop"))
+    {
+      appid = g_strndup (info->desktop_id, strlen (info->desktop_id) - strlen (".desktop"));
+    }
+  else if (info->binary && info->binary[0])
+    {
+      gchar **components;
+      int i;
+
+      /* info->binary cannot be an empty string */
+      components = g_strsplit (info->binary, G_DIR_SEPARATOR_S, -1);
+      g_assert(components[0] != NULL);
+
+      for (i = 0; components[i+1] != NULL; i++);
+      appid = g_steal_pointer (&components[i]);
+
+      g_strfreev (components);
+    }
+  else
+    {
+      appid = g_strdup ("unknown");
+    }
+
+  appid_escaped = systemd_unit_name_escape (appid);
+
+  /* Generate a name conforming to
+   *   https://systemd.io/DESKTOP_ENVIRONMENTS/
+   * We use the PID to disambiguate, as that should be unique enough.
+   */
+  unit_name = g_strdup_printf ("app-glib-%s-%d.scope", appid_escaped, pid);
+
+  source_path = g_desktop_app_info_get_filename (info);
+  if (source_path)
+    source_path_utf8 = g_filename_to_utf8 (source_path, -1, NULL, NULL, NULL);
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(ssa(sv)a(sa(sv)))"));
+  g_variant_builder_add (&builder, "s", unit_name);
+  g_variant_builder_add (&builder, "s", "fail"); /* job-mode */
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(sv)"));
+
+  /* Add a generic human readable description, can be changed at will.
+   * Note that this might be localized, but systemd wouldn't generally do this.
+   */
+  if (info->name)
+    g_variant_builder_add (&builder,
+                           "(sv)",
+                           "Description",
+                           g_variant_new_string (info->name));
+
+  /* If we have a .desktop file, document that the scope has been "generated"
+   * from it.
+   */
+  if (source_path_utf8)
+    g_variant_builder_add (&builder,
+                           "(sv)",
+                           "SourcePath",
+                           g_variant_new_take_string (source_path_utf8));
+
+  g_variant_builder_add (&builder,
+                         "(sv)",
+                         "PIDs",
+                         g_variant_new_fixed_array (G_VARIANT_TYPE_UINT32, &pid, 1, sizeof (guint32)));
+  /* Default to let systemd garbage collect failed applications we launched. */
+  g_variant_builder_add (&builder,
+                         "(sv)",
+                         "CollectMode",
+                         g_variant_new_string ("inactive-or-failed"));
+
+  g_variant_builder_close (&builder);
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(sa(sv))"));
+  g_variant_builder_close (&builder);
+
+  /* It is intentionally to not allow cancellation as cancellation could result
+   * in the created process to not be moved into a separate systemd unit.
+   */
+  g_dbus_connection_call (scope_data->task_data->connection,
+                          "org.freedesktop.systemd1",
+                          "/org/freedesktop/systemd1",
+                          "org.freedesktop.systemd1.Manager",
+                          "StartTransientUnit",
+                          g_variant_builder_end (&builder),
+                          G_VARIANT_TYPE ("(o)"),
+                          G_DBUS_CALL_FLAGS_NO_AUTO_START,
+                          -1,
+                          NULL,
+                          systemd_scope_created_cb,
+                          scope_data);
+
+  g_free (appid);
+  g_free (appid_escaped);
+  g_free (snid_escaped);
+  g_free (unit_name);
+}
+
+static void
+launch_uris_with_spawn_flush_cb (GObject *object,
+                                 GAsyncResult *result,
+                                 gpointer user_data)
+{
+  SpawnTaskData *task_data = user_data;
+
+  g_dbus_connection_flush_finish (G_DBUS_CONNECTION (object), result, NULL);
+
+  task_data->flushed = TRUE;
+
+  launch_uris_with_spawn_check_done (task_data);
+}
+#endif
+
+static gboolean
+g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo *info,
+                                           GDBusConnection *session_bus,
+                                           const gchar *exec_line,
+                                           GList *uris,
+                                           GAppLaunchContext *launch_context,
+                                           GSpawnFlags spawn_flags,
+                                           GSpawnChildSetupFunc user_setup,
+                                           gpointer user_setup_data,
+                                           GDesktopAppLaunchCallback pid_callback,
+                                           gpointer pid_callback_data,
+                                           gint stdin_fd,
+                                           gint stdout_fd,
+                                           gint stderr_fd,
+                                           GTask *task,
+                                           GError **error_out)
+{
+#if defined(__linux__) && !defined(__BIONIC__)
+  SpawnTaskData *task_data = NULL;
+#endif
+  GList *dup_uris;
+  GStrv envp = NULL;
+  GError *error = NULL;
+  char *sn_id = NULL;
   int argc;
 
+  /* We may get a task to report back on or an error. But never both.
+   * Note that g_desktop_app_info_launch_action is currently passing neither.
+   */
+  g_assert (!(task && error_out));
   g_return_val_if_fail (info != NULL, FALSE);
 
-  argv = NULL;
+#if defined(__linux__) && !defined(__BIONIC__)
+  /* Prepare task data for systemd integration */
+  if (session_bus)
+    {
+      task_data = g_new0 (SpawnTaskData, 1);
+      if (task)
+        task_data->task = g_object_ref (task);
+      task_data->connection = g_object_ref (session_bus);
+      task_data->job_watch = g_dbus_connection_signal_subscribe (session_bus,
+                                                                 "org.freedesktop.systemd1",
+                                                                 "org.freedesktop.systemd1.Manager",
+                                                                 "JobRemoved",
+                                                                 "/org/freedesktop/systemd1",
+                                                                 NULL,
+                                                                 G_DBUS_SIGNAL_FLAGS_NONE,
+                                                                 on_systemd_job_removed_cb,
+                                                                 task_data,
+                                                                 NULL);
+    }
+#endif
 
   if (launch_context)
     envp = g_app_launch_context_get_environment (launch_context);
@@ -2864,13 +3199,50 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
   dup_uris = uris;
   do
     {
+      GList *old_uris;
+      GStrv argv = NULL;
+      GList *launched_uris = NULL;
       GPid pid;
-      GList *launched_uris;
       GList *iter;
-      char *sn_id = NULL;
-      char **wrapped_argv;
       int i;
-      gsize j;
+
+      /* Wrap the @argv in a command which will:
+       *  1. set the `GIO_LAUNCHED_DESKTOP_FILE_PID` environment variable, and
+       *  2. synchronize startup with the systemd scope creation.
+       * Both actions need to be done after the new process has been spawned.
+       * We can't use either setenv() or read()/close() between fork() and
+       * exec() because we’d rather use posix_spawn() for speed.
+       *
+       * For 1. we simply set the environment variable (using export).
+       * For 2. we pass the read side of a pipe which GLib will close
+       * after systemd has replied.
+       *
+       * `sh` should be available on all the platforms that `GDesktopAppInfo`
+       * currently supports (since they are all POSIX). If additional platforms
+       * need to be supported in future, it will probably have to be replaced
+       * with a wrapper program (grep the GLib git history for
+       * `gio-launch-desktop` for an example of this which could be
+       * resurrected).
+       *
+       * We skip compiling the systemd synchronization when on android.
+       */
+
+#if defined(__linux__) && !defined(__BIONIC__)
+      SpawnWrapperData wrapper_data;
+        /* The command does:
+         *  0. Set GIO_LAUNCHED_DESKTOP_FILE_PID to its pid
+         *  1. Wait for $signal_fd to be closed using read (shell builtin).
+         *     This uses procfs as we need a non-posix shell otherwise.
+         *  2. Check that we can close the FD.
+         *       ( set -n; exec %1$d<&- )
+         *     Posix only requires FDs from 0-9. So this may fail in e.g. dash.
+         *  3. exec the actual command,
+         *     closing the FD if possible, otherwise leaking it into the child.
+         * It replaces the usual shell script if we may have systemd available.
+         */
+      gchar *wrapper_command = NULL;
+#define WRAPPER_COMMAND "export GIO_LAUNCHED_DESKTOP_FILE_PID=$$; read TMP </proc/self/fd/%1$d || true; ( set -n; exec %1$d<&- ) 2>/dev/null && exec \"$@\" %1$d<&- || exec \"$@\""
+#endif
       const gchar * const wrapper_argv[] =
         {
           "/bin/sh",
@@ -2879,20 +3251,22 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           "-c", "export GIO_LAUNCHED_DESKTOP_FILE_PID=$$; exec \"$@\"",
           "sh",  /* argv[0] for sh */
         };
+      GStrv wrapped_argv = NULL;
+      GSpawnChildSetupFunc setup = user_setup;
+      gpointer setup_data = user_setup_data;
 
       old_uris = dup_uris;
-      if (!expand_application_parameters (info, exec_line, &dup_uris, &argc, &argv, error))
+      if (!expand_application_parameters (info, exec_line, &dup_uris, &argc, &argv, &error))
         goto out;
 
       /* Get the subset of URIs we're launching with this process */
-      launched_uris = NULL;
       for (iter = old_uris; iter != NULL && iter != dup_uris; iter = iter->next)
         launched_uris = g_list_prepend (launched_uris, iter->data);
       launched_uris = g_list_reverse (launched_uris);
 
       if (info->terminal && !prepend_terminal_to_vector (&argc, &argv))
         {
-          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+          g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_FAILED,
                                _("Unable to find terminal required for application"));
           goto out;
         }
@@ -2903,7 +3277,6 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
                                  info->filename,
                                  TRUE);
 
-      sn_id = NULL;
       if (launch_context)
         {
           GList *launched_files = create_files_for_uris (launched_uris);
@@ -2922,49 +3295,96 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           emit_launch_started (launch_context, info, sn_id);
         }
 
-      /* Wrap the @argv in a command which will set the
-       * `GIO_LAUNCHED_DESKTOP_FILE_PID` environment variable. We can’t set this
-       * in @envp along with `GIO_LAUNCHED_DESKTOP_FILE` because we need to know
-       * the PID of the new forked process. We can’t use setenv() between fork()
-       * and exec() because we’d rather use posix_spawn() for speed.
-       *
-       * `sh` should be available on all the platforms that `GDesktopAppInfo`
-       * currently supports (since they are all POSIX). If additional platforms
-       * need to be supported in future, it will probably have to be replaced
-       * with a wrapper program (grep the GLib git history for
-       * `gio-launch-desktop` for an example of this which could be
-       * resurrected). */
       wrapped_argv = g_new (char *, argc + G_N_ELEMENTS (wrapper_argv) + 1);
+      wrapped_argv[argc + G_N_ELEMENTS (wrapper_argv)] = NULL;
 
-      for (j = 0; j < G_N_ELEMENTS (wrapper_argv); j++)
-        wrapped_argv[j] = g_strdup (wrapper_argv[j]);
+      for (i = 0; i < (int) G_N_ELEMENTS (wrapper_argv); i++)
+        wrapped_argv[i] = g_strdup (wrapper_argv[i]);
       for (i = 0; i < argc; i++)
-        wrapped_argv[i + G_N_ELEMENTS (wrapper_argv)] = g_steal_pointer (&argv[i]);
+        wrapped_argv[i + G_N_ELEMENTS (wrapper_argv)] = (gchar *) argv[i];
 
-      wrapped_argv[i + G_N_ELEMENTS (wrapper_argv)] = NULL;
-      g_free (argv);
-      argv = NULL;
+#if defined(__linux__) && !defined(__BIONIC__)
+      if (task_data)
+        {
+          /* Create pipes, if we use a setup func, then set cloexec,
+           * otherwise our wrapper script will close both sides. */
+          if (!g_unix_open_pipe (wrapper_data.pipe, FD_CLOEXEC, NULL))
+            {
+              g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                                   _("Unable to create pipe for systemd synchronization"));
+              goto out;
+            }
+
+          /* Remove CLOEXEC on the read side, as it is passed to the child. */
+          fcntl (wrapper_data.pipe[0], F_SETFD, 0);
+
+          if (!(spawn_flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN))
+            {
+              /* In this case, we use a setup function to clear CLOEXEC again.
+               * We could also wait for the FD and set the environment variable
+               * there. If we did that, we would need to push the job watching
+               * into a different thread though.
+               *
+               * Note that this does not incur an additional cost because
+               * %G_SPAWN_LEAVE_DESCRIPTORS_OPEN must be set in order to use
+               * posix_spawn.
+               */
+              wrapper_data.user_setup = setup;
+              wrapper_data.user_setup_data = setup_data;
+
+              setup = launch_uris_with_spawn_pass_delayfd;
+              setup_data = &wrapper_data;
+            }
+
+          /* Overwrite the command with one that waits for the pipe to close. */
+          wrapper_command = g_strdup_printf (WRAPPER_COMMAND, wrapper_data.pipe[0]);
+          wrapped_argv[G_N_ELEMENTS (wrapper_argv) - 2] = wrapper_command;
+        }
+#endif
 
       if (!g_spawn_async_with_fds (info->path,
                                    wrapped_argv,
                                    envp,
                                    spawn_flags,
-                                   user_setup,
-                                   user_setup_data,
+                                   setup,
+                                   setup_data,
                                    &pid,
                                    stdin_fd,
                                    stdout_fd,
                                    stderr_fd,
-                                   error))
+                                   &error))
         {
+#if defined(__linux__) && !defined(__BIONIC__)
+          close (wrapper_data.pipe[0]);
+          close (wrapper_data.pipe[1]);
+#endif
+
           if (sn_id)
             g_app_launch_context_launch_failed (launch_context, sn_id);
 
-          g_free (sn_id);
-          g_list_free (launched_uris);
-
           goto out;
         }
+
+#if defined(__linux__) && !defined(__BIONIC__)
+      if (task_data)
+        {
+          ScopeCreateData *data;
+
+          /* We close write side asynchronously later on when the dbus call
+           * to systemd finishes. */
+          close (wrapper_data.pipe[0]);
+
+          data = g_new0 (ScopeCreateData, 1);
+
+          data->fd = wrapper_data.pipe[1];
+          data->task_data = task_data;
+
+          data->next = task_data->scope_tasks;
+          task_data->scope_tasks = data;
+
+          create_systemd_scope (info, pid, data);
+        }
+#endif
 
       if (pid_callback != NULL)
         pid_callback (info, pid, pid_callback_data);
@@ -2990,21 +3410,68 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
                              sn_id,
                              launched_uris);
 
-      g_free (sn_id);
-      g_list_free (launched_uris);
-
-      g_strfreev (wrapped_argv);
-      wrapped_argv = NULL;
+    out:
+      g_clear_pointer (&sn_id, g_free);
+      g_clear_pointer (&launched_uris, g_list_free);
+      g_clear_pointer (&wrapped_argv, g_free);
+      g_clear_pointer (&argv, g_strfreev);
+#if defined(__linux__) && !defined(__BIONIC__)
+      g_clear_pointer (&wrapper_command, g_free);
+#endif
     }
-  while (dup_uris != NULL);
+  while (dup_uris != NULL && !error);
 
-  completed = TRUE;
-
- out:
-  g_strfreev (argv);
   g_strfreev (envp);
 
-  return completed;
+
+  if (session_bus != NULL) /* !!session_bus == !!task_data */
+    {
+      GCancellable *cancellable = task ? g_task_get_cancellable (task) : NULL;
+#if defined(__linux__) && !defined(__BIONIC__)
+
+      /* FIXME: The D-Bus message from the notify_desktop_launch() function
+       * can be still lost even if flush is called later. See:
+       * https://gitlab.freedesktop.org/dbus/dbus/issues/72
+       */
+      g_dbus_connection_flush (session_bus,
+                               cancellable,
+                               launch_uris_with_spawn_flush_cb,
+                               task_data);
+#else
+      g_dbus_connection_flush (session_bus, cancellable, NULL, NULL);
+#endif
+    }
+
+  if (task)
+    {
+      /* Return error via the task (pre-empting any return through other means).
+       * Otherwise, return if it will not happen through other means.
+       */
+      if (error)
+        g_task_return_error (task, g_steal_pointer (&error));
+#if defined(__linux__) && !defined(__BIONIC__)
+      else if (task_data != NULL)
+#else
+      else
+#endif
+        g_task_return_boolean (task, TRUE);
+
+      g_clear_object (&task);
+      /* Return value is ignored in this case. */
+      return FALSE;
+    }
+  else
+    {
+      if (error)
+        {
+          g_propagate_error (error_out, g_steal_pointer (&error));
+          return FALSE;
+        }
+      else
+        {
+          return TRUE;
+        }
+    }
 }
 
 static gchar *
@@ -3229,17 +3696,9 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
     success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec, uris, launch_context,
                                                          spawn_flags, user_setup, user_setup_data,
                                                          pid_callback, pid_callback_data,
-                                                         stdin_fd, stdout_fd, stderr_fd, error);
+                                                         stdin_fd, stdout_fd, stderr_fd, NULL, error);
 
-  if (session_bus != NULL)
-    {
-      /* This asynchronous flush holds a reference until it completes,
-       * which ensures that the following unref won't immediately kill
-       * the connection if we were the initial owner.
-       */
-      g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
-      g_object_unref (session_bus);
-    }
+  g_clear_object (&session_bus);
 
   return success;
 }
@@ -3294,18 +3753,6 @@ launch_uris_with_dbus_cb (GObject      *object,
 }
 
 static void
-launch_uris_flush_cb (GObject      *object,
-                      GAsyncResult *result,
-                      gpointer      user_data)
-{
-  GTask *task = G_TASK (user_data);
-
-  g_dbus_connection_flush_finish (G_DBUS_CONNECTION (object), result, NULL);
-  g_task_return_boolean (task, TRUE);
-  g_object_unref (task);
-}
-
-static void
 launch_uris_bus_get_cb (GObject      *object,
                         GAsyncResult *result,
                         gpointer      user_data)
@@ -3313,11 +3760,16 @@ launch_uris_bus_get_cb (GObject      *object,
   GTask *task = G_TASK (user_data);
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (g_task_get_source_object (task));
   LaunchUrisData *data = g_task_get_task_data (task);
+  LaunchUrisData *data_copy = NULL;
   GCancellable *cancellable = g_task_get_cancellable (task);
   GDBusConnection *session_bus;
-  GError *error = NULL;
 
   session_bus = g_bus_get_finish (result, NULL);
+
+  data_copy = g_new0 (LaunchUrisData, 1);
+  data_copy->appinfo = g_steal_pointer (&data->appinfo);
+  data_copy->uris = g_steal_pointer (&data->uris);
+  data_copy->context = g_steal_pointer (&data->context);
 
   if (session_bus && info->app_id)
     {
@@ -3326,34 +3778,21 @@ launch_uris_bus_get_cb (GObject      *object,
        * uses blocking calls.
        */
       g_desktop_app_info_launch_uris_with_dbus (info, session_bus,
-                                                data->uris, data->context,
+                                                data_copy->uris, data_copy->context,
                                                 cancellable,
                                                 launch_uris_with_dbus_cb,
                                                 g_steal_pointer (&task));
     }
   else
     {
-      /* FIXME: The D-Bus message from the notify_desktop_launch() function
-       * can be still lost even if flush is called later. See:
-       * https://gitlab.freedesktop.org/dbus/dbus/issues/72
-       */
       g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec,
-                                                 data->uris, data->context,
+                                                 data_copy->uris, data_copy->context,
                                                  _SPAWN_FLAGS_DEFAULT, NULL,
                                                  NULL, NULL, NULL, -1, -1, -1,
-                                                 &error);
-      if (error != NULL)
-        {
-          g_task_return_error (task, g_steal_pointer (&error));
-          g_object_unref (task);
-        }
-      else
-        g_dbus_connection_flush (session_bus,
-                                 cancellable,
-                                 launch_uris_flush_cb,
-                                 g_steal_pointer (&task));
+                                                 g_steal_pointer (&task), NULL);
     }
 
+  launch_uris_data_free (data_copy);
   g_clear_object (&session_bus);
 }
 
@@ -5169,16 +5608,12 @@ g_desktop_app_info_launch_action (GDesktopAppInfo   *info,
       if (exec_line)
         g_desktop_app_info_launch_uris_with_spawn (info, session_bus, exec_line, NULL, launch_context,
                                                    _SPAWN_FLAGS_DEFAULT, NULL, NULL, NULL, NULL,
-                                                   -1, -1, -1, NULL);
+                                                   -1, -1, -1, NULL, NULL);
 
       g_free (exec_line);
     }
 
-  if (session_bus != NULL)
-    {
-      g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
-      g_object_unref (session_bus);
-    }
+  g_clear_object (&session_bus);
 }
 /* Epilogue {{{1 */
 

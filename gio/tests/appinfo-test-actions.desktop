@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Actions=frob;tweak;twiddle;broken;
-Exec=true
+Exec=touch %f
 
 [Desktop Action frob]
 Name=Frobnicate

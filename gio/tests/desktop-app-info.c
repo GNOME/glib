@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 static GAppInfo *
 create_app_info (const char *name)
@@ -793,6 +794,217 @@ test_launch_as_manager (void)
   g_assert_finalize_object (context);
 }
 
+static void
+pid_callback (GDesktopAppInfo *appinfo, GPid pid, gpointer user_data)
+{
+  GPid *pids = user_data;
+
+  while (*pids)
+    pids++;
+
+  *pids = pid;
+}
+
+static void
+child_done_cb (GPid pid, gint wait_status, gpointer user_data)
+{
+  gboolean *done = user_data;
+
+  g_assert_cmpint (wait_status, ==, 0);
+
+  *done = TRUE;
+}
+
+static void
+check_systemd_unit (char *escaped_appid, GPid child)
+{
+  GDBusConnection *bus;
+  GError *error = NULL;
+  GVariant *res = NULL;
+  gchar *unit_name = g_strdup_printf ("app-glib-%s-%d.scope", escaped_appid, child);
+  gchar *cgroups_file;
+  gchar *contents = NULL;
+  gchar *cgroup;
+
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  if (!bus)
+    return;
+
+  /* This purely exists to check whether the environment has (a working) systemd. */
+  res = g_dbus_connection_call_sync (bus,
+                                     "org.freedesktop.systemd1",
+                                     "/org/freedesktop/systemd1",
+                                     "org.freedesktop.systemd1.Manager",
+                                     "GetUnitByPid",
+                                     g_variant_new ("(u)", getpid ()),
+                                     G_VARIANT_TYPE ("(o)"),
+                                     G_DBUS_CALL_FLAGS_NO_AUTO_START,
+                                     -1,
+                                     NULL, &error);
+  if (error)
+    {
+      gchar *remote = g_dbus_error_get_remote_error (error);
+      g_assert_cmpstr (remote, !=, "org.freedesktop.systemd1.NoSuchUnit");
+      g_free (remote);
+    }
+
+  /* We have systemd; the PID is already dead (no unit anymore) but we can
+   * extract the systemd unit name from the cgroup that is still readable.
+   */
+  cgroups_file = g_strdup_printf ("/proc/%d/cgroup", child);
+
+  if (!g_file_get_contents (cgroups_file, &contents, NULL, NULL))
+    goto out;
+
+  /* Assume cgroups v2 */
+  if (!g_str_has_prefix (contents, "0::"))
+    goto out;
+
+  g_strchomp (contents);
+  if (g_str_has_suffix (contents, " (deleted)"))
+    contents[strlen(contents) - 10] = '\0';
+  cgroup = strrchr(contents, '/');
+  g_assert_nonnull (cgroup);
+  cgroup++;
+
+  /* NOTE: cgroup has escaping, but that is not applicable here. */
+  g_assert_cmpstr (cgroup, ==, unit_name);
+
+out:
+  g_free (cgroups_file);
+  g_free (contents);
+  g_free (unit_name);
+  if (res)
+    g_variant_unref (res);
+}
+
+/* Test desktop file launching when the spawn code path is used. */
+static void
+test_launch_with_spawn (void)
+{
+  GDesktopAppInfo *appinfo;
+  GError *error = NULL;
+  gboolean retval;
+  GPid pids[3] = { 0, 0, 0 };
+  const char *files[2] = { "spawned-1", "spawned-2" };
+  gboolean done[2] = { FALSE, FALSE };
+  GList *uris = NULL;
+  gsize i;
+
+  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test-actions.desktop", NULL));
+  g_assert_nonnull (appinfo);
+
+  for (i = 0; i < G_N_ELEMENTS (files); i++)
+    {
+      GFile *file = g_file_new_for_path (files[i]);
+      uris = g_list_append (uris, g_file_get_uri (file));
+      g_object_unref (file);
+    }
+
+  /* Do not reap, so we can read the cgroup after the child is dead. */
+  retval = g_desktop_app_info_launch_uris_as_manager (appinfo, uris, NULL,
+                                                      G_SPAWN_LEAVE_DESCRIPTORS_OPEN | G_SPAWN_DO_NOT_REAP_CHILD,
+                                                      NULL, NULL,
+                                                      pid_callback, pids,
+                                                      &error);
+  g_assert_no_error (error);
+  g_assert_true (retval);
+  g_assert_cmpint (pids[0], >=, 0);
+  g_assert_cmpint (pids[1], >=, 0);
+  g_assert_cmpint (pids[2], ==, 0);
+
+  wait_for_file ("spawned-1", "frob", "tweak");
+  wait_for_file ("spawned-2", "frob", "tweak");
+
+  check_systemd_unit ("appinfo\\x2dtest\\x2dactions", pids[0]);
+  check_systemd_unit ("appinfo\\x2dtest\\x2dactions", pids[1]);
+
+  /* We could also do this blocking, as the child is likely dead already */
+  g_child_watch_add (pids[0], child_done_cb, &done[0]);
+  g_child_watch_add (pids[1], child_done_cb, &done[1]);
+  while (!done[0] || !done[1])
+    g_main_context_iteration (NULL, TRUE);
+
+  g_list_free_full (uris, g_free);
+  g_object_unref (appinfo);
+}
+
+static void
+child_setup_func (gpointer user_data)
+{
+  GDBusConnection *session_bus = user_data;
+  int i, inherited_fds = 0;
+
+  /* Double check we didn't leak an FD into the child at this point */
+  for (i = 0; i < 1024; i++)
+    {
+      int flags = fcntl (i, F_GETFD);
+      if (flags >= 0 && (flags & FD_CLOEXEC) == 0)
+        inherited_fds++;
+    }
+  if (inherited_fds != 3 + !!session_bus)
+    {
+      const char *msg = "Unexpected number of open FDs (should be exactly stdin/stdout/stderr plus synchronization FD if a session bus exists)\n";
+      write (2, msg, strlen(msg));
+      exit (1);
+    }
+
+  /* Touch "child-setup", so that we know this function was called */
+  g_file_set_contents ("child-setup", "", -1, NULL);
+}
+
+/* Test desktop file launching when the fork code path is used. */
+static void
+test_launch_with_fork (void)
+{
+  GDesktopAppInfo *appinfo;
+  GError *error = NULL;
+  gboolean retval;
+  GPid pids[3] = { 0, 0, 0 };
+  const char *files[2] = { "spawned-1", "spawned-2" };
+  gboolean done[2] = { FALSE, FALSE };
+  GList *uris = NULL;
+  gsize i;
+
+  appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test-actions.desktop", NULL));
+  g_assert_nonnull (appinfo);
+
+  for (i = 0; i < G_N_ELEMENTS (files); i++)
+    {
+      GFile *file = g_file_new_for_path (files[i]);
+      uris = g_list_append (uris, g_file_get_uri (file));
+      g_object_unref (file);
+    }
+
+  /* Do not reap, so we can read the cgroup after the child is dead. */
+  retval = g_desktop_app_info_launch_uris_as_manager (appinfo, uris, NULL,
+                                                      G_SPAWN_DO_NOT_REAP_CHILD,
+                                                      child_setup_func, g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
+                                                      pid_callback, pids,
+                                                      &error);
+  g_assert_no_error (error);
+  g_assert_true (retval);
+  g_assert_cmpint (pids[0], >=, 0);
+  g_assert_cmpint (pids[1], >=, 0);
+  g_assert_cmpint (pids[2], ==, 0);
+
+  wait_for_file ("spawned-1", "frob", "tweak");
+  wait_for_file ("spawned-2", "frob", "tweak");
+  wait_for_file ("child-setup", "spawned-1", "spawned-2");
+
+  check_systemd_unit ("appinfo\\x2dtest\\x2dactions", pids[0]);
+  check_systemd_unit ("appinfo\\x2dtest\\x2dactions", pids[1]);
+
+  /* We could also do this blocking, as the child is likely dead already */
+  g_child_watch_add (pids[0], child_done_cb, &done[0]);
+  g_child_watch_add (pids[1], child_done_cb, &done[1]);
+  while (!done[0] || !done[1])
+    g_main_context_iteration (NULL, TRUE);
+
+  g_list_free_full (uris, g_free);
+  g_object_unref (appinfo);
+}
+
 /* Test if Desktop-File Id is correctly formed */
 static void
 test_id (void)
@@ -826,6 +1038,8 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/implements", test_implements);
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
+  g_test_add_func ("/desktop-app-info/launch-with-spawn", test_launch_with_spawn);
+  g_test_add_func ("/desktop-app-info/launch-with-fork", test_launch_with_fork);
   g_test_add_func ("/desktop-app-info/id", test_id);
 
   return g_test_run ();
