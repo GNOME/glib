@@ -24,7 +24,9 @@
 
 #include <string.h>
 
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
 
 #include "gparamspecs.h"
 #include "gtype-private.h"
