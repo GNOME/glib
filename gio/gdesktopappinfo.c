@@ -94,7 +94,6 @@ enum {
   PROP_SHOULD_SHOW,
   PROP_SUPPORTED_TYPES,
   PROP_CAN_DELETE,
-  NUM_PROPERTIES
 };
 
 static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
