@@ -216,7 +216,7 @@ g_app_info_default_init (GAppInfoInterface *iface)
    *
    * The icon for the application.
    *
-   * May be %NULL, depending on how the GAppInfo has been constructed.
+   * May be %NULL, depending on how the #GAppInfo has been constructed.
    *
    * Since: 2.66
    */
