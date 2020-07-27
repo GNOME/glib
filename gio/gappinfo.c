@@ -276,7 +276,7 @@ g_app_info_default_init (GAppInfoInterface *iface)
    * directly by the application.
    *
    * In #GAppInfos created from [desktop files](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
-   * this is the (inverted) value of the MimeType key.
+   * this is the value of the `MimeType` key.
    *
    * May be %NULL, depending on how the #GAppInfo has been constructed.
    *
