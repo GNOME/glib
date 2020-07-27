@@ -2,3 +2,4 @@
 directory=sysprof
 url=https://gitlab.gnome.org/GNOME/sysprof.git
 revision=6b1cd7a722fcebae1ac392562c47957477ade8bf
+depth=1
