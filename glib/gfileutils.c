@@ -1444,12 +1444,23 @@ consistent_out:
           /* ELOOP indicates that @filename is a symlink, since we used
            * O_NOFOLLOW (alternately it could indicate that @filename contains
            * looping or too many symlinks). In either case, try again on the
-           * %G_FILE_SET_CONTENTS_CONSISTENT code path. */
+           * %G_FILE_SET_CONTENTS_CONSISTENT code path.
+           *
+           * FreeBSD uses EMLINK instead of ELOOP
+           * (https://www.freebsd.org/cgi/man.cgi?query=open&sektion=2#STANDARDS),
+           * and NetBSD uses EFTYPE
+           * (https://netbsd.gw.com/cgi-bin/man-cgi?open+2+NetBSD-current). */
+#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+          if (saved_errno == EMLINK)
+#elif defined(__NetBSD__)
+          if (saved_errno == EFTYPE)
+#else
           if (saved_errno == ELOOP)
+#endif
             return g_file_set_contents_full (filename, contents, length,
                                              flags | G_FILE_SET_CONTENTS_CONSISTENT,
                                              mode, error);
-#endif
+#endif  /* O_NOFOLLOW */
 
           set_file_error (error,
                           filename, _("Failed to open file “%s”: %s"),
