@@ -1115,6 +1115,34 @@ test_uri_split (void)
   g_free (host);
   g_free (query);
 
+  g_uri_split ("http://h%01st/%C3%89t%C3%A9%2Bhiver",
+               G_URI_FLAGS_ENCODED_PATH,
+               NULL,
+               NULL,
+               NULL,
+               NULL,
+               &path,
+               NULL,
+               NULL,
+               &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (path, ==, "/%C3%89t%C3%A9%2Bhiver");
+  g_free (path);
+
+  g_uri_split ("http://h%01st/path#%C3%89t%C3%A9%2Bhiver",
+               G_URI_FLAGS_ENCODED_FRAGMENT,
+               NULL,
+               NULL,
+               NULL,
+               NULL,
+               NULL,
+               NULL,
+               &fragment,
+               &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (fragment, ==, "%C3%89t%C3%A9%2Bhiver");
+  g_free (fragment);
+
   g_uri_split_with_user ("scheme://user:pass;auth@host:1234/path?query#fragment",
                          G_URI_FLAGS_HAS_AUTH_PARAMS|G_URI_FLAGS_HAS_PASSWORD,
                          NULL,
