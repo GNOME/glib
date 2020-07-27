@@ -31,6 +31,14 @@ variables:
     - bash .gitlab-ci/show-execution-environment.sh
     - cp -r $HOME/subprojects/* subprojects/
 
+# Some jobs take a long time and are unlikely to find failures (or will find
+# failures which are not merge-blockers to fix), so they’re executed on a weekly
+# schedule in order to save CI resources and speed up branch pipelines.
+.build-only-schedules:
+  extends: .build
+  only:
+    - schedules
+
 style-check-diff:
   extends: .only-default
   image: $DEBIAN_IMAGE
@@ -123,7 +131,7 @@ debian-stable-x86_64:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 installed-tests:
-  extends: .build
+  extends: .build-only-schedules
   image: $FEDORA_IMAGE
   stage: build
   script:
@@ -177,7 +185,7 @@ installed-tests:
       - "_build/installed-tests-report/"
 
 G_DISABLE_ASSERT:
-  extends: .build
+  extends: .build-only-schedules
   image: $FEDORA_IMAGE
   stage: build
   script:
@@ -203,7 +211,7 @@ G_DISABLE_ASSERT:
       - "_build/${CI_JOB_NAME}-report.xml"
 
 valgrind:
-  extends: .build
+  extends: .build-only-schedules
   image: $FEDORA_IMAGE
   stage: analysis
   variables:
@@ -429,7 +437,7 @@ coverage:
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
 
 scan-build:
-  extends: .build
+  extends: .build-only-schedules
   image: $FEDORA_IMAGE
   stage: analysis
   script:
