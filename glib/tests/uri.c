@@ -1267,7 +1267,9 @@ test_uri_is_valid (void)
   g_assert_true (g_uri_is_valid ("http://\xc3\x89XAMPLE.COM/", G_URI_FLAGS_NONE, NULL));
 
   g_assert_true (g_uri_is_valid ("  \r http\t://f oo  \t\n ", G_URI_FLAGS_NONE, NULL));
-  g_assert_true (g_uri_is_valid ("  \r http\t://f oo  \t\n ", G_URI_FLAGS_PARSE_STRICT, NULL));
+  g_assert_false (g_uri_is_valid ("  \r http\t://f oo  \t\n ", G_URI_FLAGS_PARSE_STRICT, &error));
+  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_BAD_SCHEME);
+  g_clear_error (&error);
 
   g_assert_false (g_uri_is_valid ("http://[::192.9.5.5/ipng", G_URI_FLAGS_NONE, &error));
   g_assert_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST);

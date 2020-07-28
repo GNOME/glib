@@ -110,7 +110,7 @@ gboolean     g_uri_split_network    (const gchar  *uri_string,
                                      GError      **error);
 
 GLIB_AVAILABLE_IN_2_66
-gboolean     g_uri_is_valid         (const gchar  *uri_ref,
+gboolean     g_uri_is_valid         (const gchar  *uri_string,
                                      GUriFlags     flags,
                                      GError      **error);
 

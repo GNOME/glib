@@ -1039,32 +1039,29 @@ g_uri_split_network (const gchar  *uri_string,
 
 /**
  * g_uri_is_valid:
- * @uri_ref: a string containing a relative or absolute URI
- * @flags: flags for parsing @uri_ref
+ * @uri_string: a string containing an absolute URI
+ * @flags: flags for parsing @uri_string
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_ref (which can be an absolute or relative URI)
- * according to @flags, to determine whether it is valid.
+ * Parses @uri_string according to @flags, to determine whether it is valid
+ * absolute URI.
  *
  * See g_uri_split(), and the definition of #GUriFlags, for more
  * information on the effect of @flags.
  *
- * Returns: %TRUE if @uri_ref parsed successfully, %FALSE on error.
+ * Returns: %TRUE if @uri_string parsed successfully, %FALSE on error.
  *
  * Since: 2.66
  */
 gboolean
-g_uri_is_valid (const gchar  *uri_ref,
+g_uri_is_valid (const gchar  *uri_string,
                 GUriFlags     flags,
                 GError      **error)
 {
-  g_return_val_if_fail (uri_ref != NULL, FALSE);
+  g_return_val_if_fail (uri_string != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  return g_uri_split_internal (uri_ref, flags,
-                               NULL, NULL, NULL, NULL, NULL,
-                               NULL, NULL, NULL, NULL, NULL,
-                               error);
+  return g_uri_split_network (uri_string, flags, NULL, NULL, NULL, error);
 }
 
 
