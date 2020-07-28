@@ -965,7 +965,7 @@ g_uri_split_with_user (const gchar  *uri_string,
 
 /**
  * g_uri_split_network:
- * @uri_string: a string containing a relative or absolute URI
+ * @uri_string: a string containing an absolute URI
  * @flags: flags for parsing @uri_string
  * @scheme: (out) (nullable) (optional) (transfer full): on return, contains
  *    the scheme (converted to lowercase), or %NULL
@@ -1156,7 +1156,7 @@ g_uri_parse (const gchar  *uri_string,
 
 /**
  * g_uri_parse_relative:
- * @base_uri: (nullable): a base URI
+ * @base_uri: (nullable): a base absolute URI
  * @uri_string: a string representing a relative or absolute URI
  * @flags: flags describing how to parse @uri_string
  * @error: #GError for error reporting, or %NULL to ignore.
@@ -1446,13 +1446,13 @@ g_uri_join_internal (GUriFlags    flags,
  * @fragment: (nullable): the fragment, or %NULL
  *
  * Joins the given components together according to @flags to create
- * a complete URI string. At least @scheme must be specified, and
+ * an absolute URI string. At least @scheme must be specified, and
  * @path may not be %NULL (though it may be "").
  *
  * See also g_uri_join_with_user(), which allows specifying the
  * components of the "userinfo" separately.
  *
- * Return value: a URI string
+ * Return value: an absolute URI string
  *
  * Since: 2.66
  */
@@ -1496,13 +1496,13 @@ g_uri_join (GUriFlags    flags,
  * @fragment: (nullable): the fragment, or %NULL
  *
  * Joins the given components together according to @flags to create
- * a complete URI string. At least @scheme must be specified, and
+ * an absolute URI string. At least @scheme must be specified, and
  * @path may not be %NULL (though it may be "").
  *
  * In constrast to g_uri_join(), this allows specifying the components
  * of the "userinfo" separately.
  *
- * Return value: a URI string
+ * Return value: an absolute URI string
  *
  * Since: 2.66
  */
