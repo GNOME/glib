@@ -33,6 +33,11 @@
  * The #GUri type and related functions can be used to parse URIs into
  * their components, and build valid URIs from individual components.
  *
+ * Note that #GUri scope is to help manipulate URIs in various applications,
+ * following the RFC 3986. In particular, it doesn't intend to cover web browser
+ * needs, and doesn't implement the WHATWG URL standard. No APIs are provided to
+ * help prevent homograph attacks.
+ *
  * ## Parsing URIs
  *
  * The most minimalist APIs for parsing URIs are g_uri_split() and
