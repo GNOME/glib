@@ -1181,6 +1181,8 @@ g_uri_parse_relative (GUri         *base_uri,
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail (base_uri == NULL || base_uri->scheme != NULL, NULL);
 
+  /* Use GUri struct to construct the return value: there is no guarantee it is
+   * actually correct within the function body. */
   uri = g_atomic_rc_box_new0 (GUri);
   uri->flags = flags;
 
