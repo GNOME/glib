@@ -25,6 +25,7 @@
 #include "gcontextspecificgroup.h"
 #include "gtask.h"
 #include "gcancellable.h"
+#include "gicon.h"
 
 #include "glibintl.h"
 #include "gmarshal-internal.h"
