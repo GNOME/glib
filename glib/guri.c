@@ -1589,7 +1589,10 @@ g_uri_build (GUriFlags    flags,
  * @query: (nullable): the query component, or %NULL
  * @fragment: (nullable): the fragment, or %NULL
  *
- * Creates a new #GUri from the given components according to @flags.
+ * Creates a new #GUri from the given components according to @flags
+ * (%G_URI_FLAGS_HAS_PASSWORD is added unconditionally). The @flags must be
+ * coherent with the passed values, in particular use `%`-encoded values with
+ * %G_URI_FLAGS_ENCODED.
 
  * In constrast to g_uri_build(), this allows specifying the components
  * of the "userinfo" field separately. Note that @user must be non-%NULL
@@ -1621,7 +1624,7 @@ g_uri_build_with_user (GUriFlags    flags,
   g_return_val_if_fail (path != NULL, NULL);
 
   uri = g_atomic_rc_box_new0 (GUri);
-  uri->flags = flags;
+  uri->flags = flags | G_URI_FLAGS_HAS_PASSWORD;
   uri->scheme = g_ascii_strdown (scheme, -1);
   uri->user = g_strdup (user);
   uri->password = g_strdup (password);
