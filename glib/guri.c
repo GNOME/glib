@@ -1383,7 +1383,7 @@ g_uri_join_internal (GUriFlags    flags,
           g_string_append_c (str, '@');
         }
 
-      if (strchr (host, ':'))
+      if (strchr (host, ':') && g_hostname_is_ip_address (host))
         {
           g_string_append_c (str, '[');
           if (encoded)
