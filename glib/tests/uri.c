@@ -932,16 +932,16 @@ test_uri_to_string (void)
   g_uri_unref (uri);
 
   uri = g_uri_build_with_user (G_URI_FLAGS_HAS_PASSWORD|G_URI_FLAGS_HAS_AUTH_PARAMS,
-                               "scheme", "user", "pass", "auth", "host", 1234,
+                               "scheme", "us:er", "pass", "auth", "host", 1234,
                                "/path", "query", "fragment");
   tostring = g_uri_to_string (uri);
-  g_assert_cmpstr (tostring, ==, "scheme://user:pass;auth@host:1234/path?query#fragment");
+  g_assert_cmpstr (tostring, ==, "scheme://us%3Aer:pass;auth@host:1234/path?query#fragment");
   g_free (tostring);
   tostring = g_uri_to_string_partial (uri, G_URI_HIDE_PASSWORD);
-  g_assert_cmpstr (tostring, ==, "scheme://user;auth@host:1234/path?query#fragment");
+  g_assert_cmpstr (tostring, ==, "scheme://us%3Aer;auth@host:1234/path?query#fragment");
   g_free (tostring);
   tostring = g_uri_to_string_partial (uri, G_URI_HIDE_AUTH_PARAMS);
-  g_assert_cmpstr (tostring, ==, "scheme://user:pass@host:1234/path?query#fragment");
+  g_assert_cmpstr (tostring, ==, "scheme://us%3Aer:pass@host:1234/path?query#fragment");
   g_free (tostring);
   g_uri_unref (uri);
 }
