@@ -987,6 +987,12 @@ test_uri_build (void)
   g_assert_cmpstr (g_uri_get_auth_params (uri), ==, "authparams");
   g_uri_unref (uri);
 
+  uri = g_uri_build_with_user (G_URI_FLAGS_NONE, "scheme", "user\001", "password\002",
+                               "authparams\003", "host", 1234,
+                               "/path", "query", "fragment");
+  g_assert_cmpstr (g_uri_get_userinfo (uri), ==, "user\001:password\002;authparams\003");
+  g_uri_unref (uri);
+
   uri = g_uri_build_with_user (G_URI_FLAGS_ENCODED, "scheme", "user%01", "password%02",
                                "authparams%03", "host", 1234,
                                "/path", "query", "fragment");

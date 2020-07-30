@@ -1634,33 +1634,19 @@ g_uri_build_with_user (GUriFlags    flags,
 
   if (user)
     {
-      userinfo = g_string_new (NULL);
-      if (flags & G_URI_FLAGS_ENCODED)
-        g_string_append (userinfo, uri->user);
-      else
-        g_string_append_uri_escaped (userinfo, uri->user, USER_ALLOWED_CHARS, TRUE);
+      userinfo = g_string_new (user);
       if (password)
         {
           g_string_append_c (userinfo, ':');
-          if (flags & G_URI_FLAGS_ENCODED)
-            g_string_append (userinfo, uri->password);
-          else
-            g_string_append_uri_escaped (userinfo, uri->password,
-                                         PASSWORD_ALLOWED_CHARS, TRUE);
+          g_string_append (userinfo, uri->password);
         }
       if (auth_params)
         {
           g_string_append_c (userinfo, ';');
-          if (flags & G_URI_FLAGS_ENCODED)
-            g_string_append (userinfo, uri->auth_params);
-          else
-            g_string_append_uri_escaped (userinfo,
-                                         uri->auth_params, AUTH_PARAMS_ALLOWED_CHARS, TRUE);
+          g_string_append (userinfo, uri->auth_params);
         }
       uri->userinfo = g_string_free (userinfo, FALSE);
     }
-  else
-    uri->userinfo = NULL;
 
   return uri;
 }
