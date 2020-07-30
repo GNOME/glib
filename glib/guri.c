@@ -1328,6 +1328,7 @@ g_uri_resolve_relative (const gchar  *base_uri_string,
 static gchar *
 g_uri_join_internal (GUriFlags    flags,
                      const gchar *scheme,
+                     gboolean     userinfo,
                      const gchar *user,
                      const gchar *password,
                      const gchar *auth_params,
@@ -1353,11 +1354,14 @@ g_uri_join_internal (GUriFlags    flags,
             g_string_append (str, user);
           else
             {
-              /* Encode ':' and ';' regardless of whether we have a
-               * password or auth params, since it may be parsed later
-               * under the assumption that it does.
-               */
-              g_string_append_uri_escaped (str, user, USER_ALLOWED_CHARS, TRUE);
+              if (userinfo)
+                g_string_append_uri_escaped (str, user, USERINFO_ALLOWED_CHARS, TRUE);
+              else
+                /* Encode ':' and ';' regardless of whether we have a
+                 * password or auth params, since it may be parsed later
+                 * under the assumption that it does.
+                 */
+                g_string_append_uri_escaped (str, user, USER_ALLOWED_CHARS, TRUE);
             }
 
           if (password)
@@ -1467,7 +1471,7 @@ g_uri_join (GUriFlags    flags,
 
   return g_uri_join_internal (flags,
                               scheme,
-                              userinfo, NULL, NULL,
+                              TRUE, userinfo, NULL, NULL,
                               host,
                               port,
                               path,
@@ -1519,7 +1523,7 @@ g_uri_join_with_user (GUriFlags    flags,
 
   return g_uri_join_internal (flags,
                               scheme,
-                              user, password, auth_params,
+                              FALSE, user, password, auth_params,
                               host,
                               port,
                               path,
