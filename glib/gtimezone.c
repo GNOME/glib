@@ -831,6 +831,8 @@ rules_from_windows_time_zone (const gchar   *identifier,
   WCHAR winsyspath[MAX_PATH];
   gunichar2 *subkey_w, *subkey_dynamic_w;
 
+  subkey_dynamic_w = NULL;
+
   if (GetSystemDirectoryW (winsyspath, MAX_PATH) == 0)
     return 0;
 
