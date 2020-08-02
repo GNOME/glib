@@ -81,19 +81,7 @@
 
 enum {
   PROP_0,
-  PROP_FILENAME,
-  PROP_ID,
-  PROP_NAME,
-  PROP_DISPLAY_NAME,
-  PROP_DESCRIPTION,
-  PROP_EXECUTABLE,
-  PROP_COMMANDLINE,
-  PROP_ICON,
-  PROP_SUPPORTS_URIS,
-  PROP_SUPPORTS_FILES,
-  PROP_SHOULD_SHOW,
-  PROP_SUPPORTED_TYPES,
-  PROP_CAN_DELETE,
+  PROP_FILENAME
 };
 
 static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
@@ -1669,62 +1657,12 @@ g_desktop_app_info_get_property (GObject    *object,
                                  GParamSpec *pspec)
 {
   GDesktopAppInfo *self = G_DESKTOP_APP_INFO (object);
-  GAppInfo *app_info = G_APP_INFO (self);
 
   switch (prop_id)
     {
     case PROP_FILENAME:
       g_value_set_string (value, self->filename);
       break;
-
-    case PROP_ID:
-      g_value_set_string (value, g_app_info_get_id (app_info));
-      break;
-
-    case PROP_NAME:
-      g_value_set_string (value, g_app_info_get_name (app_info));
-      break;
-
-    case PROP_DISPLAY_NAME:
-      g_value_set_string (value, g_app_info_get_display_name (app_info));
-      break;
-
-    case PROP_DESCRIPTION:
-      g_value_set_string (value, g_app_info_get_description (app_info));
-      break;
-
-    case PROP_EXECUTABLE:
-      g_value_set_string (value, g_app_info_get_executable (app_info));
-      break;
-
-    case PROP_COMMANDLINE:
-      g_value_set_string (value, g_app_info_get_commandline (app_info));
-      break;
-
-    case PROP_ICON:
-      g_value_set_object (value, g_app_info_get_icon (app_info));
-      break;
-
-    case PROP_SUPPORTS_URIS:
-      g_value_set_boolean (value, g_app_info_supports_uris (app_info));
-      break;
-
-    case PROP_SUPPORTS_FILES:
-      g_value_set_boolean (value, g_app_info_supports_uris (app_info));
-      break;
-
-    case PROP_SHOULD_SHOW:
-      g_value_set_boolean (value, g_app_info_should_show (app_info));
-      break;
-
-    case PROP_SUPPORTED_TYPES:
-      g_value_set_boxed (value, g_app_info_get_supported_types (app_info));
-      break;
-
-    case PROP_CAN_DELETE:
-      g_value_set_boolean (value, g_app_info_can_delete (app_info));
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1749,19 +1687,6 @@ g_desktop_app_info_class_init (GDesktopAppInfoClass *klass)
                                    PROP_FILENAME,
                                    g_param_spec_string ("filename", "Filename", "", NULL,
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-
-  g_object_class_override_property (gobject_class, PROP_ID, "id");
-  g_object_class_override_property (gobject_class, PROP_NAME, "name");
-  g_object_class_override_property (gobject_class, PROP_DISPLAY_NAME, "display-name");
-  g_object_class_override_property (gobject_class, PROP_DESCRIPTION, "description");
-  g_object_class_override_property (gobject_class, PROP_EXECUTABLE, "executable");
-  g_object_class_override_property (gobject_class, PROP_COMMANDLINE, "commandline");
-  g_object_class_override_property (gobject_class, PROP_ICON, "icon");
-  g_object_class_override_property (gobject_class, PROP_SUPPORTS_URIS, "supports-uris");
-  g_object_class_override_property (gobject_class, PROP_SUPPORTS_FILES, "supports-files");
-  g_object_class_override_property (gobject_class, PROP_SHOULD_SHOW, "should-show");
-  g_object_class_override_property (gobject_class, PROP_SUPPORTED_TYPES, "supported-types");
-  g_object_class_override_property (gobject_class, PROP_CAN_DELETE, "can-delete");
 }
 
 static void
