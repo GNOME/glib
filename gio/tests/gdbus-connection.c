@@ -65,7 +65,7 @@ test_connection_quit_mainloop (gpointer user_data)
   _log ("quit_mainloop_fired");
   *quit_mainloop_fired = TRUE;
   g_main_loop_quit (loop);
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -934,7 +934,7 @@ test_connection_filter_on_timeout (gpointer user_data)
 {
   g_printerr ("Timeout waiting 30 sec on service\n");
   g_assert_not_reached ();
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void

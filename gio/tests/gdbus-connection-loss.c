@@ -53,7 +53,7 @@ on_timeout (gpointer user_data)
 {
   /* tear down bus */
   session_bus_stop ();
-  return FALSE; /* remove source */
+  return G_SOURCE_REMOVE;
 }
 
 static void

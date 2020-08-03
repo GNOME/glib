@@ -644,7 +644,7 @@ check_connection (gpointer user_data)
         }
     }
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static gboolean
@@ -654,7 +654,7 @@ on_do_disconnect_in_idle (gpointer data)
   g_debug ("GDC %p has ref_count %d", c, G_OBJECT (c)->ref_count);
   g_dbus_connection_disconnect (c);
   g_object_unref (c);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 #endif
 
@@ -1794,7 +1794,7 @@ static gboolean
 codegen_quit_mainloop_timeout (gpointer data)
 {
   g_main_loop_quit (loop);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void

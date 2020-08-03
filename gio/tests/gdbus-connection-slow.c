@@ -49,7 +49,7 @@ test_connection_flush_on_timeout (gpointer user_data)
   guint iteration = GPOINTER_TO_UINT (user_data);
   g_printerr ("Timeout waiting 1000 msec on iteration %d\n", iteration);
   g_assert_not_reached ();
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -125,7 +125,7 @@ large_message_timeout_cb (gpointer data)
 
   g_error ("Error: timeout waiting for dbus name to appear");
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void
