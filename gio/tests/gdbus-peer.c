@@ -1719,7 +1719,7 @@ codegen_on_animal_poke (ExampleAnimal          *animal,
   g_assert_not_reached ();
 
  out:
-  return TRUE; /* to indicate that the method was handled */
+  return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
 /* Runs in thread we created GDBusServer in (since we didn't pass G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) */
