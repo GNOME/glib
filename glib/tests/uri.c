@@ -921,27 +921,27 @@ test_uri_to_string (void)
   uri = g_uri_build_with_user (G_URI_FLAGS_NONE, "scheme", "user", "pass", "auth", "host", 1234,
                                "/path", "query", "fragment");
   tostring = g_uri_to_string (uri);
-  g_assert_cmpstr (tostring, ==, "scheme://user%3Apass%3Bauth@host:1234/path?query#fragment");
+  g_assert_cmpstr (tostring, ==, "scheme://user:pass;auth@host:1234/path?query#fragment");
   g_free (tostring);
   tostring = g_uri_to_string_partial (uri, G_URI_HIDE_USERINFO);
   g_assert_cmpstr (tostring, ==, "scheme://host:1234/path?query#fragment");
   g_free (tostring);
   tostring = g_uri_to_string_partial (uri, G_URI_HIDE_FRAGMENT);
-  g_assert_cmpstr (tostring, ==, "scheme://user%3Apass%3Bauth@host:1234/path?query");
+  g_assert_cmpstr (tostring, ==, "scheme://user:pass;auth@host:1234/path?query");
   g_free (tostring);
   g_uri_unref (uri);
 
   uri = g_uri_build_with_user (G_URI_FLAGS_HAS_PASSWORD|G_URI_FLAGS_HAS_AUTH_PARAMS,
-                               "scheme", "user", "pass", "auth", "host", 1234,
+                               "scheme", "us:er", "pass", "auth", "host", 1234,
                                "/path", "query", "fragment");
   tostring = g_uri_to_string (uri);
-  g_assert_cmpstr (tostring, ==, "scheme://user:pass;auth@host:1234/path?query#fragment");
+  g_assert_cmpstr (tostring, ==, "scheme://us%3Aer:pass;auth@host:1234/path?query#fragment");
   g_free (tostring);
   tostring = g_uri_to_string_partial (uri, G_URI_HIDE_PASSWORD);
-  g_assert_cmpstr (tostring, ==, "scheme://user;auth@host:1234/path?query#fragment");
+  g_assert_cmpstr (tostring, ==, "scheme://us%3Aer;auth@host:1234/path?query#fragment");
   g_free (tostring);
   tostring = g_uri_to_string_partial (uri, G_URI_HIDE_AUTH_PARAMS);
-  g_assert_cmpstr (tostring, ==, "scheme://user:pass@host:1234/path?query#fragment");
+  g_assert_cmpstr (tostring, ==, "scheme://us%3Aer:pass@host:1234/path?query#fragment");
   g_free (tostring);
   g_uri_unref (uri);
 }
@@ -974,7 +974,7 @@ test_uri_build (void)
                                "authparams", "host", 1234,
                                "/path", "query", "fragment");
 
-  g_assert_cmpint (g_uri_get_flags (uri), ==, G_URI_FLAGS_NON_DNS);
+  g_assert_cmpint (g_uri_get_flags (uri), ==, G_URI_FLAGS_NON_DNS | G_URI_FLAGS_HAS_PASSWORD);
   g_assert_cmpstr (g_uri_get_scheme (uri), ==, "scheme");
   g_assert_cmpstr (g_uri_get_userinfo (uri), ==, "user:password;authparams");
   g_assert_cmpstr (g_uri_get_host (uri), ==, "host");
@@ -985,6 +985,12 @@ test_uri_build (void)
   g_assert_cmpstr (g_uri_get_user (uri), ==, "user");
   g_assert_cmpstr (g_uri_get_password (uri), ==, "password");
   g_assert_cmpstr (g_uri_get_auth_params (uri), ==, "authparams");
+  g_uri_unref (uri);
+
+  uri = g_uri_build_with_user (G_URI_FLAGS_NONE, "scheme", "user\001", "password\002",
+                               "authparams\003", "host", 1234,
+                               "/path", "query", "fragment");
+  g_assert_cmpstr (g_uri_get_userinfo (uri), ==, "user\001:password\002;authparams\003");
   g_uri_unref (uri);
 
   uri = g_uri_build_with_user (G_URI_FLAGS_ENCODED, "scheme", "user%01", "password%02",
@@ -1424,6 +1430,10 @@ static void
 test_uri_join (void)
 {
   gchar *uri = NULL;
+
+  uri = g_uri_join (G_URI_FLAGS_NONE, "foo", "some:user@info", "bar", -1, "", NULL, NULL);
+  g_assert_cmpstr (uri, ==, "foo://some:user%40info@bar");
+  g_free (uri);
 
   uri = g_uri_join_with_user (G_URI_FLAGS_NONE, "scheme", "user\001", "pass\002", "authparams\003",
                               "host", 9876, "/path", "query", "fragment");
