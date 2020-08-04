@@ -787,8 +787,9 @@ g_uri_split_internal (const gchar  *uri_string,
   end = p + strcspn (p, "#");
   if (*end == '#')
     {
-      if (!uri_decode (fragment, NULL, end + 1, strlen (end + 1), FALSE, flags,
-                       G_URI_ERROR_BAD_FRAGMENT, error))
+      if (!uri_normalize (fragment, end + 1, strlen (end + 1),
+                          flags | (flags & G_URI_FLAGS_ENCODED_FRAGMENT ? G_URI_FLAGS_ENCODED : 0),
+                          G_URI_ERROR_BAD_FRAGMENT, error))
         goto fail;
     }
 
@@ -803,7 +804,8 @@ g_uri_split_internal (const gchar  *uri_string,
       end = question;
     }
 
-  if (!uri_normalize (path, p, end - p, flags,
+  if (!uri_normalize (path, p, end - p,
+                      flags | (flags & G_URI_FLAGS_ENCODED_PATH ? G_URI_FLAGS_ENCODED : 0),
                       G_URI_ERROR_BAD_PATH, error))
     goto fail;
 
@@ -1404,7 +1406,7 @@ g_uri_join_internal (GUriFlags    flags,
         g_string_append_printf (str, ":%d", port);
     }
 
-  if (encoded)
+  if (encoded || flags & G_URI_FLAGS_ENCODED_PATH)
     g_string_append (str, path);
   else
     g_string_append_uri_escaped (str, path, PATH_ALLOWED_CHARS, TRUE);
@@ -1420,7 +1422,7 @@ g_uri_join_internal (GUriFlags    flags,
   if (fragment)
     {
       g_string_append_c (str, '#');
-      if (encoded)
+      if (encoded || flags & G_URI_FLAGS_ENCODED_FRAGMENT)
         g_string_append (str, fragment);
       else
         g_string_append_uri_escaped (str, fragment, FRAGMENT_ALLOWED_CHARS, TRUE);
