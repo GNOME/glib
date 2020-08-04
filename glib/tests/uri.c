@@ -669,6 +669,9 @@ static const UriAbsoluteTest absolute_tests[] = {
   { "http://:@host",
     { "http", ":", "host", -1, "", NULL, NULL }
   },
+  { "scheme://foo%3Abar._webdav._tcp.local",
+    { "scheme", NULL, "foo:bar._webdav._tcp.local", -1, "", NULL, NULL}
+  },
 
   /* IPv6 scope ID parsing (both correct and incorrect) */
   { "http://[fe80::dead:beef%em1]/",
@@ -1409,6 +1412,10 @@ test_uri_join (void)
                               "::192.9.5.5", 9876, "/path", "query", "fragment");
   g_assert_cmpstr (uri, ==,
                    "scheme://user%01:pass%02;authparams%03@[::192.9.5.5]:9876/path?query#fragment");
+  g_free (uri);
+
+  uri = g_uri_join (G_URI_FLAGS_NONE, "scheme", NULL, "foo:bar._webdav._tcp.local", -1, "", NULL, NULL);
+  g_assert_cmpstr (uri, ==, "scheme://foo%3Abar._webdav._tcp.local");
   g_free (uri);
 }
 
