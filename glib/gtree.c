@@ -66,8 +66,6 @@
  * To destroy a #GTree, use g_tree_destroy().
  **/
 
-#undef G_TREE_DEBUG
-
 #define MAX_GTREE_HEIGHT 40
 
 typedef struct _GTreeNode  GTreeNode;
@@ -294,11 +292,22 @@ g_tree_remove_all (GTree *tree)
         tree->value_destroy_func (node->value);
       g_slice_free (GTreeNode, node);
 
+#ifdef G_TREE_DEBUG
+      g_assert (tree->nnodes > 0);
+      tree->nnodes--;
+#endif
+
       node = next;
     }
 
+#ifdef G_TREE_DEBUG
+  g_assert (tree->nnodes == 0);
+#endif
+
   tree->root = NULL;
+#ifndef G_TREE_DEBUG
   tree->nnodes = 0;
+#endif
 }
 
 /**
@@ -1388,16 +1397,21 @@ g_tree_node_dump (GTreeNode *node,
   g_print ("%*s%c\n", indent, "", *(char *)node->key);
 
   if (node->left_child)
-    g_tree_node_dump (node->left, indent + 2);
+    {
+      g_print ("%*sLEFT\n", indent, "");
+      g_tree_node_dump (node->left, indent + 2);
+    }
   else if (node->left)
     g_print ("%*s<%c\n", indent + 2, "", *(char *)node->left->key);
 
   if (node->right_child)
-    g_tree_node_dump (node->right, indent + 2);
+    {
+      g_print ("%*sRIGHT\n", indent, "");
+      g_tree_node_dump (node->right, indent + 2);
+    }
   else if (node->right)
     g_print ("%*s>%c\n", indent + 2, "", *(char *)node->right->key);
 }
-
 
 void
 g_tree_dump (GTree *tree)
