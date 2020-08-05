@@ -1523,6 +1523,10 @@ test_uri_join (void)
   g_assert_cmpstr (uri, ==, "foo://some:user%40info@bar");
   g_free (uri);
 
+  uri = g_uri_join (G_URI_FLAGS_NONE, NULL, NULL, NULL, -1, "/foo", "abc", NULL);
+  g_assert_cmpstr (uri, ==, "/foo?abc");
+  g_free (uri);
+
   uri = g_uri_join_with_user (G_URI_FLAGS_NONE, "scheme", "user\001", "pass\002", "authparams\003",
                               "host", 9876, "/path", "query", "fragment");
   g_assert_cmpstr (uri, ==, "scheme://user%01:pass%02;authparams%03@host:9876/path?query#fragment");
