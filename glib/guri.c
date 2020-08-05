@@ -1348,11 +1348,13 @@ g_uri_join_internal (GUriFlags    flags,
   GString *str;
 
   str = g_string_new (scheme);
-  g_string_append_c (str, ':');
+  if (scheme)
+    g_string_append_c (str, ':');
 
   if (host)
     {
-      g_string_append (str, "//");
+      if (scheme)
+        g_string_append (str, "//");
 
       if (user)
         {
@@ -1442,7 +1444,7 @@ g_uri_join_internal (GUriFlags    flags,
 /**
  * g_uri_join:
  * @flags: flags describing how to build the URI string
- * @scheme: the URI scheme
+ * @scheme: (nullable): the URI scheme, or %NULL
  * @userinfo: (nullable): the userinfo component, or %NULL
  * @host: (nullable): the host component, or %NULL
  * @port: the port, or -1
@@ -1451,8 +1453,7 @@ g_uri_join_internal (GUriFlags    flags,
  * @fragment: (nullable): the fragment, or %NULL
  *
  * Joins the given components together according to @flags to create
- * an absolute URI string. At least @scheme must be specified, and
- * @path may not be %NULL (though it may be "").
+ * an absolute URI string. @path may not be %NULL (though it may be "").
  *
  * See also g_uri_join_with_user(), which allows specifying the
  * components of the "userinfo" separately.
@@ -1471,7 +1472,6 @@ g_uri_join (GUriFlags    flags,
             const gchar *query,
             const gchar *fragment)
 {
-  g_return_val_if_fail (scheme != NULL, NULL);
   g_return_val_if_fail (port >= -1 && port <= 65535, NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
@@ -1488,7 +1488,7 @@ g_uri_join (GUriFlags    flags,
 /**
  * g_uri_join_with_user:
  * @flags: flags describing how to build the URI string
- * @scheme: the URI scheme
+ * @scheme: (nullable): the URI scheme, or %NULL
  * @user: (nullable): the user component of the userinfo, or %NULL
  * @password: (nullable): the password component of the userinfo, or
  *   %NULL
@@ -1501,8 +1501,7 @@ g_uri_join (GUriFlags    flags,
  * @fragment: (nullable): the fragment, or %NULL
  *
  * Joins the given components together according to @flags to create
- * an absolute URI string. At least @scheme must be specified, and
- * @path may not be %NULL (though it may be "").
+ * an absolute URI string. @path may not be %NULL (though it may be "").
  *
  * In constrast to g_uri_join(), this allows specifying the components
  * of the "userinfo" separately.
@@ -1523,7 +1522,6 @@ g_uri_join_with_user (GUriFlags    flags,
                       const gchar *query,
                       const gchar *fragment)
 {
-  g_return_val_if_fail (scheme != NULL, NULL);
   g_return_val_if_fail (port >= -1 && port <= 65535, NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
