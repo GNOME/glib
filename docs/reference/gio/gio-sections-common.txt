@@ -1572,6 +1572,7 @@ g_unix_mount_point_guess_symbolic_icon
 g_unix_mount_point_guess_name
 g_unix_mount_point_guess_can_eject
 g_unix_mount_points_get
+g_unix_mount_point_at
 g_unix_mounts_get
 g_unix_mount_at
 g_unix_mount_for

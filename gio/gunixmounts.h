@@ -132,6 +132,9 @@ GIcon *        g_unix_mount_point_guess_symbolic_icon (GUnixMountPoint    *mount
 
 GLIB_AVAILABLE_IN_ALL
 GList *        g_unix_mount_points_get              (guint64            *time_read);
+GLIB_AVAILABLE_IN_2_66
+GUnixMountPoint *g_unix_mount_point_at              (const char         *mount_path,
+                                                     guint64            *time_read);
 GLIB_AVAILABLE_IN_ALL
 GList *        g_unix_mounts_get                    (guint64            *time_read);
 GLIB_AVAILABLE_IN_ALL
