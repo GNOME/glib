@@ -3184,9 +3184,6 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 	  format_number (outstr, alt_digits, pad_set ? pad : " ", 2,
 			 (g_date_time_get_hour (datetime) + 11) % 12 + 1);
 	  break;
-	case 'n':
-	  g_string_append_c (outstr, '\n');
-	  break;
 	case 'm':
 	  format_number (outstr, alt_digits, pad_set ? pad : "0", 2,
 			 g_date_time_get_month (datetime));
@@ -3194,6 +3191,9 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 	case 'M':
 	  format_number (outstr, alt_digits, pad_set ? pad : "0", 2,
 			 g_date_time_get_minute (datetime));
+	  break;
+	case 'n':
+	  g_string_append_c (outstr, '\n');
 	  break;
 	case 'O':
 	  alt_digits = TRUE;
