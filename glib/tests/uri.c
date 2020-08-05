@@ -915,7 +915,12 @@ test_uri_to_string (void)
   tostring = g_uri_to_string (uri);
   g_assert_cmpstr (tostring, ==, "scheme://userinfo@host:1234/path?query#fragment");
   g_free (tostring);
+  g_uri_unref (uri);
 
+  uri = g_uri_build (G_URI_FLAGS_NONE, "scheme", NULL, "fe80::dead:beef%em1", -1, "", NULL, NULL);
+  tostring = g_uri_to_string (uri);
+  g_assert_cmpstr (tostring, ==, "scheme://[fe80::dead:beef%25em1]");
+  g_free (tostring);
   g_uri_unref (uri);
 
   uri = g_uri_build_with_user (G_URI_FLAGS_NONE, "scheme", "user", "pass", "auth", "host", 1234,

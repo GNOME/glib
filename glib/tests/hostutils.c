@@ -207,6 +207,11 @@ static const struct {
   { "0123::123.45.67.89", TRUE },
   { "::123.45.67.89", TRUE },
 
+  /* accept zone-id from rfc6874 */
+  { "0123:4567:89AB:cdef:3210:7654:ba98:FeDc%zoneid0", TRUE },
+  { "fe80::dead:beef%zonÉid0%weird", TRUE },
+  { "fe80::dead:beef%", FALSE },
+
   /* Contain non-hex chars */
   { "012x:4567:89AB:cdef:3210:7654:ba98:FeDc", FALSE },
   { "0123:45x7:89AB:cdef:3210:7654:ba98:FeDc", FALSE },
@@ -260,7 +265,6 @@ static const struct {
   { "0123:4567:89AB:cdef:3210:7654::123.45.67.89", FALSE },
   { "0123:4567:89AB:cdef:123.45.67.89", FALSE },
   { "0123:4567:89AB:cdef:3210:123.45.67.89:FeDc", FALSE },
-
 
   /* IPv4 tests */
 
