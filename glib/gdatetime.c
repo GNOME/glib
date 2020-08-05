@@ -3465,6 +3465,8 @@ g_date_time_format (GDateTime   *datetime,
  * including the date, time and time zone, and return that as a UTF-8 encoded
  * string.
  *
+ * Since GLib 2.66, this will output to sub-second precision if needed.
+ *
  * Returns: (transfer full) (nullable): a newly allocated string formatted in
  *   ISO 8601 format or %NULL in the case that there was an error. The string
  *   should be freed with g_free().
@@ -3477,9 +3479,15 @@ g_date_time_format_iso8601 (GDateTime *datetime)
   GString *outstr = NULL;
   gchar *main_date = NULL;
   gint64 offset;
+  gchar *format = "%Y-%m-%dT%H:%M:%S";
+
+  /* if datetime has sub-second non-zero values below the second precision we
+   * should print them as well */
+  if (datetime->usec % G_TIME_SPAN_SECOND != 0)
+    format = "%Y-%m-%dT%H:%M:%S.%f";
 
   /* Main date and time. */
-  main_date = g_date_time_format (datetime, "%Y-%m-%dT%H:%M:%S");
+  main_date = g_date_time_format (datetime, format);
   outstr = g_string_new (main_date);
   g_free (main_date);
 
