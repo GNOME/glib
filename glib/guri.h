@@ -83,7 +83,7 @@ typedef enum {
 } GUriFlags;
 
 GLIB_AVAILABLE_IN_2_66
-gboolean     g_uri_split            (const gchar  *uri_string,
+gboolean     g_uri_split            (const gchar  *uri_ref,
                                      GUriFlags     flags,
                                      gchar       **scheme,
                                      gchar       **userinfo,
@@ -94,7 +94,7 @@ gboolean     g_uri_split            (const gchar  *uri_string,
                                      gchar       **fragment,
                                      GError      **error);
 GLIB_AVAILABLE_IN_2_66
-gboolean     g_uri_split_with_user  (const gchar  *uri_string,
+gboolean     g_uri_split_with_user  (const gchar  *uri_ref,
                                      GUriFlags     flags,
                                      gchar       **scheme,
                                      gchar       **user,
@@ -146,13 +146,13 @@ GUri *       g_uri_parse            (const gchar  *uri_string,
                                      GError      **error);
 GLIB_AVAILABLE_IN_2_66
 GUri *       g_uri_parse_relative   (GUri         *base_uri,
-                                     const gchar  *uri_string,
+                                     const gchar  *uri_ref,
                                      GUriFlags     flags,
                                      GError      **error);
 
 GLIB_AVAILABLE_IN_2_66
 gchar *      g_uri_resolve_relative (const gchar  *base_uri_string,
-                                     const gchar  *uri_string,
+                                     const gchar  *uri_ref,
                                      GUriFlags     flags,
                                      GError      **error);
 

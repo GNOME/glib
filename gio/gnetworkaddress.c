@@ -518,292 +518,6 @@ g_network_address_parse (const gchar  *host_and_port,
   return connectable;
 }
 
-/* Allowed characters outside alphanumeric for unreserved. */
-#define G_URI_OTHER_UNRESERVED "-._~"
-
-/* This or something equivalent will eventually go into glib/guri.h */
-gboolean
-_g_uri_parse_authority (const char  *uri,
-		        char       **host,
-		        guint16     *port,
-		        char       **userinfo,
-		        GError     **error)
-{
-  char *ascii_uri, *tmp_str;
-  const char *start, *p, *at, *delim;
-  char c;
-
-  g_return_val_if_fail (uri != NULL, FALSE);
-
-  if (host)
-    *host = NULL;
-
-  if (port)
-    *port = 0;
-
-  if (userinfo)
-    *userinfo = NULL;
-
-  /* Catch broken URIs early by trying to convert to ASCII. */
-  ascii_uri = g_hostname_to_ascii (uri);
-  if (!ascii_uri)
-    goto error;
-
-  /* From RFC 3986 Decodes:
-   * URI          = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-   * hier-part    = "//" authority path-abempty
-   * path-abempty = *( "/" segment )
-   * authority    = [ userinfo "@" ] host [ ":" port ]
-   */
-
-  /* Check we have a valid scheme */
-  tmp_str = g_uri_parse_scheme (ascii_uri);
-
-  if (tmp_str == NULL)
-    goto error;
-
-  g_free (tmp_str);
-
-  /* Decode hier-part:
-   *  hier-part   = "//" authority path-abempty
-   */
-  p = ascii_uri;
-  start = strstr (p, "//");
-
-  if (start == NULL)
-    goto error;
-
-  start += 2;
-
-  /* check if the @ sign is part of the authority before attempting to
-   * decode the userinfo */
-  delim = strpbrk (start, "/?#[]");
-  at = strchr (start, '@');
-  if (at && delim && at > delim)
-    at = NULL;
-
-  if (at != NULL)
-    {
-      /* Decode userinfo:
-       * userinfo      = *( unreserved / pct-encoded / sub-delims / ":" )
-       * unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
-       * pct-encoded   = "%" HEXDIG HEXDIG
-       */
-      p = start;
-      while (1)
-	{
-	  c = *p++;
-
-	  if (c == '@')
-	    break;
-
-	  /* pct-encoded */
-	  if (c == '%')
-	    {
-	      if (!(g_ascii_isxdigit (p[0]) ||
-		    g_ascii_isxdigit (p[1])))
-          goto error;
-
-	      p++;
-
-	      continue;
-	    }
-
-	  /* unreserved /  sub-delims / : */
-	  if (!(g_ascii_isalnum (c) ||
-		strchr (G_URI_OTHER_UNRESERVED, c) ||
-		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c) ||
-		c == ':'))
-      goto error;
-	}
-
-      if (userinfo)
-	*userinfo = g_strndup (start, p - start - 1);
-
-      start = p;
-    }
-  else
-    {
-      p = start;
-    }
-
-
-  /* decode host:
-   * host          = IP-literal / IPv4address / reg-name
-   * reg-name      = *( unreserved / pct-encoded / sub-delims )
-   */
-
-  /* If IPv6 or IPvFuture */
-  if (*p == '[')
-    {
-      gboolean has_scope_id = FALSE, has_bad_scope_id = FALSE;
-
-      start++;
-      p++;
-      while (1)
-	{
-	  c = *p++;
-
-	  if (c == ']')
-	    break;
-
-          if (c == '%' && !has_scope_id)
-            {
-              has_scope_id = TRUE;
-              if (p[0] != '2' || p[1] != '5')
-                has_bad_scope_id = TRUE;
-              continue;
-            }
-
-	  /* unreserved /  sub-delims */
-	  if (!(g_ascii_isalnum (c) ||
-		strchr (G_URI_OTHER_UNRESERVED, c) ||
-		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c) ||
-		c == ':' ||
-		c == '.'))
-      goto error;
-	}
-
-      if (host)
-        {
-          if (has_bad_scope_id)
-            *host = g_strndup (start, p - start - 1);
-          else
-            *host = g_uri_unescape_segment (start, p - 1, NULL);
-        }
-
-      c = *p++;
-    }
-  else
-    {
-      while (1)
-	{
-	  c = *p++;
-
-	  if (c == ':' ||
-	      c == '/' ||
-	      c == '?' ||
-	      c == '#' ||
-	      c == '\0')
-	    break;
-
-	  /* pct-encoded */
-	  if (c == '%')
-	    {
-	      if (!(g_ascii_isxdigit (p[0]) ||
-		    g_ascii_isxdigit (p[1])))
-          goto error;
-
-	      p++;
-
-	      continue;
-	    }
-
-	  /* unreserved /  sub-delims */
-	  if (!(g_ascii_isalnum (c) ||
-		strchr (G_URI_OTHER_UNRESERVED, c) ||
-		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c)))
-      goto error;
-	}
-
-      if (host)
-        *host = g_uri_unescape_segment (start, p - 1, NULL);
-    }
-
-  if (c == ':')
-    {
-      /* Decode port:
-       *  port          = *DIGIT
-       */
-      guint tmp = 0;
-
-      while (1)
-	{
-	  c = *p++;
-
-	  if (c == '/' ||
-	      c == '?' ||
-	      c == '#' ||
-	      c == '\0')
-	    break;
-
-	  if (!g_ascii_isdigit (c))
-      goto error;
-
-	  tmp = (tmp * 10) + (c - '0');
-
-	  if (tmp > 65535)
-	    goto error;
-	}
-      if (port)
-	*port = (guint16) tmp;
-    }
-
-  g_free (ascii_uri);
-
-  return TRUE;
-
-error:
-  g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-               "Invalid URI ‘%s’", uri);
-
-  if (host && *host)
-    {
-      g_free (*host);
-      *host = NULL;
-    }
-
-  if (userinfo && *userinfo)
-    {
-      g_free (*userinfo);
-      *userinfo = NULL;
-    }
-
-  g_free (ascii_uri);
-
-  return FALSE;
-}
-
-gchar *
-_g_uri_from_authority (const gchar *protocol,
-                       const gchar *host,
-                       guint        port,
-                       const gchar *userinfo)
-{
-  GString *uri;
-
-  uri = g_string_new (protocol);
-  g_string_append (uri, "://");
-
-  if (userinfo)
-    {
-      g_string_append_uri_escaped (uri, userinfo, G_URI_RESERVED_CHARS_ALLOWED_IN_USERINFO, FALSE);
-      g_string_append_c (uri, '@');
-    }
-
-  if (g_hostname_is_non_ascii (host))
-    {
-      gchar *ace_encoded = g_hostname_to_ascii (host);
-
-      if (!ace_encoded)
-        {
-          g_string_free (uri, TRUE);
-          return NULL;
-        }
-      g_string_append (uri, ace_encoded);
-      g_free (ace_encoded);
-    }
-  else if (strchr (host, ':'))
-    g_string_append_printf (uri, "[%s]", host);
-  else
-    g_string_append (uri, host);
-
-  if (port != 0)
-    g_string_append_printf (uri, ":%u", port);
-
-  return g_string_free (uri, FALSE);
-}
-
 /**
  * g_network_address_parse_uri:
  * @uri: the hostname and optionally a port
@@ -827,25 +541,27 @@ g_network_address_parse_uri (const gchar  *uri,
     			     guint16       default_port,
 			     GError      **error)
 {
-  GSocketConnectable *conn;
-  gchar *scheme;
-  gchar *hostname;
-  guint16 port;
+  GSocketConnectable *conn = NULL;
+  gchar *scheme = NULL;
+  gchar *hostname = NULL;
+  gint port;
 
-  if (!_g_uri_parse_authority (uri, &hostname, &port, NULL, error))
-    return NULL;
+  if (!g_uri_split_network (uri, G_URI_FLAGS_PARSE_STRICT,
+                            &scheme, &hostname, &port, NULL))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                   "Invalid URI ‘%s’", uri);
+      return NULL;
+    }
 
-  if (port == 0)
+  if (port <= 0)
     port = default_port;
-
-  scheme = g_uri_parse_scheme (uri);
 
   conn = g_object_new (G_TYPE_NETWORK_ADDRESS,
                        "hostname", hostname,
-                       "port", port,
+                       "port", (guint) port,
                        "scheme", scheme,
                        NULL);
-
   g_free (scheme);
   g_free (hostname);
 
@@ -1459,10 +1175,14 @@ g_network_address_connectable_proxy_enumerate (GSocketConnectable *connectable)
   GSocketAddressEnumerator *proxy_enum;
   gchar *uri;
 
-  uri = _g_uri_from_authority (self->priv->scheme ? self->priv->scheme : "none",
-                               self->priv->hostname,
-                               self->priv->port,
-                               NULL);
+  uri = g_uri_join (G_URI_FLAGS_NONE,
+                    self->priv->scheme ? self->priv->scheme : "none",
+                    NULL,
+                    self->priv->hostname,
+                    self->priv->port,
+                    "",
+                    NULL,
+                    NULL);
 
   proxy_enum = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
                              "connectable", connectable,

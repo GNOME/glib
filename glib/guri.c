@@ -33,6 +33,11 @@
  * The #GUri type and related functions can be used to parse URIs into
  * their components, and build valid URIs from individual components.
  *
+ * Note that #GUri scope is to help manipulate URIs in various applications,
+ * following the RFC 3986. In particular, it doesn't intend to cover web browser
+ * needs, and doesn't implement the WHATWG URL standard. No APIs are provided to
+ * help prevent homograph attacks.
+ *
  * ## Parsing URIs
  *
  * The most minimalist APIs for parsing URIs are g_uri_split() and
@@ -834,8 +839,8 @@ g_uri_split_internal (const gchar  *uri_string,
 
 /**
  * g_uri_split:
- * @uri_string: a string containing a relative or absolute URI
- * @flags: flags for parsing @uri_string
+ * @uri_ref: a string containing a relative or absolute URI
+ * @flags: flags for parsing @uri_ref
  * @scheme: (out) (nullable) (optional) (transfer full): on return, contains
  *    the scheme (converted to lowercase), or %NULL
  * @userinfo: (out) (nullable) (optional) (transfer full): on return, contains
@@ -852,14 +857,14 @@ g_uri_split_internal (const gchar  *uri_string,
  *    the fragment, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_string (which can be an absolute or relative URI)
+ * Parses @uri_ref (which can be an absolute or relative URI)
  * according to @flags, and returns the pieces. Any component that
- * doesn't appear in @uri_string will be returned as %NULL (but note
+ * doesn't appear in @uri_ref will be returned as %NULL (but note
  * that all URIs always have a path component, though it may be the
  * empty string).
  *
  * If @flags contains %G_URI_FLAGS_ENCODED, then `%`-encoded characters in
- * @uri_string will remain encoded in the output strings. (If not,
+ * @uri_ref will remain encoded in the output strings. (If not,
  * then all such characters will be decoded.) Note that decoding will
  * only work if the URI components are ASCII or UTF-8, so you will
  * need to use %G_URI_FLAGS_ENCODED if they are not.
@@ -869,13 +874,13 @@ g_uri_split_internal (const gchar  *uri_string,
  * since it always returns only the full userinfo; use
  * g_uri_split_with_user() if you want it split up.
  *
- * Returns: (skip): %TRUE if @uri_string parsed successfully, %FALSE
+ * Returns: (skip): %TRUE if @uri_ref parsed successfully, %FALSE
  *   on error.
  *
  * Since: 2.66
  */
 gboolean
-g_uri_split (const gchar  *uri_string,
+g_uri_split (const gchar  *uri_ref,
              GUriFlags     flags,
              gchar       **scheme,
              gchar       **userinfo,
@@ -886,10 +891,10 @@ g_uri_split (const gchar  *uri_string,
              gchar       **fragment,
              GError      **error)
 {
-  g_return_val_if_fail (uri_string != NULL, FALSE);
+  g_return_val_if_fail (uri_ref != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  return g_uri_split_internal (uri_string, flags,
+  return g_uri_split_internal (uri_ref, flags,
                                scheme, userinfo, NULL, NULL, NULL,
                                host, port, path, query, fragment,
                                error);
@@ -897,8 +902,8 @@ g_uri_split (const gchar  *uri_string,
 
 /**
  * g_uri_split_with_user:
- * @uri_string: a string containing a relative or absolute URI
- * @flags: flags for parsing @uri_string
+ * @uri_ref: a string containing a relative or absolute URI
+ * @flags: flags for parsing @uri_ref
  * @scheme: (out) (nullable) (optional) (transfer full): on return, contains
  *    the scheme (converted to lowercase), or %NULL
  * @user: (out) (nullable) (optional) (transfer full): on return, contains
@@ -919,9 +924,9 @@ g_uri_split (const gchar  *uri_string,
  *    the fragment, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_string (which can be an absolute or relative URI)
+ * Parses @uri_ref (which can be an absolute or relative URI)
  * according to @flags, and returns the pieces. Any component that
- * doesn't appear in @uri_string will be returned as %NULL (but note
+ * doesn't appear in @uri_ref will be returned as %NULL (but note
  * that all URIs always have a path component, though it may be the
  * empty string).
  *
@@ -931,13 +936,13 @@ g_uri_split (const gchar  *uri_string,
  * @auth_params will only be parsed out if @flags contains
  * %G_URI_FLAGS_HAS_AUTH_PARAMS.
  *
- * Returns: (skip): %TRUE if @uri_string parsed successfully, %FALSE
+ * Returns: (skip): %TRUE if @uri_ref parsed successfully, %FALSE
  *   on error.
  *
  * Since: 2.66
  */
 gboolean
-g_uri_split_with_user (const gchar  *uri_string,
+g_uri_split_with_user (const gchar  *uri_ref,
                        GUriFlags     flags,
                        gchar       **scheme,
                        gchar       **user,
@@ -950,10 +955,10 @@ g_uri_split_with_user (const gchar  *uri_string,
                        gchar       **fragment,
                        GError      **error)
 {
-  g_return_val_if_fail (uri_string != NULL, FALSE);
+  g_return_val_if_fail (uri_ref != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  return g_uri_split_internal (uri_string, flags,
+  return g_uri_split_internal (uri_ref, flags,
                                scheme, NULL, user, password, auth_params,
                                host, port, path, query, fragment,
                                error);
@@ -962,7 +967,7 @@ g_uri_split_with_user (const gchar  *uri_string,
 
 /**
  * g_uri_split_network:
- * @uri_string: a string containing a relative or absolute URI
+ * @uri_string: a string containing an absolute URI
  * @flags: flags for parsing @uri_string
  * @scheme: (out) (nullable) (optional) (transfer full): on return, contains
  *    the scheme (converted to lowercase), or %NULL
@@ -1036,12 +1041,12 @@ g_uri_split_network (const gchar  *uri_string,
 
 /**
  * g_uri_is_valid:
- * @uri_string: a string containing a relative or absolute URI
+ * @uri_string: a string containing an absolute URI
  * @flags: flags for parsing @uri_string
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_string (which can be an absolute or relative URI)
- * according to @flags, to determine whether it is valid.
+ * Parses @uri_string according to @flags, to determine whether it is valid
+ * absolute URI.
  *
  * See g_uri_split(), and the definition of #GUriFlags, for more
  * information on the effect of @flags.
@@ -1058,10 +1063,7 @@ g_uri_is_valid (const gchar  *uri_string,
   g_return_val_if_fail (uri_string != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  return g_uri_split_internal (uri_string, flags,
-                               NULL, NULL, NULL, NULL, NULL,
-                               NULL, NULL, NULL, NULL, NULL,
-                               error);
+  return g_uri_split_network (uri_string, flags, NULL, NULL, NULL, error);
 }
 
 
@@ -1153,12 +1155,12 @@ g_uri_parse (const gchar  *uri_string,
 
 /**
  * g_uri_parse_relative:
- * @base_uri: (nullable): a base URI
- * @uri_string: a string representing a relative or absolute URI
- * @flags: flags describing how to parse @uri_string
+ * @base_uri: (nullable): a base absolute URI
+ * @uri_ref: a string representing a relative or absolute URI
+ * @flags: flags describing how to parse @uri_ref
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_string according to @flags and, if it is a relative
+ * Parses @uri_ref according to @flags and, if it is a relative
  * URI, resolves it relative to @base_uri. If the result is not a
  * valid absolute URI, it will be discarded, and an error returned.
  *
@@ -1168,20 +1170,22 @@ g_uri_parse (const gchar  *uri_string,
  */
 GUri *
 g_uri_parse_relative (GUri         *base_uri,
-                      const gchar  *uri_string,
+                      const gchar  *uri_ref,
                       GUriFlags     flags,
                       GError      **error)
 {
   GUri *uri = NULL;
 
-  g_return_val_if_fail (uri_string != NULL, NULL);
+  g_return_val_if_fail (uri_ref != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail (base_uri == NULL || base_uri->scheme != NULL, NULL);
 
+  /* Use GUri struct to construct the return value: there is no guarantee it is
+   * actually correct within the function body. */
   uri = g_atomic_rc_box_new0 (GUri);
   uri->flags = flags;
 
-  if (!g_uri_split_internal (uri_string, flags,
+  if (!g_uri_split_internal (uri_ref, flags,
                              &uri->scheme, &uri->userinfo,
                              &uri->user, &uri->password, &uri->auth_params,
                              &uri->host, &uri->port,
@@ -1264,16 +1268,16 @@ g_uri_parse_relative (GUri         *base_uri,
 /**
  * g_uri_resolve_relative:
  * @base_uri_string: (nullable): a string representing a base URI
- * @uri_string: a string representing a relative or absolute URI
- * @flags: flags describing how to parse @uri_string
+ * @uri_ref: a string representing a relative or absolute URI
+ * @flags: flags describing how to parse @uri_ref
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_string according to @flags and, if it is a relative
+ * Parses @uri_ref according to @flags and, if it is a relative
  * URI, resolves it relative to @base_uri_string. If the result is not
  * a valid absolute URI, it will be discarded, and an error returned.
  *
- * (If @base_uri_string is %NULL, this just returns @uri_string, or
- * %NULL if @uri_string is invalid or not absolute.)
+ * (If @base_uri_string is %NULL, this just returns @uri_ref, or
+ * %NULL if @uri_ref is invalid or not absolute.)
  *
  * Return value: the resolved URI string.
  *
@@ -1281,14 +1285,14 @@ g_uri_parse_relative (GUri         *base_uri,
  */
 gchar *
 g_uri_resolve_relative (const gchar  *base_uri_string,
-                        const gchar  *uri_string,
+                        const gchar  *uri_ref,
                         GUriFlags     flags,
                         GError      **error)
 {
   GUri *base_uri, *resolved_uri;
   gchar *resolved_uri_string;
 
-  g_return_val_if_fail (uri_string != NULL, NULL);
+  g_return_val_if_fail (uri_ref != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   flags |= G_URI_FLAGS_ENCODED;
@@ -1302,7 +1306,7 @@ g_uri_resolve_relative (const gchar  *base_uri_string,
   else
     base_uri = NULL;
 
-  resolved_uri = g_uri_parse_relative (base_uri, uri_string, flags, error);
+  resolved_uri = g_uri_parse_relative (base_uri, uri_ref, flags, error);
   if (base_uri)
     g_uri_unref (base_uri);
   if (!resolved_uri)
@@ -1447,13 +1451,13 @@ g_uri_join_internal (GUriFlags    flags,
  * @fragment: (nullable): the fragment, or %NULL
  *
  * Joins the given components together according to @flags to create
- * a complete URI string. At least @scheme must be specified, and
+ * an absolute URI string. At least @scheme must be specified, and
  * @path may not be %NULL (though it may be "").
  *
  * See also g_uri_join_with_user(), which allows specifying the
  * components of the "userinfo" separately.
  *
- * Return value: a URI string
+ * Return value: an absolute URI string
  *
  * Since: 2.66
  */
@@ -1497,13 +1501,13 @@ g_uri_join (GUriFlags    flags,
  * @fragment: (nullable): the fragment, or %NULL
  *
  * Joins the given components together according to @flags to create
- * a complete URI string. At least @scheme must be specified, and
+ * an absolute URI string. At least @scheme must be specified, and
  * @path may not be %NULL (though it may be "").
  *
  * In constrast to g_uri_join(), this allows specifying the components
  * of the "userinfo" separately.
  *
- * Return value: a URI string
+ * Return value: an absolute URI string
  *
  * Since: 2.66
  */
