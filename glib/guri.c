@@ -1110,6 +1110,8 @@ g_uri_is_valid (const gchar  *uri_string,
 
 /* This does the "Remove Dot Segments" algorithm from section 5.2.4 of
  * RFC 3986, except that @path is modified in place.
+ *
+ * See https://tools.ietf.org/html/rfc3986#section-5.2.4
  */
 static void
 remove_dot_segments (gchar *path)
@@ -1247,6 +1249,8 @@ g_uri_parse_relative (GUri         *base_uri,
     {
       /* This is section 5.2.2 of RFC 3986, except that we're doing
        * it in place in @uri rather than copying from R to T.
+       *
+       * See https://tools.ietf.org/html/rfc3986#section-5.2.2
        */
       if (uri->scheme)
         remove_dot_segments (uri->path);
