@@ -1973,6 +1973,12 @@ g_uri_params_iter_next (GUriParamsIter *iter,
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
+  /* Pre-clear these in case of failure or finishing. */
+  if (attribute)
+    *attribute = NULL;
+  if (value)
+    *value = NULL;
+
   if (ri->attr >= ri->end)
     return FALSE;
 
