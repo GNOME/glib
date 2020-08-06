@@ -1503,7 +1503,7 @@ g_uri_join (GUriFlags    flags,
  * Joins the given components together according to @flags to create
  * an absolute URI string. @path may not be %NULL (though it may be "").
  *
- * In constrast to g_uri_join(), this allows specifying the components
+ * In contrast to g_uri_join(), this allows specifying the components
  * of the "userinfo" separately.
  *
  * Return value: an absolute URI string
@@ -1602,7 +1602,7 @@ g_uri_build (GUriFlags    flags,
  * coherent with the passed values, in particular use `%`-encoded values with
  * %G_URI_FLAGS_ENCODED.
 
- * In constrast to g_uri_build(), this allows specifying the components
+ * In contrast to g_uri_build(), this allows specifying the components
  * of the "userinfo" field separately. Note that @user must be non-%NULL
  * if either @password or @auth_params is non-%NULL.
  *
@@ -1787,7 +1787,7 @@ G_STATIC_ASSERT (G_ALIGNOF (GUriParamsIter) >= G_ALIGNOF (RealIter));
 
 /**
  * g_uri_params_iter_init:
- * @iter: an uninitalized #GUriParamsIter
+ * @iter: an uninitialized #GUriParamsIter
  * @params: a `%`-encoded string containing "attribute=value"
  *   parameters
  * @length: the length of @params, or -1 if it is NUL-terminated
@@ -1940,7 +1940,7 @@ g_uri_params_iter_next (GUriParamsIter *iter,
  *
  * Many URI schemes include one or more attribute/value pairs as part of the URI
  * value. This method can be used to parse them into a hash table. When an
- * attribute has multiple occurences, the last value is the final returned
+ * attribute has multiple occurrences, the last value is the final returned
  * value. If you need to handle repeated attributes differently, use
  * #GUriParamsIter.
  *
