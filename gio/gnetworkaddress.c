@@ -546,7 +546,7 @@ g_network_address_parse_uri (const gchar  *uri,
   gchar *hostname = NULL;
   gint port;
 
-  if (!g_uri_split_network (uri, G_URI_FLAGS_PARSE_STRICT,
+  if (!g_uri_split_network (uri, G_URI_FLAGS_NONE,
                             &scheme, &hostname, &port, NULL))
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,

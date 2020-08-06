@@ -38,9 +38,11 @@ void         g_uri_unref            (GUri *uri);
 /**
  * GUriFlags:
  * @G_URI_FLAGS_NONE: No flags set.
- * @G_URI_FLAGS_PARSE_STRICT: Parse the URI strictly according to the
- *     [RFC 3986](https://tools.ietf.org/html/rfc3986) grammar, rather than
- *     fixing up or ignoring common mistakes.
+ * @G_URI_FLAGS_PARSE_RELAXED: Parse the URI more relaxedly than the
+ *     [RFC 3986](https://tools.ietf.org/html/rfc3986) grammar specifies,
+ *     fixing up or ignoring common mistakes in URIs coming from external
+ *     sources. This is also needed for some obscure URI schemes where `;`
+ *     separates the host from the path. Don’t use this flag unless you need to.
  * @G_URI_FLAGS_HAS_PASSWORD: The userinfo field may contain a password,
  *     which will be separated from the username by `:`.
  * @G_URI_FLAGS_HAS_AUTH_PARAMS: The userinfo may contain additional
@@ -73,7 +75,7 @@ void         g_uri_unref            (GUri *uri);
 GLIB_AVAILABLE_TYPE_IN_2_66
 typedef enum {
   G_URI_FLAGS_NONE            = 0,
-  G_URI_FLAGS_PARSE_STRICT    = 1 << 0,
+  G_URI_FLAGS_PARSE_RELAXED   = 1 << 0,
   G_URI_FLAGS_HAS_PASSWORD    = 1 << 1,
   G_URI_FLAGS_HAS_AUTH_PARAMS = 1 << 2,
   G_URI_FLAGS_ENCODED         = 1 << 3,
@@ -239,6 +241,7 @@ GUriFlags    g_uri_get_flags         (GUri          *uri);
  * @G_URI_PARAMS_CASE_INSENSITIVE: Parameter names are case insensitive.
  * @G_URI_PARAMS_WWW_FORM: Replace `+` with space character. Only useful for
  *     URLs on the web, using the `https` or `http` schemas.
+ * @G_URI_PARAMS_PARSE_RELAXED: See %G_URI_FLAGS_PARSE_RELAXED.
  *
  * Flags modifying the way parameters are handled by g_uri_parse_params() and
  * #GUriParamsIter.
@@ -250,6 +253,7 @@ typedef enum {
   G_URI_PARAMS_NONE             = 0,
   G_URI_PARAMS_CASE_INSENSITIVE = 1 << 0,
   G_URI_PARAMS_WWW_FORM         = 1 << 1,
+  G_URI_PARAMS_PARSE_RELAXED    = 1 << 2,
 } GUriParamsFlags;
 
 GLIB_AVAILABLE_IN_2_66

@@ -329,7 +329,7 @@ g_simple_proxy_resolver_lookup (GProxyResolver  *proxy_resolver,
       gchar *host = NULL;
       gint port;
 
-      if (g_uri_split_network (uri, G_URI_FLAGS_PARSE_STRICT, NULL,
+      if (g_uri_split_network (uri, G_URI_FLAGS_NONE, NULL,
                                &host, &port, NULL) &&
           ignore_host (resolver, host, port > 0 ? port : 0))
         proxy = "direct://";

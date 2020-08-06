@@ -306,7 +306,7 @@ uri_decoder (gchar       **out,
               !g_ascii_isxdigit (s[2]))
             {
               /* % followed by non-hex or the end of the string; this is an error */
-              if (flags & G_URI_FLAGS_PARSE_STRICT)
+              if (!(flags & G_URI_FLAGS_PARSE_RELAXED))
                 {
                   g_set_error_literal (error, G_URI_ERROR, parse_error,
                                        /* xgettext: no-c-format */
@@ -710,7 +710,7 @@ g_uri_split_internal (const gchar  *uri_string,
   if (fragment)
     *fragment = NULL;
 
-  if (!(flags & G_URI_FLAGS_PARSE_STRICT) && strpbrk (uri_string, " \t\n\r"))
+  if ((flags & G_URI_FLAGS_PARSE_RELAXED) && strpbrk (uri_string, " \t\n\r"))
     {
       cleaned_uri_string = uri_cleanup (uri_string);
       uri_string = cleaned_uri_string;
@@ -745,7 +745,7 @@ g_uri_split_internal (const gchar  *uri_string,
       at = memchr (p, '@', path_start - p);
       if (at)
         {
-          if (!(flags & G_URI_FLAGS_PARSE_STRICT))
+          if (flags & G_URI_FLAGS_PARSE_RELAXED)
             {
               gchar *next_at;
 
@@ -780,7 +780,7 @@ g_uri_split_internal (const gchar  *uri_string,
           p = at + 1;
         }
 
-      if (!(flags & G_URI_FLAGS_PARSE_STRICT))
+      if (flags & G_URI_FLAGS_PARSE_RELAXED)
         {
           semi = strchr (p, ';');
           if (semi && semi < path_start)
@@ -1987,6 +1987,7 @@ g_uri_params_iter_next (GUriParamsIter *iter,
   const gchar *attr_end, *val, *val_end;
   gchar *decoded_attr, *decoded_value;
   gboolean www_form = ri->flags & G_URI_PARAMS_WWW_FORM;
+  GUriFlags decode_flags = G_URI_FLAGS_NONE;
 
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
@@ -1999,6 +2000,9 @@ g_uri_params_iter_next (GUriParamsIter *iter,
 
   if (ri->attr >= ri->end)
     return FALSE;
+
+  if (ri->flags & G_URI_PARAMS_PARSE_RELAXED)
+    decode_flags |= G_URI_FLAGS_PARSE_RELAXED;
 
   /* Check if each character in @attr is a separator, by indexing by the
    * character value into the @sep_table, which has value 1 stored at an
@@ -2015,14 +2019,14 @@ g_uri_params_iter_next (GUriParamsIter *iter,
       return FALSE;
     }
   if (!uri_decode (&decoded_attr, NULL, ri->attr, attr_end - ri->attr,
-                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_FAILED, error))
+                   www_form, decode_flags, G_URI_ERROR_FAILED, error))
     {
       return FALSE;
     }
 
   val = attr_end + 1;
   if (!uri_decode (&decoded_value, NULL, val, val_end - val,
-                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_FAILED, error))
+                   www_form, decode_flags, G_URI_ERROR_FAILED, error))
     {
       g_free (decoded_attr);
       return FALSE;
@@ -2062,9 +2066,9 @@ g_uri_params_iter_next (GUriParamsIter *iter,
  * The @params string is assumed to still be `%`-encoded, but the returned
  * values will be fully decoded. (Thus it is possible that the returned values
  * may contain `=` or @separators, if the value was encoded in the input.)
- * Invalid `%`-encoding is treated as with the non-%G_URI_FLAGS_PARSE_STRICT
+ * Invalid `%`-encoding is treated as with the %G_URI_FLAGS_PARSE_RELAXED
  * rules for g_uri_parse(). (However, if @params is the path or query string
- * from a #GUri that was parsed with %G_URI_FLAGS_PARSE_STRICT and
+ * from a #GUri that was parsed without %G_URI_FLAGS_PARSE_RELAXED and
  * %G_URI_FLAGS_ENCODED, then you already know that it does not contain any
  * invalid encoding.)
  *
@@ -2401,7 +2405,7 @@ g_uri_unescape_segment (const gchar *escaped_string,
                              illegal_characters,
                              escaped_string, length,
                              FALSE, FALSE,
-                             G_URI_FLAGS_PARSE_STRICT|G_URI_FLAGS_ENCODED,
+                             G_URI_FLAGS_ENCODED,
                              0, NULL);
   if (decoded_len < 0)
     return NULL;
@@ -2524,7 +2528,7 @@ g_uri_unescape_bytes (const gchar *escaped_string,
                                   escaped_string, length,
                                   FALSE,
                                   FALSE,
-                                  G_URI_FLAGS_PARSE_STRICT|G_URI_FLAGS_ENCODED,
+                                  G_URI_FLAGS_ENCODED,
                                   G_URI_ERROR_FAILED, error);
   if (unescaped_length == -1)
     return NULL;
