@@ -417,7 +417,7 @@ test_uri_unescape_bytes (gconstpointer test_data)
       if (tests[i].expected_unescaped_len < 0)
         {
           g_assert_null (bytes);
-          g_assert_error (error, G_URI_ERROR, G_URI_ERROR_MISC);
+          g_assert_error (error, G_URI_ERROR, G_URI_ERROR_FAILED);
           g_clear_error (&error);
         }
       else
@@ -891,17 +891,17 @@ test_uri_parsing_relative (void)
 
   resolved = g_uri_resolve_relative (NULL, "a", G_URI_FLAGS_NONE, &error);
   g_assert_null (resolved);
-  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_MISC);
+  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_FAILED);
   g_clear_error (&error);
 
   resolved = g_uri_resolve_relative ("../b", "a", G_URI_FLAGS_NONE, &error);
   g_assert_null (resolved);
-  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_MISC);
+  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_FAILED);
   g_clear_error (&error);
 
   resolved = g_uri_resolve_relative ("%%", "a", G_URI_FLAGS_NONE, &error);
   g_assert_null (resolved);
-  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_MISC);
+  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_FAILED);
   g_clear_error (&error);
 }
 
@@ -1449,7 +1449,7 @@ test_uri_iter_params (gconstpointer test_data)
       g_assert_cmpint (n, ==, params_tests[i].expected_n_iter);
       if (err)
         {
-          g_assert_error (err, G_URI_ERROR, G_URI_ERROR_MISC);
+          g_assert_error (err, G_URI_ERROR, G_URI_ERROR_FAILED);
           g_clear_error (&err);
         }
       g_free (uri);
@@ -1494,7 +1494,7 @@ test_uri_parse_params (gconstpointer test_data)
       if (params_tests[i].expected_n_params < 0)
         {
           g_assert_null (params);
-          g_assert_error (err, G_URI_ERROR, G_URI_ERROR_MISC);
+          g_assert_error (err, G_URI_ERROR, G_URI_ERROR_FAILED);
           g_clear_error (&err);
         }
       else

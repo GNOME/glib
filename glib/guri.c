@@ -1237,7 +1237,7 @@ g_uri_parse_relative (GUri         *base_uri,
 
   if (!uri->scheme && !base_uri)
     {
-      g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_MISC,
+      g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_FAILED,
                            _("URI is not absolute, and no base URI was provided"));
       goto fail;
     }
@@ -1980,19 +1980,19 @@ g_uri_params_iter_next (GUriParamsIter *iter,
   attr_end = memchr (ri->attr, '=', val_end - ri->attr);
   if (!attr_end)
     {
-      g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_MISC,
+      g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_FAILED,
                            _("Missing '=' and parameter value"));
       return FALSE;
     }
   if (!uri_decode (&decoded_attr, NULL, ri->attr, attr_end - ri->attr,
-                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
+                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_FAILED, error))
     {
       return FALSE;
     }
 
   val = attr_end + 1;
   if (!uri_decode (&decoded_value, NULL, val, val_end - val,
-                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_MISC, error))
+                   www_form, G_URI_FLAGS_NONE, G_URI_ERROR_FAILED, error))
     {
       g_free (decoded_attr);
       return FALSE;
@@ -2495,7 +2495,7 @@ g_uri_unescape_bytes (const gchar *escaped_string,
                                   FALSE,
                                   FALSE,
                                   G_URI_FLAGS_PARSE_STRICT|G_URI_FLAGS_ENCODED,
-                                  G_URI_ERROR_MISC, error);
+                                  G_URI_ERROR_FAILED, error);
   if (unescaped_length == -1)
     return NULL;
 

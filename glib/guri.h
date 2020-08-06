@@ -295,7 +295,7 @@ GQuark g_uri_error_quark (void);
 
 /**
  * GUriError:
- * @G_URI_ERROR_MISC: Generic error if no more specific error is available.
+ * @G_URI_ERROR_FAILED: Generic error if no more specific error is available.
  *     See the error message for details.
  * @G_URI_ERROR_BAD_SCHEME: The scheme of a URI could not be parsed.
  * @G_URI_ERROR_BAD_USER: The user/userinfo of a URI could not be parsed.
@@ -312,7 +312,7 @@ GQuark g_uri_error_quark (void);
  * Since: 2.66
  */
 typedef enum {
-  G_URI_ERROR_MISC,
+  G_URI_ERROR_FAILED,
   G_URI_ERROR_BAD_SCHEME,
   G_URI_ERROR_BAD_USER,
   G_URI_ERROR_BAD_PASSWORD,
