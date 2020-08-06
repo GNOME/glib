@@ -400,7 +400,7 @@ GBytes *    g_uri_unescape_bytes   (const char *escaped_string,
                                     GError    **error);
 
 GLIB_AVAILABLE_IN_2_66
-char *      g_uri_escape_bytes     (const guchar *unescaped,
+char *      g_uri_escape_bytes     (const guint8 *unescaped,
                                     gsize         length,
                                     const char   *reserved_chars_allowed);
 

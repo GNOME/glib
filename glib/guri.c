@@ -2539,7 +2539,7 @@ g_uri_unescape_bytes (const gchar *escaped_string,
  * Since: 2.66
  */
 gchar *
-g_uri_escape_bytes (const guchar *unescaped,
+g_uri_escape_bytes (const guint8 *unescaped,
                     gsize         length,
                     const gchar  *reserved_chars_allowed)
 {
