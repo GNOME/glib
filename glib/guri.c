@@ -1756,7 +1756,7 @@ g_uri_to_string (GUri *uri)
 {
   g_return_val_if_fail (uri != NULL, NULL);
 
-  return g_uri_to_string_partial (uri, 0);
+  return g_uri_to_string_partial (uri, G_URI_HIDE_NONE);
 }
 
 /**
@@ -2325,7 +2325,7 @@ g_uri_get_fragment (GUri *uri)
 GUriFlags
 g_uri_get_flags (GUri *uri)
 {
-  g_return_val_if_fail (uri != NULL, 0);
+  g_return_val_if_fail (uri != NULL, G_URI_FLAGS_NONE);
 
   return uri->flags;
 }
