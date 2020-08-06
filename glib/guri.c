@@ -34,16 +34,49 @@
  * their components, and build valid URIs from individual components.
  *
  * Note that #GUri scope is to help manipulate URIs in various applications,
- * following the RFC 3986. In particular, it doesn't intend to cover web browser
- * needs, and doesn't implement the WHATWG URL standard. No APIs are provided to
- * help prevent homograph attacks.
+ * following [RFC 3986](https://tools.ietf.org/html/rfc3986). In particular,
+ * it doesn't intend to cover web browser needs, and doesn't implement the
+ * [WHATWG URL](https://url.spec.whatwg.org/) standard. No APIs are provided to
+ * help prevent
+ * [homograph attacks](https://en.wikipedia.org/wiki/IDN_homograph_attack), so
+ * #GUri is not suitable for formatting URIs for display to the user for making
+ * security-sensitive decisions.
+ *
+ * ## Relative and absolute URIs # {#relative-absolute-uris}
+ *
+ * As defined in [RFC 3986](https://tools.ietf.org/html/rfc3986#section-4), the
+ * hierarchical nature of URIs means that they can either be ‘relative
+ * references’ (sometimes referred to as ‘relative URIs’) or ‘URIs’ (for
+ * clarity, ‘URIs’ are referred to in this documentation as
+ * ‘absolute URIs’ — although
+ * [in constrast to RFC 3986](https://tools.ietf.org/html/rfc3986#section-4.3),
+ * fragment identifiers are always allowed).
+ *
+ * Relative references have one or more components of the URI missing. In
+ * particular, they have no scheme. Any other component, such as hostname,
+ * query, etc. may be missing, apart from a path, which has to be specified (but
+ * may be empty). The path may be relative, starting with `./` rather than `/`.
+ *
+ * For example, a valid relative reference is `./path?query`,
+ * `/?query#fragment` or `//example.com`.
+ *
+ * Absolute URIs have a scheme specified. Any other components of the URI which
+ * are missing are specified as explicitly unset in the URI, rather than being
+ * resolved relative to a base URI using g_uri_parse_relative().
+ *
+ * For example, a valid absolute URI is `file:///home/bob` or
+ * `https://search.com?query=string`.
+ *
+ * A #GUri instance is always an absolute URI. A string may be an absolute URI
+ * or a relative reference; see the documentation for individual functions as to
+ * what forms they accept.
  *
  * ## Parsing URIs
  *
  * The most minimalist APIs for parsing URIs are g_uri_split() and
  * g_uri_split_with_user(). These split a URI into its component
  * parts, and return the parts; the difference between the two is that
- * g_uri_split() treats the "userinfo" component of the URI as a
+ * g_uri_split() treats the ‘userinfo’ component of the URI as a
  * single element, while g_uri_split_with_user() can (depending on the
  * #GUriFlags you pass) treat it as containing a username, password,
  * and authentication parameters. Alternatively, g_uri_split_network()
@@ -68,20 +101,23 @@
  * use g_uri_peek_scheme() on the URI string to check the scheme
  * first, and use that to decide what flags to parse it with.
  *
+ * For example, you might want to use %G_URI_PARAMS_WWW_FORM when parsing the
+ * params for a web URI, so compare the result of g_uri_peek_scheme() against
+ * `http` and `https`.
+ *
  * ## Building URIs
  *
  * g_uri_join() and g_uri_join_with_user() can be used to construct
- * valid URI strings from a set of component strings; they are the
+ * valid URI strings from a set of component strings. They are the
  * inverse of g_uri_split() and g_uri_split_with_user().
  *
  * Similarly, g_uri_build() and g_uri_build_with_user() can be used to
  * construct a #GUri from a set of component strings.
  *
  * As with the parsing functions, the building functions take a
- * #GUriFlags argument; in particular, it is important to keep in mind
- * whether the URI components you are using have `%`-encoded
- * characters in them or not, and pass the appropriate flags
- * accordingly.
+ * #GUriFlags argument. In particular, it is important to keep in mind
+ * whether the URI components you are using are already `%`-encoded. If so,
+ * you must pass the %G_URI_FLAGS_ENCODED flag.
  *
  * ## `file://` URIs
  *
@@ -96,10 +132,10 @@
  *
  * Note that there is no `g_uri_equal ()` function, because comparing
  * URIs usefully requires scheme-specific knowledge that #GUri does
- * not have. For example, "`http://example.com/`" and
- * "`http://EXAMPLE.COM:80`" have exactly the same meaning according
- * to the HTTP specification, and "`data:,foo`" and
- * "`data:;base64,Zm9v`" resolve to the same thing according to the
+ * not have. For example, `http://example.com/` and
+ * `http://EXAMPLE.COM:80` have exactly the same meaning according
+ * to the HTTP specification, and `data:,foo` and
+ * `data:;base64,Zm9v` resolve to the same thing according to the
  * `data:` URI specification.
  *
  * Since: 2.66
@@ -113,13 +149,14 @@
  * Since #GUri only represents absolute URIs, all #GUris will have a
  * URI scheme, so g_uri_get_scheme() will always return a non-%NULL
  * answer. Likewise, by definition, all URIs have a path component, so
- * g_uri_get_path() will always return non-%NULL (though it may return
- * the empty string).
+ * g_uri_get_path() will always return a non-%NULL string (which may be empty).
  *
- * If the URI string has an "authority" component (that is, if the
- * scheme is followed by "`://`" rather than just "`:`"), then the
- * #GUri will contain a hostname, and possibly a port and "userinfo".
- * Additionally, depending on how the #GUri was constructed/parsed,
+ * If the URI string has an
+ * [‘authority’ component](https://tools.ietf.org/html/rfc3986#section-3) (that
+ * is, if the scheme is followed by `://` rather than just `:`), then the
+ * #GUri will contain a hostname, and possibly a port and ‘userinfo’.
+ * Additionally, depending on how the #GUri was constructed/parsed (for example,
+ * using the %G_URI_FLAGS_HAS_PASSWORD and %G_URI_FLAGS_HAS_AUTH_PARAMS flags),
  * the userinfo may be split out into a username, password, and
  * additional authorization-related parameters.
  *
@@ -134,14 +171,14 @@
  * For example, with the encoded flag:
  *
  * |[<!-- language="C" -->
- *   GUri *uri = g_uri_parse ("http://host/path?query=http%3A%2F%2Fhost%2Fpath%3Fparam%3Dvalue", G_URI_FLAGS_ENCODED, &err);
+ *   g_autoptr(GUri) uri = g_uri_parse ("http://host/path?query=http%3A%2F%2Fhost%2Fpath%3Fparam%3Dvalue", G_URI_FLAGS_ENCODED, &err);
  *   g_assert_cmpstr (g_uri_get_query (uri), ==, "query=http%3A%2F%2Fhost%2Fpath%3Fparam%3Dvalue");
  * ]|
  *
  * While the default `%`-decoding behaviour would give:
  *
  * |[<!-- language="C" -->
- *   GUri *uri = g_uri_parse ("http://host/path?query=http%3A%2F%2Fhost%2Fpath%3Fparam%3Dvalue", G_URI_FLAGS_NONE, &err);
+ *   g_autoptr(GUri) uri = g_uri_parse ("http://host/path?query=http%3A%2F%2Fhost%2Fpath%3Fparam%3Dvalue", G_URI_FLAGS_NONE, &err);
  *   g_assert_cmpstr (g_uri_get_query (uri), ==, "query=http://host/path?param=value");
  * ]|
  *
@@ -149,13 +186,13 @@
  * with an error indicating the bad string location:
  *
  * |[<!-- language="C" -->
- *   GUri *uri = g_uri_parse ("http://host/path?query=http%3A%2F%2Fhost%2Fpath%3Fbad%3D%00alue", G_URI_FLAGS_NONE, &err);
- *   g_assert_error(err, G_URI_ERROR, G_URI_ERROR_BAD_QUERY);
+ *   g_autoptr(GUri) uri = g_uri_parse ("http://host/path?query=http%3A%2F%2Fhost%2Fpath%3Fbad%3D%00alue", G_URI_FLAGS_NONE, &err);
+ *   g_assert_error (err, G_URI_ERROR, G_URI_ERROR_BAD_QUERY);
  * ]|
  *
  * You should pass %G_URI_FLAGS_ENCODED or %G_URI_FLAGS_ENCODED_QUERY if you
  * need to handle that case manually. In particular, if the query string
- * contains '=' characters that are '%'-encoded, you should let
+ * contains `=` characters that are `%`-encoded, you should let
  * g_uri_parse_params() do the decoding once of the query.
  *
  * #GUri is immutable once constructed, and can safely be accessed from
@@ -847,9 +884,9 @@ g_uri_split_internal (const gchar  *uri_string,
  *    the userinfo, or %NULL
  * @host: (out) (nullable) (optional) (transfer full): on return, contains the
  *    host, or %NULL
- * @port: (out) (nullable) (optional) (transfer full): on return, contains the
- *    port, or -1
- * @path: (out) (nullable) (optional) (transfer full): on return, contains the
+ * @port: (out) (optional) (transfer full): on return, contains the
+ *    port, or `-1`
+ * @path: (out) (not nullable) (optional) (transfer full): on return, contains the
  *    path
  * @query: (out) (nullable) (optional) (transfer full): on return, contains the
  *    query, or %NULL
@@ -857,11 +894,11 @@ g_uri_split_internal (const gchar  *uri_string,
  *    the fragment, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_ref (which can be an absolute or relative URI)
- * according to @flags, and returns the pieces. Any component that
- * doesn't appear in @uri_ref will be returned as %NULL (but note
- * that all URIs always have a path component, though it may be the
- * empty string).
+ * Parses @uri_ref (which can be an
+ * [absolute or relative URI][relative-absolute-uris]) according to @flags, and
+ * returns the pieces. Any component that doesn't appear in @uri_ref will be
+ * returned as %NULL (but note that all URIs always have a path component,
+ * though it may be the empty string).
  *
  * If @flags contains %G_URI_FLAGS_ENCODED, then `%`-encoded characters in
  * @uri_ref will remain encoded in the output strings. (If not,
@@ -914,9 +951,9 @@ g_uri_split (const gchar  *uri_ref,
  *    the auth_params, or %NULL
  * @host: (out) (nullable) (optional) (transfer full): on return, contains the
  *    host, or %NULL
- * @port: (out) (nullable) (optional) (transfer full): on return, contains the
- *    port, or -1
- * @path: (out) (nullable) (optional) (transfer full): on return, contains the
+ * @port: (out) (optional) (transfer full): on return, contains the
+ *    port, or `-1`
+ * @path: (out) (not nullable) (optional) (transfer full): on return, contains the
  *    path
  * @query: (out) (nullable) (optional) (transfer full): on return, contains the
  *    query, or %NULL
@@ -924,11 +961,11 @@ g_uri_split (const gchar  *uri_ref,
  *    the fragment, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_ref (which can be an absolute or relative URI)
- * according to @flags, and returns the pieces. Any component that
- * doesn't appear in @uri_ref will be returned as %NULL (but note
- * that all URIs always have a path component, though it may be the
- * empty string).
+ * Parses @uri_ref (which can be an
+ * [absolute or relative URI][relative-absolute-uris]) according to @flags, and
+ * returns the pieces. Any component that doesn't appear in @uri_ref will be
+ * returned as %NULL (but note that all URIs always have a path component,
+ * though it may be the empty string).
  *
  * See g_uri_split(), and the definition of #GUriFlags, for more
  * information on the effect of @flags. Note that @password will only
@@ -973,12 +1010,12 @@ g_uri_split_with_user (const gchar  *uri_ref,
  *    the scheme (converted to lowercase), or %NULL
  * @host: (out) (nullable) (optional) (transfer full): on return, contains the
  *    host, or %NULL
- * @port: (out) (nullable) (optional) (transfer full): on return, contains the
- *    port, or -1
+ * @port: (out) (optional) (transfer full): on return, contains the
+ *    port, or `-1`
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_string (which must be an absolute URI) according to
- * @flags, and returns the pieces relevant to connecting to a host.
+ * Parses @uri_string (which must be an [absolute URI][relative-absolute-uris])
+ * according to @flags, and returns the pieces relevant to connecting to a host.
  * See the documentation for g_uri_split() for more details; this is
  * mostly a wrapper around that function with simpler arguments.
  * However, it will return an error if @uri_string is a relative URI,
@@ -1045,13 +1082,16 @@ g_uri_split_network (const gchar  *uri_string,
  * @flags: flags for parsing @uri_string
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_string according to @flags, to determine whether it is valid
- * absolute URI.
+ * Parses @uri_string according to @flags, to determine whether it is a valid
+ * [absolute URI][relative-absolute-uris], i.e. it does not need to be resolved
+ * relative to another URI using g_uri_parse_relative().
+ *
+ * If it’s not a valid URI, an error is returned explaining how it’s invalid.
  *
  * See g_uri_split(), and the definition of #GUriFlags, for more
  * information on the effect of @flags.
  *
- * Returns: %TRUE if @uri_string parsed successfully, %FALSE on error.
+ * Returns: %TRUE if @uri_string is a valid absolute URI, %FALSE on error.
  *
  * Since: 2.66
  */
@@ -1136,7 +1176,8 @@ remove_dot_segments (gchar *path)
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Parses @uri_string according to @flags. If the result is not a
- * valid absolute URI, it will be discarded, and an error returned.
+ * valid [absolute URI][relative-absolute-uris], it will be discarded, and an
+ * error returned.
  *
  * Return value: (transfer full): a new #GUri.
  *
@@ -1155,14 +1196,15 @@ g_uri_parse (const gchar  *uri_string,
 
 /**
  * g_uri_parse_relative:
- * @base_uri: (nullable): a base absolute URI
+ * @base_uri: (nullable) (transfer none): a base absolute URI
  * @uri_ref: a string representing a relative or absolute URI
  * @flags: flags describing how to parse @uri_ref
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_ref according to @flags and, if it is a relative
- * URI, resolves it relative to @base_uri. If the result is not a
- * valid absolute URI, it will be discarded, and an error returned.
+ * Parses @uri_ref according to @flags and, if it is a
+ * [relative URI][relative-absolute-uris], resolves it relative to @base_uri.
+ * If the result is not a valid absolute URI, it will be discarded, and an error
+ * returned.
  *
  * Return value: (transfer full): a new #GUri.
  *
@@ -1272,14 +1314,15 @@ g_uri_parse_relative (GUri         *base_uri,
  * @flags: flags describing how to parse @uri_ref
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Parses @uri_ref according to @flags and, if it is a relative
- * URI, resolves it relative to @base_uri_string. If the result is not
- * a valid absolute URI, it will be discarded, and an error returned.
+ * Parses @uri_ref according to @flags and, if it is a
+ * [relative URI][relative-absolute-uris], resolves it relative to
+ * @base_uri_string. If the result is not a valid absolute URI, it will be
+ * discarded, and an error returned.
  *
  * (If @base_uri_string is %NULL, this just returns @uri_ref, or
  * %NULL if @uri_ref is invalid or not absolute.)
  *
- * Return value: the resolved URI string.
+ * Return value: (transfer full): the resolved URI string.
  *
  * Since: 2.66
  */
@@ -1453,13 +1496,14 @@ g_uri_join_internal (GUriFlags    flags,
  * @scheme: (nullable): the URI scheme, or %NULL
  * @userinfo: (nullable): the userinfo component, or %NULL
  * @host: (nullable): the host component, or %NULL
- * @port: the port, or -1
- * @path: the path component
+ * @port: the port, or `-1`
+ * @path: (not nullable): the path component
  * @query: (nullable): the query component, or %NULL
  * @fragment: (nullable): the fragment, or %NULL
  *
  * Joins the given components together according to @flags to create
- * an absolute URI string. @path may not be %NULL (though it may be "").
+ * an absolute URI string. @path may not be %NULL (though it may be the empty
+ * string).
  *
  * When @host is present, @path must either be empty or begin with a slash (`/`)
  * character. When @host is not present, @path cannot begin with two slash
@@ -1467,9 +1511,12 @@ g_uri_join_internal (GUriFlags    flags,
  * [RFC 3986, section 3](https://tools.ietf.org/html/rfc3986#section-3).
  *
  * See also g_uri_join_with_user(), which allows specifying the
- * components of the "userinfo" separately.
+ * components of the ‘userinfo’ separately.
  *
- * Return value: an absolute URI string
+ * %G_URI_FLAGS_HAS_PASSWORD and %G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
+ * in @flags.
+ *
+ * Return value: (transfer full): an absolute URI string
  *
  * Since: 2.66
  */
@@ -1506,18 +1553,22 @@ g_uri_join (GUriFlags    flags,
  * @auth_params: (nullable): the auth params of the userinfo, or
  *   %NULL
  * @host: (nullable): the host component, or %NULL
- * @port: the port, or -1
- * @path: the path component
+ * @port: the port, or `-1`
+ * @path: (not nullable): the path component
  * @query: (nullable): the query component, or %NULL
  * @fragment: (nullable): the fragment, or %NULL
  *
  * Joins the given components together according to @flags to create
- * an absolute URI string. @path may not be %NULL (though it may be "").
+ * an absolute URI string. @path may not be %NULL (though it may be the empty
+ * string).
  *
  * In contrast to g_uri_join(), this allows specifying the components
- * of the "userinfo" separately. It otherwise behaves the same.
+ * of the ‘userinfo’ separately. It otherwise behaves the same.
  *
- * Return value: an absolute URI string
+ * %G_URI_FLAGS_HAS_PASSWORD and %G_URI_FLAGS_HAS_AUTH_PARAMS are ignored if set
+ * in @flags.
+ *
+ * Return value: (transfer full): an absolute URI string
  *
  * Since: 2.66
  */
@@ -1549,11 +1600,11 @@ g_uri_join_with_user (GUriFlags    flags,
 /**
  * g_uri_build:
  * @flags: flags describing how to build the #GUri
- * @scheme: the URI scheme
+ * @scheme: (not nullable): the URI scheme
  * @userinfo: (nullable): the userinfo component, or %NULL
  * @host: (nullable): the host component, or %NULL
- * @port: the port, or -1
- * @path: the path component
+ * @port: the port, or `-1`
+ * @path: (not nullable): the path component
  * @query: (nullable): the query component, or %NULL
  * @fragment: (nullable): the fragment, or %NULL
  *
@@ -1598,13 +1649,13 @@ g_uri_build (GUriFlags    flags,
 /**
  * g_uri_build_with_user:
  * @flags: flags describing how to build the #GUri
- * @scheme: the URI scheme
+ * @scheme: (not nullable): the URI scheme
  * @user: (nullable): the user component of the userinfo, or %NULL
  * @password: (nullable): the password component of the userinfo, or %NULL
  * @auth_params: (nullable): the auth params of the userinfo, or %NULL
  * @host: (nullable): the host component, or %NULL
- * @port: the port, or -1
- * @path: the path component
+ * @port: the port, or `-1`
+ * @path: (not nullable): the path component
  * @query: (nullable): the query component, or %NULL
  * @fragment: (nullable): the fragment, or %NULL
  *
@@ -1612,9 +1663,9 @@ g_uri_build (GUriFlags    flags,
  * (%G_URI_FLAGS_HAS_PASSWORD is added unconditionally). The @flags must be
  * coherent with the passed values, in particular use `%`-encoded values with
  * %G_URI_FLAGS_ENCODED.
-
+ *
  * In contrast to g_uri_build(), this allows specifying the components
- * of the "userinfo" field separately. Note that @user must be non-%NULL
+ * of the ‘userinfo’ field separately. Note that @user must be non-%NULL
  * if either @password or @auth_params is non-%NULL.
  *
  * Return value: (transfer full): a new #GUri
@@ -1686,8 +1737,12 @@ g_uri_build_with_user (GUriFlags    flags,
  * a string which is at least semantically equivalent to the source
  * URI (according to RFC 3986).
  *
- * Return value: a string representing @uri, which the caller must
- * free.
+ * If @uri might contain sensitive details, such as authentication parameters,
+ * or private data in its query string, and the returned string is going to be
+ * logged, then consider using g_uri_to_string_partial() to redact parts.
+ *
+ * Return value: (transfer full): a string representing @uri, which the caller
+ *     must free.
  *
  * Since: 2.66
  */
@@ -1706,9 +1761,9 @@ g_uri_to_string (GUri *uri)
  *
  * Returns a string representing @uri, subject to the options in
  * @flags. See g_uri_to_string() and #GUriHideFlags for more details.
-
- * Return value: a string representing @uri, which the caller must
- * free.
+ *
+ * Return value: (transfer full): a string representing @uri, which the caller
+ *     must free.
  *
  * Since: 2.66
  */
@@ -1774,8 +1829,8 @@ str_ascii_case_equal (gconstpointer v1,
  * GUriParamsIter:
  *
  * Many URI schemes include one or more attribute/value pairs as part of the URI
- * value (for example "scheme://server/path?query=string&is=there" has two
- * attributes "query=string" and "is=there" in its query part).
+ * value. For example `scheme://server/path?query=string&is=there` has two
+ * attributes – `query=string` and `is=there` – in its query part.
  *
  * A #GUriParamsIter structure represents an iterator that can be used to
  * iterate over the attribute/value pairs of a URI query string. #GUriParamsIter
@@ -1799,31 +1854,45 @@ G_STATIC_ASSERT (G_ALIGNOF (GUriParamsIter) >= G_ALIGNOF (RealIter));
 /**
  * g_uri_params_iter_init:
  * @iter: an uninitialized #GUriParamsIter
- * @params: a `%`-encoded string containing "attribute=value"
+ * @params: a `%`-encoded string containing `attribute=value`
  *   parameters
- * @length: the length of @params, or -1 if it is NUL-terminated
+ * @length: the length of @params, or `-1` if it is nul-terminated
  * @separators: the separator byte character set between parameters. (usually
- *   "&", but sometimes ";" or both "&;"). Note that this function works on
+ *   `&`, but sometimes `;` or both `&;`). Note that this function works on
  *   bytes not characters, so it can't be used to delimit UTF-8 strings for
  *   anything but ASCII characters. You may pass an empty set, in which case
  *   no splitting will occur.
  * @flags: flags to modify the way the parameters are handled.
  *
- * Initializes an attribute/value pair iterator. The iterator keeps references
- * over the @params and @separators arguments, those variables must thus outlive
- * the iterator and not be modified during the iteration.
+ * Initializes an attribute/value pair iterator.
+ *
+ * The iterator keeps pointers to the @params and @separators arguments, those
+ * variables must thus outlive the iterator and not be modified during the
+ * iteration.
+ *
+ * If %G_URI_PARAMS_WWW_FORM is passed in @flags, `+` characters in the param
+ * string will be replaced with spaces in the output. For example, `foo=bar+baz`
+ * will give attribute `foo` with value `bar baz`. This is commonly used on the
+ * web (the `https` and `http` schemes only), but is deprecated in favour of
+ * the equivalent of encoding spaces as `%20`.
+ *
+ * Unlike with g_uri_parse_params(), %G_URI_PARAMS_CASE_INSENSITIVE has no
+ * effect if passed to @flags for g_uri_params_iter_init(). The caller is
+ * responsible for doing their own case-insensitive comparisons.
  *
  * |[<!-- language="C" -->
  * GUriParamsIter iter;
  * GError *error = NULL;
- * gchar *attr, *value;
+ * gchar *unowned_attr, *unowned_value;
  *
- * g_uri_params_iter_init (&iter, "foo=bar&baz=bar", -1, "&", G_URI_PARAMS_NONE);
- * while (g_uri_params_iter_next (&iter, &attr, &value, &error))
+ * g_uri_params_iter_init (&iter, "foo=bar&baz=bar&Foo=frob&baz=bar2", -1, "&", G_URI_PARAMS_NONE);
+ * while (g_uri_params_iter_next (&iter, &unowned_attr, &unowned_value, &error))
  *   {
- *     // do something with attr and value
- *     g_free (attr);
- *     g_free (value);
+ *     g_autofree gchar *attr = g_steal_pointer (&unowned_attr);
+ *     g_autofree gchar *value = g_steal_pointer (&unowned_value);
+ *     // do something with attr and value; this code will be called 4 times
+ *     // for the params string in this example: once with attr=foo and value=bar,
+ *     // then with baz/bar, then Foo/frob, then baz/bar2.
  *   }
  * if (error)
  *   // handle parsing error
@@ -1869,13 +1938,18 @@ g_uri_params_iter_init (GUriParamsIter *iter,
  *     the value, or %NULL.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Advances @iter and retrieves the next attribute/value. If %FALSE is returned,
- * @attribute and @value are not set, and the iterator becomes invalid. Note
- * that the same attribute value may be returned multiple times, since URIs
+ * Advances @iter and retrieves the next attribute/value. %FALSE is returned if
+ * an error has occurred (in which case @error is set), or if the end of the
+ * iteration is reached (in which case @attribute and @value are set to %NULL
+ * and the iterator becomes invalid). If %TRUE is returned,
+ * g_uri_params_iter_next() may be called again to receive another
+ * attribute/value pair.
+ *
+ * Note that the same @attribute may be returned multiple times, since URIs
  * allow repeated attributes.
  *
  * Returns: %FALSE if the end of the parameters has been reached or an error was
- * encountered.
+ *     encountered. %TRUE otherwise.
  *
  * Since: 2.66
  */
@@ -1938,11 +2012,11 @@ g_uri_params_iter_next (GUriParamsIter *iter,
 
 /**
  * g_uri_parse_params:
- * @params: a `%`-encoded string containing "attribute=value"
+ * @params: a `%`-encoded string containing `attribute=value`
  *   parameters
- * @length: the length of @params, or -1 if it is NUL-terminated
+ * @length: the length of @params, or `-1` if it is nul-terminated
  * @separators: the separator byte character set between parameters. (usually
- *   "&", but sometimes ";" or both "&;"). Note that this function works on
+ *   `&`, but sometimes `;` or both `&;`). Note that this function works on
  *   bytes not characters, so it can't be used to delimit UTF-8 strings for
  *   anything but ASCII characters. You may pass an empty set, in which case
  *   no splitting will occur.
@@ -1957,17 +2031,26 @@ g_uri_params_iter_next (GUriParamsIter *iter,
  *
  * The @params string is assumed to still be `%`-encoded, but the returned
  * values will be fully decoded. (Thus it is possible that the returned values
- * may contain '=' or @separators, if the value was encoded in the input.)
+ * may contain `=` or @separators, if the value was encoded in the input.)
  * Invalid `%`-encoding is treated as with the non-%G_URI_FLAGS_PARSE_STRICT
  * rules for g_uri_parse(). (However, if @params is the path or query string
  * from a #GUri that was parsed with %G_URI_FLAGS_PARSE_STRICT and
  * %G_URI_FLAGS_ENCODED, then you already know that it does not contain any
  * invalid encoding.)
  *
- * Return value: (transfer full) (element-type utf8 utf8): a hash table of
- * attribute/value pairs. Both names and values will be fully-decoded. If
- * @params cannot be parsed (eg, it contains two @separators characters in a
- * row), then %NULL is returned.
+ * %G_URI_PARAMS_WWW_FORM is handled as documented for g_uri_params_iter_init().
+ *
+ * If %G_URI_PARAMS_CASE_INSENSITIVE is passed to @flags, attributes will be
+ * compared case-insensitively, so a params string `attr=123&Attr=456` will only
+ * return a single attribute–value pair, `Attr=456`. Case will be preserved in
+ * the returned attributes.
+ *
+ * If @params cannot be parsed (for example, it contains two @separators
+ * characters in a row), then @error is set and %NULL is returned.
+ *
+ * Return value: (transfer full) (element-type utf8 utf8): A hash table of
+ *     attribute/value pairs, with both names and values fully-decoded; or %NULL
+ *     on error.
  *
  * Since: 2.66
  */
@@ -2022,7 +2105,7 @@ g_uri_parse_params (const gchar     *params,
  * Gets @uri's scheme. Note that this will always be all-lowercase,
  * regardless of the string or strings that @uri was created from.
  *
- * Return value: @uri's scheme.
+ * Return value: (not nullable): @uri's scheme.
  *
  * Since: 2.66
  */
@@ -2041,7 +2124,7 @@ g_uri_get_scheme (GUri *uri)
  * Gets @uri's userinfo, which may contain `%`-encoding, depending on
  * the flags with which @uri was created.
  *
- * Return value: @uri's userinfo.
+ * Return value: (nullable): @uri's userinfo.
  *
  * Since: 2.66
  */
@@ -2057,12 +2140,12 @@ g_uri_get_userinfo (GUri *uri)
  * g_uri_get_user:
  * @uri: a #GUri
  *
- * Gets the "username" component of @uri's userinfo, which may contain
+ * Gets the ‘username’ component of @uri's userinfo, which may contain
  * `%`-encoding, depending on the flags with which @uri was created.
  * If @uri was not created with %G_URI_FLAGS_HAS_PASSWORD or
  * %G_URI_FLAGS_HAS_AUTH_PARAMS, this is the same as g_uri_get_userinfo().
  *
- * Return value: @uri's user.
+ * Return value: (nullable): @uri's user.
  *
  * Since: 2.66
  */
@@ -2082,7 +2165,7 @@ g_uri_get_user (GUri *uri)
  * the flags with which @uri was created. (If @uri was not created
  * with %G_URI_FLAGS_HAS_PASSWORD then this will be %NULL.)
  *
- * Return value: @uri's password.
+ * Return value: (nullable): @uri's password.
  *
  * Since: 2.66
  */
@@ -2106,7 +2189,7 @@ g_uri_get_password (GUri *uri)
  * Depending on the URI scheme, g_uri_parse_params() may be useful for
  * further parsing this information.
  *
- * Return value: @uri's authentication parameters.
+ * Return value: (nullable): @uri's authentication parameters.
  *
  * Since: 2.66
  */
@@ -2129,10 +2212,10 @@ g_uri_get_auth_params (GUri *uri)
  * If @uri contained an IPv6 address literal, this value will be just
  * that address, without the brackets around it that are necessary in
  * the string form of the URI. Note that in this case there may also
- * be a scope ID attached to the address. Eg, "`fe80::1234%``em1`" (or
- * "`fe80::1234%``25em1" if the string is still encoded).
+ * be a scope ID attached to the address. Eg, `fe80::1234%``em1` (or
+ * `fe80::1234%``25em1` if the string is still encoded).
  *
- * Return value: @uri's host.
+ * Return value: (not nullable): @uri's host.
  *
  * Since: 2.66
  */
@@ -2150,7 +2233,7 @@ g_uri_get_host (GUri *uri)
  *
  * Gets @uri's port.
  *
- * Return value: @uri's port, or -1 if no port was specified.
+ * Return value: @uri's port, or `-1` if no port was specified.
  *
  * Since: 2.66
  */
@@ -2169,7 +2252,7 @@ g_uri_get_port (GUri *uri)
  * Gets @uri's path, which may contain `%`-encoding, depending on the
  * flags with which @uri was created.
  *
- * Return value: @uri's path.
+ * Return value: (not nullable): @uri's path.
  *
  * Since: 2.66
  */
@@ -2188,10 +2271,10 @@ g_uri_get_path (GUri *uri)
  * Gets @uri's query, which may contain `%`-encoding, depending on the
  * flags with which @uri was created.
  *
- * For queries consisting of a series of "`name=value`" parameters,
- * g_uri_parse_params() may be useful.
+ * For queries consisting of a series of `name=value` parameters,
+ * #GUriParamsIter or g_uri_parse_params() may be useful.
  *
- * Return value: @uri's query.
+ * Return value: (nullable): @uri's query.
  *
  * Since: 2.66
  */
@@ -2210,7 +2293,7 @@ g_uri_get_query (GUri *uri)
  * Gets @uri's fragment, which may contain `%`-encoding, depending on
  * the flags with which @uri was created.
  *
- * Return value: @uri's fragment.
+ * Return value: (nullable): @uri's fragment.
  *
  * Since: 2.66
  */
@@ -2368,8 +2451,8 @@ g_uri_escape_string (const gchar *unescaped,
 /**
  * g_uri_unescape_bytes:
  * @escaped_string: A URI-escaped string
- * @length: the length of @escaped_string to escape, or -1 if it
- *   is NUL-terminated.
+ * @length: the length (in bytes) of @escaped_string to escape, or `-1` if it
+ *   is nul-terminated.
  * @illegal_characters: (nullable): a string of illegal characters
  *   not to be allowed, or %NULL.
  * @error: #GError for error reporting, or %NULL to ignore.
@@ -2377,17 +2460,17 @@ g_uri_escape_string (const gchar *unescaped,
  * Unescapes a segment of an escaped string as binary data.
  *
  * Note that in contrast to g_uri_unescape_string(), this does allow
- * `NUL` bytes to appear in the output.
+ * nul bytes to appear in the output.
  *
- * If any of the characters in @illegal_characters or the NUL
- * character appears as an escaped character in @escaped_string, then
- * that is an error and %NULL will be returned. This is useful if you
- * want to avoid for instance having a slash being expanded in an
- * escaped path element, which might confuse pathname handling.
+ * If any of the characters in @illegal_characters appears as an escaped
+ * character in @escaped_string, then that is an error and %NULL will be
+ * returned. This is useful if you want to avoid for instance having a slash
+ * being expanded in an escaped path element, which might confuse pathname
+ * handling.
  *
  * Returns: (transfer full): an unescaped version of @escaped_string or %NULL on
- * error (if decoding failed, using %G_URI_ERROR_MISC error code). The returned
- * #GBytes should be unreffed when no longer needed.
+ *     error (if decoding failed, using %G_URI_ERROR_FAILED error code). The
+ *     returned #GBytes should be unreffed when no longer needed.
  *
  * Since: 2.66
  **/
@@ -2428,18 +2511,18 @@ g_uri_unescape_bytes (const gchar *escaped_string,
  *
  * Escapes arbitrary data for use in a URI.
  *
- * Normally all characters that are not "unreserved" (i.e. ASCII
+ * Normally all characters that are not ‘unreserved’ (i.e. ASCII
  * alphanumerical characters plus dash, dot, underscore and tilde) are
  * escaped. But if you specify characters in @reserved_chars_allowed
- * they are not escaped. This is useful for the "reserved" characters
+ * they are not escaped. This is useful for the ‘reserved’ characters
  * in the URI specification, since those are allowed unescaped in some
  * portions of a URI.
  *
- * Though technically incorrect, this will also allow escaping "0"
- * bytes as "`%``00`".
+ * Though technically incorrect, this will also allow escaping nul
+ * bytes as `%``00`.
  *
- * Returns: an escaped version of @unescaped. The returned string
- * should be freed when no longer needed.
+ * Returns: (transfer full): an escaped version of @unescaped. The returned
+ *     string should be freed when no longer needed.
  *
  * Since: 2.66
  */
@@ -2482,14 +2565,16 @@ g_uri_scheme_length (const gchar *uri)
  * g_uri_parse_scheme:
  * @uri: a valid URI.
  *
- * Gets the scheme portion of a URI string. RFC 3986 decodes the scheme as:
+ * Gets the scheme portion of a URI string.
+ * [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme
+ * as:
  * |[
  * URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
  * ]|
- * Common schemes include "file", "http", "svn+ssh", etc.
+ * Common schemes include `file`, `https`, `svn+ssh`, etc.
  *
- * Returns: The "scheme" component of the URI, or %NULL on error.
- * The returned string should be freed when no longer needed.
+ * Returns: (transfer full) (nullable): The ‘scheme’ component of the URI, or
+ *     %NULL on error. The returned string should be freed when no longer needed.
  *
  * Since: 2.16
  **/
@@ -2508,15 +2593,20 @@ g_uri_parse_scheme (const gchar *uri)
  * g_uri_peek_scheme:
  * @uri: a valid URI.
  *
- * Gets the scheme portion of a URI string. RFC 3986 decodes the scheme as:
+ * Gets the scheme portion of a URI string.
+ * [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3) decodes the scheme
+ * as:
  * |[
  * URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
  * ]|
- * Common schemes include "file", "http", "svn+ssh", etc.
+ * Common schemes include `file`, `https`, `svn+ssh`, etc.
  *
- * Returns: The "scheme" component of the URI, or %NULL on error. The
- * returned string is normalized to all-lowercase, and interned via
- * g_intern_string(), so it does not need to be freed.
+ * Unlike g_uri_parse_scheme(), the returned scheme is normalized to
+ * all-lowercase and does not need to be freed.
+ *
+ * Returns: (transfer none) (nullable): The ‘scheme’ component of the URI, or
+ *     %NULL on error. The returned string is normalized to all-lowercase, and
+ *     interned via g_intern_string(), so it does not need to be freed.
  *
  * Since: 2.66
  **/
