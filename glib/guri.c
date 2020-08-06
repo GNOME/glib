@@ -1035,7 +1035,7 @@ g_uri_split_network (const gchar  *uri_string,
                      gint         *port,
                      GError      **error)
 {
-  gchar *my_scheme, *my_host;
+  gchar *my_scheme = NULL, *my_host = NULL;
 
   g_return_val_if_fail (uri_string != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
@@ -1067,13 +1067,13 @@ g_uri_split_network (const gchar  *uri_string,
     }
 
   if (scheme)
-    *scheme = my_scheme;
-  else
-    g_free (my_scheme);
+    *scheme = g_steal_pointer (&my_scheme);
   if (host)
-    *host = my_host;
-  else
-    g_free (my_host);
+    *host = g_steal_pointer (&my_host);
+
+  g_free (my_scheme);
+  g_free (my_host);
+
   return TRUE;
 }
 
@@ -1284,7 +1284,7 @@ g_uri_parse_relative (GUri         *base_uri,
                         newpath = g_strdup_printf ("/%s", uri->path);
 
                       g_free (uri->path);
-                      uri->path = newpath;
+                      uri->path = g_steal_pointer (&newpath);
 
                       remove_dot_segments (uri->path);
                     }
@@ -1300,7 +1300,7 @@ g_uri_parse_relative (GUri         *base_uri,
         }
     }
 
-  return uri;
+  return g_steal_pointer (&uri);
 
  fail:
   if (uri)
@@ -1358,7 +1358,7 @@ g_uri_resolve_relative (const gchar  *base_uri_string,
 
   resolved_uri_string = g_uri_to_string (resolved_uri);
   g_uri_unref (resolved_uri);
-  return resolved_uri_string;
+  return g_steal_pointer (&resolved_uri_string);
 }
 
 /* userinfo as a whole can contain sub-delims + ":", but split-out
@@ -1644,7 +1644,7 @@ g_uri_build (GUriFlags    flags,
   uri->query = g_strdup (query);
   uri->fragment = g_strdup (fragment);
 
-  return uri;
+  return g_steal_pointer (&uri);
 }
 
 /**
@@ -1722,7 +1722,7 @@ g_uri_build_with_user (GUriFlags    flags,
       uri->userinfo = g_string_free (userinfo, FALSE);
     }
 
-  return uri;
+  return g_steal_pointer (&uri);
 }
 
 /**
@@ -2096,7 +2096,7 @@ g_uri_parse_params (const gchar     *params,
       return NULL;
     }
 
-  return hash;
+  return g_steal_pointer (&hash);
 }
 
 /**
