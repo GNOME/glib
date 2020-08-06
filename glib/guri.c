@@ -234,7 +234,8 @@ g_uri_ref (GUri *uri)
   return g_atomic_rc_box_acquire (uri);
 }
 
-static void g_uri_clear(GUri *uri)
+static void
+g_uri_clear (GUri *uri)
 {
   g_free (uri->scheme);
   g_free (uri->userinfo);
@@ -308,7 +309,7 @@ uri_decoder (gchar       **out,
               if (flags & G_URI_FLAGS_PARSE_STRICT)
                 {
                   g_set_error_literal (error, G_URI_ERROR, parse_error,
-                                      /* xgettext: no-c-format */
+                                       /* xgettext: no-c-format */
                                        _("Invalid %-encoding in URI"));
                   g_free (decoded);
                   return -1;

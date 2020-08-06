@@ -280,6 +280,7 @@ gboolean    g_uri_params_iter_next   (GUriParamsIter *iter,
                                       gchar         **attribute,
                                       gchar         **value,
                                       GError        **error);
+
 /**
  * G_URI_ERROR:
  *
