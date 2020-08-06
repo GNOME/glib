@@ -443,6 +443,9 @@ test_uri_unescape_segment (void)
   s = g_uri_unescape_segment (escaped_segment, escaped_segment + 10, NULL);
   g_assert_cmpstr (s, ==, "+abc O");
   g_free (s);
+
+  s = g_uri_unescape_segment ("%2Babc%00cde", NULL, NULL);
+  g_assert_null (s);
 }
 
 static void
@@ -476,6 +479,10 @@ test_uri_scheme (void)
 
   s = g_uri_parse_scheme ("ftp://ftp.gtk.org");
   g_assert_cmpstr (s, ==, "ftp");
+  g_free (s);
+
+  s = g_uri_parse_scheme ("good-scheme.but+weird:gtk.org");
+  g_assert_cmpstr (s, ==, "good-scheme.but+weird");
   g_free (s);
 
   s = g_uri_parse_scheme ("1bad:");
@@ -936,6 +943,9 @@ test_uri_to_string (void)
   tostring = g_uri_to_string_partial (uri, G_URI_HIDE_USERINFO);
   g_assert_cmpstr (tostring, ==, "scheme://host:1234/path?query#fragment");
   g_free (tostring);
+  tostring = g_uri_to_string_partial (uri, G_URI_HIDE_QUERY);
+  g_assert_cmpstr (tostring, ==, "scheme://user:pass;auth@host:1234/path#fragment");
+  g_free (tostring);
   tostring = g_uri_to_string_partial (uri, G_URI_HIDE_FRAGMENT);
   g_assert_cmpstr (tostring, ==, "scheme://user:pass;auth@host:1234/path?query");
   g_free (tostring);
@@ -1016,6 +1026,12 @@ test_uri_build (void)
                                NULL, "host", 1234,
                                "/path", "query", "fragment");
   g_assert_null (g_uri_get_userinfo (uri));
+  g_uri_unref (uri);
+
+  uri = g_uri_build_with_user (G_URI_FLAGS_NONE, "scheme", "user", NULL, NULL,
+                               "host", 1234,
+                               "/path", "query", "fragment");
+  g_assert_cmpstr (g_uri_get_userinfo (uri), ==, "user");
   g_uri_unref (uri);
 }
 
@@ -1444,6 +1460,19 @@ test_uri_iter_params (gconstpointer test_data)
           uri = g_memdup (params_tests[i].uri, uri_len);
         }
 
+      /* Run once without extracting the attr or value, just to check the numbers. */
+      n = 0;
+      g_uri_params_iter_init (&iter, params_tests[i].uri, -1, params_tests[i].separators, params_tests[i].flags);
+      while (g_uri_params_iter_next (&iter, NULL, NULL, &err))
+        n++;
+      g_assert_cmpint (n, ==, params_tests[i].expected_n_iter);
+      if (err)
+        {
+          g_assert_error (err, G_URI_ERROR, G_URI_ERROR_FAILED);
+          g_clear_error (&err);
+        }
+
+      /* Run again and check the strings too. */
       n = 0;
       g_uri_params_iter_init (&iter, params_tests[i].uri, -1, params_tests[i].separators, params_tests[i].flags);
       while (g_uri_params_iter_next (&iter, &attr, &value, &err))
@@ -1460,6 +1489,7 @@ test_uri_iter_params (gconstpointer test_data)
           g_assert_error (err, G_URI_ERROR, G_URI_ERROR_FAILED);
           g_clear_error (&err);
         }
+
       g_free (uri);
     }
 }
