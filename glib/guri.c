@@ -2555,7 +2555,7 @@ g_uri_escape_bytes (const guint8 *unescaped,
   return g_string_free (string, FALSE);
 }
 
-static gint
+static gssize
 g_uri_scheme_length (const gchar *uri)
 {
   const gchar *p;
@@ -2593,7 +2593,7 @@ g_uri_scheme_length (const gchar *uri)
 gchar *
 g_uri_parse_scheme (const gchar *uri)
 {
-  gint len;
+  gssize len;
 
   g_return_val_if_fail (uri != NULL, NULL);
 
@@ -2625,7 +2625,7 @@ g_uri_parse_scheme (const gchar *uri)
 const gchar *
 g_uri_peek_scheme (const gchar *uri)
 {
-  gint len;
+  gssize len;
   gchar *lower_scheme;
   const gchar *scheme;
 
