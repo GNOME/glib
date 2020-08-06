@@ -1101,10 +1101,28 @@ g_uri_is_valid (const gchar  *uri_string,
                 GUriFlags     flags,
                 GError      **error)
 {
+  gchar *my_scheme = NULL;
+
   g_return_val_if_fail (uri_string != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  return g_uri_split_network (uri_string, flags, NULL, NULL, NULL, error);
+  if (!g_uri_split_internal (uri_string, flags,
+                             &my_scheme, NULL, NULL, NULL, NULL,
+                             NULL, NULL, NULL, NULL, NULL,
+                             error))
+    return FALSE;
+
+  if (!my_scheme)
+    {
+      g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_SCHEME,
+                   _("URI ‘%s’ is not an absolute URI"),
+                   uri_string);
+      return FALSE;
+    }
+
+  g_free (my_scheme);
+
+  return TRUE;
 }
 
 

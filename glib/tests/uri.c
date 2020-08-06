@@ -1352,6 +1352,8 @@ test_uri_is_valid (void)
   g_assert_false (g_uri_is_valid ("http://host:6553l", G_URI_FLAGS_NONE, &error));
   g_assert_error (error, G_URI_ERROR, G_URI_ERROR_BAD_PORT);
   g_clear_error (&error);
+
+  g_assert_true (g_uri_is_valid ("data:,Hello", G_URI_FLAGS_NONE, &error));
 }
 
 static const struct
