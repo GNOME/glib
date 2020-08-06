@@ -1775,6 +1775,7 @@ g_uri_to_string_partial (GUri          *uri,
   gboolean hide_user = (flags & G_URI_HIDE_USERINFO);
   gboolean hide_password = (flags & (G_URI_HIDE_USERINFO | G_URI_HIDE_PASSWORD));
   gboolean hide_auth_params = (flags & (G_URI_HIDE_USERINFO | G_URI_HIDE_AUTH_PARAMS));
+  gboolean hide_query = (flags & G_URI_HIDE_QUERY);
   gboolean hide_fragment = (flags & G_URI_HIDE_FRAGMENT);
 
   g_return_val_if_fail (uri != NULL, NULL);
@@ -1789,7 +1790,7 @@ g_uri_to_string_partial (GUri          *uri,
                                    uri->host,
                                    uri->port,
                                    uri->path,
-                                   uri->query,
+                                   hide_query ? NULL : uri->query,
                                    hide_fragment ? NULL : uri->fragment);
     }
 
@@ -1799,7 +1800,7 @@ g_uri_to_string_partial (GUri          *uri,
                      uri->host,
                      uri->port,
                      uri->path,
-                     uri->query,
+                     hide_query ? NULL : uri->query,
                      hide_fragment ? NULL : uri->fragment);
 }
 

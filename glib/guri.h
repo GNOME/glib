@@ -184,6 +184,7 @@ GUri *       g_uri_build_with_user  (GUriFlags     flags,
  * @G_URI_HIDE_USERINFO: Hide the userinfo.
  * @G_URI_HIDE_PASSWORD: Hide the password.
  * @G_URI_HIDE_AUTH_PARAMS: Hide the auth_params.
+ * @G_URI_HIDE_QUERY: Hide the query.
  * @G_URI_HIDE_FRAGMENT: Hide the fragment.
  *
  * Flags describing what parts of the URI to hide in
@@ -199,7 +200,8 @@ typedef enum {
   G_URI_HIDE_USERINFO    = 1 << 0,
   G_URI_HIDE_PASSWORD    = 1 << 1,
   G_URI_HIDE_AUTH_PARAMS = 1 << 2,
-  G_URI_HIDE_FRAGMENT    = 1 << 3,
+  G_URI_HIDE_QUERY       = 1 << 3,
+  G_URI_HIDE_FRAGMENT    = 1 << 4,
 } GUriHideFlags;
 
 GLIB_AVAILABLE_IN_2_66

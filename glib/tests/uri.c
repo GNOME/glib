@@ -950,6 +950,9 @@ test_uri_to_string (void)
   tostring = g_uri_to_string_partial (uri, G_URI_HIDE_AUTH_PARAMS);
   g_assert_cmpstr (tostring, ==, "scheme://us%3Aer:pass@host:1234/path?query#fragment");
   g_free (tostring);
+  tostring = g_uri_to_string_partial (uri, G_URI_HIDE_QUERY);
+  g_assert_cmpstr (tostring, ==, "scheme://us%3Aer:pass;auth@host:1234/path#fragment");
+  g_free (tostring);
   g_uri_unref (uri);
 }
 
