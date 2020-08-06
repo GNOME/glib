@@ -458,7 +458,7 @@ parse_host (const gchar  *start,
         bad_ipv6_literal:
           g_free (addr);
           g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
-                       _("Invalid IPv6 address '%.*s' in URI"),
+                       _("Invalid IPv6 address ‘%.*s’ in URI"),
                        (gint)length, start);
           return FALSE;
         }
@@ -520,7 +520,7 @@ parse_host (const gchar  *start,
     {
       g_free (decoded);
       g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
-                   _("Illegal encoded IP address '%.*s' in URI"),
+                   _("Illegal encoded IP address ‘%.*s’ in URI"),
                    (gint)length, start);
       return FALSE;
     }
@@ -554,7 +554,7 @@ parse_port (const gchar  *start,
   if (!g_ascii_isdigit (*start))
     {
       g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_PORT,
-                   _("Could not parse port '%.*s' in URI"),
+                   _("Could not parse port ‘%.*s’ in URI"),
                    (gint)length, start);
       return FALSE;
     }
@@ -566,14 +566,14 @@ parse_port (const gchar  *start,
   if (end != start + length)
     {
       g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_PORT,
-                   _("Could not parse port '%.*s' in URI"),
+                   _("Could not parse port ‘%.*s’ in URI"),
                    (gint)length, start);
       return FALSE;
     }
   else if (parsed_port > 65535)
     {
       g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_PORT,
-                   _("Port '%.*s' in URI is out of range"),
+                   _("Port ‘%.*s’ in URI is out of range"),
                    (gint)length, start);
       return FALSE;
     }
@@ -1051,13 +1051,13 @@ g_uri_split_network (const gchar  *uri_string,
       if (!my_scheme)
         {
           g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_SCHEME,
-                       _("URI '%s' is not an absolute URI"),
+                       _("URI ‘%s’ is not an absolute URI"),
                        uri_string);
         }
       else
         {
           g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
-                       _("URI '%s' has no host component"),
+                       _("URI ‘%s’ has no host component"),
                        uri_string);
         }
       g_free (my_scheme);
@@ -1982,7 +1982,7 @@ g_uri_params_iter_next (GUriParamsIter *iter,
   if (!attr_end)
     {
       g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_FAILED,
-                           _("Missing '=' and parameter value"));
+                           _("Missing ‘=’ and parameter value"));
       return FALSE;
     }
   if (!uri_decode (&decoded_attr, NULL, ri->attr, attr_end - ri->attr,
