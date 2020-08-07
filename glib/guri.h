@@ -37,15 +37,19 @@ void         g_uri_unref            (GUri *uri);
 
 /**
  * GUriFlags:
- * @G_URI_FLAGS_PARSE_STRICT: Parse the URI strictly according to the RFC
- *     3986 grammar, rather than fixing up or ignoring common mistakes.
+ * @G_URI_FLAGS_NONE: No flags set.
+ * @G_URI_FLAGS_PARSE_RELAXED: Parse the URI more relaxedly than the
+ *     [RFC 3986](https://tools.ietf.org/html/rfc3986) grammar specifies,
+ *     fixing up or ignoring common mistakes in URIs coming from external
+ *     sources. This is also needed for some obscure URI schemes where `;`
+ *     separates the host from the path. Don’t use this flag unless you need to.
  * @G_URI_FLAGS_HAS_PASSWORD: The userinfo field may contain a password,
- *     which will be separated from the username by ':'.
+ *     which will be separated from the username by `:`.
  * @G_URI_FLAGS_HAS_AUTH_PARAMS: The userinfo may contain additional
  *     authentication-related parameters, which will be separated from
- *     the username and/or password by ';'.
+ *     the username and/or password by `;`.
  * @G_URI_FLAGS_NON_DNS: The host component should not be assumed to be a
- *     DNS hostname or IP address. (Eg, for `smb` URIs with NetBIOS
+ *     DNS hostname or IP address (for example, for `smb` URIs with NetBIOS
  *     hostnames).
  * @G_URI_FLAGS_ENCODED: When parsing a URI, this indicates that `%`-encoded
  *     characters in the userinfo, path, query, and fragment fields
@@ -58,7 +62,6 @@ void         g_uri_unref            (GUri *uri);
  * @G_URI_FLAGS_ENCODED_PATH: Same as %G_URI_FLAGS_ENCODED, for the path only.
  * @G_URI_FLAGS_ENCODED_FRAGMENT: Same as %G_URI_FLAGS_ENCODED, for the
  *     fragment only.
- * @G_URI_FLAGS_NONE: No flags set.
  *
  * Flags that describe a URI.
  *
@@ -72,7 +75,7 @@ void         g_uri_unref            (GUri *uri);
 GLIB_AVAILABLE_TYPE_IN_2_66
 typedef enum {
   G_URI_FLAGS_NONE            = 0,
-  G_URI_FLAGS_PARSE_STRICT    = 1 << 0,
+  G_URI_FLAGS_PARSE_RELAXED   = 1 << 0,
   G_URI_FLAGS_HAS_PASSWORD    = 1 << 1,
   G_URI_FLAGS_HAS_AUTH_PARAMS = 1 << 2,
   G_URI_FLAGS_ENCODED         = 1 << 3,
@@ -179,11 +182,12 @@ GUri *       g_uri_build_with_user  (GUriFlags     flags,
 
 /**
  * GUriHideFlags:
+ * @G_URI_HIDE_NONE: No flags set.
  * @G_URI_HIDE_USERINFO: Hide the userinfo.
  * @G_URI_HIDE_PASSWORD: Hide the password.
  * @G_URI_HIDE_AUTH_PARAMS: Hide the auth_params.
+ * @G_URI_HIDE_QUERY: Hide the query.
  * @G_URI_HIDE_FRAGMENT: Hide the fragment.
- * @G_URI_HIDE_NONE: No flags set.
  *
  * Flags describing what parts of the URI to hide in
  * g_uri_to_string_partial(). Note that %G_URI_HIDE_PASSWORD and
@@ -198,7 +202,8 @@ typedef enum {
   G_URI_HIDE_USERINFO    = 1 << 0,
   G_URI_HIDE_PASSWORD    = 1 << 1,
   G_URI_HIDE_AUTH_PARAMS = 1 << 2,
-  G_URI_HIDE_FRAGMENT    = 1 << 3,
+  G_URI_HIDE_QUERY       = 1 << 3,
+  G_URI_HIDE_FRAGMENT    = 1 << 4,
 } GUriHideFlags;
 
 GLIB_AVAILABLE_IN_2_66
@@ -233,10 +238,13 @@ GUriFlags    g_uri_get_flags         (GUri          *uri);
 /**
  * GUriParamsFlags:
  * @G_URI_PARAMS_NONE: No flags set.
- * @G_URI_PARAMS_CASE_INSENSITIVE: whether parameter names are case insensitive.
- * @G_URI_PARAMS_WWW_FORM: replace `+` with space character.
+ * @G_URI_PARAMS_CASE_INSENSITIVE: Parameter names are case insensitive.
+ * @G_URI_PARAMS_WWW_FORM: Replace `+` with space character. Only useful for
+ *     URLs on the web, using the `https` or `http` schemas.
+ * @G_URI_PARAMS_PARSE_RELAXED: See %G_URI_FLAGS_PARSE_RELAXED.
  *
- * Flags modifying the way parameters are handled.
+ * Flags modifying the way parameters are handled by g_uri_parse_params() and
+ * #GUriParamsIter.
  *
  * Since: 2.66
  */
@@ -245,6 +253,7 @@ typedef enum {
   G_URI_PARAMS_NONE             = 0,
   G_URI_PARAMS_CASE_INSENSITIVE = 1 << 0,
   G_URI_PARAMS_WWW_FORM         = 1 << 1,
+  G_URI_PARAMS_PARSE_RELAXED    = 1 << 2,
 } GUriParamsFlags;
 
 GLIB_AVAILABLE_IN_2_66
@@ -277,6 +286,7 @@ gboolean    g_uri_params_iter_next   (GUriParamsIter *iter,
                                       gchar         **attribute,
                                       gchar         **value,
                                       GError        **error);
+
 /**
  * G_URI_ERROR:
  *
@@ -292,23 +302,24 @@ GQuark g_uri_error_quark (void);
 
 /**
  * GUriError:
- * @G_URI_ERROR_MISC: miscellaneous error
- * @G_URI_ERROR_BAD_SCHEME: the scheme of a URI could not be parsed.
- * @G_URI_ERROR_BAD_USER: the user/userinfo of a URI could not be parsed.
- * @G_URI_ERROR_BAD_PASSWORD: the password of a URI could not be parsed.
- * @G_URI_ERROR_BAD_AUTH_PARAMS: the authentication parameters of a URI could not be parsed.
- * @G_URI_ERROR_BAD_HOST: the host of a URI could not be parsed.
- * @G_URI_ERROR_BAD_PORT: the port of a URI could not be parsed.
- * @G_URI_ERROR_BAD_PATH: the path of a URI could not be parsed.
- * @G_URI_ERROR_BAD_QUERY: the query of a URI could not be parsed.
- * @G_URI_ERROR_BAD_FRAGMENT: the fragment of a URI could not be parsed.
+ * @G_URI_ERROR_FAILED: Generic error if no more specific error is available.
+ *     See the error message for details.
+ * @G_URI_ERROR_BAD_SCHEME: The scheme of a URI could not be parsed.
+ * @G_URI_ERROR_BAD_USER: The user/userinfo of a URI could not be parsed.
+ * @G_URI_ERROR_BAD_PASSWORD: The password of a URI could not be parsed.
+ * @G_URI_ERROR_BAD_AUTH_PARAMS: The authentication parameters of a URI could not be parsed.
+ * @G_URI_ERROR_BAD_HOST: The host of a URI could not be parsed.
+ * @G_URI_ERROR_BAD_PORT: The port of a URI could not be parsed.
+ * @G_URI_ERROR_BAD_PATH: The path of a URI could not be parsed.
+ * @G_URI_ERROR_BAD_QUERY: The query of a URI could not be parsed.
+ * @G_URI_ERROR_BAD_FRAGMENT: The fragment of a URI could not be parsed.
  *
  * Error codes returned by #GUri methods.
  *
  * Since: 2.66
  */
 typedef enum {
-  G_URI_ERROR_MISC,
+  G_URI_ERROR_FAILED,
   G_URI_ERROR_BAD_SCHEME,
   G_URI_ERROR_BAD_USER,
   G_URI_ERROR_BAD_PASSWORD,
@@ -323,7 +334,8 @@ typedef enum {
 /**
  * G_URI_RESERVED_CHARS_GENERIC_DELIMITERS:
  *
- * Generic delimiters characters as defined in RFC 3986. Includes ":/?#[]@".
+ * Generic delimiters characters as defined in
+ * [RFC 3986](https://tools.ietf.org/html/rfc3986). Includes `:/?#[]@`.
  *
  * Since: 2.16
  **/
@@ -332,7 +344,8 @@ typedef enum {
 /**
  * G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS:
  *
- * Subcomponent delimiter characters as defined in RFC 3986. Includes "!$&'()*+,;=".
+ * Subcomponent delimiter characters as defined in
+ * [RFC 3986](https://tools.ietf.org/html/rfc3986). Includes `!$&'()*+,;=`.
  *
  * Since: 2.16
  **/
@@ -341,7 +354,7 @@ typedef enum {
 /**
  * G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT:
  *
- * Allowed characters in path elements. Includes "!$&'()*+,;=:@".
+ * Allowed characters in path elements. Includes `!$&'()*+,;=:@`.
  *
  * Since: 2.16
  **/
@@ -350,7 +363,7 @@ typedef enum {
 /**
  * G_URI_RESERVED_CHARS_ALLOWED_IN_PATH:
  *
- * Allowed characters in a path. Includes "!$&'()*+,;=:@/".
+ * Allowed characters in a path. Includes `!$&'()*+,;=:@/`.
  *
  * Since: 2.16
  **/
@@ -359,7 +372,8 @@ typedef enum {
 /**
  * G_URI_RESERVED_CHARS_ALLOWED_IN_USERINFO:
  *
- * Allowed characters in userinfo as defined in RFC 3986. Includes "!$&'()*+,;=:".
+ * Allowed characters in userinfo as defined in
+ * [RFC 3986](https://tools.ietf.org/html/rfc3986). Includes `!$&'()*+,;=:`.
  *
  * Since: 2.16
  **/
@@ -390,7 +404,7 @@ GBytes *    g_uri_unescape_bytes   (const char *escaped_string,
                                     GError    **error);
 
 GLIB_AVAILABLE_IN_2_66
-char *      g_uri_escape_bytes     (const guchar *unescaped,
+char *      g_uri_escape_bytes     (const guint8 *unescaped,
                                     gsize         length,
                                     const char   *reserved_chars_allowed);
 

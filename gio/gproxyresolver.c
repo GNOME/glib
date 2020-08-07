@@ -148,7 +148,7 @@ g_proxy_resolver_lookup (GProxyResolver  *resolver,
   g_return_val_if_fail (G_IS_PROXY_RESOLVER (resolver), NULL);
   g_return_val_if_fail (uri != NULL, NULL);
 
-  if (!g_uri_is_valid (uri, G_URI_FLAGS_PARSE_STRICT, NULL))
+  if (!g_uri_is_valid (uri, G_URI_FLAGS_NONE, NULL))
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
                    "Invalid URI ‘%s’", uri);
@@ -186,7 +186,7 @@ g_proxy_resolver_lookup_async (GProxyResolver      *resolver,
   g_return_if_fail (G_IS_PROXY_RESOLVER (resolver));
   g_return_if_fail (uri != NULL);
 
-  if (!g_uri_is_valid (uri, G_URI_FLAGS_PARSE_STRICT, NULL))
+  if (!g_uri_is_valid (uri, G_URI_FLAGS_NONE, NULL))
     {
       g_set_error (&error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
                    "Invalid URI ‘%s’", uri);
