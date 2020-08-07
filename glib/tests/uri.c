@@ -1527,6 +1527,10 @@ test_uri_join (void)
   g_assert_cmpstr (uri, ==, "/foo?abc");
   g_free (uri);
 
+  uri = g_uri_join (G_URI_FLAGS_NONE, NULL, NULL, "hostname", -1, "/foo", "abc", NULL);
+  g_assert_cmpstr (uri, ==, "//hostname/foo?abc");
+  g_free (uri);
+
   uri = g_uri_join_with_user (G_URI_FLAGS_NONE, "scheme", "user\001", "pass\002", "authparams\003",
                               "host", 9876, "/path", "query", "fragment");
   g_assert_cmpstr (uri, ==, "scheme://user%01:pass%02;authparams%03@host:9876/path?query#fragment");
@@ -1547,6 +1551,74 @@ test_uri_join (void)
   uri = g_uri_join (G_URI_FLAGS_NONE, "scheme", NULL, "foo:bar._webdav._tcp.local", -1, "", NULL, NULL);
   g_assert_cmpstr (uri, ==, "scheme://foo%3Abar._webdav._tcp.local");
   g_free (uri);
+}
+
+static void
+test_uri_join_split_round_trip (void)
+{
+  GUriFlags flags = G_URI_FLAGS_HAS_PASSWORD | G_URI_FLAGS_HAS_AUTH_PARAMS;
+  guint i;
+
+  g_test_summary ("Test that joining different URI components survives a round trip");
+
+  /* Each bit in @i indicates whether the corresponding URI field should be set
+   * or %NULL. */
+  for (i = 0; i < (1 << 8); i++)
+    {
+      gchar *uri = NULL;
+      const gchar *scheme, *user, *password, *auth_params, *host, *path, *query, *fragment;
+      gint port;
+      gchar *scheme_out = NULL, *user_out = NULL, *password_out = NULL;
+      gchar *auth_params_out = NULL, *host_out = NULL, *path_out = NULL;
+      gchar *query_out = NULL, *fragment_out = NULL;
+      gint port_out = -1;
+      gboolean split_success;
+      GError *local_error = NULL;
+
+      g_test_message ("Combination %u", i);
+
+      scheme = (i & (1 << 8)) ? "scheme" : NULL;
+      host = (i & (1 << 4)) ? "host" : NULL;
+      user = (host != NULL && i & (1 << 7)) ? "user" : NULL;  /* only supported if host is also set */
+      password = (host != NULL && user != NULL && i & (1 << 6)) ? "password" : NULL;  /* only supported if host and user are also set */
+      auth_params = (host != NULL && user != NULL && i & (1 << 5)) ? "auth_params" : NULL;  /* only supported if host and user are also set */
+      port = (host != NULL && i & (1 << 3)) ? 123 : -1;  /* only supported if host is also set */
+      path = (i & (1 << 2)) ? "/path" : "";  /* the only mandatory component */
+      query = (i & (1 << 1)) ? "query" : NULL;
+      fragment = (i & (1 << 0)) ? "fragment" : NULL;
+
+      uri = g_uri_join_with_user (flags, scheme, user, password, auth_params,
+                                  host, port, path, query, fragment);
+      g_assert_nonnull (uri);
+
+      split_success = g_uri_split_with_user (uri, flags, &scheme_out, &user_out,
+                                             &password_out, &auth_params_out,
+                                             &host_out, &port_out, &path_out,
+                                             &query_out, &fragment_out,
+                                             &local_error);
+      g_assert_no_error (local_error);
+      g_assert_true (split_success);
+
+      g_assert_cmpstr (scheme, ==, scheme_out);
+      g_assert_cmpstr (user, ==, user_out);
+      g_assert_cmpstr (password, ==, password_out);
+      g_assert_cmpstr (auth_params, ==, auth_params_out);
+      g_assert_cmpstr (host, ==, host_out);
+      g_assert_cmpint (port, ==, port_out);
+      g_assert_cmpstr (path, ==, path_out);
+      g_assert_cmpstr (query, ==, query_out);
+      g_assert_cmpstr (fragment, ==, fragment_out);
+
+      g_free (uri);
+      g_free (scheme_out);
+      g_free (user_out);
+      g_free (password_out);
+      g_free (auth_params_out);
+      g_free (host_out);
+      g_free (path_out);
+      g_free (query_out);
+      g_free (fragment_out);
+    }
 }
 
 int
@@ -1572,6 +1644,7 @@ main (int   argc,
   g_test_add_func ("/uri/is_valid", test_uri_is_valid);
   g_test_add_func ("/uri/to-string", test_uri_to_string);
   g_test_add_func ("/uri/join", test_uri_join);
+  g_test_add_func ("/uri/join-split-round-trip", test_uri_join_split_round_trip);
   g_test_add_data_func ("/uri/iter-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_iter_params);
   g_test_add_data_func ("/uri/iter-params/length", GINT_TO_POINTER (FALSE), test_uri_iter_params);
   g_test_add_data_func ("/uri/parse-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_parse_params);
