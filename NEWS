@@ -1,3 +1,99 @@
+Overview of changes in GLib 2.65.1
+==================================
+
+* Add `GUri` API for parsing, building and representing URIs according to
+  [RFC 3986](https://tools.ietf.org/html/rfc3986) (work by Marc-André Lureau) (#110)
+
+* Fix handling of xattr data with embedded nuls (#422)
+
+* Add `g_file_set_contents_full()` which gives more control over fsyncs (#1302)
+
+* Fix cross-compilation on iOS (work by Nirbheek Chauhan) (#1868)
+
+* Add a `x-gvfs-notrash` option to disable trash on certain mounts (work by Ondrej Holy) (!1549)
+
+* Support ‘slim’ TZif files generated with `zic -b slim` (work by Paul Eggert) (#2129)
+
+* Support emitting profiling marks from `GMainContext` to sysprof capture files (!1551)
+
+* Accept IPv6 zone IDs in `g_hostname_is_ip_address()` (work by Marc-André Lureau) (!1604)
+
+* Bugs fixed:
+ - #4 Include a UTF-8 safe escaping function
+ - #110 Basic URI operations
+ - #137 display_name should be always available
+ - #250 GTestCase's setup/teardown functions appear pointless
+ - #272 allow thread pools to adjust the number of threads to the number of cpu's/cores
+ - #422 Wrong assumption in libgio GFileInfo on xattr/acl string: it may contain binary data.
+ - #858 glib2 @2.40.0 issues a "Got weird mach timebase info" error (Macports, PPC)
+ - #1022 g_object_new Should Mention That it Zeroes Out Private Struct
+ - #1200 Make g_assert_null/nonnull clang static analyzer friendly
+ - #1203 Add a variant of g_file_set_contents() which accepts file mode
+ - #1288 gmacros: Introduce non-public G_CLANG_ANALYZER_NORETURN macro
+ - #1302 g_file_set_contents() can fill target with NUL bytes if it did not previously exist
+ - #1670 ThreadSanitizer data races
+ - #1764 cancellable test: on_mock_operation_ready: assertion failed (iterations_requested > iterations_done): (10 > 10)
+ - #1868 iOS cross compile impossible due to frexpl check not supporting cross compilation
+ - #1869 iOS doesn't have Cocoa, which thankfully isn't a requirement of this code that supposedly requires it
+ - #1982 GSocketAddressEnumerator documentation is inconsistent with existing usage
+ - #2127 Spurious GIO module initialization on Fedora Silverblue (and other ostree-based systems?)
+ - #2129 date_time bugs after 2038, or with today's date and 'zic -b slim' TZif files
+ - #2132 Valgrind reports "still reachable" after g_thread_pool_new/free
+ - #2136 Valgrind reports "still reachable" after g_option_context_parse
+ - #2140 calling malloc in fork child is undefined-behaviour
+ - #2141 g_value_copy is was recently broken
+ - #2149 Make G_URI_FLAGS_PARSE_STRICT the default
+ - #2156 Merge _g_uri_parse_authority() into GUri
+ - #2159 Thread-unsafe initialization in gportalsupport.c
+ - #2160 More guri regressions
+ - #2165 More guri breakage
+ - #2166 g_uri_build() functions should accept a NULL scheme
+ - !1328 guri: new URI parsing and generating functions
+ - !1527 Add g_tls_connection_get_channel_binding_data call and enums
+ - !1534 Various GLocalFile fixes related to the filesystem::remote attribute
+ - !1546 tree: Fix various ableist language
+ - !1549 Add support to ignore trash for certain mounts
+ - !1551 Add initial sysprof support
+ - !1553 gtestutils: Mark that g_assert_whatever() macros do not normally return
+ - !1554 GUri build fixes
+ - !1555 Remove c-format from the string that is not c-formatted
+ - !1556 fuzzing: Another fix for g_uri_parse() test
+ - !1557 A few g_uri_parse_params() improvements
+ - !1559 Fix buffer read overflows in GUri
+ - !1561 gconvert: Use a pointer array in extract_uris
+ - !1563 gdesktopappinfo: Fix unnecessarily copied and leaked URI list
+ - !1564 tests: limit number of threads to something reasonable.
+ - !1570 Reduce CI bandwidth requirements
+ - !1572 Add GUriParamsIter
+ - !1576 gtask: Only override g_task_set_source_tag() for GLib ≥ 2.60
+ - !1577 uri: add illegal_characters argument to unescape_bytes
+ - !1578 tests: Add tests for RFC 8536 v3 parsing of time zones
+ - !1579 glib: Use g_getenv everywhere instead of getenv
+ - !1582 appinfo: Add properties
+ - !1583 gio: Remove broken support for XP
+ - !1590 Use CI schedules and DAGs
+ - !1591 gfileutils: Fix O_NOFOLLOW handling on BSD systems
+ - !1594 GFile: Document that G_FILE_CREATE_REPLACE_DESTINATION can only be used with...
+ - !1595 uri: add ENCODED_PATH & ENCODED_FRAGMENT flags
+ - !1599 uri: do not add ipv6 brackets on non-ip host
+ - !1600 uri: do not encode ':' and ';' from userinfo
+ - !1601 timezone: Fix an uninitialized use
+ - !1602 Revert "Merge branch 'appinfo-properties' into 'master'"
+ - !1604 Make g_hostname_is_ip_address() accept ipv6 zoneid
+ - !1609 Fix multiple typos in guri.c
+ - !1611 guri: Always prepend `//` to the host when building a URI
+ - !1612 guri: Document and check restrictions on path prefixes
+
+* Translation updates:
+ - Catalan
+ - Kazakh
+ - Lithuanian
+ - Romanian
+ - Slovenian
+ - Spanish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.65.0
 ==================================
 
