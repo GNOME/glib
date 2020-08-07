@@ -1353,8 +1353,7 @@ g_uri_join_internal (GUriFlags    flags,
 
   if (host)
     {
-      if (scheme)
-        g_string_append (str, "//");
+      g_string_append (str, "//");
 
       if (user)
         {
