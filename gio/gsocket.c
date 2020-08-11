@@ -3257,8 +3257,8 @@ g_socket_receive_with_timeout (GSocket       *socket,
 /**
  * g_socket_receive:
  * @socket: a #GSocket
- * @buffer: (array length=size) (element-type guint8): a buffer to
- *     read data into (which should be at least @size bytes long).
+ * @buffer: (array length=size) (element-type guint8) (out caller-allocates):
+ *     a buffer to read data into (which should be at least @size bytes long).
  * @size: the number of bytes you want to read from the socket
  * @cancellable: (nullable): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
@@ -3307,8 +3307,8 @@ g_socket_receive (GSocket       *socket,
 /**
  * g_socket_receive_with_blocking:
  * @socket: a #GSocket
- * @buffer: (array length=size) (element-type guint8): a buffer to
- *     read data into (which should be at least @size bytes long).
+ * @buffer: (array length=size) (element-type guint8) (out caller-allocates):
+ *     a buffer to read data into (which should be at least @size bytes long).
  * @size: the number of bytes you want to read from the socket
  * @blocking: whether to do blocking or non-blocking I/O
  * @cancellable: (nullable): a %GCancellable or %NULL
@@ -3340,8 +3340,8 @@ g_socket_receive_with_blocking (GSocket       *socket,
  * @socket: a #GSocket
  * @address: (out) (optional): a pointer to a #GSocketAddress
  *     pointer, or %NULL
- * @buffer: (array length=size) (element-type guint8): a buffer to
- *     read data into (which should be at least @size bytes long).
+ * @buffer: (array length=size) (element-type guint8) (out caller-allocates):
+ *     a buffer to read data into (which should be at least @size bytes long).
  * @size: the number of bytes you want to read from the socket
  * @cancellable: (nullable): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
