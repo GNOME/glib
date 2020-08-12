@@ -1530,6 +1530,7 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   TEST_PRINTF ("%d", "24");
   TEST_PRINTF_DATE (2009, 1, 1, "%d", "01");
   TEST_PRINTF ("%e", "24"); // fixme
+  TEST_PRINTF_TIME (10, 10, 1.001, "%f", "001000");
   TEST_PRINTF ("%h", "Oct");
   TEST_PRINTF ("%H", "00");
   TEST_PRINTF_TIME (15, 0, 0, "%H", "15");
@@ -2204,6 +2205,14 @@ test_format_iso8601 (void)
   dt = g_date_time_new (tz, 2019, 6, 26, 15, 1, 5);
   p = g_date_time_format_iso8601 (dt);
   g_assert_cmpstr (p, ==, "2019-06-26T15:01:05-01");
+  g_free (p);
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
+
+  tz = g_time_zone_new_utc ();
+  dt = g_date_time_new (tz, 2020, 8, 5, 12, 30, 55.000001);
+  p = g_date_time_format_iso8601 (dt);
+  g_assert_cmpstr (p, ==, "2020-08-05T12:30:55.000001Z");
   g_free (p);
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
