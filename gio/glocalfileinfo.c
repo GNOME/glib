@@ -1048,7 +1048,13 @@ set_info_from_stat (GFileInfo             *info,
 #endif
 #endif
 
-#if defined (HAVE_STRUCT_STAT_ST_BIRTHTIME) && defined (HAVE_STRUCT_STAT_ST_BIRTHTIMENSEC)
+#if defined (HAVE_STATX)
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_BTIME))
+    {
+      _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->stx_btime.tv_sec);
+      _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED_USEC, statbuf->stx_btime.tv_nsec / 1000);
+    }
+#elif defined (HAVE_STRUCT_STAT_ST_BIRTHTIME) && defined (HAVE_STRUCT_STAT_ST_BIRTHTIMENSEC)
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED, statbuf->st_birthtime);
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CREATED_USEC, statbuf->st_birthtimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_BIRTHTIM) && defined (HAVE_STRUCT_STAT_ST_BIRTHTIM_TV_NSEC)
@@ -1798,8 +1804,8 @@ _g_local_file_info_get (const char             *basename,
     }
 
   res = g_local_file_lstat (path,
-                            G_LOCAL_FILE_STAT_FIELD_BASIC_STATS,
-                            G_LOCAL_FILE_STAT_FIELD_ALL,
+                            G_LOCAL_FILE_STAT_FIELD_BASIC_STATS | G_LOCAL_FILE_STAT_FIELD_BTIME,
+                            G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_BTIME),
                             &statbuf);
 
   if (res == -1)
@@ -1848,8 +1854,8 @@ _g_local_file_info_get (const char             *basename,
       if (!(flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS))
 	{
           res = g_local_file_stat (path,
-                                   G_LOCAL_FILE_STAT_FIELD_BASIC_STATS,
-                                   G_LOCAL_FILE_STAT_FIELD_ALL,
+                                   G_LOCAL_FILE_STAT_FIELD_BASIC_STATS | G_LOCAL_FILE_STAT_FIELD_BTIME,
+                                   G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_BTIME),
                                    &statbuf2);
 
 	  /* Report broken links as symlinks */
@@ -2071,8 +2077,8 @@ _g_local_file_info_get_from_fd (int         fd,
   GFileInfo *info;
 
   if (g_local_file_fstat (fd,
-                          G_LOCAL_FILE_STAT_FIELD_BASIC_STATS,
-                          G_LOCAL_FILE_STAT_FIELD_ALL,
+                          G_LOCAL_FILE_STAT_FIELD_BASIC_STATS | G_LOCAL_FILE_STAT_FIELD_BTIME,
+                          G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_BTIME),
                           &stat_buf) == -1)
     {
       int errsv = errno;
