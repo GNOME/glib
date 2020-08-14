@@ -18,6 +18,11 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
+/* Needed for the statx() calls in inline functions in glocalfileinfo.h */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include "config.h"
 
 #include <sys/types.h>

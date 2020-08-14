@@ -21,6 +21,11 @@
 #ifndef __G_LOCAL_FILE_INFO_H__
 #define __G_LOCAL_FILE_INFO_H__
 
+/* Needed for statx() */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <fcntl.h>
 #include <gio/gfileinfo.h>
 #include <gio/gfile.h>
@@ -29,6 +34,10 @@
 #include <glib/gstdioprivate.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+
+#ifdef HAVE_STATX
+#include <sys/sysmacros.h>
+#endif
 
 G_BEGIN_DECLS
 
@@ -43,6 +52,119 @@ typedef struct
   gpointer extra_data;
   GDestroyNotify free_extra_data;
 } GLocalParentFileInfo;
+
+#ifdef HAVE_STATX
+#define GLocalFileStat struct statx
+
+typedef enum
+{
+  G_LOCAL_FILE_STAT_FIELD_TYPE = STATX_TYPE,
+  G_LOCAL_FILE_STAT_FIELD_MODE = STATX_MODE,
+  G_LOCAL_FILE_STAT_FIELD_NLINK = STATX_NLINK,
+  G_LOCAL_FILE_STAT_FIELD_UID = STATX_UID,
+  G_LOCAL_FILE_STAT_FIELD_GID = STATX_GID,
+  G_LOCAL_FILE_STAT_FIELD_ATIME = STATX_ATIME,
+  G_LOCAL_FILE_STAT_FIELD_MTIME = STATX_MTIME,
+  G_LOCAL_FILE_STAT_FIELD_CTIME = STATX_CTIME,
+  G_LOCAL_FILE_STAT_FIELD_INO = STATX_INO,
+  G_LOCAL_FILE_STAT_FIELD_SIZE = STATX_SIZE,
+  G_LOCAL_FILE_STAT_FIELD_BLOCKS = STATX_BLOCKS,
+  G_LOCAL_FILE_STAT_FIELD_BTIME = STATX_BTIME,
+} GLocalFileStatField;
+
+#define G_LOCAL_FILE_STAT_FIELD_BASIC_STATS STATX_BASIC_STATS
+#define G_LOCAL_FILE_STAT_FIELD_ALL STATX_ALL
+
+static inline int
+g_local_file_statx (int                  dirfd,
+                    const char          *pathname,
+                    int                  flags,
+                    GLocalFileStatField  mask,
+                    GLocalFileStatField  mask_required,
+                    GLocalFileStat      *stat_buf)
+{
+  int retval;
+
+  /* Allow the caller to set mask_required==G_LOCAL_FILE_STAT_FIELD_ALL as a
+   * shortcut for saying it’s equal to @mask. */
+  mask_required &= mask;
+
+  retval = statx (dirfd, pathname, flags, mask, stat_buf);
+  if (retval == 0 && (stat_buf->stx_mask & mask_required) != mask_required)
+    {
+      /* Not all required fields could be returned. */
+      errno = ERANGE;
+      return -1;
+    }
+
+  return retval;
+}
+
+static inline int
+g_local_file_fstat (int                  fd,
+                    GLocalFileStatField  mask,
+                    GLocalFileStatField  mask_required,
+                    GLocalFileStat      *stat_buf)
+{
+  return g_local_file_statx (fd, "", AT_EMPTY_PATH, mask, mask_required, stat_buf);
+}
+
+static inline int
+g_local_file_fstatat (int                  fd,
+                      const char          *path,
+                      int                  flags,
+                      GLocalFileStatField  mask,
+                      GLocalFileStatField  mask_required,
+                      GLocalFileStat      *stat_buf)
+{
+  return g_local_file_statx (fd, path, flags, mask, mask_required, stat_buf);
+}
+
+static inline int
+g_local_file_lstat (const char          *path,
+                    GLocalFileStatField  mask,
+                    GLocalFileStatField  mask_required,
+                    GLocalFileStat      *stat_buf)
+{
+  return g_local_file_statx (AT_FDCWD, path,
+                             AT_NO_AUTOMOUNT | AT_SYMLINK_NOFOLLOW | AT_STATX_SYNC_AS_STAT,
+                             mask, mask_required, stat_buf);
+}
+
+static inline int
+g_local_file_stat (const char          *path,
+                   GLocalFileStatField  mask,
+                   GLocalFileStatField  mask_required,
+                   GLocalFileStat      *stat_buf)
+{
+  return g_local_file_statx (AT_FDCWD, path,
+                             AT_NO_AUTOMOUNT | AT_STATX_SYNC_AS_STAT,
+                             mask, mask_required, stat_buf);
+}
+
+inline static gboolean _g_stat_has_field  (const GLocalFileStat *buf, GLocalFileStatField field) { return buf->stx_mask & field; }
+
+inline static guint16 _g_stat_mode        (const GLocalFileStat *buf) { return buf->stx_mode; }
+inline static guint32 _g_stat_nlink       (const GLocalFileStat *buf) { return buf->stx_nlink; }
+inline static dev_t   _g_stat_dev         (const GLocalFileStat *buf) { return makedev (buf->stx_dev_major, buf->stx_dev_minor); }
+inline static guint64 _g_stat_ino         (const GLocalFileStat *buf) { return buf->stx_ino; }
+inline static guint64 _g_stat_size        (const GLocalFileStat *buf) { return buf->stx_size; }
+
+inline static guint32 _g_stat_uid         (const GLocalFileStat *buf) { return buf->stx_uid; }
+inline static guint32 _g_stat_gid         (const GLocalFileStat *buf) { return buf->stx_gid; }
+inline static dev_t   _g_stat_rdev        (const GLocalFileStat *buf) { return makedev (buf->stx_rdev_major, buf->stx_rdev_minor); }
+inline static guint32 _g_stat_blksize     (const GLocalFileStat *buf) { return buf->stx_blksize; }
+
+inline static guint64 _g_stat_blocks      (const GLocalFileStat *buf) { return buf->stx_blocks; }
+
+inline static gint64  _g_stat_atime       (const GLocalFileStat *buf) { return buf->stx_atime.tv_sec; }
+inline static gint64  _g_stat_ctime       (const GLocalFileStat *buf) { return buf->stx_ctime.tv_sec; }
+inline static gint64  _g_stat_mtime       (const GLocalFileStat *buf) { return buf->stx_mtime.tv_sec; }
+inline static guint32 _g_stat_atim_nsec   (const GLocalFileStat *buf) { return buf->stx_atime.tv_nsec; }
+inline static guint32 _g_stat_ctim_nsec   (const GLocalFileStat *buf) { return buf->stx_ctime.tv_nsec; }
+inline static guint32 _g_stat_mtim_nsec   (const GLocalFileStat *buf) { return buf->stx_mtime.tv_nsec; }
+
+#else  /* if !HAVE_STATX */
 
 #ifdef G_OS_WIN32
 /* We want 64-bit file size, file ID and symlink support */
@@ -200,6 +322,8 @@ inline static guint32   _g_stat_atim_nsec (const GLocalFileStat *buf) { return b
 inline static guint32   _g_stat_ctim_nsec (const GLocalFileStat *buf) { return buf->st_ctim.tv_nsec; }
 inline static guint32   _g_stat_mtim_nsec (const GLocalFileStat *buf) { return buf->st_mtim.tv_nsec; }
 #endif
+
+#endif  /* !HAVE_STATX */
 
 #define G_LOCAL_FILE_INFO_NOSTAT_ATTRIBUTES \
     G_FILE_ATTRIBUTE_STANDARD_NAME "," \
