@@ -911,9 +911,9 @@ handle_overwrite_open (const char    *filename,
     }
   
   /* not a regular file */
-  if (!S_ISREG (original_stat.st_mode))
+  if (!S_ISREG (_g_stat_mode (&original_stat)))
     {
-      if (S_ISDIR (original_stat.st_mode))
+      if (S_ISDIR (_g_stat_mode (&original_stat)))
 	g_set_error_literal (error,
                              G_IO_ERROR,
                              G_IO_ERROR_IS_DIRECTORY,
@@ -953,7 +953,7 @@ handle_overwrite_open (const char    *filename,
    */
   
   if ((flags & G_FILE_CREATE_REPLACE_DESTINATION) ||
-      (!(original_stat.st_nlink > 1) && !is_symlink))
+      (!(_g_stat_nlink (&original_stat) > 1) && !is_symlink))
     {
       char *dirname, *tmp_filename;
       int tmpfd;
@@ -974,10 +974,10 @@ handle_overwrite_open (const char    *filename,
       if ( ! (flags & G_FILE_CREATE_REPLACE_DESTINATION) &&
 	   (
 #ifdef HAVE_FCHOWN
-	    fchown (tmpfd, original_stat.st_uid, original_stat.st_gid) == -1 ||
+	    fchown (tmpfd, _g_stat_uid (&original_stat), _g_stat_gid (&original_stat)) == -1 ||
 #endif
 #ifdef HAVE_FCHMOD
-	    fchmod (tmpfd, original_stat.st_mode & ~S_IFMT) == -1 ||
+	    fchmod (tmpfd, _g_stat_mode (&original_stat) & ~S_IFMT) == -1 ||
 #endif
 	    0
 	    )
@@ -993,9 +993,9 @@ handle_overwrite_open (const char    *filename,
 #endif
 	  /* Check that we really needed to change something */
 	  if (tres != 0 ||
-	      original_stat.st_uid != tmp_statbuf.st_uid ||
-	      original_stat.st_gid != tmp_statbuf.st_gid ||
-	      original_stat.st_mode != tmp_statbuf.st_mode)
+	      _g_stat_uid (&original_stat) != _g_stat_uid (&tmp_statbuf) ||
+	      _g_stat_gid (&original_stat) != _g_stat_gid (&tmp_statbuf) ||
+	      _g_stat_mode (&original_stat) != _g_stat_mode (&tmp_statbuf))
 	    {
 	      g_close (tmpfd, NULL);
 	      g_unlink (tmp_filename);
@@ -1033,7 +1033,7 @@ handle_overwrite_open (const char    *filename,
 
       bfd = g_open (backup_filename,
 		    O_WRONLY | O_CREAT | O_EXCL | O_BINARY,
-		    original_stat.st_mode & 0777);
+		    _g_stat_mode (&original_stat) & 0777);
 
       if (bfd == -1)
 	{
@@ -1062,12 +1062,12 @@ handle_overwrite_open (const char    *filename,
 	  goto err_out;
 	}
       
-      if ((original_stat.st_gid != tmp_statbuf.st_gid)  &&
-	  fchown (bfd, (uid_t) -1, original_stat.st_gid) != 0)
+      if ((_g_stat_gid (&original_stat) != _g_stat_gid (&tmp_statbuf))  &&
+	  fchown (bfd, (uid_t) -1, _g_stat_gid (&original_stat)) != 0)
 	{
 	  if (fchmod (bfd,
-		      (original_stat.st_mode & 0707) |
-		      ((original_stat.st_mode & 07) << 3)) != 0)
+		      (_g_stat_mode (&original_stat) & 0707) |
+		      ((_g_stat_mode (&original_stat) & 07) << 3)) != 0)
 	    {
 	      g_set_error_literal (error,
                                    G_IO_ERROR,

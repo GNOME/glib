@@ -48,6 +48,43 @@ typedef struct
 #define GLocalFileStat struct stat
 #endif
 
+
+#ifndef G_OS_WIN32
+inline static mode_t    _g_stat_mode      (const GLocalFileStat *buf) { return buf->st_mode; }
+inline static nlink_t   _g_stat_nlink     (const GLocalFileStat *buf) { return buf->st_nlink; }
+#else
+inline static guint16   _g_stat_mode      (const GLocalFileStat *buf) { return buf->st_mode; }
+inline static guint32   _g_stat_nlink     (const GLocalFileStat *buf) { return buf->st_nlink; }
+#endif
+inline static dev_t     _g_stat_dev       (const GLocalFileStat *buf) { return buf->st_dev; }
+inline static ino_t     _g_stat_ino       (const GLocalFileStat *buf) { return buf->st_ino; }
+inline static off_t     _g_stat_size      (const GLocalFileStat *buf) { return buf->st_size; }
+
+#ifndef G_OS_WIN32
+inline static uid_t     _g_stat_uid       (const GLocalFileStat *buf) { return buf->st_uid; }
+inline static gid_t     _g_stat_gid       (const GLocalFileStat *buf) { return buf->st_gid; }
+inline static dev_t     _g_stat_rdev      (const GLocalFileStat *buf) { return buf->st_rdev; }
+inline static blksize_t _g_stat_blksize   (const GLocalFileStat *buf) { return buf->st_blksize; }
+#else
+inline static guint16   _g_stat_uid       (const GLocalFileStat *buf) { return buf->st_uid; }
+inline static guint16   _g_stat_gid       (const GLocalFileStat *buf) { return buf->st_gid; }
+#endif
+
+#ifdef HAVE_STRUCT_STAT_ST_BLOCKS
+inline static blkcnt_t  _g_stat_blocks    (const GLocalFileStat *buf) { return buf->st_blocks; }
+#endif
+
+#ifndef G_OS_WIN32
+inline static time_t    _g_stat_atime     (const GLocalFileStat *buf) { return buf->st_atime; }
+inline static time_t    _g_stat_ctime     (const GLocalFileStat *buf) { return buf->st_ctime; }
+inline static time_t    _g_stat_mtime     (const GLocalFileStat *buf) { return buf->st_mtime; }
+#endif
+#ifdef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC
+inline static guint32   _g_stat_atim_nsec (const GLocalFileStat *buf) { return buf->st_atim.tv_nsec; }
+inline static guint32   _g_stat_ctim_nsec (const GLocalFileStat *buf) { return buf->st_ctim.tv_nsec; }
+inline static guint32   _g_stat_mtim_nsec (const GLocalFileStat *buf) { return buf->st_mtim.tv_nsec; }
+#endif
+
 #define G_LOCAL_FILE_INFO_NOSTAT_ATTRIBUTES \
     G_FILE_ATTRIBUTE_STANDARD_NAME "," \
     G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME "," \
