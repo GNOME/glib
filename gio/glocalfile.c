@@ -1352,11 +1352,7 @@ g_local_file_read (GFile         *file,
       return NULL;
     }
 
-#ifdef G_OS_WIN32
-  ret = GLIB_PRIVATE_CALL (g_win32_fstat) (fd, &buf);
-#else
-  ret = fstat (fd, &buf);
-#endif
+  ret = g_local_file_fstat (fd, G_LOCAL_FILE_STAT_FIELD_TYPE, G_LOCAL_FILE_STAT_FIELD_ALL, &buf);
 
   if (ret == 0 && S_ISDIR (_g_stat_mode (&buf)))
     {
@@ -2706,7 +2702,9 @@ g_local_file_measure_size_of_file (gint           parent_fd,
     return FALSE;
 
 #if defined (AT_FDCWD)
-  if (fstatat (parent_fd, name->data, &buf, AT_SYMLINK_NOFOLLOW) != 0)
+  if (g_local_file_fstatat (parent_fd, name->data, AT_SYMLINK_NOFOLLOW,
+                            G_LOCAL_FILE_STAT_FIELD_BASIC_STATS, G_LOCAL_FILE_STAT_FIELD_ALL,
+                            &buf) != 0)
     {
       int errsv = errno;
       return g_local_file_measure_size_error (state->flags, errsv, name, error);

@@ -123,6 +123,8 @@ _g_local_file_info_create_etag (GLocalFileStat *statbuf)
 {
   glong sec, usec;
 
+  g_return_val_if_fail (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_MTIME), NULL);
+
 #if defined (G_OS_WIN32)
   sec = statbuf->st_mtim.tv_sec;
   usec = statbuf->st_mtim.tv_nsec / 1000;
@@ -1773,11 +1775,7 @@ _g_local_file_info_get (const char             *basename,
 {
   GFileInfo *info;
   GLocalFileStat statbuf;
-#ifdef S_ISLNK
-  struct stat statbuf2;
-#elif defined (G_OS_WIN32)
-  GWin32PrivateStat statbuf2;
-#endif
+  GLocalFileStat statbuf2;
   int res;
   gboolean stat_ok;
   gboolean is_symlink, symlink_broken;
@@ -1799,11 +1797,10 @@ _g_local_file_info_get (const char             *basename,
       return info;
     }
 
-#ifndef G_OS_WIN32
-  res = g_lstat (path, &statbuf);
-#else
-  res = GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (path, &statbuf);
-#endif
+  res = g_local_file_lstat (path,
+                            G_LOCAL_FILE_STAT_FIELD_BASIC_STATS,
+                            G_LOCAL_FILE_STAT_FIELD_ALL,
+                            &statbuf);
 
   if (res == -1)
     {
@@ -1850,11 +1847,10 @@ _g_local_file_info_get (const char             *basename,
       /* Unless NOFOLLOW was set we default to following symlinks */
       if (!(flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS))
 	{
-#ifndef G_OS_WIN32
-	  res = stat (path, &statbuf2);
-#else
-	  res = GLIB_PRIVATE_CALL (g_win32_stat_utf8) (path, &statbuf2);
-#endif
+          res = g_local_file_stat (path,
+                                   G_LOCAL_FILE_STAT_FIELD_BASIC_STATS,
+                                   G_LOCAL_FILE_STAT_FIELD_ALL,
+                                   &statbuf2);
 
 	  /* Report broken links as symlinks */
 	  if (res != -1)
@@ -2073,14 +2069,11 @@ _g_local_file_info_get_from_fd (int         fd,
   GLocalFileStat stat_buf;
   GFileAttributeMatcher *matcher;
   GFileInfo *info;
-  
-#ifdef G_OS_WIN32
-#define FSTAT GLIB_PRIVATE_CALL (g_win32_fstat)
-#else
-#define FSTAT fstat
-#endif
 
-  if (FSTAT (fd, &stat_buf) == -1)
+  if (g_local_file_fstat (fd,
+                          G_LOCAL_FILE_STAT_FIELD_BASIC_STATS,
+                          G_LOCAL_FILE_STAT_FIELD_ALL,
+                          &stat_buf) == -1)
     {
       int errsv = errno;
 

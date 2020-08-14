@@ -21,8 +21,11 @@
 #ifndef __G_LOCAL_FILE_INFO_H__
 #define __G_LOCAL_FILE_INFO_H__
 
+#include <fcntl.h>
 #include <gio/gfileinfo.h>
 #include <gio/gfile.h>
+#include <glib/glib-private.h>
+#include <glib/gstdio.h>
 #include <glib/gstdioprivate.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -48,6 +51,119 @@ typedef struct
 #define GLocalFileStat struct stat
 #endif
 
+/* If the system doesn’t have statx() support, emulate it using traditional
+ * stat(). It supports fields %G_LOCAL_FILE_STAT_FIELD_BASIC_STATS only, and
+ * always returns all of them. */
+typedef enum
+{
+  G_LOCAL_FILE_STAT_FIELD_TYPE = (1 << 0),
+  G_LOCAL_FILE_STAT_FIELD_MODE = (1 << 1),
+  G_LOCAL_FILE_STAT_FIELD_NLINK = (1 << 2),
+  G_LOCAL_FILE_STAT_FIELD_UID = (1 << 3),
+  G_LOCAL_FILE_STAT_FIELD_GID = (1 << 4),
+  G_LOCAL_FILE_STAT_FIELD_ATIME = (1 << 5),
+  G_LOCAL_FILE_STAT_FIELD_MTIME = (1 << 6),
+  G_LOCAL_FILE_STAT_FIELD_CTIME = (1 << 7),
+  G_LOCAL_FILE_STAT_FIELD_INO = (1 << 8),
+  G_LOCAL_FILE_STAT_FIELD_SIZE = (1 << 9),
+  G_LOCAL_FILE_STAT_FIELD_BLOCKS = (1 << 10),
+  G_LOCAL_FILE_STAT_FIELD_BTIME = (1 << 11),
+} GLocalFileStatField;
+
+#define G_LOCAL_FILE_STAT_FIELD_BASIC_STATS \
+  (G_LOCAL_FILE_STAT_FIELD_TYPE | G_LOCAL_FILE_STAT_FIELD_MODE | \
+   G_LOCAL_FILE_STAT_FIELD_NLINK | G_LOCAL_FILE_STAT_FIELD_UID | \
+   G_LOCAL_FILE_STAT_FIELD_GID | G_LOCAL_FILE_STAT_FIELD_ATIME | \
+   G_LOCAL_FILE_STAT_FIELD_MTIME | G_LOCAL_FILE_STAT_FIELD_CTIME | \
+   G_LOCAL_FILE_STAT_FIELD_INO | G_LOCAL_FILE_STAT_FIELD_SIZE | \
+   G_LOCAL_FILE_STAT_FIELD_BLOCKS)
+#define G_LOCAL_FILE_STAT_FIELD_ALL (G_LOCAL_FILE_STAT_FIELD_BASIC_STATS | G_LOCAL_FILE_STAT_FIELD_BTIME)
+
+static inline int
+g_local_file_fstat (int                  fd,
+                    GLocalFileStatField  mask,
+                    GLocalFileStatField  mask_required,
+                    GLocalFileStat      *stat_buf)
+{
+  if ((G_LOCAL_FILE_STAT_FIELD_BASIC_STATS & (mask_required & mask)) != (mask_required & mask))
+    {
+      /* Only G_LOCAL_FILE_STAT_FIELD_BASIC_STATS are supported. */
+      errno = ERANGE;
+      return -1;
+    }
+
+#ifdef G_OS_WIN32
+  return GLIB_PRIVATE_CALL (g_win32_fstat) (fd, stat_buf);
+#else
+  return fstat (fd, stat_buf);
+#endif
+}
+
+static inline int
+g_local_file_fstatat (int                  fd,
+                      const char          *path,
+                      int                  flags,
+                      GLocalFileStatField  mask,
+                      GLocalFileStatField  mask_required,
+                      GLocalFileStat      *stat_buf)
+{
+  if ((G_LOCAL_FILE_STAT_FIELD_BASIC_STATS & (mask_required & mask)) != (mask_required & mask))
+    {
+      /* Only G_LOCAL_FILE_STAT_FIELD_BASIC_STATS are supported. */
+      errno = ERANGE;
+      return -1;
+    }
+
+#ifdef G_OS_WIN32
+  /* Currently not supported on Windows */
+  errno = ENOSYS;
+  return -1;
+#else
+  return fstatat (fd, path, stat_buf, flags);
+#endif
+}
+
+static inline int
+g_local_file_lstat (const char          *path,
+                    GLocalFileStatField  mask,
+                    GLocalFileStatField  mask_required,
+                    GLocalFileStat      *stat_buf)
+{
+  if ((G_LOCAL_FILE_STAT_FIELD_BASIC_STATS & (mask_required & mask)) != (mask_required & mask))
+    {
+      /* Only G_LOCAL_FILE_STAT_FIELD_BASIC_STATS are supported. */
+      errno = ERANGE;
+      return -1;
+    }
+
+#ifdef G_OS_WIN32
+  return GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (path, stat_buf);
+#else
+  return g_lstat (path, stat_buf);
+#endif
+}
+
+static inline int
+g_local_file_stat (const char          *path,
+                   GLocalFileStatField  mask,
+                   GLocalFileStatField  mask_required,
+                   GLocalFileStat      *stat_buf)
+{
+  if ((G_LOCAL_FILE_STAT_FIELD_BASIC_STATS & (mask_required & mask)) != (mask_required & mask))
+    {
+      /* Only G_LOCAL_FILE_STAT_FIELD_BASIC_STATS are supported. */
+      errno = ERANGE;
+      return -1;
+    }
+
+#ifdef G_OS_WIN32
+  return GLIB_PRIVATE_CALL (g_win32_stat_utf8) (path, stat_buf);
+#else
+  return stat (path, stat_buf);
+#endif
+}
+
+inline static gboolean  _g_stat_has_field  (const GLocalFileStat *buf, GLocalFileStatField field) { return (G_LOCAL_FILE_STAT_FIELD_BASIC_STATS & field) == field; }
 
 #ifndef G_OS_WIN32
 inline static mode_t    _g_stat_mode      (const GLocalFileStat *buf) { return buf->st_mode; }

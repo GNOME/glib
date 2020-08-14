@@ -424,7 +424,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
       
 #ifndef G_OS_WIN32		/* Already did the fstat() and close() above on Win32 */
 
-  if (fstat (file->priv->fd, &final_stat) == 0)
+  if (g_local_file_fstat (file->priv->fd, G_LOCAL_FILE_STAT_FIELD_MTIME, G_LOCAL_FILE_STAT_FIELD_ALL, &final_stat) == 0)
     file->priv->etag = _g_local_file_info_create_etag (&final_stat);
 
   if (!g_close (file->priv->fd, NULL))
@@ -891,12 +891,15 @@ handle_overwrite_open (const char    *filename,
       g_free (display_name);
       return -1;
     }
-  
-#ifdef G_OS_WIN32
-  res = GLIB_PRIVATE_CALL (g_win32_fstat) (fd, &original_stat);
-#else
-  res = fstat (fd, &original_stat);
-#endif
+
+  res = g_local_file_fstat (fd,
+                            G_LOCAL_FILE_STAT_FIELD_TYPE |
+                            G_LOCAL_FILE_STAT_FIELD_MODE |
+                            G_LOCAL_FILE_STAT_FIELD_UID |
+                            G_LOCAL_FILE_STAT_FIELD_GID |
+                            G_LOCAL_FILE_STAT_FIELD_MTIME |
+                            G_LOCAL_FILE_STAT_FIELD_NLINK,
+                            G_LOCAL_FILE_STAT_FIELD_ALL, &original_stat);
   errsv = errno;
 
   if (res != 0)
@@ -986,11 +989,13 @@ handle_overwrite_open (const char    *filename,
           GLocalFileStat tmp_statbuf;
           int tres;
 
-#ifdef G_OS_WIN32
-          tres = GLIB_PRIVATE_CALL (g_win32_fstat) (tmpfd, &tmp_statbuf);
-#else
-          tres = fstat (tmpfd, &tmp_statbuf);
-#endif
+          tres = g_local_file_fstat (tmpfd,
+                                     G_LOCAL_FILE_STAT_FIELD_TYPE |
+                                     G_LOCAL_FILE_STAT_FIELD_MODE |
+                                     G_LOCAL_FILE_STAT_FIELD_UID |
+                                     G_LOCAL_FILE_STAT_FIELD_GID,
+                                     G_LOCAL_FILE_STAT_FIELD_ALL, &tmp_statbuf);
+
 	  /* Check that we really needed to change something */
 	  if (tres != 0 ||
 	      _g_stat_uid (&original_stat) != _g_stat_uid (&tmp_statbuf) ||
@@ -1014,7 +1019,7 @@ handle_overwrite_open (const char    *filename,
   if (create_backup)
     {
 #if defined(HAVE_FCHOWN) && defined(HAVE_FCHMOD)
-      struct stat tmp_statbuf;      
+      GLocalFileStat tmp_statbuf;
 #endif
       char *backup_filename;
       int bfd;
@@ -1050,7 +1055,7 @@ handle_overwrite_open (const char    *filename,
        * bits for the group same as the protection bits for
        * others. */
 #if defined(HAVE_FCHOWN) && defined(HAVE_FCHMOD)
-      if (fstat (bfd, &tmp_statbuf) != 0)
+      if (g_local_file_fstat (bfd, G_LOCAL_FILE_STAT_FIELD_GID, G_LOCAL_FILE_STAT_FIELD_ALL, &tmp_statbuf) != 0)
 	{
 	  g_set_error_literal (error,
                                G_IO_ERROR,
