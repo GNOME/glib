@@ -540,7 +540,8 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * and contains the time since the file was created, in seconds since the UNIX
  * epoch.
  *
- * This corresponds to the NTFS ctime.
+ * This may correspond to Linux stx_btime, FreeBSD st_birthtim, NetBSD
+ * st_birthtime or NTFS ctime.
  **/
 #define G_FILE_ATTRIBUTE_TIME_CREATED "time::created"             /* uint64 */
 

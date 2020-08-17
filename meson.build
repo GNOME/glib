@@ -328,6 +328,23 @@ if cc.has_header('linux/netlink.h')
   glib_conf.set('HAVE_NETLINK', 1)
 endif
 
+# Is statx() supported? Android systems don’t reliably support it as of August 2020.
+statx_code = '''
+  #ifndef _GNU_SOURCE
+  #define _GNU_SOURCE
+  #endif
+  #include <sys/stat.h>
+  #include <fcntl.h>
+  int main (void)
+  {
+    struct statx stat_buf;
+    return statx (AT_FDCWD, "/", AT_SYMLINK_NOFOLLOW, STATX_BASIC_STATS | STATX_BTIME, &stat_buf);
+  }
+  '''
+if host_system != 'android' and cc.compiles(statx_code, name : 'statx() test')
+  glib_conf.set('HAVE_STATX', 1)
+endif
+
 if glib_conf.has('HAVE_LOCALE_H')
   if cc.has_header_symbol('locale.h', 'LC_MESSAGES')
     glib_conf.set('HAVE_LC_MESSAGES', 1)

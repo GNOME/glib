@@ -1352,13 +1352,9 @@ g_local_file_read (GFile         *file,
       return NULL;
     }
 
-#ifdef G_OS_WIN32
-  ret = GLIB_PRIVATE_CALL (g_win32_fstat) (fd, &buf);
-#else
-  ret = fstat (fd, &buf);
-#endif
+  ret = g_local_file_fstat (fd, G_LOCAL_FILE_STAT_FIELD_TYPE, G_LOCAL_FILE_STAT_FIELD_ALL, &buf);
 
-  if (ret == 0 && S_ISDIR (buf.st_mode))
+  if (ret == 0 && S_ISDIR (_g_stat_mode (&buf)))
     {
       (void) g_close (fd, NULL);
       g_set_io_error (error,
@@ -2706,7 +2702,9 @@ g_local_file_measure_size_of_file (gint           parent_fd,
     return FALSE;
 
 #if defined (AT_FDCWD)
-  if (fstatat (parent_fd, name->data, &buf, AT_SYMLINK_NOFOLLOW) != 0)
+  if (g_local_file_fstatat (parent_fd, name->data, AT_SYMLINK_NOFOLLOW,
+                            G_LOCAL_FILE_STAT_FIELD_BASIC_STATS, G_LOCAL_FILE_STAT_FIELD_ALL,
+                            &buf) != 0)
     {
       int errsv = errno;
       return g_local_file_measure_size_error (state->flags, errsv, name, error);
@@ -2730,7 +2728,7 @@ g_local_file_measure_size_of_file (gint           parent_fd,
       /* If not at the toplevel, check for a device boundary. */
 
       if (state->flags & G_FILE_MEASURE_NO_XDEV)
-        if (state->contained_on != buf.st_dev)
+        if (state->contained_on != _g_stat_dev (&buf))
           return TRUE;
     }
   else
@@ -2738,7 +2736,7 @@ g_local_file_measure_size_of_file (gint           parent_fd,
       /* If, however, this is the toplevel, set the device number so
        * that recursive invocations can compare against it.
        */
-      state->contained_on = buf.st_dev;
+      state->contained_on = _g_stat_dev (&buf);
     }
 
 #if defined (G_OS_WIN32)
@@ -2747,12 +2745,12 @@ g_local_file_measure_size_of_file (gint           parent_fd,
   else
 #elif defined (HAVE_STRUCT_STAT_ST_BLOCKS)
   if (~state->flags & G_FILE_MEASURE_APPARENT_SIZE)
-    state->disk_usage += buf.st_blocks * G_GUINT64_CONSTANT (512);
+    state->disk_usage += _g_stat_blocks (&buf) * G_GUINT64_CONSTANT (512);
   else
 #endif
-    state->disk_usage += buf.st_size;
+    state->disk_usage += _g_stat_size (&buf);
 
-  if (S_ISDIR (buf.st_mode))
+  if (S_ISDIR (_g_stat_mode (&buf)))
     state->num_dirs++;
   else
     state->num_files++;
@@ -2787,7 +2785,7 @@ g_local_file_measure_size_of_file (gint           parent_fd,
         }
     }
 
-  if (S_ISDIR (buf.st_mode))
+  if (S_ISDIR (_g_stat_mode (&buf)))
     {
       int dir_fd = -1;
 #ifdef AT_FDCWD
