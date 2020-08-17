@@ -1595,6 +1595,23 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
   if (subprocess->stdin_pipe)
     {
       g_assert (stdin_buf != NULL);
+
+#ifdef G_OS_UNIX
+      /* We're doing async writes to the pipe, and the async write mechanism assumes
+       * that streams polling as writable do SOME progress (possibly partial) and then
+       * stop, but never block.
+       *
+       * However, for blocking pipes, unix will return writable if there is *any* space left
+       * but still block until the full buffer size is available before returning from write.
+       * So, to avoid async blocking on the main loop we make this non-blocking here.
+       *
+       * It should be safe to change the fd because we're the only user at this point as
+       * per the g_subprocess_communicate() docs, and all the code called by this function
+       * properly handles non-blocking fds.
+       */
+      g_unix_set_fd_nonblocking (g_unix_output_stream_get_fd (G_UNIX_OUTPUT_STREAM (subprocess->stdin_pipe)), TRUE, NULL);
+#endif
+
       state->stdin_buf = g_memory_input_stream_new_from_bytes (stdin_buf);
       g_output_stream_splice_async (subprocess->stdin_pipe, (GInputStream*)state->stdin_buf,
                                     G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET,
