@@ -22,7 +22,9 @@
 
 /* For the #GDesktopAppInfoLookup macros; since macro deprecation is implemented
  * in the preprocessor, we need to define this before including glib.h*/
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
 
 #include <string.h>
 

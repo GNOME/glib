@@ -20,7 +20,9 @@
 #include <string.h>
 
 /* for GValueArray */
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
 
 #include "gboxed.h"
 #include "gclosure.h"
