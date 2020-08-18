@@ -348,6 +348,9 @@ int
 g_cancellable_get_fd (GCancellable *cancellable)
 {
   GPollFD pollfd;
+#ifndef G_OS_WIN32
+  gboolean retval;
+#endif
 
   if (cancellable == NULL)
 	  return -1;
@@ -355,7 +358,8 @@ g_cancellable_get_fd (GCancellable *cancellable)
 #ifdef G_OS_WIN32
   pollfd.fd = -1;
 #else
-  g_cancellable_make_pollfd (cancellable, &pollfd);
+  retval = g_cancellable_make_pollfd (cancellable, &pollfd);
+  g_assert (retval);
 #endif
 
   return pollfd.fd;
