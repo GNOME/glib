@@ -982,7 +982,7 @@ g_dbus_address_get_stream_sync (const gchar   *address,
       goto out;
     }
 
-  for (n = 0; addr_array != NULL && addr_array[n] != NULL; n++)
+  for (n = 0; addr_array[n] != NULL; n++)
     {
       const gchar *addr = addr_array[n];
       GError *this_error;
