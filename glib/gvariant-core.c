@@ -666,6 +666,21 @@ g_variant_is_trusted (GVariant *value)
   return (value->state & STATE_TRUSTED) != 0;
 }
 
+/* < internal >
+ * g_variant_get_depth:
+ * @value: a #GVariant
+ *
+ * Gets the nesting depth of a #GVariant. This is 0 for a #GVariant with no
+ * children.
+ *
+ * Returns: nesting depth of @value
+ */
+gsize
+g_variant_get_depth (GVariant *value)
+{
+  return value->depth;
+}
+
 /* -- public -- */
 
 /**
