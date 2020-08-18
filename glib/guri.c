@@ -350,6 +350,7 @@ uri_decoder (gchar       **out,
   *d = '\0';
 
   len = d - decoded;
+  g_assert (len >= 0);
 
   if (!(flags & G_URI_FLAGS_ENCODED) &&
       !g_utf8_validate (decoded, len, &invalid))
