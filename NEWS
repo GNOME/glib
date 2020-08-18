@@ -1,3 +1,40 @@
+Overview of changes in GLib 2.65.2
+==================================
+
+* Support `statx()` and `G_FILE_ATTRIBUTE_TIME_CREATED` (work by Andre Miranda) (#1970)
+
+* Fix deadlock in `g_subprocess_communicate_async()` (work by Alexander Larsson) (#2182)
+
+* Add `%f`/microsecond placeholder support to `g_date_time_format()` (work by Johan Bjäreholt) (!1605)
+
+* Bugs fixed:
+ - #5 g_new0 performance
+ - #1970 Make G_FILE_ATTRIBUTE_TIME_CREATED support stx_btime
+ - #2176 Inconsistent introspection annotations for g_input_stream_read and g_socket_receive
+ - #2182 g_subprocess_communicate_async() can deadlock when writing
+ - !1593 CI support for Coverity Scan
+ - !1605 gdatetime: Add %f format specifier and microsecond precision to g_date_time_format_iso8601
+ - !1613 gfile: Document TOCTTOU avoidance using g_file_delete()
+ - !1615 docs: glib-compile-resources: json-stripblanks
+ - !1616 gioerror: Map WSAENETRESET on Windows to G_IO_ERROR_CONNECTION_CLOSED
+ - !1619 Minor Coverity fixes
+ - !1620 gvariant: Ensure GVS.depth is initialised
+ - !1622 gdatetime: Widen a variable before multiplication
+ - !1623 gcancellable: Assert that make_pollfd() call succeeds
+ - !1624 gdbusaddress: Drop an unnecessary NULL check
+ - !1625 gdbusmessage: Drop redundant uint ≥ 0 checks
+
+* Translation updates:
+ - French
+ - Galician
+ - Greek, Modern (1453-)
+ - Indonesian
+ - Romanian
+ - Spanish
+ - Turkish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.65.1
 ==================================
 
