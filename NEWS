@@ -1,3 +1,19 @@
+Overview of changes in GLib 2.64.5
+==================================
+
+* Fix deadlock in `g_subprocess_communicate_async()` (work by Alexander Larsson) (#2182)
+
+* Fix cross-compilation on iOS (work by Nirbheek Chauhan) (#1868)
+
+* Bugs fixed:
+ - !1519 Backport !1468 “glib-compile-resources: Fix exporting on Visual Studio” to glib-2-64
+ - !1520 Backport !1517 “GWin32RegistryKey: Move assertions” to glib-2-64
+ - !1565 Backport !1563 “gdesktopappinfo: Fix unnecessarily copied and leaked URI list” to glib-2-64
+ - !1608 Backport !1607 “meson: Don't use gnulib for printf on iOS” to glib-2-64
+ - !1618 Backport !1617 “Ensure g_subprocess_communicate_async() never blocks” to glib-2-64
+ - !1621 Backport !1620 “gvariant: Ensure GVS.depth is initialised” to glib-2-64
+
+
 Overview of changes in GLib 2.64.4
 ==================================
 
