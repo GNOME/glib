@@ -5948,6 +5948,7 @@ g_variant_byteswap (GVariant *value)
       serialised.type_info = g_variant_get_type_info (trusted);
       serialised.size = g_variant_get_size (trusted);
       serialised.data = g_malloc (serialised.size);
+      serialised.depth = g_variant_get_depth (trusted);
       g_variant_store (trusted, serialised.data);
       g_variant_unref (trusted);
 
