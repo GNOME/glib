@@ -1530,7 +1530,10 @@ void
 
           test_prgname = g_path_get_basename (g_get_prgname ());
           if (*test_prgname == '\0')
-            test_prgname = g_strdup ("unknown");
+            {
+              g_free (test_prgname);
+              test_prgname = g_strdup ("unknown");
+            }
           tmpl = g_strdup_printf ("test_%s_XXXXXX", test_prgname);
           g_free (test_prgname);
 
