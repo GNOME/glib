@@ -598,7 +598,7 @@ ymd_to_days (gint year,
 {
   gint64 days;
 
-  days = (year - 1) * 365 + ((year - 1) / 4) - ((year - 1) / 100)
+  days = ((gint64) year - 1) * 365 + ((year - 1) / 4) - ((year - 1) / 100)
       + ((year - 1) / 400);
 
   days += days_in_year[0][month - 1];
