@@ -27,8 +27,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-08-19 09:42+0000\n"
-"PO-Revision-Date: 2020-08-20 18:50+0900\n"
+"POT-Creation-Date: 2020-08-20 11:51+0000\n"
+"PO-Revision-Date: 2020-08-20 21:04+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -5779,7 +5779,7 @@ msgstr "URI に不正な文字があります"
 
 #: glib/guri.c:359
 msgid "Non-UTF-8 characters in URI"
-msgstr "URI に UTF-8 ではな文字があります"
+msgstr "URI に UTF-8 ではない文字があります"
 
 #: glib/guri.c:462
 #, c-format
