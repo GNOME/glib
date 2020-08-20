@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-08-19 09:42+0000\n"
-"PO-Revision-Date: 2020-06-10 18:45+0900\n"
+"PO-Revision-Date: 2020-08-20 18:50+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -3587,28 +3587,6 @@ msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
 #: gio/gsettings-tool.c:667
-#, fuzzy
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
-#| "\n"
-#| "Commands:\n"
-#| "  help                      Show this information\n"
-#| "  list-schemas              List installed schemas\n"
-#| "  list-relocatable-schemas  List relocatable schemas\n"
-#| "  list-keys                 List keys in a schema\n"
-#| "  list-children             List children of a schema\n"
-#| "  list-recursively          List keys and values, recursively\n"
-#| "  range                     Queries the range of a key\n"
-#| "  get                       Get the value of a key\n"
-#| "  set                       Set the value of a key\n"
-#| "  reset                     Reset the value of a key\n"
-#| "  reset-recursively         Reset all values in a given schema\n"
-#| "  writable                  Check if a key is writable\n"
-#| "  monitor                   Watch for changes\n"
-#| "\n"
-#| "Use 'gsettings help COMMAND' to get detailed help.\n"
-#| "\n"
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3634,7 +3612,8 @@ msgid ""
 "\n"
 msgstr ""
 "用法:\n"
-"  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
+"  gsettings --version\n"
+"  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS…]\n"
 "\n"
 "コマンド:\n"
 "  help                      この情報を表示する\n"
@@ -3644,6 +3623,7 @@ msgstr ""
 "  list-children             指定したスキーマのサブスキーマの一覧を表示する\n"
 "  list-recursively          キーと値の一覧を再帰的に表示する\n"
 "  range                     キーの値の有効な範囲を確認する\n"
+"  describe                  キーの説明を確認する\n"
 "  get                       キーの値を取得する\n"
 "  set                       キーの値を設定する\n"
 "  reset                     キーの値をリセットする\n"
@@ -3651,7 +3631,7 @@ msgstr ""
 "  writable                  キーが書き込み可能か確認する\n"
 "  monitor                   変更を監視する\n"
 "\n"
-"詳細なヘルプを参照するには 'gsettings help COMMAND' を実行します。\n"
+"“gsettings help COMMAND”で詳細なヘルプを表示します。\n"
 "\n"
 
 #: gio/gsettings-tool.c:691
@@ -5789,59 +5769,55 @@ msgid "“%s” is not an unsigned number"
 msgstr "“%s”は符号なし数値ではありません"
 
 #: glib/guri.c:313
-#, fuzzy, no-c-format
-#| msgid " (invalid encoding)"
+#, no-c-format
 msgid "Invalid %-encoding in URI"
-msgstr " (不正なエンコーディング)"
+msgstr "URI に不正な % エンコーディングがあります"
 
 #: glib/guri.c:330
 msgid "Illegal character in URI"
-msgstr ""
+msgstr "URI に不正な文字があります"
 
 #: glib/guri.c:359
 msgid "Non-UTF-8 characters in URI"
-msgstr ""
+msgstr "URI に UTF-8 ではな文字があります"
 
 #: glib/guri.c:462
 #, c-format
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
-msgstr ""
+msgstr "URI に不正な IPv6 アドレス‘%.*s’があります"
 
 #: glib/guri.c:524
 #, c-format
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
-msgstr ""
+msgstr "URI に正しくないエンコードの IP アドレス‘%.*s’があります"
 
 #: glib/guri.c:558 glib/guri.c:570
-#, fuzzy, c-format
-#| msgid "Could not parse “%s” as IP address mask"
+#, c-format
 msgid "Could not parse port ‘%.*s’ in URI"
-msgstr "IP アドレスマスク“%s”を解析できませんでした"
+msgstr "URI のポート‘%.*s’を解析できませんでした"
 
 #: glib/guri.c:577
-#, fuzzy, c-format
-#| msgid "Double value “%s” for %s out of range"
+#, c-format
 msgid "Port ‘%.*s’ in URI is out of range"
-msgstr "%2$s の実数値“%1$s”は範囲外の値です"
+msgstr "URI のポート‘%.*s’は範囲外の値です"
 
 #: glib/guri.c:1055 glib/guri.c:1119
-#, fuzzy, c-format
-#| msgid "The pathname “%s” is not an absolute path"
+#, c-format
 msgid "URI ‘%s’ is not an absolute URI"
-msgstr "“%s”は絶対パスではありません"
+msgstr "‘%s’は絶対 URI ではありません"
 
 #: glib/guri.c:1061
 #, c-format
 msgid "URI ‘%s’ has no host component"
-msgstr ""
+msgstr "URI ‘%s’にはホスト要素がありません"
 
 #: glib/guri.c:1263
 msgid "URI is not absolute, and no base URI was provided"
-msgstr ""
+msgstr "URI が絶対 URI ではなく基本 URI がありません"
 
 #: glib/guri.c:2019
 msgid "Missing ‘=’ and parameter value"
-msgstr ""
+msgstr "‘=’とパラメーター値がありません"
 
 #: glib/gutf8.c:817
 msgid "Failed to allocate memory"
