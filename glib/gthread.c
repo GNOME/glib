@@ -58,6 +58,7 @@
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "glib_trace.h"
+#include "gtrace-private.h"
 
 /**
  * SECTION:threads
@@ -920,6 +921,7 @@ g_thread_new_internal (const gchar *name,
 
   g_atomic_int_inc (&g_thread_n_created_counter);
 
+  g_trace_mark (G_TRACE_CURRENT_TIME, 0, "GLib", "GThread created", "%s", name ? name : "(unnamed)");
   return (GThread *) g_system_thread_new (proxy, stack_size, scheduler_settings,
                                           name, func, data, error);
 }
