@@ -23,8 +23,7 @@
 #include <sysprof-capture.h>
 #endif
 
-#include "gmem.h"
-#include "gmacros.h"
+#include "glib.h"
 
 G_BEGIN_DECLS
 
