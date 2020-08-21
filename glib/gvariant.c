@@ -4930,7 +4930,7 @@ g_variant_valist_get_nnp (const gchar **str,
 
     case '@':
       g_variant_type_string_scan (*str, NULL, str);
-      /* fall through */
+      G_GNUC_FALLTHROUGH;
 
     case '*':
     case '?':
