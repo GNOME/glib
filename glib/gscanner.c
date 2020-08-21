@@ -1378,7 +1378,7 @@ g_scanner_unexp_token (GScanner		*scanner,
 	  _g_snprintf (token_string, token_string_len, "(unknown) token <%d>", scanner->token);
 	  break;
 	}
-      /* fall through */
+      G_GNUC_FALLTHROUGH;
     case G_TOKEN_SYMBOL:
       if (expected_token == G_TOKEN_SYMBOL ||
 	  (scanner->config->symbol_2_token &&
@@ -1523,7 +1523,7 @@ g_scanner_unexp_token (GScanner		*scanner,
 	  _g_snprintf (expected_string, expected_string_len, "(unknown) token <%d>", expected_token);
 	  break;
 	}
-      /* fall through */
+      G_GNUC_FALLTHROUGH;
     case G_TOKEN_SYMBOL:
       need_valid = (scanner->token == G_TOKEN_SYMBOL ||
 		    (scanner->config->symbol_2_token &&
