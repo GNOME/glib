@@ -1025,13 +1025,16 @@ set_info_from_stat (GFileInfo             *info,
 #elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, _g_stat_mtim_nsec (statbuf) / 1000);
 #endif
-  
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, _g_stat_atime (statbuf));
+
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_ATIME))
+    {
+      _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, _g_stat_atime (statbuf));
 #if defined (HAVE_STRUCT_STAT_ST_ATIMENSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atimensec / 1000);
+      _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, _g_stat_atim_nsec (statbuf) / 1000);
+      _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, _g_stat_atim_nsec (statbuf) / 1000);
 #endif
+    }
 #endif
 
 #ifndef G_OS_WIN32
@@ -1805,7 +1808,7 @@ _g_local_file_info_get (const char             *basename,
 
   res = g_local_file_lstat (path,
                             G_LOCAL_FILE_STAT_FIELD_BASIC_STATS | G_LOCAL_FILE_STAT_FIELD_BTIME,
-                            G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_BTIME),
+                            G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_BTIME) & (~G_LOCAL_FILE_STAT_FIELD_ATIME),
                             &statbuf);
 
   if (res == -1)
