@@ -185,6 +185,32 @@ typedef enum {
   BLOB_TYPE_UNION
 } GTypelibBlobType;
 
+
+#if defined (G_CAN_INLINE) && defined (G_ALWAYS_INLINE)
+
+G_ALWAYS_INLINE
+inline gboolean
+_blob_is_registered_type (GTypelibBlobType blob_type)
+{
+  switch (blob_type)
+    {
+      case BLOB_TYPE_STRUCT:
+      case BLOB_TYPE_UNION:
+      case BLOB_TYPE_ENUM:
+      case BLOB_TYPE_FLAGS:
+      case BLOB_TYPE_OBJECT:
+      case BLOB_TYPE_INTERFACE:
+        return TRUE;
+      default:
+        return FALSE;
+    }
+}
+
+#define BLOB_IS_REGISTERED_TYPE(blob) \
+  _blob_is_registered_type ((GTypelibBlobType) (blob)->blob_type)
+
+#else
+
 #define BLOB_IS_REGISTERED_TYPE(blob)               \
         ((blob)->blob_type == BLOB_TYPE_STRUCT ||   \
          (blob)->blob_type == BLOB_TYPE_UNION  ||   \
@@ -192,6 +218,8 @@ typedef enum {
          (blob)->blob_type == BLOB_TYPE_FLAGS  ||   \
          (blob)->blob_type == BLOB_TYPE_OBJECT ||   \
          (blob)->blob_type == BLOB_TYPE_INTERFACE)
+
+#endif /* defined (G_CAN_INLINE) && defined (G_ALWAYS_INLINE) */
 
 /**
  * Header:
