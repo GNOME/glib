@@ -1089,7 +1089,7 @@ write_to_temp_file (const gchar  *contents,
     {
       gssize s;
 
-      s = write (fd, contents, length);
+      s = write (fd, contents, MIN (length, G_MAXSSIZE));
 
       if (s < 0)
         {
