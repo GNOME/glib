@@ -1106,7 +1106,7 @@ write_to_temp_file (const gchar  *contents,
           goto out;
         }
 
-      g_assert (s <= length);
+      g_assert ((gsize) s <= length);
 
       contents += s;
       length -= s;
