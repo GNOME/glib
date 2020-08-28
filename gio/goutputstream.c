@@ -2643,6 +2643,8 @@ g_output_stream_real_writev_finish (GOutputStream   *stream,
 typedef struct {
   GInputStream *source;
   GOutputStreamSpliceFlags flags;
+  guint istream_closed : 1;
+  guint ostream_closed : 1;
   gssize n_read;
   gssize n_written;
   gsize bytes_copied;
@@ -2665,11 +2667,11 @@ real_splice_async_complete_cb (GTask *task)
   SpliceData *op = g_task_get_task_data (task);
 
   if (op->flags & G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE &&
-      !g_input_stream_is_closed (op->source))
+      !op->istream_closed)
     return;
 
   if (op->flags & G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET &&
-      !g_output_stream_is_closed (g_task_get_source_object (task)))
+      !op->ostream_closed)
     return;
 
   if (op->error != NULL)
@@ -2691,8 +2693,10 @@ real_splice_async_close_input_cb (GObject      *source,
                                   gpointer      user_data)
 {
   GTask *task = user_data;
+  SpliceData *op = g_task_get_task_data (task);
 
   g_input_stream_close_finish (G_INPUT_STREAM (source), res, NULL);
+  op->istream_closed = TRUE;
 
   real_splice_async_complete_cb (task);
 }
@@ -2707,6 +2711,7 @@ real_splice_async_close_output_cb (GObject      *source,
   GError **error = (op->error == NULL) ? &op->error : NULL;
 
   g_output_stream_internal_close_finish (G_OUTPUT_STREAM (source), res, error);
+  op->ostream_closed = TRUE;
 
   real_splice_async_complete_cb (task);
 }
