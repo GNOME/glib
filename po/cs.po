@@ -3112,7 +3112,7 @@ msgstr "Soubor „%s“ se nezdařilo otevřít: chyba Windows %lu"
 #: gio/glocalfileinfo.c:2543
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
-msgstr "Chyba při nastavování času změny nebo přístupu u souboru „%s“: %s"
+msgstr "Chyba při nastavování času změny nebo přístupu u souboru „%s“: %lu"
 
 #: gio/glocalfileinfo.c:2644
 #, c-format
@@ -5838,22 +5838,22 @@ msgstr "Znak mimo standard UTF-8 v adrese URI"
 #: glib/guri.c:462
 #, c-format
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
-msgstr "Neplatná adresa IPv6 „%s.*s“ v adrese URI"
+msgstr "Neplatná adresa IPv6 „%.*s“ v adrese URI"
 
 #: glib/guri.c:524
 #, c-format
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
-msgstr "Neplatná zakódovaná adresa IP „%s.*s“ v adrese URI"
+msgstr "Neplatná zakódovaná adresa IP „%.*s“ v adrese URI"
 
 #: glib/guri.c:558 glib/guri.c:570
 #, c-format
 msgid "Could not parse port ‘%.*s’ in URI"
-msgstr "Nezdařilo se zpracovat port „%s.*s“ v adrese URI"
+msgstr "Nezdařilo se zpracovat port „%.*s“ v adrese URI"
 
 #: glib/guri.c:577
 #, c-format
 msgid "Port ‘%.*s’ in URI is out of range"
-msgstr "Port „%s.*s“ v adrese URI je mimo rozsah"
+msgstr "Port „%.*s“ v adrese URI je mimo rozsah"
 
 #: glib/guri.c:1055 glib/guri.c:1119
 #, c-format
