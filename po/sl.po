@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-06-09 04:01+0000\n"
-"PO-Revision-Date: 2020-06-21 22:23+0200\n"
+"POT-Creation-Date: 2020-08-23 09:21+0000\n"
+"PO-Revision-Date: 2020-08-31 21:29+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
-msgstr "Možnosti programa"
+msgstr "Možnosti programa GApplication"
 
 #: gio/gapplication.c:500
 msgid "Show GApplication options"
@@ -283,7 +283,7 @@ msgstr "Pretok je že zaprt"
 msgid "Truncate not supported on base stream"
 msgstr "Razčlenitev na osnovnem pretoku ni dovoljena"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1411
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1413
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -302,28 +302,28 @@ msgid "Not enough space in destination"
 msgstr "Ni dovolj prostora za cilju"
 
 #: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
-#: gio/gdatainputstream.c:1261 glib/gconvert.c:447 glib/gconvert.c:877
+#: gio/gdatainputstream.c:1261 glib/gconvert.c:448 glib/gconvert.c:878
 #: glib/giochannel.c:1564 glib/giochannel.c:1606 glib/giochannel.c:2461
 #: glib/gutf8.c:875 glib/gutf8.c:1328
 msgid "Invalid byte sequence in conversion input"
 msgstr "Neveljavno zaporedje bajtov na vhodu pretvorbe"
 
-#: gio/gcharsetconverter.c:347 glib/gconvert.c:455 glib/gconvert.c:791
+#: gio/gcharsetconverter.c:347 glib/gconvert.c:456 glib/gconvert.c:792
 #: glib/giochannel.c:1571 glib/giochannel.c:2473
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Napaka med pretvorbo: %s"
 
-#: gio/gcharsetconverter.c:445 gio/gsocket.c:1138
+#: gio/gcharsetconverter.c:445 gio/gsocket.c:1133
 msgid "Cancellable initialization not supported"
 msgstr "Dejanje prekinitve zagona ni podprto"
 
-#: gio/gcharsetconverter.c:456 glib/gconvert.c:320 glib/giochannel.c:1392
+#: gio/gcharsetconverter.c:456 glib/gconvert.c:321 glib/giochannel.c:1392
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "Pretvorba iz nabora znakov »%s« v »%s« ni podprta"
 
-#: gio/gcharsetconverter.c:460 glib/gconvert.c:324
+#: gio/gcharsetconverter.c:460 glib/gconvert.c:325
 #, c-format
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "Ni mogoče odpreti pretvornika iz »%s« v »%s«"
@@ -342,23 +342,23 @@ msgstr "Neznana vrsta"
 msgid "%s filetype"
 msgstr "%s vrsta datoteke"
 
-#: gio/gcredentials.c:289
+#: gio/gcredentials.c:323
 msgid "GCredentials contains invalid data"
 msgstr "GCredentials vsebuje neveljavne podatke"
 
-#: gio/gcredentials.c:345 gio/gcredentials.c:609
+#: gio/gcredentials.c:383 gio/gcredentials.c:667
 msgid "GCredentials is not implemented on this OS"
 msgstr "Na tem OS predmet GCredentials ni podprt"
 
-#: gio/gcredentials.c:503
+#: gio/gcredentials.c:538 gio/gcredentials.c:556
 msgid "There is no GCredentials support for your platform"
 msgstr "Okolje ne podpira možnosti GCredentials"
 
-#: gio/gcredentials.c:552
+#: gio/gcredentials.c:607
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "Predmet GCredentials na tem sistemu ne vsebuje ustreznega ID opravila"
 
-#: gio/gcredentials.c:603
+#: gio/gcredentials.c:661
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "Na tem OS vohljanje po poverilih ni podprto"
 
@@ -513,7 +513,7 @@ msgstr "Napaka med oživljanjem ukazne vrstice »%s«: "
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Ni mogoče določiti naslova vodila seje (ni podprto v tem OS)"
 
-#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7190
+#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7192
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -522,7 +522,7 @@ msgstr ""
 "Ni mogoče določiti naslova vodila iz okoljske spremenljivke "
 "DBUS_STARTER_BUS_TYPE – neznana vrednost »%s«"
 
-#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7199
+#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7201
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -629,7 +629,7 @@ msgstr "Napaka med razvezovanjem datoteke zaklepa »%s«: %s"
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Napaka med odpiranjem zbirke ključev »%s« za branje: "
 
-#: gio/gdbusauthmechanismsha1.c:863
+#: gio/gdbusauthmechanismsha1.c:865
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(V nadaljevanju je spodletelo tudi sproščanje zaklepa »%s«: %s)"
@@ -649,82 +649,82 @@ msgstr ""
 "Med izgrajevanjem povezave s strani odjemalca so bile odkrite nepodprte "
 "zastavice"
 
-#: gio/gdbusconnection.c:4161 gio/gdbusconnection.c:4508
+#: gio/gdbusconnection.c:4163 gio/gdbusconnection.c:4510
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Vmesnik »org.freedesktop.DBus.Properties« na predmetu na poti %s ne obstaja"
 
-#: gio/gdbusconnection.c:4303
+#: gio/gdbusconnection.c:4305
 #, c-format
 msgid "No such property “%s”"
 msgstr "Lastnost »%s« ne obstaja"
 
-#: gio/gdbusconnection.c:4315
+#: gio/gdbusconnection.c:4317
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Lastnost »%s« ni berljiva"
 
-#: gio/gdbusconnection.c:4326
+#: gio/gdbusconnection.c:4328
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Lastnost »%s« ni zapisljiva"
 
-#: gio/gdbusconnection.c:4346
+#: gio/gdbusconnection.c:4348
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Napaka med nastavljanjem lastnosti »%s«: pričakovana je vrsta »%s«, javljena "
 "pa »%s«."
 
-#: gio/gdbusconnection.c:4451 gio/gdbusconnection.c:4659
-#: gio/gdbusconnection.c:6630
+#: gio/gdbusconnection.c:4453 gio/gdbusconnection.c:4661
+#: gio/gdbusconnection.c:6632
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Vmesnik »%s« ne obstaja"
 
-#: gio/gdbusconnection.c:4877 gio/gdbusconnection.c:7139
+#: gio/gdbusconnection.c:4879 gio/gdbusconnection.c:7141
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Vmesnik »%s« na predmetu na poti %s ne obstaja"
 
-#: gio/gdbusconnection.c:4975
+#: gio/gdbusconnection.c:4977
 #, c-format
 msgid "No such method “%s”"
 msgstr "Način »%s« ne obstaja"
 
-#: gio/gdbusconnection.c:5006
+#: gio/gdbusconnection.c:5008
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Vrsta sporočila »%s« se ne sklada s pričakovano vrsto »%s«"
 
-#: gio/gdbusconnection.c:5204
+#: gio/gdbusconnection.c:5206
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Za vmesnik %s pri %s je predmet že izvožen"
 
-#: gio/gdbusconnection.c:5430
+#: gio/gdbusconnection.c:5432
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Ni mogoče pridobiti lastnosti %s.%s"
 
-#: gio/gdbusconnection.c:5486
+#: gio/gdbusconnection.c:5488
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Ni mogoče določiti lastnosti %s.%s"
 
-#: gio/gdbusconnection.c:5664
+#: gio/gdbusconnection.c:5666
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Način »%s« je vrnil vrsto »%s«, pričakovana pa je vrsta »%s«"
 
-#: gio/gdbusconnection.c:6741
+#: gio/gdbusconnection.c:6743
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Način »%s« na vmesniku »%s« s podpisom »%s« ne obstaja"
 
-#: gio/gdbusconnection.c:6862
+#: gio/gdbusconnection.c:6864
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Podrejeno drevo je že izvoženo za %s"
@@ -891,7 +891,7 @@ msgstr[3] ""
 
 #: gio/gdbusmessage.c:2246
 msgid "Cannot deserialize message: "
-msgstr "Sporočila ni mogoče ločiti iz zaporedja:"
+msgstr "Sporočila ni mogoče ločiti iz zaporedja: "
 
 #: gio/gdbusmessage.c:2590
 #, c-format
@@ -909,7 +909,7 @@ msgstr "Število opisnikov v sporočilu (%d) se razlikuje od polja glave (%d)"
 
 #: gio/gdbusmessage.c:2735
 msgid "Cannot serialize message: "
-msgstr "Sporočila ni bilo mogoče združiti v zaporedje:"
+msgstr "Sporočila ni bilo mogoče združiti v zaporedje: "
 
 #: gio/gdbusmessage.c:2788
 #, c-format
@@ -938,22 +938,22 @@ msgstr "Napaka vrnjena s telesom vrste »%s«"
 msgid "Error return with empty body"
 msgstr "Napaka vrnjena s praznim telesom"
 
-#: gio/gdbusprivate.c:2242
+#: gio/gdbusprivate.c:2244
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(S pritiskom na katerikoli znak, se okno zapre)\n"
 
-#: gio/gdbusprivate.c:2416
+#: gio/gdbusprivate.c:2418
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Vodilo seje DBus ni zagnano, zato je samodejni zagon spodletel"
 
-#: gio/gdbusprivate.c:2439
+#: gio/gdbusprivate.c:2441
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Ni mogoče pridobiti strojnega profila: %s"
 
-#: gio/gdbusprivate.c:2484
+#: gio/gdbusprivate.c:2486
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Ni mogoče naložiti /var/lib/dbus/machine-id oziroma /etc/machine-id: "
 
@@ -967,7 +967,7 @@ msgstr "Napaka med klicanjem predmeta StartServiceByName za %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Nepričakovan odgovor %d iz načina StartServiceByName(»%s«)"
 
-#: gio/gdbusproxy.c:2685 gio/gdbusproxy.c:2820
+#: gio/gdbusproxy.c:2688 gio/gdbusproxy.c:2823
 #, c-format
 msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
@@ -1273,38 +1273,38 @@ msgstr "Napaka: navedenih je preveč argumentov.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Napaka: %s ni veljavno enoznačno ime vodila.\n"
 
-#: gio/gdesktopappinfo.c:2071 gio/gdesktopappinfo.c:4877
+#: gio/gdesktopappinfo.c:2073 gio/gdesktopappinfo.c:4893
 msgid "Unnamed"
 msgstr "Neimenovano"
 
-#: gio/gdesktopappinfo.c:2481
+#: gio/gdesktopappinfo.c:2483
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Namizna datoteka ne vsebuje določenega polja Exec"
 
-#: gio/gdesktopappinfo.c:2761
+#: gio/gdesktopappinfo.c:2763
 msgid "Unable to find terminal required for application"
 msgstr "Ni mogoče najti terminala, ki ga zahteva program"
 
-#: gio/gdesktopappinfo.c:3413
+#: gio/gdesktopappinfo.c:3414
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Ni mogoče ustvariti nastavitvene mape uporabnikovega programa %s: %s"
 
-#: gio/gdesktopappinfo.c:3417
+#: gio/gdesktopappinfo.c:3418
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Ni mogoče ustvariti uporabnikove nastavitvene mape MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:3657 gio/gdesktopappinfo.c:3681
+#: gio/gdesktopappinfo.c:3660 gio/gdesktopappinfo.c:3684
 msgid "Application information lacks an identifier"
 msgstr "Podatki programa so brez določila"
 
-#: gio/gdesktopappinfo.c:3915
+#: gio/gdesktopappinfo.c:3920
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Ni mogoče ustvariti uporabnikove datoteke namizja %s"
 
-#: gio/gdesktopappinfo.c:4049
+#: gio/gdesktopappinfo.c:4056
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Določilo po meri za %s"
@@ -1331,6 +1331,10 @@ msgstr "pogon ne vključuje možnosti zagona"
 #: gio/gdrive.c:880
 msgid "drive doesn’t implement stop"
 msgstr "pogon ne vključuje možnosti zaustavitve"
+
+#: gio/gdtlsconnection.c:1120 gio/gtlsconnection.c:921
+msgid "TLS backend does not implement TLS binding retrieval"
+msgstr "Ozadnji program TLS ne vključuje pridobivanje vezi TLS"
 
 #: gio/gdummytlsbackend.c:195 gio/gdummytlsbackend.c:321
 #: gio/gdummytlsbackend.c:513
@@ -1368,9 +1372,9 @@ msgstr "Pričakovan GEmblem za GEmblemedIcon"
 #: gio/gfile.c:1044 gio/gfile.c:1282 gio/gfile.c:1420 gio/gfile.c:1658
 #: gio/gfile.c:1713 gio/gfile.c:1771 gio/gfile.c:1855 gio/gfile.c:1912
 #: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3722 gio/gfile.c:3777
-#: gio/gfile.c:4055 gio/gfile.c:4523 gio/gfile.c:4934 gio/gfile.c:5019
-#: gio/gfile.c:5109 gio/gfile.c:5206 gio/gfile.c:5293 gio/gfile.c:5394
-#: gio/gfile.c:8104 gio/gfile.c:8194 gio/gfile.c:8278
+#: gio/gfile.c:4070 gio/gfile.c:4540 gio/gfile.c:4951 gio/gfile.c:5036
+#: gio/gfile.c:5126 gio/gfile.c:5223 gio/gfile.c:5310 gio/gfile.c:5411
+#: gio/gfile.c:8121 gio/gfile.c:8211 gio/gfile.c:8295
 #: gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Opravilo ni podprto"
@@ -1383,7 +1387,7 @@ msgstr "Opravilo ni podprto"
 msgid "Containing mount does not exist"
 msgstr "Obstoječa enota ne obstaja"
 
-#: gio/gfile.c:2590 gio/glocalfile.c:2428
+#: gio/gfile.c:2590 gio/glocalfile.c:2430
 msgid "Can’t copy over directory"
 msgstr "Ni mogoče kopirati prek mape"
 
@@ -1429,24 +1433,24 @@ msgstr "Ni mogoče kopirati posebne datoteke"
 msgid "Invalid symlink value given"
 msgstr "Neveljavna vrednost simbolne povezave"
 
-#: gio/gfile.c:4013 glib/gfileutils.c:2172
+#: gio/gfile.c:4013 glib/gfileutils.c:2349
 msgid "Symbolic links not supported"
 msgstr "Simbolne povezave niso podprte"
 
-#: gio/gfile.c:4164
+#: gio/gfile.c:4181
 msgid "Trash not supported"
 msgstr "Smeti niso podprte"
 
-#: gio/gfile.c:4276
+#: gio/gfile.c:4293
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Ni mogoče uporabiti »%c« v imenu datoteke"
 
-#: gio/gfile.c:6757 gio/gvolume.c:364
+#: gio/gfile.c:6774 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "enota ne podpira priklopa"
 
-#: gio/gfile.c:6871 gio/gfile.c:6919
+#: gio/gfile.c:6888 gio/gfile.c:6936
 msgid "No application is registered as handling this file"
 msgstr "Na voljo ni programa z a upravljanje s to datoteko"
 
@@ -1491,8 +1495,8 @@ msgstr "Razčlenitev ni dovoljena na dovodnem pretoku"
 msgid "Truncate not supported on stream"
 msgstr "Razčlenitev ni podprta na pretoku"
 
-#: gio/ghttpproxy.c:91 gio/gresolver.c:443 gio/gresolver.c:595
-#: glib/gconvert.c:1777
+#: gio/ghttpproxy.c:91 gio/gresolver.c:443 gio/gresolver.c:596
+#: glib/gconvert.c:1778
 msgid "Invalid hostname"
 msgstr "Neveljavno ime gostitelja"
 
@@ -1608,7 +1612,7 @@ msgstr "Ohrani z datoteko ob premikanju"
 msgid "“version” takes no arguments"
 msgstr "»različica« ne prevzema argumentov"
 
-#: gio/gio-tool.c:207 gio/gio-tool.c:223 glib/goption.c:864
+#: gio/gio-tool.c:207 gio/gio-tool.c:223 glib/goption.c:869
 msgid "Usage:"
 msgstr "Uporaba:"
 
@@ -1838,7 +1842,7 @@ msgstr "vrsta: %s\n"
 
 #: gio/gio-tool-info.c:158
 msgid "size: "
-msgstr "velikost:"
+msgstr "velikost: "
 
 #: gio/gio-tool-info.c:163
 msgid "hidden\n"
@@ -2492,7 +2496,7 @@ msgstr "podan je prevod, ni pa omogočena podpora za l10n"
 #: gio/glib-compile-schemas.c:474
 #, c-format
 msgid "Failed to parse <default> value of type “%s”: "
-msgstr "Razčlenjevanje vrednosti <default> vrste »%s« je spodletelo:"
+msgstr "Razčlenjevanje vrednosti <default> vrste »%s« je spodletelo: "
 
 #: gio/glib-compile-schemas.c:491
 msgid ""
@@ -2887,12 +2891,12 @@ msgid "No schema files found: removed existing output file."
 msgstr ""
 "Datotek sheme ni mogoče najti: obstoječa odvodna datoteka je odstranjena."
 
-#: gio/glocalfile.c:546 gio/win32/gwinhttpfile.c:420
+#: gio/glocalfile.c:549 gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Neveljavno ime datoteke %s"
 
-#: gio/glocalfile.c:1013
+#: gio/glocalfile.c:980
 #, c-format
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Napaka med pridobivanjem podrobnosti datotečnega sistema za %s: %s"
@@ -2901,55 +2905,55 @@ msgstr "Napaka med pridobivanjem podrobnosti datotečnega sistema za %s: %s"
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
-#: gio/glocalfile.c:1152
+#: gio/glocalfile.c:1121
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "Priklopne točke datoteke %s ni mogoče najti"
 
-#: gio/glocalfile.c:1175
+#: gio/glocalfile.c:1144
 msgid "Can’t rename root directory"
 msgstr "Ni mogoče preimenovati korenske mape"
 
-#: gio/glocalfile.c:1193 gio/glocalfile.c:1216
+#: gio/glocalfile.c:1162 gio/glocalfile.c:1185
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "Napaka med preimenovanjem datoteke %s: %s"
 
-#: gio/glocalfile.c:1200
+#: gio/glocalfile.c:1169
 msgid "Can’t rename file, filename already exists"
 msgstr "Ni mogoče preimenovati datoteke, izbrano ime že obstaja"
 
-#: gio/glocalfile.c:1213 gio/glocalfile.c:2322 gio/glocalfile.c:2350
-#: gio/glocalfile.c:2489 gio/glocalfileoutputstream.c:647
+#: gio/glocalfile.c:1182 gio/glocalfile.c:2324 gio/glocalfile.c:2352
+#: gio/glocalfile.c:2491 gio/glocalfileoutputstream.c:650
 msgid "Invalid filename"
 msgstr "Neveljavno ime datoteke"
 
-#: gio/glocalfile.c:1381 gio/glocalfile.c:1396
+#: gio/glocalfile.c:1350 gio/glocalfile.c:1361
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "Napaka med odpiranjem datoteke %s: %s"
 
-#: gio/glocalfile.c:1521
+#: gio/glocalfile.c:1486
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "Napaka med odstranjevanjem datoteke %s: %s"
 
-#: gio/glocalfile.c:1963
+#: gio/glocalfile.c:1969
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Napaka med premikanjem datoteke %s v smeti: %s"
 
-#: gio/glocalfile.c:2004
+#: gio/glocalfile.c:2010
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Ni mogoče ustvariti mape smeti %s: %s"
 
-#: gio/glocalfile.c:2025
+#: gio/glocalfile.c:2030
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Ni mogoče najti vrhnje ravni smeti %s"
 
-#: gio/glocalfile.c:2034
+#: gio/glocalfile.c:2038
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr ""
@@ -2965,175 +2969,211 @@ msgstr "Ni mogoče najti oziroma ustvariti mape smeti za %s"
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Ni mogoče ustvariti datoteke podrobnosti smeti za %s: %s"
 
-#: gio/glocalfile.c:2233
+#: gio/glocalfile.c:2235
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr ""
 "Datoteke %s ni mogoče premakniti v smeti prek različnih datotečnih sistemov"
 
-#: gio/glocalfile.c:2237 gio/glocalfile.c:2293
+#: gio/glocalfile.c:2239 gio/glocalfile.c:2295
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Datoteke %s ni mogoče premakniti v smeti: %s"
 
-#: gio/glocalfile.c:2299
+#: gio/glocalfile.c:2301
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Datoteke %s ni mogoče premakniti v smeti"
 
-#: gio/glocalfile.c:2325
+#: gio/glocalfile.c:2327
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Napaka med ustvarjanjem mape %s: %s"
 
-#: gio/glocalfile.c:2354
+#: gio/glocalfile.c:2356
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Datotečni sistem ne podpira simbolnih povezav"
 
-#: gio/glocalfile.c:2357
+#: gio/glocalfile.c:2359
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Napaka med ustvarjanjem simbolne povezave %s: %s"
 
-#: gio/glocalfile.c:2400 gio/glocalfile.c:2435 gio/glocalfile.c:2492
+#: gio/glocalfile.c:2402 gio/glocalfile.c:2437 gio/glocalfile.c:2494
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Napaka med premikanjem datoteke %s: %s"
 
-#: gio/glocalfile.c:2423
+#: gio/glocalfile.c:2425
 msgid "Can’t move directory over directory"
 msgstr "Ni mogoče premakniti mape čez mapo"
 
-#: gio/glocalfile.c:2449 gio/glocalfileoutputstream.c:1031
-#: gio/glocalfileoutputstream.c:1045 gio/glocalfileoutputstream.c:1060
-#: gio/glocalfileoutputstream.c:1077 gio/glocalfileoutputstream.c:1091
+#: gio/glocalfile.c:2451 gio/glocalfileoutputstream.c:1039
+#: gio/glocalfileoutputstream.c:1053 gio/glocalfileoutputstream.c:1068
+#: gio/glocalfileoutputstream.c:1085 gio/glocalfileoutputstream.c:1099
 msgid "Backup file creation failed"
 msgstr "Ustvarjanje varnostne kopije je spodletelo."
 
-#: gio/glocalfile.c:2468
+#: gio/glocalfile.c:2470
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Napaka med odstranjevanjem ciljne datoteke: %s"
 
-#: gio/glocalfile.c:2482
+#: gio/glocalfile.c:2484
 msgid "Move between mounts not supported"
 msgstr "Premikanje med priklopi ni podprto"
 
-#: gio/glocalfile.c:2673
+#: gio/glocalfile.c:2658
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Ni mogoče določiti porabe diska %s: %s."
 
-#: gio/glocalfileinfo.c:755
+#: gio/glocalfileinfo.c:767
 msgid "Attribute value must be non-NULL"
 msgstr "Vrednost atributa ni mogoče določiti kot NULL"
 
-#: gio/glocalfileinfo.c:762
+#: gio/glocalfileinfo.c:774
 msgid "Invalid attribute type (string expected)"
 msgstr "Neveljavna vrsta atributa (pričakovan niz)"
 
-#: gio/glocalfileinfo.c:769
+#: gio/glocalfileinfo.c:781
 msgid "Invalid extended attribute name"
 msgstr "Neveljavno razširjeno ime atributa"
 
-#: gio/glocalfileinfo.c:809
+#: gio/glocalfileinfo.c:821
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Napaka med določanjem razširjenega atributa »%s«: %s"
 
-#: gio/glocalfileinfo.c:1637
+#: gio/glocalfileinfo.c:1663
 msgid " (invalid encoding)"
 msgstr " (neveljavni nabor znakov)"
 
-#: gio/glocalfileinfo.c:1801 gio/glocalfileoutputstream.c:909
+#: gio/glocalfileinfo.c:1822 gio/glocalfileoutputstream.c:915
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Napaka med pridobivanjem podatkov za datoteko »%s«: %s"
 
-#: gio/glocalfileinfo.c:2071
+#: gio/glocalfileinfo.c:2088
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Napaka med potrjevanjem opisovalnika datoteke: %s"
 
-#: gio/glocalfileinfo.c:2116
+#: gio/glocalfileinfo.c:2133
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Neveljavna vrsta atributa (pričakovan uint32)"
 
-#: gio/glocalfileinfo.c:2134
+#: gio/glocalfileinfo.c:2151
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Neveljavna vrsta atributa (pričakovan uint64)"
 
-#: gio/glocalfileinfo.c:2153 gio/glocalfileinfo.c:2172
+#: gio/glocalfileinfo.c:2170 gio/glocalfileinfo.c:2189
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Neveljavna vrsta atributa (pričakovan bitni niz)"
 
-#: gio/glocalfileinfo.c:2219
+#: gio/glocalfileinfo.c:2236
 msgid "Cannot set permissions on symlinks"
 msgstr "Ni mogoče določiti dovoljenj simbolnih povezav"
 
-#: gio/glocalfileinfo.c:2235
+#: gio/glocalfileinfo.c:2252
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Napaka med določanjem dovoljenj: %s"
 
-#: gio/glocalfileinfo.c:2286
+#: gio/glocalfileinfo.c:2303
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Napaka med določanjem lastnika: %s"
 
-#: gio/glocalfileinfo.c:2309
+#: gio/glocalfileinfo.c:2326
 msgid "symlink must be non-NULL"
 msgstr "Simbolna povezava ne sme biti določena kot NULL"
 
-#: gio/glocalfileinfo.c:2319 gio/glocalfileinfo.c:2338
-#: gio/glocalfileinfo.c:2349
+#: gio/glocalfileinfo.c:2336 gio/glocalfileinfo.c:2355
+#: gio/glocalfileinfo.c:2366
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Napaka med določanjem simbolne povezave: %s"
 
-#: gio/glocalfileinfo.c:2328
+#: gio/glocalfileinfo.c:2345
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Napaka med določevanjem simbolne povezave; datoteka ni simbolna povezava"
 
-#: gio/glocalfileinfo.c:2454
+#: gio/glocalfileinfo.c:2417
+#, c-format
+msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
+msgstr "Dodatne nanosekunde %d za časovni žig UNIX %lld so negativne"
+
+#: gio/glocalfileinfo.c:2426
+#, c-format
+msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
+msgstr "Dodatne nanosekunde %d za časovni žig UNIX %lld so dosegle 1 sekundo"
+
+#: gio/glocalfileinfo.c:2436
+#, c-format
+msgid "UNIX timestamp %lld does not fit into 64 bits"
+msgstr "Časovni žig UNIX %lld je prevelik za 64-bitni zapis"
+
+#: gio/glocalfileinfo.c:2447
+#, c-format
+msgid "UNIX timestamp %lld is outside of the range supported by Windows"
+msgstr ""
+"Časovni žig UNIX %lld je izven obsega, ki je podprt na sistemih MS Windows"
+
+#: gio/glocalfileinfo.c:2511
+#, c-format
+msgid "File name “%s” cannot be converted to UTF-16"
+msgstr "Imena datoteke »%s« ni mogoče pretvoriti v zapis UTF-16"
+
+#: gio/glocalfileinfo.c:2530
+#, c-format
+msgid "File “%s” cannot be opened: Windows Error %lu"
+msgstr "Datoteke »%s« ni mogoče odpreti: napaka Windows %lu"
+
+#: gio/glocalfileinfo.c:2543
+#, c-format
+msgid "Error setting modification or access time for file “%s”: %lu"
+msgstr "Napaka med določanjem sprememb ali časa dostopa za datoteko »%s«: %lu"
+
+#: gio/glocalfileinfo.c:2644
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Napaka med določanjem sprememb ali časa dostopa: %s"
 
-#: gio/glocalfileinfo.c:2477
+#: gio/glocalfileinfo.c:2667
 msgid "SELinux context must be non-NULL"
 msgstr "Atributa SELinux ni mogoče določiti kot NULL"
 
-#: gio/glocalfileinfo.c:2492
+#: gio/glocalfileinfo.c:2682
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Napaka nastavitve vsebine SELinux: %s"
 
-#: gio/glocalfileinfo.c:2499
+#: gio/glocalfileinfo.c:2689
 msgid "SELinux is not enabled on this system"
 msgstr "Na tem sistemu SELinux ni omogočen"
 
-#: gio/glocalfileinfo.c:2591
+#: gio/glocalfileinfo.c:2781
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Določanje atributa %s ni podprto"
 
-#: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:792
+#: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:795
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Napaka med branjem iz datoteke: %s"
 
 #: gio/glocalfileinputstream.c:199 gio/glocalfileinputstream.c:211
 #: gio/glocalfileinputstream.c:225 gio/glocalfileinputstream.c:333
-#: gio/glocalfileoutputstream.c:554 gio/glocalfileoutputstream.c:1109
+#: gio/glocalfileoutputstream.c:557 gio/glocalfileoutputstream.c:1117
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Napaka med iskanjem v datoteki: %s"
 
-#: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:344
-#: gio/glocalfileoutputstream.c:438
+#: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:347
+#: gio/glocalfileoutputstream.c:441
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Napaka med zapiranjem datoteke: %s"
@@ -3142,51 +3182,51 @@ msgstr "Napaka med zapiranjem datoteke: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Ni mogoče najti privzete krajevne datoteke nadzora"
 
-#: gio/glocalfileoutputstream.c:209 gio/glocalfileoutputstream.c:287
-#: gio/glocalfileoutputstream.c:324 gio/glocalfileoutputstream.c:813
+#: gio/glocalfileoutputstream.c:214 gio/glocalfileoutputstream.c:292
+#: gio/glocalfileoutputstream.c:328 gio/glocalfileoutputstream.c:816
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Napaka med pisanjem v datoteko: %s"
 
-#: gio/glocalfileoutputstream.c:371
+#: gio/glocalfileoutputstream.c:374
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Napaka med odstranjevanjem stare varnostne povezave: %s"
 
-#: gio/glocalfileoutputstream.c:385 gio/glocalfileoutputstream.c:398
+#: gio/glocalfileoutputstream.c:388 gio/glocalfileoutputstream.c:401
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Napaka med ustvarjanjem varnostne kopije: %s"
 
-#: gio/glocalfileoutputstream.c:416
+#: gio/glocalfileoutputstream.c:419
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Napaka med preimenovanjem začasne datoteke: %s"
 
-#: gio/glocalfileoutputstream.c:600 gio/glocalfileoutputstream.c:1160
+#: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:1168
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Napaka med obrezovanjem datoteke: %s"
 
-#: gio/glocalfileoutputstream.c:653 gio/glocalfileoutputstream.c:891
-#: gio/glocalfileoutputstream.c:1141 gio/gsubprocess.c:380
+#: gio/glocalfileoutputstream.c:656 gio/glocalfileoutputstream.c:894
+#: gio/glocalfileoutputstream.c:1149 gio/gsubprocess.c:380
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Napaka med odpiranjem datoteke »%s«: %s"
 
-#: gio/glocalfileoutputstream.c:922
+#: gio/glocalfileoutputstream.c:928
 msgid "Target file is a directory"
 msgstr "Ciljna datoteka je mapa"
 
-#: gio/glocalfileoutputstream.c:927
+#: gio/glocalfileoutputstream.c:933
 msgid "Target file is not a regular file"
 msgstr "Ciljna datoteka ni običajna datoteka"
 
-#: gio/glocalfileoutputstream.c:939
+#: gio/glocalfileoutputstream.c:945
 msgid "The file was externally modified"
 msgstr "Datoteka je bila zunanje spremenjena"
 
-#: gio/glocalfileoutputstream.c:1125
+#: gio/glocalfileoutputstream.c:1133
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Napaka med odstranjevanjem datoteke: %s"
@@ -3332,24 +3372,24 @@ msgid "Error resolving “%s”: %s"
 msgstr "Napaka med razreševanjem »%s«: %s"
 
 #. Translators: The placeholder is for a function name.
-#: gio/gresolver.c:455 gio/gresolver.c:613
+#: gio/gresolver.c:455 gio/gresolver.c:615
 #, c-format
 msgid "%s not implemented"
 msgstr "Za funkcijo %s ni zagotovljene podpore."
 
-#: gio/gresolver.c:981 gio/gresolver.c:1033
+#: gio/gresolver.c:984 gio/gresolver.c:1036
 msgid "Invalid domain"
 msgstr "Neveljavna domena"
 
-#: gio/gresource.c:665 gio/gresource.c:924 gio/gresource.c:963
-#: gio/gresource.c:1087 gio/gresource.c:1159 gio/gresource.c:1232
-#: gio/gresource.c:1313 gio/gresourcefile.c:476 gio/gresourcefile.c:599
+#: gio/gresource.c:672 gio/gresource.c:931 gio/gresource.c:970
+#: gio/gresource.c:1094 gio/gresource.c:1166 gio/gresource.c:1239
+#: gio/gresource.c:1320 gio/gresourcefile.c:476 gio/gresourcefile.c:599
 #: gio/gresourcefile.c:736
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Vir »%s« ne obstaja."
 
-#: gio/gresource.c:830
+#: gio/gresource.c:837
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "Vira »%s« ni mogoče razširiti"
@@ -3711,174 +3751,174 @@ msgstr "Ni podanega imena sheme.\n"
 msgid "No such key “%s”\n"
 msgstr "Ključ »%s« ne obstaja.\n"
 
-#: gio/gsocket.c:418
+#: gio/gsocket.c:413
 msgid "Invalid socket, not initialized"
 msgstr "Neveljaven vtič, ni zagnano"
 
-#: gio/gsocket.c:425
+#: gio/gsocket.c:420
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Neveljaven vtič, zaganjanje je spodletelo: %s"
 
-#: gio/gsocket.c:433
+#: gio/gsocket.c:428
 msgid "Socket is already closed"
 msgstr "Vtič je že zaprt"
 
-#: gio/gsocket.c:448 gio/gsocket.c:3182 gio/gsocket.c:4399 gio/gsocket.c:4457
+#: gio/gsocket.c:443 gio/gsocket.c:3180 gio/gsocket.c:4403 gio/gsocket.c:4461
 msgid "Socket I/O timed out"
 msgstr "Vtič V/I naprave je časovno potekel"
 
-#: gio/gsocket.c:583
+#: gio/gsocket.c:578
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "ustvarjanje GSocet preko fd: %s"
 
-#: gio/gsocket.c:612 gio/gsocket.c:666 gio/gsocket.c:673
+#: gio/gsocket.c:607 gio/gsocket.c:661 gio/gsocket.c:668
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Ni mogoče ustvariti vtiča: %s"
 
-#: gio/gsocket.c:666
+#: gio/gsocket.c:661
 msgid "Unknown family was specified"
 msgstr "Določena je neznana družina"
 
-#: gio/gsocket.c:673
+#: gio/gsocket.c:668
 msgid "Unknown protocol was specified"
 msgstr "Določen je neznan protokol"
 
-#: gio/gsocket.c:1164
+#: gio/gsocket.c:1159
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr "Ni mogoče uporabiti opravil datagrama na vtiču, ki jih ne podpira."
 
-#: gio/gsocket.c:1181
+#: gio/gsocket.c:1176
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
 "Ni mogoče uporabiti opravil datagrama na vtiču z nastavljenim časovnim "
 "pretekom"
 
-#: gio/gsocket.c:1988
+#: gio/gsocket.c:1983
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ni mogoče pridobiti krajevnega naslova: %s"
 
-#: gio/gsocket.c:2034
+#: gio/gsocket.c:2029
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ni mogoče pridobiti oddaljenega naslova: %s"
 
-#: gio/gsocket.c:2100
+#: gio/gsocket.c:2095
 #, c-format
 msgid "could not listen: %s"
 msgstr "ni mogoče slediti: %s"
 
-#: gio/gsocket.c:2204
+#: gio/gsocket.c:2199
 #, c-format
 msgid "Error binding to address %s: %s"
 msgstr "Napaka vezave na naslov %s: %s"
 
-#: gio/gsocket.c:2380 gio/gsocket.c:2417 gio/gsocket.c:2527 gio/gsocket.c:2552
-#: gio/gsocket.c:2615 gio/gsocket.c:2673 gio/gsocket.c:2691
+#: gio/gsocket.c:2375 gio/gsocket.c:2412 gio/gsocket.c:2522 gio/gsocket.c:2547
+#: gio/gsocket.c:2610 gio/gsocket.c:2668 gio/gsocket.c:2686
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Napaka povezovanja v skupino za večsmerno oddajanje: %s"
 
-#: gio/gsocket.c:2381 gio/gsocket.c:2418 gio/gsocket.c:2528 gio/gsocket.c:2553
-#: gio/gsocket.c:2616 gio/gsocket.c:2674 gio/gsocket.c:2692
+#: gio/gsocket.c:2376 gio/gsocket.c:2413 gio/gsocket.c:2523 gio/gsocket.c:2548
+#: gio/gsocket.c:2611 gio/gsocket.c:2669 gio/gsocket.c:2687
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Napaka zapuščanja skupine za večsmerno oddajanje: %s"
 
-#: gio/gsocket.c:2382
+#: gio/gsocket.c:2377
 msgid "No support for source-specific multicast"
 msgstr "Ni podpore za večsmerno oddajanje lastno viru"
 
-#: gio/gsocket.c:2529
+#: gio/gsocket.c:2524
 msgid "Unsupported socket family"
 msgstr "Nepodprta skupina vtiča"
 
-#: gio/gsocket.c:2554
+#: gio/gsocket.c:2549
 msgid "source-specific not an IPv4 address"
 msgstr "določeno po viru in ne po naslovu IPv4"
 
-#: gio/gsocket.c:2578
+#: gio/gsocket.c:2573
 #, c-format
 msgid "Interface name too long"
 msgstr "Ime vmesnika je predolgo"
 
-#: gio/gsocket.c:2591 gio/gsocket.c:2641
+#: gio/gsocket.c:2586 gio/gsocket.c:2636
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Vmesnika ni mogoče najti: %s"
 
-#: gio/gsocket.c:2617
+#: gio/gsocket.c:2612
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Ni podpore za večsmerno oddajanje v protokolu IPv4"
 
-#: gio/gsocket.c:2675
+#: gio/gsocket.c:2670
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Ni podpore za večsmerno oddajanje v protokolu IPv6"
 
-#: gio/gsocket.c:2884
+#: gio/gsocket.c:2879
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Napaka med sprejemanjem povezave: %s"
 
-#: gio/gsocket.c:3010
+#: gio/gsocket.c:3005
 msgid "Connection in progress"
 msgstr "Povezava v teku"
 
-#: gio/gsocket.c:3061
+#: gio/gsocket.c:3056
 msgid "Unable to get pending error: "
 msgstr "Ni mogoče pridobiti uvrščene napake:"
 
-#: gio/gsocket.c:3247
+#: gio/gsocket.c:3245
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Napaka med prejemanjem podatkov: %s"
 
-#: gio/gsocket.c:3444
+#: gio/gsocket.c:3442
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Napaka med pošiljanjem podatkov: %s"
 
-#: gio/gsocket.c:3631
+#: gio/gsocket.c:3629
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Ni mogoče izklopiti vtiča: %s"
 
-#: gio/gsocket.c:3712
+#: gio/gsocket.c:3710
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Napaka med zapiranjem vtiča: %s"
 
-#: gio/gsocket.c:4392
+#: gio/gsocket.c:4396
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Čakanje na stanje vtiča: %s"
 
-#: gio/gsocket.c:4770 gio/gsocket.c:4772 gio/gsocket.c:4919 gio/gsocket.c:5004
-#: gio/gsocket.c:5182 gio/gsocket.c:5222 gio/gsocket.c:5224
+#: gio/gsocket.c:4774 gio/gsocket.c:4776 gio/gsocket.c:4923 gio/gsocket.c:5008
+#: gio/gsocket.c:5186 gio/gsocket.c:5226 gio/gsocket.c:5228
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Napaka med pošiljanjem sporočila: %s"
 
-#: gio/gsocket.c:4946
+#: gio/gsocket.c:4950
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "Predmet GSocketControlMessage na sistemih Windows ni podprt"
 
-#: gio/gsocket.c:5415 gio/gsocket.c:5488 gio/gsocket.c:5714
+#: gio/gsocket.c:5419 gio/gsocket.c:5492 gio/gsocket.c:5718
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Napaka med prejemanjem sporočila: %s"
 
-#: gio/gsocket.c:5995
+#: gio/gsocket.c:5990 gio/gsocket.c:6038
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Ni mogoče prebrati poveril vtiča: %s."
 
-#: gio/gsocket.c:6004
+#: gio/gsocket.c:6047
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Operacijski sistem ne podpira možnosti g_socket_get_credentials"
 
@@ -4013,24 +4053,24 @@ msgstr "Ni mogoče upravljati z različico %d kodiranja GThemedIcon"
 msgid "No valid addresses were found"
 msgstr "Ni mogoče najti veljavnega naslova"
 
-#: gio/gthreadedresolver.c:334
+#: gio/gthreadedresolver.c:337
 #, c-format
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "Napaka med obratnim razreševanjem »%s«: %s"
 
-#: gio/gthreadedresolver.c:671 gio/gthreadedresolver.c:750
-#: gio/gthreadedresolver.c:848 gio/gthreadedresolver.c:898
+#: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:755
+#: gio/gthreadedresolver.c:853 gio/gthreadedresolver.c:903
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "Ni zapisa DNS za zahtevano vrsto »%s«"
 
-#: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:853
+#: gio/gthreadedresolver.c:681 gio/gthreadedresolver.c:858
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "Trenutno ni mogoče razrešiti »%s«"
 
-#: gio/gthreadedresolver.c:681 gio/gthreadedresolver.c:858
-#: gio/gthreadedresolver.c:968
+#: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:863
+#: gio/gthreadedresolver.c:973
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Napaka med razreševanjem »%s«"
@@ -4133,24 +4173,24 @@ msgstr "Nadzorno sporočilo ni pričakovano, vendar pa je prejeto %d"
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Napaka med onemogočanjem SO_PASSCRED: %s"
 
-#: gio/gunixinputstream.c:372 gio/gunixinputstream.c:393
+#: gio/gunixinputstream.c:362 gio/gunixinputstream.c:383
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "Napaka med branjem iz opisovalnika datoteke: %s"
 
-#: gio/gunixinputstream.c:426 gio/gunixoutputstream.c:535
+#: gio/gunixinputstream.c:416 gio/gunixoutputstream.c:525
 #: gio/gwin32inputstream.c:217 gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Napaka med zapiranjem opisovalnika datoteke: %s"
 
-#: gio/gunixmounts.c:2709 gio/gunixmounts.c:2762
+#: gio/gunixmounts.c:2755 gio/gunixmounts.c:2808
 msgid "Filesystem root"
 msgstr "Koren datotečnega sistema"
 
-#: gio/gunixoutputstream.c:372 gio/gunixoutputstream.c:392
-#: gio/gunixoutputstream.c:479 gio/gunixoutputstream.c:499
-#: gio/gunixoutputstream.c:676
+#: gio/gunixoutputstream.c:362 gio/gunixoutputstream.c:382
+#: gio/gunixoutputstream.c:469 gio/gunixoutputstream.c:489
+#: gio/gunixoutputstream.c:635
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "Napaka med pisanjem v opisovalnik datoteke: %s"
@@ -4226,129 +4266,129 @@ msgstr "Zaženi storitev DBus"
 msgid "Wrong args\n"
 msgstr "Napačni argumenti\n"
 
-#: glib/gbookmarkfile.c:756
+#: glib/gbookmarkfile.c:768
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
 msgstr "Nepričakovan atribut »%s« za predmet »%s«"
 
-#: glib/gbookmarkfile.c:767 glib/gbookmarkfile.c:847 glib/gbookmarkfile.c:857
-#: glib/gbookmarkfile.c:969
+#: glib/gbookmarkfile.c:779 glib/gbookmarkfile.c:859 glib/gbookmarkfile.c:869
+#: glib/gbookmarkfile.c:982
 #, c-format
 msgid "Attribute “%s” of element “%s” not found"
 msgstr "Atributa »%s« predmeta »%s« ni mogoče najti"
 
-#: glib/gbookmarkfile.c:1178 glib/gbookmarkfile.c:1243
-#: glib/gbookmarkfile.c:1307 glib/gbookmarkfile.c:1317
+#: glib/gbookmarkfile.c:1191 glib/gbookmarkfile.c:1256
+#: glib/gbookmarkfile.c:1320 glib/gbookmarkfile.c:1330
 #, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "Nepričakovana oznaka »%s«, pričakovana je »%s«"
 
-#: glib/gbookmarkfile.c:1203 glib/gbookmarkfile.c:1217
-#: glib/gbookmarkfile.c:1285 glib/gbookmarkfile.c:1331
+#: glib/gbookmarkfile.c:1216 glib/gbookmarkfile.c:1230
+#: glib/gbookmarkfile.c:1298 glib/gbookmarkfile.c:1344
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
 msgstr "Nepričakovana oznaka »%s« znotraj »%s«"
 
-#: glib/gbookmarkfile.c:1625
+#: glib/gbookmarkfile.c:1624
 #, c-format
 msgid "Invalid date/time ‘%s’ in bookmark file"
 msgstr "Neveljaven zapis datuma/časa »%s« v datoteki zaznamka"
 
-#: glib/gbookmarkfile.c:1831
+#: glib/gbookmarkfile.c:1827
 msgid "No valid bookmark file found in data dirs"
 msgstr "Ni veljavne datoteke zaznamkov v podatkovnih mapah"
 
-#: glib/gbookmarkfile.c:2032
+#: glib/gbookmarkfile.c:2028
 #, c-format
 msgid "A bookmark for URI “%s” already exists"
 msgstr "Zaznamek za naslov URI »%s« že obstaja"
 
-#: glib/gbookmarkfile.c:2078 glib/gbookmarkfile.c:2236
-#: glib/gbookmarkfile.c:2321 glib/gbookmarkfile.c:2401
-#: glib/gbookmarkfile.c:2486 glib/gbookmarkfile.c:2569
-#: glib/gbookmarkfile.c:2647 glib/gbookmarkfile.c:2726
-#: glib/gbookmarkfile.c:2768 glib/gbookmarkfile.c:2865
-#: glib/gbookmarkfile.c:2986 glib/gbookmarkfile.c:3176
-#: glib/gbookmarkfile.c:3252 glib/gbookmarkfile.c:3420
-#: glib/gbookmarkfile.c:3509 glib/gbookmarkfile.c:3598
-#: glib/gbookmarkfile.c:3717
+#: glib/gbookmarkfile.c:2077 glib/gbookmarkfile.c:2235
+#: glib/gbookmarkfile.c:2320 glib/gbookmarkfile.c:2400
+#: glib/gbookmarkfile.c:2485 glib/gbookmarkfile.c:2619
+#: glib/gbookmarkfile.c:2752 glib/gbookmarkfile.c:2887
+#: glib/gbookmarkfile.c:2929 glib/gbookmarkfile.c:3026
+#: glib/gbookmarkfile.c:3147 glib/gbookmarkfile.c:3341
+#: glib/gbookmarkfile.c:3482 glib/gbookmarkfile.c:3701
+#: glib/gbookmarkfile.c:3790 glib/gbookmarkfile.c:3879
+#: glib/gbookmarkfile.c:3998
 #, c-format
 msgid "No bookmark found for URI “%s”"
 msgstr "Ni veljavnega zaznamka za naslov URI »%s«"
 
-#: glib/gbookmarkfile.c:2410
+#: glib/gbookmarkfile.c:2409
 #, c-format
 msgid "No MIME type defined in the bookmark for URI “%s”"
 msgstr "V zaznamku za naslov URI »%s« ni določene vrsta MIME"
 
-#: glib/gbookmarkfile.c:2495
+#: glib/gbookmarkfile.c:2494
 #, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
 msgstr "V zaznamku za naslov URI »%s« ni določene zasebne zastavice"
 
-#: glib/gbookmarkfile.c:2874
+#: glib/gbookmarkfile.c:3035
 #, c-format
 msgid "No groups set in bookmark for URI “%s”"
 msgstr "V zaznamku za naslov URI »%s« ni nastavljenih skupin"
 
-#: glib/gbookmarkfile.c:3273 glib/gbookmarkfile.c:3430
+#: glib/gbookmarkfile.c:3503 glib/gbookmarkfile.c:3711
 #, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
 msgstr "Program z imenom »%s« ni ustvaril zaznamka za »%s«"
 
-#: glib/gbookmarkfile.c:3453
+#: glib/gbookmarkfile.c:3734
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Razširjanje ukazne vrstice »%s« z naslovom URI »%s« je spodletelo."
 
-#: glib/gconvert.c:466
+#: glib/gconvert.c:467
 msgid "Unrepresentable character in conversion input"
 msgstr "Nepredstavljiv znak na dovodu pretvorbe"
 
-#: glib/gconvert.c:493 glib/gutf8.c:871 glib/gutf8.c:1083 glib/gutf8.c:1220
+#: glib/gconvert.c:494 glib/gutf8.c:871 glib/gutf8.c:1083 glib/gutf8.c:1220
 #: glib/gutf8.c:1324
 msgid "Partial character sequence at end of input"
 msgstr "Nedokončano zaporedje znakov na koncu vhoda"
 
-#: glib/gconvert.c:762
+#: glib/gconvert.c:763
 #, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Ni mogoče pretvoriti »%s« v nabor znakov »%s«"
 
-#: glib/gconvert.c:934
+#: glib/gconvert.c:935
 msgid "Embedded NUL byte in conversion input"
 msgstr "Vstavljeno je prazno zaporedje bajtov na dovod pretvorbe"
 
-#: glib/gconvert.c:955
+#: glib/gconvert.c:956
 msgid "Embedded NUL byte in conversion output"
 msgstr "Vstavljeno je prazno zaporedje bajtov na odvod pretvorbe"
 
-#: glib/gconvert.c:1640
+#: glib/gconvert.c:1641
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "Naslov URI »%s« pri uporabi »datotečne« sheme ni absoluten"
 
-#: glib/gconvert.c:1650
+#: glib/gconvert.c:1651
 #, c-format
 msgid "The local file URI “%s” may not include a “#”"
 msgstr "V naslovu URI krajevne datoteke »%s« ni mogoče uporabiti '#'"
 
-#: glib/gconvert.c:1667
+#: glib/gconvert.c:1668
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "Naslov URI »%s« je neveljaven"
 
-#: glib/gconvert.c:1679
+#: glib/gconvert.c:1680
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "Ime gostitelja naslova URI »%s« ni veljavno"
 
-#: glib/gconvert.c:1695
+#: glib/gconvert.c:1696
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "Naslov URI »%s« vsebuje neveljavne ubežne znake"
 
-#: glib/gconvert.c:1767
+#: glib/gconvert.c:1768
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Pot »%s« ni absolutna pot"
@@ -4771,7 +4811,7 @@ msgstr "pop"
 msgid "Error opening directory “%s”: %s"
 msgstr "Napaka med odpiranjem imenika »%s«: %s"
 
-#: glib/gfileutils.c:733 glib/gfileutils.c:825
+#: glib/gfileutils.c:737 glib/gfileutils.c:829
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
@@ -4780,78 +4820,78 @@ msgstr[1] "Ni mogoče dodeliti %lu bajta za branje datoteke »%s«"
 msgstr[2] "Ni mogoče dodeliti %lu bajtov za branje datoteke »%s«"
 msgstr[3] "Ni mogoče dodeliti %lu bajtov za branje datoteke »%s«"
 
-#: glib/gfileutils.c:750
+#: glib/gfileutils.c:754
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Napaka med branjem datoteke »%s«: %s"
 
-#: glib/gfileutils.c:786
+#: glib/gfileutils.c:790
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Datoteka »%s« je prevelika."
 
-#: glib/gfileutils.c:850
+#: glib/gfileutils.c:854
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Branje datoteke »%s« je spodletelo: %s"
 
-#: glib/gfileutils.c:898 glib/gfileutils.c:970
+#: glib/gfileutils.c:902 glib/gfileutils.c:974 glib/gfileutils.c:1466
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Odpiranje datoteke »%s« je spodletelo: %s"
 
-#: glib/gfileutils.c:910
+#: glib/gfileutils.c:914
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr ""
 "Pridobivanje atributov datoteke »%s« je spodletelo: ukaz fstat() ni uspešno "
 "izveden: %s"
 
-#: glib/gfileutils.c:940
+#: glib/gfileutils.c:944
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Ni mogoče odpreti datoteke »%s«: ukaz fdopen() ni uspešno izveden: %s"
 
-#: glib/gfileutils.c:1039
+#: glib/gfileutils.c:1044
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "Ni mogoče preimenovati datoteke »%s« v »%s«: ukaz g_rename() ni uspešno "
 "izveden: %s"
 
-#: glib/gfileutils.c:1074 glib/gfileutils.c:1592
-#, c-format
-msgid "Failed to create file “%s”: %s"
-msgstr "Ni mogoče ustvariti datoteke »%s«: %s"
-
-#: glib/gfileutils.c:1101
+#: glib/gfileutils.c:1169
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Ni mogoče zapisati datoteke »%s«: ukaz write() je spodletel: %s"
 
-#: glib/gfileutils.c:1144
+#: glib/gfileutils.c:1189
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Ni mogoče zapisati datoteke »%s«: ukaz fsync() ni uspešno izveden: %s"
 
-#: glib/gfileutils.c:1279
+#: glib/gfileutils.c:1357 glib/gfileutils.c:1769
+#, c-format
+msgid "Failed to create file “%s”: %s"
+msgstr "Ni mogoče ustvariti datoteke »%s«: %s"
+
+#: glib/gfileutils.c:1401
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Obstoječe datoteke »%s« ni mogoče odstraniti: ukaz g_unlink() ni uspešno "
 "izveden: %s"
 
-#: glib/gfileutils.c:1558
+#: glib/gfileutils.c:1735
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Predloga »%s« je neveljavna, saj ne sme vsebovati »%s«"
 
-#: glib/gfileutils.c:1571
+#: glib/gfileutils.c:1748
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Predloga »%s« ne vsebuje XXXXXX"
 
-#: glib/gfileutils.c:2129 glib/gfileutils.c:2157
+#: glib/gfileutils.c:2306 glib/gfileutils.c:2334
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Branje simbolne povezave »%s« je spodletelo: %s"
@@ -5217,61 +5257,61 @@ msgstr ""
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokument nepričakovano zaključen sredi opombe ali ukaza"
 
-#: glib/goption.c:868
+#: glib/goption.c:873
 msgid "[OPTION…]"
 msgstr "[MOŽNOST ...]"
 
-#: glib/goption.c:984
+#: glib/goption.c:989
 msgid "Help Options:"
 msgstr "Možnosti pomoči:"
 
-#: glib/goption.c:985
+#: glib/goption.c:990
 msgid "Show help options"
 msgstr "Pokaži možnosti pomoči"
 
-#: glib/goption.c:991
+#: glib/goption.c:996
 msgid "Show all help options"
 msgstr "Pokaži vse možnosti pomoči"
 
-#: glib/goption.c:1054
+#: glib/goption.c:1059
 msgid "Application Options:"
 msgstr "Možnosti programa:"
 
-#: glib/goption.c:1056
+#: glib/goption.c:1061
 msgid "Options:"
 msgstr "Možnosti:"
 
-#: glib/goption.c:1120 glib/goption.c:1190
+#: glib/goption.c:1125 glib/goption.c:1195
 #, c-format
 msgid "Cannot parse integer value “%s” for %s"
 msgstr "Ni mogoče razčleniti celoštevilske vrednosti »%s« za %s"
 
-#: glib/goption.c:1130 glib/goption.c:1198
+#: glib/goption.c:1135 glib/goption.c:1203
 #, c-format
 msgid "Integer value “%s” for %s out of range"
 msgstr "Celoštevilska vrednost »%s« za %s je izven obsega"
 
-#: glib/goption.c:1155
+#: glib/goption.c:1160
 #, c-format
 msgid "Cannot parse double value “%s” for %s"
 msgstr "Ni mogoče razčleniti dvojne vrednosti »%s« za %s"
 
-#: glib/goption.c:1163
+#: glib/goption.c:1168
 #, c-format
 msgid "Double value “%s” for %s out of range"
 msgstr "Dvojna vrednost »%s« za %s je izven obsega"
 
-#: glib/goption.c:1455 glib/goption.c:1534
+#: glib/goption.c:1460 glib/goption.c:1539
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Napaka med razčlenjevanjem %s"
 
-#: glib/goption.c:1565 glib/goption.c:1678
+#: glib/goption.c:1570 glib/goption.c:1683
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Manjka argument za %s"
 
-#: glib/goption.c:2189
+#: glib/goption.c:2194
 #, c-format
 msgid "Unknown option %s"
 msgstr "Neznana možnost %s"
@@ -5666,82 +5706,82 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Besedilo je bilo prazno (ali pa vsebuje le presledne znake)"
 
-#: glib/gspawn.c:315
+#: glib/gspawn.c:323
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Ni mogoče prebrati podatkov podrejenega procesa (%s)"
 
-#: glib/gspawn.c:460
+#: glib/gspawn.c:468
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Nepričakovana napaka branja podatkov podrejenega opravila (%s)"
 
-#: glib/gspawn.c:545
+#: glib/gspawn.c:553
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Nepričakovana napaka v waitpid() (%s)"
 
-#: glib/gspawn.c:1053 glib/gspawn-win32.c:1329
+#: glib/gspawn.c:1061 glib/gspawn-win32.c:1329
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Podrejeni proces se je zaključil s kodo %ld"
 
-#: glib/gspawn.c:1061
+#: glib/gspawn.c:1069
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Podrejeni proces je uničen s signalom %ld"
 
-#: glib/gspawn.c:1068
+#: glib/gspawn.c:1076
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Podrejeni proces se je ustavil s signalom %ld"
 
-#: glib/gspawn.c:1075
+#: glib/gspawn.c:1083
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Podrejeni proces se je zaključil nenaravno"
 
-#: glib/gspawn.c:1475 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1532 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Ni mogoče prebrati iz cevi podrejenega procesa (%s)"
 
-#: glib/gspawn.c:1723
+#: glib/gspawn.c:1788
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Ni mogoče ustvariti podrejenega opravila »%s« (%s)"
 
-#: glib/gspawn.c:1762
+#: glib/gspawn.c:1871
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Ni mogoča razvejitev (%s)"
 
-#: glib/gspawn.c:1911 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2026 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Ni mogoče spremeniti v mapo »%s« (%s)"
 
-#: glib/gspawn.c:1921
+#: glib/gspawn.c:2036
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Ni mogoče izvesti podrejenega opravila »%s« (%s)"
 
-#: glib/gspawn.c:1931
+#: glib/gspawn.c:2046
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Ni mogoče preusmeriti vhoda ali izhoda podrejenega procesa (%s)"
 
-#: glib/gspawn.c:1940
+#: glib/gspawn.c:2055
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Ni mogoče razvejiti podrejenega procesa (%s)"
 
-#: glib/gspawn.c:1948
+#: glib/gspawn.c:2063
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Neznana napaka med izvajanjem podrejenega opravila »%s«"
 
-#: glib/gspawn.c:1972
+#: glib/gspawn.c:2087
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Ni mogoče prebrati dovolj podatkov iz cevi podrejenega procesa (%s)"
@@ -5793,24 +5833,75 @@ msgstr ""
 "Nepričakovana napaka v g_io_channel_win32_poll() med branjem podatkov "
 "procesa podrejenega predmeta"
 
-#: glib/gstrfuncs.c:3309 glib/gstrfuncs.c:3411
+#: glib/gstrfuncs.c:3303 glib/gstrfuncs.c:3405
 msgid "Empty string is not a number"
 msgstr "Prazen niz ni številska vrednost"
 
-#: glib/gstrfuncs.c:3333
+#: glib/gstrfuncs.c:3327
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "»%s« ni podpisano število"
 
-#: glib/gstrfuncs.c:3343 glib/gstrfuncs.c:3447
+#: glib/gstrfuncs.c:3337 glib/gstrfuncs.c:3441
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Število »%s« je izven območja [%s, %s]"
 
-#: glib/gstrfuncs.c:3437
+#: glib/gstrfuncs.c:3431
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "»%s« ni nepodpisano število"
+
+#: glib/guri.c:313
+#, no-c-format
+msgid "Invalid %-encoding in URI"
+msgstr "Neveljavni nabor znakov v naslovu URI"
+
+#: glib/guri.c:330
+msgid "Illegal character in URI"
+msgstr "Neveljaven naslov v naslovu URI"
+
+#: glib/guri.c:359
+msgid "Non-UTF-8 characters in URI"
+msgstr "Napačen ne-UTF-8 znak v naslovu URI"
+
+#: glib/guri.c:462
+#, c-format
+msgid "Invalid IPv6 address ‘%.*s’ in URI"
+msgstr "Neveljaven naslov IPv6 »%.*s« v naslovu URI"
+
+#: glib/guri.c:524
+#, c-format
+msgid "Illegal encoded IP address ‘%.*s’ in URI"
+msgstr "Neveljaven kodiran naslov IP »%.*s« v naslovu URI"
+
+#: glib/guri.c:558 glib/guri.c:570
+#, c-format
+msgid "Could not parse port ‘%.*s’ in URI"
+msgstr "Ni mogoče razčleniti vrat »%.*s« v naslovu URI"
+
+#: glib/guri.c:577
+#, c-format
+msgid "Port ‘%.*s’ in URI is out of range"
+msgstr "Vrednost vrat »%.*s« v naslovu URI je izven obsega"
+
+#: glib/guri.c:1055 glib/guri.c:1119
+#, c-format
+msgid "URI ‘%s’ is not an absolute URI"
+msgstr "Naslov URI »%s« ni absolutna pot"
+
+#: glib/guri.c:1061
+#, c-format
+msgid "URI ‘%s’ has no host component"
+msgstr "Naslov URI »%s« je brez vpisa gostitelja"
+
+#: glib/guri.c:1263
+msgid "URI is not absolute, and no base URI was provided"
+msgstr "Naslov URI ni absoluten naslov in ni podanega osnovnega naslova URI"
+
+#: glib/guri.c:2019
+msgid "Missing ‘=’ and parameter value"
+msgstr "Manjka znak »=« in vrednost parametra"
 
 #: glib/gutf8.c:817
 msgid "Failed to allocate memory"
