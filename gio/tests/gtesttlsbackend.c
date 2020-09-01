@@ -59,8 +59,6 @@ g_test_tls_backend_iface_init (GTlsBackendInterface *iface)
   iface->get_certificate_type = _g_test_tls_certificate_get_type;
   iface->get_client_connection_type = _g_test_tls_connection_get_type;
   iface->get_server_connection_type = _g_test_tls_connection_get_type;
-  iface->get_dtls_client_connection_type = _g_test_tls_connection_get_type;
-  iface->get_dtls_server_connection_type = _g_test_tls_connection_get_type;
   iface->get_default_database = _g_test_tls_backend_get_default_database;
   iface->get_file_database_type = _g_test_tls_database_get_type;
 }
@@ -247,7 +245,6 @@ struct _GTestTlsConnectionClass {
 enum
 {
   PROP_CONN_BASE_IO_STREAM = 1,
-  PROP_CONN_BASE_SOCKET,
   PROP_CONN_USE_SYSTEM_CERTDB,
   PROP_CONN_REQUIRE_CLOSE_NOTIFY,
   PROP_CONN_REHANDSHAKE_MODE,
@@ -267,8 +264,6 @@ static void g_test_tls_connection_initable_iface_init (GInitableIface *iface);
 G_DEFINE_TYPE_WITH_CODE (GTestTlsConnection, g_test_tls_connection, G_TYPE_TLS_CONNECTION,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_CLIENT_CONNECTION, NULL)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_SERVER_CONNECTION, NULL)
-                         G_IMPLEMENT_INTERFACE (G_TYPE_DATAGRAM_BASED, NULL)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_DTLS_CONNECTION, NULL)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
 						g_test_tls_connection_initable_iface_init))
 
@@ -313,7 +308,6 @@ g_test_tls_connection_class_init (GTestTlsConnectionClass *connection_class)
   io_stream_class->close_fn = g_test_tls_connection_close;
 
   g_object_class_override_property (gobject_class, PROP_CONN_BASE_IO_STREAM, "base-io-stream");
-  g_object_class_override_property (gobject_class, PROP_CONN_BASE_SOCKET, "base-socket");
   g_object_class_override_property (gobject_class, PROP_CONN_USE_SYSTEM_CERTDB, "use-system-certdb");
   g_object_class_override_property (gobject_class, PROP_CONN_REQUIRE_CLOSE_NOTIFY, "require-close-notify");
   g_object_class_override_property (gobject_class, PROP_CONN_REHANDSHAKE_MODE, "rehandshake-mode");

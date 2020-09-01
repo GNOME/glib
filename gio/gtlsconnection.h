@@ -66,16 +66,9 @@ struct _GTlsConnectionClass
 				  GAsyncResult         *result,
 				  GError              **error);
 
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  gboolean ( *get_binding_data)  (GTlsConnection          *conn,
-                                  GTlsChannelBindingType   type,
-                                  GByteArray              *data,
-                                  GError                 **error);
-G_GNUC_END_IGNORE_DEPRECATIONS
-
   /*< private >*/
   /* Padding for future expansion */
-  gpointer padding[7];
+  gpointer padding[8];
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -131,14 +124,6 @@ void                  g_tls_connection_set_advertised_protocols    (GTlsConnecti
 GLIB_AVAILABLE_IN_2_60
 const gchar *         g_tls_connection_get_negotiated_protocol     (GTlsConnection       *conn);
 
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-GLIB_AVAILABLE_IN_2_66
-gboolean              g_tls_connection_get_channel_binding_data    (GTlsConnection          *conn,
-                                                                    GTlsChannelBindingType   type,
-                                                                    GByteArray              *data,
-                                                                    GError                 **error);
-G_GNUC_END_IGNORE_DEPRECATIONS
-
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_handshake                   (GTlsConnection       *conn,
 								    GCancellable         *cancellable,
@@ -166,18 +151,6 @@ gboolean              g_tls_connection_handshake_finish            (GTlsConnecti
 GLIB_AVAILABLE_IN_ALL
 GQuark g_tls_error_quark (void);
 
-/**
- * G_TLS_CHANNEL_BINDING_ERROR:
- *
- * Error domain for TLS channel binding. Errors in this domain will be from the
- * #GTlsChannelBindingError enumeration. See #GError for more information on error
- * domains.
- *
- * Since: 2.66
- */
-#define G_TLS_CHANNEL_BINDING_ERROR (g_tls_channel_binding_error_quark ())
-GLIB_AVAILABLE_IN_2_66
-GQuark g_tls_channel_binding_error_quark (void);
 
 /*< protected >*/
 GLIB_AVAILABLE_IN_ALL
