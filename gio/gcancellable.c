@@ -349,7 +349,7 @@ g_cancellable_get_fd (GCancellable *cancellable)
 {
   GPollFD pollfd;
 #ifndef G_OS_WIN32
-  gboolean retval;
+  gboolean retval G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 #endif
 
   if (cancellable == NULL)
