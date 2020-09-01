@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-08-22 13:31+0000\n"
-"PO-Revision-Date: 2020-09-01 11:55+0200\n"
+"PO-Revision-Date: 2020-09-01 15:39+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -1600,7 +1600,7 @@ msgstr "Il flus di jentrade nol implemente la leture"
 #. * you try to start one
 #: gio/ginputstream.c:1218 gio/giostream.c:310 gio/goutputstream.c:2208
 msgid "Stream has outstanding operation"
-msgstr "Il flus al à une operazion significante"
+msgstr "Il flus al à une operazion ecezionâl"
 
 #: gio/gio-tool.c:160
 msgid "Copy with file"
@@ -1886,6 +1886,11 @@ msgid ""
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
 "namespace, e.g. unix, or by “*”, which matches all attributes"
 msgstr ""
+"gio info al è simil ae utilitât ls tradizionâl, ma al dopre lis\n"
+"posizions GIO al puest dai file locâi: par esempli tu puedis doprâ\n"
+"alc come smb://servidôr/risorse/file.txt tant che posizion. I atribûts\n"
+"dai file a puedin jessi specificâts cul lôr non GIO, p.e. standard::icon, \n"
+"o dome cul spazi dai nons, p.e. unix, o cun “*”, che al cjape ducj i atribûts"
 
 #: gio/gio-tool-list.c:37 gio/gio-tool-tree.c:32
 msgid "Show hidden files"
@@ -1916,6 +1921,10 @@ msgid ""
 "like smb://server/resource/file.txt as location. File attributes can\n"
 "be specified with their GIO name, e.g. standard::icon"
 msgstr ""
+"gio list al è simil ae utilitât ls tradizionâl, ma al dopre lis\n"
+"posizions GIO al puest dai file locâi: par esmpli tu puedis doprâ\n"
+"alc come smb://servidôr/risorse/file.txt tant che posizion. I atribûts\n"
+"dai file a puedin jessi specificâts cul lôr non GIO, p.e. standard::icon"
 
 #. Translators: commandline placeholder
 #: gio/gio-tool-mime.c:71
@@ -1996,6 +2005,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/mydir as location."
 msgstr ""
+"gio mkdir al è simil ae utilitât mkdir tradizionâl, ma al dopre lis\n"
+"posizions GIO al puest dai file locâi: par esempli tu puedis doprâ alc\n"
+"come smb://servidôr/risorse/mêcartele tant che posizion."
 
 #: gio/gio-tool-monitor.c:37
 msgid "Monitor a directory (default: depends on type)"
@@ -2013,31 +2025,32 @@ msgstr ""
 
 #: gio/gio-tool-monitor.c:43
 msgid "Monitors a file directly, but doesn’t report changes"
-msgstr ""
+msgstr "Al monitore un file in maniere direte, ma nol segnale modifichis"
 
 #: gio/gio-tool-monitor.c:45
 msgid "Report moves and renames as simple deleted/created events"
 msgstr ""
+"Segnale spostaments e cambiaments di non come sempliçs events eliminât/creât"
 
 #: gio/gio-tool-monitor.c:47
 msgid "Watch for mount events"
-msgstr ""
+msgstr "Ten di voli i events di montaç"
 
 #: gio/gio-tool-monitor.c:208
 msgid "Monitor files or directories for changes."
-msgstr ""
+msgstr "Monitore i file o lis cartelis pes modifichis."
 
 #: gio/gio-tool-mount.c:63
 msgid "Mount as mountable"
-msgstr ""
+msgstr "Monte come montabil"
 
 #: gio/gio-tool-mount.c:64
 msgid "Mount volume with device file, or other identifier"
-msgstr ""
+msgstr "Monte il volum cul file dal dispositîf o altri identificadôr"
 
 #: gio/gio-tool-mount.c:64
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: gio/gio-tool-mount.c:65
 msgid "Unmount"
@@ -2049,7 +2062,7 @@ msgstr "Pare fûr"
 
 #: gio/gio-tool-mount.c:67
 msgid "Stop drive with device file"
-msgstr ""
+msgstr "Ferme la unitât cul file dal dispositîf"
 
 #: gio/gio-tool-mount.c:67
 msgid "DEVICE"
@@ -2057,7 +2070,7 @@ msgstr "DISPOSITÎF"
 
 #: gio/gio-tool-mount.c:68
 msgid "Unmount all mounts with the given scheme"
-msgstr ""
+msgstr "Dismonte ducj i montaçs cul scheme indicât"
 
 #: gio/gio-tool-mount.c:68
 msgid "SCHEME"
@@ -2066,10 +2079,11 @@ msgstr "SCHEME"
 #: gio/gio-tool-mount.c:69
 msgid "Ignore outstanding file operations when unmounting or ejecting"
 msgstr ""
+"Ignore lis operazions ecezionâls sui file cuant che si dismonte o si pare fûr"
 
 #: gio/gio-tool-mount.c:70
 msgid "Use an anonymous user when authenticating"
-msgstr ""
+msgstr "Dopre un utent anonim cuant che si fâs la autenticazion"
 
 #. Translator: List here is a verb as in 'List all mounts'
 #: gio/gio-tool-mount.c:72
@@ -2078,7 +2092,7 @@ msgstr "Liste"
 
 #: gio/gio-tool-mount.c:73
 msgid "Monitor events"
-msgstr ""
+msgstr "Monitore events"
 
 #: gio/gio-tool-mount.c:74
 msgid "Show extra information"
@@ -2086,7 +2100,7 @@ msgstr "Mostre informazions adizionâls"
 
 #: gio/gio-tool-mount.c:75
 msgid "The numeric PIM when unlocking a VeraCrypt volume"
-msgstr ""
+msgstr "Il PIM numeric cuant che si sbloche un volum VeraCrypt"
 
 #: gio/gio-tool-mount.c:75
 msgid "PIM"
@@ -2094,11 +2108,11 @@ msgstr "PIM"
 
 #: gio/gio-tool-mount.c:76
 msgid "Mount a TCRYPT hidden volume"
-msgstr ""
+msgstr "Monte un volum platât TCRYPT"
 
 #: gio/gio-tool-mount.c:77
 msgid "Mount a TCRYPT system volume"
-msgstr ""
+msgstr "Monte un volum di sisteme TCRYPT"
 
 #: gio/gio-tool-mount.c:265 gio/gio-tool-mount.c:297
 msgid "Anonymous access denied"
@@ -2106,11 +2120,11 @@ msgstr "Acès anonim dineât"
 
 #: gio/gio-tool-mount.c:522
 msgid "No drive for device file"
-msgstr ""
+msgstr "Nissune unitât pal file di dispositîf"
 
 #: gio/gio-tool-mount.c:1014
 msgid "No volume for given ID"
-msgstr ""
+msgstr "Nissun volum pal ID indicât"
 
 #: gio/gio-tool-mount.c:1203
 msgid "Mount or unmount the locations."
@@ -2118,11 +2132,11 @@ msgstr "Monte o dismonte lis posizions."
 
 #: gio/gio-tool-move.c:42
 msgid "Don’t use copy and delete fallback"
-msgstr ""
+msgstr "No sta doprâ i copie e elimine di repeç"
 
 #: gio/gio-tool-move.c:99
 msgid "Move one or more files from SOURCE to DEST."
-msgstr ""
+msgstr "Sposte un o plui file di SORZINT a DESTINAZION."
 
 #: gio/gio-tool-move.c:101
 msgid ""
@@ -2130,6 +2144,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location"
 msgstr ""
+"gio move al è simil ae utilitât mv tradizionâl, ma e dopre lis\n"
+"posizions GIO al puest dai file locâi: par esempli tu puedis doprâ\n"
+"alc come smb://servidôr/risorse/file.txt tant che posizion."
 
 #: gio/gio-tool-move.c:143
 #, c-format
@@ -2141,6 +2158,8 @@ msgid ""
 "Open files with the default application that\n"
 "is registered to handle files of this type."
 msgstr ""
+"Vierç i file cu la aplicazion definitive che\n"
+"e je regjistrade par gjestî i file di chest gjenar."
 
 #: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:31
 msgid "Ignore nonexistent files, never prompt"
@@ -2181,11 +2200,11 @@ msgstr "Zonte ae fin dal file"
 
 #: gio/gio-tool-save.c:52
 msgid "When creating, restrict access to the current user"
-msgstr ""
+msgstr "Cuant che si cree, limite l'acès al utent atuâl"
 
 #: gio/gio-tool-save.c:53
 msgid "When replacing, replace as if the destination did not exist"
-msgstr ""
+msgstr "Cuant che si sostituìs, sostituìs come che la destinazion no esisti"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:55
@@ -2212,7 +2231,7 @@ msgstr "Etag no disponibil\n"
 
 #: gio/gio-tool-save.c:163
 msgid "Read from standard input and save to DEST."
-msgstr ""
+msgstr "Lei de jentrade standard (standard input) e salve su DESTINAZION."
 
 #: gio/gio-tool-save.c:183
 msgid "No destination given"
@@ -2236,7 +2255,7 @@ msgstr "VALÔR"
 
 #: gio/gio-tool-set.c:93
 msgid "Set a file attribute of LOCATION."
-msgstr ""
+msgstr "Stabilìs un atribût di file di POSIZION."
 
 #: gio/gio-tool-set.c:113
 msgid "Location not specified"
@@ -2310,6 +2329,7 @@ msgstr "Opzion di elaborazion “%s” no cognossude"
 #, c-format
 msgid "%s preprocessing requested, but %s is not set, and %s is not in PATH"
 msgstr ""
+"Pre-elaborazion %s domandade, ma %s nol è stabilît e %s nol è in PERCORS"
 
 #: gio/glib-compile-resources.c:457
 #, c-format
@@ -2349,6 +2369,8 @@ msgstr "CARTELE"
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
+"Gjenere la jessude intal formât selezionât pe estension dal non di file di "
+"destinazion"
 
 #: gio/glib-compile-resources.c:741
 msgid "Generate source header"
@@ -2372,21 +2394,23 @@ msgstr ""
 
 #: gio/glib-compile-resources.c:746
 msgid "Don’t automatically create and register resource"
-msgstr ""
+msgstr "No sta creâ in automatic e regjistrâ la risorse"
 
 #: gio/glib-compile-resources.c:747
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
-msgstr ""
+msgstr "No sta espuartâ lis funzions; declarilis G_GNUC_INTERNAL"
 
 #: gio/glib-compile-resources.c:748
 msgid ""
 "Don’t embed resource data in the C file; assume it's linked externally "
 "instead"
 msgstr ""
+"No sta incorporâ i dâts de risorse intal file C; assum invezit che al sedi "
+"colegât par difûr"
 
 #: gio/glib-compile-resources.c:749
 msgid "C identifier name used for the generated source code"
-msgstr ""
+msgstr "Non identificadôr di C doprât pal codiç sorzint gjenerât"
 
 #: gio/glib-compile-resources.c:775
 msgid ""
@@ -2394,6 +2418,9 @@ msgid ""
 "Resource specification files have the extension .gresource.xml,\n"
 "and the resource file have the extension called .gresource."
 msgstr ""
+"Compile une specifiche di risorse intun file di risorse.\n"
+"I file de specifiche di risorse a àn la estension .gresource.xml\n"
+"e i file de risorse a àn la estension clamade .gresource."
 
 #: gio/glib-compile-resources.c:797
 msgid "You should give exactly one file name\n"
@@ -2422,7 +2449,7 @@ msgstr "valôr='%s' za specificât"
 #: gio/glib-compile-schemas.c:133
 #, c-format
 msgid "flags values must have at most 1 bit set"
-msgstr ""
+msgstr "i valôrs des opzions a scugnin vê stabilît al massim 1 bit"
 
 #: gio/glib-compile-schemas.c:158
 #, c-format
@@ -2432,22 +2459,22 @@ msgstr "<%s> al à di contignî almancul un <value>"
 #: gio/glib-compile-schemas.c:314
 #, c-format
 msgid "<%s> is not contained in the specified range"
-msgstr ""
+msgstr "<%s> nol è contignût intal interval specificât"
 
 #: gio/glib-compile-schemas.c:326
 #, c-format
 msgid "<%s> is not a valid member of the specified enumerated type"
-msgstr ""
+msgstr "<%s> nol è un membri valit dal gjenar enumerât specificât"
 
 #: gio/glib-compile-schemas.c:332
 #, c-format
 msgid "<%s> contains string not in the specified flags type"
-msgstr ""
+msgstr "<%s> al conten stringhis che no son tal gjenar di opzions specificadis"
 
 #: gio/glib-compile-schemas.c:338
 #, c-format
 msgid "<%s> contains a string not in <choices>"
-msgstr ""
+msgstr "<%s> al conten une stringhe che no je tes <choices>"
 
 #: gio/glib-compile-schemas.c:372
 msgid "<range/> already specified for this key"
@@ -2479,16 +2506,18 @@ msgstr "contest di traduzion furnît pal valôr cence l10n abilitât"
 #: gio/glib-compile-schemas.c:474
 #, c-format
 msgid "Failed to parse <default> value of type “%s”: "
-msgstr ""
+msgstr "No si è rivâts a analizâ il valôr <default> di gjenar “%s”: "
 
 #: gio/glib-compile-schemas.c:491
 msgid ""
 "<choices> cannot be specified for keys tagged as having an enumerated type"
 msgstr ""
+"<choices> nol pues jessi specificât pes clâfs etichetadis come clâfs che a "
+"àn un gjenar enumerât"
 
 #: gio/glib-compile-schemas.c:500
 msgid "<choices> already specified for this key"
-msgstr ""
+msgstr "<choices> za specificât par cheste clâf"
 
 #: gio/glib-compile-schemas.c:512
 #, c-format
