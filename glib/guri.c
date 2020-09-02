@@ -696,6 +696,8 @@ g_uri_split_internal (const gchar  *uri_string,
     *scheme = NULL;
   if (userinfo)
     *userinfo = NULL;
+  if (user)
+    *user = NULL;
   if (password)
     *password = NULL;
   if (auth_params)
