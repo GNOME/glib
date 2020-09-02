@@ -2422,6 +2422,8 @@ g_option_group_add_entries (GOptionGroup       *group,
 
   for (n_entries = 0; entries[n_entries].long_name != NULL; n_entries++) ;
 
+  g_return_if_fail (n_entries <= G_MAXSIZE - group->n_entries);
+
   group->entries = g_renew (GOptionEntry, group->entries, group->n_entries + n_entries);
 
   /* group->entries could be NULL in the trivial case where we add no
