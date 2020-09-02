@@ -1,3 +1,39 @@
+Overview of changes in GLib 2.65.3
+==================================
+
+* Fixes to the new `statx()` calls — note that since GLib 2.65.2 uses `statx()`
+  (if available) instead of `stat()`/`fstat()`/`lstat()`/`fstatat()`, syscall
+  sandboxing for third party applications might need to be updated
+
+* Bugs fixed:
+ - #2189 g_file_query_info on ro file system: Numerical result out of range
+ - #2191 Calling nice(20) can lead to thread related warnings
+ - #2197 Segfaulting Integer Overflow in g_option_group_add_entries
+ - !1025 Big o notations
+ - !1626 gio: Document g_settings_new() missing schema behaviour
+ - !1627 gthread: Add a sysprof mark for thread creation
+ - !1628 Replace a bunch of fallthrough comments with an attribute
+ - !1631 Fix splice behavior on cancellation
+ - !1632 Fixing signedness warning in glib/gfileutils.c
+ - !1635 gcancellable: Mark a variable as unused if built with G_DISABLE_ASSERT
+
+* Translation updates:
+ - Basque
+ - Catalan
+ - Chinese (China)
+ - Czech
+ - English (United Kingdom)
+ - Friulian
+ - German
+ - Japanese
+ - Kazakh
+ - Korean
+ - Lithuanian
+ - Polish
+ - Portuguese (Brazil)
+ - Slovenian
+
+
 Overview of changes in GLib 2.65.2
 ==================================
 
