@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-08-22 13:31+0000\n"
-"PO-Revision-Date: 2020-09-05 23:54+0200\n"
+"POT-Creation-Date: 2020-09-06 11:28+0000\n"
+"PO-Revision-Date: 2020-09-07 21:07+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Launchpad-Export-Date: 2014-01-06 11:59+0000\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.3\n"
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
@@ -83,23 +83,23 @@ msgstr "Aktiviraj radnju"
 
 #: gio/gapplication-tool.c:60
 msgid "Invoke an action on the application"
-msgstr ""
+msgstr "Pokreni radnju na aplikaciji"
 
 #: gio/gapplication-tool.c:61
 msgid "APPID ACTION [PARAMETER]"
-msgstr ""
+msgstr "ID APLIKACIJE RADNJE [PARAMETAR]"
 
 #: gio/gapplication-tool.c:63
 msgid "List available actions"
-msgstr ""
+msgstr "Prikaži dostupne radnje"
 
 #: gio/gapplication-tool.c:64
 msgid "List static actions for an application (from .desktop file)"
-msgstr ""
+msgstr "Prikazuje nepromjenjive radnje za aplikaciju (iz .desktop datoteke)"
 
 #: gio/gapplication-tool.c:65 gio/gapplication-tool.c:71
 msgid "APPID"
-msgstr "IDAPLIKACIJE"
+msgstr "ID APLIKACIJE"
 
 #: gio/gapplication-tool.c:70 gio/gapplication-tool.c:133 gio/gdbus-tool.c:102
 #: gio/gio-tool.c:224
@@ -108,11 +108,11 @@ msgstr "NAREDBA"
 
 #: gio/gapplication-tool.c:70
 msgid "The command to print detailed help for"
-msgstr ""
+msgstr "Naredba za prikaz opširnije pomoći za"
 
 #: gio/gapplication-tool.c:71
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
-msgstr ""
+msgstr "Identifikator aplikacije u D-Bus formatu (npr: org.primjer.preglednik)"
 
 #: gio/gapplication-tool.c:72 gio/glib-compile-resources.c:738
 #: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
@@ -123,6 +123,7 @@ msgstr "DATOTEKA"
 #: gio/gapplication-tool.c:72
 msgid "Optional relative or absolute filenames, or URIs to open"
 msgstr ""
+"Neobavezni relativni ili apsolutni nazivi datoteka ili URI-ji za otvoriti"
 
 #: gio/gapplication-tool.c:73
 msgid "ACTION"
@@ -130,7 +131,7 @@ msgstr "RADNJA"
 
 #: gio/gapplication-tool.c:73
 msgid "The action name to invoke"
-msgstr ""
+msgstr "Naziv radnje za pokrenuti"
 
 #: gio/gapplication-tool.c:74
 msgid "PARAMETER"
@@ -138,7 +139,7 @@ msgstr "PARAMETAR"
 
 #: gio/gapplication-tool.c:74
 msgid "Optional parameter to the action invocation, in GVariant format"
-msgstr ""
+msgstr "Neobavezni parametri za pokretanje radnje u GVariant formatu"
 
 #: gio/gapplication-tool.c:96 gio/gresource-tool.c:531 gio/gsettings-tool.c:659
 #, c-format
@@ -146,6 +147,8 @@ msgid ""
 "Unknown command %s\n"
 "\n"
 msgstr ""
+"Nepoznata naredba %s\n"
+"\n"
 
 #: gio/gapplication-tool.c:101
 msgid "Usage:\n"
@@ -172,6 +175,8 @@ msgid ""
 "Use “%s help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
+"Koristite “%s NAREDBU pomoći” za opširniju pomoć.\n"
+"\n"
 
 #: gio/gapplication-tool.c:165
 #, c-format
@@ -179,11 +184,13 @@ msgid ""
 "%s command requires an application id to directly follow\n"
 "\n"
 msgstr ""
+"%s naredba zahtijeva id aplikacije za izravno slijeđenje\n"
+"\n"
 
 #: gio/gapplication-tool.c:171
 #, c-format
 msgid "invalid application id: “%s”\n"
-msgstr ""
+msgstr "nevaljani id aplikacije: “%s”\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: gio/gapplication-tool.c:182
@@ -192,20 +199,22 @@ msgid ""
 "“%s” takes no arguments\n"
 "\n"
 msgstr ""
+"“%s” ne prihvaća argumente\n"
+"\n"
 
 #: gio/gapplication-tool.c:266
 #, c-format
 msgid "unable to connect to D-Bus: %s\n"
-msgstr ""
+msgstr "nemoguće povezivanje sa D-Bus: %s\n"
 
 #: gio/gapplication-tool.c:286
 #, c-format
 msgid "error sending %s message to application: %s\n"
-msgstr ""
+msgstr "greška slanja %s poruke u aplikaciju: %s\n"
 
 #: gio/gapplication-tool.c:317
 msgid "action name must be given after application id\n"
-msgstr ""
+msgstr "naziv radnje mora biti naveden nakon id-a aplikacije\n"
 
 #: gio/gapplication-tool.c:325
 #, c-format
@@ -213,6 +222,8 @@ msgid ""
 "invalid action name: “%s”\n"
 "action names must consist of only alphanumerics, “-” and “.”\n"
 msgstr ""
+"nevaljan naziv radnje: “%s”\n"
+"naziv radnje mora sadržavati brojčano-slovne znakove, “-” i “.”\n"
 
 #: gio/gapplication-tool.c:344
 #, c-format
@@ -221,7 +232,7 @@ msgstr "greška obrade parametara radnje: %s\n"
 
 #: gio/gapplication-tool.c:356
 msgid "actions accept a maximum of one parameter\n"
-msgstr ""
+msgstr "radnja prihvaća najviše jedan parametar\n"
 
 #: gio/gapplication-tool.c:411
 msgid "list-actions command takes only the application id"
@@ -939,9 +950,9 @@ msgstr ""
 #: gio/gdbus-tool.c:197 gio/gdbus-tool.c:264 gio/gdbus-tool.c:336
 #: gio/gdbus-tool.c:360 gio/gdbus-tool.c:850 gio/gdbus-tool.c:1187
 #: gio/gdbus-tool.c:1672
-#, c-format
+#, fuzzy, c-format
 msgid "Error: %s\n"
-msgstr ""
+msgstr "Greška: %s\n"
 
 #: gio/gdbus-tool.c:208 gio/gdbus-tool.c:277 gio/gdbus-tool.c:1688
 #, c-format
@@ -2885,114 +2896,114 @@ msgstr ""
 msgid "Error setting extended attribute “%s”: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:1663
+#: gio/glocalfileinfo.c:1666
 msgid " (invalid encoding)"
 msgstr " (neispravno kôdiranje)"
 
-#: gio/glocalfileinfo.c:1822 gio/glocalfileoutputstream.c:915
+#: gio/glocalfileinfo.c:1825 gio/glocalfileoutputstream.c:915
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2088
+#: gio/glocalfileinfo.c:2091
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2133
+#: gio/glocalfileinfo.c:2136
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Neispravna vrsta svojstva (uint32 je očekivano)"
 
-#: gio/glocalfileinfo.c:2151
+#: gio/glocalfileinfo.c:2154
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Neispravna vrsta svojstva (uint64 je očekivano)"
 
-#: gio/glocalfileinfo.c:2170 gio/glocalfileinfo.c:2189
+#: gio/glocalfileinfo.c:2173 gio/glocalfileinfo.c:2192
 msgid "Invalid attribute type (byte string expected)"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2236
+#: gio/glocalfileinfo.c:2239
 msgid "Cannot set permissions on symlinks"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2252
+#: gio/glocalfileinfo.c:2255
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2303
+#: gio/glocalfileinfo.c:2306
 #, c-format
 msgid "Error setting owner: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2326
+#: gio/glocalfileinfo.c:2329
 msgid "symlink must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2336 gio/glocalfileinfo.c:2355
-#: gio/glocalfileinfo.c:2366
+#: gio/glocalfileinfo.c:2339 gio/glocalfileinfo.c:2358
+#: gio/glocalfileinfo.c:2369
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2345
+#: gio/glocalfileinfo.c:2348
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2417
+#: gio/glocalfileinfo.c:2420
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2426
+#: gio/glocalfileinfo.c:2429
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2436
+#: gio/glocalfileinfo.c:2439
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2447
+#: gio/glocalfileinfo.c:2450
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2511
+#: gio/glocalfileinfo.c:2514
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2530
+#: gio/glocalfileinfo.c:2533
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2543
+#: gio/glocalfileinfo.c:2546
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2644
+#: gio/glocalfileinfo.c:2647
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2667
+#: gio/glocalfileinfo.c:2670
 msgid "SELinux context must be non-NULL"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2682
+#: gio/glocalfileinfo.c:2685
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2689
+#: gio/glocalfileinfo.c:2692
 msgid "SELinux is not enabled on this system"
 msgstr ""
 
-#: gio/glocalfileinfo.c:2781
+#: gio/glocalfileinfo.c:2784
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr ""
@@ -4195,7 +4206,7 @@ msgstr "%T"
 #, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%H:%M:%S"
+msgstr "%I:%M:%S %p"
 
 #. Translators: Some languages (Baltic, Slavic, Greek, and some more)
 #. * need different grammatical forms of month names depending on whether
@@ -5738,21 +5749,21 @@ msgstr ""
 msgid "Port ‘%.*s’ in URI is out of range"
 msgstr ""
 
-#: glib/guri.c:1055 glib/guri.c:1119
+#: glib/guri.c:1057 glib/guri.c:1121
 #, c-format
 msgid "URI ‘%s’ is not an absolute URI"
 msgstr "URI '%s' nije apsolutni URI"
 
-#: glib/guri.c:1061
+#: glib/guri.c:1063
 #, c-format
 msgid "URI ‘%s’ has no host component"
 msgstr ""
 
-#: glib/guri.c:1263
+#: glib/guri.c:1265
 msgid "URI is not absolute, and no base URI was provided"
 msgstr ""
 
-#: glib/guri.c:2019
+#: glib/guri.c:2021
 msgid "Missing ‘=’ and parameter value"
 msgstr ""
 
