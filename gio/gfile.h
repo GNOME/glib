@@ -1094,6 +1094,12 @@ gboolean                g_file_eject_mountable_with_operation_finish (GFile     
 							   GAsyncResult               *result,
 							   GError                    **error);
 
+GLIB_AVAILABLE_IN_2_68
+char *			g_file_build_attribute_list_for_copy (GFile                   *file,
+							   GFileCopyFlags              flags,
+							   GCancellable               *cancellable,
+							   GError                    **error);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean                g_file_copy_attributes            (GFile                      *source,
 							   GFile                      *destination,

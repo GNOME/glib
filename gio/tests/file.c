@@ -1780,6 +1780,79 @@ test_writev_async_all_too_big_vectors (void)
   g_object_unref (file);
 }
 
+static void
+test_build_attribute_list_for_copy (void)
+{
+  GFile *tmpfile;
+  GFileIOStream *iostream;
+  GError *error = NULL;
+  const GFileCopyFlags test_flags[] =
+    {
+      G_FILE_COPY_NONE,
+      G_FILE_COPY_TARGET_DEFAULT_PERMS,
+      G_FILE_COPY_ALL_METADATA,
+      G_FILE_COPY_ALL_METADATA | G_FILE_COPY_TARGET_DEFAULT_PERMS,
+    };
+  gsize i;
+  char *attrs;
+  gchar *attrs_with_commas;
+
+  tmpfile = g_file_new_tmp ("tmp-build-attribute-list-for-copyXXXXXX",
+                            &iostream, &error);
+  g_assert_no_error (error);
+  g_io_stream_close ((GIOStream*)iostream, NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&iostream);
+
+  for (i = 0; i < G_N_ELEMENTS (test_flags); i++)
+    {
+      GFileCopyFlags flags = test_flags[i];
+
+      attrs = g_file_build_attribute_list_for_copy (tmpfile, flags, NULL, &error);
+      g_test_message ("Attributes for copy: %s", attrs);
+      g_assert_no_error (error);
+      g_assert_nonnull (attrs);
+      attrs_with_commas = g_strconcat (",", attrs, ",", NULL);
+      g_free (attrs);
+
+      /* See g_local_file_class_init for reference. */
+      if (flags & G_FILE_COPY_TARGET_DEFAULT_PERMS)
+        g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_UNIX_MODE ","));
+      else
+        g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_UNIX_MODE ","));
+#ifdef G_OS_UNIX
+      if (flags & G_FILE_COPY_ALL_METADATA)
+        {
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_UNIX_UID ","));
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_UNIX_GID ","));
+        }
+      else
+        {
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_UNIX_UID ","));
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_UNIX_GID ","));
+        }
+#endif
+#ifdef HAVE_UTIMES
+      g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED ","));
+      g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC ","));
+      if (flags & G_FILE_COPY_ALL_METADATA)
+        {
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS ","));
+          g_assert_nonnull (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS_USEC ","));
+        }
+      else
+        {
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS ","));
+          g_assert_null (g_strstr_len (attrs_with_commas, -1, "," G_FILE_ATTRIBUTE_TIME_ACCESS_USEC ","));
+        }
+#endif
+      g_free (attrs_with_commas);
+    }
+
+  (void) g_file_delete (tmpfile, NULL, NULL);
+  g_clear_object (&tmpfile);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1817,6 +1890,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/writev/async_all-no-vectors", test_writev_async_all_no_vectors);
   g_test_add_func ("/file/writev/async_all-to-big-vectors", test_writev_async_all_too_big_vectors);
   g_test_add_func ("/file/writev/async_all-cancellation", test_writev_async_all_cancellation);
+  g_test_add_func ("/file/build-attribute-list-for-copy", test_build_attribute_list_for_copy);
 
   return g_test_run ();
 }
