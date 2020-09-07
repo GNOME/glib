@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-09-06 11:28+0000\n"
-"PO-Revision-Date: 2020-09-07 21:07+0200\n"
+"PO-Revision-Date: 2020-09-07 23:54+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -236,12 +236,12 @@ msgstr "radnja prihvaća najviše jedan parametar\n"
 
 #: gio/gapplication-tool.c:411
 msgid "list-actions command takes only the application id"
-msgstr ""
+msgstr "list-actions naredba prihvaća samo id aplikacije"
 
 #: gio/gapplication-tool.c:421
 #, c-format
 msgid "unable to find desktop file for application %s\n"
-msgstr ""
+msgstr "nemoguće pronalazak datoteke radne površine za aplikaciju %s\n"
 
 #: gio/gapplication-tool.c:466
 #, c-format
@@ -249,6 +249,8 @@ msgid ""
 "unrecognised command: %s\n"
 "\n"
 msgstr ""
+"nepoznata naredba: %s\n"
+"\n"
 
 #: gio/gbufferedinputstream.c:420 gio/gbufferedinputstream.c:498
 #: gio/ginputstream.c:179 gio/ginputstream.c:379 gio/ginputstream.c:617
@@ -256,25 +258,25 @@ msgstr ""
 #: gio/gpollableinputstream.c:205 gio/gpollableoutputstream.c:277
 #, c-format
 msgid "Too large count value passed to %s"
-msgstr ""
+msgstr "Prevelika brojčana vrijednost proslijeđena u %s"
 
 #: gio/gbufferedinputstream.c:891 gio/gbufferedoutputstream.c:575
 #: gio/gdataoutputstream.c:562
 msgid "Seek not supported on base stream"
-msgstr ""
+msgstr "Premotavanje nije podržano na osnovnom strujanju"
 
 #: gio/gbufferedinputstream.c:937
 msgid "Cannot truncate GBufferedInputStream"
-msgstr ""
+msgstr "Nemoguće skraćivanje GBufferedInputStreama"
 
 #: gio/gbufferedinputstream.c:982 gio/ginputstream.c:1208 gio/giostream.c:300
 #: gio/goutputstream.c:2198
 msgid "Stream is already closed"
-msgstr ""
+msgstr "Strujanje je već zatvoreno"
 
 #: gio/gbufferedoutputstream.c:612 gio/gdataoutputstream.c:592
 msgid "Truncate not supported on base stream"
-msgstr ""
+msgstr "Skraćivanje nije podržano na osnovnom strujanju"
 
 #: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1413
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
@@ -284,28 +286,28 @@ msgstr "Radnja je prekinuta"
 
 #: gio/gcharsetconverter.c:260
 msgid "Invalid object, not initialized"
-msgstr ""
+msgstr "Neispravni objekt, nije pokrenut"
 
 #: gio/gcharsetconverter.c:281 gio/gcharsetconverter.c:309
 msgid "Incomplete multibyte sequence in input"
-msgstr ""
+msgstr "Nepotpun višebajtni niz na ulazu"
 
 #: gio/gcharsetconverter.c:315 gio/gcharsetconverter.c:324
 msgid "Not enough space in destination"
-msgstr "Nema dovoljno prostora u odredištu"
+msgstr "Nedovoljno prostora u odredištu"
 
 #: gio/gcharsetconverter.c:342 gio/gdatainputstream.c:848
 #: gio/gdatainputstream.c:1261 glib/gconvert.c:448 glib/gconvert.c:878
 #: glib/giochannel.c:1564 glib/giochannel.c:1606 glib/giochannel.c:2461
 #: glib/gutf8.c:875 glib/gutf8.c:1328
 msgid "Invalid byte sequence in conversion input"
-msgstr "Neispravna sekvenca bajtova u izlazu konverzije"
+msgstr "Neispravan niz bajta na ulazu pretvorbe"
 
 #: gio/gcharsetconverter.c:347 glib/gconvert.c:456 glib/gconvert.c:792
 #: glib/giochannel.c:1571 glib/giochannel.c:2473
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "Greška prilikom konverzije: %s"
+msgstr "Greška pri pretvorbi: %s"
 
 #: gio/gcharsetconverter.c:445 gio/gsocket.c:1133
 msgid "Cancellable initialization not supported"
@@ -337,37 +339,37 @@ msgstr "%s vrsta datoteke"
 
 #: gio/gcredentials.c:323
 msgid "GCredentials contains invalid data"
-msgstr ""
+msgstr "GVjerodajnice sadrže nevaljane podatke"
 
 #: gio/gcredentials.c:383 gio/gcredentials.c:667
 msgid "GCredentials is not implemented on this OS"
-msgstr ""
+msgstr "GVjerodajnice nisu implementirane na ovom OS-u"
 
 #: gio/gcredentials.c:538 gio/gcredentials.c:556
 msgid "There is no GCredentials support for your platform"
-msgstr ""
+msgstr "Nema podrške GVjerodajnica za vašu platformu"
 
 #: gio/gcredentials.c:607
 msgid "GCredentials does not contain a process ID on this OS"
-msgstr ""
+msgstr "GVjerodajnice ne sadrže ID procesa na ovom OS-u"
 
 #: gio/gcredentials.c:661
 msgid "Credentials spoofing is not possible on this OS"
-msgstr ""
+msgstr "Podvala vjerodajnica nije moguća na ovom OS-u"
 
 #: gio/gdatainputstream.c:304
 msgid "Unexpected early end-of-stream"
-msgstr ""
+msgstr "Neočekivani prerani kraj strujanja"
 
 #: gio/gdbusaddress.c:158 gio/gdbusaddress.c:232 gio/gdbusaddress.c:321
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
-msgstr ""
+msgstr "Nepodržani ključ “%s” u unosu adrese “%s”"
 
 #: gio/gdbusaddress.c:171
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
-msgstr ""
+msgstr "Besmislena kombinacija para ključa/vrijednosti u unosu adrese “%s”"
 
 #: gio/gdbusaddress.c:180
 #, c-format
@@ -375,27 +377,29 @@ msgid ""
 "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract "
 "keys)"
 msgstr ""
+"Adresa “%s” je nevaljana (potrebna je točno jedna putanja, dir, privremeni "
+"dir ili apstraktni ključ)"
 
 #: gio/gdbusaddress.c:247 gio/gdbusaddress.c:258 gio/gdbusaddress.c:273
 #: gio/gdbusaddress.c:336 gio/gdbusaddress.c:347
 #, c-format
 msgid "Error in address “%s” — the “%s” attribute is malformed"
-msgstr ""
+msgstr "Greška u adresi “%s” — “%s” svojstvo je oštećeno"
 
 #: gio/gdbusaddress.c:417 gio/gdbusaddress.c:681
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
-msgstr ""
+msgstr "Nepoznati ili nepodržani prijenos “%s” za adresu “%s”"
 
 #: gio/gdbusaddress.c:461
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
-msgstr ""
+msgstr "Element adrese “%s” ne sadrži dvotočku (:)"
 
 #: gio/gdbusaddress.c:470
 #, c-format
 msgid "Transport name in address element “%s” must not be empty"
-msgstr ""
+msgstr "Naziv prijenosa u elementu adrese “%s” ne može biti prazan"
 
 #: gio/gdbusaddress.c:491
 #, c-format
@@ -403,12 +407,16 @@ msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
 "sign"
 msgstr ""
+"Par ključa/vrijednosti %d, “%s”, u elementu adrese “%s” ne sadrže znak "
+"jednakosti"
 
 #: gio/gdbusaddress.c:502
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"
 msgstr ""
+"Par ključa/vrijednosti %d, “%s”, u elementu adrese “%s” ne mogu sadržavati "
+"prazan ključ"
 
 #: gio/gdbusaddress.c:516
 #, c-format
@@ -416,6 +424,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
 "“%s”"
 msgstr ""
+"Greška neizbjegavanja ključa ili vrijednosti u paru ključa/vrijednosti %d, "
+"“%s”, u elementu adrese “%s”"
 
 #: gio/gdbusaddress.c:588
 #, c-format
@@ -423,51 +433,55 @@ msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
 "“path” or “abstract” to be set"
 msgstr ""
+"Greška u adresi “%s” — unix prijenos zahtijeva točno postavljeno jedno "
+"ključevo “putanju” ili “apstraktan” svojstvo"
 
 #: gio/gdbusaddress.c:624
 #, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
-msgstr ""
+msgstr "Greška u adresi “%s” — svojstvo poslužitelja nedostaje ili je oštećeno"
 
 #: gio/gdbusaddress.c:638
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
-msgstr ""
+msgstr "Greška u adresi “%s” — svojstvo ulaza nedostaje ili je oštećeno"
 
 #: gio/gdbusaddress.c:652
 #, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
+"Greška u adresi “%s” — svojstvo jednokratne datoteke nedostaje ili je "
+"oštećeno"
 
 #: gio/gdbusaddress.c:673
 msgid "Error auto-launching: "
-msgstr ""
+msgstr "Greška automatskog pokretanja: "
 
 #: gio/gdbusaddress.c:726
-#, fuzzy, c-format
-#| msgid "Error reading file '%s': %s"
+#, c-format
 msgid "Error opening nonce file “%s”: %s"
-msgstr "Greška pri čitanju datoteke '%s': %s"
+msgstr "Greška otvaranja jednokratne datoteke “%s”: %s"
 
 #: gio/gdbusaddress.c:745
-#, fuzzy, c-format
-#| msgid "Error reading file '%s': %s"
+#, c-format
 msgid "Error reading from nonce file “%s”: %s"
-msgstr "Greška pri čitanju datoteke '%s': %s"
+msgstr "Greška čitanja iz jednokratne datoteke “%s”: %s"
 
 #: gio/gdbusaddress.c:754
 #, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr ""
+"Greška čitanja iz jednokratne datoteke “%s”, očekivano je 16 bajta, dobiveno "
+"je %d"
 
 #: gio/gdbusaddress.c:772
 #, c-format
 msgid "Error writing contents of nonce file “%s” to stream:"
-msgstr ""
+msgstr "Greška zapisivanja sadržaja jednokratne datoteke “%s” u strujanje:"
 
 #: gio/gdbusaddress.c:981
 msgid "The given address is empty"
-msgstr ""
+msgstr "Navedena adresa je prazna"
 
 #: gio/gdbusaddress.c:1094
 #, c-format
