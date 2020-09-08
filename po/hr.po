@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-09-06 11:28+0000\n"
-"PO-Revision-Date: 2020-09-08 18:08+0200\n"
+"PO-Revision-Date: 2020-09-08 23:16+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -823,7 +823,7 @@ msgstr "Obrađena vrijednost “%s” za varijantu nije valjan D-Bus potpis"
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
-"Greška pri deserializaciji GVariante s nizom vrste \"% s\" iz D-Bus formata "
+"Greška pri deserijalizaciji GVariante s nizom vrste \"% s\" iz D-Bus formata "
 "provodnika"
 
 #: gio/gdbusmessage.c:2110
@@ -873,6 +873,7 @@ msgstr "Nemoguća deserijalizacija poruke: "
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr ""
+"Greška serijalizacije GVariante s nizom vrste “%s” u D-Bus formata provodnika"
 
 #: gio/gdbusmessage.c:2727
 #, c-format
@@ -1962,7 +1963,7 @@ msgstr ""
 
 #: gio/gio-tool-monitor.c:47
 msgid "Watch for mount events"
-msgstr "NAdgledaj događaje montiranja"
+msgstr "Nadgledaj događaje montiranja"
 
 #: gio/gio-tool-monitor.c:208
 msgid "Monitor files or directories for changes."
