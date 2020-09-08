@@ -1257,13 +1257,17 @@ g_uri_parse_relative (GUri         *base_uri,
                              &uri->host, &uri->port,
                              &uri->path, &uri->query, &uri->fragment,
                              error))
-    goto fail;
+    {
+      g_uri_unref (uri);
+      return NULL;
+    }
 
   if (!uri->scheme && !base_uri)
     {
       g_set_error_literal (error, G_URI_ERROR, G_URI_ERROR_FAILED,
                            _("URI is not absolute, and no base URI was provided"));
-      goto fail;
+      g_uri_unref (uri);
+      return NULL;
     }
 
   if (base_uri)
@@ -1326,11 +1330,6 @@ g_uri_parse_relative (GUri         *base_uri,
     }
 
   return g_steal_pointer (&uri);
-
- fail:
-  if (uri)
-    g_uri_unref (uri);
-  return NULL;
 }
 
 /**
