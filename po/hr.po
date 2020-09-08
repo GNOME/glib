@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-09-06 11:28+0000\n"
-"PO-Revision-Date: 2020-09-07 23:54+0200\n"
+"PO-Revision-Date: 2020-09-08 18:08+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -486,26 +486,27 @@ msgstr "Navedena adresa je prazna"
 #: gio/gdbusaddress.c:1094
 #, c-format
 msgid "Cannot spawn a message bus when setuid"
-msgstr ""
+msgstr "Nemoguće pokretanje sabirnice poruke pri podešavanju uid-a"
 
 #: gio/gdbusaddress.c:1101
 msgid "Cannot spawn a message bus without a machine-id: "
-msgstr ""
+msgstr "Nemoguće pokretanje sabirnice poruke bez id-računala: "
 
 #: gio/gdbusaddress.c:1108
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
-msgstr ""
+msgstr "Nemoguće automatsko pokretanje bez X11 $DISPLAY"
 
 #: gio/gdbusaddress.c:1150
 #, c-format
 msgid "Error spawning command line “%s”: "
-msgstr ""
+msgstr "Greška pokretanja naredbenog redka “%s”: "
 
 #: gio/gdbusaddress.c:1219
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
+"Nemoguće otkrivanje adrese sabirnice sesije (nije implementirano za ovaj OS)"
 
 #: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7192
 #, c-format
@@ -513,113 +514,116 @@ msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "— unknown value “%s”"
 msgstr ""
+"Nemoguće otkrivanje adrese sabirnice iz DBUS_STARTER_BUS_TYPE varijable "
+"okruženja — nepoznata vrijednost “%s”"
 
 #: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7201
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr ""
+"Nemoguće otkrivanje adrese sabirnice zato jer DBUS_STARTER_BUS_TYPE "
+"varijabla okruženja nije postavljena"
 
 #: gio/gdbusaddress.c:1376
 #, c-format
 msgid "Unknown bus type %d"
-msgstr ""
+msgstr "Nepoznata vrsta sabirnice %d"
 
 #: gio/gdbusauth.c:294
 msgid "Unexpected lack of content trying to read a line"
-msgstr ""
+msgstr "Neočekivani nedostatak sadržaja pri čitanju redka"
 
 #: gio/gdbusauth.c:338
 msgid "Unexpected lack of content trying to (safely) read a line"
-msgstr ""
+msgstr "Neočekivani nedostatak sadržaja pri (sigurnom ) čitanju redka"
 
 #: gio/gdbusauth.c:482
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
+"Iscrpljeni su svi dostupni mehanizmi ovjere (isprobano: %s) (dostupno: %s)"
 
 #: gio/gdbusauth.c:1167
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
-msgstr ""
+msgstr "Poništeno putem GDBusAuthObserver::authorize-authenticated-peer"
 
 #: gio/gdbusauthmechanismsha1.c:265
-#, fuzzy, c-format
-#| msgid "Error opening directory '%s': %s"
+#, c-format
 msgid "Error when getting information for directory “%s”: %s"
-msgstr "Greška pri otvaranju mape '%s': %s"
+msgstr "Greška pri dobivanju informacija za direktorij “%s”: %s"
 
 #: gio/gdbusauthmechanismsha1.c:280
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
+"Dozvole na direktoriju “%s” su oštećene. Očekivano dozvole 0700, dobivene 0%o"
 
 #: gio/gdbusauthmechanismsha1.c:310
-#, fuzzy, c-format
-#| msgid "Error opening directory '%s': %s"
+#, c-format
 msgid "Error creating directory “%s”: %s"
-msgstr "Greška pri otvaranju mape '%s': %s"
+msgstr "Greška stvaranja direktorija “%s”: %s"
 
 #: gio/gdbusauthmechanismsha1.c:355
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
-msgstr ""
+msgstr "Greška otvaranja skupa ključeva “%s” za čitanje: "
 
 #: gio/gdbusauthmechanismsha1.c:378 gio/gdbusauthmechanismsha1.c:700
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
-msgstr ""
+msgstr "Redak %d skupa ključeva na “%s” sa sadržajem “%s” je oštećen"
 
 #: gio/gdbusauthmechanismsha1.c:392 gio/gdbusauthmechanismsha1.c:714
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
+"Prvi token redka %d skupa ključeva na “%s” sa sadržajem “%s” je oštećen"
 
 #: gio/gdbusauthmechanismsha1.c:406 gio/gdbusauthmechanismsha1.c:728
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
+"Drugi token redka %d skupa ključeva na “%s” sa sadržajem “%s” je oštećen"
 
 #: gio/gdbusauthmechanismsha1.c:430
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
-msgstr ""
+msgstr "Nije pronađen kolačić s ID-ijem %d u skupu ključeva na “%s”"
 
 #: gio/gdbusauthmechanismsha1.c:476
-#, fuzzy, c-format
-#| msgid "Error reading file '%s': %s"
+#, c-format
 msgid "Error creating lock file “%s”: %s"
-msgstr "Greška pri čitanju datoteke '%s': %s"
+msgstr "Greška stvaranja datoteke zaključavanja “%s”: %s"
 
 #: gio/gdbusauthmechanismsha1.c:540
-#, fuzzy, c-format
-#| msgid "Error reading file '%s': %s"
+#, c-format
 msgid "Error deleting stale lock file “%s”: %s"
-msgstr "Greška pri čitanju datoteke '%s': %s"
+msgstr "Greška brisanja zaostale datoteke zaključavanja “%s”: %s"
 
 #: gio/gdbusauthmechanismsha1.c:579
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
-msgstr ""
+msgstr "Greška zatvaranja (nepovezane) datoteke zaključavanja “%s”: %s"
 
 #: gio/gdbusauthmechanismsha1.c:590
-#, fuzzy, c-format
-#| msgid "Error reading file '%s': %s"
+#, c-format
 msgid "Error unlinking lock file “%s”: %s"
-msgstr "Greška pri čitanju datoteke '%s': %s"
+msgstr "Greška uklanjanja poveznice datoteke zaključavanja “%s”: %s"
 
 #: gio/gdbusauthmechanismsha1.c:667
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
-msgstr ""
+msgstr "Greška otvaranja skupa ključeva “%s” za zapisivanje: "
 
 #: gio/gdbusauthmechanismsha1.c:865
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
-msgstr ""
+msgstr "(Dodatno, oslobađanje zaključavanja za “%s” je isto neuspjelo: %s) "
 
 #: gio/gdbusconnection.c:595 gio/gdbusconnection.c:2391
 msgid "The connection is closed"
@@ -633,128 +637,136 @@ msgstr "Vrijeme isteka dostignuto"
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
+"Nepodržane oznake pronađene pri izgradnje povezivanja od strane klijenta"
 
 #: gio/gdbusconnection.c:4163 gio/gdbusconnection.c:4510
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
+"Nema takvog sučelja “org.freedesktop.DBus.Properties” na putanji objekta %s"
 
 #: gio/gdbusconnection.c:4305
 #, c-format
 msgid "No such property “%s”"
-msgstr ""
+msgstr "Nema takvog svojstva “%s”"
 
 #: gio/gdbusconnection.c:4317
 #, c-format
 msgid "Property “%s” is not readable"
-msgstr ""
+msgstr "Svojstvo “%s” nije čitljivo"
 
 #: gio/gdbusconnection.c:4328
 #, c-format
 msgid "Property “%s” is not writable"
-msgstr ""
+msgstr "Svojstvo “%s” nije zapisivo"
 
 #: gio/gdbusconnection.c:4348
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
+"Greška postavljanja svojstva “%s”: Očekivana je vrsta “%s” ali je dobivena "
+"“%s”"
 
 #: gio/gdbusconnection.c:4453 gio/gdbusconnection.c:4661
 #: gio/gdbusconnection.c:6632
 #, c-format
 msgid "No such interface “%s”"
-msgstr ""
+msgstr "Nema takvog sučelja “%s”"
 
 #: gio/gdbusconnection.c:4879 gio/gdbusconnection.c:7141
 #, c-format
 msgid "No such interface “%s” on object at path %s"
-msgstr ""
+msgstr "Nema takvog sučelja “%s” na putanji objekta %s"
 
 #: gio/gdbusconnection.c:4977
 #, c-format
 msgid "No such method “%s”"
-msgstr ""
+msgstr "Nema takve metode “%s”"
 
 #: gio/gdbusconnection.c:5008
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
-msgstr ""
+msgstr "Vrsta poruke, “%s”, ne podudara se s očekivanom vrstom “%s”"
 
 #: gio/gdbusconnection.c:5206
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
-msgstr ""
+msgstr "Objekt je već izvezen za sučelje %s na %s"
 
 #: gio/gdbusconnection.c:5432
 #, c-format
 msgid "Unable to retrieve property %s.%s"
-msgstr ""
+msgstr "Nemoguće dobivanju svojstva %s.%s"
 
 #: gio/gdbusconnection.c:5488
 #, c-format
 msgid "Unable to set property %s.%s"
-msgstr ""
+msgstr "Nemoguće postavljanje svojstva %s.%s"
 
 #: gio/gdbusconnection.c:5666
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
-msgstr ""
+msgstr "Metoda “%s” je vratio vrstu “%s”, ali je očekivano “%s”"
 
 #: gio/gdbusconnection.c:6743
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
-msgstr ""
+msgstr "Metoda “%s” na sučelju “%s” s potpisom “%s” ne posoji"
 
 #: gio/gdbusconnection.c:6864
 #, c-format
 msgid "A subtree is already exported for %s"
-msgstr ""
+msgstr "Podstablo je već izvezeno za %s"
 
 #: gio/gdbusmessage.c:1255
 msgid "type is INVALID"
-msgstr ""
+msgstr "vrsta je NEVALJANA"
 
 #: gio/gdbusmessage.c:1266
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
-msgstr ""
+msgstr "METHOD_CALL poruka: PATH ili MEMBER polja zaglavlja nedostaju"
 
 #: gio/gdbusmessage.c:1277
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
-msgstr ""
+msgstr "METHOD_RETURN poruka: REPLY_SERIAL polja zaglavlja nedostaju"
 
 #: gio/gdbusmessage.c:1289
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
-msgstr ""
+msgstr "ERROR poruka: REPLY_SERIAL ili ERROR_NAME polja zaglavlja nedostaju"
 
 #: gio/gdbusmessage.c:1302
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
-msgstr ""
+msgstr "SIGNAL poruka: PATH, INTERFACE ili MEMBER polja zaglavlja nedostaju"
 
 #: gio/gdbusmessage.c:1310
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
 msgstr ""
+"SIGNAL poruka: PATH polje zaglavlja koristi rezerviranu vrijednost /org/"
+"freedesktop/DBus/Local"
 
 #: gio/gdbusmessage.c:1318
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
+"SIGNAL poruka: INTERFACE polje zaglavlja koristi rezerviranu vrijednost org."
+"freedesktop.DBus.Local"
 
 #: gio/gdbusmessage.c:1366 gio/gdbusmessage.c:1426
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Pokušaj čitanja %lu bajta, ali je dobiven samo %lu"
+msgstr[1] "Pokušaj čitanja %lu bajta, ali je dobiven samo %lu"
+msgstr[2] "Pokušaj čitanja %lu bajta, ali je dobiven samo %lu"
 
 #: gio/gdbusmessage.c:1380
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
-msgstr ""
+msgstr "Očekivan je nula bajt nakon izraza “%s”, ali je pronađen bajt %d"
 
 #: gio/gdbusmessage.c:1399
 #, c-format
@@ -762,20 +774,22 @@ msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
 "(length of string is %d). The valid UTF-8 string up until that point was “%s”"
 msgstr ""
+"Očekivan je valjani UTF-8 niz ali su pronađeni nevaljani bajti u pomaku "
+"bajta %d (duljina niza je %d). Valjani UTF-8 niz do te točke je bio “%s”"
 
 #: gio/gdbusmessage.c:1463 gio/gdbusmessage.c:1711 gio/gdbusmessage.c:1900
 msgid "Value nested too deeply"
-msgstr ""
+msgstr "Vrijednost je ugniježđena preduboko"
 
 #: gio/gdbusmessage.c:1609
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
-msgstr ""
+msgstr "Obrađena vrijednost “%s” nije valjana D-Bus putanja objekta"
 
 #: gio/gdbusmessage.c:1631
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
-msgstr ""
+msgstr "Obrađena vrijednost “%s” nije valjani D-Bus potpis"
 
 #: gio/gdbusmessage.c:1678
 #, c-format
@@ -784,8 +798,11 @@ msgid ""
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
+"Pronađen je niz duljine %u bajta. Najveća duljina je is 2<<26 bajta (64 MiB)."
 msgstr[1] ""
+"Pronađen je niz duljine %u bajta. Najveća duljina je is 2<<26 bajta (64 MiB)."
 msgstr[2] ""
+"Pronađen je niz duljine %u bajta. Najveća duljina je is 2<<26 bajta (64 MiB)."
 
 #: gio/gdbusmessage.c:1698
 #, c-format
@@ -793,17 +810,21 @@ msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
 "bytes, but found to be %u bytes in length"
 msgstr ""
+"Pronađen je niz vrste “a%c”, očekivano je da ima duljinu umnoška od %u "
+"bajta, ali je pronađeno da je duljina %u bajta"
 
 #: gio/gdbusmessage.c:1884
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
-msgstr ""
+msgstr "Obrađena vrijednost “%s” za varijantu nije valjan D-Bus potpis"
 
 #: gio/gdbusmessage.c:1925
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
+"Greška pri deserializaciji GVariante s nizom vrste \"% s\" iz D-Bus formata "
+"provodnika"
 
 #: gio/gdbusmessage.c:2110
 #, c-format
@@ -811,37 +832,41 @@ msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
 "0x%02x"
 msgstr ""
+"Nevaljana endian vrijednost. Očekivana je 0x6c (“l”) ili 0x42 (“B”) ali je "
+"pronađena vrijednost 0x%02x"
 
 #: gio/gdbusmessage.c:2123
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
+"Nevaljana inačica glavnog protokola. Očekivana je 1 ali je pronađena %d"
 
 #: gio/gdbusmessage.c:2177 gio/gdbusmessage.c:2773
 msgid "Signature header found but is not of type signature"
-msgstr ""
+msgstr "Zaglavlje potpisa je pronađeno ali nije prikladna vrsta potpisa"
 
 #: gio/gdbusmessage.c:2189
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
+"Zaglavlje potpisa s potpisom “%s” je pronađeno ali tijelo poruke je prazno"
 
 #: gio/gdbusmessage.c:2204
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
-msgstr ""
+msgstr "Obrađena vrijednost “%s” nije valjan D-Bus potpis (za tijelo)"
 
 #: gio/gdbusmessage.c:2236
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Nema zaglavlja potpisa u poruci ali tijelo poruke je %u bajt"
+msgstr[1] "Nema zaglavlja potpisa u poruci ali tijelo poruke je %u bajta"
+msgstr[2] "Nema zaglavlja potpisa u poruci ali tijelo poruke je %u bajta"
 
 #: gio/gdbusmessage.c:2246
 msgid "Cannot deserialize message: "
-msgstr ""
+msgstr "Nemoguća deserijalizacija poruke: "
 
 #: gio/gdbusmessage.c:2590
 #, c-format
