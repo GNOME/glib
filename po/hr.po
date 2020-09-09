@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: glib 0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-09-06 11:28+0000\n"
-"PO-Revision-Date: 2020-09-08 23:16+0200\n"
+"PO-Revision-Date: 2020-09-09 21:23+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -682,7 +682,7 @@ msgstr "Nema takvog sučelja “%s” na putanji objekta %s"
 #: gio/gdbusconnection.c:4977
 #, c-format
 msgid "No such method “%s”"
-msgstr "Nema takve metode “%s”"
+msgstr "Nema takvog načina “%s”"
 
 #: gio/gdbusconnection.c:5008
 #, c-format
@@ -707,12 +707,12 @@ msgstr "Nemoguće postavljanje svojstva %s.%s"
 #: gio/gdbusconnection.c:5666
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
-msgstr "Metoda “%s” je vratio vrstu “%s”, ali je očekivano “%s”"
+msgstr "Način “%s” je vratio vrstu “%s”, ali je očekivano “%s”"
 
 #: gio/gdbusconnection.c:6743
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
-msgstr "Metoda “%s” na sučelju “%s” s potpisom “%s” ne posoji"
+msgstr "Način “%s” na sučelju “%s” s potpisom “%s” ne posoji"
 
 #: gio/gdbusconnection.c:6864
 #, c-format
@@ -880,15 +880,16 @@ msgstr ""
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr ""
+"Broj opisnika datoteke u poruci (%d) razlikuje se od polja zaglavlja (%d)"
 
 #: gio/gdbusmessage.c:2735
 msgid "Cannot serialize message: "
-msgstr ""
+msgstr "Nemoguća serijalizacija poruke: "
 
 #: gio/gdbusmessage.c:2788
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
-msgstr ""
+msgstr "Tijelo poruke ima potpis “%s”, ali ne sadrži zaglavlje potpisa"
 
 #: gio/gdbusmessage.c:2798
 #, c-format
@@ -896,49 +897,50 @@ msgid ""
 "Message body has type signature “%s” but signature in the header field is "
 "“%s”"
 msgstr ""
+"Tijelo poruke ima vrstu potpisa “%s”, ali potpis u polju zaglavlja je “%s”"
 
 #: gio/gdbusmessage.c:2814
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
-msgstr ""
+msgstr "Tijelo poruke je prazno, ali potpis u polju zaglavlja je “(%s)”"
 
 #: gio/gdbusmessage.c:3367
 #, c-format
 msgid "Error return with body of type “%s”"
-msgstr ""
+msgstr "Vraćena je greška s tijelom vrste “%s”"
 
 #: gio/gdbusmessage.c:3375
 msgid "Error return with empty body"
-msgstr ""
+msgstr "Vraćena je greška s praznim tijelom"
 
 #: gio/gdbusprivate.c:2244
 #, c-format
 msgid "(Type any character to close this window)\n"
-msgstr ""
+msgstr "(Upišite bilo kakav znak za zatvaranje ovog prozora)\n"
 
 #: gio/gdbusprivate.c:2418
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
-msgstr ""
+msgstr "Dbus sesije nije pokrenut, automatsko pokretanje neuspjelo"
 
 #: gio/gdbusprivate.c:2441
 #, c-format
 msgid "Unable to get Hardware profile: %s"
-msgstr ""
+msgstr "Neuspjelo dobivanje profila hardvera: %s"
 
 #: gio/gdbusprivate.c:2486
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr ""
+msgstr "Nemoguće učitavanje /var/lib/dbus/machine-id ili /etc/machine-id: "
 
 #: gio/gdbusproxy.c:1562
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
-msgstr ""
+msgstr "Greška poziva StartServiceByName za %s: "
 
 #: gio/gdbusproxy.c:1585
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
-msgstr ""
+msgstr "Neočekivan odgovor %d od StartServiceByName(\"%s\") načina"
 
 #: gio/gdbusproxy.c:2688 gio/gdbusproxy.c:2823
 #, c-format
@@ -946,32 +948,31 @@ msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
 "and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
+"Nemoguć poziv načina; proxy je za dobro poznati naziv %s bez vlasnika, a "
+"proxy je konstruiran sa G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START oznakom"
 
 #: gio/gdbusserver.c:755
-#, fuzzy
-#| msgid "Symbolic links not supported"
 msgid "Abstract namespace not supported"
-msgstr "Nisu podržane simboličke veze"
+msgstr "Apstraktan prostor naziva nije podržan"
 
 #: gio/gdbusserver.c:848
 msgid "Cannot specify nonce file when creating a server"
-msgstr ""
+msgstr "Nemoguće određivanje jednokratne datoteke pri stvaranju poslužitelja"
 
 #: gio/gdbusserver.c:930
-#, fuzzy, c-format
-#| msgid "Error reading file '%s': %s"
+#, c-format
 msgid "Error writing nonce file at “%s”: %s"
-msgstr "Greška pri čitanju datoteke '%s': %s"
+msgstr "Greška zapisivanja jednokratne datoteke na “%s”: %s"
 
 #: gio/gdbusserver.c:1103
 #, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
-msgstr ""
+msgstr "Izraz “%s” nije valjan D-Bus GUID"
 
 #: gio/gdbusserver.c:1143
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
-msgstr ""
+msgstr "Nemoguće osluškivanje nepodržanog prijenosa “%s”"
 
 #: gio/gdbus-tool.c:107
 #, c-format
@@ -986,59 +987,68 @@ msgid ""
 "\n"
 "Use “%s COMMAND --help” to get help on each command.\n"
 msgstr ""
+"Naredbe:\n"
+"  help         Prikazuje ove informacije pomoći\n"
+"  introspect   Preispituje udaljeni objekt\n"
+"  monitor      Nadgleda udaljeni objekt\n"
+"  call         Poziva način na udaljenom objektu\n"
+"  emit         Emitira signal\n"
+"  wait         Čekaj da se pojavi naziv sabirnice\n"
+"\n"
+"Koristite “%s NAREDBA --help” za dobivanje pomoći pojedine naredbe.\n"
 
 #: gio/gdbus-tool.c:197 gio/gdbus-tool.c:264 gio/gdbus-tool.c:336
 #: gio/gdbus-tool.c:360 gio/gdbus-tool.c:850 gio/gdbus-tool.c:1187
 #: gio/gdbus-tool.c:1672
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s\n"
 msgstr "Greška: %s\n"
 
 #: gio/gdbus-tool.c:208 gio/gdbus-tool.c:277 gio/gdbus-tool.c:1688
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
-msgstr ""
+msgstr "Greška preispitivanja XML-a: %s\n"
 
 #: gio/gdbus-tool.c:246
 #, c-format
 msgid "Error: %s is not a valid name\n"
-msgstr ""
+msgstr "Greška: %s nije valjani naziv\n"
 
 #: gio/gdbus-tool.c:394
 msgid "Connect to the system bus"
-msgstr ""
+msgstr "Povezivanje sa sabirnicom sustava"
 
 #: gio/gdbus-tool.c:395
 msgid "Connect to the session bus"
-msgstr ""
+msgstr "Povezivanje sa sabirnicom sesije"
 
 #: gio/gdbus-tool.c:396
 msgid "Connect to given D-Bus address"
-msgstr ""
+msgstr "Povezivanje sa zadanom D-Bus adresom"
 
 #: gio/gdbus-tool.c:406
 msgid "Connection Endpoint Options:"
-msgstr ""
+msgstr "Mogućnosti krajnje točke povezivanja:"
 
 #: gio/gdbus-tool.c:407
 msgid "Options specifying the connection endpoint"
-msgstr ""
+msgstr "Mogućnosti koje određuju krajnje točke povezivanja"
 
 #: gio/gdbus-tool.c:430
 #, c-format
 msgid "No connection endpoint specified"
-msgstr ""
+msgstr "Krajnja točka povezivanja nije određena"
 
 #: gio/gdbus-tool.c:440
 #, c-format
 msgid "Multiple connection endpoints specified"
-msgstr ""
+msgstr "Više krajnjih točka povezivanja je određeno"
 
 #: gio/gdbus-tool.c:513
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
-msgstr ""
+msgstr "Upozorenje: Prema podacima preispitivanja, sučelje “%s” ne postoji\n"
 
 #: gio/gdbus-tool.c:522
 #, c-format
@@ -1046,182 +1056,187 @@ msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
 "interface “%s”\n"
 msgstr ""
+"Upozorenje: Prema podacima preispitivanja, način “%s” ne postoji na sučelju "
+"“%s”\n"
 
 #: gio/gdbus-tool.c:584
 msgid "Optional destination for signal (unique name)"
-msgstr ""
+msgstr "Dodatno odredište za signal (jedinstveni naziv)"
 
 #: gio/gdbus-tool.c:585
 msgid "Object path to emit signal on"
-msgstr ""
+msgstr "Putanja objekta na koje se emitira signal"
 
 #: gio/gdbus-tool.c:586
 msgid "Signal and interface name"
-msgstr ""
+msgstr "Naziv signala i sučelja"
 
 #: gio/gdbus-tool.c:619
 msgid "Emit a signal."
-msgstr ""
+msgstr "Emitiraj signal."
 
 #: gio/gdbus-tool.c:674 gio/gdbus-tool.c:981 gio/gdbus-tool.c:1775
 #: gio/gdbus-tool.c:2007 gio/gdbus-tool.c:2227
 #, c-format
 msgid "Error connecting: %s\n"
-msgstr ""
+msgstr "Greška povezivanja: %s\n"
 
 #: gio/gdbus-tool.c:694
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
-msgstr ""
+msgstr "Greška: %s nije valjan jedinstven naziv sabirnice.\n"
 
 #: gio/gdbus-tool.c:713 gio/gdbus-tool.c:1024 gio/gdbus-tool.c:1818
 msgid "Error: Object path is not specified\n"
-msgstr ""
+msgstr "Greška: Putanja objekta nije navedena\n"
 
 #: gio/gdbus-tool.c:736 gio/gdbus-tool.c:1044 gio/gdbus-tool.c:1838
 #: gio/gdbus-tool.c:2078
 #, c-format
 msgid "Error: %s is not a valid object path\n"
-msgstr ""
+msgstr "Greška: %s nije valjana putanja objekta\n"
 
 #: gio/gdbus-tool.c:756
 msgid "Error: Signal name is not specified\n"
-msgstr ""
+msgstr "Greška: Naziv signala nije naveden\n"
 
 #: gio/gdbus-tool.c:770
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
-msgstr ""
+msgstr "Greška: Naziv signala “%s” nije valjan\n"
 
 #: gio/gdbus-tool.c:782
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
-msgstr ""
+msgstr "Greška: %s nije valjani naziv sučelja\n"
 
 #: gio/gdbus-tool.c:788
 #, c-format
 msgid "Error: %s is not a valid member name\n"
-msgstr ""
+msgstr "Greška: %s nije valjani naziv člana\n"
 
 #. Use the original non-"parse-me-harder" error
 #: gio/gdbus-tool.c:825 gio/gdbus-tool.c:1156
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr ""
+msgstr "Greška obrade parametra %d: %s\n"
 
 #: gio/gdbus-tool.c:857
 #, c-format
 msgid "Error flushing connection: %s\n"
-msgstr ""
+msgstr "Greška pražnjenja povezivanja: %s\n"
 
 #: gio/gdbus-tool.c:884
 msgid "Destination name to invoke method on"
-msgstr ""
+msgstr "Naziv odredišta za poziv načina"
 
 #: gio/gdbus-tool.c:885
 msgid "Object path to invoke method on"
-msgstr ""
+msgstr "Putanja objekta za poziv načina"
 
 #: gio/gdbus-tool.c:886
 msgid "Method and interface name"
-msgstr ""
+msgstr "Naziv načina i sučelja"
 
 #: gio/gdbus-tool.c:887
 msgid "Timeout in seconds"
-msgstr ""
+msgstr "Vrijeme čekanja u sekundama"
 
 #: gio/gdbus-tool.c:926
 msgid "Invoke a method on a remote object."
-msgstr ""
+msgstr "Pozovi način na udaljenom objektu."
 
 #: gio/gdbus-tool.c:998 gio/gdbus-tool.c:1792 gio/gdbus-tool.c:2032
 msgid "Error: Destination is not specified\n"
-msgstr ""
+msgstr "Greška: Odredište nije navedeno\n"
 
 #: gio/gdbus-tool.c:1009 gio/gdbus-tool.c:1809 gio/gdbus-tool.c:2043
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
-msgstr ""
+msgstr "Greška: %s nije valjan naziv sabirnice\n"
 
 #: gio/gdbus-tool.c:1059
 msgid "Error: Method name is not specified\n"
-msgstr ""
+msgstr "Greška: Naziv načina nije naveden\n"
 
 #: gio/gdbus-tool.c:1070
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
-msgstr ""
+msgstr "Greška: Naziv načina “%s” je nevaljan\n"
 
 #: gio/gdbus-tool.c:1148
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
-msgstr ""
+msgstr "Greška obrade parametra %d vrste “%s”: %s\n"
 
 #: gio/gdbus-tool.c:1634
 msgid "Destination name to introspect"
-msgstr ""
+msgstr "Naziv odredišta za preispitivanje"
 
 #: gio/gdbus-tool.c:1635
 msgid "Object path to introspect"
-msgstr ""
+msgstr "Putanja objekta za preispitivanje"
 
 #: gio/gdbus-tool.c:1636
 msgid "Print XML"
-msgstr ""
+msgstr "Prikaži XML"
 
 #: gio/gdbus-tool.c:1637
 msgid "Introspect children"
-msgstr ""
+msgstr "Preispitivanje podsadržaja"
 
 #: gio/gdbus-tool.c:1638
 msgid "Only print properties"
-msgstr ""
+msgstr "Samo prikaži svojstva"
 
 #: gio/gdbus-tool.c:1727
 msgid "Introspect a remote object."
-msgstr ""
+msgstr "Preispitivanje udaljenog objekta."
 
 #: gio/gdbus-tool.c:1933
 msgid "Destination name to monitor"
-msgstr ""
+msgstr "Naziv odredišta za nadgledanje"
 
 #: gio/gdbus-tool.c:1934
 msgid "Object path to monitor"
-msgstr ""
+msgstr "Putanja objekta za nadgledanje"
 
 #: gio/gdbus-tool.c:1959
 msgid "Monitor a remote object."
-msgstr ""
+msgstr "Nadgledaj udaljeni objekt."
 
 #: gio/gdbus-tool.c:2017
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr ""
+"Greška: nemoguće nadgledanje povezivanja sabirnice koja nije za poruke\n"
 
 #: gio/gdbus-tool.c:2141
 msgid "Service to activate before waiting for the other one (well-known name)"
-msgstr ""
+msgstr "Usluga za aktiviranje prije čekanja druge usluge (dobro poznat naziv)"
 
 #: gio/gdbus-tool.c:2144
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
 msgstr ""
+"Vrijeme čekanja prije zatvaranja s greškom (sekunde), O za vrijeme čekanja "
+"(zadano)"
 
 #: gio/gdbus-tool.c:2192
 msgid "[OPTION…] BUS-NAME"
-msgstr ""
+msgstr "[MOGUĆNOST...] NAZIV-SABIRNICE"
 
 #: gio/gdbus-tool.c:2193
 msgid "Wait for a bus name to appear."
-msgstr ""
+msgstr "Čekaj da se pojavi naziv sabirnice."
 
 #: gio/gdbus-tool.c:2269
 msgid "Error: A service to activate for must be specified.\n"
-msgstr ""
+msgstr "Greška: Usluga za aktiviranje mora biti navedena.\n"
 
 #: gio/gdbus-tool.c:2274
 msgid "Error: A service to wait for must be specified.\n"
-msgstr ""
+msgstr "Greška: Usluga koja se čeka mora biti navedena.\n"
 
 #: gio/gdbus-tool.c:2279
 msgid "Error: Too many arguments.\n"
@@ -1230,7 +1245,7 @@ msgstr "Greška: previše argumenata.\n"
 #: gio/gdbus-tool.c:2287 gio/gdbus-tool.c:2294
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
-msgstr ""
+msgstr "Greška: %s nije valjan dobro poznat naziv sabirnice\n"
 
 #: gio/gdesktopappinfo.c:2073 gio/gdesktopappinfo.c:4893
 msgid "Unnamed"
@@ -1242,31 +1257,31 @@ msgstr "Datoteka radne površine nema navedeno Exec polje"
 
 #: gio/gdesktopappinfo.c:2763
 msgid "Unable to find terminal required for application"
-msgstr ""
+msgstr "Nemoguć pronalazak potrebnog terminala za aplikaciju"
 
 #: gio/gdesktopappinfo.c:3414
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
-msgstr ""
+msgstr "Nemoguće stvaranje mape podešavanja aplikacije korisnika %s: %s"
 
 #: gio/gdesktopappinfo.c:3418
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
-msgstr ""
+msgstr "Nemoguće stvaranje mape MIME podešavanja korisnika %s: %s"
 
 #: gio/gdesktopappinfo.c:3660 gio/gdesktopappinfo.c:3684
 msgid "Application information lacks an identifier"
-msgstr ""
+msgstr "Informacijama aplikacije nedostaje identifikator"
 
 #: gio/gdesktopappinfo.c:3920
 #, c-format
 msgid "Can’t create user desktop file %s"
-msgstr ""
+msgstr "Nemoguće stvaranje datoteke radne površine korisnika %s"
 
 #: gio/gdesktopappinfo.c:4056
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "Prilagođena definicija za %s"
 
 #: gio/gdrive.c:417
 msgid "drive doesn’t implement eject"
