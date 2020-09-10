@@ -1,3 +1,19 @@
+Overview of changes in GLib 2.66.0
+==================================
+
+* Bugs fixed:
+ - #2200 missing tab in makefile rule
+ - !1639 guri: Fix user passed to g_uri_split_with_user() not being NULL'd
+
+* Translation updates:
+ - Croatian
+ - Hungarian
+ - Italian
+ - Serbian
+ - Slovak
+ - Swedish
+
+
 Overview of changes in GLib 2.65.3
 ==================================
 
