@@ -2244,7 +2244,7 @@ script_execute (const gchar *file,
                 gchar      **envp)
 {
   /* Count the arguments.  */
-  int argc = 0;
+  gsize argc = 0;
   while (argv[argc])
     ++argc;
 
