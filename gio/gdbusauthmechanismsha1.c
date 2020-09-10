@@ -43,6 +43,37 @@
 
 #include "glibintl.h"
 
+/*
+ * Arbitrary timeouts for keys in the keyring.
+ * For interoperability, these match the reference implementation, libdbus.
+ * To make them easier to compare, their names also match libdbus
+ * (see dbus/dbus-keyring.c).
+ */
+
+/*
+ * Maximum age of a key before we create a new key to use in challenges:
+ * 5 minutes.
+ */
+#define NEW_KEY_TIMEOUT_SECONDS (60*5)
+
+/*
+ * Time before we drop a key from the keyring: 7 minutes.
+ * Authentication will succeed if it takes less than
+ * EXPIRE_KEYS_TIMEOUT_SECONDS - NEW_KEY_TIMEOUT_SECONDS (2 minutes)
+ * to complete.
+ * The spec says "delete any cookies that are old (the timeout can be
+ * fairly short)".
+ */
+#define EXPIRE_KEYS_TIMEOUT_SECONDS (NEW_KEY_TIMEOUT_SECONDS + (60*2))
+
+/*
+ * Maximum amount of time a key can be in the future due to clock skew
+ * with a shared home directory: 5 minutes.
+ * The spec says "a reasonable time in the future".
+ */
+#define MAX_TIME_TRAVEL_SECONDS (60*5)
+
+
 struct _GDBusAuthMechanismSha1Private
 {
   gboolean is_client;
@@ -750,12 +781,8 @@ keyring_generate_entry (const gchar  *cookie_context,
             {
               /* Oddball case: entry is more recent than our current wall-clock time..
                * This is OK, it means that another server on another machine but with
-               * same $HOME wrote the entry.
-               *
-               * So discard the entry if it's more than 1 day in the future ("reasonable
-               * time in the future").
-               */
-              if (line_when - now > 24*60*60)
+               * same $HOME wrote the entry. */
+              if (line_when - now > MAX_TIME_TRAVEL_SECONDS)
                 {
                   keep_entry = FALSE;
                   _log ("Deleted SHA1 cookie from %" G_GUINT64_FORMAT " seconds in the future", line_when - now);
@@ -763,8 +790,8 @@ keyring_generate_entry (const gchar  *cookie_context,
             }
           else
             {
-              /* Discard entry if it's older than 15 minutes ("can be fairly short") */
-              if (now - line_when > 15*60)
+              /* Discard entry if it's too old. */
+              if (now - line_when > EXPIRE_KEYS_TIMEOUT_SECONDS)
                 {
                   keep_entry = FALSE;
                 }
@@ -782,13 +809,13 @@ keyring_generate_entry (const gchar  *cookie_context,
                                       line_when,
                                       tokens[2]);
               max_line_id = MAX (line_id, max_line_id);
-              /* Only reuse entry if not older than 10 minutes.
+              /* Only reuse entry if not older than 5 minutes.
                *
-               * (We need a bit of grace time compared to 15 minutes above.. otherwise
-               * there's a race where we reuse the 14min59.9 secs old entry and a
-               * split-second later another server purges the now 15 minute old entry.)
+               * (We need a bit of grace time compared to 7 minutes above.. otherwise
+               * there's a race where we reuse the 6min59.9 secs old entry and a
+               * split-second later another server purges the now 7 minute old entry.)
                */
-              if (now - line_when < 10 * 60)
+              if (now - line_when < NEW_KEY_TIMEOUT_SECONDS)
                 {
                   if (!have_id)
                     {
