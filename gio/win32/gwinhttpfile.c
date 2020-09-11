@@ -29,6 +29,7 @@
 #include "gio/gfile.h"
 #include "gio/gfileattribute.h"
 #include "gio/gfileinfo.h"
+#include "gio/gfileinfo-priv.h"
 #include "gwinhttpfile.h"
 #include "gwinhttpfileinputstream.h"
 #include "gwinhttpfileoutputstream.h"
@@ -175,6 +176,21 @@ g_winhttp_file_get_basename (GFile *file)
   g_free (basename);
 
   return retval;
+}
+
+static char *
+g_winhttp_file_get_display_name (GFile *file)
+{
+  char *basename;
+
+  /* FIXME: This could be improved by using a new g_utf16_make_valid() function
+   * to recover what we can from the URI, and then suffixing it with
+   * “ (invalid encoding)” as per g_filename_display_basename(). */
+  basename = g_winhttp_file_get_basename (file);
+  if (!basename)
+    return g_strdup (_(" (invalid encoding)"));
+
+  return g_steal_pointer (&basename);
 }
 
 static char *
@@ -512,6 +528,14 @@ g_winhttp_file_query_info (GFile                *file,
   basename = g_winhttp_file_get_basename (file);
   g_file_info_set_name (info, basename);
   g_free (basename);
+
+  if (_g_file_attribute_matcher_matches_id (matcher,
+                                            G_FILE_ATTRIBUTE_ID_STANDARD_DISPLAY_NAME))
+    {
+      char *display_name = g_winhttp_file_get_display_name (file);
+      g_file_info_set_display_name (info, display_name);
+      g_free (display_name);
+    }
 
   content_length = NULL;
   if (_g_winhttp_query_header (winhttp_file->vfs,
