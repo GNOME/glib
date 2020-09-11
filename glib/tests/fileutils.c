@@ -976,7 +976,7 @@ test_set_contents_full (void)
       gboolean use_strlen;
 
       gboolean expected_success;
-      GFileError expected_error;
+      gint expected_error;
     }
   tests[] =
     {
