@@ -995,7 +995,7 @@ g_get_host_name (void)
 
 #ifdef _SC_HOST_NAME_MAX
       max = sysconf (_SC_HOST_NAME_MAX);
-      if (max > 0 && max <= G_MAXSIZE - 1)
+      if (max > 0 && (gsize) max <= G_MAXSIZE - 1)
         size = (gsize) max + 1;
       else
 #ifdef HOST_NAME_MAX
