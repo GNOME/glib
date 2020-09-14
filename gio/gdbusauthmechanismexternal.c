@@ -189,14 +189,24 @@ data_matches_credentials (const gchar  *data,
   if (credentials == NULL)
     goto out;
 
-  if (data == NULL || data_len == 0)
-    goto out;
-
 #if defined(G_OS_UNIX)
   {
     gint64 alleged_uid;
     gchar *endp;
 
+    /* If we were unable to find out the uid, then nothing
+     * can possibly match it.  */
+    if (g_credentials_get_unix_user (credentials, NULL) == (uid_t) -1)
+      goto out;
+
+    /* An empty authorization identity means we want to be
+     * whatever identity the out-of-band credentials say we have
+     * (RFC 4422 appendix A.1). This effectively matches any uid. */
+    if (data == NULL || data_len == 0)
+      {
+        match = TRUE;
+        goto out;
+      }
     /* on UNIX, this is the uid as a string in base 10 */
     alleged_uid = g_ascii_strtoll (data, &endp, 10);
     if (*endp == '\0')
