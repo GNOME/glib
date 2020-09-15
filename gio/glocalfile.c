@@ -2703,7 +2703,8 @@ g_local_file_measure_size_of_file (gint           parent_fd,
 
 #if defined (AT_FDCWD)
   if (g_local_file_fstatat (parent_fd, name->data, AT_SYMLINK_NOFOLLOW,
-                            G_LOCAL_FILE_STAT_FIELD_BASIC_STATS, G_LOCAL_FILE_STAT_FIELD_ALL,
+                            G_LOCAL_FILE_STAT_FIELD_BASIC_STATS,
+                            G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_ATIME),
                             &buf) != 0)
     {
       int errsv = errno;
