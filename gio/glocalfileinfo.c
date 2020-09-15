@@ -961,52 +961,66 @@ set_info_from_stat (GFileInfo             *info,
 
   file_type = G_FILE_TYPE_UNKNOWN;
 
-  if (S_ISREG (_g_stat_mode (statbuf)))
-    file_type = G_FILE_TYPE_REGULAR;
-  else if (S_ISDIR (_g_stat_mode (statbuf)))
-    file_type = G_FILE_TYPE_DIRECTORY;
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_TYPE))
+    {
+      if (S_ISREG (_g_stat_mode (statbuf)))
+        file_type = G_FILE_TYPE_REGULAR;
+      else if (S_ISDIR (_g_stat_mode (statbuf)))
+        file_type = G_FILE_TYPE_DIRECTORY;
 #ifndef G_OS_WIN32
-  else if (S_ISCHR (_g_stat_mode (statbuf)) ||
-	   S_ISBLK (_g_stat_mode (statbuf)) ||
-	   S_ISFIFO (_g_stat_mode (statbuf))
+      else if (S_ISCHR (_g_stat_mode (statbuf)) ||
+               S_ISBLK (_g_stat_mode (statbuf)) ||
+               S_ISFIFO (_g_stat_mode (statbuf))
 #ifdef S_ISSOCK
-	   || S_ISSOCK (_g_stat_mode (statbuf))
+               || S_ISSOCK (_g_stat_mode (statbuf))
 #endif
-	   )
-    file_type = G_FILE_TYPE_SPECIAL;
+               )
+        file_type = G_FILE_TYPE_SPECIAL;
 #endif
 #ifdef S_ISLNK
-  else if (S_ISLNK (_g_stat_mode (statbuf)))
-    file_type = G_FILE_TYPE_SYMBOLIC_LINK;
+      else if (S_ISLNK (_g_stat_mode (statbuf)))
+        file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #elif defined (G_OS_WIN32)
-  else if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK ||
-           statbuf->reparse_tag == IO_REPARSE_TAG_MOUNT_POINT)
-    file_type = G_FILE_TYPE_SYMBOLIC_LINK;
+      else if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK ||
+               statbuf->reparse_tag == IO_REPARSE_TAG_MOUNT_POINT)
+        file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #endif
+    }
 
   g_file_info_set_file_type (info, file_type);
-  g_file_info_set_size (info, _g_stat_size (statbuf));
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_SIZE))
+    g_file_info_set_size (info, _g_stat_size (statbuf));
 
+  /* There doesn't seem to be a STATX_FOO bit for dev or rdev, so set those
+   * unconditionally */
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_DEVICE, _g_stat_dev (statbuf));
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_NLINK, _g_stat_nlink (statbuf));
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_NLINK))
+    _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_NLINK, _g_stat_nlink (statbuf));
 #ifndef G_OS_WIN32
   /* Pointless setting these on Windows even if they exist in the struct */
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_INODE, _g_stat_ino (statbuf));
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_UID, _g_stat_uid (statbuf));
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_GID, _g_stat_gid (statbuf));
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_INO))
+    _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_INODE, _g_stat_ino (statbuf));
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_UID))
+    _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_UID, _g_stat_uid (statbuf));
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_GID))
+    _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_GID, _g_stat_gid (statbuf));
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_RDEV, _g_stat_rdev (statbuf));
 #endif
   /* Mostly pointless on Windows.
    * Still, it allows for S_ISREG/S_ISDIR and IWRITE (read-only) checks.
    */
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_MODE, _g_stat_mode (statbuf));
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_MODE))
+    _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_MODE, _g_stat_mode (statbuf));
 #if defined (HAVE_STRUCT_STAT_ST_BLKSIZE)
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCK_SIZE, _g_stat_blksize (statbuf));
 #endif
 #if defined (HAVE_STRUCT_STAT_ST_BLOCKS)
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCKS, _g_stat_blocks (statbuf));
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_ALLOCATED_SIZE,
-                                           _g_stat_blocks (statbuf) * G_GUINT64_CONSTANT (512));
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_BLOCKS))
+    {
+      _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCKS, _g_stat_blocks (statbuf));
+      _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_ALLOCATED_SIZE,
+                                               _g_stat_blocks (statbuf) * G_GUINT64_CONSTANT (512));
+    }
 #elif defined (G_OS_WIN32)
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_ALLOCATED_SIZE,
                                            statbuf->allocated_size);
@@ -1019,12 +1033,15 @@ set_info_from_stat (GFileInfo             *info,
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS, statbuf->st_atim.tv_sec);
   _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_ACCESS_USEC, statbuf->st_atim.tv_nsec / 1000);
 #else
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, _g_stat_mtime (statbuf));
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_MTIME))
+    {
+      _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, _g_stat_mtime (statbuf));
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtimensec / 1000);
+      _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, statbuf->st_mtimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, _g_stat_mtim_nsec (statbuf) / 1000);
+      _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC, _g_stat_mtim_nsec (statbuf) / 1000);
 #endif
+    }
 
   if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_ATIME))
     {
@@ -1043,12 +1060,15 @@ set_info_from_stat (GFileInfo             *info,
    * https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/stat-functions#generic-text-routine-mappings
    * Thank you, Microsoft!
    */
-  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED, _g_stat_ctime (statbuf));
+  if (_g_stat_has_field (statbuf, G_LOCAL_FILE_STAT_FIELD_CTIME))
+    {
+      _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED, _g_stat_ctime (statbuf));
 #if defined (HAVE_STRUCT_STAT_ST_CTIMENSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, statbuf->st_ctimensec / 1000);
+      _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, statbuf->st_ctimensec / 1000);
 #elif defined (HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC)
-  _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, _g_stat_ctim_nsec (statbuf) / 1000);
+      _g_file_info_set_attribute_uint32_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_CHANGED_USEC, _g_stat_ctim_nsec (statbuf) / 1000);
 #endif
+    }
 #endif
 
 #if defined (HAVE_STATX)
