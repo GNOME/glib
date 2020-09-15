@@ -920,9 +920,11 @@ handle_overwrite_open (const char    *filename,
     }
   
   /* not a regular file */
-  if (!S_ISREG (_g_stat_mode (&original_stat)))
+  if (!_g_stat_has_field (&original_stat, G_LOCAL_FILE_STAT_FIELD_TYPE) ||
+      !S_ISREG (_g_stat_mode (&original_stat)))
     {
-      if (S_ISDIR (_g_stat_mode (&original_stat)))
+      if (_g_stat_has_field (&original_stat, G_LOCAL_FILE_STAT_FIELD_TYPE) &&
+          S_ISDIR (_g_stat_mode (&original_stat)))
 	g_set_error_literal (error,
                              G_IO_ERROR,
                              G_IO_ERROR_IS_DIRECTORY,
@@ -937,6 +939,8 @@ handle_overwrite_open (const char    *filename,
   
   if (etag != NULL)
     {
+      /* TODO: What if original_stat doesn't have the mtime, or whatever
+       * other information goes into the etag? */
       current_etag = _g_local_file_info_create_etag (&original_stat);
       if (strcmp (etag, current_etag) != 0)
 	{
@@ -962,7 +966,8 @@ handle_overwrite_open (const char    *filename,
    */
   
   if ((flags & G_FILE_CREATE_REPLACE_DESTINATION) ||
-      (!(_g_stat_nlink (&original_stat) > 1) && !is_symlink))
+      (!(_g_stat_has_field (&original_stat, G_LOCAL_FILE_STAT_FIELD_NLINK) &&
+         _g_stat_nlink (&original_stat) > 1) && !is_symlink))
     {
       char *dirname, *tmp_filename;
       int tmpfd;
@@ -980,6 +985,7 @@ handle_overwrite_open (const char    *filename,
       
       /* try to keep permissions (unless replacing) */
 
+      /* TODO: Check for G_LOCAL_FILE_STAT_FIELD_UID, _GID, _MODE */
       if ( ! (flags & G_FILE_CREATE_REPLACE_DESTINATION) &&
 	   (
 #ifdef HAVE_FCHOWN
@@ -1003,6 +1009,7 @@ handle_overwrite_open (const char    *filename,
                                      &tmp_statbuf);
 
 	  /* Check that we really needed to change something */
+	  /* TODO: Check for G_LOCAL_FILE_STAT_FIELD_UID, _GID, _MODE */
 	  if (tres != 0 ||
 	      _g_stat_uid (&original_stat) != _g_stat_uid (&tmp_statbuf) ||
 	      _g_stat_gid (&original_stat) != _g_stat_gid (&tmp_statbuf) ||
@@ -1042,6 +1049,9 @@ handle_overwrite_open (const char    *filename,
 	  goto err_out;
 	}
 
+      /* TODO: Check for G_LOCAL_FILE_STAT_FIELD_MODE? (But if it's
+       * unset, we have to specify *something*: will our fallback be
+       * any better than the kernel's?) */
       bfd = g_open (backup_filename,
 		    O_WRONLY | O_CREAT | O_EXCL | O_BINARY,
 		    _g_stat_mode (&original_stat) & 0777);
@@ -1073,9 +1083,12 @@ handle_overwrite_open (const char    *filename,
 	  goto err_out;
 	}
       
-      if ((_g_stat_gid (&original_stat) != _g_stat_gid (&tmp_statbuf))  &&
+      if (_g_stat_has_field (&tmp_statbuf, G_LOCAL_FILE_STAT_FIELD_GID) &&
+          _g_stat_has_field (&original_stat, G_LOCAL_FILE_STAT_FIELD_GID) &&
+          (_g_stat_gid (&original_stat) != _g_stat_gid (&tmp_statbuf)) &&
 	  fchown (bfd, (uid_t) -1, _g_stat_gid (&original_stat)) != 0)
 	{
+	  /* TODO: Check for G_LOCAL_FILE_STAT_FIELD_MODE? */
 	  if (fchmod (bfd,
 		      (_g_stat_mode (&original_stat) & 0707) |
 		      ((_g_stat_mode (&original_stat) & 07) << 3)) != 0)
