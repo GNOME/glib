@@ -273,10 +273,23 @@ do_test_server_auth (InteropFlags flags)
   GVariant *tuple = NULL;
   gint64 uid, pid;
 #ifdef HAVE_DBUS1
-  /* GNOME/glib#1831 seems to involve a race condition, so try a few times
-   * to see if we can trigger it. */
   gsize i;
-  gsize n = 20;
+  gsize n;
+
+  /* GNOME/glib#1831 and GNOME/glib#2164 involve race conditions, so
+   * try a few times to see if we can trigger them. DBUS_COOKIE_SHA1
+   * is still not entirely reliable, so for now we only do this in
+   * situations where we expect to be able to use EXTERNAL auth,
+   * unless asked to be particularly thorough. */
+  if (g_test_thorough ()
+#if defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED) || \
+    defined(G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED)
+      || !(flags & (INTEROP_FLAGS_ANONYMOUS | INTEROP_FLAGS_SHA1 | INTEROP_FLAGS_TCP))
+#endif
+      )
+    n = 20;
+  else
+    n = 1;
 #endif
 
   if (flags & INTEROP_FLAGS_TCP)
