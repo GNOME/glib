@@ -1352,7 +1352,7 @@ g_local_file_read (GFile         *file,
       return NULL;
     }
 
-  ret = g_local_file_fstat (fd, G_LOCAL_FILE_STAT_FIELD_TYPE, G_LOCAL_FILE_STAT_FIELD_ALL, &buf);
+  ret = g_local_file_fstat (fd, G_LOCAL_FILE_STAT_FIELD_TYPE, &buf);
 
   if (ret == 0 && S_ISDIR (_g_stat_mode (&buf)))
     {
@@ -2703,9 +2703,7 @@ g_local_file_measure_size_of_file (gint           parent_fd,
 
 #if defined (AT_FDCWD)
   if (g_local_file_fstatat (parent_fd, name->data, AT_SYMLINK_NOFOLLOW,
-                            G_LOCAL_FILE_STAT_FIELD_BASIC_STATS,
-                            G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_ATIME),
-                            &buf) != 0)
+                            G_LOCAL_FILE_STAT_FIELD_BASIC_STATS, &buf) != 0)
     {
       int errsv = errno;
       return g_local_file_measure_size_error (state->flags, errsv, name, error);

@@ -1808,7 +1808,6 @@ _g_local_file_info_get (const char             *basename,
 
   res = g_local_file_lstat (path,
                             G_LOCAL_FILE_STAT_FIELD_BASIC_STATS | G_LOCAL_FILE_STAT_FIELD_BTIME,
-                            G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_BTIME) & (~G_LOCAL_FILE_STAT_FIELD_ATIME),
                             &statbuf);
 
   if (res == -1)
@@ -1858,7 +1857,6 @@ _g_local_file_info_get (const char             *basename,
 	{
           res = g_local_file_stat (path,
                                    G_LOCAL_FILE_STAT_FIELD_BASIC_STATS | G_LOCAL_FILE_STAT_FIELD_BTIME,
-                                   G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_BTIME) & (~G_LOCAL_FILE_STAT_FIELD_ATIME),
                                    &statbuf2);
 
 	  /* Report broken links as symlinks */
@@ -2081,7 +2079,6 @@ _g_local_file_info_get_from_fd (int         fd,
 
   if (g_local_file_fstat (fd,
                           G_LOCAL_FILE_STAT_FIELD_BASIC_STATS | G_LOCAL_FILE_STAT_FIELD_BTIME,
-                          G_LOCAL_FILE_STAT_FIELD_ALL & (~G_LOCAL_FILE_STAT_FIELD_BTIME) & (~G_LOCAL_FILE_STAT_FIELD_ATIME),
                           &stat_buf) == -1)
     {
       int errsv = errno;

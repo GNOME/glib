@@ -429,7 +429,8 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
       
 #ifndef G_OS_WIN32		/* Already did the fstat() and close() above on Win32 */
 
-  if (g_local_file_fstat (file->priv->fd, G_LOCAL_FILE_STAT_FIELD_MTIME, G_LOCAL_FILE_STAT_FIELD_ALL, &final_stat) == 0)
+  if (g_local_file_fstat (file->priv->fd, G_LOCAL_FILE_STAT_FIELD_MTIME, &final_stat) == 0 &&
+      _g_stat_has_field (&final_stat, G_LOCAL_FILE_STAT_FIELD_MTIME))
     file->priv->etag = _g_local_file_info_create_etag (&final_stat);
 
   if (!g_close (file->priv->fd, NULL))
@@ -904,7 +905,7 @@ handle_overwrite_open (const char    *filename,
                             G_LOCAL_FILE_STAT_FIELD_GID |
                             G_LOCAL_FILE_STAT_FIELD_MTIME |
                             G_LOCAL_FILE_STAT_FIELD_NLINK,
-                            G_LOCAL_FILE_STAT_FIELD_ALL, &original_stat);
+                            &original_stat);
   errsv = errno;
 
   if (res != 0)
@@ -999,7 +1000,7 @@ handle_overwrite_open (const char    *filename,
                                      G_LOCAL_FILE_STAT_FIELD_MODE |
                                      G_LOCAL_FILE_STAT_FIELD_UID |
                                      G_LOCAL_FILE_STAT_FIELD_GID,
-                                     G_LOCAL_FILE_STAT_FIELD_ALL, &tmp_statbuf);
+                                     &tmp_statbuf);
 
 	  /* Check that we really needed to change something */
 	  if (tres != 0 ||
@@ -1060,7 +1061,7 @@ handle_overwrite_open (const char    *filename,
        * bits for the group same as the protection bits for
        * others. */
 #if defined(HAVE_FCHOWN) && defined(HAVE_FCHMOD)
-      if (g_local_file_fstat (bfd, G_LOCAL_FILE_STAT_FIELD_GID, G_LOCAL_FILE_STAT_FIELD_ALL, &tmp_statbuf) != 0)
+      if (g_local_file_fstat (bfd, G_LOCAL_FILE_STAT_FIELD_GID, &tmp_statbuf) != 0)
 	{
 	  g_set_error_literal (error,
                                G_IO_ERROR,

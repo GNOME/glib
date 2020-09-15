@@ -80,33 +80,17 @@ g_local_file_statx (int                  dirfd,
                     const char          *pathname,
                     int                  flags,
                     GLocalFileStatField  mask,
-                    GLocalFileStatField  mask_required,
                     GLocalFileStat      *stat_buf)
 {
-  int retval;
-
-  /* Allow the caller to set mask_required==G_LOCAL_FILE_STAT_FIELD_ALL as a
-   * shortcut for saying it’s equal to @mask. */
-  mask_required &= mask;
-
-  retval = statx (dirfd, pathname, flags, mask, stat_buf);
-  if (retval == 0 && (stat_buf->stx_mask & mask_required) != mask_required)
-    {
-      /* Not all required fields could be returned. */
-      errno = ERANGE;
-      return -1;
-    }
-
-  return retval;
+  return statx (dirfd, pathname, flags, mask, stat_buf);
 }
 
 static inline int
 g_local_file_fstat (int                  fd,
                     GLocalFileStatField  mask,
-                    GLocalFileStatField  mask_required,
                     GLocalFileStat      *stat_buf)
 {
-  return g_local_file_statx (fd, "", AT_EMPTY_PATH, mask, mask_required, stat_buf);
+  return g_local_file_statx (fd, "", AT_EMPTY_PATH, mask, stat_buf);
 }
 
 static inline int
@@ -114,32 +98,29 @@ g_local_file_fstatat (int                  fd,
                       const char          *path,
                       int                  flags,
                       GLocalFileStatField  mask,
-                      GLocalFileStatField  mask_required,
                       GLocalFileStat      *stat_buf)
 {
-  return g_local_file_statx (fd, path, flags, mask, mask_required, stat_buf);
+  return g_local_file_statx (fd, path, flags, mask, stat_buf);
 }
 
 static inline int
 g_local_file_lstat (const char          *path,
                     GLocalFileStatField  mask,
-                    GLocalFileStatField  mask_required,
                     GLocalFileStat      *stat_buf)
 {
   return g_local_file_statx (AT_FDCWD, path,
                              AT_NO_AUTOMOUNT | AT_SYMLINK_NOFOLLOW | AT_STATX_SYNC_AS_STAT,
-                             mask, mask_required, stat_buf);
+                             mask, stat_buf);
 }
 
 static inline int
 g_local_file_stat (const char          *path,
                    GLocalFileStatField  mask,
-                   GLocalFileStatField  mask_required,
                    GLocalFileStat      *stat_buf)
 {
   return g_local_file_statx (AT_FDCWD, path,
                              AT_NO_AUTOMOUNT | AT_STATX_SYNC_AS_STAT,
-                             mask, mask_required, stat_buf);
+                             mask, stat_buf);
 }
 
 inline static gboolean _g_stat_has_field  (const GLocalFileStat *buf, GLocalFileStatField field) { return buf->stx_mask & field; }
@@ -204,16 +185,8 @@ typedef enum
 static inline int
 g_local_file_fstat (int                  fd,
                     GLocalFileStatField  mask,
-                    GLocalFileStatField  mask_required,
                     GLocalFileStat      *stat_buf)
 {
-  if ((G_LOCAL_FILE_STAT_FIELD_BASIC_STATS & (mask_required & mask)) != (mask_required & mask))
-    {
-      /* Only G_LOCAL_FILE_STAT_FIELD_BASIC_STATS are supported. */
-      errno = ERANGE;
-      return -1;
-    }
-
 #ifdef G_OS_WIN32
   return GLIB_PRIVATE_CALL (g_win32_fstat) (fd, stat_buf);
 #else
@@ -226,16 +199,8 @@ g_local_file_fstatat (int                  fd,
                       const char          *path,
                       int                  flags,
                       GLocalFileStatField  mask,
-                      GLocalFileStatField  mask_required,
                       GLocalFileStat      *stat_buf)
 {
-  if ((G_LOCAL_FILE_STAT_FIELD_BASIC_STATS & (mask_required & mask)) != (mask_required & mask))
-    {
-      /* Only G_LOCAL_FILE_STAT_FIELD_BASIC_STATS are supported. */
-      errno = ERANGE;
-      return -1;
-    }
-
 #ifdef G_OS_WIN32
   /* Currently not supported on Windows */
   errno = ENOSYS;
@@ -248,16 +213,8 @@ g_local_file_fstatat (int                  fd,
 static inline int
 g_local_file_lstat (const char          *path,
                     GLocalFileStatField  mask,
-                    GLocalFileStatField  mask_required,
                     GLocalFileStat      *stat_buf)
 {
-  if ((G_LOCAL_FILE_STAT_FIELD_BASIC_STATS & (mask_required & mask)) != (mask_required & mask))
-    {
-      /* Only G_LOCAL_FILE_STAT_FIELD_BASIC_STATS are supported. */
-      errno = ERANGE;
-      return -1;
-    }
-
 #ifdef G_OS_WIN32
   return GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (path, stat_buf);
 #else
@@ -268,16 +225,8 @@ g_local_file_lstat (const char          *path,
 static inline int
 g_local_file_stat (const char          *path,
                    GLocalFileStatField  mask,
-                   GLocalFileStatField  mask_required,
                    GLocalFileStat      *stat_buf)
 {
-  if ((G_LOCAL_FILE_STAT_FIELD_BASIC_STATS & (mask_required & mask)) != (mask_required & mask))
-    {
-      /* Only G_LOCAL_FILE_STAT_FIELD_BASIC_STATS are supported. */
-      errno = ERANGE;
-      return -1;
-    }
-
 #ifdef G_OS_WIN32
   return GLIB_PRIVATE_CALL (g_win32_stat_utf8) (path, stat_buf);
 #else
