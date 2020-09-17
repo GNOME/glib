@@ -2777,6 +2777,7 @@ create_systemd_scope (GDBusConnection    *session_bus,
 {
   GVariantBuilder builder;
   const char *app_name = g_get_application_name ();
+  const char *source_path = NULL;
   char *appid = NULL;
   char *appid_escaped = NULL;
   char *snid_escaped = NULL;
@@ -2802,6 +2803,8 @@ create_systemd_scope (GDBusConnection    *session_bus,
    */
   unit_name = g_strdup_printf ("app-glib-%s-%d.scope", appid_escaped, pid);
 
+  source_path = g_desktop_app_info_get_filename (info);
+
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("(ssa(sv)a(sa(sv)))"));
   g_variant_builder_add (&builder, "s", unit_name);
   g_variant_builder_add (&builder, "s", "fail");
@@ -2815,6 +2818,16 @@ create_systemd_scope (GDBusConnection    *session_bus,
                            "Description",
                            g_variant_new_take_string (g_strdup_printf ("Application launched by %s",
                                                                        app_name)));
+
+  /* If we have a .desktop file, document that the scope has been "generated"
+   * from it.
+   */
+  if (source_path && g_utf8_validate (source_path, -1, NULL))
+    g_variant_builder_add (&builder,
+                           "(sv)",
+                           "SourcePath",
+                           g_variant_new_string (source_path));
+
   g_variant_builder_add (&builder,
                          "(sv)",
                          "PIDs",
