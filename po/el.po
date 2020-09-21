@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
 "POT-Creation-Date: 2020-07-15 15:47+0000\n"
-"PO-Revision-Date: 2020-07-31 23:48+0300\n"
+"PO-Revision-Date: 2020-09-21 23:06+0300\n"
 "Last-Translator: Efstathios Iosifidis <eiosifidis@gnome.org>\n"
 "Language-Team: www.gnome.gr\n"
 "Language: el\n"
@@ -426,16 +426,14 @@ msgid "Error in address “%s” — the “%s” attribute is malformed"
 msgstr "Σφάλμα στη διεύθυνση '%s' - η ιδιότητα θύρας είναι κακοδιατυπωμένη"
 
 #: gio/gdbusaddress.c:417 gio/gdbusaddress.c:681
-#, fuzzy, c-format
-#| msgid "Unknown or unsupported transport '%s' for address '%s'"
+#, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
-msgstr "Άγνωστη ή ανυποστήρικτη μεταφορά '%s' για τη διεύθυνση '%s'"
+msgstr "Άγνωστη ή ανυποστήρικτη μεταφορά «%s» για τη διεύθυνση «%s»"
 
 #: gio/gdbusaddress.c:461
-#, fuzzy, c-format
-#| msgid "Address element '%s' does not contain a colon (:)"
+#, c-format
 msgid "Address element “%s” does not contain a colon (:)"
-msgstr "Το στοιχείο διευθύνσεως '%s' δεν περιέχει διπλή στιγμή (:)"
+msgstr "Το στοιχείο διευθύνσεως «%s» δεν περιέχει διπλή στιγμή (:)"
 
 #: gio/gdbusaddress.c:470
 #, c-format
@@ -443,74 +441,58 @@ msgid "Transport name in address element “%s” must not be empty"
 msgstr ""
 
 #: gio/gdbusaddress.c:491
-#, fuzzy, c-format
-#| msgid ""
-#| "Key/Value pair %d, '%s', in address element '%s' does not contain an "
-#| "equal sign"
+#, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
 "sign"
 msgstr ""
-"Το δίδυμο κλειδί/τιμή %d, '%s', στο στοιχείο διεύθυνσης'%s' δεν περιέχει τον "
-"τελεστή ίσον"
+"Το δίδυμο κλειδί/τιμή %d, «%s», στο στοιχείο διεύθυνσης «%s» δεν περιέχει "
+"τον τελεστή ίσον"
 
 #: gio/gdbusaddress.c:502
-#, fuzzy, c-format
-#| msgid ""
-#| "Key/Value pair %d, '%s', in address element '%s' does not contain an "
-#| "equal sign"
+#, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"
 msgstr ""
-"Το δίδυμο κλειδί/τιμή %d, '%s', στο στοιχείο διεύθυνσης'%s' δεν περιέχει τον "
-"τελεστή ίσον"
+"Το δίδυμο κλειδί/τιμή %d, «%s», στο στοιχείο διεύθυνσης «%s» δεν περιέχει "
+"τον τελεστή ίσον"
 
 #: gio/gdbusaddress.c:516
-#, fuzzy, c-format
-#| msgid ""
-#| "Error unescaping key or value in Key/Value pair %d, '%s', in address "
-#| "element '%s'"
+#, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
 "“%s”"
 msgstr ""
 "Σφάλμα στη μη διαφυγή του κλειδιού ή της τιμής στο δίδυμο κλειδί/τιμή %d, "
-"'%s', στο στοιχείο διεύθυνσης '%s'"
+"«%s», στο στοιχείο διεύθυνσης «%s»"
 
 #: gio/gdbusaddress.c:588
-#, fuzzy, c-format
-#| msgid ""
-#| "Error in address '%s' - the unix transport requires exactly one of the "
-#| "keys 'path' or 'abstract' to be set"
+#, c-format
 msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
 "“path” or “abstract” to be set"
 msgstr ""
-"Σφάλμα στη διεύθυνση '%s' – ο μεταφορέας unix απαιτεί ακριβώς ένα από τα "
-"κλειδιά 'path' ή 'abstract' να οριστούν"
+"Σφάλμα στη διεύθυνση «%s» — ο μεταφορέας unix απαιτεί ακριβώς ένα από τα "
+"κλειδιά «path» ή «abstract» να οριστούν"
 
 #: gio/gdbusaddress.c:624
-#, fuzzy, c-format
-#| msgid "Error in address '%s' - the host attribute is missing or malformed"
+#, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgstr ""
-"Σφάλμα στη διεύθυνση '%s' - η ιδιότητα κεντρικού υπολογιστή λείπει ή είναι "
+"Σφάλμα στη διεύθυνση «%s» — η ιδιότητα κεντρικού υπολογιστή λείπει ή είναι "
 "κακοδιατυπωμένη"
 
 #: gio/gdbusaddress.c:638
-#, fuzzy, c-format
-#| msgid "Error in address '%s' - the port attribute is missing or malformed"
+#, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
 msgstr ""
-"Σφάλμα στη διεύθυνση '%s' - η ιδιότητα θύρας λείπει ή είναι κακοδιατυπωμένη"
+"Σφάλμα στη διεύθυνση «%s» — η ιδιότητα θύρας λείπει ή είναι κακοδιατυπωμένη"
 
 #: gio/gdbusaddress.c:652
-#, fuzzy, c-format
-#| msgid ""
-#| "Error in address '%s' - the noncefile attribute is missing or malformed"
+#, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
-"Σφάλμα στη διεύθυνση '%s' - η ιδιότητα του παρόντος αρχείου λείπει ή είναι "
+"Σφάλμα στη διεύθυνση «%s» — η ιδιότητα του παρόντος αρχείου λείπει ή είναι "
 "κακοδιατυπωμένη"
 
 #
@@ -520,32 +502,28 @@ msgstr "Σφάλμα αυτόματης εκκίνησης: "
 
 #
 #: gio/gdbusaddress.c:726
-#, fuzzy, c-format
-#| msgid "Error opening nonce file '%s': %s"
+#, c-format
 msgid "Error opening nonce file “%s”: %s"
-msgstr "Σφάλμα ανοίγματος παρόντος αρχείου '%s': %s"
+msgstr "Σφάλμα ανοίγματος παρόντος αρχείου «%s»: %s"
 
 #
 #: gio/gdbusaddress.c:745
-#, fuzzy, c-format
-#| msgid "Error reading from nonce file '%s': %s"
+#, c-format
 msgid "Error reading from nonce file “%s”: %s"
-msgstr "Σφάλμα ανάγνωσης από το παρόν αρχείο '%s': %s"
+msgstr "Σφάλμα ανάγνωσης από το παρόν αρχείο «%s»: %s"
 
 #
 #: gio/gdbusaddress.c:754
-#, fuzzy, c-format
-#| msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
+#, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr ""
-"Σφάλμα ανάγνωσης από το παρόν αρχείο '%s', αναμενόμενες 16 bytes, "
+"Σφάλμα ανάγνωσης από το παρόν αρχείο «%s», αναμενόμενες 16 bytes, "
 "παραλήφθηκαν %d"
 
 #: gio/gdbusaddress.c:772
-#, fuzzy, c-format
-#| msgid "Error writing contents of nonce file '%s' to stream:"
+#, c-format
 msgid "Error writing contents of nonce file “%s” to stream:"
-msgstr "Σφάλμα εγγραφής περιεχομένου του παρόντος αρχείου '%s' στην ροή:"
+msgstr "Σφάλμα εγγραφής περιεχομένου του παρόντος αρχείου «%s» στην ροή:"
 
 #: gio/gdbusaddress.c:981
 msgid "The given address is empty"
@@ -567,10 +545,9 @@ msgstr ""
 
 #
 #: gio/gdbusaddress.c:1150
-#, fuzzy, c-format
-#| msgid "Error spawning command line '%s': "
+#, c-format
 msgid "Error spawning command line “%s”: "
-msgstr "Σφάλμα δημιουργίας στη γραμμή εντολών '%s': "
+msgstr "Σφάλμα δημιουργίας στη γραμμή εντολών «%s»: "
 
 #: gio/gdbusaddress.c:1219
 #, c-format
@@ -580,16 +557,13 @@ msgstr ""
 "το λειτουργικό)"
 
 #: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7192
-#, fuzzy, c-format
-#| msgid ""
-#| "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment "
-#| "variable - unknown value '%s'"
+#, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "— unknown value “%s”"
 msgstr ""
 "Αδυναμία καθορισμού της διεύθυνση διαύλου από την μεταβλητή περιβάλλοντος "
-"DBUS_STARTER_BUS_TYPE - άγνωστη τιμή '%s'"
+"DBUS_STARTER_BUS_TYPE - άγνωστη τιμή «%s»"
 
 #: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7201
 msgid ""
@@ -629,19 +603,16 @@ msgstr "Ακυρώθηκε μέσω του GDBusAuthObserver::authorize-authenti
 
 #
 #: gio/gdbusauthmechanismsha1.c:265
-#, fuzzy, c-format
-#| msgid "Error when getting information for directory '%s': %s"
+#, c-format
 msgid "Error when getting information for directory “%s”: %s"
-msgstr "Σφάλμα λήψης πληροφορίας του καταλόγου '%s': %s"
+msgstr "Σφάλμα λήψης πληροφορίας του καταλόγου «%s»: %s"
 
 #: gio/gdbusauthmechanismsha1.c:280
-#, fuzzy, c-format
-#| msgid ""
-#| "Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
+#, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Δικαιώματα στον κατάλογο '%s' είναι κακοδιατυπωμένα. Αναμενόμενη κατάσταση "
+"Δικαιώματα στον κατάλογο «%s» είναι κακοδιατυπωμένα. Αναμενόμενη κατάσταση "
 "0700, ελήφθη 0%o"
 
 #: gio/gdbusauthmechanismsha1.c:310
@@ -651,86 +622,71 @@ msgstr "Σφάλμα δημιουργίας καταλόγου «%s»: %s"
 
 #
 #: gio/gdbusauthmechanismsha1.c:355
-#, fuzzy, c-format
-#| msgid "Error opening keyring '%s' for reading: "
+#, c-format
 msgid "Error opening keyring “%s” for reading: "
-msgstr "Σφάλμα ανοίγματος της κλειδοθήκης '%s' για ανάγνωση: "
+msgstr "Σφάλμα ανοίγματος της κλειδοθήκης «%s» για ανάγνωση: "
 
 #: gio/gdbusauthmechanismsha1.c:378 gio/gdbusauthmechanismsha1.c:700
-#, fuzzy, c-format
-#| msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+#, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
-"Η γραμμή %d από την κλειδοθήκη στο '%s' με το περιεχόμενο '%s' είναι "
+"Η γραμμή %d από την κλειδοθήκη στο «%s» με το περιεχόμενο «%s» είναι "
 "κακοδιατυπωμένη"
 
 #: gio/gdbusauthmechanismsha1.c:392 gio/gdbusauthmechanismsha1.c:714
-#, fuzzy, c-format
-#| msgid ""
-#| "First token of line %d of the keyring at '%s' with content '%s' is "
-#| "malformed"
+#, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
-"Το πρώτο σημείο της γραμμής %d της κλειδοθήκης στο '%s' με περιεχόμενο '%s' "
+"Το πρώτο σημείο της γραμμής %d της κλειδοθήκης στο «%s» με περιεχόμενο «%s» "
 "είναι κακοδιατυπωμένο"
 
 #: gio/gdbusauthmechanismsha1.c:406 gio/gdbusauthmechanismsha1.c:728
-#, fuzzy, c-format
-#| msgid ""
-#| "Second token of line %d of the keyring at '%s' with content '%s' is "
-#| "malformed"
+#, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
-"Το δεύτερο διακριτικό της γραμμής %d της κλειδοθήκης στο '%s' με περιεχόμενο "
-"'%s' είναι κακοδιατυπωμένο"
+"Το δεύτερο διακριτικό της γραμμής %d της κλειδοθήκης στο «%s» με περιεχόμενο "
+"«%s» είναι κακοδιατυπωμένο"
 
 #: gio/gdbusauthmechanismsha1.c:430
-#, fuzzy, c-format
-#| msgid "Didn't find cookie with id %d in the keyring at '%s'"
+#, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
-msgstr "Δεν βρήκε το cookie με ταυτότητα %d στη κλειδοθήκη στο '%s'"
+msgstr "Δεν βρήκε το cookie με ταυτότητα %d στη κλειδοθήκη στο «%s»"
 
 #
 #: gio/gdbusauthmechanismsha1.c:476
-#, fuzzy, c-format
-#| msgid "Error creating lock file '%s': %s"
+#, c-format
 msgid "Error creating lock file “%s”: %s"
-msgstr "Σφάλμα δημιουργίας αρχείου κλειδαριών '%s': %s"
+msgstr "Σφάλμα δημιουργίας αρχείου κλειδαριών «%s»: %s"
 
 #
 #: gio/gdbusauthmechanismsha1.c:540
-#, fuzzy, c-format
-#| msgid "Error deleting stale lock file '%s': %s"
+#, c-format
 msgid "Error deleting stale lock file “%s”: %s"
-msgstr "Σφάλμα διαγραφής ξεπερασμένου αρχείου κλειδαριών '%s': %s"
+msgstr "Σφάλμα διαγραφής ξεπερασμένου αρχείου κλειδαριών «%s»: %s"
 
 #: gio/gdbusauthmechanismsha1.c:579
-#, fuzzy, c-format
-#| msgid "Error closing (unlinked) lock file '%s': %s"
+#, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
-msgstr "Σφάλμα στο κλείσιμο (αποσυνδεμένου) αρχείου κλειδαριών '%s': %s"
+msgstr "Σφάλμα στο κλείσιμο (αποσυνδεμένου) αρχείου κλειδαριών «%s»: %s"
 
 #
 #: gio/gdbusauthmechanismsha1.c:590
-#, fuzzy, c-format
-#| msgid "Error unlinking lock file '%s': %s"
+#, c-format
 msgid "Error unlinking lock file “%s”: %s"
-msgstr "Σφάλμα αποσύνδεσης αρχείου κλειδαριών '%s': %s"
+msgstr "Σφάλμα αποσύνδεσης αρχείου κλειδαριών «%s»: %s"
 
 #
 #: gio/gdbusauthmechanismsha1.c:667
-#, fuzzy, c-format
-#| msgid "Error opening keyring '%s' for writing: "
+#, c-format
 msgid "Error opening keyring “%s” for writing: "
-msgstr "Σφάλμα στο άνοιγμα της κλειδοθήκης '%s' για εγγραφή: "
+msgstr "Σφάλμα στο άνοιγμα της κλειδοθήκης «%s» για εγγραφή: "
 
 #: gio/gdbusauthmechanismsha1.c:863
-#, fuzzy, c-format
-#| msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+#, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
-msgstr "(Επιπλέον, απελευθερώνοντας το κλείδωμα για '%s' απέτυχε επίσης: %s) "
+msgstr "(Επιπλέον, απελευθερώνοντας το κλείδωμα για «%s» απέτυχε επίσης: %s) "
 
 #: gio/gdbusconnection.c:595 gio/gdbusconnection.c:2391
 msgid "The connection is closed"
@@ -792,10 +748,9 @@ msgid "No such method “%s”"
 msgstr "Δεν υπάρχει η μέθοδος «%s»"
 
 #: gio/gdbusconnection.c:5008
-#, fuzzy, c-format
-#| msgid "Type of message, '%s', does not match expected type '%s'"
+#, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
-msgstr "Ο τύπος μηνύματος, '%s', δεν ταιριάζει με τον αναμενόμενο τύπο '%s'"
+msgstr "Ο τύπος μηνύματος, «%s», δεν ταιριάζει με τον αναμενόμενο τύπο «%s»"
 
 #: gio/gdbusconnection.c:5206
 #, c-format
@@ -815,16 +770,14 @@ msgid "Unable to set property %s.%s"
 msgstr "Αδυναμία ορισμού της ιδιότητας %s.%s"
 
 #: gio/gdbusconnection.c:5666
-#, fuzzy, c-format
-#| msgid "Method '%s' returned type '%s', but expected '%s'"
+#, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
-msgstr "Η μέθοδος '%s' επέστρεψε τον τύπο '%s', αλλά αναμενόταν '%s'"
+msgstr "Η μέθοδος «%s» επέστρεψε τον τύπο «%s», αλλά αναμενόταν «%s»"
 
 #: gio/gdbusconnection.c:6743
-#, fuzzy, c-format
-#| msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+#, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
-msgstr "Η μέθοδος '%s' στη διεπαφή '%s' με υπογραφή '%s' δεν υπάρχει"
+msgstr "Η μέθοδος «%s» στη διεπαφή «%s» με υπογραφή «%s» δεν υπάρχει"
 
 #: gio/gdbusconnection.c:6864
 #, c-format
@@ -875,11 +828,10 @@ msgstr[0] "Απαίτηση για ανάγνωση %lu byte αλλά ελήφθ
 msgstr[1] "Απαίτηση για ανάγνωση %lu bytes αλλά ελήφθησαν μόνο %lu"
 
 #: gio/gdbusmessage.c:1380
-#, fuzzy, c-format
-#| msgid "Expected NUL byte after the string '%s' but found byte %d"
+#, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr ""
-"Αναμενόμενo byte NUL μετά από τη συμβολοσειρά '%s' αλλά βρέθηκε byte %d"
+"Αναμενόμενo byte NUL μετά από τη συμβολοσειρά «%s» αλλά βρέθηκε byte %d"
 
 #: gio/gdbusmessage.c:1399
 #, fuzzy, c-format
@@ -900,16 +852,14 @@ msgid "Value nested too deeply"
 msgstr ""
 
 #: gio/gdbusmessage.c:1609
-#, fuzzy, c-format
-#| msgid "Parsed value '%s' is not a valid D-Bus object path"
+#, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
-msgstr "Η αναλυμένη τιμή '%s' δεν είναι αποδεκτή διαδρομή αντικειμένου D-Bus"
+msgstr "Η αναλυμένη τιμή «%s» δεν είναι αποδεκτή διαδρομή αντικειμένου D-Bus"
 
 #: gio/gdbusmessage.c:1631
-#, fuzzy, c-format
-#| msgid "Parsed value '%s' is not a valid D-Bus signature"
+#, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
-msgstr "Η αναλυμένη τιμή '%s' δεν είναι έγκυρη υπογραφή D-Bus"
+msgstr "Η αναλυμένη τιμή «%s» δεν είναι έγκυρη υπογραφή D-Bus"
 
 #: gio/gdbusmessage.c:1678
 #, c-format
@@ -923,23 +873,19 @@ msgstr[1] ""
 "Βρέθηκε πίνακας μήκους %u bytes. Μέγιστο μήκος είναι 2<<26 bytes (64 MiB)."
 
 #: gio/gdbusmessage.c:1698
-#, fuzzy, c-format
-#| msgid ""
-#| "Encountered array of type 'a%c', expected to have a length a multiple of "
-#| "%u bytes, but found to be %u bytes in length"
+#, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
 "bytes, but found to be %u bytes in length"
 msgstr ""
-"Βρέθηκε πίνακας τύπου 'a%c', αναμενόταν να έχει μήκος πολλαπλάσιο από %u "
+"Βρέθηκε πίνακας τύπου «a%c», αναμενόταν να έχει μήκος πολλαπλάσιο από %u "
 "bytes, αλλά βρέθηκε να έχει μήκος %u bytes"
 
 #: gio/gdbusmessage.c:1884
-#, fuzzy, c-format
-#| msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
+#, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr ""
-"Η αναλυμένη τιμή '%s' για την παραλλαγή δεν είναι αποδεκτή υπογραφή D-Bus"
+"Η αναλυμένη τιμή «%s» για την παραλλαγή δεν είναι αποδεκτή υπογραφή D-Bus"
 
 #: gio/gdbusmessage.c:1925
 #, fuzzy, c-format
@@ -982,10 +928,9 @@ msgstr ""
 "είναι κενό"
 
 #: gio/gdbusmessage.c:2204
-#, fuzzy, c-format
-#| msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
+#, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
-msgstr "Η αναλυμένη τιμή '%s' δεν είναι αποδεκτή υπογραφή D-Bus (για το σώμα)"
+msgstr "Η αναλυμένη τιμή «%s» δεν είναι αποδεκτή υπογραφή D-Bus (για το σώμα)"
 
 #: gio/gdbusmessage.c:2236
 #, c-format
@@ -1003,13 +948,11 @@ msgid "Cannot deserialize message: "
 msgstr "Αδυναμία αποσειριοποίησης μηνύματος: "
 
 #: gio/gdbusmessage.c:2590
-#, fuzzy, c-format
-#| msgid ""
-#| "Error serializing GVariant with type string '%s' to the D-Bus wire format"
+#, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr ""
-"Σφάλμα στην σειριακή διάταξη GVariant με τύπο συμβολοσειράς '%s' στην μορφή "
+"Σφάλμα στην σειριακή διάταξη GVariant με τύπο συμβολοσειράς «%s» στην μορφή "
 "δικτυώματος D-Bus"
 
 #: gio/gdbusmessage.c:2727
@@ -1023,37 +966,31 @@ msgid "Cannot serialize message: "
 msgstr "Αδυναμία σειριακής διάταξης μηνύματος: "
 
 #: gio/gdbusmessage.c:2788
-#, fuzzy, c-format
-#| msgid "Message body has signature '%s' but there is no signature header"
+#, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr ""
-"Το σώμα του μηνύματος έχει υπογραφή '%s' αλλά δεν υπάρχει κεφαλίδα υπογραφής"
+"Το σώμα του μηνύματος έχει υπογραφή «%s» αλλά δεν υπάρχει κεφαλίδα υπογραφής"
 
 #: gio/gdbusmessage.c:2798
-#, fuzzy, c-format
-#| msgid ""
-#| "Message body has type signature '%s' but signature in the header field is "
-#| "'%s'"
+#, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
 "“%s”"
 msgstr ""
-"Το σώμα του μηνύματος έχει την υπογραφή τύπου '%s' αλλά η υπογραφή στο πεδίο "
-"κεφαλίδας είναι '%s'"
+"Το σώμα του μηνύματος έχει την υπογραφή τύπου «%s» αλλά η υπογραφή στο πεδίο "
+"κεφαλίδας είναι «%s»"
 
 #: gio/gdbusmessage.c:2814
-#, fuzzy, c-format
-#| msgid "Message body is empty but signature in the header field is '(%s)'"
+#, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "Το σώμα του μηνύματος είναι κενό αλλά η υπογραφή στο πεδίο κεφαλίδας είναι "
-"'(%s)'"
+"«(%s)»"
 
 #: gio/gdbusmessage.c:3367
-#, fuzzy, c-format
-#| msgid "Error return with body of type '%s'"
+#, c-format
 msgid "Error return with body of type “%s”"
-msgstr "Σφάλμα επιστροφής με σώμα τύπου'%s'"
+msgstr "Σφάλμα επιστροφής με σώμα τύπου «%s»"
 
 #: gio/gdbusmessage.c:3375
 msgid "Error return with empty body"
@@ -1115,22 +1052,19 @@ msgstr ""
 "Αδυναμία διευκρίνισης του τρέχοντος αρχείου κατά τη δημιουργία διακομιστή"
 
 #: gio/gdbusserver.c:930
-#, fuzzy, c-format
-#| msgid "Error writing nonce file at '%s': %s"
+#, c-format
 msgid "Error writing nonce file at “%s”: %s"
-msgstr "Σφάλμα εγγραφής στο παρόν αρχείο στο '%s': %s"
+msgstr "Σφάλμα εγγραφής στο παρόν αρχείο στο «%s»: %s"
 
 #: gio/gdbusserver.c:1103
-#, fuzzy, c-format
-#| msgid "The string '%s' is not a valid D-Bus GUID"
+#, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
-msgstr "Η συμβολοσειρά '%s' δεν είναι αποδεκτό D-Bus GUID"
+msgstr "Η συμβολοσειρά «%s» δεν είναι αποδεκτό D-Bus GUID"
 
 #: gio/gdbusserver.c:1143
-#, fuzzy, c-format
-#| msgid "Cannot listen on unsupported transport '%s'"
+#, c-format
 msgid "Cannot listen on unsupported transport “%s”"
-msgstr "Αδυναμία ακρόασης στην ανυποστήρικτη μεταφορά '%s'"
+msgstr "Αδυναμία ακρόασης στην ανυποστήρικτη μεταφορά «%s»"
 
 #: gio/gdbus-tool.c:107
 #, fuzzy, c-format
@@ -1279,9 +1213,8 @@ msgstr "Σφάλμα: αδιευκρίνιστο όνομα μεθόδου\n"
 
 #: gio/gdbus-tool.c:770
 #, fuzzy, c-format
-#| msgid "Error: Method name '%s' is invalid\n"
 msgid "Error: Signal name “%s” is invalid\n"
-msgstr "Σφάλμα: Το όνομα μεθόδου '%s' είναι άκυρο\n"
+msgstr "Σφάλμα: Το όνομα μεθόδου «%s» είναι άκυρο\n"
 
 #: gio/gdbus-tool.c:782
 #, c-format
@@ -1629,10 +1562,9 @@ msgid "Trash not supported"
 msgstr "Δεν υποστηρίζονται απορρίμματα"
 
 #: gio/gfile.c:4276
-#, fuzzy, c-format
-#| msgid "File names cannot contain '%c'"
+#, c-format
 msgid "File names cannot contain “%c”"
-msgstr "Τα ονόματα των αρχείων δεν μπορούν να περιέχουν '%c'"
+msgstr "Τα ονόματα των αρχείων δεν μπορούν να περιέχουν «%c»"
 
 #: gio/gfile.c:6757 gio/gvolume.c:364
 #, fuzzy
@@ -1769,10 +1701,9 @@ msgid "Address has bits set beyond prefix length"
 msgstr "Η διεύθυνση έχει σύνολα δυαδικών πέρα από το μήκος προθέματος"
 
 #: gio/ginetaddressmask.c:300
-#, fuzzy, c-format
-#| msgid "Could not parse '%s' as IP address mask"
+#, c-format
 msgid "Could not parse “%s” as IP address mask"
-msgstr "Αδυναμία ανάλυσης του '%s' ως μάσκα διεύθυνσης IP"
+msgstr "Αδυναμία ανάλυσης του «%s» ως μάσκα διεύθυνσης IP"
 
 #: gio/ginetsocketaddress.c:203 gio/ginetsocketaddress.c:220
 #: gio/gnativesocketaddress.c:109 gio/gunixsocketaddress.c:220
@@ -1808,14 +1739,8 @@ msgid "Keep with file when moved"
 msgstr "Να διατηρηθεί με το αρχείο όταν μετακινηθεί"
 
 #: gio/gio-tool.c:205
-#, fuzzy
-#| msgid ""
-#| "'%s' takes no arguments\n"
-#| "\n"
 msgid "“version” takes no arguments"
-msgstr ""
-"Το '%s' δεν παίρνει ορίσματα\n"
-"\n"
+msgstr "Η «έκδοση» δεν παίρνει ορίσματα"
 
 #: gio/gio-tool.c:207 gio/gio-tool.c:223 glib/goption.c:869
 msgid "Usage:"
@@ -2517,16 +2442,14 @@ msgid "File %s appears multiple times in the resource"
 msgstr "Το αρχείο %s φαίνεται πολλές φορές στην πηγή"
 
 #: gio/glib-compile-resources.c:245
-#, fuzzy, c-format
-#| msgid "Failed to locate '%s' in any source directory"
+#, c-format
 msgid "Failed to locate “%s” in any source directory"
-msgstr "Αποτυχία εντοπισμού '%s' σε οποιοδήποτε κατάλογο πηγής"
+msgstr "Αποτυχία εντοπισμού «%s» σε οποιοδήποτε κατάλογο πηγής"
 
 #: gio/glib-compile-resources.c:256
-#, fuzzy, c-format
-#| msgid "Failed to locate '%s' in current directory"
+#, c-format
 msgid "Failed to locate “%s” in current directory"
-msgstr "Αποτυχία εντοπισμού '%s' στον τρέχοντα κατάλογο"
+msgstr "Αποτυχία εντοπισμού «%s» στον τρέχοντα κατάλογο"
 
 #: gio/glib-compile-resources.c:290
 #, fuzzy, c-format
@@ -2664,16 +2587,14 @@ msgid "Invalid numeric value"
 msgstr "Άκυρη τιμή συμβολικού συνδέσμου"
 
 #: gio/glib-compile-schemas.c:111
-#, fuzzy, c-format
-#| msgid "<%s id='%s'> already specified"
+#, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<%s id='%s'> είναι ήδη ορισμένο"
+msgstr "<value nick='%s'/> είναι ήδη ορισμένο"
 
 #: gio/glib-compile-schemas.c:119
-#, fuzzy, c-format
-#| msgid "<key name='%s'> already specified"
+#, c-format
 msgid "value='%s' already specified"
-msgstr "<key name='%s'> έχει ήδη οριστεί"
+msgstr "value='%s' είναι ήδη ορισμένο"
 
 #: gio/glib-compile-schemas.c:133
 #, c-format
@@ -2890,10 +2811,9 @@ msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> αδιευκρίνιστη (ακόμα)."
 
 #: gio/glib-compile-schemas.c:1017
-#, fuzzy, c-format
-#| msgid "invalid GVariant type string '%s'"
+#, c-format
 msgid "Invalid GVariant type string “%s”"
-msgstr "Άκυρος τύπος συμβολοσειράς GVariant '%s'"
+msgstr "Μη έγκυρος τύπος συμβολοσειράς GVariant «%s»"
 
 #: gio/glib-compile-schemas.c:1047
 #, fuzzy
@@ -3018,16 +2938,12 @@ msgid "--strict was specified; exiting."
 msgstr "ορίστηκε το --strict· γίνεται έξοδος.\n"
 
 #: gio/glib-compile-schemas.c:1845
-#, fuzzy
-#| msgid "This entire file has been ignored.\n"
 msgid "This entire file has been ignored."
-msgstr "Έχει παραβλεφθεί όλο αυτό το αρχείο.\n"
+msgstr "Έχει παραβλεφθεί όλο αυτό το αρχείο."
 
 #: gio/glib-compile-schemas.c:1908
-#, fuzzy
-#| msgid "Ignoring this file.\n"
 msgid "Ignoring this file."
-msgstr "Παράβλεψη αυτού του αρχείου.\n"
+msgstr "Παράβλεψη αυτού του αρχείου."
 
 #: gio/glib-compile-schemas.c:1963
 #, fuzzy, c-format
@@ -3372,10 +3288,9 @@ msgid "Invalid extended attribute name"
 msgstr "Άκυρο εκτεταμένο όνομα γνωρίσματος"
 
 #: gio/glocalfileinfo.c:814
-#, fuzzy, c-format
-#| msgid "Error setting extended attribute '%s': %s"
+#, c-format
 msgid "Error setting extended attribute “%s”: %s"
-msgstr "Σφάλμα ορισμού εκτεταμένου γνωρίσματος '%s': %s"
+msgstr "Σφάλμα ορισμού εκτεταμένου γνωρίσματος «%s»: %s"
 
 #: gio/glocalfileinfo.c:1650
 msgid " (invalid encoding)"
@@ -3383,10 +3298,9 @@ msgstr " (άκυρη κωδικοποίηση)"
 
 #
 #: gio/glocalfileinfo.c:1814 gio/glocalfileoutputstream.c:909
-#, fuzzy, c-format
-#| msgid "Error when getting information for file '%s': %s"
+#, c-format
 msgid "Error when getting information for file “%s”: %s"
-msgstr "Σφάλμα λήψης πληροφοριών αρχείου '%s': %s"
+msgstr "Σφάλμα λήψης πληροφοριών αρχείου «%s»: %s"
 
 #: gio/glocalfileinfo.c:2084
 #, c-format
@@ -3556,10 +3470,9 @@ msgstr "Σφάλμα περικοπής αρχείου: %s"
 #
 #: gio/glocalfileoutputstream.c:653 gio/glocalfileoutputstream.c:891
 #: gio/glocalfileoutputstream.c:1141 gio/gsubprocess.c:380
-#, fuzzy, c-format
-#| msgid "Error opening file '%s': %s"
+#, c-format
 msgid "Error opening file “%s”: %s"
-msgstr "Σφάλμα ανοίγματος αρχείου '%s': %s"
+msgstr "Σφάλμα ανοίγματος αρχείου «%s»: %s"
 
 #: gio/glocalfileoutputstream.c:922
 msgid "Target file is a directory"
@@ -3618,48 +3531,37 @@ msgstr "Αίτηση αναζήτησης πέραν του τέλους της 
 #. * message for mount objects that
 #. * don't implement unmount.
 #: gio/gmount.c:399
-#, fuzzy
-#| msgid "mount doesn't implement \"unmount\""
 msgid "mount doesn’t implement “unmount”"
-msgstr "η προσάρτηση δεν υποστηρίζει \"αποπροσάρτηση\""
+msgstr "η προσάρτηση δεν υποστηρίζει «αποπροσάρτηση»"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: gio/gmount.c:475
-#, fuzzy
-#| msgid "mount doesn't implement \"eject\""
 msgid "mount doesn’t implement “eject”"
-msgstr "η προσάρτηση δεν υποστηρίζει \"εξαγωγή\""
+msgstr "η προσάρτηση δεν υποστηρίζει «εξαγωγή»"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: gio/gmount.c:553
-#, fuzzy
-#| msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgid "mount doesn’t implement “unmount” or “unmount_with_operation”"
 msgstr ""
-"η προσάρτηση δεν υποστηρίζει \"αποπροσάρτηση\" ή την \"unmount_with_operation"
-"\""
+"η προσάρτηση δεν υποστηρίζει «αποπροσάρτηση» ή την «unmount_with_operation»"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gmount.c:638
-#, fuzzy
-#| msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgid "mount doesn’t implement “eject” or “eject_with_operation”"
-msgstr "η προσάρτηση δεν υποστηρίζει \"εξαγωγή\" ή \"eject_with_operation\""
+msgstr "η προσάρτηση δεν υποστηρίζει «εξαγωγή» ή «eject_with_operation»"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 #: gio/gmount.c:726
-#, fuzzy
-#| msgid "mount doesn't implement \"remount\""
 msgid "mount doesn’t implement “remount”"
-msgstr "η προσάρτηση δεν υποστηρίζει την \"επαναπροσάρτηση\""
+msgstr "η προσάρτηση δεν υποστηρίζει την «επαναπροσάρτηση»"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -3680,10 +3582,9 @@ msgid "mount doesn’t implement synchronous content type guessing"
 msgstr "η προσάρτηση δεν υποστηρίζει την πρόβλεψη σύγχρονου τύπου περιεχομένου"
 
 #: gio/gnetworkaddress.c:415
-#, fuzzy, c-format
-#| msgid "Hostname '%s' contains '[' but not ']'"
+#, c-format
 msgid "Hostname “%s” contains “[” but not “]”"
-msgstr "Το όνομα κεντρικού υπολογιστή '%s' περιέχει το '[' αλλά όχι το ']'"
+msgstr "Το όνομα κεντρικού υπολογιστή «%s» περιέχει το «[» αλλά όχι το «]»"
 
 #: gio/gnetworkmonitorbase.c:219 gio/gnetworkmonitorbase.c:323
 msgid "Network unreachable"
@@ -3708,10 +3609,9 @@ msgid "Could not get network status: "
 msgstr "Αδυναμία λήψης κατάστασης δικτύου: "
 
 #: gio/gnetworkmonitornm.c:348
-#, fuzzy, c-format
-#| msgid "NetworkManager version too old"
+#, c-format
 msgid "NetworkManager not running"
-msgstr "Πολύ παλιά έκδοση του NetworkManager"
+msgstr "Δεν εκτελείται το NetworkManager"
 
 #: gio/gnetworkmonitornm.c:359
 #, c-format
@@ -3735,10 +3635,9 @@ msgstr "Η ροή πηγής έχει ήδη κλείσει"
 
 #
 #: gio/gresolver.c:386 gio/gthreadedresolver.c:150 gio/gthreadedresolver.c:168
-#, fuzzy, c-format
-#| msgid "Error resolving '%s': %s"
+#, c-format
 msgid "Error resolving “%s”: %s"
-msgstr "Σφάλμα επίλυσης του '%s': %s"
+msgstr "Σφάλμα επίλυσης του «%s»: %s"
 
 #. Translators: The placeholder is for a function name.
 #: gio/gresolver.c:455 gio/gresolver.c:615
@@ -3747,10 +3646,8 @@ msgid "%s not implemented"
 msgstr ""
 
 #: gio/gresolver.c:984 gio/gresolver.c:1036
-#, fuzzy
-#| msgid "Invalid filename"
 msgid "Invalid domain"
-msgstr "Άκυρο όνομα αρχείου"
+msgstr "Μη έγκυρος τομέας"
 
 #: gio/gresource.c:665 gio/gresource.c:924 gio/gresource.c:963
 #: gio/gresource.c:1087 gio/gresource.c:1159 gio/gresource.c:1232
@@ -3762,16 +3659,14 @@ msgid "The resource at “%s” does not exist"
 msgstr "Η πηγή στο '%s' δεν υπάρχει"
 
 #: gio/gresource.c:830
-#, fuzzy, c-format
-#| msgid "The resource at '%s' failed to decompress"
+#, c-format
 msgid "The resource at “%s” failed to decompress"
-msgstr "Αποτυχία αποσυμπίεσης πηγής στο '%s'"
+msgstr "Αποτυχία αποσυμπίεσης πηγής στο «%s»"
 
 #: gio/gresourcefile.c:732
-#, fuzzy, c-format
-#| msgid "The resource at '%s' is not a directory"
+#, c-format
 msgid "The resource at “%s” is not a directory"
-msgstr "Η πηγή στο '%s' δεν είναι κατάλογος"
+msgstr "Η πηγή στο «%s» δεν είναι κατάλογος"
 
 #: gio/gresourcefile.c:940
 #, fuzzy
@@ -4479,10 +4374,8 @@ msgid "Connection refused through SOCKSv5 proxy."
 msgstr "Η σύνδεση απορρίφθηκε από τον διαμεσολαβητή SOCKSv5."
 
 #: gio/gsocks5proxy.c:400
-#, fuzzy
-#| msgid "SOCKSv5 proxy does not support 'connect' command."
 msgid "SOCKSv5 proxy does not support “connect” command."
-msgstr "Ο διαμεσολαβητής SOCKSv5 δεν υποστηρίζει την εντολή 'σύνδεση'."
+msgstr "Ο διαμεσολαβητής SOCKSv5 δεν υποστηρίζει την εντολή «σύνδεση»."
 
 #: gio/gsocks5proxy.c:406
 msgid "SOCKSv5 proxy does not support provided address type."
@@ -4512,23 +4405,20 @@ msgstr "Σφάλμα ανάστροφης επίλυσης του '%s': %s"
 
 #: gio/gthreadedresolver.c:676 gio/gthreadedresolver.c:755
 #: gio/gthreadedresolver.c:853 gio/gthreadedresolver.c:903
-#, fuzzy, c-format
-#| msgid "No DNS record of the requested type for '%s'"
+#, c-format
 msgid "No DNS record of the requested type for “%s”"
-msgstr "Χωρίς εγγραφή DNS του αιτούμενου τύπου για '%s'"
+msgstr "Χωρίς εγγραφή DNS του αιτούμενου τύπου για «%s»"
 
 #: gio/gthreadedresolver.c:681 gio/gthreadedresolver.c:858
-#, fuzzy, c-format
-#| msgid "Temporarily unable to resolve '%s'"
+#, c-format
 msgid "Temporarily unable to resolve “%s”"
-msgstr "Προσωρινή αδυναμία επίλυσης του '%s'"
+msgstr "Προσωρινή αδυναμία επίλυσης του «%s»"
 
 #: gio/gthreadedresolver.c:686 gio/gthreadedresolver.c:863
 #: gio/gthreadedresolver.c:973
-#, fuzzy, c-format
-#| msgid "Error resolving '%s'"
+#, c-format
 msgid "Error resolving “%s”"
-msgstr "Σφάλμα επίλυσης του '%s'"
+msgstr "Σφάλμα επίλυσης του «%s»"
 
 #: gio/gtlscertificate.c:243
 msgid "No PEM-encoded private key found"
@@ -4749,10 +4639,9 @@ msgstr "Απρόσμενη ετικέτα «%s», αναμενόταν ετικ�
 
 #: glib/gbookmarkfile.c:1216 glib/gbookmarkfile.c:1230
 #: glib/gbookmarkfile.c:1298 glib/gbookmarkfile.c:1344
-#, fuzzy, c-format
-#| msgid "Unexpected tag '%s' inside '%s'"
+#, c-format
 msgid "Unexpected tag “%s” inside “%s”"
-msgstr "Απρόσμενη ετικέτα '%s' στο '%s'"
+msgstr "Απρόσμενη ετικέτα «%s» στο «%s»"
 
 #: glib/gbookmarkfile.c:1624
 #, c-format
@@ -4764,10 +4653,9 @@ msgid "No valid bookmark file found in data dirs"
 msgstr "Δεν βρέθηκε έγκυρο αρχείο σελιδοδεικτών στους καταλόγους δεδομένων"
 
 #: glib/gbookmarkfile.c:2028
-#, fuzzy, c-format
-#| msgid "A bookmark for URI '%s' already exists"
+#, c-format
 msgid "A bookmark for URI “%s” already exists"
-msgstr "Υπάρχει ήδη ένας σελιδοδείκτης για το URI '%s'"
+msgstr "Υπάρχει ήδη ένας σελιδοδείκτης για το URI «%s»"
 
 #: glib/gbookmarkfile.c:2077 glib/gbookmarkfile.c:2235
 #: glib/gbookmarkfile.c:2320 glib/gbookmarkfile.c:2400
@@ -4778,10 +4666,9 @@ msgstr "Υπάρχει ήδη ένας σελιδοδείκτης για το UR
 #: glib/gbookmarkfile.c:3482 glib/gbookmarkfile.c:3701
 #: glib/gbookmarkfile.c:3790 glib/gbookmarkfile.c:3879
 #: glib/gbookmarkfile.c:3998
-#, fuzzy, c-format
-#| msgid "No bookmark found for URI '%s'"
+#, c-format
 msgid "No bookmark found for URI “%s”"
-msgstr "Δεν βρέθηκε σελιδοδείκτης για το URI '%s'"
+msgstr "Δεν βρέθηκε σελιδοδείκτης για το URI «%s»"
 
 #: glib/gbookmarkfile.c:2409
 #, fuzzy, c-format
@@ -4797,10 +4684,9 @@ msgstr ""
 "Καμιά προσωπική σημαία δεν έχει αναγνωριστεί στο σελιδοδείκτη για το URI '%s'"
 
 #: glib/gbookmarkfile.c:3035
-#, fuzzy, c-format
-#| msgid "No groups set in bookmark for URI '%s'"
+#, c-format
 msgid "No groups set in bookmark for URI “%s”"
-msgstr "Δεν ορίστηκαν ομάδες στο σελιδοδείκτη για το URI '%s'"
+msgstr "Δεν ορίστηκαν ομάδες στο σελιδοδείκτη για το URI «%s»"
 
 #: glib/gbookmarkfile.c:3503 glib/gbookmarkfile.c:3711
 #, fuzzy, c-format
@@ -4811,10 +4697,9 @@ msgstr ""
 
 # gconf/gconf-internals.c:2416
 #: glib/gbookmarkfile.c:3734
-#, fuzzy, c-format
-#| msgid "Failed to expand exec line '%s' with URI '%s'"
+#, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
-msgstr "Αποτυχία ανάπτυξης της γραμμής exec '%s' με URI '%s'"
+msgstr "Αποτυχία ανάπτυξης της γραμμής exec «%s» με URI «%s»"
 
 #: glib/gconvert.c:466
 #, fuzzy
@@ -4828,10 +4713,9 @@ msgid "Partial character sequence at end of input"
 msgstr "Ημιτελής σειρά χαρακτήρα στο τέλος της εισόδου"
 
 #: glib/gconvert.c:762
-#, fuzzy, c-format
-#| msgid "Cannot convert fallback '%s' to codeset '%s'"
+#, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
-msgstr "Αδυναμία μετατροπής υποχώρησης '%s' σε σύνολο κώδικα '%s'"
+msgstr "Αδυναμία μετατροπής υποχώρησης «%s» σε σύνολο κώδικα «%s»"
 
 #: glib/gconvert.c:934
 #, fuzzy
@@ -4852,34 +4736,29 @@ msgstr ""
 "Το URI «%s» δεν είναι ένα απόλυτο URI με την χρήση του σχήματος «αρχείου»"
 
 #: glib/gconvert.c:1650
-#, fuzzy, c-format
-#| msgid "The local file URI '%s' may not include a '#'"
+#, c-format
 msgid "The local file URI “%s” may not include a “#”"
-msgstr "Το URI τοπικού αρχείου '%s' μπορεί να μην περιέχει ένα '#'"
+msgstr "Το URI τοπικού αρχείου «%s» μπορεί να μην περιέχει ένα «#»"
 
 #: glib/gconvert.c:1667
-#, fuzzy, c-format
-#| msgid "The URI '%s' is invalid"
+#, c-format
 msgid "The URI “%s” is invalid"
-msgstr "Το URI '%s' δεν είναι έγκυρο"
+msgstr "Το URI «%s» δεν είναι έγκυρο"
 
 #: glib/gconvert.c:1679
-#, fuzzy, c-format
-#| msgid "The hostname of the URI '%s' is invalid"
+#, c-format
 msgid "The hostname of the URI “%s” is invalid"
-msgstr "Το όνομα κεντρικού υπολογιστή του URI '%s' είναι άκυρο"
+msgstr "Το όνομα κεντρικού υπολογιστή του URI «%s» δεν είναι έγκυρο"
 
 #: glib/gconvert.c:1695
-#, fuzzy, c-format
-#| msgid "The URI '%s' contains invalidly escaped characters"
+#, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
-msgstr "Το URI '%s' περιέχει άκυρους χαρακτήρες διαφυγής"
+msgstr "Το URI «%s» περιέχει άκυρους χαρακτήρες διαφυγής"
 
 #: glib/gconvert.c:1767
-#, fuzzy, c-format
-#| msgid "The pathname '%s' is not an absolute path"
+#, c-format
 msgid "The pathname “%s” is not an absolute path"
-msgstr "Το όνομα διαδρομής '%s' δεν είναι απόλυτη διαδρομή"
+msgstr "Το όνομα διαδρομής «%s» δεν είναι απόλυτη διαδρομή"
 
 #. Translators: this is the preferred format for expressing the date and the time
 #: glib/gdatetime.c:220
@@ -5296,121 +5175,103 @@ msgstr "ΜΜ"
 
 #
 #: glib/gdir.c:154
-#, fuzzy, c-format
-#| msgid "Error opening directory '%s': %s"
+#, c-format
 msgid "Error opening directory “%s”: %s"
-msgstr "Σφάλμα ανοίγματος καταλόγου '%s': %s"
+msgstr "Σφάλμα ανοίγματος καταλόγου «%s»: %s"
 
 #
 #: glib/gfileutils.c:733 glib/gfileutils.c:825
-#, fuzzy, c-format
-#| msgid "Could not allocate %lu byte to read file \"%s\""
-#| msgid_plural "Could not allocate %lu bytes to read file \"%s\""
+#, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
-msgstr[0] "Αδυναμία διάθεσης %lu byte για ανάγνωση αρχείου \"%s\""
-msgstr[1] "Αδυναμία διάθεσης %lu bytes για ανάγνωση αρχείου \"%s\""
+msgstr[0] "Αδυναμία διάθεσης %lu byte για ανάγνωση αρχείου «%s»"
+msgstr[1] "Αδυναμία διάθεσης %lu bytes για ανάγνωση αρχείου «%s»"
 
 #
 #: glib/gfileutils.c:750
-#, fuzzy, c-format
-#| msgid "Error reading file %s: %s"
+#, c-format
 msgid "Error reading file “%s”: %s"
-msgstr "Σφάλμα ανάγνωσης αρχείου %s: %s"
+msgstr "Σφάλμα ανάγνωσης αρχείου «%s»: %s"
 
 #: glib/gfileutils.c:786
-#, fuzzy, c-format
-#| msgid "File \"%s\" is too large"
+#, c-format
 msgid "File “%s” is too large"
-msgstr "Το αρχείο \"%s\" είναι υπερβολικά μεγάλο"
+msgstr "Το αρχείο «%s» είναι υπερβολικά μεγάλο"
 
 # gconf/gconf-internals.c:2416
 #: glib/gfileutils.c:850
-#, fuzzy, c-format
-#| msgid "Failed to read from file '%s': %s"
+#, c-format
 msgid "Failed to read from file “%s”: %s"
-msgstr "Αποτυχία ανάγνωσης από το αρχείο '%s': %s"
+msgstr "Αποτυχία ανάγνωσης από το αρχείο «%s»: %s"
 
 # gconf/gconf-internals.c:2416
 #: glib/gfileutils.c:898 glib/gfileutils.c:970
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': %s"
+#, c-format
 msgid "Failed to open file “%s”: %s"
-msgstr "Αποτυχία ανοίγματος αρχείου '%s': %s"
+msgstr "Αποτυχία ανοίγματος αρχείου «%s»: %s"
 
 # gconf/gconfd.c:1701
 #: glib/gfileutils.c:910
-#, fuzzy, c-format
-#| msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+#, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
-msgstr "Αποτυχία λήψης γνωρισμάτων αρχείου '%s': fstat() απέτυχε: %s"
+msgstr "Αποτυχία λήψης γνωρισμάτων αρχείου «%s»: fstat() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
 #: glib/gfileutils.c:940
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': fdopen() failed: %s"
+#, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
-msgstr "Αποτυχία ανοίγματος αρχείου '%s': fdopen() απέτυχε: %s"
+msgstr "Αποτυχία ανοίγματος αρχείου «%s»: fdopen() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
 #: glib/gfileutils.c:1039
-#, fuzzy, c-format
-#| msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+#, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
-msgstr "Αποτυχία μετονομασίας αρχείου '%s' σε '%s': g_rename() απέτυχε: %s"
+msgstr "Αποτυχία μετονομασίας αρχείου «%s» σε «%s»: g_rename() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
 #: glib/gfileutils.c:1074 glib/gfileutils.c:1592
-#, fuzzy, c-format
-#| msgid "Failed to create file '%s': %s"
+#, c-format
 msgid "Failed to create file “%s”: %s"
-msgstr "Αποτυχία δημιουργίας αρχείου '%s': %s"
+msgstr "Αποτυχία δημιουργίας αρχείου «%s»: %s"
 
 # gconf/gconf-internals.c:2416
 #: glib/gfileutils.c:1101
-#, fuzzy, c-format
-#| msgid "Failed to write file '%s': write() failed: %s"
+#, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
-msgstr "Αποτυχία εγγραφής αρχείου '%s': write() απέτυχε: %s"
+msgstr "Αποτυχία εγγραφής αρχείου «%s»: write() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
 #: glib/gfileutils.c:1144
-#, fuzzy, c-format
-#| msgid "Failed to write file '%s': fsync() failed: %s"
+#, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
-msgstr "Αποτυχία εγγραφής αρχείου '%s': fsync() απέτυχε: %s"
+msgstr "Αποτυχία εγγραφής αρχείου «%s»: fsync() απέτυχε: %s"
 
 #: glib/gfileutils.c:1279
-#, fuzzy, c-format
-#| msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+#, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
-"Αδυναμία απομάκρυνσης του υπάρχοντος αρχείου '%s': g_unlink() απέτυχε: %s"
+"Αδυναμία απομάκρυνσης του υπάρχοντος αρχείου «%s»: g_unlink() απέτυχε: %s"
 
 #: glib/gfileutils.c:1558
-#, fuzzy, c-format
-#| msgid "Template '%s' invalid, should not contain a '%s'"
+#, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
-msgstr "Άκυρο πρότυπο '%s', δεν πρέπει να περιέχει '%s'"
+msgstr "Άκυρο πρότυπο «%s», δεν πρέπει να περιέχει «%s»"
 
 #: glib/gfileutils.c:1571
-#, fuzzy, c-format
-#| msgid "Template '%s' doesn't contain XXXXXX"
+#, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
-msgstr "Το πρότυπο '%s' δεν περιέχει XXXXXX"
+msgstr "Το πρότυπο «%s» δεν περιέχει XXXXXX"
 
 # gconf/gconf-internals.c:2416
 #: glib/gfileutils.c:2129 glib/gfileutils.c:2157
-#, fuzzy, c-format
-#| msgid "Failed to read the symbolic link '%s': %s"
+#, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
-msgstr "Αποτυχία ανάγνωσης συμβολικού συνδέσμου '%s': %s"
+msgstr "Αποτυχία ανάγνωσης συμβολικού συνδέσμου «%s»: %s"
 
 #: glib/giochannel.c:1396
-#, fuzzy, c-format
-#| msgid "Could not open converter from '%s' to '%s': %s"
+#, c-format
 msgid "Could not open converter from “%s” to “%s”: %s"
-msgstr "Αδυναμία ανοίγματος μετατροπέα από '%s' σε '%s': %s"
+msgstr "Αδυναμία ανοίγματος μετατροπέα από «%s» σε «%s»: %s"
 
 #: glib/giochannel.c:1749
 #, fuzzy
@@ -5441,14 +5302,11 @@ msgid "Not a regular file"
 msgstr "Δεν είναι κανονικό αρχείο"
 
 #: glib/gkeyfile.c:1275
-#, fuzzy, c-format
-#| msgid ""
-#| "Key file contains line '%s' which is not a key-value pair, group, or "
-#| "comment"
+#, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
 msgstr ""
-"Το αρχείο κλειδιού περιέχει την γραμμή '%s' που δεν είναι ζεύγος κλειδιού-"
+"Το αρχείο κλειδιού περιέχει την γραμμή «%s» που δεν είναι ζεύγος κλειδιού-"
 "τιμής, ομάδας, ή σχολίου"
 
 #: glib/gkeyfile.c:1332
@@ -5466,100 +5324,84 @@ msgid "Invalid key name: %s"
 msgstr "Άκυρο όνομα κλειδιού: %s"
 
 #: glib/gkeyfile.c:1407
-#, fuzzy, c-format
-#| msgid "Key file contains unsupported encoding '%s'"
+#, c-format
 msgid "Key file contains unsupported encoding “%s”"
-msgstr "Το αρχείο κλειδιού περιέχει ανυποστήρικτη κωδικοποίηση '%s'"
+msgstr "Το αρχείο κλειδιού περιέχει μη υποστηριζόμενη κωδικοποίηση «%s»"
 
 #: glib/gkeyfile.c:1650 glib/gkeyfile.c:1823 glib/gkeyfile.c:3276
 #: glib/gkeyfile.c:3340 glib/gkeyfile.c:3470 glib/gkeyfile.c:3602
 #: glib/gkeyfile.c:3748 glib/gkeyfile.c:3977 glib/gkeyfile.c:4044
-#, fuzzy, c-format
-#| msgid "Key file does not have group '%s'"
+#, c-format
 msgid "Key file does not have group “%s”"
-msgstr "Το αρχείο κλειδιού δεν έχει ομάδα '%s'"
+msgstr "Το αρχείο κλειδιού δεν έχει ομάδα «%s»"
 
 #: glib/gkeyfile.c:1778
-#, fuzzy, c-format
-#| msgid "Key file does not have key '%s' in group '%s'"
+#, c-format
 msgid "Key file does not have key “%s” in group “%s”"
-msgstr "Το αρχείο κλειδιού δεν έχει κλειδί '%s' στην ομάδα '%s'"
+msgstr "Το αρχείο κλειδιού δεν έχει κλειδί «%s» στην ομάδα «%s»"
 
 #: glib/gkeyfile.c:1940 glib/gkeyfile.c:2056
-#, fuzzy, c-format
-#| msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+#, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
-"Το αρχείο κλειδιού περιέχει κλειδί '%s' με τιμή '%s' που δεν είναι UTF-8"
+"Το αρχείο κλειδιού περιέχει κλειδί «%s» με τιμή «%s» που δεν είναι UTF-8"
 
 #: glib/gkeyfile.c:1960 glib/gkeyfile.c:2076 glib/gkeyfile.c:2518
-#, fuzzy, c-format
-#| msgid ""
-#| "Key file contains key '%s' which has a value that cannot be interpreted."
+#, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
-"Το αρχείο κλειδιού περιέχει κλειδί '%s' που περιέχει μια τιμή που δεν μπορεί "
+"Το αρχείο κλειδιού περιέχει κλειδί «%s» που περιέχει μια τιμή που δεν μπορεί "
 "να ερμηνευθεί."
 
 #: glib/gkeyfile.c:2736 glib/gkeyfile.c:3105
-#, fuzzy, c-format
-#| msgid ""
-#| "Key file contains key '%s' in group '%s' which has a value that cannot be "
-#| "interpreted."
+#, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
 "interpreted."
 msgstr ""
-"Το αρχείο κλειδιού περιέχει κλειδί '%s' στην ομάδα '%s' που η τιμή του δεν "
+"Το αρχείο κλειδιού περιέχει κλειδί «%s» στην ομάδα «%s» που η τιμή του δεν "
 "μπορεί να ερμηνευθεί."
 
 #: glib/gkeyfile.c:2814 glib/gkeyfile.c:2891
-#, fuzzy, c-format
-#| msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
+#, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
-msgstr "Το κλειδί '%s' στην ομάδα '%s' έχει τιμή '%s' όταν αναμενόταν %s"
+msgstr "Το κλειδί «%s» στην ομάδα «%s» έχει τιμή «%s» όταν αναμενόταν %s"
 
 #: glib/gkeyfile.c:4284
 msgid "Key file contains escape character at end of line"
 msgstr "Το αρχείο κλειδιού περιέχει χαρακτήρα διαφυγής στο τέλος της γραμμής"
 
 #: glib/gkeyfile.c:4306
-#, fuzzy, c-format
-#| msgid "Key file contains invalid escape sequence '%s'"
+#, c-format
 msgid "Key file contains invalid escape sequence “%s”"
-msgstr "Το αρχείο κλειδιού περιέχει άκυρη σειρά διαφυγής '%s'"
+msgstr "Το αρχείο κλειδιού περιέχει άκυρη σειρά διαφυγής «%s»"
 
 #: glib/gkeyfile.c:4450
-#, fuzzy, c-format
-#| msgid "Value '%s' cannot be interpreted as a number."
+#, c-format
 msgid "Value “%s” cannot be interpreted as a number."
-msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως αριθμός."
+msgstr "Η τιμή «%s» δεν μπορεί να ερμηνευθεί ως αριθμός."
 
 #: glib/gkeyfile.c:4464
-#, fuzzy, c-format
-#| msgid "Integer value '%s' out of range"
+#, c-format
 msgid "Integer value “%s” out of range"
-msgstr "Η ακέραιη τιμή '%s' είναι εκτός εύρους"
+msgstr "Η ακέραιη τιμή «%s» είναι εκτός εύρους"
 
 #: glib/gkeyfile.c:4497
-#, fuzzy, c-format
-#| msgid "Value '%s' cannot be interpreted as a float number."
+#, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
-msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως αριθμός κινητής υποδιαστολής."
+msgstr "Η τιμή «%s» δεν μπορεί να ερμηνευθεί ως αριθμός κινητής υποδιαστολής."
 
 #: glib/gkeyfile.c:4536
-#, fuzzy, c-format
-#| msgid "Value '%s' cannot be interpreted as a boolean."
+#, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
-msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως Μπουλ."
+msgstr "Η τιμή «%s» δεν μπορεί να ερμηνευθεί ως Μπουλ."
 
 # gconf/gconfd.c:1701
 #: glib/gmappedfile.c:129
-#, fuzzy, c-format
-#| msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
+#, c-format
 msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
-msgstr "Αποτυχία λήψης γνωρισμάτων του αρχείου '%s%s%s%s': fstat() απέτυχε: %s"
+msgstr "Αποτυχία λήψης γνωρισμάτων του αρχείου «%s%s%s%s»: fstat() απέτυχε: %s"
 
 # gconf/gconf-internals.c:2416
 #: glib/gmappedfile.c:195
@@ -5569,10 +5411,9 @@ msgstr "Αποτυχία χαρτογράφησης %s%s%s%s: mmap() απέτυ�
 
 # gconf/gconf-internals.c:2416
 #: glib/gmappedfile.c:262
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': open() failed: %s"
+#, c-format
 msgid "Failed to open file “%s”: open() failed: %s"
-msgstr "Αποτυχία ανοίγματος αρχείου '%s': open() απέτυχε: %s"
+msgstr "Αποτυχία ανοίγματος αρχείου «%s»: open() απέτυχε: %s"
 
 # gconf/gconfd.c:1676
 #: glib/gmarkup.c:398 glib/gmarkup.c:440
@@ -5581,22 +5422,19 @@ msgid "Error on line %d char %d: "
 msgstr "Σφάλμα στη γραμμή %d χαρακτήρας %d: "
 
 #: glib/gmarkup.c:462 glib/gmarkup.c:545
-#, fuzzy, c-format
-#| msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+#, c-format
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
-msgstr "Άκυρο κωδικοποιημένο κείμενο UTF-8 στο όνομα - μη έγκυρο '%s'"
+msgstr "Άκυρο κωδικοποιημένο κείμενο UTF-8 στο όνομα - μη έγκυρο «%s»"
 
 #: glib/gmarkup.c:473
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name"
+#, c-format
 msgid "“%s” is not a valid name"
-msgstr "'%s' δεν είναι έγκυρο όνομα"
+msgstr "Το «%s» δεν είναι έγκυρο όνομα"
 
 #: glib/gmarkup.c:489
-#, fuzzy, c-format
-#| msgid "'%s' is not a valid name: '%c'"
+#, c-format
 msgid "“%s” is not a valid name: “%c”"
-msgstr "'%s' δεν είναι ένα έγκυρο όνομα: '%c'"
+msgstr "Το «%s» δεν είναι ένα έγκυρο όνομα: «%c»"
 
 #
 #: glib/gmarkup.c:613
@@ -5605,15 +5443,12 @@ msgid "Error on line %d: %s"
 msgstr "Σφάλμα στη γραμμή %d: %s"
 
 #: glib/gmarkup.c:690
-#, fuzzy, c-format
-#| msgid ""
-#| "Failed to parse '%-.*s', which should have been a digit inside a "
-#| "character reference (&#234; for example) - perhaps the digit is too large"
+#, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
 "reference (&#234; for example) — perhaps the digit is too large"
 msgstr ""
-"Αποτυχία ανάλυσης του '%-.*s', που θα έπρεπε να υπήρχε ένα ψηφίο μέσα στην "
+"Αποτυχία ανάλυσης του «%-.*s», που θα έπρεπε να υπήρχε ένα ψηφίο μέσα στην "
 "αναφορά χαρακτήρα (&#234; για παράδειγμα) - ίσως το ψηφίο να είναι πολύ "
 "μεγάλο"
 
@@ -5633,11 +5468,10 @@ msgstr ""
 "οντότητα - διαφυγή συμπλεκτικού ως &amp;"
 
 #: glib/gmarkup.c:728
-#, fuzzy, c-format
-#| msgid "Character reference '%-.*s' does not encode a permitted character"
+#, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr ""
-"Η αναφορά χαρακτήρα '%-.*s' δεν κωδικοποιεί έναν επιτρεπόμενο χαρακτήρα"
+"Η αναφορά χαρακτήρα «%-.*s» δεν κωδικοποιεί έναν επιτρεπόμενο χαρακτήρα"
 
 #: glib/gmarkup.c:766
 #, fuzzy
@@ -5650,10 +5484,9 @@ msgstr ""
 "&gt; &apos;"
 
 #: glib/gmarkup.c:774
-#, fuzzy, c-format
-#| msgid "Entity name '%-.*s' is not known"
+#, c-format
 msgid "Entity name “%-.*s” is not known"
-msgstr "Το όνομα οντότητας '%-.*s' δεν είναι γνωστό"
+msgstr "Το όνομα οντότητας «%-.*s» δεν είναι γνωστό"
 
 #: glib/gmarkup.c:779
 #, fuzzy
@@ -5673,28 +5506,22 @@ msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Το έγγραφο πρέπει να ξεκινά με στοιχείο (π.χ. <book>)"
 
 #: glib/gmarkup.c:1233
-#, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following a '<' character; it may not begin "
-#| "an element name"
+#, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
 "element name"
 msgstr ""
-"Το '%s' δεν είναι έγκυρος χαρακτήρας όταν ακολουθείται από χαρακτήρα '<'· "
+"Το «%s» δεν είναι έγκυρος χαρακτήρας όταν ακολουθείται από χαρακτήρα «<»· "
 "δεν μπορεί να ξεκινά όνομα στοιχείου"
 
 #: glib/gmarkup.c:1276
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' character to end the empty-element tag "
-#| "'%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
 "“%s”"
 msgstr ""
-"Περίεργος χαρακτήρας '%s', αναμενόταν ο χαρακτήρας '>' στο τέλος της "
-"ετικέτας του κενού-στοιχείου '%s'"
+"Περίεργος χαρακτήρας «%s», αναμενόταν ο χαρακτήρας «>» στο τέλος της "
+"ετικέτας του κενού-στοιχείου «%s»"
 
 #: glib/gmarkup.c:1346
 #, fuzzy, c-format
@@ -5703,101 +5530,78 @@ msgid "Too many attributes in element “%s”"
 msgstr "Αναπάντεχο γνώρισμα '%s' για το στοιχείο '%s'"
 
 #: glib/gmarkup.c:1366
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '=' after attribute name '%s' of element "
-#| "'%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
 msgstr ""
-"Περίεργος χαρακτήρας '%s', αναμενόταν ένα '=' μετά το όνομα γνωρίσματος '%s' "
-"του στοιχείου '%s'"
+"Περίεργος χαρακτήρας «%s», αναμενόταν ένα «=» μετά το όνομα γνωρίσματος «%s» "
+"του στοιχείου «%s»"
 
 #: glib/gmarkup.c:1408
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected a '>' or '/' character to end the start tag "
-#| "of element '%s', or optionally an attribute; perhaps you used an invalid "
-#| "character in an attribute name"
+#, c-format
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
 "element “%s”, or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Περίεργος χαρακτήρας '%s', αναμενόταν ένας χαρακτήρας '>' ή '/' στο τέλος "
-"της ετικέτας έναρξης του στοιχείου '%s' ή προαιρετικά ένα γνώρισμα· πιθανόν "
+"Περίεργος χαρακτήρας «%s», αναμενόταν ένας χαρακτήρας «>» ή «/» στο τέλος "
+"της ετικέτας έναρξης του στοιχείου «%s» ή προαιρετικά ένα γνώρισμα· πιθανόν "
 "να χρησιμοποιήσατε έναν άκυρο χαρακτήρα σε όνομα γνωρίσματος"
 
 #: glib/gmarkup.c:1453
-#, fuzzy, c-format
-#| msgid ""
-#| "Odd character '%s', expected an open quote mark after the equals sign "
-#| "when giving value for attribute '%s' of element '%s'"
+#, c-format
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when "
 "giving value for attribute “%s” of element “%s”"
 msgstr ""
-"Περίεργος χαρακτήρας '%s', αναμενόταν ένα ανοικτό εισαγωγικό μετά το σύμβολο "
-"ίσον στην τιμή για το γνώρισμα '%s' του στοιχείου '%s'"
+"Περίεργος χαρακτήρας «%s», αναμενόταν ένα ανοικτό εισαγωγικό μετά το σύμβολο "
+"ίσον στην τιμή για το γνώρισμα «%s» του στοιχείου «%s»"
 
 #: glib/gmarkup.c:1587
-#, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following the characters '</'; '%s' may not "
-#| "begin an element name"
+#, c-format
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not "
 "begin an element name"
 msgstr ""
-"Το '%s' δεν είναι έγκυρος χαρακτήρας ακολουθούμενος από χαρακτήρες '</'· το "
-"'%s' δεν μπορεί να αρχίζει όνομα στοιχείου"
+"Το «%s» δεν είναι έγκυρος χαρακτήρας ακολουθούμενος από χαρακτήρες «</»· το "
+"«%s» δεν μπορεί να αρχίζει όνομα στοιχείου"
 
 #: glib/gmarkup.c:1625
-#, fuzzy, c-format
-#| msgid ""
-#| "'%s' is not a valid character following the close element name '%s'; the "
-#| "allowed character is '>'"
+#, c-format
 msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
 "allowed character is “>”"
 msgstr ""
-"Το '%s' δεν είναι έγκυρος χαρακτήρας ακολουθούμενος από το όνομα στοιχείου "
-"κλεισίματος '%s'· ο επιτρεπόμενος χαρακτήρας είναι '>'"
+"Το «%s» δεν είναι έγκυρος χαρακτήρας ακολουθούμενος από το όνομα στοιχείου "
+"κλεισίματος «%s»· ο επιτρεπόμενος χαρακτήρας είναι «>»"
 
 #: glib/gmarkup.c:1637
-#, fuzzy, c-format
-#| msgid "Element '%s' was closed, no element is currently open"
+#, c-format
 msgid "Element “%s” was closed, no element is currently open"
-msgstr "Το στοιχείο '%s' έκλεισε, κανένα στοιχείο δεν είναι ανοικτό"
+msgstr "Το στοιχείο «%s» έκλεισε, κανένα στοιχείο δεν είναι ανοικτό"
 
 #: glib/gmarkup.c:1646
-#, fuzzy, c-format
-#| msgid "Element '%s' was closed, but the currently open element is '%s'"
+#, c-format
 msgid "Element “%s” was closed, but the currently open element is “%s”"
-msgstr "Το στοιχείο '%s' έκλεισε, αλλά το τρέχον ανοικτό στοιχείο είναι '%s'"
+msgstr "Το στοιχείο «%s» έκλεισε, αλλά το τρέχον ανοικτό στοιχείο είναι «%s»"
 
 #: glib/gmarkup.c:1799
 msgid "Document was empty or contained only whitespace"
 msgstr "Το έγγραφο ήταν κενό ή περιέχει μόνο λευκό κενό"
 
 #: glib/gmarkup.c:1813
-#, fuzzy
-#| msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr ""
 "Το έγγραφο τερματίστηκε απρόσμενα αμέσως μετά από μια ανοικτή γωνιακή "
-"παρένθεση '<'"
+"παρένθεση «<»"
 
 #: glib/gmarkup.c:1821 glib/gmarkup.c:1866
-#, fuzzy, c-format
-#| msgid ""
-#| "Document ended unexpectedly with elements still open - '%s' was the last "
-#| "element opened"
+#, c-format
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
 "element opened"
 msgstr ""
-"Το έγγραφο τερματίστηκε απρόσμενα με στοιχεία ακόμα ανοικτά - '%s' ήταν το "
+"Το έγγραφο τερματίστηκε απρόσμενα με στοιχεία ακόμα ανοικτά — «%s» ήταν το "
 "τελευταίο στοιχείο που ανοίχθηκε"
 
 #: glib/gmarkup.c:1829
@@ -5835,29 +5639,24 @@ msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Το έγγραφο τερματίστηκε απρόσμενα σε τιμή γνωρίσματος"
 
 #: glib/gmarkup.c:1876
-#, fuzzy, c-format
-#| msgid "Document ended unexpectedly inside the close tag for element '%s'"
+#, c-format
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr ""
-"Το έγγραφο τερματίστηκε απρόσμενα σε ετικέτα κλεισίματος για στοιχείο '%s'"
+"Το έγγραφο τερματίστηκε απρόσμενα σε ετικέτα κλεισίματος για στοιχείο «%s»"
 
 #: glib/gmarkup.c:1880
-#, fuzzy
-#| msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
 msgstr ""
-"Το έγγραφο τερματίστηκε απρόσμενα σε ετικέτα κλεισίματος για στοιχείο '%s'"
+"Το έγγραφο τερματίστηκε απρόσμενα σε ετικέτα κλεισίματος για στοιχείο «%s»"
 
 #: glib/gmarkup.c:1886
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Το έγγραφο τερματίστηκε απρόσμενα σε σχόλιο ή οδηγία επεξεργασίας"
 
 #: glib/goption.c:873
-#, fuzzy
-#| msgid "[OPTION...]"
 msgid "[OPTION…]"
-msgstr "[ΕΠΙΛΟΓΗ...]"
+msgstr "[ΕΠΙΛΟΓΗ…]"
 
 #: glib/goption.c:989
 msgid "Help Options:"
@@ -5880,28 +5679,24 @@ msgid "Options:"
 msgstr "Επιλογές:"
 
 #: glib/goption.c:1125 glib/goption.c:1195
-#, fuzzy, c-format
-#| msgid "Cannot parse integer value '%s' for %s"
+#, c-format
 msgid "Cannot parse integer value “%s” for %s"
-msgstr "Αδυναμία ανάλυσης ακέραιης τιμής '%s' για %s"
+msgstr "Αδυναμία ανάλυσης ακέραιης τιμής «%s» για %s"
 
 #: glib/goption.c:1135 glib/goption.c:1203
-#, fuzzy, c-format
-#| msgid "Integer value '%s' for %s out of range"
+#, c-format
 msgid "Integer value “%s” for %s out of range"
-msgstr "Ακέραιη τιμή '%s' για %s είναι εκτός περιοχής"
+msgstr "Ακέραιη τιμή «%s» για %s είναι εκτός περιοχής"
 
 #: glib/goption.c:1160
-#, fuzzy, c-format
-#| msgid "Cannot parse double value '%s' for %s"
+#, c-format
 msgid "Cannot parse double value “%s” for %s"
-msgstr "Αδυναμία ανάλυσης διπλής τιμής '%s' για %s"
+msgstr "Αδυναμία ανάλυσης διπλής τιμής «%s» για %s"
 
 #: glib/goption.c:1168
-#, fuzzy, c-format
-#| msgid "Double value '%s' for %s out of range"
+#, c-format
 msgid "Double value “%s” for %s out of range"
-msgstr "Η διπλή τιμή '%s' για %s είναι εκτός περιοχής"
+msgstr "Η διπλή τιμή «%s» για %s είναι εκτός περιοχής"
 
 # gconf/gconftool.c:1181
 #: glib/goption.c:1460 glib/goption.c:1539
@@ -6262,10 +6057,8 @@ msgid "hexadecimal digit expected"
 msgstr "αναμένεται δεκαεξαδικό ψηφίο"
 
 #: glib/gregex.c:2475
-#, fuzzy
-#| msgid "missing '<' in symbolic reference"
 msgid "missing “<” in symbolic reference"
-msgstr "λείπει το '<' από τη συμβολική αναφορά"
+msgstr "λείπει το «<» από τη συμβολική αναφορά"
 
 #: glib/gregex.c:2484
 msgid "unfinished symbolic reference"
@@ -6284,21 +6077,18 @@ msgid "illegal symbolic reference"
 msgstr "παράνομη συμβολική αναφορά"
 
 #: glib/gregex.c:2583
-#, fuzzy
-#| msgid "stray final '\\'"
 msgid "stray final “\\”"
-msgstr "αδέσποτο τελικό '\\'"
+msgstr "αδέσποτο τελικό «\\»"
 
 #: glib/gregex.c:2587
 msgid "unknown escape sequence"
 msgstr "άγνωστη ακολουθία διαφυγής"
 
 #: glib/gregex.c:2597
-#, fuzzy, c-format
-#| msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+#, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
-"Σφάλμα ανάλυσης του κειμένου αντικατάστασης \"%s\" στον χαρακτήρα %lu: %s"
+"Σφάλμα ανάλυσης του κειμένου αντικατάστασης «%s» στον χαρακτήρα %lu: %s"
 
 # gconf/gconf-internals.c:1577
 #: glib/gshell.c:94
@@ -6314,20 +6104,17 @@ msgstr ""
 "κελύφους"
 
 #: glib/gshell.c:580
-#, fuzzy, c-format
-#| msgid "Text ended just after a '\\' character. (The text was '%s')"
+#, c-format
 msgid "Text ended just after a “\\” character. (The text was “%s”)"
 msgstr ""
-"Το κείμενο τερματίστηκε αμέσως μετά χαρακτήρα '\\'. (Το κείμενο ήταν '%s')"
+"Το κείμενο τερματίστηκε αμέσως μετά χαρακτήρα «\\». (Το κείμενο ήταν «%s»)"
 
 #: glib/gshell.c:587
-#, fuzzy, c-format
-#| msgid ""
-#| "Text ended before matching quote was found for %c. (The text was '%s')"
+#, c-format
 msgid "Text ended before matching quote was found for %c. (The text was “%s”)"
 msgstr ""
 "Το κείμενο τερματίστηκε πριν να βρεθεί ταιριαστή παράθεση για %c. (Το "
-"κείμενο ήταν '%s')"
+"κείμενο ήταν «%s»)"
 
 #: glib/gshell.c:599
 msgid "Text was empty (or contained only whitespace)"
@@ -6391,17 +6178,15 @@ msgid "Failed to fork (%s)"
 msgstr "Αποτυχία δικράνωσης (%s)"
 
 #: glib/gspawn.c:2026 glib/gspawn-win32.c:381
-#, fuzzy, c-format
-#| msgid "Failed to change to directory '%s' (%s)"
+#, c-format
 msgid "Failed to change to directory “%s” (%s)"
-msgstr "Αποτυχία αλλαγής καταλόγου '%s' (%s)"
+msgstr "Αποτυχία αλλαγής καταλόγου «%s» (%s)"
 
 # gconf/gconf-internals.c:2416
 #: glib/gspawn.c:2036
-#, fuzzy, c-format
-#| msgid "Failed to execute child process \"%s\" (%s)"
+#, c-format
 msgid "Failed to execute child process “%s” (%s)"
-msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασίας \"%s\" (%s)"
+msgstr "Αποτυχία εκτέλεσης θυγατρικής διεργασίας «%s» (%s)"
 
 #: glib/gspawn.c:2046
 #, c-format
@@ -6414,10 +6199,9 @@ msgid "Failed to fork child process (%s)"
 msgstr "Αποτυχία δικράνωσης θυγατρικής διεργασίας (%s)"
 
 #: glib/gspawn.c:2063
-#, fuzzy, c-format
-#| msgid "Unknown error executing child process \"%s\""
+#, c-format
 msgid "Unknown error executing child process “%s”"
-msgstr "Άγνωστο σφάλμα εκτέλεσης θυγατρικής διεργασίας \"%s\""
+msgstr "Άγνωστο σφάλμα εκτέλεσης θυγατρικής διεργασίας «%s»"
 
 #: glib/gspawn.c:2087
 #, c-format
@@ -6480,9 +6264,8 @@ msgstr "Το κενό αλφαριθμητικό δεν είναι αριθμό�
 
 #: glib/gstrfuncs.c:3327
 #, fuzzy, c-format
-#| msgid "'%s' is not a valid name"
 msgid "“%s” is not a signed number"
-msgstr "'%s' δεν είναι έγκυρο όνομα"
+msgstr "Το «%s» δεν είναι έγκυρο όνομα"
 
 #: glib/gstrfuncs.c:3337 glib/gstrfuncs.c:3441
 #, c-format
@@ -6530,10 +6313,9 @@ msgid "Port '%.*s' in URI is out of range"
 msgstr ""
 
 #: glib/guri.c:1009
-#, fuzzy, c-format
-#| msgid "The pathname '%s' is not an absolute path"
+#, c-format
 msgid "URI '%s' is not an absolute URI"
-msgstr "Το όνομα διαδρομής '%s' δεν είναι απόλυτη διαδρομή"
+msgstr "Το URI «%s» δεν είναι απόλυτη διαδρομή URI"
 
 #: glib/guri.c:1015
 #, c-format
