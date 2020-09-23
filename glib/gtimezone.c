@@ -438,11 +438,80 @@ zone_for_constant_offset (GTimeZone *gtz, const gchar *name)
 }
 
 #ifdef G_OS_UNIX
+static gchar *
+zone_identifier_unix (void)
+{
+  gchar *resolved_identifier = NULL;
+  gsize prefix_len = 0;
+  gchar *canonical_path = NULL;
+  GError *read_link_err = NULL;
+  const gchar *tzdir;
+
+  /* Resolve the actual timezone pointed to by /etc/localtime. */
+  resolved_identifier = g_file_read_link ("/etc/localtime", &read_link_err);
+  if (resolved_identifier == NULL)
+    {
+      gboolean not_a_symlink = g_error_matches (read_link_err,
+                                                G_FILE_ERROR,
+                                                G_FILE_ERROR_INVAL);
+      g_clear_error (&read_link_err);
+
+      /* Fallback to the content of /var/db/zoneinfo or /etc/timezone
+       * if /etc/localtime is not a symlink. /var/db/zoneinfo is
+       * where 'tzsetup' program on FreeBSD and DragonflyBSD stores
+       * the timezone chosen by the user. /etc/timezone is where user
+       * choice is expressed on Gentoo OpenRC and others. */
+      if (not_a_symlink && (g_file_get_contents ("/var/db/zoneinfo",
+                                                 &resolved_identifier,
+                                                 NULL, NULL) ||
+                            g_file_get_contents ("/etc/timezone",
+                                                 &resolved_identifier,
+                                                 NULL, NULL)))
+        g_strchomp (resolved_identifier);
+      else
+        {
+          /* Error */
+          g_assert (resolved_identifier == NULL);
+          goto out;
+        }
+    }
+  else
+    {
+      /* Resolve relative path */
+      canonical_path = g_canonicalize_filename (resolved_identifier, "/etc");
+      g_free (resolved_identifier);
+      resolved_identifier = g_steal_pointer (&canonical_path);
+    }
+
+  tzdir = g_getenv ("TZDIR");
+  if (tzdir == NULL)
+    tzdir = "/usr/share/zoneinfo";
+
+  /* Strip the prefix and slashes if possible. */
+  if (g_str_has_prefix (resolved_identifier, tzdir))
+    {
+      prefix_len = strlen (tzdir);
+      while (*(resolved_identifier + prefix_len) == '/')
+        prefix_len++;
+    }
+
+  if (prefix_len > 0)
+    memmove (resolved_identifier, resolved_identifier + prefix_len,
+             strlen (resolved_identifier) - prefix_len + 1  /* nul terminator */);
+
+  g_assert (resolved_identifier != NULL);
+
+out:
+  g_free (canonical_path);
+
+  return resolved_identifier;
+}
+
 static GBytes*
 zone_info_unix (const gchar  *identifier,
                 gchar       **out_identifier)
 {
-  gchar *filename;
+  gchar *filename = NULL;
   GMappedFile *file = NULL;
   GBytes *zoneinfo = NULL;
   gchar *resolved_identifier = NULL;
@@ -470,61 +539,11 @@ zone_info_unix (const gchar  *identifier,
     }
   else
     {
-      gsize prefix_len = 0;
-      gchar *canonical_path = NULL;
-      GError *read_link_err = NULL;
+      resolved_identifier = zone_identifier_unix ();
+      if (resolved_identifier == NULL)
+        goto out;
 
       filename = g_strdup ("/etc/localtime");
-
-      /* Resolve the actual timezone pointed to by /etc/localtime. */
-      resolved_identifier = g_file_read_link (filename, &read_link_err);
-      if (resolved_identifier == NULL)
-        {
-          gboolean not_a_symlink = g_error_matches (read_link_err,
-                                                    G_FILE_ERROR,
-                                                    G_FILE_ERROR_INVAL);
-          g_clear_error (&read_link_err);
-
-          /* Fallback to the content of /var/db/zoneinfo or /etc/timezone
-           * if /etc/localtime is not a symlink. /var/db/zoneinfo is
-           * where 'tzsetup' program on FreeBSD and DragonflyBSD stores
-           * the timezone chosen by the user. /etc/timezone is where user
-           * choice is expressed on Gentoo OpenRC and others. */
-          if (not_a_symlink && (g_file_get_contents ("/var/db/zoneinfo",
-                                                     &resolved_identifier,
-                                                     NULL, NULL) ||
-                                g_file_get_contents ("/etc/timezone",
-                                                     &resolved_identifier,
-                                                     NULL, NULL)))
-            g_strchomp (resolved_identifier);
-          else
-            {
-              /* Error */
-              g_assert (resolved_identifier == NULL);
-              goto out;
-            }
-        }
-      else
-        {
-          /* Resolve relative path */
-          canonical_path = g_canonicalize_filename (resolved_identifier, "/etc");
-          g_free (resolved_identifier);
-          resolved_identifier = g_steal_pointer (&canonical_path);
-        }
-
-      /* Strip the prefix and slashes if possible. */
-      if (g_str_has_prefix (resolved_identifier, tzdir))
-        {
-          prefix_len = strlen (tzdir);
-          while (*(resolved_identifier + prefix_len) == '/')
-            prefix_len++;
-        }
-
-      if (prefix_len > 0)
-        memmove (resolved_identifier, resolved_identifier + prefix_len,
-                 strlen (resolved_identifier) - prefix_len + 1  /* nul terminator */);
-
-      g_free (canonical_path);
     }
 
   file = g_mapped_file_new (filename, FALSE, NULL);
