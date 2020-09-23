@@ -198,7 +198,6 @@ static GHashTable/*<string?, GTimeZone>*/ *time_zones;
 G_LOCK_DEFINE_STATIC (tz_default);
 static GTimeZone *tz_default = NULL;
 G_LOCK_DEFINE_STATIC (tz_local);
-static gchar *tzenv_cached = NULL;
 static GTimeZone *tz_local = NULL;
 
 #define MIN_TZYEAR 1916 /* Daylight Savings started in WWI */
@@ -1869,17 +1868,11 @@ g_time_zone_new_local (void)
   G_LOCK (tz_local);
 
   /* Is time zone changed and must be flushed? */
-  if (tz_local && g_strcmp0 (tzenv, tzenv_cached) != 0)
-    {
-      g_clear_pointer (&tz_local, g_time_zone_unref);
-      g_clear_pointer (&tzenv_cached, g_free);
-    }
+  if (tz_local && g_strcmp0 (g_time_zone_get_identifier (tz_local), tzenv))
+    g_clear_pointer (&tz_local, g_time_zone_unref);
 
   if (tz_local == NULL)
-    {
-      tz_local = g_time_zone_new (tzenv);
-      tzenv_cached = g_strdup (tzenv);
-    }
+    tz_local = g_time_zone_new (tzenv);
 
   tz = g_time_zone_ref (tz_local);
 
