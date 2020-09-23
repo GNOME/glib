@@ -982,7 +982,6 @@ g_get_host_name (void)
       gchar *utmp;
 
 #ifndef G_OS_WIN32
-      glong max;
       gsize size;
       /* The number 256 * 256 is taken from the value of _POSIX_HOST_NAME_MAX,
        * which is 255. Since we use _POSIX_HOST_NAME_MAX + 1 (= 256) in the
@@ -994,15 +993,19 @@ g_get_host_name (void)
       gchar *tmp;
 
 #ifdef _SC_HOST_NAME_MAX
-      max = sysconf (_SC_HOST_NAME_MAX);
-      if (max > 0 && (gsize) max <= G_MAXSIZE - 1)
-        size = (gsize) max + 1;
-      else
+      {
+        glong max;
+
+        max = sysconf (_SC_HOST_NAME_MAX);
+        if (max > 0 && (gsize) max <= G_MAXSIZE - 1)
+          size = (gsize) max + 1;
+        else
 #ifdef HOST_NAME_MAX
-        size = HOST_NAME_MAX + 1;
+          size = HOST_NAME_MAX + 1;
 #else
-        size = _POSIX_HOST_NAME_MAX + 1;
+          size = _POSIX_HOST_NAME_MAX + 1;
 #endif /* HOST_NAME_MAX */
+      }
 #else
       /* Fallback to some reasonable value */
       size = 256;
