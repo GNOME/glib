@@ -74,8 +74,9 @@ g_trash_portal_trash_file (GFile   *file,
   GUnixFDList *fd_list = NULL;
   int fd, fd_in, errsv;
   gboolean ret = FALSE;
+  guint portal_result = 0;
   GXdpTrash *proxy;
-  
+
   proxy = ensure_trash_portal ();
   if (proxy == NULL)
     {
@@ -114,10 +115,16 @@ g_trash_portal_trash_file (GFile   *file,
   ret = gxdp_trash_call_trash_file_sync (proxy,
                                          g_variant_new_handle (fd_in),
                                          fd_list,
-                                         NULL,
+                                         &portal_result,
                                          NULL,
                                          NULL,
                                          error);
+
+  if (ret && portal_result != 1)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Trash portal failed on %s", path);
+      ret = FALSE;
+    }
 
  out:
   g_clear_object (&fd_list);
