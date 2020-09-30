@@ -373,9 +373,9 @@ g_private_replace (GPrivate *key,
   gpointer old;
 
   old = TlsGetValue (impl);
+  TlsSetValue (impl, value);
   if (old && key->notify)
     key->notify (old);
-  TlsSetValue (impl, value);
 }
 
 /* {{{1 GThread */

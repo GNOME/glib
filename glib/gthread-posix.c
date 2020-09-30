@@ -1116,11 +1116,12 @@ g_private_replace (GPrivate *key,
   gint status;
 
   old = pthread_getspecific (*impl);
-  if (old && key->notify)
-    key->notify (old);
 
   if G_UNLIKELY ((status = pthread_setspecific (*impl, value)) != 0)
     g_thread_abort (status, "pthread_setspecific");
+
+  if (old && key->notify)
+    key->notify (old);
 }
 
 /* {{{1 GThread */
