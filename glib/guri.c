@@ -466,14 +466,7 @@ parse_ip_literal (const gchar  *start,
   gchar *addr = NULL;
 
   if (start[length - 1] != ']')
-    {
-    bad_ipv6_literal:
-      g_free (addr);
-      g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
-                   _("Invalid IPv6 address ‘%.*s’ in URI"),
-                   (gint)length, start);
-      return FALSE;
-    }
+    goto bad_ipv6_literal;
 
   addr = g_strndup (start + 1, length - 2);
 
@@ -499,9 +492,18 @@ parse_ip_literal (const gchar  *start,
   /* Success */
   if (out != NULL)
     *out = g_steal_pointer (&addr);
+
   g_free (addr);
 
   return TRUE;
+
+bad_ipv6_literal:
+  g_free (addr);
+  g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
+               _("Invalid IPv6 address ‘%.*s’ in URI"),
+               (gint)length, start);
+
+  return FALSE;
 }
 
 static gboolean
