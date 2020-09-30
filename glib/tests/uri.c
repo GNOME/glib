@@ -697,13 +697,13 @@ static const UriAbsoluteTest absolute_tests[] = {
     { "http-ish", NULL, "host", -1, "/path", NULL, NULL } },
 
   /* IPv6 scope ID parsing (both correct and incorrect) */
-  { "http://[fe80::dead:beef%em1]/", G_URI_FLAGS_NONE,
+  { "http://[fe80::dead:beef%em1]/", G_URI_FLAGS_PARSE_RELAXED,
     { "http", NULL, "fe80::dead:beef%em1", -1, "/", NULL, NULL } },
   { "http://[fe80::dead:beef%25em1]/", G_URI_FLAGS_NONE,
     { "http", NULL, "fe80::dead:beef%em1", -1, "/", NULL, NULL } },
-  { "http://[fe80::dead:beef%10]/", G_URI_FLAGS_NONE,
+  { "http://[fe80::dead:beef%10]/", G_URI_FLAGS_PARSE_RELAXED,
     { "http", NULL, "fe80::dead:beef%10", -1, "/", NULL, NULL } },
-  { "http://[fe80::dead:beef%25]/", G_URI_FLAGS_NONE,
+  { "http://[fe80::dead:beef%25]/", G_URI_FLAGS_PARSE_RELAXED,
     { "http", NULL, "fe80::dead:beef%25", -1, "/", NULL, NULL } },
 };
 static int num_absolute_tests = G_N_ELEMENTS (absolute_tests);
