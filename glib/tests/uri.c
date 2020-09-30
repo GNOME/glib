@@ -681,17 +681,6 @@ static const UriAbsoluteTest absolute_tests[] = {
     { "scheme", NULL, "foo:bar._webdav._tcp.local", -1, "", NULL, NULL}
   },
 
-  /* IPv6 scope ID parsing (both correct and incorrect) */
-  { "http://[fe80::dead:beef%em1]/", G_URI_FLAGS_NONE,
-    { "http", NULL, "fe80::dead:beef%em1", -1, "/", NULL, NULL }
-  },
-  { "http://[fe80::dead:beef%25em1]/", G_URI_FLAGS_NONE,
-    { "http", NULL, "fe80::dead:beef%em1", -1, "/", NULL, NULL }
-  },
-  { "http://[fe80::dead:beef%10]/", G_URI_FLAGS_NONE,
-    { "http", NULL, "fe80::dead:beef%10", -1, "/", NULL, NULL }
-  },
-
   /* ".." past top */
   { "http://example.com/..", G_URI_FLAGS_NONE,
     { "http", NULL, "example.com", -1, "/..", NULL, NULL }
