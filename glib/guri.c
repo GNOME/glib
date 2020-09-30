@@ -442,6 +442,68 @@ _uri_encoder (GString      *out,
     }
 }
 
+/* Parse the IP-literal construction from RFC 6874 (which extends RFC 3986 to
+ * support IPv6 zone identifiers.
+ *
+ * Rules:
+ *
+ * IP-literal = "[" ( IPv6address / IPvFuture  ) "]"
+ *
+ * IP-literal = "[" ( IPv6address / IPv6addrz / IPvFuture  ) "]"
+ *
+ * ZoneID = 1*( unreserved / pct-encoded )
+ *
+ * IPv6addrz = IPv6address "%25" ZoneID
+ */
+static gboolean
+parse_ip_literal (const gchar  *start,
+                  gsize         length,
+                  GUriFlags     flags,
+                  gchar       **out,
+                  GError      **error)
+{
+  gchar *pct;
+  gchar *addr = NULL;
+
+  if (start[length - 1] != ']')
+    {
+    bad_ipv6_literal:
+      g_free (addr);
+      g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
+                   _("Invalid IPv6 address ‘%.*s’ in URI"),
+                   (gint)length, start);
+      return FALSE;
+    }
+
+  addr = g_strndup (start + 1, length - 2);
+
+  /* If there's an IPv6 scope id, ignore it for the moment. */
+  pct = strchr (addr, '%');
+  if (pct)
+    *pct = '\0';
+
+  /* addr must be an IPv6 address */
+  if (!g_hostname_is_ip_address (addr) || !strchr (addr, ':'))
+    goto bad_ipv6_literal;
+
+  if (pct)
+    {
+      *pct = '%';
+      if (strchr (pct + 1, '%'))
+        goto bad_ipv6_literal;
+      /* If the '%' is encoded as '%25' (which it should be), decode it */
+      if (pct[1] == '2' && pct[2] == '5' && pct[3])
+        memmove (pct + 1, pct + 3, strlen (pct + 3) + 1);
+    }
+
+  /* Success */
+  if (out != NULL)
+    *out = g_steal_pointer (&addr);
+  g_free (addr);
+
+  return TRUE;
+}
+
 static gboolean
 parse_host (const gchar  *start,
             gsize         length,
@@ -449,43 +511,13 @@ parse_host (const gchar  *start,
             gchar       **out,
             GError      **error)
 {
-  gchar *decoded, *host, *pct;
+  gchar *decoded, *host;
   gchar *addr = NULL;
 
   if (*start == '[')
     {
-      if (start[length - 1] != ']')
-        {
-        bad_ipv6_literal:
-          g_free (addr);
-          g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
-                       _("Invalid IPv6 address ‘%.*s’ in URI"),
-                       (gint)length, start);
-          return FALSE;
-        }
-
-      addr = g_strndup (start + 1, length - 2);
-
-      /* If there's an IPv6 scope id, ignore it for the moment. */
-      pct = strchr (addr, '%');
-      if (pct)
-        *pct = '\0';
-
-      /* addr must be an IPv6 address */
-      if (!g_hostname_is_ip_address (addr) || !strchr (addr, ':'))
-        goto bad_ipv6_literal;
-
-      if (pct)
-        {
-          *pct = '%';
-          if (strchr (pct + 1, '%'))
-            goto bad_ipv6_literal;
-          /* If the '%' is encoded as '%25' (which it should be), decode it */
-          if (pct[1] == '2' && pct[2] == '5' && pct[3])
-            memmove (pct + 1, pct + 3, strlen (pct + 3) + 1);
-        }
-
-      host = addr;
+      if (!parse_ip_literal (start, length, flags, &host, error))
+        return FALSE;
       goto ok;
     }
 
