@@ -511,7 +511,7 @@ parse_host (const gchar  *start,
             gchar       **out,
             GError      **error)
 {
-  gchar *decoded, *host;
+  gchar *decoded = NULL, *host;
   gchar *addr = NULL;
 
   if (*start == '[')
@@ -537,7 +537,7 @@ parse_host (const gchar  *start,
       if (!uri_normalize (&decoded, start, length, flags,
                           G_URI_ERROR_BAD_HOST, error))
         return FALSE;
-      host = decoded;
+      host = g_steal_pointer (&decoded);
       goto ok;
     }
 
@@ -559,18 +559,16 @@ parse_host (const gchar  *start,
     }
 
   if (g_hostname_is_non_ascii (decoded))
-    {
-      host = g_hostname_to_ascii (decoded);
-      g_free (decoded);
-    }
+    host = g_hostname_to_ascii (decoded);
   else
-    host = decoded;
+    host = g_steal_pointer (&decoded);
 
  ok:
   if (out)
-    *out = host;
-  else
-    g_free (host);
+    *out = g_steal_pointer (&host);
+  g_free (host);
+  g_free (decoded);
+
   return TRUE;
 }
 
