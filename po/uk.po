@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-08-07 14:14+0000\n"
-"PO-Revision-Date: 2020-08-08 17:58+0300\n"
+"POT-Creation-Date: 2020-10-01 16:35+0000\n"
+"PO-Revision-Date: 2020-10-01 19:55+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
 "=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 20.07.70\n"
+"X-Generator: Lokalize 20.11.70\n"
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
@@ -561,34 +561,34 @@ msgstr ""
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Скасовано через GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:265
+#: gio/gdbusauthmechanismsha1.c:296
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Помилка при отриманні відомостей для каталогу «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:280
+#: gio/gdbusauthmechanismsha1.c:311
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr "Помилкові права на каталог «%s». Очікуваний режим — 0700, отримано 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:310
+#: gio/gdbusauthmechanismsha1.c:341
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Сталася помилка при створенні каталогу «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:355
+#: gio/gdbusauthmechanismsha1.c:386
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Сталася помилка при відкриванні зв'язки ключів «%s» на читання: "
 
-#: gio/gdbusauthmechanismsha1.c:378 gio/gdbusauthmechanismsha1.c:700
+#: gio/gdbusauthmechanismsha1.c:409 gio/gdbusauthmechanismsha1.c:731
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "Некоректне форматування у рядку %d у зв'язці ключів у «%s» з вмістом «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:392 gio/gdbusauthmechanismsha1.c:714
+#: gio/gdbusauthmechanismsha1.c:423 gio/gdbusauthmechanismsha1.c:745
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -596,7 +596,7 @@ msgstr ""
 "Некоректне форматування першої лексеми у рядку %d у зв'язці ключів у «%s» з "
 "вмістом «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:406 gio/gdbusauthmechanismsha1.c:728
+#: gio/gdbusauthmechanismsha1.c:437 gio/gdbusauthmechanismsha1.c:759
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -604,38 +604,38 @@ msgstr ""
 "Некоректне форматування другої лексеми у рядку %d у зв'язці ключів у «%s» з "
 "вмістом «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:430
+#: gio/gdbusauthmechanismsha1.c:461
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Не вдалося знайти куки з ідентифікатором %d у зв'язці ключів «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:476
+#: gio/gdbusauthmechanismsha1.c:507
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Сталася помилка при створенні файла блокування «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:540
+#: gio/gdbusauthmechanismsha1.c:571
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Сталася помилка при вилученні застарілого файла блокування «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:579
+#: gio/gdbusauthmechanismsha1.c:610
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr ""
 "Сталася помилка при закриванні (від'єднаного) файла блокування «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:590
+#: gio/gdbusauthmechanismsha1.c:621
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Сталася помилка при вилученні файла блокування «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:667
+#: gio/gdbusauthmechanismsha1.c:698
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Сталася помилка при відкриванні зв'язки ключів «%s» для запису: "
 
-#: gio/gdbusauthmechanismsha1.c:865
+#: gio/gdbusauthmechanismsha1.c:892
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Також, не вдалося вивільнити блокування «%s»: %s) "
@@ -1277,38 +1277,38 @@ msgstr "Помилка: забагато аргументів.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Помилка: %s не є припустимим добре відомою назвою шини.\n"
 
-#: gio/gdesktopappinfo.c:2071 gio/gdesktopappinfo.c:4891
+#: gio/gdesktopappinfo.c:2073 gio/gdesktopappinfo.c:4893
 msgid "Unnamed"
 msgstr "Без назви"
 
-#: gio/gdesktopappinfo.c:2481
+#: gio/gdesktopappinfo.c:2483
 msgid "Desktop file didn’t specify Exec field"
 msgstr "У desktop-файлі не визначено поля Exec"
 
-#: gio/gdesktopappinfo.c:2761
+#: gio/gdesktopappinfo.c:2763
 msgid "Unable to find terminal required for application"
 msgstr "Неможливо знайти термінал, що потрібен програмі"
 
-#: gio/gdesktopappinfo.c:3412
+#: gio/gdesktopappinfo.c:3414
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Не вдалося створити теку параметрів програми %s: %s"
 
-#: gio/gdesktopappinfo.c:3416
+#: gio/gdesktopappinfo.c:3418
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Не вдалося створити теку параметрів MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:3658 gio/gdesktopappinfo.c:3682
+#: gio/gdesktopappinfo.c:3660 gio/gdesktopappinfo.c:3684
 msgid "Application information lacks an identifier"
 msgstr "У інформації про програму не вказано ідентифікатор"
 
-#: gio/gdesktopappinfo.c:3918
+#: gio/gdesktopappinfo.c:3920
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Не вдалося створити для користувача desktop-файл %s"
 
-#: gio/gdesktopappinfo.c:4054
+#: gio/gdesktopappinfo.c:4056
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Власне визначення %s"
@@ -1376,10 +1376,10 @@ msgstr "Очікується GEmblem для GEmblemedIcon"
 #: gio/gfile.c:1044 gio/gfile.c:1282 gio/gfile.c:1420 gio/gfile.c:1658
 #: gio/gfile.c:1713 gio/gfile.c:1771 gio/gfile.c:1855 gio/gfile.c:1912
 #: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3722 gio/gfile.c:3777
-#: gio/gfile.c:4055 gio/gfile.c:4525 gio/gfile.c:4936 gio/gfile.c:5021
-#: gio/gfile.c:5111 gio/gfile.c:5208 gio/gfile.c:5295 gio/gfile.c:5396
-#: gio/gfile.c:8106 gio/gfile.c:8196 gio/gfile.c:8280
-#: gio/win32/gwinhttpfile.c:437
+#: gio/gfile.c:4070 gio/gfile.c:4540 gio/gfile.c:4951 gio/gfile.c:5036
+#: gio/gfile.c:5126 gio/gfile.c:5223 gio/gfile.c:5310 gio/gfile.c:5411
+#: gio/gfile.c:8121 gio/gfile.c:8211 gio/gfile.c:8295
+#: gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Операція не підтримується"
 
@@ -1391,7 +1391,7 @@ msgstr "Операція не підтримується"
 msgid "Containing mount does not exist"
 msgstr "Вкладена точка монтування не існує"
 
-#: gio/gfile.c:2590 gio/glocalfile.c:2434
+#: gio/gfile.c:2590 gio/glocalfile.c:2430
 msgid "Can’t copy over directory"
 msgstr "Не можна копіювати із заміною каталогу"
 
@@ -1441,20 +1441,20 @@ msgstr "Неправильне значення символьного поси�
 msgid "Symbolic links not supported"
 msgstr "Символічні посилання не підтримуються"
 
-#: gio/gfile.c:4166
+#: gio/gfile.c:4181
 msgid "Trash not supported"
 msgstr "Смітник не підтримується"
 
-#: gio/gfile.c:4278
+#: gio/gfile.c:4293
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Назви файлів не можуть містити символу «%c»"
 
-#: gio/gfile.c:6759 gio/gvolume.c:364
+#: gio/gfile.c:6774 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "для тому не реалізовано операцію монтування"
 
-#: gio/gfile.c:6873 gio/gfile.c:6921
+#: gio/gfile.c:6888 gio/gfile.c:6936
 msgid "No application is registered as handling this file"
 msgstr "Програм для обробки таких файлів не зареєстровано"
 
@@ -1707,7 +1707,7 @@ msgstr "Помилка при записі до стандартного вив�
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
-#: gio/gio-tool-trash.c:81 gio/gio-tool-tree.c:239
+#: gio/gio-tool-trash.c:90 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "МІСЦЕ"
 
@@ -1727,7 +1727,7 @@ msgstr ""
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
+#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:145
 msgid "No locations given"
 msgstr "Не вказано місць"
 
@@ -2278,7 +2278,7 @@ msgstr "Некоректний тип атрибута «%s»"
 msgid "Empty the trash"
 msgstr "Спорожнити смітник"
 
-#: gio/gio-tool-trash.c:86
+#: gio/gio-tool-trash.c:95
 msgid "Move files or directories to the trash."
 msgstr "Пересунути файли або каталоги до смітника."
 
@@ -2907,7 +2907,7 @@ msgstr "Не знайдено файлів схем: нічого не роби�
 msgid "No schema files found: removed existing output file."
 msgstr "Не знайдено файлів схеми: вилучено наявний файл виведених даних."
 
-#: gio/glocalfile.c:549 gio/win32/gwinhttpfile.c:420
+#: gio/glocalfile.c:549 gio/win32/gwinhttpfile.c:436
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Некоректна назва файла %s"
@@ -2939,262 +2939,262 @@ msgstr "Помилка при перейменуванні файла %s: %s"
 msgid "Can’t rename file, filename already exists"
 msgstr "Не вдалося перейменувати файл, файл із також назвою вже існує"
 
-#: gio/glocalfile.c:1182 gio/glocalfile.c:2328 gio/glocalfile.c:2356
-#: gio/glocalfile.c:2495 gio/glocalfileoutputstream.c:645
+#: gio/glocalfile.c:1182 gio/glocalfile.c:2324 gio/glocalfile.c:2352
+#: gio/glocalfile.c:2491 gio/glocalfileoutputstream.c:650
 msgid "Invalid filename"
 msgstr "Некоректна назва файла"
 
-#: gio/glocalfile.c:1350 gio/glocalfile.c:1365
+#: gio/glocalfile.c:1350 gio/glocalfile.c:1361
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "Помилка при відкритті файла «%s»: %s"
 
-#: gio/glocalfile.c:1490
+#: gio/glocalfile.c:1486
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "Помилка під час спроби вилучити файл %s: %s"
 
-#: gio/glocalfile.c:1973
+#: gio/glocalfile.c:1969
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Помилка під час спроби надіслати файл %s до смітника: %s"
 
-#: gio/glocalfile.c:2014
+#: gio/glocalfile.c:2010
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Помилка при створенні каталогу смітника %s: %s"
 
-#: gio/glocalfile.c:2034
+#: gio/glocalfile.c:2030
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Не вдалося знайти каталог верхнього рівня для смітника %s"
 
-#: gio/glocalfile.c:2042
+#: gio/glocalfile.c:2038
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr ""
 "Підтримки надсилання до смітника на внутрішніх точках монтування системи не "
 "передбачено"
 
-#: gio/glocalfile.c:2122 gio/glocalfile.c:2142
+#: gio/glocalfile.c:2118 gio/glocalfile.c:2138
 #, c-format
 msgid "Unable to find or create trash directory for %s"
 msgstr "Не вдалося знайти або створити каталог смітника для %s"
 
-#: gio/glocalfile.c:2177
+#: gio/glocalfile.c:2173
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr ""
 "Не вдалося створити файл відомостей щодо надсилання до смітника для %s: %s"
 
-#: gio/glocalfile.c:2239
+#: gio/glocalfile.c:2235
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Не вдалося надіслати файл %s до смітника за межами файлової системи"
 
-#: gio/glocalfile.c:2243 gio/glocalfile.c:2299
+#: gio/glocalfile.c:2239 gio/glocalfile.c:2295
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Не вдалося перемістити файл до смітника %s: %s"
 
-#: gio/glocalfile.c:2305
+#: gio/glocalfile.c:2301
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Не вдалося перемістити файл до смітника %s"
 
-#: gio/glocalfile.c:2331
+#: gio/glocalfile.c:2327
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Сталася помилка при створенні каталогу «%s»: %s"
 
-#: gio/glocalfile.c:2360
+#: gio/glocalfile.c:2356
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Файлова система не підтримує символічні посилання"
 
-#: gio/glocalfile.c:2363
+#: gio/glocalfile.c:2359
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Помилка при створенні символічного посилання %s: %s"
 
-#: gio/glocalfile.c:2406 gio/glocalfile.c:2441 gio/glocalfile.c:2498
+#: gio/glocalfile.c:2402 gio/glocalfile.c:2437 gio/glocalfile.c:2494
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Помилка при переміщенні файла %s: %s"
 
-#: gio/glocalfile.c:2429
+#: gio/glocalfile.c:2425
 msgid "Can’t move directory over directory"
 msgstr "Не вдалося перемістити каталог поверх каталогу"
 
-#: gio/glocalfile.c:2455 gio/glocalfileoutputstream.c:1029
-#: gio/glocalfileoutputstream.c:1043 gio/glocalfileoutputstream.c:1058
-#: gio/glocalfileoutputstream.c:1075 gio/glocalfileoutputstream.c:1089
+#: gio/glocalfile.c:2451 gio/glocalfileoutputstream.c:1039
+#: gio/glocalfileoutputstream.c:1053 gio/glocalfileoutputstream.c:1068
+#: gio/glocalfileoutputstream.c:1085 gio/glocalfileoutputstream.c:1099
 msgid "Backup file creation failed"
 msgstr "Помилка при створенні файла резервної копії"
 
-#: gio/glocalfile.c:2474
+#: gio/glocalfile.c:2470
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Помилка при зчитуванні файла призначення: %s"
 
-#: gio/glocalfile.c:2488
+#: gio/glocalfile.c:2484
 msgid "Move between mounts not supported"
 msgstr "Переміщення між різними точками монтування не підтримується"
 
-#: gio/glocalfile.c:2662
+#: gio/glocalfile.c:2658
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Не вдалося визначити використання диска %s: %s"
 
-#: gio/glocalfileinfo.c:765
+#: gio/glocalfileinfo.c:767
 msgid "Attribute value must be non-NULL"
 msgstr "Значення атрибута не може бути NULL"
 
-#: gio/glocalfileinfo.c:772
+#: gio/glocalfileinfo.c:774
 msgid "Invalid attribute type (string expected)"
 msgstr "Некоректний тип атрибута (очікувався рядок)"
 
-#: gio/glocalfileinfo.c:779
+#: gio/glocalfileinfo.c:781
 msgid "Invalid extended attribute name"
 msgstr "Неправильна назва розширеного атрибута"
 
-#: gio/glocalfileinfo.c:819
+#: gio/glocalfileinfo.c:821
 #, c-format
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Помилка при встановленні розширеного атрибута «%s»: %s"
 
-#: gio/glocalfileinfo.c:1655
+#: gio/glocalfileinfo.c:1666 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (неправильне кодування)"
 
-#: gio/glocalfileinfo.c:1819 gio/glocalfileoutputstream.c:907
+#: gio/glocalfileinfo.c:1825 gio/glocalfileoutputstream.c:915
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Помилка при отриманні інформації про файл «%s»: %s"
 
-#: gio/glocalfileinfo.c:2089
+#: gio/glocalfileinfo.c:2091
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Помилка при отриманні інформації про файловий дескриптор: %s"
 
-#: gio/glocalfileinfo.c:2134
+#: gio/glocalfileinfo.c:2136
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Неправильний тип атрибута (очікувався uint32)"
 
-#: gio/glocalfileinfo.c:2152
+#: gio/glocalfileinfo.c:2154
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Неправильний тип атрибута (очікувався uint64)"
 
-#: gio/glocalfileinfo.c:2171 gio/glocalfileinfo.c:2190
+#: gio/glocalfileinfo.c:2173 gio/glocalfileinfo.c:2192
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Неправильний тип атрибута (очікувався рядок байтів)"
 
-#: gio/glocalfileinfo.c:2237
+#: gio/glocalfileinfo.c:2239
 msgid "Cannot set permissions on symlinks"
 msgstr "Помилка при встановленні прав доступу на символічне посилання"
 
-#: gio/glocalfileinfo.c:2253
+#: gio/glocalfileinfo.c:2255
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Помилка встановлення прав доступу: %s"
 
-#: gio/glocalfileinfo.c:2304
+#: gio/glocalfileinfo.c:2306
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Помилка встановлення власник: %s"
 
-#: gio/glocalfileinfo.c:2327
+#: gio/glocalfileinfo.c:2329
 msgid "symlink must be non-NULL"
 msgstr "символьне посилання не може мати значення NULL"
 
-#: gio/glocalfileinfo.c:2337 gio/glocalfileinfo.c:2356
-#: gio/glocalfileinfo.c:2367
+#: gio/glocalfileinfo.c:2339 gio/glocalfileinfo.c:2358
+#: gio/glocalfileinfo.c:2369
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Помилка при встановленні символічного посилання: %s"
 
-#: gio/glocalfileinfo.c:2346
+#: gio/glocalfileinfo.c:2348
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "помилка при встановленні символічного посилання: файл не є символічним "
 "посиланням"
 
-#: gio/glocalfileinfo.c:2418
+#: gio/glocalfileinfo.c:2420
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "Зайві наносекунди %d у часовій позначці UNIX %lld є від'ємними"
 
-#: gio/glocalfileinfo.c:2427
+#: gio/glocalfileinfo.c:2429
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 "Зайві наносекунди %d у часовій позначці UNIX %lld досягли значення у одну "
 "секунду"
 
-#: gio/glocalfileinfo.c:2437
+#: gio/glocalfileinfo.c:2439
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "Часова позначка UNIX %lld не вкладається у 64 біти"
 
-#: gio/glocalfileinfo.c:2448
+#: gio/glocalfileinfo.c:2450
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "Часова позначка UNIX %lld лежить поза діапазоном, підтримку якого "
 "передбачено у Windows"
 
-#: gio/glocalfileinfo.c:2512
+#: gio/glocalfileinfo.c:2514
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Назву файла «%s» неможливо перетворити на назву у кодуванні UTF-16"
 
-#: gio/glocalfileinfo.c:2531
+#: gio/glocalfileinfo.c:2533
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Не вдалося відкрити файл «%s»: помилка Windows %lu"
 
-#: gio/glocalfileinfo.c:2544
+#: gio/glocalfileinfo.c:2546
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "Помилка при встановленні часу зміни або доступу для файла «%s»: %lu"
 
-#: gio/glocalfileinfo.c:2645
+#: gio/glocalfileinfo.c:2647
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Помилка при встановленні часу зміни або доступу: %s"
 
-#: gio/glocalfileinfo.c:2668
+#: gio/glocalfileinfo.c:2670
 msgid "SELinux context must be non-NULL"
 msgstr "Контекст SELinux не може значення NULL"
 
-#: gio/glocalfileinfo.c:2683
+#: gio/glocalfileinfo.c:2685
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Помилка при встановленні контексту SELinux: %s"
 
-#: gio/glocalfileinfo.c:2690
+#: gio/glocalfileinfo.c:2692
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux не увімкнено у цій системі"
 
-#: gio/glocalfileinfo.c:2782
+#: gio/glocalfileinfo.c:2784
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Підтримки встановлення атрибута %s не передбачено"
 
-#: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:790
+#: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:795
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Помилка при читанні файла: %s"
 
 #: gio/glocalfileinputstream.c:199 gio/glocalfileinputstream.c:211
 #: gio/glocalfileinputstream.c:225 gio/glocalfileinputstream.c:333
-#: gio/glocalfileoutputstream.c:552 gio/glocalfileoutputstream.c:1107
+#: gio/glocalfileoutputstream.c:557 gio/glocalfileoutputstream.c:1117
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Помилка при встановленні позиції у файлі: %s"
 
-#: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:342
-#: gio/glocalfileoutputstream.c:436
+#: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:347
+#: gio/glocalfileoutputstream.c:441
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Помилка при закриванні файла: %s"
@@ -3203,51 +3203,51 @@ msgstr "Помилка при закриванні файла: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Не вдалося знайти типовий різновид монітора локального файла"
 
-#: gio/glocalfileoutputstream.c:209 gio/glocalfileoutputstream.c:287
-#: gio/glocalfileoutputstream.c:323 gio/glocalfileoutputstream.c:811
+#: gio/glocalfileoutputstream.c:214 gio/glocalfileoutputstream.c:292
+#: gio/glocalfileoutputstream.c:328 gio/glocalfileoutputstream.c:816
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Помилка при записі до файла: %s"
 
-#: gio/glocalfileoutputstream.c:369
+#: gio/glocalfileoutputstream.c:374
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Помилка при видаленні старої резервної копії посилання: %s"
 
-#: gio/glocalfileoutputstream.c:383 gio/glocalfileoutputstream.c:396
+#: gio/glocalfileoutputstream.c:388 gio/glocalfileoutputstream.c:401
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Помилка при створенні резервної копії: %s"
 
-#: gio/glocalfileoutputstream.c:414
+#: gio/glocalfileoutputstream.c:419
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Помилка при перейменуванні тимчасового файла: %s"
 
-#: gio/glocalfileoutputstream.c:598 gio/glocalfileoutputstream.c:1158
+#: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:1168
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Помилка при обрізанні файла: %s"
 
-#: gio/glocalfileoutputstream.c:651 gio/glocalfileoutputstream.c:889
-#: gio/glocalfileoutputstream.c:1139 gio/gsubprocess.c:380
+#: gio/glocalfileoutputstream.c:656 gio/glocalfileoutputstream.c:894
+#: gio/glocalfileoutputstream.c:1149 gio/gsubprocess.c:380
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Помилка при відкритті файла «%s»: %s"
 
-#: gio/glocalfileoutputstream.c:920
+#: gio/glocalfileoutputstream.c:928
 msgid "Target file is a directory"
 msgstr "Цільовий файл є каталогом"
 
-#: gio/glocalfileoutputstream.c:925
+#: gio/glocalfileoutputstream.c:933
 msgid "Target file is not a regular file"
 msgstr "Цільовий файл не є звичайним файлом"
 
-#: gio/glocalfileoutputstream.c:937
+#: gio/glocalfileoutputstream.c:945
 msgid "The file was externally modified"
 msgstr "Файл був змінений іншою програмою"
 
-#: gio/glocalfileoutputstream.c:1123
+#: gio/glocalfileoutputstream.c:1133
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Помилка при видаленні старого файла: %s"
@@ -3407,15 +3407,15 @@ msgstr "%s не реалізовано"
 msgid "Invalid domain"
 msgstr "Некоректний домен"
 
-#: gio/gresource.c:665 gio/gresource.c:924 gio/gresource.c:963
-#: gio/gresource.c:1087 gio/gresource.c:1159 gio/gresource.c:1232
-#: gio/gresource.c:1313 gio/gresourcefile.c:476 gio/gresourcefile.c:599
+#: gio/gresource.c:672 gio/gresource.c:931 gio/gresource.c:970
+#: gio/gresource.c:1094 gio/gresource.c:1166 gio/gresource.c:1239
+#: gio/gresource.c:1320 gio/gresourcefile.c:476 gio/gresourcefile.c:599
 #: gio/gresourcefile.c:736
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Ресурсу у «%s» не існує"
 
-#: gio/gresource.c:830
+#: gio/gresource.c:837
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "Не вдалося розпакувати ресурс з «%s»"
@@ -4112,25 +4112,30 @@ msgstr "Тимчасово неможливо розв'язати «%s»"
 msgid "Error resolving “%s”"
 msgstr "Помилка при розв'язанні імені «%s»"
 
-#: gio/gtlscertificate.c:243
+#: gio/gtlscertificate.c:298
 msgid "No PEM-encoded private key found"
 msgstr "Не знайдено секретний ключ у форматі PEM"
 
-#: gio/gtlscertificate.c:253
+#: gio/gtlscertificate.c:308
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "Не вдалося розшифрувати секретний ключ у форматі PEM"
 
-#: gio/gtlscertificate.c:264
+#: gio/gtlscertificate.c:319
 msgid "Could not parse PEM-encoded private key"
 msgstr "Не вдалося розібрати секретний ключ у форматі PEM"
 
-#: gio/gtlscertificate.c:291
+#: gio/gtlscertificate.c:346
 msgid "No PEM-encoded certificate found"
 msgstr "Не знайдено сертифікат у форматі PEM"
 
-#: gio/gtlscertificate.c:300
+#: gio/gtlscertificate.c:355
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Не вдалося розібрати сертифікат у форматі PEM"
+
+#: gio/gtlscertificate.c:710
+msgid "This GTlsBackend does not support creating PKCS #11 certificates"
+msgstr ""
+"У цьому GTlsBackend не передбачено підтримки створення сертифікатів PKCS #11"
 
 #: gio/gtlspassword.c:111
 msgid ""
@@ -5902,52 +5907,45 @@ msgstr "Некоректне %-eкодування в адресі"
 msgid "Illegal character in URI"
 msgstr "Некоректний символ в адресі"
 
-#: glib/guri.c:358
+#: glib/guri.c:359
 msgid "Non-UTF-8 characters in URI"
 msgstr "Символи поза UTF-8 в адресі"
 
-#: glib/guri.c:461
+#: glib/guri.c:533
 #, c-format
-#| msgid "Invalid IPv6 address '%.*s' in URI"
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
 msgstr "Некоректна IPv6-адреса «%.*s» в адресі"
 
-#: glib/guri.c:523
+#: glib/guri.c:588
 #, c-format
-#| msgid "Illegal encoded IP address '%.*s' in URI"
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgstr "Помилкове кодування IP-адреси «%.*s» в адресі"
 
-#: glib/guri.c:557 glib/guri.c:569
+#: glib/guri.c:620 glib/guri.c:632
 #, c-format
-#| msgid "Could not parse port '%.*s' in URI"
 msgid "Could not parse port ‘%.*s’ in URI"
 msgstr "Не вдалося обробити запис порту «%.*s» в адресі"
 
-#: glib/guri.c:576
+#: glib/guri.c:639
 #, c-format
-#| msgid "Port '%.*s' in URI is out of range"
 msgid "Port ‘%.*s’ in URI is out of range"
 msgstr "Порт «%.*s» в адресі не належить до припустимого діапазону"
 
-#: glib/guri.c:1054 glib/guri.c:1118
+#: glib/guri.c:1119 glib/guri.c:1183
 #, c-format
-#| msgid "URI '%s' is not an absolute URI"
 msgid "URI ‘%s’ is not an absolute URI"
 msgstr "Адреса «%s» не є абсолютною адресою"
 
-#: glib/guri.c:1060
+#: glib/guri.c:1125
 #, c-format
-#| msgid "URI '%s' has no host component"
 msgid "URI ‘%s’ has no host component"
 msgstr "В адресі «%s» немає компонента вузла"
 
-#: glib/guri.c:1262
+#: glib/guri.c:1330
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "Адреса не є абсолютною, і не вказано базової адреси"
 
-#: glib/guri.c:2018
-#| msgid "Missing '=' and parameter value"
+#: glib/guri.c:2082
 msgid "Missing ‘=’ and parameter value"
 msgstr "Пропущено «=» і значення параметра"
 
@@ -5969,150 +5967,150 @@ msgid "Character out of range for UTF-16"
 msgstr "Символ не входить в набір UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2756
+#: glib/gutils.c:2759
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f кБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2758
+#: glib/gutils.c:2761
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2760
+#: glib/gutils.c:2763
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2762
+#: glib/gutils.c:2765
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2764
+#: glib/gutils.c:2767
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2766
+#: glib/gutils.c:2769
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2770
+#: glib/gutils.c:2773
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f КіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2772
+#: glib/gutils.c:2775
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f МіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2774
+#: glib/gutils.c:2777
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f ГіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2776
+#: glib/gutils.c:2779
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f ТіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2778
+#: glib/gutils.c:2781
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f ПіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2780
+#: glib/gutils.c:2783
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f ЕіБ"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2784
+#: glib/gutils.c:2787
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f кбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2786
+#: glib/gutils.c:2789
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Мбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2788
+#: glib/gutils.c:2791
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Гбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2790
+#: glib/gutils.c:2793
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Тбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2792
+#: glib/gutils.c:2795
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Пбіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2794
+#: glib/gutils.c:2797
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Ебіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2798
+#: glib/gutils.c:2801
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Кібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2800
+#: glib/gutils.c:2803
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Мібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2802
+#: glib/gutils.c:2805
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Гібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2804
+#: glib/gutils.c:2807
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Тібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2806
+#: glib/gutils.c:2809
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Пібіт"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2808
+#: glib/gutils.c:2811
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Еібіт"
 
-#: glib/gutils.c:2842 glib/gutils.c:2959
+#: glib/gutils.c:2845 glib/gutils.c:2962
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6120,7 +6118,7 @@ msgstr[0] "%u байт"
 msgstr[1] "%u байти"
 msgstr[2] "%u байтів"
 
-#: glib/gutils.c:2846
+#: glib/gutils.c:2849
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6129,7 +6127,7 @@ msgstr[1] "%u бітів"
 msgstr[2] "%u байтів"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2913
+#: glib/gutils.c:2916
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6138,7 +6136,7 @@ msgstr[1] "%s байти"
 msgstr[2] "%s байтів"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2918
+#: glib/gutils.c:2921
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6151,32 +6149,32 @@ msgstr[2] "%s бітів"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:2972
+#: glib/gutils.c:2975
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
-#: glib/gutils.c:2977
+#: glib/gutils.c:2980
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
-#: glib/gutils.c:2982
+#: glib/gutils.c:2985
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
-#: glib/gutils.c:2987
+#: glib/gutils.c:2990
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
-#: glib/gutils.c:2992
+#: glib/gutils.c:2995
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
-#: glib/gutils.c:2997
+#: glib/gutils.c:3000
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
