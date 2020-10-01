@@ -1522,7 +1522,7 @@ class CodeGenerator:
                         '   *\n'
                         '   * If a signal handler returns %%TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call %s_complete_%s() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %%G_DBUS_ERROR_UNKNOWN_METHOD error is returned.\n'
                         '   *\n'
-                        '   * Returns: %%TRUE if the invocation was handled, %%FALSE to let other signal handlers run.\n'
+                        '   * Returns: %%G_DBUS_METHOD_INVOCATION_HANDLED or %%TRUE if the invocation was handled, %%G_DBUS_METHOD_INVOCATION_UNHANDLED or %%FALSE to let other signal handlers run.\n'
                         %(i.name, m.name, i.name_lower, m.name_lower), False))
                 self.write_gtkdoc_deprecated_and_since_and_close(m, self.outfile, 2)
                 if m.unix_fd:

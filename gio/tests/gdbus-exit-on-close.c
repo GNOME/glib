@@ -57,7 +57,7 @@ quit_later_cb (gpointer data G_GNUC_UNUSED)
 {
   g_main_loop_quit (loop);
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void

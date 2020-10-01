@@ -188,7 +188,7 @@ delayed_close_cb (gpointer data)
     close_async (df->stream, df->io_priority, df->cancellable, df->callback,
                  df->user_data);
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void

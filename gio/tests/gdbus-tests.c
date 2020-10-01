@@ -48,7 +48,7 @@ on_property_notify_timeout (gpointer user_data)
   PropertyNotifyData *data = user_data;
   data->timed_out = TRUE;
   g_main_loop_quit (data->loop);
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 gboolean
@@ -83,7 +83,7 @@ static gboolean
 _give_up (gpointer data)
 {
   g_error ("%s", (const gchar *) data);
-  g_return_val_if_reached (TRUE);
+  g_return_val_if_reached (G_SOURCE_CONTINUE);
 }
 
 typedef struct
@@ -175,7 +175,7 @@ on_signal_received_timeout (gpointer user_data)
   SignalReceivedData *data = user_data;
   data->timed_out = TRUE;
   g_main_loop_quit (data->loop);
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 gboolean

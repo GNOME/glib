@@ -644,7 +644,7 @@ check_connection (gpointer user_data)
         }
     }
 
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static gboolean
@@ -654,7 +654,7 @@ on_do_disconnect_in_idle (gpointer data)
   g_debug ("GDC %p has ref_count %d", c, G_OBJECT (c)->ref_count);
   g_dbus_connection_disconnect (c);
   g_object_unref (c);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 #endif
 
@@ -1719,7 +1719,7 @@ codegen_on_animal_poke (ExampleAnimal          *animal,
   g_assert_not_reached ();
 
  out:
-  return TRUE; /* to indicate that the method was handled */
+  return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
 /* Runs in thread we created GDBusServer in (since we didn't pass G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) */
@@ -1794,7 +1794,7 @@ static gboolean
 codegen_quit_mainloop_timeout (gpointer data)
 {
   g_main_loop_quit (loop);
-  return FALSE;
+  return G_SOURCE_REMOVE;
 }
 
 static void
