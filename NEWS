@@ -1,3 +1,40 @@
+Overview of changes in GLib 2.66.1
+==================================
+
+* A performance problem where timezones were reloaded from disk every time a
+  `GTimeZone` was created has been fixed (#2204), but this means that changes to
+  `/etc/localtime` will not take effect until a process restarts; future changes
+  in a subsequent 2.66.x release will improve this
+
+* Security fix for incorrect scope/zone ID parsing in URIs (!1669)
+
+* Bugs fixed:
+ - #2077 Invalid Pointer Arithmetic in g_path_get_basename
+ - #2164 GDBus DBUS_COOKIE_SHA1 mechanism may use too old a key
+ - #2194 gtk3/glib crash on gimp
+ - #2204 Time zone cache is constantly invalidated if TZ is NULL
+ - #2209 gthreadedresolver: faulty logic in parse_res_txt
+ - !1187 Define G_MSVC_SYMBOL_PREFIX correctly for ARM
+ - !1643 Minor Coverity fixes
+ - !1645 Fix various signedness warnings
+ - !1648 glocalfile: Never require G_LOCAL_FILE_STAT_FIELD_ATIME
+ - !1652 trash portal: Handle portal failures
+ - !1654 gio-tool-trash: Prevent recursion to speed up emptying trash
+ - !1657 glist: Clarify that g_list_free() and friends only free an entire list
+ - !1658 utils: Limit the scope of the variable `max`
+ - !1665 Fix g_module_symbol() under Windows sometimes not succeeding
+ - !1669 guri: Fix URI scope parsing
+ - !1671 gdatetime: Avoid integer overflow creating dates too far in the past
+
+* Translation updates:
+ - Danish
+ - Greek, Modern (1453-)
+ - Hebrew
+ - Latvian
+ - Portuguese
+ - Russian
+
+
 Overview of changes in GLib 2.66.0
 ==================================
 
