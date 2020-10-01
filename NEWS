@@ -1,3 +1,24 @@
+Overview of changes in GLib 2.64.6
+==================================
+
+* This is expected to be the last release in the 2.64 series; the new stable
+  series is 2.66, and maintenance efforts will shift to that
+
+* Bugs fixed:
+ - #2194 gtk3/glib crash on gimp
+ - #2209 gthreadedresolver: faulty logic in parse_res_txt
+ - !1633 Backport !1632 Fix large writes in gfileutils to glib-2-64
+ - !1634 Backport !1631 “Fix splice behavior on cancellation” to glib-2-64
+ - !1656 Backport !1187 “Define G_MSVC_SYMBOL_PREFIX correctly for ARM32” to glib-2-64
+ - !1659 Backport !1652 “trash portal: Handle portal failures” to glib-2-64
+ - !1666 Backport !1665 “Fix g_module_symbol() under Windows sometimes not succeeding” to glib-2-64
+ - !1672 Backport !1671 “gdatetime: Avoid integer overflow creating dates too far in the past” to glib-2-64
+
+* Translation updates:
+ - Croatian
+ - Portuguese
+
+
 Overview of changes in GLib 2.64.5
 ==================================
 
