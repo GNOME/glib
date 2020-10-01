@@ -442,6 +442,100 @@ _uri_encoder (GString      *out,
     }
 }
 
+/* Parse the IP-literal construction from RFC 6874 (which extends RFC 3986 to
+ * support IPv6 zone identifiers.
+ *
+ * Currently, IP versions beyond 6 (i.e. the IPvFuture rule) are unsupported.
+ * There’s no point supporting them until (a) they exist and (b) the rest of the
+ * stack (notably, sockets) supports them.
+ *
+ * Rules:
+ *
+ * IP-literal = "[" ( IPv6address / IPv6addrz / IPvFuture  ) "]"
+ *
+ * ZoneID = 1*( unreserved / pct-encoded )
+ *
+ * IPv6addrz = IPv6address "%25" ZoneID
+ *
+ * If %G_URI_FLAGS_PARSE_RELAXED is specified, this function also accepts:
+ *
+ * IPv6addrz = IPv6address "%" ZoneID
+ */
+static gboolean
+parse_ip_literal (const gchar  *start,
+                  gsize         length,
+                  GUriFlags     flags,
+                  gchar       **out,
+                  GError      **error)
+{
+  gchar *pct, *zone_id = NULL;
+  gchar *addr = NULL;
+  gsize addr_length = 0;
+  gsize zone_id_length = 0;
+  gchar *decoded_zone_id = NULL;
+
+  if (start[length - 1] != ']')
+    goto bad_ipv6_literal;
+
+  /* Drop the square brackets */
+  addr = g_strndup (start + 1, length - 2);
+  addr_length = length - 2;
+
+  /* If there's an IPv6 scope ID, split out the zone. */
+  pct = strchr (addr, '%');
+  if (pct != NULL)
+    {
+      *pct = '\0';
+
+      if (addr_length - (pct - addr) >= 4 &&
+          *(pct + 1) == '2' && *(pct + 2) == '5')
+        {
+          zone_id = pct + 3;
+          zone_id_length = addr_length - (zone_id - addr);
+        }
+      else if (flags & G_URI_FLAGS_PARSE_RELAXED &&
+               addr_length - (pct - addr) >= 2)
+        {
+          zone_id = pct + 1;
+          zone_id_length = addr_length - (zone_id - addr);
+        }
+      else
+        goto bad_ipv6_literal;
+
+      g_assert (zone_id_length >= 1);
+    }
+
+  /* addr must be an IPv6 address */
+  if (!g_hostname_is_ip_address (addr) || !strchr (addr, ':'))
+    goto bad_ipv6_literal;
+
+  /* Zone ID must be valid. It can contain %-encoded characters. */
+  if (zone_id != NULL &&
+      !uri_decode (&decoded_zone_id, NULL, zone_id, zone_id_length, FALSE,
+                   flags, G_URI_ERROR_BAD_HOST, NULL))
+    goto bad_ipv6_literal;
+
+  /* Success */
+  if (out != NULL && decoded_zone_id != NULL)
+    *out = g_strconcat (addr, "%", decoded_zone_id, NULL);
+  else if (out != NULL)
+    *out = g_steal_pointer (&addr);
+
+  g_free (addr);
+  g_free (decoded_zone_id);
+
+  return TRUE;
+
+bad_ipv6_literal:
+  g_free (addr);
+  g_free (decoded_zone_id);
+  g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
+               _("Invalid IPv6 address ‘%.*s’ in URI"),
+               (gint)length, start);
+
+  return FALSE;
+}
+
 static gboolean
 parse_host (const gchar  *start,
             gsize         length,
@@ -449,43 +543,13 @@ parse_host (const gchar  *start,
             gchar       **out,
             GError      **error)
 {
-  gchar *decoded, *host, *pct;
+  gchar *decoded = NULL, *host;
   gchar *addr = NULL;
 
   if (*start == '[')
     {
-      if (start[length - 1] != ']')
-        {
-        bad_ipv6_literal:
-          g_free (addr);
-          g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
-                       _("Invalid IPv6 address ‘%.*s’ in URI"),
-                       (gint)length, start);
-          return FALSE;
-        }
-
-      addr = g_strndup (start + 1, length - 2);
-
-      /* If there's an IPv6 scope id, ignore it for the moment. */
-      pct = strchr (addr, '%');
-      if (pct)
-        *pct = '\0';
-
-      /* addr must be an IPv6 address */
-      if (!g_hostname_is_ip_address (addr) || !strchr (addr, ':'))
-        goto bad_ipv6_literal;
-
-      if (pct)
-        {
-          *pct = '%';
-          if (strchr (pct + 1, '%'))
-            goto bad_ipv6_literal;
-          /* If the '%' is encoded as '%25' (which it should be), decode it */
-          if (pct[1] == '2' && pct[2] == '5' && pct[3])
-            memmove (pct + 1, pct + 3, strlen (pct + 3) + 1);
-        }
-
-      host = addr;
+      if (!parse_ip_literal (start, length, flags, &host, error))
+        return FALSE;
       goto ok;
     }
 
@@ -505,7 +569,7 @@ parse_host (const gchar  *start,
       if (!uri_normalize (&decoded, start, length, flags,
                           G_URI_ERROR_BAD_HOST, error))
         return FALSE;
-      host = decoded;
+      host = g_steal_pointer (&decoded);
       goto ok;
     }
 
@@ -527,18 +591,16 @@ parse_host (const gchar  *start,
     }
 
   if (g_hostname_is_non_ascii (decoded))
-    {
-      host = g_hostname_to_ascii (decoded);
-      g_free (decoded);
-    }
+    host = g_hostname_to_ascii (decoded);
   else
-    host = decoded;
+    host = g_steal_pointer (&decoded);
 
  ok:
   if (out)
-    *out = host;
-  else
-    g_free (host);
+    *out = g_steal_pointer (&host);
+  g_free (host);
+  g_free (decoded);
+
   return TRUE;
 }
 

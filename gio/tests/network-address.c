@@ -40,10 +40,10 @@ static ParseTest uri_tests[] = {
   { "ftp://[fec0::abcd]/start", "ftp", "fec0::abcd", 8080, -1 },
   { "ftp://[fec0::abcd]:999/start", "ftp", "fec0::abcd", 999, -1 },
   { "ftp://joe%x-@ftp.gnome.org:2020/start", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
-  { "http://[fec0::abcd%em1]/start", "http", "fec0::abcd%em1", 8080, -1 },
+  { "http://[fec0::abcd%em1]/start", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
   { "http://[fec0::abcd%25em1]/start", "http", "fec0::abcd%em1", 8080, -1 },
-  { "http://[fec0::abcd%10]/start", "http", "fec0::abcd%10", 8080, -1 },
-  { "http://[fec0::abcd%25em%31]/start", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
+  { "http://[fec0::abcd%10]/start", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
+  { "http://[fec0::abcd%25em%31]/start", "http", "fec0::abcd%em1", 8080, -1 },
   { "ftp://ftp.gnome.org/start?foo=bar@baz", "ftp", "ftp.gnome.org", 8080, -1 }
 };
 
@@ -80,6 +80,7 @@ static ParseTest host_tests[] =
   { "[2001:db8::1]", NULL, "2001:db8::1", 1234, -1 },
   { "[2001:db8::1]:888", NULL, "2001:db8::1", 888, -1 },
   { "[2001:db8::1%em1]", NULL, "2001:db8::1%em1", 1234, -1 },
+  { "[2001:db8::1%25em1]", NULL, "2001:db8::1%25em1", 1234, -1 },
   { "[hostname", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
   { "[hostnam]e", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
   { "hostname:", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
@@ -337,10 +338,9 @@ test_uri_scope_id (void)
                          SCOPE_ID_TEST_PORT);
   addr = g_network_address_parse_uri (uri, 0, &error);
   g_free (uri);
-  g_assert_no_error (error);
-
-  test_scope_id (addr);
-  g_object_unref (addr);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_null (addr);
+  g_clear_error (&error);
 
   uri = g_strdup_printf ("http://[%s%%25%s]:%d/foo",
                          SCOPE_ID_TEST_ADDR,
