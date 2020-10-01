@@ -615,7 +615,7 @@ parse_res_txt (guchar  *answer,
   while (at < end)
     {
       len = *(at++);
-      if (len > at - end)
+      if (len > (gsize) (end - at))
         break;
       g_ptr_array_add (array, g_strndup ((gchar *)at, len));
       at += len;
