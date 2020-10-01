@@ -111,3 +111,8 @@ option('glib_checks',
        value : true,
        yield : true,
        description : 'Enable GLib checks such as API guards (see docs/macros.txt)')
+
+option('libelf',
+       type : 'feature',
+       value : 'auto',
+       description : 'Enable support for listing and extracting from ELF resource files with gresource tool')

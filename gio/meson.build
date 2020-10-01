@@ -874,14 +874,14 @@ endif
 
 # Dependencies used by executables below
 have_libelf = false
-libelf = dependency('libelf', version : '>= 0.8.12', required : false)
+libelf = dependency('libelf', version : '>= 0.8.12', required : get_option ('libelf'))
 if libelf.found()
   have_libelf = true
 else
   # This fallback is necessary on *BSD. elfutils isn't the only libelf
   # implementation, and *BSD usually includes their own libelf as a system
   # library which doesn't have a corresponding .pc file.
-  libelf = cc.find_library('elf', required : false)
+  libelf = cc.find_library('elf', required : get_option ('libelf'))
   have_libelf = libelf.found()
   have_libelf = have_libelf and cc.has_function('elf_begin', dependencies : libelf)
   have_libelf = have_libelf and cc.has_function('elf_getshdrstrndx', dependencies : libelf)
