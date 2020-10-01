@@ -1013,13 +1013,15 @@ g_win32_registry_subkey_iter_get_name (GWin32RegistrySubkeyIter  *iter,
                                           &subkey_name_len_glong,
                                           error);
 
-  if (iter->subkey_name_u8 != NULL)
-    {
-      *subkey_name_len = subkey_name_len_glong;
-      return TRUE;
-    }
+  if (iter->subkey_name_u8 == NULL)
+    return FALSE;
 
-  return FALSE;
+  *subkey_name = iter->subkey_name_u8;
+
+  if (subkey_name_len)
+    *subkey_name_len = subkey_name_len_glong;
+
+  return TRUE;
 }
 
 /**
