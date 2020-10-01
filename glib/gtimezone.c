@@ -195,6 +195,8 @@ struct _GTimeZone
 
 G_LOCK_DEFINE_STATIC (time_zones);
 static GHashTable/*<string?, GTimeZone>*/ *time_zones;
+G_LOCK_DEFINE_STATIC (tz_default);
+static GTimeZone *tz_default = NULL;
 G_LOCK_DEFINE_STATIC (tz_local);
 static gchar *tzenv_cached = NULL;
 static GTimeZone *tz_local = NULL;
@@ -239,7 +241,8 @@ again:
               goto again;
             }
 
-          g_hash_table_remove (time_zones, tz->name);
+          if (time_zones != NULL)
+            g_hash_table_remove (time_zones, tz->name);
           G_UNLOCK(time_zones);
         }
 
@@ -1675,12 +1678,12 @@ g_time_zone_new (const gchar *identifier)
   gint rules_num;
   gchar *resolved_identifier = NULL;
 
-  G_LOCK (time_zones);
-  if (time_zones == NULL)
-    time_zones = g_hash_table_new (g_str_hash, g_str_equal);
-
   if (identifier)
     {
+      G_LOCK (time_zones);
+      if (time_zones == NULL)
+        time_zones = g_hash_table_new (g_str_hash, g_str_equal);
+
       tz = g_hash_table_lookup (time_zones, identifier);
       if (tz)
         {
@@ -1693,11 +1696,31 @@ g_time_zone_new (const gchar *identifier)
     }
   else
     {
+      G_LOCK (tz_default);
 #ifdef G_OS_UNIX
       resolved_identifier = zone_identifier_unix ();
 #elif defined (G_OS_WIN32)
       resolved_identifier = windows_default_tzname ();
 #endif
+      if (tz_default)
+        {
+          /* Flush default if changed. If the identifier couldn’t be resolved,
+           * we’re going to fall back to UTC eventually, so don’t clear out the
+           * cache if it’s already UTC. */
+          if (!(resolved_identifier == NULL && g_str_equal (tz_default->name, "UTC")) &&
+              g_strcmp0 (tz_default->name, resolved_identifier) != 0)
+            {
+              g_clear_pointer (&tz_default, g_time_zone_unref);
+            }
+          else
+            {
+              tz = g_time_zone_ref (tz_default);
+              G_UNLOCK (tz_default);
+
+              g_free (resolved_identifier);
+              return tz;
+            }
+        }
     }
 
   tz = g_slice_new0 (GTimeZone);
@@ -1773,9 +1796,19 @@ g_time_zone_new (const gchar *identifier)
     {
       if (identifier)
         g_hash_table_insert (time_zones, tz->name, tz);
+      else if (tz->name)
+        {
+          /* Caching reference */
+          g_atomic_int_inc (&tz->ref_count);
+          tz_default = tz;
+        }
     }
   g_atomic_int_inc (&tz->ref_count);
-  G_UNLOCK (time_zones);
+
+  if (identifier)
+    G_UNLOCK (time_zones);
+  else
+    G_UNLOCK (tz_default);
 
   return tz;
 }
