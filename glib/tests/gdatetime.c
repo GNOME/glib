@@ -152,7 +152,7 @@ test_GDateTime_new_from_unix (void)
   g_date_time_unref (dt);
 }
 
-/* Check that trying to create a #GDateTime too far in the future reliably
+/* Check that trying to create a #GDateTime too far in the future (or past) reliably
  * fails. Previously, the checks for this overflowed and it silently returned
  * an incorrect #GDateTime. */
 static void
@@ -166,6 +166,12 @@ test_GDateTime_new_from_unix_overflow (void)
   g_assert_null (dt);
 
   dt = g_date_time_new_from_unix_local (G_MAXINT64);
+  g_assert_null (dt);
+
+  dt = g_date_time_new_from_unix_utc (G_MININT64);
+  g_assert_null (dt);
+
+  dt = g_date_time_new_from_unix_local (G_MININT64);
   g_assert_null (dt);
 }
 
