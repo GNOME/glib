@@ -1032,7 +1032,8 @@ g_date_time_new_from_unix_local (gint64 t)
   GDateTime *datetime;
   GTimeZone *local;
 
-  if (t > G_MAXINT64 / USEC_PER_SECOND)
+  if (t > G_MAXINT64 / USEC_PER_SECOND ||
+      t < G_MININT64 / USEC_PER_SECOND)
     return NULL;
 
   local = g_time_zone_new_local ();
@@ -1067,7 +1068,8 @@ g_date_time_new_from_unix_utc (gint64 t)
   GDateTime *datetime;
   GTimeZone *utc;
 
-  if (t > G_MAXINT64 / USEC_PER_SECOND)
+  if (t > G_MAXINT64 / USEC_PER_SECOND ||
+      t < G_MININT64 / USEC_PER_SECOND)
     return NULL;
 
   utc = g_time_zone_new_utc ();
