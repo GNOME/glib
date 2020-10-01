@@ -93,6 +93,8 @@ struct _GTestTlsCertificate {
   gchar *key_pem;
   gchar *cert_pem;
   GTlsCertificate *issuer;
+  gchar *pkcs11_uri;
+  gchar *private_key_pkcs11_uri;
 };
 
 struct _GTestTlsCertificateClass {
@@ -105,7 +107,9 @@ enum
   PROP_CERT_CERTIFICATE_PEM,
   PROP_CERT_PRIVATE_KEY,
   PROP_CERT_PRIVATE_KEY_PEM,
-  PROP_CERT_ISSUER
+  PROP_CERT_ISSUER,
+  PROP_CERT_PKCS11_URI,
+  PROP_CERT_PRIVATE_KEY_PKCS11_URI,
 };
 
 static void g_test_tls_certificate_initable_iface_init (GInitableIface *iface);
@@ -143,6 +147,15 @@ g_test_tls_certificate_get_property (GObject    *object,
     case PROP_CERT_ISSUER:
       g_value_set_object (value, cert->issuer);
       break;
+    case PROP_CERT_PKCS11_URI:
+      /* This test value simulates a backend that ignores the value
+         because it is unsupported */
+      if (g_strcmp0 (cert->pkcs11_uri, "unsupported") != 0)
+        g_value_set_string (value, cert->pkcs11_uri);
+      break;
+    case PROP_CERT_PRIVATE_KEY_PKCS11_URI:
+      g_value_set_string (value, cert->private_key_pkcs11_uri);
+      break;
     default:
       g_assert_not_reached ();
       break;
@@ -168,6 +181,12 @@ g_test_tls_certificate_set_property (GObject      *object,
     case PROP_CERT_ISSUER:
       cert->issuer = g_value_dup_object (value);
       break;
+    case PROP_CERT_PKCS11_URI:
+      cert->pkcs11_uri = g_value_dup_string (value);
+      break;
+    case PROP_CERT_PRIVATE_KEY_PKCS11_URI:
+      cert->private_key_pkcs11_uri = g_value_dup_string (value);
+      break;
     case PROP_CERT_CERTIFICATE:
     case PROP_CERT_PRIVATE_KEY:
       /* ignore */
@@ -185,6 +204,8 @@ g_test_tls_certificate_finalize (GObject *object)
 
   g_free (cert->cert_pem);
   g_free (cert->key_pem);
+  g_free (cert->pkcs11_uri);
+  g_free (cert->private_key_pkcs11_uri);
   g_clear_object (&cert->issuer);
 
   G_OBJECT_CLASS (g_test_tls_certificate_parent_class)->finalize (object);
@@ -207,6 +228,8 @@ g_test_tls_certificate_class_init (GTestTlsCertificateClass *test_class)
   g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY, "private-key");
   g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY_PEM, "private-key-pem");
   g_object_class_override_property (gobject_class, PROP_CERT_ISSUER, "issuer");
+  g_object_class_override_property (gobject_class, PROP_CERT_PKCS11_URI, "pkcs11-uri");
+  g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY_PKCS11_URI, "private-key-pkcs11-uri");
 }
 
 static void

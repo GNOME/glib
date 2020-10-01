@@ -71,6 +71,11 @@ GLIB_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_certificate_new_from_files     (const gchar         *cert_file,
 							    const gchar         *key_file,
 							    GError             **error);
+GLIB_AVAILABLE_IN_2_68
+GTlsCertificate      *g_tls_certificate_new_from_pkcs11_uris (const gchar       *pkcs11_uri,
+                                                              const gchar       *private_key_pkcs11_uri,
+                                                              GError           **error);
+
 GLIB_AVAILABLE_IN_ALL
 GList                *g_tls_certificate_list_new_from_file (const gchar         *file,
 							    GError             **error);
