@@ -31,6 +31,11 @@
 #include <stdio.h>
 #include <ctype.h>
 
+/* Deliberately not checking HAVE_STDINT_H here: we officially require a
+ * C99 toolchain, which implies <stdint.h>, int8_t and so on. If your
+ * toolchain does not have this, now would be a good time to upgrade. */
+#include <stdint.h>
+
 /* This seems as good a place as any to make static assertions about platform
  * assumptions we make throughout GLib. */
 
@@ -66,6 +71,71 @@ G_STATIC_ASSERT (sizeof (TestInt) == sizeof (int));
 G_STATIC_ASSERT (G_ALIGNOF (TestChar) == G_ALIGNOF (int));
 G_STATIC_ASSERT (G_ALIGNOF (TestShort) == G_ALIGNOF (int));
 G_STATIC_ASSERT (G_ALIGNOF (TestInt) == G_ALIGNOF (int));
+
+G_STATIC_ASSERT (sizeof (gchar) == 1);
+G_STATIC_ASSERT (sizeof (guchar) == 1);
+G_STATIC_ASSERT (sizeof (gint8) * CHAR_BIT == 8);
+G_STATIC_ASSERT (sizeof (guint8) * CHAR_BIT == 8);
+G_STATIC_ASSERT (sizeof (gint16) * CHAR_BIT == 16);
+G_STATIC_ASSERT (sizeof (guint16) * CHAR_BIT == 16);
+G_STATIC_ASSERT (sizeof (gint32) * CHAR_BIT == 32);
+G_STATIC_ASSERT (sizeof (guint32) * CHAR_BIT == 32);
+G_STATIC_ASSERT (sizeof (gint64) * CHAR_BIT == 64);
+G_STATIC_ASSERT (sizeof (guint64) * CHAR_BIT == 64);
+
+G_STATIC_ASSERT (sizeof (void *) == GLIB_SIZEOF_VOID_P);
+G_STATIC_ASSERT (sizeof (gintptr) == sizeof (void *));
+G_STATIC_ASSERT (sizeof (guintptr) == sizeof (void *));
+
+G_STATIC_ASSERT (sizeof (long) == GLIB_SIZEOF_LONG);
+
+G_STATIC_ASSERT (G_HAVE_GINT64 == 1);
+
+G_STATIC_ASSERT (sizeof (size_t) == GLIB_SIZEOF_SIZE_T);
+/* Not a typo: ssize_t is POSIX, not Standard C, but if it exists then
+ * it's the same size as size_t. */
+G_STATIC_ASSERT (sizeof (size_t) == GLIB_SIZEOF_SSIZE_T);
+G_STATIC_ASSERT (sizeof (gsize) == GLIB_SIZEOF_SSIZE_T);
+G_STATIC_ASSERT (sizeof (gsize) == sizeof (size_t));
+/* Again this is size_t not ssize_t, because ssize_t is POSIX, not C99 */
+G_STATIC_ASSERT (sizeof (gssize) == sizeof (size_t));
+G_STATIC_ASSERT (G_ALIGNOF (gsize) == G_ALIGNOF (size_t));
+G_STATIC_ASSERT (G_ALIGNOF (gssize) == G_ALIGNOF (size_t));
+
+/* goffset is always 64-bit, even if off_t is only 32-bit
+ * (compiling without large-file-support on 32-bit) */
+G_STATIC_ASSERT (sizeof (goffset) == sizeof (gint64));
+G_STATIC_ASSERT (G_ALIGNOF (goffset) == G_ALIGNOF (gint64));
+
+G_STATIC_ASSERT (sizeof (gfloat) == sizeof (float));
+G_STATIC_ASSERT (G_ALIGNOF (gfloat) == G_ALIGNOF (float));
+G_STATIC_ASSERT (sizeof (gdouble) == sizeof (double));
+G_STATIC_ASSERT (G_ALIGNOF (gdouble) == G_ALIGNOF (double));
+
+G_STATIC_ASSERT (sizeof (gintptr) == sizeof (intptr_t));
+G_STATIC_ASSERT (sizeof (guintptr) == sizeof (uintptr_t));
+G_STATIC_ASSERT (G_ALIGNOF (gintptr) == G_ALIGNOF (intptr_t));
+G_STATIC_ASSERT (G_ALIGNOF (guintptr) == G_ALIGNOF (uintptr_t));
+
+G_STATIC_ASSERT (sizeof (gint8) == sizeof (int8_t));
+G_STATIC_ASSERT (sizeof (guint8) == sizeof (uint8_t));
+G_STATIC_ASSERT (G_ALIGNOF (gint8) == G_ALIGNOF (int8_t));
+G_STATIC_ASSERT (G_ALIGNOF (guint8) == G_ALIGNOF (uint8_t));
+
+G_STATIC_ASSERT (sizeof (gint16) == sizeof (int16_t));
+G_STATIC_ASSERT (sizeof (guint16) == sizeof (uint16_t));
+G_STATIC_ASSERT (G_ALIGNOF (gint16) == G_ALIGNOF (int16_t));
+G_STATIC_ASSERT (G_ALIGNOF (guint16) == G_ALIGNOF (uint16_t));
+
+G_STATIC_ASSERT (sizeof (gint32) == sizeof (int32_t));
+G_STATIC_ASSERT (sizeof (guint32) == sizeof (uint32_t));
+G_STATIC_ASSERT (G_ALIGNOF (gint32) == G_ALIGNOF (int32_t));
+G_STATIC_ASSERT (G_ALIGNOF (guint32) == G_ALIGNOF (uint32_t));
+
+G_STATIC_ASSERT (sizeof (gint64) == sizeof (int64_t));
+G_STATIC_ASSERT (sizeof (guint64) == sizeof (uint64_t));
+G_STATIC_ASSERT (G_ALIGNOF (gint64) == G_ALIGNOF (int64_t));
+G_STATIC_ASSERT (G_ALIGNOF (guint64) == G_ALIGNOF (uint64_t));
 
 /**
  * g_mem_gc_friendly:
