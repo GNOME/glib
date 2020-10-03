@@ -36,6 +36,7 @@
 #include <windows.h>
 
 #include <glib/gstdioprivate.h>
+#include "giowin32-priv.h"
 #include "glib-private.h"
 
 /* We need to watch 8 places:
@@ -519,7 +520,26 @@ g_win32_appinfo_application_init (GWin32AppInfoApplication *self)
   self->verbs = g_ptr_array_new_with_free_func (g_object_unref);
 }
 
-G_LOCK_DEFINE_STATIC (gio_win32_appinfo);
+/* The AppInfo threadpool that does asynchronous AppInfo tree rebuilds */
+static GThreadPool *gio_win32_appinfo_threadpool;
+
+/* This mutex is held by a thread that reads or writes the AppInfo tree.
+ * (tree object references can be obtained and later read without
+ *  holding this mutex, since objects are practically immutable).
+ */
+static GMutex gio_win32_appinfo_mutex;
+
+/* Any thread wanting to access AppInfo can wait on this condition */
+static GCond gio_win32_appinfo_cond;
+
+/* Increased to indicate that AppInfo tree does needs to be rebuilt.
+ * AppInfo thread checks this to see if it needs to
+ * do a tree re-build. If the value changes during a rebuild,
+ * another rebuild is triggered after that.
+ * Other threads check this to see if they need
+ * to wait for a tree re-build to finish.
+ */
+static gint gio_win32_appinfo_update_counter = 0;
 
 /* Map of owned ".ext" (with '.', UTF-8, folded)
  * to GWin32AppInfoFileExtension ptr
@@ -3046,6 +3066,19 @@ update_registry_data (void)
   return;
 }
 
+/* This function is called when any of our registry watchers detect
+ * changes in the registry.
+ */
+static void
+keys_updated (GWin32RegistryKey  *key,
+              gpointer            user_data)
+{
+  /* Indicate the tree as not up-to-date, push a new job for the AppInfo thread */
+  g_atomic_int_inc (&gio_win32_appinfo_update_counter);
+  /* We don't use the data pointer, but it must be non-NULL */
+  g_thread_pool_push (gio_win32_appinfo_threadpool, (gpointer) keys_updated, NULL);
+}
+
 static void
 watch_keys (void)
 {
@@ -3055,7 +3088,7 @@ watch_keys (void)
                                 G_WIN32_REGISTRY_WATCH_NAME |
                                 G_WIN32_REGISTRY_WATCH_ATTRIBUTES |
                                 G_WIN32_REGISTRY_WATCH_VALUES,
-                                NULL,
+                                keys_updated,
                                 NULL,
                                 NULL);
 
@@ -3065,7 +3098,7 @@ watch_keys (void)
                                 G_WIN32_REGISTRY_WATCH_NAME |
                                 G_WIN32_REGISTRY_WATCH_ATTRIBUTES |
                                 G_WIN32_REGISTRY_WATCH_VALUES,
-                                NULL,
+                                keys_updated,
                                 NULL,
                                 NULL);
 
@@ -3075,7 +3108,7 @@ watch_keys (void)
                                 G_WIN32_REGISTRY_WATCH_NAME |
                                 G_WIN32_REGISTRY_WATCH_ATTRIBUTES |
                                 G_WIN32_REGISTRY_WATCH_VALUES,
-                                NULL,
+                                keys_updated,
                                 NULL,
                                 NULL);
 
@@ -3085,7 +3118,7 @@ watch_keys (void)
                                 G_WIN32_REGISTRY_WATCH_NAME |
                                 G_WIN32_REGISTRY_WATCH_ATTRIBUTES |
                                 G_WIN32_REGISTRY_WATCH_VALUES,
-                                NULL,
+                                keys_updated,
                                 NULL,
                                 NULL);
 
@@ -3095,7 +3128,7 @@ watch_keys (void)
                                 G_WIN32_REGISTRY_WATCH_NAME |
                                 G_WIN32_REGISTRY_WATCH_ATTRIBUTES |
                                 G_WIN32_REGISTRY_WATCH_VALUES,
-                                NULL,
+                                keys_updated,
                                 NULL,
                                 NULL);
 
@@ -3105,7 +3138,7 @@ watch_keys (void)
                                 G_WIN32_REGISTRY_WATCH_NAME |
                                 G_WIN32_REGISTRY_WATCH_ATTRIBUTES |
                                 G_WIN32_REGISTRY_WATCH_VALUES,
-                                NULL,
+                                keys_updated,
                                 NULL,
                                 NULL);
 
@@ -3115,7 +3148,7 @@ watch_keys (void)
                                 G_WIN32_REGISTRY_WATCH_NAME |
                                 G_WIN32_REGISTRY_WATCH_ATTRIBUTES |
                                 G_WIN32_REGISTRY_WATCH_VALUES,
-                                NULL,
+                                keys_updated,
                                 NULL,
                                 NULL);
 
@@ -3125,14 +3158,45 @@ watch_keys (void)
                                 G_WIN32_REGISTRY_WATCH_NAME |
                                 G_WIN32_REGISTRY_WATCH_ATTRIBUTES |
                                 G_WIN32_REGISTRY_WATCH_VALUES,
-                                NULL,
+                                keys_updated,
                                 NULL,
                                 NULL);
 }
 
-
+/* This is the main function of the AppInfo thread */
 static void
-g_win32_appinfo_init (void)
+gio_win32_appinfo_thread_func (gpointer data,
+                               gpointer user_data)
+{
+  gint saved_counter;
+  g_mutex_lock (&gio_win32_appinfo_mutex);
+  saved_counter = g_atomic_int_get (&gio_win32_appinfo_update_counter);
+
+  if (saved_counter > 0)
+    update_registry_data ();
+  /* If the counter didn't change while we were working, then set it to zero.
+   * Otherwise we need to rebuild the tree again, so keep it greater than zero.
+   * Numeric value doesn't matter - even if we're asked to rebuild N times,
+   * we just need to rebuild once, and as long as there were no new rebuild
+   * requests while we were working, we're done.
+   */
+  if (g_atomic_int_compare_and_exchange  (&gio_win32_appinfo_update_counter,
+                                          saved_counter,
+                                          0))
+    g_cond_broadcast (&gio_win32_appinfo_cond);
+
+  g_mutex_unlock (&gio_win32_appinfo_mutex);
+}
+
+/* Initializes Windows AppInfo. Creates the registry watchers,
+ * the AppInfo thread, and initiates an update of the AppInfo tree.
+ * Called with do_wait = `FALSE` at startup to prevent it from
+ * blocking until the tree is updated. All subsequent calls
+ * from everywhere else are made with do_wait = `TRUE`, blocking
+ * until the tree is re-built (if needed).
+ */
+void
+gio_win32_appinfo_init (gboolean do_wait)
 {
   static gsize initialized;
 
@@ -3165,11 +3229,31 @@ g_win32_appinfo_init (void)
 
       watch_keys ();
 
-      update_registry_data ();
+      /* We don't really require an exclusive pool, but the implementation
+       * details might cause the g_thread_pool_push() call below to block
+       * if the pool is not exclusive (specifically - for POSIX threads backend
+       * lacking thread scheduler settings).
+       */
+      gio_win32_appinfo_threadpool = g_thread_pool_new (gio_win32_appinfo_thread_func,
+                                                        NULL,
+                                                        1,
+                                                        TRUE,
+                                                        NULL);
+      g_mutex_init (&gio_win32_appinfo_mutex);
+      g_cond_init (&gio_win32_appinfo_cond);
+      g_atomic_int_set (&gio_win32_appinfo_update_counter, 1);
+      /* Trigger initial tree build. Fake data pointer. */
+      g_thread_pool_push (gio_win32_appinfo_threadpool, (gpointer) keys_updated, NULL);
 
       g_once_init_leave (&initialized, TRUE);
     }
 
+  if (!do_wait)
+    return;
+
+  /* If any of the keys had a change, then we've already initiated
+   * a tree re-build in keys_updated(). Just wait for it to finish.
+   */
   if ((url_associations_key       && g_win32_registry_key_has_changed (url_associations_key))       ||
       (file_exts_key              && g_win32_registry_key_has_changed (file_exts_key))              ||
       (user_clients_key           && g_win32_registry_key_has_changed (user_clients_key))           ||
@@ -3179,10 +3263,11 @@ g_win32_appinfo_init (void)
       (system_registered_apps_key && g_win32_registry_key_has_changed (system_registered_apps_key)) ||
       (classes_root_key           && g_win32_registry_key_has_changed (classes_root_key)))
     {
-      G_LOCK (gio_win32_appinfo);
-      update_registry_data ();
+      g_mutex_lock (&gio_win32_appinfo_mutex);
+      while (g_atomic_int_get (&gio_win32_appinfo_update_counter) > 0)
+        g_cond_wait (&gio_win32_appinfo_cond, &gio_win32_appinfo_mutex);
       watch_keys ();
-      G_UNLOCK (gio_win32_appinfo);
+      g_mutex_unlock (&gio_win32_appinfo_mutex);
     }
 }
 
@@ -3248,8 +3333,8 @@ g_win32_app_info_new_from_app (GWin32AppInfoApplication *app,
 
   new_info->app = g_object_ref (app);
 
-  g_win32_appinfo_init ();
-  G_LOCK (gio_win32_appinfo);
+  gio_win32_appinfo_init (TRUE);
+  g_mutex_lock (&gio_win32_appinfo_mutex);
 
   i = 0;
   g_hash_table_iter_init (&iter, new_info->app->supported_exts);
@@ -3274,7 +3359,7 @@ g_win32_app_info_new_from_app (GWin32AppInfoApplication *app,
       i += 1;
     }
 
-  G_UNLOCK (gio_win32_appinfo);
+  g_mutex_unlock (&gio_win32_appinfo_mutex);
 
   new_info->supported_types[i] = NULL;
 
@@ -4216,13 +4301,13 @@ g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
       return NULL;
     }
 
-  g_win32_appinfo_init ();
-  G_LOCK (gio_win32_appinfo);
+  gio_win32_appinfo_init (TRUE);
+  g_mutex_lock (&gio_win32_appinfo_mutex);
 
   g_set_object (&scheme, g_hash_table_lookup (urls, scheme_down));
   g_free (scheme_down);
 
-  G_UNLOCK (gio_win32_appinfo);
+  g_mutex_unlock (&gio_win32_appinfo_mutex);
 
   result = NULL;
 
@@ -4252,14 +4337,14 @@ g_app_info_get_default_for_type (const char *content_type,
   if (!ext_down)
     return NULL;
 
-  g_win32_appinfo_init ();
-  G_LOCK (gio_win32_appinfo);
+  gio_win32_appinfo_init (TRUE);
+  g_mutex_lock (&gio_win32_appinfo_mutex);
 
   /* Assuming that "content_type" is a file extension, not a MIME type */
   g_set_object (&ext, g_hash_table_lookup (extensions, ext_down));
   g_free (ext_down);
 
-  G_UNLOCK (gio_win32_appinfo);
+  g_mutex_unlock (&gio_win32_appinfo_mutex);
 
   if (ext == NULL)
     return NULL;
@@ -4309,15 +4394,15 @@ g_app_info_get_all (void)
   GList *apps;
   GList *apps_i;
 
-  g_win32_appinfo_init ();
-  G_LOCK (gio_win32_appinfo);
+  gio_win32_appinfo_init (TRUE);
+  g_mutex_lock (&gio_win32_appinfo_mutex);
 
   apps = NULL;
   g_hash_table_iter_init (&iter, apps_by_id);
   while (g_hash_table_iter_next (&iter, NULL, &value))
     apps = g_list_prepend (apps, g_object_ref (G_OBJECT (value)));
 
-  G_UNLOCK (gio_win32_appinfo);
+  g_mutex_unlock (&gio_win32_appinfo_mutex);
 
   infos = NULL;
   for (apps_i = apps; apps_i; apps_i = apps_i->next)
@@ -4345,14 +4430,14 @@ g_app_info_get_all_for_type (const char *content_type)
   if (!ext_down)
     return NULL;
 
-  g_win32_appinfo_init ();
-  G_LOCK (gio_win32_appinfo);
+  gio_win32_appinfo_init (TRUE);
+  g_mutex_lock (&gio_win32_appinfo_mutex);
 
   /* Assuming that "content_type" is a file extension, not a MIME type */
   g_set_object (&ext, g_hash_table_lookup (extensions, ext_down));
   g_free (ext_down);
 
-  G_UNLOCK (gio_win32_appinfo);
+  g_mutex_unlock (&gio_win32_appinfo_mutex);
 
   if (ext == NULL)
     return NULL;

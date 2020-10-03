@@ -49,6 +49,7 @@
 #include "gmemorymonitordbus.h"
 #ifdef G_OS_WIN32
 #include "gregistrysettingsbackend.h"
+#include "giowin32-priv.h"
 #endif
 #include <glib/gstdio.h>
 
@@ -1068,7 +1069,10 @@ DllMain (HINSTANCE hinstDLL,
 	 LPVOID    lpvReserved)
 {
   if (fdwReason == DLL_PROCESS_ATTACH)
+    {
       gio_dll = hinstDLL;
+      gio_win32_appinfo_init (FALSE);
+    }
 
   return TRUE;
 }
