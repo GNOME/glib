@@ -2606,6 +2606,10 @@ log_is_old_api (const GLogField *fields,
  * messages unless their log domain (or `all`) is listed in the space-separated
  * `G_MESSAGES_DEBUG` environment variable.
  *
+ * g_log_writer_default() uses the mask set by g_log_set_always_fatal() to
+ * determine which messages are fatal. When using a custom writer func instead it is
+ * up to the writer function to determine which log messages are fatal.
+ *
  * Returns: %G_LOG_WRITER_HANDLED on success, %G_LOG_WRITER_UNHANDLED otherwise
  * Since: 2.50
  */
