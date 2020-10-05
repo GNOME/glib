@@ -466,6 +466,10 @@ test_uri_escape_string (void)
       { ":+ \\?#", NULL, FALSE, "%3A%2B%20%5C%3F%23" },
       { "a+b:c", "+", FALSE, "a+b%3Ac" },
       { "a+b:c\303\234", "+", TRUE, "a+b%3Ac\303\234" },
+      /* Incomplete UTF-8 sequence: */
+      { "\xfc\x3b\xd2", NULL, TRUE, "%FC%3B%D2" },
+      /* Invalid sequence: */
+      { "\xc3\xb1\xc3\x28", NULL, TRUE, "ñ%C3%28" },
     };
   gsize i;
 
