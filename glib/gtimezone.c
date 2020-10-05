@@ -1041,7 +1041,11 @@ find_relative_date (TimeZoneDate *buffer)
       /* week is 1 <= w <= 5, we need 0-based */
       days = 7 * (buffer->week - 1) + wday - first_wday;
 
-      while (days > days_in_month)
+      /* "days" is a 0-based offset from the 1st of the month.
+       * Adding days == days_in_month would bring us into the next month,
+       * hence the ">=" instead of just ">".
+       */
+      while (days >= days_in_month)
         days -= 7;
 
       g_date_add_days (&date, days);
