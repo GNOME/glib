@@ -449,22 +449,48 @@ test_uri_unescape_segment (void)
 }
 
 static void
-test_uri_escape (void)
+test_uri_escape_string (void)
 {
-  gchar *s;
+  const struct
+    {
+      /* Inputs */
+      const gchar *unescaped;
+      const gchar *reserved_chars_allowed;
+      gboolean allow_utf8;
+      /* Outputs */
+      const gchar *expected_escaped;
+    }
+  tests[] =
+    {
+      { "abcdefgABCDEFG._~", NULL, FALSE, "abcdefgABCDEFG._~" },
+      { ":+ \\?#", NULL, FALSE, "%3A%2B%20%5C%3F%23" },
+      { "a+b:c", "+", FALSE, "a+b%3Ac" },
+      { "a+b:c\303\234", "+", TRUE, "a+b%3Ac\303\234" },
+      /* Incomplete UTF-8 sequence: */
+      { "\xfc\x3b\xd2", NULL, TRUE, "%FC%3B%D2" },
+      /* Invalid sequence: */
+      { "\xc3\xb1\xc3\x28", NULL, TRUE, "ñ%C3%28" },
+    };
+  gsize i;
 
-  s = g_uri_escape_string ("abcdefgABCDEFG._~", NULL, FALSE);
-  g_assert_cmpstr (s, ==, "abcdefgABCDEFG._~");
-  g_free (s);
-  s = g_uri_escape_string (":+ \\?#", NULL, FALSE);
-  g_assert_cmpstr (s, ==, "%3A%2B%20%5C%3F%23");
-  g_free (s);
-  s = g_uri_escape_string ("a+b:c", "+", FALSE);
-  g_assert_cmpstr (s, ==, "a+b%3Ac");
-  g_free (s);
-  s = g_uri_escape_string ("a+b:c\303\234", "+", TRUE);
-  g_assert_cmpstr (s, ==, "a+b%3Ac\303\234");
-  g_free (s);
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      gchar *s = NULL;
+
+      g_test_message ("Test %" G_GSIZE_FORMAT ": %s", i, tests[i].unescaped);
+
+      s = g_uri_escape_string (tests[i].unescaped,
+                               tests[i].reserved_chars_allowed,
+                               tests[i].allow_utf8);
+      g_assert_cmpstr (s, ==, tests[i].expected_escaped);
+      g_free (s);
+    }
+}
+
+static void
+test_uri_escape_bytes (void)
+{
+  gchar *s = NULL;
 
   s = g_uri_escape_bytes ((guchar*)"\0\0", 2, NULL);
   g_assert_cmpstr (s, ==, "%00%00");
@@ -722,6 +748,14 @@ static const UriAbsoluteTest absolute_tests[] = {
   { "http://[fe80::dead:beef%25]/", G_URI_FLAGS_NONE, FALSE, G_URI_ERROR_BAD_HOST,
     { NULL, NULL, NULL, -1, NULL, NULL, NULL } },
   { "http://[192.168.0.1%25em1]/", G_URI_FLAGS_NONE, FALSE, G_URI_ERROR_BAD_HOST,
+    { NULL, NULL, NULL, -1, NULL, NULL, NULL } },
+  { "http://[fe80::dead:beef%2em1]/", G_URI_FLAGS_PARSE_RELAXED, TRUE, 0,
+    { "http", NULL, "fe80::dead:beef%2em1", -1, "/", NULL, NULL } },
+  { "http://[fe80::dead:beef%2em1]/", G_URI_FLAGS_NONE, FALSE, G_URI_ERROR_BAD_HOST,
+    { NULL, NULL, NULL, -1, NULL, NULL, NULL } },
+  { "http://[fe80::dead:beef%25em1%00]/", G_URI_FLAGS_PARSE_RELAXED, FALSE, G_URI_ERROR_BAD_HOST,
+    { NULL, NULL, NULL, -1, NULL, NULL, NULL } },
+  { "http://[fe80::dead:beef%25em1%00]/", G_URI_FLAGS_NONE, FALSE, G_URI_ERROR_BAD_HOST,
     { NULL, NULL, NULL, -1, NULL, NULL, NULL } },
 };
 
@@ -1688,7 +1722,8 @@ main (int   argc,
   g_test_add_data_func ("/uri/unescape-bytes/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_unescape_bytes);
   g_test_add_data_func ("/uri/unescape-bytes/length", GINT_TO_POINTER (FALSE), test_uri_unescape_bytes);
   g_test_add_func ("/uri/unescape-segment", test_uri_unescape_segment);
-  g_test_add_func ("/uri/escape", test_uri_escape);
+  g_test_add_func ("/uri/escape-string", test_uri_escape_string);
+  g_test_add_func ("/uri/escape-bytes", test_uri_escape_bytes);
   g_test_add_func ("/uri/scheme", test_uri_scheme);
   g_test_add_func ("/uri/parsing/absolute", test_uri_parsing_absolute);
   g_test_add_func ("/uri/parsing/relative", test_uri_parsing_relative);
