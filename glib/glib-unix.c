@@ -33,6 +33,12 @@
 #include <sys/types.h>
 #include <pwd.h>
 
+G_STATIC_ASSERT (sizeof (ssize_t) == GLIB_SIZEOF_SSIZE_T);
+G_STATIC_ASSERT (G_ALIGNOF (gssize) == G_ALIGNOF (ssize_t));
+
+G_STATIC_ASSERT (sizeof (GPid) == sizeof (pid_t));
+G_STATIC_ASSERT (G_ALIGNOF (GPid) == G_ALIGNOF (pid_t));
+
 /**
  * SECTION:gunix
  * @title: UNIX-specific utilities and integration
