@@ -991,6 +991,7 @@ g_socket_client_connect (GSocketClient       *client,
 {
   GIOStream *connection = NULL;
   GSocketAddressEnumerator *enumerator = NULL;
+  gboolean ever_resolved = FALSE;
   GError *last_error, *tmp_error;
 
   last_error = NULL;
@@ -1025,10 +1026,20 @@ g_socket_client_connect (GSocketClient       *client,
 	}
 
       tmp_error = NULL;
-      g_socket_client_emit_event (client, G_SOCKET_CLIENT_RESOLVING,
-				  connectable, NULL);
+
+      if (!ever_resolved)
+	{
+	  g_socket_client_emit_event (client, G_SOCKET_CLIENT_RESOLVING,
+				      connectable, NULL);
+	}
       address = g_socket_address_enumerator_next (enumerator, cancellable,
 	      					  &tmp_error);
+      if (!ever_resolved)
+	{
+	  g_socket_client_emit_event (client, G_SOCKET_CLIENT_RESOLVED,
+				      connectable, NULL);
+	  ever_resolved = TRUE;
+	}
 
       if (address == NULL)
 	{
@@ -1046,8 +1057,6 @@ g_socket_client_connect (GSocketClient       *client,
                                  _("Unknown error on connect"));
 	  break;
 	}
-      g_socket_client_emit_event (client, G_SOCKET_CLIENT_RESOLVED,
-				  connectable, NULL);
 
       using_proxy = (G_IS_PROXY_ADDRESS (address) &&
 		     client->priv->enable_proxy);
@@ -1509,7 +1518,8 @@ enumerator_next_async (GSocketClientAsyncConnectData *data,
   if (add_task_ref)
     g_object_ref (data->task);
 
-  g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_RESOLVING, data->connectable, NULL);
+  if (!data->enumerated_at_least_once)
+    g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_RESOLVING, data->connectable, NULL);
   g_debug ("GSocketClient: Starting new address enumeration");
   g_socket_address_enumerator_next_async (data->enumerator,
 					  data->enumeration_cancellable,
@@ -1883,10 +1893,13 @@ g_socket_client_enumerator_callback (GObject      *object,
       return;
     }
 
-  data->enumerated_at_least_once = TRUE;
   g_debug ("GSocketClient: Address enumeration succeeded");
-  g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_RESOLVED,
-			      data->connectable, NULL);
+  if (!data->enumerated_at_least_once)
+    {
+      g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_RESOLVED,
+				  data->connectable, NULL);
+      data->enumerated_at_least_once = TRUE;
+    }
 
   g_clear_error (&data->last_error);
 
