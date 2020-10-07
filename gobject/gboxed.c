@@ -145,6 +145,7 @@ G_DEFINE_BOXED_TYPE (GArray, g_array, g_array_ref, g_array_unref)
 G_DEFINE_BOXED_TYPE (GPtrArray, g_ptr_array,g_ptr_array_ref, g_ptr_array_unref)
 G_DEFINE_BOXED_TYPE (GByteArray, g_byte_array, g_byte_array_ref, g_byte_array_unref)
 G_DEFINE_BOXED_TYPE (GBytes, g_bytes, g_bytes_ref, g_bytes_unref)
+G_DEFINE_BOXED_TYPE (GTree, g_tree, g_tree_ref, g_tree_unref)
 
 G_DEFINE_BOXED_TYPE (GRegex, g_regex, g_regex_ref, g_regex_unref)
 G_DEFINE_BOXED_TYPE (GMatchInfo, g_match_info, g_match_info_ref, g_match_info_unref)

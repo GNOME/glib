@@ -409,6 +409,7 @@ G_TYPE_POLLFD
 G_TYPE_THREAD
 G_TYPE_OPTION_GROUP
 G_TYPE_URI
+G_TYPE_TREE
 
 <SUBSECTION Standard>
 G_TYPE_IS_BOXED
@@ -443,6 +444,7 @@ g_markup_parse_context_get_type
 g_thread_get_type
 g_option_group_get_type
 g_uri_get_type
+g_tree_get_type
 </SECTION>
 
 <SECTION>
