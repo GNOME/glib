@@ -420,8 +420,13 @@ _uri_encoder (GString      *out,
 
   while (p < end)
     {
-      if (allow_utf8 && *p >= 0x80 &&
-          g_utf8_get_char_validated ((gchar *)p, end - p) > 0)
+      gunichar multibyte_utf8_char = 0;
+
+      if (allow_utf8 && *p >= 0x80)
+        multibyte_utf8_char = g_utf8_get_char_validated ((gchar *)p, end - p);
+
+      if (multibyte_utf8_char > 0 &&
+          multibyte_utf8_char != (gunichar) -1 && multibyte_utf8_char != (gunichar) -2)
         {
           gint len = g_utf8_skip [*p];
           g_string_append_len (out, (gchar *)p, len);
