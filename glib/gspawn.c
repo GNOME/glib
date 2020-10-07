@@ -1451,6 +1451,9 @@ do_exec (gint                  child_err_report_fd,
   else if (stderr_to_null)
     {
       gint write_null = safe_open ("/dev/null", O_WRONLY);
+      if (write_null < 0)
+        write_err_and_exit (child_err_report_fd,
+                            CHILD_DUP2_FAILED);
       safe_dup2 (write_null, 2);
       close_and_invalidate (&write_null);
     }
