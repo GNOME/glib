@@ -127,7 +127,8 @@
  * It is recommended that custom log writer functions re-use the
  * `G_MESSAGES_DEBUG` environment variable, rather than inventing a custom one,
  * so that developers can re-use the same debugging techniques and tools across
- * projects.
+ * projects. Since GLib 2.68, this can be implemented by dropping messages
+ * for which g_log_writer_default_would_drop() returns %TRUE.
  *
  * ## Testing for Messages ## {#testing-for-messages}
  *
@@ -197,6 +198,7 @@
 #include "gstrfuncs.h"
 #include "gstring.h"
 #include "gpattern.h"
+#include "gthreadprivate.h"
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
@@ -1160,12 +1162,42 @@ static const gchar *log_level_to_color (GLogLevelFlags log_level,
                                         gboolean       use_color);
 static const gchar *color_reset        (gboolean       use_color);
 
+static gboolean gmessages_use_stderr = FALSE;
+
+/**
+ * g_log_writer_default_set_use_stderr:
+ * @use_stderr: If %TRUE, use `stderr` for log messages that would
+ *  normally have appeared on `stdout`
+ *
+ * Configure whether the built-in log functions
+ * (g_log_default_handler() for the old-style API, and both
+ * g_log_writer_default() and g_log_writer_standard_streams() for the
+ * structured API) will output all log messages to `stderr`.
+ *
+ * By default, log messages of levels %G_LOG_LEVEL_INFO and
+ * %G_LOG_LEVEL_DEBUG are sent to `stdout`, and other log messages are
+ * sent to `stderr`. This is problematic for applications that intend
+ * to reserve `stdout` for structured output such as JSON or XML.
+ *
+ * This function sets global state. It is not thread-aware, and should be
+ * called at the very start of a program, before creating any other threads
+ * or creating objects that could create worker threads of their own.
+ *
+ * Since: 2.68
+ */
+void
+g_log_writer_default_set_use_stderr (gboolean use_stderr)
+{
+  g_return_if_fail (g_thread_n_created () == 0);
+  gmessages_use_stderr = use_stderr;
+}
+
 static FILE *
 mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
                 GLogLevelFlags log_level,
                 gboolean       use_color)
 {
-  gboolean to_stdout = TRUE;
+  gboolean to_stdout = !gmessages_use_stderr;
 
   /* we may not call _any_ GLib functions here */
 
@@ -1442,6 +1474,9 @@ log_level_to_priority (GLogLevelFlags log_level)
 static FILE *
 log_level_to_file (GLogLevelFlags log_level)
 {
+  if (gmessages_use_stderr)
+    return stderr;
+
   if (log_level & (G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL |
                    G_LOG_LEVEL_WARNING | G_LOG_LEVEL_MESSAGE))
     return stderr;
@@ -2524,7 +2559,9 @@ g_log_writer_journald (GLogLevelFlags   log_level,
  *
  * Format a structured log message and print it to either `stdout` or `stderr`,
  * depending on its log level. %G_LOG_LEVEL_INFO and %G_LOG_LEVEL_DEBUG messages
- * are sent to `stdout`; all other log levels are sent to `stderr`. Only fields
+ * are sent to `stdout`, or to `stderr` if requested by
+ * g_log_writer_default_set_use_stderr();
+ * all other log levels are sent to `stderr`. Only fields
  * which are understood by this function are included in the formatted string
  * which is printed.
  *
@@ -2581,6 +2618,95 @@ log_is_old_api (const GLogField *fields,
           g_strcmp0 (fields[0].value, "1") == 0);
 }
 
+/*
+ * Internal version of g_log_writer_default_would_drop(), which can
+ * read from either a log_domain or an array of fields. This avoids
+ * having to iterate through the fields if the @log_level is sufficient
+ * to make the decision.
+ */
+static gboolean
+should_drop_message (GLogLevelFlags   log_level,
+                     const char      *log_domain,
+                     const GLogField *fields,
+                     gsize            n_fields)
+{
+  /* Disable debug message output unless specified in G_MESSAGES_DEBUG. */
+  if (!(log_level & DEFAULT_LEVELS) && !(log_level >> G_LOG_LEVEL_USER_SHIFT))
+    {
+      const gchar *domains;
+      gsize i;
+
+      domains = g_getenv ("G_MESSAGES_DEBUG");
+
+      if ((log_level & INFO_LEVELS) == 0 ||
+          domains == NULL)
+        return TRUE;
+
+      if (log_domain == NULL)
+        {
+          for (i = 0; i < n_fields; i++)
+            {
+              if (g_strcmp0 (fields[i].key, "GLIB_DOMAIN") == 0)
+                {
+                  log_domain = fields[i].value;
+                  break;
+                }
+            }
+        }
+
+      if (strcmp (domains, "all") != 0 &&
+          (log_domain == NULL || !strstr (domains, log_domain)))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+/**
+ * g_log_writer_default_would_drop:
+ * @log_domain: (nullable): log domain
+ * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ *    level
+ *
+ * Check whether g_log_writer_default() and g_log_default_handler() would
+ * ignore a message with the given domain and level.
+ *
+ * As with g_log_default_handler(), this function drops debug and informational
+ * messages unless their log domain (or `all`) is listed in the space-separated
+ * `G_MESSAGES_DEBUG` environment variable.
+ *
+ * This can be used when implementing log writers with the same filtering
+ * behaviour as the default, but a different destination or output format:
+ *
+ * |[<!-- language="C" -->
+ *   if (g_log_writer_default_would_drop (log_level, log_domain))
+ *     return G_LOG_WRITER_HANDLED;
+ * ]|
+ *
+ * or to skip an expensive computation if it is only needed for a debugging
+ * message, and `G_MESSAGES_DEBUG` is not set:
+ *
+ * |[<!-- language="C" -->
+ *   if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
+ *     {
+ *       gchar *result = expensive_computation (my_object);
+ *
+ *       g_debug ("my_object result: %s", result);
+ *       g_free (result);
+ *     }
+ * ]|
+ *
+ * Returns: %TRUE if the log message would be dropped by GLib's
+ *  default log handlers
+ * Since: 2.68
+ */
+gboolean
+g_log_writer_default_would_drop (GLogLevelFlags  log_level,
+                                 const char     *log_domain)
+{
+  return should_drop_message (log_level, log_domain, NULL, 0);
+}
+
 /**
  * g_log_writer_default:
  * @log_level: log level, either from #GLogLevelFlags, or a user-defined
@@ -2625,31 +2751,8 @@ g_log_writer_default (GLogLevelFlags   log_level,
   g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
   g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
 
-  /* Disable debug message output unless specified in G_MESSAGES_DEBUG. */
-  if (!(log_level & DEFAULT_LEVELS) && !(log_level >> G_LOG_LEVEL_USER_SHIFT))
-    {
-      const gchar *domains, *log_domain = NULL;
-      gsize i;
-
-      domains = g_getenv ("G_MESSAGES_DEBUG");
-
-      if ((log_level & INFO_LEVELS) == 0 ||
-          domains == NULL)
-        return G_LOG_WRITER_HANDLED;
-
-      for (i = 0; i < n_fields; i++)
-        {
-          if (g_strcmp0 (fields[i].key, "GLIB_DOMAIN") == 0)
-            {
-              log_domain = fields[i].value;
-              break;
-            }
-        }
-
-      if (strcmp (domains, "all") != 0 &&
-          (log_domain == NULL || !strstr (domains, log_domain)))
-        return G_LOG_WRITER_HANDLED;
-    }
+  if (should_drop_message (log_level, NULL, fields, n_fields))
+    return G_LOG_WRITER_HANDLED;
 
   /* Mark messages as fatal if they have a level set in
    * g_log_set_always_fatal().
@@ -3075,7 +3178,8 @@ escape_string (GString *string)
  *
  * stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
  * %G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for
- * the rest.
+ * the rest, unless stderr was requested by
+ * g_log_writer_default_set_use_stderr().
  *
  * This has no effect if structured logging is enabled; see
  * [Using Structured Logging][using-structured-logging].

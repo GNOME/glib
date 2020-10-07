@@ -1484,6 +1484,8 @@ g_log_writer_format_fields
 g_log_writer_journald
 g_log_writer_standard_streams
 g_log_writer_default
+g_log_writer_default_set_use_stderr
+g_log_writer_default_would_drop
 
 <SUBSECTION Private>
 g_log_structured_standard
