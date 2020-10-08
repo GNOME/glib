@@ -8,7 +8,7 @@ if not use_system_pcre
 endif
 
 # libsysprof-capture support
-libsysprof_capture_dep = dependency('sysprof-capture-4',
+libsysprof_capture_dep = dependency('sysprof-capture-4', version: '>= 3.38.0',
   required: get_option('sysprof'),
   default_options: [
     'enable_examples=false',
