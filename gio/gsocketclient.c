@@ -828,7 +828,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * multiple times (or not at all) for a given connectable (in
    * particular, if @client ends up attempting to connect to more than
    * one address). However, if @client emits the #GSocketClient::event
-   * signal at all for a given connectable, that it will always emit
+   * signal at all for a given connectable, then it will always emit
    * it with %G_SOCKET_CLIENT_COMPLETE when it is done.
    *
    * Note that there may be additional #GSocketClientEvent values in
