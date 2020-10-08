@@ -945,7 +945,7 @@ g_socket_client_class_init (GSocketClientClass *class)
 
 static void
 g_socket_client_emit_event (GSocketClient       *client,
-			    GSocketClientEvent  event,
+			    GSocketClientEvent   event,
 			    GSocketConnectable  *connectable,
 			    GIOStream           *connection)
 {
