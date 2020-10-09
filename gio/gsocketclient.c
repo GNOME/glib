@@ -24,6 +24,10 @@
 #include "config.h"
 #include "gsocketclient.h"
 
+#ifndef G_OS_WIN32
+#include <netinet/in.h>
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -39,6 +43,7 @@
 #include <gio/gioerror.h>
 #include <gio/gsocket.h>
 #include <gio/gnetworkaddress.h>
+#include <gio/gnetworking.h>
 #include <gio/gnetworkservice.h>
 #include <gio/gproxy.h>
 #include <gio/gproxyresolver.h>
@@ -142,6 +147,10 @@ create_socket (GSocketClient  *client,
 
   if (client->priv->local_address)
     {
+#ifdef IP_BIND_ADDRESS_NO_PORT
+      g_socket_set_option (socket, IPPROTO_IP, IP_BIND_ADDRESS_NO_PORT, 1, NULL);
+#endif
+
       if (!g_socket_bind (socket,
 			  client->priv->local_address,
 			  FALSE,
