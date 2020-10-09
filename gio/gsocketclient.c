@@ -1936,6 +1936,15 @@ g_socket_client_enumerator_callback (GObject      *object,
  *
  * This is the asynchronous version of g_socket_client_connect().
  *
+ * You may wish to prefer the asynchronous version even in synchronous
+ * command line programs because, since 2.60, it implements
+ * [RFC 8305](https://tools.ietf.org/html/rfc8305) "Happy Eyeballs"
+ * recommendations to work around long connection timeouts in networks
+ * where IPv6 is broken by performing an IPv4 connection simultaneously
+ * without waiting for IPv6 to time out, which is not supported by the
+ * synchronous call. (This is not an API guarantee, and may change in
+ * the future.)
+ *
  * When the operation is finished @callback will be
  * called. You can then call g_socket_client_connect_finish() to get
  * the result of the operation.
