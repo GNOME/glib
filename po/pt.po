@@ -5,16 +5,16 @@
 # Pedro Albuquerque <palbuquerque73@gmail.com>, 2015.
 # Sérgio Cardeira <cardeira.sergio@gmail.com>, 2016.
 # Tiago Santos <tiagofsantos81@sapo.pt>, 2014 - 2016.
-# Juliano de Souza Camargo <julianosc@pm.me>, 2020.
+# Juliano de Souza Camargo <julianosc@protonmail.com>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.12\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-09-21 14:07+0000\n"
-"PO-Revision-Date: 2020-09-21 15:24+0100\n"
-"Last-Translator: Juliano de Souza Camargo <julianosc@pm.me>\n"
-"Language-Team: Portuguese <>\n"
+"POT-Creation-Date: 2020-10-01 16:40+0000\n"
+"PO-Revision-Date: 2020-10-11 15:20+0100\n"
+"Last-Translator: Juliano de Souza Camargo <julianosc@protonmail.com>\n"
+"Language-Team: Portuguese < >\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1695,7 +1695,7 @@ msgstr "Erro ao escrever no stdout"
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
-#: gio/gio-tool-trash.c:81 gio/gio-tool-tree.c:239
+#: gio/gio-tool-trash.c:90 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "LOCALIZAÇÃO"
 
@@ -1715,7 +1715,7 @@ msgstr ""
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
+#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:145
 msgid "No locations given"
 msgstr "Nenhuma localização fornecida"
 
@@ -2263,7 +2263,7 @@ msgstr "Tipo de atributo inválido “%s”"
 msgid "Empty the trash"
 msgstr "Esvaziar lixo"
 
-#: gio/gio-tool-trash.c:86
+#: gio/gio-tool-trash.c:95
 msgid "Move files or directories to the trash."
 msgstr "Mover ficheiros e diretórios para o lixo."
 
@@ -3127,19 +3127,16 @@ msgstr "Data/hora UNIX %lld estão fora do alcance suportado pelo Windows"
 
 #: gio/glocalfileinfo.c:2514
 #, c-format
-#| msgid "Value “%s” cannot be interpreted as a number."
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Nome de ficheiro “%s” não pode ser convertido para UTF-16"
 
 #: gio/glocalfileinfo.c:2533
 #, c-format
-#| msgid "Value “%s” cannot be interpreted as a number."
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Ficheiro “%s” não pode ser aberto: erro do Windows %lu"
 
 #: gio/glocalfileinfo.c:2546
 #, c-format
-#| msgid "Error setting modification or access time: %s"
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr ""
 "Erro ao definir ou modificar a hora de acesso para o ficheiro “%s”: %lu"
@@ -4449,62 +4446,62 @@ msgstr "%I:%M:%S %p"
 #: glib/gdatetime.c:268
 msgctxt "full month name"
 msgid "January"
-msgstr "janeiro"
+msgstr "Janeiro"
 
 #: glib/gdatetime.c:270
 msgctxt "full month name"
 msgid "February"
-msgstr "fevereiro"
+msgstr "Fevereiro"
 
 #: glib/gdatetime.c:272
 msgctxt "full month name"
 msgid "March"
-msgstr "março"
+msgstr "Março"
 
 #: glib/gdatetime.c:274
 msgctxt "full month name"
 msgid "April"
-msgstr "abril"
+msgstr "Abril"
 
 #: glib/gdatetime.c:276
 msgctxt "full month name"
 msgid "May"
-msgstr "maio"
+msgstr "Maio"
 
 #: glib/gdatetime.c:278
 msgctxt "full month name"
 msgid "June"
-msgstr "junho"
+msgstr "Junho"
 
 #: glib/gdatetime.c:280
 msgctxt "full month name"
 msgid "July"
-msgstr "julho"
+msgstr "Julho"
 
 #: glib/gdatetime.c:282
 msgctxt "full month name"
 msgid "August"
-msgstr "agosto"
+msgstr "Agosto"
 
 #: glib/gdatetime.c:284
 msgctxt "full month name"
 msgid "September"
-msgstr "setembro"
+msgstr "Setembro"
 
 #: glib/gdatetime.c:286
 msgctxt "full month name"
 msgid "October"
-msgstr "outubro"
+msgstr "Outubro"
 
 #: glib/gdatetime.c:288
 msgctxt "full month name"
 msgid "November"
-msgstr "novembro"
+msgstr "Novembro"
 
 #: glib/gdatetime.c:290
 msgctxt "full month name"
 msgid "December"
-msgstr "dezembro"
+msgstr "Dezembro"
 
 #. Translators: Some languages need different grammatical forms of
 #. * month names depending on whether they are standalone or in a complete
@@ -4526,62 +4523,62 @@ msgstr "dezembro"
 #: glib/gdatetime.c:322
 msgctxt "abbreviated month name"
 msgid "Jan"
-msgstr "jan"
+msgstr "Jan"
 
 #: glib/gdatetime.c:324
 msgctxt "abbreviated month name"
 msgid "Feb"
-msgstr "fev"
+msgstr "Fev"
 
 #: glib/gdatetime.c:326
 msgctxt "abbreviated month name"
 msgid "Mar"
-msgstr "mar"
+msgstr "Mar"
 
 #: glib/gdatetime.c:328
 msgctxt "abbreviated month name"
 msgid "Apr"
-msgstr "abr"
+msgstr "Abr"
 
 #: glib/gdatetime.c:330
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr "mai"
+msgstr "Mai"
 
 #: glib/gdatetime.c:332
 msgctxt "abbreviated month name"
 msgid "Jun"
-msgstr "jun"
+msgstr "Jun"
 
 #: glib/gdatetime.c:334
 msgctxt "abbreviated month name"
 msgid "Jul"
-msgstr "jul"
+msgstr "Jul"
 
 #: glib/gdatetime.c:336
 msgctxt "abbreviated month name"
 msgid "Aug"
-msgstr "ago"
+msgstr "Ago"
 
 #: glib/gdatetime.c:338
 msgctxt "abbreviated month name"
 msgid "Sep"
-msgstr "set"
+msgstr "Set"
 
 #: glib/gdatetime.c:340
 msgctxt "abbreviated month name"
 msgid "Oct"
-msgstr "out"
+msgstr "Out"
 
 #: glib/gdatetime.c:342
 msgctxt "abbreviated month name"
 msgid "Nov"
-msgstr "nov"
+msgstr "Nov"
 
 #: glib/gdatetime.c:344
 msgctxt "abbreviated month name"
 msgid "Dec"
-msgstr "dez"
+msgstr "Dez"
 
 #: glib/gdatetime.c:359
 msgctxt "full weekday name"
@@ -5869,7 +5866,6 @@ msgstr "“%s” não é um valor sem sinal"
 
 #: glib/guri.c:313
 #, no-c-format
-#| msgid " (invalid encoding)"
 msgid "Invalid %-encoding in URI"
 msgstr "%-encoding inválido no URI"
 
@@ -5881,44 +5877,41 @@ msgstr "Carácter ilegal no URI"
 msgid "Non-UTF-8 characters in URI"
 msgstr "Caracteres non-UTF-8 no URI"
 
-#: glib/guri.c:462
+#: glib/guri.c:533
 #, c-format
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
 msgstr "Endereço IPv6 inválido ‘%.*s’ no URI"
 
-#: glib/guri.c:524
+#: glib/guri.c:588
 #, c-format
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgstr "Endereço IP codificado ilegal ‘%.*s’ no URI"
 
-#: glib/guri.c:558 glib/guri.c:570
+#: glib/guri.c:620 glib/guri.c:632
 #, c-format
-#| msgid "Could not parse “%s” as IP address mask"
 msgid "Could not parse port ‘%.*s’ in URI"
 msgstr "Impossível processar porto ‘%.*s’ no URI"
 
-#: glib/guri.c:577
+#: glib/guri.c:639
 #, c-format
-#| msgid "Double value “%s” for %s out of range"
 msgid "Port ‘%.*s’ in URI is out of range"
 msgstr "Porto ‘%.*s’ no URI fora de alcance"
 
-#: glib/guri.c:1057 glib/guri.c:1121
+#: glib/guri.c:1119 glib/guri.c:1183
 #, c-format
-#| msgid "The pathname “%s” is not an absolute path"
 msgid "URI ‘%s’ is not an absolute URI"
 msgstr "URI ‘%s’ não é um URI absoluto"
 
-#: glib/guri.c:1063
+#: glib/guri.c:1125
 #, c-format
 msgid "URI ‘%s’ has no host component"
 msgstr "URI ‘%s’ não possui uma componente destino"
 
-#: glib/guri.c:1268
+#: glib/guri.c:1330
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "URI não é absoluto, e nenhuma base URI foi fornecida"
 
-#: glib/guri.c:2020
+#: glib/guri.c:2082
 msgid "Missing ‘=’ and parameter value"
 msgstr "‘=’ e valor de parâmetro em falta"
 
@@ -5940,157 +5933,157 @@ msgid "Character out of range for UTF-16"
 msgstr "Carácter fora do limite para UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2756
+#: glib/gutils.c:2759
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2758
+#: glib/gutils.c:2761
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2760
+#: glib/gutils.c:2763
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2762
+#: glib/gutils.c:2765
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2764
+#: glib/gutils.c:2767
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2766
+#: glib/gutils.c:2769
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2770
+#: glib/gutils.c:2773
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2772
+#: glib/gutils.c:2775
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2774
+#: glib/gutils.c:2777
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2776
+#: glib/gutils.c:2779
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2778
+#: glib/gutils.c:2781
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2780
+#: glib/gutils.c:2783
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2784
+#: glib/gutils.c:2787
 #, c-format
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2786
+#: glib/gutils.c:2789
 #, c-format
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2788
+#: glib/gutils.c:2791
 #, c-format
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2790
+#: glib/gutils.c:2793
 #, c-format
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2792
+#: glib/gutils.c:2795
 #, c-format
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2794
+#: glib/gutils.c:2797
 #, c-format
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2798
+#: glib/gutils.c:2801
 #, c-format
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2800
+#: glib/gutils.c:2803
 #, c-format
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2802
+#: glib/gutils.c:2805
 #, c-format
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2804
+#: glib/gutils.c:2807
 #, c-format
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2806
+#: glib/gutils.c:2809
 #, c-format
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2808
+#: glib/gutils.c:2811
 #, c-format
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2842 glib/gutils.c:2959
+#: glib/gutils.c:2845 glib/gutils.c:2962
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: glib/gutils.c:2846
+#: glib/gutils.c:2849
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6098,7 +6091,7 @@ msgstr[0] "%u bit"
 msgstr[1] "%u bits"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2913
+#: glib/gutils.c:2916
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6106,7 +6099,7 @@ msgstr[0] "%s byte"
 msgstr[1] "%s bytes"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2918
+#: glib/gutils.c:2921
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6118,32 +6111,32 @@ msgstr[1] "%s bits"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:2972
+#: glib/gutils.c:2975
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:2977
+#: glib/gutils.c:2980
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:2982
+#: glib/gutils.c:2985
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:2987
+#: glib/gutils.c:2990
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:2992
+#: glib/gutils.c:2995
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:2997
+#: glib/gutils.c:3000
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
