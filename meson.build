@@ -473,6 +473,7 @@ if host_system == 'windows'
 endif
 
 functions = [
+  'close_range',
   'endmntent',
   'endservent',
   'fallocate',
