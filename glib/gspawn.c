@@ -167,46 +167,28 @@ static gint g_execute (const gchar  *file,
                        gchar        *search_path_buffer,
                        gsize         search_path_buffer_len);
 
-static gboolean fork_exec_with_pipes (gboolean              intermediate_child,
-                                      const gchar          *working_directory,
-                                      gchar               **argv,
-                                      gchar               **envp,
-                                      gboolean              close_descriptors,
-                                      gboolean              search_path,
-                                      gboolean              search_path_from_envp,
-                                      gboolean              stdout_to_null,
-                                      gboolean              stderr_to_null,
-                                      gboolean              child_inherits_stdin,
-                                      gboolean              file_and_argv_zero,
-                                      gboolean              cloexec_pipes,
-                                      GSpawnChildSetupFunc  child_setup,
-                                      gpointer              user_data,
-                                      GPid                 *child_pid,
-                                      gint                 *standard_input,
-                                      gint                 *standard_output,
-                                      gint                 *standard_error,
-                                      GError              **error);
-
-static gboolean fork_exec_with_fds (gboolean              intermediate_child,
-                                    const gchar          *working_directory,
-                                    gchar               **argv,
-                                    gchar               **envp,
-                                    gboolean              close_descriptors,
-                                    gboolean              search_path,
-                                    gboolean              search_path_from_envp,
-                                    gboolean              stdout_to_null,
-                                    gboolean              stderr_to_null,
-                                    gboolean              child_inherits_stdin,
-                                    gboolean              file_and_argv_zero,
-                                    gboolean              cloexec_pipes,
-                                    GSpawnChildSetupFunc  child_setup,
-                                    gpointer              user_data,
-                                    GPid                 *child_pid,
-                                    gint                 *child_close_fds,
-                                    gint                  stdin_fd,
-                                    gint                  stdout_fd,
-                                    gint                  stderr_fd,
-                                    GError              **error);
+static gboolean fork_exec (gboolean              intermediate_child,
+                           const gchar          *working_directory,
+                           const gchar * const  *argv,
+                           const gchar * const  *envp,
+                           gboolean              close_descriptors,
+                           gboolean              search_path,
+                           gboolean              search_path_from_envp,
+                           gboolean              stdout_to_null,
+                           gboolean              stderr_to_null,
+                           gboolean              child_inherits_stdin,
+                           gboolean              file_and_argv_zero,
+                           gboolean              cloexec_pipes,
+                           GSpawnChildSetupFunc  child_setup,
+                           gpointer              user_data,
+                           GPid                 *child_pid,
+                           gint                 *stdin_pipe_out,
+                           gint                 *stdout_pipe_out,
+                           gint                 *stderr_pipe_out,
+                           gint                  stdin_fd,
+                           gint                  stdout_fd,
+                           gint                  stderr_fd,
+                           GError              **error);
 
 G_DEFINE_QUARK (g-exec-error-quark, g_spawn_error)
 G_DEFINE_QUARK (g-spawn-exit-error-quark, g_spawn_exit_error)
@@ -262,6 +244,16 @@ g_spawn_async (const gchar          *working_directory,
                                    child_pid,
                                    NULL, NULL, NULL,
                                    error);
+}
+
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
+static gint
+steal_fd (gint *fd)
+{
+  gint fd_out = *fd;
+  *fd = -1;
+  return fd_out;
 }
 
 /* Avoids a danger in threaded situations (calling close()
@@ -402,25 +394,26 @@ g_spawn_sync (const gchar          *working_directory,
   if (standard_error)
     *standard_error = NULL;
   
-  if (!fork_exec_with_pipes (FALSE,
-                             working_directory,
-                             argv,
-                             envp,
-                             !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
-                             (flags & G_SPAWN_SEARCH_PATH) != 0,
-                             (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
-                             (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
-                             (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
-                             (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
-                             (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
-                             (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
-                             child_setup,
-                             user_data,
-                             &pid,
-                             NULL,
-                             standard_output ? &outpipe : NULL,
-                             standard_error ? &errpipe : NULL,
-                             error))
+  if (!fork_exec (FALSE,
+                  working_directory,
+                  (const gchar * const *) argv,
+                  (const gchar * const *) envp,
+                  !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
+                  (flags & G_SPAWN_SEARCH_PATH) != 0,
+                  (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
+                  (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
+                  (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
+                  (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
+                  (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
+                  (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
+                  child_setup,
+                  user_data,
+                  &pid,
+                  NULL,
+                  standard_output ? &outpipe : NULL,
+                  standard_error ? &errpipe : NULL,
+                  -1, -1, -1,
+                  error))
     return FALSE;
 
   /* Read data from child. */
@@ -789,25 +782,26 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
   g_return_val_if_fail (standard_input == NULL ||
                         !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
   
-  return fork_exec_with_pipes (!(flags & G_SPAWN_DO_NOT_REAP_CHILD),
-                               working_directory,
-                               argv,
-                               envp,
-                               !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
-                               (flags & G_SPAWN_SEARCH_PATH) != 0,
-                               (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
-                               (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
-                               (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
-                               (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
-                               (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
-                               (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
-                               child_setup,
-                               user_data,
-                               child_pid,
-                               standard_input,
-                               standard_output,
-                               standard_error,
-                               error);
+  return fork_exec (!(flags & G_SPAWN_DO_NOT_REAP_CHILD),
+                    working_directory,
+                    (const gchar * const *) argv,
+                    (const gchar * const *) envp,
+                    !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
+                    (flags & G_SPAWN_SEARCH_PATH) != 0,
+                    (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
+                    (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
+                    (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
+                    (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
+                    (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
+                    (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
+                    child_setup,
+                    user_data,
+                    child_pid,
+                    standard_input,
+                    standard_output,
+                    standard_error,
+                    -1, -1, -1,
+                    error);
 }
 
 /**
@@ -869,26 +863,26 @@ g_spawn_async_with_fds (const gchar          *working_directory,
   g_return_val_if_fail (stdin_fd < 0 ||
                         !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
 
-  return fork_exec_with_fds (!(flags & G_SPAWN_DO_NOT_REAP_CHILD),
-                             working_directory,
-                             argv,
-                             envp,
-                             !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
-                             (flags & G_SPAWN_SEARCH_PATH) != 0,
-                             (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
-                             (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
-                             (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
-                             (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
-                             (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
-                             (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
-                             child_setup,
-                             user_data,
-                             child_pid,
-                             NULL,
-                             stdin_fd,
-                             stdout_fd,
-                             stderr_fd,
-                             error);
+  return fork_exec (!(flags & G_SPAWN_DO_NOT_REAP_CHILD),
+                    working_directory,
+                    (const gchar * const *) argv,
+                    (const gchar * const *) envp,
+                    !(flags & G_SPAWN_LEAVE_DESCRIPTORS_OPEN),
+                    (flags & G_SPAWN_SEARCH_PATH) != 0,
+                    (flags & G_SPAWN_SEARCH_PATH_FROM_ENVP) != 0,
+                    (flags & G_SPAWN_STDOUT_TO_DEV_NULL) != 0,
+                    (flags & G_SPAWN_STDERR_TO_DEV_NULL) != 0,
+                    (flags & G_SPAWN_CHILD_INHERITS_STDIN) != 0,
+                    (flags & G_SPAWN_FILE_AND_ARGV_ZERO) != 0,
+                    (flags & G_SPAWN_CLOEXEC_PIPES) != 0,
+                    child_setup,
+                    user_data,
+                    child_pid,
+                    NULL, NULL, NULL,
+                    stdin_fd,
+                    stdout_fd,
+                    stderr_fd,
+                    error);
 }
 
 /**
@@ -1389,10 +1383,10 @@ do_exec (gint                  child_err_report_fd,
          gint                  stdout_fd,
          gint                  stderr_fd,
          const gchar          *working_directory,
-         gchar               **argv,
+         const gchar * const  *argv,
          gchar               **argv_buffer,
          gsize                 argv_buffer_len,
-         gchar               **envp,
+         const gchar * const  *envp,
          gboolean              close_descriptors,
          const gchar          *search_path,
          gchar                *search_path_buffer,
@@ -1499,9 +1493,9 @@ do_exec (gint                  child_err_report_fd,
     }
 
   g_execute (argv[0],
-             file_and_argv_zero ? argv + 1 : argv,
+             (gchar **) (file_and_argv_zero ? argv + 1 : argv),
              argv_buffer, argv_buffer_len,
-             envp, search_path, search_path_buffer, search_path_buffer_len);
+             (gchar **) envp, search_path, search_path_buffer, search_path_buffer_len);
 
   /* Exec failed */
   write_err_and_exit (child_err_report_fd,
@@ -1559,8 +1553,8 @@ read_ints (int      fd,
 
 #ifdef POSIX_SPAWN_AVAILABLE
 static gboolean
-do_posix_spawn (gchar     **argv,
-                gchar     **envp,
+do_posix_spawn (const gchar * const *argv,
+                const gchar * const *envp,
                 gboolean    search_path,
                 gboolean    stdout_to_null,
                 gboolean    stderr_to_null,
@@ -1573,7 +1567,7 @@ do_posix_spawn (gchar     **argv,
                 gint        stderr_fd)
 {
   pid_t pid;
-  gchar **argv_pass;
+  const gchar * const *argv_pass;
   posix_spawnattr_t attr;
   posix_spawn_file_actions_t file_actions;
   gint parent_close_fds[3];
@@ -1712,13 +1706,13 @@ do_posix_spawn (gchar     **argv,
 
   argv_pass = file_and_argv_zero ? argv + 1 : argv;
   if (envp == NULL)
-    envp = environ;
+    envp = (const gchar * const *) environ;
 
   /* Don't search when it contains a slash. */
   if (!search_path || strchr (argv[0], '/') != NULL)
-    r = posix_spawn (&pid, argv[0], &file_actions, &attr, argv_pass, envp);
+    r = posix_spawn (&pid, argv[0], &file_actions, &attr, (char * const *) argv_pass, (char * const *) envp);
   else
-    r = posix_spawnp (&pid, argv[0], &file_actions, &attr, argv_pass, envp);
+    r = posix_spawnp (&pid, argv[0], &file_actions, &attr, (char * const *) argv_pass, (char * const *) envp);
 
   if (r == 0 && child_pid != NULL)
     *child_pid = pid;
@@ -1737,26 +1731,28 @@ out_free_spawnattr:
 #endif /* POSIX_SPAWN_AVAILABLE */
 
 static gboolean
-fork_exec_with_fds (gboolean              intermediate_child,
-                    const gchar          *working_directory,
-                    gchar               **argv,
-                    gchar               **envp,
-                    gboolean              close_descriptors,
-                    gboolean              search_path,
-                    gboolean              search_path_from_envp,
-                    gboolean              stdout_to_null,
-                    gboolean              stderr_to_null,
-                    gboolean              child_inherits_stdin,
-                    gboolean              file_and_argv_zero,
-                    gboolean              cloexec_pipes,
-                    GSpawnChildSetupFunc  child_setup,
-                    gpointer              user_data,
-                    GPid                 *child_pid,
-                    gint                 *child_close_fds,
-                    gint                  stdin_fd,
-                    gint                  stdout_fd,
-                    gint                  stderr_fd,
-                    GError              **error)
+fork_exec (gboolean              intermediate_child,
+           const gchar          *working_directory,
+           const gchar * const  *argv,
+           const gchar * const  *envp,
+           gboolean              close_descriptors,
+           gboolean              search_path,
+           gboolean              search_path_from_envp,
+           gboolean              stdout_to_null,
+           gboolean              stderr_to_null,
+           gboolean              child_inherits_stdin,
+           gboolean              file_and_argv_zero,
+           gboolean              cloexec_pipes,
+           GSpawnChildSetupFunc  child_setup,
+           gpointer              user_data,
+           GPid                 *child_pid,
+           gint                 *stdin_pipe_out,
+           gint                 *stdout_pipe_out,
+           gint                 *stderr_pipe_out,
+           gint                  stdin_fd,
+           gint                  stdout_fd,
+           gint                  stderr_fd,
+           GError              **error)
 {
   GPid pid = -1;
   gint child_err_report_pipe[2] = { -1, -1 };
@@ -1770,6 +1766,42 @@ fork_exec_with_fds (gboolean              intermediate_child,
   gchar **argv_buffer = NULL;
   gchar **argv_buffer_heap = NULL;
   gsize argv_buffer_len = 0;
+  gint stdin_pipe[2] = { -1, -1 };
+  gint stdout_pipe[2] = { -1, -1 };
+  gint stderr_pipe[2] = { -1, -1 };
+  gint child_close_fds[4] = { -1, -1, -1, -1 };
+  gint n_child_close_fds = 0;
+
+  g_assert (stdin_pipe_out == NULL || stdin_fd < 0);
+  g_assert (stdout_pipe_out == NULL || stdout_fd < 0);
+  g_assert (stderr_pipe_out == NULL || stderr_fd < 0);
+
+  /* If pipes have been requested, open them */
+  if (stdin_pipe_out != NULL)
+    {
+      if (!g_unix_open_pipe (stdin_pipe, pipe_flags, error))
+        goto cleanup_and_fail;
+      child_close_fds[n_child_close_fds++] = stdin_pipe[1];
+      stdin_fd = stdin_pipe[0];
+    }
+
+  if (stdout_pipe_out != NULL)
+    {
+      if (!g_unix_open_pipe (stdout_pipe, pipe_flags, error))
+        goto cleanup_and_fail;
+      child_close_fds[n_child_close_fds++] = stdout_pipe[0];
+      stdout_fd = stdout_pipe[1];
+    }
+
+  if (stderr_pipe_out != NULL)
+    {
+      if (!g_unix_open_pipe (stderr_pipe, pipe_flags, error))
+        goto cleanup_and_fail;
+      child_close_fds[n_child_close_fds++] = stderr_pipe[0];
+      stderr_fd = stderr_pipe[1];
+    }
+
+  child_close_fds[n_child_close_fds++] = -1;
 
 #ifdef POSIX_SPAWN_AVAILABLE
   if (!intermediate_child && working_directory == NULL && !close_descriptors &&
@@ -1792,7 +1824,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
                                stdout_fd,
                                stderr_fd);
       if (status == 0)
-        return TRUE;
+        goto success;
 
       if (status != ENOEXEC)
         {
@@ -1802,7 +1834,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
                        _("Failed to spawn child process “%s” (%s)"),
                        argv[0],
                        g_strerror (status));
-          return FALSE;
+          goto cleanup_and_fail;
        }
 
       /* posix_spawn is not intended to support script execution. It does in
@@ -1829,7 +1861,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
    * as getenv() isn’t async-signal-safe (see `man 7 signal-safety`). */
   chosen_search_path = NULL;
   if (search_path_from_envp)
-    chosen_search_path = g_environ_getenv (envp, "PATH");
+    chosen_search_path = g_environ_getenv ((gchar **) envp, "PATH");
   if (search_path && chosen_search_path == NULL)
     chosen_search_path = g_getenv ("PATH");
 
@@ -1883,7 +1915,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
   /* And allocate a buffer which is 2 elements longer than @argv, so that if
    * script_execute() has to be called later on, it can build a wrapper argv
    * array in this buffer. */
-  argv_buffer_len = g_strv_length (argv) + 2;
+  argv_buffer_len = g_strv_length ((gchar **) argv) + 2;
   if (argv_buffer_len < 4000 / sizeof (gchar *))
     {
       /* Prefer small stack allocations to avoid valgrind leak warnings
@@ -1897,11 +1929,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
     }
 
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
-    {
-      g_free (search_path_buffer_heap);
-      g_free (argv_buffer_heap);
-      return FALSE;
-    }
+    goto cleanup_and_fail;
 
   if (intermediate_child && !g_unix_open_pipe (child_pid_report_pipe, pipe_flags, error))
     goto cleanup_and_fail;
@@ -1943,7 +1971,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
        */
       close_and_invalidate (&child_err_report_pipe[0]);
       close_and_invalidate (&child_pid_report_pipe[0]);
-      if (child_close_fds != NULL)
+      if (child_close_fds[0] != -1)
         {
            int i = -1;
            while (child_close_fds[++i] != -1)
@@ -2049,8 +2077,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
               else if (errno == ECHILD)
                 ; /* do nothing, child already reaped */
               else
-                g_warning ("waitpid() should not fail in "
-			   "'fork_exec_with_pipes'");
+                g_warning ("waitpid() should not fail in 'fork_exec'");
             }
         }
       
@@ -2152,8 +2179,25 @@ fork_exec_with_fds (gboolean              intermediate_child,
       if (child_pid)
         *child_pid = pid;
 
-      return TRUE;
+      goto success;
     }
+
+success:
+  /* Close the uncared-about ends of the pipes */
+  close_and_invalidate (&stdin_pipe[0]);
+  close_and_invalidate (&stdout_pipe[1]);
+  close_and_invalidate (&stderr_pipe[1]);
+
+  if (stdin_pipe_out != NULL)
+    *stdin_pipe_out = steal_fd (&stdin_pipe[1]);
+
+  if (stdout_pipe_out != NULL)
+    *stdout_pipe_out = steal_fd (&stdout_pipe[0]);
+
+  if (stderr_pipe_out != NULL)
+    *stderr_pipe_out = steal_fd (&stderr_pipe[0]);
+
+  return TRUE;
 
  cleanup_and_fail:
 
@@ -2171,110 +2215,24 @@ fork_exec_with_fds (gboolean              intermediate_child,
           else if (errno == ECHILD)
             ; /* do nothing, child already reaped */
           else
-            g_warning ("waitpid() should not fail in "
-                       "'fork_exec_with_pipes'");
+            g_warning ("waitpid() should not fail in 'fork_exec'");
        }
    }
 
-  close_and_invalidate (&child_err_report_pipe[0]);
-  close_and_invalidate (&child_err_report_pipe[1]);
-  close_and_invalidate (&child_pid_report_pipe[0]);
-  close_and_invalidate (&child_pid_report_pipe[1]);
-
-  g_free (search_path_buffer_heap);
-  g_free (argv_buffer_heap);
-
-  return FALSE;
-}
-
-static gboolean
-fork_exec_with_pipes (gboolean              intermediate_child,
-                      const gchar          *working_directory,
-                      gchar               **argv,
-                      gchar               **envp,
-                      gboolean              close_descriptors,
-                      gboolean              search_path,
-                      gboolean              search_path_from_envp,
-                      gboolean              stdout_to_null,
-                      gboolean              stderr_to_null,
-                      gboolean              child_inherits_stdin,
-                      gboolean              file_and_argv_zero,
-                      gboolean              cloexec_pipes,
-                      GSpawnChildSetupFunc  child_setup,
-                      gpointer              user_data,
-                      GPid                 *child_pid,
-                      gint                 *standard_input,
-                      gint                 *standard_output,
-                      gint                 *standard_error,
-                      GError              **error)
-{
-  guint pipe_flags = cloexec_pipes ? FD_CLOEXEC : 0;
-  gint stdin_pipe[2] = { -1, -1 };
-  gint stdout_pipe[2] = { -1, -1 };
-  gint stderr_pipe[2] = { -1, -1 };
-  gint child_close_fds[4];
-  gboolean ret;
-
-  if (standard_input && !g_unix_open_pipe (stdin_pipe, pipe_flags, error))
-    goto cleanup_and_fail;
-
-  if (standard_output && !g_unix_open_pipe (stdout_pipe, pipe_flags, error))
-    goto cleanup_and_fail;
-
-  if (standard_error && !g_unix_open_pipe (stderr_pipe, FD_CLOEXEC, error))
-    goto cleanup_and_fail;
-
-  child_close_fds[0] = stdin_pipe[1];
-  child_close_fds[1] = stdout_pipe[0];
-  child_close_fds[2] = stderr_pipe[0];
-  child_close_fds[3] = -1;
-
-  ret = fork_exec_with_fds (intermediate_child,
-                            working_directory,
-                            argv,
-                            envp,
-                            close_descriptors,
-                            search_path,
-                            search_path_from_envp,
-                            stdout_to_null,
-                            stderr_to_null,
-                            child_inherits_stdin,
-                            file_and_argv_zero,
-                            pipe_flags,
-                            child_setup,
-                            user_data,
-                            child_pid,
-                            child_close_fds,
-                            stdin_pipe[0],
-                            stdout_pipe[1],
-                            stderr_pipe[1],
-                            error);
-  if (!ret)
-    goto cleanup_and_fail;
-
-  /* Close the uncared-about ends of the pipes */
-  close_and_invalidate (&stdin_pipe[0]);
-  close_and_invalidate (&stdout_pipe[1]);
-  close_and_invalidate (&stderr_pipe[1]);
-
-  if (standard_input)
-    *standard_input = stdin_pipe[1];
-
-  if (standard_output)
-    *standard_output = stdout_pipe[0];
-
-  if (standard_error)
-    *standard_error = stderr_pipe[0];
-
-  return TRUE;
-
-cleanup_and_fail:
   close_and_invalidate (&stdin_pipe[0]);
   close_and_invalidate (&stdin_pipe[1]);
   close_and_invalidate (&stdout_pipe[0]);
   close_and_invalidate (&stdout_pipe[1]);
   close_and_invalidate (&stderr_pipe[0]);
   close_and_invalidate (&stderr_pipe[1]);
+
+  close_and_invalidate (&child_err_report_pipe[0]);
+  close_and_invalidate (&child_err_report_pipe[1]);
+  close_and_invalidate (&child_pid_report_pipe[0]);
+  close_and_invalidate (&child_pid_report_pipe[1]);
+
+  g_clear_pointer (&search_path_buffer_heap, g_free);
+  g_clear_pointer (&argv_buffer_heap, g_free);
 
   return FALSE;
 }
