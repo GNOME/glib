@@ -1409,11 +1409,9 @@ do_exec (gint                  child_err_report_fd,
                         CHILD_CHDIR_FAILED);
   
   /* Redirect pipes as required */
-  
   if (stdin_fd >= 0)
     {
       /* dup2 can't actually fail here I don't think */
-          
       if (safe_dup2 (stdin_fd, 0) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
@@ -1434,7 +1432,6 @@ do_exec (gint                  child_err_report_fd,
   if (stdout_fd >= 0)
     {
       /* dup2 can't actually fail here I don't think */
-          
       if (safe_dup2 (stdout_fd, 1) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
@@ -1454,7 +1451,6 @@ do_exec (gint                  child_err_report_fd,
   if (stderr_fd >= 0)
     {
       /* dup2 can't actually fail here I don't think */
-          
       if (safe_dup2 (stderr_fd, 2) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
