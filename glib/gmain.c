@@ -2293,7 +2293,7 @@ g_source_unref_internal (GSource      *source,
             g_slist_remove (source->priv->child_sources, child_source);
           child_source->priv->parent_source = NULL;
 
-          g_source_unref_internal (child_source, context, have_lock);
+          g_source_unref_internal (child_source, context, TRUE);
         }
 
       g_slice_free (GSourcePrivate, source->priv);
