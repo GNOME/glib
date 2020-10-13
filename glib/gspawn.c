@@ -1410,6 +1410,20 @@ safe_closefrom (int lowfd)
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)). */
 static gint
+safe_dup (gint fd)
+{
+  gint ret;
+
+  do
+    ret = dup (fd);
+  while (ret < 0 && (errno == EINTR || errno == EBUSY));
+
+  return ret;
+}
+
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
+static gint
 safe_dup2 (gint fd1, gint fd2)
 {
   gint ret;
@@ -1574,6 +1588,9 @@ do_exec (gint                  child_err_report_fd,
    * 5 -> 4, 4 -> 6
    *
    * We do this by duping the source fds temporarily in a first pass.
+   *
+   * If any of the @target_fds conflict with @child_err_report_fd, dup the
+   * latter so it doesn’t get conflated.
    */
   if (n_fds > 0)
     {
@@ -1590,6 +1607,9 @@ do_exec (gint                  child_err_report_fd,
             }
           else
             {
+              if (target_fds[i] == child_err_report_fd)
+                child_err_report_fd = safe_dup (child_err_report_fd);
+
               safe_dup2 (source_fds[i], target_fds[i]);
               (void) close (source_fds[i]);
             }
