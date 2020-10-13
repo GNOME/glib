@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-09-03 09:48+0000\n"
-"PO-Revision-Date: 2020-09-06 13:27+0200\n"
+"POT-Creation-Date: 2020-10-01 16:40+0000\n"
+"PO-Revision-Date: 2020-10-13 14:43+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -568,12 +568,12 @@ msgstr ""
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Zrušené cez GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:265
+#: gio/gdbusauthmechanismsha1.c:296
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Chyba pri získavaní informácií pre adresár „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:280
+#: gio/gdbusauthmechanismsha1.c:311
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
@@ -581,17 +581,17 @@ msgstr ""
 "Oprávnenia k adresáru „%s“ sú zle formátované. Očakávaný režim 0700, získaný "
 "0%o"
 
-#: gio/gdbusauthmechanismsha1.c:310
+#: gio/gdbusauthmechanismsha1.c:341
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Chyba pri vytváraní adresára %s: %s"
 
-#: gio/gdbusauthmechanismsha1.c:355
+#: gio/gdbusauthmechanismsha1.c:386
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Chyba pri otváraní zväzku kľúčov „%s“ na čítanie: "
 
-#: gio/gdbusauthmechanismsha1.c:378 gio/gdbusauthmechanismsha1.c:700
+#: gio/gdbusauthmechanismsha1.c:409 gio/gdbusauthmechanismsha1.c:731
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Riadok č. %d zväzku kľúčov na „%s“ s obsahom „%s“ je zle formátovaný"
@@ -599,7 +599,7 @@ msgstr "Riadok č. %d zväzku kľúčov na „%s“ s obsahom „%s“ je zle fo
 # PK: token nie je nejaky znak? viacX
 # PM: token je napríklad "%s" ide o znaky ktoré môžu byt nahradené nejakým textom napr %u - meno používateľa
 # PK: token by mal byt string
-#: gio/gdbusauthmechanismsha1.c:392 gio/gdbusauthmechanismsha1.c:714
+#: gio/gdbusauthmechanismsha1.c:423 gio/gdbusauthmechanismsha1.c:745
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -607,7 +607,7 @@ msgstr ""
 "Prvý token riadka č. %d zväzku kľúčov na „%s“ s obsahom „%s“ je zle "
 "formátovaný"
 
-#: gio/gdbusauthmechanismsha1.c:406 gio/gdbusauthmechanismsha1.c:728
+#: gio/gdbusauthmechanismsha1.c:437 gio/gdbusauthmechanismsha1.c:759
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -615,41 +615,41 @@ msgstr ""
 "Druhý token riadka č. %d zväzku kľúčov na „%s“ s obsahom „%s“ je zle "
 "formátovaný"
 
-#: gio/gdbusauthmechanismsha1.c:430
+#: gio/gdbusauthmechanismsha1.c:461
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Nenašlo sa cookie s identifikátorom %d vo zväzku kľúčov na „%s“"
 
-#: gio/gdbusauthmechanismsha1.c:476
+#: gio/gdbusauthmechanismsha1.c:507
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Chyba pri vytváraní súboru uzamknutia „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:540
+#: gio/gdbusauthmechanismsha1.c:571
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Chyba pri odstraňovaní starého súboru uzamknutia „%s“: %s"
 
 # PM: Je to súbor určený na vymazanie ale vymaže sa až vtedy, keď ho zatvorí posledný, kto ho má otvorený
-#: gio/gdbusauthmechanismsha1.c:579
+#: gio/gdbusauthmechanismsha1.c:610
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Chyba pri zatváraní (vymazávaného) súboru uzamknutia „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:590
+#: gio/gdbusauthmechanismsha1.c:621
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Chyba pri mazaní súboru uzamknutia „%s“: %s"
 
-#: gio/gdbusauthmechanismsha1.c:667
+#: gio/gdbusauthmechanismsha1.c:698
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Chyba pri otváraní zväzku kľúčov „%s“ na zápis: "
 
-#: gio/gdbusauthmechanismsha1.c:865
+#: gio/gdbusauthmechanismsha1.c:892
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
-msgstr "(Okrem toho zlyhalo aj uvoľnenie zámky pre „%s“: %s)"
+msgstr "(Okrem toho zlyhalo aj uvoľnenie zámky pre „%s“: %s) "
 
 #: gio/gdbusconnection.c:595 gio/gdbusconnection.c:2391
 msgid "The connection is closed"
@@ -1399,7 +1399,7 @@ msgstr "Očakávaný GEmblem pre GEmblemedIcon"
 #: gio/gfile.c:4070 gio/gfile.c:4540 gio/gfile.c:4951 gio/gfile.c:5036
 #: gio/gfile.c:5126 gio/gfile.c:5223 gio/gfile.c:5310 gio/gfile.c:5411
 #: gio/gfile.c:8121 gio/gfile.c:8211 gio/gfile.c:8295
-#: gio/win32/gwinhttpfile.c:437
+#: gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Nepodporovaná operácia"
 
@@ -1740,7 +1740,7 @@ msgstr "Chyba pri zápise na štandardný výstup"
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
-#: gio/gio-tool-trash.c:81 gio/gio-tool-tree.c:239
+#: gio/gio-tool-trash.c:90 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "UMIESTNENIE"
 
@@ -1761,7 +1761,7 @@ msgstr ""
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:136
+#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:145
 msgid "No locations given"
 msgstr "Neposkytnuté žiadne umiestnenia"
 
@@ -2148,8 +2148,6 @@ msgid "The numeric PIM when unlocking a VeraCrypt volume"
 msgstr ""
 
 #: gio/gio-tool-mount.c:75
-#| msgctxt "GDateTime"
-#| msgid "PM"
 msgid "PIM"
 msgstr "PIM"
 
@@ -2196,7 +2194,7 @@ msgstr ""
 "gio move pracuje podobne ako tradičná utilita mv, iba že \n"
 "s použitím umiestnení GIO namiesto lokálnych súborov: napríklad môžete "
 "použiť niečo ako \n"
-"smb://server/resource/file.txt ako umiestnenie."
+"smb://server/resource/file.txt ako umiestnenie"
 
 #: gio/gio-tool-move.c:143
 #, c-format
@@ -2329,7 +2327,7 @@ msgstr "Neplatný typ atribútu „%s“"
 msgid "Empty the trash"
 msgstr "Vyprázdni Kôš"
 
-#: gio/gio-tool-trash.c:86
+#: gio/gio-tool-trash.c:95
 msgid "Move files or directories to the trash."
 msgstr "Presúva súbory alebo adresáre do Koša."
 
@@ -2402,22 +2400,17 @@ msgstr "Zobrazí verziu programu a skončí"
 
 # cmd desc
 #: gio/glib-compile-resources.c:738
-#, fuzzy
-#| msgid "name of the output file"
 msgid "Name of the output file"
-msgstr "názov výstupného súboru"
+msgstr "Názov výstupného súboru"
 
 # cmd desc
 #: gio/glib-compile-resources.c:739
-#, fuzzy
-#| msgid ""
-#| "The directories where files are to be read from (default to current "
-#| "directory)"
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
 msgstr ""
-"Adresáre, z ktorých sa majú čítať súbory (predvolený je aktuálny adresár)"
+"Adresáre odkiaľ sa majú čítať súbory odkazované v SÚBORe (predvolené: "
+"aktuálny adresár)"
 
 #: gio/glib-compile-resources.c:739 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2202
@@ -2428,7 +2421,7 @@ msgstr "ADRESÁR"
 #: gio/glib-compile-resources.c:740
 msgid ""
 "Generate output in the format selected for by the target filename extension"
-msgstr "Vygeneruje výstup vo formáte stanovenom podľa prípony cielového súboru"
+msgstr "Vygeneruje výstup vo formáte stanovenom podľa prípony cieľového súboru"
 
 #  cmd desc
 #: gio/glib-compile-resources.c:741
@@ -2437,8 +2430,6 @@ msgstr "Vygeneruje zdrojové hlavičky"
 
 # cmd desc
 #: gio/glib-compile-resources.c:742
-#, fuzzy
-#| msgid "Generate sourcecode used to link in the resource file into your code"
 msgid "Generate source code used to link in the resource file into your code"
 msgstr ""
 "Vygeneruje zdrojový kód použitý na prepojenie súboru zdrojov s vaším kódom"
@@ -2452,9 +2443,10 @@ msgstr "Vygeneruje zoznam závislostí"
 msgid "Name of the dependency file to generate"
 msgstr "Názov súboru závislostí na vygenerovanie"
 
+# cmd line desc
 #: gio/glib-compile-resources.c:745
 msgid "Include phony targets in the generated dependency file"
-msgstr "zahrnúť fiktívne ciele do vygenerovaného súboru závislosti"
+msgstr "Zahrnie fiktívne ciele do vygenerovaného súboru závislosti"
 
 # cmd desc
 #: gio/glib-compile-resources.c:746
@@ -2471,6 +2463,8 @@ msgid ""
 "Don’t embed resource data in the C file; assume it's linked externally "
 "instead"
 msgstr ""
+"Nezabuduje údaje zdrojov do súboru jazyka C, usudzujúc, že sú namiesto toho "
+"prepojené externe"
 
 # cmd desc
 #: gio/glib-compile-resources.c:749
@@ -2660,14 +2654,14 @@ msgid ""
 "and hyphen (“-”) are permitted"
 msgstr ""
 "Neplatný názov „%s“: neplatný znak „%c“: povolené sú iba malé písmená, čísla "
-"a spojovník („-“)."
+"a spojovník („-“)"
 
 #: gio/glib-compile-schemas.c:828
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
 msgstr ""
 "Neplatný názov „%s“: dva za sebou nasledujúce spojovníky („--“) nie sú "
-"povolené."
+"povolené"
 
 #: gio/glib-compile-schemas.c:837
 #, c-format
@@ -2827,10 +2821,8 @@ msgstr "Upozornenie: nedefinovaná referencia na <schema id='%s'/>"
 
 #. Translators: Do not translate "--strict".
 #: gio/glib-compile-schemas.c:1833 gio/glib-compile-schemas.c:1912
-#, fuzzy
-#| msgid "--strict was specified; exiting.\n"
 msgid "--strict was specified; exiting."
-msgstr "--strict bolo zadané; ukončuje sa.\n"
+msgstr "Bol určený parameter --strict. Ukončuje sa."
 
 #: gio/glib-compile-schemas.c:1845
 msgid "This entire file has been ignored."
@@ -2841,24 +2833,22 @@ msgid "Ignoring this file."
 msgstr "Ignoruje sa tento súbor."
 
 #: gio/glib-compile-schemas.c:1963
-#, fuzzy, c-format
-#| msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
+#, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
 "override for this key."
 msgstr ""
 "Kľúč „%s“ neexistuje v schéme „%s“ ako to bolo určené v súbore preváženia "
-"„%s“"
+"„%s“. Ignoruje sa preváženie tohto kľúča."
 
 #: gio/glib-compile-schemas.c:1971
-#, fuzzy, c-format
-#| msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
+#, c-format
 msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
 "strict was specified; exiting."
 msgstr ""
 "Kľúč „%s“ neexistuje v schéme „%s“ ako to bolo určené v súbore preváženia "
-"„%s“"
+"„%s“ a bol určený parameter --strict. Ukončuje sa."
 
 #: gio/glib-compile-schemas.c:1993
 #, fuzzy, c-format
@@ -2885,83 +2875,63 @@ msgstr ""
 "zozname platných možností"
 
 #: gio/glib-compile-schemas.c:2026
-#, fuzzy, c-format
-#| msgid ""
-#| "error parsing key '%s' in schema '%s' as specified in override file '%s': "
-#| "%s."
+#, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. Ignoring override for this key."
 msgstr ""
-"chyba pri analyzovaní kľúča „%s“ v schéme „%s“ ako bolo určené v súbore "
-"preváženia „%s“: %s."
+"Chyba pri analyzovaní kľúča „%s“ v schéme „%s“ ako bolo určené v súbore "
+"preváženia „%s“: %s. Ignoruje sa preváženie tohto kľúča."
 
 #: gio/glib-compile-schemas.c:2038
-#, fuzzy, c-format
-#| msgid ""
-#| "error parsing key '%s' in schema '%s' as specified in override file '%s': "
-#| "%s."
+#, c-format
 msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
 "%s. --strict was specified; exiting."
 msgstr ""
-"chyba pri analyzovaní kľúča „%s“ v schéme „%s“ ako bolo určené v súbore "
-"preváženia „%s“: %s."
+"Chyba pri analyzovaní kľúča „%s“ v schéme „%s“ ako bolo určené v súbore "
+"preváženia „%s“: %s. Bol určený parameter --strict. Ukončuje sa."
 
 #: gio/glib-compile-schemas.c:2065
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is outside the "
-#| "range given in the schema"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema; ignoring override for this key."
 msgstr ""
-"preváženie kľúča „%s“ v schéme „%s“ v prevažujúcom súbore „%s“ je mimo "
-"rozsah daný schémou"
+"Preváženie kľúča „%s“ v schéme „%s“ v prevažujúcom súbore „%s“ je mimo "
+"rozsah daný schémou. Ignoruje sa preváženie tohto kľúča."
 
 #: gio/glib-compile-schemas.c:2075
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is outside the "
-#| "range given in the schema"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema and --strict was specified; exiting."
 msgstr ""
-"preváženie kľúča „%s“ v schéme „%s“ v prevažujúcom súbore „%s“ je mimo "
-"rozsah daný schémou"
+"Preváženie kľúča „%s“ v schéme „%s“ v prevažujúcom súbore „%s“ je mimo "
+"rozsah daný schémou a bol určený parameter --strict. Ukončuje sa."
 
 #: gio/glib-compile-schemas.c:2101
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is not in the "
-#| "list of valid choices"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices; ignoring override for this key."
 msgstr ""
-"preváženie kľúča „%s“ v schéme „%s“ v súbore preváženia „%s“ nie je v "
-"zozname platných možností"
+"Preváženie kľúča „%s“ v schéme „%s“ v súbore preváženia „%s“ nie je v "
+"zozname platných možností. Ignoruje sa preváženie tohto kľúča."
 
 #: gio/glib-compile-schemas.c:2111
-#, fuzzy, c-format
-#| msgid ""
-#| "override for key '%s' in schema '%s' in override file '%s' is not in the "
-#| "list of valid choices"
+#, c-format
 msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices and --strict was specified; exiting."
 msgstr ""
-"preváženie kľúča „%s“ v schéme „%s“ v súbore preváženia „%s“ nie je v "
-"zozname platných možností"
+"Preváženie kľúča „%s“ v schéme „%s“ v súbore preváženia „%s“ nie je v "
+"zozname platných možností a bol určený parameter --strict. Ukončuje sa."
 
 # cmd desc
 #: gio/glib-compile-schemas.c:2173
-#, fuzzy
-#| msgid "where to store the gschemas.compiled file"
 msgid "Where to store the gschemas.compiled file"
-msgstr "kam sa má uložiť súbor gschemas.compiled"
+msgstr "Kam sa má uložiť súbor gschemas.compiled"
 
 # cmd desc
 #: gio/glib-compile-schemas.c:2174
@@ -2994,13 +2964,13 @@ msgstr "Mali by ste zadať práve jeden názov adresára"
 
 #: gio/glib-compile-schemas.c:2269
 msgid "No schema files found: doing nothing."
-msgstr "Nenájdené žiadne súbory schém: neurobí sa nič"
+msgstr "Nenájdené žiadne súbory schém: neurobí sa nič."
 
 #: gio/glib-compile-schemas.c:2271
 msgid "No schema files found: removed existing output file."
 msgstr "Nenájdené žiadne súbory schém: existujúci výstupný súbor odstránený."
 
-#: gio/glocalfile.c:549 gio/win32/gwinhttpfile.c:420
+#: gio/glocalfile.c:549 gio/win32/gwinhttpfile.c:436
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Neplatný názov súboru %s"
@@ -3156,7 +3126,7 @@ msgstr "Neplatný názov rozšíreného atribútu"
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Chyba pri nastavovaní rozšíreného atribútu „%s“: %s"
 
-#: gio/glocalfileinfo.c:1666
+#: gio/glocalfileinfo.c:1666 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (neplatné kódovanie)"
 
@@ -3214,22 +3184,23 @@ msgstr ""
 #: gio/glocalfileinfo.c:2420
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
-msgstr ""
+msgstr "%d nanosekúnd navyše pre UNIXovú časovú značku %lld je záporných"
 
 #: gio/glocalfileinfo.c:2429
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
-msgstr ""
+msgstr "%d nanosekúnd navyše pre UNIXovú časovú značku %lld dosiahlo 1 sekundu"
 
 #: gio/glocalfileinfo.c:2439
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
-msgstr ""
+msgstr "UNIXová časová značka %lld sa nevmestí do 64 bitov"
 
 #: gio/glocalfileinfo.c:2450
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
+"UNIXová časová značka %lld je mimo rozsahu podporovaného systémom Windows"
 
 #: gio/glocalfileinfo.c:2514
 #, c-format
@@ -3237,16 +3208,14 @@ msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Názov súboru „%s“ nemôže byť prevedený na kódovanie UTF-16"
 
 #: gio/glocalfileinfo.c:2533
-#, fuzzy, c-format
-#| msgid "Value “%s” cannot be interpreted as a number."
+#, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
-msgstr "Hodnota „%s“ nemôže byť interpretovaná ako číslo."
+msgstr "Súbor „%s“ sa nedá otvoriť: Chyba systému Windows %lu"
 
 #: gio/glocalfileinfo.c:2546
-#, fuzzy, c-format
-#| msgid "Error setting modification or access time: %s"
+#, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
-msgstr "Chyba pri nastavovaní času prístupu alebo zmeny: %s"
+msgstr "Chyba pri nastavovaní času prístupu alebo zmeny súboru „%s“: %lu"
 
 #: gio/glocalfileinfo.c:2647
 #, c-format
@@ -3456,7 +3425,7 @@ msgstr "Nepodarilo sa vytvoriť monitor siete: "
 
 #: gio/gnetworkmonitornetlink.c:183
 msgid "Could not get network status: "
-msgstr "Nepodarilo sa získať vzdialenú adresu: %s"
+msgstr "Nepodarilo sa získať vzdialenú adresu: "
 
 #: gio/gnetworkmonitornm.c:348
 #, c-format
@@ -3475,7 +3444,7 @@ msgstr "Výstupný prúd neimplementuje zápis"
 #: gio/goutputstream.c:472 gio/goutputstream.c:1533
 #, c-format
 msgid "Sum of vectors passed to %s too large"
-msgstr ""
+msgstr "Súčet vektorov predaných funkcii %s je príliš veľký"
 
 #: gio/goutputstream.c:736 gio/goutputstream.c:1761
 msgid "Source stream is already closed"
@@ -3490,7 +3459,7 @@ msgstr "Chyba pri preklade adresy „%s“: %s"
 #: gio/gresolver.c:455 gio/gresolver.c:615
 #, c-format
 msgid "%s not implemented"
-msgstr ""
+msgstr "Funkcia %s nie je implementovaná"
 
 #: gio/gresolver.c:984 gio/gresolver.c:1036
 msgid "Invalid domain"
@@ -3977,18 +3946,14 @@ msgstr "Nenašlo sa rozhranie: %s"
 # PM: SSM je termín neprekladal som to
 # http://en.wikipedia.org/wiki/Source-specific_multicast
 #: gio/gsocket.c:2612
-#, fuzzy
-#| msgid "No support for source-specific multicast"
 msgid "No support for IPv4 source-specific multicast"
-msgstr "Nie je podpora pre source-specific multicast"
+msgstr "Nie je podpora pre IPv4 source-specific multicast"
 
 # PM: SSM je termín neprekladal som to
 # http://en.wikipedia.org/wiki/Source-specific_multicast
 #: gio/gsocket.c:2670
-#, fuzzy
-#| msgid "No support for source-specific multicast"
 msgid "No support for IPv6 source-specific multicast"
-msgstr "Nie je podpora pre source-specific multicast"
+msgstr "Nie je podpora pre IPv6 source-specific multicast"
 
 #: gio/gsocket.c:2879
 #, c-format
@@ -4001,7 +3966,7 @@ msgstr "Prebieha pripájanie"
 
 #: gio/gsocket.c:3056
 msgid "Unable to get pending error: "
-msgstr "Nepodarilo sa získať chybu určenú na spracovanie: %s"
+msgstr "Nepodarilo sa získať chybu určenú na spracovanie: "
 
 #: gio/gsocket.c:3245
 #, c-format
@@ -4104,7 +4069,7 @@ msgstr "Názov hostiteľa „%s“ je pre protokol SOCKSv4 príliš dlhý"
 
 #: gio/gsocks4aproxy.c:179
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr "Server nie je proxy serverom SOCKSv4"
+msgstr "Server nie je proxy serverom SOCKSv4."
 
 #: gio/gsocks4aproxy.c:186
 msgid "Connection through SOCKSv4 server was rejected"
@@ -4436,7 +4401,7 @@ msgstr "Neočakávaná značka „%s“ vo vnútri „%s“"
 #: glib/gbookmarkfile.c:1624
 #, c-format
 msgid "Invalid date/time ‘%s’ in bookmark file"
-msgstr ""
+msgstr "Neplatný dátum alebo čas „%s“ v súbore záložky"
 
 #: glib/gbookmarkfile.c:1827
 msgid "No valid bookmark file found in data dirs"
@@ -4487,10 +4452,8 @@ msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Zlyhalo rozvinutie spustiteľného riadka „%s“ o identifikátor URI „%s“"
 
 #: glib/gconvert.c:467
-#, fuzzy
-#| msgid "Invalid sequence in conversion input"
 msgid "Unrepresentable character in conversion input"
-msgstr "Neplatná sekvencia na vstupe prevodu"
+msgstr "Nezobraziteľný znak na vstupe prevodu"
 
 #: glib/gconvert.c:494 glib/gutf8.c:871 glib/gutf8.c:1083 glib/gutf8.c:1220
 #: glib/gutf8.c:1324
@@ -5289,10 +5252,9 @@ msgstr ""
 "prvku „%s“"
 
 #: glib/gmarkup.c:1346
-#, fuzzy, c-format
-#| msgid "Unexpected attribute “%s” for element “%s”"
+#, c-format
 msgid "Too many attributes in element “%s”"
-msgstr "Neočakávaný atribút „%s“ prvku „%s“"
+msgstr "Príliš veľa atribútov v prvku „%s“"
 
 #: glib/gmarkup.c:1366
 #, fuzzy, c-format
@@ -5361,8 +5323,7 @@ msgid "Element “%s” was closed, no element is currently open"
 msgstr "Prvok „%s“ bol ukončený, momentálne nie je otvorený žiadny prvok"
 
 #: glib/gmarkup.c:1646
-#, fuzzy, c-format
-#| msgid "Element '%s' was closed, but the currently open element is '%s'"
+#, c-format
 msgid "Element “%s” was closed, but the currently open element is “%s”"
 msgstr "Prvok „%s“ bol ukončený, ale momentálne otvorený prvok je „%s“"
 
@@ -5371,21 +5332,16 @@ msgid "Document was empty or contained only whitespace"
 msgstr "Dokument je prázdny alebo obsahuje iba netlačiteľné znaky"
 
 #: glib/gmarkup.c:1813
-#, fuzzy
-#| msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr "Dokument neočakávane skončil hneď po začiatočnej lomenej zátvorke „<“"
 
 #: glib/gmarkup.c:1821 glib/gmarkup.c:1866
-#, fuzzy, c-format
-#| msgid ""
-#| "Document ended unexpectedly with elements still open - '%s' was the last "
-#| "element opened"
+#, c-format
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
 "element opened"
 msgstr ""
-"Dokument neočakávane skončil s otvorenými prvkami – „%s“ bol posledný "
+"Dokument neočakávane skončil s otvorenými prvkami — „%s“ bol posledný "
 "otvorený prvok."
 
 #: glib/gmarkup.c:1829
@@ -5904,11 +5860,9 @@ msgid "Failed to read data from child process (%s)"
 msgstr "Zlyhalo čítanie údajov z dcérskeho procesu (%s)"
 
 #: glib/gspawn.c:468
-#, fuzzy, c-format
-#| msgid "Unexpected error in select() reading data from a child process (%s)"
+#, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
-msgstr ""
-"Neočakávaná chyba v select() pri čítaní údajov z dcérskeho procesu (%s)"
+msgstr "Neočakávaná chyba pri čítaní údajov z dcérskeho procesu (%s)"
 
 #: glib/gspawn.c:553
 #, c-format
@@ -5941,10 +5895,9 @@ msgid "Failed to read from child pipe (%s)"
 msgstr "Zlyhalo čítanie zo zreťazenia s potomkom (%s)"
 
 #: glib/gspawn.c:1788
-#, fuzzy, c-format
-#| msgid "Failed to execute child process “%s” (%s)"
+#, c-format
 msgid "Failed to spawn child process “%s” (%s)"
-msgstr "Zlyhalo spustenie dcérskeho procesu „%s“ (%s)"
+msgstr "Zlyhalo vytvorenie dcérskeho procesu „%s“ (%s)"
 
 #: glib/gspawn.c:1871
 #, c-format
@@ -6049,54 +6002,53 @@ msgid "“%s” is not an unsigned number"
 msgstr "„%s“ nie je číslo bez znamienka"
 
 #: glib/guri.c:313
-#, fuzzy, no-c-format
-#| msgid " (invalid encoding)"
+#, no-c-format
 msgid "Invalid %-encoding in URI"
-msgstr " (neplatné kódovanie)"
+msgstr "Neplatné kódovanie použitím znaku % v URI"
 
 #: glib/guri.c:330
 msgid "Illegal character in URI"
-msgstr ""
+msgstr "Neplatný znak v URI"
 
 #: glib/guri.c:359
 msgid "Non-UTF-8 characters in URI"
 msgstr ""
 
-#: glib/guri.c:462
+#: glib/guri.c:533
 #, c-format
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
 msgstr ""
 
-#: glib/guri.c:524
+#: glib/guri.c:588
 #, c-format
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgstr ""
 
-#: glib/guri.c:558 glib/guri.c:570
+#: glib/guri.c:620 glib/guri.c:632
 #, c-format
 msgid "Could not parse port ‘%.*s’ in URI"
 msgstr "Nepodarilo sa analyzovať port „%.*s“ v URI"
 
-#: glib/guri.c:577
+#: glib/guri.c:639
 #, c-format
 msgid "Port ‘%.*s’ in URI is out of range"
 msgstr "Port „%.*s“ v URI je mimo rozsah"
 
-#: glib/guri.c:1057 glib/guri.c:1121
+#: glib/guri.c:1119 glib/guri.c:1183
 #, c-format
 msgid "URI ‘%s’ is not an absolute URI"
 msgstr "URI „%s“ nie je absolútnym URI"
 
-#: glib/guri.c:1063
+#: glib/guri.c:1125
 #, c-format
 msgid "URI ‘%s’ has no host component"
 msgstr ""
 
-#: glib/guri.c:1265
+#: glib/guri.c:1330
 msgid "URI is not absolute, and no base URI was provided"
 msgstr ""
 
-#: glib/guri.c:2021
+#: glib/guri.c:2082
 msgid "Missing ‘=’ and parameter value"
 msgstr "Chýba znak „=“ a hodnota parametra"
 
@@ -6118,174 +6070,150 @@ msgid "Character out of range for UTF-16"
 msgstr "Znak mimo rozsah UTF-16"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2756
+#: glib/gutils.c:2759
 #, c-format
-#| msgid "%.1f kB"
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2758
+#: glib/gutils.c:2761
 #, c-format
-#| msgid "%.1f MB"
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2760
+#: glib/gutils.c:2763
 #, c-format
-#| msgid "%.1f GB"
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2762
+#: glib/gutils.c:2765
 #, c-format
-#| msgid "%.1f TB"
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2764
+#: glib/gutils.c:2767
 #, c-format
-#| msgid "%.1f PB"
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2766
+#: glib/gutils.c:2769
 #, c-format
-#| msgid "%.1f EB"
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2770
+#: glib/gutils.c:2773
 #, c-format
-#| msgid "%.1f KiB"
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2772
+#: glib/gutils.c:2775
 #, c-format
-#| msgid "%.1f MiB"
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2774
+#: glib/gutils.c:2777
 #, c-format
-#| msgid "%.1f GiB"
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2776
+#: glib/gutils.c:2779
 #, c-format
-#| msgid "%.1f TiB"
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2778
+#: glib/gutils.c:2781
 #, c-format
-#| msgid "%.1f PiB"
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2780
+#: glib/gutils.c:2783
 #, c-format
-#| msgid "%.1f EiB"
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2784
+#: glib/gutils.c:2787
 #, c-format
-#| msgid "%.1f kb"
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2786
+#: glib/gutils.c:2789
 #, c-format
-#| msgid "%.1f Mb"
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2788
+#: glib/gutils.c:2791
 #, c-format
-#| msgid "%.1f Gb"
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2790
+#: glib/gutils.c:2793
 #, c-format
-#| msgid "%.1f Tb"
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2792
+#: glib/gutils.c:2795
 #, c-format
-#| msgid "%.1f Pb"
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2794
+#: glib/gutils.c:2797
 #, c-format
-#| msgid "%.1f Eb"
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2798
+#: glib/gutils.c:2801
 #, c-format
-#| msgid "%.1f Kib"
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2800
+#: glib/gutils.c:2803
 #, c-format
-#| msgid "%.1f Mib"
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2802
+#: glib/gutils.c:2805
 #, c-format
-#| msgid "%.1f Gib"
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2804
+#: glib/gutils.c:2807
 #, c-format
-#| msgid "%.1f Tib"
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2806
+#: glib/gutils.c:2809
 #, c-format
-#| msgid "%.1f Pib"
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #. Translators: Keep the no-break space between %.1f and the unit symbol
-#: glib/gutils.c:2808
+#: glib/gutils.c:2811
 #, c-format
-#| msgid "%.1f Eib"
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
-#: glib/gutils.c:2842 glib/gutils.c:2959
+#: glib/gutils.c:2845 glib/gutils.c:2962
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6293,7 +6221,7 @@ msgstr[0] "%u bajtov"
 msgstr[1] "%u bajt"
 msgstr[2] "%u bajty"
 
-#: glib/gutils.c:2846
+#: glib/gutils.c:2849
 #, c-format
 msgid "%u bit"
 msgid_plural "%u bits"
@@ -6302,7 +6230,7 @@ msgstr[1] "%u bit"
 msgstr[2] "%u bity"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:2913
+#: glib/gutils.c:2916
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6311,7 +6239,7 @@ msgstr[1] "%s bajt"
 msgstr[2] "%s bajty"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:2918
+#: glib/gutils.c:2921
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6324,32 +6252,32 @@ msgstr[2] "%s bity"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:2972
+#: glib/gutils.c:2975
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f kB"
 
-#: glib/gutils.c:2977
+#: glib/gutils.c:2980
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:2982
+#: glib/gutils.c:2985
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:2987
+#: glib/gutils.c:2990
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:2992
+#: glib/gutils.c:2995
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:2997
+#: glib/gutils.c:3000
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
