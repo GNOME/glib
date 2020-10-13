@@ -103,6 +103,9 @@ void                    g_subprocess_launcher_take_fd                   (GSubpro
                                                                          gint                   source_fd,
                                                                          gint                   target_fd);
 
+GLIB_AVAILABLE_IN_2_68
+void                    g_subprocess_launcher_close                     (GSubprocessLauncher      *self);
+
 /* Child setup, only available on UNIX */
 GLIB_AVAILABLE_IN_2_40
 void                    g_subprocess_launcher_set_child_setup           (GSubprocessLauncher   *self,

@@ -4617,6 +4617,7 @@ g_subprocess_launcher_take_stdout_fd
 g_subprocess_launcher_set_stderr_file_path
 g_subprocess_launcher_take_stderr_fd
 g_subprocess_launcher_take_fd
+g_subprocess_launcher_close
 g_subprocess_launcher_set_child_setup
 <SUBSECTION Standard>
 G_IS_SUBPROCESS_LAUNCHER

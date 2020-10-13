@@ -44,6 +44,7 @@ struct _GSubprocessLauncher
 
   GArray *basic_fd_assignments;
   GArray *needdup_fd_assignments;
+  gboolean closed_fd;
 
   GSpawnChildSetupFunc child_setup_func;
   gpointer child_setup_user_data;

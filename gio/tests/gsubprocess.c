@@ -6,6 +6,8 @@
 #include <glib-unix.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gfiledescriptorbased.h>
+#include <unistd.h>
+#include <fcntl.h>
 #endif
 
 /* We write 2^1 + 2^2 ... + 2^10 or 2047 copies of "Hello World!\n"
@@ -1483,6 +1485,35 @@ test_cwd (void)
   g_object_unref (launcher);
 }
 #ifdef G_OS_UNIX
+
+static void
+test_subprocess_launcher_close (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GSubprocessLauncher *launcher;
+  GSubprocess *proc;
+  GPtrArray *args;
+  int fd;
+  gboolean is_open;
+
+  fd = dup(0);
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
+  g_subprocess_launcher_take_fd (launcher, fd, fd);
+  is_open = fcntl (fd, F_GETFD) != -1;
+  g_assert_true (is_open);
+  g_subprocess_launcher_close (launcher);
+  is_open = fcntl (fd, F_GETFD) != -1;
+  g_assert_false (is_open);
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_launcher_spawnv (launcher, (const gchar * const *) args->pdata, error);
+  g_ptr_array_free (args, TRUE);
+  g_assert_null (proc);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_CLOSED);
+  g_clear_error (error);
+  g_object_unref (launcher);
+}
+
 static void
 test_stdout_file (void)
 {
@@ -1835,6 +1866,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/env/inherit", test_env_inherit);
   g_test_add_func ("/gsubprocess/cwd", test_cwd);
 #ifdef G_OS_UNIX
+  g_test_add_func ("/gsubprocess/launcher-close", test_subprocess_launcher_close);
   g_test_add_func ("/gsubprocess/stdout-file", test_stdout_file);
   g_test_add_func ("/gsubprocess/stdout-fd", test_stdout_fd);
   g_test_add_func ("/gsubprocess/child-setup", test_child_setup);

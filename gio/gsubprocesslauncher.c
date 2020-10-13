@@ -46,6 +46,7 @@
 #include "gioenumtypes.h"
 #include "gsubprocess.h"
 #include "ginitable.h"
+#include "gioerror.h"
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
@@ -136,36 +137,11 @@ g_subprocess_launcher_dispose (GObject *object)
   GSubprocessLauncher *self = G_SUBPROCESS_LAUNCHER (object);
 
 #ifdef G_OS_UNIX
-  guint i;
-
   g_clear_pointer (&self->stdin_path, g_free);
   g_clear_pointer (&self->stdout_path, g_free);
   g_clear_pointer (&self->stderr_path, g_free);
 
-  if (self->stdin_fd != -1)
-    close (self->stdin_fd);
-  self->stdin_fd = -1;
-
-  if (self->stdout_fd != -1)
-    close (self->stdout_fd);
-  self->stdout_fd = -1;
-
-  if (self->stderr_fd != -1)
-    close (self->stderr_fd);
-  self->stderr_fd = -1;
-
-  if (self->basic_fd_assignments)
-    {
-      for (i = 0; i < self->basic_fd_assignments->len; i++)
-        (void) close (g_array_index (self->basic_fd_assignments, int, i));
-      g_clear_pointer (&self->basic_fd_assignments, g_array_unref);
-    }
-  if (self->needdup_fd_assignments)
-    {
-      for (i = 0; i < self->needdup_fd_assignments->len; i += 2)
-        (void) close (g_array_index (self->needdup_fd_assignments, int, i));
-      g_clear_pointer (&self->needdup_fd_assignments, g_array_unref);
-    }
+  g_subprocess_launcher_close (self);
 
   if (self->child_setup_destroy_notify)
     (* self->child_setup_destroy_notify) (self->child_setup_user_data);
@@ -653,6 +629,58 @@ g_subprocess_launcher_take_fd (GSubprocessLauncher   *self,
 }
 
 /**
+ * g_subprocess_launcher_close:
+ * @self: a #GSubprocessLauncher
+ *
+ * Closes all the file descriptors previously passed to the object with
+ * g_subprocess_launcher_take_fd(), g_subprocess_launcher_take_stderr_fd(), etc.
+ *
+ * After calling this method, any subsequent calls to g_subprocess_launcher_spawn() or g_subprocess_launcher_spawnv() will
+ * return %G_IO_ERROR_CLOSED. This method is idempotent if
+ * called more than once.
+ *
+ * This function is called automatically when the #GSubprocessLauncher
+ * is disposed, but is provided separately so that garbage collected
+ * language bindings can call it earlier to guarantee when FDs are closed.
+ *
+ * Since: 2.68
+ */
+void
+g_subprocess_launcher_close (GSubprocessLauncher *self)
+{
+  guint i;
+
+  g_return_if_fail (G_IS_SUBPROCESS_LAUNCHER (self));
+
+  if (self->stdin_fd != -1)
+    close (self->stdin_fd);
+  self->stdin_fd = -1;
+
+  if (self->stdout_fd != -1)
+    close (self->stdout_fd);
+  self->stdout_fd = -1;
+
+  if (self->stderr_fd != -1)
+    close (self->stderr_fd);
+  self->stderr_fd = -1;
+
+  if (self->basic_fd_assignments)
+    {
+      for (i = 0; i < self->basic_fd_assignments->len; i++)
+        (void) close (g_array_index (self->basic_fd_assignments, int, i));
+      g_clear_pointer (&self->basic_fd_assignments, g_array_unref);
+    }
+  if (self->needdup_fd_assignments)
+    {
+      for (i = 0; i < self->needdup_fd_assignments->len; i += 2)
+        (void) close (g_array_index (self->needdup_fd_assignments, int, i));
+      g_clear_pointer (&self->needdup_fd_assignments, g_array_unref);
+    }
+
+  self->closed_fd = TRUE;
+}
+
+/**
  * g_subprocess_launcher_set_child_setup: (skip)
  * @self: a #GSubprocessLauncher
  * @child_setup: a #GSpawnChildSetupFunc to use as the child setup function
@@ -753,6 +781,17 @@ g_subprocess_launcher_spawnv (GSubprocessLauncher  *launcher,
   GSubprocess *subprocess;
 
   g_return_val_if_fail (argv != NULL && argv[0] != NULL && argv[0][0] != '\0', NULL);
+
+#ifdef G_OS_UNIX
+  if (launcher->closed_fd)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_CLOSED,
+                   "Can't spawn a new child because a passed file descriptor has been closed.");
+      return NULL;
+    }
+#endif
 
   subprocess = g_object_new (G_TYPE_SUBPROCESS,
                              "argv", argv,
