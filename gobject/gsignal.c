@@ -3808,6 +3808,7 @@ invalid_closure_notify (gpointer  instance,
   g_assert (handler != NULL);
   g_assert (handler->closure == closure);
 
+  g_hash_table_remove (g_handlers, handler);
   handler->sequential_number = 0;
   handler->block_count = 1;
   handler_unref_R (signal_id, instance, handler);
