@@ -164,8 +164,8 @@ g_subprocess_launcher_init (GSubprocessLauncher  *self)
   self->stdin_fd = -1;
   self->stdout_fd = -1;
   self->stderr_fd = -1;
-  self->basic_fd_assignments = g_array_new (FALSE, 0, sizeof (int));
-  self->needdup_fd_assignments = g_array_new (FALSE, 0, sizeof (int));
+  self->source_fds = g_array_new (FALSE, 0, sizeof (int));
+  self->target_fds = g_array_new (FALSE, 0, sizeof (int));
 #endif
 }
 
@@ -613,18 +613,10 @@ g_subprocess_launcher_take_fd (GSubprocessLauncher   *self,
                                gint                   source_fd,
                                gint                   target_fd)
 {
-  if (source_fd == target_fd)
+  if (self->source_fds != NULL && self->target_fds != NULL)
     {
-      if (self->basic_fd_assignments)
-        g_array_append_val (self->basic_fd_assignments, source_fd);
-    }
-  else
-    {
-      if (self->needdup_fd_assignments)
-        {
-          g_array_append_val (self->needdup_fd_assignments, source_fd);
-          g_array_append_val (self->needdup_fd_assignments, target_fd);
-        }
+      g_array_append_val (self->source_fds, source_fd);
+      g_array_append_val (self->target_fds, target_fd);
     }
 }
 
@@ -664,17 +656,18 @@ g_subprocess_launcher_close (GSubprocessLauncher *self)
     close (self->stderr_fd);
   self->stderr_fd = -1;
 
-  if (self->basic_fd_assignments)
+  if (self->source_fds)
     {
-      for (i = 0; i < self->basic_fd_assignments->len; i++)
-        (void) close (g_array_index (self->basic_fd_assignments, int, i));
-      g_clear_pointer (&self->basic_fd_assignments, g_array_unref);
-    }
-  if (self->needdup_fd_assignments)
-    {
-      for (i = 0; i < self->needdup_fd_assignments->len; i += 2)
-        (void) close (g_array_index (self->needdup_fd_assignments, int, i));
-      g_clear_pointer (&self->needdup_fd_assignments, g_array_unref);
+      g_assert (self->target_fds != NULL);
+      g_assert (self->source_fds->len == self->target_fds->len);
+
+      for (i = 0; i < self->source_fds->len; i++)
+        {
+          (void) close (g_array_index (self->source_fds, int, i));
+          (void) close (g_array_index (self->target_fds, int, i));
+        }
+      g_clear_pointer (&self->source_fds, g_array_unref);
+      g_clear_pointer (&self->target_fds, g_array_unref);
     }
 
   self->closed_fd = TRUE;
