@@ -30,6 +30,10 @@
 
 #ifdef G_OS_UNIX
 #include <glib-unix.h>
+#include <glib/gstdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #endif
 
 #ifdef G_OS_WIN32
@@ -421,6 +425,72 @@ test_spawn_nonexistent (void)
   g_clear_error (&error);
 }
 
+/* Test that FD assignments in a spawned process don’t overwrite and break the
+ * child_err_report_fd which is used to report error information back from the
+ * intermediate child process to the parent.
+ *
+ * https://gitlab.gnome.org/GNOME/glib/-/issues/2097 */
+static void
+test_spawn_fd_assignment_clash (void)
+{
+#ifdef G_OS_UNIX
+  int tmp_fd;
+  guint i;
+  const guint n_fds = 10;
+  gint source_fds[n_fds];
+  gint target_fds[n_fds];
+  const gchar *argv[] = { "/nonexistent" };
+  gboolean retval;
+  GError *local_error = NULL;
+  struct stat statbuf;
+
+  /* Open a temporary file and duplicate its FD several times so we have several
+   * FDs to remap in the child process. */
+  tmp_fd = g_file_open_tmp ("glib-spawn-test-XXXXXX", NULL, NULL);
+  g_assert_cmpint (tmp_fd, >=, 0);
+
+  for (i = 0; i < (n_fds - 1); ++i)
+    {
+      int source = fcntl (tmp_fd, F_DUPFD_CLOEXEC, 3);
+      g_assert_cmpint (source, >=, 0);
+      source_fds[i] = source;
+      target_fds[i] = source + n_fds;
+    }
+
+  source_fds[i] = tmp_fd;
+  target_fds[i] = tmp_fd + n_fds;
+
+  /* Print out the FD map. */
+  g_test_message ("FD map:");
+  for (i = 0; i < n_fds; i++)
+    g_test_message (" • %d → %d", source_fds[i], target_fds[i]);
+
+  /* Spawn the subprocess. This should fail because the executable doesn’t
+   * exist. */
+  retval = g_spawn_async_with_pipes_and_fds (NULL, argv, NULL, G_SPAWN_DEFAULT,
+                                             NULL, NULL, -1, -1, -1,
+                                             source_fds, target_fds, n_fds,
+                                             NULL, NULL, NULL, NULL,
+                                             &local_error);
+  g_assert_error (local_error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+  g_assert_false (retval);
+
+  g_clear_error (&local_error);
+
+  /* Check nothing was written to the temporary file, as would happen if the FD
+   * mapping was messed up to conflict with the child process error reporting FD.
+   * See https://gitlab.gnome.org/GNOME/glib/-/issues/2097 */
+  g_assert_no_errno (fstat (tmp_fd, &statbuf));
+  g_assert_cmpuint (statbuf.st_size, ==, 0);
+
+  /* Clean up. */
+  for (i = 0; i < n_fds; i++)
+    g_close (source_fds[i], NULL);
+#else  /* !G_OS_UNIX */
+  g_test_skip ("FD redirection only supported on Unix");
+#endif  /* !G_OS_UNIX */
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -456,6 +526,7 @@ main (int   argc,
   g_test_add_func ("/gthread/spawn-script", test_spawn_script);
   g_test_add_func ("/gthread/spawn/nonexistent", test_spawn_nonexistent);
   g_test_add_func ("/gthread/spawn-posix-spawn", test_posix_spawn);
+  g_test_add_func ("/gthread/spawn/fd-assignment-clash", test_spawn_fd_assignment_clash);
 
   ret = g_test_run();
 
