@@ -188,6 +188,9 @@ static gboolean fork_exec (gboolean              intermediate_child,
                            gint                  stdin_fd,
                            gint                  stdout_fd,
                            gint                  stderr_fd,
+                           const gint           *source_fds,
+                           const gint           *target_fds,
+                           gsize                 n_fds,
                            GError              **error);
 
 G_DEFINE_QUARK (g-exec-error-quark, g_spawn_error)
@@ -413,6 +416,7 @@ g_spawn_sync (const gchar          *working_directory,
                   standard_output ? &outpipe : NULL,
                   standard_error ? &errpipe : NULL,
                   -1, -1, -1,
+                  NULL, NULL, 0,
                   error))
     return FALSE;
 
@@ -801,6 +805,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                     standard_output,
                     standard_error,
                     -1, -1, -1,
+                    NULL, NULL, 0,
                     error);
 }
 
@@ -882,6 +887,7 @@ g_spawn_async_with_fds (const gchar          *working_directory,
                     stdin_fd,
                     stdout_fd,
                     stderr_fd,
+                    NULL, NULL, 0,
                     error);
 }
 
@@ -1135,6 +1141,68 @@ set_cloexec (void *data, gint fd)
 
 /* This function is called between fork() and exec() and hence must be
  * async-signal-safe (see signal-safety(7)). */
+static void
+unset_cloexec (int fd)
+{
+  int flags;
+  int result;
+
+  flags = fcntl (fd, F_GETFD, 0);
+
+  if (flags != -1)
+    {
+      int errsv;
+      flags &= (~FD_CLOEXEC);
+      do
+        {
+          result = fcntl (fd, F_SETFD, flags);
+          errsv = errno;
+        }
+      while (result == -1 && errsv == EINTR);
+    }
+}
+
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
+static int
+dupfd_cloexec (int parent_fd)
+{
+  int fd, errsv;
+#ifdef F_DUPFD_CLOEXEC
+  do
+    {
+      fd = fcntl (parent_fd, F_DUPFD_CLOEXEC, 3);
+      errsv = errno;
+    }
+  while (fd == -1 && errsv == EINTR);
+#else
+  /* OS X Snow Lion and earlier don't have F_DUPFD_CLOEXEC:
+   * https://bugzilla.gnome.org/show_bug.cgi?id=710962
+   */
+  int result, flags;
+  do
+    {
+      fd = fcntl (parent_fd, F_DUPFD, 3);
+      errsv = errno;
+    }
+  while (fd == -1 && errsv == EINTR);
+  flags = fcntl (fd, F_GETFD, 0);
+  if (flags != -1)
+    {
+      flags |= FD_CLOEXEC;
+      do
+        {
+          result = fcntl (fd, F_SETFD, flags);
+          errsv = errno;
+        }
+      while (result == -1 && errsv == EINTR);
+    }
+#endif
+  return fd;
+}
+
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
 static gint
 safe_close (gint fd)
 {
@@ -1382,6 +1450,9 @@ do_exec (gint                  child_err_report_fd,
          gint                  stdin_fd,
          gint                  stdout_fd,
          gint                  stderr_fd,
+         gint                 *source_fds,
+         const gint           *target_fds,
+         gsize                 n_fds,
          const gchar          *working_directory,
          const gchar * const  *argv,
          gchar               **argv_buffer,
@@ -1398,6 +1469,8 @@ do_exec (gint                  child_err_report_fd,
          GSpawnChildSetupFunc  child_setup,
          gpointer              user_data)
 {
+  gsize i;
+
   if (working_directory && chdir (working_directory) < 0)
     write_err_and_exit (child_err_report_fd,
                         CHILD_CHDIR_FAILED);
@@ -1461,14 +1534,14 @@ do_exec (gint                  child_err_report_fd,
       close_and_invalidate (&write_null);
     }
 
-  /* Close all file descriptors but stdin, stdout and stderr
+  /* Close all file descriptors but stdin, stdout and stderr, and any of source_fds,
    * before we exec. Note that this includes
    * child_err_report_fd, which keeps the parent from blocking
    * forever on the other end of that pipe.
    */
   if (close_descriptors)
     {
-      if (child_setup == NULL)
+      if (child_setup == NULL && n_fds == 0)
         {
           safe_dup2 (child_err_report_fd, 3);
           set_cloexec (GINT_TO_POINTER (0), 3);
@@ -1485,7 +1558,44 @@ do_exec (gint                  child_err_report_fd,
       /* We need to do child_err_report_fd anyway */
       set_cloexec (GINT_TO_POINTER (0), child_err_report_fd);
     }
-  
+
+  /*
+   * Work through the @source_fds and @target_fds mapping.
+   *
+   * Based on code derived from
+   * gnome-terminal:src/terminal-screen.c:terminal_screen_child_setup(),
+   * used under the LGPLv2+ with permission from author.
+   */
+
+  /* Basic fd assignments (where source == target) we can just unset FD_CLOEXEC
+   *
+   * If we're doing remapping fd assignments, we need to handle
+   * the case where the user has specified e.g.:
+   * 5 -> 4, 4 -> 6
+   *
+   * We do this by duping the source fds temporarily in a first pass.
+   */
+  if (n_fds > 0)
+    {
+      for (i = 0; i < n_fds; i++)
+        {
+          if (source_fds[i] != target_fds[i])
+            source_fds[i] = dupfd_cloexec (source_fds[i]);
+        }
+      for (i = 0; i < n_fds; i++)
+        {
+          if (source_fds[i] == target_fds[i])
+            {
+              unset_cloexec (source_fds[i]);
+            }
+          else
+            {
+              safe_dup2 (source_fds[i], target_fds[i]);
+              (void) close (source_fds[i]);
+            }
+        }
+    }
+
   /* Call user function just before we exec */
   if (child_setup)
     {
@@ -1752,6 +1862,9 @@ fork_exec (gboolean              intermediate_child,
            gint                  stdin_fd,
            gint                  stdout_fd,
            gint                  stderr_fd,
+           const gint           *source_fds,
+           const gint           *target_fds,
+           gsize                 n_fds,
            GError              **error)
 {
   GPid pid = -1;
@@ -1771,6 +1884,7 @@ fork_exec (gboolean              intermediate_child,
   gint stderr_pipe[2] = { -1, -1 };
   gint child_close_fds[4] = { -1, -1, -1, -1 };
   gint n_child_close_fds = 0;
+  gint *source_fds_copy = NULL;
 
   g_assert (stdin_pipe_out == NULL || stdin_fd < 0);
   g_assert (stdout_pipe_out == NULL || stdout_fd < 0);
@@ -1804,8 +1918,10 @@ fork_exec (gboolean              intermediate_child,
   child_close_fds[n_child_close_fds++] = -1;
 
 #ifdef POSIX_SPAWN_AVAILABLE
+  /* FIXME: Handle @source_fds and @target_fds in do_posix_spawn() using the
+   * file actions API. */
   if (!intermediate_child && working_directory == NULL && !close_descriptors &&
-      !search_path_from_envp && child_setup == NULL)
+      !search_path_from_envp && child_setup == NULL && n_fds == 0)
     {
       g_trace_mark (G_TRACE_CURRENT_TIME, 0,
                     "GLib", "posix_spawn",
@@ -1928,6 +2044,11 @@ fork_exec (gboolean              intermediate_child,
       argv_buffer = argv_buffer_heap;
     }
 
+  /* And one to hold a copy of @source_fds for later manipulation in do_exec(). */
+  source_fds_copy = g_new (int, n_fds);
+  if (n_fds > 0)
+    memcpy (source_fds_copy, source_fds, sizeof (*source_fds) * n_fds);
+
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
     goto cleanup_and_fail;
 
@@ -2005,6 +2126,9 @@ fork_exec (gboolean              intermediate_child,
                        stdin_fd,
                        stdout_fd,
                        stderr_fd,
+                       source_fds_copy,
+                       target_fds,
+                       n_fds,
                        working_directory,
                        argv,
                        argv_buffer,
@@ -2038,6 +2162,9 @@ fork_exec (gboolean              intermediate_child,
                    stdin_fd,
                    stdout_fd,
                    stderr_fd,
+                   source_fds_copy,
+                   target_fds,
+                   n_fds,
                    working_directory,
                    argv,
                    argv_buffer,
@@ -2175,6 +2302,7 @@ fork_exec (gboolean              intermediate_child,
 
       g_free (search_path_buffer_heap);
       g_free (argv_buffer_heap);
+      g_free (source_fds_copy);
 
       if (child_pid)
         *child_pid = pid;
@@ -2233,6 +2361,7 @@ success:
 
   g_clear_pointer (&search_path_buffer_heap, g_free);
   g_clear_pointer (&argv_buffer_heap, g_free);
+  g_clear_pointer (&source_fds_copy, g_free);
 
   return FALSE;
 }
