@@ -366,7 +366,7 @@ array_remove_index (gconstpointer test_data)
 {
   const ArrayTestData *config = test_data;
   GArray *garray;
-  gint i;
+  guint i;
   gint prev, cur;
 
   garray = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
@@ -403,7 +403,7 @@ array_remove_index_fast (gconstpointer test_data)
 {
   const ArrayTestData *config = test_data;
   GArray *garray;
-  gint i;
+  guint i;
   gint prev, cur;
 
   garray = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
@@ -443,7 +443,7 @@ array_remove_range (gconstpointer test_data)
 {
   const ArrayTestData *config = test_data;
   GArray *garray;
-  gint i;
+  guint i;
   gint prev, cur;
 
   garray = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
@@ -586,7 +586,7 @@ array_sort (gconstpointer test_data)
 {
   const ArrayTestData *config = test_data;
   GArray *garray;
-  gint i;
+  guint i;
   gint prev, cur;
 
   garray = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
@@ -618,7 +618,7 @@ array_sort_with_data (gconstpointer test_data)
 {
   const ArrayTestData *config = test_data;
   GArray *garray;
-  gint i;
+  guint i;
   gint prev, cur;
 
   garray = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
@@ -1859,7 +1859,7 @@ static void
 byte_array_sort (void)
 {
   GByteArray *gbarray;
-  gint i;
+  guint i;
   guint8 val;
   guint8 prev, cur;
 
@@ -1887,7 +1887,7 @@ static void
 byte_array_sort_with_data (void)
 {
   GByteArray *gbarray;
-  gint i;
+  guint i;
   guint8 val;
   guint8 prev, cur;
 
