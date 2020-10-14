@@ -2689,10 +2689,9 @@ g_strjoin (const gchar *separator,
 
 /**
  * g_strstr_len:
- * @haystack: a string
- * @haystack_len: the maximum length of @haystack. Note that -1 is
- *     a valid length, if @haystack is nul-terminated, meaning it will
- *     search through the whole string.
+ * @haystack: a nul-terminated string
+ * @haystack_len: the maximum length of @haystack in bytes. A length of -1
+ *     can be used to mean "search the entire string", like `strstr()`.
  * @needle: the string to search for
  *
  * Searches the string @haystack for the first occurrence
@@ -2796,7 +2795,8 @@ g_strrstr (const gchar *haystack,
 /**
  * g_strrstr_len:
  * @haystack: a nul-terminated string
- * @haystack_len: the maximum length of @haystack
+ * @haystack_len: the maximum length of @haystack in bytes. A length of -1
+ *     can be used to mean "search the entire string", like g_strrstr().
  * @needle: the nul-terminated string to search for
  *
  * Searches the string @haystack for the last occurrence
