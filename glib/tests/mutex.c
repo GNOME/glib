@@ -186,14 +186,16 @@ addition_thread (gpointer value)
 static void
 test_mutex_perf (gconstpointer data)
 {
-  gint n_threads = GPOINTER_TO_INT (data);
+  guint n_threads = GPOINTER_TO_UINT (data);
   GThread *threads[THREADS];
   gint64 start_time;
   gdouble rate;
   gint x = -1;
-  gint i;
+  guint i;
 
-  for (i = 0; i < n_threads - 1; i++)
+  g_assert (n_threads <= G_N_ELEMENTS (threads));
+
+  for (i = 0; n_threads > 0 && i < n_threads - 1; i++)
     threads[i] = g_thread_create (addition_thread, &x, TRUE, NULL);
 
   /* avoid measuring thread setup/teardown time */
@@ -204,7 +206,7 @@ test_mutex_perf (gconstpointer data)
   rate = g_get_monotonic_time () - start_time;
   rate = x / rate;
 
-  for (i = 0; i < n_threads - 1; i++)
+  for (i = 0; n_threads > 0 && i < n_threads - 1; i++)
     g_thread_join (threads[i]);
 
   g_test_maximized_result (rate, "%f mips", rate);
@@ -223,15 +225,15 @@ main (int argc, char *argv[])
 
   if (g_test_perf ())
     {
-      gint i;
+      guint i;
 
-      g_test_add_data_func ("/thread/mutex/perf/uncontended", NULL, test_mutex_perf);
+      g_test_add_data_func ("/thread/mutex/perf/uncontended", GUINT_TO_POINTER (0), test_mutex_perf);
 
       for (i = 1; i <= 10; i++)
         {
           gchar name[80];
-          sprintf (name, "/thread/mutex/perf/contended/%d", i);
-          g_test_add_data_func (name, GINT_TO_POINTER (i), test_mutex_perf);
+          sprintf (name, "/thread/mutex/perf/contended/%u", i);
+          g_test_add_data_func (name, GUINT_TO_POINTER (i), test_mutex_perf);
         }
     }
 
