@@ -121,6 +121,7 @@ test_maincontext_basic (void)
   g_source_set_funcs (source, &funcs);
   g_source_set_callback (source, cb, data, NULL);
   id = g_source_attach (source, ctx);
+  g_assert_cmpint (id, >, 0);
   g_source_unref (source);
   g_assert_true (g_source_remove_by_user_data (data));
   g_assert_false (g_source_remove_by_user_data ((gpointer)0x1234));
