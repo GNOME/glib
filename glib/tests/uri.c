@@ -1708,6 +1708,41 @@ test_uri_join_split_round_trip (void)
     }
 }
 
+static const struct
+{
+  /* Inputs */
+  const gchar *uri;
+  GUriFlags flags;
+  /* Outputs */
+  const gchar *path;
+} normalize_tests[] =
+  {
+    { "http://foo/path with spaces", G_URI_FLAGS_ENCODED,
+      "/path%20with%20spaces" },
+    { "http://foo/path with spaces 2", G_URI_FLAGS_ENCODED_PATH,
+      "/path%20with%20spaces%202" },
+    { "http://foo/%aa", G_URI_FLAGS_ENCODED,
+      "/%AA" },
+    { "http://foo/p\xc3\xa4th/", G_URI_FLAGS_ENCODED | G_URI_FLAGS_PARSE_RELAXED,
+      "/p%C3%A4th/" },
+  };
+
+static void
+test_uri_normalize (void)
+{
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (normalize_tests); ++i)
+    {
+      GUri *uri = g_uri_parse (normalize_tests[i].uri,
+                               normalize_tests[i].flags,
+                               NULL);
+      g_assert_nonnull (uri);
+      g_assert_cmpstr (g_uri_get_path (uri), ==, normalize_tests[i].path);
+      g_uri_unref (uri);
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1733,6 +1768,7 @@ main (int   argc,
   g_test_add_func ("/uri/to-string", test_uri_to_string);
   g_test_add_func ("/uri/join", test_uri_join);
   g_test_add_func ("/uri/join-split-round-trip", test_uri_join_split_round_trip);
+  g_test_add_func ("/uri/normalize", test_uri_normalize);
   g_test_add_data_func ("/uri/iter-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_iter_params);
   g_test_add_data_func ("/uri/iter-params/length", GINT_TO_POINTER (FALSE), test_uri_iter_params);
   g_test_add_data_func ("/uri/parse-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_parse_params);

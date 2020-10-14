@@ -289,15 +289,16 @@ uri_decoder (gchar       **out,
              GUriError     parse_error,
              GError      **error)
 {
-  gchar *decoded, *d, c;
+  gchar c;
+  GString *decoded;
   const gchar *invalid, *s, *end;
   gssize len;
 
   if (!(flags & G_URI_FLAGS_ENCODED))
     just_normalize = FALSE;
 
-  decoded = g_malloc (length + 1);
-  for (s = start, end = s + length, d = decoded; s < end; s++)
+  decoded = g_string_sized_new (length + 1);
+  for (s = start, end = s + length; s < end; s++)
     {
       if (*s == '%')
         {
@@ -311,7 +312,7 @@ uri_decoder (gchar       **out,
                   g_set_error_literal (error, G_URI_ERROR, parse_error,
                                        /* xgettext: no-c-format */
                                        _("Invalid %-encoding in URI"));
-                  g_free (decoded);
+                  g_string_free (decoded, TRUE);
                   return -1;
                 }
 
@@ -319,7 +320,7 @@ uri_decoder (gchar       **out,
                * fix it to "%25", since that might change the way that
                * the URI's owner would interpret it.
                */
-              *d++ = *s;
+              g_string_append_c (decoded, *s);
               continue;
             }
 
@@ -328,43 +329,50 @@ uri_decoder (gchar       **out,
             {
               g_set_error_literal (error, G_URI_ERROR, parse_error,
                                    _("Illegal character in URI"));
-              g_free (decoded);
+              g_string_free (decoded, TRUE);
               return -1;
             }
           if (just_normalize && !g_uri_char_is_unreserved (c))
             {
-              /* Leave the % sequence there. */
-              *d++ = *s;
+              /* Leave the % sequence there but normalize it. */
+              g_string_append_c (decoded, *s);
+              g_string_append_c (decoded, g_ascii_toupper (s[1]));
+              g_string_append_c (decoded, g_ascii_toupper (s[2]));
+              s += 2;
             }
           else
             {
-              *d++ = c;
+              g_string_append_c (decoded, c);
               s += 2;
             }
         }
       else if (www_form && *s == '+')
-        *d++ = ' ';
+        g_string_append_c (decoded, ' ');
+      /* Normalize any illegal characters */
+      else if (just_normalize && (!g_ascii_isgraph (*s) ||
+                                  (illegal_chars && strchr (illegal_chars, *s))))
+        g_string_append_printf (decoded, "%%%02X", (guchar)*s);
       else
-        *d++ = *s;
+        g_string_append_c (decoded, *s);
     }
-  *d = '\0';
 
-  len = d - decoded;
+  len = decoded->len;
   g_assert (len >= 0);
 
   if (!(flags & G_URI_FLAGS_ENCODED) &&
-      !g_utf8_validate (decoded, len, &invalid))
+      !g_utf8_validate (decoded->str, len, &invalid))
     {
       g_set_error_literal (error, G_URI_ERROR, parse_error,
                            _("Non-UTF-8 characters in URI"));
-      g_free (decoded);
+      g_string_free (decoded, TRUE);
       return -1;
     }
 
   if (out)
-    *out = g_steal_pointer (&decoded);
+    *out = g_string_free (decoded, FALSE);
+  else
+    g_string_free (decoded, TRUE);
 
-  g_free (decoded);
   return len;
 }
 
