@@ -1151,6 +1151,7 @@ test_key_names (void)
   check_error (&error,
                G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_KEY_NOT_FOUND);
+  g_assert_null (value);
   g_key_file_free (keyfile);
 
   keyfile = g_key_file_new ();
@@ -1160,6 +1161,7 @@ test_key_names (void)
   check_error (&error,
                G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_KEY_NOT_FOUND);
+  g_assert_null (value);
   g_key_file_free (keyfile);
 
   keyfile = g_key_file_new ();
@@ -1177,6 +1179,7 @@ test_key_names (void)
   check_error (&error,
                G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_KEY_NOT_FOUND);
+  g_assert_null (value);
   g_key_file_free (keyfile);
 
   keyfile = g_key_file_new ();
