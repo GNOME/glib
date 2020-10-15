@@ -194,8 +194,7 @@ append_tuple_type_string (GString  *string,
 {
   GVariantType *result, *other_result;
   GVariantType **types;
-  gint size;
-  gsize i;
+  gsize i, size;
 
   g_string_append_c (string, '(');
   g_string_append (description, "t of [");
@@ -376,8 +375,7 @@ describe_type (const GVariantType *type)
             {
               const GVariantType *sub;
               GString *string;
-              gint length;
-              gsize i;
+              gsize i, length;
 
               string = g_string_new ("t of [");
 
@@ -873,8 +871,7 @@ describe_info (GVariantTypeInfo *info)
       {
         const gchar *sep = "";
         GString *string;
-        gint length;
-        gsize i;
+        gsize i, length;
 
         string = g_string_new ("t of [");
         length = g_variant_type_info_n_members (info);
@@ -935,11 +932,10 @@ static void
 check_offsets (GVariantTypeInfo   *info,
                const GVariantType *type)
 {
-  gsize flavour;
-  gint length;
+  gsize flavour, length;
 
   length = g_variant_type_info_n_members (info);
-  g_assert_cmpint (length, ==, g_variant_type_n_items (type));
+  g_assert_cmpuint (length, ==, g_variant_type_n_items (type));
 
   /* the 'flavour' is the low order bits of the ending point of
    * variable-size items in the tuple.  this lets us test that the type
@@ -2637,7 +2633,7 @@ tree_instance_check_gvariant (TreeInstance *tree,
       break;
 
     case 'b':
-      return g_variant_get_boolean (value) == tree->data.integer;
+      return g_variant_get_boolean (value) == (gboolean) tree->data.integer;
 
     case 'y':
       return g_variant_get_byte (value) == (guchar) tree->data.integer;
@@ -3091,7 +3087,7 @@ test_varargs (void)
     i = 0;
     g_variant_iter_init (&iter, value);
     while (g_variant_iter_loop (&iter, "mi", NULL, &val))
-      g_assert_true (val == i++ || val == 0);
+      g_assert_true (val == (gint) i++ || val == 0);
     g_assert_cmpuint (i, ==, 100);
 
     i = 0;
