@@ -225,7 +225,7 @@ g_credentials_to_string (GCredentials *credentials)
 {
   GString *ret;
 #if G_CREDENTIALS_USE_APPLE_XUCRED
-  __typeof__(credentials->native.cr_ngroups) i;
+  glib_typeof (credentials->native.cr_ngroups) i;
 #endif
 
   g_return_val_if_fail (G_IS_CREDENTIALS (credentials), NULL);
