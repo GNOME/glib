@@ -241,7 +241,7 @@ test_rcbox_alignment (void)
     sizeof (gint32) * 3,
   };
 
-  int i;
+  gsize i;
 
   for (i = 0; i < G_N_ELEMENTS (block_sizes); i++)
     {
@@ -265,7 +265,7 @@ test_atomic_rcbox_alignment (void)
     sizeof (gint32) * 3,
   };
 
-  int i;
+  gsize i;
 
   for (i = 0; i < G_N_ELEMENTS (block_sizes); i++)
     {
