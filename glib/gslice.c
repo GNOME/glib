@@ -361,10 +361,52 @@ static void
 slice_config_init (SliceConfig *config)
 {
   const gchar *val;
+  gchar *val_allocated = NULL;
 
   *config = slice_config;
 
+  /* Note that the empty string (`G_SLICE=""`) is treated differently from the
+   * envvar being unset. In the latter case, we also check whether running under
+   * valgrind. */
+#ifndef G_OS_WIN32
   val = g_getenv ("G_SLICE");
+#else
+  /* The win32 implementation of g_getenv() has to do UTF-8 ↔ UTF-16 conversions
+   * which use the slice allocator, leading to deadlock. Use a simple in-place
+   * implementation here instead.
+   *
+   * Ignore references to other environment variables: only support values which
+   * are a combination of always-malloc and debug-blocks. */
+  {
+
+  wchar_t wvalue[128];  /* at least big enough for `always-malloc,debug-blocks` */
+  int len;
+
+  len = GetEnvironmentVariableW (L"G_SLICE", wvalue, G_N_ELEMENTS (wvalue));
+
+  if (len == 0)
+    {
+      if (GetLastError () == ERROR_ENVVAR_NOT_FOUND)
+        val = NULL;
+      else
+        val = "";
+    }
+  else if (len >= G_N_ELEMENTS (wvalue))
+    {
+      /* @wvalue isn’t big enough. Give up. */
+      g_warning ("Unsupported G_SLICE value");
+      val = NULL;
+    }
+  else
+    {
+      /* it’s safe to use g_utf16_to_utf8() here as it only allocates using
+       * malloc() rather than GSlice */
+      val = val_allocated = g_utf16_to_utf8 (wvalue, -1, NULL, NULL, NULL);
+    }
+
+  }
+#endif  /* G_OS_WIN32 */
+
   if (val != NULL)
     {
       gint flags;
@@ -392,6 +434,8 @@ slice_config_init (SliceConfig *config)
         config->always_malloc = TRUE;
 #endif
     }
+
+  g_free (val_allocated);
 }
 
 static void
