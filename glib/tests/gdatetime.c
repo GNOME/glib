@@ -2193,6 +2193,43 @@ test_z (void)
 }
 
 static void
+test_6_days_until_end_of_the_month (void)
+{
+  GTimeZone *tz;
+  GDateTime *dt;
+  gchar *p;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2215");
+
+#ifdef G_OS_UNIX
+  /* This is the footertz string from `Europe/Paris` from tzdata 2020b. It’s
+   * used by GLib when the tzdata file was compiled with `zic -b slim`, which is
+   * the default in tzcode ≥2020b.
+   *
+   * The `M10.5.0` part indicates that the summer time end transition happens on
+   * the Sunday (`0`) in the last week (`5`) of October (`10`). That’s 6 days
+   * before the end of the month, and hence was triggering issue #2215.
+   *
+   * References:
+   *  - https://tools.ietf.org/id/draft-murchison-tzdist-tzif-15.html#rfc.section.3.3
+   *  - https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_03
+   */
+  tz = g_time_zone_new ("CET-1CEST,M3.5.0,M10.5.0/3");
+#elif defined (G_OS_WIN32)
+  tz = g_time_zone_new ("Romance Standard Time");
+#endif
+  dt = g_date_time_new (tz, 2020, 10, 5, 1, 1, 1);
+
+  p = g_date_time_format (dt, "%Y-%m-%d %H:%M:%S%z");
+  /* Incorrect output is  "2020-10-05 01:01:01+0100" */
+  g_assert_cmpstr (p, ==, "2020-10-05 01:01:01+0200");
+  g_free (p);
+
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
+}
+
+static void
 test_format_iso8601 (void)
 {
   GTimeZone *tz = NULL;
@@ -2836,6 +2873,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/new_from_iso8601/2", test_GDateTime_new_from_iso8601_2);
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
+  g_test_add_func ("/GDateTime/test-6-days-until-end-of-the-month", test_6_days_until_end_of_the_month);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
   g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
   g_test_add_func ("/GDateTime/format_unrepresentable", test_format_unrepresentable);
