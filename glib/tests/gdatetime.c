@@ -2739,6 +2739,57 @@ test_time_zone_parse_rfc8536 (void)
     }
 }
 
+/* Check GTimeZone instances are cached. */
+static void
+test_time_zone_caching (void)
+{
+  GTimeZone *tz1 = NULL, *tz2 = NULL;
+
+  g_test_summary ("GTimeZone instances are cached");
+
+  /* Check a specific (arbitrary) timezone. These are only cached while third
+   * party code holds a ref to at least one instance. */
+#ifdef G_OS_UNIX
+  tz1 = g_time_zone_new ("Europe/London");
+  tz2 = g_time_zone_new ("Europe/London");
+  g_time_zone_unref (tz1);
+  g_time_zone_unref (tz2);
+#elif defined G_OS_WIN32
+  tz1 = g_time_zone_new ("GMT Standard Time");
+  tz2 = g_time_zone_new ("GMT Standard Time");
+  g_time_zone_unref (tz1);
+  g_time_zone_unref (tz2);
+#endif
+
+  /* Only compare pointers */
+  g_assert_true (tz1 == tz2);
+
+  /* Check the default timezone, local and UTC. These are cached internally in
+   * GLib, so should persist even after the last third party reference is
+   * dropped. */
+  tz1 = g_time_zone_new (NULL);
+  g_time_zone_unref (tz1);
+  tz2 = g_time_zone_new (NULL);
+  g_time_zone_unref (tz2);
+
+  g_assert_true (tz1 == tz2);
+
+  tz1 = g_time_zone_new_utc ();
+  g_time_zone_unref (tz1);
+  tz2 = g_time_zone_new_utc ();
+  g_time_zone_unref (tz2);
+
+  g_assert_true (tz1 == tz2);
+
+  tz1 = g_time_zone_new_local ();
+  g_time_zone_unref (tz1);
+  tz2 = g_time_zone_new_local ();
+  g_time_zone_unref (tz2);
+
+  g_assert_true (tz1 == tz2);
+}
+
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -2809,6 +2860,7 @@ main (gint   argc,
   g_test_add_func ("/GTimeZone/identifier", test_identifier);
   g_test_add_func ("/GTimeZone/new-offset", test_new_offset);
   g_test_add_func ("/GTimeZone/parse-rfc8536", test_time_zone_parse_rfc8536);
+  g_test_add_func ("/GTimeZone/caching", test_time_zone_caching);
 
   return g_test_run ();
 }
