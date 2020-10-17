@@ -884,7 +884,7 @@ g_main_context_pop_thread_default (GMainContext *context)
  * If you need to hold a reference on the context, use
  * g_main_context_ref_thread_default() instead.
  *
- * Returns: (transfer none): the thread-default #GMainContext, or
+ * Returns: (transfer none) (nullable): the thread-default #GMainContext, or
  * %NULL if the thread-default context is the global default context.
  *
  * Since: 2.22
@@ -2112,7 +2112,7 @@ g_source_set_name (GSource    *source,
  * Gets a name for the source, used in debugging and profiling.  The
  * name may be #NULL if it has never been set with g_source_set_name().
  *
- * Returns: the name of the source
+ * Returns: (nullable): the name of the source
  *
  * Since: 2.26
  **/
@@ -3098,7 +3098,7 @@ g_main_depth (void)
  *
  * Returns the currently firing source for this thread.
  * 
- * Returns: (transfer none): The currently firing source or %NULL.
+ * Returns: (transfer none) (nullable): The currently firing source or %NULL.
  *
  * Since: 2.12
  */
