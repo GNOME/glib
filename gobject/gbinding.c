@@ -754,7 +754,12 @@ g_binding_get_flags (GBinding *binding)
  *
  * Retrieves the #GObject instance used as the source of the binding.
  *
- * Returns: (transfer none): the source #GObject
+ * A #GBinding can outlive the source #GObject as the binding does not hold a
+ * strong reference to the source. If the source is destroyed before the
+ * binding then this function will return %NULL.
+ *
+ * Returns: (transfer none) (nullable): the source #GObject, or %NULL if the
+ *     source does not exist any more.
  *
  * Since: 2.26
  */
@@ -772,7 +777,12 @@ g_binding_get_source (GBinding *binding)
  *
  * Retrieves the #GObject instance used as the target of the binding.
  *
- * Returns: (transfer none): the target #GObject
+ * A #GBinding can outlive the target #GObject as the binding does not hold a
+ * strong reference to the target. If the target is destroyed before the
+ * binding then this function will return %NULL.
+ *
+ * Returns: (transfer none) (nullable): the target #GObject, or %NULL if the
+ *     target does not exist any more.
  *
  * Since: 2.26
  */

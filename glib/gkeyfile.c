@@ -1693,7 +1693,7 @@ g_key_file_get_keys (GKeyFile     *key_file,
  *
  * Returns the name of the start group of the file. 
  *
- * Returns: The start group of the key file.
+ * Returns: (nullable): The start group of the key file.
  *
  * Since: 2.6
  **/
