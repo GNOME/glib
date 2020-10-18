@@ -2107,7 +2107,7 @@ g_desktop_app_info_get_is_hidden (GDesktopAppInfo *info)
  * situations such as the #GDesktopAppInfo returned from
  * g_desktop_app_info_new_from_keyfile(), this function will return %NULL.
  *
- * Returns: (type filename): The full path to the file for @info,
+ * Returns: (nullable) (type filename): The full path to the file for @info,
  *     or %NULL if not known.
  * Since: 2.24
  */
@@ -2155,7 +2155,7 @@ g_desktop_app_info_get_icon (GAppInfo *appinfo)
  *
  * Gets the categories from the desktop file.
  *
- * Returns: The unparsed Categories key from the desktop file;
+ * Returns: (nullable): The unparsed Categories key from the desktop file;
  *     i.e. no attempt is made to split it by ';' or validate it.
  */
 const char *
@@ -2184,9 +2184,9 @@ g_desktop_app_info_get_keywords (GDesktopAppInfo *info)
  * g_desktop_app_info_get_generic_name:
  * @info: a #GDesktopAppInfo
  *
- * Gets the generic name from the destkop file.
+ * Gets the generic name from the desktop file.
  *
- * Returns: The value of the GenericName key
+ * Returns: (nullable): The value of the GenericName key
  */
 const char *
 g_desktop_app_info_get_generic_name (GDesktopAppInfo *info)
@@ -4679,7 +4679,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * WM_CLASS property of the main window of the application, if launched
  * through @info.
  *
- * Returns: (transfer none): the startup WM class, or %NULL if none is set
+ * Returns: (nullable) (transfer none): the startup WM class, or %NULL if none is set
  * in the desktop file.
  *
  * Since: 2.34
@@ -4701,7 +4701,7 @@ g_desktop_app_info_get_startup_wm_class (GDesktopAppInfo *info)
  *
  * The @key is looked up in the "Desktop Entry" group.
  *
- * Returns: a newly allocated string, or %NULL if the key
+ * Returns: (nullable): a newly allocated string, or %NULL if the key
  *     is not found
  *
  * Since: 2.36

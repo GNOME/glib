@@ -282,7 +282,7 @@ g_zlib_decompressor_new (GZlibCompressorFormat format)
  * or the header data was not fully processed yet, or it not present in the
  * data stream at all.
  *
- * Returns: (transfer none): a #GFileInfo, or %NULL
+ * Returns: (nullable) (transfer none): a #GFileInfo, or %NULL
  *
  * Since: 2.26
  */

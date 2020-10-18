@@ -1652,7 +1652,7 @@ g_file_info_get_edit_name (GFileInfo *info)
  *
  * Gets the icon for a file.
  *
- * Returns: (transfer none): #GIcon for the given @info.
+ * Returns: (nullable) (transfer none): #GIcon for the given @info.
  **/
 GIcon *
 g_file_info_get_icon (GFileInfo *info)
@@ -1679,7 +1679,7 @@ g_file_info_get_icon (GFileInfo *info)
  *
  * Gets the symbolic icon for a file.
  *
- * Returns: (transfer none): #GIcon for the given @info.
+ * Returns: (nullable) (transfer none): #GIcon for the given @info.
  *
  * Since: 2.34
  **/
@@ -1835,7 +1835,7 @@ g_file_info_get_modification_date_time (GFileInfo *info)
  *
  * Gets the symlink target for a given #GFileInfo.
  *
- * Returns: a string containing the symlink target.
+ * Returns: (nullable): a string containing the symlink target.
  **/
 const char *
 g_file_info_get_symlink_target (GFileInfo *info)
@@ -1859,7 +1859,7 @@ g_file_info_get_symlink_target (GFileInfo *info)
  * Gets the [entity tag][gfile-etag] for a given
  * #GFileInfo. See %G_FILE_ATTRIBUTE_ETAG_VALUE.
  *
- * Returns: a string containing the value of the "etag:value" attribute.
+ * Returns: (nullable): a string containing the value of the "etag:value" attribute.
  **/
 const char *
 g_file_info_get_etag (GFileInfo *info)
@@ -2464,8 +2464,8 @@ g_file_attribute_matcher_new (const char *attributes)
 
 /**
  * g_file_attribute_matcher_subtract:
- * @matcher: Matcher to subtract from 
- * @subtract: The matcher to subtract
+ * @matcher: (nullable): Matcher to subtract from 
+ * @subtract: (nullable): The matcher to subtract
  *
  * Subtracts all attributes of @subtract from @matcher and returns
  * a matcher that supports those attributes.
@@ -2476,7 +2476,7 @@ g_file_attribute_matcher_new (const char *attributes)
  * is a limitation of the current implementation, but may be fixed
  * in the future.
  *
- * Returns: A file attribute matcher matching all attributes of
+ * Returns: (nullable): A file attribute matcher matching all attributes of
  *     @matcher that are not matched by @subtract
  **/
 GFileAttributeMatcher *

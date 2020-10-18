@@ -529,7 +529,7 @@ g_application_command_line_get_options_dict (GApplicationCommandLine *cmdline)
  *
  * You must only call this function once per commandline invocation.
  *
- * Returns: (transfer full): a #GInputStream for stdin
+ * Returns: (nullable) (transfer full): a #GInputStream for stdin
  *
  * Since: 2.34
  **/
@@ -610,7 +610,7 @@ g_application_command_line_get_environ (GApplicationCommandLine *cmdline)
  * The return value should not be modified or freed and is valid for as
  * long as @cmdline exists.
  *
- * Returns: the value of the variable, or %NULL if unset or unsent
+ * Returns: (nullable): the value of the variable, or %NULL if unset or unsent
  *
  * Since: 2.28
  **/

@@ -194,7 +194,7 @@ g_dbus_method_invocation_get_interface_name (GDBusMethodInvocation *invocation)
  * returned.  See g_dbus_method_invocation_get_property_info() and
  * #GDBusInterfaceVTable for more information.
  *
- * Returns: A #GDBusMethodInfo or %NULL. Do not free, it is owned by @invocation.
+ * Returns: (nullable): A #GDBusMethodInfo or %NULL. Do not free, it is owned by @invocation.
  *
  * Since: 2.26
  */
@@ -221,7 +221,7 @@ g_dbus_method_invocation_get_method_info (GDBusMethodInvocation *invocation)
  *
  * If the call was GetAll, %NULL will be returned.
  *
- * Returns: (transfer none): a #GDBusPropertyInfo or %NULL
+ * Returns: (nullable) (transfer none): a #GDBusPropertyInfo or %NULL
  *
  * Since: 2.38
  */

@@ -767,7 +767,7 @@ set_object_path_locked (GDBusInterfaceSkeleton *interface_,
  *
  * Gets the first connection that @interface_ is exported on, if any.
  *
- * Returns: (transfer none): A #GDBusConnection or %NULL if @interface_ is
+ * Returns: (nullable) (transfer none): A #GDBusConnection or %NULL if @interface_ is
  * not exported anywhere. Do not free, the object belongs to @interface_.
  *
  * Since: 2.30
@@ -876,7 +876,7 @@ g_dbus_interface_skeleton_has_connection (GDBusInterfaceSkeleton     *interface_
  *
  * Gets the object path that @interface_ is exported on, if any.
  *
- * Returns: A string owned by @interface_ or %NULL if @interface_ is not exported
+ * Returns: (nullable): A string owned by @interface_ or %NULL if @interface_ is not exported
  * anywhere. Do not free, the string belongs to @interface_.
  *
  * Since: 2.30

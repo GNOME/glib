@@ -533,9 +533,9 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  * See the g_dbus_gvariant_to_gvalue() function for how to convert a
  * #GVariant to a #GValue.
  *
- * Returns: A #GVariant (never floating) of #GVariantType @type holding
- *     the data from @gvalue or %NULL in case of failure. Free with
- *     g_variant_unref().
+ * Returns: (transfer full): A #GVariant (never floating) of
+ *     #GVariantType @type holding the data from @gvalue or an empty #GVariant
+ *     in case of failure. Free with g_variant_unref().
  *
  * Since: 2.30
  */

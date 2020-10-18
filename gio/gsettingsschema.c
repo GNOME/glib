@@ -1001,7 +1001,7 @@ g_settings_schema_get_value (GSettingsSchema *schema,
  * therefore describe multiple sets of keys at different locations.  For
  * relocatable schemas, this function will return %NULL.
  *
- * Returns: (transfer none): the path of the schema, or %NULL
+ * Returns: (nullable) (transfer none): the path of the schema, or %NULL
  *
  * Since: 2.32
  **/
@@ -1660,7 +1660,7 @@ g_settings_schema_key_get_name (GSettingsSchemaKey *key)
  * function has to parse all of the source XML files in the schema
  * directory.
  *
- * Returns: the summary for @key, or %NULL
+ * Returns: (nullable): the summary for @key, or %NULL
  *
  * Since: 2.34
  **/
@@ -1695,7 +1695,7 @@ g_settings_schema_key_get_summary (GSettingsSchemaKey *key)
  * function has to parse all of the source XML files in the schema
  * directory.
  *
- * Returns: the description for @key, or %NULL
+ * Returns: (nullable): the description for @key, or %NULL
  *
  * Since: 2.34
  **/

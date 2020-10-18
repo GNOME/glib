@@ -2491,7 +2491,7 @@ g_unix_mount_point_get_fs_type (GUnixMountPoint *mount_point)
  * 
  * Gets the options for the mount point.
  * 
- * Returns: a string containing the options.
+ * Returns: (nullable): a string containing the options.
  *
  * Since: 2.32
  */

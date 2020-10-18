@@ -76,7 +76,7 @@ g_action_map_default_init (GActionMapInterface *iface)
  *
  * If no such action exists, returns %NULL.
  *
- * Returns: (transfer none): a #GAction, or %NULL
+ * Returns: (nullable) (transfer none): a #GAction, or %NULL
  *
  * Since: 2.32
  */

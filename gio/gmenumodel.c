@@ -541,7 +541,7 @@ g_menu_model_iterate_item_attributes (GMenuModel *model,
  * If the attribute does not exist, or does not match the expected type
  * then %NULL is returned.
  *
- * Returns: (transfer full): the value of the attribute
+ * Returns: (nullable) (transfer full): the value of the attribute
  *
  * Since: 2.32
  */
@@ -648,7 +648,7 @@ g_menu_model_iterate_item_links (GMenuModel *model,
  * If the link exists, the linked #GMenuModel is returned.  If the link
  * does not exist, %NULL is returned.
  *
- * Returns: (transfer full): the linked #GMenuModel, or %NULL
+ * Returns: (nullable) (transfer full): the linked #GMenuModel, or %NULL
  *
  * Since: 2.32
  */

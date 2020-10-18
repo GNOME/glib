@@ -174,7 +174,7 @@ g_file_icon_new (GFile *file)
  * 
  * Gets the #GFile associated with the given @icon.
  * 
- * Returns: (transfer none): a #GFile, or %NULL.
+ * Returns: (transfer none): a #GFile.
  **/
 GFile *
 g_file_icon_get_file (GFileIcon *icon)

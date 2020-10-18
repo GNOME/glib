@@ -296,7 +296,7 @@ g_zlib_compressor_new (GZlibCompressorFormat format,
  *
  * Returns the #GZlibCompressor:file-info property.
  *
- * Returns: (transfer none): a #GFileInfo, or %NULL
+ * Returns: (nullable) (transfer none): a #GFileInfo, or %NULL
  *
  * Since: 2.26
  */
