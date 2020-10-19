@@ -150,8 +150,8 @@ struct _GBinding
   GObject parent_instance;
 
   /* no reference is held on the objects, to avoid cycles */
-  GObject *source;
-  GObject *target;
+  GWeakRef source;
+  GWeakRef target;
 
   /* the property names are interned, so they should not be freed */
   const gchar *source_property;
@@ -204,36 +204,38 @@ weak_unbind (gpointer  user_data,
              GObject  *where_the_object_was)
 {
   GBinding *binding = user_data;
+  GObject *source, *target;
+
+  source = g_weak_ref_get (&binding->source);
+  target = g_weak_ref_get (&binding->target);
 
   /* if what went away was the source, unset it so that GBinding::finalize
    * does not try to access it; otherwise, disconnect everything and remove
    * the GBinding instance from the object's qdata
    */
-  if (binding->source == where_the_object_was)
-    binding->source = NULL;
-  else
+  if (source)
     {
       if (binding->source_notify != 0)
-        g_signal_handler_disconnect (binding->source, binding->source_notify);
+        g_signal_handler_disconnect (source, binding->source_notify);
 
-      g_object_weak_unref (binding->source, weak_unbind, user_data);
+      g_object_weak_unref (source, weak_unbind, user_data);
 
       binding->source_notify = 0;
-      binding->source = NULL;
+      g_weak_ref_set (&binding->source, NULL);
+      g_object_unref (source);
     }
 
   /* as above, but with the target */
-  if (binding->target == where_the_object_was)
-    binding->target = NULL;
-  else
+  if (target)
     {
       if (binding->target_notify != 0)
-        g_signal_handler_disconnect (binding->target, binding->target_notify);
+        g_signal_handler_disconnect (target, binding->target_notify);
 
-      g_object_weak_unref (binding->target, weak_unbind, user_data);
+      g_object_weak_unref (target, weak_unbind, user_data);
 
       binding->target_notify = 0;
-      binding->target = NULL;
+      g_weak_ref_set (&binding->target, NULL);
+      g_object_unref (target);
     }
 
   /* this will take care of the binding itself */
@@ -303,6 +305,7 @@ on_source_notify (GObject    *gobject,
                   GParamSpec *pspec,
                   GBinding   *binding)
 {
+  GObject *target;
   GValue from_value = G_VALUE_INIT;
   GValue to_value = G_VALUE_INIT;
   gboolean res;
@@ -310,10 +313,14 @@ on_source_notify (GObject    *gobject,
   if (binding->is_frozen)
     return;
 
+  target = g_weak_ref_get (&binding->target);
+  if (!target)
+    return;
+
   g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
   g_value_init (&to_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
 
-  g_object_get_property (binding->source, binding->source_pspec->name, &from_value);
+  g_object_get_property (gobject, binding->source_pspec->name, &from_value);
 
   res = binding->transform_s2t (binding,
                                 &from_value,
@@ -324,13 +331,15 @@ on_source_notify (GObject    *gobject,
       binding->is_frozen = TRUE;
 
       g_param_value_validate (binding->target_pspec, &to_value);
-      g_object_set_property (binding->target, binding->target_pspec->name, &to_value);
+      g_object_set_property (target, binding->target_pspec->name, &to_value);
 
       binding->is_frozen = FALSE;
     }
 
   g_value_unset (&from_value);
   g_value_unset (&to_value);
+
+  g_object_unref (target);
 }
 
 static void
@@ -338,6 +347,7 @@ on_target_notify (GObject    *gobject,
                   GParamSpec *pspec,
                   GBinding   *binding)
 {
+  GObject *source;
   GValue from_value = G_VALUE_INIT;
   GValue to_value = G_VALUE_INIT;
   gboolean res;
@@ -345,10 +355,14 @@ on_target_notify (GObject    *gobject,
   if (binding->is_frozen)
     return;
 
+  source = g_weak_ref_get (&binding->source);
+  if (!source)
+    return;
+
   g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
   g_value_init (&to_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
 
-  g_object_get_property (binding->target, binding->target_pspec->name, &from_value);
+  g_object_get_property (gobject, binding->target_pspec->name, &from_value);
 
   res = binding->transform_t2s (binding,
                                 &from_value,
@@ -359,21 +373,29 @@ on_target_notify (GObject    *gobject,
       binding->is_frozen = TRUE;
 
       g_param_value_validate (binding->source_pspec, &to_value);
-      g_object_set_property (binding->source, binding->source_pspec->name, &to_value);
+      g_object_set_property (source, binding->source_pspec->name, &to_value);
 
       binding->is_frozen = FALSE;
     }
 
   g_value_unset (&from_value);
   g_value_unset (&to_value);
+
+  g_object_unref (source);
 }
 
 static inline void
 g_binding_unbind_internal (GBinding *binding,
                            gboolean  unref_binding)
 {
-  gboolean source_is_target = binding->source == binding->target;
+  GObject *source, *target;
+  gboolean source_is_target;
   gboolean binding_was_removed = FALSE;
+
+  source = g_weak_ref_get (&binding->source);
+  target = g_weak_ref_get (&binding->target);
+
+  source_is_target = source == target;
 
   /* dispose of the transformation data */
   if (binding->notify != NULL)
@@ -384,29 +406,33 @@ g_binding_unbind_internal (GBinding *binding,
       binding->notify = NULL;
     }
 
-  if (binding->source != NULL)
+  if (source != NULL)
     {
       if (binding->source_notify != 0)
-        g_signal_handler_disconnect (binding->source, binding->source_notify);
+        g_signal_handler_disconnect (source, binding->source_notify);
 
-      g_object_weak_unref (binding->source, weak_unbind, binding);
+      g_object_weak_unref (source, weak_unbind, binding);
 
       binding->source_notify = 0;
-      binding->source = NULL;
+      g_weak_ref_set (&binding->source, NULL);
       binding_was_removed = TRUE;
+
+      g_object_unref (source);
     }
 
-  if (binding->target != NULL)
+  if (target != NULL)
     {
       if (binding->target_notify != 0)
-        g_signal_handler_disconnect (binding->target, binding->target_notify);
+        g_signal_handler_disconnect (target, binding->target_notify);
 
       if (!source_is_target)
-        g_object_weak_unref (binding->target, weak_unbind, binding);
+        g_object_weak_unref (target, weak_unbind, binding);
 
       binding->target_notify = 0;
-      binding->target = NULL;
+      g_weak_ref_set (&binding->target, NULL);
       binding_was_removed = TRUE;
+
+      g_object_unref (target);
     }
 
   if (binding_was_removed && unref_binding)
@@ -419,6 +445,9 @@ g_binding_finalize (GObject *gobject)
   GBinding *binding = G_BINDING (gobject);
 
   g_binding_unbind_internal (binding, FALSE);
+
+  g_weak_ref_clear (&binding->source);
+  g_weak_ref_clear (&binding->target);
 
   G_OBJECT_CLASS (g_binding_parent_class)->finalize (gobject);
 }
@@ -481,11 +510,11 @@ g_binding_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_SOURCE:
-      binding->source = g_value_get_object (value);
+      g_weak_ref_set (&binding->source, g_value_get_object (value));
       break;
 
     case PROP_TARGET:
-      binding->target = g_value_get_object (value);
+      g_weak_ref_set (&binding->target, g_value_get_object (value));
       break;
 
     case PROP_SOURCE_PROPERTY:
@@ -535,7 +564,7 @@ g_binding_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_SOURCE:
-      g_value_set_object (value, binding->source);
+      g_value_take_object (value, g_weak_ref_get (&binding->source));
       break;
 
     case PROP_SOURCE_PROPERTY:
@@ -544,7 +573,7 @@ g_binding_get_property (GObject    *gobject,
       break;
 
     case PROP_TARGET:
-      g_value_set_object (value, binding->target);
+      g_value_take_object (value, g_weak_ref_get (&binding->target));
       break;
 
     case PROP_TARGET_PROPERTY:
@@ -567,12 +596,15 @@ g_binding_constructed (GObject *gobject)
 {
   GBinding *binding = G_BINDING (gobject);
   GBindingTransformFunc transform_func = default_transform;
+  GObject *source, *target;
   GQuark source_property_detail;
   GClosure *source_notify_closure;
 
   /* assert that we were constructed correctly */
-  g_assert (binding->source != NULL);
-  g_assert (binding->target != NULL);
+  source = g_weak_ref_get (&binding->source);
+  target = g_weak_ref_get (&binding->target);
+  g_assert (source != NULL);
+  g_assert (target != NULL);
   g_assert (binding->source_property != NULL);
   g_assert (binding->target_property != NULL);
 
@@ -580,8 +612,8 @@ g_binding_constructed (GObject *gobject)
    * g_object_bind_property_full() does it; we cannot fail construction
    * anyway, so it would be hard for use to properly warn here
    */
-  binding->source_pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (binding->source), binding->source_property);
-  binding->target_pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (binding->target), binding->target_property);
+  binding->source_pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (source), binding->source_property);
+  binding->target_pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (target), binding->target_property);
   g_assert (binding->source_pspec != NULL);
   g_assert (binding->target_pspec != NULL);
 
@@ -599,13 +631,13 @@ g_binding_constructed (GObject *gobject)
   source_property_detail = g_quark_from_string (binding->source_property);
   source_notify_closure = g_cclosure_new (G_CALLBACK (on_source_notify),
                                           binding, NULL);
-  binding->source_notify = g_signal_connect_closure_by_id (binding->source,
+  binding->source_notify = g_signal_connect_closure_by_id (source,
                                                            gobject_notify_signal_id,
                                                            source_property_detail,
                                                            source_notify_closure,
                                                            FALSE);
 
-  g_object_weak_ref (binding->source, weak_unbind, binding);
+  g_object_weak_ref (source, weak_unbind, binding);
 
   if (binding->flags & G_BINDING_BIDIRECTIONAL)
     {
@@ -615,15 +647,18 @@ g_binding_constructed (GObject *gobject)
       target_property_detail = g_quark_from_string (binding->target_property);
       target_notify_closure = g_cclosure_new (G_CALLBACK (on_target_notify),
                                               binding, NULL);
-      binding->target_notify = g_signal_connect_closure_by_id (binding->target,
+      binding->target_notify = g_signal_connect_closure_by_id (target,
                                                                gobject_notify_signal_id,
                                                                target_property_detail,
                                                                target_notify_closure,
                                                                FALSE);
     }
 
-  if (binding->target != binding->source)
-    g_object_weak_ref (binding->target, weak_unbind, binding);
+  if (target != source)
+    g_object_weak_ref (target, weak_unbind, binding);
+
+  g_object_unref (source);
+  g_object_unref (target);
 }
 
 static void
@@ -766,9 +801,17 @@ g_binding_get_flags (GBinding *binding)
 GObject *
 g_binding_get_source (GBinding *binding)
 {
+  GObject *source;
+
   g_return_val_if_fail (G_IS_BINDING (binding), NULL);
 
-  return binding->source;
+  source = g_weak_ref_get (&binding->source);
+  /* Unref here, this API is not thread-safe
+   * FIXME: Remove this API when we next break API */
+  if (source)
+    g_object_unref (source);
+
+  return source;
 }
 
 /**
@@ -789,9 +832,17 @@ g_binding_get_source (GBinding *binding)
 GObject *
 g_binding_get_target (GBinding *binding)
 {
+  GObject *target;
+
   g_return_val_if_fail (G_IS_BINDING (binding), NULL);
 
-  return binding->target;
+  target = g_weak_ref_get (&binding->target);
+  /* Unref here, this API is not thread-safe
+   * FIXME: Remove this API when we next break API */
+  if (target)
+    g_object_unref (target);
+
+  return target;
 }
 
 /**
@@ -1043,7 +1094,7 @@ g_object_bind_property_full (gpointer               source,
    * will emit a notification on the target
    */
   if (flags & G_BINDING_SYNC_CREATE)
-    on_source_notify (binding->source, binding->source_pspec, binding);
+    on_source_notify (source, binding->source_pspec, binding);
 
   return binding;
 }
