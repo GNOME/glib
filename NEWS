@@ -1,3 +1,38 @@
+Overview of changes in GLib 2.66.2
+==================================
+
+* Important and time-critical fix to DST transitions which will happen in Europe
+  on 2020-10-25 on distributions which use the ‘slim’ tzdata format (which is
+  now the default in tzdata/tzcode 2020b) (work by Claudi M., LRN) (#2224)
+
+* Further timezone handling changes to restore support for changing the timezone
+  when `/etc/localtime/` changes (work by António Fernandes, Sebastian Keller) (#2204)
+
+* Fix deadlock on Windows when `G_SLICE` is set in the environment (diagnosis by
+  Christoph Reiter) (#2225)
+
+* Fix UTF-8 validation when escaping URI components (thanks to Marc-André Lureau) (!1680)
+
+* Bugs fixed:
+ - #2203 fstatat is available only on macOS 10.10+
+ - #2224 top bar time is incorrect, timezone map in control center is broken
+ - #2225 Setting G_SLICE makes Windows programs hang since 2.66
+ - !1682 Backport !1680 “guri: Fix UTF-8 validation when escaping URI components” to glib-2-66
+ - !1685 Backport !1684 “glocalfileinfo: Fix use of fstatat() on macOS < 10.10” to glib-2-66
+ - !1689 uri: add missing (not)nullable annotations
+ - !1693 Backport !1691 “gmain: Fix possible locking issue in source unref” to glib-2-66
+ - !1694 Backport !1692 “gsignal: Plug g_signal_connect_object leak” to glib-2-66
+ - !1700 Backport !1661 “Lookup fallback time zones in the cache to improve performance” to glib-2-66
+ - !1702 Backport !1698 “gslice: Inline win32 implementation of g_getenv() to avoid deadlock” to glib-2-66
+ - !1705 Backport !1683 “Fix the 6-days-until-the-end-of-the-month bug” to glib-2-66
+ - !1710 Backport !1706 “Add various missing nullable annotations” to glib-2-66
+
+* Translation updates:
+ - Chinese (Taiwan)
+ - Portuguese
+ - Slovak
+
+
 Overview of changes in GLib 2.66.1
 ==================================
 
