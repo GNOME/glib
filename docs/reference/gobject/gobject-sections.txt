@@ -978,8 +978,10 @@ g_io_condition_get_type
 GBinding
 GBindingFlags
 g_binding_get_source
+g_binding_dup_source
 g_binding_get_source_property
 g_binding_get_target
+g_binding_dup_target
 g_binding_get_target_property
 g_binding_get_flags
 g_binding_unbind

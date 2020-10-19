@@ -793,6 +793,10 @@ g_binding_get_flags (GBinding *binding)
  * strong reference to the source. If the source is destroyed before the
  * binding then this function will return %NULL.
  *
+ * Use g_binding_dup_source() if the source or binding are used from different
+ * threads as otherwise the pointer returned from this function might become
+ * invalid if the source is finalized from another thread in the meantime.
+ *
  * Returns: (transfer none) (nullable): the source #GObject, or %NULL if the
  *     source does not exist any more.
  *
@@ -815,6 +819,29 @@ g_binding_get_source (GBinding *binding)
 }
 
 /**
+ * g_binding_dup_source:
+ * @binding: a #GBinding
+ *
+ * Retrieves the #GObject instance used as the source of the binding.
+ *
+ * A #GBinding can outlive the source #GObject as the binding does not hold a
+ * strong reference to the source. If the source is destroyed before the
+ * binding then this function will return %NULL.
+ *
+ * Returns: (transfer full) (nullable): the source #GObject, or %NULL if the
+ *     source does not exist any more.
+ *
+ * Since: 2.68
+ */
+GObject *
+g_binding_dup_source (GBinding *binding)
+{
+  g_return_val_if_fail (G_IS_BINDING (binding), NULL);
+
+  return g_weak_ref_get (&binding->source);
+}
+
+/**
  * g_binding_get_target:
  * @binding: a #GBinding
  *
@@ -823,6 +850,10 @@ g_binding_get_source (GBinding *binding)
  * A #GBinding can outlive the target #GObject as the binding does not hold a
  * strong reference to the target. If the target is destroyed before the
  * binding then this function will return %NULL.
+ *
+ * Use g_binding_dup_target() if the target or binding are used from different
+ * threads as otherwise the pointer returned from this function might become
+ * invalid if the target is finalized from another thread in the meantime.
  *
  * Returns: (transfer none) (nullable): the target #GObject, or %NULL if the
  *     target does not exist any more.
@@ -843,6 +874,29 @@ g_binding_get_target (GBinding *binding)
     g_object_unref (target);
 
   return target;
+}
+
+/**
+ * g_binding_dup_target:
+ * @binding: a #GBinding
+ *
+ * Retrieves the #GObject instance used as the target of the binding.
+ *
+ * A #GBinding can outlive the target #GObject as the binding does not hold a
+ * strong reference to the target. If the target is destroyed before the
+ * binding then this function will return %NULL.
+ *
+ * Returns: (transfer full) (nullable): the target #GObject, or %NULL if the
+ *     target does not exist any more.
+ *
+ * Since: 2.68
+ */
+GObject *
+g_binding_dup_target (GBinding *binding)
+{
+  g_return_val_if_fail (G_IS_BINDING (binding), NULL);
+
+  return g_weak_ref_get (&binding->target);
 }
 
 /**
