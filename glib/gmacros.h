@@ -240,6 +240,7 @@
 /* C++11 decltype() is close enough for our usage */
 #include <type_traits>
 #define glib_typeof(t) typename std::remove_reference<decltype (t)>::type
+#define glib_typeof_2_68
 #endif
 
 /*
