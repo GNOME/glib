@@ -232,7 +232,9 @@
  * This symbol is private.
  */
 #undef glib_typeof
-#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)) && !defined(__cplusplus)
+#if !defined(__cplusplus) && \
+     ((defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8))) || \
+      defined(__clang__))
 #define glib_typeof(t) __typeof__ (t)
 #endif
 
