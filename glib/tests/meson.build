@@ -14,9 +14,6 @@ glib_tests = {
   'collate' : {},
   'cond' : {},
   'convert' : {},
-  'cxx' : {
-    'source' : ['cxx.cpp'],
-  },
   'dataset' : {},
   'date' : {},
   'dir' : {},
