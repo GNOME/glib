@@ -334,6 +334,7 @@ wait_for_file (const gchar *want_this,
    */
   while (access (want_this, F_OK) != 0)
     {
+      g_main_context_iteration (NULL, FALSE);
       g_usleep (100000); /* 100ms */
       g_assert_cmpuint (retries, >, 0);
       retries--;
