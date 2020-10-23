@@ -348,9 +348,8 @@ uri_decoder (gchar       **out,
         }
       else if (www_form && *s == '+')
         g_string_append_c (decoded, ' ');
-      /* Normalize any illegal characters */
-      else if (just_normalize && (!g_ascii_isgraph (*s) ||
-                                  (illegal_chars && strchr (illegal_chars, *s))))
+      /* Normalize any illegal characters. */
+      else if (just_normalize && (!g_ascii_isgraph (*s)))
         g_string_append_printf (decoded, "%%%02X", (guchar)*s);
       else
         g_string_append_c (decoded, *s);
@@ -749,6 +748,52 @@ uri_cleanup (const gchar *uri_string)
 }
 
 static gboolean
+should_normalize_empty_path (const char *scheme)
+{
+  const char * const schemes[] = { "https", "http", "wss", "ws" };
+  int i;
+  for (i = 0; i < G_N_ELEMENTS (schemes); ++i)
+    {
+      if (!strcmp (schemes[i], scheme))
+        return TRUE;
+    }
+  return FALSE;
+}
+
+static int
+normalize_port (const char *scheme,
+                int         port)
+{
+  const char *default_schemes[3] = { NULL };
+  int i;
+
+  switch (port)
+    {
+    case 21:
+      default_schemes[0] = "ftp";
+      break;
+    case 80:
+      default_schemes[0] = "http";
+      default_schemes[1] = "ws";
+      break;
+    case 443:
+      default_schemes[0] = "https";
+      default_schemes[1] = "wss";
+      break;
+    default:
+      break;
+    }
+
+  for (i = 0; default_schemes[i]; ++i)
+    {
+      if (!strcmp (scheme, default_schemes[i]))
+        return -1;
+    }
+
+  return port;
+}
+
+static gboolean
 g_uri_split_internal (const gchar  *uri_string,
                       GUriFlags     flags,
                       gchar       **scheme,
@@ -766,6 +811,7 @@ g_uri_split_internal (const gchar  *uri_string,
   const gchar *end, *colon, *at, *path_start, *semi, *question;
   const gchar *p, *bracket, *hostend;
   gchar *cleaned_uri_string = NULL;
+  gchar *normalized_scheme = NULL;
 
   if (scheme)
     *scheme = NULL;
@@ -803,8 +849,9 @@ g_uri_split_internal (const gchar  *uri_string,
 
   if (p > uri_string && *p == ':')
     {
+      normalized_scheme = g_ascii_strdown (uri_string, p - uri_string);
       if (scheme)
-        *scheme = g_ascii_strdown (uri_string, p - uri_string);
+        *scheme = g_steal_pointer (&normalized_scheme);
       p++;
     }
   else
@@ -930,6 +977,22 @@ g_uri_split_internal (const gchar  *uri_string,
                       G_URI_ERROR_BAD_PATH, error))
     goto fail;
 
+  /* Scheme-based normalization */
+  if (flags & G_URI_FLAGS_SCHEME_NORMALIZE && ((scheme && *scheme) || normalized_scheme))
+    {
+      const char *scheme_str = scheme && *scheme ? *scheme : normalized_scheme;
+
+      if (should_normalize_empty_path (scheme_str) && path && !**path)
+        {
+          g_free (*path);
+          *path = g_strdup ("/");
+        }
+
+      if (port && *port != -1)
+        *port = normalize_port (scheme_str, *port);
+    }
+
+  g_free (normalized_scheme);
   g_free (cleaned_uri_string);
   return TRUE;
 
@@ -949,6 +1012,7 @@ g_uri_split_internal (const gchar  *uri_string,
   if (fragment)
     g_clear_pointer (fragment, g_free);
 
+  g_free (normalized_scheme);
   g_free (cleaned_uri_string);
   return FALSE;
 }
@@ -1401,6 +1465,19 @@ g_uri_parse_relative (GUri         *base_uri,
               uri->host = g_strdup (base_uri->host);
               uri->port = base_uri->port;
             }
+        }
+
+      /* Scheme normalization couldn't have been done earlier
+       * as the relative URI may not have had a scheme */
+      if (flags & G_URI_FLAGS_SCHEME_NORMALIZE)
+        {
+          if (should_normalize_empty_path (uri->scheme) && !*uri->path)
+            {
+              g_free (uri->path);
+              uri->path = g_strdup ("/");
+            }
+
+          uri->port = normalize_port (uri->scheme, uri->port);
         }
     }
 
