@@ -1,3 +1,111 @@
+Overview of changes in GLib 2.67.0
+==================================
+
+* Important and time-critical fix to DST transitions which will happen in Europe
+  on 2020-10-25 on distributions which use the ‘slim’ tzdata format (which is
+  now the default in tzdata/tzcode 2020b) (work by Claudi M., LRN) (#2224)
+
+* Further timezone handling changes to improve performance of `GTimeZone` (work
+  by António Fernandes, Sebastian Keller) (#2204)
+
+* Fix deadlock on Windows when `G_SLICE` is set in the environment (diagnosis by
+  Christoph Reiter) (#2225)
+
+* Fix UTF-8 validation when escaping URI components (thanks to Marc-André Lureau) (!1680)
+
+* Security fix for incorrect scope/zone ID parsing in URIs (!1669)
+
+* Add `g_log_writer_default_set_use_stderr()` API for printing log messages to stderr (work by Simon McVittie) (#2087)
+
+* Improve connection error reporting when IPv6 is available and disabled (work by Michael Catanzaro, debugging by Konstantin Kharlamov and Milan Crha) (#2211)
+
+* Fix definition of `G_MSVC_SYMBOL_PREFIX` for ARM (work by Wolfgang Stöggl) (!1187)
+
+* Add `GStrvBuilder` convenience API for building `NULL`-terminated string arrays (work by Robert Ancell) (!1417)
+
+* Support appinfo verbs other than ‘open’ on Windows (work by LRN) (!1502)
+
+* Expose node-based `GTree` APIs (work by Maciej S. Szmigiero) (!1509)
+
+* Add `G_DBUS_METHOD_INVOCATION_HANDLED`/`_UNHANDLED` convenience constants (work by Simon McVittie) (!1603)
+
+* Set `IP_BIND_ADDRESS_NO_PORT` on sockets when binding to local addresses (work by Cristian Rodríguez) (!1598)
+
+* Add Meson option for libelf support (work by Niklas Gürtler) (!1650)
+
+* Add support for PKCS #11-backed TLS certificates (work by Patrick Griffis) (!1663)
+
+* Add `g_subprocess_launcher_close()` API to make `GSubprocessLauncher` more usable in bindings (work by Sergio Costas) (!1677)
+
+* Bugs fixed:
+ - #1233 GType for GTree
+ - #2077 Invalid Pointer Arithmetic in g_path_get_basename
+ - #2087 Respecting G_MESSAGES_DEBUG in a custom log writer should be easy to do
+ - #2164 GDBus DBUS_COOKIE_SHA1 mechanism may use too old a key
+ - #2194 gtk3/glib crash on gimp
+ - #2203 fstatat is available only on macOS 10.10+
+ - #2204 Time zone cache is constantly invalidated if TZ is NULL
+ - #2209 gthreadedresolver: faulty logic in parse_res_txt
+ - #2210 g_private_replace ordering issue
+ - #2211 "Network is unreachable" error returned when IPv6 is disabled and network is reachable using IPv4
+ - #2215 DST incorrectly ends on wrong dates
+ - #2224 top bar time is incorrect, timezone map in control center is broken
+ - #2225 Setting G_SLICE makes Windows programs hang since 2.66
+ - !1187 Define G_MSVC_SYMBOL_PREFIX correctly for ARM
+ - !1417 gstrvbuilder: Add a new object to make NULL-terminated string arrays.
+ - !1449 gio: Expose g_file_query_info_for_copy()
+ - !1502 GWin32AppInfo: Support verbs other than "open"
+ - !1509 GTree: add an ability to iterate over a tree and a node-based API
+ - !1575 Use C++11 decltype where possible
+ - !1598 gsocketclient: set IP_BIND_ADDRESS_NO_PORT if binding to local address
+ - !1603 GDBus: Add G_DBUS_METHOD_INVOCATION_HANDLED, _UNHANDLED
+ - !1643 Minor Coverity fixes
+ - !1645 Fix various signedness warnings
+ - !1647 Fix warnings (keep going)
+ - !1648 glocalfile: Never require G_LOCAL_FILE_STAT_FIELD_ATIME
+ - !1650 Make libelf dependency optional via meson feature
+ - !1652 trash portal: Handle portal failures
+ - !1654 gio-tool-trash: Prevent recursion to speed up emptying trash
+ - !1657 glist: Clarify that g_list_free() and friends only free an entire list
+ - !1658 utils: Limit the scope of the variable `max`
+ - !1661 Lookup fallback time zones in the cache to improve performance
+ - !1663 gtlscertificate: Add support for PKCS #11 backed certificates
+ - !1665 Fix g_module_symbol() under Windows sometimes not succeeding
+ - !1669 guri: Fix URI scope parsing
+ - !1670 GSubprocessLauncher: Move cleanup to dispose()
+ - !1671 gdatetime: Avoid integer overflow creating dates too far in the past
+ - !1673 CI: Re-enable code coverage reporting for MSYS2 builds
+ - !1674 Add version macros for 2.68
+ - !1675 Make static assertions about standard types
+ - !1677 gsubprocesslauncher: Allow to close FDs
+ - !1678 gmessages: Document that using a custom log writer basically disables fatal handling
+ - !1679 gmain: Fix minor typo in documentation
+ - !1680 guri: Fix UTF-8 validation when escaping URI components
+ - !1681 gspawn: Handle error opening /dev/null
+ - !1686 Various improvements in GSocketClient
+ - !1687 uri: add missing (not)nullable annotations
+ - !1688 gspawn: Use close_range() if available to close FDs between fork/exec
+ - !1691 gmain: Fix possible locking issue in source unref
+ - !1692 gsignal: Plug g_signal_connect_object leak
+ - !1695 gfile: Clarify refcount handling for g_file_replace_contents_bytes_async()
+ - !1696 Fix various minor scan build warnings
+ - !1706 Add various missing nullable annotations
+ - !1712 Revert "Use C++11 decltype where possible"
+ - !1714 gmacros: Use __typeof__ when compiling with Clang
+ - !1718 gtrace: Add G_GNUC_PRINTF annotation
+
+* Translation updates:
+ - Chinese (Taiwan)
+ - Danish
+ - Greek, Modern (1453-)
+ - Hebrew
+ - Latvian
+ - Portuguese
+ - Russian
+ - Slovak
+ - Ukrainian
+
+
 Overview of changes in GLib 2.66.0
 ==================================
 
