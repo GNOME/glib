@@ -54,7 +54,7 @@ void (g_trace_mark) (gint64       begin_time_nsec,
                      const gchar *group,
                      const gchar *name,
                      const gchar *message_format,
-                     ...);
+                     ...) G_GNUC_PRINTF (5, 6);
 
 #ifndef HAVE_SYSPROF
 /* Optimise the whole call out */
