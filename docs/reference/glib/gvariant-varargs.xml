@@ -532,8 +532,8 @@ value4 = g_variant_new ("x", G_GINT64_CONSTANT (998877665544332211));
     <link linkend='gchar'>gchar</link> *)</code> and makes a copy of it.
     <link linkend='NULL:CAPS'><literal>NULL</literal></link> is not a valid string; use
     <link linkend='gvariant-format-strings-maybe-types'>maybe types</link> to encode that.  If the '<literal>o</literal>' or
-    '<literal>g</literal>' characters are used, care must be taken to ensure that the passed string is a valid DBus
-    object path or DBus type signature, respectively.
+    '<literal>g</literal>' characters are used, care must be taken to ensure that the passed string is a valid D-Bus
+    object path or D-Bus type signature, respectively.
    </para>
    <para>
     Upon encounting '<literal>s</literal>', '<literal>o</literal>' or '<literal>g</literal>', <link

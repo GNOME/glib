@@ -43,7 +43,7 @@
 #include "gunixfdlist.h"
 #endif
 
-/* DBus Interface definition {{{1 */
+/* D-Bus Interface definition {{{1 */
 
 /* For documentation of these interfaces, see
  * https://wiki.gnome.org/Projects/GLib/GApplication/DBusAPI
@@ -640,7 +640,7 @@ g_application_impl_register (GApplication        *application,
 
   /* We are non-primary.  Try to get the primary's list of actions.
    * This also serves as a mechanism to ensure that the primary exists
-   * (ie: DBus service files installed correctly, etc).
+   * (ie: D-Bus service files installed correctly, etc).
    */
   actions = g_dbus_action_group_get (impl->session_bus, impl->bus_name, impl->object_path);
   if (!g_dbus_action_group_sync (actions, cancellable, error))

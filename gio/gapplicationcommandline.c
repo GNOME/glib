@@ -523,7 +523,7 @@ g_application_command_line_get_options_dict (GApplicationCommandLine *cmdline)
  * The #GInputStream can be used to read data passed to the standard
  * input of the invoking process.
  * This doesn't work on all platforms.  Presently, it is only available
- * on UNIX when using a DBus daemon capable of passing file descriptors.
+ * on UNIX when using a D-Bus daemon capable of passing file descriptors.
  * If stdin is not available then %NULL will be returned.  In the
  * future, support may be expanded to other platforms.
  *
