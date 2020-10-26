@@ -1542,6 +1542,62 @@ test_unix_file_poll (void)
   close (fd);
 }
 
+static void
+test_unix_fd_priority (void)
+{
+  gint fd1, fd2;
+  GMainLoop *loop;
+  GSource *source;
+
+  gint s1 = 0;
+  gboolean s2 = FALSE, s3 = FALSE;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/1592");
+
+  loop = g_main_loop_new (NULL, FALSE);
+
+  source = g_idle_source_new ();
+  g_source_set_callback (source, count_calls, &s1, NULL);
+  g_source_set_priority (source, 0);
+  g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  fd1 = open ("/dev/random", O_RDONLY);
+  g_assert_cmpint (fd1, >=, 0);
+  source = g_unix_fd_source_new (fd1, G_IO_IN);
+  g_source_set_callback (source, G_SOURCE_FUNC (flag_bool), &s2, NULL);
+  g_source_set_priority (source, 10);
+  g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  fd2 = open ("/dev/random", O_RDONLY);
+  g_assert_cmpint (fd2, >=, 0);
+  source = g_unix_fd_source_new (fd2, G_IO_IN);
+  g_source_set_callback (source, G_SOURCE_FUNC (flag_bool), &s3, NULL);
+  g_source_set_priority (source, 0);
+  g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  /* This tests a bug that depends on the source with the lowest FD
+     identifier to have the lowest priority. Make sure that this is
+     the case. */
+  g_assert_cmpint (fd1, <, fd2);
+
+  g_assert_true (g_main_context_iteration (NULL, FALSE));
+
+  /* Idle source should have been dispatched. */
+  g_assert_cmpint (s1, ==, 1);
+  /* Low priority FD source shouldn't have been dispatched. */
+  g_assert_false (s2);
+  /* Default priority FD source should have been dispatched. */
+  g_assert_true (s3);
+
+  g_main_loop_unref (loop);
+
+  close (fd1);
+  close (fd2);
+}
+
 #endif
 
 #ifdef G_OS_UNIX
@@ -2035,6 +2091,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/source-unix-fd-api", test_source_unix_fd_api);
   g_test_add_func ("/mainloop/wait", test_mainloop_wait);
   g_test_add_func ("/mainloop/unix-file-poll", test_unix_file_poll);
+  g_test_add_func ("/mainloop/unix-fd-priority", test_unix_fd_priority);
 #endif
   g_test_add_func ("/mainloop/nfds", test_nfds);
 
