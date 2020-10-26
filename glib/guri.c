@@ -132,11 +132,12 @@
  *
  * Note that there is no `g_uri_equal ()` function, because comparing
  * URIs usefully requires scheme-specific knowledge that #GUri does
- * not have. For example, `http://example.com/` and
- * `http://EXAMPLE.COM:80` have exactly the same meaning according
- * to the HTTP specification, and `data:,foo` and
- * `data:;base64,Zm9v` resolve to the same thing according to the
- * `data:` URI specification.
+ * not have. #GUri can help with normalization if you use the various
+ * encoded #GUriFlags as well as %G_URI_FLAGS_SCHEME_NORMALIZE however
+ * it is not comprehensive.
+ * For example, `data:,foo` and `data:;base64,Zm9v` resolve to the same
+ * thing according to the `data:` URI specification which GLib does not
+ * handle.
  *
  * Since: 2.66
  */
