@@ -71,7 +71,7 @@
  * To just export an object on a well-known name on a message bus, such as the
  * session or system bus, you should instead use g_bus_own_name().
  *
- * An example of peer-to-peer communication with G-DBus can be found
+ * An example of peer-to-peer communication with GDBus can be found
  * in [gdbus-example-peer.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-peer.c).
  *
  * Note that a minimal #GDBusServer will accept connections from any

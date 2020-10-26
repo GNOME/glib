@@ -370,7 +370,7 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         The #GVfs implementation for local files that is included in GIO
         has the name "local", the implementation in the gvfs module has
         the name "gvfs".  Most commonly, system software will set this to "local"
-	to avoid having `GFile` APIs perform unnecessary DBus calls.
+        to avoid having `GFile` APIs perform unnecessary D-Bus calls.
       </para><para>
         The special value <literal>help</literal> can be used to print a list of
         available implementations to standard output.

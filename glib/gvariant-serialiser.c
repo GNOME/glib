@@ -1666,7 +1666,7 @@ g_variant_serialiser_is_string (gconstpointer data,
  *
  * Performs the checks for being a valid string.
  *
- * Also, ensures that @data is a valid DBus object path, as per the D-Bus
+ * Also, ensures that @data is a valid D-Bus object path, as per the D-Bus
  * specification.
  */
 gboolean

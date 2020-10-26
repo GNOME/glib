@@ -49,7 +49,7 @@
  * its type nor its content can be modified further.
  *
  * GVariant is useful whenever data needs to be serialized, for example when
- * sending method parameters in DBus, or when saving settings using GSettings.
+ * sending method parameters in D-Bus, or when saving settings using GSettings.
  *
  * When creating a new #GVariant, you pass the data you want to store in it
  * along with a string representing the type of data you wish to pass to it.
