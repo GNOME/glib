@@ -138,7 +138,7 @@ g_app_info_dup (GAppInfo *appinfo)
  *
  * Checks if two #GAppInfos are equal.
  *
- * Note that the check <emphasis>may not</emphasis> compare each individual
+ * Note that the check *may not* compare each individual
  * field, and only does an identity check. In case detecting changes in the 
  * contents is needed, program code must additionally compare relevant fields.
  *
