@@ -76,6 +76,12 @@ typedef struct
   gboolean signal_received;
 } PeerData;
 
+/* This needs to be enough to usually take more than one write(),
+ * to reproduce
+ * <https://gitlab.gnome.org/GNOME/glib/-/issues/2074>.
+ * 1 MiB ought to be enough. */
+#define BIG_MESSAGE_ARRAY_SIZE (1024 * 1024)
+
 static const gchar *test_interface_introspection_xml =
   "<node>"
   "  <interface name='org.gtk.GDBus.PeerTestInterface'>"
@@ -87,6 +93,11 @@ static const gchar *test_interface_introspection_xml =
   "    <method name='EmitSignalWithNameSet'/>"
   "    <method name='OpenFile'>"
   "      <arg type='s' name='path' direction='in'/>"
+  "    </method>"
+  "    <method name='OpenFileWithBigMessage'>"
+  "      <arg type='s' name='path' direction='in'/>"
+  "      <arg type='h' name='handle' direction='out'/>"
+  "      <arg type='ay' name='junk' direction='out'/>"
   "    </method>"
   "    <signal name='PeerSignal'>"
   "      <arg type='s' name='a_string'/>"
@@ -164,7 +175,8 @@ test_interface_method_call (GDBusConnection       *connection,
 
       g_dbus_method_invocation_return_value (invocation, NULL);
     }
-  else if (g_strcmp0 (method_name, "OpenFile") == 0)
+  else if (g_strcmp0 (method_name, "OpenFile") == 0 ||
+           g_strcmp0 (method_name, "OpenFileWithBigMessage") == 0)
     {
 #ifdef G_OS_UNIX
       const gchar *path;
@@ -189,6 +201,21 @@ test_interface_method_call (GDBusConnection       *connection,
       g_dbus_message_set_unix_fd_list (reply, fd_list);
       g_object_unref (fd_list);
       g_object_unref (invocation);
+
+      if (g_strcmp0 (method_name, "OpenFileWithBigMessage") == 0)
+        {
+          char *junk;
+
+          junk = g_new0 (char, BIG_MESSAGE_ARRAY_SIZE);
+          g_dbus_message_set_body (reply,
+                                   g_variant_new ("(h@ay)",
+                                                  0,
+                                                  g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE,
+                                                                             junk,
+                                                                             BIG_MESSAGE_ARRAY_SIZE,
+                                                                             1)));
+          g_free (junk);
+        }
 
       error = NULL;
       g_dbus_connection_send_message (connection,
@@ -723,6 +750,7 @@ do_test_peer (void)
   const gchar *s;
   GThread *service_thread;
   gulong signal_handler_id;
+  gsize i;
 
   memset (&data, '\0', sizeof (PeerData));
   data.current_connections = g_ptr_array_new_with_free_func (g_object_unref);
@@ -843,73 +871,116 @@ do_test_peer (void)
   g_assert_cmpint (data.num_method_calls, ==, 3);
   g_signal_handler_disconnect (proxy, signal_handler_id);
 
-  /* check for UNIX fd passing */
+  /*
+   * Check for UNIX fd passing.
+   *
+   * The first time through, we use a very simple method call. Note that
+   * because this does not have a G_VARIANT_TYPE_HANDLE in the message body
+   * to refer to the fd, it is a GDBus-specific idiom that would not
+   * interoperate with libdbus or sd-bus
+   * (see <https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1726>).
+   *
+   * The second time, we call a method that returns a fd attached to a
+   * large message, to reproduce
+   * <https://gitlab.gnome.org/GNOME/glib/-/issues/2074>. It also happens
+   * to follow the more usual pattern for D-Bus messages containing a
+   * G_VARIANT_TYPE_HANDLE to refer to attached fds.
+   */
+  for (i = 0; i < 2; i++)
+    {
 #ifdef G_OS_UNIX
-  {
-    GDBusMessage *method_call_message;
-    GDBusMessage *method_reply_message;
-    GUnixFDList *fd_list;
-    gint fd;
-    gchar *buf;
-    gsize len;
-    gchar *buf2;
-    gsize len2;
-    const char *testfile = g_test_get_filename (G_TEST_DIST, "file.c", NULL);
+      GDBusMessage *method_call_message;
+      GDBusMessage *method_reply_message;
+      GUnixFDList *fd_list;
+      gint fd;
+      gchar *buf;
+      gsize len;
+      gchar *buf2;
+      gsize len2;
+      const char *testfile = g_test_get_filename (G_TEST_DIST, "file.c", NULL);
+      const char *method = "OpenFile";
+      GVariant *body;
 
-    method_call_message = g_dbus_message_new_method_call (NULL, /* name */
-                                                          "/org/gtk/GDBus/PeerTestObject",
-                                                          "org.gtk.GDBus.PeerTestInterface",
-                                                          "OpenFile");
-    g_dbus_message_set_body (method_call_message, g_variant_new ("(s)", testfile));
-    error = NULL;
-    method_reply_message = g_dbus_connection_send_message_with_reply_sync (c,
-                                                                           method_call_message,
-                                                                           G_DBUS_SEND_MESSAGE_FLAGS_NONE,
-                                                                           -1,
-                                                                           NULL, /* out_serial */
-                                                                           NULL, /* cancellable */
-                                                                           &error);
-    g_assert_no_error (error);
-    g_assert (g_dbus_message_get_message_type (method_reply_message) == G_DBUS_MESSAGE_TYPE_METHOD_RETURN);
-    fd_list = g_dbus_message_get_unix_fd_list (method_reply_message);
-    g_assert (fd_list != NULL);
-    g_assert_cmpint (g_unix_fd_list_get_length (fd_list), ==, 1);
-    error = NULL;
-    fd = g_unix_fd_list_get (fd_list, 0, &error);
-    g_assert_no_error (error);
-    g_object_unref (method_call_message);
-    g_object_unref (method_reply_message);
+      if (i == 1)
+        method = "OpenFileWithBigMessage";
 
-    error = NULL;
-    len = 0;
-    buf = read_all_from_fd (fd, &len, &error);
-    g_assert_no_error (error);
-    g_assert (buf != NULL);
-    close (fd);
+      method_call_message = g_dbus_message_new_method_call (NULL, /* name */
+                                                            "/org/gtk/GDBus/PeerTestObject",
+                                                            "org.gtk.GDBus.PeerTestInterface",
+                                                            method);
+      g_dbus_message_set_body (method_call_message, g_variant_new ("(s)", testfile));
+      error = NULL;
+      method_reply_message = g_dbus_connection_send_message_with_reply_sync (c,
+                                                                             method_call_message,
+                                                                             G_DBUS_SEND_MESSAGE_FLAGS_NONE,
+                                                                             -1,
+                                                                             NULL, /* out_serial */
+                                                                             NULL, /* cancellable */
+                                                                             &error);
+      g_assert_no_error (error);
+      g_assert (g_dbus_message_get_message_type (method_reply_message) == G_DBUS_MESSAGE_TYPE_METHOD_RETURN);
 
-    error = NULL;
-    g_file_get_contents (testfile,
-                         &buf2,
-                         &len2,
-                         &error);
-    g_assert_no_error (error);
-    g_assert_cmpmem (buf, len, buf2, len2);
-    g_free (buf2);
-    g_free (buf);
-  }
+      body = g_dbus_message_get_body (method_reply_message);
+
+      if (i == 1)
+        {
+          gint32 handle = -1;
+          GVariant *junk = NULL;
+
+          g_assert_cmpstr (g_variant_get_type_string (body), ==, "(hay)");
+          g_variant_get (body, "(h@ay)", &handle, &junk);
+          g_assert_cmpint (handle, ==, 0);
+          g_assert_cmpuint (g_variant_n_children (junk), ==, BIG_MESSAGE_ARRAY_SIZE);
+          g_variant_unref (junk);
+        }
+      else
+        {
+          g_assert_null (body);
+        }
+
+      fd_list = g_dbus_message_get_unix_fd_list (method_reply_message);
+      g_assert (fd_list != NULL);
+      g_assert_cmpint (g_unix_fd_list_get_length (fd_list), ==, 1);
+      error = NULL;
+      fd = g_unix_fd_list_get (fd_list, 0, &error);
+      g_assert_no_error (error);
+      g_object_unref (method_call_message);
+      g_object_unref (method_reply_message);
+
+      error = NULL;
+      len = 0;
+      buf = read_all_from_fd (fd, &len, &error);
+      g_assert_no_error (error);
+      g_assert (buf != NULL);
+      close (fd);
+
+      error = NULL;
+      g_file_get_contents (testfile,
+                           &buf2,
+                           &len2,
+                           &error);
+      g_assert_no_error (error);
+      g_assert_cmpmem (buf, len, buf2, len2);
+      g_free (buf2);
+      g_free (buf);
 #else
-  error = NULL;
-  result = g_dbus_proxy_call_sync (proxy,
-                                   "OpenFile",
-                                   g_variant_new ("(s)", "boo"),
-                                   G_DBUS_CALL_FLAGS_NONE,
-                                   -1,
-                                   NULL,  /* GCancellable */
-                                   &error);
-  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_DBUS_ERROR);
-  g_assert (result == NULL);
-  g_error_free (error);
+      /* We do the same number of iterations on non-Unix, so that
+       * the method call count will match. In this case we use
+       * OpenFile both times, because the difference between this
+       * and OpenFileWithBigMessage is only relevant on Unix. */
+      error = NULL;
+      result = g_dbus_proxy_call_sync (proxy,
+                                       "OpenFile",
+                                       g_variant_new ("(s)", "boo"),
+                                       G_DBUS_CALL_FLAGS_NONE,
+                                       -1,
+                                       NULL,  /* GCancellable */
+                                       &error);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_DBUS_ERROR);
+      g_assert (result == NULL);
+      g_error_free (error);
 #endif /* G_OS_UNIX */
+    }
 
   /* Check that g_socket_get_credentials() work - (though this really
    * should be in socket.c)
@@ -1017,7 +1088,7 @@ do_test_peer (void)
   g_variant_get (result, "(&s)", &s);
   g_assert_cmpstr (s, ==, "You greeted me with 'Hey Again Peer!'.");
   g_variant_unref (result);
-  g_assert_cmpint (data.num_method_calls, ==, 5);
+  g_assert_cmpint (data.num_method_calls, ==, 6);
 
 #if 0
   /* TODO: THIS TEST DOESN'T WORK YET */
