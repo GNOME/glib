@@ -6248,6 +6248,18 @@ g_dbus_connection_call_sync (GDBusConnection     *connection,
  *
  * Like g_dbus_connection_call() but also takes a #GUnixFDList object.
  *
+ * The file descriptors normally correspond to %G_VARIANT_TYPE_HANDLE
+ * values in the body of the message. For example, if a message contains
+ * two file descriptors, @fd_list would have length 2, and
+ * `g_variant_new_handle (0)` and `g_variant_new_handle (1)` would appear
+ * somewhere in the body of the message (not necessarily in that order!)
+ * to represent the file descriptors at indexes 0 and 1 respectively.
+ *
+ * When designing D-Bus APIs that are intended to be interoperable,
+ * please note that non-GDBus implementations of D-Bus can usually only
+ * access file descriptors if they are referenced in this way by a
+ * value of type %G_VARIANT_TYPE_HANDLE in the body of the message.
+ *
  * This method is only available on UNIX.
  *
  * Since: 2.30
@@ -6279,6 +6291,17 @@ g_dbus_connection_call_with_unix_fd_list (GDBusConnection     *connection,
  * @error: return location for error or %NULL
  *
  * Finishes an operation started with g_dbus_connection_call_with_unix_fd_list().
+ *
+ * The file descriptors normally correspond to %G_VARIANT_TYPE_HANDLE
+ * values in the body of the message. For example,
+ * if g_variant_get_handle() returns 5, that is intended to be a reference
+ * to the file descriptor that can be accessed by
+ * `g_unix_fd_list_get (*out_fd_list, 5, ...)`.
+ *
+ * When designing D-Bus APIs that are intended to be interoperable,
+ * please note that non-GDBus implementations of D-Bus can usually only
+ * access file descriptors if they are referenced in this way by a
+ * value of type %G_VARIANT_TYPE_HANDLE in the body of the message.
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
  *     return values. Free with g_variant_unref().
@@ -6314,6 +6337,8 @@ g_dbus_connection_call_with_unix_fd_list_finish (GDBusConnection  *connection,
  * @error: return location for error or %NULL
  *
  * Like g_dbus_connection_call_sync() but also takes and returns #GUnixFDList objects.
+ * See g_dbus_connection_call_with_unix_fd_list() and
+ * g_dbus_connection_call_with_unix_fd_list_finish() for more details.
  *
  * This method is only available on UNIX.
  *
