@@ -1085,8 +1085,11 @@ write_message_continue_writing (MessageToWriteData *data)
   else
     {
 #ifdef G_OS_UNIX
-      if (fd_list != NULL)
+      if (data->total_written == 0 && fd_list != NULL)
         {
+          /* We were trying to write byte 0 of the message, which needs
+           * the fd list to be attached to it, but this connection doesn't
+           * support doing that. */
           g_task_return_new_error (task,
                                    G_IO_ERROR,
                                    G_IO_ERROR_FAILED,
