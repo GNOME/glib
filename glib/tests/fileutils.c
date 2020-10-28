@@ -557,13 +557,13 @@ check_cap_dac_override (const char *tmpdir)
   dac_denies_write = g_build_filename (tmpdir, "dac-denies-write", NULL);
   inside = g_build_filename (dac_denies_write, "inside", NULL);
 
-  g_assert_cmpint (mkdir (dac_denies_write, S_IRWXU) == 0 ? 0 : errno, ==, 0);
-  g_assert_cmpint (chmod (dac_denies_write, 0) == 0 ? 0 : errno, ==, 0);
+  g_assert_no_errno (mkdir (dac_denies_write, S_IRWXU));
+  g_assert_no_errno (chmod (dac_denies_write, 0));
 
   if (mkdir (inside, S_IRWXU) == 0)
     {
       g_test_message ("Looks like we have CAP_DAC_OVERRIDE or equivalent");
-      g_assert_cmpint (rmdir (inside) == 0 ? 0 : errno, ==, 0);
+      g_assert_no_errno (rmdir (inside));
       have_cap = TRUE;
     }
   else
@@ -575,8 +575,8 @@ check_cap_dac_override (const char *tmpdir)
       have_cap = FALSE;
     }
 
-  g_assert_cmpint (chmod (dac_denies_write, S_IRWXU) == 0 ? 0 : errno, ==, 0);
-  g_assert_cmpint (rmdir (dac_denies_write) == 0 ? 0 : errno, ==, 0);
+  g_assert_no_errno (chmod (dac_denies_write, S_IRWXU));
+  g_assert_no_errno (rmdir (dac_denies_write));
   g_free (dac_denies_write);
   g_free (inside);
   return have_cap;
@@ -606,8 +606,8 @@ test_mkdir_with_parents_permission (void)
   subdir = g_build_filename (tmpdir, "sub", NULL);
   subdir2 = g_build_filename (subdir, "sub2", NULL);
   subdir3 = g_build_filename (subdir2, "sub3", NULL);
-  g_assert_cmpint (g_mkdir (subdir, 0700) == 0 ? 0 : errno, ==, 0);
-  g_assert_cmpint (g_chmod (subdir, 0) == 0 ? 0 : errno, ==, 0);
+  g_assert_no_errno (g_mkdir (subdir, 0700));
+  g_assert_no_errno (g_chmod (subdir, 0));
 
   if (have_cap_dac_override)
     {
@@ -625,11 +625,11 @@ test_mkdir_with_parents_permission (void)
       g_assert_cmpint (result, ==, -1);
       g_assert_cmpint (saved_errno, ==, EACCES);
 
-      g_assert_cmpint (g_chmod (subdir, 0700) == 0 ? 0 : errno, ==, 0);
+      g_assert_no_errno (g_chmod (subdir, 0700));
     }
 
-  g_assert_cmpint (g_remove (subdir) == 0 ? 0 : errno, ==, 0);
-  g_assert_cmpint (g_remove (tmpdir) == 0 ? 0 : errno, ==, 0);
+  g_assert_no_errno (g_remove (subdir));
+  g_assert_no_errno (g_remove (tmpdir));
   g_free (subdir3);
   g_free (subdir2);
   g_free (subdir);
