@@ -524,10 +524,10 @@ test_mkdir_with_parents (void)
   g_assert_cmpint (errno, ==, EINVAL);
 }
 
-#ifdef G_OS_UNIX
 /*
  * check_cap_dac_override:
- * @tmpdir: A temporary directory in which we can create and delete files
+ * @tmpdir: (nullable): A temporary directory in which we can create
+ *  and delete files. If %NULL, use the g_get_tmp_dir(), safely.
  *
  * Check whether the current process can bypass DAC permissions.
  *
@@ -550,9 +550,28 @@ test_mkdir_with_parents (void)
 static gboolean
 check_cap_dac_override (const char *tmpdir)
 {
+#ifdef G_OS_UNIX
+  gchar *safe_tmpdir = NULL;
   gchar *dac_denies_write;
   gchar *inside;
   gboolean have_cap;
+
+  if (tmpdir == NULL)
+    {
+      /* It's unsafe to write predictable filenames into g_get_tmp_dir(),
+       * because it's usually a shared directory that can be subject to
+       * symlink attacks, so use a subdirectory for this check. */
+      GError *error = NULL;
+
+      safe_tmpdir = g_dir_make_tmp (NULL, &error);
+      g_assert_no_error (error);
+      g_clear_error (&error);
+
+      if (safe_tmpdir == NULL)
+        return FALSE;
+
+      tmpdir = safe_tmpdir;
+    }
 
   dac_denies_write = g_build_filename (tmpdir, "dac-denies-write", NULL);
   inside = g_build_filename (dac_denies_write, "inside", NULL);
@@ -577,11 +596,18 @@ check_cap_dac_override (const char *tmpdir)
 
   g_assert_no_errno (chmod (dac_denies_write, S_IRWXU));
   g_assert_no_errno (rmdir (dac_denies_write));
+
+  if (safe_tmpdir != NULL)
+    g_assert_no_errno (rmdir (safe_tmpdir));
+
   g_free (dac_denies_write);
   g_free (inside);
+  g_free (safe_tmpdir);
   return have_cap;
-}
+#else
+  return FALSE;
 #endif
+}
 
 /* Reproducer for https://gitlab.gnome.org/GNOME/glib/issues/1852 */
 static void
@@ -1132,6 +1158,7 @@ test_set_contents_full_read_only_file (void)
   GError *error = NULL;
   gchar *file_name = NULL;
   gboolean ret;
+  gboolean can_override_dac = check_cap_dac_override (NULL);
 
   g_test_summary ("Test g_file_set_contents_full() on a read-only file");
 
@@ -1147,8 +1174,18 @@ test_set_contents_full_read_only_file (void)
 
   /* Set the file contents */
   ret = g_file_set_contents_full (file_name, "b", 1, G_FILE_SET_CONTENTS_NONE, 0644, &error);
-  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_ACCES);
-  g_assert_false (ret);
+
+  if (can_override_dac)
+    {
+      g_assert_no_error (error);
+      g_assert_true (ret);
+    }
+  else
+    {
+      g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_ACCES);
+      g_assert_false (ret);
+    }
+
   g_clear_error (&error);
 
   g_remove (file_name);
@@ -1174,11 +1211,13 @@ test_set_contents_full_read_only_directory (void)
       gchar *dir_name = NULL;
       gchar *file_name = NULL;
       gboolean ret;
+      gboolean can_override_dac;
 
       g_test_message ("Flags %d", flags);
 
       dir_name = g_dir_make_tmp ("glib-file-set-contents-full-rodir-XXXXXX", &error);
       g_assert_no_error (error);
+      can_override_dac = check_cap_dac_override (dir_name);
 
       file_name = g_build_filename (dir_name, "file", NULL);
       fd = g_open (file_name, O_CREAT | O_RDWR, 0644);
@@ -1191,10 +1230,19 @@ test_set_contents_full_read_only_directory (void)
 
       /* Set the file contents */
       ret = g_file_set_contents_full (file_name, "b", 1, flags, 0644, &error);
-      g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_ACCES);
-      g_assert_false (ret);
-      g_clear_error (&error);
 
+      if (can_override_dac)
+        {
+          g_assert_no_error (error);
+          g_assert_true (ret);
+        }
+      else
+        {
+          g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_ACCES);
+          g_assert_false (ret);
+        }
+
+      g_clear_error (&error);
       g_remove (file_name);
       g_unlink (dir_name);
 
