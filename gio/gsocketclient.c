@@ -1837,9 +1837,9 @@ g_socket_client_connected_callback (GObject      *source,
     {
       if (!g_cancellable_is_cancelled (attempt->cancellable))
         {
+          g_debug ("GSocketClient: Connection attempt failed: %s", data->error_info->tmp_error->message);
           clarify_connect_error (data->error_info->tmp_error, data->connectable, attempt->address);
           consider_tmp_error (data->error_info, G_SOCKET_CLIENT_CONNECTING);
-          g_debug ("GSocketClient: Connection attempt failed: %s", data->error_info->tmp_error->message);
           connection_attempt_remove (attempt);
           connection_attempt_unref (attempt);
           try_next_connection_or_finish (data, FALSE);
