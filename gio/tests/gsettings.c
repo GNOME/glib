@@ -1861,7 +1861,7 @@ test_keyfile (Fixture       *fixture,
   /* Clean up the temporary directory. */
   g_assert_no_errno (g_chmod (keyfile_path, 0777));
   g_assert_no_errno (g_remove (store_path));
-  g_rmdir (keyfile_path);
+  g_assert_no_errno (g_rmdir (keyfile_path));
   g_free (store_path);
   g_free (keyfile_path);
 }
