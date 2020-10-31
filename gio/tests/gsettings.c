@@ -39,7 +39,7 @@ static void
 teardown (Fixture       *fixture,
           gconstpointer  user_data)
 {
-  g_assert_cmpint (g_rmdir (fixture->tmp_dir), ==, 0);
+  g_assert_no_errno (g_rmdir (fixture->tmp_dir));
   g_clear_pointer (&fixture->tmp_dir, g_free);
 }
 
@@ -1860,7 +1860,7 @@ test_keyfile (Fixture       *fixture,
 
   /* Clean up the temporary directory. */
   g_chmod (keyfile_path, 0777);
-  g_assert_cmpint (g_remove (store_path), ==, 0);
+  g_assert_no_errno (g_remove (store_path));
   g_rmdir (keyfile_path);
   g_free (store_path);
   g_free (keyfile_path);
