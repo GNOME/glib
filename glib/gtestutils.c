@@ -577,6 +577,30 @@
  */
 
 /**
+ * g_assert_cmpstrv:
+ * @strv1: (nullable): a string array (may be %NULL)
+ * @strv2: (nullable): another string array (may be %NULL)
+ *
+ * Debugging macro to check if two %NULL-terminated string arrays (i.e. 2
+ * #GStrv) are equal. If they are not equal, an error message is logged and the
+ * application is either terminated or the testcase marked as failed.
+ * If both arrays are %NULL, the check passes. If one array is %NULL but the
+ * other is not, an error message is logged.
+ *
+ * The effect of `g_assert_cmpstrv (strv1, strv2)` is the same as
+ * `g_assert_true (g_strv_equal (strv1, strv2))` (if both arrays are not
+ * %NULL). The advantage of this macro is that it can produce a message that
+ * includes how @strv1 and @strv2 are different.
+ *
+ * |[<!-- language="C" -->
+ *   const char *expected[] = { "one", "two", "three", NULL };
+ *   g_assert_cmpstrv (mystrv, expected);
+ * ]|
+ *
+ * Since: 2.68
+ */
+
+/**
  * g_assert_cmpint:
  * @n1: an integer
  * @cmp: The comparison operator to use.
@@ -3012,6 +3036,31 @@ g_assertion_message_cmpstr (const char     *domain,
   g_free (t1);
   g_free (t2);
   s = g_strdup_printf ("assertion failed (%s): (%s %s %s)", expr, a1, cmp, a2);
+  g_free (a1);
+  g_free (a2);
+  g_assertion_message (domain, file, line, func, s);
+  g_free (s);
+}
+
+void
+g_assertion_message_cmpstrv (const char         *domain,
+                             const char         *file,
+                             int                 line,
+                             const char         *func,
+                             const char         *expr,
+                             const char * const *arg1,
+                             const char * const *arg2,
+                             gsize               first_wrong_idx)
+{
+  const char *s1 = arg1[first_wrong_idx], *s2 = arg2[first_wrong_idx];
+  char *a1, *a2, *s, *t1 = NULL, *t2 = NULL;
+
+  a1 = arg1 ? g_strconcat ("\"", t1 = g_strescape (s1, NULL), "\"", NULL) : g_strdup ("NULL");
+  a2 = arg2 ? g_strconcat ("\"", t2 = g_strescape (s2, NULL), "\"", NULL) : g_strdup ("NULL");
+  g_free (t1);
+  g_free (t2);
+  s = g_strdup_printf ("assertion failed (%s): first differing element at index %" G_GSIZE_FORMAT ": %s does not equal %s",
+                       expr, first_wrong_idx, a1, a2);
   g_free (a1);
   g_free (a2);
   g_assertion_message (domain, file, line, func, s);

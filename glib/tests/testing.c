@@ -67,6 +67,40 @@ test_assertions_bad_cmpvariant_values (void)
 }
 
 static void
+test_assertions_bad_cmpstrv_null1 (void)
+{
+  const char *strv[] = { "one", "two", "three", NULL };
+  g_assert_cmpstrv (strv, NULL);
+  exit (0);
+}
+
+static void
+test_assertions_bad_cmpstrv_null2 (void)
+{
+  const char *strv[] = { "one", "two", "three", NULL };
+  g_assert_cmpstrv (NULL, strv);
+  exit (0);
+}
+
+static void
+test_assertions_bad_cmpstrv_length (void)
+{
+  const char *strv1[] = { "one", "two", "three", NULL };
+  const char *strv2[] = { "one", "two", NULL };
+  g_assert_cmpstrv (strv1, strv2);
+  exit (0);
+}
+
+static void
+test_assertions_bad_cmpstrv_values (void)
+{
+  const char *strv1[] = { "one", "two", "three", NULL };
+  const char *strv2[] = { "one", "too", "three", NULL };
+  g_assert_cmpstrv (strv1, strv2);
+  exit (0);
+}
+
+static void
 test_assertions_bad_cmpstr (void)
 {
   g_assert_cmpstr ("fzz", !=, "fzz");
@@ -132,6 +166,8 @@ test_assertions_bad_no_errno (void)
 static void
 test_assertions (void)
 {
+  const char *strv1[] = { "one", "two", "three", NULL };
+  const char *strv2[] = { "one", "two", "three", NULL };
   GVariant *v1, *v2;
   gchar *fuu;
 
@@ -160,6 +196,9 @@ test_assertions (void)
   g_assert_cmpmem ("foo", 0, NULL, 0);
   g_assert_no_errno (return_no_errno ());
 
+  g_assert_cmpstrv (NULL, NULL);
+  g_assert_cmpstrv (strv1, strv2);
+
   v1 = g_variant_new_parsed ("['hello', 'there']");
   v2 = g_variant_new_parsed ("['hello', 'there']");
 
@@ -178,6 +217,22 @@ test_assertions (void)
   g_test_trap_assert_stderr ("*assertion failed*");
 
   g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpstr", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
+
+  g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpstrv_null1", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
+
+  g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpstrv_null2", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
+
+  g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpstrv_length", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
+
+  g_test_trap_subprocess ("/misc/assertions/subprocess/bad_cmpstrv_values", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*assertion failed*");
 
@@ -1303,6 +1358,10 @@ main (int   argc,
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpvariant_types", test_assertions_bad_cmpvariant_types);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpvariant_values", test_assertions_bad_cmpvariant_values);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpstr", test_assertions_bad_cmpstr);
+  g_test_add_func ("/misc/assertions/subprocess/bad_cmpstrv_null1", test_assertions_bad_cmpstrv_null1);
+  g_test_add_func ("/misc/assertions/subprocess/bad_cmpstrv_null2", test_assertions_bad_cmpstrv_null2);
+  g_test_add_func ("/misc/assertions/subprocess/bad_cmpstrv_length", test_assertions_bad_cmpstrv_length);
+  g_test_add_func ("/misc/assertions/subprocess/bad_cmpstrv_values", test_assertions_bad_cmpstrv_values);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpint", test_assertions_bad_cmpint);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpmem_len", test_assertions_bad_cmpmem_len);
   g_test_add_func ("/misc/assertions/subprocess/bad_cmpmem_data", test_assertions_bad_cmpmem_data);

@@ -111,6 +111,51 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
       } \
   } \
   G_STMT_END
+#define g_assert_cmpstrv(strv1, strv2) \
+  G_STMT_START \
+  { \
+    const char * const *__strv1 = (const char * const *) (strv1); \
+    const char * const *__strv2 = (const char * const *) (strv2); \
+    if (!__strv1 || !__strv2) \
+      { \
+        if (__strv1) \
+          { \
+            g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                 "assertion failed (" #strv1 " == " #strv2 "): " #strv2 " is NULL, but " #strv1 " is not"); \
+          } \
+        else if (__strv2) \
+          { \
+            g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                 "assertion failed (" #strv1 " == " #strv2 "): " #strv1 " is NULL, but " #strv2 " is not"); \
+          } \
+      } \
+    else \
+      { \
+        guint __l1 = g_strv_length ((char **) __strv1); \
+        guint __l2 = g_strv_length ((char **) __strv2); \
+        if (__l1 != __l2) \
+          { \
+            char *__msg; \
+            __msg = g_strdup_printf ("assertion failed (" #strv1 " == " #strv2 "): length %u does not equal length %u", __l1, __l2); \
+            g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, __msg); \
+            g_free (__msg); \
+          } \
+        else \
+          { \
+            guint __i; \
+            for (__i = 0; __i < __l1; __i++) \
+              { \
+                if (g_strcmp0 (__strv1[__i], __strv2[__i]) != 0) \
+                  { \
+                    g_assertion_message_cmpstrv (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #strv1 " == " #strv2, \
+                                                 __strv1, __strv2, __i); \
+                  } \
+              } \
+          } \
+      } \
+  } \
+  G_STMT_END
 #define g_assert_no_errno(expr)         G_STMT_START { \
                                              int __ret, __errsv; \
                                              errno = 0; \
@@ -483,6 +528,16 @@ void    g_assertion_message_cmpstr      (const char     *domain,
                                          const char     *arg1,
                                          const char     *cmp,
                                          const char     *arg2) G_ANALYZER_NORETURN;
+
+GLIB_AVAILABLE_IN_2_68
+void    g_assertion_message_cmpstrv     (const char         *domain,
+                                         const char         *file,
+                                         int                 line,
+                                         const char         *func,
+                                         const char         *expr,
+                                         const char * const *arg1,
+                                         const char * const *arg2,
+                                         gsize               first_wrong_idx) G_ANALYZER_NORETURN;
 GLIB_AVAILABLE_IN_ALL
 void    g_assertion_message_cmpnum      (const char     *domain,
                                          const char     *file,
