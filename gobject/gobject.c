@@ -48,8 +48,8 @@
  * For a tutorial on implementing a new GObject class, see [How to define and
  * implement a new GObject][howto-gobject]. For a list of naming conventions for
  * GObjects and their methods, see the [GType conventions][gtype-conventions].
- * For the high-level concepts behind GObject, read [Instantiable classed types:
- * Objects][gtype-instantiable-classed].
+ * For the high-level concepts behind GObject, read [Instantiatable classed types:
+ * Objects][gtype-instantiatable-classed].
  *
  * ## Floating references # {#floating-ref}
  *
