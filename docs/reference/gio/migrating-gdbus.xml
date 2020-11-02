@@ -254,7 +254,7 @@ on_name_acquired (GDBusConnection *connection,
       linkend="gdbus-codegen">gdbus-codegen</link></command> is used and like
       its counterpart, it also takes D-Bus Introspection XML as input:
     </para>
-    <example id="gdbus-example-codegen-input"><title>Example D-Bus Introspection XML</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../gdbus-example-objectmanager.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+    <example id="gdbus-example-codegen-input"><title>Example D-Bus Introspection XML</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../../gio/tests/gdbus-object-manager-example/gdbus-example-objectmanager.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT: gdbus-example-objectmanager.xml</xi:fallback></xi:include></programlisting></example>
     <para>
       If this XML is processed like this
 <informalexample><programlisting><![CDATA[
@@ -291,18 +291,19 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
       #ExampleObjectManagerClient pages for documentation.
     </para>
 
-    <example id="gdbus-example-codegen-server"><title>Server-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../gdbus-example-objectmanager-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+    <example id="gdbus-example-codegen-server"><title>Server-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../../gio/tests/gdbus-example-objectmanager-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT: gdbus-example-objectmanager-server.c</xi:fallback></xi:include></programlisting></example>
 
-    <example id="gdbus-example-codegen-client"><title>Client-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../gdbus-example-objectmanager-client.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+    <example id="gdbus-example-codegen-client"><title>Client-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../../gio/tests/gdbus-example-objectmanager-client.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT: gdbus-example-objectmanager-client.c</xi:fallback></xi:include></programlisting></example>
 
   </section>
 
-  <xi:include href="../../../../gio/tests/gdbus-object-manager-example/objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
-  <xi:include href="../../../../gio/tests/gdbus-object-manager-example/objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
-  <xi:include href="../gdbus-object-manager-example/xml/ExampleAnimal.xml"/>
-  <xi:include href="../gdbus-object-manager-example/xml/ExampleCat.xml"/>
-  <xi:include href="../gdbus-object-manager-example/xml/ExampleObject.xml"/>
-  <xi:include href="../gdbus-object-manager-example/xml/ExampleObjectManagerClient.xml"/>
+  <!-- All XInclude paths are relative to the html/ directory under the build root directory -->
+  <xi:include href="../../../../gio/tests/gdbus-object-manager-example/objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Animal.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT: objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Animal.xml</xi:fallback></xi:include>
+  <xi:include href="../../../../gio/tests/gdbus-object-manager-example/objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Cat.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT: objectmanager-gen-org.gtk.GDBus.Example.ObjectManager.Cat.xml</xi:fallback></xi:include>
+  <xi:include href="../gdbus-object-manager-example/xml/ExampleAnimal.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT: ExampleAnimal.xml</xi:fallback></xi:include>
+  <xi:include href="../gdbus-object-manager-example/xml/ExampleCat.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT: ExampleCat.xml</xi:fallback></xi:include>
+  <xi:include href="../gdbus-object-manager-example/xml/ExampleObject.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT: ExampleObject.xml</xi:fallback></xi:include>
+  <xi:include href="../gdbus-object-manager-example/xml/ExampleObjectManagerClient.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT: ExampleObjectManagerClient.xml</xi:fallback></xi:include>
 
   </section>
 
