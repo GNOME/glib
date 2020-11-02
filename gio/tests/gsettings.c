@@ -39,7 +39,7 @@ static void
 teardown (Fixture       *fixture,
           gconstpointer  user_data)
 {
-  g_assert_cmpint (g_rmdir (fixture->tmp_dir), ==, 0);
+  g_assert_no_errno (g_rmdir (fixture->tmp_dir));
   g_clear_pointer (&fixture->tmp_dir, g_free);
 }
 
@@ -1844,7 +1844,7 @@ test_keyfile (Fixture       *fixture,
       g_signal_connect (settings, "writable-changed::greeting",
                         G_CALLBACK (key_changed_cb), &called);
 
-      g_chmod (keyfile_path, 0500);
+      g_assert_no_errno (g_chmod (keyfile_path, 0500));
       while (!called)
         g_main_context_iteration (NULL, FALSE);
       g_signal_handlers_disconnect_by_func (settings, key_changed_cb, &called);
@@ -1859,9 +1859,9 @@ test_keyfile (Fixture       *fixture,
   g_object_unref (settings);
 
   /* Clean up the temporary directory. */
-  g_chmod (keyfile_path, 0777);
-  g_assert_cmpint (g_remove (store_path), ==, 0);
-  g_rmdir (keyfile_path);
+  g_assert_no_errno (g_chmod (keyfile_path, 0777));
+  g_assert_no_errno (g_remove (store_path));
+  g_assert_no_errno (g_rmdir (keyfile_path));
   g_free (store_path);
   g_free (keyfile_path);
 }

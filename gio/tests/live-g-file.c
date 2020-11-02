@@ -149,13 +149,13 @@ check_cap_dac_override (const char *tmpdir)
   dac_denies_write = g_build_filename (tmpdir, "dac-denies-write", NULL);
   inside = g_build_filename (dac_denies_write, "inside", NULL);
 
-  g_assert_cmpint (mkdir (dac_denies_write, S_IRWXU) == 0 ? 0 : errno, ==, 0);
-  g_assert_cmpint (chmod (dac_denies_write, 0) == 0 ? 0 : errno, ==, 0);
+  g_assert_no_errno (mkdir (dac_denies_write, S_IRWXU));
+  g_assert_no_errno (chmod (dac_denies_write, 0));
 
   if (mkdir (inside, S_IRWXU) == 0)
     {
       g_test_message ("Looks like we have CAP_DAC_OVERRIDE or equivalent");
-      g_assert_cmpint (rmdir (inside) == 0 ? 0 : errno, ==, 0);
+      g_assert_no_errno (rmdir (inside));
       have_cap = TRUE;
     }
   else
@@ -167,8 +167,8 @@ check_cap_dac_override (const char *tmpdir)
       have_cap = FALSE;
     }
 
-  g_assert_cmpint (chmod (dac_denies_write, S_IRWXU) == 0 ? 0 : errno, ==, 0);
-  g_assert_cmpint (rmdir (dac_denies_write) == 0 ? 0 : errno, ==, 0);
+  g_assert_no_errno (chmod (dac_denies_write, S_IRWXU));
+  g_assert_no_errno (rmdir (dac_denies_write));
   g_free (dac_denies_write);
   g_free (inside);
   return have_cap;
