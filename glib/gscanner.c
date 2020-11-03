@@ -1696,12 +1696,19 @@ g_scanner_get_token_i (GScanner	*scanner,
       scanner->config->int_2_float)
     {
       *token_p = G_TOKEN_FLOAT;
+
+      /* Have to assign through a temporary variable to avoid undefined behaviour
+       * by copying between potentially-overlapping union members. */
       if (scanner->config->store_int64)
         {
-          value_p->v_float = value_p->v_int64;
+          gint64 temp = value_p->v_int64;
+          value_p->v_float = temp;
         }
       else
-	value_p->v_float = value_p->v_int;
+        {
+          gint temp = value_p->v_int;
+          value_p->v_float = temp;
+        }
     }
   
   errno = 0;
