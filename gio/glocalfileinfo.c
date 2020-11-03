@@ -1547,15 +1547,45 @@ win32_get_file_user_info (const gchar  *filename,
 /* support for '.hidden' files */
 G_LOCK_DEFINE_STATIC (hidden_cache);
 static GHashTable *hidden_cache;
+static GSource *hidden_cache_source = NULL; /* Under the hidden_cache lock */
+static guint hidden_cache_ttl_secs = 5;
+static guint hidden_cache_ttl_jitter_secs = 2;
+
+typedef struct
+{
+  GHashTable *hidden_files;
+  gint64 timestamp_secs;
+} HiddenCacheData;
 
 static gboolean
 remove_from_hidden_cache (gpointer user_data)
 {
+  HiddenCacheData *data;
+  GHashTableIter iter;
+  gboolean retval;
+  gint64 timestamp_secs;
+
   G_LOCK (hidden_cache);
-  g_hash_table_remove (hidden_cache, user_data);
+  timestamp_secs = g_source_get_time (hidden_cache_source) / G_USEC_PER_SEC;
+
+  g_hash_table_iter_init (&iter, hidden_cache);
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &data))
+    {
+      if (timestamp_secs > data->timestamp_secs + hidden_cache_ttl_secs)
+        g_hash_table_iter_remove (&iter);
+    }
+
+  if (g_hash_table_size (hidden_cache) == 0)
+    {
+      g_clear_pointer (&hidden_cache_source, g_source_unref);
+      retval = G_SOURCE_REMOVE;
+    }
+  else
+    retval = G_SOURCE_CONTINUE;
+
   G_UNLOCK (hidden_cache);
 
-  return FALSE;
+  return retval;
 }
 
 static GHashTable *
@@ -1593,16 +1623,19 @@ read_hidden_file (const gchar *dirname)
 }
 
 static void
-maybe_unref_hash_table (gpointer data)
+free_hidden_file_data (gpointer user_data)
 {
-  if (data != NULL)
-    g_hash_table_unref (data);
+  HiddenCacheData *data = user_data;
+
+  g_clear_pointer (&data->hidden_files, g_hash_table_unref);
+  g_free (data);
 }
 
 static gboolean
 file_is_hidden (const gchar *path,
                 const gchar *basename)
 {
+  HiddenCacheData *data;
   gboolean result;
   gchar *dirname;
   gpointer table;
@@ -1613,28 +1646,38 @@ file_is_hidden (const gchar *path,
 
   if G_UNLIKELY (hidden_cache == NULL)
     hidden_cache = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                          g_free, maybe_unref_hash_table);
+                                          g_free, free_hidden_file_data);
 
   if (!g_hash_table_lookup_extended (hidden_cache, dirname,
-                                     NULL, &table))
+                                     NULL, (gpointer *) &data))
     {
       gchar *mydirname;
-      GSource *remove_from_cache_source;
+
+      data = g_new0 (HiddenCacheData, 1);
+      data->hidden_files = table = read_hidden_file (dirname);
+      data->timestamp_secs = g_get_monotonic_time () / G_USEC_PER_SEC;
 
       g_hash_table_insert (hidden_cache,
                            mydirname = g_strdup (dirname),
-                           table = read_hidden_file (dirname));
+                           data);
 
-      remove_from_cache_source = g_timeout_source_new_seconds (5);
-      g_source_set_priority (remove_from_cache_source, G_PRIORITY_DEFAULT);
-      g_source_set_callback (remove_from_cache_source, 
-                             remove_from_hidden_cache, 
-                             mydirname, 
-                             NULL);
-      g_source_attach (remove_from_cache_source, 
-                       GLIB_PRIVATE_CALL (g_get_worker_context) ());
-      g_source_unref (remove_from_cache_source);
+      if (!hidden_cache_source)
+        {
+          hidden_cache_source =
+            g_timeout_source_new_seconds (hidden_cache_ttl_secs +
+                                          hidden_cache_ttl_jitter_secs);
+          g_source_set_priority (hidden_cache_source, G_PRIORITY_DEFAULT);
+          g_source_set_name (hidden_cache_source,
+                             "[gio] remove_from_hidden_cache");
+          g_source_set_callback (hidden_cache_source,
+                                 remove_from_hidden_cache,
+                                 NULL, NULL);
+          g_source_attach (hidden_cache_source,
+                           GLIB_PRIVATE_CALL (g_get_worker_context) ());
+        }
     }
+  else
+    table = data->hidden_files;
 
   result = table != NULL && g_hash_table_contains (table, basename);
 
