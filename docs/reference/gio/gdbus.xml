@@ -322,6 +322,18 @@ $ gdbus call --session \
 (uint32 12,)
 </programlisting>
 <para>
+  Call a method with file handle argument:
+</para>
+<programlisting>
+$ gdbus call --session \
+             --dest org.example.foo \
+             --object-path /org/example/foo \
+             --method SendFDs \
+             1 \
+             10 \
+             10&lt;file.foo
+</programlisting>
+<para>
   Monitoring all objects on a service:
 </para>
 <programlisting>
