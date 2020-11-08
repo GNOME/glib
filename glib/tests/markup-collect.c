@@ -91,13 +91,14 @@ static struct test tests[] =
   { "<bool mb='y'>", "<bool(1) 1 0 -1>",
     G_MARKUP_ERROR_PARSE, "'bool'" },
 
-  { "<bool mb='false'/>", "<bool(1) 0 0 -1>" },
-  { "<bool mb='true'/>", "<bool(1) 1 0 -1>" },
-  { "<bool mb='t' ob='f' tri='1'/>", "<bool(1) 1 0 1>" },
-  { "<bool mb='y' ob='n' tri='0'/>", "<bool(1) 1 0 0>" },
+  { "<bool mb='false'/>", "<bool(1) 0 0 -1>", 0, NULL },
+  { "<bool mb='true'/>", "<bool(1) 1 0 -1>", 0, NULL },
+  { "<bool mb='t' ob='f' tri='1'/>", "<bool(1) 1 0 1>", 0, NULL },
+  { "<bool mb='y' ob='n' tri='0'/>", "<bool(1) 1 0 0>", 0, NULL },
 
-  { "<bool mb='y' my:attr='q'><my:tag/></bool>", "<bool(1) 1 0 -1>" },
-  { "<bool mb='y' my:attr='q'><my:tag>some <b>text</b> is in here</my:tag></bool>", "<bool(1) 1 0 -1>" },
+  { "<bool mb='y' my:attr='q'><my:tag/></bool>", "<bool(1) 1 0 -1>", 0, NULL },
+  { "<bool mb='y' my:attr='q'><my:tag>some <b>text</b> is in here</my:tag></bool>",
+    "<bool(1) 1 0 -1>", 0, NULL },
 
   { "<bool ob='y'/>", "<bool(0) 0 0 -1>",
     G_MARKUP_ERROR_MISSING_ATTRIBUTE, "'mb'" },
@@ -108,7 +109,7 @@ static struct test tests[] =
   { "<bool mb='y' tri='y' tri='n'/>", "<bool(0) 0 0 -1>",
     G_MARKUP_ERROR_INVALID_CONTENT, "'tri'" },
 
-  { "<str cm='x' am='y'/>", "<str(1) x y (null) (null)>" },
+  { "<str cm='x' am='y'/>", "<str(1) x y (null) (null)>", 0, NULL },
 
   { "<str am='x' co='y'/>", "<str(0) (null) (null) (null) (null)>",
     G_MARKUP_ERROR_MISSING_ATTRIBUTE, "'cm'" },
