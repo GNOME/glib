@@ -111,7 +111,8 @@ test_group_captions (void)
 {
   const gchar *test_name_base[] = { "help", "help-all", "help-test" };
   gchar *test_name;
-  gint i, j;
+  guint i;
+  gsize j;
 
   g_test_bug ("504142");
 
@@ -132,7 +133,7 @@ test_group_captions (void)
           if (g_test_verbose ())
             trap_flags |= G_TEST_SUBPROCESS_INHERIT_STDOUT | G_TEST_SUBPROCESS_INHERIT_STDERR;
 
-          test_name = g_strdup_printf ("/option/group/captions/subprocess/%s-%d",
+          test_name = g_strdup_printf ("/option/group/captions/subprocess/%s-%u",
                                        test_name_base[j], i);
           g_test_trap_subprocess (test_name, 0, trap_flags);
           g_free (test_name);
@@ -2361,7 +2362,7 @@ option_context_parse_command_line (GOptionContext *context,
   argv_new_len = g_strv_length (argv);
 
   g_strfreev (argv);
-  return success ? argv_len - argv_new_len : -1;
+  return success ? (gint) (argv_len - argv_new_len) : -1;
 }
 
 static void
