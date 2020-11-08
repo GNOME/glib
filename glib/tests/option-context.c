@@ -943,7 +943,7 @@ callback_test_optional_5 (void)
   gchar **argv_copy;
   int argc;
   GOptionEntry entries [] =
-    { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL },
+    { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL, NULL },
       { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
 	callback_parse_optional, NULL, NULL },
       { NULL } };
@@ -981,7 +981,7 @@ callback_test_optional_6 (void)
   gchar **argv_copy;
   int argc;
   GOptionEntry entries [] =
-    { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL },
+    { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL, NULL },
       { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
 	callback_parse_optional, NULL, NULL },
       { NULL } };
@@ -1019,7 +1019,7 @@ callback_test_optional_7 (void)
   gchar **argv_copy;
   int argc;
   GOptionEntry entries [] =
-    { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL },
+    { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL, NULL },
       { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
 	callback_parse_optional, NULL, NULL },
       { NULL } };
@@ -1057,7 +1057,7 @@ callback_test_optional_8 (void)
   gchar **argv_copy;
   int argc;
   GOptionEntry entries [] =
-    { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL },
+    { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL, NULL },
       { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
 	callback_parse_optional, NULL, NULL },
       { NULL } };
