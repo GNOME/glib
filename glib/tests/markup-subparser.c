@@ -265,7 +265,10 @@ end_element (GMarkupParseContext  *context,
 static GMarkupParser parser =
 {
   start_element,
-  end_element
+  end_element,
+  NULL,
+  NULL,
+  NULL
 };
 
 typedef struct
