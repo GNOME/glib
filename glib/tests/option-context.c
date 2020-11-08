@@ -1332,8 +1332,8 @@ ignore_test3 (void)
   g_option_context_free (context);
 }
 
-void
-static array_test1 (void)
+static void
+array_test1 (void)
 {
   GOptionContext *context;
   gboolean retval;
