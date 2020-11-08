@@ -76,7 +76,7 @@ start (GMarkupParseContext  *context,
     }
 }
 
-static GMarkupParser parser = { start };
+static GMarkupParser parser = { start, NULL, NULL, NULL, NULL };
 
 struct test
 {
@@ -194,7 +194,7 @@ start_element (GMarkupParseContext  *context,
 }
 
 static GMarkupParser cleanup_parser = {
-  start_element
+  start_element, NULL, NULL, NULL, NULL
 };
 
 static void
