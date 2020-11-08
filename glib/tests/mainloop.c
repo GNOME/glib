@@ -1143,7 +1143,7 @@ write_bytes (gint         fd,
   /* Detect if we run before we should */
   g_assert_cmpint (*to_write, >=, 0);
 
-  limit = MIN (*to_write, sizeof zeros);
+  limit = MIN ((gsize) *to_write, sizeof zeros);
   *to_write -= write (fd, zeros, limit);
 
   return TRUE;
