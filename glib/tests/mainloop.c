@@ -51,6 +51,8 @@ static GSourceFuncs funcs = {
   prepare,
   check,
   dispatch,
+  NULL,
+  NULL,
   NULL
 };
 
@@ -419,6 +421,8 @@ static GSourceFuncs counter_source_funcs = {
   NULL,
   counter_source_dispatch,
   NULL,
+  NULL,
+  NULL
 };
 
 static GSource *
@@ -942,7 +946,7 @@ test_ready_time (void)
   GThread *thread;
   GSource *source;
   GSourceFuncs source_funcs = {
-    NULL, NULL, ready_time_dispatch
+    NULL, NULL, ready_time_dispatch, NULL, NULL, NULL
   };
   GMainLoop *loop;
 
@@ -1085,7 +1089,9 @@ trivial_finalize (GSource *source)
 static void
 test_unref_while_pending (void)
 {
-  static GSourceFuncs funcs = { trivial_prepare, NULL, NULL, trivial_finalize };
+  static GSourceFuncs funcs = {
+    trivial_prepare, NULL, NULL, trivial_finalize, NULL, NULL
+  };
   GMainContext *context;
   GSource *source;
 
@@ -1399,7 +1405,7 @@ static void
 test_source_unix_fd_api (void)
 {
   GSourceFuncs no_funcs = {
-    NULL, NULL, return_true
+    NULL, NULL, return_true, NULL, NULL, NULL
   };
   GSource *source_a;
   GSource *source_b;
@@ -1839,7 +1845,9 @@ static GSourceFuncs source_funcs = {
   prepare,
   check,
   dispatch,
-  finalize
+  finalize,
+  NULL,
+  NULL
 };
 
 static void
@@ -1915,7 +1923,9 @@ static GSourceFuncs source_with_source_funcs = {
   NULL,
   NULL,
   NULL,
-  finalize_source_with_source
+  finalize_source_with_source,
+  NULL,
+  NULL
 };
 
 static void
@@ -1998,7 +2008,9 @@ static GSourceFuncs source_with_source_funcs_dispatch = {
   NULL,
   NULL,
   dispatch_source_with_source,
-  finalize_source_with_source
+  finalize_source_with_source,
+  NULL,
+  NULL
 };
 
 static void
