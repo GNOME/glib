@@ -356,7 +356,7 @@ TestCase error_cases[] = /* error cases */
 
 #define add_tests(func, basename, array) \
   G_STMT_START { \
-    int __add_tests_i;                                                  \
+    gsize __add_tests_i;                                                \
                                                                         \
     for (__add_tests_i  = 0;                                            \
          __add_tests_i < G_N_ELEMENTS (array);                          \
@@ -364,7 +364,8 @@ TestCase error_cases[] = /* error cases */
       {                                                                 \
         char *testname;                                                 \
                                                                         \
-        testname = g_strdup_printf ("%s/%d", basename, __add_tests_i);  \
+        testname = g_strdup_printf ("%s/%" G_GSIZE_FORMAT,              \
+                                    basename, __add_tests_i);           \
         g_test_add_data_func (testname, &array[__add_tests_i], func);   \
         g_free (testname);                                              \
       }                                                                 \
