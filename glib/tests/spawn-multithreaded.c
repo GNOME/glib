@@ -31,7 +31,7 @@ static char *echo_prog_path;
 static void
 multithreaded_test_run (GThreadFunc function)
 {
-  int i;
+  guint i;
   GPtrArray *threads = g_ptr_array_new ();
   guint n_threads;
 
@@ -42,7 +42,7 @@ multithreaded_test_run (GThreadFunc function)
     {
       GThread *thread;
 
-      thread = g_thread_new ("test", function, GINT_TO_POINTER (i));
+      thread = g_thread_new ("test", function, GUINT_TO_POINTER (i));
       g_ptr_array_add (threads, thread);
     }
 
@@ -50,7 +50,7 @@ multithreaded_test_run (GThreadFunc function)
     {
       gpointer ret;
       ret = g_thread_join (g_ptr_array_index (threads, i));
-      g_assert_cmpint (GPOINTER_TO_INT (ret), ==, i);
+      g_assert_cmpint (GPOINTER_TO_UINT (ret), ==, i);
     }
   g_ptr_array_free (threads, TRUE);
 }
@@ -58,14 +58,14 @@ multithreaded_test_run (GThreadFunc function)
 static gpointer
 test_spawn_sync_multithreaded_instance (gpointer data)
 {
-  int tnum = GPOINTER_TO_INT (data);
+  guint tnum = GPOINTER_TO_UINT (data);
   GError *error = NULL;
   GPtrArray *argv;
   char *arg;
   char *stdout_str;
   int estatus;
 
-  arg = g_strdup_printf ("thread %d", tnum);
+  arg = g_strdup_printf ("thread %u", tnum);
 
   argv = g_ptr_array_new ();
   g_ptr_array_add (argv, echo_prog_path);
@@ -79,7 +79,7 @@ test_spawn_sync_multithreaded_instance (gpointer data)
   g_free (stdout_str);
   g_ptr_array_free (argv, TRUE);
 
-  return GINT_TO_POINTER (tnum);
+  return GUINT_TO_POINTER (tnum);
 }
 
 static void
@@ -147,7 +147,7 @@ on_child_stdout (GIOChannel   *channel,
 static gpointer
 test_spawn_async_multithreaded_instance (gpointer thread_data)
 {
-  int tnum = GPOINTER_TO_INT (thread_data);
+  guint tnum = GPOINTER_TO_UINT (thread_data);
   GError *error = NULL;
   GPtrArray *argv;
   char *arg;
@@ -162,7 +162,7 @@ test_spawn_async_multithreaded_instance (gpointer thread_data)
   context = g_main_context_new ();
   loop = g_main_loop_new (context, TRUE);
 
-  arg = g_strdup_printf ("thread %d", tnum);
+  arg = g_strdup_printf ("thread %u", tnum);
 
   argv = g_ptr_array_new ();
   g_ptr_array_add (argv, echo_prog_path);
@@ -203,7 +203,7 @@ test_spawn_async_multithreaded_instance (gpointer thread_data)
 
   g_free (arg);
 
-  return GINT_TO_POINTER (tnum);
+  return GUINT_TO_POINTER (tnum);
 }
 
 static void
