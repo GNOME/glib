@@ -165,7 +165,7 @@ test_collect (gconstpointer d)
     }
   else
     {
-      g_assert_error (error, G_MARKUP_ERROR, test->error_code);
+      g_assert_error (error, G_MARKUP_ERROR, (gint) test->error_code);
     }
 
   g_markup_parse_context_free (ctx);
