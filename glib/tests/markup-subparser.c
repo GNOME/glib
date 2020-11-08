@@ -334,15 +334,15 @@ test (gconstpointer user_data)
 
 TestCase test_cases[] = /* successful runs */
 {
-    /* in */                    /* out */
-  { "<test/>",                  "<test></test>" },
-  { "<sub><foo/></sub>",        "<sub><<{foo}{/foo}>></sub>" },
-  { "<sub><foo/><bar/></sub>",  "<sub><<{foo}{/foo}{bar}{/bar}>></sub>" },
-  { "<foo><bar/></foo>",        "<foo>[[{foo}{bar}{/bar}{/foo}]]</foo>" },
-  { "<foo><x/><y/></foo>",      "<foo>[[{foo}{x}{/x}{y}{/y}{/foo}]]</foo>" },
-  { "<foo/>",                   "<foo>[[{foo}{/foo}]]</foo>" },
+  /* in */                    /* out */                               /* error */
+  { "<test/>",                  "<test></test>",                            NULL },
+  { "<sub><foo/></sub>",        "<sub><<{foo}{/foo}>></sub>",               NULL },
+  { "<sub><foo/><bar/></sub>",  "<sub><<{foo}{/foo}{bar}{/bar}>></sub>",    NULL },
+  { "<foo><bar/></foo>",        "<foo>[[{foo}{bar}{/bar}{/foo}]]</foo>",    NULL },
+  { "<foo><x/><y/></foo>",      "<foo>[[{foo}{x}{/x}{y}{/y}{/foo}]]</foo>", NULL },
+  { "<foo/>",                   "<foo>[[{foo}{/foo}]]</foo>",               NULL },
   { "<sub><foo/></sub><bar/>",  "<sub><<{foo}{/foo}>></sub>"
-                                "<bar>[[{bar}{/bar}]]</bar>" }
+                                "<bar>[[{bar}{/bar}]]</bar>",               NULL }
 };
 
 TestCase error_cases[] = /* error cases */
