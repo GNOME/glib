@@ -1708,6 +1708,79 @@ test_uri_join_split_round_trip (void)
     }
 }
 
+static const struct
+{
+  /* Inputs */
+  const gchar *base;
+  const gchar *uri;
+  GUriFlags flags;
+  /* Outputs */
+  const gchar *path;
+  int port;
+} normalize_tests[] =
+  {
+    { NULL, "http://foo/path with spaces", G_URI_FLAGS_ENCODED,
+      "/path%20with%20spaces", -1 },
+    { NULL, "http://foo/path with spaces 2", G_URI_FLAGS_ENCODED_PATH,
+      "/path%20with%20spaces%202", -1 },
+    { NULL, "http://foo/%aa", G_URI_FLAGS_ENCODED,
+      "/%AA", -1 },
+    { NULL, "http://foo/p\xc3\xa4th/", G_URI_FLAGS_ENCODED | G_URI_FLAGS_PARSE_RELAXED,
+      "/p%C3%A4th/", -1 },
+    { NULL, "http://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "/", -1 },
+    { NULL, "nothttp://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "", -1 },
+    { NULL, "http://foo:80", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "/", -1 },
+    { NULL, "https://foo:443", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "/", -1 },
+    { NULL, "ftp://foo:21", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "", -1 },
+    { NULL, "nothttp://foo:80", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "", 80 },
+    { "http://foo", "//bar", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "/", -1 },
+    { "http://foo", "//bar:80", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "/", -1 },
+    { "nothttp://foo", "//bar:80", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "", 80 },
+    { "http://foo", "//bar", 0,
+      "", -1 },
+  };
+
+static void
+test_uri_normalize (void)
+{
+  gsize i;
+  int port;
+
+  for (i = 0; i < G_N_ELEMENTS (normalize_tests); ++i)
+    {
+      GUri *uri, *base = NULL;
+      if (normalize_tests[i].base)
+        base = g_uri_parse (normalize_tests[i].base, normalize_tests[i].flags, NULL);
+
+      uri = g_uri_parse_relative (base,
+                                  normalize_tests[i].uri,
+                                  normalize_tests[i].flags,
+                                  NULL);
+
+      g_assert_nonnull (uri);
+      g_assert_cmpstr (g_uri_get_path (uri), ==, normalize_tests[i].path);
+      g_assert_cmpint (g_uri_get_port (uri), ==, normalize_tests[i].port);
+
+      g_uri_unref (uri);
+      if (base)
+        g_uri_unref (base);
+    }
+
+  /* One off testing a codepath where scheme is NULL but internally we still normalize it. */
+  g_assert_true (g_uri_split ("HTTP://foo:80", G_URI_FLAGS_SCHEME_NORMALIZE,
+                              NULL, NULL, NULL, &port, NULL, NULL, NULL, NULL));
+  g_assert_cmpint (port, ==, -1);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1733,6 +1806,7 @@ main (int   argc,
   g_test_add_func ("/uri/to-string", test_uri_to_string);
   g_test_add_func ("/uri/join", test_uri_join);
   g_test_add_func ("/uri/join-split-round-trip", test_uri_join_split_round_trip);
+  g_test_add_func ("/uri/normalize", test_uri_normalize);
   g_test_add_data_func ("/uri/iter-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_iter_params);
   g_test_add_data_func ("/uri/iter-params/length", GINT_TO_POINTER (FALSE), test_uri_iter_params);
   g_test_add_data_func ("/uri/parse-params/nul-terminated", GINT_TO_POINTER (TRUE), test_uri_parse_params);
