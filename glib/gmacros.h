@@ -1118,4 +1118,34 @@
     GLIB_AVAILABLE_MACRO_IN_2_64 \
     sizeof (((struct_type *) 0)->member)
 
+/**
+ * G_GNUC_BEGIN_ALIGNED:
+ * @n: the size of the alignment in bytes
+ *
+ * The %G_GNUC_BEGIN_ALIGNED macro should be used in conjunction with
+ * %G_GNUC_END_ALIGNED before and after a structure definition. Doing so
+ * allows both GNU-like compilers and MSVC-like compilers the ability to
+ * specify the boundary alignment for the structure.
+ */
+/**
+ * G_GNUC_END_ALIGNED:
+ * @n: the size of the alignment in bytes
+ *
+ * The %G_GNUC_END_ALIGNED macro should be used in conjunction with
+ * %G_GNUC_BEGIN_ALIGNED before and after a structure definition. Doing so
+ * allows both GNU-like compilers and MSVC-like compilers the ability to
+ * specify the boundary alignment for the structure.
+ */
+#if G_GNUC_CHECK_VERSION(3, 0)
+# define G_GNUC_BEGIN_ALIGNED(n) GLIB_AVAILABLE_MACRO_IN_2_68
+# define G_GNUC_END_ALIGNED(n) __attribute__((aligned(n))) GLIB_AVAILABLE_MACRO_IN_2_68
+#elif defined(_MSC_VER)
+# define G_GNUC_BEGIN_ALIGNED(n) __declspec(align(n)) GLIB_AVAILABLE_MACRO_IN_2_68
+# define G_GNUC_END_ALIGNED(n) GLIB_AVAILABLE_MACRO_IN_2_68
+#else
+# warning "Cannot specify structure alignment for unknown compiler. Runtime errors may occur."
+# define G_GNUC_BEGIN_ALIGNED(n) GLIB_AVAILABLE_MACRO_IN_2_68
+# define G_GNUC_END_ALIGNED(n) GLIB_AVAILABLE_MACRO_IN_2_68
+#endif
+
 #endif /* __G_MACROS_H__ */
