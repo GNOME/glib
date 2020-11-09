@@ -169,6 +169,7 @@ enum {
 #define HAVE_OPTIONAL_FLAGS
 #endif
 
+G_GNUC_BEGIN_ALIGNED(8)
 typedef struct
 {
   GTypeInstance  g_type_instance;
@@ -179,7 +180,8 @@ typedef struct
   volatile guint optional_flags;
 #endif
   GData         *qdata;
-} GObjectReal;
+} GObjectReal
+G_GNUC_BEGIN_ALIGNED(8);
 
 G_STATIC_ASSERT(sizeof(GObject) == sizeof(GObjectReal));
 G_STATIC_ASSERT(G_STRUCT_OFFSET(GObject, ref_count) == G_STRUCT_OFFSET(GObjectReal, ref_count));

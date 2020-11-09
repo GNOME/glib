@@ -242,6 +242,7 @@ typedef void (*GWeakNotify)		(gpointer      data,
  * All the fields in the GObject structure are private 
  * to the #GObject implementation and should never be accessed directly.
  */
+G_GNUC_BEGIN_ALIGNED(8)
 struct  _GObject
 {
   GTypeInstance  g_type_instance;
@@ -249,7 +250,8 @@ struct  _GObject
   /*< private >*/
   volatile guint ref_count;
   GData         *qdata;
-};
+}
+G_GNUC_END_ALIGNED(8);
 /**
  * GObjectClass:
  * @g_type_class: the parent class

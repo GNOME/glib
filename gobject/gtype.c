@@ -1878,6 +1878,9 @@ g_type_create_instance (GType type)
   private_size = node->data->instance.private_size;
   ivar_size = node->data->instance.instance_size;
 
+  g_assert ((private_size & 0x7) == 0);
+  g_assert ((ivar_size & 0x7) == 0);
+
 #ifdef ENABLE_VALGRIND
   if (private_size && RUNNING_ON_VALGRIND)
     {
@@ -1922,6 +1925,8 @@ g_type_create_instance (GType type)
 #endif
 
   TRACE(GOBJECT_OBJECT_NEW(instance, type));
+
+  g_assert ((GPOINTER_TO_SIZE (instance) & 0x7) == 0);
 
   return instance;
 }
@@ -4777,6 +4782,9 @@ g_type_instance_get_private (GTypeInstance *instance,
       return NULL;
     }
 
+  /* Ensure we maintain alignment requirements */
+  g_assert ((node->data->instance.private_size & 0x7) == 0);
+
   return ((gchar *) instance) - node->data->instance.private_size;
 }
 
@@ -4824,6 +4832,8 @@ g_type_class_get_instance_private_offset (gpointer g_class)
   if (node->data->instance.private_size == parent_size)
     g_error ("g_type_class_get_instance_private_offset() called on class %s but it has no private data",
              g_type_name (instance_type));
+
+  g_assert ((node->data->instance.private_size & 0x7) == 0);
 
   return -(gint) node->data->instance.private_size;
 }
