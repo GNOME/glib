@@ -112,6 +112,19 @@ g_file_icon_set_property (GObject      *object,
 }
 
 static void
+g_file_icon_constructed (GObject *object)
+{
+  GFileIcon *icon;
+
+  G_OBJECT_CLASS (g_file_icon_parent_class)->constructed (object);
+
+  icon = G_FILE_ICON (object);
+
+  /* Must have be set during construction */
+  g_assert (icon->file != NULL);
+}
+
+static void
 g_file_icon_finalize (GObject *object)
 {
   GFileIcon *icon;
@@ -132,6 +145,7 @@ g_file_icon_class_init (GFileIconClass *klass)
   gobject_class->get_property = g_file_icon_get_property;
   gobject_class->set_property = g_file_icon_set_property;
   gobject_class->finalize = g_file_icon_finalize;
+  gobject_class->constructed = g_file_icon_constructed;
 
   /**
    * GFileIcon:file:
