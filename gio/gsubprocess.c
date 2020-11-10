@@ -773,10 +773,10 @@ g_subprocess_get_identifier (GSubprocess *subprocess)
  * Gets the #GOutputStream that you can write to in order to give data
  * to the stdin of @subprocess.
  *
- * The process must have been created with
- * %G_SUBPROCESS_FLAGS_STDIN_PIPE.
+ * The process must have been created with %G_SUBPROCESS_FLAGS_STDIN_PIPE and
+ * not %G_SUBPROCESS_FLAGS_STDIN_INHERIT, otherwise %NULL will be returned.
  *
- * Returns: (transfer none): the stdout pipe
+ * Returns: (nullable) (transfer none): the stdout pipe
  *
  * Since: 2.40
  **/
@@ -784,7 +784,6 @@ GOutputStream *
 g_subprocess_get_stdin_pipe (GSubprocess *subprocess)
 {
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), NULL);
-  g_return_val_if_fail (subprocess->stdin_pipe, NULL);
 
   return subprocess->stdin_pipe;
 }
@@ -796,10 +795,10 @@ g_subprocess_get_stdin_pipe (GSubprocess *subprocess)
  * Gets the #GInputStream from which to read the stdout output of
  * @subprocess.
  *
- * The process must have been created with
- * %G_SUBPROCESS_FLAGS_STDOUT_PIPE.
+ * The process must have been created with %G_SUBPROCESS_FLAGS_STDOUT_PIPE,
+ * otherwise %NULL will be returned.
  *
- * Returns: (transfer none): the stdout pipe
+ * Returns: (nullable) (transfer none): the stdout pipe
  *
  * Since: 2.40
  **/
@@ -807,7 +806,6 @@ GInputStream *
 g_subprocess_get_stdout_pipe (GSubprocess *subprocess)
 {
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), NULL);
-  g_return_val_if_fail (subprocess->stdout_pipe, NULL);
 
   return subprocess->stdout_pipe;
 }
@@ -819,10 +817,10 @@ g_subprocess_get_stdout_pipe (GSubprocess *subprocess)
  * Gets the #GInputStream from which to read the stderr output of
  * @subprocess.
  *
- * The process must have been created with
- * %G_SUBPROCESS_FLAGS_STDERR_PIPE.
+ * The process must have been created with %G_SUBPROCESS_FLAGS_STDERR_PIPE,
+ * otherwise %NULL will be returned.
  *
- * Returns: (transfer none): the stderr pipe
+ * Returns: (nullable) (transfer none): the stderr pipe
  *
  * Since: 2.40
  **/
@@ -830,7 +828,6 @@ GInputStream *
 g_subprocess_get_stderr_pipe (GSubprocess *subprocess)
 {
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), NULL);
-  g_return_val_if_fail (subprocess->stderr_pipe, NULL);
 
   return subprocess->stderr_pipe;
 }
