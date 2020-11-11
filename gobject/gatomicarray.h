@@ -29,7 +29,7 @@ G_BEGIN_DECLS
 
 typedef struct _GAtomicArray GAtomicArray;
 struct _GAtomicArray {
-  volatile gpointer data;               /* elements - atomic */
+  gpointer data;  /* elements - atomic */
 };
 
 void     _g_atomic_array_init   (GAtomicArray *array);
@@ -42,7 +42,7 @@ void     _g_atomic_array_update (GAtomicArray *array,
 #define  G_ATOMIC_ARRAY_GET_LOCKED(_array, _type) ((_type *)((_array)->data))
 
 #define G_ATOMIC_ARRAY_DO_TRANSACTION(_array, _type, _C_) G_STMT_START {	\
-    volatile gpointer *_datap  = &(_array)->data;				\
+    gpointer *_datap  = &(_array)->data;				\
     _type *transaction_data, *__check;						\
 										\
     __check = g_atomic_pointer_get (_datap);					\
