@@ -550,8 +550,8 @@ struct _GTimeVal
   glong tv_usec;
 } GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
 
-typedef gint            grefcount;
-typedef volatile gint   gatomicrefcount;
+typedef gint grefcount;
+typedef gint gatomicrefcount;  /* should be accessed only using atomics */
 
 G_END_DECLS
 
