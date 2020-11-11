@@ -174,9 +174,9 @@ typedef struct
   GTypeInstance  g_type_instance;
 
   /*< private >*/
-  volatile guint ref_count;
+  guint          ref_count;  /* (atomic) */
 #ifdef HAVE_OPTIONAL_FLAGS
-  volatile guint optional_flags;
+  guint          optional_flags;  /* (atomic) */
 #endif
   GData         *qdata;
 } GObjectReal;

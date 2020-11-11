@@ -221,9 +221,9 @@ typedef enum
 /* --- structures --- */
 struct _TypeNode
 {
-  guint volatile ref_count;
+  guint        ref_count;  /* (atomic) */
 #ifdef G_ENABLE_DEBUG
-  guint volatile instance_count;
+  guint        instance_count;  /* (atomic) */
 #endif
   GTypePlugin *plugin;
   guint        n_children; /* writable with lock */
@@ -233,7 +233,7 @@ struct _TypeNode
   guint        is_instantiatable : 1;
   guint        mutatable_check_cache : 1;	/* combines some common path checks */
   GType       *children; /* writable with lock */
-  TypeData * volatile data;
+  TypeData    *data;
   GQuark       qname;
   GData       *global_gdata;
   union {
@@ -569,8 +569,8 @@ type_node_new_W (TypeNode    *pnode,
 }
 
 static inline IFaceEntry*
-lookup_iface_entry_I (volatile IFaceEntries *entries,
-		      TypeNode *iface_node)
+lookup_iface_entry_I (IFaceEntries *entries,
+                      TypeNode     *iface_node)
 {
   guint8 *offsets;
   guint offset_index;

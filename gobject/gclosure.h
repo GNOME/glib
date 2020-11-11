@@ -175,20 +175,20 @@ struct _GClosureNotifyData
 struct _GClosure
 {
   /*< private >*/
-  volatile      	guint	 ref_count : 15;
+  guint ref_count : 15;  /* (atomic) */
   /* meta_marshal is not used anymore but must be zero for historical reasons
      as it was exposed in the G_CLOSURE_N_NOTIFIERS macro */
-  volatile       	guint	 meta_marshal_nouse : 1;
-  volatile       	guint	 n_guards : 1;
-  volatile       	guint	 n_fnotifiers : 2;	/* finalization notifiers */
-  volatile       	guint	 n_inotifiers : 8;	/* invalidation notifiers */
-  volatile       	guint	 in_inotify : 1;
-  volatile       	guint	 floating : 1;
+  guint meta_marshal_nouse : 1;  /* (atomic) */
+  guint n_guards : 1;  /* (atomic) */
+  guint n_fnotifiers : 2;  /* finalization notifiers (atomic) */
+  guint n_inotifiers : 8;  /* invalidation notifiers (atomic) */
+  guint in_inotify : 1;  /* (atomic) */
+  guint floating : 1;  /* (atomic) */
   /*< protected >*/
-  volatile         	guint	 derivative_flag : 1;
+  guint derivative_flag : 1;  /* (atomic) */
   /*< public >*/
-  volatile       	guint	 in_marshal : 1;
-  volatile       	guint	 is_invalid : 1;
+  guint in_marshal : 1;  /* (atomic) */
+  guint is_invalid : 1;  /* (atomic) */
 
   /*< private >*/	void   (*marshal)  (GClosure       *closure,
 					    GValue /*out*/ *return_value,
