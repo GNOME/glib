@@ -61,7 +61,7 @@ void
 g_networking_init (void)
 {
 #ifdef G_OS_WIN32
-  static volatile gsize inited = 0;
+  static gsize inited = 0;
 
   if (g_once_init_enter (&inited))
     {
