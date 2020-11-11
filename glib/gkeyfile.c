@@ -512,7 +512,7 @@ struct _GKeyFile
 
   gchar **locales;
 
-  volatile gint ref_count;
+  gint ref_count;  /* (atomic) */
 };
 
 typedef struct _GKeyFileKeyValuePair GKeyFileKeyValuePair;
