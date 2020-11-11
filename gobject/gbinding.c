@@ -139,6 +139,45 @@ g_binding_flags_get_type (void)
   return static_g_define_type_id;
 }
 
+/* Reference counted helper struct that is passed to all callbacks to ensure
+ * that they never work with already freed objects without having to store
+ * strong references for them.
+ *
+ * Using strong references anywhere is not possible because of the API
+ * requirements of GBinding, specifically that the initial reference of the
+ * GBinding is owned by the source/target and the caller and can be released
+ * either by the source/target being finalized or calling g_binding_unbind().
+ *
+ * As such, the only strong reference has to be owned by both weak notifies of
+ * the source and target and the first to be called has to release it.
+ */
+typedef struct {
+  GWeakRef binding;
+  GWeakRef source;
+  GWeakRef target;
+  gboolean binding_removed;
+} BindingContext;
+
+static BindingContext *
+binding_context_ref (BindingContext *context)
+{
+  return g_atomic_rc_box_acquire (context);
+}
+
+static void
+binding_context_clear (BindingContext *context)
+{
+  g_weak_ref_clear (&context->binding);
+  g_weak_ref_clear (&context->source);
+  g_weak_ref_clear (&context->target);
+}
+
+static void
+binding_context_unref (BindingContext *context)
+{
+  g_atomic_rc_box_release_full (context, (GDestroyNotify) binding_context_clear);
+}
+
 #define G_BINDING_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_BINDING, GBindingClass))
 #define G_IS_BINDING_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_BINDING))
 #define G_BINDING_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_BINDING, GBindingClass))
@@ -150,8 +189,7 @@ struct _GBinding
   GObject parent_instance;
 
   /* no reference is held on the objects, to avoid cycles */
-  GWeakRef source;
-  GWeakRef target;
+  BindingContext *context;
 
   /* the property names are interned, so they should not be freed */
   const gchar *source_property;
@@ -165,8 +203,13 @@ struct _GBinding
 
   GBindingFlags flags;
 
-  guint source_notify;
-  guint target_notify;
+  /* protects source and target property notify and
+   * target_weak_notify_installed for unbinding */
+  GMutex unbind_lock;
+
+  guint source_notify; /* LOCK: unbind_lock */
+  guint target_notify; /* LOCK: unbind_lock */
+  gboolean target_weak_notify_installed; /* LOCK: unbind_lock */
 
   gpointer transform_data;
   GDestroyNotify notify;
@@ -197,49 +240,107 @@ G_DEFINE_TYPE (GBinding, g_binding, G_TYPE_OBJECT)
 
 /* the basic assumption is that if either the source or the target
  * goes away then the binding does not exist any more and it should
- * be reaped as well
+ * be reaped as well. Each weak notify owns a strong reference to the
+ * binding that should be dropped here.
  */
 static void
 weak_unbind (gpointer  user_data,
              GObject  *where_the_object_was)
 {
-  GBinding *binding = user_data;
+  BindingContext *context = user_data;
+  GBinding *binding;
   GObject *source, *target;
+  gboolean binding_was_removed = FALSE;
 
-  source = g_weak_ref_get (&binding->source);
-  target = g_weak_ref_get (&binding->target);
+  binding = g_weak_ref_get (&context->binding);
+  if (!binding)
+    {
+      /* The binding was already destroyed before so there's nothing to do */
+      binding_context_unref (context);
+      return;
+    }
 
-  /* if what went away was the source, unset it so that GBinding::finalize
-   * does not try to access it; otherwise, disconnect everything and remove
-   * the GBinding instance from the object's qdata
+  g_mutex_lock (&binding->unbind_lock);
+
+  source = g_weak_ref_get (&context->source);
+  target = g_weak_ref_get (&context->target);
+
+  /* If this is called then either the source or target or both must be in the
+   * process of being finalized and their weak reference must be reset to NULL
+   * already. */
+  g_assert (source == NULL || target == NULL);
+
+  /* If the target went away we still have a strong reference to the source
+   * here and can clear it from the binding. Otherwise if the source went away
+   * we can clear the target from the binding.
+   *
+   * The property notification has already been removed for the object for
+   * which this function was called and does not have to be removed manually.
    */
   if (source)
     {
+      /* We always add/remove the source property notify and the weak notify
+       * of the source at the same time, and should only ever do that once. */
       if (binding->source_notify != 0)
-        g_signal_handler_disconnect (source, binding->source_notify);
+        {
+          g_signal_handler_disconnect (source, binding->source_notify);
 
-      g_object_weak_unref (source, weak_unbind, user_data);
+          g_object_weak_unref (source, weak_unbind, context);
+          binding_context_unref (context);
 
-      binding->source_notify = 0;
-      g_weak_ref_set (&binding->source, NULL);
-      g_object_unref (source);
+          binding->source_notify = 0;
+        }
+      g_weak_ref_set (&context->source, NULL);
     }
 
-  /* as above, but with the target */
+  /* As above, but with the target. If source == target then both will be NULL
+   * inside this function so there's no risk of removing the weak notify
+   * twice. */
   if (target)
     {
+      /* There might be a target property notify without a weak notify on the
+       * target or the other way around, so these have to be handled
+       * independently here unlike for the source */
       if (binding->target_notify != 0)
-        g_signal_handler_disconnect (target, binding->target_notify);
+        {
+          g_signal_handler_disconnect (target, binding->target_notify);
 
-      g_object_weak_unref (target, weak_unbind, user_data);
+          binding->target_notify = 0;
+        }
+      g_weak_ref_set (&context->target, NULL);
 
-      binding->target_notify = 0;
-      g_weak_ref_set (&binding->target, NULL);
-      g_object_unref (target);
+      /* Remove the weak notify from the target, at most once */
+      if (binding->target_weak_notify_installed)
+        {
+          g_object_weak_unref (target, weak_unbind, context);
+          binding_context_unref (context);
+          binding->target_weak_notify_installed = FALSE;
+        }
     }
 
-  /* this will take care of the binding itself */
+  /* Make sure to remove the binding only once */
+  if (!context->binding_removed)
+    {
+      context->binding_removed = TRUE;
+      binding_was_removed = TRUE;
+    }
+
+  g_mutex_unlock (&binding->unbind_lock);
+
+  /* Unref source and target after the mutex is unlocked as it might
+   * release the last reference, which then accesses the mutex again */
+  g_clear_object (&target);
+  g_clear_object (&source);
+
+  /* This releases the strong reference we got from the weak ref above */
   g_object_unref (binding);
+
+  /* This will take care of the binding itself. */
+  if (binding_was_removed)
+    g_object_unref (binding);
+
+  /* Each weak notify owns a reference to the binding context. */
+  binding_context_unref (context);
 }
 
 static gboolean
@@ -301,26 +402,37 @@ default_invert_boolean_transform (GBinding     *binding,
 }
 
 static void
-on_source_notify (GObject    *gobject,
-                  GParamSpec *pspec,
-                  GBinding   *binding)
+on_source_notify (GObject          *source,
+                  GParamSpec       *pspec,
+                  BindingContext   *context)
 {
+  GBinding *binding;
   GObject *target;
   GValue from_value = G_VALUE_INIT;
   GValue to_value = G_VALUE_INIT;
   gboolean res;
 
-  if (binding->is_frozen)
+  binding = g_weak_ref_get (&context->binding);
+  if (!binding)
     return;
 
-  target = g_weak_ref_get (&binding->target);
+  if (binding->is_frozen)
+    {
+      g_object_unref (binding);
+      return;
+    }
+
+  target = g_weak_ref_get (&context->target);
   if (!target)
-    return;
+    {
+      g_object_unref (binding);
+      return;
+    }
 
   g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
   g_value_init (&to_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
 
-  g_object_get_property (gobject, binding->source_pspec->name, &from_value);
+  g_object_get_property (source, binding->source_pspec->name, &from_value);
 
   res = binding->transform_s2t (binding,
                                 &from_value,
@@ -340,29 +452,41 @@ on_source_notify (GObject    *gobject,
   g_value_unset (&to_value);
 
   g_object_unref (target);
+  g_object_unref (binding);
 }
 
 static void
-on_target_notify (GObject    *gobject,
-                  GParamSpec *pspec,
-                  GBinding   *binding)
+on_target_notify (GObject          *target,
+                  GParamSpec       *pspec,
+                  BindingContext   *context)
 {
+  GBinding *binding;
   GObject *source;
   GValue from_value = G_VALUE_INIT;
   GValue to_value = G_VALUE_INIT;
   gboolean res;
 
-  if (binding->is_frozen)
+  binding = g_weak_ref_get (&context->binding);
+  if (!binding)
     return;
 
-  source = g_weak_ref_get (&binding->source);
+  if (binding->is_frozen)
+    {
+      g_object_unref (binding);
+      return;
+    }
+
+  source = g_weak_ref_get (&context->source);
   if (!source)
-    return;
+    {
+      g_object_unref (binding);
+      return;
+    }
 
   g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
   g_value_init (&to_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
 
-  g_object_get_property (gobject, binding->target_pspec->name, &from_value);
+  g_object_get_property (target, binding->target_pspec->name, &from_value);
 
   res = binding->transform_t2s (binding,
                                 &from_value,
@@ -382,20 +506,16 @@ on_target_notify (GObject    *gobject,
   g_value_unset (&to_value);
 
   g_object_unref (source);
+  g_object_unref (binding);
 }
 
 static inline void
 g_binding_unbind_internal (GBinding *binding,
                            gboolean  unref_binding)
 {
+  BindingContext *context = binding->context;
   GObject *source, *target;
-  gboolean source_is_target;
   gboolean binding_was_removed = FALSE;
-
-  source = g_weak_ref_get (&binding->source);
-  target = g_weak_ref_get (&binding->target);
-
-  source_is_target = source == target;
 
   /* dispose of the transformation data */
   if (binding->notify != NULL)
@@ -406,34 +526,67 @@ g_binding_unbind_internal (GBinding *binding,
       binding->notify = NULL;
     }
 
-  if (source != NULL)
+  g_mutex_lock (&binding->unbind_lock);
+
+  source = g_weak_ref_get (&context->source);
+  target = g_weak_ref_get (&context->target);
+
+  /* If the binding was removed previously, source and target are both NULL.
+   * Otherwise both will not be NULL. */
+  g_assert ((source == NULL && target == NULL) || (source != NULL && target != NULL));
+
+  if (source)
     {
+      /* We always add/remove the source property notify and the weak notify
+       * of the source at the same time, and should only ever do that once. */
       if (binding->source_notify != 0)
-        g_signal_handler_disconnect (source, binding->source_notify);
+        {
+          g_signal_handler_disconnect (source, binding->source_notify);
 
-      g_object_weak_unref (source, weak_unbind, binding);
+          g_object_weak_unref (source, weak_unbind, context);
+          binding_context_unref (context);
 
-      binding->source_notify = 0;
-      g_weak_ref_set (&binding->source, NULL);
-      binding_was_removed = TRUE;
-
-      g_object_unref (source);
+          binding->source_notify = 0;
+        }
+      g_weak_ref_set (&context->source, NULL);
     }
 
-  if (target != NULL)
+  /* As above, but with the target. */
+  if (target)
     {
+      /* There might be a target property notify without a weak notify on the
+       * target or the other way around, so these have to be handled
+       * independently here unlike for the source */
       if (binding->target_notify != 0)
-        g_signal_handler_disconnect (target, binding->target_notify);
+        {
+          g_signal_handler_disconnect (target, binding->target_notify);
 
-      if (!source_is_target)
-        g_object_weak_unref (target, weak_unbind, binding);
+          binding->target_notify = 0;
+        }
+      g_weak_ref_set (&context->target, NULL);
 
-      binding->target_notify = 0;
-      g_weak_ref_set (&binding->target, NULL);
-      binding_was_removed = TRUE;
-
-      g_object_unref (target);
+      /* Remove the weak notify from the target, at most once */
+      if (binding->target_weak_notify_installed)
+        {
+          g_object_weak_unref (target, weak_unbind, context);
+          binding_context_unref (context);
+          binding->target_weak_notify_installed = FALSE;
+        }
     }
+
+  /* Make sure to remove the binding only once */
+  if (!context->binding_removed)
+    {
+      context->binding_removed = TRUE;
+      binding_was_removed = TRUE;
+    }
+
+  g_mutex_unlock (&binding->unbind_lock);
+
+  /* Unref source and target after the mutex is unlocked as it might
+   * release the last reference, which then accesses the mutex again */
+  g_clear_object (&target);
+  g_clear_object (&source);
 
   if (binding_was_removed && unref_binding)
     g_object_unref (binding);
@@ -446,8 +599,18 @@ g_binding_finalize (GObject *gobject)
 
   g_binding_unbind_internal (binding, FALSE);
 
-  g_weak_ref_clear (&binding->source);
-  g_weak_ref_clear (&binding->target);
+  /* dispose of the transformation data */
+  if (binding->notify != NULL)
+    {
+      binding->notify (binding->transform_data);
+
+      binding->transform_data = NULL;
+      binding->notify = NULL;
+    }
+
+  binding_context_unref (binding->context);
+
+  g_mutex_clear (&binding->unbind_lock);
 
   G_OBJECT_CLASS (g_binding_parent_class)->finalize (gobject);
 }
@@ -510,11 +673,11 @@ g_binding_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_SOURCE:
-      g_weak_ref_set (&binding->source, g_value_get_object (value));
+      g_weak_ref_set (&binding->context->source, g_value_get_object (value));
       break;
 
     case PROP_TARGET:
-      g_weak_ref_set (&binding->target, g_value_get_object (value));
+      g_weak_ref_set (&binding->context->target, g_value_get_object (value));
       break;
 
     case PROP_SOURCE_PROPERTY:
@@ -564,7 +727,7 @@ g_binding_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_SOURCE:
-      g_value_take_object (value, g_weak_ref_get (&binding->source));
+      g_value_take_object (value, g_weak_ref_get (&binding->context->source));
       break;
 
     case PROP_SOURCE_PROPERTY:
@@ -573,7 +736,7 @@ g_binding_get_property (GObject    *gobject,
       break;
 
     case PROP_TARGET:
-      g_value_take_object (value, g_weak_ref_get (&binding->target));
+      g_value_take_object (value, g_weak_ref_get (&binding->context->target));
       break;
 
     case PROP_TARGET_PROPERTY:
@@ -601,8 +764,8 @@ g_binding_constructed (GObject *gobject)
   GClosure *source_notify_closure;
 
   /* assert that we were constructed correctly */
-  source = g_weak_ref_get (&binding->source);
-  target = g_weak_ref_get (&binding->target);
+  source = g_weak_ref_get (&binding->context->source);
+  target = g_weak_ref_get (&binding->context->target);
   g_assert (source != NULL);
   g_assert (target != NULL);
   g_assert (binding->source_property != NULL);
@@ -630,14 +793,15 @@ g_binding_constructed (GObject *gobject)
 
   source_property_detail = g_quark_from_string (binding->source_property);
   source_notify_closure = g_cclosure_new (G_CALLBACK (on_source_notify),
-                                          binding, NULL);
+                                          binding_context_ref (binding->context),
+                                          (GClosureNotify) binding_context_unref);
   binding->source_notify = g_signal_connect_closure_by_id (source,
                                                            gobject_notify_signal_id,
                                                            source_property_detail,
                                                            source_notify_closure,
                                                            FALSE);
 
-  g_object_weak_ref (source, weak_unbind, binding);
+  g_object_weak_ref (source, weak_unbind, binding_context_ref (binding->context));
 
   if (binding->flags & G_BINDING_BIDIRECTIONAL)
     {
@@ -646,7 +810,8 @@ g_binding_constructed (GObject *gobject)
 
       target_property_detail = g_quark_from_string (binding->target_property);
       target_notify_closure = g_cclosure_new (G_CALLBACK (on_target_notify),
-                                              binding, NULL);
+                                              binding_context_ref (binding->context),
+                                              (GClosureNotify) binding_context_unref);
       binding->target_notify = g_signal_connect_closure_by_id (target,
                                                                gobject_notify_signal_id,
                                                                target_property_detail,
@@ -655,7 +820,14 @@ g_binding_constructed (GObject *gobject)
     }
 
   if (target != source)
-    g_object_weak_ref (target, weak_unbind, binding);
+    {
+      g_object_weak_ref (target, weak_unbind, binding_context_ref (binding->context));
+
+      /* Need to remember separately if a target weak notify was installed as
+       * unlike for the source it can exist independently of the property
+       * notification callback */
+      binding->target_weak_notify_installed = TRUE;
+    }
 
   g_object_unref (source);
   g_object_unref (target);
@@ -763,6 +935,12 @@ g_binding_class_init (GBindingClass *klass)
 static void
 g_binding_init (GBinding *binding)
 {
+  g_mutex_init (&binding->unbind_lock);
+
+  binding->context = g_atomic_rc_box_new0 (BindingContext);
+  g_weak_ref_init (&binding->context->binding, binding);
+  g_weak_ref_init (&binding->context->source, NULL);
+  g_weak_ref_init (&binding->context->target, NULL);
 }
 
 /**
@@ -809,7 +987,7 @@ g_binding_get_source (GBinding *binding)
 
   g_return_val_if_fail (G_IS_BINDING (binding), NULL);
 
-  source = g_weak_ref_get (&binding->source);
+  source = g_weak_ref_get (&binding->context->source);
   /* Unref here, this API is not thread-safe
    * FIXME: Remove this API when we next break API */
   if (source)
@@ -838,7 +1016,7 @@ g_binding_dup_source (GBinding *binding)
 {
   g_return_val_if_fail (G_IS_BINDING (binding), NULL);
 
-  return g_weak_ref_get (&binding->source);
+  return g_weak_ref_get (&binding->context->source);
 }
 
 /**
@@ -867,7 +1045,7 @@ g_binding_get_target (GBinding *binding)
 
   g_return_val_if_fail (G_IS_BINDING (binding), NULL);
 
-  target = g_weak_ref_get (&binding->target);
+  target = g_weak_ref_get (&binding->context->target);
   /* Unref here, this API is not thread-safe
    * FIXME: Remove this API when we next break API */
   if (target)
@@ -896,7 +1074,7 @@ g_binding_dup_target (GBinding *binding)
 {
   g_return_val_if_fail (G_IS_BINDING (binding), NULL);
 
-  return g_weak_ref_get (&binding->target);
+  return g_weak_ref_get (&binding->context->target);
 }
 
 /**
@@ -945,9 +1123,13 @@ g_binding_get_target_property (GBinding *binding)
  * property expressed by @binding.
  *
  * This function will release the reference that is being held on
- * the @binding instance; if you want to hold on to the #GBinding instance
- * after calling g_binding_unbind(), you will need to hold a reference
- * to it.
+ * the @binding instance if the binding is still bound; if you want to hold on
+ * to the #GBinding instance after calling g_binding_unbind(), you will need
+ * to hold a reference to it.
+ *
+ * Note however that this function does not take ownership of @binding, it
+ * only unrefs the reference that was initially created by
+ * g_object_bind_property() and is owned by the binding.
  *
  * Since: 2.38
  */
@@ -1148,7 +1330,7 @@ g_object_bind_property_full (gpointer               source,
    * will emit a notification on the target
    */
   if (flags & G_BINDING_SYNC_CREATE)
-    on_source_notify (source, binding->source_pspec, binding);
+    on_source_notify (source, binding->source_pspec, binding->context);
 
   return binding;
 }
@@ -1181,6 +1363,13 @@ g_object_bind_property_full (gpointer               source,
  * @target instances are finalized. To remove the binding without affecting the
  * @source and the @target you can just call g_object_unref() on the returned
  * #GBinding instance.
+ *
+ * Removing the binding by calling g_object_unref() on it must only be done if
+ * the binding, @source and @target are only used from a single thread and it
+ * is clear that both @source and @target outlive the binding. Especially it
+ * is not safe to rely on this if the binding, @source or @target can be
+ * finalized from different threads. Keep another reference to the binding and
+ * use g_binding_unbind() instead to be on the safe side.
  *
  * A #GObject can have multiple bindings.
  *
