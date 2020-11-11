@@ -92,7 +92,7 @@ struct context
 static struct context contexts[NUM_THREADS];
 static GThread *threads[NUM_THREADS];
 static GWakeup *last_token_wakeup;
-static volatile gint tokens_alive;
+static gint tokens_alive;  /* (atomic) */
 
 static void
 context_init (struct context *ctx)

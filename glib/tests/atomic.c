@@ -248,8 +248,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 #define THREADS 10
 #define ROUNDS 10000
 
-volatile gint bucket[THREADS];
-volatile gint atomic;
+gint bucket[THREADS];  /* never contested by threads, not accessed atomically */
+gint atomic;  /* (atomic) */
 
 static gpointer
 thread_func (gpointer data)

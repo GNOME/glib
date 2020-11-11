@@ -107,7 +107,7 @@ thread_allocate (gpointer data)
   gint b;
   gint size;
   gpointer p;
-  volatile gpointer *loc;
+  gpointer *loc;  /* (atomic) */
 
   for (i = 0; i < 10000; i++)
     {
