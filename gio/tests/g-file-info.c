@@ -221,7 +221,7 @@ test_internal_enhanced_stdio (void)
   guint64 size_p0, alsize_p0, size_ps, alsize_ps;
   const gchar *id_p0;
   const gchar *id_p1;
-  volatile guint64 time_p0;
+  guint64 time_p0;
   gchar *tmp_dir;
   wchar_t *programdata_dir_w;
   wchar_t *users_dir_w;
