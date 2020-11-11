@@ -99,7 +99,7 @@ test_start_stop (void)
 
 GMutex mutex_712570;
 GCond cond_712570;
-volatile gboolean finalized;
+gboolean finalized;  /* (atomic) */
 
 GType test_threaded_socket_service_get_type (void);
 typedef GThreadedSocketService TestThreadedSocketService;
@@ -120,7 +120,7 @@ test_threaded_socket_service_finalize (GObject *object)
   /* Signal the main thread that finalization completed successfully
    * rather than hanging.
    */
-  finalized = TRUE;
+  g_atomic_int_set (&finalized, TRUE);
   g_cond_signal (&cond_712570);
   g_mutex_unlock (&mutex_712570);
 }
@@ -235,7 +235,7 @@ test_threaded_712570 (void)
    */
   g_object_unref (service);
 
-  while (!finalized)
+  while (!g_atomic_int_get (&finalized))
     g_cond_wait (&cond_712570, &mutex_712570);
   g_mutex_unlock (&mutex_712570);
 }
