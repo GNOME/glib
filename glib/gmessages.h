@@ -478,7 +478,7 @@ g_debug (const gchar *format,
 #if defined(G_HAVE_ISO_VARARGS) && !G_ANALYZER_ANALYZING
 #define g_warning_once(...) \
   G_STMT_START { \
-    static volatile int G_PASTE (_GWarningOnceBoolean, __LINE__) = 0; \
+    static int G_PASTE (_GWarningOnceBoolean, __LINE__) = 0;  /* (atomic) */ \
     if (g_atomic_int_compare_and_exchange (&G_PASTE (_GWarningOnceBoolean, __LINE__), \
                                            0, 1)) \
       g_warning (__VA_ARGS__); \
@@ -487,7 +487,7 @@ g_debug (const gchar *format,
 #elif defined(G_HAVE_GNUC_VARARGS)  && !G_ANALYZER_ANALYZING
 #define g_warning_once(format...) \
   G_STMT_START { \
-    static volatile int G_PASTE (_GWarningOnceBoolean, __LINE__) = 0; \
+    static int G_PASTE (_GWarningOnceBoolean, __LINE__) = 0;  /* (atomic) */ \
     if (g_atomic_int_compare_and_exchange (&G_PASTE (_GWarningOnceBoolean, __LINE__), \
                                            0, 1)) \
       g_warning (format); \
