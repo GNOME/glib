@@ -247,7 +247,7 @@ struct  _GObject
   GTypeInstance  g_type_instance;
   
   /*< private >*/
-  volatile guint ref_count;
+  guint          ref_count;  /* (atomic) */
   GData         *qdata;
 };
 /**
