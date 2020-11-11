@@ -178,6 +178,59 @@ binding_context_unref (BindingContext *context)
   g_atomic_rc_box_release_full (context, (GDestroyNotify) binding_context_clear);
 }
 
+/* Reference counting for the transform functions to ensure that they're always
+ * valid while making use of them in the property notify callbacks.
+ *
+ * The transform functions are released when unbinding but unbinding can happen
+ * while the transform functions are currently in use inside the notify callbacks.
+ *
+ * Note that the transform functions are only released from explicit unbinding
+ * or when the binding itself is finalized. Finalizing the source and target
+ * while the binding is still alive does not release the transform functions
+ * yet. */
+typedef struct {
+  GBindingTransformFunc transform_s2t;
+  GBindingTransformFunc transform_t2s;
+
+  gpointer transform_data;
+  GDestroyNotify destroy_notify;
+} TransformFunc;
+
+static TransformFunc *
+transform_func_new (GBindingTransformFunc transform_s2t,
+                    GBindingTransformFunc transform_t2s,
+                    gpointer              transform_data,
+                    GDestroyNotify        destroy_notify)
+{
+  TransformFunc *func = g_atomic_rc_box_new0 (TransformFunc);
+
+  func->transform_s2t = transform_s2t;
+  func->transform_t2s = transform_t2s;
+  func->transform_data = transform_data;
+  func->destroy_notify = destroy_notify;
+
+  return func;
+}
+
+static TransformFunc *
+transform_func_ref (TransformFunc *func)
+{
+  return g_atomic_rc_box_acquire (func);
+}
+
+static void
+transform_func_clear (TransformFunc *func)
+{
+  if (func->destroy_notify)
+    func->destroy_notify (func->transform_data);
+}
+
+static void
+transform_func_unref (TransformFunc *func)
+{
+  g_atomic_rc_box_release_full (func, (GDestroyNotify) transform_func_clear);
+}
+
 #define G_BINDING_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_BINDING, GBindingClass))
 #define G_IS_BINDING_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_BINDING))
 #define G_BINDING_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_BINDING, GBindingClass))
@@ -191,6 +244,13 @@ struct _GBinding
   /* no reference is held on the objects, to avoid cycles */
   BindingContext *context;
 
+  /* protects transform_func, source, target property notify and
+   * target_weak_notify_installed for unbinding */
+  GMutex unbind_lock;
+
+  /* transform functions, only NULL after unbinding */
+  TransformFunc *transform_func; /* LOCK: unbind_lock */
+
   /* the property names are interned, so they should not be freed */
   const gchar *source_property;
   const gchar *target_property;
@@ -198,21 +258,11 @@ struct _GBinding
   GParamSpec *source_pspec;
   GParamSpec *target_pspec;
 
-  GBindingTransformFunc transform_s2t;
-  GBindingTransformFunc transform_t2s;
-
   GBindingFlags flags;
-
-  /* protects source and target property notify and
-   * target_weak_notify_installed for unbinding */
-  GMutex unbind_lock;
 
   guint source_notify; /* LOCK: unbind_lock */
   guint target_notify; /* LOCK: unbind_lock */
   gboolean target_weak_notify_installed; /* LOCK: unbind_lock */
-
-  gpointer transform_data;
-  GDestroyNotify notify;
 
   /* a guard, to avoid loops */
   guint is_frozen : 1;
@@ -408,6 +458,7 @@ on_source_notify (GObject          *source,
 {
   GBinding *binding;
   GObject *target;
+  TransformFunc *transform_func;
   GValue from_value = G_VALUE_INIT;
   GValue to_value = G_VALUE_INIT;
   gboolean res;
@@ -429,15 +480,29 @@ on_source_notify (GObject          *source,
       return;
     }
 
+  /* Get the transform function safely */
+  g_mutex_lock (&binding->unbind_lock);
+  if (!binding->transform_func)
+    {
+      /* it was released already during unbinding, nothing to do here */
+      g_mutex_unlock (&binding->unbind_lock);
+      return;
+    }
+  transform_func = transform_func_ref (binding->transform_func);
+  g_mutex_unlock (&binding->unbind_lock);
+
   g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
   g_value_init (&to_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
 
   g_object_get_property (source, binding->source_pspec->name, &from_value);
 
-  res = binding->transform_s2t (binding,
-                                &from_value,
-                                &to_value,
-                                binding->transform_data);
+  res = transform_func->transform_s2t (binding,
+                                       &from_value,
+                                       &to_value,
+                                       transform_func->transform_data);
+
+  transform_func_unref (transform_func);
+
   if (res)
     {
       binding->is_frozen = TRUE;
@@ -462,6 +527,7 @@ on_target_notify (GObject          *target,
 {
   GBinding *binding;
   GObject *source;
+  TransformFunc *transform_func;
   GValue from_value = G_VALUE_INIT;
   GValue to_value = G_VALUE_INIT;
   gboolean res;
@@ -483,15 +549,28 @@ on_target_notify (GObject          *target,
       return;
     }
 
+  /* Get the transform function safely */
+  g_mutex_lock (&binding->unbind_lock);
+  if (!binding->transform_func)
+    {
+      /* it was released already during unbinding, nothing to do here */
+      g_mutex_unlock (&binding->unbind_lock);
+      return;
+    }
+  transform_func = transform_func_ref (binding->transform_func);
+  g_mutex_unlock (&binding->unbind_lock);
+
   g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
   g_value_init (&to_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
 
   g_object_get_property (target, binding->target_pspec->name, &from_value);
 
-  res = binding->transform_t2s (binding,
-                                &from_value,
-                                &to_value,
-                                binding->transform_data);
+  res = transform_func->transform_t2s (binding,
+                                       &from_value,
+                                       &to_value,
+                                       transform_func->transform_data);
+  transform_func_unref (transform_func);
+
   if (res)
     {
       binding->is_frozen = TRUE;
@@ -516,17 +595,11 @@ g_binding_unbind_internal (GBinding *binding,
   BindingContext *context = binding->context;
   GObject *source, *target;
   gboolean binding_was_removed = FALSE;
-
-  /* dispose of the transformation data */
-  if (binding->notify != NULL)
-    {
-      binding->notify (binding->transform_data);
-
-      binding->transform_data = NULL;
-      binding->notify = NULL;
-    }
+  TransformFunc *transform_func;
 
   g_mutex_lock (&binding->unbind_lock);
+
+  transform_func = g_steal_pointer (&binding->transform_func);
 
   source = g_weak_ref_get (&context->source);
   target = g_weak_ref_get (&context->target);
@@ -583,10 +656,12 @@ g_binding_unbind_internal (GBinding *binding,
 
   g_mutex_unlock (&binding->unbind_lock);
 
-  /* Unref source and target after the mutex is unlocked as it might
-   * release the last reference, which then accesses the mutex again */
+  /* Unref source, target and transform_func after the mutex is unlocked as it
+   * might release the last reference, which then accesses the mutex again */
   g_clear_object (&target);
   g_clear_object (&source);
+
+  g_clear_pointer (&transform_func, transform_func_unref);
 
   if (binding_was_removed && unref_binding)
     g_object_unref (binding);
@@ -598,15 +673,6 @@ g_binding_finalize (GObject *gobject)
   GBinding *binding = G_BINDING (gobject);
 
   g_binding_unbind_internal (binding, FALSE);
-
-  /* dispose of the transformation data */
-  if (binding->notify != NULL)
-    {
-      binding->notify (binding->transform_data);
-
-      binding->transform_data = NULL;
-      binding->notify = NULL;
-    }
 
   binding_context_unref (binding->context);
 
@@ -785,11 +851,7 @@ g_binding_constructed (GObject *gobject)
     transform_func = default_invert_boolean_transform;
 
   /* set the default transformation functions here */
-  binding->transform_s2t = transform_func;
-  binding->transform_t2s = transform_func;
-
-  binding->transform_data = NULL;
-  binding->notify = NULL;
+  binding->transform_func = transform_func_new (transform_func, transform_func, NULL, NULL);
 
   source_property_detail = g_quark_from_string (binding->source_property);
   source_notify_closure = g_cclosure_new (G_CALLBACK (on_source_notify),
@@ -1315,14 +1377,17 @@ g_object_bind_property_full (gpointer               source,
                           "flags", flags,
                           NULL);
 
-  if (transform_to != NULL)
-    binding->transform_s2t = transform_to;
+  g_assert (binding->transform_func != NULL);
 
-  if (transform_from != NULL)
-    binding->transform_t2s = transform_from;
+  /* Use default functions if not provided here */
+  if (transform_to == NULL)
+    transform_to = binding->transform_func->transform_s2t;
 
-  binding->transform_data = user_data;
-  binding->notify = notify;
+  if (transform_from == NULL)
+    transform_from = binding->transform_func->transform_t2s;
+
+  g_clear_pointer (&binding->transform_func, transform_func_unref);
+  binding->transform_func = transform_func_new (transform_to, transform_from, user_data, notify);
 
   /* synchronize the target with the source by faking an emission of
    * the ::notify signal for the source property; this will also take
