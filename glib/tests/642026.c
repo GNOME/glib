@@ -25,7 +25,7 @@ static GMutex *mutex;
 static GCond *cond;
 static guint i;
 
-static volatile gint freed = 0;
+static gint freed = 0;  /* (atomic) */
 
 static void
 notify (gpointer p)
@@ -63,7 +63,7 @@ testcase (void)
       GThread *t1;
 
       g_static_private_init (&sp);
-      freed = 0;
+      g_atomic_int_set (&freed, 0);
 
       t1 = g_thread_create (thread_func, NULL, TRUE, NULL);
       g_assert (t1 != NULL);
