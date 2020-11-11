@@ -1060,7 +1060,7 @@ test_object_set_property (GObject      *object,
 static GType
 test_enum_get_type (void)
 {
-  static volatile gsize define_type_id = 0;
+  static gsize define_type_id = 0;
 
   if (g_once_init_enter (&define_type_id))
     {
@@ -1082,7 +1082,7 @@ test_enum_get_type (void)
 static GType
 test_flags_get_type (void)
 {
-  static volatile gsize define_type_id = 0;
+  static gsize define_type_id = 0;
 
   if (g_once_init_enter (&define_type_id))
     {

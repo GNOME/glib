@@ -180,19 +180,19 @@ G_DEFINE_BOXED_TYPE (GOptionGroup, g_option_group, g_option_group_ref, g_option_
 GType
 g_strv_get_type (void)
 {
-  static volatile gsize g_define_type_id__volatile = 0;
+  static gsize static_g_define_type_id = 0;
 
-  if (g_once_init_enter (&g_define_type_id__volatile))
+  if (g_once_init_enter (&static_g_define_type_id))
     {
       GType g_define_type_id =
         g_boxed_type_register_static (g_intern_static_string ("GStrv"),
                                       (GBoxedCopyFunc) g_strdupv,
                                       (GBoxedFreeFunc) g_strfreev);
 
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
+      g_once_init_leave (&static_g_define_type_id, g_define_type_id);
     }
 
-  return g_define_type_id__volatile;
+  return static_g_define_type_id;
 }
 
 GType
