@@ -2993,18 +2993,6 @@ test_varargs_empty_array (void)
 }
 
 static void
-assert_cmpstrv (const gchar **strv1, const gchar **strv2)
-{
-  gsize i;
-
-  for (i = 0; strv1[i] != NULL && strv2[i] != NULL; i++)
-    g_assert_cmpstr (strv1[i], ==, strv2[i]);
-
-  g_assert_null (strv1[i]);
-  g_assert_null (strv2[i]);
-}
-
-static void
 test_varargs (void)
 {
   {
@@ -3153,8 +3141,8 @@ test_varargs (void)
     g_variant_iter_next (&tuple, "^a&s", &strv);
     g_variant_iter_next (&tuple, "^as", &my_strv);
 
-    assert_cmpstrv (strv, strvector);
-    assert_cmpstrv ((const char **)my_strv, strvector);
+    g_assert_cmpstrv (strv, strvector);
+    g_assert_cmpstrv (my_strv, strvector);
 
     g_variant_unref (value);
     g_strfreev (my_strv);
@@ -3223,8 +3211,8 @@ test_varargs (void)
     g_variant_iter_next (&tuple, "^a&ay", &strv);
     g_variant_iter_next (&tuple, "^aay", &my_strv);
 
-    assert_cmpstrv (strv, strvector);
-    assert_cmpstrv ((const char **)my_strv, strvector);
+    g_assert_cmpstrv (strv, strvector);
+    g_assert_cmpstrv (my_strv, strvector);
 
     g_variant_unref (value);
     g_strfreev (my_strv);
@@ -3272,8 +3260,8 @@ test_varargs (void)
     g_variant_iter_next (&tuple, "^a&o", &strv);
     g_variant_iter_next (&tuple, "^ao", &my_strv);
 
-    assert_cmpstrv (strv, strvector);
-    assert_cmpstrv ((const char **)my_strv, strvector);
+    g_assert_cmpstrv (strv, strvector);
+    g_assert_cmpstrv (my_strv, strvector);
 
     g_variant_unref (value);
     g_strfreev (my_strv);

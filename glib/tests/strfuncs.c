@@ -525,9 +525,7 @@ test_strdupv (void)
 
   copy = g_strdupv (vec);
   g_assert_nonnull (copy);
-  g_assert_cmpstr (copy[0], ==, "Foo");
-  g_assert_cmpstr (copy[1], ==, "Bar");
-  g_assert_null (copy[2]);
+  g_assert_cmpstrv (copy, vec);
   g_strfreev (copy);
 }
 
