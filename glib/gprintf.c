@@ -257,7 +257,7 @@ g_vsprintf (gchar	 *string,
  * @n: the maximum number of bytes to produce (including the 
  *     terminating nul character).
  * @format: a standard printf() format string, but notice 
- *          string precision pitfalls][string-precision]
+ *          [string precision pitfalls][string-precision]
  * @args: the list of arguments to insert in the output.
  *
  * A safer form of the standard vsprintf() function. The output is guaranteed
