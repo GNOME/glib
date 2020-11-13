@@ -72,7 +72,8 @@ g_proxy_resolver_default_init (GProxyResolverInterface *iface)
  *
  * Gets the default #GProxyResolver for the system.
  *
- * Returns: (transfer none): the default #GProxyResolver.
+ * Returns: (not nullable) (transfer none): the default #GProxyResolver, which
+ *     will be a dummy object if no proxy resolver is available
  *
  * Since: 2.26
  */

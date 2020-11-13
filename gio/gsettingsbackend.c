@@ -1001,7 +1001,9 @@ g_settings_backend_verify (gpointer impl)
  *
  * The user gets a reference to the backend.
  *
- * Returns: (transfer full): the default #GSettingsBackend
+ * Returns: (not nullable) (transfer full): the default #GSettingsBackend,
+ *     which will be a dummy (memory) settings backend if no other settings
+ *     backend is available.
  *
  * Since: 2.28
  */

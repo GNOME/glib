@@ -98,7 +98,8 @@ g_tls_backend_default_init (GTlsBackendInterface *iface)
  *
  * Gets the default #GTlsBackend for the system.
  *
- * Returns: (transfer none): a #GTlsBackend
+ * Returns: (not nullable) (transfer none): a #GTlsBackend, which will be a
+ *     dummy object if no TLS backend is available
  *
  * Since: 2.28
  */
