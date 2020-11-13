@@ -10,6 +10,7 @@ int
 main (int argc, char **argv)
 {
   FILE *f;
+  long tell_result;
   size_t n_read, len;
   unsigned char *buf;
 
@@ -19,7 +20,9 @@ main (int argc, char **argv)
   f = fopen (argv[1], "r");
   assert (f);
   fseek (f, 0, SEEK_END);
-  len = ftell (f);
+  tell_result = ftell (f);
+  assert (tell_result >= 0);
+  len = (size_t) tell_result;
   fseek (f, 0, SEEK_SET);
   buf = (unsigned char*) malloc (len);
   n_read = fread (buf, 1, len, f);

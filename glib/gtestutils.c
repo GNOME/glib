@@ -1297,8 +1297,8 @@ rm_rf (const gchar *path)
   dir = g_dir_open (path, 0, NULL);
   if (dir == NULL)
     {
-      /* Assume it’s a file. */
-      g_remove (path);
+      /* Assume it’s a file. Ignore failure. */
+      (void) g_remove (path);
       return;
     }
 
