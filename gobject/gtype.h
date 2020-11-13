@@ -981,7 +981,7 @@ typedef void     (*GTypeInterfaceCheckFunc)  (gpointer	       check_data,
 /**
  * GTypeFundamentalFlags:
  * @G_TYPE_FLAG_CLASSED: Indicates a classed type
- * @G_TYPE_FLAG_INSTANTIATABLE: Indicates an instantiable type (implies classed)
+ * @G_TYPE_FLAG_INSTANTIATABLE: Indicates an instantiatable type (implies classed)
  * @G_TYPE_FLAG_DERIVABLE: Indicates a flat derivable type
  * @G_TYPE_FLAG_DEEP_DERIVABLE: Indicates a deep derivable type (implies derivable)
  * 

@@ -854,7 +854,7 @@ b_method_to_call (B *obj, gint some_param)
   
   <para>
     The theory behind how GObject interfaces work is given in
-    <xref linkend="gtype-non-instantiable-classed"/>; this section covers how to
+    <xref linkend="gtype-non-instantiatable-classed"/>; this section covers how to
     define and implement an interface.
   </para>
 

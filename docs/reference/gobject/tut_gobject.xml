@@ -12,7 +12,7 @@
   </para>
 
   <para>
-    <link linkend="GObject"><type>GObject</type></link> is a fundamental classed instantiable type. It implements:
+    <link linkend="GObject"><type>GObject</type></link> is a fundamental classed instantiatable type. It implements:
     <itemizedlist>
       <listitem><para>Memory management with reference counting</para></listitem>
       <listitem><para>Construction/Destruction of instances</para></listitem>
@@ -293,8 +293,8 @@ ViewerFile *file = g_object_new (VIEWER_TYPE_FILE, NULL);
         one of the <function>g_type_register_*</function> functions), the object's instance 
         memory will be freed or returned to the object pool for this type.
         Once the object has been freed, if it was the last instance of the type, the type's class
-        will be destroyed as described in <xref linkend="gtype-instantiable-classed"/> and 
-          <xref linkend="gtype-non-instantiable-classed"/>.
+        will be destroyed as described in <xref linkend="gtype-instantiatable-classed"/> and
+          <xref linkend="gtype-non-instantiatable-classed"/>.
       </para>
 
       <para>

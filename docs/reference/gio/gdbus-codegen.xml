@@ -90,7 +90,7 @@
     When generating C code, a
     #GInterface<!-- -->-derived type is generated for each D-Bus
     interface. Additionally, for every generated type,
-    <type>FooBar</type>, two concrete instantiable types,
+    <type>FooBar</type>, two concrete instantiatable types,
     <type>FooBarProxy</type> and <type>FooBarSkeleton</type>, implementing
     said interface are also generated. The former is derived from
     #GDBusProxy and intended for use on the client side
@@ -771,7 +771,7 @@ gdbus-codegen --generate-c-code myapp-generated       \
     <filename>myapp-generated.[ch]</filename> are
     generated. The files provide an abstract
     #GTypeInterface<!-- -->-derived type called
-    <type>MyAppFrobber</type> as well as two instantiable types with
+    <type>MyAppFrobber</type> as well as two instantiatable types with
     the same name but suffixed with <type>Proxy</type> and
     <type>Skeleton</type>. The generated file, roughly, contains the
     following facilities:

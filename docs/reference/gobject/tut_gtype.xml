@@ -108,7 +108,7 @@ GType g_type_register_fundamental (GType                       type_id,
 
         <para>
           The major common point between <emphasis>all</emphasis> GLib types (fundamental and 
-          non-fundamental, classed and non-classed, instantiable and non-instantiable) is that
+          non-fundamental, classed and non-classed, instantiatable and non-instantiatable) is that
           they can all be manipulated through a single API to copy/assign them.
         </para>
 
@@ -300,11 +300,11 @@ GType viewer_file_get_type (void)
 
       </sect1>
 
-      <sect1 id="gtype-non-instantiable">
-        <title>Non-instantiable non-classed fundamental types</title>
+      <sect1 id="gtype-non-instantiatable">
+        <title>Non-instantiatable non-classed fundamental types</title>
 
         <para>
-          A lot of types are not instantiable by the type system and do not have
+          A lot of types are not instantiatable by the type system and do not have
           a class. Most of these types are fundamental trivial types such as <emphasis>gchar</emphasis>, 
           and are already registered by GLib.
         </para>
@@ -344,7 +344,7 @@ GType viewer_file_get_type (void)
 
 
         <para>
-          Having non-instantiable types might seem a bit useless: what good is a type
+          Having non-instantiatable types might seem a bit useless: what good is a type
           if you cannot instantiate an instance of that type ? Most of these types
           are used in conjunction with <link linkend="GValue"><type>GValue</type></link>s: a GValue is initialized
           with an integer or a string and it is passed around by using the registered 
@@ -354,8 +354,8 @@ GType viewer_file_get_type (void)
 
       </sect1>
 
-      <sect1 id="gtype-instantiable-classed">
-        <title>Instantiable classed types: objects</title>
+      <sect1 id="gtype-instantiatable-classed">
+        <title>Instantiatable classed types: objects</title>
 
         <para>
           This section covers the theory behind objects. See
@@ -364,10 +364,10 @@ GType viewer_file_get_type (void)
         </para>
 
         <para>
-          Types which are registered with a class and are declared instantiable are
+          Types which are registered with a class and are declared instantiatable are
           what most closely resembles an <emphasis>object</emphasis>. 
           Although <link linkend="GObject"><type>GObject</type></link>s (detailed in <xref linkend="chapter-gobject"/>) 
-          are the most well known type of instantiable
+          are the most well known type of instantiatable
           classed types, other kinds of similar objects used as the base of an inheritance 
           hierarchy have been externally developed and they are all built on the fundamental
           features described below.
@@ -498,7 +498,7 @@ B *b;
 </programlisting></informalexample>
         </para>
 
-        <sect2 id="gtype-instantiable-classed-init-done">
+        <sect2 id="gtype-instantiatable-classed-init-done">
           <title>Initialization and Destruction</title>
 
           <para>
@@ -599,7 +599,7 @@ B *b;
                   <row>
                     <!--entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry-->
                     <entry>interface initialization, see 
-                      <xref linkend="gtype-non-instantiable-classed-init"/></entry>
+                      <xref linkend="gtype-non-instantiatable-classed-init"/></entry>
                     <entry></entry>
                   </row>
                   <row>
@@ -610,7 +610,7 @@ B *b;
                   <row>
                     <entry morerows="2">Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry>
                     <entry>interface destruction, see
-                      <xref linkend="gtype-non-instantiable-classed-dest"/></entry>
+                      <xref linkend="gtype-non-instantiatable-classed-dest"/></entry>
                     <entry></entry>
                   </row>
                   <row>
@@ -633,8 +633,8 @@ B *b;
 
       </sect1>
 
-      <sect1 id="gtype-non-instantiable-classed">
-        <title>Non-instantiable classed types: interfaces</title>
+      <sect1 id="gtype-non-instantiatable-classed">
+        <title>Non-instantiatable classed types: interfaces</title>
 
         <para>
           This section covers the theory behind interfaces. See
@@ -648,7 +648,7 @@ B *b;
           Imagine the play, pause and stop buttons on hi-fi equipment — those can
           be seen as a playback interface. Once you know what they do, you can
           control your CD player, MP3 player or anything that uses these symbols.
-          To declare an interface you have to register a non-instantiable
+          To declare an interface you have to register a non-instantiatable
           classed type which derives from 
           <link linkend="GTypeInterface"><type>GTypeInterface</type></link>. The following piece of code declares such an interface.
 <informalexample><programlisting>
@@ -792,14 +792,14 @@ struct _GInterfaceInfo
 </programlisting></informalexample>
         </para>
 
-        <sect2 id="gtype-non-instantiable-classed-init">
+        <sect2 id="gtype-non-instantiatable-classed-init">
           <title>Interface Initialization</title>
 
           <para>
-            When an instantiable classed type which implements an interface
+            When an instantiatable classed type which implements an interface
             (either directly or by inheriting an implementation from a superclass)
             is created for the first time, its class structure is initialized
-            following the process described in <xref linkend="gtype-instantiable-classed"/>.
+            following the process described in <xref linkend="gtype-instantiatable-classed"/>.
             After that, the interface implementations associated with
             the type are initialized.
           </para>
@@ -937,11 +937,11 @@ viewer_editable_default_init (ViewerEditableInterface *iface)
         
         </sect2>
         
-        <sect2 id="gtype-non-instantiable-classed-dest">
+        <sect2 id="gtype-non-instantiatable-classed-dest">
           <title>Interface Destruction</title>
 
           <para>
-            When the last instance of an instantiable type which registered 
+            When the last instance of an instantiatable type which registered
             an interface implementation is destroyed, the interface's 
             implementations associated to the type are destroyed.
           </para>
@@ -955,7 +955,7 @@ viewer_editable_default_init (ViewerEditableInterface *iface)
 
           <para>
             Again, it is important to understand, as in 
-            <xref linkend="gtype-non-instantiable-classed-init"/>,
+            <xref linkend="gtype-non-instantiatable-classed-init"/>,
               that both <function>interface_finalize</function> and <function>base_finalize</function>
               are invoked exactly once for the destruction of each implementation of an interface. Thus,
               if you were to use one of these functions, you would need to use a static integer variable
