@@ -32,7 +32,7 @@ typedef struct
   char *filename;
   char *hostname;
   char *expected_result;
-  GConvertError expected_error; /* If failed */
+  gint expected_error; /* If failed */
 } FileToUriTest;
 
 FileToUriTest
@@ -100,7 +100,7 @@ typedef struct
   char *uri;
   char *expected_filename;
   char *expected_hostname;
-  GConvertError expected_error; /* If failed */
+  gint expected_error; /* If failed */
 } FileFromUriTest;
 
 FileFromUriTest
@@ -549,7 +549,7 @@ typedef struct {
   GUriFlags flags;
   /* Outputs */
   gboolean expected_success;
-  GUriError expected_error_code;  /* unused if @expected_success is true */
+  gint expected_error_code;       /* unused if @expected_success is true */
   const UriParts expected_parts;  /* unused if @expected_success is false */
 } UriAbsoluteTest;
 
@@ -1492,7 +1492,7 @@ test_uri_iter_params (gconstpointer test_data)
       g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, params_tests[i].uri);
 
       g_assert (params_tests[i].expected_n_params < 0 ||
-                params_tests[i].expected_n_params <= G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
+                params_tests[i].expected_n_params <= (gssize) G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
 
       /* The tests get run twice: once with the length unspecified, using a
        * nul-terminated string; and once with the length specified and a copy of
@@ -1559,7 +1559,7 @@ test_uri_parse_params (gconstpointer test_data)
       g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, params_tests[i].uri);
 
       g_assert (params_tests[i].expected_n_params < 0 ||
-                params_tests[i].expected_n_params <= G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
+                params_tests[i].expected_n_params <= (gssize) G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
 
       /* The tests get run twice: once with the length unspecified, using a
        * nul-terminated string; and once with the length specified and a copy of
