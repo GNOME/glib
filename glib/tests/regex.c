@@ -1305,8 +1305,7 @@ test_match_all (gconstpointer d)
   GMatchInfo *match_info;
   GSList *l_exp;
   gboolean match_ok;
-  gint match_count;
-  gint i;
+  guint i, match_count;
 
   regex = g_regex_new (data->pattern, 0, 0, NULL);
   match_ok = g_regex_match_all (regex, data->string, 0, &match_info);
@@ -1331,7 +1330,7 @@ test_match_all (gconstpointer d)
 
           matched_string = g_match_info_fetch (match_info, i);
           g_match_info_fetch_pos (match_info, i, &start, &end);
-          g_message ("%d. %d-%d '%s'", i, start, end, matched_string);
+          g_message ("%u. %d-%d '%s'", i, start, end, matched_string);
           g_free (matched_string);
         }
 
@@ -1342,11 +1341,11 @@ test_match_all (gconstpointer d)
         {
           Match *exp = l_exp->data;
 
-          g_message ("%d. %d-%d '%s'", i, exp->start, exp->end, exp->string);
+          g_message ("%u. %d-%d '%s'", i, exp->start, exp->end, exp->string);
           i++;
         }
 
-      g_error ("match_count not as expected: %d != %d",
+      g_error ("match_count not as expected: %u != %d",
           match_count, g_slist_length (data->expected));
     }
 

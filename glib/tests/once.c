@@ -173,7 +173,7 @@ thread_func (gpointer data)
 static void
 test_once_init_multi_threaded (void)
 {
-  gint i;
+  gsize i;
   GThread *threads[THREADS];
 
   g_test_summary ("Test g_once_init_{enter,leave}() usage from multiple threads");

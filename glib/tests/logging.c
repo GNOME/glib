@@ -398,7 +398,7 @@ compare_field (const GLogField *f1, const GLogField *f2)
 static gboolean
 compare_fields (const GLogField *f1, gsize n1, const GLogField *f2, gsize n2)
 {
-  int i, j;
+  gsize i, j;
 
   for (i = 0; i < n1; i++)
     {
