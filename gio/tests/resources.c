@@ -69,6 +69,15 @@ test_resource (GResource *resource)
   g_assert_cmpuint (flags, ==, G_RESOURCE_FLAGS_COMPRESSED);
 
   found = g_resource_get_info (resource,
+                               "/empty.txt",
+                               G_RESOURCE_LOOKUP_FLAGS_NONE,
+                               &size, &flags, &error);
+  g_assert_true (found);
+  g_assert_no_error (error);
+  g_assert_cmpint (size, ==, 0);
+  g_assert_cmpuint (flags, ==, G_RESOURCE_FLAGS_COMPRESSED);
+
+  found = g_resource_get_info (resource,
 			       "/a_prefix/test2.txt",
 			       G_RESOURCE_LOOKUP_FLAGS_NONE,
 			       &size, &flags, &error);
@@ -105,6 +114,14 @@ test_resource (GResource *resource)
   g_assert_no_error (error);
   g_bytes_unref (data);
 
+  data = g_resource_lookup_data (resource,
+                                 "/empty.txt",
+                                 G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                 &error);
+  g_assert_cmpuint (g_bytes_get_size (data), ==, 0);
+  g_assert_no_error (error);
+  g_bytes_unref (data);
+
   for (i = 0; i < G_N_ELEMENTS (not_found_paths); i++)
     {
       in = g_resource_open_stream (resource,
@@ -131,6 +148,24 @@ test_resource (GResource *resource)
   g_assert_cmpint (size, ==, 6);
   buffer[size] = 0;
   g_assert_cmpstr (buffer, ==, "test1\n");
+
+  g_input_stream_close (in, NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&in);
+
+  in = g_resource_open_stream (resource,
+                               "/empty.txt",
+                               G_RESOURCE_LOOKUP_FLAGS_NONE,
+                               &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (in);
+
+  success = g_input_stream_read_all (in, buffer, sizeof (buffer) - 1,
+                                     &size,
+                                     NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (success);
+  g_assert_cmpint (size, ==, 0);
 
   g_input_stream_close (in, NULL, &error);
   g_assert_no_error (error);
@@ -398,6 +433,14 @@ test_resource_registered (void)
   g_assert_cmpint (size, ==, 6);
   g_assert (flags == (G_RESOURCE_FLAGS_COMPRESSED));
 
+  found = g_resources_get_info ("/empty.txt",
+                                G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                &size, &flags, &error);
+  g_assert_no_error (error);
+  g_assert_true (found);
+  g_assert_cmpint (size, ==, 0);
+  g_assert (flags == (G_RESOURCE_FLAGS_COMPRESSED));
+
   found = g_resources_get_info ("/a_prefix/test2.txt",
 				G_RESOURCE_LOOKUP_FLAGS_NONE,
 				&size, &flags, &error);
@@ -435,6 +478,30 @@ test_resource_registered (void)
   g_assert_cmpint (size, ==, 6);
   buffer[size] = 0;
   g_assert_cmpstr (buffer, ==, "test1\n");
+
+  g_input_stream_close (in, NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&in);
+
+  data = g_resources_lookup_data ("/empty.txt",
+                                  G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                  &error);
+  g_assert_no_error (error);
+  g_assert_cmpuint (g_bytes_get_size (data), ==, 0);
+  g_bytes_unref (data);
+
+  in = g_resources_open_stream ("/empty.txt",
+                                G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (in);
+
+  success = g_input_stream_read_all (in, buffer, sizeof (buffer) - 1,
+                                     &size,
+                                     NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (success);
+  g_assert_cmpint (size, ==, 0);
 
   g_input_stream_close (in, NULL, &error);
   g_assert_no_error (error);
