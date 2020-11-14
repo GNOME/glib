@@ -4355,12 +4355,12 @@ test_lookup_value (void)
     const gchar *dict, *key, *value;
   } cases[] = {
     { "@a{ss} {'x':  'y'}",   "x",  "'y'" },
-    { "@a{ss} {'x':  'y'}",   "y"         },
+    { "@a{ss} {'x':  'y'}",   "y",  NULL  },
     { "@a{os} {'/x': 'y'}",   "/x", "'y'" },
-    { "@a{os} {'/x': 'y'}",   "/y"        },
+    { "@a{os} {'/x': 'y'}",   "/y", NULL  },
     { "@a{sv} {'x':  <'y'>}", "x",  "'y'" },
     { "@a{sv} {'x':  <5>}",   "x",  "5"   },
-    { "@a{sv} {'x':  <'y'>}", "y"         }
+    { "@a{sv} {'x':  <'y'>}", "y",  NULL  }
   };
   gsize i;
 
