@@ -2557,13 +2557,16 @@ main (int argc, char *argv[])
   TEST_SUB_PATTERN("(a)?(b)", "b", 0, 0, "b", 0, 1);
   TEST_SUB_PATTERN("(a)?(b)", "b", 0, 1, "", -1, -1);
   TEST_SUB_PATTERN("(a)?(b)", "b", 0, 2, "b", 0, 1);
+  TEST_SUB_PATTERN("(a)?b", "b", 0, 0, "b", 0, 1);
+  TEST_SUB_PATTERN("(a)?b", "b", 0, 1, "", -1, -1);
+  TEST_SUB_PATTERN("(a)?b", "b", 0, 2, NULL, UNTOUCHED, UNTOUCHED);
 
   /* TEST_NAMED_SUB_PATTERN(pattern, string, start_position, sub_name,
    * 			    expected_sub, expected_start, expected_end) */
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", "ab", 0, "A", "b", 1, 2);
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", "aab", 1, "A", "b", 2, 3);
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", EURO "ab", 0, "A", "b", 4, 5);
-  TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", EURO "ab", 0, "B", NULL, UNTOUCHED, UNTOUCHED);
+  TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", EURO "ab", 0, "B", "", -1, -1);
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", EURO "ab", 0, "C", NULL, UNTOUCHED, UNTOUCHED);
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", "a" EGRAVE "x", 0, "A", EGRAVE, 1, 3);
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", "a" EGRAVE "x", 0, "B", "x", 3, 4);

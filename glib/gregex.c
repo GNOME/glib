@@ -35,6 +35,7 @@
 #include "gmessages.h"
 #include "gstrfuncs.h"
 #include "gatomic.h"
+#include "gtestutils.h"
 #include "gthread.h"
 
 /**
@@ -206,7 +207,8 @@ struct _GMatchInfo
   gint ref_count;               /* the ref count (atomic) */
   GRegex *regex;                /* the regex */
   GRegexMatchFlags match_opts;  /* options used at match time on the regex */
-  gint matches;                 /* number of matching sub patterns */
+  gint matches;                 /* number of matching sub patterns, guaranteed to be <= (n_subpatterns + 1) if doing a single match (rather than matching all) */
+  gint n_subpatterns;           /* total number of sub patterns in the regex */
   gint pos;                     /* position in the string where last match left off */
   gint  n_offsets;              /* number of offsets */
   gint *offsets;                /* array of offsets paired 0,1 ; 2,3 ; 3,4 etc */
@@ -574,6 +576,9 @@ match_info_new (const GRegex *regex,
   match_info->pos = start_position;
   match_info->match_opts = match_options;
 
+  pcre_fullinfo (regex->pcre_re, regex->extra,
+                 PCRE_INFO_CAPTURECOUNT, &match_info->n_subpatterns);
+
   if (is_dfa)
     {
       /* These values should be enough for most cases, if they are not
@@ -584,10 +589,7 @@ match_info_new (const GRegex *regex,
     }
   else
     {
-      gint capture_count;
-      pcre_fullinfo (regex->pcre_re, regex->extra,
-                     PCRE_INFO_CAPTURECOUNT, &capture_count);
-      match_info->n_offsets = (capture_count + 1) * 3;
+      match_info->n_offsets = (match_info->n_subpatterns + 1) * 3;
     }
 
   match_info->offsets = g_new0 (gint, match_info->n_offsets);
@@ -767,6 +769,8 @@ g_match_info_next (GMatchInfo  *match_info,
     {
       match_info->pos = match_info->offsets[1];
     }
+
+  g_assert (match_info->matches <= match_info->n_subpatterns + 1);
 
   /* it's possible to get two identical matches when we are matching
    * empty strings, for instance if the pattern is "(?=[A-Z0-9])" and
@@ -1044,16 +1048,21 @@ g_match_info_fetch_pos (const GMatchInfo *match_info,
   g_return_val_if_fail (match_info != NULL, FALSE);
   g_return_val_if_fail (match_num >= 0, FALSE);
 
+  /* check whether there was an error */
+  if (match_info->matches < 0)
+    return FALSE;
+
   /* make sure the sub expression number they're requesting is less than
-   * the total number of sub expressions that were matched. */
-  if (match_num >= match_info->matches)
+   * the total number of sub expressions in the regex. When matching all
+   * (g_regex_match_all()), also compare against the number of matches */
+  if (match_num >= MAX (match_info->n_subpatterns + 1, match_info->matches))
     return FALSE;
 
   if (start_pos != NULL)
-    *start_pos = match_info->offsets[2 * match_num];
+    *start_pos = (match_num < match_info->matches) ? match_info->offsets[2 * match_num] : -1;
 
   if (end_pos != NULL)
-    *end_pos = match_info->offsets[2 * match_num + 1];
+    *end_pos = (match_num < match_info->matches) ? match_info->offsets[2 * match_num + 1] : -1;
 
   return TRUE;
 }
@@ -1988,6 +1997,9 @@ g_regex_match_all_full (const GRegex      *regex,
 #ifdef PCRE_NO_AUTO_POSSESS
   pcre_free (pcre_re);
 #endif
+
+  /* don’t assert that (info->matches <= info->n_subpatterns + 1) as that only
+   * holds true for a single match, rather than matching all */
 
   /* set info->pos to -1 so that a call to g_match_info_next() fails. */
   info->pos = -1;
