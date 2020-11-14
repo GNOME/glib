@@ -350,6 +350,7 @@ wait_for_file (const gchar *want_this,
 static void
 test_actions (void)
 {
+  const char *expected[] = { "frob", "tweak", "twiddle", "broken", NULL };
   const gchar * const *actions;
   GDesktopAppInfo *appinfo;
   gchar *name;
@@ -358,11 +359,7 @@ test_actions (void)
   g_assert_nonnull (appinfo);
 
   actions = g_desktop_app_info_list_actions (appinfo);
-  g_assert_cmpstr (actions[0], ==, "frob");
-  g_assert_cmpstr (actions[1], ==, "tweak");
-  g_assert_cmpstr (actions[2], ==, "twiddle");
-  g_assert_cmpstr (actions[3], ==, "broken");
-  g_assert_cmpstr (actions[4], ==, NULL);
+  g_assert_cmpstrv (actions, expected);
 
   name = g_desktop_app_info_get_action_name (appinfo, "frob");
   g_assert_cmpstr (name, ==, "Frobnicate");

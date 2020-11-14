@@ -3547,6 +3547,7 @@ g_assert
 g_assert_not_reached
 
 g_assert_cmpstr
+g_assert_cmpstrv
 g_assert_cmpint
 g_assert_cmpuint
 g_assert_cmphex
