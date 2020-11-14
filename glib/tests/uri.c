@@ -165,7 +165,7 @@ file_from_uri_tests[] = {
 static void
 run_file_to_uri_tests (void)
 {
-  int i;
+  gsize i;
   gchar *res;
   GError *error;
 
@@ -189,7 +189,7 @@ run_file_to_uri_tests (void)
 static void
 run_file_from_uri_tests (void)
 {
-  int i;
+  gsize i;
   gchar *res;
   gchar *hostname;
   GError *error;
@@ -269,7 +269,7 @@ safe_strcmp_hostname (const gchar *a, const gchar *b)
 static void
 run_file_roundtrip_tests (void)
 {
-  int i;
+  gsize i;
   gchar *uri, *hostname, *res;
   GError *error;
 
@@ -1591,7 +1591,7 @@ test_uri_parse_params (gconstpointer test_data)
           g_assert_no_error (err);
           g_assert_cmpint (g_hash_table_size (params), ==, params_tests[i].expected_n_params);
 
-          for (j = 0; j < params_tests[i].expected_n_params; j += 2)
+          for (j = 0; j < (gsize) params_tests[i].expected_n_params; j += 2)
             g_assert_cmpstr (g_hash_table_lookup (params, params_tests[i].expected_param_key_values[j]), ==,
                              params_tests[i].expected_param_key_values[j + 1]);
         }
