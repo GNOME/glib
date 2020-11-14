@@ -784,7 +784,7 @@ g_tls_certificate_list_new_from_file (const gchar  *file,
  *
  * Gets the #GTlsCertificate representing @cert's issuer, if known
  *
- * Returns: (transfer none): The certificate of @cert's issuer,
+ * Returns: (nullable) (transfer none): The certificate of @cert's issuer,
  * or %NULL if @cert is self-signed or signed with an unknown
  * certificate.
  *

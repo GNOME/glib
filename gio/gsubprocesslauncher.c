@@ -303,7 +303,7 @@ g_subprocess_launcher_unsetenv (GSubprocessLauncher *self,
  * On UNIX, the returned string can be an arbitrary byte string.
  * On Windows, it will be UTF-8.
  *
- * Returns: (type filename): the value of the environment variable,
+ * Returns: (nullable) (type filename): the value of the environment variable,
  *     %NULL if unset
  *
  * Since: 2.40

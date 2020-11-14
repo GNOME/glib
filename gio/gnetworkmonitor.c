@@ -83,7 +83,8 @@ static guint signals[LAST_SIGNAL] = { 0 };
  *
  * Gets the default #GNetworkMonitor for the system.
  *
- * Returns: (transfer none): a #GNetworkMonitor
+ * Returns: (not nullable) (transfer none): a #GNetworkMonitor, which will be
+ *     a dummy object if no network monitor is available
  *
  * Since: 2.32
  */

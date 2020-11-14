@@ -342,7 +342,8 @@ g_vfs_parse_name (GVfs       *vfs,
  *
  * Gets the default #GVfs for the system.
  *
- * Returns: (transfer none): a #GVfs.
+ * Returns: (not nullable) (transfer none): a #GVfs, which will be the local
+ *     file system #GVfs if no other implementation is available.
  */
 GVfs *
 g_vfs_get_default (void)

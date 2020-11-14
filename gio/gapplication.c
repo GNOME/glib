@@ -1793,7 +1793,7 @@ g_application_new (const gchar       *application_id,
  *
  * Gets the unique identifier for @application.
  *
- * Returns: the identifier for @application, owned by @application
+ * Returns: (nullable): the identifier for @application, owned by @application
  *
  * Since: 2.28
  **/
@@ -2084,7 +2084,7 @@ g_application_get_is_remote (GApplication *application)
  * This function must not be called before the application has been
  * registered.  See g_application_get_is_registered().
  *
- * Returns: (transfer none): a #GDBusConnection, or %NULL
+ * Returns: (nullable) (transfer none): a #GDBusConnection, or %NULL
  *
  * Since: 2.34
  **/
@@ -2116,7 +2116,7 @@ g_application_get_dbus_connection (GApplication *application)
  * This function must not be called before the application has been
  * registered.  See g_application_get_is_registered().
  *
- * Returns: the object path, or %NULL
+ * Returns: (nullable): the object path, or %NULL
  *
  * Since: 2.34
  **/
@@ -2743,7 +2743,7 @@ static GApplication *default_app;
  *
  * If there is no default application then %NULL is returned.
  *
- * Returns: (transfer none): the default application for this process, or %NULL
+ * Returns: (nullable) (transfer none): the default application for this process, or %NULL
  *
  * Since: 2.32
  **/

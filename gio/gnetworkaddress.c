@@ -611,7 +611,7 @@ g_network_address_get_port (GNetworkAddress *addr)
  *
  * Gets @addr's scheme
  *
- * Returns: @addr's scheme (%NULL if not built from URI)
+ * Returns: (nullable): @addr's scheme (%NULL if not built from URI)
  *
  * Since: 2.26
  */

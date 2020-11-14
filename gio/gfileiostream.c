@@ -277,7 +277,7 @@ g_file_io_stream_query_info_finish (GFileIOStream     *stream,
  * This must be called after the stream has been written
  * and closed, as the etag can change while writing.
  *
- * Returns: the entity tag for the stream.
+ * Returns: (nullable) (transfer full): the entity tag for the stream.
  *
  * Since: 2.22
  **/

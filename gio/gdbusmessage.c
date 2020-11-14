@@ -1085,7 +1085,7 @@ g_dbus_message_get_header_fields (GDBusMessage  *message)
  *
  * Gets the body of a message.
  *
- * Returns: (transfer none): A #GVariant or %NULL if the body is
+ * Returns: (nullable) (transfer none): A #GVariant or %NULL if the body is
  * empty. Do not free, it is owned by @message.
  *
  * Since: 2.26
@@ -1164,7 +1164,7 @@ g_dbus_message_set_body (GDBusMessage  *message,
  * to the file descriptor that can be accessed by
  * `g_unix_fd_list_get (list, 5, ...)`.
  *
- * Returns: (transfer none):A #GUnixFDList or %NULL if no file descriptors are
+ * Returns: (nullable) (transfer none): A #GUnixFDList or %NULL if no file descriptors are
  * associated. Do not free, this object is owned by @message.
  *
  * Since: 2.26
@@ -2994,7 +2994,7 @@ g_dbus_message_set_reply_serial (GDBusMessage  *message,
  *
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
  *
- * Returns: The value.
+ * Returns: (nullable): The value.
  *
  * Since: 2.26
  */
@@ -3008,7 +3008,7 @@ g_dbus_message_get_interface (GDBusMessage  *message)
 /**
  * g_dbus_message_set_interface:
  * @message: A #GDBusMessage.
- * @value: The value to set.
+ * @value: (nullable): The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
  *
@@ -3031,7 +3031,7 @@ g_dbus_message_set_interface (GDBusMessage  *message,
  *
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_MEMBER header field.
  *
- * Returns: The value.
+ * Returns: (nullable): The value.
  *
  * Since: 2.26
  */
@@ -3045,7 +3045,7 @@ g_dbus_message_get_member (GDBusMessage  *message)
 /**
  * g_dbus_message_set_member:
  * @message: A #GDBusMessage.
- * @value: The value to set.
+ * @value: (nullable): The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_MEMBER header field.
  *
@@ -3068,7 +3068,7 @@ g_dbus_message_set_member (GDBusMessage  *message,
  *
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_PATH header field.
  *
- * Returns: The value.
+ * Returns: (nullable): The value.
  *
  * Since: 2.26
  */
@@ -3082,7 +3082,7 @@ g_dbus_message_get_path (GDBusMessage  *message)
 /**
  * g_dbus_message_set_path:
  * @message: A #GDBusMessage.
- * @value: The value to set.
+ * @value: (nullable): The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_PATH header field.
  *
@@ -3105,7 +3105,7 @@ g_dbus_message_set_path (GDBusMessage  *message,
  *
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_SENDER header field.
  *
- * Returns: The value.
+ * Returns: (nullable): The value.
  *
  * Since: 2.26
  */
@@ -3119,7 +3119,7 @@ g_dbus_message_get_sender (GDBusMessage *message)
 /**
  * g_dbus_message_set_sender:
  * @message: A #GDBusMessage.
- * @value: The value to set.
+ * @value: (nullable): The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_SENDER header field.
  *
@@ -3142,7 +3142,7 @@ g_dbus_message_set_sender (GDBusMessage  *message,
  *
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
  *
- * Returns: The value.
+ * Returns: (nullable): The value.
  *
  * Since: 2.26
  */
@@ -3156,7 +3156,7 @@ g_dbus_message_get_destination (GDBusMessage  *message)
 /**
  * g_dbus_message_set_destination:
  * @message: A #GDBusMessage.
- * @value: The value to set.
+ * @value: (nullable): The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
  *
@@ -3179,7 +3179,7 @@ g_dbus_message_set_destination (GDBusMessage  *message,
  *
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
  *
- * Returns: The value.
+ * Returns: (nullable): The value.
  *
  * Since: 2.26
  */
@@ -3192,7 +3192,7 @@ g_dbus_message_get_error_name (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_error_name:
- * @message: A #GDBusMessage.
+ * @message: (nullable): A #GDBusMessage.
  * @value: The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
@@ -3234,7 +3234,7 @@ g_dbus_message_get_signature (GDBusMessage  *message)
 /**
  * g_dbus_message_set_signature:
  * @message: A #GDBusMessage.
- * @value: The value to set.
+ * @value: (nullable): The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
  *
@@ -3257,7 +3257,7 @@ g_dbus_message_set_signature (GDBusMessage  *message,
  *
  * Convenience to get the first item in the body of @message.
  *
- * Returns: The string item or %NULL if the first item in the body of
+ * Returns: (nullable): The string item or %NULL if the first item in the body of
  * @message is not a string.
  *
  * Since: 2.26

@@ -118,7 +118,7 @@ static guint signals[LAST_SIGNAL] = { 0 };
  *
  * Gets a reference to the default #GMemoryMonitor for the system.
  *
- * Returns: (transfer full): a new reference to the default #GMemoryMonitor
+ * Returns: (not nullable) (transfer full): a new reference to the default #GMemoryMonitor
  *
  * Since: 2.64
  */

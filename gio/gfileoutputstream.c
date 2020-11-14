@@ -271,7 +271,7 @@ g_file_output_stream_query_info_finish (GFileOutputStream     *stream,
  * This must be called after the stream has been written
  * and closed, as the etag can change while writing.
  * 
- * Returns: the entity tag for the stream.
+ * Returns: (nullable) (transfer full): the entity tag for the stream.
  **/
 char *
 g_file_output_stream_get_etag (GFileOutputStream  *stream)

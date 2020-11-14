@@ -137,7 +137,7 @@ g_dbus_object_get_interfaces (GDBusObject *object)
  * Gets the D-Bus interface with name @interface_name associated with
  * @object, if any.
  *
- * Returns: (transfer full): %NULL if not found, otherwise a
+ * Returns: (nullable) (transfer full): %NULL if not found, otherwise a
  *   #GDBusInterface that must be freed with g_object_unref().
  *
  * Since: 2.30

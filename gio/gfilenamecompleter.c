@@ -404,9 +404,9 @@ init_completion (GFilenameCompleter *completer,
  *
  * Obtains a completion for @initial_text from @completer.
  *  
- * Returns: a completed string, or %NULL if no completion exists. 
- *     This string is not owned by GIO, so remember to g_free() it 
- *     when finished.
+ * Returns: (nullable) (transfer full): a completed string, or %NULL if no
+ *     completion exists. This string is not owned by GIO, so remember to g_free()
+ *     it when finished.
  **/
 char *
 g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
