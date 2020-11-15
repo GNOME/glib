@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-10-01 16:35+0000\n"
-"PO-Revision-Date: 2020-10-01 19:55+0300\n"
+"POT-Creation-Date: 2020-11-06 17:19+0000\n"
+"PO-Revision-Date: 2020-11-15 09:54+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -107,7 +107,7 @@ msgstr "Вивести перелік статичних дій для прог�
 msgid "APPID"
 msgstr "ІД_ПРОГРАМИ"
 
-#: gio/gapplication-tool.c:70 gio/gapplication-tool.c:133 gio/gdbus-tool.c:102
+#: gio/gapplication-tool.c:70 gio/gapplication-tool.c:133 gio/gdbus-tool.c:106
 #: gio/gio-tool.c:224
 msgid "COMMAND"
 msgstr "КОМАНДА"
@@ -285,7 +285,7 @@ msgstr "Потік вже закрито"
 msgid "Truncate not supported on base stream"
 msgstr "Урізання не підтримується у базовому потоці"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1413
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1416
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -519,7 +519,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Не вдалося визначити адресу сеансової шини (не реалізовано для цієї ОС)"
 
-#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7192
+#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7217
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -528,7 +528,7 @@ msgstr ""
 "Не вдалося визначити адресу шини зі значення змінної середовища "
 "DBUS_STARTER_BUS_TYPE — невідоме значення «%s»"
 
-#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7201
+#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7226
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -683,12 +683,12 @@ msgstr ""
 "отримано «%s»"
 
 #: gio/gdbusconnection.c:4453 gio/gdbusconnection.c:4661
-#: gio/gdbusconnection.c:6632
+#: gio/gdbusconnection.c:6657
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Немає інтерфейсу «%s»"
 
-#: gio/gdbusconnection.c:4879 gio/gdbusconnection.c:7141
+#: gio/gdbusconnection.c:4879 gio/gdbusconnection.c:7166
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Немає інтерфейсу «%s» на об'єкті зі шляхом %s"
@@ -723,37 +723,37 @@ msgstr "Не вдалося встановити значення властив
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Метод «%s» повернув тип «%s», але очікувалося «%s»"
 
-#: gio/gdbusconnection.c:6743
+#: gio/gdbusconnection.c:6768
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Методу «%s» інтерфейсу «%s» з підписом «%s» не існує"
 
-#: gio/gdbusconnection.c:6864
+#: gio/gdbusconnection.c:6889
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Піддерево вже експортовано для %s"
 
-#: gio/gdbusmessage.c:1255
+#: gio/gdbusmessage.c:1266
 msgid "type is INVALID"
 msgstr "НЕПРАВИЛЬНИЙ тип"
 
-#: gio/gdbusmessage.c:1266
+#: gio/gdbusmessage.c:1277
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "Повідомлення METHOD_CALL: немає поля заголовка PATH або MEMBER"
 
-#: gio/gdbusmessage.c:1277
+#: gio/gdbusmessage.c:1288
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "Повідомлення METHOD_RETURN: немає поля заголовка REPLY_SERIAL"
 
-#: gio/gdbusmessage.c:1289
+#: gio/gdbusmessage.c:1300
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "Повідомлення ERROR: немає поля заголовка REPLY_SERIAL або ERROR_NAME"
 
-#: gio/gdbusmessage.c:1302
+#: gio/gdbusmessage.c:1313
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "Повідомлення SIGNAL: немає поля заголовка PATH, INTERFACE або MEMBER"
 
-#: gio/gdbusmessage.c:1310
+#: gio/gdbusmessage.c:1321
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -761,7 +761,7 @@ msgstr ""
 "Повідомлення SIGNAL: поле заголовка PATH використовує зарезервоване "
 "значення /org/freedesktop/DBus/Local"
 
-#: gio/gdbusmessage.c:1318
+#: gio/gdbusmessage.c:1329
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -769,7 +769,7 @@ msgstr ""
 "Повідомлення SIGNAL: поле заголовка INTERFACE використовує зарезервоване "
 "значення org.freedesktop.DBus.Local"
 
-#: gio/gdbusmessage.c:1366 gio/gdbusmessage.c:1426
+#: gio/gdbusmessage.c:1377 gio/gdbusmessage.c:1437
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
@@ -777,12 +777,12 @@ msgstr[0] "Потрібно було прочитати %lu байт, але п�
 msgstr[1] "Потрібно було прочитати %lu байти, але прочитано лише %lu"
 msgstr[2] "Потрібно було прочитати %lu байтів, але прочитано лише %lu"
 
-#: gio/gdbusmessage.c:1380
+#: gio/gdbusmessage.c:1391
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "Мало бути використано байт NUL після рядка «%s», але знайдено байт %d"
 
-#: gio/gdbusmessage.c:1399
+#: gio/gdbusmessage.c:1410
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -792,21 +792,21 @@ msgstr ""
 "(зміщення %d, довжина рядка %d). Коректний рядок UTF-8 аж до цієї миті був "
 "таким: «%s»"
 
-#: gio/gdbusmessage.c:1463 gio/gdbusmessage.c:1711 gio/gdbusmessage.c:1900
+#: gio/gdbusmessage.c:1474 gio/gdbusmessage.c:1722 gio/gdbusmessage.c:1911
 msgid "Value nested too deeply"
 msgstr "Рівень вкладеності значення є надто високим"
 
-#: gio/gdbusmessage.c:1609
+#: gio/gdbusmessage.c:1620
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Оброблене значення «%s» не є припустимим шляхом до об'єкта D-Bus"
 
-#: gio/gdbusmessage.c:1631
+#: gio/gdbusmessage.c:1642
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Оброблене значення «%s» не є припустимим підписом D-Bus"
 
-#: gio/gdbusmessage.c:1678
+#: gio/gdbusmessage.c:1689
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -822,7 +822,7 @@ msgstr[2] ""
 "Виявлено масив довжиною %u байтів. Максимальна довжина дорівнює 2<<26 байт "
 "(64 МіБ)."
 
-#: gio/gdbusmessage.c:1698
+#: gio/gdbusmessage.c:1709
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -831,19 +831,19 @@ msgstr ""
 "Виявлено масив типу «a%c». Очікувалося, що довжина буде кратною до %u "
 "байтів, втім, виявлено довжину %u байтів"
 
-#: gio/gdbusmessage.c:1884
+#: gio/gdbusmessage.c:1895
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Оброблене значення «%s» для варіанта не є припустимим підписом D-Bus"
 
-#: gio/gdbusmessage.c:1925
+#: gio/gdbusmessage.c:1936
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
 "Помилка десеріалізації GVariant з типом рядка «%s» з формату D-Bus wire"
 
-#: gio/gdbusmessage.c:2110
+#: gio/gdbusmessage.c:2121
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -852,29 +852,29 @@ msgstr ""
 "Неправильний порядок байтів у значенні. Мало бути 0x6c («l») або 0x42 («B»), "
 "але знайдено значення 0x%02x"
 
-#: gio/gdbusmessage.c:2123
+#: gio/gdbusmessage.c:2134
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Неправильний старший номер версії протоколу. Очікувався 1, але знайдено %d"
 
-#: gio/gdbusmessage.c:2177 gio/gdbusmessage.c:2773
+#: gio/gdbusmessage.c:2188 gio/gdbusmessage.c:2784
 msgid "Signature header found but is not of type signature"
 msgstr ""
 "Виявлено заголовок підпису, але цей заголовок не належить до типу підписів"
 
-#: gio/gdbusmessage.c:2189
+#: gio/gdbusmessage.c:2200
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Знайдено заголовок підпису з підписом «%s», але вміст повідомлення є порожнім"
 
-#: gio/gdbusmessage.c:2204
+#: gio/gdbusmessage.c:2215
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Оброблене значення «%s» не є припустимим підписом D-Bus (для вмісту)"
 
-#: gio/gdbusmessage.c:2236
+#: gio/gdbusmessage.c:2247
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -888,17 +888,17 @@ msgstr[2] ""
 "Відсутній заголовок підпису у повідомленні, але тіло повідомлення займає %u "
 "байтів"
 
-#: gio/gdbusmessage.c:2246
+#: gio/gdbusmessage.c:2257
 msgid "Cannot deserialize message: "
 msgstr "Не вдалося виконати десеріалізацію повідомлення:"
 
-#: gio/gdbusmessage.c:2590
+#: gio/gdbusmessage.c:2601
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr "Помилка серіалізації GVariant з типом рядка «%s» у формат D-Bus wire"
 
-#: gio/gdbusmessage.c:2727
+#: gio/gdbusmessage.c:2738
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -906,16 +906,16 @@ msgstr ""
 "Кількість дескрипторів файлів у повідомленні (%d) відрізняється від значення "
 "у полі заголовка (%d)"
 
-#: gio/gdbusmessage.c:2735
+#: gio/gdbusmessage.c:2746
 msgid "Cannot serialize message: "
 msgstr "Не вдалося серіалізувати повідомлення: "
 
-#: gio/gdbusmessage.c:2788
+#: gio/gdbusmessage.c:2799
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Вміст повідомлення має підпис «%s», але немає заголовка підпису"
 
-#: gio/gdbusmessage.c:2798
+#: gio/gdbusmessage.c:2809
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -924,38 +924,38 @@ msgstr ""
 "Вміст повідомлення має тип підпису «%s», але значення підпису у полі "
 "заголовка дорівнює «%s»"
 
-#: gio/gdbusmessage.c:2814
+#: gio/gdbusmessage.c:2825
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "Вміст повідомлення порожній, але значення підпису у полі заголовка дорівнює "
 "«(%s)»"
 
-#: gio/gdbusmessage.c:3367
+#: gio/gdbusmessage.c:3378
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Повернуто помилку для вмісту типу «%s»"
 
-#: gio/gdbusmessage.c:3375
+#: gio/gdbusmessage.c:3386
 msgid "Error return with empty body"
 msgstr "Повернена помилка з порожнім тілом"
 
-#: gio/gdbusprivate.c:2244
+#: gio/gdbusprivate.c:2247
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Щоб закрити це вікно, уведіть будь-який символ)\n"
 
-#: gio/gdbusprivate.c:2418
+#: gio/gdbusprivate.c:2421
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Сеанс dbus не запущений, і автозапуск не виконався"
 
-#: gio/gdbusprivate.c:2441
+#: gio/gdbusprivate.c:2444
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Не вдалося отримати профіль апаратури: %s"
 
-#: gio/gdbusprivate.c:2486
+#: gio/gdbusprivate.c:2489
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Не вдалося завантажити /var/lib/dbus/machine-id або /etc/machine-id: "
 
@@ -1002,7 +1002,7 @@ msgstr "Рядок «%s» не є припустимим GUID D-Bus"
 msgid "Cannot listen on unsupported transport “%s”"
 msgstr "Неможливо очікувати на дані на каналі передавання «%s», якого не існує"
 
-#: gio/gdbus-tool.c:107
+#: gio/gdbus-tool.c:111
 #, c-format
 msgid ""
 "Commands:\n"
@@ -1025,60 +1025,60 @@ msgstr ""
 "\n"
 "Для отримання довідки за командою використовуйте «%s КОМАНДА --help».\n"
 
-#: gio/gdbus-tool.c:197 gio/gdbus-tool.c:264 gio/gdbus-tool.c:336
-#: gio/gdbus-tool.c:360 gio/gdbus-tool.c:850 gio/gdbus-tool.c:1187
-#: gio/gdbus-tool.c:1672
+#: gio/gdbus-tool.c:201 gio/gdbus-tool.c:268 gio/gdbus-tool.c:340
+#: gio/gdbus-tool.c:364 gio/gdbus-tool.c:854 gio/gdbus-tool.c:1231
+#: gio/gdbus-tool.c:1719
 #, c-format
 msgid "Error: %s\n"
 msgstr "Помилка: %s\n"
 
-#: gio/gdbus-tool.c:208 gio/gdbus-tool.c:277 gio/gdbus-tool.c:1688
+#: gio/gdbus-tool.c:212 gio/gdbus-tool.c:281 gio/gdbus-tool.c:1735
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Сталася помилка під час обробки інтроспекції XML: %s\n"
 
-#: gio/gdbus-tool.c:246
+#: gio/gdbus-tool.c:250
 #, c-format
 msgid "Error: %s is not a valid name\n"
 msgstr "Помилка: %s не є припустимою назвою\n"
 
-#: gio/gdbus-tool.c:394
+#: gio/gdbus-tool.c:398
 msgid "Connect to the system bus"
 msgstr "Під'єднатися до системної шини"
 
-#: gio/gdbus-tool.c:395
+#: gio/gdbus-tool.c:399
 msgid "Connect to the session bus"
 msgstr "Під'єднатися до користувацької шини"
 
-#: gio/gdbus-tool.c:396
+#: gio/gdbus-tool.c:400
 msgid "Connect to given D-Bus address"
 msgstr "Під'єднатися до вказаної адреси D-Bus"
 
-#: gio/gdbus-tool.c:406
+#: gio/gdbus-tool.c:410
 msgid "Connection Endpoint Options:"
 msgstr "Параметри кінцевої точки з'єднання:"
 
-#: gio/gdbus-tool.c:407
+#: gio/gdbus-tool.c:411
 msgid "Options specifying the connection endpoint"
 msgstr "Параметри, що визначають кінцеву точку з'єднання"
 
-#: gio/gdbus-tool.c:430
+#: gio/gdbus-tool.c:434
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Кінцева точка з'єднання не вказана"
 
-#: gio/gdbus-tool.c:440
+#: gio/gdbus-tool.c:444
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Вказано декілька кінцевих точок з'єднання"
 
-#: gio/gdbus-tool.c:513
+#: gio/gdbus-tool.c:517
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr "Попередження: згідно з даними інтроспекції, інтерфейсу «%s» не існує\n"
 
-#: gio/gdbus-tool.c:522
+#: gio/gdbus-tool.c:526
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
@@ -1087,164 +1087,170 @@ msgstr ""
 "Попередження: згідно з даними інтроспекції, методу «%s» в інтерфейсі «%s» не "
 "існує\n"
 
-#: gio/gdbus-tool.c:584
+#: gio/gdbus-tool.c:588
 msgid "Optional destination for signal (unique name)"
 msgstr "Необов'язковий отримувач сигналу (унікальна назва)"
 
-#: gio/gdbus-tool.c:585
+#: gio/gdbus-tool.c:589
 msgid "Object path to emit signal on"
 msgstr "Об'єктний шлях, для випуску сигналу"
 
-#: gio/gdbus-tool.c:586
+#: gio/gdbus-tool.c:590
 msgid "Signal and interface name"
 msgstr "Назва сигналу і інтерфейсу"
 
-#: gio/gdbus-tool.c:619
+#: gio/gdbus-tool.c:623
 msgid "Emit a signal."
 msgstr "Послати сигнал."
 
-#: gio/gdbus-tool.c:674 gio/gdbus-tool.c:981 gio/gdbus-tool.c:1775
-#: gio/gdbus-tool.c:2007 gio/gdbus-tool.c:2227
+#: gio/gdbus-tool.c:678 gio/gdbus-tool.c:992 gio/gdbus-tool.c:1822
+#: gio/gdbus-tool.c:2054 gio/gdbus-tool.c:2274
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Сталася помилка при з'єднанні: %s\n"
 
-#: gio/gdbus-tool.c:694
+#: gio/gdbus-tool.c:698
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Помилка: %s не є припустимою унікальною назвою шини.\n"
 
-#: gio/gdbus-tool.c:713 gio/gdbus-tool.c:1024 gio/gdbus-tool.c:1818
+#: gio/gdbus-tool.c:717 gio/gdbus-tool.c:1035 gio/gdbus-tool.c:1865
 msgid "Error: Object path is not specified\n"
 msgstr "Помилка: не вказано об'єктний шлях\n"
 
-#: gio/gdbus-tool.c:736 gio/gdbus-tool.c:1044 gio/gdbus-tool.c:1838
-#: gio/gdbus-tool.c:2078
+#: gio/gdbus-tool.c:740 gio/gdbus-tool.c:1055 gio/gdbus-tool.c:1885
+#: gio/gdbus-tool.c:2125
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Помилка: %s не є припустимим об'єктним шляхом\n"
 
-#: gio/gdbus-tool.c:756
+#: gio/gdbus-tool.c:760
 msgid "Error: Signal name is not specified\n"
 msgstr "Помилка: не вказано назви сигналу\n"
 
-#: gio/gdbus-tool.c:770
+#: gio/gdbus-tool.c:774
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "Помилка: некоректна назва сигналу «%s»\n"
 
-#: gio/gdbus-tool.c:782
+#: gio/gdbus-tool.c:786
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Помилка: %s не є припустимою назвою інтерфейсу\n"
 
-#: gio/gdbus-tool.c:788
+#: gio/gdbus-tool.c:792
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Помилка: %s не є припустимою назвою члену\n"
 
 #. Use the original non-"parse-me-harder" error
-#: gio/gdbus-tool.c:825 gio/gdbus-tool.c:1156
+#: gio/gdbus-tool.c:829 gio/gdbus-tool.c:1167
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Сталася помилка під час обробки параметра %d: %s\n"
 
-#: gio/gdbus-tool.c:857
+#: gio/gdbus-tool.c:861
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Сталася помилка при скиданні під'єднання: %s\n"
 
-#: gio/gdbus-tool.c:884
+#: gio/gdbus-tool.c:888
 msgid "Destination name to invoke method on"
 msgstr "Назва призначення, для якого викликається метод"
 
-#: gio/gdbus-tool.c:885
+#: gio/gdbus-tool.c:889
 msgid "Object path to invoke method on"
 msgstr "Об'єктний шлях, для якого викликається метод"
 
-#: gio/gdbus-tool.c:886
+#: gio/gdbus-tool.c:890
 msgid "Method and interface name"
 msgstr "Назва методу або інтерфейсу"
 
-#: gio/gdbus-tool.c:887
+#: gio/gdbus-tool.c:891
 msgid "Timeout in seconds"
 msgstr "Час очікування у секундах"
 
-#: gio/gdbus-tool.c:926
+#: gio/gdbus-tool.c:937
 msgid "Invoke a method on a remote object."
 msgstr "Викликає метод на віддаленому об'єкті."
 
-#: gio/gdbus-tool.c:998 gio/gdbus-tool.c:1792 gio/gdbus-tool.c:2032
+#: gio/gdbus-tool.c:1009 gio/gdbus-tool.c:1839 gio/gdbus-tool.c:2079
 msgid "Error: Destination is not specified\n"
 msgstr "Помилка: не вказано призначення\n"
 
-#: gio/gdbus-tool.c:1009 gio/gdbus-tool.c:1809 gio/gdbus-tool.c:2043
+#: gio/gdbus-tool.c:1020 gio/gdbus-tool.c:1856 gio/gdbus-tool.c:2090
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Помилка: %s не є припустимою назвою шини\n"
 
-#: gio/gdbus-tool.c:1059
+#: gio/gdbus-tool.c:1070
 msgid "Error: Method name is not specified\n"
 msgstr "Помилка: не вказано назви методу\n"
 
-#: gio/gdbus-tool.c:1070
+#: gio/gdbus-tool.c:1081
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Помилка: некоректна назва методу «%s»\n"
 
-#: gio/gdbus-tool.c:1148
+#: gio/gdbus-tool.c:1159
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Сталася помилка під час обробки параметра %d типу «%s»: %s\n"
 
-#: gio/gdbus-tool.c:1634
+#: gio/gdbus-tool.c:1185
+#, c-format
+#| msgid "Error reading from handle: %s"
+msgid "Error adding handle %d: %s\n"
+msgstr "Помилка під час додавання елемента керування %d: %s\n"
+
+#: gio/gdbus-tool.c:1681
 msgid "Destination name to introspect"
 msgstr "Назва призначення для інтроспекції"
 
-#: gio/gdbus-tool.c:1635
+#: gio/gdbus-tool.c:1682
 msgid "Object path to introspect"
 msgstr "Об'єктний шлях для інтроспекції"
 
-#: gio/gdbus-tool.c:1636
+#: gio/gdbus-tool.c:1683
 msgid "Print XML"
 msgstr "Надрукувати XML"
 
-#: gio/gdbus-tool.c:1637
+#: gio/gdbus-tool.c:1684
 msgid "Introspect children"
 msgstr "Інтроспекція нащадка"
 
-#: gio/gdbus-tool.c:1638
+#: gio/gdbus-tool.c:1685
 msgid "Only print properties"
 msgstr "Лише властивості друку"
 
-#: gio/gdbus-tool.c:1727
+#: gio/gdbus-tool.c:1774
 msgid "Introspect a remote object."
 msgstr "Виконати інтроспекцію віддаленого об'єкту."
 
-#: gio/gdbus-tool.c:1933
+#: gio/gdbus-tool.c:1980
 msgid "Destination name to monitor"
 msgstr "Назва призначення для спостерігання"
 
-#: gio/gdbus-tool.c:1934
+#: gio/gdbus-tool.c:1981
 msgid "Object path to monitor"
 msgstr "Об'єктний шлях для спостерігання"
 
-#: gio/gdbus-tool.c:1959
+#: gio/gdbus-tool.c:2006
 msgid "Monitor a remote object."
 msgstr "Спостерігати за віддаленим об'єктом."
 
-#: gio/gdbus-tool.c:2017
+#: gio/gdbus-tool.c:2064
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr ""
 "Помилка: спостереження за з'єднанням, яке не належить до типу message-bus, є "
 "неможливим\n"
 
-#: gio/gdbus-tool.c:2141
+#: gio/gdbus-tool.c:2188
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr ""
 "Служба, яку слід активувати, перш ніж очікувати на іншу (добре відома назва)"
 
-#: gio/gdbus-tool.c:2144
+#: gio/gdbus-tool.c:2191
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1252,27 +1258,27 @@ msgstr ""
 "Час очікування до виходу із станом помилки (у секундах); 0 — не очікувати "
 "(типова поведінка)"
 
-#: gio/gdbus-tool.c:2192
+#: gio/gdbus-tool.c:2239
 msgid "[OPTION…] BUS-NAME"
 msgstr "[ПАРАМЕТР…] НАЗВА-ШИНИ"
 
-#: gio/gdbus-tool.c:2193
+#: gio/gdbus-tool.c:2240
 msgid "Wait for a bus name to appear."
 msgstr "Очікувати на появу назви шини."
 
-#: gio/gdbus-tool.c:2269
+#: gio/gdbus-tool.c:2316
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Помилка: має бути вказано службу для активації.\n"
 
-#: gio/gdbus-tool.c:2274
+#: gio/gdbus-tool.c:2321
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Помилка: має бути вказано службу для очікування.\n"
 
-#: gio/gdbus-tool.c:2279
+#: gio/gdbus-tool.c:2326
 msgid "Error: Too many arguments.\n"
 msgstr "Помилка: забагато аргументів.\n"
 
-#: gio/gdbus-tool.c:2287 gio/gdbus-tool.c:2294
+#: gio/gdbus-tool.c:2334 gio/gdbus-tool.c:2341
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Помилка: %s не є припустимим добре відомою назвою шини.\n"
@@ -1375,10 +1381,10 @@ msgstr "Очікується GEmblem для GEmblemedIcon"
 
 #: gio/gfile.c:1044 gio/gfile.c:1282 gio/gfile.c:1420 gio/gfile.c:1658
 #: gio/gfile.c:1713 gio/gfile.c:1771 gio/gfile.c:1855 gio/gfile.c:1912
-#: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3722 gio/gfile.c:3777
-#: gio/gfile.c:4070 gio/gfile.c:4540 gio/gfile.c:4951 gio/gfile.c:5036
-#: gio/gfile.c:5126 gio/gfile.c:5223 gio/gfile.c:5310 gio/gfile.c:5411
-#: gio/gfile.c:8121 gio/gfile.c:8211 gio/gfile.c:8295
+#: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3745 gio/gfile.c:3800
+#: gio/gfile.c:4093 gio/gfile.c:4563 gio/gfile.c:4974 gio/gfile.c:5059
+#: gio/gfile.c:5149 gio/gfile.c:5246 gio/gfile.c:5333 gio/gfile.c:5434
+#: gio/gfile.c:8144 gio/gfile.c:8234 gio/gfile.c:8318
 #: gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Операція не підтримується"
@@ -1407,54 +1413,54 @@ msgstr "Цільовий файл існує"
 msgid "Can’t recursively copy directory"
 msgstr "Не вдалося скопіювати каталог рекурсивно"
 
-#: gio/gfile.c:2952
+#: gio/gfile.c:2978
 msgid "Splice not supported"
 msgstr "З'єднання не підтримується"
 
-#: gio/gfile.c:2956 gio/gfile.c:3001
+#: gio/gfile.c:2982 gio/gfile.c:3027
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Помилка при розрізанні файла: %s"
 
-#: gio/gfile.c:3117
+#: gio/gfile.c:3143
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Копіювання (reflink/clone) між точками монтування не підтримується"
 
-#: gio/gfile.c:3121
+#: gio/gfile.c:3147
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Копіювання (reflink/clone) не підтримується або некоректне"
 
-#: gio/gfile.c:3126
+#: gio/gfile.c:3152
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr ""
 "Підтримки копіювання (reflink/clone) не передбачено або копіювання не працює"
 
-#: gio/gfile.c:3190
+#: gio/gfile.c:3217
 msgid "Can’t copy special file"
 msgstr "Не вдалося скопіювати спеціальний файл"
 
-#: gio/gfile.c:4003
+#: gio/gfile.c:4026
 msgid "Invalid symlink value given"
 msgstr "Неправильне значення символьного посилання"
 
-#: gio/gfile.c:4013 glib/gfileutils.c:2349
+#: gio/gfile.c:4036 glib/gfileutils.c:2349
 msgid "Symbolic links not supported"
 msgstr "Символічні посилання не підтримуються"
 
-#: gio/gfile.c:4181
+#: gio/gfile.c:4204
 msgid "Trash not supported"
 msgstr "Смітник не підтримується"
 
-#: gio/gfile.c:4293
+#: gio/gfile.c:4316
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Назви файлів не можуть містити символу «%c»"
 
-#: gio/gfile.c:6774 gio/gvolume.c:364
+#: gio/gfile.c:6797 gio/gvolume.c:364
 msgid "volume doesn’t implement mount"
 msgstr "для тому не реалізовано операцію монтування"
 
-#: gio/gfile.c:6888 gio/gfile.c:6936
+#: gio/gfile.c:6911 gio/gfile.c:6959
 msgid "No application is registered as handling this file"
 msgstr "Програм для обробки таких файлів не зареєстровано"
 
@@ -3063,120 +3069,120 @@ msgstr "Неправильна назва розширеного атрибут�
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "Помилка при встановленні розширеного атрибута «%s»: %s"
 
-#: gio/glocalfileinfo.c:1666 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1709 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (неправильне кодування)"
 
-#: gio/glocalfileinfo.c:1825 gio/glocalfileoutputstream.c:915
+#: gio/glocalfileinfo.c:1868 gio/glocalfileoutputstream.c:915
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Помилка при отриманні інформації про файл «%s»: %s"
 
-#: gio/glocalfileinfo.c:2091
+#: gio/glocalfileinfo.c:2134
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Помилка при отриманні інформації про файловий дескриптор: %s"
 
-#: gio/glocalfileinfo.c:2136
+#: gio/glocalfileinfo.c:2179
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Неправильний тип атрибута (очікувався uint32)"
 
-#: gio/glocalfileinfo.c:2154
+#: gio/glocalfileinfo.c:2197
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Неправильний тип атрибута (очікувався uint64)"
 
-#: gio/glocalfileinfo.c:2173 gio/glocalfileinfo.c:2192
+#: gio/glocalfileinfo.c:2216 gio/glocalfileinfo.c:2235
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Неправильний тип атрибута (очікувався рядок байтів)"
 
-#: gio/glocalfileinfo.c:2239
+#: gio/glocalfileinfo.c:2282
 msgid "Cannot set permissions on symlinks"
 msgstr "Помилка при встановленні прав доступу на символічне посилання"
 
-#: gio/glocalfileinfo.c:2255
+#: gio/glocalfileinfo.c:2298
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Помилка встановлення прав доступу: %s"
 
-#: gio/glocalfileinfo.c:2306
+#: gio/glocalfileinfo.c:2349
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Помилка встановлення власник: %s"
 
-#: gio/glocalfileinfo.c:2329
+#: gio/glocalfileinfo.c:2372
 msgid "symlink must be non-NULL"
 msgstr "символьне посилання не може мати значення NULL"
 
-#: gio/glocalfileinfo.c:2339 gio/glocalfileinfo.c:2358
-#: gio/glocalfileinfo.c:2369
+#: gio/glocalfileinfo.c:2382 gio/glocalfileinfo.c:2401
+#: gio/glocalfileinfo.c:2412
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Помилка при встановленні символічного посилання: %s"
 
-#: gio/glocalfileinfo.c:2348
+#: gio/glocalfileinfo.c:2391
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "помилка при встановленні символічного посилання: файл не є символічним "
 "посиланням"
 
-#: gio/glocalfileinfo.c:2420
+#: gio/glocalfileinfo.c:2463
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "Зайві наносекунди %d у часовій позначці UNIX %lld є від'ємними"
 
-#: gio/glocalfileinfo.c:2429
+#: gio/glocalfileinfo.c:2472
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr ""
 "Зайві наносекунди %d у часовій позначці UNIX %lld досягли значення у одну "
 "секунду"
 
-#: gio/glocalfileinfo.c:2439
+#: gio/glocalfileinfo.c:2482
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "Часова позначка UNIX %lld не вкладається у 64 біти"
 
-#: gio/glocalfileinfo.c:2450
+#: gio/glocalfileinfo.c:2493
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "Часова позначка UNIX %lld лежить поза діапазоном, підтримку якого "
 "передбачено у Windows"
 
-#: gio/glocalfileinfo.c:2514
+#: gio/glocalfileinfo.c:2557
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Назву файла «%s» неможливо перетворити на назву у кодуванні UTF-16"
 
-#: gio/glocalfileinfo.c:2533
+#: gio/glocalfileinfo.c:2576
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Не вдалося відкрити файл «%s»: помилка Windows %lu"
 
-#: gio/glocalfileinfo.c:2546
+#: gio/glocalfileinfo.c:2589
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "Помилка при встановленні часу зміни або доступу для файла «%s»: %lu"
 
-#: gio/glocalfileinfo.c:2647
+#: gio/glocalfileinfo.c:2690
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Помилка при встановленні часу зміни або доступу: %s"
 
-#: gio/glocalfileinfo.c:2670
+#: gio/glocalfileinfo.c:2713
 msgid "SELinux context must be non-NULL"
 msgstr "Контекст SELinux не може значення NULL"
 
-#: gio/glocalfileinfo.c:2685
+#: gio/glocalfileinfo.c:2728
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Помилка при встановленні контексту SELinux: %s"
 
-#: gio/glocalfileinfo.c:2692
+#: gio/glocalfileinfo.c:2735
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux не увімкнено у цій системі"
 
-#: gio/glocalfileinfo.c:2784
+#: gio/glocalfileinfo.c:2827
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Підтримки встановлення атрибута %s не передбачено"
@@ -3955,31 +3961,27 @@ msgstr "Не вдалося прочитати повноваження соке
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Функція g_socket_get_credentials не реалізована у цій ОС"
 
-#: gio/gsocketclient.c:182
+#: gio/gsocketclient.c:191
 #, c-format
 msgid "Could not connect to proxy server %s: "
 msgstr "Не вдалося під'єднатися до проксі-сервера %s: "
 
-#: gio/gsocketclient.c:196
+#: gio/gsocketclient.c:205
 #, c-format
 msgid "Could not connect to %s: "
 msgstr "Не вдалося під'єднатися до %s: "
 
-#: gio/gsocketclient.c:198
+#: gio/gsocketclient.c:207
 msgid "Could not connect: "
 msgstr "Не вдалося під'єднатися до: "
 
-#: gio/gsocketclient.c:1037 gio/gsocketclient.c:1866
-msgid "Unknown error on connect"
-msgstr "Невідома помилка при з'єднанні"
-
-#: gio/gsocketclient.c:1091 gio/gsocketclient.c:1668
+#: gio/gsocketclient.c:1162 gio/gsocketclient.c:1749
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr ""
 "Підтримки передавання даних за допомогою проксі-сервера через не-TCP "
 "з'єднання не передбачено."
 
-#: gio/gsocketclient.c:1120 gio/gsocketclient.c:1698
+#: gio/gsocketclient.c:1194 gio/gsocketclient.c:1778
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "Підтримки протоколу проксі «%s» не передбачено."
@@ -5787,47 +5789,47 @@ msgstr "Дочірній процес зупинений за сигналом %
 msgid "Child process exited abnormally"
 msgstr "Дочірній процес аварійно закінчив роботу"
 
-#: glib/gspawn.c:1532 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1540 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Помилка зчитування з дочірнього каналу (%s)"
 
-#: glib/gspawn.c:1788
+#: glib/gspawn.c:1796
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Не вдалося запустити дочірній процес «%s» (%s)"
 
-#: glib/gspawn.c:1871
+#: glib/gspawn.c:1879
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Помилка створення процесу (%s)"
 
-#: glib/gspawn.c:2026 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2034 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Не вдалося змінити каталог на «%s» (%s)"
 
-#: glib/gspawn.c:2036
+#: glib/gspawn.c:2044
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Не вдалося виконати дочірній процес «%s» (%s)"
 
-#: glib/gspawn.c:2046
+#: glib/gspawn.c:2054
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Помилка перенаправлення виводу чи вводу дочірнього процесу (%s)"
 
-#: glib/gspawn.c:2055
+#: glib/gspawn.c:2063
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Помилка запуску дочірнього процесу (%s)"
 
-#: glib/gspawn.c:2063
+#: glib/gspawn.c:2071
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Невідома помилка виконання дочірнього процесу «%s»"
 
-#: glib/gspawn.c:2087
+#: glib/gspawn.c:2095
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Не вдалося зчитати достатню кількість даних з дочірнього каналу (%s)"
@@ -5911,41 +5913,41 @@ msgstr "Некоректний символ в адресі"
 msgid "Non-UTF-8 characters in URI"
 msgstr "Символи поза UTF-8 в адресі"
 
-#: glib/guri.c:533
+#: glib/guri.c:538
 #, c-format
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
 msgstr "Некоректна IPv6-адреса «%.*s» в адресі"
 
-#: glib/guri.c:588
+#: glib/guri.c:593
 #, c-format
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgstr "Помилкове кодування IP-адреси «%.*s» в адресі"
 
-#: glib/guri.c:620 glib/guri.c:632
+#: glib/guri.c:625 glib/guri.c:637
 #, c-format
 msgid "Could not parse port ‘%.*s’ in URI"
 msgstr "Не вдалося обробити запис порту «%.*s» в адресі"
 
-#: glib/guri.c:639
+#: glib/guri.c:644
 #, c-format
 msgid "Port ‘%.*s’ in URI is out of range"
 msgstr "Порт «%.*s» в адресі не належить до припустимого діапазону"
 
-#: glib/guri.c:1119 glib/guri.c:1183
+#: glib/guri.c:1124 glib/guri.c:1188
 #, c-format
 msgid "URI ‘%s’ is not an absolute URI"
 msgstr "Адреса «%s» не є абсолютною адресою"
 
-#: glib/guri.c:1125
+#: glib/guri.c:1130
 #, c-format
 msgid "URI ‘%s’ has no host component"
 msgstr "В адресі «%s» немає компонента вузла"
 
-#: glib/guri.c:1330
+#: glib/guri.c:1335
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "Адреса не є абсолютною, і не вказано базової адреси"
 
-#: glib/guri.c:2082
+#: glib/guri.c:2088
 msgid "Missing ‘=’ and parameter value"
 msgstr "Пропущено «=» і значення параметра"
 
@@ -6178,3 +6180,6 @@ msgstr "%.1f ПБ"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
+
+#~ msgid "Unknown error on connect"
+#~ msgstr "Невідома помилка при з'єднанні"
