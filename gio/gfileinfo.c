@@ -439,7 +439,7 @@ g_file_info_set_attribute_mask (GFileInfo             *info,
 				GFileAttributeMatcher *mask)
 {
   GFileAttribute *attr;
-  int i;
+  guint i;
 
   g_return_if_fail (G_IS_FILE_INFO (info));
 
