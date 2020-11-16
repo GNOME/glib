@@ -1,3 +1,21 @@
+Overview of changes in GLib 2.66.3
+==================================
+
+* Fix awkward bug with `GPollFD` handling in some situations (work by Claudio
+  Saavedra and Eugene M) (#1592)
+
+* Fix sending FDs attached to very large D-Bus messages (work by Simon McVittie
+  and Giovanni Campagna) (#2074)
+
+* Bugs fixed:
+ - #1592 Main loop ignores GPollFD sources when there is at least one source ready with priority higher than default one
+ - !1720 Backport !1718 “gtrace: Add G_GNUC_PRINTF annotation” to glib-2-66
+ - !1721 Backport !1713 “gmain: g_main_context_check() can skip updating polled FD sources” to glib-2-66
+ - !1723 Backport !1711 “Fix race in socketclient-slow test” to glib-2-66
+ - !1727 Backport !1725 “gdbus: Cope with sending fds in a message that takes multiple writes” to glib-2-66
+ - !1736 Backport !1734 “glocalfileinfo: Use a single timeout source at a time for hidden file cache” to glib-2-66
+
+
 Overview of changes in GLib 2.66.2
 ==================================
 
