@@ -274,8 +274,8 @@ valid_char (char c)
 static char *
 escape_byte_string (const char *str)
 {
-  size_t len;
-  int num_invalid, i;
+  size_t i, len;
+  int num_invalid;
   char *escaped_val, *p;
   unsigned char c;
   const char hex_digits[] = "0123456789abcdef";
