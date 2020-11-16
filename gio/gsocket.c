@@ -3767,7 +3767,9 @@ static GSourceFuncs broken_funcs =
   NULL,
   NULL,
   broken_dispatch,
-  NULL
+  NULL,
+  NULL,
+  NULL,
 };
 
 #ifdef G_OS_WIN32
@@ -4082,6 +4084,7 @@ static GSourceFuncs socket_source_funcs =
   socket_source_dispatch,
   socket_source_finalize,
   (GSourceFunc)socket_source_closure_callback,
+  NULL,
 };
 
 static GSource *
