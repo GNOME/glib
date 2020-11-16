@@ -1604,7 +1604,7 @@ g_type_interface_add_prerequisite (GType interface_type,
 	    }
 	}
       
-      for (i = 0; i < prerequisite_node->n_supers + 1; i++)
+      for (i = 0; i < prerequisite_node->n_supers + 1u; i++)
 	type_iface_add_prerequisite_W (iface, lookup_type_node_I (prerequisite_node->supers[i]));
       G_WRITE_UNLOCK (&type_rw_lock);
     }
