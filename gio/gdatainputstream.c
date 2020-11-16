@@ -861,7 +861,7 @@ scan_for_chars (GDataInputStream *stream,
   GBufferedInputStream *bstream;
   const char *buffer;
   gsize start, end, peeked;
-  int i;
+  gsize i;
   gsize available, checked;
   const char *stop_char;
   const char *stop_end;
