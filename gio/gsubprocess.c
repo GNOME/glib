@@ -584,7 +584,7 @@ initable_init (GInitable     *initable,
 #endif
 
     s = g_snprintf (self->identifier, sizeof self->identifier, "%"G_GUINT64_FORMAT, identifier);
-    g_assert (0 < s && s < sizeof self->identifier);
+    g_assert (0 < s && (gsize) s < sizeof self->identifier);
   }
 
   /* Start attempting to reap the child immediately */
