@@ -322,7 +322,7 @@ struct _ClassData
   CommonData         common;
   guint16            class_size;
   guint16            class_private_size;
-  int volatile       init_state; /* atomic - g_type_class_ref reads it unlocked */
+  int                init_state;  /* (atomic) - g_type_class_ref reads it unlocked */
   GBaseInitFunc      class_init_base;
   GBaseFinalizeFunc  class_finalize_base;
   GClassInitFunc     class_init;
@@ -336,7 +336,7 @@ struct _InstanceData
   CommonData         common;
   guint16            class_size;
   guint16            class_private_size;
-  int volatile       init_state; /* atomic - g_type_class_ref reads it unlocked */
+  int                init_state;  /* (atomic) - g_type_class_ref reads it unlocked */
   GBaseInitFunc      class_init_base;
   GBaseFinalizeFunc  class_finalize_base;
   GClassInitFunc     class_init;
@@ -1415,7 +1415,7 @@ type_node_add_iface_entry_W (TypeNode   *node,
 
   if (parent_entry)
     {
-      if (node->data && node->data->class.init_state >= BASE_IFACE_INIT)
+      if (node->data && g_atomic_int_get (&node->data->class.init_state) >= BASE_IFACE_INIT)
         {
           entries->entry[i].init_state = INITIALIZED;
           entries->entry[i].vtable = parent_entry->vtable;
@@ -1481,7 +1481,7 @@ type_add_interface_Wm (TypeNode             *node,
    */
   if (node->data)
     {
-      InitState class_state = node->data->class.init_state;
+      InitState class_state = g_atomic_int_get (&node->data->class.init_state);
       
       if (class_state >= BASE_IFACE_INIT)
         type_iface_vtable_base_init_Wm (iface, node);
@@ -2175,7 +2175,7 @@ type_class_init_Wm (TypeNode   *node,
   g_assert (node->is_classed && node->data &&
 	    node->data->class.class_size &&
 	    !node->data->class.class &&
-	    node->data->class.init_state == UNINITIALIZED);
+	    g_atomic_int_get (&node->data->class.init_state) == UNINITIALIZED);
   if (node->data->class.class_private_size)
     class = g_malloc0 (ALIGN_STRUCT (node->data->class.class_size) + node->data->class.class_private_size);
   else
