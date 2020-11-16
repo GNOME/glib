@@ -1365,7 +1365,7 @@ type_node_add_iface_entry_W (TypeNode   *node,
   IFaceEntry *entry;
   TypeNode *iface_node;
   guint i, j;
-  int num_entries;
+  guint num_entries;
 
   g_assert (node->is_instantiatable);
 
