@@ -536,7 +536,7 @@ g_file_info_find_value (GFileInfo *info,
 			guint32    attr_id)
 {
   GFileAttribute *attrs;
-  int i;
+  guint i;
 
   i = g_file_info_find_place (info, attr_id);
   attrs = (GFileAttribute *)info->attributes->data;
