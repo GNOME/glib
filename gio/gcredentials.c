@@ -314,8 +314,8 @@ linux_ucred_check_valid (struct ucred  *native,
                          GError       **error)
 {
   if (native->pid == 0
-      || native->uid == -1
-      || native->gid == -1)
+      || native->uid == (uid_t) -1
+      || native->gid == (gid_t) -1)
     {
       g_set_error_literal (error,
                            G_IO_ERROR,
@@ -636,7 +636,7 @@ g_credentials_set_unix_user (GCredentials    *credentials,
   gboolean ret = FALSE;
 
   g_return_val_if_fail (G_IS_CREDENTIALS (credentials), FALSE);
-  g_return_val_if_fail (uid != -1, FALSE);
+  g_return_val_if_fail (uid != (uid_t) -1, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
 #if G_CREDENTIALS_USE_LINUX_UCRED
