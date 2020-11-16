@@ -599,7 +599,7 @@ g_file_info_has_namespace (GFileInfo  *info,
 {
   GFileAttribute *attrs;
   guint32 ns_id;
-  int i;
+  guint i;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
   g_return_val_if_fail (name_space != NULL, FALSE);
