@@ -233,18 +233,18 @@ g_credentials_to_string (GCredentials *credentials)
   ret = g_string_new ("GCredentials:");
 #if G_CREDENTIALS_USE_LINUX_UCRED
   g_string_append (ret, "linux-ucred:");
-  if (credentials->native.pid != -1)
+  if (credentials->native.pid != (pid_t) -1)
     g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.pid);
-  if (credentials->native.uid != -1)
+  if (credentials->native.uid != (uid_t) -1)
     g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.uid);
-  if (credentials->native.gid != -1)
+  if (credentials->native.gid != (gid_t) -1)
     g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.gid);
   if (ret->str[ret->len - 1] == ',')
     ret->str[ret->len - 1] = '\0';
 #elif G_CREDENTIALS_USE_APPLE_XUCRED
   g_string_append (ret, "apple-xucred:");
   g_string_append_printf (ret, "version=%u,", credentials->native.cr_version);
-  if (credentials->native.cr_uid != -1)
+  if (credentials->native.cr_uid != (uid_t) -1)
     g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.cr_uid);
   for (i = 0; i < credentials->native.cr_ngroups; i++)
     g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.cr_groups[i]);
@@ -252,28 +252,28 @@ g_credentials_to_string (GCredentials *credentials)
     ret->str[ret->len - 1] = '\0';
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
   g_string_append (ret, "freebsd-cmsgcred:");
-  if (credentials->native.cmcred_pid != -1)
+  if (credentials->native.cmcred_pid != (pid_t) -1)
     g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.cmcred_pid);
-  if (credentials->native.cmcred_euid != -1)
+  if (credentials->native.cmcred_euid != (uid_t) -1)
     g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.cmcred_euid);
-  if (credentials->native.cmcred_gid != -1)
+  if (credentials->native.cmcred_gid != (gid_t) -1)
     g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.cmcred_gid);
 #elif G_CREDENTIALS_USE_NETBSD_UNPCBID
   g_string_append (ret, "netbsd-unpcbid:");
-  if (credentials->native.unp_pid != -1)
+  if (credentials->native.unp_pid != (pid_t) -1)
     g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.unp_pid);
-  if (credentials->native.unp_euid != -1)
+  if (credentials->native.unp_euid != (uid_t) -1)
     g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.unp_euid);
-  if (credentials->native.unp_egid != -1)
+  if (credentials->native.unp_egid != (gid_t) -1)
     g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.unp_egid);
   ret->str[ret->len - 1] = '\0';
 #elif G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
   g_string_append (ret, "openbsd-sockpeercred:");
-  if (credentials->native.pid != -1)
+  if (credentials->native.pid != (pid_t) -1)
     g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.pid);
-  if (credentials->native.uid != -1)
+  if (credentials->native.uid != (uid_t) -1)
     g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.uid);
-  if (credentials->native.gid != -1)
+  if (credentials->native.gid != (gid_t) -1)
     g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.gid);
   if (ret->str[ret->len - 1] == ',')
     ret->str[ret->len - 1] = '\0';
@@ -281,11 +281,11 @@ g_credentials_to_string (GCredentials *credentials)
   g_string_append (ret, "solaris-ucred:");
   {
     id_t id;
-    if ((id = ucred_getpid (credentials->native)) != -1)
+    if ((id = ucred_getpid (credentials->native)) != (id_t) -1)
       g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) id);
-    if ((id = ucred_geteuid (credentials->native)) != -1)
+    if ((id = ucred_geteuid (credentials->native)) != (id_t) -1)
       g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) id);
-    if ((id = ucred_getegid (credentials->native)) != -1)
+    if ((id = ucred_getegid (credentials->native)) != (id_t) -1)
       g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) id);
     if (ret->str[ret->len - 1] == ',')
       ret->str[ret->len - 1] = '\0';
