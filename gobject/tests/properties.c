@@ -554,7 +554,7 @@ properties_get_property (void)
     { "bar", G_TYPE_INVALID, G_VALUE_INIT },
     { "bar", G_TYPE_STRING, G_VALUE_INIT },
   };
-  int i;
+  gsize i;
 
   g_test_summary ("g_object_get_property() accepts uninitialized, "
                   "initialized, and transformable values");
