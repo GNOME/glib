@@ -631,7 +631,7 @@ scan_for_newline (GDataInputStream *stream,
   GDataInputStreamPrivate *priv;
   const char *buffer;
   gsize start, end, peeked;
-  int i;
+  gsize i;
   gssize found_pos;
   int newline_len;
   gsize available, checked;
