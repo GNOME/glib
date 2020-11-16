@@ -1954,7 +1954,7 @@ g_object_new_internal (GObjectClass          *class,
         {
           const GValue *value;
           GParamSpec *pspec;
-          gint j;
+          guint j;
 
           pspec = node->data;
           value = NULL; /* to silence gcc... */
@@ -1980,7 +1980,7 @@ g_object_new_internal (GObjectClass          *class,
 
   if (nqueue)
     {
-      gint i;
+      guint i;
 
       /* Set remaining properties.  The construct properties will
        * already have been taken, so set only the non-construct
