@@ -50,7 +50,7 @@
 
 typedef struct {
   gchar        *name;
-  gint          length;
+  gsize          length;
   gushort       port;
 } GSimpleProxyResolverDomain;
 
@@ -259,7 +259,8 @@ ignore_host (GSimpleProxyResolver *resolver,
   GSimpleProxyResolverPrivate *priv = resolver->priv;
   gchar *ascii_host = NULL;
   gboolean ignore = FALSE;
-  gint i, length, offset;
+  gsize offset, length;
+  guint i;
 
   if (priv->ignore_ips)
     {
@@ -296,6 +297,9 @@ ignore_host (GSimpleProxyResolver *resolver,
       for (i = 0; length > 0 && priv->ignore_domains[i].length; i++)
 	{
 	  GSimpleProxyResolverDomain *domain = &priv->ignore_domains[i];
+
+          if (domain->length > length)
+            continue;
 
 	  offset = length - domain->length;
 	  if ((domain->port == 0 || domain->port == port) &&
