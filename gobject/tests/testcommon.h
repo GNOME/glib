@@ -72,6 +72,12 @@ prefix ## _get_type (void)					\
 	(GBaseInitFunc)	base_init,				\
 	(GBaseFinalizeFunc) NULL,				\
 	(GClassInitFunc) dflt_init,				\
+	(GClassFinalizeFunc) NULL,				\
+	(gconstpointer) NULL,					\
+	(guint16) 0,						\
+	(guint16) 0,						\
+	(GInstanceInitFunc) NULL,				\
+	(const GTypeValueTable*) NULL,				\
       };							\
 								\
       iface_type = g_type_register_static (G_TYPE_INTERFACE,	\
