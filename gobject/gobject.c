@@ -749,7 +749,7 @@ g_object_class_install_properties (GObjectClass  *oclass,
                                    GParamSpec   **pspecs)
 {
   GType oclass_type, parent_type;
-  gint i;
+  guint i;
 
   g_return_if_fail (G_IS_OBJECT_CLASS (oclass));
   g_return_if_fail (n_pspecs > 1);
