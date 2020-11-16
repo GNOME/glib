@@ -575,7 +575,7 @@ lookup_iface_entry_I (IFaceEntries *entries,
   guint8 *offsets;
   guint offset_index;
   IFaceEntry *check;
-  int index;
+  gsize index;
   IFaceEntry *entry;
 
   if (entries == NULL)
