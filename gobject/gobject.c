@@ -1798,7 +1798,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
   gint n_cparams;
   gint cvals_used;
   GSList *node;
-  gint i;
+  guint i;
 
   /* If we have ->constructed() then we have to do a lot more work.
    * It's possible that this is a singleton and it's also possible
@@ -1828,7 +1828,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
     {
       GParamSpec *pspec;
       GValue *value;
-      gint j;
+      guint j;
 
       pspec = node->data;
       value = NULL; /* to silence gcc... */
