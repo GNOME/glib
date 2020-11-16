@@ -477,7 +477,7 @@ g_list_store_splice (GListStore *store,
 
   if (n_additions)
     {
-      gint i;
+      guint i;
 
       for (i = 0; i < n_additions; i++)
         {
