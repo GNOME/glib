@@ -269,7 +269,7 @@ g_list_store_insert (GListStore *store,
 
   g_return_if_fail (G_IS_LIST_STORE (store));
   g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (item), store->item_type));
-  g_return_if_fail (position <= g_sequence_get_length (store->items));
+  g_return_if_fail (position <= (guint) g_sequence_get_length (store->items));
 
   it = g_sequence_get_iter_at_pos (store->items, position);
   g_sequence_insert_before (it, g_object_ref (item));
