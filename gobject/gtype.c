@@ -286,7 +286,7 @@ struct _IFaceEntry
 };
 
 struct _IFaceEntries {
-  guint offset_index;
+  gsize offset_index;
   IFaceEntry entry[1];
 };
 
@@ -577,7 +577,7 @@ lookup_iface_entry_I (IFaceEntries *entries,
                       TypeNode     *iface_node)
 {
   guint8 *offsets;
-  guint offset_index;
+  gsize offset_index;
   IFaceEntry *check;
   gsize index;
   IFaceEntry *entry;
@@ -1280,7 +1280,7 @@ type_data_ref_U (TypeNode *node)
 
 static gboolean
 iface_node_has_available_offset_L (TypeNode *iface_node,
-				   int offset,
+				   gsize offset,
 				   int for_index)
 {
   guint8 *offsets;
@@ -1299,27 +1299,29 @@ iface_node_has_available_offset_L (TypeNode *iface_node,
   return FALSE;
 }
 
-static int
+static gsize
 find_free_iface_offset_L (IFaceEntries *entries)
 {
   IFaceEntry *entry;
   TypeNode *iface_node;
-  int offset;
+  gsize offset;
   int i;
   int n_entries;
 
   n_entries = IFACE_ENTRIES_N_ENTRIES (entries);
-  offset = -1;
+  offset = 0;
   do
     {
-      offset++;
       for (i = 0; i < n_entries; i++)
 	{
 	  entry = &entries->entry[i];
 	  iface_node = lookup_type_node_I (entry->iface_type);
 
 	  if (!iface_node_has_available_offset_L (iface_node, offset, i))
-	    break;
+            {
+              offset++;
+              break;
+            }
 	}
     }
   while (i != n_entries);
@@ -1329,12 +1331,12 @@ find_free_iface_offset_L (IFaceEntries *entries)
 
 static void
 iface_node_set_offset_L (TypeNode *iface_node,
-			 int offset,
+			 gsize offset,
 			 int index)
 {
   guint8 *offsets, *old_offsets;
-  int new_size, old_size;
-  int i;
+  gsize new_size, old_size;
+  gsize i;
 
   old_offsets = G_ATOMIC_ARRAY_GET_LOCKED (&iface_node->_prot.offsets, guint8);
   if (old_offsets == NULL)
