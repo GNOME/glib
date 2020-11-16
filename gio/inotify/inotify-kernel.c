@@ -372,8 +372,8 @@ ik_source_new (gboolean (* callback) (ik_event_t *event))
 {
   static GSourceFuncs source_funcs = {
     NULL, NULL,
-    ik_source_dispatch
-    /* should have a finalize, but it will never happen */
+    ik_source_dispatch,
+    NULL, NULL, NULL
   };
   InotifyKernelSource *iks;
   GSource *source;
