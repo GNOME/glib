@@ -256,7 +256,7 @@ static void
 child_setup (gpointer user_data)
 {
   ChildData *child_data = user_data;
-  gint i;
+  guint i;
   gint result;
   int errsv;
 
@@ -268,7 +268,7 @@ child_setup (gpointer user_data)
    * have been created O_CLOEXEC.
    */
   for (i = 0; i < 3; i++)
-    if (child_data->fds[i] != -1 && child_data->fds[i] != i)
+    if (child_data->fds[i] != -1 && child_data->fds[i] != (gint) i)
       {
         do
           {
