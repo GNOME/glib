@@ -1431,6 +1431,7 @@ g_param_type_register_static (const gchar              *name,
     0,                             /* instance_size */
     16,                            /* n_preallocs */
     NULL,                          /* instance_init */
+    NULL,                          /* value_table */
   };
   ParamSpecClassInfo *cinfo;
 
