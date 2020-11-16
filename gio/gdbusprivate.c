@@ -1945,11 +1945,10 @@ _g_dbus_initialize (void)
 
   if (g_once_init_enter (&initialized))
     {
-      GQuark g_dbus_error_domain;
       const gchar *debug;
 
-      g_dbus_error_domain = G_DBUS_ERROR;
-      (g_dbus_error_domain); /* To avoid -Wunused-but-set-variable */
+      /* Ensure the domain is registered. */
+      g_dbus_error_quark ();
 
       debug = g_getenv ("G_DBUS_DEBUG");
       if (debug != NULL)
