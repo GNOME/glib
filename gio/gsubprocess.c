@@ -451,7 +451,7 @@ initable_init (GInitable     *initable,
 {
   GSubprocess *self = G_SUBPROCESS (initable);
 #ifdef G_OS_UNIX
-  ChildData child_data = { { -1, -1, -1 }, 0 };
+  ChildData child_data = { { -1, -1, -1 }, 0, NULL, NULL, NULL };
 #endif
   gint *pipe_ptrs[3] = { NULL, NULL, NULL };
   gint pipe_fds[3] = { -1, -1, -1 };
