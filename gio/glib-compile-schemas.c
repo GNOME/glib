@@ -363,7 +363,7 @@ key_state_set_range (KeyState     *state,
     { 'd',                 "-inf",                  "inf" },
   };
   gboolean type_ok = FALSE;
-  gint i;
+  gsize i;
 
   if (state->minimum)
     {
@@ -705,7 +705,7 @@ key_state_serialise (KeyState *state)
               guint32 *words;
               gpointer data;
               gsize size;
-              gint i;
+              gsize i;
 
               data = state->strinfo->str;
               size = state->strinfo->len;
