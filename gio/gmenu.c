@@ -162,7 +162,7 @@ g_menu_insert_item (GMenu     *menu,
   g_return_if_fail (G_IS_MENU (menu));
   g_return_if_fail (G_IS_MENU_ITEM (item));
 
-  if (position < 0 || position > menu->items->len)
+  if (position < 0 || (guint) position > menu->items->len)
     position = menu->items->len;
 
   new_item.attributes = g_hash_table_ref (item->attributes);
