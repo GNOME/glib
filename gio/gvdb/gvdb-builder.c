@@ -463,7 +463,7 @@ static GString *
 file_builder_serialise (FileBuilder          *fb,
                         struct gvdb_pointer   root)
 {
-  struct gvdb_header header;
+  struct gvdb_header header = { { 0, 0 }, { 0 }, { 0 }, { { 0 }, { 0 } } };
   GString *result;
 
   memset (&header, 0, sizeof (header));
