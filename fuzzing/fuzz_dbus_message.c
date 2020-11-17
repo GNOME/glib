@@ -1,6 +1,6 @@
 #include "fuzz.h"
 
-const static GDBusCapabilityFlags flags = G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
+static const GDBusCapabilityFlags flags = G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
 
 int
 LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
