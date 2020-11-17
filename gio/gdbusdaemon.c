@@ -210,7 +210,8 @@ is_key (const char *key_start, const char *key_end, const char *value)
 {
   gsize len = strlen (value);
 
-  if (len != key_end - key_start)
+  g_assert (key_end >= key_start);
+  if (len != (gsize) (key_end - key_start))
     return FALSE;
 
   return strncmp (key_start, value, len) == 0;
