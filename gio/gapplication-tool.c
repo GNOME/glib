@@ -47,10 +47,12 @@ static const struct help_topic topics[] = {
                     N_("[COMMAND]")
   },
   { "version",      N_("Print version"),
-                    N_("Print version information and exit")
+                    N_("Print version information and exit"),
+                    NULL
   },
   { "list-apps",    N_("List applications"),
-                    N_("List the installed D-Bus activatable applications (by .desktop files)")
+                    N_("List the installed D-Bus activatable applications (by .desktop files)"),
+                    NULL
   },
   { "launch",       N_("Launch an application"),
                     N_("Launch the application (with optional files to open)"),
