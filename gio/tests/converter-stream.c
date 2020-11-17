@@ -972,7 +972,7 @@ test_converter_pollable (void)
   GPollableOutputStream *pollable_out;
   GConverter *expander, *compressor;
   GError *error;
-  int i;
+  gsize i;
 
   expander = g_expander_converter_new ();
   expanded = g_malloc (100*1000); /* Large enough */
