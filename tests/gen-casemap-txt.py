@@ -29,7 +29,8 @@ import argparse
 
 def main(argv):
     parser = argparse.ArgumentParser(
-        description="Generate test cases for case mapping from Unicode data")
+        description="Generate test cases for case mapping from Unicode data"
+    )
     parser.add_argument("UNICODE-VERSION")
     parser.add_argument("UnicodeData.txt")
     parser.add_argument("SpecialCasing.txt")
@@ -39,9 +40,23 @@ def main(argv):
     filename_casing = getattr(args, "SpecialCasing.txt")
 
     # Names of fields in Unicode data table.
-    CODE, NAME, CATEGORY, COMBINING_CLASSES, BIDI_CATEGORY, DECOMPOSITION, \
-        DECIMAL_VALUE, DIGIT_VALUE, NUMERIC_VALUE, MIRRORED, OLD_NAME, \
-        COMMENT, UPPER, LOWER, TITLE = range(15)
+    (
+        CODE,
+        NAME,
+        CATEGORY,
+        COMBINING_CLASSES,
+        BIDI_CATEGORY,
+        DECOMPOSITION,
+        DECIMAL_VALUE,
+        DIGIT_VALUE,
+        NUMERIC_VALUE,
+        MIRRORED,
+        OLD_NAME,
+        COMMENT,
+        UPPER,
+        LOWER,
+        TITLE,
+    ) = range(15)
 
     # Names of fields in the SpecialCasing table
     CASE_CODE, CASE_LOWER, CASE_TITLE, CASE_UPPER, CASE_CONDITION = range(5)
@@ -78,8 +93,9 @@ def main(argv):
             fields = [f.strip() for f in line.split(";")]
             if len(fields) != 15:
                 raise SystemExit(
-                    "Entry for %s has wrong number of fields (%d)" % (
-                        fields[CODE], len(fields)))
+                    "Entry for %s has wrong number of fields (%d)"
+                    % (fields[CODE], len(fields))
+                )
 
             code = int(fields[CODE], 16)
 
@@ -92,8 +108,23 @@ def main(argv):
                 else:
                     # The gap represents undefined characters.  Only the type
                     # matters.
-                    gfields = ['', '', 'Cn', '0', '', '', '', '', '', '', '',
-                               '', '', '', '']
+                    gfields = [
+                        "",
+                        "",
+                        "Cn",
+                        "0",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                    ]
 
                 last_code += 1
                 while last_code < code:
@@ -117,8 +148,9 @@ def main(argv):
             fields = [f.strip() for f in line.split(";")]
             if len(fields) not in (4, 5):
                 raise SystemExit(
-                    "Entry for %s has wrong number of fields (%d)" % (
-                        fields[CASE_CODE], len(fields)))
+                    "Entry for %s has wrong number of fields (%d)"
+                    % (fields[CASE_CODE], len(fields))
+                )
 
             if len(fields) == 5:
                 # Ignore conditional special cases - we'll handle them manually
@@ -134,7 +166,8 @@ def main(argv):
 
 
 def print_tests(version, upper, title, lower):
-    print("""\
+    print(
+        """\
 # Test cases generated from Unicode {} data
 # by gen-casemap-txt.py. Do not edit.
 #
@@ -181,9 +214,12 @@ lt_LT.UTF-8\t\u012e\u0301\t\u012f\u0307\u0301\t\u012e\u0301\t\u012e\u0301\t # LA
 \ta\ufb04\ta\ufb04\tAffl\tAFFL\t# FB04
 #
 # Now the automatic tests
-#""".format(version))
+#""".format(
+            version
+        )
+    )
 
-    for i in range(0x10ffff):
+    for i in range(0x10FFFF):
         if i == 0x3A3:
             # Greek sigma needs special tests
             continue

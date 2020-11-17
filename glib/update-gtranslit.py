@@ -10,14 +10,15 @@ localedir = sys.argv[1]
 
 # returns true if the name looks like a POSIX locale name
 def looks_like_locale(name):
-    name, _, variant = name.partition('@')
+    name, _, variant = name.partition("@")
 
-    if '_' not in name:
+    if "_" not in name:
         return False
 
-    lang, _, land = name.partition('_')
+    lang, _, land = name.partition("_")
 
     return len(lang) == 2 or len(lang) == 3 and len(land) == 2
+
 
 # handles <U1234> style escapes
 def unescape(string):
@@ -27,26 +28,28 @@ def unescape(string):
     i = 0
 
     while i < n:
-        start_escape = string.find('<', i)
+        start_escape = string.find("<", i)
 
         if start_escape == -1:
             chunks.append(string[i:])
             break
 
-        assert string[start_escape:start_escape + 2] == '<U'
+        assert string[start_escape : start_escape + 2] == "<U"
         start_escape += 2
 
-        end_escape = string.find('>', start_escape)
+        end_escape = string.find(">", start_escape)
         assert end_escape != -1
 
         chunks.append(chr(int(string[start_escape:end_escape], 16)))
         i = end_escape + 1
 
-    return ''.join(chunks)
+    return "".join(chunks)
+
 
 # Checks if a string is ascii
 def is_ascii(string):
     return all(ord(c) < 0x80 for c in string)
+
 
 # A Mapping is a map from non-ascii strings to ascii strings.
 #
@@ -68,25 +71,25 @@ class Mapping:
     # dictionary, with the origin string as the key.  In the case of
     # IGNORE, stores the empty string.
     def consider_mapping_line(self, line):
-        key, value, rest = (line + ' % comment').split(maxsplit=2)
+        key, value, rest = (line + " % comment").split(maxsplit=2)
 
         key = unescape(key)
 
-        for alternative in value.split(';'):
+        for alternative in value.split(";"):
             if alternative[0] == '"' and alternative[-1] == '"':
                 unescaped = unescape(alternative[1:-1])
                 if is_ascii(unescaped):
                     self.mapping[key] = unescaped
                     break
 
-            elif alternative[0] == '<' and alternative[-1] == '>':
+            elif alternative[0] == "<" and alternative[-1] == ">":
                 unescaped = unescape(alternative)
                 if is_ascii(unescaped):
                     self.mapping[key] = unescaped
                     break
 
-            elif alternative == 'IGNORE':
-                self.mapping[key] = ''
+            elif alternative == "IGNORE":
+                self.mapping[key] = ""
                 break
 
     # Performs a normal dictionary merge, but ensures that there are no
@@ -108,6 +111,7 @@ class Mapping:
             self.serialised = serialiser.add_mapping(self.mapping)
 
         return self.serialised
+
 
 # A Chain is a sequence of mappings and chains.
 #
@@ -135,16 +139,16 @@ class Chain:
         in_lc_ctype = False
         in_translit = False
 
-        fp = open(filename, encoding='ascii', errors='surrogateescape')
+        fp = open(filename, encoding="ascii", errors="surrogateescape")
 
         for line in fp:
             line = line.strip()
 
             if in_lc_ctype:
-                if line == 'END LC_CTYPE':
+                if line == "END LC_CTYPE":
                     break
 
-                if line.startswith('copy') or line.startswith('include'):
+                if line.startswith("copy") or line.startswith("include"):
                     if current_mapping:
                         self.chain.append(current_mapping)
 
@@ -155,29 +159,29 @@ class Chain:
 
                     current_mapping = None
 
-                elif line == 'translit_start':
+                elif line == "translit_start":
                     in_translit = True
 
-                elif line == 'translit_end':
+                elif line == "translit_end":
                     in_translit = False
 
-                elif in_translit and line.startswith('<U'):
+                elif in_translit and line.startswith("<U"):
                     if not current_mapping:
                         current_mapping = Mapping()
 
                     current_mapping.consider_mapping_line(line)
 
-                elif line == '' or line.startswith('%'):
+                elif line == "" or line.startswith("%"):
                     pass
 
-                elif 'default_missing <U003F>':
+                elif "default_missing <U003F>":
                     pass
 
                 elif in_translit:
-                    print('unknown line:', line)
+                    print("unknown line:", line)
                     assert False
 
-            elif line == 'LC_CTYPE':
+            elif line == "LC_CTYPE":
                 in_lc_ctype = True
 
         if current_mapping:
@@ -199,7 +203,9 @@ class Chain:
 
             i = 0
             while i < len(self.chain) - 1:
-                if isinstance(self.chain[i], Mapping) and isinstance(self.chain[i + 1], Mapping):
+                if isinstance(self.chain[i], Mapping) and isinstance(
+                    self.chain[i + 1], Mapping
+                ):
                     # We have two mappings in a row.  Try to merge them.
                     self.chain[i].merge_mapping(self.chain[i + 1])
                     del self.chain[i + 1]
@@ -215,8 +221,11 @@ class Chain:
 
         return self.serialised
 
+
 # Chain cache -- allows sharing of common chains
 chains = {}
+
+
 def get_chain(name):
     if not name in chains:
         chains[name] = Chain(name)
@@ -227,9 +236,10 @@ def get_chain(name):
 # Remove the country name from a locale, preserving variant
 # eg: 'sr_RS@latin' -> 'sr@latin'
 def remove_country(string):
-    base, at, variant = string.partition('@')
-    lang, _, land = base.partition('_')
+    base, at, variant = string.partition("@")
+    lang, _, land = base.partition("_")
     return lang + at + variant
+
 
 def encode_range(start, end):
     assert start <= end
@@ -244,8 +254,10 @@ def encode_range(start, end):
 
     return result
 
+
 def c_pair_array(array):
-    return '{ ' + ', '.join ('{ %u, %u }' % pair for pair in array) + ' };'
+    return "{ " + ", ".join("{ %u, %u }" % pair for pair in array) + " };"
+
 
 class Serialiser:
     def __init__(self):
@@ -284,7 +296,9 @@ class Serialiser:
         languages = list(set(remove_country(locale) for locale in self.locales))
 
         for language in languages:
-            locales = [locale for locale in self.locales if remove_country(locale) == language]
+            locales = [
+                locale for locale in self.locales if remove_country(locale) == language
+            ]
 
             item_id = self.locales[locales[0]]
             if all(self.locales[locale] == item_id for locale in locales):
@@ -294,8 +308,8 @@ class Serialiser:
 
         # Check if a variant is the same as the non-variant form
         # eg: 'de@euro' and 'de'
-        for variant in list(locale for locale in self.locales if '@' in locale):
-            base, _, _ = variant.partition('@')
+        for variant in list(locale for locale in self.locales if "@" in locale):
+            base, _, _ = variant.partition("@")
             if base in self.locales and self.locales[base] == self.locales[variant]:
                 del self.locales[variant]
 
@@ -305,19 +319,19 @@ class Serialiser:
                 del self.locales[locale]
 
     def to_c(self):
-        src_table = ''
-        ascii_table = ''
+        src_table = ""
+        ascii_table = ""
         mappings_table = []
         mapping_ranges = []
         chains_table = []
         chain_starts = []
-        locale_names = ''
+        locale_names = ""
         locale_index = []
         max_lookup = 0
         max_localename = 0
 
         for mapping in self.mappings:
-            mapping_ranges.append ((len(mappings_table), len(mapping)))
+            mapping_ranges.append((len(mappings_table), len(mapping)))
 
             for key in sorted(mapping):
                 if len(key) == 1 and ord(key[0]) < 0x8000:
@@ -326,7 +340,7 @@ class Serialiser:
                     existing = src_table.find(key)
                     if existing == -1:
                         start = len(src_table)
-                        assert all(ord(c) <= 0x10ffff for c in key)
+                        assert all(ord(c) <= 0x10FFFF for c in key)
                         src_table += key
                         src_range = encode_range(start, len(src_table))
                         max_lookup = max(max_lookup, len(key))
@@ -346,7 +360,7 @@ class Serialiser:
                     else:
                         ascii_range = encode_range(existing, existing + len(value))
 
-                mappings_table.append ((src_range, ascii_range))
+                mappings_table.append((src_range, ascii_range))
 
             mapping_end = len(mappings_table)
 
@@ -354,15 +368,15 @@ class Serialiser:
             chain_starts.append(len(chains_table))
 
             for item_id in reversed(chain):
-                assert item_id < 0xff
+                assert item_id < 0xFF
                 chains_table.append(item_id)
-            chains_table.append(0xff)
+            chains_table.append(0xFF)
 
         for locale in sorted(self.locales):
             max_localename = max(max_localename, len(locale))
             name_offset = len(locale_names)
-            assert all(ord(c) <= 0x7f for c in locale)
-            locale_names += (locale + '\0')
+            assert all(ord(c) <= 0x7F for c in locale)
+            locale_names += locale + "\0"
 
             item_id = self.locales[locale]
 
@@ -370,30 +384,60 @@ class Serialiser:
             assert item_id < 256
             locale_index.append((name_offset, item_id))
 
-        print('/* Generated by update-gtranslit.py */')
-        print('#define MAX_KEY_SIZE', max_lookup)
-        print('#define MAX_LOCALE_NAME', max_localename)
-        print('static const gunichar src_table[] = {', ', '.join(str(ord(c)) for c in src_table), '};')
+        print("/* Generated by update-gtranslit.py */")
+        print("#define MAX_KEY_SIZE", max_lookup)
+        print("#define MAX_LOCALE_NAME", max_localename)
+        print(
+            "static const gunichar src_table[] = {",
+            ", ".join(str(ord(c)) for c in src_table),
+            "};",
+        )
         # cannot do this in plain ascii because of trigraphs... :(
-        print('static const gchar ascii_table[] = {', ', '.join(str(ord(c)) for c in ascii_table), '};')
-        print('static const struct mapping_entry mappings_table[] =', c_pair_array (mappings_table))
-        print('static const struct mapping_range mapping_ranges[] =', c_pair_array (mapping_ranges))
-        print('static const guint8 chains_table[] = {', ', '.join(str(i) for i in chains_table), '};')
-        print('static const guint8 chain_starts[] = {', ', '.join(str(i) for i in chain_starts), '};')
-        print('static const gchar locale_names[] = "' + locale_names.replace('\0', '\\0') + '";')
-        print('static const struct locale_entry locale_index[] = ', c_pair_array (locale_index))
-        print('static const guint8 default_item_id = %u;' % (self.default,))
+        print(
+            "static const gchar ascii_table[] = {",
+            ", ".join(str(ord(c)) for c in ascii_table),
+            "};",
+        )
+        print(
+            "static const struct mapping_entry mappings_table[] =",
+            c_pair_array(mappings_table),
+        )
+        print(
+            "static const struct mapping_range mapping_ranges[] =",
+            c_pair_array(mapping_ranges),
+        )
+        print(
+            "static const guint8 chains_table[] = {",
+            ", ".join(str(i) for i in chains_table),
+            "};",
+        )
+        print(
+            "static const guint8 chain_starts[] = {",
+            ", ".join(str(i) for i in chain_starts),
+            "};",
+        )
+        print(
+            'static const gchar locale_names[] = "'
+            + locale_names.replace("\0", "\\0")
+            + '";'
+        )
+        print(
+            "static const struct locale_entry locale_index[] = ",
+            c_pair_array(locale_index),
+        )
+        print("static const guint8 default_item_id = %u;" % (self.default,))
 
     def dump(self):
         print(self.mappings)
         print(self.chains)
         print(self.locales)
 
+
 locales = []
 for name in os.listdir(localedir):
     if looks_like_locale(name):
         chain = get_chain(name)
-        locales.append (chain)
+        locales.append(chain)
         chain.links += 1
 
 serialiser = Serialiser()
@@ -401,8 +445,8 @@ serialiser = Serialiser()
 for locale in locales:
     serialiser.add_locale(locale.name, locale.serialise(serialiser))
 
-i18n = get_chain('i18n').serialise(serialiser)
-combining = get_chain('translit_combining').serialise(serialiser)
+i18n = get_chain("i18n").serialise(serialiser)
+combining = get_chain("translit_combining").serialise(serialiser)
 serialiser.add_default(serialiser.add_chain([i18n, combining]))
 
 serialiser.optimise_locales()

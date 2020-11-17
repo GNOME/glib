@@ -21,7 +21,9 @@
 
 import os
 
-builddir = os.environ.get('UNINSTALLED_GLIB_BUILDDIR')
+builddir = os.environ.get("UNINSTALLED_GLIB_BUILDDIR")
 
 if builddir is not None:
-    __path__.append(os.path.abspath(os.path.join(builddir, 'gio', 'gdbus-2.0', 'codegen')))
+    __path__.append(
+        os.path.abspath(os.path.join(builddir, "gio", "gdbus-2.0", "codegen"))
+    )
