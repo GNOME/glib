@@ -361,10 +361,11 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
                                     GCancellable      *cancellable,
                                     GError           **error)
 {
-  const static GDBusInterfaceVTable vtable = {
+  static const GDBusInterfaceVTable vtable = {
     g_application_impl_method_call,
     g_application_impl_get_property,
-    NULL /* set_property */
+    NULL, /* set_property */
+    { 0 }
   };
   GApplicationClass *app_class = G_APPLICATION_GET_CLASS (impl->app);
   GBusNameOwnerFlags name_owner_flags;
