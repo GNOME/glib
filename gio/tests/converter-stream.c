@@ -1207,7 +1207,7 @@ main (int   argc,
     { "/converter-input-stream/charset/fallbacks", "UTF-8", "Some characters just don't fit into latin1: πא", "ISO-8859-1", "Some characters just don't fit into latin1: \\CF\\80\\D7\\90", 4 },
   };
 
-  gint i;
+  gsize i;
 
   g_test_init (&argc, &argv, NULL);
 
