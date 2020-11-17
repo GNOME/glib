@@ -30,6 +30,7 @@ import sys
 import base64
 from io import StringIO
 
+
 # Log modes
 class LogMode(object):
     LogToError, LogToDiagnostics, LogToYAML, LogToAttachment = range(4)

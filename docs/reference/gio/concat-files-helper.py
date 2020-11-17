@@ -18,6 +18,7 @@
 #
 # Author: Xavier Claessens <xavier.claessens@collabora.com>
 
+import os
 import sys
 
 if len(sys.argv) < 3:

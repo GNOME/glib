@@ -53,7 +53,7 @@ def main():
 
     for line in log_lines:
         for keyword in BANNED_KEYWORDS:
-            if re.search("(^|\W+){}(\W+|$)".format(keyword), line):
+            if re.search(r"(^|\W+){}(\W+|$)".format(keyword), line):
                 banned_words_seen.add(keyword)
                 seen_in_log = True
 
@@ -72,7 +72,7 @@ def main():
             continue
 
         for keyword in BANNED_KEYWORDS:
-            if re.search("(^|\W+){}(\W+|$)".format(keyword), line):
+            if re.search(r"(^|\W+){}(\W+|$)".format(keyword), line):
                 banned_words_seen.add(keyword)
                 seen_in_diff = True
 

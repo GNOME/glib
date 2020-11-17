@@ -32,6 +32,10 @@ import unittest
 import taptestrunner
 
 
+# Disable line length warnings as wrapping the C code templates would be hard
+# flake8: noqa: E501
+
+
 Result = collections.namedtuple("Result", ("info", "out", "err", "subs"))
 
 

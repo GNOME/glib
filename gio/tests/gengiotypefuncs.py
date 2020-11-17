@@ -29,7 +29,7 @@ for filename in in_files:
             match = re.search(b"\bg_[a-zA-Z0-9_]*_get_type\b", line)
             if match:
                 func = match.group(0)
-                if not func in funcs:
+                if func not in funcs:
                     funcs.append(func)
                     if debug:
                         print("Found ", func)

@@ -23,6 +23,7 @@ import distutils.version
 import os
 import sys
 
+
 # pylint: disable=too-few-public-methods
 class Color:
     """ANSI Terminal colors"""

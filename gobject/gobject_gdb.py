@@ -1,4 +1,3 @@
-import os.path
 import gdb
 import glib_gdb
 import sys
@@ -18,6 +17,7 @@ try:
     FrameDecorator = gdb.FrameDecorator.FrameDecorator
 except ImportError:
     HAVE_GDB_FRAMEDECORATOR = False
+
 
 # This is not quite right, as local vars may override symname
 def read_global_var(symname):
@@ -44,7 +44,7 @@ def g_type_to_typenode(gtype):
 
 def g_type_to_name(gtype):
     typenode = g_type_to_typenode(gtype)
-    if typenode != None:
+    if typenode is not None:
         return glib_gdb.g_quark_to_string(typenode["qname"])
     return None
 
@@ -116,7 +116,7 @@ class GTypeHandlePrettyPrinter:
 
     def to_string(self):
         typenode = g_type_to_typenode(self.val)
-        if typenode != None:
+        if typenode is not None:
             name = glib_gdb.g_quark_to_string(typenode["qname"])
             s = ("0x%x [%s%s") % (long(self.val), self.hint, name)
             for i in range(1, int(typenode["n_supers"])):
@@ -178,7 +178,7 @@ class SignalFrame(FrameDecorator):
             v = frame_var(frame, name)
             if v is None or v.is_optimized_out:
                 return None
-            if array != None:
+            if array is not None:
                 array.append(v)
             return v
         except ValueError:
@@ -191,8 +191,8 @@ class SignalFrame(FrameDecorator):
                 return None
             v = v.cast(gdb.lookup_type("GObject").pointer())
             # Ensure this is a somewhat correct object pointer
-            if v != None and g_type_name_from_instance(v):
-                if array != None:
+            if v is not None and g_type_name_from_instance(v):
+                if array is not None:
                     array.append(v)
                 return v
             return None
@@ -200,7 +200,7 @@ class SignalFrame(FrameDecorator):
             return None
 
     def append(self, array, obj):
-        if obj != None:
+        if obj is not None:
             array.append(obj)
 
     def or_join_array(self, array):

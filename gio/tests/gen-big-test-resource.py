@@ -8,7 +8,6 @@
 #
 # See issue #1580
 
-import io
 import string
 import sys
 

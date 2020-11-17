@@ -414,7 +414,8 @@ class Property:
                 name = overridden_name
             self.name_lower = utils.camel_case_to_uscore(name).lower().replace("-", "_")
         self.name_hyphen = self.name_lower.replace("_", "-")
-        # don't clash with the GType getter, e.g.: GType foo_bar_get_type (void); G_GNUC_CONST
+        # don't clash with the GType getter, e.g.:
+        # GType foo_bar_get_type (void); G_GNUC_CONST
         if self.name_lower == "type":
             self.name_lower = "type_"
 
@@ -431,7 +432,8 @@ class Property:
         for a in self.annotations:
             a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
 
-        # FIXME: for now we only support 'false' and 'const' on the signal itself, see #674913 and
+        # FIXME: for now we only support 'false' and 'const' on the signal itself,
+        # see #674913 and
         # http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format
         # for details
         if utils.lookup_annotation(

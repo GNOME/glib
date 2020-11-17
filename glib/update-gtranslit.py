@@ -4,9 +4,12 @@
 #
 #  ./update-gtranslit.py /path/to/glibc/localedata/locales > gtranslit-data.h
 
-import sys, os
+import os
+import sys
+
 
 localedir = sys.argv[1]
+
 
 # returns true if the name looks like a POSIX locale name
 def looks_like_locale(name):
@@ -34,7 +37,7 @@ def unescape(string):
             chunks.append(string[i:])
             break
 
-        assert string[start_escape : start_escape + 2] == "<U"
+        assert string[start_escape : (start_escape + 2)] == "<U"
         start_escape += 2
 
         end_escape = string.find(">", start_escape)
@@ -65,7 +68,8 @@ class Mapping:
 
     # Scans a string like
     #
-    #   <U00C4> "<U0041><U0308>";"<U0041><U0045>" % LATIN CAPITAL LETTER A WITH DIAERESIS.
+    #   <U00C4> "<U0041><U0308>";"<U0041><U0045>" % \
+    #   LATIN CAPITAL LETTER A WITH DIAERESIS.
     #
     # and adds the first all-ascii choice (or IGNORE) to the mapping
     # dictionary, with the origin string as the key.  In the case of
@@ -227,7 +231,7 @@ chains = {}
 
 
 def get_chain(name):
-    if not name in chains:
+    if name not in chains:
         chains[name] = Chain(name)
 
     return chains[name]
@@ -361,8 +365,6 @@ class Serialiser:
                         ascii_range = encode_range(existing, existing + len(value))
 
                 mappings_table.append((src_range, ascii_range))
-
-            mapping_end = len(mappings_table)
 
         for chain in self.chains:
             chain_starts.append(len(chains_table))

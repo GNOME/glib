@@ -23,7 +23,7 @@ import sys
 import tempfile
 import subprocess
 
-if not "GLIB_TEST_COMPILATION" in os.environ:
+if "GLIB_TEST_COMPILATION" not in os.environ:
     print(
         """Test disabled because GLIB_TEST_COMPILATION is not set in the env.
 If you wish to run this test, set GLIB_TEST_COMPILATION=1 in the env,

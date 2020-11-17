@@ -21,8 +21,6 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
-import sys
-
 from . import config
 from . import utils
 from . import dbustypes
@@ -35,6 +33,10 @@ LICENSE_STR = """/*
  * it was derived from. Note that it links to GLib, so must comply with the
  * LGPL linking clauses.
  */\n"""
+
+
+# Disable line length warnings as wrapping the C code templates would be hard
+# flake8: noqa: E501
 
 
 def generate_namespace(namespace):
@@ -163,7 +165,7 @@ class HeaderCodeGenerator:
                     key = (m.since, "_method_%s" % m.name_lower)
                     value = "  gboolean (*handle_%s) (\n" % (m.name_lower)
                     value += "    %s *object,\n" % (i.camel_name)
-                    value += "    GDBusMethodInvocation *invocation" % ()
+                    value += "    GDBusMethodInvocation *invocation"
                     if m.unix_fd:
                         value += ",\n    GUnixFDList *fd_list"
                     for a in m.in_args:
@@ -369,7 +371,7 @@ class HeaderCodeGenerator:
                         "%s%s_get_%s (%s *object);\n"
                         % (p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name)
                     )
-                    if p.arg.free_func != None:
+                    if p.arg.free_func is not None:
                         if self.symbol_decorator is not None:
                             self.outfile.write("%s\n" % self.symbol_decorator)
                         if p.deprecated:
@@ -2342,7 +2344,7 @@ class CodeGenerator:
                     False,
                 )
             )
-            if p.arg.free_func != None:
+            if p.arg.free_func is not None:
                 self.outfile.write(
                     " * The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use %s_dup_%s() if on another thread.\n"
                     " *\n"
@@ -2363,7 +2365,7 @@ class CodeGenerator:
             )
             self.outfile.write("}\n")
             self.outfile.write("\n")
-            if p.arg.free_func != None:
+            if p.arg.free_func is not None:
 
                 self.outfile.write(
                     self.docbook_gen.expand(
@@ -3082,7 +3084,7 @@ class CodeGenerator:
         # property vfuncs
         for p in i.properties:
             nul_value = "0"
-            if p.arg.free_func != None:
+            if p.arg.free_func is not None:
                 nul_value = "NULL"
             self.outfile.write(
                 "static %s\n"
@@ -3544,7 +3546,7 @@ class CodeGenerator:
         )
         self.outfile.write(
             "  info = (_ExtendedGDBusMethodInfo *) g_dbus_method_invocation_get_method_info (invocation);\n"
-            "  g_assert (info != NULL);\n" % ()
+            "  g_assert (info != NULL);\n"
         )
         self.outfile.write(
             "  num_params = g_variant_n_children (parameters);\n"
@@ -4006,7 +4008,7 @@ class CodeGenerator:
                 "      g_value_copy (orig_value, &cp->orig_value);\n"
                 "    }\n"
                 "}\n"
-                "\n" % ()
+                "\n"
             )
 
             # Postpone setting up the refresh source until the ::notify signal is emitted as
@@ -4506,7 +4508,7 @@ class CodeGenerator:
             "  G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);\n"
             % (self.ns_lower)
         )
-        self.outfile.write("}\n" "\n" % ())
+        self.outfile.write("}\n" "\n")
         self.outfile.write(
             "static void\n"
             "%sobject_proxy_get_property (GObject      *gobject,\n"
@@ -4536,7 +4538,7 @@ class CodeGenerator:
             "      break;\n"
             "  }\n"
             "}\n"
-            "\n" % ()
+            "\n"
         )
         self.outfile.write(
             "static void\n"
@@ -4685,7 +4687,7 @@ class CodeGenerator:
             "      break;\n"
             "  }\n"
             "}\n"
-            "\n" % ()
+            "\n"
         )
         self.outfile.write(
             "static void\n"
@@ -4716,7 +4718,7 @@ class CodeGenerator:
             "      break;\n"
             "  }\n"
             "}\n"
-            "\n" % ()
+            "\n"
         )
         self.outfile.write(
             "static void\n"

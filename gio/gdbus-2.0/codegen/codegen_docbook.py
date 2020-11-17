@@ -19,14 +19,15 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
-import sys
 import re
 from os import path
 
-from . import config
 from . import utils
-from . import dbustypes
-from . import parser
+
+
+# Disable line length warnings as wrapping the Docbook templates would be hard
+# flake8: noqa: E501
+
 
 # ----------------------------------------------------------------------------------------------------
 
@@ -167,31 +168,31 @@ class DocbookCodeGenerator:
         self.out.write("  %s  %s\n" % (access, p.signature))
 
     def print_synopsis_methods(self, i):
-        self.out.write('  <refsynopsisdiv role="synopsis">\n' % ())
-        self.out.write('    <title role="synopsis.title">Methods</title>\n' % ())
-        self.out.write("    <synopsis>\n" % ())
+        self.out.write('  <refsynopsisdiv role="synopsis">\n')
+        self.out.write('    <title role="synopsis.title">Methods</title>\n')
+        self.out.write("    <synopsis>\n")
         for m in i.methods:
             self.print_method_prototype(i, m, in_synopsis=True)
-        self.out.write("</synopsis>\n" % ())
-        self.out.write("  </refsynopsisdiv>\n" % ())
+        self.out.write("</synopsis>\n")
+        self.out.write("  </refsynopsisdiv>\n")
 
     def print_synopsis_signals(self, i):
-        self.out.write('  <refsect1 role="signal_proto">\n' % ())
-        self.out.write('    <title role="signal_proto.title">Signals</title>\n' % ())
-        self.out.write("    <synopsis>\n" % ())
+        self.out.write('  <refsect1 role="signal_proto">\n')
+        self.out.write('    <title role="signal_proto.title">Signals</title>\n')
+        self.out.write("    <synopsis>\n")
         for s in i.signals:
             self.print_signal_prototype(i, s, in_synopsis=True)
-        self.out.write("</synopsis>\n" % ())
-        self.out.write("  </refsect1>\n" % ())
+        self.out.write("</synopsis>\n")
+        self.out.write("  </refsect1>\n")
 
     def print_synopsis_properties(self, i):
-        self.out.write('  <refsect1 role="properties">\n' % ())
-        self.out.write('    <title role="properties.title">Properties</title>\n' % ())
-        self.out.write("    <synopsis>\n" % ())
+        self.out.write('  <refsect1 role="properties">\n')
+        self.out.write('    <title role="properties.title">Properties</title>\n')
+        self.out.write("    <synopsis>\n")
         for p in i.properties:
             self.print_property_prototype(i, p, in_synopsis=True)
-        self.out.write("</synopsis>\n" % ())
-        self.out.write("  </refsect1>\n" % ())
+        self.out.write("</synopsis>\n")
+        self.out.write("  </refsect1>\n")
 
     def print_method(self, i, m):
         self.out.write(
@@ -217,7 +218,7 @@ class DocbookCodeGenerator:
         if m.in_args or m.out_args:
             self.out.write('<variablelist role="params">\n')
             for a in m.in_args:
-                self.out.write("<varlistentry>\n" % ())
+                self.out.write("<varlistentry>\n")
                 self.out.write(
                     "  <term><literal>IN %s <parameter>%s</parameter></literal>:</term>\n"
                     % (a.signature, a.name)
@@ -226,9 +227,9 @@ class DocbookCodeGenerator:
                     "  <listitem>%s</listitem>\n"
                     % (self.expand_paras(a.doc_string, True))
                 )
-                self.out.write("</varlistentry>\n" % ())
+                self.out.write("</varlistentry>\n")
             for a in m.out_args:
-                self.out.write("<varlistentry>\n" % ())
+                self.out.write("<varlistentry>\n")
                 self.out.write(
                     "  <term><literal>OUT %s <parameter>%s</parameter></literal>:</term>\n"
                     % (a.signature, a.name)
@@ -237,7 +238,7 @@ class DocbookCodeGenerator:
                     "  <listitem>%s</listitem>\n"
                     % (self.expand_paras(a.doc_string, True))
                 )
-                self.out.write("</varlistentry>\n" % ())
+                self.out.write("</varlistentry>\n")
             self.out.write("</variablelist>\n")
         if len(m.since) > 0:
             self.out.write('<para role="since">Since %s</para>\n' % (m.since))
@@ -272,7 +273,7 @@ class DocbookCodeGenerator:
         if s.args:
             self.out.write('<variablelist role="params">\n')
             for a in s.args:
-                self.out.write("<varlistentry>\n" % ())
+                self.out.write("<varlistentry>\n")
                 self.out.write(
                     "  <term><literal>%s <parameter>%s</parameter></literal>:</term>\n"
                     % (a.signature, a.name)
@@ -281,7 +282,7 @@ class DocbookCodeGenerator:
                     "  <listitem>%s</listitem>\n"
                     % (self.expand_paras(a.doc_string, True))
                 )
-                self.out.write("</varlistentry>\n" % ())
+                self.out.write("</varlistentry>\n")
             self.out.write("</variablelist>\n")
         if len(s.since) > 0:
             self.out.write('<para role="since">Since %s</para>\n' % (s.since))
@@ -394,19 +395,17 @@ class DocbookCodeGenerator:
     def generate(self, docbook, outdir):
         for i in self.ifaces:
             self.out = open(path.join(outdir, "%s-%s.xml" % (docbook, i.name)), "w")
-            self.out.write("" % ())
-            self.out.write('<?xml version="1.0" encoding="utf-8"?>\n' % ())
+            self.out.write("")
+            self.out.write('<?xml version="1.0" encoding="utf-8"?>\n')
             self.out.write(
                 '<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"\n'
-                % ()
             )
             self.out.write(
                 '               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [\n'
-                % ()
             )
-            self.out.write("]>\n" % ())
+            self.out.write("]>\n")
             self.out.write('<refentry id="gdbus-%s">\n' % (i.name))
-            self.out.write("  <refmeta>" % ())
+            self.out.write("  <refmeta>")
             self.out.write(
                 '    <refentrytitle role="top_of_page" id="gdbus-interface-%s.top_of_page">%s</refentrytitle>\n'
                 % (utils.dots_to_hyphens(i.name), i.name)
@@ -415,12 +414,12 @@ class DocbookCodeGenerator:
                 '  <indexterm zone="gdbus-interface-%s.top_of_page"><primary sortas="%s">%s</primary></indexterm>\n'
                 % (utils.dots_to_hyphens(i.name), i.name_without_prefix, i.name)
             )
-            self.out.write("  </refmeta>" % ())
+            self.out.write("  </refmeta>")
 
-            self.out.write("  <refnamediv>" % ())
+            self.out.write("  <refnamediv>")
             self.out.write("    <refname>%s</refname>" % (i.name))
             self.out.write("    <refpurpose>%s</refpurpose>" % (i.doc_string_brief))
-            self.out.write("  </refnamediv>" % ())
+            self.out.write("  </refnamediv>")
 
             if len(i.methods) > 0:
                 self.print_synopsis_methods(i)
@@ -433,7 +432,7 @@ class DocbookCodeGenerator:
                 '<refsect1 role="desc" id="gdbus-interface-%s">\n'
                 % (utils.dots_to_hyphens(i.name))
             )
-            self.out.write('  <title role="desc.title">Description</title>\n' % ())
+            self.out.write('  <title role="desc.title">Description</title>\n')
             self.out.write("  %s\n" % (self.expand_paras(i.doc_string, True)))
             if len(i.since) > 0:
                 self.out.write('  <para role="since">Since %s</para>\n' % (i.since))
@@ -442,40 +441,36 @@ class DocbookCodeGenerator:
                     "<warning><para>The %s interface is deprecated.</para></warning>"
                     % (i.name)
                 )
-            self.out.write("</refsect1>\n" % ())
+            self.out.write("</refsect1>\n")
 
             if len(i.methods) > 0:
                 self.out.write(
                     '<refsect1 role="details" id="gdbus-methods-%s">\n' % (i.name)
                 )
-                self.out.write(
-                    '  <title role="details.title">Method Details</title>\n' % ()
-                )
+                self.out.write('  <title role="details.title">Method Details</title>\n')
                 for m in i.methods:
                     self.print_method(i, m)
-                self.out.write("</refsect1>\n" % ())
+                self.out.write("</refsect1>\n")
 
             if len(i.signals) > 0:
                 self.out.write(
                     '<refsect1 role="details" id="gdbus-signals-%s">\n' % (i.name)
                 )
-                self.out.write(
-                    '  <title role="details.title">Signal Details</title>\n' % ()
-                )
+                self.out.write('  <title role="details.title">Signal Details</title>\n')
                 for s in i.signals:
                     self.print_signal(i, s)
-                self.out.write("</refsect1>\n" % ())
+                self.out.write("</refsect1>\n")
 
             if len(i.properties) > 0:
                 self.out.write(
                     '<refsect1 role="details" id="gdbus-properties-%s">\n' % (i.name)
                 )
                 self.out.write(
-                    '  <title role="details.title">Property Details</title>\n' % ()
+                    '  <title role="details.title">Property Details</title>\n'
                 )
                 for s in i.properties:
                     self.print_property(i, s)
-                self.out.write("</refsect1>\n" % ())
+                self.out.write("</refsect1>\n")
 
             self.out.write("</refentry>\n")
             self.out.write("\n")

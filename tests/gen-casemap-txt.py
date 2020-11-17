@@ -27,6 +27,10 @@ import sys
 import argparse
 
 
+# Disable line length warnings as wrapping the test templates would be hard
+# flake8: noqa: E501
+
+
 def main(argv):
     parser = argparse.ArgumentParser(
         description="Generate test cases for case mapping from Unicode data"
@@ -183,9 +187,9 @@ tr_TR.UTF-8\tI\u0307\ti\tI\u0307\tI\u0307\t# I => LATIN SMALL LETTER DOTLESS I
 \t\u03b1\u0345\u0314\t\u03b1\u0345\u0314\t\u0391\u0345\u0314\t\u0391\u0314\u0399\t
 \t\u03b1\u0314\u0345\t\u03b1\u0314\u0345\t\u0391\u0314\u0345\t\u0391\u0314\u0399\t
 # Handling of final and nonfinal sigma
-\tΜΆΙΟΣ 	μάιος 	Μάιος 	ΜΆΙΟΣ 	
-\tΜΆΙΟΣ	μάιος	Μάιος	ΜΆΙΟΣ	
-\tΣΙΓΜΑ	σιγμα	Σιγμα	ΣΙΓΜΑ	
+\tΜΆΙΟΣ 	μάιος 	Μάιος 	ΜΆΙΟΣ \t
+\tΜΆΙΟΣ	μάιος	Μάιος	ΜΆΙΟΣ\t
+\tΣΙΓΜΑ	σιγμα	Σιγμα	ΣΙΓΜΑ\t
 # Lithuanian rule of i followed by letter with dot. Not at all sure
 # about the titlecase part here
 lt_LT\ti\u0117\ti\u0117\tIe\tIE\t

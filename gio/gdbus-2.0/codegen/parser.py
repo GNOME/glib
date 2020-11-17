@@ -19,7 +19,6 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
-import sys
 import xml.parsers.expat
 
 from . import dbustypes
@@ -222,7 +221,7 @@ class DBusXMLParser:
             if self.doc_comment_last_symbol == old_cur_object.name:
                 if "name" in attrs and attrs["name"] in self.doc_comment_params:
                     doc_string = self.doc_comment_params[attrs["name"]]
-                    if doc_string != None:
+                    if doc_string is not None:
                         self._cur_object.doc_string = doc_string
                     if "since" in self.doc_comment_params:
                         self._cur_object.since = self.doc_comment_params[
@@ -250,7 +249,7 @@ class DBusXMLParser:
             if self.doc_comment_last_symbol == old_cur_object.name:
                 if "name" in attrs and attrs["name"] in self.doc_comment_params:
                     doc_string = self.doc_comment_params[attrs["name"]]
-                    if doc_string != None:
+                    if doc_string is not None:
                         self._cur_object.doc_string = doc_string
                     if "since" in self.doc_comment_params:
                         self._cur_object.since = self.doc_comment_params[

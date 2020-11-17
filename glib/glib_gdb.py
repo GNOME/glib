@@ -4,6 +4,7 @@ import sys
 if sys.version_info[0] >= 3:
     long = int
 
+
 # This is not quite right, as local vars may override symname
 def read_global_var(symname):
     return gdb.selected_frame().read_var(symname)
@@ -18,11 +19,11 @@ def g_quark_to_string(quark):
     try:
         val = read_global_var("quarks")
         max_q = long(read_global_var("quark_seq_id"))
-    except:
+    except Exception:
         try:
             val = read_global_var("g_quarks")
             max_q = long(read_global_var("g_quark_seq_id"))
-        except:
+        except Exception:
             return None
     if quark < max_q:
         return val[quark].string()
@@ -130,7 +131,7 @@ class GHashPrinter:
         def next(self):
             if self.ht == 0:
                 raise StopIteration
-            if self.value != None:
+            if self.value is not None:
                 v = self.value
                 self.value = None
                 return v
@@ -160,11 +161,11 @@ class GHashPrinter:
         self.keys_are_strings = False
         try:
             string_hash = read_global_var("g_str_hash")
-        except:
+        except Exception:
             string_hash = None
         if (
             self.val != 0
-            and string_hash != None
+            and string_hash is not None
             and self.val["hash_func"] == string_hash
         ):
             self.keys_are_strings = True
@@ -267,16 +268,16 @@ class ForeachCommand(gdb.Command):
         gdb.execute(command)
 
     def slist_iterator(self, arg, container, command):
-        l = container.cast(gdb.lookup_type("GSList").pointer())
-        while long(l) != 0:
-            self.do_iter(arg, l["data"], command)
-            l = l["next"]
+        list_element = container.cast(gdb.lookup_type("GSList").pointer())
+        while long(list_element) != 0:
+            self.do_iter(arg, list_element["data"], command)
+            list_element = list_element["next"]
 
     def list_iterator(self, arg, container, command):
-        l = container.cast(gdb.lookup_type("GList").pointer())
-        while long(l) != 0:
-            self.do_iter(arg, l["data"], command)
-            l = l["next"]
+        list_element = container.cast(gdb.lookup_type("GList").pointer())
+        while long(list_element) != 0:
+            self.do_iter(arg, list_element["data"], command)
+            list_element = list_element["next"]
 
     def pick_iterator(self, container):
         t = container.type.unqualified()
