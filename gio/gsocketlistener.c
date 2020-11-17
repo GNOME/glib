@@ -1009,7 +1009,7 @@ void
 g_socket_listener_close (GSocketListener *listener)
 {
   GSocket *socket;
-  int i;
+  guint i;
 
   g_return_if_fail (G_IS_SOCKET_LISTENER (listener));
 
