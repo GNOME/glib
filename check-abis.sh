@@ -1,11 +1,11 @@
 #!/bin/sh -e
 
 list_leaked_symbols () {
-	nm -D "$1" | grep ' T ' | cut -f 3 -d ' ' | egrep -v "$2"
+	nm -D "$1" | grep ' T ' | cut -f 3 -d ' ' | grep -E -v "$2"
 }
 
 check_symbols () {
-	if [ "`list_leaked_symbols "$1" "$2" | wc -l`" -ne 0 ]; then
+	if [ "$(list_leaked_symbols "$1" "$2" | wc -l)" -ne 0 ]; then
 		echo File "$1" possibly leaking symbols:
 		list_leaked_symbols "$1" "$2"
 		exit 1
