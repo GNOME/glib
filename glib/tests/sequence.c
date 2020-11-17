@@ -15,7 +15,7 @@ struct _GSequence
 
 struct _GSequenceNode
 {
-  gint                  n_nodes;
+  guint                 n_nodes;
   GSequenceNode *       parent;
   GSequenceNode *       left;
   GSequenceNode *       right;
@@ -99,7 +99,7 @@ typedef struct SequenceInfo
 {
   GQueue *      queue;
   GSequence *   sequence;
-  int           n_items;
+  guint         n_items;
 } SequenceInfo;
 
 typedef struct
@@ -137,7 +137,7 @@ check_integrity (SequenceInfo *info)
              g_sequence_get_length (info->sequence), info->n_items);
 #endif
   g_assert (info->n_items == g_queue_get_length (info->queue));
-  g_assert (g_sequence_get_length (info->sequence) == info->n_items);
+  g_assert ((guint) g_sequence_get_length (info->sequence) == info->n_items);
 
   iter = g_sequence_get_begin_iter (info->sequence);
   list = info->queue->head;
@@ -155,7 +155,7 @@ check_integrity (SequenceInfo *info)
     }
 
   g_assert (info->n_items == g_queue_get_length (info->queue));
-  g_assert (g_sequence_get_length (info->sequence) == info->n_items);
+  g_assert ((guint) g_sequence_get_length (info->sequence) == info->n_items);
 }
 
 static gpointer
@@ -551,7 +551,7 @@ run_random_tests (gconstpointer d)
           {
             int i;
 
-            g_assert (g_queue_get_length (seq->queue) == g_sequence_get_length (seq->sequence));
+            g_assert (g_queue_get_length (seq->queue) == (guint) g_sequence_get_length (seq->sequence));
 
             for (i = 0; i < 10; ++i)
               {
@@ -1387,7 +1387,7 @@ int
 main (int argc,
       char **argv)
 {
-  gint i;
+  gsize i;
   guint32 seed;
   gchar *path;
 
