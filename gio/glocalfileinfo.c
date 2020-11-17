@@ -929,7 +929,7 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 	      uid_t uid = geteuid ();
 
 	      if (uid == _g_stat_uid (statbuf) ||
-		  uid == parent_info->owner ||
+		  uid == (uid_t) parent_info->owner ||
 		  uid == 0)
 		writable = TRUE;
 	    }

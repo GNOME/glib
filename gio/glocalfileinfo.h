@@ -46,6 +46,7 @@ typedef struct
   gboolean writable;
   gboolean is_sticky;
   gboolean has_trash_dir;
+  /* owner should be uid_t but it breaks compliance with MS-Windows */
   int      owner;
   dev_t    device;
   ino_t    inode;
