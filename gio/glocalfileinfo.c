@@ -170,14 +170,14 @@ read_link (const gchar *full_name)
 {
 #if defined (HAVE_READLINK)
   gchar *buffer;
-  guint size;
+  gsize size;
   
   size = 256;
   buffer = g_malloc (size);
   
   while (1)
     {
-      int read_size;
+      gssize read_size;
 
       read_size = readlink (full_name, buffer, size);
       if (read_size < 0)
@@ -185,7 +185,7 @@ read_link (const gchar *full_name)
 	  g_free (buffer);
 	  return NULL;
 	}
-      if (read_size < size)
+      if ((gsize) read_size < size)
 	{
 	  buffer[read_size] = 0;
 	  return buffer;
