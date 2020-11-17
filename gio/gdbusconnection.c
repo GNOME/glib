@@ -1708,7 +1708,9 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
  * will be assigned by @connection and set on @message via
  * g_dbus_message_set_serial(). If @out_serial is not %NULL, then the
  * serial number used will be written to this location prior to
- * submitting the message to the underlying transport.
+ * submitting the message to the underlying transport. While it has a `volatile`
+ * qualifier, this is a historical artifact and the argument passed to it should
+ * not be `volatile`.
  *
  * If @connection is closed then the operation will fail with
  * %G_IO_ERROR_CLOSED. If @message is not well-formed,
@@ -1979,7 +1981,9 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * will be assigned by @connection and set on @message via
  * g_dbus_message_set_serial(). If @out_serial is not %NULL, then the
  * serial number used will be written to this location prior to
- * submitting the message to the underlying transport.
+ * submitting the message to the underlying transport. While it has a `volatile`
+ * qualifier, this is a historical artifact and the argument passed to it should
+ * not be `volatile`.
  *
  * If @connection is closed then the operation will fail with
  * %G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will
@@ -2105,7 +2109,9 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * will be assigned by @connection and set on @message via
  * g_dbus_message_set_serial(). If @out_serial is not %NULL, then the
  * serial number used will be written to this location prior to
- * submitting the message to the underlying transport.
+ * submitting the message to the underlying transport. While it has a `volatile`
+ * qualifier, this is a historical artifact and the argument passed to it should
+ * not be `volatile`.
  *
  * If @connection is closed then the operation will fail with
  * %G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will

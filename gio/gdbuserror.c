@@ -177,6 +177,9 @@ g_dbus_error_quark (void)
  *
  * Helper function for associating a #GError error domain with D-Bus error names.
  *
+ * While @quark_volatile has a `volatile` qualifier, this is a historical
+ * artifact and the argument passed to it should not be `volatile`.
+ *
  * Since: 2.26
  */
 void

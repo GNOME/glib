@@ -105,6 +105,9 @@
  * This call acts as a full compiler and hardware
  * memory barrier (before the get).
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Returns: the value of the integer
  *
  * Since: 2.4
@@ -125,6 +128,9 @@ gint
  * This call acts as a full compiler and hardware
  * memory barrier (after the set).
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Since: 2.4
  */
 void
@@ -144,6 +150,9 @@ void
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Since: 2.4
  **/
 void
@@ -162,6 +171,9 @@ void
  * `{ *atomic -= 1; return (*atomic == 0); }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
+ *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
  *
  * Returns: %TRUE if the resultant value is zero
  *
@@ -188,6 +200,9 @@ gboolean
  * `{ if (*atomic == oldval) { *atomic = newval; return TRUE; } else return FALSE; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
+ *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
  *
  * Returns: %TRUE if the exchange took place
  *
@@ -216,6 +231,9 @@ gboolean
  * Before version 2.30, this function did not return a value
  * (but g_atomic_int_exchange_and_add() did, and had the same meaning).
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Returns: the value of @atomic before the add, signed
  *
  * Since: 2.4
@@ -239,6 +257,9 @@ gint
  *
  * Think of this operation as an atomic version of
  * `{ tmp = *atomic; *atomic &= val; return tmp; }`.
+ *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
  *
  * Returns: the value of @atomic before the operation, unsigned
  *
@@ -264,6 +285,9 @@ guint
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Returns: the value of @atomic before the operation, unsigned
  *
  * Since: 2.30
@@ -288,6 +312,9 @@ guint
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Returns: the value of @atomic before the operation, unsigned
  *
  * Since: 2.30
@@ -309,6 +336,9 @@ guint
  * This call acts as a full compiler and hardware
  * memory barrier (before the get).
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Returns: the value of the pointer
  *
  * Since: 2.4
@@ -328,6 +358,9 @@ gpointer
  *
  * This call acts as a full compiler and hardware
  * memory barrier (after the set).
+ *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
  *
  * Since: 2.4
  **/
@@ -354,6 +387,9 @@ void
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Returns: %TRUE if the exchange took place
  *
  * Since: 2.4
@@ -379,6 +415,9 @@ gboolean
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Returns: the value of @atomic before the add, signed
  *
  * Since: 2.30
@@ -402,6 +441,9 @@ gssize
  * `{ tmp = *atomic; *atomic &= val; return tmp; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
+ *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
  *
  * Returns: the value of @atomic before the operation, unsigned
  *
@@ -427,6 +469,9 @@ gsize
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
+ *
  * Returns: the value of @atomic before the operation, unsigned
  *
  * Since: 2.30
@@ -450,6 +495,9 @@ gsize
  * `{ tmp = *atomic; *atomic ^= val; return tmp; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
+ *
+ * While @atomic has a `volatile` qualifier, this is a historical artifact and
+ * the pointer passed to it should not be `volatile`.
  *
  * Returns: the value of @atomic before the operation, unsigned
  *
