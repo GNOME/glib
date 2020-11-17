@@ -210,7 +210,7 @@ g_compressor_converter_convert (GConverter *converter,
 {
   const guint8 *in, *in_end;
   guint8 v, *out;
-  int i;
+  gsize i;
   gsize block_size;
 
   in = inbuf;
@@ -231,7 +231,7 @@ g_compressor_converter_convert (GConverter *converter,
 	block_size = v * 1000;
 
       /* Not enough data */
-      if (in_end - in < block_size)
+      if ((gsize) (in_end - in) < block_size)
 	{
 	  if (*bytes_read > 0)
 	    break;
@@ -254,7 +254,7 @@ g_compressor_converter_convert (GConverter *converter,
 	    }
 	}
 
-      if (v == 0 && in_end - in == block_size && (flags & G_CONVERTER_INPUT_AT_END) == 0)
+      if (v == 0 && (gsize) (in_end - in) == block_size && (flags & G_CONVERTER_INPUT_AT_END) == 0)
 	{
 	  if (*bytes_read > 0)
 	    break;
