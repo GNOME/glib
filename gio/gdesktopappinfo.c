@@ -1221,7 +1221,7 @@ static gboolean
 array_contains (GPtrArray *array,
                 const gchar *str)
 {
-  gint i;
+  guint i;
 
   for (i = 0; i < array->len; i++)
     if (g_str_equal (array->pdata[i], str))
