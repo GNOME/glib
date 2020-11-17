@@ -542,7 +542,7 @@ g_application_parse_command_line (GApplication   *application,
     {
       GOptionEntry entries[] = {
         { "gapplication-service", '\0', 0, G_OPTION_ARG_NONE, &become_service,
-          N_("Enter GApplication service mode (use from D-Bus service files)") },
+          N_("Enter GApplication service mode (use from D-Bus service files)"), NULL },
         { NULL }
       };
 
@@ -554,7 +554,7 @@ g_application_parse_command_line (GApplication   *application,
     {
       GOptionEntry entries[] = {
         { "gapplication-app-id", '\0', 0, G_OPTION_ARG_STRING, &app_id,
-          N_("Override the application’s ID") },
+          N_("Override the application’s ID"), NULL },
         { NULL }
       };
 
@@ -566,7 +566,7 @@ g_application_parse_command_line (GApplication   *application,
     {
       GOptionEntry entries[] = {
         { "gapplication-replace", '\0', 0, G_OPTION_ARG_NONE, &replace,
-          N_("Replace the running instance") },
+          N_("Replace the running instance"), NULL },
         { NULL }
       };
 
