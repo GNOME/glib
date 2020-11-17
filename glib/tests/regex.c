@@ -1316,6 +1316,7 @@ test_match_all (gconstpointer d)
     g_assert (match_ok);
 
   match_count = g_match_info_get_match_count (match_info);
+  g_assert_cmpint (match_count, >=, 0);
 
   if (match_count != g_slist_length (data->expected))
     {
