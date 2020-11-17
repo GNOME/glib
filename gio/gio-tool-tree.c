@@ -52,7 +52,7 @@ sort_info_by_name (GFileInfo *a, GFileInfo *b)
 }
 
 static void
-do_tree (GFile *f, int level, guint64 pattern)
+do_tree (GFile *f, unsigned int level, guint64 pattern)
 {
   GFileEnumerator *enumerator;
   GError *error = NULL;
