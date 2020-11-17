@@ -104,7 +104,7 @@ app_help (gboolean     requested,
 
   if (topic)
     {
-      gint maxwidth;
+      guint maxwidth;
       gsize i;
 
       g_string_append_printf (string, "\n  %s %s %s\n\n", "gapplication",
@@ -129,7 +129,7 @@ app_help (gboolean     requested,
     }
   else
     {
-      gint maxwidth;
+      guint maxwidth;
       gsize i;
 
       g_string_append_printf (string, "\n  %s %s %s\n\n", "gapplication", _("COMMAND"), _("[ARGS…]"));
