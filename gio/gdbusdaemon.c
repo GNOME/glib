@@ -361,7 +361,7 @@ match_new (const char *str)
   MatchElement element;
   gboolean eavesdrop;
   GDBusMessageType type;
-  int i;
+  gsize i;
 
   eavesdrop = FALSE;
   type = G_DBUS_MESSAGE_TYPE_INVALID;
