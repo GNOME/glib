@@ -85,7 +85,7 @@ app_help (gboolean     requested,
 
   if (command)
     {
-      gint i;
+      gsize i;
 
       for (i = 0; i < G_N_ELEMENTS (topics); i++)
         if (g_str_equal (topics[i].command, command))
@@ -103,7 +103,7 @@ app_help (gboolean     requested,
   if (topic)
     {
       gint maxwidth;
-      gint i;
+      gsize i;
 
       g_string_append_printf (string, "\n  %s %s %s\n\n", "gapplication",
                               topic->command, topic->synopsis ? _(topic->synopsis) : "");
@@ -128,7 +128,7 @@ app_help (gboolean     requested,
   else
     {
       gint maxwidth;
-      gint i;
+      gsize i;
 
       g_string_append_printf (string, "\n  %s %s %s\n\n", "gapplication", _("COMMAND"), _("[ARGS…]"));
       g_string_append_printf (string, _("Commands:\n"));
