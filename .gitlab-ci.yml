@@ -40,29 +40,6 @@ variables:
   only:
     - schedules
 
-sh-check:
-  extends: .only-default
-  image: $DEBIAN_IMAGE
-  stage: style-check
-  allow_failure: true
-  script:
-    - .gitlab-ci/run-shellcheck.sh
-  only:
-    changes:
-      - "**/*.sh"
-
-py-check:
-  extends: .only-default
-  image: $DEBIAN_IMAGE
-  stage: style-check
-  allow_failure: true
-  script:
-    - .gitlab-ci/run-black.sh
-    - .gitlab-ci/run-flake8.sh
-  only:
-    changes:
-      - "**/*.py"
-
 style-check-diff:
   extends: .only-default
   image: $DEBIAN_IMAGE
@@ -70,6 +47,9 @@ style-check-diff:
   allow_failure: true
   script:
     - .gitlab-ci/run-style-check-diff.sh
+    - .gitlab-ci/run-shellcheck.sh
+    - .gitlab-ci/run-black.sh
+    - .gitlab-ci/run-flake8.sh
 
 check-todos:
   extends: .only-default
