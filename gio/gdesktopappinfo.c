@@ -4143,7 +4143,7 @@ get_list_of_mimetypes (const gchar *content_type,
 
   if (include_fallback)
     {
-      gint i;
+      guint i;
 
       /* Iterate the array as we grow it, until we have nothing more to add */
       for (i = 0; i < array->len; i++)
