@@ -3055,8 +3055,8 @@ g_assertion_message_cmpstrv (const char         *domain,
   const char *s1 = arg1[first_wrong_idx], *s2 = arg2[first_wrong_idx];
   char *a1, *a2, *s, *t1 = NULL, *t2 = NULL;
 
-  a1 = arg1 ? g_strconcat ("\"", t1 = g_strescape (s1, NULL), "\"", NULL) : g_strdup ("NULL");
-  a2 = arg2 ? g_strconcat ("\"", t2 = g_strescape (s2, NULL), "\"", NULL) : g_strdup ("NULL");
+  a1 = g_strconcat ("\"", t1 = g_strescape (s1, NULL), "\"", NULL);
+  a2 = g_strconcat ("\"", t2 = g_strescape (s2, NULL), "\"", NULL);
   g_free (t1);
   g_free (t2);
   s = g_strdup_printf ("assertion failed (%s): first differing element at index %" G_GSIZE_FORMAT ": %s does not equal %s",
