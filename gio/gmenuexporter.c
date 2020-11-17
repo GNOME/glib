@@ -783,7 +783,7 @@ g_dbus_connection_export_menu_model (GDBusConnection  *connection,
                                      GError          **error)
 {
   const GDBusInterfaceVTable vtable = {
-    g_menu_exporter_method_call,
+    g_menu_exporter_method_call, NULL, NULL, { 0 }
   };
   GMenuExporter *exporter;
   guint id;
