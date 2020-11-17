@@ -363,7 +363,7 @@ test_tree (void)
   const gchar *path;
   GFile *file;
   gchar **types;
-  gint i;
+  gsize i;
 
 #ifdef __APPLE__
   g_test_skip ("The OSX backend does not implement g_content_type_guess_for_tree()");
