@@ -94,7 +94,7 @@ g_expander_converter_convert (GConverter *converter,
 {
   const guint8 *in, *in_end;
   guint8 v, *out;
-  int i;
+  gsize i;
   gsize block_size;
 
   in = inbuf;
