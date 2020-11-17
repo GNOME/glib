@@ -310,7 +310,7 @@ read_data (GDataInputStream  *stream,
   res = g_input_stream_read (G_INPUT_STREAM (stream),
 			     buffer, size,
 			     NULL, NULL);
-  g_warn_if_fail (res == size);
+  g_warn_if_fail (res >= 0 && (gsize) res == size);
   return TRUE;
 }
 
