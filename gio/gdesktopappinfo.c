@@ -4477,7 +4477,7 @@ g_desktop_app_info_get_implementations (const gchar *interface)
 {
   GList *result = NULL;
   GList **ptr;
-  gint i;
+  guint i;
 
   desktop_file_dirs_lock ();
 
