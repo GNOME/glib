@@ -297,7 +297,7 @@ test_expander (void)
   GConverter *expander;
   GConverter *converter;
   GError *error;
-  int i;
+  gsize i;
 
   expander = g_expander_converter_new ();
 
