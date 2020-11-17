@@ -4540,6 +4540,7 @@ g_desktop_app_info_search (const gchar *search_string)
   gint n_categories = 0;
   gint start_of_category;
   gint i, j;
+  guint k;
 
   search_tokens = g_str_tokenize_and_fold (search_string, NULL, NULL);
 
@@ -4547,11 +4548,11 @@ g_desktop_app_info_search (const gchar *search_string)
 
   reset_total_search_results ();
 
-  for (i = 0; i < desktop_file_dirs->len; i++)
+  for (k = 0; k < desktop_file_dirs->len; k++)
     {
       for (j = 0; search_tokens[j]; j++)
         {
-          desktop_file_dir_search (g_ptr_array_index (desktop_file_dirs, i), search_tokens[j]);
+          desktop_file_dir_search (g_ptr_array_index (desktop_file_dirs, k), search_tokens[j]);
           merge_token_results (j == 0);
         }
       merge_directory_results ();
