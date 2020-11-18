@@ -789,7 +789,7 @@ g_memory_output_stream_seek (GSeekable    *seekable,
    * stream is valid (eg: a 1-byte fixed sized stream can have position
    * 0 or 1).  Therefore '>' is what we want.
    * */
-  if (priv->realloc_fn == NULL && absolute > priv->len)
+  if (priv->realloc_fn == NULL && (gsize) absolute > priv->len)
     {
       g_set_error_literal (error,
                            G_IO_ERROR,
