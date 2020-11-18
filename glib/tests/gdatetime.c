@@ -2399,6 +2399,16 @@ test_no_header (void)
 }
 
 static void
+test_no_header_identifier (void)
+{
+  GTimeZone *tz;
+
+  tz = g_time_zone_new_identifier ("blabla");
+
+  g_assert_null (tz);
+}
+
+static void
 test_posix_parse (void)
 {
   GTimeZone *tz;
@@ -2893,6 +2903,7 @@ main (gint   argc,
   g_test_add_func ("/GTimeZone/find-interval", test_find_interval);
   g_test_add_func ("/GTimeZone/adjust-time", test_adjust_time);
   g_test_add_func ("/GTimeZone/no-header", test_no_header);
+  g_test_add_func ("/GTimeZone/no-header-identifier", test_no_header_identifier);
   g_test_add_func ("/GTimeZone/posix-parse", test_posix_parse);
   g_test_add_func ("/GTimeZone/floating-point", test_GDateTime_floating_point);
   g_test_add_func ("/GTimeZone/identifier", test_identifier);
