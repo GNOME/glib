@@ -577,6 +577,7 @@ gio_sources = files(
   'gzlibdecompressor.c',
   'glistmodel.c',
   'gliststore.c',
+  '../glib/gtrace.c',
 )
 
 gio_sources += appinfo_sources
@@ -791,7 +792,7 @@ libgio = library('gio-2.0',
   #  '$(gio_win32_res_ldflag)',
   dependencies : [libz_dep, libdl_dep, libmount_dep, libglib_dep,
                   libgobject_dep, libgmodule_dep, selinux_dep, xattr_dep,
-                  platform_deps, network_libs],
+                  platform_deps, network_libs, libsysprof_capture_dep],
   c_args : gio_c_args,
   objc_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH

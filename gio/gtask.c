@@ -24,6 +24,7 @@
 #include "gasyncresult.h"
 #include "gcancellable.h"
 #include "glib-private.h"
+#include "gtrace-private.h"
 
 #include "glibintl.h"
 
@@ -617,6 +618,9 @@ static GPrivate task_private = G_PRIVATE_INIT (NULL);
 static GSource *task_pool_manager;
 static guint64 task_wait_time;
 static gint tasks_running;
+
+static guint task_pool_max_counter;
+static guint tasks_running_counter;
 
 /* When the task pool fills up and blocks, and the program keeps
  * queueing more tasks, we will slowly add more threads to the pool
@@ -1361,6 +1365,7 @@ task_pool_manager_timeout (gpointer user_data)
 {
   g_mutex_lock (&task_pool_mutex);
   g_thread_pool_set_max_threads (task_pool, tasks_running + 1, NULL);
+  g_trace_set_int64_counter (task_pool_max_counter, tasks_running + 1);
   g_source_set_ready_time (task_pool_manager, -1);
   g_mutex_unlock (&task_pool_mutex);
 
@@ -1373,6 +1378,8 @@ g_task_thread_setup (void)
   g_private_set (&task_private, GUINT_TO_POINTER (TRUE));
   g_mutex_lock (&task_pool_mutex);
   tasks_running++;
+
+  g_trace_set_int64_counter (tasks_running_counter, tasks_running);
 
   if (tasks_running == G_TASK_POOL_SIZE)
     task_wait_time = G_TASK_WAIT_TIME_BASE;
@@ -1394,7 +1401,10 @@ g_task_thread_cleanup (void)
   tasks_pending = g_thread_pool_unprocessed (task_pool);
 
   if (tasks_running > G_TASK_POOL_SIZE)
-    g_thread_pool_set_max_threads (task_pool, tasks_running - 1, NULL);
+    {
+      g_thread_pool_set_max_threads (task_pool, tasks_running - 1, NULL);
+      g_trace_set_int64_counter (task_pool_max_counter, tasks_running - 1);
+    }
   else if (tasks_running + tasks_pending < G_TASK_POOL_SIZE)
     g_source_set_ready_time (task_pool_manager, -1);
 
@@ -1402,6 +1412,9 @@ g_task_thread_cleanup (void)
     task_wait_time /= G_TASK_WAIT_TIME_MULTIPLIER;
 
   tasks_running--;
+
+  g_trace_set_int64_counter (tasks_running_counter, tasks_running);
+
   g_mutex_unlock (&task_pool_mutex);
   g_private_set (&task_private, GUINT_TO_POINTER (FALSE));
 }
@@ -2214,6 +2227,16 @@ g_task_class_init (GTaskClass *klass)
                           P_("Task completed"),
                           P_("Whether the task has completed yet"),
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  if (G_UNLIKELY (task_pool_max_counter == 0))
+    {
+      /* We use two counters to track characteristics of the GTask thread pool.
+       * task pool max size - the value of g_thread_pool_set_max_threads()
+       * tasks running - the number of running threads
+       */
+      task_pool_max_counter = g_trace_define_int64_counter ("GIO", "task pool max size", "Maximum number of threads allowed in the GTask thread pool; see g_thread_pool_set_max_threads()");
+      tasks_running_counter = g_trace_define_int64_counter ("GIO", "tasks running", "Number of currently running tasks in the GTask thread pool");
+    }
 }
 
 static gpointer
