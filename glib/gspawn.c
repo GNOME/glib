@@ -1273,7 +1273,7 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
   if (getrlimit (RLIMIT_NOFILE, &rl) == 0 && rl.rlim_max != RLIM_INFINITY)
     open_max = rl.rlim_max;
 #endif
-#if defined(__FreeBSD__) || defined(__OpenBSD__)
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
   /* Use sysconf() function provided by the system if it is known to be
    * async-signal safe.
    *
@@ -1282,6 +1282,9 @@ safe_fdwalk (int (*cb)(void *data, int fd), void *data)
    *
    * OpenBSD: sysconf() is included in the list of async-signal safe functions
    * found in https://man.openbsd.org/sigaction.2.
+   * 
+   * Apple: sysconf() is included in the list of async-signal safe functions
+   * found in https://opensource.apple.com/source/xnu/xnu-517.12.7/bsd/man/man2/sigaction.2
    */
   if (open_max < 0)
     open_max = sysconf (_SC_OPEN_MAX);
