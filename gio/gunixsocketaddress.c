@@ -214,7 +214,8 @@ g_unix_socket_address_to_native (GSocketAddress *address,
   gssize socklen;
 
   socklen = g_unix_socket_address_get_native_size (address);
-  if (destlen < socklen)
+  g_assert (socklen >= 0);
+  if (destlen < (gsize) socklen)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
 			   _("Not enough space for socket address"));
