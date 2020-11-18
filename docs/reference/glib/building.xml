@@ -216,6 +216,12 @@
         <literal>G_ENABLE_DEBUG</literal> will be defined and GLib will be built
         with additional debug code enabled.
       </para>
+      <para>
+        If the build type is <literal>plain</literal>, GLib will not enable any
+        optimization or debug options by default, and will leave it entirely to
+        the user to choose their options. To build with the options recommended
+        by GLib developers, choose <literal>release</literal>.
+      </para>
     </formalpara>
 
     <formalpara>
