@@ -731,7 +731,7 @@ print_help (const char        *envvar,
     {
       GList *l;
       GIOExtension *extension;
-      int width = 0;
+      gsize width = 0;
 
       for (l = g_io_extension_point_get_extensions (ep); l; l = l->next)
         {
@@ -743,7 +743,9 @@ print_help (const char        *envvar,
         {
           extension = l->data;
 
-          g_print (" %*s - %d\n", width, g_io_extension_get_name (extension), g_io_extension_get_priority (extension));
+          g_print (" %*s - %d\n", (int) MIN (width, G_MAXINT),
+                   g_io_extension_get_name (extension),
+                   g_io_extension_get_priority (extension));
         }
     }
 }
