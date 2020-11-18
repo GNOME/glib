@@ -1273,8 +1273,10 @@ decide_which_id_to_use (const gunichar2    *program_id,
 
   if (return_handler_id_u8)
     *return_handler_id_u8 = g_steal_pointer (&handler_id_u8);
+  g_clear_pointer (&handler_id_u8, g_free);
   if (return_handler_id_u8_folded)
     *return_handler_id_u8_folded = g_steal_pointer (&handler_id_u8_folded);
+  g_clear_pointer (&handler_id_u8_folded, g_free);
 
   if (return_id == NULL && return_key)
     *return_key = g_steal_pointer (&key);
