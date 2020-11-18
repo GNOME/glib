@@ -151,7 +151,7 @@ strv_strv_cmp (gchar **a, gchar **b)
 static gboolean
 strv_set_equal (gchar **strv, ...)
 {
-  gint count;
+  guint count;
   va_list list;
   const gchar *str;
   gboolean res;
@@ -468,7 +468,7 @@ test_parse_detailed (void)
     { "abc(42, 4)",       "abc",    "(42, 4)",  "expected end of input", NULL },
     { "abc(42,)",         "abc",    "(42,)",    "expected end of input", NULL }
   };
-  gint i;
+  gsize i;
 
   for (i = 0; i < G_N_ELEMENTS (testcases); i++)
     {
