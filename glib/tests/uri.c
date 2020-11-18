@@ -32,59 +32,59 @@ typedef struct
   char *filename;
   char *hostname;
   char *expected_result;
-  GConvertError expected_error; /* If failed */
+  gint expected_error; /* If failed */
 } FileToUriTest;
 
 FileToUriTest
 file_to_uri_tests[] = {
-  { "/etc", NULL, "file:///etc"},
-  { "/etc", "", "file:///etc"},
-  { "/etc", "otherhost", "file://otherhost/etc"},
+  { "/etc", NULL, "file:///etc", 0 },
+  { "/etc", "", "file:///etc", 0 },
+  { "/etc", "otherhost", "file://otherhost/etc", 0 },
 #ifdef G_OS_WIN32
-  { "/etc", "localhost", "file:///etc"},
-  { "c:\\windows", NULL, "file:///c:/windows"},
-  { "c:\\windows", "localhost", "file:///c:/windows"},
-  { "c:\\windows", "otherhost", "file://otherhost/c:/windows"},
-  { "\\\\server\\share\\dir", NULL, "file:////server/share/dir"},
-  { "\\\\server\\share\\dir", "localhost", "file:////server/share/dir"},
+  { "/etc", "localhost", "file:///etc", 0 },
+  { "c:\\windows", NULL, "file:///c:/windows", 0 },
+  { "c:\\windows", "localhost", "file:///c:/windows", 0 },
+  { "c:\\windows", "otherhost", "file://otherhost/c:/windows", 0 },
+  { "\\\\server\\share\\dir", NULL, "file:////server/share/dir", 0 },
+  { "\\\\server\\share\\dir", "localhost", "file:////server/share/dir", 0 },
 #else
-  { "/etc", "localhost", "file://localhost/etc"},
+  { "/etc", "localhost", "file://localhost/etc", 0 },
   { "c:\\windows", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH}, /* it's important to get this error on Unix */
   { "c:\\windows", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
   { "c:\\windows", "otherhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
 #endif
   { "etc", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
 #ifndef G_PLATFORM_WIN32
-  { "/etc/\xE5\xE4\xF6", NULL, "file:///etc/%E5%E4%F6" },
-  { "/etc/\xC3\xB6\xC3\xA4\xC3\xA5", NULL, "file:///etc/%C3%B6%C3%A4%C3%A5"},
+  { "/etc/\xE5\xE4\xF6", NULL, "file:///etc/%E5%E4%F6", 0 },
+  { "/etc/\xC3\xB6\xC3\xA4\xC3\xA5", NULL, "file:///etc/%C3%B6%C3%A4%C3%A5", 0 },
 #endif
   { "/etc", "\xC3\xB6\xC3\xA4\xC3\xA5", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/etc", "\xE5\xE4\xF6", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
-  { "/etc/file with #%", NULL, "file:///etc/file%20with%20%23%25"},
+  { "/etc/file with #%", NULL, "file:///etc/file%20with%20%23%25", 0 },
   { "", NULL, NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
   { "", "", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
   { "", "localhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
   { "", "otherhost", NULL, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH},
-  { "/0123456789", NULL, "file:///0123456789"},
-  { "/ABCDEFGHIJKLMNOPQRSTUVWXYZ", NULL, "file:///ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
-  { "/abcdefghijklmnopqrstuvwxyz", NULL, "file:///abcdefghijklmnopqrstuvwxyz"},
-  { "/-_.!~*'()", NULL, "file:///-_.!~*'()"},
+  { "/0123456789", NULL, "file:///0123456789", 0 },
+  { "/ABCDEFGHIJKLMNOPQRSTUVWXYZ", NULL, "file:///ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0 },
+  { "/abcdefghijklmnopqrstuvwxyz", NULL, "file:///abcdefghijklmnopqrstuvwxyz", 0 },
+  { "/-_.!~*'()", NULL, "file:///-_.!~*'()", 0 },
 #ifdef G_OS_WIN32
   /* As '\\' is a path separator on Win32, it gets turned into '/' in the URI */
-  { "/\"#%<>[\\]^`{|}\x7F", NULL, "file:///%22%23%25%3C%3E%5B/%5D%5E%60%7B%7C%7D%7F"},
+  { "/\"#%<>[\\]^`{|}\x7F", NULL, "file:///%22%23%25%3C%3E%5B/%5D%5E%60%7B%7C%7D%7F", 0 },
 #else
   /* On Unix, '\\' is a normal character in the file name */
-  { "/\"#%<>[\\]^`{|}\x7F", NULL, "file:///%22%23%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D%7F"},
+  { "/\"#%<>[\\]^`{|}\x7F", NULL, "file:///%22%23%25%3C%3E%5B%5C%5D%5E%60%7B%7C%7D%7F", 0 },
 #endif
-  { "/;@+$,", NULL, "file:///%3B@+$,"},
+  { "/;@+$,", NULL, "file:///%3B@+$,", 0 },
   /* This and some of the following are of course as such illegal file names on Windows,
    * and would not occur in real life.
    */
-  { "/:", NULL, "file:///:"},
-  { "/?&=", NULL, "file:///%3F&="},
+  { "/:", NULL, "file:///:", 0 },
+  { "/?&=", NULL, "file:///%3F&=", 0 },
   { "/", "0123456789-", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
-  { "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/"},
-  { "/", "abcdefghijklmnopqrstuvwxyz", "file://abcdefghijklmnopqrstuvwxyz/"},
+  { "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/", 0 },
+  { "/", "abcdefghijklmnopqrstuvwxyz", "file://abcdefghijklmnopqrstuvwxyz/", 0 },
   { "/", "_.!~*'()", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/", "\"#%<>[\\]^`{|}\x7F", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
   { "/", ";?&=+$,", NULL, G_CONVERT_ERROR_ILLEGAL_SEQUENCE},
@@ -100,31 +100,31 @@ typedef struct
   char *uri;
   char *expected_filename;
   char *expected_hostname;
-  GConvertError expected_error; /* If failed */
+  gint expected_error; /* If failed */
 } FileFromUriTest;
 
 FileFromUriTest
 file_from_uri_tests[] = {
-  { "file:///etc", "/etc"},
-  { "file:/etc", "/etc"},
+  { "file:///etc", "/etc", NULL, 0 },
+  { "file:/etc", "/etc", NULL, 0 },
 #ifdef G_OS_WIN32
   /* On Win32 we don't return "localhost" hostames, just in case
    * it isn't recognized anyway.
    */
-  { "file://localhost/etc", "/etc", NULL},
-  { "file://localhost/etc/%23%25%20file", "/etc/#% file", NULL},
-  { "file://localhost/\xE5\xE4\xF6", "/\xe5\xe4\xf6", NULL},
-  { "file://localhost/%E5%E4%F6", "/\xe5\xe4\xf6", NULL},
+  { "file://localhost/etc", "/etc", NULL, 0 },
+  { "file://localhost/etc/%23%25%20file", "/etc/#% file", NULL, 0 },
+  { "file://localhost/\xE5\xE4\xF6", "/\xe5\xe4\xf6", NULL, 0 },
+  { "file://localhost/%E5%E4%F6", "/\xe5\xe4\xf6", NULL, 0 },
 #else
-  { "file://localhost/etc", "/etc", "localhost"},
-  { "file://localhost/etc/%23%25%20file", "/etc/#% file", "localhost"},
-  { "file://localhost/\xE5\xE4\xF6", "/\xe5\xe4\xf6", "localhost"},
-  { "file://localhost/%E5%E4%F6", "/\xe5\xe4\xf6", "localhost"},
+  { "file://localhost/etc", "/etc", "localhost", 0 },
+  { "file://localhost/etc/%23%25%20file", "/etc/#% file", "localhost", 0 },
+  { "file://localhost/\xE5\xE4\xF6", "/\xe5\xe4\xf6", "localhost", 0 },
+  { "file://localhost/%E5%E4%F6", "/\xe5\xe4\xf6", "localhost", 0 },
 #endif
-  { "file://otherhost/etc", "/etc", "otherhost"},
-  { "file://otherhost/etc/%23%25%20file", "/etc/#% file", "otherhost"},
+  { "file://otherhost/etc", "/etc", "otherhost", 0 },
+  { "file://otherhost/etc/%23%25%20file", "/etc/#% file", "otherhost", 0 },
   { "file://%C3%B6%C3%A4%C3%A5/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file:////etc/%C3%B6%C3%C3%C3%A5", "//etc/\xc3\xb6\xc3\xc3\xc3\xa5", NULL},
+  { "file:////etc/%C3%B6%C3%C3%C3%A5", "//etc/\xc3\xb6\xc3\xc3\xc3\xa5", NULL, 0 },
   { "file://\xE5\xE4\xF6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://%E5%E4%F6/etc", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:///some/file#bad", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
@@ -132,25 +132,25 @@ file_from_uri_tests[] = {
   { "", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file:test", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "http://www.yahoo.com/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file:////etc", "//etc"},
-  { "file://///etc", "///etc"},
+  { "file:////etc", "//etc", NULL, 0 },
+  { "file://///etc", "///etc", NULL, 0 },
 #ifdef G_OS_WIN32
   /* URIs with backslashes come from some nonstandard application, but accept them anyhow */
-  { "file:///c:\\foo", "c:\\foo"},
-  { "file:///c:/foo\\bar", "c:\\foo\\bar"},
+  { "file:///c:\\foo", "c:\\foo", NULL, 0 },
+  { "file:///c:/foo\\bar", "c:\\foo\\bar", NULL, 0 },
   /* Accept also the old Netscape drive-letter-and-vertical bar convention */
-  { "file:///c|/foo", "c:\\foo"},
-  { "file:////server/share/dir", "\\\\server\\share\\dir"},
-  { "file://localhost//server/share/foo", "\\\\server\\share\\foo"},
-  { "file://otherhost//server/share/foo", "\\\\server\\share\\foo", "otherhost"},
+  { "file:///c|/foo", "c:\\foo", NULL, 0 },
+  { "file:////server/share/dir", "\\\\server\\share\\dir", NULL, 0 },
+  { "file://localhost//server/share/foo", "\\\\server\\share\\foo", NULL, 0 },
+  { "file://otherhost//server/share/foo", "\\\\server\\share\\foo", "otherhost", 0 },
 #else
-  { "file:///c:\\foo", "/c:\\foo"},
-  { "file:///c:/foo", "/c:/foo"},
-  { "file:////c:/foo", "//c:/foo"},
+  { "file:///c:\\foo", "/c:\\foo", NULL, 0 },
+  { "file:///c:/foo", "/c:/foo", NULL, 0 },
+  { "file:////c:/foo", "//c:/foo",  NULL, 0 },
 #endif
   { "file://0123456789/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
-  { "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/", "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
-  { "file://abcdefghijklmnopqrstuvwxyz/", "/", "abcdefghijklmnopqrstuvwxyz"},
+  { "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/", "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0 },
+  { "file://abcdefghijklmnopqrstuvwxyz/", "/", "abcdefghijklmnopqrstuvwxyz", 0 },
   { "file://-_.!~*'()/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://\"<>[\\]^`{|}\x7F/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
   { "file://;?&=+$,/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
@@ -165,7 +165,7 @@ file_from_uri_tests[] = {
 static void
 run_file_to_uri_tests (void)
 {
-  int i;
+  gsize i;
   gchar *res;
   GError *error;
 
@@ -189,7 +189,7 @@ run_file_to_uri_tests (void)
 static void
 run_file_from_uri_tests (void)
 {
-  int i;
+  gsize i;
   gchar *res;
   gchar *hostname;
   GError *error;
@@ -269,7 +269,7 @@ safe_strcmp_hostname (const gchar *a, const gchar *b)
 static void
 run_file_roundtrip_tests (void)
 {
-  int i;
+  gsize i;
   gchar *uri, *hostname, *res;
   GError *error;
 
@@ -549,7 +549,7 @@ typedef struct {
   GUriFlags flags;
   /* Outputs */
   gboolean expected_success;
-  GUriError expected_error_code;  /* unused if @expected_success is true */
+  gint expected_error_code;       /* unused if @expected_success is true */
   const UriParts expected_parts;  /* unused if @expected_success is false */
 } UriAbsoluteTest;
 
@@ -1492,7 +1492,7 @@ test_uri_iter_params (gconstpointer test_data)
       g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, params_tests[i].uri);
 
       g_assert (params_tests[i].expected_n_params < 0 ||
-                params_tests[i].expected_n_params <= G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
+                params_tests[i].expected_n_params <= (gssize) G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
 
       /* The tests get run twice: once with the length unspecified, using a
        * nul-terminated string; and once with the length specified and a copy of
@@ -1559,7 +1559,7 @@ test_uri_parse_params (gconstpointer test_data)
       g_test_message ("URI %" G_GSIZE_FORMAT ": %s", i, params_tests[i].uri);
 
       g_assert (params_tests[i].expected_n_params < 0 ||
-                params_tests[i].expected_n_params <= G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
+                params_tests[i].expected_n_params <= (gssize) G_N_ELEMENTS (params_tests[i].expected_param_key_values) / 2);
 
       /* The tests get run twice: once with the length unspecified, using a
        * nul-terminated string; and once with the length specified and a copy of
@@ -1591,7 +1591,7 @@ test_uri_parse_params (gconstpointer test_data)
           g_assert_no_error (err);
           g_assert_cmpint (g_hash_table_size (params), ==, params_tests[i].expected_n_params);
 
-          for (j = 0; j < params_tests[i].expected_n_params; j += 2)
+          for (j = 0; j < (gsize) params_tests[i].expected_n_params; j += 2)
             g_assert_cmpstr (g_hash_table_lookup (params, params_tests[i].expected_param_key_values[j]), ==,
                              params_tests[i].expected_param_key_values[j + 1]);
         }
