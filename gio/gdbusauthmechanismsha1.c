@@ -40,6 +40,7 @@
 #include "gioenumtypes.h"
 #include "gioerror.h"
 #include "gdbusprivate.h"
+#include "glib-private.h"
 
 #include "glibintl.h"
 
@@ -265,6 +266,7 @@ ensure_keyring_directory (GError **error)
 {
   gchar *path;
   const gchar *e;
+  gboolean is_setuid;
 #ifdef G_OS_UNIX
   struct stat statbuf;
 #endif
@@ -332,7 +334,10 @@ ensure_keyring_directory (GError **error)
     }
 #endif  /* if !G_OS_UNIX */
 
-  if (g_mkdir_with_parents (path, 0700) != 0)
+  /* Only create the directory if not running as setuid */
+  is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
+  if (!is_setuid &&
+      g_mkdir_with_parents (path, 0700) != 0)
     {
       int errsv = errno;
       g_set_error (error,
@@ -341,6 +346,17 @@ ensure_keyring_directory (GError **error)
                    _("Error creating directory “%s”: %s"),
                    path,
                    g_strerror (errsv));
+      g_clear_pointer (&path, g_free);
+      return NULL;
+    }
+  else if (is_setuid)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_PERMISSION_DENIED,
+                   _("Error creating directory “%s”: %s"),
+                   path,
+                   _("Operation not supported"));
       g_clear_pointer (&path, g_free);
       return NULL;
     }
