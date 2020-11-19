@@ -174,7 +174,7 @@ typedef struct
   gint monitor_deleted;
   gint monitor_changed;
   gchar *monitor_path;
-  gint pos;
+  gsize pos;
   const gchar *data;
   gchar *buffer;
   guint timeout;
