@@ -1118,28 +1118,37 @@ test_message_serialize_double_array (void)
 
 /* Test that an invalid header in a D-Bus message (specifically, with a type
  * which doesn’t match what’s expected for the given header) is gracefully
- * handled with an error rather than a crash.
- * The set of bytes here come directly from fuzzer output. */
+ * handled with an error rather than a crash. */
 static void
 test_message_parse_non_signature_header (void)
 {
   const guint8 data[] = {
     'l',  /* little-endian byte order */
-    0x04,  /* message type */
-    0x0f,  /* message flags */
+    0x02,  /* message type (method return) */
+    0x00,  /* message flags (none) */
     0x01,  /* major protocol version */
-    0x00, 0x00, 0x00, 0x00,  /* body length */
+    0x00, 0x00, 0x00, 0x00,  /* body length (in bytes) */
     0x00, 0x00, 0x00, 0xbc,  /* message serial */
     /* a{yv} of header fields:
      * (things start to be invalid below here) */
-    0x02, 0x00, 0x00, 0x00,  /* array length (in bytes) */
-      G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE, /* array key */
+    0x10, 0x00, 0x00, 0x00,  /* array length (in bytes), must be a multiple of 8 */
+      0x08, /* array key (SIGNATURE) */
       /* Variant array value: */
       0x04, /* signature length */
       'd', 0x00, 0x00, 'F',  /* signature (invalid) */
       0x00,  /* nul terminator */
       /* (Variant array value payload missing) */
-    /* (message body length missing) */
+      /* alignment padding before the next header array element, as structs must
+       * be 8-aligned: */
+      0x00,
+      0x05,  /* array key (REPLY_SERIAL, required for method return messages) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'u',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x00, 0x01, 0x02, 0x03,
+    /* (message body is zero-length) */
   };
   gsize size = sizeof (data);
   GDBusMessage *message = NULL;
@@ -1158,27 +1167,36 @@ test_message_parse_non_signature_header (void)
 
 /* Test that an invalid header in a D-Bus message (specifically, containing a
  * variant with an empty type signature) is gracefully handled with an error
- * rather than a crash. The set of bytes here come directly from fuzzer
- * output. */
+ * rather than a crash. */
 static void
 test_message_parse_empty_signature_header (void)
 {
   const guint8 data[] = {
     'l',  /* little-endian byte order */
-    0x20,  /* message type */
-    0x20,  /* message flags */
+    0x02,  /* message type (method return) */
+    0x00,  /* message flags (none) */
     0x01,  /* major protocol version */
-    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0x00, 0x00, 0x00, 0x00,  /* body length (in bytes) */
     0x20, 0x20, 0x20, 0x20,  /* message serial */
     /* a{yv} of header fields:
-     * (things start to be even more invalid below here) */
-    0x20, 0x20, 0x20, 0x00,  /* array length (in bytes) */
-      0x20, /* array key */
+     * (things start to be invalid below here) */
+    0x10, 0x00, 0x00, 0x00,  /* array length (in bytes), must be a multiple of 8 */
+      0x20, /* array key (this is not currently a valid header field) */
       /* Variant array value: */
       0x00, /* signature length */
       0x00,  /* nul terminator */
       /* (Variant array value payload missing) */
-    /* (message body length missing) */
+      /* alignment padding before the next header array element, as structs must
+       * be 8-aligned: */
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x05,  /* array key (REPLY_SERIAL, required for method return messages) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'u',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x00, 0x01, 0x02, 0x03,
+    /* (message body is zero-length) */
   };
   gsize size = sizeof (data);
   GDBusMessage *message = NULL;
@@ -1197,28 +1215,37 @@ test_message_parse_empty_signature_header (void)
 
 /* Test that an invalid header in a D-Bus message (specifically, containing a
  * variant with a type signature containing multiple complete types) is
- * gracefully handled with an error rather than a crash. The set of bytes here
- * come directly from fuzzer output. */
+ * gracefully handled with an error rather than a crash. */
 static void
 test_message_parse_multiple_signature_header (void)
 {
   const guint8 data[] = {
     'l',  /* little-endian byte order */
-    0x20,  /* message type */
-    0x20,  /* message flags */
+    0x02,  /* message type (method return) */
+    0x00,  /* message flags (none) */
     0x01,  /* major protocol version */
-    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0x00, 0x00, 0x00, 0x00,  /* body length (in bytes) */
     0x20, 0x20, 0x20, 0x20,  /* message serial */
     /* a{yv} of header fields:
-     * (things start to be even more invalid below here) */
-    0x20, 0x20, 0x20, 0x00,  /* array length (in bytes) */
-      0x20, /* array key */
+     * (things start to be invalid below here) */
+    0x10, 0x00, 0x00, 0x00,  /* array length (in bytes), must be a multiple of 8 */
+      0x20, /* array key (this is not currently a valid header field) */
       /* Variant array value: */
       0x02, /* signature length */
       'b', 'b',  /* two complete types */
       0x00,  /* nul terminator */
       /* (Variant array value payload missing) */
-    /* (message body length missing) */
+      /* alignment padding before the next header array element, as structs must
+       * be 8-aligned: */
+      0x00, 0x00, 0x00,
+      0x05,  /* array key (REPLY_SERIAL, required for method return messages) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'u',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x00, 0x01, 0x02, 0x03,
+    /* (message body is zero-length) */
   };
   gsize size = sizeof (data);
   GDBusMessage *message = NULL;
@@ -1238,22 +1265,21 @@ test_message_parse_multiple_signature_header (void)
 /* Test that an invalid header in a D-Bus message (specifically, containing a
  * variant with a valid type signature that is too long to be a valid
  * #GVariantType due to exceeding the array nesting limits) is gracefully
- * handled with an error rather than a crash. The set of bytes here come
- * directly from fuzzer output. */
+ * handled with an error rather than a crash. */
 static void
 test_message_parse_over_long_signature_header (void)
 {
   const guint8 data[] = {
     'l',  /* little-endian byte order */
-    0x20,  /* message type */
-    0x20,  /* message flags */
+    0x02,  /* message type (method return) */
+    0x00,  /* message flags (none) */
     0x01,  /* major protocol version */
-    0x20, 0x20, 0x20, 0x01,  /* body length (invalid) */
+    0x00, 0x00, 0x00, 0x00,  /* body length (in bytes) */
     0x20, 0x20, 0x20, 0x20,  /* message serial */
     /* a{yv} of header fields:
-     * (things start to be even more invalid below here) */
-    0x20, 0x00, 0x00, 0x00,  /* array length (in bytes) */
-      0x08,  /* array key */
+     * (things start to be invalid below here) */
+    0xa0, 0x00, 0x00, 0x00,  /* array length (in bytes), must be a multiple of 8 */
+      0x08,  /* array key (SIGNATURE) */
       /* Variant array value: */
       0x04,  /* signature length */
       'g', 0x00, 0x20, 0x20,  /* one complete type plus some rubbish */
@@ -1275,8 +1301,16 @@ test_message_parse_over_long_signature_header (void)
       'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
       'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
       'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
-      'v'
-    /* (message body length missing) */
+      'v',
+      /* first header length is a multiple of 8 so no padding is needed */
+      0x05,  /* array key (REPLY_SERIAL, required for method return messages) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'u',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x00, 0x01, 0x02, 0x03,
+    /* (message body is zero-length) */
   };
   gsize size = sizeof (data);
   GDBusMessage *message = NULL;
@@ -1295,20 +1329,20 @@ test_message_parse_over_long_signature_header (void)
 
 /* Test that an invalid header in a D-Bus message (specifically, containing too
  * many levels of nested variant) is gracefully handled with an error rather
- * than a crash. The set of bytes here come almost directly from fuzzer output. */
+ * than a crash. */
 static void
 test_message_parse_deep_header_nesting (void)
 {
   const guint8 data[] = {
     'l',  /* little-endian byte order */
-    0x20,  /* message type */
-    0x20,  /* message flags */
+    0x02,  /* message type (method return) */
+    0x00,  /* message flags (none) */
     0x01,  /* major protocol version */
-    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0x00, 0x00, 0x00, 0x00,  /* body length (in bytes) */
     0x20, 0x20, 0x20, 0x20,  /* message serial */
     /* a{yv} of header fields:
-     * (things start to be even more invalid below here) */
-    0x20, 0x20, 0x20, 0x00,  /* array length (in bytes) */
+     * (things start to be invalid below here) */
+    0xd0, 0x00, 0x00, 0x00,  /* array length (in bytes), must be a multiple of 8 */
       0x20,  /* array key (this is not currently a valid header field) */
       /* Variant array value: */
       0x01,  /* signature length */
@@ -1333,10 +1367,18 @@ test_message_parse_deep_header_nesting (void)
       0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
       0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
       0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
-      0x01, 'v', 0x00, 0x01, 'v', 0x00,
+      0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
       /* Some arbitrary valid content inside the innermost variant: */
       0x01, 'y', 0x00, 0xcc,
-    /* (message body length missing) */
+      /* no padding needed as this header element length is a multiple of 8 */
+      0x05,  /* array key (REPLY_SERIAL, required for method return messages) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'u',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x00, 0x01, 0x02, 0x03,
+    /* (message body is zero-length) */
   };
   gsize size = sizeof (data);
   GDBusMessage *message = NULL;
@@ -1362,22 +1404,30 @@ test_message_parse_deep_body_nesting (void)
 {
   const guint8 data[] = {
     'l',  /* little-endian byte order */
-    0x20,  /* message type */
-    0x20,  /* message flags */
+    0x02,  /* message type (method return) */
+    0x00,  /* message flags (none) */
     0x01,  /* major protocol version */
-    0x20, 0x20, 0x20, 0x00,  /* body length (invalid) */
+    0xc4, 0x00, 0x00, 0x00,  /* body length (in bytes) */
     0x20, 0x20, 0x20, 0x20,  /* message serial */
     /* a{yv} of header fields: */
-    0x07, 0x00, 0x00, 0x00,  /* array length (in bytes) */
-      0x08,  /* array key (signature field) */
+    0x10, 0x00, 0x00, 0x00,  /* array length (in bytes), must be a multiple of 8 */
+      0x08,  /* array key (SIGNATURE) */
       /* Variant array value: */
       0x01,  /* signature length */
       'g',  /* one complete type */
       0x00,  /* nul terminator */
       /* (Variant array value payload) */
       0x01, 'v', 0x00,
-    /* End-of-header padding to reach an 8-byte boundary: */
-    0x00,
+      /* alignment padding before the next header array element, as structs must
+       * be 8-aligned: */
+      0x00,
+      0x05,  /* array key (REPLY_SERIAL, required for method return messages) */
+      /* Variant array value: */
+      0x01,  /* signature length */
+      'u',  /* one complete type */
+      0x00,  /* nul terminator */
+      /* (Variant array value payload) */
+      0x00, 0x01, 0x02, 0x03,
     /* Message body: over 64 levels of nested variant, which is not valid: */
     0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
     0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00, 0x01, 'v', 0x00,
