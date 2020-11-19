@@ -120,7 +120,8 @@ check_expected_events (RecordedEvent *expected,
                        GList         *recorded,
                        Environment    env)
 {
-  gint i, li;
+  gsize i;
+  gint li;
   GList *l;
 
   for (i = 0, li = 0, l = recorded; i < n_expected && l != NULL;)
@@ -219,7 +220,7 @@ check_expected_events (RecordedEvent *expected,
               e2->event_type == G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
             {
               g_test_message ("Event CHANGES_DONE_HINT ignored at "
-                              "expected index %d, recorded index %d", i, li);
+                              "expected index %"  G_GSIZE_FORMAT ", recorded index %d", i, li);
               li++, l = l->next;
               continue;
             }
@@ -227,7 +228,7 @@ check_expected_events (RecordedEvent *expected,
            * the event doesn't match, it means the expected event has lost. */
           else if (env & e1->optional)
             {
-              g_test_message ("Event %d at expected index %d skipped because "
+              g_test_message ("Event %d at expected index %" G_GSIZE_FORMAT " skipped because "
                               "it is marked as optional", e1->event_type, i);
               i++;
               continue;
