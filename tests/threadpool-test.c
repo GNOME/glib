@@ -248,7 +248,7 @@ test_thread_sort (gboolean sort)
   GThreadPool *pool;
   guint limit;
   guint max_threads;
-  gint i;
+  guint i;
 
   limit = MAX_THREADS * 10;
 
@@ -293,8 +293,8 @@ test_thread_sort (gboolean sort)
 		g_thread_pool_unprocessed (pool)));
   }
 
-  g_assert (g_thread_pool_get_max_threads (pool) == max_threads);
-  g_assert (g_thread_pool_get_num_threads (pool) == g_thread_pool_get_max_threads (pool));
+  g_assert (g_thread_pool_get_max_threads (pool) == (gint) max_threads);
+  g_assert (g_thread_pool_get_num_threads (pool) == (guint) g_thread_pool_get_max_threads (pool));
   g_thread_pool_free (pool, TRUE, TRUE);
 }
 
@@ -337,7 +337,7 @@ test_thread_idle_time (void)
 {
   guint limit = 50;
   guint interval = 10000;
-  gint i;
+  guint i;
 
   idle_pool = g_thread_pool_new (test_thread_idle_time_entry_func,
 				 NULL,
