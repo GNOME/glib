@@ -56,7 +56,7 @@ typedef enum
 
 typedef struct
 {
-  volatile gint             ref_count;
+  gint                      ref_count;  /* (atomic) */
   guint                     id;
   gchar                    *name;
   GBusNameWatcherFlags      flags;
@@ -78,7 +78,7 @@ typedef struct
 } Client;
 
 /* Must be accessed atomically. */
-static volatile guint next_global_id = 1;
+static guint next_global_id = 1;  /* (atomic) */
 
 /* Must be accessed with @lock held. */
 static GHashTable *map_id_to_client = NULL;

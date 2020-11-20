@@ -25,13 +25,13 @@
 
 static GMutex       tmutex;
 static GCond        tcond;
-static volatile int thread_call_count = 0;
+static int thread_call_count = 0;  /* (atomic) */
 static char         dummy_value = 'x';
 
 static void
 assert_singleton_execution1 (void)
 {
-  static volatile int seen_execution = 0;
+  static int seen_execution = 0;  /* (atomic) */
   int old_seen_execution = g_atomic_int_add (&seen_execution, 1);
   if (old_seen_execution != 0)
     g_error ("%s: function executed more than once", G_STRFUNC);
@@ -40,7 +40,7 @@ assert_singleton_execution1 (void)
 static void
 assert_singleton_execution2 (void)
 {
-  static volatile int seen_execution = 0;
+  static int seen_execution = 0;  /* (atomic) */
   int old_seen_execution = g_atomic_int_add (&seen_execution, 1);
   if (old_seen_execution != 0)
     g_error ("%s: function executed more than once", G_STRFUNC);
@@ -49,7 +49,7 @@ assert_singleton_execution2 (void)
 static void
 assert_singleton_execution3 (void)
 {
-  static volatile int seen_execution = 0;
+  static int seen_execution = 0;  /* (atomic) */
   int old_seen_execution = g_atomic_int_add (&seen_execution, 1);
   if (old_seen_execution != 0)
     g_error ("%s: function executed more than once", G_STRFUNC);
@@ -58,7 +58,7 @@ assert_singleton_execution3 (void)
 static void
 initializer1 (void)
 {
-  static volatile gsize initialized = 0;
+  static gsize initialized = 0;
   if (g_once_init_enter (&initialized))
     {
       gsize initval = 42;
@@ -70,7 +70,7 @@ initializer1 (void)
 static gpointer
 initializer2 (void)
 {
-  static volatile gsize initialized = 0;
+  static gsize initialized = 0;
   if (g_once_init_enter (&initialized))
     {
       void *pointer_value = &dummy_value;
@@ -83,7 +83,7 @@ initializer2 (void)
 static void
 initializer3 (void)
 {
-  static volatile gsize initialized = 0;
+  static gsize initialized = 0;
   if (g_once_init_enter (&initialized))
     {
       gsize initval = 42;
@@ -163,7 +163,7 @@ main (int   argc,
       static void                                       \
       test_initializer_##N (void)                       \
       {                                                 \
-        static volatile gsize initialized = 0;          \
+        static gsize initialized = 0;                   \
         if (g_once_init_enter (&initialized))           \
           {                                             \
             g_free (g_strdup_printf ("cpuhog%5d", 1));  \

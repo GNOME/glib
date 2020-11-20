@@ -86,8 +86,8 @@ overflow_filter_func (GDBusConnection *connection,
                       gboolean         incoming,
                       gpointer         user_data)
 {
-  volatile gint *counter = user_data;
-  *counter += 1;
+  gint *counter = user_data;  /* (atomic) */
+  g_atomic_int_inc (counter);
   return message;
 }
 
@@ -108,8 +108,8 @@ test_overflow (void)
   GDBusConnection *producer, *consumer;
   GError *error;
   GTimer *timer;
-  volatile gint n_messages_received;
-  volatile gint n_messages_sent;
+  gint n_messages_received;  /* (atomic) */
+  gint n_messages_sent;  /* (atomic) */
 
   g_assert_cmpint (socketpair (AF_UNIX, SOCK_STREAM, 0, sv), ==, 0);
 
@@ -129,7 +129,7 @@ test_overflow (void)
   g_dbus_connection_set_exit_on_close (producer, TRUE);
   g_assert_no_error (error);
   g_object_unref (socket_connection);
-  n_messages_sent = 0;
+  g_atomic_int_set (&n_messages_sent, 0);
   g_dbus_connection_add_filter (producer, overflow_filter_func, (gpointer) &n_messages_sent, NULL);
 
   /* send enough data that we get an EAGAIN */
@@ -155,7 +155,7 @@ test_overflow (void)
    */
   g_timeout_add (500, overflow_on_500ms_later_func, NULL);
   g_main_loop_run (loop);
-  g_assert_cmpint (n_messages_sent, <, OVERFLOW_NUM_SIGNALS);
+  g_assert_cmpint (g_atomic_int_get (&n_messages_sent), <, OVERFLOW_NUM_SIGNALS);
 
   /* now suck it all out as a client, and add it up */
   socket = g_socket_new_from_fd (sv[1], &error);
@@ -171,18 +171,18 @@ test_overflow (void)
 					 &error);
   g_assert_no_error (error);
   g_object_unref (socket_connection);
-  n_messages_received = 0;
+  g_atomic_int_set (&n_messages_received, 0);
   g_dbus_connection_add_filter (consumer, overflow_filter_func, (gpointer) &n_messages_received, NULL);
   g_dbus_connection_start_message_processing (consumer);
 
   timer = g_timer_new ();
   g_timer_start (timer);
 
-  while (n_messages_received < OVERFLOW_NUM_SIGNALS && g_timer_elapsed (timer, NULL) < OVERFLOW_TIMEOUT_SEC)
+  while (g_atomic_int_get (&n_messages_received) < OVERFLOW_NUM_SIGNALS && g_timer_elapsed (timer, NULL) < OVERFLOW_TIMEOUT_SEC)
       g_main_context_iteration (NULL, FALSE);
 
-  g_assert_cmpint (n_messages_sent, ==, OVERFLOW_NUM_SIGNALS);
-  g_assert_cmpint (n_messages_received, ==, OVERFLOW_NUM_SIGNALS);
+  g_assert_cmpint (g_atomic_int_get (&n_messages_sent), ==, OVERFLOW_NUM_SIGNALS);
+  g_assert_cmpint (g_atomic_int_get (&n_messages_received), ==, OVERFLOW_NUM_SIGNALS);
 
   g_timer_destroy (timer);
   g_object_unref (consumer);

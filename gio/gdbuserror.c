@@ -84,12 +84,12 @@
  * GQuark
  * foo_bar_error_quark (void)
  * {
- *   static volatile gsize quark_volatile = 0;
+ *   static gsize quark = 0;
  *   g_dbus_error_register_error_domain ("foo-bar-error-quark",
- *                                       &quark_volatile,
+ *                                       &quark,
  *                                       foo_bar_error_entries,
  *                                       G_N_ELEMENTS (foo_bar_error_entries));
- *   return (GQuark) quark_volatile;
+ *   return (GQuark) quark;
  * }
  * ]|
  * With this setup, a D-Bus peer can transparently pass e.g. %FOO_BAR_ERROR_ANOTHER_ERROR and
@@ -160,12 +160,12 @@ GQuark
 g_dbus_error_quark (void)
 {
   G_STATIC_ASSERT (G_N_ELEMENTS (g_dbus_error_entries) - 1 == G_DBUS_ERROR_PROPERTY_READ_ONLY);
-  static volatile gsize quark_volatile = 0;
+  static gsize quark = 0;
   g_dbus_error_register_error_domain ("g-dbus-error-quark",
-                                      &quark_volatile,
+                                      &quark,
                                       g_dbus_error_entries,
                                       G_N_ELEMENTS (g_dbus_error_entries));
-  return (GQuark) quark_volatile;
+  return (GQuark) quark;
 }
 
 /**
@@ -177,6 +177,9 @@ g_dbus_error_quark (void)
  *
  * Helper function for associating a #GError error domain with D-Bus error names.
  *
+ * While @quark_volatile has a `volatile` qualifier, this is a historical
+ * artifact and the argument passed to it should not be `volatile`.
+ *
  * Since: 2.26
  */
 void
@@ -185,25 +188,31 @@ g_dbus_error_register_error_domain (const gchar           *error_domain_quark_na
                                     const GDBusErrorEntry *entries,
                                     guint                  num_entries)
 {
+  gsize *quark;
+
   g_return_if_fail (error_domain_quark_name != NULL);
   g_return_if_fail (quark_volatile != NULL);
   g_return_if_fail (entries != NULL);
   g_return_if_fail (num_entries > 0);
 
-  if (g_once_init_enter (quark_volatile))
+  /* Drop the volatile qualifier, which should never have been on the argument
+   * in the first place. */
+  quark = (gsize *) quark_volatile;
+
+  if (g_once_init_enter (quark))
     {
       guint n;
-      GQuark quark;
+      GQuark new_quark;
 
-      quark = g_quark_from_static_string (error_domain_quark_name);
+      new_quark = g_quark_from_static_string (error_domain_quark_name);
 
       for (n = 0; n < num_entries; n++)
         {
-          g_warn_if_fail (g_dbus_error_register_error (quark,
+          g_warn_if_fail (g_dbus_error_register_error (new_quark,
                                                        entries[n].error_code,
                                                        entries[n].dbus_error_name));
         }
-      g_once_init_leave (quark_volatile, quark);
+      g_once_init_leave (quark, new_quark);
     }
 }
 

@@ -265,7 +265,7 @@ ensure_required_types (void)
 
 typedef struct
 {
-  volatile gint refcount;
+  gint refcount;  /* (atomic) */
   GThread *thread;
   GMainContext *context;
   GMainLoop *loop;
@@ -341,12 +341,12 @@ typedef enum {
 
 struct GDBusWorker
 {
-  volatile gint                       ref_count;
+  gint                                ref_count;  /* (atomic) */
 
   SharedThreadData                   *shared_thread_data;
 
   /* really a boolean, but GLib 2.28 lacks atomic boolean ops */
-  volatile gint                       stopped;
+  gint                                stopped;  /* (atomic) */
 
   /* TODO: frozen (e.g. G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING) currently
    * only affects messages received from the other peer (since GDBusServer is the
@@ -1941,15 +1941,14 @@ _g_dbus_debug_print_unlock (void)
 void
 _g_dbus_initialize (void)
 {
-  static volatile gsize initialized = 0;
+  static gsize initialized = 0;
 
   if (g_once_init_enter (&initialized))
     {
-      volatile GQuark g_dbus_error_domain;
       const gchar *debug;
 
-      g_dbus_error_domain = G_DBUS_ERROR;
-      (g_dbus_error_domain); /* To avoid -Wunused-but-set-variable */
+      /* Ensure the domain is registered. */
+      g_dbus_error_quark ();
 
       debug = g_getenv ("G_DBUS_DEBUG");
       if (debug != NULL)

@@ -852,7 +852,7 @@ viewer_editable_default_init (ViewerEditableInterface *iface)
 GType
 viewer_editable_get_type (void)
 {
-  static volatile gsize type_id = 0;
+  static gsize type_id = 0;
   if (g_once_init_enter (&amp;type_id)) {
     const GTypeInfo info = {
       sizeof (ViewerEditableInterface),

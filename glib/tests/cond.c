@@ -29,7 +29,7 @@
 
 static GCond cond;
 static GMutex mutex;
-static volatile gint next;
+static gint next;  /* locked by @mutex */
 
 static void
 push_value (gint value)

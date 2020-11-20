@@ -301,7 +301,7 @@ struct _GPrivateDestructor
   GPrivateDestructor *next;
 };
 
-static GPrivateDestructor * volatile g_private_destructors;
+static GPrivateDestructor *g_private_destructors;  /* (atomic) prepend-only */
 static CRITICAL_SECTION g_private_lock;
 
 static DWORD
@@ -329,7 +329,7 @@ g_private_get_impl (GPrivate *key)
                 g_thread_abort (errno, "malloc");
               destructor->index = impl;
               destructor->notify = key->notify;
-              destructor->next = g_private_destructors;
+              destructor->next = g_atomic_pointer_get (&g_private_destructors);
 
               /* We need to do an atomic store due to the unlocked
                * access to the destructor list from the thread exit
@@ -337,13 +337,14 @@ g_private_get_impl (GPrivate *key)
                *
                * It can double as a sanity check...
                */
-              if (InterlockedCompareExchangePointer (&g_private_destructors, destructor,
-                                                     destructor->next) != destructor->next)
+              if (!g_atomic_pointer_compare_and_exchange (&g_private_destructors,
+                                                          destructor->next,
+                                                          destructor))
                 g_thread_abort (0, "g_private_get_impl(1)");
             }
 
           /* Ditto, due to the unlocked access on the fast path */
-          if (InterlockedCompareExchangePointer (&key->p, impl, NULL) != NULL)
+          if (!g_atomic_pointer_compare_and_exchange (&key->p, NULL, impl))
             g_thread_abort (0, "g_private_get_impl(2)");
         }
       LeaveCriticalSection (&g_private_lock);
@@ -635,7 +636,7 @@ g_thread_win32_thread_detach (void)
        */
       dtors_called = FALSE;
 
-      for (dtor = g_private_destructors; dtor; dtor = dtor->next)
+      for (dtor = g_atomic_pointer_get (&g_private_destructors); dtor; dtor = dtor->next)
         {
           gpointer value;
 

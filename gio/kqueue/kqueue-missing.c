@@ -34,7 +34,7 @@ static gboolean km_debug_enabled = FALSE;
 static GSList *missing_subs_list = NULL;
 G_LOCK_DEFINE_STATIC (missing_lock);
 
-static volatile gboolean scan_missing_running = FALSE;
+static gboolean scan_missing_running = FALSE;  /* must be accessed under @missing_lock */
 
 
 static gboolean
@@ -62,7 +62,6 @@ _km_add_missing (kqueue_sub *sub)
 
   KM_W ("adding %s to missing list\n", sub->filename);
   missing_subs_list = g_slist_prepend (missing_subs_list, sub);
-  G_UNLOCK (missing_lock);
 
   if (!scan_missing_running)
     {
@@ -73,6 +72,8 @@ _km_add_missing (kqueue_sub *sub)
       g_source_attach (source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
       g_source_unref (source);
     }
+
+  G_UNLOCK (missing_lock);
 }
 
 /**

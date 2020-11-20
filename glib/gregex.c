@@ -203,7 +203,7 @@ G_STATIC_ASSERT (G_REGEX_RAW               == PCRE_UTF8);
 
 struct _GMatchInfo
 {
-  volatile gint ref_count;      /* the ref count */
+  gint ref_count;               /* the ref count (atomic) */
   GRegex *regex;                /* the regex */
   GRegexMatchFlags match_opts;  /* options used at match time on the regex */
   gint matches;                 /* number of matching sub patterns */
@@ -218,7 +218,7 @@ struct _GMatchInfo
 
 struct _GRegex
 {
-  volatile gint ref_count;      /* the ref count for the immutable part */
+  gint ref_count;               /* the ref count for the immutable part (atomic) */
   gchar *pattern;               /* the pattern */
   pcre *pcre_re;                /* compiled form of the pattern */
   GRegexCompileFlags compile_opts;      /* options used at compile time on the pattern */
@@ -1300,7 +1300,7 @@ g_regex_new (const gchar         *pattern,
   pcre *re;
   const gchar *errmsg;
   gboolean optimize = FALSE;
-  static volatile gsize initialised = 0;
+  static gsize initialised = 0;
 
   g_return_val_if_fail (pattern != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);

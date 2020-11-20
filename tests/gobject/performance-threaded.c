@@ -52,7 +52,7 @@ static GType liststore_interfaces[6];
 static gpointer 
 register_types (void)
 {
-  static volatile gsize inited = 0;
+  static gsize inited = 0;
   if (g_once_init_enter (&inited))
     {
       liststore_interfaces[0] = simple_register_class ("GtkBuildable", G_TYPE_INTERFACE, 0);

@@ -26,7 +26,7 @@ struct _GTestClass
 };
 
 static GType my_test_get_type (void);
-static volatile gboolean stopping;
+static gint stopping;  /* (atomic) */
 
 static void my_test_class_init (GTestClass * klass);
 static void my_test_init (GTest * test);
@@ -101,7 +101,7 @@ run_thread (GTest * test)
 {
   gint i = 1;
 
-  while (!stopping) {
+  while (!g_atomic_int_get (&stopping)) {
     my_test_do_refcount (test);
     if ((i++ % 10000) == 0) {
       g_print (".");
@@ -128,7 +128,7 @@ main (int argc, char **argv)
 
   test_threads = g_array_new (FALSE, FALSE, sizeof (GThread *));
 
-  stopping = FALSE;
+  g_atomic_int_set (&stopping, 0);
 
   for (i = 0; i < n_threads; i++) {
     GThread *thread;
@@ -141,7 +141,7 @@ main (int argc, char **argv)
   }
   g_usleep (5000000);
 
-  stopping = TRUE;
+  g_atomic_int_set (&stopping, 1);
 
   g_print ("\nstopping\n");
 

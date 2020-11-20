@@ -918,7 +918,7 @@ test_mainloop_overflow (void)
   g_main_context_unref (ctx);
 }
 
-static volatile gint ready_time_dispatched;
+static gint ready_time_dispatched;  /* (atomic) */
 
 static gboolean
 ready_time_dispatch (GSource     *source,
@@ -964,7 +964,7 @@ test_ready_time (void)
   /* A source with no ready time set should not fire */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
   while (g_main_context_iteration (NULL, FALSE));
-  g_assert_false (ready_time_dispatched);
+  g_assert_false (g_atomic_int_get (&ready_time_dispatched));
 
   /* The ready time should not have been changed */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
@@ -978,37 +978,37 @@ test_ready_time (void)
    */
   g_source_set_ready_time (source, g_get_monotonic_time () + G_TIME_SPAN_DAY);
   while (g_main_context_iteration (NULL, FALSE));
-  g_assert_false (ready_time_dispatched);
+  g_assert_false (g_atomic_int_get (&ready_time_dispatched));
   /* Make sure it didn't get reset */
   g_assert_cmpint (g_source_get_ready_time (source), !=, -1);
 
   /* Ready time of -1 -> don't fire */
   g_source_set_ready_time (source, -1);
   while (g_main_context_iteration (NULL, FALSE));
-  g_assert_false (ready_time_dispatched);
+  g_assert_false (g_atomic_int_get (&ready_time_dispatched));
   /* Not reset, but should still be -1 from above */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
 
   /* A ready time of the current time should fire immediately */
   g_source_set_ready_time (source, g_get_monotonic_time ());
   while (g_main_context_iteration (NULL, FALSE));
-  g_assert_true (ready_time_dispatched);
-  ready_time_dispatched = FALSE;
+  g_assert_true (g_atomic_int_get (&ready_time_dispatched));
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
   /* Should have gotten reset by the handler function */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
 
   /* As well as one in the recent past... */
   g_source_set_ready_time (source, g_get_monotonic_time () - G_TIME_SPAN_SECOND);
   while (g_main_context_iteration (NULL, FALSE));
-  g_assert_true (ready_time_dispatched);
-  ready_time_dispatched = FALSE;
+  g_assert_true (g_atomic_int_get (&ready_time_dispatched));
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
 
   /* Zero is the 'official' way to get a source to fire immediately */
   g_source_set_ready_time (source, 0);
   while (g_main_context_iteration (NULL, FALSE));
-  g_assert_true (ready_time_dispatched);
-  ready_time_dispatched = FALSE;
+  g_assert_true (g_atomic_int_get (&ready_time_dispatched));
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
 
   /* Now do some tests of cross-thread wakeups.

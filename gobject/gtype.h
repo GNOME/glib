@@ -1727,8 +1727,8 @@ guint     g_type_get_type_registration_serial (void);
  * GType
  * gtk_gadget_get_type (void)
  * {
- *   static volatile gsize g_define_type_id__volatile = 0;
- *   if (g_once_init_enter (&g_define_type_id__volatile))
+ *   static gsize static_g_define_type_id = 0;
+ *   if (g_once_init_enter (&static_g_define_type_id))
  *     {
  *       GType g_define_type_id =
  *         g_type_register_static_simple (GTK_TYPE_WIDGET,
@@ -1748,9 +1748,9 @@ guint     g_type_get_type_registration_serial (void);
  *         };
  *         g_type_add_interface_static (g_define_type_id, TYPE_GIZMO, &g_implement_interface_info);
  *       }
- *       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
+ *       g_once_init_leave (&static_g_define_type_id, g_define_type_id);
  *     }
- *   return g_define_type_id__volatile;
+ *   return static_g_define_type_id;
  * }
  * ]|
  * The only pieces which have to be manually provided are the definitions of
@@ -1995,17 +1995,17 @@ type_name##_get_instance_private (TypeName *self) \
 GType \
 type_name##_get_type (void) \
 { \
-  static volatile gsize g_define_type_id__volatile = 0;
+  static gsize static_g_define_type_id = 0;
   /* Prelude goes here */
 
 /* Added for _G_DEFINE_TYPE_EXTENDED_WITH_PRELUDE */
 #define _G_DEFINE_TYPE_EXTENDED_BEGIN_REGISTER(TypeName, type_name, TYPE_PARENT, flags) \
-  if (g_once_init_enter (&g_define_type_id__volatile))  \
+  if (g_once_init_enter (&static_g_define_type_id)) \
     { \
       GType g_define_type_id = type_name##_get_type_once (); \
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id); \
+      g_once_init_leave (&static_g_define_type_id, g_define_type_id); \
     }					\
-  return g_define_type_id__volatile;	\
+  return static_g_define_type_id; \
 } /* closes type_name##_get_type() */ \
 \
 G_GNUC_NO_INLINE \
@@ -2041,8 +2041,8 @@ static void     type_name##_default_init        (TypeName##Interface *klass); \
 GType \
 type_name##_get_type (void) \
 { \
-  static volatile gsize g_define_type_id__volatile = 0; \
-  if (g_once_init_enter (&g_define_type_id__volatile))  \
+  static gsize static_g_define_type_id = 0; \
+  if (g_once_init_enter (&static_g_define_type_id)) \
     { \
       GType g_define_type_id = \
         g_type_register_static_simple (G_TYPE_INTERFACE, \
@@ -2058,9 +2058,9 @@ type_name##_get_type (void) \
 #define _G_DEFINE_INTERFACE_EXTENDED_END()	\
         /* following custom code */		\
       }						\
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id); \
+      g_once_init_leave (&static_g_define_type_id, g_define_type_id); \
     }						\
-  return g_define_type_id__volatile;			\
+  return static_g_define_type_id; \
 } /* closes type_name##_get_type() */
 
 /**
@@ -2115,13 +2115,13 @@ static GType type_name##_get_type_once (void); \
 GType \
 type_name##_get_type (void) \
 { \
-  static volatile gsize g_define_type_id__volatile = 0; \
-  if (g_once_init_enter (&g_define_type_id__volatile))  \
+  static gsize static_g_define_type_id = 0; \
+  if (g_once_init_enter (&static_g_define_type_id)) \
     { \
       GType g_define_type_id = type_name##_get_type_once (); \
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id); \
+      g_once_init_leave (&static_g_define_type_id, g_define_type_id); \
     } \
-  return g_define_type_id__volatile; \
+  return static_g_define_type_id; \
 } \
 \
 G_GNUC_NO_INLINE \
@@ -2152,13 +2152,13 @@ static GType type_name##_get_type_once (void); \
 GType \
 type_name##_get_type (void) \
 { \
-  static volatile gsize g_define_type_id__volatile = 0; \
-  if (g_once_init_enter (&g_define_type_id__volatile))  \
+  static gsize static_g_define_type_id = 0; \
+  if (g_once_init_enter (&static_g_define_type_id)) \
     { \
       GType g_define_type_id = type_name##_get_type_once (); \
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id); \
+      g_once_init_leave (&static_g_define_type_id, g_define_type_id); \
     } \
-  return g_define_type_id__volatile; \
+  return static_g_define_type_id; \
 } \
 \
 G_GNUC_NO_INLINE \
@@ -2205,13 +2205,13 @@ static GType type_name##_get_type_once (void); \
 GType \
 type_name##_get_type (void) \
 { \
-  static volatile gsize g_define_type_id__volatile = 0; \
-  if (g_once_init_enter (&g_define_type_id__volatile))  \
+  static gsize static_g_define_type_id = 0; \
+  if (g_once_init_enter (&static_g_define_type_id)) \
     { \
       GType g_define_type_id = type_name##_get_type_once (); \
-      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id); \
+      g_once_init_leave (&static_g_define_type_id, g_define_type_id); \
     } \
-  return g_define_type_id__volatile; \
+  return static_g_define_type_id; \
 } \
 \
 G_GNUC_NO_INLINE \

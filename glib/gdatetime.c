@@ -126,7 +126,7 @@ struct _GDateTime
   /* 1 is 0001-01-01 in Proleptic Gregorian */
   gint32 days;
 
-  volatile gint ref_count;
+  gint ref_count;  /* (atomic) */
 };
 
 /* Time conversion {{{1 */

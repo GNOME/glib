@@ -98,7 +98,7 @@
 
 typedef union {
   GClosure closure;
-  volatile gint vint;
+  gint vint;
 } ClosureInt;
 
 #define CHANGE_FIELD(_closure, _field, _OP, _value, _must_set, _SET_OLD, _SET_NEW)      \

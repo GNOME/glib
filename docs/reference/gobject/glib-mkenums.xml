@@ -480,9 +480,9 @@ A C source template file will typically look like this:
 GType
 @enum_name@_get_type (void)
 {
-  static volatile gsize g_@type@_type_id__volatile;
+  static gsize static_g_@type@_type_id;
 
-  if (g_once_init_enter (&amp;g_define_type_id__volatile))
+  if (g_once_init_enter (&amp;static_g_@type@_type_id))
     {
       static const G@Type@Value values[] = {
 /*** END value-header ***/
@@ -498,9 +498,9 @@ GType
       GType g_@type@_type_id =
         g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
 
-      g_once_init_leave (&amp;g_@type@_type_id__volatile, g_@type@_type_id);
+      g_once_init_leave (&amp;static_g_@type@_type_id, g_@type@_type_id);
     }
-  return g_@type@_type_id__volatile;
+  return static_g_@type@_type_id;
 }
 
 /*** END value-tail ***/

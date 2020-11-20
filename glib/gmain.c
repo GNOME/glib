@@ -272,7 +272,7 @@ struct _GMainContext
   guint owner_count;
   GSList *waiters;
 
-  volatile gint ref_count;
+  gint ref_count;  /* (atomic) */
 
   GHashTable *sources;              /* guint -> GSource */
 
@@ -303,7 +303,7 @@ struct _GMainContext
 
 struct _GSourceCallback
 {
-  volatile gint ref_count;
+  gint ref_count;  /* (atomic) */
   GSourceFunc func;
   gpointer    data;
   GDestroyNotify notify;
@@ -313,7 +313,7 @@ struct _GMainLoop
 {
   GMainContext *context;
   gboolean is_running; /* (atomic) */
-  volatile gint ref_count;
+  gint ref_count;  /* (atomic) */
 };
 
 struct _GTimeoutSource
@@ -4749,7 +4749,7 @@ g_main_context_get_poll_func (GMainContext *context)
  *
  * |[<!-- language="C" --> 
  *   #define NUM_TASKS 10
- *   static volatile gint tasks_remaining = NUM_TASKS;
+ *   static gint tasks_remaining = NUM_TASKS;  // (atomic)
  *   ...
  *  
  *   while (g_atomic_int_get (&tasks_remaining) != 0)
