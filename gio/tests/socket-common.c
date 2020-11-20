@@ -45,7 +45,7 @@ static GSocketAddress *
 socket_address_from_string (const char *name)
 {
 #ifdef G_OS_UNIX
-  int i, len;
+  gsize i, len;
 
   for (i = 0; i < G_N_ELEMENTS (unix_socket_address_types); i++)
     {
