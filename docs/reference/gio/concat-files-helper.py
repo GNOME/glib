@@ -18,13 +18,18 @@
 #
 # Author: Xavier Claessens <xavier.claessens@collabora.com>
 
+import os
 import sys
 
 if len(sys.argv) < 3:
-  print('Usage: {} <output file> <input file 1> ...'.format(os.path.basename(sys.argv[0])))
-  sys.exit(1)
+    print(
+        "Usage: {} <output file> <input file 1> ...".format(
+            os.path.basename(sys.argv[0])
+        )
+    )
+    sys.exit(1)
 
-with open(sys.argv[1], 'w') as outfile:
+with open(sys.argv[1], "w") as outfile:
     for fname in sys.argv[2:]:
         with open(fname) as infile:
             for line in infile:

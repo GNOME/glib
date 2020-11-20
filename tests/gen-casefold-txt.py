@@ -29,14 +29,16 @@ import argparse
 
 def main(argv):
     parser = argparse.ArgumentParser(
-        description="Generate test cases for casefolding from Unicode data")
+        description="Generate test cases for casefolding from Unicode data"
+    )
     parser.add_argument("UNICODE-VERSION")
     parser.add_argument("CaseFolding.txt")
     args = parser.parse_args(argv[1:])
     version = getattr(args, "UNICODE-VERSION")
     filename = getattr(args, "CaseFolding.txt")
 
-    print("""\
+    print(
+        """\
 # Test cases generated from Unicode {} data
 # by gen-casefold-txt.py. Do not edit.
 #
@@ -45,7 +47,10 @@ def main(argv):
 AaBbCc@@\taabbcc@@
 #
 # Now the automatic tests
-#""".format(version))
+#""".format(
+            version
+        )
+    )
 
     # Names of fields in the CaseFolding table
     CODE, STATUS, MAPPING = range(3)
@@ -60,8 +65,9 @@ AaBbCc@@\taabbcc@@
             fields = [f.strip() for f in line.split(";", 3)[:3]]
             if len(fields) != 3:
                 raise SystemExit(
-                    "Entry for %s has wrong number of fields (%d)" % (
-                        fields[CODE], len(fields)))
+                    "Entry for %s has wrong number of fields (%d)"
+                    % (fields[CODE], len(fields))
+                )
 
             status = fields[STATUS]
             # skip simple and Turkic mappings
@@ -69,8 +75,7 @@ AaBbCc@@\taabbcc@@
                 continue
 
             code = chr(int(fields[CODE], 16))
-            values = "".join(
-                [chr(int(v, 16)) for v in fields[MAPPING].split()])
+            values = "".join([chr(int(v, 16)) for v in fields[MAPPING].split()])
             print("{}\t{}".format(code, values))
 
 

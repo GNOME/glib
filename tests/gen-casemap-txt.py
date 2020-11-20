@@ -27,9 +27,14 @@ import sys
 import argparse
 
 
+# Disable line length warnings as wrapping the test templates would be hard
+# flake8: noqa: E501
+
+
 def main(argv):
     parser = argparse.ArgumentParser(
-        description="Generate test cases for case mapping from Unicode data")
+        description="Generate test cases for case mapping from Unicode data"
+    )
     parser.add_argument("UNICODE-VERSION")
     parser.add_argument("UnicodeData.txt")
     parser.add_argument("SpecialCasing.txt")
@@ -39,9 +44,23 @@ def main(argv):
     filename_casing = getattr(args, "SpecialCasing.txt")
 
     # Names of fields in Unicode data table.
-    CODE, NAME, CATEGORY, COMBINING_CLASSES, BIDI_CATEGORY, DECOMPOSITION, \
-        DECIMAL_VALUE, DIGIT_VALUE, NUMERIC_VALUE, MIRRORED, OLD_NAME, \
-        COMMENT, UPPER, LOWER, TITLE = range(15)
+    (
+        CODE,
+        NAME,
+        CATEGORY,
+        COMBINING_CLASSES,
+        BIDI_CATEGORY,
+        DECOMPOSITION,
+        DECIMAL_VALUE,
+        DIGIT_VALUE,
+        NUMERIC_VALUE,
+        MIRRORED,
+        OLD_NAME,
+        COMMENT,
+        UPPER,
+        LOWER,
+        TITLE,
+    ) = range(15)
 
     # Names of fields in the SpecialCasing table
     CASE_CODE, CASE_LOWER, CASE_TITLE, CASE_UPPER, CASE_CONDITION = range(5)
@@ -78,8 +97,9 @@ def main(argv):
             fields = [f.strip() for f in line.split(";")]
             if len(fields) != 15:
                 raise SystemExit(
-                    "Entry for %s has wrong number of fields (%d)" % (
-                        fields[CODE], len(fields)))
+                    "Entry for %s has wrong number of fields (%d)"
+                    % (fields[CODE], len(fields))
+                )
 
             code = int(fields[CODE], 16)
 
@@ -92,8 +112,23 @@ def main(argv):
                 else:
                     # The gap represents undefined characters.  Only the type
                     # matters.
-                    gfields = ['', '', 'Cn', '0', '', '', '', '', '', '', '',
-                               '', '', '', '']
+                    gfields = [
+                        "",
+                        "",
+                        "Cn",
+                        "0",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                    ]
 
                 last_code += 1
                 while last_code < code:
@@ -117,8 +152,9 @@ def main(argv):
             fields = [f.strip() for f in line.split(";")]
             if len(fields) not in (4, 5):
                 raise SystemExit(
-                    "Entry for %s has wrong number of fields (%d)" % (
-                        fields[CASE_CODE], len(fields)))
+                    "Entry for %s has wrong number of fields (%d)"
+                    % (fields[CASE_CODE], len(fields))
+                )
 
             if len(fields) == 5:
                 # Ignore conditional special cases - we'll handle them manually
@@ -134,7 +170,8 @@ def main(argv):
 
 
 def print_tests(version, upper, title, lower):
-    print("""\
+    print(
+        """\
 # Test cases generated from Unicode {} data
 # by gen-casemap-txt.py. Do not edit.
 #
@@ -150,9 +187,9 @@ tr_TR.UTF-8\tI\u0307\ti\tI\u0307\tI\u0307\t# I => LATIN SMALL LETTER DOTLESS I
 \t\u03b1\u0345\u0314\t\u03b1\u0345\u0314\t\u0391\u0345\u0314\t\u0391\u0314\u0399\t
 \t\u03b1\u0314\u0345\t\u03b1\u0314\u0345\t\u0391\u0314\u0345\t\u0391\u0314\u0399\t
 # Handling of final and nonfinal sigma
-\tΜΆΙΟΣ 	μάιος 	Μάιος 	ΜΆΙΟΣ 	
-\tΜΆΙΟΣ	μάιος	Μάιος	ΜΆΙΟΣ	
-\tΣΙΓΜΑ	σιγμα	Σιγμα	ΣΙΓΜΑ	
+\tΜΆΙΟΣ 	μάιος 	Μάιος 	ΜΆΙΟΣ \t
+\tΜΆΙΟΣ	μάιος	Μάιος	ΜΆΙΟΣ\t
+\tΣΙΓΜΑ	σιγμα	Σιγμα	ΣΙΓΜΑ\t
 # Lithuanian rule of i followed by letter with dot. Not at all sure
 # about the titlecase part here
 lt_LT\ti\u0117\ti\u0117\tIe\tIE\t
@@ -181,9 +218,12 @@ lt_LT.UTF-8\t\u012e\u0301\t\u012f\u0307\u0301\t\u012e\u0301\t\u012e\u0301\t # LA
 \ta\ufb04\ta\ufb04\tAffl\tAFFL\t# FB04
 #
 # Now the automatic tests
-#""".format(version))
+#""".format(
+            version
+        )
+    )
 
-    for i in range(0x10ffff):
+    for i in range(0x10FFFF):
         if i == 0x3A3:
             # Greek sigma needs special tests
             continue

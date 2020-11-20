@@ -33,50 +33,76 @@ else:
 
 def main():
     parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('-i', action='store_true', default=False,
-                        help='apply edits to files instead of displaying a '
-                             'diff')
-    parser.add_argument('-p', metavar='NUM', default=0,
-                        help='strip the smallest prefix containing P slashes')
-    parser.add_argument('-regex', metavar='PATTERN', default=None,
-                        help='custom pattern selecting file paths to reformat '
-                        '(case sensitive, overrides -iregex)')
-    parser.add_argument('-iregex', metavar='PATTERN',
-                        default=r'.*\.(cpp|cc|c\+\+|cxx|c|cl|h|hh|hpp|m|mm|inc'
-                                r'|js|ts|proto|protodevel|java|cs)',
-                        help='custom pattern selecting file paths to reformat '
-                             '(case insensitive, overridden by -regex)')
-    parser.add_argument('-sort-includes', action='store_true', default=False,
-                        help='let clang-format sort include blocks')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='be more verbose, ineffective without -i')
-    parser.add_argument('-style',
-                        help='formatting style to apply (LLVM, Google, '
-                        'Chromium, Mozilla, WebKit)')
-    parser.add_argument('-binary', default='clang-format',
-                        help='location of binary to use for clang-format')
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "-i",
+        action="store_true",
+        default=False,
+        help="apply edits to files instead of displaying a " "diff",
+    )
+    parser.add_argument(
+        "-p",
+        metavar="NUM",
+        default=0,
+        help="strip the smallest prefix containing P slashes",
+    )
+    parser.add_argument(
+        "-regex",
+        metavar="PATTERN",
+        default=None,
+        help="custom pattern selecting file paths to reformat "
+        "(case sensitive, overrides -iregex)",
+    )
+    parser.add_argument(
+        "-iregex",
+        metavar="PATTERN",
+        default=r".*\.(cpp|cc|c\+\+|cxx|c|cl|h|hh|hpp|m|mm|inc"
+        r"|js|ts|proto|protodevel|java|cs)",
+        help="custom pattern selecting file paths to reformat "
+        "(case insensitive, overridden by -regex)",
+    )
+    parser.add_argument(
+        "-sort-includes",
+        action="store_true",
+        default=False,
+        help="let clang-format sort include blocks",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="be more verbose, ineffective without -i",
+    )
+    parser.add_argument(
+        "-style",
+        help="formatting style to apply (LLVM, Google, " "Chromium, Mozilla, WebKit)",
+    )
+    parser.add_argument(
+        "-binary",
+        default="clang-format",
+        help="location of binary to use for clang-format",
+    )
     args = parser.parse_args()
 
     # Extract changed lines for each file.
     filename = None
     lines_by_file = {}
     for line in sys.stdin:
-        match = re.search(r'^\+\+\+\ (.*?/){%s}(\S*)' % args.p, line)
+        match = re.search(r"^\+\+\+\ (.*?/){%s}(\S*)" % args.p, line)
         if match:
             filename = match.group(2)
         if filename is None:
             continue
 
         if args.regex is not None:
-            if not re.match('^%s$' % args.regex, filename):
+            if not re.match("^%s$" % args.regex, filename):
                 continue
         else:
-            if not re.match('^%s$' % args.iregex, filename, re.IGNORECASE):
+            if not re.match("^%s$" % args.iregex, filename, re.IGNORECASE):
                 continue
 
-        match = re.search(r'^@@.*\+(\d+)(,(\d+))?', line)
+        match = re.search(r"^@@.*\+(\d+)(,(\d+))?", line)
         if match:
             start_line = int(match.group(1))
             line_count = 1
@@ -86,7 +112,8 @@ def main():
                 continue
             end_line = start_line + line_count - 1
             lines_by_file.setdefault(filename, []).extend(
-                ['-lines', str(start_line) + ':' + str(end_line)])
+                ["-lines", str(start_line) + ":" + str(end_line)]
+            )
 
     # Reformat files containing changes in place.
     # We need to count amount of bytes generated in the output of
@@ -95,20 +122,22 @@ def main():
     format_line_counter = 0
     for filename, lines in lines_by_file.items():
         if args.i and args.verbose:
-            print('Formatting {}'.format(filename))
+            print("Formatting {}".format(filename))
         command = [args.binary, filename]
         if args.i:
-            command.append('-i')
+            command.append("-i")
         if args.sort_includes:
-            command.append('-sort-includes')
+            command.append("-sort-includes")
         command.extend(lines)
         if args.style:
-            command.extend(['-style', args.style])
-        p = subprocess.Popen(command,
-                             stdout=subprocess.PIPE,
-                             stderr=None,
-                             stdin=subprocess.PIPE,
-                             universal_newlines=True)
+            command.extend(["-style", args.style])
+        p = subprocess.Popen(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=None,
+            stdin=subprocess.PIPE,
+            universal_newlines=True,
+        )
         stdout, _ = p.communicate()
         if p.returncode != 0:
             sys.exit(p.returncode)
@@ -117,11 +146,15 @@ def main():
             with open(filename) as f:
                 code = f.readlines()
             formatted_code = StringIO(stdout).readlines()
-            diff = difflib.unified_diff(code, formatted_code,
-                                        filename, filename,
-                                        '(before formatting)',
-                                        '(after formatting)')
-            diff_string = ''.join(diff)
+            diff = difflib.unified_diff(
+                code,
+                formatted_code,
+                filename,
+                filename,
+                "(before formatting)",
+                "(after formatting)",
+            )
+            diff_string = "".join(diff)
             if diff_string:
                 format_line_counter += sys.stdout.write(diff_string)
 
@@ -129,5 +162,5 @@ def main():
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

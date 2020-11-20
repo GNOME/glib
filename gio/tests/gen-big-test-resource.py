@@ -8,14 +8,13 @@
 #
 # See issue #1580
 
-import io
 import string
 import sys
 
 if len(sys.argv) != 2:
-    raise SystemExit('Usage: %s <output-file>' % sys.argv[0])
+    raise SystemExit("Usage: %s <output-file>" % sys.argv[0])
 
-with open(sys.argv[1], 'w', newline='\n') as f:
+with open(sys.argv[1], "w", newline="\n") as f:
     for count in range(12):
         for c in string.ascii_lowercase:
             f.write("%s\n" % (c * 100))
