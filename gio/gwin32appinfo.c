@@ -1795,7 +1795,7 @@ generate_new_verb_name (GPtrArray        *verbs,
   memcpy (new_verb_name, verb, orig_len * sizeof (gunichar2));
   for (counter = 0; counter < 255; counter++)
   {
-    _snwprintf (&new_verb_name[orig_len], new_verb_name_len, L" (%x)", counter);
+    _snwprintf (&new_verb_name[orig_len], new_verb_name_len, L" (%zx)", counter);
     _verb_lookup (verbs, new_verb_name, &shverb);
 
     if (shverb == NULL)
