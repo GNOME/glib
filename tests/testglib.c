@@ -78,7 +78,7 @@ static void
 glist_test (void)
 {
   GList *list = NULL;
-  guint i;
+  gint i;
 
   for (i = 0; i < 10; i++)
     list = g_list_append (list, &test_nums[i]);
@@ -158,7 +158,7 @@ static void
 gslist_test (void)
 {
   GSList *slist = NULL;
-  guint i;
+  gint i;
 
   for (i = 0; i < 10; i++)
     slist = g_slist_append (slist, &test_nums[i]);
