@@ -46,7 +46,7 @@ while (($# > 0)); do
                 --base|-b) read_arg base "$@" || shift;;
                 --base-version) read_arg base_version "$@" || shift;;
                 --no-login) no_login=1;;
-                *) echo -e "\e[1;31mERROR\e[0m: Unknown option '$1'"; exit 1;;
+                *) echo -e "\\e[1;31mERROR\\e[0m: Unknown option '$1'"; exit 1;;
         esac
         shift
 done
@@ -75,7 +75,7 @@ if [ $list == 1 ]; then
                 filename=$( basename -- "$f" )
                 basename="${filename%.*}"
 
-                echo -e "  \e[1;39m$basename\e[0m"
+                echo -e "  \\e[1;39m$basename\\e[0m"
         done
         exit 0
 fi
@@ -87,7 +87,7 @@ if [ -z "${base}" ]; then
 fi
 
 if [ ! -f "$base.Dockerfile" ]; then
-        echo -e "\e[1;31mERROR\e[0m: Dockerfile for '$base' not found"
+        echo -e "\\e[1;31mERROR\\e[0m: Dockerfile for '$base' not found"
         exit 1
 fi
 
@@ -100,7 +100,7 @@ fi
 TAG="registry.gitlab.gnome.org/gnome/glib/${base}:${base_version}"
 
 if [ $build == 1 ]; then
-        echo -e "\e[1;32mBUILDING\e[0m: ${base} as ${TAG}"
+        echo -e "\\e[1;32mBUILDING\\e[0m: ${base} as ${TAG}"
         $SUDO_CMD docker build \
                 --build-arg HOST_USER_ID="$UID" \
                 --build-arg COVERITY_SCAN_PROJECT_NAME="${COVERITY_SCAN_PROJECT_NAME}" \
@@ -111,7 +111,7 @@ if [ $build == 1 ]; then
 fi
 
 if [ $push == 1 ]; then
-        echo -e "\e[1;32mPUSHING\e[0m: ${base} as ${TAG}"
+        echo -e "\\e[1;32mPUSHING\\e[0m: ${base} as ${TAG}"
 
         if [ $no_login == 0 ]; then
                 $SUDO_CMD docker login registry.gitlab.gnome.org
@@ -122,7 +122,7 @@ if [ $push == 1 ]; then
 fi
 
 if [ $run == 1 ]; then
-        echo -e "\e[1;32mRUNNING\e[0m: ${base} as ${TAG}"
+        echo -e "\\e[1;32mRUNNING\\e[0m: ${base} as ${TAG}"
         $SUDO_CMD docker run \
                 --rm \
                 --volume "$(pwd)/..:/home/user/app" \
