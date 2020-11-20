@@ -53,7 +53,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  gint i;
+  gsize i;
   struct {
     gchar *filename;
     gchar *dirname;
@@ -100,9 +100,8 @@ main (int   argc,
     { "a:\\/", "a:\\" },
 #endif
   };
-  guint n_dirname_checks = sizeof (dirname_checks) / sizeof (dirname_checks[0]);
 
-  for (i = 0; i < n_dirname_checks; i++)
+  for (i = 0; i < G_N_ELEMENTS (dirname_checks); i++)
     {
       gchar *dirname;
 
