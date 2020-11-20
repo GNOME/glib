@@ -112,7 +112,8 @@ pokee_method_call (GDBusConnection       *connection,
 static const GDBusInterfaceVTable pokee_vtable = {
   pokee_method_call,
   NULL, /* get_property */
-  NULL  /* set_property */
+  NULL, /* set_property */
+  { 0 }
 };
 
 /* Processes:
