@@ -2005,9 +2005,10 @@ g_object_new_is_valid_property (GType                  object_type,
                                 GParamSpec            *pspec,
                                 const char            *name,
                                 GObjectConstructParam *params,
-                                int                    n_params)
+                                guint                  n_params)
 {
-  gint i;
+  guint i;
+
   if (G_UNLIKELY (pspec == NULL))
     {
       g_critical ("%s: object class '%s' has no property named '%s'",
@@ -2217,13 +2218,15 @@ g_object_new_valist (GType        object_type,
 
   if (first_property_name)
     {
-      GObjectConstructParam stack_params[16];
-      GObjectConstructParam *params;
+      GObjectConstructParam params_stack[16];
+      GValue values_stack[G_N_ELEMENTS (params_stack)];
       const gchar *name;
-      gint n_params = 0;
+      GObjectConstructParam *params = params_stack;
+      GValue *values = values_stack;
+      guint n_params = 0;
+      guint n_params_alloc = G_N_ELEMENTS (params_stack);
 
       name = first_property_name;
-      params = stack_params;
 
       do
         {
@@ -2235,24 +2238,39 @@ g_object_new_valist (GType        object_type,
           if (!g_object_new_is_valid_property (object_type, pspec, name, params, n_params))
             break;
 
-          if (n_params == 16)
+          if (G_UNLIKELY (n_params == n_params_alloc))
             {
-              params = g_new (GObjectConstructParam, n_params + 1);
-              memcpy (params, stack_params, sizeof stack_params);
+              guint i;
+
+              if (n_params_alloc == G_N_ELEMENTS (params_stack))
+                {
+                  n_params_alloc = G_N_ELEMENTS (params_stack) * 2u;
+                  params = g_new (GObjectConstructParam, n_params_alloc);
+                  values = g_new (GValue, n_params_alloc);
+                  memcpy (params, params_stack, sizeof (GObjectConstructParam) * n_params);
+                  memcpy (values, values_stack, sizeof (GValue) * n_params);
+                }
+              else
+                {
+                  n_params_alloc *= 2u;
+                  params = g_realloc (params, sizeof (GObjectConstructParam) * n_params_alloc);
+                  values = g_realloc (values, sizeof (GValue) * n_params_alloc);
+                }
+
+              for (i = 0; i < n_params; i++)
+                params[i].value = &values[i];
             }
-          else if (n_params > 16)
-            params = g_renew (GObjectConstructParam, params, n_params + 1);
 
           params[n_params].pspec = pspec;
-          params[n_params].value = g_newa (GValue, 1);
-          memset (params[n_params].value, 0, sizeof (GValue));
+          params[n_params].value = &values[n_params];
+          memset (&values[n_params], 0, sizeof (GValue));
 
-          G_VALUE_COLLECT_INIT (params[n_params].value, pspec->value_type, var_args, 0, &error);
+          G_VALUE_COLLECT_INIT (&values[n_params], pspec->value_type, var_args, 0, &error);
 
           if (error)
             {
               g_critical ("%s: %s", G_STRFUNC, error);
-              g_value_unset (params[n_params].value);
+              g_value_unset (&values[n_params]);
               g_free (error);
               break;
             }
@@ -2266,8 +2284,11 @@ g_object_new_valist (GType        object_type,
       while (n_params--)
         g_value_unset (params[n_params].value);
 
-      if (params != stack_params)
-        g_free (params);
+      if (G_UNLIKELY (n_params_alloc != G_N_ELEMENTS (params_stack)))
+        {
+          g_free (params);
+          g_free (values);
+        }
     }
   else
     /* Fast case: no properties passed in. */
