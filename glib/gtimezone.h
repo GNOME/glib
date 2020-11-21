@@ -53,7 +53,7 @@ typedef enum
   G_TIME_TYPE_UNIVERSAL
 } GTimeType;
 
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_68_FOR (g_time_zone_new_identifier)
 GTimeZone *             g_time_zone_new                                 (const gchar *identifier);
 GLIB_AVAILABLE_IN_2_68
 GTimeZone *             g_time_zone_new_identifier                      (const gchar *identifier);

@@ -1611,6 +1611,9 @@ parse_footertz (const gchar *footer, size_t footerlen)
  * g_time_zone_new_identifier().
  *
  * Returns: (transfer full) (not nullable): the requested timezone
+ * Deprecated: 2.68: Use g_time_zone_new_identifier() instead, as it provides
+ *     error reporting. Change your code to handle a potentially %NULL return
+ *     value.
  *
  * Since: 2.26
  **/
@@ -1875,7 +1878,8 @@ g_time_zone_new_utc (void)
 
   if (g_once_init_enter (&initialised))
     {
-      utc = g_time_zone_new ("UTC");
+      utc = g_time_zone_new_identifier ("UTC");
+      g_assert (utc != NULL);
       g_once_init_leave (&initialised, TRUE);
     }
 
@@ -1912,7 +1916,9 @@ g_time_zone_new_local (void)
     g_clear_pointer (&tz_local, g_time_zone_unref);
 
   if (tz_local == NULL)
-    tz_local = g_time_zone_new (tzenv);
+    tz_local = g_time_zone_new_identifier (tzenv);
+  if (tz_local == NULL)
+    tz_local = g_time_zone_new_utc ();
 
   tz = g_time_zone_ref (tz_local);
 
@@ -1943,13 +1949,15 @@ g_time_zone_new_offset (gint32 seconds)
   /* Seemingly, we should be using @seconds directly to set the
    * #TransitionInfo.gmt_offset to avoid all this string building and parsing.
    * However, we always need to set the #GTimeZone.name to a constructed
-   * string anyway, so we might as well reuse its code. */
+   * string anyway, so we might as well reuse its code.
+   * g_time_zone_new_identifier() should never fail in this situation. */
   identifier = g_strdup_printf ("%c%02u:%02u:%02u",
                                 (seconds >= 0) ? '+' : '-',
                                 (ABS (seconds) / 60) / 60,
                                 (ABS (seconds) / 60) % 60,
                                 ABS (seconds) % 60);
-  tz = g_time_zone_new (identifier);
+  tz = g_time_zone_new_identifier (identifier);
+  g_assert (tz != NULL);
   g_free (identifier);
 
   g_assert (g_time_zone_get_offset (tz, 0) == seconds);

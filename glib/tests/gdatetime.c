@@ -234,7 +234,8 @@ test_GDateTime_equal (void)
   g_date_time_unref (dt2);
 
   /* UTC-0300 and not in DST */
-  tz = g_time_zone_new ("-03:00");
+  tz = g_time_zone_new_identifier ("-03:00");
+  g_assert_nonnull (tz);
   dt1 = g_date_time_new (tz, 2010, 5, 24,  8, 0, 0);
   g_time_zone_unref (tz);
   g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, (-3 * 3600));
@@ -247,10 +248,11 @@ test_GDateTime_equal (void)
 
   /* America/Recife is in UTC-0300 */
 #ifdef G_OS_UNIX
-  tz = g_time_zone_new ("America/Recife");
+  tz = g_time_zone_new_identifier ("America/Recife");
 #elif defined G_OS_WIN32
-  tz = g_time_zone_new ("E. South America Standard Time");
+  tz = g_time_zone_new_identifier ("E. South America Standard Time");
 #endif
+  g_assert_nonnull (tz);
   dt1 = g_date_time_new (tz, 2010, 5, 24,  8, 0, 0);
   g_time_zone_unref (tz);
   g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, (-3 * 3600));
@@ -1174,10 +1176,11 @@ test_GDateTime_new_full (void)
   g_date_time_unref (dt);
 
 #ifdef G_OS_UNIX
-  tz = g_time_zone_new ("America/Tijuana");
+  tz = g_time_zone_new_identifier ("America/Tijuana");
 #elif defined G_OS_WIN32
-  tz = g_time_zone_new ("Pacific Standard Time");
+  tz = g_time_zone_new_identifier ("Pacific Standard Time");
 #endif
+  g_assert_nonnull (tz);
   dt = g_date_time_new (tz, 2010, 11, 24, 8, 4, 0);
 
   dt_tz = g_date_time_get_timezone (dt);
@@ -1938,10 +1941,11 @@ test_GDateTime_dst (void)
 
   /* this date has the DST state set for Europe/London */
 #ifdef G_OS_UNIX
-  tz = g_time_zone_new ("Europe/London");
+  tz = g_time_zone_new_identifier ("Europe/London");
 #elif defined G_OS_WIN32
-  tz = g_time_zone_new ("GMT Standard Time");
+  tz = g_time_zone_new_identifier ("GMT Standard Time");
 #endif
+  g_assert_nonnull (tz);
   dt1 = g_date_time_new (tz, 2009, 8, 15, 3, 0, 1);
   g_assert (g_date_time_is_daylight_savings (dt1));
   g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, 3600);
@@ -2123,7 +2127,8 @@ test_z (void)
 
   g_test_bug ("http://bugzilla.gnome.org/642935");
 
-  tz = g_time_zone_new ("-08:00");
+  tz = g_time_zone_new_identifier ("-08:00");
+  g_assert_nonnull (tz);
   dt = g_date_time_new (tz, 1, 1, 1, 0, 0, 0);
 
   p = g_date_time_format (dt, "%z");
@@ -2145,7 +2150,8 @@ test_z (void)
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("+00:00");
+  tz = g_time_zone_new_identifier ("+00:00");
+  g_assert_nonnull (tz);
   dt = g_date_time_new (tz, 1, 1, 1, 0, 0, 0);
   p = g_date_time_format (dt, "%:::z");
   g_assert_cmpstr (p, ==, "+00");
@@ -2153,7 +2159,8 @@ test_z (void)
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("+08:23");
+  tz = g_time_zone_new_identifier ("+08:23");
+  g_assert_nonnull (tz);
   dt = g_date_time_new (tz, 1, 1, 1, 0, 0, 0);
   p = g_date_time_format (dt, "%:::z");
   g_assert_cmpstr (p, ==, "+08:23");
@@ -2161,7 +2168,8 @@ test_z (void)
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("+08:23:45");
+  tz = g_time_zone_new_identifier ("+08:23:45");
+  g_assert_nonnull (tz);
   dt = g_date_time_new (tz, 1, 1, 1, 0, 0, 0);
   p = g_date_time_format (dt, "%:::z");
   g_assert_cmpstr (p, ==, "+08:23:45");
@@ -2169,7 +2177,8 @@ test_z (void)
   g_date_time_unref (dt);
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("-00:15");
+  tz = g_time_zone_new_identifier ("-00:15");
+  g_assert_nonnull (tz);
   dt = g_date_time_new (tz, 1, 1, 1, 0, 0, 0);
 
   p = g_date_time_format (dt, "%z");
@@ -2214,10 +2223,11 @@ test_6_days_until_end_of_the_month (void)
    *  - https://tools.ietf.org/id/draft-murchison-tzdist-tzif-15.html#rfc.section.3.3
    *  - https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_03
    */
-  tz = g_time_zone_new ("CET-1CEST,M3.5.0,M10.5.0/3");
+  tz = g_time_zone_new_identifier ("CET-1CEST,M3.5.0,M10.5.0/3");
 #elif defined (G_OS_WIN32)
-  tz = g_time_zone_new ("Romance Standard Time");
+  tz = g_time_zone_new_identifier ("Romance Standard Time");
 #endif
+  g_assert_nonnull (tz);
   dt = g_date_time_new (tz, 2020, 10, 5, 1, 1, 1);
 
   p = g_date_time_format (dt, "%Y-%m-%d %H:%M:%S%z");
@@ -2320,10 +2330,11 @@ test_find_interval (void)
   gint i1, i2;
 
 #ifdef G_OS_UNIX
-  tz = g_time_zone_new ("America/Toronto");
+  tz = g_time_zone_new_identifier ("America/Toronto");
 #elif defined G_OS_WIN32
-  tz = g_time_zone_new ("Eastern Standard Time");
+  tz = g_time_zone_new_identifier ("Eastern Standard Time");
 #endif
+  g_assert_nonnull (tz);
   dt = g_date_time_new_utc (2010, 11, 7, 1, 30, 0);
   u = g_date_time_to_unix (dt);
 
@@ -2353,10 +2364,11 @@ test_adjust_time (void)
   gint i1, i2;
 
 #ifdef G_OS_UNIX
-  tz = g_time_zone_new ("America/Toronto");
+  tz = g_time_zone_new_identifier ("America/Toronto");
 #elif defined G_OS_WIN32
-  tz = g_time_zone_new ("Eastern Standard Time");
+  tz = g_time_zone_new_identifier ("Eastern Standard Time");
 #endif
+  g_assert_nonnull (tz);
   dt = g_date_time_new_utc (2010, 11, 7, 1, 30, 0);
   u = g_date_time_to_unix (dt);
   u2 = u;
@@ -2388,7 +2400,9 @@ test_no_header (void)
 {
   GTimeZone *tz;
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   tz = g_time_zone_new ("blabla");
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
@@ -2415,7 +2429,9 @@ test_posix_parse (void)
   GDateTime *gdt1, *gdt2;
 
   /* Check that an unknown zone name falls back to UTC. */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   tz = g_time_zone_new ("nonexistent");
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 0);
@@ -2423,7 +2439,9 @@ test_posix_parse (void)
   g_time_zone_unref (tz);
 
   /* An existent zone name should not fall back to UTC. */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   tz = g_time_zone_new ("PST8");
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, - 8 * 3600);
@@ -2433,7 +2451,8 @@ test_posix_parse (void)
 /* This fails rules_from_identifier on Unix (though not on Windows)
  * but passes anyway because PST8PDT is a zone name.
  */
-  tz = g_time_zone_new ("PST8PDT");
+  tz = g_time_zone_new_identifier ("PST8PDT");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8PDT");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, - 8 * 3600);
@@ -2443,8 +2462,9 @@ test_posix_parse (void)
   g_assert (g_time_zone_is_dst (tz, 1));
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("PST8PDT6:32:15");
+  tz = g_time_zone_new_identifier ("PST8PDT6:32:15");
 #ifdef G_OS_WIN32
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8PDT6:32:15");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, - 8 * 3600);
@@ -2461,14 +2481,12 @@ test_posix_parse (void)
   g_date_time_unref (gdt1);
   g_date_time_unref (gdt2);
 #else
-  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
-  g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
-  g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 0);
-  g_assert (!g_time_zone_is_dst (tz, 0));
+  g_assert_null (tz);
 #endif
-  g_time_zone_unref (tz);
+  g_clear_pointer (&tz, g_time_zone_unref);
 
-  tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,M10.1.0,M3.3.0");
+  tz = g_time_zone_new_identifier ("NZST-12:00:00NZDT-13:00:00,M10.1.0,M3.3.0");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,M10.1.0,M3.3.0");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "NZST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 12 * 3600);
@@ -2494,7 +2512,8 @@ test_posix_parse (void)
   g_date_time_unref (gdt2);
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,279,76");
+  tz = g_time_zone_new_identifier ("NZST-12:00:00NZDT-13:00:00,279,76");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,279,76");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "NZST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 12 * 3600);
@@ -2520,7 +2539,8 @@ test_posix_parse (void)
   g_date_time_unref (gdt2);
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,J279,J76");
+  tz = g_time_zone_new_identifier ("NZST-12:00:00NZDT-13:00:00,J279,J76");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,J279,J76");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "NZST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 12 * 3600);
@@ -2546,7 +2566,8 @@ test_posix_parse (void)
   g_date_time_unref (gdt2);
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,M10.1.0/07:00,M3.3.0/07:00");
+  tz = g_time_zone_new_identifier ("NZST-12:00:00NZDT-13:00:00,M10.1.0/07:00,M3.3.0/07:00");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,M10.1.0/07:00,M3.3.0/07:00");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "NZST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 12 * 3600);
@@ -2596,13 +2617,15 @@ test_posix_parse (void)
   g_date_time_unref (gdt2);
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("VIR-00:30");
+  tz = g_time_zone_new_identifier ("VIR-00:30");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-00:30");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (30 * 60));
   g_assert_false (g_time_zone_is_dst (tz, 0));
 
-  tz = g_time_zone_new ("VIR-00:30VID,0/00:00:00,365/23:59:59");
+  tz = g_time_zone_new_identifier ("VIR-00:30VID,0/00:00:00,365/23:59:59");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-00:30VID,0/00:00:00,365/23:59:59");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (30 * 60));
@@ -2611,7 +2634,8 @@ test_posix_parse (void)
   g_assert_cmpint (g_time_zone_get_offset (tz, 1), ==, (90 * 60));
   g_assert_true (g_time_zone_is_dst (tz, 1));
 
-  tz = g_time_zone_new ("VIR-02:30VID,0/00:00:00,365/23:59:59");
+  tz = g_time_zone_new_identifier ("VIR-02:30VID,0/00:00:00,365/23:59:59");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-02:30VID,0/00:00:00,365/23:59:59");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (150 * 60));
@@ -2620,7 +2644,8 @@ test_posix_parse (void)
   g_assert_cmpint (g_time_zone_get_offset (tz, 1), ==, (210 * 60));
   g_assert_true (g_time_zone_is_dst (tz, 1));
 
-  tz = g_time_zone_new ("VIR-02:30VID-04:30,0/00:00:00,365/23:59:59");
+  tz = g_time_zone_new_identifier ("VIR-02:30VID-04:30,0/00:00:00,365/23:59:59");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-02:30VID-04:30,0/00:00:00,365/23:59:59");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (150 * 60));
@@ -2629,7 +2654,8 @@ test_posix_parse (void)
   g_assert_cmpint (g_time_zone_get_offset (tz, 1), ==, (270 * 60));
   g_assert_true (g_time_zone_is_dst (tz, 1));
 
-  tz = g_time_zone_new ("VIR-12:00VID-13:00,0/00:00:00,365/23:59:59");
+  tz = g_time_zone_new_identifier ("VIR-12:00VID-13:00,0/00:00:00,365/23:59:59");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "VIR-12:00VID-13:00,0/00:00:00,365/23:59:59");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "VIR");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, (720 * 60));
@@ -2647,7 +2673,8 @@ test_GDateTime_floating_point (void)
 
   g_test_bug ("http://bugzilla.gnome.org/697715");
 
-  tz = g_time_zone_new ("-03:00");
+  tz = g_time_zone_new_identifier ("-03:00");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "-03:00");
   dt = g_date_time_new (tz, 2010, 5, 24,  8, 0, 1.000001);
   g_time_zone_unref (tz);
@@ -2669,7 +2696,8 @@ test_identifier (void)
   const char *recife_tz = "America/Recife";
 #endif
 
-  tz = g_time_zone_new ("UTC");
+  tz = g_time_zone_new_identifier ("UTC");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_time_zone_unref (tz);
 
@@ -2677,21 +2705,27 @@ test_identifier (void)
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_time_zone_unref (tz);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   tz = g_time_zone_new ("some rubbish");
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("Z");
+  tz = g_time_zone_new_identifier ("Z");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "Z");
   g_time_zone_unref (tz);
 
-  tz = g_time_zone_new ("+03:15");
+  tz = g_time_zone_new_identifier ("+03:15");
+  g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "+03:15");
   g_time_zone_unref (tz);
 
   /* System timezone. We can’t change this, but we can at least assert that
    * the identifier is non-NULL and non-empty. */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   tz = g_time_zone_new (NULL);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_test_message ("System time zone identifier: %s", g_time_zone_get_identifier (tz));
   g_assert_nonnull (g_time_zone_get_identifier (tz));
   g_assert_cmpstr (g_time_zone_get_identifier (tz), !=, "");
@@ -2777,10 +2811,8 @@ test_time_zone_parse_rfc8536 (void)
 
       path = g_test_build_filename (G_TEST_DIST, "time-zones", test_files[i], NULL);
       g_assert_true (g_path_is_absolute (path));
-      tz = g_time_zone_new (path);
+      tz = g_time_zone_new_identifier (path);
       g_assert_nonnull (tz);
-      /* UTC will be loaded as a fallback if parsing fails */
-      g_assert_cmpstr (g_time_zone_get_identifier (tz), !=, "UTC");
       g_time_zone_unref (tz);
       g_free (path);
     }
@@ -2797,13 +2829,17 @@ test_time_zone_caching (void)
   /* Check a specific (arbitrary) timezone. These are only cached while third
    * party code holds a ref to at least one instance. */
 #ifdef G_OS_UNIX
-  tz1 = g_time_zone_new ("Europe/London");
-  tz2 = g_time_zone_new ("Europe/London");
+  tz1 = g_time_zone_new_identifier ("Europe/London");
+  g_assert_nonnull (tz1);
+  tz2 = g_time_zone_new_identifier ("Europe/London");
+  g_assert_nonnull (tz2);
   g_time_zone_unref (tz1);
   g_time_zone_unref (tz2);
 #elif defined G_OS_WIN32
-  tz1 = g_time_zone_new ("GMT Standard Time");
-  tz2 = g_time_zone_new ("GMT Standard Time");
+  tz1 = g_time_zone_new_identifier ("GMT Standard Time");
+  g_assert_nonnull (tz1);
+  tz2 = g_time_zone_new_identifier ("GMT Standard Time");
+  g_assert_nonnull (tz2);
   g_time_zone_unref (tz1);
   g_time_zone_unref (tz2);
 #endif
@@ -2814,9 +2850,11 @@ test_time_zone_caching (void)
   /* Check the default timezone, local and UTC. These are cached internally in
    * GLib, so should persist even after the last third party reference is
    * dropped. */
-  tz1 = g_time_zone_new (NULL);
+  tz1 = g_time_zone_new_identifier (NULL);
+  g_assert_nonnull (tz1);
   g_time_zone_unref (tz1);
-  tz2 = g_time_zone_new (NULL);
+  tz2 = g_time_zone_new_identifier (NULL);
+  g_assert_nonnull (tz2);
   g_time_zone_unref (tz2);
 
   g_assert_true (tz1 == tz2);
