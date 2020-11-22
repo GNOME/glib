@@ -1715,38 +1715,146 @@ static const struct
   const gchar *uri;
   GUriFlags flags;
   /* Outputs */
+  const gchar *uri_string;
   const gchar *path;
   int port;
-} normalize_tests[] =
+} normalize_parse_tests[] =
   {
     { NULL, "http://foo/path with spaces", G_URI_FLAGS_ENCODED,
-      "/path%20with%20spaces", -1 },
+      "http://foo/path%20with%20spaces", "/path%20with%20spaces", -1 },
     { NULL, "http://foo/path with spaces 2", G_URI_FLAGS_ENCODED_PATH,
-      "/path%20with%20spaces%202", -1 },
+      "http://foo/path%20with%20spaces%202", "/path%20with%20spaces%202", -1 },
     { NULL, "http://foo/%aa", G_URI_FLAGS_ENCODED,
-      "/%AA", -1 },
+      "http://foo/%AA", "/%AA", -1 },
     { NULL, "http://foo/p\xc3\xa4th/", G_URI_FLAGS_ENCODED | G_URI_FLAGS_PARSE_RELAXED,
-      "/p%C3%A4th/", -1 },
+      "http://foo/p%C3%A4th/", "/p%C3%A4th/", -1 },
+    { NULL, "http://foo", G_URI_FLAGS_NONE,
+      "http://foo", "", -1 },
     { NULL, "http://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
-      "/", -1 },
+      "http://foo/", "/", 80 },
     { NULL, "nothttp://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
-      "", -1 },
+      "nothttp://foo", "", -1 },
+    { NULL, "http://foo:80", G_URI_FLAGS_NONE,
+      "http://foo:80", "", 80 },
     { NULL, "http://foo:80", G_URI_FLAGS_SCHEME_NORMALIZE,
-      "/", -1 },
+      "http://foo/", "/", 80 },
+    { NULL, "http://foo:8080", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "http://foo:8080/", "/", 8080 },
     { NULL, "https://foo:443", G_URI_FLAGS_SCHEME_NORMALIZE,
-      "/", -1 },
+      "https://foo/", "/", 443 },
+    { NULL, "https://foo:943", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "https://foo:943/", "/", 943 },
+    { NULL, "ws://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "ws://foo/", "/", 80 },
+    { NULL, "wss://foo:443", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "wss://foo/", "/", 443 },
+    { NULL, "ftp://foo", G_URI_FLAGS_NONE,
+      "ftp://foo", "", -1 },
+    { NULL, "ftp://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "ftp://foo", "", 21 },
     { NULL, "ftp://foo:21", G_URI_FLAGS_SCHEME_NORMALIZE,
-      "", -1 },
+      "ftp://foo", "", 21 },
+    { NULL, "ftp://foo:2100", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "ftp://foo:2100", "", 2100 },
     { NULL, "nothttp://foo:80", G_URI_FLAGS_SCHEME_NORMALIZE,
-      "", 80 },
+      "nothttp://foo:80", "", 80 },
     { "http://foo", "//bar", G_URI_FLAGS_SCHEME_NORMALIZE,
-      "/", -1 },
+      "http://bar/", "/", 80 },
     { "http://foo", "//bar:80", G_URI_FLAGS_SCHEME_NORMALIZE,
-      "/", -1 },
+      "http://bar/", "/", 80 },
     { "nothttp://foo", "//bar:80", G_URI_FLAGS_SCHEME_NORMALIZE,
-      "", 80 },
-    { "http://foo", "//bar", 0,
-      "", -1 },
+      "nothttp://bar:80", "", 80 },
+    { "http://foo", "//bar", G_URI_FLAGS_NONE,
+      "http://bar", "", -1 },
+  };
+
+static const struct
+{
+  /* Inputs */
+  const gchar *uri;
+  GUriFlags flags;
+  /* Outputs */
+  const char *scheme;
+  const gchar *path;
+  int port;
+} normalize_split_tests[] =
+  {
+    { "HTTP://foo", G_URI_FLAGS_ENCODED,
+      "http", "", -1 },
+    { "HTTP://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "http", "/", 80 },
+    { "http://foo:80/", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "http", "/", 80 },
+    { "http://foo:8080/bar", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "http", "/bar", 8080 },
+    { "ws://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "ws", "/", 80 },
+    { "https://foo", G_URI_FLAGS_ENCODED,
+      "https", "", -1 },
+    { "https://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "https", "/", 443 },
+    { "https://foo:443/", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "https", "/", 443 },
+    { "wss://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "wss", "/", 443 },
+    { "ftp://foo", G_URI_FLAGS_ENCODED,
+      "ftp", "", -1 },
+    { "ftp://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "ftp", "", 21 },
+    { "ftp://foo:21", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "ftp", "", 21 },
+    { "scheme://foo", G_URI_FLAGS_SCHEME_NORMALIZE,
+      "scheme", "", -1 },
+  };
+
+static const struct
+{
+  /* Inputs */
+  GUriFlags flags;
+  const gchar *scheme;
+  const gchar *host;
+  int port;
+  const gchar *path;
+  /* Outputs */
+  const gchar *uri;
+} normalize_join_tests[] =
+  {
+    { G_URI_FLAGS_NONE, "http", "foo", -1, "",
+      "http://foo" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "http", "foo", -1, "",
+      "http://foo/" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "http", "foo", 80, "",
+      "http://foo/" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "http", "foo", 8080, "",
+      "http://foo:8080/" },
+    { G_URI_FLAGS_NONE, "http", "foo", 80, "",
+      "http://foo:80" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "ws", "foo", 80, "",
+      "ws://foo/" },
+    { G_URI_FLAGS_NONE, "https", "foo", -1, "",
+      "https://foo" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "https", "foo", -1, "",
+      "https://foo/" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "https", "foo", 443, "",
+      "https://foo/" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "https", "foo", 943, "",
+      "https://foo:943/" },
+    { G_URI_FLAGS_NONE, "https", "foo", 443, "",
+      "https://foo:443" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "wss", "foo", 443, "",
+      "wss://foo/" },
+    { G_URI_FLAGS_NONE, "ftp", "foo", -1, "",
+      "ftp://foo" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "ftp", "foo", -1, "",
+      "ftp://foo" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "ftp", "foo", 21, "",
+      "ftp://foo" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "ftp", "foo", 2020, "",
+      "ftp://foo:2020" },
+    { G_URI_FLAGS_NONE, "ftp", "foo", 21, "",
+      "ftp://foo:21" },
+    { G_URI_FLAGS_SCHEME_NORMALIZE, "scheme", "foo", 80, "",
+      "scheme://foo:80" },
   };
 
 static void
@@ -1754,31 +1862,61 @@ test_uri_normalize (void)
 {
   gsize i;
   int port;
+  char *path;
+  char *uri_string;
 
-  for (i = 0; i < G_N_ELEMENTS (normalize_tests); ++i)
+  for (i = 0; i < G_N_ELEMENTS (normalize_parse_tests); ++i)
     {
       GUri *uri, *base = NULL;
-      if (normalize_tests[i].base)
-        base = g_uri_parse (normalize_tests[i].base, normalize_tests[i].flags, NULL);
+
+      if (normalize_parse_tests[i].base)
+        base = g_uri_parse (normalize_parse_tests[i].base, normalize_parse_tests[i].flags, NULL);
 
       uri = g_uri_parse_relative (base,
-                                  normalize_tests[i].uri,
-                                  normalize_tests[i].flags,
+                                  normalize_parse_tests[i].uri,
+                                  normalize_parse_tests[i].flags,
                                   NULL);
+      uri_string = g_uri_to_string (uri);
 
       g_assert_nonnull (uri);
-      g_assert_cmpstr (g_uri_get_path (uri), ==, normalize_tests[i].path);
-      g_assert_cmpint (g_uri_get_port (uri), ==, normalize_tests[i].port);
+      g_assert_cmpstr (g_uri_get_path (uri), ==, normalize_parse_tests[i].path);
+      g_assert_cmpint (g_uri_get_port (uri), ==, normalize_parse_tests[i].port);
+      g_assert_cmpstr (uri_string, ==, normalize_parse_tests[i].uri_string);
 
+      g_free (uri_string);
       g_uri_unref (uri);
       if (base)
         g_uri_unref (base);
     }
 
-  /* One off testing a codepath where scheme is NULL but internally we still normalize it. */
-  g_assert_true (g_uri_split ("HTTP://foo:80", G_URI_FLAGS_SCHEME_NORMALIZE,
-                              NULL, NULL, NULL, &port, NULL, NULL, NULL, NULL));
-  g_assert_cmpint (port, ==, -1);
+  for (i = 0; i < G_N_ELEMENTS (normalize_split_tests); ++i)
+    {
+      char *scheme;
+
+      /* Testing a codepath where scheme is NULL but internally we still normalize it. */
+      g_assert_true (g_uri_split (normalize_split_tests[i].uri, normalize_split_tests[i].flags,
+                                  NULL, NULL, NULL, &port, &path, NULL, NULL, NULL));
+      g_assert_cmpstr (path, ==, normalize_split_tests[i].path);
+      g_assert_cmpint (port, ==, normalize_split_tests[i].port);
+      g_free (path);
+
+      g_assert_true (g_uri_split (normalize_split_tests[i].uri, normalize_split_tests[i].flags,
+                                  &scheme, NULL, NULL, &port, &path, NULL, NULL, NULL));
+      g_assert_cmpstr (scheme, ==, normalize_split_tests[i].scheme);
+      g_assert_cmpstr (path, ==, normalize_split_tests[i].path);
+      g_assert_cmpint (port, ==, normalize_split_tests[i].port);
+      g_free (scheme);
+      g_free (path);
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (normalize_join_tests); ++i)
+    {
+      uri_string = g_uri_join (normalize_join_tests[i].flags, normalize_join_tests[i].scheme, NULL,
+                               normalize_join_tests[i].host, normalize_join_tests[i].port,
+                               normalize_join_tests[i].path, NULL, NULL);
+      g_assert_cmpstr (uri_string, ==, normalize_join_tests[i].uri);
+      g_free (uri_string);
+    }
 }
 
 int
