@@ -537,7 +537,7 @@ test_g_timer (void)
 static void
 test_g_time_zone (void)
 {
-  g_autoptr(GTimeZone) val = g_time_zone_new ("UTC");
+  g_autoptr(GTimeZone) val = g_time_zone_new_utc ();
   g_assert_nonnull (val);
 }
 

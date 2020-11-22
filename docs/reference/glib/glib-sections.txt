@@ -1939,6 +1939,7 @@ g_time_zone_unref
 g_time_zone_ref
 <SUBSECTION>
 g_time_zone_new
+g_time_zone_new_identifier
 g_time_zone_new_local
 g_time_zone_new_utc
 g_time_zone_new_offset

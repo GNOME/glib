@@ -1604,7 +1604,39 @@ parse_footertz (const gchar *footer, size_t footerlen)
  * g_time_zone_new:
  * @identifier: (nullable): a timezone identifier
  *
- * Creates a #GTimeZone corresponding to @identifier.
+ * A version of g_time_zone_new_identifier() which returns the UTC time zone
+ * if @identifier could not be parsed or loaded.
+ *
+ * If you need to check whether @identifier was loaded successfully, use
+ * g_time_zone_new_identifier().
+ *
+ * Returns: (transfer full) (not nullable): the requested timezone
+ * Deprecated: 2.68: Use g_time_zone_new_identifier() instead, as it provides
+ *     error reporting. Change your code to handle a potentially %NULL return
+ *     value.
+ *
+ * Since: 2.26
+ **/
+GTimeZone *
+g_time_zone_new (const gchar *identifier)
+{
+  GTimeZone *tz = g_time_zone_new_identifier (identifier);
+
+  /* Always fall back to UTC. */
+  if (tz == NULL)
+    tz = g_time_zone_new_utc ();
+
+  g_assert (tz != NULL);
+
+  return g_steal_pointer (&tz);
+}
+
+/**
+ * g_time_zone_new_identifier:
+ * @identifier: (nullable): a timezone identifier
+ *
+ * Creates a #GTimeZone corresponding to @identifier. If @identifier cannot be
+ * parsed or loaded, %NULL is returned.
  *
  * @identifier can either be an RFC3339/ISO 8601 time offset or
  * something that would pass as a valid value for the `TZ` environment
@@ -1669,12 +1701,12 @@ parse_footertz (const gchar *footer, size_t footerlen)
  * You should release the return value by calling g_time_zone_unref()
  * when you are done with it.
  *
- * Returns: the requested timezone
- *
- * Since: 2.26
- **/
+ * Returns: (transfer full) (nullable): the requested timezone, or %NULL on
+ *     failure
+ * Since: 2.68
+ */
 GTimeZone *
-g_time_zone_new (const gchar *identifier)
+g_time_zone_new_identifier (const gchar *identifier)
 {
   GTimeZone *tz = NULL;
   TimeZoneRule *rules;
@@ -1788,24 +1820,31 @@ g_time_zone_new (const gchar *identifier)
 
   g_free (resolved_identifier);
 
-  /* Always fall back to UTC. */
+  /* Failed to load the timezone. */
   if (tz->t_info == NULL)
-    zone_for_constant_offset (tz, "UTC");
+    {
+      g_slice_free (GTimeZone, tz);
+
+      if (identifier)
+        G_UNLOCK (time_zones);
+      else
+        G_UNLOCK (tz_default);
+
+      return NULL;
+    }
 
   g_assert (tz->name != NULL);
   g_assert (tz->t_info != NULL);
 
-  if (tz->t_info != NULL)
+  if (identifier)
+    g_hash_table_insert (time_zones, tz->name, tz);
+  else if (tz->name)
     {
-      if (identifier)
-        g_hash_table_insert (time_zones, tz->name, tz);
-      else if (tz->name)
-        {
-          /* Caching reference */
-          g_atomic_int_inc (&tz->ref_count);
-          tz_default = tz;
-        }
+      /* Caching reference */
+      g_atomic_int_inc (&tz->ref_count);
+      tz_default = tz;
     }
+
   g_atomic_int_inc (&tz->ref_count);
 
   if (identifier)
@@ -1839,7 +1878,8 @@ g_time_zone_new_utc (void)
 
   if (g_once_init_enter (&initialised))
     {
-      utc = g_time_zone_new ("UTC");
+      utc = g_time_zone_new_identifier ("UTC");
+      g_assert (utc != NULL);
       g_once_init_leave (&initialised, TRUE);
     }
 
@@ -1876,7 +1916,9 @@ g_time_zone_new_local (void)
     g_clear_pointer (&tz_local, g_time_zone_unref);
 
   if (tz_local == NULL)
-    tz_local = g_time_zone_new (tzenv);
+    tz_local = g_time_zone_new_identifier (tzenv);
+  if (tz_local == NULL)
+    tz_local = g_time_zone_new_utc ();
 
   tz = g_time_zone_ref (tz_local);
 
@@ -1907,13 +1949,15 @@ g_time_zone_new_offset (gint32 seconds)
   /* Seemingly, we should be using @seconds directly to set the
    * #TransitionInfo.gmt_offset to avoid all this string building and parsing.
    * However, we always need to set the #GTimeZone.name to a constructed
-   * string anyway, so we might as well reuse its code. */
+   * string anyway, so we might as well reuse its code.
+   * g_time_zone_new_identifier() should never fail in this situation. */
   identifier = g_strdup_printf ("%c%02u:%02u:%02u",
                                 (seconds >= 0) ? '+' : '-',
                                 (ABS (seconds) / 60) / 60,
                                 (ABS (seconds) / 60) % 60,
                                 ABS (seconds) % 60);
-  tz = g_time_zone_new (identifier);
+  tz = g_time_zone_new_identifier (identifier);
+  g_assert (tz != NULL);
   g_free (identifier);
 
   g_assert (g_time_zone_get_offset (tz, 0) == seconds);
