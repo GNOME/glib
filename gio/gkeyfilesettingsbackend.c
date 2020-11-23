@@ -105,20 +105,24 @@ compute_checksum (guint8        *digest,
   g_assert (len == 32);
 }
 
-static void
-g_keyfile_settings_backend_keyfile_write (GKeyfileSettingsBackend *kfsb)
+static gboolean
+g_keyfile_settings_backend_keyfile_write (GKeyfileSettingsBackend  *kfsb,
+                                          GError                  **error)
 {
   gchar *contents;
   gsize length;
+  gboolean success;
 
   contents = g_key_file_to_data (kfsb->keyfile, &length, NULL);
-  g_file_replace_contents (kfsb->file, contents, length, NULL, FALSE,
-                           G_FILE_CREATE_REPLACE_DESTINATION |
-                           G_FILE_CREATE_PRIVATE,
-                           NULL, NULL, NULL);
+  success = g_file_replace_contents (kfsb->file, contents, length, NULL, FALSE,
+                                     G_FILE_CREATE_REPLACE_DESTINATION |
+                                     G_FILE_CREATE_PRIVATE,
+                                     NULL, NULL, error);
 
   compute_checksum (kfsb->digest, contents, length);
   g_free (contents);
+
+  return success;
 }
 
 static gboolean
@@ -359,6 +363,8 @@ g_keyfile_settings_backend_write_tree (GSettingsBackend *backend,
                                        gpointer          origin_tag)
 {
   WriteManyData data = { G_KEYFILE_SETTINGS_BACKEND (backend) };
+  gboolean success;
+  GError *error = NULL;
 
   if (!data.kfsb->writable)
     return FALSE;
@@ -369,11 +375,16 @@ g_keyfile_settings_backend_write_tree (GSettingsBackend *backend,
     return FALSE;
 
   g_tree_foreach (tree, g_keyfile_settings_backend_write_one, &data);
-  g_keyfile_settings_backend_keyfile_write (data.kfsb);
+  success = g_keyfile_settings_backend_keyfile_write (data.kfsb, &error);
+  if (error)
+    {
+      g_warning ("Failed to write keyfile to %s: %s", g_file_peek_path (data.kfsb->file), error->message);
+      g_error_free (error);
+    }
 
   g_settings_backend_changed_tree (backend, tree, origin_tag);
 
-  return TRUE;
+  return success;
 }
 
 static gboolean
@@ -384,6 +395,7 @@ g_keyfile_settings_backend_write (GSettingsBackend *backend,
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
   gboolean success;
+  GError *error = NULL;
 
   if (!kfsb->writable)
     return FALSE;
@@ -393,7 +405,12 @@ g_keyfile_settings_backend_write (GSettingsBackend *backend,
   if (success)
     {
       g_settings_backend_changed (backend, key, origin_tag);
-      g_keyfile_settings_backend_keyfile_write (kfsb);
+      success = g_keyfile_settings_backend_keyfile_write (kfsb, &error);
+      if (error)
+        {
+          g_warning ("Failed to write keyfile to %s: %s", g_file_peek_path (kfsb->file), error->message);
+          g_error_free (error);
+        }
     }
 
   return success;
@@ -405,9 +422,17 @@ g_keyfile_settings_backend_reset (GSettingsBackend *backend,
                                   gpointer          origin_tag)
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
+  GError *error = NULL;
 
   if (set_to_keyfile (kfsb, key, NULL))
-    g_keyfile_settings_backend_keyfile_write (kfsb);
+    {
+      g_keyfile_settings_backend_keyfile_write (kfsb, &error);
+      if (error)
+        {
+          g_warning ("Failed to write keyfile to %s: %s", g_file_peek_path (kfsb->file), error->message);
+          g_error_free (error);
+        }
+    }
 
   g_settings_backend_changed (backend, key, origin_tag);
 }
@@ -689,6 +714,7 @@ static void
 g_keyfile_settings_backend_constructed (GObject *object)
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
+  const char *path;
 
   if (kfsb->file == NULL)
     {
@@ -709,7 +735,9 @@ g_keyfile_settings_backend_constructed (GObject *object)
   kfsb->permission = g_simple_permission_new (TRUE);
 
   kfsb->dir = g_file_get_parent (kfsb->file);
-  g_mkdir_with_parents (g_file_peek_path (kfsb->dir), 0700);
+  path = g_file_peek_path (kfsb->dir);
+  if (g_mkdir_with_parents (path, 0700) == -1)
+    g_warning ("Failed to create %s: %s", path, g_strerror (errno));
 
   kfsb->file_monitor = g_file_monitor (kfsb->file, G_FILE_MONITOR_NONE, NULL, NULL);
   kfsb->dir_monitor = g_file_monitor (kfsb->dir, G_FILE_MONITOR_NONE, NULL, NULL);
