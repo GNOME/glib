@@ -1526,12 +1526,6 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   get_localtime_tm (t, &tt);
   strftime (dst, sizeof(dst), "%Z", &tt);
 
-  /* get current time_t for 20090924 in the local timezone */
-  tt.tm_sec = 0;
-  tt.tm_min = 0;
-  tt.tm_hour = 0;
-  t = mktime (&tt);
-
   TEST_PRINTF ("%a", "Sat");
   TEST_PRINTF ("%A", "Saturday");
   TEST_PRINTF ("%b", "Oct");
