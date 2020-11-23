@@ -2384,6 +2384,7 @@ test_adjust_time (void)
   g_date_time_unref (dt);
 
   i1 = g_time_zone_adjust_time (tz, G_TIME_TYPE_DAYLIGHT, &u2);
+  g_assert_cmpint (i1, >=, 0);
   g_assert (u == u2);
 
   g_time_zone_unref (tz);
