@@ -62,10 +62,10 @@ void         g_uri_unref            (GUri *uri);
  * @G_URI_FLAGS_ENCODED_PATH: Same as %G_URI_FLAGS_ENCODED, for the path only.
  * @G_URI_FLAGS_ENCODED_FRAGMENT: Same as %G_URI_FLAGS_ENCODED, for the
  *     fragment only.
- * @G_URI_FLAGS_SCHEME_NORMALIZE: Applies scheme-based normalization to the
- *     parsed URI. For example when parsing an HTTP URI changing empty paths
- *     to `/` and changing port `80` to `-1`. This only supports a subset
- *     of known schemes. (Since: 2.68)
+ * @G_URI_FLAGS_SCHEME_NORMALIZE: A scheme-based normalization will be applied.
+ *     For example, when parsing an HTTP URI changing omitted path to `/` and
+ *     omitted port to `80`; and when building a URI, changing empty path to `/`
+ *     and default port `80`). This only supports a subset of known schemes. (Since: 2.68)
  *
  * Flags that describe a URI.
  *
