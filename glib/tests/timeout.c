@@ -126,6 +126,8 @@ test_far_future_ready_time (void)
   n_fds = 0;
   n_fds = g_main_context_query (context, priority, &timeout_, NULL, n_fds);
 
+  g_assert_cmpint (n_fds, >=, 0);
+
   /* The true timeout in milliseconds doesn't fit into a gint. We definitely
    * don't want poll() to block forever:
    */

@@ -1526,12 +1526,6 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   get_localtime_tm (t, &tt);
   strftime (dst, sizeof(dst), "%Z", &tt);
 
-  /* get current time_t for 20090924 in the local timezone */
-  tt.tm_sec = 0;
-  tt.tm_min = 0;
-  tt.tm_hour = 0;
-  t = mktime (&tt);
-
   TEST_PRINTF ("%a", "Sat");
   TEST_PRINTF ("%A", "Saturday");
   TEST_PRINTF ("%b", "Oct");
@@ -2390,6 +2384,7 @@ test_adjust_time (void)
   g_date_time_unref (dt);
 
   i1 = g_time_zone_adjust_time (tz, G_TIME_TYPE_DAYLIGHT, &u2);
+  g_assert_cmpint (i1, >=, 0);
   g_assert (u == u2);
 
   g_time_zone_unref (tz);
