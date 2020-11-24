@@ -579,7 +579,7 @@ lookup_iface_entry_I (IFaceEntries *entries,
   guint8 *offsets;
   guint offset_index;
   IFaceEntry *check;
-  int index;
+  gsize index;
   IFaceEntry *entry;
 
   if (entries == NULL)
@@ -1369,7 +1369,7 @@ type_node_add_iface_entry_W (TypeNode   *node,
   IFaceEntry *entry;
   TypeNode *iface_node;
   guint i, j;
-  int num_entries;
+  guint num_entries;
 
   g_assert (node->is_instantiatable);
 
@@ -1608,7 +1608,7 @@ g_type_interface_add_prerequisite (GType interface_type,
 	    }
 	}
       
-      for (i = 0; i < prerequisite_node->n_supers + 1; i++)
+      for (i = 0; i < prerequisite_node->n_supers + 1u; i++)
 	type_iface_add_prerequisite_W (iface, lookup_type_node_I (prerequisite_node->supers[i]));
       G_WRITE_UNLOCK (&type_rw_lock);
     }
