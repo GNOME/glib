@@ -2018,8 +2018,8 @@ g_date_time_add_full (GDateTime *datetime,
 /* Compare, difference, hash, equal {{{1 */
 /**
  * g_date_time_compare:
- * @dt1: (not nullable): first #GDateTime to compare
- * @dt2: (not nullable): second #GDateTime to compare
+ * @dt1: (type GDateTime) (not nullable): first #GDateTime to compare
+ * @dt2: (type GDateTime) (not nullable): second #GDateTime to compare
  *
  * A comparison function for #GDateTimes that is suitable
  * as a #GCompareFunc. Both #GDateTimes must be non-%NULL.
@@ -2074,7 +2074,7 @@ g_date_time_difference (GDateTime *end,
 
 /**
  * g_date_time_hash:
- * @datetime: (not nullable): a #GDateTime
+ * @datetime: (type GDateTime) (not nullable): a #GDateTime
  *
  * Hashes @datetime into a #guint, suitable for use within #GHashTable.
  *
@@ -2092,8 +2092,8 @@ g_date_time_hash (gconstpointer datetime)
 
 /**
  * g_date_time_equal:
- * @dt1: (not nullable): a #GDateTime
- * @dt2: (not nullable): a #GDateTime
+ * @dt1: (type GDateTime) (not nullable): a #GDateTime
+ * @dt2: (type GDateTime) (not nullable): a #GDateTime
  *
  * Checks to see if @dt1 and @dt2 are equal.
  *
