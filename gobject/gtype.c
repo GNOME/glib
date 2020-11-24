@@ -442,6 +442,10 @@ type_node_any_new_W (TypeNode             *pnode,
       node = G_STRUCT_MEMBER_P (node, SIZEOF_FUNDAMENTAL_INFO);
       static_fundamental_type_nodes[ftype >> G_TYPE_FUNDAMENTAL_SHIFT] = node;
       type = ftype;
+
+#if ENABLE_VALGRIND
+      VALGRIND_MALLOCLIKE_BLOCK (node, node_size - SIZEOF_FUNDAMENTAL_INFO, FALSE, TRUE);
+#endif
     }
   else
     type = (GType) node;
