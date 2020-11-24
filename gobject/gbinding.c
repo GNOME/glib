@@ -288,11 +288,84 @@ static guint gobject_notify_signal_id;
 
 G_DEFINE_TYPE (GBinding, g_binding, G_TYPE_OBJECT)
 
+static void weak_unbind (gpointer user_data, GObject *where_the_object_was);
+
+/* Must be called with the unbind lock held, context/binding != NULL and strong
+ * references to source/target or NULL.
+ * Return TRUE if the binding was actually removed and FALSE if it was already
+ * removed before. */
+static gboolean
+unbind_internal_locked (BindingContext *context, GBinding *binding, GObject *source, GObject *target)
+{
+  gboolean binding_was_removed = FALSE;
+
+  g_assert (context != NULL);
+  g_assert (binding != NULL);
+
+  /* If the target went away we still have a strong reference to the source
+   * here and can clear it from the binding. Otherwise if the source went away
+   * we can clear the target from the binding. Finalizing an object clears its
+   * signal handlers and all weak references pointing to it before calling
+   * weak notify callbacks.
+   *
+   * If both still exist we clean up everything set up by the binding.
+   */
+  if (source)
+    {
+      /* We always add/remove the source property notify and the weak notify
+       * of the source at the same time, and should only ever do that once. */
+      if (binding->source_notify != 0)
+        {
+          g_signal_handler_disconnect (source, binding->source_notify);
+
+          g_object_weak_unref (source, weak_unbind, context);
+          binding_context_unref (context);
+
+          binding->source_notify = 0;
+        }
+      g_weak_ref_set (&context->source, NULL);
+    }
+
+  /* As above, but with the target. If source==target then no weak notify was
+   * installed for the target, which is why that is stored as a separate
+   * boolean inside the binding. */
+  if (target)
+    {
+      /* There might be a target property notify without a weak notify on the
+       * target or the other way around, so these have to be handled
+       * independently here unlike for the source. */
+      if (binding->target_notify != 0)
+        {
+          g_signal_handler_disconnect (target, binding->target_notify);
+
+          binding->target_notify = 0;
+        }
+      g_weak_ref_set (&context->target, NULL);
+
+      /* Remove the weak notify from the target, at most once */
+      if (binding->target_weak_notify_installed)
+        {
+          g_object_weak_unref (target, weak_unbind, context);
+          binding_context_unref (context);
+          binding->target_weak_notify_installed = FALSE;
+        }
+    }
+
+  /* Make sure to remove the binding only once and return to the caller that
+   * this was the call that actually removed it. */
+  if (!context->binding_removed)
+    {
+      context->binding_removed = TRUE;
+      binding_was_removed = TRUE;
+    }
+
+  return binding_was_removed;
+}
+
 /* the basic assumption is that if either the source or the target
  * goes away then the binding does not exist any more and it should
  * be reaped as well. Each weak notify owns a strong reference to the
- * binding that should be dropped here.
- */
+ * binding that should be dropped here. */
 static void
 weak_unbind (gpointer  user_data,
              GObject  *where_the_object_was)
@@ -317,63 +390,12 @@ weak_unbind (gpointer  user_data,
 
   /* If this is called then either the source or target or both must be in the
    * process of being finalized and their weak reference must be reset to NULL
-   * already. */
+   * already.
+   *
+   * If source==target then both will always be NULL here. */
   g_assert (source == NULL || target == NULL);
 
-  /* If the target went away we still have a strong reference to the source
-   * here and can clear it from the binding. Otherwise if the source went away
-   * we can clear the target from the binding.
-   *
-   * The property notification has already been removed for the object for
-   * which this function was called and does not have to be removed manually.
-   */
-  if (source)
-    {
-      /* We always add/remove the source property notify and the weak notify
-       * of the source at the same time, and should only ever do that once. */
-      if (binding->source_notify != 0)
-        {
-          g_signal_handler_disconnect (source, binding->source_notify);
-
-          g_object_weak_unref (source, weak_unbind, context);
-          binding_context_unref (context);
-
-          binding->source_notify = 0;
-        }
-      g_weak_ref_set (&context->source, NULL);
-    }
-
-  /* As above, but with the target. If source == target then both will be NULL
-   * inside this function so there's no risk of removing the weak notify
-   * twice. */
-  if (target)
-    {
-      /* There might be a target property notify without a weak notify on the
-       * target or the other way around, so these have to be handled
-       * independently here unlike for the source */
-      if (binding->target_notify != 0)
-        {
-          g_signal_handler_disconnect (target, binding->target_notify);
-
-          binding->target_notify = 0;
-        }
-      g_weak_ref_set (&context->target, NULL);
-
-      /* Remove the weak notify from the target, at most once */
-      if (binding->target_weak_notify_installed)
-        {
-          g_object_weak_unref (target, weak_unbind, context);
-          binding_context_unref (context);
-          binding->target_weak_notify_installed = FALSE;
-        }
-    }
-
-  /* Make sure to remove the binding only once */
-  if (!context->binding_removed)
-    {
-      context->binding_removed = TRUE;
-      binding_was_removed = TRUE;
-    }
+  binding_was_removed = unbind_internal_locked (context, binding, source, target);
 
   g_mutex_unlock (&binding->unbind_lock);
 
@@ -608,51 +630,7 @@ g_binding_unbind_internal (GBinding *binding,
    * Otherwise both will not be NULL. */
   g_assert ((source == NULL && target == NULL) || (source != NULL && target != NULL));
 
-  if (source)
-    {
-      /* We always add/remove the source property notify and the weak notify
-       * of the source at the same time, and should only ever do that once. */
-      if (binding->source_notify != 0)
-        {
-          g_signal_handler_disconnect (source, binding->source_notify);
-
-          g_object_weak_unref (source, weak_unbind, context);
-          binding_context_unref (context);
-
-          binding->source_notify = 0;
-        }
-      g_weak_ref_set (&context->source, NULL);
-    }
-
-  /* As above, but with the target. */
-  if (target)
-    {
-      /* There might be a target property notify without a weak notify on the
-       * target or the other way around, so these have to be handled
-       * independently here unlike for the source */
-      if (binding->target_notify != 0)
-        {
-          g_signal_handler_disconnect (target, binding->target_notify);
-
-          binding->target_notify = 0;
-        }
-      g_weak_ref_set (&context->target, NULL);
-
-      /* Remove the weak notify from the target, at most once */
-      if (binding->target_weak_notify_installed)
-        {
-          g_object_weak_unref (target, weak_unbind, context);
-          binding_context_unref (context);
-          binding->target_weak_notify_installed = FALSE;
-        }
-    }
-
-  /* Make sure to remove the binding only once */
-  if (!context->binding_removed)
-    {
-      context->binding_removed = TRUE;
-      binding_was_removed = TRUE;
-    }
+  binding_was_removed = unbind_internal_locked (context, binding, source, target);
 
   g_mutex_unlock (&binding->unbind_lock);
 
