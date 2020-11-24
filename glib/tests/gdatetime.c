@@ -2849,15 +2849,21 @@ test_time_zone_caching (void)
 
   /* Check the default timezone, local and UTC. These are cached internally in
    * GLib, so should persist even after the last third party reference is
-   * dropped. */
+   * dropped.
+   *
+   * The default timezone could be NULL on some platforms (FreeBSD) if
+   * `/etc/localtime` is not set correctly. */
   tz1 = g_time_zone_new_identifier (NULL);
-  g_assert_nonnull (tz1);
-  g_time_zone_unref (tz1);
-  tz2 = g_time_zone_new_identifier (NULL);
-  g_assert_nonnull (tz2);
-  g_time_zone_unref (tz2);
+  if (tz1 != NULL)
+    {
+      g_assert_nonnull (tz1);
+      g_time_zone_unref (tz1);
+      tz2 = g_time_zone_new_identifier (NULL);
+      g_assert_nonnull (tz2);
+      g_time_zone_unref (tz2);
 
-  g_assert_true (tz1 == tz2);
+      g_assert_true (tz1 == tz2);
+    }
 
   tz1 = g_time_zone_new_utc ();
   g_time_zone_unref (tz1);
