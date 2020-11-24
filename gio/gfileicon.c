@@ -114,11 +114,11 @@ g_file_icon_set_property (GObject      *object,
 static void
 g_file_icon_constructed (GObject *object)
 {
-  GFileIcon *icon;
+#ifndef G_DISABLE_ASSERT
+  GFileIcon *icon = G_FILE_ICON (object);
+#endif
 
   G_OBJECT_CLASS (g_file_icon_parent_class)->constructed (object);
-
-  icon = G_FILE_ICON (object);
 
   /* Must have be set during construction */
   g_assert (icon->file != NULL);
