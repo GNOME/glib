@@ -120,7 +120,6 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
 else
   if (host_system.startswith ('aix') or
       host_system.startswith ('beos') or
-      host_system.startswith ('darwin') or
       host_system.startswith ('irix'))
     gl_cv_func_frexpl_works = false
     gl_cv_func_frexpl_broken_beyond_repair = true
