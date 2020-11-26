@@ -1019,6 +1019,9 @@ g_binding_get_flags (GBinding *binding)
  * Returns: (transfer none) (nullable): the source #GObject, or %NULL if the
  *     source does not exist any more.
  *
+ * Deprecated: 2.68: Use g_binding_dup_source() for a safer version of this
+ * function.
+ *
  * Since: 2.26
  */
 GObject *
@@ -1076,6 +1079,9 @@ g_binding_dup_source (GBinding *binding)
  *
  * Returns: (transfer none) (nullable): the target #GObject, or %NULL if the
  *     target does not exist any more.
+ *
+ * Deprecated: 2.68: Use g_binding_dup_target() for a safer version of this
+ * function.
  *
  * Since: 2.26
  */
