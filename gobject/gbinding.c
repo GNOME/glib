@@ -183,11 +183,7 @@ binding_context_unref (BindingContext *context)
  *
  * The transform functions are released when unbinding but unbinding can happen
  * while the transform functions are currently in use inside the notify callbacks.
- *
- * Note that the transform functions are only released from explicit unbinding
- * or when the binding itself is finalized. Finalizing the source and target
- * while the binding is still alive does not release the transform functions
- * yet. */
+ */
 typedef struct {
   GBindingTransformFunc transform_s2t;
   GBindingTransformFunc transform_t2s;
@@ -374,6 +370,7 @@ weak_unbind (gpointer  user_data,
   GBinding *binding;
   GObject *source, *target;
   gboolean binding_was_removed = FALSE;
+  TransformFunc *transform_func;
 
   binding = g_weak_ref_get (&context->binding);
   if (!binding)
@@ -384,6 +381,8 @@ weak_unbind (gpointer  user_data,
     }
 
   g_mutex_lock (&binding->unbind_lock);
+
+  transform_func = g_steal_pointer (&binding->transform_func);
 
   source = g_weak_ref_get (&context->source);
   target = g_weak_ref_get (&context->target);
@@ -399,10 +398,12 @@ weak_unbind (gpointer  user_data,
 
   g_mutex_unlock (&binding->unbind_lock);
 
-  /* Unref source and target after the mutex is unlocked as it might
-   * release the last reference, which then accesses the mutex again */
+  /* Unref source, target and transform_func after the mutex is unlocked as it
+   * might release the last reference, which then accesses the mutex again */
   g_clear_object (&target);
   g_clear_object (&source);
+
+  g_clear_pointer (&transform_func, transform_func_unref);
 
   /* This releases the strong reference we got from the weak ref above */
   g_object_unref (binding);
