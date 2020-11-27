@@ -106,6 +106,7 @@ typedef struct
 FileFromUriTest
 file_from_uri_tests[] = {
   { "file:///etc", "/etc", NULL, 0 },
+  { "FILE:///etc", "/etc", NULL, 0 },
   { "file:/etc", "/etc", NULL, 0 },
 #ifdef G_OS_WIN32
   /* On Win32 we don't return "localhost" hostames, just in case
@@ -889,7 +890,10 @@ static const UriRelativeTest relative_tests[] = {
   { "http:g", "http:g",
     { "http", NULL, NULL, -1, "g", NULL, NULL } },
   { "http://a/../..", "http://a/",
-    { "http", NULL, "a", -1, "/", NULL, NULL } }
+    { "http", NULL, "a", -1, "/", NULL, NULL } },
+  { "ScHeMe://User:P%61ss@HOST.%63om:1234/path/./from/../to%7d/item%2dobj?qu%65ry=something#fr%61gment",
+    "scheme://User:Pass@HOST.com:1234/path/to%7D/item-obj?query=something#fragment",
+    { "scheme", "User:Pass", "HOST.com", 1234, "/path/to}/item-obj", "query=something", "fragment" } },
 };
 static int num_relative_tests = G_N_ELEMENTS (relative_tests);
 
@@ -1213,6 +1217,20 @@ test_uri_split (void)
   g_assert_cmpstr (path, ==, "/%C3%89t%C3%A9%2Bhiver");
   g_free (path);
 
+  g_uri_split ("file:///path/to/some%20file",
+               G_URI_FLAGS_NONE,
+               NULL,
+               NULL,
+               NULL,
+               NULL,
+               &path,
+               NULL,
+               NULL,
+               &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (path, ==, "/path/to/some file");
+  g_free (path);
+
   g_uri_split ("http://h%01st/path#%C3%89t%C3%A9%2Bhiver",
                G_URI_FLAGS_ENCODED_FRAGMENT,
                NULL,
@@ -1369,6 +1387,47 @@ test_uri_split (void)
   g_assert_error (error, G_URI_ERROR, G_URI_ERROR_BAD_PASSWORD);
   g_clear_error (&error);
 
+  /* Path not started correctly */
+  g_uri_split("scheme://hostname:123path?query#fragment",
+              G_URI_FLAGS_NONE,
+              &scheme,
+              &userinfo,
+              &host,
+              &port,
+              &path,
+              &query,
+              &fragment,
+              &error);
+  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_BAD_PORT);
+  g_clear_error (&error);
+
+  /* Brackets that don't close */
+  g_uri_split("scheme://[01:23:45:67:89:ab:cd:ef:123/path",
+              G_URI_FLAGS_NONE,
+              &scheme,
+              &userinfo,
+              &host,
+              &port,
+              &path,
+              &query,
+              &fragment,
+              &error);
+  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST);
+  g_clear_error (&error);
+
+  /* IPv6 hostname without brackets */
+  g_uri_split("scheme://01:23:45:67:89:ab:cd:ef:123/path",
+              G_URI_FLAGS_NONE,
+              &scheme,
+              &userinfo,
+              &host,
+              &port,
+              &path,
+              &query,
+              &fragment,
+              &error);
+  g_assert_error (error, G_URI_ERROR, G_URI_ERROR_BAD_PORT);
+  g_clear_error (&error);
 }
 
 static void
@@ -1422,6 +1481,25 @@ test_uri_is_valid (void)
   g_clear_error (&error);
 
   g_assert_true (g_uri_is_valid ("data:,Hello", G_URI_FLAGS_NONE, &error));
+
+  g_assert_true (g_uri_is_valid ("B:\\foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("B:/foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("B://foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("B:foo.txt", G_URI_FLAGS_NONE, &error));
+
+  g_assert_true (g_uri_is_valid ("fd://0", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("AB:\\foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("AB:/foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("AB://foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("AB:foo.txt", G_URI_FLAGS_NONE, &error));
+
+  g_assert_true (g_uri_is_valid ("ABC:/foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("ABC://foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("ABC:foo.txt", G_URI_FLAGS_NONE, &error));
+
+  g_assert_true (g_uri_is_valid ("ABCD:/foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("ABCD://foo.txt", G_URI_FLAGS_NONE, &error));
+  g_assert_true (g_uri_is_valid ("ABCD:foo.txt", G_URI_FLAGS_NONE, &error));
 }
 
 static const struct
@@ -1474,6 +1552,9 @@ static const struct
     { "foo=bar+%26+baz&saisons=%C3%89t%C3%A9%2Bhiver", "&", G_URI_PARAMS_NONE,
       2, { "foo", "bar+&+baz", "saisons", "Été+hiver", NULL, },
       2, { "foo", "bar+&+baz", "saisons", "Été+hiver", NULL, }},
+    { "token=exp=123~acl=/QualityLevels(*~hmac=0cb", "&", G_URI_PARAMS_NONE,
+      1, { "token", "exp=123~acl=/QualityLevels(*~hmac=0cb", NULL, },
+      1, { "token", "exp=123~acl=/QualityLevels(*~hmac=0cb", NULL, }},
   };
 
 static void
@@ -1766,6 +1847,11 @@ static const struct
       "nothttp://bar:80", "", 80 },
     { "http://foo", "//bar", G_URI_FLAGS_NONE,
       "http://bar", "", -1 },
+    { "ScHeMe://User:P%61ss@HOST.%63om:1234/path",
+      "ScHeMe://User:P%61ss@HOST.%63om:1234/path/./from/../to%7d/item%2dobj?qu%65ry=something#fr%61gment",
+      G_URI_FLAGS_SCHEME_NORMALIZE,
+      "scheme://User:Pass@HOST.com:1234/path/to%7D/item-obj?query=something#fragment",
+      "/path/to}/item-obj", 1234 },
   };
 
 static const struct
