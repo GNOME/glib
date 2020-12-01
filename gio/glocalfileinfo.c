@@ -2715,7 +2715,7 @@ set_selinux_context (char                       *filename,
   }
 
   if (is_selinux_enabled ()) {
-	security_context_t val_s;
+	char *val_s;
 	
 	val_s = g_strdup (val);
 	
