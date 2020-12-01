@@ -2063,7 +2063,7 @@ endif
 
 selinux_dep = []
 if host_system == 'linux'
-  selinux_dep = dependency('libselinux', required: get_option('selinux'))
+  selinux_dep = dependency('libselinux', version: '>=2.2', required: get_option('selinux'))
 
   glib_conf.set('HAVE_SELINUX', selinux_dep.found())
 endif
