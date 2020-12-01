@@ -40,6 +40,7 @@
 #endif
 
 #include "gconvert.h"
+#include "gconvertprivate.h"
 
 #include "gcharsetprivate.h"
 #include "gslist.h"
@@ -1008,6 +1009,52 @@ g_locale_to_utf8 (const gchar  *opsysstring,
   const char *charset;
 
   if (g_get_charset (&charset))
+    return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
+  else
+    return convert_checked (opsysstring, len, "UTF-8", charset,
+                            CONVERT_CHECK_NO_NULS_IN_OUTPUT,
+                            bytes_read, bytes_written, error);
+}
+
+/*
+ * Do the exact same as g_locale_to_utf8 except that the charset would
+ * be retrieved from _g_get_time_charset (which uses LC_TIME)
+ *
+ * Returns: The converted string, or %NULL on an error.
+ */
+gchar *
+_g_time_locale_to_utf8 (const gchar *opsysstring,
+                        gssize       len,
+                        gsize       *bytes_read,
+                        gsize       *bytes_written,
+                        GError     **error)
+{
+  const char *charset;
+
+  if (_g_get_time_charset (&charset))
+    return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
+  else
+    return convert_checked (opsysstring, len, "UTF-8", charset,
+                            CONVERT_CHECK_NO_NULS_IN_OUTPUT,
+                            bytes_read, bytes_written, error);
+}
+
+/*
+ * Do the exact same as g_locale_to_utf8 except that the charset would
+ * be retrieved from _g_get_ctype_charset (which uses LC_CTYPE)
+ *
+ * Returns: The converted string, or %NULL on an error.
+ */
+gchar *
+_g_ctype_locale_to_utf8 (const gchar *opsysstring,
+                         gssize       len,
+                         gsize       *bytes_read,
+                         gsize       *bytes_written,
+                         GError     **error)
+{
+  const char *charset;
+
+  if (_g_get_ctype_charset (&charset))
     return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
   else
     return convert_checked (opsysstring, len, "UTF-8", charset,
