@@ -2715,11 +2715,7 @@ set_selinux_context (char                       *filename,
   }
 
   if (is_selinux_enabled ()) {
-	char *val_s;
-	
-	val_s = g_strdup (val);
-	
-	if (setfilecon_raw (filename, val_s) < 0)
+	if (setfilecon_raw (filename, val) < 0)
 	{
             int errsv = errno;
             
@@ -2729,7 +2725,6 @@ set_selinux_context (char                       *filename,
                          g_strerror (errsv));
             return FALSE;
         }
-        g_free (val_s);
   } else {
     g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
                          _("SELinux is not enabled on this system"));
