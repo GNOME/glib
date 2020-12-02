@@ -868,7 +868,11 @@ static guint       test_startup_skip_count = 0;
 static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
 static GSList     *test_paths = NULL;
+static gboolean    test_prefix = FALSE;
+static gboolean    test_prefix_extended = FALSE;
 static GSList     *test_paths_skipped = NULL;
+static gboolean    test_prefix_skipped = FALSE;
+static gboolean    test_prefix_extended_skipped = FALSE;
 static GTestSuite *test_suite_root = NULL;
 static int         test_trap_last_status = 0;  /* unmodified platform-specific status */
 static GPid        test_trap_last_pid = 0;
@@ -1199,6 +1203,31 @@ parse_args (gint    *argc_p,
               test_paths = g_slist_prepend (test_paths, argv[i]);
             }
           argv[i] = NULL;
+          if (test_prefix_extended) {
+            printf ("do not mix [-r | --run-prefix] with '-p'\n");
+            exit (1);
+          }
+          test_prefix = TRUE;
+        }
+      else if (strcmp ("-r", argv[i]) == 0 ||
+               strncmp ("-r=", argv[i], 3) == 0 ||
+               strcmp ("--run-prefix", argv[i]) == 0 ||
+               strncmp ("--run-prefix=", argv[i], 13) == 0)
+        {
+            gchar *equal = argv[i] + 2;
+            if (*equal == '=')
+              test_paths = g_slist_prepend (test_paths, equal + 1);
+            else if (i + 1 < argc)
+              {
+                argv[i++] = NULL;
+                test_paths = g_slist_prepend (test_paths, argv[i]);
+              }
+            argv[i] = NULL;
+            if (test_prefix) {
+              printf ("do not mix [-r | --run-prefix] with '-p'\n");
+              exit (1);
+            }
+            test_prefix_extended = TRUE;
         }
       else if (strcmp ("-s", argv[i]) == 0 || strncmp ("-s=", argv[i], 3) == 0)
         {
@@ -1211,6 +1240,31 @@ parse_args (gint    *argc_p,
               test_paths_skipped = g_slist_prepend (test_paths_skipped, argv[i]);
             }
           argv[i] = NULL;
+          if (test_prefix_extended_skipped) {
+            printf ("do not mix [-x | --skip-prefix] with '-s'\n");
+            exit (1);
+          }
+          test_prefix_skipped = TRUE;
+        }
+      else if (strcmp ("-x", argv[i]) == 0 ||
+               strncmp ("-x=", argv[i], 3) == 0 ||
+               strcmp ("--skip-prefix", argv[i]) == 0 ||
+               strncmp ("--skip-prefix=", argv[i], 14) == 0)
+        {
+          gchar *equal = argv[i] + 2;
+          if (*equal == '=')
+            test_paths_skipped = g_slist_prepend (test_paths_skipped, equal + 1);
+          else if (i + 1 < argc)
+            {
+              argv[i++] = NULL;
+              test_paths_skipped = g_slist_prepend (test_paths_skipped, argv[i]);
+            }
+          argv[i] = NULL;
+          if (test_prefix_skipped) {
+            printf ("do not mix [-x | --skip-prefix] with '-s'\n");
+            exit (1);
+          }
+          test_prefix_extended_skipped = TRUE;
         }
       else if (strcmp ("-m", argv[i]) == 0 || strncmp ("-m=", argv[i], 3) == 0)
         {
@@ -1286,6 +1340,13 @@ parse_args (gint    *argc_p,
                   "  -m {undefined|no-undefined}    Execute tests according to mode\n"
                   "  -p TESTPATH                    Only start test cases matching TESTPATH\n"
                   "  -s TESTPATH                    Skip all tests matching TESTPATH\n"
+                  "  [-r | --run-prefix] PREFIX     Only start test cases (or suites) matching PREFIX (incompatible with -p).\n"
+                  "                                 Unlike the -p option (which only goes one level deep), this option would \n"
+                  "                                 run all tests path that have PREFIX at the beginning of their name.\n"
+                  "                                 Note that the prefix used should be a valid test path (and not a simple prefix).\n"
+                  "  [-x | --skip-prefix] PREFIX    Skip all tests matching PREFIX (incompatible with -s)\n"
+                  "                                 Unlike the -s option (which only skips the exact TESTPATH), this option will \n"
+                  "                                 skip all the tests that begins with PREFIX).\n"
                   "  --seed=SEEDSTRING              Start tests with random seed SEEDSTRING\n"
                   "  --debug-log                    debug test logging output\n"
                   "  -q, --quiet                    Run tests quietly\n"
@@ -2630,6 +2691,22 @@ g_test_queue_destroy (GDestroyNotify destroy_func,
   test_destroy_queue = dentry;
 }
 
+static gint
+test_has_prefix (gconstpointer a,
+                 gconstpointer b)
+{
+    const gchar *test_path_skipped_local = (const gchar *)a;
+    const gchar* test_run_name_local = (const gchar*)b;
+    if (test_prefix_extended_skipped)
+      {
+        /* If both are null, we consider that it doesn't match */
+        if (!test_path_skipped_local || !test_run_name_local)
+          return FALSE;
+        return strncmp (test_run_name_local, test_path_skipped_local, strlen (test_path_skipped_local));
+      }
+    return g_strcmp0 (test_run_name_local, test_path_skipped_local);
+}
+
 static gboolean
 test_case_run (GTestCase *tc)
 {
@@ -2657,7 +2734,7 @@ test_case_run (GTestCase *tc)
       test_run_success = G_TEST_RUN_SUCCESS;
       g_clear_pointer (&test_run_msg, g_free);
       g_test_log_set_fatal_handler (NULL, NULL);
-      if (test_paths_skipped && g_slist_find_custom (test_paths_skipped, test_run_name, (GCompareFunc)g_strcmp0))
+      if (test_paths_skipped && g_slist_find_custom (test_paths_skipped, test_run_name, (GCompareFunc)test_has_prefix))
         g_test_skip ("by request (-s option)");
       else
         {
@@ -2775,8 +2852,15 @@ g_test_run_suite_internal (GTestSuite *suite,
       GTestSuite *ts = iter->data;
 
       test_run_name = g_build_path ("/", old_name, ts->name, NULL);
-      if (!path || path_has_prefix (path, test_run_name))
+      if (test_prefix_extended) {
+        if (!path || path_has_prefix (test_run_name, path))
+          n_bad += g_test_run_suite_internal (ts, test_run_name);
+        else if (!path || path_has_prefix (path, test_run_name))
+          n_bad += g_test_run_suite_internal (ts, path);
+      } else if (!path || path_has_prefix (path, test_run_name)) {
         n_bad += g_test_run_suite_internal (ts, path);
+      }
+
       g_free (test_run_name);
     }
 

@@ -115,10 +115,15 @@ main (int   argc,
   else if (g_strcmp0 (argv1, "skip-options") == 0)
     {
       /* The caller is expected to skip some of these with
-       * -p, -s and/or --GTestSkipCount */
+       * -p/-r, -s/-x and/or --GTestSkipCount */
       g_test_add_func ("/a", test_pass);
+      g_test_add_func ("/b", test_pass);
       g_test_add_func ("/b/a", test_pass);
       g_test_add_func ("/b/b", test_pass);
+      g_test_add_func ("/b/b/a", test_pass);
+      g_test_add_func ("/prefix/a", test_pass);
+      g_test_add_func ("/prefix/b/b", test_pass);
+      g_test_add_func ("/prefix-long/a", test_pass);
       g_test_add_func ("/c/a", test_pass);
       g_test_add_func ("/d/a", test_pass);
     }
