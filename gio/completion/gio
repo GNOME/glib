@@ -105,7 +105,7 @@ __gio_location() {
 __gio() {
     # Complete subcommands
     if (( ${COMP_CWORD} == 1 )); then
-        COMPREPLY=($(compgen -W "help version cat copy info list mime mkdir monitor mount move open rename remove save set trash tree" -- "${COMP_WORDS[1]}"))
+        COMPREPLY=($(compgen -W "help version cat copy info launch list mime mkdir monitor mount move open rename remove save set trash tree" -- "${COMP_WORDS[1]}"))
         compopt +o nospace
         return 0
     fi

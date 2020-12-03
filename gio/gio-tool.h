@@ -37,6 +37,7 @@ gboolean file_is_dir (GFile *file);
 int handle_cat     (int argc, char *argv[], gboolean do_help);
 int handle_copy    (int argc, char *argv[], gboolean do_help);
 int handle_info    (int argc, char *argv[], gboolean do_help);
+int handle_launch  (int argc, char *argv[], gboolean do_help);
 int handle_list    (int argc, char *argv[], gboolean do_help);
 int handle_mime    (int argc, char *argv[], gboolean do_help);
 int handle_mkdir   (int argc, char *argv[], gboolean do_help);
