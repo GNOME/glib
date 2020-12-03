@@ -2699,8 +2699,8 @@ set_mtime_atime (char                       *filename,
 #ifdef HAVE_SELINUX
 static gboolean
 set_selinux_context (char                       *filename,
-		 const GFileAttributeValue  *value,
-		 GError                    **error)
+                     const GFileAttributeValue  *value,
+                     GError                    **error)
 {
   const char *val;
 
@@ -2708,34 +2708,30 @@ set_selinux_context (char                       *filename,
     return FALSE;
 
   if (val == NULL)
-  {
-    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-                         _("SELinux context must be non-NULL"));
-    return FALSE;
-  }
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("SELinux context must be non-NULL"));
+      return FALSE;
+    }
 
-  if (is_selinux_enabled ()) {
-	security_context_t val_s;
-	
-	val_s = g_strdup (val);
-	
-	if (setfilecon_raw (filename, val_s) < 0)
-	{
-            int errsv = errno;
+  if (!is_selinux_enabled ())
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("SELinux is not enabled on this system"));
+      return FALSE;
+    }
+
+  if (setfilecon_raw (filename, val) < 0)
+    {
+      int errsv = errno;
             
-            g_set_error (error, G_IO_ERROR,
-                         g_io_error_from_errno (errsv),
-                	_("Error setting SELinux context: %s"),
-                         g_strerror (errsv));
-            return FALSE;
-        }
-        g_free (val_s);
-  } else {
-    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-                         _("SELinux is not enabled on this system"));
-    return FALSE;
-  }
-                                                     
+      g_set_error (error, G_IO_ERROR,
+                   g_io_error_from_errno (errsv),
+                   _("Error setting SELinux context: %s"),
+                   g_strerror (errsv));
+      return FALSE;
+    }
+
   return TRUE;
 }
 #endif 
