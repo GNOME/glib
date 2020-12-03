@@ -282,10 +282,13 @@ watcher_send_command (const gchar *command)
 {
   GIOChannel *channel;
   GError *error = NULL;
+  GIOStatus status;
 
   channel = watcher_init ();
 
-  g_io_channel_write_chars (channel, command, -1, NULL, &error);
+  do
+   status = g_io_channel_write_chars (channel, command, -1, NULL, &error);
+  while (status == G_IO_STATUS_AGAIN);
   g_assert_no_error (error);
 
   g_io_channel_flush (channel, &error);
