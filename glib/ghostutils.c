@@ -413,8 +413,8 @@ idna_end_of_label (const gchar *str)
  * string containing no uppercase letters and not ending with a
  * trailing dot.
  *
- * Returns: an ASCII hostname, which must be freed, or %NULL if
- * @hostname is in some way invalid.
+ * Returns: (nullable) (transfer full): an ASCII hostname, which must be freed,
+ *    or %NULL if @hostname is in some way invalid.
  *
  * Since: 2.22
  **/
@@ -594,8 +594,8 @@ punycode_decode (const gchar *input,
  * Of course if @hostname is not an internationalized hostname, then
  * the canonical presentation form will be entirely ASCII.
  *
- * Returns: a UTF-8 hostname, which must be freed, or %NULL if
- * @hostname is in some way invalid.
+ * Returns: (nullable) (transfer full): a UTF-8 hostname, which must be freed,
+ *    or %NULL if @hostname is in some way invalid.
  *
  * Since: 2.22
  **/
