@@ -353,6 +353,7 @@ binding_default (void)
 {
   BindingSource *source = g_object_new (binding_source_get_type (), NULL);
   BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+  GObject *tmp;
   GBinding *binding;
 
   binding = g_object_bind_property (source, "foo",
@@ -360,8 +361,14 @@ binding_default (void)
                                     G_BINDING_DEFAULT);
 
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
-  g_assert_true ((BindingSource *) g_binding_get_source (binding) == source);
-  g_assert_true ((BindingTarget *) g_binding_get_target (binding) == target);
+  tmp = g_binding_dup_source (binding);
+  g_assert_nonnull (tmp);
+  g_assert_true ((BindingSource *) tmp == source);
+  g_object_unref (tmp);
+  tmp = g_binding_dup_target (binding);
+  g_assert_nonnull (tmp);
+  g_assert_true ((BindingTarget *) tmp == target);
+  g_object_unref (tmp);
   g_assert_cmpstr (g_binding_get_source_property (binding), ==, "foo");
   g_assert_cmpstr (g_binding_get_target_property (binding), ==, "bar");
   g_assert_cmpint (g_binding_get_flags (binding), ==, G_BINDING_DEFAULT);
@@ -388,6 +395,7 @@ binding_canonicalisation (void)
   BindingSource *source = g_object_new (binding_source_get_type (), NULL);
   BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
   GBinding *binding;
+  GObject *tmp;
 
   g_test_summary ("Test that bindings set up with non-canonical property names work");
 
@@ -396,8 +404,14 @@ binding_canonicalisation (void)
                                     G_BINDING_DEFAULT);
 
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
-  g_assert_true ((BindingSource *) g_binding_get_source (binding) == source);
-  g_assert_true ((BindingTarget *) g_binding_get_target (binding) == target);
+  tmp = g_binding_dup_source (binding);
+  g_assert_nonnull (tmp);
+  g_assert_true ((BindingSource *) tmp == source);
+  g_object_unref (tmp);
+  tmp = g_binding_dup_target (binding);
+  g_assert_nonnull (tmp);
+  g_assert_true ((BindingTarget *) tmp == target);
+  g_object_unref (tmp);
   g_assert_cmpstr (g_binding_get_source_property (binding), ==, "double-value");
   g_assert_cmpstr (g_binding_get_target_property (binding), ==, "double-value");
   g_assert_cmpint (g_binding_get_flags (binding), ==, G_BINDING_DEFAULT);
@@ -886,6 +900,182 @@ binding_interface (void)
   g_object_unref (target);
 }
 
+typedef struct {
+  GThread *thread;
+  GBinding *binding;
+  GMutex *lock;
+  GCond *cond;
+  gboolean *wait;
+  gint *count; /* (atomic) */
+} ConcurrentUnbindData;
+
+static gpointer
+concurrent_unbind_func (gpointer data)
+{
+  ConcurrentUnbindData *unbind_data = data;
+
+  g_mutex_lock (unbind_data->lock);
+  g_atomic_int_inc (unbind_data->count);
+  while (*unbind_data->wait)
+    g_cond_wait (unbind_data->cond, unbind_data->lock);
+  g_mutex_unlock (unbind_data->lock);
+  g_binding_unbind (unbind_data->binding);
+  g_object_unref (unbind_data->binding);
+
+  return NULL;
+}
+
+static void
+binding_concurrent_unbind (void)
+{
+  guint i, j;
+
+  g_test_summary ("Test that unbinding from multiple threads concurrently works correctly");
+
+  for (i = 0; i < 50; i++)
+    {
+      BindingSource *source = g_object_new (binding_source_get_type (), NULL);
+      BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+      GBinding *binding;
+      GQueue threads = G_QUEUE_INIT;
+      GMutex lock;
+      GCond cond;
+      gboolean wait = TRUE;
+      gint count = 0; /* (atomic) */
+      ConcurrentUnbindData *data;
+
+      g_mutex_init (&lock);
+      g_cond_init (&cond);
+
+      binding = g_object_bind_property (source, "foo",
+                                        target, "bar",
+                                        G_BINDING_BIDIRECTIONAL);
+      g_object_ref (binding);
+
+      for (j = 0; j < 10; j++)
+        {
+          data = g_new0 (ConcurrentUnbindData, 1);
+
+          data->binding = g_object_ref (binding);
+          data->lock = &lock;
+          data->cond = &cond;
+          data->wait = &wait;
+          data->count = &count;
+
+          data->thread = g_thread_new ("binding-concurrent", concurrent_unbind_func, data);
+          g_queue_push_tail (&threads, data);
+        }
+
+      /* wait until all threads are started */
+      while (g_atomic_int_get (&count) < 10)
+        g_thread_yield ();
+
+      g_mutex_lock (&lock);
+      wait = FALSE;
+      g_cond_broadcast (&cond);
+      g_mutex_unlock (&lock);
+
+      while ((data = g_queue_pop_head (&threads)))
+        {
+          g_thread_join (data->thread);
+          g_free (data);
+        }
+
+      g_mutex_clear (&lock);
+      g_cond_clear (&cond);
+
+      g_object_unref (binding);
+      g_object_unref (source);
+      g_object_unref (target);
+    }
+}
+
+typedef struct {
+  GObject *object;
+  GMutex *lock;
+  GCond *cond;
+  gint *count; /* (atomic) */
+  gboolean *wait;
+} ConcurrentFinalizeData;
+
+static gpointer
+concurrent_finalize_func (gpointer data)
+{
+  ConcurrentFinalizeData *finalize_data = data;
+
+  g_mutex_lock (finalize_data->lock);
+  g_atomic_int_inc (finalize_data->count);
+  while (*finalize_data->wait)
+    g_cond_wait (finalize_data->cond, finalize_data->lock);
+  g_mutex_unlock (finalize_data->lock);
+  g_object_unref (finalize_data->object);
+  g_free (finalize_data);
+
+  return NULL;
+}
+
+static void
+binding_concurrent_finalizing (void)
+{
+  guint i;
+
+  g_test_summary ("Test that finalizing source/target from multiple threads concurrently works correctly");
+
+  for (i = 0; i < 50; i++)
+    {
+      BindingSource *source = g_object_new (binding_source_get_type (), NULL);
+      BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+      GBinding *binding;
+      GMutex lock;
+      GCond cond;
+      gboolean wait = TRUE;
+      ConcurrentFinalizeData *data;
+      GThread *source_thread, *target_thread;
+      gint count = 0; /* (atomic) */
+
+      g_mutex_init (&lock);
+      g_cond_init (&cond);
+
+      binding = g_object_bind_property (source, "foo",
+                                        target, "bar",
+                                        G_BINDING_BIDIRECTIONAL);
+      g_object_ref (binding);
+
+      data = g_new0 (ConcurrentFinalizeData, 1);
+      data->object = (GObject *) source;
+      data->wait = &wait;
+      data->lock = &lock;
+      data->cond = &cond;
+      data->count = &count;
+      source_thread = g_thread_new ("binding-concurrent", concurrent_finalize_func, data);
+
+      data = g_new0 (ConcurrentFinalizeData, 1);
+      data->object = (GObject *) target;
+      data->wait = &wait;
+      data->lock = &lock;
+      data->cond = &cond;
+      data->count = &count;
+      target_thread = g_thread_new ("binding-concurrent", concurrent_finalize_func, data);
+
+      /* wait until all threads are started */
+      while (g_atomic_int_get (&count) < 2)
+        g_thread_yield ();
+
+      g_mutex_lock (&lock);
+      wait = FALSE;
+      g_cond_broadcast (&cond);
+      g_mutex_unlock (&lock);
+
+      g_thread_join (source_thread);
+      g_thread_join (target_thread);
+
+      g_mutex_clear (&lock);
+      g_cond_clear (&cond);
+
+      g_object_unref (binding);
+    }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -908,6 +1098,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/unbind-multiple", binding_unbind_multiple);
   g_test_add_func ("/binding/fail", binding_fail);
   g_test_add_func ("/binding/interface", binding_interface);
+  g_test_add_func ("/binding/concurrent-unbind", binding_concurrent_unbind);
+  g_test_add_func ("/binding/concurrent-finalizing", binding_concurrent_finalizing);
 
   return g_test_run ();
 }
