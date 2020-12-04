@@ -436,6 +436,9 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
 	modules from this alternate directory instead of the directory
 	built into GIO. This is useful when running tests, for example.
       </para>
+      <para>
+        This environment variable is ignored when running in a setuid program.
+      </para>
     </formalpara>
 
     <formalpara>
@@ -445,6 +448,9 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         When this environment variable is set to a path, or a set of
         paths separated by a colon, GIO will attempt to load
         additional modules from within the path.
+      </para>
+      <para>
+        This environment variable is ignored when running in a setuid program.
       </para>
     </formalpara>
 
