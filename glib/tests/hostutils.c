@@ -69,7 +69,23 @@ static const gint num_non_round_trip_names = G_N_ELEMENTS (non_round_trip_names)
 static const gchar *bad_names[] = {
   "disallowed\xef\xbf\xbd" "character",
   "non-utf\x88",
-  "xn--mixed-\xc3\xbcp"
+  "xn--mixed-\xc3\xbcp",
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
+  "verylongverylongverylongverylongverylongverylongverylongverylongverylong",
 };
 static const gint num_bad_names = G_N_ELEMENTS (bad_names);
 
