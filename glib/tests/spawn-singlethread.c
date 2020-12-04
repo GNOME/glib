@@ -24,6 +24,7 @@
 #include "config.h"
 
 #include <glib.h>
+#include <locale.h>
 #include <string.h>
 #include <fcntl.h>
 
@@ -426,6 +427,8 @@ main (int   argc,
 {
   char *dirname;
   int ret;
+
+  setlocale (LC_ALL, "");
 
   g_test_init (&argc, &argv, NULL);
 
