@@ -758,6 +758,10 @@ static const UriAbsoluteTest absolute_tests[] = {
     { NULL, NULL, NULL, -1, NULL, NULL, NULL } },
   { "http://[fe80::dead:beef%25em1%00]/", G_URI_FLAGS_NONE, FALSE, G_URI_ERROR_BAD_HOST,
     { NULL, NULL, NULL, -1, NULL, NULL, NULL } },
+
+  /* Invalid IDN hostname */
+  { "http://xn--mixed-\xc3\xbcp/", G_URI_FLAGS_NONE, FALSE, G_URI_ERROR_BAD_HOST,
+    { NULL, NULL, NULL, -1, NULL, NULL, NULL } },
 };
 
 static void

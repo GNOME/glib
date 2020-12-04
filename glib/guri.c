@@ -604,9 +604,21 @@ parse_host (const gchar  *start,
     }
 
   if (g_hostname_is_non_ascii (decoded))
-    host = g_hostname_to_ascii (decoded);
+    {
+      host = g_hostname_to_ascii (decoded);
+      if (host == NULL)
+        {
+          g_free (decoded);
+          g_set_error (error, G_URI_ERROR, G_URI_ERROR_BAD_HOST,
+                       _("Illegal internationalized hostname ‘%.*s’ in URI"),
+                       (gint) length, start);
+          return FALSE;
+        }
+    }
   else
-    host = g_steal_pointer (&decoded);
+    {
+      host = g_steal_pointer (&decoded);
+    }
 
  ok:
   if (out)
