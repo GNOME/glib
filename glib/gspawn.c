@@ -680,7 +680,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * name of the program must be a full path. If @flags contains the
  * %G_SPAWN_SEARCH_PATH flag, the `PATH` environment variable is
  * used to search for the executable. If @flags contains the
- * %G_SPAWN_SEARCH_PATH_FROM_ENVP flag, the `PATH` variable from 
+ * %G_SPAWN_SEARCH_PATH_FROM_ENVP flag, the `PATH` variable from
  * @envp is used to search for the executable. If both the
  * %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP flags
  * are set, the `PATH` variable from @envp takes precedence over
@@ -735,7 +735,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * Eventually you must call g_spawn_close_pid() on the @child_pid, in order to
  * free resources which may be associated with the child process. (On Unix,
  * using a child watch is equivalent to calling waitpid() or handling
- * the %SIGCHLD signal manually. On Windows, calling g_spawn_close_pid()
+ * the `SIGCHLD` signal manually. On Windows, calling g_spawn_close_pid()
  * is equivalent to calling CloseHandle() on the process handle returned
  * in @child_pid). See g_child_watch_add().
  *
@@ -749,6 +749,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * absolute path, it will be looked for in the `PATH` variable from
  * @envp. If both %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP
  * are used, the value from @envp takes precedence over the environment.
+ *
  * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output
  * will be discarded, instead of going to the same location as the parent's
  * standard output. If you use this flag, @stdout_pipe_out must be %NULL.
@@ -852,8 +853,8 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * If you are writing a GTK+ application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
  * windows on the right screen, you may want to use #GdkAppLaunchContext,
- * #GAppLaunchContext, or set the %DISPLAY environment variable.
- * 
+ * #GAppLaunchContext, or set the `DISPLAY` environment variable.
+ *
  * Returns: %TRUE on success, %FALSE if an error was set
  *
  * Since: 2.68
@@ -926,9 +927,9 @@ g_spawn_async_with_pipes_and_fds (const gchar           *working_directory,
  * @child_setup: (scope async) (nullable): function to run in the child just before exec()
  * @user_data: (closure): user data for @child_setup
  * @child_pid: (out) (optional): return location for child process ID, or %NULL
- * @stdin_fd: file descriptor to use for child's stdin, or -1
- * @stdout_fd: file descriptor to use for child's stdout, or -1
- * @stderr_fd: file descriptor to use for child's stderr, or -1
+ * @stdin_fd: file descriptor to use for child's stdin, or `-1`
+ * @stdout_fd: file descriptor to use for child's stdout, or `-1`
+ * @stderr_fd: file descriptor to use for child's stderr, or `-1`
  * @error: return location for error
  *
  * Identical to g_spawn_async_with_pipes_and_fds() but with `n_fds` set to zero,
