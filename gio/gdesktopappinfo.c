@@ -305,6 +305,27 @@ desktop_file_dir_app_name_is_masked (DesktopFileDir *dir,
   return FALSE;
 }
 
+/* Not much to go on from https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
+ * so validate it as a non-empty alphanumeric ASCII string with `-` and `_` allowed.
+ *
+ * Validation is important as the desktop IDs are used to construct filenames,
+ * and may be set by an unprivileged caller if running in a setuid program. */
+static gboolean
+validate_xdg_desktop (const gchar *desktop)
+{
+  gsize i;
+
+  for (i = 0; desktop[i] != '\0'; i++)
+    if (desktop[i] != '-' && desktop[i] != '_' &&
+        !g_ascii_isalnum (desktop[i]))
+      return FALSE;
+
+  if (i == 0)
+    return FALSE;
+
+  return TRUE;
+}
+
 static const gchar * const *
 get_lowercase_current_desktops (void)
 {
@@ -320,12 +341,22 @@ get_lowercase_current_desktops (void)
       if (envvar)
         {
           gint i, j;
+          gsize tmp_len;
 
           tmp = g_strsplit (envvar, G_SEARCHPATH_SEPARATOR_S, 0);
+          tmp_len = g_strv_length (tmp);
 
           for (i = 0; tmp[i]; i++)
-            for (j = 0; tmp[i][j]; j++)
-              tmp[i][j] = g_ascii_tolower (tmp[i][j]);
+            {
+              /* If the desktop is invalid, drop it and shift the following
+               * ones (and trailing %NULL) up. */
+              if (!validate_xdg_desktop (tmp[i]))
+                memmove (tmp + i, tmp + i + 1, tmp_len - i);
+
+              /* Convert to lowercase. */
+              for (j = 0; tmp[i][j]; j++)
+                tmp[i][j] = g_ascii_tolower (tmp[i][j]);
+            }
         }
       else
         tmp = g_new0 (gchar *, 0 + 1);
@@ -344,6 +375,7 @@ get_current_desktops (const gchar *value)
   if (g_once_init_enter (&result))
     {
       gchar **tmp;
+      gsize tmp_len, i;
 
       if (!value)
         value = g_getenv ("XDG_CURRENT_DESKTOP");
@@ -352,6 +384,15 @@ get_current_desktops (const gchar *value)
         value = "";
 
       tmp = g_strsplit (value, ":", 0);
+      tmp_len = g_strv_length (tmp);
+
+      for (i = 0; tmp[i]; i++)
+        {
+          /* If the desktop is invalid, drop it and shift the following
+           * ones (and trailing %NULL) up. */
+          if (!validate_xdg_desktop (tmp[i]))
+            memmove (tmp + i, tmp + i + 1, tmp_len - i);
+        }
 
       g_once_init_leave (&result, tmp);
     }
