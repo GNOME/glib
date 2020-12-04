@@ -1497,7 +1497,9 @@ do_exec (gint                  child_err_report_fd,
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
 
-      set_cloexec (GINT_TO_POINTER(0), stdin_fd);
+      if (!((stdout_fd >= 0 || stdout_to_null) && stdin_fd == 1) &&
+          !((stderr_fd >= 0 || stderr_to_null) && stdin_fd == 2))
+        set_cloexec (GINT_TO_POINTER(0), stdin_fd);
     }
   else if (!child_inherits_stdin)
     {
@@ -1517,7 +1519,9 @@ do_exec (gint                  child_err_report_fd,
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
 
-      set_cloexec (GINT_TO_POINTER(0), stdout_fd);
+      if (!((stdin_fd >= 0 || !child_inherits_stdin) && stdout_fd == 0) &&
+          !((stderr_fd >= 0 || stderr_to_null) && stdout_fd == 2))
+        set_cloexec (GINT_TO_POINTER(0), stdout_fd);
     }
   else if (stdout_to_null)
     {
@@ -1536,7 +1540,9 @@ do_exec (gint                  child_err_report_fd,
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUP2_FAILED);
 
-      set_cloexec (GINT_TO_POINTER(0), stderr_fd);
+      if (!((stdin_fd >= 0 || !child_inherits_stdin) && stderr_fd == 0) &&
+          !((stdout_fd >= 0 || stdout_to_null) && stderr_fd == 1))
+        set_cloexec (GINT_TO_POINTER(0), stderr_fd);
     }
   else if (stderr_to_null)
     {
