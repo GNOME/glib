@@ -700,6 +700,10 @@
                 <term><option>--empty</option></term>
                 <listitem><para>Empty the trash.</para></listitem>
               </varlistentry>
+              <varlistentry>
+                <term><option>--list</option></term>
+                <listitem><para>List files in the trash with their original locations</para></listitem>
+              </varlistentry>
             </variablelist>
           </refsect3>
         </listitem>

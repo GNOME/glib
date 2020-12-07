@@ -27,9 +27,11 @@
 
 static gboolean force = FALSE;
 static gboolean empty = FALSE;
+static gboolean list = FALSE;
 static const GOptionEntry entries[] = {
   { "force", 'f', 0, G_OPTION_ARG_NONE, &force, N_("Ignore nonexistent files, never prompt"), NULL },
   { "empty", 0, 0, G_OPTION_ARG_NONE, &empty, N_("Empty the trash"), NULL },
+  { "list", 0, 0, G_OPTION_ARG_NONE, &list, N_("List files in the trash with their original locations"), NULL },
   { NULL }
 };
 
@@ -73,6 +75,66 @@ delete_trash_file (GFile *file, gboolean del_file, gboolean del_children)
 
   if (del_file)
     g_file_delete (file, NULL, NULL);
+}
+
+static gboolean
+trash_list (GFile         *file,
+            GCancellable  *cancellable,
+            GError       **error)
+{
+  GFileEnumerator *enumerator;
+  GFileInfo *info;
+  GError *local_error = NULL;
+  gboolean res;
+
+  enumerator = g_file_enumerate_children (file,
+                                          G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                          G_FILE_ATTRIBUTE_TRASH_ORIG_PATH,
+                                          G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                          cancellable,
+                                          &local_error);
+  if (!enumerator)
+    {
+      g_propagate_error (error, local_error);
+      return FALSE;
+    }
+
+  res = TRUE;
+  while ((info = g_file_enumerator_next_file (enumerator, cancellable, &local_error)) != NULL)
+    {
+      const char *name;
+      char *orig_path;
+      char *uri;
+      GFile* child;
+
+      name = g_file_info_get_name (info);
+      child = g_file_get_child (file, name);
+      uri = g_file_get_uri (child);
+      g_object_unref (child);
+      orig_path = g_file_info_get_attribute_as_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
+
+      g_print ("%s\t%s\n", uri, orig_path);
+
+      g_object_unref (info);
+      g_free (orig_path);
+      g_free (uri);
+    }
+
+  if (local_error)
+    {
+      g_propagate_error (error, local_error);
+      local_error = NULL;
+      res = FALSE;
+    }
+
+  if (!g_file_enumerator_close (enumerator, cancellable, &local_error))
+    {
+      print_file_error (file, local_error->message);
+      g_clear_error (&local_error);
+      res = FALSE;
+    }
+
+  return res;
 }
 
 int
@@ -131,8 +193,20 @@ handle_trash (int argc, char *argv[], gboolean do_help)
           g_object_unref (file);
         }
     }
-
-  if (empty)
+  else if (list)
+    {
+      GFile *file;
+      file = g_file_new_for_uri ("trash:");
+      trash_list (file, NULL, &error);
+      if (error)
+        {
+          print_file_error (file, error->message);
+          g_clear_error (&error);
+          retval = 1;
+        }
+      g_object_unref (file);
+    }
+  else if (empty)
     {
       GFile *file;
       file = g_file_new_for_uri ("trash:");
@@ -140,7 +214,7 @@ handle_trash (int argc, char *argv[], gboolean do_help)
       g_object_unref (file);
     }
 
-  if (argc == 1 && !empty)
+  if (argc == 1 && !empty && !list)
     {
       show_help (context, _("No locations given"));
       g_option_context_free (context);
