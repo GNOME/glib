@@ -27,11 +27,14 @@
 
 static gboolean force = FALSE;
 static gboolean empty = FALSE;
+static gboolean restore = FALSE;
 static gboolean list = FALSE;
 static const GOptionEntry entries[] = {
   { "force", 'f', 0, G_OPTION_ARG_NONE, &force, N_("Ignore nonexistent files, never prompt"), NULL },
   { "empty", 0, 0, G_OPTION_ARG_NONE, &empty, N_("Empty the trash"), NULL },
   { "list", 0, 0, G_OPTION_ARG_NONE, &list, N_("List files in the trash with their original locations"), NULL },
+  { "restore", 0, 0, G_OPTION_ARG_NONE, &restore, N_("Restore a file from trash to its original location (possibly "
+                                                     "recreating the directory)"), NULL },
   { NULL }
 };
 
@@ -75,6 +78,71 @@ delete_trash_file (GFile *file, gboolean del_file, gboolean del_children)
 
   if (del_file)
     g_file_delete (file, NULL, NULL);
+}
+
+static gboolean
+restore_trash (GFile         *file,
+               gboolean       force,
+               GCancellable  *cancellable,
+               GError       **error)
+{
+  GFileInfo *info = NULL;
+  GFile *target = NULL;
+  GFile *dir_target = NULL;
+  gboolean ret = FALSE;
+  gchar *orig_path = NULL;
+  GError *local_error = NULL;
+
+  info = g_file_query_info (file, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH, G_FILE_QUERY_INFO_NONE, cancellable, &local_error);
+  if (local_error)
+    {
+      g_propagate_error (error, local_error);
+      goto exit_func;
+    }
+
+  orig_path = g_file_info_get_attribute_as_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
+  if (!orig_path)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND, _("Unable to find original path"));
+      goto exit_func;
+    }
+
+  target = g_file_new_for_commandline_arg (orig_path);
+  g_free (orig_path);
+
+  dir_target = g_file_get_parent (target);
+  if (dir_target)
+    {
+      g_file_make_directory_with_parents (dir_target, cancellable, &local_error);
+      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS))
+        {
+          g_clear_error (&local_error);
+        }
+      else if (local_error != NULL)
+        {
+          g_propagate_prefixed_error (error, local_error, _("Unable to recreate original location: "));
+          goto exit_func;
+        }
+    }
+
+  if (!g_file_move (file,
+                    target,
+                    force ? G_FILE_COPY_OVERWRITE : G_FILE_COPY_NONE,
+                    cancellable,
+                    NULL,
+                    NULL,
+                    &local_error))
+    {
+      g_propagate_prefixed_error (error, local_error, _("Unable to move file to its original location: "));
+      goto exit_func;
+    }
+  ret = TRUE;
+
+exit_func:
+  g_clear_object (&target);
+  g_clear_object (&dir_target);
+  g_clear_object (&info);
+  return ret;
 }
 
 static gboolean
@@ -154,7 +222,10 @@ handle_trash (int argc, char *argv[], gboolean do_help)
   g_free (param);
   g_option_context_set_help_enabled (context, FALSE);
   g_option_context_set_summary (context,
-      _("Move files or directories to the trash."));
+      _("Move/Restore files or directories to the trash."));
+  g_option_context_set_description (context,
+      _("Note: for --restore switch, if the original location of the trashed file \n"
+        "already exists, it will not be overwritten unless --force is set."));
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 
   if (do_help)
@@ -180,7 +251,20 @@ handle_trash (int argc, char *argv[], gboolean do_help)
         {
           file = g_file_new_for_commandline_arg (argv[i]);
           error = NULL;
-          if (!g_file_trash (file, NULL, &error))
+          if (restore)
+            {
+              if (!g_file_has_uri_scheme (file, "trash"))
+                {
+                  print_file_error (file, _("Location given doesn't start with trash:///"));
+                  retval = 1;
+                }
+              else if (!restore_trash (file, force, NULL, &error))
+                {
+                  print_file_error (file, error->message);
+                  retval = 1;
+                }
+            }
+          else if (!g_file_trash (file, NULL, &error))
             {
               if (!force ||
                   !g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
@@ -188,8 +272,8 @@ handle_trash (int argc, char *argv[], gboolean do_help)
                   print_file_error (file, error->message);
                   retval = 1;
                 }
-              g_error_free (error);
             }
+          g_clear_error (&error);
           g_object_unref (file);
         }
     }

@@ -678,17 +678,18 @@
           <arg choice="opt" rep="repeat"><replaceable>LOCATION</replaceable></arg>
         </term>
         <listitem>
-          <para>Sends files or directories to the ‘Trashcan’. This can be a
-            different folder depending on where the file is located, and not
-            all file systems support this concept. In the common case that the
-            file lives inside a user’s home directory, the trash folder is
+          <para>Sends files or directories to the ‘Trashcan’ or restore them from
+            ‘Trashcan’. This can be a different folder depending on where the file
+            is located, and not all file systems support this concept. In the common
+            case that the file lives inside a user’s home directory, the trash folder is
             <filename><envar>$XDG_DATA_HOME</envar>/Trash</filename>.</para>
           <para>Note that moving files to the trash does not free up space on
             the file system until the ‘Trashcan’ is emptied. If you are interested
             in deleting a file irreversibly, see the <command>remove</command> command.</para>
           <para>Inspecting and emptying the ‘Trashcan’ is normally supported by
             graphical file managers such as Nautilus, but you can also see the
-            trash with the command: <command>gio list trash://</command>.</para>
+            trash with the command: <command>gio trash --list</command> or
+            <command>gio list trash://</command>.</para>
           <refsect3>
             <title>Options</title>
             <variablelist>
@@ -703,6 +704,12 @@
               <varlistentry>
                 <term><option>--list</option></term>
                 <listitem><para>List files in the trash with their original locations</para></listitem>
+              </varlistentry>
+              <varlistentry>
+                <term><option>--restore</option></term>
+                <listitem><para>Restore a file from trash to its original location. A URI beginning
+                                with <literal>trash://</literal> is expected here. If the original
+                                directory doesn't exist, it will be recreated.</para></listitem>
               </varlistentry>
             </variablelist>
           </refsect3>
