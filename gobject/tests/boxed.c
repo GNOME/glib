@@ -271,6 +271,7 @@ test_boxed_ptrarray (void)
   g_value_unset (&value);
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_boxed_regex (void)
 {
@@ -293,7 +294,9 @@ test_boxed_regex (void)
 
   g_value_unset (&value);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static void
 test_boxed_matchinfo (void)
 {
@@ -320,6 +323,7 @@ test_boxed_matchinfo (void)
   g_value_unset (&value);
   g_regex_unref (r);
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_boxed_varianttype (void)

@@ -148,8 +148,11 @@ G_DEFINE_BOXED_TYPE (GByteArray, g_byte_array, g_byte_array_ref, g_byte_array_un
 G_DEFINE_BOXED_TYPE (GBytes, g_bytes, g_bytes_ref, g_bytes_unref)
 G_DEFINE_BOXED_TYPE (GTree, g_tree, g_tree_ref, g_tree_unref)
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+/* GRegex API has been deprecated in 2.68 */
 G_DEFINE_BOXED_TYPE (GRegex, g_regex, g_regex_ref, g_regex_unref)
 G_DEFINE_BOXED_TYPE (GMatchInfo, g_match_info, g_match_info_ref, g_match_info_unref)
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 #define g_variant_type_get_type g_variant_type_get_gtype
 G_DEFINE_BOXED_TYPE (GVariantType, g_variant_type, g_variant_type_copy, g_variant_type_free)

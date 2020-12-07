@@ -91,8 +91,10 @@ typedef gsize GType;
  * The #GType for a boxed type holding a #GRegex reference.
  *
  * Since: 2.14
+ *
+ * Deprecated: 2.68: Use a custom boxed type around PCRE 2 types instead
  */
-#define G_TYPE_REGEX (g_regex_get_type ())
+#define G_TYPE_REGEX (g_regex_get_type ()) GLIB_DEPRECATED_MACRO_IN_2_68
 
 /**
  * G_TYPE_MATCH_INFO:
@@ -100,8 +102,10 @@ typedef gsize GType;
  * The #GType for a boxed type holding a #GMatchInfo reference.
  *
  * Since: 2.30
+ *
+ * Deprecated: 2.68: Use a custom boxed type around PCRE 2 types instead
  */
-#define G_TYPE_MATCH_INFO (g_match_info_get_type ())
+#define G_TYPE_MATCH_INFO (g_match_info_get_type ()) GLIB_DEPRECATED_MACRO_IN_2_68
 
 /**
  * G_TYPE_ARRAY:
