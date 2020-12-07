@@ -1,3 +1,98 @@
+Overview of changes in GLib 2.67.1
+==================================
+
+* Deprecate `g_time_zone_new()` in favour of `g_time_zone_new_identifier()`,
+  which makes error checking easier (#553)
+
+* Remove `volatile` from various public APIs, including `G_DEFINE_*`. You should
+  adjust your code to not use `volatile` for atomic variables, `GOnce`
+  variables, or mostly anything else (see
+  http://isvolatileusefulwiththreads.in/c/). (#600)
+
+* Support passing file handles to `gdbus` command line tool (work by
+  Norbert Pocs and Tim Waugh) (#961)
+
+* Add `g_assert_cmpstrv()` test convenience function (work by Niels De Graef) (#2015)
+
+* Changes to the behaviour of the `G_URI_FLAGS_SCHEME_NORMALIZE` scheme
+  normalization flag in `GUri` (work by Carlos Garcia Campos) (#2257, !1716)
+
+* Add new `--run-prefix` and `--skip-prefix` options to GTest, to allow running
+  or skipping test suites by prefix (work by Frederic Martinsons) (!1738)
+
+* Fix thread-safety of `GBinding`; see the updated documentation for
+  `g_object_bind_property()` for full details — if your code uses `GBinding`
+  across threads, you should re-check it against the latest documentation, use
+  `g_binding_unbind()` rather than implicitly dropping the binding with your
+  last `g_object_unref()` call, and use `g_binding_dup_source()`/`g_binding_dup_target()`
+  instead of `g_binding_get_source()`/`g_binding_get_target()`
+  (work by Sebastian Dröge) (!1745)
+
+* Bugs fixed:
+ - #553 Improved error-handling when timezone lookup fails
+ - #600 Remove "volatile" from G_DEFINE_*
+ - #961 gdbus tool: file handle passing doesn't work
+ - #994 mark g_assert_* as "noreturn" also on MSVC
+ - #1560 Can't get data for empty compressed resources
+ - #1592 Main loop ignores GPollFD sources when there is at least one source ready with priority higher than default one
+ - #1833 meson: reconsider G_DISABLE_CAST_CHECKS handling
+ - #1849 Documentation of g_set_object(): can object_ptr be null?
+ - #1963 Follow-up from "gdbusmessage: Limit recursion of variants in D-Bus messages"
+ - #2015 Add g_assert_cmpstrv() test utility
+ - #2046 Add pylint and shellcheck CI checks
+ - #2074 Big dbus writes with a FD list fail
+ - #2076 g_type_register_fundamental() and g_type_add_interface_static() should not trigger valgrind leak warnings
+ - #2150 Add URI parsing tests from GstURI to GUri
+ - #2221 GLib-GIO:ERROR:../gio/tests/gsocketclient-slow.c:99:on_event: 'connection' should be NULL
+ - #2223 Documentation of g_strrstr_len is misleading; suggested fix
+ - #2233 GSocketClient crashes on connection failure
+ - #2236 Docs: gdbus-codegen example links broken
+ - #2253 In gspawn.c, use sysconf() system call on Mac OS, instead of default maxfiles limit of 4096
+ - #2257 GUri: apply scheme normalization flag consistently
+ - !1251 Improve support for interface types
+ - !1385 gobject: allocate parameter list for g_object_new_valist() entirely on stack
+ - !1629 Add some tracing to GTask
+ - !1699 Fix signedness warnings
+ - !1701 gio: Fix some remaining DocBook syntax in a documentation comment
+ - !1708 gio: Add missing nullable annotations
+ - !1716 guri: Normalize uri segments if they are encoded and add a flag to do scheme-based normalization
+ - !1722 gio: Fix various typos of the name ‘D-Bus’
+ - !1724 glib/tests/fileutils: Fix expectations when running as root
+ - !1726 gdbus: Document the intended semantics of handles and fdsTim Waugh
+ - !1731 Make more use of g_assert_no_errno()
+ - !1733 gdbusauthmechanismsha1: Don’t create keyring dir when running as setuid
+ - !1734 glocalfileinfo: Use a single timeout source at a time for hidden file cache
+ - !1735 gobject: Standardise on the term ‘instantiatable’
+ - !1737 gscanner: Avoid undefined behaviour copying between union members
+ - !1738 Extend the usage of -p option for glib test framework
+ - !1740 Fix more warnings
+ - !1745 Make GBinding thread-safe (alternative approach)
+ - !1746 gkeyfilesettingsbackend: improve error-checking
+ - !1747 Fix broken link syntax in g_vasprintf docs
+ - !1748 Fix minor Coverity return value warnings
+ - !1750 Fix warnings
+ - !1754 GWin32AppInfo: Use a thread pool for async appinfo tree rebuilds
+ - !1755 Minor Coverity fixes
+ - !1756 shellcheck fixes
+ - !1757 Python formatting improvements
+ - !1758 Fix warnings
+ - !1765 Fix more warnings
+ - !1766 Fix some gdatetime annotations
+ - !1767 tests: Fix GDateTime tests on FreeBSD
+ - !1769 gfileicon: Fix unused-but-set variable with G_DISABLE_ASSERT
+ - !1770 Minor scan-build fixes
+ - !1771 macos: fix frexpl checks in cross-compilation
+ - !1776 gio: ‘security_context_t’ is deprecated
+ - !1780 Minor Coverity fixes
+ - !1781 gspawn: Handle ENOSYS from close_range()
+ - !1782 ghostutils: Abandon hostname conversion early if it’s too long
+
+* Translation updates:
+ - Czech
+ - Spanish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.67.0
 ==================================
 
