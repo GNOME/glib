@@ -23,6 +23,14 @@ which may be exploitable security vulnerabilities.
 
 See [SECURITY.md](SECURITY.md) for more details.
 
+## Documentation
+
+API documentation is available online for GLib for the:
+ * [GLib](https://docs.gtk.org/glib/)
+ * [GObject](https://docs.gtk.org/gobject/)
+ * [GModule](https://docs.gtk.org/gmodule/)
+ * [GIO](https://docs.gtk.org/gio/)
+
 ## How to report bugs
 
 Bugs should be reported to the GNOME issue tracking system.
