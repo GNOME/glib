@@ -2842,22 +2842,24 @@ g_local_file_measure_size_of_contents (gint           fd,
   gboolean success = TRUE;
   const gchar *name;
   GDir *dir;
+  gint saved_errno;
 
 #ifdef AT_FDCWD
   {
-    /* If this fails, we want to preserve the errno from fopendir() */
+    /* If this fails, we want to preserve the errno from fdopendir() */
     DIR *dirp;
     dirp = fdopendir (fd);
+    saved_errno = errno;
     dir = dirp ? GLIB_PRIVATE_CALL(g_dir_new_from_dirp) (dirp) : NULL;
+    g_assert ((dirp == NULL) == (dir == NULL));
   }
 #else
   dir = GLIB_PRIVATE_CALL(g_dir_open_with_errno) (dir_name->data, 0);
+  saved_errno = errno;
 #endif
 
   if (dir == NULL)
     {
-      gint saved_errno = errno;
-
 #ifdef AT_FDCWD
       close (fd);
 #endif
