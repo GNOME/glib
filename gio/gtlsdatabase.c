@@ -516,8 +516,6 @@ g_tls_database_verify_chain (GTlsDatabase           *self,
                              GError                **error)
 {
   g_return_val_if_fail (G_IS_TLS_DATABASE (self), G_TLS_CERTIFICATE_GENERIC_ERROR);
-  g_return_val_if_fail (G_IS_TLS_DATABASE (self),
-                        G_TLS_CERTIFICATE_GENERIC_ERROR);
   g_return_val_if_fail (G_IS_TLS_CERTIFICATE (chain),
                         G_TLS_CERTIFICATE_GENERIC_ERROR);
   g_return_val_if_fail (purpose, G_TLS_CERTIFICATE_GENERIC_ERROR);
