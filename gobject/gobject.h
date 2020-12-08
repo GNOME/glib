@@ -227,11 +227,11 @@ typedef void (*GObjectFinalizeFunc)     (GObject      *object);
 /**
  * GWeakNotify:
  * @data: data that was provided when the weak reference was established
- * @where_the_object_was: the object being finalized
+ * @where_the_object_was: the object being disposed
  * 
  * A #GWeakNotify function can be added to an object as a callback that gets
  * triggered when the object is finalized. Since the object is already being
- * finalized when the #GWeakNotify is called, there's not much you could do 
+ * disposed when the #GWeakNotify is called, there's not much you could do 
  * with the object, apart from e.g. using its address as hash-index or the like. 
  */
 typedef void (*GWeakNotify)		(gpointer      data,

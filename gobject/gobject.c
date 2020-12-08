@@ -2975,7 +2975,7 @@ weak_refs_notify (gpointer data)
  * @data: extra data to pass to notify
  *
  * Adds a weak reference callback to an object. Weak references are
- * used for notification when an object is finalized. They are called
+ * used for notification when an object is disposed. They are called
  * "weak references" because they allow you to safely hold a pointer
  * to an object without calling g_object_ref() (g_object_ref() adds a
  * strong reference, that is, forces the object to stay alive).
