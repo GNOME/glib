@@ -4289,7 +4289,7 @@ g_variant_format_string_scan (const gchar  *string,
                               const gchar  *limit,
                               const gchar **endptr)
 {
-#define next_char() (string == limit ? '\0' : *string++)
+#define next_char() (string == limit ? '\0' : *(string++))
 #define peek_char() (string == limit ? '\0' : *string)
   char c;
 
