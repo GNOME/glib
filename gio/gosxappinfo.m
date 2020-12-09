@@ -226,8 +226,8 @@ url_escape_hostname (const char *url)
 }
 
 static CFURLRef
-create_url_from_cstr (gchar    *cstr,
-                      gboolean  is_file)
+create_url_from_cstr (const gchar *cstr,
+                      gboolean     is_file)
 {
   gchar *puny_cstr;
   CFStringRef str;
@@ -280,7 +280,7 @@ create_urlspec_for_appinfo (GOsxAppInfo *info,
                             gboolean          are_files)
 {
   LSLaunchURLSpec *urlspec = g_new0 (LSLaunchURLSpec, 1);
-  gchar *app_cstr = g_osx_app_info_get_filename (info);
+  const gchar *app_cstr = g_osx_app_info_get_filename (info);
 
   /* Strip file:// from app url but ensure filesystem url */
   urlspec->appURL = create_url_from_cstr (app_cstr + 7, TRUE);
@@ -402,7 +402,7 @@ g_osx_app_info_get_executable (GAppInfo *appinfo)
   return info->executable;
 }
 
-char *
+const char *
 g_osx_app_info_get_filename (GOsxAppInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
@@ -431,7 +431,8 @@ g_osx_app_info_get_icon (GAppInfo *appinfo)
 
   if (!info->icon)
     {
-      gchar *icon_name, *app_uri, *icon_uri;
+      const gchar *app_uri;
+      gchar *icon_name, *icon_uri;
       GFile *file;
 
       icon_name = get_bundle_string_value (info->bundle, @"CFBundleIconFile");
