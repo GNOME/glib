@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-12-07 08:30+0000\n"
-"PO-Revision-Date: 2020-12-07 10:49+0200\n"
+"POT-Creation-Date: 2020-12-09 15:12+0000\n"
+"PO-Revision-Date: 2020-12-09 17:42+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -1646,58 +1646,63 @@ msgid "Show information about locations"
 msgstr "Показати відомості щодо місць"
 
 #: gio/gio-tool.c:232
+#| msgid "List static actions for an application (from .desktop file)"
+msgid "Launch an application from a desktop file"
+msgstr "Запустити програму з файла desktop"
+
+#: gio/gio-tool.c:233
 msgid "List the contents of locations"
 msgstr "Вивести список вмісту місць"
 
-#: gio/gio-tool.c:233
+#: gio/gio-tool.c:234
 msgid "Get or set the handler for a mimetype"
 msgstr "Отримати або встановити обробник для типу MIME"
 
-#: gio/gio-tool.c:234
+#: gio/gio-tool.c:235
 msgid "Create directories"
 msgstr "Створити каталоги"
 
-#: gio/gio-tool.c:235
+#: gio/gio-tool.c:236
 msgid "Monitor files and directories for changes"
 msgstr "Стежити за змінами у файлах і каталогах"
 
-#: gio/gio-tool.c:236
+#: gio/gio-tool.c:237
 msgid "Mount or unmount the locations"
 msgstr "Змонтувати або демонтувати місця"
 
-#: gio/gio-tool.c:237
+#: gio/gio-tool.c:238
 msgid "Move one or more files"
 msgstr "Пересунути один або декілька файлів"
 
-#: gio/gio-tool.c:238
+#: gio/gio-tool.c:239
 msgid "Open files with the default application"
 msgstr "Відкрити файли за допомогою типової програми"
 
-#: gio/gio-tool.c:239
+#: gio/gio-tool.c:240
 msgid "Rename a file"
 msgstr "Перейменувати файл"
 
-#: gio/gio-tool.c:240
+#: gio/gio-tool.c:241
 msgid "Delete one or more files"
 msgstr "Вилучити один або декілька файлів"
 
-#: gio/gio-tool.c:241
+#: gio/gio-tool.c:242
 msgid "Read from standard input and save"
 msgstr "Прочитати дані зі стандартного джерела даних і зберегти їх"
 
-#: gio/gio-tool.c:242
+#: gio/gio-tool.c:243
 msgid "Set a file attribute"
 msgstr "Встановити атрибут файла"
 
-#: gio/gio-tool.c:243
+#: gio/gio-tool.c:244
 msgid "Move files or directories to the trash"
 msgstr "Пересунути файли або каталоги до смітника"
 
-#: gio/gio-tool.c:244
+#: gio/gio-tool.c:245
 msgid "Lists the contents of locations in a tree"
 msgstr "Вивести список вмісту усіх місць у ієрархії"
 
-#: gio/gio-tool.c:246
+#: gio/gio-tool.c:247
 #, c-format
 msgid "Use %s to get detailed help.\n"
 msgstr "Скористайтеся %s, щоб дізнатися більше.\n"
@@ -1712,7 +1717,7 @@ msgstr "Помилка при записі до стандартного вив�
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
-#: gio/gio-tool-trash.c:90 gio/gio-tool-tree.c:239
+#: gio/gio-tool-trash.c:220 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "МІСЦЕ"
 
@@ -1732,7 +1737,7 @@ msgstr ""
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:145
+#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr "Не вказано місць"
 
@@ -1898,6 +1903,49 @@ msgstr ""
 "за їхніми назвами GIO, — наприклад, standard::icon, — або просто за "
 "простором\n"
 "назв, — наприклад, unix, — або просто «*», тобто обробити усі атрибути."
+
+#. Translators: commandline placeholder
+#: gio/gio-tool-launch.c:54
+msgid "DESKTOP-FILE [FILE-ARG …]"
+msgstr "ФАЙЛ-DESKTOP [АРГУМЕНТ-ФАЙЛ …]"
+
+#: gio/gio-tool-launch.c:57
+msgid ""
+"Launch an application from a desktop file, passing optional filename "
+"arguments to it."
+msgstr ""
+"Запустити програму з файла desktop, передавши їй необов'язкові аргументи —"
+" назви файлів."
+
+#: gio/gio-tool-launch.c:77
+#| msgid "No destination given"
+msgid "No desktop file given"
+msgstr "Не вказано файла desktop"
+
+#: gio/gio-tool-launch.c:85
+#| msgid "There is no GCredentials support for your platform"
+msgid "The launch command is not currently supported on this platform"
+msgstr ""
+"На цій платформі у поточній версії не передбачено можливості виконання"
+" команди запуску"
+
+#: gio/gio-tool-launch.c:98
+#, c-format
+#| msgid "Unable to trash file %s: %s"
+msgid "Unable to load ‘%s‘: %s"
+msgstr "Не вдалося завантажити «%s»: %s"
+
+#: gio/gio-tool-launch.c:107
+#, c-format
+#| msgid "Failed to load info for handler “%s”"
+msgid "Unable to load application information for ‘%s‘"
+msgstr "Не вдалося завантажити дані програми для «%s»"
+
+#: gio/gio-tool-launch.c:119
+#, c-format
+#| msgid "Default application for “%s”: %s\n"
+msgid "Unable to launch application ‘%s’: %s"
+msgstr "Не вдалося запустити програму «%s»: %s"
 
 #: gio/gio-tool-list.c:37 gio/gio-tool-tree.c:32
 msgid "Show hidden files"
@@ -2165,7 +2213,7 @@ msgstr ""
 "Відкрити файли за допомогою типової програми, яку\n"
 "зареєстровано для обробки файлів відповідного типу."
 
-#: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:31
+#: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:33
 msgid "Ignore nonexistent files, never prompt"
 msgstr "Ігнорувати файли, яких не існує — не запитувати користувача"
 
@@ -2279,13 +2327,56 @@ msgstr "Не вказано значення"
 msgid "Invalid attribute type “%s”"
 msgstr "Некоректний тип атрибута «%s»"
 
-#: gio/gio-tool-trash.c:32
+#: gio/gio-tool-trash.c:34
 msgid "Empty the trash"
 msgstr "Спорожнити смітник"
 
-#: gio/gio-tool-trash.c:95
-msgid "Move files or directories to the trash."
-msgstr "Пересунути файли або каталоги до смітника."
+#: gio/gio-tool-trash.c:35
+#| msgid "List the contents of the locations."
+msgid "List files in the trash with their original locations"
+msgstr ""
+"Вивести список файлів у смітнику із зазначенням початкових місць зберігання"
+
+#: gio/gio-tool-trash.c:36
+msgid ""
+"Restore a file from trash to its original location (possibly recreating the "
+"directory)"
+msgstr ""
+"Відновити файл зі смітника до його початкового розташування (з можливим"
+" повторним створенням каталогу)"
+
+#: gio/gio-tool-trash.c:106
+#| msgid "Unable to find terminal required for application"
+msgid "Unable to find original path"
+msgstr "Не вдалося визначити початковий шлях"
+
+#: gio/gio-tool-trash.c:123
+#| msgid "Unable to create socket: %s"
+msgid "Unable to recreate original location: "
+msgstr "Не вдалося повторно створити початкове місце: "
+
+#: gio/gio-tool-trash.c:136
+#| msgid "unable to find desktop file for application %s\n"
+msgid "Unable to move file to its original location: "
+msgstr "Не вдалося пересунути файл до його початкового місця: "
+
+#: gio/gio-tool-trash.c:225
+#| msgid "Move files or directories to the trash."
+msgid "Move/Restore files or directories to the trash."
+msgstr "Пересунути/Відновити файли або каталоги до смітника."
+
+#: gio/gio-tool-trash.c:227
+msgid ""
+"Note: for --restore switch, if the original location of the trashed file \n"
+"already exists, it will not be overwritten unless --force is set."
+msgstr ""
+"Зауваження: для перемикача --restore, якщо початкове місце файла зі смітника"
+" \n"
+"вже зайнято, його не буде перезаписано, якщо не вказано параметр --force."
+
+#: gio/gio-tool-trash.c:258
+msgid "Location given doesn't start with trash:///"
+msgstr "Вказане місце не починається з trash:///"
 
 #: gio/gio-tool-tree.c:33
 msgid "Follow symbolic links, mounts and shortcuts"
@@ -5924,7 +6015,6 @@ msgstr "Помилкове кодування IP-адреси «%.*s» в адр
 
 #: glib/guri.c:613
 #, c-format
-#| msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgid "Illegal internationalized hostname ‘%.*s’ in URI"
 msgstr "Назва вузла із некоректними символами «%.*s» у адресі"
 
