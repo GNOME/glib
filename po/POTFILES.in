@@ -75,6 +75,7 @@ gio/gio-tool.c
 gio/gio-tool-cat.c
 gio/gio-tool-copy.c
 gio/gio-tool-info.c
+gio/gio-tool-launch.c
 gio/gio-tool-list.c
 gio/gio-tool-mime.c
 gio/gio-tool-mkdir.c

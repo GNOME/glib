@@ -55,6 +55,12 @@
     </cmdsynopsis>
     <cmdsynopsis>
       <command>gio</command>
+      <arg choice="plain">launch</arg>
+      <arg choice="plain"><replaceable>DESKTOP-FILE</replaceable></arg>
+      <arg choice="opt" rep="repeat"><replaceable>FILE-ARG</replaceable></arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+      <command>gio</command>
       <arg choice="plain">list</arg>
       <arg choice="opt" rep="repeat"><replaceable>OPTION</replaceable></arg>
       <arg choice="opt" rep="repeat"><replaceable>LOCATION</replaceable></arg>
@@ -270,6 +276,19 @@
               </varlistentry>
             </variablelist>
           </refsect3>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <command>launch</command>
+          <arg choice="plain"><replaceable>DESKTOP-FILE</replaceable></arg>
+          <arg choice="opt" rep="repeat"><replaceable>FILE-ARG</replaceable></arg>
+        </term>
+        <listitem>
+          <para>Launch a desktop file from any location given.</para>
+          <para>The <command>launch</command> command extends the behavior of the <command>open</command> command by allowing
+            any desktop file to be launched, not only those registered as file handlers.</para>
         </listitem>
       </varlistentry>
 
