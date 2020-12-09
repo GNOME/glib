@@ -168,6 +168,7 @@ get_bundle_string_value (NSBundle *bundle,
 static CFStringRef
 create_cfstring_from_cstr (const gchar *cstr)
 {
+  g_return_val_if_fail (cstr != NULL, NULL);
   return CFStringCreateWithCString (NULL, cstr, kCFStringEncodingUTF8);
 }
 
@@ -279,8 +280,14 @@ create_urlspec_for_appinfo (GOsxAppInfo *info,
                             GList            *uris,
                             gboolean          are_files)
 {
-  LSLaunchURLSpec *urlspec = g_new0 (LSLaunchURLSpec, 1);
-  const gchar *app_cstr = g_osx_app_info_get_filename (info);
+  LSLaunchURLSpec *urlspec = NULL;
+  const gchar *app_cstr;
+
+  g_return_val_if_fail (G_IS_OSX_APP_INFO (info), NULL);
+
+  urlspec = g_new0 (LSLaunchURLSpec, 1);
+  app_cstr = g_osx_app_info_get_filename (info);
+  g_assert (app_cstr != NULL);
 
   /* Strip file:// from app url but ensure filesystem url */
   urlspec->appURL = create_url_from_cstr (app_cstr + strlen ("file://"), TRUE);
@@ -460,8 +467,13 @@ g_osx_app_info_launch_internal (GAppInfo  *appinfo,
                                      GError   **error)
 {
   GOsxAppInfo *info = G_OSX_APP_INFO (appinfo);
-  LSLaunchURLSpec *urlspec = create_urlspec_for_appinfo (info, uris, are_files);
+  LSLaunchURLSpec *urlspec;
   gint ret, success = TRUE;
+
+  g_return_val_if_fail (G_IS_OSX_APP_INFO (appinfo), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  urlspec = create_urlspec_for_appinfo (info, uris, are_files);
 
   if ((ret = LSOpenFromURLSpec (urlspec, NULL)))
     {
