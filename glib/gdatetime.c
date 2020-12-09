@@ -52,6 +52,7 @@
 #define _GNU_SOURCE 1
 #endif
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -1213,7 +1214,11 @@ get_iso8601_seconds (const gchar *text, gsize length, gdouble *value)
       divisor *= 10;
     }
 
-  *value = v / divisor;
+  v = v / divisor;
+  if (!isfinite (v))
+    return FALSE;
+
+  *value = v;
   return TRUE;
 }
 
@@ -1585,6 +1590,7 @@ g_date_time_new (GTimeZone *tz,
       day < 1 || day > days_in_months[GREGORIAN_LEAP (year)][month] ||
       hour < 0 || hour > 23 ||
       minute < 0 || minute > 59 ||
+      !isfinite (seconds) ||
       seconds < 0.0 || seconds >= 60.0)
     return NULL;
 
