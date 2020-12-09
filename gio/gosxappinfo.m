@@ -283,7 +283,7 @@ create_urlspec_for_appinfo (GOsxAppInfo *info,
   const gchar *app_cstr = g_osx_app_info_get_filename (info);
 
   /* Strip file:// from app url but ensure filesystem url */
-  urlspec->appURL = create_url_from_cstr (app_cstr + 7, TRUE);
+  urlspec->appURL = create_url_from_cstr (app_cstr + strlen ("file://"), TRUE);
   urlspec->launchFlags = kLSLaunchDefaults;
   urlspec->itemURLs = create_url_list_from_glist (uris, are_files);
 
@@ -440,7 +440,7 @@ g_osx_app_info_get_icon (GAppInfo *appinfo)
         return NULL;
 
       app_uri = g_osx_app_info_get_filename (info);
-      icon_uri = g_strconcat (app_uri + 7, "/Contents/Resources/", icon_name,
+      icon_uri = g_strconcat (app_uri + strlen ("file://"), "/Contents/Resources/", icon_name,
                               g_str_has_suffix (icon_name, ".icns") ? NULL : ".icns", NULL);
       g_free (icon_name);
 
