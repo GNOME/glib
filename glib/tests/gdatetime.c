@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <math.h>
 #include <string.h>
 #include <time.h>
 #include <gi18n.h>
@@ -797,6 +798,12 @@ test_GDateTime_new_from_iso8601 (void)
   /* Timezone hours two digits */
   dt = g_date_time_new_from_iso8601 ("2016-08-24T22-2Z", NULL);
   g_assert_null (dt);
+
+  /* Ordinal date (YYYYDDD), space separator, and then time as HHMMSS,SSS
+   * The interesting bit is that the seconds field is so long as to parse as
+   * NaN */
+  dt = g_date_time_new_from_iso8601 ("0005306 000001,666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666600080000-00", NULL);
+  g_assert_null (dt);
 }
 
 typedef struct {
@@ -1269,6 +1276,8 @@ test_GDateTime_new_full (void)
   ASSERT_DATE (dt, 2016, 12, 31);
   g_date_time_unref (dt);
   dt = g_date_time_new_utc (2016, 12, 32, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2020, 12, 9, 14, 49, NAN);
   g_assert_null (dt);
 }
 
