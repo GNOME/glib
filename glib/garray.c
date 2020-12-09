@@ -822,11 +822,12 @@ g_array_sort (GArray       *farray,
   g_return_if_fail (array != NULL);
 
   /* Don't use qsort as we want a guaranteed stable sort */
-  g_qsort_with_data (array->data,
-                     array->len,
-                     array->elt_size,
-                     (GCompareDataFunc)compare_func,
-                     NULL);
+  if (array->len > 0)
+    g_qsort_with_data (array->data,
+                       array->len,
+                       array->elt_size,
+                       (GCompareDataFunc)compare_func,
+                       NULL);
 }
 
 /**
@@ -853,11 +854,12 @@ g_array_sort_with_data (GArray           *farray,
 
   g_return_if_fail (array != NULL);
 
-  g_qsort_with_data (array->data,
-                     array->len,
-                     array->elt_size,
-                     compare_func,
-                     user_data);
+  if (array->len > 0)
+    g_qsort_with_data (array->data,
+                       array->len,
+                       array->elt_size,
+                       compare_func,
+                       user_data);
 }
 
 /**
@@ -1984,11 +1986,12 @@ g_ptr_array_sort (GPtrArray    *array,
   g_return_if_fail (array != NULL);
 
   /* Don't use qsort as we want a guaranteed stable sort */
-  g_qsort_with_data (array->pdata,
-                     array->len,
-                     sizeof (gpointer),
-                     (GCompareDataFunc)compare_func,
-                     NULL);
+  if (array->len > 0)
+    g_qsort_with_data (array->pdata,
+                       array->len,
+                       sizeof (gpointer),
+                       (GCompareDataFunc)compare_func,
+                       NULL);
 }
 
 /* Please keep this doc-comment in sync with
@@ -2060,11 +2063,12 @@ g_ptr_array_sort_with_data (GPtrArray        *array,
 {
   g_return_if_fail (array != NULL);
 
-  g_qsort_with_data (array->pdata,
-                     array->len,
-                     sizeof (gpointer),
-                     compare_func,
-                     user_data);
+  if (array->len > 0)
+    g_qsort_with_data (array->pdata,
+                       array->len,
+                       sizeof (gpointer),
+                       compare_func,
+                       user_data);
 }
 
 /**
