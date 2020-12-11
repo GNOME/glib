@@ -225,7 +225,7 @@ file-tail
 
             # Known substitutions for generated filenames.
             result.subs.update(
-                {"filename": h_file.name, "basename": os.path.basename(h_file.name),}
+                {"filename": h_file.name, "basename": os.path.basename(h_file.name)}
             )
 
             return result

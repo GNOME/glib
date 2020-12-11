@@ -22,11 +22,7 @@ import sys
 # itself. The keyword ‘fixme’ (in upper case) is explicitly allowed because
 # that’s conventionally used as a way of marking a workaround which needs to
 # be merged for now, but is to be grepped for and reverted or reworked later.
-BANNED_KEYWORDS = [
-    "TO" + "DO",
-    "X" + "XX",
-    "W" + "IP",
-]
+BANNED_KEYWORDS = ["TO" + "DO", "X" + "XX", "W" + "IP"]
 
 
 def main():
