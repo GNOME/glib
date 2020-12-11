@@ -203,11 +203,11 @@ g_param_spec_finalize (GParamSpec *pspec)
 
 /**
  * g_param_spec_ref: (skip)
- * @pspec: a valid #GParamSpec
+ * @pspec: (transfer none) (not nullable): a valid #GParamSpec
  *
  * Increments the reference count of @pspec.
  *
- * Returns: the #GParamSpec that was passed into this function
+ * Returns: (transfer full) (not nullable): the #GParamSpec that was passed into this function
  */
 GParamSpec*
 g_param_spec_ref (GParamSpec *pspec)
@@ -270,7 +270,7 @@ g_param_spec_sink (GParamSpec *pspec)
  * Convenience function to ref and sink a #GParamSpec.
  *
  * Since: 2.10
- * Returns: the #GParamSpec that was passed into this function
+ * Returns: (transfer full) (not nullable): the #GParamSpec that was passed into this function
  */
 GParamSpec*
 g_param_spec_ref_sink (GParamSpec *pspec)
@@ -337,7 +337,7 @@ g_param_spec_get_nick (GParamSpec *pspec)
  *
  * Get the short description of a #GParamSpec.
  *
- * Returns: the short description of @pspec.
+ * Returns: (nullable): the short description of @pspec.
  */
 const gchar *
 g_param_spec_get_blurb (GParamSpec *pspec)
@@ -439,7 +439,7 @@ g_param_spec_is_valid_name (const gchar *name)
  * @blurb, which should be a somewhat longer description, suitable for
  * e.g. a tooltip. The @nick and @blurb should ideally be localized.
  *
- * Returns: (type GObject.ParamSpec): a newly allocated #GParamSpec instance
+ * Returns: (type GObject.ParamSpec): (transfer full): a newly allocated #GParamSpec instance
  */
 gpointer
 g_param_spec_internal (GType        param_type,
@@ -503,7 +503,7 @@ g_param_spec_internal (GType        param_type,
  *
  * Gets back user data pointers stored via g_param_spec_set_qdata().
  *
- * Returns: (transfer none): the user data pointer set, or %NULL
+ * Returns: (transfer none) (nullable): the user data pointer set, or %NULL
  */
 gpointer
 g_param_spec_get_qdata (GParamSpec *pspec,
@@ -518,7 +518,7 @@ g_param_spec_get_qdata (GParamSpec *pspec,
  * g_param_spec_set_qdata:
  * @pspec: the #GParamSpec to set store a user data pointer
  * @quark: a #GQuark, naming the user data pointer
- * @data: an opaque user data pointer
+ * @data: (nullable): an opaque user data pointer
  *
  * Sets an opaque, named pointer on a #GParamSpec. The name is
  * specified through a #GQuark (retrieved e.g. via
@@ -542,8 +542,8 @@ g_param_spec_set_qdata (GParamSpec *pspec,
  * g_param_spec_set_qdata_full: (skip)
  * @pspec: the #GParamSpec to set store a user data pointer
  * @quark: a #GQuark, naming the user data pointer
- * @data: an opaque user data pointer
- * @destroy: function to invoke with @data as argument, when @data needs to
+ * @data: (nullable): an opaque user data pointer
+ * @destroy: (nullable): function to invoke with @data as argument, when @data needs to
  *  be freed
  *
  * This function works like g_param_spec_set_qdata(), but in addition,
@@ -574,7 +574,7 @@ g_param_spec_set_qdata_full (GParamSpec    *pspec,
  * function (if any was set).  Usually, calling this function is only
  * required to update user data pointers with a destroy notifier.
  *
- * Returns: (transfer none): the user data pointer set, or %NULL
+ * Returns: (transfer none) (nullable): the user data pointer set, or %NULL
  */
 gpointer
 g_param_spec_steal_qdata (GParamSpec *pspec,
@@ -600,7 +600,7 @@ g_param_spec_steal_qdata (GParamSpec *pspec,
  *
  * Since: 2.4
  *
- * Returns: (transfer none): paramspec to which requests on this
+ * Returns: (transfer none) (nullable): paramspec to which requests on this
  *          paramspec should be redirected, or %NULL if none.
  */
 GParamSpec*
@@ -935,7 +935,7 @@ param_spec_pool_equals (gconstpointer key_spec_1,
  * property name, like "GtkContainer:border-width". This feature is
  * deprecated, so you should always set @type_prefixing to %FALSE.
  *
- * Returns: (transfer none): a newly allocated #GParamSpecPool.
+ * Returns: (transfer full): a newly allocated #GParamSpecPool.
  */
 GParamSpecPool*
 g_param_spec_pool_new (gboolean type_prefixing)
@@ -953,7 +953,7 @@ g_param_spec_pool_new (gboolean type_prefixing)
 /**
  * g_param_spec_pool_insert:
  * @pool: a #GParamSpecPool.
- * @pspec: the #GParamSpec to insert
+ * @pspec: (transfer none) (not nullable): the #GParamSpec to insert
  * @owner_type: a #GType identifying the owner of @pspec
  *
  * Inserts a #GParamSpec in the pool.
@@ -993,7 +993,7 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
 /**
  * g_param_spec_pool_remove:
  * @pool: a #GParamSpecPool
- * @pspec: the #GParamSpec to remove
+ * @pspec: (transfer none) (not nullable): the #GParamSpec to remove
  *
  * Removes a #GParamSpec from the pool.
  */
@@ -1081,7 +1081,7 @@ param_spec_ht_lookup (GHashTable  *hash_table,
  *
  * Looks up a #GParamSpec in the pool.
  *
- * Returns: (transfer none): The found #GParamSpec, or %NULL if no
+ * Returns: (transfer none) (nullable): The found #GParamSpec, or %NULL if no
  * matching #GParamSpec was found.
  */
 GParamSpec*
@@ -1542,8 +1542,8 @@ g_value_get_param (const GValue *value)
  * Get the contents of a %G_TYPE_PARAM #GValue, increasing its
  * reference count.
  *
- * Returns: #GParamSpec content of @value, should be unreferenced when
- *          no longer needed.
+ * Returns: (transfer full): #GParamSpec content of @value, should be
+ *     unreferenced when no longer needed.
  */
 GParamSpec*
 g_value_dup_param (const GValue *value)
