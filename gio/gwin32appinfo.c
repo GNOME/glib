@@ -3802,17 +3802,11 @@ gio_win32_appinfo_init (gboolean do_wait)
   if (!do_wait)
     return;
 
-  /* If any of the keys had a change, then we've already initiated
-   * a tree re-build in keys_updated(). Just wait for it to finish.
+  /* Previously, we checked each of the watched keys here.
+   * Now we just look at the update counter, because each key
+   * has a change callback keys_updated, which increments this counter.
    */
-  if ((url_associations_key       && g_win32_registry_key_has_changed (url_associations_key))       ||
-      (file_exts_key              && g_win32_registry_key_has_changed (file_exts_key))              ||
-      (user_clients_key           && g_win32_registry_key_has_changed (user_clients_key))           ||
-      (system_clients_key         && g_win32_registry_key_has_changed (system_clients_key))         ||
-      (applications_key           && g_win32_registry_key_has_changed (applications_key))           ||
-      (user_registered_apps_key   && g_win32_registry_key_has_changed (user_registered_apps_key))   ||
-      (system_registered_apps_key && g_win32_registry_key_has_changed (system_registered_apps_key)) ||
-      (classes_root_key           && g_win32_registry_key_has_changed (classes_root_key)))
+  if (g_atomic_int_get (&gio_win32_appinfo_update_counter) > 0)
     {
       g_mutex_lock (&gio_win32_appinfo_mutex);
       while (g_atomic_int_get (&gio_win32_appinfo_update_counter) > 0)
