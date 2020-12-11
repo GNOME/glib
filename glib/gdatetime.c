@@ -1588,7 +1588,7 @@ g_date_time_new (GTimeZone *tz,
       day < 1 || day > days_in_months[GREGORIAN_LEAP (year)][month] ||
       hour < 0 || hour > 23 ||
       minute < 0 || minute > 59 ||
-      !isfinite (seconds) ||
+      isnan (seconds) ||
       seconds < 0.0 || seconds >= 60.0)
     return NULL;
 
