@@ -152,11 +152,13 @@ test_func (gpointer data)
 
   /* We accept 2 on the first iteration because _add_seconds() can
    * have an initial latency of 1 second, see its documentation.
+   *
+   * Allow up to 500ms leeway for rounding and scheduling.
    */
   if (count == 0)
-    g_assert (current_time / 1000000 - last_time / 1000000 <= 2);
+    g_assert_cmpint (current_time / 1000 - last_time / 1000, <=, 2500);
   else
-    g_assert (current_time / 1000000 - last_time / 1000000 == 1);
+    g_assert_cmpint (current_time / 1000 - last_time / 1000, <=, 1500);
 
   last_time = current_time;
   count++;
