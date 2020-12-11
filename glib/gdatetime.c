@@ -1181,7 +1181,7 @@ static gboolean
 get_iso8601_seconds (const gchar *text, gsize length, gdouble *value)
 {
   gsize i;
-  gdouble divisor = 1, v = 0;
+  guint64 divisor = 1, v = 0;
 
   if (length < 2)
     return FALSE;
@@ -1208,17 +1208,15 @@ get_iso8601_seconds (const gchar *text, gsize length, gdouble *value)
   for (; i < length; i++)
     {
       const gchar c = text[i];
-      if (c < '0' || c > '9')
+      if (c < '0' || c > '9' ||
+          v > (G_MAXUINT64 - (c - '0')) / 10 ||
+          divisor > G_MAXUINT64 / 10)
         return FALSE;
       v = v * 10 + (c - '0');
       divisor *= 10;
     }
 
-  v = v / divisor;
-  if (!isfinite (v))
-    return FALSE;
-
-  *value = v;
+  *value = (gdouble) v / divisor;
   return TRUE;
 }
 
