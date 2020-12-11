@@ -1923,7 +1923,7 @@ g_bookmark_file_load_from_data_dirs (GBookmarkFile  *bookmark,
  *
  * This function outputs @bookmark as a string.
  *
- * Returns: (array length=length) (element-type guint8):
+ * Returns: (transfer full) (array length=length) (element-type guint8):
  *   a newly allocated string holding the contents of the #GBookmarkFile
  *
  * Since: 2.12
@@ -2210,7 +2210,7 @@ g_bookmark_file_set_title (GBookmarkFile *bookmark,
  * In the event the URI cannot be found, %NULL is returned and
  * @error is set to #G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
  *
- * Returns: a newly allocated string or %NULL if the specified
+ * Returns: (transfer full): a newly allocated string or %NULL if the specified
  *   URI cannot be found.
  *
  * Since: 2.12
@@ -2295,7 +2295,7 @@ g_bookmark_file_set_description (GBookmarkFile *bookmark,
  * In the event the URI cannot be found, %NULL is returned and
  * @error is set to #G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
  *
- * Returns: a newly allocated string or %NULL if the specified
+ * Returns: (transfer full): a newly allocated string or %NULL if the specified
  *   URI cannot be found.
  *
  * Since: 2.12
@@ -2377,7 +2377,7 @@ g_bookmark_file_set_mime_type (GBookmarkFile *bookmark,
  * event that the MIME type cannot be found, %NULL is returned and
  * @error is set to #G_BOOKMARK_FILE_ERROR_INVALID_VALUE.
  *
- * Returns: a newly allocated string or %NULL if the specified
+ * Returns: (transfer full): a newly allocated string or %NULL if the specified
  *   URI cannot be found.
  *
  * Since: 2.12
