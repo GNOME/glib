@@ -280,7 +280,7 @@ ViewerFile *file = g_object_new (VIEWER_TYPE_FILE, NULL);
       <para>
         The reference count is initialized to one by 
         <function><link linkend="g-object-new">g_object_new</link></function> which means that the caller
-        is currently the sole owner of the newly-created reference.
+        is currently the sole owner of the newly-created reference. (If the object is derived from <link linkend="GInitiallyUnowned"><type>GInitiallyUnowned</type></link>, this reference count is <link linkend="floating-ref">floating</link>.)
         When the reference count reaches zero, that is, 
         when <function><link linkend="g-object-unref">g_object_unref</link></function> is called by the last client holding
         a reference to the object, the <emphasis>dispose</emphasis> and the 
