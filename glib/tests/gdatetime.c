@@ -743,6 +743,14 @@ test_GDateTime_new_from_iso8601 (void)
   dt = g_date_time_new_from_iso8601 ("--0824T22:10:42Z", NULL);
   g_assert_null (dt);
 
+  /* Seconds must be two digits. */
+  dt = g_date_time_new_from_iso8601 ("2016-08-10T22:10:4Z", NULL);
+  g_assert_null (dt);
+
+  /* Seconds must all be digits. */
+  dt = g_date_time_new_from_iso8601 ("2016-08-10T22:10:4aZ", NULL);
+  g_assert_null (dt);
+
   /* Check subseconds work */
   dt = g_date_time_new_from_iso8601 ("2016-08-24T22:10:42.123456Z", NULL);
   ASSERT_DATE (dt, 2016, 8, 24);
@@ -758,6 +766,28 @@ test_GDateTime_new_from_iso8601 (void)
   ASSERT_DATE (dt, 2016, 8, 24);
   ASSERT_TIME (dt, 22, 10, 42, 123456);
   g_date_time_unref (dt);
+
+  /* Subseconds must all be digits. */
+  dt = g_date_time_new_from_iso8601 ("2016-08-10T22:10:42.5aZ", NULL);
+  g_assert_null (dt);
+
+  /* Subseconds can be an arbitrary length, but must not overflow.
+   * The ASSERT_TIME() comparisons are constrained by only comparing up to
+   * microsecond granularity. */
+  dt = g_date_time_new_from_iso8601 ("2016-08-10T22:10:09.222222222222222222Z", NULL);
+  ASSERT_DATE (dt, 2016, 8, 10);
+  ASSERT_TIME (dt, 22, 10, 9, 222222);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_from_iso8601 ("2016-08-10T22:10:09.2222222222222222222Z", NULL);
+  g_assert_null (dt);
+
+  /* Small numerator, large divisor when parsing the subseconds. */
+  dt = g_date_time_new_from_iso8601 ("2016-08-10T22:10:00.0000000000000000001Z", NULL);
+  ASSERT_DATE (dt, 2016, 8, 10);
+  ASSERT_TIME (dt, 22, 10, 0, 0);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_from_iso8601 ("2016-08-10T22:10:00.00000000000000000001Z", NULL);
+  g_assert_null (dt);
 
   /* We don't support times without minutes / seconds (valid ISO 8601) */
   dt = g_date_time_new_from_iso8601 ("2016-08-24T22Z", NULL);
@@ -1280,8 +1310,18 @@ test_GDateTime_new_full (void)
   g_date_time_unref (dt);
   dt = g_date_time_new_utc (2016, 12, 32, 22, 10, 42);
   g_assert_null (dt);
+
+  /* Seconds limits. */
   dt = g_date_time_new_utc (2020, 12, 9, 14, 49, NAN);
   g_assert_null (dt);
+  dt = g_date_time_new_utc (2020, 12, 9, 14, 49, -0.1);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2020, 12, 9, 14, 49, 60.0);
+  g_assert_null (dt);
+
+  /* Year limits */
+  dt = g_date_time_new_utc (10000, 1, 1, 0, 0, 0);
+  dt = g_date_time_new_utc (0, 1, 1, 0, 0, 0);
 }
 
 static void
