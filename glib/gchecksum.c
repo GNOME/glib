@@ -1790,7 +1790,6 @@ g_compute_checksum_for_data (GChecksumType  checksum_type,
   GChecksum *checksum;
   gchar *retval;
 
-  g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
   g_return_val_if_fail (length == 0 || data != NULL, NULL);
 
   checksum = g_checksum_new (checksum_type);
@@ -1825,7 +1824,6 @@ g_compute_checksum_for_string (GChecksumType  checksum_type,
                                const gchar   *str,
                                gssize         length)
 {
-  g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
   g_return_val_if_fail (length == 0 || str != NULL, NULL);
 
   if (length < 0)
@@ -1859,7 +1857,6 @@ g_compute_checksum_for_bytes (GChecksumType  checksum_type,
   gconstpointer byte_data;
   gsize length;
 
-  g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
   g_return_val_if_fail (data != NULL, NULL);
 
   byte_data = g_bytes_get_data (data, &length);
