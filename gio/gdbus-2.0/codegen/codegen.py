@@ -392,7 +392,7 @@ class HeaderCodeGenerator:
                         self.outfile.write("G_GNUC_DEPRECATED ")
                     self.outfile.write(
                         "void %s_set_%s (%s *object, %svalue);\n"
-                        % (i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in,)
+                        % (i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in)
                     )
                     self.outfile.write("\n")
 
@@ -2443,7 +2443,7 @@ class CodeGenerator:
             self.outfile.write(
                 "void\n"
                 "%s_set_%s (%s *object, %svalue)\n"
-                "{\n" % (i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in,)
+                "{\n" % (i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in)
             )
             self.outfile.write(
                 '  g_object_set (G_OBJECT (object), "%s", value, NULL);\n'
