@@ -734,6 +734,9 @@ g_file_info_get_attribute_data (GFileInfo            *info,
 {
   GFileAttributeValue *value;
 
+  g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
+  g_return_val_if_fail (attribute != NULL && *attribute != '\0', FALSE);
+
   value = g_file_info_find_value_by_name (info, attribute);
   if (value == NULL)
     return FALSE;
