@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-11-06 17:19+0000\n"
-"PO-Revision-Date: 2020-12-02 10:43+0100\n"
+"POT-Creation-Date: 2020-12-13 09:18+0000\n"
+"PO-Revision-Date: 2020-12-15 09:52+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -290,7 +290,7 @@ msgstr "El flujo ya se cerró"
 msgid "Truncate not supported on base stream"
 msgstr "No se soporta el truncado en el flujo base"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1862 gio/gdbusprivate.c:1416
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1864 gio/gdbusprivate.c:1416
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -530,7 +530,7 @@ msgstr ""
 "No se puede determinar la dirección del bus de sesión (no implementado para "
 "este SO)"
 
-#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7217
+#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7223
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -539,7 +539,7 @@ msgstr ""
 "No se puede determinar la dirección del bus desde la variable de entorno "
 "DBUS_STARTER_BUS_TYPE; variable «%s» desconocida"
 
-#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7226
+#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7232
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -573,12 +573,12 @@ msgstr ""
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Cancelado a través de GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:296
+#: gio/gdbusauthmechanismsha1.c:298
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Error al obtener la información de la carpeta «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:311
+#: gio/gdbusauthmechanismsha1.c:313
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
@@ -586,24 +586,34 @@ msgstr ""
 "Los permisos de la carpeta «%s» están mal formados. Se esperaba el modo "
 "0700, se obtuvo 0%o"
 
-#: gio/gdbusauthmechanismsha1.c:341
+#: gio/gdbusauthmechanismsha1.c:346 gio/gdbusauthmechanismsha1.c:357
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Error al crear la carpeta %s: %s"
 
-#: gio/gdbusauthmechanismsha1.c:386
+#: gio/gdbusauthmechanismsha1.c:359 gio/gfile.c:1044 gio/gfile.c:1282
+#: gio/gfile.c:1420 gio/gfile.c:1658 gio/gfile.c:1713 gio/gfile.c:1771
+#: gio/gfile.c:1855 gio/gfile.c:1912 gio/gfile.c:1976 gio/gfile.c:2031
+#: gio/gfile.c:3745 gio/gfile.c:3800 gio/gfile.c:4093 gio/gfile.c:4563
+#: gio/gfile.c:4974 gio/gfile.c:5059 gio/gfile.c:5149 gio/gfile.c:5246
+#: gio/gfile.c:5333 gio/gfile.c:5434 gio/gfile.c:8144 gio/gfile.c:8234
+#: gio/gfile.c:8318 gio/win32/gwinhttpfile.c:453
+msgid "Operation not supported"
+msgstr "Operación no soportada"
+
+#: gio/gdbusauthmechanismsha1.c:402
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Error al abrir el depósito de claves «%s» para su lectura: "
 
-#: gio/gdbusauthmechanismsha1.c:409 gio/gdbusauthmechanismsha1.c:731
+#: gio/gdbusauthmechanismsha1.c:425 gio/gdbusauthmechanismsha1.c:747
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "La línea %d del depósito de claves en «%s» con contenido «%s» está mal "
 "formada"
 
-#: gio/gdbusauthmechanismsha1.c:423 gio/gdbusauthmechanismsha1.c:745
+#: gio/gdbusauthmechanismsha1.c:439 gio/gdbusauthmechanismsha1.c:761
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -611,7 +621,7 @@ msgstr ""
 "El primer token de la línea %d del depósito de claves en «%s» con contenido "
 "«%s» está mal formado"
 
-#: gio/gdbusauthmechanismsha1.c:437 gio/gdbusauthmechanismsha1.c:759
+#: gio/gdbusauthmechanismsha1.c:453 gio/gdbusauthmechanismsha1.c:775
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -619,58 +629,58 @@ msgstr ""
 "El segundo token de la línea %d del depósito de claves en «%s» con contenido "
 "«%s» está mal formado"
 
-#: gio/gdbusauthmechanismsha1.c:461
+#: gio/gdbusauthmechanismsha1.c:477
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "No se encontró la «cookie» con ID %d en el depósito de claves en «%s»"
 
-#: gio/gdbusauthmechanismsha1.c:507
+#: gio/gdbusauthmechanismsha1.c:523
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Error al crear el archivo de bloqueo «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:571
+#: gio/gdbusauthmechanismsha1.c:587
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Error al eliminar el archivo de bloqueo antiguo «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:610
+#: gio/gdbusauthmechanismsha1.c:626
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Error al cerrar (desenlazar) el archivo de bloqueo «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:621
+#: gio/gdbusauthmechanismsha1.c:637
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Error al desenlazar el archivo de bloqueo «%s»: %s"
 
-#: gio/gdbusauthmechanismsha1.c:698
+#: gio/gdbusauthmechanismsha1.c:714
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Error al abrir el depósito de claves «%s» para su escritura:"
 
-#: gio/gdbusauthmechanismsha1.c:892
+#: gio/gdbusauthmechanismsha1.c:908
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr ""
 "(Adicionalmente, también falló la liberación del bloqueo para «%s»: %s)"
 
-#: gio/gdbusconnection.c:595 gio/gdbusconnection.c:2391
+#: gio/gdbusconnection.c:595 gio/gdbusconnection.c:2397
 msgid "The connection is closed"
 msgstr "La conexión está cerrada"
 
-#: gio/gdbusconnection.c:1892
+#: gio/gdbusconnection.c:1894
 msgid "Timeout was reached"
 msgstr "Se alcanzó el tiempo de expiración"
 
-#: gio/gdbusconnection.c:2513
+#: gio/gdbusconnection.c:2519
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Se encontraron opciones no soportadas al construir la conexión del lado del "
 "cliente"
 
-#: gio/gdbusconnection.c:4163 gio/gdbusconnection.c:4510
+#: gio/gdbusconnection.c:4169 gio/gdbusconnection.c:4516
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
@@ -678,75 +688,75 @@ msgstr ""
 "No existe la interfaz «org.freedesktop.DBus.Properties» en el objeto en la "
 "ruta %s"
 
-#: gio/gdbusconnection.c:4305
+#: gio/gdbusconnection.c:4311
 #, c-format
 msgid "No such property “%s”"
 msgstr "No existe la propiedad «%s»"
 
-#: gio/gdbusconnection.c:4317
+#: gio/gdbusconnection.c:4323
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "No se puede leer la propiedad «%s»"
 
-#: gio/gdbusconnection.c:4328
+#: gio/gdbusconnection.c:4334
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "No se puede escribir la propiedad «%s»"
 
-#: gio/gdbusconnection.c:4348
+#: gio/gdbusconnection.c:4354
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se "
 "obtuvo «%s»."
 
-#: gio/gdbusconnection.c:4453 gio/gdbusconnection.c:4661
-#: gio/gdbusconnection.c:6657
+#: gio/gdbusconnection.c:4459 gio/gdbusconnection.c:4667
+#: gio/gdbusconnection.c:6663
 #, c-format
 msgid "No such interface “%s”"
 msgstr "La interfaz «%s» no existe"
 
-#: gio/gdbusconnection.c:4879 gio/gdbusconnection.c:7166
+#: gio/gdbusconnection.c:4885 gio/gdbusconnection.c:7172
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "No existe la interfaz «%s» en el objeto en la ruta %s"
 
-#: gio/gdbusconnection.c:4977
+#: gio/gdbusconnection.c:4983
 #, c-format
 msgid "No such method “%s”"
 msgstr "No existe el método «%s»"
 
-#: gio/gdbusconnection.c:5008
+#: gio/gdbusconnection.c:5014
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "El tipo de mensaje, «%s», no coincide con el tipo esperado «%s»"
 
-#: gio/gdbusconnection.c:5206
+#: gio/gdbusconnection.c:5212
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Ya existe un objeto exportado para la interfaz %s en %s"
 
-#: gio/gdbusconnection.c:5432
+#: gio/gdbusconnection.c:5438
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "No se pudo obtener la propiedad %s.%s"
 
-#: gio/gdbusconnection.c:5488
+#: gio/gdbusconnection.c:5494
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "No se pudo establecer la propiedad %s.%s"
 
-#: gio/gdbusconnection.c:5666
+#: gio/gdbusconnection.c:5672
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "El método «%s» devolvió el tipo «%s» pero se esperaba «%s»"
 
-#: gio/gdbusconnection.c:6768
+#: gio/gdbusconnection.c:6774
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "El método «%s» con interfaz «%s» y firma «%s» no existe"
 
-#: gio/gdbusconnection.c:6889
+#: gio/gdbusconnection.c:6895
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ya se ha exportado un subárbol para %s"
@@ -961,23 +971,23 @@ msgstr "Error al devolver el cuerpo de tipo «%s»"
 msgid "Error return with empty body"
 msgstr "Error al devolver un cuepro vacío"
 
-#: gio/gdbusprivate.c:2247
+#: gio/gdbusprivate.c:2246
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Escriba un carácter cualquiera para cerrar esta ventana)\n"
 
-#: gio/gdbusprivate.c:2421
+#: gio/gdbusprivate.c:2420
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 "La sesión de dbus no está en ejecución, y falló el lanzamiento automático"
 
-#: gio/gdbusprivate.c:2444
+#: gio/gdbusprivate.c:2443
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "No se pudo obtener el perfil de hardware: %s"
 
-#: gio/gdbusprivate.c:2489
+#: gio/gdbusprivate.c:2488
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "No se puede cargar /var/lib/dbus/machine-id o /etc/machine-id: "
 
@@ -1225,7 +1235,6 @@ msgstr "Error al analizar el parámetro %d del tipo «%s»: %s\n"
 
 #: gio/gdbus-tool.c:1185
 #, c-format
-#| msgid "Error reading from handle: %s"
 msgid "Error adding handle %d: %s\n"
 msgstr "Error al añadir el manejador %d: %s\n"
 
@@ -1405,16 +1414,6 @@ msgstr "Número de tokens (%d) mal formados en la codificación GEmblemedIcon"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Se esperaba un GEmblem para GEmblemedIconjo"
 
-#: gio/gfile.c:1044 gio/gfile.c:1282 gio/gfile.c:1420 gio/gfile.c:1658
-#: gio/gfile.c:1713 gio/gfile.c:1771 gio/gfile.c:1855 gio/gfile.c:1912
-#: gio/gfile.c:1976 gio/gfile.c:2031 gio/gfile.c:3745 gio/gfile.c:3800
-#: gio/gfile.c:4093 gio/gfile.c:4563 gio/gfile.c:4974 gio/gfile.c:5059
-#: gio/gfile.c:5149 gio/gfile.c:5246 gio/gfile.c:5333 gio/gfile.c:5434
-#: gio/gfile.c:8144 gio/gfile.c:8234 gio/gfile.c:8318
-#: gio/win32/gwinhttpfile.c:453
-msgid "Operation not supported"
-msgstr "Operación no soportada"
-
 #. Translators: This is an error message when
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
@@ -1423,7 +1422,7 @@ msgstr "Operación no soportada"
 msgid "Containing mount does not exist"
 msgstr "El punto de montaje contenido no existe"
 
-#: gio/gfile.c:2590 gio/glocalfile.c:2430
+#: gio/gfile.c:2590 gio/glocalfile.c:2449
 msgid "Can’t copy over directory"
 msgstr "No se puede copiar sobre la carpeta"
 
@@ -1502,12 +1501,12 @@ msgstr "El enumerador del archivo tiene una operación excepcional"
 msgid "File enumerator is already closed"
 msgstr "El enumerador del archivo ya está cerrado"
 
-#: gio/gfileicon.c:236
+#: gio/gfileicon.c:250
 #, c-format
 msgid "Can’t handle version %d of GFileIcon encoding"
 msgstr "No se puede manejar la versión %d de la codificación GFileIcon"
 
-#: gio/gfileicon.c:246
+#: gio/gfileicon.c:260
 msgid "Malformed input data for GFileIcon"
 msgstr "Datos de entrada mal formados para GFileIcon"
 
@@ -1673,58 +1672,63 @@ msgid "Show information about locations"
 msgstr "Mostrar información sobre las ubicaciones"
 
 #: gio/gio-tool.c:232
+#| msgid "List static actions for an application (from .desktop file)"
+msgid "Launch an application from a desktop file"
+msgstr "Lanzar una aplicación desde un archivo .desktop"
+
+#: gio/gio-tool.c:233
 msgid "List the contents of locations"
 msgstr "Listar el contenido de las ubicaciones"
 
-#: gio/gio-tool.c:233
+#: gio/gio-tool.c:234
 msgid "Get or set the handler for a mimetype"
 msgstr "Obtener o establecer el gestor para un tipo MIME"
 
-#: gio/gio-tool.c:234
+#: gio/gio-tool.c:235
 msgid "Create directories"
 msgstr "Crear carpetas"
 
-#: gio/gio-tool.c:235
+#: gio/gio-tool.c:236
 msgid "Monitor files and directories for changes"
 msgstr "Monitorizar cambios en archivos y claves"
 
-#: gio/gio-tool.c:236
+#: gio/gio-tool.c:237
 msgid "Mount or unmount the locations"
 msgstr "Montar o desmontar las ubicaciones"
 
-#: gio/gio-tool.c:237
+#: gio/gio-tool.c:238
 msgid "Move one or more files"
 msgstr "Mover uno o más archivos"
 
-#: gio/gio-tool.c:238
+#: gio/gio-tool.c:239
 msgid "Open files with the default application"
 msgstr "Abrir archivos con la aplicación predeterminada"
 
-#: gio/gio-tool.c:239
+#: gio/gio-tool.c:240
 msgid "Rename a file"
 msgstr "Renombrar un archivo"
 
-#: gio/gio-tool.c:240
+#: gio/gio-tool.c:241
 msgid "Delete one or more files"
 msgstr "Eliminar uno o más archivos"
 
-#: gio/gio-tool.c:241
+#: gio/gio-tool.c:242
 msgid "Read from standard input and save"
 msgstr "Leer de la entrada estándar y guardar"
 
-#: gio/gio-tool.c:242
+#: gio/gio-tool.c:243
 msgid "Set a file attribute"
 msgstr "Establecer el atributo de un archivo"
 
-#: gio/gio-tool.c:243
+#: gio/gio-tool.c:244
 msgid "Move files or directories to the trash"
 msgstr "Mover archivos o carpetas a la papelera"
 
-#: gio/gio-tool.c:244
+#: gio/gio-tool.c:245
 msgid "Lists the contents of locations in a tree"
 msgstr "Listar el contenido de las ubicaciones en un árbol"
 
-#: gio/gio-tool.c:246
+#: gio/gio-tool.c:247
 #, c-format
 msgid "Use %s to get detailed help.\n"
 msgstr ""
@@ -1736,12 +1740,12 @@ msgid "Error writing to stdout"
 msgstr "Error al escribir en la salida estándar"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:333 gio/gio-tool-list.c:172
+#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:172
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
-#: gio/gio-tool-trash.c:90 gio/gio-tool-tree.c:239
+#: gio/gio-tool-trash.c:220 gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "UBICACIÓN"
 
@@ -1759,9 +1763,9 @@ msgstr ""
 "ubicaciones GIO en lugar de archivos locales: por ejemplo, puede\n"
 "usar algo como smb://servidor/recurso/archivo.txt como ubicación."
 
-#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
+#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:371 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
-#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:145
+#: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr "No se han proporcionado ubicaciones"
 
@@ -1896,24 +1900,24 @@ msgstr "URI: %s\n"
 msgid "local path: %s\n"
 msgstr "ruta local: %s\n"
 
-#: gio/gio-tool-info.c:199
+#: gio/gio-tool-info.c:205
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
 msgstr "montaje unix: %s%s %s %s %s\n"
 
-#: gio/gio-tool-info.c:279
+#: gio/gio-tool-info.c:286
 msgid "Settable attributes:\n"
 msgstr "Atributos que se pueden establecer:\n"
 
-#: gio/gio-tool-info.c:303
+#: gio/gio-tool-info.c:310
 msgid "Writable attribute namespaces:\n"
 msgstr "Espacios de nombres de atributos que se pueden escribir:\n"
 
-#: gio/gio-tool-info.c:338
+#: gio/gio-tool-info.c:345
 msgid "Show information about locations."
 msgstr "Mostrar información sobre las ubicaciones."
 
-#: gio/gio-tool-info.c:340
+#: gio/gio-tool-info.c:347
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1927,6 +1931,47 @@ msgstr ""
 "del archivo se puede especificar con su nombre GIO, es decir standard::icon\n"
 "o simplemente por su espacio de nombres, ej. unix o con «*», que obtiene "
 "todos los atributos"
+
+#. Translators: commandline placeholder
+#: gio/gio-tool-launch.c:54
+msgid "DESKTOP-FILE [FILE-ARG …]"
+msgstr "ARCHIVO-DESKTOP [ARG-ARCH …]"
+
+#: gio/gio-tool-launch.c:57
+msgid ""
+"Launch an application from a desktop file, passing optional filename "
+"arguments to it."
+msgstr ""
+"Lanzar una aplicación desde un archivo .desktop, pasándole argumentos de "
+"nombre de archivo opcionales."
+
+#: gio/gio-tool-launch.c:77
+#| msgid "No files given"
+msgid "No desktop file given"
+msgstr "No se han proporcionado un archivo .desktop"
+
+#: gio/gio-tool-launch.c:85
+#| msgid "There is no GCredentials support for your platform"
+msgid "The launch command is not currently supported on this platform"
+msgstr "El comando lanzado no está soportado actualmente en esta plataforma"
+
+#: gio/gio-tool-launch.c:98
+#, c-format
+#| msgid "Unable to trash file %s: %s"
+msgid "Unable to load ‘%s‘: %s"
+msgstr "No se pudo cargar «%s»: %s"
+
+#: gio/gio-tool-launch.c:107
+#, c-format
+#| msgid "Failed to load info for handler “%s”"
+msgid "Unable to load application information for ‘%s‘"
+msgstr "No se pudo cargar la información de la aplicación para «%s»"
+
+#: gio/gio-tool-launch.c:119
+#, c-format
+#| msgid "Default application for “%s”: %s\n"
+msgid "Unable to launch application ‘%s’: %s"
+msgstr "No se pudo lanzar la aplicación «%s»: %s"
 
 #: gio/gio-tool-list.c:37 gio/gio-tool-tree.c:32
 msgid "Show hidden files"
@@ -2195,7 +2240,7 @@ msgstr ""
 "Abrir archivos con la aplicación predeterminada que\n"
 "esté registrada para manejar archivos de este tipo."
 
-#: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:31
+#: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:33
 msgid "Ignore nonexistent files, never prompt"
 msgstr "Ignorar archivos no existentes, nunca preguntar"
 
@@ -2308,13 +2353,55 @@ msgstr "Valor no especificado"
 msgid "Invalid attribute type “%s”"
 msgstr "Tipo de atributo «%s» no válido"
 
-#: gio/gio-tool-trash.c:32
+#: gio/gio-tool-trash.c:34
 msgid "Empty the trash"
 msgstr "Vaciar la papelera"
 
-#: gio/gio-tool-trash.c:95
-msgid "Move files or directories to the trash."
-msgstr "Mover archivos o carpetas a la papelera."
+#: gio/gio-tool-trash.c:35
+#| msgid "List the contents of the locations."
+msgid "List files in the trash with their original locations"
+msgstr "Listar los archivos de la papelera con sus ubicaciones originales"
+
+#: gio/gio-tool-trash.c:36
+msgid ""
+"Restore a file from trash to its original location (possibly recreating the "
+"directory)"
+msgstr ""
+"Restaurar un archivo de la papelera a su ubicación original (posiblemente "
+"recreando la carpeta)"
+
+#: gio/gio-tool-trash.c:106
+#| msgid "Unable to find terminal required for application"
+msgid "Unable to find original path"
+msgstr "No se pudo encontrar la ruta original"
+
+#: gio/gio-tool-trash.c:123
+#| msgid "Unable to create socket: %s"
+msgid "Unable to recreate original location: "
+msgstr "No se pudo recrear la ubicación original: "
+
+#: gio/gio-tool-trash.c:136
+#| msgid "unable to find desktop file for application %s\n"
+msgid "Unable to move file to its original location: "
+msgstr "No se puede mover el archivo a su ubicación original: "
+
+#: gio/gio-tool-trash.c:225
+#| msgid "Move files or directories to the trash."
+msgid "Move/Restore files or directories to the trash."
+msgstr "Mover o restaurar archivos o carpetas a/de la papelera."
+
+#: gio/gio-tool-trash.c:227
+msgid ""
+"Note: for --restore switch, if the original location of the trashed file \n"
+"already exists, it will not be overwritten unless --force is set."
+msgstr ""
+"Nota: para la opción --restore, si la ubicación original del archivo "
+"eliminado\n"
+"ya existe no se sobrescribirá a menos que se indique la opción --force."
+
+#: gio/gio-tool-trash.c:258
+msgid "Location given doesn't start with trash:///"
+msgstr "La ubicación indicada no empieza por trash:///"
 
 #: gio/gio-tool-tree.c:33
 msgid "Follow symbolic links, mounts and shortcuts"
@@ -2981,8 +3068,8 @@ msgstr "Error al leer el archivo %s: %s"
 msgid "Can’t rename file, filename already exists"
 msgstr "No se puede renombrar el archivo, el nombre de archivo ya existe"
 
-#: gio/glocalfile.c:1182 gio/glocalfile.c:2324 gio/glocalfile.c:2352
-#: gio/glocalfile.c:2491 gio/glocalfileoutputstream.c:650
+#: gio/glocalfile.c:1182 gio/glocalfile.c:2343 gio/glocalfile.c:2371
+#: gio/glocalfile.c:2510 gio/glocalfileoutputstream.c:650
 msgid "Invalid filename"
 msgstr "Nombre de archivo no válido"
 
@@ -2996,92 +3083,92 @@ msgstr "Error al abrir el archivo %s: %s"
 msgid "Error removing file %s: %s"
 msgstr "Error al eliminar el archivo %s: %s"
 
-#: gio/glocalfile.c:1969
+#: gio/glocalfile.c:1980 gio/glocalfile.c:1991
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Error al mover a la papelera el archivo %s: %s"
 
-#: gio/glocalfile.c:2010
+#: gio/glocalfile.c:2029
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "No se pudo crear la carpeta de papelera %s: %s"
 
-#: gio/glocalfile.c:2030
+#: gio/glocalfile.c:2049
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "No se pudo encontrar la carpeta de nivel superior para la papelera %s"
 
-#: gio/glocalfile.c:2038
+#: gio/glocalfile.c:2057
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr "Copiar (reflink/clone) entre puntos de montaje no está soportado"
 
-#: gio/glocalfile.c:2118 gio/glocalfile.c:2138
+#: gio/glocalfile.c:2137 gio/glocalfile.c:2157
 #, c-format
 msgid "Unable to find or create trash directory for %s"
 msgstr "No se pudo encontrar o crear la carpeta de la papelera para %s"
 
-#: gio/glocalfile.c:2173
+#: gio/glocalfile.c:2192
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "No se pudo crear la información de papelera para el archivo %s: %s"
 
-#: gio/glocalfile.c:2235
+#: gio/glocalfile.c:2254
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr ""
 "No se pudo enviar a la papelera el archivo %s entre sistemas de archivos"
 
-#: gio/glocalfile.c:2239 gio/glocalfile.c:2295
+#: gio/glocalfile.c:2258 gio/glocalfile.c:2314
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "No se pudo enviar a la papelera el archivo %s: %s"
 
-#: gio/glocalfile.c:2301
+#: gio/glocalfile.c:2320
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "No se pudo enviar a la papelera el archivo %s"
 
-#: gio/glocalfile.c:2327
+#: gio/glocalfile.c:2346
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Error al crear la carpeta %s: %s"
 
-#: gio/glocalfile.c:2356
+#: gio/glocalfile.c:2375
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "El sistema de archivos no soporta enlaces simbólicos"
 
-#: gio/glocalfile.c:2359
+#: gio/glocalfile.c:2378
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Error al crear el enlace simbólico %s: %s"
 
-#: gio/glocalfile.c:2402 gio/glocalfile.c:2437 gio/glocalfile.c:2494
+#: gio/glocalfile.c:2421 gio/glocalfile.c:2456 gio/glocalfile.c:2513
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Error al mover el archivo %s: %s"
 
-#: gio/glocalfile.c:2425
+#: gio/glocalfile.c:2444
 msgid "Can’t move directory over directory"
 msgstr "No se puede mover una carpeta sobre una carpeta"
 
-#: gio/glocalfile.c:2451 gio/glocalfileoutputstream.c:1039
+#: gio/glocalfile.c:2470 gio/glocalfileoutputstream.c:1039
 #: gio/glocalfileoutputstream.c:1053 gio/glocalfileoutputstream.c:1068
 #: gio/glocalfileoutputstream.c:1085 gio/glocalfileoutputstream.c:1099
 msgid "Backup file creation failed"
 msgstr "Falló la creación del archivo de respaldo"
 
-#: gio/glocalfile.c:2470
+#: gio/glocalfile.c:2489
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Error al eliminar el archivo destino: %s"
 
-#: gio/glocalfile.c:2484
+#: gio/glocalfile.c:2503
 msgid "Move between mounts not supported"
 msgstr "No se soporta mover archivos entre puntos de montaje"
 
-#: gio/glocalfile.c:2658
+#: gio/glocalfile.c:2677
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "No se pudo determinar el uso de disco de %s: %s"
@@ -3208,16 +3295,16 @@ msgstr "Error al establecer o modificar el tiempo de acceso: %s"
 msgid "SELinux context must be non-NULL"
 msgstr "El contexto SELinux debe ser no nulo"
 
-#: gio/glocalfileinfo.c:2728
+#: gio/glocalfileinfo.c:2720
+msgid "SELinux is not enabled on this system"
+msgstr "SELinux no está activado en este sistema"
+
+#: gio/glocalfileinfo.c:2730
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Error al establecer el contexto SELinux: %s"
 
-#: gio/glocalfileinfo.c:2735
-msgid "SELinux is not enabled on this system"
-msgstr "SELinux no está activado en este sistema"
-
-#: gio/glocalfileinfo.c:2827
+#: gio/glocalfileinfo.c:2823
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Establecer el atributo %s no está soportado"
@@ -3450,15 +3537,15 @@ msgstr "%s no está implementado"
 msgid "Invalid domain"
 msgstr "Dominio no válido"
 
-#: gio/gresource.c:672 gio/gresource.c:931 gio/gresource.c:970
-#: gio/gresource.c:1094 gio/gresource.c:1166 gio/gresource.c:1239
-#: gio/gresource.c:1320 gio/gresourcefile.c:476 gio/gresourcefile.c:599
+#: gio/gresource.c:672 gio/gresource.c:933 gio/gresource.c:972
+#: gio/gresource.c:1096 gio/gresource.c:1168 gio/gresource.c:1241
+#: gio/gresource.c:1322 gio/gresourcefile.c:476 gio/gresourcefile.c:599
 #: gio/gresourcefile.c:736
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "El recurso en «%s» no existe"
 
-#: gio/gresource.c:837
+#: gio/gresource.c:839
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "El recurso en «%s» falló al descomprimir"
@@ -4473,25 +4560,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "El nombre de la ruta «%s» no es una ruta absoluta"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:220
+#: glib/gdatetime.c:221
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %H:%M:%S, %e de %B de %Y"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:223
+#: glib/gdatetime.c:224
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:226
+#: glib/gdatetime.c:227
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:229
+#: glib/gdatetime.c:230
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4512,62 +4599,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:268
+#: glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "January"
 msgstr "enero"
 
-#: glib/gdatetime.c:270
+#: glib/gdatetime.c:271
 msgctxt "full month name"
 msgid "February"
 msgstr "febrero"
 
-#: glib/gdatetime.c:272
+#: glib/gdatetime.c:273
 msgctxt "full month name"
 msgid "March"
 msgstr "marzo"
 
-#: glib/gdatetime.c:274
+#: glib/gdatetime.c:275
 msgctxt "full month name"
 msgid "April"
 msgstr "abril"
 
-#: glib/gdatetime.c:276
+#: glib/gdatetime.c:277
 msgctxt "full month name"
 msgid "May"
 msgstr "mayo"
 
-#: glib/gdatetime.c:278
+#: glib/gdatetime.c:279
 msgctxt "full month name"
 msgid "June"
 msgstr "junio"
 
-#: glib/gdatetime.c:280
+#: glib/gdatetime.c:281
 msgctxt "full month name"
 msgid "July"
 msgstr "julio"
 
-#: glib/gdatetime.c:282
+#: glib/gdatetime.c:283
 msgctxt "full month name"
 msgid "August"
 msgstr "agosto"
 
-#: glib/gdatetime.c:284
+#: glib/gdatetime.c:285
 msgctxt "full month name"
 msgid "September"
 msgstr "septiembre"
 
-#: glib/gdatetime.c:286
+#: glib/gdatetime.c:287
 msgctxt "full month name"
 msgid "October"
 msgstr "octubre"
 
-#: glib/gdatetime.c:288
+#: glib/gdatetime.c:289
 msgctxt "full month name"
 msgid "November"
 msgstr "noviembre"
 
-#: glib/gdatetime.c:290
+#: glib/gdatetime.c:291
 msgctxt "full month name"
 msgid "December"
 msgstr "diciembre"
@@ -4589,132 +4676,132 @@ msgstr "diciembre"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:322
+#: glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "ene"
 
-#: glib/gdatetime.c:324
+#: glib/gdatetime.c:325
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "feb"
 
-#: glib/gdatetime.c:326
+#: glib/gdatetime.c:327
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "mar"
 
-#: glib/gdatetime.c:328
+#: glib/gdatetime.c:329
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "abr"
 
-#: glib/gdatetime.c:330
+#: glib/gdatetime.c:331
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "may"
 
-#: glib/gdatetime.c:332
+#: glib/gdatetime.c:333
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "jun"
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:335
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "jul"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:337
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "ago"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:339
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "sep"
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:341
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "oct"
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:343
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "nov"
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:345
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "dic"
 
-#: glib/gdatetime.c:359
+#: glib/gdatetime.c:360
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Lunes"
 
-#: glib/gdatetime.c:361
+#: glib/gdatetime.c:362
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Martes"
 
-#: glib/gdatetime.c:363
+#: glib/gdatetime.c:364
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Miércoles"
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:366
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Jueves"
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:368
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Viernes"
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:370
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sábado"
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:372
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Domingo"
 
-#: glib/gdatetime.c:386
+#: glib/gdatetime.c:387
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Lun"
 
-#: glib/gdatetime.c:388
+#: glib/gdatetime.c:389
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Mar"
 
-#: glib/gdatetime.c:390
+#: glib/gdatetime.c:391
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Mié"
 
-#: glib/gdatetime.c:392
+#: glib/gdatetime.c:393
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Jue"
 
-#: glib/gdatetime.c:394
+#: glib/gdatetime.c:395
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Vie"
 
-#: glib/gdatetime.c:396
+#: glib/gdatetime.c:397
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sáb"
 
-#: glib/gdatetime.c:398
+#: glib/gdatetime.c:399
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Dom"
@@ -4736,62 +4823,62 @@ msgstr "Dom"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:462
+#: glib/gdatetime.c:463
 msgctxt "full month name with day"
 msgid "January"
 msgstr "enero"
 
-#: glib/gdatetime.c:464
+#: glib/gdatetime.c:465
 msgctxt "full month name with day"
 msgid "February"
 msgstr "febrero"
 
-#: glib/gdatetime.c:466
+#: glib/gdatetime.c:467
 msgctxt "full month name with day"
 msgid "March"
 msgstr "marzo"
 
-#: glib/gdatetime.c:468
+#: glib/gdatetime.c:469
 msgctxt "full month name with day"
 msgid "April"
 msgstr "abril"
 
-#: glib/gdatetime.c:470
+#: glib/gdatetime.c:471
 msgctxt "full month name with day"
 msgid "May"
 msgstr "mayo"
 
-#: glib/gdatetime.c:472
+#: glib/gdatetime.c:473
 msgctxt "full month name with day"
 msgid "June"
 msgstr "junio"
 
-#: glib/gdatetime.c:474
+#: glib/gdatetime.c:475
 msgctxt "full month name with day"
 msgid "July"
 msgstr "julio"
 
-#: glib/gdatetime.c:476
+#: glib/gdatetime.c:477
 msgctxt "full month name with day"
 msgid "August"
 msgstr "agosto"
 
-#: glib/gdatetime.c:478
+#: glib/gdatetime.c:479
 msgctxt "full month name with day"
 msgid "September"
 msgstr "septiembre"
 
-#: glib/gdatetime.c:480
+#: glib/gdatetime.c:481
 msgctxt "full month name with day"
 msgid "October"
 msgstr "octubre"
 
-#: glib/gdatetime.c:482
+#: glib/gdatetime.c:483
 msgctxt "full month name with day"
 msgid "November"
 msgstr "noviembre"
 
-#: glib/gdatetime.c:484
+#: glib/gdatetime.c:485
 msgctxt "full month name with day"
 msgid "December"
 msgstr "diciembre"
@@ -4813,74 +4900,74 @@ msgstr "diciembre"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:549
+#: glib/gdatetime.c:550
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "ene"
 
-#: glib/gdatetime.c:551
+#: glib/gdatetime.c:552
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "feb"
 
-#: glib/gdatetime.c:553
+#: glib/gdatetime.c:554
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "mar"
 
-#: glib/gdatetime.c:555
+#: glib/gdatetime.c:556
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "abr"
 
-#: glib/gdatetime.c:557
+#: glib/gdatetime.c:558
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "may"
 
-#: glib/gdatetime.c:559
+#: glib/gdatetime.c:560
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "jun"
 
-#: glib/gdatetime.c:561
+#: glib/gdatetime.c:562
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "jul"
 
-#: glib/gdatetime.c:563
+#: glib/gdatetime.c:564
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "ago"
 
-#: glib/gdatetime.c:565
+#: glib/gdatetime.c:566
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "sep"
 
-#: glib/gdatetime.c:567
+#: glib/gdatetime.c:568
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "oct"
 
-#: glib/gdatetime.c:569
+#: glib/gdatetime.c:570
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "nov"
 
-#: glib/gdatetime.c:571
+#: glib/gdatetime.c:572
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "dic"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:588
+#: glib/gdatetime.c:589
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:591
+#: glib/gdatetime.c:592
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -5840,47 +5927,47 @@ msgstr "El proceso hijo se detuvo por la señal %ld"
 msgid "Child process exited abnormally"
 msgstr "El proceso hijo terminó de forma anormal"
 
-#: glib/gspawn.c:1540 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1548 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falló al leer desde el conducto hijo (%s)"
 
-#: glib/gspawn.c:1796
+#: glib/gspawn.c:1804
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Falló al ejecutar el proceso hijo «%s» (%s)"
 
-#: glib/gspawn.c:1879
+#: glib/gspawn.c:1887
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Falló al bifurcar (fork) (%s)"
 
-#: glib/gspawn.c:2034 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2042 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Falló al cambiar a la carpeta «%s» (%s)"
 
-#: glib/gspawn.c:2044
+#: glib/gspawn.c:2052
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Falló al ejecutar el proceso hijo «%s» (%s)"
 
-#: glib/gspawn.c:2054
+#: glib/gspawn.c:2062
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Falló al redirigir la salida o la entrada del proceso hijo (%s)"
 
-#: glib/gspawn.c:2063
+#: glib/gspawn.c:2071
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Falló al bifurcar el proceso hijo (%s)"
 
-#: glib/gspawn.c:2071
+#: glib/gspawn.c:2079
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Error desconocido al ejecutar el proceso hijo «%s»"
 
-#: glib/gspawn.c:2095
+#: glib/gspawn.c:2103
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Falló al leer suficientes datos desde el conducto del pid hijo (%s)"
@@ -5953,54 +6040,60 @@ msgstr "El número «%s» está fuera de los límites [%s, %s]"
 msgid "“%s” is not an unsigned number"
 msgstr "«%s» no es un número sin signo"
 
-#: glib/guri.c:313
+#: glib/guri.c:315
 #, no-c-format
 msgid "Invalid %-encoding in URI"
 msgstr "codificación %-e no válida en el URI"
 
-#: glib/guri.c:330
+#: glib/guri.c:332
 msgid "Illegal character in URI"
 msgstr "Caracter ilegal en el URI"
 
-#: glib/guri.c:359
+#: glib/guri.c:366
 msgid "Non-UTF-8 characters in URI"
 msgstr "Caracteres no UTF-8 en el URI"
 
-#: glib/guri.c:538
+#: glib/guri.c:546
 #, c-format
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
 msgstr "Dirección IPv6 «%.*s» no válida en el URI"
 
-#: glib/guri.c:593
+#: glib/guri.c:601
 #, c-format
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgstr "Dirección IP codificada «%.*s» no válida en el URI"
 
-#: glib/guri.c:625 glib/guri.c:637
+#: glib/guri.c:613
+#, c-format
+#| msgid "Illegal encoded IP address ‘%.*s’ in URI"
+msgid "Illegal internationalized hostname ‘%.*s’ in URI"
+msgstr "Nombre de equipo traducido «%.*s» no válido en el URI"
+
+#: glib/guri.c:645 glib/guri.c:657
 #, c-format
 msgid "Could not parse port ‘%.*s’ in URI"
 msgstr "No se pudo analizar el puerto «%.*s» en el URI"
 
-#: glib/guri.c:644
+#: glib/guri.c:664
 #, c-format
 msgid "Port ‘%.*s’ in URI is out of range"
 msgstr "Puerto «%.*s» en el URI fuera de rango"
 
-#: glib/guri.c:1124 glib/guri.c:1188
+#: glib/guri.c:1224 glib/guri.c:1288
 #, c-format
 msgid "URI ‘%s’ is not an absolute URI"
 msgstr "El URI «%s» no es un URI absoluto"
 
-#: glib/guri.c:1130
+#: glib/guri.c:1230
 #, c-format
 msgid "URI ‘%s’ has no host component"
 msgstr "El URI «%s» no tiene componente de equipo"
 
-#: glib/guri.c:1335
+#: glib/guri.c:1435
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "El URI no es absoluto y no se ha proporcionado un URI base"
 
-#: glib/guri.c:2088
+#: glib/guri.c:2209
 msgid "Missing ‘=’ and parameter value"
 msgstr "Faltan el «=» y el valor del parámetro"
 
@@ -6294,9 +6387,6 @@ msgstr "%.1f EB"
 
 #~ msgid "No such interface"
 #~ msgstr "No existe tal interfaz"
-
-#~ msgid "No files given"
-#~ msgstr "No se han proporcionado archivos"
 
 #~ msgid "Error getting writable attributes: %s\n"
 #~ msgstr "Error al obtener los atributos que se pueden escribir: %s\n"
