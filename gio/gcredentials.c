@@ -196,7 +196,7 @@ g_credentials_init (GCredentials *credentials)
  * Creates a new #GCredentials object with credentials matching the
  * the current process.
  *
- * Returns: A #GCredentials. Free with g_object_unref().
+ * Returns: (transfer full): A #GCredentials. Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -216,7 +216,7 @@ g_credentials_new (void)
  * that can be used in logging and debug messages. The format of the
  * returned string may change in future GLib release.
  *
- * Returns: A string that should be freed with g_free().
+ * Returns: (transfer full): A string that should be freed with g_free().
  *
  * Since: 2.26
  */
@@ -435,10 +435,10 @@ credentials_native_type_check (GCredentialsType  requested_type,
  * logged) to use this method if there is no #GCredentials support for
  * the OS or if @native_type isn't supported by the OS.
  *
- * Returns: The pointer to native credentials or %NULL if the
- * operation there is no #GCredentials support for the OS or if
- * @native_type isn't supported by the OS. Do not free the returned
- * data, it is owned by @credentials.
+ * Returns: (transfer none) (nullable): The pointer to native credentials or
+ *     %NULL if there is no #GCredentials support for the OS or if @native_type
+ *     isn't supported by the OS. Do not free the returned data, it is owned
+ *     by @credentials.
  *
  * Since: 2.26
  */
