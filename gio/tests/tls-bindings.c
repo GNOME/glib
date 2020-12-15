@@ -40,7 +40,6 @@ get_tls_channel_binding (void)
             G_TLS_CHANNEL_BINDING_TLS_UNIQUE, NULL, (GError **)&not_null));
 
   g_object_unref (tls);
-  g_object_unref (backend);
   g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*GLib-GIO-CRITICAL*");
@@ -76,7 +75,6 @@ get_dtls_channel_binding (void)
             G_TLS_CHANNEL_BINDING_TLS_UNIQUE, NULL, (GError **)&not_null));
 
   g_object_unref (dtls);
-  g_object_unref (backend);
   g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*GLib-GIO-CRITICAL*");
