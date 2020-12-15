@@ -507,7 +507,7 @@ g_credentials_set_native (GCredentials     *credentials,
  * OS or if the native credentials type does not contain information
  * about the UNIX user.
  *
- * Returns: The UNIX user identifier or -1 if @error is set.
+ * Returns: The UNIX user identifier or `-1` if @error is set.
  *
  * Since: 2.26
  */
@@ -572,7 +572,7 @@ g_credentials_get_unix_user (GCredentials    *credentials,
  * about the UNIX process ID (for example this is the case for
  * %G_CREDENTIALS_TYPE_APPLE_XUCRED).
  *
- * Returns: The UNIX process ID, or -1 if @error is set.
+ * Returns: The UNIX process ID, or `-1` if @error is set.
  *
  * Since: 2.36
  */
