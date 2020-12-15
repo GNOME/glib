@@ -343,7 +343,7 @@ def codegen_main():
             parts = args.glib_min_required.split(".", 3)
             glib_min_required = (int(parts[0]), int(parts[1] if len(parts) > 1 else 0))
             # Ignore micro component, but still validate it:
-            _ = int(parts[2] if len(parts) > 2 else 0)
+            _ = int(parts[2] if len(parts) > 2 else 0)  # noqa: F841
         except (ValueError, IndexError):
             print_error(
                 "Unrecognized --glib-min-required string ‘{}’".format(
@@ -365,7 +365,7 @@ def codegen_main():
             parts = args.glib_max_allowed.split(".", 3)
             glib_max_allowed = (int(parts[0]), int(parts[1] if len(parts) > 1 else 0))
             # Ignore micro component, but still validate it:
-            _ = int(parts[2] if len(parts) > 2 else 0)
+            _ = int(parts[2] if len(parts) > 2 else 0)  # noqa: F841
         except (ValueError, IndexError):
             print_error(
                 "Unrecognized --glib-max-allowed string ‘{}’".format(
