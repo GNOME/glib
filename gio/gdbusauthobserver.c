@@ -70,7 +70,9 @@
  * connections from any successfully authenticated user (but not from
  * anonymous connections using the `ANONYMOUS` mechanism). If you only
  * want to allow D-Bus connections from processes owned by the same uid
- * as the server, you would use a signal handler like the following:
+ * as the server, since GLib 2.68, you should use the
+ * %G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flag. It’s equivalent
+ * to the following signal handler:
  * 
  * |[<!-- language="C" -->
  * static gboolean
