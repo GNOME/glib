@@ -2255,6 +2255,7 @@ read_capable_app (const gunichar2 *app_key_path,
   GWin32RegistryKey *associations;
   const reg_verb *preferred_verb;
   GList *verbs = NULL;
+  gboolean verbs_in_root_key = TRUE;
 
   appkey = NULL;
   capabilities = NULL;
@@ -2269,7 +2270,9 @@ read_capable_app (const gunichar2 *app_key_path,
                                  &app_key_path_u8_folded) ||
       (appkey = g_win32_registry_key_new_w (app_key_path, NULL)) == NULL ||
       (capabilities = g_win32_registry_key_get_child_w (appkey, L"Capabilities", NULL)) == NULL ||
-      !get_verbs (capabilities, &preferred_verb, &verbs, L"", L"Shell", NULL))
+      !(get_verbs (appkey, &preferred_verb, &verbs, L"", L"Shell", NULL) ||
+        (verbs_in_root_key = FALSE) ||
+        get_verbs (capabilities, &preferred_verb, &verbs, L"", L"Shell", NULL)))
     {
       g_clear_pointer (&canonical_name_u8, g_free);
       g_clear_pointer (&canonical_name_folded, g_free);
@@ -2291,7 +2294,7 @@ read_capable_app (const gunichar2 *app_key_path,
   process_verbs_commands (g_steal_pointer (&verbs),
                           preferred_verb,
                           L"", /* [ab]use the fact that two strings are simply concatenated */
-                          g_win32_registry_key_get_path_w (capabilities),
+                          verbs_in_root_key ? app_key_path : g_win32_registry_key_get_path_w (capabilities),
                           FALSE,
                           app_add_verb,
                           app,
