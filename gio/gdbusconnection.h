@@ -432,7 +432,7 @@ gboolean         g_dbus_connection_unregister_object          (GDBusConnection  
  * specified (ie: to verify that the object path is valid).
  *
  * Hierarchies are not supported; the items that you return should not
- * contain the '/' character.
+ * contain the `/` character.
  *
  * The return value will be freed with g_strfreev().
  *
