@@ -3361,6 +3361,7 @@ uwp_package_cb (gpointer         user_data,
   gchar *app_user_model_id_u8_folded;
   GHashTableIter iter;
   GWin32AppInfoHandler *ext;
+  GWin32AppInfoHandler *url;
 
   if (!g_utf16_to_utf8_and_fold (app_user_model_id,
                                  -1,
@@ -3413,6 +3414,9 @@ uwp_package_cb (gpointer         user_data,
                                    g_strdup (app_user_model_id_u8_folded),
                                    g_object_ref (handler_rec));
             }
+
+          if (file_extn->chosen_handler == NULL)
+            g_set_object (&file_extn->chosen_handler, handler_rec);
 
           /* This is somewhat wasteful, but for 100% correct handling
            * we need to remember which extensions (handlers) support
@@ -3499,15 +3503,49 @@ uwp_package_cb (gpointer         user_data,
                                             NULL,
                                             app_user_model_id,
                                             app_user_model_id);
-          /* UWP URL handlers do not need any verbs */
+
           g_hash_table_insert (schema_rec->handlers,
                                g_strdup (app_user_model_id_u8_folded),
                                g_object_ref (handler_rec));
         }
 
+      if (schema_rec->chosen_handler == NULL)
+        g_set_object (&schema_rec->chosen_handler, handler_rec);
+
+      /* Technically, UWP apps don't use verbs for URIs,
+       * but we only store an app field in verbs,
+       * so each UWP URI handler has to have one.
+       * Let's call it "open".
+       */
+      uwp_handler_add_verb (handler_rec,
+                            app,
+                            L"open",
+                            NULL,
+                            TRUE);
+
       g_hash_table_insert (app->supported_urls,
                            g_steal_pointer (&proto_u8_folded),
                            g_object_ref (handler_rec));
+    }
+
+  g_hash_table_iter_init (&iter, app->supported_urls);
+
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &url))
+    {
+      gint i_hverb;
+
+      if (!url)
+        continue;
+
+      for (i_hverb = 0; i_hverb < url->verbs->len; i_hverb++)
+        {
+          GWin32AppInfoShellVerb *handler_verb;
+
+          handler_verb = _verb_idx (url->verbs, i_hverb);
+          uwp_app_add_verb (app, handler_verb->verb_name, handler_verb->verb_displayname);
+          if (handler_verb->app == NULL && handler_verb->is_uwp)
+            handler_verb->app = g_object_ref (app);
+        }
     }
 
   g_free (app_user_model_id_u8);
