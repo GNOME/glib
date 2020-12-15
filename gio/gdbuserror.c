@@ -512,8 +512,8 @@ g_dbus_error_is_remote_error (const GError *error)
  * (e.g. g_dbus_connection_call_finish()) unless
  * g_dbus_error_strip_remote_error() has been used on @error.
  *
- * Returns: an allocated string or %NULL if the D-Bus error name
- *     could not be found. Free with g_free().
+ * Returns: (nullable) (transfer full): an allocated string or %NULL if the
+ *     D-Bus error name could not be found. Free with g_free().
  *
  * Since: 2.26
  */
@@ -600,7 +600,7 @@ g_dbus_error_get_remote_error (const GError *error)
  * #GError instances for applications. Regular applications should not use
  * it.
  *
- * Returns: An allocated #GError. Free with g_error_free().
+ * Returns: (transfer full): An allocated #GError. Free with g_error_free().
  *
  * Since: 2.26
  */
@@ -810,7 +810,8 @@ g_dbus_error_strip_remote_error (GError *error)
  * This function is typically only used in object mappings to put a
  * #GError on the wire. Regular applications should not use it.
  *
- * Returns: A D-Bus error name (never %NULL). Free with g_free().
+ * Returns: (transfer full) (not nullable): A D-Bus error name (never %NULL).
+ *     Free with g_free().
  *
  * Since: 2.26
  */
