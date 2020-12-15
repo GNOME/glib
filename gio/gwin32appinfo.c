@@ -4009,7 +4009,9 @@ g_win32_app_info_get_name (GAppInfo *appinfo)
 {
   GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
 
-  if (info->app && info->app->canonical_name_u8)
+  if (info->app && info->app->pretty_name_u8)
+    return info->app->pretty_name_u8;
+  else if (info->app && info->app->canonical_name_u8)
     return info->app->canonical_name_u8;
   else
     return P_("Unnamed");
