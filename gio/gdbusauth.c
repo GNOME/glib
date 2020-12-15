@@ -1348,12 +1348,9 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                        "Not implemented (server)");
 
  out:
-  if (mech != NULL)
-    g_object_unref (mech);
-  if (dis != NULL)
-    g_object_unref (dis);
-  if (dos != NULL)
-    g_object_unref (dos);
+  g_clear_object (&mech);
+  g_clear_object (&dis);
+  g_clear_object (&dos);
 
   /* ensure return value is FALSE if error is set */
   if (error != NULL && *error != NULL)
