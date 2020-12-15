@@ -1102,7 +1102,7 @@ g_dbus_connection_init (GDBusConnection *connection)
  * stream from a worker thread, so it is not safe to interact with
  * the stream directly.
  *
- * Returns: (transfer none): the stream used for IO
+ * Returns: (transfer none) (not nullable): the stream used for IO
  *
  * Since: 2.26
  */
@@ -2732,7 +2732,7 @@ g_dbus_connection_new (GIOStream            *stream,
  *
  * Finishes an operation started with g_dbus_connection_new().
  *
- * Returns: a #GDBusConnection or %NULL if @error is set. Free
+ * Returns: (transfer full): a #GDBusConnection or %NULL if @error is set. Free
  *     with g_object_unref().
  *
  * Since: 2.26
@@ -2784,7 +2784,8 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
  * This is a synchronous failable constructor. See
  * g_dbus_connection_new() for the asynchronous version.
  *
- * Returns: a #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: (transfer full): a #GDBusConnection or %NULL if @error is set.
+ *     Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -2875,8 +2876,8 @@ g_dbus_connection_new_for_address (const gchar          *address,
  *
  * Finishes an operation started with g_dbus_connection_new_for_address().
  *
- * Returns: a #GDBusConnection or %NULL if @error is set. Free with
- *     g_object_unref().
+ * Returns: (transfer full): a #GDBusConnection or %NULL if @error is set.
+ *     Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -2927,8 +2928,8 @@ g_dbus_connection_new_for_address_finish (GAsyncResult  *res,
  * If @observer is not %NULL it may be used to control the
  * authentication process.
  *
- * Returns: a #GDBusConnection or %NULL if @error is set. Free with
- *     g_object_unref().
+ * Returns: (transfer full): a #GDBusConnection or %NULL if @error is set.
+ *     Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -3017,7 +3018,7 @@ g_dbus_connection_get_exit_on_close (GDBusConnection *connection)
  * The GUID of the peer performing the role of server when
  * authenticating. See #GDBusConnection:guid for more details.
  *
- * Returns: The GUID. Do not free this string, it is owned by
+ * Returns: (not nullable): The GUID. Do not free this string, it is owned by
  *     @connection.
  *
  * Since: 2.26
@@ -6139,8 +6140,8 @@ g_dbus_connection_call (GDBusConnection     *connection,
  *
  * Finishes an operation started with g_dbus_connection_call().
  *
- * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
- *     return values. Free with g_variant_unref().
+ * Returns: (transfer full): %NULL if @error is set. Otherwise a non-floating
+ *     #GVariant tuple with return values. Free with g_variant_unref().
  *
  * Since: 2.26
  */
@@ -6206,8 +6207,8 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  * g_dbus_connection_call() for the asynchronous version of
  * this method.
  *
- * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
- *     return values. Free with g_variant_unref().
+ * Returns: (transfer full): %NULL if @error is set. Otherwise a non-floating
+ *     #GVariant tuple with return values. Free with g_variant_unref().
  *
  * Since: 2.26
  */
@@ -6309,8 +6310,8 @@ g_dbus_connection_call_with_unix_fd_list (GDBusConnection     *connection,
  * access file descriptors if they are referenced in this way by a
  * value of type %G_VARIANT_TYPE_HANDLE in the body of the message.
  *
- * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
- *     return values. Free with g_variant_unref().
+ * Returns: (transfer full): %NULL if @error is set. Otherwise a non-floating
+ *     #GVariant tuple with return values. Free with g_variant_unref().
  *
  * Since: 2.30
  */
@@ -6348,8 +6349,8 @@ g_dbus_connection_call_with_unix_fd_list_finish (GDBusConnection  *connection,
  *
  * This method is only available on UNIX.
  *
- * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
- *     return values. Free with g_variant_unref().
+ * Returns: (transfer full): %NULL if @error is set. Otherwise a non-floating
+ *     #GVariant tuple with return values. Free with g_variant_unref().
  *
  * Since: 2.30
  */

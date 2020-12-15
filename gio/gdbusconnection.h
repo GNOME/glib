@@ -436,7 +436,7 @@ gboolean         g_dbus_connection_unregister_object          (GDBusConnection  
  *
  * The return value will be freed with g_strfreev().
  *
- * Returns: A newly allocated array of strings for node names that are children of @object_path.
+ * Returns: (array zero-terminated=1) (transfer full): A newly allocated array of strings for node names that are children of @object_path.
  *
  * Since: 2.26
  */
@@ -472,7 +472,7 @@ typedef gchar** (*GDBusSubtreeEnumerateFunc) (GDBusConnection       *connection,
  * remote introspector in the empty array case, but not in the %NULL
  * case.
  *
- * Returns: A %NULL-terminated array of pointers to #GDBusInterfaceInfo, or %NULL.
+ * Returns: (array zero-terminated=1) (nullable) (transfer full): A %NULL-terminated array of pointers to #GDBusInterfaceInfo, or %NULL.
  *
  * Since: 2.26
  */
@@ -497,7 +497,7 @@ typedef GDBusInterfaceInfo ** (*GDBusSubtreeIntrospectFunc) (GDBusConnection    
  * Subtrees are flat.  @node, if non-%NULL, is always exactly one
  * segment of the object path (ie: it never contains a slash).
  *
- * Returns: A #GDBusInterfaceVTable or %NULL if you don't want to handle the methods.
+ * Returns: (nullable): A #GDBusInterfaceVTable or %NULL if you don't want to handle the methods.
  *
  * Since: 2.26
  */
