@@ -42,6 +42,8 @@
 #include "gwin32api-application-activation-manager.h"
 
 #include <windows.h>
+/* For SHLoadIndirectString() */
+#include <shlwapi.h>
 
 #include <glib/gstdioprivate.h>
 #include "giowin32-priv.h"
@@ -604,6 +606,11 @@ static GHashTable *fake_apps = NULL;
  */
 static GHashTable *handlers = NULL;
 
+/* Temporary (only exists while the registry is being scanned) table
+ * that maps GWin32RegistryKey objects (keeps a ref) to owned AUMId wchar strings.
+ */
+static GHashTable *uwp_handler_table = NULL;
+
 /* Watch this whole subtree */
 static GWin32RegistryKey *url_associations_key;
 
@@ -673,6 +680,12 @@ read_handler_icon (GWin32RegistryKey  *key,
                                       NULL,
                                       NULL))
     {
+      /* TODO: For UWP handlers this string is usually in @{...} form,
+       * see grab_registry_string() below. Right now this
+       * string is read as-is and the icon would silently fail to load.
+       * Also, right now handler icon is not used anywhere
+       * (only app icon is used).
+       */
       if (default_type == G_WIN32_REGISTRY_VALUE_STR &&
           default_value[0] != '\0')
         *icon_out = g_themed_icon_new (default_value);
@@ -1367,9 +1380,16 @@ decide_which_id_to_use (const gunichar2    *program_id,
       if (got_value && val_type != G_WIN32_REGISTRY_VALUE_STR)
         g_clear_pointer (&uwp_aumid, g_free);
 
+      /* Other values in the Application key contain useful information
+       * (description, name, icon), but it's inconvenient to read
+       * it here (we don't have an app object *yet*). Store the key
+       * in a table instead, and look at it later.
+       */
       if (uwp_aumid == NULL)
         g_debug ("ProgramID %S looks like a UWP application, but isn't",
                  program_id);
+      else
+        g_hash_table_insert (uwp_handler_table, g_object_ref (uwp_key), g_wcsdup (uwp_aumid, -1));
 
       g_object_unref (uwp_key);
     }
@@ -3496,6 +3516,150 @@ uwp_package_cb (gpointer         user_data,
   return TRUE;
 }
 
+/* Calls SHLoadIndirectString() in a loop to resolve
+ * a string in @{...} format (also supports other indirect
+ * strings, but we aren't using it for those).
+ * Consumes the input, but may return it unmodified
+ * (not an indirect string). May return %NULL (the string
+ * is indirect, but the OS failed to load it).
+ */
+static gunichar2 *
+resolve_string (gunichar2 *at_string)
+{
+  HRESULT hr;
+  gunichar2 *result = NULL;
+  gsize result_size;
+  /* This value is arbitrary */
+  const gsize reasonable_size_limit = 8192;
+
+  if (at_string == NULL || at_string[0] != L'@')
+    return at_string;
+
+  /* In case of a no-op @at_string will be copied into the output,
+   * buffer so allocate at least that much.
+   */
+  result_size = wcslen (at_string) + 1;
+
+  while (TRUE)
+    {
+      result = g_renew (gunichar2, result, result_size);
+      /* Since there's no built-in way to detect too small buffer size,
+       * we do so by putting a sentinel at the end of the buffer.
+       * If it's 0 (result is always 0-terminated, even if the buffer
+       * is too small), then try larger buffer.
+       */
+      result[result_size - 1] = 0xff;
+      /* This string accepts size in characters, not bytes. */
+      hr = SHLoadIndirectString (at_string, result, result_size, NULL);
+      if (!SUCCEEDED (hr))
+        {
+          g_free (result);
+          g_free (at_string);
+          return NULL;
+        }
+      else if (result[result_size - 1] != 0 ||
+               result_size >= reasonable_size_limit)
+        {
+          /* Now that the length is known, allocate the exact amount */
+          gunichar2 *copy = g_wcsdup (result, -1);
+          g_free (result);
+          g_free (at_string);
+          return copy;
+        }
+
+      result_size *= 2;
+    }
+
+  g_assert_not_reached ();
+
+  return at_string;
+}
+
+static void
+grab_registry_string (GWin32RegistryKey  *handler_appkey,
+                      const gunichar2    *value_name,
+                      gunichar2         **destination,
+                      gchar             **destination_u8)
+{
+  gunichar2 *value;
+  gsize value_size;
+  GWin32RegistryValueType vtype;
+  const gunichar2 *ms_resource_prefix = L"ms-resource:";
+  gsize ms_resource_prefix_len = wcslen (ms_resource_prefix);
+
+  /* Right now this function is not used without destination,
+   * enforce this. destination_u8 is optional.
+   */
+  g_assert (destination != NULL);
+
+  if (*destination != NULL)
+    return;
+
+  if (g_win32_registry_key_get_value_w (handler_appkey,
+                                        NULL,
+                                        TRUE,
+                                        value_name,
+                                        &vtype,
+                                        (void **) &value,
+                                        &value_size,
+                                        NULL) &&
+      vtype != G_WIN32_REGISTRY_VALUE_STR)
+    g_clear_pointer (&value, g_free);
+
+  /* There's no way for us to resolve "ms-resource:..." strings */
+  if (value != NULL &&
+      value_size >= ms_resource_prefix_len &&
+      memcmp (value,
+              ms_resource_prefix,
+              ms_resource_prefix_len * sizeof (gunichar2)) == 0)
+    g_clear_pointer (&value, g_free);
+
+  if (value == NULL)
+    return;
+
+  *destination = resolve_string (g_steal_pointer (&value));
+
+  if (*destination == NULL)
+    return;
+
+  if (destination_u8)
+    *destination_u8 = g_utf16_to_utf8 (*destination, -1, NULL, NULL, NULL);
+}
+
+static void
+read_uwp_handler_info (void)
+{
+  GHashTableIter iter;
+  GWin32RegistryKey *handler_appkey;
+  gunichar2 *aumid;
+
+  g_hash_table_iter_init (&iter, uwp_handler_table);
+
+  while (g_hash_table_iter_next (&iter, (gpointer *) &handler_appkey, (gpointer *) &aumid))
+    {
+      gchar *aumid_u8_folded;
+      GWin32AppInfoApplication *app;
+
+      if (!g_utf16_to_utf8_and_fold (aumid,
+                                     -1,
+                                     NULL,
+                                     &aumid_u8_folded))
+        continue;
+
+      app = g_hash_table_lookup (apps_by_id, aumid_u8_folded);
+      g_clear_pointer (&aumid_u8_folded, g_free);
+
+      if (app == NULL)
+        continue;
+
+      grab_registry_string (handler_appkey, L"ApplicationDescription", &app->description, &app->description_u8);
+      grab_registry_string (handler_appkey, L"ApplicationName", &app->localized_pretty_name, &app->localized_pretty_name_u8);
+      /* TODO: ApplicationIcon value (usually also @{...}) resolves into
+       * an image (PNG only?) with implicit multiple variants (scale, size, etc).
+       */
+    }
+}
+
 static void
 update_registry_data (void)
 {
@@ -3553,6 +3717,8 @@ update_registry_data (void)
       g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
   handlers =
       g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_object_unref);
+  uwp_handler_table =
+      g_hash_table_new_full (g_direct_hash, g_direct_equal, g_object_unref, g_free);
   alloc_end = GetTickCount ();
 
   for (i = 0; i < priority_capable_apps_keys->len; i++)
@@ -3583,6 +3749,8 @@ update_registry_data (void)
       g_debug ("Unable to get UWP apps: %s", error->message);
       g_clear_error (&error);
     }
+
+  read_uwp_handler_info ();
 
   uwp_end = GetTickCount ();
   link_handlers_to_unregistered_apps ();
@@ -3616,6 +3784,7 @@ update_registry_data (void)
   g_ptr_array_free (capable_apps_keys, TRUE);
   g_ptr_array_free (user_capable_apps_keys, TRUE);
   g_ptr_array_free (priority_capable_apps_keys, TRUE);
+  g_hash_table_unref (uwp_handler_table);
 
   return;
 }
