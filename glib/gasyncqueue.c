@@ -482,7 +482,7 @@ g_async_queue_pop_unlocked (GAsyncQueue *queue)
  * Tries to pop data from the @queue. If no data is available,
  * %NULL is returned.
  *
- * Returns: data from the queue or %NULL, when no data is
+ * Returns: (nullable): data from the queue or %NULL, when no data is
  *     available immediately.
  */
 gpointer
@@ -508,7 +508,7 @@ g_async_queue_try_pop (GAsyncQueue *queue)
  *
  * This function must be called while holding the @queue's lock.
  *
- * Returns: data from the queue or %NULL, when no data is
+ * Returns: (nullable): data from the queue or %NULL, when no data is
  *     available immediately.
  */
 gpointer
@@ -529,7 +529,7 @@ g_async_queue_try_pop_unlocked (GAsyncQueue *queue)
  *
  * If no data is received before the timeout, %NULL is returned.
  *
- * Returns: data from the queue or %NULL, when no data is
+ * Returns: (nullable): data from the queue or %NULL, when no data is
  *     received before the timeout.
  */
 gpointer
@@ -560,7 +560,7 @@ g_async_queue_timeout_pop (GAsyncQueue *queue,
  *
  * This function must be called while holding the @queue's lock.
  *
- * Returns: data from the queue or %NULL, when no data is
+ * Returns: (nullable): data from the queue or %NULL, when no data is
  *     received before the timeout.
  */
 gpointer
@@ -587,7 +587,7 @@ g_async_queue_timeout_pop_unlocked (GAsyncQueue *queue,
  * To easily calculate @end_time, a combination of g_get_real_time()
  * and g_time_val_add() can be used.
  *
- * Returns: data from the queue or %NULL, when no data is
+ * Returns: (nullable): data from the queue or %NULL, when no data is
  *     received before @end_time.
  *
  * Deprecated: use g_async_queue_timeout_pop().
@@ -633,7 +633,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  *
  * This function must be called while holding the @queue's lock.
  *
- * Returns: data from the queue or %NULL, when no data is
+ * Returns: (nullable): data from the queue or %NULL, when no data is
  *     received before @end_time.
  *
  * Deprecated: use g_async_queue_timeout_pop_unlocked().

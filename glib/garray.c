@@ -1421,8 +1421,8 @@ g_ptr_array_unref (GPtrArray *array)
  * threads, use only the atomic g_ptr_array_ref() and g_ptr_array_unref()
  * functions.
  *
- * Returns: the pointer array if @free_seg is %FALSE, otherwise %NULL.
- *     The pointer array should be freed using g_free().
+ * Returns: (transfer full) (nullable): the pointer array if @free_seg is
+ *     %FALSE, otherwise %NULL. The pointer array should be freed using g_free().
  */
 gpointer*
 g_ptr_array_free (GPtrArray *array,
