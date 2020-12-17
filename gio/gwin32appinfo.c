@@ -2297,6 +2297,7 @@ read_capable_app (const gunichar2 *app_key_path,
       g_clear_pointer (&canonical_name_u8, g_free);
       g_clear_pointer (&canonical_name_folded, g_free);
       g_clear_object (&appkey);
+      g_clear_object (&capabilities);
       g_clear_pointer (&app_key_path_u8, g_free);
       g_clear_pointer (&app_key_path_u8_folded, g_free);
 
