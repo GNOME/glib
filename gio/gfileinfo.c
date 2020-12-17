@@ -376,7 +376,7 @@ g_file_info_copy_into (GFileInfo *src_info,
                        GFileInfo *dest_info)
 {
   GFileAttribute *source, *dest;
-  int i;
+  guint i;
 
   g_return_if_fail (G_IS_FILE_INFO (src_info));
   g_return_if_fail (G_IS_FILE_INFO (dest_info));
@@ -439,7 +439,7 @@ g_file_info_set_attribute_mask (GFileInfo             *info,
 				GFileAttributeMatcher *mask)
 {
   GFileAttribute *attr;
-  int i;
+  guint i;
 
   g_return_if_fail (G_IS_FILE_INFO (info));
 
@@ -491,7 +491,7 @@ void
 g_file_info_clear_status (GFileInfo  *info)
 {
   GFileAttribute *attrs;
-  int i;
+  guint i;
 
   g_return_if_fail (G_IS_FILE_INFO (info));
 
@@ -536,7 +536,7 @@ g_file_info_find_value (GFileInfo *info,
 			guint32    attr_id)
 {
   GFileAttribute *attrs;
-  int i;
+  guint i;
 
   i = g_file_info_find_place (info, attr_id);
   attrs = (GFileAttribute *)info->attributes->data;
@@ -599,7 +599,7 @@ g_file_info_has_namespace (GFileInfo  *info,
 {
   GFileAttribute *attrs;
   guint32 ns_id;
-  int i;
+  guint i;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
   g_return_val_if_fail (name_space != NULL, FALSE);
@@ -636,7 +636,7 @@ g_file_info_list_attributes (GFileInfo  *info,
   GFileAttribute *attrs;
   guint32 attribute;
   guint32 ns_id = (name_space) ? lookup_namespace (name_space) : 0;
-  int i;
+  guint i;
 
   g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
 
