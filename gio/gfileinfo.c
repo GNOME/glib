@@ -318,7 +318,7 @@ static void
 g_file_info_finalize (GObject *object)
 {
   GFileInfo *info;
-  int i;
+  guint i;
   GFileAttribute *attrs;
 
   info = G_FILE_INFO (object);
