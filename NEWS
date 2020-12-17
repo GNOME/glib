@@ -1,3 +1,19 @@
+Overview of changes in GLib 2.66.4
+==================================
+
+* Fix some issues in parsing floating point seconds in `GDateTime` (!1791, !1797)
+
+* Fix some issues in handling invalid UTF-8 when parsing for `GDate` (!1788)
+
+* Bugs fixed:
+ - #2264 GPtrArray might call qsort() with NULL data
+ - !1774 Backport !1771 “macos: fix frexpl checks in cross-compilation” to glib-2-66
+ - !1790 Backport !1788 “gdate: Validate input as UTF-8 before parsing” to glib-2-66
+ - !1793 Backport !1791 “gdatetime: Disallow NAN as a number of seconds in a GDateTime” to glib-2-66
+ - !1799 Backport !1794 “gio-tool-info: Prevent criticals if mount options are not available” to glib-2-66
+ - !1805 Backport !1797 “gdatetime: Improve ISO 8601 parsing to avoid floating point checks” to glib-2-66
+
+
 Overview of changes in GLib 2.66.3
 ==================================
 
