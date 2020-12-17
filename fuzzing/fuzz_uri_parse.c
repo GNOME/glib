@@ -32,6 +32,12 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
   nul_terminated_data = (unsigned char *) g_strndup ((const gchar *) data, size);
   test_with_flags ((const gchar *) nul_terminated_data, G_URI_FLAGS_NONE);
   test_with_flags ((const gchar *) nul_terminated_data, G_URI_FLAGS_PARSE_RELAXED);
+  test_with_flags ((const gchar *) nul_terminated_data, G_URI_FLAGS_NON_DNS);
+  test_with_flags ((const gchar *) nul_terminated_data, G_URI_FLAGS_HAS_AUTH_PARAMS);
+  test_with_flags ((const gchar *) nul_terminated_data, G_URI_FLAGS_HAS_PASSWORD);
+  test_with_flags ((const gchar *) nul_terminated_data, G_URI_FLAGS_ENCODED_QUERY);
+  test_with_flags ((const gchar *) nul_terminated_data, G_URI_FLAGS_ENCODED_PATH);
+  test_with_flags ((const gchar *) nul_terminated_data, G_URI_FLAGS_SCHEME_NORMALIZE);
   g_free (nul_terminated_data);
 
   return 0;
