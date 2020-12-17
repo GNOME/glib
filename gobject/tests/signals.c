@@ -1148,7 +1148,7 @@ test_introspection (void)
   guint *ids;
   guint n_ids;
   const gchar *name;
-  gint i;
+  guint i;
   const gchar *names[] = {
     "simple",
     "simple-detailed",
