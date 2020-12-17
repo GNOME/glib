@@ -733,18 +733,18 @@ compare_verbs (gconstpointer a,
   if (def != NULL)
     {
       if (_wcsicmp (ca->name, def) == 0)
-        return 1;
-      else if (_wcsicmp (cb->name, def) == 0)
         return -1;
+      else if (_wcsicmp (cb->name, def) == 0)
+        return 1;
     }
 
   is_open_ca = is_open (ca->name);
   is_open_cb = is_open (cb->name);
 
   if (is_open_ca && !is_open_cb)
-    return 1;
-  else if (is_open_ca && !is_open_cb)
     return -1;
+  else if (is_open_ca && !is_open_cb)
+    return 1;
 
   return _wcsicmp (ca->name, cb->name);
 }
