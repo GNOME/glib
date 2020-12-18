@@ -208,7 +208,7 @@ g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
 
   if (priv->buffer)
     {
-      size = MAX (size, priv->pos);
+      size = (priv->pos > 0) ? MAX (size, (gsize) priv->pos) : size;
 
       buffer = g_malloc (size);
       memcpy (buffer, priv->buffer, priv->pos);

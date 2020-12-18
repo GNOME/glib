@@ -138,7 +138,7 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
   GPtrArray *tokens;
   gint version;
   GIconIface *icon_iface;
-  int i;
+  guint i;
 
   g_return_val_if_fail (icon != NULL, FALSE);
   g_return_val_if_fail (G_IS_ICON (icon), FALSE);

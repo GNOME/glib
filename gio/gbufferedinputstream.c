@@ -661,10 +661,10 @@ g_buffered_input_stream_real_fill (GBufferedInputStream  *stream,
   in_buffer = priv->end - priv->pos;
 
   /* Never fill more than can fit in the buffer */
-  count = MIN (count, priv->len - in_buffer);
+  count = MIN ((gsize) count, priv->len - in_buffer);
 
   /* If requested length does not fit at end, compact */
-  if (priv->len - priv->end < count)
+  if (priv->len - priv->end < (gsize) count)
     compact_buffer (stream);
 
   base_stream = G_FILTER_INPUT_STREAM (stream)->base_stream;
@@ -1072,10 +1072,10 @@ g_buffered_input_stream_real_fill_async (GBufferedInputStream *stream,
   in_buffer = priv->end - priv->pos;
 
   /* Never fill more than can fit in the buffer */
-  count = MIN (count, priv->len - in_buffer);
+  count = MIN ((gsize) count, priv->len - in_buffer);
 
   /* If requested length does not fit at end, compact */
-  if (priv->len - priv->end < count)
+  if (priv->len - priv->end < (gsize) count)
     compact_buffer (stream);
 
   task = g_task_new (stream, cancellable, callback, user_data);
