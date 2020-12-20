@@ -489,6 +489,7 @@
 
 #include "config.h"
 
+#include "gvalgrind.h"
 #include <string.h>
 
 #include "gerror.h"
@@ -680,7 +681,22 @@ g_error_allocate (GQuark domain, ErrorDomainInfo *out_info)
         memset (out_info, 0, sizeof (*out_info));
       private_size = 0;
     }
-  allocated = g_slice_alloc0 (private_size + sizeof (GError));
+  /* See comments in g_type_create_instance in gtype.c to see what
+   * this magic is about.
+   */
+#ifdef ENABLE_VALGRIND
+  if (private_size > 0 && RUNNING_ON_VALGRIND)
+    {
+      private_size += ALIGN_STRUCT (1);
+      allocated = g_slice_alloc0 (private_size + sizeof (GError) + sizeof (gpointer));
+      *(gpointer *) (allocated + private_size + sizeof (GError)) = allocated + ALIGN_STRUCT (1);
+      VALGRIND_MALLOCLIKE_BLOCK (allocated + private_size, sizeof (GError) + sizeof (gpointer), 0, TRUE);
+      VALGRIND_MALLOCLIKE_BLOCK (allocated + ALIGN_STRUCT (1), private_size - ALIGN_STRUCT (1), 0, TRUE);
+    }
+  else
+#endif
+    allocated = g_slice_alloc0 (private_size + sizeof (GError));
+
   error = (GError *) (allocated + private_size);
   return error;
 }
@@ -826,6 +842,21 @@ g_error_free (GError *error)
 
   g_free (error->message);
   allocated = ((guint8 *) error) - private_size;
+  /* See comments in g_type_free_instance in gtype.c to see what this
+   * magic is about.
+   */
+#ifdef ENABLE_VALGRIND
+  if (private_size > 0 && RUNNING_ON_VALGRIND)
+    {
+      private_size += ALIGN_STRUCT (1);
+      allocated -= ALIGN_STRUCT (1);
+      *(gpointer *) (allocated + private_size + sizeof (GError)) = NULL;
+      g_slice_free1 (private_size + sizeof (GError) + sizeof (gpointer), allocated);
+      VALGRIND_FREELIKE_BLOCK (allocated + ALIGN_STRUCT (1), 0);
+      VALGRIND_FREELIKE_BLOCK (error, 0);
+    }
+  else
+#endif
   g_slice_free1 (private_size + sizeof (GError), allocated);
 }
 
