@@ -1243,7 +1243,7 @@ g_date_set_parse (GDate       *d,
     return;
 
   /* The input has to be valid UTF-8. */
-  if (!g_utf8_validate (str, -1, NULL))
+  if (!g_utf8_validate_len (str, str_len, NULL))
     return;
 
   G_LOCK (g_date_global);
