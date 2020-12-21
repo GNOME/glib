@@ -1229,14 +1229,21 @@ g_date_set_parse (GDate       *d,
 {
   GDateParseTokens pt;
   guint m = G_DATE_BAD_MONTH, day = G_DATE_BAD_DAY, y = G_DATE_BAD_YEAR;
+  gsize str_len;
   
   g_return_if_fail (d != NULL);
   
   /* set invalid */
   g_date_clear (d, 1);
 
+  /* Anything longer than this is ridiculous and could take a while to normalize.
+   * This limit is chosen arbitrarily. */
+  str_len = strlen (str);
+  if (str_len > 200)
+    return;
+
   /* The input has to be valid UTF-8. */
-  if (!g_utf8_validate (str, -1, NULL))
+  if (!g_utf8_validate_len (str, str_len, NULL))
     return;
 
   G_LOCK (g_date_global);
