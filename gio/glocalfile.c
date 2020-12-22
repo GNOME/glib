@@ -2026,7 +2026,7 @@ g_local_file_trash (GFile         *file,
           display_name = g_filename_display_name (trashdir);
           g_set_error (error, G_IO_ERROR,
                        g_io_error_from_errno (errsv),
-                       _("Unable to create trash dir %s: %s"),
+                       _("Unable to create trash directory %s: %s"),
                        display_name, g_strerror (errsv));
           g_free (display_name);
           g_free (trashdir);
