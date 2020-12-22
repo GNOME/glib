@@ -219,6 +219,9 @@ searched for in the <envar>PATH</envar>.
 <varlistentry>
 <term><envar>GDK_PIXBUF_PIXDATA</envar></term>
 <listitem><para>
+Deprecated since gdk-pixbuf 2.32, as <type>GResource</type> supports embedding
+modern image formats without conversion.
+</para><para>
 The full path to the <command>gdk-pixbuf-pixdata</command> executable. This is
 used to preprocess resources with the <literal>to-pixdata</literal> preprocessing
 option. If this environment variable is not set, <command>gdk-pixbuf-pixdata</command>
