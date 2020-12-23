@@ -996,8 +996,8 @@ get_verbs (GWin32RegistryKey  *program_id_key,
           subc_type == G_WIN32_REGISTRY_VALUE_STR)
         {
           gboolean dummy = FALSE;
-          gunichar2 *new_nameprefix = g_malloc ((verbname_prefix_len + name_len + 1 + 1) * sizeof (gunichar2));
-          gunichar2 *new_shellprefix = g_malloc ((verbshell_prefix_len + 1 + name_len + 1 + shell_len + 1) * sizeof (gunichar2));
+          gunichar2 *new_nameprefix = g_new (gunichar2, verbname_prefix_len + name_len + 1 + 1);
+          gunichar2 *new_shellprefix = g_new (gunichar2, verbshell_prefix_len + 1 + name_len + 1 + shell_len + 1);
           memcpy (&new_shellprefix[0], verbshell_prefix, verbshell_prefix_len * sizeof (gunichar2));
           new_shellprefix[verbshell_prefix_len] = L'\\';
           memcpy (&new_shellprefix[verbshell_prefix_len + 1], name, name_len * sizeof (gunichar2));
@@ -1051,11 +1051,11 @@ get_verbs (GWin32RegistryKey  *program_id_key,
        * because it never has one - all verbshell prefixes end with "Shell", not "Shell\\")
        */
       rverb = g_new0 (reg_verb, 1);
-      rverb->name = g_malloc ((verbname_prefix_len + name_len + 1) * sizeof (gunichar2));
+      rverb->name = g_new (gunichar2, verbname_prefix_len + name_len + 1);
       memcpy (&rverb->name[0], verbname_prefix, verbname_prefix_len * sizeof (gunichar2));
       memcpy (&rverb->name[verbname_prefix_len], name, name_len * sizeof (gunichar2));
       rverb->name[verbname_prefix_len + name_len] = 0;
-      rverb->shellpath = g_malloc ((verbshell_prefix_len + 1 + name_len + 1) * sizeof (gunichar2));
+      rverb->shellpath = g_new (gunichar2, verbshell_prefix_len + 1 + name_len + 1);
       memcpy (&rverb->shellpath[0], verbshell_prefix, verbshell_prefix_len * sizeof (gunichar2));
       memcpy (&rverb->shellpath[verbshell_prefix_len], L"\\", sizeof (gunichar2));
       memcpy (&rverb->shellpath[verbshell_prefix_len + 1], name, name_len * sizeof (gunichar2));
@@ -1767,7 +1767,7 @@ generate_new_verb_name (GPtrArray        *verbs,
   GWin32AppInfoShellVerb *shverb;
   gsize orig_len = g_utf16_len (verb);
   gsize new_verb_name_len = orig_len + strlen (" ()") + 2 + 1;
-  gunichar2 *new_verb_name = g_malloc (new_verb_name_len * sizeof (gunichar2));
+  gunichar2 *new_verb_name = g_new (gunichar2, new_verb_name_len);
 
   *new_verb = NULL;
   *new_displayname = NULL;
@@ -3896,7 +3896,7 @@ g_win32_app_info_new_from_app (GWin32AppInfoApplication *app,
         i += 1;
     }
 
-  new_info->supported_types = g_malloc (sizeof (gchar *) * (i + 1));
+  new_info->supported_types = g_new (gchar *, i + 1);
 
   i = 0;
   g_hash_table_iter_init (&iter, new_info->app->supported_exts);
@@ -3943,7 +3943,7 @@ g_win32_app_info_dup (GAppInfo *appinfo)
       for (i = 0; info->supported_types[i]; i++)
         break;
 
-      new_info->supported_types = g_malloc (sizeof (gchar *) * (i + 1));
+      new_info->supported_types = g_new (gchar *, i + 1);
 
       for (i = 0; info->supported_types[i]; i++)
         new_info->supported_types[i] = g_strdup (info->supported_types[i]);
