@@ -12,7 +12,7 @@ gnetworking_h_conf = configuration_data()
 
 gnetworking_h_nameser_compat_include = ''
 
-if host_system != 'windows' and not host_system.contains('android')
+if host_system not in ['windows', 'android']
   # Don't check for C_IN on Android since it does not define it in public
   # headers, we define it ourselves wherever necessary
   if not cc.compiles('''#include <sys/types.h>
@@ -148,7 +148,7 @@ if host_system != 'windows'
 
 endif
 
-if host_system.contains('android')
+if host_system == 'android'
   # struct ip_mreq_source definition is broken on Android NDK <= r16
   # See https://bugzilla.gnome.org/show_bug.cgi?id=740791
   if not cc.compiles('''#include <netinet/in.h>
