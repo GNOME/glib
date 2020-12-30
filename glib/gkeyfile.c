@@ -510,6 +510,7 @@ struct _GKeyFile
 
   GKeyFileFlags flags;
 
+  gboolean checked_locales;
   gchar **locales;
 
   gint ref_count;  /* (atomic) */
@@ -635,7 +636,6 @@ g_key_file_init (GKeyFile *key_file)
   key_file->parse_buffer = g_string_sized_new (128);
   key_file->list_separator = ';';
   key_file->flags = 0;
-  key_file->locales = g_strdupv ((gchar **)g_get_language_names ());
 }
 
 static void
@@ -1231,6 +1231,12 @@ g_key_file_locale_is_interesting (GKeyFile    *key_file,
 
   if (key_file->flags & G_KEY_FILE_KEEP_TRANSLATIONS)
     return TRUE;
+
+  if (!key_file->checked_locales && !key_file->locales)
+    {
+      key_file->locales = g_strdupv ((gchar **)g_get_language_names ());
+      key_file->checked_locales = TRUE;
+    }
 
   for (i = 0; key_file->locales[i] != NULL; i++)
     {
