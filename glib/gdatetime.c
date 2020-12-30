@@ -79,6 +79,10 @@
 #ifndef G_OS_WIN32
 #include <sys/time.h>
 #include <time.h>
+#else
+#if (_MSC_VER < 1800)
+#define isnan _isnan
+#endif
 #endif /* !G_OS_WIN32 */
 
 /**

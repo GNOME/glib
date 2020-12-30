@@ -28,6 +28,10 @@
 #ifdef G_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+
+#ifndef NAN
+#define NAN HUGE_VAL * 0.0f
+#endif
 #endif
 
 #define ASSERT_DATE(dt,y,m,d) G_STMT_START { \
