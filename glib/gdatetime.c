@@ -80,6 +80,11 @@
 #ifndef G_OS_WIN32
 #include <sys/time.h>
 #include <time.h>
+#else
+#if defined (_MSC_VER) && (_MSC_VER < 1800)
+/* fallback implementation for isnan() on VS2012 and earlier */
+#define isnan _isnan
+#endif
 #endif /* !G_OS_WIN32 */
 
 /**
