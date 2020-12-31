@@ -633,7 +633,7 @@ g_key_file_init (GKeyFile *key_file)
   key_file->groups = g_list_prepend (NULL, key_file->current_group);
   key_file->group_hash = g_hash_table_new (g_str_hash, g_str_equal);
   key_file->start_group = NULL;
-  key_file->parse_buffer = g_string_sized_new (128);
+  key_file->parse_buffer = NULL;
   key_file->list_separator = ';';
   key_file->flags = 0;
 }
@@ -1473,6 +1473,9 @@ g_key_file_parse_data (GKeyFile     *key_file,
 
   parse_error = NULL;
 
+  if (!key_file->parse_buffer)
+    key_file->parse_buffer = g_string_sized_new (128);
+
   i = 0;
   while (i < length)
     {
@@ -1528,6 +1531,9 @@ g_key_file_flush_parse_buffer (GKeyFile  *key_file,
   GError *file_error = NULL;
 
   g_return_if_fail (key_file != NULL);
+
+  if (!key_file->parse_buffer)
+    return;
 
   file_error = NULL;
 
