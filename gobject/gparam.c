@@ -1203,52 +1203,30 @@ pspec_compare_id (gconstpointer a,
   return strcmp (pspec1->name, pspec2->name);
 }
 
-static inline GSList*
-pspec_list_remove_overridden_and_redirected (GSList     *plist,
-					     GHashTable *ht,
-					     GType       owner_type,
-					     guint      *n_p)
+static inline gboolean
+should_list_pspec (GParamSpec *pspec,
+                   GType      owner_type,
+                   GHashTable *ht)
 {
-  GSList *rlist = NULL;
+  GParamSpec *found;
 
-  while (plist)
+  /* Remove paramspecs that are redirected, and also paramspecs
+   * that have are overridden by non-redirected properties.
+   * The idea is to get the single paramspec for each name that
+   * best corresponds to what the application sees.
+   */
+  if (g_param_spec_get_redirect_target (pspec))
+    return FALSE;
+
+  found = param_spec_ht_lookup (ht, pspec->name, owner_type, TRUE);
+  if (found != pspec)
     {
-      GSList *tmp = plist->next;
-      GParamSpec *pspec = plist->data;
-      GParamSpec *found;
-      gboolean remove = FALSE;
-
-      /* Remove paramspecs that are redirected, and also paramspecs
-       * that have are overridden by non-redirected properties.
-       * The idea is to get the single paramspec for each name that
-       * best corresponds to what the application sees.
-       */
-      if (g_param_spec_get_redirect_target (pspec))
-	remove = TRUE;
-      else
-	{
-	  found = param_spec_ht_lookup (ht, pspec->name, owner_type, TRUE);
-	  if (found != pspec)
-	    {
-	      GParamSpec *redirect = g_param_spec_get_redirect_target (found);
-	      if (redirect != pspec)
-		remove = TRUE;
-	    }
-	}
-
-      if (remove)
-	{
-	  g_slist_free_1 (plist);
-	}
-      else
-	{
-	  plist->next = rlist;
-	  rlist = plist;
-	  *n_p += 1;
-	}
-      plist = tmp;
+      GParamSpec *redirect = g_param_spec_get_redirect_target (found);
+      if (redirect != pspec)
+        return FALSE;
     }
-  return rlist;
+
+  return TRUE;
 }
 
 static void
@@ -1260,18 +1238,23 @@ pool_depth_list (gpointer key,
   gpointer *data = user_data;
   GSList **slists = data[0];
   GType owner_type = (GType) data[1];
+  GHashTable *ht = data[2];
+  int *count = data[3];
 
-  if (g_type_is_a (owner_type, pspec->owner_type))
+  if (g_type_is_a (owner_type, pspec->owner_type) &&
+      should_list_pspec (pspec, owner_type, ht))
     {
       if (G_TYPE_IS_INTERFACE (pspec->owner_type))
 	{
 	  slists[0] = g_slist_prepend (slists[0], pspec);
+          *count = *count + 1;
 	}
       else
 	{
-	  guint d = g_type_depth (pspec->owner_type);
+          guint d = g_type_depth (pspec->owner_type);
 
-	  slists[d - 1] = g_slist_prepend (slists[d - 1], pspec);
+          slists[d - 1] = g_slist_prepend (slists[d - 1], pspec);
+          *count = *count + 1;
 	}
     }
 }
@@ -1294,9 +1277,15 @@ pool_depth_list_for_interface (gpointer key,
   gpointer *data = user_data;
   GSList **slists = data[0];
   GType owner_type = (GType) data[1];
+  GHashTable *ht = data[2];
+  int *count = data[3];
 
-  if (pspec->owner_type == owner_type)
-    slists[0] = g_slist_prepend (slists[0], pspec);
+  if (pspec->owner_type == owner_type &&
+      should_list_pspec (pspec, owner_type, ht))
+    {
+      slists[0] = g_slist_prepend (slists[0], pspec);
+      *count = *count + 1;
+    }
 }
 
 /**
@@ -1319,29 +1308,29 @@ g_param_spec_pool_list (GParamSpecPool *pool,
 {
   GParamSpec **pspecs, **p;
   GSList **slists, *node;
-  gpointer data[2];
+  gpointer data[4];
   guint d, i;
+  int n_pspecs = 0;
 
   g_return_val_if_fail (pool != NULL, NULL);
   g_return_val_if_fail (owner_type > 0, NULL);
   g_return_val_if_fail (n_pspecs_p != NULL, NULL);
   
   g_mutex_lock (&pool->mutex);
-  *n_pspecs_p = 0;
   d = g_type_depth (owner_type);
   slists = g_new0 (GSList*, d);
   data[0] = slists;
   data[1] = (gpointer) owner_type;
+  data[2] = pool->hash_table;
+  data[3] = &n_pspecs;
 
   g_hash_table_foreach (pool->hash_table,
-			G_TYPE_IS_INTERFACE (owner_type) ?
-			   pool_depth_list_for_interface :
-			   pool_depth_list,
-			&data);
-  
-  for (i = 0; i < d; i++)
-    slists[i] = pspec_list_remove_overridden_and_redirected (slists[i], pool->hash_table, owner_type, n_pspecs_p);
-  pspecs = g_new (GParamSpec*, *n_pspecs_p + 1);
+                        G_TYPE_IS_INTERFACE (owner_type) ?
+                          pool_depth_list_for_interface :
+                          pool_depth_list,
+                        &data);
+
+  pspecs = g_new (GParamSpec*, n_pspecs + 1);
   p = pspecs;
   for (i = 0; i < d; i++)
     {
@@ -1354,9 +1343,10 @@ g_param_spec_pool_list (GParamSpecPool *pool,
   g_free (slists);
   g_mutex_unlock (&pool->mutex);
 
+  *n_pspecs_p = n_pspecs;
+
   return pspecs;
 }
-
 
 /* --- auxiliary functions --- */
 typedef struct
