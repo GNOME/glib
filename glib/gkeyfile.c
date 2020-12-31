@@ -631,7 +631,7 @@ g_key_file_init (GKeyFile *key_file)
 {  
   key_file->current_group = g_slice_new0 (GKeyFileGroup);
   key_file->groups = g_list_prepend (NULL, key_file->current_group);
-  key_file->group_hash = g_hash_table_new (g_str_hash, g_str_equal);
+  key_file->group_hash = NULL;
   key_file->start_group = NULL;
   key_file->parse_buffer = NULL;
   key_file->list_separator = ';';
@@ -3837,6 +3837,9 @@ g_key_file_add_group (GKeyFile    *key_file,
   if (key_file->start_group == NULL)
     key_file->start_group = group;
 
+  if (!key_file->group_hash)
+    key_file->group_hash = g_hash_table_new (g_str_hash, g_str_equal);
+
   g_hash_table_insert (key_file->group_hash, (gpointer)group->name, group);
 }
 
@@ -3889,7 +3892,10 @@ g_key_file_remove_group_node (GKeyFile *key_file,
   group = (GKeyFileGroup *) group_node->data;
 
   if (group->name)
-    g_hash_table_remove (key_file->group_hash, group->name);
+    {
+      g_assert (key_file->group_hash);
+      g_hash_table_remove (key_file->group_hash, group->name);
+    }
 
   /* If the current group gets deleted make the current group the last
    * added group.
@@ -4095,6 +4101,9 @@ static GKeyFileGroup *
 g_key_file_lookup_group (GKeyFile    *key_file,
 			 const gchar *group_name)
 {
+  if (!key_file->group_hash)
+    return NULL;
+
   return (GKeyFileGroup *)g_hash_table_lookup (key_file->group_hash, group_name);
 }
 
