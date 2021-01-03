@@ -184,7 +184,7 @@ msgid ""
 "Use “%s help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
-"Feu servir «%s help ORDRE» per obtenir l'ajuda detallada.\n"
+"Feu servir «%s help ORDRE» per a obtenir l'ajuda detallada.\n"
 "\n"
 
 #: gio/gapplication-tool.c:165
@@ -610,7 +610,7 @@ msgstr "L'operació no està implementada"
 #: gio/gdbusauthmechanismsha1.c:402
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
-msgstr "S'ha produït un error en obrir l'anell de claus «%s» per llegir-lo: "
+msgstr "S'ha produït un error en obrir l'anell de claus «%s» per a llegir-lo: "
 
 #: gio/gdbusauthmechanismsha1.c:425 gio/gdbusauthmechanismsha1.c:747
 #, c-format
@@ -981,7 +981,7 @@ msgstr "S'ha retornat un error amb el cos buit"
 #: gio/gdbusprivate.c:2246
 #, c-format
 msgid "(Type any character to close this window)\n"
-msgstr "(Premeu qualsevol tecla per tancar aquesta finestra)\n"
+msgstr "(Premeu qualsevol tecla per a tancar aquesta finestra)\n"
 
 #: gio/gdbusprivate.c:2420
 #, c-format
@@ -1066,7 +1066,8 @@ msgstr ""
 "  emit         Emet un senyal\n"
 "  wait         Espera que aparegui un nom de bus\n"
 "\n"
-"Utilitzeu «%s ORDRE --help» per veure l'ajuda de cada ordre en particular.\n"
+"Utilitzeu «%s ORDRE --help» per a veure l'ajuda de cada ordre en "
+"particular.\n"
 
 #: gio/gdbus-tool.c:201 gio/gdbus-tool.c:268 gio/gdbus-tool.c:340
 #: gio/gdbus-tool.c:364 gio/gdbus-tool.c:854 gio/gdbus-tool.c:1231
@@ -1432,7 +1433,6 @@ msgstr "S'esperava un GEmblem per a un GEmblemedIcon"
 #. Translators: This is an error message when
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
-#.
 #: gio/gfile.c:1543
 msgid "Containing mount does not exist"
 msgstr "No existeix el punt de muntatge contenidor"
@@ -1504,7 +1504,7 @@ msgstr "el volum no implementa el muntatge"
 #: gio/gfile.c:6911 gio/gfile.c:6959
 msgid "No application is registered as handling this file"
 msgstr ""
-"No hi ha cap aplicació que s'hagi registrat per gestionar aquest fitxer"
+"No hi ha cap aplicació que s'hagi registrat per a gestionar aquest fitxer"
 
 #: gio/gfileenumerator.c:212
 msgid "Enumerator is closed"
@@ -1707,7 +1707,7 @@ msgstr "Crea els directoris"
 
 #: gio/gio-tool.c:236
 msgid "Monitor files and directories for changes"
-msgstr "Fes un seguiment dels directoris per veure si hi ha canvis"
+msgstr "Fes un seguiment dels directoris per a veure si hi ha canvis"
 
 #: gio/gio-tool.c:237
 msgid "Mount or unmount the locations"
@@ -1748,7 +1748,7 @@ msgstr "Llista els continguts de les ubicacions en un arbre"
 #: gio/gio-tool.c:247
 #, c-format
 msgid "Use %s to get detailed help.\n"
-msgstr "Feu servir %s per obtenir ajuda detallada.\n"
+msgstr "Feu servir %s per a obtenir ajuda detallada.\n"
 
 #: gio/gio-tool-cat.c:87
 msgid "Error writing to stdout"
@@ -2037,8 +2037,8 @@ msgid ""
 "for the mimetype. If a handler is given, it is set as the default\n"
 "handler for the mimetype."
 msgstr ""
-"Si no es dóna un gestor, mostra les aplicacions recomanades i registrades\n"
-"pel tipus MIME. Si es dóna un gestor, s'estableix com a gestor per defecte\n"
+"Si no es dona un gestor, mostra les aplicacions recomanades i registrades\n"
+"pel tipus MIME. Si es dona un gestor, s'estableix com a gestor per defecte\n"
 "pel tipus MIME."
 
 #: gio/gio-tool-mime.c:100
@@ -2130,7 +2130,7 @@ msgstr "Vigila els esdeveniments de muntatge"
 
 #: gio/gio-tool-monitor.c:208
 msgid "Monitor files or directories for changes."
-msgstr "Fes un seguiment dels directoris per veure si hi ha canvis."
+msgstr "Fes un seguiment dels directoris per a veure si hi ha canvis."
 
 #: gio/gio-tool-mount.c:63
 msgid "Mount as mountable"
@@ -2250,7 +2250,7 @@ msgid ""
 "is registered to handle files of this type."
 msgstr ""
 "Obre els fitxers amb l'aplicació registrada per\n"
-"defecte per gestionar aquest tipus de fitxer."
+"defecte per a gestionar aquest tipus de fitxer."
 
 #: gio/gio-tool-remove.c:31 gio/gio-tool-trash.c:33
 msgid "Ignore nonexistent files, never prompt"
@@ -2297,12 +2297,14 @@ msgstr "En crear un fitxer, limita'n l'accés a només l'usuari actual"
 msgid "When replacing, replace as if the destination did not exist"
 msgstr "Quan es reemplaci, fes com si el destí no existís"
 
-#. Translators: The "etag" is a token allowing to verify whether a file has been modified
+#. Translators: The "etag" is a token allowing to verify whether a file has
+#. been modified
 #: gio/gio-tool-save.c:55
 msgid "Print new etag at end"
 msgstr "Mostra la nova etag al final"
 
-#. Translators: The "etag" is a token allowing to verify whether a file has been modified
+#. Translators: The "etag" is a token allowing to verify whether a file has
+#. been modified
 #: gio/gio-tool-save.c:57
 msgid "The etag of the file being overwritten"
 msgstr "L'etag del fitxer que s'està sobreescrivint"
@@ -2315,7 +2317,8 @@ msgstr "ETAG"
 msgid "Error reading from standard input"
 msgstr "S'ha produït un error en llegir de l'entrada estàndard"
 
-#. Translators: The "etag" is a token allowing to verify whether a file has been modified
+#. Translators: The "etag" is a token allowing to verify whether a file has
+#. been modified
 #: gio/gio-tool-save.c:139
 msgid "Etag not available\n"
 msgstr "L'etag no està disponible\n"
@@ -2450,7 +2453,6 @@ msgstr "Es desconeix l'opció de processament «%s»"
 #. Translators: the first %s is a gresource XML attribute,
 #. * the second %s is an environment variable, and the third
 #. * %s is a command line tool
-#.
 #: gio/glib-compile-resources.c:310 gio/glib-compile-resources.c:367
 #: gio/glib-compile-resources.c:424
 #, c-format
@@ -2509,8 +2511,8 @@ msgstr "Genera la capçalera del codi"
 #: gio/glib-compile-resources.c:742
 msgid "Generate source code used to link in the resource file into your code"
 msgstr ""
-"Genera el codi font que es fa servir per enllaçar el fitxer de recurs amb el "
-"codi"
+"Genera el codi font que es fa servir per a enllaçar el fitxer de recurs amb "
+"el codi"
 
 #: gio/glib-compile-resources.c:743
 msgid "Generate dependency list"
@@ -2851,7 +2853,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1224
 #, c-format
 msgid "A path, if given, must begin and end with a slash"
-msgstr "Si es dóna un camí ha de començar i acabar amb una barra inclinada"
+msgstr "Si es dona un camí ha de començar i acabar amb una barra inclinada"
 
 #: gio/glib-compile-schemas.c:1231
 #, c-format
@@ -3062,7 +3064,6 @@ msgstr ""
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#.
 #: gio/glocalfile.c:1121
 #, c-format
 msgid "Containing mount for file %s not found"
@@ -3425,7 +3426,7 @@ msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr ""
-"La quantitat de memòria necessària per processar l'escriptura és més gran "
+"La quantitat de memòria necessària per a processar l'escriptura és més gran "
 "que l'espai d'adreces disponible"
 
 #: gio/gmemoryoutputstream.c:782
@@ -3642,7 +3643,7 @@ msgstr ""
 "  details                   Llista els recursos amb les seves dades\n"
 "  extract                   Extreu un recurs\n"
 "\n"
-"Utilitzeu «gresource help ORDRE» per obtenir informació més detallada.\n"
+"Utilitzeu «gresource help ORDRE» per a obtenir informació més detallada.\n"
 "\n"
 
 #: gio/gresource-tool.c:553
@@ -3815,7 +3816,7 @@ msgstr ""
 "Fes un seguiment de la CLAU per si hi ha canvis.\n"
 "Si no s'especifica cap CLAU, es farà un seguiment a \n"
 "totes les claus de l'ESQUEMA.\n"
-"Utilitzeu ^C per deixar de fer el seguiment.\n"
+"Utilitzeu ^C per a deixar de fer el seguiment.\n"
 
 #: gio/gsettings-tool.c:655
 msgid "SCHEMA[:PATH] [KEY]"
@@ -3866,7 +3867,7 @@ msgstr ""
 "  writable                  Comprova si es pot escriure a la clau\n"
 "  monitor                   Fa un seguiment per si hi ha canvis\n"
 "\n"
-"Utilitzeu «gsettings help ORDRE» per veure l'ajuda més detallada.\n"
+"Utilitzeu «gsettings help ORDRE» per a veure l'ajuda més detallada.\n"
 "\n"
 
 #: gio/gsettings-tool.c:691
@@ -4289,7 +4290,7 @@ msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
-"Últim intent per introduir la contrasenya correctament abans que se us "
+"Últim intent per a introduir la contrasenya correctament abans que se us "
 "bloquegi l'accés."
 
 #. Translators: This is not the 'This is the last chance' string. It is
@@ -4349,7 +4350,7 @@ msgstr "S'ha produït un error en habilitar «SO_PASSCRED»: %s"
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
-"S'esperava llegir un sol byte per rebre les credencials però s'han llegit "
+"S'esperava llegir un sol byte per a rebre les credencials però s'han llegit "
 "zero bytes"
 
 #: gio/gunixconnection.c:605
@@ -4437,7 +4438,7 @@ msgstr "Adreça on s'escoltarà"
 
 #: gio/tests/gdbus-daemon.c:19
 msgid "Ignored, for compat with GTestDbus"
-msgstr "Ignorat, per mantenir la compatibilitat amb el GTestDbus"
+msgstr "Ignorat, per a mantenir la compatibilitat amb el GTestDbus"
 
 #: gio/tests/gdbus-daemon.c:20
 msgid "Print address"
@@ -4587,7 +4588,8 @@ msgstr "L'URI «%s» conté caràcters d'escapada no vàlids"
 msgid "The pathname “%s” is not an absolute path"
 msgstr "El nom de camí «%s» no és un camí absolut"
 
-#. Translators: this is the preferred format for expressing the date and the time
+#. Translators: this is the preferred format for expressing the date and the
+#. time
 #: glib/gdatetime.c:221
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
@@ -4626,7 +4628,6 @@ msgstr "%I:%M:%S %p"
 #. * paste here.  Note that in most of the languages (western European,
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
-#.
 #: glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "January"
@@ -4703,7 +4704,6 @@ msgstr "desembre"
 #. * and paste here.  Note that this feature is not yet supported by any
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
-#.
 #: glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "Jan"
@@ -4850,7 +4850,6 @@ msgstr "dg."
 #. * incorrect in some languages.  Note that in most of the languages
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
-#.
 #: glib/gdatetime.c:463
 msgctxt "full month name with day"
 msgid "January"
@@ -4927,7 +4926,6 @@ msgstr "de desembre"
 #. * `locale abmon' in your native locale produces a complete list of
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
-#.
 #: glib/gdatetime.c:550
 msgctxt "abbreviated month name with day"
 msgid "Jan"
@@ -5321,8 +5319,8 @@ msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
 "“%s”"
 msgstr ""
-"S'ha trobat un caràcter estrany: «%s». S'esperava el caràcter «>» per tancar "
-"l'etiqueta d'element buit «%s»"
+"S'ha trobat un caràcter estrany: «%s». S'esperava el caràcter «>» per a "
+"tancar l'etiqueta d'element buit «%s»"
 
 #: glib/gmarkup.c:1346
 #, c-format
@@ -5345,8 +5343,8 @@ msgid ""
 "character in an attribute name"
 msgstr ""
 "S'ha trobat un caràcter estrany: «%s». S'esperava un caràcter «>» o «/» per "
-"finalitzar l'etiqueta d'inici de l'element «%s», o opcionalment un atribut. "
-"Potser heu utilitzat un caràcter no vàlid en un nom d'atribut"
+"a finalitzar l'etiqueta d'inici de l'element «%s», o opcionalment un "
+"atribut. Potser heu utilitzat un caràcter no vàlid en un nom d'atribut"
 
 #: glib/gmarkup.c:1453
 #, c-format
@@ -5608,7 +5606,7 @@ msgstr "s'ha sortit de l'interval en la classe de caràcter"
 
 #: glib/gregex.c:353
 msgid "nothing to repeat"
-msgstr "no hi ha res per repetir"
+msgstr "no hi ha res per a repetir"
 
 #: glib/gregex.c:357
 msgid "unexpected repeat"
@@ -5673,7 +5671,6 @@ msgstr "s'esperava una asserció després de «(?(»"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
-#.
 #: glib/gregex.c:409
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "«(?R» o «(?[+-]dígits» han d'anar seguits de «)»"
@@ -6321,11 +6318,13 @@ msgid_plural "%s bits"
 msgstr[0] "%s bit"
 msgstr[1] "%s bits"
 
-#. Translators: this is from the deprecated function g_format_size_for_display() which uses 'KB' to
-#. * mean 1024 bytes.  I am aware that 'KB' is not correct, but it has been preserved for reasons of
-#. * compatibility.  Users will not see this string unless a program is using this deprecated function.
+#. Translators: this is from the deprecated function
+#. g_format_size_for_display() which uses 'KB' to
+#. * mean 1024 bytes.  I am aware that 'KB' is not correct, but it has been
+#. preserved for reasons of
+#. * compatibility.  Users will not see this string unless a program is using
+#. this deprecated function.
 #. * Please translate as literally as possible.
-#.
 #: glib/gutils.c:2975
 #, c-format
 msgid "%.1f KB"
@@ -6355,6 +6354,3 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
-
-#~ msgid "Unknown error on connect"
-#~ msgstr "S'ha produït un error desconegut en connectar-se"
