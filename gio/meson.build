@@ -430,12 +430,16 @@ else
                     cc.find_library('dnsapi'),
                     iphlpapi_dep,
                     winsock2]
+  platform_deps += uwp_gio_deps
+
   win32_sources += files(
     'gwin32registrykey.c',
     'gwin32mount.c',
     'gwin32volumemonitor.c',
     'gwin32inputstream.c',
     'gwin32outputstream.c',
+    'gwin32file-sync-stream.c',
+    'gwin32packageparser.c',
     'gwin32networkmonitor.c',
     'gwin32networkmonitor.h',
     'gwin32notificationbackend.c',

@@ -466,9 +466,12 @@ if host_system == 'windows'
     glib_conf.set('G_WINAPI_ONLY_APP', true)
     # We require Windows 10+ on WinRT
     glib_conf.set('_WIN32_WINNT', '0x0A00')
+    uwp_gio_deps = [cc.find_library('shcore'),
+                    cc.find_library('runtimeobject')]
   else
     # We require Windows 7+ on Win32
     glib_conf.set('_WIN32_WINNT', '0x0601')
+    uwp_gio_deps = []
   endif
 endif
 
