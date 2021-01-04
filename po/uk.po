@@ -5,13 +5,13 @@
 # Maxim Dziumanenko <dziumanenko@gmail.com>, 2004-2009.
 # wanderlust <wanderlust@ukr.net>, 2009.
 # Mykola Tkach <Stuartlittle1970@gmail.com>, 2014.
-# Yuri Chornoivan <yurchor@ukr.net>, 2020.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2020-12-09 15:12+0000\n"
-"PO-Revision-Date: 2020-12-09 17:42+0200\n"
+"POT-Creation-Date: 2021-01-04 15:50+0000\n"
+"PO-Revision-Date: 2021-01-04 18:51+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -489,37 +489,37 @@ msgstr ""
 msgid "Error writing contents of nonce file “%s” to stream:"
 msgstr "Сталася помилка запису вмісту nonce-файла «%s» до потоку:"
 
-#: gio/gdbusaddress.c:981
+#: gio/gdbusaddress.c:987
 msgid "The given address is empty"
 msgstr "Вказана адреса порожня"
 
-#: gio/gdbusaddress.c:1094
+#: gio/gdbusaddress.c:1100
 #, c-format
 msgid "Cannot spawn a message bus when setuid"
 msgstr ""
 "Неможливо породити процес шини повідомлень, якщо встановлений атрибут setuid"
 
-#: gio/gdbusaddress.c:1101
+#: gio/gdbusaddress.c:1107
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Неможливо породити процес шини повідомлень без ідентифікатора машини:"
 
-#: gio/gdbusaddress.c:1108
+#: gio/gdbusaddress.c:1114
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
 msgstr "Неможливо автоматично запускати D-Bus без $DISPLAY у X11"
 
-#: gio/gdbusaddress.c:1150
+#: gio/gdbusaddress.c:1156
 #, c-format
 msgid "Error spawning command line “%s”: "
 msgstr "Помилка запуску рядка команди «%s»: "
 
-#: gio/gdbusaddress.c:1219
+#: gio/gdbusaddress.c:1225
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Не вдалося визначити адресу сеансової шини (не реалізовано для цієї ОС)"
 
-#: gio/gdbusaddress.c:1357 gio/gdbusconnection.c:7223
+#: gio/gdbusaddress.c:1363 gio/gdbusconnection.c:7224
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -528,7 +528,7 @@ msgstr ""
 "Не вдалося визначити адресу шини зі значення змінної середовища "
 "DBUS_STARTER_BUS_TYPE — невідоме значення «%s»"
 
-#: gio/gdbusaddress.c:1366 gio/gdbusconnection.c:7232
+#: gio/gdbusaddress.c:1372 gio/gdbusconnection.c:7233
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -536,7 +536,7 @@ msgstr ""
 "Не вдалося визначити адресу шини, оскільки значення змінної середовища "
 "DBUS_STARTER_BUS_TYPE не встановлено"
 
-#: gio/gdbusaddress.c:1376
+#: gio/gdbusaddress.c:1382
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Невідомий тип шини %d"
@@ -663,82 +663,82 @@ msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "При створенні клієнтського з'єднання виявлено непідтримувані прапорці"
 
-#: gio/gdbusconnection.c:4169 gio/gdbusconnection.c:4516
+#: gio/gdbusconnection.c:4170 gio/gdbusconnection.c:4517
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "Інтерфейс «org.freedesktop.DBus.Properties» для шляху об'єкта %s не знайдено"
 
-#: gio/gdbusconnection.c:4311
+#: gio/gdbusconnection.c:4312
 #, c-format
 msgid "No such property “%s”"
 msgstr "Немає властивості «%s»"
 
-#: gio/gdbusconnection.c:4323
+#: gio/gdbusconnection.c:4324
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Властивість «%s» недоступна для читання"
 
-#: gio/gdbusconnection.c:4334
+#: gio/gdbusconnection.c:4335
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Властивість «%s» недоступна для запису"
 
-#: gio/gdbusconnection.c:4354
+#: gio/gdbusconnection.c:4355
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Помилка встановлення властивості «%s». Мало бути використано тип «%s», але "
 "отримано «%s»"
 
-#: gio/gdbusconnection.c:4459 gio/gdbusconnection.c:4667
-#: gio/gdbusconnection.c:6663
+#: gio/gdbusconnection.c:4460 gio/gdbusconnection.c:4668
+#: gio/gdbusconnection.c:6664
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Немає інтерфейсу «%s»"
 
-#: gio/gdbusconnection.c:4885 gio/gdbusconnection.c:7172
+#: gio/gdbusconnection.c:4886 gio/gdbusconnection.c:7173
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Немає інтерфейсу «%s» на об'єкті зі шляхом %s"
 
-#: gio/gdbusconnection.c:4983
+#: gio/gdbusconnection.c:4984
 #, c-format
 msgid "No such method “%s”"
 msgstr "Немає методу «%s»"
 
-#: gio/gdbusconnection.c:5014
+#: gio/gdbusconnection.c:5015
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Тип повідомлення «%s» не збігається з очікуваним типом «%s»"
 
-#: gio/gdbusconnection.c:5212
+#: gio/gdbusconnection.c:5213
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Об'єкт інтерфейсу %s вже експортовано як %s"
 
-#: gio/gdbusconnection.c:5438
+#: gio/gdbusconnection.c:5439
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Не вдалося отримати властивість %s.%s"
 
-#: gio/gdbusconnection.c:5494
+#: gio/gdbusconnection.c:5495
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Не вдалося встановити значення властивості %s.%s"
 
-#: gio/gdbusconnection.c:5672
+#: gio/gdbusconnection.c:5673
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Метод «%s» повернув тип «%s», але очікувалося «%s»"
 
-#: gio/gdbusconnection.c:6774
+#: gio/gdbusconnection.c:6775
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Методу «%s» інтерфейсу «%s» з підписом «%s» не існує"
 
-#: gio/gdbusconnection.c:6895
+#: gio/gdbusconnection.c:6896
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Піддерево вже експортовано для %s"
@@ -1396,7 +1396,7 @@ msgstr "Очікується GEmblem для GEmblemedIcon"
 msgid "Containing mount does not exist"
 msgstr "Вкладена точка монтування не існує"
 
-#: gio/gfile.c:2590 gio/glocalfile.c:2449
+#: gio/gfile.c:2590 gio/glocalfile.c:2472
 msgid "Can’t copy over directory"
 msgstr "Не можна копіювати із заміною каталогу"
 
@@ -1442,7 +1442,7 @@ msgstr "Не вдалося скопіювати спеціальний файл
 msgid "Invalid symlink value given"
 msgstr "Неправильне значення символьного посилання"
 
-#: gio/gfile.c:4036 glib/gfileutils.c:2349
+#: gio/gfile.c:4036 glib/gfileutils.c:2362
 msgid "Symbolic links not supported"
 msgstr "Символічні посилання не підтримуються"
 
@@ -1646,7 +1646,6 @@ msgid "Show information about locations"
 msgstr "Показати відомості щодо місць"
 
 #: gio/gio-tool.c:232
-#| msgid "List static actions for an application (from .desktop file)"
 msgid "Launch an application from a desktop file"
 msgstr "Запустити програму з файла desktop"
 
@@ -1712,7 +1711,7 @@ msgid "Error writing to stdout"
 msgstr "Помилка при записі до стандартного виведення (stdout)"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:333 gio/gio-tool-list.c:172
+#: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:172
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
 #: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
@@ -1735,7 +1734,7 @@ msgstr ""
 "GIO замість локальних файлів. Наприклад, ви можете вказати як місце\n"
 "щось таке: smb://сервер/ресурс/файл.txt."
 
-#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:364 gio/gio-tool-mkdir.c:76
+#: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:371 gio/gio-tool-mkdir.c:76
 #: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
 #: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:303
 msgid "No locations given"
@@ -1872,24 +1871,24 @@ msgstr "адреса: %s\n"
 msgid "local path: %s\n"
 msgstr "локальний шлях: %s\n"
 
-#: gio/gio-tool-info.c:199
+#: gio/gio-tool-info.c:205
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
 msgstr "точка монтування unix: %s%s %s %s %s\n"
 
-#: gio/gio-tool-info.c:279
+#: gio/gio-tool-info.c:286
 msgid "Settable attributes:\n"
 msgstr "Придатні до встановлення атрибути:\n"
 
-#: gio/gio-tool-info.c:303
+#: gio/gio-tool-info.c:310
 msgid "Writable attribute namespaces:\n"
 msgstr "Придатні до запису простори назв атрибутів:\n"
 
-#: gio/gio-tool-info.c:338
+#: gio/gio-tool-info.c:345
 msgid "Show information about locations."
 msgstr "Показати відомості щодо місць."
 
-#: gio/gio-tool-info.c:340
+#: gio/gio-tool-info.c:347
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1914,36 +1913,31 @@ msgid ""
 "Launch an application from a desktop file, passing optional filename "
 "arguments to it."
 msgstr ""
-"Запустити програму з файла desktop, передавши їй необов'язкові аргументи —"
-" назви файлів."
+"Запустити програму з файла desktop, передавши їй необов'язкові аргументи — "
+"назви файлів."
 
 #: gio/gio-tool-launch.c:77
-#| msgid "No destination given"
 msgid "No desktop file given"
 msgstr "Не вказано файла desktop"
 
 #: gio/gio-tool-launch.c:85
-#| msgid "There is no GCredentials support for your platform"
 msgid "The launch command is not currently supported on this platform"
 msgstr ""
-"На цій платформі у поточній версії не передбачено можливості виконання"
-" команди запуску"
+"На цій платформі у поточній версії не передбачено можливості виконання "
+"команди запуску"
 
 #: gio/gio-tool-launch.c:98
 #, c-format
-#| msgid "Unable to trash file %s: %s"
 msgid "Unable to load ‘%s‘: %s"
 msgstr "Не вдалося завантажити «%s»: %s"
 
 #: gio/gio-tool-launch.c:107
 #, c-format
-#| msgid "Failed to load info for handler “%s”"
 msgid "Unable to load application information for ‘%s‘"
 msgstr "Не вдалося завантажити дані програми для «%s»"
 
 #: gio/gio-tool-launch.c:119
 #, c-format
-#| msgid "Default application for “%s”: %s\n"
 msgid "Unable to launch application ‘%s’: %s"
 msgstr "Не вдалося запустити програму «%s»: %s"
 
@@ -2332,7 +2326,6 @@ msgid "Empty the trash"
 msgstr "Спорожнити смітник"
 
 #: gio/gio-tool-trash.c:35
-#| msgid "List the contents of the locations."
 msgid "List files in the trash with their original locations"
 msgstr ""
 "Вивести список файлів у смітнику із зазначенням початкових місць зберігання"
@@ -2342,26 +2335,22 @@ msgid ""
 "Restore a file from trash to its original location (possibly recreating the "
 "directory)"
 msgstr ""
-"Відновити файл зі смітника до його початкового розташування (з можливим"
-" повторним створенням каталогу)"
+"Відновити файл зі смітника до його початкового розташування (з можливим "
+"повторним створенням каталогу)"
 
 #: gio/gio-tool-trash.c:106
-#| msgid "Unable to find terminal required for application"
 msgid "Unable to find original path"
 msgstr "Не вдалося визначити початковий шлях"
 
 #: gio/gio-tool-trash.c:123
-#| msgid "Unable to create socket: %s"
 msgid "Unable to recreate original location: "
 msgstr "Не вдалося повторно створити початкове місце: "
 
 #: gio/gio-tool-trash.c:136
-#| msgid "unable to find desktop file for application %s\n"
 msgid "Unable to move file to its original location: "
 msgstr "Не вдалося пересунути файл до його початкового місця: "
 
 #: gio/gio-tool-trash.c:225
-#| msgid "Move files or directories to the trash."
 msgid "Move/Restore files or directories to the trash."
 msgstr "Пересунути/Відновити файли або каталоги до смітника."
 
@@ -2370,8 +2359,8 @@ msgid ""
 "Note: for --restore switch, if the original location of the trashed file \n"
 "already exists, it will not be overwritten unless --force is set."
 msgstr ""
-"Зауваження: для перемикача --restore, якщо початкове місце файла зі смітника"
-" \n"
+"Зауваження: для перемикача --restore, якщо початкове місце файла зі "
+"смітника \n"
 "вже зайнято, його не буде перезаписано, якщо не вказано параметр --force."
 
 #: gio/gio-tool-trash.c:258
@@ -3035,8 +3024,8 @@ msgstr "Помилка при перейменуванні файла %s: %s"
 msgid "Can’t rename file, filename already exists"
 msgstr "Не вдалося перейменувати файл, файл із також назвою вже існує"
 
-#: gio/glocalfile.c:1182 gio/glocalfile.c:2343 gio/glocalfile.c:2371
-#: gio/glocalfile.c:2510 gio/glocalfileoutputstream.c:650
+#: gio/glocalfile.c:1182 gio/glocalfile.c:2366 gio/glocalfile.c:2394
+#: gio/glocalfile.c:2533 gio/glocalfileoutputstream.c:650
 msgid "Invalid filename"
 msgstr "Некоректна назва файла"
 
@@ -3057,87 +3046,89 @@ msgstr "Помилка під час спроби надіслати файл %s
 
 #: gio/glocalfile.c:2029
 #, c-format
-msgid "Unable to create trash dir %s: %s"
+#| msgid "Unable to create trash dir %s: %s"
+msgid "Unable to create trash directory %s: %s"
 msgstr "Помилка при створенні каталогу смітника %s: %s"
 
-#: gio/glocalfile.c:2049
+#: gio/glocalfile.c:2050
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Не вдалося знайти каталог верхнього рівня для смітника %s"
 
-#: gio/glocalfile.c:2057
+#: gio/glocalfile.c:2058
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr ""
 "Підтримки надсилання до смітника на внутрішніх точках монтування системи не "
 "передбачено"
 
-#: gio/glocalfile.c:2137 gio/glocalfile.c:2157
+#: gio/glocalfile.c:2141 gio/glocalfile.c:2169
 #, c-format
-msgid "Unable to find or create trash directory for %s"
-msgstr "Не вдалося знайти або створити каталог смітника для %s"
+#| msgid "Unable to find or create trash directory for %s"
+msgid "Unable to find or create trash directory %s to trash %s"
+msgstr "Не вдалося знайти або створити каталог смітника %s для викидання %s"
 
-#: gio/glocalfile.c:2192
+#: gio/glocalfile.c:2215
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr ""
 "Не вдалося створити файл відомостей щодо надсилання до смітника для %s: %s"
 
-#: gio/glocalfile.c:2254
+#: gio/glocalfile.c:2277
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Не вдалося надіслати файл %s до смітника за межами файлової системи"
 
-#: gio/glocalfile.c:2258 gio/glocalfile.c:2314
+#: gio/glocalfile.c:2281 gio/glocalfile.c:2337
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Не вдалося перемістити файл до смітника %s: %s"
 
-#: gio/glocalfile.c:2320
+#: gio/glocalfile.c:2343
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Не вдалося перемістити файл до смітника %s"
 
-#: gio/glocalfile.c:2346
+#: gio/glocalfile.c:2369
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Сталася помилка при створенні каталогу «%s»: %s"
 
-#: gio/glocalfile.c:2375
+#: gio/glocalfile.c:2398
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Файлова система не підтримує символічні посилання"
 
-#: gio/glocalfile.c:2378
+#: gio/glocalfile.c:2401
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Помилка при створенні символічного посилання %s: %s"
 
-#: gio/glocalfile.c:2421 gio/glocalfile.c:2456 gio/glocalfile.c:2513
+#: gio/glocalfile.c:2444 gio/glocalfile.c:2479 gio/glocalfile.c:2536
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Помилка при переміщенні файла %s: %s"
 
-#: gio/glocalfile.c:2444
+#: gio/glocalfile.c:2467
 msgid "Can’t move directory over directory"
 msgstr "Не вдалося перемістити каталог поверх каталогу"
 
-#: gio/glocalfile.c:2470 gio/glocalfileoutputstream.c:1039
+#: gio/glocalfile.c:2493 gio/glocalfileoutputstream.c:1039
 #: gio/glocalfileoutputstream.c:1053 gio/glocalfileoutputstream.c:1068
 #: gio/glocalfileoutputstream.c:1085 gio/glocalfileoutputstream.c:1099
 msgid "Backup file creation failed"
 msgstr "Помилка при створенні файла резервної копії"
 
-#: gio/glocalfile.c:2489
+#: gio/glocalfile.c:2512
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Помилка при зчитуванні файла призначення: %s"
 
-#: gio/glocalfile.c:2503
+#: gio/glocalfile.c:2526
 msgid "Move between mounts not supported"
 msgstr "Переміщення між різними точками монтування не підтримується"
 
-#: gio/glocalfile.c:2677
+#: gio/glocalfile.c:2700
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Не вдалося визначити використання диска %s: %s"
@@ -3503,15 +3494,15 @@ msgstr "%s не реалізовано"
 msgid "Invalid domain"
 msgstr "Некоректний домен"
 
-#: gio/gresource.c:672 gio/gresource.c:933 gio/gresource.c:972
-#: gio/gresource.c:1096 gio/gresource.c:1168 gio/gresource.c:1241
-#: gio/gresource.c:1322 gio/gresourcefile.c:476 gio/gresourcefile.c:599
+#: gio/gresource.c:676 gio/gresource.c:938 gio/gresource.c:978
+#: gio/gresource.c:1102 gio/gresource.c:1174 gio/gresource.c:1248
+#: gio/gresource.c:1329 gio/gresourcefile.c:476 gio/gresourcefile.c:599
 #: gio/gresourcefile.c:736
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Ресурсу у «%s» не існує"
 
-#: gio/gresource.c:839
+#: gio/gresource.c:843
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "Не вдалося розпакувати ресурс з «%s»"
@@ -4042,12 +4033,12 @@ msgstr "GSocketControlMessage не підтримується у windows"
 msgid "Error receiving message: %s"
 msgstr "Помилка при отриманні повідомлення: %s"
 
-#: gio/gsocket.c:5990 gio/gsocket.c:6038
+#: gio/gsocket.c:5991 gio/gsocket.c:6002 gio/gsocket.c:6048
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Не вдалося прочитати повноваження сокета: %s"
 
-#: gio/gsocket.c:6047
+#: gio/gsocket.c:6057
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Функція g_socket_get_credentials не реалізована у цій ОС"
 
@@ -4531,25 +4522,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "Шлях «%s» не є абсолютним"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:220
+#: glib/gdatetime.c:221
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %b %e %H:%M:%S %Y"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:223
+#: glib/gdatetime.c:224
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%m/%d/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:226
+#: glib/gdatetime.c:227
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:229
+#: glib/gdatetime.c:230
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4570,62 +4561,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:268
+#: glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "January"
 msgstr "січень"
 
-#: glib/gdatetime.c:270
+#: glib/gdatetime.c:271
 msgctxt "full month name"
 msgid "February"
 msgstr "лютий"
 
-#: glib/gdatetime.c:272
+#: glib/gdatetime.c:273
 msgctxt "full month name"
 msgid "March"
 msgstr "березень"
 
-#: glib/gdatetime.c:274
+#: glib/gdatetime.c:275
 msgctxt "full month name"
 msgid "April"
 msgstr "квітень"
 
-#: glib/gdatetime.c:276
+#: glib/gdatetime.c:277
 msgctxt "full month name"
 msgid "May"
 msgstr "травень"
 
-#: glib/gdatetime.c:278
+#: glib/gdatetime.c:279
 msgctxt "full month name"
 msgid "June"
 msgstr "червень"
 
-#: glib/gdatetime.c:280
+#: glib/gdatetime.c:281
 msgctxt "full month name"
 msgid "July"
 msgstr "липень"
 
-#: glib/gdatetime.c:282
+#: glib/gdatetime.c:283
 msgctxt "full month name"
 msgid "August"
 msgstr "серпень"
 
-#: glib/gdatetime.c:284
+#: glib/gdatetime.c:285
 msgctxt "full month name"
 msgid "September"
 msgstr "вересень"
 
-#: glib/gdatetime.c:286
+#: glib/gdatetime.c:287
 msgctxt "full month name"
 msgid "October"
 msgstr "жовтень"
 
-#: glib/gdatetime.c:288
+#: glib/gdatetime.c:289
 msgctxt "full month name"
 msgid "November"
 msgstr "листопад"
 
-#: glib/gdatetime.c:290
+#: glib/gdatetime.c:291
 msgctxt "full month name"
 msgid "December"
 msgstr "грудень"
@@ -4647,132 +4638,132 @@ msgstr "грудень"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:322
+#: glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "січ"
 
-#: glib/gdatetime.c:324
+#: glib/gdatetime.c:325
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "лют"
 
-#: glib/gdatetime.c:326
+#: glib/gdatetime.c:327
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "бер"
 
-#: glib/gdatetime.c:328
+#: glib/gdatetime.c:329
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "кві"
 
-#: glib/gdatetime.c:330
+#: glib/gdatetime.c:331
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "тра"
 
-#: glib/gdatetime.c:332
+#: glib/gdatetime.c:333
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "чер"
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:335
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "лип"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:337
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "серп"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:339
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "вер"
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:341
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "жовт"
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:343
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "лист"
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:345
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "груд"
 
-#: glib/gdatetime.c:359
+#: glib/gdatetime.c:360
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "понеділок"
 
-#: glib/gdatetime.c:361
+#: glib/gdatetime.c:362
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "вівторок"
 
-#: glib/gdatetime.c:363
+#: glib/gdatetime.c:364
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "середа"
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:366
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "четвер"
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:368
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "п'ятниця"
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:370
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "субота"
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:372
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "неділя"
 
-#: glib/gdatetime.c:386
+#: glib/gdatetime.c:387
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "пн"
 
-#: glib/gdatetime.c:388
+#: glib/gdatetime.c:389
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "вт"
 
-#: glib/gdatetime.c:390
+#: glib/gdatetime.c:391
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "ср"
 
-#: glib/gdatetime.c:392
+#: glib/gdatetime.c:393
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "чт"
 
-#: glib/gdatetime.c:394
+#: glib/gdatetime.c:395
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "пт"
 
-#: glib/gdatetime.c:396
+#: glib/gdatetime.c:397
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "сб"
 
-#: glib/gdatetime.c:398
+#: glib/gdatetime.c:399
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "нд"
@@ -4794,62 +4785,62 @@ msgstr "нд"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:462
+#: glib/gdatetime.c:463
 msgctxt "full month name with day"
 msgid "January"
 msgstr "січня"
 
-#: glib/gdatetime.c:464
+#: glib/gdatetime.c:465
 msgctxt "full month name with day"
 msgid "February"
 msgstr "лютого"
 
-#: glib/gdatetime.c:466
+#: glib/gdatetime.c:467
 msgctxt "full month name with day"
 msgid "March"
 msgstr "березня"
 
-#: glib/gdatetime.c:468
+#: glib/gdatetime.c:469
 msgctxt "full month name with day"
 msgid "April"
 msgstr "квітня"
 
-#: glib/gdatetime.c:470
+#: glib/gdatetime.c:471
 msgctxt "full month name with day"
 msgid "May"
 msgstr "травня"
 
-#: glib/gdatetime.c:472
+#: glib/gdatetime.c:473
 msgctxt "full month name with day"
 msgid "June"
 msgstr "червня"
 
-#: glib/gdatetime.c:474
+#: glib/gdatetime.c:475
 msgctxt "full month name with day"
 msgid "July"
 msgstr "липня"
 
-#: glib/gdatetime.c:476
+#: glib/gdatetime.c:477
 msgctxt "full month name with day"
 msgid "August"
 msgstr "серпня"
 
-#: glib/gdatetime.c:478
+#: glib/gdatetime.c:479
 msgctxt "full month name with day"
 msgid "September"
 msgstr "вересня"
 
-#: glib/gdatetime.c:480
+#: glib/gdatetime.c:481
 msgctxt "full month name with day"
 msgid "October"
 msgstr "жовтня"
 
-#: glib/gdatetime.c:482
+#: glib/gdatetime.c:483
 msgctxt "full month name with day"
 msgid "November"
 msgstr "листопада"
 
-#: glib/gdatetime.c:484
+#: glib/gdatetime.c:485
 msgctxt "full month name with day"
 msgid "December"
 msgstr "грудня"
@@ -4871,74 +4862,74 @@ msgstr "грудня"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:549
+#: glib/gdatetime.c:550
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "січ"
 
-#: glib/gdatetime.c:551
+#: glib/gdatetime.c:552
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "лют"
 
-#: glib/gdatetime.c:553
+#: glib/gdatetime.c:554
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "бер"
 
-#: glib/gdatetime.c:555
+#: glib/gdatetime.c:556
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "квіт"
 
-#: glib/gdatetime.c:557
+#: glib/gdatetime.c:558
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "трав"
 
-#: glib/gdatetime.c:559
+#: glib/gdatetime.c:560
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "черв"
 
-#: glib/gdatetime.c:561
+#: glib/gdatetime.c:562
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "лип"
 
-#: glib/gdatetime.c:563
+#: glib/gdatetime.c:564
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "серп"
 
-#: glib/gdatetime.c:565
+#: glib/gdatetime.c:566
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "вер"
 
-#: glib/gdatetime.c:567
+#: glib/gdatetime.c:568
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "жовт"
 
-#: glib/gdatetime.c:569
+#: glib/gdatetime.c:570
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "лист"
 
-#: glib/gdatetime.c:571
+#: glib/gdatetime.c:572
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "груд"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:588
+#: glib/gdatetime.c:589
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:591
+#: glib/gdatetime.c:592
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -4971,57 +4962,57 @@ msgstr "Файл «%s» занадто великий"
 msgid "Failed to read from file “%s”: %s"
 msgstr "Помилка зчитування з файла «%s»: %s"
 
-#: glib/gfileutils.c:902 glib/gfileutils.c:974 glib/gfileutils.c:1466
+#: glib/gfileutils.c:904 glib/gfileutils.c:979 glib/gfileutils.c:1476
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Не вдалося відкрити файл «%s»: %s"
 
-#: glib/gfileutils.c:914
+#: glib/gfileutils.c:917
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Помилка отримання атрибутів файла «%s»: помилка fstat(): %s"
 
-#: glib/gfileutils.c:944
+#: glib/gfileutils.c:948
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Помилка відкривання файла «%s»: помилка fdopen(): %s"
 
-#: glib/gfileutils.c:1044
+#: glib/gfileutils.c:1049
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Помилка перейменування файла «%s» на «%s»: помилка g_rename(): %s"
 
-#: glib/gfileutils.c:1169
+#: glib/gfileutils.c:1175
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Не вдалося записати файл «%s»: збій у функції write(): %s"
 
-#: glib/gfileutils.c:1189
+#: glib/gfileutils.c:1196
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Помилка запису у файл «%s»: помилка fsync(): %s"
 
-#: glib/gfileutils.c:1357 glib/gfileutils.c:1769
+#: glib/gfileutils.c:1365 glib/gfileutils.c:1780
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Помилка створення файла «%s»: %s"
 
-#: glib/gfileutils.c:1401
+#: glib/gfileutils.c:1410
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Не вдалося вилучити наявний файл «%s»: помилка g_unlink(): %s"
 
-#: glib/gfileutils.c:1735
+#: glib/gfileutils.c:1745
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Шаблон «%s» неправильний, бо не може містити «%s»"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Шаблон «%s» не містить XXXXXX"
 
-#: glib/gfileutils.c:2306 glib/gfileutils.c:2334
+#: glib/gfileutils.c:2318 glib/gfileutils.c:2347
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Помилка читання символічного посилання «%s»: %s"
@@ -5059,7 +5050,7 @@ msgstr "Не вдалося знайти правильний ключовий �
 msgid "Not a regular file"
 msgstr "Не є звичайним файлом"
 
-#: glib/gkeyfile.c:1275
+#: glib/gkeyfile.c:1281
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
@@ -5067,52 +5058,52 @@ msgstr ""
 "Файл ключа містить рядок «%s», який не є парою ключ-значення, групою або "
 "коментарем"
 
-#: glib/gkeyfile.c:1332
+#: glib/gkeyfile.c:1338
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Неправильна назва групи: %s"
 
-#: glib/gkeyfile.c:1354
+#: glib/gkeyfile.c:1360
 msgid "Key file does not start with a group"
 msgstr "Ключовий файл не починається з групи"
 
-#: glib/gkeyfile.c:1380
+#: glib/gkeyfile.c:1386
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Неправильна назва ключа: %s"
 
-#: glib/gkeyfile.c:1407
+#: glib/gkeyfile.c:1413
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Файл ключа містить кодування, підтримки якого не передбачено — «%s»"
 
-#: glib/gkeyfile.c:1650 glib/gkeyfile.c:1823 glib/gkeyfile.c:3276
-#: glib/gkeyfile.c:3340 glib/gkeyfile.c:3470 glib/gkeyfile.c:3602
-#: glib/gkeyfile.c:3748 glib/gkeyfile.c:3977 glib/gkeyfile.c:4044
+#: glib/gkeyfile.c:1662 glib/gkeyfile.c:1835 glib/gkeyfile.c:3288
+#: glib/gkeyfile.c:3352 glib/gkeyfile.c:3482 glib/gkeyfile.c:3614
+#: glib/gkeyfile.c:3760 glib/gkeyfile.c:3995 glib/gkeyfile.c:4062
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Файл ключа не містить групи «%s»"
 
-#: glib/gkeyfile.c:1778
+#: glib/gkeyfile.c:1790
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Файл ключа не містить ключ «%s» у групі «%s»"
 
-#: glib/gkeyfile.c:1940 glib/gkeyfile.c:2056
+#: glib/gkeyfile.c:1952 glib/gkeyfile.c:2068
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
 "Файл ключа містить ключ «%s» зі значенням «%s», кодування якого не є "
 "кодуванням UTF-8"
 
-#: glib/gkeyfile.c:1960 glib/gkeyfile.c:2076 glib/gkeyfile.c:2518
+#: glib/gkeyfile.c:1972 glib/gkeyfile.c:2088 glib/gkeyfile.c:2530
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Ключ «%s» з файла ключів містить значення, яке не вдається проаналізувати."
 
-#: glib/gkeyfile.c:2736 glib/gkeyfile.c:3105
+#: glib/gkeyfile.c:2748 glib/gkeyfile.c:3117
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5121,36 +5112,36 @@ msgstr ""
 "Файл ключів містить ключ «%s» у групі «%s», значення якого не вдалося "
 "розпізнати."
 
-#: glib/gkeyfile.c:2814 glib/gkeyfile.c:2891
+#: glib/gkeyfile.c:2826 glib/gkeyfile.c:2903
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Значення ключа «%s» у групі «%s» дорівнює «%s», але очікувалося «%s»"
 
-#: glib/gkeyfile.c:4284
+#: glib/gkeyfile.c:4305
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовий файл містить escape-символ наприкінці рядка"
 
-#: glib/gkeyfile.c:4306
+#: glib/gkeyfile.c:4327
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Файл ключа містить неправильну послідовність екранування «%s»"
 
-#: glib/gkeyfile.c:4450
+#: glib/gkeyfile.c:4471
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Не вдалося розібрати значення «%s» як число."
 
-#: glib/gkeyfile.c:4464
+#: glib/gkeyfile.c:4485
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Числове ціле значення «%s» поза межами діапазону"
 
-#: glib/gkeyfile.c:4497
+#: glib/gkeyfile.c:4518
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Значення «%s» не вдалося перетворити на число з рухомою комою."
 
-#: glib/gkeyfile.c:4536
+#: glib/gkeyfile.c:4557
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Не вдалося обробити значення «%s» як логічне значення."
