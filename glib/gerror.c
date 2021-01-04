@@ -354,7 +354,7 @@
  *   #GError is set.  Among other problems, it requires C callers to allocate
  *   a temporary error.  Instead, provide a `gboolean *` out parameter.
  *   There are functions in GLib itself such as g_key_file_has_key() that
- *   are deprecated because of this. If %FALSE is returned, the error must
+ *   are hard to use because of this. If %FALSE is returned, the error must
  *   be set to a non-%NULL value.  One exception to this is that in situations
  *   that are already considered to be undefined behaviour (such as when a
  *   g_return_val_if_fail() check fails), the error need not be set.
