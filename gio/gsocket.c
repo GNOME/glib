@@ -5475,10 +5475,10 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
 	    if (errsv == WSAEINTR)
 	      continue;
 
+	    win32_unset_event_mask (socket, FD_READ);
+
             if (errsv == WSAEWOULDBLOCK)
               {
-                win32_unset_event_mask (socket, FD_READ);
-
                 if (timeout_us != 0)
                   {
                     if (!block_on_timeout (socket, G_IO_IN, timeout_us,
