@@ -5965,10 +5965,11 @@ g_socket_get_credentials (GSocket   *socket,
     socklen_t optlen = sizeof (cred);
 
     if (getsockopt (socket->priv->fd,
-                    0,
+                    SOL_LOCAL,
                     LOCAL_PEERCRED,
                     &cred,
-                    &optlen) == 0)
+                    &optlen) == 0
+        && optlen != 0)
       {
         if (cred.cr_version == XUCRED_VERSION)
           {
@@ -5992,6 +5993,15 @@ g_socket_get_credentials (GSocket   *socket,
 
             return NULL;
           }
+      }
+    else if (optlen == 0 || errno == EINVAL)
+      {
+        g_set_error (error,
+                     G_IO_ERROR,
+                     G_IO_ERROR_NOT_SUPPORTED,
+                     _("Unable to read socket credentials: %s"),
+                     "unsupported socket type");
+        return NULL;
       }
   }
 #elif G_CREDENTIALS_USE_NETBSD_UNPCBID
