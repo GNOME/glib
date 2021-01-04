@@ -316,14 +316,14 @@
  * - Do not report programming errors via #GError.
  * 
  * - The last argument of a function that returns an error should
- *   be a location where a #GError can be placed (i.e. "#GError** error").
- *   If #GError is used with varargs, the #GError** should be the last
- *   argument before the "...".
+ *   be a location where a #GError can be placed (i.e. `GError **error`).
+ *   If #GError is used with varargs, the `GError**` should be the last
+ *   argument before the `...`.
  *
- * - The caller may pass %NULL for the #GError** if they are not interested
+ * - The caller may pass %NULL for the `GError**` if they are not interested
  *   in details of the exact error that occurred.
  *
- * - If %NULL is passed for the #GError** argument, then errors should
+ * - If %NULL is passed for the `GError**` argument, then errors should
  *   not be returned to the caller, but your function should still
  *   abort and return if an error occurs. That is, control flow should
  *   not be affected by whether the caller wants to get a #GError.
@@ -337,11 +337,11 @@
  * - If a #GError is reported, out parameters are not guaranteed to
  *   be set to any defined value.
  *
- * - A #GError* must be initialized to %NULL before passing its address
+ * - A `GError*` must be initialized to %NULL before passing its address
  *   to a function that can report errors.
  *
  * - "Piling up" errors is always a bug. That is, if you assign a
- *   new #GError to a #GError* that is non-%NULL, thus overwriting
+ *   new #GError to a `GError*` that is non-%NULL, thus overwriting
  *   the previous error, it indicates that you should have aborted
  *   the operation instead of continuing. If you were able to continue,
  *   you should have cleared the previous error with g_clear_error().
@@ -349,10 +349,10 @@
  *
  * - By convention, if you return a boolean value indicating success
  *   then %TRUE means success and %FALSE means failure. Avoid creating
- *   functions which have a boolean return value and a GError parameter,
+ *   functions which have a boolean return value and a #GError parameter,
  *   but where the boolean does something other than signal whether the
- *   GError is set.  Among other problems, it requires C callers to allocate
- *   a temporary error.  Instead, provide a "gboolean *" out parameter.
+ *   #GError is set.  Among other problems, it requires C callers to allocate
+ *   a temporary error.  Instead, provide a `gboolean *` out parameter.
  *   There are functions in GLib itself such as g_key_file_has_key() that
  *   are deprecated because of this. If %FALSE is returned, the error must
  *   be set to a non-%NULL value.  One exception to this is that in situations
