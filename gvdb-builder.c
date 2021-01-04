@@ -206,7 +206,7 @@ item_to_index (GvdbItem *item)
   if (item != NULL)
     return item->assigned_index;
 
-  return guint32_to_le (-1u);
+  return guint32_to_le ((guint32) -1);
 }
 
 typedef struct
@@ -234,7 +234,7 @@ file_builder_allocate (FileBuilder         *fb,
   if (size == 0)
     return NULL;
 
-  fb->offset += (-fb->offset) & (alignment - 1);
+  fb->offset += (guint64) (-fb->offset) & (alignment - 1);
   chunk = g_slice_new (FileChunk);
   chunk->offset = fb->offset;
   chunk->size = size;
@@ -463,8 +463,10 @@ static GString *
 file_builder_serialise (FileBuilder          *fb,
                         struct gvdb_pointer   root)
 {
-  struct gvdb_header header = { { 0, }, };
+  struct gvdb_header header;
   GString *result;
+
+  memset (&header, 0, sizeof (header));
 
   if (fb->byteswap)
     {
