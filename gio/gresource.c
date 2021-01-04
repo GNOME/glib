@@ -929,9 +929,10 @@ g_resource_enumerate_children (GResource             *resource,
 
   if (*path == 0)
     {
-      g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                   _("The resource at “%s” does not exist"),
-                   path);
+      if (error)
+        g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
+                     _("The resource at “%s” does not exist"),
+                     path);
       return NULL;
     }
 
@@ -968,9 +969,10 @@ g_resource_enumerate_children (GResource             *resource,
 
   if (children == NULL)
     {
-      g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                   _("The resource at “%s” does not exist"),
-                   path);
+      if (error)
+        g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
+                     _("The resource at “%s” does not exist"),
+                     path);
       return NULL;
     }
 
@@ -1237,9 +1239,10 @@ g_resources_enumerate_children (const gchar           *path,
 
   if (hash == NULL)
     {
-      g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                   _("The resource at “%s” does not exist"),
-                   path);
+      if (error)
+        g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
+                     _("The resource at “%s” does not exist"),
+                     path);
       return NULL;
     }
   else
