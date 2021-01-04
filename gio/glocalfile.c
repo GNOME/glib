@@ -2026,7 +2026,7 @@ g_local_file_trash (GFile         *file,
           display_name = g_filename_display_name (trashdir);
           g_set_error (error, G_IO_ERROR,
                        g_io_error_from_errno (errsv),
-                       _("Unable to create trash dir %s: %s"),
+                       _("Unable to create trash directory %s: %s"),
                        display_name, g_strerror (errsv));
           g_free (display_name);
           g_free (trashdir);
@@ -2038,6 +2038,7 @@ g_local_file_trash (GFile         *file,
     {
       uid_t uid;
       char uid_str[32];
+      gboolean success;
 
       uid = geteuid ();
       g_snprintf (uid_str, sizeof (uid_str), "%lu", (unsigned long)uid);
@@ -2093,6 +2094,7 @@ g_local_file_trash (GFile         *file,
 	  /* No global trash dir, or it failed the tests, fall back to $topdir/.Trash-$uid */
 	  dirname = g_strdup_printf (".Trash-%s", uid_str);
 	  trashdir = g_build_filename (topdir, dirname, NULL);
+          success = TRUE;
 	  g_free (dirname);
 
 	  tried_create = FALSE;
@@ -2108,8 +2110,7 @@ g_local_file_trash (GFile         *file,
 		    g_remove (trashdir);
 		  
 		  /* Not a directory or not owned by user, ignore */
-		  g_free (trashdir);
-		  trashdir = NULL;
+		  success = FALSE;
 		}
 	    }
 	  else
@@ -2124,18 +2125,28 @@ g_local_file_trash (GFile         *file,
 		}
 	      else
 		{
-		  g_free (trashdir);
-		  trashdir = NULL;
+		  success = FALSE;
 		}
 	    }
 	}
 
-      if (trashdir == NULL)
+      if (!success)
 	{
-	  g_free (topdir);
-          g_set_io_error (error,
-                          _("Unable to find or create trash directory for %s"),
-                          file, G_IO_ERROR_NOT_SUPPORTED);
+          gchar *trashdir_display_name = NULL, *file_display_name = NULL;
+
+          trashdir_display_name = g_filename_display_name (trashdir);
+          file_display_name = g_filename_display_name (local->filename);
+          g_set_error (error, G_IO_ERROR,
+                       G_IO_ERROR_NOT_SUPPORTED,
+                       _("Unable to find or create trash directory %s to trash %s"),
+                       trashdir_display_name, file_display_name);
+
+          g_free (trashdir_display_name);
+          g_free (file_display_name);
+
+          g_free (topdir);
+          g_free (trashdir);
+
 	  return FALSE;
 	}
     }
@@ -2144,20 +2155,32 @@ g_local_file_trash (GFile         *file,
 
   infodir = g_build_filename (trashdir, "info", NULL);
   filesdir = g_build_filename (trashdir, "files", NULL);
-  g_free (trashdir);
 
   /* Make sure we have the subdirectories */
   if ((g_mkdir (infodir, 0700) == -1 && errno != EEXIST) ||
       (g_mkdir (filesdir, 0700) == -1 && errno != EEXIST))
     {
+      gchar *trashdir_display_name = NULL, *file_display_name = NULL;
+
+      trashdir_display_name = g_filename_display_name (trashdir);
+      file_display_name = g_filename_display_name (local->filename);
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_NOT_SUPPORTED,
+                   _("Unable to find or create trash directory %s to trash %s"),
+                   trashdir_display_name, file_display_name);
+
+      g_free (trashdir_display_name);
+      g_free (file_display_name);
+
       g_free (topdir);
+      g_free (trashdir);
       g_free (infodir);
       g_free (filesdir);
-      g_set_io_error (error,
-                      _("Unable to find or create trash directory for %s"),
-                      file, G_IO_ERROR_NOT_SUPPORTED);
+
       return FALSE;
     }
+
+  g_free (trashdir);
 
   basename = g_path_get_basename (local->filename);
   i = 1;
