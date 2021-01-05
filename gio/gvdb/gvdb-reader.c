@@ -379,7 +379,7 @@ gvdb_table_get_names (GvdbTable *table,
    * a pass that fills in no additional items.
    *
    * This takes an O(n) algorithm and turns it into O(n*m) where m is
-   * the depth of the tree, but in all sane cases the tree won't be very
+   * the depth of the tree, but typically the tree won't be very
    * deep and the constant factor of this algorithm is lower (and the
    * complexity of coding it, as well).
    */
