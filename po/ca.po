@@ -491,7 +491,7 @@ msgstr "S'ha produït un error en llegir el fitxer nonce «%s»: %s"
 #, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr ""
-"S'ha produït un error en llegir el fitxer nonce «%s»: s'esperaven 16 bytes "
+"S'ha produït un error en llegir el fitxer nonce «%s»: s'esperaven 16 bytes, "
 "però se n'han obtingut %d"
 
 #: gio/gdbusaddress.c:772
@@ -590,7 +590,7 @@ msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Els permisos del directori «%s» no estan ben formatats. S'esperava el mode "
-"0700 però s'ha obtingut el 0%o"
+"0700, però s'ha obtingut el 0%o"
 
 #: gio/gdbusauthmechanismsha1.c:346 gio/gdbusauthmechanismsha1.c:357
 #, c-format
@@ -717,7 +717,7 @@ msgstr "La propietat «%s» no és d'escriptura"
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "S'ha produït un error en establir la propietat «%s»: s'esperava el tipus "
-"«%s» però s'ha obtingut el «%s»"
+"«%s», però s'ha obtingut el «%s»"
 
 #: gio/gdbusconnection.c:4459 gio/gdbusconnection.c:4667
 #: gio/gdbusconnection.c:6663
@@ -758,7 +758,7 @@ msgstr "No s'ha pogut establir la propietat %s.%s"
 #: gio/gdbusconnection.c:5672
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
-msgstr "El mètode «%s» ha retornat un tipus «%s» però s'esperava «%s»"
+msgstr "El mètode «%s» ha retornat un tipus «%s», però s'esperava «%s»"
 
 #: gio/gdbusconnection.c:6774
 #, c-format
@@ -2773,7 +2773,7 @@ msgid ""
 "to modify value"
 msgstr ""
 "La <key name='%s'> emmascara la <key name='%s'> a <schema id='%s'>. "
-"Utilitzeu <override> per modificar-ne el valor"
+"Utilitzeu <override> per a modificar-ne el valor"
 
 #: gio/glib-compile-schemas.c:983
 #, c-format
@@ -3935,7 +3935,7 @@ msgstr "El sòcol no és vàlid, no està inicialitzat"
 #: gio/gsocket.c:420
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
-msgstr "El sòcol no és vàlid, ha fallat la inicialització degut a: %s"
+msgstr "El sòcol no és vàlid, ha fallat la inicialització a causa de: %s"
 
 #: gio/gsocket.c:428
 msgid "Socket is already closed"
@@ -4181,7 +4181,7 @@ msgstr ""
 #: gio/gsocks5proxy.c:250
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
-"Ha fallat l'autenticació SOCKSv5 degut a un nom d'usuari o contrasenya "
+"Ha fallat l'autenticació SOCKSv5 a causa d'un nom d'usuari o contrasenya "
 "errònies."
 
 #: gio/gsocks5proxy.c:300
@@ -5007,8 +5007,8 @@ msgstr "S'ha produït un error en obrir el directori «%s»: %s"
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
-msgstr[0] "No s'han pogut assignar %lu byte per llegir el fitxer «%s»"
-msgstr[1] "No s'han pogut assignar %lu bytes per llegir el fitxer «%s»"
+msgstr[0] "No s'han pogut assignar %lu byte per a llegir el fitxer «%s»"
+msgstr[1] "No s'han pogut assignar %lu bytes per a llegir el fitxer «%s»"
 
 #: glib/gfileutils.c:754
 #, c-format
@@ -5830,12 +5830,12 @@ msgstr "S'ha produït un error en fer coincidir l'expressió regular %s: %s"
 
 #: glib/gregex.c:1316
 msgid "PCRE library is compiled without UTF8 support"
-msgstr "La biblioteca PCRE no està compilada per interpretar UTF-8"
+msgstr "La biblioteca PCRE no està compilada per a interpretar UTF-8"
 
 #: glib/gregex.c:1320
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
-"La biblioteca PCRE no està compilada per interpretar les propietats UTF-8"
+"La biblioteca PCRE no està compilada per a interpretar les propietats UTF-8"
 
 #: glib/gregex.c:1328
 msgid "PCRE library is compiled with incompatible options"
@@ -6012,7 +6012,7 @@ msgstr "No s'han pogut llegir dades del procés fill"
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
-"No s'ha pogut crear el conducte per comunicar-se amb el procés fill (%s)"
+"No s'ha pogut crear el conducte per a comunicar-se amb el procés fill (%s)"
 
 #: glib/gspawn-win32.c:387 glib/gspawn-win32.c:392 glib/gspawn-win32.c:511
 #, c-format
