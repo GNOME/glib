@@ -1111,10 +1111,11 @@ g_propagate_prefixed_error (GError      **dest,
 {
   g_propagate_error (dest, src);
 
-  if (dest && *dest)
+  if (dest)
     {
       va_list ap;
 
+      g_assert (*dest != NULL);
       va_start (ap, format);
       g_error_add_prefix (&(*dest)->message, format, ap);
       va_end (ap);
