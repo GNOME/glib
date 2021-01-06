@@ -34,7 +34,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
       name : 'printf supports the \'F\' directive')
   gl_cv_func_printf_directive_f = run_result.compiled() and run_result.returncode() == 0
 else
-  if host_system == 'linux'
+  if host_system in ['linux', 'android']
     gl_cv_func_printf_directive_f = true
   elif (host_system.startswith ('freebsd1') or
         host_system.startswith ('freebsd2') or

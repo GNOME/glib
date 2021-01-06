@@ -609,7 +609,7 @@ endif
 # When building for Android-20 and earlier, require Meson 0.54.2 or newer.
 # This is needed, because Meson build versions prior to 0.54.2 return false
 # positive for stpcpy has_function check when building for legacy Android.
-if host_system.startswith('android-')
+if host_system == 'android'
     android_is_older = cc.compiles('''#if __ANDROID_API__ >= 21
                                         #error Android is 21 or newer
                                     #endif''')

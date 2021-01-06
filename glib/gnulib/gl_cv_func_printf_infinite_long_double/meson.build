@@ -175,7 +175,7 @@ if gl_cv_func_printf_long_double
     if host_machine.cpu_family() == 'x86_64'
       gl_cv_func_printf_infinite_long_double = false
     else
-      if host_system == 'linux'
+      if host_system in ['linux', 'android']
         gl_cv_func_printf_infinite_long_double = true
       elif (host_system.startswith ('freebsd1') or
             host_system.startswith ('freebsd2') or
