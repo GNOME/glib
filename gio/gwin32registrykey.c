@@ -2484,7 +2484,7 @@ g_win32_registry_key_watch (GWin32RegistryKey                   *key,
   if (g_once_init_enter (&nt_notify_change_multiple_keys))
   {
     NtNotifyChangeMultipleKeysFunc func;
-    HMODULE ntdll = GetModuleHandle ("ntdll.dll");
+    HMODULE ntdll = GetModuleHandleW (L"ntdll.dll");
 
     if (ntdll != NULL)
       func = (NtNotifyChangeMultipleKeysFunc) GetProcAddress (ntdll, "NtNotifyChangeMultipleKeys");
