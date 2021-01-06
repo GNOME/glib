@@ -72,8 +72,8 @@
 #include <sys/syscall.h>
 #endif
 
-/* clang defines __ATOMIC_SEQ_CST but doesn't support the GCC extension */
-#if defined(HAVE_FUTEX) && defined(__ATOMIC_SEQ_CST) && !defined(__clang__)
+#if defined(HAVE_FUTEX) && \
+    (defined(HAVE_STDATOMIC_H) || defined(__ATOMIC_SEQ_CST))
 #define USE_NATIVE_MUTEX
 #endif
 
@@ -1401,6 +1401,23 @@ g_system_thread_set_name (const gchar *name)
  * purposes...
  */
 
+#ifdef HAVE_STDATOMIC_H
+
+#include <stdatomic.h>
+
+#define exchange_acquire(ptr, new) \
+  atomic_exchange_explicit((atomic_uint *) (ptr), (new), __ATOMIC_ACQUIRE)
+#define compare_exchange_acquire(ptr, old, new) \
+  atomic_compare_exchange_strong_explicit((atomic_uint *) (ptr), (old), (new), \
+                                          __ATOMIC_ACQUIRE, __ATOMIC_RELAXED)
+
+#define exchange_release(ptr, new) \
+  atomic_exchange_explicit((atomic_uint *) (ptr), (new), __ATOMIC_RELEASE)
+#define store_release(ptr, new) \
+  atomic_store_explicit((atomic_uint *) (ptr), (new), __ATOMIC_RELEASE)
+
+#else
+
 #define exchange_acquire(ptr, new) \
   __atomic_exchange_4((ptr), (new), __ATOMIC_ACQUIRE)
 #define compare_exchange_acquire(ptr, old, new) \
@@ -1410,6 +1427,8 @@ g_system_thread_set_name (const gchar *name)
   __atomic_exchange_4((ptr), (new), __ATOMIC_RELEASE)
 #define store_release(ptr, new) \
   __atomic_store_4((ptr), (new), __ATOMIC_RELEASE)
+
+#endif
 
 /* Our strategy for the mutex is pretty simple:
  *
