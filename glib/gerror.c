@@ -1012,8 +1012,7 @@ g_propagate_error (GError **dest,
  
   if (dest == NULL)
     {
-      if (src)
-        g_error_free (src);
+      g_error_free (src);
       return;
     }
   else
