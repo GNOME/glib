@@ -1975,10 +1975,11 @@ class CodeGenerator:
         )
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.outfile, 0)
         self.outfile.write(
-            "guint\n"
-            "%s_override_properties (GObjectClass *klass, guint property_id_begin)\n"
-            "{\n" % (i.name_lower)
+            "guint\n" "%s_override_properties (GObjectClass *klass" % (i.name_lower)
         )
+        if len(i.properties) == 0:
+            self.outfile.write(" G_GNUC_UNUSED")
+        self.outfile.write(", guint property_id_begin)\n" "{\n")
         for p in i.properties:
             self.outfile.write(
                 '  g_object_class_override_property (klass, property_id_begin++, "%s");\n'
@@ -2065,10 +2066,13 @@ class CodeGenerator:
 
         self.outfile.write(
             "static void\n"
-            "%s_default_init (%sIface *iface)\n"
-            "{\n" % (i.name_lower, i.camel_name)
+            "%s_default_init (%sIface *iface" % (i.name_lower, i.camel_name)
         )
-
+        if len(i.methods) == 0 and len(i.signals) == 0 and len(i.properties) == 0:
+            self.outfile.write(" G_GNUC_UNUSED)\n")
+        else:
+            self.outfile.write(")\n")
+        self.outfile.write("{\n")
         if len(i.methods) > 0:
             self.outfile.write(
                 "  /* GObject signals for incoming D-Bus method calls: */\n"
@@ -2781,7 +2785,7 @@ class CodeGenerator:
             self.outfile.write(
                 "void\n"
                 "%s_complete_%s (\n"
-                "    %s *object,\n"
+                "    %s *object G_GNUC_UNUSED,\n"
                 "    GDBusMethodInvocation *invocation"
                 % (i.name_lower, m.name_lower, i.camel_name)
             )
@@ -2906,12 +2910,19 @@ class CodeGenerator:
         #
         self.outfile.write(
             "static void\n"
-            "%s_proxy_get_property (GObject      *object,\n"
-            "  guint         prop_id,\n"
-            "  GValue       *value,\n"
-            "  GParamSpec   *pspec G_GNUC_UNUSED)\n"
-            "{\n" % (i.name_lower)
+            "%s_proxy_get_property (GObject      *object" % (i.name_lower)
         )
+        if len(i.properties) == 0:
+            self.outfile.write(
+                " G_GNUC_UNUSED,\n"
+                "  guint         prop_id G_GNUC_UNUSED,\n"
+                "  GValue       *value G_GNUC_UNUSED,\n"
+            )
+        else:
+            self.outfile.write(
+                ",\n" "  guint         prop_id,\n" "  GValue       *value,\n"
+            )
+        self.outfile.write("  GParamSpec   *pspec G_GNUC_UNUSED)\n" "{\n")
         if len(i.properties) > 0:
             self.outfile.write(
                 "  const _ExtendedGDBusPropertyInfo *info;\n"
@@ -2961,14 +2972,20 @@ class CodeGenerator:
                 "    }\n" % (i.name)
             )
             self.outfile.write("}\n" "\n")
-        self.outfile.write(
-            "static void\n"
-            "%s_proxy_set_property (GObject      *object,\n"
-            "  guint         prop_id,\n"
-            "  const GValue *value,\n"
-            "  GParamSpec   *pspec G_GNUC_UNUSED)\n"
-            "{\n" % (i.name_lower)
-        )
+        self.outfile.write("static void\n" "%s_proxy_set_property (" % (i.name_lower))
+        if len(i.properties) == 0:
+            self.outfile.write(
+                "GObject      *object G_GNUC_UNUSED,\n"
+                "  guint         prop_id G_GNUC_UNUSED,\n"
+                "  const GValue *value G_GNUC_UNUSED,\n"
+            )
+        else:
+            self.outfile.write(
+                "GObject      *object,\n"
+                "  guint         prop_id,\n"
+                "  const GValue *value,\n"
+            )
+        self.outfile.write("  GParamSpec   *pspec G_GNUC_UNUSED)\n" "{\n")
         if len(i.properties) > 0:
             self.outfile.write(
                 "  const _ExtendedGDBusPropertyInfo *info;\n"
@@ -3221,9 +3238,13 @@ class CodeGenerator:
 
         self.outfile.write(
             "static void\n"
-            "%s_proxy_iface_init (%sIface *iface)\n"
-            "{\n" % (i.name_lower, i.camel_name)
+            "%s_proxy_iface_init (%sIface *iface" % (i.name_lower, i.camel_name)
         )
+        if len(i.properties) == 0:
+            self.outfile.write(" G_GNUC_UNUSED)\n")
+        else:
+            self.outfile.write(")\n")
+        self.outfile.write("{\n")
         for p in i.properties:
             self.outfile.write(
                 "  iface->get_%s = %s_proxy_get_%s;\n"
@@ -3753,9 +3774,14 @@ class CodeGenerator:
 
         self.outfile.write(
             "static void\n"
-            "%s_skeleton_dbus_interface_flush (GDBusInterfaceSkeleton *_skeleton)\n"
-            "{\n" % (i.name_lower)
+            "%s_skeleton_dbus_interface_flush (GDBusInterfaceSkeleton *_skeleton"
+            % (i.name_lower)
         )
+        if len(i.properties) == 0:
+            self.outfile.write(" G_GNUC_UNUSED)\n")
+        else:
+            self.outfile.write(")\n")
+        self.outfile.write("{\n")
         if len(i.properties) > 0:
             self.outfile.write(
                 "  %sSkeleton *skeleton = %s%s_SKELETON (_skeleton);\n"
@@ -4193,9 +4219,13 @@ class CodeGenerator:
 
         self.outfile.write(
             "static void\n"
-            "%s_skeleton_iface_init (%sIface *iface)\n"
-            "{\n" % (i.name_lower, i.camel_name)
+            "%s_skeleton_iface_init (%sIface *iface" % (i.name_lower, i.camel_name)
         )
+        if len(i.signals) == 0 and len(i.properties) == 0:
+            self.outfile.write(" G_GNUC_UNUSED)\n")
+        else:
+            self.outfile.write(")\n")
+        self.outfile.write("{\n")
         for s in i.signals:
             self.outfile.write(
                 "  iface->%s = _%s_on_signal_%s;\n"
