@@ -456,11 +456,14 @@ g_file_has_uri_scheme (GFile      *file,
  * ]|
  * Common schemes include "file", "http", "ftp", etc.
  *
+ * The scheme can be different from the one used to construct the #GFile,
+ * in that it might be replaced with one that is logically equivalent to the #GFile.
+ *
  * This call does no blocking I/O.
  *
- * Returns: a string containing the URI scheme for the given
- *     #GFile. The returned string should be freed with g_free()
- *     when no longer needed.
+ * Returns: (nullable): a string containing the URI scheme for the given
+ *     #GFile or %NULL if the #GFile was constructed with an invalid URI. The
+ *     returned string should be freed with g_free() when no longer needed.
  */
 char *
 g_file_get_uri_scheme (GFile *file)
@@ -611,7 +614,8 @@ g_file_peek_path (GFile *file)
  *
  * This call does no blocking I/O.
  *
- * Returns: a string containing the #GFile's URI.
+ * Returns: a string containing the #GFile's URI. If the #GFile was constructed
+ *     with an invalid URI, an invalid URI is returned.
  *     The returned string should be freed with g_free()
  *     when no longer needed.
  */
