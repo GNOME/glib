@@ -754,6 +754,13 @@ g_propagate_error
 g_clear_error
 g_prefix_error
 g_propagate_prefixed_error
+<SUBSECTION>
+GErrorInitFunc
+GErrorCopyFunc
+GErrorClearFunc
+G_DEFINE_EXTENDED_ERROR
+g_error_domain_register_static
+g_error_domain_register
 </SECTION>
 
 <SECTION>
