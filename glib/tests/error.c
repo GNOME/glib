@@ -121,12 +121,17 @@ test_new_valist_invalid_va (gpointer dummy,
 
       va_start (ap, dummy);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
       g_test_expect_message (G_LOG_DOMAIN,
                              G_LOG_LEVEL_WARNING,
                              "*g_error_new_valist: runtime check failed*");
       error = g_error_new_valist (tests[i].domain, G_MARKUP_ERROR_EMPTY, tests[i].format, ap);
       g_test_assert_expected_messages ();
       g_assert_nonnull (error);
+
+#pragma GCC diagnostic pop
 
       g_test_expect_message (G_LOG_DOMAIN,
                              G_LOG_LEVEL_WARNING,
