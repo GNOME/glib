@@ -19,6 +19,17 @@ test_overwrite (void)
   g_error_free (error);
 
 
+  error = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "bla");
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "*set over the top*");
+  g_set_error (&error, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE, "bla");
+  g_test_assert_expected_messages ();
+
+  g_assert_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY);
+  g_error_free (error);
+
+
   dest = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "bla");
   src = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE, "bla");
 
@@ -51,6 +62,9 @@ test_prefix (void)
   g_propagate_prefixed_error (&dest, src, "foo %d %s: ", 1, "two");
   g_assert_cmpstr (dest->message, ==, "foo 1 two: bla");
   g_error_free (dest);
+
+  src = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "bla");
+  g_propagate_prefixed_error (NULL, src, "foo %d %s: ", 1, "two");
 }
 
 static void
@@ -80,6 +94,94 @@ test_copy (void)
 
   g_error_free (error);
   g_error_free (copy);
+}
+
+static void
+test_new_valist_invalid_va (gpointer dummy,
+                         ...)
+{
+  const struct
+    {
+      GQuark domain;
+      const gchar *format;
+    }
+  tests[] =
+    {
+      { G_MARKUP_ERROR, NULL },
+      { 0, "Message" },
+    };
+  gsize i;
+
+  g_test_summary ("Test that g_error_new_valist() rejects invalid input");
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      GError *error = NULL, *error_copy = NULL;
+      va_list ap;
+
+      va_start (ap, dummy);
+
+      g_test_expect_message (G_LOG_DOMAIN,
+                             G_LOG_LEVEL_WARNING,
+                             "*g_error_new_valist: runtime check failed*");
+      error = g_error_new_valist (tests[i].domain, G_MARKUP_ERROR_EMPTY, tests[i].format, ap);
+      g_test_assert_expected_messages ();
+      g_assert_nonnull (error);
+
+      g_test_expect_message (G_LOG_DOMAIN,
+                             G_LOG_LEVEL_WARNING,
+                             "*g_error_copy: runtime check failed*");
+      error_copy = g_error_copy (error);
+      g_test_assert_expected_messages ();
+      g_assert_nonnull (error_copy);
+
+      g_clear_error (&error);
+      g_clear_error (&error_copy);
+
+      va_end (ap);
+    }
+}
+
+static void
+test_new_valist_invalid (void)
+{
+  /* We need a wrapper function so we can build a va_list */
+  test_new_valist_invalid_va (NULL);
+}
+
+static void
+test_matches (void)
+{
+  GError *error = NULL;
+
+  g_test_summary ("Test g_error_matches()");
+
+  error = g_error_new (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "Oh no!");
+
+  g_assert_true (g_error_matches (error, G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY));
+  g_assert_false (g_error_matches (NULL, G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY));
+  g_assert_false (g_error_matches (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE));  /* same numeric value as G_MARKUP_ERROR_EMPTY */
+  g_assert_false (g_error_matches (error, G_OPTION_ERROR, G_OPTION_ERROR_FAILED));  /* different numeric value from G_MARKUP_ERROR_EMPTY */
+  g_assert_false (g_error_matches (error, G_MARKUP_ERROR, G_MARKUP_ERROR_BAD_UTF8));
+
+  g_error_free (error);
+}
+
+static void
+test_clear (void)
+{
+  GError *error = NULL;
+
+  g_test_summary ("Test g_error_clear()");
+
+  g_clear_error (&error);
+  g_assert_null (error);
+
+  g_clear_error (NULL);
+
+  error = g_error_new (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "Oh no!");
+  g_clear_error (&error);
+  g_assert_null (error);
 }
 
 typedef struct
@@ -181,6 +283,66 @@ test_extended (void)
   g_assert_cmpint (check.free_called, ==, 2);
 }
 
+static void
+test_extended_duplicate (void)
+{
+  g_test_summary ("Test that registering a duplicate extended error domain doesn’t work");
+
+  if (!g_test_subprocess ())
+    {
+      /* Spawn a subprocess and expect it to fail. */
+      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*CRITICAL*Attempted to register an extended error domain for TestError more than once*");
+    }
+  else
+    {
+      GQuark q;
+      guint i;
+
+      for (i = 0; i < 2; i++)
+        {
+          q = g_error_domain_register_static ("TestError",
+                                              sizeof (TestErrorPrivate),
+                                              g_error_with_test_error_private_init,
+                                              g_error_with_test_error_private_copy,
+                                              g_error_with_test_error_private_clear);
+          g_assert_cmpstr (g_quark_to_string (q), ==, "TestError");
+        }
+    }
+}
+
+typedef struct
+{
+  int dummy;
+} TestErrorNonStaticPrivate;
+
+static void test_error_non_static_private_init (GError *error) {}
+static void test_error_non_static_private_copy (const GError *src_error, GError *dest_error) {}
+static void test_error_non_static_private_clear (GError *error) {}
+
+static void
+test_extended_non_static (void)
+{
+  gchar *domain_name = g_strdup ("TestErrorNonStatic");
+  GQuark q;
+  GError *error = NULL;
+
+  g_test_summary ("Test registering an extended error domain with a non-static name");
+
+  q = g_error_domain_register (domain_name,
+                               sizeof (TestErrorNonStaticPrivate),
+                               test_error_non_static_private_init,
+                               test_error_non_static_private_copy,
+                               test_error_non_static_private_clear);
+  g_free (domain_name);
+
+  error = g_error_new (q, 0, "Test error: %s", "hello");
+  g_assert_true (g_error_matches (error, q, 0));
+  g_assert_cmpstr (g_quark_to_string (q), ==, "TestErrorNonStatic");
+  g_error_free (error);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -190,7 +352,12 @@ main (int argc, char *argv[])
   g_test_add_func ("/error/prefix", test_prefix);
   g_test_add_func ("/error/literal", test_literal);
   g_test_add_func ("/error/copy", test_copy);
+  g_test_add_func ("/error/matches", test_matches);
+  g_test_add_func ("/error/clear", test_clear);
+  g_test_add_func ("/error/new-valist/invalid", test_new_valist_invalid);
   g_test_add_func ("/error/extended", test_extended);
+  g_test_add_func ("/error/extended/duplicate", test_extended_duplicate);
+  g_test_add_func ("/error/extended/non-static", test_extended_non_static);
 
   return g_test_run ();
 }
