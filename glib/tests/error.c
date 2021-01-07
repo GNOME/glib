@@ -100,6 +100,12 @@ static void
 test_new_valist_invalid_va (gpointer dummy,
                          ...)
 {
+#ifdef __linux__
+  /* Only worth testing this on Linux; if other platforms regress on this legacy
+   * behaviour, we don’t care. In particular, calling g_error_new_valist() with
+   * a %NULL format will crash on FreeBSD as its implementation of vasprintf()
+   * is less forgiving than Linux’s. That’s fine: it’s a programmer error in
+   * either case. */
   const struct
     {
       GQuark domain;
@@ -118,6 +124,8 @@ test_new_valist_invalid_va (gpointer dummy,
     {
       GError *error = NULL, *error_copy = NULL;
       va_list ap;
+
+      g_test_message ("Test %" G_GSIZE_FORMAT, i);
 
       va_start (ap, dummy);
 
@@ -145,6 +153,9 @@ test_new_valist_invalid_va (gpointer dummy,
 
       va_end (ap);
     }
+#else  /* if !__linux__ */
+  g_test_skip ("g_error_new_valist() programmer error handling is only relevant on Linux");
+#endif  /* !__linux__ */
 }
 
 static void
