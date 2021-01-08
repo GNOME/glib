@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include "glib-private.h"
 #include "gsettingsschema-internal.h"
 #include "gsettings.h"
 
@@ -343,6 +344,7 @@ initialise_schema_sources (void)
    */
   if G_UNLIKELY (g_once_init_enter (&initialised))
     {
+      gboolean is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
       const gchar * const *dirs;
       const gchar *path;
       gchar **extra_schema_dirs;
@@ -357,7 +359,9 @@ initialise_schema_sources (void)
 
       try_prepend_data_dir (g_get_user_data_dir ());
 
-      if ((path = g_getenv ("GSETTINGS_SCHEMA_DIR")) != NULL)
+      /* Disallow loading extra schemas if running as setuid, as that could
+       * allow reading privileged files. */
+      if (!is_setuid && (path = g_getenv ("GSETTINGS_SCHEMA_DIR")) != NULL)
         {
           extra_schema_dirs = g_strsplit (path, G_SEARCHPATH_SEPARATOR_S, 0);
           for (i = 0; extra_schema_dirs[i]; i++);
