@@ -2038,7 +2038,7 @@ g_local_file_trash (GFile         *file,
     {
       uid_t uid;
       char uid_str[32];
-      gboolean success;
+      gboolean success = FALSE;
 
       uid = geteuid ();
       g_snprintf (uid_str, sizeof (uid_str), "%lu", (unsigned long)uid);
