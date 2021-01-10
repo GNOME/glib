@@ -131,17 +131,17 @@ option_lowercase_name = ''  # DEPRECATED.  A lower case name to use as part
                             # uses abnormal capitalization and we can not
                             # guess where to put the underscores.
 option_since = ''           # User provided version info for the enum.
-seenbitshift = 0        # Have we seen bitshift operators?
-enum_prefix = None        # Prefix for this enumeration
-enumname = ''            # Name for this enumeration
-enumshort = ''           # $enumname without prefix
-enumname_prefix = ''       # prefix of $enumname
-enumindex = 0        # Global enum counter
-firstenum = 1        # Is this the first enumeration per file?
-entries = []            # [ name, val ] for each entry
-sandbox = None      # sandbox for safe evaluation of expressions
+seenbitshift = 0            # Have we seen bitshift operators?
+enum_prefix = None          # Prefix for this enumeration
+enumname = ''               # Name for this enumeration
+enumshort = ''              # $enumname without prefix
+enumname_prefix = ''        # prefix of $enumname
+enumindex = 0               # Global enum counter
+firstenum = 1               # Is this the first enumeration per file?
+entries = []                # [ name, val ] for each entry
+sandbox = None              # sandbox for safe evaluation of expressions
 
-output = ''            # Filename to write result into
+output = ''                 # Filename to write result into
 
 def parse_trigraph(opts):
     result = {}
