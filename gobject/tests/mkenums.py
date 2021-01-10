@@ -595,6 +595,61 @@ comment: {standard_bottom_comment}
             "0",
         )
 
+    def test_enum_private_public(self):
+        """Test private/public enums. Bug #782162."""
+        h_contents1 = """
+        typedef enum {
+          ENUM_VALUE_PUBLIC1,
+          /*< private >*/
+          ENUM_VALUE_PRIVATE,
+        } SomeEnumA
+        """
+
+        h_contents2 = """
+        typedef enum {
+          /*< private >*/
+          ENUM_VALUE_PRIVATE,
+          /*< public >*/
+          ENUM_VALUE_PUBLIC2,
+        } SomeEnumB;
+        """
+
+        result = self.runMkenumsWithHeader(h_contents1)
+        self.maxDiff = None
+        self.assertEqual("", result.err)
+        self.assertSingleEnum(
+            result,
+            "SomeEnumA",
+            "some_enum_a",
+            "SOME_ENUM_A",
+            "ENUM_A",
+            "SOME",
+            "",
+            "enum",
+            "Enum",
+            "ENUM",
+            "ENUM_VALUE_PUBLIC1",
+            "public1",
+            "0",
+        )
+        result = self.runMkenumsWithHeader(h_contents2)
+        self.assertEqual("", result.err)
+        self.assertSingleEnum(
+            result,
+            "SomeEnumB",
+            "some_enum_b",
+            "SOME_ENUM_B",
+            "ENUM_B",
+            "SOME",
+            "",
+            "enum",
+            "Enum",
+            "ENUM",
+            "ENUM_VALUE_PUBLIC2",
+            "public2",
+            "0",
+        )
+
 
 class TestRspMkenums(TestMkenums):
     """Run all tests again in @rspfile mode"""
