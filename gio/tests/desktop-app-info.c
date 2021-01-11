@@ -568,7 +568,8 @@ assert_implementations (const gchar *interface,
                       "gnome-terminal.desktop nautilus-autorun-software.desktop gcr-viewer.desktop "         \
                       "nautilus-connect-server.desktop kde4-dolphin.desktop gnome-music.desktop "            \
                       "kde4-konqbrowser.desktop gucharmap.desktop kde4-okular.desktop nautilus.desktop "     \
-                      "gedit.desktop evince.desktop file-roller.desktop dconf-editor.desktop glade.desktop"
+                      "gedit.desktop evince.desktop file-roller.desktop dconf-editor.desktop glade.desktop " \
+                      "invalid-desktop.desktop"
 #define HOME_APPS     "epiphany-weather-for-toronto-island-9c6a4e022b17686306243dada811d550d25eb1fb.desktop"
 #define ALL_HOME_APPS HOME_APPS " eog.desktop"
 
@@ -723,6 +724,9 @@ test_show_in (void)
   assert_shown ("gcr-prompter.desktop", TRUE, "GNOME-Classic");
   assert_shown ("gcr-prompter.desktop", TRUE, "GNOME-Classic:KDE");
   assert_shown ("gcr-prompter.desktop", TRUE, "KDE:GNOME-Classic");
+  assert_shown ("invalid-desktop.desktop", TRUE, "GNOME");
+  assert_shown ("invalid-desktop.desktop", FALSE, "../invalid/desktop");
+  assert_shown ("invalid-desktop.desktop", FALSE, "../invalid/desktop:../invalid/desktop");
 }
 
 /* Test g_desktop_app_info_launch_uris_as_manager() and

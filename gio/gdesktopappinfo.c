@@ -326,6 +326,34 @@ validate_xdg_desktop (const gchar *desktop)
   return TRUE;
 }
 
+static char **
+get_valid_current_desktops (const char *value)
+{
+  char **tmp;
+  gsize i;
+  GPtrArray *valid_desktops;
+
+  if (value == NULL)
+    value = g_getenv ("XDG_CURRENT_DESKTOP");
+  if (value == NULL)
+    value = "";
+
+  tmp = g_strsplit (value, G_SEARCHPATH_SEPARATOR_S, 0);
+  valid_desktops = g_ptr_array_new_full (g_strv_length (tmp) + 1, g_free);
+  for (i = 0; tmp[i]; i++)
+    {
+      if (validate_xdg_desktop (tmp[i]))
+        g_ptr_array_add (valid_desktops, tmp[i]);
+      else
+        g_free (tmp[i]);
+    }
+  g_ptr_array_add (valid_desktops, NULL);
+  g_free (tmp);
+  tmp = (char **) g_ptr_array_steal (valid_desktops, NULL);
+  g_ptr_array_unref (valid_desktops);
+  return tmp;
+}
+
 static const gchar * const *
 get_lowercase_current_desktops (void)
 {
@@ -333,33 +361,15 @@ get_lowercase_current_desktops (void)
 
   if (g_once_init_enter (&result))
     {
-      const gchar *envvar;
-      gchar **tmp;
+      char **tmp = get_valid_current_desktops (NULL);
+      gsize i, j;
 
-      envvar = g_getenv ("XDG_CURRENT_DESKTOP");
-
-      if (envvar)
+      for (i = 0; tmp[i]; i++)
         {
-          gint i, j;
-          gsize tmp_len;
-
-          tmp = g_strsplit (envvar, G_SEARCHPATH_SEPARATOR_S, 0);
-          tmp_len = g_strv_length (tmp);
-
-          for (i = 0; tmp[i]; i++)
-            {
-              /* If the desktop is invalid, drop it and shift the following
-               * ones (and trailing %NULL) up. */
-              if (!validate_xdg_desktop (tmp[i]))
-                memmove (tmp + i, tmp + i + 1, tmp_len - i);
-
-              /* Convert to lowercase. */
-              for (j = 0; tmp[i][j]; j++)
-                tmp[i][j] = g_ascii_tolower (tmp[i][j]);
-            }
+          /* Convert to lowercase. */
+          for (j = 0; tmp[i][j]; j++)
+            tmp[i][j] = g_ascii_tolower (tmp[i][j]);
         }
-      else
-        tmp = g_new0 (gchar *, 0 + 1);
 
       g_once_init_leave (&result, tmp);
     }
@@ -374,25 +384,7 @@ get_current_desktops (const gchar *value)
 
   if (g_once_init_enter (&result))
     {
-      gchar **tmp;
-      gsize tmp_len, i;
-
-      if (!value)
-        value = g_getenv ("XDG_CURRENT_DESKTOP");
-
-      if (!value)
-        value = "";
-
-      tmp = g_strsplit (value, ":", 0);
-      tmp_len = g_strv_length (tmp);
-
-      for (i = 0; tmp[i]; i++)
-        {
-          /* If the desktop is invalid, drop it and shift the following
-           * ones (and trailing %NULL) up. */
-          if (!validate_xdg_desktop (tmp[i]))
-            memmove (tmp + i, tmp + i + 1, tmp_len - i);
-        }
+      char **tmp = get_valid_current_desktops (value);
 
       g_once_init_leave (&result, tmp);
     }
