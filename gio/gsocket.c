@@ -4754,6 +4754,11 @@ input_message_from_msghdr (const struct msghdr  *msg,
  * notified of a %G_IO_OUT condition. (On Windows in particular, this is
  * very common due to the way the underlying APIs work.)
  *
+ * Finally, it must be mentioned that the whole message buffer cannot
+ * exceed %G_MAXSSIZE, if the message can be more than this, then it
+ * is mandatory to use the g_socket_send_message_with_timeout()
+ * function.
+ *
  * On error -1 is returned and @error is set accordingly.
  *
  * Returns: Number of bytes written (which may be less than @size), or -1
@@ -4774,6 +4779,29 @@ g_socket_send_message (GSocket                *socket,
 {
   GPollableReturn res;
   gsize bytes_written = 0;
+  gsize vectors_size = 0;
+
+  for (gsize i = 0; i < num_vectors; i++)
+    {
+      /* No wrap-around for vectors_size */
+      if (vectors_size > vectors_size + vectors[i].size)
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Unable to send message: %s"),
+                       _("Message too large"));
+          return -1;
+        }
+
+      vectors_size += vectors[i].size;
+    }
+  /* Check if vectors buffers are too big for gssize */
+  if (vectors_size > G_MAXSSIZE)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Unable to send message: %s"),
+                   _("Message too large"));
+      return -1;
+    }
 
   res = g_socket_send_message_with_timeout (socket, address,
                                             vectors, num_vectors,
@@ -4781,6 +4809,8 @@ g_socket_send_message (GSocket                *socket,
                                             socket->priv->blocking ? -1 : 0,
                                             &bytes_written,
                                             cancellable, error);
+
+  g_assert (res != G_POLLABLE_RETURN_OK || bytes_written <= G_MAXSSIZE);
 
   if (res == G_POLLABLE_RETURN_WOULD_BLOCK)
     {
@@ -4791,7 +4821,7 @@ g_socket_send_message (GSocket                *socket,
 #endif
     }
 
-  return res == G_POLLABLE_RETURN_OK ? bytes_written : -1;
+  return res == G_POLLABLE_RETURN_OK ? (gssize) bytes_written : -1;
 }
 
 /**
