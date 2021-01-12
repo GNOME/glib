@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-01-12 15:06+0000\n"
-"PO-Revision-Date: 2021-01-12 19:28+0200\n"
+"POT-Creation-Date: 2021-01-12 18:10+0000\n"
+"PO-Revision-Date: 2021-01-12 22:41+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -3877,7 +3877,7 @@ msgstr "Неправильний сокет, помилка ініціаліза
 msgid "Socket is already closed"
 msgstr "Сокет вже закритий"
 
-#: gio/gsocket.c:443 gio/gsocket.c:3190 gio/gsocket.c:4417 gio/gsocket.c:4475
+#: gio/gsocket.c:443 gio/gsocket.c:3190 gio/gsocket.c:4420 gio/gsocket.c:4478
 msgid "Socket I/O timed out"
 msgstr "Перевищено час очікування вводу-виводу сокета"
 
@@ -4011,43 +4011,42 @@ msgstr "Не вдалося вимкнути сокет: %s"
 msgid "Error closing socket: %s"
 msgstr "Помилка при закриванні сокету: %s"
 
-#: gio/gsocket.c:4410
+#: gio/gsocket.c:4413
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Очікується умова сокету: %s"
 
-#: gio/gsocket.c:4790 gio/gsocket.c:4801
+#: gio/gsocket.c:4793 gio/gsocket.c:4805
 #, c-format
-#| msgid "Error sending message: %s"
 msgid "Unable to send message: %s"
 msgstr "Не вдалося надіслати повідомлення: %s"
 
-#: gio/gsocket.c:4791 gio/gsocket.c:4802
-#| msgid "File “%s” is too large"
-msgid "Message too large"
-msgstr "Повідомлення надто велике"
+#: gio/gsocket.c:4794 gio/gsocket.c:4806
+#| msgid "Message too large"
+msgid "Message vectors too large"
+msgstr "Вектори повідомлення є надто великими"
 
-#: gio/gsocket.c:4818 gio/gsocket.c:4820 gio/gsocket.c:4967 gio/gsocket.c:5052
-#: gio/gsocket.c:5230 gio/gsocket.c:5270 gio/gsocket.c:5272
+#: gio/gsocket.c:4822 gio/gsocket.c:4824 gio/gsocket.c:4971 gio/gsocket.c:5056
+#: gio/gsocket.c:5234 gio/gsocket.c:5274 gio/gsocket.c:5276
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Помилка при надсиланні повідомлення: %s"
 
-#: gio/gsocket.c:4994
+#: gio/gsocket.c:4998
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage не підтримується у windows"
 
-#: gio/gsocket.c:5463 gio/gsocket.c:5536 gio/gsocket.c:5762
+#: gio/gsocket.c:5467 gio/gsocket.c:5540 gio/gsocket.c:5766
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Помилка при отриманні повідомлення: %s"
 
-#: gio/gsocket.c:6035 gio/gsocket.c:6046 gio/gsocket.c:6092
+#: gio/gsocket.c:6039 gio/gsocket.c:6050 gio/gsocket.c:6096
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Не вдалося прочитати повноваження сокета: %s"
 
-#: gio/gsocket.c:6101
+#: gio/gsocket.c:6105
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Функція g_socket_get_credentials не реалізована у цій ОС"
 
