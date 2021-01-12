@@ -4757,9 +4757,9 @@ input_message_from_msghdr (const struct msghdr  *msg,
  * notified of a %G_IO_OUT condition. (On Windows in particular, this is
  * very common due to the way the underlying APIs work.)
  *
- * Finally, it must be mentioned that the whole message buffer cannot
- * exceed %G_MAXSSIZE, if the message can be more than this, then it
- * is mandatory to use the g_socket_send_message_with_timeout()
+ * The sum of the sizes of each #GOutputVector in vectors must not be
+ * greater than %G_MAXSSIZE. If the message can be larger than this,
+ * then it is mandatory to use the g_socket_send_message_with_timeout()
  * function.
  *
  * On error -1 is returned and @error is set accordingly.
@@ -4791,18 +4791,19 @@ g_socket_send_message (GSocket                *socket,
         {
           g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
                        _("Unable to send message: %s"),
-                       _("Message too large"));
+                       _("Message vectors too large"));
           return -1;
         }
 
       vectors_size += vectors[i].size;
     }
-  /* Check if vectors buffers are too big for gssize */
+
+  /* Check if vector's buffers are too big for gssize */
   if (vectors_size > G_MAXSSIZE)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
                    _("Unable to send message: %s"),
-                   _("Message too large"));
+                   _("Message vectors too large"));
       return -1;
     }
 
