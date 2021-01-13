@@ -54,16 +54,18 @@ struct _GError
  *
  * A convenience macro which defines two functions. First, returning
  * the #GQuark for the extended error type @ErrorType; it is called
- * `@error_type_quark()`. Second, returning the private data from a
- * passed #GError; it is called `@error_type_get_private()`.
+ * `error_type_quark()`. Second, returning the private data from a
+ * passed #GError; it is called `error_type_get_private()`.
  *
- * For this macro to work, a type named `@ErrorTypePrivate` should be
- * defined, `@error_type_private_init()`, `@error_type_private_copy()`
- * and `@error_type_private_clear()` functions need to be either
+ * For this macro to work, a type named `ErrorTypePrivate` should be
+ * defined, `error_type_private_init()`, `error_type_private_copy()`
+ * and `error_type_private_clear()` functions need to be either
  * declared or defined. The functions should be similar to
  * #GErrorInitFunc, #GErrorCopyFunc and #GErrorClearFunc,
  * respectively, but they should receive the private data type instead
  * of #GError.
+ *
+ * See [Extended #GError Domains][gerror-extended-domains] for an example.
  *
  * Since: 2.68
  */

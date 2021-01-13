@@ -340,6 +340,8 @@
  * - A `GError*` must be initialized to %NULL before passing its address
  *   to a function that can report errors.
  *
+ * - #GError structs must not be stack-allocated.
+ *
  * - "Piling up" errors is always a bug. That is, if you assign a
  *   new #GError to a `GError*` that is non-%NULL, thus overwriting
  *   the previous error, it indicates that you should have aborted
@@ -372,6 +374,8 @@
  *   to add a check at the top of your function that the error return
  *   location is either %NULL or contains a %NULL error (e.g.
  *   `g_return_if_fail (error == NULL || *error == NULL);`).
+ *
+ * ## Extended #GError Domains # {#gerror-extended-domains}
  *
  * Since GLib 2.68 it is possible to extend the #GError type. This is
  * done with the G_DEFINE_EXTENDED_ERROR() macro. To create an
