@@ -1142,7 +1142,7 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
         {
           /* Index the interesting keys... */
           gchar **implements;
-          gint i;
+          gsize i;
 
           for (i = 0; i < G_N_ELEMENTS (desktop_key_match_category); i++)
             {
@@ -1221,7 +1221,7 @@ static gboolean
 array_contains (GPtrArray *array,
                 const gchar *str)
 {
-  gint i;
+  guint i;
 
   for (i = 0; i < array->len; i++)
     if (g_str_equal (array->pdata[i], str))
@@ -1545,7 +1545,7 @@ desktop_file_dir_get_implementations (DesktopFileDir  *dir,
 static void
 desktop_file_dirs_lock (void)
 {
-  gint i;
+  guint i;
   const gchar *user_config_dir = g_get_user_config_dir ();
 
   g_mutex_lock (&desktop_file_dir_lock);
@@ -2771,6 +2771,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       char *sn_id = NULL;
       char **wrapped_argv;
       int i;
+      gsize j;
       const gchar * const wrapper_argv[] =
         {
           "/bin/sh",
@@ -2834,8 +2835,8 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
        * resurrected). */
       wrapped_argv = g_new (char *, argc + G_N_ELEMENTS (wrapper_argv) + 1);
 
-      for (i = 0; i < G_N_ELEMENTS (wrapper_argv); i++)
-        wrapped_argv[i] = g_strdup (wrapper_argv[i]);
+      for (j = 0; j < G_N_ELEMENTS (wrapper_argv); j++)
+        wrapped_argv[j] = g_strdup (wrapper_argv[j]);
       for (i = 0; i < argc; i++)
         wrapped_argv[i + G_N_ELEMENTS (wrapper_argv)] = g_steal_pointer (&argv[i]);
 

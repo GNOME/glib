@@ -649,7 +649,8 @@ g_file_monitor_source_new (gpointer           instance,
   static GSourceFuncs source_funcs = {
     NULL, NULL,
     g_file_monitor_source_dispatch,
-    g_file_monitor_source_finalize
+    g_file_monitor_source_finalize,
+    NULL, NULL
   };
   GFileMonitorSource *fms;
   GSource *source;

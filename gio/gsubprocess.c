@@ -256,7 +256,7 @@ static void
 child_setup (gpointer user_data)
 {
   ChildData *child_data = user_data;
-  gint i;
+  guint i;
   gint result;
   int errsv;
 
@@ -268,7 +268,7 @@ child_setup (gpointer user_data)
    * have been created O_CLOEXEC.
    */
   for (i = 0; i < 3; i++)
-    if (child_data->fds[i] != -1 && child_data->fds[i] != i)
+    if (child_data->fds[i] != -1 && child_data->fds[i] != (gint) i)
       {
         do
           {
@@ -451,7 +451,7 @@ initable_init (GInitable     *initable,
 {
   GSubprocess *self = G_SUBPROCESS (initable);
 #ifdef G_OS_UNIX
-  ChildData child_data = { { -1, -1, -1 }, 0 };
+  ChildData child_data = { { -1, -1, -1 }, 0, NULL, NULL, NULL };
 #endif
   gint *pipe_ptrs[3] = { NULL, NULL, NULL };
   gint pipe_fds[3] = { -1, -1, -1 };
@@ -584,7 +584,7 @@ initable_init (GInitable     *initable,
 #endif
 
     s = g_snprintf (self->identifier, sizeof self->identifier, "%"G_GUINT64_FORMAT, identifier);
-    g_assert (0 < s && s < sizeof self->identifier);
+    g_assert (0 < s && (gsize) s < sizeof self->identifier);
   }
 
   /* Start attempting to reap the child immediately */
