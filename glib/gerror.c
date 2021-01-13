@@ -375,6 +375,8 @@
  *   location is either %NULL or contains a %NULL error (e.g.
  *   `g_return_if_fail (error == NULL || *error == NULL);`).
  *
+ * ## Extended #GError Domains # {#gerror-extended-domains}
+ *
  * Since GLib 2.68 it is possible to extend the #GError type. This is
  * done with the G_DEFINE_EXTENDED_ERROR() macro. To create an
  * extended #GError type do something like this in the header file:

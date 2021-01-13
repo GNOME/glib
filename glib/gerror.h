@@ -65,6 +65,8 @@ struct _GError
  * respectively, but they should receive the private data type instead
  * of #GError.
  *
+ * See [Extended #GError Domains][gerror-extended-domains] for an example.
+ *
  * Since: 2.68
  */
 #define G_DEFINE_EXTENDED_ERROR(ErrorType, error_type)                  \
