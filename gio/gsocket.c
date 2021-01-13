@@ -4784,18 +4784,37 @@ g_socket_send_message (GSocket                *socket,
   gsize bytes_written = 0;
   gsize vectors_size = 0;
 
-  for (gsize i = 0; i < num_vectors; i++)
+  if (num_vectors != -1)
     {
-      /* No wrap-around for vectors_size */
-      if (vectors_size > vectors_size + vectors[i].size)
+      for (gint i = 0; i < num_vectors; i++)
         {
-          g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Unable to send message: %s"),
-                       _("Message vectors too large"));
-          return -1;
-        }
+          /* No wrap-around for vectors_size */
+          if (vectors_size > vectors_size + vectors[i].size)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Unable to send message: %s"),
+                           _("Message vectors too large"));
+              return -1;
+            }
 
-      vectors_size += vectors[i].size;
+          vectors_size += vectors[i].size;
+        }
+    }
+  else
+    {
+      for (gsize i = 0; vectors[i].buffer != NULL; i++)
+        {
+          /* No wrap-around for vectors_size */
+          if (vectors_size > vectors_size + vectors[i].size)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Unable to send message: %s"),
+                           _("Message vectors too large"));
+              return -1;
+            }
+
+          vectors_size += vectors[i].size;
+        }
     }
 
   /* Check if vector's buffers are too big for gssize */
