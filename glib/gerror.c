@@ -340,6 +340,8 @@
  * - A `GError*` must be initialized to %NULL before passing its address
  *   to a function that can report errors.
  *
+ * - #GError structs must not be stack-allocated.
+ *
  * - "Piling up" errors is always a bug. That is, if you assign a
  *   new #GError to a `GError*` that is non-%NULL, thus overwriting
  *   the previous error, it indicates that you should have aborted
