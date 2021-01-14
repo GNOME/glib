@@ -597,10 +597,62 @@ SetThreadName (DWORD  dwThreadID,
 #endif
 }
 
+typedef HRESULT (WINAPI *pSetThreadDescription) (HANDLE hThread,
+                                                 PCWSTR lpThreadDescription);
+static pSetThreadDescription SetThreadDescriptionFunc = NULL;
+HMODULE kernel32_module = NULL;
+
+static gboolean
+g_thread_win32_load_library (void)
+{
+  /* FIXME: Add support for UWP app */
+#if !defined(G_WINAPI_ONLY_APP)
+  static volatile gsize _init_once = 0;
+  if (g_once_init_enter (&_init_once))
+    {
+      kernel32_module = LoadLibraryW (L"kernel32.dll");
+      if (kernel32_module)
+        {
+          SetThreadDescriptionFunc =
+              (pSetThreadDescription) GetProcAddress (kernel32_module,
+                                                      "SetThreadDescription");
+          if (!SetThreadDescriptionFunc)
+            FreeLibrary (kernel32_module);
+        }
+      g_once_init_leave (&_init_once, 1);
+    }
+#endif
+
+  return !!SetThreadDescriptionFunc;
+}
+
+static gboolean
+g_thread_win32_set_thread_desc (const gchar *name)
+{
+  HRESULT hr;
+  wchar_t *namew;
+
+  if (!g_thread_win32_load_library () || !name)
+    return FALSE;
+
+  namew = g_utf8_to_utf16 (name, -1, NULL, NULL, NULL);
+  if (!namew)
+    return FALSE;
+
+  hr = SetThreadDescriptionFunc (GetCurrentThread (), namew);
+
+  g_free (namew);
+  return SUCCEEDED (hr);
+}
+
 void
 g_system_thread_set_name (const gchar *name)
 {
-  SetThreadName ((DWORD) -1, name);
+  /* Prefer SetThreadDescription over exception based way if available,
+   * since thread description set by SetThreadDescription will be preserved
+   * in dump file */
+  if (!g_thread_win32_set_thread_desc (name))
+    SetThreadName ((DWORD) -1, name);
 }
 
 /* {{{1 Epilogue */
