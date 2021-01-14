@@ -1732,6 +1732,9 @@ g_build_user_data_dir (void)
  * Note that in this case on Windows it will be the same
  * as what g_get_user_config_dir() returns.
  *
+ * The return value is cached and modifying it at runtime is not supported, as
+ * it’s not thread-safe to modify environment variables at runtime.
+ *
  * Returns: (type filename) (transfer none): a string owned by GLib that must
  *   not be modified or freed.
  *
@@ -1793,6 +1796,9 @@ g_build_user_config_dir (void)
  * Note that in this case on Windows it will be  the same
  * as what g_get_user_data_dir() returns.
  *
+ * The return value is cached and modifying it at runtime is not supported, as
+ * it’s not thread-safe to modify environment variables at runtime.
+ *
  * Returns: (type filename) (transfer none): a string owned by GLib that
  *   must not be modified or freed.
  * Since: 2.6
@@ -1851,6 +1857,9 @@ g_build_user_cache_dir (void)
  * repository for temporary Internet files is used instead. A typical path is
  * `C:\Documents and Settings\username\Local Settings\Temporary Internet Files`.
  * See the [documentation for `CSIDL_INTERNET_CACHE`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb762494%28v=vs.85%29.aspx#csidl_internet_cache).
+ *
+ * The return value is cached and modifying it at runtime is not supported, as
+ * it’s not thread-safe to modify environment variables at runtime.
  *
  * Returns: (type filename) (transfer none): a string owned by GLib that
  *   must not be modified or freed.
@@ -1913,6 +1922,9 @@ g_build_user_runtime_dir (void)
  * specified in the `XDG_RUNTIME_DIR` environment variable.
  * In the case that this variable is not set, we return the value of
  * g_get_user_cache_dir(), after verifying that it exists.
+ *
+ * The return value is cached and modifying it at runtime is not supported, as
+ * it’s not thread-safe to modify environment variables at runtime.
  *
  * Returns: (type filename): a string owned by GLib that must not be
  *     modified or freed.
@@ -2536,6 +2548,9 @@ g_build_system_data_dirs (void)
  * Note that on Windows the returned list can vary depending on where
  * this function is called.
  *
+ * The return value is cached and modifying it at runtime is not supported, as
+ * it’s not thread-safe to modify environment variables at runtime.
+ *
  * Returns: (array zero-terminated=1) (element-type filename) (transfer none):
  *     a %NULL-terminated array of strings owned by GLib that must not be
  *     modified or freed.
@@ -2610,6 +2625,9 @@ g_build_system_config_dirs (void)
  * a spell-check dictionary, a database of clip art, or a log file in the
  * CSIDL_COMMON_APPDATA folder. This information will not roam and is available
  * to anyone using the computer.
+ *
+ * The return value is cached and modifying it at runtime is not supported, as
+ * it’s not thread-safe to modify environment variables at runtime.
  *
  * Returns: (array zero-terminated=1) (element-type filename) (transfer none):
  *     a %NULL-terminated array of strings owned by GLib that must not be
