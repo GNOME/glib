@@ -350,6 +350,7 @@ if host_machine.system() != 'windows'
       'fake-document-portal' : {
         'extra_sources': fake_document_portal_generated,
       },
+      'fake-service-name' : {}
     }
   endif # have_dbus_daemon
 
