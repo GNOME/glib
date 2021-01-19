@@ -361,6 +361,7 @@ gdbus_daemon_sources = [
 if host_system != 'windows'
   unix_sources = files(
     'gfiledescriptorbased.c',
+    'giounix-private.c',
     'gunixconnection.c',
     'gunixcredentialsmessage.c',
     'gunixfdlist.c',
