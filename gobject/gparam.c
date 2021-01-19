@@ -439,7 +439,8 @@ g_param_spec_is_valid_name (const gchar *name)
  * @blurb, which should be a somewhat longer description, suitable for
  * e.g. a tooltip. The @nick and @blurb should ideally be localized.
  *
- * Returns: (type GObject.ParamSpec): (transfer full): a newly allocated #GParamSpec instance
+ * Returns: (type GObject.ParamSpec): (transfer floating): a newly allocated
+ *     #GParamSpec instance, which is initially floating
  */
 gpointer
 g_param_spec_internal (GType        param_type,
