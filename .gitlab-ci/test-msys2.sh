@@ -20,7 +20,7 @@ pacman --noconfirm -S --needed \
     mingw-w64-$MSYS2_ARCH-meson \
     mingw-w64-$MSYS2_ARCH-pcre \
     mingw-w64-$MSYS2_ARCH-python3 \
-    mingw-w64-$MSYS2_ARCH-python3-pip \
+    mingw-w64-$MSYS2_ARCH-python-pip \
     mingw-w64-$MSYS2_ARCH-toolchain \
     mingw-w64-$MSYS2_ARCH-zlib \
     mingw-w64-$MSYS2_ARCH-libelf
