@@ -4143,7 +4143,7 @@ get_list_of_mimetypes (const gchar *content_type,
 
   if (include_fallback)
     {
-      gint i;
+      guint i;
 
       /* Iterate the array as we grow it, until we have nothing more to add */
       for (i = 0; i < array->len; i++)
@@ -4174,7 +4174,7 @@ g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
 {
   GPtrArray *hits, *blocklist;
   gchar **types;
-  gint i, j;
+  guint i, j;
 
   hits = g_ptr_array_new ();
   blocklist = g_ptr_array_new ();
@@ -4372,7 +4372,7 @@ g_app_info_get_default_for_type (const char *content_type,
   GPtrArray *results;
   GAppInfo *info;
   gchar **types;
-  gint i, j, k;
+  guint i, j, k;
 
   g_return_val_if_fail (content_type != NULL, NULL);
 
@@ -4477,7 +4477,7 @@ g_desktop_app_info_get_implementations (const gchar *interface)
 {
   GList *result = NULL;
   GList **ptr;
-  gint i;
+  guint i;
 
   desktop_file_dirs_lock ();
 
@@ -4540,6 +4540,7 @@ g_desktop_app_info_search (const gchar *search_string)
   gint n_categories = 0;
   gint start_of_category;
   gint i, j;
+  guint k;
 
   search_tokens = g_str_tokenize_and_fold (search_string, NULL, NULL);
 
@@ -4547,11 +4548,11 @@ g_desktop_app_info_search (const gchar *search_string)
 
   reset_total_search_results ();
 
-  for (i = 0; i < desktop_file_dirs->len; i++)
+  for (k = 0; k < desktop_file_dirs->len; k++)
     {
       for (j = 0; search_tokens[j]; j++)
         {
-          desktop_file_dir_search (g_ptr_array_index (desktop_file_dirs, i), search_tokens[j]);
+          desktop_file_dir_search (g_ptr_array_index (desktop_file_dirs, k), search_tokens[j]);
           merge_token_results (j == 0);
         }
       merge_directory_results ();
@@ -4619,7 +4620,7 @@ g_app_info_get_all (void)
   GHashTable *apps;
   GHashTableIter iter;
   gpointer value;
-  int i;
+  guint i;
   GList *infos;
 
   apps = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);

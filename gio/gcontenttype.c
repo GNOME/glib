@@ -405,7 +405,9 @@ load_comment_for_mime_helper (const char *dir,
   GMarkupParser parser = {
     mime_info_start_element,
     mime_info_end_element,
-    mime_info_text
+    mime_info_text,
+    NULL,
+    NULL
   };
 
   filename = g_build_filename (dir, basename, NULL);

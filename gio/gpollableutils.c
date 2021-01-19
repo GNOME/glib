@@ -89,6 +89,7 @@ static GSourceFuncs pollable_source_funcs =
   pollable_source_dispatch,
   pollable_source_finalize,
   (GSourceFunc)pollable_source_closure_callback,
+  NULL,
 };
 
 /**
