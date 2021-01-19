@@ -4361,9 +4361,9 @@ g_object_watch_closure (GObject  *object,
  * @object and the created closure. This function is mainly useful
  * when implementing new types of closures.
  *
- * Returns: (transfer full): a newly allocated #GClosure
+ * Returns: (transfer floating): a newly allocated #GClosure
  */
-GClosure*
+GClosure *
 g_closure_new_object (guint    sizeof_closure,
 		      GObject *object)
 {
@@ -4389,9 +4389,9 @@ g_closure_new_object (guint    sizeof_closure,
  * associated with a #GObject, and want the callback to no longer run
  * after the object is is freed.
  *
- * Returns: a new #GCClosure
+ * Returns: (transfer floating): a new #GCClosure
  */
-GClosure*
+GClosure *
 g_cclosure_new_object (GCallback callback_func,
 		       GObject  *object)
 {
@@ -4418,9 +4418,9 @@ g_cclosure_new_object (GCallback callback_func,
  * associated with a #GObject, and want the callback to no longer run
  * after the object is is freed.
  *
- * Returns: a new #GCClosure
+ * Returns: (transfer floating): a new #GCClosure
  */
-GClosure*
+GClosure *
 g_cclosure_new_object_swap (GCallback callback_func,
 			    GObject  *object)
 {
