@@ -255,8 +255,16 @@
  */
 #define GLIB_VERSION_2_68       (G_ENCODE_VERSION (2, 68))
 
-/* evaluates to the current stable version; for development cycles,
- * this means the next stable target
+/**
+ * GLIB_VERSION_CUR_STABLE:
+ *
+ * A macro that evaluates to the current stable version of GLib, in a format
+ * that can be used by the C pre-processor.
+ *
+ * During an unstable development cycle, this evaluates to the next stable
+ * (unreleased) version which will be the result of the development cycle.
+ *
+ * Since: 2.32
  */
 #if (GLIB_MINOR_VERSION % 2)
 #define GLIB_VERSION_CUR_STABLE         (G_ENCODE_VERSION (GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION + 1))
@@ -264,7 +272,17 @@
 #define GLIB_VERSION_CUR_STABLE         (G_ENCODE_VERSION (GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION))
 #endif
 
-/* evaluates to the previous stable version */
+/**
+ * GLIB_VERSION_PREV_STABLE:
+ *
+ * A macro that evaluates to the previous stable version of GLib, in a format
+ * that can be used by the C pre-processor.
+ *
+ * During an unstable development cycle, this evaluates to the most recent
+ * released stable release, which preceded this development cycle.
+ *
+ * Since: 2.32
+ */
 #if (GLIB_MINOR_VERSION % 2)
 #define GLIB_VERSION_PREV_STABLE        (G_ENCODE_VERSION (GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION - 1))
 #else
