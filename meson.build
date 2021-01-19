@@ -235,7 +235,8 @@ endif
 # Use debug/optimization flags to determine whether to enable debug or disable
 # cast checks
 glib_debug_cflags = []
-if get_option('debug')
+glib_debug = get_option('glib_debug')
+if glib_debug.enabled() or (glib_debug.auto() and get_option('debug'))
   glib_debug_cflags += ['-DG_ENABLE_DEBUG']
   message('Enabling various debug infrastructure')
 elif get_option('optimization') in ['2', '3', 's']
