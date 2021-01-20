@@ -105,6 +105,12 @@ option('oss_fuzz',
        value : 'disabled',
        description : 'Indicate oss-fuzz build environment')
 
+option('glib_debug',
+       type : 'feature',
+       value : 'auto',
+       yield : true,
+       description : 'Enable GLib debug infrastructure (see docs/macros.txt)')
+
 option('glib_assert',
        type : 'boolean',
        value : true,
