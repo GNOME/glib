@@ -98,6 +98,10 @@ build_tests = get_option('tests') and (not meson.is_cross_build() or (meson.is_c
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
+if host_system == 'qnx'
+  add_project_arguments('-D_QNX_SOURCE', language: 'c')
+endif
+
 # Disable strict aliasing;
 # see https://bugzilla.gnome.org/show_bug.cgi?id=791622
 if cc.has_argument('-fno-strict-aliasing')
@@ -771,6 +775,10 @@ if host_system == 'darwin'
   # know which language flags it's going to use to link. Add to both languages
   # for now. See https://github.com/mesonbuild/meson/issues/3585.
   add_project_link_arguments(osx_ldflags, language : ['objc', 'c'])
+endif
+
+if host_system == 'qnx'
+  glib_conf.set('HAVE_QNX', 1)
 endif
 
 # Check for futex(2)

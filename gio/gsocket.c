@@ -4486,6 +4486,15 @@ g_socket_condition_timed_wait (GSocket       *socket,
 
 #ifndef G_OS_WIN32
 
+#ifdef HAVE_QNX
+/* QNX has this weird upper limit, or at least used to back in the 6.x days.
+ * This was discovered empirically and doesn't appear to be mentioned in any
+ * of the official documentation. */
+# define G_SOCKET_CONTROL_BUFFER_SIZE_BYTES 2016
+#else
+# define G_SOCKET_CONTROL_BUFFER_SIZE_BYTES 2048
+#endif
+
 /* Unfortunately these have to be macros rather than inline functions due to
  * using alloca(). */
 #define output_message_to_msghdr(message, prev_message, msg, prev_msg, error) \
@@ -4632,7 +4641,7 @@ G_STMT_START { \
     } \
   else \
     { \
-      _msg->msg_controllen = 2048; \
+      _msg->msg_controllen = G_SOCKET_CONTROL_BUFFER_SIZE_BYTES; \
       _msg->msg_control = g_alloca (_msg->msg_controllen); \
     } \
  \

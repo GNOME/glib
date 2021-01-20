@@ -50,6 +50,9 @@ if host_system != 'windows'
     elif cc.links(res_query_test, args : '-lbind', name : 'res_query() in -lbind')
       network_libs += [ cc.find_library('bind') ]
       network_args += [ '-lbind' ]
+    elif cc.links(res_query_test, args : '-lsocket', name : 'res_query() in -lsocket')
+      network_libs += [ cc.find_library('socket') ]
+      network_args += [ '-lsocket' ]
     else
       error('Could not find res_query()')
     endif
