@@ -1757,6 +1757,13 @@ foreach d : inet_defines
   glibconfig_conf.set(d[1], val)
 endforeach
 
+if host_system == 'windows'
+  have_ipv6 = true
+else
+  have_ipv6 = cc.has_type('struct in6_addr', prefix: '#include <netinet/in.h>')
+endif
+glib_conf.set('HAVE_IPV6', have_ipv6)
+
 # We need to decide at configure time if GLib will use real atomic
 # operations ("lock free") or emulated ones with a mutex.  This is
 # because we must put this information in glibconfig.h so we know if
