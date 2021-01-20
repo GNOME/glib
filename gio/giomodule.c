@@ -893,6 +893,13 @@ try_implementation (const char           *extension_point,
     }
 }
 
+static void
+weak_ref_free (GWeakRef *weak_ref)
+{
+  g_weak_ref_clear (weak_ref);
+  g_free (weak_ref);
+}
+
 /**
  * _g_io_module_get_default:
  * @extension_point: the name of an extension point
@@ -914,10 +921,11 @@ try_implementation (const char           *extension_point,
  * be called on each candidate implementation after construction, to
  * check if it is actually usable or not.
  *
- * The result is cached after it is generated the first time, and
+ * The result is cached after it is generated the first time (but the cache does
+ * not keep a strong reference to the object), and
  * the function is thread-safe.
  *
- * Returns: (transfer none): an object implementing
+ * Returns: (transfer full) (nullable): an object implementing
  *     @extension_point, or %NULL if there are no usable
  *     implementations.
  */
@@ -932,25 +940,33 @@ _g_io_module_get_default (const gchar         *extension_point,
   GList *l;
   GIOExtensionPoint *ep;
   GIOExtension *extension = NULL, *preferred;
-  gpointer impl;
+  gpointer impl, value;
+  GWeakRef *impl_weak_ref = NULL;
 
   g_rec_mutex_lock (&default_modules_lock);
   if (default_modules)
     {
-      gpointer key;
-
       if (g_hash_table_lookup_extended (default_modules, extension_point,
-					&key, &impl))
-	{
+                                        NULL, &value))
+        {
           /* Don’t debug here, since we’re returning a cached object which was
            * already printed earlier. */
-	  g_rec_mutex_unlock (&default_modules_lock);
-	  return impl;
-	}
+          impl_weak_ref = value;
+          impl = g_weak_ref_get (impl_weak_ref);
+
+          /* If the object has been finalised (impl == NULL), fall through and
+           * instantiate a new one. */
+          if (impl != NULL)
+            {
+              g_rec_mutex_unlock (&default_modules_lock);
+              return g_steal_pointer (&impl);
+            }
+        }
     }
   else
     {
-      default_modules = g_hash_table_new (g_str_hash, g_str_equal);
+      default_modules = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                               g_free, (GDestroyNotify) weak_ref_free);
     }
 
   _g_io_modules_ensure_loaded ();
@@ -1005,9 +1021,18 @@ _g_io_module_get_default (const gchar         *extension_point,
   impl = NULL;
 
  done:
-  g_hash_table_insert (default_modules,
-		       g_strdup (extension_point),
-		       impl ? g_object_ref (impl) : NULL);
+  if (impl_weak_ref == NULL)
+    {
+      impl_weak_ref = g_new0 (GWeakRef, 1);
+      g_weak_ref_init (impl_weak_ref, impl);
+      g_hash_table_insert (default_modules, g_strdup (extension_point),
+                           g_steal_pointer (&impl_weak_ref));
+    }
+  else
+    {
+      g_weak_ref_set (impl_weak_ref, impl);
+    }
+
   g_rec_mutex_unlock (&default_modules_lock);
 
   if (impl != NULL)
@@ -1021,7 +1046,7 @@ _g_io_module_get_default (const gchar         *extension_point,
     g_debug ("%s: Failed to find default implementation for ‘%s’",
              G_STRFUNC, extension_point);
 
-  return impl;
+  return g_steal_pointer (&impl);
 }
 
 G_LOCK_DEFINE_STATIC (registered_extensions);

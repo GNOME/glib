@@ -77,6 +77,7 @@ enum {
 };
 
 static guint signals[LAST_SIGNAL] = { 0 };
+static GNetworkMonitor *network_monitor_default_singleton = NULL;  /* (owned) (atomic) */
 
 /**
  * g_network_monitor_get_default:
@@ -91,9 +92,18 @@ static guint signals[LAST_SIGNAL] = { 0 };
 GNetworkMonitor *
 g_network_monitor_get_default (void)
 {
-  return _g_io_module_get_default (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
-                                   "GIO_USE_NETWORK_MONITOR",
-                                   NULL);
+  if (g_once_init_enter (&network_monitor_default_singleton))
+    {
+      GNetworkMonitor *singleton;
+
+      singleton = _g_io_module_get_default (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
+                                            "GIO_USE_NETWORK_MONITOR",
+                                            NULL);
+
+      g_once_init_leave (&network_monitor_default_singleton, singleton);
+    }
+
+  return network_monitor_default_singleton;
 }
 
 /**

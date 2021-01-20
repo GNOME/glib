@@ -3001,5 +3001,19 @@ main (int argc, char *argv[])
 
   g_settings_sync ();
 
+  /* FIXME: Due to the way #GSettings objects can be used without specifying a
+   * backend, the default backend is leaked. In order to be able to run this
+   * test under valgrind and get meaningful checking for real leaks, use this
+   * hack to drop the final reference to the default #GSettingsBackend.
+   *
+   * This should not be used in production code. */
+    {
+      GSettingsBackend *backend;
+
+      backend = g_settings_backend_get_default ();
+      g_object_unref (backend);  /* reference from the *_get_default() call */
+      g_assert_finalize_object (backend);  /* singleton reference owned by GLib */
+    }
+
   return result;
 }

@@ -3296,7 +3296,7 @@ g_settings_action_get_property (GObject *object, guint prop_id,
       break;
 
     case ACTION_PROP_STATE:
-      g_value_set_variant (value, g_settings_action_get_state (action));
+      g_value_take_variant (value, g_settings_action_get_state (action));
       break;
 
     default:

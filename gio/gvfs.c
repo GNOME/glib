@@ -337,6 +337,8 @@ g_vfs_parse_name (GVfs       *vfs,
   return (* class->parse_name) (vfs, parse_name);
 }
 
+static GVfs *vfs_default_singleton = NULL;  /* (owned) (atomic) */
+
 /**
  * g_vfs_get_default:
  *
@@ -350,9 +352,19 @@ g_vfs_get_default (void)
 {
   if (GLIB_PRIVATE_CALL (g_check_setuid) ())
     return g_vfs_get_local ();
-  return _g_io_module_get_default (G_VFS_EXTENSION_POINT_NAME,
-                                   "GIO_USE_VFS",
-                                   (GIOModuleVerifyFunc)g_vfs_is_active);
+
+  if (g_once_init_enter (&vfs_default_singleton))
+    {
+      GVfs *singleton;
+
+      singleton = _g_io_module_get_default (G_VFS_EXTENSION_POINT_NAME,
+                                            "GIO_USE_VFS",
+                                            (GIOModuleVerifyFunc) g_vfs_is_active);
+
+      g_once_init_leave (&vfs_default_singleton, singleton);
+    }
+
+  return vfs_default_singleton;
 }
 
 /**
