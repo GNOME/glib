@@ -769,6 +769,49 @@ test_validate_names (void)
     }
 }
 
+static void
+assert_cmp_escaped_object_path (const gchar *s,
+                                const gchar *correct_escaped)
+{
+  gchar *escaped;
+  guint8 *unescaped;
+
+  escaped = g_dbus_escape_object_path (s);
+  g_assert_cmpstr (escaped, ==, correct_escaped);
+
+  g_free (escaped);
+  escaped = g_dbus_escape_object_path_bytestring ((const guint8 *) s);
+  g_assert_cmpstr (escaped, ==, correct_escaped);
+
+  unescaped = g_dbus_unescape_object_path (escaped);
+  g_assert_cmpstr ((const gchar *) unescaped, ==, s);
+
+  g_free (escaped);
+  g_free (unescaped);
+}
+
+static void
+test_escape_object_path (void)
+{
+  assert_cmp_escaped_object_path ("Foo42", "Foo42");
+  assert_cmp_escaped_object_path ("foo.bar.baz", "foo_2ebar_2ebaz");
+  assert_cmp_escaped_object_path ("foo_bar_baz", "foo_5fbar_5fbaz");
+  assert_cmp_escaped_object_path ("_", "_5f");
+  assert_cmp_escaped_object_path ("__", "_5f_5f");
+  assert_cmp_escaped_object_path ("", "_");
+  assert_cmp_escaped_object_path (":1.42", "_3a1_2e42");
+  assert_cmp_escaped_object_path ("a/b", "a_2fb");
+  assert_cmp_escaped_object_path (" ", "_20");
+  assert_cmp_escaped_object_path ("\n", "_0a");
+
+  g_assert_null (g_dbus_unescape_object_path ("_ii"));
+  g_assert_null (g_dbus_unescape_object_path ("döner"));
+  g_assert_null (g_dbus_unescape_object_path ("_00"));
+  g_assert_null (g_dbus_unescape_object_path ("_61"));
+  g_assert_null (g_dbus_unescape_object_path ("_ga"));
+  g_assert_null (g_dbus_unescape_object_path ("_ag"));
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -786,6 +829,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/validate-names", test_validate_names);
   g_test_add_func ("/gdbus/bus-own-name", test_bus_own_name);
   g_test_add_func ("/gdbus/bus-watch-name", test_bus_watch_name);
+  g_test_add_func ("/gdbus/escape-object-path", test_escape_object_path);
 
   ret = g_test_run();
 
