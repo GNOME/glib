@@ -1899,6 +1899,28 @@ test_read_write (gconstpointer user_data)
   g_object_unref (client);
 }
 
+#ifdef SO_NOSIGPIPE
+static void
+test_nosigpipe (void)
+{
+  GSocket *sock;
+  GError *error = NULL;
+  gint value;
+
+  sock = g_socket_new (AF_INET,
+                       G_SOCKET_TYPE_STREAM,
+                       G_SOCKET_PROTOCOL_DEFAULT,
+                       &error);
+  g_assert_no_error (error);
+
+  g_socket_get_option (sock, SOL_SOCKET, SO_NOSIGPIPE, &value, &error);
+  g_assert_no_error (error);
+  g_assert_true (value);
+
+  g_object_unref (sock);
+}
+#endif
+
 #if G_CREDENTIALS_SUPPORTED
 static gpointer client_setup_thread (gpointer user_data);
 
@@ -2165,6 +2187,9 @@ main (int   argc,
                         test_read_write);
   g_test_add_data_func ("/socket/read_writev", GUINT_TO_POINTER (TRUE),
                         test_read_write);
+#ifdef SO_NOSIGPIPE
+  g_test_add_func ("/socket/nosigpipe", test_nosigpipe);
+#endif
 #if G_CREDENTIALS_SUPPORTED
   g_test_add_func ("/socket/credentials/tcp_client", test_credentials_tcp_client);
   g_test_add_func ("/socket/credentials/tcp_server", test_credentials_tcp_server);
