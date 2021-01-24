@@ -250,6 +250,11 @@ print_paths (GDBusConnection *c,
       g_printerr (_("Error: %s is not a valid name\n"), name);
       goto out;
     }
+  if (!g_variant_is_object_path (path))
+    {
+      g_printerr (_("Error: %s is not a valid object path\n"), path);
+      goto out;
+    }
 
   error = NULL;
   result = g_dbus_connection_call_sync (c,
