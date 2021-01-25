@@ -338,6 +338,10 @@ void    g_test_add_data_func_full       (const char     *testpath,
                                          GTestDataFunc   test_func,
                                          GDestroyNotify  data_free_func);
 
+/* tell about currently run test */
+GLIB_AVAILABLE_IN_2_68
+const char * g_test_get_path            (void);
+
 /* tell about failure */
 GLIB_AVAILABLE_IN_2_30
 void    g_test_fail                     (void);

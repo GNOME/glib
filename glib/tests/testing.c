@@ -843,6 +843,18 @@ test_subprocess_timed_out (void)
   g_assert_true (g_test_trap_reached_timeout ());
 }
 
+static void
+test_path_first (void)
+{
+  g_assert_cmpstr (g_test_get_path (), ==, "/misc/path/first");
+}
+
+static void
+test_path_second (void)
+{
+  g_assert_cmpstr (g_test_get_path (), ==, "/misc/path/second");
+}
+
 static const char *argv0;
 
 static void
@@ -1594,6 +1606,9 @@ main (int   argc,
   g_test_add_func ("/misc/fail", test_fail);
   g_test_add_func ("/misc/incomplete", test_incomplete);
   g_test_add_func ("/misc/timeout", test_subprocess_timed_out);
+
+  g_test_add_func ("/misc/path/first", test_path_first);
+  g_test_add_func ("/misc/path/second", test_path_second);
 
   g_test_add_func ("/tap", test_tap);
   g_test_add_func ("/tap/summary", test_tap_summary);
