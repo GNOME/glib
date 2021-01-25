@@ -35,6 +35,20 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+
+/*
+ * We duplicate the following Linux kernel header defines here so we can still
+ * run at full speed on modern kernels in cases where an old toolchain was used
+ * to build GLib. This is often done deliberately to allow shipping binaries
+ * that need to run on a wide range of systems.
+ */
+#ifndef F_SETPIPE_SZ
+#define F_SETPIPE_SZ 1031
+#endif
+#ifndef F_GETPIPE_SZ
+#define F_GETPIPE_SZ 1032
+#endif
+
 #endif
 
 #include <string.h>
@@ -3015,31 +3029,22 @@ splice_stream_with_progress (GInputStream           *in,
   if (!g_unix_open_pipe (buffer, FD_CLOEXEC, error))
     return FALSE;
 
-#if defined(F_SETPIPE_SZ) && defined(F_GETPIPE_SZ)
   /* Try a 1MiB buffer for improved throughput. If that fails, use the default
    * pipe size. See: https://bugzilla.gnome.org/791457 */
   buffer_size = fcntl (buffer[1], F_SETPIPE_SZ, 1024 * 1024);
   if (buffer_size <= 0)
     {
-      int errsv;
       buffer_size = fcntl (buffer[1], F_GETPIPE_SZ);
-      errsv = errno;
-
       if (buffer_size <= 0)
         {
-          g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-                       _("Error splicing file: %s"), g_strerror (errsv));
-          res = FALSE;
-          goto out;
+          /* If #F_GETPIPE_SZ isn’t available, assume we’re on Linux < 2.6.35,
+           * but ≥ 2.6.11, meaning the pipe capacity is 64KiB. Ignore the
+           * possibility of running on Linux < 2.6.11 (where the capacity was
+           * the system page size, typically 4KiB) because it’s ancient.
+           * See pipe(7). */
+          buffer_size = 1024 * 64;
         }
     }
-#else
-  /* If #F_GETPIPE_SZ isn’t available, assume we’re on Linux < 2.6.35,
-   * but ≥ 2.6.11, meaning the pipe capacity is 64KiB. Ignore the possibility of
-   * running on Linux < 2.6.11 (where the capacity was the system page size,
-   * typically 4KiB) because it’s ancient. See pipe(7). */
-  buffer_size = 1024 * 64;
-#endif
 
   g_assert (buffer_size > 0);
 
