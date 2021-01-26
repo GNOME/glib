@@ -451,13 +451,14 @@ void	 g_clear_signal_handler		      (gulong            *handler_id_ptr,
 
 #define  g_clear_signal_handler(handler_id_ptr, instance)           \
   G_STMT_START {                                                    \
-    G_STATIC_ASSERT (sizeof *(handler_id_ptr) == sizeof (gulong));  \
-    gulong _handler_id = *(handler_id_ptr);                         \
+    gpointer const _instance      = (instance);                     \
+    gulong *const _handler_id_ptr = (handler_id_ptr);               \
+    const gulong _handler_id      = *_handler_id_ptr;               \
                                                                     \
     if (_handler_id > 0)                                            \
       {                                                             \
-        g_signal_handler_disconnect ((instance), _handler_id);      \
-        *(handler_id_ptr) = 0;                                      \
+        *_handler_id_ptr = 0;                                       \
+        g_signal_handler_disconnect (_instance, _handler_id);       \
       }                                                             \
   } G_STMT_END                                                      \
   GLIB_AVAILABLE_MACRO_IN_2_62
