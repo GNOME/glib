@@ -613,6 +613,7 @@ stop_service (GDBusConnection *connection,
 {
   GError *error = NULL;
   GDBusProxy *proxy = NULL;
+  GVariant *result = NULL;
 
   data->num_vanished = 0;
 
@@ -626,15 +627,17 @@ stop_service (GDBusConnection *connection,
                                  &error);
   g_assert_no_error (error);
 
-  g_dbus_proxy_call_sync (proxy,
-                          "Quit",
-                          NULL,
-                          G_DBUS_CALL_FLAGS_NO_AUTO_START,
-                          100,
-                          NULL,
-                          &error);
+  result = g_dbus_proxy_call_sync (proxy,
+                                   "Quit",
+                                   NULL,
+                                   G_DBUS_CALL_FLAGS_NO_AUTO_START,
+                                   100,
+                                   NULL,
+                                   &error);
   g_assert_no_error (error);
   g_object_unref (proxy);
+  if (result)
+    g_variant_unref (result);
   while (data->num_vanished == 0)
     g_main_loop_run (loop);
 }
