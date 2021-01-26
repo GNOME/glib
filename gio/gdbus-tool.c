@@ -681,8 +681,8 @@ handle_emit (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
@@ -995,8 +995,8 @@ handle_call (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
@@ -1825,8 +1825,8 @@ handle_introspect (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
@@ -2057,8 +2057,8 @@ handle_monitor (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
@@ -2277,8 +2277,8 @@ handle_wait (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
