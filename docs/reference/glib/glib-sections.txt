@@ -3508,6 +3508,7 @@ GTestDataFunc
 g_test_add_data_func
 g_test_add_data_func_full
 g_test_add
+g_test_get_path
 
 GTestFileType
 g_test_build_filename

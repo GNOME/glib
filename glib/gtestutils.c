@@ -4230,3 +4230,23 @@ g_test_get_filename (GTestFileType  file_type,
 
   return result;
 }
+
+/**
+ * g_test_get_path:
+ *
+ * Gets the test path for the test currently being run.
+ *
+ * In essence, it will be the same string passed as the first argument to
+ * e.g. g_test_add() when the test was added.
+ *
+ * This function returns a valid string only within a test function.
+ *
+ * Returns: the test path for the test currently being run
+ *
+ * Since: 2.68
+ **/
+const char *
+g_test_get_path (void)
+{
+  return test_run_name;
+}
