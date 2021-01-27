@@ -2,7 +2,7 @@
 # Owen Taylor     1997-2001
 
 # Increment this whenever this file is changed.
-#serial 3
+#serial 4
 
 dnl AM_PATH_GLIB_2_0([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
 dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if gmodule, gobject,
