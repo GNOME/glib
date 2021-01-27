@@ -93,10 +93,17 @@ gio_tests = {
   'tls-certificate' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-interaction' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-database' : {'extra_sources' : ['gtesttlsbackend.c']},
-  'tls-bindings' : {'extra_sources' : ['gtesttlsbackend.c']},
   'gdbus-address-get-session' : {},
   'win32-appinfo' : {},
 }
+
+# FIXME: These sometimes can’t be killed on the Windows CI machines, and cause
+# all subsequent CI runs on Windows to fail. See #2297.
+if host_machine.system() != 'windows'
+  gio_tests += {
+    'tls-bindings' : {'extra_sources' : ['gtesttlsbackend.c']}
+  }
+endif
 
 test_extra_programs = {
   'gdbus-connection-flush-helper' : {},
