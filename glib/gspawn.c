@@ -1819,7 +1819,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
   if (search_path && chosen_search_path == NULL)
     chosen_search_path = g_getenv ("PATH");
 
-  if (chosen_search_path == NULL)
+  if ((search_path || search_path_from_envp) && chosen_search_path == NULL)
     {
       /* There is no 'PATH' in the environment.  The default
        * * search path in libc is the current directory followed by
@@ -1834,14 +1834,27 @@ fork_exec_with_fds (gboolean              intermediate_child,
       chosen_search_path = "/bin:/usr/bin:.";
     }
 
+  if (search_path || search_path_from_envp)
+    g_assert (chosen_search_path != NULL);
+  else
+    g_assert (chosen_search_path == NULL);
+
   /* Allocate a buffer which the fork()ed child can use to assemble potential
    * paths for the binary to exec(), combining the argv[0] and elements from
    * the chosen_search_path. This can’t be done in the child because malloc()
    * (or alloca()) are not async-signal-safe (see `man 7 signal-safety`).
    *
    * Add 2 for the nul terminator and a leading `/`. */
-  search_path_buffer_len = strlen (chosen_search_path) + strlen (argv[0]) + 2;
-  search_path_buffer = g_malloc (search_path_buffer_len);
+  if (chosen_search_path != NULL)
+    {
+      search_path_buffer_len = strlen (chosen_search_path) + strlen (argv[0]) + 2;
+      search_path_buffer = g_malloc (search_path_buffer_len);
+    }
+
+  if (search_path || search_path_from_envp)
+    g_assert (search_path_buffer != NULL);
+  else
+    g_assert (search_path_buffer == NULL);
 
   /* And allocate a buffer which is 2 elements longer than @argv, so that if
    * script_execute() has to be called later on, it can build a wrapper argv
