@@ -1,5 +1,7 @@
 #include <glib.h>
 
+#include "glib-private.h"
+
 static void
 test_overwrite (void)
 {
@@ -119,6 +121,12 @@ test_new_valist_invalid_va (gpointer dummy,
   gsize i;
 
   g_test_summary ("Test that g_error_new_valist() rejects invalid input");
+
+  if (!g_test_undefined ())
+    {
+      g_test_skip ("Not testing response to programmer error");
+      return;
+    }
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
