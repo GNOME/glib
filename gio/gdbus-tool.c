@@ -250,6 +250,11 @@ print_paths (GDBusConnection *c,
       g_printerr (_("Error: %s is not a valid name\n"), name);
       goto out;
     }
+  if (!g_variant_is_object_path (path))
+    {
+      g_printerr (_("Error: %s is not a valid object path\n"), path);
+      goto out;
+    }
 
   error = NULL;
   result = g_dbus_connection_call_sync (c,
@@ -676,8 +681,8 @@ handle_emit (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
@@ -990,8 +995,8 @@ handle_call (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
@@ -1820,8 +1825,8 @@ handle_introspect (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
@@ -2052,8 +2057,8 @@ handle_monitor (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
@@ -2272,8 +2277,8 @@ handle_wait (gint        *argc,
       else
         {
           g_printerr (_("Error connecting: %s\n"), error->message);
-          g_error_free (error);
         }
+      g_error_free (error);
       goto out;
     }
 
