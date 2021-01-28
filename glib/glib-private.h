@@ -22,6 +22,19 @@
 #include "gwakeup.h"
 #include "gstdioprivate.h"
 
+/* gcc defines __SANITIZE_ADDRESS__, clang sets the address_sanitizer
+ * feature flag */
+#if defined(__SANITIZE_ADDRESS__) || g_macro__has_feature(address_sanitizer)
+
+/*
+ * %_GLIB_ADDRESS_SANITIZER:
+ *
+ * Private macro defined if the AddressSanitizer is in use.
+ */
+#define _GLIB_ADDRESS_SANITIZER
+
+#endif
+
 GMainContext *          g_get_worker_context            (void);
 gboolean                g_check_setuid                  (void);
 GMainContext *          g_main_context_new_with_next_id (guint next_id);
