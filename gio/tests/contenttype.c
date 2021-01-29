@@ -1,6 +1,8 @@
 #include <gio/gio.h>
 #include <string.h>
 
+#include "glib/glib-private.h"
+
 #define g_assert_content_type_equals(s1, s2) 			\
   do { 								\
     const char *__s1 = (s1), *__s2 = (s2); 			\
@@ -16,6 +18,9 @@
 static void
 test_guess (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#else
   gchar *res;
   gchar *expected;
   gchar *existing_directory;
@@ -126,11 +131,15 @@ test_guess (void)
   g_assert_false (uncertain);
   g_free (res);
   g_free (expected);
+#endif
 }
 
 static void
 test_unknown (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#else
   gchar *unknown;
   gchar *str;
 
@@ -140,11 +149,15 @@ test_unknown (void)
   g_assert_cmpstr (str, ==, "application/octet-stream");
   g_free (str);
   g_free (unknown);
+#endif
 }
 
 static void
 test_subtype (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#else
   gchar *plain;
   gchar *xml;
 
@@ -156,6 +169,7 @@ test_subtype (void)
 
   g_free (plain);
   g_free (xml);
+#endif
 }
 
 static gint
@@ -169,6 +183,10 @@ find_mime (gconstpointer a, gconstpointer b)
 static void
 test_list (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+  (void) find_mime;
+#else
   GList *types;
   gchar *plain;
   gchar *xml;
@@ -193,11 +211,15 @@ test_list (void)
 
   g_free (plain);
   g_free (xml);
+#endif
 }
 
 static void
 test_executable (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#else
   gchar *type;
 
   type = g_content_type_from_mime_type ("application/x-executable");
@@ -211,11 +233,15 @@ test_executable (void)
   type = g_content_type_from_mime_type ("image/png");
   g_assert_false (g_content_type_can_be_executable (type));
   g_free (type);
+#endif
 }
 
 static void
 test_description (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#else
   gchar *type;
   gchar *desc;
 
@@ -225,11 +251,15 @@ test_description (void)
 
   g_free (desc);
   g_free (type);
+#endif
 }
 
 static void
 test_icon (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#else
   gchar *type;
   GIcon *icon;
 
@@ -266,12 +296,15 @@ test_icon (void)
     }
   g_object_unref (icon);
   g_free (type);
+#endif
 }
 
 static void
 test_symbolic_icon (void)
 {
-#ifndef G_OS_WIN32
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#elif !defined(G_OS_WIN32)
   gchar *type;
   GIcon *icon;
 
@@ -319,6 +352,9 @@ test_symbolic_icon (void)
 static void
 test_tree (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#else
   const gchar *tests[] = {
     "x-content/image-dcf",
     "x-content/unix-software",
@@ -343,11 +379,15 @@ test_tree (void)
       g_strfreev (types);
       g_object_unref (file);
    }
+#endif
 }
 
 static void
 test_type_is_a_special_case (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#else
   gboolean res;
 
   g_test_bug ("782311");
@@ -359,11 +399,15 @@ test_type_is_a_special_case (void)
   res = g_content_type_is_a ("anything", "application/octet-stream");
   g_assert_true (res);
 #endif
+#endif
 }
 
 static void
 test_guess_svg_from_data (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#else
   const gchar svgfilecontent[] = "<svg  xmlns=\"http://www.w3.org/2000/svg\"\
       xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n\
     <rect x=\"10\" y=\"10\" height=\"100\" width=\"100\"\n\
@@ -382,12 +426,15 @@ test_guess_svg_from_data (void)
 #endif
   g_assert_false (uncertain);
   g_free (res);
+#endif
 }
 
 static void
 test_mime_from_content (void)
 {
-#ifdef __APPLE__
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks xdgmime internal data, see glib#2310");
+#elif defined(__APPLE__)
   gchar *mime_type;
   mime_type = g_content_type_get_mime_type ("com.microsoft.bmp");
   g_assert_cmpstr (mime_type, ==, "image/bmp");
