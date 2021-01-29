@@ -152,7 +152,8 @@ if host_machine.system() != 'windows'
     'trash' : {},
   }
 
-  if have_rtld_next
+  # LD_PRELOAD modules don't work so well with AddressSanitizer
+  if have_rtld_next and get_option('b_sanitize') == 'none'
     gio_tests += {
       'gsocketclient-slow' : {
         'depends' : [
