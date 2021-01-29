@@ -524,6 +524,7 @@ get_and_check_serialization (GVariant *value)
   GDBusMessage *recovered_message;
   GError *error;
   DBusError dbus_error;
+  gchar *last_serialization = NULL;
   gchar *s = NULL;
   guint n;
 
@@ -617,11 +618,19 @@ get_and_check_serialization (GVariant *value)
         }
       g_object_unref (recovered_message);
       g_free (blob);
+
+      if (last_serialization != NULL)
+        {
+          g_assert_cmpstr (last_serialization, ==, s);
+          g_free (last_serialization);
+        }
+
+      last_serialization = g_steal_pointer (&s);
     }
 
   g_object_unref (message);
 
-  return g_steal_pointer (&s);
+  return g_steal_pointer (&last_serialization);
 }
 
 /* If @value is floating, this assumes ownership. */
