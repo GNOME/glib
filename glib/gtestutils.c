@@ -309,8 +309,12 @@
  * behaviour, to verify that appropriate warnings are given. It might, in some
  * cases, be useful to turn this off with if running tests under valgrind;
  * in tests that use g_test_init(), the option `-m no-undefined` disables
- * those tests, while `-m undefined` explicitly enables them (the default
- * behaviour).
+ * those tests, while `-m undefined` explicitly enables them (normally
+ * the default behaviour).
+ *
+ * Since GLib 2.68, if GLib was compiled with gcc or clang and
+ * [AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer)
+ * is enabled, the default changes to not exercising undefined behaviour.
  *
  * Returns: %TRUE if tests may provoke programming errors
  */
@@ -1572,6 +1576,10 @@ void
   g_return_if_fail (argv != NULL);
   g_return_if_fail (g_test_config_vars->test_initialized == FALSE);
   mutable_test_config_vars.test_initialized = TRUE;
+
+#ifdef _GLIB_ADDRESS_SANITIZER
+  mutable_test_config_vars.test_undefined = FALSE;
+#endif
 
   va_start (args, argv);
   while ((option = va_arg (args, char *)))
