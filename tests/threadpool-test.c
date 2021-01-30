@@ -295,6 +295,7 @@ test_thread_sort (gboolean sort)
 
   g_assert (g_thread_pool_get_max_threads (pool) == max_threads);
   g_assert (g_thread_pool_get_num_threads (pool) == g_thread_pool_get_max_threads (pool));
+  g_thread_pool_free (pool, TRUE, TRUE);
 }
 
 static void
