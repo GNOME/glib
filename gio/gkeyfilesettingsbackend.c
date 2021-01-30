@@ -362,7 +362,7 @@ g_keyfile_settings_backend_write_tree (GSettingsBackend *backend,
                                        GTree            *tree,
                                        gpointer          origin_tag)
 {
-  WriteManyData data = { G_KEYFILE_SETTINGS_BACKEND (backend) };
+  WriteManyData data = { G_KEYFILE_SETTINGS_BACKEND (backend), 0 };
   gboolean success;
   GError *error = NULL;
 

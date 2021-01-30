@@ -538,7 +538,7 @@ g_dbus_connection_export_action_group (GDBusConnection  *connection,
                                        GError          **error)
 {
   const GDBusInterfaceVTable vtable = {
-    org_gtk_Actions_method_call
+    org_gtk_Actions_method_call, NULL, NULL, { 0 }
   };
   GActionGroupExporter *exporter;
   guint id;
