@@ -983,6 +983,7 @@ glib_compile_resources = executable('glib-compile-resources',
 if not meson.is_cross_build()
   meson.override_find_program('glib-compile-schemas', glib_compile_schemas)
   meson.override_find_program('glib-compile-resources', glib_compile_resources)
+  meson.override_find_program('gio-querymodules', gio_querymodules)
 endif
 
 executable('gsettings', 'gsettings-tool.c',
