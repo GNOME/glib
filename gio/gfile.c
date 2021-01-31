@@ -493,7 +493,7 @@ g_file_get_uri_scheme (GFile *file)
 
 
 /**
- * g_file_get_basename:
+ * g_file_get_basename: (virtual get_basename)
  * @file: input #GFile
  *
  * Gets the base name (the last component of the path) for a given #GFile.
@@ -527,7 +527,7 @@ g_file_get_basename (GFile *file)
 }
 
 /**
- * g_file_get_path:
+ * g_file_get_path: (virtual get_path)
  * @file: input #GFile
  *
  * Gets the local pathname for #GFile, if one exists. If non-%NULL, this is
@@ -946,7 +946,7 @@ g_file_has_prefix (GFile *file,
 }
 
 /**
- * g_file_get_relative_path:
+ * g_file_get_relative_path: (virtual get_relative_path)
  * @parent: input #GFile
  * @descendant: input #GFile
  *

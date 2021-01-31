@@ -256,7 +256,7 @@ g_app_info_get_description (GAppInfo *appinfo)
 }
 
 /**
- * g_app_info_get_executable:
+ * g_app_info_get_executable: (virtual get_executable)
  * @appinfo: a #GAppInfo
  * 
  * Gets the executable's name for the installed application.
@@ -278,7 +278,7 @@ g_app_info_get_executable (GAppInfo *appinfo)
 
 
 /**
- * g_app_info_get_commandline:
+ * g_app_info_get_commandline: (virtual get_commandline)
  * @appinfo: a #GAppInfo
  * 
  * Gets the commandline with which the application will be
