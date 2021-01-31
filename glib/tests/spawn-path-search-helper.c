@@ -55,6 +55,7 @@ main (int    argc,
   gboolean search_path = FALSE;
   gboolean search_path_from_envp = FALSE;
   gboolean slow_path = FALSE;
+  gboolean unset_path_in_envp = FALSE;
   gchar *chdir_child = NULL;
   gchar *set_path_in_envp = NULL;
   gchar **envp = NULL;
@@ -72,6 +73,9 @@ main (int    argc,
     { "set-path-in-envp", '\0',
       G_OPTION_FLAG_NONE, G_OPTION_ARG_FILENAME, &set_path_in_envp,
       "Set PATH in specified environment to this value", "PATH", },
+    { "unset-path-in-envp", '\0',
+      G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, &unset_path_in_envp,
+      "Unset PATH in specified environment", NULL },
     { "slow-path", '\0',
       G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, &slow_path,
       "Use a child-setup function to avoid the posix_spawn fast path", NULL },
@@ -102,8 +106,19 @@ main (int    argc,
 
   envp = g_get_environ ();
 
+  if (set_path_in_envp != NULL && unset_path_in_envp)
+    {
+      g_set_error (&error, G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
+                   "Cannot both set PATH and unset it");
+      ret = 2;
+      goto out;
+    }
+
   if (set_path_in_envp != NULL)
     envp = g_environ_setenv (envp, "PATH", set_path_in_envp, TRUE);
+
+  if (unset_path_in_envp)
+    envp = g_environ_unsetenv (envp, "PATH");
 
   if (search_path)
     spawn_flags |= G_SPAWN_SEARCH_PATH;
