@@ -1952,30 +1952,38 @@ g_signal_new_valist (const gchar       *signal_name,
                      GSignalFlags       signal_flags,
                      GClosure          *class_closure,
                      GSignalAccumulator accumulator,
-		     gpointer		accu_data,
+                     gpointer           accu_data,
                      GSignalCMarshaller c_marshaller,
                      GType              return_type,
                      guint              n_params,
                      va_list            args)
 {
+  /* Somewhat arbitrarily reserve 200 bytes. That should cover the majority
+   * of cases where n_params is small and still be small enough for what we
+   * want to put on the stack. */
+  GType param_types_stack[200 / sizeof (GType)];
+  GType *param_types_heap = NULL;
   GType *param_types;
   guint i;
   guint signal_id;
 
+  param_types = param_types_stack;
   if (n_params > 0)
     {
-      param_types = g_new (GType, n_params);
+      if (G_UNLIKELY (n_params > G_N_ELEMENTS (param_types_stack)))
+        {
+          param_types_heap = g_new (GType, n_params);
+          param_types = param_types_heap;
+        }
 
       for (i = 0; i < n_params; i++)
-	param_types[i] = va_arg (args, GType);
+        param_types[i] = va_arg (args, GType);
     }
-  else
-    param_types = NULL;
 
   signal_id = g_signal_newv (signal_name, itype, signal_flags,
-			     class_closure, accumulator, accu_data, c_marshaller,
-			     return_type, n_params, param_types);
-  g_free (param_types);
+                             class_closure, accumulator, accu_data, c_marshaller,
+                             return_type, n_params, param_types);
+  g_free (param_types_heap);
 
   return signal_id;
 }
@@ -4004,6 +4012,7 @@ g_signal_accumulator_first_wins (GSignalInvocationHint *ihint,
  * g_clear_signal_handler:
  * @handler_id_ptr: A pointer to a handler ID (of type #gulong) of the handler to be disconnected.
  * @instance: (type GObject.Object): The instance to remove the signal handler from.
+ *   This pointer may be %NULL or invalid, if the handler ID is zero.
  *
  * Disconnects a handler from @instance so it will not be called during
  * any future or currently ongoing emissions of the signal it has been
@@ -4011,21 +4020,20 @@ g_signal_accumulator_first_wins (GSignalInvocationHint *ihint,
  *
  * If the handler ID is 0 then this function does nothing.
  *
- * A macro is also included that allows this function to be used without
- * pointer casts.
+ * There is also a macro version of this function so that the code
+ * will be inlined.
  *
  * Since: 2.62
  */
-#undef g_clear_signal_handler
 void
-g_clear_signal_handler (gulong   *handler_id_ptr,
-                        gpointer  instance)
+(g_clear_signal_handler) (gulong   *handler_id_ptr,
+                          gpointer  instance)
 {
   g_return_if_fail (handler_id_ptr != NULL);
 
-  if (*handler_id_ptr != 0)
-    {
-      g_signal_handler_disconnect (instance, *handler_id_ptr);
-      *handler_id_ptr = 0;
-    }
+#ifndef g_clear_signal_handler
+#error g_clear_signal_handler() macro is not defined
+#endif
+
+  g_clear_signal_handler (handler_id_ptr, instance);
 }
