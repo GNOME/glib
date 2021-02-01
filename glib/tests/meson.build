@@ -89,6 +89,7 @@ glib_tests = {
   'slist' : {},
   'sort' : {},
   'spawn-multithreaded' : {},
+  'spawn-path-search' : {},
   'spawn-singlethread' : {},
   'strfuncs' : {},
   'string' : {},
@@ -236,6 +237,20 @@ foreach test_name, extra_args : glib_tests
   test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach
 
+executable('spawn-path-search-helper', 'spawn-path-search-helper.c',
+  c_args : test_cargs,
+  dependencies : test_deps,
+  install_dir: installed_tests_execdir,
+  install: installed_tests_enabled,
+)
+
+executable('spawn-test-helper', 'spawn-test-helper.c',
+  c_args : test_cargs,
+  dependencies : test_deps,
+  install_dir: installed_tests_execdir,
+  install: installed_tests_enabled,
+)
+
 # test-spawn-echo helper binary required by the spawn tests above
 executable('test-spawn-echo', 'test-spawn-echo.c',
   c_args : test_cargs,
@@ -267,3 +282,5 @@ if not meson.is_cross_build() and host_system != 'windows'
     )
   endif
 endif
+
+subdir('path-test-subdir')
