@@ -22,6 +22,8 @@
 
 #include <gio/gio.h>
 
+#include "glib/glib-private.h"
+
 /* How long to wait in ms for each iteration */
 #define WAIT_ITERATION (10)
 
@@ -257,6 +259,11 @@ threaded_dispose_thread_cb (gpointer user_data)
 static void
 test_cancellable_source_threaded_dispose (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks lots of GCancellableSource objects, see glib#2309");
+  (void) cancelled_cb;
+  (void) threaded_dispose_thread_cb;
+#else
   ThreadedDisposeData data;
   GThread *thread = NULL;
   guint i;
@@ -326,6 +333,7 @@ test_cancellable_source_threaded_dispose (void)
   g_cond_clear (&data.cond);
 
   g_ptr_array_unref (cancellables_pending_unref);
+#endif
 }
 
 int

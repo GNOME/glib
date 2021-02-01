@@ -22,6 +22,62 @@
 #include "gwakeup.h"
 #include "gstdioprivate.h"
 
+/* gcc defines __SANITIZE_ADDRESS__, clang sets the address_sanitizer
+ * feature flag */
+#if defined(__SANITIZE_ADDRESS__) || g_macro__has_feature(address_sanitizer)
+
+/*
+ * %_GLIB_ADDRESS_SANITIZER:
+ *
+ * Private macro defined if the AddressSanitizer is in use.
+ */
+#define _GLIB_ADDRESS_SANITIZER
+
+#include <sanitizer/lsan_interface.h>
+
+#endif
+
+/*
+ * g_ignore_leak:
+ * @p: any pointer
+ *
+ * Tell AddressSanitizer and similar tools that if the object pointed to
+ * by @p is leaked, it is not a problem. Use this to suppress memory leak
+ * reports when a potentially unreachable pointer is deliberately not
+ * going to be deallocated.
+ */
+static inline void
+g_ignore_leak (gconstpointer p)
+{
+#ifdef _GLIB_ADDRESS_SANITIZER
+  if (p != NULL)
+    __lsan_ignore_object (p);
+#endif
+}
+
+/*
+ * g_ignore_strv_leak:
+ * @strv: (nullable) (array zero-terminated=1): an array of strings
+ *
+ * The same as g_ignore_leak(), but for the memory pointed to by @strv,
+ * and for each element of @strv.
+ */
+static inline void
+g_ignore_strv_leak (GStrv strv)
+{
+#ifdef _GLIB_ADDRESS_SANITIZER
+  gchar **item;
+
+  if (strv)
+    {
+      g_ignore_leak (strv);
+
+      for (item = strv; *item != NULL; item++)
+        g_ignore_leak (*item);
+    }
+#endif
+}
+
 GMainContext *          g_get_worker_context            (void);
 gboolean                g_check_setuid                  (void);
 GMainContext *          g_main_context_new_with_next_id (guint next_id);

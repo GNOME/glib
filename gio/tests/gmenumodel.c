@@ -5,6 +5,8 @@
 
 #include "gdbus-sessionbus.h"
 
+#include "glib/glib-private.h"
+
 static gboolean
 time_out (gpointer unused G_GNUC_UNUSED)
 {
@@ -1012,11 +1014,17 @@ test_dbus_roundtrip (void)
 static void
 test_dbus_peer_roundtrip (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks a GCancellableSource, see glib#2313");
+  (void) peer_connection_up;
+  (void) peer_connection_down;
+#else
   PeerConnection peer;
 
   peer_connection_up (&peer);
   do_roundtrip (peer.server_connection, peer.client_connection);
   peer_connection_down (&peer);
+#endif
 }
 
 static gint items_changed_count;
@@ -1145,11 +1153,17 @@ test_dbus_subscriptions (void)
 static void
 test_dbus_peer_subscriptions (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks a GCancellableSource, see glib#2313");
+  (void) peer_connection_up;
+  (void) peer_connection_down;
+#else
   PeerConnection peer;
 
   peer_connection_up (&peer);
   do_subscriptions (peer.server_connection, peer.client_connection);
   peer_connection_down (&peer);
+#endif
 }
 
 static gpointer

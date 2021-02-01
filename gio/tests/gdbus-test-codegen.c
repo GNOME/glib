@@ -23,6 +23,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "glib/glib-private.h"
+
 #include "gdbus-tests.h"
 
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_64
@@ -1302,6 +1304,18 @@ static gpointer
 check_proxies_in_thread (gpointer user_data)
 {
   GMainLoop *loop = user_data;
+#ifdef _GLIB_ADDRESS_SANITIZER
+
+  /* Silence "Not available before 2.38" when using old API */
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  g_test_incomplete ("FIXME: Leaks a GWeakRef, see glib#2312");
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
+  (void) check_thread_proxies;
+  (void) check_authorize_proxy;
+  (void) check_bat_proxy;
+  (void) check_bar_proxy;
+#else
   GMainContext *thread_context;
   GMainLoop *thread_loop;
   GError *error;
@@ -1370,6 +1384,7 @@ check_proxies_in_thread (gpointer user_data)
 
   g_main_loop_unref (thread_loop);
   g_main_context_unref (thread_context);
+#endif
 
   /* this breaks out of the loop in main() (below) */
   g_main_loop_quit (loop);

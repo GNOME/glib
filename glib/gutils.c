@@ -1601,6 +1601,7 @@ set_str_if_different (gchar       **global_str,
 
       /* We have to leak the old value, as user code could be retaining pointers
        * to it. */
+      g_ignore_leak (*global_str);
       *global_str = g_strdup (new_value);
     }
 }
@@ -1619,6 +1620,7 @@ set_strv_if_different (gchar                ***global_strv,
 
       /* We have to leak the old value, as user code could be retaining pointers
        * to it. */
+      g_ignore_strv_leak (*global_strv);
       *global_strv = g_strdupv ((gchar **) new_value);
     }
 }

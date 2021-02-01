@@ -1645,6 +1645,10 @@ threadf (gpointer data)
 static void
 test_mainloop_wait (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  (void) threadf;
+  g_test_incomplete ("FIXME: Leaks a GMainLoop, see glib#2307");
+#else
   GMainContext *context;
   GThread *t1, *t2;
 
@@ -1657,6 +1661,7 @@ test_mainloop_wait (void)
   g_thread_join (t2);
 
   g_main_context_unref (context);
+#endif
 }
 #endif
 
