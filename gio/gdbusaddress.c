@@ -1337,9 +1337,31 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
 
     case G_BUS_TYPE_SESSION:
       if (has_elevated_privileges)
-        ret = NULL;
+        {
+#ifdef G_OS_UNIX
+          if (geteuid () == getuid ())
+            {
+              /* Ideally we shouldn't do this, because setgid and
+               * filesystem capabilities are also elevated privileges
+               * with which we should not be trusting environment variables
+               * from the caller. Unfortunately, there are programs with
+               * elevated privileges that rely on the session bus being
+               * available. We already prevent the really dangerous
+               * transports like autolaunch: and unixexec: when our
+               * privileges are elevated, so this can only make us connect
+               * to the wrong AF_UNIX or TCP socket. */
+              ret = g_strdup (g_getenv ("DBUS_SESSION_BUS_ADDRESS"));
+            }
+          else
+#endif
+            {
+              ret = NULL;
+            }
+        }
       else
-        ret = g_strdup (g_getenv ("DBUS_SESSION_BUS_ADDRESS"));
+        {
+          ret = g_strdup (g_getenv ("DBUS_SESSION_BUS_ADDRESS"));
+        }
 
       if (ret == NULL)
         {
