@@ -1324,7 +1324,11 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
   switch (bus_type)
     {
     case G_BUS_TYPE_SYSTEM:
-      ret = !is_setuid ? g_strdup (g_getenv ("DBUS_SYSTEM_BUS_ADDRESS")) : NULL;
+      if (is_setuid)
+        ret = NULL;
+      else
+        ret = g_strdup (g_getenv ("DBUS_SYSTEM_BUS_ADDRESS"));
+
       if (ret == NULL)
         {
           ret = g_strdup ("unix:path=/var/run/dbus/system_bus_socket");
@@ -1332,7 +1336,11 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
       break;
 
     case G_BUS_TYPE_SESSION:
-      ret = !is_setuid ? g_strdup (g_getenv ("DBUS_SESSION_BUS_ADDRESS")) : NULL;
+      if (is_setuid)
+        ret = NULL;
+      else
+        ret = g_strdup (g_getenv ("DBUS_SESSION_BUS_ADDRESS"));
+
       if (ret == NULL)
         {
           ret = get_session_address_platform_specific (&local_error);
