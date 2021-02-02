@@ -5530,7 +5530,8 @@ g_dbus_connection_register_object_with_closures (GDBusConnection     *connection
     {
       method_call_closure != NULL  ? register_with_closures_on_method_call  : NULL,
       get_property_closure != NULL ? register_with_closures_on_get_property : NULL,
-      set_property_closure != NULL ? register_with_closures_on_set_property : NULL
+      set_property_closure != NULL ? register_with_closures_on_set_property : NULL,
+      { 0 }
     };
 
   data = register_object_data_new (method_call_closure, get_property_closure, set_property_closure);

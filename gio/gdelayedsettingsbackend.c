@@ -403,7 +403,7 @@ delayed_backend_path_writable_changed (GObject          *target,
 
   if (n_keys > 0)
     {
-      CheckPrefixState state = { path, g_new (const gchar *, n_keys) };
+      CheckPrefixState state = { path, g_new (const gchar *, n_keys), 0 };
       gsize i;
 
       /* collect a list of possibly-affected keys (ie: matching the path) */

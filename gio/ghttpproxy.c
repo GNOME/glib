@@ -190,7 +190,7 @@ g_http_proxy_connect (GProxy         *proxy,
   GOutputStream *out;
   gchar *buffer = NULL;
   gsize buffer_length;
-  gssize bytes_read;
+  gsize bytes_read;
   gboolean has_cred;
   GIOStream *tlsconn = NULL;
 
@@ -239,12 +239,15 @@ g_http_proxy_connect (GProxy         *proxy,
    */
   do
     {
+      gssize signed_nread;
       gsize nread;
 
-      nread = g_input_stream_read (in, buffer + bytes_read, 1, cancellable, error);
-      if (nread == -1)
+      signed_nread =
+          g_input_stream_read (in, buffer + bytes_read, 1, cancellable, error);
+      if (signed_nread == -1)
         goto error;
 
+      nread = signed_nread;
       if (nread == 0)
         break;
 
