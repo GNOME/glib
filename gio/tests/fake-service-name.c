@@ -51,7 +51,8 @@ incoming_method_call (GDBusConnection       *connection,
 static const GDBusInterfaceVTable interface_vtable = {
   incoming_method_call,
   NULL,
-  NULL
+  NULL,
+  { 0 }
 };
 
 static void
