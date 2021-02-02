@@ -1753,8 +1753,10 @@ fork_exec_with_fds (gboolean              intermediate_child,
   gint status;
   const gchar *chosen_search_path;
   gchar *search_path_buffer = NULL;
+  gchar *search_path_buffer_heap = NULL;
   gsize search_path_buffer_len = 0;
   gchar **argv_buffer = NULL;
+  gchar **argv_buffer_heap = NULL;
   gsize argv_buffer_len = 0;
 
 #ifdef POSIX_SPAWN_AVAILABLE
@@ -1819,7 +1821,7 @@ fork_exec_with_fds (gboolean              intermediate_child,
   if (search_path && chosen_search_path == NULL)
     chosen_search_path = g_getenv ("PATH");
 
-  if (chosen_search_path == NULL)
+  if ((search_path || search_path_from_envp) && chosen_search_path == NULL)
     {
       /* There is no 'PATH' in the environment.  The default
        * * search path in libc is the current directory followed by
@@ -1834,25 +1836,58 @@ fork_exec_with_fds (gboolean              intermediate_child,
       chosen_search_path = "/bin:/usr/bin:.";
     }
 
+  if (search_path || search_path_from_envp)
+    g_assert (chosen_search_path != NULL);
+  else
+    g_assert (chosen_search_path == NULL);
+
   /* Allocate a buffer which the fork()ed child can use to assemble potential
    * paths for the binary to exec(), combining the argv[0] and elements from
    * the chosen_search_path. This can’t be done in the child because malloc()
    * (or alloca()) are not async-signal-safe (see `man 7 signal-safety`).
    *
    * Add 2 for the nul terminator and a leading `/`. */
-  search_path_buffer_len = strlen (chosen_search_path) + strlen (argv[0]) + 2;
-  search_path_buffer = g_malloc (search_path_buffer_len);
+  if (chosen_search_path != NULL)
+    {
+      search_path_buffer_len = strlen (chosen_search_path) + strlen (argv[0]) + 2;
+      if (search_path_buffer_len < 4000)
+        {
+          /* Prefer small stack allocations to avoid valgrind leak warnings
+           * in forked child. The 4000B cutoff is arbitrary. */
+          search_path_buffer = g_alloca (search_path_buffer_len);
+        }
+      else
+        {
+          search_path_buffer_heap = g_malloc (search_path_buffer_len);
+          search_path_buffer = search_path_buffer_heap;
+        }
+    }
+
+  if (search_path || search_path_from_envp)
+    g_assert (search_path_buffer != NULL);
+  else
+    g_assert (search_path_buffer == NULL);
 
   /* And allocate a buffer which is 2 elements longer than @argv, so that if
    * script_execute() has to be called later on, it can build a wrapper argv
    * array in this buffer. */
   argv_buffer_len = g_strv_length (argv) + 2;
-  argv_buffer = g_new (gchar *, argv_buffer_len);
+  if (argv_buffer_len < 4000 / sizeof (gchar *))
+    {
+      /* Prefer small stack allocations to avoid valgrind leak warnings
+       * in forked child. The 4000B cutoff is arbitrary. */
+      argv_buffer = g_newa (gchar *, argv_buffer_len);
+    }
+  else
+    {
+      argv_buffer_heap = g_new (gchar *, argv_buffer_len);
+      argv_buffer = argv_buffer_heap;
+    }
 
   if (!g_unix_open_pipe (child_err_report_pipe, pipe_flags, error))
     {
-      g_free (search_path_buffer);
-      g_free (argv_buffer);
+      g_free (search_path_buffer_heap);
+      g_free (argv_buffer_heap);
       return FALSE;
     }
 
@@ -2099,8 +2134,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
       close_and_invalidate (&child_err_report_pipe[0]);
       close_and_invalidate (&child_pid_report_pipe[0]);
 
-      g_free (search_path_buffer);
-      g_free (argv_buffer);
+      g_free (search_path_buffer_heap);
+      g_free (argv_buffer_heap);
 
       if (child_pid)
         *child_pid = pid;
@@ -2134,8 +2169,8 @@ fork_exec_with_fds (gboolean              intermediate_child,
   close_and_invalidate (&child_pid_report_pipe[0]);
   close_and_invalidate (&child_pid_report_pipe[1]);
 
-  g_free (search_path_buffer);
-  g_free (argv_buffer);
+  g_free (search_path_buffer_heap);
+  g_free (argv_buffer_heap);
 
   return FALSE;
 }
