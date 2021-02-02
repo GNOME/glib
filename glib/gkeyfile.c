@@ -3648,7 +3648,7 @@ g_key_file_get_top_comment (GKeyFile  *key_file,
  * g_key_file_get_comment:
  * @key_file: a #GKeyFile
  * @group_name: (nullable): a group name, or %NULL
- * @key: a key
+ * @key: (nullable): a key
  * @error: return location for a #GError
  *
  * Retrieves a comment above @key from @group_name.
