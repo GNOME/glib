@@ -20,12 +20,9 @@
 
 #include "config.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>
 #include <stdio.h>
-#include <fcntl.h>
 
 #include <glib.h>
 #include <glib/gstdio.h>
@@ -36,6 +33,7 @@
 #include "gasynchelper.h"
 #include "gfiledescriptorbased.h"
 #include "glibintl.h"
+#include "giounix-private.h"
 
 
 /**
@@ -64,7 +62,7 @@ enum {
 struct _GUnixInputStreamPrivate {
   int fd;
   guint close_fd : 1;
-  guint is_pipe_or_socket : 1;
+  guint can_poll : 1;
 };
 
 static void g_unix_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
@@ -186,10 +184,7 @@ g_unix_input_stream_set_property (GObject         *object,
     {
     case PROP_FD:
       unix_stream->priv->fd = g_value_get_int (value);
-      if (lseek (unix_stream->priv->fd, 0, SEEK_CUR) == -1 && errno == ESPIPE)
-	unix_stream->priv->is_pipe_or_socket = TRUE;
-      else
-	unix_stream->priv->is_pipe_or_socket = FALSE;
+      unix_stream->priv->can_poll = _g_fd_is_pollable (unix_stream->priv->fd);
       break;
     case PROP_CLOSE_FD:
       unix_stream->priv->close_fd = g_value_get_boolean (value);
@@ -337,7 +332,7 @@ g_unix_input_stream_read (GInputStream  *stream,
 
   poll_fds[0].fd = unix_stream->priv->fd;
   poll_fds[0].events = G_IO_IN;
-  if (unix_stream->priv->is_pipe_or_socket &&
+  if (unix_stream->priv->can_poll &&
       g_cancellable_make_pollfd (cancellable, &poll_fds[1]))
     nfds = 2;
   else
@@ -445,7 +440,7 @@ g_unix_input_stream_skip_finish  (GInputStream  *stream,
 static gboolean
 g_unix_input_stream_pollable_can_poll (GPollableInputStream *stream)
 {
-  return G_UNIX_INPUT_STREAM (stream)->priv->is_pipe_or_socket;
+  return G_UNIX_INPUT_STREAM (stream)->priv->can_poll;
 }
 
 static gboolean

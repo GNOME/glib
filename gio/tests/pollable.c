@@ -16,10 +16,13 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <gio/gio.h>
 #include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
+#include <dlfcn.h>
 #include <fcntl.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
@@ -146,10 +149,26 @@ test_streams (void)
 }
 
 #ifdef G_OS_UNIX
+
+#define g_assert_not_pollable(fd) \
+  G_STMT_START {                                                        \
+    in = G_POLLABLE_INPUT_STREAM (g_unix_input_stream_new (fd, FALSE)); \
+    out = g_unix_output_stream_new (fd, FALSE);                         \
+                                                                        \
+    g_assert (!g_pollable_input_stream_can_poll (in));                  \
+    g_assert (!g_pollable_output_stream_can_poll (                      \
+        G_POLLABLE_OUTPUT_STREAM (out)));                               \
+                                                                        \
+    g_clear_object (&in);                                               \
+    g_clear_object (&out);                                              \
+  } G_STMT_END
+
 static void
-test_pollable_unix (void)
+test_pollable_unix_pipe (void)
 {
-  int pipefds[2], status, fd;
+  int pipefds[2], status;
+
+  g_test_summary ("Test that pipes are considered pollable, just like sockets");
 
   status = pipe (pipefds);
   g_assert_cmpint (status, ==, 0);
@@ -161,19 +180,84 @@ test_pollable_unix (void)
 
   g_object_unref (in);
   g_object_unref (out);
+}
 
-  /* Non-pipe/socket unix streams are not pollable */
-  fd = g_open ("/dev/null", O_RDWR, 0);
-  g_assert_cmpint (fd, !=, -1);
-  in = G_POLLABLE_INPUT_STREAM (g_unix_input_stream_new (fd, FALSE));
-  out = g_unix_output_stream_new (fd, FALSE);
+static void
+test_pollable_unix_pty (void)
+{
+  int (*openpty_impl) (int *, int *, char *, void *, void *);
+  int a, b, status;
 
-  g_assert (!g_pollable_input_stream_can_poll (in));
-  g_assert (!g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (out)));
+  g_test_summary ("Test that PTYs are considered pollable");
+
+#ifdef __linux__
+  dlopen ("libutil.so", RTLD_GLOBAL | RTLD_LAZY);
+#endif
+
+  openpty_impl = dlsym (RTLD_DEFAULT, "openpty");
+  if (openpty_impl == NULL)
+    {
+      g_test_skip ("System does not support openpty()");
+      return;
+    }
+
+  status = openpty_impl (&a, &b, NULL, NULL, NULL);
+  if (status == -1)
+    {
+      g_test_skip ("Unable to open PTY");
+      return;
+    }
+
+  in = G_POLLABLE_INPUT_STREAM (g_unix_input_stream_new (a, TRUE));
+  out = g_unix_output_stream_new (b, TRUE);
+
+  test_streams ();
 
   g_object_unref (in);
   g_object_unref (out);
+
+  close (a);
+  close (b);
+}
+
+static void
+test_pollable_unix_file (void)
+{
+  int fd;
+
+  g_test_summary ("Test that regular files are not considered pollable");
+
+  fd = g_open ("/etc/hosts", O_RDONLY, 0);
+  if (fd == -1)
+    {
+      g_test_skip ("Unable to open /etc/hosts");
+      return;
+    }
+
+  g_assert_not_pollable (fd);
+
   close (fd);
+}
+
+static void
+test_pollable_unix_nulldev (void)
+{
+  int fd;
+
+  g_test_summary ("Test that /dev/null is not considered pollable, but only if "
+                  "on a system where we are able to tell it apart from devices "
+                  "that actually implement poll");
+
+#if defined (HAVE_EPOLL_CREATE) || defined (HAVE_KQUEUE)
+  fd = g_open ("/dev/null", O_RDWR, 0);
+  g_assert_cmpint (fd, !=, -1);
+
+  g_assert_not_pollable (fd);
+
+  close (fd);
+#else
+  g_test_skip ("Cannot detect /dev/null as non-pollable on this system");
+#endif
 }
 
 static void
@@ -285,7 +369,10 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
 #ifdef G_OS_UNIX
-  g_test_add_func ("/pollable/unix", test_pollable_unix);
+  g_test_add_func ("/pollable/unix/pipe", test_pollable_unix_pipe);
+  g_test_add_func ("/pollable/unix/pty", test_pollable_unix_pty);
+  g_test_add_func ("/pollable/unix/file", test_pollable_unix_file);
+  g_test_add_func ("/pollable/unix/nulldev", test_pollable_unix_nulldev);
   g_test_add_func ("/pollable/converter", test_pollable_converter);
 #endif
   g_test_add_func ("/pollable/socket", test_pollable_socket);

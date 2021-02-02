@@ -485,6 +485,7 @@ functions = [
   'close_range',
   'endmntent',
   'endservent',
+  'epoll_create',
   'fallocate',
   'fchmod',
   'fchown',
