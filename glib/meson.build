@@ -377,7 +377,7 @@ libglib = library('glib-2.0',
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
-  dependencies : pcre_deps + [thread_dep, librt] + libintl_deps + libiconv + platform_deps + gnulib_libm_dependency + [libsysprof_capture_dep],
+  dependencies : pcre_deps + [thread_dep, librt] + libintl_deps + libiconv + platform_deps + [gnulib_libm_dependency, libm] + [libsysprof_capture_dep],
   c_args : glib_c_args,
   objc_args : glib_c_args,
 )
