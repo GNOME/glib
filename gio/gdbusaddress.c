@@ -1280,7 +1280,7 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
                                  GCancellable  *cancellable,
                                  GError       **error)
 {
-  gboolean is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
+  gboolean has_elevated_privileges = GLIB_PRIVATE_CALL (g_check_setuid) ();
   gchar *ret, *s = NULL;
   const gchar *starter_bus;
   GError *local_error;
@@ -1324,7 +1324,11 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
   switch (bus_type)
     {
     case G_BUS_TYPE_SYSTEM:
-      ret = !is_setuid ? g_strdup (g_getenv ("DBUS_SYSTEM_BUS_ADDRESS")) : NULL;
+      if (has_elevated_privileges)
+        ret = NULL;
+      else
+        ret = g_strdup (g_getenv ("DBUS_SYSTEM_BUS_ADDRESS"));
+
       if (ret == NULL)
         {
           ret = g_strdup ("unix:path=/var/run/dbus/system_bus_socket");
@@ -1332,7 +1336,33 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
       break;
 
     case G_BUS_TYPE_SESSION:
-      ret = !is_setuid ? g_strdup (g_getenv ("DBUS_SESSION_BUS_ADDRESS")) : NULL;
+      if (has_elevated_privileges)
+        {
+#ifdef G_OS_UNIX
+          if (geteuid () == getuid ())
+            {
+              /* Ideally we shouldn't do this, because setgid and
+               * filesystem capabilities are also elevated privileges
+               * with which we should not be trusting environment variables
+               * from the caller. Unfortunately, there are programs with
+               * elevated privileges that rely on the session bus being
+               * available. We already prevent the really dangerous
+               * transports like autolaunch: and unixexec: when our
+               * privileges are elevated, so this can only make us connect
+               * to the wrong AF_UNIX or TCP socket. */
+              ret = g_strdup (g_getenv ("DBUS_SESSION_BUS_ADDRESS"));
+            }
+          else
+#endif
+            {
+              ret = NULL;
+            }
+        }
+      else
+        {
+          ret = g_strdup (g_getenv ("DBUS_SESSION_BUS_ADDRESS"));
+        }
+
       if (ret == NULL)
         {
           ret = get_session_address_platform_specific (&local_error);
