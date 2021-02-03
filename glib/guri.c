@@ -2440,7 +2440,7 @@ g_uri_get_auth_params (GUri *uri)
  * be a scope ID attached to the address. Eg, `fe80::1234%``em1` (or
  * `fe80::1234%``25em1` if the string is still encoded).
  *
- * Return value: (not nullable): @uri's host.
+ * Return value: (nullable): @uri's host.
  *
  * Since: 2.66
  */
