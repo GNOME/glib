@@ -1,3 +1,35 @@
+Overview of changes in GLib 2.66.5
+==================================
+
+* Fix some issues with handling over-long (invalid) input when parsing for `GDate` (!1824)
+
+* Don’t load GIO modules or parse other GIO environment variables when `AT_SECURE`
+  is set (i.e. in a setuid/setgid/setcap process). GIO has always been
+  documented as not being safe to use in privileged processes, but people persist
+  in using it unsafely, so these changes should harden things against potential
+  attacks at least a little. Unfortunately they break a couple of projects which
+  were relying on reading `DBUS_SESSION_BUS_ADDRESS`, so GIO continues to read
+  that for setgid/setcap (but not setuid) processes. This loophole will be closed
+  in GLib 2.70 (see issue #2316), which should give modules 6 months to change
+  their behaviour. (Work by Simon McVittie and Philip Withnall) (#2168, #2305)
+
+* Fix `g_spawn()` searching `PATH` when it wasn’t meant to (work by
+  Simon McVittie and Thomas Haller) (!1913)
+
+* Bugs fixed:
+ - #2168 giomodule: Loads GIO modules even if setuid, etc.
+ - #2210 g_private_replace ordering issue
+ - #2305 GIO security hardening causing gnome-keyring to regress when session bus is provided by dbus-launch (dbus-x11)
+ - !1820 gthread: Destroy value after replacing it in g_private_replace()
+ - !1824 Backport !1821 “gdate: Limit length of dates which can be parsed as valid” to glib-2-66
+ - !1831 gdatetime.c: Fix MSVC builds for lack of NAN items
+ - !1836 Backport !1827 “Windows: fix FD_READ condition flag still set on recoverable UDP socket errors.” to glib-2-66
+ - !1864 Backport !1862 “gio: Ignore various environment variables when running as setuid” to glib-2-66
+ - !1872 Backport !1868 “gdesktopappinfo: Fix validation of XDG_CURRENT_DESKTOP” to glib-2-66
+ - !1913 Backport !1902 “spawn: Don't set a search path if we don't want to search PATH” to glib-2-66
+ - !1922 Backport !1920 “Resolve GDBus regressions in setcap/setgid programs” to glib-2-66
+
+
 Overview of changes in GLib 2.66.4
 ==================================
 
