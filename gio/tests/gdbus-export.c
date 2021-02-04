@@ -671,7 +671,7 @@ subtree_introspect (GDBusConnection       *connection,
       g_assert_not_reached ();
     }
 
-  return g_memdup (interfaces, 2 * sizeof (void *));
+  return g_memdup2 (interfaces, 2 * sizeof (void *));
 }
 
 static const GDBusInterfaceVTable *
@@ -727,7 +727,7 @@ dynamic_subtree_introspect (GDBusConnection       *connection,
 {
   const GDBusInterfaceInfo *interfaces[2] = { &dyna_interface_info, NULL };
 
-  return g_memdup (interfaces, 2 * sizeof (void *));
+  return g_memdup2 (interfaces, 2 * sizeof (void *));
 }
 
 static const GDBusInterfaceVTable *

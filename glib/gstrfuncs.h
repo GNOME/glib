@@ -257,6 +257,10 @@ GLIB_AVAILABLE_IN_ALL
 gpointer              g_memdup	       (gconstpointer mem,
 					guint	       byte_size) G_GNUC_ALLOC_SIZE(2);
 
+GLIB_AVAILABLE_IN_2_68
+gpointer              g_memdup2        (gconstpointer mem,
+                                        gsize         byte_size) G_GNUC_ALLOC_SIZE(2);
+
 /* NULL terminated string arrays.
  * g_strsplit(), g_strsplit_set() split up string into max_tokens tokens
  * at delim and return a newly allocated string array.

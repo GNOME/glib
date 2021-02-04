@@ -886,16 +886,25 @@ g_io_channel_set_line_term (GIOChannel	*channel,
                             const gchar	*line_term,
 			    gint         length)
 {
+  guint length_unsigned;
+
   g_return_if_fail (channel != NULL);
   g_return_if_fail (line_term == NULL || length != 0); /* Disallow "" */
 
   if (line_term == NULL)
-    length = 0;
-  else if (length < 0)
-    length = strlen (line_term);
+    length_unsigned = 0;
+  else if (length >= 0)
+    length_unsigned = (guint) length;
+  else
+    {
+      /* FIXME: We’re constrained by line_term_len being a guint here */
+      gsize length_size = strlen (line_term);
+      g_return_if_fail (length_size > G_MAXUINT);
+      length_unsigned = (guint) length_size;
+    }
 
   g_free (channel->line_term);
-  channel->line_term = line_term ? g_memdup (line_term, length) : NULL;
+  channel->line_term = line_term ? g_memdup2 (line_term, length_unsigned) : NULL;
   channel->line_term_len = length;
 }
 
@@ -1673,10 +1682,10 @@ g_io_channel_read_line (GIOChannel  *channel,
 
       /* Copy the read bytes (including any embedded nuls) and nul-terminate.
        * `USE_BUF (channel)->str` is guaranteed to be nul-terminated as it’s a
-       * #GString, so it’s safe to call g_memdup() with +1 length to allocate
+       * #GString, so it’s safe to call g_memdup2() with +1 length to allocate
        * a nul-terminator. */
       g_assert (USE_BUF (channel));
-      line = g_memdup (USE_BUF (channel)->str, got_length + 1);
+      line = g_memdup2 (USE_BUF (channel)->str, got_length + 1);
       line[got_length] = '\0';
       *str_return = g_steal_pointer (&line);
       g_string_erase (USE_BUF (channel), 0, got_length);

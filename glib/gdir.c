@@ -112,7 +112,7 @@ g_dir_open_with_errno (const gchar *path,
     return NULL;
 #endif
 
-  return g_memdup (&dir, sizeof dir);
+  return g_memdup2 (&dir, sizeof dir);
 }
 
 /**
