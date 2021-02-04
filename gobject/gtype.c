@@ -1476,7 +1476,7 @@ type_add_interface_Wm (TypeNode             *node,
   iholder->next = iface_node_get_holders_L (iface);
   iface_node_set_holders_W (iface, iholder);
   iholder->instance_type = NODE_TYPE (node);
-  iholder->info = info ? g_memdup (info, sizeof (*info)) : NULL;
+  iholder->info = info ? g_memdup2 (info, sizeof (*info)) : NULL;
   iholder->plugin = plugin;
 
   /* create an iface entry for this type */
@@ -1785,7 +1785,7 @@ type_iface_retrieve_holder_info_Wm (TypeNode *iface,
         INVALID_RECURSION ("g_type_plugin_*", iholder->plugin, NODE_NAME (iface));
       
       check_interface_info_I (iface, instance_type, &tmp_info);
-      iholder->info = g_memdup (&tmp_info, sizeof (tmp_info));
+      iholder->info = g_memdup2 (&tmp_info, sizeof (tmp_info));
     }
   
   return iholder;	/* we don't modify write lock upon returning NULL */
@@ -2070,10 +2070,10 @@ type_iface_vtable_base_init_Wm (TypeNode *iface,
       IFaceEntry *pentry = type_lookup_iface_entry_L (pnode, iface);
       
       if (pentry)
-	vtable = g_memdup (pentry->vtable, iface->data->iface.vtable_size);
+	vtable = g_memdup2 (pentry->vtable, iface->data->iface.vtable_size);
     }
   if (!vtable)
-    vtable = g_memdup (iface->data->iface.dflt_vtable, iface->data->iface.vtable_size);
+    vtable = g_memdup2 (iface->data->iface.dflt_vtable, iface->data->iface.vtable_size);
   entry->vtable = vtable;
   vtable->g_type = NODE_TYPE (iface);
   vtable->g_instance_type = NODE_TYPE (node);
