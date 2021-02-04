@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "glib.h"
+#include "gstrfuncsprivate.h"
 
 static void
 sum_up (gpointer data,
@@ -913,7 +914,7 @@ byte_array_new_take (void)
   GByteArray *gbarray;
   guint8 *data;
 
-  data = g_memdup ("woooweeewow", 11);
+  data = g_memdup2 ("woooweeewow", 11);
   gbarray = g_byte_array_new_take (data, 11);
   g_assert (gbarray->data == data);
   g_assert_cmpuint (gbarray->len, ==, 11);
