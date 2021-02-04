@@ -27,6 +27,7 @@
 #include "gioenumtypes.h"
 #include "gioerror.h"
 #include "glibintl.h"
+#include "gstrfuncsprivate.h"
 
 #include <string.h>
 
@@ -856,7 +857,7 @@ static gssize
 scan_for_chars (GDataInputStream *stream,
 		gsize            *checked_out,
 		const char       *stop_chars,
-                gssize            stop_chars_len)
+                gsize             stop_chars_len)
 {
   GBufferedInputStream *bstream;
   const char *buffer;
@@ -952,7 +953,7 @@ typedef struct
   gsize checked;
 
   gchar *stop_chars;
-  gssize stop_chars_len;
+  gsize stop_chars_len;
   gsize length;
 } GDataInputStreamReadData;
 
@@ -1078,12 +1079,17 @@ g_data_input_stream_read_async (GDataInputStream    *stream,
 {
   GDataInputStreamReadData *data;
   GTask *task;
+  gsize stop_chars_len_unsigned;
 
   data = g_slice_new0 (GDataInputStreamReadData);
-  if (stop_chars_len == -1)
-    stop_chars_len = strlen (stop_chars);
-  data->stop_chars = g_memdup (stop_chars, stop_chars_len);
-  data->stop_chars_len = stop_chars_len;
+
+  if (stop_chars_len < 0)
+    stop_chars_len_unsigned = strlen (stop_chars);
+  else
+    stop_chars_len_unsigned = (gsize) stop_chars_len;
+
+  data->stop_chars = g_memdup2 (stop_chars, stop_chars_len_unsigned);
+  data->stop_chars_len = stop_chars_len_unsigned;
   data->last_saw_cr = FALSE;
 
   task = g_task_new (stream, cancellable, callback, user_data);
@@ -1338,17 +1344,20 @@ g_data_input_stream_read_upto (GDataInputStream  *stream,
   gssize found_pos;
   gssize res;
   char *data_until;
+  gsize stop_chars_len_unsigned;
 
   g_return_val_if_fail (G_IS_DATA_INPUT_STREAM (stream), NULL);
 
   if (stop_chars_len < 0)
-    stop_chars_len = strlen (stop_chars);
+    stop_chars_len_unsigned = strlen (stop_chars);
+  else
+    stop_chars_len_unsigned = (gsize) stop_chars_len;
 
   bstream = G_BUFFERED_INPUT_STREAM (stream);
 
   checked = 0;
 
-  while ((found_pos = scan_for_chars (stream, &checked, stop_chars, stop_chars_len)) == -1)
+  while ((found_pos = scan_for_chars (stream, &checked, stop_chars, stop_chars_len_unsigned)) == -1)
     {
       if (g_buffered_input_stream_get_available (bstream) ==
           g_buffered_input_stream_get_buffer_size (bstream))
