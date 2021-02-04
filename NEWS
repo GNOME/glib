@@ -1,3 +1,95 @@
+Overview of changes in GLib 2.67.3
+==================================
+
+* Add new `g_memdup2()` API to replace `g_memdup()`, which is vulnerable to a
+  silent integer truncation and heap overflow problem if not used carefully
+  (discovered by Kevin Backhouse, work by Philip Withnall) (#2319)
+
+* Add new `g_dbus_object_path_escape()` and `g_dbus_object_path_unescape()` APIs
+  to provide one way of escaping arbitrary bytestrings for use in D-Bus object
+  paths (work by Lars Karlitski and Frederic Martinsons) (#968)
+
+* Use `bash-completion.pc` (if available) to provide the path to install
+  completion files into (work by Frederic Martinsons) (#1054)
+
+* Fix support for public/private trigraphs in `glib-mkenums` (work by Matthias Klumpp) (!1870)
+
+* Add `glib_debug` configure option to allow disabling debug infrastructure in
+  builds with debug symbols enabled (work by Ole André Vadla Ravnås) (!1889)
+
+* Fix a regression where `PATH` would always be searched when using `g_spawn()`,
+  even when it wasn’t supposed to (work by Simon McVittie and Thomas Haller) (!1902)
+
+* Override `gio-querymodules` in Meson when used as a submodule (work by Xavier Claessens) (!1909)
+
+* Bugs fixed:
+ - #344 gdbus(1) command-line completion issues
+ - #968 gdbus: add g_dbus_object_path_{un,}escape
+ - #1054 Use pkg-config to get path for bash-completion file installation
+ - #1180 GUnixInputStream and GUnixOutputStream don't consider TTYs pollable
+ - #2011 Add additional unit tests for D-Bus name watching
+ - #2226 clang++ compilation fails on clusterfuzz
+ - #2292 Cannot find a common ancestor when running CI style check jobs
+ - #2299 GObject introspection annotation of g_closure_new_object() is wrong
+ - #2305 GIO security hardening causing gnome-keyring to regress when session bus is provided by dbus-launch (dbus-x11)
+ - #2314 gdatetime: math library link issue
+ - #2319 GHSL-2021-045: integer overflow in g_bytes_new/g_memdup
+ - !610 Various memory leak cleanups to GSettings tests
+ - !1804 Add more GIR annotations to gparam.c and gsignal.c
+ - !1823 Fix more warnings
+ - !1843 gfile: Add Linux kernel headers compatibility kludge
+ - !1847 Port to QNX
+ - !1853 ginetaddress: Handle systems without IPv6 support
+ - !1859 docs: update g_action_group_activate_action() remote activation semantics
+ - !1860 glocalfile: Fix an uninitialized variable
+ - !1865 tests: Add more debug information to gdbus-connection-slow
+ - !1868 gdesktopappinfo: Fix validation of XDG_CURRENT_DESKTOP
+ - !1870 mkenums: Support public/private trigraph again
+ - !1873 Fix possible integer overflow of g_socket_send_message()
+ - !1876 Fixing g_socket_send_message() documentation to make it clearer
+ - !1877 Fix more warnings
+ - !1878 Another fix on g_socket_send_message()
+ - !1879 Fix more warnings
+ - !1880 GError documentation tweaks
+ - !1881 docs: Move ‘Notes’ section from README to NEWS
+ - !1883 gutils: Document caching of XDG directory variables
+ - !1884 gthread-win32: Use SetThreadDescription Win32 API for setting thread name
+ - !1887 ci: Fix msys-mingw32 CI builds due to package rename
+ - !1888 docs: Add documentation for GLIB_VERSION_CUR_STABLE and PREV_STABLE
+ - !1889 build: Add glib_debug option
+ - !1890 gtype: Improve formatting of GType documentation
+ - !1891 Fix more warnings
+ - !1893 gwin32appinfo: Fix printf length sub-specifier
+ - !1894 gsocket: Fix SO_NOSIGPIPE regression on Darwin
+ - !1898 gtestutils: Add g_test_get_path() API
+ - !1899 m4macros: replace obsolete macros AC_TRY_RUN and AC_TRY_LINK in glib-2.0.m4
+ - !1900 [th/gsignal-cleanup] minor changes to GSignal related code
+ - !1901 Check if the remote already exists before adding it.
+ - !1902 spawn: Don't set a search path if we don't want to search PATH
+ - !1903 m4macros: Increment serial number of glib-2.0.m4
+ - !1905 Start to ignore known leaks under AddressSanitizer
+ - !1906 gdbus-serialization: Don't leak string containing first serialization
+ - !1908 Fix straightforward memory leaks in tests
+ - !1909 Meson: override gio-querymodules program
+ - !1910 gio: Add explicit virtual g-i annotations for undiscovered invoker relationship
+ - !1911 Fix more warnings
+ - !1915 Mark g_key_file_get_comment() key parameter as nullable
+ - !1919 atomic: Fix type check of g_atomic_pointer_compare_and_exchange()
+ - !1921 guri: Mark g_uri_get_host as nullable
+ - !1925 gapplication: Fix a memory leak
+
+* Translation updates:
+ - Czech
+ - Friulian
+ - Galician
+ - Hungarian
+ - Portuguese
+ - Portuguese (Brazil)
+ - Romanian
+ - Spanish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.67.2
 ==================================
 
