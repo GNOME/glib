@@ -284,6 +284,7 @@ glib_sources = files(
   'gslist.c',
   'gstdio.c',
   'gstrfuncs.c',
+  'gstrfuncsprivate.h',
   'gstring.c',
   'gstringchunk.c',
   'gtestutils.c',

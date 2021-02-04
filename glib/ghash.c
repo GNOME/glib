@@ -34,6 +34,7 @@
 #include "gmacros.h"
 #include "glib-private.h"
 #include "gstrfuncs.h"
+#include "gstrfuncsprivate.h"
 #include "gatomic.h"
 #include "gtestutils.h"
 #include "gslice.h"
@@ -963,7 +964,7 @@ g_hash_table_ensure_keyval_fits (GHashTable *hash_table, gpointer key, gpointer 
       if (hash_table->have_big_keys)
         {
           if (key != value)
-            hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
+            hash_table->values = g_memdup2 (hash_table->keys, sizeof (gpointer) * hash_table->size);
           /* Keys and values are both big now, so no need for further checks */
           return;
         }
@@ -971,7 +972,7 @@ g_hash_table_ensure_keyval_fits (GHashTable *hash_table, gpointer key, gpointer 
         {
           if (key != value)
             {
-              hash_table->values = g_memdup (hash_table->keys, sizeof (guint) * hash_table->size);
+              hash_table->values = g_memdup2 (hash_table->keys, sizeof (guint) * hash_table->size);
               is_a_set = FALSE;
             }
         }
@@ -999,7 +1000,7 @@ g_hash_table_ensure_keyval_fits (GHashTable *hash_table, gpointer key, gpointer 
 
   /* Just split if necessary */
   if (is_a_set && key != value)
-    hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
+    hash_table->values = g_memdup2 (hash_table->keys, sizeof (gpointer) * hash_table->size);
 
 #endif
 }

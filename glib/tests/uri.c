@@ -27,6 +27,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "gstrfuncsprivate.h"
+
 typedef struct
 {
   char *filename;
@@ -409,7 +411,7 @@ test_uri_unescape_bytes (gconstpointer test_data)
       else
         {
           escaped_len = strlen (tests[i].escaped);  /* no trailing nul */
-          escaped = g_memdup (tests[i].escaped, escaped_len);
+          escaped = g_memdup2 (tests[i].escaped, escaped_len);
         }
 
       bytes = g_uri_unescape_bytes (escaped, escaped_len, tests[i].illegal, &error);
@@ -1506,7 +1508,7 @@ test_uri_iter_params (gconstpointer test_data)
       else
         {
           uri_len = strlen (params_tests[i].uri);  /* no trailing nul */
-          uri = g_memdup (params_tests[i].uri, uri_len);
+          uri = g_memdup2 (params_tests[i].uri, uri_len);
         }
 
       /* Run once without extracting the attr or value, just to check the numbers. */
@@ -1573,7 +1575,7 @@ test_uri_parse_params (gconstpointer test_data)
       else
         {
           uri_len = strlen (params_tests[i].uri);  /* no trailing nul */
-          uri = g_memdup (params_tests[i].uri, uri_len);
+          uri = g_memdup2 (params_tests[i].uri, uri_len);
         }
 
       params = g_uri_parse_params (uri, uri_len, params_tests[i].separators, params_tests[i].flags, &err);

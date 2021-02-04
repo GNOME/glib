@@ -16,11 +16,12 @@
  * along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gstrfuncsprivate.h"
 
-static gssize
+static gsize
 g_utf16_len (const gunichar2 *str)
 {
-  gssize result;
+  gsize result;
 
   for (result = 0; str[0] != 0; str++, result++)
     ;
@@ -31,17 +32,20 @@ g_utf16_len (const gunichar2 *str)
 static gunichar2 *
 g_wcsdup (const gunichar2 *str, gssize str_len)
 {
-  gssize str_size;
+  gsize str_len_unsigned;
+  gsize str_size;
 
   g_return_val_if_fail (str != NULL, NULL);
 
-  if (str_len == -1)
-    str_len = g_utf16_len (str);
+  if (str_len < 0)
+    str_len_unsigned = g_utf16_len (str);
+  else
+    str_len_unsigned = (gsize) str_len;
 
-  g_assert (str_len <= G_MAXSIZE / sizeof (gunichar2) - 1);
-  str_size = (str_len + 1) * sizeof (gunichar2);
+  g_assert (str_len_unsigned <= G_MAXSIZE / sizeof (gunichar2) - 1);
+  str_size = (str_len_unsigned + 1) * sizeof (gunichar2);
 
-  return g_memdup (str, str_size);
+  return g_memdup2 (str, str_size);
 }
 
 static const gunichar2 *

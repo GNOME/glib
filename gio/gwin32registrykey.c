@@ -28,6 +28,8 @@
 #include <ntstatus.h>
 #include <winternl.h>
 
+#include "gstrfuncsprivate.h"
+
 #ifndef _WDMDDK_
 typedef enum _KEY_INFORMATION_CLASS {
   KeyBasicInformation,
@@ -125,16 +127,34 @@ typedef enum
   G_WIN32_REGISTRY_UPDATED_PATH = 1,
 } GWin32RegistryKeyUpdateFlag;
 
-static gunichar2 *
-g_wcsdup (const gunichar2 *str,
-          gssize           str_size)
+static gsize
+g_utf16_len (const gunichar2 *str)
 {
-  if (str_size == -1)
-    {
-      str_size = wcslen (str) + 1;
-      str_size *= sizeof (gunichar2);
-    }
-  return g_memdup (str, str_size);
+  gsize result;
+
+  for (result = 0; str[0] != 0; str++, result++)
+    ;
+
+  return result;
+}
+
+static gunichar2 *
+g_wcsdup (const gunichar2 *str, gssize str_len)
+{
+  gsize str_len_unsigned;
+  gsize str_size;
+
+  g_return_val_if_fail (str != NULL, NULL);
+
+  if (str_len < 0)
+    str_len_unsigned = g_utf16_len (str);
+  else
+    str_len_unsigned = (gsize) str_len;
+
+  g_assert (str_len_unsigned <= G_MAXSIZE / sizeof (gunichar2) - 1);
+  str_size = (str_len_unsigned + 1) * sizeof (gunichar2);
+
+  return g_memdup2 (str, str_size);
 }
 
 /**
@@ -247,7 +267,7 @@ g_win32_registry_value_iter_copy (const GWin32RegistryValueIter *iter)
   new_iter->value_name_size = iter->value_name_size;
 
   if (iter->value_data != NULL)
-    new_iter->value_data = g_memdup (iter->value_data, iter->value_data_size);
+    new_iter->value_data = g_memdup2 (iter->value_data, iter->value_data_size);
 
   new_iter->value_data_size = iter->value_data_size;
 
@@ -268,8 +288,8 @@ g_win32_registry_value_iter_copy (const GWin32RegistryValueIter *iter)
   new_iter->value_data_expanded_charsize = iter->value_data_expanded_charsize;
 
   if (iter->value_data_expanded_u8 != NULL)
-    new_iter->value_data_expanded_u8 = g_memdup (iter->value_data_expanded_u8,
-                                                 iter->value_data_expanded_charsize);
+    new_iter->value_data_expanded_u8 = g_memdup2 (iter->value_data_expanded_u8,
+                                                  iter->value_data_expanded_charsize);
 
   new_iter->value_data_expanded_u8_size = iter->value_data_expanded_charsize;
 

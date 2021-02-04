@@ -75,6 +75,7 @@
 #include "gcredentialsprivate.h"
 #include "glibintl.h"
 #include "gioprivate.h"
+#include "gstrfuncsprivate.h"
 
 /**
  * SECTION:gsocket
@@ -169,7 +170,7 @@ static gboolean     g_socket_datagram_based_condition_wait       (GDatagramBased
                                                                   GError          **error);
 
 static GSocketAddress *
-cache_recv_address (GSocket *socket, struct sockaddr *native, int native_len);
+cache_recv_address (GSocket *socket, struct sockaddr *native, size_t native_len);
 
 static gssize
 g_socket_receive_message_with_timeout  (GSocket                 *socket,
@@ -255,7 +256,7 @@ struct _GSocketPrivate
   struct {
     GSocketAddress *addr;
     struct sockaddr *native;
-    gint native_len;
+    gsize native_len;
     guint64 last_used;
   } recv_addr_cache[RECV_ADDR_CACHE_SIZE];
 };
@@ -5263,14 +5264,14 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
 }
 
 static GSocketAddress *
-cache_recv_address (GSocket *socket, struct sockaddr *native, int native_len)
+cache_recv_address (GSocket *socket, struct sockaddr *native, size_t native_len)
 {
   GSocketAddress *saddr;
   gint i;
   guint64 oldest_time = G_MAXUINT64;
   gint oldest_index = 0;
 
-  if (native_len <= 0)
+  if (native_len == 0)
     return NULL;
 
   saddr = NULL;
@@ -5278,7 +5279,7 @@ cache_recv_address (GSocket *socket, struct sockaddr *native, int native_len)
     {
       GSocketAddress *tmp = socket->priv->recv_addr_cache[i].addr;
       gpointer tmp_native = socket->priv->recv_addr_cache[i].native;
-      gint tmp_native_len = socket->priv->recv_addr_cache[i].native_len;
+      gsize tmp_native_len = socket->priv->recv_addr_cache[i].native_len;
 
       if (!tmp)
         continue;
@@ -5308,7 +5309,7 @@ cache_recv_address (GSocket *socket, struct sockaddr *native, int native_len)
       g_free (socket->priv->recv_addr_cache[oldest_index].native);
     }
 
-  socket->priv->recv_addr_cache[oldest_index].native = g_memdup (native, native_len);
+  socket->priv->recv_addr_cache[oldest_index].native = g_memdup2 (native, native_len);
   socket->priv->recv_addr_cache[oldest_index].native_len = native_len;
   socket->priv->recv_addr_cache[oldest_index].addr = g_object_ref (saddr);
   socket->priv->recv_addr_cache[oldest_index].last_used = g_get_monotonic_time ();
@@ -5456,6 +5457,9 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
     /* do it */
     while (1)
       {
+        /* addrlen has to be of type int because that’s how WSARecvFrom() is defined */
+        G_STATIC_ASSERT (sizeof addr <= G_MAXINT);
+
 	addrlen = sizeof addr;
 	if (address)
 	  result = WSARecvFrom (socket->priv->fd,
