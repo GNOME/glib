@@ -136,7 +136,7 @@ g_wcsdup (const gunichar2 *str,
       str_size = wcslen (str) + 1;
       str_size *= sizeof (gunichar2);
     }
-  return g_memdup (str, str_size);
+  return g_memdup2 (str, str_size);
 }
 
 /**
