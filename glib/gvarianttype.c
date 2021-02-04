@@ -28,6 +28,7 @@
 
 #include <string.h>
 
+#include "gstrfuncsprivate.h"
 
 /**
  * SECTION:gvarianttype
@@ -1181,7 +1182,7 @@ g_variant_type_new_tuple (const GVariantType * const *items,
   g_assert (offset < sizeof buffer);
   buffer[offset++] = ')';
 
-  return (GVariantType *) g_memdup (buffer, offset);
+  return (GVariantType *) g_memdup2 (buffer, offset);
 }
 
 /**
