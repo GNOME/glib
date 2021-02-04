@@ -287,9 +287,14 @@ g_tls_password_set_value (GTlsPassword  *password,
   g_return_if_fail (G_IS_TLS_PASSWORD (password));
 
   if (length < 0)
-    length = strlen ((gchar *)value);
+    {
+      /* FIXME: g_tls_password_set_value_full() doesn’t support unsigned gsize */
+      gsize length_unsigned = strlen ((gchar *) value);
+      g_return_if_fail (length_unsigned > G_MAXSSIZE);
+      length = (gssize) length_unsigned;
+    }
 
-  g_tls_password_set_value_full (password, g_memdup (value, length), length, g_free);
+  g_tls_password_set_value_full (password, g_memdup2 (value, (gsize) length), length, g_free);
 }
 
 /**
