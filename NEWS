@@ -1,3 +1,14 @@
+Overview of changes in GLib 2.66.6
+==================================
+
+* Fix various instances within GLib where `g_memdup()` was vulnerable to a
+  silent integer truncation and heap overflow problem (discovered by
+  Kevin Backhouse, work by Philip Withnall) (#2319)
+
+* Bugs fixed:
+ - !1927 Backport !1926 “Add g_memdup2()” to glib-2-66
+
+
 Overview of changes in GLib 2.66.5
 ==================================
 
