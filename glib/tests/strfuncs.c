@@ -205,6 +205,8 @@ test_is_to_digit (void)
 static void
 test_memdup (void)
 {
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
   gchar *str_dup = NULL;
   const gchar *str = "The quick brown fox jumps over the lazy dog";
 
@@ -219,6 +221,8 @@ test_memdup (void)
   g_assert_cmpstr (str, ==, str_dup);
 
   g_free (str_dup);
+
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 /* Testing g_memdup2() function with various positive and negative cases */
