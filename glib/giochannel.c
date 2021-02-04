@@ -887,16 +887,25 @@ g_io_channel_set_line_term (GIOChannel	*channel,
                             const gchar	*line_term,
 			    gint         length)
 {
+  guint length_unsigned;
+
   g_return_if_fail (channel != NULL);
   g_return_if_fail (line_term == NULL || length != 0); /* Disallow "" */
 
   if (line_term == NULL)
-    length = 0;
-  else if (length < 0)
-    length = strlen (line_term);
+    length_unsigned = 0;
+  else if (length >= 0)
+    length_unsigned = (guint) length;
+  else
+    {
+      /* FIXME: We’re constrained by line_term_len being a guint here */
+      gsize length_size = strlen (line_term);
+      g_return_if_fail (length_size > G_MAXUINT);
+      length_unsigned = (guint) length_size;
+    }
 
   g_free (channel->line_term);
-  channel->line_term = line_term ? g_memdup (line_term, length) : NULL;
+  channel->line_term = line_term ? g_memdup2 (line_term, length_unsigned) : NULL;
   channel->line_term_len = length;
 }
 
