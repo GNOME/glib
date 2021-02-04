@@ -33,6 +33,8 @@
 
 #include <string.h>
 
+#include "gstrfuncsprivate.h"
+
 /**
  * GBytes:
  *
@@ -94,7 +96,7 @@ g_bytes_new (gconstpointer data,
 {
   g_return_val_if_fail (data != NULL || size == 0, NULL);
 
-  return g_bytes_new_take (g_memdup (data, size), size);
+  return g_bytes_new_take (g_memdup2 (data, size), size);
 }
 
 /**
@@ -490,7 +492,7 @@ g_bytes_unref_to_data (GBytes *bytes,
        * Copy: Non g_malloc (or compatible) allocator, or static memory,
        * so we have to copy, and then unref.
        */
-      result = g_memdup (bytes->data, bytes->size);
+      result = g_memdup2 (bytes->data, bytes->size);
       *size = bytes->size;
       g_bytes_unref (bytes);
     }
