@@ -1341,6 +1341,7 @@ g_newa
 <SUBSECTION>
 g_memmove
 g_memdup
+g_memdup2
 
 <SUBSECTION>
 GMemVTable

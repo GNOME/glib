@@ -221,6 +221,26 @@ test_memdup (void)
   g_free (str_dup);
 }
 
+/* Testing g_memdup2() function with various positive and negative cases */
+static void
+test_memdup2 (void)
+{
+  gchar *str_dup = NULL;
+  const gchar *str = "The quick brown fox jumps over the lazy dog";
+
+  /* Testing negative cases */
+  g_assert_null (g_memdup2 (NULL, 1024));
+  g_assert_null (g_memdup2 (str, 0));
+  g_assert_null (g_memdup2 (NULL, 0));
+
+  /* Testing normal usage cases */
+  str_dup = g_memdup2 (str, strlen (str) + 1);
+  g_assert_nonnull (str_dup);
+  g_assert_cmpstr (str, ==, str_dup);
+
+  g_free (str_dup);
+}
+
 /* Testing g_strpcpy() function with various positive and negative cases */
 static void
 test_stpcpy (void)
@@ -2539,6 +2559,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/has-prefix", test_has_prefix);
   g_test_add_func ("/strfuncs/has-suffix", test_has_suffix);
   g_test_add_func ("/strfuncs/memdup", test_memdup);
+  g_test_add_func ("/strfuncs/memdup2", test_memdup2);
   g_test_add_func ("/strfuncs/stpcpy", test_stpcpy);
   g_test_add_func ("/strfuncs/str_match_string", test_str_match_string);
   g_test_add_func ("/strfuncs/str_tokenize_and_fold", test_str_tokenize_and_fold);

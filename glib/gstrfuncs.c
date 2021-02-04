@@ -399,6 +399,38 @@ g_memdup (gconstpointer mem,
 }
 
 /**
+ * g_memdup2:
+ * @mem: (nullable): the memory to copy.
+ * @byte_size: the number of bytes to copy.
+ *
+ * Allocates @byte_size bytes of memory, and copies @byte_size bytes into it
+ * from @mem. If @mem is %NULL it returns %NULL.
+ *
+ * This replaces g_memdup(), which was prone to integer overflows when
+ * converting the argument from a #gsize to a #guint.
+ *
+ * Returns: (nullable): a pointer to the newly-allocated copy of the memory,
+ *    or %NULL if @mem is %NULL.
+ * Since: 2.68
+ */
+gpointer
+g_memdup2 (gconstpointer mem,
+           gsize         byte_size)
+{
+  gpointer new_mem;
+
+  if (mem && byte_size != 0)
+    {
+      new_mem = g_malloc (byte_size);
+      memcpy (new_mem, mem, byte_size);
+    }
+  else
+    new_mem = NULL;
+
+  return new_mem;
+}
+
+/**
  * g_strndup:
  * @str: the string to duplicate
  * @n: the maximum number of bytes to copy from @str
