@@ -28,6 +28,8 @@
 #include <ntstatus.h>
 #include <winternl.h>
 
+#include "gstrfuncsprivate.h"
+
 #ifndef _WDMDDK_
 typedef enum _KEY_INFORMATION_CLASS {
   KeyBasicInformation,
@@ -247,7 +249,7 @@ g_win32_registry_value_iter_copy (const GWin32RegistryValueIter *iter)
   new_iter->value_name_size = iter->value_name_size;
 
   if (iter->value_data != NULL)
-    new_iter->value_data = g_memdup (iter->value_data, iter->value_data_size);
+    new_iter->value_data = g_memdup2 (iter->value_data, iter->value_data_size);
 
   new_iter->value_data_size = iter->value_data_size;
 
@@ -268,8 +270,8 @@ g_win32_registry_value_iter_copy (const GWin32RegistryValueIter *iter)
   new_iter->value_data_expanded_charsize = iter->value_data_expanded_charsize;
 
   if (iter->value_data_expanded_u8 != NULL)
-    new_iter->value_data_expanded_u8 = g_memdup (iter->value_data_expanded_u8,
-                                                 iter->value_data_expanded_charsize);
+    new_iter->value_data_expanded_u8 = g_memdup2 (iter->value_data_expanded_u8,
+                                                  iter->value_data_expanded_charsize);
 
   new_iter->value_data_expanded_u8_size = iter->value_data_expanded_charsize;
 
