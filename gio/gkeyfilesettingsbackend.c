@@ -33,6 +33,7 @@
 #include "gfilemonitor.h"
 #include "gsimplepermission.h"
 #include "gsettingsbackendinternal.h"
+#include "gstrfuncsprivate.h"
 #include "giomodule-priv.h"
 #include "gportalsupport.h"
 
@@ -145,8 +146,8 @@ convert_path (GKeyfileSettingsBackend  *kfsb,
               gchar                   **group,
               gchar                   **basename)
 {
-  gint key_len = strlen (key);
-  gint i;
+  gsize key_len = strlen (key);
+  const gchar *last_slash;
 
   if (key_len < kfsb->prefix_len ||
       memcmp (key, kfsb->prefix, kfsb->prefix_len) != 0)
@@ -155,38 +156,36 @@ convert_path (GKeyfileSettingsBackend  *kfsb,
   key_len -= kfsb->prefix_len;
   key += kfsb->prefix_len;
 
-  for (i = key_len; i >= 0; i--)
-    if (key[i] == '/')
-      break;
+  last_slash = strrchr (key, '/');
 
   if (kfsb->root_group)
     {
       /* if a root_group was specified, make sure the user hasn't given
        * a path that ghosts that group name
        */
-      if (i == kfsb->root_group_len && memcmp (key, kfsb->root_group, i) == 0)
+      if (last_slash != NULL && (last_slash - key) == kfsb->root_group_len && memcmp (key, kfsb->root_group, last_slash - key) == 0)
         return FALSE;
     }
   else
     {
       /* if no root_group was given, ensure that the user gave a path */
-      if (i == -1)
+      if (last_slash == NULL)
         return FALSE;
     }
 
   if (group)
     {
-      if (i >= 0)
+      if (last_slash != NULL)
         {
-          *group = g_memdup (key, i + 1);
-          (*group)[i] = '\0';
+          *group = g_memdup2 (key, (last_slash - key) + 1);
+          (*group)[(last_slash - key)] = '\0';
         }
       else
         *group = g_strdup (kfsb->root_group);
     }
 
   if (basename)
-    *basename = g_memdup (key + i + 1, key_len - i);
+    *basename = g_memdup2 (last_slash + 1, key_len - (last_slash - key));
 
   return TRUE;
 }
