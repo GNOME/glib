@@ -28,6 +28,7 @@
 #include "gdbusmethodinvocation.h"
 #include "gdbusconnection.h"
 #include "gmarshal-internal.h"
+#include "gstrfuncsprivate.h"
 #include "gtask.h"
 #include "gioerror.h"
 
@@ -702,7 +703,7 @@ add_connection_locked (GDBusInterfaceSkeleton *interface_,
        * properly before building the hooked_vtable, so we create it
        * once at the last minute.
        */
-      interface_->priv->hooked_vtable = g_memdup (g_dbus_interface_skeleton_get_vtable (interface_), sizeof (GDBusInterfaceVTable));
+      interface_->priv->hooked_vtable = g_memdup2 (g_dbus_interface_skeleton_get_vtable (interface_), sizeof (GDBusInterfaceVTable));
       interface_->priv->hooked_vtable->method_call = skeleton_intercept_handle_method_call;
     }
 
