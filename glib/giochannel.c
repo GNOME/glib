@@ -900,7 +900,7 @@ g_io_channel_set_line_term (GIOChannel	*channel,
     {
       /* FIXME: We’re constrained by line_term_len being a guint here */
       gsize length_size = strlen (line_term);
-      g_return_if_fail (length_size > G_MAXUINT);
+      g_return_if_fail (length_size <= G_MAXUINT);
       length_unsigned = (guint) length_size;
     }
 
