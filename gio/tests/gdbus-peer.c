@@ -1139,6 +1139,183 @@ test_peer (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#define VALID_GUID "0123456789abcdef0123456789abcdef"
+
+static void
+test_peer_invalid_server (void)
+{
+  GDBusServer *server;
+
+  if (!g_test_undefined ())
+    {
+      g_test_skip ("Not exercising programming errors");
+      return;
+    }
+
+  if (g_test_subprocess ())
+    {
+      /* This assumes we are not going to run out of GDBusServerFlags
+       * any time soon */
+      server = g_dbus_server_new_sync ("tcp:", (GDBusServerFlags) (1 << 30),
+                                       VALID_GUID,
+                                       NULL, NULL, NULL);
+      g_assert_null (server);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_SERVER_FLAGS_ALL*");
+    }
+}
+
+static void
+test_peer_invalid_conn_stream_sync (void)
+{
+  GSocket *sock;
+  GSocketConnection *socket_conn;
+  GIOStream *iostream;
+  GDBusConnection *conn;
+
+  if (!g_test_undefined ())
+    {
+      g_test_skip ("Not exercising programming errors");
+      return;
+    }
+
+  sock = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                       G_SOCKET_TYPE_STREAM,
+                       G_SOCKET_PROTOCOL_TCP,
+                       NULL);
+
+  if (sock == NULL)
+    {
+      g_test_skip ("TCP not available?");
+      return;
+    }
+
+  socket_conn = g_socket_connection_factory_create_connection (sock);
+  g_assert_nonnull (socket_conn);
+  iostream = G_IO_STREAM (socket_conn);
+  g_assert_nonnull (iostream);
+
+  if (g_test_subprocess ())
+    {
+      /* This assumes we are not going to run out of GDBusConnectionFlags
+       * any time soon */
+      conn = g_dbus_connection_new_sync (iostream, VALID_GUID,
+                                         (GDBusConnectionFlags) (1 << 30),
+                                         NULL, NULL, NULL);
+      g_assert_null (conn);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_CONNECTION_FLAGS_ALL*");
+    }
+
+  g_clear_object (&sock);
+  g_clear_object (&socket_conn);
+}
+
+static void
+test_peer_invalid_conn_stream_async (void)
+{
+  GSocket *sock;
+  GSocketConnection *socket_conn;
+  GIOStream *iostream;
+
+  if (!g_test_undefined ())
+    {
+      g_test_skip ("Not exercising programming errors");
+      return;
+    }
+
+  sock = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                       G_SOCKET_TYPE_STREAM,
+                       G_SOCKET_PROTOCOL_TCP,
+                       NULL);
+
+  if (sock == NULL)
+    {
+      g_test_skip ("TCP not available?");
+      return;
+    }
+
+  socket_conn = g_socket_connection_factory_create_connection (sock);
+  g_assert_nonnull (socket_conn);
+  iostream = G_IO_STREAM (socket_conn);
+  g_assert_nonnull (iostream);
+
+  if (g_test_subprocess ())
+    {
+      g_dbus_connection_new (iostream, VALID_GUID,
+                             (GDBusConnectionFlags) (1 << 30),
+                             NULL, NULL, NULL, NULL);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_CONNECTION_FLAGS_ALL*");
+    }
+
+  g_clear_object (&sock);
+  g_clear_object (&socket_conn);
+}
+
+static void
+test_peer_invalid_conn_addr_sync (void)
+{
+  GDBusConnection *conn;
+
+  if (!g_test_undefined ())
+    {
+      g_test_skip ("Not exercising programming errors");
+      return;
+    }
+
+  if (g_test_subprocess ())
+    {
+      conn = g_dbus_connection_new_for_address_sync ("tcp:",
+                                                     (GDBusConnectionFlags) (1 << 30),
+                                                     NULL, NULL, NULL);
+      g_assert_null (conn);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_CONNECTION_FLAGS_ALL*");
+    }
+}
+
+static void
+test_peer_invalid_conn_addr_async (void)
+{
+  if (!g_test_undefined ())
+    {
+      g_test_skip ("Not exercising programming errors");
+      return;
+    }
+
+  if (g_test_subprocess ())
+    {
+      g_dbus_connection_new_for_address ("tcp:",
+                                         (GDBusConnectionFlags) (1 << 30),
+                                         NULL, NULL, NULL, NULL);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, 0);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*CRITICAL*G_DBUS_CONNECTION_FLAGS_ALL*");
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 static void
 test_peer_signals (void)
 {
@@ -2010,6 +2187,16 @@ main (int   argc,
   test_interface_introspection_data = introspection_data->interfaces[0];
 
   g_test_add_func ("/gdbus/peer-to-peer", test_peer);
+  g_test_add_func ("/gdbus/peer-to-peer/invalid/server",
+                   test_peer_invalid_server);
+  g_test_add_func ("/gdbus/peer-to-peer/invalid/conn/stream/async",
+                   test_peer_invalid_conn_stream_async);
+  g_test_add_func ("/gdbus/peer-to-peer/invalid/conn/stream/sync",
+                   test_peer_invalid_conn_stream_sync);
+  g_test_add_func ("/gdbus/peer-to-peer/invalid/conn/addr/async",
+                   test_peer_invalid_conn_addr_async);
+  g_test_add_func ("/gdbus/peer-to-peer/invalid/conn/addr/sync",
+                   test_peer_invalid_conn_addr_sync);
   g_test_add_func ("/gdbus/peer-to-peer/signals", test_peer_signals);
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
   g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
