@@ -174,6 +174,38 @@ test_interaction_ask_password_finish_failure (GTlsInteraction    *interaction,
 }
 
 
+/* Return a copy of @str that is allocated in a silly way, to exercise
+ * custom free-functions. The returned pointer points to a copy of @str
+ * in a buffer of the form "BEFORE \0 str \0 AFTER". */
+static guchar *
+special_dup (const char *str)
+{
+  GString *buf = g_string_new ("BEFORE");
+  guchar *ret;
+
+  g_string_append_c (buf, '\0');
+  g_string_append (buf, str);
+  g_string_append_c (buf, '\0');
+  g_string_append (buf, "AFTER");
+  ret = (guchar *) g_string_free (buf, FALSE);
+  return ret + strlen ("BEFORE") + 1;
+}
+
+
+/* Free a copy of @str that was made with special_dup(), after asserting
+ * that it has not been corrupted. */
+static void
+special_free (gpointer p)
+{
+  gchar *s = p;
+  gchar *buf = s - strlen ("BEFORE") - 1;
+
+  g_assert_cmpstr (buf, ==, "BEFORE");
+  g_assert_cmpstr (s + strlen (s) + 1, ==, "AFTER");
+  g_free (buf);
+}
+
+
 static GTlsInteractionResult
 test_interaction_ask_password_sync_success (GTlsInteraction    *interaction,
                                             GTlsPassword       *password,
@@ -181,6 +213,8 @@ test_interaction_ask_password_sync_success (GTlsInteraction    *interaction,
                                             GError            **error)
 {
   TestInteraction *self;
+  const guchar *value;
+  gsize len;
 
   g_assert (TEST_IS_INTERACTION (interaction));
   self = TEST_INTERACTION (interaction);
@@ -191,6 +225,27 @@ test_interaction_ask_password_sync_success (GTlsInteraction    *interaction,
   g_assert (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
   g_assert (error != NULL);
   g_assert (*error == NULL);
+
+  /* Exercise different ways to set the value */
+  g_tls_password_set_value (password, (const guchar *) "foo", 4);
+  len = 0;
+  value = g_tls_password_get_value (password, &len);
+  g_assert_cmpmem (value, len, "foo", 4);
+
+  g_tls_password_set_value (password, (const guchar *) "bar", -1);
+  len = 0;
+  value = g_tls_password_get_value (password, &len);
+  g_assert_cmpmem (value, len, "bar", 3);
+
+  g_tls_password_set_value_full (password, special_dup ("baa"), 4, special_free);
+  len = 0;
+  value = g_tls_password_get_value (password, &len);
+  g_assert_cmpmem (value, len, "baa", 4);
+
+  g_tls_password_set_value_full (password, special_dup ("baz"), -1, special_free);
+  len = 0;
+  value = g_tls_password_get_value (password, &len);
+  g_assert_cmpmem (value, len, "baz", 3);
 
   /* Don't do this in real life. Include a null terminator for testing */
   g_tls_password_set_value (password, (const guchar *)"the password", 13);
