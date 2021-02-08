@@ -49,8 +49,10 @@ test_read_line_embedded_nuls (void)
   channel = g_io_channel_new_file (filename, "r", &local_error);
   g_assert_no_error (local_error);
 
-  /* Only break on newline characters, not nuls. */
-  g_io_channel_set_line_term (channel, "\n", 1);
+  /* Only break on newline characters, not nuls.
+   * Use length -1 here to exercise glib#2323; the case where length > 0
+   * is covered in glib/tests/protocol.c. */
+  g_io_channel_set_line_term (channel, "\n", -1);
   g_io_channel_set_encoding (channel, NULL, &local_error);
   g_assert_no_error (local_error);
 
