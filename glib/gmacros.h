@@ -238,7 +238,9 @@
 #define glib_typeof(t) __typeof__ (t)
 #elif defined(__cplusplus) && __cplusplus >= 201103L
 /* C++11 decltype() is close enough for our usage */
+extern "C++" {
 #include <type_traits>
+} /* extern "C++" */
 #define glib_typeof(t) typename std::remove_reference<decltype (t)>::type
 #define glib_typeof_2_68
 #endif
