@@ -290,7 +290,7 @@ g_tls_password_set_value (GTlsPassword  *password,
     {
       /* FIXME: g_tls_password_set_value_full() doesn’t support unsigned gsize */
       gsize length_unsigned = strlen ((gchar *) value);
-      g_return_if_fail (length_unsigned > G_MAXSSIZE);
+      g_return_if_fail (length_unsigned <= G_MAXSSIZE);
       length = (gssize) length_unsigned;
     }
 
