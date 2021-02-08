@@ -57,6 +57,10 @@
 
 #include "glibintl.h"
 
+#define G_DBUS_SERVER_FLAGS_ALL \
+  (G_DBUS_SERVER_FLAGS_RUN_IN_THREAD | \
+   G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS)
+
 /**
  * SECTION:gdbusserver
  * @short_description: Helper for accepting connections
@@ -512,6 +516,7 @@ g_dbus_server_new_sync (const gchar        *address,
 
   g_return_val_if_fail (address != NULL, NULL);
   g_return_val_if_fail (g_dbus_is_guid (guid), NULL);
+  g_return_val_if_fail ((flags & ~G_DBUS_SERVER_FLAGS_ALL) == 0, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   server = g_initable_new (G_TYPE_DBUS_SERVER,
