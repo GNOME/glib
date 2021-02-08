@@ -464,6 +464,47 @@ test_strdown (void)
   g_free (str_down);
 }
 
+/* Test that g_utf8_strup() and g_utf8_strdown() return the correct
+ * value for Turkish 'i' with and without dot above. */
+static void
+test_turkish_strupdown (void)
+{
+  char *str_up = NULL;
+  char *str_down = NULL;
+  const char *str = "iII"
+    "\xcc\x87"  /* COMBINING DOT ABOVE (U+307) */
+    "\xc4\xb1"  /* LATIN SMALL LETTER DOTLESS I (U+131) */
+    "\xc4\xb0"; /* LATIN CAPITAL LETTER I WITH DOT ABOVE (U+130) */
+
+  char *oldlocale = g_strdup (setlocale (LC_ALL, "tr_TR"));
+
+  if (oldlocale == NULL)
+    {
+      g_test_skip ("locale tr_TR not available");
+      return;
+    }
+
+  str_up = g_utf8_strup (str, strlen (str));
+  str_down = g_utf8_strdown (str, strlen (str));
+  /* i => LATIN CAPITAL LETTER I WITH DOT ABOVE,
+   * I => I,
+   * I + COMBINING DOT ABOVE => I + COMBINING DOT ABOVE,
+   * LATIN SMALL LETTER DOTLESS I => I,
+   * LATIN CAPITAL LETTER I WITH DOT ABOVE => LATIN CAPITAL LETTER I WITH DOT ABOVE */
+  g_assert_cmpstr (str_up, ==, "\xc4\xb0II\xcc\x87I\xc4\xb0");
+  /* i => i,
+   * I => LATIN SMALL LETTER DOTLESS I,
+   * I + COMBINING DOT ABOVE => i,
+   * LATIN SMALL LETTER DOTLESS I => LATIN SMALL LETTER DOTLESS I,
+   * LATIN CAPITAL LETTER I WITH DOT ABOVE => i */
+  g_assert_cmpstr (str_down, ==, "i\xc4\xb1i\xc4\xb1i");
+  g_free (str_up);
+  g_free (str_down);
+
+  setlocale (LC_ALL, oldlocale);
+  g_free (oldlocale);
+}
+
 /* Test that g_utf8_casefold() returns the correct value for various
  * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
 static void
@@ -1644,6 +1685,7 @@ main (int   argc,
   g_test_add_func ("/unicode/space", test_space);
   g_test_add_func ("/unicode/strdown", test_strdown);
   g_test_add_func ("/unicode/strup", test_strup);
+  g_test_add_func ("/unicode/turkish-strupdown", test_turkish_strupdown);
   g_test_add_func ("/unicode/title", test_title);
   g_test_add_func ("/unicode/upper", test_upper);
   g_test_add_func ("/unicode/validate", test_unichar_validate);
