@@ -905,7 +905,7 @@ g_io_channel_set_line_term (GIOChannel	*channel,
 
   g_free (channel->line_term);
   channel->line_term = line_term ? g_memdup2 (line_term, length_unsigned) : NULL;
-  channel->line_term_len = length;
+  channel->line_term_len = length_unsigned;
 }
 
 /**
