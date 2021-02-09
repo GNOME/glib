@@ -1034,10 +1034,11 @@ typedef struct {
 /**
  * ObjectBlob:
  * @blob_type: #BLOB_TYPE_OBJECT
- * @deprecated: TODO
- * @abstract: TODO
+ * @deprecated: whether the type is deprecated
+ * @abstract: whether the type can be instantiated
  * @fundamental: this object is not a GObject derived type, instead it's
  *   an additional fundamental type.
+ * @final: whether the type can be derived
  * @reserved: Reserved for future use.
  * @name: TODO
  * @gtype_name: String name of the associated #GType
@@ -1076,7 +1077,8 @@ typedef struct {
   guint16   deprecated   : 1;
   guint16   abstract     : 1;
   guint16   fundamental  : 1;
-  guint16   reserved     :13;
+  guint16   final_       : 1;
+  guint16   reserved     :12;
   guint32   name;
 
   guint32   gtype_name;

@@ -240,6 +240,7 @@ struct _GIrNodeInterface
   gboolean abstract;
   gboolean deprecated;
   gboolean fundamental;
+  gboolean final_;
 
   gchar *gtype_name;
   gchar *gtype_init;

@@ -1806,6 +1806,7 @@ start_class (GMarkupParseContext *context,
   const gchar *deprecated;
   const gchar *abstract;
   const gchar *fundamental;
+  const gchar *final;
   const gchar *ref_func;
   const gchar *unref_func;
   const gchar *set_value_func;
@@ -1826,6 +1827,7 @@ start_class (GMarkupParseContext *context,
   typeinit = find_attribute ("glib:get-type", attribute_names, attribute_values);
   deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
   abstract = find_attribute ("abstract", attribute_names, attribute_values);
+  final = find_attribute ("final", attribute_names, attribute_values);
   fundamental = find_attribute ("glib:fundamental", attribute_names, attribute_values);
   ref_func = find_attribute ("glib:ref-func", attribute_names, attribute_values);
   unref_func = find_attribute ("glib:unref-func", attribute_names, attribute_values);
@@ -1861,6 +1863,7 @@ start_class (GMarkupParseContext *context,
     iface->deprecated = FALSE;
 
   iface->abstract = abstract && strcmp (abstract, "1") == 0;
+  iface->final_ = final && strcmp (final, "1") == 0;
 
   if (fundamental)
     iface->fundamental = TRUE;

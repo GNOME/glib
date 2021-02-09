@@ -87,6 +87,9 @@ const gchar *     g_object_info_get_type_init	 (GIObjectInfo *info);
 GI_AVAILABLE_IN_ALL
 gboolean          g_object_info_get_abstract     (GIObjectInfo *info);
 
+GI_AVAILABLE_IN_1_70
+gboolean          g_object_info_get_final        (GIObjectInfo *info);
+
 GI_AVAILABLE_IN_ALL
 gboolean          g_object_info_get_fundamental  (GIObjectInfo *info);
 

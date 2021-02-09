@@ -241,6 +241,12 @@ dump_object_type (GType type, const char *symbol, GOutputStream *out)
 
   if (G_TYPE_IS_ABSTRACT (type))
     escaped_printf (out, " abstract=\"1\"");
+
+#if GLIB_CHECK_VERSION (2, 70, 0)
+  if (G_TYPE_IS_FINAL (type))
+    escaped_printf (out, " final=\"1\"");
+#endif
+
   goutput_write (out, ">\n");
 
   interfaces = g_type_interfaces (type, &n_interfaces);
@@ -353,6 +359,11 @@ dump_fundamental_type (GType type, const char *symbol, GOutputStream *out)
 
   if (G_TYPE_IS_ABSTRACT (type))
     escaped_printf (out, " abstract=\"1\"");
+
+#if GLIB_CHECK_VERSION (2, 70, 0)
+  if (G_TYPE_IS_FINAL (type))
+    escaped_printf (out, " final=\"1\"");
+#endif
 
   if (G_TYPE_IS_INSTANTIATABLE (type))
     escaped_printf (out, " instantiatable=\"1\"");

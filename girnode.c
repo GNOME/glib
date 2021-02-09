@@ -2096,6 +2096,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->blob_type = BLOB_TYPE_OBJECT;
 	blob->abstract = object->abstract;
         blob->fundamental = object->fundamental;
+        blob->final_ = object->final_;
 	blob->deprecated = object->deprecated;
 	blob->reserved = 0;
 	blob->name = _g_ir_write_string (node->name, strings, data, offset2);
