@@ -255,6 +255,17 @@ g_http_proxy_connect (GProxy         *proxy,
 
       if (bytes_read == buffer_length)
         {
+          /* HTTP specifications does not defines any upper limit for
+           * headers. But, the most usual size used seems to be 8KB.
+           * Yet, the biggest we found was Tomcat's HTTP headers whose
+           * size is 48K. So, for a reasonable error margin, let's accept
+           * a header with a twice as large size but no more: 96KB */
+          if (buffer_length > 98304)
+            {
+              g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+                                   _("HTTP proxy response too big"));
+              goto error;
+            }
           buffer_length = 2 * buffer_length;
           buffer = g_realloc (buffer, buffer_length);
         }
