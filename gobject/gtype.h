@@ -1701,6 +1701,57 @@ guint     g_type_get_type_registration_serial (void);
  */
 #define G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE(TN, t_n, T_P)   G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_ABSTRACT, G_ADD_PRIVATE (TN))
 /**
+ * G_DEFINE_FINAL_TYPE:
+ * @TN: the name of the new type, in Camel case
+ * @t_n: the name of the new type, in lower case, with words
+ *   separated by `_` (snake case)
+ * @T_P: the #GType of the parent type
+ *
+ * A convenience macro for type implementations.
+ *
+ * Similar to G_DEFINE_TYPE(), but defines a final type.
+ *
+ * See G_DEFINE_TYPE_EXTENDED() for an example.
+ *
+ * Since: 2.70
+ */
+#define G_DEFINE_FINAL_TYPE(TN, t_n, T_P)                      G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_FINAL, {}) GLIB_AVAILABLE_MACRO_IN_2_70
+/**
+ * G_DEFINE_FINAL_TYPE_WITH_CODE:
+ * @TN: the name of the new type, in Camel case
+ * @t_n: the name of the new type, in lower case, with words
+ *   separated by `_` (snake case)
+ * @T_P: the #GType of the parent type
+ * @_C_: Custom code that gets inserted in the `type_name_get_type()` function.
+ *
+ * A convenience macro for type implementations.
+ *
+ * Similar to G_DEFINE_TYPE_WITH_CODE(), but defines a final type and
+ * allows you to insert custom code into the `*_get_type()` function, e.g.
+ * interface implementations  via G_IMPLEMENT_INTERFACE().
+ *
+ * See G_DEFINE_TYPE_EXTENDED() for an example.
+ *
+ * Since: 2.70
+ */
+#define G_DEFINE_FINAL_TYPE_WITH_CODE(TN, t_n, T_P, _C_)       _G_DEFINE_TYPE_EXTENDED_BEGIN (TN, t_n, T_P, G_TYPE_FLAG_FINAL) {_C_;} _G_DEFINE_TYPE_EXTENDED_END() GLIB_AVAILABLE_MACRO_IN_2_70
+/**
+ * G_DEFINE_FINAL_TYPE_WITH_PRIVATE:
+ * @TN: the name of the new type, in Camel case
+ * @t_n: the name of the new type, in lower case, with words
+ *   separated by `_` (snake case)
+ * @T_P: the #GType of the parent type
+ *
+ * A convenience macro for type implementations.
+ *
+ * Similar to G_DEFINE_TYPE_WITH_PRIVATE(), but defines a final type.
+ *
+ * See G_DEFINE_TYPE_EXTENDED() for an example.
+ *
+ * Since: 2.70
+ */
+#define G_DEFINE_FINAL_TYPE_WITH_PRIVATE(TN, t_n, T_P)         G_DEFINE_TYPE_EXTENDED (TN, t_n, T_P, G_TYPE_FLAG_FINAL, G_ADD_PRIVATE (TN)) GLIB_AVAILABLE_MACRO_IN_2_70
+/**
  * G_DEFINE_TYPE_EXTENDED:
  * @TN: The name of the new type, in Camel case.
  * @t_n: The name of the new type, in lowercase, with words
