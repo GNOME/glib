@@ -143,7 +143,7 @@
 				    G_TYPE_FLAG_INSTANTIATABLE | \
 				    G_TYPE_FLAG_DERIVABLE | \
 				    G_TYPE_FLAG_DEEP_DERIVABLE)
-#define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT)
+#define	TYPE_FLAG_MASK		   (G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT | G_TYPE_FLAG_FINAL)
 #define	SIZEOF_FUNDAMENTAL_INFO	   ((gssize) MAX (MAX (sizeof (GTypeFundamentalInfo), \
 						       sizeof (gpointer)), \
                                                   sizeof (glong)))
@@ -802,6 +802,13 @@ check_derivation_I (GType        parent_type,
       g_warning ("cannot derive '%s' from non-fundamental parent type '%s'",
 		 type_name,
 		 NODE_NAME (pnode));
+      return FALSE;
+    }
+  if ((G_TYPE_FLAG_FINAL & GPOINTER_TO_UINT (type_get_qdata_L (pnode, static_quark_type_flags))) == G_TYPE_FLAG_FINAL)
+    {
+      g_warning ("cannot derive '%s' from final parent type '%s'",
+                 type_name,
+                 NODE_NAME (pnode));
       return FALSE;
     }
   
