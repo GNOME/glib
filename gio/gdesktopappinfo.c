@@ -2601,6 +2601,10 @@ prepend_terminal_to_vector (int    *argc,
       else
         {
           if (check == NULL)
+            check = g_find_program_in_path ("tilix");
+          if (check == NULL)
+            check = g_find_program_in_path ("konsole");
+          if (check == NULL)
             check = g_find_program_in_path ("nxterm");
           if (check == NULL)
             check = g_find_program_in_path ("color-xterm");
