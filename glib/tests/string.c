@@ -495,6 +495,34 @@ test_string_to_bytes (void)
   g_bytes_unref (bytes);
 }
 
+static void
+test_string_replace (void)
+{
+  GString *s;
+  gint n;
+
+  s = g_string_new ("foo bar foo baz foo bar foobarbaz");
+
+  n = g_string_replace (s, "bar", "baz", 0);
+  g_assert_cmpstr ("foo baz foo baz foo baz foobazbaz", ==, s->str);
+  g_assert_cmpint (n, ==, 3);
+
+  n = g_string_replace (s, "baz", "bar", 3);
+  g_assert_cmpstr ("foo bar foo bar foo bar foobazbaz", ==, s->str);
+  g_assert_cmpint (n, ==, 3);
+
+  n = g_string_replace (s, "foobar", "bar", 1);
+  g_assert_cmpstr ("foo bar foo bar foo bar foobazbaz", ==, s->str);
+  g_assert_cmpint (n, ==, 0);
+
+  s = g_string_assign (s, "aaaaaaaa");
+  n = g_string_replace (s, "a", "abcdefghijkl", 0);
+  g_assert_cmpstr ("abcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijkl",
+                   ==, s->str);
+
+  g_string_free (s, TRUE);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -519,6 +547,7 @@ main (int   argc,
   g_test_add_func ("/string/test-string-up-down", test_string_up_down);
   g_test_add_func ("/string/test-string-set-size", test_string_set_size);
   g_test_add_func ("/string/test-string-to-bytes", test_string_to_bytes);
+  g_test_add_func ("/string/test-string-replace", test_string_replace);
 
   return g_test_run();
 }

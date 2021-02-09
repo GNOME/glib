@@ -2861,6 +2861,7 @@ g_string_insert_unichar
 g_string_insert_len
 g_string_overwrite
 g_string_overwrite_len
+g_string_replace
 g_string_erase
 g_string_truncate
 g_string_set_size
