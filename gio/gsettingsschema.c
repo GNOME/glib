@@ -683,8 +683,8 @@ parse_into_text_tables (const gchar *directory,
                         GHashTable  *summaries,
                         GHashTable  *descriptions)
 {
-  GMarkupParser parser = { start_element, end_element, text };
-  TextTableParseInfo info = { summaries, descriptions };
+  GMarkupParser parser = { start_element, end_element, text, NULL, NULL };
+  TextTableParseInfo info = { summaries, descriptions, NULL, NULL, NULL, NULL };
   const gchar *basename;
   GDir *dir;
 
