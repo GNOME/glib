@@ -472,9 +472,9 @@ test_turkish_strupdown (void)
   char *str_up = NULL;
   char *str_down = NULL;
   const char *str = "iII"
-    "\xcc\x87"  /* COMBINING DOT ABOVE (U+307) */
-    "\xc4\xb1"  /* LATIN SMALL LETTER DOTLESS I (U+131) */
-    "\xc4\xb0"; /* LATIN CAPITAL LETTER I WITH DOT ABOVE (U+130) */
+                    "\xcc\x87"  /* COMBINING DOT ABOVE (U+307) */
+                    "\xc4\xb1"  /* LATIN SMALL LETTER DOTLESS I (U+131) */
+                    "\xc4\xb0"; /* LATIN CAPITAL LETTER I WITH DOT ABOVE (U+130) */
 
   char *oldlocale = g_strdup (setlocale (LC_ALL, "tr_TR"));
 

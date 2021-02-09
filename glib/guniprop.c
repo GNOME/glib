@@ -991,7 +991,7 @@ real_tolower (const gchar *str,
                                            c == G_UNICHAR_FULLWIDTH_I))
         {
           gboolean combining_dot = (c == 'I' || c == G_UNICHAR_FULLWIDTH_I) &&
-                                    g_utf8_get_char (p) == 0x0307;
+                                   g_utf8_get_char (p) == 0x0307;
           if (combining_dot || c == 0x130)
             {
               /* I + COMBINING DOT ABOVE => i (U+0069)
