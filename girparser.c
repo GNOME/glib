@@ -58,6 +58,7 @@
 struct _GIrParser
 {
   gchar **includes;
+  gchar **gi_gir_path;
   GList *parsed_modules; /* All previously parsed modules */
 };
 
@@ -184,6 +185,10 @@ GIrParser *
 _g_ir_parser_new (void)
 {
   GIrParser *parser = g_slice_new0 (GIrParser);
+  const char *gi_gir_path = g_getenv ("GI_GIR_PATH");
+
+  if (gi_gir_path != NULL)
+    parser->gi_gir_path = g_strsplit (gi_gir_path, G_SEARCHPATH_SEPARATOR_S, 0);
 
   return parser;
 }
@@ -193,8 +198,8 @@ _g_ir_parser_free (GIrParser *parser)
 {
   GList *l;
 
-  if (parser->includes)
-    g_strfreev (parser->includes);
+  g_strfreev (parser->includes);
+  g_strfreev (parser->gi_gir_path);
 
   for (l = parser->parsed_modules; l; l = l->next)
     _g_ir_module_free (l->data);
@@ -206,8 +211,7 @@ void
 _g_ir_parser_set_includes (GIrParser          *parser,
 			   const gchar *const *includes)
 {
-  if (parser->includes)
-    g_strfreev (parser->includes);
+  g_strfreev (parser->includes);
 
   parser->includes = g_strdupv ((char **)includes);
 }
@@ -307,6 +311,22 @@ locate_gir (GIrParser  *parser,
 	  g_clear_pointer (&path, g_free);
 	}
     }
+
+  if (parser->gi_gir_path != NULL)
+    {
+      for (dir = (const gchar *const *) parser->gi_gir_path; *dir; dir++)
+        {
+          if (**dir == '\0')
+            continue;
+
+          path = g_build_filename (*dir, girname, NULL);
+          g_debug ("Trying %s from GI_GIR_PATH", path);
+          if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+            return g_steal_pointer (&path);
+          g_clear_pointer (&path, g_free);
+        }
+    }
+
   for (dir = datadirs; *dir; dir++)
     {
       path = g_build_filename (*dir, GIR_SUFFIX, girname, NULL);
