@@ -342,6 +342,20 @@ locate_gir (GIrParser  *parser,
     return g_steal_pointer (&path);
   g_clear_pointer (&path, g_free);
 
+  path = g_build_filename (GOBJECT_INTROSPECTION_DATADIR, GIR_SUFFIX, girname, NULL);
+  g_debug ("Trying %s from DATADIR", path);
+  if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+    return g_steal_pointer (&path);
+  g_clear_pointer (&path, g_free);
+
+#ifdef G_OS_UNIX
+  path = g_build_filename ("/usr/share", GIR_SUFFIX, girname, NULL);
+  g_debug ("Trying %s", path);
+  if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))
+    return g_steal_pointer (&path);
+  g_clear_pointer (&path, g_free);
+#endif
+
   g_debug ("Did not find %s", girname);
   return NULL;
 }
