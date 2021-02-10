@@ -987,14 +987,18 @@ real_tolower (const gchar *str,
       last = p;
       p = g_utf8_next_char (p);
 
-      if (locale_type == LOCALE_TURKIC && (c == 'I' ||
+      if (locale_type == LOCALE_TURKIC && (c == 'I' || c == 0x130 ||
                                            c == G_UNICHAR_FULLWIDTH_I))
-	{
-          if (g_utf8_get_char (p) == 0x0307)
+        {
+          gboolean combining_dot = (c == 'I' || c == G_UNICHAR_FULLWIDTH_I) &&
+                                   g_utf8_get_char (p) == 0x0307;
+          if (combining_dot || c == 0x130)
             {
-              /* I + COMBINING DOT ABOVE => i (U+0069) */
-              len += g_unichar_to_utf8 (0x0069, out_buffer ? out_buffer + len : NULL); 
-              p = g_utf8_next_char (p);
+              /* I + COMBINING DOT ABOVE => i (U+0069)
+               * LATIN CAPITAL LETTER I WITH DOT ABOVE => i (U+0069) */
+              len += g_unichar_to_utf8 (0x0069, out_buffer ? out_buffer + len : NULL);
+              if (combining_dot)
+                p = g_utf8_next_char (p);
             }
           else
             {
