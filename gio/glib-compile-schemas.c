@@ -363,7 +363,7 @@ key_state_set_range (KeyState     *state,
     { 'd',                 "-inf",                  "inf" },
   };
   gboolean type_ok = FALSE;
-  gint i;
+  gsize i;
 
   if (state->minimum)
     {
@@ -705,7 +705,7 @@ key_state_serialise (KeyState *state)
               guint32 *words;
               gpointer data;
               gsize size;
-              gint i;
+              gsize i;
 
               data = state->strinfo->str;
               size = state->strinfo->len;
@@ -1770,7 +1770,7 @@ static GHashTable *
 parse_gschema_files (gchar    **files,
                      gboolean   strict)
 {
-  GMarkupParser parser = { start_element, end_element, text };
+  GMarkupParser parser = { start_element, end_element, text, NULL, NULL };
   ParseState state = { 0, };
   const gchar *filename;
   GError *error = NULL;
@@ -2173,7 +2173,7 @@ main (int argc, char **argv)
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("Where to store the gschemas.compiled file"), N_("DIRECTORY") },
     { "strict", 0, 0, G_OPTION_ARG_NONE, &strict, N_("Abort on any errors in schemas"), NULL },
     { "dry-run", 0, 0, G_OPTION_ARG_NONE, &dry_run, N_("Do not write the gschema.compiled file"), NULL },
-    { "allow-any-name", 0, 0, G_OPTION_ARG_NONE, &allow_any_name, N_("Do not enforce key name restrictions") },
+    { "allow-any-name", 0, 0, G_OPTION_ARG_NONE, &allow_any_name, N_("Do not enforce key name restrictions"), NULL },
 
     /* These options are only for use in the gschema-compile tests */
     { "schema-file", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_FILENAME_ARRAY, &schema_files, NULL, NULL },
