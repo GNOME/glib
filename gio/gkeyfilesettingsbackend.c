@@ -185,7 +185,12 @@ convert_path (GKeyfileSettingsBackend  *kfsb,
     }
 
   if (basename)
-    *basename = g_memdup2 (last_slash + 1, key_len - (last_slash - key));
+    {
+      if (last_slash != NULL)
+        *basename = g_memdup2 (last_slash + 1, key_len - (last_slash - key));
+      else
+        *basename = g_strdup (key);
+    }
 
   return TRUE;
 }
