@@ -521,6 +521,10 @@ g_bytes_unref_to_data (GBytes *bytes,
  * g_bytes_new(), g_bytes_new_take() or g_byte_array_free_to_bytes(). In all
  * other cases the data is copied.
  *
+ * Do not use it if @bytes contains more than %G_MAXUINT
+ * bytes. #GByteArray stores the length of its data in #guint, which
+ * may be shorter than #gsize, that @bytes is using.
+ *
  * Returns: (transfer full): a new mutable #GByteArray containing the same byte data
  *
  * Since: 2.32
