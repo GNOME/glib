@@ -1,3 +1,23 @@
+Overview of changes in GLib 2.66.7
+==================================
+
+* Fix various regressions caused by rushed security fixes in 2.66.6
+  (work by Simon McVittie and Jan Alexander Steffens) (!1933, !1943)
+
+* Fix a silent integer truncation when calling `g_byte_array_new_take()` for
+  byte arrays bigger than `G_MAXUINT` (work by Krzesimir Nowak) (!1944)
+
+* Disallow using currently-undefined D-Bus connection or server flags to prevent
+  forward-compatibility problems with new security-sensitive flags likely to be
+  released in GLib 2.68 (work by Simon McVittie) (!1945)
+
+* Bugs fixed:
+ - !1933 [2.66] Fix regressions in 2.66.6 where negative gssize indicates strlen()
+ - !1943 Backport !1941 “gkeyfilesettingsbackend: Fix basename handling when group is unset” to glib-2-66
+ - !1944 Backport !1942 “gbytearray: Do not accept too large byte arrays” to glib-2-66
+ - !1945 Backport !1934 “gdbus: Reject attempts to set future connection or server flags” to glib-2-66
+
+
 Overview of changes in GLib 2.66.6
 ==================================
 
