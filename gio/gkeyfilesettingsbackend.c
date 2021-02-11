@@ -158,6 +158,13 @@ convert_path (GKeyfileSettingsBackend  *kfsb,
 
   last_slash = strrchr (key, '/');
 
+  /* Disallow empty group names or key names */
+  if (key_len == 0 ||
+      (last_slash != NULL &&
+       (*(last_slash + 1) == '\0' ||
+        last_slash == key)))
+    return FALSE;
+
   if (kfsb->root_group)
     {
       /* if a root_group was specified, make sure the user hasn't given
@@ -185,7 +192,12 @@ convert_path (GKeyfileSettingsBackend  *kfsb,
     }
 
   if (basename)
-    *basename = g_memdup2 (last_slash + 1, key_len - (last_slash - key));
+    {
+      if (last_slash != NULL)
+        *basename = g_memdup2 (last_slash + 1, key_len - (last_slash - key));
+      else
+        *basename = g_strdup (key);
+    }
 
   return TRUE;
 }
