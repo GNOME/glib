@@ -1206,6 +1206,8 @@ typedef enum
  * message bus. This means that the Hello() method will be invoked as part of the connection setup.
  * @G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING: If set, processing of D-Bus messages is
  * delayed until g_dbus_connection_start_message_processing() is called.
+ * @G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER: When authenticating
+ * as a server, require the UID of the peer to be the same as the UID of the server. (Since: 2.68)
  *
  * Flags used when creating a new #GDBusConnection.
  *
@@ -1217,7 +1219,8 @@ typedef enum {
   G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER = (1<<1),
   G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS = (1<<2),
   G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION = (1<<3),
-  G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING = (1<<4)
+  G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING = (1<<4),
+  G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER = (1<<5)
 } GDBusConnectionFlags;
 
 /**
@@ -1368,6 +1371,8 @@ typedef enum
  * details).
  * @G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS: Allow the anonymous
  * authentication method.
+ * @G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER: Require the UID of the
+ * peer to be the same as the UID of the server when authenticating. (Since: 2.68)
  *
  * Flags used when creating a #GDBusServer.
  *
@@ -1377,7 +1382,8 @@ typedef enum
 {
   G_DBUS_SERVER_FLAGS_NONE = 0,
   G_DBUS_SERVER_FLAGS_RUN_IN_THREAD = (1<<0),
-  G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS = (1<<1)
+  G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS = (1<<1),
+  G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER = (1<<2)
 } GDBusServerFlags;
 
 /**
