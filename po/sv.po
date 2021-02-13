@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-02-09 18:07+0000\n"
-"PO-Revision-Date: 2021-02-09 21:14+0100\n"
+"POT-Creation-Date: 2021-02-12 16:38+0000\n"
+"PO-Revision-Date: 2021-02-13 20:29+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -278,7 +278,7 @@ msgstr "Strömmen är redan stängd"
 msgid "Truncate not supported on base stream"
 msgstr "Kapning stöds inte på basströmmen"
 
-#: gio/gcancellable.c:319 gio/gdbusconnection.c:1864 gio/gdbusprivate.c:1416
+#: gio/gcancellable.c:319 gio/gdbusconnection.c:1872 gio/gdbusprivate.c:1416
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -505,7 +505,7 @@ msgstr ""
 "Kan inte fastställa adress för sessionsbuss (inte implementerat för detta "
 "operativsystem)"
 
-#: gio/gdbusaddress.c:1397 gio/gdbusconnection.c:7225
+#: gio/gdbusaddress.c:1397 gio/gdbusconnection.c:7241
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -514,7 +514,7 @@ msgstr ""
 "Kan inte fastställa bussadressen från miljövariabeln DBUS_STARTER_BUS_TYPE — "
 "okänt värde ”%s”"
 
-#: gio/gdbusaddress.c:1406 gio/gdbusconnection.c:7234
+#: gio/gdbusaddress.c:1406 gio/gdbusconnection.c:7250
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -543,7 +543,11 @@ msgstr ""
 "Alla tillgängliga autentiseringsmekanismer har testats (försök: %s) "
 "(tillgängliga: %s)"
 
-#: gio/gdbusauth.c:1167
+#: gio/gdbusauth.c:1170
+msgid "User IDs must be the same for peer and server"
+msgstr "Användar-ID:n måste vara samma för motpart och server"
+
+#: gio/gdbusauth.c:1182
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Avbröts via GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -636,22 +640,22 @@ msgstr "Fel vid öppning av nyckelringen ”%s” för skrivning: "
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(I tillägg misslyckades även upplåsningen för ”%s”: %s) "
 
-#: gio/gdbusconnection.c:595 gio/gdbusconnection.c:2397
+#: gio/gdbusconnection.c:603 gio/gdbusconnection.c:2405
 msgid "The connection is closed"
 msgstr "Anslutningen är stängd"
 
-#: gio/gdbusconnection.c:1894
+#: gio/gdbusconnection.c:1902
 msgid "Timeout was reached"
 msgstr "Tidsgränsen uppnåddes"
 
-#: gio/gdbusconnection.c:2519
+#: gio/gdbusconnection.c:2528
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Flaggor som inte stöds påträffades vid konstruktion av en anslutning på "
 "klientsidan"
 
-#: gio/gdbusconnection.c:4170 gio/gdbusconnection.c:4517
+#: gio/gdbusconnection.c:4186 gio/gdbusconnection.c:4533
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
@@ -659,74 +663,74 @@ msgstr ""
 "Inget sådant gränssnitt ”org.freedesktop.DBus.Properties” på objekt med "
 "sökvägen %s"
 
-#: gio/gdbusconnection.c:4312
+#: gio/gdbusconnection.c:4328
 #, c-format
 msgid "No such property “%s”"
 msgstr "Ingen sådan egenskap ”%s”"
 
-#: gio/gdbusconnection.c:4324
+#: gio/gdbusconnection.c:4340
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Egenskapen ”%s” är inte läsbar"
 
-#: gio/gdbusconnection.c:4335
+#: gio/gdbusconnection.c:4351
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Egenskapen ”%s” är inte skrivbar"
 
-#: gio/gdbusconnection.c:4355
+#: gio/gdbusconnection.c:4371
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Fel vid inställning av egenskapen ”%s”: Förväntade typen ”%s” men fick ”%s”"
 
-#: gio/gdbusconnection.c:4460 gio/gdbusconnection.c:4668
-#: gio/gdbusconnection.c:6665
+#: gio/gdbusconnection.c:4476 gio/gdbusconnection.c:4684
+#: gio/gdbusconnection.c:6681
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Inget sådan gränssnitt ”%s”"
 
-#: gio/gdbusconnection.c:4886 gio/gdbusconnection.c:7174
+#: gio/gdbusconnection.c:4902 gio/gdbusconnection.c:7190
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Inget sådant gränssnitt ”%s” på objekt med sökvägen %s"
 
-#: gio/gdbusconnection.c:4984
+#: gio/gdbusconnection.c:5000
 #, c-format
 msgid "No such method “%s”"
 msgstr "Ingen sådan metod ”%s”"
 
-#: gio/gdbusconnection.c:5015
+#: gio/gdbusconnection.c:5031
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Typ av meddelande, ”%s”, matchar inte förväntade typen ”%s”"
 
-#: gio/gdbusconnection.c:5213
+#: gio/gdbusconnection.c:5229
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Ett objekt är redan exporterat för gränssnittet %s vid %s"
 
-#: gio/gdbusconnection.c:5439
+#: gio/gdbusconnection.c:5455
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Kunde inte hämta egenskap %s.%s"
 
-#: gio/gdbusconnection.c:5495
+#: gio/gdbusconnection.c:5511
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Kunde inte sätta egenskap %s.%s"
 
-#: gio/gdbusconnection.c:5674
+#: gio/gdbusconnection.c:5690
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Metoden ”%s” returnerade typen ”%s”, men förväntade ”%s”"
 
-#: gio/gdbusconnection.c:6776
+#: gio/gdbusconnection.c:6792
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Metoden ”%s” på gränssnittet ”%s” med signaturen ”%s” finns inte"
 
-#: gio/gdbusconnection.c:6897
+#: gio/gdbusconnection.c:6913
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ett underträd har redan exporterats för %s"
@@ -961,25 +965,25 @@ msgstr ""
 "Kan inte anropa metod; proxy är för det välkända namnet %s utan en ägare och "
 "proxy konstruerades med flaggan G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: gio/gdbusserver.c:755
+#: gio/gdbusserver.c:763
 msgid "Abstract namespace not supported"
 msgstr "Abstrakt namnrymd stöds inte"
 
-#: gio/gdbusserver.c:848
+#: gio/gdbusserver.c:856
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Kan inte ange nonce-filen när en server skapas"
 
-#: gio/gdbusserver.c:930
+#: gio/gdbusserver.c:938
 #, c-format
 msgid "Error writing nonce file at “%s”: %s"
 msgstr "Fel vid skrivning av nonce-fil i ”%s”: %s"
 
-#: gio/gdbusserver.c:1103
+#: gio/gdbusserver.c:1113
 #, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
 msgstr "Strängen ”%s” är inte ett giltigt D-Bus GUID"
 
-#: gio/gdbusserver.c:1143
+#: gio/gdbusserver.c:1153
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
 msgstr "Kan inte lyssna på transport ”%s” som inte stöds"
@@ -1686,7 +1690,7 @@ msgstr "Fel vid skrivning till standard ut"
 #: gio/gio-tool-cat.c:133 gio/gio-tool-info.c:340 gio/gio-tool-list.c:172
 #: gio/gio-tool-mkdir.c:48 gio/gio-tool-monitor.c:37 gio/gio-tool-monitor.c:39
 #: gio/gio-tool-monitor.c:41 gio/gio-tool-monitor.c:43
-#: gio/gio-tool-monitor.c:203 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
+#: gio/gio-tool-monitor.c:204 gio/gio-tool-mount.c:1199 gio/gio-tool-open.c:70
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
 #: gio/gio-tool-trash.c:220 gio/gio-tool-tree.c:239
 msgid "LOCATION"
@@ -1707,7 +1711,7 @@ msgstr ""
 "något liknande smb://server/resurs/fil.txt som plats."
 
 #: gio/gio-tool-cat.c:162 gio/gio-tool-info.c:371 gio/gio-tool-mkdir.c:76
-#: gio/gio-tool-monitor.c:228 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
+#: gio/gio-tool-monitor.c:229 gio/gio-tool-mount.c:1250 gio/gio-tool-open.c:96
 #: gio/gio-tool-remove.c:72 gio/gio-tool-trash.c:303
 msgid "No locations given"
 msgstr "Inga platser angivna"
@@ -2049,7 +2053,7 @@ msgstr ""
 msgid "Watch for mount events"
 msgstr "Bevaka monteringshändelser"
 
-#: gio/gio-tool-monitor.c:208
+#: gio/gio-tool-monitor.c:209
 msgid "Monitor files or directories for changes."
 msgstr "Övervaka filer och kataloger efter förändringar."
 
