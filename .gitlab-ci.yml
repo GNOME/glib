@@ -399,9 +399,7 @@ freebsd-12-x86_64:
       - "_build/meson-logs"
       - "_build/${CI_JOB_NAME}-report.xml"
 
-# FIXME: Temporarily disabled while the macOS runner is offline
-# See https://gitlab.gnome.org/Infrastructure/GitLab/-/issues/495
-.macos:
+macos:
   extends: .only-default
   stage: build
   only:
