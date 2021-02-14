@@ -303,7 +303,7 @@ test_extra_getters (void)
   g_assert_cmpstr (s, ==, "Bratwurst");
   g_free (s);
 
-  g_setenv ("LANGUAGE", "sv_SV.UTF8", TRUE);
+  g_setenv ("LANGUAGE", "sv_SE.UTF8", TRUE);
   setlocale (LC_ALL, "");
 
   s = g_desktop_app_info_get_locale_string (appinfo, "X-JunkFood");
