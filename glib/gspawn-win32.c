@@ -230,7 +230,7 @@ g_spawn_async (const gchar          *working_directory,
                GSpawnFlags           flags,
                GSpawnChildSetupFunc  child_setup,
                gpointer              user_data,
-               GPid                 *child_handle,
+               GPid                 *child_pid,
                GError              **error)
 {
   g_return_val_if_fail (argv != NULL, FALSE);
@@ -240,7 +240,7 @@ g_spawn_async (const gchar          *working_directory,
                                    flags,
                                    child_setup,
                                    user_data,
-                                   child_handle,
+                                   child_pid,
                                    NULL, NULL, NULL,
                                    error);
 }
@@ -441,7 +441,7 @@ do_spawn_directly (gint                 *exit_status,
 		   gchar               **argv,
 		   char                **envp,
 		   char                **protected_argv,
-		   GPid                 *child_handle,
+		   GPid                 *child_pid,
 		   GError              **error)     
 {
   const int mode = (exit_status == NULL) ? P_NOWAIT : P_WAIT;
@@ -515,13 +515,13 @@ do_spawn_directly (gint                 *exit_status,
 
   if (exit_status == NULL)
     {
-      if (child_handle && do_return_handle)
-	*child_handle = (GPid) rc;
+      if (child_pid && do_return_handle)
+	*child_pid = (GPid) rc;
       else
 	{
 	  CloseHandle ((HANDLE) rc);
-	  if (child_handle)
-	    *child_handle = 0;
+	  if (child_pid)
+	    *child_pid = 0;
 	}
     }
   else
@@ -538,7 +538,7 @@ do_spawn_with_fds (gint                 *exit_status,
 		   char                **envp,
 		   GSpawnFlags           flags,
 		   GSpawnChildSetupFunc  child_setup,
-		   GPid                 *child_handle,
+		   GPid                 *child_pid,
 		   gint                  stdin_fd,
 		   gint                  stdout_fd,
 		   gint                  stderr_fd,
@@ -581,7 +581,7 @@ do_spawn_with_fds (gint                 *exit_status,
       gboolean retval =
 	do_spawn_directly (exit_status, do_return_handle, flags,
 			   argv, envp, protected_argv,
-			   child_handle, error);
+			   child_pid, error);
       g_strfreev (protected_argv);
       return retval;
     }
@@ -807,23 +807,23 @@ do_spawn_with_fds (gint                 *exit_status,
       switch (helper_report[0])
 	{
 	case CHILD_NO_ERROR:
-	  if (child_handle && do_return_handle)
+	  if (child_pid && do_return_handle)
 	    {
 	      /* rc is our HANDLE for gspawn-win32-helper. It has
 	       * told us the HANDLE of its child. Duplicate that into
 	       * a HANDLE valid in this process.
 	       */
 	      if (!DuplicateHandle ((HANDLE) rc, (HANDLE) helper_report[1],
-				    GetCurrentProcess (), (LPHANDLE) child_handle,
+				    GetCurrentProcess (), (LPHANDLE) child_pid,
 				    0, TRUE, DUPLICATE_SAME_ACCESS))
 		{
 		  char *emsg = g_win32_error_message (GetLastError ());
 		  g_print("%s\n", emsg);
-		  *child_handle = 0;
+		  *child_pid = 0;
 		}
 	    }
-	  else if (child_handle)
-	    *child_handle = 0;
+	  else if (child_pid)
+	    *child_pid = 0;
 	  write (helper_sync_pipe[1], " ", 1);
 	  close_and_invalidate (&helper_sync_pipe[1]);
 	  break;
@@ -867,7 +867,7 @@ do_spawn_with_pipes (gint                 *exit_status,
 		     char                **envp,
 		     GSpawnFlags           flags,
 		     GSpawnChildSetupFunc  child_setup,
-		     GPid                 *child_handle,
+		     GPid                 *child_pid,
 		     gint                 *standard_input,
 		     gint                 *standard_output,
 		     gint                 *standard_error,
@@ -894,7 +894,7 @@ do_spawn_with_pipes (gint                 *exit_status,
 			  envp,
 			  flags,
 			  child_setup,
-			  child_handle,
+			  child_pid,
 			  stdin_pipe[0],
 			  stdout_pipe[1],
 			  stderr_pipe[1],
@@ -1185,7 +1185,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
                           GSpawnFlags           flags,
                           GSpawnChildSetupFunc  child_setup,
                           gpointer              user_data,
-                          GPid                 *child_handle,
+                          GPid                 *child_pid,
                           gint                 *standard_input,
                           gint                 *standard_output,
                           gint                 *standard_error,
@@ -1207,7 +1207,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
 			      envp,
 			      flags,
 			      child_setup,
-			      child_handle,
+			      child_pid,
 			      standard_input,
 			      standard_output,
 			      standard_error,
@@ -1222,7 +1222,7 @@ g_spawn_async_with_fds (const gchar          *working_directory,
                         GSpawnFlags           flags,
                         GSpawnChildSetupFunc  child_setup,
                         gpointer              user_data,
-                        GPid                 *child_handle,
+                        GPid                 *child_pid,
                         gint                  stdin_fd,
                         gint                  stdout_fd,
                         gint                  stderr_fd,
@@ -1244,7 +1244,7 @@ g_spawn_async_with_fds (const gchar          *working_directory,
 			    envp,
 			    flags,
 			    child_setup,
-			    child_handle,
+			    child_pid,
 			    stdin_fd,
 			    stdout_fd,
 			    stderr_fd,
@@ -1384,7 +1384,7 @@ g_spawn_async_utf8 (const gchar          *working_directory,
                     GSpawnFlags           flags,
                     GSpawnChildSetupFunc  child_setup,
                     gpointer              user_data,
-                    GPid                 *child_handle,
+                    GPid                 *child_pid,
                     GError              **error)
 {
   return g_spawn_async (working_directory,
@@ -1393,7 +1393,7 @@ g_spawn_async_utf8 (const gchar          *working_directory,
                         flags,
                         child_setup,
                         user_data,
-                        child_handle,
+                        child_pid,
                         error);
 }
 
@@ -1404,7 +1404,7 @@ g_spawn_async_with_pipes_utf8 (const gchar          *working_directory,
                                GSpawnFlags           flags,
                                GSpawnChildSetupFunc  child_setup,
                                gpointer              user_data,
-                               GPid                 *child_handle,
+                               GPid                 *child_pid,
                                gint                 *standard_input,
                                gint                 *standard_output,
                                gint                 *standard_error,
@@ -1416,7 +1416,7 @@ g_spawn_async_with_pipes_utf8 (const gchar          *working_directory,
                                    flags,
                                    child_setup,
                                    user_data,
-                                   child_handle,
+                                   child_pid,
                                    standard_input,
                                    standard_output,
                                    standard_error,
