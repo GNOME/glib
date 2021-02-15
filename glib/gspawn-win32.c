@@ -191,8 +191,8 @@ protect_argv_string (const gchar *string)
 }
 
 static gint
-protect_argv (gchar  **argv,
-	      gchar ***new_argv)
+protect_argv (const gchar * const   *argv,
+              gchar               ***new_argv)
 {
   gint i;
   gint argc = 0;
@@ -398,10 +398,10 @@ set_child_error (gintptr      report[2],
 }
 
 static gboolean
-utf8_charv_to_wcharv (char     **utf8_charv,
-		      wchar_t ***wcharv,
-		      int       *error_index,
-		      GError   **error)
+utf8_charv_to_wcharv (const gchar * const   *utf8_charv,
+                      wchar_t             ***wcharv,
+                      int                   *error_index,
+                      GError               **error)
 {
   wchar_t **retval = NULL;
 
@@ -436,16 +436,16 @@ utf8_charv_to_wcharv (char     **utf8_charv,
 
 static gboolean
 do_spawn_directly (gint                 *exit_status,
-		   gboolean		 do_return_handle,
-		   GSpawnFlags           flags,
-		   gchar               **argv,
-		   char                **envp,
-		   char                **protected_argv,
-		   GPid                 *child_pid,
-		   GError              **error)     
+                   gboolean              do_return_handle,
+                   GSpawnFlags           flags,
+                   const gchar * const  *argv,
+                   const gchar * const  *envp,
+                   const gchar * const  *protected_argv,
+                   GPid                 *child_pid,
+                   GError              **error)
 {
   const int mode = (exit_status == NULL) ? P_NOWAIT : P_WAIT;
-  char **new_argv;
+  const gchar * const *new_argv;
   gintptr rc = -1;
   int errsv;
   GError *conv_error = NULL;
@@ -612,7 +612,7 @@ fork_exec (gint                  *exit_status,
       /* We can do without the helper process */
       gboolean retval =
 	do_spawn_directly (exit_status, do_return_handle, flags,
-			   argv, envp, protected_argv,
+			   argv, envp, (const gchar * const *) protected_argv,
 			   child_pid, error);
       g_strfreev (protected_argv);
       return retval;
@@ -746,7 +746,7 @@ fork_exec (gint                  *exit_status,
 	g_print ("argv[%d]: %s\n", i, (new_argv[i] ? new_argv[i] : "NULL"));
     }
 
-  if (!utf8_charv_to_wcharv (new_argv, &wargv, &conv_error_index, &conv_error))
+  if (!utf8_charv_to_wcharv ((const gchar * const *) new_argv, &wargv, &conv_error_index, &conv_error))
     {
       if (conv_error_index == ARG_WORKING_DIRECTORY)
 	g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_CHDIR,
