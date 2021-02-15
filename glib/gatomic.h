@@ -423,10 +423,24 @@ G_END_DECLS
 #define g_atomic_int_dec_and_test(atomic) \
   (g_atomic_int_dec_and_test ((gint *) (atomic)))
 
+#if defined(glib_typeof)
+  /* The (void *) cast in the middle *looks* redundant, because
+   * g_atomic_pointer_get returns void * already, but it's to silence
+   * -Werror=bad-function-cast when we're doing something like:
+   * guintptr a, b; ...; a = g_atomic_pointer_get (&b);
+   * which would otherwise be assigning the void * result of
+   * g_atomic_pointer_get directly to the pointer-sized but
+   * non-pointer-typed result. */
+#define g_atomic_pointer_get(atomic)                                       \
+  (glib_typeof (*(atomic))) (void *) ((g_atomic_pointer_get) ((void *) atomic))
+#else /* !defined(glib_typeof) */
 #define g_atomic_pointer_get(atomic) \
   (g_atomic_pointer_get (atomic))
+#endif
+
 #define g_atomic_pointer_set(atomic, newval) \
   (g_atomic_pointer_set ((atomic), (gpointer) (newval)))
+
 #define g_atomic_pointer_compare_and_exchange(atomic, oldval, newval) \
   (g_atomic_pointer_compare_and_exchange ((atomic), (gpointer) (oldval), (gpointer) (newval)))
 #define g_atomic_pointer_add(atomic, val) \
