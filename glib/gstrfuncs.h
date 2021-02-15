@@ -253,9 +253,9 @@ GLIB_AVAILABLE_IN_ALL
 gchar*                g_strescape      (const gchar *source,
 					const gchar *exceptions) G_GNUC_MALLOC;
 
-GLIB_AVAILABLE_IN_ALL
-gpointer              g_memdup	       (gconstpointer mem,
-					guint	       byte_size) G_GNUC_ALLOC_SIZE(2);
+GLIB_DEPRECATED_IN_2_68_FOR (g_memdup2)
+gpointer              g_memdup         (gconstpointer mem,
+                                        guint         byte_size) G_GNUC_ALLOC_SIZE(2);
 
 GLIB_AVAILABLE_IN_2_68
 gpointer              g_memdup2        (gconstpointer mem,
