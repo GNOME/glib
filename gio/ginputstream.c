@@ -411,12 +411,41 @@ g_input_stream_real_skip (GInputStream  *stream,
 
   if (G_IS_SEEKABLE (stream) && g_seekable_can_seek (G_SEEKABLE (stream)))
     {
+      GSeekable *seekable = G_SEEKABLE (stream);
+      goffset start, end;
+      gboolean success;
+
+      /* g_seekable_seek() may try to set pending itself */
+      stream->priv->pending = FALSE;
+
+      start = g_seekable_tell (seekable);
+
       if (g_seekable_seek (G_SEEKABLE (stream),
-			   count,
-			   G_SEEK_CUR,
-			   cancellable,
-			   NULL))
-	return count;
+                           0,
+                           G_SEEK_END,
+                           cancellable,
+                           NULL))
+        {
+          end = g_seekable_tell (seekable);
+          g_assert (end >= start);
+          if (start > G_MAXSIZE - count || start + count > end)
+            {
+              stream->priv->pending = TRUE;
+              return end - start;
+            }
+
+          success = g_seekable_seek (G_SEEKABLE (stream),
+                                     start + count,
+                                     G_SEEK_SET,
+                                     cancellable,
+                                     error);
+          stream->priv->pending = TRUE;
+
+          if (success)
+            return count;
+          else
+            return -1;
+        }
     }
 
   /* If not seekable, or seek failed, fall back to reading data: */
