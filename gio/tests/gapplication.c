@@ -1020,6 +1020,53 @@ test_handle_local_options_passthrough (void)
   g_test_trap_assert_passed ();
 }
 
+static gint
+test_local_options_double (GApplication *app,
+                           GVariantDict *options,
+                           gpointer      data)
+{
+  gboolean *called = data;
+  gdouble number = 1.0;
+
+  *called = TRUE;
+
+  g_assert_true (g_variant_dict_lookup (options, "number", "d", &number));
+  g_assert_cmpfloat (number, ==, 0.0);
+
+  return 0;
+}
+
+static void
+test_handle_local_options_double (void)
+{
+  g_test_summary ("Test that a double of value 0.0 can be parsed using the options handling");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2329");
+
+  if (g_test_subprocess ())
+    {
+      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+      gchar *argv[] = { binpath, "--number", "0.0", NULL };
+      GApplication *app;
+      gboolean called = FALSE;
+      int status;
+
+      app = g_application_new ("org.gtk.TestApplication", 0);
+      g_application_add_main_option (app, "number", 0, G_OPTION_FLAG_NONE, G_OPTION_ARG_DOUBLE, "", "");
+      g_signal_connect (app, "handle-local-options", G_CALLBACK (test_local_options_double), &called);
+
+      status = g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+      g_assert_true (called);
+      g_assert_cmpint (status, ==, 0);
+
+      g_object_unref (app);
+      g_free (binpath);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_STDOUT | G_TEST_SUBPROCESS_INHERIT_STDERR);
+  g_test_trap_assert_passed ();
+}
+
 static void
 test_api (void)
 {
@@ -1222,6 +1269,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/test-handle-local-options1", test_handle_local_options_success);
   g_test_add_func ("/gapplication/test-handle-local-options2", test_handle_local_options_failure);
   g_test_add_func ("/gapplication/test-handle-local-options3", test_handle_local_options_passthrough);
+  g_test_add_func ("/gapplication/test-handle-local-options4", test_handle_local_options_double);
   g_test_add_func ("/gapplication/api", test_api);
   g_test_add_data_func ("/gapplication/replace", GINT_TO_POINTER (TRUE), test_replace);
   g_test_add_data_func ("/gapplication/no-replace", GINT_TO_POINTER (FALSE), test_replace);
