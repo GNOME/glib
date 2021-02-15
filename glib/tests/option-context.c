@@ -26,6 +26,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
+#include <math.h>
+
 
 static GOptionEntry main_entries[] = {
   { "main-switch", 0, 0,
@@ -579,7 +581,6 @@ arg_test3 (void)
   g_free (argv);
   g_option_context_free (context);
 }
-
 
 static void
 arg_test4 (void)
@@ -2560,6 +2561,39 @@ double_free (void)
 
 }
 
+static void
+double_zero (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv_copy;
+  gchar **argv;
+  int argc;
+  double test_val = NAN;
+  GOptionEntry entries [] =
+    { { "test", 0, 0, G_OPTION_ARG_DOUBLE, &test_val, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test 0", &argc);
+  argv_copy = copy_stringv (argv, argc);
+
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_no_error (error);
+  g_assert (retval);
+
+  /* Last arg specified is the one that should be stored */
+  g_assert (test_val == 0);
+
+  g_strfreev (argv_copy);
+  g_free (argv);
+  g_option_context_free (context);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2674,6 +2708,7 @@ main (int   argc,
   g_test_add_func ("/option/bug/dash-arg", dash_arg_test);
   g_test_add_func ("/option/bug/short-remaining", short_remaining);
   g_test_add_func ("/option/bug/double-free", double_free);
+  g_test_add_func ("/option/bug/double-zero", double_zero);
 
   return g_test_run();
 }
