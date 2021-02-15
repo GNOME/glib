@@ -1248,6 +1248,65 @@ g_spawn_async_with_fds (const gchar          *working_directory,
 }
 
 gboolean
+g_spawn_async_with_pipes_and_fds (const gchar           *working_directory,
+                                  const gchar * const   *argv,
+                                  const gchar * const   *envp,
+                                  GSpawnFlags            flags,
+                                  GSpawnChildSetupFunc   child_setup,
+                                  gpointer               user_data,
+                                  gint                   stdin_fd,
+                                  gint                   stdout_fd,
+                                  gint                   stderr_fd,
+                                  const gint            *source_fds,
+                                  const gint            *target_fds,
+                                  gsize                  n_fds,
+                                  GPid                  *child_pid_out,
+                                  gint                  *stdin_pipe_out,
+                                  gint                  *stdout_pipe_out,
+                                  gint                  *stderr_pipe_out,
+                                  GError               **error)
+{
+  g_return_val_if_fail (argv != NULL, FALSE);
+  g_return_val_if_fail (stdout_pipe_out == NULL ||
+                        !(flags & G_SPAWN_STDOUT_TO_DEV_NULL), FALSE);
+  g_return_val_if_fail (stderr_pipe_out == NULL ||
+                        !(flags & G_SPAWN_STDERR_TO_DEV_NULL), FALSE);
+  /* can't inherit stdin if we have an input pipe. */
+  g_return_val_if_fail (stdin_pipe_out == NULL ||
+                        !(flags & G_SPAWN_CHILD_INHERITS_STDIN), FALSE);
+  /* can’t use pipes and stdin/stdout/stderr FDs */
+  g_return_val_if_fail (stdin_pipe_out == NULL || stdin_fd < 0, FALSE);
+  g_return_val_if_fail (stdout_pipe_out == NULL || stdout_fd < 0, FALSE);
+  g_return_val_if_fail (stderr_pipe_out == NULL || stderr_fd < 0, FALSE);
+
+  /* source_fds/target_fds isn’t supported on Windows at the moment. */
+  if (n_fds != 0)
+    {
+      g_set_error_literal (error, G_SPAWN_ERROR, G_SPAWN_ERROR_INVAL,
+                           "FD redirection is not supported on Windows at the moment");
+      return FALSE;
+    }
+
+  return fork_exec (NULL,
+                    (flags & G_SPAWN_DO_NOT_REAP_CHILD),
+                    working_directory,
+                    argv,
+                    envp,
+                    flags,
+                    child_setup,
+                    user_data,
+                    child_pid_out,
+                    stdin_pipe_out,
+                    stdout_pipe_out,
+                    stderr_pipe_out,
+                    stdin_fd,
+                    stdout_fd,
+                    stderr_fd,
+                    NULL,
+                    error);
+}
+
+gboolean
 g_spawn_command_line_sync (const gchar  *command_line,
                            gchar       **standard_output,
                            gchar       **standard_error,
