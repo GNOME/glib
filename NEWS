@@ -1,3 +1,67 @@
+Overview of changes in GLib 2.67.4
+==================================
+
+* Add a `g_string_replace()` function (work by Joshua Lee) (#225)
+
+* Add `G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER` flag to simplify
+  the common case for writing a D-Bus authentication observer, allowing most
+  uses of `GDBusAuthObserver` to be dropped (#1804)
+
+* Add a new `g_spawn_with_pipes_and_fds()` variant which supports renumbering
+  FDs (#2097)
+
+* Add new g_memdup2() API to replace g_memdup(), which is vulnerable to a
+  silent integer truncation and heap overflow problem if not used carefully
+  (discovered by Kevin Backhouse, work by Philip Withnall) (#2319)
+
+* Fix various regressions caused by rushed security fixes in 2.66.6 (work by
+  Simon McVittie and Jan Alexander Steffens) (!1932, !1941, #2323)
+
+* Fix a silent integer truncation when calling g_byte_array_new_take() for
+  byte arrays bigger than G_MAXUINT (work by Krzesimir Nowak) (!1942)
+
+* Fix `g_utf8_strdown()` to fix some issues in Turkish
+  (work by Kjell Ahlstedt) (!1930)
+
+* Bugs fixed:
+ - #225 GString doesn't have a g_string_replace() function
+ - #587 g_input_stream_skip() out-of-bounds behavior is inconsistent between implementations
+ - #1804 Add G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flag
+ - #2097 GSubprocessLauncher with FD assignment can clash with g_spawn_async internal pipe
+ - #2315 httpproxy: Need overflow protection when reading response during connection establishment
+ - #2319 CVE-2021-27219 (GHSL-2021-045): integer overflow in g_bytes_new/g_memdup
+ - #2322 g_test_dbus: double output when piping
+ - #2323 [GLIB 2.66.6] g_io_channel_set_line_term() stopped working with null terminated strings and length -1
+ - !1917 Adding a missing test on integer overflow within g_http_proxy_connect()
+ - !1918 Fix more warnings
+ - !1923 Add support for Tilix and Konsole
+ - !1930 guniprop: Fix g_utf8_strdown() for Turkish locale
+ - !1932 gtlspassword: Fix inverted assertion
+ - !1934 gdbus: Reject attempts to set future connection or server flags
+ - !1938 Fix more warnings
+ - !1939 ci: Temporarily disable macOS CI job as runner is offline
+ - !1940 Fix more warnings
+ - !1941 gkeyfilesettingsbackend: Fix basename handling when group is unset
+ - !1942 CVE-2021-27218: gbytearray: Do not accept too large byte arrays
+ - !1947 Revert "Merge branch 'wip/pwithnall/macos-ci-disable' into 'master'"
+ - !1948 tests: Use a more realistic language code than sv_SV
+ - !1949 gatomic: Make fallback g_atomic_pointer_get type-safe
+ - !1951 Add a test for parsing 0 as double
+ - !1955 tests: Add missing NULL terminator to spawn-singlethread test
+
+* Translation updates:
+ - Catalan
+ - Galician
+ - Hungarian
+ - Portuguese
+ - Romanian
+ - Slovenian
+ - Spanish
+ - Swedish
+ - Turkish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.67.3
 ==================================
 
