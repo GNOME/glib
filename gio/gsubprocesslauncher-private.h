@@ -42,8 +42,8 @@ struct _GSubprocessLauncher
   gint stderr_fd;
   gchar *stderr_path;
 
-  GArray *basic_fd_assignments;
-  GArray *needdup_fd_assignments;
+  GArray *source_fds;
+  GArray *target_fds;  /* always the same length as source_fds */
   gboolean closed_fd;
 
   GSpawnChildSetupFunc child_setup_func;
