@@ -47,10 +47,12 @@ static const struct help_topic topics[] = {
                     N_("[COMMAND]")
   },
   { "version",      N_("Print version"),
-                    N_("Print version information and exit")
+                    N_("Print version information and exit"),
+                    NULL
   },
   { "list-apps",    N_("List applications"),
-                    N_("List the installed D-Bus activatable applications (by .desktop files)")
+                    N_("List the installed D-Bus activatable applications (by .desktop files)"),
+                    NULL
   },
   { "launch",       N_("Launch an application"),
                     N_("Launch the application (with optional files to open)"),
@@ -85,7 +87,7 @@ app_help (gboolean     requested,
 
   if (command)
     {
-      gint i;
+      gsize i;
 
       for (i = 0; i < G_N_ELEMENTS (topics); i++)
         if (g_str_equal (topics[i].command, command))
@@ -102,8 +104,8 @@ app_help (gboolean     requested,
 
   if (topic)
     {
-      gint maxwidth;
-      gint i;
+      guint maxwidth;
+      gsize i;
 
       g_string_append_printf (string, "\n  %s %s %s\n\n", "gapplication",
                               topic->command, topic->synopsis ? _(topic->synopsis) : "");
@@ -127,8 +129,8 @@ app_help (gboolean     requested,
     }
   else
     {
-      gint maxwidth;
-      gint i;
+      guint maxwidth;
+      gsize i;
 
       g_string_append_printf (string, "\n  %s %s %s\n\n", "gapplication", _("COMMAND"), _("[ARGS…]"));
       g_string_append_printf (string, _("Commands:\n"));

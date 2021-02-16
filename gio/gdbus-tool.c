@@ -916,7 +916,7 @@ handle_call (gint        *argc,
   GPtrArray *in_signature_types;
 #ifdef G_OS_UNIX
   GUnixFDList *fd_list;
-  guint fd_id;
+  gint fd_id;
 #endif
   gboolean complete_names;
   gboolean complete_paths;
