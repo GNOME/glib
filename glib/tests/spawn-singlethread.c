@@ -439,7 +439,7 @@ test_spawn_fd_assignment_clash (void)
   const guint n_fds = 10;
   gint source_fds[n_fds];
   gint target_fds[n_fds];
-  const gchar *argv[] = { "/nonexistent" };
+  const gchar *argv[] = { "/nonexistent", NULL };
   gboolean retval;
   GError *local_error = NULL;
   struct stat statbuf;
