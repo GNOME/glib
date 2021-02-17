@@ -7057,7 +7057,7 @@ g_file_query_default_handler_finish (GFile        *file,
  * @contents: (out) (transfer full) (element-type guint8) (array length=length): a location to place the contents of the file
  * @length: (out) (optional): a location to place the length of the contents of the file,
  *    or %NULL if the length is not needed
- * @etag_out: (out) (optional): a location to place the current entity tag for the file,
+ * @etag_out: (out) (optional) (nullable): a location to place the current entity tag for the file,
  *    or %NULL if the entity tag is not needed
  * @error: a #GError, or %NULL
  *
@@ -7345,7 +7345,7 @@ g_file_load_partial_contents_async (GFile                 *file,
  * @contents: (out) (transfer full) (element-type guint8) (array length=length): a location to place the contents of the file
  * @length: (out) (optional): a location to place the length of the contents of the file,
  *     or %NULL if the length is not needed
- * @etag_out: (out) (optional): a location to place the current entity tag for the file,
+ * @etag_out: (out) (optional) (nullable): a location to place the current entity tag for the file,
  *     or %NULL if the entity tag is not needed
  * @error: a #GError, or %NULL
  *
@@ -7443,7 +7443,7 @@ g_file_load_contents_async (GFile               *file,
  * @contents: (out) (transfer full) (element-type guint8) (array length=length): a location to place the contents of the file
  * @length: (out) (optional): a location to place the length of the contents of the file,
  *     or %NULL if the length is not needed
- * @etag_out: (out) (optional): a location to place the current entity tag for the file,
+ * @etag_out: (out) (optional) (nullable): a location to place the current entity tag for the file,
  *     or %NULL if the entity tag is not needed
  * @error: a #GError, or %NULL
  *
@@ -7481,7 +7481,7 @@ g_file_load_contents_finish (GFile         *file,
  *     or %NULL
  * @make_backup: %TRUE if a backup should be created
  * @flags: a set of #GFileCreateFlags
- * @new_etag: (out) (optional): a location to a new [entity tag][gfile-etag]
+ * @new_etag: (out) (optional) (nullable): a location to a new [entity tag][gfile-etag]
  *      for the document. This should be freed with g_free() when no longer
  *      needed, or %NULL
  * @cancellable: optional #GCancellable object, %NULL to ignore
@@ -7789,7 +7789,7 @@ g_file_replace_contents_bytes_async  (GFile               *file,
  * g_file_replace_contents_finish:
  * @file: input #GFile
  * @res: a #GAsyncResult
- * @new_etag: (out) (optional): a location of a new [entity tag][gfile-etag]
+ * @new_etag: (out) (optional) (nullable): a location of a new [entity tag][gfile-etag]
  *     for the document. This should be freed with g_free() when it is no
  *     longer needed, or %NULL
  * @error: a #GError, or %NULL
