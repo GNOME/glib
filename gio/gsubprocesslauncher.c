@@ -661,11 +661,11 @@ g_subprocess_launcher_close (GSubprocessLauncher *self)
       g_assert (self->target_fds != NULL);
       g_assert (self->source_fds->len == self->target_fds->len);
 
+      /* Note: Don’t close the target_fds, as they’re only valid FDs in the
+       * child process. This code never executes in the child process. */
       for (i = 0; i < self->source_fds->len; i++)
-        {
-          (void) close (g_array_index (self->source_fds, int, i));
-          (void) close (g_array_index (self->target_fds, int, i));
-        }
+        (void) close (g_array_index (self->source_fds, int, i));
+
       g_clear_pointer (&self->source_fds, g_array_unref);
       g_clear_pointer (&self->target_fds, g_array_unref);
     }
