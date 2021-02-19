@@ -596,16 +596,16 @@ g_subprocess_launcher_take_stderr_fd (GSubprocessLauncher *self,
  * @target_fd: Target descriptor for child process
  *
  * Transfer an arbitrary file descriptor from parent process to the
- * child.  This function takes "ownership" of the fd; it will be closed
+ * child.  This function takes ownership of the @source_fd; it will be closed
  * in the parent when @self is freed.
  *
  * By default, all file descriptors from the parent will be closed.
- * This function allows you to create (for example) a custom pipe() or
- * socketpair() before launching the process, and choose the target
+ * This function allows you to create (for example) a custom `pipe()` or
+ * `socketpair()` before launching the process, and choose the target
  * descriptor in the child.
  *
  * An example use case is GNUPG, which has a command line argument
- * --passphrase-fd providing a file descriptor number where it expects
+ * `--passphrase-fd` providing a file descriptor number where it expects
  * the passphrase to be written.
  */
 void
