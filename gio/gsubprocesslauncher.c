@@ -596,16 +596,16 @@ g_subprocess_launcher_take_stderr_fd (GSubprocessLauncher *self,
  * @target_fd: Target descriptor for child process
  *
  * Transfer an arbitrary file descriptor from parent process to the
- * child.  This function takes "ownership" of the fd; it will be closed
+ * child.  This function takes ownership of the @source_fd; it will be closed
  * in the parent when @self is freed.
  *
  * By default, all file descriptors from the parent will be closed.
- * This function allows you to create (for example) a custom pipe() or
- * socketpair() before launching the process, and choose the target
+ * This function allows you to create (for example) a custom `pipe()` or
+ * `socketpair()` before launching the process, and choose the target
  * descriptor in the child.
  *
  * An example use case is GNUPG, which has a command line argument
- * --passphrase-fd providing a file descriptor number where it expects
+ * `--passphrase-fd` providing a file descriptor number where it expects
  * the passphrase to be written.
  */
 void
@@ -661,11 +661,11 @@ g_subprocess_launcher_close (GSubprocessLauncher *self)
       g_assert (self->target_fds != NULL);
       g_assert (self->source_fds->len == self->target_fds->len);
 
+      /* Note: Don’t close the target_fds, as they’re only valid FDs in the
+       * child process. This code never executes in the child process. */
       for (i = 0; i < self->source_fds->len; i++)
-        {
-          (void) close (g_array_index (self->source_fds, int, i));
-          (void) close (g_array_index (self->target_fds, int, i));
-        }
+        (void) close (g_array_index (self->source_fds, int, i));
+
       g_clear_pointer (&self->source_fds, g_array_unref);
       g_clear_pointer (&self->target_fds, g_array_unref);
     }
