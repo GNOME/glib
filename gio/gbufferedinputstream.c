@@ -1104,8 +1104,8 @@ g_buffered_input_stream_real_fill_finish (GBufferedInputStream *stream,
 
 typedef struct
 {
-  gssize bytes_skipped;
-  gssize count;
+  gsize bytes_skipped;
+  gsize count;
 } SkipAsyncData;
 
 static void
@@ -1186,6 +1186,7 @@ skip_fill_buffer_callback (GObject      *source_object,
 	  priv->pos += data->count;
 	}
 
+      g_assert (data->bytes_skipped <= G_MAXSSIZE);
       g_task_return_int (task, data->bytes_skipped);
     }
 
@@ -1243,9 +1244,12 @@ g_buffered_input_stream_skip_async (GInputStream        *stream,
   if (count > priv->len)
     {
       /* Large request, shortcut buffer */
-
       base_stream = G_FILTER_INPUT_STREAM (stream)->base_stream;
 
+      /* If 'count > G_MAXSSIZE then 'g_input_stream_skip_async()'
+       * will return an error anyway before calling this.
+       * Assert that this is never called for too big `count` for clarity. */
+      g_assert ((gssize) count >= 0);
       g_input_stream_skip_async (base_stream,
                                  count,
                                  io_priority, cancellable,
