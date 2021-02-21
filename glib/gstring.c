@@ -978,7 +978,7 @@ g_string_replace (GString     *string,
 {
   gsize f_len, r_len, pos;
   gchar *cur, *next;
-  gint n = 0;
+  guint n = 0;
 
   g_return_val_if_fail (string != NULL, 0);
   g_return_val_if_fail (find != NULL, 0);
