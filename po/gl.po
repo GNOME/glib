@@ -2,6 +2,7 @@
 # Copyright (C) 2001, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
 # Proxecto Trasno - Adaptación do software libre á lingua galega:  Se desexas
 # colaborar connosco, podes atopar máis información en http://www.trasno.net
+#
 # Manuel A. Fernández Montecelo <manuel@sindominio.net>, 2001, 2005.
 # Ignacio Casal Quinteiro <nacho.resa@gmail.com>, 2005, 2006.
 # Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007.
@@ -12,15 +13,14 @@
 # Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011, 2012.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
 # Fran Dieguez <frandieguez@gnome.org>, 2012-2021.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-02-12 16:38+0000\n"
-"PO-Revision-Date: 2021-02-12 20:02+0100\n"
+"POT-Creation-Date: 2021-02-12 19:03+0000\n"
+"PO-Revision-Date: 2021-02-23 23:40+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
-"Language-Team: Galician <proxecto@trasno.gal>\n"
+"Language-Team: Proxecto Trasno <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -407,7 +407,7 @@ msgstr "Transporte «%s» descoñecido ou non compatíbel para o enderezo «%s»
 #: gio/gdbusaddress.c:462
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
-msgstr "O elemento do enderezo «%s» non contén un caracter dous puntos (:)"
+msgstr "O elemento do enderezo «%s» non contén un carácter dous puntos (:)"
 
 #: gio/gdbusaddress.c:471
 #, c-format
@@ -561,7 +561,7 @@ msgstr "Falta de contido inesperada ao tentar ler (de forma segura) unha liña"
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
-"Agotáronse todos os mecanismos de autenticación dispoñíbel (tentaronse: %s) "
+"Esgotáronse todos os mecanismos de autenticación dispoñíbel (tentáronse: %s) "
 "(dispoñíbeis: %s)"
 
 #: gio/gdbusauth.c:1170
@@ -623,7 +623,7 @@ msgstr ""
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
-"O segundo token da liña %d no anel de chaves en «%s» co contido «%s» está "
+"O segundo token da liña %d no anel de chaves en «%s» co contido «%s» está "
 "malformado"
 
 #: gio/gdbusauthmechanismsha1.c:477
@@ -944,7 +944,7 @@ msgid ""
 "Message body has type signature “%s” but signature in the header field is "
 "“%s”"
 msgstr ""
-"O corpo da mensaxe ten a sinatura de tipo «%s» pero a sintura no campo da "
+"O corpo da mensaxe ten a sinatura de tipo «%s» pero a sinatura no campo da "
 "cabeceira é «%s»"
 
 #: gio/gdbusmessage.c:2825
@@ -966,7 +966,7 @@ msgstr "Produciuse un erro ao devolver co corpo baleiro"
 #: gio/gdbusprivate.c:2246
 #, c-format
 msgid "(Type any character to close this window)\n"
-msgstr "(Prema calquera caracter para pechar esta xanela)\n"
+msgstr "(Prema calquera carácter para pechar esta xanela)\n"
 
 #: gio/gdbusprivate.c:2420
 #, c-format
@@ -1527,15 +1527,15 @@ msgstr "O nome do host non é válido"
 
 #: gio/ghttpproxy.c:143
 msgid "Bad HTTP proxy reply"
-msgstr "Resposta do proxi HTTP incorrecta"
+msgstr "Resposta do proxy HTTP incorrecta"
 
 #: gio/ghttpproxy.c:159
 msgid "HTTP proxy connection not allowed"
-msgstr "Non se permite a conexión co proxi HTTP"
+msgstr "Non se permite a conexión co proxy HTTP"
 
 #: gio/ghttpproxy.c:164
 msgid "HTTP proxy authentication failed"
-msgstr "Produciuse un fallo na autenticación co proxi HTTP"
+msgstr "Produciuse un fallo na autenticación co proxy HTTP"
 
 #: gio/ghttpproxy.c:167
 msgid "HTTP proxy authentication required"
@@ -1544,15 +1544,15 @@ msgstr "Requírese autenticación no proxy HTTP"
 #: gio/ghttpproxy.c:171
 #, c-format
 msgid "HTTP proxy connection failed: %i"
-msgstr "Produciuse un fallo na conexión co proxi HTTP: %i"
+msgstr "Produciuse un fallo na conexión co proxy HTTP: %i"
 
 #: gio/ghttpproxy.c:266
 msgid "HTTP proxy response too big"
-msgstr "A resposta do proxi HTTP é demasiado grande"
+msgstr "A resposta do proxy HTTP é demasiado grande"
 
 #: gio/ghttpproxy.c:283
 msgid "HTTP proxy server closed connection unexpectedly."
-msgstr "A conexión co servidor proxi HTTP pechouse de forma non esperada."
+msgstr "A conexión co servidor proxy HTTP pechouse de forma non esperada."
 
 #: gio/gicon.c:298
 #, c-format
@@ -1738,7 +1738,7 @@ msgstr "Produciuse un erro ao escribir ao stdout"
 #: gio/gio-tool-remove.c:48 gio/gio-tool-rename.c:45 gio/gio-tool-set.c:89
 #: gio/gio-tool-trash.c:220 gio/gio-tool-tree.c:239
 msgid "LOCATION"
-msgstr "LOCALICCIÓN"
+msgstr "LOCALIZACIÓN"
 
 #: gio/gio-tool-cat.c:138
 msgid "Concatenate files and print to standard output."
@@ -1935,7 +1935,7 @@ msgid ""
 "arguments to it."
 msgstr ""
 "Iniciar unha aplicación desde un ficheiro desktop, pasando argumentos do "
-"nome do ficheiro opcionais a él."
+"nome do ficheiro opcionais a el."
 
 #: gio/gio-tool-launch.c:77
 msgid "No desktop file given"
@@ -2180,7 +2180,7 @@ msgstr "Montar un volume TCRYPT oculto"
 
 #: gio/gio-tool-mount.c:77
 msgid "Mount a TCRYPT system volume"
-msgstr "Motar un volume de sistema TCRYPT"
+msgstr "Montar un volume de sistema TCRYPT"
 
 #: gio/gio-tool-mount.c:265 gio/gio-tool-mount.c:297
 msgid "Anonymous access denied"
@@ -2381,7 +2381,7 @@ msgid ""
 "already exists, it will not be overwritten unless --force is set."
 msgstr ""
 "Nota: para o trocador --restore, se a localización orixinal dun ficheiro\n"
-"no lixo xa exite, non se sobrescribirá a non ser que se estabeleza --force."
+"no lixo xa existe, non se sobrescribirá a non ser que se estabeleza --force."
 
 #: gio/gio-tool-trash.c:258
 msgid "Location given doesn't start with trash:///"
@@ -2478,7 +2478,7 @@ msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Xerar saída no formato seleccionado pola extensión do nome do ficheiro "
-"obxetivo"
+"obxectivo"
 
 #: gio/glib-compile-resources.c:741
 msgid "Generate source header"
@@ -2527,7 +2527,7 @@ msgid ""
 "Resource specification files have the extension .gresource.xml,\n"
 "and the resource file have the extension called .gresource."
 msgstr ""
-"Compilaa unha especificación de recurso nun ficheiro de recurso.\n"
+"Compila unha especificación de recurso nun ficheiro de recurso.\n"
 "Os ficheiros de especificación de recursos teñen a extensión .gresource."
 "xml,\n"
 "e o ficheiro do recurso ten a extensión .gresource."
@@ -2611,7 +2611,7 @@ msgstr "l10n solicitado, pero non existe o dominio gettext"
 
 #: gio/glib-compile-schemas.c:452
 msgid "translation context given for value without l10n enabled"
-msgstr "conexto de tradución fornecido para o valor sen ter l10n activado"
+msgstr "contexto de tradución fornecido para o valor sen ter l10n activado"
 
 #: gio/glib-compile-schemas.c:474
 #, c-format
@@ -2654,7 +2654,7 @@ msgid ""
 "after <choices>"
 msgstr ""
 "<aliases> só pode ser especificado para as chaves con enumerados ou "
-"bandeiras de tipos ou despoisd e <choices>"
+"bandeiras de tipos ou despois de <choices>"
 
 #: gio/glib-compile-schemas.c:580
 #, c-format
@@ -2889,7 +2889,7 @@ msgid ""
 "override for this key."
 msgstr ""
 "Non existe a clave «%s» no esquema «%s» como se especificou no ficheiro de "
-"sobrescritura «%s»; ignorando a sobrescributra para esta chave."
+"sobrescrita «%s»; ignorando a sobrescrita para esta chave."
 
 #: gio/glib-compile-schemas.c:1971
 #, c-format
@@ -2898,7 +2898,7 @@ msgid ""
 "strict was specified; exiting."
 msgstr ""
 "Non existe a clave «%s» no esquema «%s» como se especificou no ficheiro de "
-"sobrescritura «%s» e --strict foi especificado; saíndo."
+"sobrescrita «%s» e --strict foi especificado; saíndo."
 
 #: gio/glib-compile-schemas.c:1993
 #, c-format
@@ -2906,9 +2906,9 @@ msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”); ignoring override for this key."
 msgstr ""
-"Non se poden fornecer sobrescrituras por escritorio para as chaves "
-"localizadas «%s» no esquema «%s» (ficheiro de sobrescritura «%s»); ignorando "
-"a sobrescributra para esta chave."
+"Non se poden fornecer sobrescritas por escritorio para as chaves "
+"localizadas «%s» no esquema «%s» (ficheiro de sobrescrita «%s»); ignorando "
+"a sobrescrita para esta chave."
 
 #: gio/glib-compile-schemas.c:2002
 #, c-format
@@ -2916,8 +2916,8 @@ msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema "
 "“%s” (override file “%s”) and --strict was specified; exiting."
 msgstr ""
-"Non se poden fornecer sobrescrituras por escritorio para as chaves "
-"localizadas «%s» no esquema «%s» (ficheiro de sobrescritura «%s») e --strict "
+"Non se poden fornecer sobrescritas por escritorio para as chaves "
+"localizadas «%s» no esquema «%s» (ficheiro de sobrescrita «%s») e --strict "
 "foi especificado; saíndo."
 
 #: gio/glib-compile-schemas.c:2026
@@ -2927,8 +2927,8 @@ msgid ""
 "%s. Ignoring override for this key."
 msgstr ""
 "Produciuse un erro ao analizar a clave «%s» no esquema «%s» como se "
-"especificou no ficheiro de sobrescritura «%s»: %s. Ignorando a "
-"sobrescributra para esta chave."
+"especificou no ficheiro de sobrescrita «%s»: %s. Ignorando a "
+"sobrescrita para esta chave."
 
 #: gio/glib-compile-schemas.c:2038
 #, c-format
@@ -2937,7 +2937,7 @@ msgid ""
 "%s. --strict was specified; exiting."
 msgstr ""
 "Produciuse un erro ao analizar a clave «%s» no esquema «%s» como se "
-"especificou no ficheiro de sobrescritura «%s»: %s. --strict foi "
+"especificou no ficheiro de sobrescrita «%s»: %s. --strict foi "
 "especificado; saíndo."
 
 #: gio/glib-compile-schemas.c:2065
@@ -2946,8 +2946,8 @@ msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema; ignoring override for this key."
 msgstr ""
-"A clave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
-"«%s» está fora do intervalo indicado no esquema; ignorando a sobrescritura "
+"A clave de sobrescrita «%s» no esquema «%s» no ficheiro de sobrescrita "
+"«%s» está fora do intervalo indicado no esquema; ignorando a sobrescrita "
 "para esta chave."
 
 #: gio/glib-compile-schemas.c:2075
@@ -2956,7 +2956,7 @@ msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the "
 "range given in the schema and --strict was specified; exiting."
 msgstr ""
-"A clave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
+"A clave de sobrescrita «%s» no esquema «%s» no ficheiro de sobrescrita "
 "«%s» está fora do intervalo indicado no esquema e --strict foi especificado; "
 "saíndo."
 
@@ -2966,8 +2966,8 @@ msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices; ignoring override for this key."
 msgstr ""
-"A clave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
-"«%s» non está na lista de opcións válidas; ignorando a sobrescritura para "
+"A clave de sobrescrita «%s» no esquema «%s» no ficheiro de sobrescrita "
+"«%s» non está na lista de opcións válidas; ignorando a sobrescrita para "
 "esta chave."
 
 #: gio/glib-compile-schemas.c:2111
@@ -2976,7 +2976,7 @@ msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the "
 "list of valid choices and --strict was specified; exiting."
 msgstr ""
-"A clave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
+"A clave de sobrescrita «%s» no esquema «%s» no ficheiro de sobrescrita "
 "«%s» non está na lista de opcións válidas e --strict foi especificado; "
 "saíndo."
 
@@ -2994,7 +2994,7 @@ msgstr "Non escribir o ficheiro compilado de gschema"
 
 #: gio/glib-compile-schemas.c:2176
 msgid "Do not enforce key name restrictions"
-msgstr "Non respetar as restricións de nome de clave"
+msgstr "Non respectar as restricións de nome de clave"
 
 #: gio/glib-compile-schemas.c:2205
 msgid ""
@@ -3446,14 +3446,14 @@ msgstr "a montaxe non implementa \"remount\""
 #. * don't implement content type guessing.
 #: gio/gmount.c:808
 msgid "mount doesn’t implement content type guessing"
-msgstr "a montaxe non implementa a averiguación do tipo de contido"
+msgstr "a montaxe non implementa o descubrimento do tipo de contido"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: gio/gmount.c:895
 msgid "mount doesn’t implement synchronous content type guessing"
-msgstr "a montaxe non implementa a averiguación síncrona do tipo de contido"
+msgstr "a montaxe non implementa o descubrimento síncrono do tipo de contido"
 
 #: gio/gnetworkaddress.c:415
 #, c-format
@@ -3819,7 +3819,7 @@ msgstr ""
 "Ordes:\n"
 "  help                      Mostra esta información\n"
 "  list-schemas              Mostra os esquemas instalados\n"
-"  list-relocatable-schemas  Mostra os esquemas instalados reubicábeis\n"
+"  list-relocatable-schemas  Mostra os esquemas instalados relocalizábeis\n"
 "  list-keys                 Mostra as claves dun esquema\n"
 "  list-children             Mostra os fillos nun esquema\n"
 "  list-recursively          Lista claves e valores, recursivamente\n"
@@ -3932,7 +3932,7 @@ msgstr "Especificouse un protocolo descoñecido"
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr ""
-"Non é posíbel usar as operacions de datagramas nun socket que non é de "
+"Non é posíbel usar as operacións de datagramas nun socket que non é de "
 "datagramas."
 
 #: gio/gsocket.c:1186
@@ -4258,7 +4258,7 @@ msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
-"Esta é a última oportunidade para escribir o contrasinal corretamente antes "
+"Esta é a última oportunidade para escribir o contrasinal correctamente antes "
 "de que se bloquee o acceso."
 
 #. Translators: This is not the 'This is the last chance' string. It is
@@ -4502,7 +4502,7 @@ msgstr "Produciuse un erro ao expandir a liña executábel «%s» co URI «%s»"
 
 #: glib/gconvert.c:467
 msgid "Unrepresentable character in conversion input"
-msgstr "Caracter non representábel na entrada da conversión"
+msgstr "Carácter non representábel na entrada da conversión"
 
 #: glib/gconvert.c:494 glib/gutf8.c:871 glib/gutf8.c:1083 glib/gutf8.c:1220
 #: glib/gutf8.c:1324
@@ -5520,7 +5520,7 @@ msgstr "combinación non válida de marcas de liña nova"
 
 #: glib/gregex.c:301
 msgid "bad offset"
-msgstr "desplazamento erróneo"
+msgstr "desprazamento erróneo"
 
 #: glib/gregex.c:303
 msgid "short utf8"
