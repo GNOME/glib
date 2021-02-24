@@ -2470,11 +2470,10 @@ _g_dbus_get_machine_id (GError **error)
 
   return res;
 #else
-  gchar *ret;
-  GError *first_error;
+  gchar *ret = NULL;
+  GError *first_error = NULL;
+
   /* TODO: use PACKAGE_LOCALSTATEDIR ? */
-  ret = NULL;
-  first_error = NULL;
   if (!g_file_get_contents ("/var/lib/dbus/machine-id",
                             &ret,
                             NULL,
