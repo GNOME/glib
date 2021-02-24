@@ -2475,18 +2475,24 @@ _g_dbus_get_machine_id (GError **error)
   gsize i;
   gboolean non_zero = FALSE;
 
-  /* TODO: use PACKAGE_LOCALSTATEDIR ? */
-  if (!g_file_get_contents ("/var/lib/dbus/machine-id",
+  /* Copy what dbus.git does: allow the /var/lib path to be configurable at
+   * build time, but hard-code the system-wide machine ID path in /etc. */
+  const gchar *var_lib_path = LOCALSTATEDIR "/lib/dbus/machine-id";
+  const gchar *etc_path = "/etc/machine-id";
+
+  if (!g_file_get_contents (var_lib_path,
                             &ret,
                             NULL,
                             &first_error) &&
-      !g_file_get_contents ("/etc/machine-id",
+      !g_file_get_contents (etc_path,
                             &ret,
                             NULL,
                             NULL))
     {
       g_propagate_prefixed_error (error, g_steal_pointer (&first_error),
-                                  _("Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "));
+                                  /* Translators: Both placeholders are file paths */
+                                  _("Unable to load %s or %s: "),
+                                  var_lib_path, etc_path);
       return NULL;
     }
 
@@ -2510,8 +2516,9 @@ _g_dbus_get_machine_id (GError **error)
 
   if (i != 32 || ret[i] != '\n' || ret[i + 1] != '\0' || !non_zero)
     {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                           "Invalid machine ID in /var/lib/dbus/machine-id or /etc/machine-id");
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Invalid machine ID in %s or %s",
+                   var_lib_path, etc_path);
       g_free (ret);
       return NULL;
     }
