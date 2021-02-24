@@ -806,6 +806,113 @@ test_replace_cancel (void)
 }
 
 static void
+test_replace_symlink (void)
+{
+#ifdef G_OS_UNIX
+  gchar *tmpdir_path = NULL;
+  GFile *tmpdir = NULL, *source_file = NULL, *target_file = NULL;
+  GFileOutputStream *stream = NULL;
+  const gchar *new_contents = "this is a test message which should be written to source and not target";
+  gsize n_written;
+  GFileEnumerator *enumerator = NULL;
+  GFileInfo *info = NULL;
+  gchar *contents = NULL;
+  gsize length = 0;
+  GError *local_error = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2325");
+  g_test_summary ("Test that G_FILE_CREATE_REPLACE_DESTINATION doesn’t follow symlinks");
+
+  /* Create a fresh, empty working directory. */
+  tmpdir_path = g_dir_make_tmp ("g_file_replace_symlink_XXXXXX", &local_error);
+  g_assert_no_error (local_error);
+  tmpdir = g_file_new_for_path (tmpdir_path);
+
+  g_test_message ("Using temporary directory %s", tmpdir_path);
+  g_free (tmpdir_path);
+
+  /* Create symlink `source` which points to `target`. */
+  source_file = g_file_get_child (tmpdir, "source");
+  target_file = g_file_get_child (tmpdir, "target");
+  g_file_make_symbolic_link (source_file, "target", NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  /* Ensure that `target` doesn’t exist */
+  g_assert_false (g_file_query_exists (target_file, NULL));
+
+  /* Replace the `source` symlink with a regular file using
+   * %G_FILE_CREATE_REPLACE_DESTINATION, which should replace it *without*
+   * following the symlink */
+  stream = g_file_replace (source_file, NULL, FALSE  /* no backup */,
+                           G_FILE_CREATE_REPLACE_DESTINATION, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_output_stream_write_all (G_OUTPUT_STREAM (stream), new_contents, strlen (new_contents),
+                             &n_written, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (n_written, ==, strlen (new_contents));
+
+  g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_object (&stream);
+
+  /* At this point, there should still only be one file: `source`. It should
+   * now be a regular file. `target` should not exist. */
+  enumerator = g_file_enumerate_children (tmpdir,
+                                          G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                          G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                          G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  info = g_file_enumerator_next_file (enumerator, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (info);
+
+  g_assert_cmpstr (g_file_info_get_name (info), ==, "source");
+  g_assert_cmpint (g_file_info_get_file_type (info), ==, G_FILE_TYPE_REGULAR);
+
+  g_clear_object (&info);
+
+  info = g_file_enumerator_next_file (enumerator, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_null (info);
+
+  g_file_enumerator_close (enumerator, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_clear_object (&enumerator);
+
+  /* Double-check that `target` doesn’t exist */
+  g_assert_false (g_file_query_exists (target_file, NULL));
+
+  /* Check the content of `source`. */
+  g_file_load_contents (source_file,
+                        NULL,
+                        &contents,
+                        &length,
+                        NULL,
+                        &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpstr (contents, ==, new_contents);
+  g_assert_cmpuint (length, ==, strlen (new_contents));
+  g_free (contents);
+
+  /* Tidy up. */
+  g_file_delete (source_file, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_file_delete (tmpdir, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_object (&target_file);
+  g_clear_object (&source_file);
+  g_clear_object (&tmpdir);
+#else  /* if !G_OS_UNIX */
+  g_test_skip ("Symlink replacement tests can only be run on Unix")
+#endif
+}
+
+static void
 on_file_deleted (GObject      *object,
 		 GAsyncResult *result,
 		 gpointer      user_data)
@@ -1798,6 +1905,7 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/file/async-create-delete/4096", GINT_TO_POINTER (4096), test_create_delete);
   g_test_add_func ("/file/replace-load", test_replace_load);
   g_test_add_func ("/file/replace-cancel", test_replace_cancel);
+  g_test_add_func ("/file/replace-symlink", test_replace_symlink);
   g_test_add_func ("/file/async-delete", test_async_delete);
   g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);
   g_test_add_func ("/file/measure", test_measure);
