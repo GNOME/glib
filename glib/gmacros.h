@@ -238,7 +238,12 @@
 #define glib_typeof(t) __typeof__ (t)
 #elif defined(__cplusplus) && __cplusplus >= 201103L
 /* C++11 decltype() is close enough for our usage */
-#include <type_traits>
+/* This needs `#include <type_traits>`, but we have guarded this feature with a
+ * `GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68` check, and such a check
+ * cannot be enforced in this header due to include ordering requirements.
+ * Within GLib itself, which use `glib_typeof` need to add the include
+ * themselves. See other examples in GLib for how to do this.
+ */
 #define glib_typeof(t) typename std::remove_reference<decltype (t)>::type
 #define glib_typeof_2_68
 #endif
