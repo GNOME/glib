@@ -74,6 +74,7 @@ fedora-x86_64:
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
+            --localstatedir=/var
             --libdir=lib
             -Dsystemtap=true
             -Ddtrace=true
@@ -117,6 +118,7 @@ debian-stable-x86_64:
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
+            --localstatedir=/var
             --libdir=lib
             -Dsystemtap=true
             -Ddtrace=true
@@ -461,6 +463,7 @@ scan-build:
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
+            --localstatedir=/var
             --libdir=lib
             -Dsystemtap=true
             -Ddtrace=true
@@ -487,6 +490,7 @@ coverity:
             --werror
             --default-library=both
             --prefix=$HOME/glib-installed
+            --localstatedir=/var
             --libdir=lib
             -Dsystemtap=true
             -Ddtrace=true
