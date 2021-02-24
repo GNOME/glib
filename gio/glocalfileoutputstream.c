@@ -779,16 +779,22 @@ handle_overwrite_open (const char    *filename,
       /* Could be a symlink, or it could be a regular ELOOP error,
        * but then the next open will fail too. */
       is_symlink = TRUE;
-      fd = g_open (filename, open_flags, mode);
+      if (!replace_destination_set)
+        fd = g_open (filename, open_flags, mode);
     }
-#else
-  fd = g_open (filename, open_flags, mode);
-  errsv = errno;
+#else  /* if !O_NOFOLLOW */
   /* This is racy, but we do it as soon as possible to minimize the race */
   is_symlink = g_file_test (filename, G_FILE_TEST_IS_SYMLINK);
+
+  if (!is_symlink || !replace_destination_set)
+    {
+      fd = g_open (filename, open_flags, mode);
+      errsv = errno;
+    }
 #endif
 
-  if (fd == -1)
+  if (fd == -1 &&
+      (!is_symlink || !replace_destination_set))
     {
       char *display_name = g_filename_display_name (filename);
       g_set_error (error, G_IO_ERROR,
@@ -802,7 +808,10 @@ handle_overwrite_open (const char    *filename,
 #ifdef G_OS_WIN32
   res = GLIB_PRIVATE_CALL (g_win32_fstat) (fd, &original_stat);
 #else
-  res = fstat (fd, &original_stat);
+  if (!is_symlink)
+    res = fstat (fd, &original_stat);
+  else
+    res = lstat (filename, &original_stat);
 #endif
   errsv = errno;
 
@@ -821,16 +830,27 @@ handle_overwrite_open (const char    *filename,
   if (!S_ISREG (original_stat.st_mode))
     {
       if (S_ISDIR (original_stat.st_mode))
-	g_set_error_literal (error,
-                             G_IO_ERROR,
-                             G_IO_ERROR_IS_DIRECTORY,
-                             _("Target file is a directory"));
-      else
-	g_set_error_literal (error,
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_IS_DIRECTORY,
+                               _("Target file is a directory"));
+          goto err_out;
+        }
+      else if (!is_symlink ||
+#ifdef S_ISLNK
+               !S_ISLNK (original_stat.st_mode)
+#else
+               FALSE
+#endif
+               )
+        {
+          g_set_error_literal (error,
                              G_IO_ERROR,
                              G_IO_ERROR_NOT_REGULAR_FILE,
                              _("Target file is not a regular file"));
-      goto err_out;
+          goto err_out;
+        }
     }
   
   if (etag != NULL)
@@ -911,7 +931,8 @@ handle_overwrite_open (const char    *filename,
 	    }
 	}
 
-      g_close (fd, NULL);
+      if (fd >= 0)
+        g_close (fd, NULL);
       *temp_filename = tmp_filename;
       return tmpfd;
     }
