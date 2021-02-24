@@ -686,7 +686,7 @@ test_replace_cancel (void)
   guint count;
   GError *error = NULL;
 
-  g_test_bug ("629301");
+  g_test_bug ("https://bugzilla.gnome.org/629301");
 
   path = g_dir_make_tmp ("g_file_replace_cancel_XXXXXX", &error);
   g_assert_no_error (error);
@@ -1784,8 +1784,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/file/basic", test_basic);
   g_test_add_func ("/file/build-filename", test_build_filename);
