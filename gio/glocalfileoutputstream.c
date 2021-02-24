@@ -854,7 +854,7 @@ handle_overwrite_open (const char    *filename,
   mode = mode_from_flags_or_info (flags, reference_info);
 
   /* We only need read access to the original file if we are creating a backup.
-   * We also add O_CREATE to avoid a race if the file was just removed */
+   * We also add O_CREAT to avoid a race if the file was just removed */
   if (create_backup || readable)
     open_flags = O_RDWR | O_CREAT | O_BINARY;
   else
