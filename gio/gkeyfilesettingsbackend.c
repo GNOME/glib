@@ -605,19 +605,24 @@ g_keyfile_settings_backend_finalize (GObject *object)
   g_hash_table_unref (kfsb->system_locks);
   g_free (kfsb->defaults_dir);
 
-  g_file_monitor_cancel (kfsb->file_monitor);
-  g_object_unref (kfsb->file_monitor);
+  if (kfsb->file_monitor)
+    {
+      g_file_monitor_cancel (kfsb->file_monitor);
+      g_object_unref (kfsb->file_monitor);
+    }
   g_object_unref (kfsb->file);
 
-  g_file_monitor_cancel (kfsb->dir_monitor);
-  g_object_unref (kfsb->dir_monitor);
+  if (kfsb->dir_monitor)
+    {
+      g_file_monitor_cancel (kfsb->dir_monitor);
+      g_object_unref (kfsb->dir_monitor);
+    }
   g_object_unref (kfsb->dir);
 
   g_free (kfsb->root_group);
   g_free (kfsb->prefix);
 
-  G_OBJECT_CLASS (g_keyfile_settings_backend_parent_class)
-    ->finalize (object);
+  G_OBJECT_CLASS (g_keyfile_settings_backend_parent_class)->finalize (object);
 }
 
 static void
@@ -724,6 +729,7 @@ static void
 g_keyfile_settings_backend_constructed (GObject *object)
 {
   GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
+  GError *error = NULL;
   const char *path;
 
   if (kfsb->file == NULL)
@@ -749,15 +755,31 @@ g_keyfile_settings_backend_constructed (GObject *object)
   if (g_mkdir_with_parents (path, 0700) == -1)
     g_warning ("Failed to create %s: %s", path, g_strerror (errno));
 
-  kfsb->file_monitor = g_file_monitor (kfsb->file, G_FILE_MONITOR_NONE, NULL, NULL);
-  kfsb->dir_monitor = g_file_monitor (kfsb->dir, G_FILE_MONITOR_NONE, NULL, NULL);
+  kfsb->file_monitor = g_file_monitor (kfsb->file, G_FILE_MONITOR_NONE, NULL, &error);
+  if (!kfsb->file_monitor)
+    {
+      g_warning ("Failed to create file monitor for %s: %s", g_file_peek_path (kfsb->file), error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      g_signal_connect (kfsb->file_monitor, "changed",
+                        G_CALLBACK (file_changed), kfsb);
+    }
+
+  kfsb->dir_monitor = g_file_monitor (kfsb->dir, G_FILE_MONITOR_NONE, NULL, &error);
+  if (!kfsb->dir_monitor)
+    {
+      g_warning ("Failed to create file monitor for %s: %s", g_file_peek_path (kfsb->file), error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      g_signal_connect (kfsb->dir_monitor, "changed",
+                        G_CALLBACK (dir_changed), kfsb);
+    }
 
   compute_checksum (kfsb->digest, NULL, 0);
-
-  g_signal_connect (kfsb->file_monitor, "changed",
-                    G_CALLBACK (file_changed), kfsb);
-  g_signal_connect (kfsb->dir_monitor, "changed",
-                    G_CALLBACK (dir_changed), kfsb);
 
   g_keyfile_settings_backend_keyfile_writable (kfsb);
   g_keyfile_settings_backend_keyfile_reload (kfsb);
