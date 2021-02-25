@@ -1697,7 +1697,8 @@ test_child_setup (void)
 }
 
 static void
-test_pass_fd (void)
+do_test_pass_fd (GSubprocessFlags     flags,
+                 GSpawnChildSetupFunc child_setup)
 {
   GError *local_error = NULL;
   GError **error = &local_error;
@@ -1722,9 +1723,11 @@ test_pass_fd (void)
   needdup_fd_str = g_strdup_printf ("%d", needdup_pipefds[1] + 1);
 
   args = get_test_subprocess_args ("write-to-fds", basic_fd_str, needdup_fd_str, NULL);
-  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
+  launcher = g_subprocess_launcher_new (flags);
   g_subprocess_launcher_take_fd (launcher, basic_pipefds[1], basic_pipefds[1]);
   g_subprocess_launcher_take_fd (launcher, needdup_pipefds[1], needdup_pipefds[1] + 1);
+  if (child_setup != NULL)
+    g_subprocess_launcher_set_child_setup (launcher, child_setup, NULL, NULL);
   proc = g_subprocess_launcher_spawnv (launcher, (const gchar * const *) args->pdata, error);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
@@ -1752,6 +1755,39 @@ test_pass_fd (void)
 
   g_object_unref (launcher);
   g_object_unref (proc);
+}
+
+static void
+test_pass_fd (void)
+{
+  do_test_pass_fd (G_SUBPROCESS_FLAGS_NONE, NULL);
+}
+
+static void
+empty_child_setup (gpointer user_data)
+{
+}
+
+static void
+test_pass_fd_empty_child_setup (void)
+{
+  /* Using a child setup function forces gspawn to use fork/exec
+   * rather than posix_spawn.
+   */
+  do_test_pass_fd (G_SUBPROCESS_FLAGS_NONE, empty_child_setup);
+}
+
+static void
+test_pass_fd_inherit_fds (void)
+{
+  /* Try to test the optimized posix_spawn codepath instead of
+   * fork/exec. Currently this requires using INHERIT_FDS since gspawn's
+   * posix_spawn codepath does not currently handle closing
+   * non-inherited fds. Note that using INHERIT_FDS means our testing of
+   * g_subprocess_launcher_take_fd() is less-comprehensive than when
+   * using G_SUBPROCESS_FLAGS_NONE.
+   */
+  do_test_pass_fd (G_SUBPROCESS_FLAGS_INHERIT_FDS, NULL);
 }
 
 #endif
@@ -1891,7 +1927,9 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/stdout-file", test_stdout_file);
   g_test_add_func ("/gsubprocess/stdout-fd", test_stdout_fd);
   g_test_add_func ("/gsubprocess/child-setup", test_child_setup);
-  g_test_add_func ("/gsubprocess/pass-fd", test_pass_fd);
+  g_test_add_func ("/gsubprocess/pass-fd/basic", test_pass_fd);
+  g_test_add_func ("/gsubprocess/pass-fd/empty-child-setup", test_pass_fd_empty_child_setup);
+  g_test_add_func ("/gsubprocess/pass-fd/inherit-fds", test_pass_fd_inherit_fds);
 #endif
   g_test_add_func ("/gsubprocess/launcher-environment", test_launcher_environment);
 
