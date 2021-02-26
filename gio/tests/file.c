@@ -1246,7 +1246,7 @@ test_replace (gconstpointer test_data)
         FALSE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FALSE, G_IO_ERROR, G_IO_ERROR_FAILED,  /* FIXME Perhaps this should be G_IO_ERROR_NOT_REGULAR_FILE; actually documented as such */
+        FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
         2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
       },
@@ -1317,7 +1317,7 @@ test_replace (gconstpointer test_data)
         TRUE, G_FILE_CREATE_NONE, NULL,
         FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FALSE, G_IO_ERROR, G_IO_ERROR_FAILED,  /* FIXME Perhaps this should be G_IO_ERROR_NOT_REGULAR_FILE; actually documented as such */
+        FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
         2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
       },
@@ -1451,7 +1451,7 @@ test_replace (gconstpointer test_data)
         FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FALSE, G_IO_ERROR, G_IO_ERROR_FAILED,  /* FIXME Perhaps this should be G_IO_ERROR_NOT_REGULAR_FILE; actually documented as such */
+        FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
         2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
       },
@@ -1526,7 +1526,7 @@ test_replace (gconstpointer test_data)
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
-        FALSE, G_IO_ERROR, G_IO_ERROR_FAILED,  /* FIXME Perhaps this should be G_IO_ERROR_NOT_REGULAR_FILE; actually documented as such */
+        FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
         2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
         FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
       },

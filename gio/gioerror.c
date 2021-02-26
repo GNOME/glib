@@ -107,6 +107,12 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef ENXIO
+    case ENXIO:
+      return G_IO_ERROR_NOT_REGULAR_FILE;
+      break;
+#endif
+
 #ifdef EROFS
     case EROFS:
       return G_IO_ERROR_READ_ONLY;
