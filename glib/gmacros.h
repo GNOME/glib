@@ -277,28 +277,6 @@
 #endif
 
 /*
- * We can only use __typeof__ on GCC >= 4.8, and not when compiling C++. Since
- * __typeof__ is used in a few places in GLib, provide a pre-processor symbol
- * to factor the check out from callers.
- *
- * This symbol is private.
- */
-#undef glib_typeof
-#if !defined(__cplusplus) && (G_GNUC_CHECK_VERSION(4, 8) || defined(__clang__))
-#define glib_typeof(t) __typeof__ (t)
-#elif defined(__cplusplus) && __cplusplus >= 201103L
-/* C++11 decltype() is close enough for our usage */
-/* This needs `#include <type_traits>`, but we have guarded this feature with a
- * `GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68` check, and such a check
- * cannot be enforced in this header due to include ordering requirements.
- * Within GLib itself, which use `glib_typeof` need to add the include
- * themselves. See other examples in GLib for how to do this.
- */
-#define glib_typeof(t) typename std::remove_reference<decltype (t)>::type
-#define glib_typeof_2_68
-#endif
-
-/*
  * Clang feature detection: http://clang.llvm.org/docs/LanguageExtensions.html
  * These are not available on GCC, but since the pre-processor doesn't do
  * operator short-circuiting, we can't use it in a statement or we'll get:
