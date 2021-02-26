@@ -31,6 +31,11 @@
 
 #include <glib/gutils.h>
 
+#if defined(glib_typeof_2_68) && GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68
+/* for glib_typeof */
+#include <type_traits>
+#endif
+
 G_BEGIN_DECLS
 
 /**
