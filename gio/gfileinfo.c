@@ -1733,9 +1733,11 @@ g_file_info_get_content_type (GFileInfo *info)
  * g_file_info_get_size:
  * @info: a #GFileInfo.
  *
- * Gets the file's size.
+ * Gets the file's size (in bytes). The size is retrieved through the value of
+ * the %G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted
+ * from #guint64 to #goffset before returning the result.
  *
- * Returns: a #goffset containing the file's size.
+ * Returns: a #goffset containing the file's size (in bytes).
  **/
 goffset
 g_file_info_get_size (GFileInfo *info)
