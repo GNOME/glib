@@ -1,6 +1,7 @@
 /* GLib testing framework examples and tests
  *
  * Copyright (C) 2008-2010 Red Hat, Inc.
+ * Copyright (C) 2021 Frederic Martinsons
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +17,7 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
  * Author: David Zeuthen <davidz@redhat.com>
+ * Author: Frederic Martinsons <frederic.martinsons@gmail.com>
  */
 
 #include <gio/gio.h>
@@ -495,6 +497,20 @@ typedef struct
   guint num_free_func;
 } WatchNameData;
 
+typedef struct
+{
+  WatchNameData data;
+  GDBusConnection *connection;
+  GMutex cond_mutex;
+  GCond cond;
+  gboolean started;
+  gboolean name_acquired;
+  gboolean ended;
+  gboolean unwatch_early;
+  GMutex mutex;
+  guint watch_id;
+} WatchNameThreadData;
+
 static void
 watch_name_data_free_func (WatchNameData *data)
 {
@@ -862,6 +878,248 @@ test_bus_watch_name (gconstpointer d)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Called in the same thread as watcher_thread() */
+static void
+t_watch_name_data_free_func (WatchNameThreadData *thread_data)
+{
+  thread_data->data.num_free_func++;
+}
+
+/* Called in the same thread as watcher_thread() */
+static void
+t_name_appeared_handler (GDBusConnection *connection,
+                         const gchar     *name,
+                         const gchar     *name_owner,
+                         gpointer         user_data)
+{
+  WatchNameThreadData *thread_data = user_data;
+  thread_data->data.num_appeared += 1;
+}
+
+/* Called in the same thread as watcher_thread() */
+static void
+t_name_vanished_handler (GDBusConnection *connection,
+                         const gchar     *name,
+                         gpointer         user_data)
+{
+  WatchNameThreadData *thread_data = user_data;
+  thread_data->data.num_vanished += 1;
+}
+
+/* Called in the thread which constructed the GDBusConnection */
+static void
+connection_closed_cb (GDBusConnection *connection,
+                      gboolean         remote_peer_vanished,
+                      GError          *error,
+                      gpointer         user_data)
+{
+  WatchNameThreadData *thread_data = (WatchNameThreadData *) user_data;
+  if (thread_data->unwatch_early)
+    {
+      g_mutex_lock (&thread_data->mutex);
+      g_bus_unwatch_name (g_atomic_int_get (&thread_data->watch_id));
+      g_atomic_int_set (&thread_data->watch_id, 0);
+      g_cond_signal (&thread_data->cond);
+      g_mutex_unlock (&thread_data->mutex);
+    }
+}
+
+static gpointer
+watcher_thread (gpointer user_data)
+{
+  WatchNameThreadData *thread_data = user_data;
+  GMainContext *thread_context;
+
+  thread_context = g_main_context_new ();
+  g_main_context_push_thread_default (thread_context);
+
+  // Notify that the thread has started
+  g_mutex_lock (&thread_data->cond_mutex);
+  g_atomic_int_set (&thread_data->started, TRUE);
+  g_cond_signal (&thread_data->cond);
+  g_mutex_unlock (&thread_data->cond_mutex);
+
+  // Wait for the main thread to own the name before watching it
+  g_mutex_lock (&thread_data->cond_mutex);
+  while (!g_atomic_int_get (&thread_data->name_acquired))
+    g_cond_wait (&thread_data->cond, &thread_data->cond_mutex);
+  g_mutex_unlock (&thread_data->cond_mutex);
+
+  thread_data->data.num_appeared = 0;
+  thread_data->data.num_vanished = 0;
+  thread_data->data.num_free_func = 0;
+  // g_signal_connect_after is important to have default handler be called before our code
+  g_signal_connect_after (thread_data->connection, "closed", G_CALLBACK (connection_closed_cb), thread_data);
+
+  g_mutex_lock (&thread_data->mutex);
+  thread_data->watch_id = g_bus_watch_name_on_connection (thread_data->connection,
+                                                          "org.gtk.GDBus.Name1",
+                                                          G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                                          t_name_appeared_handler,
+                                                          t_name_vanished_handler,
+                                                          thread_data,
+                                                          (GDestroyNotify) t_watch_name_data_free_func);
+  g_mutex_unlock (&thread_data->mutex);
+
+  g_assert_cmpint (thread_data->data.num_appeared, ==, 0);
+  g_assert_cmpint (thread_data->data.num_vanished, ==, 0);
+  while (thread_data->data.num_appeared == 0)
+    g_main_context_iteration (thread_context, TRUE);
+  g_assert_cmpint (thread_data->data.num_appeared, ==, 1);
+  g_assert_cmpint (thread_data->data.num_vanished, ==, 0);
+  thread_data->data.num_appeared = 0;
+
+  /* Close the connection and:
+   *  - check that we had received a vanished event even begin in different thread
+   *  - or check that unwatching the bus when a vanished had been scheduled
+   *    make it correctly unscheduled (unwatch_early condition)
+   */
+  g_dbus_connection_close_sync (thread_data->connection, NULL, NULL);
+  if (thread_data->unwatch_early)
+    {
+      // Wait for the main thread to iterate in order to have close connection handled
+      g_mutex_lock (&thread_data->mutex);
+      while (g_atomic_int_get (&thread_data->watch_id) != 0)
+        g_cond_wait (&thread_data->cond, &thread_data->mutex);
+      g_mutex_unlock (&thread_data->mutex);
+
+      while (thread_data->data.num_free_func == 0)
+        g_main_context_iteration (thread_context, TRUE);
+      g_assert_cmpint (thread_data->data.num_vanished, ==, 0);
+      g_assert_cmpint (thread_data->data.num_appeared, ==, 0);
+      g_assert_cmpint (thread_data->data.num_free_func, ==, 1);
+    }
+  else
+    {
+      while (thread_data->data.num_vanished == 0)
+        {
+          /*
+           * Close of connection is treated in the context of the thread which
+           * creates the connection. We must run iteration on it (to have the 'closed'
+           * signal handled) and also run current thread loop to have name_vanished
+           * callback handled.
+           */
+          g_main_context_iteration (thread_context, TRUE);
+        }
+      g_assert_cmpint (thread_data->data.num_vanished, ==, 1);
+      g_assert_cmpint (thread_data->data.num_appeared, ==, 0);
+      g_mutex_lock (&thread_data->mutex);
+      g_bus_unwatch_name (g_atomic_int_get (&thread_data->watch_id));
+      g_atomic_int_set (&thread_data->watch_id, 0);
+      g_mutex_unlock (&thread_data->mutex);
+      while (thread_data->data.num_free_func == 0)
+        g_main_context_iteration (thread_context, TRUE);
+      g_assert_cmpint (thread_data->data.num_free_func, ==, 1);
+    }
+
+  g_mutex_lock (&thread_data->cond_mutex);
+  thread_data->ended = TRUE;
+  g_main_context_wakeup (NULL);
+  g_cond_signal (&thread_data->cond);
+  g_mutex_unlock (&thread_data->cond_mutex);
+
+  g_signal_handlers_disconnect_by_func (thread_data->connection, connection_closed_cb, thread_data);
+  g_object_unref (thread_data->connection);
+  g_main_context_pop_thread_default (thread_context);
+  g_main_context_unref (thread_context);
+
+  g_mutex_lock (&thread_data->mutex);
+  g_assert_cmpint (thread_data->watch_id, ==, 0);
+  g_mutex_unlock (&thread_data->mutex);
+  return NULL;
+}
+
+static void
+watch_with_different_context (gboolean unwatch_early)
+{
+  OwnNameData own_data;
+  WatchNameThreadData thread_data;
+  GDBusConnection *connection;
+  GThread *watcher;
+  guint id;
+
+  session_bus_up ();
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_assert (connection != NULL);
+
+  g_mutex_init (&thread_data.mutex);
+  g_mutex_init (&thread_data.cond_mutex);
+  g_cond_init (&thread_data.cond);
+  thread_data.started = FALSE;
+  thread_data.name_acquired = FALSE;
+  thread_data.ended = FALSE;
+  thread_data.connection = g_object_ref (connection);
+  thread_data.unwatch_early = unwatch_early;
+
+  // Create a thread which will watch a name and wait for it to be ready
+  g_mutex_lock (&thread_data.cond_mutex);
+  watcher = g_thread_new ("watcher", watcher_thread, &thread_data);
+  while (!g_atomic_int_get (&thread_data.started))
+    g_cond_wait (&thread_data.cond, &thread_data.cond_mutex);
+  g_mutex_unlock (&thread_data.cond_mutex);
+
+  own_data.num_acquired = 0;
+  own_data.num_lost = 0;
+  own_data.num_free_func = 0;
+  own_data.expect_null_connection = FALSE;
+  // Own the name to avoid direct name vanished in watcher thread
+  id = g_bus_own_name_on_connection (connection,
+                                     "org.gtk.GDBus.Name1",
+                                     G_BUS_NAME_OWNER_FLAGS_REPLACE,
+                                     w_name_acquired_handler,
+                                     w_name_lost_handler,
+                                     &own_data,
+                                     (GDestroyNotify) own_name_data_free_func);
+  while (own_data.num_acquired == 0)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (own_data.num_acquired, ==, 1);
+  g_assert_cmpint (own_data.num_lost, ==, 0);
+
+  // Wake the thread for it to begin watch
+  g_mutex_lock (&thread_data.cond_mutex);
+  g_atomic_int_set (&thread_data.name_acquired, TRUE);
+  g_cond_signal (&thread_data.cond);
+  g_mutex_unlock (&thread_data.cond_mutex);
+
+  // Iterate the loop until thread is waking us up
+  while (!thread_data.ended)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_thread_join (watcher);
+
+  g_bus_unown_name (id);
+  while (own_data.num_free_func == 0)
+    g_main_context_iteration (NULL, TRUE);
+  g_assert_cmpint (own_data.num_free_func, ==, 1);
+
+  g_mutex_clear (&thread_data.mutex);
+  g_mutex_clear (&thread_data.cond_mutex);
+  g_cond_clear (&thread_data.cond);
+
+  session_bus_stop ();
+  g_assert_true (g_dbus_connection_is_closed (connection));
+  g_object_unref (connection);
+  session_bus_down ();
+}
+
+static void
+test_bus_watch_different_context (void)
+{
+  watch_with_different_context (FALSE);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static void
+test_bus_unwatch_early (void)
+{
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/604");
+  watch_with_different_context (TRUE);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 static void
 test_validate_names (void)
 {
@@ -984,6 +1242,8 @@ main (int   argc,
   g_test_add_data_func ("/gdbus/bus-watch-name-closures-auto-start",
                         &watch_closures_flags_auto_start,
                         test_bus_watch_name);
+  g_test_add_func ("/gdbus/bus-watch-different-context", test_bus_watch_different_context);
+  g_test_add_func ("/gdbus/bus-unwatch-early", test_bus_unwatch_early);
   g_test_add_func ("/gdbus/escape-object-path", test_escape_object_path);
   ret = g_test_run();
 
