@@ -225,6 +225,8 @@ test_pollable_unix_pty (void)
 close_libutil:
 #ifdef __linux__
   dlclose (handle);
+#else
+  return;
 #endif
 }
 
