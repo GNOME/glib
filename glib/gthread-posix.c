@@ -537,9 +537,12 @@ g_rw_lock_clear (GRWLock *rw_lock)
  * g_rw_lock_writer_lock:
  * @rw_lock: a #GRWLock
  *
- * Obtain a write lock on @rw_lock. If any thread already holds
+ * Obtain a write lock on @rw_lock. If another thread currently holds
  * a read or write lock on @rw_lock, the current thread will block
  * until all other threads have dropped their locks on @rw_lock.
+ *
+ * Calling g_rw_lock_writer_lock() while the current thread already
+ * owns a read or write lock on @rw_lock leads to undefined behaviour.
  *
  * Since: 2.32
  */
@@ -556,8 +559,9 @@ g_rw_lock_writer_lock (GRWLock *rw_lock)
  * g_rw_lock_writer_trylock:
  * @rw_lock: a #GRWLock
  *
- * Tries to obtain a write lock on @rw_lock. If any other thread holds
- * a read or write lock on @rw_lock, it immediately returns %FALSE.
+ * Tries to obtain a write lock on @rw_lock. If another thread
+ * currently holds a read or write lock on @rw_lock, it immediately
+ * returns %FALSE.
  * Otherwise it locks @rw_lock and returns %TRUE.
  *
  * Returns: %TRUE if @rw_lock could be locked
@@ -595,13 +599,19 @@ g_rw_lock_writer_unlock (GRWLock *rw_lock)
  * @rw_lock: a #GRWLock
  *
  * Obtain a read lock on @rw_lock. If another thread currently holds
- * the write lock on @rw_lock, the current thread will block. If another thread
- * does not hold the write lock, but is waiting for it, it is implementation
- * defined whether the reader or writer will block. Read locks can be taken
+ * the write lock on @rw_lock, the current thread will block until the
+ * write lock was (held and) released. If another thread does not hold
+ * the write lock, but is waiting for it, it is implementation defined
+ * whether the reader or writer will block. Read locks can be taken
  * recursively.
  *
- * It is implementation-defined how many threads are allowed to
- * hold read locks on the same lock simultaneously. If the limit is hit,
+ * Calling g_rw_lock_reader_lock() while the current thread already
+ * owns a write lock leads to undefined behaviour. Read locks however
+ * can be taken recursively, in which case you need to make sure to
+ * call g_rw_lock_reader_unlock() the same amount of times.
+ *
+ * It is implementation-defined how many read locks are allowed to be
+ * held on the same lock simultaneously. If the limit is hit,
  * or if a deadlock is detected, a critical warning will be emitted.
  *
  * Since: 2.32
