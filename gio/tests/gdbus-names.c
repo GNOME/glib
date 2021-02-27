@@ -514,7 +514,7 @@ w_name_acquired_handler (GDBusConnection *connection,
                          const gchar     *name,
                          gpointer         user_data)
 {
-  WatchNameData *data = user_data;
+  OwnNameData *data = user_data;
   data->num_acquired += 1;
   g_main_loop_quit (loop);
 }
@@ -524,7 +524,7 @@ w_name_lost_handler (GDBusConnection *connection,
                      const gchar     *name,
                      gpointer         user_data)
 {
-  WatchNameData *data = user_data;
+  OwnNameData *data = user_data;
   data->num_lost += 1;
   g_main_loop_quit (loop);
 }
@@ -646,6 +646,7 @@ static void
 test_bus_watch_name (gconstpointer d)
 {
   WatchNameData data;
+  OwnNameData own_data;
   guint id;
   guint owner_id;
   GDBusConnection *connection;
@@ -688,15 +689,16 @@ test_bus_watch_name (gconstpointer d)
   g_assert_cmpint (data.num_appeared, ==, 0);
   g_assert_cmpint (data.num_vanished, ==, 1);
   g_assert_cmpint (data.num_free_func, ==, 1);
+  data.num_free_func = 0;
 
   /*
    * Now bring up a bus, own a name, and then start watching it.
    */
   session_bus_up ();
   /* own the name */
-  data.num_free_func = 0;
-  data.num_acquired = 0;
-  data.num_lost = 0;
+  own_data.num_free_func = 0;
+  own_data.num_acquired = 0;
+  own_data.num_lost = 0;
   data.expect_null_connection = FALSE;
   owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                              name,
@@ -704,11 +706,11 @@ test_bus_watch_name (gconstpointer d)
                              w_bus_acquired_handler,
                              w_name_acquired_handler,
                              w_name_lost_handler,
-                             &data,
-                             (GDestroyNotify) watch_name_data_free_func);
+                             &own_data,
+                             (GDestroyNotify) own_name_data_free_func);
   g_main_loop_run (loop);
-  g_assert_cmpint (data.num_acquired, ==, 1);
-  g_assert_cmpint (data.num_lost, ==, 0);
+  g_assert_cmpint (own_data.num_acquired, ==, 1);
+  g_assert_cmpint (own_data.num_lost, ==, 0);
 
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
   g_assert (connection != NULL);
@@ -753,9 +755,9 @@ test_bus_watch_name (gconstpointer d)
   /* unown the name */
   g_bus_unown_name (owner_id);
   g_main_loop_run (loop);
-  g_assert_cmpint (data.num_acquired, ==, 1);
-  g_assert_cmpint (data.num_free_func, ==, 2);
-
+  g_assert_cmpint (own_data.num_acquired, ==, 1);
+  g_assert_cmpint (own_data.num_free_func, ==, 1);
+  own_data.num_free_func = 0;
   /*
    * Create a watcher and then make a name be owned.
    *
@@ -805,21 +807,21 @@ test_bus_watch_name (gconstpointer d)
   if (!watch_name_test->existing_service)
     {
       /* own the name */
-      data.num_acquired = 0;
-      data.num_lost = 0;
-      data.expect_null_connection = FALSE;
+      own_data.num_acquired = 0;
+      own_data.num_lost = 0;
+      own_data.expect_null_connection = FALSE;
       owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                  name,
                                  G_BUS_NAME_OWNER_FLAGS_NONE,
                                  w_bus_acquired_handler,
                                  w_name_acquired_handler,
                                  w_name_lost_handler,
-                                 &data,
-                                 (GDestroyNotify) watch_name_data_free_func);
-      while (data.num_acquired == 0 || data.num_appeared == 0)
+                                 &own_data,
+                                 (GDestroyNotify) own_name_data_free_func);
+      while (own_data.num_acquired == 0 || data.num_appeared == 0)
         g_main_loop_run (loop);
-      g_assert_cmpint (data.num_acquired, ==, 1);
-      g_assert_cmpint (data.num_lost, ==, 0);
+      g_assert_cmpint (own_data.num_acquired, ==, 1);
+      g_assert_cmpint (own_data.num_lost, ==, 0);
       g_assert_cmpint (data.num_appeared, ==, 1);
       g_assert_cmpint (data.num_vanished, ==, 1);
     }
@@ -838,12 +840,12 @@ test_bus_watch_name (gconstpointer d)
   if (!watch_name_test->existing_service)
     {
       g_main_loop_run (loop);
-      g_assert_cmpint (data.num_lost, ==, 1);
+      g_assert_cmpint (own_data.num_lost, ==, 1);
       g_assert_cmpint (data.num_vanished, ==, 2);
     }
   else
     {
-      g_assert_cmpint (data.num_lost, ==, 0);
+      g_assert_cmpint (own_data.num_lost, ==, 0);
       g_assert_cmpint (data.num_vanished, ==, 1);
     }
   g_bus_unwatch_name (id);
@@ -853,7 +855,7 @@ test_bus_watch_name (gconstpointer d)
     {
       g_bus_unown_name (owner_id);
       g_main_loop_run (loop);
-      g_assert_cmpint (data.num_free_func, ==, 2);
+      g_assert_cmpint (own_data.num_free_func, ==, 1);
     }
   session_bus_down ();
 }
