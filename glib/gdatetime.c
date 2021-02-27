@@ -60,22 +60,20 @@
 #include <langinfo.h>
 #endif
 
-#include "gdatetime.h"
-
-#include "gslice.h"
 #include "gatomic.h"
 #include "gcharset.h"
 #include "gconvert.h"
+#include "gdatetime.h"
 #include "gfileutils.h"
 #include "ghash.h"
+#include "glibintl.h"
 #include "gmain.h"
 #include "gmappedfile.h"
+#include "gslice.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gthread.h"
 #include "gtimezone.h"
-
-#include "glibintl.h"
 
 #ifndef G_OS_WIN32
 #include <sys/time.h>
