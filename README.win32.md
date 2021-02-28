@@ -161,22 +161,9 @@ To overcome this problem, please set your system's locale setting for non-Unicod
 English (United States), reboot, and restart the build, and the code should build
 normally.
 
-### Visual Studio 2008 hacks
+### Support for pre-2012 Visual Studio
 
-- You need to run the following lines from your build directory, to embed the
-  manifests that are generated during the build, assuming the built binaries
-  are installed to `$(PREFIX)`, after a successful build/installation:
-
-```cmd
-> for /r %f in (*.dll.manifest) do if exist $(PREFIX)\bin\%~nf mt /manifest %f $(PREFIX)\bin\%~nf;2
-> for /r %f in (*.exe.manifest) do if exist $(PREFIX)\bin\%~nf mt /manifest %f $(PREFIX)\bin\%~nf;1
-```
-
-
-- If building for amd64/x86_64/x64, sometimes the compilation of sources may seem to hang, which
-  is caused by an optimization issue in the 2008 x64 compiler.  You need to use Task Manager to
-  remove all running instances of `cl.exe`, which will cause the build process to terminate.  Update
-  the build flags of the sources that hang on compilation by changing its `"/O2"` flag to `"/O1"`
-  in `build.ninja`, and retry the build, where things should continue to build normally.  At the
-  time of writing, this is needed for compiling `glib/gtestutils.c`, `gio/gsettings.c`,
-  `gio/gsettingsschema.c` and `gio/tests/gsubprocess-testprog.c`
+This release of GLib requires at least the Windows 8 SDK in order to be built
+successfully using Visual Studio, which means that it is no longer supported to
+build GLib with Visual Studio 2008 nor 2010.  People that still need to use
+Visual Studio 2008 or 2010 should continue to use glib-2.66.x.
