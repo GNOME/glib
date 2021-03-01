@@ -1,3 +1,50 @@
+Overview of changes in GLib 2.67.5
+==================================
+
+* Fix more issues with `glib_typeof` macro from 2.67.3–2.67.4 (work by
+  Iain Lane, Simon McVittie) (#2331, !1975)
+
+* Fix regression with some FD mappings passed to `g_subprocess_launcher_spawnv()`
+  caused by changes for #2097 in GLib 2.67.4 (work by Olivier Fourdan,
+  Philip Withnall) (#2332)
+
+* Fix detection of `str[n]casecmp()` when building with `clang-cl` (work by
+  Aleksandr Mezin) (#2337)
+
+* Use zlib from subproject if configured with `wrap_mode=forcefallback` (work by
+  Seungha Yang) (!1959)
+
+* Bump Visual Studio compilation requirement to VS 2012, and Windows 8 SDK for
+  GLib 2.67.x onwards (work by Chun-wei Fan) (!1970)
+
+* Bugs fixed:
+ - #832 Some tweaks re: GRWLock
+ - #2331 glib 2.67.3: <glib.h> can no longer be included in extern "C" blocks
+ - #2332 Glib 2.67.4 causes gnome-shell to exit when spawning Xwayland on demand
+ - #2333 Missing relation between g_file_info_get_size() and G_FILE_ATTRIBUTE_STANDARD_SIZE attribute in documentation
+ - #2337 Linking fails when building with clang-cl because of str[n]casecmp
+ - !1936 tests: Fix leak of dlopened module in pollable test
+ - !1954 Change SkipAsyncData fields to be gsize (and not gssize)
+ - !1956 The ETag returned by various GFile functions is nullable
+ - !1959 meson: Use subproject zlib if "wrap_mode=forcefallback" was specified
+ - !1961 gkeyfilesettingsbackend: check for errors when creating file monitors
+ - !1970 README.win32.md: Mention about Window 8+ SDK requirement
+ - !1971 gio/tests/pollable.c: Fix build on non-Linux UNIX
+ - !1975 gatomic.h: Make `glib_typeof` API break opt in.
+
+* Translation updates:
+ - Basque
+ - Danish
+ - English (United Kingdom)
+ - Galician
+ - German
+ - Indonesian
+ - Lithuanian
+ - Portuguese
+ - Portuguese (Brazil)
+ - Slovenian
+
+
 Overview of changes in GLib 2.67.4
 ==================================
 
