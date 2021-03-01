@@ -662,7 +662,7 @@ elif cc.has_function('_snprintf') or cc.has_header_symbol('stdio.h', '_snprintf'
   glib_conf_prefix = glib_conf_prefix + '#define HAVE_SNPRINTF ' + hack_define
 endif
 
-if cc.has_function('strcasecmp')
+if cc.has_function('strcasecmp', prefix: '#include <strings.h>')
   glib_conf.set('HAVE_STRCASECMP', 1)
   glib_conf_prefix = glib_conf_prefix + '#define HAVE_STRCASECMP 1\n'
 elif cc.has_function('_stricmp')
@@ -671,7 +671,7 @@ elif cc.has_function('_stricmp')
   glib_conf_prefix = glib_conf_prefix + '#define HAVE_STRCASECMP ' + hack_define
 endif
 
-if cc.has_function('strncasecmp')
+if cc.has_function('strncasecmp', prefix: '#include <strings.h>')
   glib_conf.set('HAVE_STRNCASECMP', 1)
   glib_conf_prefix = glib_conf_prefix + '#define HAVE_STRNCASECMP 1\n'
 elif cc.has_function('_strnicmp')
