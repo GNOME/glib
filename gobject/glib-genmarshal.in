@@ -864,7 +864,7 @@ def generate_marshallers_body(outfile, retval, params,
         outfile.write('\n\n')
 
 
-if __name__ == '__main__':
+def parse_args():
     arg_parser = argparse.ArgumentParser(description='Generate signal marshallers for GObject')
     arg_parser.add_argument('--prefix', metavar='STRING',
                             default='g_cclosure_user_marshal',
@@ -945,6 +945,10 @@ if __name__ == '__main__':
         print(VERSION_STR)
         sys.exit(0)
 
+    return args
+
+
+def generate(args):
     # Backward compatibility hack; some projects use both arguments to
     # generate the marshallers prototype in the C source, even though
     # it's not really a supported use case. We keep this behaviour by
@@ -1067,3 +1071,10 @@ if __name__ == '__main__':
 
         if args.header:
             generate_header_postamble(args.output, prefix=args.prefix, use_pragma=args.pragma_once)
+
+
+if __name__ == '__main__':
+    args = parse_args()
+
+    with args.output:
+        generate(args)
