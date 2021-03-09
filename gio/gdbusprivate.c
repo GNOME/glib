@@ -2470,31 +2470,63 @@ _g_dbus_get_machine_id (GError **error)
 
   return res;
 #else
-  gchar *ret;
-  GError *first_error;
-  /* TODO: use PACKAGE_LOCALSTATEDIR ? */
-  ret = NULL;
-  first_error = NULL;
-  if (!g_file_get_contents ("/var/lib/dbus/machine-id",
+  gchar *ret = NULL;
+  GError *first_error = NULL;
+  gsize i;
+  gboolean non_zero = FALSE;
+
+  /* Copy what dbus.git does: allow the /var/lib path to be configurable at
+   * build time, but hard-code the system-wide machine ID path in /etc. */
+  const gchar *var_lib_path = LOCALSTATEDIR "/lib/dbus/machine-id";
+  const gchar *etc_path = "/etc/machine-id";
+
+  if (!g_file_get_contents (var_lib_path,
                             &ret,
                             NULL,
                             &first_error) &&
-      !g_file_get_contents ("/etc/machine-id",
+      !g_file_get_contents (etc_path,
                             &ret,
                             NULL,
                             NULL))
     {
-      g_propagate_prefixed_error (error, first_error,
-                                  _("Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "));
+      g_propagate_prefixed_error (error, g_steal_pointer (&first_error),
+                                  /* Translators: Both placeholders are file paths */
+                                  _("Unable to load %s or %s: "),
+                                  var_lib_path, etc_path);
+      return NULL;
     }
-  else
+
+  /* ignore the error from the first try, if any */
+  g_clear_error (&first_error);
+
+  /* Validate the machine ID. From `man 5 machine-id`:
+   * > The machine ID is a single newline-terminated, hexadecimal, 32-character,
+   * > lowercase ID. When decoded from hexadecimal, this corresponds to a
+   * > 16-byte/128-bit value. This ID may not be all zeros.
+   */
+  for (i = 0; ret[i] != '\0' && ret[i] != '\n'; i++)
     {
-      /* ignore the error from the first try, if any */
-      g_clear_error (&first_error);
-      /* TODO: validate value */
-      g_strstrip (ret);
+      /* Break early if it’s invalid. */
+      if (!g_ascii_isxdigit (ret[i]) || g_ascii_isupper (ret[i]))
+        break;
+
+      if (ret[i] != '0')
+        non_zero = TRUE;
     }
-  return ret;
+
+  if (i != 32 || ret[i] != '\n' || ret[i + 1] != '\0' || !non_zero)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Invalid machine ID in %s or %s",
+                   var_lib_path, etc_path);
+      g_free (ret);
+      return NULL;
+    }
+
+  /* Strip trailing newline. */
+  ret[32] = '\0';
+
+  return g_steal_pointer (&ret);
 #endif
 }
 
