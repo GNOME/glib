@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-02-12 16:38+0000\n"
-"PO-Revision-Date: 2021-02-13 20:29+0100\n"
+"POT-Creation-Date: 2021-03-09 12:50+0000\n"
+"PO-Revision-Date: 2021-03-09 22:26+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -57,91 +57,91 @@ msgstr "Skriv ut version"
 msgid "Print version information and exit"
 msgstr "Skriv ut versionsinformation och avsluta"
 
-#: gio/gapplication-tool.c:52
+#: gio/gapplication-tool.c:53
 msgid "List applications"
 msgstr "Lista program"
 
-#: gio/gapplication-tool.c:53
+#: gio/gapplication-tool.c:54
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr ""
 "Lista de installerade D-Bus-aktiverbara programmen (via .desktop-filer)"
 
-#: gio/gapplication-tool.c:55
+#: gio/gapplication-tool.c:57
 msgid "Launch an application"
 msgstr "Starta ett program"
 
-#: gio/gapplication-tool.c:56
+#: gio/gapplication-tool.c:58
 msgid "Launch the application (with optional files to open)"
 msgstr "Starta programmet (med frivilliga filer att öppna)"
 
-#: gio/gapplication-tool.c:57
+#: gio/gapplication-tool.c:59
 msgid "APPID [FILE…]"
 msgstr "APPID [FIL…]"
 
-#: gio/gapplication-tool.c:59
+#: gio/gapplication-tool.c:61
 msgid "Activate an action"
 msgstr "Aktivera en åtgärd"
 
-#: gio/gapplication-tool.c:60
+#: gio/gapplication-tool.c:62
 msgid "Invoke an action on the application"
 msgstr "Anropa en åtgärd i programmet"
 
-#: gio/gapplication-tool.c:61
+#: gio/gapplication-tool.c:63
 msgid "APPID ACTION [PARAMETER]"
 msgstr "APPID ÅTGÄRD [PARAMETER]"
 
-#: gio/gapplication-tool.c:63
+#: gio/gapplication-tool.c:65
 msgid "List available actions"
 msgstr "Lista tillgängliga åtgärder"
 
-#: gio/gapplication-tool.c:64
+#: gio/gapplication-tool.c:66
 msgid "List static actions for an application (from .desktop file)"
 msgstr "Lista statiska åtgärder för ett program (från .desktop-fil)"
 
-#: gio/gapplication-tool.c:65 gio/gapplication-tool.c:71
+#: gio/gapplication-tool.c:67 gio/gapplication-tool.c:73
 msgid "APPID"
 msgstr "APPID"
 
-#: gio/gapplication-tool.c:70 gio/gapplication-tool.c:133 gio/gdbus-tool.c:106
+#: gio/gapplication-tool.c:72 gio/gapplication-tool.c:135 gio/gdbus-tool.c:106
 #: gio/gio-tool.c:224
 msgid "COMMAND"
 msgstr "KOMMANDO"
 
-#: gio/gapplication-tool.c:70
+#: gio/gapplication-tool.c:72
 msgid "The command to print detailed help for"
 msgstr "Kommandot att skriva ut detaljerad hjälp för"
 
-#: gio/gapplication-tool.c:71
+#: gio/gapplication-tool.c:73
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Programidentifierare i D-Bus-format (t.ex: org.example.viewer)"
 
-#: gio/gapplication-tool.c:72 gio/glib-compile-resources.c:738
+#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:738
 #: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
 #: gio/gresource-tool.c:500 gio/gresource-tool.c:566
 msgid "FILE"
 msgstr "FIL"
 
-#: gio/gapplication-tool.c:72
+#: gio/gapplication-tool.c:74
 msgid "Optional relative or absolute filenames, or URIs to open"
 msgstr "Frivilliga relativa eller absoluta filnamn eller URI:er att öppna"
 
-#: gio/gapplication-tool.c:73
+#: gio/gapplication-tool.c:75
 msgid "ACTION"
 msgstr "ÅTGÄRD"
 
-#: gio/gapplication-tool.c:73
+#: gio/gapplication-tool.c:75
 msgid "The action name to invoke"
 msgstr "Åtgärdsnamn att starta"
 
-#: gio/gapplication-tool.c:74
+#: gio/gapplication-tool.c:76
 msgid "PARAMETER"
 msgstr "PARAMETER"
 
-#: gio/gapplication-tool.c:74
+#: gio/gapplication-tool.c:76
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Frivillig parameter till åtgärdsstarten, i GVariant-format"
 
-#: gio/gapplication-tool.c:96 gio/gresource-tool.c:531 gio/gsettings-tool.c:659
+#: gio/gapplication-tool.c:98 gio/gresource-tool.c:531 gio/gsettings-tool.c:659
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -150,26 +150,26 @@ msgstr ""
 "Okänt kommando %s\n"
 "\n"
 
-#: gio/gapplication-tool.c:101
+#: gio/gapplication-tool.c:103
 msgid "Usage:\n"
 msgstr "Användning:\n"
 
-#: gio/gapplication-tool.c:114 gio/gresource-tool.c:556
+#: gio/gapplication-tool.c:116 gio/gresource-tool.c:556
 #: gio/gsettings-tool.c:694
 msgid "Arguments:\n"
 msgstr "Argument:\n"
 
-#: gio/gapplication-tool.c:133 gio/gio-tool.c:224
+#: gio/gapplication-tool.c:135 gio/gio-tool.c:224
 msgid "[ARGS…]"
 msgstr "[ARGUMENT…]"
 
-#: gio/gapplication-tool.c:134
+#: gio/gapplication-tool.c:136
 #, c-format
 msgid "Commands:\n"
 msgstr "Kommandon:\n"
 
 #. Translators: do not translate 'help', but please translate 'COMMAND'.
-#: gio/gapplication-tool.c:146
+#: gio/gapplication-tool.c:148
 #, c-format
 msgid ""
 "Use “%s help COMMAND” to get detailed help.\n"
@@ -178,7 +178,7 @@ msgstr ""
 "Använd ”%s help KOMMANDO” för att få detaljerad hjälp.\n"
 "\n"
 
-#: gio/gapplication-tool.c:165
+#: gio/gapplication-tool.c:167
 #, c-format
 msgid ""
 "%s command requires an application id to directly follow\n"
@@ -187,13 +187,13 @@ msgstr ""
 "%s-kommando kräver ett program-ID direkt efter\n"
 "\n"
 
-#: gio/gapplication-tool.c:171
+#: gio/gapplication-tool.c:173
 #, c-format
 msgid "invalid application id: “%s”\n"
 msgstr "ogiltigt program-ID: ”%s”\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
-#: gio/gapplication-tool.c:182
+#: gio/gapplication-tool.c:184
 #, c-format
 msgid ""
 "“%s” takes no arguments\n"
@@ -202,21 +202,21 @@ msgstr ""
 "”%s” tar inga argument\n"
 "\n"
 
-#: gio/gapplication-tool.c:266
+#: gio/gapplication-tool.c:268
 #, c-format
 msgid "unable to connect to D-Bus: %s\n"
 msgstr "kunde inte ansluta till D-Bus: %s\n"
 
-#: gio/gapplication-tool.c:286
+#: gio/gapplication-tool.c:288
 #, c-format
 msgid "error sending %s message to application: %s\n"
 msgstr "fel vid sändning av meddelande %s till program: %s\n"
 
-#: gio/gapplication-tool.c:317
+#: gio/gapplication-tool.c:319
 msgid "action name must be given after application id\n"
 msgstr "åtgärdsnamn måste ges efter program-ID\n"
 
-#: gio/gapplication-tool.c:325
+#: gio/gapplication-tool.c:327
 #, c-format
 msgid ""
 "invalid action name: “%s”\n"
@@ -225,25 +225,25 @@ msgstr ""
 "ogiltigt åtgärdsnamn: ”%s”\n"
 "åtgärdsnamn måste bestå av enbart alfanumeriska, ”-” och ”.”\n"
 
-#: gio/gapplication-tool.c:344
+#: gio/gapplication-tool.c:346
 #, c-format
 msgid "error parsing action parameter: %s\n"
 msgstr "fel vid tolkning av åtgärdsparameter: %s\n"
 
-#: gio/gapplication-tool.c:356
+#: gio/gapplication-tool.c:358
 msgid "actions accept a maximum of one parameter\n"
 msgstr "åtgärder accepterar maximalt en parameter\n"
 
-#: gio/gapplication-tool.c:411
+#: gio/gapplication-tool.c:413
 msgid "list-actions command takes only the application id"
 msgstr "list-actions-kommandot tar enbart program-ID:t"
 
-#: gio/gapplication-tool.c:421
+#: gio/gapplication-tool.c:423
 #, c-format
 msgid "unable to find desktop file for application %s\n"
 msgstr "kunde inte hitta desktopfil för programmet %s\n"
 
-#: gio/gapplication-tool.c:466
+#: gio/gapplication-tool.c:468
 #, c-format
 msgid ""
 "unrecognised command: %s\n"
@@ -253,8 +253,8 @@ msgstr ""
 "\n"
 
 #: gio/gbufferedinputstream.c:420 gio/gbufferedinputstream.c:498
-#: gio/ginputstream.c:179 gio/ginputstream.c:379 gio/ginputstream.c:617
-#: gio/ginputstream.c:1019 gio/goutputstream.c:223 gio/goutputstream.c:1049
+#: gio/ginputstream.c:179 gio/ginputstream.c:379 gio/ginputstream.c:646
+#: gio/ginputstream.c:1048 gio/goutputstream.c:223 gio/goutputstream.c:1049
 #: gio/gpollableinputstream.c:205 gio/gpollableoutputstream.c:277
 #, c-format
 msgid "Too large count value passed to %s"
@@ -265,11 +265,11 @@ msgstr "För stort räknevärde skickat till %s"
 msgid "Seek not supported on base stream"
 msgstr "Sökning stöds inte på basströmmen"
 
-#: gio/gbufferedinputstream.c:937
+#: gio/gbufferedinputstream.c:938
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Kan inte kapa av GBufferedInputStream"
 
-#: gio/gbufferedinputstream.c:982 gio/ginputstream.c:1208 gio/giostream.c:300
+#: gio/gbufferedinputstream.c:983 gio/ginputstream.c:1237 gio/giostream.c:300
 #: gio/goutputstream.c:2198
 msgid "Stream is already closed"
 msgstr "Strömmen är redan stängd"
@@ -942,9 +942,11 @@ msgstr "Sessions-dbus kör inte, och autostart misslyckades"
 msgid "Unable to get Hardware profile: %s"
 msgstr "Kunde inte hämta hårdvaruprofil: %s"
 
-#: gio/gdbusprivate.c:2488
-msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr "Kunde inte läsa in /var/lib/dbus/machine-id eller /etc/machine-id: "
+#. Translators: Both placeholders are file paths
+#: gio/gdbusprivate.c:2494
+#, c-format
+msgid "Unable to load %s or %s: "
+msgstr "Kunde inte läsa in %s eller %s: "
 
 #: gio/gdbusproxy.c:1562
 #, c-format
@@ -1581,7 +1583,7 @@ msgstr "Inmatningsströmmen har inte implementerat läsning"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:1218 gio/giostream.c:310 gio/goutputstream.c:2208
+#: gio/ginputstream.c:1247 gio/giostream.c:310 gio/goutputstream.c:2208
 msgid "Stream has outstanding operation"
 msgstr "Strömmen har kvarstående åtgärd"
 
@@ -3221,23 +3223,22 @@ msgstr "Fel vid inställning av SELinux-kontext: %s"
 msgid "Setting attribute %s not supported"
 msgstr "Inställning av attributet %s stöds inte"
 
-#: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:795
+#: gio/glocalfileinputstream.c:163 gio/glocalfileoutputstream.c:795
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Fel vid läsning från fil: %s"
 
-#: gio/glocalfileinputstream.c:199 gio/glocalfileinputstream.c:211
-#: gio/glocalfileinputstream.c:225 gio/glocalfileinputstream.c:333
-#: gio/glocalfileoutputstream.c:557 gio/glocalfileoutputstream.c:1117
-#, c-format
-msgid "Error seeking in file: %s"
-msgstr "Fel vid sökning i fil: %s"
-
-#: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:347
+#: gio/glocalfileinputstream.c:194 gio/glocalfileoutputstream.c:347
 #: gio/glocalfileoutputstream.c:441
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Fel vid stängning av fil: %s"
+
+#: gio/glocalfileinputstream.c:272 gio/glocalfileoutputstream.c:557
+#: gio/glocalfileoutputstream.c:1117
+#, c-format
+msgid "Error seeking in file: %s"
+msgstr "Fel vid sökning i fil: %s"
 
 #: gio/glocalfilemonitor.c:866
 msgid "Unable to find default local file monitor type"
@@ -3270,7 +3271,7 @@ msgid "Error truncating file: %s"
 msgstr "Fel vid kapning av fil: %s"
 
 #: gio/glocalfileoutputstream.c:656 gio/glocalfileoutputstream.c:894
-#: gio/glocalfileoutputstream.c:1149 gio/gsubprocess.c:380
+#: gio/glocalfileoutputstream.c:1149 gio/gsubprocess.c:226
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Fel vid öppning av filen ”%s”: %s"
@@ -5770,83 +5771,83 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Texten var tom (eller innehöll bara tomrum)"
 
-#: glib/gspawn.c:323
+#: glib/gspawn.c:318
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Misslyckades med att läsa data från barnprocess (%s)"
 
-#: glib/gspawn.c:468
+#: glib/gspawn.c:465
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Oväntat fel vid läsning av data från en barnprocess (%s)"
 
-#: glib/gspawn.c:553
+#: glib/gspawn.c:550
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Oväntat fel i waitpid() (%s)"
 
-#: glib/gspawn.c:1061 glib/gspawn-win32.c:1329
+#: glib/gspawn.c:1154 glib/gspawn-win32.c:1383
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Barnprocess avslutades med kod %ld"
 
-#: glib/gspawn.c:1069
+#: glib/gspawn.c:1162
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Barnprocess dödat av signal %ld"
 
-#: glib/gspawn.c:1076
+#: glib/gspawn.c:1169
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Barnprocess stoppad av signal %ld"
 
-#: glib/gspawn.c:1083
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Barnprocess avslutades onormalt"
 
-#: glib/gspawn.c:1548 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1767 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Misslyckades med att läsa från rör till barn (%s)"
 
-#: glib/gspawn.c:1806
+#: glib/gspawn.c:2069
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Misslyckades med att starta barnprocessen ”%s” (%s)"
 
-#: glib/gspawn.c:1922
+#: glib/gspawn.c:2186
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Misslyckades med att grena (%s)"
 
-#: glib/gspawn.c:2077 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2346 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Misslyckades med att byta till katalogen ”%s” (%s)"
 
-#: glib/gspawn.c:2087
+#: glib/gspawn.c:2356
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Misslyckades med att köra barnprocessen ”%s” (%s)"
 
-#: glib/gspawn.c:2097
+#: glib/gspawn.c:2366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr ""
 "Misslyckades med att dirigera om utdata eller indata från barnprocess (%s)"
 
-#: glib/gspawn.c:2106
+#: glib/gspawn.c:2375
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Misslyckades med att skapa barnprocess (%s)"
 
-#: glib/gspawn.c:2114
+#: glib/gspawn.c:2383
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Okänt fel vid körning av barnprocessen ”%s”"
 
-#: glib/gspawn.c:2138
+#: glib/gspawn.c:2407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -5872,27 +5873,27 @@ msgstr "Misslyckades med att köra barnprocess (%s)"
 msgid "Invalid program name: %s"
 msgstr "Ogiltigt programnamn: %s"
 
-#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:725
+#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:757
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Ogiltig sträng i argumentvektorn vid %d: %s"
 
-#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:740
+#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:772
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Ogiltig sträng i miljön: %s"
 
-#: glib/gspawn-win32.c:721
+#: glib/gspawn-win32.c:753
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Ogiltig arbetskatalog: %s"
 
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:815
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Misslyckades med att köra hjälparprogram (%s)"
 
-#: glib/gspawn-win32.c:1056
+#: glib/gspawn-win32.c:1042
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
@@ -5900,21 +5901,21 @@ msgstr ""
 "Oväntat fel i g_io_channel_win32_poll() vid inläsning av data från en "
 "barnprocess"
 
-#: glib/gstrfuncs.c:3335 glib/gstrfuncs.c:3437
+#: glib/gstrfuncs.c:3338 glib/gstrfuncs.c:3440
 msgid "Empty string is not a number"
 msgstr "Tom sträng är inte ett tal"
 
-#: glib/gstrfuncs.c:3359
+#: glib/gstrfuncs.c:3362
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "”%s” är inte ett tal med tecken"
 
-#: glib/gstrfuncs.c:3369 glib/gstrfuncs.c:3473
+#: glib/gstrfuncs.c:3372 glib/gstrfuncs.c:3476
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Talet ”%s” är utanför gränserna [%s, %s]"
 
-#: glib/gstrfuncs.c:3463
+#: glib/gstrfuncs.c:3466
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "”%s” är inte ett teckenlöst tal"
@@ -6200,6 +6201,9 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
+#~ msgstr "Kunde inte läsa in /var/lib/dbus/machine-id eller /etc/machine-id: "
 
 #~ msgid "Unknown error on connect"
 #~ msgstr "Okänt fel inträffade vid anslutning"
