@@ -493,6 +493,15 @@
 }
 
 {
+	g-system-thread-init-malloc
+	Memcheck:Leak
+	match-leak-kinds:possible,reachable
+	fun:malloc
+	...
+	fun:g_system_thread_new
+}
+
+{
 	g-task-thread-pool-init
 	Memcheck:Leak
 	match-leak-kinds:possible,reachable,definite
