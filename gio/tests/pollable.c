@@ -187,14 +187,15 @@ test_pollable_unix_pty (void)
 {
   int (*openpty_impl) (int *, int *, char *, void *, void *);
   int a, b, status;
-#ifdef __linux__
+#ifdef LIBUTIL_SONAME
   void *handle;
 #endif
 
   g_test_summary ("Test that PTYs are considered pollable");
 
-#ifdef __linux__
-  handle = dlopen ("libutil.so", RTLD_GLOBAL | RTLD_LAZY);
+#ifdef LIBUTIL_SONAME
+  handle = dlopen (LIBUTIL_SONAME, RTLD_GLOBAL | RTLD_LAZY);
+  g_assert_nonnull (handle);
 #endif
 
   openpty_impl = dlsym (RTLD_DEFAULT, "openpty");
@@ -223,7 +224,7 @@ test_pollable_unix_pty (void)
   close (b);
 
 close_libutil:
-#ifdef __linux__
+#ifdef LIBUTIL_SONAME
   dlclose (handle);
 #else
   return;
