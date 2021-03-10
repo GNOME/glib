@@ -850,6 +850,7 @@ handle_overwrite_open (const char    *filename,
   int res;
   int mode;
   int errsv;
+  gboolean replace_destination_set = (flags & G_FILE_CREATE_REPLACE_DESTINATION);
 
   mode = mode_from_flags_or_info (flags, reference_info);
 
@@ -960,7 +961,7 @@ handle_overwrite_open (const char    *filename,
    * to a backup file and rewrite the contents of the file.
    */
   
-  if ((flags & G_FILE_CREATE_REPLACE_DESTINATION) ||
+  if (replace_destination_set ||
       (!(_g_stat_nlink (&original_stat) > 1) && !is_symlink))
     {
       char *dirname, *tmp_filename;
@@ -979,7 +980,7 @@ handle_overwrite_open (const char    *filename,
       
       /* try to keep permissions (unless replacing) */
 
-      if ( ! (flags & G_FILE_CREATE_REPLACE_DESTINATION) &&
+      if (!replace_destination_set &&
 	   (
 #ifdef HAVE_FCHOWN
 	    fchown (tmpfd, _g_stat_uid (&original_stat), _g_stat_gid (&original_stat)) == -1 ||
@@ -1120,7 +1121,7 @@ handle_overwrite_open (const char    *filename,
 	}
     }
 
-  if (flags & G_FILE_CREATE_REPLACE_DESTINATION)
+  if (replace_destination_set)
     {
       g_close (fd, NULL);
       
