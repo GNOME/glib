@@ -650,6 +650,84 @@ comment: {standard_bottom_comment}
             "0",
         )
 
+    def test_available_in(self):
+        """Test GLIB_AVAILABLE_ENUMERATOR_IN_2_68 handling
+        https://gitlab.gnome.org/GNOME/glib/-/issues/2327"""
+        h_contents = """
+        typedef enum {
+          G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER GLIB_AVAILABLE_ENUMERATOR_IN_2_68 = (1<<2)
+        } GDBusServerFlags;
+        """
+        result = self.runMkenumsWithHeader(h_contents)
+        self.assertEqual("", result.err)
+        self.assertSingleEnum(
+            result,
+            "GDBusServerFlags",
+            "g_dbus_server_flags",
+            "G_DBUS_SERVER_FLAGS",
+            "DBUS_SERVER_FLAGS",
+            "G",
+            "",
+            "flags",
+            "Flags",
+            "FLAGS",
+            "G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER",
+            "user",
+            "4",
+        )
+
+    def test_deprecated_in(self):
+        """Test GLIB_DEPRECATED_ENUMERATOR_IN_2_68 handling
+        https://gitlab.gnome.org/GNOME/glib/-/issues/2327"""
+        h_contents = """
+        typedef enum {
+          G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER GLIB_DEPRECATED_ENUMERATOR_IN_2_68 = (1<<2)
+        } GDBusServerFlags;
+        """
+        result = self.runMkenumsWithHeader(h_contents)
+        self.assertEqual("", result.err)
+        self.assertSingleEnum(
+            result,
+            "GDBusServerFlags",
+            "g_dbus_server_flags",
+            "G_DBUS_SERVER_FLAGS",
+            "DBUS_SERVER_FLAGS",
+            "G",
+            "",
+            "flags",
+            "Flags",
+            "FLAGS",
+            "G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER",
+            "user",
+            "4",
+        )
+
+    def test_deprecated_in_for(self):
+        """Test GLIB_DEPRECATED_ENUMERATOR_IN_2_68_FOR() handling
+        https://gitlab.gnome.org/GNOME/glib/-/issues/2327"""
+        h_contents = """
+        typedef enum {
+          G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER GLIB_DEPRECATED_ENUMERATOR_IN_2_68_FOR(G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER2) = (1<<2)
+        } GDBusServerFlags;
+        """
+        result = self.runMkenumsWithHeader(h_contents)
+        self.assertEqual("", result.err)
+        self.assertSingleEnum(
+            result,
+            "GDBusServerFlags",
+            "g_dbus_server_flags",
+            "G_DBUS_SERVER_FLAGS",
+            "DBUS_SERVER_FLAGS",
+            "G",
+            "",
+            "flags",
+            "Flags",
+            "FLAGS",
+            "G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER",
+            "user",
+            "4",
+        )
+
 
 class TestRspMkenums(TestMkenums):
     """Run all tests again in @rspfile mode"""
