@@ -97,6 +97,26 @@ test_child (void)
 }
 
 static void
+test_empty_path (void)
+{
+  GFile *file = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2328");
+  g_test_summary ("Check that creating a file with an empty path results in errors");
+
+  /* Creating the file must always succeed. */
+  file = g_file_new_for_path ("");
+  g_assert_nonnull (file);
+
+  /* But then querying its path should indicate it’s invalid. */
+  g_assert_null (g_file_get_path (file));
+  g_assert_null (g_file_get_basename (file));
+  g_assert_null (g_file_get_parent (file));
+
+  g_object_unref (file);
+}
+
+static void
 test_type (void)
 {
   GFile *datapath_f;
@@ -2875,6 +2895,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/build-filename", test_build_filename);
   g_test_add_func ("/file/parent", test_parent);
   g_test_add_func ("/file/child", test_child);
+  g_test_add_func ("/file/empty-path", test_empty_path);
   g_test_add_func ("/file/type", test_type);
   g_test_add_func ("/file/parse-name", test_parse_name);
   g_test_add_data_func ("/file/async-create-delete/0", GINT_TO_POINTER (0), test_create_delete);
