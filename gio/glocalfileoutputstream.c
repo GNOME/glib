@@ -63,6 +63,12 @@
 #define O_BINARY 0
 #endif
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#else
+#define HAVE_O_CLOEXEC 1
+#endif
+
 struct _GLocalFileOutputStreamPrivate {
   char *tmp_filename;
   char *original_filename;
@@ -850,11 +856,12 @@ handle_overwrite_open (const char    *filename,
   int res;
   int mode;
   int errsv;
+  gboolean replace_destination_set = (flags & G_FILE_CREATE_REPLACE_DESTINATION);
 
   mode = mode_from_flags_or_info (flags, reference_info);
 
   /* We only need read access to the original file if we are creating a backup.
-   * We also add O_CREATE to avoid a race if the file was just removed */
+   * We also add O_CREAT to avoid a race if the file was just removed */
   if (create_backup || readable)
     open_flags = O_RDWR | O_CREAT | O_BINARY;
   else
@@ -877,16 +884,22 @@ handle_overwrite_open (const char    *filename,
       /* Could be a symlink, or it could be a regular ELOOP error,
        * but then the next open will fail too. */
       is_symlink = TRUE;
-      fd = g_open (filename, open_flags, mode);
+      if (!replace_destination_set)
+        fd = g_open (filename, open_flags, mode);
     }
-#else
-  fd = g_open (filename, open_flags, mode);
-  errsv = errno;
+#else  /* if !O_NOFOLLOW */
   /* This is racy, but we do it as soon as possible to minimize the race */
   is_symlink = g_file_test (filename, G_FILE_TEST_IS_SYMLINK);
+
+  if (!is_symlink || !replace_destination_set)
+    {
+      fd = g_open (filename, open_flags, mode);
+      errsv = errno;
+    }
 #endif
 
-  if (fd == -1)
+  if (fd == -1 &&
+      (!is_symlink || !replace_destination_set))
     {
       char *display_name = g_filename_display_name (filename);
       g_set_error (error, G_IO_ERROR,
@@ -897,15 +910,30 @@ handle_overwrite_open (const char    *filename,
       return -1;
     }
 
-  res = g_local_file_fstat (fd,
-                            G_LOCAL_FILE_STAT_FIELD_TYPE |
-                            G_LOCAL_FILE_STAT_FIELD_MODE |
-                            G_LOCAL_FILE_STAT_FIELD_UID |
-                            G_LOCAL_FILE_STAT_FIELD_GID |
-                            G_LOCAL_FILE_STAT_FIELD_MTIME |
-                            G_LOCAL_FILE_STAT_FIELD_NLINK,
-                            G_LOCAL_FILE_STAT_FIELD_ALL, &original_stat);
-  errsv = errno;
+  if (!is_symlink)
+    {
+      res = g_local_file_fstat (fd,
+                                G_LOCAL_FILE_STAT_FIELD_TYPE |
+                                G_LOCAL_FILE_STAT_FIELD_MODE |
+                                G_LOCAL_FILE_STAT_FIELD_UID |
+                                G_LOCAL_FILE_STAT_FIELD_GID |
+                                G_LOCAL_FILE_STAT_FIELD_MTIME |
+                                G_LOCAL_FILE_STAT_FIELD_NLINK,
+                                G_LOCAL_FILE_STAT_FIELD_ALL, &original_stat);
+      errsv = errno;
+    }
+  else
+    {
+      res = g_local_file_lstat (filename,
+                                G_LOCAL_FILE_STAT_FIELD_TYPE |
+                                G_LOCAL_FILE_STAT_FIELD_MODE |
+                                G_LOCAL_FILE_STAT_FIELD_UID |
+                                G_LOCAL_FILE_STAT_FIELD_GID |
+                                G_LOCAL_FILE_STAT_FIELD_MTIME |
+                                G_LOCAL_FILE_STAT_FIELD_NLINK,
+                                G_LOCAL_FILE_STAT_FIELD_ALL, &original_stat);
+      errsv = errno;
+    }
 
   if (res != 0)
     {
@@ -922,16 +950,27 @@ handle_overwrite_open (const char    *filename,
   if (!S_ISREG (_g_stat_mode (&original_stat)))
     {
       if (S_ISDIR (_g_stat_mode (&original_stat)))
-	g_set_error_literal (error,
-                             G_IO_ERROR,
-                             G_IO_ERROR_IS_DIRECTORY,
-                             _("Target file is a directory"));
-      else
-	g_set_error_literal (error,
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_IS_DIRECTORY,
+                               _("Target file is a directory"));
+          goto err_out;
+        }
+      else if (!is_symlink ||
+#ifdef S_ISLNK
+               !S_ISLNK (_g_stat_mode (&original_stat))
+#else
+               FALSE
+#endif
+               )
+        {
+          g_set_error_literal (error,
                              G_IO_ERROR,
                              G_IO_ERROR_NOT_REGULAR_FILE,
                              _("Target file is not a regular file"));
-      goto err_out;
+          goto err_out;
+        }
     }
   
   if (etag != NULL)
@@ -960,7 +999,7 @@ handle_overwrite_open (const char    *filename,
    * to a backup file and rewrite the contents of the file.
    */
   
-  if ((flags & G_FILE_CREATE_REPLACE_DESTINATION) ||
+  if (replace_destination_set ||
       (!(_g_stat_nlink (&original_stat) > 1) && !is_symlink))
     {
       char *dirname, *tmp_filename;
@@ -979,7 +1018,7 @@ handle_overwrite_open (const char    *filename,
       
       /* try to keep permissions (unless replacing) */
 
-      if ( ! (flags & G_FILE_CREATE_REPLACE_DESTINATION) &&
+      if (!replace_destination_set &&
 	   (
 #ifdef HAVE_FCHOWN
 	    fchown (tmpfd, _g_stat_uid (&original_stat), _g_stat_gid (&original_stat)) == -1 ||
@@ -1014,7 +1053,8 @@ handle_overwrite_open (const char    *filename,
 	    }
 	}
 
-      g_close (fd, NULL);
+      if (fd >= 0)
+        g_close (fd, NULL);
       *temp_filename = tmp_filename;
       return tmpfd;
     }
@@ -1120,7 +1160,7 @@ handle_overwrite_open (const char    *filename,
 	}
     }
 
-  if (flags & G_FILE_CREATE_REPLACE_DESTINATION)
+  if (replace_destination_set)
     {
       g_close (fd, NULL);
       
@@ -1205,7 +1245,7 @@ _g_local_file_output_stream_replace (const char        *filename,
   sync_on_close = FALSE;
 
   /* If the file doesn't exist, create it */
-  open_flags = O_CREAT | O_EXCL | O_BINARY;
+  open_flags = O_CREAT | O_EXCL | O_BINARY | O_CLOEXEC;
   if (readable)
     open_flags |= O_RDWR;
   else
@@ -1235,8 +1275,11 @@ _g_local_file_output_stream_replace (const char        *filename,
       set_error_from_open_errno (filename, error);
       return NULL;
     }
-  
- 
+#if !defined(HAVE_O_CLOEXEC) && defined(F_SETFD)
+  else
+    fcntl (fd, F_SETFD, FD_CLOEXEC);
+#endif
+
   stream = g_object_new (G_TYPE_LOCAL_FILE_OUTPUT_STREAM, NULL);
   stream->priv->fd = fd;
   stream->priv->sync_on_close = sync_on_close;

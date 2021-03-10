@@ -686,7 +686,7 @@ test_replace_cancel (void)
   guint count;
   GError *error = NULL;
 
-  g_test_bug ("629301");
+  g_test_bug ("https://bugzilla.gnome.org/629301");
 
   path = g_dir_make_tmp ("g_file_replace_cancel_XXXXXX", &error);
   g_assert_no_error (error);
@@ -803,6 +803,1019 @@ test_replace_cancel (void)
   g_file_delete (tmpdir, NULL, &error);
   g_assert_no_error (error);
   g_object_unref (tmpdir);
+}
+
+static void
+test_replace_symlink (void)
+{
+#ifdef G_OS_UNIX
+  gchar *tmpdir_path = NULL;
+  GFile *tmpdir = NULL, *source_file = NULL, *target_file = NULL;
+  GFileOutputStream *stream = NULL;
+  const gchar *new_contents = "this is a test message which should be written to source and not target";
+  gsize n_written;
+  GFileEnumerator *enumerator = NULL;
+  GFileInfo *info = NULL;
+  gchar *contents = NULL;
+  gsize length = 0;
+  GError *local_error = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2325");
+  g_test_summary ("Test that G_FILE_CREATE_REPLACE_DESTINATION doesn’t follow symlinks");
+
+  /* Create a fresh, empty working directory. */
+  tmpdir_path = g_dir_make_tmp ("g_file_replace_symlink_XXXXXX", &local_error);
+  g_assert_no_error (local_error);
+  tmpdir = g_file_new_for_path (tmpdir_path);
+
+  g_test_message ("Using temporary directory %s", tmpdir_path);
+  g_free (tmpdir_path);
+
+  /* Create symlink `source` which points to `target`. */
+  source_file = g_file_get_child (tmpdir, "source");
+  target_file = g_file_get_child (tmpdir, "target");
+  g_file_make_symbolic_link (source_file, "target", NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  /* Ensure that `target` doesn’t exist */
+  g_assert_false (g_file_query_exists (target_file, NULL));
+
+  /* Replace the `source` symlink with a regular file using
+   * %G_FILE_CREATE_REPLACE_DESTINATION, which should replace it *without*
+   * following the symlink */
+  stream = g_file_replace (source_file, NULL, FALSE  /* no backup */,
+                           G_FILE_CREATE_REPLACE_DESTINATION, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_output_stream_write_all (G_OUTPUT_STREAM (stream), new_contents, strlen (new_contents),
+                             &n_written, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (n_written, ==, strlen (new_contents));
+
+  g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_object (&stream);
+
+  /* At this point, there should still only be one file: `source`. It should
+   * now be a regular file. `target` should not exist. */
+  enumerator = g_file_enumerate_children (tmpdir,
+                                          G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                          G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                          G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  info = g_file_enumerator_next_file (enumerator, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (info);
+
+  g_assert_cmpstr (g_file_info_get_name (info), ==, "source");
+  g_assert_cmpint (g_file_info_get_file_type (info), ==, G_FILE_TYPE_REGULAR);
+
+  g_clear_object (&info);
+
+  info = g_file_enumerator_next_file (enumerator, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_null (info);
+
+  g_file_enumerator_close (enumerator, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_clear_object (&enumerator);
+
+  /* Double-check that `target` doesn’t exist */
+  g_assert_false (g_file_query_exists (target_file, NULL));
+
+  /* Check the content of `source`. */
+  g_file_load_contents (source_file,
+                        NULL,
+                        &contents,
+                        &length,
+                        NULL,
+                        &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpstr (contents, ==, new_contents);
+  g_assert_cmpuint (length, ==, strlen (new_contents));
+  g_free (contents);
+
+  /* Tidy up. */
+  g_file_delete (source_file, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_file_delete (tmpdir, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_object (&target_file);
+  g_clear_object (&source_file);
+  g_clear_object (&tmpdir);
+#else  /* if !G_OS_UNIX */
+  g_test_skip ("Symlink replacement tests can only be run on Unix")
+#endif
+}
+
+/* FIXME: These tests have only been checked on Linux. Most of them are probably
+ * applicable on Windows, too, but that has not been tested yet.
+ * See https://gitlab.gnome.org/GNOME/glib/-/issues/2325 */
+#ifdef __linux__
+
+/* Different kinds of file which create_test_file() can create. */
+typedef enum
+{
+  FILE_TEST_SETUP_TYPE_NONEXISTENT,
+  FILE_TEST_SETUP_TYPE_REGULAR_EMPTY,
+  FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY,
+  FILE_TEST_SETUP_TYPE_DIRECTORY,
+  FILE_TEST_SETUP_TYPE_SOCKET,
+  FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING,
+  FILE_TEST_SETUP_TYPE_SYMLINK_VALID,
+} FileTestSetupType;
+
+/* Create file `tmpdir/basename`, of type @setup_type, and chmod it to
+ * @setup_mode. Return the #GFile representing it. Abort on any errors. */
+static GFile *
+create_test_file (GFile             *tmpdir,
+                  const gchar       *basename,
+                  FileTestSetupType  setup_type,
+                  guint              setup_mode)
+{
+  GFile *test_file = g_file_get_child (tmpdir, basename);
+  gchar *target_basename = g_strdup_printf ("%s-target", basename);  /* for symlinks */
+  GFile *target_file = g_file_get_child (tmpdir, target_basename);
+  GError *local_error = NULL;
+
+  switch (setup_type)
+    {
+    case FILE_TEST_SETUP_TYPE_NONEXISTENT:
+      /* Nothing to do here. */
+      g_assert (setup_mode == 0);
+      break;
+    case FILE_TEST_SETUP_TYPE_REGULAR_EMPTY:
+    case FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY:
+        {
+          gchar *contents = NULL;
+
+          if (setup_type == FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY)
+            contents = g_strdup_printf ("this is some test content in %s", basename);
+          else
+            contents = g_strdup ("");
+
+          g_file_set_contents (g_file_peek_path (test_file), contents, -1, &local_error);
+          g_assert_no_error (local_error);
+
+          g_file_set_attribute_uint32 (test_file, G_FILE_ATTRIBUTE_UNIX_MODE,
+                                       setup_mode, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                       NULL, &local_error);
+          g_assert_no_error (local_error);
+
+          g_free (contents);
+          break;
+        }
+    case FILE_TEST_SETUP_TYPE_DIRECTORY:
+      g_assert (setup_mode == 0);
+
+      g_file_make_directory (test_file, NULL, &local_error);
+      g_assert_no_error (local_error);
+      break;
+    case FILE_TEST_SETUP_TYPE_SOCKET:
+      g_assert_no_errno (mknod (g_file_peek_path (test_file), S_IFSOCK | setup_mode, 0));
+      break;
+    case FILE_TEST_SETUP_TYPE_SYMLINK_VALID:
+      g_file_set_contents (g_file_peek_path (target_file), "target file", -1, &local_error);
+      g_assert_no_error (local_error);
+      G_GNUC_FALLTHROUGH;
+    case FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING:
+      /* Permissions on a symlink are not used by the kernel, so are only
+       * applicable if the symlink is valid (and are applied to the target) */
+      g_assert (setup_type != FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING || setup_mode == 0);
+
+      g_file_make_symbolic_link (test_file, target_basename, NULL, &local_error);
+      g_assert_no_error (local_error);
+
+      if (setup_type == FILE_TEST_SETUP_TYPE_SYMLINK_VALID)
+        {
+          g_file_set_attribute_uint32 (test_file, G_FILE_ATTRIBUTE_UNIX_MODE,
+                                       setup_mode, G_FILE_QUERY_INFO_NONE,
+                                       NULL, &local_error);
+          g_assert_no_error (local_error);
+        }
+
+      if (setup_type == FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING)
+        {
+          /* Ensure that the target doesn’t exist */
+          g_assert_false (g_file_query_exists (target_file, NULL));
+        }
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+
+  g_clear_object (&target_file);
+  g_free (target_basename);
+
+  return g_steal_pointer (&test_file);
+}
+
+/* Check that @test_file is of the @expected_type, has the @expected_mode, and
+ * (if it’s a regular file) has the @expected_contents or (if it’s a symlink)
+ * has the symlink target given by @expected_contents.
+ *
+ * @test_file must point to the file `tmpdir/basename`.
+ *
+ * Aborts on any errors or mismatches against the expectations.
+ */
+static void
+check_test_file (GFile             *test_file,
+                 GFile             *tmpdir,
+                 const gchar       *basename,
+                 FileTestSetupType  expected_type,
+                 guint              expected_mode,
+                 const gchar       *expected_contents)
+{
+  gchar *target_basename = g_strdup_printf ("%s-target", basename);  /* for symlinks */
+  GFile *target_file = g_file_get_child (tmpdir, target_basename);
+  GFileType test_file_type = g_file_query_file_type (test_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+  GFileInfo *info = NULL;
+  GError *local_error = NULL;
+
+  switch (expected_type)
+    {
+    case FILE_TEST_SETUP_TYPE_NONEXISTENT:
+      g_assert (expected_mode == 0);
+      g_assert (expected_contents == NULL);
+
+      g_assert_false (g_file_query_exists (test_file, NULL));
+      g_assert_cmpint (test_file_type, ==, G_FILE_TYPE_UNKNOWN);
+      break;
+    case FILE_TEST_SETUP_TYPE_REGULAR_EMPTY:
+    case FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY:
+      g_assert (expected_type != FILE_TEST_SETUP_TYPE_REGULAR_EMPTY || expected_contents == NULL);
+      g_assert (expected_type != FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY || expected_contents != NULL);
+
+      g_assert_cmpint (test_file_type, ==, G_FILE_TYPE_REGULAR);
+
+      info = g_file_query_info (test_file,
+                                G_FILE_ATTRIBUTE_STANDARD_SIZE ","
+                                G_FILE_ATTRIBUTE_UNIX_MODE,
+                                G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+      g_assert_no_error (local_error);
+
+      if (expected_type == FILE_TEST_SETUP_TYPE_REGULAR_EMPTY)
+        g_assert_cmpint (g_file_info_get_size (info), ==, 0);
+      else
+        g_assert_cmpint (g_file_info_get_size (info), >, 0);
+
+      if (expected_contents != NULL)
+        {
+          gchar *contents = NULL;
+          gsize length = 0;
+
+          g_file_get_contents (g_file_peek_path (test_file), &contents, &length, &local_error);
+          g_assert_no_error (local_error);
+
+          g_assert_cmpstr (contents, ==, expected_contents);
+          g_free (contents);
+        }
+
+      g_assert_cmpuint (g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_MODE) & 0777, ==, expected_mode);
+
+      break;
+    case FILE_TEST_SETUP_TYPE_DIRECTORY:
+      g_assert (expected_mode == 0);
+      g_assert (expected_contents == NULL);
+
+      g_assert_cmpint (test_file_type, ==, G_FILE_TYPE_DIRECTORY);
+      break;
+    case FILE_TEST_SETUP_TYPE_SOCKET:
+      g_assert (expected_contents == NULL);
+
+      g_assert_cmpint (test_file_type, ==, G_FILE_TYPE_SPECIAL);
+
+      info = g_file_query_info (test_file,
+                                G_FILE_ATTRIBUTE_UNIX_MODE,
+                                G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+      g_assert_no_error (local_error);
+
+      g_assert_cmpuint (g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_UNIX_MODE) & 0777, ==, expected_mode);
+      break;
+    case FILE_TEST_SETUP_TYPE_SYMLINK_VALID:
+    case FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING:
+        {
+          GFile *symlink_target_file = NULL;
+
+          /* Permissions on a symlink are not used by the kernel, so are only
+           * applicable if the symlink is valid (and are applied to the target) */
+          g_assert (expected_type != FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING || expected_mode == 0);
+          g_assert (expected_contents != NULL);
+
+          g_assert_cmpint (test_file_type, ==, G_FILE_TYPE_SYMBOLIC_LINK);
+
+          info = g_file_query_info (test_file,
+                                    G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
+                                    G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+          g_assert_no_error (local_error);
+
+          g_assert_cmpstr (g_file_info_get_symlink_target (info), ==, expected_contents);
+
+          symlink_target_file = g_file_get_child (tmpdir, g_file_info_get_symlink_target (info));
+          if (expected_type == FILE_TEST_SETUP_TYPE_SYMLINK_VALID)
+            g_assert_true (g_file_query_exists (symlink_target_file, NULL));
+          else
+            g_assert_false (g_file_query_exists (symlink_target_file, NULL));
+
+          if (expected_type == FILE_TEST_SETUP_TYPE_SYMLINK_VALID)
+            {
+              GFileInfo *target_info = NULL;
+
+              /* Need to re-query the info so we follow symlinks */
+              target_info = g_file_query_info (test_file,
+                                               G_FILE_ATTRIBUTE_UNIX_MODE,
+                                               G_FILE_QUERY_INFO_NONE, NULL, &local_error);
+              g_assert_no_error (local_error);
+
+              g_assert_cmpuint (g_file_info_get_attribute_uint32 (target_info, G_FILE_ATTRIBUTE_UNIX_MODE) & 0777, ==, expected_mode);
+
+              g_clear_object (&target_info);
+            }
+
+          g_clear_object (&symlink_target_file);
+          break;
+        }
+    default:
+      g_assert_not_reached ();
+    }
+
+  g_clear_object (&info);
+  g_clear_object (&target_file);
+  g_free (target_basename);
+}
+
+#endif  /* __linux__ */
+
+/* A big test for g_file_replace() and g_file_replace_readwrite(). The
+ * @test_data is a boolean: %TRUE to test g_file_replace_readwrite(), %FALSE to
+ * test g_file_replace(). The test setup and checks are identical for both
+ * functions; in the case of testing g_file_replace_readwrite(), only the output
+ * stream side of the returned #GIOStream is tested. i.e. We test the write
+ * behaviour of both functions is identical.
+ *
+ * This is intended to test all static behaviour of the function: for each test
+ * scenario, a temporary directory is set up with a source file (and maybe some
+ * other files) in a set configuration, g_file_replace{,_readwrite}() is called,
+ * and the final state of the directory is checked.
+ *
+ * This test does not check dynamic behaviour or race conditions. For example,
+ * it does not test what happens if the source file is deleted from another
+ * process half-way through a call to g_file_replace().
+ */
+static void
+test_replace (gconstpointer test_data)
+{
+#ifdef __linux__
+  gboolean read_write = GPOINTER_TO_UINT (test_data);
+  const gchar *new_contents = "this is a new test message which should be written to source";
+  const gchar *original_source_contents = "this is some test content in source";
+  const gchar *original_backup_contents = "this is some test content in source~";
+  mode_t current_umask = umask (0);
+  guint32 default_public_mode = 0666 & ~current_umask;
+  guint32 default_private_mode = 0600;
+
+  const struct
+    {
+      /* Arguments to pass to g_file_replace(). */
+      gboolean replace_make_backup;
+      GFileCreateFlags replace_flags;
+      const gchar *replace_etag;  /* (nullable) */
+
+      /* File system setup. */
+      FileTestSetupType setup_source_type;
+      guint setup_source_mode;
+      FileTestSetupType setup_backup_type;
+      guint setup_backup_mode;
+
+      /* Expected results. */
+      gboolean expected_success;
+      GQuark expected_error_domain;
+      gint expected_error_code;
+
+      /* Expected final file system state. */
+      guint expected_n_files;
+      FileTestSetupType expected_source_type;
+      guint expected_source_mode;
+      const gchar *expected_source_contents;  /* content for a regular file, or target for a symlink; NULL otherwise */
+      FileTestSetupType expected_backup_type;
+      guint expected_backup_mode;
+      const gchar *expected_backup_contents;  /* content for a regular file, or target for a symlink; NULL otherwise */
+    }
+  tests[] =
+    {
+      /* replace_make_backup == FALSE, replace_flags == NONE, replace_etag == NULL,
+       * all the different values of setup_source_type, mostly with a backup
+       * file created to check it’s not modified */
+      {
+        FALSE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+      {
+        FALSE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
+        2, FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
+        2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        3, FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, "source-target",
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        3, FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, "source-target",
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+
+      /* replace_etag set to an invalid value, with setup_source_type as a
+       * regular non-empty file; replacement should fail */
+      {
+        FALSE, G_FILE_CREATE_NONE, "incorrect etag",
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_WRONG_ETAG,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+
+      /* replace_make_backup == TRUE, replace_flags == NONE, replace_etag == NULL,
+       * all the different values of setup_source_type, with a backup
+       * file created to check it’s either replaced or the operation fails */
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode, NULL,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
+        2, FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
+        2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        /* The final situation here is a bit odd; the backup file is a bit
+         * pointless as the original source file was a dangling symlink.
+         * Theoretically the backup file should be that symlink, pointing to
+         * `source-target`, and hence no longer dangling, as that file has now
+         * been created as the new source content, since REPLACE_DESTINATION was
+         * not specified. However, the code instead creates an empty regular
+         * file as the backup. FIXME: This seems acceptable for now, but not
+         * entirely ideal and would be good to fix at some point. */
+        3, FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, "source-target",
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, 0777 & ~current_umask, NULL,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        /* FIXME: The permissions for the backup file are just the default umask,
+         * but should probably be the same as the permissions for the source
+         * file (`default_public_mode`). This probably arises from the fact that
+         * symlinks don’t have permissions. */
+        3, FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, "source-target",
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, 0777 & ~current_umask, "target file",
+      },
+
+      /* replace_make_backup == TRUE, replace_flags == NONE, replace_etag == NULL,
+       * setup_source_type is a regular file, with a backup file of every type
+       * created to check it’s either replaced or the operation fails */
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
+        FALSE, G_IO_ERROR, G_IO_ERROR_CANT_CREATE_BACKUP,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
+        TRUE, 0, 0,
+        /* the third file is `source~-target`, the original target of the old
+         * backup symlink */
+        3, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+
+      /* replace_make_backup == FALSE, replace_flags == REPLACE_DESTINATION,
+       * replace_etag == NULL, all the different values of setup_source_type,
+       * mostly with a backup file created to check it’s not modified */
+      {
+        FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+      {
+        FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
+        2, FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
+        2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        FALSE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        /* the third file is `source-target`, the original target of the old
+         * source file */
+        3, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+
+      /* replace_flags == REPLACE_DESTINATION, replace_etag set to an invalid
+       * value, with setup_source_type as a regular non-empty file; replacement
+       * should fail */
+      {
+        FALSE, G_FILE_CREATE_REPLACE_DESTINATION, "incorrect etag",
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_WRONG_ETAG,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+
+      /* replace_make_backup == TRUE, replace_flags == REPLACE_DESTINATION,
+       * replace_etag == NULL, all the different values of setup_source_type,
+       * with a backup file created to check it’s either replaced or the
+       * operation fails */
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode, NULL,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
+        2, FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FALSE, G_IO_ERROR, G_IO_ERROR_NOT_REGULAR_FILE,
+        2, FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_backup_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0, "source-target",
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        /* the third file is `source-target`, the original target of the old
+         * source file */
+        3, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, "source-target",
+      },
+
+      /* replace_make_backup == TRUE, replace_flags == REPLACE_DESTINATION,
+       * replace_etag == NULL, setup_source_type is a regular file, with a
+       * backup file of every type created to check it’s either replaced or the
+       * operation fails */
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0,
+        FALSE, G_IO_ERROR, G_IO_ERROR_CANT_CREATE_BACKUP,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+        FILE_TEST_SETUP_TYPE_DIRECTORY, 0, NULL,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SOCKET, default_public_mode,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SYMLINK_DANGLING, 0,
+        TRUE, 0, 0,
+        2, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+      {
+        TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
+        TRUE, 0, 0,
+        /* the third file is `source~-target`, the original target of the old
+         * backup symlink */
+        3, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, original_source_contents,
+      },
+
+      /* several different setups with replace_flags == PRIVATE */
+      {
+        FALSE, G_FILE_CREATE_PRIVATE, NULL,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_private_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+      {
+        FALSE, G_FILE_CREATE_PRIVATE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        /* the file isn’t being replaced, so it should keep its existing permissions */
+        1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+      {
+        FALSE, G_FILE_CREATE_PRIVATE | G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_private_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+      {
+        FALSE, G_FILE_CREATE_PRIVATE | G_FILE_CREATE_REPLACE_DESTINATION, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_public_mode,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        TRUE, 0, 0,
+        1, FILE_TEST_SETUP_TYPE_REGULAR_NONEMPTY, default_private_mode, new_contents,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+
+      /* make the initial source file unreadable, so the replace operation
+       * should fail */
+      {
+        FALSE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, 0  /* most restrictive permissions */,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0,
+        FALSE, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED,
+        1, FILE_TEST_SETUP_TYPE_REGULAR_EMPTY, 0, NULL,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+    };
+  gsize i;
+
+  g_test_summary ("Test various situations for g_file_replace()");
+
+  /* Reset the umask after querying it above. There’s no way to query it without
+   * changing it. */
+  umask (current_umask);
+  g_test_message ("Current umask: %u", current_umask);
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      gchar *tmpdir_path = NULL;
+      GFile *tmpdir = NULL, *source_file = NULL, *backup_file = NULL;
+      GFileOutputStream *output_stream = NULL;
+      GFileIOStream *io_stream = NULL;
+      GFileEnumerator *enumerator = NULL;
+      GFileInfo *info = NULL;
+      guint n_files;
+      GError *local_error = NULL;
+
+      /* Create a fresh, empty working directory. */
+      tmpdir_path = g_dir_make_tmp ("g_file_replace_XXXXXX", &local_error);
+      g_assert_no_error (local_error);
+      tmpdir = g_file_new_for_path (tmpdir_path);
+
+      g_test_message ("Test %" G_GSIZE_FORMAT ", using temporary directory %s", i, tmpdir_path);
+      g_free (tmpdir_path);
+
+      /* Set up the test directory. */
+      source_file = create_test_file (tmpdir, "source", tests[i].setup_source_type, tests[i].setup_source_mode);
+      backup_file = create_test_file (tmpdir, "source~", tests[i].setup_backup_type, tests[i].setup_backup_mode);
+
+      /* Replace the source file. Check the error state only after finishing
+       * writing, as the replace operation is split across g_file_replace() and
+       * g_output_stream_close(). */
+      if (read_write)
+        io_stream = g_file_replace_readwrite (source_file,
+                                              tests[i].replace_etag,
+                                              tests[i].replace_make_backup,
+                                              tests[i].replace_flags,
+                                              NULL,
+                                              &local_error);
+      else
+        output_stream = g_file_replace (source_file,
+                                        tests[i].replace_etag,
+                                        tests[i].replace_make_backup,
+                                        tests[i].replace_flags,
+                                        NULL,
+                                        &local_error);
+
+      if (tests[i].expected_success)
+        {
+          g_assert_no_error (local_error);
+          if (read_write)
+            g_assert_nonnull (io_stream);
+          else
+            g_assert_nonnull (output_stream);
+        }
+
+      /* Write new content to it. */
+      if (io_stream != NULL)
+        {
+          GOutputStream *io_output_stream = g_io_stream_get_output_stream (G_IO_STREAM (io_stream));
+          gsize n_written;
+
+          g_output_stream_write_all (G_OUTPUT_STREAM (io_output_stream), new_contents, strlen (new_contents),
+                                     &n_written, NULL, &local_error);
+
+          if (tests[i].expected_success)
+            {
+              g_assert_no_error (local_error);
+              g_assert_cmpint (n_written, ==, strlen (new_contents));
+            }
+
+          g_io_stream_close (G_IO_STREAM (io_stream), NULL, (local_error == NULL) ? &local_error : NULL);
+
+          if (tests[i].expected_success)
+            g_assert_no_error (local_error);
+        }
+      else if (output_stream != NULL)
+        {
+          gsize n_written;
+
+          g_output_stream_write_all (G_OUTPUT_STREAM (output_stream), new_contents, strlen (new_contents),
+                                     &n_written, NULL, &local_error);
+
+          if (tests[i].expected_success)
+            {
+              g_assert_no_error (local_error);
+              g_assert_cmpint (n_written, ==, strlen (new_contents));
+            }
+
+          g_output_stream_close (G_OUTPUT_STREAM (output_stream), NULL, (local_error == NULL) ? &local_error : NULL);
+
+          if (tests[i].expected_success)
+            g_assert_no_error (local_error);
+        }
+
+      if (tests[i].expected_success)
+        g_assert_no_error (local_error);
+      else
+        g_assert_error (local_error, tests[i].expected_error_domain, tests[i].expected_error_code);
+
+      g_clear_error (&local_error);
+      g_clear_object (&io_stream);
+      g_clear_object (&output_stream);
+
+      /* Verify the final state of the directory. */
+      enumerator = g_file_enumerate_children (tmpdir,
+                                              G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                              G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+      g_assert_no_error (local_error);
+
+      n_files = 0;
+      do
+        {
+          g_file_enumerator_iterate (enumerator, &info, NULL, NULL, &local_error);
+          g_assert_no_error (local_error);
+
+          if (info != NULL)
+            n_files++;
+        }
+      while (info != NULL);
+
+      g_clear_object (&enumerator);
+
+      g_assert_cmpuint (n_files, ==, tests[i].expected_n_files);
+
+      check_test_file (source_file, tmpdir, "source", tests[i].expected_source_type, tests[i].expected_source_mode, tests[i].expected_source_contents);
+      check_test_file (backup_file, tmpdir, "source~", tests[i].expected_backup_type, tests[i].expected_backup_mode, tests[i].expected_backup_contents);
+
+      /* Tidy up. Ignore failure apart from when deleting the directory, which
+       * should be empty. */
+      g_file_delete (source_file, NULL, NULL);
+      g_file_delete (backup_file, NULL, NULL);
+
+      /* Other files which are occasionally generated by the tests. */
+        {
+          GFile *backup_target_file = g_file_get_child (tmpdir, "source~-target");
+          g_file_delete (backup_target_file, NULL, NULL);
+          g_clear_object (&backup_target_file);
+        }
+        {
+          GFile *backup_target_file = g_file_get_child (tmpdir, "source-target");
+          g_file_delete (backup_target_file, NULL, NULL);
+          g_clear_object (&backup_target_file);
+        }
+
+      g_file_delete (tmpdir, NULL, &local_error);
+      g_assert_no_error (local_error);
+
+      g_clear_object (&backup_file);
+      g_clear_object (&source_file);
+      g_clear_object (&tmpdir);
+    }
+#else  /* if !__linux__ */
+  g_test_skip ("File replacement tests can only be run on Linux");
+#endif
 }
 
 static void
@@ -1858,8 +2871,6 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
-
   g_test_add_func ("/file/basic", test_basic);
   g_test_add_func ("/file/build-filename", test_build_filename);
   g_test_add_func ("/file/parent", test_parent);
@@ -1873,6 +2884,9 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/file/async-create-delete/4096", GINT_TO_POINTER (4096), test_create_delete);
   g_test_add_func ("/file/replace-load", test_replace_load);
   g_test_add_func ("/file/replace-cancel", test_replace_cancel);
+  g_test_add_func ("/file/replace-symlink", test_replace_symlink);
+  g_test_add_data_func ("/file/replace/write-only", GUINT_TO_POINTER (FALSE), test_replace);
+  g_test_add_data_func ("/file/replace/read-write", GUINT_TO_POINTER (TRUE), test_replace);
   g_test_add_func ("/file/async-delete", test_async_delete);
   g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);
   g_test_add_func ("/file/measure", test_measure);
