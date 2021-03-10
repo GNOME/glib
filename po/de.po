@@ -11,7 +11,7 @@
 # Tobias Endrigkeit <tobiasendrigkeit@googlemail.com>, 2012.
 # Bernd Homuth <dev@hmt.im>, 2015.
 # Wolfgang Stöggl <c72578@yahoo.de>, 2011, 2015-2016.
-# Tim Sabsch <tim@sabsch.com>, 2019-2020.
+# Tim Sabsch <tim@sabsch.com>, 2019-2021.
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2010-2013, 2015-2018, 2020-2021.
 # Philipp Kiemle <philipp.kiemle@gmail.com>, 2021.
 #
@@ -19,16 +19,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-02-20 10:07+0000\n"
-"PO-Revision-Date: 2021-02-21 00:17+0100\n"
-"Last-Translator: Philipp Kiemle <philipp.kiemle@gmail.com>\n"
+"POT-Creation-Date: 2021-03-10 19:11+0000\n"
+"PO-Revision-Date: 2021-03-10 20:56+0100\n"
+"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
@@ -979,10 +979,11 @@ msgstr "Der Sitzungs-dbus läuft nicht und automatisches Starten schlug fehl"
 msgid "Unable to get Hardware profile: %s"
 msgstr "Hardware-Profil konnte nicht ermittelt werden: %s"
 
-#: gio/gdbusprivate.c:2488
-msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr ""
-"/var/lib/dbus/machine-id oder /etc/machine-id konnte nicht geladen werden: "
+#. Translators: Both placeholders are file paths
+#: gio/gdbusprivate.c:2494
+#, c-format
+msgid "Unable to load %s or %s: "
+msgstr "%s oder %s kann nicht geladen werden: "
 
 #: gio/gdbusproxy.c:1562
 #, c-format
@@ -3069,7 +3070,7 @@ msgid "Can’t rename file, filename already exists"
 msgstr "Datei kann nicht umbenannt werden, da der Dateiname bereits existiert"
 
 #: gio/glocalfile.c:1182 gio/glocalfile.c:2366 gio/glocalfile.c:2394
-#: gio/glocalfile.c:2533 gio/glocalfileoutputstream.c:650
+#: gio/glocalfile.c:2533 gio/glocalfileoutputstream.c:656
 msgid "Invalid filename"
 msgstr "Ungültiger Dateiname"
 
@@ -3158,9 +3159,9 @@ msgstr "Fehler beim Verschieben der Datei %s: %s"
 msgid "Can’t move directory over directory"
 msgstr "Ordner kann nicht über Ordner verschoben werden"
 
-#: gio/glocalfile.c:2493 gio/glocalfileoutputstream.c:1039
-#: gio/glocalfileoutputstream.c:1053 gio/glocalfileoutputstream.c:1068
-#: gio/glocalfileoutputstream.c:1085 gio/glocalfileoutputstream.c:1099
+#: gio/glocalfile.c:2493 gio/glocalfileoutputstream.c:1079
+#: gio/glocalfileoutputstream.c:1093 gio/glocalfileoutputstream.c:1108
+#: gio/glocalfileoutputstream.c:1125 gio/glocalfileoutputstream.c:1139
 msgid "Backup file creation failed"
 msgstr "Erstellen der Sicherungsdatei gescheitert"
 
@@ -3199,7 +3200,7 @@ msgstr "Fehler beim Setzen des erweiterten Attributs »%s«: %s"
 msgid " (invalid encoding)"
 msgstr " (ungültige Kodierung)"
 
-#: gio/glocalfileinfo.c:1868 gio/glocalfileoutputstream.c:915
+#: gio/glocalfileinfo.c:1868 gio/glocalfileoutputstream.c:943
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Fehler beim Holen der Informationen für Datei »%s«: %s"
@@ -3313,19 +3314,19 @@ msgstr "Fehler beim Setzen des SELinux-Kontexts: %s"
 msgid "Setting attribute %s not supported"
 msgstr "Setzen des Attributs %s nicht unterstützt"
 
-#: gio/glocalfileinputstream.c:163 gio/glocalfileoutputstream.c:795
+#: gio/glocalfileinputstream.c:163 gio/glocalfileoutputstream.c:801
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Fehler beim Lesen aus Datei: %s"
 
-#: gio/glocalfileinputstream.c:194 gio/glocalfileoutputstream.c:347
-#: gio/glocalfileoutputstream.c:441
+#: gio/glocalfileinputstream.c:194 gio/glocalfileoutputstream.c:353
+#: gio/glocalfileoutputstream.c:447
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Fehler beim Schließen der Datei: %s"
 
-#: gio/glocalfileinputstream.c:272 gio/glocalfileoutputstream.c:557
-#: gio/glocalfileoutputstream.c:1117
+#: gio/glocalfileinputstream.c:272 gio/glocalfileoutputstream.c:563
+#: gio/glocalfileoutputstream.c:1157
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Fehler beim Suchen in Datei: %s"
@@ -3335,51 +3336,51 @@ msgid "Unable to find default local file monitor type"
 msgstr ""
 "Vorgegebener Überwachungstyp für lokale Dateien konnte nicht gefunden werden"
 
-#: gio/glocalfileoutputstream.c:214 gio/glocalfileoutputstream.c:292
-#: gio/glocalfileoutputstream.c:328 gio/glocalfileoutputstream.c:816
+#: gio/glocalfileoutputstream.c:220 gio/glocalfileoutputstream.c:298
+#: gio/glocalfileoutputstream.c:334 gio/glocalfileoutputstream.c:822
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Fehler beim Schreiben in Datei: %s"
 
-#: gio/glocalfileoutputstream.c:374
+#: gio/glocalfileoutputstream.c:380
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Fehler beim Entfernen der alten Sicherungsverknüpfung: %s"
 
-#: gio/glocalfileoutputstream.c:388 gio/glocalfileoutputstream.c:401
+#: gio/glocalfileoutputstream.c:394 gio/glocalfileoutputstream.c:407
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Fehler beim Erzeugen der Sicherungskopie: %s"
 
-#: gio/glocalfileoutputstream.c:419
+#: gio/glocalfileoutputstream.c:425
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Fehler beim Umbenennen der temporären Datei: %s"
 
-#: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:1168
+#: gio/glocalfileoutputstream.c:609 gio/glocalfileoutputstream.c:1208
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Fehler beim Abschneiden der Datei: %s"
 
-#: gio/glocalfileoutputstream.c:656 gio/glocalfileoutputstream.c:894
-#: gio/glocalfileoutputstream.c:1149 gio/gsubprocess.c:226
+#: gio/glocalfileoutputstream.c:662 gio/glocalfileoutputstream.c:907
+#: gio/glocalfileoutputstream.c:1189 gio/gsubprocess.c:226
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Fehler beim Öffnen der Datei »%s«: %s"
 
-#: gio/glocalfileoutputstream.c:928
+#: gio/glocalfileoutputstream.c:957
 msgid "Target file is a directory"
 msgstr "Zieldatei ist ein Ordner"
 
-#: gio/glocalfileoutputstream.c:933
+#: gio/glocalfileoutputstream.c:971
 msgid "Target file is not a regular file"
 msgstr "Zieldatei ist keine reguläre Datei"
 
-#: gio/glocalfileoutputstream.c:945
+#: gio/glocalfileoutputstream.c:984
 msgid "The file was externally modified"
 msgstr "Die Datei wurde extern verändert"
 
-#: gio/glocalfileoutputstream.c:1133
+#: gio/glocalfileoutputstream.c:1173
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Fehler beim Entfernen der alten Datei: %s"
@@ -6348,6 +6349,11 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
+#~ msgstr ""
+#~ "/var/lib/dbus/machine-id oder /etc/machine-id konnte nicht geladen "
+#~ "werden: "
 
 #~ msgid "Unknown error on connect"
 #~ msgstr "Unbekannter Fehler bei Verbindungsversuch"
