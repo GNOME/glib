@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-02-12 16:38+0000\n"
-"PO-Revision-Date: 2021-02-23 10:00+0100\n"
+"POT-Creation-Date: 2021-03-09 12:50+0000\n"
+"PO-Revision-Date: 2021-03-10 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -57,90 +57,90 @@ msgstr "Bistaratu bertsioa"
 msgid "Print version information and exit"
 msgstr "Erakutsi bertsioaren informazioa eta irten"
 
-#: gio/gapplication-tool.c:52
+#: gio/gapplication-tool.c:53
 msgid "List applications"
 msgstr "Zerrendatu aplikazioak"
 
-#: gio/gapplication-tool.c:53
+#: gio/gapplication-tool.c:54
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr "Zerrendatu instalatutako aplikazioak D-Bus-agatik aktibagarriak (.desktop fitxategien arabera)"
 
-#: gio/gapplication-tool.c:55
+#: gio/gapplication-tool.c:57
 msgid "Launch an application"
 msgstr "Abiarazi aplikazioa"
 
-#: gio/gapplication-tool.c:56
+#: gio/gapplication-tool.c:58
 msgid "Launch the application (with optional files to open)"
 msgstr "Abiarazi aplikazioa (aukerako fitxategiekin irekitzeko)"
 
-#: gio/gapplication-tool.c:57
+#: gio/gapplication-tool.c:59
 msgid "APPID [FILE…]"
 msgstr "APPID [FITXATEGIA…]"
 
-#: gio/gapplication-tool.c:59
+#: gio/gapplication-tool.c:61
 msgid "Activate an action"
 msgstr "Aktibatu ekintza bat"
 
-#: gio/gapplication-tool.c:60
+#: gio/gapplication-tool.c:62
 msgid "Invoke an action on the application"
 msgstr "Deitu aplikazioaren ekintza bati"
 
-#: gio/gapplication-tool.c:61
+#: gio/gapplication-tool.c:63
 msgid "APPID ACTION [PARAMETER]"
 msgstr "APP_ID EKINTZA [PARAMETROA]"
 
-#: gio/gapplication-tool.c:63
+#: gio/gapplication-tool.c:65
 msgid "List available actions"
 msgstr "Zerrendatu ekintza erabilgarriak"
 
-#: gio/gapplication-tool.c:64
+#: gio/gapplication-tool.c:66
 msgid "List static actions for an application (from .desktop file)"
 msgstr "Zerrendatu aplikazioaren ekintza estatikoak (.desktop fitxategitik)"
 
-#: gio/gapplication-tool.c:65 gio/gapplication-tool.c:71
+#: gio/gapplication-tool.c:67 gio/gapplication-tool.c:73
 msgid "APPID"
 msgstr "APP_ID"
 
-#: gio/gapplication-tool.c:70 gio/gapplication-tool.c:133 gio/gdbus-tool.c:106
+#: gio/gapplication-tool.c:72 gio/gapplication-tool.c:135 gio/gdbus-tool.c:106
 #: gio/gio-tool.c:224
 msgid "COMMAND"
 msgstr "KOMANDOA"
 
-#: gio/gapplication-tool.c:70
+#: gio/gapplication-tool.c:72
 msgid "The command to print detailed help for"
 msgstr "Erakutsi komandoaren laguntza xehea"
 
-#: gio/gapplication-tool.c:71
+#: gio/gapplication-tool.c:73
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Aplikazioaren identifikatzailea D-bus formatuan (adib: org.example.viewer)"
 
-#: gio/gapplication-tool.c:72 gio/glib-compile-resources.c:738
+#: gio/gapplication-tool.c:74 gio/glib-compile-resources.c:738
 #: gio/glib-compile-resources.c:744 gio/glib-compile-resources.c:772
 #: gio/gresource-tool.c:500 gio/gresource-tool.c:566
 msgid "FILE"
 msgstr "FITXATEGIA"
 
-#: gio/gapplication-tool.c:72
+#: gio/gapplication-tool.c:74
 msgid "Optional relative or absolute filenames, or URIs to open"
 msgstr "Aukerako fitxategi-izen erlatibo edo absolutuak, edo URIak irekitzeko"
 
-#: gio/gapplication-tool.c:73
+#: gio/gapplication-tool.c:75
 msgid "ACTION"
 msgstr "EKINTZA"
 
-#: gio/gapplication-tool.c:73
+#: gio/gapplication-tool.c:75
 msgid "The action name to invoke"
 msgstr "Ekintzaren izena deitzeko"
 
-#: gio/gapplication-tool.c:74
+#: gio/gapplication-tool.c:76
 msgid "PARAMETER"
 msgstr "PARAMETROA"
 
-#: gio/gapplication-tool.c:74
+#: gio/gapplication-tool.c:76
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Ekintza deitzean emango zaion parametroa, GVariant formatuan"
 
-#: gio/gapplication-tool.c:96 gio/gresource-tool.c:531 gio/gsettings-tool.c:659
+#: gio/gapplication-tool.c:98 gio/gresource-tool.c:531 gio/gsettings-tool.c:659
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -148,26 +148,26 @@ msgid ""
 msgstr "'%s' komando ezezaguna\n"
 "\n"
 
-#: gio/gapplication-tool.c:101
+#: gio/gapplication-tool.c:103
 msgid "Usage:\n"
 msgstr "Erabilera:\n"
 
-#: gio/gapplication-tool.c:114 gio/gresource-tool.c:556
+#: gio/gapplication-tool.c:116 gio/gresource-tool.c:556
 #: gio/gsettings-tool.c:694
 msgid "Arguments:\n"
 msgstr "Argumentuak:\n"
 
-#: gio/gapplication-tool.c:133 gio/gio-tool.c:224
+#: gio/gapplication-tool.c:135 gio/gio-tool.c:224
 msgid "[ARGS…]"
 msgstr "[ARGUMENTUAK…]"
 
-#: gio/gapplication-tool.c:134
+#: gio/gapplication-tool.c:136
 #, c-format
 msgid "Commands:\n"
 msgstr "Komandoak:\n"
 
 #. Translators: do not translate 'help', but please translate 'COMMAND'.
-#: gio/gapplication-tool.c:146
+#: gio/gapplication-tool.c:148
 #, c-format
 msgid ""
 "Use “%s help COMMAND” to get detailed help.\n"
@@ -175,7 +175,7 @@ msgid ""
 msgstr "Erabili “%s help KOMANDOA“  laguntza xehea lortzeko.\n"
 "\n"
 
-#: gio/gapplication-tool.c:165
+#: gio/gapplication-tool.c:167
 #, c-format
 msgid ""
 "%s command requires an application id to directly follow\n"
@@ -183,13 +183,13 @@ msgid ""
 msgstr "'%s' komandoak aplikazioaren IDa behar du zuzenean jarraitzeko\n"
 "\n"
 
-#: gio/gapplication-tool.c:171
+#: gio/gapplication-tool.c:173
 #, c-format
 msgid "invalid application id: “%s”\n"
 msgstr "aplikazioaren IDa baliogabea: “%s”\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
-#: gio/gapplication-tool.c:182
+#: gio/gapplication-tool.c:184
 #, c-format
 msgid ""
 "“%s” takes no arguments\n"
@@ -197,21 +197,21 @@ msgid ""
 msgstr "“%s” ez du argumenturik hartzen\n"
 "\n"
 
-#: gio/gapplication-tool.c:266
+#: gio/gapplication-tool.c:268
 #, c-format
 msgid "unable to connect to D-Bus: %s\n"
 msgstr "ezin da D-Bus-arekin konektatu: %s\n"
 
-#: gio/gapplication-tool.c:286
+#: gio/gapplication-tool.c:288
 #, c-format
 msgid "error sending %s message to application: %s\n"
 msgstr "errorea '%s' mezua aplikazioari bidaltzean: %s\n"
 
-#: gio/gapplication-tool.c:317
+#: gio/gapplication-tool.c:319
 msgid "action name must be given after application id\n"
 msgstr "ekintzaren izena eman behar da aplikazioaren IDaren ondoren\n"
 
-#: gio/gapplication-tool.c:325
+#: gio/gapplication-tool.c:327
 #, c-format
 msgid ""
 "invalid action name: “%s”\n"
@@ -220,25 +220,25 @@ msgstr "baliogabeko ekintza-izena: “%s”\n"
 "ekintzaren izenak soilik karaktere alfanumerikoak, “-” eta “.” karaktereak\n"
 "eduki ditzake\n"
 
-#: gio/gapplication-tool.c:344
+#: gio/gapplication-tool.c:346
 #, c-format
 msgid "error parsing action parameter: %s\n"
 msgstr "errorea ekintzaren parametroa analizatzean: %s\n"
 
-#: gio/gapplication-tool.c:356
+#: gio/gapplication-tool.c:358
 msgid "actions accept a maximum of one parameter\n"
 msgstr "ekintzak gehienez parametro bat onartzen du\n"
 
-#: gio/gapplication-tool.c:411
+#: gio/gapplication-tool.c:413
 msgid "list-actions command takes only the application id"
 msgstr "'list-actions' komandoak soilik aplikazioaren IDa hartzen du"
 
-#: gio/gapplication-tool.c:421
+#: gio/gapplication-tool.c:423
 #, c-format
 msgid "unable to find desktop file for application %s\n"
 msgstr "ezin da '%s' aplikazioaren '.desktop' fitxategia aurkitu\n"
 
-#: gio/gapplication-tool.c:466
+#: gio/gapplication-tool.c:468
 #, c-format
 msgid ""
 "unrecognised command: %s\n"
@@ -247,8 +247,8 @@ msgstr "komando ezezaguna: %s\n"
 "\n"
 
 #: gio/gbufferedinputstream.c:420 gio/gbufferedinputstream.c:498
-#: gio/ginputstream.c:179 gio/ginputstream.c:379 gio/ginputstream.c:617
-#: gio/ginputstream.c:1019 gio/goutputstream.c:223 gio/goutputstream.c:1049
+#: gio/ginputstream.c:179 gio/ginputstream.c:379 gio/ginputstream.c:646
+#: gio/ginputstream.c:1048 gio/goutputstream.c:223 gio/goutputstream.c:1049
 #: gio/gpollableinputstream.c:205 gio/gpollableoutputstream.c:277
 #, c-format
 msgid "Too large count value passed to %s"
@@ -259,11 +259,11 @@ msgstr "Zenbaketaren balio handiegia honi pasatuta: %s"
 msgid "Seek not supported on base stream"
 msgstr "Ez da bilaketarik onartzen oinarrizko korrontean"
 
-#: gio/gbufferedinputstream.c:937
+#: gio/gbufferedinputstream.c:938
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Ezin da GBufferedInputStream trunkatu"
 
-#: gio/gbufferedinputstream.c:982 gio/ginputstream.c:1208 gio/giostream.c:300
+#: gio/gbufferedinputstream.c:983 gio/ginputstream.c:1237 gio/giostream.c:300
 #: gio/goutputstream.c:2198
 msgid "Stream is already closed"
 msgstr "Korrontea jadanik itxita dago"
@@ -886,9 +886,11 @@ msgstr "Saioaren dbus ez da exekutatzen ari, eta abiarazte automatikoak huts egi
 msgid "Unable to get Hardware profile: %s"
 msgstr "Ezin da hardwarearen profila eskuratu: %s"
 
-#: gio/gdbusprivate.c:2488
-msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr "Ezin da /var/lib/dbus/machine-id edo /etc/machine-id kargatu: "
+#. Translators: Both placeholders are file paths
+#: gio/gdbusprivate.c:2494
+#, c-format
+msgid "Unable to load %s or %s: "
+msgstr "Ezin izan da %s edo %s kargatu: "
 
 #: gio/gdbusproxy.c:1562
 #, c-format
@@ -1519,7 +1521,7 @@ msgstr "Sarrerako korronteak ez dauka irakurtzea inplementatuta"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:1218 gio/giostream.c:310 gio/goutputstream.c:2208
+#: gio/ginputstream.c:1247 gio/giostream.c:310 gio/goutputstream.c:2208
 msgid "Stream has outstanding operation"
 msgstr "Korronteak eragiketa bat du lanean"
 
@@ -3093,23 +3095,22 @@ msgstr "Errorea SELinux testuingurua ezartzean: %s"
 msgid "Setting attribute %s not supported"
 msgstr "%s atributuaren ezarpena ez dago onartuta"
 
-#: gio/glocalfileinputstream.c:168 gio/glocalfileoutputstream.c:795
+#: gio/glocalfileinputstream.c:163 gio/glocalfileoutputstream.c:795
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Errorea fitxategitik irakurtzean: %s"
 
-#: gio/glocalfileinputstream.c:199 gio/glocalfileinputstream.c:211
-#: gio/glocalfileinputstream.c:225 gio/glocalfileinputstream.c:333
-#: gio/glocalfileoutputstream.c:557 gio/glocalfileoutputstream.c:1117
-#, c-format
-msgid "Error seeking in file: %s"
-msgstr "Errorea fitxategian bilatzean: %s"
-
-#: gio/glocalfileinputstream.c:255 gio/glocalfileoutputstream.c:347
+#: gio/glocalfileinputstream.c:194 gio/glocalfileoutputstream.c:347
 #: gio/glocalfileoutputstream.c:441
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Errorea fitxategia ixtean: %s"
+
+#: gio/glocalfileinputstream.c:272 gio/glocalfileoutputstream.c:557
+#: gio/glocalfileoutputstream.c:1117
+#, c-format
+msgid "Error seeking in file: %s"
+msgstr "Errorea fitxategian bilatzean: %s"
 
 #: gio/glocalfilemonitor.c:866
 msgid "Unable to find default local file monitor type"
@@ -3142,7 +3143,7 @@ msgid "Error truncating file: %s"
 msgstr "Errorea fitxategia trunkatzean: %s"
 
 #: gio/glocalfileoutputstream.c:656 gio/glocalfileoutputstream.c:894
-#: gio/glocalfileoutputstream.c:1149 gio/gsubprocess.c:380
+#: gio/glocalfileoutputstream.c:1149 gio/gsubprocess.c:226
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Errorea “%s” fitxategia irekitzean: %s"
@@ -5577,82 +5578,82 @@ msgstr "Testua %c(r)en komatxoak aurkitu baino lehen amaitu da (testua “%s” 
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Testua hutsik dago (edo zuriuneak bakarrik ditu)"
 
-#: glib/gspawn.c:323
+#: glib/gspawn.c:318
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Ezin izan da daturik irakurri prozesu umetik (%s)"
 
-#: glib/gspawn.c:468
+#: glib/gspawn.c:465
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Ustekabeko errorea datuak prozesu umetik irakurtzean (%s)"
 
-#: glib/gspawn.c:553
+#: glib/gspawn.c:550
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ustekabeko errorea waitpid()-en (%s)"
 
-#: glib/gspawn.c:1061 glib/gspawn-win32.c:1329
+#: glib/gspawn.c:1154 glib/gspawn-win32.c:1383
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Prozesu haurra amaitu da %ld kodearekin"
 
-#: glib/gspawn.c:1069
+#: glib/gspawn.c:1162
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Prozesu haurra %ld seinaleak hilda"
 
-#: glib/gspawn.c:1076
+#: glib/gspawn.c:1169
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Prozesu haurra %ld seinaleak geldituta"
 
-#: glib/gspawn.c:1083
+#: glib/gspawn.c:1176
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Prozesu haurra ustekabean amaituta"
 
-#: glib/gspawn.c:1548 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1767 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Ezin izan da kanalizazio umetik irakurri (%s)"
 
-#: glib/gspawn.c:1806
+#: glib/gspawn.c:2069
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Ezin izan da “%s” prozesu haurra abiarazi (%s)"
 
-#: glib/gspawn.c:1922
+#: glib/gspawn.c:2186
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Ezin da sardetu (%s)"
 
-#: glib/gspawn.c:2077 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2346 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Ezin izan da “%s” direktoriora aldatu (%s)"
 
-#: glib/gspawn.c:2087
+#: glib/gspawn.c:2356
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Ezin izan da “%s” prozesu haurra exekutatu (%s)"
 
-#: glib/gspawn.c:2097
+#: glib/gspawn.c:2366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Ezin izan da prozesu haurraren irteera edo sarrera birbideratu (%s)"
 
-#: glib/gspawn.c:2106
+#: glib/gspawn.c:2375
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Ezin izan da prozesu haurra sardetu (%s)"
 
-#: glib/gspawn.c:2114
+#: glib/gspawn.c:2383
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Errore ezezaguna “%s” prozesu haurra exekutatzean"
 
-#: glib/gspawn.c:2138
+#: glib/gspawn.c:2407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Ezin izan da nahikoa datu irakurri pid kanalizazio umetik (%s)"
@@ -5677,48 +5678,48 @@ msgstr "Ezin izan da prozesu haurra exekutatu (%s)"
 msgid "Invalid program name: %s"
 msgstr "Programaren izen baliogabea: %s"
 
-#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:725
+#: glib/gspawn-win32.c:471 glib/gspawn-win32.c:757
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Kate baliogabea %d(e)ko bektorearen argumentuan: %s"
 
-#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:740
+#: glib/gspawn-win32.c:482 glib/gspawn-win32.c:772
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Kate baliogabea ingurunean: %s"
 
-#: glib/gspawn-win32.c:721
+#: glib/gspawn-win32.c:753
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Laneko direktorio baliogabea: %s"
 
 #
-#: glib/gspawn-win32.c:783
+#: glib/gspawn-win32.c:815
 #, c-format
 msgid "Failed to execute helper program (%s)"
 msgstr "Ezin izan da laguntza-programa exekutatu (%s)"
 
-#: glib/gspawn-win32.c:1056
+#: glib/gspawn-win32.c:1042
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr "Ustekabeko errorea gertatu da 'g_io_channel_win32_poll()'-en prozesu umetik datuak irakurtzean"
 
-#: glib/gstrfuncs.c:3335 glib/gstrfuncs.c:3437
+#: glib/gstrfuncs.c:3338 glib/gstrfuncs.c:3440
 msgid "Empty string is not a number"
 msgstr "Kate hutsa ez da zenbaki bat"
 
-#: glib/gstrfuncs.c:3359
+#: glib/gstrfuncs.c:3362
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "“%s” ez da zeinudun zenbaki bat"
 
-#: glib/gstrfuncs.c:3369 glib/gstrfuncs.c:3473
+#: glib/gstrfuncs.c:3372 glib/gstrfuncs.c:3476
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "“%s” zenbakia barrutitik kanpo [%s, %s]"
 
-#: glib/gstrfuncs.c:3463
+#: glib/gstrfuncs.c:3466
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "“%s” ez da zeinurik gabeko zenbaki bat"
@@ -6004,6 +6005,9 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
+#~ msgstr "Ezin da /var/lib/dbus/machine-id edo /etc/machine-id kargatu: "
 
 #~ msgid "Unknown error on connect"
 #~ msgstr "Errore ezezaguna konexioan"
