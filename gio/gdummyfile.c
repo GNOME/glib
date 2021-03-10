@@ -126,7 +126,7 @@ g_dummy_file_get_basename (GFile *file)
   
   if (dummy->decoded_uri)
     return g_path_get_basename (dummy->decoded_uri->path);
-  return g_strdup (dummy->text_uri);
+  return NULL;
 }
 
 static char *
