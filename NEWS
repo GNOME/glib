@@ -1,3 +1,44 @@
+Overview of changes in GLib 2.67.6
+==================================
+
+* Fix a security issue when using `g_file_replace()` with
+  `G_FILE_CREATE_REPLACE_DESTINATION` (#2325)
+
+* Disallow operations on the empty path with `g_file_new_from_path()` (#2328)
+
+* Various fixes for GLib when building with clang-cl on Windows (work by
+  Aleksandr Mezin) (#2341, #2344)
+
+* Bugs fixed:
+ - #2325 file-roller symlink attack
+ - #2327 Teach glib-mkenums about GLIB_AVAILABLE_ENUMERATOR_IN_2_68, and start using it
+ - #2328 g_file_new_for_path("") yields CWD, which seems wrong
+ - #2341 glib-genmarshal output is sometimes empty because output file is not closed
+ - #2344 c_std=c11: gbitlock.c: ‘asm’ undeclared
+ - !1962 Validate D-Bus machine ID after loading
+ - !1976 Use the right permissions for directory watching on Win32
+ - !1977 gio/tests/{meson.build,pollable.c}: Determine libutil SONAME at build time
+ - !1980 glib.supp: Add another system thread suppression
+
+* Translation updates:
+ - Basque
+ - Catalan
+ - Czech
+ - French
+ - Galician
+ - German
+ - Hungarian
+ - Indonesian
+ - Korean
+ - Latvian
+ - Portuguese
+ - Portuguese (Brazil)
+ - Serbian
+ - Spanish
+ - Swedish
+ - Ukrainian
+
+
 Overview of changes in GLib 2.67.5
 ==================================
 
