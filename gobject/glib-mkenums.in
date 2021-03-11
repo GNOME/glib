@@ -219,6 +219,7 @@ def parse_entries(file, file_name):
 
         m = re.match(r'''\s*
               (\w+)\s*                   # name
+              (\s+[A-Z]+_(?:AVAILABLE|DEPRECATED)_ENUMERATOR_IN_[0-9_]+(?:_FOR\s*\(\s*\w+\s*\))?\s*)?    # availability
               (?:=(                      # value
                    \s*\w+\s*\(.*\)\s*       # macro with multiple args
                    |                        # OR
@@ -231,12 +232,15 @@ def parse_entries(file, file_name):
         if m:
             groups = m.groups()
             name = groups[0]
+            availability = None
             value = None
             options = None
             if len(groups) > 1:
-                value = groups[1]
+                availability = groups[1]
             if len(groups) > 2:
-                options = groups[2]
+                value = groups[2]
+            if len(groups) > 3:
+                options = groups[3]
             if flags is None and value is not None and '<<' in value:
                 seenbitshift = 1
 
