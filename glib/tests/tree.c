@@ -68,17 +68,21 @@ my_search (gconstpointer a,
 
 static gpointer destroyed_key = NULL;
 static gpointer destroyed_value = NULL;
+static guint destroyed_key_count = 0;
+static guint destroyed_value_count = 0;
 
 static void
 my_key_destroy (gpointer key)
 {
   destroyed_key = key;
+  destroyed_key_count++;
 }
 
 static void
 my_value_destroy (gpointer value)
 {
   destroyed_value = value;
+  destroyed_value_count++;
 }
 
 static gint
@@ -282,6 +286,32 @@ test_tree_remove (void)
 }
 
 static void
+test_tree_remove_all (void)
+{
+  GTree *tree;
+  gsize i;
+
+  tree = g_tree_new_full ((GCompareDataFunc)my_compare, NULL,
+                          my_key_destroy,
+                          my_value_destroy);
+
+  for (i = 0; chars[i]; i++)
+    g_tree_insert (tree, &chars[i], &chars[i]);
+
+  destroyed_key_count = 0;
+  destroyed_value_count = 0;
+
+  g_tree_remove_all (tree);
+
+  g_assert_cmpuint (destroyed_key_count, ==, strlen (chars));
+  g_assert_cmpuint (destroyed_value_count, ==, strlen (chars));
+  g_assert_cmpint (g_tree_height (tree), ==, 0);
+  g_assert_cmpint (g_tree_nnodes (tree), ==, 0);
+
+  g_tree_unref (tree);
+}
+
+static void
 test_tree_destroy (void)
 {
   GTree *tree;
@@ -462,6 +492,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/tree/destroy", test_tree_destroy);
   g_test_add_func ("/tree/traverse", test_tree_traverse);
   g_test_add_func ("/tree/insert", test_tree_insert);
+  g_test_add_func ("/tree/remove-all", test_tree_remove_all);
 
   return g_test_run ();
 }
