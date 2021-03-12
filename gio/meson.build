@@ -965,7 +965,7 @@ gio_querymodules = executable('gio-querymodules', 'gio-querymodules.c', 'giomodu
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 glib_compile_schemas = executable('glib-compile-schemas',
-  [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-schemas.c'],
+  ['gvdb/gvdb-builder.c', 'glib-compile-schemas.c'],
   install : true,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
