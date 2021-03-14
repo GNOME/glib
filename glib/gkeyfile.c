@@ -1431,17 +1431,14 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
       GKeyFileKeyValuePair *pair;
 
       pair = g_slice_new (GKeyFileKeyValuePair);
-      pair->key = key;
-      pair->value = value;
+      pair->key = g_steal_pointer (&key);
+      pair->value = g_steal_pointer (&value);
 
       g_key_file_add_key_value_pair (key_file, key_file->current_group, pair);
     }
-  else
-    {
-      g_free (key);
-      g_free (value);
-    }
 
+  g_free (key);
+  g_free (value);
   g_free (locale);
 }
 
