@@ -618,7 +618,8 @@ static void                  g_key_file_parse_group            (GKeyFile        
 								const gchar            *line,
 								gsize                   length,
 								GError                **error);
-static gchar                *key_get_locale                    (const gchar            *key);
+static const gchar          *key_get_locale                    (const gchar            *key,
+                                                                gsize                  *len_out);
 static void                  g_key_file_parse_data             (GKeyFile               *key_file,
 								const gchar            *data,
 								gsize                   length,
@@ -1229,7 +1230,8 @@ g_key_file_unref (GKeyFile *key_file)
  */
 static gboolean
 g_key_file_locale_is_interesting (GKeyFile    *key_file,
-				  const gchar *locale)
+                                  const gchar *locale,
+                                  gsize        locale_len)
 {
   gsize i;
 
@@ -1244,7 +1246,8 @@ g_key_file_locale_is_interesting (GKeyFile    *key_file,
 
   for (i = 0; key_file->locales[i] != NULL; i++)
     {
-      if (g_ascii_strcasecmp (key_file->locales[i], locale) == 0)
+      if (g_ascii_strncasecmp (key_file->locales[i], locale, locale_len) == 0 &&
+          key_file->locales[i][locale_len] == '\0')
 	return TRUE;
     }
 
@@ -1354,7 +1357,9 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 				 gsize         length,
 				 GError      **error)
 {
-  gchar *key, *value, *key_end, *value_start, *locale;
+  gchar *key, *key_end, *value_start;
+  const gchar *locale;
+  gsize locale_len;
   gsize key_len, value_len;
 
   if (key_file->current_group == NULL || key_file->current_group->name == NULL)
@@ -1422,9 +1427,9 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
   /* Is this key a translation? If so, is it one that we care about?
    */
-  locale = key_get_locale (key);
+  locale = key_get_locale (key, &locale_len);
 
-  if (locale == NULL || g_key_file_locale_is_interesting (key_file, locale))
+  if (locale == NULL || g_key_file_locale_is_interesting (key_file, locale, locale_len))
     {
       GKeyFileKeyValuePair *pair;
 
@@ -1436,22 +1441,33 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
     }
 
   g_free (key);
-  g_free (locale);
 }
 
-static gchar *
-key_get_locale (const gchar *key)
+static const gchar *
+key_get_locale (const gchar *key,
+                gsize       *len_out)
 {
-  gchar *locale;
+  const gchar *locale;
+  gsize locale_len;
 
   locale = g_strrstr (key, "[");
+  if (locale != NULL)
+    locale_len = strlen (locale);
+  else
+    locale_len = 0;
 
-  if (locale && strlen (locale) <= 2)
-    locale = NULL;
+  if (locale_len > 2)
+    {
+      locale++;  /* skip `[` */
+      locale_len -= 2;  /* drop `[` and `]` */
+    }
+  else
+    {
+      locale = NULL;
+      locale_len = 0;
+    }
 
-  if (locale)
-    locale = g_strndup (locale + 1, strlen (locale) - 2);
-
+  *len_out = locale_len;
   return locale;
 }
 
