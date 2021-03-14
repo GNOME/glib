@@ -1888,8 +1888,8 @@ g_key_file_set_value (GKeyFile    *key_file,
   GKeyFileKeyValuePair *pair;
 
   g_return_if_fail (key_file != NULL);
-  g_return_if_fail (g_key_file_is_group_name (group_name));
-  g_return_if_fail (g_key_file_is_key_name (key, strlen (key)));
+  g_return_if_fail (group_name != NULL && g_key_file_is_group_name (group_name));
+  g_return_if_fail (key != NULL && g_key_file_is_key_name (key, strlen (key)));
   g_return_if_fail (value != NULL);
 
   group = g_key_file_lookup_group (key_file, group_name);
@@ -3351,7 +3351,7 @@ g_key_file_set_group_comment (GKeyFile     *key_file,
 {
   GKeyFileGroup *group;
   
-  g_return_val_if_fail (g_key_file_is_group_name (group_name), FALSE);
+  g_return_val_if_fail (group_name != NULL && g_key_file_is_group_name (group_name), FALSE);
 
   group = g_key_file_lookup_group (key_file, group_name);
   if (!group)
@@ -3481,7 +3481,7 @@ g_key_file_get_key_comment (GKeyFile     *key_file,
   GString *string;
   gchar *comment;
 
-  g_return_val_if_fail (g_key_file_is_group_name (group_name), NULL);
+  g_return_val_if_fail (group_name != NULL && g_key_file_is_group_name (group_name), NULL);
 
   group = g_key_file_lookup_group (key_file, group_name);
   if (!group)
@@ -3828,7 +3828,7 @@ g_key_file_add_group (GKeyFile    *key_file,
   GKeyFileGroup *group;
 
   g_return_if_fail (key_file != NULL);
-  g_return_if_fail (g_key_file_is_group_name (group_name));
+  g_return_if_fail (group_name != NULL && g_key_file_is_group_name (group_name));
 
   group = g_key_file_lookup_group (key_file, group_name);
   if (group != NULL)
@@ -4156,8 +4156,7 @@ g_key_file_is_group_name (const gchar *name)
 {
   const gchar *p, *q;
 
-  if (name == NULL)
-    return FALSE;
+  g_assert (name != NULL);
 
   p = q = name;
   while (*q && *q != ']' && *q != '[' && !g_ascii_iscntrl (*q))
@@ -4175,8 +4174,7 @@ g_key_file_is_key_name (const gchar *name,
 {
   const gchar *p, *q, *end;
 
-  if (name == NULL)
-    return FALSE;
+  g_assert (name != NULL);
 
   p = q = name;
   end = name + len;
