@@ -1404,8 +1404,7 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
   if (key_file->current_group
       && key_file->current_group->name
-      && strcmp (key_file->start_group->name,
-                 key_file->current_group->name) == 0
+      && key_file->start_group == key_file->current_group
       && strcmp (key, "Encoding") == 0)
     {
       if (g_ascii_strcasecmp (value, "UTF-8") != 0)
