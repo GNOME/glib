@@ -1406,9 +1406,11 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
   g_warn_if_fail (key_file->start_group != NULL);
 
-  if (key_file->current_group
-      && key_file->current_group->name
-      && key_file->start_group == key_file->current_group
+  /* Checked on entry to this function */
+  g_assert (key_file->current_group != NULL);
+  g_assert (key_file->current_group->name != NULL);
+
+  if (key_file->start_group == key_file->current_group
       && strcmp (key, "Encoding") == 0)
     {
       if (value_len != strlen ("UTF-8") ||
