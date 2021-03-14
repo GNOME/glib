@@ -4080,17 +4080,12 @@ g_key_file_lookup_group_node (GKeyFile    *key_file,
 			      const gchar *group_name)
 {
   GKeyFileGroup *group;
-  GList *tmp;
 
-  for (tmp = key_file->groups; tmp != NULL; tmp = tmp->next)
-    {
-      group = (GKeyFileGroup *) tmp->data;
+  group = g_key_file_lookup_group (key_file, group_name);
+  if (group == NULL)
+    return NULL;
 
-      if (group && group->name && strcmp (group->name, group_name) == 0)
-        break;
-    }
-
-  return tmp;
+  return g_list_find (key_file->groups, group);
 }
 
 static GKeyFileGroup *
