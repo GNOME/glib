@@ -345,7 +345,7 @@ g_win32_fs_monitor_init (GWin32FSMonitorPrivate *monitor,
     monitor->file_attribs = INVALID_FILE_ATTRIBUTES;
   monitor->pfni_prev = NULL;
   monitor->hDirectory = CreateFileW (wdirname_with_long_prefix != NULL ? wdirname_with_long_prefix : monitor->wfullpath_with_long_prefix,
-                                     FILE_GENERIC_READ | FILE_GENERIC_WRITE,
+                                     FILE_LIST_DIRECTORY,
                                      FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
                                      NULL,
                                      OPEN_EXISTING,
