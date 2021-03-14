@@ -599,7 +599,7 @@ static gdouble               g_key_file_parse_value_as_double  (GKeyFile        
 static gboolean              g_key_file_parse_value_as_boolean (GKeyFile               *key_file,
 								const gchar            *value,
 								GError                **error);
-static gchar                *g_key_file_parse_boolean_as_value (GKeyFile               *key_file,
+static const gchar          *g_key_file_parse_boolean_as_value (GKeyFile               *key_file,
 								gboolean                value);
 static gchar                *g_key_file_parse_value_as_comment (GKeyFile               *key_file,
                                                                 const gchar            *value,
@@ -2556,13 +2556,12 @@ g_key_file_set_boolean (GKeyFile    *key_file,
 			const gchar *key,
 			gboolean     value)
 {
-  gchar *result;
+  const gchar *result;
 
   g_return_if_fail (key_file != NULL);
 
   result = g_key_file_parse_boolean_as_value (key_file, value);
   g_key_file_set_value (key_file, group_name, key, result);
-  g_free (result);
 }
 
 /**
@@ -2673,14 +2672,12 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
   value_list = g_string_sized_new (length * 8);
   for (i = 0; i < length; i++)
     {
-      gchar *value;
+      const gchar *value;
 
       value = g_key_file_parse_boolean_as_value (key_file, list[i]);
 
       g_string_append (value_list, value);
       g_string_append_c (value_list, key_file->list_separator);
-
-      g_free (value);
     }
 
   g_key_file_set_value (key_file, group_name, key, value_list->str);
@@ -4578,14 +4575,14 @@ g_key_file_parse_value_as_boolean (GKeyFile     *key_file,
   return FALSE;
 }
 
-static gchar *
+static const gchar *
 g_key_file_parse_boolean_as_value (GKeyFile *key_file,
 				   gboolean  value)
 {
   if (value)
-    return g_strdup ("true");
+    return "true";
   else
-    return g_strdup ("false");
+    return "false";
 }
 
 static gchar *
