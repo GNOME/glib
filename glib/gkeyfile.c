@@ -1420,8 +1420,6 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
         }
     }
 
-  value = g_strndup (value_start, value_len);
-
   /* Is this key a translation? If so, is it one that we care about?
    */
   locale = key_get_locale (key);
@@ -1432,13 +1430,12 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
       pair = g_slice_new (GKeyFileKeyValuePair);
       pair->key = g_steal_pointer (&key);
-      pair->value = g_steal_pointer (&value);
+      pair->value = g_strndup (value_start, value_len);
 
       g_key_file_add_key_value_pair (key_file, key_file->current_group, pair);
     }
 
   g_free (key);
-  g_free (value);
   g_free (locale);
 }
 
