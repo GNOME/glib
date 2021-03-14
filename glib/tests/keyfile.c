@@ -1675,21 +1675,32 @@ test_limbo (void)
 static void
 test_utf8 (void)
 {
-  GKeyFile *file;
-  static const char data[] =
-"[group]\n"
-"Encoding=non-UTF-8\n";
-  gboolean ok;
-  GError *error;
+  const gchar *invalid_encoding_names[] =
+    {
+      "non-UTF-8",
+      "UTF",
+      "UTF-9",
+    };
+  gsize i;
 
-  file = g_key_file_new ();
+  for (i = 0; i < G_N_ELEMENTS (invalid_encoding_names); i++)
+    {
+      GKeyFile *file = NULL;
+      gchar *data = NULL;
+      gboolean ok;
+      GError *error = NULL;
 
-  error = NULL;
-  ok = g_key_file_load_from_data (file, data, strlen (data), 0, &error);
-  g_assert_false (ok);
-  g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
-  g_clear_error (&error);
-  g_key_file_free (file);
+      g_test_message ("Testing invalid encoding ‘%s’", invalid_encoding_names[i]);
+
+      file = g_key_file_new ();
+      data = g_strdup_printf ("[group]\n"
+                              "Encoding=%s\n", invalid_encoding_names[i]);
+      ok = g_key_file_load_from_data (file, data, strlen (data), 0, &error);
+      g_assert_false (ok);
+      g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
+      g_clear_error (&error);
+      g_key_file_free (file);
+    }
 }
 
 static void
