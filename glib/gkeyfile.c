@@ -575,7 +575,8 @@ static void                  g_key_file_add_key                (GKeyFile        
 static void                  g_key_file_add_group              (GKeyFile               *key_file,
 								const gchar            *group_name);
 static gboolean              g_key_file_is_group_name          (const gchar *name);
-static gboolean              g_key_file_is_key_name            (const gchar *name);
+static gboolean              g_key_file_is_key_name            (const gchar *name,
+                                                                gsize        len);
 static void                  g_key_file_key_value_pair_free    (GKeyFileKeyValuePair   *pair);
 static gboolean              g_key_file_line_is_comment        (const gchar            *line);
 static gboolean              g_key_file_line_is_group          (const gchar            *line);
@@ -1380,16 +1381,15 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
   g_warn_if_fail (key_len <= length);
 
-  key = g_strndup (line, key_len - 1);
-
-  if (!g_key_file_is_key_name (key))
+  if (!g_key_file_is_key_name (line, key_len - 1))
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,
-                   _("Invalid key name: %s"), key);
-      g_free (key);
+                   _("Invalid key name: %.*s"), (int) key_len - 1, line);
       return; 
     }
+
+  key = g_strndup (line, key_len - 1);
 
   /* Pull the value from the line (chugging leading whitespace)
    */
@@ -1877,7 +1877,7 @@ g_key_file_set_value (GKeyFile    *key_file,
 
   g_return_if_fail (key_file != NULL);
   g_return_if_fail (g_key_file_is_group_name (group_name));
-  g_return_if_fail (g_key_file_is_key_name (key));
+  g_return_if_fail (g_key_file_is_key_name (key, strlen (key)));
   g_return_if_fail (value != NULL);
 
   group = g_key_file_lookup_group (key_file, group_name);
@@ -4166,20 +4166,26 @@ g_key_file_is_group_name (const gchar *name)
 }
 
 static gboolean
-g_key_file_is_key_name (const gchar *name)
+g_key_file_is_key_name (const gchar *name,
+                        gsize        len)
 {
-  const gchar *p, *q;
+  const gchar *p, *q, *end;
 
   if (name == NULL)
     return FALSE;
 
   p = q = name;
+  end = name + len;
 
   /* We accept a little more than the desktop entry spec says,
    * since gnome-vfs uses mime-types as keys in its cache.
    */
-  while (*q && *q != '=' && *q != '[' && *q != ']')
-    q = g_utf8_find_next_char (q, NULL);
+  while (q < end && *q && *q != '=' && *q != '[' && *q != ']')
+    {
+      q = g_utf8_find_next_char (q, end);
+      if (q == NULL)
+        q = end;
+    }
   
   /* No empty keys, please */
   if (q == p)
@@ -4196,8 +4202,17 @@ g_key_file_is_key_name (const gchar *name)
   if (*q == '[')
     {
       q++;
-      while (*q && (g_unichar_isalnum (g_utf8_get_char_validated (q, -1)) || *q == '-' || *q == '_' || *q == '.' || *q == '@'))
-        q = g_utf8_find_next_char (q, NULL);
+      while (q < end &&
+             *q != '\0' &&
+             (g_unichar_isalnum (g_utf8_get_char_validated (q, end - q)) || *q == '-' || *q == '_' || *q == '.' || *q == '@'))
+        {
+          q = g_utf8_find_next_char (q, end);
+          if (q == NULL)
+            {
+              q = end;
+              break;
+            }
+        }
 
       if (*q != ']')
         return FALSE;     
@@ -4205,7 +4220,7 @@ g_key_file_is_key_name (const gchar *name)
       q++;
     }
 
-  if (*q != '\0')
+  if (q < end)
     return FALSE;
 
   return TRUE;
