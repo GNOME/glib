@@ -745,9 +745,10 @@ find_file_in_data_dirs (const gchar   *file,
 
   while (data_dirs && (data_dir = *data_dirs) && fd == -1)
     {
-      gchar *candidate_file, *sub_dir;
+      const gchar *candidate_file;
+      gchar *sub_dir;
 
-      candidate_file = (gchar *) file;
+      candidate_file = file;
       sub_dir = g_strdup ("");
       while (candidate_file != NULL && fd == -1)
         {
@@ -1256,12 +1257,12 @@ g_key_file_parse_line (GKeyFile     *key_file,
 		       GError      **error)
 {
   GError *parse_error = NULL;
-  gchar *line_start;
+  const gchar *line_start;
 
   g_return_if_fail (key_file != NULL);
   g_return_if_fail (line != NULL);
 
-  line_start = (gchar *) line;
+  line_start = line;
   while (g_ascii_isspace (*line_start))
     line_start++;
 
@@ -4149,12 +4150,12 @@ g_key_file_line_is_comment (const gchar *line)
 static gboolean 
 g_key_file_is_group_name (const gchar *name)
 {
-  gchar *p, *q;
+  const gchar *p, *q;
 
   if (name == NULL)
     return FALSE;
 
-  p = q = (gchar *) name;
+  p = q = name;
   while (*q && *q != ']' && *q != '[' && !g_ascii_iscntrl (*q))
     q = g_utf8_find_next_char (q, NULL);
   
@@ -4167,12 +4168,13 @@ g_key_file_is_group_name (const gchar *name)
 static gboolean
 g_key_file_is_key_name (const gchar *name)
 {
-  gchar *p, *q;
+  const gchar *p, *q;
 
   if (name == NULL)
     return FALSE;
 
-  p = q = (gchar *) name;
+  p = q = name;
+
   /* We accept a little more than the desktop entry spec says,
    * since gnome-vfs uses mime-types as keys in its cache.
    */
@@ -4215,9 +4217,9 @@ g_key_file_is_key_name (const gchar *name)
 static gboolean
 g_key_file_line_is_group (const gchar *line)
 {
-  gchar *p;
+  const gchar *p;
 
-  p = (gchar *) line;
+  p = line;
   if (*p != '[')
     return FALSE;
 
@@ -4243,9 +4245,9 @@ g_key_file_line_is_group (const gchar *line)
 static gboolean
 g_key_file_line_is_key_value_pair (const gchar *line)
 {
-  gchar *p;
+  const gchar *p;
 
-  p = (gchar *) g_utf8_strchr (line, -1, '=');
+  p = g_utf8_strchr (line, -1, '=');
 
   if (!p)
     return FALSE;
@@ -4264,11 +4266,12 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
 				  GSList      **pieces,
 				  GError      **error)
 {
-  gchar *string_value, *p, *q0, *q;
+  gchar *string_value, *q0, *q;
+  const gchar *p;
 
   string_value = g_new (gchar, strlen (value) + 1);
 
-  p = (gchar *) value;
+  p = value;
   q0 = q = string_value;
   while (*p)
     {
@@ -4363,7 +4366,8 @@ g_key_file_parse_string_as_value (GKeyFile    *key_file,
 				  const gchar *string,
 				  gboolean     escape_separator)
 {
-  gchar *value, *p, *q;
+  gchar *value, *q;
+  const gchar *p;
   gsize length;
   gboolean parsing_leading_space;
 
@@ -4374,7 +4378,7 @@ g_key_file_parse_string_as_value (GKeyFile    *key_file,
    */
   value = g_new (gchar, 2 * length);
 
-  p = (gchar *) string;
+  p = string;
   q = value;
   parsing_leading_space = TRUE;
   while (p < (string + length - 1))
