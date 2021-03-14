@@ -1398,8 +1398,6 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 
   value_len = line + length - value_start;
 
-  value = g_strndup (value_start, value_len);
-
   g_warn_if_fail (key_file->start_group != NULL);
 
   if (key_file->current_group
@@ -1407,9 +1405,10 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
       && key_file->start_group == key_file->current_group
       && strcmp (key, "Encoding") == 0)
     {
-      if (g_ascii_strcasecmp (value, "UTF-8") != 0)
+      if (value_len != strlen ("UTF-8") ||
+          g_ascii_strncasecmp (value_start, "UTF-8", value_len) != 0)
         {
-	  gchar *value_utf8 = g_utf8_make_valid (value, value_len);
+          gchar *value_utf8 = g_utf8_make_valid (value_start, value_len);
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
                        _("Key file contains unsupported "
@@ -1417,10 +1416,11 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 	  g_free (value_utf8);
 
           g_free (key);
-          g_free (value);
           return;
         }
     }
+
+  value = g_strndup (value_start, value_len);
 
   /* Is this key a translation? If so, is it one that we care about?
    */
