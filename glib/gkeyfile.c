@@ -1396,7 +1396,7 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
   while (g_ascii_isspace (*value_start))
     value_start++;
 
-  value_len = line + length - value_start + 1;
+  value_len = line + length - value_start;
 
   value = g_strndup (value_start, value_len);
 
