@@ -511,8 +511,8 @@ struct _GKeyFile
 
   GKeyFileFlags flags;
 
-  gboolean checked_locales;
-  gchar **locales;
+  gboolean checked_locales;  /* TRUE if @locales has been initialised */
+  gchar **locales;  /* (nullable) */
 
   gint ref_count;  /* (atomic) */
 };
@@ -1240,6 +1240,7 @@ g_key_file_locale_is_interesting (GKeyFile    *key_file,
 
   if (!key_file->checked_locales)
     {
+      g_assert (key_file->locales == NULL);
       key_file->locales = g_strdupv ((gchar **)g_get_language_names ());
       key_file->checked_locales = TRUE;
     }
