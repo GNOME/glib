@@ -435,7 +435,7 @@ random_test (gconstpointer d)
             g_assert (g_queue_peek_head (q) == NULL);
           break;
         case PEEK_TAIL:
-          if (qinf->head)
+          if (qinf->tail)
             g_assert (qinf->tail->data == g_queue_peek_tail (q));
           else
             g_assert (g_queue_peek_tail (q) == NULL);
