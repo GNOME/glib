@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the glib package.
 #
 # Andraž Tori <andraz.tori1@guest.arnes.si> 2000.
-# Matej Urbančič <mateju@svn.gnome.org>, 2007–2021.
+# Matej Urbančič <mateju@src.gnome.org>, 2007–2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-02-18 01:34+0000\n"
-"PO-Revision-Date: 2021-02-18 20:17+0100\n"
-"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"POT-Creation-Date: 2021-03-17 07:43+0000\n"
+"PO-Revision-Date: 2021-03-17 18:38+0100\n"
+"Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
@@ -967,9 +967,11 @@ msgstr "Vodilo seje DBus ni zagnano, zato je samodejni zagon spodletel"
 msgid "Unable to get Hardware profile: %s"
 msgstr "Ni mogoče pridobiti strojnega profila: %s"
 
-#: gio/gdbusprivate.c:2488
-msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr "Ni mogoče naložiti /var/lib/dbus/machine-id oziroma /etc/machine-id: "
+#. Translators: Both placeholders are file paths
+#: gio/gdbusprivate.c:2494
+#, c-format
+msgid "Unable to load %s or %s: "
+msgstr "Ni mogoče naložiti %s oziroma %s:"
 
 #: gio/gdbusproxy.c:1562
 #, c-format
@@ -3012,7 +3014,7 @@ msgid "Can’t rename file, filename already exists"
 msgstr "Ni mogoče preimenovati datoteke, izbrano ime že obstaja"
 
 #: gio/glocalfile.c:1182 gio/glocalfile.c:2366 gio/glocalfile.c:2394
-#: gio/glocalfile.c:2533 gio/glocalfileoutputstream.c:650
+#: gio/glocalfile.c:2533 gio/glocalfileoutputstream.c:656
 msgid "Invalid filename"
 msgstr "Neveljavno ime datoteke"
 
@@ -3097,9 +3099,9 @@ msgstr "Napaka med premikanjem datoteke %s: %s"
 msgid "Can’t move directory over directory"
 msgstr "Ni mogoče premakniti mape čez mapo"
 
-#: gio/glocalfile.c:2493 gio/glocalfileoutputstream.c:1039
-#: gio/glocalfileoutputstream.c:1053 gio/glocalfileoutputstream.c:1068
-#: gio/glocalfileoutputstream.c:1085 gio/glocalfileoutputstream.c:1099
+#: gio/glocalfile.c:2493 gio/glocalfileoutputstream.c:1079
+#: gio/glocalfileoutputstream.c:1093 gio/glocalfileoutputstream.c:1108
+#: gio/glocalfileoutputstream.c:1125 gio/glocalfileoutputstream.c:1139
 msgid "Backup file creation failed"
 msgstr "Ustvarjanje varnostne kopije je spodletelo."
 
@@ -3138,7 +3140,7 @@ msgstr "Napaka med določanjem razširjenega atributa »%s«: %s"
 msgid " (invalid encoding)"
 msgstr " (neveljavni nabor znakov)"
 
-#: gio/glocalfileinfo.c:1868 gio/glocalfileoutputstream.c:915
+#: gio/glocalfileinfo.c:1868 gio/glocalfileoutputstream.c:943
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Napaka med pridobivanjem podatkov za datoteko »%s«: %s"
@@ -3248,19 +3250,19 @@ msgstr "Napaka nastavitve vsebine SELinux: %s"
 msgid "Setting attribute %s not supported"
 msgstr "Določanje atributa %s ni podprto"
 
-#: gio/glocalfileinputstream.c:163 gio/glocalfileoutputstream.c:795
+#: gio/glocalfileinputstream.c:163 gio/glocalfileoutputstream.c:801
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Napaka med branjem iz datoteke: %s"
 
-#: gio/glocalfileinputstream.c:194 gio/glocalfileoutputstream.c:347
-#: gio/glocalfileoutputstream.c:441
+#: gio/glocalfileinputstream.c:194 gio/glocalfileoutputstream.c:353
+#: gio/glocalfileoutputstream.c:447
 #, c-format
 msgid "Error closing file: %s"
 msgstr "Napaka med zapiranjem datoteke: %s"
 
-#: gio/glocalfileinputstream.c:272 gio/glocalfileoutputstream.c:557
-#: gio/glocalfileoutputstream.c:1117
+#: gio/glocalfileinputstream.c:272 gio/glocalfileoutputstream.c:563
+#: gio/glocalfileoutputstream.c:1157
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Napaka med iskanjem v datoteki: %s"
@@ -3269,51 +3271,51 @@ msgstr "Napaka med iskanjem v datoteki: %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Ni mogoče najti privzete krajevne datoteke nadzora"
 
-#: gio/glocalfileoutputstream.c:214 gio/glocalfileoutputstream.c:292
-#: gio/glocalfileoutputstream.c:328 gio/glocalfileoutputstream.c:816
+#: gio/glocalfileoutputstream.c:220 gio/glocalfileoutputstream.c:298
+#: gio/glocalfileoutputstream.c:334 gio/glocalfileoutputstream.c:822
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "Napaka med pisanjem v datoteko: %s"
 
-#: gio/glocalfileoutputstream.c:374
+#: gio/glocalfileoutputstream.c:380
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "Napaka med odstranjevanjem stare varnostne povezave: %s"
 
-#: gio/glocalfileoutputstream.c:388 gio/glocalfileoutputstream.c:401
+#: gio/glocalfileoutputstream.c:394 gio/glocalfileoutputstream.c:407
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Napaka med ustvarjanjem varnostne kopije: %s"
 
-#: gio/glocalfileoutputstream.c:419
+#: gio/glocalfileoutputstream.c:425
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "Napaka med preimenovanjem začasne datoteke: %s"
 
-#: gio/glocalfileoutputstream.c:603 gio/glocalfileoutputstream.c:1168
+#: gio/glocalfileoutputstream.c:609 gio/glocalfileoutputstream.c:1208
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Napaka med obrezovanjem datoteke: %s"
 
-#: gio/glocalfileoutputstream.c:656 gio/glocalfileoutputstream.c:894
-#: gio/glocalfileoutputstream.c:1149 gio/gsubprocess.c:226
+#: gio/glocalfileoutputstream.c:662 gio/glocalfileoutputstream.c:907
+#: gio/glocalfileoutputstream.c:1189 gio/gsubprocess.c:226
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Napaka med odpiranjem datoteke »%s«: %s"
 
-#: gio/glocalfileoutputstream.c:928
+#: gio/glocalfileoutputstream.c:957
 msgid "Target file is a directory"
 msgstr "Ciljna datoteka je mapa"
 
-#: gio/glocalfileoutputstream.c:933
+#: gio/glocalfileoutputstream.c:971
 msgid "Target file is not a regular file"
 msgstr "Ciljna datoteka ni običajna datoteka"
 
-#: gio/glocalfileoutputstream.c:945
+#: gio/glocalfileoutputstream.c:984
 msgid "The file was externally modified"
 msgstr "Datoteka je bila zunanje spremenjena"
 
-#: gio/glocalfileoutputstream.c:1133
+#: gio/glocalfileoutputstream.c:1173
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Napaka med odstranjevanjem datoteke: %s"
@@ -6237,6 +6239,10 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
+#~ msgstr ""
+#~ "Ni mogoče naložiti /var/lib/dbus/machine-id oziroma /etc/machine-id: "
 
 #~ msgid "Unknown error on connect"
 #~ msgstr "Neznana napaka med povezovanjem"
