@@ -1,3 +1,15 @@
+Overview of changes in GLib 2.66.8
+==================================
+
+* Fix a security issue when using `g_file_replace()` with
+  `G_FILE_CREATE_REPLACE_DESTINATION` (#2325)
+
+* Bugs fixed:
+ - #2325 file-roller symlink attack
+ - !1982 Backport !2325 “file-roller symlink attack” to glib-2-66
+ - !1990 Backport !1976 “Use the right permissions for directory watching on Win32” to glib-2-66
+
+
 Overview of changes in GLib 2.66.7
 ==================================
 
