@@ -1,3 +1,25 @@
+Overview of changes in GLib 2.68.0
+==================================
+
+* Bugs fixed:
+ - !1987 build: Drop gconstructor_as_data_h usage from glib-compile-schemas
+ - !1989 glib.supp: Generalize some suppressions
+ - !1992 gbytesicon: Fix error in g_bytes_icon_new() documentation
+ - !1994 glocalfileoutputstream: Tidy up error handling
+ - !1995 tests: Fix copy/paste error in queue test
+
+* Translation updates:
+ - Czech
+ - Finnish
+ - Italian
+ - Korean
+ - Lithuanian
+ - Polish
+ - Romanian
+ - Slovenian
+ - Turkish
+
+
 Overview of changes in GLib 2.67.6
 ==================================
 
