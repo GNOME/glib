@@ -208,6 +208,10 @@
     <title>Index of new symbols in 2.68</title>
     <xi:include href="xml/api-index-2.68.xml"><xi:fallback /></xi:include>
   </index>
+  <index id="api-index-2-70" role="2.70">
+    <title>Index of new symbols in 2.70</title>
+    <xi:include href="xml/api-index-2.70.xml"><xi:fallback /></xi:include>
+  </index>
 
   <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>
 
