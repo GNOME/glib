@@ -34,6 +34,7 @@
 
 #include "glib-private.h"
 #include "gstrfuncs.h"
+#include "gstrfuncsprivate.h"
 #include "gatomic.h"
 #include "gtestutils.h"
 #include "gslice.h"
@@ -967,7 +968,7 @@ g_hash_table_insert_node (GHashTable *hash_table,
    * split the table.
    */
   if (G_UNLIKELY (hash_table->keys == hash_table->values && hash_table->keys[node_index] != new_value))
-    hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
+    hash_table->values = g_memdup2 (hash_table->keys, sizeof (gpointer) * hash_table->size);
 
   /* Step 3: Actually do the write */
   hash_table->values[node_index] = new_value;
