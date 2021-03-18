@@ -17,6 +17,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <glib.h>
+#include "gstrfuncsprivate.h"
 
 #define BASIC "bynqiuxthdsog?"
 #define N_BASIC (G_N_ELEMENTS (BASIC) - 1)
@@ -4779,7 +4780,7 @@ test_normal_checking_tuples (void)
   GVariant *variant = NULL;
   GVariant *normal_variant = NULL;
 
-  aligned_data = g_memdup (data, size); /* guarantee alignment */
+  aligned_data = g_memdup2 (data, size); /* guarantee alignment */
   variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, aligned_data, size,
                                      FALSE, NULL, NULL);
   g_assert_nonnull (variant);
@@ -4908,7 +4909,7 @@ test_normal_checking_array_offsets (void)
   GVariant *variant = NULL;
   GVariant *normal_variant = NULL;
 
-  aligned_data = g_memdup (data, size); /* guarantee alignment */
+  aligned_data = g_memdup2 (data, size); /* guarantee alignment */
   variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, aligned_data, size,
                                      FALSE, NULL, NULL);
   g_assert_nonnull (variant);
@@ -4935,7 +4936,7 @@ test_normal_checking_tuple_offsets (void)
   GVariant *variant = NULL;
   GVariant *normal_variant = NULL;
 
-  aligned_data = g_memdup (data, size); /* guarantee alignment */
+  aligned_data = g_memdup2 (data, size); /* guarantee alignment */
   variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, aligned_data,
                                      size, FALSE, NULL, NULL);
   g_assert_nonnull (variant);
@@ -4962,7 +4963,7 @@ test_normal_checking_empty_object_path (void)
   GVariant *variant = NULL;
   GVariant *normal_variant = NULL;
 
-  aligned_data = g_memdup (data, size); /* guarantee alignment */
+  aligned_data = g_memdup2 (data, size); /* guarantee alignment */
   variant = g_variant_new_from_data (G_VARIANT_TYPE_VARIANT, aligned_data, size,
                                      FALSE, NULL, NULL);
   g_assert_nonnull (variant);
