@@ -159,8 +159,8 @@ g_pollable_input_stream_default_read_nonblocking (GPollableInputStream  *stream,
 /**
  * g_pollable_input_stream_read_nonblocking:
  * @stream: a #GPollableInputStream
- * @buffer: (array length=count) (element-type guint8): a buffer to
- *     read data into (which should be at least @count bytes long).
+ * @buffer: (array length=count) (element-type guint8) (out caller-allocates): a
+ *     buffer to read data into (which should be at least @count bytes long).
  * @count: the number of bytes you want to read
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
