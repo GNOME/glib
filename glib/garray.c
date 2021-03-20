@@ -188,7 +188,7 @@ g_array_new (gboolean zero_terminated,
 /**
  * g_array_steal:
  * @array: a #GArray.
- * @len: (optional) (out caller-allocates): pointer to retrieve the number of
+ * @len: (optional) (out): pointer to retrieve the number of
  *    elements of the original array
  *
  * Frees the data in the array and resets the size to zero, while
@@ -867,7 +867,7 @@ g_array_sort_with_data (GArray           *farray,
  * @array: a #GArray.
  * @target: a pointer to the item to look up.
  * @compare_func: A #GCompareFunc used to locate @target.
- * @out_match_index: (optional) (out caller-allocates): return location
+ * @out_match_index: (optional) (out): return location
  *    for the index of the element, if found.
  *
  * Checks whether @target exists in @array by performing a binary
@@ -1114,7 +1114,7 @@ g_ptr_array_new (void)
 /**
  * g_ptr_array_steal:
  * @array: a #GPtrArray.
- * @len: (optional) (out caller-allocates): pointer to retrieve the number of
+ * @len: (optional) (out): pointer to retrieve the number of
  *    elements of the original array
  *
  * Frees the data in the array and resets the size to zero, while
@@ -2099,7 +2099,7 @@ g_ptr_array_foreach (GPtrArray *array,
  * g_ptr_array_find: (skip)
  * @haystack: pointer array to be searched
  * @needle: pointer to look for
- * @index_: (optional) (out caller-allocates): return location for the index of
+ * @index_: (optional) (out): return location for the index of
  *    the element, if found
  *
  * Checks whether @needle exists in @haystack. If the element is found, %TRUE is
@@ -2128,7 +2128,7 @@ g_ptr_array_find (GPtrArray     *haystack,
  * @equal_func: (nullable): the function to call for each element, which should
  *    return %TRUE when the desired element is found; or %NULL to use pointer
  *    equality
- * @index_: (optional) (out caller-allocates): return location for the index of
+ * @index_: (optional) (out): return location for the index of
  *    the element, if found
  *
  * Checks whether @needle exists in @haystack, using the given @equal_func.
@@ -2234,7 +2234,7 @@ g_byte_array_new (void)
 /**
  * g_byte_array_steal:
  * @array: a #GByteArray.
- * @len: (optional) (out caller-allocates): pointer to retrieve the number of
+ * @len: (optional) (out): pointer to retrieve the number of
  *    elements of the original array
  *
  * Frees the data in the array and resets the size to zero, while
