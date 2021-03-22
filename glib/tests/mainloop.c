@@ -21,6 +21,7 @@
  */
 
 #include <glib.h>
+#include <glib/gstdio.h>
 #include "glib-private.h"
 #include <stdio.h>
 #include <string.h>
@@ -2066,6 +2067,36 @@ test_maincontext_source_finalization_from_dispatch (gconstpointer user_data)
   g_main_context_unref (c);
 }
 
+static void
+test_steal_fd (void)
+{
+  GError *error = NULL;
+  gchar *tmpfile = NULL;
+  int fd = -42;
+  int borrowed;
+  int stolen;
+
+  g_assert_cmpint (g_steal_fd (&fd), ==, -42);
+  g_assert_cmpint (fd, ==, -1);
+  g_assert_cmpint (g_steal_fd (&fd), ==, -1);
+  g_assert_cmpint (fd, ==, -1);
+
+  fd = g_file_open_tmp (NULL, &tmpfile, &error);
+  g_assert_cmpint (fd, >=, 0);
+  g_assert_no_error (error);
+  borrowed = fd;
+  stolen = g_steal_fd (&fd);
+  g_assert_cmpint (fd, ==, -1);
+  g_assert_cmpint (borrowed, ==, stolen);
+
+  g_close (g_steal_fd (&stolen), &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (stolen, ==, -1);
+
+  g_assert_no_errno (remove (tmpfile));
+  g_free (tmpfile);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2111,6 +2142,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/unix-fd-priority", test_unix_fd_priority);
 #endif
   g_test_add_func ("/mainloop/nfds", test_nfds);
+  g_test_add_func ("/mainloop/steal-fd", test_steal_fd);
 
   return g_test_run ();
 }
