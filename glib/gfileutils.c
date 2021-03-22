@@ -1208,14 +1208,6 @@ write_to_file (const gchar  *contents,
   return TRUE;
 }
 
-static inline int
-steal_fd (int *fd_ptr)
-{
-  int fd = *fd_ptr;
-  *fd_ptr = -1;
-  return fd;
-}
-
 /**
  * g_file_set_contents:
  * @filename: (type filename): name of a file to write @contents to, in the GLib file name
@@ -1369,7 +1361,7 @@ g_file_set_contents_full (const gchar            *filename,
         }
 
       do_fsync = fd_should_be_fsynced (fd, filename, flags);
-      if (!write_to_file (contents, length, steal_fd (&fd), tmp_filename, do_fsync, error))
+      if (!write_to_file (contents, length, g_steal_fd (&fd), tmp_filename, do_fsync, error))
         {
           g_unlink (tmp_filename);
           retval = FALSE;
@@ -1479,7 +1471,7 @@ consistent_out:
         }
 
       do_fsync = fd_should_be_fsynced (direct_fd, filename, flags);
-      if (!write_to_file (contents, length, steal_fd (&direct_fd), filename,
+      if (!write_to_file (contents, length, g_steal_fd (&direct_fd), filename,
                           do_fsync, error))
         return FALSE;
     }

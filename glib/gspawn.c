@@ -249,16 +249,6 @@ g_spawn_async (const gchar          *working_directory,
                                    error);
 }
 
-/* This function is called between fork() and exec() and hence must be
- * async-signal-safe (see signal-safety(7)). */
-static gint
-steal_fd (gint *fd)
-{
-  gint fd_out = *fd;
-  *fd = -1;
-  return fd_out;
-}
-
 /* Avoids a danger in threaded situations (calling close()
  * on a file descriptor twice, and another thread has
  * re-opened it since the first close)
@@ -2436,13 +2426,13 @@ success:
   close_and_invalidate (&stderr_pipe[1]);
 
   if (stdin_pipe_out != NULL)
-    *stdin_pipe_out = steal_fd (&stdin_pipe[1]);
+    *stdin_pipe_out = g_steal_fd (&stdin_pipe[1]);
 
   if (stdout_pipe_out != NULL)
-    *stdout_pipe_out = steal_fd (&stdout_pipe[0]);
+    *stdout_pipe_out = g_steal_fd (&stdout_pipe[0]);
 
   if (stderr_pipe_out != NULL)
-    *stderr_pipe_out = steal_fd (&stderr_pipe[0]);
+    *stderr_pipe_out = g_steal_fd (&stderr_pipe[0]);
 
   return TRUE;
 

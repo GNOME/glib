@@ -924,6 +924,9 @@ g_source_remove_by_user_data
 GClearHandleFunc
 g_clear_handle_id
 
+<SUBSECTION>
+g_steal_fd
+
 <SUBSECTION Private>
 GLIB_HAVE_ALLOCA_H
 alloca
