@@ -1232,7 +1232,7 @@ g_key_file_locale_is_interesting (GKeyFile    *key_file,
   if (key_file->flags & G_KEY_FILE_KEEP_TRANSLATIONS)
     return TRUE;
 
-  if (!key_file->checked_locales && !key_file->locales)
+  if (!key_file->checked_locales)
     {
       key_file->locales = g_strdupv ((gchar **)g_get_language_names ());
       key_file->checked_locales = TRUE;
