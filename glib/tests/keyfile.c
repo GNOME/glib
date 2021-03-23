@@ -759,6 +759,48 @@ test_locale_string (void)
 }
 
 static void
+test_locale_string_multiple_loads (void)
+{
+  GKeyFile *keyfile = NULL;
+  GError *local_error = NULL;
+  gchar *old_locale = NULL;
+  guint i;
+  const gchar *data =
+    "[valid]\n"
+    "key1=v1\n"
+    "key1[de]=v1-de\n"
+    "key1[de_DE]=v1-de_DE\n"
+    "key1[de_DE.UTF8]=v1-de_DE.UTF8\n"
+    "key1[fr]=v1-fr\n"
+    "key1[en] =v1-en\n"
+    "key1[sr@Latn]=v1-sr\n";
+
+  g_test_summary ("Check that loading with translations multiple times works");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2361");
+
+  old_locale = g_strdup (setlocale (LC_ALL, NULL));
+  g_setenv ("LANGUAGE", "de", TRUE);
+  setlocale (LC_ALL, "");
+
+  keyfile = g_key_file_new ();
+
+  for (i = 0; i < 3; i++)
+    {
+      g_key_file_load_from_data (keyfile, data, -1, G_KEY_FILE_NONE, &local_error);
+      g_assert_no_error (local_error);
+
+      check_locale_string_value (keyfile, "valid", "key1", "it", "v1");
+      check_locale_string_value (keyfile, "valid", "key1", "de", "v1-de");
+      check_locale_string_value (keyfile, "valid", "key1", "de_DE", "v1-de");
+    }
+
+  g_key_file_free (keyfile);
+
+  setlocale (LC_ALL, old_locale);
+  g_free (old_locale);
+}
+
+static void
 test_lists (void)
 {
   GKeyFile *keyfile;
@@ -1791,6 +1833,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/boolean", test_boolean);
   g_test_add_func ("/keyfile/number", test_number);
   g_test_add_func ("/keyfile/locale-string", test_locale_string);
+  g_test_add_func ("/keyfile/locale-string/multiple-loads", test_locale_string_multiple_loads);
   g_test_add_func ("/keyfile/lists", test_lists);
   g_test_add_func ("/keyfile/lists-set-get", test_lists_set_get);
   g_test_add_func ("/keyfile/group-remove", test_group_remove);

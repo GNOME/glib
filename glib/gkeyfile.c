@@ -648,6 +648,7 @@ g_key_file_clear (GKeyFile *key_file)
       g_strfreev (key_file->locales);
       key_file->locales = NULL;
     }
+  key_file->checked_locales = FALSE;
 
   if (key_file->parse_buffer)
     {
