@@ -204,7 +204,7 @@ g_socket_control_message_deserialize (int      level,
    * example, the control message may be be discarded if it is deemed
    * empty, see e.g.
    *
-   *  http://git.gnome.org/browse/glib/commit/?id=ec91ed00f14c70cca9749347b8ebc19d72d9885b
+   *  https://gitlab.gnome.org/GNOME/glib/commit/ec91ed00f14c70cca9749347b8ebc19d72d9885b
    *
    * Therefore, it's not appropriate to print a warning about not
    * being able to deserialize the message.

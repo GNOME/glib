@@ -155,13 +155,13 @@
  * respectively.
  *
  * For an example of opening files with a GApplication, see
- * [gapplication-example-open.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-open.c).
+ * [gapplication-example-open.c](https://gitlab.gnome.org/GNOME/glib/-/blob/master/gio/tests/gapplication-example-open.c).
  *
  * For an example of using actions with GApplication, see
- * [gapplication-example-actions.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-actions.c).
+ * [gapplication-example-actions.c](https://gitlab.gnome.org/GNOME/glib/-/blob/master/gio/tests/gapplication-example-actions.c).
  *
  * For an example of using extra D-Bus hooks with GApplication, see
- * [gapplication-example-dbushooks.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
+ * [gapplication-example-dbushooks.c](https://gitlab.gnome.org/GNOME/glib/-/blob/master/gio/tests/gapplication-example-dbushooks.c).
  */
 
 /**

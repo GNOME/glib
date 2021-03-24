@@ -80,7 +80,7 @@
  * displaying the bookmark inside a GUI.
  *
  * Here is an example of a bookmark file:
- * [bookmarks.xbel](https://git.gnome.org/browse/glib/tree/glib/tests/bookmarks.xbel)
+ * [bookmarks.xbel](https://gitlab.gnome.org/GNOME/glib/-/blob/master/glib/tests/bookmarks.xbel)
  *
  * A bookmark file might contain more than one bookmark; each bookmark
  * is accessed through its URI.
