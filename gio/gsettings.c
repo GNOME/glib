@@ -121,7 +121,7 @@
  * utility. The input is a schema description in an XML format.
  *
  * A DTD for the gschema XML format can be found here:
- * [gschema.dtd](https://git.gnome.org/browse/glib/tree/gio/gschema.dtd)
+ * [gschema.dtd](https://gitlab.gnome.org/GNOME/glib/-/blob/master/gio/gschema.dtd)
  *
  * The [glib-compile-schemas][glib-compile-schemas] tool expects schema
  * files to have the extension `.gschema.xml`.

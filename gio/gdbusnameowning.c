@@ -39,7 +39,7 @@
  * Convenience API for owning bus names.
  *
  * A simple example for owning a name can be found in
- * [gdbus-example-own-name.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-own-name.c) 
+ * [gdbus-example-own-name.c](https://gitlab.gnome.org/GNOME/glib/-/blob/master/gio/tests/gdbus-example-own-name.c)
  */
 
 G_LOCK_DEFINE_STATIC (lock);
