@@ -1,5 +1,6 @@
 fuzz_targets = [
   'fuzz_bookmark',
+  'fuzz_canonicalize_filename',
   'fuzz_date_parse',
   'fuzz_date_time_new_from_iso8601',
   'fuzz_dbus_message',
@@ -9,6 +10,7 @@ fuzz_targets = [
   'fuzz_key',
   'fuzz_network_address_parse',
   'fuzz_network_address_parse_uri',
+  'fuzz_paths',
   'fuzz_uri_escape',
   'fuzz_uri_parse',
   'fuzz_uri_parse_params',
