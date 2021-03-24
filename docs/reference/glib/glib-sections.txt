@@ -3055,6 +3055,7 @@ g_tree_lower_bound
 g_tree_upper_bound
 g_tree_remove
 g_tree_steal
+g_tree_remove_all
 g_tree_destroy
 </SECTION>
 
