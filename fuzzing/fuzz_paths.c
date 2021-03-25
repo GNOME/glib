@@ -19,10 +19,10 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
   g_assert (skipped_root == NULL || skipped_root <= (const gchar *) nul_terminated_data + size);
 
   basename = g_path_get_basename ((const gchar *) nul_terminated_data);
-  g_assert (strlen (basename) <= size);
+  g_assert (strcmp (basename, ".") == 0 || strlen (basename) <= size);
 
   dirname = g_path_get_dirname ((const gchar *) nul_terminated_data);
-  g_assert (strlen (dirname) <= size);
+  g_assert (strcmp (dirname, ".") == 0 || strlen (dirname) <= size);
 
   g_free (nul_terminated_data);
   g_free (dirname);
