@@ -81,6 +81,11 @@ G_END_DECLS
  *   way as out of stack space situations from infinite function recursion, i.e.
  *   with a segmentation fault.
  *
+ * - Allowing @size to be specified by an untrusted party would allow for them
+ *   to trigger a segmentation fault by specifying a large size, leading to a
+ *   denial of service vulnerability. @size must always be entirely under the
+ *   control of the program.
+ *
  * - Special care has to be taken when mixing alloca() with GNU C variable sized arrays.
  *   Stack space allocated with alloca() in the same scope as a variable sized array
  *   will be freed together with the variable sized array upon exit of that scope, and
@@ -96,6 +101,12 @@ G_END_DECLS
  * 
  * Wraps g_alloca() in a more typesafe manner.
  * 
+ * As mentioned in the documentation for g_alloca(), @n_structs must always be
+ * entirely under the control of the program, or you may introduce a denial of
+ * service vulnerability. In addition, the multiplication of @struct_type by
+ * @n_structs is not checked, so an overflow may lead to a remote code execution
+ * vulnerability.
+ *
  * Returns: Pointer to stack space for @n_structs chunks of type @struct_type
  */
 #define g_newa(struct_type, n_structs)	((struct_type*) g_alloca (sizeof (struct_type) * (gsize) (n_structs)))
