@@ -1,5 +1,5 @@
 # Simplified Chinese translation for glib.
-# Copyright (C) 2001-2019 glib's COPYRIGHT HOLDER
+# Copyright (C) 2001-2021 glib's COPYRIGHT HOLDER
 # This file is distributed under the same license as glib package.
 # He Qiangqiang <carton@263.net>, 2001.
 # Funda Wang <fundawang@linux.net.cn>, 2004, 2005.
@@ -16,22 +16,22 @@
 # Tong Hui <tonghuix@gmail.com>, 2014.
 # Mingye Wang <arthur2e5@aosc.xyz>, 2015, 2016.
 # Mingcong Bai <jeffbai@aosc.xyz>, 2015, 2016, 2018.
-# Dingzhong Chen <wsxy162@gmail.com>, 2018-2019.
+# Dingzhong Chen <wsxy162@gmail.com>, 2018-2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2021-03-10 18:43+0000\n"
-"PO-Revision-Date: 2021-03-18 22:02-0400\n"
-"Last-Translator: mars <gzhqyz@gmail.com>\n"
-"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
+"POT-Creation-Date: 2021-03-22 11:48+0000\n"
+"PO-Revision-Date: 2021-03-28 01:17+0800\n"
+"Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
+"Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.2\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 3.38.0\n"
 
 #: gio/gapplication.c:500
 msgid "GApplication options"
@@ -540,7 +540,7 @@ msgstr "用尽了所有可用的认证机制（已尝试：%s）（可用的：%
 
 #: gio/gdbusauth.c:1170
 msgid "User IDs must be the same for peer and server"
-msgstr "用户 ID 对对等端和服务端必须相同"
+msgstr "对等端和服务器端的用户 ID 必须相同"
 
 #: gio/gdbusauth.c:1182
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -1378,7 +1378,7 @@ msgstr "无法复制特殊文件"
 msgid "Invalid symlink value given"
 msgstr "给定的符号链接值无效"
 
-#: gio/gfile.c:4045 glib/gfileutils.c:2362
+#: gio/gfile.c:4045 glib/gfileutils.c:2354
 msgid "Symbolic links not supported"
 msgstr "不支持符号链接"
 
@@ -1587,7 +1587,7 @@ msgstr "显示关于位置的信息"
 
 #: gio/gio-tool.c:232
 msgid "Launch an application from a desktop file"
-msgstr "启动一个来自 .desktop 文件的应用程序"
+msgstr "从桌面文件启动应用程序"
 
 #: gio/gio-tool.c:233
 msgid "List the contents of locations"
@@ -1842,31 +1842,31 @@ msgstr ""
 #. Translators: commandline placeholder
 #: gio/gio-tool-launch.c:54
 msgid "DESKTOP-FILE [FILE-ARG …]"
-msgstr "DESKTOP文件 [文件参数 …]"
+msgstr "桌面文件 [文件参数 …]"
 
 #: gio/gio-tool-launch.c:57
 msgid ""
 "Launch an application from a desktop file, passing optional filename "
 "arguments to it."
-msgstr "从一个 desktop 文件启动应用，并向其传递可选文件名参数。"
+msgstr "从桌面文件启动应用程序，并向其传递可选的文件名参数。"
 
 #: gio/gio-tool-launch.c:77
 msgid "No desktop file given"
-msgstr "未给出 desktop 文件"
+msgstr "未给定桌面文件"
 
 #: gio/gio-tool-launch.c:85
 msgid "The launch command is not currently supported on this platform"
-msgstr "当前平台尚不支持启动命令"
+msgstr "当前平台尚不支持该启动命令"
 
 #: gio/gio-tool-launch.c:98
 #, c-format
 msgid "Unable to load ‘%s‘: %s"
-msgstr "无法载入“%s”： %s"
+msgstr "无法加载“%s”：%s"
 
 #: gio/gio-tool-launch.c:107
 #, c-format
 msgid "Unable to load application information for ‘%s‘"
-msgstr "载入应用程序“%s”的信息失败"
+msgstr "无法加载“%s”的应用程序信息"
 
 #: gio/gio-tool-launch.c:119
 #, c-format
@@ -2268,7 +2268,7 @@ msgstr "无法创建原始位置："
 
 #: gio/gio-tool-trash.c:136
 msgid "Unable to move file to its original location: "
-msgstr "无法移动文件到它的原始位置："
+msgstr "无法移动文件回它的原始位置："
 
 #: gio/gio-tool-trash.c:225
 msgid "Move/Restore files or directories to the trash."
@@ -2284,7 +2284,7 @@ msgstr ""
 
 #: gio/gio-tool-trash.c:258
 msgid "Location given doesn't start with trash:///"
-msgstr "给定的路径没有使用 trash:/// 起始"
+msgstr "给定的位置没有以 trash:/// 开头"
 
 #: gio/gio-tool-tree.c:33
 msgid "Follow symbolic links, mounts and shortcuts"
@@ -2954,7 +2954,7 @@ msgstr "不支持在系统内部挂载上的丢弃到回收站操作"
 #: gio/glocalfile.c:2141 gio/glocalfile.c:2169
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
-msgstr "无法在回收站 %s 为 %s 找到或创建目录"
+msgstr "无法找到或创建回收站目录 %s 来丢弃 %s"
 
 #: gio/glocalfile.c:2215
 #, c-format
@@ -4817,7 +4817,7 @@ msgstr "文件“%s”过大"
 msgid "Failed to read from file “%s”: %s"
 msgstr "读取文件“%s”失败：%s"
 
-#: glib/gfileutils.c:904 glib/gfileutils.c:979 glib/gfileutils.c:1476
+#: glib/gfileutils.c:904 glib/gfileutils.c:979 glib/gfileutils.c:1468
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "打开文件“%s”失败：%s"
@@ -4847,27 +4847,27 @@ msgstr "写入文件“%s”失败：write() 失败：%s"
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "写入文件“%s”失败：fsync() 失败：%s"
 
-#: glib/gfileutils.c:1365 glib/gfileutils.c:1780
+#: glib/gfileutils.c:1357 glib/gfileutils.c:1772
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "创建文件“%s”失败：%s"
 
-#: glib/gfileutils.c:1410
+#: glib/gfileutils.c:1402
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "无法删除已有文件“%s”：g_unlink() 失败：%s"
 
-#: glib/gfileutils.c:1745
+#: glib/gfileutils.c:1737
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "模板“%s”无效，不应该包含“%s”"
 
-#: glib/gfileutils.c:1758
+#: glib/gfileutils.c:1750
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "模板“%s”不包含 XXXXXX"
 
-#: glib/gfileutils.c:2318 glib/gfileutils.c:2347
+#: glib/gfileutils.c:2310 glib/gfileutils.c:2339
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "读取符号链接“%s”失败：%s"
@@ -5247,12 +5247,12 @@ msgstr "%2$s 所用的双精度值“%1$s”超出范围"
 msgid "Error parsing option %s"
 msgstr "解析选项 %s 时出错"
 
-#: glib/goption.c:1570 glib/goption.c:1683
+#: glib/goption.c:1561 glib/goption.c:1674
 #, c-format
 msgid "Missing argument for %s"
 msgstr "缺少 %s 的参数"
 
-#: glib/goption.c:2194
+#: glib/goption.c:2185
 #, c-format
 msgid "Unknown option %s"
 msgstr "未知选项 %s"
@@ -5644,82 +5644,82 @@ msgstr "在找到为 %c 匹配的引用之前，文本已结束。（文本为�
 msgid "Text was empty (or contained only whitespace)"
 msgstr "文本为空（或仅含空白字符）"
 
-#: glib/gspawn.c:318
+#: glib/gspawn.c:308
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "从子进程中读取数据失败（%s）"
 
-#: glib/gspawn.c:465
+#: glib/gspawn.c:455
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "在从子进程中读取数据时出现异常错误（%s）"
 
-#: glib/gspawn.c:550
+#: glib/gspawn.c:540
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() 出现异常错误（%s）"
 
-#: glib/gspawn.c:1154 glib/gspawn-win32.c:1383
+#: glib/gspawn.c:1144 glib/gspawn-win32.c:1383
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "子进程已退出，代码 %ld"
 
-#: glib/gspawn.c:1162
+#: glib/gspawn.c:1152
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "子进程已由信号 %ld 杀死"
 
-#: glib/gspawn.c:1169
+#: glib/gspawn.c:1159
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "子进程已由信号 %ld 停止"
 
-#: glib/gspawn.c:1176
+#: glib/gspawn.c:1166
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "子进程异常中止"
 
-#: glib/gspawn.c:1767 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
+#: glib/gspawn.c:1757 glib/gspawn-win32.c:350 glib/gspawn-win32.c:358
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "从子管道中读取失败（%s）"
 
-#: glib/gspawn.c:2069
+#: glib/gspawn.c:2059
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "生成子进程“%s”失败（%s）"
 
-#: glib/gspawn.c:2186
+#: glib/gspawn.c:2176
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork 失败（%s）"
 
-#: glib/gspawn.c:2346 glib/gspawn-win32.c:381
+#: glib/gspawn.c:2336 glib/gspawn-win32.c:381
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "切换到目录“%s”失败（%s）"
 
-#: glib/gspawn.c:2356
+#: glib/gspawn.c:2346
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "执行子进程“%s”失败（%s）"
 
-#: glib/gspawn.c:2366
+#: glib/gspawn.c:2356
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "重定位子进程（%s）的输入或输出失败"
 
-#: glib/gspawn.c:2375
+#: glib/gspawn.c:2365
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "fork 子进程失败（%s）"
 
-#: glib/gspawn.c:2383
+#: glib/gspawn.c:2373
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "执行子进程“%s”时出现未知错误"
 
-#: glib/gspawn.c:2407
+#: glib/gspawn.c:2397
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "从子进程管道中读取足够的数据失败（%s）"
