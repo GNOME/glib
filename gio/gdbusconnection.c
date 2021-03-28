@@ -1610,7 +1610,6 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   guchar *blob;
   gsize blob_size;
   guint32 serial_to_use;
-  gboolean ret;
 
   CONNECTION_ENSURE_LOCK (connection);
 
@@ -1618,9 +1617,6 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), FALSE);
 
   /* TODO: check all necessary headers are present */
-
-  ret = FALSE;
-  blob = NULL;
 
   if (out_serial != NULL)
     *out_serial = 0;
@@ -1633,14 +1629,14 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   if (!check_unclosed (connection,
                        (flags & SEND_MESSAGE_FLAGS_INITIALIZING) ? MAY_BE_UNINITIALIZED : 0,
                        error))
-    goto out;
+    return FALSE;
 
   blob = g_dbus_message_to_blob (message,
                                  &blob_size,
                                  connection->capabilities,
                                  error);
   if (blob == NULL)
-    goto out;
+    return FALSE;
 
   if (flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL)
     serial_to_use = g_dbus_message_get_serial (message);
@@ -1686,18 +1682,13 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
     g_dbus_message_set_serial (message, serial_to_use);
 
   g_dbus_message_lock (message);
+
   _g_dbus_worker_send_message (connection->worker,
                                message,
-                               (gchar*) blob,
+                               (gchar*) blob, /* transfer ownership */
                                blob_size);
-  blob = NULL; /* since _g_dbus_worker_send_message() steals the blob */
 
-  ret = TRUE;
-
- out:
-  g_free (blob);
-
-  return ret;
+  return TRUE;
 }
 
 /**
