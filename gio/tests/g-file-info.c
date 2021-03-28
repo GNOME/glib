@@ -201,6 +201,153 @@ test_g_file_info_modification_time (void)
   g_date_time_unref (dt_new_usecs);
 }
 
+static void
+test_g_file_info_access_time (void)
+{
+  GFile *file = NULL;
+  GFileIOStream *io_stream = NULL;
+  GFileInfo *info = NULL;
+  GDateTime *dt = NULL, *dt_usecs = NULL, *dt_new = NULL, *dt_new_usecs = NULL,
+            *dt_before_epoch = NULL, *dt_before_epoch_returned = NULL;
+  GTimeSpan ts;
+  GError *error = NULL;
+
+  g_test_summary ("Test that getting the access time of a file works.");
+
+  file = g_file_new_tmp ("g-file-info-test-XXXXXX", &io_stream, &error);
+  g_assert_no_error (error);
+
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_TIME_ACCESS,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  g_assert_no_error (error);
+
+  /* Check the access time is retrievable. */
+  dt = g_file_info_get_access_date_time (info);
+  g_assert_nonnull (dt);
+
+  /* Try again with microsecond precision. */
+  g_clear_object (&info);
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_TIME_ACCESS "," G_FILE_ATTRIBUTE_TIME_ACCESS_USEC,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  g_assert_no_error (error);
+
+  dt_usecs = g_file_info_get_access_date_time (info);
+  g_assert_nonnull (dt_usecs);
+
+  ts = g_date_time_difference (dt_usecs, dt);
+  g_assert_cmpint (ts, >, 0);
+  g_assert_cmpint (ts, <, G_USEC_PER_SEC);
+
+  /* Try round-tripping the access time. */
+  dt_new = g_date_time_add (dt_usecs, G_USEC_PER_SEC + 50);
+  g_file_info_set_access_date_time (info, dt_new);
+
+  dt_new_usecs = g_file_info_get_access_date_time (info);
+  ts = g_date_time_difference (dt_new_usecs, dt_new);
+  g_assert_cmpint (ts, ==, 0);
+
+  // try with a negative timestamp
+  dt_before_epoch = g_date_time_new_from_unix_utc (-10000);
+  g_file_info_set_access_date_time (info, dt_before_epoch);
+  dt_before_epoch_returned = g_file_info_get_access_date_time (info);
+  ts = g_date_time_difference (dt_before_epoch, dt_before_epoch_returned);
+  g_assert_cmpint (ts, ==, 0);
+
+  /* Clean up. */
+  g_clear_object (&io_stream);
+  g_file_delete (file, NULL, NULL);
+  g_clear_object (&file);
+
+  g_clear_object (&info);
+  g_date_time_unref (dt);
+  g_date_time_unref (dt_usecs);
+  g_date_time_unref (dt_new);
+  g_date_time_unref (dt_new_usecs);
+  g_date_time_unref (dt_before_epoch);
+  g_date_time_unref (dt_before_epoch_returned);
+}
+
+static void
+test_g_file_info_creation_time (void)
+{
+  GFile *file = NULL;
+  GFileIOStream *io_stream = NULL;
+  GFileInfo *info = NULL;
+  GDateTime *dt = NULL, *dt_usecs = NULL, *dt_new = NULL, *dt_new_usecs = NULL,
+            *dt_before_epoch = NULL, *dt_before_epoch_returned = NULL;
+  GTimeSpan ts;
+  GError *error = NULL;
+
+  g_test_summary ("Test that getting the creation time of a file works.");
+
+  file = g_file_new_tmp ("g-file-info-test-XXXXXX", &io_stream, &error);
+  g_assert_no_error (error);
+
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_TIME_CREATED,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  g_assert_no_error (error);
+
+  /* Check the creation time is retrievable. */
+  dt = g_file_info_get_creation_date_time (info);
+  if (!dt)
+    {
+      g_test_skip ("Skipping testing creation time as it’s not supported by the kernel");
+      g_file_delete (file, NULL, NULL);
+      g_clear_object (&file);
+      g_clear_object (&info);
+      return;
+    }
+
+  /* Try again with microsecond precision. */
+  g_clear_object (&info);
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_TIME_CREATED "," G_FILE_ATTRIBUTE_TIME_CREATED_USEC,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  g_assert_no_error (error);
+
+  dt_usecs = g_file_info_get_creation_date_time (info);
+  g_assert_nonnull (dt_usecs);
+
+  ts = g_date_time_difference (dt_usecs, dt);
+  g_assert_cmpint (ts, >, 0);
+  g_assert_cmpint (ts, <, G_USEC_PER_SEC);
+
+  /* Try round-tripping the creation time. */
+  dt_new = g_date_time_add (dt_usecs, G_USEC_PER_SEC + 50);
+  g_file_info_set_creation_date_time (info, dt_new);
+
+  dt_new_usecs = g_file_info_get_creation_date_time (info);
+  ts = g_date_time_difference (dt_new_usecs, dt_new);
+  g_assert_cmpint (ts, ==, 0);
+
+  // try with a negative timestamp
+  dt_before_epoch = g_date_time_new_from_unix_utc (-10000);
+  g_file_info_set_creation_date_time (info, dt_before_epoch);
+  dt_before_epoch_returned = g_file_info_get_creation_date_time (info);
+  ts = g_date_time_difference (dt_before_epoch, dt_before_epoch_returned);
+  g_assert_cmpint (ts, ==, 0);
+
+  /* Clean up. */
+  g_clear_object (&io_stream);
+  g_file_delete (file, NULL, NULL);
+  g_clear_object (&file);
+
+  g_clear_object (&info);
+  g_date_time_unref (dt);
+  g_date_time_unref (dt_usecs);
+  g_date_time_unref (dt_new);
+  g_date_time_unref (dt_new_usecs);
+  g_date_time_unref (dt_before_epoch);
+  g_date_time_unref (dt_before_epoch_returned);
+}
+
 #ifdef G_OS_WIN32
 static void
 test_internal_enhanced_stdio (void)
@@ -746,6 +893,8 @@ main (int   argc,
 
   g_test_add_func ("/g-file-info/test_g_file_info", test_g_file_info);
   g_test_add_func ("/g-file-info/test_g_file_info/modification-time", test_g_file_info_modification_time);
+  g_test_add_func ("/g-file-info/test_g_file_info/access-time", test_g_file_info_access_time);
+  g_test_add_func ("/g-file-info/test_g_file_info/creation-time", test_g_file_info_creation_time);
 #ifdef G_OS_WIN32
   g_test_add_func ("/g-file-info/internal-enhanced-stdio", test_internal_enhanced_stdio);
 #endif
