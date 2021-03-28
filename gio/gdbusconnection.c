@@ -2202,6 +2202,24 @@ typedef struct
   GMainContext               *context;
 } FilterData;
 
+static void
+filter_data_destroy (FilterData *filter, gboolean notify_sync)
+{
+  if (notify_sync)
+    {
+      if (filter->user_data_free_func != NULL)
+        filter->user_data_free_func (filter->user_data);
+    }
+  else
+    {
+      call_destroy_notify (filter->context,
+                           filter->user_data_free_func,
+                           filter->user_data);
+    }
+  g_main_context_unref (filter->context);
+  g_free (filter);
+}
+
 /* requires CONNECTION_LOCK */
 static FilterData **
 copy_filter_list (GPtrArray *filters)
@@ -2230,13 +2248,7 @@ free_filter_list (FilterData **filters)
     {
       filters[n]->ref_count--;
       if (filters[n]->ref_count == 0)
-        {
-          call_destroy_notify (filters[n]->context,
-                               filters[n]->user_data_free_func,
-                               filters[n]->user_data);
-          g_main_context_unref (filters[n]->context);
-          g_free (filters[n]);
-        }
+        filter_data_destroy (filters[n], FALSE);
     }
   g_free (filters);
 }
@@ -3179,16 +3191,9 @@ static void
 purge_all_filters (GDBusConnection *connection)
 {
   guint n;
-  for (n = 0; n < connection->filters->len; n++)
-    {
-      FilterData *data = connection->filters->pdata[n];
 
-      call_destroy_notify (data->context,
-                           data->user_data_free_func,
-                           data->user_data);
-      g_main_context_unref (data->context);
-      g_free (data);
-    }
+  for (n = 0; n < connection->filters->len; n++)
+    filter_data_destroy (connection->filters->pdata[n], FALSE);
 }
 
 /**
@@ -3238,12 +3243,7 @@ g_dbus_connection_remove_filter (GDBusConnection *connection,
 
   /* do free without holding lock */
   if (to_destroy != NULL)
-    {
-      if (to_destroy->user_data_free_func != NULL)
-        to_destroy->user_data_free_func (to_destroy->user_data);
-      g_main_context_unref (to_destroy->context);
-      g_free (to_destroy);
-    }
+    filter_data_destroy (to_destroy, TRUE);
   else if (!found)
     {
       g_warning ("g_dbus_connection_remove_filter: No filter found for filter_id %d", filter_id);
