@@ -1835,6 +1835,96 @@ g_file_info_get_modification_date_time (GFileInfo *info)
 }
 
 /**
+ * g_file_info_get_access_date_time:
+ * @info: a #GFileInfo.
+ *
+ * Gets the access time of the current @info and returns it as a
+ * #GDateTime.
+ *
+ * This requires the %G_FILE_ATTRIBUTE_TIME_ACCESS attribute. If
+ * %G_FILE_ATTRIBUTE_TIME_ACCESS_USEC is provided, the resulting #GDateTime
+ * will have microsecond precision.
+ *
+ * Returns: (transfer full) (nullable): access time, or %NULL if unknown
+ * Since: 2.70
+ */
+GDateTime *
+g_file_info_get_access_date_time (GFileInfo *info)
+{
+  static guint32 attr_atime = 0, attr_atime_usec;
+  GFileAttributeValue *value, *value_usec;
+  GDateTime *dt = NULL, *dt2 = NULL;
+
+  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
+
+  if (attr_atime == 0)
+    {
+      attr_atime = lookup_attribute (G_FILE_ATTRIBUTE_TIME_ACCESS);
+      attr_atime_usec = lookup_attribute (G_FILE_ATTRIBUTE_TIME_ACCESS_USEC);
+    }
+
+  value = g_file_info_find_value (info, attr_atime);
+  if (value == NULL)
+    return NULL;
+
+  dt = g_date_time_new_from_unix_utc (_g_file_attribute_value_get_uint64 (value));
+
+  value_usec = g_file_info_find_value (info, attr_atime_usec);
+  if (value_usec == NULL)
+    return g_steal_pointer (&dt);
+
+  dt2 = g_date_time_add (dt, _g_file_attribute_value_get_uint32 (value_usec));
+  g_date_time_unref (dt);
+
+  return g_steal_pointer (&dt2);
+}
+
+/**
+ * g_file_info_get_creation_date_time:
+ * @info: a #GFileInfo.
+ *
+ * Gets the creation time of the current @info and returns it as a
+ * #GDateTime.
+ *
+ * This requires the %G_FILE_ATTRIBUTE_TIME_CREATED attribute. If
+ * %G_FILE_ATTRIBUTE_TIME_CREATED_USEC is provided, the resulting #GDateTime
+ * will have microsecond precision.
+ *
+ * Returns: (transfer full) (nullable): creation time, or %NULL if unknown
+ * Since: 2.70
+ */
+GDateTime *
+g_file_info_get_creation_date_time (GFileInfo *info)
+{
+  static guint32 attr_ctime = 0, attr_ctime_usec;
+  GFileAttributeValue *value, *value_usec;
+  GDateTime *dt = NULL, *dt2 = NULL;
+
+  g_return_val_if_fail (G_IS_FILE_INFO (info), NULL);
+
+  if (attr_ctime == 0)
+    {
+      attr_ctime = lookup_attribute (G_FILE_ATTRIBUTE_TIME_CREATED);
+      attr_ctime_usec = lookup_attribute (G_FILE_ATTRIBUTE_TIME_CREATED_USEC);
+    }
+
+  value = g_file_info_find_value (info, attr_ctime);
+  if (value == NULL)
+    return NULL;
+
+  dt = g_date_time_new_from_unix_utc (_g_file_attribute_value_get_uint64 (value));
+
+  value_usec = g_file_info_find_value (info, attr_ctime_usec);
+  if (value_usec == NULL)
+    return g_steal_pointer (&dt);
+
+  dt2 = g_date_time_add (dt, _g_file_attribute_value_get_uint32 (value_usec));
+  g_date_time_unref (dt);
+
+  return g_steal_pointer (&dt2);
+}
+
+/**
  * g_file_info_get_symlink_target:
  * @info: a #GFileInfo.
  *
@@ -2235,6 +2325,76 @@ g_file_info_set_modification_date_time (GFileInfo *info,
   value = g_file_info_create_value (info, attr_mtime_usec);
   if (value)
     _g_file_attribute_value_set_uint32 (value, g_date_time_get_microsecond (mtime));
+}
+
+/**
+ * g_file_info_set_access_date_time:
+ * @info: a #GFileInfo.
+ * @atime: (not nullable): a #GDateTime.
+ *
+ * Sets the %G_FILE_ATTRIBUTE_TIME_ACCESS and
+ * %G_FILE_ATTRIBUTE_TIME_ACCESS_USEC attributes in the file info to the
+ * given date/time value.
+ *
+ * Since: 2.70
+ */
+void
+g_file_info_set_access_date_time (GFileInfo *info,
+                                  GDateTime *atime)
+{
+  static guint32 attr_atime = 0, attr_atime_usec;
+  GFileAttributeValue *value;
+
+  g_return_if_fail (G_IS_FILE_INFO (info));
+  g_return_if_fail (atime != NULL);
+
+  if (attr_atime == 0)
+    {
+      attr_atime = lookup_attribute (G_FILE_ATTRIBUTE_TIME_ACCESS);
+      attr_atime_usec = lookup_attribute (G_FILE_ATTRIBUTE_TIME_ACCESS_USEC);
+    }
+
+  value = g_file_info_create_value (info, attr_atime);
+  if (value)
+    _g_file_attribute_value_set_uint64 (value, g_date_time_to_unix (atime));
+  value = g_file_info_create_value (info, attr_atime_usec);
+  if (value)
+    _g_file_attribute_value_set_uint32 (value, g_date_time_get_microsecond (atime));
+}
+
+/**
+ * g_file_info_set_creation_date_time:
+ * @info: a #GFileInfo.
+ * @creation_time: (not nullable): a #GDateTime.
+ *
+ * Sets the %G_FILE_ATTRIBUTE_TIME_CREATED and
+ * %G_FILE_ATTRIBUTE_TIME_CREATED_USEC attributes in the file info to the
+ * given date/time value.
+ *
+ * Since: 2.70
+ */
+void
+g_file_info_set_creation_date_time (GFileInfo *info,
+                                    GDateTime *creation_time)
+{
+  static guint32 attr_ctime = 0, attr_ctime_usec;
+  GFileAttributeValue *value;
+
+  g_return_if_fail (G_IS_FILE_INFO (info));
+  g_return_if_fail (creation_time != NULL);
+
+  if (attr_ctime == 0)
+    {
+      attr_ctime = lookup_attribute (G_FILE_ATTRIBUTE_TIME_CREATED);
+      attr_ctime_usec = lookup_attribute (G_FILE_ATTRIBUTE_TIME_CREATED_USEC);
+    }
+
+  value = g_file_info_create_value (info, attr_ctime);
+  if (value)
+    _g_file_attribute_value_set_uint64 (value, g_date_time_to_unix (creation_time));
+  value = g_file_info_create_value (info, attr_ctime_usec);
+  if (value)
+    _g_file_attribute_value_set_uint32 (value, g_date_time_get_microsecond (creation_time));
 }
 
 /**
