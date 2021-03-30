@@ -143,14 +143,52 @@ g_win32_mount_init (GWin32Mount *win32_mount)
 {
 }
 
+/* wdrive doesn't need to end with a path separator.
+   wdrive must use backslashes as path separators, not slashes.
+   IShellFolder::ParseDisplayName() takes non-const string as input,
+   so wdrive can't be a const string.
+   Returns the name on success (free with g_free),
+   NULL otherwise.
+ */
+static gchar *
+get_mount_display_name (gunichar2 *wdrive)
+{
+  IShellFolder *desktop;
+  PIDLIST_RELATIVE volume;
+  STRRET volume_name;
+  gchar *result = NULL;
+
+  /* Get the desktop folder object reference */
+  if (!SUCCEEDED (SHGetDesktopFolder (&desktop)))
+    return result;
+
+  if (SUCCEEDED (IShellFolder_ParseDisplayName (desktop, NULL, NULL, wdrive, NULL, &volume, NULL)))
+    {
+      volume_name.uType = STRRET_WSTR;
+
+      if (SUCCEEDED (IShellFolder_GetDisplayNameOf (desktop, volume, SHGDN_FORADDRESSBAR, &volume_name)))
+        {
+          wchar_t *volume_name_wchar;
+
+          if (SUCCEEDED (StrRetToStrW (&volume_name, volume, &volume_name_wchar)))
+            {
+              result = g_utf16_to_utf8 (volume_name_wchar, -1, NULL, NULL, NULL);
+              CoTaskMemFree (volume_name_wchar);
+            }
+        }
+      CoTaskMemFree (volume);
+    }
+
+  IShellFolder_Release (desktop);
+
+  return result;
+}
+
 static gchar *
 _win32_get_displayname (const char *drive)
 {
   gunichar2 *wdrive = g_utf8_to_utf16 (drive, -1, NULL, NULL, NULL);
-  gchar *name = NULL;
-  SHFILEINFOW sfi;
-  if (SHGetFileInfoW(wdrive, 0, &sfi, sizeof(sfi), SHGFI_DISPLAYNAME))
-    name = g_utf16_to_utf8 (sfi.szDisplayName, -1, NULL, NULL, NULL);
+  gchar *name = get_mount_display_name (wdrive);
 
   g_free (wdrive);
   return name ? name : g_strdup (drive);
