@@ -14,18 +14,23 @@ cxx = meson.get_compiler('cpp')
 
 cc_can_run = not meson.is_cross_build() or meson.has_exe_wrapper()
 
-if cc.get_id() == 'msvc'
+if cc.get_argument_syntax() == 'msvc'
   # Ignore several spurious warnings for things glib does very commonly
+  # (also for clang-cl)
+  add_project_arguments('/FImsvc_recommended_pragmas.h',language : 'c')
+endif
+
+if cc.get_id() == 'msvc'
   # If a warning is completely useless and spammy, use '/wdXXXX' to suppress it
   # If a warning is harmless but hard to fix, use '/woXXXX' so it's shown once
   # NOTE: Only add warnings here if you are sure they're spurious
   add_project_arguments('/wd4035', '/wd4715', '/wd4116',
-    '/wd4046', '/wd4068', '/wo4090', '/FImsvc_recommended_pragmas.h',language : 'c')
+    '/wd4046', '/wd4068', '/wo4090',language : 'c')
+  # Set the input and exec encoding to utf-8, like is the default with GCC
+  add_project_arguments(cc.get_supported_arguments(['/utf-8']), language: 'c')
   # Disable SAFESEH with MSVC for plugins and libs that use external deps that
   # are built with MinGW
   noseh_link_args = ['/SAFESEH:NO']
-  # Set the input and exec encoding to utf-8, like is the default with GCC
-  add_project_arguments(cc.get_supported_arguments(['/utf-8']), language: 'c')
 else
   noseh_link_args = []
   # -mms-bitfields vs -fnative-struct ?

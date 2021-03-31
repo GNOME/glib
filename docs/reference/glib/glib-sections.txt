@@ -753,6 +753,7 @@ glib_typeof_2_68
 g_macro__has_attribute
 g_macro__has_builtin
 g_macro__has_feature
+g_macro__has_extension
 </SECTION>
 
 <SECTION>
