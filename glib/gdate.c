@@ -1206,6 +1206,22 @@ g_date_prepare_to_parse (const gchar      *str,
   g_date_fill_parse_tokens (str, pt);
 }
 
+static guint
+convert_twodigit_year (gint y)
+{
+  if (using_twodigit_years && y < 100)
+    {
+      guint two     =  twodigit_start_year % 100;
+      guint century = (twodigit_start_year / 100) * 100;
+
+      if (y < two)
+        century += 100;
+
+      y += century;
+    }
+  return y;
+}
+
 /**
  * g_date_set_parse:
  * @date: a #GDate to fill in
@@ -1302,16 +1318,8 @@ g_date_set_parse (GDate       *d,
 	        {
 		  y += locale_era_adjust;
 	        }
-	      else if (using_twodigit_years && y < 100)
-		{
-		  guint two     =  twodigit_start_year % 100;
-		  guint century = (twodigit_start_year / 100) * 100;
-		  
-		  if (y < two)
-		    century += 100;
-		  
-		  y += century;
-		}
+
+	      y = convert_twodigit_year (y);
 	    }
 	    break;
             default:
@@ -1355,18 +1363,8 @@ g_date_set_parse (GDate       *d,
           m   = (pt.n[0]/100) % 100;
           day = pt.n[0] % 100;
           y   = pt.n[0]/10000;
-	  
-          /* FIXME move this into a separate function */
-          if (using_twodigit_years && y < 100)
-            {
-              guint two     =  twodigit_start_year % 100;
-              guint century = (twodigit_start_year / 100) * 100;
-              
-              if (y < two)
-                century += 100;
-              
-              y += century;
-            }
+
+          y   = convert_twodigit_year (y);
         }
     }
   

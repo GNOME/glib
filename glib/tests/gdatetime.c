@@ -2318,6 +2318,116 @@ test_format_iso8601 (void)
   g_time_zone_unref (tz);
 }
 
+typedef struct
+{
+  gboolean utf8_messages;
+  gboolean utf8_time;
+} MixedUtf8TestData;
+
+static const MixedUtf8TestData utf8_time_non_utf8_messages = {
+  .utf8_messages = FALSE,
+  .utf8_time = TRUE
+};
+
+static const MixedUtf8TestData non_utf8_time_utf8_messages = {
+  .utf8_messages = TRUE,
+  .utf8_time = FALSE
+};
+
+static const MixedUtf8TestData utf8_time_utf8_messages = {
+  .utf8_messages = TRUE,
+  .utf8_time = TRUE
+};
+
+static const MixedUtf8TestData non_utf8_time_non_utf8_messages = {
+  .utf8_messages = FALSE,
+  .utf8_time = FALSE
+};
+
+static gboolean
+check_and_set_locale (int          category,
+                      const gchar *name)
+{
+  setlocale (category, name);
+  if (strstr (setlocale (category, NULL), name) == NULL)
+    {
+      g_print ("Unavaible '%s' locale\n", name);
+      g_test_skip ("required locale not available, skipping tests");
+      return FALSE;
+    }
+  return TRUE;
+}
+
+static void
+test_format_time_mixed_utf8 (gconstpointer data)
+{
+  const MixedUtf8TestData *test_data;
+  gchar *old_time_locale;
+  gchar *old_messages_locale;
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2055");
+
+  test_data = (MixedUtf8TestData *) data;
+  old_time_locale = g_strdup (setlocale (LC_TIME, NULL));
+  old_messages_locale = g_strdup (setlocale (LC_MESSAGES, NULL));
+  if (test_data->utf8_time)
+    {
+      if (!check_and_set_locale (LC_TIME, "C.UTF-8"))
+        {
+          g_free (old_time_locale);
+          setlocale (LC_MESSAGES, old_messages_locale);
+          g_free (old_messages_locale);
+          return;
+        }
+    }
+  else
+    {
+      if (!check_and_set_locale (LC_TIME, "de_DE.iso88591"))
+        {
+          g_free (old_time_locale);
+          setlocale (LC_MESSAGES, old_messages_locale);
+          g_free (old_messages_locale);
+          return;
+        }
+    }
+  if (test_data->utf8_messages)
+    {
+      if (!check_and_set_locale (LC_MESSAGES, "C.UTF-8"))
+        {
+          g_free (old_messages_locale);
+          setlocale (LC_TIME, old_time_locale);
+          g_free (old_time_locale);
+          return;
+        }
+    }
+  else
+    {
+      if (!check_and_set_locale (LC_MESSAGES, "de_DE.iso88591"))
+        {
+          g_free (old_messages_locale);
+          setlocale (LC_TIME, old_time_locale);
+          g_free (old_time_locale);
+          return;
+        }
+    }
+
+  if (!test_data->utf8_time)
+    {
+      /* March to have März in german */
+      TEST_PRINTF_DATE (2020, 3, 1, "%b", "Mär");
+      TEST_PRINTF_DATE (2020, 3, 1, "%B", "März");
+    }
+  else
+    {
+      TEST_PRINTF_DATE (2020, 3, 1, "%b", "mar");
+      TEST_PRINTF_DATE (2020, 3, 1, "%B", "march");
+    }
+
+  setlocale (LC_TIME, old_time_locale);
+  setlocale (LC_MESSAGES, old_messages_locale);
+  g_free (old_time_locale);
+  g_free (old_messages_locale);
+}
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-y2k"
 static void
@@ -2980,6 +3090,18 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
   g_test_add_func ("/GDateTime/format_unrepresentable", test_format_unrepresentable);
   g_test_add_func ("/GDateTime/format_iso8601", test_format_iso8601);
+  g_test_add_data_func ("/GDateTime/format_mixed/utf8_time_non_utf8_messages",
+                        &utf8_time_non_utf8_messages,
+                        test_format_time_mixed_utf8);
+  g_test_add_data_func ("/GDateTime/format_mixed/utf8_time_utf8_messages",
+                        &utf8_time_utf8_messages,
+                        test_format_time_mixed_utf8);
+  g_test_add_data_func ("/GDateTime/format_mixed/non_utf8_time_non_utf8_messages",
+                        &non_utf8_time_non_utf8_messages,
+                        test_format_time_mixed_utf8);
+  g_test_add_data_func ("/GDateTime/format_mixed/non_utf8_time_utf8_messages",
+                        &non_utf8_time_utf8_messages,
+                        test_format_time_mixed_utf8);
   g_test_add_func ("/GDateTime/strftime", test_strftime);
   g_test_add_func ("/GDateTime/strftime/error_handling", test_GDateTime_strftime_error_handling);
   g_test_add_func ("/GDateTime/modifiers", test_modifiers);

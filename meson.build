@@ -1190,6 +1190,15 @@ if cc.links('''#ifndef _GNU_SOURCE
   glib_conf.set('HAVE_LANGINFO_ABALTMON', 1)
 endif
 
+# Check for nl_langinfo and _NL_TIME_CODESET
+if cc.links('''#include <langinfo.h>
+               int main (int argc, char ** argv) {
+                 char *codeset = nl_langinfo (_NL_TIME_CODESET);
+                 return 0;
+               }''', name : 'nl_langinfo and _NL_TIME_CODESET')
+  glib_conf.set('HAVE_LANGINFO_TIME_CODESET', 1)
+endif
+
 # Check if C compiler supports the 'signed' keyword
 if not cc.compiles('''signed char x;''', name : 'signed')
   glib_conf.set('signed', '/* NOOP */')

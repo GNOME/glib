@@ -60,22 +60,22 @@
 #include <langinfo.h>
 #endif
 
-#include "gdatetime.h"
-
-#include "gslice.h"
 #include "gatomic.h"
 #include "gcharset.h"
+#include "gcharsetprivate.h"
 #include "gconvert.h"
+#include "gconvertprivate.h"
+#include "gdatetime.h"
 #include "gfileutils.h"
 #include "ghash.h"
+#include "glibintl.h"
 #include "gmain.h"
 #include "gmappedfile.h"
+#include "gslice.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gthread.h"
 #include "gtimezone.h"
-
-#include "glibintl.h"
 
 #ifndef G_OS_WIN32
 #include <sys/time.h>
@@ -2871,7 +2871,7 @@ initialize_alt_digits (void)
       if (g_strcmp0 (locale_digit, "") == 0)
         return NULL;
 
-      digit = g_locale_to_utf8 (locale_digit, -1, NULL, &digit_len, NULL);
+      digit = _g_ctype_locale_to_utf8 (locale_digit, -1, NULL, &digit_len, NULL);
       if (digit == NULL)
         return NULL;
 
@@ -2995,7 +2995,7 @@ g_date_time_format_locale (GDateTime   *datetime,
   if (locale_is_utf8)
     return g_date_time_format_utf8 (datetime, locale_format, outstr, locale_is_utf8);
 
-  utf8_format = g_locale_to_utf8 (locale_format, -1, NULL, NULL, NULL);
+  utf8_format = _g_time_locale_to_utf8 (locale_format, -1, NULL, NULL, NULL);
   if (utf8_format == NULL)
     return FALSE;
 
@@ -3019,7 +3019,7 @@ string_append (GString     *string,
     }
   else
     {
-      utf8 = g_locale_to_utf8 (s, -1, NULL, &utf8_len, NULL);
+      utf8 = _g_time_locale_to_utf8 (s, -1, NULL, &utf8_len, NULL);
       if (utf8 == NULL)
         return FALSE;
       g_string_append_len (string, utf8, utf8_len);
@@ -3445,10 +3445,11 @@ g_date_time_format (GDateTime   *datetime,
 {
   GString  *outstr;
   const gchar *charset;
-  /* Avoid conversions from locale charset to UTF-8 if charset is compatible
+  /* Avoid conversions from locale (for LC_TIME and not for LC_MESSAGES unless
+   * specified otherwise) charset to UTF-8 if charset is compatible
    * with UTF-8 already. Check for UTF-8 and synonymous canonical names of
    * ASCII. */
-  gboolean locale_is_utf8_compatible = g_get_charset (&charset) ||
+  gboolean time_is_utf8_compatible = _g_get_time_charset (&charset) ||
     g_strcmp0 ("ASCII", charset) == 0 ||
     g_strcmp0 ("ANSI_X3.4-1968", charset) == 0;
 
@@ -3459,7 +3460,7 @@ g_date_time_format (GDateTime   *datetime,
   outstr = g_string_sized_new (strlen (format) * 2);
 
   if (!g_date_time_format_utf8 (datetime, format, outstr,
-                                locale_is_utf8_compatible))
+                                time_is_utf8_compatible))
     {
       g_string_free (outstr, TRUE);
       return NULL;
