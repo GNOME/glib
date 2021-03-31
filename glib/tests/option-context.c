@@ -28,6 +28,24 @@
 #include <locale.h>
 #include <math.h>
 
+#ifdef _MSC_VER
+# ifndef NAN
+/*
+ * From the Visual Studio 2013+ math.h, we have the following:
+ * #ifndef _HUGE_ENUF
+ *    #define _HUGE_ENUF  1e+300  // _HUGE_ENUF*_HUGE_ENUF must overflow
+ * #endif
+ *
+ * #define INFINITY   ((float)(_HUGE_ENUF * _HUGE_ENUF))
+ * ...
+ * #define NAN        ((float)(INFINITY * 0.0F))
+ * ...
+ * so, HUVE_VAL * HUGE_VAL would be a good approximation of INFINITY without
+ * defining anything extra
+ */
+#  define NAN HUGE_VAL * HUGE_VAL * 0.0f
+# endif
+#endif
 
 static GOptionEntry main_entries[] = {
   { "main-switch", 0, 0,
