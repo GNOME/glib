@@ -1007,6 +1007,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
           g_propagate_error (error, local_error);
           goto out;
         }
+      g_clear_error (&local_error);
     }
   else
     {
