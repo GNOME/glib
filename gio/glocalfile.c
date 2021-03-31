@@ -609,6 +609,8 @@ get_fs_type (long f_type)
       return "efivarfs";
     case 0x00414A53:
       return "efs";
+    case 0x2011BAB0UL:
+      return "exfat";
     case 0x137D:
       return "ext";
     case 0xEF51:
