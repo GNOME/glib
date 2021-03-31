@@ -2524,7 +2524,12 @@ g_application_run (GApplication  *application,
 
   context = g_main_context_default ();
   acquired_context = g_main_context_acquire (context);
-  g_return_val_if_fail (acquired_context, 0);
+  if (!acquired_context)
+    {
+      g_critical ("g_application_run() cannot acquire the default main context because it is already acquired by another thread!");
+      g_strfreev (arguments);
+      return 1;
+    }
 
   if (!G_APPLICATION_GET_CLASS (application)
         ->local_command_line (application, &arguments, &status))
