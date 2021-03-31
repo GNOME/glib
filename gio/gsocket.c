@@ -4795,7 +4795,9 @@ g_socket_send_message (GSocket                *socket,
 
   if (num_vectors != -1)
     {
-      for (gint i = 0; i < num_vectors; i++)
+      gint i;
+
+      for (i = 0; i < num_vectors; i++)
         {
           /* No wrap-around for vectors_size */
           if (vectors_size > vectors_size + vectors[i].size)
@@ -4811,7 +4813,9 @@ g_socket_send_message (GSocket                *socket,
     }
   else
     {
-      for (gsize i = 0; vectors[i].buffer != NULL; i++)
+      gsize i;
+
+      for (i = 0; vectors[i].buffer != NULL; i++)
         {
           /* No wrap-around for vectors_size */
           if (vectors_size > vectors_size + vectors[i].size)
