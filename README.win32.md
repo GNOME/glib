@@ -164,9 +164,27 @@ normally.
 ### Support for pre-2012 Visual Studio
 
 This release of GLib requires at least the Windows 8.0 SDK in order to be built
-successfully using Visual Studio, which means that it is no longer supported to
-build GLib with Visual Studio 2008 nor 2010.  People that still need to use
-Visual Studio 2008 or 2010 should continue to use glib-2.66.x.
+successfully using Visual Studio, which means that building with Visual Studio
+2008 or 2010 is possible only with a special setup and must be done in the
+command line with Ninja.  Please see
+https://devblogs.microsoft.com/cppblog/using-the-windows-software-development-kit-sdk-for-windows-8-consumer-preview-with-visual-studio-2010/
+for references; basically, assuming that your Windows 8.0 SDK is installed in
+`C:\Program Files (x86)\Windows Kits\8.0` (`$(WIN8SDKDIR)` in short), you need
+to ensure the following before invoking Meson to configure the build:
+
+- Your `%INCLUDE%` must not include the Windows 7.0/7.1 SDK include directories,
+  and `$(WIN8SDKDIR)\include\um`, `$(WIN8SDKDIR)\include\um\share` and
+  `$(WIN8SDKDIR)\include\winrt` (in this order) must be before your stock
+  Visual Studio 2008/2010 header directories.  If you have the DirectX SDK installed,
+  you should remove its include directory from your `%INCLUDE%` as well.
+- You must replace the Windows 7.0/7.1 SDK library directory in `%LIB%` with the
+  Windows 8.0 SDK library directory, i.e. `$(WIN8SDKDIR)\lib\win8\um\[x86|x64]`.
+  If you have the DirectX SDK installed, you should remove its library directory
+  from your `%INCLUDE%` as well.
+- You must replace the Windows 7.0/7.1 SDK tools directory from your `%PATH%` with
+  the Windows 8.0 SDK tools directory, i.e. `$(WIN8SDKDIR)\bin\[x86|x64]`.
+  If you have the DirectX SDK installed, you should remove its utility directory
+  from your `%PATH%` as well.
 
 The Windows 8.0 SDK headers may contain an `roapi.h` that cannot be used under plain
 C, so to remedy that, change the following lines (around lines 55-57):
@@ -193,3 +211,23 @@ This follows what is done in the Windows 8.1 SDK, which contains an `roapi.h`
 that is usable under plain C.  Please note that you might need to copy that file
 into a location that is in your `%INCLUDE%` which precedes the include path for the
 Windows 8.0 SDK headers, if you do not have administrative privileges.
+
+### Visual Studio 2008 hacks
+
+- You need to run the following lines from your build directory, to embed the
+  manifests that are generated during the build, assuming the built binaries
+  are installed to `$(PREFIX)`, after a successful build/installation:
+
+```cmd
+> for /r %f in (*.dll.manifest) do if exist $(PREFIX)\bin\%~nf mt /manifest %f (PREFIX)\bin\%~nf;2
+> for /r %f in (*.exe.manifest) do if exist $(PREFIX)\bin\%~nf mt /manifest %f (PREFIX)\bin\%~nf;1
+```
+
+
+- If building for amd64/x86_64/x64, sometimes the compilation of sources may seem to hang, which
+  is caused by an optimization issue in the 2008 x64 compiler.  You need to use Task Manager to
+  remove all running instances of `cl.exe`, which will cause the build process to terminate.  Update
+  the build flags of the sources that hang on compilation by changing its `"/O2"` flag to `"/O1"`
+  in `build.ninja`, and retry the build, where things should continue to build normally.  At the
+  time of writing, this is needed for compiling `glib/gtestutils.c`, `gio/gsettings.c`,
+  `gio/gsettingsschema.c`, `glib/tests/fileutils.c` and `gio/tests/gsubprocess-testprog.c`
