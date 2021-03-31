@@ -163,7 +163,33 @@ normally.
 
 ### Support for pre-2012 Visual Studio
 
-This release of GLib requires at least the Windows 8 SDK in order to be built
+This release of GLib requires at least the Windows 8.0 SDK in order to be built
 successfully using Visual Studio, which means that it is no longer supported to
 build GLib with Visual Studio 2008 nor 2010.  People that still need to use
 Visual Studio 2008 or 2010 should continue to use glib-2.66.x.
+
+The Windows 8.0 SDK headers may contain an `roapi.h` that cannot be used under plain
+C, so to remedy that, change the following lines (around lines 55-57):
+
+```
+// RegisterActivationFactory/RevokeActivationFactory registration cookie
+typedef struct {} *RO_REGISTRATION_COOKIE;
+// RegisterActivationFactory/DllGetActivationFactory callback
+```
+
+to
+
+```
+// RegisterActivationFactory/RevokeActivationFactory registration cookie
+#ifdef __cplusplus
+typedef struct {} *RO_REGISTRATION_COOKIE;
+#else
+typedef struct _RO_REGISTRATION_COOKIE *RO_REGISTRATION_COOKIE; /* make this header includable in C files */
+#endif
+// RegisterActivationFactory/DllGetActivationFactory callback
+```
+
+This follows what is done in the Windows 8.1 SDK, which contains an `roapi.h`
+that is usable under plain C.  Please note that you might need to copy that file
+into a location that is in your `%INCLUDE%` which precedes the include path for the
+Windows 8.0 SDK headers, if you do not have administrative privileges.
