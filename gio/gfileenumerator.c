@@ -787,7 +787,10 @@ next_files_thread (GTask        *task,
     }
 
   if (error)
-    g_task_return_error (task, error);
+    {
+      g_list_free_full (files, g_object_unref);
+      g_task_return_error (task, error);
+    }
   else
     g_task_return_pointer (task, files, (GDestroyNotify)next_async_op_free);
 }
