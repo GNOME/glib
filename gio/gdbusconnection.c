@@ -1610,7 +1610,6 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   guchar *blob;
   gsize blob_size;
   guint32 serial_to_use;
-  gboolean ret;
 
   CONNECTION_ENSURE_LOCK (connection);
 
@@ -1618,9 +1617,6 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), FALSE);
 
   /* TODO: check all necessary headers are present */
-
-  ret = FALSE;
-  blob = NULL;
 
   if (out_serial != NULL)
     *out_serial = 0;
@@ -1633,14 +1629,14 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   if (!check_unclosed (connection,
                        (flags & SEND_MESSAGE_FLAGS_INITIALIZING) ? MAY_BE_UNINITIALIZED : 0,
                        error))
-    goto out;
+    return FALSE;
 
   blob = g_dbus_message_to_blob (message,
                                  &blob_size,
                                  connection->capabilities,
                                  error);
   if (blob == NULL)
-    goto out;
+    return FALSE;
 
   if (flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL)
     serial_to_use = g_dbus_message_get_serial (message);
@@ -1686,18 +1682,13 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
     g_dbus_message_set_serial (message, serial_to_use);
 
   g_dbus_message_lock (message);
+
   _g_dbus_worker_send_message (connection->worker,
                                message,
-                               (gchar*) blob,
+                               (gchar*) blob, /* transfer ownership */
                                blob_size);
-  blob = NULL; /* since _g_dbus_worker_send_message() steals the blob */
 
-  ret = TRUE;
-
- out:
-  g_free (blob);
-
-  return ret;
+  return TRUE;
 }
 
 /**
@@ -2202,6 +2193,24 @@ typedef struct
   GMainContext               *context;
 } FilterData;
 
+static void
+filter_data_destroy (FilterData *filter, gboolean notify_sync)
+{
+  if (notify_sync)
+    {
+      if (filter->user_data_free_func != NULL)
+        filter->user_data_free_func (filter->user_data);
+    }
+  else
+    {
+      call_destroy_notify (filter->context,
+                           filter->user_data_free_func,
+                           filter->user_data);
+    }
+  g_main_context_unref (filter->context);
+  g_free (filter);
+}
+
 /* requires CONNECTION_LOCK */
 static FilterData **
 copy_filter_list (GPtrArray *filters)
@@ -2230,13 +2239,7 @@ free_filter_list (FilterData **filters)
     {
       filters[n]->ref_count--;
       if (filters[n]->ref_count == 0)
-        {
-          call_destroy_notify (filters[n]->context,
-                               filters[n]->user_data_free_func,
-                               filters[n]->user_data);
-          g_main_context_unref (filters[n]->context);
-          g_free (filters[n]);
-        }
+        filter_data_destroy (filters[n], FALSE);
     }
   g_free (filters);
 }
@@ -3179,16 +3182,9 @@ static void
 purge_all_filters (GDBusConnection *connection)
 {
   guint n;
-  for (n = 0; n < connection->filters->len; n++)
-    {
-      FilterData *data = connection->filters->pdata[n];
 
-      call_destroy_notify (data->context,
-                           data->user_data_free_func,
-                           data->user_data);
-      g_main_context_unref (data->context);
-      g_free (data);
-    }
+  for (n = 0; n < connection->filters->len; n++)
+    filter_data_destroy (connection->filters->pdata[n], FALSE);
 }
 
 /**
@@ -3238,12 +3234,7 @@ g_dbus_connection_remove_filter (GDBusConnection *connection,
 
   /* do free without holding lock */
   if (to_destroy != NULL)
-    {
-      if (to_destroy->user_data_free_func != NULL)
-        to_destroy->user_data_free_func (to_destroy->user_data);
-      g_main_context_unref (to_destroy->context);
-      g_free (to_destroy);
-    }
+    filter_data_destroy (to_destroy, TRUE);
   else if (!found)
     {
       g_warning ("g_dbus_connection_remove_filter: No filter found for filter_id %d", filter_id);
