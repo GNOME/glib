@@ -30,6 +30,7 @@ main (int argc, char **argv)
   LLVMFuzzerTestOneInput (buf, len);
 
   free (buf);
+  fclose (f);
   printf ("Done!\n");
   return 0;
 }

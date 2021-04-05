@@ -565,12 +565,12 @@ void
 g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer *manager,
                                               GDBusObjectSkeleton      *object)
 {
-  gchar *orig_object_path;
+  const gchar *orig_object_path;
   gchar *object_path;
   guint count;
   gboolean modified;
 
-  orig_object_path = g_strdup (g_dbus_object_get_object_path (G_DBUS_OBJECT (object)));
+  orig_object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (object));
 
   g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager));
   g_return_if_fail (G_IS_DBUS_OBJECT (object));
@@ -602,7 +602,6 @@ g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer *manager,
     g_dbus_object_skeleton_set_object_path (G_DBUS_OBJECT_SKELETON (object), object_path);
 
   g_free (object_path);
-  g_free (orig_object_path);
 
 }
 
