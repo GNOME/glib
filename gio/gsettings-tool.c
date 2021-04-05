@@ -191,13 +191,16 @@ static void
 gsettings_list_children (void)
 {
   gchar **children;
-  gint max = 0;
+  gsize max = 0;
   gint i;
 
   children = g_settings_list_children (global_settings);
   for (i = 0; children[i]; i++)
-    if (strlen (children[i]) > max)
-      max = strlen (children[i]);
+    {
+      gsize len = strlen (children[i]);
+      if (len > max)
+        max = len;
+    }
 
   for (i = 0; children[i]; i++)
     {
@@ -212,9 +215,11 @@ gsettings_list_children (void)
                     NULL);
 
       if (g_settings_schema_get_path (schema) != NULL)
-        g_print ("%-*s   %s\n", max, children[i], g_settings_schema_get_id (schema));
+        g_print ("%-*s   %s\n", (int) MIN (max, G_MAXINT), children[i],
+                 g_settings_schema_get_id (schema));
       else
-        g_print ("%-*s   %s:%s\n", max, children[i], g_settings_schema_get_id (schema), path);
+        g_print ("%-*s   %s:%s\n", (int) MIN (max, G_MAXINT), children[i],
+                 g_settings_schema_get_id (schema), path);
 
       g_object_unref (child);
       g_settings_schema_unref (schema);
