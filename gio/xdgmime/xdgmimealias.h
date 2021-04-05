@@ -12,7 +12,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,7 +20,9 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
  */
 
 #ifndef __XDG_MIME_ALIAS_H__
@@ -44,7 +46,6 @@ XdgAliasList *_xdg_mime_alias_list_new       (void);
 void          _xdg_mime_alias_list_free      (XdgAliasList *list);
 const char   *_xdg_mime_alias_list_lookup    (XdgAliasList *list,
 					      const char  *alias);
-#ifdef NOT_USED_IN_GIO
 void          _xdg_mime_alias_list_dump      (XdgAliasList *list);
-#endif
+
 #endif /* __XDG_MIME_ALIAS_H__ */

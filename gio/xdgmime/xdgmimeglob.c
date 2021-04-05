@@ -12,7 +12,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,10 +20,14 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "xdgmimeglob.h"
 #include "xdgmimeint.h"
@@ -32,10 +36,6 @@
 #include <assert.h>
 #include <string.h>
 #include <fnmatch.h>
-
-#ifndef MAX
-#define MAX(a,b) ((a) > (b) ? (a) : (b))
-#endif
 
 #ifndef	FALSE
 #define	FALSE	(0)
@@ -86,7 +86,7 @@ _xdg_glob_list_new (void)
   return new_element;
 }
 
-/* Frees glob_list and all of it's children */
+/* Frees glob_list and all of its children */
 static void
 _xdg_glob_list_free (XdgGlobList *glob_list)
 {
@@ -158,8 +158,6 @@ _xdg_glob_hash_node_new (void)
   return glob_hash_node;
 }
 
-#ifdef NOT_USED_IN_GIO
-
 static void
 _xdg_glob_hash_node_dump (XdgGlobHashNode *glob_hash_node,
 			  int depth)
@@ -178,8 +176,6 @@ _xdg_glob_hash_node_dump (XdgGlobHashNode *glob_hash_node,
   if (glob_hash_node->next)
     _xdg_glob_hash_node_dump (glob_hash_node->next, depth);
 }
-
-#endif
 
 static XdgGlobHashNode *
 _xdg_glob_hash_insert_ucs4 (XdgGlobHashNode *glob_hash_node,
@@ -404,34 +400,6 @@ ascii_tolower (const char *str)
   return lower;
 }
 
-static int
-filter_out_dupes (MimeWeight mimes[], int n_mimes)
-{
-  int last;
-  int i, j;
-
-  last = n_mimes;
-
-  for (i = 0; i < last; i++)
-    {
-      j = i + 1;
-      while (j < last)
-        {
-          if (strcmp (mimes[i].mime, mimes[j].mime) == 0)
-            {
-              mimes[i].weight = MAX (mimes[i].weight, mimes[j].weight);
-              last--;
-              mimes[j].mime = mimes[last].mime;
-              mimes[j].weight = mimes[last].weight;
-            }
-          else
-            j++;
-        }
-    }
-
-  return last;
-}
-
 int
 _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
 				 const char  *file_name,
@@ -478,11 +446,11 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
   len = strlen (file_name);
   n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, lower_case, len, FALSE,
 					    mimes, n_mimes);
-  if (n < 2)
-    n += _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, file_name, len, TRUE,
-					       mimes + n, n_mimes - n);
+  if (n == 0)
+    n = _xdg_glob_hash_node_lookup_file_name (glob_hash->simple_node, file_name, len, TRUE,
+					      mimes, n_mimes);
 
-  if (n < 2)
+  if (n == 0)
     {
       for (list = glob_hash->full_list; list && n < n_mime_types; list = list->next)
         {
@@ -495,8 +463,6 @@ _xdg_glob_hash_lookup_file_name (XdgGlobHash *glob_hash,
         }
     }
   free (lower_case);
-
-  n = filter_out_dupes (mimes, n);
 
   qsort (mimes, n, sizeof (MimeWeight), compare_mime_weight);
 
@@ -603,8 +569,6 @@ _xdg_glob_hash_append_glob (XdgGlobHash *glob_hash,
     }
 }
 
-#ifdef NOT_USED_IN_GIO
-
 void
 _xdg_glob_hash_dump (XdgGlobHash *glob_hash)
 {
@@ -641,7 +605,6 @@ _xdg_glob_hash_dump (XdgGlobHash *glob_hash)
     }
 }
 
-#endif
 
 void
 _xdg_mime_glob_read_from_file (XdgGlobHash *glob_hash,
