@@ -1068,20 +1068,29 @@ static void *WinVEH_handle = NULL;
  * or for control flow.
  *
  * This function deliberately avoids calling any GLib code.
+ * This is done on purpose. This function can be called when the program
+ * is in a bad state (crashing). It can also be called very early, as soon
+ * as the handler is installed. Therefore, it's imperative that
+ * it does as little as possible. Preferably, all the work that can be
+ * done in advance (when the program is not crashing yet) should be done
+ * in advance. And this function certainly does not need to use Unicode.
  */
 static LONG __stdcall
 g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 {
   EXCEPTION_RECORD    *er;
-  char                 debugger[MAX_PATH + 1];
-  WCHAR               *debugger_utf16;
-  const char          *debugger_env = NULL;
-  const char          *catch_list;
+  const gsize          debugger_buffer_size = MAX_PATH + 1;
+  char                 debugger[debugger_buffer_size];
+  char                 debugger_env[debugger_buffer_size];
+  const gsize          catch_buffer_size = 1024;
+  char                 catch_buffer[catch_buffer_size];
+  char                *catch_list;
   gboolean             catch = FALSE;
-  STARTUPINFOW         si;
+  STARTUPINFOA         si;
   PROCESS_INFORMATION  pi;
   HANDLE               event;
   SECURITY_ATTRIBUTES  sa;
+  DWORD                flags;
 
   if (ExceptionInfo == NULL ||
       ExceptionInfo->ExceptionRecord == NULL ||
@@ -1097,7 +1106,11 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
     case EXCEPTION_ILLEGAL_INSTRUCTION:
       break;
     default:
-      catch_list = g_getenv ("G_VEH_CATCH");
+      catch_buffer[0] = 0;
+      if (!GetEnvironmentVariableA ("G_VEH_CATCH", catch_buffer, catch_buffer_size))
+        break;
+
+      catch_list = catch_buffer;
 
       while (!catch &&
              catch_list != NULL &&
@@ -1156,9 +1169,8 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 
   fflush (stderr);
 
-  debugger_env = g_getenv ("G_DEBUGGER");
-
-  if (debugger_env == NULL)
+  debugger_env[0] = 0;
+  if (!GetEnvironmentVariableA ("G_DEBUGGER", debugger_env, debugger_buffer_size))
     return EXCEPTION_CONTINUE_SEARCH;
 
   /* Create an inheritable event */
@@ -1180,19 +1192,13 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
     }
   debugger[MAX_PATH] = '\0';
 
-  debugger_utf16 = g_utf8_to_utf16 (debugger, -1, NULL, NULL, NULL);
+  if (GetEnvironmentVariableA ("G_DEBUGGER_OLD_CONSOLE", (char *) &flags, 1))
+    flags = 0;
+  else
+    flags = CREATE_NEW_CONSOLE;
 
   /* Run the debugger */
-  if (0 != CreateProcessW (NULL,
-                           debugger_utf16,
-                           NULL,
-                           NULL,
-                           TRUE,
-                           g_getenv ("G_DEBUGGER_OLD_CONSOLE") != NULL ? 0 : CREATE_NEW_CONSOLE,
-                           NULL,
-                           NULL,
-                           &si,
-                           &pi))
+  if (0 != CreateProcessA (NULL, debugger, NULL, NULL, TRUE, flags, NULL, NULL, &si, &pi))
     {
       CloseHandle (pi.hProcess);
       CloseHandle (pi.hThread);
@@ -1204,8 +1210,6 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
        */
       WaitForSingleObject (event, 60000);
     }
-
-  g_free (debugger_utf16);
 
   CloseHandle (event);
 
@@ -1222,6 +1226,8 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 void
 g_crash_handler_win32_init (void)
 {
+  char tmp;
+
   if (WinVEH_handle != NULL)
     return;
 
@@ -1230,7 +1236,7 @@ g_crash_handler_win32_init (void)
    * break advanced exception handling such as in CLRs like C# or other managed
    * code. See: https://blogs.msdn.microsoft.com/jmstall/2006/05/24/beware-of-the-vectored-exception-handler-and-managed-code/
    */
-  if (g_getenv ("G_DEBUGGER") == NULL && g_getenv("G_VEH_CATCH") == NULL)
+  if (!GetEnvironmentVariableA ("G_DEBUGGER", (char *) &tmp, 1))
     return;
 
   WinVEH_handle = AddVectoredExceptionHandler (0, &g_win32_veh_handler);
