@@ -1035,7 +1035,17 @@ g_console_win32_init (void)
  * it will be non-NULL. Only used to later de-install the handler
  * on library de-initialization.
  */
-static void *WinVEH_handle = NULL;
+static void        *WinVEH_handle = NULL;
+
+#define             DEBUGGER_BUFFER_SIZE (MAX_PATH + 1)
+/* This is the debugger that we'll run on crash */
+static char         debugger[DEBUGGER_BUFFER_SIZE];
+
+static gsize        number_of_exceptions_to_catch = 0;
+static DWORD       *exceptions_to_catch = NULL;
+
+static HANDLE       debugger_wakeup_event = 0;
+static DWORD        debugger_spawn_flags = 0;
 
 #include "gwin32-private.c"
 
@@ -1079,18 +1089,9 @@ static LONG __stdcall
 g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 {
   EXCEPTION_RECORD    *er;
-  const gsize          debugger_buffer_size = MAX_PATH + 1;
-  char                 debugger[debugger_buffer_size];
-  char                 debugger_env[debugger_buffer_size];
-  const gsize          catch_buffer_size = 1024;
-  char                 catch_buffer[catch_buffer_size];
-  char                *catch_list;
-  gboolean             catch = FALSE;
+  gsize                i;
   STARTUPINFOA         si;
   PROCESS_INFORMATION  pi;
-  HANDLE               event;
-  SECURITY_ATTRIBUTES  sa;
-  DWORD                flags;
 
   if (ExceptionInfo == NULL ||
       ExceptionInfo->ExceptionRecord == NULL ||
@@ -1106,33 +1107,14 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
     case EXCEPTION_ILLEGAL_INSTRUCTION:
       break;
     default:
-      catch_buffer[0] = 0;
-      if (!GetEnvironmentVariableA ("G_VEH_CATCH", catch_buffer, catch_buffer_size))
-        break;
+      for (i = 0; i < number_of_exceptions_to_catch; i++)
+        if (exceptions_to_catch[i] == er->ExceptionCode)
+          break;
 
-      catch_list = catch_buffer;
+      if (i == number_of_exceptions_to_catch)
+        return EXCEPTION_CONTINUE_SEARCH;
 
-      while (!catch &&
-             catch_list != NULL &&
-             catch_list[0] != 0)
-        {
-          unsigned long  catch_code;
-          char          *end;
-          errno = 0;
-          catch_code = strtoul (catch_list, &end, 16);
-          if (errno != NO_ERROR)
-            break;
-          catch_list = end;
-          if (catch_list != NULL && catch_list[0] == ',')
-            catch_list++;
-          if (catch_code == er->ExceptionCode)
-            catch = TRUE;
-        }
-
-      if (catch)
-        break;
-
-      return EXCEPTION_CONTINUE_SEARCH;
+      break;
     }
 
   fprintf_s (stderr,
@@ -1169,36 +1151,15 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 
   fflush (stderr);
 
-  debugger_env[0] = 0;
-  if (!GetEnvironmentVariableA ("G_DEBUGGER", debugger_env, debugger_buffer_size))
+  if (debugger[0] == 0)
     return EXCEPTION_CONTINUE_SEARCH;
 
-  /* Create an inheritable event */
   memset (&si, 0, sizeof (si));
   memset (&pi, 0, sizeof (pi));
-  memset (&sa, 0, sizeof (sa));
   si.cb = sizeof (si);
-  sa.nLength = sizeof (sa);
-  sa.bInheritHandle = TRUE;
-  event = CreateEvent (&sa, FALSE, FALSE, NULL);
-
-  /* Put process ID and event handle into debugger commandline */
-  if (!_g_win32_subst_pid_and_event (debugger, G_N_ELEMENTS (debugger),
-                                     debugger_env, GetCurrentProcessId (),
-                                     (guintptr) event))
-    {
-      CloseHandle (event);
-      return EXCEPTION_CONTINUE_SEARCH;
-    }
-  debugger[MAX_PATH] = '\0';
-
-  if (GetEnvironmentVariableA ("G_DEBUGGER_OLD_CONSOLE", (char *) &flags, 1))
-    flags = 0;
-  else
-    flags = CREATE_NEW_CONSOLE;
 
   /* Run the debugger */
-  if (0 != CreateProcessA (NULL, debugger, NULL, NULL, TRUE, flags, NULL, NULL, &si, &pi))
+  if (0 != CreateProcessA (NULL, debugger, NULL, NULL, TRUE, debugger_spawn_flags, NULL, NULL, &si, &pi))
     {
       CloseHandle (pi.hProcess);
       CloseHandle (pi.hThread);
@@ -1208,10 +1169,8 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
        * up forever in case the debugger does not support
        * event signalling.
        */
-      WaitForSingleObject (event, 60000);
+      WaitForSingleObject (debugger_wakeup_event, 60000);
     }
-
-  CloseHandle (event);
 
   /* Now the debugger is present, and we can try
    * resuming execution, re-triggering the exception,
@@ -1223,10 +1182,41 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
   return EXCEPTION_CONTINUE_SEARCH;
 }
 
+static gsize
+parse_catch_list (const char *catch_buffer,
+                  DWORD      *exceptions,
+                  gsize       num_exceptions)
+{
+  const char *catch_list = catch_buffer;
+  gsize       result = 0;
+  gsize       i = 0;
+
+  while (catch_list != NULL &&
+         catch_list[0] != 0)
+    {
+      unsigned long  catch_code;
+      char          *end;
+      errno = 0;
+      catch_code = strtoul (catch_list, &end, 16);
+      if (errno != NO_ERROR)
+        break;
+      catch_list = end;
+      if (catch_list != NULL && catch_list[0] == ',')
+        catch_list++;
+      if (exceptions && i < num_exceptions)
+        exceptions[i++] = catch_code;
+    }
+
+  return result;
+}
+
 void
 g_crash_handler_win32_init (void)
 {
-  char tmp;
+  char         debugger_env[DEBUGGER_BUFFER_SIZE];
+#define CATCH_BUFFER_SIZE 1024
+  char         catch_buffer[CATCH_BUFFER_SIZE];
+  SECURITY_ATTRIBUTES  sa;
 
   if (WinVEH_handle != NULL)
     return;
@@ -1234,10 +1224,45 @@ g_crash_handler_win32_init (void)
   /* Do not register an exception handler if we're not supposed to catch any
    * exceptions. Exception handlers are considered dangerous to use, and can
    * break advanced exception handling such as in CLRs like C# or other managed
-   * code. See: https://blogs.msdn.microsoft.com/jmstall/2006/05/24/beware-of-the-vectored-exception-handler-and-managed-code/
+   * code. See: http://www.windows-tech.info/13/785f590867bd6316.php
    */
-  if (!GetEnvironmentVariableA ("G_DEBUGGER", (char *) &tmp, 1))
+  debugger_env[0] = 0;
+  if (!GetEnvironmentVariableA ("G_DEBUGGER", debugger_env, DEBUGGER_BUFFER_SIZE))
     return;
+
+  /* Create an inheritable event */
+  memset (&sa, 0, sizeof (sa));
+  sa.nLength = sizeof (sa);
+  sa.bInheritHandle = TRUE;
+  debugger_wakeup_event = CreateEvent (&sa, FALSE, FALSE, NULL);
+
+  /* Put process ID and event handle into debugger commandline */
+  if (!_g_win32_subst_pid_and_event (debugger, G_N_ELEMENTS (debugger),
+                                     debugger_env, GetCurrentProcessId (),
+                                     (guintptr) debugger_wakeup_event))
+    {
+      CloseHandle (debugger_wakeup_event);
+      debugger_wakeup_event = 0;
+      debugger[0] = 0;
+      return;
+    }
+  debugger[MAX_PATH] = '\0';
+
+  catch_buffer[0] = 0;
+  if (GetEnvironmentVariableA ("G_VEH_CATCH", catch_buffer, CATCH_BUFFER_SIZE))
+    {
+      number_of_exceptions_to_catch = parse_catch_list (catch_buffer, NULL, 0);
+      if (number_of_exceptions_to_catch > 0)
+        {
+          exceptions_to_catch = g_new0 (DWORD, number_of_exceptions_to_catch);
+          parse_catch_list (catch_buffer, exceptions_to_catch, number_of_exceptions_to_catch);
+        }
+    }
+
+  if (GetEnvironmentVariableA ("G_DEBUGGER_OLD_CONSOLE", (char *) &debugger_spawn_flags, 1))
+    debugger_spawn_flags = 0;
+  else
+    debugger_spawn_flags = CREATE_NEW_CONSOLE;
 
   WinVEH_handle = AddVectoredExceptionHandler (0, &g_win32_veh_handler);
 }
