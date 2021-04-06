@@ -1049,6 +1049,24 @@ static DWORD        debugger_spawn_flags = 0;
 
 #include "gwin32-private.c"
 
+static char *
+copy_chars (char       *buffer,
+            gsize      *buffer_size,
+            const char *to_copy)
+{
+  gsize copy_count = strlen (to_copy);
+  if (copy_count <= *buffer_size)
+    memset (buffer, 0x20, copy_count);
+  else
+    memset (buffer, 0x20, *buffer_size);
+  strncpy_s (buffer, *buffer_size, to_copy, copy_count);
+  if (*buffer_size >= copy_count)
+    *buffer_size -= copy_count;
+  else
+    *buffer_size = 0;
+  return &buffer[copy_count];
+}
+
 /* Handles exceptions (useful for debugging).
  * Issues a DebugBreak() call if the process is being debugged (not really
  * useful - if the process is being debugged, this handler won't be invoked
@@ -1092,10 +1110,17 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
   gsize                i;
   STARTUPINFOA         si;
   PROCESS_INFORMATION  pi;
+#define ITOA_BUFFER_SIZE 100
+  char                 itoa_buffer[ITOA_BUFFER_SIZE];
+#define DEBUG_STRING_SIZE 1024
+  gsize                dbgs = DEBUG_STRING_SIZE;
+  char                 debug_string[DEBUG_STRING_SIZE];
+  char                *dbgp;
 
   if (ExceptionInfo == NULL ||
       ExceptionInfo->ExceptionRecord == NULL ||
-      IsDebuggerPresent ())
+      IsDebuggerPresent () ||
+      debugger[0] == 0)
     return EXCEPTION_CONTINUE_SEARCH;
 
   er = ExceptionInfo->ExceptionRecord;
@@ -1117,43 +1142,6 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
       break;
     }
 
-  fprintf_s (stderr,
-             "Exception code=0x%lx flags=0x%lx at 0x%p",
-             er->ExceptionCode,
-             er->ExceptionFlags,
-             er->ExceptionAddress);
-
-  switch (er->ExceptionCode)
-    {
-    case EXCEPTION_ACCESS_VIOLATION:
-      fprintf_s (stderr,
-                 ". Access violation - attempting to %s at address 0x%p\n",
-                 er->ExceptionInformation[0] == 0 ? "read data" :
-                 er->ExceptionInformation[0] == 1 ? "write data" :
-                 er->ExceptionInformation[0] == 8 ? "execute data" :
-                 "do something bad",
-                 (void *) er->ExceptionInformation[1]);
-      break;
-    case EXCEPTION_IN_PAGE_ERROR:
-      fprintf_s (stderr,
-                 ". Page access violation - attempting to %s at address 0x%p with status %Ix\n",
-                 er->ExceptionInformation[0] == 0 ? "read from an inaccessible page" :
-                 er->ExceptionInformation[0] == 1 ? "write to an inaccessible page" :
-                 er->ExceptionInformation[0] == 8 ? "execute data in page" :
-                 "do something bad with a page",
-                 (void *) er->ExceptionInformation[1],
-                 er->ExceptionInformation[2]);
-      break;
-    default:
-      fprintf_s (stderr, "\n");
-      break;
-    }
-
-  fflush (stderr);
-
-  if (debugger[0] == 0)
-    return EXCEPTION_CONTINUE_SEARCH;
-
   memset (&si, 0, sizeof (si));
   memset (&pi, 0, sizeof (pi));
   si.cb = sizeof (si);
@@ -1170,6 +1158,64 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
        * event signalling.
        */
       WaitForSingleObject (debugger_wakeup_event, 60000);
+
+      dbgp = &debug_string[0];
+
+      dbgp = copy_chars (dbgp, &dbgs, "Exception code=0x");
+      itoa_buffer[0] = 0;
+      _ui64toa_s (er->ExceptionCode, itoa_buffer, ITOA_BUFFER_SIZE, 16);
+      dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+      dbgp = copy_chars (dbgp, &dbgs, " flags=0x");
+      itoa_buffer[0] = 0;
+      _ui64toa_s (er->ExceptionFlags, itoa_buffer, ITOA_BUFFER_SIZE, 16);
+      dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+      dbgp = copy_chars (dbgp, &dbgs, " at 0x");
+      itoa_buffer[0] = 0;
+      _ui64toa_s ((guintptr) er->ExceptionAddress, itoa_buffer, ITOA_BUFFER_SIZE, 16);
+      dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+
+      switch (er->ExceptionCode)
+        {
+        case EXCEPTION_ACCESS_VIOLATION:
+          dbgp = copy_chars (dbgp, &dbgs, ". Access violation - attempting to ");
+          if (er->ExceptionInformation[0] == 0)
+            dbgp = copy_chars (dbgp, &dbgs, "read data");
+          else if (er->ExceptionInformation[0] == 1)
+            dbgp = copy_chars (dbgp, &dbgs, "write data");
+          else if (er->ExceptionInformation[0] == 8)
+            dbgp = copy_chars (dbgp, &dbgs, "execute data");
+          else
+            dbgp = copy_chars (dbgp, &dbgs, "do something bad");
+          dbgp = copy_chars (dbgp, &dbgs, " at address 0x");
+          itoa_buffer[0] = 0;
+          _ui64toa_s (er->ExceptionInformation[1], itoa_buffer, ITOA_BUFFER_SIZE, 16);
+          dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+          break;
+        case EXCEPTION_IN_PAGE_ERROR:
+          dbgp = copy_chars (dbgp, &dbgs, ". Page access violation - attempting to ");
+          if (er->ExceptionInformation[0] == 0)
+            dbgp = copy_chars (dbgp, &dbgs, "read from an inaccessible page");
+          else if (er->ExceptionInformation[0] == 1)
+            dbgp = copy_chars (dbgp, &dbgs, "write to an inaccessible page");
+          else if (er->ExceptionInformation[0] == 8)
+            dbgp = copy_chars (dbgp, &dbgs, "execute data in page");
+          else
+            dbgp = copy_chars (dbgp, &dbgs, "do something bad with a page");
+          dbgp = copy_chars (dbgp, &dbgs, " at address 0x");
+          itoa_buffer[0] = 0;
+          _ui64toa_s (er->ExceptionInformation[1], itoa_buffer, ITOA_BUFFER_SIZE, 16);
+          dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+          dbgp = copy_chars (dbgp, &dbgs, " with status ");
+          itoa_buffer[0] = 0;
+          _ui64toa_s (er->ExceptionInformation[2], itoa_buffer, ITOA_BUFFER_SIZE, 16);
+          dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+          break;
+        default:
+          break;
+        }
+
+      dbgp = copy_chars (dbgp, &dbgs, "\n");
+      OutputDebugStringA (debug_string);
     }
 
   /* Now the debugger is present, and we can try
