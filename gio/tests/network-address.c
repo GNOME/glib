@@ -1183,7 +1183,7 @@ test_happy_eyeballs_both_error_delays_3 (HappyEyeballsFixture *fixture,
 int
 main (int argc, char *argv[])
 {
-  gint i;
+  gsize i;
   gchar *path;
 
   g_test_init (&argc, &argv, NULL);
@@ -1193,28 +1193,28 @@ main (int argc, char *argv[])
 
   for (i = 0; i < G_N_ELEMENTS (host_tests); i++)
     {
-      path = g_strdup_printf ("/network-address/parse-host/%d", i);
+      path = g_strdup_printf ("/network-address/parse-host/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &host_tests[i], test_parse_host);
       g_free (path);
     }
 
   for (i = 0; i < G_N_ELEMENTS (uri_tests); i++)
     {
-      path = g_strdup_printf ("/network-address/parse-uri/%d", i);
+      path = g_strdup_printf ("/network-address/parse-uri/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &uri_tests[i], test_parse_uri);
       g_free (path);
     }
 
   for (i = 0; i < G_N_ELEMENTS (address_tests); i++)
     {
-      path = g_strdup_printf ("/network-address/resolve-address/%d", i);
+      path = g_strdup_printf ("/network-address/resolve-address/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &address_tests[i], test_resolve_address);
       g_free (path);
     }
 
   for (i = 0; i < G_N_ELEMENTS (address_tests); i++)
     {
-      path = g_strdup_printf ("/gresolver/resolve-address/%d", i);
+      path = g_strdup_printf ("/gresolver/resolve-address/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &address_tests[i], test_resolve_address_gresolver);
       g_free (path);
     }
