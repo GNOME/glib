@@ -1072,7 +1072,20 @@ g_test_log (GTestLogType lbit,
       break;
     case G_TEST_LOG_MESSAGE:
       if (test_tap_log)
-        g_print ("# %s\n", string1);
+        {
+          if (strstr (string1, "\n") == NULL)
+            g_print ("# %s\n", string1);
+          else
+            {
+              char **lines = g_strsplit (string1, "\n", -1);
+              gsize i;
+
+              for (i = 0; lines[i] != NULL; i++)
+                g_print ("# %s\n", lines[i]);
+
+              g_strfreev (lines);
+            }
+        }
       else if (g_test_verbose ())
         g_print ("(MSG: %s)\n", string1);
       break;
