@@ -1207,7 +1207,7 @@ g_date_prepare_to_parse (const gchar      *str,
 }
 
 static guint
-convert_twodigit_year (gint y)
+convert_twodigit_year (guint y)
 {
   if (using_twodigit_years && y < 100)
     {
