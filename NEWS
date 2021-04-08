@@ -1,3 +1,24 @@
+Overview of changes in GLib 2.68.1
+==================================
+
+* Fix a crash in `GKeyFile` when parsing a file which contains translations
+  using a `GKeyFile` instance which has loaded another file previously (#2361)
+
+* Pin GIO DLL in memory on Windows (!2016)
+
+* Bugs fixed:
+ - #2361 g_key_file_load_from_file segfaults on "Key[*]="like lines
+ - !1997 Backport !1996 “Include glibconfig.h to get the G_OS_UNIX token” to glib-2-68
+ - !2016 GIO W32: Pin gio DLL
+ - !2021 Backport MR !2016 (GIO W32: Pin gio DLL) into glib-2-68
+ - !2022 Few fixes and notes for building on Visual Studio 2012 and earlier
+ - !2034 Backport MR !2032 (gkeyfile: Drop a redundant check) into glib-2-68
+ - !2035 Backport !2026 “Split g_test_log() messages that contain multiple lines” to glib-2-68
+
+* Translation updates:
+ - English (United Kingdom)
+
+
 Overview of changes in GLib 2.68.0
 ==================================
 
