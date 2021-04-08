@@ -108,6 +108,7 @@ mock_interface_get_vtable (GDBusInterfaceSkeleton *interface)
     NULL,
     mock_interface_get_property,
     NULL,
+    { 0 }
   };
 
   return &vtable;

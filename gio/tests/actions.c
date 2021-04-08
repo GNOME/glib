@@ -151,7 +151,7 @@ strv_strv_cmp (gchar **a, gchar **b)
 static gboolean
 strv_set_equal (gchar **strv, ...)
 {
-  gint count;
+  guint count;
   va_list list;
   const gchar *str;
   gboolean res;
@@ -372,10 +372,10 @@ static void
 test_entries (void)
 {
   const GActionEntry entries[] = {
-    { "foo",    activate_foo                                     },
-    { "bar",    activate_bar, "s"                                },
-    { "toggle", NULL,         NULL, "false"                      },
-    { "volume", NULL,         NULL, "0",     change_volume_state }
+    { "foo",    activate_foo, NULL, NULL,    NULL,                { 0 } },
+    { "bar",    activate_bar, "s",  NULL,    NULL,                { 0 } },
+    { "toggle", NULL,         NULL, "false", NULL,                { 0 } },
+    { "volume", NULL,         NULL, "0",     change_volume_state, { 0 } },
   };
   GSimpleActionGroup *actions;
   GVariant *state;
@@ -399,10 +399,10 @@ test_entries (void)
   if (g_test_undefined ())
     {
       const GActionEntry bad_type = {
-        "bad-type", NULL, "ss"
+        "bad-type", NULL, "ss", NULL, NULL, { 0 }
       };
       const GActionEntry bad_state = {
-        "bad-state", NULL, NULL, "flse"
+        "bad-state", NULL, NULL, "flse", NULL, { 0 }
       };
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
@@ -468,7 +468,7 @@ test_parse_detailed (void)
     { "abc(42, 4)",       "abc",    "(42, 4)",  "expected end of input", NULL },
     { "abc(42,)",         "abc",    "(42,)",    "expected end of input", NULL }
   };
-  gint i;
+  gsize i;
 
   for (i = 0; i < G_N_ELEMENTS (testcases); i++)
     {
@@ -638,13 +638,13 @@ stop_loop (gpointer data)
 }
 
 static GActionEntry exported_entries[] = {
-  { "undo",  activate_action, NULL, NULL,      NULL },
-  { "redo",  activate_action, NULL, NULL,      NULL },
-  { "cut",   activate_action, NULL, NULL,      NULL },
-  { "copy",  activate_action, NULL, NULL,      NULL },
-  { "paste", activate_action, NULL, NULL,      NULL },
-  { "bold",  activate_toggle, NULL, "true",    NULL },
-  { "lang",  activate_radio,  "s",  "'latin'", NULL },
+  { "undo",  activate_action, NULL, NULL,      NULL, { 0 } },
+  { "redo",  activate_action, NULL, NULL,      NULL, { 0 } },
+  { "cut",   activate_action, NULL, NULL,      NULL, { 0 } },
+  { "copy",  activate_action, NULL, NULL,      NULL, { 0 } },
+  { "paste", activate_action, NULL, NULL,      NULL, { 0 } },
+  { "bold",  activate_toggle, NULL, "true",    NULL, { 0 } },
+  { "lang",  activate_radio,  "s",  "'latin'", NULL, { 0 } },
 };
 
 static void
@@ -920,8 +920,8 @@ test_dbus_threaded (void)
   GSimpleActionGroup *group[10];
   GThread *export[10];
   static GActionEntry entries[] = {
-    { "a",  activate_action, NULL, NULL, NULL },
-    { "b",  activate_action, NULL, NULL, NULL },
+    { "a",  activate_action, NULL, NULL, NULL, { 0 } },
+    { "b",  activate_action, NULL, NULL, NULL, { 0 } },
   };
   gint i;
 
