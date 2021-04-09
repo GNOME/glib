@@ -142,6 +142,10 @@ void
  *
  * Decreases the reference count.
  *
+ * If %TRUE is returned, the reference count reached 0. After this point, @rc
+ * is an undefined state and must be reinitialized with
+ * g_ref_count_init() to be used again.
+ *
  * Returns: %TRUE if the reference count reached 0, and %FALSE otherwise
  *
  * Since: 2.58
@@ -248,6 +252,10 @@ void
  * @arc: the address of an atomic reference count variable
  *
  * Atomically decreases the reference count.
+ *
+ * If %TRUE is returned, the reference count reached 0. After this point, @arc
+ * is an undefined state and must be reinitialized with
+ * g_atomic_ref_count_init() to be used again.
  *
  * Returns: %TRUE if the reference count reached 0, and %FALSE otherwise
  *
