@@ -84,7 +84,7 @@
  * g_ref_count_init:
  * @rc: the address of a reference count variable
  *
- * Initializes a reference count variable.
+ * Initializes a reference count variable to 1.
  *
  * Since: 2.58
  */
@@ -199,7 +199,7 @@ gboolean
  * g_atomic_ref_count_init:
  * @arc: the address of an atomic reference count variable
  *
- * Initializes a reference count variable.
+ * Initializes a reference count variable to 1.
  *
  * Since: 2.58
  */
