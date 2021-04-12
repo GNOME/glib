@@ -41,6 +41,10 @@ typedef enum /*< flags >*/
 /**
  * GMainContextFlags:
  * @G_MAIN_CONTEXT_FLAGS_NONE: Default behaviour.
+ * @G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING: Assume that polling for events will
+ * free the thread to process other jobs. That's useful if you're using
+ * `g_main_context_{prepare,query,check,dispatch}` to integrate GMainContext in
+ * other event loops.
  *
  * Flags to pass to g_main_context_new_with_flags() which affect the behaviour
  * of a #GMainContext.
@@ -51,6 +55,7 @@ GLIB_AVAILABLE_TYPE_IN_2_72
 typedef enum /*< flags >*/
 {
   G_MAIN_CONTEXT_FLAGS_NONE = 0,
+  G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING = 1
 } GMainContextFlags;
 
 

@@ -158,6 +158,56 @@ test_mainloop_basic (void)
   g_main_loop_unref (loop);
 }
 
+static void
+test_ownerless_polling (gconstpointer test_data)
+{
+  gboolean attach_first = GPOINTER_TO_INT (test_data);
+  GMainContext *ctx = g_main_context_new_with_flags (
+    G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING);
+
+  GPollFD fds[20];
+  gint fds_size;
+  gint max_priority;
+  GSource *source = NULL;
+
+  g_assert_true (ctx != g_main_context_default ());
+
+  g_main_context_push_thread_default (ctx);
+
+  /* Drain events */
+  for (;;)
+    {
+      gboolean ready_to_dispatch = g_main_context_prepare (ctx, &max_priority);
+      gint timeout, nready;
+      fds_size = g_main_context_query (ctx, max_priority, &timeout, fds, G_N_ELEMENTS (fds));
+      nready = g_poll (fds, fds_size, /*timeout=*/0);
+      if (!ready_to_dispatch && nready == 0)
+        {
+          if (timeout == -1)
+            break;
+          else
+            g_usleep (timeout * 1000);
+        }
+      ready_to_dispatch = g_main_context_check (ctx, max_priority, fds, fds_size);
+      if (ready_to_dispatch)
+        g_main_context_dispatch (ctx);
+    }
+
+  if (!attach_first)
+    g_main_context_pop_thread_default (ctx);
+
+  source = g_idle_source_new ();
+  g_source_attach (source, ctx);
+  g_source_unref (source);
+
+  if (attach_first)
+    g_main_context_pop_thread_default (ctx);
+
+  g_assert_cmpint (g_poll (fds, fds_size, 0), >, 0);
+
+  g_main_context_unref (ctx);
+}
+
 static gint a;
 static gint b;
 static gint c;
@@ -2145,6 +2195,8 @@ main (int argc, char *argv[])
 #endif
   g_test_add_func ("/mainloop/nfds", test_nfds);
   g_test_add_func ("/mainloop/steal-fd", test_steal_fd);
+  g_test_add_data_func ("/mainloop/ownerless-polling/attach-first", GINT_TO_POINTER (TRUE), test_ownerless_polling);
+  g_test_add_data_func ("/mainloop/ownerless-polling/pop-first", GINT_TO_POINTER (FALSE), test_ownerless_polling);
 
   return g_test_run ();
 }

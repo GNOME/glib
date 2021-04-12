@@ -177,6 +177,15 @@
  * g_main_context_prepare(), g_main_context_query(),
  * g_main_context_check() and g_main_context_dispatch().
  *
+ * If the event loop thread releases #GMainContext ownership until the results
+ * required by g_main_context_check() are ready you must create a context with
+ * the flag %G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING or else you'll lose
+ * g_source_attach() notifications. This happens for instance when you integrate
+ * the GLib event loop into implementations that follow the proactor pattern
+ * (i.e. in these contexts the `poll()` implementation will reclaim the thread for
+ * other tasks until the results are ready). One example of the proactor pattern
+ * is the Boost.Asio library.
+ *
  * ## State of a Main Context # {#mainloop-states}
  *
  * The operation of these functions can best be seen in terms
@@ -1267,8 +1276,12 @@ g_source_attach_unlocked (GSource      *source,
   /* If another thread has acquired the context, wake it up since it
    * might be in poll() right now.
    */
-  if (do_wakeup && context->owner && context->owner != G_THREAD_SELF)
-    g_wakeup_signal (context->wakeup);
+  if (do_wakeup &&
+      (context->flags & G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING ||
+       (context->owner && context->owner != G_THREAD_SELF)))
+    {
+      g_wakeup_signal (context->wakeup);
+    }
 
   g_trace_mark (G_TRACE_CURRENT_TIME, 0,
                 "GLib", "g_source_attach",
