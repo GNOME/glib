@@ -270,6 +270,7 @@ struct _GMainContext
   GCond cond;
   GThread *owner;
   guint owner_count;
+  GMainContextFlags flags;
   GSList *waiters;
 
   gint ref_count;  /* (atomic) */
@@ -659,6 +660,23 @@ g_main_context_new_with_next_id (guint next_id)
 GMainContext *
 g_main_context_new (void)
 {
+  return g_main_context_new_with_flags (G_MAIN_CONTEXT_FLAGS_NONE);
+}
+
+/**
+ * g_main_context_new_with_flags:
+ * @flags: a bitwise-OR combination of #GMainContextFlags flags that can only be
+ *         set at creation time.
+ *
+ * Creates a new #GMainContext structure.
+ *
+ * Returns: (transfer full): the new #GMainContext
+ *
+ * Since: 2.72
+ */
+GMainContext *
+g_main_context_new_with_flags (GMainContextFlags flags)
+{
   static gsize initialised;
   GMainContext *context;
 
@@ -681,6 +699,7 @@ g_main_context_new (void)
 
   context->sources = g_hash_table_new (NULL, NULL);
   context->owner = NULL;
+  context->flags = flags;
   context->waiters = NULL;
 
   context->ref_count = 1;
