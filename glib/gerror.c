@@ -114,6 +114,12 @@
  * function (the file being opened, or whatever - though in the
  * g_file_get_contents() case, the @message already contains a filename).
  *
+ * Since error messages may be displayed to the user, they need to be valid
+ * UTF-8 (all GTK widgets expect text to be UTF-8). Keep this in mind in
+ * particular when formatting error messages with filenames, which are in
+ * the 'filename encoding', and need to be turned into UTF-8 using
+ * g_filename_to_utf8(), g_filename_display_name() or g_utf8_make_valid().
+ *
  * Note, however, that many error messages are too technical to display to the
  * user in an application, so prefer to use g_error_matches() to categorize errors
  * from called functions, and build an appropriate error message for the context
