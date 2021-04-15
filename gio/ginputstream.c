@@ -427,8 +427,10 @@ g_input_stream_real_skip (GInputStream  *stream,
                            NULL))
         {
           end = g_seekable_tell (seekable);
+          g_assert (start >= 0);
           g_assert (end >= start);
-          if (start > G_MAXSIZE - count || start + count > end)
+          if ((guint64) start > (G_MAXSIZE - count) ||
+              (start + count) > (guint64) end)
             {
               stream->priv->pending = TRUE;
               return end - start;
