@@ -322,7 +322,7 @@ handle_method_call (GDBusConnection       *connection,
       const guint64 *uint64s;
       const gdouble *doubles;
       gsize n_elts;
-      gint i, j;
+      gsize i, j;
       GVariantBuilder ret;
 
       g_variant_builder_init (&ret, G_VARIANT_TYPE ("(ayabanaqaiauaxatad)"));
@@ -802,7 +802,8 @@ static const GDBusInterfaceVTable interface_vtable =
 {
   handle_method_call,
   handle_get_property,
-  handle_set_property
+  handle_set_property,
+  { 0 }
 };
 
 static void

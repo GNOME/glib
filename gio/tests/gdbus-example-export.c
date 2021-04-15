@@ -225,7 +225,8 @@ static const GDBusInterfaceVTable interface_vtable =
 {
   handle_method_call,
   handle_get_property,
-  handle_set_property
+  handle_set_property,
+  { 0 }
 };
 
 static void

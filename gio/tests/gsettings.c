@@ -2397,7 +2397,7 @@ strv_has_string (gchar       **haystack,
 static gboolean
 strv_set_equal (gchar **strv, ...)
 {
-  gint count;
+  gsize count;
   va_list list;
   const gchar *str;
   gboolean res;
