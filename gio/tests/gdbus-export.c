@@ -127,6 +127,8 @@ static const GDBusInterfaceInfo foo2_interface_info =
   "org.example.Foo2",
   (GDBusMethodInfo **) &foo_method_info_pointers,
   (GDBusSignalInfo **) &foo_signal_info_pointers,
+  NULL,
+  NULL
 };
 
 static void
@@ -198,7 +200,8 @@ static const GDBusInterfaceVTable foo_vtable =
 {
   foo_method_call,
   foo_get_property,
-  foo_set_property
+  foo_set_property,
+  { 0 },
 };
 
 /* -------------------- */
@@ -311,7 +314,8 @@ static const GDBusInterfaceVTable dyna_interface_vtable =
 {
   dyna_cyber,
   NULL,
-  NULL
+  NULL,
+  { 0 }
 };
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -693,7 +697,8 @@ static const GDBusSubtreeVTable subtree_vtable =
 {
   subtree_enumerate,
   subtree_introspect,
-  subtree_dispatch
+  subtree_dispatch,
+  { 0 }
 };
 
 /* -------------------- */
@@ -747,7 +752,8 @@ static const GDBusSubtreeVTable dynamic_subtree_vtable =
 {
   dynamic_subtree_enumerate,
   dynamic_subtree_introspect,
-  dynamic_subtree_dispatch
+  dynamic_subtree_dispatch,
+  { 0 }
 };
 
 /* -------------------- */
@@ -1729,7 +1735,7 @@ test_async_properties (void)
   GError *error = NULL;
   guint registration_id, registration_id2;
   static const GDBusInterfaceVTable vtable = {
-    test_async_method_call, NULL, NULL
+    test_async_method_call, NULL, NULL, { 0 }
   };
 
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);

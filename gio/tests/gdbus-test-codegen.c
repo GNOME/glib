@@ -1920,7 +1920,7 @@ check_object_manager (void)
   GError *error;
   GMainLoop *loop;
   OMData *om_data = NULL;
-  guint om_signal_id = -1;
+  guint om_signal_id = 0;
   GDBusObjectManager *pm = NULL;
   GList *object_proxies;
   GList *proxies;
@@ -2356,7 +2356,7 @@ check_object_manager (void)
   if (loop != NULL)
     g_main_loop_unref (loop);
 
-  if (om_signal_id != -1)
+  if (om_signal_id != 0)
     g_dbus_connection_signal_unsubscribe (c, om_signal_id);
   g_clear_object (&o3);
   g_clear_object (&o2);
