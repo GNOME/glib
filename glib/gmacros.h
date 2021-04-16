@@ -134,7 +134,7 @@
 #define g_macro__has_attribute___alloc_size__ G_GNUC_CHECK_VERSION (4, 3)
 #define g_macro__has_attribute___format__ G_GNUC_CHECK_VERSION (2, 4)
 #define g_macro__has_attribute___format_arg__ G_GNUC_CHECK_VERSION (2, 4)
-#define g_macro__has_attribute___noreturn__ G_GNUC_CHECK_VERSION (2, 4)
+#define g_macro__has_attribute___noreturn__ (G_GNUC_CHECK_VERSION (2, 8) || (0x5110 <= __SUNPRO_C))
 #define g_macro__has_attribute___const__ G_GNUC_CHECK_VERSION (2, 4)
 #define g_macro__has_attribute___unused__ G_GNUC_CHECK_VERSION (2, 4)
 #define g_macro__has_attribute___no_instrument_function__ G_GNUC_CHECK_VERSION (2, 4)
@@ -1040,7 +1040,7 @@
  * evaluated when a header is included. This results in warnings in third party
  * code which includes glib.h, even if the third party code doesn’t use the new
  * macro itself. */
-#if G_GNUC_CHECK_VERSION(2, 8) || (0x5110 <= __SUNPRO_C)
+#if g_macro__has_attribute(__noreturn__)
   /* For compatibility with G_NORETURN_FUNCPTR on clang, use
      __attribute__((__noreturn__)), not _Noreturn.  */
 # define G_NORETURN __attribute__ ((__noreturn__))
@@ -1079,7 +1079,7 @@
  *
  * Since: 2.68
  */
-#if G_GNUC_CHECK_VERSION(2, 8) || (0x5110 <= __SUNPRO_C)
+#if g_macro__has_attribute(__noreturn__)
 # define G_NORETURN_FUNCPTR __attribute__ ((__noreturn__))      \
   GLIB_AVAILABLE_MACRO_IN_2_68
 #else
