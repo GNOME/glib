@@ -37,6 +37,12 @@
  */
 #include <stddef.h>
 
+/*
+ * Note: Clang (but not clang-cl) defines __GNUC__ and __GNUC_MINOR__.
+ * Both Clang 11.1 on current Arch Linux and Apple's Clang 12.0 define
+ * __GNUC__ = 4 and __GNUC_MINOR__ = 2. So G_GNUC_CHECK_VERSION(4, 2) on
+ * current Clang will be 1.
+ */
 #ifdef __GNUC__
 #define G_GNUC_CHECK_VERSION(major, minor) \
     ((__GNUC__ > (major)) || \
@@ -105,6 +111,39 @@
 #else
 #  define G_INLINE_FUNC static inline GLIB_DEPRECATED_MACRO_IN_2_48_FOR(static inline)
 #endif /* G_IMPLEMENT_INLINES */
+
+/*
+ * Attribute support detection. Works on clang and GCC >= 5
+ * https://clang.llvm.org/docs/LanguageExtensions.html#has-attribute
+ * https://gcc.gnu.org/onlinedocs/cpp/_005f_005fhas_005fattribute.html
+ */
+
+#ifdef __has_attribute
+#define g_macro__has_attribute __has_attribute
+#else
+
+/*
+ * Fallback for GCC < 5 and other compilers not supporting __has_attribute.
+ */
+#define g_macro__has_attribute(x) g_macro__has_attribute_##x
+
+#define g_macro__has_attribute___pure__ G_GNUC_CHECK_VERSION (2, 96)
+#define g_macro__has_attribute___malloc__ G_GNUC_CHECK_VERSION (2, 96)
+#define g_macro__has_attribute_noinline G_GNUC_CHECK_VERSION (2, 96)
+#define g_macro__has_attribute___sentinel__ G_GNUC_CHECK_VERSION (4, 0)
+#define g_macro__has_attribute___alloc_size__ G_GNUC_CHECK_VERSION (4, 3)
+#define g_macro__has_attribute___format__ G_GNUC_CHECK_VERSION (2, 4)
+#define g_macro__has_attribute___format_arg__ G_GNUC_CHECK_VERSION (2, 4)
+#define g_macro__has_attribute___noreturn__ (G_GNUC_CHECK_VERSION (2, 8) || (0x5110 <= __SUNPRO_C))
+#define g_macro__has_attribute___const__ G_GNUC_CHECK_VERSION (2, 4)
+#define g_macro__has_attribute___unused__ G_GNUC_CHECK_VERSION (2, 4)
+#define g_macro__has_attribute___no_instrument_function__ G_GNUC_CHECK_VERSION (2, 4)
+#define g_macro__has_attribute_fallthrough G_GNUC_CHECK_VERSION (6, 0)
+#define g_macro__has_attribute___deprecated__ G_GNUC_CHECK_VERSION (3, 1)
+#define g_macro__has_attribute_may_alias G_GNUC_CHECK_VERSION (3, 3)
+#define g_macro__has_attribute_warn_unused_result G_GNUC_CHECK_VERSION (3, 4)
+
+#endif
 
 /* Provide macros to feature the GCC function attribute.
  */
@@ -194,13 +233,21 @@
  * code which includes glib.h, even if the third party code doesn’t use the new
  * macro itself. */
 
-#if G_GNUC_CHECK_VERSION(2, 96)
+#if g_macro__has_attribute(__pure__)
 #define G_GNUC_PURE __attribute__((__pure__))
-#define G_GNUC_MALLOC __attribute__((__malloc__))
-#define G_GNUC_NO_INLINE __attribute__((noinline))
 #else
 #define G_GNUC_PURE
+#endif
+
+#if g_macro__has_attribute(__malloc__)
+#define G_GNUC_MALLOC __attribute__ ((__malloc__))
+#else
 #define G_GNUC_MALLOC
+#endif
+
+#if g_macro__has_attribute(noinline)
+#define G_GNUC_NO_INLINE __attribute__ ((noinline))
+#else
 #define G_GNUC_NO_INLINE
 #endif
 
@@ -223,7 +270,7 @@
  *
  * Since: 2.8
  */
-#if G_GNUC_CHECK_VERSION(4, 0)
+#if g_macro__has_attribute(__sentinel__)
 #define G_GNUC_NULL_TERMINATED __attribute__((__sentinel__))
 #else
 #define G_GNUC_NULL_TERMINATED
@@ -260,12 +307,6 @@
  *
  * So we define it to 0 to satisfy the pre-processor.
  */
-
-#ifdef __has_attribute
-#define g_macro__has_attribute __has_attribute
-#else
-#define g_macro__has_attribute(x) 0
-#endif
 
 #ifdef __has_feature
 #define g_macro__has_feature __has_feature
@@ -328,8 +369,7 @@
  *
  * Since: 2.18
  */
-#if (!defined(__clang__) && G_GNUC_CHECK_VERSION(4, 3)) || \
-    (defined(__clang__) && g_macro__has_attribute(__alloc_size__))
+#if g_macro__has_attribute(__alloc_size__)
 #define G_GNUC_ALLOC_SIZE(x) __attribute__((__alloc_size__(x)))
 #define G_GNUC_ALLOC_SIZE2(x,y) __attribute__((__alloc_size__(x,y)))
 #else
@@ -515,7 +555,8 @@
  * See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-no_005finstrument_005ffunction-function-attribute) for more details.
  */
 
-#if G_GNUC_CHECK_VERSION(2, 4)
+#if g_macro__has_attribute(__format__)
+
 #if !defined (__clang__) && G_GNUC_CHECK_VERSION (4, 4)
 #define G_GNUC_PRINTF( format_idx, arg_idx )    \
   __attribute__((__format__ (gnu_printf, format_idx, arg_idx)))
@@ -533,31 +574,54 @@
   __attribute__((__format__ (__strftime__, format_idx, 0))) \
   GLIB_AVAILABLE_MACRO_IN_2_60
 #endif
-#define G_GNUC_FORMAT( arg_idx )                \
-  __attribute__((__format_arg__ (arg_idx)))
-#define G_GNUC_NORETURN                         \
-  __attribute__((__noreturn__))
-#define G_GNUC_CONST                            \
-  __attribute__((__const__))
-#define G_GNUC_UNUSED                           \
-  __attribute__((__unused__))
-#define G_GNUC_NO_INSTRUMENT			\
-  __attribute__((__no_instrument_function__))
-#else   /* !__GNUC__ */
+
+#else
+
 #define G_GNUC_PRINTF( format_idx, arg_idx )
 #define G_GNUC_SCANF( format_idx, arg_idx )
 #define G_GNUC_STRFTIME( format_idx ) \
   GLIB_AVAILABLE_MACRO_IN_2_60
+
+#endif
+
+#if g_macro__has_attribute(__format_arg__)
+#define G_GNUC_FORMAT(arg_idx) \
+  __attribute__ ((__format_arg__ (arg_idx)))
+#else
 #define G_GNUC_FORMAT( arg_idx )
+#endif
+
+#if g_macro__has_attribute(__noreturn__)
+#define G_GNUC_NORETURN \
+  __attribute__ ((__noreturn__))
+#else
 /* NOTE: MSVC has __declspec(noreturn) but unlike GCC __attribute__,
  * __declspec can only be placed at the start of the function prototype
  * and not at the end, so we can't use it without breaking API.
  */
 #define G_GNUC_NORETURN
+#endif
+
+#if g_macro__has_attribute(__const__)
+#define G_GNUC_CONST \
+  __attribute__ ((__const__))
+#else
 #define G_GNUC_CONST
+#endif
+
+#if g_macro__has_attribute(__unused__)
+#define G_GNUC_UNUSED \
+  __attribute__ ((__unused__))
+#else
 #define G_GNUC_UNUSED
+#endif
+
+#if g_macro__has_attribute(__no_instrument_function__)
+#define G_GNUC_NO_INSTRUMENT \
+  __attribute__ ((__no_instrument_function__))
+#else
 #define G_GNUC_NO_INSTRUMENT
-#endif  /* !__GNUC__ */
+#endif
 
 /**
  * G_GNUC_FALLTHROUGH:
@@ -587,16 +651,13 @@
  *
  * Since: 2.60
  */
-#if G_GNUC_CHECK_VERSION(6, 0)
-#define G_GNUC_FALLTHROUGH __attribute__((fallthrough)) \
-  GLIB_AVAILABLE_MACRO_IN_2_60
-#elif g_macro__has_attribute (fallthrough)
+#if g_macro__has_attribute(fallthrough)
 #define G_GNUC_FALLTHROUGH __attribute__((fallthrough)) \
   GLIB_AVAILABLE_MACRO_IN_2_60
 #else
 #define G_GNUC_FALLTHROUGH \
   GLIB_AVAILABLE_MACRO_IN_2_60
-#endif /* __GNUC__ */
+#endif
 
 /**
  * G_GNUC_DEPRECATED:
@@ -616,7 +677,7 @@
  *
  * Since: 2.2
  */
-#if G_GNUC_CHECK_VERSION(3, 1) || defined(__clang__)
+#if g_macro__has_attribute(__deprecated__)
 #define G_GNUC_DEPRECATED __attribute__((__deprecated__))
 #else
 #define G_GNUC_DEPRECATED
@@ -694,7 +755,7 @@
  *
  * Since: 2.14
  */
-#if G_GNUC_CHECK_VERSION(3, 3)
+#if g_macro__has_attribute(may_alias)
 #define G_GNUC_MAY_ALIAS __attribute__((may_alias))
 #else
 #define G_GNUC_MAY_ALIAS
@@ -718,7 +779,7 @@
  *
  * Since: 2.10
  */
-#if G_GNUC_CHECK_VERSION(3, 4)
+#if g_macro__has_attribute(warn_unused_result)
 #define G_GNUC_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
 #else
 #define G_GNUC_WARN_UNUSED_RESULT
@@ -979,7 +1040,7 @@
  * evaluated when a header is included. This results in warnings in third party
  * code which includes glib.h, even if the third party code doesn’t use the new
  * macro itself. */
-#if G_GNUC_CHECK_VERSION(2, 8) || (0x5110 <= __SUNPRO_C)
+#if g_macro__has_attribute(__noreturn__)
   /* For compatibility with G_NORETURN_FUNCPTR on clang, use
      __attribute__((__noreturn__)), not _Noreturn.  */
 # define G_NORETURN __attribute__ ((__noreturn__))
@@ -1018,7 +1079,7 @@
  *
  * Since: 2.68
  */
-#if G_GNUC_CHECK_VERSION(2, 8) || (0x5110 <= __SUNPRO_C)
+#if g_macro__has_attribute(__noreturn__)
 # define G_NORETURN_FUNCPTR __attribute__ ((__noreturn__))      \
   GLIB_AVAILABLE_MACRO_IN_2_68
 #else
