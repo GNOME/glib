@@ -1593,7 +1593,7 @@ g_unix_mounts_get (guint64 *time_read)
  * If more mounts have the same mount path, the last matching mount
  * is returned.
  *
- * Returns: (transfer full): a #GUnixMountEntry.
+ * Returns: (transfer full) (nullable): a #GUnixMountEntry.
  **/
 GUnixMountEntry *
 g_unix_mount_at (const char *mount_path,
@@ -1636,7 +1636,7 @@ g_unix_mount_at (const char *mount_path,
  * If more mounts have the same mount path, the last matching mount
  * is returned.
  *
- * Returns: (transfer full): a #GUnixMountEntry.
+ * Returns: (transfer full)  (nullable): a #GUnixMountEntry.
  *
  * Since: 2.52
  **/
