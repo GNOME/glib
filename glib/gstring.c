@@ -964,7 +964,7 @@ g_string_erase (GString *string,
  * Replaces the string @find with the string @replace in a #GString up to
  * @limit times. If the number of instances of @find in the #GString is
  * less than @limit, all instances are replaced. If the number of
- * instances is `0`, all instances of @find are replaced.
+ * @limit is `0`, all instances of @find are replaced.
  *
  * Returns: the number of find and replace operations performed.
  *
