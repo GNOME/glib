@@ -3715,6 +3715,9 @@ unsubscribe_id_internal (GDBusConnection *connection,
  * g_dbus_connection_signal_subscribe() is called, in order to avoid memory
  * leaks through callbacks queued on the #GMainContext after it’s stopped being
  * iterated.
+ * Alternatively, any idle source with a priority lower than %G_PRIORITY_DEFAULT
+ * that was scheduled after unsubscription, also indicates that all resources
+ * of this subscription are released.
  *
  * Since: 2.26
  */
