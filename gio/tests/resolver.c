@@ -308,6 +308,52 @@ print_resolved_ns (const char *rrname,
 }
 
 static void
+print_resolved_https (const char *rrname,
+                      GList      *records,
+                      GError     *error)
+{
+  GList *t;
+
+  G_LOCK (response);
+  printf ("Zone: %s\n", rrname);
+  if (error)
+    {
+      printf ("Error: %s\n", error->message);
+      g_error_free (error);
+    }
+  else if (!records)
+    {
+      printf ("no HTTPS records\n");
+    }
+  else
+    {
+      for (t = records; t; t = t->next)
+        {
+          guint16 priority;
+          gchar *target, *params_str;
+          GVariant *params;
+
+          g_variant_get (t->data, "(qs@a{sv})", &priority, &target, &params);
+
+          printf ("Priority: %u\nTarget: %s\n", priority, target);
+
+          params_str = g_variant_print (params, FALSE);
+          printf ("Params: %s\n", params_str);
+
+          g_free (params_str);
+          g_free (target);
+          g_variant_unref (params);
+          g_variant_unref (t->data);
+        }
+      g_list_free (records);
+    }
+  printf ("\n");
+
+  done_lookup ();
+  G_UNLOCK (response);
+}
+
+static void
 lookup_one_sync (const char *arg)
 {
   GError *error = NULL;
@@ -330,6 +376,9 @@ lookup_one_sync (const char *arg)
           break;
         case G_RESOLVER_RECORD_TXT:
           print_resolved_txt (arg, records, error);
+          break;
+        case G_RESOLVER_RECORD_HTTPS:
+          print_resolved_https (arg, records, error);
           break;
         default:
           g_warn_if_reached ();
@@ -448,6 +497,9 @@ lookup_records_callback (GObject      *source,
       break;
     case G_RESOLVER_RECORD_TXT:
       print_resolved_txt (arg, records, error);
+      break;
+    case G_RESOLVER_RECORD_HTTPS:
+      print_resolved_https (arg, records, error);
       break;
     default:
       g_warn_if_reached ();
@@ -659,9 +711,11 @@ record_type_arg (const gchar *option_name,
     record_type = G_RESOLVER_RECORD_SOA;
   } else if (g_ascii_strcasecmp (value, "NS") == 0) {
     record_type = G_RESOLVER_RECORD_NS;
+  } else if (g_ascii_strcasecmp (value, "HTTPS") == 0) {
+    record_type = G_RESOLVER_RECORD_HTTPS;
   } else {
       g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-                   "Specify MX, TXT, NS or SOA for the special record lookup types");
+                   "Specify MX, TXT, NS, SOA, or HTTPS for the special record lookup types");
       return FALSE;
   }
 
@@ -671,7 +725,7 @@ record_type_arg (const gchar *option_name,
 static const GOptionEntry option_entries[] = {
   { "synchronous", 's', 0, G_OPTION_ARG_NONE, &synchronous, "Synchronous connections", NULL },
   { "connectable", 'c', 0, G_OPTION_ARG_INT, &connectable_count, "Connectable count", "C" },
-  { "special-type", 't', 0, G_OPTION_ARG_CALLBACK, record_type_arg, "Record type like MX, TXT, NS or SOA", "RR" },
+  { "special-type", 't', 0, G_OPTION_ARG_CALLBACK, record_type_arg, "Record type like MX, TXT, NS, SOA, or HTTPS", "RR" },
   G_OPTION_ENTRY_NULL,
 };
 

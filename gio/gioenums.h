@@ -722,6 +722,7 @@ typedef enum {
  * @G_RESOLVER_RECORD_TXT: look up DNS TXT records for a name
  * @G_RESOLVER_RECORD_SOA: look up DNS SOA records for a zone
  * @G_RESOLVER_RECORD_NS: look up DNS NS records for a domain
+ * @G_RESOLVER_RECORD_HTTPS: look up DNS HTTPS records for a zone. Since: 2.70
  *
  * The type of record that g_resolver_lookup_records() or
  * g_resolver_lookup_records_async() should retrieve. The records are returned
@@ -754,6 +755,19 @@ typedef enum {
  * %G_RESOLVER_RECORD_NS records are returned as variants with the signature
  * `(s)`, representing a string of the hostname of the name server.
  *
+ * %G_RESOLVER_RECORD_HTTPS records are returned as variants with the signature
+ * `(qsa{sv})`, representing the priority, target host, and params of the domain.
+ * The keys of the params dictionary are:
+ *   `alpn`: array of strings
+ *   `no-default-alpn`: an empty string
+ *   `port`: uint16
+ *   `ipv4hint`: array of strings of addresses
+ *   `ipv6hint`: array of strings of addresses
+ *   `ech`: string of base64 data
+ *   `mandatory`: array of strings matching these keys
+ *   `keyN`: for unknown keys, N is the key number, the value is a bytestring of unparsed data
+ * See the [RFC](https://datatracker.ietf.org/doc/draft-ietf-dnsop-svcb-https/) for more information.
+ *
  * Since: 2.34
  */
 typedef enum {
@@ -761,7 +775,8 @@ typedef enum {
   G_RESOLVER_RECORD_MX,
   G_RESOLVER_RECORD_TXT,
   G_RESOLVER_RECORD_SOA,
-  G_RESOLVER_RECORD_NS
+  G_RESOLVER_RECORD_NS,
+  G_RESOLVER_RECORD_HTTPS
 } GResolverRecordType;
 
 /**

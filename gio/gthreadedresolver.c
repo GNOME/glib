@@ -394,6 +394,10 @@ lookup_by_address_finish (GResolver     *resolver,
 
 #if defined(G_OS_UNIX)
 
+#ifndef T_HTTPS
+#define T_HTTPS 65
+#endif
+
 #if defined __BIONIC__ && !defined BIND_4_COMPAT
 /* Copy from bionic/libc/private/arpa_nameser_compat.h
  * and bionic/libc/private/arpa_nameser.h */
@@ -633,6 +637,282 @@ parse_res_txt (guchar  *answer,
   return record;
 }
 
+/* Defined in Section 6 (https://datatracker.ietf.org/doc/draft-ietf-dnsop-svcb-https/) */
+typedef enum {
+  SVCB_KEY_MANDATORY = 0,
+  SVCB_KEY_ALPN,
+  SVCB_KEY_NO_DEFAULT_ALPN,
+  SVCB_KEY_PORT,
+  SVCB_KEY_IPV4HINT,
+  SVCB_KEY_ECH,
+  SVCB_KEY_IPV6HINT
+} SVCBKey;
+
+static char *
+svcb_key_to_string (SVCBKey key)
+{
+  switch (key)
+    {
+    case SVCB_KEY_MANDATORY:
+      return g_strdup ("mandatory");
+    case SVCB_KEY_ALPN:
+      return g_strdup ("alpn");
+    case SVCB_KEY_NO_DEFAULT_ALPN:
+      return g_strdup ("no-default-alpn");
+    case SVCB_KEY_PORT:
+      return g_strdup ("port");
+    case SVCB_KEY_IPV4HINT:
+      return g_strdup ("ipv4hint");
+    case SVCB_KEY_ECH:
+      return g_strdup ("ech");
+    case SVCB_KEY_IPV6HINT:
+      return g_strdup ("ipv6hint");
+    default:
+      return g_strdup_printf ("key%u", key);
+    }
+}
+
+static gchar *
+get_uncompressed_domain (guchar *src, guchar *end, guchar **out)
+{
+  GString *target = g_string_new (NULL);
+
+  /* Defined in RFC 1035 section 3.1 */
+  do
+    {
+      guint16 length = *(src++);
+
+      if (length > (gsize) (end - src))
+        break;
+
+      /* End of string */
+      if (length == 0)
+        {
+          if (target->len == 0)
+            g_string_append_c (target, '.');
+          break;
+        }
+
+      g_string_append_len (target, (char *)src, length);
+      g_string_append_c (target, '.');
+      src += length;
+    }
+  while (src < end);
+
+  *out = src;
+  return g_string_free (target, FALSE);
+}
+
+static GVariant *
+get_svcb_ipv4_hint_value (const guchar *src, const guchar *end, guint16 length)
+{
+  GVariantBuilder builder;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_STRING_ARRAY);
+
+  for (; length >= 4; length -= 4, src += 4)
+    {
+      char buffer[INET_ADDRSTRLEN];
+
+      if (inet_ntop (AF_INET, src, buffer, sizeof (buffer)))
+        g_variant_builder_add_value (&builder, g_variant_new_string (buffer));
+    }
+
+  return g_variant_builder_end (&builder);
+}
+
+static GVariant *
+get_svcb_ipv6_hint_value (const guchar *src, const guchar *end, guint16 length)
+{
+  GVariantBuilder builder;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_STRING_ARRAY);
+
+#ifdef HAVE_IPV6
+  for (; length >= 16; length -= 16, src += 16)
+    {
+      char buffer[INET6_ADDRSTRLEN];
+
+      if (inet_ntop (AF_INET6, src, buffer, sizeof (buffer)))
+        g_variant_builder_add_value (&builder, g_variant_new_string (buffer));
+    }
+#endif
+
+  return g_variant_builder_end (&builder);
+}
+
+static GVariant *
+get_svcb_alpn_value (const guchar *src, const guchar *end, guint16 length)
+{
+  GVariantBuilder builder;
+  GString *alpn_id = NULL;
+  guchar alpn_id_remaning = 0;
+
+  /* Format defined in Section 6.1 */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_STRING_ARRAY);
+
+  /* length prefixed strings */
+  for (; src <= end && length; src++, length--)
+    {
+      guchar c = *src;
+
+      if (alpn_id && !alpn_id_remaning)
+        {
+          g_variant_builder_add_value (&builder,
+                                       g_variant_new_take_string (g_string_free (g_steal_pointer (&alpn_id), FALSE)));
+          /* This drops through as the current char is the new length */
+        }
+
+      if (!alpn_id)
+        {
+          /* First byte is length */
+          alpn_id_remaning = c;
+          alpn_id = g_string_sized_new (c + 1);
+          continue;
+        }
+
+      g_string_append_c (alpn_id, c);
+      alpn_id_remaning--;
+    }
+
+  /* Trailing value */
+  if (alpn_id)
+    {
+      g_variant_builder_add_value (&builder,
+                                   g_variant_new_take_string (g_string_free (g_steal_pointer (&alpn_id), FALSE)));
+    }
+
+  return g_variant_builder_end (&builder);
+}
+
+static GVariant *
+get_svcb_mandatory_value (const guchar *src, const guchar *end, guint16 length)
+{
+  GVariantBuilder builder;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_STRING_ARRAY);
+
+  for (; length; length -= 2)
+    {
+      guint16 key;
+      gchar *key_str;
+
+      GETSHORT (key, src);
+      key_str = svcb_key_to_string (key);
+
+      g_variant_builder_add_value (&builder,
+                                   g_variant_new_take_string (key_str));
+    }
+
+  return g_variant_builder_end (&builder);
+}
+
+static gboolean
+get_svcb_value (SVCBKey key, guint16 value_length, const guchar *src, const guchar *end, GVariant **value)
+{
+  switch (key)
+    {
+    case SVCB_KEY_MANDATORY:
+      *value = get_svcb_mandatory_value (src, end, value_length);
+      return TRUE;
+    case SVCB_KEY_ALPN:
+      *value = get_svcb_alpn_value (src, end, value_length);
+      return TRUE;
+    case SVCB_KEY_PORT:
+      {
+        guint16 port;
+        GETSHORT (port, src);
+        *value = g_variant_new_uint16 (port);
+        return TRUE;
+      }
+    case SVCB_KEY_ECH:
+      {
+        guint8 length;
+        gchar *base64_str;
+        GETSHORT (length, src);
+
+        if (length > (gsize) (end - src))
+          return FALSE;
+
+        base64_str = g_base64_encode (src, length);
+        *value = g_variant_new_take_string (base64_str);
+        return TRUE;
+      }
+    case SVCB_KEY_IPV4HINT:
+      *value = get_svcb_ipv4_hint_value (src, end, value_length);
+      return TRUE;
+    case SVCB_KEY_IPV6HINT:
+      *value = get_svcb_ipv6_hint_value (src, end, value_length);
+      return TRUE;
+    case SVCB_KEY_NO_DEFAULT_ALPN:
+      G_GNUC_FALLTHROUGH;
+    default:
+      {
+        gchar *string = g_strndup ((char *)src, value_length);
+        *value = g_variant_new_bytestring (string);
+        g_free (string);
+        return TRUE;
+      }
+    }
+}
+
+static GVariant *
+parse_res_https (guchar  *answer,
+                 guchar  *end,
+                 guchar **p)
+{
+  GVariant *variant;
+  gchar *target;
+  guint16 priority;
+  GVariantBuilder params_builder;
+
+  /* This response has two forms:
+   * if priority is 0 it is AliasForm and the string is
+   *   the alias target with nothing else.
+   * otherwise it is ServiceForm which is an alternative endpoint
+   *   and extra params are included.
+   *
+   * https://datatracker.ietf.org/doc/draft-ietf-dnsop-svcb-https/
+   */
+
+  GETSHORT (priority, *p);
+  target = get_uncompressed_domain (*p, end, p);
+
+  /* For AliasForm we just include an empty dict. */
+  g_variant_builder_init (&params_builder, G_VARIANT_TYPE ("a{sv}"));
+  if (priority != 0)
+    {
+      while (*p < end)
+        {
+          gchar *key_str;
+          GVariant *value = NULL;
+          guint16 key;
+          guint16 value_length;
+
+          GETSHORT (key, *p);
+          GETSHORT (value_length, *p);
+
+          if (value_length > (gsize) (end - *p))
+            {
+              *p = end;
+              break;
+            }
+
+          key_str = svcb_key_to_string (key);
+
+          if (get_svcb_value (key, value_length, *p, end, &value))
+            g_variant_builder_add (&params_builder, "{sv}", key_str, value);
+
+          *p += value_length;
+          g_free (key_str);
+        }
+    }
+
+  variant = g_variant_new ("(qsa{sv})", priority, target, &params_builder);
+  g_free (target);
+  return variant;
+}
+
 static gint
 g_resolver_record_type_to_rrtype (GResolverRecordType type)
 {
@@ -648,6 +928,8 @@ g_resolver_record_type_to_rrtype (GResolverRecordType type)
       return T_NS;
     case G_RESOLVER_RECORD_MX:
       return T_MX;
+    case G_RESOLVER_RECORD_HTTPS:
+      return T_HTTPS;
   }
   g_return_val_if_reached (-1);
 }
@@ -739,6 +1021,9 @@ g_resolver_records_from_res_query (const gchar      *rrname,
         case T_TXT:
           record = parse_res_txt (answer, p + rdlength, &p);
           break;
+        case T_HTTPS:
+          record = parse_res_https (answer, p + rdlength, &p);
+          break;
         default:
           g_warn_if_reached ();
           record = NULL;
@@ -761,6 +1046,10 @@ g_resolver_records_from_res_query (const gchar      *rrname,
 }
 
 #elif defined(G_OS_WIN32)
+
+#ifndef DNS_TYPE_HTTPS
+#define DNS_TYPE_HTTPS 65
+#endif
 
 static GVariant *
 parse_dns_srv (DNS_RECORD *rec)
@@ -830,6 +1119,8 @@ g_resolver_record_type_to_dnstype (GResolverRecordType type)
       return DNS_TYPE_NS;
     case G_RESOLVER_RECORD_MX:
       return DNS_TYPE_MX;
+    case G_RESOLVER_RECORD_HTTPS:
+      return DNS_TYPE_HTTPS;
   }
   g_return_val_if_reached (-1);
 }
