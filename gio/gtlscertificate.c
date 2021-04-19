@@ -658,7 +658,7 @@ g_tls_certificate_new_from_files (const gchar  *cert_file,
  *
  * Where the token’s layout is:
  *
- * ```
+ * |[
  * Object 0:
  *   URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01;object=private%20key;type=private
  *   Type: Private key (RSA-2048)
@@ -668,7 +668,7 @@ g_tls_certificate_new_from_files (const gchar  *cert_file,
  *   URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01;object=Certificate%20for%20Authentication;type=cert
  *   Type: X.509 Certificate (RSA-2048)
  *   ID: 01
- * ```
+ * ]|
  *
  * In this case the certificate and private key would both be detected and used as expected.
  * @pkcs_uri may also just reference an X.509 certificate object and then optionally
