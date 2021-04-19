@@ -74,6 +74,14 @@ if host_system != 'windows'
     endif
   endif
 
+  # dn_comp()
+  if cc.links('''#include <resolv.h>
+                 int main (int argc, char ** argv) {
+                   return dn_comp(NULL, NULL, 0, NULL, NULL) == -1;
+                 } ''', args : network_args, name : 'dn_comp()')
+    glib_conf.set('HAVE_DN_COMP', 1)
+  endif
+
   # res_nclose()
   if cc.links('''#include <sys/types.h>
                  #include <netinet/in.h>
