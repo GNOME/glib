@@ -531,6 +531,28 @@ do_spawn_directly (gint                 *exit_status,
 }
 
 static gboolean
+might_be_console_process (void)
+{
+  // we should always fail to attach ourself to a console (because we're
+  // either already attached, or we do not have a console)
+  gboolean attached_to_self = AttachConsole (GetCurrentProcessId ());
+  g_return_val_if_fail (!attached_to_self, TRUE);
+
+  switch (GetLastError ())
+    {
+    // current process is already attached to a console
+    case ERROR_ACCESS_DENIED:
+      return TRUE;
+    // current process does not have a console
+    case ERROR_INVALID_HANDLE:
+      return FALSE;
+    // we should not get ERROR_INVALID_PARAMETER
+    }
+
+  g_return_val_if_reached (FALSE);
+}
+
+static gboolean
 fork_exec (gint                  *exit_status,
            gboolean               do_return_handle,
            const gchar           *working_directory,
@@ -625,7 +647,7 @@ fork_exec (gint                  *exit_status,
     goto cleanup_and_fail;
   
   new_argv = g_new (char *, argc + 1 + ARG_COUNT);
-  if (GetConsoleWindow () != NULL)
+  if (might_be_console_process ())
     helper_process = HELPER_PROCESS "-console.exe";
   else
     helper_process = HELPER_PROCESS ".exe";
