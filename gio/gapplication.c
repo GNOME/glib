@@ -2578,6 +2578,13 @@ g_application_run (GApplication  *application,
 
   if (application->priv->impl)
     {
+      if (application->priv->is_registered)
+        {
+          application->priv->is_registered = FALSE;
+
+          g_object_notify (G_OBJECT (application), "is-registered");
+        }
+
       g_application_impl_flush (application->priv->impl);
       g_application_impl_destroy (application->priv->impl);
       application->priv->impl = NULL;
