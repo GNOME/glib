@@ -135,7 +135,7 @@ _topendir (const _TCHAR *szPath)
   nd->dd_dir.d_ino = 0;
   nd->dd_dir.d_reclen = 0;
   nd->dd_dir.d_namlen = 0;
-  memset (nd->dd_dir.d_name, 0, FILENAME_MAX);
+  memset (nd->dd_dir.d_name, 0, sizeof (nd->dd_dir.d_name));
 
   return nd;
 }
