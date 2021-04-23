@@ -66,9 +66,9 @@ typedef struct
   GHashTable        *system_locks; /* Used as a set, owning the strings it contains */
 
   gchar             *prefix;
-  gint               prefix_len;
+  gsize              prefix_len;
   gchar             *root_group;
-  gint               root_group_len;
+  gsize              root_group_len;
 
   GFile             *file;
   GFileMonitor      *file_monitor;
@@ -173,7 +173,9 @@ convert_path (GKeyfileSettingsBackend  *kfsb,
       /* if a root_group was specified, make sure the user hasn't given
        * a path that ghosts that group name
        */
-      if (last_slash != NULL && (last_slash - key) == kfsb->root_group_len && memcmp (key, kfsb->root_group, last_slash - key) == 0)
+      if (last_slash != NULL && last_slash - key >= 0 &&
+          (gsize) (last_slash - key) == kfsb->root_group_len &&
+          memcmp (key, kfsb->root_group, last_slash - key) == 0)
         return FALSE;
     }
   else
