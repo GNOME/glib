@@ -1039,7 +1039,7 @@ static void        *WinVEH_handle = NULL;
 
 #define             DEBUGGER_BUFFER_SIZE (MAX_PATH + 1)
 /* This is the debugger that we'll run on crash */
-static char         debugger[DEBUGGER_BUFFER_SIZE];
+static wchar_t      debugger[DEBUGGER_BUFFER_SIZE];
 
 static gsize        number_of_exceptions_to_catch = 0;
 static DWORD       *exceptions_to_catch = NULL;
@@ -1101,14 +1101,14 @@ copy_chars (char       *buffer,
  * as the handler is installed. Therefore, it's imperative that
  * it does as little as possible. Preferably, all the work that can be
  * done in advance (when the program is not crashing yet) should be done
- * in advance. And this function certainly does not need to use Unicode.
+ * in advance.
  */
 static LONG __stdcall
 g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 {
   EXCEPTION_RECORD    *er;
   gsize                i;
-  STARTUPINFOA         si;
+  STARTUPINFOW         si;
   PROCESS_INFORMATION  pi;
 #define ITOA_BUFFER_SIZE 100
   char                 itoa_buffer[ITOA_BUFFER_SIZE];
@@ -1147,7 +1147,7 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
   si.cb = sizeof (si);
 
   /* Run the debugger */
-  if (0 != CreateProcessA (NULL, debugger, NULL, NULL, TRUE, debugger_spawn_flags, NULL, NULL, &si, &pi))
+  if (0 != CreateProcessW (NULL, debugger, NULL, NULL, TRUE, debugger_spawn_flags, NULL, NULL, &si, &pi))
     {
       CloseHandle (pi.hProcess);
       CloseHandle (pi.hThread);
@@ -1229,25 +1229,25 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 }
 
 static gsize
-parse_catch_list (const char *catch_buffer,
-                  DWORD      *exceptions,
-                  gsize       num_exceptions)
+parse_catch_list (const wchar_t *catch_buffer,
+                  DWORD         *exceptions,
+                  gsize          num_exceptions)
 {
-  const char *catch_list = catch_buffer;
-  gsize       result = 0;
-  gsize       i = 0;
+  const wchar_t *catch_list = catch_buffer;
+  gsize          result = 0;
+  gsize          i = 0;
 
   while (catch_list != NULL &&
          catch_list[0] != 0)
     {
       unsigned long  catch_code;
-      char          *end;
+      wchar_t       *end;
       errno = 0;
-      catch_code = strtoul (catch_list, &end, 16);
+      catch_code = wcstoul (catch_list, &end, 16);
       if (errno != NO_ERROR)
         break;
       catch_list = end;
-      if (catch_list != NULL && catch_list[0] == ',')
+      if (catch_list != NULL && catch_list[0] == L',')
         catch_list++;
       if (exceptions && i < num_exceptions)
         exceptions[i++] = catch_code;
@@ -1259,9 +1259,9 @@ parse_catch_list (const char *catch_buffer,
 void
 g_crash_handler_win32_init (void)
 {
-  char         debugger_env[DEBUGGER_BUFFER_SIZE];
+  wchar_t      debugger_env[DEBUGGER_BUFFER_SIZE];
 #define CATCH_BUFFER_SIZE 1024
-  char         catch_buffer[CATCH_BUFFER_SIZE];
+  wchar_t      catch_buffer[CATCH_BUFFER_SIZE];
   SECURITY_ATTRIBUTES  sa;
 
   if (WinVEH_handle != NULL)
@@ -1273,7 +1273,7 @@ g_crash_handler_win32_init (void)
    * code. See: http://www.windows-tech.info/13/785f590867bd6316.php
    */
   debugger_env[0] = 0;
-  if (!GetEnvironmentVariableA ("G_DEBUGGER", debugger_env, DEBUGGER_BUFFER_SIZE))
+  if (!GetEnvironmentVariableW (L"G_DEBUGGER", debugger_env, DEBUGGER_BUFFER_SIZE))
     return;
 
   /* Create an inheritable event */
@@ -1283,19 +1283,19 @@ g_crash_handler_win32_init (void)
   debugger_wakeup_event = CreateEvent (&sa, FALSE, FALSE, NULL);
 
   /* Put process ID and event handle into debugger commandline */
-  if (!_g_win32_subst_pid_and_event (debugger, G_N_ELEMENTS (debugger),
-                                     debugger_env, GetCurrentProcessId (),
-                                     (guintptr) debugger_wakeup_event))
+  if (!_g_win32_subst_pid_and_event_w (debugger, G_N_ELEMENTS (debugger),
+                                       debugger_env, GetCurrentProcessId (),
+                                       (guintptr) debugger_wakeup_event))
     {
       CloseHandle (debugger_wakeup_event);
       debugger_wakeup_event = 0;
       debugger[0] = 0;
       return;
     }
-  debugger[MAX_PATH] = '\0';
+  debugger[MAX_PATH] = L'\0';
 
   catch_buffer[0] = 0;
-  if (GetEnvironmentVariableA ("G_VEH_CATCH", catch_buffer, CATCH_BUFFER_SIZE))
+  if (GetEnvironmentVariableW (L"G_VEH_CATCH", catch_buffer, CATCH_BUFFER_SIZE))
     {
       number_of_exceptions_to_catch = parse_catch_list (catch_buffer, NULL, 0);
       if (number_of_exceptions_to_catch > 0)
@@ -1305,7 +1305,7 @@ g_crash_handler_win32_init (void)
         }
     }
 
-  if (GetEnvironmentVariableA ("G_DEBUGGER_OLD_CONSOLE", (char *) &debugger_spawn_flags, 1))
+  if (GetEnvironmentVariableW (L"G_DEBUGGER_OLD_CONSOLE", (wchar_t *) &debugger_spawn_flags, 1))
     debugger_spawn_flags = 0;
   else
     debugger_spawn_flags = CREATE_NEW_CONSOLE;
