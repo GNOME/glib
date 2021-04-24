@@ -566,6 +566,106 @@ test_weak_ref (void)
   g_free (dynamic_weak);
 }
 
+G_DECLARE_FINAL_TYPE (WeakReffedObject, weak_reffed_object,
+                      WEAK, REFFED_OBJECT, GObject)
+
+struct _WeakReffedObject
+{
+  GObject parent;
+
+  GWeakRef *weak_ref;
+};
+
+G_DEFINE_TYPE (WeakReffedObject, weak_reffed_object, G_TYPE_OBJECT)
+
+static void
+weak_reffed_object_dispose (GObject *object)
+{
+  WeakReffedObject *weak_reffed = WEAK_REFFED_OBJECT (object);
+
+  g_assert_cmpint (object->ref_count, ==, 1);
+
+  g_weak_ref_set (weak_reffed->weak_ref, object);
+
+  G_OBJECT_CLASS (weak_reffed_object_parent_class)->dispose (object);
+}
+
+static void
+weak_reffed_object_init (WeakReffedObject *connector)
+{
+}
+
+static void
+weak_reffed_object_class_init (WeakReffedObjectClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->dispose = weak_reffed_object_dispose;
+}
+
+static void
+test_weak_ref_on_dispose (void)
+{
+  WeakReffedObject *obj;
+  GWeakRef weak = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2390");
+  g_test_summary ("Test that a weak ref set during dispose vfunc is cleared");
+
+  g_weak_ref_init (&weak, NULL);
+
+  obj = g_object_new (weak_reffed_object_get_type (), NULL);
+  obj->weak_ref = &weak;
+
+  g_assert_cmpint (G_OBJECT (obj)->ref_count, ==, 1);
+  g_clear_object (&obj);
+
+  g_assert_null (g_weak_ref_get (&weak));
+}
+
+static void
+on_weak_ref_toggle_notify (gpointer data,
+                           GObject *object,
+                           gboolean is_last_ref)
+{
+  GWeakRef *weak = data;
+
+  if (is_last_ref)
+    g_weak_ref_set (weak, object);
+}
+
+static void
+on_weak_ref_toggle_notify_disposed (gpointer data,
+                                    GObject *object)
+{
+  g_assert_cmpint (object->ref_count, ==, 1);
+
+  g_object_ref (object);
+  g_object_unref (object);
+}
+
+static void
+test_weak_ref_on_toggle_notify (void)
+{
+  GObject *obj;
+  GWeakRef weak = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2390");
+  g_test_summary ("Test that a weak ref set on toggle notify is cleared");
+
+  g_weak_ref_init (&weak, NULL);
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+  g_object_add_toggle_ref (obj, on_weak_ref_toggle_notify, &weak);
+  g_object_weak_ref (obj, on_weak_ref_toggle_notify_disposed, NULL);
+  g_object_unref (obj);
+
+  g_assert_cmpint (obj->ref_count, ==, 1);
+  g_clear_object (&obj);
+
+  g_assert_null (g_weak_ref_get (&weak));
+}
+
 typedef struct
 {
   gboolean should_be_last;
@@ -826,6 +926,8 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-pointer/set", test_weak_pointer_set);
   g_test_add_func ("/object/weak-pointer/set-function", test_weak_pointer_set_function);
   g_test_add_func ("/object/weak-ref", test_weak_ref);
+  g_test_add_func ("/object/weak-ref/on-dispose", test_weak_ref_on_dispose);
+  g_test_add_func ("/object/weak-ref/on-toggle-notify", test_weak_ref_on_toggle_notify);
   g_test_add_func ("/object/toggle-ref", test_toggle_ref);
   g_test_add_func ("/object/qdata", test_object_qdata);
   g_test_add_func ("/object/qdata2", test_object_qdata2);
