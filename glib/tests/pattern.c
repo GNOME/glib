@@ -176,10 +176,16 @@ test_match (gconstpointer d)
   g_assert_cmpint (g_pattern_match_simple (test->pattern, test->string), ==, test->match);
 
   p = g_pattern_spec_new (test->pattern);
+  g_assert_cmpint (g_pattern_spec_match_string (p, test->string), ==, test->match);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_assert_cmpint (g_pattern_match_string (p, test->string), ==, test->match);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   r = g_utf8_strreverse (test->string, -1);
+  g_assert_cmpint (g_pattern_spec_match (p, strlen (test->string), test->string, r), ==, test->match);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_assert_cmpint (g_pattern_match (p, strlen (test->string), test->string, r), ==, test->match);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_free (r);
 
   g_pattern_spec_free (p);

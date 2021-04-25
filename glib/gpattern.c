@@ -158,7 +158,7 @@ g_pattern_ph_match (const gchar *match_pattern,
 }
 
 /**
- * g_pattern_match:
+ * g_pattern_spec_match:
  * @pspec: a #GPatternSpec
  * @string_length: the length of @string (in bytes, i.e. strlen(),
  *     not g_utf8_strlen())
@@ -184,12 +184,14 @@ g_pattern_ph_match (const gchar *match_pattern,
  * g_utf8_strreverse() function to reverse UTF-8 encoded strings.
  *
  * Returns: %TRUE if @string matches @pspec
+ *
+ * Since: 2.70
  **/
 gboolean
-g_pattern_match (GPatternSpec *pspec,
-		 guint         string_length,
-		 const gchar  *string,
-		 const gchar  *string_reversed)
+g_pattern_spec_match (GPatternSpec *pspec,
+                      gsize string_length,
+                      const gchar *string,
+                      const gchar *string_reversed)
 {
   g_return_val_if_fail (pspec != NULL, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
@@ -236,6 +238,44 @@ g_pattern_match (GPatternSpec *pspec,
       g_return_val_if_fail (pspec->match_type < G_MATCH_LAST, FALSE);
       return FALSE;
     }
+}
+
+/**
+ * g_pattern_match: (skip)
+ * @pspec: a #GPatternSpec
+ * @string_length: the length of @string (in bytes, i.e. strlen(),
+ *     not g_utf8_strlen())
+ * @string: the UTF-8 encoded string to match
+ * @string_reversed: (nullable): the reverse of @string or %NULL
+ *
+ * Matches a string against a compiled pattern. Passing the correct
+ * length of the string given is mandatory. The reversed string can be
+ * omitted by passing %NULL, this is more efficient if the reversed
+ * version of the string to be matched is not at hand, as
+ * g_pattern_match() will only construct it if the compiled pattern
+ * requires reverse matches.
+ *
+ * Note that, if the user code will (possibly) match a string against a
+ * multitude of patterns containing wildcards, chances are high that
+ * some patterns will require a reversed string. In this case, it's
+ * more efficient to provide the reversed string to avoid multiple
+ * constructions thereof in the various calls to g_pattern_match().
+ *
+ * Note also that the reverse of a UTF-8 encoded string can in general
+ * not be obtained by g_strreverse(). This works only if the string
+ * does not contain any multibyte characters. GLib offers the
+ * g_utf8_strreverse() function to reverse UTF-8 encoded strings.
+ *
+ * Returns: %TRUE if @string matches @pspec
+ * Deprecated: 2.70: Use g_pattern_spec_match() instead
+ **/
+gboolean
+g_pattern_match (GPatternSpec *pspec,
+                 guint string_length,
+                 const gchar *string,
+                 const gchar *string_reversed)
+{
+  return g_pattern_spec_match (pspec, string_length, string, string_reversed);
 }
 
 /**
@@ -416,7 +456,7 @@ g_pattern_spec_equal (GPatternSpec *pspec1,
 }
 
 /**
- * g_pattern_match_string:
+ * g_pattern_spec_match_string:
  * @pspec: a #GPatternSpec
  * @string: the UTF-8 encoded string to match
  *
@@ -425,15 +465,36 @@ g_pattern_spec_equal (GPatternSpec *pspec1,
  * g_pattern_match() instead while supplying the reversed string.
  *
  * Returns: %TRUE if @string matches @pspec
+ *
+ * Since: 2.70
  **/
 gboolean
-g_pattern_match_string (GPatternSpec *pspec,
-			const gchar  *string)
+g_pattern_spec_match_string (GPatternSpec *pspec,
+                             const gchar *string)
 {
   g_return_val_if_fail (pspec != NULL, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
 
-  return g_pattern_match (pspec, strlen (string), string, NULL);
+  return g_pattern_spec_match (pspec, strlen (string), string, NULL);
+}
+
+/**
+ * g_pattern_match_string: (skip)
+ * @pspec: a #GPatternSpec
+ * @string: the UTF-8 encoded string to match
+ *
+ * Matches a string against a compiled pattern. If the string is to be
+ * matched against more than one pattern, consider using
+ * g_pattern_match() instead while supplying the reversed string.
+ *
+ * Returns: %TRUE if @string matches @pspec
+ * Deprecated: 2.70: Use g_pattern_spec_match_string() instead
+ **/
+gboolean
+g_pattern_match_string (GPatternSpec *pspec,
+                        const gchar *string)
+{
+  return g_pattern_spec_match_string (pspec, string);
 }
 
 /**
@@ -459,7 +520,7 @@ g_pattern_match_simple (const gchar *pattern,
   g_return_val_if_fail (string != NULL, FALSE);
 
   pspec = g_pattern_spec_new (pattern);
-  ergo = g_pattern_match (pspec, strlen (string), string, NULL);
+  ergo = g_pattern_spec_match (pspec, strlen (string), string, NULL);
   g_pattern_spec_free (pspec);
 
   return ergo;
