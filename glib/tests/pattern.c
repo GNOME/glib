@@ -51,12 +51,12 @@ struct _CompileTest
   guint min;
 };
 
-static CompileTest compile_tests[] =
-{
+static CompileTest compile_tests[] = {
   { "*A?B*", G_MATCH_ALL, "*A?B*", 3 },
   { "ABC*DEFGH", G_MATCH_ALL_TAIL, "HGFED*CBA", 8 },
   { "ABCDEF*GH", G_MATCH_ALL, "ABCDEF*GH", 8 },
   { "ABC**?***??**DEF*GH", G_MATCH_ALL, "ABC*???DEF*GH", 11 },
+  { "**ABC***?🤌DEF**", G_MATCH_ALL, "*ABC*?🤌DEF*", 11 },
   { "*A?AA", G_MATCH_ALL_TAIL, "AA?A*", 4 },
   { "ABCD*", G_MATCH_HEAD, "ABCD", 4 },
   { "*ABCD", G_MATCH_TAIL, "ABCD", 4 },
