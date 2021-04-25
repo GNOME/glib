@@ -22,11 +22,11 @@
 #include "gpattern.h"
 
 #include "gmacros.h"
-#include "gmessages.h"
 #include "gmem.h"
+#include "gmessages.h"
 #include "gstrfuncs.h"
 #include "gunicode.h"
-#include "gutils.h" 
+#include "gutils.h"
 
 /**
  * SECTION:patterns
