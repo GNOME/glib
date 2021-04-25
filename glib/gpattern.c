@@ -24,6 +24,7 @@
 #include "gmacros.h"
 #include "gmessages.h"
 #include "gmem.h"
+#include "gstrfuncs.h"
 #include "gunicode.h"
 #include "gutils.h" 
 
@@ -351,6 +352,30 @@ g_pattern_spec_new (const gchar *pattern)
     g_free (tmp);
   }
   return pspec;
+}
+
+/**
+ * g_pattern_spec_copy:
+ * @pspec: a #GPatternSpec
+ *
+ * Copies @pspec in a new #GPatternSpec.
+ *
+ * Returns: (transfer full): a copy of @pspec.
+ *
+ * Since: 2.70
+ **/
+GPatternSpec *
+g_pattern_spec_copy (GPatternSpec *pspec)
+{
+  GPatternSpec *pspec_copy;
+
+  g_return_val_if_fail (pspec != NULL, NULL);
+
+  pspec_copy = g_new (GPatternSpec, 1);
+  *pspec_copy = *pspec;
+  pspec_copy->pattern = g_strndup (pspec->pattern, pspec->pattern_length);
+
+  return pspec_copy;
 }
 
 /**

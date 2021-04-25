@@ -33,6 +33,8 @@ GLIB_AVAILABLE_IN_ALL
 GPatternSpec* g_pattern_spec_new       (const gchar  *pattern);
 GLIB_AVAILABLE_IN_ALL
 void          g_pattern_spec_free      (GPatternSpec *pspec);
+GLIB_AVAILABLE_IN_2_70
+GPatternSpec *g_pattern_spec_copy (GPatternSpec *pspec);
 GLIB_AVAILABLE_IN_ALL
 gboolean      g_pattern_spec_equal     (GPatternSpec *pspec1,
 					GPatternSpec *pspec2);

@@ -84,6 +84,24 @@ test_compilation (gconstpointer d)
   g_pattern_spec_free (spec);
 }
 
+static void
+test_copy (gconstpointer d)
+{
+  const CompileTest *test = d;
+  GPatternSpec *p1, *p2;
+
+  p1 = g_pattern_spec_new (test->src);
+  p2 = g_pattern_spec_copy (p1);
+
+  g_assert_cmpint (p2->match_type, ==, test->match_type);
+  g_assert_cmpstr (p2->pattern, ==, test->pattern);
+  g_assert_cmpint (p2->pattern_length, ==, strlen (p1->pattern));
+  g_assert_cmpint (p2->min_length, ==, test->min);
+
+  g_pattern_spec_free (p1);
+  g_pattern_spec_free (p2);
+}
+
 typedef struct _MatchTest MatchTest;
 
 struct _MatchTest
@@ -219,6 +237,13 @@ main (int argc, char** argv)
     {
       path = g_strdup_printf ("/pattern/compile/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &compile_tests[i], test_compilation);
+      g_free (path);
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (compile_tests); i++)
+    {
+      path = g_strdup_printf ("/pattern/copy/%" G_GSIZE_FORMAT, i);
+      g_test_add_data_func (path, &compile_tests[i], test_copy);
       g_free (path);
     }
 
