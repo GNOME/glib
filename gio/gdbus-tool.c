@@ -145,7 +145,7 @@ modify_argv0_for_command (gint *argc, gchar **argv[], const gchar *command)
   remove_arg (1, argc, argv);
 
   program_name = g_path_get_basename ((*argv)[0]);
-  s = g_strdup_printf ("%s %s", (*argv)[0], command);
+  s = g_strdup_printf ("%s %s", program_name, command);
   (*argv)[0] = s;
   g_free (program_name);
 }
