@@ -576,6 +576,81 @@ test_quit (void)
   g_free (binpath);
 }
 
+typedef struct
+{
+  gboolean shutdown;
+  GParamSpec *notify_spec; /* (owned) (nullable) */
+} RegisteredData;
+
+static void
+on_registered_shutdown (GApplication *app,
+                        gpointer user_data)
+{
+  RegisteredData *registered_data = user_data;
+
+  registered_data->shutdown = TRUE;
+}
+
+static void
+on_registered_notify (GApplication *app,
+                      GParamSpec *spec,
+                      gpointer user_data)
+{
+  RegisteredData *registered_data = user_data;
+  registered_data->notify_spec = g_param_spec_ref (spec);
+
+  if (g_application_get_is_registered (app))
+    g_assert_false (registered_data->shutdown);
+  else
+    g_assert_true (registered_data->shutdown);
+}
+
+static void
+test_registered (void)
+{
+  char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+  gchar *argv[] = { binpath, NULL };
+  RegisteredData registered_data = { FALSE, NULL };
+  GApplication *app;
+
+  app = g_application_new (NULL, G_APPLICATION_FLAGS_NONE);
+  g_signal_connect (app, "activate", G_CALLBACK (noappid_activate), NULL);
+  g_signal_connect (app, "shutdown", G_CALLBACK (on_registered_shutdown), &registered_data);
+  g_signal_connect (app, "notify::is-registered", G_CALLBACK (on_registered_notify), &registered_data);
+
+  g_assert_null (registered_data.notify_spec);
+
+  g_assert_true (g_application_register (app, NULL, NULL));
+  g_assert_true (g_application_get_is_registered (app));
+
+  g_assert_nonnull (registered_data.notify_spec);
+  g_assert_cmpstr (registered_data.notify_spec->name, ==, "is-registered");
+  g_clear_pointer (&registered_data.notify_spec, g_param_spec_unref);
+
+  g_assert_false (registered_data.shutdown);
+
+  g_application_run (app, 1, argv);
+
+  g_assert_true (registered_data.shutdown);
+  g_assert_false (g_application_get_is_registered (app));
+  g_assert_nonnull (registered_data.notify_spec);
+  g_assert_cmpstr (registered_data.notify_spec->name, ==, "is-registered");
+  g_clear_pointer (&registered_data.notify_spec, g_param_spec_unref);
+
+  /* Register it again */
+  registered_data.shutdown = FALSE;
+  g_assert_true (g_application_register (app, NULL, NULL));
+  g_assert_true (g_application_get_is_registered (app));
+  g_assert_nonnull (registered_data.notify_spec);
+  g_assert_cmpstr (registered_data.notify_spec->name, ==, "is-registered");
+  g_clear_pointer (&registered_data.notify_spec, g_param_spec_unref);
+  g_assert_false (registered_data.shutdown);
+
+  g_object_unref (app);
+
+  g_free (binpath);
+}
+
 static void
 on_activate (GApplication *app)
 {
@@ -1136,6 +1211,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/properties", properties);
   g_test_add_func ("/gapplication/app-id", appid);
   g_test_add_func ("/gapplication/quit", test_quit);
+  g_test_add_func ("/gapplication/registered", test_registered);
   g_test_add_func ("/gapplication/local-actions", test_local_actions);
 /*  g_test_add_func ("/gapplication/remote-actions", test_remote_actions); */
   g_test_add_func ("/gapplication/local-command-line", test_local_command_line);
