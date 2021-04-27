@@ -645,6 +645,29 @@ test_boxed_tree (void)
   g_value_unset (&value);
 }
 
+static void
+test_boxed_pattern_spec (void)
+{
+  GPatternSpec *ps, *ps2;
+  GValue value = G_VALUE_INIT;
+
+  g_value_init (&value, G_TYPE_PATTERN_SPEC);
+  g_assert_true (G_VALUE_HOLDS_BOXED (&value));
+
+  ps = g_pattern_spec_new ("*abc*?cde");
+  g_value_take_boxed (&value, ps);
+
+  ps2 = g_value_get_boxed (&value);
+  g_assert_true (ps == ps2);
+
+  ps2 = g_value_dup_boxed (&value);
+  g_assert_true (ps != ps2);
+  g_assert_true (g_pattern_spec_equal (ps, ps2));
+  g_pattern_spec_free (ps2);
+
+  g_value_unset (&value);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -675,6 +698,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/boxed/thread", test_boxed_thread);
   g_test_add_func ("/boxed/checksum", test_boxed_checksum);
   g_test_add_func ("/boxed/tree", test_boxed_tree);
+  g_test_add_func ("/boxed/patternspec", test_boxed_pattern_spec);
 
   return g_test_run ();
 }

@@ -51,12 +51,12 @@ struct _CompileTest
   guint min;
 };
 
-static CompileTest compile_tests[] =
-{
+static CompileTest compile_tests[] = {
   { "*A?B*", G_MATCH_ALL, "*A?B*", 3 },
   { "ABC*DEFGH", G_MATCH_ALL_TAIL, "HGFED*CBA", 8 },
   { "ABCDEF*GH", G_MATCH_ALL, "ABCDEF*GH", 8 },
   { "ABC**?***??**DEF*GH", G_MATCH_ALL, "ABC*???DEF*GH", 11 },
+  { "**ABC***?🤌DEF**", G_MATCH_ALL, "*ABC*?🤌DEF*", 11 },
   { "*A?AA", G_MATCH_ALL_TAIL, "AA?A*", 4 },
   { "ABCD*", G_MATCH_HEAD, "ABCD", 4 },
   { "*ABCD", G_MATCH_TAIL, "ABCD", 4 },
@@ -82,6 +82,24 @@ test_compilation (gconstpointer d)
   g_assert_cmpint (spec->min_length, ==, test->min);
 
   g_pattern_spec_free (spec);
+}
+
+static void
+test_copy (gconstpointer d)
+{
+  const CompileTest *test = d;
+  GPatternSpec *p1, *p2;
+
+  p1 = g_pattern_spec_new (test->src);
+  p2 = g_pattern_spec_copy (p1);
+
+  g_assert_cmpint (p2->match_type, ==, test->match_type);
+  g_assert_cmpstr (p2->pattern, ==, test->pattern);
+  g_assert_cmpint (p2->pattern_length, ==, strlen (p1->pattern));
+  g_assert_cmpint (p2->min_length, ==, test->min);
+
+  g_pattern_spec_free (p1);
+  g_pattern_spec_free (p2);
 }
 
 typedef struct _MatchTest MatchTest;
@@ -158,10 +176,16 @@ test_match (gconstpointer d)
   g_assert_cmpint (g_pattern_match_simple (test->pattern, test->string), ==, test->match);
 
   p = g_pattern_spec_new (test->pattern);
+  g_assert_cmpint (g_pattern_spec_match_string (p, test->string), ==, test->match);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_assert_cmpint (g_pattern_match_string (p, test->string), ==, test->match);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   r = g_utf8_strreverse (test->string, -1);
+  g_assert_cmpint (g_pattern_spec_match (p, strlen (test->string), test->string, r), ==, test->match);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_assert_cmpint (g_pattern_match (p, strlen (test->string), test->string, r), ==, test->match);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_free (r);
 
   g_pattern_spec_free (p);
@@ -219,6 +243,13 @@ main (int argc, char** argv)
     {
       path = g_strdup_printf ("/pattern/compile/%" G_GSIZE_FORMAT, i);
       g_test_add_data_func (path, &compile_tests[i], test_compilation);
+      g_free (path);
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (compile_tests); i++)
+    {
+      path = g_strdup_printf ("/pattern/copy/%" G_GSIZE_FORMAT, i);
+      g_test_add_data_func (path, &compile_tests[i], test_copy);
       g_free (path);
     }
 
