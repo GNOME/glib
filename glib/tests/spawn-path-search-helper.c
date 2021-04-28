@@ -79,7 +79,7 @@ main (int    argc,
     { "slow-path", '\0',
       G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, &slow_path,
       "Use a child-setup function to avoid the posix_spawn fast path", NULL },
-    { NULL }
+    G_OPTION_ENTRY_NULL
   };
   GError *error = NULL;
   int ret = 1;
