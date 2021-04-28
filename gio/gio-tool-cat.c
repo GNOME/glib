@@ -39,7 +39,7 @@
 
 
 static const GOptionEntry entries[] = {
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 /* 256k minus malloc overhead */
