@@ -155,6 +155,12 @@ gboolean              g_tls_connection_handshake_finish            (GTlsConnecti
 								    GAsyncResult         *result,
 								    GError              **error);
 
+GLIB_AVAILABLE_IN_2_70
+GTlsProtocolVersion   g_tls_connection_get_protocol_version        (GTlsConnection       *conn);
+
+GLIB_AVAILABLE_IN_2_70
+gchar *               g_tls_connection_get_ciphersuite_name        (GTlsConnection       *conn);
+
 /**
  * G_TLS_ERROR:
  *

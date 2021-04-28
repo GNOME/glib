@@ -3667,16 +3667,19 @@ GTlsChannelBindingError
 <SUBSECTION>
 GTlsAuthenticationMode
 GTlsCertificateFlags
+GTlsProtocolVersion
 <SUBSECTION Standard>
 G_TYPE_TLS_AUTHENTICATION_MODE
 G_TYPE_TLS_CERTIFICATE_FLAGS
 G_TYPE_TLS_CHANNEL_BINDING_ERROR
 G_TYPE_TLS_ERROR
+G_TYPE_TLS_PROTOCOL_VERSION
 g_tls_authentication_mode_get_type
 g_tls_certificate_flags_get_type
 g_tls_channel_binding_error_get_type
 g_tls_channel_binding_error_quark
 g_tls_error_get_type
+g_tls_protocol_version_get_type
 </SECTION>
 
 <SECTION>
@@ -3758,6 +3761,8 @@ g_tls_connection_get_database
 g_tls_connection_set_database
 g_tls_connection_get_interaction
 g_tls_connection_set_interaction
+g_tls_connection_get_protocol_version
+g_tls_connection_get_ciphersuite_name
 <SUBSECTION>
 g_tls_connection_handshake
 g_tls_connection_handshake_async
@@ -3952,6 +3957,8 @@ g_dtls_connection_get_database
 g_dtls_connection_set_database
 g_dtls_connection_get_interaction
 g_dtls_connection_set_interaction
+g_dtls_connection_get_protocol_version
+g_dtls_connection_get_ciphersuite_name
 <SUBSECTION>
 g_dtls_connection_handshake
 g_dtls_connection_handshake_async

@@ -216,6 +216,12 @@ gboolean              g_dtls_connection_get_channel_binding_data    (GDtlsConnec
                                                                      GError                 **error);
 G_GNUC_END_IGNORE_DEPRECATIONS
 
+GLIB_AVAILABLE_IN_2_70
+GTlsProtocolVersion   g_dtls_connection_get_protocol_version        (GDtlsConnection       *conn);
+
+GLIB_AVAILABLE_IN_2_70
+gchar *               g_dtls_connection_get_ciphersuite_name        (GDtlsConnection       *conn);
+
 G_END_DECLS
 
 #endif /* __G_DTLS_CONNECTION_H__ */
