@@ -1100,7 +1100,8 @@ type_data_make_W (TypeNode              *node,
 	vtable = pnode->data->common.value_table;
       else
 	{
-	  static const GTypeValueTable zero_vtable = { NULL, };
+          static const GTypeValueTable zero_vtable =
+            { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
 	  
 	  value_table = &zero_vtable;
 	}
