@@ -1678,7 +1678,7 @@ g_scanner_get_token_i (GScanner	*scanner,
       
     case G_TOKEN_SYMBOL:
       if (scanner->config->symbol_2_token)
-	*token_p = (GTokenType) value_p->v_symbol;
+        *token_p = (GTokenType) ((size_t) value_p->v_symbol);
       break;
       
     case G_TOKEN_BINARY:
