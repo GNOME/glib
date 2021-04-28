@@ -268,7 +268,7 @@ Test test[] = {
   { "\x20\xed\xaf\xbf\xed\xb0\x80\x20", -1, 1, FALSE },
   { "\x20\xed\xaf\xbf\xed\xbf\xbf\x20", -1, 1, FALSE },
 
-  { NULL, }
+  { NULL, 0, 0, 0 }
 };
 
 static void
