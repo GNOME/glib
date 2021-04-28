@@ -47,7 +47,7 @@ static const GOptionEntry entries[] = {
   { "backup", 'b', 0, G_OPTION_ARG_NONE, &backup, N_("Backup existing destination files"), NULL },
   { "no-dereference", 'P', 0, G_OPTION_ARG_NONE, &no_dereference, N_("Never follow symbolic links"), NULL },
   { "default-permissions", 0, 0, G_OPTION_ARG_NONE, &default_permissions, N_("Use default permissions for the destination"), NULL },
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static gint64 start_time;
