@@ -3276,6 +3276,16 @@ toggle_refs_notify (GObject *object,
   ToggleRefStack tstack, *tstackptr;
 
   G_LOCK (toggle_refs_mutex);
+  /* If another thread removed the toggle reference on the object, while
+   * we were waiting here, there's nothing to notify.
+   * So let's check again if the object has toggle reference and in case return.
+   */
+  if (!OBJECT_HAS_TOGGLE_REF (object))
+    {
+      G_UNLOCK (toggle_refs_mutex);
+      return;
+    }
+
   tstackptr = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
   tstack = *tstackptr;
   G_UNLOCK (toggle_refs_mutex);
