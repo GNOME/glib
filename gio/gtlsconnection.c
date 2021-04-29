@@ -55,12 +55,7 @@
  * Since: 2.28
  */
 
-struct _GTlsConnectionPrivate
-{
-  gchar *negotiated_protocol;
-};
-
-G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GTlsConnection, g_tls_connection, G_TYPE_IO_STREAM)
+G_DEFINE_ABSTRACT_TYPE (GTlsConnection, g_tls_connection, G_TYPE_IO_STREAM)
 
 static void g_tls_connection_get_property (GObject    *object,
 					   guint       prop_id,
@@ -70,7 +65,6 @@ static void g_tls_connection_set_property (GObject      *object,
 					   guint         prop_id,
 					   const GValue *value,
 					   GParamSpec   *pspec);
-static void g_tls_connection_finalize (GObject *object);
 
 enum {
   ACCEPT_CERTIFICATE,
@@ -104,7 +98,6 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 
   gobject_class->get_property = g_tls_connection_get_property;
   gobject_class->set_property = g_tls_connection_set_property;
-  gobject_class->finalize = g_tls_connection_finalize;
 
   /**
    * GTlsConnection:base-io-stream:
@@ -411,17 +404,6 @@ g_tls_connection_set_property (GObject      *object,
 			       GParamSpec   *pspec)
 {
   G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-}
-
-static void
-g_tls_connection_finalize (GObject *object)
-{
-  GTlsConnection *conn = G_TLS_CONNECTION(object);
-  GTlsConnectionPrivate *priv = g_tls_connection_get_instance_private (conn);
-
-  g_clear_pointer (&priv->negotiated_protocol, g_free);
-
-  G_OBJECT_CLASS (g_tls_connection_parent_class)->finalize (object);
 }
 
 /**
@@ -871,31 +853,15 @@ g_tls_connection_set_advertised_protocols (GTlsConnection      *conn,
 const gchar *
 g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
 {
-  GTlsConnectionPrivate *priv;
-  gchar *protocol;
+  GTlsConnectionClass *class;
 
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
 
-  g_object_get (G_OBJECT (conn),
-                "negotiated-protocol", &protocol,
-                NULL);
+  class = G_TLS_CONNECTION_GET_CLASS (conn);
+  if (class->get_negotiated_protocol == NULL)
+    return NULL;
 
-  /*
-   * Cache the property internally so we can return a `const` pointer
-   * to the caller.
-   */
-  priv = g_tls_connection_get_instance_private (conn);
-  if (g_strcmp0 (priv->negotiated_protocol, protocol) != 0)
-    {
-      g_free (priv->negotiated_protocol);
-      priv->negotiated_protocol = protocol;
-    }
-  else
-    {
-      g_free (protocol);
-    }
-
-  return priv->negotiated_protocol;
+  return class->get_negotiated_protocol (conn);
 }
 
 /**

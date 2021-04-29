@@ -73,9 +73,11 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
                                   GError                 **error);
 G_GNUC_END_IGNORE_DEPRECATIONS
 
+  const gchar *(*get_negotiated_protocol) (GTlsConnection *conn);
+
   /*< private >*/
   /* Padding for future expansion */
-  gpointer padding[7];
+  gpointer padding[6];
 };
 
 GLIB_AVAILABLE_IN_ALL
