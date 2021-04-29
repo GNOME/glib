@@ -728,7 +728,7 @@ test_64bit (void)
   /* However, gcc doesn't know about this, so we need to disable printf
    * format warnings...
    */
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+#if G_GNUC_CHECK_VERSION(4, 6)
 _Pragma ("GCC diagnostic push")
 _Pragma ("GCC diagnostic ignored \"-Wformat\"")
 _Pragma ("GCC diagnostic ignored \"-Wformat-extra-args\"")
@@ -766,7 +766,7 @@ _Pragma ("GCC diagnostic ignored \"-Wformat-extra-args\"")
   g_assert_cmpint (res, ==, 5);
   g_assert_cmpstr (buf, ==, "1E240");
 
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+#if G_GNUC_CHECK_VERSION(4, 6)
 _Pragma ("GCC diagnostic pop")
 #endif
 
@@ -819,7 +819,7 @@ test_64bit2_win32 (void)
   /* However, gcc doesn't know about this, so we need to disable printf
    * format warnings...
    */
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+#if G_GNUC_CHECK_VERSION(4, 6)
 _Pragma ("GCC diagnostic push")
 _Pragma ("GCC diagnostic ignored \"-Wformat\"")
 _Pragma ("GCC diagnostic ignored \"-Wformat-extra-args\"")
@@ -849,7 +849,7 @@ _Pragma ("GCC diagnostic ignored \"-Wformat-extra-args\"")
   res = g_printf ("%" "ll" "X\n", (gint64)123456);
   g_assert_cmpint (res, ==, 6);
 
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+#if G_GNUC_CHECK_VERSION(4, 6)
 _Pragma ("GCC diagnostic pop")
 #endif
 }

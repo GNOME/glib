@@ -22,6 +22,7 @@
 
 #include "gbitlock.h"
 
+#include <glib/gmacros.h>
 #include <glib/gmessages.h>
 #include <glib/gatomic.h>
 #include <glib/gslist.h>
@@ -179,7 +180,7 @@ g_futex_wake (const volatile gint *address)
 static volatile gint g_bit_lock_contended[CONTENTION_CLASSES];
 
 #if (defined (i386) || defined (__amd64__))
-  #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+  #if G_GNUC_CHECK_VERSION(4, 5)
     #define USE_ASM_GOTO 1
   #endif
 #endif
