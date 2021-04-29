@@ -122,7 +122,12 @@ test_dynamic_iface_register (GTypeModule *module)
       (GBaseInitFunc)	   NULL,
       (GBaseFinalizeFunc)  NULL,				
       (GClassInitFunc)     test_dynamic_iface_default_init,
-      (GClassFinalizeFunc) test_dynamic_iface_default_finalize
+      (GClassFinalizeFunc) test_dynamic_iface_default_finalize,
+      NULL,
+      0,
+      0,
+      NULL,
+      NULL
     };							
 
   test_dynamic_iface_type = g_type_module_register_type (module, G_TYPE_INTERFACE,
