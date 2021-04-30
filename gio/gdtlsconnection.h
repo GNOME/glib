@@ -46,7 +46,8 @@ typedef struct _GDtlsConnectionInterface GDtlsConnectionInterface;
  * @shutdown_async: Start an asynchronous shutdown operation.
  * @shutdown_finish: Finish an asynchronous shutdown operation.
  * @set_advertised_protocols: Set APLN protocol list
- * @get_negotiated_protocol: Retrieve ALPN-negotiated protocol
+ * @get_negotiated_protocol: Get ALPN-negotiated protocol
+ * @get_binding_data: Retrieve TLS channel binding data
  *
  * Virtual method table for a #GDtlsConnection implementation.
  *
