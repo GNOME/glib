@@ -43,6 +43,20 @@ struct _GTlsConnection {
   GTlsConnectionPrivate *priv;
 };
 
+/**
+ * GTlsConnectionClass:
+ * @parent_class: The parent class.
+ * @accept_certificate: Check whether to accept a certificate.
+ * @handshake: Perform a handshake operation.
+ * @handshake_async: Start an asynchronous handshake operation.
+ * @handshake_finish: Finish an asynchronous handshake operation.
+ * @get_binding_data: Retrieve TLS channel binding data
+ * @get_negotiated_protocol: Get ALPN-negotiated protocol
+ *
+ * The class structure for the #GTlsConnection type.
+ *
+ * Since: 2.28
+ */
 struct _GTlsConnectionClass
 {
   GIOStreamClass parent_class;
