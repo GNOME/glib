@@ -226,7 +226,7 @@ lookup_by_name_with_flags (GResolver                 *resolver,
   GList *addresses;
   LookupData *data;
 
-  data = lookup_data_new (hostname, AF_UNSPEC);
+  data = lookup_data_new (hostname, flags_to_family (flags));
   task = g_task_new (resolver, cancellable, NULL, NULL);
   g_task_set_source_tag (task, lookup_by_name_with_flags);
   g_task_set_name (task, "[gio] resolver lookup");
