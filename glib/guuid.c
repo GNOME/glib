@@ -113,7 +113,7 @@ uuid_parse_string (const gchar *str,
       if (hi == -1 || lo == -1)
         return FALSE;
 
-      bytes[i++] = hi << 8 | lo;
+      bytes[i++] = hi << 4 | lo;
     }
 
   if (uuid != NULL)
