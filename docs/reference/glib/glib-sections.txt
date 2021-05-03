@@ -767,7 +767,7 @@ g_macro__has_attribute___sentinel__
 g_macro__has_attribute___unused__
 g_macro__has_attribute_fallthrough
 g_macro__has_attribute_may_alias
-g_macro__has_attribute_noinline
+g_macro__has_attribute___noinline__
 g_macro__has_attribute_warn_unused_result
 </SECTION>
 
