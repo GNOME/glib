@@ -1015,7 +1015,7 @@ static PerformanceTest tests[] = {
 static PerformanceTest *
 find_test (const char *name)
 {
-  int i;
+  gsize i;
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       if (strcmp (tests[i].name, name) == 0)
@@ -1051,8 +1051,9 @@ main (int   argc,
     }
   else
     {
-      for (i = 0; i < G_N_ELEMENTS (tests); i++)
-	run_test (&tests[i]);
+      gsize k;
+      for (k = 0; k < G_N_ELEMENTS (tests); k++)
+        run_test (&tests[k]);
     }
 
   return 0;

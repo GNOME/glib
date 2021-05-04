@@ -352,10 +352,10 @@ create_crawler (void)
 static void
 cleanup_crawlers (GMainContext *context)
 {
-  gint i;
+  guint i;
   
   G_LOCK (crawler_array_lock);
-  for (i=0; i < crawler_array->len; i++)
+  for (i = 0; i < crawler_array->len; i++)
     {
       if (g_source_get_context (crawler_array->pdata[i]) == context)
 	{
