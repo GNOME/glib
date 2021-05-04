@@ -129,7 +129,7 @@ test_types (void)
   g_assert_cmpuint (gs, ==, 8);
 
   g_assert_cmpint (g_atomic_int_get (csp), ==, s);
-  g_assert_true (g_atomic_pointer_get (cspp) == csp);
+  g_assert_true (g_atomic_pointer_get ((const gint **) cspp) == csp);
 
   /* repeat, without the macros */
 #undef g_atomic_int_set
