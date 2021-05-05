@@ -1508,6 +1508,10 @@ g_uri_parse_relative (GUri         *base_uri,
           uri->port = normalize_port (uri->scheme, uri->port);
         }
     }
+  else
+    {
+      remove_dot_segments (uri->path);
+    }
 
   return g_steal_pointer (&uri);
 }

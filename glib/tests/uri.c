@@ -714,7 +714,7 @@ static const UriAbsoluteTest absolute_tests[] = {
 
   /* ".." past top */
   { "http://example.com/..", G_URI_FLAGS_NONE, TRUE, 0,
-    { "http", NULL, "example.com", -1, "/..", NULL, NULL }
+    { "http", NULL, "example.com", -1, "/", NULL, NULL }
   },
 
   /* scheme parsing */
