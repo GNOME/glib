@@ -74,7 +74,7 @@ int main (int argc, char **argv)
         }
     }
 
- if (argc > i)
+  if (argc > (gint) i)
     {
       in = g_io_channel_new_file (argv[i], "r", &error);
       if (!in)

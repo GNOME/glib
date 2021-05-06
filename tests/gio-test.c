@@ -130,7 +130,8 @@ recv_message (GIOChannel  *channel,
       char buf[BUFSIZE];
       guint nbytes;
       guint nb;
-      int i, j, seq;
+      guint j;
+      int i, seq;
       GIOError error;
       
       error = read_all (fd, channel, (gchar *) &seq, sizeof (seq), &nb);
@@ -169,7 +170,7 @@ recv_message (GIOChannel  *channel,
       g_assert (nb == sizeof (nbytes));
 
       g_assert_cmpint (nbytes, <, BUFSIZE);
-      g_assert (nbytes >= 0 && nbytes < BUFSIZE);
+      g_assert (nbytes < BUFSIZE);
       g_debug ("gio-test: ...from %d: %d bytes", fd, nbytes);
       if (nbytes > 0)
 	{
@@ -186,7 +187,7 @@ recv_message (GIOChannel  *channel,
 	    }
       
 	  for (j = 0; j < nbytes; j++)
-            g_assert (buf[j] == ' ' + ((nbytes + j) % 95));
+            g_assert (buf[j] == ' ' + (char) ((nbytes + j) % 95));
 	  g_debug ("gio-test: ...from %d: OK", fd);
 	}
     }
