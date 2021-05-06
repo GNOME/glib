@@ -39,9 +39,6 @@ struct _GTestTlsBackendClass {
 
 GType _g_test_tls_backend_get_type       (void);
 
-const gchar *g_test_tls_connection_get_private_key_pem (GTlsCertificate *cert);
-
-
 G_END_DECLS
 
 #endif /* __G_TEST_TLS_BACKEND_H__ */
