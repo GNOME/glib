@@ -82,4 +82,4 @@ gboolean         g_credentials_set_unix_user      (GCredentials    *credentials,
 
 G_END_DECLS
 
-#endif /* __G_DBUS_PROXY_H__ */
+#endif /* __G_CREDENTIALS_H__ */
