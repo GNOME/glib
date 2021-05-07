@@ -49,7 +49,7 @@ static guint mem_chunk_recursion = 0;
 
 /* --- old memchunk prototypes --- */
 GMemChunk*      old_mem_chunk_new       (const gchar  *name,
-                                         gint          atom_size,
+                                         gulong        atom_size,
                                          gulong        area_size,
                                          gint          type);
 void            old_mem_chunk_destroy   (GMemChunk *mem_chunk);
@@ -129,7 +129,7 @@ static GMemChunk     *mem_chunks = NULL;
 
 GMemChunk*
 old_mem_chunk_new (const gchar  *name,
-                   gint          atom_size,
+                   gulong        atom_size,
                    gulong        area_size,
                    gint          type)
 {

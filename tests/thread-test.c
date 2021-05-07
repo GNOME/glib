@@ -211,7 +211,7 @@ test_g_static_private (void)
   test_g_static_private_ready = 0;
 
   for (i = 0; i < THREADS; i++)
-    g_assert (GPOINTER_TO_INT (g_thread_join (threads[i])) == i * 3);
+    g_assert (GPOINTER_TO_UINT (g_thread_join (threads[i])) == i * 3);
     
   g_assert (test_g_static_private_counter == 0); 
 }
