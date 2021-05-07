@@ -136,7 +136,7 @@ the dconf database.
 <term><option>get</option></term>
 <listitem><para>
 Gets the value of <replaceable>KEY</replaceable>.
-The value is printed out as a serialised
+The value is printed out as a serialized
 <link linkend="GVariant"><type>GVariant</type></link>.
 </para></listitem>
 </varlistentry>
@@ -175,7 +175,7 @@ Queries the description of valid values for <replaceable>KEY</replaceable>.
 <term><option>set</option></term>
 <listitem><para>
 Sets the value of <replaceable>KEY</replaceable> to
-<replaceable>VALUE</replaceable>. The value is specified as a serialised
+<replaceable>VALUE</replaceable>. The value is specified as a serialized
 <link linkend="GVariant"><type>GVariant</type></link>.
 </para></listitem>
 </varlistentry>

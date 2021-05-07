@@ -263,7 +263,7 @@
        <para>
         Used as a prefix for a GVariant type string (not a prefix for a format string, so <literal>&amp;s</literal> is
         a valid format string but <literal>&amp;@s</literal> is not).
-        Denotes that a C pointer to serialised data
+        Denotes that a C pointer to serialized data
         should be used in place of the normal C type.  See
         <link linkend='gvariant-format-strings-pointers'>Pointers</link> below.
        </para>
@@ -946,7 +946,7 @@ data = g_variant_new_parsed ("(%o, {'brightness': {'value': <%i>, 'max': <%i>}})
    </para>
 
    <para>
-    The '<code>&amp;</code>' character is used to indicate that serialised data should be directly exchanged via a
+    The '<code>&amp;</code>' character is used to indicate that serialized data should be directly exchanged via a
     pointer.
    </para>
    <para>
@@ -954,7 +954,7 @@ data = g_variant_new_parsed ("(%o, {'brightness': {'value': <%i>, 'max': <%i>}})
     '<literal>&amp;o</literal>' or '<code>&amp;g</code>').  For
     <link linkend='g-variant-new'><function>g_variant_new()</function></link> this has absolutely no effect.  The string
     is collected and duplicated normally.  For <link linkend='g-variant-get'><function>g_variant_get()</function></link>
-    it means that instead of creating a newly allocated copy of the string, a pointer to the serialised data is
+    it means that instead of creating a newly allocated copy of the string, a pointer to the serialized data is
     returned.  This pointer should not be freed.  Validity checks are performed to ensure that the string data will
     always be properly nul-terminated.
    </para>
