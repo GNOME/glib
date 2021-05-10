@@ -133,8 +133,7 @@ g_bsearch_array_create (const GBSearchConfig *bconfig)
   size = sizeof (GBSearchArray) + bconfig->sizeof_node;
   if (bconfig->flags & G_BSEARCH_ARRAY_ALIGN_POWER2)
     size = G_BSEARCH_UPPER_POWER2 (size);
-  barray = (GBSearchArray *) g_malloc (size);
-  memset (barray, 0, sizeof (GBSearchArray));
+  barray = (GBSearchArray *) g_malloc0(size);
 
   return barray;
 }
