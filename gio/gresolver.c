@@ -369,10 +369,10 @@ handle_ip_address_or_localhost (const char                *hostname,
 
   /* Reject non-standard IPv4 numbers-and-dots addresses.
    * g_inet_address_new_from_string() will have accepted any "real" IP
-   * address, so if inet_aton() succeeds, then it's an address we want
+   * address, so if inet_pton() succeeds, then it's an address we want
    * to reject.
    */
-  if (inet_aton (hostname, &ip4addr))
+  if (inet_pton (AF_INET, hostname, &ip4addr))
 #endif
     {
 #ifdef G_OS_WIN32
