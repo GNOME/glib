@@ -1064,7 +1064,6 @@ g_object_finalize (GObject *object)
   GOBJECT_IF_DEBUG (OBJECTS,
     {
       G_LOCK (debug_objects);
-      g_assert (g_hash_table_contains (debug_objects_ht, object));
       g_hash_table_remove (debug_objects_ht, object);
       debug_objects_count--;
       G_UNLOCK (debug_objects);
@@ -3345,7 +3344,7 @@ g_object_unref (gpointer _object)
 	    {
 	      /* catch objects not chaining finalize handlers */
 	      G_LOCK (debug_objects);
-	      g_assert (!g_hash_table_contains (debug_objects_ht, object));
+	      g_hash_table_remove (debug_objects_ht, object);
 	      G_UNLOCK (debug_objects);
 	    });
           g_type_free_instance ((GTypeInstance*) object);
