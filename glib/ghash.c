@@ -206,7 +206,7 @@
  * release of GLib. It does nothing.
  */
 
-#define HASH_TABLE_MIN_SHIFT 3  /* 1 << 3 == 8 buckets */
+static int HASH_TABLE_MIN_SHIFT = 3;
 
 #define UNUSED_HASH_VALUE 0
 #define TOMBSTONE_HASH_VALUE 1
@@ -714,7 +714,7 @@ g_hash_table_new_full (GHashFunc      hash_func,
                        GDestroyNotify value_destroy_func)
 {
   GHashTable *hash_table;
-
+  HASH_TABLE_MIN_SHIFT = atoi(getenv ("G_HASH_TABLE_MIN_SHIFT")? : "3");
   hash_table = g_slice_new (GHashTable);
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   hash_table->nnodes             = 0;
