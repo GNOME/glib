@@ -548,23 +548,20 @@ static  gchar  **g_user_special_dirs = NULL;
 #ifdef G_OS_WIN32
 
 static gchar *
-get_special_folder (int csidl)
+get_special_folder (REFKNOWNFOLDERID known_folder_guid_ptr)
 {
-  wchar_t path[MAX_PATH+1];
+  wchar_t *wcp = NULL;
+  gchar *result = NULL;
   HRESULT hr;
-  LPITEMIDLIST pidl = NULL;
-  BOOL b;
-  gchar *retval = NULL;
 
-  hr = SHGetSpecialFolderLocation (NULL, csidl, &pidl);
-  if (hr == S_OK)
-    {
-      b = SHGetPathFromIDListW (pidl, path);
-      if (b)
-	retval = g_utf16_to_utf8 (path, -1, NULL, NULL, NULL);
-      CoTaskMemFree (pidl);
-    }
-  return retval;
+  hr = SHGetKnownFolderPath (known_folder_guid_ptr, 0, NULL, &wcp);
+
+  if (SUCCEEDED (hr))
+    result = g_utf16_to_utf8 (wcp, -1, NULL, NULL, NULL);
+
+  CoTaskMemFree (wcp);
+
+  return result;
 }
 
 static char *
@@ -814,7 +811,7 @@ g_build_home_dir (void)
     }
 
   if (home_dir == NULL)
-    home_dir = get_special_folder (CSIDL_PROFILE);
+    home_dir = get_special_folder (&FOLDERID_Profile);
 
   if (home_dir == NULL)
     home_dir = get_windows_directory_root ();
@@ -1704,7 +1701,7 @@ g_build_user_data_dir (void)
     data_dir = g_strdup (data_dir_env);
 #ifdef G_OS_WIN32
   else
-    data_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
+    data_dir = get_special_folder (&FOLDERID_LocalAppData);
 #endif
   if (!data_dir || !data_dir[0])
     {
@@ -1730,7 +1727,7 @@ g_build_user_data_dir (void)
  * On Windows it follows XDG Base Directory Specification if `XDG_DATA_HOME`
  * is defined. If `XDG_DATA_HOME` is undefined, the folder to use for local (as
  * opposed to roaming) application data is used instead. See the
- * [documentation for `CSIDL_LOCAL_APPDATA`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb762494%28v=vs.85%29.aspx#csidl_local_appdata).
+ * [documentation for `FOLDERID_LocalAppData`](https://docs.microsoft.com/en-us/windows/win32/shell/knownfolderid).
  * Note that in this case on Windows it will be the same
  * as what g_get_user_config_dir() returns.
  *
@@ -1768,7 +1765,7 @@ g_build_user_config_dir (void)
     config_dir = g_strdup (config_dir_env);
 #ifdef G_OS_WIN32
   else
-    config_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
+    config_dir = get_special_folder (&FOLDERID_LocalAppData);
 #endif
   if (!config_dir || !config_dir[0])
     {
@@ -1794,7 +1791,7 @@ g_build_user_config_dir (void)
  * On Windows it follows XDG Base Directory Specification if `XDG_CONFIG_HOME` is defined.
  * If `XDG_CONFIG_HOME` is undefined, the folder to use for local (as opposed
  * to roaming) application data is used instead. See the
- * [documentation for `CSIDL_LOCAL_APPDATA`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb762494%28v=vs.85%29.aspx#csidl_local_appdata).
+ * [documentation for `FOLDERID_LocalAppData`](https://docs.microsoft.com/en-us/windows/win32/shell/knownfolderid).
  * Note that in this case on Windows it will be  the same
  * as what g_get_user_data_dir() returns.
  *
@@ -1831,7 +1828,7 @@ g_build_user_cache_dir (void)
     cache_dir = g_strdup (cache_dir_env);
 #ifdef G_OS_WIN32
   else
-    cache_dir = get_special_folder (CSIDL_INTERNET_CACHE);
+    cache_dir = get_special_folder (&FOLDERID_InternetCache);
 #endif
   if (!cache_dir || !cache_dir[0])
     {
@@ -1858,7 +1855,7 @@ g_build_user_cache_dir (void)
  * If `XDG_CACHE_HOME` is undefined, the directory that serves as a common
  * repository for temporary Internet files is used instead. A typical path is
  * `C:\Documents and Settings\username\Local Settings\Temporary Internet Files`.
- * See the [documentation for `CSIDL_INTERNET_CACHE`](https://msdn.microsoft.com/en-us/library/windows/desktop/bb762494%28v=vs.85%29.aspx#csidl_internet_cache).
+ * See the [documentation for `FOLDERID_InternetCache`](https://docs.microsoft.com/en-us/windows/win32/shell/knownfolderid).
  *
  * The return value is cached and modifying it at runtime is not supported, as
  * it’s not thread-safe to modify environment variables at runtime.
@@ -1965,69 +1962,22 @@ load_user_special_dirs (void)
 static void
 load_user_special_dirs (void)
 {
-  typedef HRESULT (WINAPI *t_SHGetKnownFolderPath) (const GUID *rfid,
-						    DWORD dwFlags,
-						    HANDLE hToken,
-						    PWSTR *ppszPath);
-  t_SHGetKnownFolderPath p_SHGetKnownFolderPath;
+  g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = get_special_folder (&FOLDERID_Desktop);
+  g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = get_special_folder (&FOLDERID_Documents);
 
-  static const GUID FOLDERID_Downloads =
-    { 0x374de290, 0x123f, 0x4565, { 0x91, 0x64, 0x39, 0xc4, 0x92, 0x5e, 0x46, 0x7b } };
-  static const GUID FOLDERID_Public =
-    { 0xDFDF76A2, 0xC82A, 0x4D63, { 0x90, 0x6A, 0x56, 0x44, 0xAC, 0x45, 0x73, 0x85 } };
+  g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (&FOLDERID_Downloads);
+  if (g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] == NULL)
+    g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (&FOLDERID_Desktop);
 
-  wchar_t *wcp;
+  g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = get_special_folder (&FOLDERID_Music);
+  g_user_special_dirs[G_USER_DIRECTORY_PICTURES] = get_special_folder (&FOLDERID_Pictures);
 
-  p_SHGetKnownFolderPath = (t_SHGetKnownFolderPath) GetProcAddress (GetModuleHandleW (L"shell32.dll"),
-								    "SHGetKnownFolderPath");
+  g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (&FOLDERID_Public);
+  if (g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] == NULL)
+    g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (&FOLDERID_PublicDocuments);
 
-  g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
-  g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = get_special_folder (CSIDL_PERSONAL);
-
-  if (p_SHGetKnownFolderPath == NULL)
-    {
-      g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
-    }
-  else
-    {
-      wcp = NULL;
-      (*p_SHGetKnownFolderPath) (&FOLDERID_Downloads, 0, NULL, &wcp);
-      if (wcp)
-        {
-          g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = g_utf16_to_utf8 (wcp, -1, NULL, NULL, NULL);
-          if (g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] == NULL)
-              g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
-          CoTaskMemFree (wcp);
-        }
-      else
-          g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
-    }
-
-  g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = get_special_folder (CSIDL_MYMUSIC);
-  g_user_special_dirs[G_USER_DIRECTORY_PICTURES] = get_special_folder (CSIDL_MYPICTURES);
-
-  if (p_SHGetKnownFolderPath == NULL)
-    {
-      /* XXX */
-      g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (CSIDL_COMMON_DOCUMENTS);
-    }
-  else
-    {
-      wcp = NULL;
-      (*p_SHGetKnownFolderPath) (&FOLDERID_Public, 0, NULL, &wcp);
-      if (wcp)
-        {
-          g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = g_utf16_to_utf8 (wcp, -1, NULL, NULL, NULL);
-          if (g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] == NULL)
-              g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (CSIDL_COMMON_DOCUMENTS);
-          CoTaskMemFree (wcp);
-        }
-      else
-          g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (CSIDL_COMMON_DOCUMENTS);
-    }
-  
-  g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = get_special_folder (CSIDL_TEMPLATES);
-  g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = get_special_folder (CSIDL_MYVIDEO);
+  g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = get_special_folder (&FOLDERID_Templates);
+  g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = get_special_folder (&FOLDERID_Videos);
 }
 
 #else /* default is unix */
@@ -2379,12 +2329,12 @@ g_win32_get_system_data_dirs_for_module_real (void (*address_of_function)(void))
   data_dirs = g_array_new (TRUE, TRUE, sizeof (char *));
 
   /* Documents and Settings\All Users\Application Data */
-  p = get_special_folder (CSIDL_COMMON_APPDATA);
+  p = get_special_folder (&FOLDERID_ProgramData);
   if (p)
     g_array_append_val (data_dirs, p);
   
   /* Documents and Settings\All Users\Documents */
-  p = get_special_folder (CSIDL_COMMON_DOCUMENTS);
+  p = get_special_folder (&FOLDERID_PublicDocuments);
   if (p)
     g_array_append_val (data_dirs, p);
 	
@@ -2531,8 +2481,8 @@ g_build_system_data_dirs (void)
  * the first elements in the list are the Application Data
  * and Documents folders for All Users. (These can be determined only
  * on Windows 2000 or later and are not present in the list on other
- * Windows versions.) See documentation for CSIDL_COMMON_APPDATA and
- * CSIDL_COMMON_DOCUMENTS.
+ * Windows versions.) See documentation for FOLDERID_ProgramData and
+ * FOLDERID_PublicDocuments.
  *
  * Then follows the "share" subfolder in the installation folder for
  * the package containing the DLL that calls this function, if it can
@@ -2587,7 +2537,7 @@ g_build_system_config_dirs (void)
     }
   else
     {
-      gchar *special_conf_dirs = get_special_folder (CSIDL_COMMON_APPDATA);
+      gchar *special_conf_dirs = get_special_folder (&FOLDERID_ProgramData);
 
       if (special_conf_dirs)
         conf_dir_vector = g_strsplit (special_conf_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
@@ -2625,7 +2575,7 @@ g_build_system_config_dirs (void)
  * This folder is used for application data
  * that is not user specific. For example, an application can store
  * a spell-check dictionary, a database of clip art, or a log file in the
- * CSIDL_COMMON_APPDATA folder. This information will not roam and is available
+ * FOLDERID_ProgramData folder. This information will not roam and is available
  * to anyone using the computer.
  *
  * The return value is cached and modifying it at runtime is not supported, as
