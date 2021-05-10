@@ -264,8 +264,8 @@ typedef void (*GSourceDummyMarshal) (void);
 struct _GSourceFuncs
 {
   gboolean (*prepare)  (GSource    *source,
-                        gint       *timeout_);
-  gboolean (*check)    (GSource    *source);
+                        gint       *timeout_);/* Can be NULL */
+  gboolean (*check)    (GSource    *source);/* Can be NULL */
   gboolean (*dispatch) (GSource    *source,
                         GSourceFunc callback,
                         gpointer    user_data);
