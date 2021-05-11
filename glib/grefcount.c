@@ -262,10 +262,13 @@ void
 gboolean
 (g_atomic_ref_count_dec) (gatomicrefcount *arc)
 {
-  g_return_val_if_fail (arc != NULL, FALSE);
-  g_return_val_if_fail (g_atomic_int_get (arc) > 0, FALSE);
+  gint old_value;
 
-  return g_atomic_int_dec_and_test (arc);
+  g_return_val_if_fail (arc != NULL, FALSE);
+  old_value = g_atomic_int_add (arc, -1);
+  g_return_val_if_fail (old_value > 0, FALSE);
+
+  return old_value == 1;
 }
 
 /**
