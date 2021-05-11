@@ -519,6 +519,7 @@ test_string_replace (void)
   n = g_string_replace (s, "a", "abcdefghijkl", 0);
   g_assert_cmpstr ("abcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijklabcdefghijkl",
                    ==, s->str);
+  g_assert_cmpint (n, ==, 8);
 
   g_string_free (s, TRUE);
 }
