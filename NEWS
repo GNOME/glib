@@ -1,3 +1,20 @@
+Overview of changes in GLib 2.68.2
+==================================
+
+* Fix building third-party projects against GLib on CentOS 7 (work by
+  Ignacio Casal Quinteiro) (#2387)
+
+* Bugs fixed:
+ - #2387 json-glib does not build with glib 2.68.1
+ - !2060 gmacros: check that __cplusplus or _MSC_VER is defined
+ - !2068 gmacros: missing check if __STDC_VERSION__ is defined
+ - !2079 Backport !2078 “gthreadedresolver: don't ignore flags in lookup_by_name_with_flags” to glib-2-68
+
+* Translation updates:
+ - Nepali
+ - Serbian
+
+
 Overview of changes in GLib 2.68.1
 ==================================
 
