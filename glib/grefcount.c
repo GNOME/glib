@@ -235,16 +235,14 @@ void
 void
 (g_atomic_ref_count_inc) (gatomicrefcount *arc)
 {
+  gint old_value;
+
   g_return_if_fail (arc != NULL);
-  g_return_if_fail (g_atomic_int_get (arc) > 0);
+  old_value = g_atomic_int_add (arc, 1);
+  g_return_if_fail (old_value > 0);
 
-  if (g_atomic_int_get (arc) == G_MAXINT)
-    {
-      g_critical ("Reference count has reached saturation");
-      return;
-    }
-
-  g_atomic_int_inc (arc);
+  if (old_value == G_MAXINT)
+    g_critical ("Reference count has reached saturation");
 }
 
 /**
