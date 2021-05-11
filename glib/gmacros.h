@@ -1048,10 +1048,10 @@
   /* Use MSVC specific syntax.  */
 # define G_NORETURN __declspec (noreturn)
   /* Use ISO C++11 syntax when the compiler supports it.  */
-#elif (defined (__cplusplus) && __cplusplus >= 201103 && !(__GNUC__ == 4 && __GNUC_MINOR__ == 7)) || defined (_MSC_VER) && (_MSC_VER >= 1900)
+#elif defined (__cplusplus) && __cplusplus >= 201103
 # define G_NORETURN [[noreturn]]
   /* Use ISO C11 syntax when the compiler supports it.  */
-#elif (defined (__STDC_VERSION__) && __STDC_VERSION__ >= 201112) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7)
+#elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 201112
 # define G_NORETURN _Noreturn
 #else
 # define G_NORETURN /* empty */
