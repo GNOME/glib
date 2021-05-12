@@ -1649,6 +1649,7 @@ GOptionArg
 GOptionFlags
 G_OPTION_REMAINING
 GOptionEntry
+G_OPTION_ENTRY_NULL
 g_option_context_add_main_entries
 GOptionGroup
 g_option_context_add_group
