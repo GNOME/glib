@@ -33,7 +33,7 @@ static int n_outstanding = 0;
 static gboolean success = TRUE;
 
 static const GOptionEntry entries[] = {
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static void

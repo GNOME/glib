@@ -1371,7 +1371,7 @@ main (int argc, char *argv[])
     {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, "Be verbose", NULL},
     {"posix", 'x', 0, G_OPTION_ARG_NONE, &posix_compat,
      "Test POSIX-specific features (unix permissions, symlinks)", NULL},
-    {NULL}
+    G_OPTION_ENTRY_NULL
   };
 
   test_suite = FALSE;

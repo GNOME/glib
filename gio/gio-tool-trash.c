@@ -35,7 +35,7 @@ static const GOptionEntry entries[] = {
   { "list", 0, 0, G_OPTION_ARG_NONE, &list, N_("List files in the trash with their original locations"), NULL },
   { "restore", 0, 0, G_OPTION_ARG_NONE, &restore, N_("Restore a file from trash to its original location (possibly "
                                                      "recreating the directory)"), NULL },
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static void

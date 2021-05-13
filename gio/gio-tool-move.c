@@ -40,7 +40,7 @@ static const GOptionEntry entries[] = {
   { "interactive", 'i', 0, G_OPTION_ARG_NONE, &interactive, N_("Prompt before overwrite"), NULL },
   { "backup", 'b', 0, G_OPTION_ARG_NONE, &backup, N_("Backup existing destination files"), NULL },
   { "no-copy-fallback", 'C', 0, G_OPTION_ARG_NONE, &no_copy_fallback, N_("Don’t use copy and delete fallback"), NULL },
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static gint64 start_time;

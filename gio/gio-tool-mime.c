@@ -30,7 +30,7 @@
 #include "gio-tool.h"
 
 static const GOptionEntry entries[] = {
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static GAppInfo *

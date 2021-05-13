@@ -54,7 +54,7 @@ static GOptionEntry entries[] = {
   {"to-charset", 0, 0, G_OPTION_ARG_STRING, &to_charset, "to charset", NULL},
   {"fallback", 0, 0, G_OPTION_ARG_NONE, &fallback, "use fallback", NULL},
   {G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &locations, "locations", NULL},
-  {NULL}
+  G_OPTION_ENTRY_NULL
 };
 
 static void

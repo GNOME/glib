@@ -672,7 +672,7 @@ static const GOptionEntry option_entries[] = {
   { "synchronous", 's', 0, G_OPTION_ARG_NONE, &synchronous, "Synchronous connections", NULL },
   { "connectable", 'c', 0, G_OPTION_ARG_INT, &connectable_count, "Connectable count", "C" },
   { "special-type", 't', 0, G_OPTION_ARG_CALLBACK, record_type_arg, "Record type like MX, TXT, NS or SOA", "RR" },
-  { NULL },
+  G_OPTION_ENTRY_NULL,
 };
 
 int

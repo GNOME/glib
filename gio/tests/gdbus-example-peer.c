@@ -252,7 +252,7 @@ main (int argc, char *argv[])
       { "server", 's', 0, G_OPTION_ARG_NONE, &opt_server, "Start a server instead of a client", NULL },
       { "address", 'a', 0, G_OPTION_ARG_STRING, &opt_address, "D-Bus address to use", NULL },
       { "allow-anonymous", 'n', 0, G_OPTION_ARG_NONE, &opt_allow_anonymous, "Allow anonymous authentication", NULL },
-      { NULL}
+      G_OPTION_ENTRY_NULL
     };
 
   ret = 1;

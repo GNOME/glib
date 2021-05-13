@@ -39,7 +39,7 @@ static const GOptionEntry entries[] = {
   { "nofollow-symlinks", 'n', 0, G_OPTION_ARG_NONE, &nofollow_symlinks, N_("Don’t follow symbolic links"), NULL},
   { "print-display-names", 'd', 0, G_OPTION_ARG_NONE, &print_display_names, N_("Print display names"), NULL },
   { "print-uris", 'u', 0, G_OPTION_ARG_NONE, &print_uris, N_("Print full URIs"), NULL},
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static void

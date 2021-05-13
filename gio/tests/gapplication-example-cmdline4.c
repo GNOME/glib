@@ -53,7 +53,7 @@ main (int argc, char **argv)
     /* A dummy flag option, to be handled in primary */
     { "flag", 'f', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, NULL, "A flag argument", NULL },
 
-    { NULL }
+    G_OPTION_ENTRY_NULL
   };
 
   app = g_application_new ("org.gtk.TestApplication",

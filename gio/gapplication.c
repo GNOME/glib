@@ -543,7 +543,7 @@ g_application_parse_command_line (GApplication   *application,
       GOptionEntry entries[] = {
         { "gapplication-service", '\0', 0, G_OPTION_ARG_NONE, &become_service,
           N_("Enter GApplication service mode (use from D-Bus service files)"), NULL },
-        { NULL }
+        G_OPTION_ENTRY_NULL
       };
 
       g_option_group_add_entries (gapplication_group, entries);
@@ -555,7 +555,7 @@ g_application_parse_command_line (GApplication   *application,
       GOptionEntry entries[] = {
         { "gapplication-app-id", '\0', 0, G_OPTION_ARG_STRING, &app_id,
           N_("Override the application’s ID"), NULL },
-        { NULL }
+        G_OPTION_ENTRY_NULL
       };
 
       g_option_group_add_entries (gapplication_group, entries);
@@ -567,7 +567,7 @@ g_application_parse_command_line (GApplication   *application,
       GOptionEntry entries[] = {
         { "gapplication-replace", '\0', 0, G_OPTION_ARG_NONE, &replace,
           N_("Replace the running instance"), NULL },
-        { NULL }
+        G_OPTION_ENTRY_NULL
       };
 
       g_option_group_add_entries (gapplication_group, entries);
@@ -729,7 +729,11 @@ g_application_add_main_option_entries (GApplication       *application,
 
   for (i = 0; entries[i].long_name; i++)
     {
-      GOptionEntry my_entries[2] = { { NULL }, { NULL } };
+      GOptionEntry my_entries[2] =
+        {
+          G_OPTION_ENTRY_NULL,
+          G_OPTION_ENTRY_NULL
+        };
       my_entries[0] = entries[i];
 
       if (!my_entries[0].arg_data)
@@ -778,7 +782,7 @@ g_application_add_main_option (GApplication *application,
   gchar *dup_string;
   GOptionEntry my_entry[2] = {
     { NULL, short_name, flags, arg, NULL, NULL, NULL },
-    { NULL }
+    G_OPTION_ENTRY_NULL
   };
 
   g_return_if_fail (G_IS_APPLICATION (application));

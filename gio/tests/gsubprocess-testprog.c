@@ -12,7 +12,7 @@
 #endif
 
 static GOptionEntry options[] = {
-  {NULL}
+  G_OPTION_ENTRY_NULL
 };
 
 static void
