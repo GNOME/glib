@@ -5122,7 +5122,6 @@ main (int argc, char **argv)
   guint i;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("");
 
   g_test_add_func ("/gvariant/type", test_gvarianttype);
   g_test_add_func ("/gvariant/type/string-scan/recursion/tuple",

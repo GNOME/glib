@@ -76,8 +76,6 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugs.gnome.org/");
-
   g_test_add_func ("/charset/language_names_with_category", test_language_names_with_category);
   g_test_add_func ("/charset/language_names_with_category_async", test_language_names_with_category_async);
 

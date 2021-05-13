@@ -1051,7 +1051,7 @@ test_message_parse_empty_arrays_of_arrays (void)
   GVariant *body;
   GError *error = NULL;
 
-  g_test_bug ("673612");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=673612");
   /* These three-element array of empty arrays were previously read back as a
    * two-element array of empty arrays, due to sometimes erroneously skipping
    * four bytes to align for the eight-byte-aligned grandchild types (x and
@@ -1107,7 +1107,7 @@ test_message_serialize_double_array (void)
   GVariantBuilder builder;
   GVariant *body;
 
-  g_test_bug ("732754");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=732754");
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("ad"));
   g_variant_builder_add (&builder, "d", (gdouble)0.0);
@@ -1480,7 +1480,6 @@ main (int   argc,
   setlocale (LC_ALL, "C");
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
   g_test_add_func ("/gdbus/message-serialize/basic",
                    test_message_serialize_basic);

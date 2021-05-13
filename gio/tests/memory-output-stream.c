@@ -33,7 +33,7 @@ test_truncate (void)
   GError *error = NULL;
   guint8 *data;
 
-  g_test_bug ("540423");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=540423");
 
   mo = g_memory_output_stream_new_resizable ();
   g_assert (g_seekable_can_truncate (G_SEEKABLE (mo)));
@@ -66,7 +66,7 @@ test_truncate (void)
   for (i = 1000; i < 3000; i++)
     g_assert_cmpuint (data[i], ==, 2);
 
-  g_test_bug ("720080");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=720080");
 
   g_seekable_truncate (G_SEEKABLE (mo), 8192, NULL, &error);
   g_assert_cmpint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, 8192);
@@ -199,7 +199,7 @@ test_data_size (void)
   GDataOutputStream *o;
   int pos;
 
-  g_test_bug ("540459");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=540459");
 
   mo = g_memory_output_stream_new_resizable ();
   o = g_data_output_stream_new (mo);
@@ -211,7 +211,7 @@ test_data_size (void)
   pos = g_seekable_tell (G_SEEKABLE (mo));
   g_assert_cmpint (pos, ==, 1);
 
-  g_test_bug ("540461");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=540461");
   
   g_seekable_seek (G_SEEKABLE (mo), 0, G_SEEK_SET, NULL, NULL);
   pos = g_seekable_tell (G_SEEKABLE (mo));
@@ -239,7 +239,7 @@ test_properties (void)
   gpointer data_prop;
   gpointer func;
 
-  g_test_bug ("605733");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=605733");
 
   mo = (GOutputStream*) g_object_new (G_TYPE_MEMORY_OUTPUT_STREAM,
                                       "realloc-function", g_realloc,
@@ -430,7 +430,6 @@ main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/memory-output-stream/truncate", test_truncate);
   g_test_add_func ("/memory-output-stream/seek/fixed", test_seek_fixed);

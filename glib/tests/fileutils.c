@@ -1439,7 +1439,7 @@ test_fopen_modes (void)
       "ab+"
     };
 
-  g_test_bug ("119");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/merge_requests/119");
 
   if (g_file_test (path, G_FILE_TEST_EXISTS))
     g_error ("failed, %s exists, cannot test g_fopen()", path);
@@ -1825,8 +1825,6 @@ main (int   argc,
 {
   g_setenv ("LC_ALL", "C", TRUE);
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
-
-  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/merge_requests/");
 
 #ifdef G_OS_WIN32
   g_test_add_func ("/fileutils/stdio-win32-pathstrip", test_win32_pathstrip);

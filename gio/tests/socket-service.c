@@ -182,7 +182,7 @@ test_threaded_712570 (void)
   GSocketClient *client;
   GError *error = NULL;
 
-  g_test_bug ("712570");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=712570");
 
   g_mutex_lock (&mutex_712570);
 
@@ -556,8 +556,6 @@ main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/socket-service/start-stop", test_start_stop);
   g_test_add_func ("/socket-service/threaded/712570", test_threaded_712570);

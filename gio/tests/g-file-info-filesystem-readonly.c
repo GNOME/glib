@@ -225,8 +225,7 @@ main (int argc, char *argv[])
 
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
-  g_test_bug ("787731");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=787731");
 
   g_test_add_data_func ("/g-file-info-filesystem-readonly/test-fs-ro",
                         GINT_TO_POINTER (FALSE), test_filesystem_readonly);

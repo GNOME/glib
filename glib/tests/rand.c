@@ -160,7 +160,7 @@ test_double_range (void)
 {
   gdouble d;
 
-  g_test_bug ("502560");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=502560");
 
   d = g_random_double_range (-G_MAXDOUBLE, G_MAXDOUBLE);
 
@@ -173,7 +173,6 @@ main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/rand/test-rand", test_rand);
   g_test_add_func ("/rand/double-range", test_double_range);

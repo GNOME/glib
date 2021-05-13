@@ -897,7 +897,7 @@ test_group_remove (void)
     "key1=bla\n"
     "key2=bla\n";
 
-  g_test_bug ("165887");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=165887");
 
   keyfile = load_data (data, 0);
 
@@ -952,7 +952,7 @@ test_key_remove (void)
     "key1=bla\n"
     "key2=bla\n";
 
-  g_test_bug ("165980");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=165980");
 
   keyfile = load_data (data, 0);
 
@@ -986,7 +986,7 @@ test_groups (void)
     "[2]\n"
     "key2=123\n";
 
-  g_test_bug ("316309");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=316309");
 
   keyfile = load_data (data, 0);
 
@@ -1267,7 +1267,7 @@ test_duplicate_groups (void)
     "[Desktop Entry]\n"
     "key2=123\n";
 
-  g_test_bug ("157877");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=157877");
 
   keyfile = load_data (data, 0);
   check_string_value (keyfile, "Desktop Entry", "key1", "123");
@@ -1288,7 +1288,7 @@ test_duplicate_groups2 (void)
     "[A]\n"
     "foo=bang\n";
 
-  g_test_bug ("385910");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=385910");
 
   keyfile = load_data (data, 0);
   check_string_value (keyfile, "A", "foo", "bang");
@@ -1324,7 +1324,7 @@ test_reload_idempotency (void)
   gchar *data1, *data2;
   gsize len1, len2;
 
-  g_test_bug ("420686");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=420686");
 
   /* check that we only insert a single new line between groups */
   keyfile = g_key_file_new ();
@@ -1371,7 +1371,7 @@ test_int64 (void)
   gint64 d;
   gchar *value;
 
-  g_test_bug ("614864");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=614864");
 
   file = g_key_file_new ();
 
@@ -1552,7 +1552,7 @@ test_page_boundary (void)
 #define LAST_KEY 99
 #define VALUE 92
 
-  g_test_bug ("640695");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=640695");
 
   file = g_key_file_new ();
 
@@ -1822,8 +1822,6 @@ main (int argc, char *argv[])
 #ifdef G_OS_UNIX
   g_setenv ("XDG_DATA_HOME", g_test_get_dir (G_TEST_DIST), TRUE);
 #endif
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/keyfile/line-ends", test_line_ends);
   g_test_add_func ("/keyfile/whitespace", test_whitespace);

@@ -242,7 +242,7 @@ test_month_substring (void)
 {
   GDate date;
 
-  g_test_bug ("793550");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=793550");
 
   if (setlocale (LC_ALL, "pl_PL") == NULL)
     {
@@ -282,7 +282,7 @@ test_month_names (void)
 #endif
 #endif  /* defined(HAVE_LANGINFO_ABALTMON) || defined(G_OS_WIN32) */
 
-  g_test_bug ("749206");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=749206");
 
   /* If running uninstalled (G_TEST_BUILDDIR is set), skip this test, since we
    * need the translations to be installed. We can’t mess around with
@@ -789,7 +789,6 @@ main (int argc, char** argv)
 #endif
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/date/basic", test_basic);
   g_test_add_func ("/date/empty", test_empty_constructor);

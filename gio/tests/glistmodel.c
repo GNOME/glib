@@ -270,7 +270,7 @@ test_store_splice_replace_middle (void)
   GAction *item;
   GPtrArray *array;
 
-  g_test_bug ("795307");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=795307");
 
   store = g_list_store_new (G_TYPE_SIMPLE_ACTION);
   model = G_LIST_MODEL (store);
@@ -326,7 +326,7 @@ test_store_splice_replace_all (void)
   GPtrArray *array;
   GAction *item;
 
-  g_test_bug ("795307");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=795307");
 
   store = g_list_store_new (G_TYPE_SIMPLE_ACTION);
   model = G_LIST_MODEL (store);
@@ -874,7 +874,6 @@ test_store_find (void)
 int main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/");
 
   g_test_add_func ("/glistmodel/store/properties", test_store_properties);
   g_test_add_func ("/glistmodel/store/non-gobjects", test_store_non_gobjects);

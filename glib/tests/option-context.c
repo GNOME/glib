@@ -116,7 +116,7 @@ test_group_captions (void)
   guint i;
   gsize j;
 
-  g_test_bug ("504142");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=504142");
 
   for (i = 0; i < 4; ++i)
     {
@@ -1775,7 +1775,7 @@ unknown_short_test (void)
   int argc;
   GOptionEntry entries [] = { G_OPTION_ENTRY_NULL };
 
-  g_test_bug ("166609");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=166609");
 
   context = g_option_context_new (NULL);
   g_option_context_add_main_entries (context, entries, NULL);
@@ -1805,7 +1805,7 @@ lonely_dash_test (void)
   gchar **argv_copy;
   int argc;
 
-  g_test_bug ("168008");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=168008");
 
   context = g_option_context_new (NULL);
 
@@ -1881,7 +1881,7 @@ missing_arg_test (void)
     { { "test", 't', 0, G_OPTION_ARG_STRING, &arg, NULL, NULL },
       G_OPTION_ENTRY_NULL };
 
-  g_test_bug ("305576");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=305576");
 
   context = g_option_context_new (NULL);
   g_option_context_add_main_entries (context, entries, NULL);
@@ -1947,7 +1947,7 @@ dash_arg_test (void)
       { "three", '3', 0, G_OPTION_ARG_NONE, &argb, NULL, NULL },
       G_OPTION_ENTRY_NULL };
 
-  g_test_bug ("577638");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=577638");
 
   context = g_option_context_new (NULL);
   g_option_context_add_main_entries (context, entries, NULL);
@@ -2172,7 +2172,7 @@ test_help_no_help_options (void)
     G_OPTION_ENTRY_NULL
   };
 
-  g_test_bug ("697652");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=697652");
 
   context = g_option_context_new ("blabla");
   g_option_context_add_main_entries (context, entries, NULL);
@@ -2500,7 +2500,7 @@ short_remaining (void)
   gchar **argv, **argv_copy;
   gint argc;
 
-  g_test_bug ("729563");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=729563");
 
   argv = split_string ("program -ri -n 4 -t hello file1 file2", &argc);
   argv_copy = copy_stringv (argv, argc);
@@ -2542,7 +2542,7 @@ double_free (void)
   gint argc;
   GError *error = NULL;
 
-  g_test_bug ("646926");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=646926");
 
   argv = split_string ("program --known=foo --known=bar --unknown=baz", &argc);
 
@@ -2603,8 +2603,6 @@ main (int   argc,
 
   g_setenv ("LC_ALL", "C", TRUE);
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/option/help/options", test_help);
   g_test_add_func ("/option/help/no-options", test_help_no_options);

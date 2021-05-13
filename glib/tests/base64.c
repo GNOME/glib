@@ -247,7 +247,7 @@ test_base64_encode_incremental_small_block (gconstpointer block_size_p)
   gsize i;
   struct MyRawData myraw;
 
-  g_test_bug ("780066");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=780066");
 
   generate_databuffer_for_base64 (&myraw);
 
@@ -492,7 +492,6 @@ main (int argc, char *argv[])
   gint i;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/browse.cgi?product=");
 
   for (i = 0; i < DATA_SIZE; i++)
     data[i] = (guchar)i;

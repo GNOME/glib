@@ -324,8 +324,7 @@ test_wait_until_errno (void)
   act.sa_handler = signal_handler;
 
   g_test_summary ("Check proper handling of errno in g_cond_wait_until with a contended mutex");
-  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/");
-  g_test_bug ("merge_requests/957");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/merge_requests/957");
 
   g_mutex_init (&lock);
   g_cond_init (&cond);

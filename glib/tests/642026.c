@@ -51,7 +51,7 @@ static gpointer thread_func (gpointer nil)
 static void
 testcase (void)
 {
-  g_test_bug ("642026");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=642026");
 
   mutex = g_mutex_new ();
   cond = g_cond_new ();
@@ -86,7 +86,6 @@ main (int argc,
     char **argv)
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
   g_test_add_func ("/glib/642026", testcase);
 

@@ -86,8 +86,6 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
-
   g_test_add_func ("/socket-listener/event-signal", test_event_signal);
 
   return g_test_run();

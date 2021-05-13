@@ -126,7 +126,7 @@ test_read_byte (void)
   GInputStream *in;
   GError *error;
 
-  g_test_bug ("562393");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=562393");
 
   base = g_memory_input_stream_new_from_data ("abcdefgh", -1, NULL);
   in = g_buffered_input_stream_new (base);
@@ -536,7 +536,6 @@ main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/buffered-input-stream/peek", test_peek);
   g_test_add_func ("/buffered-input-stream/peek-buffer", test_peek_buffer);

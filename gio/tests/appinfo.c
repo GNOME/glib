@@ -104,7 +104,7 @@ test_launch_no_app_id (void)
       "Exec=%s/appinfo-test --option %%u %%i --name %%c --filename %%k %%m %%%%",
       g_test_get_dir (G_TEST_BUILT));
 
-  g_test_bug ("791337");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=791337");
 
   for (i = 0; i < G_N_ELEMENTS (exec_line_variants); i++)
     {
@@ -581,7 +581,6 @@ main (int argc, char *argv[])
   g_setenv ("XDG_CURRENT_DESKTOP", "GNOME", TRUE);
 
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
   g_test_add_func ("/appinfo/basic", test_basic);
   g_test_add_func ("/appinfo/text", test_text);
