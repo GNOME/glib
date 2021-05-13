@@ -34,7 +34,7 @@ static GOptionEntry cmd_entries[] = {
    "Time out reads after the specified number of seconds", NULL},
   {"tls", 'T', 0, G_OPTION_ARG_NONE, &tls,
    "Use TLS (SSL)", NULL},
-  {NULL}
+  G_OPTION_ENTRY_NULL
 };
 
 #include "socket-common.c"

@@ -2178,7 +2178,7 @@ main (int argc, char **argv)
     /* These options are only for use in the gschema-compile tests */
     { "schema-file", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_FILENAME_ARRAY, &schema_files, NULL, NULL },
     { "override-file", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_FILENAME_ARRAY, &override_files, NULL, NULL },
-    { NULL }
+    G_OPTION_ENTRY_NULL
   };
 
 #ifdef G_OS_WIN32
