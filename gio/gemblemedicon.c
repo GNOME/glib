@@ -431,7 +431,7 @@ g_emblemed_icon_serialize (GIcon *icon)
       icon_data = g_icon_serialize (node->data);
       if (icon_data)
         {
-          /* We know how emblems serialise, so do a tweak here to
+          /* We know how emblems serialize, so do a tweak here to
            * reduce some of the variant wrapping and redundant storage
            * of 'emblem' over and again...
            */

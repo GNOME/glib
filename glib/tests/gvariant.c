@@ -997,7 +997,7 @@ check_offsets (GVariantTypeInfo   *info,
                 position++;
 
               /* and store the offset, just like it would be in the
-               * serialised data.
+               * serialized data.
                */
               last_offset = position;
               last_offset_index++;
@@ -1093,7 +1093,7 @@ test_gvarianttypeinfo (void)
 #define MAX_TUPLE_CHILDREN      128
 
 /* this function generates a random type such that all characteristics
- * that are "interesting" to the serialiser are tested.
+ * that are "interesting" to the serializer are tested.
  *
  * this basically means:
  *   - test different alignments
@@ -2311,19 +2311,19 @@ test_serialiser_children (void)
   g_test_summary ("Test that getting a child variant before and after "
                   "serialisation of the parent works");
 
-  /* Construct a variable sized array containing a child which serialises to a
+  /* Construct a variable sized array containing a child which serializes to a
    * zero-length bytestring. */
   child = g_variant_new_maybe (G_VARIANT_TYPE_VARIANT, NULL);
   variant = g_variant_new_array (mv_type, &child, 1);
 
-  /* Get the child before serialising. */
+  /* Get the child before serializing. */
   child1 = g_variant_get_child_value (variant, 0);
   data1 = g_variant_get_data_as_bytes (child1);
 
-  /* Serialise the parent variant. */
+  /* Serialize the parent variant. */
   g_variant_get_data (variant);
 
-  /* Get the child again after serialising — this uses a different code path. */
+  /* Get the child again after serializing — this uses a different code path. */
   child2 = g_variant_get_child_value (variant, 0);
   data2 = g_variant_get_data_as_bytes (child2);
 
@@ -2348,7 +2348,7 @@ test_fuzz (gdouble *fuzziness)
   /* make an instance */
   tree = tree_instance_new (NULL, 3);
 
-  /* serialise it */
+  /* serialize it */
   serialise_tree (tree, &serialised);
 
   g_assert_true (g_variant_serialised_is_normal (serialised));
@@ -2371,17 +2371,17 @@ test_fuzz (gdouble *fuzziness)
               }
         }
 
-      /* at least one byte in the serialised data has changed.
+      /* at least one byte in the serialized data has changed.
        *
        * this means that at least one of the following is true:
        *
-       *    - the serialised data now represents a different value:
+       *    - the serialized data now represents a different value:
        *        check_tree() will return FALSE
        *
-       *    - the serialised data is in non-normal form:
+       *    - the serialized data is in non-normal form:
        *        g_variant_serialiser_is_normal() will return FALSE
        *
-       * we always do both checks to increase exposure of the serialiser
+       * we always do both checks to increase exposure of the serializer
        * to corrupt data.
        */
       a = g_variant_serialised_is_normal (serialised);
@@ -3743,9 +3743,9 @@ test_gv_byteswap (void)
 # define swapped16(x) x, 0
 #endif
   /* all kinds of of crazy randomised testing already performed on the
-   * byteswapper in the /gvariant/serialiser/byteswap test and all kinds
-   * of crazy randomised testing performed against the serialiser
-   * normalisation functions in the /gvariant/serialiser/fuzz/ tests.
+   * byteswapper in the /gvariant/serializer/byteswap test and all kinds
+   * of crazy randomised testing performed against the serializer
+   * normalisation functions in the /gvariant/serializer/fuzz/ tests.
    *
    * just test a few simple cases here to make sure they each work
    */
@@ -4755,7 +4755,7 @@ test_gbytes (void)
   g_bytes_unref (bytes2);
 
   tuple = g_variant_new_parsed ("['foo', 'bar']");
-  bytes = g_variant_get_data_as_bytes (tuple); /* force serialisation */
+  bytes = g_variant_get_data_as_bytes (tuple); /* force serialization */
   a = g_variant_get_child_value (tuple, 1);
   bytes2 = g_variant_get_data_as_bytes (a);
   g_assert_false (g_bytes_equal (bytes, bytes2));
@@ -4898,7 +4898,7 @@ test_normal_checking_tuples (void)
 }
 
 /* Check that deeply nested variants are not considered in normal form when
- * deserialised from untrusted data.*/
+ * deserialized from untrusted data.*/
 static void
 test_recursion_limits_variant_in_variant (void)
 {
@@ -4914,7 +4914,7 @@ test_recursion_limits_variant_in_variant (void)
   for (i = 0; i < G_VARIANT_MAX_RECURSION_DEPTH - 1; i++)
     wrapper_variant = g_variant_new_variant (g_steal_pointer (&wrapper_variant));
 
-  /* Serialise and deserialise it as untrusted data, to force normalisation. */
+  /* Serialize and deserialize it as untrusted data, to force normalisation. */
   bytes = g_variant_get_data_as_bytes (wrapper_variant);
   deserialised_variant = g_variant_new_from_bytes (G_VARIANT_TYPE_VARIANT,
                                                    bytes, FALSE);
@@ -4935,7 +4935,7 @@ test_recursion_limits_variant_in_variant (void)
 
   g_variant_unref (deserialised_variant);
 
-  /* Deserialise it again, but trusted this time. This should succeed. */
+  /* Deserialize it again, but trusted this time. This should succeed. */
   deserialised_variant = g_variant_new_from_bytes (G_VARIANT_TYPE_VARIANT,
                                                    bytes, TRUE);
   g_assert_nonnull (deserialised_variant);
@@ -4947,7 +4947,7 @@ test_recursion_limits_variant_in_variant (void)
 }
 
 /* Check that deeply nested arrays are not considered in normal form when
- * deserialised from untrusted data after being wrapped in a variant. This is
+ * deserialized from untrusted data after being wrapped in a variant. This is
  * worth testing, because neither the deeply nested array, nor the variant,
  * have a static #GVariantType which is too deep — only when nested together do
  * they become too deep. */
@@ -4967,7 +4967,7 @@ test_recursion_limits_array_in_variant (void)
   for (i = 0; i < G_VARIANT_MAX_RECURSION_DEPTH - 1; i++)
     child_variant = g_variant_new_array (NULL, &child_variant, 1);
 
-  /* Serialise and deserialise it as untrusted data, to force normalisation. */
+  /* Serialize and deserialize it as untrusted data, to force normalisation. */
   bytes = g_variant_get_data_as_bytes (child_variant);
   deserialised_variant = g_variant_new_from_bytes (g_variant_get_type (child_variant),
                                                    bytes, FALSE);
@@ -4988,7 +4988,7 @@ test_recursion_limits_array_in_variant (void)
 
   g_variant_unref (deserialised_variant);
 
-  /* Deserialise it again, but trusted this time. This should succeed. */
+  /* Deserialize it again, but trusted this time. This should succeed. */
   deserialised_variant = g_variant_new_from_bytes (G_VARIANT_TYPE_VARIANT,
                                                    bytes, TRUE);
   g_assert_nonnull (deserialised_variant);
