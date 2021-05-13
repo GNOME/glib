@@ -55,7 +55,7 @@ static const GOptionEntry entries[] =
   { "print-etag", 'v', 0, G_OPTION_ARG_NONE, &print_etag, N_("Print new etag at end"), NULL },
   /* Translators: The "etag" is a token allowing to verify whether a file has been modified */
   { "etag", 'e', 0, G_OPTION_ARG_STRING, &etag, N_("The etag of the file being overwritten"), N_("ETAG") },
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 /* 256k minus malloc overhead */

@@ -17,7 +17,7 @@ my_cmdline_handler (gpointer data)
     { "arg1", 0, 0, G_OPTION_ARG_INT, &arg1, NULL, NULL },
     { "arg2", 0, 0, G_OPTION_ARG_NONE, &arg2, NULL, NULL },
     { "help", '?', 0, G_OPTION_ARG_NONE, &help, NULL, NULL },
-    { NULL }
+    G_OPTION_ENTRY_NULL
   };
   GError *error;
   gint i;

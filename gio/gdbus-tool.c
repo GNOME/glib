@@ -403,7 +403,7 @@ static const GOptionEntry connection_entries[] =
   { "system", 'y', 0, G_OPTION_ARG_NONE, &opt_connection_system, N_("Connect to the system bus"), NULL},
   { "session", 'e', 0, G_OPTION_ARG_NONE, &opt_connection_session, N_("Connect to the session bus"), NULL},
   { "address", 'a', 0, G_OPTION_ARG_STRING, &opt_connection_address, N_("Connect to given D-Bus address"), NULL},
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static GOptionGroup *
@@ -593,7 +593,7 @@ static const GOptionEntry emit_entries[] =
   { "dest", 'd', 0, G_OPTION_ARG_STRING, &opt_emit_dest, N_("Optional destination for signal (unique name)"), NULL},
   { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_emit_object_path, N_("Object path to emit signal on"), NULL},
   { "signal", 's', 0, G_OPTION_ARG_STRING, &opt_emit_signal, N_("Signal and interface name"), NULL},
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static gboolean
@@ -894,7 +894,7 @@ static const GOptionEntry call_entries[] =
   { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_call_object_path, N_("Object path to invoke method on"), NULL},
   { "method", 'm', 0, G_OPTION_ARG_STRING, &opt_call_method, N_("Method and interface name"), NULL},
   { "timeout", 't', 0, G_OPTION_ARG_INT, &opt_call_timeout, N_("Timeout in seconds"), NULL},
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static gboolean
@@ -1688,7 +1688,7 @@ static const GOptionEntry introspect_entries[] =
   { "xml", 'x', 0, G_OPTION_ARG_NONE, &opt_introspect_xml, N_("Print XML"), NULL},
   { "recurse", 'r', 0, G_OPTION_ARG_NONE, &opt_introspect_recurse, N_("Introspect children"), NULL},
   { "only-properties", 'p', 0, G_OPTION_ARG_NONE, &opt_introspect_only_properties, N_("Only print properties"), NULL},
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static gboolean
@@ -1984,7 +1984,7 @@ static const GOptionEntry monitor_entries[] =
 {
   { "dest", 'd', 0, G_OPTION_ARG_STRING, &opt_monitor_dest, N_("Destination name to monitor"), NULL},
   { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_monitor_object_path, N_("Object path to monitor"), NULL},
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static gboolean
@@ -2195,7 +2195,7 @@ static const GOptionEntry wait_entries[] =
   { "timeout", 't', 0, G_OPTION_ARG_INT64, &opt_wait_timeout_secs,
     N_("Timeout to wait for before exiting with an error (seconds); 0 for "
        "no timeout (default)"), "SECS" },
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static void

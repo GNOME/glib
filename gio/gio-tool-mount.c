@@ -75,7 +75,7 @@ static const GOptionEntry entries[] =
   { "tcrypt-pim", 0, 0, G_OPTION_ARG_INT, &tcrypt_pim, N_("The numeric PIM when unlocking a VeraCrypt volume"), N_("PIM")},
   { "tcrypt-hidden", 0, 0, G_OPTION_ARG_NONE, &tcrypt_hidden, N_("Mount a TCRYPT hidden volume"), NULL},
   { "tcrypt-system", 0, 0, G_OPTION_ARG_NONE, &tcrypt_system, N_("Mount a TCRYPT system volume"), NULL},
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static char *

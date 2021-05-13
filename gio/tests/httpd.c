@@ -6,7 +6,7 @@ static char *root = NULL;
 static GOptionEntry cmd_entries[] = {
   {"port", 'p', 0, G_OPTION_ARG_INT, &port,
    "Local port to bind to", NULL},
-  {NULL}
+  G_OPTION_ENTRY_NULL
 };
 
 static void

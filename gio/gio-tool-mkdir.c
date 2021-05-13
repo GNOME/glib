@@ -29,7 +29,7 @@ static gboolean parent = FALSE;
 
 static const GOptionEntry entries[] = {
   { "parent", 'p', 0, G_OPTION_ARG_NONE, &parent, N_("Create parent directories"), NULL },
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 int

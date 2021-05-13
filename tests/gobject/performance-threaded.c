@@ -210,7 +210,7 @@ static GOptionEntry cmd_entries[] = {
    "Time to run each test in seconds", NULL},
   {"list", 'l', 0, G_OPTION_ARG_NONE, &list, 
    "List all available tests and exit", NULL},
-  {NULL}
+  G_OPTION_ENTRY_NULL
 };
 
 static gpointer

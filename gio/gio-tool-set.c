@@ -32,7 +32,7 @@ static gboolean nofollow_symlinks = FALSE;
 static const GOptionEntry entries[] = {
   { "type", 't', 0, G_OPTION_ARG_STRING, &attr_type, N_("Type of the attribute"), N_("TYPE") },
   { "nofollow-symlinks", 'n', 0, G_OPTION_ARG_NONE, &nofollow_symlinks, N_("Don’t follow symbolic links"), NULL },
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 static char *

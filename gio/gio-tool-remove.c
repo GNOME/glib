@@ -29,7 +29,7 @@ static gboolean force = FALSE;
 
 static const GOptionEntry entries[] = {
   {"force", 'f', 0, G_OPTION_ARG_NONE, &force, N_("Ignore nonexistent files, never prompt"), NULL},
-  { NULL }
+  G_OPTION_ENTRY_NULL
 };
 
 int

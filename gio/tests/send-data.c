@@ -20,7 +20,7 @@ static GOptionEntry cmd_entries[] = {
    "Time out socket I/O after the specified number of seconds", NULL},
   {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
    "Verbose debugging output", NULL},
-  {NULL}
+  G_OPTION_ENTRY_NULL
 };
 
 static gpointer

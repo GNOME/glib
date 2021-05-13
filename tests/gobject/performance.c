@@ -37,7 +37,7 @@ static GOptionEntry cmd_entries[] = {
    "Print extra information", NULL},
   {"seconds", 's', 0, G_OPTION_ARG_INT, &test_length,
    "Time to run each test in seconds", NULL},
-  {NULL}
+  G_OPTION_ENTRY_NULL
 };
 
 typedef struct _PerformanceTest PerformanceTest;
