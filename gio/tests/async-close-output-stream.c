@@ -164,7 +164,7 @@ test_without_flush (SetupData     *data,
 {
   prepare_data (data, FALSE);
 
-  g_test_bug ("617937");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=617937");
 
   /* just close asynchronously */
   g_output_stream_close_async (data->conv_stream,
@@ -181,7 +181,7 @@ test_with_flush (SetupData *data, gconstpointer user_data)
 {
   GError *error = NULL;
 
-  g_test_bug ("617937");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=617937");
 
   prepare_data (data, TRUE);
 
@@ -222,7 +222,7 @@ static void
 test_with_async_flush (SetupData     *data,
                        gconstpointer  user_data)
 {
-  g_test_bug ("617937");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=617937");
 
   prepare_data (data, TRUE);
 
@@ -243,8 +243,6 @@ main (int   argc,
   SetupData *data;
 
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   data = g_slice_new (SetupData);
 

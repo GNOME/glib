@@ -2124,7 +2124,7 @@ test_multiline (void)
   GMatchInfo *info;
   gint count;
 
-  g_test_bug ("640489");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=640489");
 
   regex = g_regex_new ("^a$", G_REGEX_MULTILINE|G_REGEX_DOTALL, 0, NULL);
 
@@ -2193,8 +2193,6 @@ main (int argc, char *argv[])
   setlocale (LC_ALL, "");
 
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/regex/properties", test_properties);
   g_test_add_func ("/regex/class", test_class);

@@ -2013,7 +2013,7 @@ g_test_message (const char *format,
  * case only.
  * Bug URIs are constructed by appending a bug specific URI
  * portion to @uri_pattern, or by replacing the special string
- * '\%s' within @uri_pattern if that is present.
+ * `%s` within @uri_pattern if that is present.
  *
  * If g_test_bug_base() is not called, bug URIs are formed solely
  * from the value provided by g_test_bug().
@@ -2029,14 +2029,18 @@ g_test_bug_base (const char *uri_pattern)
 
 /**
  * g_test_bug:
- * @bug_uri_snippet: Bug specific bug tracker URI portion.
+ * @bug_uri_snippet: Bug specific bug tracker URI or URI portion.
  *
  * This function adds a message to test reports that
  * associates a bug URI with a test case.
+ *
  * Bug URIs are constructed from a base URI set with g_test_bug_base()
  * and @bug_uri_snippet. If g_test_bug_base() has not been called, it is
  * assumed to be the empty string, so a full URI can be provided to
  * g_test_bug() instead.
+ *
+ * Since GLib 2.70, the base URI is not prepended to @bug_uri_snippet if it
+ * is already a valid URI.
  *
  * Since: 2.16
  * See also: g_test_summary()
@@ -2047,6 +2051,13 @@ g_test_bug (const char *bug_uri_snippet)
   const char *c = NULL;
 
   g_return_if_fail (bug_uri_snippet != NULL);
+
+  if (g_str_has_prefix (bug_uri_snippet, "http:") ||
+      g_str_has_prefix (bug_uri_snippet, "https:"))
+    {
+      g_test_message ("Bug Reference: %s", bug_uri_snippet);
+      return;
+    }
 
   if (test_uri_base != NULL)
     c = strstr (test_uri_base, "%s");

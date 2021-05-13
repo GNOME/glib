@@ -618,7 +618,7 @@ test_not_overridden (void)
   if (!g_test_undefined ())
     return;
 
-  g_test_bug ("637738");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=637738");
 
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                          "*Base2Object doesn't implement property 'prop3' from interface 'TestIface'*");
@@ -632,7 +632,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/interface/properties/set", test_set);
   g_test_add_func ("/interface/properties/notify", test_notify);

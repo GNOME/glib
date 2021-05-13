@@ -322,7 +322,7 @@ properties_construct (void)
   gboolean b;
   gchar *s;
 
-  g_test_bug ("630357");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=630357");
 
   /* more than 16 args triggers a realloc in g_object_new_valist() */
   obj = g_object_new (test_object_get_type (),
@@ -637,8 +637,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/properties/install", properties_install);
   g_test_add_func ("/properties/notify", properties_notify);

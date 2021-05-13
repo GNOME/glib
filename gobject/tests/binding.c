@@ -574,8 +574,7 @@ binding_chain (void)
   BindingSource *c = g_object_new (binding_source_get_type (), NULL);
   GBinding *binding_1, *binding_2;
 
-  g_test_bug_base ("http://bugzilla.gnome.org/");
-  g_test_bug ("621782");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=621782");
 
   /* A -> B, B -> C */
   binding_1 = g_object_bind_property (a, "foo", b, "foo", G_BINDING_BIDIRECTIONAL);
@@ -794,7 +793,7 @@ binding_unbind_multiple (void)
   GBinding *binding;
   guint i;
 
-  g_test_bug ("1373");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1373");
 
   binding = g_object_bind_property (source, "foo",
                                     target, "bar",
@@ -1080,8 +1079,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues/");
 
   g_test_add_func ("/binding/default", binding_default);
   g_test_add_func ("/binding/canonicalisation", binding_canonicalisation);

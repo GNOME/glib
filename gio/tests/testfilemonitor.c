@@ -965,7 +965,7 @@ test_file_hard_links (Fixture       *fixture,
   GError *error = NULL;
   TestData data;
 
-  g_test_bug ("755721");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=755721");
 
 #ifdef HAVE_LINK
   g_test_message ("Running with hard link tests");
@@ -1019,8 +1019,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
   g_test_add ("/monitor/atomic-replace", Fixture, NULL, setup, test_atomic_replace, teardown);
   g_test_add ("/monitor/file-changes", Fixture, NULL, setup, test_file_changes, teardown);

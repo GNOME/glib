@@ -161,7 +161,7 @@ test_appname (void)
 static void
 test_tmpdir (void)
 {
-  g_test_bug ("627969");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=627969");
   g_assert_cmpstr (g_get_tmp_dir (), !=, "");
 }
 
@@ -829,7 +829,6 @@ main (int   argc,
   g_set_prgname (argv[0]);
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/utils/language-names", test_language_names);
   g_test_add_func ("/utils/locale-variants", test_locale_variants);

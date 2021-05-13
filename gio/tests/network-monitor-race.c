@@ -58,7 +58,7 @@ test_network_monitor (void)
 {
   guint ii;
 
-  g_test_bug ("793727");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=793727");
 
   if (g_test_subprocess ())
     {
@@ -86,7 +86,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
   g_test_add_func ("/network-monitor/create-in-thread",
                    test_network_monitor);

@@ -340,7 +340,7 @@ test_handler (const gchar    *log_domain,
 static void
 bug653052 (void)
 {
-  g_test_bug ("653052");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=653052");
 
   g_test_log_set_fatal_handler (good_failure_handler, fail_str);
   g_log_set_default_handler (test_handler, log_str);
@@ -637,7 +637,6 @@ main (int argc, char *argv[])
   g_unsetenv ("G_MESSAGES_DEBUG");
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/logging/default-handler", test_default_handler);
   g_test_add_func ("/logging/default-handler/subprocess/error", test_default_handler_error);

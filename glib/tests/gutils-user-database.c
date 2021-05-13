@@ -35,7 +35,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/issues");
 
   g_test_add_func ("/gutils/get_user_database_entry", test_get_user_database_entry);
 

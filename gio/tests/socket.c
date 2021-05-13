@@ -1227,7 +1227,7 @@ test_fd_reuse (void)
   gssize len;
   gchar buf[128];
 
-  g_test_bug ("741707");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=741707");
 
   data = create_server (G_SOCKET_FAMILY_IPV4, echo_server_thread, FALSE, &error);
   if (error != NULL)
@@ -2140,7 +2140,6 @@ main (int   argc,
   GError *error = NULL;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/");
 
   sock = g_socket_new (G_SOCKET_FAMILY_IPV6,
                        G_SOCKET_TYPE_STREAM,

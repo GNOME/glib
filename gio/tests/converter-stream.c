@@ -748,7 +748,7 @@ test_roundtrip (gconstpointer data)
   GFileInfo *info;
   GFileInfo *info2;
 
-  g_test_bug ("619945");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=619945");
 
   data0 = g_malloc (DATA_LENGTH * sizeof (guint32));
   for (i = 0; i < DATA_LENGTH; i++)
@@ -1210,8 +1210,6 @@ main (int   argc,
   gsize i;
 
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/converter/basics", test_converter_basics);
   g_test_add_func ("/converter-input-stream/expander", test_expander);

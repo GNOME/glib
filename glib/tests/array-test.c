@@ -1991,8 +1991,6 @@ main (int argc, char *argv[])
 
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("https://bugzilla.gnome.org/");
-
   /* array tests */
   g_test_add_func ("/array/new/zero-terminated", array_new_zero_terminated);
   g_test_add_func ("/array/ref-count", array_ref_count);

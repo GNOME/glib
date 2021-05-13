@@ -68,7 +68,7 @@ test_input_filter (void)
   gchar buf[1024];
   GError *error = NULL;
 
-  g_test_bug ("568394");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=568394");
   base = g_memory_input_stream_new_from_data ("abcdefghijk", -1, NULL);
   f1 = g_object_new (TEST_TYPE_FILTER_INPUT_STREAM,
                      "base-stream", base,
@@ -381,7 +381,6 @@ int
 main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/filter-stream/input", test_input_filter);
   g_test_add_func ("/filter-stream/output", test_output_filter);

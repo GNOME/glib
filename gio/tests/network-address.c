@@ -1011,7 +1011,7 @@ test_happy_eyeballs_ipv6_error_ipv4_very_slow (HappyEyeballsFixture *fixture,
   AsyncData data = { 0 };
   GError *ipv6_error;
 
-  g_test_bug ("merge_requests/865");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/merge_requests/865");
   g_test_summary ("Ensure that we successfully return IPv4 results even when they come significantly later than an IPv6 failure.");
 
   /* If ipv6 fails, ensuring that ipv6 errors before ipv4 finishes, we still get ipv4. */
@@ -1187,7 +1187,6 @@ main (int argc, char *argv[])
   gchar *path;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/");
 
   g_test_add_func ("/network-address/basic", test_basic);
 

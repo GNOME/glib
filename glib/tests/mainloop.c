@@ -687,7 +687,7 @@ test_blocked_child_sources (void)
   GMainLoop *loop;
   GSource *source;
 
-  g_test_bug ("701283");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=701283");
 
   ctx = g_main_context_new ();
   loop = g_main_loop_new (ctx, FALSE);
@@ -886,7 +886,7 @@ test_mainloop_overflow (void)
   TestOverflowData data;
   guint i;
 
-  g_test_bug ("687098");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=687098");
 
   memset (&data, 0, sizeof (data));
 
@@ -2103,7 +2103,6 @@ main (int argc, char *argv[])
   gint i;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/maincontext/basic", test_maincontext_basic);
   g_test_add_func ("/maincontext/source_finalization", test_maincontext_source_finalization);

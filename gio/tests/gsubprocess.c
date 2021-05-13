@@ -233,7 +233,7 @@ test_exit1_cancel (void)
   GSubprocess *proc;
   TestExit1CancelData data = { 0 };
 
-  g_test_bug ("786456");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=786456");
 
   args = get_test_subprocess_args ("exit1", NULL);
   proc = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
@@ -288,7 +288,7 @@ test_exit1_cancel_in_cb (void)
   GSubprocess *proc;
   TestExit1CancelData data = { 0 };
 
-  g_test_bug ("786456");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=786456");
 
   args = get_test_subprocess_args ("exit1", NULL);
   proc = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
@@ -1812,7 +1812,6 @@ main (int argc, char **argv)
   gsize i;
 
   g_test_init (&argc, &argv, NULL);
-  g_test_bug_base ("https://bugzilla.gnome.org/");
 
   g_test_add_func ("/gsubprocess/noop", test_noop);
   g_test_add_func ("/gsubprocess/noop-all-to-null", test_noop_all_to_null);

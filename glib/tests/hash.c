@@ -759,7 +759,7 @@ test_lookup_null_key (void)
   gpointer key;
   gpointer value;
 
-  g_test_bug ("642944");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=642944");
 
   h = g_hash_table_new (null_safe_str_hash, null_safe_str_equal);
   g_hash_table_insert (h, "abc", "ABC");
@@ -1012,7 +1012,7 @@ test_destroy_modify (void)
   FakeFreeData *ffd;
   guint i;
 
-  g_test_bug ("650459");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=650459");
 
   fake_free_data = g_ptr_array_new ();
 
@@ -1518,7 +1518,7 @@ test_iter_replace (void)
   gpointer k, v;
   gchar *s;
 
-  g_test_bug ("662544");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=662544");
 
   h = g_hash_table_new_full (g_str_hash, g_str_equal, my_key_free, my_value_free);
 
@@ -1555,7 +1555,7 @@ test_set_insert_corruption (void)
   gchar b[] = "foo";
   gpointer key, value;
 
-  g_test_bug ("692815");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=692815");
 
   g_hash_table_insert (hash_table, a, a);
   g_assert (g_hash_table_contains (hash_table, "foo"));
@@ -1663,8 +1663,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/hash/misc", test_hash_misc);
   g_test_add_data_func ("/hash/one", GINT_TO_POINTER (TRUE), second_hash_test);

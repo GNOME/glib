@@ -191,7 +191,7 @@ empty_alloc_subprocess (void)
 static void
 empty_alloc (void)
 {
-  g_test_bug ("615379");
+  g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=615379");
 
   g_assert_cmpint (sizeof (Empty), ==, 0);
 
@@ -209,8 +209,6 @@ main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-
-  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/mem/overflow", mem_overflow);
   g_test_add_func ("/mem/overflow/subprocess/malloc_n_a_a", mem_overflow_malloc_n_a_a);

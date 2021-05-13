@@ -745,6 +745,7 @@ fixture_test (guint        *fix,
   g_test_bug ("123");
   g_test_bug_base ("http://www.example.com/bugtracker?bugnum=%s;cmd=showbug");
   g_test_bug ("456");
+  g_test_bug ("https://example.com/no-base-used");
 }
 static void
 fixture_teardown (guint        *fix,
