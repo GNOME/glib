@@ -128,14 +128,17 @@ punycode_encode (const gchar *input_utf8,
 {
   guint delta, handled_chars, num_basic_chars, bias, j, q, k, t, digit;
   gunichar n, m, *input;
-  glong input_length;
+  glong written_chars;
+  gsize input_length;
   gboolean success = FALSE;
 
   /* Convert from UTF-8 to Unicode code points */
   input = g_utf8_to_ucs4 (input_utf8, input_utf8_length, NULL,
-			  &input_length, NULL);
+			  &written_chars, NULL);
   if (!input)
     return FALSE;
+
+  input_length = (gsize) (written_chars > 0 ? written_chars : 0);
 
   /* Copy basic chars */
   for (j = num_basic_chars = 0; j < input_length; j++)
