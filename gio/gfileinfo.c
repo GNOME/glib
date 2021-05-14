@@ -46,6 +46,11 @@
  * g_file_query_writable_namespaces() to discover the settable attributes
  * of a particular file at runtime.
  *
+ * The direct accessors, such as g_file_info_get_name(), are slightly more
+ * optimized than the generic attribute accessors, such as
+ * g_file_info_get_attribute_byte_string().This optimization will matter
+ * only if calling the API in a tight loop.
+ *
  * #GFileAttributeMatcher allows for searching through a #GFileInfo for
  * attributes.
  **/
