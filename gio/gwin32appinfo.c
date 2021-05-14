@@ -3359,7 +3359,7 @@ uwp_package_cb (gpointer         user_data,
                 GPtrArray       *supported_extgroups,
                 GPtrArray       *supported_protocols)
 {
-  gint i, i_verb, i_ext;
+  guint i, i_verb, i_ext;
   gint extensions_considered;
   GWin32AppInfoApplication *app;
   gchar *app_user_model_id_u8;
@@ -3459,7 +3459,7 @@ uwp_package_cb (gpointer         user_data,
    */
   while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &ext))
     {
-      gint i_hverb;
+      guint i_hverb;
 
       if (!ext)
         continue;
@@ -3537,7 +3537,7 @@ uwp_package_cb (gpointer         user_data,
 
   while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &url))
     {
-      gint i_hverb;
+      guint i_hverb;
 
       if (!url)
         continue;
@@ -4788,7 +4788,7 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
   if (apppath)
     {
       gchar **p;
-      gint p_index;
+      gsize p_index;
 
       for (p = envp, p_index = 0; p[0]; p++, p_index++)
         if ((p[0][0] == 'p' || p[0][0] == 'P') &&
