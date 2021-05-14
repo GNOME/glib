@@ -59,7 +59,7 @@ get_registry_classes_key (const char    *subdir,
       if (key_type == REG_EXPAND_SZ)
         {
           wchar_t dummy[1];
-          int len = ExpandEnvironmentStringsW (wc_temp, dummy, 1);
+          DWORD len = ExpandEnvironmentStringsW (wc_temp, dummy, 1);
           if (len > 0)
             {
               wchar_t *wc_temp_expanded = g_new (wchar_t, len);
