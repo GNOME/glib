@@ -92,7 +92,7 @@ g_win32_fs_monitor_handle_event (GWin32FSMonitorPrivate   *monitor,
           monitor->pfni_prev->Action == FILE_ACTION_RENAMED_OLD_NAME)
         {
           /* don't bother sending events, was already sent (rename) */
-          fme = -1;
+          fme = (GFileMonitorEvent) -1;
         }
       else
         fme = G_FILE_MONITOR_EVENT_MOVED_IN;
@@ -104,7 +104,7 @@ g_win32_fs_monitor_handle_event (GWin32FSMonitorPrivate   *monitor,
       break;
     }
 
-  if (fme != -1)
+  if (fme != (GFileMonitorEvent) -1)
     return g_file_monitor_source_handle_event (monitor->fms,
                                                fme,
                                                filename,
