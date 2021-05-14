@@ -377,7 +377,7 @@ g_get_console_charset (const char **charset)
           modifier = strchr (dot, '@');
           if (modifier == NULL)
             raw = dot;
-          else if (modifier - dot < sizeof (buf))
+          else if ((gsize) (modifier - dot) < sizeof (buf))
             {
               memcpy (buf, dot, modifier - dot);
               buf[modifier - dot] = '\0';
