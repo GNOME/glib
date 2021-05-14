@@ -165,7 +165,7 @@ g_winhttp_vfs_get_file_for_uri (GVfs       *vfs,
                                 const char *uri)
 {
   GWinHttpVfs *winhttp_vfs = G_WINHTTP_VFS (vfs);
-  int i;
+  gsize i;
   GFile *ret = NULL;
 
   /* If it matches one of "our" schemes, handle it */
@@ -192,7 +192,7 @@ g_winhttp_vfs_get_supported_uri_schemes (GVfs *vfs)
 {
   GWinHttpVfs *winhttp_vfs = G_WINHTTP_VFS (vfs);
   const gchar * const *wrapped_vfs_uri_schemes = g_vfs_get_supported_uri_schemes (winhttp_vfs->wrapped_vfs);
-  int i, n;
+  gsize i, n;
   const gchar **retval;
 
   n = 0;
