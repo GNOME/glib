@@ -454,7 +454,7 @@ g_getenv (const gchar *variable)
   GQuark quark;
   gchar *value;
   wchar_t dummy[2], *wname, *wvalue;
-  int len;
+  DWORD len;
 
   g_return_val_if_fail (variable != NULL, NULL);
   g_return_val_if_fail (g_utf8_validate (variable, -1, NULL), NULL);
