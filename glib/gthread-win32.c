@@ -514,7 +514,7 @@ g_system_thread_new (GThreadFunc proxy,
       goto error;
     }
 
-  if (ResumeThread (thread->handle) == -1)
+  if (ResumeThread (thread->handle) == (DWORD) -1)
     {
       message = "Error resuming new thread";
       goto error;
