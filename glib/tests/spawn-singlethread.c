@@ -433,7 +433,7 @@ test_spawn_nonexistent (void)
 static void
 test_spawn_fd_assignment_clash (void)
 {
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && defined(F_DUPFD_CLOEXEC)
   int tmp_fd;
   guint i;
   const guint n_fds = 10;
@@ -487,7 +487,7 @@ test_spawn_fd_assignment_clash (void)
   for (i = 0; i < n_fds; i++)
     g_close (source_fds[i], NULL);
 #else  /* !G_OS_UNIX */
-  g_test_skip ("FD redirection only supported on Unix");
+  g_test_skip ("FD redirection only supported on Unix with F_DUPFD_CLOEXEC");
 #endif  /* !G_OS_UNIX */
 }
 
