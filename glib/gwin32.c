@@ -1054,16 +1054,10 @@ copy_chars (char       *buffer,
             gsize      *buffer_size,
             const char *to_copy)
 {
-  gsize copy_count = strlen (to_copy);
-  if (copy_count <= *buffer_size)
-    memset (buffer, 0x20, copy_count);
-  else
-    memset (buffer, 0x20, *buffer_size);
-  strncpy_s (buffer, *buffer_size, to_copy, copy_count);
-  if (*buffer_size >= copy_count)
-    *buffer_size -= copy_count;
-  else
-    *buffer_size = 0;
+  gsize copy_count = MIN (strlen (to_copy), *buffer_size - 1);
+  memset (buffer, 0x20, copy_count);
+  strncpy_s (buffer, *buffer_size, to_copy, _TRUNCATE);
+  *buffer_size -= copy_count;
   return &buffer[copy_count];
 }
 
