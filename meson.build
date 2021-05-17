@@ -2052,13 +2052,13 @@ endif
 # FIXME: glib-gettext.m4 has much more checks to detect broken/uncompatible
 # implementations. This could be extended if issues are found in some platforms.
 libintl_deps = []
-if cc.has_function('ngettext')
+if cc.has_function('ngettext', args : osx_ldflags)
   have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset')
 else
   # First just find the bare library.
   libintl = cc.find_library('intl', required : false)
   # The bare library probably won't link without help if it's static.
-  if libintl.found() and not cc.has_function('ngettext', dependencies : libintl)
+  if libintl.found() and not cc.has_function('ngettext', args : osx_ldflags, dependencies : libintl)
      libintl_iconv = cc.find_library('iconv', required : false)
      # libintl supports different threading APIs, which may not
      # require additional flags, but it defaults to using pthreads if
@@ -2068,10 +2068,10 @@ else
      # also defining the macros with the -pthread flag.
      libintl_pthread = cc.find_library('pthread', required : false)
      # Try linking with just libiconv.
-     if libintl_iconv.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_iconv])
+     if libintl_iconv.found() and cc.has_function('ngettext', args : osx_ldflags, dependencies : [libintl, libintl_iconv])
        libintl_deps += [libintl_iconv]
      # Then also try linking with pthreads.
-     elif libintl_iconv.found() and libintl_pthread.found() and cc.has_function('ngettext', dependencies : [libintl, libintl_iconv, libintl_pthread])
+     elif libintl_iconv.found() and libintl_pthread.found() and cc.has_function('ngettext', args : osx_ldflags, dependencies : [libintl, libintl_iconv, libintl_pthread])
        libintl_deps += [libintl_iconv, libintl_pthread]
      else
        libintl = disabler()
@@ -2083,7 +2083,7 @@ else
     have_bind_textdomain_codeset = true  # proxy-libintl supports it
   else
     libintl_deps = [libintl] + libintl_deps
-    have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset',
+    have_bind_textdomain_codeset = cc.has_function('bind_textdomain_codeset', args : osx_ldflags,
                                                    dependencies : libintl_deps)
   endif
 endif
