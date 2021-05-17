@@ -1370,6 +1370,10 @@ g_source_destroy_internal (GSource      *source,
  *
  * This function is safe to call from any thread, regardless of which thread
  * the #GMainContext is running in.
+ *
+ * If the source is currently attached to a #GMainContext, destroying it
+ * will effectively unset the callback similar to calling g_source_set_callback().
+ * This can mean, that the data's #GDestroyNotify gets called right away.
  */
 void
 g_source_destroy (GSource *source)
@@ -1761,6 +1765,9 @@ g_source_set_callback_indirect (GSource              *source,
  * It is safe to call this function multiple times on a source which has already
  * been attached to a context. The changes will take effect for the next time
  * the source is dispatched after this call returns.
+ *
+ * Note that g_source_destroy() for a currently attached source has the effect
+ * of also unsetting the callback.
  **/
 void
 g_source_set_callback (GSource        *source,
