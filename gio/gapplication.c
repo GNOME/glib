@@ -2832,6 +2832,8 @@ g_application_quit (GApplication *application)
  *
  * To cancel the busy indication, use g_application_unmark_busy().
  *
+ * The application must be registered before calling this function.
+ *
  * Since: 2.38
  **/
 void
@@ -2840,6 +2842,7 @@ g_application_mark_busy (GApplication *application)
   gboolean was_busy;
 
   g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (application->priv->is_registered);
 
   was_busy = (application->priv->busy_count > 0);
   application->priv->busy_count++;
