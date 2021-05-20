@@ -2139,7 +2139,7 @@ prefix_with_context (GError **error,
 		     const char *section,
 		     ValidateContext *ctx)
 {
-  GString *str = g_string_new (NULL);
+  GString *str;
   GSList *link;
   char *buf;
 
@@ -2149,6 +2149,8 @@ prefix_with_context (GError **error,
       g_prefix_error (error, "In %s:", section);
       return;
     }
+
+  str = g_string_new (NULL);
 
   for (; link; link = link->next)
     {
