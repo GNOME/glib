@@ -923,7 +923,10 @@ write_vfunc_info (const gchar *namespace,
   xml_printf (file, " offset=\"%d\"", offset);
 
   if (invoker)
-    xml_printf (file, " invoker=\"%s\"", g_base_info_get_name ((GIBaseInfo*)invoker));
+    {
+      xml_printf (file, " invoker=\"%s\"", g_base_info_get_name ((GIBaseInfo*)invoker));
+      g_base_info_unref ((GIBaseInfo *)invoker);
+    }
 
   write_callable_info (namespace, (GICallableInfo*)info, file);
 
