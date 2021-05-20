@@ -27,6 +27,7 @@
 #include "gioenumtypes.h"
 #include "gioerror.h"
 #include "glibintl.h"
+#include "gstrfuncsprivate.h"
 
 #include <string.h>
 
@@ -1082,7 +1083,7 @@ g_data_input_stream_read_async (GDataInputStream    *stream,
   data = g_slice_new0 (GDataInputStreamReadData);
   if (stop_chars_len == -1)
     stop_chars_len = strlen (stop_chars);
-  data->stop_chars = g_memdup (stop_chars, stop_chars_len);
+  data->stop_chars = g_memdup2 (stop_chars, stop_chars_len);
   data->stop_chars_len = stop_chars_len;
   data->last_saw_cr = FALSE;
 
