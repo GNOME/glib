@@ -3672,7 +3672,11 @@ _g_ir_parser_parse_file (GIrParser   *parser,
     *dash = '\0';
 
   if (!g_file_get_contents (filename, &buffer, &length, error))
-    return NULL;
+    {
+      g_free (namespace);
+
+      return NULL;
+    }
 
   module = _g_ir_parser_parse_string (parser, namespace, filename, buffer, length, error);
 
