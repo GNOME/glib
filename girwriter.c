@@ -423,6 +423,7 @@ write_field_info (const gchar *namespace,
   if (branch)
     {
       xml_printf (file, " branch=\"");
+      g_base_info_unref ((GIBaseInfo *)type);
       type = g_constant_info_get_type (branch);
       g_constant_info_get_value (branch, &value);
       write_constant_value (namespace, type, &value, file);
