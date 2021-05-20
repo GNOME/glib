@@ -110,6 +110,8 @@ write_out_typelib (gchar *prefix,
     }
   success = TRUE;
 out:
+  g_clear_object (&file_obj);
+  g_clear_object (&tmp_file_obj);
   g_free (filename);
   g_free (tmp_filename);
 
