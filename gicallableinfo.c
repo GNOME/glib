@@ -638,6 +638,7 @@ g_callable_info_invoke (GIFunctionInfo *info,
         case GI_DIRECTION_IN:
           tinfo = g_arg_info_get_type (ainfo);
           atypes[i+offset] = g_type_info_get_ffi_type (tinfo);
+          g_base_info_unref ((GIBaseInfo *)ainfo);
           g_base_info_unref ((GIBaseInfo *)tinfo);
 
           if (in_pos >= n_in_args)
@@ -655,6 +656,7 @@ g_callable_info_invoke (GIFunctionInfo *info,
           break;
         case GI_DIRECTION_OUT:
           atypes[i+offset] = &ffi_type_pointer;
+          g_base_info_unref ((GIBaseInfo *)ainfo);
 
           if (out_pos >= n_out_args)
             {
@@ -670,6 +672,7 @@ g_callable_info_invoke (GIFunctionInfo *info,
           break;
         case GI_DIRECTION_INOUT:
           atypes[i+offset] = &ffi_type_pointer;
+          g_base_info_unref ((GIBaseInfo *)ainfo);
 
           if (in_pos >= n_in_args)
             {
@@ -694,9 +697,9 @@ g_callable_info_invoke (GIFunctionInfo *info,
           out_pos++;
           break;
         default:
+          g_base_info_unref ((GIBaseInfo *)ainfo);
           g_assert_not_reached ();
         }
-      g_base_info_unref ((GIBaseInfo *)ainfo);
     }
 
   if (throws)
