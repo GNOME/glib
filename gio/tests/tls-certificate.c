@@ -430,6 +430,92 @@ from_unsupported_pkcs11_uri (void)
   g_clear_error (&error);
 }
 
+static void
+not_valid_before (void)
+{
+  const gchar *EXPECTED_NOT_VALID_BEFORE = "2020-10-12T17:49:44Z";
+
+  GTlsCertificate *cert;
+  GError *error = NULL;
+  GDateTime *actual;
+  gchar *actual_str;
+
+  cert = g_tls_certificate_new_from_pkcs11_uris ("pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=ca-bundle.crt", NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  actual = g_tls_certificate_get_not_valid_before (cert);
+  g_assert_nonnull (actual);
+  actual_str = g_date_time_format_iso8601 (actual);
+  g_assert_cmpstr (actual_str, ==, EXPECTED_NOT_VALID_BEFORE);
+  g_free (actual_str);
+  g_date_time_unref (actual);
+  g_object_unref (cert);
+}
+
+static void
+not_valid_after (void)
+{
+  const gchar *EXPECTED_NOT_VALID_AFTER = "2045-10-06T17:49:44Z";
+
+  GTlsCertificate *cert;
+  GError *error = NULL;
+  GDateTime *actual;
+  gchar *actual_str;
+
+  cert = g_tls_certificate_new_from_pkcs11_uris ("pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=ca-bundle.crt", NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  actual = g_tls_certificate_get_not_valid_after (cert);
+  g_assert_nonnull (actual);
+  actual_str = g_date_time_format_iso8601 (actual);
+  g_assert_cmpstr (actual_str, ==, EXPECTED_NOT_VALID_AFTER);
+  g_free (actual_str);
+  g_date_time_unref (actual);
+  g_object_unref (cert);
+}
+
+static void
+subject_name (void)
+{
+  const gchar *EXPECTED_SUBJECT_NAME = "DC=COM,DC=EXAMPLE,CN=server.example.com";
+
+  GTlsCertificate *cert;
+  GError *error = NULL;
+  gchar *actual;
+
+  cert = g_tls_certificate_new_from_pkcs11_uris ("pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=ca-bundle.crt", NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  actual = g_tls_certificate_get_subject_name (cert);
+  g_assert_nonnull (actual);
+  g_assert_cmpstr (actual, ==, EXPECTED_SUBJECT_NAME);
+  g_free (actual);
+  g_object_unref (cert);
+}
+
+static void
+issuer_name (void)
+{
+  const gchar *EXPECTED_ISSUER_NAME = "DC=COM,DC=EXAMPLE,OU=Certificate Authority,CN=ca.example.com,emailAddress=ca@example.com";
+
+  GTlsCertificate *cert;
+  GError *error = NULL;
+  gchar *actual;
+
+  cert = g_tls_certificate_new_from_pkcs11_uris ("pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=ca-bundle.crt", NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  actual = g_tls_certificate_get_issuer_name (cert);
+  g_assert_nonnull (actual);
+  g_assert_cmpstr (actual, ==, EXPECTED_ISSUER_NAME);
+  g_free (actual);
+  g_object_unref (cert);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -500,6 +586,14 @@ main (int   argc,
                    from_pkcs11_uri);
   g_test_add_func ("/tls-certificate/pkcs11-uri-unsupported",
                    from_unsupported_pkcs11_uri);
+  g_test_add_func ("/tls-certificate/not-valid-before",
+                   not_valid_before);
+  g_test_add_func ("/tls-certificate/not-valid-after",
+                   not_valid_after);
+  g_test_add_func ("/tls-certificate/subject-name",
+                   subject_name);
+  g_test_add_func ("/tls-certificate/issuer-name",
+                   issuer_name);
 
   rtv = g_test_run();
 
