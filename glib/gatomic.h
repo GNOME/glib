@@ -157,7 +157,7 @@ G_END_DECLS
     gint gaicae_oldval = (oldval);                                           \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (newval) ^ (oldval) : 1);                        \
-    __atomic_compare_exchange_n ((atomic), &gaicae_oldval, (newval), FALSE, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST) ? TRUE : FALSE; \
+    __atomic_compare_exchange_n ((atomic), (void *) (&(gaicae_oldval)), (newval), FALSE, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST) ? TRUE : FALSE; \
   }))
 #define g_atomic_int_add(atomic, val) \
   (G_GNUC_EXTENSION ({                                                       \
@@ -208,7 +208,7 @@ G_END_DECLS
     gpointer gapcae_oldval = (gpointer)(oldval);                             \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : NULL);                                \
-    __atomic_compare_exchange_n ((atomic), &gapcae_oldval, (newval), FALSE, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST) ? TRUE : FALSE; \
+    __atomic_compare_exchange_n ((atomic), (void *) (&(gapcae_oldval)), (newval), FALSE, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST) ? TRUE : FALSE; \
   }))
 #endif /* defined(glib_typeof) */
 #define g_atomic_pointer_add(atomic, val) \
