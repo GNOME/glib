@@ -1,5 +1,6 @@
 /*
  * Copyright © 2020 Canonical Ltd.
+ * Copyright © 2021 Alexandros Theodotou
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +22,7 @@
 
 #include "garray.h"
 #include "gmem.h"
+#include "gmessages.h"
 
 /**
  * SECTION:gstrvbuilder
@@ -111,6 +113,48 @@ g_strv_builder_add (GStrvBuilder *builder,
                     const char   *value)
 {
   g_ptr_array_add (&builder->array, g_strdup (value));
+}
+
+/**
+ * g_strv_builder_addv:
+ * @builder: a #GStrvBuilder
+ * @value: (array zero-terminated=1): the vector of strings to add
+ *
+ * Appends all the strings in the given vector to the builder.
+ *
+ * Since 2.70
+ */
+void
+g_strv_builder_addv (GStrvBuilder *builder,
+                     const char **value)
+{
+  gsize i = 0;
+  g_return_if_fail (builder != NULL);
+  g_return_if_fail (value != NULL);
+  for (i = 0; value[i] != NULL; i++)
+    g_strv_builder_add (builder, value[i]);
+}
+
+/**
+ * g_strv_builder_add_many:
+ * @builder: a #GStrvBuilder
+ * @...: one or more strings followed by %NULL
+ *
+ * Appends all the given strings to the builder.
+ *
+ * Since 2.70
+ */
+void
+g_strv_builder_add_many (GStrvBuilder *builder,
+                         ...)
+{
+  va_list var_args;
+  const gchar *str;
+  g_return_if_fail (builder != NULL);
+  va_start (var_args, builder);
+  while ((str = va_arg (var_args, gchar *)) != NULL)
+    g_strv_builder_add (builder, str);
+  va_end (var_args);
 }
 
 /**
