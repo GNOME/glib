@@ -1865,6 +1865,8 @@ g_strv_builder_new
 g_strv_builder_ref
 g_strv_builder_unref
 g_strv_builder_add
+g_strv_builder_addv
+g_strv_builder_add_many
 g_strv_builder_end
 
 <SUBSECTION>

@@ -1,5 +1,6 @@
 /*
  * Copyright © 2020 Canonical Ltd.
+ * Copyright © 2021 Alexandros Theodotou
  *
  * This work is provided "as is"; redistribution and modification
  * in whole or in part, in any medium, physical or electronic is
@@ -56,6 +57,40 @@ test_strvbuilder_add (void)
 }
 
 static void
+test_strvbuilder_addv (void)
+{
+  GStrvBuilder *builder;
+  GStrv result;
+  const gchar *expected[] = { "one", "two", "three", NULL };
+
+  builder = g_strv_builder_new ();
+  g_strv_builder_addv (builder, expected);
+  result = g_strv_builder_end (builder);
+  g_assert_nonnull (result);
+  g_assert_cmpstrv ((const gchar *const *) result, expected);
+
+  g_strfreev (result);
+  g_strv_builder_unref (builder);
+}
+
+static void
+test_strvbuilder_add_many (void)
+{
+  GStrvBuilder *builder;
+  GStrv result;
+  const gchar *expected[] = { "one", "two", "three", NULL };
+
+  builder = g_strv_builder_new ();
+  g_strv_builder_add_many (builder, "one", "two", "three", NULL);
+  result = g_strv_builder_end (builder);
+  g_assert_nonnull (result);
+  g_assert_cmpstrv ((const gchar *const *) result, expected);
+
+  g_strfreev (result);
+  g_strv_builder_unref (builder);
+}
+
+static void
 test_strvbuilder_ref (void)
 {
   GStrvBuilder *builder;
@@ -74,6 +109,8 @@ main (int argc,
 
   g_test_add_func ("/strvbuilder/empty", test_strvbuilder_empty);
   g_test_add_func ("/strvbuilder/add", test_strvbuilder_add);
+  g_test_add_func ("/strvbuilder/addv", test_strvbuilder_addv);
+  g_test_add_func ("/strvbuilder/add_many", test_strvbuilder_add_many);
   g_test_add_func ("/strvbuilder/ref", test_strvbuilder_ref);
 
   return g_test_run ();
