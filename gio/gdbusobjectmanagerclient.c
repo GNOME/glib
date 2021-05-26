@@ -1244,6 +1244,21 @@ maybe_unsubscribe_signals (GDBusObjectManagerClient *manager)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static GWeakRef *
+weak_ref_new (GObject *object)
+{
+  GWeakRef *weak_ref = g_new0 (GWeakRef, 1);
+  g_weak_ref_init (weak_ref, object);
+  return g_steal_pointer (&weak_ref);
+}
+
+static void
+weak_ref_free (GWeakRef *weak_ref)
+{
+  g_weak_ref_clear (weak_ref);
+  g_free (weak_ref);
+}
+
 static void
 on_notify_g_name_owner (GObject    *object,
                         GParamSpec *pspec,
@@ -1340,21 +1355,6 @@ on_notify_g_name_owner (GObject    *object,
     }
   g_free (old_name_owner);
   g_object_unref (manager);
-}
-
-static GWeakRef *
-weak_ref_new (GObject *object)
-{
-  GWeakRef *weak_ref = g_new0 (GWeakRef, 1);
-  g_weak_ref_init (weak_ref, object);
-  return g_steal_pointer (&weak_ref);
-}
-
-static void
-weak_ref_free (GWeakRef *weak_ref)
-{
-  g_weak_ref_clear (weak_ref);
-  g_free (weak_ref);
 }
 
 static gboolean
