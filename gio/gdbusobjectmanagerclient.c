@@ -1260,6 +1260,57 @@ weak_ref_free (GWeakRef *weak_ref)
 }
 
 static void
+on_get_managed_objects_finish (GObject      *source,
+                               GAsyncResult *result,
+                               gpointer      user_data)
+{
+
+  GDBusProxy *proxy = G_DBUS_PROXY (source);
+  GWeakRef *manager_weak = user_data;
+  GDBusObjectManagerClient *manager;
+  GError *error = NULL;
+  GVariant *value = NULL;
+  gchar *new_name_owner = NULL;
+
+  value = g_dbus_proxy_call_finish (proxy, result, &error);
+
+  manager = G_DBUS_OBJECT_MANAGER_CLIENT (g_weak_ref_get (manager_weak));
+  /* Manager got disposed, nothing to do */
+  if (manager == NULL)
+    {
+      goto out;
+    }
+
+  new_name_owner = g_dbus_proxy_get_name_owner (manager->priv->control_proxy);
+  if (value == NULL)
+    {
+      maybe_unsubscribe_signals (manager);
+      g_warning ("Error calling GetManagedObjects() when name owner %s for name %s came back: %s",
+                 new_name_owner,
+                 manager->priv->name,
+                 error->message);
+    }
+  else
+    {
+      process_get_all_result (manager, value, new_name_owner);
+    }
+
+  /* do the :name-owner notify *AFTER* emitting ::object-proxy-added signals - this
+   * way the user knows that the signals were emitted because the name owner came back
+   */
+  g_mutex_lock (&manager->priv->lock);
+  manager->priv->name_owner = g_steal_pointer (&new_name_owner);
+  g_mutex_unlock (&manager->priv->lock);
+  g_object_notify (G_OBJECT (manager), "name-owner");
+
+  g_object_unref (manager);
+ out:
+  g_clear_error (&error);
+  g_clear_pointer (&value, g_variant_unref);
+  weak_ref_free (manager_weak);
+}
+
+static void
 on_notify_g_name_owner (GObject    *object,
                         GParamSpec *pspec,
                         gpointer    user_data)
@@ -1313,46 +1364,20 @@ on_notify_g_name_owner (GObject    *object,
 
   if (new_name_owner != NULL)
     {
-      GError *error;
-      GVariant *value;
-
       //g_debug ("repopulating for %s", new_name_owner);
 
-      /* TODO: do this async! */
       subscribe_signals (manager,
                          new_name_owner);
-      error = NULL;
-      value = g_dbus_proxy_call_sync (manager->priv->control_proxy,
-                                      "GetManagedObjects",
-                                      NULL, /* parameters */
-                                      G_DBUS_CALL_FLAGS_NONE,
-                                      -1,
-                                      NULL,
-                                      &error);
-      if (value == NULL)
-        {
-          maybe_unsubscribe_signals (manager);
-          g_warning ("Error calling GetManagedObjects() when name owner %s for name %s came back: %s",
-                     new_name_owner,
-                     manager->priv->name,
-                     error->message);
-          g_error_free (error);
-        }
-      else
-        {
-          process_get_all_result (manager, value, new_name_owner);
-          g_variant_unref (value);
-        }
-
-      /* do the :name-owner notify *AFTER* emitting ::object-proxy-added signals - this
-       * way the user knows that the signals were emitted because the name owner came back
-       */
-      g_mutex_lock (&manager->priv->lock);
-      manager->priv->name_owner = new_name_owner;
-      g_mutex_unlock (&manager->priv->lock);
-      g_object_notify (G_OBJECT (manager), "name-owner");
-
+      g_dbus_proxy_call (manager->priv->control_proxy,
+                         "GetManagedObjects",
+                         NULL, /* parameters */
+                         G_DBUS_CALL_FLAGS_NONE,
+                         -1,
+                         NULL,
+                         on_get_managed_objects_finish,
+                         weak_ref_new (G_OBJECT (manager)));
     }
+  g_free (new_name_owner);
   g_free (old_name_owner);
   g_object_unref (manager);
 }
