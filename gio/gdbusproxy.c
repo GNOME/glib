@@ -2246,7 +2246,7 @@ g_dbus_proxy_new_for_bus_sync (GBusType             bus_type,
  *
  * Gets the connection @proxy is for.
  *
- * Returns: (transfer none): A #GDBusConnection owned by @proxy. Do not free.
+ * Returns: (transfer none) (not nullable): A #GDBusConnection owned by @proxy. Do not free.
  *
  * Since: 2.26
  */
@@ -2280,7 +2280,11 @@ g_dbus_proxy_get_flags (GDBusProxy *proxy)
  *
  * Gets the name that @proxy was constructed for.
  *
- * Returns: A string owned by @proxy. Do not free.
+ * When connected to a message bus, this will usually be non-%NULL.
+ * However, it may be %NULL for a proxy that communicates using a peer-to-peer
+ * pattern.
+ *
+ * Returns: (nullable): A string owned by @proxy. Do not free.
  *
  * Since: 2.26
  */
@@ -2324,7 +2328,7 @@ g_dbus_proxy_get_name_owner (GDBusProxy *proxy)
  *
  * Gets the object path @proxy is for.
  *
- * Returns: A string owned by @proxy. Do not free.
+ * Returns: (not nullable): A string owned by @proxy. Do not free.
  *
  * Since: 2.26
  */
@@ -2341,7 +2345,7 @@ g_dbus_proxy_get_object_path (GDBusProxy *proxy)
  *
  * Gets the D-Bus interface name @proxy is for.
  *
- * Returns: A string owned by @proxy. Do not free.
+ * Returns: (not nullable): A string owned by @proxy. Do not free.
  *
  * Since: 2.26
  */

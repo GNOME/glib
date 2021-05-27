@@ -318,7 +318,7 @@ g_dbus_object_manager_server_set_connection (GDBusObjectManagerServer  *manager,
  *
  * Gets the #GDBusConnection used by @manager.
  *
- * Returns: (transfer full): A #GDBusConnection object or %NULL if
+ * Returns: (transfer full) (nullable): A #GDBusConnection object or %NULL if
  *   @manager isn't exported on a connection. The returned object should
  *   be freed with g_object_unref().
  *

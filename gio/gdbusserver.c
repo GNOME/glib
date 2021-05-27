@@ -542,7 +542,9 @@ g_dbus_server_new_sync (const gchar        *address,
  * [D-Bus address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
  * string that can be used by clients to connect to @server.
  *
- * Returns: A D-Bus address string. Do not free, the string is owned
+ * This is valid and non-empty if initializing the #GDBusServer succeeded.
+ *
+ * Returns: (not nullable): A D-Bus address string. Do not free, the string is owned
  * by @server.
  *
  * Since: 2.26
@@ -558,9 +560,9 @@ g_dbus_server_get_client_address (GDBusServer *server)
  * g_dbus_server_get_guid:
  * @server: A #GDBusServer.
  *
- * Gets the GUID for @server.
+ * Gets the GUID for @server, as provided to g_dbus_server_new_sync().
  *
- * Returns: A D-Bus GUID. Do not free this string, it is owned by @server.
+ * Returns: (not nullable): A D-Bus GUID. Do not free this string, it is owned by @server.
  *
  * Since: 2.26
  */
