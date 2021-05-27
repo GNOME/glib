@@ -854,16 +854,113 @@ signal_key_cmp (gconstpointer node1,
     return G_BSEARCH_ARRAY_CMP (key1->itype, key2->itype);
 }
 
+static GMetricsFile *handlers_by_object_metrics_file;
+static GMetricsFile *total_handlers_metrics_file;
+static gsize old_total_handlers;
+
+static void
+on_signal_metrics_timeout (void)
+{
+  GMetricsTableIter iter;
+  static int generation = 0;
+  GMetricsTable *counts_hash;
+  const char *key;
+  long *count;
+  Handler **handlers;
+  guint length, i;
+  gsize new_total_handlers;
+  gssize change;
+
+  SIGNAL_LOCK ();
+
+  if (total_handlers_metrics_file)
+    {
+      g_metrics_file_start_record (total_handlers_metrics_file);
+      new_total_handlers = g_hash_table_size (g_handlers);
+
+      change = new_total_handlers - old_total_handlers;
+      old_total_handlers = new_total_handlers;
+
+      g_metrics_file_add_row (total_handlers_metrics_file,
+                              g_handlers,
+                              new_total_handlers,
+                              change > 0? "+" : "",
+                              change);
+      g_metrics_file_end_record (total_handlers_metrics_file);
+    }
+
+  if (handlers_by_object_metrics_file)
+    {
+      g_metrics_file_start_record (handlers_by_object_metrics_file);
+      if ((generation % 10) == 0)
+        {
+          counts_hash = g_metrics_table_new (sizeof (*count));
+
+          handlers = (Handler **) g_hash_table_get_keys_as_array (g_handlers, &length);
+          for (i = 0; i < length; i++)
+            {
+              Handler *handler = handlers[i];
+              char *name;
+
+              name = g_strdup_printf ("(%p) %s::%s", handler->instance, g_type_name (G_TYPE_FROM_INSTANCE (handler->instance)),g_signal_name_unlocked (handler->signal_id));
+              count = g_metrics_table_get_record (counts_hash, key);
+
+              if (count == NULL)
+                {
+                  long new_count = 0;
+                  g_metrics_table_set_record (counts_hash, name, &new_count);
+		  count = g_metrics_table_get_record (counts_hash, name);
+                }
+              *count = *count + 1;
+
+              g_free (name);
+            }
+
+          g_metrics_table_sorted_iter_init (&iter, counts_hash, (GCompareFunc) g_strcmp0);
+          while (g_metrics_table_iter_next (&iter, &key, &count))
+            g_metrics_file_add_row (handlers_by_object_metrics_file,
+                                    key,
+                                    *count);
+
+          g_free (handlers);
+          g_metrics_table_free (counts_hash);
+        }
+      g_metrics_file_end_record (handlers_by_object_metrics_file);
+    }
+  SIGNAL_UNLOCK ();
+  generation++;
+}
+
 void
 _g_signal_init (void)
 {
   SIGNAL_LOCK ();
   if (!g_n_signal_nodes)
     {
+      gboolean needs_signal_metrics = FALSE, needs_handler_metrics = FALSE;
+
       /* setup handler list binary searchable array hash table (in german, that'd be one word ;) */
       g_handler_list_bsa_ht = g_hash_table_new (g_direct_hash, NULL);
       g_signal_key_bsa = g_bsearch_array_create (&g_signal_key_bconfig);
-      
+
+      needs_signal_metrics = g_metrics_requested ("signals");
+      needs_handler_metrics = g_metrics_requested ("handlers");
+
+      if (needs_signal_metrics)
+        handlers_by_object_metrics_file = g_metrics_file_new ("signals",
+                                                              "name", "%s",
+                                                              "count", "%ld",
+                                                              NULL);
+      if (needs_handler_metrics)
+        total_handlers_metrics_file = g_metrics_file_new ("handlers",
+                                                          "address", "%p",
+                                                          "total handlers", "%ld",
+                                                          "change", "%s%ld",
+                                                          NULL);
+
+      if (needs_signal_metrics || needs_handler_metrics)
+        g_metrics_start_timeout (on_signal_metrics_timeout);
+
       /* invalid (0) signal_id */
       g_n_signal_nodes = 1;
       g_signal_nodes = g_renew (SignalNode*, g_signal_nodes, g_n_signal_nodes);
