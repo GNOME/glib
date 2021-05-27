@@ -1962,7 +1962,7 @@ g_type_create_instance (GType type)
     }
   else
 #endif
-    allocated = g_malloc0 (private_size + ivar_size);
+    allocated = g_slice_alloc0_with_name (private_size + ivar_size, type_descriptive_name_I (type));
 
   instance = (GTypeInstance *) (allocated + private_size);
 
@@ -2052,14 +2052,13 @@ g_type_free_instance (GTypeInstance *instance)
       /* Clear out the extra pointer... */
       *(gpointer *) (allocated + private_size + ivar_size) = NULL;
       /* ... and ensure we include it in the size we free. */
-      g_free_sized (allocated, private_size + ivar_size + sizeof (gpointer));
+      g_slice_free1_with_name (private_size + ivar_size, allocated, type_descriptive_name_I (class->g_type));
 
       VALGRIND_FREELIKE_BLOCK (allocated + ALIGN_STRUCT (1), 0);
       VALGRIND_FREELIKE_BLOCK (instance, 0);
     }
   else
-#endif
-    g_free_sized (allocated, private_size + ivar_size);
+    g_slice_free1_with_name (private_size + ivar_size, allocated, type_descriptive_name_I (class->g_type));
 
 #ifdef	G_ENABLE_DEBUG
   IF_DEBUG (INSTANCE_COUNT)

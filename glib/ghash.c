@@ -717,10 +717,10 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
 
   /* Destroy old storage space. */
   if (old_keys != old_values)
-    g_free (old_values);
+    g_slice_free1_with_name (sizeof (gpointer) * old_size, old_values, "GHashTable::values");
 
-  g_free (old_keys);
-  g_free (old_hashes);
+  g_slice_free1_with_name (sizeof (gpointer) * old_size, old_keys, "GHashTable::keys");
+  g_slice_free1_with_name (sizeof (guint) * old_size, old_hashes, "GHashTable::hashes");
 }
 
 static void
@@ -875,7 +875,6 @@ g_hash_table_resize (GHashTable *hash_table)
    *
    * Immediately after growing, the load factor will be in the range
    * .375 .. .469. After shrinking, it will be exactly .5. */
-
   g_hash_table_set_shift_from_size (hash_table, hash_table->nnodes * 1.333);
 
   if (hash_table->size > old_size)
@@ -1603,9 +1602,10 @@ g_hash_table_unref (GHashTable *hash_table)
     {
       g_hash_table_remove_all_nodes (hash_table, TRUE, TRUE);
       if (hash_table->keys != hash_table->values)
-        g_free (hash_table->values);
-      g_free (hash_table->keys);
-      g_free (hash_table->hashes);
+	g_slice_free1_with_name (sizeof (gpointer) * hash_table->size, hash_table->values, "GHashTable::values");
+
+      g_slice_free1_with_name (sizeof (gpointer) * hash_table->size, hash_table->keys, "GHashTable::keys");
+      g_slice_free1_with_name (sizeof (guint) * hash_table->size, hash_table->hashes, "GHashTable::hashes");
       G_LOCK (hash_tables);
       if (hash_tables_list != NULL)
         g_metrics_list_remove_item (hash_tables_list, hash_table);

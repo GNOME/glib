@@ -226,6 +226,13 @@ g_slice_get_config_state (GSliceConfig ckey,
  *
  * Since: 2.10
  */
+#include <gatomic.h>
+G_LOCK_DEFINE_STATIC (metrics);
+static GMetricsTable *metrics_table;
+static GMetricsInstanceCounter *instance_counter = NULL;
+static GMetricsInstanceCounter *stack_trace_counter = NULL;
+static GMetricsStackTraceSampler *stack_trace_sampler = NULL;
+static gsize g_slice_allocated_memory = 0;
 
 /**
  * g_slice_alloc:
@@ -247,10 +254,54 @@ g_slice_get_config_state (GSliceConfig ckey,
 gpointer
 g_slice_alloc (gsize mem_size)
 {
+  char *name = g_strdup_printf ("%lu", mem_size);
+  gpointer mem = g_slice_alloc_with_name (mem_size, name);
+  g_free (name);
+
+  return mem;
+}
+
+gpointer
+g_slice_alloc_with_name (gsize mem_size,
+                         const char *name)
+{
+  ThreadMemory *tmem;
+  gsize chunk_size;
   gpointer mem;
 
   mem = g_malloc (mem_size);
   TRACE (GLIB_SLICE_ALLOC((void*)mem, mem_size));
+
+  g_assert (((gssize) mem_size) == mem_size);
+
+  G_LOCK (metrics);
+  if (g_metrics_requested ("slice-memory-usage") && mem_size != 0)
+    {
+      GSliceMetrics *metrics = NULL;
+
+      if (metrics_table == NULL)
+        {
+          metrics_table = g_metrics_table_new (sizeof (GSliceMetrics));
+          instance_counter = g_metrics_instance_counter_new ();
+          stack_trace_counter = g_metrics_instance_counter_new ();
+          stack_trace_sampler = g_metrics_stack_trace_sampler_new ();
+        }
+
+      g_slice_allocated_memory += mem_size;
+      metrics = g_metrics_table_get_record (metrics_table, name);
+      if (metrics == NULL)
+        {
+          GSliceMetrics empty_metrics = { 0 };
+          g_metrics_table_set_record (metrics_table, name, &empty_metrics);
+          metrics = g_metrics_table_get_record (metrics_table, name);
+        }
+      metrics->total_usage += mem_size;
+      metrics->number_of_allocations++;
+
+      if (g_metrics_instance_counter_instance_is_interesting (instance_counter, name))
+        g_metrics_stack_trace_sampler_take_sample (stack_trace_sampler, name, mem);
+    }
+  G_UNLOCK (metrics);
 
   return mem;
 }
@@ -279,6 +330,16 @@ g_slice_alloc0 (gsize mem_size)
   return mem;
 }
 
+gpointer
+g_slice_alloc0_with_name (gsize mem_size,
+                          const char *name)
+{
+  gpointer mem = g_slice_alloc_with_name (mem_size, name);
+  if (mem)
+    memset (mem, 0, mem_size);
+  return mem;
+}
+
 /**
  * g_slice_copy:
  * @block_size: the number of bytes to allocate
@@ -301,7 +362,20 @@ gpointer
 g_slice_copy (gsize         mem_size,
               gconstpointer mem_block)
 {
-  gpointer mem = g_slice_alloc (mem_size);
+  gpointer mem;
+  char *name = g_strdup_printf ("%lu", mem_size);
+  mem = g_slice_copy_with_name (mem_size, mem_block, name);
+  g_free (name);
+
+  return mem;
+}
+
+gpointer
+g_slice_copy_with_name (gsize         mem_size,
+                        gconstpointer mem_block,
+                        const char    *name)
+{
+  gpointer mem = g_slice_alloc_with_name (mem_size, name);
   if (mem)
     memcpy (mem, mem_block, mem_size);
   return mem;
@@ -333,8 +407,98 @@ g_slice_free1 (gsize    mem_size,
 {
   if (G_UNLIKELY (g_mem_gc_friendly && mem_block))
     memset (mem_block, 0, mem_size);
-  g_free_sized (mem_block, mem_size);
+
+  char *name = g_strdup_printf ("%lu", mem_size);
+  g_slice_free1_with_name (mem_size, mem_block, name);
+  g_free (name);
+}
+
+void
+g_slice_free1_with_name (gsize    mem_size,
+                         gpointer mem_block,
+                         const char *name)
+{
+  gsize chunk_size = P2ALIGN (mem_size);
+  guint acat = allocator_categorize (chunk_size);
+
+  if (G_UNLIKELY (!mem_block))
+    return;
+
+  if (G_UNLIKELY (g_mem_gc_friendly))
+    memset (mem_block, 0, mem_size);
+
+  g_free_sized (current, mem_size);
+
   TRACE (GLIB_SLICE_FREE((void*)mem_block, mem_size));
+
+  g_assert (((gssize) mem_size) == mem_size);
+  G_LOCK (metrics);
+  g_slice_allocated_memory -= mem_size;
+  if (metrics_table != NULL && mem_size != 0)
+    {
+      GSliceMetrics *metrics = NULL;
+
+      metrics = g_metrics_table_get_record (metrics_table, name);
+      if (metrics != NULL)
+        {
+          metrics->total_usage -= mem_size;
+          metrics->number_of_allocations--;
+
+          if (metrics->total_usage <= 0)
+            g_metrics_table_remove_record (metrics_table, name);
+        }
+
+      g_metrics_stack_trace_sampler_remove_sample (stack_trace_sampler, mem_block);
+    }
+  G_UNLOCK (metrics);
+}
+
+gsize
+g_slice_get_total_allocated_memory (void)
+{
+  return g_slice_allocated_memory;
+}
+
+void
+g_slice_lock_metrics (GMetricsInstanceCounter   **instance_counter_out,
+                      GMetricsInstanceCounter   **stack_trace_counter_out)
+{
+  GMetricsTableIter table_iter;
+  GSliceMetrics *metrics;
+  GMetricsStackTraceSample *sample;
+  GMetricsStackTraceSamplerIter sampler_iter;
+  const char *name;
+  G_LOCK (metrics);
+
+  *instance_counter_out = instance_counter;
+  *stack_trace_counter_out = stack_trace_counter;
+
+  if (instance_counter == NULL || stack_trace_sampler == NULL)
+    return;
+
+  g_metrics_instance_counter_start_record (instance_counter);
+  g_metrics_table_iter_init (&table_iter, metrics_table);
+  while (g_metrics_table_iter_next (&table_iter, &name, &metrics))
+    g_metrics_instance_counter_add_instances (instance_counter, name, NULL, metrics->number_of_allocations, metrics->total_usage);
+  g_metrics_instance_counter_end_record (instance_counter);
+
+  g_metrics_instance_counter_start_record (stack_trace_counter);
+  g_metrics_stack_trace_sampler_iter_init (&sampler_iter, stack_trace_sampler);
+  while (g_metrics_stack_trace_sampler_iter_next (&sampler_iter, &sample))
+    {
+      const char *output;
+
+      output = g_metrics_stack_trace_get_output (sample->stack_trace);
+      g_metrics_instance_counter_add_instances (stack_trace_counter, output, sample->name, sample->number_of_hits, 1);
+    }
+  g_metrics_instance_counter_end_record (stack_trace_counter);
+
+}
+
+void
+g_slice_unlock_metrics (void)
+{
+  G_UNLOCK (metrics);
 }
 
 /**
@@ -364,15 +528,63 @@ g_slice_free_chain_with_offset (gsize    mem_size,
                                 gpointer mem_chain,
                                 gsize    next_offset)
 {
+  char *name = g_strdup_printf ("%lu", mem_size);
+  g_slice_free_chain_with_offset_and_name (mem_size, mem_chain, next_offset, name);
+  g_free (name);
+}
+
+void
+g_slice_free_chain_with_offset_and_name (gsize    mem_size,
+                                         gpointer mem_chain,
+                                         gsize    next_offset,
+                                         const char *name)
+{
+  gssize chain_total = 0, chain_length = 0;
+  gboolean is_interesting = FALSE;
   gpointer slice = mem_chain;
+
+  G_LOCK (metrics);
+  if (instance_counter && stack_trace_sampler)
+    is_interesting = g_metrics_instance_counter_instance_is_interesting (instance_counter, name);
+  G_UNLOCK (metrics);
+
   while (slice)
     {
       guint8 *current = slice;
       slice = *(gpointer *) (current + next_offset);
       if (G_UNLIKELY (g_mem_gc_friendly))
         memset (current, 0, mem_size);
+
+      chain_total += mem_size;
+      chain_length++;
+
+       if (is_interesting)
+         {
+           G_LOCK (metrics);
+           g_metrics_stack_trace_sampler_remove_sample (stack_trace_sampler, current);
+           G_UNLOCK (metrics);
+         }
+
       g_free_sized (current, mem_size);
     }
+
+    G_LOCK (metrics);
+    g_slice_allocated_memory -= chain_total;
+    if (metrics_table != NULL)
+      {
+        GSliceMetrics *metrics = NULL;
+
+        metrics = g_metrics_table_get_record (metrics_table, name);
+        if (metrics != NULL)
+          {
+            metrics->total_usage -= chain_total;
+            metrics->number_of_allocations -= chain_length;
+
+            if (metrics->total_usage <= 0)
+              g_metrics_table_remove_record (metrics_table, name);
+          }
+      }
+    G_UNLOCK (metrics);
 }
 
 #ifdef G_ENABLE_DEBUG
