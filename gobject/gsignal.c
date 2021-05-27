@@ -205,6 +205,7 @@ static       void               invalid_closure_notify  (gpointer         data,
 static const gchar *            type_debug_name         (GType            type);
 static void                     node_check_deprecated   (const SignalNode *node);
 static void                     node_update_single_va_closure (SignalNode *node);
+static const gchar             *g_signal_name_unlocked (guint signal_id);
 
 
 /* --- structures --- */
@@ -1315,6 +1316,18 @@ g_signal_list_ids (GType  itype,
   return (guint*) g_array_free (result, FALSE);
 }
 
+static const gchar *
+g_signal_name_unlocked (guint signal_id)
+{
+  SignalNode *node;
+  const gchar *name;
+
+  node = LOOKUP_SIGNAL_NODE (signal_id);
+  name = node ? node->name : NULL;
+
+  return (char*) name;
+}
+
 /**
  * g_signal_name:
  * @signal_id: the signal's identifying number.
@@ -1328,14 +1341,12 @@ g_signal_list_ids (GType  itype,
 const gchar *
 g_signal_name (guint signal_id)
 {
-  SignalNode *node;
   const gchar *name;
-  
+
   SIGNAL_LOCK ();
-  node = LOOKUP_SIGNAL_NODE (signal_id);
-  name = node ? node->name : NULL;
+  name = g_signal_name_unlocked (signal_id);
   SIGNAL_UNLOCK ();
-  
+
   return (char*) name;
 }
 
