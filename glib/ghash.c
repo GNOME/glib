@@ -239,6 +239,7 @@ struct _GHashTable
 #endif
   GDestroyNotify   key_destroy_func;
   GDestroyNotify   value_destroy_func;
+  gulong           last_sweep;
 };
 
 typedef struct
@@ -253,6 +254,9 @@ typedef struct
 
 G_STATIC_ASSERT (sizeof (GHashTableIter) == sizeof (RealIter));
 G_STATIC_ASSERT (_g_alignof (GHashTableIter) >= _g_alignof (RealIter));
+
+G_LOCK_DEFINE_STATIC (hash_tables);
+static GMetricsList *hash_tables_list = NULL;
 
 /* Each table size has an associated prime modulo (the first prime
  * lower than the table size) used to find the initial bucket. Probing
@@ -681,6 +685,76 @@ g_hash_table_new (GHashFunc  hash_func,
   return g_hash_table_new_full (hash_func, key_equal_func, NULL, NULL);
 }
 
+static GMetricsFile *metrics_file;
+static GMetricsFile *combined_metrics_file;
+static unsigned long old_total_items = 0, old_total_tables;
+
+static void
+on_hash_table_metrics_timeout (void)
+{
+  GHashTable *hash_table;
+  unsigned long new_total_items = 0, new_total_tables = 0;
+  long change, table_change;
+  GMetricsListIter iter;
+
+  if (combined_metrics_file)
+    g_metrics_file_start_record (combined_metrics_file);
+
+  if (metrics_file)
+    g_metrics_file_start_record (metrics_file);
+
+  G_LOCK (hash_tables);
+  g_metrics_list_iter_init (&iter, hash_tables_list);
+  while (g_metrics_list_iter_next (&iter, &hash_table))
+    {
+      glong new_items;
+
+      if (combined_metrics_file)
+        {
+          new_total_items += hash_table->nnodes;
+          new_total_tables++;
+        }
+
+      if (!metrics_file)
+        continue;
+
+      new_items = (glong) hash_table->nnodes - (glong) hash_table->last_sweep;
+      if (new_items != 0)
+        {
+          if (hash_table->last_sweep != 0)
+            g_metrics_file_add_row (metrics_file,
+                                    hash_table,
+                                    hash_table->nnodes,
+                                    new_items > 0 ? "+" : "",
+                                    new_items);
+          hash_table->last_sweep = hash_table->nnodes;
+        }
+    }
+  G_UNLOCK (hash_tables);
+
+  if (metrics_file)
+    g_metrics_file_end_record (metrics_file);
+
+  if (combined_metrics_file)
+    {
+      table_change = new_total_tables - old_total_tables;
+      change = new_total_items - old_total_items;
+
+      g_metrics_file_add_row (combined_metrics_file,
+                              (gpointer) new_total_items,
+                              change > 0? "+" : "",
+                              change,
+                              new_total_tables,
+                              table_change > 0? "+" : "",
+                              table_change);
+      g_metrics_file_end_record (combined_metrics_file);
+    }
+
+  old_total_items = new_total_items;
+  old_total_tables = new_total_tables;
+}
+
+static gboolean metrics_timeout_started;
 
 /**
  * g_hash_table_new_full:
@@ -714,10 +788,12 @@ g_hash_table_new_full (GHashFunc      hash_func,
                        GDestroyNotify value_destroy_func)
 {
   GHashTable *hash_table;
+  gboolean needs_hash_table_metrics = FALSE, needs_hash_table_totals = FALSE;
   HASH_TABLE_MIN_SHIFT = atoi(getenv ("G_HASH_TABLE_MIN_SHIFT")? : "3");
   hash_table = g_slice_new (GHashTable);
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   hash_table->nnodes             = 0;
+  hash_table->last_sweep         = 0;
   hash_table->noccupied          = 0;
   hash_table->hash_func          = hash_func ? hash_func : g_direct_hash;
   hash_table->key_equal_func     = key_equal_func;
@@ -730,6 +806,42 @@ g_hash_table_new_full (GHashFunc      hash_func,
   hash_table->keys               = g_new0 (gpointer, hash_table->size);
   hash_table->values             = hash_table->keys;
   hash_table->hashes             = g_new0 (guint, hash_table->size);
+
+  G_LOCK (hash_tables);
+  if (g_metrics_enabled ())
+    {
+      if (hash_tables_list == NULL)
+      {
+          needs_hash_table_metrics = g_metrics_requested ("hash-tables");
+          needs_hash_table_totals = g_metrics_requested ("total-hash-tables");
+          hash_tables_list = g_metrics_list_new ();
+      }
+      g_metrics_list_add_item (hash_tables_list, hash_table);
+    }
+  G_UNLOCK (hash_tables);
+
+  if (!metrics_timeout_started)
+    {
+      metrics_timeout_started = TRUE;
+
+      if (needs_hash_table_metrics)
+        metrics_file = g_metrics_file_new ("hash-tables",
+                                           "address", "%p",
+                                           "total items", "%ld",
+                                           "total items change", "%s%ld",
+                                           NULL);
+
+      if (needs_hash_table_totals)
+        combined_metrics_file = g_metrics_file_new ("total-hash-tables",
+                                                    "total items", "%ld",
+                                                    "total items change", "%s%ld",
+                                                    "total tables", "%ld",
+                                                    "total tables changed", "%s%ld",
+                                                    NULL);
+
+      if (needs_hash_table_metrics || needs_hash_table_totals)
+        g_metrics_start_timeout (on_hash_table_metrics_timeout);
+    }
 
   return hash_table;
 }
@@ -1106,6 +1218,10 @@ g_hash_table_unref (GHashTable *hash_table)
         g_free (hash_table->values);
       g_free (hash_table->keys);
       g_free (hash_table->hashes);
+      G_LOCK (hash_tables);
+      if (hash_tables_list != NULL)
+        g_metrics_list_remove_item (hash_tables_list, hash_table);
+      G_UNLOCK (hash_tables);
       g_slice_free (GHashTable, hash_table);
     }
 }
