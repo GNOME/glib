@@ -23,6 +23,7 @@
 
 #include <string.h>
 #include <signal.h>
+#include <malloc.h>
 
 #include "gobject.h"
 #include "gtype-private.h"
@@ -317,7 +318,8 @@ g_object_notify_queue_add (GObject            *object,
 
 #ifdef	G_ENABLE_DEBUG
 G_LOCK_DEFINE_STATIC     (debug_objects);
-static guint		 debug_objects_count = 0;
+static gulong		 debug_objects_count = 0;
+static gulong		 debug_objects_watermark = 0;
 static GHashTable	*debug_objects_ht = NULL;
 
 static void
@@ -340,16 +342,111 @@ debug_objects_foreach (gpointer key,
 G_DEFINE_DESTRUCTOR(debug_objects_atexit)
 #endif /* G_HAS_CONSTRUCTORS */
 
+typedef struct _GTypeMetrics GTypeMetrics;
+struct _GTypeMetrics {
+  long  instance_count;
+  long  instance_change;
+  long  instance_watermark;
+};
+
+static GMetricsFile *objects_by_type_metrics_file;
+static GMetricsFile *object_totals_metrics_file;
+static GMetricsInstanceCounter *instance_counter = NULL;
+
 static void
 debug_objects_atexit (void)
 {
   GOBJECT_IF_DEBUG (OBJECTS,
     {
       G_LOCK (debug_objects);
-      g_message ("stale GObjects: %u", debug_objects_count);
-      g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
+      g_message ("stale GObjects: %lu", debug_objects_count);
+      if (debug_objects_ht)
+        {
+          g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
+          g_clear_pointer (&debug_objects_ht, g_hash_table_unref);
+        }
       G_UNLOCK (debug_objects);
     });
+}
+
+static void
+on_object_metrics_timeout (void)
+{
+  static gulong old_debug_objects_count = 0;
+
+  if (_g_type_debug_flags & G_TYPE_DEBUG_OBJECTS)
+    {
+      gpointer object;
+      long change;
+
+      if (instance_counter == NULL)
+        instance_counter = g_metrics_instance_counter_new ();
+
+      g_metrics_instance_counter_start_record (instance_counter);
+
+      malloc_trim(0);
+
+      G_LOCK (debug_objects);
+      change = debug_objects_count - old_debug_objects_count;
+      old_debug_objects_count = debug_objects_count;
+
+      if (object_totals_metrics_file)
+        {
+          g_metrics_file_start_record (object_totals_metrics_file);
+          g_metrics_file_add_row (object_totals_metrics_file,
+                                  (gpointer) debug_objects_count,
+                                  change > 0? "+" : "",
+                                  change,
+                                  debug_objects_watermark);
+          g_metrics_file_end_record (object_totals_metrics_file);
+        }
+
+      if (objects_by_type_metrics_file)
+        {
+          GHashTableIter iter;
+          g_hash_table_iter_init (&iter, debug_objects_ht);
+          while (g_hash_table_iter_next (&iter, NULL, &object))
+            {
+              GType type;
+              GTypeQuery query = { 0 };
+
+              if (!G_IS_OBJECT (object))
+                continue;
+
+              type = G_OBJECT_TYPE (object);
+              g_type_query (type, &query);
+
+              if (query.type != type)
+                continue;
+
+              g_metrics_instance_counter_add_instance (instance_counter, query.type_name, query.instance_size);
+            }
+          g_metrics_instance_counter_end_record (instance_counter);
+        }
+      G_UNLOCK (debug_objects);
+
+      if (objects_by_type_metrics_file)
+        {
+          GMetricsInstanceCounterIter     iter;
+          GMetricsInstanceCounterMetrics *metrics;
+          const char *name = NULL;
+
+          g_metrics_file_start_record (objects_by_type_metrics_file);
+          g_metrics_instance_counter_iter_init (&iter, instance_counter);
+          while (g_metrics_instance_counter_iter_next (&iter, &name, &metrics))
+            {
+              g_metrics_file_add_row (objects_by_type_metrics_file,
+                                      name,
+                                      metrics->instance_count,
+                                      metrics->instance_change > 0? "+" : "",
+                                      metrics->instance_change,
+                                      metrics->average_instance_change > 0? "+" : "",
+                                      metrics->average_instance_change,
+                                      metrics->instance_watermark);
+            }
+          g_metrics_file_end_record (objects_by_type_metrics_file);
+        }
+    };
 }
 #endif	/* G_ENABLE_DEBUG */
 
@@ -383,6 +480,9 @@ _g_object_type_init (void)
     g_value_object_lcopy_value,	  /* lcopy_value */
   };
   GType type;
+#if G_ENABLE_DEBUG
+  gboolean needs_object_metrics = FALSE, needs_object_totals = FALSE;
+#endif
   
   g_return_if_fail (initialized == FALSE);
   initialized = TRUE;
@@ -395,6 +495,12 @@ _g_object_type_init (void)
   g_value_register_transform_func (G_TYPE_OBJECT, G_TYPE_OBJECT, g_value_object_transform_value);
 
 #if G_ENABLE_DEBUG
+  needs_object_metrics = g_metrics_requested ("objects-by-type");
+  needs_object_totals = g_metrics_requested ("object-totals");
+
+  if (needs_object_metrics || needs_object_totals)
+    _g_type_debug_flags |= G_TYPE_DEBUG_OBJECTS;
+
   /* We cannot use GOBJECT_IF_DEBUG here because of the G_HAS_CONSTRUCTORS
    * conditional in between, as the C spec leaves conditionals inside macro
    * expansions as undefined behavior. Only GCC and Clang are known to work
@@ -408,6 +514,24 @@ _g_object_type_init (void)
 # ifndef G_HAS_CONSTRUCTORS
       g_atexit (debug_objects_atexit);
 # endif /* G_HAS_CONSTRUCTORS */
+
+      if (needs_object_metrics)
+        objects_by_type_metrics_file = g_metrics_file_new ("objects-by-type",
+                                                           "name", "%s",
+                                                           "count", "%ld",
+                                                           "change", "%s%ld",
+                                                           "average change", "%s%ld",
+                                                           "max seen", "%lu",
+                                                           NULL);
+
+      if (needs_object_totals)
+        object_totals_metrics_file = g_metrics_file_new ("object-totals",
+                                                         "count", "%ld",
+                                                         "change", "%s%ld",
+                                                         "max seen", "%lu",
+                                                         NULL);
+      if (needs_object_totals || needs_object_metrics)
+        g_metrics_start_timeout (on_object_metrics_timeout);
     }
 #endif /* G_ENABLE_DEBUG */
 }
@@ -1009,6 +1133,7 @@ g_object_init (GObject		*object,
     {
       G_LOCK (debug_objects);
       debug_objects_count++;
+      debug_objects_watermark = MAX (debug_objects_count, debug_objects_watermark);
       g_hash_table_add (debug_objects_ht, object);
       G_UNLOCK (debug_objects);
     });
