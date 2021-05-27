@@ -796,7 +796,7 @@ g_hash_table_new_full (GHashFunc      hash_func,
   GHashTable *hash_table;
   gboolean needs_hash_table_metrics = FALSE, needs_hash_table_totals = FALSE;
   HASH_TABLE_MIN_SHIFT = atoi(getenv ("G_HASH_TABLE_MIN_SHIFT")? : "3");
-  hash_table = g_slice_new (GHashTable);
+  hash_table = g_new0 (GHashTable, 1);
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   hash_table->nnodes             = 0;
   hash_table->last_sweep         = 0;
@@ -1231,7 +1231,7 @@ g_hash_table_unref (GHashTable *hash_table)
       if (hash_tables_list != NULL)
         g_metrics_list_remove_item (hash_tables_list, hash_table);
       G_UNLOCK (hash_tables);
-      g_slice_free (GHashTable, hash_table);
+      g_free (hash_table);
     }
 }
 

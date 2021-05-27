@@ -606,6 +606,330 @@ g_main_context_new_with_next_id (guint next_id)
   return ret;
 }
 
+typedef struct _GSourceMetrics GSourceMetrics;
+struct _GSourceMetrics {
+  long  instance_count;
+  long  instance_change;
+};
+static GMetricsTable *histograms[2] = { NULL };
+static int old_histogram_index = 0;
+static GMetricsTable *old_histogram = NULL;
+
+static gint
+metrics_sort (GSourceMetrics *a, GSourceMetrics *b)
+{
+  return b->instance_count - a->instance_count;
+}
+
+static GMetricsFile *total_sources_metrics_file;
+static GMetricsFile *sources_metrics_file;
+static GMetricsFile *memory_metrics_file;
+static GMetricsFile *slice_metrics_file;
+static long old_total_sources = 0;
+
+static gboolean
+fetch_current_memory_stats (char **vm_rss,
+                            char **vm_data,
+                            char **rss_anon,
+                            char **vm_hwm,
+                            char **vm_size,
+                            char **vm_peak,
+                            char **rss_file,
+                            char **rss_shmem,
+                            char **threads,
+                            char **fd_size)
+{
+  char *status_contents;
+  gsize length;
+  gboolean got_contents;
+  GString *line_buffer;
+  gsize i;
+
+  /* gdb attach regularly so if customer gdb attaches later they don't see a jump
+   * in memory from things faulting in suddenly
+   */
+  char *command = g_strdup_printf ("gdb --pid=%d --batch", getpid ());
+  system (command);
+  g_free (command);
+
+  got_contents = g_file_get_contents ("/proc/self/status",
+                                      &status_contents,
+                                      &length,
+                                      NULL);
+
+  if (!got_contents)
+    return FALSE;
+
+  line_buffer = g_string_new ("");
+  for (i = 0; i <= length; i++)
+    {
+      char **key_and_value;
+      const char *key;
+      char *value;
+      if (i != length && status_contents[i] != '\n')
+        {
+          g_string_append_c (line_buffer, status_contents[i]);
+          continue;
+        }
+
+      key_and_value = g_strsplit (line_buffer->str, ":", 2);
+      g_string_set_size (line_buffer, 0);
+
+      key = key_and_value[0];
+
+      if (key == NULL)
+        {
+          g_strfreev (key_and_value);
+          continue;
+        }
+
+      value = g_strdup (g_strchug (key_and_value[1]));
+
+      if (strcmp (key, "VmRSS") == 0)
+        *vm_rss = value;
+      else if (strcmp (key, "VmData") == 0)
+        *vm_data = value;
+      else if (strcmp (key, "RssAnon") == 0)
+        *rss_anon = value;
+      else if (strcmp (key, "VmHWM") == 0)
+        *vm_hwm = value;
+      else if (strcmp (key, "VmSize") == 0)
+        *vm_size = value;
+      else if (strcmp (key, "VmPeak") == 0)
+        *vm_peak = value;
+      else if (strcmp (key, "RssFile") == 0)
+        *rss_file = value;
+      else if (strcmp (key, "RssShmem") == 0)
+        *rss_shmem = value;
+      else if (strcmp (key, "Threads") == 0)
+        *threads = value;
+      else if (strcmp (key, "FDSize") == 0)
+        *fd_size = value;
+      else
+        g_free (value);
+
+      g_strfreev (key_and_value);
+    }
+  g_string_free (line_buffer, TRUE);
+
+  g_free (status_contents);
+
+  return TRUE;
+}
+
+static void
+on_metrics_timeout (void)
+{
+  GMetricsTable *histogram;
+  guint new_histogram_index = (old_histogram_index + 1) % G_N_ELEMENTS (histograms);
+  GSList *context_node;
+  long new_total_sources = 0;
+  long change;
+
+  if (memory_metrics_file)
+    {
+      char *vm_rss = NULL;
+      char *vm_data = NULL;
+      char *rss_anon = NULL;
+      char *vm_hwm = NULL;
+      char *vm_size = NULL;
+      char *vm_peak = NULL;
+      char *rss_file = NULL;
+      char *rss_shmem = NULL;
+      char *threads = NULL;
+      char *fd_size = NULL;
+      gsize slice_allocated = 0;
+
+      slice_allocated = g_slice_get_total_allocated_memory ();
+
+      g_metrics_file_start_record (memory_metrics_file);
+      if (fetch_current_memory_stats (&vm_rss,
+                                      &vm_data,
+                                      &rss_anon,
+                                      &vm_hwm,
+                                      &vm_size,
+                                      &vm_peak,
+                                      &rss_file,
+                                      &rss_shmem,
+                                      &threads,
+                                      &fd_size))
+        {
+          g_metrics_file_add_row (memory_metrics_file,
+                                  vm_rss? : "",
+                                  vm_data? : "",
+                                  rss_anon? : "",
+                                  vm_hwm? : "",
+                                  slice_allocated,
+                                  vm_size? : "",
+                                  vm_peak? : "",
+                                  rss_file? : "",
+                                  rss_shmem? : "",
+                                  threads? : "",
+                                  fd_size? : "");
+          g_free (vm_rss);
+          g_free (vm_data);
+          g_free (rss_anon);
+          g_free (vm_hwm);
+          g_free (vm_size);
+          g_free (vm_peak);
+          g_free (rss_file);
+          g_free (rss_shmem);
+          g_free (threads);
+          g_free (fd_size);
+        }
+      g_metrics_file_end_record (memory_metrics_file);
+    }
+
+  if (slice_metrics_file)
+    {
+      GMetricsTable *slice_metrics_table;
+      GMetricsTableIter iter;
+      GSliceMetrics *slice_metrics;
+      const char *name;
+
+      g_metrics_file_start_record (slice_metrics_file);
+      slice_metrics_table = g_slice_lock_metrics_table ();
+      g_metrics_table_iter_init (&iter, slice_metrics_table);
+      while (g_metrics_table_iter_next (&iter, &name, &slice_metrics))
+        g_metrics_file_add_row (slice_metrics_file,
+                                name,
+                                slice_metrics->total_usage,
+                                slice_metrics->number_of_allocations);
+      g_slice_unlock_metrics_table ();
+      g_metrics_file_end_record (slice_metrics_file);
+    }
+
+  G_LOCK (main_context_list);
+
+  old_histogram = histograms[old_histogram_index];
+  if (histograms[new_histogram_index] == NULL)
+    histograms[new_histogram_index] = g_metrics_table_new (sizeof (GSourceMetrics));
+
+  histogram = histograms[new_histogram_index];
+  g_metrics_table_clear (histogram);
+
+  for (context_node = main_context_list; context_node != NULL; context_node = context_node->next)
+    {
+      GMainContext *context = context_node->data;
+      GHashTableIter iter;
+      gpointer value;
+
+      if (!context)
+        continue;
+
+      LOCK_CONTEXT (context);
+      g_hash_table_iter_init (&iter, context->sources);
+      while (g_hash_table_iter_next (&iter, NULL, &value))
+        {
+          GSource *source = value;
+          char *name;
+          GSourceMetrics *old_metrics = NULL;
+          GSourceMetrics *metrics;
+          long old_instance_count = 0;
+
+          if (SOURCE_DESTROYED (source))
+            continue;
+
+          if (total_sources_metrics_file)
+            new_total_sources++;
+          name = g_strdup (g_source_get_name (source));
+
+          if (name == NULL)
+            name = g_strdup_printf ("%p", source);
+
+          if (old_histogram != NULL)
+            {
+              old_metrics = g_metrics_table_get_record (old_histogram, name);
+
+              if (old_metrics != NULL)
+                  old_instance_count = old_metrics->instance_count;
+            }
+
+          metrics = g_metrics_table_get_record (histogram, name);
+          if (metrics == NULL)
+            {
+              GSourceMetrics new_metrics = { 0 };
+              g_metrics_table_set_record (histogram, name, &new_metrics);
+
+              metrics = g_metrics_table_get_record (histogram, name);
+            }
+
+          g_free (name);
+
+          metrics->instance_count++;
+          metrics->instance_change = metrics->instance_count - old_instance_count;
+        }
+      UNLOCK_CONTEXT (context);
+    }
+
+  if (total_sources_metrics_file)
+    {
+      change = new_total_sources - old_total_sources;
+
+      g_metrics_file_start_record (total_sources_metrics_file);
+      g_metrics_file_add_row (total_sources_metrics_file,
+                              (gpointer) new_total_sources,
+                              change);
+      g_metrics_file_end_record (total_sources_metrics_file);
+      old_total_sources = new_total_sources;
+    }
+
+  if (old_histogram != NULL)
+    {
+      GMetricsTableIter iter;
+      GSourceMetrics *old_metrics = NULL;
+      const char *old_name = NULL;
+
+      g_metrics_table_iter_init (&iter, old_histogram);
+      while (g_metrics_table_iter_next (&iter, &old_name, &old_metrics))
+        {
+          GSourceMetrics *metrics;
+
+          metrics = g_metrics_table_get_record (histogram, old_name);
+          if (metrics == NULL)
+            {
+              GSourceMetrics new_metrics = { 0 };
+              new_metrics.instance_change = -old_metrics->instance_count;
+              g_metrics_table_set_record (histogram, old_name, &new_metrics);
+            }
+        }
+    }
+
+  if (sources_metrics_file)
+    {
+      GMetricsTableIter iter;
+      GSourceMetrics *metrics = NULL;
+      const char *name = NULL;
+
+      g_metrics_file_start_record (sources_metrics_file);
+      g_metrics_table_sorted_iter_init (&iter, histogram, (GCompareFunc) metrics_sort);
+      while (g_metrics_table_iter_next (&iter, &name, &metrics))
+        {
+          if (metrics->instance_change == 0)
+            continue;
+
+          g_metrics_file_add_row (sources_metrics_file,
+                                  name,
+                                  metrics->instance_count,
+                                  metrics->instance_change > 0? "+" : "",
+                                  metrics->instance_change);
+        }
+      g_metrics_file_end_record (sources_metrics_file);
+    }
+  if (old_histogram != NULL)
+    g_metrics_table_clear (old_histogram);
+  old_histogram_index = new_histogram_index;
+
+  G_UNLOCK (main_context_list);
+}
+
+static gboolean
+on_timeout_fd_ready (void)
+{
+  g_metrics_run_timeout_handlers ();
+  return G_SOURCE_CONTINUE;
+}
+
 /**
  * g_main_context_new:
  * 
@@ -618,6 +942,8 @@ g_main_context_new (void)
 {
   static gsize initialised;
   GMainContext *context;
+  GSource *metrics_timeout_source = NULL;
+  gboolean needs_event_loop_metrics = FALSE, needs_event_loop_totals_metrics = FALSE, needs_mem_metrics = FALSE, needs_slice_metrics = FALSE;
 
   if (g_once_init_enter (&initialised))
     {
@@ -660,6 +986,57 @@ g_main_context_new (void)
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
 
   G_LOCK (main_context_list);
+
+  if (main_context_list == NULL)
+    {
+      if (g_metrics_enabled ())
+        {
+          int timeout_fd = g_metrics_get_timeout_fd ();
+          metrics_timeout_source = g_unix_fd_source_new (timeout_fd, G_IO_IN);
+          g_source_set_callback (metrics_timeout_source, (GSourceFunc) on_timeout_fd_ready, NULL, NULL);
+          g_source_set_name (metrics_timeout_source, "metrics timeout source");
+        }
+      needs_event_loop_metrics = g_metrics_requested ("event-loop-sources");
+      needs_event_loop_totals_metrics = g_metrics_requested ("event-loop-sources-totals");
+      needs_mem_metrics = g_metrics_requested ("memory-usage");
+      needs_slice_metrics = g_metrics_requested ("slice-memory-usage");
+    }
+
+    if (needs_event_loop_totals_metrics)
+      total_sources_metrics_file = g_metrics_file_new ("event-loop-sources-totals",
+                                                       "total sources", "%ld",
+                                                       "total sources change", "%ld",
+                                                        NULL);
+    if (needs_event_loop_metrics)
+      sources_metrics_file = g_metrics_file_new ("event-loop-sources",
+                                                 "name", "%s",
+                                                 "count", "%ld",
+                                                 "change", "%s%ld",
+                                                 NULL);
+    if (needs_mem_metrics)
+      memory_metrics_file = g_metrics_file_new ("memory-usage",
+                                                "VmRSS", "%s",
+                                                "VmData", "%s",
+                                                "RssAnon", "%s",
+                                                "VmHWM", "%s",
+                                                "Slice Allocated", "%ld",
+                                                "VmSize", "%s",
+                                                "VmPeak", "%s",
+                                                "RssFile", "%s",
+                                                "RssShmem", "%s",
+                                                "Threads", "%s",
+                                                "FDSize", "%s",
+                                                NULL);
+
+    if (needs_slice_metrics)
+      slice_metrics_file = g_metrics_file_new ("slice-memory-usage",
+                                               "name", "%s",
+                                               "total-bytes", "%ld",
+                                               "number of allocations", "%lu",
+                                               NULL);
+    if (needs_event_loop_metrics || needs_event_loop_totals_metrics || needs_mem_metrics || needs_slice_metrics)
+      g_metrics_start_timeout (on_metrics_timeout);
+
   main_context_list = g_slist_append (main_context_list, context);
 
 #ifdef G_MAIN_POLL_DEBUG
@@ -668,6 +1045,12 @@ g_main_context_new (void)
 #endif
 
   G_UNLOCK (main_context_list);
+
+  if (metrics_timeout_source != NULL)
+    {
+      g_source_attach (metrics_timeout_source, context);
+      g_source_unref (metrics_timeout_source);
+    }
 
   return context;
 }
