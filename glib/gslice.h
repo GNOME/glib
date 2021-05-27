@@ -22,12 +22,18 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
+#include <glib/gmetrics.h>
 #include <glib/gtypes.h>
+#include <string.h>
 
 G_BEGIN_DECLS
 
 /* slices - fast allocation/release of small memory blocks
  */
+GLIB_AVAILABLE_IN_ALL
+gpointer g_slice_alloc_with_name        (gsize	       block_size, const char *name) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+GLIB_AVAILABLE_IN_ALL
+gpointer g_slice_alloc0_with_name        (gsize	       block_size, const char *name) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 GLIB_AVAILABLE_IN_ALL
 gpointer g_slice_alloc          	(gsize	       block_size) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 GLIB_AVAILABLE_IN_ALL
@@ -36,14 +42,28 @@ GLIB_AVAILABLE_IN_ALL
 gpointer g_slice_copy                   (gsize         block_size,
                                          gconstpointer mem_block) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 GLIB_AVAILABLE_IN_ALL
+gpointer g_slice_copy_with_name          (gsize         block_size,
+                                          gconstpointer mem_block,
+                                          const char   *name) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
+GLIB_AVAILABLE_IN_ALL
+void     g_slice_free1_with_name          	(gsize         block_size,
+						 gpointer      mem_block,
+						 const char   *name);
+GLIB_AVAILABLE_IN_ALL
 void     g_slice_free1          	(gsize         block_size,
 					 gpointer      mem_block);
+GLIB_AVAILABLE_IN_ALL
+void     g_slice_free_chain_with_offset_and_name (gsize         block_size,
+					 gpointer      mem_chain,
+					 gsize         next_offset,
+					 const char   *name);
 GLIB_AVAILABLE_IN_ALL
 void     g_slice_free_chain_with_offset (gsize         block_size,
 					 gpointer      mem_chain,
 					 gsize         next_offset);
-#define  g_slice_new(type)      ((type*) g_slice_alloc (sizeof (type)))
-#define  g_slice_new0(type)     ((type*) g_slice_alloc0 (sizeof (type)))
+#define  g_slice_new(type)      ((type*) g_slice_alloc_with_name (sizeof (type), #type))
+#define  g_slice_new0(type)     ((type*) g_slice_alloc0_with_name (sizeof (type), #type))
+
 /* MemoryBlockType *
  *       g_slice_dup                    (MemoryBlockType,
  *	                                 MemoryBlockType *mem_block);
@@ -58,17 +78,17 @@ void     g_slice_free_chain_with_offset (gsize         block_size,
 
 /* we go through extra hoops to ensure type safety */
 #define g_slice_dup(type, mem)                                  \
-  (1 ? (type*) g_slice_copy (sizeof (type), (mem))              \
+  (1 ? (type*) g_slice_copy_with_name (sizeof (type), (mem), #type)              \
      : ((void) ((type*) 0 == (mem)), (type*) 0))
 #define g_slice_free(type, mem)                                 \
 G_STMT_START {                                                  \
-  if (1) g_slice_free1 (sizeof (type), (mem));			\
+  if (1) g_slice_free1_with_name (sizeof (type), (mem), #type);			\
   else   (void) ((type*) 0 == (mem)); 				\
 } G_STMT_END
 #define g_slice_free_chain(type, mem_chain, next)               \
 G_STMT_START {                                                  \
-  if (1) g_slice_free_chain_with_offset (sizeof (type),		\
-                 (mem_chain), G_STRUCT_OFFSET (type, next)); 	\
+  if (1) g_slice_free_chain_with_offset_and_name (sizeof (type),		\
+                 (mem_chain), G_STRUCT_OFFSET (type, next), #type); 	\
   else   (void) ((type*) 0 == (mem_chain));			\
 } G_STMT_END
 
@@ -88,6 +108,21 @@ GLIB_DEPRECATED_IN_2_34
 gint64   g_slice_get_config	   (GSliceConfig ckey);
 GLIB_DEPRECATED_IN_2_34
 gint64*  g_slice_get_config_state  (GSliceConfig ckey, gint64 address, guint *n_values);
+
+GLIB_AVAILABLE_IN_ALL
+gsize    g_slice_get_total_allocated_memory (void);
+
+typedef struct _GSliceMetrics
+{
+  gssize total_usage;
+  gsize number_of_allocations;
+} GSliceMetrics;
+
+GLIB_AVAILABLE_IN_ALL
+void g_slice_lock_metrics (GMetricsInstanceCounter   **instance_counter,
+                           GMetricsInstanceCounter   **stack_trace_counter);
+GLIB_AVAILABLE_IN_ALL
+void g_slice_unlock_metrics (void);
 
 #ifdef G_ENABLE_DEBUG
 GLIB_AVAILABLE_IN_ALL

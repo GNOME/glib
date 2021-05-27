@@ -1846,7 +1846,7 @@ g_type_create_instance (GType type)
       VALGRIND_MALLOCLIKE_BLOCK (allocated + ALIGN_STRUCT (1), private_size - ALIGN_STRUCT (1), 0, TRUE);
     }
   else
-    allocated = g_slice_alloc0 (private_size + ivar_size);
+    allocated = g_slice_alloc0_with_name (private_size + ivar_size, type_descriptive_name_I (type));
 
   instance = (GTypeInstance *) (allocated + private_size);
 
@@ -1941,7 +1941,7 @@ g_type_free_instance (GTypeInstance *instance)
       VALGRIND_FREELIKE_BLOCK (instance, 0);
     }
   else
-    g_slice_free1 (private_size + ivar_size, allocated);
+    g_slice_free1_with_name (private_size + ivar_size, allocated, type_descriptive_name_I (class->g_type));
 
 #ifdef	G_ENABLE_DEBUG
   IF_DEBUG (INSTANCE_COUNT)

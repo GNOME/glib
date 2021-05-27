@@ -528,9 +528,9 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   if (!destruction)
     {
-      hash_table->keys   = g_new0 (gpointer, hash_table->size);
+      hash_table->keys   = g_slice_alloc0_with_name (sizeof (gpointer) * hash_table->size, "GHashTable::keys");
       hash_table->values = hash_table->keys;
-      hash_table->hashes = g_new0 (guint, hash_table->size);
+      hash_table->hashes = g_slice_alloc0_with_name (sizeof (guint) * hash_table->size, "GHashTable::hashes");
     }
   else
     {
@@ -560,10 +560,10 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
 
   /* Destroy old storage space. */
   if (old_keys != old_values)
-    g_free (old_values);
+    g_slice_free1_with_name (sizeof (gpointer) * old_size, old_values, "GHashTable::values");
 
-  g_free (old_keys);
-  g_free (old_hashes);
+  g_slice_free1_with_name (sizeof (gpointer) * old_size, old_keys, "GHashTable::keys");
+  g_slice_free1_with_name (sizeof (guint) * old_size, old_hashes, "GHashTable::hashes");
 }
 
 /*
@@ -591,12 +591,12 @@ g_hash_table_resize (GHashTable *hash_table)
   old_size = hash_table->size;
   g_hash_table_set_shift_from_size (hash_table, hash_table->nnodes * 2);
 
-  new_keys = g_new0 (gpointer, hash_table->size);
+  new_keys = g_slice_alloc0_with_name (sizeof (gpointer) * hash_table->size, "GHashTable::keys");
   if (hash_table->keys == hash_table->values)
     new_values = new_keys;
   else
-    new_values = g_new0 (gpointer, hash_table->size);
-  new_hashes = g_new0 (guint, hash_table->size);
+    new_values = g_slice_alloc0_with_name (sizeof (gpointer) * hash_table->size, "GHashTable::values");
+  new_hashes = g_slice_alloc0_with_name (sizeof (guint) * hash_table->size, "GHashTable::hashes");
 
   for (i = 0; i < old_size; i++)
     {
@@ -622,10 +622,10 @@ g_hash_table_resize (GHashTable *hash_table)
     }
 
   if (hash_table->keys != hash_table->values)
-    g_free (hash_table->values);
+    g_slice_free1_with_name (sizeof (gpointer) * old_size, hash_table->values, "GHashTable::values");
 
-  g_free (hash_table->keys);
-  g_free (hash_table->hashes);
+  g_slice_free1_with_name (sizeof (gpointer) * old_size, hash_table->keys, "GHashTable::keys");
+  g_slice_free1_with_name (sizeof (guint) * old_size, hash_table->hashes, "GHashTable::hashes");
 
   hash_table->keys = new_keys;
   hash_table->values = new_values;
@@ -790,7 +790,7 @@ g_hash_table_new_full (GHashFunc      hash_func,
   GHashTable *hash_table;
   gboolean needs_hash_table_metrics = FALSE, needs_hash_table_totals = FALSE;
   HASH_TABLE_MIN_SHIFT = atoi(getenv ("G_HASH_TABLE_MIN_SHIFT")? : "3");
-  hash_table = g_slice_new (GHashTable);
+  hash_table = g_slice_new0 (GHashTable);
   g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
   hash_table->nnodes             = 0;
   hash_table->last_sweep         = 0;
@@ -803,9 +803,9 @@ g_hash_table_new_full (GHashFunc      hash_func,
 #endif
   hash_table->key_destroy_func   = key_destroy_func;
   hash_table->value_destroy_func = value_destroy_func;
-  hash_table->keys               = g_new0 (gpointer, hash_table->size);
+  hash_table->keys               = g_slice_alloc0_with_name (sizeof (gpointer) * hash_table->size, "GHashTable::keys");
   hash_table->values             = hash_table->keys;
-  hash_table->hashes             = g_new0 (guint, hash_table->size);
+  hash_table->hashes             = g_slice_alloc0_with_name (sizeof (guint) * hash_table->size, "GHashTable::hashes");
 
   G_LOCK (hash_tables);
   if (g_metrics_enabled ())
@@ -1080,7 +1080,7 @@ g_hash_table_insert_node (GHashTable *hash_table,
    * split the table.
    */
   if (G_UNLIKELY (hash_table->keys == hash_table->values && hash_table->keys[node_index] != new_value))
-    hash_table->values = g_memdup2 (hash_table->keys, sizeof (gpointer) * hash_table->size);
+    hash_table->values = g_slice_copy_with_name (sizeof (gpointer) * hash_table->size, hash_table->keys, "GHashTable::values");
 
   /* Step 3: Actually do the write */
   hash_table->values[node_index] = new_value;
@@ -1215,9 +1215,10 @@ g_hash_table_unref (GHashTable *hash_table)
     {
       g_hash_table_remove_all_nodes (hash_table, TRUE, TRUE);
       if (hash_table->keys != hash_table->values)
-        g_free (hash_table->values);
-      g_free (hash_table->keys);
-      g_free (hash_table->hashes);
+	g_slice_free1_with_name (sizeof (gpointer) * hash_table->size, hash_table->values, "GHashTable::values");
+
+      g_slice_free1_with_name (sizeof (gpointer) * hash_table->size, hash_table->keys, "GHashTable::keys");
+      g_slice_free1_with_name (sizeof (guint) * hash_table->size, hash_table->hashes, "GHashTable::hashes");
       G_LOCK (hash_tables);
       if (hash_tables_list != NULL)
         g_metrics_list_remove_item (hash_tables_list, hash_table);

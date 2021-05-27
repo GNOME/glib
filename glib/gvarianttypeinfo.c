@@ -342,8 +342,8 @@ tuple_info_free (GVariantTypeInfo *info)
   for (i = 0; i < tuple_info->n_members; i++)
     g_variant_type_info_unref (tuple_info->members[i].type_info);
 
-  g_slice_free1 (sizeof (GVariantMemberInfo) * tuple_info->n_members,
-                 tuple_info->members);
+  g_slice_free1_with_name (sizeof (GVariantMemberInfo) * tuple_info->n_members,
+                 tuple_info->members, "GVariantMemberInfo");
   g_slice_free (TupleInfo, tuple_info);
 }
 
@@ -356,7 +356,7 @@ tuple_allocate_members (const GVariantType  *type,
   gsize i = 0;
 
   *n_members = g_variant_type_n_items (type);
-  *members = g_slice_alloc (sizeof (GVariantMemberInfo) * *n_members);
+  *members = g_slice_alloc_with_name (sizeof (GVariantMemberInfo) * *n_members, "GVariantMemberInfo");
 
   item_type = g_variant_type_first (type);
   while (item_type)
