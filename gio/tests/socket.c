@@ -502,7 +502,7 @@ test_ip_sync (GSocketFamily family)
   g_assert_cmpstr (testbuf, ==, buf);
 
   {
-    GOutputVector v[7] = { { NULL, }, };
+    GOutputVector v[7] = { { NULL, 0 }, };
 
     v[0].buffer = testbuf2 + 0;
     v[0].size = 3;
@@ -627,10 +627,10 @@ test_ip_sync_dgram (GSocketFamily family)
   g_assert_cmpstr (testbuf, ==, buf);
 
   {
-    GOutputMessage m[3] = { { NULL, }, };
-    GInputMessage im[3] = { { NULL, }, };
-    GOutputVector v[7] = { { NULL, }, };
-    GInputVector iv[7] = { { NULL, }, };
+    GOutputMessage m[3] = { { NULL, NULL, 0, 0, NULL, 0 }, };
+    GInputMessage im[3] = { { NULL, NULL, 0, 0, 0, NULL, 0 }, };
+    GOutputVector v[7] = { { NULL, 0 }, };
+    GInputVector iv[7] = { { NULL, 0 }, };
 
     v[0].buffer = testbuf2 + 0;
     v[0].size = 3;
@@ -868,8 +868,8 @@ test_ip_sync_dgram_timeouts (GSocketFamily family)
   /* Check for timeouts when no server is running. */
   {
     gint64 start_time;
-    GInputMessage im = { NULL, };
-    GInputVector iv = { NULL, };
+    GInputMessage im = { NULL, NULL, 0, 0, 0, NULL, 0 };
+    GInputVector iv = { NULL, 0 };
     guint8 buf[128];
 
     iv.buffer = buf;

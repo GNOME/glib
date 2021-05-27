@@ -112,7 +112,7 @@ test_types (void)
   vp2 = (gpointer) g_atomic_pointer_get (&gs);
   gs2 = (gsize) vp2;
   g_assert_cmpuint (gs2, ==, 0);
-  res = g_atomic_pointer_compare_and_exchange (&gs, NULL, NULL);
+  res = g_atomic_pointer_compare_and_exchange (&gs, NULL, (gsize) NULL);
   g_assert_true (res);
   g_assert_cmpuint (gs, ==, 0);
   gs2 = (gsize) g_atomic_pointer_add (&gs, 5);
@@ -129,7 +129,7 @@ test_types (void)
   g_assert_cmpuint (gs, ==, 8);
 
   g_assert_cmpint (g_atomic_int_get (csp), ==, s);
-  g_assert_true (g_atomic_pointer_get (cspp) == csp);
+  g_assert_true (g_atomic_pointer_get ((const gint **) cspp) == csp);
 
   /* repeat, without the macros */
 #undef g_atomic_int_set

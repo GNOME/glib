@@ -49,7 +49,7 @@ static const TestData cases[] = {
       { "true",     NULL,     EXPLICITLY_TRUE,  REMOTE },
       { "false",    NULL,     EXPLICITLY_FALSE, REMOTE },
       { "we-close", "662100", EXPLICITLY_TRUE,  LOCAL  },
-      { NULL }
+      { NULL, NULL, 0, 0 }
 };
 
 static gboolean
