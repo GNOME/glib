@@ -70,6 +70,27 @@ test_prefix (void)
 }
 
 static void
+test_prefix_literal (void)
+{
+  GError *error = NULL;
+
+  g_prefix_error_literal (NULL, "foo: ");
+
+  g_prefix_error_literal (&error, "foo: ");
+  g_assert_null (error);
+
+  error = NULL;
+  g_prefix_error_literal (&error, "foo: ");
+  g_assert_null (error);
+
+  error = g_error_new_literal (G_MARKUP_ERROR, G_MARKUP_ERROR_EMPTY, "bla");
+  g_assert_nonnull (error);
+  g_prefix_error_literal (&error, "foo: ");
+  g_assert_cmpstr (error->message, ==, "foo: bla");
+  g_error_free (error);
+}
+
+static void
 test_literal (void)
 {
   GError *error;
@@ -374,6 +395,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/error/overwrite", test_overwrite);
   g_test_add_func ("/error/prefix", test_prefix);
+  g_test_add_func ("/error/prefix-literal", test_prefix_literal);
   g_test_add_func ("/error/literal", test_literal);
   g_test_add_func ("/error/copy", test_copy);
   g_test_add_func ("/error/matches", test_matches);
