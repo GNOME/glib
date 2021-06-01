@@ -1101,6 +1101,30 @@ g_prefix_error (GError      **err,
 }
 
 /**
+ * g_prefix_error_literal:
+ * @err: (allow-none): a return location for a #GError, or %NULL
+ * @prefix: string to prefix @err with
+ *
+ * Prefixes @prefix to an existing error message. If @err or *@err is
+ * %NULL (i.e.: no error variable) then do nothing.
+ *
+ * Since: 2.70
+ */
+void
+g_prefix_error_literal (GError      **err,
+                        const gchar  *prefix)
+{
+  if (err && *err)
+    {
+      gchar *oldstring;
+
+      oldstring = (*err)->message;
+      (*err)->message = g_strconcat (prefix, oldstring, NULL);
+      g_free (oldstring);
+    }
+}
+
+/**
  * g_propagate_prefixed_error:
  * @dest: error return location
  * @src: error to move into the return location
