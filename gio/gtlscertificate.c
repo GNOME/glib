@@ -63,6 +63,10 @@ enum
   PROP_ISSUER,
   PROP_PKCS11_URI,
   PROP_PRIVATE_KEY_PKCS11_URI,
+  PROP_NOT_VALID_BEFORE,
+  PROP_NOT_VALID_AFTER,
+  PROP_SUBJECT_NAME,
+  PROP_ISSUER_NAME,
 };
 
 static void
@@ -247,6 +251,69 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                           G_PARAM_CONSTRUCT_ONLY |
+                                                          G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GTlsCertificate:not-valid-before: (nullable)
+   *
+   * The time at which this cert is considered to be valid,
+   * %NULL if unavailable.
+   *
+   * Since: 2.70
+   */
+  g_object_class_install_property (gobject_class, PROP_NOT_VALID_BEFORE,
+                                   g_param_spec_boxed ("not-valid-before",
+                                                       P_("Not Valid Before"),
+                                                       P_("Cert should not be considered valid before this time."),
+                                                       G_TYPE_DATE_TIME,
+                                                       G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GTlsCertificate:not-valid-after: (nullable)
+   *
+   * The time at which this cert is no longer valid,
+   * %NULL if unavailable.
+   *
+   * Since: 2.70
+   */
+  g_object_class_install_property (gobject_class, PROP_NOT_VALID_AFTER,
+                                   g_param_spec_boxed ("not-valid-after",
+                                                       P_("Not Valid after"),
+                                                       P_("Cert should not be considered valid after this time."),
+                                                       G_TYPE_DATE_TIME,
+                                                       G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GTlsCertificate:subject-name: (nullable)
+   *
+   * The subject from the cert,
+   * %NULL if unavailable.
+   *
+   * Since: 2.70
+   */
+  g_object_class_install_property (gobject_class, PROP_SUBJECT_NAME,
+                                   g_param_spec_string ("subject-name",
+                                                        P_("Subject Name"),
+                                                        P_("The subject name from the certificate."),
+                                                        NULL,
+                                                        G_PARAM_READABLE |
+                                                          G_PARAM_STATIC_STRINGS));
+  /**
+   * GTlsCertificate:issuer-name: (nullable)
+   *
+   * The issuer from the certificate,
+   * %NULL if unavailable.
+   *
+   * Since: 2.70
+   */
+  g_object_class_install_property (gobject_class, PROP_ISSUER_NAME,
+                                   g_param_spec_string ("issuer-name",
+                                                        P_("Issuer Name"),
+                                                        P_("The issuer from the certificate."),
+                                                        NULL,
+                                                        G_PARAM_READABLE |
                                                           G_PARAM_STATIC_STRINGS));
 }
 
@@ -875,4 +942,93 @@ g_tls_certificate_is_same (GTlsCertificate     *cert_one,
   g_byte_array_unref (b2);
 
   return equal;
+}
+
+
+/**
+ * g_tls_certificate_get_not_valid_before:
+ * @cert: a #GTlsCertificate
+ *
+ * Returns the time at which the certificate became or will become valid.
+ *
+ * Returns: (nullable) (transfer full): The not-valid-before date, or %NULL if it's not available.
+ *
+ * Since: 2.70
+ */
+GDateTime *
+g_tls_certificate_get_not_valid_before (GTlsCertificate *cert)
+{
+  GDateTime *not_valid_before = NULL;
+
+  g_return_val_if_fail (G_IS_TLS_CERTIFICATE (cert), NULL);
+
+  g_object_get (G_OBJECT (cert), "not-valid-before", &not_valid_before, NULL);
+
+  return g_steal_pointer (&not_valid_before);
+}
+
+/**
+ * g_tls_certificate_get_not_valid_after:
+ * @cert: a #GTlsCertificate
+ *
+ * Returns the time at which the certificate became or will become invalid.
+ *
+ * Returns: (nullable) (transfer full): The not-valid-after date, or %NULL if it's not available.
+ *
+ * Since: 2.70
+ */
+GDateTime *
+g_tls_certificate_get_not_valid_after (GTlsCertificate *cert)
+{
+  GDateTime *not_valid_after = NULL;
+
+  g_return_val_if_fail (G_IS_TLS_CERTIFICATE (cert), NULL);
+
+  g_object_get (G_OBJECT (cert), "not-valid-after", &not_valid_after, NULL);
+
+  return g_steal_pointer (&not_valid_after);
+}
+
+/**
+ * g_tls_certificate_get_subject_name:
+ * @cert: a #GTlsCertificate
+ *
+ * Returns the subject name from the certificate.
+ *
+ * Returns: (nullable) (transfer full): The subject name, or %NULL if it's not available.
+ *
+ * Since: 2.70
+ */
+gchar *
+g_tls_certificate_get_subject_name (GTlsCertificate *cert)
+{
+  gchar *subject_name = NULL;
+
+  g_return_val_if_fail (G_IS_TLS_CERTIFICATE (cert), NULL);
+
+  g_object_get (G_OBJECT (cert), "subject-name", &subject_name, NULL);
+
+  return g_steal_pointer (&subject_name);
+}
+
+/**
+ * g_tls_certificate_get_issuer_name:
+ * @cert: a #GTlsCertificate
+ *
+ * Returns the issuer name from the certificate.
+ *
+ * Returns: (nullable) (transfer full): The issuer name, or %NULL if it's not available.
+ *
+ * Since: 2.70
+ */
+gchar *
+g_tls_certificate_get_issuer_name (GTlsCertificate *cert)
+{
+  gchar *issuer_name = NULL;
+
+  g_return_val_if_fail (G_IS_TLS_CERTIFICATE (cert), NULL);
+
+  g_object_get (G_OBJECT (cert), "issuer-name", &issuer_name, NULL);
+
+  return g_steal_pointer (&issuer_name);
 }

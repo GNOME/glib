@@ -110,6 +110,10 @@ enum
   PROP_CERT_ISSUER,
   PROP_CERT_PKCS11_URI,
   PROP_CERT_PRIVATE_KEY_PKCS11_URI,
+  PROP_CERT_NOT_VALID_BEFORE,
+  PROP_CERT_NOT_VALID_AFTER,
+  PROP_CERT_SUBJECT_NAME,
+  PROP_CERT_ISSUER_NAME,
 };
 
 static void g_test_tls_certificate_initable_iface_init (GInitableIface *iface);
@@ -155,6 +159,18 @@ g_test_tls_certificate_get_property (GObject    *object,
       break;
     case PROP_CERT_PRIVATE_KEY_PKCS11_URI:
       g_value_set_string (value, cert->private_key_pkcs11_uri);
+      break;
+    case PROP_CERT_NOT_VALID_BEFORE:
+      g_value_take_boxed (value, g_date_time_new_from_iso8601 ("2020-10-12T17:49:44Z", NULL));
+      break;
+    case PROP_CERT_NOT_VALID_AFTER:
+      g_value_take_boxed (value, g_date_time_new_from_iso8601 ("2045-10-06T17:49:44Z", NULL));
+      break;
+    case PROP_CERT_SUBJECT_NAME:
+      g_value_set_string (value, "DC=COM,DC=EXAMPLE,CN=server.example.com");
+      break;
+    case PROP_CERT_ISSUER_NAME:
+      g_value_set_string (value, "DC=COM,DC=EXAMPLE,OU=Certificate Authority,CN=ca.example.com,emailAddress=ca@example.com");
       break;
     default:
       g_assert_not_reached ();
@@ -230,6 +246,10 @@ g_test_tls_certificate_class_init (GTestTlsCertificateClass *test_class)
   g_object_class_override_property (gobject_class, PROP_CERT_ISSUER, "issuer");
   g_object_class_override_property (gobject_class, PROP_CERT_PKCS11_URI, "pkcs11-uri");
   g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY_PKCS11_URI, "private-key-pkcs11-uri");
+  g_object_class_override_property (gobject_class, PROP_CERT_NOT_VALID_BEFORE, "not-valid-before");
+  g_object_class_override_property (gobject_class, PROP_CERT_NOT_VALID_AFTER, "not-valid-after");
+  g_object_class_override_property (gobject_class, PROP_CERT_SUBJECT_NAME, "subject-name");
+  g_object_class_override_property (gobject_class, PROP_CERT_ISSUER_NAME, "issuer-name");
 }
 
 static void

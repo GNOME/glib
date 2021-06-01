@@ -92,6 +92,18 @@ GLIB_AVAILABLE_IN_2_34
 gboolean              g_tls_certificate_is_same            (GTlsCertificate     *cert_one,
                                                             GTlsCertificate     *cert_two);
 
+GLIB_AVAILABLE_IN_2_70
+GDateTime            *g_tls_certificate_get_not_valid_before (GTlsCertificate     *cert);
+
+GLIB_AVAILABLE_IN_2_70
+GDateTime            *g_tls_certificate_get_not_valid_after  (GTlsCertificate     *cert);
+
+GLIB_AVAILABLE_IN_2_70
+gchar                *g_tls_certificate_get_subject_name     (GTlsCertificate     *cert);
+
+GLIB_AVAILABLE_IN_2_70
+gchar                *g_tls_certificate_get_issuer_name      (GTlsCertificate     *cert);
+
 G_END_DECLS
 
 #endif /* __G_TLS_CERTIFICATE_H__ */
