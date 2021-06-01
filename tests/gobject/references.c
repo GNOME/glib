@@ -256,7 +256,8 @@ main (int   argc,
   g_assert (object_destroyed == FALSE);
 
   clear_flags ();
-  g_object_remove_toggle_ref (object, toggle_ref2, GUINT_TO_POINTER (24));
+  /* Check that removing a toggle ref with %NULL data works fine. */
+  g_object_remove_toggle_ref (object, toggle_ref2, NULL);
   g_assert (toggle_ref1_weakened == FALSE);
   g_assert (toggle_ref1_strengthened == FALSE);
   g_assert (toggle_ref2_weakened == FALSE);
