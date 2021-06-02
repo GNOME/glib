@@ -1703,6 +1703,12 @@ typedef enum {
  *    wrong many times, and the user may not have many chances left.
  * @G_TLS_PASSWORD_FINAL_TRY: Hint to the user that this is the last try to get
  *    this password right.
+ * @G_TLS_PASSWORD_PKCS11_USER: For PKCS #11, the user PIN is required.
+ *    Since: 2.70.
+ * @G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER: For PKCS #11, the security officer
+ *    PIN is required. Since: 2.70.
+ * @G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC: For PKCS #11, the context-specific
+ *    PIN is required. Since: 2.70.
  *
  * Various flags for the password.
  *
@@ -1714,7 +1720,10 @@ typedef enum _GTlsPasswordFlags
   G_TLS_PASSWORD_NONE = 0,
   G_TLS_PASSWORD_RETRY = 1 << 1,
   G_TLS_PASSWORD_MANY_TRIES = 1 << 2,
-  G_TLS_PASSWORD_FINAL_TRY = 1 << 3
+  G_TLS_PASSWORD_FINAL_TRY = 1 << 3,
+  G_TLS_PASSWORD_PKCS11_USER = 1 << 4,
+  G_TLS_PASSWORD_PKCS11_SECURITY_OFFICER = 1 << 5,
+  G_TLS_PASSWORD_PKCS11_CONTEXT_SPECIFIC = 1 << 6
 } GTlsPasswordFlags;
 
 /**
