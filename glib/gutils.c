@@ -340,7 +340,17 @@ g_find_program_in_path (const gchar *program)
     {
       if (g_file_test (program, G_FILE_TEST_IS_EXECUTABLE) &&
 	  !g_file_test (program, G_FILE_TEST_IS_DIR))
-        return g_strdup (program);
+        {
+          gchar *out = NULL, *cwd = NULL;
+
+          if (g_path_is_absolute (program))
+            return g_strdup (program);
+
+          cwd = g_get_current_dir ();
+          out = g_build_filename (cwd, program, NULL);
+          g_free (cwd);
+          return g_steal_pointer (&out);
+        }
       else
         return NULL;
     }

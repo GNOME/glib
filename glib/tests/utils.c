@@ -246,6 +246,11 @@ test_find_program (void)
   gchar *res;
 
 #ifdef G_OS_UNIX
+  gchar *relative_path;
+  gchar *absolute_path;
+  gchar *cwd;
+  gsize i;
+
   res = g_find_program_in_path ("sh");
   g_assert (res != NULL);
   g_free (res);
@@ -253,6 +258,27 @@ test_find_program (void)
   res = g_find_program_in_path ("/bin/sh");
   g_assert (res != NULL);
   g_free (res);
+
+  cwd = g_get_current_dir ();
+  absolute_path = g_find_program_in_path ("sh");
+  relative_path = g_strdup (absolute_path);
+  for (i = 0; cwd[i] != '\0'; i++)
+    {
+      if (cwd[i] == '/' && cwd[i + 1] != '\0')
+        {
+          gchar *relative_path_2 = g_strconcat ("../", relative_path, NULL);
+          g_free (relative_path);
+          relative_path = relative_path_2;
+        }
+    }
+  res = g_find_program_in_path (relative_path);
+  g_assert_nonnull (res);
+  g_assert_true (g_path_is_absolute (res));
+  g_free (cwd);
+  g_free (absolute_path);
+  g_free (relative_path);
+  g_free (res);
+
 #else
   /* There's not a lot we can search for that would reliably work both
    * on real Windows and mingw.
