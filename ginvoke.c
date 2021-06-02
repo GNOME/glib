@@ -251,7 +251,7 @@ gi_cclosure_marshal_generic (GClosure *closure,
                              gpointer invocation_hint,
                              gpointer marshal_data)
 {
-  GIArgument return_ffi_value;
+  GIArgument return_ffi_value = { 0, };
   ffi_type *rtype;
   void *rvalue;
   int n_args;
