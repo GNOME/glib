@@ -3216,7 +3216,9 @@ g_dbus_message_set_error_name (GDBusMessage  *message,
  *
  * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
  *
- * Returns: The value.
+ * This will always be non-%NULL, but may be an empty string.
+ *
+ * Returns: (not nullable): The value.
  *
  * Since: 2.26
  */
@@ -3488,7 +3490,7 @@ _sort_keys_func (gconstpointer a,
  *   fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
  * ]|
  *
- * Returns: A string that should be freed with g_free().
+ * Returns: (not nullable): A string that should be freed with g_free().
  *
  * Since: 2.26
  */

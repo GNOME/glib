@@ -98,7 +98,7 @@ typedef struct
  * If @info is statically allocated does nothing. Otherwise increases
  * the reference count.
  *
- * Returns: The same @info.
+ * Returns: (not nullable): The same @info.
  *
  * Since: 2.26
  */
@@ -118,7 +118,7 @@ g_dbus_node_info_ref (GDBusNodeInfo *info)
  * If @info is statically allocated does nothing. Otherwise increases
  * the reference count.
  *
- * Returns: The same @info.
+ * Returns: (not nullable): The same @info.
  *
  * Since: 2.26
  */
@@ -138,7 +138,7 @@ g_dbus_interface_info_ref (GDBusInterfaceInfo *info)
  * If @info is statically allocated does nothing. Otherwise increases
  * the reference count.
  *
- * Returns: The same @info.
+ * Returns: (not nullable): The same @info.
  *
  * Since: 2.26
  */
@@ -158,7 +158,7 @@ g_dbus_method_info_ref (GDBusMethodInfo *info)
  * If @info is statically allocated does nothing. Otherwise increases
  * the reference count.
  *
- * Returns: The same @info.
+ * Returns: (not nullable): The same @info.
  *
  * Since: 2.26
  */
@@ -178,7 +178,7 @@ g_dbus_signal_info_ref (GDBusSignalInfo *info)
  * If @info is statically allocated does nothing. Otherwise increases
  * the reference count.
  *
- * Returns: The same @info.
+ * Returns: (not nullable): The same @info.
  *
  * Since: 2.26
  */
@@ -198,7 +198,7 @@ g_dbus_property_info_ref (GDBusPropertyInfo *info)
  * If @info is statically allocated does nothing. Otherwise increases
  * the reference count.
  *
- * Returns: The same @info.
+ * Returns: (not nullable): The same @info.
  *
  * Since: 2.26
  */
@@ -218,7 +218,7 @@ g_dbus_arg_info_ref (GDBusArgInfo *info)
  * If @info is statically allocated does nothing. Otherwise increases
  * the reference count.
  *
- * Returns: The same @info.
+ * Returns: (not nullable): The same @info.
  *
  * Since: 2.26
  */
