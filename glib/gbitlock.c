@@ -471,7 +471,7 @@ void
  * @address: (not nullable): a pointer to a #gpointer-sized value
  * @lock_bit: a bit value between 0 and 31
  *
- * This is equivalent to g_bit_trylock, but working on pointers (or
+ * This is equivalent to g_bit_trylock(), but working on pointers (or
  * other pointer-sized values).
  *
  * For portability reasons, you may only lock on the bottom 32 bits of
