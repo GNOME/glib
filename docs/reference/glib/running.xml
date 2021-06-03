@@ -201,8 +201,11 @@ How to run and debug your GLib application
           reproduced with <literal>G_SLICE=always-malloc</literal>, but will
           be caught by <literal>G_SLICE=debug-blocks</literal> is as follows:
           <programlisting>
-            void *slist = g_slist_alloc (); /* void* gives up type-safety */
-            g_list_free (slist);            /* corruption: sizeof (GSList) != sizeof (GList) */
+            /* void* gives up type-safety */
+            void *slist = g_slist_alloc ();
+
+            /* corruption: sizeof (GSList) != sizeof (GList) */
+            g_list_free (slist);
           </programlisting></para>
         </listitem>
       </varlistentry>
