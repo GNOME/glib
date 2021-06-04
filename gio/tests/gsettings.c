@@ -2572,7 +2572,7 @@ test_schema_source (void)
   GSettingsBackend *backend;
   GSettingsSchema *schema;
   GError *error = NULL;
-  GSettings *settings;
+  GSettings *settings, *child;
   gboolean enabled;
 
   backend = g_settings_backend_get_default ();
@@ -2628,13 +2628,18 @@ test_schema_source (void)
   g_assert_nonnull (schema);
 
   /* try to use it for something */
-  settings = g_settings_new_full (schema, backend, g_settings_schema_get_path (schema));
+  settings = g_settings_new_full (schema, backend, "/test/");
   g_settings_schema_unref (schema);
   enabled = FALSE;
   g_settings_get (settings, "enabled", "b", &enabled);
   g_assert_true (enabled);
-  g_object_unref (settings);
 
+  /* Check that child schemas are resolved from the correct schema source, see glib#1884 */
+  child = g_settings_get_child (settings, "child");
+  g_settings_get (settings, "enabled", "b", &enabled);
+
+  g_object_unref (child);
+  g_object_unref (settings);
   g_settings_schema_source_unref (source);
 
   /* try again, but with no parent */
