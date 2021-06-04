@@ -208,6 +208,7 @@ ip_watched_file_free (ip_watched_file_t *file)
   g_assert (file->subs == NULL);
   g_free (file->filename);
   g_free (file->path);
+  g_free (file);
 }
 
 static void
