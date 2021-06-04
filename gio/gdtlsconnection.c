@@ -88,6 +88,8 @@ enum {
   PROP_CERTIFICATE,
   PROP_PEER_CERTIFICATE,
   PROP_PEER_CERTIFICATE_ERRORS,
+  PROP_PROTOCOL_VERSION,
+  PROP_CIPHERSUITE_NAME,
 };
 
 static void
@@ -259,6 +261,37 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
                                        g_param_spec_string ("negotiated-protocol",
                                                             P_("Negotiated Protocol"),
                                                             P_("Application-layer protocol negotiated for this connection"),
+                                                            NULL,
+                                                            G_PARAM_READABLE |
+                                                            G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GDtlsConnection:protocol-version:
+   *
+   * The DTLS protocol version in use. See g_dtls_connection_get_protocol_version().
+   *
+   * Since: 2.70
+   */
+  g_object_interface_install_property (iface,
+                                       g_param_spec_enum ("protocol-version",
+                                                          P_("Protocol Version"),
+                                                          P_("DTLS protocol version negotiated for this connection"),
+                                                          G_TYPE_TLS_PROTOCOL_VERSION,
+                                                          G_TLS_PROTOCOL_VERSION_UNKNOWN,
+                                                          G_PARAM_READABLE |
+                                                          G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GDtlsConnection:ciphersuite-name: (nullable)
+   *
+   * The name of the DTLS ciphersuite in use. See g_dtls_connection_get_ciphersuite_name().
+   *
+   * Since: 2.70
+   */
+  g_object_interface_install_property (iface,
+                                       g_param_spec_string ("ciphersuite-name",
+                                                            P_("Ciphersuite Name"),
+                                                            P_("Name of ciphersuite negotiated for this connection"),
                                                             NULL,
                                                             G_PARAM_READABLE |
                                                             G_PARAM_STATIC_STRINGS));
@@ -1122,4 +1155,67 @@ g_dtls_connection_get_channel_binding_data (GDtlsConnection         *conn,
     }
 
   return iface->get_binding_data (conn, type, data, error);
+}
+
+/**
+ * g_dtls_connection_get_protocol_version:
+ * @conn: a #GDTlsConnection
+ *
+ * Returns the current DTLS protocol version, which may be
+ * %G_TLS_PROTOCOL_VERSION_UNKNOWN if the connection has not handshaked, or
+ * has been closed, or if the TLS backend has implemented a protocol version
+ * that is not a recognized #GTlsProtocolVersion.
+ *
+ * Returns: The current DTLS protocol version
+ *
+ * Since: 2.70
+ */
+GTlsProtocolVersion
+g_dtls_connection_get_protocol_version (GDtlsConnection *conn)
+{
+  GTlsProtocolVersion protocol_version;
+  GEnumClass *enum_class;
+  GEnumValue *enum_value;
+
+  g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), G_TLS_PROTOCOL_VERSION_UNKNOWN);
+
+  g_object_get (G_OBJECT (conn),
+                "protocol-version", &protocol_version,
+                NULL);
+
+  /* Convert unknown values to G_TLS_PROTOCOL_VERSION_UNKNOWN. */
+  enum_class = g_type_class_peek_static (G_TYPE_TLS_PROTOCOL_VERSION);
+  enum_value = g_enum_get_value (enum_class, protocol_version);
+  return enum_value ? protocol_version : G_TLS_PROTOCOL_VERSION_UNKNOWN;
+}
+
+/**
+ * g_dtls_connection_get_ciphersuite_name:
+ * @conn: a #GDTlsConnection
+ *
+ * Returns the name of the current DTLS ciphersuite, or %NULL if the
+ * connection has not handshaked or has been closed. Beware that the TLS
+ * backend may use any of multiple different naming conventions, because
+ * OpenSSL and GnuTLS have their own ciphersuite naming conventions that
+ * are different from each other and different from the standard, IANA-
+ * registered ciphersuite names. The ciphersuite name is intended to be
+ * displayed to the user for informative purposes only, and parsing it
+ * is not recommended.
+ *
+ * Returns: (nullable): The name of the current DTLS ciphersuite, or %NULL
+ *
+ * Since: 2.70
+ */
+gchar *
+g_dtls_connection_get_ciphersuite_name (GDtlsConnection *conn)
+{
+  gchar *ciphersuite_name;
+
+  g_return_val_if_fail (G_IS_DTLS_CONNECTION (conn), NULL);
+
+  g_object_get (G_OBJECT (conn),
+                "ciphersuite-name", &ciphersuite_name,
+                NULL);
+
+  return g_steal_pointer (&ciphersuite_name);
 }
