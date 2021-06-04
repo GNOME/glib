@@ -50,6 +50,9 @@ const GQuark *          g_settings_schema_list                          (GSettin
 const gchar *           g_settings_schema_get_string                    (GSettingsSchema  *schema,
                                                                          const gchar      *key);
 
+GSettingsSchema *       g_settings_schema_get_child_schema              (GSettingsSchema *schema,
+                                                                         const gchar     *name);
+
 void                    g_settings_schema_key_init                      (GSettingsSchemaKey *key,
                                                                          GSettingsSchema    *schema,
                                                                          const gchar        *name);

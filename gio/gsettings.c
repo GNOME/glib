@@ -2434,28 +2434,24 @@ GSettings *
 g_settings_get_child (GSettings   *settings,
                       const gchar *name)
 {
-  const gchar *child_schema;
+  GSettingsSchema *child_schema;
   gchar *child_path;
-  gchar *child_name;
   GSettings *child;
 
   g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
 
-  child_name = g_strconcat (name, "/", NULL);
-  child_schema = g_settings_schema_get_string (settings->priv->schema,
-                                               child_name);
+  child_schema = g_settings_schema_get_child_schema (settings->priv->schema,
+                                                     name);
   if (child_schema == NULL)
-    g_error ("Schema '%s' has no child '%s'",
+    g_error ("Schema '%s' has no child '%s' or child schema not found",
              g_settings_schema_get_id (settings->priv->schema), name);
 
-  child_path = g_strconcat (settings->priv->path, child_name, NULL);
-  child = g_object_new (G_TYPE_SETTINGS,
-                        "backend", settings->priv->backend,
-                        "schema-id", child_schema,
-                        "path", child_path,
-                        NULL);
+  child_path = g_strconcat (settings->priv->path, name, "/", NULL);
+  child = g_settings_new_full (child_schema,
+                               settings->priv->backend,
+                               child_path);
+  g_settings_schema_unref (child_schema);
   g_free (child_path);
-  g_free (child_name);
 
   return child;
 }

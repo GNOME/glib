@@ -968,6 +968,24 @@ g_settings_schema_get_string (GSettingsSchema *schema,
   return result;
 }
 
+GSettingsSchema *
+g_settings_schema_get_child_schema (GSettingsSchema *schema,
+                                    const gchar     *name)
+{
+  const gchar *child_id;
+  gchar *child_name;
+
+  child_name = g_strconcat (name, "/", NULL);
+  child_id = g_settings_schema_get_string (schema, child_name);
+
+  g_free (child_name);
+
+  if (child_id == NULL)
+    return NULL;
+
+  return g_settings_schema_source_lookup (schema->source, child_id, TRUE);
+}
+
 GVariantIter *
 g_settings_schema_get_value (GSettingsSchema *schema,
                              const gchar     *key)
