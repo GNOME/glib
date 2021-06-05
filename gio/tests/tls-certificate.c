@@ -220,6 +220,10 @@ pem_parser_no_sentinel (void)
   memmove (pem_copy, pem, pem_len);
   g_free (pem);
 
+  /* Check whether the parser respects the @length parameter.
+   * pem_copy is allocated exactly pem_len bytes, so accessing memory
+   * outside its bounds will be detected by, for example, valgrind or
+   * asan. */
   cert = g_tls_certificate_new_from_pem (pem_copy, pem_len, &error);
   g_assert_no_error (error);
   g_assert_nonnull (cert);
