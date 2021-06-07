@@ -353,6 +353,7 @@ parse_private_key (const gchar *data,
 		   GError **error)
 {
   const gchar *header_start = NULL, *header_end, *footer_start = NULL, *footer_end;
+  const gchar *data_end = data + data_len;
 
   header_end = g_strstr_len (data, data_len, PEM_PRIVKEY_HEADER_END);
   if (header_end)
@@ -389,7 +390,7 @@ parse_private_key (const gchar *data,
 
   footer_end += strlen (PEM_PRIVKEY_FOOTER_END);
 
-  while (*footer_end == '\r' || *footer_end == '\n')
+  while ((footer_end < data_end) && (*footer_end == '\r' || *footer_end == '\n'))
     footer_end++;
 
   return g_strndup (header_start, footer_end - header_start);
@@ -423,7 +424,7 @@ parse_next_pem_certificate (const gchar **data,
       return NULL;
     }
   end += strlen (PEM_CERTIFICATE_FOOTER);
-  while (*end == '\r' || *end == '\n')
+  while ((end < data_end) && (*end == '\r' || *end == '\n'))
     end++;
 
   *data = end;
@@ -455,7 +456,7 @@ parse_and_create_certificate_list (const gchar  *data,
   /* If we read one certificate successfully, let's see if we can read
    * some more. If not, we will simply return a list with the first one.
    */
-  while (p && *p)
+  while (p < end && p && *p)
     {
       gchar *cert_pem;
       GError *error = NULL;

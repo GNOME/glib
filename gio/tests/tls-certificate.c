@@ -201,6 +201,38 @@ pem_parser_handles_chain (const Reference *ref)
 }
 
 static void
+pem_parser_no_sentinel (void)
+{
+  GTlsCertificate *cert;
+  gchar *pem;
+  gsize pem_len = 0;
+  gchar *pem_copy;
+  GError *error = NULL;
+
+  /* Check certificate from not-nul-terminated PEM */
+  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert1.pem", NULL), &pem, &pem_len, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (pem);
+  g_assert_cmpuint (pem_len, >=, 10);
+
+  pem_copy = g_new (char, pem_len);
+  /* Do not copy the terminating nul: */
+  memmove (pem_copy, pem, pem_len);
+  g_free (pem);
+
+  /* Check whether the parser respects the @length parameter.
+   * pem_copy is allocated exactly pem_len bytes, so accessing memory
+   * outside its bounds will be detected by, for example, valgrind or
+   * asan. */
+  cert = g_tls_certificate_new_from_pem (pem_copy, pem_len, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  g_free (pem_copy);
+  g_object_unref (cert);
+}
+
+static void
 from_file (const Reference *ref)
 {
   GTlsCertificate *cert;
@@ -594,6 +626,8 @@ main (int   argc,
                    subject_name);
   g_test_add_func ("/tls-certificate/issuer-name",
                    issuer_name);
+  g_test_add_func ("/tls-certificate/pem-parser-no-sentinel",
+                   pem_parser_no_sentinel);
 
   rtv = g_test_run();
 
