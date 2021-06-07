@@ -40,7 +40,7 @@
  * Convenience API for watching bus names.
  *
  * A simple example for watching a name can be found in
- * [gdbus-example-watch-name.c](https://gitlab.gnome.org/GNOME/glib/-/blob/master/gio/tests/gdbus-example-watch-name.c)
+ * [gdbus-example-watch-name.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-name.c)
  */
 
 G_LOCK_DEFINE_STATIC (lock);

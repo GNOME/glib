@@ -24,7 +24,7 @@ extra_sources = []
 extra_c_args = cc.get_supported_arguments('-Werror=unused-function')
 
 # Links in a static library provided by oss-fuzz, else a standalone driver.
-# https://github.com/google/oss-fuzz/blob/master/docs/new_project_guide.md#buildsh-script-environment
+# https://google.github.io/oss-fuzz/getting-started/new-project-guide/#buildsh-script-environment
 fuzzing_engine = cxx.find_library('FuzzingEngine', required : get_option('oss_fuzz'))
 if fuzzing_engine.found()
   deps += fuzzing_engine

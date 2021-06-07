@@ -700,7 +700,7 @@
 	fun:g_inet_address_get_type
 }
 
-# From: https://github.com/fredericgermain/valgrind/blob/master/glibc-2.X-drd.supp
+# From: https://github.com/fredericgermain/valgrind/blob/HEAD/glibc-2.X-drd.supp
 {
 	drd-libc-stdio
 	drd:ConflictingAccess

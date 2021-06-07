@@ -81,7 +81,7 @@
  *
  * However, some libc implementations, such as glibc, implement dlerror() using
  * thread-local storage, so are thread-safe. As of early 2021:
- *  - glibc is thread-safe: https://github.com/bminor/glibc/blob/master/dlfcn/libc_dlerror_result.c
+ *  - glibc is thread-safe: https://github.com/bminor/glibc/blob/HEAD/dlfcn/libc_dlerror_result.c
  *  - uclibc-ng is not thread-safe: https://cgit.uclibc-ng.org/cgi/cgit/uclibc-ng.git/tree/ldso/libdl/libdl.c?id=132decd2a043d0ccf799f42bf89f3ae0c11e95d5#n1075
  *  - Other libc implementations have not been checked, and no problems have
  *    been reported with them in 10 years, so default to assuming that they

@@ -63,5 +63,5 @@ additionally be made via
 ## Acknowledgements
 
 This text was partially based on the
-[github.com/containers security policy](https://github.com/containers/common/blob/master/SECURITY.md),
-and partially based on the [flatpak security policy](https://github.com/flatpak/flatpak/blob/master/SECURITY.md).
+[github.com/containers security policy](https://github.com/containers/common/blob/HEAD/SECURITY.md),
+and partially based on the [flatpak security policy](https://github.com/flatpak/flatpak/blob/HEAD/SECURITY.md).
