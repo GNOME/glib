@@ -117,7 +117,7 @@ gchar *_g_dbus_win32_get_user_sid (void);
  * Initially this function was introduces for usage with rundll,
  * so the signature is kept rundll-compatible, though parameters aren't used.
  */
-__declspec(dllexport) void __stdcall
+_GLIB_EXTERN void __stdcall
 g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdshow);
 gchar *_g_dbus_win32_get_session_address_dbus_launch (GError **error);
 #endif

@@ -2292,7 +2292,7 @@ turn_off_the_starting_cursor (void)
     }
 }
 
-__declspec(dllexport) void __stdcall
+void __stdcall
 g_win32_run_session_bus (void* hwnd, void* hinst, const char* cmdline, int cmdshow)
 {
   GDBusDaemon *daemon;
