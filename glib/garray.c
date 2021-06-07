@@ -299,6 +299,27 @@ g_array_sized_new (gboolean zero_terminated,
  * functions, @clear_func is expected to clear the contents of
  * the array element it is given, but not free the element itself.
  *
+ * |[<!-- language="C" -->
+ * typedef struct
+ * {
+ *   gchar *str;
+ *   GObject *obj;
+ * } ArrayElement;
+ *
+ * static void
+ * array_element_clear (ArrayElement *element)
+ * {
+ *   g_clear_pointer (&element->str, g_free);
+ *   g_clear_object (&element->obj);
+ * }
+ *
+ * // main code
+ * GArray *garray = g_array_new (FALSE, FALSE, sizeof (ArrayElement));
+ * g_array_set_clear_func (garray, (GDestroyNotify) array_element_clear);
+ * // assign data to the structure
+ * g_array_free (garray, TRUE);
+ * ]|
+ *
  * Since: 2.32
  */
 void
