@@ -56,7 +56,7 @@
 
   <repository>
     <GitRepository>
-      <browse rdf:resource="https://gitlab.gnome.org/GNOME/glib/tree/master"/>
+      <browse rdf:resource="https://gitlab.gnome.org/GNOME/glib/"/>
       <location rdf:resource="https://gitlab.gnome.org/GNOME/glib.git"/>
     </GitRepository>
   </repository>

@@ -25,7 +25,7 @@ exit_status=$?
 # style with the changes they’re making.)
 echo ""
 echo "Note that clang-format output is advisory and cannot always match the GLib coding style, documented at"
-echo "   https://gitlab.gnome.org/GNOME/gtk/blob/master/docs/CODING-STYLE"
+echo "   https://gitlab.gnome.org/GNOME/gtk/blob/HEAD/docs/CODING-STYLE.md"
 echo "Warnings from this tool can be ignored in favour of the documented coding style,"
 echo "or in favour of matching the style of existing surrounding code."
 

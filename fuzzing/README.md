@@ -40,7 +40,7 @@ $ DIR/fuzzing/fuzz_target_name FILE
 
 Correct MSAN instrumentation is [difficult to achieve](https://clang.llvm.org/docs/MemorySanitizer.html#handling-external-code) locally, so false positives are very likely to mask the actual bug.
 
-If need be, [you can still reproduce](https://github.com/google/oss-fuzz/blob/master/docs/reproducing.md#building-using-docker) those bugs with the oss-fuzz provided docker images.
+If need be, [you can still reproduce](https://google.github.io/oss-fuzz/advanced-topics/reproducing/#building-using-docker) those bugs with the oss-fuzz provided docker images.
 
 ###### There are no file/function names in the stack trace.
 

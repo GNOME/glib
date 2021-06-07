@@ -380,7 +380,7 @@ _g_test_watcher_remove_pid (GPid pid)
  *
  * An example of a test fixture for D-Bus services can be found
  * here:
- * [gdbus-test-fixture.c](https://gitlab.gnome.org/GNOME/glib/-/blob/master/gio/tests/gdbus-test-fixture.c)
+ * [gdbus-test-fixture.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-test-fixture.c)
  *
  * Note that these examples only deal with isolating the D-Bus aspect of your
  * service. To successfully run isolated unit tests on your service you may need

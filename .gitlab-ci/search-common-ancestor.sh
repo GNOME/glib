@@ -9,7 +9,7 @@ ancestor_horizon=28  # days (4 weeks)
 # branches.
 #
 # Limit the fetch to a certain date horizon to limit the amount of data we get.
-# If the branch was forked from origin/master before this horizon, it should
+# If the branch was forked from origin/main before this horizon, it should
 # probably be rebased.
 if ! git ls-remote --exit-code upstream >/dev/null 2>&1 ; then
     git remote add upstream https://gitlab.gnome.org/GNOME/glib.git
@@ -18,7 +18,7 @@ git fetch --shallow-since="$(date --date="${ancestor_horizon} days ago" +%Y-%m-%
 
 # Work out the newest common ancestor between the detached HEAD that this CI job
 # has checked out, and the upstream target branch (which will typically be
-# `upstream/master` or `upstream/glib-2-62`).
+# `upstream/main` or `upstream/glib-2-62`).
 # `${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}` or `${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}`
 # are only defined if we’re running in a merge request pipeline,
 # fall back to `${CI_DEFAULT_BRANCH}` or `${CI_COMMIT_BRANCH}` respectively
@@ -29,8 +29,8 @@ git fetch --shallow-since="$(date --date="${ancestor_horizon} days ago" +%Y-%m-%
 
 newest_common_ancestor_sha=$(diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "upstream/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-${CI_DEFAULT_BRANCH}}") <(git rev-list --first-parent "origin/${source_branch}") | head -1)
 if [ -z "${newest_common_ancestor_sha}" ]; then
-    echo "Couldn’t find common ancestor with upstream master. This typically"
-    echo "happens if you branched from master a long time ago. Please update"
+    echo "Couldn’t find common ancestor with upstream main branch. This typically"
+    echo "happens if you branched from main a long time ago. Please update"
     echo "your clone, rebase, and re-push your branch."
     exit 1
 fi
