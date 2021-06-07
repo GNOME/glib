@@ -1,3 +1,4 @@
+#include <locale.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -918,6 +919,125 @@ test_replace_symlink (void)
   g_free (contents);
 
   /* Tidy up. */
+  g_file_delete (source_file, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_file_delete (tmpdir, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_object (&target_file);
+  g_clear_object (&source_file);
+  g_clear_object (&tmpdir);
+#else  /* if !G_OS_UNIX */
+  g_test_skip ("Symlink replacement tests can only be run on Unix")
+#endif
+}
+
+static void
+test_replace_symlink_using_etag (void)
+{
+#ifdef G_OS_UNIX
+  gchar *tmpdir_path = NULL;
+  GFile *tmpdir = NULL, *source_file = NULL, *target_file = NULL;
+  GFileOutputStream *stream = NULL;
+  const gchar *old_contents = "this is a test message which should be written to target and then overwritten";
+  gchar *old_etag = NULL;
+  const gchar *new_contents = "this is an updated message";
+  gsize n_written;
+  gchar *contents = NULL;
+  gsize length = 0;
+  GFileInfo *info = NULL;
+  GError *local_error = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2417");
+  g_test_summary ("Test that ETag checks work when replacing a file through a symlink");
+
+  /* Create a fresh, empty working directory. */
+  tmpdir_path = g_dir_make_tmp ("g_file_replace_symlink_using_etag_XXXXXX", &local_error);
+  g_assert_no_error (local_error);
+  tmpdir = g_file_new_for_path (tmpdir_path);
+
+  g_test_message ("Using temporary directory %s", tmpdir_path);
+  g_free (tmpdir_path);
+
+  /* Create symlink `source` which points to `target`. */
+  source_file = g_file_get_child (tmpdir, "source");
+  target_file = g_file_get_child (tmpdir, "target");
+  g_file_make_symbolic_link (source_file, "target", NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  /* Sleep for at least 1s to ensure the mtimes of `source` and `target` differ,
+   * as that’s what _g_local_file_info_create_etag() uses to create the ETag,
+   * and one failure mode we’re testing for is that the ETags of `source` and
+   * `target` are conflated. */
+  sleep (1);
+
+  /* Create `target` with some arbitrary content. */
+  stream = g_file_create (target_file, G_FILE_CREATE_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_output_stream_write_all (G_OUTPUT_STREAM (stream), old_contents, strlen (old_contents),
+                             &n_written, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (n_written, ==, strlen (old_contents));
+
+  g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  old_etag = g_file_output_stream_get_etag (stream);
+  g_assert_nonnull (old_etag);
+  g_assert_cmpstr (old_etag, !=, "");
+
+  g_clear_object (&stream);
+
+  /* Sleep again to ensure the ETag changes again. */
+  sleep (1);
+
+  /* Write out a new copy of the `target`, checking its ETag first. This should
+   * replace `target` by following the symlink. */
+  stream = g_file_replace (source_file, old_etag, FALSE  /* no backup */,
+                           G_FILE_CREATE_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_output_stream_write_all (G_OUTPUT_STREAM (stream), new_contents, strlen (new_contents),
+                             &n_written, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpint (n_written, ==, strlen (new_contents));
+
+  g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_object (&stream);
+
+  /* At this point, there should be a regular file, `target`, containing
+   * @new_contents; and a symlink `source` which points to `target`. */
+  g_assert_cmpint (g_file_query_file_type (source_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL), ==, G_FILE_TYPE_SYMBOLIC_LINK);
+  g_assert_cmpint (g_file_query_file_type (target_file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL), ==, G_FILE_TYPE_REGULAR);
+
+  /* Check the content of `target`. */
+  g_file_load_contents (target_file,
+                        NULL,
+                        &contents,
+                        &length,
+                        NULL,
+                        &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpstr (contents, ==, new_contents);
+  g_assert_cmpuint (length, ==, strlen (new_contents));
+  g_free (contents);
+
+  /* And check its ETag value has changed. */
+  info = g_file_query_info (target_file, G_FILE_ATTRIBUTE_ETAG_VALUE,
+                            G_FILE_QUERY_INFO_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpstr (g_file_info_get_etag (info), !=, old_etag);
+
+  g_clear_object (&info);
+  g_free (old_etag);
+
+  /* Tidy up. */
+  g_file_delete (target_file, NULL, &local_error);
+  g_assert_no_error (local_error);
+
   g_file_delete (source_file, NULL, &local_error);
   g_assert_no_error (local_error);
 
@@ -2889,6 +3009,8 @@ test_build_attribute_list_for_copy (void)
 int
 main (int argc, char *argv[])
 {
+  setlocale (LC_ALL, "");
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/file/basic", test_basic);
@@ -2906,6 +3028,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/replace-load", test_replace_load);
   g_test_add_func ("/file/replace-cancel", test_replace_cancel);
   g_test_add_func ("/file/replace-symlink", test_replace_symlink);
+  g_test_add_func ("/file/replace-symlink/using-etag", test_replace_symlink_using_etag);
   g_test_add_data_func ("/file/replace/write-only", GUINT_TO_POINTER (FALSE), test_replace);
   g_test_add_data_func ("/file/replace/read-write", GUINT_TO_POINTER (TRUE), test_replace);
   g_test_add_func ("/file/async-delete", test_async_delete);

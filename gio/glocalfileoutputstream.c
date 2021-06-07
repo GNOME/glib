@@ -975,7 +975,36 @@ handle_overwrite_open (const char    *filename,
   
   if (etag != NULL)
     {
-      current_etag = _g_local_file_info_create_etag (&original_stat);
+      GLocalFileStat etag_stat;
+      GLocalFileStat *etag_stat_pointer;
+
+      /* The ETag is calculated on the details of the target file, for symlinks,
+       * so we might need to stat() again. */
+      if (is_symlink)
+        {
+          res = g_local_file_stat (filename,
+                                   G_LOCAL_FILE_STAT_FIELD_MTIME,
+                                   G_LOCAL_FILE_STAT_FIELD_ALL, &etag_stat);
+          errsv = errno;
+
+          if (res != 0)
+            {
+              char *display_name = g_filename_display_name (filename);
+              g_set_error (error, G_IO_ERROR,
+                           g_io_error_from_errno (errsv),
+                           _("Error when getting information for file “%s”: %s"),
+                           display_name, g_strerror (errsv));
+              g_free (display_name);
+              goto error;
+            }
+
+          etag_stat_pointer = &etag_stat;
+        }
+      else
+        etag_stat_pointer = &original_stat;
+
+      /* Compare the ETags */
+      current_etag = _g_local_file_info_create_etag (etag_stat_pointer);
       if (strcmp (etag, current_etag) != 0)
 	{
 	  g_set_error_literal (error,
