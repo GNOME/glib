@@ -513,7 +513,7 @@ coverity:
 pages:
   stage: deploy
   only:
-    - master
+    - main
   needs: ['coverage', 'style-check-diff']
   script:
     - mv _coverage/ public/
