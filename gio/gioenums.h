@@ -758,12 +758,12 @@ typedef enum {
  * %G_RESOLVER_RECORD_HTTPS records are returned as variants with the signature
  * `(qsa{sv})`, representing the priority, target host, and params of the domain.
  * The keys of the params dictionary are:
- *   `alpn`: array of strings
+ *   `alpn`: array of strings of protocol names
  *   `no-default-alpn`: an empty string
  *   `port`: uint16
  *   `ipv4hint`: array of strings of addresses
  *   `ipv6hint`: array of strings of addresses
- *   `ech`: string of base64 data
+ *   `ech`: string of base64 data containing an ECHConfigList defined [here](https://datatracker.ietf.org/doc/draft-ietf-tls-esni/)
  *   `mandatory`: array of strings matching these keys
  *   `keyN`: for unknown keys, N is the key number, the value is a bytestring of unparsed data
  * See the [RFC](https://datatracker.ietf.org/doc/draft-ietf-dnsop-svcb-https/) for more information.
