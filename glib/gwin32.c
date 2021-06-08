@@ -1035,9 +1035,31 @@ g_console_win32_init (void)
  * it will be non-NULL. Only used to later de-install the handler
  * on library de-initialization.
  */
-static void *WinVEH_handle = NULL;
+static void        *WinVEH_handle = NULL;
+
+#define             DEBUGGER_BUFFER_SIZE (MAX_PATH + 1)
+/* This is the debugger that we'll run on crash */
+static wchar_t      debugger[DEBUGGER_BUFFER_SIZE];
+
+static gsize        number_of_exceptions_to_catch = 0;
+static DWORD       *exceptions_to_catch = NULL;
+
+static HANDLE       debugger_wakeup_event = 0;
+static DWORD        debugger_spawn_flags = 0;
 
 #include "gwin32-private.c"
+
+static char *
+copy_chars (char       *buffer,
+            gsize      *buffer_size,
+            const char *to_copy)
+{
+  gsize copy_count = MIN (strlen (to_copy), *buffer_size - 1);
+  memset (buffer, 0x20, copy_count);
+  strncpy_s (buffer, *buffer_size, to_copy, _TRUNCATE);
+  *buffer_size -= copy_count;
+  return &buffer[copy_count];
+}
 
 /* Handles exceptions (useful for debugging).
  * Issues a DebugBreak() call if the process is being debugged (not really
@@ -1068,24 +1090,31 @@ static void *WinVEH_handle = NULL;
  * or for control flow.
  *
  * This function deliberately avoids calling any GLib code.
+ * This is done on purpose. This function can be called when the program
+ * is in a bad state (crashing). It can also be called very early, as soon
+ * as the handler is installed. Therefore, it's imperative that
+ * it does as little as possible. Preferably, all the work that can be
+ * done in advance (when the program is not crashing yet) should be done
+ * in advance.
  */
 static LONG __stdcall
 g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
 {
   EXCEPTION_RECORD    *er;
-  char                 debugger[MAX_PATH + 1];
-  WCHAR               *debugger_utf16;
-  const char          *debugger_env = NULL;
-  const char          *catch_list;
-  gboolean             catch = FALSE;
+  gsize                i;
   STARTUPINFOW         si;
   PROCESS_INFORMATION  pi;
-  HANDLE               event;
-  SECURITY_ATTRIBUTES  sa;
+#define ITOA_BUFFER_SIZE 100
+  char                 itoa_buffer[ITOA_BUFFER_SIZE];
+#define DEBUG_STRING_SIZE 1024
+  gsize                dbgs = DEBUG_STRING_SIZE;
+  char                 debug_string[DEBUG_STRING_SIZE];
+  char                *dbgp;
 
   if (ExceptionInfo == NULL ||
       ExceptionInfo->ExceptionRecord == NULL ||
-      IsDebuggerPresent ())
+      IsDebuggerPresent () ||
+      debugger[0] == 0)
     return EXCEPTION_CONTINUE_SEARCH;
 
   er = ExceptionInfo->ExceptionRecord;
@@ -1097,102 +1126,22 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
     case EXCEPTION_ILLEGAL_INSTRUCTION:
       break;
     default:
-      catch_list = g_getenv ("G_VEH_CATCH");
+      for (i = 0; i < number_of_exceptions_to_catch; i++)
+        if (exceptions_to_catch[i] == er->ExceptionCode)
+          break;
 
-      while (!catch &&
-             catch_list != NULL &&
-             catch_list[0] != 0)
-        {
-          unsigned long  catch_code;
-          char          *end;
-          errno = 0;
-          catch_code = strtoul (catch_list, &end, 16);
-          if (errno != NO_ERROR)
-            break;
-          catch_list = end;
-          if (catch_list != NULL && catch_list[0] == ',')
-            catch_list++;
-          if (catch_code == er->ExceptionCode)
-            catch = TRUE;
-        }
+      if (i == number_of_exceptions_to_catch)
+        return EXCEPTION_CONTINUE_SEARCH;
 
-      if (catch)
-        break;
-
-      return EXCEPTION_CONTINUE_SEARCH;
-    }
-
-  fprintf_s (stderr,
-             "Exception code=0x%lx flags=0x%lx at 0x%p",
-             er->ExceptionCode,
-             er->ExceptionFlags,
-             er->ExceptionAddress);
-
-  switch (er->ExceptionCode)
-    {
-    case EXCEPTION_ACCESS_VIOLATION:
-      fprintf_s (stderr,
-                 ". Access violation - attempting to %s at address 0x%p\n",
-                 er->ExceptionInformation[0] == 0 ? "read data" :
-                 er->ExceptionInformation[0] == 1 ? "write data" :
-                 er->ExceptionInformation[0] == 8 ? "execute data" :
-                 "do something bad",
-                 (void *) er->ExceptionInformation[1]);
-      break;
-    case EXCEPTION_IN_PAGE_ERROR:
-      fprintf_s (stderr,
-                 ". Page access violation - attempting to %s at address 0x%p with status %Ix\n",
-                 er->ExceptionInformation[0] == 0 ? "read from an inaccessible page" :
-                 er->ExceptionInformation[0] == 1 ? "write to an inaccessible page" :
-                 er->ExceptionInformation[0] == 8 ? "execute data in page" :
-                 "do something bad with a page",
-                 (void *) er->ExceptionInformation[1],
-                 er->ExceptionInformation[2]);
-      break;
-    default:
-      fprintf_s (stderr, "\n");
       break;
     }
 
-  fflush (stderr);
-
-  debugger_env = g_getenv ("G_DEBUGGER");
-
-  if (debugger_env == NULL)
-    return EXCEPTION_CONTINUE_SEARCH;
-
-  /* Create an inheritable event */
   memset (&si, 0, sizeof (si));
   memset (&pi, 0, sizeof (pi));
-  memset (&sa, 0, sizeof (sa));
   si.cb = sizeof (si);
-  sa.nLength = sizeof (sa);
-  sa.bInheritHandle = TRUE;
-  event = CreateEvent (&sa, FALSE, FALSE, NULL);
-
-  /* Put process ID and event handle into debugger commandline */
-  if (!_g_win32_subst_pid_and_event (debugger, G_N_ELEMENTS (debugger),
-                                     debugger_env, GetCurrentProcessId (),
-                                     (guintptr) event))
-    {
-      CloseHandle (event);
-      return EXCEPTION_CONTINUE_SEARCH;
-    }
-  debugger[MAX_PATH] = '\0';
-
-  debugger_utf16 = g_utf8_to_utf16 (debugger, -1, NULL, NULL, NULL);
 
   /* Run the debugger */
-  if (0 != CreateProcessW (NULL,
-                           debugger_utf16,
-                           NULL,
-                           NULL,
-                           TRUE,
-                           g_getenv ("G_DEBUGGER_OLD_CONSOLE") != NULL ? 0 : CREATE_NEW_CONSOLE,
-                           NULL,
-                           NULL,
-                           &si,
-                           &pi))
+  if (0 != CreateProcessW (NULL, debugger, NULL, NULL, TRUE, debugger_spawn_flags, NULL, NULL, &si, &pi))
     {
       CloseHandle (pi.hProcess);
       CloseHandle (pi.hThread);
@@ -1202,12 +1151,66 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
        * up forever in case the debugger does not support
        * event signalling.
        */
-      WaitForSingleObject (event, 60000);
+      WaitForSingleObject (debugger_wakeup_event, 60000);
+
+      dbgp = &debug_string[0];
+
+      dbgp = copy_chars (dbgp, &dbgs, "Exception code=0x");
+      itoa_buffer[0] = 0;
+      _ui64toa_s (er->ExceptionCode, itoa_buffer, ITOA_BUFFER_SIZE, 16);
+      dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+      dbgp = copy_chars (dbgp, &dbgs, " flags=0x");
+      itoa_buffer[0] = 0;
+      _ui64toa_s (er->ExceptionFlags, itoa_buffer, ITOA_BUFFER_SIZE, 16);
+      dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+      dbgp = copy_chars (dbgp, &dbgs, " at 0x");
+      itoa_buffer[0] = 0;
+      _ui64toa_s ((guintptr) er->ExceptionAddress, itoa_buffer, ITOA_BUFFER_SIZE, 16);
+      dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+
+      switch (er->ExceptionCode)
+        {
+        case EXCEPTION_ACCESS_VIOLATION:
+          dbgp = copy_chars (dbgp, &dbgs, ". Access violation - attempting to ");
+          if (er->ExceptionInformation[0] == 0)
+            dbgp = copy_chars (dbgp, &dbgs, "read data");
+          else if (er->ExceptionInformation[0] == 1)
+            dbgp = copy_chars (dbgp, &dbgs, "write data");
+          else if (er->ExceptionInformation[0] == 8)
+            dbgp = copy_chars (dbgp, &dbgs, "execute data");
+          else
+            dbgp = copy_chars (dbgp, &dbgs, "do something bad");
+          dbgp = copy_chars (dbgp, &dbgs, " at address 0x");
+          itoa_buffer[0] = 0;
+          _ui64toa_s (er->ExceptionInformation[1], itoa_buffer, ITOA_BUFFER_SIZE, 16);
+          dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+          break;
+        case EXCEPTION_IN_PAGE_ERROR:
+          dbgp = copy_chars (dbgp, &dbgs, ". Page access violation - attempting to ");
+          if (er->ExceptionInformation[0] == 0)
+            dbgp = copy_chars (dbgp, &dbgs, "read from an inaccessible page");
+          else if (er->ExceptionInformation[0] == 1)
+            dbgp = copy_chars (dbgp, &dbgs, "write to an inaccessible page");
+          else if (er->ExceptionInformation[0] == 8)
+            dbgp = copy_chars (dbgp, &dbgs, "execute data in page");
+          else
+            dbgp = copy_chars (dbgp, &dbgs, "do something bad with a page");
+          dbgp = copy_chars (dbgp, &dbgs, " at address 0x");
+          itoa_buffer[0] = 0;
+          _ui64toa_s (er->ExceptionInformation[1], itoa_buffer, ITOA_BUFFER_SIZE, 16);
+          dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+          dbgp = copy_chars (dbgp, &dbgs, " with status ");
+          itoa_buffer[0] = 0;
+          _ui64toa_s (er->ExceptionInformation[2], itoa_buffer, ITOA_BUFFER_SIZE, 16);
+          dbgp = copy_chars (dbgp, &dbgs, itoa_buffer);
+          break;
+        default:
+          break;
+        }
+
+      dbgp = copy_chars (dbgp, &dbgs, "\n");
+      OutputDebugStringA (debug_string);
     }
-
-  g_free (debugger_utf16);
-
-  CloseHandle (event);
 
   /* Now the debugger is present, and we can try
    * resuming execution, re-triggering the exception,
@@ -1219,19 +1222,87 @@ g_win32_veh_handler (PEXCEPTION_POINTERS ExceptionInfo)
   return EXCEPTION_CONTINUE_SEARCH;
 }
 
+static gsize
+parse_catch_list (const wchar_t *catch_buffer,
+                  DWORD         *exceptions,
+                  gsize          num_exceptions)
+{
+  const wchar_t *catch_list = catch_buffer;
+  gsize          result = 0;
+  gsize          i = 0;
+
+  while (catch_list != NULL &&
+         catch_list[0] != 0)
+    {
+      unsigned long  catch_code;
+      wchar_t       *end;
+      errno = 0;
+      catch_code = wcstoul (catch_list, &end, 16);
+      if (errno != NO_ERROR)
+        break;
+      catch_list = end;
+      if (catch_list != NULL && catch_list[0] == L',')
+        catch_list++;
+      if (exceptions && i < num_exceptions)
+        exceptions[i++] = catch_code;
+    }
+
+  return result;
+}
+
 void
 g_crash_handler_win32_init (void)
 {
+  wchar_t      debugger_env[DEBUGGER_BUFFER_SIZE];
+#define CATCH_BUFFER_SIZE 1024
+  wchar_t      catch_buffer[CATCH_BUFFER_SIZE];
+  SECURITY_ATTRIBUTES  sa;
+
   if (WinVEH_handle != NULL)
     return;
 
   /* Do not register an exception handler if we're not supposed to catch any
    * exceptions. Exception handlers are considered dangerous to use, and can
    * break advanced exception handling such as in CLRs like C# or other managed
-   * code. See: https://blogs.msdn.microsoft.com/jmstall/2006/05/24/beware-of-the-vectored-exception-handler-and-managed-code/
+   * code. See: http://www.windows-tech.info/13/785f590867bd6316.php
    */
-  if (g_getenv ("G_DEBUGGER") == NULL && g_getenv("G_VEH_CATCH") == NULL)
+  debugger_env[0] = 0;
+  if (!GetEnvironmentVariableW (L"G_DEBUGGER", debugger_env, DEBUGGER_BUFFER_SIZE))
     return;
+
+  /* Create an inheritable event */
+  memset (&sa, 0, sizeof (sa));
+  sa.nLength = sizeof (sa);
+  sa.bInheritHandle = TRUE;
+  debugger_wakeup_event = CreateEvent (&sa, FALSE, FALSE, NULL);
+
+  /* Put process ID and event handle into debugger commandline */
+  if (!_g_win32_subst_pid_and_event_w (debugger, G_N_ELEMENTS (debugger),
+                                       debugger_env, GetCurrentProcessId (),
+                                       (guintptr) debugger_wakeup_event))
+    {
+      CloseHandle (debugger_wakeup_event);
+      debugger_wakeup_event = 0;
+      debugger[0] = 0;
+      return;
+    }
+  debugger[MAX_PATH] = L'\0';
+
+  catch_buffer[0] = 0;
+  if (GetEnvironmentVariableW (L"G_VEH_CATCH", catch_buffer, CATCH_BUFFER_SIZE))
+    {
+      number_of_exceptions_to_catch = parse_catch_list (catch_buffer, NULL, 0);
+      if (number_of_exceptions_to_catch > 0)
+        {
+          exceptions_to_catch = g_new0 (DWORD, number_of_exceptions_to_catch);
+          parse_catch_list (catch_buffer, exceptions_to_catch, number_of_exceptions_to_catch);
+        }
+    }
+
+  if (GetEnvironmentVariableW (L"G_DEBUGGER_OLD_CONSOLE", (wchar_t *) &debugger_spawn_flags, 1))
+    debugger_spawn_flags = 0;
+  else
+    debugger_spawn_flags = CREATE_NEW_CONSOLE;
 
   WinVEH_handle = AddVectoredExceptionHandler (0, &g_win32_veh_handler);
 }

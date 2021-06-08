@@ -33,34 +33,40 @@ static char *argv0 = NULL;
 static void
 test_subst_pid_and_event (void)
 {
-  const gchar not_enough[] = "too long when %e and %p are substituted";
-  gchar debugger_3[3];
-  gchar debugger_not_enough[G_N_ELEMENTS (not_enough)];
-  gchar debugger_enough[G_N_ELEMENTS (not_enough) + 1];
-  gchar debugger_big[65535] = {0};
+  const wchar_t not_enough[] = L"too long when %e and %p are substituted";
+  wchar_t debugger_3[3];
+  wchar_t debugger_not_enough[G_N_ELEMENTS (not_enough)];
+  wchar_t debugger_enough[G_N_ELEMENTS (not_enough) + 1];
+  char *debugger_enough_utf8;
+  wchar_t debugger_big[65535] = {0};
+  char *debugger_big_utf8;
   gchar *output;
   guintptr be = (guintptr) 0xFFFFFFFF;
   DWORD bp = G_MAXSIZE;
 
   /* %f is not valid */
-  g_assert_false (_g_win32_subst_pid_and_event (debugger_3, G_N_ELEMENTS (debugger_3),
-                                                "%f", 0, 0));
+  g_assert_false (_g_win32_subst_pid_and_event_w (debugger_3, G_N_ELEMENTS (debugger_3),
+                                                  L"%f", 0, 0));
 
-  g_assert_false (_g_win32_subst_pid_and_event (debugger_3, G_N_ELEMENTS (debugger_3),
-                                                "string longer than 10", 0, 0));
+  g_assert_false (_g_win32_subst_pid_and_event_w (debugger_3, G_N_ELEMENTS (debugger_3),
+                                                  L"string longer than 10", 0, 0));
   /* 200 is longer than %e, so the string doesn't fit by 1 byte */
-  g_assert_false (_g_win32_subst_pid_and_event (debugger_not_enough, G_N_ELEMENTS (debugger_not_enough),
-                                                "too long when %e and %p are substituted", 10, 200));
+  g_assert_false (_g_win32_subst_pid_and_event_w (debugger_not_enough, G_N_ELEMENTS (debugger_not_enough),
+                                                  not_enough, 10, 200));
 
   /* This should fit */
-  g_assert_true (_g_win32_subst_pid_and_event (debugger_enough, G_N_ELEMENTS (debugger_enough),
-                                                "too long when %e and %p are substituted", 10, 200));
-  g_assert_cmpstr (debugger_enough, ==, "too long when 200 and 10 are substituted");
+  g_assert_true (_g_win32_subst_pid_and_event_w (debugger_enough, G_N_ELEMENTS (debugger_enough),
+                                                 not_enough, 10, 200));
+  debugger_enough_utf8 = g_utf16_to_utf8 (debugger_enough, -1, NULL, NULL, NULL);
+  g_assert_cmpstr (debugger_enough_utf8, ==, "too long when 200 and 10 are substituted");
+  g_free (debugger_enough_utf8);
 
-  g_assert_true (_g_win32_subst_pid_and_event (debugger_big, G_N_ELEMENTS (debugger_big),
-                                                "multipl%e big %e %entries and %pids are %provided here", bp, be));
+  g_assert_true (_g_win32_subst_pid_and_event_w (debugger_big, G_N_ELEMENTS (debugger_big),
+                                                 L"multipl%e big %e %entries and %pids are %provided here", bp, be));
+  debugger_big_utf8 = g_utf16_to_utf8 (debugger_big, -1, NULL, NULL, NULL);
   output = g_strdup_printf ("multipl%llu big %llu %lluntries and %luids are %lurovided here", (guint64) be, (guint64) be, (guint64) be, bp, bp);
-  g_assert_cmpstr (debugger_big, ==, output);
+  g_assert_cmpstr (debugger_big_utf8, ==, output);
+  g_free (debugger_big_utf8);
   g_free (output);
 }
 
@@ -95,7 +101,6 @@ test_veh_crash_access_violation (void)
   /* Run a test that crashes */
   g_test_trap_subprocess ("/win32/subprocess/access_violation", 0, 0);
   g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("Exception code=0xc0000005*");
 }
 
 static void
@@ -105,20 +110,10 @@ test_veh_crash_illegal_instruction (void)
   /* Run a test that crashes */
   g_test_trap_subprocess ("/win32/subprocess/illegal_instruction", 0, 0);
   g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("Exception code=0xc000001d*");
 }
 
 static void
 test_veh_debug (void)
-{
-  /* Run a test that crashes and runs a debugger */
-  g_test_trap_subprocess ("/win32/subprocess/debuggee", 0, 0);
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("Exception code=0xc0000005*Debugger invoked, attaching to*");
-}
-
-static void
-test_veh_debuggee (void)
 {
   /* Set up a debugger to be run on crash */
   gchar *command = g_strdup_printf ("%s %s", argv0, "%p %e");
@@ -129,6 +124,15 @@ test_veh_debuggee (void)
    */
   g_setenv ("G_DEBUGGER_OLD_CONSOLE", "1", TRUE);
   g_free (command);
+  /* Run a test that crashes and runs a debugger */
+  g_test_trap_subprocess ("/win32/subprocess/debuggee", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("Debugger invoked, attaching to*");
+}
+
+static void
+test_veh_debuggee (void)
+{
   /* Crash */
   test_access_violation ();
 }
