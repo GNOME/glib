@@ -893,15 +893,14 @@ parse_res_https (guchar  *answer,
           GETSHORT (value_length, *p);
 
           if (value_length > (gsize) (end - *p))
-            {
-              *p = end;
-              break;
-            }
+            goto invalid_input;
 
           key_str = svcb_key_to_string (key);
 
-          if (get_svcb_value (key, value_length, *p, end, &value))
-            g_variant_builder_add (&params_builder, "{sv}", key_str, value);
+          if (!get_svcb_value (key, value_length, *p, end, &value))
+            goto invalid_input;
+
+          g_variant_builder_add (&params_builder, "{sv}", key_str, value);
 
           *p += value_length;
           g_free (key_str);
@@ -911,6 +910,12 @@ parse_res_https (guchar  *answer,
   variant = g_variant_new ("(qsa{sv})", priority, target, &params_builder);
   g_free (target);
   return variant;
+
+invalid_input:
+  g_debug ("Invalid response for DNS HTTPS request, ignoring a record");
+  *p = end;
+  g_free (target);
+  return NULL;
 }
 
 static gint
