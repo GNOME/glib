@@ -1,0 +1,11 @@
+[wrap-file]
+directory = pcre-8.37
+source_url = https://ftp.pcre.org/pub/pcre/pcre-8.37.tar.bz2
+source_filename = pcre-8.37.tar.bz2
+source_hash = 51679ea8006ce31379fb0860e46dd86665d864b5020fc9cd19e71260eef4789d
+patch_filename = pcre_8.37-2_patch.zip
+patch_url = https://wrapdb.mesonbuild.com/v2/pcre_8.37-2/get_patch
+patch_hash = 6b80f72385e1bf06721e26fbc83aced576e9c0d3182d86a55dd173a04050fe26
+
+[provide]
+libpcre = pcre_dep
