@@ -25,11 +25,7 @@
 #include <locale.h>
 #include "glib.h"
 
-#ifdef USE_SYSTEM_PCRE
 #include <pcre.h>
-#else
-#include "glib/pcre/pcre.h"
-#endif
 
 /* U+20AC EURO SIGN (symbol, currency) */
 #define EURO "\xe2\x82\xac"

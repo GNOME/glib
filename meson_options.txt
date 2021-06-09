@@ -34,11 +34,6 @@ option('libmount',
        value : 'auto',
        description : 'build with libmount support')
 
-option('internal_pcre',
-       type : 'boolean',
-       value : false,
-       description : 'whether to use internal PCRE')
-
 option('man',
        type : 'boolean',
        value : false,

@@ -357,13 +357,8 @@ if use_pcre_static_flag
   pcre_static_args = ['-DPCRE_STATIC']
 endif
 
-if use_system_pcre
-  pcre_deps = [pcre]
-  pcre_objects = []
-else
-  pcre_deps = []
-  pcre_objects = [libpcre.extract_all_objects()]
-endif
+pcre_deps = [pcre]
+pcre_objects = []
 
 glib_c_args = ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
 libglib = library('glib-2.0',

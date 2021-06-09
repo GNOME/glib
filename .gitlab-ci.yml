@@ -270,7 +270,7 @@ cross-android_api21_arm64:
     # FIXME: add --werror
     # We use -Diconv=auto to test that we successfully detect that iconv is not
     # provided by android api 21, and detect the external iconv instead.
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=auto -Dinternal_pcre=true _build
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=auto _build
     - ninja -C _build
 
 cross-android_api28_arm64:
@@ -278,7 +278,7 @@ cross-android_api28_arm64:
   image: $ANDROID_IMAGE
   script:
     # FIXME: add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt -Dinternal_pcre=true _build
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt _build
     - ninja -C _build
 
 cross-mingw64:
