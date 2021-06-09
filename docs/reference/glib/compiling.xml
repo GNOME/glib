@@ -60,13 +60,13 @@ The difference between the two is that gmodule-2.0 adds
 which is often not needed.
 </para>
 <para>
-The simplest way to compile a program is to use the "backticks"
-feature of the shell. If you enclose a command in backticks
-(<emphasis>not single quotes</emphasis>), then its output will
-be substituted into the command line before execution. So to
-compile a GLib Hello, World, you would type the following:
+The simplest way to compile a program is to use command substitution
+feature of a shell. A command written in the format
+<literal>$(command)</literal> gets substituted into the command line
+before execution. So to compile a GLib Hello, World, you would type
+the following:
 <programlisting>
-$ cc hello.c `pkg-config --cflags --libs glib-2.0` -o hello
+$ cc hello.c $(pkg-config --cflags --libs glib-2.0) -o hello
 </programlisting>
 </para>
 <note><para>
