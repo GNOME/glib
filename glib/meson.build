@@ -3,9 +3,6 @@ configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h',
   configuration : glibconfig_conf)
 
 subdir('libcharset')
-if not use_system_pcre
-  subdir('pcre')
-endif
 
 # libsysprof-capture support
 libsysprof_capture_dep = dependency('sysprof-capture-4', version: '>= 3.38.0',
