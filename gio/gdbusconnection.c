@@ -5052,7 +5052,8 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
 static gboolean
 obj_message_func (GDBusConnection *connection,
                   ExportedObject  *eo,
-                  GDBusMessage    *message)
+                  GDBusMessage    *message,
+                  gboolean        *object_found)
 {
   const gchar *interface_name;
   const gchar *member;
@@ -5087,6 +5088,10 @@ obj_message_func (GDBusConnection *connection,
                                                              ei->context,
                                                              ei->user_data);
           goto out;
+        }
+      else
+        {
+          *object_found = TRUE;
         }
     }
 
@@ -7113,6 +7118,7 @@ distribute_method_call (GDBusConnection *connection,
   const gchar *path;
   gchar *subtree_path;
   gchar *needle;
+  gboolean object_found = FALSE;
 
   g_assert (g_dbus_message_get_message_type (message) == G_DBUS_MESSAGE_TYPE_METHOD_CALL);
 
@@ -7154,7 +7160,7 @@ distribute_method_call (GDBusConnection *connection,
   eo = g_hash_table_lookup (connection->map_object_path_to_eo, object_path);
   if (eo != NULL)
     {
-      if (obj_message_func (connection, eo, message))
+      if (obj_message_func (connection, eo, message, &object_found))
         goto out;
     }
 
@@ -7179,11 +7185,22 @@ distribute_method_call (GDBusConnection *connection,
     goto out;
 
   /* if we end up here, the message has not been not handled - so return an error saying this */
-  reply = g_dbus_message_new_method_error (message,
+  if (object_found == TRUE)
+    {
+      reply = g_dbus_message_new_method_error (message,
+                                               "org.freedesktop.DBus.Error.UnknownMethod",
+                                               _("No such interface “%s” on object at path %s"),
+                                               interface_name,
+                                               object_path);
+    }
+  else
+    {
+      reply = g_dbus_message_new_method_error (message,
                                            "org.freedesktop.DBus.Error.UnknownMethod",
-                                           _("No such interface “%s” on object at path %s"),
-                                           interface_name,
+                                           _("Object does not exist at path “%s”"),
                                            object_path);
+    }
+
   g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
 
