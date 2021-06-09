@@ -1636,6 +1636,9 @@ g_unix_mount_at (const char *mount_path,
  * If more mounts have the same mount path, the last matching mount
  * is returned.
  *
+ * This will return %NULL if looking up the mount entry fails, if
+ * @file_path doesn’t exist or there is an I/O error.
+ *
  * Returns: (transfer full)  (nullable): a #GUnixMountEntry.
  *
  * Since: 2.52
