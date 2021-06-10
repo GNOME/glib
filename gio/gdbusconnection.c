@@ -386,7 +386,7 @@ struct _GDBusConnection
    */
   gchar *bus_unique_name;
 
-  /* The GUID returned by the other side if we authenticed as a client or
+  /* The GUID returned by the other side if we authenticated as a client or
    * the GUID to use if authenticating as a server.
    * Read-only after initable_init(), so it may be read if you either
    * hold @init_lock or check for initialization first.
