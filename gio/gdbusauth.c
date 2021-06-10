@@ -960,7 +960,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_FAILED,
-                   "The given guid '%s' is not valid",
+                   "The given GUID '%s' is not valid",
                    guid);
       goto out;
     }

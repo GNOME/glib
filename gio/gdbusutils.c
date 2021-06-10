@@ -326,7 +326,7 @@ g_dbus_generate_guid (void)
  * See the documentation for g_dbus_generate_guid() for more information about
  * the format of a GUID.
  *
- * Returns: %TRUE if @string is a guid, %FALSE otherwise.
+ * Returns: %TRUE if @string is a GUID, %FALSE otherwise.
  *
  * Since: 2.26
  */
