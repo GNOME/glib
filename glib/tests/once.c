@@ -192,7 +192,7 @@ test_once_init_multi_threaded (void)
 static void
 test_once_init_string (void)
 {
-  static const gchar *val;
+  static gchar *val;
 
   g_test_summary ("Test g_once_init_{enter,leave}() usage with a string");
 
