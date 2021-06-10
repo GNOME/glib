@@ -280,8 +280,14 @@ g_dbus_is_interface_name (const gchar *string)
  * Generate a D-Bus GUID that can be used with
  * e.g. g_dbus_connection_new().
  *
- * See the D-Bus specification regarding what strings are valid D-Bus
- * GUID (for example, D-Bus GUIDs are not RFC-4122 compliant).
+ * See the
+ * [D-Bus specification](https://dbus.freedesktop.org/doc/dbus-specification.html#uuids)
+ * regarding what strings are valid D-Bus GUIDs. The specification refers to
+ * these as ‘UUIDs’ whereas GLib (for historical reasons) refers to them as
+ * ‘GUIDs’. The terms are interchangeable.
+ *
+ * Note that D-Bus GUIDs do not follow
+ * [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122).
  *
  * Returns: A valid D-Bus GUID. Free with g_free().
  *
@@ -317,8 +323,8 @@ g_dbus_generate_guid (void)
  *
  * Checks if @string is a D-Bus GUID.
  *
- * See the D-Bus specification regarding what strings are valid D-Bus
- * GUID (for example, D-Bus GUIDs are not RFC-4122 compliant).
+ * See the documentation for g_dbus_generate_guid() for more information about
+ * the format of a GUID.
  *
  * Returns: %TRUE if @string is a guid, %FALSE otherwise.
  *

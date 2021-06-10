@@ -902,6 +902,15 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * of the other peer here after the connection has been successfully
    * initialized.
    *
+   * Note that the
+   * [D-Bus specification](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
+   * uses the term ‘UUID’ to refer to this, whereas GLib consistently uses the
+   * term ‘GUID’ for historical reasons.
+   *
+   * Despite its name, the format of #GDBusConnection:guid does not follow
+   * [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122) or the Microsoft
+   * GUID format.
+   *
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
