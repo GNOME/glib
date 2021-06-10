@@ -386,7 +386,7 @@ struct _GDBusConnection
    */
   gchar *bus_unique_name;
 
-  /* The GUID returned by the other side if we authenticed as a client or
+  /* The GUID returned by the other side if we authenticated as a client or
    * the GUID to use if authenticating as a server.
    * Read-only after initable_init(), so it may be read if you either
    * hold @init_lock or check for initialization first.
@@ -901,6 +901,15 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * #GDBusConnection:flags property you will be able to read the GUID
    * of the other peer here after the connection has been successfully
    * initialized.
+   *
+   * Note that the
+   * [D-Bus specification](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
+   * uses the term ‘UUID’ to refer to this, whereas GLib consistently uses the
+   * term ‘GUID’ for historical reasons.
+   *
+   * Despite its name, the format of #GDBusConnection:guid does not follow
+   * [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122) or the Microsoft
+   * GUID format.
    *
    * Since: 2.26
    */
