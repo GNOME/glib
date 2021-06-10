@@ -25,11 +25,7 @@
 #endif
 
 #include <glib/gtypes.h>
-
-#if defined(glib_typeof_2_68) && GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68
-/* for glib_typeof */
-#include <type_traits>
-#endif
+#include <glib/glib-typeof.h>
 
 G_BEGIN_DECLS
 
@@ -108,7 +104,7 @@ G_END_DECLS
     __atomic_store ((gint *)(atomic), &gais_temp, __ATOMIC_SEQ_CST);         \
   }))
 
-#if defined(glib_typeof) && (!defined(glib_typeof_2_68) || GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68)
+#if defined(glib_typeof)
 #define g_atomic_pointer_get(atomic)                                       \
   (G_GNUC_EXTENSION ({                                                     \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));               \
@@ -125,7 +121,7 @@ G_END_DECLS
     (void) (0 ? (gpointer) * (atomic) : NULL);                              \
     __atomic_store (gaps_temp_atomic, &gaps_temp_newval, __ATOMIC_SEQ_CST); \
   }))
-#else /* if !(defined(glib_typeof) && (!defined(glib_typeof_2_68) || GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68)) */
+#else /* if !(defined(glib_typeof) */
 #define g_atomic_pointer_get(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
@@ -142,7 +138,7 @@ G_END_DECLS
     (void) (0 ? (gpointer) *(atomic) : NULL);                                \
     __atomic_store (gaps_temp_atomic, &gaps_temp_newval, __ATOMIC_SEQ_CST);  \
   }))
-#endif /* if defined(glib_typeof) && (!defined(glib_typeof_2_68) || GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68) */
+#endif /* if defined(glib_typeof) */
 
 #define g_atomic_int_inc(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
@@ -307,7 +303,7 @@ G_END_DECLS
     __asm__ __volatile__ ("" : : : "memory");                                \
     gapg_result;                                                             \
   }))
-#if defined(glib_typeof) && (!defined(glib_typeof_2_68) || GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68)
+#if defined(glib_typeof)
 #define g_atomic_pointer_set(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
@@ -316,7 +312,7 @@ G_END_DECLS
     __asm__ __volatile__ ("" : : : "memory");                                \
     *(atomic) = (glib_typeof (*(atomic))) (gsize) (newval);                  \
   }))
-#else /* if !(defined(glib_typeof) && (!defined(glib_typeof_2_68) || GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68)) */
+#else /* if !(defined(glib_typeof) */
 #define g_atomic_pointer_set(atomic, newval) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
@@ -325,7 +321,7 @@ G_END_DECLS
     __asm__ __volatile__ ("" : : : "memory");                                \
     *(atomic) = (gpointer) (gsize) (newval);                                         \
   }))
-#endif /* if defined(glib_typeof) && (!defined(glib_typeof_2_68) || GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68) */
+#endif /* if defined(glib_typeof) */
 
 #define g_atomic_int_inc(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
@@ -428,7 +424,7 @@ G_END_DECLS
 #define g_atomic_int_dec_and_test(atomic) \
   (g_atomic_int_dec_and_test ((gint *) (atomic)))
 
-#if defined(glib_typeof) && (!defined(glib_typeof_2_68) || GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68)
+#if defined(glib_typeof)
   /* The (void *) cast in the middle *looks* redundant, because
    * g_atomic_pointer_get returns void * already, but it's to silence
    * -Werror=bad-function-cast when we're doing something like:
@@ -438,7 +434,7 @@ G_END_DECLS
    * non-pointer-typed result. */
 #define g_atomic_pointer_get(atomic)                                       \
   (glib_typeof (*(atomic))) (void *) ((g_atomic_pointer_get) ((void *) atomic))
-#else /* !(defined(glib_typeof) && (!defined(glib_typeof_2_68) || GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68)) */
+#else /* !(defined(glib_typeof) */
 #define g_atomic_pointer_get(atomic) \
   (g_atomic_pointer_get (atomic))
 #endif

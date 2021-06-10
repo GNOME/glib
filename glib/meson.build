@@ -142,6 +142,7 @@ install_headers(glib_deprecated_headers, subdir : 'glib-2.0/glib/deprecated')
 
 glib_sub_headers = files(
   'glib-autocleanups.h',
+  'glib-typeof.h',
   'galloca.h',
   'garray.h',
   'gasyncqueue.h',
