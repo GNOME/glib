@@ -548,6 +548,51 @@ issuer_name (void)
   g_object_unref (cert);
 }
 
+static void
+dns_names (void)
+{
+  GTlsCertificate *cert;
+  GError *error = NULL;
+  GPtrArray *actual;
+  const gchar *dns_name = "a.example.com";
+  GBytes *expected = g_bytes_new_static (dns_name, strlen (dns_name));
+
+  cert = g_tls_certificate_new_from_pkcs11_uris ("pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=ca-bundle.crt", NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  actual = g_tls_certificate_get_dns_names (cert);
+  g_assert_nonnull (actual);
+  g_assert_cmpuint (actual->len, ==, 1);
+  g_assert_true (g_ptr_array_find_with_equal_func (actual, expected, (GEqualFunc)g_bytes_equal, NULL));
+
+  g_ptr_array_free (actual, FALSE);
+  g_bytes_unref (expected);
+  g_object_unref (cert);
+}
+
+static void
+ip_addresses (void)
+{
+  GTlsCertificate *cert;
+  GError *error = NULL;
+  GPtrArray *actual;
+  GInetAddress *expected = g_inet_address_new_from_string ("192.0.2.1");
+
+  cert = g_tls_certificate_new_from_pkcs11_uris ("pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=ca-bundle.crt", NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (cert);
+
+  actual = g_tls_certificate_get_ip_addresses (cert);
+  g_assert_nonnull (actual);
+  g_assert_cmpuint (actual->len, ==, 1);
+  g_assert_true (g_ptr_array_find_with_equal_func (actual, expected, (GEqualFunc)g_inet_address_equal, NULL));
+
+  g_ptr_array_free (actual, TRUE);
+  g_object_unref (expected);
+  g_object_unref (cert);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -626,6 +671,10 @@ main (int   argc,
                    subject_name);
   g_test_add_func ("/tls-certificate/issuer-name",
                    issuer_name);
+  g_test_add_func ("/tls-certificate/dns-names",
+                   dns_names);
+  g_test_add_func ("/tls-certificate/ip-addresses",
+                   ip_addresses);
   g_test_add_func ("/tls-certificate/pem-parser-no-sentinel",
                    pem_parser_no_sentinel);
 

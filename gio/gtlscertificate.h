@@ -104,6 +104,12 @@ gchar                *g_tls_certificate_get_subject_name     (GTlsCertificate   
 GLIB_AVAILABLE_IN_2_70
 gchar                *g_tls_certificate_get_issuer_name      (GTlsCertificate     *cert);
 
+GLIB_AVAILABLE_IN_2_70
+GPtrArray            *g_tls_certificate_get_dns_names        (GTlsCertificate     *cert);
+
+GLIB_AVAILABLE_IN_2_70
+GPtrArray            *g_tls_certificate_get_ip_addresses     (GTlsCertificate     *cert);
+
 G_END_DECLS
 
 #endif /* __G_TLS_CERTIFICATE_H__ */

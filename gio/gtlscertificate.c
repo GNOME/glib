@@ -67,6 +67,8 @@ enum
   PROP_NOT_VALID_AFTER,
   PROP_SUBJECT_NAME,
   PROP_ISSUER_NAME,
+  PROP_DNS_NAMES,
+  PROP_IP_ADDRESSES,
 };
 
 static void
@@ -315,6 +317,38 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                           G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GTlsCertificate:dns-names: (nullable)
+   *
+   * The DNS names from the certificate's Subject Alternative Names (SANs),
+   * %NULL if unavailable.
+   *
+   * Since: 2.70
+   */
+  g_object_class_install_property (gobject_class, PROP_DNS_NAMES,
+                                   g_param_spec_boxed ("dns-names",
+                                                       P_("DNS Names"),
+                                                       P_("DNS Names listed on the cert."),
+                                                       G_TYPE_PTR_ARRAY,
+                                                       G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GTlsCertificate:ip-addresses: (nullable)
+   *
+   * The IP addresses from the certificate's Subject Alternative Names (SANs),
+   * %NULL if unavailable.
+   *
+   * Since: 2.70
+   */
+  g_object_class_install_property (gobject_class, PROP_IP_ADDRESSES,
+                                   g_param_spec_boxed ("ip-addresses",
+                                                       P_("IP Addresses"),
+                                                       P_("IP Addresses listed on the cert."),
+                                                       G_TYPE_PTR_ARRAY,
+                                                       G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 }
 
 static GTlsCertificate *
@@ -1032,4 +1066,50 @@ g_tls_certificate_get_issuer_name (GTlsCertificate *cert)
   g_object_get (G_OBJECT (cert), "issuer-name", &issuer_name, NULL);
 
   return g_steal_pointer (&issuer_name);
+}
+
+/**
+ * g_tls_certificate_get_dns_names:
+ * @cert: a #GTlsCertificate
+ *
+ * Gets the value of #GTlsCertificate:dns-names.
+ *
+ * Returns: (nullable) (element-type GBytes) (transfer container): A #GPtrArray of
+ * #GBytes elements, or %NULL if it's not available.
+ *
+ * Since: 2.70
+ */
+GPtrArray *
+g_tls_certificate_get_dns_names (GTlsCertificate *cert)
+{
+  GPtrArray *dns_names = NULL;
+
+  g_return_val_if_fail (G_IS_TLS_CERTIFICATE (cert), NULL);
+
+  g_object_get (G_OBJECT (cert), "dns-names", &dns_names, NULL);
+
+  return g_steal_pointer (&dns_names);
+}
+
+/**
+ * g_tls_certificate_get_ip_addresses:
+ * @cert: a #GTlsCertificate
+ *
+ * Gets the value of #GTlsCertificate:ip-addresses.
+ *
+ * Returns: (nullable) (element-type GInetAddress) (transfer container): A #GPtrArray
+ * of #GInetAddress elements, or %NULL if it's not available.
+ *
+ * Since: 2.70
+ */
+GPtrArray *
+g_tls_certificate_get_ip_addresses (GTlsCertificate *cert)
+{
+  GPtrArray *ip_addresses = NULL;
+
+  g_return_val_if_fail (G_IS_TLS_CERTIFICATE (cert), NULL);
+
+  g_object_get (G_OBJECT (cert), "ip-addresses", &ip_addresses, NULL);
+
+  return g_steal_pointer (&ip_addresses);
 }
