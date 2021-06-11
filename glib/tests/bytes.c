@@ -450,6 +450,13 @@ test_get_region (void)
   g_bytes_unref (bytes);
 }
 
+static void
+test_unref_null (void)
+{
+  g_test_summary ("Test that calling g_bytes_unref() on NULL is a no-op");
+  g_bytes_unref (NULL);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -474,6 +481,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytes/to-array/non-malloc", test_to_array_non_malloc);
   g_test_add_func ("/bytes/null", test_null);
   g_test_add_func ("/bytes/get-region", test_get_region);
+  g_test_add_func ("/bytes/unref-null", test_unref_null);
 
   return g_test_run ();
 }
