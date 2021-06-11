@@ -2191,7 +2191,7 @@ g_hash_table_get_keys (GHashTable *hash_table)
 /**
  * g_hash_table_get_keys_as_array:
  * @hash_table: a #GHashTable
- * @length: (out): the length of the returned array
+ * @length: (out) (optional): the length of the returned array
  *
  * Retrieves every key inside @hash_table, as an array.
  *
