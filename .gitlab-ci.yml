@@ -361,6 +361,7 @@ freebsd-11-x86_64:
     - meson ${MESON_COMMON_OPTIONS} --localstatedir=/var -Db_lundef=false -Diconv=external -Dxattr=false _build
     - ninja -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
+  allow_failure: true
   artifacts:
     reports:
       junit: "_build/${CI_JOB_NAME}-report.xml"
@@ -391,6 +392,7 @@ freebsd-12-x86_64:
     - bash -x ./.gitlab-ci/run-tests.sh
   except:
     - tags
+  allow_failure: true
   artifacts:
     reports:
       junit: "_build/${CI_JOB_NAME}-report.xml"
