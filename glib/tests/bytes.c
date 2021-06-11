@@ -316,6 +316,30 @@ test_to_data_non_malloc (void)
 }
 
 static void
+test_to_data_different_free_func (void)
+{
+  gpointer data;
+  gsize size;
+  GBytes *bytes;
+  gchar *sentinel = g_strdup ("hello");
+
+  /* Memory copied: free func and user_data don’t point to the bytes data */
+  bytes = g_bytes_new_with_free_func (NYAN, N_NYAN, g_free, sentinel);
+  g_assert_true (g_bytes_get_data (bytes, NULL) == NYAN);
+
+  data = g_bytes_unref_to_data (bytes, &size);
+  g_assert_true (data != (gpointer)NYAN);
+  g_assert_cmpmem (data, size, NYAN, N_NYAN);
+  g_free (data);
+
+  /* @sentinel should not be leaked; testing that requires this test to be run
+   * under valgrind. We can’t use a custom free func to check it isn’t leaked,
+   * as the point of this test is to hit a condition in `try_steal_and_unref()`
+   * which is short-circuited if the free func isn’t g_free().
+   * See discussion in https://gitlab.gnome.org/GNOME/glib/-/merge_requests/2152 */
+}
+
+static void
 test_to_array_transferred (void)
 {
   gconstpointer memory;
@@ -475,6 +499,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytes/to-data/transferred", test_to_data_transferred);
   g_test_add_func ("/bytes/to-data/two-refs", test_to_data_two_refs);
   g_test_add_func ("/bytes/to-data/non-malloc", test_to_data_non_malloc);
+  g_test_add_func ("/bytes/to-data/different-free-func", test_to_data_different_free_func);
   g_test_add_func ("/bytes/to-array/transferred", test_to_array_transferred);
   g_test_add_func ("/bytes/to-array/transferred/oversize", test_to_array_transferred_oversize);
   g_test_add_func ("/bytes/to-array/two-refs", test_to_array_two_refs);
