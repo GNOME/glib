@@ -95,7 +95,7 @@ typedef enum
 /**
  * G_SPAWN_EXIT_ERROR:
  *
- * Error domain used by g_spawn_check_exit_status().  The code
+ * Error domain used by g_spawn_check_wait_status().  The code
  * will be the program exit code.
  */
 #define G_SPAWN_EXIT_ERROR g_spawn_exit_error_quark ()
@@ -259,21 +259,25 @@ gboolean g_spawn_sync         (const gchar          *working_directory,
                                gpointer              user_data,
                                gchar               **standard_output,
                                gchar               **standard_error,
-                               gint                 *exit_status,
+                               gint                 *wait_status,
                                GError              **error);
 
 GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_command_line_sync  (const gchar          *command_line,
                                      gchar               **standard_output,
                                      gchar               **standard_error,
-                                     gint                 *exit_status,
+                                     gint                 *wait_status,
                                      GError              **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_command_line_async (const gchar          *command_line,
                                      GError              **error);
 
-GLIB_AVAILABLE_IN_2_34
-gboolean g_spawn_check_exit_status (gint      exit_status,
+GLIB_AVAILABLE_IN_2_70
+gboolean g_spawn_check_wait_status (gint      wait_status,
+                                    GError  **error);
+
+GLIB_DEPRECATED_IN_2_70_FOR(g_spawn_check_wait_status)
+gboolean g_spawn_check_exit_status (gint      wait_status,
 				    GError  **error);
 
 GLIB_AVAILABLE_IN_ALL

@@ -84,7 +84,7 @@ test_connection_flush (void)
   for (n = 0; n < 50; n++)
     {
       gboolean ret;
-      gint exit_status;
+      gint wait_status;
       guint timeout_mainloop_id;
       gchar *flush_helper_stdout = NULL;
       gchar *flush_helper_stderr = NULL;
@@ -93,9 +93,9 @@ test_connection_flush (void)
       ret = g_spawn_command_line_sync (flush_helper,
                                        &flush_helper_stdout,
                                        &flush_helper_stderr,
-                                       &exit_status,
+                                       &wait_status,
                                        &error) &&
-            g_spawn_check_exit_status (exit_status, &error);
+            g_spawn_check_wait_status (wait_status, &error);
       if (!ret)
           g_test_message ("Child process ‘%s’ failed. stdout:\n%s\nstderr:\n%s",
                           flush_helper, flush_helper_stdout, flush_helper_stderr);

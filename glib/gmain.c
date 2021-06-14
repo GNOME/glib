@@ -5730,7 +5730,7 @@ g_child_watch_source_new (GPid pid)
  * you will need to pass #G_SPAWN_DO_NOT_REAP_CHILD as flag to 
  * the spawn function for the child watching to work.
  *
- * In many programs, you will want to call g_spawn_check_exit_status()
+ * In many programs, you will want to call g_spawn_check_wait_status()
  * in the callback to determine whether or not the child exited
  * successfully.
  * 

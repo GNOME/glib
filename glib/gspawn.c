@@ -141,7 +141,7 @@ extern char **environ;
  *                 gpointer user_data)
  * {
  *   g_message ("Child %" G_PID_FORMAT " exited %s", pid,
- *              g_spawn_check_exit_status (status, NULL) ? "normally" : "abnormally");
+ *              g_spawn_check_wait_status (status, NULL) ? "normally" : "abnormally");
  *
  *   // Free any resources associated with the child here, such as I/O channels
  *   // on its stdout and stderr FDs. If you have no code to put in the
@@ -325,7 +325,7 @@ read_data (GString *str,
  * @user_data: (closure): user data for @child_setup
  * @standard_output: (out) (array zero-terminated=1) (element-type guint8) (optional): return location for child output, or %NULL
  * @standard_error: (out) (array zero-terminated=1) (element-type guint8) (optional): return location for child error messages, or %NULL
- * @exit_status: (out) (optional): return location for child exit status, as returned by waitpid(), or %NULL
+ * @wait_status: (out) (optional): return location for child wait status, as returned by waitpid(), or %NULL
  * @error: return location for error, or %NULL
  *
  * Executes a child synchronously (waits for the child to exit before returning).
@@ -334,15 +334,18 @@ read_data (GString *str,
  * %G_SPAWN_STDOUT_TO_DEV_NULL and %G_SPAWN_STDERR_TO_DEV_NULL flags when
  * passing %NULL for @standard_output and @standard_error.
  *
- * If @exit_status is non-%NULL, the platform-specific exit status of
+ * If @wait_status is non-%NULL, the platform-specific status of
  * the child is stored there; see the documentation of
- * g_spawn_check_exit_status() for how to use and interpret this.
+ * g_spawn_check_wait_status() for how to use and interpret this.
+ * On Unix platforms, note that it is usually not equal
+ * to the integer passed to `exit()` or returned from `main()`.
+ *
  * Note that it is invalid to pass %G_SPAWN_DO_NOT_REAP_CHILD in
  * @flags, and on POSIX platforms, the same restrictions as for
  * g_child_watch_source_new() apply.
  *
  * If an error occurs, no data is returned in @standard_output,
- * @standard_error, or @exit_status.
+ * @standard_error, or @wait_status.
  *
  * This function calls g_spawn_async_with_pipes() internally; see that
  * function for full details on the other parameters and details on
@@ -359,7 +362,7 @@ g_spawn_sync (const gchar          *working_directory,
               gpointer              user_data,
               gchar               **standard_output,
               gchar               **standard_error,
-              gint                 *exit_status,
+              gint                 *wait_status,
               GError              **error)     
 {
   gint outpipe = -1;
@@ -517,13 +520,13 @@ g_spawn_sync (const gchar          *working_directory,
         goto again;
       else if (errno == ECHILD)
         {
-          if (exit_status)
+          if (wait_status)
             {
-              g_warning ("In call to g_spawn_sync(), exit status of a child process was requested but ECHILD was received by waitpid(). See the documentation of g_child_watch_source_new() for possible causes.");
+              g_warning ("In call to g_spawn_sync(), wait status of a child process was requested but ECHILD was received by waitpid(). See the documentation of g_child_watch_source_new() for possible causes.");
             }
           else
             {
-              /* We don't need the exit status. */
+              /* We don't need the wait status. */
             }
         }
       else
@@ -554,8 +557,8 @@ g_spawn_sync (const gchar          *working_directory,
     }
   else
     {
-      if (exit_status)
-        *exit_status = status;
+      if (wait_status)
+        *wait_status = status;
       
       if (standard_output)        
         *standard_output = g_string_free (outstr, FALSE);
@@ -979,7 +982,7 @@ g_spawn_async_with_fds (const gchar          *working_directory,
  * @command_line: (type filename): a command line
  * @standard_output: (out) (array zero-terminated=1) (element-type guint8) (optional): return location for child output
  * @standard_error: (out) (array zero-terminated=1) (element-type guint8) (optional): return location for child errors
- * @exit_status: (out) (optional): return location for child exit status, as returned by waitpid()
+ * @wait_status: (out) (optional): return location for child wait status, as returned by waitpid()
  * @error: return location for errors
  *
  * A simple version of g_spawn_sync() with little-used parameters
@@ -991,9 +994,11 @@ g_spawn_async_with_fds (const gchar          *working_directory,
  * appropriate. Possible errors are those from g_spawn_sync() and those
  * from g_shell_parse_argv().
  *
- * If @exit_status is non-%NULL, the platform-specific exit status of
+ * If @wait_status is non-%NULL, the platform-specific status of
  * the child is stored there; see the documentation of
- * g_spawn_check_exit_status() for how to use and interpret this.
+ * g_spawn_check_wait_status() for how to use and interpret this.
+ * On Unix platforms, note that it is usually not equal
+ * to the integer passed to `exit()` or returned from `main()`.
  * 
  * On Windows, please note the implications of g_shell_parse_argv()
  * parsing @command_line. Parsing is done according to Unix shell rules, not 
@@ -1011,7 +1016,7 @@ gboolean
 g_spawn_command_line_sync (const gchar  *command_line,
                            gchar       **standard_output,
                            gchar       **standard_error,
-                           gint         *exit_status,
+                           gint         *wait_status,
                            GError      **error)
 {
   gboolean retval;
@@ -1032,7 +1037,7 @@ g_spawn_command_line_sync (const gchar  *command_line,
                          NULL,
                          standard_output,
                          standard_error,
-                         exit_status,
+                         wait_status,
                          error);
   g_strfreev (argv);
 
@@ -1084,32 +1089,32 @@ g_spawn_command_line_async (const gchar *command_line,
 }
 
 /**
- * g_spawn_check_exit_status:
- * @exit_status: An exit code as returned from g_spawn_sync()
+ * g_spawn_check_wait_status:
+ * @wait_status: A platform-specific wait status as returned from g_spawn_sync()
  * @error: a #GError
  *
- * Set @error if @exit_status indicates the child exited abnormally
+ * Set @error if @wait_status indicates the child exited abnormally
  * (e.g. with a nonzero exit code, or via a fatal signal).
  *
- * The g_spawn_sync() and g_child_watch_add() family of APIs return an
- * exit status for subprocesses encoded in a platform-specific way.
+ * The g_spawn_sync() and g_child_watch_add() family of APIs return the
+ * status of subprocesses encoded in a platform-specific way.
  * On Unix, this is guaranteed to be in the same format waitpid() returns,
  * and on Windows it is guaranteed to be the result of GetExitCodeProcess().
  *
  * Prior to the introduction of this function in GLib 2.34, interpreting
- * @exit_status required use of platform-specific APIs, which is problematic
+ * @wait_status required use of platform-specific APIs, which is problematic
  * for software using GLib as a cross-platform layer.
  *
  * Additionally, many programs simply want to determine whether or not
  * the child exited successfully, and either propagate a #GError or
  * print a message to standard error. In that common case, this function
  * can be used. Note that the error message in @error will contain
- * human-readable information about the exit status.
+ * human-readable information about the wait status.
  *
  * The @domain and @code of @error have special semantics in the case
  * where the process has an "exit code", as opposed to being killed by
  * a signal. On Unix, this happens if WIFEXITED() would be true of
- * @exit_status. On Windows, it is always the case.
+ * @wait_status. On Windows, it is always the case.
  *
  * The special semantics are that the actual exit code will be the
  * code set in @error, and the domain will be %G_SPAWN_EXIT_ERROR.
@@ -1121,43 +1126,46 @@ g_spawn_command_line_async (const gchar *command_line,
  *
  * This function just offers convenience; you can of course also check
  * the available platform via a macro such as %G_OS_UNIX, and use
- * WIFEXITED() and WEXITSTATUS() on @exit_status directly. Do not attempt
+ * WIFEXITED() and WEXITSTATUS() on @wait_status directly. Do not attempt
  * to scan or parse the error message string; it may be translated and/or
  * change in future versions of GLib.
+ *
+ * Prior to version 2.70, g_spawn_check_exit_status() provides the same
+ * functionality, although under a misleading name.
  *
  * Returns: %TRUE if child exited successfully, %FALSE otherwise (and
  *     @error will be set)
  *
- * Since: 2.34
+ * Since: 2.70
  */
 gboolean
-g_spawn_check_exit_status (gint      exit_status,
+g_spawn_check_wait_status (gint      wait_status,
 			   GError  **error)
 {
   gboolean ret = FALSE;
 
-  if (WIFEXITED (exit_status))
+  if (WIFEXITED (wait_status))
     {
-      if (WEXITSTATUS (exit_status) != 0)
+      if (WEXITSTATUS (wait_status) != 0)
 	{
-	  g_set_error (error, G_SPAWN_EXIT_ERROR, WEXITSTATUS (exit_status),
+	  g_set_error (error, G_SPAWN_EXIT_ERROR, WEXITSTATUS (wait_status),
 		       _("Child process exited with code %ld"),
-		       (long) WEXITSTATUS (exit_status));
+		       (long) WEXITSTATUS (wait_status));
 	  goto out;
 	}
     }
-  else if (WIFSIGNALED (exit_status))
+  else if (WIFSIGNALED (wait_status))
     {
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
 		   _("Child process killed by signal %ld"),
-		   (long) WTERMSIG (exit_status));
+		   (long) WTERMSIG (wait_status));
       goto out;
     }
-  else if (WIFSTOPPED (exit_status))
+  else if (WIFSTOPPED (wait_status))
     {
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
 		   _("Child process stopped by signal %ld"),
-		   (long) WSTOPSIG (exit_status));
+		   (long) WSTOPSIG (wait_status));
       goto out;
     }
   else
@@ -1170,6 +1178,34 @@ g_spawn_check_exit_status (gint      exit_status,
   ret = TRUE;
  out:
   return ret;
+}
+
+/**
+ * g_spawn_check_exit_status:
+ * @wait_status: A status as returned from g_spawn_sync()
+ * @error: a #GError
+ *
+ * An old name for g_spawn_check_wait_status(), deprecated because its
+ * name is misleading.
+ *
+ * Despite the name of the function, @wait_status must be the wait status
+ * as returned by g_spawn_sync(), g_subprocess_get_status(), `waitpid()`,
+ * etc. On Unix platforms, it is incorrect for it to be the exit status
+ * as passed to `exit()` or returned by g_subprocess_get_exit_status() or
+ * `WEXITSTATUS()`.
+ *
+ * Returns: %TRUE if child exited successfully, %FALSE otherwise (and
+ *     @error will be set)
+ *
+ * Since: 2.34
+ *
+ * Deprecated: 2.70: Use g_spawn_check_wait_status() instead, and check whether your code is conflating wait and exit statuses.
+ */
+gboolean
+g_spawn_check_exit_status (gint      wait_status,
+                           GError  **error)
+{
+  return g_spawn_check_wait_status (wait_status, error);
 }
 
 /* This function is called between fork() and exec() and hence must be

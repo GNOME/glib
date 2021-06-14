@@ -878,7 +878,7 @@ test_combining (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 77);
   g_clear_error (&error);
 
@@ -900,7 +900,7 @@ test_combining (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 77);
   g_clear_error (&error);
 
@@ -918,7 +918,7 @@ test_combining (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 77);
   g_clear_error (&error);
 
@@ -940,7 +940,7 @@ test_combining (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_test_message ("one pass and some incomplete -> overall status 0");
@@ -959,7 +959,7 @@ test_combining (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_test_message ("one pass and mix of skipped and incomplete -> overall status 0");
@@ -980,7 +980,7 @@ test_combining (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_test_message ("one fail and some skipped -> overall status fail");
@@ -1001,7 +1001,7 @@ test_combining (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
   g_clear_error (&error);
 
@@ -1021,7 +1021,7 @@ test_combining (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
   g_clear_error (&error);
 
@@ -1043,7 +1043,7 @@ test_combining (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
   g_clear_error (&error);
 
@@ -1075,7 +1075,7 @@ test_tap (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
   g_assert_nonnull (strstr (output, "\nok 1 /pass\n"));
   g_free (output);
@@ -1094,7 +1094,7 @@ test_tap (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
   g_assert_nonnull (strstr (output, "\nok 1 /skip # SKIP not enough tea\n"));
   g_free (output);
@@ -1113,7 +1113,7 @@ test_tap (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
   g_assert_nonnull (strstr (output, "\nnot ok 1 /incomplete # TODO mind reading not implemented yet\n"));
   g_free (output);
@@ -1132,7 +1132,7 @@ test_tap (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
   g_assert_nonnull (strstr (output, "\nnot ok 1 /fail\n"));
   g_free (output);
@@ -1166,7 +1166,7 @@ test_tap (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_ptr_array_unref (argv);
@@ -1197,7 +1197,7 @@ test_tap (void)
   g_assert_nonnull (strstr (output, "\nok 9 /c/a\n"));
   g_assert_nonnull (strstr (output, "\nok 10 /d/a\n"));
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_free (output);
@@ -1229,7 +1229,7 @@ test_tap (void)
   g_assert_nonnull (strstr (output, "\nok 9 /c/a\n"));
   g_assert_nonnull (strstr (output, "\nok 10 /d/a\n"));
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_free (output);
@@ -1261,7 +1261,7 @@ test_tap (void)
   g_assert_nonnull (strstr (output, "\nok 9 /c/a # SKIP\n"));
   g_assert_nonnull (strstr (output, "\nok 10 /d/a # SKIP\n"));
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_free (output);
@@ -1292,7 +1292,7 @@ test_tap (void)
   g_assert_nonnull (strstr (output, "\nok 5 /b/b\n"));
   g_assert_nonnull (strstr (output, "\n1..5\n"));
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_free (output);
@@ -1324,7 +1324,7 @@ test_tap (void)
   g_assert_nonnull (strstr (output, "\nok 6 /b/b/a\n"));
   g_assert_nonnull (strstr (output, "\n1..6\n"));
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_free (output);
@@ -1350,7 +1350,7 @@ test_tap (void)
   g_assert_nonnull (strstr (output, "\nok 2 /b/b/a\n"));
   g_assert_nonnull (strstr (output, "\n1..2\n"));
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_free (output);
@@ -1374,7 +1374,7 @@ test_tap (void)
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_nonnull (error);
   g_assert_nonnull (strstr (output, "do not mix [-r | --run-prefix] with '-p'\n"));
   g_clear_error (&error);
@@ -1416,7 +1416,7 @@ test_tap (void)
   g_assert_nonnull (strstr (output, "\nok 9 /c/a # SKIP by request"));
   g_assert_nonnull (strstr (output, "\nok 10 /d/a\n"));
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_free (output);
@@ -1453,7 +1453,7 @@ test_tap (void)
   g_assert_nonnull (strstr (output, "\nok 9 /c/a # SKIP by request"));
   g_assert_nonnull (strstr (output, "\nok 10 /d/a\n"));
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
 
   g_free (output);
@@ -1477,7 +1477,7 @@ test_tap (void)
                 NULL, NULL, &output, NULL, &status,
                 &error);
   g_assert_no_error (error);
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_nonnull (error);
   g_assert_nonnull (strstr (output, "do not mix [-x | --skip-prefix] with '-s'\n"));
   g_clear_error (&error);
@@ -1511,7 +1511,7 @@ test_tap_summary (void)
                 &error);
   g_assert_no_error (error);
 
-  g_spawn_check_exit_status (status, &error);
+  g_spawn_check_wait_status (status, &error);
   g_assert_no_error (error);
   /* Note: The test path in the output is not `/tap/summary` because it’s the
    * test path from testing-helper, not from this function. */
