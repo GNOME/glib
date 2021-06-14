@@ -1121,8 +1121,8 @@ g_spawn_command_line_async (const gchar *command_line,
  * This allows you to differentiate between different exit codes.
  *
  * If the process was terminated by some means other than an exit
- * status, the domain will be %G_SPAWN_ERROR, and the code will be
- * %G_SPAWN_ERROR_FAILED.
+ * status (for example if it was killed by a signal), the domain will be
+ * %G_SPAWN_ERROR and the code will be %G_SPAWN_ERROR_FAILED.
  *
  * This function just offers convenience; you can of course also check
  * the available platform via a macro such as %G_OS_UNIX, and use
