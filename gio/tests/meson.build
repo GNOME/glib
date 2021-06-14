@@ -675,10 +675,8 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
   ]
 
   # Create object file containing resource data for testing the --external-data
-  # option. Currently only GNU ld and GNU objcopy support the right options.
-  # Support for --add-symbol was added to LLVM objcopy in 2019
-  # (https://reviews.llvm.org/D58234). FIXME: This test could be enabled for
-  # LLVM once that support is in a stable release.
+  # option. Currently only GNU ld and objcopy, or (as of 2019) LLVM ld and
+  # objcopy, support the right options.
   objcopy_supports_add_symbol = false
   objcopy = find_program('objcopy', required : false)
   if objcopy.found()
@@ -687,7 +685,7 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
 
   ld = find_program('ld', required : false)
 
-  if build_machine.system() == 'linux' and cc.get_id() == 'gcc' and objcopy.found() and objcopy_supports_add_symbol and ld.found()
+  if build_machine.system() == 'linux' and objcopy.found() and objcopy_supports_add_symbol and ld.found()
     test_gresource_binary = custom_target('test5.gresource',
       input : 'test5.gresource.xml',
       output : 'test5.gresource',
