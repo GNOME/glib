@@ -611,7 +611,7 @@ on_subprocess_exited (GObject         *object,
           g_propagate_error (&data->error, error);
         }
     }
-  g_spawn_check_exit_status (g_subprocess_get_exit_status (subprocess), &error);
+  g_spawn_check_exit_status (g_subprocess_get_status (subprocess), &error);
   g_assert_no_error (error);
   data->events_pending--;
   if (data->events_pending == 0)
