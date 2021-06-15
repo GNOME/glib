@@ -3028,6 +3028,7 @@ g_bytes_new_static
 g_bytes_new_with_free_func
 g_bytes_new_from_bytes
 g_bytes_get_data
+g_bytes_get_region
 g_bytes_get_size
 g_bytes_hash
 g_bytes_equal

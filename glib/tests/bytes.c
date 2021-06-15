@@ -418,6 +418,38 @@ test_null (void)
   g_assert (size == 0);
 }
 
+static void
+test_get_region (void)
+{
+  GBytes *bytes;
+
+  bytes = g_bytes_new_static (NYAN, N_NYAN);
+
+  /* simple valid gets at the start */
+  g_assert_true (g_bytes_get_region (bytes, 1, 0, 1) == NYAN);
+  g_assert_true (g_bytes_get_region (bytes, 1, 0, N_NYAN) == NYAN);
+
+  /* an invalid get because the range is too wide */
+  g_assert_true (g_bytes_get_region (bytes, 1, 0, N_NYAN + 1) == NULL);
+
+  /* an valid get, but of a zero-byte range at the end */
+  g_assert_true (g_bytes_get_region (bytes, 1, N_NYAN, 0) == NYAN + N_NYAN);
+
+  /* not a valid get because it overlap ones byte */
+  g_assert_true (g_bytes_get_region (bytes, 1, N_NYAN, 1) == NULL);
+
+  /* let's try some multiplication overflow now */
+  g_assert_true (g_bytes_get_region (bytes, 32, 0, G_MAXSIZE / 32 + 1) == NULL);
+  g_assert_true (g_bytes_get_region (bytes, G_MAXSIZE / 32 + 1, 0, 32) == NULL);
+
+  /* and some addition overflow */
+  g_assert_true (g_bytes_get_region (bytes, 1, G_MAXSIZE, -G_MAXSIZE) == NULL);
+  g_assert_true (g_bytes_get_region (bytes, 1, G_MAXSSIZE, ((gsize) G_MAXSSIZE) + 1) == NULL);
+  g_assert_true (g_bytes_get_region (bytes, 1, G_MAXSIZE, 1) == NULL);
+
+  g_bytes_unref (bytes);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -441,6 +473,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytes/to-array/two-refs", test_to_array_two_refs);
   g_test_add_func ("/bytes/to-array/non-malloc", test_to_array_non_malloc);
   g_test_add_func ("/bytes/null", test_null);
+  g_test_add_func ("/bytes/get-region", test_get_region);
 
   return g_test_run ();
 }
