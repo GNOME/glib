@@ -240,10 +240,10 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
   /**
    * GTlsCertificate:pkcs11-uri: (nullable)
    *
-   * A URI referencing the PKCS \#11 objects containing an X.509 certificate
-   * and optionally a private key.
+   * A URI referencing the [PKCS \#11](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html)
+   * objects containing an X.509 certificate and optionally a private key.
    *
-   * If %NULL the certificate is either not backed by PKCS \#11 or the
+   * If %NULL, the certificate is either not backed by PKCS \#11 or the
    * #GTlsBackend does not support PKCS \#11.
    *
    * Since: 2.68
@@ -260,7 +260,8 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
   /**
    * GTlsCertificate:private-key-pkcs11-uri: (nullable)
    *
-   * A URI referencing a PKCS \#11 object containing a private key.
+   * A URI referencing a [PKCS \#11](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html)
+   * object containing a private key.
    *
    * Since: 2.68
    */
@@ -772,7 +773,8 @@ g_tls_certificate_new_from_files (const gchar  *cert_file,
  * @private_key_pkcs11_uri: (nullable): A PKCS \#11 URI
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Creates a #GTlsCertificate from a PKCS \#11 URI.
+ * Creates a #GTlsCertificate from a
+ * [PKCS \#11](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html) URI.
  *
  * An example @pkcs11_uri would be `pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01`
  *
