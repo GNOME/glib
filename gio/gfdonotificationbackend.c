@@ -257,6 +257,7 @@ call_notify (GDBusConnection     *con,
   GVariantBuilder hints_builder;
   GIcon *icon;
   GVariant *parameters;
+  const gchar *app_name;
   const gchar *body;
   guchar urgency;
 
@@ -322,10 +323,11 @@ call_notify (GDBusConnection     *con,
         }
     }
 
+  app_name = g_get_application_name ();
   body = g_notification_get_body (notification);
 
   parameters = g_variant_new ("(susssasa{sv}i)",
-                              "",           /* app name */
+                              app_name ? app_name : "",
                               replace_id,
                               "",           /* app icon */
                               g_notification_get_title (notification),
