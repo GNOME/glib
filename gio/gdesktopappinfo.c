@@ -3734,7 +3734,7 @@ update_program_done (GPid     pid,
                      gpointer data)
 {
   /* Did the application exit correctly */
-  if (g_spawn_check_exit_status (status, NULL))
+  if (g_spawn_check_wait_status (status, NULL))
     {
       /* Here we could clean out any caches in use */
     }

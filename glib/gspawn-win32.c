@@ -949,7 +949,7 @@ g_spawn_sync (const gchar          *working_directory,
               gpointer              user_data,
               gchar               **standard_output,
               gchar               **standard_error,
-              gint                 *exit_status,
+              gint                 *wait_status,
               GError              **error)
 {
   gint outpipe = -1;
@@ -1124,8 +1124,8 @@ g_spawn_sync (const gchar          *working_directory,
       /* No helper process, exit status of actual spawned process
        * already available.
        */
-      if (exit_status)
-        *exit_status = status;
+      if (wait_status)
+        *wait_status = status;
     }
   else
     {
@@ -1141,8 +1141,8 @@ g_spawn_sync (const gchar          *working_directory,
 	  switch (helper_report[0])
 	    {
 	    case CHILD_NO_ERROR:
-	      if (exit_status)
-		*exit_status = helper_report[1];
+	      if (wait_status)
+		*wait_status = helper_report[1];
 	      break;
 	    default:
 	      set_child_error (helper_report, working_directory, error);
@@ -1332,7 +1332,7 @@ gboolean
 g_spawn_command_line_sync (const gchar  *command_line,
                            gchar       **standard_output,
                            gchar       **standard_error,
-                           gint         *exit_status,
+                           gint         *wait_status,
                            GError      **error)
 {
   gboolean retval;
@@ -1353,7 +1353,7 @@ g_spawn_command_line_sync (const gchar  *command_line,
                          NULL,
                          standard_output,
                          standard_error,
-                         exit_status,
+                         wait_status,
                          error);
   g_strfreev (argv);
 
@@ -1394,22 +1394,31 @@ g_spawn_close_pid (GPid pid)
 }
 
 gboolean
-g_spawn_check_exit_status (gint      exit_status,
+g_spawn_check_wait_status (gint      wait_status,
 			   GError  **error)
 {
   gboolean ret = FALSE;
 
-  if (exit_status != 0)
+  if (wait_status != 0)
     {
-      g_set_error (error, G_SPAWN_EXIT_ERROR, exit_status,
+      /* On Windows, the wait status is just the exit status: the
+       * difference between the two that exists on Unix is not relevant */
+      g_set_error (error, G_SPAWN_EXIT_ERROR, wait_status,
 		   _("Child process exited with code %ld"),
-		   (long) exit_status);
+		   (long) wait_status);
       goto out;
     }
 
   ret = TRUE;
  out:
   return ret;
+}
+
+gboolean
+g_spawn_check_exit_status (gint      wait_status,
+                           GError  **error)
+{
+  return g_spawn_check_wait_status (wait_status, error);
 }
 
 #ifdef G_OS_WIN32
@@ -1443,12 +1452,12 @@ _GLIB_EXTERN gboolean g_spawn_sync_utf8               (const gchar           *wo
                                                        gpointer               user_data,
                                                        gchar                **standard_output,
                                                        gchar                **standard_error,
-                                                       gint                  *exit_status,
+                                                       gint                  *wait_status,
                                                        GError               **error);
 _GLIB_EXTERN gboolean g_spawn_command_line_sync_utf8  (const gchar           *command_line,
                                                        gchar                **standard_output,
                                                        gchar                **standard_error,
-                                                       gint                  *exit_status,
+                                                       gint                  *wait_status,
                                                        GError               **error);
 _GLIB_EXTERN gboolean g_spawn_command_line_async_utf8 (const gchar           *command_line,
                                                        GError               **error);
@@ -1508,7 +1517,7 @@ g_spawn_sync_utf8 (const gchar          *working_directory,
                    gpointer              user_data,
                    gchar               **standard_output,
                    gchar               **standard_error,
-                   gint                 *exit_status,
+                   gint                 *wait_status,
                    GError              **error)
 {
   return g_spawn_sync (working_directory,
@@ -1519,7 +1528,7 @@ g_spawn_sync_utf8 (const gchar          *working_directory,
                        user_data,
                        standard_output,
                        standard_error,
-                       exit_status,
+                       wait_status,
                        error);
 }
 
@@ -1527,13 +1536,13 @@ gboolean
 g_spawn_command_line_sync_utf8 (const gchar  *command_line,
                                 gchar       **standard_output,
                                 gchar       **standard_error,
-                                gint         *exit_status,
+                                gint         *wait_status,
                                 GError      **error)
 {
   return g_spawn_command_line_sync (command_line,
                                     standard_output,
                                     standard_error,
-                                    exit_status,
+                                    wait_status,
                                     error);
 }
 

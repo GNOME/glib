@@ -408,17 +408,17 @@ test_spawn_nonexistent (void)
   GError *error = NULL;
   GPtrArray *argv = NULL;
   gchar *stdout_str = NULL;
-  gint exit_status = -1;
+  gint wait_status = -1;
 
   argv = g_ptr_array_new ();
   g_ptr_array_add (argv, "this does not exist");
   g_ptr_array_add (argv, NULL);
 
   g_spawn_sync (NULL, (char**) argv->pdata, NULL, 0, NULL, NULL, &stdout_str,
-                NULL, &exit_status, &error);
+                NULL, &wait_status, &error);
   g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
   g_assert_null (stdout_str);
-  g_assert_cmpint (exit_status, ==, -1);
+  g_assert_cmpint (wait_status, ==, -1);
 
   g_ptr_array_free (argv, TRUE);
 

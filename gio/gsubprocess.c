@@ -883,7 +883,7 @@ g_subprocess_wait (GSubprocess   *subprocess,
  * @cancellable: a #GCancellable
  * @error: a #GError
  *
- * Combines g_subprocess_wait() with g_spawn_check_exit_status().
+ * Combines g_subprocess_wait() with g_spawn_check_wait_status().
  *
  * Returns: %TRUE on success, %FALSE if process exited abnormally, or
  * @cancellable was cancelled
@@ -896,7 +896,7 @@ g_subprocess_wait_check (GSubprocess   *subprocess,
                          GError       **error)
 {
   return g_subprocess_wait (subprocess, cancellable, error) &&
-         g_spawn_check_exit_status (subprocess->status, error);
+         g_spawn_check_wait_status (subprocess->status, error);
 }
 
 /**
@@ -906,7 +906,7 @@ g_subprocess_wait_check (GSubprocess   *subprocess,
  * @callback: a #GAsyncReadyCallback to call when the operation is complete
  * @user_data: user_data for @callback
  *
- * Combines g_subprocess_wait_async() with g_spawn_check_exit_status().
+ * Combines g_subprocess_wait_async() with g_spawn_check_wait_status().
  *
  * This is the asynchronous version of g_subprocess_wait_check().
  *
@@ -940,7 +940,7 @@ g_subprocess_wait_check_finish (GSubprocess   *subprocess,
                                 GError       **error)
 {
   return g_subprocess_wait_finish (subprocess, result, error) &&
-         g_spawn_check_exit_status (subprocess->status, error);
+         g_spawn_check_wait_status (subprocess->status, error);
 }
 
 #ifdef G_OS_UNIX
@@ -1053,7 +1053,7 @@ g_subprocess_force_exit (GSubprocess *subprocess)
  *
  * This value has no particular meaning, but it can be used with the
  * macros defined by the system headers such as WIFEXITED.  It can also
- * be used with g_spawn_check_exit_status().
+ * be used with g_spawn_check_wait_status().
  *
  * It is more likely that you want to use g_subprocess_get_if_exited()
  * followed by g_subprocess_get_exit_status().

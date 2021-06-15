@@ -1567,6 +1567,7 @@ g_spawn_async_with_pipes_and_fds
 g_spawn_async
 g_spawn_sync
 G_SPAWN_EXIT_ERROR
+g_spawn_check_wait_status
 g_spawn_check_exit_status
 g_spawn_command_line_async
 g_spawn_command_line_sync

@@ -611,7 +611,7 @@ on_subprocess_exited (GObject         *object,
           g_propagate_error (&data->error, error);
         }
     }
-  g_spawn_check_exit_status (g_subprocess_get_exit_status (subprocess), &error);
+  g_spawn_check_wait_status (g_subprocess_get_status (subprocess), &error);
   g_assert_no_error (error);
   data->events_pending--;
   if (data->events_pending == 0)
@@ -1281,7 +1281,7 @@ on_request_quit_exited (GObject        *object,
   g_assert_true (g_subprocess_get_if_signaled (subprocess));
   g_assert_cmpint (g_subprocess_get_term_sig (subprocess), ==, 9);
 #endif
-  g_spawn_check_exit_status (g_subprocess_get_status (subprocess), &error);
+  g_spawn_check_wait_status (g_subprocess_get_status (subprocess), &error);
   g_assert_nonnull (error);
   g_clear_error (&error);
 
