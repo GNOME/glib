@@ -322,6 +322,20 @@ test_initially_unowned (void)
 
   g_object_ref_sink (obj);
   g_object_unref (obj);
+
+  obj = g_object_new (G_TYPE_INITIALLY_UNOWNED, NULL);
+  g_assert_true (g_object_is_floating (obj));
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  g_object_take_ref (obj);
+  g_assert_false (g_object_is_floating (obj));
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  g_object_take_ref (obj);
+  g_assert_false (g_object_is_floating (obj));
+  g_assert_cmpint (obj->ref_count, ==, 1);
+
+  g_object_unref (obj);
 }
 
 static void

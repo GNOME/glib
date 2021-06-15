@@ -494,6 +494,8 @@ GLIB_AVAILABLE_IN_ALL
 gboolean    g_object_is_floating    	      (gpointer        object);
 GLIB_AVAILABLE_IN_ALL
 gpointer    g_object_ref_sink       	      (gpointer	       object);
+GLIB_AVAILABLE_IN_2_70
+gpointer    g_object_take_ref                 (gpointer        object);
 GLIB_AVAILABLE_IN_ALL
 gpointer    g_object_ref                      (gpointer        object);
 GLIB_AVAILABLE_IN_ALL
