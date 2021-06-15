@@ -1162,9 +1162,15 @@ test_validate_names (void)
         g_assert (!g_dbus_is_unique_name (names[n].string));
 
       if (names[n].interface)
-        g_assert (g_dbus_is_interface_name (names[n].string));
+        {
+          g_assert (g_dbus_is_interface_name (names[n].string));
+          g_assert (g_dbus_is_error_name (names[n].string)); 
+        }
       else
-        g_assert (!g_dbus_is_interface_name (names[n].string));
+        {
+          g_assert (!g_dbus_is_interface_name (names[n].string));
+          g_assert (!g_dbus_is_error_name (names[n].string));
+        }        
     }
 }
 
