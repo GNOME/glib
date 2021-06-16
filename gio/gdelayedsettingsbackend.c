@@ -156,7 +156,8 @@ add_to_tree (gpointer key,
              gpointer value,
              gpointer user_data)
 {
-  g_tree_insert (user_data, g_strdup (key), g_variant_ref (value));
+  /* A value may be %NULL if its key has been reset */
+  g_tree_insert (user_data, g_strdup (key), (value != NULL) ? g_variant_ref (value) : NULL);
   return FALSE;
 }
 
