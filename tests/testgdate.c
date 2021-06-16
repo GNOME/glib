@@ -27,7 +27,9 @@ if (failed) \
   } \
 else \
   ++passed;    \
-  if ((passed+notpassed) % 10000 == 0) g_print ("."); fflush (stdout); \
+if ((passed+notpassed) % 10000 == 0) \
+  g_print ("."); \
+fflush (stdout); \
 } G_STMT_END
 
 static void
