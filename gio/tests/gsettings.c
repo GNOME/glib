@@ -56,6 +56,15 @@ check_and_free (GVariant    *value,
   g_variant_unref (value);
 }
 
+/* Wrapper around g_assert_cmpstr() which gets a setting from a #GSettings
+ * using g_settings_get(). */
+#define settings_assert_cmpstr(settings, key, op, expected_value) G_STMT_START { \
+  gchar *__str; \
+  g_settings_get ((settings), (key), "s", &__str); \
+  g_assert_cmpstr (__str, op, (expected_value)); \
+  g_free (__str); \
+} G_STMT_END
+
 
 /* Just to get warmed up: Read and set a string, and
  * verify that can read the changed string back
@@ -668,6 +677,51 @@ test_delay_child (void)
   g_object_unref (child);
   g_object_unref (settings);
   g_object_unref (base);
+}
+
+static void
+test_delay_reset_key (void)
+{
+  GSettings *direct_settings = NULL, *delayed_settings = NULL;
+
+  g_test_summary ("Test that resetting a key on a delayed settings instance works");
+
+  delayed_settings = g_settings_new ("org.gtk.test");
+  direct_settings = g_settings_new ("org.gtk.test");
+
+  g_settings_set (direct_settings, "greeting", "s", "ey up");
+
+  settings_assert_cmpstr (delayed_settings, "greeting", ==, "ey up");
+
+  /* Set up a delayed settings backend. */
+  g_settings_delay (delayed_settings);
+
+  g_settings_set (delayed_settings, "greeting", "s", "how do");
+
+  settings_assert_cmpstr (delayed_settings, "greeting", ==, "how do");
+  settings_assert_cmpstr (direct_settings, "greeting", ==, "ey up");
+
+  g_assert_true (g_settings_get_has_unapplied (delayed_settings));
+
+  g_settings_reset (delayed_settings, "greeting");
+
+  /* There are still unapplied settings, because the reset is resetting to the
+   * value from the schema, not the value from @direct_settings. */
+  g_assert_true (g_settings_get_has_unapplied (delayed_settings));
+
+  settings_assert_cmpstr (delayed_settings, "greeting", ==, "Hello, earthlings");
+  settings_assert_cmpstr (direct_settings, "greeting", ==, "ey up");
+
+  /* Apply the settings changes (i.e. the reset). */
+  g_settings_apply (delayed_settings);
+
+  g_assert_false (g_settings_get_has_unapplied (delayed_settings));
+
+  settings_assert_cmpstr (delayed_settings, "greeting", ==, "Hello, earthlings");
+  settings_assert_cmpstr (direct_settings, "greeting", ==, "Hello, earthlings");
+
+  g_object_unref (direct_settings);
+  g_object_unref (delayed_settings);
 }
 
 static void
@@ -3114,6 +3168,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
   g_test_add_func ("/gsettings/delay-child", test_delay_child);
+  g_test_add_func ("/gsettings/delay-reset-key", test_delay_reset_key);
   g_test_add_func ("/gsettings/atomic", test_atomic);
 
   g_test_add_func ("/gsettings/simple-binding", test_simple_binding);
