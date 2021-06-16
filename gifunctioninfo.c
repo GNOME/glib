@@ -165,18 +165,30 @@ g_function_info_get_flags (GIFunctionInfo *info)
 GIPropertyInfo *
 g_function_info_get_property (GIFunctionInfo *info)
 {
-  GIRealInfo *rinfo;
+  GIRealInfo *rinfo, *container_rinfo;
   FunctionBlob *blob;
-  GIInterfaceInfo *container;
 
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_FUNCTION_INFO (info), NULL);
 
   rinfo = (GIRealInfo *)info;
   blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
-  container = (GIInterfaceInfo *)rinfo->container;
+  container_rinfo = (GIRealInfo *)rinfo->container;
 
-  return g_interface_info_get_property (container, blob->index);
+  if (container_rinfo->type == GI_INFO_TYPE_INTERFACE)
+    {
+      GIInterfaceInfo *container = (GIInterfaceInfo *)rinfo->container;
+
+      return g_interface_info_get_property (container, blob->index);
+    }
+  else if (container_rinfo->type == GI_INFO_TYPE_OBJECT)
+    {
+      GIObjectInfo *container = (GIObjectInfo *)rinfo->container;
+
+      return g_object_info_get_property (container, blob->index);
+    }
+  else
+    return NULL;
 }
 
 /**
