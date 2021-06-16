@@ -268,6 +268,28 @@ g_dbus_is_interface_name (const gchar *string)
   return ret;
 }
 
+/**
+ * g_dbus_is_error_name:
+ * @string: The string to check.
+ *
+ * Check whether @string is a valid D-Bus error name.
+ *
+ * This function returns the same result as g_dbus_is_interface_name(),
+ * because D-Bus error names are defined to have exactly the
+ * same syntax as interface names.
+ *
+ * Returns: %TRUE if valid, %FALSE otherwise.
+ *
+ * Since: 2.70
+ */
+gboolean
+g_dbus_is_error_name (const gchar *string)
+{
+  /* Error names are the same syntax as interface names.
+   * See https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-error */
+  return g_dbus_is_interface_name (string);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* TODO: maybe move to glib? if so, it should conform to http://en.wikipedia.org/wiki/Guid and/or

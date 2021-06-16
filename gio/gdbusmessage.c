@@ -3204,7 +3204,7 @@ g_dbus_message_set_error_name (GDBusMessage  *message,
                                const gchar   *value)
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
-  g_return_if_fail (value == NULL || g_dbus_is_interface_name (value));
+  g_return_if_fail (value == NULL || g_dbus_is_error_name (value));
   set_string_header (message, G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME, value);
 }
 

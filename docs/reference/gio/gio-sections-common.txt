@@ -2806,6 +2806,7 @@ g_dbus_is_name
 g_dbus_is_unique_name
 g_dbus_is_member_name
 g_dbus_is_interface_name
+g_dbus_is_error_name
 g_dbus_gvalue_to_gvariant
 g_dbus_gvariant_to_gvalue
 g_dbus_escape_object_path_bytestring

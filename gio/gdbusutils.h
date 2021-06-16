@@ -42,6 +42,8 @@ GLIB_AVAILABLE_IN_ALL
 gboolean g_dbus_is_member_name (const gchar *string);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_dbus_is_interface_name (const gchar *string);
+GLIB_AVAILABLE_IN_2_70
+gboolean g_dbus_is_error_name (const gchar *string);
 
 GLIB_AVAILABLE_IN_ALL
 void g_dbus_gvariant_to_gvalue (GVariant  *value,
