@@ -807,6 +807,8 @@ start_function (GMarkupParseContext *context,
   const gchar *symbol;
   const gchar *deprecated;
   const gchar *throws;
+  const gchar *set_property;
+  const gchar *get_property;
   GIrNodeFunction *function;
   gboolean found = FALSE;
   ParseState in_embedded_state = STATE_NONE;
@@ -854,6 +856,8 @@ start_function (GMarkupParseContext *context,
   symbol = find_attribute ("c:identifier", attribute_names, attribute_values);
   deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
   throws = find_attribute ("throws", attribute_names, attribute_values);
+  set_property = find_attribute ("glib:set-property", attribute_names, attribute_values);
+  get_property = find_attribute ("glib:get-property", attribute_names, attribute_values);
 
   if (name == NULL)
     {
@@ -889,6 +893,25 @@ start_function (GMarkupParseContext *context,
 	function->is_constructor = TRUE;
       else
 	function->is_constructor = FALSE;
+
+      if (set_property != NULL)
+        {
+          function->is_setter = TRUE;
+          function->is_getter = FALSE;
+          function->property = g_strdup (set_property);
+        }
+      else if (get_property != NULL)
+        {
+          function->is_setter = FALSE;
+          function->is_getter = TRUE;
+          function->property = g_strdup (get_property);
+        }
+      else
+        {
+          function->is_setter = FALSE;
+          function->is_getter = FALSE;
+          function->property = NULL;
+        }
     }
   else
     {

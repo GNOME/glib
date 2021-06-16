@@ -586,10 +586,22 @@ write_function_info (const gchar    *namespace,
   xml_printf (file, " name=\"%s\" c:identifier=\"%s\"",
               name, symbol);
 
-  if (flags & GI_FUNCTION_IS_SETTER)
-    xml_printf (file, " type=\"setter\"");
-  else if (flags & GI_FUNCTION_IS_GETTER)
-    xml_printf (file, " type=\"getter\"");
+  if ((flags & GI_FUNCTION_IS_SETTER) || (flags & GI_FUNCTION_IS_GETTER))
+    {
+      GIPropertyInfo *property = g_function_info_get_property (info);
+
+      if (property != NULL)
+        {
+          const char *property_name = g_base_info_get_name ((GIBaseInfo *)property);
+
+          if (flags & GI_FUNCTION_IS_SETTER)
+            xml_printf (file, " glib:set-property=\"%s\"", property_name);
+          else if (flags & GI_FUNCTION_IS_GETTER)
+            xml_printf (file, " glib:get-property=\"%s\"", property_name);
+
+          g_base_info_unref (property);
+        }
+    }
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");

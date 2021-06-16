@@ -218,6 +218,7 @@ _g_ir_node_free (GIrNode *node)
 
 	g_free (node->name);
 	g_free (function->symbol);
+        g_free (function->property);
 	_g_ir_node_free ((GIrNode *)function->result);
 	for (l = function->parameters; l; l = l->next)
 	  _g_ir_node_free ((GIrNode *)l->data);
@@ -1648,8 +1649,8 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->blob_type = BLOB_TYPE_FUNCTION;
 	blob->deprecated = function->deprecated;
         blob->is_static = !function->is_method;
-	blob->setter = function->is_setter;
-	blob->getter = function->is_getter;
+	blob->setter = FALSE;
+	blob->getter = FALSE;
 	blob->constructor = function->is_constructor;
 	blob->wraps_vfunc = function->wraps_vfunc;
 	blob->throws = function->throws; /* Deprecated. Also stored in SignatureBlob. */
@@ -1657,6 +1658,21 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->name = _g_ir_write_string (node->name, strings, data, offset2);
 	blob->symbol = _g_ir_write_string (function->symbol, strings, data, offset2);
 	blob->signature = signature;
+
+        if (function->is_setter || function->is_getter)
+          {
+            int index = get_index_of_member_type ((GIrNodeInterface*)parent,
+                                                  G_IR_NODE_PROPERTY,
+                                                  function->property);
+            if (index == -1)
+              {
+                g_error ("Unknown property %s for accessor %s", function->property, node->name);
+              }
+
+            blob->setter = function->is_setter;
+            blob->getter = function->is_getter;
+            blob->index = (guint) index;
+          }
 
         /* function->result is special since it doesn't appear in the serialized format but
          * we do want the attributes for it to appear

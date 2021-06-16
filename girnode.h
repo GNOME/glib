@@ -103,6 +103,7 @@ struct _GIrNodeFunction
   gboolean instance_transfer_full;
 
   gchar *symbol;
+  char *property;
 
   GIrNodeParam *result;
   GList *parameters;
