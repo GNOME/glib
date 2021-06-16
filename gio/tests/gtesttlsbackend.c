@@ -407,12 +407,6 @@ g_test_tls_connection_initable_iface_init (GInitableIface  *iface)
   iface->init = g_test_tls_connection_initable_init;
 }
 
-const gchar *
-g_test_tls_connection_get_private_key_pem (GTlsCertificate *cert)
-{
-  return ((GTestTlsCertificate *)cert)->key_pem;
-}
-
 /* Test database type */
 
 typedef struct _GTestTlsDatabase      GTestTlsDatabase;
