@@ -50,6 +50,12 @@ GITypeInfo * g_property_info_get_type  (GIPropertyInfo *info);
 GI_AVAILABLE_IN_ALL
 GITransfer   g_property_info_get_ownership_transfer (GIPropertyInfo *info);
 
+GI_AVAILABLE_IN_1_70
+GIFunctionInfo *g_property_info_get_setter (GIPropertyInfo *info);
+
+GI_AVAILABLE_IN_1_70
+GIFunctionInfo *g_property_info_get_getter (GIPropertyInfo *info);
+
 G_END_DECLS
 
 #endif  /* __GIPROPERTYINFO_H__ */

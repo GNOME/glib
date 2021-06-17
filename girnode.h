@@ -174,6 +174,9 @@ struct _GIrNodeProperty
   gboolean transfer;
   gboolean shallow_transfer;
 
+  char *setter;
+  char *getter;
+
   GIrNodeType *type;
 };
 

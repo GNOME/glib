@@ -254,6 +254,8 @@ _g_ir_node_free (GIrNode *node)
 	GIrNodeProperty *property = (GIrNodeProperty *)node;
 
 	g_free (node->name);
+        g_free (property->setter);
+        g_free (property->getter);
 	_g_ir_node_free ((GIrNode *)property->type);
       }
       break;
@@ -1626,6 +1628,36 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->transfer_ownership = prop->transfer;
 	blob->transfer_container_ownership = prop->shallow_transfer;
 	blob->reserved = 0;
+
+        if (prop->setter != NULL)
+          {
+            int index = get_index_of_member_type ((GIrNodeInterface*)parent,
+                                                  G_IR_NODE_FUNCTION,
+                                                  prop->setter);
+            if (index == -1)
+              {
+                g_error ("Unknown setter %s for property %s", prop->setter, node->name);
+              }
+
+            blob->setter = (guint) index;
+          }
+        else
+          blob->setter = 0x3ff; /* max of 10 bits */
+
+        if (prop->getter != NULL)
+          {
+            int index = get_index_of_member_type ((GIrNodeInterface*)parent,
+                                                  G_IR_NODE_FUNCTION,
+                                                  prop->getter);
+            if (index == -1)
+              {
+                g_error ("Unknown getter %s for property %s", prop->getter, node->name);
+              }
+
+            blob->getter = (guint) index;
+          }
+        else
+          blob->getter = 0x3ff;
 
         _g_ir_node_build_typelib ((GIrNode *)prop->type,
 				 node, build, offset, offset2, NULL);

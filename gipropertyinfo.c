@@ -132,3 +132,82 @@ g_property_info_get_ownership_transfer (GIPropertyInfo *info)
   else
     return GI_TRANSFER_NOTHING;
 }
+
+/**
+ * g_property_info_get_setter:
+ * @info: a #GIPropertyInfo
+ *
+ * Obtains the setter function associated with this #GIPropertyInfo.
+ *
+ * The setter is only available for %G_PARAM_WRITABLE properties that
+ * are also not %G_PARAM_CONSTRUCT_ONLY.
+ *
+ * Returns: (transfer full): the function info or %NULL if not set.
+ *   Free it with g_base_info_unref() when done.
+ */
+GIFunctionInfo *
+g_property_info_get_setter (GIPropertyInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  PropertyBlob *blob;
+  GIBaseInfo *container;
+  GIInfoType parent_type;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_PROPERTY_INFO (info), NULL);
+
+  blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
+  if (!blob->writable || blob->construct_only)
+    return NULL;
+
+  if (blob->setter == 0x3ff)
+    return NULL;
+
+  container = rinfo->container;
+  parent_type = g_base_info_get_type (container);
+  if (parent_type == GI_INFO_TYPE_OBJECT)
+    return g_object_info_get_method ((GIObjectInfo *) container, blob->setter);
+  else if (parent_type == GI_INFO_TYPE_INTERFACE)
+    return g_interface_info_get_method ((GIInterfaceInfo *) container, blob->setter);
+  else
+    return NULL;
+}
+
+/**
+ * g_property_info_get_getter:
+ * @info: a #GIPropertyInfo
+ *
+ * Obtains the getter function associated with this #GIPropertyInfo.
+ *
+ * The setter is only available for %G_PARAM_READABLE properties.
+ *
+ * Returns: (transfer full): the function info or %NULL if not set.
+ *   Free it with g_base_info_unref() when done.
+ */
+GIFunctionInfo *
+g_property_info_get_getter (GIPropertyInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  PropertyBlob *blob;
+  GIBaseInfo *container;
+  GIInfoType parent_type;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_PROPERTY_INFO (info), NULL);
+
+  blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
+  if (!blob->readable)
+    return NULL;
+
+  if (blob->getter == 0x3ff)
+    return NULL;
+
+  container = rinfo->container;
+  parent_type = g_base_info_get_type (container);
+  if (parent_type == GI_INFO_TYPE_OBJECT)
+    return g_object_info_get_method ((GIObjectInfo *) container, blob->getter);
+  else if (parent_type == GI_INFO_TYPE_INTERFACE)
+    return g_interface_info_get_method ((GIInterfaceInfo *) container, blob->getter);
+  else
+    return NULL;
+}

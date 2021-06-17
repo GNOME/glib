@@ -1526,6 +1526,8 @@ start_property (GMarkupParseContext *context,
   const gchar *construct;
   const gchar *construct_only;
   const gchar *transfer;
+  const gchar *setter;
+  const gchar *getter;
   GIrNodeProperty *property;
   GIrNodeInterface *iface;
 
@@ -1551,6 +1553,8 @@ start_property (GMarkupParseContext *context,
   construct = find_attribute ("construct", attribute_names, attribute_values);
   construct_only = find_attribute ("construct-only", attribute_names, attribute_values);
   transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
+  setter = find_attribute ("setter", attribute_names, attribute_values);
+  getter = find_attribute ("getter", attribute_names, attribute_values);
 
   if (name == NULL)
     {
@@ -1581,6 +1585,9 @@ start_property (GMarkupParseContext *context,
     property->construct_only = TRUE;
   else
     property->construct_only = FALSE;
+
+  property->setter = g_strdup (setter);
+  property->getter = g_strdup (getter);
 
   parse_property_transfer (property, transfer, ctx);
 

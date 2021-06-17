@@ -977,6 +977,28 @@ write_property_info (const gchar    *namespace,
   if (flags & G_PARAM_CONSTRUCT_ONLY)
     xml_printf (file, " construct-only=\"1\"");
 
+  if (flags & G_PARAM_READABLE)
+    {
+      GIFunctionInfo *getter = g_property_info_get_getter (info);
+
+      if (getter != NULL)
+        {
+          xml_printf (file, " getter=\"%s\"", g_base_info_get_name ((GIBaseInfo *) getter));
+          g_base_info_unref ((GIBaseInfo *) getter);
+        }
+    }
+
+  if (flags & G_PARAM_WRITABLE)
+    {
+      GIFunctionInfo *setter = g_property_info_get_setter (info);
+
+      if (setter != NULL)
+        {
+          xml_printf (file, " setter=\"%s\"", g_base_info_get_name ((GIBaseInfo *) setter));
+          g_base_info_unref ((GIBaseInfo *) setter);
+        }
+    }
+
   write_ownership_transfer (g_property_info_get_ownership_transfer (info), file);
 
   write_attributes (file, (GIBaseInfo*) info);

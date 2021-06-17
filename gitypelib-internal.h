@@ -918,6 +918,10 @@ typedef struct {
  *   ownership of the container, but not of its contents, is transferred.
  *   This is typically the case when reading lists of statically allocated
  *   things.
+ * @setter: the index of the setter function for this property, if @writable
+ *   is set; if the method is not known, the value will be set to 0x3ff
+ * @getter: ths index of the getter function for this property, if @readable
+ *   is set; if the method is not known, the value will be set to 0x3ff
  * @reserved: Reserved for future use.
  * @reserved2: Reserved for future use.
  * @type: Describes the type of the property.
@@ -934,7 +938,9 @@ typedef struct {
   guint32        construct_only               : 1;
   guint32        transfer_ownership           : 1;
   guint32        transfer_container_ownership : 1;
-  guint32        reserved                     :25;
+  guint32        setter                       :10;
+  guint32        getter                       :10;
+  guint32        reserved                     : 5;
 
   guint32        reserved2;
 
