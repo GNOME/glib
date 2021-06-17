@@ -19,8 +19,8 @@
 
 #include "config.h"
 
+#include <dlfcn.h>
 #include <string.h>
-#include <gnutls/crypto.h>
 
 #include "ghmac.h"
 
@@ -31,12 +31,15 @@
 #include "gstrfuncs.h"
 #include "gchecksumprivate.h"
 #include "gtestutils.h"
+#include "gthread.h"
 #include "gtypes.h"
 #include "glibintl.h"
 
-#ifndef HAVE_GNUTLS
+#ifndef USE_GNUTLS
 #error "build configuration error"
 #endif
+
+typedef gpointer gnutls_hmac_hd_t;
 
 struct _GHmac
 {
@@ -46,15 +49,107 @@ struct _GHmac
   gchar *digest_str;
 };
 
+typedef enum
+{
+  GNUTLS_MAC_MD5 = 2,
+  GNUTLS_MAC_SHA1 = 3,
+  GNUTLS_MAC_SHA256 = 6,
+  GNUTLS_MAC_SHA384 = 7,
+  GNUTLS_MAC_SHA512 = 8,
+} gnutls_mac_algorithm_t;
+
+/* Why are we dlopening GnuTLS instead of linking to it directly? Because we
+ * want to be able to build GLib as a static library without depending on a
+ * static build of GnuTLS. QEMU depends on static linking with GLib, but Fedora
+ * does not ship a static build of GnuTLS, and this allows us to avoid changing
+ * that.
+ */
+static int              (*gnutls_hmac_init)   (gnutls_hmac_hd_t *dig, gnutls_mac_algorithm_t algorithm, const void *key, size_t keylen);
+static gnutls_hmac_hd_t (*gnutls_hmac_copy)   (gnutls_hmac_hd_t handle);
+static void             (*gnutls_hmac_deinit) (gnutls_hmac_hd_t handle, void *digest);
+static int              (*gnutls_hmac)        (gnutls_hmac_hd_t handle, const void *ptext, size_t ptext_len);
+static void             (*gnutls_hmac_output) (gnutls_hmac_hd_t handle, void *digest);
+static const char *     (*gnutls_strerror)    (int error);
+
+static gsize gnutls_initialize_attempted = 0;
+static gboolean gnutls_initialize_successful = FALSE;
+
+static void
+initialize_gnutls (void)
+{
+  gpointer libgnutls;
+
+  libgnutls = dlopen ("libgnutls.so.30", RTLD_LAZY | RTLD_GLOBAL);
+  if (!libgnutls)
+    {
+      g_warning ("Cannot use GHmac: failed to load libgnutls.so.30: %s", dlerror ());
+      return;
+    }
+
+  gnutls_hmac_init = dlsym (libgnutls, "gnutls_hmac_init");
+  if (!gnutls_hmac_init)
+    {
+      g_warning ("Cannot use GHmac: failed to load gnutls_hmac_init: %s", dlerror ());
+      return;
+    }
+
+  gnutls_hmac_copy = dlsym (libgnutls, "gnutls_hmac_copy");
+  if (!gnutls_hmac_copy)
+    {
+      g_warning ("Cannot use GHmac: failed to load gnutls_hmac_copy: %s", dlerror ());
+      return;
+    }
+
+  gnutls_hmac_deinit = dlsym (libgnutls, "gnutls_hmac_deinit");
+  if (!gnutls_hmac_deinit)
+    {
+      g_warning ("Cannot use GHmac: failed to load gnutls_hmac_deinit: %s", dlerror ());
+      return;
+    }
+
+  gnutls_hmac = dlsym (libgnutls, "gnutls_hmac");
+  if (!gnutls_hmac)
+    {
+      g_warning ("Cannot use GHmac: failed to load gnutls_hmac: %s", dlerror ());
+      return;
+    }
+
+  gnutls_hmac_output = dlsym (libgnutls, "gnutls_hmac_output");
+  if (!gnutls_hmac_output)
+    {
+      g_warning ("Cannot use GHmac: failed to load gnutls_hmac_output: %s", dlerror ());
+      return;
+    }
+
+  gnutls_strerror = dlsym (libgnutls, "gnutls_strerror");
+  if (!gnutls_strerror)
+    {
+      g_warning ("Cannot use GHmac: failed to load gnutls_strerror: %s", dlerror ());
+      return;
+    }
+
+  gnutls_initialize_successful = TRUE;
+}
+
 GHmac *
 g_hmac_new (GChecksumType  digest_type,
             const guchar  *key,
             gsize          key_len)
 {
   gnutls_mac_algorithm_t algo;
-  GHmac *hmac = g_new0 (GHmac, 1);
+  GHmac *hmac;
   int ret;
 
+  if (g_once_init_enter (&gnutls_initialize_attempted))
+    {
+      initialize_gnutls ();
+      g_once_init_leave (&gnutls_initialize_attempted, 1);
+    }
+
+  if (!gnutls_initialize_successful)
+    return NULL;
+
+  hmac = g_new0 (GHmac, 1);
   hmac->ref_count = 1;
   hmac->digest_type = digest_type;
 

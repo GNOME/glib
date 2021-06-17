@@ -428,7 +428,6 @@ libglib = library('glib-2.0',
   link_with: [charset_lib, gnulib_lib],
   dependencies : [
     gnulib_libm_dependency,
-    libgnutls_dep,
     libiconv,
     libintl_deps,
     libm,

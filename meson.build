@@ -2286,11 +2286,9 @@ if host_system == 'linux'
   endif
 endif
 
-# gnutls is used optionally by ghmac
-libgnutls_dep = []
+# gnutls is used optionally by GHmac
 if get_option('gnutls')
-  libgnutls_dep = [dependency('gnutls', version : '>=3.6.9', required : true)]
-  glib_conf.set('HAVE_GNUTLS', 1)
+  glib_conf.set('USE_GNUTLS', 1)
 endif
 
 if host_system == 'windows'
