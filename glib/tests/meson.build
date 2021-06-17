@@ -101,7 +101,9 @@ glib_tests = {
   'test-printf' : {},
   'thread' : {},
   'thread-pool' : {},
-  'timeout' : {},
+  'timeout' : {
+    'suite' : ['slow'],
+  },
   'timer' : {},
   'tree' : {},
   'utf8-performance' : {},
@@ -111,7 +113,9 @@ glib_tests = {
   'utils' : {},
   'unicode' : {},
   'uri' : {},
-  '1bit-mutex' : {},
+  '1bit-mutex' : {
+    'suite' : ['slow'],
+  },
   '1bit-emufutex' : {
     'source' : '1bit-mutex.c',
     'c_args' : ['-DTEST_EMULATED_FUTEX'],

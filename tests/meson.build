@@ -20,7 +20,9 @@ tests = {
   'testgdate' : {},
   'datetime' : {},
   'bit-test' : {},
-  'child-test' : {},
+  'child-test' : {
+    'suite' : ['slow'],
+  },
   'completion-test' : {},
   'dirname-test' : {},
   'file-test' : {},
@@ -29,7 +31,9 @@ tests = {
   'mainloop-test' : {},
   'mapping-test' : {},
   'onceinit' : {},
-  'asyncqueue-test' : {},
+  'asyncqueue-test' : {
+    'suite' : ['slow'],
+  },
   'qsort-test' : {},
   'relation-test' : {},
   'slice-concurrent' : {},
@@ -38,7 +42,9 @@ tests = {
   },
   'sources' : {},
   'spawn-test' : {},
-  'thread-test' : {},
+  'thread-test' : {
+    'suite' : ['slow'],
+  },
   'threadpool-test' : {'suite' : ['slow']},
   'type-test' : {},
   'unicode-caseconv' : {},

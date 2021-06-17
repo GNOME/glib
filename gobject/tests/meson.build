@@ -31,7 +31,9 @@ gobject_tests = {
   'boxed' : {},
   'enums' : {},
   'param' : {},
-  'threadtests' : {},
+  'threadtests' : {
+    'suite' : ['slow'],
+  },
   'dynamictests' : {},
   'binding' : {},
   'properties' : {},

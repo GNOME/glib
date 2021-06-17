@@ -58,7 +58,9 @@ gio_tests = {
   'fileattributematcher' : {},
   'filter-streams' : {},
   'giomodule' : {},
-  'gsubprocess' : {},
+  'gsubprocess' : {
+    'suite' : ['slow'],
+  },
   'g-file' : {},
   'g-file-info' : {},
   'g-icon' : {},
@@ -70,7 +72,10 @@ gio_tests = {
   'memory-monitor' : {},
   'memory-output-stream' : {},
   'mount-operation' : {},
-  'network-address' : {'extra_sources': ['mock-resolver.c']},
+  'network-address' : {
+    'extra_sources': ['mock-resolver.c'],
+    'suite' : ['slow'],
+  },
   'network-monitor' : {},
   'network-monitor-race' : {},
   'permission' : {},
