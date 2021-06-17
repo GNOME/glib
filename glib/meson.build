@@ -429,7 +429,6 @@ libglib = library('glib-2.0',
   dependencies : [
     atomic_dep,
     gnulib_libm_dependency,
-    libgnutls_dep,
     libiconv,
     libintl_deps,
     libm,
