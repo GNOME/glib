@@ -1,7 +1,10 @@
+#include "config.h"
+
 #include <glib.h>
 #include <string.h>
 #include <stdlib.h>
 
+#ifndef USE_GNUTLS
 /* HMAC-MD5 test vectors as per RFC 2202 */
 
 /* Test 1 */
@@ -81,6 +84,7 @@ guint8 key_md5_test7[] = {
 guint8 result_md5_test7[] = {
     0x6f, 0x63, 0x0f, 0xad, 0x67, 0xcd, 0xa0, 0xee, 0x1f, 0xb1,
     0xf5, 0x62, 0xdb, 0x3a, 0xa5, 0x3e };
+#endif
 
 /* HMAC-SHA1, HMAC-SHA256, HMAC-SHA384 and HMAC-SHA512 test vectors
  * as per RFCs 2202 and 4868.
@@ -299,6 +303,7 @@ typedef struct {
   gconstpointer result;
 } HmacCase;
 
+#ifndef USE_GNUTLS
 HmacCase hmac_md5_tests[] = {
   { G_CHECKSUM_MD5, key_md5_test1, 16, "Hi There", 8, result_md5_test1 },
   { G_CHECKSUM_MD5, "Jefe", 4, "what do ya want for nothing?", 28,
@@ -336,6 +341,7 @@ HmacCase hmac_sha1_tests[] = {
                " Than One Block-Size Data", 73, result_sha1_test7, },
   { -1, NULL, 0, NULL, 0, NULL },
 };
+#endif
 
 HmacCase hmac_sha256_tests[] = {
   { G_CHECKSUM_SHA256, key_sha_test1, 20, "Hi There", 8, result_sha256_test1 },
@@ -498,8 +504,10 @@ main (int argc,
     char **argv)
 {
   int i;
+
   g_test_init (&argc, &argv, NULL);
 
+#ifndef USE_GNUTLS
   for (i = 0 ; hmac_sha1_tests[i].key_len > 0 ; i++)
     {
       gchar *name = g_strdup_printf ("/hmac/sha1-%d", i + 1);
@@ -507,6 +515,7 @@ main (int argc,
         (void (*)(const void *)) test_hmac);
       g_free (name);
     }
+#endif
 
   for (i = 0 ; hmac_sha256_tests[i].key_len > 0 ; i++)
     {
@@ -532,6 +541,7 @@ main (int argc,
       g_free (name);
     }
 
+#ifndef USE_GNUTLS
   for (i = 0 ; hmac_md5_tests[i].key_len > 0 ; i++)
     {
       gchar *name = g_strdup_printf ("/hmac/md5-%d", i + 1);
@@ -539,6 +549,7 @@ main (int argc,
         (void (*)(const void *)) test_hmac);
       g_free (name);
     }
+#endif
 
   g_test_add_func ("/hmac/ref-unref", test_hmac_ref_unref);
   g_test_add_func ("/hmac/copy", test_hmac_copy);
