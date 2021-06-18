@@ -15,6 +15,14 @@ The official web site is:
 
 See the file '[INSTALL.in](INSTALL.in)'
 
+## Supported versions
+
+Only the most recent unstable and stable release series are supported. All
+older versions are not supported upstream and may contain bugs, some of
+which may be exploitable security vulnerabilities.
+
+See [SECURITY.md](SECURITY.md) for more details.
+
 ## How to report bugs
 
 Bugs should be reported to the GNOME issue tracking system.
