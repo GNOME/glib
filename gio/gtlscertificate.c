@@ -354,7 +354,7 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
                                                          G_PARAM_STATIC_STRINGS));
 
   /**
-   * GTlsCertificate:ip-addresses: (nullable) (element-type GInetAddress) (transfer container):
+   * GTlsCertificate:ip-addresses: (nullable) (element-type GInetAddress) (transfer container)
    *
    * The IP addresses from the certificate's Subject Alternative Names (SANs),
    * %NULL if unavailable.
