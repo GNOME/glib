@@ -1979,46 +1979,37 @@ else
   endif
 endif
 
-if get_option('internal_pcre')
-  pcre = []
-  use_system_pcre = false
-else
-  pcre = dependency('libpcre', version: '>= 8.31', required : false) # Should check for Unicode support, too. FIXME
-  if not pcre.found()
-    if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
-    # MSVC: Search for the PCRE library by the configuration, which corresponds
-    # to the output of CMake builds of PCRE.  Note that debugoptimized
-    # is really a Release build with .PDB files.
-      if vs_crt == 'debug'
-        pcre = cc.find_library('pcred', required : false)
-      else
-        pcre = cc.find_library('pcre', required : false)
-      endif
+pcre = dependency('libpcre', version: '>= 8.31', required : false) # Should check for Unicode support, too. FIXME
+if not pcre.found()
+  if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
+  # MSVC: Search for the PCRE library by the configuration, which corresponds
+  # to the output of CMake builds of PCRE.  Note that debugoptimized
+  # is really a Release build with .PDB files.
+    if vs_crt == 'debug'
+      pcre = cc.find_library('pcred', required : false)
+    else
+      pcre = cc.find_library('pcre', required : false)
     endif
   endif
-  use_system_pcre = pcre.found()
 endif
-glib_conf.set('USE_SYSTEM_PCRE', use_system_pcre)
 
-use_pcre_static_flag = false
-
-if host_system == 'windows'
-  if not use_system_pcre
-    use_pcre_static_flag = true
-  else
-    pcre_static = cc.links('''#define PCRE_STATIC
-                              #include <pcre.h>
-                              int main() {
-                                void *p = NULL;
-                                pcre_free(p);
-                                return 0;
-                              }''',
-                           dependencies: pcre,
-                           name : 'Windows system PCRE is a static build')
-    if pcre_static
-      use_pcre_static_flag = true
-    endif
-  endif
+# Try again with the fallback
+if not pcre.found()
+  pcre = dependency('libpcre', required : true, fallback : ['libpcre', 'pcre_dep'])
+  use_pcre_static_flag = true
+elif host_system == 'windows'
+  pcre_static = cc.links('''#define PCRE_STATIC
+                            #include <pcre.h>
+                            int main() {
+                              void *p = NULL;
+                              pcre_free(p);
+                              return 0;
+                            }''',
+                         dependencies: pcre,
+                         name : 'Windows system PCRE is a static build')
+  use_pcre_static_flag = pcre_static
+else
+  use_pcre_static_flag = false
 endif
 
 libm = cc.find_library('m', required : false)

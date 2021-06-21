@@ -3,9 +3,6 @@ configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h',
   configuration : glibconfig_conf)
 
 subdir('libcharset')
-if not use_system_pcre
-  subdir('pcre')
-endif
 
 # libsysprof-capture support
 libsysprof_capture_dep = dependency('sysprof-capture-4', version: '>= 3.38.0',
@@ -23,7 +20,7 @@ libsysprof_capture_dep = dependency('sysprof-capture-4', version: '>= 3.38.0',
 )
 glib_conf.set('HAVE_SYSPROF', libsysprof_capture_dep.found())
 
-# TODO: gnulib_objects, pcre_objects and pcre_deps are a workaround for
+# TODO: gnulib_objects is a workaround for
 # <https://github.com/mesonbuild/meson/issues/3934> and
 # <https://github.com/mesonbuild/meson/issues/3937>. When we can depend
 # on a meson version where those are fixed, revert the commit that
@@ -358,19 +355,11 @@ if use_pcre_static_flag
   pcre_static_args = ['-DPCRE_STATIC']
 endif
 
-if use_system_pcre
-  pcre_deps = [pcre]
-  pcre_objects = []
-else
-  pcre_deps = []
-  pcre_objects = [libpcre.extract_all_objects()]
-endif
-
 glib_c_args = ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
 libglib = library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
   sources : [deprecated_sources, glib_sources],
-  objects : [charset_lib.extract_all_objects()] + gnulib_objects + pcre_objects,
+  objects : [charset_lib.extract_all_objects()] + gnulib_objects,
   version : library_version,
   soversion : soversion,
   darwin_versions : darwin_versions,
@@ -378,7 +367,7 @@ libglib = library('glib-2.0',
   # intl.lib is not compatible with SAFESEH
   link_args : [noseh_link_args, glib_link_flags, win32_ldflags],
   include_directories : configinc,
-  dependencies : pcre_deps + [thread_dep, librt] + libintl_deps + libiconv + platform_deps + [gnulib_libm_dependency, libm] + [libsysprof_capture_dep],
+  dependencies : [pcre, thread_dep, librt] + libintl_deps + libiconv + platform_deps + [gnulib_libm_dependency, libm] + [libsysprof_capture_dep],
   c_args : glib_c_args,
   objc_args : glib_c_args,
 )

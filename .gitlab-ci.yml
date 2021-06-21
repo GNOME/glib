@@ -10,11 +10,11 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v10"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v11"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v1"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v7"
-  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v3"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v2"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v8"
+  ANDROID_IMAGE: "registry.gitlab.gnome.org/gnome/glib/android-ndk:v4"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v3"
   MESON_TEST_TIMEOUT_MULTIPLIER: 2
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS_NO_WARNING: "--buildtype debug --wrap-mode=nodownload"
@@ -270,7 +270,10 @@ cross-android_api21_arm64:
     # FIXME: add --werror
     # We use -Diconv=auto to test that we successfully detect that iconv is not
     # provided by android api 21, and detect the external iconv instead.
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=auto -Dinternal_pcre=true _build
+    # FIXME: Work around a bug in Meson 0.49 where --wrap-mode=nodownload also
+    # disables fallback subprojects, by passing --wrap-mode=default. Fixed in
+    # Meson commit 47b9c1a564756ac48a55da9a7c4d91787399c645
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_21.txt -Diconv=auto --wrap-mode=default _build
     - ninja -C _build
 
 cross-android_api28_arm64:
@@ -278,7 +281,10 @@ cross-android_api28_arm64:
   image: $ANDROID_IMAGE
   script:
     # FIXME: add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt -Dinternal_pcre=true _build
+    # FIXME: Work around a bug in Meson 0.49 where --wrap-mode=nodownload also
+    # disables fallback subprojects, by passing --wrap-mode=default. Fixed in
+    # Meson commit 47b9c1a564756ac48a55da9a7c4d91787399c645
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_android_arm64_28.txt --wrap-mode=default _build
     - ninja -C _build
 
 cross-mingw64:
@@ -286,7 +292,10 @@ cross-mingw64:
   image: $MINGW_IMAGE
   script:
     # FIXME: Add --werror
-    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt _build
+    # FIXME: Work around a bug in Meson 0.49 where --wrap-mode=nodownload also
+    # disables fallback subprojects, by passing --wrap-mode=default. Fixed in
+    # Meson commit 47b9c1a564756ac48a55da9a7c4d91787399c645
+    - meson ${MESON_COMMON_OPTIONS} --cross-file=/opt/cross_file_mingw64.txt --wrap-mode=default _build
     - ninja -C _build
 
 msys2-mingw32:

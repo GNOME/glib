@@ -153,12 +153,9 @@
       <listitem>
         <para>
           GRegex uses the <ulink url="http://www.pcre.org/">PCRE library</ulink>
-          for regular expression matching. The default is to use the system
-          version of PCRE, to reduce the chances of security fixes going out
-          of sync. GLib additionally provides an internal copy of PCRE in case
-          the system version is too old, or does not support UTF-8; the internal
-          copy is patched to use GLib for memory management and to share the
-          same Unicode tables.
+          for regular expression matching. The system version of PCRE is used,
+          unless not available (which is the case on Android), in which case a
+          fallback subproject is used.
         </para>
       </listitem>
       <listitem>
@@ -232,45 +229,6 @@
         the correct thread implementation to use. This option forces POSIX
         threads to be used even if the platform provides another threading API
         (for example, on Windows).
-      </para>
-    </formalpara>
-
-    <formalpara>
-      <title><option>-Dinternal_pcre=true</option></title>
-
-      <para>
-        Normally, GLib will be configured to use the system-supplied PCRE
-        library if it is suitable, falling back to an internal version
-        otherwise. If this option is specified, the internal version will always
-        be used.
-      </para>
-      <para>
-        Using the internal PCRE is the preferred solution if:
-        <itemizedlist>
-          <listitem>
-            <para>
-              your system has strict resource constraints; the system-supplied
-              PCRE has a separated copy of the tables used for Unicode
-              handling, whereas the internal copy shares the Unicode tables
-              used by GLib.
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              your system has PCRE built without some needed features,
-              such as UTF-8 and Unicode support.
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              you are planning to use both GRegex and PCRE API at the same
-              time, either directly or indirectly through a dependency; PCRE
-              uses some global variables for memory management and
-              other features, and if both GLib and PCRE try to access them
-              at the same time, this could lead to undefined behavior.
-            </para>
-          </listitem>
-        </itemizedlist>
       </para>
     </formalpara>
 
