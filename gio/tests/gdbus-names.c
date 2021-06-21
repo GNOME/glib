@@ -773,7 +773,11 @@ test_bus_watch_name (gconstpointer d)
 
   g_assert_cmpint (data.num_appeared, ==, 0);
   g_assert_cmpint (data.num_vanished, ==, 1);
+
   g_bus_unwatch_name (id);
+  while (data.num_free_func < 1)
+    g_main_context_iteration (main_context, TRUE);
+
   g_assert_cmpint (data.num_appeared, ==, 0);
   g_assert_cmpint (data.num_vanished, ==, 1);
   g_assert_cmpint (data.num_free_func, ==, 1);
@@ -845,6 +849,9 @@ test_bus_watch_name (gconstpointer d)
    * Unwatch the name.
    */
   g_bus_unwatch_name (id);
+  while (data.num_free_func < 1)
+    g_main_context_iteration (main_context, TRUE);
+
   g_assert_cmpint (data.num_free_func, ==, 1);
 
   /* unown the name */
@@ -952,7 +959,11 @@ test_bus_watch_name (gconstpointer d)
       g_assert_cmpint (own_data.num_lost, ==, 0);
       g_assert_cmpint (data.num_vanished, ==, 1);
     }
+
   g_bus_unwatch_name (id);
+  while (data.num_free_func < 1)
+    g_main_context_iteration (main_context, TRUE);
+
   g_assert_cmpint (data.num_free_func, ==, 1);
 
   if (!watch_name_test->existing_service)
