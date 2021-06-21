@@ -338,7 +338,7 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
                                                           G_PARAM_STATIC_STRINGS));
 
   /**
-   * GTlsCertificate:dns-names: (nullable) (element-type GBytes) (transfer container):
+   * GTlsCertificate:dns-names: (nullable) (element-type GBytes) (transfer container)
    *
    * The DNS names from the certificate's Subject Alternative Names (SANs),
    * %NULL if unavailable.
