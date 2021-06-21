@@ -50,8 +50,8 @@ struct _GTlsConnection {
  * @handshake: Perform a handshake operation.
  * @handshake_async: Start an asynchronous handshake operation.
  * @handshake_finish: Finish an asynchronous handshake operation.
- * @get_binding_data: Retrieve TLS channel binding data
- * @get_negotiated_protocol: Get ALPN-negotiated protocol
+ * @get_binding_data: Retrieve TLS channel binding data (Since: 2.66)
+ * @get_negotiated_protocol: Get ALPN-negotiated protocol (Since: 2.70)
  *
  * The class structure for the #GTlsConnection type.
  *
