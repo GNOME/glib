@@ -88,6 +88,12 @@ dummy_pool_func (gpointer data, gpointer user_data)
 }
 
 static void
+dummy_pool_func_full (gpointer data, gpointer user_data)
+{
+  g_assert_true (data == user_data);
+}
+
+static void
 test_create_first_pool (gconstpointer shared_first)
 {
   GThreadPool *pool;
@@ -142,6 +148,55 @@ test_create_first_pool (gconstpointer shared_first)
   g_thread_pool_free (pool, TRUE, TRUE);
 }
 
+static void
+free_func (gpointer user_data)
+{
+  gboolean *free_func_called = user_data;
+  *free_func_called = TRUE;
+}
+
+static void
+test_thread_pool_full (gconstpointer shared_first)
+{
+  GThreadPool *pool;
+  gboolean free_func_called = FALSE;
+  GError *err = NULL;
+  gboolean success;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/121");
+
+  g_thread_pool_set_max_unused_threads (0);
+
+  if (GPOINTER_TO_INT (shared_first))
+    pool = g_thread_pool_new_full (dummy_pool_func_full, &free_func_called, free_func, -1, FALSE, &err);
+  else
+    pool = g_thread_pool_new_full (dummy_pool_func_full, &free_func_called, free_func, 2, TRUE, &err);
+  g_assert_no_error (err);
+  g_assert_nonnull (pool);
+
+  success = g_thread_pool_push (pool, &free_func_called, &err);
+  g_assert_no_error (err);
+  g_assert_true (success);
+
+  g_thread_pool_free (pool, TRUE, TRUE);
+  g_assert_true (free_func_called);
+
+  free_func_called = FALSE;
+  if (GPOINTER_TO_INT (shared_first))
+    pool = g_thread_pool_new_full (dummy_pool_func_full, &free_func_called, free_func, 2, TRUE, &err);
+  else
+    pool = g_thread_pool_new_full (dummy_pool_func_full, &free_func_called, free_func, -1, FALSE, &err);
+  g_assert_no_error (err);
+  g_assert_nonnull (pool);
+
+  success = g_thread_pool_push (pool, &free_func_called, &err);
+  g_assert_no_error (err);
+  g_assert_true (success);
+
+  g_thread_pool_free (pool, TRUE, TRUE);
+  g_assert_true (free_func_called);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -150,6 +205,7 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/thread_pool/shared", GINT_TO_POINTER (TRUE), test_simple);
   g_test_add_data_func ("/thread_pool/exclusive", GINT_TO_POINTER (FALSE), test_simple);
   g_test_add_data_func ("/thread_pool/create_shared_after_exclusive", GINT_TO_POINTER (FALSE), test_create_first_pool);
+  g_test_add_data_func ("/thread_pool/create_full", GINT_TO_POINTER (FALSE), test_thread_pool_full);
   g_test_add_data_func ("/thread_pool/create_exclusive_after_shared", GINT_TO_POINTER (TRUE), test_create_first_pool);
 
   return g_test_run ();
