@@ -268,6 +268,7 @@ glib_init (void)
 
   glib_inited = TRUE;
 
+  g_metrics_init ();
   g_messages_prefixed_init ();
   g_debug_init ();
   g_quark_init ();
