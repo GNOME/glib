@@ -406,10 +406,7 @@ g_callable_info_prepare_closure (GICallableInfo       *callable_info,
       return NULL;
     }
 
-  /* Return exec_ptr, which points to the same underlying memory as
-   * closure, but via an executable-non-writable mapping.
-   */
-  return exec_ptr;
+  return &closure->ffi_closure;
 }
 
 /**
