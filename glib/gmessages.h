@@ -684,7 +684,6 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
   } G_STMT_END
 
 #endif /* !G_DISABLE_CHECKS */
-
 G_END_DECLS
 
 #endif /* __G_MESSAGES_H__ */
