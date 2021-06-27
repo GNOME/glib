@@ -367,6 +367,9 @@ GLIB_VAR GMemVTable	*glib_mem_profiler_table;
 GLIB_DEPRECATED_IN_2_46
 void	g_mem_profile	(void);
 
+GLIB_AVAILABLE_IN_ALL
+gsize g_mem_get_total_allocated_memory (void);
+
 G_END_DECLS
 
 #endif /* __G_MEM_H__ */
