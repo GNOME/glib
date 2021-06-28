@@ -1642,7 +1642,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
             blob->setter = (guint) index;
           }
         else
-          blob->setter = 0x3ff; /* max of 10 bits */
+          blob->setter = ACCESSOR_SENTINEL;
 
         if (prop->getter != NULL)
           {
@@ -1657,7 +1657,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
             blob->getter = (guint) index;
           }
         else
-          blob->getter = 0x3ff;
+          blob->getter = ACCESSOR_SENTINEL;
 
         _g_ir_node_build_typelib ((GIrNode *)prop->type,
 				 node, build, offset, offset2, NULL);

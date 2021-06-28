@@ -903,6 +903,8 @@ typedef struct {
   ValueBlob values[];
 } EnumBlob;
 
+#define ACCESSOR_SENTINEL       0x3ff
+
 /**
  * PropertyBlob:
  * @name: The name of the property.
@@ -919,9 +921,9 @@ typedef struct {
  *   This is typically the case when reading lists of statically allocated
  *   things.
  * @setter: the index of the setter function for this property, if @writable
- *   is set; if the method is not known, the value will be set to 0x3ff
+ *   is set; if the method is not known, the value will be set to %ACCESSOR_SENTINEL
  * @getter: ths index of the getter function for this property, if @readable
- *   is set; if the method is not known, the value will be set to 0x3ff
+ *   is set; if the method is not known, the value will be set to %ACCESSOR_SENTINEL
  * @reserved: Reserved for future use.
  * @reserved2: Reserved for future use.
  * @type: Describes the type of the property.

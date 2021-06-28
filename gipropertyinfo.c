@@ -142,7 +142,7 @@ g_property_info_get_ownership_transfer (GIPropertyInfo *info)
  * The setter is only available for %G_PARAM_WRITABLE properties that
  * are also not %G_PARAM_CONSTRUCT_ONLY.
  *
- * Returns: (transfer full): the function info or %NULL if not set.
+ * Returns: (transfer full) (nullable): the function info or %NULL if not set.
  *   Free it with g_base_info_unref() when done.
  */
 GIFunctionInfo *
@@ -160,7 +160,7 @@ g_property_info_get_setter (GIPropertyInfo *info)
   if (!blob->writable || blob->construct_only)
     return NULL;
 
-  if (blob->setter == 0x3ff)
+  if (blob->setter == ACCESSOR_SENTINEL)
     return NULL;
 
   container = rinfo->container;
@@ -181,7 +181,7 @@ g_property_info_get_setter (GIPropertyInfo *info)
  *
  * The setter is only available for %G_PARAM_READABLE properties.
  *
- * Returns: (transfer full): the function info or %NULL if not set.
+ * Returns: (transfer full) (nullable): the function info or %NULL if not set.
  *   Free it with g_base_info_unref() when done.
  */
 GIFunctionInfo *
@@ -199,7 +199,7 @@ g_property_info_get_getter (GIPropertyInfo *info)
   if (!blob->readable)
     return NULL;
 
-  if (blob->getter == 0x3ff)
+  if (blob->getter == ACCESSOR_SENTINEL)
     return NULL;
 
   container = rinfo->container;
