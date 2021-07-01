@@ -88,6 +88,8 @@
 #define MIN_ARRAY_SIZE  16
 
 typedef struct _GRealArray  GRealArray;
+G_LOCK_DEFINE_STATIC (arrays);
+static GMetricsList *arrays_list = NULL;
 
 /**
  * GArray:
@@ -107,6 +109,7 @@ struct _GRealArray
   guint   zero_terminated : 1;
   guint   clear : 1;
   gint    ref_count;
+  guint   last_sweep;
   GDestroyNotify clear_func;
 };
 
@@ -165,6 +168,77 @@ g_array_new (gboolean zero_terminated,
   return g_array_sized_new (zero_terminated, clear, elt_size, 0);
 }
 
+static gboolean array_metrics_timeout_started;
+
+static GMetricsFile *array_metrics_file;
+static GMetricsFile *array_combined_metrics_file;
+static unsigned long old_total_array_items = 0, old_total_arrays;
+
+static void
+on_array_metrics_timeout (void)
+{
+  GRealArray *array;
+  unsigned long new_total_items = 0, new_total_arrays = 0;
+  long change, table_change;
+  GMetricsListIter iter;
+
+  if (array_combined_metrics_file)
+    g_metrics_file_start_record (array_combined_metrics_file);
+
+  if (array_metrics_file)
+    g_metrics_file_start_record (array_metrics_file);
+
+  G_LOCK (arrays);
+  g_metrics_list_iter_init (&iter, arrays_list);
+  while (g_metrics_list_iter_next (&iter, &array))
+    {
+      int new_items;
+
+      if (array_combined_metrics_file)
+        {
+          new_total_items += array->len;
+          new_total_arrays++;
+        }
+
+      if (!array_metrics_file)
+        continue;
+
+      new_items = (int) array->len - (int) array->last_sweep;
+      if (new_items != 0)
+        {
+          if (array->last_sweep != 0)
+            g_metrics_file_add_row (array_metrics_file,
+                                    array,
+                                    array->len,
+                                    new_items > 0 ? "+" : "",
+                                    new_items);
+          array->last_sweep = array->len;
+        }
+    }
+  G_UNLOCK (arrays);
+
+  if (array_metrics_file)
+    g_metrics_file_end_record (array_metrics_file);
+
+  if (array_combined_metrics_file)
+    {
+      table_change = new_total_arrays - old_total_arrays;
+      change = new_total_items - old_total_array_items;
+
+      g_metrics_file_add_row (array_combined_metrics_file,
+                              new_total_items,
+                              change > 0? "+" : "",
+                              change,
+                              new_total_arrays,
+                              table_change > 0? "+" : "",
+                              table_change);
+      g_metrics_file_end_record (array_combined_metrics_file);
+    }
+
+  old_total_array_items = new_total_items;
+  old_total_arrays = new_total_arrays;
+}
+
 /**
  * g_array_sized_new:
  * @zero_terminated: %TRUE if the array should have an extra element at
@@ -188,13 +262,51 @@ g_array_sized_new (gboolean zero_terminated,
                    guint    reserved_size)
 {
   GRealArray *array;
+  gboolean needs_array_metrics = FALSE, needs_array_totals = FALSE;
   
   g_return_val_if_fail (elt_size > 0, NULL);
 
   array = g_slice_new (GRealArray);
 
+  G_LOCK (arrays);
+  if (g_metrics_enabled ())
+    {
+      if (arrays_list == NULL)
+        {
+          needs_array_metrics = g_metrics_requested ("arrays");
+          needs_array_totals = g_metrics_requested ("arrays");
+          arrays_list = g_metrics_list_new ();
+       }
+      g_metrics_list_add_item (arrays_list, array);
+    }
+  G_UNLOCK (arrays);
+
+  if (!array_metrics_timeout_started)
+    {
+      array_metrics_timeout_started = TRUE;
+
+      if (needs_array_metrics)
+        array_metrics_file = g_metrics_file_new ("arrays",
+                                                 "address", "%p",
+                                                 "total items", "%ld",
+                                                 "total items change", "%s%d",
+                                                 NULL);
+
+      if (needs_array_totals)
+        array_combined_metrics_file = g_metrics_file_new ("total-arrays",
+                                                          "total items", "%ld",
+                                                          "total items change", "%s%ld",
+                                                          "total arrays", "%ld",
+                                                          "total arrays changed", "%s%d",
+                                                          NULL);
+
+      if (needs_array_metrics || needs_array_totals)
+        g_metrics_start_timeout (on_array_metrics_timeout);
+    }
+
   array->data            = NULL;
   array->len             = 0;
+  array->last_sweep      = 0;
   array->alloc           = 0;
   array->zero_terminated = (zero_terminated ? 1 : 0);
   array->clear           = (clear ? 1 : 0);
@@ -382,7 +494,11 @@ array_free (GRealArray     *array,
     }
   else
     {
-      g_slice_free1 (sizeof (GRealArray), array);
+      G_LOCK (arrays);
+      if (arrays_list)
+        g_metrics_list_remove_item (arrays_list, array);
+      G_UNLOCK (arrays);
+      g_slice_free (GRealArray, array);
     }
 
   return segment;
@@ -864,6 +980,7 @@ struct _GRealPtrArray
   guint           len;
   guint           alloc;
   gint            ref_count;
+  guint           last_sweep;
   GDestroyNotify  element_free_func;
 };
 
@@ -896,6 +1013,78 @@ g_ptr_array_new (void)
   return g_ptr_array_sized_new (0);
 }
 
+static gboolean ptr_array_metrics_timeout_started;
+
+static GMetricsList *ptr_arrays_list = NULL;
+static GMetricsFile *ptr_array_metrics_file;
+static GMetricsFile *ptr_array_combined_metrics_file;
+static unsigned long old_total_ptr_array_items = 0, old_total_ptr_arrays;
+
+static void
+on_ptr_array_metrics_timeout (void)
+{
+  GRealPtrArray *array;
+  unsigned long new_total_items = 0, new_total_ptr_arrays = 0;
+  long change, table_change;
+  GMetricsListIter iter;
+
+  if (ptr_array_combined_metrics_file)
+    g_metrics_file_start_record (ptr_array_combined_metrics_file);
+
+  if (ptr_array_metrics_file)
+    g_metrics_file_start_record (ptr_array_metrics_file);
+
+  G_LOCK (arrays);
+  g_metrics_list_iter_init (&iter, ptr_arrays_list);
+  while (g_metrics_list_iter_next (&iter, &array))
+    {
+      int new_items;
+
+      if (ptr_array_combined_metrics_file)
+        {
+          new_total_items += array->len;
+          new_total_ptr_arrays++;
+        }
+
+      if (!ptr_array_metrics_file)
+        continue;
+
+      new_items = (int) array->len - (int) array->last_sweep;
+      if (new_items != 0)
+        {
+          if (array->last_sweep != 0)
+            g_metrics_file_add_row (ptr_array_metrics_file,
+                                    array,
+                                    array->len,
+                                    new_items > 0 ? "+" : "",
+                                    new_items);
+          array->last_sweep = array->len;
+        }
+    }
+  G_UNLOCK (arrays);
+
+  if (ptr_array_metrics_file)
+    g_metrics_file_end_record (ptr_array_metrics_file);
+
+  if (ptr_array_combined_metrics_file)
+    {
+      table_change = new_total_ptr_arrays - old_total_ptr_arrays;
+      change = new_total_items - old_total_ptr_array_items;
+
+      g_metrics_file_add_row (ptr_array_combined_metrics_file,
+                              new_total_items,
+                              change > 0? "+" : "",
+                              change,
+                              new_total_ptr_arrays,
+                              table_change > 0? "+" : "",
+                              table_change);
+      g_metrics_file_end_record (ptr_array_combined_metrics_file);
+    }
+
+  old_total_ptr_array_items = new_total_items;
+  old_total_ptr_arrays = new_total_ptr_arrays;
+}
+
 /**
  * g_ptr_array_sized_new:
  * @reserved_size: number of pointers preallocated
@@ -911,17 +1100,55 @@ GPtrArray*
 g_ptr_array_sized_new (guint reserved_size)
 {
   GRealPtrArray *array;
+  gboolean needs_ptr_array_metrics = FALSE, needs_ptr_array_totals = FALSE;
 
   array = g_slice_new (GRealPtrArray);
 
+  G_LOCK (arrays);
+  if (g_metrics_enabled ())
+    {
+      if (ptr_arrays_list == NULL)
+        {
+          needs_ptr_array_metrics = g_metrics_requested ("ptr-arrays");
+          needs_ptr_array_totals = g_metrics_requested ("total-ptr-arrays");
+          ptr_arrays_list = g_metrics_list_new ();
+        }
+      g_metrics_list_add_item (ptr_arrays_list, array);
+    }
+  G_UNLOCK (arrays);
+
   array->pdata = NULL;
   array->len = 0;
+  array->last_sweep = 0;
   array->alloc = 0;
   array->ref_count = 1;
   array->element_free_func = NULL;
 
   if (reserved_size != 0)
     g_ptr_array_maybe_expand (array, reserved_size);
+
+  if (!ptr_array_metrics_timeout_started)
+    {
+      ptr_array_metrics_timeout_started = TRUE;
+
+      if (needs_ptr_array_metrics)
+        ptr_array_metrics_file = g_metrics_file_new ("ptr-arrays",
+                                                     "address", "%p",
+                                                     "total items", "%d",
+                                                     "total items change", "%s%d",
+                                                     NULL);
+
+      if (needs_ptr_array_totals)
+        ptr_array_combined_metrics_file = g_metrics_file_new ("total-ptr-arrays",
+                                                              "total items", "%ld",
+                                                              "total items change", "%s%ld",
+                                                              "total ptr arrays", "%ld",
+                                                              "total ptry arrays changed", "%s%ld",
+                                                              NULL);
+
+      if (needs_ptr_array_metrics || needs_ptr_array_totals)
+        g_metrics_start_timeout (on_ptr_array_metrics_timeout);
+    }
 
   return (GPtrArray*) array;  
 }
@@ -1119,7 +1346,11 @@ ptr_array_free (GPtrArray      *array,
     }
   else
     {
-      g_slice_free1 (sizeof (GRealPtrArray), rarray);
+      G_LOCK (arrays);
+      if (ptr_arrays_list)
+        g_metrics_list_remove_item (ptr_arrays_list, rarray);
+      G_UNLOCK (arrays);
+      g_slice_free (GRealPtrArray, rarray);
     }
 
   return segment;
