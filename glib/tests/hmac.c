@@ -493,6 +493,27 @@ test_hmac_for_bytes (void)
   g_bytes_unref (data);
 }
 
+static void
+test_ghmac_gnutls_regressions (void)
+{
+  GHmac *hmac;
+  GHmac *copy;
+
+  hmac = g_hmac_new (G_CHECKSUM_SHA256, (const guchar *)"abc123", sizeof ("abc123"));
+  g_assert_nonnull (hmac);
+
+  /* Ensure g_hmac_update() does not crash when called with -1. */
+  g_hmac_update (hmac, (const guchar *)"You win again, gravity!", -1);
+
+  /* Ensure g_hmac_copy() does not crash. */
+  copy = g_hmac_copy (hmac);
+  g_assert_nonnull (hmac);
+  g_hmac_unref (hmac);
+
+  g_assert_cmpstr (g_hmac_get_string (copy), ==, "795ba6900bcb22e8ce65c2ec02db4e85697da921deb960ee3143bf88a4a60f83");
+  g_hmac_unref (copy);
+}
+
 int
 main (int argc,
     char **argv)
@@ -545,6 +566,7 @@ main (int argc,
   g_test_add_func ("/hmac/for-data", test_hmac_for_data);
   g_test_add_func ("/hmac/for-string", test_hmac_for_string);
   g_test_add_func ("/hmac/for-bytes", test_hmac_for_bytes);
+  g_test_add_func ("/hmac/ghmac-gnutls-regressions", test_ghmac_gnutls_regressions);
 
   return g_test_run ();
 }
