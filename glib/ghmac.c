@@ -118,6 +118,7 @@ g_hmac_new (GChecksumType  digest_type,
       block_size = 128; /* RFC 4868 */
       break;
     default:
+      g_checksum_free (checksum);
       g_return_val_if_reached (NULL);
     }
 
