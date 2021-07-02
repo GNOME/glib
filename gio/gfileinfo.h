@@ -563,6 +563,18 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 #define G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC "time::modified-usec" /* uint32 */
 
 /**
+ * G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC:
+ *
+ * A key in the "time" namespace for getting the nanoseconds of the time
+ * the file was last modified. This should be used in conjunction with
+ * #G_FILE_ATTRIBUTE_TIME_MODIFIED. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ *
+ * Since: 2.74
+ **/
+#define G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC "time::modified-nsec" /* uint32 */
+
+/**
  * G_FILE_ATTRIBUTE_TIME_ACCESS:
  *
  * A key in the "time" namespace for getting the time the file was last
@@ -585,6 +597,18 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_TIME_ACCESS_USEC "time::access-usec"     /* uint32 */
+
+/**
+ * G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC:
+ *
+ * A key in the "time" namespace for getting the nanoseconds of the time
+ * the file was last accessed. This should be used in conjunction with
+ * #G_FILE_ATTRIBUTE_TIME_ACCESS. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ *
+ * Since: 2.74
+ **/
+#define G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC "time::access-nsec"     /* uint32 */
 
 /**
  * G_FILE_ATTRIBUTE_TIME_CHANGED:
@@ -613,6 +637,18 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 #define G_FILE_ATTRIBUTE_TIME_CHANGED_USEC "time::changed-usec"   /* uint32 */
 
 /**
+ * G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC:
+ *
+ * A key in the "time" namespace for getting the nanoseconds of the time
+ * the file was last changed. This should be used in conjunction with
+ * #G_FILE_ATTRIBUTE_TIME_CHANGED. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ *
+ * Since: 2.74
+ **/
+#define G_FILE_ATTRIBUTE_TIME_CHANGED_NSEC "time::changed-nsec"   /* uint32 */
+
+/**
  * G_FILE_ATTRIBUTE_TIME_CREATED:
  *
  * A key in the "time" namespace for getting the time the file was created.
@@ -637,6 +673,18 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT32.
  **/
 #define G_FILE_ATTRIBUTE_TIME_CREATED_USEC "time::created-usec"   /* uint32 */
+
+/**
+ * G_FILE_ATTRIBUTE_TIME_CREATED_NSEC:
+ *
+ * A key in the "time" namespace for getting the nanoseconds of the time
+ * the file was created. This should be used in conjunction with
+ * #G_FILE_ATTRIBUTE_TIME_CREATED. Corresponding #GFileAttributeType is
+ * %G_FILE_ATTRIBUTE_TYPE_UINT32.
+ *
+ * Since: 2.74
+ **/
+#define G_FILE_ATTRIBUTE_TIME_CREATED_NSEC "time::created-nsec"   /* uint32 */
 
 /* Unix specific attributes */
 

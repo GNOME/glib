@@ -586,6 +586,7 @@ functions = [
   'unsetenv',
   'uselocale',
   'utimes',
+  'utimensat',
   'valloc',
   'vasprintf',
   'vsnprintf',

@@ -392,6 +392,9 @@ g_zlib_decompressor_convert (GConverter *converter,
       g_file_info_set_attribute_uint32 (data->file_info,
                                         G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC,
                                         0);
+      g_file_info_set_attribute_uint32 (data->file_info,
+                                        G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC,
+                                        0);
 
       if (data->filename[0] != '\0')
         g_file_info_set_attribute_byte_string (data->file_info,
