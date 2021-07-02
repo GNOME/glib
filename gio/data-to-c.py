@@ -11,7 +11,7 @@ with open(sys.argv[1], "r", encoding="utf-8", errors="backslashreplace") as f:
 b = [r"\x{:02x}".format(ord(c)) for c in in_data]
 
 out_data = 'const char {0}[] = "'.format(sys.argv[2])
-out_data += "".join(b) + '";'
+out_data += "".join(b) + '";\n'
 
 with open(sys.argv[3], "w") as f:
     f.write(out_data)
