@@ -1171,6 +1171,7 @@ g_once_init_enter_impl
 <FILE>thread_pools</FILE>
 GThreadPool
 g_thread_pool_new
+g_thread_pool_new_full
 g_thread_pool_push
 g_thread_pool_set_max_threads
 g_thread_pool_get_max_threads
