@@ -149,7 +149,98 @@
 
 #define _g_list_alloc()         g_slice_new (GList)
 #define _g_list_alloc0()        g_slice_new0 (GList)
-#define _g_list_free1(list)     g_slice_free (GList, list)
+#define _g_list_free1(list)     ({ if (list && list->prev == NULL) { remove_list_from_metrics_table (list); } ; g_slice_free (GList, list); })
+
+static GMetricsTable *metrics_table;
+G_LOCK_DEFINE_STATIC (metrics);
+
+static void
+init_metrics (void)
+{
+  static gsize initialized;
+
+  if (g_once_init_enter (&initialized))
+    {
+      if (g_metrics_requested ("lists"))
+        metrics_table = g_metrics_table_new (sizeof (GListMetrics));
+      g_once_init_leave (&initialized, TRUE);
+    }
+}
+
+static void
+add_list_to_metrics_table (GList *list)
+{
+  GListMetrics metrics = { 0 };
+  char name[sizeof("0xdeadbeefdeadbeef")] = "";
+
+  if (!metrics_table)
+    return;
+
+  G_LOCK (metrics);
+  g_snprintf (name, sizeof name, "%p", list);
+  metrics.length = g_list_length (list);
+  g_metrics_table_set_record (metrics_table, name, &metrics);
+  G_UNLOCK (metrics);
+}
+
+static void
+update_list_in_metrics_table (GList    *list,
+                              gboolean  orphaned)
+{
+  GListMetrics *metrics;
+  char name[sizeof("0xdeadbeefdeadbeef")] = "";
+
+  if (!metrics_table)
+    return;
+
+  G_LOCK (metrics);
+  g_snprintf (name, sizeof name, "%p", list);
+  metrics = g_metrics_table_get_record (metrics_table, name);
+  if (metrics == NULL)
+    {
+      GListMetrics new_metrics = { 0 };
+      g_metrics_table_set_record (metrics_table, name, &new_metrics);
+      metrics = g_metrics_table_get_record (metrics_table, name);
+    }
+  metrics->length = g_list_length (list);
+
+  if (orphaned)
+    {
+      static gsize sample_interval = 0, sample_index = 0;
+
+      if (sample_interval == 0)
+        {
+          sample_interval = atoi (getenv ("G_METRICS_STACK_TRACE_SAMPLE_INTERVAL")? : "1000");
+          if (sample_interval == 0)
+            sample_interval = 1000;
+        }
+
+      if ((sample_index % sample_interval) == 0)
+         metrics->stack_trace = g_metrics_stack_trace ();
+      sample_index++;
+    }
+  G_UNLOCK (metrics);
+}
+
+static void
+remove_list_from_metrics_table (GList *list)
+{
+  GListMetrics *metrics;
+  char name[sizeof("0xdeadbeefdeadbeef")] = "";
+
+  if (!metrics_table)
+    return;
+
+  G_LOCK (metrics);
+  g_snprintf (name, sizeof name, "%p", list);
+  metrics = g_metrics_table_get_record (metrics_table, name);
+  if (metrics)
+    {
+      g_metrics_free (metrics->stack_trace);
+      g_metrics_table_remove_record (metrics_table, name);
+    }
+  G_UNLOCK (metrics);
+}
 
 /**
  * g_list_alloc:
@@ -179,6 +270,9 @@ g_list_alloc (void)
 void
 g_list_free (GList *list)
 {
+
+ if (list && list->prev == NULL)
+     remove_list_from_metrics_table (list);
   g_slice_free_chain (GList, list, next);
 }
 
@@ -260,23 +354,31 @@ g_list_append (GList    *list,
 {
   GList *new_list;
   GList *last;
-  
+
+  init_metrics ();
+
   new_list = _g_list_alloc ();
   new_list->data = data;
   new_list->next = NULL;
   
   if (list)
     {
+      GList *first;
       last = g_list_last (list);
       /* g_assert (last != NULL); */
       last->next = new_list;
       new_list->prev = last;
+
+      first = g_list_first (list);
+      update_list_in_metrics_table (first, FALSE);
 
       return list;
     }
   else
     {
       new_list->prev = NULL;
+
+      add_list_to_metrics_table (new_list);
       return new_list;
     }
 }
@@ -310,6 +412,8 @@ g_list_prepend (GList    *list,
                 gpointer  data)
 {
   GList *new_list;
+
+  init_metrics ();
   
   new_list = _g_list_alloc ();
   new_list->data = data;
@@ -321,9 +425,13 @@ g_list_prepend (GList    *list,
       if (list->prev)
         list->prev->next = new_list;
       list->prev = new_list;
+
+      remove_list_from_metrics_table (list);
     }
   else
     new_list->prev = NULL;
+
+  add_list_to_metrics_table (new_list);
   
   return new_list;
 }
@@ -348,6 +456,8 @@ g_list_insert (GList    *list,
   GList *new_list;
   GList *tmp_list;
 
+  init_metrics ();
+
   if (position < 0)
     return g_list_append (list, data);
   else if (position == 0)
@@ -363,6 +473,8 @@ g_list_insert (GList    *list,
   tmp_list->prev->next = new_list;
   new_list->next = tmp_list;
   tmp_list->prev = new_list;
+
+  update_list_in_metrics_table (list, FALSE);
 
   return list;
 }
@@ -383,10 +495,14 @@ g_list_insert_before (GList    *list,
                       GList    *sibling,
                       gpointer  data)
 {
+  init_metrics ();
+
   if (!list)
     {
+
       list = g_list_alloc ();
       list->data = data;
+      add_list_to_metrics_table (list);
       g_return_val_if_fail (sibling == NULL, list);
       return list;
     }
@@ -394,6 +510,8 @@ g_list_insert_before (GList    *list,
     {
       GList *node;
 
+      if (sibling->prev == NULL)
+        remove_list_from_metrics_table (sibling);
       node = _g_list_alloc ();
       node->data = data;
       node->prev = sibling->prev;
@@ -401,11 +519,17 @@ g_list_insert_before (GList    *list,
       sibling->prev = node;
       if (node->prev)
         {
+          GList *first;
           node->prev->next = node;
+
+          first = g_list_first (node);
+          update_list_in_metrics_table (first, FALSE);
+
           return list;
         }
       else
         {
+          add_list_to_metrics_table (list);
           g_return_val_if_fail (sibling == list, node);
           return node;
         }
@@ -413,6 +537,7 @@ g_list_insert_before (GList    *list,
   else
     {
       GList *last;
+      GList *first;
 
       last = list;
       while (last->next)
@@ -422,6 +547,9 @@ g_list_insert_before (GList    *list,
       last->next->data = data;
       last->next->prev = last;
       last->next->next = NULL;
+
+      first = g_list_first (list);
+      update_list_in_metrics_table (first, FALSE);
 
       return list;
     }
@@ -454,6 +582,9 @@ g_list_concat (GList *list1,
   
   if (list2)
     {
+      if (list2->prev == NULL)
+        remove_list_from_metrics_table (list2);
+
       tmp_list = g_list_last (list1);
       if (tmp_list)
         tmp_list->next = list2;
@@ -462,6 +593,8 @@ g_list_concat (GList *list1,
       list2->prev = tmp_list;
     }
   
+  update_list_in_metrics_table (list1, FALSE);
+
   return list1;
 }
 
@@ -469,6 +602,8 @@ static inline GList *
 _g_list_remove_link (GList *list,
                      GList *link)
 {
+  GList *first;
+
   if (link == NULL)
     return list;
 
@@ -479,6 +614,7 @@ _g_list_remove_link (GList *list,
       else
         g_warning ("corrupted double-linked list detected");
     }
+
   if (link->next)
     {
       if (link->next->prev == link)
@@ -488,10 +624,20 @@ _g_list_remove_link (GList *list,
     }
 
   if (link == list)
-    list = list->next;
+    {
+      if (list->prev == NULL)
+        remove_list_from_metrics_table (list);
+
+      list = list->next;
+    }
+
+  first = g_list_first (list);
+  update_list_in_metrics_table (first, FALSE);
 
   link->next = NULL;
   link->prev = NULL;
+
+  update_list_in_metrics_table (link, TRUE);
 
   return list;
 }
@@ -558,9 +704,17 @@ g_list_remove_all (GList         *list,
           if (tmp->prev)
             tmp->prev->next = next;
           else
-            list = next;
+            {
+              remove_list_from_metrics_table (list);
+              list = next;
+            }
           if (next)
-            next->prev = tmp->prev;
+            {
+              next->prev = tmp->prev;
+
+              if (next->prev == NULL)
+                add_list_to_metrics_table (list);
+            }
 
           _g_list_free1 (tmp);
           tmp = next;
@@ -674,6 +828,8 @@ g_list_copy_deep (GList     *list,
 {
   GList *new_list = NULL;
 
+  init_metrics ();
+
   if (list)
     {
       GList *last;
@@ -699,6 +855,7 @@ g_list_copy_deep (GList     *list,
         }
       last->next = NULL;
     }
+  add_list_to_metrics_table (new_list);
 
   return new_list;
 }
@@ -717,6 +874,7 @@ g_list_reverse (GList *list)
 {
   GList *last;
   
+  remove_list_from_metrics_table (list);
   last = NULL;
   while (list)
     {
@@ -725,6 +883,8 @@ g_list_reverse (GList *list)
       last->next = last->prev;
       last->prev = list;
     }
+
+  add_list_to_metrics_table (last);
   
   return last;
 }
@@ -1025,10 +1185,13 @@ g_list_insert_sorted_real (GList    *list,
 
   g_return_val_if_fail (func != NULL, list);
   
+  init_metrics ();
+
   if (!list) 
     {
       new_list = _g_list_alloc0 ();
       new_list->data = data;
+      add_list_to_metrics_table (new_list);
       return new_list;
     }
   
@@ -1048,6 +1211,7 @@ g_list_insert_sorted_real (GList    *list,
     {
       tmp_list->next = new_list;
       new_list->prev = tmp_list;
+      update_list_in_metrics_table (list, FALSE);
       return list;
     }
    
@@ -1058,6 +1222,16 @@ g_list_insert_sorted_real (GList    *list,
     }
   new_list->next = tmp_list;
   tmp_list->prev = new_list;
+
+  if (new_list->prev == NULL)
+    {
+      remove_list_from_metrics_table (list);
+      add_list_to_metrics_table (new_list);
+    }
+  else
+    {
+      update_list_in_metrics_table (list, FALSE);
+    }
  
   if (tmp_list == list)
     return new_list;
@@ -1132,6 +1306,9 @@ g_list_sort_merge (GList     *l1,
   GList list, *l, *lprev;
   gint cmp;
 
+  remove_list_from_metrics_table (l1);
+  remove_list_from_metrics_table (l2);
+
   l = &list; 
   lprev = NULL;
 
@@ -1156,6 +1333,7 @@ g_list_sort_merge (GList     *l1,
   l->next = l1 ? l1 : l2;
   l->next->prev = l;
 
+  add_list_to_metrics_table (list.next);
   return list.next;
 }
 
@@ -1255,3 +1433,17 @@ g_list_sort_with_data (GList            *list,
 {
   return g_list_sort_real (list, (GFunc) compare_func, user_data);
 }
+
+GMetricsTable *
+g_list_lock_metrics_table (void)
+{
+  G_LOCK (metrics);
+  return metrics_table;
+}
+
+void
+g_list_unlock_metrics_table (void)
+{
+  G_UNLOCK (metrics);
+}
+
