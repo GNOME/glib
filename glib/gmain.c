@@ -625,6 +625,7 @@ static GMetricsFile *total_sources_metrics_file;
 static GMetricsFile *sources_metrics_file;
 static GMetricsFile *memory_metrics_file;
 static GMetricsFile *slice_metrics_file;
+static GMetricsFile *list_metrics_file;
 static long old_total_sources = 0;
 
 static gboolean
@@ -799,6 +800,24 @@ on_metrics_timeout (void)
       g_metrics_file_end_record (slice_metrics_file);
     }
 
+  if (list_metrics_file)
+    {
+      GMetricsTable *list_metrics_table;
+      GMetricsTableIter iter;
+      GListMetrics *list_metrics;
+      const char *name;
+
+      list_metrics_table = g_list_lock_metrics_table ();
+      g_metrics_table_iter_init (&iter, list_metrics_table);
+      while (g_metrics_table_iter_next (&iter, &name, &list_metrics))
+        g_metrics_file_add_row (list_metrics_file,
+                                name,
+                                list_metrics->length,
+                                list_metrics->stack_trace? : "");
+      g_list_unlock_metrics_table ();
+      g_metrics_file_end_record (list_metrics_file);
+    }
+
   G_LOCK (main_context_list);
 
   old_histogram = histograms[old_histogram_index];
@@ -943,7 +962,7 @@ g_main_context_new (void)
   static gsize initialised;
   GMainContext *context;
   GSource *metrics_timeout_source = NULL;
-  gboolean needs_event_loop_metrics = FALSE, needs_event_loop_totals_metrics = FALSE, needs_mem_metrics = FALSE, needs_slice_metrics = FALSE;
+  gboolean needs_event_loop_metrics = FALSE, needs_event_loop_totals_metrics = FALSE, needs_mem_metrics = FALSE, needs_slice_metrics = FALSE, needs_list_metrics = FALSE;
 
   if (g_once_init_enter (&initialised))
     {
@@ -1000,6 +1019,7 @@ g_main_context_new (void)
       needs_event_loop_totals_metrics = g_metrics_requested ("event-loop-sources-totals");
       needs_mem_metrics = g_metrics_requested ("memory-usage");
       needs_slice_metrics = g_metrics_requested ("slice-memory-usage");
+      needs_list_metrics = g_metrics_requested ("lists");
     }
 
     if (needs_event_loop_totals_metrics)
@@ -1034,7 +1054,13 @@ g_main_context_new (void)
                                                "total-bytes", "%ld",
                                                "number of allocations", "%lu",
                                                NULL);
-    if (needs_event_loop_metrics || needs_event_loop_totals_metrics || needs_mem_metrics || needs_slice_metrics)
+    if (needs_list_metrics)
+      list_metrics_file = g_metrics_file_new ("lists",
+                                              "address", "%s",
+                                              "length", "%ld",
+                                              "stack trace", "%s",
+                                              NULL);
+    if (needs_event_loop_metrics || needs_event_loop_totals_metrics || needs_mem_metrics || needs_slice_metrics || needs_list_metrics)
       g_metrics_start_timeout (on_metrics_timeout);
 
   main_context_list = g_slist_append (main_context_list, context);
