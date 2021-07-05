@@ -33,6 +33,7 @@
 
 #include <glib/gmem.h>
 #include <glib/gnode.h>
+#include <glib/gmetrics.h>
 
 G_BEGIN_DECLS
 
@@ -174,6 +175,18 @@ void     g_clear_list                   (GList           **list_ptr,
 #define g_list_previous(list)	        ((list) ? (((GList *)(list))->prev) : NULL)
 #define g_list_next(list)	        ((list) ? (((GList *)(list))->next) : NULL)
 
+
+typedef struct _GListMetrics GListMetrics;
+struct _GListMetrics
+{
+  gsize length;
+  char *stack_trace;
+};
+
+GLIB_AVAILABLE_IN_ALL
+GMetricsTable *g_list_lock_metrics_table (void);
+GLIB_AVAILABLE_IN_ALL
+void        g_list_unlock_metrics_table (void);
 G_END_DECLS
 
 #endif /* __G_LIST_H__ */
