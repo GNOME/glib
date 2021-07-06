@@ -96,13 +96,10 @@ g_malloc (gsize n_bytes)
     {
       gpointer mem;
 
-      mem = malloc (n_bytes);
+      mem = g_metrics_allocate (n_bytes);
       TRACE (GLIB_MEM_ALLOC((void*) mem, (unsigned int) n_bytes, 0, 0));
       if (mem)
-	return mem;
-
-      g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
-               G_STRLOC, n_bytes);
+        return mem;
     }
 
   TRACE(GLIB_MEM_ALLOC((void*) NULL, (int) n_bytes, 0, 0));
@@ -126,13 +123,10 @@ g_malloc0 (gsize n_bytes)
     {
       gpointer mem;
 
-      mem = calloc (1, n_bytes);
+      mem = g_metrics_allocate (n_bytes);
       TRACE (GLIB_MEM_ALLOC((void*) mem, (unsigned int) n_bytes, 1, 0));
       if (mem)
 	return mem;
-
-      g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
-               G_STRLOC, n_bytes);
     }
 
   TRACE(GLIB_MEM_ALLOC((void*) NULL, (int) n_bytes, 1, 0));
@@ -161,17 +155,15 @@ g_realloc (gpointer mem,
 
   if (G_LIKELY (n_bytes))
     {
-      newmem = realloc (mem, n_bytes);
+      newmem = g_metrics_reallocate (mem, n_bytes);
+
       TRACE (GLIB_MEM_REALLOC((void*) newmem, (void*)mem, (unsigned int) n_bytes, 0));
       if (newmem)
 	return newmem;
-
-      g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
-               G_STRLOC, n_bytes);
     }
 
   if (mem)
-    free (mem);
+    g_metrics_free (mem);
 
   TRACE (GLIB_MEM_REALLOC((void*) NULL, (void*)mem, 0, 0));
 
@@ -191,7 +183,7 @@ void
 g_free (gpointer mem)
 {
   if (G_LIKELY (mem))
-    free (mem);
+    g_metrics_free (mem);
   TRACE(GLIB_MEM_FREE((void*) mem));
 }
 
@@ -244,7 +236,7 @@ g_try_malloc (gsize n_bytes)
   gpointer mem;
 
   if (G_LIKELY (n_bytes))
-    mem = malloc (n_bytes);
+    mem = g_metrics_allocate (n_bytes);
   else
     mem = NULL;
 
@@ -269,7 +261,7 @@ g_try_malloc0 (gsize n_bytes)
   gpointer mem;
 
   if (G_LIKELY (n_bytes))
-    mem = calloc (1, n_bytes);
+    mem = g_metrics_allocate (n_bytes);
   else
     mem = NULL;
 
@@ -296,12 +288,12 @@ g_try_realloc (gpointer mem,
   gpointer newmem;
 
   if (G_LIKELY (n_bytes))
-    newmem = realloc (mem, n_bytes);
+    newmem = g_realloc (mem, n_bytes);
   else
     {
       newmem = NULL;
       if (mem)
-	free (mem);
+	g_metrics_free (mem);
     }
 
   TRACE (GLIB_MEM_REALLOC((void*) newmem, (void*)mem, (unsigned int) n_bytes, 1));
