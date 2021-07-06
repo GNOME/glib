@@ -1,3 +1,257 @@
+Overview of changes in GLib 2.69.0
+==================================
+
+* Fix a crash in `GKeyFile` when parsing a file which contains translations
+  using a `GKeyFile` instance which has loaded another file previously (#2361)
+
+* Pin GIO DLL in memory on Windows (!2016)
+
+* Fix building third-party projects against GLib on CentOS 7 (work by
+  Ignacio Casal Quinteiro) (#2387)
+
+* Add `g_thread_pool_new_full()` API to allow queued `GThreadPool` data to be
+  freed if the pool is freed early (work by Nitin Wartkar) (#121)
+
+* Ensure `dlerror()` is used with locking as it’s not thread-safe in some libc
+  implementations (#399)
+
+* Add `g_dbus_is_error_name()` and `g_dbus_is_interface_name()` convenience
+  functions (work by Nitin Wartkar) (#402)
+
+* Drop internal libpcre copy in favour of a subproject from wrapdb (#962, #642)
+
+* Add `g_prefix_error_literal()` helper function (work by Emmanuel Fleury,
+  building on work by Dan Williams) (#663)
+
+* Add `g_bytes_get_region()` to get data from a `GBytes` with range checks
+  (work by Nitin Wartkar, building on work by Allison Karlitskaya) (#1098)
+
+* Add `g_object_take_ref()` to sink a floating ref (work by Nitin Wartkar,
+  building on work by Allison Karlitskaya) (#1112)
+
+* Optimise grefcount atomic operations (work by Nishal Kulkarni) (#1583)
+
+* Fix resolving child GSettings schemas from the parent’s schema source (work
+  by Christian Persch) (#1884)
+
+* Fix `g_date_time_format()` return value encoding if `LC_TIME` is not a UTF-8
+  locale but other locale settings are (work by Frederic Martinsons) (#2055)
+
+* Set app name in freedesktop.org notifications with `GNotification` (work
+  by André Apitzsch) (#2069)
+
+* Significantly improve retrieval of mount data on Windows (work by LRN based
+  on initial analysis by Jehan Pagès) (#2096)
+
+* Add `g_file_info_get_(access|creation)_date_time()` accessors (work
+  by Abanoub Ghadban) (#2281)
+
+* Always apply the remove_dot_segments algorithm to URIs in `g_uri_parse()`;
+  previously it was only applied to relative URIs (work
+  by Carlos Garcia Campos) (#2342)
+
+* Rename git `master` branch to `main` (#2348)
+
+* Various macro and version check cleanup (work by Gaël Bonithon,
+  Robin Verdenal-Tallieux, Nishal Kulkarni) (#2376, #2388, #2389)
+
+* Add a `GTlsConnectionClass.get_negotiated_protocol` vfunc so that
+  `g_tls_connection_get_negotiated_protocol()` can be made thread-safe
+  (work by Michael Catanzaro) (#2393)
+
+* Improve guess about whether a Windows process is a console process
+  (work by Princeton Ferro with input from LRN) (!1662)
+
+* Add `g_steal_fd()` function (work by Simon McVittie) (!1966)
+
+* Add `g_spawn_check_wait_status()` and distinguish more carefully between
+  wait status and exit status in the `GSpawn` API (work by Simon McVittie) (!1967)
+
+* Document GLib’s security policy; see
+  https://gitlab.gnome.org/GNOME/glib/-/blob/main/SECURITY.md (!1985)
+
+* Add `g_tree_remove_all()` (work by Lighto-Ku) (!1986)
+
+* Simplify exception handling on Windows to eliminate risk of it failing due
+  to prior heap corruption (work by LRN) (!2031)
+
+* Fix handling EOF when reading from SOCKS5 proxy stream (work
+  by Benjamin Berg) (!2032)
+
+* Unset the registered state of a `GApplication` after it has shut down (work
+  by Marco Trevisan) (!2056)
+
+* Support `GPattern` as a boxed type (work by Marco Trevisan) (!2066)
+
+* Add `g_tls_connection_get_protocol_version()` and
+  `g_tls_connection_get_ciphersuite_name()` to get TLS connection information
+  (work by Michael Catanzaro) (!2077)
+
+* Make TLS private key properties readable in `GTlsCertificate` (work
+  by Michael Catanzaro) (!2087)
+
+* Fix detection of static libintl when building on macOS (work
+  by Jonas Hahnfeld) (!2109)
+
+* Add `g_strv_builder_addv()` and `g_strv_builder_add_many()` to the
+  `GStrvBuilder` API (work by Alexandros Theodotou) (!2112)
+
+* Add `not-valid-before`, `not-valid-after`, `subject-name`, `issuer-name`,
+  `dns-names`, `ip-addresses` properties to `GTlsCertificate`
+  (work by Ross Wollman) (!2113, !2142)
+
+* Add PKCS#11 flags to `GTlsPasswordFlags` (work by Patrick Griffis) (!2126)
+
+* Bugs fixed:
+ - #121 GThreadPool and the ability to free data waiting to be handled
+ - #229 g_match_info_fetch_named not return empty string as expected
+ - #310 ref doc doesn't talk about "helper getters" optimization in g_file_info.c
+ - #399 dlerror() not thread-safe in all libc, making gmodule-dl.c's fetch_dlerror fail sometimes
+ - #402 please consider: #define g_dbus_is_error_name(x) g_dbus_is_interface_name (x)
+ - #626 Add documentation example for GArray and g_array_set_clear_func()
+ - #642 update to pcre 8.35+
+ - #663 [patch] add g_prefix_error_literal()
+ - #793 Potentially confusing error message when object doesn't exist
+ - #817 gobject: Allow passing %NULL for @data in g_object_remove_toggle_ref
+ - #962 drop embedded pcre copy
+ - #1036 gdbusproxy stops tracking if dbus service restarts
+ - #1098 GBytes: add range-checked pointer getter
+ - #1112 GObject: add g_object_take_ref()
+ - #1583 Optimise gatomicrefcount operations
+ - #1864 Somewhat misleading documentation of GSourceFuncs
+ - #1884 `g_settings_get_child` not compatible with `g_settings_schema_source_new_from_directory`
+ - #2011 Add additional unit tests for D-Bus name watching
+ - #2055 g_date_time_format() does not return UTF-8 if LC_TIME is not UTF8 but other locale settings are UTF-8
+ - #2069 FreedesktopNotification fails to set app_name
+ - #2096 SHGetFileInfoW() is not reliable (time-wise)
+ - #2281 Add g_file_info_get_(access|creation)_date_time()
+ - #2300 Crash on Windows MSVC build around gio
+ - #2311 testfilemonitor test leaks ip_watched_file_t struct
+ - #2340 GIO tests fail to build with clang-cl
+ - #2342 g_uri_parse doesn't apply the remove_dot_segments algorithm to the path
+ - #2348 Investigate renaming master git branch to main
+ - #2352 RUN_FIRST | RUN_CLEANUP signals with a default handler ignore return values from user handlers
+ - #2359 GLib 2.68.0: gio-querymodules segfaults on Windows
+ - #2361 g_key_file_load_from_file segfaults on "Key[*]="like lines
+ - #2363 g_newa() doesn’t check for multiplication overflow
+ - #2368 g_task_run_in_thread () limits are not clear
+ - #2369 glocalfile: Add native exfat magic number to  filesystem list
+ - #2376 GLIB_VERSION_MAX_ALLOWED < 2.60 does not warn when using G_GNUC_FALLTHROUGH
+ - #2387 json-glib does not build with glib 2.68.1
+ - #2388 Pixman compilation error due to glib
+ - #2389 Use G_GNUC_CHECK_VERSION to check the GNUC version
+ - #2393 g_tls_connection_get_negotiated_protocol() is not threadsafe
+ - #2397 Slow to list device in windows
+ - #2399 Change spelling of ‘serialise’ to ‘serialize’ in documentation
+ - #2405 Mention that GNotification requires an installed .desktop file to work
+ - #2409 Project crashes when executing g_application_mark_busy
+ - #2414 Devhelp: Glib Reference Manual/Glib Overview/Running Glib Applications formatting issue.
+ - #2416 certificate: g_tls_certificate_new_from_pem invalid read on non null terminated data
+ - #2417 GFile: `g_file_replace_contents()` reports `G_IO_ERROR_WRONG_ETAG` when saving from a symlink
+ - #2418 gatomic: __atomic functions are called for CV-qualified output variables
+ - #2423 resources.c:656:test_resource_binary_linked: 'found' should be TRUE
+ - !1514 gbookmarkfile: Don't crash if we're not visited
+ - !1662 gspawn-win32: improve guess whether process is console process
+ - !1812 docs: Expand documentation about D-Bus GUIDs
+ - !1957 Fix more warnings
+ - !1965 gversionmacros: Add version macros for GLib 2.70
+ - !1966 Add g_steal_fd() to API
+ - !1967 Distinguish more clearly between wait status and exit status
+ - !1969 glib_typeof: Move definition to its own header
+ - !1985 docs: Add a policy for handling security issues
+ - !1986 make g_tree_remove_all public
+ - !1996 Include glibconfig.h to get the G_OS_UNIX token
+ - !1998 gpollableinputstream: Add missing annotation
+ - !1999 goption.c: Simplfy parse_short_option()
+ - !2004 Some improvements to clang-cl builds
+ - !2005 introspection: Remove 'caller-allocates' from POD types
+ - !2006 fuzzing: Add fuzz tests for functions which parse paths
+ - !2008 tests: Deactivate tls-bindings test suite for windows
+ - !2011 docs: Fix example program link
+ - !2012 docs: Replace git.gnome.org with gitlab.gnome.org urls
+ - !2013 fuzzing: Fix assertion failure in fuzz_paths.c
+ - !2016 GIO W32: Pin gio DLL
+ - !2023 gtlspassword: Fix g-i annotation of return for g_tls_password_get_value
+ - !2025 [th/gdbus-cleanup] two minor cleanup patches for gdbusconnection.c
+ - !2026 Split g_test_log() messages that contain multiple lines
+ - !2027 Fix a handful of minor leaks found by Coverity
+ - !2030 Fix more warnings
+ - !2031 Re-simplify exception handling on Windows
+ - !2032 gsocks5proxy: Handle EOF when reading from a stream
+ - !2033 Fix annotation of count arguments
+ - !2036 gmacros.h: use G_GNUC_CHECK_VERSION
+ - !2038 Fix more warnings
+ - !2039 Implement G_ANALYZER_NORETURN for Coverity
+ - !2040 Fix more warnings
+ - !2041 refcount: Clarify when the ref count ends up undefined
+ - !2042 grefcount: Clarify that the initial reference count is 1
+ - !2043 gmacros.h: use g_macro__has_attribute() where possible
+ - !2046 gerror: Clarify docs around message requirements
+ - !2047 Fix more warnings
+ - !2048 Fix more warnings
+ - !2049 Fix typo in g_socket_listener_accept_async()'s comment
+ - !2050 gdbus: document completion after idle action for g_dbus_connection_signal_unsubscribe()
+ - !2051 Add nullable annotations in GUnixMountEntry
+ - !2052 g_string_replace(): Fix documentation of 'limit' parameter
+ - !2054 docs: Fix formatting of code block
+ - !2055 Improve handling of FILENAME_MAX
+ - !2056 application: Unset the registered state after shutting down
+ - !2063 Fix more warnings
+ - !2066 gpattern: Register as Boxed type and support introspection for it
+ - !2067 gmacros: missing check if __STDC_VERSION__ is defined
+ - !2069 gdbus-tool: Actually use argv[0] basename as program name
+ - !2071 gstring: Cleanup documentation of g_string_replace
+ - !2074 Fix more warnings
+ - !2075 gdtlsconnection: Fix a check for a vfunc being implemented
+ - !2077 tls: add functions to get protocol version and ciphersuite name
+ - !2078 gthreadedresolver: don't ignore flags in lookup_by_name_with_flags
+ - !2080 guuid: fix shift operation to parse hex string in uuid_parse_string()
+ - !2081 Fix more warnings
+ - !2085 gcredentials.h: Fix comment typo
+ - !2087 gtlscertificate: make private key properties readable
+ - !2088 Fix more warnings
+ - !2090 docs: Standardize spelling of serializ*
+ - !2091 Fix more warnings (clang)
+ - !2098 grefcount: Optimise g_atomic_ref_count_dec
+ - !2099 gmacros.h: G_NORETURN: remove useless checks
+ - !2100 tests: Add missing return value check in string test
+ - !2101 Fix more warnings
+ - !2104 tests: Drop use of g_test_bug_base()
+ - !2105 tests: Use a temporary file in the bookmarkfile tests
+ - !2106 Fix more warnings
+ - !2108 glib spawn-singlethread test only if F_DUPFD_CLOEXEC is defined
+ - !2109 meson: Fix detection of static libintl on macOS
+ - !2112 gstrvbuilder: add addv and add_many to the API
+ - !2113 tls: expose cert details on GTlsCertificate
+ - !2119 Fix more warnings
+ - !2120 gdbusobjectmanagerclient: Call GetManagedObjects async
+ - !2123 gdbus: Add various missing (nullable) or (not nullable) annotations
+ - !2126 gtlspassword: Add flags signifying PIN type for PKCS#11
+ - !2127 gutils: ensure g_find_program_in_path() return an absolute path
+ - !2130 Revert "tests: Deactivate tls-bindings test suite for windows"
+ - !2139 gdbus, win32: Fix accidental dllexport in static builds
+ - !2142 tls: expose SAN details on GTlsCertificate
+ - !2143 compiling.xml: Don't recommend backticks
+ - !2144 pcre: Drop internal libpcre copy
+ - !2145 gunixmounts: Document NULL return value for g_unix_mount_for()
+ - !2152 tests: A few small improvements to GBytes tests
+ - !2153 docs: Fix annotations for optional arguments
+ - !2155 glocalfilemonitor: Avoid a deadlock on finalization
+ - !2162 testgdate: fix -Wmisleading-indentation warning
+ - !2166 gtlscertificate: Add more annotations to new properties
+ - !2167 g_value_set_string description: clarified (unified), that v_string is a copy.
+ - !2173 gasyncqueue: Add missing (nullable) annotation to free function
+ - !2174 data-to-c.py: generate new-line at the end of the file
+
+* Translation updates:
+ - Chinese (China)
+ - English (United Kingdom)
+ - Hebrew
+ - Nepali
+ - Occitan (post 1500)
+ - Serbian
+
+
 Overview of changes in GLib 2.68.0
 ==================================
 
