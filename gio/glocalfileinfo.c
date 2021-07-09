@@ -2512,6 +2512,7 @@ set_mtime_atime (const char                 *filename,
   BOOL res;
   guint64 val = 0;
   guint32 val_usec = 0;
+  guint32 val_nsec = 0;
   gunichar2 *filename_utf16;
   SECURITY_ATTRIBUTES sec = { sizeof (SECURITY_ATTRIBUTES), NULL, FALSE };
   HANDLE file_handle;
@@ -2529,8 +2530,14 @@ set_mtime_atime (const char                 *filename,
       val_usec = 0;
       if (atime_usec_value &&
           !get_uint32 (atime_usec_value, &val_usec, error))
-	return FALSE;
-      if (!_g_win32_unix_time_to_filetime (val, val_usec, &atime, error))
+        return FALSE;
+
+      /* Convert to nanoseconds. Clamp the usec value if it’s going to overflow,
+       * as %G_MAXINT32 will trigger a ‘too big’ error in
+       * _g_win32_unix_time_to_filetime() anyway. */
+      val_nsec = (val_usec > G_MAXINT32 / 1000) ? G_MAXINT32 : (val_usec * 1000);
+
+      if (!_g_win32_unix_time_to_filetime (val, val_nsec, &atime, error))
         return FALSE;
       p_atime = &atime;
     }
@@ -2543,8 +2550,14 @@ set_mtime_atime (const char                 *filename,
       val_usec = 0;
       if (mtime_usec_value &&
           !get_uint32 (mtime_usec_value, &val_usec, error))
-	return FALSE;
-      if (!_g_win32_unix_time_to_filetime (val, val_usec, &mtime, error))
+        return FALSE;
+
+      /* Convert to nanoseconds. Clamp the usec value if it’s going to overflow,
+       * as %G_MAXINT32 will trigger a ‘too big’ error in
+       * _g_win32_unix_time_to_filetime() anyway. */
+      val_nsec = (val_usec > G_MAXINT32 / 1000) ? G_MAXINT32 : (val_usec * 1000);
+
+      if (!_g_win32_unix_time_to_filetime (val, val_nsec, &mtime, error))
         return FALSE;
       p_mtime = &mtime;
     }
