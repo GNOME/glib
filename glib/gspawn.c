@@ -1494,7 +1494,7 @@ safe_closefrom (int lowfd)
    *
    * Handle ENOSYS in case it’s supported in libc but not the kernel; if so,
    * fall back to safe_fdwalk(). */
-  if (close_range (lowfd, G_MAXUINT) != 0 && errno == ENOSYS)
+  if (close_range (lowfd, G_MAXUINT, 0) != 0 && errno == ENOSYS)
 #endif  /* HAVE_CLOSE_RANGE */
   (void) safe_fdwalk (close_func, GINT_TO_POINTER (lowfd));
 #endif
