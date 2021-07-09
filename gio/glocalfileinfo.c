@@ -2440,7 +2440,7 @@ _g_win32_unix_time_to_filetime (gint64     ut,
 {
   gint64 result;
   /* 1 unit of FILETIME is 100ns */
-  const gint64 hundreds_of_usec_per_sec = 10000000;
+  const gint64 hundreds_of_nsec_per_sec = 10000000;
   /* The difference between January 1, 1601 UTC (FILETIME epoch) and UNIX epoch
    * in hundreds of nanoseconds.
    */
@@ -2465,7 +2465,7 @@ _g_win32_unix_time_to_filetime (gint64     ut,
       return FALSE;
     }
 
-  if (nsec >= hundreds_of_usec_per_sec * 100)
+  if (nsec >= hundreds_of_nsec_per_sec * 100)
     {
       g_set_error (error, G_IO_ERROR,
                    G_IO_ERROR_INVALID_DATA,
@@ -2474,8 +2474,8 @@ _g_win32_unix_time_to_filetime (gint64     ut,
       return FALSE;
     }
 
-  if (ut >= (G_MAXINT64 / hundreds_of_usec_per_sec) ||
-      (ut * hundreds_of_usec_per_sec) >= (G_MAXINT64 - filetime_unix_epoch_offset))
+  if (ut >= (G_MAXINT64 / hundreds_of_nsec_per_sec) ||
+      (ut * hundreds_of_nsec_per_sec) >= (G_MAXINT64 - filetime_unix_epoch_offset))
     {
       g_set_error (error, G_IO_ERROR,
                    G_IO_ERROR_INVALID_DATA,
@@ -2484,7 +2484,7 @@ _g_win32_unix_time_to_filetime (gint64     ut,
       return FALSE;
     }
 
-  result = ut * hundreds_of_usec_per_sec + filetime_unix_epoch_offset + nsec / 100;
+  result = ut * hundreds_of_nsec_per_sec + filetime_unix_epoch_offset + nsec / 100;
 
   if (result >= max_systemtime || result < 0)
     {
